@@ -183,18 +183,18 @@ WITH y AS (SELECT * FROM numbers(10)) INSERT INTO x SELECT * FROM y;
 INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION type] [SETTINGS ...] [FORMAT format_name]
 ```
 
-위의 구문을 사용하면 **클라이언트** 측에 저장된 하나 또는 여러 개의 파일에서 데이터를 삽입할 수 있습니다. `file_name`과 `type`은 문자열 리터럴입니다. 입력 파일의 [포맷](../../interfaces/formats.md)은 `FORMAT` 절에서 설정해야 합니다.
+위의 구문을 사용하면 **클라이언트** 측에 저장된 하나 또는 여러 개의 파일에서 데이터를 삽입할 수 있습니다. `file_name`과 `type`은 문자열 리터럴입니다. 입력 파일의 [형식](../../interfaces/formats.md)은 `FORMAT` 절에서 설정해야 합니다.
 
 압축된 파일도 지원됩니다. 압축 유형은 파일 이름의 확장자로 자동 감지됩니다. 또는 `COMPRESSION` 절에서 명시적으로 지정할 수 있습니다. 지원되는 유형은 `'none'`, `'gzip'`, `'deflate'`, `'br'`, `'xz'`, `'zstd'`, `'lz4'`, `'bz2'`입니다.
 
-이 기능은 [command-line client](../../interfaces/cli.md)와 [clickhouse-local](../../operations/utilities/clickhouse-local.md)에서 사용할 수 있습니다.
+이 기능은 [command-line client](../../interfaces/client.md)와 [clickhouse-local](../../operations/utilities/clickhouse-local.md)에서 사용할 수 있습니다.
 
 **예시**
 
 
 ### 단일 파일에서 FROM INFILE 사용하기 \{#single-file-with-from-infile\}
 
-다음 쿼리를 [명령줄 클라이언트](../../interfaces/cli.md)를 사용하여 실행하십시오:
+다음 쿼리를 [command-line client](../../interfaces/client.md)를 사용하여 실행하십시오:
 
 ```bash
 echo 1,A > input.csv ; echo 2,B >> input.csv

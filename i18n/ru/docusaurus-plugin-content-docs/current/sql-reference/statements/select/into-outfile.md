@@ -24,7 +24,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 ## Подробности реализации \{#implementation-details\}
 
-* Эта функциональность доступна в [клиенте командной строки](../../../interfaces/cli.md) и [clickhouse-local](../../../operations/utilities/clickhouse-local.md). Поэтому запрос, отправленный через [HTTP-интерфейс](/interfaces/http), завершится с ошибкой.
+* Эта функциональность доступна в [клиенте командной строки](../../../interfaces/client.md) и [clickhouse-local](../../../operations/utilities/clickhouse-local.md). Поэтому запрос, отправленный через [HTTP-интерфейс](/interfaces/http), завершится с ошибкой.
 * Запрос завершится с ошибкой, если файл с тем же именем уже существует.
 * [Формат вывода](../../../interfaces/formats.md) по умолчанию — `TabSeparated` (как в пакетном режиме клиента командной строки). Используйте раздел [FORMAT](format.md), чтобы изменить его.
 * Если в запросе указано `AND STDOUT`, то вывод, записываемый в файл, также отображается в стандартный поток вывода. При использовании сжатия в стандартный поток вывода выводится несжатый текст.
@@ -33,7 +33,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 **Пример**
 
-Выполните следующий запрос с помощью [клиента командной строки](../../../interfaces/cli.md):
+Выполните следующий запрос с помощью [клиента командной строки](../../../interfaces/client.md):
 
 ```bash
 clickhouse-client --query="SELECT 1,'ABC' INTO OUTFILE 'select.gz' FORMAT CSV;"

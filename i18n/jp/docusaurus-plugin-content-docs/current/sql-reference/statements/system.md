@@ -727,23 +727,11 @@ SYSTEM UNLOAD PRIMARY KEY
 ```
 
 
-## リフレッシャブルmaterialized view の管理 \{#refreshable-materialized-views\}
+## リフレッシャブルmaterialized view の管理 \{#managing-refreshable-materialized-views\}
 
 [リフレッシャブルmaterialized view](../../sql-reference/statements/create/view.md#refreshable-materialized-view) によって実行されるバックグラウンドタスクを制御するためのコマンド群です。
 
 使用中は [`system.view_refreshes`](../../operations/system-tables/view_refreshes.md) を監視してください。
-
-### SYSTEM REFRESH VIEW \{#refresh-view\}
-
-指定した VIEW のスケジュール外リフレッシュを即時に実行します。
-
-```sql
-SYSTEM REFRESH VIEW [db.]name
-```
-
-### SYSTEM WAIT VIEW \{#wait-view\}
-
-現在実行中のリフレッシュが完了するまで待機します。リフレッシュが失敗した場合は例外をスローします。リフレッシュが実行されていない場合は直ちに完了し、前回のリフレッシュが失敗している場合は例外をスローします。
 
 ### SYSTEM STOP [REPLICATED] VIEW, STOP VIEWS \{#stop-view-stop-views\}
 
@@ -780,23 +768,31 @@ SYSTEM START VIEWS
 ```
 
 
+### SYSTEM REFRESH VIEW \{#refresh-view\}
+
+指定した VIEW のスケジュール外リフレッシュを即時に実行します。
+
+```sql
+SYSTEM REFRESH VIEW [db.]name
+```
+
+### SYSTEM WAIT VIEW \{#wait-view\}
+
+実行中のリフレッシュが完了するまで待機します。リフレッシュが実行されていない場合は、即座に戻ります。直前のリフレッシュ試行が失敗している場合は、エラーを返します。
+
+新しいリフレッシャブルmaterialized view を (EMPTY キーワードなしで) 作成した直後に、初回リフレッシュの完了を待つ目的で使用できます。
+
+ビューが Replicated または Shared データベース内にあり、別のレプリカでリフレッシュが実行中の場合、そのリフレッシュが完了するまで待機します。
+
+```sql
+SYSTEM WAIT VIEW [db.]name
+```
+
+
 ### SYSTEM CANCEL VIEW \{#cancel-view\}
 
 指定されたビューについて現在のレプリカ上でリフレッシュが実行中の場合、それを中断してキャンセルします。実行中でない場合は何もしません。
 
 ```sql
 SYSTEM CANCEL VIEW [db.]name
-```
-
-
-### SYSTEM WAIT VIEW \{#system-wait-view\}
-
-実行中のリフレッシュが完了するまで待機します。リフレッシュが実行されていない場合は、即座に戻ります。直前のリフレッシュ試行が失敗している場合は、エラーを返します。
-
-新しいリフレッシャブルmaterialized view を（EMPTY キーワードなしで）作成した直後に、初回リフレッシュの完了を待つ目的で使用できます。
-
-ビューが Replicated または Shared データベース内にあり、別のレプリカでリフレッシュが実行中の場合、そのリフレッシュが完了するまで待機します。
-
-```sql
-SYSTEM WAIT VIEW [db.]name
 ```

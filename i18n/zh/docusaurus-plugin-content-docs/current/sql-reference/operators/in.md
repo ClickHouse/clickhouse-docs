@@ -139,6 +139,8 @@ FROM t_null
 
 当使用 `GLOBAL IN` / `GLOBAL JOIN` 时，首先会执行所有 `GLOBAL IN` / `GLOBAL JOIN` 的子查询，并将结果收集到临时表中。然后，这些临时表被发送到每个远程服务器，在远程服务器上使用这些临时数据来执行查询。
 
+对于 `GLOBAL ... JOIN`，连接的哪一侧作为子查询进行计算取决于连接类型：对于 `LEFT` 和 `INNER` 连接，计算右表；对于 `RIGHT` 连接，则计算左表，因为右表是被保留的一侧，应从各分片中读取。
+
 对于非分布式查询，请使用普通的 `IN` / `JOIN`。
 
 在分布式查询处理时，在 `IN` / `JOIN` 子句中使用子查询要格外小心。
@@ -177,7 +179,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SEL
 
 换句话说，`IN` 子句中的数据集会在每台服务器上独立收集，只会基于该服务器本地存储的数据进行处理。
 
-如果你事先为这种情况做好准备，并且在集群服务器之间分布数据，使得单个 UserID 的数据完全存放在同一台服务器上，那么该机制会正确且高效地工作。在这种情况下，每台服务器上所需的数据都可以在本地获取。否则，结果将会不准确。我们将这种形式的查询称为 “local IN”。
+如果你事先为这种情况做好准备，并且在集群服务器之间分布数据，使得单个 UserID 的数据完全存放在同一台服务器上，那么该机制会正确且高效地工作。在这种情况下，每台服务器上所需的数据都可以在本地获取。否则，结果将会不准确。我们将这种形式的查询称为 &quot;local IN&quot;。
 
 当数据随机分布在集群服务器上时，为了修正查询的执行方式，你可以在子查询中指定 **distributed&#95;table**。查询将如下所示：
 
@@ -185,7 +187,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SEL
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-该查询将以如下形式发送到所有远程服务器：
+此查询将以如下形式发送到所有远程服务器：
 
 ```sql
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
@@ -217,11 +219,11 @@ SELECT UserID FROM distributed_table WHERE CounterID = 34
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL IN _data1
 ```
 
-临时表 `_data1` 将随查询一起发送到每个远程服务器 (临时表的名称由具体实现决定) 。
+临时表 `_data1` 将随查询一起发送到每个远程服务器 (临时表的具体名称由实现决定) 。
 
-这比使用普通的 `IN` 更高效，但请注意以下几点：
+这种方式比使用普通的 `IN` 更高效。不过，请注意以下几点：
 
-1. 创建临时表时，数据不会自动去重。为了减少通过网络传输的数据量，请在子查询中使用 DISTINCT。 (对于普通的 `IN`，不需要这样做。) 
+1. 创建临时表时，数据不会自动去重。为了减少通过网络传输的数据量，请在子查询中使用 DISTINCT。 (对于普通的 `IN`，不需要这样做。)
 2. 临时表会被发送到所有远程服务器。传输时不会考虑网络拓扑结构。例如，如果有 10 台远程服务器位于距离发起请求的服务器很远的数据中心，则数据会通过与该远程数据中心的网络链路被发送 10 次。在使用 `GLOBAL IN` 时，尽量避免使用大型数据集。
 3. 向远程服务器传输数据时，无法对网络带宽限制进行配置，这可能会导致网络过载。
 4. 尽量将数据合理分布到各个服务器上，以避免经常需要使用 `GLOBAL IN`。

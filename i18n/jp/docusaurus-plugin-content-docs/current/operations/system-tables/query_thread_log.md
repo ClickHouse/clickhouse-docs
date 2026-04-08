@@ -30,9 +30,9 @@ Columns:
 * `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — クエリを実行するサーバーのホスト名。
 * `event_date` ([Date](../../sql-reference/data-types/date.md)) — スレッドがクエリの実行を完了した日付。
 * `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — スレッドがクエリの実行を完了した日時。
-* `event_time_microseconds` ([DateTime](../../sql-reference/data-types/datetime.md)) — スレッドがクエリの実行を完了した日時（マイクロ秒精度まで）。
+* `event_time_microseconds` ([DateTime](../../sql-reference/data-types/datetime.md)) — スレッドがクエリの実行を完了した日時 (マイクロ秒精度まで) 。
 * `query_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — クエリ実行開始時刻。
-* `query_start_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — クエリ実行開始時刻（マイクロ秒精度まで）。
+* `query_start_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — クエリ実行開始時刻 (マイクロ秒精度まで) 。
 * `query_duration_ms` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — クエリの実行時間。
 * `read_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 読み込まれた行数。
 * `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — 読み込まれたバイト数。
@@ -53,26 +53,26 @@ Columns:
 * `query_id` ([String](../../sql-reference/data-types/string.md)) — クエリ ID。
 * `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — クエリの実行に使用された IP アドレス。プロキシ経由で接続しており、[auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) が設定されている場合、この値はプロキシではなくクライアントのアドレスになります。
 * `port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — クエリの送信に使用されたクライアントのポート番号。プロキシ経由で接続し、[auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) が有効になっている場合、これはプロキシではなくクライアントのポート番号になります。
-* `initial_user` ([String](../../sql-reference/data-types/string.md)) — 初回のクエリを実行したユーザー名（分散クエリ実行時）。
+* `initial_user` ([String](../../sql-reference/data-types/string.md)) — 初回のクエリを実行したユーザー名 (分散クエリ実行時) 。
 * `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — 分散クエリ実行における初期クエリの ID。
 * `initial_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — 親クエリが実行された際に使用された IP アドレス。
 * `initial_port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — 親クエリの実行に使用されたクライアントポート。
 * `interface` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — クエリがどのインターフェイスから実行されたかを表します。取り得る値:
-  * 1 — TCP
-  * 2 — HTTP
-* `os_user` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) を実行する OS のユーザー名。
-* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) または他の TCP クライアントが実行されているクライアントマシンのホスト名です。
-* `client_name` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) または別の TCP クライアントの名前。
-* `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) またはその他の TCP クライアントのリビジョン番号。
-* `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) またはその他の TCP クライアントのメジャーバージョン。
-* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) またはその他の TCP クライアントのマイナーバージョン。
-* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/cli.md) または他の TCP クライアントのバージョンのパッチ番号。
+  * 1 — TCP.
+  * 2 — HTTP.
+* `os_user` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/client.md) を実行する OS のユーザー名。
+* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/client.md) または他の TCP クライアントが実行されているクライアントマシンのホスト名です。
+* `client_name` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/client.md) または別の TCP クライアントの名前。
+* `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/client.md) またはその他の TCP クライアントのリビジョン番号。
+* `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/client.md) またはその他の TCP クライアントのメジャーバージョン。
+* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/client.md) またはその他の TCP クライアントのマイナーバージョン。
+* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — [clickhouse-client](../../interfaces/client.md) または他の TCP クライアントのバージョンのパッチ番号。
 * `http_method` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — クエリを開始した HTTP メソッド。取りうる値:
   * 0 — クエリは TCPインターフェイスから実行されました。
   * 1 — `GET` メソッドが使用されました。
   * 2 — `POST` メソッドが使用されました。
 * `http_user_agent` ([String](../../sql-reference/data-types/string.md)) — HTTP リクエストで送信された `UserAgent` ヘッダー。
-* `quota_key` ([String](../../sql-reference/data-types/string.md)) — [quotas](../../operations/quotas.md) 設定で指定される「quota key」（`keyed` を参照）です。
+* `quota_key` ([String](../../sql-reference/data-types/string.md)) — [quotas](../../operations/quotas.md) 設定で指定される「quota key」 (`keyed` を参照) です。
 * `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ClickHouse のリビジョン番号。
 * `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/array.md)) — このスレッドに関するさまざまなメトリクスを測定する `ProfileEvents`。各イベントの説明は、[system.events](/operations/system-tables/events) テーブルで確認できます。
 

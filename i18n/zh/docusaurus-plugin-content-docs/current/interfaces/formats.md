@@ -142,15 +142,15 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 在使用 `Cap'n Proto` 或 `Protobuf` 任一格式时，必须设置该配置。
 格式模式由文件名和该文件中消息类型的名称组成，两者以冒号分隔，
 例如：`schemafile.proto:MessageType`。
-如果文件具有该格式的标准扩展名（例如 `Protobuf` 的 `.proto`），
+如果文件具有该格式的标准扩展名 (例如 `Protobuf` 的 `.proto`) ，
 则扩展名可以省略，此时格式模式为 `schemafile:MessageType`。
 
-如果通过交互模式下的[客户端](/interfaces/cli.md)进行数据输入或输出，格式模式中指定的文件名
+如果通过交互模式下的[客户端](/interfaces/client.md)进行数据输入或输出，格式模式中指定的文件名
 可以是绝对路径，也可以是相对于客户端当前目录的相对路径。
-如果在[批处理模式](/interfaces/cli.md/#batch-mode)下使用客户端，出于安全考虑，模式文件的路径必须是相对路径。
+如果在[批处理模式](/interfaces/client.md/#batch-mode)下使用客户端，出于安全考虑，模式文件的路径必须是相对路径。
 
 如果通过 [HTTP 接口](/interfaces/http) 进行数据输入或输出，则格式模式中指定的文件名
-必须位于服务器配置中由 [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) 指定的目录中。
+必须位于服务器配置中由 [format&#95;schema&#95;path](/operations/server-configuration-parameters/settings.md/#format_schema_path) 指定的目录中。
 
 ## 跳过错误 \{#skippingerrors\}
 

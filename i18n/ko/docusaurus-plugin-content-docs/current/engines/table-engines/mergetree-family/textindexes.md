@@ -420,6 +420,10 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 `support` 양쪽에 공백을 넣어 두면 해당 용어를 하나의 토큰으로 인식할 수 있습니다.
 
+다행히도 ClickHouse가 역색인 인덱스를 활용해 LIKE 쿼리의 속도를 크게 높일 수 있는 특별한 경우가 있습니다.
+
+자세한 내용은 [LIKE/ILIKE 성능 튜닝 섹션](#like-ilike-queries-perf)을 참조하십시오.
+
 
 #### `startsWith` 및 `endsWith` \{#functions-example-startswith-endswith\}
 
@@ -919,6 +923,23 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 이 쿼리에서는 `__text_index_...`, 그다음 `greaterOrEquals(...)`, 마지막으로 `like(...)` 순서로 적용됩니다.
 이러한 적용 순서 덕분에 텍스트 인덱스와 기존 필터만으로 건너뛸 수 있는 그래뉼보다 더 많은 데이터 그래뉼을, `WHERE` 절 이후 쿼리에서 사용되는 읽기 비용이 큰 컬럼을 읽기 전에 건너뛸 수 있어, 최종적으로 읽어야 하는 데이터 양이 더욱 줄어듭니다.
 
+
+### LIKE/ILIKE 쿼리 \{#like-ilike-queries-perf\}
+
+LIKE/ILIKE 쿼리 패턴이 `%<alpha-numeric-characters-without-spaces>%`이고 텍스트 인덱스 토크나이저가 `splitByNonAlpha`인 경우, ClickHouse는 역인덱스를 활용해 LIKE/ILIKE 쿼리 속도를 크게 높입니다. 이를 위해 ClickHouse는 일치하는 패턴을 찾을 때 전체 테이블 스캔 대신 역인덱스 딕셔너리를 스캔합니다.
+
+이 최적화가 활성화되면 LIKE/ILIKE 쿼리는 전체 테이블 스캔보다 훨씬 빨라집니다. 하지만 패턴이 딕셔너리의 대부분의 토큰과 일치하는 경우에는 전체 테이블 스캔보다 성능이 더 나빠질 수 있습니다. 다행히 이를 방지하기 위한 폴백 메커니즘이 있습니다.
+
+이 최적화는 다음 설정으로 제어됩니다.
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+폴백 메커니즘은 다음 두 가지 설정으로 제어됩니다.
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+이 최적화는 `like` 및 `ilike` 함수만 지원합니다.
 
 ### 캐싱 \{#caching\}
 
