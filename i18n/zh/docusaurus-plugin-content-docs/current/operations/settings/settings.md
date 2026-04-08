@@ -11448,6 +11448,27 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 用于决定是否使用由倒排文本索引构建的提示时，过滤器的最大选择性。
 
+## text_index_like_max_postings_to_read \{#text_index_like_max_postings_to_read\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "50"},{"label": "新设置"}]}]} />
+
+启用通过字典扫描进行 文本索引 LIKE 求值时，可读取的大型 postings 列表的最大数量。
+
+需要同时启用 `use_text_index_like_evaluation_by_dictionary_scan`。
+
+## text_index_like_min_pattern_length \{#text_index_like_min_pattern_length\}
+
+<SettingsInfoBlock type="UInt64" default_value="4" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4"},{"label": "新增设置"}]}]} />
+
+在 LIKE/ILIKE 模式中，若要使用通过字典扫描进行的文本索引 LIKE 求值，字母数字 needle 所需的最小长度。
+短于此阈值的模式会匹配过多的字典标记，因此会被跳过，以避免高开销的扫描。
+
+需要同时启用 `use_text_index_like_evaluation_by_dictionary_scan`。
+
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -12074,6 +12095,14 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 是否启用反序列化后的文本索引头部缓存。
 在处理大量文本索引查询时，使用文本索引头部缓存可以显著降低延迟并提高吞吐量。
+
+## use_text_index_like_evaluation_by_dictionary_scan \{#use_text_index_like_evaluation_by_dictionary_scan\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "新增设置"}]}]} />
+
+启用通过扫描倒排文本索引字典对 LIKE/ILIKE 查询进行求值。
 
 ## use_text_index_postings_cache \{#use_text_index_postings_cache\}
 

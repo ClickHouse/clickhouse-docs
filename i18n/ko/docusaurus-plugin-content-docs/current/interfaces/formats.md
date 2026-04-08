@@ -143,12 +143,12 @@ ClickHouse는 대부분의 일반적인 텍스트 및 바이너리 데이터 형
 파일이 해당 포맷의 표준 확장자(예: `Protobuf`의 `.proto`)를 갖는 경우 이 확장자는 생략할 수 있으며,
 이 경우 포맷 스키마는 `schemafile:MessageType`과 같은 형태가 됩니다.
 
-대화형 모드에서 [client](/interfaces/cli.md)를 통해 데이터를 입력하거나 출력하는 경우,
+대화형 모드에서 [client](/interfaces/client.md)를 통해 데이터를 입력하거나 출력하는 경우,
 포맷 스키마에 지정된 파일 이름에는 클라이언트의 현재 디렉터리를 기준으로 한 상대 경로나 절대 경로를 사용할 수 있습니다.
-[batch mode](/interfaces/cli.md/#batch-mode)에서 client를 사용하는 경우, 보안상의 이유로 스키마에 대한 경로는 상대 경로여야 합니다.
+[batch mode](/interfaces/client.md/#batch-mode)에서 client를 사용하는 경우, 보안상의 이유로 스키마에 대한 경로는 상대 경로여야 합니다.
 
 [HTTP 인터페이스](/interfaces/http)를 통해 데이터를 입력하거나 출력하는 경우,
-포맷 스키마에 지정된 파일 이름은 서버 설정에서 [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path)
+포맷 스키마에 지정된 파일 이름은 서버 설정에서 [format&#95;schema&#95;path](/operations/server-configuration-parameters/settings.md/#format_schema_path)
 로 지정된 디렉터리에 위치해야 합니다.
 
 ## 오류 건너뛰기 \{#skippingerrors\}

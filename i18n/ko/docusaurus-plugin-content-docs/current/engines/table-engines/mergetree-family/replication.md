@@ -19,7 +19,7 @@ ENGINE = ReplicatedMergeTree(
 )
 ```
 
-다음과 함께 사용합니다:
+다음으로 바꿉니다:
 
 ```sql
 ENGINE = ReplicatedMergeTree
@@ -27,15 +27,16 @@ ENGINE = ReplicatedMergeTree
 
 :::
 
-복제는 MergeTree 계열에 속한 테이블에만 지원됩니다:
+복제는 MergeTree 계열에 속한 테이블에만 지원됩니다
 
-* ReplicatedMergeTree
 * ReplicatedSummingMergeTree
+* ReplicatedCoalescingMergeTree
+* ReplicatedVersionedCollapsingMergeTree
+* ReplicatedCollapsingMergeTree
+* ReplicatedGraphiteMergeTree
+* ReplicatedMergeTree
 * ReplicatedReplacingMergeTree
 * ReplicatedAggregatingMergeTree
-* ReplicatedCollapsingMergeTree
-* ReplicatedVersionedCollapsingMergeTree
-* ReplicatedGraphiteMergeTree
 
 복제는 전체 서버가 아니라 개별 테이블 단위에서 동작합니다. 하나의 서버에서 복제된 테이블과 비복제 테이블을 동시에 저장할 수 있습니다.
 

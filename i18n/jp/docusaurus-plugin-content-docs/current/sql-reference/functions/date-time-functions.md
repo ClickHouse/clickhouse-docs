@@ -3466,7 +3466,7 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toDaysInMonth \{#toDaysInMonth\}
 
-導入バージョン: v25.5.0
+導入バージョン: v26.3.0
 
 `Date` または `DateTime` の月の日数を返します。
 

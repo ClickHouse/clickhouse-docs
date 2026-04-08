@@ -187,14 +187,14 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 支持压缩文件。压缩类型通过文件名扩展名自动检测，也可以在 `COMPRESSION` 子句中显式指定。支持的类型包括：`'none'`、`'gzip'`、`'deflate'`、`'br'`、`'xz'`、`'zstd'`、`'lz4'`、`'bz2'`。
 
-此功能可在[命令行客户端](../../interfaces/cli.md)和 [clickhouse-local](../../operations/utilities/clickhouse-local.md) 中使用。
+此功能可在[命令行客户端](../../interfaces/client.md)和 [clickhouse-local](../../operations/utilities/clickhouse-local.md) 中使用。
 
 **示例**
 
 
 ### 使用 FROM INFILE 的单个文件 \{#single-file-with-from-infile\}
 
-使用 [命令行客户端](../../interfaces/cli.md) 执行以下查询：
+使用 [命令行客户端](../../interfaces/client.md) 执行以下查询：
 
 ```bash
 echo 1,A > input.csv ; echo 2,B >> input.csv

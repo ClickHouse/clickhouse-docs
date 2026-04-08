@@ -630,7 +630,7 @@ __exception__
 
 ## 带参数的查询 \{#cli-queries-with-parameters\}
 
-你可以创建带参数的查询，并通过相应的 HTTP 请求参数为其传递值。更多信息，请参见 [命令行接口中的带参数查询](../../interfaces/cli.md#cli-queries-with-parameters)。
+你可以创建带参数的查询，并通过相应的 HTTP 请求参数为其传递值。更多信息，请参见 [命令行接口中的带参数查询](/interfaces/client#cli-queries-with-parameters)。
 
 ### 示例 \{#example-3\}
 

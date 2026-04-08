@@ -24,7 +24,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 ## 구현 세부 사항 \{#implementation-details\}
 
-* 이 기능은 [command-line client](../../../interfaces/cli.md) 및 [clickhouse-local](../../../operations/utilities/clickhouse-local.md)에서 사용할 수 있습니다. 따라서 [HTTP 인터페이스](/interfaces/http)를 통해 전송된 쿼리는 실패합니다.
+* 이 기능은 [command-line client](../../../interfaces/client.md) 및 [clickhouse-local](../../../operations/utilities/clickhouse-local.md)에서 사용할 수 있습니다. 따라서 [HTTP 인터페이스](/interfaces/http)를 통해 전송된 쿼리는 실패합니다.
 * 동일한 파일 이름의 파일이 이미 존재하는 경우 쿼리는 실패합니다.
 * 기본 [출력 형식](../../../interfaces/formats.md)은 `TabSeparated`입니다 (command-line client 배치 모드와 동일합니다). 이를 변경하려면 [FORMAT](format.md) 절을 사용하십시오.
 * 쿼리에 `AND STDOUT`가 지정되면 파일로 기록되는 출력이 표준 출력에도 표시됩니다. 압축을 사용하는 경우 평문이 표준 출력에 표시됩니다.
@@ -33,7 +33,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 **예시**
 
-다음 쿼리를 [command-line client](../../../interfaces/cli.md)를 사용하여 실행하십시오:
+다음 쿼리를 [command-line client](../../../interfaces/client.md)를 사용하여 실행하십시오:
 
 ```bash
 clickhouse-client --query="SELECT 1,'ABC' INTO OUTFILE 'select.gz' FORMAT CSV;"

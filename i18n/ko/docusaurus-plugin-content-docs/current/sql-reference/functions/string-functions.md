@@ -2745,15 +2745,15 @@ SELECT space(3) AS res, length(res);
 **구문**
 
 ```sql
-sparseGrams(s[, min_ngram_length, max_ngram_length])
+sparseGrams(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **인수**
 
 * `s` — 입력 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `min_ngram_length` — 선택 사항입니다. 추출되는 n그램의 최소 길이입니다. 기본값이자 최소값은 3입니다. [`UInt*`](/sql-reference/data-types/int-uint)
-* `max_ngram_length` — 선택 사항입니다. 추출되는 n그램의 최대 길이입니다. 기본값은 100입니다. `min_ngram_length`보다 작아서는 안 됩니다. [`UInt*`](/sql-reference/data-types/int-uint)
-* `min_cutoff_length` — 선택 사항입니다. 지정된 경우, 길이가 `min_cutoff_length` 이상인 n그램만 반환합니다. 기본값은 `min_ngram_length`와 동일합니다. `min_ngram_length`보다 작아서는 안 되며, `max_ngram_length`보다 커서도 안 됩니다. [`UInt*`](/sql-reference/data-types/int-uint)
+* `min_ngram_length` — 선택 사항입니다. 추출되는 n-그램의 최소 길이입니다. 기본값이자 최소값은 3입니다. [`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 선택 사항입니다. 추출되는 n-그램의 최대 길이입니다. 기본값은 100입니다. `min_ngram_length`보다 작아서는 안 됩니다. [`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 선택 사항입니다. 지정된 경우, 길이가 `min_cutoff_length` 이상인 n-그램만 반환합니다. 기본값은 `min_ngram_length`와 동일합니다. `min_ngram_length`보다 작아서는 안 되며, `max_ngram_length`보다 커서도 안 됩니다. [`UInt*`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -2772,7 +2772,6 @@ SELECT sparseGrams('alice', 3)
 │ ['ali','lic','lice','ice']         │
 └────────────────────────────────────┘
 ```
-
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
@@ -2866,10 +2865,10 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 **구문**
 
 ```sql
-sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
+sparseGramsUTF8(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
-**인자**
+**인수**
 
 * `s` — 입력 문자열입니다. [`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 선택 사항입니다. 추출되는 n-그램의 최소 길이입니다. 기본값이자 최소값은 3입니다. [`UInt*`](/sql-reference/data-types/int-uint)
@@ -2893,7 +2892,6 @@ SELECT sparseGramsUTF8('алиса', 3)
 │ ['али','лис','иса']         │
 └─────────────────────────────┘
 ```
-
 
 ## startsWith \{#startsWith\}
 

@@ -198,16 +198,16 @@ number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 
 対応するクエリを定期的に実行し、その結果をテーブルに保存します。
 
-* クエリに `APPEND` が指定されている場合、各リフレッシュで既存の行を削除せずにテーブルに行を挿入します。挿入は通常の INSERT SELECT と同様にアトミックではありません。
+* `APPEND` が指定されている場合、各リフレッシュで既存の行を削除せずにテーブルに行を挿入します。挿入は通常の `INSERT INTO ... SELECT` クエリと同様にアトミックではありません。
 * それ以外の場合、各リフレッシュでテーブルの以前の内容をアトミックに置き換えます。
 
-通常の（リフレッシュ非対応の）マテリアライズドビューとの違い:
+通常の (リフレッシュ非対応の) マテリアライズドビューとの違い:
 
-* 挿入トリガーはありません。つまり、SELECT で指定されたテーブルに新しいデータが挿入されても、それが自動的にリフレッシュ可能なマテリアライズドビューに反映されることは *ありません*。定期的なリフレッシュ時に、クエリ全体が実行されます。
-* SELECT クエリに制限はありません。テーブル関数（例: `url()`）、ビュー、UNION、JOIN などがすべて利用可能です。
+* 挿入トリガーはありません。つまり、`SELECT` で指定されたテーブルに新しいデータが挿入されても、それが自動的にリフレッシャブルmaterialized viewに反映されることは *ありません*。代わりに、データの挿入は定期的または手動のリフレッシュ実行時にのみ行われます。
+* `SELECT` クエリに制限はありません。テーブル関数 (例: `url()`) 、ビュー、UNION、JOIN などがすべて利用可能です。
 
 :::note
-クエリ中の `REFRESH ... SETTINGS` 部分にある設定はリフレッシュに関する設定（例: `refresh_retries`）であり、通常の設定（例: `max_threads`）とは異なります。通常の設定はクエリ末尾の `SETTINGS`で指定できます。
+クエリ中の `REFRESH ... SETTINGS` 部分にある設定はリフレッシュに関する設定 (例: `refresh_retries`) であり、通常の設定 (例: `max_threads`) とは異なります。通常の設定はクエリ末尾の `SETTINGS`で指定できます。
 :::
 
 
@@ -250,9 +250,9 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 調整は Keeper を通じて行われます。znode パスは、[default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) サーバー設定によって決まります。
 
-### 依存関係 \{#refresh-dependencies\}
+### リフレッシュの依存関係 \{#refresh-dependencies\}
 
-`DEPENDS ON` は、異なるテーブルのリフレッシュを同期します。例として、2 つのリフレッシュ可能なマテリアライズドビューが連なったチェーン構造になっているとします。
+`DEPENDS ON` は、異なるテーブルのリフレッシュを同期します。例として、2 つのリフレッシャブルmaterialized viewが連なったチェーン構造になっているとします。
 
 ```sql
 CREATE MATERIALIZED VIEW source REFRESH EVERY 1 DAY AS SELECT * FROM url(...)
@@ -273,7 +273,7 @@ CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY DEPENDS ON source AS SE
 CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS SELECT ... FROM source
 ```
 
-ここで、`1 HOUR` には `source` のリフレッシュ周期よりも短い任意の期間を指定できます。従属テーブルが、その依存先より高頻度でリフレッシュされることはありません。これは、実際のリフレッシュ周期を一度だけ指定して、リフレッシュ可能なビューのチェーンを構成する有効な方法です。
+ここで、`1 HOUR` には `source` のリフレッシュ周期よりも短い任意の期間を指定できます。従属テーブルが、その依存先より高頻度でリフレッシュされることはありません。これは、実際のリフレッシュ周期を一度だけ指定して、リフレッシャブルmaterialized viewのチェーンを構成する有効な方法です。
 
 いくつか追加の例を示します:
 
@@ -281,29 +281,27 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
   `source` のリフレッシュに 10 分以上かかると、`destination` はそれが終わるまで待機します。
 * `REFRESH EVERY 1 DAY OFFSET 1 HOUR` が `REFRESH EVERY 1 DAY OFFSET 23 HOUR` に依存する場合<br />
   上記と同様ですが、対応するリフレッシュが異なる暦日で発生する点が異なります。
-  日 X+1 における `destination` のリフレッシュは、日 X における `source` のリフレッシュが完了するまで待機します（それに 2 時間以上かかる場合）。
+  日 `X+1` における `destination` のリフレッシュは、日 `X` における `source` のリフレッシュが完了するまで待機します (それに 2 時間以上かかる場合) 。
 * `REFRESH EVERY 2 HOUR` が `REFRESH EVERY 1 HOUR` に依存する場合<br />
   2 HOUR のリフレッシュは、1 時間おきに 1 HOUR のリフレッシュの後で実行されます。例えば、真夜中の
   リフレッシュの後、その次は午前 2 時のリフレッシュの後、というように続きます。
 * `REFRESH EVERY 1 MINUTE` が `REFRESH EVERY 2 HOUR` に依存する場合<br />
-  `REFRESH AFTER 1 MINUTE` が `REFRESH EVERY 2 HOUR` に依存する場合<br />
-  `REFRESH AFTER 1 MINUTE` が `REFRESH AFTER 2 HOUR` に依存する場合<br />
   `destination` は、すべての `source` のリフレッシュごとに 1 回リフレッシュされます。つまり 2 時間ごとです。`1 MINUTE` は実質的に無視されます。
 * `REFRESH AFTER 1 HOUR` が `REFRESH AFTER 1 HOUR` に依存する場合<br />
   現在、これは推奨されません。
 
 :::note
-`DEPENDS ON` は、リフレッシュ可能なマテリアライズドビュー同士でのみ機能します。`DEPENDS ON` のリストに通常のテーブルを指定すると、そのビューは一度もリフレッシュされなくなります（依存関係は `ALTER` で削除できます。後述を参照してください）。
+`DEPENDS ON` は、リフレッシャブルmaterialized view同士でのみ機能します。`DEPENDS ON` のリストに通常のテーブルを指定すると、そのビューは一度もリフレッシュされなくなります (依存関係は `ALTER` で削除できます。[リフレッシュパラメータの変更](#changing-refresh-parameters)を参照してください) 。
 :::
 
 
-### 設定 \{#settings\}
+### リフレッシュ設定 \{#refresh-settings\}
 
 利用可能なリフレッシュ設定:
 
 * `refresh_retries` - リフレッシュクエリが例外で失敗した場合に再試行する回数。すべての再試行が失敗した場合、次のスケジュールされたリフレッシュ時刻までスキップします。0 は再試行なし、-1 は無制限に再試行することを意味します。デフォルト: 0。
 * `refresh_retry_initial_backoff_ms` - `refresh_retries` が 0 でない場合の、最初の再試行までの遅延。以降の再試行ごとに、この遅延は 2 倍になり、`refresh_retry_max_backoff_ms` まで増加します。デフォルト: 100 ms。
-* `refresh_retry_max_backoff_ms` - リフレッシュ試行間の遅延の指数的な増加に対する上限。デフォルト: 60000 ms（1 分）。
+* `refresh_retry_max_backoff_ms` - リフレッシュ試行間の遅延の指数的な増加に対する上限。デフォルト: 60000 ms (1 分) 。
 
 ### リフレッシュパラメータの変更 \{#changing-refresh-parameters\}
 
@@ -320,14 +318,14 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 
 ### その他の操作 \{#other-operations\}
 
-すべてのリフレッシャブルmaterialized viewのステータスは、テーブル [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) で確認できます。特に、（実行中であれば）リフレッシュの進捗状況、直近および次回のリフレッシュ時刻、リフレッシュが失敗した場合の例外メッセージが含まれます。
+すべてのリフレッシャブルmaterialized viewのステータスは、テーブル [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) で確認できます。特に、 (実行中であれば) リフレッシュの進捗状況、直近および次回のリフレッシュ時刻、リフレッシュが失敗した場合の例外メッセージが含まれます。
 
-リフレッシュを手動で停止、開始、トリガー、キャンセルするには、[`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views) を使用します。
+リフレッシュを手動で停止、開始、トリガー、キャンセルするには、[`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#managing-refreshable-materialized-views) を使用します。
 
-リフレッシュが完了するまで待機するには、[`SYSTEM WAIT VIEW`](../system.md#refreshable-materialized-views) を使用します。特に、ビュー作成後の初回リフレッシュ完了を待つ場合に有用です。
+リフレッシュが完了するまで待機するには、[`SYSTEM WAIT VIEW`](../system.md#wait-view) を使用します。特に、ビュー作成後の初回リフレッシュ完了を待つ場合に有用です。
 
 :::note
-豆知識: リフレッシュクエリは、リフレッシュ対象のビューから読み取ることができ、その場合はリフレッシュ前のバージョンのデータが見えます。これは、Conway's Game of Life（ライフゲーム）を実装できることを意味します: https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
+豆知識: リフレッシュクエリは、リフレッシュ対象のビューから読み取ることができ、その場合はリフレッシュ前のバージョンのデータが見えます。これは、Conway&#39;s Game of Life (ライフゲーム) を実装できることを意味します: https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
 :::
 
 ## ウィンドウビュー \{#window-view\}
