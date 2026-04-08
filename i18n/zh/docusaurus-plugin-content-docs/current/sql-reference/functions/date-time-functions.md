@@ -3488,7 +3488,7 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toDaysInMonth \{#toDaysInMonth\}
 
-引入版本：v25.5.0
+引入版本：v26.3.0
 
 返回 `Date` 或 `DateTime` 对应月份的天数。
 
@@ -3502,7 +3502,7 @@ toDaysInMonth(datetime)
 
 **参数**
 
-* `datetime` — 用于获取其所在月份天数的日期，或包含时间的日期值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — 用于获取其所在月份天数的日期，或日期时间值。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **返回值**
 

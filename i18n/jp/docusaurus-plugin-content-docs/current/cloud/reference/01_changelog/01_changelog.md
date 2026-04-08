@@ -1502,17 +1502,17 @@ ClickHouse 23.1 の機能のサポートを一部追加しました。例:
 - デフォルトリージョンが大陸ローカリティを考慮するように変更
 - Billing Usage ページを改善し、課金単位とウェブサイト単位の両方を表示
 
-### Integrations の変更 \{#integrations-changes-25\}
+### インテグレーションの変更点 \{#integrations-changes-25\}
 
-- DBT リリース [v1.3.2](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md#release-132-2022-12-23)
-  - delete+insert 方式のインクリメンタルストラテジーに対する実験的サポートを追加
-  - 新しい `s3source` マクロを追加
-- Python クライアント [v0.4.8](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#048-2023-01-02)
-  - ファイル挿入のサポートを追加
-  - サーバーサイドクエリの[パラメータバインディング](/interfaces/cli.md/#cli-queries-with-parameters)を追加
-- Go クライアント [v2.5.0](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.5.0)
-  - 圧縮処理におけるメモリ使用量を削減
-  - サーバーサイドクエリの[パラメータバインディング](/interfaces/cli.md/#cli-queries-with-parameters)を追加
+* DBT リリース [v1.3.2](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md#release-132-2022-12-23)
+  * delete+insert 方式のインクリメンタルストラテジーに対する実験的サポートを追加
+  * 新しい `s3source` マクロを追加
+* Python クライアント [v0.4.8](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#048-2023-01-02)
+  * ファイル挿入のサポートを追加
+  * サーバーサイドクエリの[パラメータバインディング](/interfaces/client#cli-queries-with-parameters)を追加
+* Go クライアント [v2.5.0](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.5.0)
+  * 圧縮処理におけるメモリ使用量を削減
+  * サーバーサイドクエリの[パラメータバインディング](/interfaces/client#cli-queries-with-parameters)を追加
 
 ### 信頼性とパフォーマンス \{#reliability-and-performance-2\}
 
