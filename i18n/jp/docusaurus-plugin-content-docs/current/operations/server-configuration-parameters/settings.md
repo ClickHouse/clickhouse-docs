@@ -1690,7 +1690,7 @@ true の場合、ClickHouse は `CREATE VIEW` クエリ内で空の SQL SECURITY
 :::note
 
 * デフォルトでは、`interserver_http_credentials` セクションが省略されている場合、レプリケーション時に認証は使用されません。
-* `interserver_http_credentials` 設定は、ClickHouse クライアントの認証情報[設定](../../interfaces/cli.md#configuration_files)とは無関係です。
+* `interserver_http_credentials` 設定は、ClickHouse クライアントの認証情報[設定](../../interfaces/client.md#configuration_files)とは無関係です。
 * これらの認証情報は、`HTTP` および `HTTPS` によるレプリケーションで共通です。
   :::
 

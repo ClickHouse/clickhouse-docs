@@ -393,17 +393,17 @@ SELECT * from table WHERE str IN ('Hello', 'World');
 #### `LIKE` 和 `match` \{#functions-example-like-match\}
 
 :::note
-目前只有当索引的 tokenizer 为 `splitByNonAlpha`、`ngrams` 或 `sparseGrams` 时，这些函数才会使用文本索引进行过滤。
+目前只有当索引的 分词器 为 `splitByNonAlpha`、`ngrams` 或 `sparseGrams` 时，这些函数才会使用文本索引进行过滤。
 :::
 
 :::note
 文本索引不支持 `NOT LIKE` (`notLike`) 。
 :::
 
-要在文本索引中使用 `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) 以及 [match](/sql-reference/functions/string-search-functions.md/#match) 函数，ClickHouse 必须能够从搜索词中提取完整的 token。
-对于使用 `ngrams` tokenizer 的索引，如果通配符之间所搜索字符串的长度大于或等于 ngram 的长度，则满足该条件。
+要在文本索引中使用 `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) 以及 [match](/sql-reference/functions/string-search-functions.md/#match) 函数，ClickHouse 必须能够从搜索词中提取完整的 标记。
+对于使用 `ngrams` 分词器 的索引，如果通配符之间所搜索字符串的长度大于或等于 ngram 的长度，则满足该条件。
 
-使用 `splitByNonAlpha` tokenizer 的文本索引示例：
+使用 `splitByNonAlpha` 分词器 的文本索引示例：
 
 ```sql
 SELECT count() FROM table WHERE comment LIKE 'support%';
@@ -418,8 +418,11 @@ SELECT count() FROM table WHERE comment LIKE 'support%';
 SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 ```
 
-`support` 左右的空格能够确保该词被提取为一个单独的 token。
+`support` 左右的空格能够确保该词被提取为一个单独的 标记。
 
+幸运的是，有一种特殊情况，ClickHouse 可以利用倒排索引显著加速 LIKE 查询。
+
+详见 [LIKE/ILIKE 性能调优部分](#like-ilike-queries-perf)。
 
 #### `startsWith` 和 `endsWith` \{#functions-example-startswith-endswith\}
 
@@ -919,6 +922,23 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 对于这个查询，应用顺序是先 `__text_index_...`，然后是 `greaterOrEquals(...)`，最后是 `like(...)`。
 这种顺序使得在读取 `WHERE` 子句中使用的开销较大的列之前，就能在文本索引和原始过滤条件已经跳过的数据粒度基础上，进一步跳过更多数据粒度，从而减少需要读取的数据量。
 
+
+### LIKE/ILIKE 查询 \{#like-ilike-queries-perf\}
+
+当 LIKE/ILIKE 查询模式为 `%<alpha-numeric-characters-without-spaces>%`，且 文本索引 的分词器为 `splitByNonAlpha` 时，ClickHouse 会利用转置索引显著加速 LIKE/ILIKE 查询。为实现这一点，ClickHouse 会扫描转置索引字典来查找匹配模式，而不是执行全表扫描。
+
+启用该优化后，LIKE/ILIKE 查询通常会比全表扫描快得多。不过，当该模式匹配字典中的大多数标记时，其性能反而可能不如全表扫描。幸运的是，系统提供了回退机制来避免这种情况。
+
+该优化由以下设置控制：
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+回退机制由以下两个设置控制：
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+此优化仅支持函数 `like` 和 `ilike`。
 
 ### 缓存 \{#caching\}
 

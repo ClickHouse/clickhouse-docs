@@ -61,13 +61,13 @@ ClickHouse не удаляет данные из таблицы автомати
 * `interface` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — Интерфейс, из которого был инициирован запрос. Возможные значения:
   * 1 — TCP.
   * 2 — HTTP.
-* `os_user` ([String](../../sql-reference/data-types/string.md)) — имя пользователя операционной системы, под которым запущен [clickhouse-client](../../interfaces/cli.md).
-* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — имя хоста клиентского компьютера, на котором запущен [clickhouse-client](../../interfaces/cli.md) или другой TCP-клиент.
-* `client_name` ([String](../../sql-reference/data-types/string.md)) — имя [clickhouse-client](../../interfaces/cli.md) или другого TCP-клиента.
-* `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ревизия клиента [clickhouse-client](../../interfaces/cli.md) или другого TCP-клиента.
-* `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Мажорная версия [clickhouse-client](../../interfaces/cli.md) или другого TCP‑клиента.
-* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — номер минорной версии [clickhouse-client](../../interfaces/cli.md) или другого TCP-клиента.
-* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — номер патч-версии [clickhouse-client](../../interfaces/cli.md) или другого TCP‑клиента.
+* `os_user` ([String](../../sql-reference/data-types/string.md)) — имя пользователя операционной системы, под которым запущен [clickhouse-client](../../interfaces/client.md).
+* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — имя хоста клиентского компьютера, на котором запущен [clickhouse-client](../../interfaces/client.md) или другой TCP-клиент.
+* `client_name` ([String](../../sql-reference/data-types/string.md)) — имя [clickhouse-client](../../interfaces/client.md) или другого TCP-клиента.
+* `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ревизия клиента [clickhouse-client](../../interfaces/client.md) или другого TCP-клиента.
+* `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Мажорная версия [clickhouse-client](../../interfaces/client.md) или другого TCP‑клиента.
+* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — номер минорной версии [clickhouse-client](../../interfaces/client.md) или другого TCP-клиента.
+* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — номер патч-версии [clickhouse-client](../../interfaces/client.md) или другого TCP‑клиента.
 * `http_method` ([UInt8](/sql-reference/data-types/int-uint#integer-ranges)) — HTTP-метод, инициировавший запрос. Возможные значения:
   * 0 — Запрос был выполнен через TCP-интерфейс.
   * 1 — Использовался метод `GET`.

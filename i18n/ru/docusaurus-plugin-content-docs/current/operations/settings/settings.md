@@ -11489,6 +11489,27 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Максимальная селективность фильтра для использования подсказки, основанной на инвертированном текстовом индексе.
 
+## text_index_like_max_postings_to_read \{#text_index_like_max_postings_to_read\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "50"},{"label": "Новая настройка"}]}]} />
+
+Максимальное количество крупных постингов, считываемых при вычислении `LIKE` для текстового индекса, если включено вычисление через сканирование словаря.
+
+Требуется одновременно включить `use_text_index_like_evaluation_by_dictionary_scan`.
+
+## text_index_like_min_pattern_length \{#text_index_like_min_pattern_length\}
+
+<SettingsInfoBlock type="UInt64" default_value="4" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4"},{"label": "Новая настройка"}]}]} />
+
+Минимальная длина буквенно-цифрового `needle` в шаблоне LIKE/ILIKE, необходимая для использования вычисления LIKE с помощью текстового индекса при сканировании словаря.
+Шаблоны короче этого порога соответствуют слишком большому числу токенов словаря и пропускаются во избежание ресурсоемкого сканирования.
+
+Требуется включить `use_text_index_like_evaluation_by_dictionary_scan`.
+
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -12119,6 +12140,14 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Нужно ли использовать кэш десериализованного заголовка текстового индекса.
 Использование кэша заголовка текстового индекса может значительно уменьшить задержки и увеличить пропускную способность при работе с большим количеством запросов к текстовому индексу.
+
+## use_text_index_like_evaluation_by_dictionary_scan \{#use_text_index_like_evaluation_by_dictionary_scan\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Новая настройка"}]}]} />
+
+Включает обработку запросов LIKE/ILIKE путем сканирования словаря инвертированного текстового индекса.
 
 ## use_text_index_postings_cache \{#use_text_index_postings_cache\}
 

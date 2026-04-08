@@ -1696,7 +1696,7 @@ ClickHouse перезагружает встроенные словари каж
 :::note
 
 * По умолчанию если секция `interserver_http_credentials` опущена, аутентификация во время репликации не используется.
-* Настройки `interserver_http_credentials` не относятся к [конфигурации](../../interfaces/cli.md#configuration_files) учетных данных клиента ClickHouse.
+* Настройки `interserver_http_credentials` не относятся к [конфигурации](../../interfaces/client.md#configuration_files) учетных данных клиента ClickHouse.
 * Эти учетные данные общие для репликации по `HTTP` и `HTTPS`.
   :::
 

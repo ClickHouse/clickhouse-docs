@@ -3490,7 +3490,7 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toDaysInMonth \{#toDaysInMonth\}
 
-добавлена в версии: v25.5.0
+добавлено в версии: v26.3.0
 
 Возвращает количество дней в месяце для значения типа `Date` или `DateTime`.
 
@@ -3504,7 +3504,7 @@ toDaysInMonth(datetime)
 
 **Аргументы**
 
-* `datetime` — Дата или дата и время, для которых нужно получить количество дней в месяце. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
+* `datetime` — Дата или дата со временем, для которых нужно получить количество дней в месяце. [`Date`](/sql-reference/data-types/date) или [`Date32`](/sql-reference/data-types/date32) или [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64)
 
 **Возвращаемое значение**
 

@@ -19,7 +19,7 @@ Columns:
   * `[]` — すべてのユーザーが同じクォータを共有します。
   * `['user_name']` — 同じユーザー名の接続が同じクォータを共有します。
   * `['ip_address']` — 同一 IP からの接続が同じクォータを共有します。
-  * `['client_key']` — 同じキーを持つ接続が同じクォータを共有します。キーはクライアントによって明示的に指定する必要があります。[clickhouse-client](../../interfaces/cli.md) を使用する場合は、`--quota_key` パラメータでキー値を渡すか、クライアント設定ファイルで `quota_key` パラメータを使用します。HTTP interface を使用する場合は、`X-ClickHouse-Quota` ヘッダーを使用します。
+  * `['client_key']` — 同じキーを持つ接続が同じクォータを共有します。キーはクライアントによって明示的に指定する必要があります。[clickhouse-client](../../interfaces/client.md) を使用する場合は、`--quota_key` パラメータでキー値を渡すか、クライアント設定ファイルで `quota_key` パラメータを使用します。HTTP interface を使用する場合は、`X-ClickHouse-Quota` ヘッダーを使用します。
   * `['user_name', 'client_key']` — 同じ `client_key` を持つ接続が同じクォータを共有します。キーがクライアントによって指定されない場合、クォータは `user_name` ごとに追跡されます。
   * `['client_key', 'ip_address']` — 同じ `client_key` を持つ接続が同じクォータを共有します。キーがクライアントによって指定されない場合、クォータは `ip_address` ごとに追跡されます。
   * `['normalized_query_hash']` — 正規化された個々のクエリごとに専用のクォータバケットが割り当てられます。リテラル値だけが異なるクエリ (例: `SELECT 1` と `SELECT 2`) は同じバケットを共有します。

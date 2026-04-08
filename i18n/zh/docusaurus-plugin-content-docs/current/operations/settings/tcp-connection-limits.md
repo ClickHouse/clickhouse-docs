@@ -10,14 +10,14 @@ doc_type: 'reference'
 
 ## 概览 \{#overview\}
 
-您可能会遇到 ClickHouse 的 TCP 连接（例如，通过[命令行客户端](https://clickhouse.com/docs/interfaces/cli)建立的连接）
+您可能会遇到 ClickHouse 的 TCP 连接 (例如，通过[命令行客户端](https://clickhouse.com/docs/interfaces/client)建立的连接)
 在执行一定数量的查询或经过一段时间后自动断开。
-在断开连接后，不会发生自动重连（除非通过其他操作触发，
-比如在命令行客户端中再次发送查询）。
+在断开连接后，不会发生自动重连 (除非通过其他操作触发，
+比如在命令行客户端中再次发送查询) 。
 
 可以通过设置服务端配置项来启用连接限制：
-`tcp_close_connection_after_queries_num`（按查询数量限制）
-或 `tcp_close_connection_after_queries_seconds`（按持续时间限制），并将其值设置为大于 0。
+`tcp_close_connection_after_queries_num` (按查询数量限制)
+或 `tcp_close_connection_after_queries_seconds` (按持续时间限制) ，并将其值设置为大于 0。
 如果两个限制都被启用，则连接会在任一限制先被触发时关闭。
 
 在触发限制并断开连接时，客户端会收到
@@ -31,8 +31,8 @@ N 次成功查询。在第 N + 1 次查询时，客户端会断开连接。
 处理的每个查询都会计入查询限制。因此，当使用命令行客户端连接时，
 可能会自动发出一次初始系统警告查询，这个查询同样计入限制内。
 
-当一个 TCP 连接处于空闲状态（即在一段时间内未处理查询，
-该时间由会话设置 `poll_interval` 指定）时，至此为止统计的查询次数会重置为 0。
+当一个 TCP 连接处于空闲状态 (即在一段时间内未处理查询，
+该时间由会话设置 `poll_interval` 指定) 时，至此为止统计的查询次数会重置为 0。
 这意味着，如果连接在中途出现空闲，同一个连接中的总查询次数可以超过
 `tcp_close_connection_after_queries_num`。
 
