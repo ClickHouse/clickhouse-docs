@@ -28,9 +28,9 @@ ClickHouse 增量物化视图功能极其强大，通常比可刷新物化视图
 
 >  可刷新物化视图可以运行批处理过程来执行诸如反规范化之类的任务。可以在可刷新物化视图之间创建依赖关系，使一个视图依赖另一个视图的结果，并仅在其完成后才执行。这可以替代预定的工作流或简单的有向无环图（DAG），例如 [dbt](https://www.getdbt.com/) 任务。要了解更多关于如何在可刷新物化视图之间设置依赖关系的信息，请参阅 [CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies) 中的 `Dependencies` 部分。
 
-## 如何刷新可刷新物化视图？ \{#how-do-you-refresh-a-refreshable-materialized-view\}
+## 如何刷新可刷新materialized view？ \{#how-do-you-refresh-a-refreshable-materialized-view\}
 
-可刷新物化视图会按照创建时定义的时间间隔自动刷新。
+可刷新materialized view会按照创建时定义的时间间隔自动刷新。
 例如，下面的物化视图每分钟刷新一次：
 
 ```sql
@@ -46,7 +46,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 ```
 
 你还可以取消、停止或启动视图。
-有关更多信息，请参阅[管理可刷新的物化视图](/sql-reference/statements/system#refreshable-materialized-views)文档。
+有关更多信息，请参阅[管理可刷新的materialized view](/sql-reference/statements/system#managing-refreshable-materialized-views)文档。
 
 
 ## 可刷新物化视图最近一次刷新是什么时候？ \{#when-was-a-refreshable-materialized-view-last-refreshed\}

@@ -83,6 +83,7 @@ CREATE TABLE table
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
                                             | ngrams[(N)]
+                                            | asciiCJK
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -103,7 +104,7 @@ ORDER BY key
 * [String](/sql-reference/data-types/string.md) 및 [FixedString](/sql-reference/data-types/fixedstring.md),
 * [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md),
 * [Map](/sql-reference/data-types/map.md) 타입([mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원), 그리고
-* [JSON](/sql-reference/data-types/newjson.md) 타입([JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 함수를 통해 지원).
+* [JSON](/sql-reference/data-types/newjson.md) 타입([JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 및 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) 함수를 통해 지원).
 
 [Nullable(T)](/sql-reference/data-types/nullable.md) 및 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 타입의 컬럼도 지원되며, `Array(Nullable(String or FixedString))`도 포함됩니다.
 
@@ -115,6 +116,7 @@ ALTER TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
+                                            | asciiCJK
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
@@ -149,6 +151,7 @@ ALTER TABLE table DROP INDEX text_idx;
   구분자는 선택적 매개변수를 사용하여 지정할 수 있으며, 예를 들어 `tokenizer = splitByString([', ', '; ', '\n', '\\'])`와 같이 설정합니다.
   각 문자열은 여러 문자로 구성될 수 있습니다(예시의 `', '` 등).
   구분자를 명시적으로 지정하지 않으면(예: `tokenizer = splitByString`) 기본 구분자 목록은 공백 한 개 `[' ']`입니다.
+* `asciiCJK`는 Unicode 단어 경계 규칙([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)와 유사)을 사용해 문자열을 token으로 분리합니다. ASCII 영숫자와 밑줄은 연결 문자와 함께 token을 구성합니다(문자의 경우 ASCII `:`, 같은 타입의 문자에 대해서는 `.` 및 `'`). [CJK](https://en.wikipedia.org/wiki/CJK_characters) 문자를 포함한 비-ASCII Unicode 문자는 한 글자짜리 token이 됩니다.
 * `ngrams(N)`는 문자열을 동일한 크기의 `N`-그램으로 분리합니다(함수 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams) 참조).
   n그램 길이는 1에서 8 사이의 정수 선택적 매개변수를 사용하여 지정할 수 있으며, 예를 들어 `tokenizer = ngrams(3)`와 같이 설정합니다.
   n그램 크기를 명시적으로 지정하지 않으면(예: `tokenizer = ngrams`) 기본값은 3입니다.
@@ -158,7 +161,6 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)`과 비교하면, `sparseGrams` 토크나이저는 가변 길이 N-그램을 생성하여 원본 텍스트를 더 유연하게 표현할 수 있습니다.
   예를 들어, `tokenizer = sparseGrams(3, 5, 4)`는 내부적으로 입력 문자열에서 3-, 4-, 5-그램을 생성하지만, 4-그램과 5-그램만 반환합니다.
 * `array`는 토큰화를 수행하지 않으며, 각 행 값이 하나의 token이 됩니다(함수 [array](/sql-reference/functions/array-functions.md/#array) 참조).
-* `asciiCJK`는 Unicode 단어 경계 규칙([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)와 유사)을 사용해 문자열을 token으로 분리합니다. ASCII 영숫자와 밑줄은 연결 문자와 함께 token을 구성합니다(문자의 경우 ASCII `:`, 같은 타입의 문자에 대해서는 `.` 및 `'`). [CJK](https://en.wikipedia.org/wiki/CJK_characters) 문자를 포함한 비-ASCII Unicode 문자는 한 글자짜리 token이 됩니다.
 
 사용 가능한 모든 토크나이저는 [system.tokenizers](../../../operations/system-tables/tokenizers.md)에 나열되어 있습니다.
 
@@ -420,6 +422,10 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 `support` 양쪽에 공백을 넣어 두면 해당 용어를 하나의 토큰으로 인식할 수 있습니다.
 
+다행히도 ClickHouse가 역색인 인덱스를 활용해 LIKE 쿼리의 속도를 크게 높일 수 있는 특별한 경우가 있습니다.
+
+자세한 내용은 [LIKE/ILIKE 성능 튜닝 섹션](#like-ilike-queries-perf)을 참조하십시오.
+
 
 #### `startsWith` 및 `endsWith` \{#functions-example-startswith-endswith\}
 
@@ -647,18 +653,19 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
 
-#### JSON 컬럼 인덱싱 \{#text-index-example-json\}
+### JSON 컬럼 인덱싱 \{#text-index-example-json\}
 
-데이터 스키핑 인덱스는 `JSON` 컬럼에 두 가지 방식으로 적용할 수 있습니다:
+텍스트 인덱스는 `JSON` 컬럼에 세 가지 방식으로 적용할 수 있습니다:
 
-1. **특정 하위 컬럼에 대한 인덱스** — 일반 컬럼과 마찬가지로, 알려진 JSON 경로에 표준 스킵 인덱스를 생성합니다. 이렇게 하면 해당 경로의 *값*에 인덱스가 생성됩니다.
+1. **특정 하위 컬럼에 대한 인덱스** — 일반 컬럼과 마찬가지로, 알려진 JSON 경로에 텍스트 인덱스를 생성합니다. 이렇게 하면 해당 경로의 *값*에 인덱스가 생성됩니다.
 2. **`JSONAllPaths`를 사용하는 경로 기반 인덱스** — 각 그래뉼에 존재하는 *경로 집합*에 인덱스를 생성하여, 쿼리한 경로를 포함할 수 없는 그래뉼을 건너뜁니다. `Map` 컬럼과 유사합니다.
+3. **`JSONAllValues`를 사용하는 값 기반 인덱스** — 모든 JSON 경로의 *모든 값*에 인덱스를 생성하여, 단일 인덱스로 모든 JSON 서브컬럼에 대한 전문 검색을 가속화합니다.
 
-##### 특정 하위 컬럼의 인덱스 \{#json-indexes-on-subcolumns\}
+#### 특정 서브컬럼의 인덱스 \{#json-indexes-on-subcolumns\}
 
-일반 컬럼과 동일한 구문을 사용하여 모든 JSON 하위 컬럼에 스킵 인덱스를 생성할 수 있습니다.
+일반 컬럼과 동일한 구문을 사용하여 모든 JSON 서브컬럼에 스킵 인덱스를 생성할 수 있습니다.
 
-인덱스 표현식에서 JSON 하위 컬럼을 참조하는 방법은 두 가지입니다.
+인덱스 표현식에서 JSON 서브컬럼을 참조하는 방법은 두 가지입니다.
 
 * JSON 타입 힌트에 선언된 **타입이 지정된 경로** — 이름으로 직접 접근합니다: `json.a`.
 * 명시적 캐스트를 사용하는 **동적 경로** — `::` 캐스트 구문을 사용합니다: `json.b::String`.
@@ -710,8 +717,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
         Granules: 1/8
 ```
 
-
-##### JSONAllPaths를 사용한 경로 기반 인덱스 \{#json-indexes-jsonallpaths\}
+#### JSONAllPaths를 사용한 경로 기반 인덱스 \{#json-indexes-jsonallpaths\}
 
 `Map` 컬럼과 마찬가지로, [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths)를 사용하면 [JSON](/sql-reference/data-types/newjson.md) 컬럼에도 텍스트 인덱스를 생성할 수 있습니다.
 이 인덱스는 각 그래뉼에 존재하는 JSON 경로 집합을 저장하며, 쿼리한 경로가 없는 그래뉼을 건너뛰는 데 사용됩니다.
@@ -782,6 +788,71 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
         Granules: 1/2
 ```
 
+
+#### JSONAllValues를 사용한 값 기반 인덱스 \{#json-indexes-jsonallvalues\}
+
+텍스트 인덱스는 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) 함수를 사용해 [JSON](/sql-reference/data-types/newjson.md) 컬럼에 대한 검색을 가속할 수 있습니다.
+
+`JSONAllValues`는 JSON 컬럼의 모든 값을 텍스트 표현으로 직렬화하여 `Array(String)`으로 반환합니다.
+`JSONAllValues(json_column)`에 텍스트 인덱스를 생성하면, 모든 JSON 경로의 값이 함께 토큰화되고 인덱싱됩니다.
+이 단일 인덱스는 개별 JSON 서브컬럼을 기준으로 필터링하는 쿼리도 가속할 수 있습니다.
+
+##### 인덱스 생성 \{#json-all-values-creating-the-index\}
+
+```sql
+CREATE TABLE events
+(
+    id UInt64,
+    data JSON,
+    INDEX json_idx JSONAllValues(data) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+
+##### 지원되는 쿼리 패턴 \{#json-all-values-supported-query-patterns\}
+
+인덱스가 생성되면 `String` 컬럼에 사용하는 것과 동일한 함수로 JSON 서브컬럼 쿼리를 더 빠르게 수행할 수 있으며, 모든 컬럼에서는 `equals` 함수도 사용할 수 있습니다.
+
+서브컬럼 접근:
+
+```sql
+SELECT * FROM events WHERE data.user_name = 'alice';
+SELECT * FROM events WHERE data.message LIKE '% error %';
+SELECT * FROM events WHERE startsWith(data.status, 'fail');
+SELECT * FROM events WHERE hasToken(data.title, 'clickhouse');
+```
+
+명시적 `CAST`를 사용한 서브컬럼 접근:
+
+```sql
+SELECT * FROM events WHERE hasAllTokens(data.message::String, 'connection timeout');
+SELECT * FROM events WHERE data.status_code::UInt64 = 404;
+SELECT * FROM events WHERE has(data.tags::Array(String), 'bug')
+```
+
+`IN` 연산자:
+
+```sql
+SELECT * FROM events WHERE data.level IN ('error', 'critical');
+```
+
+
+##### 작동 방식 \{#json-all-values-how-it-works\}
+
+`JSONAllValues`는 모든 값을 텍스트 표현으로 직렬화하므로, 모든 유형의 값(문자열, 정수, 배열 등)이 텍스트 토큰으로 인덱싱됩니다.
+
+`JSONAllValues`의 텍스트 인덱스는 각 행의 모든 JSON 경로에 걸쳐 이러한 텍스트 표현을 인덱싱합니다.
+쿼리가 특정 서브컬럼에 대해 필터링할 때(예: `data.user_name = 'alice'`), 텍스트 인덱스는 어떤 JSON 값에도 검색 토큰이 포함되지 않은 행(및 그래뉼)을 빠르게 건너뛸 수 있습니다.
+인덱스가 모든 경로를 포괄하므로, 단일 인덱스 정의만으로도 모든 JSON 서브컬럼에 대한 검색을 가속화할 수 있습니다.
+
+:::note
+서로 다른 JSON 경로에 동일한 토큰이 포함되어 있으면 인덱스에서 거짓 양성(false positive)이 발생할 수 있습니다.
+예를 들어, 1번 행에 `{"a": "hello", "b": "world"}`가 있고 쿼리에서 `data.a = 'world'`를 검색하는 경우, 텍스트 인덱스는 `world`가 경로 `a`가 아니라 `b`에 속한다는 점을 구분할 수 없습니다.
+이 경우 인덱스는 해당 행을 건너뛰지 않으며, 실제 컬럼 데이터에 대한 필터가 최종 판단을 수행합니다.
+이는 인덱스가 빠른 사전 필터 역할을 하는 다른 텍스트 인덱스 사용 사례와 동일한 동작입니다.
+:::
 
 ## 성능 튜닝 \{#performance-tuning\}
 
@@ -919,6 +990,23 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 이 쿼리에서는 `__text_index_...`, 그다음 `greaterOrEquals(...)`, 마지막으로 `like(...)` 순서로 적용됩니다.
 이러한 적용 순서 덕분에 텍스트 인덱스와 기존 필터만으로 건너뛸 수 있는 그래뉼보다 더 많은 데이터 그래뉼을, `WHERE` 절 이후 쿼리에서 사용되는 읽기 비용이 큰 컬럼을 읽기 전에 건너뛸 수 있어, 최종적으로 읽어야 하는 데이터 양이 더욱 줄어듭니다.
 
+
+### LIKE/ILIKE 쿼리 \{#like-ilike-queries-perf\}
+
+LIKE/ILIKE 쿼리 패턴이 `%<alpha-numeric-characters-without-spaces>%`이고 텍스트 인덱스 토크나이저가 `splitByNonAlpha`인 경우, ClickHouse는 역인덱스를 활용해 LIKE/ILIKE 쿼리 속도를 크게 높입니다. 이를 위해 ClickHouse는 일치하는 패턴을 찾을 때 전체 테이블 스캔 대신 역인덱스 딕셔너리를 스캔합니다.
+
+이 최적화가 활성화되면 LIKE/ILIKE 쿼리는 전체 테이블 스캔보다 훨씬 빨라집니다. 하지만 패턴이 딕셔너리의 대부분의 토큰과 일치하는 경우에는 전체 테이블 스캔보다 성능이 더 나빠질 수 있습니다. 다행히 이를 방지하기 위한 폴백 메커니즘이 있습니다.
+
+이 최적화는 다음 설정으로 제어됩니다.
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+폴백 메커니즘은 다음 두 가지 설정으로 제어됩니다.
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+이 최적화는 `like` 및 `ilike` 함수만 지원합니다.
 
 ### 캐싱 \{#caching\}
 

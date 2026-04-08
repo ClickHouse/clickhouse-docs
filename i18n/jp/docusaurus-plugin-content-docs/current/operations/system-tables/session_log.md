@@ -46,7 +46,7 @@ Columns:
   * `gRPC`
   * `MySQL`
   * `PostgreSQL`
-* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) または他の TCP クライアントが実行されているクライアントマシンのホスト名。
+* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/client.md) または他の TCP クライアントが実行されているクライアントマシンのホスト名。
 * `client_name` ([String](../../sql-reference/data-types/string.md)) — `clickhouse-client` または他の TCP クライアントの名前。
 * `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または他の TCP クライアントのリビジョン。
 * `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` または他の TCP クライアントのメジャーバージョン。

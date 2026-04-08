@@ -94,27 +94,27 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 ## 3. 测试 \{#3-testing\}
 
-1. 将用户证书、用户密钥和 CA 证书复制到某个远程节点。
+1. 将用户证书、用户私钥和 CA 证书复制到某个远程节点。
 
-2. 在 ClickHouse 的 [客户端配置](/interfaces/cli.md#configuration_files) 中使用证书及其路径配置 OpenSSL。
+2. 在 ClickHouse 的 [客户端配置](/interfaces/client#configuration_files) 中使用证书及其路径配置 OpenSSL。
 
-    ```xml
-    <openSSL>
-        <client>
-            <certificateFile>my_cert_name.crt</certificateFile>
-            <privateKeyFile>my_cert_name.key</privateKeyFile>
-            <caConfig>my_ca_cert.crt</caConfig>
-        </client>
-    </openSSL>
-    ```
+   ```xml
+   <openSSL>
+       <client>
+           <certificateFile>my_cert_name.crt</certificateFile>
+           <privateKeyFile>my_cert_name.key</privateKeyFile>
+           <caConfig>my_ca_cert.crt</caConfig>
+       </client>
+   </openSSL>
+   ```
 
 3. 运行 `clickhouse-client`。
-    ```bash
-    clickhouse-client --user <my_user> --query 'SHOW TABLES'
-    ```
-    :::note
-    请注意，当在配置中指定了证书时，传递给 clickhouse-client 的密码会被忽略。
-    :::
+   ```bash
+   clickhouse-client --user <my_user> --query 'SHOW TABLES'
+   ```
+   :::note
+   请注意，当在配置中指定了证书时，传递给 clickhouse-client 的密码会被忽略。
+   :::
 
 ## 4. 测试 HTTP \{#4-testing-http\}
 

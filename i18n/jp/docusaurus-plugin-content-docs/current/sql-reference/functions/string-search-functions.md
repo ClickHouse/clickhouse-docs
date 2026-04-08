@@ -464,7 +464,7 @@ hasAllTokens(input, needles)
 
 * `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 使用するトークナイザ。有効な引数は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams`、`asciiCJK` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルトです。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 使用するトークナイザ。有効な引数は `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams`、`array` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルトです。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -622,7 +622,7 @@ hasAnyTokens(input, needles)
 
 * `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Nullable(String)`](/sql-reference/data-types/nullable) または [`Nullable(FixedString)`](/sql-reference/data-types/nullable) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array) または [`Array(Nullable(String))`](/sql-reference/data-types/array) または [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 使用する tokenizer を指定します。利用可能な値は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams`、`asciiCJK` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルト値になります。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 使用する tokenizer を指定します。利用可能な値は `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams`、`array` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルト値になります。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 

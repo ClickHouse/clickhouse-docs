@@ -466,7 +466,7 @@ hasAllTokens(input, needles)
 
 * `input` — 입력 컬럼입니다. 데이터 타입은 [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring), [`Array(String)`](/sql-reference/data-types/array), [`Array(FixedString)`](/sql-reference/data-types/array) 중 하나일 수 있습니다.
 * `needles` — 검색할 토큰입니다. [`String`](/sql-reference/data-types/string) 또는 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 사용할 tokenizer를 지정합니다. 사용할 수 있는 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `asciiCJK`입니다. 선택 사항으로, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. 형식은 [`const String`](/sql-reference/data-types/string)입니다.
+* `tokenizer` — 사용할 tokenizer를 지정합니다. 사용할 수 있는 인수는 `splitByNonAlpha`, `splitByString`, `asciiCJK`, `ngrams`, `sparseGrams`, `array`입니다. 선택 사항으로, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. 형식은 [`const String`](/sql-reference/data-types/string)입니다.
 
 **반환 값**
 
@@ -474,7 +474,7 @@ hasAllTokens(input, needles)
 
 **예시**
 
-**문자열 needle 사용 기본 예제**
+**문자열 needle 사용법**
 
 ```sql title=Query
 CREATE TABLE table (
@@ -624,7 +624,7 @@ hasAnyTokens(input, needles)
 
 * `input` — 입력 컬럼입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Nullable(String)`](/sql-reference/data-types/nullable) 또는 [`Nullable(FixedString)`](/sql-reference/data-types/nullable) 또는 [`Array(String)`](/sql-reference/data-types/array) 또는 [`Array(FixedString)`](/sql-reference/data-types/array) 또는 [`Array(Nullable(String))`](/sql-reference/data-types/array) 또는 [`Array(Nullable(FixedString))`](/sql-reference/data-types/array) 형식일 수 있습니다.
 * `needles` — 검색 대상 토큰입니다. [`String`](/sql-reference/data-types/string) 또는 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 사용할 tokenizer입니다. 허용되는 값은 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `asciiCJK`입니다. 선택 사항이며, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 사용할 tokenizer입니다. 허용되는 값은 `splitByNonAlpha`, `splitByString`, `asciiCJK`, `ngrams`, `sparseGrams`, `array`입니다. 선택 사항이며, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
 
 **반환 값**
 

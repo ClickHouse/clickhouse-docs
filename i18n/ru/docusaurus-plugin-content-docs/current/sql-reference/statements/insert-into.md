@@ -187,14 +187,14 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 Поддерживаются сжатые файлы. Тип сжатия определяется по расширению имени файла, либо он может быть явно указан в предложении `COMPRESSION`. Поддерживаемые типы: `'none'`, `'gzip'`, `'deflate'`, `'br'`, `'xz'`, `'zstd'`, `'lz4'`, `'bz2'`.
 
-Эта функциональность доступна в [клиенте командной строки](../../interfaces/cli.md) и в [clickhouse-local](../../operations/utilities/clickhouse-local.md).
+Эта функциональность доступна в [клиенте командной строки](../../interfaces/client.md) и в [clickhouse-local](../../operations/utilities/clickhouse-local.md).
 
 **Примеры**
 
 
 ### Один файл с FROM INFILE \{#single-file-with-from-infile\}
 
-Выполните следующие запросы с помощью [клиента командной строки](../../interfaces/cli.md):
+Выполните следующие запросы с помощью [клиента командной строки](../../interfaces/client.md):
 
 ```bash
 echo 1,A > input.csv ; echo 2,B >> input.csv

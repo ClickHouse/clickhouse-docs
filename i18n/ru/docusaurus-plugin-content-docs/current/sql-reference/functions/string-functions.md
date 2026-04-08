@@ -2715,7 +2715,7 @@ SELECT space(3) AS res, length(res);
 
 ## sparseGrams \{#sparseGrams\}
 
-Добавлена в версии: v25.5.0
+Добавлено в версии: v25.5.0
 
 Находит все подстроки заданной строки длиной не менее `n`,
 для которых хеши (n-1)-грамм на границах подстроки
@@ -2725,7 +2725,7 @@ SELECT space(3) AS res, length(res);
 **Синтаксис**
 
 ```sql
-sparseGrams(s[, min_ngram_length, max_ngram_length])
+sparseGrams(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **Аргументы**
@@ -2752,7 +2752,6 @@ SELECT sparseGrams('alice', 3)
 │ ['ali','lic','lice','ice']         │
 └────────────────────────────────────┘
 ```
-
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
@@ -2841,12 +2840,12 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 
 Находит все подстроки заданной строки в кодировке UTF-8 длиной не менее `n`, для которых значения хэшей (n-1)-грамм на границах подстроки строго больше, чем значения хэшей любых (n-1)-грамм внутри подстроки.
 Ожидает строку в кодировке UTF-8; при некорректной последовательности UTF-8 генерирует исключение.
-В качестве хэш-функции используется `CRC32`.
+В качестве хеш-функции используется `CRC32`.
 
 **Синтаксис**
 
 ```sql
-sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
+sparseGramsUTF8(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **Аргументы**
@@ -2873,7 +2872,6 @@ SELECT sparseGramsUTF8('алиса', 3)
 │ ['али','лис','иса']         │
 └─────────────────────────────┘
 ```
-
 
 ## startsWith \{#startsWith\}
 
