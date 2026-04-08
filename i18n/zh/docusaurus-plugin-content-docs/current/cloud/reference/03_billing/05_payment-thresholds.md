@@ -14,11 +14,10 @@ import billing_2 from '@site/static/images/cloud/reference/billing_payment_thres
 
 ## 支付阈值 \{#threshholds\}
 
-如果您是按使用量付费 (pay as you go) 客户，并且在某个计费周期内对 ClickHouse Cloud 的应付金额达到 10,000 美元 (或等值金额) ，系统会自动向为您的组织配置的支付方式扣款。
+如果您是按使用量付费 (pay as you go) 客户，并且在某个计费周期内对 ClickHouse Cloud 的应付金额达到 1,000 美元 (或等值金额) ，系统会自动向为您的组织配置的支付方式扣款。
 
 :::tip
-此默认支付阈值金额可以调整为低于 10,000 美元。
-如果您希望进行调整，请[联系支持](mailto:support@clickhouse.com)。
+如果您希望调整默认支付阈值金额，请[联系支持](mailto:support@clickhouse.com)。
 :::
 
 扣款失败将在 14 天宽限期后导致您的服务被暂停。
@@ -33,7 +32,7 @@ import billing_2 from '@site/static/images/cloud/reference/billing_payment_thres
 
 <Image img={billing_2} size="lg" alt="账单" />
 
-从上述示例可以看到，在 2 月 28 日至 3 月 31 日的计费周期内发送了一张阈值发票，然后在同一计费周期内又针对超过 10,000 美元的剩余用量发送了另一张发票。
+从上述示例可以看到，在 2 月 28 日至 3 月 31 日的计费周期内发送了一张阈值发票，然后在同一计费周期内又针对超过 1,000 美元的剩余用量发送了另一张发票。
 
 ## 支付阈值通知 \{#threshholds-notifications\}
 

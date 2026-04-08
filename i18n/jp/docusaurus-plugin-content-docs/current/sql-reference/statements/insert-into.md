@@ -187,14 +187,14 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 圧縮されたファイルもサポートされます。圧縮形式はファイル名の拡張子から自動的に検出されます。また、`COMPRESSION` 句で明示的に指定することもできます。サポートされている形式は `'none'`, `'gzip'`, `'deflate'`, `'br'`, `'xz'`, `'zstd'`, `'lz4'`, `'bz2'` です。
 
-この機能は [command-line client](../../interfaces/cli.md) と [clickhouse-local](../../operations/utilities/clickhouse-local.md) で利用できます。
+この機能は [コマンドラインクライアント](../../interfaces/client.md) と [clickhouse-local](../../operations/utilities/clickhouse-local.md) で利用できます。
 
 **例**
 
 
 ### FROM INFILE を用いた単一ファイル \{#single-file-with-from-infile\}
 
-次のクエリを [command-line client](../../interfaces/cli.md) を使って実行します。
+次のクエリを [コマンドラインクライアント](../../interfaces/client.md) を使って実行します。
 
 ```bash
 echo 1,A > input.csv ; echo 2,B >> input.csv

@@ -92,12 +92,6 @@ ENGINE = IcebergS3(
   'minio_access_key',
   'minio_secret_key'
 )
-SETTINGS 
-  storage_catalog_type="rest",
-  storage_warehouse="demo",
-  object_storage_endpoint="http://minio:9000/warehouse-rest",
-  storage_region="us-east-1",
-  storage_catalog_url="http://rest:8181/v1"
 ```
 
 Либо при использовании AWS Glue Data Catalog вместе с S3:
@@ -109,12 +103,6 @@ ENGINE = IcebergS3(
   'aws_access_key',
   'aws_secret_key'
 )
-SETTINGS 
-  storage_catalog_type = 'glue',
-  storage_warehouse = 'my_database',
-  object_storage_endpoint = 's3://my-data-bucket/',
-  storage_region = 'us-east-1',
-  storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
 
 

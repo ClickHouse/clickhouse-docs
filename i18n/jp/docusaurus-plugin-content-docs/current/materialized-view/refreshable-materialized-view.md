@@ -28,9 +28,9 @@ ClickHouse のインクリメンタルマテリアライズドビューは非常
 
 >  リフレッシュ可能なマテリアライズドビューは、非正規化のようなタスクを実行するバッチ処理を行うことができます。リフレッシュ可能なマテリアライズドビュー同士の間に依存関係を作成し、一方のビューが別のビューの結果に依存し、それが完了した後にのみ実行されるようにすることができます。これは、[dbt](https://www.getdbt.com/) ジョブのようなスケジュールされたワークフローや単純な DAG を置き換えることができます。リフレッシュ可能なマテリアライズドビュー間の依存関係の設定方法については、[CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies) の `Dependencies` セクションを参照してください。
 
-## リフレッシュ可能なマテリアライズドビューはどのように更新されますか？ \{#how-do-you-refresh-a-refreshable-materialized-view\}
+## リフレッシャブルmaterialized viewはどのように更新されますか？ \{#how-do-you-refresh-a-refreshable-materialized-view\}
 
-リフレッシュ可能なマテリアライズドビューは、作成時に定義された間隔で自動的に更新されます。
+リフレッシャブルmaterialized viewは、作成時に定義された間隔で自動的に更新されます。
 例えば、次のマテリアライズドビューは 1 分ごとにリフレッシュされます。
 
 ```sql
@@ -46,7 +46,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 ```
 
 ビューをキャンセル、停止、開始することもできます。
-詳細については、[リフレッシャブルmaterialized viewの管理](/sql-reference/statements/system#refreshable-materialized-views) ドキュメントを参照してください。
+詳細については、[リフレッシャブルmaterialized viewの管理](/sql-reference/statements/system#managing-refreshable-materialized-views) ドキュメントを参照してください。
 
 
 ## リフレッシュ可能なマテリアライズドビューが最後にリフレッシュされたのはいつですか？ \{#when-was-a-refreshable-materialized-view-last-refreshed\}
