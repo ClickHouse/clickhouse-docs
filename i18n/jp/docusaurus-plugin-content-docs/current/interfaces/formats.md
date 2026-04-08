@@ -141,14 +141,14 @@ ClickHouse の設定を使用して、一部のフォーマット処理パラメ
 この設定は、`Cap'n Proto` または `Protobuf` のいずれかのフォーマットを使用する場合に必須です。
 フォーマットスキーマは、コロンで区切られた「ファイル名」と、そのファイル内のメッセージ型の名前の組み合わせです。
 例: `schemafile.proto:MessageType`。
-ファイルがそのフォーマットの標準拡張子（たとえば `Protobuf` の `.proto`）を持つ場合は、拡張子を省略でき、その場合フォーマットスキーマは `schemafile:MessageType` のようになります。
+ファイルがそのフォーマットの標準拡張子 (たとえば `Protobuf` の `.proto`) を持つ場合は、拡張子を省略でき、その場合フォーマットスキーマは `schemafile:MessageType` のようになります。
 
-[クライアント](/interfaces/cli.md)を対話モードで使用してデータを入力または出力する場合、フォーマットスキーマに指定するファイル名には、
+[クライアント](/interfaces/client.md)を対話モードで使用してデータを入力または出力する場合、フォーマットスキーマに指定するファイル名には、
 クライアント側のカレントディレクトリからの相対パス、または絶対パスを指定できます。
-クライアントを[バッチモード](/interfaces/cli.md/#batch-mode)で使用する場合、セキュリティ上の理由から、スキーマへのパスは相対パスでなければなりません。
+クライアントを[バッチモード](/interfaces/client.md/#batch-mode)で使用する場合、セキュリティ上の理由から、スキーマへのパスは相対パスでなければなりません。
 
 [HTTP インターフェイス](/interfaces/http)経由でデータを入力または出力する場合、フォーマットスキーマで指定するファイル名は、
-サーバー設定の [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) で指定されたディレクトリ内に存在している必要があります。
+サーバー設定の [format&#95;schema&#95;path](/operations/server-configuration-parameters/settings.md/#format_schema_path) で指定されたディレクトリ内に存在している必要があります。
 
 ## エラーのスキップ \{#skippingerrors\}
 

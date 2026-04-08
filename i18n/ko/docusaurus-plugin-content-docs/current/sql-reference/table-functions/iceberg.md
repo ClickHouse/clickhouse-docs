@@ -82,7 +82,7 @@ Iceberg 테이블은 [REST Catalog](https://iceberg.apache.org/rest-catalog-spec
 카탈로그를 사용하는 경우 대부분의 사용자는 `DataLakeCatalog` 데이터베이스 엔진을 사용하여 카탈로그에 ClickHouse를 연결하고, 카탈로그에 등록된 테이블을 자동으로 탐색하도록 설정합니다. 이 데이터베이스 엔진을 사용하면 `IcebergS3` 테이블 엔진으로 개별 테이블을 일일이 수동 생성하지 않고도 테이블을 사용할 수 있습니다.
 :::
 
-데이터 카탈로그를 사용하려면 `IcebergS3` 엔진으로 테이블을 생성하고 필요한 설정을 지정합니다.
+데이터 카탈로그를 사용하려면 `IcebergS3` 테이블 엔진으로 테이블을 생성하고 필요한 설정을 지정합니다.
 
 예를 들어, MinIO 스토리지와 REST Catalog를 함께 사용하는 경우:
 
@@ -93,12 +93,6 @@ ENGINE = IcebergS3(
   'minio_access_key',
   'minio_secret_key'
 )
-SETTINGS 
-  storage_catalog_type="rest",
-  storage_warehouse="demo",
-  object_storage_endpoint="http://minio:9000/warehouse-rest",
-  storage_region="us-east-1",
-  storage_catalog_url="http://rest:8181/v1"
 ```
 
 또는 S3와 함께 AWS Glue Data Catalog를 사용하는 경우:
@@ -110,14 +104,7 @@ ENGINE = IcebergS3(
   'aws_access_key',
   'aws_secret_key'
 )
-SETTINGS 
-  storage_catalog_type = 'glue',
-  storage_warehouse = 'my_database',
-  object_storage_endpoint = 's3://my-data-bucket/',
-  storage_region = 'us-east-1',
-  storage_catalog_url = 'https://glue.us-east-1.amazonaws.com/iceberg/v1'
 ```
-
 
 ## 스키마 변경(Schema Evolution) \{#schema-evolution\}
 

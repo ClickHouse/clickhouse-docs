@@ -24,7 +24,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 ## 実装の詳細 \{#implementation-details\}
 
-* この機能は [command-line client](../../../interfaces/cli.md) と [clickhouse-local](../../../operations/utilities/clickhouse-local.md) で利用できます。したがって、[HTTP interface](/interfaces/http) 経由で送信されたクエリはエラーになります。
+* この機能は [command-line client](../../../interfaces/client.md) と [clickhouse-local](../../../operations/utilities/clickhouse-local.md) で利用できます。したがって、[HTTP interface](/interfaces/http) 経由で送信されたクエリはエラーになります。
 * 同じファイル名のファイルがすでに存在する場合、そのクエリはエラーになります。
 * デフォルトの [出力フォーマット](../../../interfaces/formats.md) は `TabSeparated` (command-line client のバッチモードと同様) です。変更するには [FORMAT](format.md) 句を使用します。
 * クエリ内で `AND STDOUT` が指定されている場合、ファイルに書き込まれる出力は標準出力にも表示されます。圧縮を使用している場合は、標準出力には非圧縮の出力が表示されます。
@@ -33,7 +33,7 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 **例**
 
-[command-line client](../../../interfaces/cli.md) を使用して次のクエリを実行します:
+[command-line client](../../../interfaces/client.md) を使用して次のクエリを実行します:
 
 ```bash
 clickhouse-client --query="SELECT 1,'ABC' INTO OUTFILE 'select.gz' FORMAT CSV;"

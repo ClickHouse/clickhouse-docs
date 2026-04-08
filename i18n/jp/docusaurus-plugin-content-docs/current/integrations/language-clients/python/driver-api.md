@@ -255,11 +255,11 @@ with clickhouse_connect.get_client(host='my-host', username='default', password=
 
 ClickHouse Connect クライアントの `query*` および `command` メソッドは、Python の式を ClickHouse の値式にバインドするために使用される任意指定のキーワード引数 `parameters` を受け取ります。利用可能なバインディング方式は 2 種類あります。
 
-#### サーバー側バインディング \{#server-side-binding\}
+#### サーバーサイドバインディング \{#server-side-binding\}
 
-ClickHouse は、ほとんどのクエリ値に対して [サーバー側バインディング](/interfaces/cli.md#cli-queries-with-parameters) をサポートしており、バインドされた値はクエリとは別に HTTP のクエリパラメータとして送信されます。ClickHouse Connect は、`{<name>:<datatype>}` 形式のバインディング式を検出すると、適切なクエリパラメータを追加します。サーバー側バインディングでは、`parameters` 引数には Python の辞書型を指定する必要があります。
+ClickHouse は、ほとんどのクエリ値に対して [サーバーサイドバインディング](/interfaces/client#cli-queries-with-parameters) をサポートしており、バインドされた値はクエリとは別に HTTP のクエリパラメータとして送信されます。ClickHouse Connect は、`{<name>:<datatype>}` 形式のバインディング式を検出すると、適切なクエリパラメータを追加します。サーバーサイドバインディングでは、`parameters` 引数には Python の辞書型を指定する必要があります。
 
-* Python の辞書型、DateTime 値、および文字列値を使ったサーバー側バインディング
+* Python の辞書型、DateTime 値、および文字列値を使ったサーバーサイドバインディング
 
 ```python
 import datetime
@@ -280,7 +280,7 @@ WHERE date >= '2022-10-01 15:20:05'
 ```
 
 :::warning
-サーバー側バインディングは（ClickHouseサーバーによって）`SELECT` クエリに対してのみサポートされています。`ALTER`、`DELETE`、`INSERT`、その他の種類のクエリでは動作しません。この仕様は将来変更される可能性があります。詳細は https://github.com/ClickHouse/ClickHouse/issues/42092 を参照してください。
+サーバーサイドバインディングは (ClickHouseサーバーによって) `SELECT` クエリに対してのみサポートされています。`ALTER`、`DELETE`、`INSERT`、その他の種類のクエリでは動作しません。この仕様は将来変更される可能性があります。詳細は https://github.com/ClickHouse/ClickHouse/issues/42092 を参照してください。
 :::
 
 

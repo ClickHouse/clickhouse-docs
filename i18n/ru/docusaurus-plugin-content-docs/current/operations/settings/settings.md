@@ -542,6 +542,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использовать Hive‑партиционирование с движками S3Queue/AzureQueue
 
+## allow_experimental_paimon_storage_engine \{#allow_experimental_paimon_storage_engine\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Разрешает создавать таблицы на движках Paimon*.
+
 ## allow_experimental_parallel_reading_from_replicas \{#allow_experimental_parallel_reading_from_replicas\}
 
 **Псевдонимы**: `enable_parallel_replicas`
@@ -6644,6 +6654,16 @@ log_query_views=1
 ```
 
 
+## max_consume_snapshots \{#max_consume_snapshots\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Максимальное количество снимков Paimon, обрабатываемых при одном инкрементальном чтении. 0 означает отсутствие ограничения.
+
 ## max_distributed_connections \{#max_distributed_connections\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
@@ -9098,6 +9118,18 @@ FROM default.fuse_tbl AS __table1
 
 Большее значение лучше подходит для высокопроизводительных запросов с большим объемом данных, тогда как точечные запросы с низкой задержкой будут работать лучше без предварительного чтения (readahead).
 
+## paimon_target_snapshot_id \{#paimon_target_snapshot_id\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Int64" default_value="-1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "-1"},{"label": "Новая настройка"}]}]} />
+
+Чтение указанного снимка на уровне запроса для инкрементального режима Paimon. Если значение &gt;0, модуль чтения будет получать только дельту
+для указанного snapshot&#95;id, не продвигая зафиксированную водяную метку.
+По умолчанию: -1 (отключено)
+
 ## parallel_distributed_insert_select \{#parallel_distributed_insert_select\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
@@ -11489,6 +11521,27 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Максимальная селективность фильтра для использования подсказки, основанной на инвертированном текстовом индексе.
 
+## text_index_like_max_postings_to_read \{#text_index_like_max_postings_to_read\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "50"},{"label": "Новая настройка"}]}]} />
+
+Максимальное количество крупных постингов, считываемых при вычислении `LIKE` для текстового индекса, если включено вычисление через сканирование словаря.
+
+Требуется одновременно включить `use_text_index_like_evaluation_by_dictionary_scan`.
+
+## text_index_like_min_pattern_length \{#text_index_like_min_pattern_length\}
+
+<SettingsInfoBlock type="UInt64" default_value="4" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4"},{"label": "Новая настройка"}]}]} />
+
+Минимальная длина буквенно-цифрового `needle` в шаблоне LIKE/ILIKE, необходимая для использования вычисления LIKE с помощью текстового индекса при сканировании словаря.
+Шаблоны короче этого порога соответствуют слишком большому числу токенов словаря и пропускаются во избежание ресурсоемкого сканирования.
+
+Требуется включить `use_text_index_like_evaluation_by_dictionary_scan`.
+
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -12119,6 +12172,14 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Нужно ли использовать кэш десериализованного заголовка текстового индекса.
 Использование кэша заголовка текстового индекса может значительно уменьшить задержки и увеличить пропускную способность при работе с большим количеством запросов к текстовому индексу.
+
+## use_text_index_like_evaluation_by_dictionary_scan \{#use_text_index_like_evaluation_by_dictionary_scan\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Новая настройка"}]}]} />
+
+Включает обработку запросов LIKE/ILIKE путем сканирования словаря инвертированного текстового индекса.
 
 ## use_text_index_postings_cache \{#use_text_index_postings_cache\}
 

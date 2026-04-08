@@ -394,17 +394,17 @@ SELECT * from table WHERE str IN ('Hello', 'World');
 #### `LIKE` および `match` \{#functions-example-like-match\}
 
 :::note
-これらの関数がテキストインデックスをフィルタリングに利用するのは、インデックスの tokenizer が `splitByNonAlpha`、`ngrams`、または `sparseGrams` のいずれかである場合に限られます。
+これらの関数がテキスト索引をフィルタリングに利用するのは、インデックスの トークナイザー が `splitByNonAlpha`、`ngrams`、または `sparseGrams` のいずれかである場合に限られます。
 :::
 
 :::note
 `NOT LIKE` (`notLike`) はテキスト索引ではサポートされません。
 :::
 
-テキストインデックスで `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) および [match](/sql-reference/functions/string-search-functions.md/#match) 関数を使用するには、ClickHouse が検索語から完全なトークンを抽出できる必要があります。
-`ngrams` tokenizer を持つインデックスでは、ワイルドカードの間にある検索文字列の長さが ngram の長さ以上であれば、この条件を満たします。
+テキスト索引で `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) および [match](/sql-reference/functions/string-search-functions.md/#match) 関数を使用するには、ClickHouse が検索語から完全なトークンを抽出できる必要があります。
+`ngrams` トークナイザー を持つインデックスでは、ワイルドカードの間にある検索文字列の長さが ngram の長さ以上であれば、この条件を満たします。
 
-`splitByNonAlpha` tokenizer を持つテキストインデックスの例:
+`splitByNonAlpha` トークナイザー を持つテキスト索引の例:
 
 ```sql
 SELECT count() FROM table WHERE comment LIKE 'support%';
@@ -421,6 +421,9 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 `support` の左右に空白を入れておくことで、その語をトークンとして抽出できるようにします。
 
+幸い、ClickHouse が転置索引を利用して LIKE クエリを大幅に高速化できる特別なケースがあります。
+
+詳しくは、[LIKE/ILIKE パフォーマンスチューニングのセクション](#like-ilike-queries-perf)を参照してください。
 
 #### `startsWith` と `endsWith` \{#functions-example-startswith-endswith\}
 
@@ -920,6 +923,23 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 このクエリでは、適用順序は `__text_index_...`、次に `greaterOrEquals(...)`、最後に `like(...)` となります。
 この順序付けにより、テキスト索引と元のフィルター条件でスキップされるグラニュールに加えて、クエリの `WHERE` 句以降で使用される重いカラムを読み込む前に、さらに多くのデータグラニュールをスキップできるため、読み取るデータ量を一層削減できます。
 
+
+### LIKE/ILIKE クエリ \{#like-ilike-queries-perf\}
+
+LIKE/ILIKE クエリのパターンが `%<alpha-numeric-characters-without-spaces>%` で、テキスト索引のトークナイザーが `splitByNonAlpha` の場合、ClickHouse は転置索引を利用して LIKE/ILIKE クエリを大幅に高速化できます。これを実現するため、ClickHouse は一致するパターンを見つける際に、テーブル全体をスキャンする代わりに転置索引の Dictionary をスキャンします。
+
+この最適化を有効にすると、LIKE/ILIKE クエリはテーブル全体のスキャンより大幅に高速になるはずです。ただし、パターンが Dictionary 内のほとんどのトークンに一致する場合は、テーブル全体のスキャンよりもパフォーマンスが低下することがあります。幸い、これを防ぐためのフォールバック機構が用意されています。
+
+この最適化は、次の設定で制御されます。
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+フォールバック機構は、次の 2 つの設定で制御されます。
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+この最適化がサポートするのは、関数 `like` と `ilike` のみです。
 
 ### キャッシュ \{#caching\}
 

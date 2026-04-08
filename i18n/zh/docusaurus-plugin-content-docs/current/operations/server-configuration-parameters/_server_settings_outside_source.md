@@ -628,7 +628,7 @@ HSTS 的有效期（单位：秒）。
 默认值：
 
 
-## interserver&#95;http&#95;credentials \{#interserver_http_credentials\}
+## interserver_http_credentials \{#interserver_http_credentials\}
 
 在[复制](../../engines/table-engines/mergetree-family/replication.md)期间用于连接其他服务器的用户名和密码。此外，服务器也使用这些凭据对其他副本进行身份验证。
 因此，集群中所有副本的 `interserver_http_credentials` 必须相同。
@@ -636,7 +636,7 @@ HSTS 的有效期（单位：秒）。
 :::note
 
 * 默认情况下，如果省略 `interserver_http_credentials` 部分，在复制过程中将不使用身份验证。
-* `interserver_http_credentials` 设置与 ClickHouse 客户端凭据[配置](../../interfaces/cli.md#configuration_files)无关。
+* `interserver_http_credentials` 设置与 ClickHouse 客户端凭据[配置](../../interfaces/client.md#configuration_files)无关。
 * 这些凭据同时适用于通过 `HTTP` 和 `HTTPS` 进行的复制。
   :::
 
