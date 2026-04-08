@@ -30,7 +30,7 @@ DateTime([timezone])
 
 ## 사용 시 유의사항 \{#usage-remarks\}
 
-시점은 시간대나 일광 절약 시간제 여부와 관계없이 [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time)로 저장됩니다. 시간대는 `DateTime` 타입 값이 텍스트 형식으로 표시되는 방식과, 문자열로 지정된 값('2020-01-01 05:00:01')을 파싱하는 방식에 영향을 줍니다.
+시점은 시간대나 일광 절약 시간제 여부와 관계없이 [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time)로 저장됩니다. 시간대는 `DateTime` 타입 값이 텍스트 형식으로 표시되는 방식과, 문자열로 지정된 값(&#39;2020-01-01 05:00:01&#39;)을 파싱하는 방식에 영향을 줍니다.
 
 시간대에 독립적인 Unix timestamp가 테이블에 저장되며, 데이터 import/export를 수행하거나 값에 대해 달력 연산을 수행할 때(예: `toDate`, `toHour` 함수 등) 이를 텍스트 형식으로 변환하거나 그 반대로 변환하는 데 시간대가 사용됩니다. 시간대는 테이블의 행(또는 결과 집합(result set))에는 저장되지 않고, 컬럼 메타데이터에 저장됩니다.
 
@@ -38,11 +38,11 @@ DateTime([timezone])
 
 테이블을 생성할 때 `DateTime` 타입 컬럼에 대해 시간대를 명시적으로 설정할 수 있습니다. 예: `DateTime('UTC')`. 시간대를 설정하지 않으면 ClickHouse는 서버 설정의 [timezone](../../operations/server-configuration-parameters/settings.md#timezone) 파라미터 값이나 ClickHouse 서버가 시작되는 시점의 운영 체제 설정 값을 사용합니다.
 
-[clickhouse-client](../../interfaces/cli.md)는 데이터 타입을 초기화할 때 시간대를 명시적으로 지정하지 않으면 기본적으로 서버 시간대를 적용합니다. 클라이언트 시간대를 사용하려면 `--use_client_time_zone` 파라미터와 함께 `clickhouse-client`를 실행하십시오.
+[clickhouse-client](../../interfaces/client.md)는 데이터 타입을 초기화할 때 시간대를 명시적으로 지정하지 않으면 기본적으로 서버 시간대를 적용합니다. 클라이언트 시간대를 사용하려면 `--use_client_time_zone` 파라미터와 함께 `clickhouse-client`를 실행하십시오.
 
-ClickHouse는 [date_time_output_format](../../operations/settings/settings-formats.md#date_time_output_format) 설정 값에 따라 값을 출력합니다. 기본 텍스트 형식은 `YYYY-MM-DD hh:mm:ss`입니다. 또한 [formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime) 함수를 사용해 출력 형식을 변경할 수 있습니다.
+ClickHouse는 [date&#95;time&#95;output&#95;format](../../operations/settings/settings-formats.md#date_time_output_format) 설정 값에 따라 값을 출력합니다. 기본 텍스트 형식은 `YYYY-MM-DD hh:mm:ss`입니다. 또한 [formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime) 함수를 사용해 출력 형식을 변경할 수 있습니다.
 
-ClickHouse에 데이터를 삽입할 때는 [date_time_input_format](../../operations/settings/settings-formats.md#date_time_input_format) 설정 값에 따라 서로 다른 형식의 날짜 및 시간 문자열을 사용할 수 있습니다.
+ClickHouse에 데이터를 삽입할 때는 [date&#95;time&#95;input&#95;format](../../operations/settings/settings-formats.md#date_time_input_format) 설정 값에 따라 서로 다른 형식의 날짜 및 시간 문자열을 사용할 수 있습니다.
 
 ## 예제 \{#examples\}
 

@@ -174,7 +174,7 @@ AS SELECT ...
 
 为方便查阅，旧版文档位于[此处](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)
 
-## 可刷新物化视图 \{#refreshable-materialized-view\}
+## 可刷新materialized view \{#refreshable-materialized-view\}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -198,14 +198,16 @@ number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 
 定期运行相应的查询，并将其结果存储在一个表中。
 
-* 如果查询中包含 `APPEND`，每次刷新都会向表中插入新行，而不会删除现有行。该插入操作不是原子的，与常规的 INSERT SELECT 一样。
+* 如果指定了 `APPEND`，每次刷新都会向表中插入新行，而不会删除现有行。该插入操作不是原子的，与常规的 `INSERT INTO ... SELECT` 查询一样。
 * 否则，每次刷新都会以原子方式替换表中之前的内容。
-  与常规的不可刷新的物化视图的区别：
-* 没有插入触发器。也就是说，当向 SELECT 中指定的表插入新数据时，这些数据*不会*自动推送到可刷新的物化视图中。周期性刷新会运行整个查询。
-* 对 SELECT 查询没有限制。表函数（例如 `url()`）、视图、UNION、JOIN 都是允许的。
+
+与常规的不可刷新的物化视图的区别：
+
+* 没有插入触发器。当向 `SELECT` 中指定的表插入新数据时，这些数据*不会*自动推送到可刷新materialized view中。相反，只有在周期性刷新或手动刷新期间才会插入数据。
+* 对 `SELECT` 查询没有限制。表函数 (例如 `url()`) 、视图、UNION、JOIN 都是允许的。
 
 :::note
-查询中 `REFRESH ... SETTINGS` 部分中的设置是刷新设置（例如 `refresh_retries`），与常规设置（例如 `max_threads`）不同。常规设置可以在查询末尾使用 `SETTINGS` 指定。
+查询中 `REFRESH ... SETTINGS` 部分中的设置是刷新设置 (例如 `refresh_retries`) ，与常规设置 (例如 `max_threads`) 不同。常规设置可以在查询末尾使用 `SETTINGS` 指定。
 :::
 
 
@@ -248,9 +250,9 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 这种协调通过 Keeper 实现。znode 路径由 [default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) 服务器设置决定。
 
-### 依赖关系 \{#refresh-dependencies\}
+### 刷新依赖关系 \{#refresh-dependencies\}
 
-`DEPENDS ON` 用于同步不同表的刷新。举例来说，假设存在一条由两个可刷新物化视图组成的依赖链：
+`DEPENDS ON` 用于同步不同表的刷新。举例来说，假设存在一条由两个可刷新materialized view组成的依赖链：
 
 ```sql
 CREATE MATERIALIZED VIEW source REFRESH EVERY 1 DAY AS SELECT * FROM url(...)
@@ -275,32 +277,30 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 
 更多示例：
 
-* `REFRESH EVERY 1 DAY OFFSET 10 MINUTE`（`destination`）依赖于 `REFRESH EVERY 1 DAY`（`source`）<br />
+* `REFRESH EVERY 1 DAY OFFSET 10 MINUTE` (`destination`) 依赖于 `REFRESH EVERY 1 DAY` (`source`) <br />
   如果 `source` 的刷新耗时超过 10 分钟，则 `destination` 会等待它完成。
 * `REFRESH EVERY 1 DAY OFFSET 1 HOUR` 依赖于 `REFRESH EVERY 1 DAY OFFSET 23 HOUR`<br />
   与上面类似，即使对应的刷新发生在不同的日历日。
-  `destination` 在第 X+1 天的刷新会等待 `source` 在第 X 天的刷新（如果耗时超过 2 小时）。
+  `destination` 在第 `X+1` 天的刷新会等待 `source` 在第 `X` 天的刷新 (如果耗时超过 2 小时) 。
 * `REFRESH EVERY 2 HOUR` 依赖于 `REFRESH EVERY 1 HOUR`<br />
-  2 小时的刷新会在每隔一小时的 1 小时刷新之后执行，例如在午夜刷新之后、然后在凌晨 2 点刷新之后，依此类推。
+  `2 HOUR` 的刷新会在每隔一小时的 `1 HOUR` 刷新之后执行，例如在午夜刷新之后、然后在凌晨 2 点刷新之后，依此类推。
 * `REFRESH EVERY 1 MINUTE` 依赖于 `REFRESH EVERY 2 HOUR`<br />
-  `REFRESH AFTER 1 MINUTE` 依赖于 `REFRESH EVERY 2 HOUR`<br />
-  `REFRESH AFTER 1 MINUTE` 依赖于 `REFRESH AFTER 2 HOUR`<br />
   `destination` 会在每次 `source` 刷新后被刷新一次，即每 2 小时刷新一次。`1 MINUTE` 实际上会被忽略。
 * `REFRESH AFTER 1 HOUR` 依赖于 `REFRESH AFTER 1 HOUR`<br />
   目前不推荐这样配置。
 
 :::note
-`DEPENDS ON` 仅在可刷新的物化视图之间生效。将普通表列入 `DEPENDS ON` 列表会导致该视图永远不会刷新（可以使用 `ALTER` 移除依赖关系，见下文）。
+`DEPENDS ON` 仅在可刷新的materialized view之间生效。将普通表列入 `DEPENDS ON` 列表会导致该视图永远不会刷新 (可以使用 `ALTER` 移除依赖关系，参见[更改刷新参数](#changing-refresh-parameters)) 。
 :::
 
 
-### Settings \{#settings\}
+### 刷新设置 \{#refresh-settings\}
 
 可用的刷新设置：
 
 * `refresh_retries` - 当刷新查询因异常失败时重试的次数。如果所有重试都失败，则跳过本次并等待下一个计划刷新时间。0 表示不重试，-1 表示无限重试。默认值：0。
 * `refresh_retry_initial_backoff_ms` - 如果 `refresh_retries` 不为零，第一次重试前的延迟。之后每次重试会将延迟翻倍，直到达到 `refresh_retry_max_backoff_ms`。默认值：100 ms。
-* `refresh_retry_max_backoff_ms` - 刷新重试之间延迟的指数增长上限。默认值：60000 ms（1 分钟）。
+* `refresh_retry_max_backoff_ms` - 刷新重试之间延迟的指数增长上限。默认值：60000 ms (1 分钟) 。
 
 ### Changing Refresh Parameters \{#changing-refresh-parameters\}
 
@@ -317,14 +317,14 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 
 ### 其他操作 \{#other-operations\}
 
-所有可刷新的 materialized view 的状态都可以在表 [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) 中查看。该表包含刷新进度（如果正在运行）、上次和下次刷新时间，以及在刷新失败时的异常消息。
+所有可刷新materialized view的状态都可以在表 [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) 中查看。该表包含刷新进度 (如果正在运行) 、上次和下次刷新时间，以及在刷新失败时的异常消息。
 
-要手动停止、启动、触发或取消刷新，请使用 [`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views)。
+要手动停止、启动、触发或取消刷新，请使用 [`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#managing-refreshable-materialized-views)。
 
-要等待某次刷新完成，请使用 [`SYSTEM WAIT VIEW`](../system.md#refreshable-materialized-views)。这在创建视图后等待其完成初始刷新时尤其有用。
+要等待某次刷新完成，请使用 [`SYSTEM WAIT VIEW`](../system.md#wait-view)。这在创建视图后等待其完成初始刷新时尤其有用。
 
 :::note
-趣闻：刷新查询可以从正在刷新的视图中读取数据，读取到的是刷新前版本的数据。这意味着你可以实现康威生命游戏（Conway's Game of Life）：https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
+趣闻：刷新查询可以从正在刷新的视图中读取数据，读取到的是刷新前版本的数据。这意味着你可以实现康威生命游戏 (Conway&#39;s Game of Life) ：https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
 :::
 
 ## 窗口视图 \{#window-view\}

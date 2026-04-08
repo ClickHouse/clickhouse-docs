@@ -19,7 +19,7 @@ doc_type: 'reference'
   * `[]` — 所有用户共享同一个配额。
   * `['user_name']` — 具有相同用户名的连接共享同一个配额。
   * `['ip_address']` — 来自同一 IP 的连接共享同一个配额。
-  * `['client_key']` — 具有相同 key 的连接共享同一个配额。key 必须由客户端显式提供。使用 [clickhouse-client](../../interfaces/cli.md) 时，在 `--quota_key` 参数中传递 key 值，或在客户端配置文件中使用 `quota_key` 参数。使用 HTTP 接口时，使用 `X-ClickHouse-Quota` 请求头。
+  * `['client_key']` — 具有相同 key 的连接共享同一个配额。key 必须由客户端显式提供。使用 [clickhouse-client](../../interfaces/client.md) 时，在 `--quota_key` 参数中传递 key 值，或在客户端配置文件中使用 `quota_key` 参数。使用 HTTP 接口时，使用 `X-ClickHouse-Quota` 请求头。
   * `['user_name', 'client_key']` — 具有相同 `client_key` 的连接共享同一个配额。如果客户端未提供 key，则按 `user_name` 跟踪配额。
   * `['client_key', 'ip_address']` — 具有相同 `client_key` 的连接共享同一个配额。如果客户端未提供 key，则按 `ip_address` 跟踪配额。
   * `['normalized_query_hash']` — 每个不同的规范化查询都会获得自己的配额桶。仅字面值不同的查询 (例如 `SELECT 1` 和 `SELECT 2`) 共享同一个桶。

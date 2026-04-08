@@ -83,6 +83,7 @@ CREATE TABLE table
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
                                             | ngrams[(N)]
+                                            | asciiCJK
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -115,6 +116,7 @@ ALTER TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
+                                            | asciiCJK
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
@@ -149,6 +151,7 @@ ALTER TABLE table DROP INDEX text_idx;
   セパレーターはオプション引数で指定できます。たとえば `tokenizer = splitByString([', ', '; ', '\n', '\\'])` のように指定します。
   各セパレーター文字列は複数文字から構成できる点に注意してください (この例では `', '`) 。
   セパレーターリストを明示的に指定しない場合 (たとえば `tokenizer = splitByString`) 、デフォルトのセパレーターリストは空白 1 文字 `[' ']` です。
+* `asciiCJK` は、Unicode の単語境界規則 ([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/) に類似) を使用して文字列をトークンに分割します。ASCII の英数字とアンダースコアは、コネクタ (文字には ASCII `:`、同種の文字には `.` と `'`) とともにトークンを構成します。[CJK](https://en.wikipedia.org/wiki/CJK_characters) 文字を含む非 ASCII の Unicode 文字は 1 文字のトークンになります。
 * `ngrams(N)` は、文字列を同じ長さの `N`-gram に分割します (関数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams) を参照) 。
   N-gram の長さは 1 から 8 までの整数をオプション引数として指定できます。たとえば `tokenizer = ngrams(3)` のように指定します。
   N-gram のサイズを明示的に指定しない場合 (たとえば `tokenizer = ngrams`) 、デフォルトのサイズは 3 です。
@@ -158,7 +161,6 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)` と比較して、`sparseGrams` トークナイザーは可変長の N-gram を生成するため、元のテキストをより柔軟に表現できます。
   たとえば、`tokenizer = sparseGrams(3, 5, 4)` は内部的には入力文字列から 3-, 4-, 5-gram を生成しますが、返されるのは 4-gram と 5-gram のみです。
 * `array` はトークナイズ処理を行いません。つまり、各行の値全体が 1 つのトークンになります (関数 [array](/sql-reference/functions/array-functions.md/#array) を参照) 。
-* `asciiCJK` は、Unicode の単語境界規則 ([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/) に類似) を使用して文字列をトークンに分割します。ASCII の英数字とアンダースコアは、コネクタ (文字には ASCII `:`、同種の文字には `.` と `'`) とともにトークンを構成します。[CJK](https://en.wikipedia.org/wiki/CJK_characters) 文字を含む非 ASCII の Unicode 文字は 1 文字のトークンになります。
 
 利用可能なすべてのトークナイザーは [system.tokenizers](../../../operations/system-tables/tokenizers.md) に一覧表示されています。
 
@@ -394,17 +396,17 @@ SELECT * from table WHERE str IN ('Hello', 'World');
 #### `LIKE` および `match` \{#functions-example-like-match\}
 
 :::note
-これらの関数がテキストインデックスをフィルタリングに利用するのは、インデックスの tokenizer が `splitByNonAlpha`、`ngrams`、または `sparseGrams` のいずれかである場合に限られます。
+これらの関数がテキスト索引をフィルタリングに利用するのは、インデックスの トークナイザー が `splitByNonAlpha`、`ngrams`、または `sparseGrams` のいずれかである場合に限られます。
 :::
 
 :::note
 `NOT LIKE` (`notLike`) はテキスト索引ではサポートされません。
 :::
 
-テキストインデックスで `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) および [match](/sql-reference/functions/string-search-functions.md/#match) 関数を使用するには、ClickHouse が検索語から完全なトークンを抽出できる必要があります。
-`ngrams` tokenizer を持つインデックスでは、ワイルドカードの間にある検索文字列の長さが ngram の長さ以上であれば、この条件を満たします。
+テキスト索引で `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) および [match](/sql-reference/functions/string-search-functions.md/#match) 関数を使用するには、ClickHouse が検索語から完全なトークンを抽出できる必要があります。
+`ngrams` トークナイザー を持つインデックスでは、ワイルドカードの間にある検索文字列の長さが ngram の長さ以上であれば、この条件を満たします。
 
-`splitByNonAlpha` tokenizer を持つテキストインデックスの例:
+`splitByNonAlpha` トークナイザー を持つテキスト索引の例:
 
 ```sql
 SELECT count() FROM table WHERE comment LIKE 'support%';
@@ -421,6 +423,9 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 `support` の左右に空白を入れておくことで、その語をトークンとして抽出できるようにします。
 
+幸い、ClickHouse が転置索引を利用して LIKE クエリを大幅に高速化できる特別なケースがあります。
+
+詳しくは、[LIKE/ILIKE パフォーマンスチューニングのセクション](#like-ilike-queries-perf)を参照してください。
 
 #### `startsWith` と `endsWith` \{#functions-example-startswith-endswith\}
 
@@ -920,6 +925,23 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 このクエリでは、適用順序は `__text_index_...`、次に `greaterOrEquals(...)`、最後に `like(...)` となります。
 この順序付けにより、テキスト索引と元のフィルター条件でスキップされるグラニュールに加えて、クエリの `WHERE` 句以降で使用される重いカラムを読み込む前に、さらに多くのデータグラニュールをスキップできるため、読み取るデータ量を一層削減できます。
 
+
+### LIKE/ILIKE クエリ \{#like-ilike-queries-perf\}
+
+LIKE/ILIKE クエリのパターンが `%<alpha-numeric-characters-without-spaces>%` で、テキスト索引のトークナイザーが `splitByNonAlpha` の場合、ClickHouse は転置索引を利用して LIKE/ILIKE クエリを大幅に高速化できます。これを実現するため、ClickHouse は一致するパターンを見つける際に、テーブル全体をスキャンする代わりに転置索引の Dictionary をスキャンします。
+
+この最適化を有効にすると、LIKE/ILIKE クエリはテーブル全体のスキャンより大幅に高速になるはずです。ただし、パターンが Dictionary 内のほとんどのトークンに一致する場合は、テーブル全体のスキャンよりもパフォーマンスが低下することがあります。幸い、これを防ぐためのフォールバック機構が用意されています。
+
+この最適化は、次の設定で制御されます。
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+フォールバック機構は、次の 2 つの設定で制御されます。
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+この最適化がサポートするのは、関数 `like` と `ilike` のみです。
 
 ### キャッシュ \{#caching\}
 

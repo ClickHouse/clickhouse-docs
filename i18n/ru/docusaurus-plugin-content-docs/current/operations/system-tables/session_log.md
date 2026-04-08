@@ -46,7 +46,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   * `gRPC`
   * `MySQL`
   * `PostgreSQL`
-* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — Имя хоста клиентской машины, на которой запущен [clickhouse-client](../../interfaces/cli.md) или другой TCP‑клиент.
+* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — Имя хоста клиентской машины, на которой запущен [clickhouse-client](../../interfaces/client.md) или другой TCP‑клиент.
 * `client_name` ([String](../../sql-reference/data-types/string.md)) — Имя `clickhouse-client` или другого TCP‑клиента.
 * `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Ревизия `clickhouse-client` или другого TCP‑клиента.
 * `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Мажорная версия `clickhouse-client` или другого TCP‑клиента.

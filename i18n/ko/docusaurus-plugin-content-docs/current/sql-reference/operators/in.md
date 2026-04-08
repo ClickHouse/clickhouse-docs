@@ -138,6 +138,8 @@ FROM t_null
 
 `GLOBAL IN` / `GLOBAL JOIN`을 사용할 경우, 먼저 `GLOBAL IN` / `GLOBAL JOIN`에 대한 모든 서브쿼리를 실행하고, 그 결과를 임시 테이블에 수집합니다. 그런 다음 이 임시 테이블을 각 원격 서버로 전송한 후, 각 서버에서 이 임시 데이터를 사용하여 쿼리를 실행합니다.
 
+`GLOBAL ... JOIN`의 경우, 조인의 어느 쪽이 서브쿼리로 계산되는지는 조인 종류에 따라 다릅니다. `LEFT` 및 `INNER` 조인에서는 오른쪽 테이블이 계산되고, `RIGHT` 조인에서는 오른쪽 테이블이 보존되는 쪽이므로 세그먼트에서 읽어야 하기 때문에 왼쪽 테이블이 대신 계산됩니다.
+
 비분산 쿼리에서는 일반 `IN` / `JOIN`을 사용하십시오.
 
 분산 쿼리 처리에서 `IN` / `JOIN` 절에 서브쿼리를 사용할 때에는 주의해야 합니다.
@@ -176,7 +178,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SEL
 
 다시 말해, `IN` 절에 사용되는 데이터 집합은 각 서버에 로컬로 저장된 데이터에 대해서만, 각 서버에서 독립적으로 수집됩니다.
 
-이 동작은 이 상황을 미리 고려하여, 단일 UserID에 대한 데이터가 서버 중 하나에만 온전히 존재하도록 클러스터 서버에 데이터를 분산해 둔 경우에 올바르고 최적으로 동작합니다. 이 경우 필요한 모든 데이터는 각 서버에서 로컬에서 모두 사용할 수 있습니다. 그렇지 않으면 결과는 부정확해집니다. 이러한 방식의 쿼리를 「local IN」이라고 부릅니다.
+이 동작은 이 상황을 미리 고려하여, 단일 UserID에 대한 데이터가 서버 중 하나에만 온전히 존재하도록 클러스터 서버에 데이터를 분산해 둔 경우에 올바르고 최적으로 동작합니다. 이 경우 필요한 모든 데이터는 각 서버에서 로컬에서 모두 사용할 수 있습니다. 그렇지 않으면 결과는 부정확해집니다. 이러한 방식의 쿼리를 &quot;local IN&quot;이라고 부릅니다.
 
 데이터가 클러스터 서버 전체에 무작위로 분산되어 있는 경우 쿼리가 정확하게 동작하도록 하려면, 서브쿼리 안에 **distributed&#95;table** 을 지정할 수 있습니다. 쿼리는 다음과 같습니다:
 
@@ -184,7 +186,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SEL
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-이 쿼리는 다음과 같은 형태로 모든 원격 서버에 전송됩니다.
+이 쿼리는 모든 원격 서버에 다음과 같이 전송됩니다.
 
 ```sql
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
@@ -216,9 +218,9 @@ SELECT UserID FROM distributed_table WHERE CounterID = 34
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL IN _data1
 ```
 
-임시 테이블 `_data1`은(는) 쿼리와 함께 모든 원격 서버로 전송됩니다(임시 테이블의 이름은 구현에 의해 결정됩니다).
+임시 테이블 `_data1`은 쿼리와 함께 모든 원격 서버로 전송됩니다(임시 테이블 이름은 구현에 따라 달라집니다).
 
-이는 일반적인 `IN`을(를) 사용하는 것보다 더 효율적입니다. 다만 다음 사항을 유의하십시오:
+이는 일반 `IN`을 사용하는 것보다 더 효율적입니다. 하지만 다음 사항에 유의하십시오:
 
 1. 임시 테이블을 생성할 때는 데이터의 고유성이 보장되지 않습니다. 네트워크를 통해 전송되는 데이터 양을 줄이려면 서브쿼리에서 DISTINCT를 지정하십시오. (일반 `IN`의 경우에는 그럴 필요가 없습니다.)
 2. 임시 테이블은 모든 원격 서버로 전송됩니다. 전송 시 네트워크 토폴로지는 고려되지 않습니다. 예를 들어, 10개의 원격 서버가 요청 서버와 매우 멀리 떨어진 데이터 센터에 있는 경우, 해당 원격 데이터 센터로의 채널을 통해 데이터가 10번 전송됩니다. `GLOBAL IN`을 사용할 때는 큰 데이터 세트를 피하도록 하십시오.

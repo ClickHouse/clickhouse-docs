@@ -83,6 +83,7 @@ CREATE TABLE table
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
                                             | ngrams[(N)]
+                                            | asciiCJK
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -115,6 +116,7 @@ ALTER TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
+                                            | asciiCJK
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
@@ -149,6 +151,7 @@ ALTER TABLE table DROP INDEX text_idx;
   Разделители можно задать с помощью необязательного параметра, например, `tokenizer = splitByString([', ', '; ', '\n', '\\'])`.
   Обратите внимание, что каждая строка может состоять из нескольких символов (в примере — `', '`).
   Если список разделителей явно не указан (например, `tokenizer = splitByString`), по умолчанию используется один пробел `[' ']`.
+* `asciiCJK` разбивает строки на токены, используя правила границ слов Unicode (аналогично [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)). ASCII-буквенно-цифровые символы и символы подчёркивания образуют токены с соединителями (ASCII `:` для букв, `.` и `'` для символов одного типа). Символы Unicode вне ASCII, включая символы [CJK](https://en.wikipedia.org/wiki/CJK_characters), становятся односимвольными токенами.
 * `ngrams(N)` разбивает строки на одинаковые по размеру `N`-граммы (см. функцию [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)).
   Длину n-граммы можно указать необязательным целочисленным параметром от 1 до 8, например, `tokenizer = ngrams(3)`.
   Если размер n-граммы явно не указан (например, `tokenizer = ngrams`), по умолчанию используется значение 3.
@@ -158,7 +161,6 @@ ALTER TABLE table DROP INDEX text_idx;
   По сравнению с `ngrams(N)` токенизатор `sparseGrams` генерирует n-граммы переменной длины, обеспечивая более гибкое представление исходного текста.
   Например, `tokenizer = sparseGrams(3, 5, 4)` внутренне генерирует 3-, 4-, 5-граммы из входной строки, но возвращает только 4- и 5-граммы.
 * `array` не выполняет токенизацию, т.е. каждое значение строки является токеном (см. функцию [array](/sql-reference/functions/array-functions.md/#array)).
-* `asciiCJK` разбивает строки на токены, используя правила границ слов Unicode (аналогично [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)). ASCII-буквенно-цифровые символы и символы подчёркивания образуют токены с соединителями (ASCII `:` для букв, `.` и `'` для символов одного типа). Символы Unicode вне ASCII, включая символы [CJK](https://en.wikipedia.org/wiki/CJK_characters), становятся односимвольными токенами.
 
 Все доступные токенизаторы перечислены в [system.tokenizers](../../../operations/system-tables/tokenizers.md).
 
@@ -420,6 +422,10 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 ```
 
 Пробелы слева и справа от `support` гарантируют, что термин корректно распознаётся как отдельный токен.
+
+К счастью, есть особый случай, когда ClickHouse может использовать обратный индекс, чтобы значительно ускорить запросы LIKE.
+
+Подробности см. в [разделе о настройке производительности LIKE/ILIKE](#like-ilike-queries-perf).
 
 
 #### `startsWith` и `endsWith` \{#functions-example-startswith-endswith\}
@@ -920,6 +926,23 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 Для этого запроса порядок применения такой: сначала `__text_index_...`, затем `greaterOrEquals(...)` и, наконец, `like(...)`.
 Такой порядок позволяет пропускать ещё больше гранул данных по сравнению с теми, которые уже пропускаются текстовым индексом и исходным фильтром, ещё до чтения «тяжёлых» столбцов, используемых в запросе после предложения `WHERE`, что дополнительно уменьшает объём данных для чтения.
 
+
+### Запросы LIKE/ILIKE \{#like-ilike-queries-perf\}
+
+Когда шаблон запроса LIKE/ILIKE имеет вид `%<alpha-numeric-characters-without-spaces>%`, а токенизатор текстового индекса — `splitByNonAlpha`, ClickHouse использует инвертированный индекс, чтобы существенно ускорить запросы LIKE/ILIKE. Для этого ClickHouse сканирует словарь инвертированного индекса вместо полного сканирования таблицы в поисках совпадающего шаблона.
+
+Когда эта оптимизация включена, запросы LIKE/ILIKE должны выполняться значительно быстрее, чем при полном сканировании таблицы. Однако если шаблон совпадает с большинством токенов в словаре, производительность может оказаться ниже, чем при полном сканировании таблицы. К счастью, чтобы этого избежать, предусмотрен механизм возврата к полному сканированию.
+
+Эта оптимизация управляется настройкой:
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+Механизм возврата к полному сканированию управляется двумя настройками:
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+Эта оптимизация поддерживает только функции `like` и `ilike`.
 
 ### Кэширование \{#caching\}
 

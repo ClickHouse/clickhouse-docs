@@ -1499,15 +1499,15 @@ ClickHouse 23.1의 일부 기능이 추가로 지원됩니다. 예를 들면 다
 
 ### 통합 변경 사항 \{#integrations-changes-25\}
 
-- DBT 릴리스 [v1.3.2](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md#release-132-2022-12-23)
-  - delete+insert 증분 전략에 대한 실험적 지원 추가
-  - 새로운 s3source 매크로 추가
-- Python 클라이언트 [v0.4.8](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#048-2023-01-02)
-  - 파일 insert 기능 지원
-  - 서버 측 쿼리 [파라미터 바인딩](/interfaces/cli.md/#cli-queries-with-parameters)
-- Go 클라이언트 [v2.5.0](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.5.0)
-  - 압축 시 메모리 사용량 감소
-  - 서버 측 쿼리 [파라미터 바인딩](/interfaces/cli.md/#cli-queries-with-parameters)
+* DBT 릴리스 [v1.3.2](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md#release-132-2022-12-23)
+  * delete+insert 증분 전략에 대한 실험적 지원 추가
+  * 새로운 s3source 매크로 추가
+* Python 클라이언트 [v0.4.8](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#048-2023-01-02)
+  * 파일 insert 기능 지원
+  * 서버 측 쿼리 [파라미터 바인딩](/interfaces/client#cli-queries-with-parameters)
+* Go 클라이언트 [v2.5.0](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.5.0)
+  * 압축 시 메모리 사용량 감소
+  * 서버 측 쿼리 [파라미터 바인딩](/interfaces/client#cli-queries-with-parameters)
 
 ### 안정성과 성능 \{#reliability-and-performance-2\}
 
