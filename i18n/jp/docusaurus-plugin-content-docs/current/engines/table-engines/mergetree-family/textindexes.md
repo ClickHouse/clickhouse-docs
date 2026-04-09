@@ -556,9 +556,7 @@ SELECT count() FROM table WHERE map['engine'] = 'clickhouse';
 テキスト索引と併用する `Array(T)` 型および `Map(K, V)` 型カラムの例を以下に示します。
 
 
-### `Array` および `Map` カラムに対するテキストインデックスの例 \{#text-index-array-and-map-examples\}
-
-#### Array(String) カラムのインデックス化 \{#text-index-example-array\}
+### Array(String) カラムのインデックス化 \{#text-index-example-array\}
 
 ブログプラットフォームを想像してください。そこでは、著者がブログ記事にキーワードを付けてカテゴリ分けしています。
 ユーザーには、トピックを検索したりクリックしたりすることで、関連コンテンツを見つけてほしいと考えています。
@@ -577,7 +575,7 @@ ENGINE = MergeTree
 ORDER BY (post_id);
 ```
 
-テキスト索引がない場合、特定のキーワード（例：`clickhouse`）を含む投稿を検索するには、すべてのエントリを走査する必要があります。
+テキスト索引がない場合、特定のキーワード (例：`clickhouse`) を含む投稿を検索するには、すべてのエントリを走査する必要があります。
 
 ```sql
 SELECT count() FROM posts WHERE has(keywords, 'clickhouse'); -- slow full-table scan - checks every keyword in every post
@@ -591,8 +589,7 @@ ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitBy
 ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the index for existing data
 ```
 
-
-#### Map カラムのインデックス作成 \{#text-index-example-map\}
+### Map カラムのインデックス作成 \{#text-index-example-map\}
 
 多くのオブザーバビリティのユースケースでは、ログメッセージは「コンポーネント」に分割され、タイムスタンプには日時型、ログレベルには enum 型など、適切なデータ型として保存されます。
 メトリクスフィールドは、キーと値のペアとして保存するのが最適です。
@@ -612,7 +609,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp);
 ```
 
-テキストインデックスがない場合、[Map](/sql-reference/data-types/map.md) データを検索するにはテーブル全体をフルスキャンする必要があります。
+テキスト索引がない場合、[Map](/sql-reference/data-types/map.md) データを検索するにはテーブル全体をフルスキャンする必要があります。
 
 ```sql
 -- Finds all logs with rate limiting data:
@@ -652,14 +649,13 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
-
 ### JSONカラムのインデックス化 \{#text-index-example-json\}
 
 `JSON` カラムでは、テキスト索引を 3 つの方法で利用できます。
 
 1. **特定のサブカラムに対するインデックス** — 通常のカラムと同様に、既知の JSON パスにテキスト索引を作成します。これにより、そのパスの *値* がインデックス化されます。
-2. **`JSONAllPaths` を使用したパスベースのインデックス** — 各グラニュールに存在する *パスの集合* をインデックス化し、クエリ対象のパスを含む可能性がないグラニュールをスキップします。`Map` カラムと同様です。
-3. **`JSONAllValues` を使用した値ベースのインデックス** — すべての JSON パスにまたがる *すべての値* をインデックス化し、単一のインデックスで任意の JSON サブカラムに対する全文検索を高速化します。
+2. **[JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) を使用したパスベースのインデックス** — 各グラニュールに存在する *すべてのパス* をインデックス化し、クエリ対象のパスを含む可能性がないグラニュールをスキップします。`Map` カラムと同様です。
+3. **[JSONAllValues](/sql-reference/functions/json-functions.md#JSONAllValues) を使用した値ベースのインデックス** — すべての JSON パスにまたがる *すべての値* をインデックス化し、単一のインデックスで任意の JSON サブカラムに対する全文検索を高速化します。
 
 #### 特定のサブカラムに対する索引 \{#json-indexes-on-subcolumns\}
 
@@ -670,7 +666,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 * **型付きパス** — JSON 型ヒントで宣言し、名前で直接アクセスします: `json.a`.
 * **動的パス** (明示的なキャストあり) — `::` キャスト構文を使用します: `json.b::String`.
 
-クエリ例:
+索引定義の例:
 
 ```sql
 CREATE TABLE sensor_data
@@ -687,11 +683,15 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , '
 INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
 ```
 
-```sql title="Query"
+クエリ例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-```text title="Response"
+結果:
+
+```text
 ...
     Indexes:
       Skip
@@ -702,11 +702,15 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
         Granules: 1/8
 ```
 
-```sql title="Query"
+クエリ例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-```text title="Response"
+結果:
+
+```text
 ...
     Indexes:
       Skip
@@ -717,13 +721,12 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
         Granules: 1/8
 ```
 
-
 #### JSONAllPaths によるパスベース索引 \{#json-indexes-jsonallpaths\}
 
 `Map` カラムと同様に、[JSON](/sql-reference/data-types/newjson.md) カラムにも [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths) を使用してテキスト索引を作成できます。
 この索引は各グラニュールに含まれる JSON パスの集合を保持し、クエリ対象のパスが存在しないグラニュールをスキップするために利用します。
 
-クエリ例:
+索引定義の例:
 
 ```sql
 CREATE TABLE events
@@ -738,13 +741,18 @@ INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
 INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 ```
 
-`EXPLAIN indexes = 1` を使用すると、スキップ索引が使われていることを確認できます。パスが1つのパートにしか存在しない場合、索引はもう一方のパートをスキップします:
+`EXPLAIN indexes = 1` を使用すると、スキップ索引が使われていることを確認できます。
+パスが1つのパートにしか存在しない場合、索引はもう一方のパートをスキップします。
 
-```sql title="Query"
+例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-```text title="Response"
+結果:
+
+```text
 ...
     Indexes:
       Skip
@@ -755,11 +763,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
         Granules: 1/2
 ```
 
-どのパーツにもパスが存在しない場合、すべてのパーツとグラニュールがスキップされます:
+どのパーツにもパスが存在しない場合、すべてのパーツとグラニュールがスキップされます。
 
-```sql title="Query"
+例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
+
+結果:
 
 ```text title="Response"
 ...
@@ -774,11 +786,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 
 `IS NOT NULL` でも索引が使用され、パスが存在しないグラニュールは (その場合、値は `NULL` になるため) スキップされます。
 
-```sql title="Query"
+例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-```text title="Response"
+結果:
+
+```text
 ...
     Indexes:
       Skip
@@ -789,16 +805,26 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
         Granules: 1/2
 ```
 
-
 #### JSONAllValues を使用した値ベースの索引 \{#json-indexes-jsonallvalues\}
 
-テキスト索引を使用すると、関数 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) を使って [JSON](/sql-reference/data-types/newjson.md) カラムの検索を高速化できます。
+テキスト索引は、関数 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) を介して [JSON](/sql-reference/data-types/newjson.md) カラムの検索を高速化するために使用できます。
 
-`JSONAllValues` は、JSON カラム内のすべての値を `Array(String)` として返します。各値はテキスト表現にシリアライズされた形式になります。
-`JSONAllValues(json_column)` に対してテキスト索引を構築すると、あらゆる JSON パス上のすべての値がトークン化され、まとめて索引化されます。
-この単一の索引によって、個々の JSON サブカラムでフィルタするクエリを高速化できます。
+`JSONAllValues` は、JSON カラムのすべての値を `Array(String)` として返します。
+文字列以外のデータ型の値 (例: 整数や配列) は、そのテキスト表現に変換されます。
+`JSONAllValues` に対するテキスト索引は、各行のすべての JSON パスにまたがって、これらのテキスト表現を索引付けします。
+この索引は、その後、個々の JSON サブカラムで絞り込むクエリを高速化できます。
+クエリが特定のサブカラム (例: `data.user_name = 'alice'`) で絞り込む場合、テキスト索引は、JSON 値のいずれにも検索トークンが含まれていない行 (およびグラニュール) をすばやくスキップできます。
+
+:::note
+異なる JSON パスに同じトークンが含まれている場合、この索引は偽陽性を返すことがあります。
+たとえば、行 1 が `{"a": "hello", "b": "world"}` を持ち、クエリで `data.a = 'world'` を検索する場合、テキスト索引は `world` がパス `a` ではなく `b` に属していることを区別できません。
+このような場合、索引はその行をスキップせず、最終的な評価は実際のカラムデータに対するフィルタリングで行われます。
+これは、索引が高速な事前フィルターとして機能する、他のテキスト索引の利用ケースと同じ動作です。
+:::
 
 ##### 索引の作成 \{#json-all-values-creating-the-index\}
+
+索引の定義例:
 
 ```sql
 CREATE TABLE events
@@ -810,7 +836,6 @@ CREATE TABLE events
 ENGINE = MergeTree
 ORDER BY id;
 ```
-
 
 ##### サポートされるクエリパターン \{#json-all-values-supported-query-patterns\}
 
@@ -839,21 +864,6 @@ SELECT * FROM events WHERE has(data.tags::Array(String), 'bug')
 SELECT * FROM events WHERE data.level IN ('error', 'critical');
 ```
 
-
-##### 仕組み \{#json-all-values-how-it-works\}
-
-`JSONAllValues` はすべての値をテキスト表現にシリアライズするため、あらゆる型の値 (文字列、整数、配列など) がテキストトークンとして索引付けされます。
-
-`JSONAllValues` に対するテキスト索引は、各行のすべての JSON パスにまたがって、これらのテキスト表現を索引付けします。
-クエリが特定のサブカラム (例: `data.user_name = 'alice'`) で絞り込む場合、テキスト索引は、JSON 値のいずれにも検索トークンが含まれていない行 (およびグラニュール) をすばやくスキップできます。
-この索引はすべてのパスを対象としているため、単一の索引定義で任意の JSON サブカラムに対する検索を高速化できます。
-
-:::note
-異なる JSON パスに同じトークンが含まれている場合、この索引は偽陽性を返すことがあります。
-たとえば、行 1 が `{"a": "hello", "b": "world"}` を持ち、クエリで `data.a = 'world'` を検索する場合、テキスト索引は `world` がパス `a` ではなく `b` に属していることを区別できません。
-このような場合、索引はその行をスキップせず、最終的な評価は実際のカラムデータに対するフィルタリングで行われます。
-これは、索引が高速な事前フィルターとして機能する、他のテキスト索引の利用ケースと同じ動作です。
-:::
 
 ## パフォーマンスチューニング \{#performance-tuning\}
 

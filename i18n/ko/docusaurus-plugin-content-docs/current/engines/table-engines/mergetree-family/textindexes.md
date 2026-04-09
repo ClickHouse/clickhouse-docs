@@ -556,9 +556,7 @@ SELECT count() FROM table WHERE map['engine'] = 'clickhouse';
 다음 예시는 텍스트 인덱스와 함께 `Array(T)` 및 `Map(K, V)` 타입 컬럼을 사용하는 방법을 보여줍니다.
 
 
-### `Array` 및 `Map` 컬럼에서 텍스트 인덱스를 사용하는 예제 \{#text-index-array-and-map-examples\}
-
-#### Array(String) 컬럼에 인덱스 생성하기 \{#text-index-example-array\}
+### Array(String) 컬럼에 인덱스 생성하기 \{#text-index-example-array\}
 
 블로그 플랫폼이 있다고 가정해 보십시오. 작성자는 키워드를 사용해 블로그 게시물을 분류합니다.
 사용자가 주제를 검색하거나 클릭하여 관련 콘텐츠를 발견하도록 하고자 합니다.
@@ -591,8 +589,7 @@ ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitBy
 ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the index for existing data
 ```
 
-
-#### 맵 컬럼 인덱싱 \{#text-index-example-map\}
+### 맵 컬럼 인덱싱 \{#text-index-example-map\}
 
 많은 관측성 관련 사용 사례에서 로그 메시지는 「구성 요소」로 분리되어, 타임스탬프는 날짜-시간 데이터 타입으로, 로그 레벨은 enum 등으로 적절한 데이터 타입에 따라 저장됩니다.
 메트릭 필드는 key-value 쌍으로 저장하는 것이 가장 좋습니다.
@@ -612,7 +609,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp);
 ```
 
-텍스트 인덱스가 없으면 [Map](/sql-reference/data-types/map.md) 데이터에서 검색하려면 테이블 전체를 스캔해야 합니다.
+텍스트 인덱스가 없으면 [Map](/sql-reference/data-types/map.md) 데이터에서 검색하려면 테이블 전체를 스캔해야 합니다:
 
 ```sql
 -- Finds all logs with rate limiting data:
@@ -652,14 +649,13 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
-
 ### JSON 컬럼 인덱싱 \{#text-index-example-json\}
 
 텍스트 인덱스는 `JSON` 컬럼에 세 가지 방식으로 적용할 수 있습니다:
 
 1. **특정 하위 컬럼에 대한 인덱스** — 일반 컬럼과 마찬가지로, 알려진 JSON 경로에 텍스트 인덱스를 생성합니다. 이렇게 하면 해당 경로의 *값*에 인덱스가 생성됩니다.
-2. **`JSONAllPaths`를 사용하는 경로 기반 인덱스** — 각 그래뉼에 존재하는 *경로 집합*에 인덱스를 생성하여, 쿼리한 경로를 포함할 수 없는 그래뉼을 건너뜁니다. `Map` 컬럼과 유사합니다.
-3. **`JSONAllValues`를 사용하는 값 기반 인덱스** — 모든 JSON 경로의 *모든 값*에 인덱스를 생성하여, 단일 인덱스로 모든 JSON 서브컬럼에 대한 전문 검색을 가속화합니다.
+2. **[JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths)를 사용하는 경로 기반 인덱스** — 각 그래뉼에 존재하는 *모든 경로*에 인덱스를 생성하여, 쿼리한 경로를 포함할 수 없는 그래뉼을 건너뜁니다. `Map` 컬럼과 유사합니다.
+3. **[JSONAllValues](/sql-reference/functions/json-functions.md#JSONAllValues)를 사용하는 값 기반 인덱스** — 모든 JSON 경로의 *모든 값*에 인덱스를 생성하여, 단일 인덱스로 모든 JSON 서브컬럼에 대한 전문 검색을 가속화합니다.
 
 #### 특정 서브컬럼의 인덱스 \{#json-indexes-on-subcolumns\}
 
@@ -670,7 +666,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 * JSON 타입 힌트에 선언된 **타입이 지정된 경로** — 이름으로 직접 접근합니다: `json.a`.
 * 명시적 캐스트를 사용하는 **동적 경로** — `::` 캐스트 구문을 사용합니다: `json.b::String`.
 
-예시 쿼리:
+예시 인덱스 정의:
 
 ```sql
 CREATE TABLE sensor_data
@@ -687,11 +683,15 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , '
 INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
 ```
 
-```sql title="Query"
+예시 쿼리:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-```text title="Response"
+결과:
+
+```text
 ...
     Indexes:
       Skip
@@ -702,11 +702,15 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
         Granules: 1/8
 ```
 
-```sql title="Query"
+예시 쿼리:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-```text title="Response"
+결과:
+
+```text
 ...
     Indexes:
       Skip
@@ -720,9 +724,9 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 #### JSONAllPaths를 사용한 경로 기반 인덱스 \{#json-indexes-jsonallpaths\}
 
 `Map` 컬럼과 마찬가지로, [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths)를 사용하면 [JSON](/sql-reference/data-types/newjson.md) 컬럼에도 텍스트 인덱스를 생성할 수 있습니다.
-이 인덱스는 각 그래뉼에 존재하는 JSON 경로 집합을 저장하며, 쿼리한 경로가 없는 그래뉼을 건너뛰는 데 사용됩니다.
+이 인덱스는 각 그래뉼에 존재하는 JSON 경로 집합을 저장하며, 쿌리한 경로가 없는 그래뉼을 건너뛰는 데 사용됩니다.
 
-예시 쿼리:
+예시 인덱스 정의:
 
 ```sql
 CREATE TABLE events
@@ -737,13 +741,18 @@ INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
 INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 ```
 
-`EXPLAIN indexes = 1`을 사용하면 스킵 인덱스가 실제로 사용되는지 확인할 수 있습니다. 경로가 하나의 파트에만 존재하면 인덱스가 다른 파트는 건너뜁니다:
+`EXPLAIN indexes = 1`을 사용하면 스킵 인덱스가 실제로 사용되는지 확인할 수 있습니다.
+경로가 하나의 파트에만 존재하면 인덱스가 다른 파트는 건너뜁니다.
 
-```sql title="Query"
+예시:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-```text title="Response"
+결과:
+
+```text
 ...
     Indexes:
       Skip
@@ -754,11 +763,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
         Granules: 1/2
 ```
 
-경로가 어떤 파트에도 존재하지 않으면, 모든 파트와 그래뉼을 건너뜁니다:
+경로가 어떤 파트에도 존재하지 않으면, 모든 파트와 그래뉼을 건너뜁니다.
 
-```sql title="Query"
+예시:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
+
+결과:
 
 ```text title="Response"
 ...
@@ -773,11 +786,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 
 `IS NOT NULL`도 인덱스를 사용합니다 — 경로가 없는 그래뉼은 건너뜁니다(이 경우 값이 `NULL`이기 때문입니다):
 
-```sql title="Query"
+예시:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-```text title="Response"
+결과:
+
+```text
 ...
     Indexes:
       Skip
@@ -788,16 +805,26 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
         Granules: 1/2
 ```
 
-
 #### JSONAllValues를 사용한 값 기반 인덱스 \{#json-indexes-jsonallvalues\}
 
-텍스트 인덱스는 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) 함수를 사용해 [JSON](/sql-reference/data-types/newjson.md) 컬럼에 대한 검색을 가속할 수 있습니다.
+텍스트 인덱스는 함수 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues)를 통해 [JSON](/sql-reference/data-types/newjson.md) 컬럼에 대한 검색을 가속화하는 데 사용할 수 있습니다.
 
-`JSONAllValues`는 JSON 컬럼의 모든 값을 텍스트 표현으로 직렬화하여 `Array(String)`으로 반환합니다.
-`JSONAllValues(json_column)`에 텍스트 인덱스를 생성하면, 모든 JSON 경로의 값이 함께 토큰화되고 인덱싱됩니다.
-이 단일 인덱스는 개별 JSON 서브컬럼을 기준으로 필터링하는 쿼리도 가속할 수 있습니다.
+`JSONAllValues`는 JSON 컬럼의 모든 값을 `Array(String)`으로 반환합니다.
+문자열이 아닌 데이터 형식의 값(예: 정수 및 배열)은 텍스트 표현으로 변환됩니다.
+`JSONAllValues`의 텍스트 인덱스는 각 행의 모든 JSON 경로에 걸쳐 이러한 텍스트 표현을 인덱싱합니다.
+이 인덱스는 개별 JSON 서브컬럼에 대해 필터링하는 쿼리를 가속화할 수 있습니다.
+쿼리가 특정 서브컬럼에 대해 필터링할 때(예: `data.user_name = 'alice'`), 텍스트 인덱스는 어떤 JSON 값에도 검색 토큰이 포함되지 않은 행(및 그래뉼)을 빠르게 건너뛸 수 있습니다.
+
+:::note
+서로 다른 JSON 경로에 동일한 토큰이 포함되어 있으면 인덱스에서 거짓 양성(false positive)이 발생할 수 있습니다.
+예를 들어, 1번 행에 `{"a": "hello", "b": "world"}`가 있고 쿼리에서 `data.a = 'world'`를 검색하는 경우, 텍스트 인덱스는 `world`가 경로 `a`가 아니라 `b`에 속한다는 점을 구분할 수 없습니다.
+이 경우 인덱스는 해당 행을 건너뛰지 않으며, 실제 컬럼 데이터에 대한 필터가 최종 판단을 수행합니다.
+이는 인덱스가 빠른 사전 필터 역할을 하는 다른 텍스트 인덱스 사용 사례와 동일한 동작입니다.
+:::
 
 ##### 인덱스 생성 \{#json-all-values-creating-the-index\}
+
+인덱스 정의 예시:
 
 ```sql
 CREATE TABLE events
@@ -809,7 +836,6 @@ CREATE TABLE events
 ENGINE = MergeTree
 ORDER BY id;
 ```
-
 
 ##### 지원되는 쿼리 패턴 \{#json-all-values-supported-query-patterns\}
 
@@ -838,21 +864,6 @@ SELECT * FROM events WHERE has(data.tags::Array(String), 'bug')
 SELECT * FROM events WHERE data.level IN ('error', 'critical');
 ```
 
-
-##### 작동 방식 \{#json-all-values-how-it-works\}
-
-`JSONAllValues`는 모든 값을 텍스트 표현으로 직렬화하므로, 모든 유형의 값(문자열, 정수, 배열 등)이 텍스트 토큰으로 인덱싱됩니다.
-
-`JSONAllValues`의 텍스트 인덱스는 각 행의 모든 JSON 경로에 걸쳐 이러한 텍스트 표현을 인덱싱합니다.
-쿼리가 특정 서브컬럼에 대해 필터링할 때(예: `data.user_name = 'alice'`), 텍스트 인덱스는 어떤 JSON 값에도 검색 토큰이 포함되지 않은 행(및 그래뉼)을 빠르게 건너뛸 수 있습니다.
-인덱스가 모든 경로를 포괄하므로, 단일 인덱스 정의만으로도 모든 JSON 서브컬럼에 대한 검색을 가속화할 수 있습니다.
-
-:::note
-서로 다른 JSON 경로에 동일한 토큰이 포함되어 있으면 인덱스에서 거짓 양성(false positive)이 발생할 수 있습니다.
-예를 들어, 1번 행에 `{"a": "hello", "b": "world"}`가 있고 쿼리에서 `data.a = 'world'`를 검색하는 경우, 텍스트 인덱스는 `world`가 경로 `a`가 아니라 `b`에 속한다는 점을 구분할 수 없습니다.
-이 경우 인덱스는 해당 행을 건너뛰지 않으며, 실제 컬럼 데이터에 대한 필터가 최종 판단을 수행합니다.
-이는 인덱스가 빠른 사전 필터 역할을 하는 다른 텍스트 인덱스 사용 사례와 동일한 동작입니다.
-:::
 
 ## 성능 튜닝 \{#performance-tuning\}
 

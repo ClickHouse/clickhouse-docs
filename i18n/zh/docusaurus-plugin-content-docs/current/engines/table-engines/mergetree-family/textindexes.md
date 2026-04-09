@@ -555,9 +555,7 @@ SELECT count() FROM table WHERE map['engine'] = 'clickhouse';
 请参考以下示例，了解如何在文本索引中使用类型为 `Array(T)` 和 `Map(K, V)` 的列。
 
 
-### 具有文本索引的 `Array` 和 `Map` 列示例 \{#text-index-array-and-map-examples\}
-
-#### 为 Array(String) 列建立索引 \{#text-index-example-array\}
+### 为 Array(String) 列建立索引 \{#text-index-example-array\}
 
 假设有一个博客平台，作者使用关键词为他们的博客文章进行分类。
 我们希望用户能够通过搜索或点击主题来发现相关内容。
@@ -576,7 +574,7 @@ ENGINE = MergeTree
 ORDER BY (post_id);
 ```
 
-如果没有文本索引，要查找包含特定关键字（例如 `clickhouse`）的帖子，就必须扫描所有记录：
+如果没有文本索引，要查找包含特定关键字 (例如 `clickhouse`) 的帖子，就必须扫描所有记录：
 
 ```sql
 SELECT count() FROM posts WHERE has(keywords, 'clickhouse'); -- slow full-table scan - checks every keyword in every post
@@ -590,8 +588,7 @@ ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitBy
 ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the index for existing data
 ```
 
-
-#### 为 Map 列建立索引 \{#text-index-example-map\}
+### 为 Map 列建立索引 \{#text-index-example-map\}
 
 在许多可观测性用例中，日志消息通常会被拆分为“组件”，并按合适的数据类型存储，例如时间戳使用日期时间类型、日志级别使用 enum 等。
 指标字段通常最好存储为键值对。
@@ -651,14 +648,13 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
-
 ### 为 JSON 列建立索引 \{#text-index-example-json\}
 
 文本索引可通过以下三种方式用于 `JSON` 列：
 
 1. **针对特定子列的索引** —— 在已知的 JSON 路径上创建文本索引，就像对普通列所做的那样。这会为该路径上的*值*建立索引。
-2. **使用 `JSONAllPaths` 的基于路径的索引** —— 对每个粒度中存在的*路径集合*建立索引，以跳过不可能包含所查询路径的粒度。与 `Map` 列类似。
-3. **使用 `JSONAllValues` 的基于值的索引** —— 对所有 JSON 路径中的*所有值*建立索引，从而只需一个索引即可加速对任意 JSON 子列的全文搜索。
+2. **使用 [JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 的基于路径的索引** —— 对每个粒度中存在的*所有路径*建立索引，以跳过不可能包含所查询路径的粒度。与 `Map` 列类似。
+3. **使用 [JSONAllValues](/sql-reference/functions/json-functions.md#JSONAllValues) 的基于值的索引** —— 对所有 JSON 路径中的*所有值*建立索引，从而只需一个索引即可加速对任意 JSON 子列的全文搜索。
 
 #### 特定子列上的索引 \{#json-indexes-on-subcolumns\}
 
@@ -669,7 +665,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 * 在 JSON 类型提示中声明的 **类型化路径** — 直接通过名称访问：`json.a`。
 * 带显式类型转换的 **动态路径** — 使用 `::` 类型转换语法：`json.b::String`。
 
-示例查询：
+示例索引定义：
 
 ```sql
 CREATE TABLE sensor_data
@@ -686,11 +682,15 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , '
 INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
 ```
 
-```sql title="Query"
+示例查询：
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-```text title="Response"
+结果：
+
+```text
 ...
     Indexes:
       Skip
@@ -701,11 +701,15 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
         Granules: 1/8
 ```
 
-```sql title="Query"
+示例查询：
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-```text title="Response"
+结果：
+
+```text
 ...
     Indexes:
       Skip
@@ -716,13 +720,12 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
         Granules: 1/8
 ```
 
-
 #### 使用 JSONAllPaths 的基于路径的索引 \{#json-indexes-jsonallpaths\}
 
 与 `Map` 列类似，也可以使用 [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths) 在 [JSON](/sql-reference/data-types/newjson.md) 列上创建文本索引。
 该索引会存储每个粒度中存在的 JSON 路径集合，并利用这些路径跳过不包含查询路径的粒度。
 
-示例查询：
+示例索引定义：
 
 ```sql
 CREATE TABLE events
@@ -737,13 +740,18 @@ INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
 INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 ```
 
-您可以使用 `EXPLAIN indexes = 1` 来验证是否使用了跳过索引。当某个路径仅存在于一个 parts 中时，索引会跳过另一个 parts：
+您可以使用 `EXPLAIN indexes = 1` 来验证是否使用了跳过索引。
+当某个路径仅存在于一个 parts 中时，索引会跳过另一个 parts。
 
-```sql title="Query"
+示例：
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-```text title="Response"
+结果：
+
+```text
 ...
     Indexes:
       Skip
@@ -754,11 +762,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
         Granules: 1/2
 ```
 
-当某一路径在任何 part 中都不存在时，将跳过所有 parts 和 granules：
+当某一路径在任何 part 中都不存在时，将跳过所有 parts 和 granules。
 
-```sql title="Query"
+示例：
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
+
+结果：
 
 ```text title="Response"
 ...
@@ -773,11 +785,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 
 `IS NOT NULL` 也会使用索引——它会跳过路径不存在的그래뉼 (因为此时该值会是 `NULL`) ：
 
-```sql title="Query"
+示例：
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-```text title="Response"
+结果：
+
+```text
 ...
     Indexes:
       Skip
@@ -788,16 +804,26 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
         Granules: 1/2
 ```
 
+#### 使用 JSONAllValues 的基于值的索引 \{#json-indexes-jsonallvalues\}
 
-#### 基于值的索引与 JSONAllValues \{#json-indexes-jsonallvalues\}
+可以通过 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) 函数在 [JSON](/sql-reference/data-types/newjson.md) 列上使用文本索引来加速搜索。
 
-可通过函数 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) 在 [JSON](/sql-reference/data-types/newjson.md) 列上使用文本索引来加速搜索。
+`JSONAllValues` 会将 JSON 列中的所有值作为 `Array(String)` 返回。
+非字符串数据类型的值 (例如整数和数组) 会被转换为其文本表示形式。
+`JSONAllValues` 上的文本索引会对每一行中所有 JSON 路径上的这些文本表示建立索引。
+随后，该索引可以加速对各个 JSON 子列进行筛选的查询。
+当查询按特定子列进行筛选时 (例如 `data.user_name = 'alice'`) ，文本索引可以快速跳过那些在任意 JSON 值中都不包含搜索标记的行 (以及 granules) 。
 
-`JSONAllValues` 将 JSON 列中的所有值以 `Array(String)` 形式返回，并将这些值序列化为其文本表示。
-当在 `JSONAllValues(json_column)` 上构建文本索引时，所有 JSON 路径中的值都会统一分词并编入索引。
-随后，这一个索引即可加速按各个 JSON 子列过滤的查询。
+:::note
+当不同的 JSON 路径包含相同的标记时，该索引可能会产生误报。
+例如，如果第 1 行为 `{"a": "hello", "b": "world"}`，而查询搜索 `data.a = 'world'`，文本索引无法区分 `world` 属于路径 `b` 而不是 `a`。
+在这种情况下，索引不会跳过该行，最终会由实际列数据上的筛选条件完成判断。
+这种行为与文本索引的其他使用场景相同，即索引充当快速预筛选器。
+:::
 
 ##### 创建索引 \{#json-all-values-creating-the-index\}
+
+索引定义示例：
 
 ```sql
 CREATE TABLE events
@@ -809,7 +835,6 @@ CREATE TABLE events
 ENGINE = MergeTree
 ORDER BY id;
 ```
-
 
 ##### 支持的查询模式 \{#json-all-values-supported-query-patterns\}
 
@@ -838,21 +863,6 @@ SELECT * FROM events WHERE has(data.tags::Array(String), 'bug')
 SELECT * FROM events WHERE data.level IN ('error', 'critical');
 ```
 
-
-##### 工作原理 \{#json-all-values-how-it-works\}
-
-`JSONAllValues` 会将每个值序列化为其文本表示形式，因此所有类型的值 (字符串、整数、数组等) 都会作为文本标记建立索引。
-
-`JSONAllValues` 上的文本索引会对每一行中所有 JSON 路径上的这些文本表示建立索引。
-当查询按特定子列进行筛选时 (例如 `data.user_name = 'alice'`) ，文本索引可以快速跳过那些在任意 JSON 值中都不包含搜索标记的行 (以及 granules) 。
-由于该索引覆盖了所有路径，因此只需定义一个索引，就足以加速对任意 JSON 子列的搜索。
-
-:::note
-当不同的 JSON 路径包含相同的标记时，该索引可能会产生误报。
-例如，如果第 1 行为 `{"a": "hello", "b": "world"}`，而查询搜索 `data.a = 'world'`，文本索引无法区分 `world` 属于路径 `b` 而不是 `a`。
-在这种情况下，索引不会跳过该行，最终会由实际列数据上的筛选条件完成判断。
-这种行为与文本索引的其他使用场景相同，即索引充当快速预筛选器。
-:::
 
 ## 性能调优 \{#performance-tuning\}
 

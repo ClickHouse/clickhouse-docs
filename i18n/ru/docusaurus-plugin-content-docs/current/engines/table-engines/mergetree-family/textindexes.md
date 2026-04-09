@@ -557,9 +557,7 @@ SELECT count() FROM table WHERE map['engine'] = 'clickhouse';
 См. следующие примеры использования столбцов типа `Array(T)` и `Map(K, V)` с текстовым индексом.
 
 
-### Примеры для столбцов типа `Array` и `Map` с текстовыми индексами \{#text-index-array-and-map-examples\}
-
-#### Индексирование столбцов Array(String) \{#text-index-example-array\}
+### Индексирование столбцов Array(String) \{#text-index-example-array\}
 
 Представьте платформу для блогов, где авторы помечают свои публикации в блоге ключевыми словами.
 Мы хотим, чтобы пользователи находили похожий контент, выполняя поиск по темам или нажимая на них.
@@ -592,10 +590,9 @@ ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitBy
 ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the index for existing data
 ```
 
+### Индексация столбцов Map \{#text-index-example-map\}
 
-#### Индексация столбцов Map \{#text-index-example-map\}
-
-Во многих сценариях обсервабилити лог-сообщения разбиваются на «компоненты» и сохраняются с использованием соответствующих типов данных, например DateTime для временной метки, Enum для уровня логирования и т. д.
+Во многих сценариях обсервабилити лог-сообщения разбиваются на &quot;компоненты&quot; и сохраняются с использованием соответствующих типов данных, например DateTime для временной метки, Enum для уровня логирования и т. д.
 Поля метрик лучше всего хранить в виде пар ключ–значение.
 Командам эксплуатации необходимо эффективно искать по логам для отладки, расследования инцидентов безопасности и мониторинга.
 
@@ -653,14 +650,13 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
-
 ### Индексация JSON-столбцов \{#text-index-example-json\}
 
 Текстовые индексы можно использовать со столбцами `JSON` тремя способами:
 
 1. **Индексы для конкретных подстолбцов** — создайте текстовый индекс для известного пути JSON, как и для обычного столбца. При этом индексируются *значения* по этому пути.
-2. **Индексы на основе путей с `JSONAllPaths`** — индексируйте *набор путей*, присутствующих в каждой грануле, чтобы пропускать гранулы, которые заведомо не могут содержать запрашиваемый путь. Аналогично столбцам `Map`.
-3. **Индексы на основе значений с `JSONAllValues`** — индексируйте *все значения* по всем путям JSON, чтобы ускорить полнотекстовый поиск по любому подстолбцу JSON с помощью одного индекса.
+2. **Индексы на основе путей с [JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths)** — индексируйте *все пути*, присутствующие в каждой грануле, чтобы пропускать гранулы, которые заведомо не могут содержать запрашиваемый путь. Аналогично столбцам `Map`.
+3. **Индексы на основе значений с [JSONAllValues](/sql-reference/functions/json-functions.md#JSONAllValues)** — индексируйте *все значения* по всем путям JSON, чтобы ускорить полнотекстовый поиск по любому подстолбцу JSON с помощью одного индекса.
 
 #### Индексы по определённым подстолбцам \{#json-indexes-on-subcolumns\}
 
@@ -671,7 +667,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 * **Типизированный путь**, объявленный в подсказке типа JSON, — прямое обращение по имени: `json.a`.
 * **Динамический путь** с явным приведением типа — используйте синтаксис приведения `::`: `json.b::String`.
 
-Примеры запросов:
+Пример определения индекса:
 
 ```sql
 CREATE TABLE sensor_data
@@ -688,11 +684,15 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , '
 INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
 ```
 
-```sql title="Query"
+Пример запроса:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-```text title="Response"
+Результат:
+
+```text
 ...
     Indexes:
       Skip
@@ -703,11 +703,15 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
         Granules: 1/8
 ```
 
-```sql title="Query"
+Пример запроса:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-```text title="Response"
+Результат:
+
+```text
 ...
     Indexes:
       Skip
@@ -723,7 +727,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 Как и для столбцов `Map`, для столбцов [JSON](/sql-reference/data-types/newjson.md) можно создавать текстовые индексы с помощью [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths).
 Индекс хранит набор JSON-путей, присутствующих в каждой грануле, и использует их, чтобы пропускать гранулы, в которых отсутствует запрашиваемый путь.
 
-Примеры запросов:
+Пример определения индекса:
 
 ```sql
 CREATE TABLE events
@@ -738,13 +742,18 @@ INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
 INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 ```
 
-Вы можете использовать `EXPLAIN indexes = 1`, чтобы убедиться, что индекс пропуска данных используется. Когда путь существует только в одной части, индекс пропускает другую часть:
+Вы можете использовать `EXPLAIN indexes = 1`, чтобы убедиться, что индекс пропуска данных используется.
+Когда путь существует только в одной части, индекс пропускает другую часть.
 
-```sql title="Query"
+Пример:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-```text title="Response"
+Результат:
+
+```text
 ...
     Indexes:
       Skip
@@ -755,11 +764,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
         Granules: 1/2
 ```
 
-Когда путь отсутствует во всех частях, все части и гранулы пропускаются:
+Когда путь отсутствует во всех частях, все части и гранулы пропускаются.
 
-```sql title="Query"
+Пример:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
+
+Результат:
 
 ```text title="Response"
 ...
@@ -774,11 +787,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 
 `IS NOT NULL` также использует индекс — он пропускает 그래뉼ы, в которых этот путь отсутствует (так как значение в этом случае было бы `NULL`):
 
-```sql title="Query"
+Пример:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-```text title="Response"
+Результат:
+
+```text
 ...
     Indexes:
       Skip
@@ -789,15 +806,26 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
         Granules: 1/2
 ```
 
-#### Индексы на основе значений с JSONAllValues \{#json-indexes-jsonallvalues\}
+#### Индексы по значениям с JSONAllValues \{#json-indexes-jsonallvalues\}
 
-текстовый индекс можно использовать для ускорения поиска по столбцам [JSON](/sql-reference/data-types/newjson.md) с помощью функции [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues).
+Текстовые индексы можно использовать для ускорения поиска в столбцах типа [JSON](/sql-reference/data-types/newjson.md) с помощью функции [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues).
 
-`JSONAllValues` возвращает все значения из столбца JSON в виде `Array(String)`, сериализуя их в текстовое представление.
-Когда текстовый индекс строится по `JSONAllValues(json_column)`, все значения из всех путей JSON токенизируются и индексируются вместе.
-Затем этот единый индекс может ускорять запросы с фильтрацией по отдельным подстолбцам JSON.
+`JSONAllValues` возвращает все значения из JSON-столбца в виде `Array(String)`.
+Значения нестроковых типов данных (например, целые числа и массивы) преобразуются в текстовое представление.
+Текстовый индекс, построенный с использованием `JSONAllValues`, индексирует эти текстовые представления по всем JSON-путям в каждой строке.
+Затем этот индекс может ускорять запросы, которые фильтруют по отдельным JSON-подстолбцам.
+Когда запрос фильтрует по конкретному подстолбцу (например, `data.user_name = 'alice'`), текстовый индекс может быстро отсеивать строки (и гранулы), которые не содержат искомых токенов ни в одном из своих JSON-значений.
+
+:::note
+Индекс может давать ложноположительные срабатывания, если одинаковые токены встречаются в разных JSON-путях.
+Например, если строка 1 содержит `{"a": "hello", "b": "world"}`, а запрос ищет `data.a = 'world'`, текстовый индекс не может определить, что `world` относится к пути `b`, а не `a`.
+В таких случаях индекс не отсеет строку, а окончательную проверку выполнит фильтр по фактическим данным столбца.
+Это такое же поведение, как и в других сценариях использования текстового индекса, где индекс выступает быстрым предварительным фильтром.
+:::
 
 ##### Создание индекса \{#json-all-values-creating-the-index\}
+
+Пример определения индекса:
 
 ```sql
 CREATE TABLE events
@@ -809,7 +837,6 @@ CREATE TABLE events
 ENGINE = MergeTree
 ORDER BY id;
 ```
-
 
 ##### Поддерживаемые шаблоны запросов \{#json-all-values-supported-query-patterns\}
 
@@ -838,21 +865,6 @@ SELECT * FROM events WHERE has(data.tags::Array(String), 'bug')
 SELECT * FROM events WHERE data.level IN ('error', 'critical');
 ```
 
-
-##### Как это работает \{#json-all-values-how-it-works\}
-
-`JSONAllValues` сериализует каждое значение в текстовое представление, поэтому значения всех типов (строки, целые числа, массивы и т. д.) индексируются как текстовые токены.
-
-Текстовый индекс для `JSONAllValues` индексирует эти текстовые представления по всем JSON-путям в каждой строке.
-Когда запрос фильтрует по конкретному подстолбцу (например, `data.user_name = 'alice'`), текстовый индекс может быстро отсеивать строки (и гранулы), которые не содержат искомых токенов ни в одном из своих JSON-значений.
-Поскольку индекс охватывает все пути, достаточно одного определения индекса, чтобы ускорить поиск по любому JSON-подстолбцу.
-
-:::note
-Индекс может давать ложноположительные срабатывания, если одинаковые токены встречаются в разных JSON-путях.
-Например, если строка 1 содержит `{"a": "hello", "b": "world"}`, а запрос ищет `data.a = 'world'`, текстовый индекс не может определить, что `world` относится к пути `b`, а не `a`.
-В таких случаях индекс не отсеет строку, а окончательную проверку выполнит фильтр по фактическим данным столбца.
-Это такое же поведение, как и в других сценариях использования текстового индекса, где индекс выступает быстрым предварительным фильтром.
-:::
 
 ## Настройка производительности \{#performance-tuning\}
 
