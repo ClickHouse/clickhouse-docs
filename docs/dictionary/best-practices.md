@@ -29,13 +29,24 @@ The `LAYOUT` clause controls the internal data structure for the dictionary. All
 
 When choosing a layout, use the following guidelines:
 
-- **`flat`** — the fastest layout (simple array offset lookup), but keys must be `UInt64` and are limited to 500,000 by default (`max_array_size`). Best for monotonically increasing integer keys in small-to-medium tables. Sparse key distributions (e.g. key values of 1 and 500,000) waste memory since the array is sized to the largest key. If you're hitting the 500k limit, that's a signal to switch to `hashed_array`.
-- **`hashed_array`** — the recommended default for most use cases. Stores attributes in arrays with a hash table mapping keys to array indices. Nearly as fast as `hashed` but more memory-efficient, especially with many attributes.
-- **`hashed`** — stores the full dictionary in a hash table. Can be faster than `hashed_array` when you have very few attributes, but consumes more memory as attribute count grows.
-- **`complex_key_hashed` / `complex_key_hashed_array`** — use these when keys aren't castable to `UInt64` (for example, `String` keys). They follow the same performance tradeoffs as their non-complex counterparts.
-- **`sparse_hashed`** — trades CPU for lower memory usage compared to `hashed`. Rarely the best choice — it's only efficient when you have a single attribute. In most cases, `hashed_array` is a better fit.
-- **`cache` / `ssd_cache`** — only cache frequently accessed keys. Useful when the full dataset doesn't fit in memory, but lookups may hit the source on cache misses. Not recommended for latency-sensitive workloads.
-- **`direct`** — queries the source for every lookup with no in-memory storage. Use when the data changes too frequently to cache or when the dictionary is too large for memory.
+| Layout | Description |
+|---|---|
+| `flat` | The fastest layout (simple array offset lookup), but keys must be `UInt64` and are limited to 500,000 by default (`max_array_size`). Best for monotonically increasing integer keys in small-to-medium tables. Sparse key distributions (e.g. key values of 1 and 500,000) waste memory since the array is sized to the largest key. If you're hitting the 500k limit, that's a signal to switch to `hashed_array`. |
+| `hashed_array` | The recommended default for most use cases. Stores attributes in arrays with a hash table mapping keys to array indices. Nearly as fast as `hashed` but more memory-efficient, especially with many attributes. |
+| `hashed` | Stores the full dictionary in a hash table. Can be faster than `hashed_array` when you have very few attributes, but consumes more memory as attribute count grows. |
+| `complex_key_hashed` / `complex_key_hashed_array` | Use these when keys aren't castable to `UInt64` (for example, `String` keys). They follow the same performance tradeoffs as their non-complex counterparts. |
+| `sparse_hashed` | Trades CPU for lower memory usage compared to `hashed`. Rarely the best choice — it's only efficient when you have a single attribute. In most cases, `hashed_array` is a better fit. |
+| `cache` / `ssd_cache` | Only cache frequently accessed keys. Useful when the full dataset doesn't fit in memory, but lookups may hit the source on cache misses. Not recommended for latency-sensitive workloads. |
+| `direct` | Queries the source for every lookup with no in-memory storage. Use when the data changes too frequently to cache or when the dictionary is too large for memory. |
+
+:::warning[Avoid cache layouts in ClickHouse Cloud]
+In ClickHouse Cloud, nodes can be replaced at any time due to autoscaling. When a node is replaced, `cache` and `ssd_cache` dictionaries are wiped clean and must be re-warmed by incoming queries.
+Until re-warmed, lookups for keys not yet in the cache return default values instead of real data.
+
+This is especially dangerous when a dictionary is used to denormalize data inside a [materialized view](/sql-reference/statements/create/view#materialized-view) as rows inserted during the re-warming window will be written with incorrect (default) values permanently.
+
+Always use a fully-loaded layout (`flat`, `hashed`, `hashed_array`, `complex_key_hashed`, etc.) in ClickHouse Cloud so the dictionary is immediately available after a node replacement.
+:::
 
 ## Monitoring dictionary usage {#monitoring-dictionary-usage}
 
