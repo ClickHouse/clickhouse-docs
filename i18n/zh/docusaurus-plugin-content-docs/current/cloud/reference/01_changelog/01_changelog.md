@@ -1480,15 +1480,15 @@ ClickHouse Cloud 在 GCP 上现已 GA，请参阅上方的 [6 月 20 日](#june-
 
 ### 集成变更 \{#integrations-changes-25\}
 
-- DBT 版本 [v1.3.2](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md#release-132-2022-12-23)
-  - 新增对 delete+insert 增量策略的实验性支持
-  - 新增 s3source 宏
-- Python 客户端 [v0.4.8](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#048-2023-01-02)
-  - 支持文件插入
-  - 支持服务端查询[参数绑定](/interfaces/cli.md/#cli-queries-with-parameters)
-- Go 客户端 [v2.5.0](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.5.0)
-  - 降低压缩过程中的内存使用
-  - 支持服务端查询[参数绑定](/interfaces/cli.md/#cli-queries-with-parameters)
+* DBT 版本 [v1.3.2](https://github.com/ClickHouse/dbt-clickhouse/blob/main/CHANGELOG.md#release-132-2022-12-23)
+  * 新增对 delete+insert 增量策略的实验性支持
+  * 新增 s3source 宏
+* Python 客户端 [v0.4.8](https://github.com/ClickHouse/clickhouse-connect/blob/main/CHANGELOG.md#048-2023-01-02)
+  * 支持文件插入
+  * 支持服务端查询[参数绑定](/interfaces/client#cli-queries-with-parameters)
+* Go 客户端 [v2.5.0](https://github.com/ClickHouse/clickhouse-go/releases/tag/v2.5.0)
+  * 降低压缩过程中的内存使用
+  * 支持服务端查询[参数绑定](/interfaces/client#cli-queries-with-parameters)
 
 ### 可靠性与性能 \{#reliability-and-performance-2\}
 

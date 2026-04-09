@@ -31,7 +31,7 @@ DateTime([timezone])
 
 ## Замечания по использованию \{#usage-remarks\}
 
-Момент времени сохраняется в виде [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time), независимо от часового пояса или перехода на летнее время. Часовой пояс влияет на то, как значения типа `DateTime` отображаются в текстовом формате и как разбираются значения, заданные в виде строк ('2020-01-01 05:00:01').
+Момент времени сохраняется в виде [Unix timestamp](https://en.wikipedia.org/wiki/Unix_time), независимо от часового пояса или перехода на летнее время. Часовой пояс влияет на то, как значения типа `DateTime` отображаются в текстовом формате и как разбираются значения, заданные в виде строк (&#39;2020-01-01 05:00:01&#39;).
 
 Независимый от часового пояса Unix timestamp хранится в таблицах, а часовой пояс используется для преобразования его в текстовый формат или обратно при импорте/экспорте данных, а также для выполнения календарных вычислений над значениями (например, функциями `toDate`, `toHour` и т. д.). Часовой пояс не хранится в строках таблицы (или в результатах запроса), а хранится в метаданных столбца.
 
@@ -39,11 +39,11 @@ DateTime([timezone])
 
 Вы можете явно задать часовой пояс для столбцов типа `DateTime` при создании таблицы. Пример: `DateTime('UTC')`. Если часовой пояс не задан, ClickHouse использует значение параметра [timezone](../../operations/server-configuration-parameters/settings.md#timezone) в настройках сервера или настройки операционной системы на момент запуска сервера ClickHouse.
 
-По умолчанию [clickhouse-client](../../interfaces/cli.md) использует часовой пояс сервера, если часовой пояс явно не задан при инициализации типа данных. Чтобы использовать часовой пояс клиента, запустите `clickhouse-client` с параметром `--use_client_time_zone`.
+По умолчанию [clickhouse-client](../../interfaces/client.md) использует часовой пояс сервера, если часовой пояс явно не задан при инициализации типа данных. Чтобы использовать часовой пояс клиента, запустите `clickhouse-client` с параметром `--use_client_time_zone`.
 
-ClickHouse выводит значения в зависимости от значения настройки [date_time_output_format](../../operations/settings/settings-formats.md#date_time_output_format). По умолчанию используется текстовый формат `YYYY-MM-DD hh:mm:ss`. Кроме того, вы можете изменить формат вывода с помощью функции [formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime).
+ClickHouse выводит значения в зависимости от значения настройки [date&#95;time&#95;output&#95;format](../../operations/settings/settings-formats.md#date_time_output_format). По умолчанию используется текстовый формат `YYYY-MM-DD hh:mm:ss`. Кроме того, вы можете изменить формат вывода с помощью функции [formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime).
 
-При вставке данных в ClickHouse вы можете использовать различные форматы строк даты и времени в зависимости от значения настройки [date_time_input_format](../../operations/settings/settings-formats.md#date_time_input_format).
+При вставке данных в ClickHouse вы можете использовать различные форматы строк даты и времени в зависимости от значения настройки [date&#95;time&#95;input&#95;format](../../operations/settings/settings-formats.md#date_time_input_format).
 
 ## Примеры \{#examples\}
 

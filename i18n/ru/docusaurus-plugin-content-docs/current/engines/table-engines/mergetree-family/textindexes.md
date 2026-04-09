@@ -83,6 +83,7 @@ CREATE TABLE table
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
                                             | ngrams[(N)]
+                                            | asciiCJK
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -103,7 +104,7 @@ ORDER BY key
 * [String](/sql-reference/data-types/string.md) и [FixedString](/sql-reference/data-types/fixedstring.md),
 * [Array(String)](/sql-reference/data-types/array.md) и [Array(FixedString)](/sql-reference/data-types/array.md),
 * [Map](/sql-reference/data-types/map.md) (через функции работы с Map [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) и [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues)), и
-* [JSON](/sql-reference/data-types/newjson.md) (через функцию [JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths)).
+* [JSON](/sql-reference/data-types/newjson.md) (через функции [JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) и [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues)).
 
 Также поддерживаются столбцы типа [Nullable(T)](/sql-reference/data-types/nullable.md) и [LowCardinality()](/sql-reference/data-types/lowcardinality.md), включая `Array(Nullable(String or FixedString))`.
 
@@ -115,6 +116,7 @@ ALTER TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
+                                            | asciiCJK
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
@@ -149,6 +151,7 @@ ALTER TABLE table DROP INDEX text_idx;
   Разделители можно задать с помощью необязательного параметра, например, `tokenizer = splitByString([', ', '; ', '\n', '\\'])`.
   Обратите внимание, что каждая строка может состоять из нескольких символов (в примере — `', '`).
   Если список разделителей явно не указан (например, `tokenizer = splitByString`), по умолчанию используется один пробел `[' ']`.
+* `asciiCJK` разбивает строки на токены, используя правила границ слов Unicode (аналогично [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)). ASCII-буквенно-цифровые символы и символы подчёркивания образуют токены с соединителями (ASCII `:` для букв, `.` и `'` для символов одного типа). Символы Unicode вне ASCII, включая символы [CJK](https://en.wikipedia.org/wiki/CJK_characters), становятся односимвольными токенами.
 * `ngrams(N)` разбивает строки на одинаковые по размеру `N`-граммы (см. функцию [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)).
   Длину n-граммы можно указать необязательным целочисленным параметром от 1 до 8, например, `tokenizer = ngrams(3)`.
   Если размер n-граммы явно не указан (например, `tokenizer = ngrams`), по умолчанию используется значение 3.
@@ -158,7 +161,6 @@ ALTER TABLE table DROP INDEX text_idx;
   По сравнению с `ngrams(N)` токенизатор `sparseGrams` генерирует n-граммы переменной длины, обеспечивая более гибкое представление исходного текста.
   Например, `tokenizer = sparseGrams(3, 5, 4)` внутренне генерирует 3-, 4-, 5-граммы из входной строки, но возвращает только 4- и 5-граммы.
 * `array` не выполняет токенизацию, т.е. каждое значение строки является токеном (см. функцию [array](/sql-reference/functions/array-functions.md/#array)).
-* `asciiCJK` разбивает строки на токены, используя правила границ слов Unicode (аналогично [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)). ASCII-буквенно-цифровые символы и символы подчёркивания образуют токены с соединителями (ASCII `:` для букв, `.` и `'` для символов одного типа). Символы Unicode вне ASCII, включая символы [CJK](https://en.wikipedia.org/wiki/CJK_characters), становятся односимвольными токенами.
 
 Все доступные токенизаторы перечислены в [system.tokenizers](../../../operations/system-tables/tokenizers.md).
 
@@ -421,6 +423,10 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 Пробелы слева и справа от `support` гарантируют, что термин корректно распознаётся как отдельный токен.
 
+К счастью, есть особый случай, когда ClickHouse может использовать обратный индекс, чтобы значительно ускорить запросы LIKE.
+
+Подробности см. в [разделе о настройке производительности LIKE/ILIKE](#like-ilike-queries-perf).
+
 
 #### `startsWith` и `endsWith` \{#functions-example-startswith-endswith\}
 
@@ -648,16 +654,17 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
 
-#### Индексация JSON-столбцов \{#text-index-example-json\}
+### Индексация JSON-столбцов \{#text-index-example-json\}
 
-Индексы пропуска данных можно использовать со столбцами `JSON` двумя способами:
+Текстовые индексы можно использовать со столбцами `JSON` тремя способами:
 
-1. **Индексы для конкретных подстолбцов** — создайте стандартный индекс пропуска данных для известного пути JSON, как и для обычного столбца. При этом индексируются *значения* по этому пути.
+1. **Индексы для конкретных подстолбцов** — создайте текстовый индекс для известного пути JSON, как и для обычного столбца. При этом индексируются *значения* по этому пути.
 2. **Индексы на основе путей с `JSONAllPaths`** — индексируйте *набор путей*, присутствующих в каждой грануле, чтобы пропускать гранулы, которые заведомо не могут содержать запрашиваемый путь. Аналогично столбцам `Map`.
+3. **Индексы на основе значений с `JSONAllValues`** — индексируйте *все значения* по всем путям JSON, чтобы ускорить полнотекстовый поиск по любому подстолбцу JSON с помощью одного индекса.
 
-##### Индексы по определённым подстолбцам \{#json-indexes-on-subcolumns\}
+#### Индексы по определённым подстолбцам \{#json-indexes-on-subcolumns\}
 
-Вы можете создать skip-индекс для любого подстолбца JSON, используя тот же синтаксис, что и для обычных столбцов.
+Вы можете создать индекс пропуска данных для любого подстолбца JSON, используя тот же синтаксис, что и для обычных столбцов.
 
 Есть два способа обратиться к подстолбцу JSON в выражении индекса:
 
@@ -711,8 +718,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
         Granules: 1/8
 ```
 
-
-##### Индексы на основе путей с JSONAllPaths \{#json-indexes-jsonallpaths\}
+#### Индексы на основе путей с JSONAllPaths \{#json-indexes-jsonallpaths\}
 
 Как и для столбцов `Map`, для столбцов [JSON](/sql-reference/data-types/newjson.md) можно создавать текстовые индексы с помощью [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths).
 Индекс хранит набор JSON-путей, присутствующих в каждой грануле, и использует их, чтобы пропускать гранулы, в которых отсутствует запрашиваемый путь.
@@ -732,7 +738,7 @@ INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
 INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 ```
 
-Вы можете использовать `EXPLAIN indexes = 1`, чтобы убедиться, что skip-индекс используется. Когда путь существует только в одной части, индекс пропускает другую часть:
+Вы можете использовать `EXPLAIN indexes = 1`, чтобы убедиться, что индекс пропуска данных используется. Когда путь существует только в одной части, индекс пропускает другую часть:
 
 ```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
@@ -783,6 +789,70 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
         Granules: 1/2
 ```
 
+#### Индексы на основе значений с JSONAllValues \{#json-indexes-jsonallvalues\}
+
+текстовый индекс можно использовать для ускорения поиска по столбцам [JSON](/sql-reference/data-types/newjson.md) с помощью функции [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues).
+
+`JSONAllValues` возвращает все значения из столбца JSON в виде `Array(String)`, сериализуя их в текстовое представление.
+Когда текстовый индекс строится по `JSONAllValues(json_column)`, все значения из всех путей JSON токенизируются и индексируются вместе.
+Затем этот единый индекс может ускорять запросы с фильтрацией по отдельным подстолбцам JSON.
+
+##### Создание индекса \{#json-all-values-creating-the-index\}
+
+```sql
+CREATE TABLE events
+(
+    id UInt64,
+    data JSON,
+    INDEX json_idx JSONAllValues(data) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+
+##### Поддерживаемые шаблоны запросов \{#json-all-values-supported-query-patterns\}
+
+После создания индекс может ускорять выполнение запросов к подстолбцам JSON с использованием тех же функций, что и для столбцов `String`, а также функции `equals` для всех столбцов.
+
+Доступ к подстолбцам:
+
+```sql
+SELECT * FROM events WHERE data.user_name = 'alice';
+SELECT * FROM events WHERE data.message LIKE '% error %';
+SELECT * FROM events WHERE startsWith(data.status, 'fail');
+SELECT * FROM events WHERE hasToken(data.title, 'clickhouse');
+```
+
+Доступ к подстолбцу с явным `CAST`:
+
+```sql
+SELECT * FROM events WHERE hasAllTokens(data.message::String, 'connection timeout');
+SELECT * FROM events WHERE data.status_code::UInt64 = 404;
+SELECT * FROM events WHERE has(data.tags::Array(String), 'bug')
+```
+
+Оператор `IN`:
+
+```sql
+SELECT * FROM events WHERE data.level IN ('error', 'critical');
+```
+
+
+##### Как это работает \{#json-all-values-how-it-works\}
+
+`JSONAllValues` сериализует каждое значение в текстовое представление, поэтому значения всех типов (строки, целые числа, массивы и т. д.) индексируются как текстовые токены.
+
+Текстовый индекс для `JSONAllValues` индексирует эти текстовые представления по всем JSON-путям в каждой строке.
+Когда запрос фильтрует по конкретному подстолбцу (например, `data.user_name = 'alice'`), текстовый индекс может быстро отсеивать строки (и гранулы), которые не содержат искомых токенов ни в одном из своих JSON-значений.
+Поскольку индекс охватывает все пути, достаточно одного определения индекса, чтобы ускорить поиск по любому JSON-подстолбцу.
+
+:::note
+Индекс может давать ложноположительные срабатывания, если одинаковые токены встречаются в разных JSON-путях.
+Например, если строка 1 содержит `{"a": "hello", "b": "world"}`, а запрос ищет `data.a = 'world'`, текстовый индекс не может определить, что `world` относится к пути `b`, а не `a`.
+В таких случаях индекс не отсеет строку, а окончательную проверку выполнит фильтр по фактическим данным столбца.
+Это такое же поведение, как и в других сценариях использования текстового индекса, где индекс выступает быстрым предварительным фильтром.
+:::
 
 ## Настройка производительности \{#performance-tuning\}
 
@@ -920,6 +990,23 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 Для этого запроса порядок применения такой: сначала `__text_index_...`, затем `greaterOrEquals(...)` и, наконец, `like(...)`.
 Такой порядок позволяет пропускать ещё больше гранул данных по сравнению с теми, которые уже пропускаются текстовым индексом и исходным фильтром, ещё до чтения «тяжёлых» столбцов, используемых в запросе после предложения `WHERE`, что дополнительно уменьшает объём данных для чтения.
 
+
+### Запросы LIKE/ILIKE \{#like-ilike-queries-perf\}
+
+Когда шаблон запроса LIKE/ILIKE имеет вид `%<alpha-numeric-characters-without-spaces>%`, а токенизатор текстового индекса — `splitByNonAlpha`, ClickHouse использует инвертированный индекс, чтобы существенно ускорить запросы LIKE/ILIKE. Для этого ClickHouse сканирует словарь инвертированного индекса вместо полного сканирования таблицы в поисках совпадающего шаблона.
+
+Когда эта оптимизация включена, запросы LIKE/ILIKE должны выполняться значительно быстрее, чем при полном сканировании таблицы. Однако если шаблон совпадает с большинством токенов в словаре, производительность может оказаться ниже, чем при полном сканировании таблицы. К счастью, чтобы этого избежать, предусмотрен механизм возврата к полному сканированию.
+
+Эта оптимизация управляется настройкой:
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+Механизм возврата к полному сканированию управляется двумя настройками:
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+Эта оптимизация поддерживает только функции `like` и `ilike`.
 
 ### Кэширование \{#caching\}
 

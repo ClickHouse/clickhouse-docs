@@ -125,6 +125,46 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+## JSONAllValues \{#JSONAllValues\}
+
+導入バージョン: v26.4.0
+
+JSONカラムの各行に含まれるすべての値を、文字列の配列として返します。
+値はテキスト表現にシリアライズされ、パス名順に並べられます。
+
+**構文**
+
+```sql
+JSONAllValues(json)
+```
+
+**引数**
+
+* `json` — JSON カラム。[`JSON`](/sql-reference/data-types/newjson)
+
+**戻り値**
+
+JSON カラム内のすべての値を文字列として格納した配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
+INSERT INTO test FORMAT JSONEachRow {"json": {"a": 42}}, {"json": {"b": "Hello"}}, {"json": {"a": [1, 2, 3], "c": "2020-01-01"}}
+SELECT json, JSONAllValues(json) FROM test;
+```
+
+```response title=Response
+┌─json─────────────────────────────────┬─JSONAllValues(json)──────┐
+│ {"a":42}                             │ ['42']                   │
+│ {"b":"Hello"}                        │ ['Hello']                │
+│ {"a":[1,2,3],"c":"2020-01-01"}       │ ['[1,2,3]','2020-01-01'] │
+└──────────────────────────────────────┴──────────────────────────┘
+```
+
+
 ## JSONArrayLength \{#JSONArrayLength\}
 
 導入バージョン: v23.2.0

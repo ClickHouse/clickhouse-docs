@@ -125,6 +125,46 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+## JSONAllValues \{#JSONAllValues\}
+
+도입 버전: v26.4.0
+
+JSON 컬럼의 각 행에 있는 모든 값을 문자열 배열로 반환합니다.
+값은 텍스트 표현으로 직렬화되며 경로 이름순으로 정렬됩니다.
+
+**구문**
+
+```sql
+JSONAllValues(json)
+```
+
+**인수**
+
+* `json` — JSON 컬럼입니다. [`JSON`](/sql-reference/data-types/newjson)
+
+**반환값**
+
+JSON 컬럼의 모든 값을 문자열 배열로 반환합니다. [`Array(String)`](/sql-reference/data-types/array)
+
+**예시**
+
+**사용 예시**
+
+```sql title=Query
+CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
+INSERT INTO test FORMAT JSONEachRow {"json": {"a": 42}}, {"json": {"b": "Hello"}}, {"json": {"a": [1, 2, 3], "c": "2020-01-01"}}
+SELECT json, JSONAllValues(json) FROM test;
+```
+
+```response title=Response
+┌─json─────────────────────────────────┬─JSONAllValues(json)──────┐
+│ {"a":42}                             │ ['42']                   │
+│ {"b":"Hello"}                        │ ['Hello']                │
+│ {"a":[1,2,3],"c":"2020-01-01"}       │ ['[1,2,3]','2020-01-01'] │
+└──────────────────────────────────────┴──────────────────────────┘
+```
+
+
 ## JSONArrayLength \{#JSONArrayLength\}
 
 도입 버전: v23.2.0

@@ -30,10 +30,10 @@ import Link from '@docusaurus/Link'
 ```sql
 <column_name> JSON
 (
-    max_dynamic_paths=N, 
-    max_dynamic_types=M, 
-    some.path TypeName, 
-    SKIP path.to.skip, 
+    max_dynamic_paths=N,
+    max_dynamic_types=M,
+    some.path TypeName,
+    SKIP path.to.skip,
     SKIP REGEXP 'paths_regexp'
 )
 ```
@@ -240,7 +240,7 @@ SELECT toTypeName(json.a.b), toTypeName(json.a.g), toTypeName(json.c), toTypeNam
 Как мы видим, для `a.b` тип — `UInt32`, как и было задано в объявлении типа JSON,
 а для всех остальных подстолбцов тип — `Dynamic`.
 
-Также можно читать подстолбцы столбца типа `Dynamic`, используя специальный синтаксис `json.some.path.:TypeName`:
+Также можно читать подстолбцы типа `Dynamic`, используя специальный синтаксис `json.some.path.:TypeName`:
 
 ```sql title="Query"
 SELECT
@@ -262,7 +262,7 @@ FROM test
 Подстолбцы типа `Dynamic` можно привести к любому типу данных. При этом будет выброшено исключение, если внутренний тип в `Dynamic` нельзя привести к запрошенному типу:
 
 ```sql title="Query"
-SELECT json.a.g::UInt64 AS uint 
+SELECT json.a.g::UInt64 AS uint
 FROM test;
 ```
 
@@ -275,16 +275,16 @@ FROM test;
 ```
 
 ```sql title="Query"
-SELECT json.a.g::UUID AS float 
+SELECT json.a.g::UUID AS float
 FROM test;
 ```
 
 ```text title="Response"
 Received exception from server:
-Code: 48. DB::Exception: Received from localhost:9000. DB::Exception: 
-Conversion between numeric types and UUID is not supported. 
-Probably the passed UUID is unquoted: 
-while executing 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'. 
+Code: 48. DB::Exception: Received from localhost:9000. DB::Exception:
+Conversion between numeric types and UUID is not supported.
+Probably the passed UUID is unquoted:
+while executing 'FUNCTION CAST(__table1.json.a.g :: 2, 'UUID'_String :: 1) -> CAST(__table1.json.a.g, 'UUID'_String) UUID : 0'.
 (NOT_IMPLEMENTED)
 ```
 
@@ -386,7 +386,7 @@ FROM test;
 ## Определение типов для путей \{#type-inference-for-paths\}
 
 Во время разбора `JSON` ClickHouse пытается определить наиболее подходящий тип данных для каждого пути в JSON.
-Это работает аналогично [автоматическому определению схемы по входным данным](/interfaces/schema-inference.md)
+Это работает аналогично [автоматическому определению схемы по входным данным](/interfaces/schema-inference.md),
 и управляется теми же настройками:
 
 * [input&#95;format&#95;try&#95;infer&#95;dates](/operations/settings/formats#input_format_try_infer_dates)
@@ -483,7 +483,7 @@ SELECT json.a.b, dynamicType(json.a.b) FROM test;
 Попробуем прочитать подстолбцы из вложенного столбца `JSON`:
 
 ```sql title="Query"
-SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JSON)`.d FROM test; 
+SELECT json.a.b.:`Array(JSON)`.c, json.a.b.:`Array(JSON)`.f, json.a.b.:`Array(JSON)`.d FROM test;
 ```
 
 
@@ -862,8 +862,8 @@ ORDER BY _part ASC
 и `advanced`.
 
 Версия сериализации управляется настройками MergeTree
-[object_shared_data_serialization_version](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version)
-и [object_shared_data_serialization_version_for_zero_level_parts](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version_for_zero_level_parts) 
+[object&#95;shared&#95;data&#95;serialization&#95;version](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version)
+и [object&#95;shared&#95;data&#95;serialization&#95;version&#95;for&#95;zero&#95;level&#95;parts](../../operations/settings/merge-tree-settings.md#object_shared_data_serialization_version_for_zero_level_parts)
 (часть нулевого уровня — это часть, создаваемая при вставке данных в таблицу; во время слияний части получают более высокий уровень).
 
 Примечание: изменение формата сериализации общей структуры данных поддерживается только
@@ -879,14 +879,14 @@ ORDER BY _part ASC
 
 #### Map with buckets \{#shared-data-map-with-buckets\}
 
-В версии сериализации `map_with_buckets` общие данные сериализуются как `N` столбцов («бакеты») с типом `Map(String, String)`.
-Каждый такой бакет содержит только подмножество путей. Чтобы прочитать подстолбец пути из такого типа сериализации, ClickHouse
-читает целиком столбец `Map` из одного бакета и извлекает требуемый путь в памяти.
+В версии сериализации `map_with_buckets` общие данные сериализуются как `N` столбцов («бакетов») типа `Map(String, String)`.
+Каждый такой бакет содержит только подмножество путей. Чтобы прочитать подстолбец пути из этого типа сериализации, ClickHouse
+целиком считывает столбец `Map` из одного бакета и извлекает требуемый путь в памяти.
 
 Эта сериализация менее эффективна для записи данных и чтения всего столбца `JSON`, но более эффективна для чтения подстолбцов путей,
-поскольку считываются данные только из нужных бакетов.
+поскольку данные считываются только из нужных бакетов.
 
-Количество бакетов `N` управляется настройками MergeTree [object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (по умолчанию 8)
+Количество бакетов `N` задаётся настройками MergeTree [object&#95;shared&#95;data&#95;buckets&#95;for&#95;compact&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_compact_part) (по умолчанию 8)
 и [object&#95;shared&#95;data&#95;buckets&#95;for&#95;wide&#95;part](../../operations/settings/merge-tree-settings.md#object_shared_data_buckets_for_wide_part) (по умолчанию 32).
 Максимально допустимое значение для обеих настроек — 256.
 
@@ -921,6 +921,7 @@ ORDER BY _part ASC
 
 * [`JSONAllPaths`](../functions/json-functions.md#JSONAllPaths)
 * [`JSONAllPathsWithTypes`](../functions/json-functions.md#JSONAllPathsWithTypes)
+* [`JSONAllValues`](../functions/json-functions.md#JSONAllValues)
 * [`JSONDynamicPaths`](../functions/json-functions.md#JSONDynamicPaths)
 * [`JSONDynamicPathsWithTypes`](../functions/json-functions.md#JSONDynamicPathsWithTypes)
 * [`JSONSharedDataPaths`](../functions/json-functions.md#JSONSharedDataPaths)
@@ -934,7 +935,7 @@ ORDER BY _part ASC
 
 ```sql title="Query"
 SELECT arrayJoin(distinctJSONPaths(json))
-FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz', JSONAsObject) 
+FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz', JSONAsObject)
 ```
 
 ```text title="Response"
@@ -1191,10 +1192,11 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 
 ## Индексы пропуска данных для JSON \{#data-skipping-indexes-for-json\}
 
-[Индексы пропуска данных](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes) можно использовать со столбцами `JSON` двумя способами:
+[Индексы пропуска данных](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-data_skipping-indexes) можно использовать со столбцами `JSON` тремя способами:
 
 1. **Индексы по конкретным подстолбцам** — создайте стандартный индекс пропуска данных для известного пути в JSON, как и для обычного столбца. В этом случае индексируются *значения* по этому пути.
 2. **Индексы на основе путей с `JSONAllPaths`** — индексируйте *набор путей*, присутствующих в каждой грануле, чтобы пропускать гранулы, которые заведомо не могут содержать запрашиваемый путь.
+3. **Индексы на основе значений с `JSONAllValues`** — индексируйте *все значения* по всем путям JSON с помощью [текстового индекса](/engines/table-engines/mergetree-family/textindexes.md), чтобы ускорить полнотекстовый поиск по любому подстолбцу JSON с помощью одного индекса.
 
 ### Индексы для конкретных подстолбцов \{#json-indexes-on-subcolumns\}
 
@@ -1347,13 +1349,21 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 * `NULL` для типа `Dynamic` (например, `json.path`) и подстолбцов типа `Nullable` (например, `json.path.:Int64`) — сравнения с `NULL` всегда возвращают false, поэтому пропуск безопасен.
 * Значение типа по умолчанию для выражений `CAST` без `Nullable` (например, `json.path::Int64` дает `0`, если путь отсутствует) — пропуск безопасен только тогда, когда сравниваемое значение отличается от значения по умолчанию. Индекс автоматически учитывает это различие.
 
+### Полнотекстовый поиск с JSONAllValues \{#json-indexes-jsonallvalues\}
+
+[Текстовые индексы](/engines/table-engines/mergetree-family/textindexes.md) можно использовать для ускорения полнотекстового поиска по JSON-столбцам с помощью функции [`JSONAllValues`](/sql-reference/functions/json-functions#JSONAllValues).
+`JSONAllValues` возвращает все значения из JSON-столбца в виде `Array(String)`, который можно индексировать текстовым индексом.
+Один индекс на `JSONAllValues(json_column)` охватывает все пути JSON, что позволяет выполнять полнотекстовый поиск по любому подстолбцу без создания отдельных индексов для каждого пути.
+
+Подробности и примеры см. в разделе [Индексы на основе значений с JSONAllValues](/engines/table-engines/mergetree-family/textindexes.md#json-indexes-jsonallvalues) в документации по текстовым индексам.
+
 ## Рекомендации по более эффективному использованию типа JSON \{#tips-for-better-usage-of-the-json-type\}
 
 Прежде чем создавать столбец `JSON` и загружать в него данные, учитывайте следующие рекомендации:
 
-- Проанализируйте свои данные и укажите как можно больше подсказок по путям с указанием типов. Это сделает хранение и чтение гораздо более эффективными.
-- Продумайте, какие пути вам понадобятся, а какие — никогда. Укажите пути, которые вам не нужны, в разделе `SKIP`, а при необходимости — в разделе `SKIP REGEXP`. Это улучшит эффективность хранения.
-- Не устанавливайте параметр `max_dynamic_paths` на слишком большие значения, так как это может сделать хранение и чтение менее эффективными. 
+* Проанализируйте свои данные и укажите как можно больше подсказок по путям с указанием типов. Это сделает хранение и чтение гораздо более эффективными.
+* Продумайте, какие пути вам понадобятся, а какие — никогда. Укажите пути, которые вам не нужны, в разделе `SKIP`, а при необходимости — в разделе `SKIP REGEXP`. Это улучшит эффективность хранения.
+* Не устанавливайте параметр `max_dynamic_paths` на слишком большие значения, так как это может сделать хранение и чтение менее эффективными.
   Хотя это сильно зависит от системных параметров, таких как память, CPU и т.д., в качестве общего ориентира не следует устанавливать `max_dynamic_paths` более 10 000 для хранилища на локальной файловой системе и 1024 для хранилища на удалённой файловой системе.
 
 ## Дополнительные материалы \{#further-reading\}

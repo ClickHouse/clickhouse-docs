@@ -629,7 +629,7 @@ ClickHouse перезагружает встроенные словари каж
 Значение по умолчанию:
 
 
-## interserver&#95;http&#95;credentials \{#interserver_http_credentials\}
+## interserver_http_credentials \{#interserver_http_credentials\}
 
 Имя пользователя и пароль, используемые для подключения к другим серверам во время [репликации](../../engines/table-engines/mergetree-family/replication.md). Кроме того, сервер аутентифицирует другие реплики, используя эти учетные данные.
 Поэтому `interserver_http_credentials` должны быть одинаковыми для всех реплик в кластере.
@@ -637,7 +637,7 @@ ClickHouse перезагружает встроенные словари каж
 :::note
 
 * По умолчанию, если секция `interserver_http_credentials` опущена, аутентификация при репликации не используется.
-* Настройки `interserver_http_credentials` не связаны с учетными данными клиента ClickHouse в [конфигурации](../../interfaces/cli.md#configuration_files).
+* Настройки `interserver_http_credentials` не связаны с учетными данными клиента ClickHouse в [конфигурации](../../interfaces/client.md#configuration_files).
 * Эти учетные данные являются общими для репликации через `HTTP` и `HTTPS`.
   :::
 

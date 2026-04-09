@@ -96,25 +96,25 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 
 1. Скопируйте пользовательский сертификат, пользовательский ключ и сертификат CA (центра сертификации) на удалённый узел.
 
-2. Настройте OpenSSL в [конфигурации клиента](/interfaces/cli.md#configuration_files) ClickHouse, указав сертификат и пути к файлам.
+2. Настройте OpenSSL в [конфигурации клиента](/interfaces/client#configuration_files) ClickHouse, указав сертификат и пути к файлам.
 
-    ```xml
-    <openSSL>
-        <client>
-            <certificateFile>my_cert_name.crt</certificateFile>
-            <privateKeyFile>my_cert_name.key</privateKeyFile>
-            <caConfig>my_ca_cert.crt</caConfig>
-        </client>
-    </openSSL>
-    ```
+   ```xml
+   <openSSL>
+       <client>
+           <certificateFile>my_cert_name.crt</certificateFile>
+           <privateKeyFile>my_cert_name.key</privateKeyFile>
+           <caConfig>my_ca_cert.crt</caConfig>
+       </client>
+   </openSSL>
+   ```
 
 3. Запустите `clickhouse-client`.
-    ```bash
-    clickhouse-client --user <my_user> --query 'SHOW TABLES'
-    ```
-    :::note
-    Обратите внимание, что пароль, переданный в clickhouse-client, игнорируется, если в конфигурации указан сертификат.
-    :::
+   ```bash
+   clickhouse-client --user <my_user> --query 'SHOW TABLES'
+   ```
+   :::note
+   Обратите внимание, что пароль, переданный в clickhouse-client, игнорируется, если в конфигурации указан сертификат.
+   :::
 
 ## 4. Тестирование HTTP \{#4-testing-http\}
 

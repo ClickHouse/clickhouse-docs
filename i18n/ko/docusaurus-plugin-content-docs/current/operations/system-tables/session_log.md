@@ -46,7 +46,7 @@ import SystemTableCloud from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   * `gRPC`
   * `MySQL`
   * `PostgreSQL`
-* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/cli.md) 또는 다른 TCP 클라이언트가 실행되는 클라이언트 머신의 호스트 이름입니다.
+* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — [clickhouse-client](../../interfaces/client.md) 또는 다른 TCP 클라이언트가 실행되는 클라이언트 머신의 호스트 이름입니다.
 * `client_name` ([String](../../sql-reference/data-types/string.md)) — `clickhouse-client` 또는 다른 TCP 클라이언트의 이름입니다.
 * `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` 또는 다른 TCP 클라이언트의 리비전입니다.
 * `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` 또는 다른 TCP 클라이언트의 메이저 버전입니다.

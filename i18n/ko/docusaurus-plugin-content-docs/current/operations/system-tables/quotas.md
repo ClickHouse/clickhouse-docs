@@ -19,7 +19,7 @@ Columns:
   * `[]` — 모든 사용자가 동일한 쿼터를 공유합니다.
   * `['user_name']` — 동일한 사용자 이름을 사용하는 연결이 동일한 쿼터를 공유합니다.
   * `['ip_address']` — 동일한 IP에서 오는 연결이 동일한 쿼터를 공유합니다.
-  * `['client_key']` — 동일한 키를 사용하는 연결이 동일한 쿼터를 공유합니다. 키는 클라이언트가 명시적으로 제공해야 합니다. [clickhouse-client](../../interfaces/cli.md)를 사용할 때는 `--quota_key` 파라미터로 키 값을 전달하거나, 클라이언트 설정 파일에서 `quota_key` 파라미터를 사용합니다. HTTP 인터페이스를 사용할 때는 `X-ClickHouse-Quota` 헤더를 사용합니다.
+  * `['client_key']` — 동일한 키를 사용하는 연결이 동일한 쿼터를 공유합니다. 키는 클라이언트가 명시적으로 제공해야 합니다. [clickhouse-client](../../interfaces/client.md)를 사용할 때는 `--quota_key` 파라미터로 키 값을 전달하거나, 클라이언트 설정 파일에서 `quota_key` 파라미터를 사용합니다. HTTP 인터페이스를 사용할 때는 `X-ClickHouse-Quota` 헤더를 사용합니다.
   * `['user_name', 'client_key']` — 동일한 `client_key`를 사용하는 연결이 동일한 쿼터를 공유합니다. 클라이언트가 키를 제공하지 않으면 쿼터는 `user_name` 기준으로 추적됩니다.
   * `['client_key', 'ip_address']` — 동일한 `client_key`를 사용하는 연결이 동일한 쿼터를 공유합니다. 클라이언트가 키를 제공하지 않으면 쿼터는 `ip_address` 기준으로 추적됩니다.
   * `['normalized_query_hash']` — 정규화된 각기 다른 쿼리마다 자체 쿼터 버킷이 할당됩니다. 리터럴 값만 다른 쿼리(예: `SELECT 1` 및 `SELECT 2`)는 동일한 버킷을 공유합니다.

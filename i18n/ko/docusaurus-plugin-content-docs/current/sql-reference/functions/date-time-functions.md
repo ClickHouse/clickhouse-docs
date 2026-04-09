@@ -3467,7 +3467,7 @@ SELECT toDayOfYear(toDateTime('2023-04-21 10:20:30'))
 
 ## toDaysInMonth \{#toDaysInMonth\}
 
-도입 버전: v25.5.0
+도입 버전: v26.3.0
 
 `Date` 또는 `DateTime`의 해당 월에 있는 일 수를 반환합니다.
 

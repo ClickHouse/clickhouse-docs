@@ -441,7 +441,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 在搜索之前,函数会对以下内容进行分词(tokenize):
 
-* the `input` argument (always), and
+* `input` 参数 (始终如此) ，以及
 * `needle` 参数 (如果以 [String](../../sql-reference/data-types/string.md) 形式给出) ，使用为该 text index 指定的 tokenizer。
   如果该列未定义 text index，则改用 `splitByNonAlpha` tokenizer。
   如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个标记——不会进行额外的分词。
@@ -461,11 +461,11 @@ hasAllTokens(input, needles)
 
 * `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 要搜索的标记。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 要使用的 tokenizer。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `asciiCJK`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的 tokenizer。有效参数包括 `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams` 和 `array`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
-如果所有词元都匹配则返回 1,否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+如果所有 needle 都匹配则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **示例**
 
@@ -515,7 +515,7 @@ SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString'
 └─────────┘
 ```
 
-**通过第 3 个参数使用自定义 tokenizer**
+**通过第 3 个参数使用自定义分词器**
 
 ```sql title=Query
 SELECT hasAllTokens('abcdef', 'abc', 'ngrams(3)');
@@ -619,7 +619,7 @@ hasAnyTokens(input, needles)
 
 * `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Nullable(String)`](/sql-reference/data-types/nullable) 或 [`Nullable(FixedString)`](/sql-reference/data-types/nullable) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array) 或 [`Array(Nullable(String))`](/sql-reference/data-types/array) 或 [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — 要搜索的标记 (标记) 。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 要使用的分词器。有效参数包括 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `asciiCJK`。可选。如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的分词器。有效参数包括 `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams` 和 `array`。可选。如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -649,7 +649,7 @@ SELECT count() FROM table WHERE hasAnyTokens(msg, 'a\\d()');
 └─────────┘
 ```
 
-**指定在数组中按原样 (不进行分词) 进行匹配的搜索词**
+**在数组中指定按原样搜索的 needle (不进行分词)&#x20;**
 
 ```sql title=Query
 SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);

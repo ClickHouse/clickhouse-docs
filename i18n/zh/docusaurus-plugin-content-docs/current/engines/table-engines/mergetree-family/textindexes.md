@@ -83,6 +83,7 @@ CREATE TABLE table
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
                                             | ngrams[(N)]
+                                            | asciiCJK
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -103,7 +104,7 @@ ORDER BY key
 * [String](/sql-reference/data-types/string.md) 和 [FixedString](/sql-reference/data-types/fixedstring.md)，
 * [Array(String)](/sql-reference/data-types/array.md) 和 [Array(FixedString)](/sql-reference/data-types/array.md)，
 * [Map](/sql-reference/data-types/map.md) (通过 [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 和 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 函数) ，以及
-* [JSON](/sql-reference/data-types/newjson.md) (通过 [JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 函数) 。
+* [JSON](/sql-reference/data-types/newjson.md) (通过 [JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 和 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) 函数)。
 
 [Nullable(T)](/sql-reference/data-types/nullable.md) 和 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 类型的列也受支持，包括 `Array(Nullable(String or FixedString))`。
 
@@ -115,6 +116,7 @@ ALTER TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
+                                            | asciiCJK
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
@@ -141,7 +143,7 @@ ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
-**Tokenizer 参数 (必填)&#x20;**。`tokenizer` 参数指定要使用的分词器：
+**分词器 参数 (必填)&#x20;**。`tokenizer` 参数指定要使用的分词器：
 
 
 * `splitByNonAlpha` 会根据非字母数字的 ASCII 字符拆分字符串 (参见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)) 。
@@ -149,6 +151,7 @@ ALTER TABLE table DROP INDEX text_idx;
   可以通过可选参数指定分隔符，例如：`tokenizer = splitByString([', ', '; ', '\n', '\\'])`。
   请注意，每个分隔字符串可以由多个字符组成 (示例中的 `', '`) 。
   如果未显式指定 (例如 `tokenizer = splitByString`) ，则默认的分隔符列表为单个空格 `[' ']`。
+* `asciiCJK` 使用 Unicode 单词边界规则 (类似于 [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)) 将字符串拆分为 标记。ASCII 字母数字字符和下划线会与连接符一起构成 标记 (ASCII `:` 用于字母，`.` 和 `'` 用于相同类型的字符)。非 ASCII Unicode 字符 (包括 [CJK](https://en.wikipedia.org/wiki/CJK_characters) 字符) 会成为单字符 标记。
 * `ngrams(N)` 将字符串拆分为长度相同的 `N`-gram (参见函数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)) 。
   ngram 的长度可以通过 1 到 8 之间的可选整数参数指定，例如：`tokenizer = ngrams(3)`。
   如果未显式指定 (例如 `tokenizer = ngrams`) ，则默认的 ngram 大小为 3。
@@ -158,7 +161,6 @@ ALTER TABLE table DROP INDEX text_idx;
   与 `ngrams(N)` 相比，`sparseGrams` 分词器会生成可变长度的 N-gram，从而可以更灵活地表示原始文本。
   例如，`tokenizer = sparseGrams(3, 5, 4)` 在内部会从输入字符串生成长度为 3、4、5 的 n-gram，但只返回长度为 4 和 5 的 n-gram。
 * `array` 不执行任何分词操作，即每一行的值都是一个 标记 (参见函数 [array](/sql-reference/functions/array-functions.md/#array)) 。
-* `asciiCJK` 使用 Unicode 单词边界规则 (类似于 [Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)) 将字符串拆分为 标记。ASCII 字母数字字符和下划线会与连接符一起构成 标记 (ASCII `:` 用于字母，`.` 和 `'` 用于相同类型的字符)。非 ASCII Unicode 字符 (包括 [CJK](https://en.wikipedia.org/wiki/CJK_characters) 字符) 会成为单字符 标记。
 
 所有可用的 分词器 都列在 [system.tokenizers](../../../operations/system-tables/tokenizers.md) 中。
 
@@ -190,9 +192,9 @@ SELECT tokens('abc def', 'ngrams', 3);
 对于非 ASCII 文本，建议使用 `asciiCJK` 分词器，因为它能够正确处理 Unicode 单词边界，包括中日韩字符。
 :::
 
-**Preprocessor 参数 (可选)&#x20;**。Preprocessor 指的是在分词之前应用于输入字符串的一个表达式。
+**预处理器 参数 (可选)&#x20;**。预处理器 指的是在分词之前应用于输入字符串的一个表达式。
 
-Preprocessor 参数的典型用例包括
+预处理器 参数的典型用例包括
 
 
 1. 转换为小写/大写，或进行大小写折叠以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)、[caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)。
@@ -393,17 +395,17 @@ SELECT * from table WHERE str IN ('Hello', 'World');
 #### `LIKE` 和 `match` \{#functions-example-like-match\}
 
 :::note
-目前只有当索引的 tokenizer 为 `splitByNonAlpha`、`ngrams` 或 `sparseGrams` 时，这些函数才会使用文本索引进行过滤。
+目前只有当索引的 分词器 为 `splitByNonAlpha`、`ngrams` 或 `sparseGrams` 时，这些函数才会使用文本索引进行过滤。
 :::
 
 :::note
 文本索引不支持 `NOT LIKE` (`notLike`) 。
 :::
 
-要在文本索引中使用 `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) 以及 [match](/sql-reference/functions/string-search-functions.md/#match) 函数，ClickHouse 必须能够从搜索词中提取完整的 token。
-对于使用 `ngrams` tokenizer 的索引，如果通配符之间所搜索字符串的长度大于或等于 ngram 的长度，则满足该条件。
+要在文本索引中使用 `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) 以及 [match](/sql-reference/functions/string-search-functions.md/#match) 函数，ClickHouse 必须能够从搜索词中提取完整的 标记。
+对于使用 `ngrams` 分词器 的索引，如果通配符之间所搜索字符串的长度大于或等于 ngram 的长度，则满足该条件。
 
-使用 `splitByNonAlpha` tokenizer 的文本索引示例：
+使用 `splitByNonAlpha` 分词器 的文本索引示例：
 
 ```sql
 SELECT count() FROM table WHERE comment LIKE 'support%';
@@ -418,8 +420,11 @@ SELECT count() FROM table WHERE comment LIKE 'support%';
 SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 ```
 
-`support` 左右的空格能够确保该词被提取为一个单独的 token。
+`support` 左右的空格能够确保该词被提取为一个单独的 标记。
 
+幸运的是，有一种特殊情况，ClickHouse 可以利用倒排索引显著加速 LIKE 查询。
+
+详见 [LIKE/ILIKE 性能调优部分](#like-ilike-queries-perf)。
 
 #### `startsWith` 和 `endsWith` \{#functions-example-startswith-endswith\}
 
@@ -647,14 +652,15 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
 
-#### 为 JSON 列建立索引 \{#text-index-example-json\}
+### 为 JSON 列建立索引 \{#text-index-example-json\}
 
-数据跳过索引可通过以下两种方式用于 `JSON` 列：
+文本索引可通过以下三种方式用于 `JSON` 列：
 
-1. **针对特定子列的索引** —— 在已知的 JSON 路径上创建标准跳过索引，就像对普通列所做的那样。这会为该路径上的*值*建立索引。
+1. **针对特定子列的索引** —— 在已知的 JSON 路径上创建文本索引，就像对普通列所做的那样。这会为该路径上的*值*建立索引。
 2. **使用 `JSONAllPaths` 的基于路径的索引** —— 对每个粒度中存在的*路径集合*建立索引，以跳过不可能包含所查询路径的粒度。与 `Map` 列类似。
+3. **使用 `JSONAllValues` 的基于值的索引** —— 对所有 JSON 路径中的*所有值*建立索引，从而只需一个索引即可加速对任意 JSON 子列的全文搜索。
 
-##### 特定子列上的索引 \{#json-indexes-on-subcolumns\}
+#### 特定子列上的索引 \{#json-indexes-on-subcolumns\}
 
 您可以对任意 JSON 子列创建跳过索引，其语法与普通列相同。
 
@@ -711,7 +717,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 ```
 
 
-##### 使用 JSONAllPaths 的基于路径的索引 \{#json-indexes-jsonallpaths\}
+#### 使用 JSONAllPaths 的基于路径的索引 \{#json-indexes-jsonallpaths\}
 
 与 `Map` 列类似，也可以使用 [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths) 在 [JSON](/sql-reference/data-types/newjson.md) 列上创建文本索引。
 该索引会存储每个粒度中存在的 JSON 路径集合，并利用这些路径跳过不包含查询路径的粒度。
@@ -782,6 +788,71 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
         Granules: 1/2
 ```
 
+
+#### 基于值的索引与 JSONAllValues \{#json-indexes-jsonallvalues\}
+
+可通过函数 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) 在 [JSON](/sql-reference/data-types/newjson.md) 列上使用文本索引来加速搜索。
+
+`JSONAllValues` 将 JSON 列中的所有值以 `Array(String)` 形式返回，并将这些值序列化为其文本表示。
+当在 `JSONAllValues(json_column)` 上构建文本索引时，所有 JSON 路径中的值都会统一分词并编入索引。
+随后，这一个索引即可加速按各个 JSON 子列过滤的查询。
+
+##### 创建索引 \{#json-all-values-creating-the-index\}
+
+```sql
+CREATE TABLE events
+(
+    id UInt64,
+    data JSON,
+    INDEX json_idx JSONAllValues(data) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+
+##### 支持的查询模式 \{#json-all-values-supported-query-patterns\}
+
+索引创建后，可使用与 `String` 列相同的函数来加速对 JSON 子列的查询；对于所有列，则可使用 `equals` 函数。
+
+子列访问：
+
+```sql
+SELECT * FROM events WHERE data.user_name = 'alice';
+SELECT * FROM events WHERE data.message LIKE '% error %';
+SELECT * FROM events WHERE startsWith(data.status, 'fail');
+SELECT * FROM events WHERE hasToken(data.title, 'clickhouse');
+```
+
+通过显式 `CAST` 访问子列：
+
+```sql
+SELECT * FROM events WHERE hasAllTokens(data.message::String, 'connection timeout');
+SELECT * FROM events WHERE data.status_code::UInt64 = 404;
+SELECT * FROM events WHERE has(data.tags::Array(String), 'bug')
+```
+
+`IN` 运算符：
+
+```sql
+SELECT * FROM events WHERE data.level IN ('error', 'critical');
+```
+
+
+##### 工作原理 \{#json-all-values-how-it-works\}
+
+`JSONAllValues` 会将每个值序列化为其文本表示形式，因此所有类型的值 (字符串、整数、数组等) 都会作为文本标记建立索引。
+
+`JSONAllValues` 上的文本索引会对每一行中所有 JSON 路径上的这些文本表示建立索引。
+当查询按特定子列进行筛选时 (例如 `data.user_name = 'alice'`) ，文本索引可以快速跳过那些在任意 JSON 值中都不包含搜索标记的行 (以及 granules) 。
+由于该索引覆盖了所有路径，因此只需定义一个索引，就足以加速对任意 JSON 子列的搜索。
+
+:::note
+当不同的 JSON 路径包含相同的标记时，该索引可能会产生误报。
+例如，如果第 1 行为 `{"a": "hello", "b": "world"}`，而查询搜索 `data.a = 'world'`，文本索引无法区分 `world` 属于路径 `b` 而不是 `a`。
+在这种情况下，索引不会跳过该行，最终会由实际列数据上的筛选条件完成判断。
+这种行为与文本索引的其他使用场景相同，即索引充当快速预筛选器。
+:::
 
 ## 性能调优 \{#performance-tuning\}
 
@@ -919,6 +990,23 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 对于这个查询，应用顺序是先 `__text_index_...`，然后是 `greaterOrEquals(...)`，最后是 `like(...)`。
 这种顺序使得在读取 `WHERE` 子句中使用的开销较大的列之前，就能在文本索引和原始过滤条件已经跳过的数据粒度基础上，进一步跳过更多数据粒度，从而减少需要读取的数据量。
 
+
+### LIKE/ILIKE 查询 \{#like-ilike-queries-perf\}
+
+当 LIKE/ILIKE 查询模式为 `%<alpha-numeric-characters-without-spaces>%`，且 文本索引 的分词器为 `splitByNonAlpha` 时，ClickHouse 会利用转置索引显著加速 LIKE/ILIKE 查询。为实现这一点，ClickHouse 会扫描转置索引字典来查找匹配模式，而不是执行全表扫描。
+
+启用该优化后，LIKE/ILIKE 查询通常会比全表扫描快得多。不过，当该模式匹配字典中的大多数标记时，其性能反而可能不如全表扫描。幸运的是，系统提供了回退机制来避免这种情况。
+
+该优化由以下设置控制：
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+回退机制由以下两个设置控制：
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+此优化仅支持函数 `like` 和 `ilike`。
 
 ### 缓存 \{#caching\}
 

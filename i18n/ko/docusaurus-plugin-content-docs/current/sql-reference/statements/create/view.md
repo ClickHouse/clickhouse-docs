@@ -174,7 +174,7 @@ AS SELECT ...
 
 편의를 위해 이전 문서는 [여기](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)에서 확인할 수 있습니다.
 
-## 갱신 가능 구체화 뷰 \{#refreshable-materialized-view\}
+## 갱신 가능 materialized view \{#refreshable-materialized-view\}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
@@ -198,16 +198,17 @@ number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 
 해당 쿼리를 주기적으로 실행하여 결과를 테이블에 저장합니다.
 
-* 쿼리에 `APPEND`가 지정되어 있으면, 각 갱신 시 기존 행을 삭제하지 않고 테이블에 행을 삽입합니다. 이 삽입은 일반적인 INSERT SELECT와 마찬가지로 원자적이지 않습니다.
+* `APPEND`가 지정되어 있으면, 각 갱신 시 기존 행을 삭제하지 않고 테이블에 행을 삽입합니다. 이 삽입은 일반적인 `INSERT INTO ... SELECT` 쿼리와 마찬가지로 원자적이지 않습니다.
 * 그렇지 않으면 각 갱신 시 이전 테이블 내용을 원자적으로 교체합니다.
-  일반적인 갱신 불가능 materialized view와의 차이점:
-* 삽입 트리거가 없습니다. 즉, SELECT에 지정된 테이블에 새 데이터가 삽입되어도 갱신 가능 구체화 뷰로 자동으로 전달되지 *않습니다*. 주기적 갱신은 전체 쿼리를 실행합니다.
-* SELECT 쿼리에 제한이 없습니다. 테이블 함수(예: `url()`), VIEW, UNION, JOIN이 모두 허용됩니다.
+
+일반적인 갱신 불가능 materialized view와의 차이점:
+
+* 삽입 트리거가 없습니다. `SELECT`에 지정된 테이블에 새 데이터가 삽입되어도 갱신 가능 materialized view로 자동으로 전달되지 *않습니다*. 대신 데이터 삽입은 주기적 또는 수동 갱신 실행 중에만 발생합니다.
+* `SELECT` 쿼리에 제한이 없습니다. 테이블 함수(예: `url()`), 뷰, UNION, JOIN이 모두 허용됩니다.
 
 :::note
 쿼리의 `REFRESH ... SETTINGS` 부분에 있는 설정(예: `refresh_retries`)은 갱신 설정이며, 일반 설정(예: `max_threads`)과는 다릅니다. 일반 설정은 쿼리 끝에 `SETTINGS`를 사용하여 지정할 수 있습니다.
 :::
-
 
 ### 새로 고침 일정 \{#refresh-schedule\}
 
@@ -248,16 +249,16 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 조율은 Keeper를 통해 이루어집니다. znode 경로는 [default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) 서버 설정으로 결정됩니다.
 
-### 의존성 \{#refresh-dependencies\}
+### 갱신 의존성 \{#refresh-dependencies\}
 
-`DEPENDS ON`은 서로 다른 테이블의 갱신을 동기화합니다. 예를 들어, 두 개의 갱신 가능 구체화 뷰가 연쇄를 이루고 있다고 가정해 보겠습니다.
+`DEPENDS ON`은 서로 다른 테이블의 갱신을 동기화합니다. 예를 들어, 두 개의 갱신 가능 materialized view가 연쇄를 이루고 있다고 가정해 보겠습니다.
 
 ```sql
 CREATE MATERIALIZED VIEW source REFRESH EVERY 1 DAY AS SELECT * FROM url(...)
 CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY AS SELECT ... FROM source
 ```
 
-`DEPENDS ON`이 없으면 두 VIEW 모두 자정에 새로 고침을 시작하며, 일반적으로 `destination`에서는 `source`에 있는 어제의 데이터를 보게 됩니다. 의존성을 추가해 보면 다음과 같습니다.
+`DEPENDS ON`이 없으면 두 VIEW 모두 자정에 새로 고침을 시작하며, 일반적으로 `destination`에서는 `source`에 있는 어제의 데이터를 보게 됩니다. 의존성을 추가해 보면 다음과 같습니다:
 
 ```sql
 CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY DEPENDS ON source AS SELECT ... FROM source
@@ -283,18 +284,15 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 * `REFRESH EVERY 2 HOUR`는 `REFRESH EVERY 1 HOUR`에 의존합니다.<br />
   2 HOUR 갱신은 매 두 시간마다 1 HOUR 갱신 이후에 발생합니다. 예를 들어 자정 갱신 이후, 그 다음에는 오전 2시 갱신 이후 등으로 진행됩니다.
 * `REFRESH EVERY 1 MINUTE`는 `REFRESH EVERY 2 HOUR`에 의존합니다.<br />
-  `REFRESH AFTER 1 MINUTE`는 `REFRESH EVERY 2 HOUR`에 의존합니다.<br />
-  `REFRESH AFTER 1 MINUTE`는 `REFRESH AFTER 2 HOUR`에 의존합니다.<br />
   `destination`은 `source`의 각 갱신마다 한 번씩, 즉 2시간마다 한 번 갱신됩니다. 이때 `1 MINUTE`는 사실상 무시됩니다.
 * `REFRESH AFTER 1 HOUR`는 `REFRESH AFTER 1 HOUR`에 의존합니다.<br />
   현재로서는 권장되지 않습니다.
 
 :::note
-`DEPENDS ON`은 갱신 가능 구체화 뷰(refreshable materialized view) 사이에서만 동작합니다. `DEPENDS ON` 목록에 일반 테이블을 명시하면, 해당 뷰는 절대 갱신되지 않습니다(종속성은 `ALTER`로 제거할 수 있으며, 아래 내용을 참고하십시오).
+`DEPENDS ON`은 갱신 가능 materialized view(refreshable materialized view) 사이에서만 동작합니다. `DEPENDS ON` 목록에 일반 테이블을 명시하면, 해당 뷰는 절대 갱신되지 않습니다(종속성은 `ALTER`로 제거할 수 있으며, [갱신 매개변수 변경](#changing-refresh-parameters) 내용을 참고하십시오).
 :::
 
-
-### Settings \{#settings\}
+### 새로고침 설정 \{#refresh-settings\}
 
 사용 가능한 새로고침 설정은 다음과 같습니다.
 
@@ -317,14 +315,14 @@ ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPEND
 
 ### 기타 작업 \{#other-operations\}
 
-모든 갱신 가능 구체화 뷰의 상태는 [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) 테이블에서 확인할 수 있습니다. 여기에는 (실행 중인 경우) 갱신 진행 상황, 마지막 및 다음 갱신 시각, 갱신 실패 시 예외 메시지 등이 포함됩니다.
+모든 갱신 가능 materialized view의 상태는 [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) 테이블에서 확인할 수 있습니다. 여기에는 (실행 중인 경우) 갱신 진행 상황, 마지막 및 다음 갱신 시각, 갱신 실패 시 예외 메시지 등이 포함됩니다.
 
-갱신을 수동으로 중지, 시작, 트리거하거나 취소하려면 [`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#refreshable-materialized-views)를 사용하십시오.
+갱신을 수동으로 중지, 시작, 트리거하거나 취소하려면 [`SYSTEM STOP|START|REFRESH|WAIT|CANCEL VIEW`](../system.md#managing-refreshable-materialized-views)를 사용하십시오.
 
-갱신이 완료될 때까지 기다리려면 [`SYSTEM WAIT VIEW`](../system.md#refreshable-materialized-views)를 사용하십시오. 특히 뷰를 생성한 후 초기 갱신이 끝날 때까지 대기할 때 유용합니다.
+갱신이 완료될 때까지 기다리려면 [`SYSTEM WAIT VIEW`](../system.md#wait-view)를 사용하십시오. 특히 뷰를 생성한 후 초기 갱신이 끝날 때까지 대기할 때 유용합니다.
 
 :::note
-알면 재미있는 사실: 갱신 쿼리는 갱신 중인 뷰에서 데이터를 읽을 수 있으며, 갱신 전 버전의 데이터를 보게 됩니다. 이는 다음 링크와 같이 Conway's Game of Life를 구현할 수 있음을 의미합니다: https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
+알면 재미있는 사실: 갱신 쿼리는 갱신 중인 뷰에서 데이터를 읽을 수 있으며, 갱신 전 버전의 데이터를 보게 됩니다. 이는 다음 링크와 같이 Conway&#39;s Game of Life를 구현할 수 있음을 의미합니다: https://pastila.nl/?00021a4b/d6156ff819c83d490ad2dcec05676865#O0LGWTO7maUQIA4AcGUtlA==
 :::
 
 ## 윈도우 뷰(Window View) \{#window-view\}

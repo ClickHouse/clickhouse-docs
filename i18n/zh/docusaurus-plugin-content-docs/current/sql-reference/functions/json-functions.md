@@ -125,6 +125,46 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+## JSONAllValues \{#JSONAllValues\}
+
+引入版本：v26.4.0
+
+以字符串数组形式返回 JSON 列中每一行的所有值。
+这些值会按其文本表示进行序列化，并按路径名称排序。
+
+**语法**
+
+```sql
+JSONAllValues(json)
+```
+
+**参数**
+
+* `json` — JSON 列。[`JSON`](/sql-reference/data-types/newjson)
+
+**返回值**
+
+返回由 JSON 列中所有值组成的字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
+INSERT INTO test FORMAT JSONEachRow {"json": {"a": 42}}, {"json": {"b": "Hello"}}, {"json": {"a": [1, 2, 3], "c": "2020-01-01"}}
+SELECT json, JSONAllValues(json) FROM test;
+```
+
+```response title=Response
+┌─json─────────────────────────────────┬─JSONAllValues(json)──────┐
+│ {"a":42}                             │ ['42']                   │
+│ {"b":"Hello"}                        │ ['Hello']                │
+│ {"a":[1,2,3],"c":"2020-01-01"}       │ ['[1,2,3]','2020-01-01'] │
+└──────────────────────────────────────┴──────────────────────────┘
+```
+
+
 ## JSONArrayLength \{#JSONArrayLength\}
 
 引入版本：v23.2.0

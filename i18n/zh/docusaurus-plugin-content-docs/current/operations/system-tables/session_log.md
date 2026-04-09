@@ -46,7 +46,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
   * `gRPC`
   * `MySQL`
   * `PostgreSQL`
-* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — 运行 [clickhouse-client](../../interfaces/cli.md) 或其他 TCP 客户端的客户端机器主机名。
+* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — 运行 [clickhouse-client](../../interfaces/client.md) 或其他 TCP 客户端的客户端机器主机名。
 * `client_name` ([String](../../sql-reference/data-types/string.md)) — `clickhouse-client` 或其他 TCP 客户端名称。
 * `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` 或其他 TCP 客户端的修订版本号。
 * `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — `clickhouse-client` 或其他 TCP 客户端的主版本号。
