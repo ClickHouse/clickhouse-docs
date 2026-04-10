@@ -275,7 +275,7 @@ Maximum number of idle (unused but kept alive) connections in the pool.
 **When misconfigured:**
 - Too low: frequent connection creation/destruction, higher latency per query, TCP connection churn
 - Too high: wasted memory holding unused connections, server resources held unnecessarily
-- Must be <= `MaxOpenConns` (automatically capped if higher)
+- Must be ≤ `MaxOpenConns` (automatically capped if higher)
 
 ---
 
