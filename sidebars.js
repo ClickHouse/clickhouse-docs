@@ -565,6 +565,7 @@ const sidebars = {
           },
           items: [
             'integrations/language-clients/go/configuration',
+            'integrations/language-clients/go/config-reference',
             'integrations/language-clients/go/clickhouse-api',
             'integrations/language-clients/go/database-sql-api',
             'integrations/language-clients/go/data-types',
