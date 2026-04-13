@@ -116,8 +116,6 @@ SELECT * FROM a AS a1 JOIN a AS a2 ON a1.x <=> a2.x;
 Он работает как обычный оператор равенства (`=`), но рассматривает значения `NULL` как сравнимые между собой.
 Два значения `NULL` считаются равными, а сравнение `NULL` с любым ненулевым (non-`NULL`) значением возвращает 0 (ложь), а не `NULL`.
 
-:::
-
 ```sql
 SELECT
   'ClickHouse' <=> NULL,
@@ -152,7 +150,7 @@ SELECT
 
 ### функция in с подзапросом \{#in-subquery-function\}
 
-`a = ANY (subquery)` – Функция `in(a, subquery)`.  
+`a = ANY (subquery)` – Функция `in(a, subquery)`.
 
 ### функция notIn с подзапросом \{#notin-subquery-function\}
 
@@ -162,7 +160,7 @@ SELECT
 
 `a = ALL (subquery)` – Функция `a IN (SELECT singleValueOrNull(*) FROM subquery)`.
 
-### Функция подзапроса notIn \{#notin-subquery-function-1\}
+### функция notIn с подзапросом \{#notin-subquery-function-1\}
 
 `a != ALL (subquery)` – Функция `notIn(a, subquery)`.
 
@@ -358,6 +356,55 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) — тип данных
 * функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear)
 
+### Сложение даты и времени \{#date-time-addition\}
+
+К значению [Date](../../sql-reference/data-types/date.md) или [Date32](../../sql-reference/data-types/date32.md) можно прибавить значение [Time](../../sql-reference/data-types/time.md) или [Time64](../../sql-reference/data-types/time64.md) с помощью оператора `+`. В результате получается [DateTime](../../sql-reference/data-types/datetime.md) или [DateTime64](../../sql-reference/data-types/datetime64.md), представляющий дату с указанным временем суток. Операция коммутативна.
+
+Тип результата зависит от типов операндов:
+
+| Левый операнд | Правый операнд | Тип результата  |
+| ------------- | -------------- | --------------- |
+| `Date`        | `Time`         | `DateTime`      |
+| `Date`        | `Time64(s)`    | `DateTime64(s)` |
+| `Date32`      | `Time`         | `DateTime64(0)` |
+| `Date32`      | `Time64(s)`    | `DateTime64(s)` |
+
+:::note
+Для результата используется [часовой пояс сессии](../../operations/settings/settings.md#session_timezone) (или часовой пояс сервера по умолчанию, если часовой пояс сессии не задан). Настройка [`date_time_overflow_behavior`](../../operations/settings/settings-formats.md#date_time_overflow_behavior) определяет, что произойдет, если результат выходит за пределы представимого диапазона.
+:::
+
+Примеры:
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25 │ DateTime       │
+└─────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+┌─────────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+└────────────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toTime64('23:59:59.999', 3) + toDate32('2024-07-15') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 23:59:59.999 │ DateTime64(3)  │
+└─────────────────────────┴────────────────┘
+```
 
 ## Оператор логического AND \{#logical-and-operator\}
 

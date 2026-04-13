@@ -21,7 +21,7 @@ doc_type: '参考文档'
 
 引入于：v21.11.0
 
-计算 `L1` 空间中两点之间的距离 (向量的元素为坐标)  (1-范数，即 [taxicab geometry](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离) 。
+计算 `L1` 空间中两点之间的距离 (向量的元素为坐标)  (1-范数，即 [出租车几何](https://en.wikipedia.org/wiki/Taxicab_geometry) 距离) 。
 
 **语法**
 
@@ -38,7 +38,7 @@ L1Distance(vector1, vector2)
 
 **返回值**
 
-返回 1-范数距离值。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`Float64`](/sql-reference/data-types/float)
+返回 1-范数距离值。对于 `Array` 输入，如果元素类型的最小共同超类型为 `Float32` 或 `BFloat16`，则返回 `Float32`，否则返回 `Float64`。对于 `Tuple` 输入，返回类型遵循按元素运算的算术结果类型 (整数类型保持不变) 。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -130,7 +130,7 @@ SELECT L1Normalize((1, 2))
 
 引入版本：v21.11.0
 
-计算欧几里得空间中两个点之间的距离 (将向量的各元素视为坐标)  ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
+计算欧几里得空间中两个点之间的距离 (将向量的各元素视为坐标)  ([欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
 
 **语法**
 
@@ -147,7 +147,7 @@ L2Distance(vector1, vector2)
 
 **返回值**
 
-返回 2 范数距离。[`Float64`](/sql-reference/data-types/float)
+返回 2 范数距离。对于 `Array` 输入，如果元素类型的最小共同超类型为 `Float32` 或 `BFloat16`，则返回 `Float32`，否则返回 `Float64`。对于 `Tuple` 输入，始终返回 `Float64`。[`Float*`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -167,7 +167,7 @@ SELECT L2Distance((1, 2), (2, 3))
 
 自 v25.10.0 引入
 
-计算欧几里得空间中两个点之间的近似距离 (向量的各个分量作为坐标)  (参见 [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
+计算欧几里得空间中两个点之间的近似距离 (向量的各个分量作为坐标)  (参见 [欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
 
 **语法**
 
@@ -185,7 +185,7 @@ L2DistanceTransposed(vector1, vector2, p)
 
 **返回值**
 
-返回近似的 2-范数距离。[`Float64`](/sql-reference/data-types/float)
+返回近似的 2-范数距离。始终返回 `Float64`。[`Float64`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -296,7 +296,7 @@ L2SquaredDistance(vector1, vector2)
 
 **返回值**
 
-返回两个向量对应元素差值的平方和。[`Float64`](/sql-reference/data-types/float)
+返回两个向量对应元素差值的平方和。对于 `Array` 输入，如果元素类型的最小共同超类型为 `Float32` 或 `BFloat16`，则返回 `Float32`，否则返回 `Float64`。对于 `Tuple` 输入，返回类型遵循按元素运算的算术结果类型 (整数类型保持不变) 。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -369,7 +369,7 @@ LinfDistance(vector1, vector2)
 
 **返回值**
 
-返回无穷范数 (Infinity-norm) 距离。[`Float64`](/sql-reference/data-types/float)
+返回无穷范数 (Infinity-norm) 距离。对于 `Array` 输入，如果元素类型的最小共同超类型为 `Float32` 或 `BFloat16`，则返回 `Float32`，否则返回 `Float64`。对于 `Tuple` 输入，始终返回 `Float64`。[`Float*`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -479,7 +479,7 @@ LpDistance(vector1, vector2, p)
 
 **返回值**
 
-返回 p 范数距离。[`Float64`](/sql-reference/data-types/float)
+返回 p 范数距离。对于 `Array` 输入，如果元素类型的最小共同超类型为 `Float32` 或 `BFloat16`，则返回 `Float32`；否则返回 `Float64`。对于 `Tuple` 输入，始终返回 `Float64`。[`Float*`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -596,7 +596,7 @@ cosineDistance(vector1, vector2)
 
 **返回值**
 
-返回 1 减去两个向量夹角余弦的结果。[`Float64`](/sql-reference/data-types/float)
+返回余弦距离 (即 1 减去余弦相似度) 。对于 `Array` 输入，如果元素类型的最小共同超类型为 `Float32` 或 `BFloat16`，则返回 `Float32`，否则返回 `Float64`。对于 `Tuple` 输入，始终返回 `Float64`。[`Float*`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -634,7 +634,7 @@ cosineDistanceTransposed(vector1, vector2, p)
 
 **返回值**
 
-返回 1 减去两个向量夹角余弦值的近似结果。[`Float64`](/sql-reference/data-types/float)
+返回近似余弦距离 (1 减去余弦相似度) 。始终返回 Float64。[`Float64`](/sql-reference/data-types/float)
 
 **示例**
 

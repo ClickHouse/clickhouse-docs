@@ -1524,7 +1524,7 @@ SELECT arrayFold(
 
 도입 버전: v1.1.0
 
-여러 배열을 입력으로 받아 모든 원본 배열에 공통으로 존재하는 요소들로 이루어진 배열을 반환합니다. 결과에는 중복되지 않는 값만 포함됩니다.
+여러 배열을 입력으로 받아 모든 소스 배열에 공통으로 존재하는 요소들로 이루어진 배열을 반환합니다. 결과에는 중복되지 않는 값만 포함됩니다.
 
 **구문**
 
@@ -1551,11 +1551,10 @@ arrayIntersect([1, 2], [1, 3], [1, 4]) AS non_empty_intersection
 ```
 
 ```response title=Response
-┌─non_empty_intersection─┬─empty_intersection─┐
-│ []                     │ [1]                │
-└────────────────────────┴────────────────────┘
+┌─empty_intersection─┬─non_empty_intersection─┐
+│ []                 │ [1]                    │
+└────────────────────┴────────────────────────┘
 ```
-
 
 ## arrayJaccardIndex \{#arrayJaccardIndex\}
 
@@ -3642,6 +3641,60 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 └────────────────────────────┴────────────────────────────────┘
 ```
 
+
+## arrayTranspose \{#arrayTranspose\}
+
+도입 버전: v26.4.0
+
+2차원 배열을 전치합니다.
+
+모든 내부 배열의 길이는 동일해야 합니다.
+
+**구문**
+
+```sql
+arrayTranspose(arr)
+```
+
+**인수**
+
+* `arr` — 전치할 2차원 배열입니다. 모든 내부 배열은 길이가 같아야 합니다. [`Array(Array(T))`](/sql-reference/data-types/array)
+
+**반환 값**
+
+결과의 `[i][j]` 요소가 입력의 `[j][i]` 요소와 같은 전치된 2차원 배열을 반환합니다. [`Array(Array(T))`](/sql-reference/data-types/array)
+
+**예시**
+
+**정방 행렬**
+
+```sql title=Query
+SELECT arrayTranspose([[1, 2], [3, 4]])
+```
+
+```response title=Response
+[[1, 3], [2, 4]]
+```
+
+**직사각 행렬**
+
+```sql title=Query
+SELECT arrayTranspose([[1, 2, 3], [4, 5, 6]])
+```
+
+```response title=Response
+[[1, 4], [2, 5], [3, 6]]
+```
+
+**문자열 원소**
+
+```sql title=Query
+SELECT arrayTranspose([['a', 'b'], ['c', 'd']])
+```
+
+```response title=Response
+[['a', 'c'], ['b', 'd']]
+```
 
 ## arrayUnion \{#arrayUnion\}
 

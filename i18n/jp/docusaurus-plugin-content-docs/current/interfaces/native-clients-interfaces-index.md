@@ -12,8 +12,9 @@ ClickHouse には、接続のために利用できる複数のネイティブク
 
 詳細については、以下のページを参照してください。
 
-| セクション                                                   | 概要                                                                                 |
-|--------------------------------------------------------------|-------------------------------------------------------------------------------------|
-| [Command-Line Client](/interfaces/cli)               | コマンドラインオプションおよび設定ファイルをサポートするネイティブなコマンドラインクライアント。 |
-| [Drivers &amp; Interfaces](/interfaces/overview)         | 各種ネットワークインターフェース、ライブラリ、およびビジュアルインターフェース。            |
-| [SQL Console](/integrations/sql-clients/sql-console) | ClickHouse Cloud のデータを操作するための、高速かつ簡便な方法。                    |
+| セクション                                                | 概要                                               |
+| ---------------------------------------------------- | ------------------------------------------------ |
+| [clickhousectl](/interfaces/cli)                     | ClickHouse 用の CLI: ローカルおよび Cloud。                |
+| [ClickHouse Client](/interfaces/client)              | コマンドラインオプションおよび設定ファイルをサポートするネイティブなコマンドラインクライアント。 |
+| [Drivers &amp; Interfaces](/interfaces/overview)     | 各種ネットワークインターフェース、ライブラリ、およびビジュアルインターフェース。         |
+| [SQL Console](/integrations/sql-clients/sql-console) | ClickHouse Cloud のデータを操作するための、高速かつ簡便な方法。         |

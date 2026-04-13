@@ -21,20 +21,16 @@ import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committ
 
 ## 선행 조건 \{#prerequisites\}
 
-- 특정 계약 조건을 기반으로 한 ClickHouse Private Offer.
-- ClickHouse 조직을 약정 사용량(Committed Spend) 오퍼에 연결하려면 해당 조직의 관리자여야 합니다.
-
-:::note
-하나의 AWS 계정은 하나의 「ClickHouse Cloud - Committed Contract」 Private Offer만 구독할 수 있으며, 이 오퍼는 하나의 ClickHouse 조직에만 연결할 수 있습니다.
-:::
+* 특정 계약 조건을 기반으로 한 ClickHouse 비공개 오퍼.
+* ClickHouse 조직을 약정 사용량(Committed Spend) 오퍼에 연결하려면 해당 조직의 관리자여야 합니다.
 
 AWS에서 약정 계약을 조회하고 수락하기 위해 필요한 권한:
 
-- AWS 관리형 정책을 사용하는 경우 다음 권한이 필요합니다.
-  - `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
-  - 또는 `AWSMarketplaceFullAccess`
-- AWS 관리형 정책을 사용하지 않는 경우 다음 권한이 필요합니다.
-  - IAM 동작 `aws-marketplace:ListPrivateListings` 및 `aws-marketplace:ViewSubscriptions`
+* AWS 관리형 정책을 사용하는 경우 다음 권한이 필요합니다.
+  * `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
+  * 또는 `AWSMarketplaceFullAccess`
+* AWS 관리형 정책을 사용하지 않는 경우 다음 권한이 필요합니다.
+  * IAM 동작 `aws-marketplace:ListPrivateListings` 및 `aws-marketplace:ViewSubscriptions`
 
 ## 가입 단계 \{#steps-to-sign-up\}
 

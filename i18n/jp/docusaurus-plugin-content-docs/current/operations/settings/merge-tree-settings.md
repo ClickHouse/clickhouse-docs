@@ -424,6 +424,18 @@ ClickHouse Cloud でのみ利用可能です。マージ時にパーツ全体を
 
 マークは圧縮をサポートすることで、マークファイルのサイズを小さくし、ネットワーク転送を高速化します。
 
+## compress_per_column_in_compact_parts \{#compress_per_column_in_compact_parts\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "新しい設定"}]}]} />
+
+Compactパーツの物理レイアウトを制御します。true (デフォルト) の場合、グラニュール内の各カラムは
+それぞれ新しい圧縮ブロックから開始されるため、ClickHouse は不要なカラムを
+ディスクから読み込まずにスキップできます。false の場合、グラニュール内のすべてのカラムは同じ圧縮ブロックにまとめられるため、
+圧縮率は向上しますが、読み取り時により多くのデータを展開する必要があります。
+これは、常にすべてのカラムを読み取るワークロード (例: プロジェクション) に適しています。
+
 ## compress_primary_key \{#compress_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

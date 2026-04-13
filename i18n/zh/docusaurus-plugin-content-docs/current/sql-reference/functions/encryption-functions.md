@@ -26,70 +26,37 @@ doc_type: 'reference'
 
 ## HMAC \{#HMAC\}
 
-引入于：v25.12.0
+引入版本：v25.12.0
 
-使用指定的哈希算法和密钥，为给定消息计算 HMAC（基于哈希的消息认证码）。
+使用指定的哈希算法和密钥，为给定消息计算 HMAC (基于哈希的消息认证码) 。
 
 支持的哈希算法：
 
-* RSA-MD4（别名：MD4，RSA-MD4）
-* RSA-MD5（别名：MD5，RSA-MD5）
-* RSA-MDC2（别名：MDC2，RSA-MDC2）
-* RSA-RIPEMD160（别名：RIPEMD160，RSA-RIPEMD160）
-* RSA-SHA1（别名：RSA-SHA1，SHA1）
-* RSA-SHA1-2（别名：RSA-SHA1，RSA-SHA1-2）
-* RSA-SHA224（别名：RSA-SHA224，SHA224）
-* RSA-SHA256（别名：RSA-SHA256，SHA256）
-* RSA-SHA3-224（别名：RSA-SHA3-224，SHA3-224）
-* RSA-SHA3-256（别名：RSA-SHA3-256，SHA3-256）
-* RSA-SHA3-384（别名：RSA-SHA3-384，SHA3-384）
-* RSA-SHA3-512（别名：RSA-SHA3-512，SHA3-512）
-* RSA-SHA384（别名：RSA-SHA384，SHA384）
-* RSA-SHA512（别名：RSA-SHA512，SHA512）
-* RSA-SHA512/224（别名：RSA-SHA512/224，SHA512-224）
-* RSA-SHA512/256（别名：RSA-SHA512/256，SHA512-256）
-* RSA-SM3（别名：RSA-SM3，SM3）
 * blake2b512
 * blake2s256
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-224（别名：SHA3-224，id-rsassa-pkcs1-v1&#95;5-with-sha3-224）
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-256（别名：SHA3-256，id-rsassa-pkcs1-v1&#95;5-with-sha3-256）
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-384（别名：SHA3-384，id-rsassa-pkcs1-v1&#95;5-with-sha3-384）
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-512（别名：SHA3-512，id-rsassa-pkcs1-v1&#95;5-with-sha3-512）
 * md4
-* md4WithRSAEncryption（别名：MD4，md4WithRSAEncryption）
 * md5
 * md5-sha1
-* md5WithRSAEncryption（别名：MD5，md5WithRSAEncryption）
 * mdc2
-* mdc2WithRSA（别名：MDC2，mdc2WithRSA）
-* ripemd（别名：RIPEMD160，ripemd）
+* ripemd (别名：RIPEMD160、ripemd) 
 * ripemd160
-* ripemd160WithRSA（别名：RIPEMD160，ripemd160WithRSA）
-* rmd160（别名：RIPEMD160，rmd160）
+* rmd160 (别名：RIPEMD160、rmd160) 
 * sha1
-* sha1WithRSAEncryption（别名：SHA1，sha1WithRSAEncryption）
 * sha224
-* sha224WithRSAEncryption（别名：SHA224，sha224WithRSAEncryption）
 * sha256
-* sha256WithRSAEncryption（别名：SHA256，sha256WithRSAEncryption）
 * sha3-224
 * sha3-256
 * sha3-384
 * sha3-512
 * sha384
-* sha384WithRSAEncryption（别名：SHA384，sha384WithRSAEncryption）
 * sha512
 * sha512-224
-* sha512-224WithRSAEncryption（别名：SHA512-224，sha512-224WithRSAEncryption）
 * sha512-256
-* sha512-256WithRSAEncryption（别名：SHA512-256，sha512-256WithRSAEncryption）
-* sha512WithRSAEncryption（别名：SHA512，sha512WithRSAEncryption）
 * shake128
 * shake256
 * sm3
-* sm3WithRSAEncryption（别名：SM3，sm3WithRSAEncryption）
-* ssl3-md5（别名：MD5，ssl3-md5）
-* ssl3-sha1（别名：SHA1，ssl3-sha1）
+* ssl3-md5 (别名：MD5、ssl3-md5) 
+* ssl3-sha1 (别名：SHA1、ssl3-sha1) 
 * whirlpool
 
 **语法**
@@ -100,10 +67,9 @@ HMAC(mode, message, key)
 
 **参数**
 
-
-* `mode` — 哈希算法名称（不区分大小写）。支持：md5、sha1、sha224、sha256、sha384、sha512。[`String`](/sql-reference/data-types/string)
+* `mode` — 哈希算法名称 (不区分大小写) 。支持：md5、sha1、sha224、sha256、sha384、sha512。[`String`](/sql-reference/data-types/string)
 * `message` — 用于计算 HMAC 的消息。[`String`](/sql-reference/data-types/string)
-* `key` — 用于 HMAC 的密钥（秘钥）。[`String`](/sql-reference/data-types/string)
+* `key` — 用于 HMAC 的密钥 (秘钥) 。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -138,7 +104,7 @@ SELECT
 └──────────────────────────────────┴──────────────────────────────────────────┴──────────────────────────────────────────────────────────────────┘
 ```
 
-**大小写不敏感模式**
+**不区分大小写模式**
 
 ```sql title=Query
 SELECT

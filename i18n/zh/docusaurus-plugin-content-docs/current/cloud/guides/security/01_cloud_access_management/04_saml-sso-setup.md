@@ -87,16 +87,7 @@ ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SS
 
   ### 更新默认角色和会话超时
 
-  完成 SAML 设置后，您可以设置用户登录时将被分配的默认角色，并调整会话超时设置。
-
-  可用的默认角色包括：
-
-  * Admin
-  * Service Admin
-  * Service Read Only
-  * Member
-
-  有关这些角色所对应权限的更多信息，请参阅 [Console roles and permissions](/cloud/security/console-roles)。
+  完成 SAML 设置后，您可以设置所有用户登录时将被分配的默认角色，并调整会话超时设置。有关可分配的系统角色列表，请参阅 [Console roles and permissions](/cloud/security/console-roles)。
 
   ### 配置管理员用户
 

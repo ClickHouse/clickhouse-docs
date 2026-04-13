@@ -431,6 +431,18 @@ ClickHouse Cloud에서만 사용할 수 있습니다. 머지(merge) 중 compact 
 
 마크 파일은 압축을 지원하여 파일 크기를 줄이고 네트워크 전송 속도를 높입니다.
 
+## compress_per_column_in_compact_parts \{#compress_per_column_in_compact_parts\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "새 설정"}]}]} />
+
+Compact 파트의 물리적 레이아웃을 제어합니다. true(기본값)인 경우 그래뉼의 각 컬럼이
+새로운 압축 블록에서 시작하므로 ClickHouse가 디스크에서 불필요한 컬럼을 읽지 않고
+건너뛸 수 있습니다. false인 경우 그래뉼 내의 모든 컬럼이 동일한 압축 블록에 함께 저장되어
+압축률은 높아지지만 읽기 시 더 많은 데이터를 압축 해제해야 합니다.
+이 설정은 항상 모든 컬럼을 읽는 워크로드(예: 프로젝션)에 유용합니다.
+
 ## compress_primary_key \{#compress_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

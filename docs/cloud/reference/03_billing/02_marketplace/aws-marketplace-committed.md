@@ -23,10 +23,6 @@ A committed contract, also known as a Private Offer, allows customers to commit 
 - A Private Offer from ClickHouse based on specific contract terms.
 - To connect a ClickHouse organization to your committed spend offer, you must be an admin of that organization.
 
-:::note
-One AWS account can only subscribe to one “ClickHouse Cloud - Committed Contract” private offer which can only be linked to one ClickHouse organization.
-:::
-
 Required permissions to view and accept your committed contract in AWS:
 
 - If you use AWS managed policies, it is required to have the following permissions:

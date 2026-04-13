@@ -35,11 +35,11 @@ Time
 **负值**。
 前导负号会被支持并保留。
 负值通常源自对 `Time` 值进行算术运算。
-对于 `Time` 类型，负输入在文本（例如 `'-01:02:03'`）和数值输入（例如 `-3723`）两种形式中都会被保留。
+对于 `Time` 类型，负输入在文本 (例如 `'-01:02:03'`) 和数值输入 (例如 `-3723`) 两种形式中都会被保留。
 
 **饱和**。
 一天中的时间组件会被限制在 [-999:59:59, 999:59:59] 范围内。
-小时数超出 999（或小于 -999） 的值，在文本表示和往返时都会被表示为 `999:59:59`（或 `-999:59:59`）。
+小时数超出 999 (或小于 -999)  的值，在文本表示和往返时都会被表示为 `999:59:59` (或 `-999:59:59`) 。
 
 **时区**。
 `Time` 不支持时区，即在解释 `Time` 值时不带区域上下文。
@@ -51,48 +51,62 @@ Time
 
 **1.** 创建一个包含 `Time` 类型列的表，并向其中插入数据：
 
+```sql
+CREATE TABLE tab
+(
+    `event_id` UInt8,
+    `time` Time
+)
+ENGINE = TinyLog;
 ```
 
+```sql
+-- Parse Time
+-- - from string,
+-- - from integer interpreted as number of seconds since 00:00:00.
+INSERT INTO tab VALUES (1, '14:30:25'), (2, 52225);
+
+SELECT * FROM tab ORDER BY event_id;
 ```
 
-```
-
-```
-
-```
-
-**2.** Filtering on `Time` values
-
+```text
+   ┌─event_id─┬──────time─┐
+1. │        1 │ 14:30:25 │
+2. │        2 │ 14:30:25 │
+   └──────────┴───────────┘
 ```
 
 **2.** 按 `Time` 值过滤
 
+```sql
+SET use_legacy_to_time = 0;
+SELECT * FROM tab WHERE time = toTime('14:30:25')
 ```
 
-```
-
-```
-
-`Time` column values can be filtered using a string value in `WHERE` predicate. It will be converted to `Time` automatically:
-
+```text
+   ┌─event_id─┬──────time─┐
+1. │        1 │ 14:30:25 │
+2. │        2 │ 14:30:25 │
+   └──────────┴───────────┘
 ```
 
 可以在 `WHERE` 谓词中使用字符串值来过滤 `Time` 列的值，它会被自动转换为 `Time`：
 
+```sql
+SELECT * FROM tab WHERE time = '14:30:25'
 ```
 
-```
-
-```
-
-**3.** Inspecting the resulting type:
-
+```text
+   ┌─event_id─┬──────time─┐
+1. │        1 │ 14:30:25 │
+2. │        2 │ 14:30:25 │
+   └──────────┴───────────┘
 ```
 
 **3.** 查看结果类型：
 
-```
-
+```sql
+SELECT CAST('14:30:25' AS Time) AS column, toTypeName(column) AS type
 ```
 
 ```text
@@ -101,14 +115,31 @@ Time
    └───────────┴──────┘
 ```
 
+## 与 Date 相加 \{#addition-with-date\}
+
+将 [Time](time.md) 值加到 [Date](date.md) 或 [Date32](date32.md) 值上，可得到 [DateTime](datetime.md) 或 [DateTime64](datetime64.md)：
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') as datetime;
+```
+
+```text
+   ┌────────────datetime─┐
+1. │ 2024-07-15 14:30:25 │
+   └─────────────────────┘
+```
+
+有关所有受支持的组合及结果类型的详细信息，请参见[日期和时间加法](../operators/index.md#date-time-addition)。
+
 ## 另请参阅 \{#see-also\}
 
-- [类型转换函数](../functions/type-conversion-functions.md)
-- [用于处理日期和时间的函数](../functions/date-time-functions.md)
-- [用于处理数组的函数](../functions/array-functions.md)
-- [`date_time_input_format` 设置](../../operations/settings/settings-formats.md#date_time_input_format)
-- [`date_time_output_format` 设置](../../operations/settings/settings-formats.md#date_time_output_format)
-- [`timezone` 服务器配置参数](../../operations/server-configuration-parameters/settings.md#timezone)
-- [`session_timezone` 设置](../../operations/settings/settings.md#session_timezone)
-- [`DateTime` 数据类型](datetime.md)
-- [`Date` 数据类型](date.md)
+* [类型转换函数](../functions/type-conversion-functions.md)
+* [用于处理日期和时间的函数](../functions/date-time-functions.md)
+* [用于处理数组的函数](../functions/array-functions.md)
+* [`date_time_input_format` 设置](../../operations/settings/settings-formats.md#date_time_input_format)
+* [`date_time_output_format` 设置](../../operations/settings/settings-formats.md#date_time_output_format)
+* [`timezone` 服务器配置参数](../../operations/server-configuration-parameters/settings.md#timezone)
+* [`session_timezone` 设置](../../operations/settings/settings.md#session_timezone)
+* [`DateTime` 数据类型](datetime.md)
+* [`Date` 数据类型](date.md)

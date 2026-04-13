@@ -1527,7 +1527,7 @@ SELECT arrayFold(
 
 ## arrayIntersect \{#arrayIntersect\}
 
-Впервые появилась в версии: v1.1.0
+Добавлена в версии: v1.1.0
 
 Принимает несколько массивов и возвращает массив с элементами, которые присутствуют во всех исходных массивах. Результат содержит только уникальные значения.
 
@@ -1556,11 +1556,10 @@ arrayIntersect([1, 2], [1, 3], [1, 4]) AS non_empty_intersection
 ```
 
 ```response title=Response
-┌─non_empty_intersection─┬─empty_intersection─┐
-│ []                     │ [1]                │
-└────────────────────────┴────────────────────┘
+┌─empty_intersection─┬─non_empty_intersection─┐
+│ []                 │ [1]                    │
+└────────────────────┴────────────────────────┘
 ```
-
 
 ## arrayJaccardIndex \{#arrayJaccardIndex\}
 
@@ -3657,6 +3656,60 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 └────────────────────────────┴────────────────────────────────┘
 ```
 
+
+## arrayTranspose \{#arrayTranspose\}
+
+Добавлено в: v26.4.0
+
+Транспонирует двумерный массив.
+
+Все внутренние массивы должны иметь одинаковую длину.
+
+**Синтаксис**
+
+```sql
+arrayTranspose(arr)
+```
+
+**Аргументы**
+
+* `arr` — двумерный массив, который нужно транспонировать. Все внутренние массивы должны иметь одинаковую длину. [`Array(Array(T))`](/sql-reference/data-types/array)
+
+**Возвращаемое значение**
+
+Транспонированный двумерный массив, в котором элемент `[i][j]` результата равен элементу `[j][i]` исходного массива. [`Array(Array(T))`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Квадратная матрица**
+
+```sql title=Query
+SELECT arrayTranspose([[1, 2], [3, 4]])
+```
+
+```response title=Response
+[[1, 3], [2, 4]]
+```
+
+**Неквадратная матрица**
+
+```sql title=Query
+SELECT arrayTranspose([[1, 2, 3], [4, 5, 6]])
+```
+
+```response title=Response
+[[1, 4], [2, 5], [3, 6]]
+```
+
+**Элементы типа String**
+
+```sql title=Query
+SELECT arrayTranspose([['a', 'b'], ['c', 'd']])
+```
+
+```response title=Response
+[['a', 'c'], ['b', 'd']]
+```
 
 ## arrayUnion \{#arrayUnion\}
 

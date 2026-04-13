@@ -727,23 +727,11 @@ SYSTEM UNLOAD PRIMARY KEY
 ```
 
 
-## Управление Refreshable Materialized Views \{#refreshable-materialized-views\}
+## Управление Refreshable Materialized Views \{#managing-refreshable-materialized-views\}
 
 Команды для управления фоновыми задачами, выполняемыми [Refreshable Materialized Views](../../sql-reference/statements/create/view.md#refreshable-materialized-view).
 
 При работе с ними отслеживайте таблицу [`system.view_refreshes`](../../operations/system-tables/view_refreshes.md).
-
-### SYSTEM REFRESH VIEW \{#refresh-view\}
-
-Запускает немедленное внеплановое обновление указанного представления.
-
-```sql
-SYSTEM REFRESH VIEW [db.]name
-```
-
-### SYSTEM WAIT VIEW \{#wait-view\}
-
-Ожидает завершения текущего обновления, выполняющегося в данный момент. Если обновление завершается с ошибкой, генерируется исключение. Если обновление не выполняется, немедленно завершает выполнение, генерируя исключение, если предыдущее обновление завершилось с ошибкой.
 
 ### SYSTEM STOP [REPLICATED] VIEW, STOP VIEWS \{#stop-view-stop-views\}
 
@@ -780,16 +768,15 @@ SYSTEM START VIEWS
 ```
 
 
-### SYSTEM CANCEL VIEW \{#cancel-view\}
+### SYSTEM REFRESH VIEW \{#refresh-view\}
 
-Если для указанного представления на текущей реплике в данный момент выполняется обновление, команда прерывает и отменяет его; в противном случае ничего не происходит.
+Запускает немедленное внеплановое обновление указанного представления.
 
 ```sql
-SYSTEM CANCEL VIEW [db.]name
+SYSTEM REFRESH VIEW [db.]name
 ```
 
-
-### SYSTEM WAIT VIEW \{#system-wait-view\}
+### SYSTEM WAIT VIEW \{#wait-view\}
 
 Ожидает завершения текущего обновления. Если обновление не выполняется, немедленно возвращает управление. Если последняя попытка обновления завершилась с ошибкой, генерирует ошибку.
 
@@ -799,4 +786,22 @@ SYSTEM CANCEL VIEW [db.]name
 
 ```sql
 SYSTEM WAIT VIEW [db.]name
+```
+
+
+### SYSTEM CANCEL VIEW \{#cancel-view\}
+
+Если для указанного представления на текущей реплике в данный момент выполняется обновление, команда прерывает и отменяет его; в противном случае ничего не происходит.
+
+```sql
+SYSTEM CANCEL VIEW [db.]name
+```
+
+
+## SYSTEM FLUSH OBJECT STORAGE QUEUE \{#flush-object-storage-queue\}
+
+Блокирует выполнение до тех пор, пока указанный файл не будет обработан или не завершится необратимой ошибкой в указанной таблице [S3Queue](../../engines/table-engines/integrations/s3queue.md) или [AzureQueue](../../engines/table-engines/integrations/azure-queue.md). Если файл уже обработан, управление возвращается немедленно. Выдаёт ошибку, если обработка файла завершилась необратимой ошибкой (все повторные попытки исчерпаны).
+
+```sql
+SYSTEM FLUSH OBJECT STORAGE QUEUE [db.]table_name PATH 'path'
 ```

@@ -7,13 +7,12 @@ doc_type: 'landing-page'
 
 このセクションには、次のページがあります。
 
-{/* 以下の目次は、次のスクリプトによって、
-     YAML フロントマターの title、description、slug フィールドから
-     自動的に生成されます:
+{/* 以下の目次は、次のスクリプトによって YAML 
+     フロントマターの title、description、slug フィールドから自動的に生成されます:
 
      https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
      
-     誤りを見つけた場合や説明文を改善したい場合は、該当ファイルを
+     誤りを見つけた場合や説明文を改善したい場合は、該当するファイルを
      直接編集してください。
   */ }
 
@@ -33,6 +32,7 @@ doc_type: 'landing-page'
 | [Testing ClickHouse](/development/tests)                                         | ClickHouse のテストおよびテストスイートの実行方法に関するガイド                     |
 | [Architecture Overview](/development/architecture)                               | ClickHouse のアーキテクチャとそのカラム指向設計に関する包括的な概要                   |
 | [Continuous Integration (CI)](/development/continuous-integration)               | ClickHouse の継続的インテグレーション (CI) システムの概要                     |
+| [Backport System](/development/backports)                                        | ClickHouse のバックポート方針と自動化の概要                               |
 | [Third-Party Libraries](/development/contrib)                                    | ClickHouse におけるサードパーティライブラリの利用方法と、ライブラリの追加および保守方法を説明するページ |
 | [C++ Style Guide](/development/style)                                            | ClickHouse C++ 開発のためのコーディングスタイルガイドライン                     |
 | [Integrating Rust Libraries](/development/integrating_rust_libraries)            | Rust ライブラリを ClickHouse に統合するためのガイド                        |

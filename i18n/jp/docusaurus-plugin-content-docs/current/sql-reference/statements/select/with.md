@@ -526,3 +526,15 @@ SELECT sum(number) FROM (SELECT number FROM test_table LIMIT 100);
 │        5050 │
 └─────────────┘
 ```
+
+
+## 末尾のカンマ \{#trailing-comma\}
+
+`WITH` 句では、最後の要素の後ろにカンマを付けることができます。
+
+```sql
+WITH
+    (SELECT sum(number) FROM numbers(10)) AS total,
+    total * 2 AS doubled,
+SELECT total, doubled;
+```

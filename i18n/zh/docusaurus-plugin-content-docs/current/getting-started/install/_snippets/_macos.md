@@ -8,7 +8,7 @@ import Recommendations from '@site/i18n/zh/docusaurus-plugin-content-docs/curren
 
 :::warning
 通过 Homebrew Formulae 安装的方式现已被弃用，并将于 2026-09-01 起停用。
-我们推荐使用适用于任何平台的[快速安装](/install/quick-install-curl)方式。
+我们推荐使用适用于任何平台的[快速安装](/install/quick-install)方式。
 :::
 
 <VerticalStepper>
@@ -40,15 +40,15 @@ import Recommendations from '@site/i18n/zh/docusaurus-plugin-content-docs/curren
 
   将 `clickhouse` 可执行文件从隔离区移除的最简单方式是：
 
-  1. 打开 **System Settings** (系统设置) 。
+  1. 打开 **系统设置** (系统设置) 。
 
-  2. 进入 **Privacy &amp; Security** (隐私与安全) ：
+  2. 进入 **隐私与安全** (隐私与安全) ：
 
      <Image img={privacy_default} size="md" alt="MacOS 隐私与安全设置的默认视图" border />
 
-  3. 滚动到窗口底部，找到一条消息，内容为 &#95;&quot;clickhouse-macos-aarch64&quot; was blocked from use because it is not from an identified developer&quot; (由于“clickhouse-macos-aarch64”不是来自已识别的开发者，因此被阻止使用) 。
+  3. 滚动到窗口底部，找到一条消息，内容为 *&quot;clickhouse-macos-aarch64&quot; was blocked from use because it is not from an identified developer&quot;* (由于“clickhouse-macos-aarch64”不是来自已识别的开发者，因此被阻止使用) 。
 
-  4. 点击 **Allow Anyway** (仍要允许) 。
+  4. 点击 **仍要允许** (仍要允许) 。
 
      <Image img={privacy_allow} size="md" alt="MacOS 隐私与安全设置中显示 Allow Anyway 按钮" border />
 

@@ -141,6 +141,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [distributed_plan_default_reader_bucket_count](/operations/settings/settings#distributed_plan_default_reader_bucket_count) | `8` |
 | [distributed_plan_force_exchange_kind](/operations/settings/settings#distributed_plan_force_exchange_kind) | `` |
 | [distributed_plan_max_rows_to_broadcast](/operations/settings/settings#distributed_plan_max_rows_to_broadcast) | `20000` |
+| [distributed_plan_prefer_replicas_over_workers](/operations/settings/settings#distributed_plan_prefer_replicas_over_workers) | `0` |
 | [allow_experimental_ytsaurus_table_engine](/operations/settings/settings#allow_experimental_ytsaurus_table_engine) | `0` |
 | [allow_experimental_ytsaurus_table_function](/operations/settings/settings#allow_experimental_ytsaurus_table_function) | `0` |
 | [allow_experimental_ytsaurus_dictionary_source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source) | `0` |

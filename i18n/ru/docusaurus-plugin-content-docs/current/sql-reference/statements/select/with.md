@@ -526,3 +526,15 @@ SELECT sum(number) FROM (SELECT number FROM test_table LIMIT 100);
 │        5050 │
 └─────────────┘
 ```
+
+
+## Запятая в конце \{#trailing-comma\}
+
+После последнего элемента в конструкции `WITH` допускается запятая:
+
+```sql
+WITH
+    (SELECT sum(number) FROM numbers(10)) AS total,
+    total * 2 AS doubled,
+SELECT total, doubled;
+```

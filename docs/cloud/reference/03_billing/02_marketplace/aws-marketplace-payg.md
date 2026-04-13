@@ -25,10 +25,6 @@ Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.co
 - To purchase, you must be logged into the AWS marketplace with this account.
 - To connect a ClickHouse organization to your subscription, you must be an admin of that organization.
 
-:::note
-One AWS account can only subscribe to one “ClickHouse Cloud - Pay As You Go” subscription which can only be linked to one ClickHouse organization.
-:::
-
 ## Steps to sign up {#steps-to-sign-up}
 
 <VerticalStepper headerLevel="h3">

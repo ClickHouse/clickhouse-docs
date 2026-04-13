@@ -8,6 +8,7 @@ doc_type: 'guide'
 ---
 
 import InstallSelector from '@site/src/components/Install/Install'
+import CLIInstall from './_snippets/_cli_install.md'
 import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
 import QuickInstall from './_snippets/_quick_install.md'
@@ -39,4 +40,4 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 或者，在下方选择平台、发行版和安装方式，以查看适用于开源 ClickHouse 的安装指南：
 
-<InstallSelector windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />
+<InstallSelector cli={<CLIInstall/>} windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />

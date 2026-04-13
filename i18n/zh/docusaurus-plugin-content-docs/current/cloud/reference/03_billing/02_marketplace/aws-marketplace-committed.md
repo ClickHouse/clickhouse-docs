@@ -21,20 +21,16 @@ import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committ
 
 ## 先决条件 \{#prerequisites\}
 
-- 基于特定合同条款的 ClickHouse Private Offer。
-- 若要将某个 ClickHouse 组织关联到你的承诺消费优惠，你必须是该组织的管理员。
+* 基于特定合同条款的 ClickHouse Private Offer。
+* 若要将某个 ClickHouse 组织关联到你的承诺消费优惠，你必须是该组织的管理员。
 
-:::note
-一个 AWS 账号只能订阅一个“ClickHouse Cloud - Committed Contract” Private Offer，并且该 Offer 只能关联到一个 ClickHouse 组织。
-:::
+在 AWS 中查看并接受承诺消费合同所需的权限：
 
-在 AWS 中查看并接受承诺合同所需的权限：
-
-- 如果你使用 AWS 托管策略，则必须具备以下权限：
-  - `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
-  - 或 `AWSMarketplaceFullAccess`
-- 如果你未使用 AWS 托管策略，则必须具备以下权限：
-  - IAM 操作 `aws-marketplace:ListPrivateListings` 和 `aws-marketplace:ViewSubscriptions`
+* 如果你使用 AWS 托管策略，则必须具备以下权限：
+  * `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
+  * 或 `AWSMarketplaceFullAccess`
+* 如果你未使用 AWS 托管策略，则必须具备以下权限：
+  * IAM 操作 `aws-marketplace:ListPrivateListings` 和 `aws-marketplace:ViewSubscriptions`
 
 ## 注册步骤 \{#steps-to-sign-up\}
 

@@ -38,9 +38,9 @@ L1Distance(vector1, vector2)
 
 **반환 값**
 
-1-노름 거리 값을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`Float64`](/sql-reference/data-types/float)
+1-노름 거리 값을 반환합니다. `Array` 입력의 경우, 요소 타입의 최소 공통 상위 타입이 `Float32` 또는 `BFloat16`이면 `Float32`를 반환하고, 그렇지 않으면 `Float64`를 반환합니다. `Tuple` 입력의 경우, 반환 타입은 요소별 연산의 산술 결과 타입을 따릅니다(정수 타입은 유지됩니다). [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 
-**예제**
+**예시**
 
 **기본 사용법**
 
@@ -147,7 +147,7 @@ L2Distance(vector1, vector2)
 
 **반환 값**
 
-2-노름(L2-norm) 거리를 반환합니다. [`Float64`](/sql-reference/data-types/float)
+2-노름(L2-norm) 거리를 반환합니다. `Array` 입력에서는 원소 타입의 최소 공통 상위 타입이 `Float32` 또는 `BFloat16`이면 `Float32`를 반환하고, 그렇지 않으면 `Float64`를 반환합니다. `Tuple` 입력에서는 항상 `Float64`를 반환합니다. [`Float*`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -165,9 +165,9 @@ SELECT L2Distance((1, 2), (2, 3))
 
 ## L2DistanceTransposed \{#L2DistanceTransposed\}
 
-도입: v25.10.0
+도입 버전: v25.10.0
 
-유클리드 공간에서 두 점(벡터의 값이 좌표를 의미함) 사이의 근사 거리를 계산합니다([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).
+유클리드 공간에서 두 점(벡터의 값이 좌표를 의미함) 사이의 근사 거리를 계산합니다([유클리드 거리](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
 **구문**
 
@@ -177,7 +177,7 @@ L2DistanceTransposed(vector1, vector2, p)
 
 **별칭**: `distanceL2Transposed`
 
-**인자**
+**인수**
 
 * `vectors` — 벡터. [`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
 * `reference` — 기준 벡터. [`Array(T)`](/sql-reference/data-types/array)
@@ -185,7 +185,7 @@ L2DistanceTransposed(vector1, vector2, p)
 
 **반환 값**
 
-근사적인 2-노름(2-norm) 거리를 반환합니다. [`Float64`](/sql-reference/data-types/float)
+근사적인 2-노름(2-norm) 거리를 반환합니다. 항상 `Float64`를 반환합니다. [`Float64`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -277,7 +277,7 @@ SELECT L2Normalize((3, 4))
 
 ## L2SquaredDistance \{#L2SquaredDistance\}
 
-도입된 버전: v22.7.0
+도입 버전: v22.7.0
 
 두 벡터에서 대응하는 각 원소의 차이를 제곱한 값의 합을 계산합니다.
 
@@ -296,7 +296,7 @@ L2SquaredDistance(vector1, vector2)
 
 **반환 값**
 
-두 벡터에서 서로 대응하는 원소들의 차를 제곱한 값의 합을 반환합니다. [`Float64`](/sql-reference/data-types/float)
+두 벡터에서 서로 대응하는 원소들의 차를 제곱한 값의 합을 반환합니다. `Array` 입력의 경우, 원소 타입의 최소 공통 상위 타입이 `Float32` 또는 `BFloat16`이면 `Float32`를 반환하고, 그렇지 않으면 `Float64`를 반환합니다. `Tuple` 입력의 경우, 반환 타입은 원소별 연산의 산술 결과 타입을 따릅니다(정수 타입은 유지됨). [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -350,9 +350,9 @@ SELECT L2SquaredNorm((1, 2))
 
 ## LinfDistance \{#LinfDistance\}
 
-도입된 버전: v21.11.0
+도입 버전: v21.11.0
 
-두 점(벡터의 각 원소는 좌표) 사이의 거리를 `L_{inf}` 공간([maximum norm](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\)))에서 계산합니다.
+두 점(벡터의 각 원소는 좌표) 사이의 거리를 `L_{inf}` 공간([최대 노름](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\)))에서 계산합니다.
 
 **구문**
 
@@ -365,11 +365,11 @@ LinfDistance(vector1, vector2)
 **인수**
 
 * `vector1` — 첫 번째 벡터. [`Tuple(T)`](/sql-reference/data-types/tuple) 또는 [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 두 번째 벡터. [`Tuple(T)`](/sql-reference/data-types/array) 또는 [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 두 번째 벡터. [`Tuple(T)`](/sql-reference/data-types/tuple) 또는 [`Array(T)`](/sql-reference/data-types/array)
 
 **반환 값**
 
-Infinity-norm(무한 노름) 거리 값을 반환합니다. [`Float64`](/sql-reference/data-types/float)
+Infinity-norm(무한 노름) 거리 값을 반환합니다. `Array` 입력의 경우, 원소 타입의 최소 공통 상위 타입이 `Float32` 또는 `BFloat16`이면 `Float32`를 반환하고, 그렇지 않으면 `Float64`를 반환합니다. `Tuple` 입력의 경우 항상 `Float64`를 반환합니다. [`Float*`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -459,7 +459,7 @@ SELECT LinfNormalize((3, 4))
 
 ## LpDistance \{#LpDistance\}
 
-도입된 버전: v21.11.0
+도입 버전: v21.11.0
 
 두 점(벡터의 원소를 좌표로 가정)을 `Lp` 공간에서의 거리([p-노름 거리](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm))로 계산합니다.
 
@@ -479,7 +479,7 @@ LpDistance(vector1, vector2, p)
 
 **반환 값**
 
-p-노름 거리(p-norm distance)를 반환합니다. [`Float64`](/sql-reference/data-types/float)
+p-노름 거리(p-norm distance)를 반환합니다. `Array` 입력의 경우, 원소 타입의 최소 공통 상위 타입이 `Float32` 또는 `BFloat16`이면 `Float32`를 반환하고, 그렇지 않으면 `Float64`를 반환합니다. `Tuple` 입력의 경우, 항상 `Float64`를 반환합니다. [`Float*`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -592,11 +592,11 @@ cosineDistance(vector1, vector2)
 **인수**
 
 * `vector1` — 첫 번째 튜플. [`Tuple(T)`](/sql-reference/data-types/tuple) 또는 [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 두 번째 튜플. [`Tuple(T)`](/sql-reference/data-types/array) 또는 [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 두 번째 튜플. [`Tuple(T)`](/sql-reference/data-types/tuple) 또는 [`Array(T)`](/sql-reference/data-types/array)
 
 **반환 값(Returned value)**
 
-두 벡터 사이 각도의 코사인 값을 1에서 뺀 결과를 반환합니다. [`Float64`](/sql-reference/data-types/float)
+코사인 거리(코사인 유사도에서 1을 뺀 값)를 반환합니다. `Array` 입력에서는 원소 타입의 최소 공통 상위 타입이 `Float32` 또는 `BFloat16`이면 `Float32`를, 그 외에는 `Float64`를 반환합니다. `Tuple` 입력에서는 항상 `Float64`를 반환합니다. [`Float*`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -626,7 +626,7 @@ cosineDistanceTransposed(vector1, vector2, p)
 
 **별칭**: `distanceCosineTransposed`
 
-**인자**
+**인수**
 
 * `vectors` — 벡터. [`QBit(T, UInt64)`](/sql-reference/data-types/qbit)
 * `reference` — 기준 벡터. [`Array(T)`](/sql-reference/data-types/array)
@@ -634,7 +634,7 @@ cosineDistanceTransposed(vector1, vector2, p)
 
 **반환 값**
 
-두 벡터 사이 각도의 코사인 값을 1에서 뺀 값의 근사치를 반환합니다. [`Float64`](/sql-reference/data-types/float)
+근사 코사인 거리(코사인 유사도에서 1을 뺀 값)를 반환합니다. 항상 Float64를 반환합니다. [`Float64`](/sql-reference/data-types/float)
 
 **예시**
 

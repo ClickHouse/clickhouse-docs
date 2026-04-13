@@ -735,24 +735,11 @@ SYSTEM UNLOAD PRIMARY KEY
 ```
 
 
-## 갱신 가능 구체화 뷰(refreshable materialized view) 관리 \{#refreshable-materialized-views\}
+## 갱신 가능 구체화 뷰(refreshable materialized view) 관리 \{#managing-refreshable-materialized-views\}
 
 [갱신 가능 구체화 뷰(refreshable materialized view)](../../sql-reference/statements/create/view.md#refreshable-materialized-view)가 수행하는 백그라운드 작업을 제어하는 명령을 설명합니다.
 
 사용 시에는 [`system.view_refreshes`](../../operations/system-tables/view_refreshes.md)를 주시하십시오.
-
-### SYSTEM REFRESH VIEW \{#refresh-view\}
-
-지정된 VIEW를 예약된 주기와 관계없이 즉시 새로 고치도록 트리거합니다.
-
-```sql
-SYSTEM REFRESH VIEW [db.]name
-```
-
-
-### SYSTEM WAIT VIEW \{#wait-view\}
-
-현재 실행 중인 새로 고침이 완료될 때까지 대기합니다. 새로 고침이 실패하면 예외를 발생시킵니다. 실행 중인 새로 고침이 없으면 즉시 완료되며, 이전 새로 고침이 실패한 경우 예외를 발생시킵니다.
 
 ### SYSTEM STOP [REPLICATED] VIEW, STOP VIEWS \{#stop-view-stop-views\}
 
@@ -789,6 +776,28 @@ SYSTEM START VIEWS
 ```
 
 
+### SYSTEM REFRESH VIEW \{#refresh-view\}
+
+지정된 VIEW를 예약된 주기와 관계없이 즉시 새로 고치도록 트리거합니다.
+
+```sql
+SYSTEM REFRESH VIEW [db.]name
+```
+
+
+### SYSTEM WAIT VIEW \{#wait-view\}
+
+실행 중인 갱신이 완료될 때까지 대기합니다. 실행 중인 갱신이 없으면 즉시 반환합니다. 마지막 갱신 시도가 실패한 경우 오류를 반환합니다.
+
+새로 갱신 가능 구체화 VIEW를 생성한 직후(EMPTY 키워드 없이) 초기 갱신이 완료될 때까지 대기하는 데 사용할 수 있습니다.
+
+VIEW가 Replicated 또는 Shared 데이터베이스에 있고, 갱신이 다른 레플리카에서 실행 중인 경우 해당 갱신이 완료될 때까지 대기합니다.
+
+```sql
+SYSTEM WAIT VIEW [db.]name
+```
+
+
 ### SYSTEM CANCEL VIEW \{#cancel-view\}
 
 지정된 VIEW에 대해 현재 레플리카에서 진행 중인 리프레시 작업이 있으면 이를 중단하고 취소합니다. 그렇지 않으면 아무 작업도 수행하지 않습니다.
@@ -798,14 +807,10 @@ SYSTEM CANCEL VIEW [db.]name
 ```
 
 
-### SYSTEM WAIT VIEW \{#system-wait-view\}
+## SYSTEM FLUSH OBJECT STORAGE QUEUE \{#flush-object-storage-queue\}
 
-실행 중인 리프레시가 완료될 때까지 대기합니다. 실행 중인 리프레시가 없으면 즉시 반환합니다. 마지막 리프레시 시도가 실패한 경우 오류를 반환합니다.
-
-새로 갱신 가능 구체화 뷰를 생성한 직후(EMPTY 키워드 없이) 초기 리프레시가 완료될 때까지 대기하는 데 사용할 수 있습니다.
-
-뷰가 Replicated 또는 Shared 데이터베이스에 있고, 리프레시가 다른 레플리카에서 실행 중인 경우 해당 리프레시가 완료될 때까지 대기합니다.
+지정된 [S3Queue](../../engines/table-engines/integrations/s3queue.md) 또는 [AzureQueue](../../engines/table-engines/integrations/azure-queue.md) 테이블에서 해당 파일이 처리되거나 영구적인 실패 상태가 될 때까지 대기합니다. 파일이 이미 처리된 경우 즉시 반환합니다. 파일이 영구적으로 실패한 경우(모든 재시도를 모두 소진한 경우) 오류를 발생시킵니다.
 
 ```sql
-SYSTEM WAIT VIEW [db.]name
+SYSTEM FLUSH OBJECT STORAGE QUEUE [db.]table_name PATH 'path'
 ```

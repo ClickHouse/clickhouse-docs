@@ -87,16 +87,7 @@ IdP での管理者権限、自身のドメインの DNS 設定に TXT レコー
 
   ### デフォルトロールとセッションタイムアウトの更新
 
-  SAML セットアップが完了すると、ログイン時にすべてのユーザーに割り当てられるデフォルトロールを設定し、セッションタイムアウト設定を調整できます。
-
-  利用可能なデフォルトロールは次のとおりです:
-
-  * Admin
-  * Service Admin
-  * Service Read Only
-  * Member
-
-  これらのロールに割り当てられる権限の詳細については、[Console roles and permissions](/cloud/security/console-roles) を参照してください。
+  SAML セットアップが完了すると、ログイン時にすべてのユーザーに割り当てるデフォルトロールを設定し、セッションタイムアウト設定を調整できます。割り当て可能なシステムロールの一覧については、[Console roles and permissions](/cloud/security/console-roles) を参照してください。
 
   ### 管理者ユーザーの設定
 
@@ -108,7 +99,7 @@ IdP での管理者権限、自身のドメインの DNS 設定に TXT レコー
 
   1. [ClickHouse Cloud](https://console.clickhouse.cloud) からログアウトします。
   2. アイデンティティプロバイダーで、ClickHouse アプリケーションに管理者ユーザーを割り当てます。
-  3. ユーザーに https://console.clickhouse.cloud/?connection={orgId}  (ショートカット URL) からログインするよう依頼します。これは前の手順で作成したブックマーク経由の場合もあります。ユーザーは最初にログインするまで ClickHouse Cloud 上には表示されません。
+  3. ユーザーに https://console.clickhouse.cloud/?connection={orgId} (ショートカット URL) からログインするよう依頼します。これは前の手順で作成したブックマーク経由の場合もあります。ユーザーは最初にログインするまで ClickHouse Cloud 上には表示されません。
   4. デフォルトの SAML ロールが Admin 以外である場合、新しい SAML ユーザーのロールを更新するために、ユーザーは一度ログアウトし、元の認証方法でログインし直す必要がある場合があります。
      * メールアドレス + パスワードのアカウントの場合は、`https://console.clickhouse.cloud/?with=email` を使用してください。
      * ソーシャルログインの場合は、該当するボタン (**Continue with Google** または **Continue with Microsoft**) をクリックしてください。

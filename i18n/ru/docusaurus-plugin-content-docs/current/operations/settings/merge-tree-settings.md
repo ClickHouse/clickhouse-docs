@@ -443,6 +443,18 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Метки поддерживают сжатие, уменьшая размер файлов меток и ускоряя их передачу по сети.
 
+## compress_per_column_in_compact_parts \{#compress_per_column_in_compact_parts\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Новая настройка"}]}]} />
+
+Управляет физической структурой компактных частей. Если установлено значение true (по умолчанию), каждый столбец в грануле
+начинает новый сжатый блок, что позволяет ClickHouse пропускать чтение ненужных столбцов
+с диска. Если установлено значение false, все столбцы в пределах гранулы упаковываются в один сжатый блок,
+что улучшает коэффициент сжатия, но требует распаковки большего объёма данных при чтении.
+Это полезно для рабочих нагрузок, в которых всегда читаются все столбцы (например, проекции).
+
 ## compress_primary_key \{#compress_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

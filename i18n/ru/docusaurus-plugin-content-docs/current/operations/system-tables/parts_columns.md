@@ -6,57 +6,75 @@ title: 'system.parts_columns'
 doc_type: 'reference'
 ---
 
-# system.parts_columns \{#systemparts_columns\}
+## Описание \{#description\}
 
 Содержит информацию о частях и столбцах таблиц [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md).
 Каждая строка описывает одну часть данных.
 
-| Column                                  | Type     | Description                                                                                                                                                                                                |
-| --------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `partition`                             | String   | Имя партиции. Форматы: `YYYYMM` для автоматического партиционирования по месяцам или `any_string` при ручном партиционировании.                                                                            |
-| `name`                                  | String   | Имя части данных.                                                                                                                                                                                          |
-| `part_type`                             | String   | Формат хранения части данных. Значения: `Wide` (каждый столбец в отдельном файле) или `Compact` (все столбцы в одном файле). Управляется настройками `min_bytes_for_wide_part` и `min_rows_for_wide_part`. |
-| `active`                                | UInt8    | Флаг, указывающий, активна ли часть данных. Активные части используются в таблице; неактивные части удаляются или остаются после слияния.                                                                  |
-| `marks`                                 | UInt64   | Количество меток. Умножьте на гранулярность индекса (обычно 8192), чтобы получить примерное количество строк.                                                                                              |
-| `rows`                                  | UInt64   | Количество строк.                                                                                                                                                                                          |
-| `bytes_on_disk`                         | UInt64   | Общий размер всех файлов части данных в байтах.                                                                                                                                                            |
-| `data_compressed_bytes`                 | UInt64   | Общий размер сжатых данных в части данных (исключая вспомогательные файлы, такие как метки).                                                                                                               |
-| `data_uncompressed_bytes`               | UInt64   | Общий размер несжатых данных в части данных (исключая вспомогательные файлы, такие как метки).                                                                                                             |
-| `marks_bytes`                           | UInt64   | Размер файла с метками.                                                                                                                                                                                    |
-| `modification_time`                     | DateTime | Время модификации каталога с частью данных (обычно соответствует времени создания).                                                                                                                        |
-| `remove_time`                           | DateTime | Время, когда часть данных стала неактивной.                                                                                                                                                                |
-| `refcount`                              | UInt32   | Количество мест, в которых используется часть данных. Значение &gt; 2 указывает на использование в запросах или слияниях.                                                                                  |
-| `min_date`                              | Date     | Минимальное значение ключа даты в части данных.                                                                                                                                                            |
-| `max_date`                              | Date     | Максимальное значение ключа даты в части данных.                                                                                                                                                           |
-| `partition_id`                          | String   | Идентификатор партиции.                                                                                                                                                                                    |
-| `min_block_number`                      | UInt64   | Минимальный номер блока (части данных), из которых после слияния образована текущая часть.                                                                                                                 |
-| `max_block_number`                      | UInt64   | Максимальный номер блока (части данных), из которых после слияния образована текущая часть.                                                                                                                |
-| `level`                                 | UInt32   | Глубина дерева слияний. Ноль означает, что часть создана вставкой, а не слиянием.                                                                                                                          |
-| `data_version`                          | UInt64   | Число, используемое для определения, какие мутации должны быть применены (мутации с версией выше `data_version`).                                                                                          |
-| `primary_key_bytes_in_memory`           | UInt64   | Объем памяти (в байтах), используемый значениями первичного ключа.                                                                                                                                         |
-| `primary_key_bytes_in_memory_allocated` | UInt64   | Объем памяти (в байтах), зарезервированный для значений первичного ключа.                                                                                                                                  |
-| `database`                              | String   | Имя базы данных.                                                                                                                                                                                           |
-| `table`                                 | String   | Имя таблицы.                                                                                                                                                                                               |
-| `engine`                                | String   | Имя движка таблицы без параметров.                                                                                                                                                                         |
-| `disk_name`                             | String   | Имя диска, на котором хранится часть данных.                                                                                                                                                               |
-| `path`                                  | String   | Абсолютный путь к каталогу с файлами части данных.                                                                                                                                                         |
-| `column`                                | String   | Имя столбца.                                                                                                                                                                                               |
-| `type`                                  | String   | Тип столбца.                                                                                                                                                                                               |
-| `statistics`                            | String   | Статистика, созданная для столбца.                                                                                                                                                                         |
-| `estimates.min`                         | String   | Оценочное минимальное значение для столбца.                                                                                                                                                                |
-| `estimates.max`                         | String   | Оценочное максимальное значение для столбца.                                                                                                                                                               |
-| `estimates.cardinality`                 | String   | Оценочная кардинальность столбца.                                                                                                                                                                          |
-| `column_position`                       | UInt64   | Порядковый номер столбца в таблице, начиная с 1.                                                                                                                                                           |
-| `default_kind`                          | String   | Тип выражения (`DEFAULT`, `MATERIALIZED`, `ALIAS`) для значения по умолчанию или пустая строка, если не определено.                                                                                        |
-| `default_expression`                    | String   | Выражение для значения по умолчанию или пустая строка, если не определено.                                                                                                                                 |
-| `column_bytes_on_disk`                  | UInt64   | Общий размер столбца в байтах.                                                                                                                                                                             |
-| `column_data_compressed_bytes`          | UInt64   | Общий размер сжатых данных в столбце в байтах. Примечание: это значение не вычисляется для компактных частей.                                                                                              |
-| `column_data_uncompressed_bytes`        | UInt64   | Общий размер несжатых данных в столбце в байтах. Примечание: это значение не вычисляется для компактных частей.                                                                                            |
-| `column_marks_bytes`                    | UInt64   | Размер столбца с метками в байтах.                                                                                                                                                                         |
-| `bytes`                                 | UInt64   | Псевдоним для `bytes_on_disk`.                                                                                                                                                                             |
-| `marks_size`                            | UInt64   | Псевдоним для `marks_bytes`.                                                                                                                                                                               |
+## Столбцы \{#columns\}
 
-**Пример**
+{/*AUTOGENERATED_START*/ }
+
+* `partition` ([String](../../sql-reference/data-types/)) — Имя партиции.
+* `name` ([String](../../sql-reference/data-types/)) — Имя части.
+* `uuid` ([UUID](../../sql-reference/data-types/)) — UUID части.
+* `part_type` ([String](../../sql-reference/data-types/)) — Формат хранения части данных. Возможные значения: Wide — каждый столбец хранится в отдельном файле в файловой системе, Compact — все столбцы хранятся в одном файле в файловой системе.
+* `active` ([UInt8](../../sql-reference/data-types/)) — Флаг, указывающий, активна ли часть данных. Если часть данных активна, она используется в таблице. В противном случае она удаляется. Неактивные части данных остаются после слияния.
+* `marks` ([UInt64](../../sql-reference/data-types/)) — Количество меток. Чтобы получить приблизительное число строк в части данных, умножьте количество меток на гранулярность индекса (обычно 8192) (эта подсказка не работает для адаптивной гранулярности).
+* `rows` ([UInt64](../../sql-reference/data-types/)) — Количество строк.
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — Общий размер в байтах всех файлов частей данных.
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Общий размер сжатых данных в части данных. Все вспомогательные файлы (например, файлы меток) не включены.
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Общий размер несжатых данных в части данных. Все вспомогательные файлы (например, файлы с метками) не включаются.
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/)) — Размер файла с метками.
+* `modification_time` ([DateTime](../../sql-reference/data-types/)) — Время изменения каталога, содержащего часть данных. Обычно соответствует времени создания части данных.
+* `remove_time` ([DateTime](../../sql-reference/data-types/)) — Время, когда часть данных стала неактивной.
+* `refcount` ([UInt32](../../sql-reference/data-types/)) — Количество мест, в которых используется часть данных. Значение больше 2 указывает на то, что часть данных используется в запросах или при слияниях.
+* `min_date` ([Date](../../sql-reference/data-types/)) — Минимальное значение для столбца типа Date, если он включён в ключ партиционирования.
+* `max_date` ([Date](../../sql-reference/data-types/)) — максимальное значение в столбце Date, если этот столбец входит в ключ партиции.
+* `min_time` ([DateTime](../../sql-reference/data-types/)) — Минимальное значение для столбца типа DateTime, если он включён в ключ партиционирования.
+* `max_time` ([DateTime](../../sql-reference/data-types/)) — Максимальное значение столбца DateTime, если он включён в ключ партиции.
+* `partition_id` ([String](../../sql-reference/data-types/)) — идентификатор партиции.
+* `min_block_number` ([Int64](../../sql-reference/data-types/)) — Минимальный номер частей данных, из которых состоит текущая часть после слияния.
+* `max_block_number` ([Int64](../../sql-reference/data-types/)) — Максимальное число частей данных, из которых после слияния состоит текущая часть.
+* `level` ([UInt32](../../sql-reference/data-types/)) — Глубина дерева слияний. Ноль означает, что текущая часть была создана в результате вставки, а не слияния других частей.
+* `data_version` ([UInt64](../../sql-reference/data-types/)) — Число, используемое для определения того, какие мутации должны быть применены к части данных (мутации с версией выше, чем data&#95;version).
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — Объём памяти (в байтах), занимаемый значениями первичного ключа.
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — Объем памяти (в байтах), зарезервированный для значений первичного ключа.
+* `database` ([String](../../sql-reference/data-types/)) — Имя базы данных.
+* `table` ([String](../../sql-reference/data-types/)) — Название таблицы.
+* `engine` ([String](../../sql-reference/data-types/)) — Название движка таблицы без параметров.
+* `disk_name` ([String](../../sql-reference/data-types/)) — Имя диска, на котором хранится часть данных.
+* `path` ([String](../../sql-reference/data-types/)) — Абсолютный путь к папке с файлами части данных.
+* `column` ([String](../../sql-reference/data-types/)) — Имя столбца.
+* `type` ([String](../../sql-reference/data-types/)) — Тип столбца.
+* `column_position` ([UInt64](../../sql-reference/data-types/)) — Порядковый номер столбца в таблице, начиная с 1.
+* `default_kind` ([String](../../sql-reference/data-types/)) — Тип выражения (DEFAULT, MATERIALIZED, ALIAS) для значения по умолчанию либо пустая строка, если оно не задано.
+* `default_expression` ([String](../../sql-reference/data-types/)) — Выражение для значения по умолчанию или пустая строка, если оно не задано.
+* `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — Общий размер столбца в байтах.
+* `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Общий объём сжатых данных в столбце, в байтах.
+* `column_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — Общий размер данных в столбце после распаковки, в байтах.
+* `column_marks_bytes` ([UInt64](../../sql-reference/data-types/)) — Размер меток столбца в байтах.
+* `column_modification_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Время последнего изменения столбца.
+* `column_ttl_min` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Минимальное значение вычисленного выражения TTL для столбца.
+* `column_ttl_max` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Максимальное значение вычисленного выражения TTL для столбца.
+* `statistics` ([Array(String)](../../sql-reference/data-types/)) — Статистика столбца.
+* `estimates.min` ([Nullable(String)](../../sql-reference/data-types/)) — Оценочное минимальное значение столбца.
+* `estimates.max` ([Nullable(String)](../../sql-reference/data-types/)) — Предполагаемое максимальное значение столбца.
+* `estimates.cardinality` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Приблизительная кардинальность столбца.
+* `serialization_kind` ([String](../../sql-reference/data-types/)) — Тип сериализации столбца
+* `substreams` ([Array(String)](../../sql-reference/data-types/)) — Имена подпотоков, в которые сериализуется столбец
+* `filenames` ([Array(String)](../../sql-reference/data-types/)) — Имена файлов для каждого подпотока столбца
+* `subcolumns.names` ([Array(String)](../../sql-reference/data-types/)) — Названия подстолбцов столбца
+* `subcolumns.types` ([Array(String)](../../sql-reference/data-types/)) — Типы подстолбцов столбца
+* `subcolumns.serializations` ([Array(String)](../../sql-reference/data-types/)) — Типы сериализации подстолбцов столбца
+* `subcolumns.bytes_on_disk` ([Array(UInt64)](../../sql-reference/data-types/)) — Размер в байтах каждого подстолбца
+* `subcolumns.data_compressed_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — Размеры сжатых данных каждого подстолбца, в байтах
+* `subcolumns.data_uncompressed_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — Размеры данных после распаковки для каждого подстолбца, в байтах
+* `subcolumns.marks_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — Размеры меток для каждого подстолбца столбца, в байтах
+
+{/*AUTOGENERATED_END*/ }
+
+## Пример \{#example\}
 
 ```sql
 SELECT * FROM system.parts_columns LIMIT 1 FORMAT Vertical;
@@ -103,7 +121,7 @@ column_data_uncompressed_bytes:        2
 column_marks_bytes:                    48
 ```
 
-**См. также**
+## См. также \{#see-also\}
 
 * [Семейство MergeTree](../../engines/table-engines/mergetree-family/mergetree.md)
 * [Подсчёт количества и размера компактных и широких частей](/knowledgebase/count-parts-by-type)

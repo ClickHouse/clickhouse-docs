@@ -12,14 +12,12 @@ integration:
 
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';
 import cloudsql_logical_decoding1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding1.png';
-import cloudsql_logical_decoding2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding2.png';
 import cloudsql_logical_decoding3 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding3.png';
 import connections from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections.png';
 import connections_networking from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections_networking.png';
 import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall1.png';
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
-
 
 # Google Cloud SQL Postgres 소스 설정 가이드 \{#google-cloud-sql-postgres-source-setup-guide\}
 
@@ -35,19 +33,17 @@ Postgres 12 이상 버전은 모두 지원됩니다.
 
 ## 논리적 복제(logical replication) 활성화 \{#enable-logical-replication\}
 
-`cloudsql.logical_decoding`이 on이고 `wal_sender_timeout`이 0으로 설정되어 있으면 **아래 단계를 따를 필요가 없습니다**. 다른 데이터 복제(replication) 도구에서 마이그레이션하는 경우에는 이 설정들이 대부분 이미 구성되어 있습니다.
+`cloudsql.logical_decoding`이 on으로 설정되어 있으면 **아래 단계를 따를 필요가 없습니다**. 다른 데이터 복제(replication) 도구에서 마이그레이션하는 경우에는 이 설정이 대부분 이미 구성되어 있습니다.
 
 1. Overview 페이지에서 **Edit** 버튼을 클릭합니다.
 
-<Image img={edit_button} alt="Cloud SQL Postgres에서 Edit 버튼" size="lg" border/>
+<Image img={edit_button} alt="Cloud SQL Postgres에서 Edit 버튼" size="lg" border />
 
-2. Flags 탭으로 이동하여 `cloudsql.logical_decoding`을 on으로, `wal_sender_timeout`을 0으로 변경합니다. 이러한 변경 사항을 적용하려면 Postgres 서버를 재시작해야 합니다.
+2. Flags 탭으로 이동하여 `cloudsql.logical_decoding`을 on으로 변경합니다. 이 변경 사항을 적용하려면 Postgres 서버를 재시작해야 합니다.
 
-<Image img={cloudsql_logical_decoding1} alt="cloudsql.logical_decoding을 on으로 변경" size="lg" border/>
+<Image img={cloudsql_logical_decoding1} alt="cloudsql.logical_decoding을 on으로 변경" size="lg" border />
 
-<Image img={cloudsql_logical_decoding2} alt="cloudsql.logical_decoding과 wal_sender_timeout 변경 완료" size="lg" border/>
-
-<Image img={cloudsql_logical_decoding3} alt="서버 재시작" size="lg" border/>
+<Image img={cloudsql_logical_decoding3} alt="서버 재시작" size="lg" border />
 
 ## ClickPipes 사용자 생성 및 권한 부여 \{#creating-clickpipes-user-and-granting-permissions\}
 

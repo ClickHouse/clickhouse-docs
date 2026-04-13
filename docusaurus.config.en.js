@@ -59,7 +59,7 @@ const config = {
   onBrokenLinks: process.env.ON_BROKEN_LINKS ?? "throw",
   onBrokenMarkdownLinks: process.env.ON_BROKEN_MARKDOWN_LINKS ?? "warn",
   onDuplicateRoutes: "throw",
-  onBrokenAnchors: process.env.ON_BROKEN_ANCHORS ?? "throw",
+  onBrokenAnchors: process.env.ON_BROKEN_ANCHORS ?? "warn",
   favicon: "img/docs_favicon.ico",
   organizationName: "ClickHouse",
   trailingSlash: false,

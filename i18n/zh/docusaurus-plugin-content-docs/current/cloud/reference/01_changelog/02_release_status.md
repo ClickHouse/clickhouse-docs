@@ -37,7 +37,7 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
 ## 发布计划 \{#release-schedule\}
 
 :::important 了解发布日程
-下方显示的日期表示 ClickHouse **开始向各发布通道分阶段发布** 的时间，而不是您的各个服务实际完成升级的时间。
+下方显示的日期表示 ClickHouse **开始向各发布通道发布** 的时间，而不是您的各个服务实际完成升级的时间。
 
 * 发布过程是自动执行的，并会在数周内逐步完成
 * 已配置计划升级时间窗口的服务，会在通道发布结束后的下一周内，于其计划升级时间窗口内完成升级 (从周一 00:00 UTC 开始)
@@ -69,11 +69,12 @@ ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新
    regular_start_date: '2026-03-09',
    regular_end_date: '2026-03-18',
    slow_start_date: '2026-04-07',
-   slow_end_date: '待定',
+   slow_end_date: '2026-04-09',
    fast_progress: 'green',
    regular_progress: 'green',
    slow_progress: 'green',
    regular_delay_note: '配置了计划升级时间窗口的服务，将在 3 月 23 日之后的下一周内，于其计划升级时间窗口内接收 25.12 版本',
+   slow_delay_note: '配置了计划升级时间窗口的服务，将在 4 月 13 日之后的下一周内，于其计划升级时间窗口内接收 25.12 版本',
  },
  {
    changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',

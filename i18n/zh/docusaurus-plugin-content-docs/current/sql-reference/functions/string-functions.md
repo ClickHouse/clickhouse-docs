@@ -2737,7 +2737,7 @@ SELECT space(3) AS res, length(res);
 
 自 v25.5.0 起引入
 
-查找给定字符串中所有长度至少为 `n` 的子串，
+查找给定字符串中所有长度至少为 `n` 的子字符串，
 其中子串边界处的 (n-1)-gram 的哈希值
 都严格大于该子串内部任意 (n-1)-gram 的哈希值。
 使用 `CRC32` 作为哈希函数。
@@ -2745,7 +2745,7 @@ SELECT space(3) AS res, length(res);
 **语法**
 
 ```sql
-sparseGrams(s[, min_ngram_length, max_ngram_length])
+sparseGrams(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **参数**
@@ -2772,7 +2772,6 @@ SELECT sparseGrams('alice', 3)
 │ ['ali','lic','lice','ice']         │
 └────────────────────────────────────┘
 ```
-
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
@@ -2866,7 +2865,7 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 **语法**
 
 ```sql
-sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
+sparseGramsUTF8(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **参数**
@@ -2878,7 +2877,7 @@ sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
 
 **返回值**
 
-返回选取的 UTF-8 子串数组。[`Array(String)`](/sql-reference/data-types/array)
+返回选取的 UTF-8 子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
 
 **示例**
 
@@ -2893,7 +2892,6 @@ SELECT sparseGramsUTF8('алиса', 3)
 │ ['али','лис','иса']         │
 └─────────────────────────────┘
 ```
-
 
 ## startsWith \{#startsWith\}
 

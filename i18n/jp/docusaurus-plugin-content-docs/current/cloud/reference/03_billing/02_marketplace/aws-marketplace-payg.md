@@ -22,13 +22,9 @@ import Image from '@theme/IdealImage';
 
 ## 前提条件 \{#prerequisites\}
 
-- 請求管理者によって購入権限が有効化されている AWS アカウント。
-- サブスクリプションを購入するには、そのアカウントで AWS Marketplace にログインしている必要があります。
-- サブスクリプションに ClickHouse 組織を接続するには、その組織の管理者である必要があります。
-
-:::note
-1 つの AWS アカウントは、「ClickHouse Cloud - Pay As You Go」サブスクリプション 1 件にしか登録できず、そのサブスクリプションは 1 つの ClickHouse 組織にのみリンクできます。
-:::
+* 請求管理者によって購入権限が有効化されている AWS アカウント。
+* サブスクリプションを購入するには、そのアカウントで AWS Marketplace にログインしている必要があります。
+* サブスクリプションに ClickHouse 組織を接続するには、その組織の管理者である必要があります。
 
 ## サインアップ手順 \{#steps-to-sign-up\}
 

@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.warnings \{#systemwarnings\}
-
 <SystemTableCloud />
+
+## 说明 \{#description\}
 
 该表显示 ClickHouse 服务器的警告信息。
 相同类型的警告会合并为一条记录。
@@ -29,22 +29,18 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 * [max&#95;named&#95;collection&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_named_collection_num_to_warn)
 * [resource&#95;overload&#95;warnings](/operations/settings/server-overload#resource-overload-warnings)
 
-列：
+## 列 \{#columns\}
 
 * `message` ([String](../../sql-reference/data-types/string.md)) — 警告信息。
 * `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 用于格式化该警告信息的格式字符串。
 
-**示例**
+## 示例 \{#example\}
 
-查询：
-
-```sql
+```sql title="Query"
  SELECT * FROM system.warnings LIMIT 2 \G;
 ```
 
-结果：
-
-```text
+```text title="Response"
 Row 1:
 ──────
 message:               The number of active parts is more than 10.

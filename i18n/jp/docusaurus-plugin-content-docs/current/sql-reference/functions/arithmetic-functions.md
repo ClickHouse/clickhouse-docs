@@ -1206,6 +1206,9 @@ SELECT negate(10)
 
 2 つの値 `x` と `y` の和を計算します。エイリアス: `x + y` (演算子) 。
 整数と日付、または整数と日時を加算できます。前者の演算では日付の日数を増やし、後者の演算では日時の秒数を増やします。
+日付と時刻を加算することもできます。`Date` と `Time` を加算すると
+`DateTime` になります。`Date` と `Time64`、または `Date32` と
+`Time` または `Time64` を加算すると、`DateTime64` になります。
 
 **構文**
 
@@ -1241,6 +1244,16 @@ SELECT plus(toDate('2025-01-01'),5)
 
 ```response title=Response
 2025-01-06
+```
+
+**日付と時刻の加算**
+
+```sql title=Query
+SELECT toDate('2025-01-01') + CAST('14:30:25', 'Time')
+```
+
+```response title=Response
+2025-01-01 14:30:25
 ```
 
 ## positiveModulo \{#positiveModulo\}

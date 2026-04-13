@@ -19,6 +19,10 @@ integration:
 | 使用默认值添加新列 (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | 自动传播。新列将在 schema 变更之后同步的所有行中被填充，但已有的行在未执行整表刷新前不会显示默认值 |
 | 删除已有列 (`ALTER TABLE DROP COLUMN ...`)                | 可检测，但**不会**传播。被删除的列在 schema 变更之后同步的所有行中将被填充为 `NULL`   |
 
+:::note
+目前不支持在 snapshot 期间添加列。建议的解决方法是在计划进行 schema 变更之前或之后执行 snapshot；或者，如果 ClickPipe 已经失败，可手动向目标表添加一个相应类型的列。
+:::
+
 ### MySQL 5.x 限制 \{#mysql-5-limitations\}
 
 [8.0.1](https://dev.mysql.com/blog-archive/more-metadata-is-written-into-binary-log/) 之前的 MySQL 版本在 binlog 中不会包含完整的列元数据（`binlog_row_metadata=FULL`），因此 ClickPipes 会根据列的序号位置进行跟踪。也就是说：

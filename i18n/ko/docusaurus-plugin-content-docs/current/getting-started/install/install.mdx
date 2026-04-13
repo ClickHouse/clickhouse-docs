@@ -8,6 +8,7 @@ doc_type: 'guide'
 ---
 
 import InstallSelector from '@site/src/components/Install/Install'
+import CLIInstall from './_snippets/_cli_install.md'
 import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
 import QuickInstall from './_snippets/_quick_install.md'
@@ -27,4 +28,4 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 또는 아래에서 플랫폼, 배포판 및 설치 방법을 선택하여 오픈 소스 ClickHouse용 설치 지침을 확인하십시오.
 
-<InstallSelector windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />
+<InstallSelector cli={<CLIInstall/>} windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />

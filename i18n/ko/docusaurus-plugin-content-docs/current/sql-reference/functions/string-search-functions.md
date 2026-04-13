@@ -466,7 +466,7 @@ hasAllTokens(input, needles)
 
 * `input` — 입력 컬럼입니다. 데이터 타입은 [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring), [`Array(String)`](/sql-reference/data-types/array), [`Array(FixedString)`](/sql-reference/data-types/array) 중 하나일 수 있습니다.
 * `needles` — 검색할 토큰입니다. [`String`](/sql-reference/data-types/string) 또는 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 사용할 tokenizer를 지정합니다. 사용할 수 있는 인수는 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `asciiCJK`입니다. 선택 사항으로, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. 형식은 [`const String`](/sql-reference/data-types/string)입니다.
+* `tokenizer` — 사용할 tokenizer를 지정합니다. 사용할 수 있는 인수는 `splitByNonAlpha`, `splitByString`, `asciiCJK`, `ngrams`, `sparseGrams`, `array`입니다. 선택 사항으로, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. 형식은 [`const String`](/sql-reference/data-types/string)입니다.
 
 **반환 값**
 
@@ -474,7 +474,7 @@ hasAllTokens(input, needles)
 
 **예시**
 
-**문자열 needle 사용 기본 예제**
+**문자열 needle 사용법**
 
 ```sql title=Query
 CREATE TABLE table (
@@ -624,7 +624,7 @@ hasAnyTokens(input, needles)
 
 * `input` — 입력 컬럼입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring) 또는 [`Nullable(String)`](/sql-reference/data-types/nullable) 또는 [`Nullable(FixedString)`](/sql-reference/data-types/nullable) 또는 [`Array(String)`](/sql-reference/data-types/array) 또는 [`Array(FixedString)`](/sql-reference/data-types/array) 또는 [`Array(Nullable(String))`](/sql-reference/data-types/array) 또는 [`Array(Nullable(FixedString))`](/sql-reference/data-types/array) 형식일 수 있습니다.
 * `needles` — 검색 대상 토큰입니다. [`String`](/sql-reference/data-types/string) 또는 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 사용할 tokenizer입니다. 허용되는 값은 `splitByNonAlpha`, `ngrams`, `splitByString`, `array`, `sparseGrams`, `asciiCJK`입니다. 선택 사항이며, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 사용할 tokenizer입니다. 허용되는 값은 `splitByNonAlpha`, `splitByString`, `asciiCJK`, `ngrams`, `sparseGrams`, `array`입니다. 선택 사항이며, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -734,6 +734,63 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 ┌─count()─┐
 │       2 │
 └─────────┘
+```
+
+## hasPhrase \{#hasPhrase\}
+
+도입 버전: v26.4.0
+
+haystack에 phrase의 모든 토큰이 연속된 순서로 포함되어 있는지 확인합니다.
+
+검색에 앞서 함수는 선택적 세 번째 인수로 지정한 토크나이저를 사용해 `input` 인수와 `phrase` 인수를 모두 토큰화합니다.
+토크나이저를 지정하지 않으면 기본적으로 `splitByNonAlpha` 토크나이저를 사용합니다.
+
+[`hasToken`](#hasToken), [`hasAnyTokens`](#hasAnyTokens), [`hasAllTokens`](#hasAllTokens)과 달리 `hasPhrase`는 토큰이 동일한 순서로 나타나야 하며
+그 사이에 다른 토큰이 끼어들어서는 안 됩니다. 예를 들어 `hasPhrase('the quick brown fox', 'quick fox')`는 0을 반환합니다.
+이는 &quot;quick&quot;과 &quot;fox&quot; 사이에 &quot;brown&quot;이 있기 때문입니다.
+
+**구문**
+
+```sql
+hasPhrase(input, phrase[, tokenizer])
+```
+
+**별칭**: `matchPhrase`
+
+**인수**
+
+* `input` — 입력 컬럼입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `phrase` — 검색할 구문입니다. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 사용할 토크나이저입니다. 선택 사항이며, 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
+
+**반환값**
+
+구문이 연속된 토큰 시퀀스로 발견되면 `1`을 반환하며, 그렇지 않으면 `0`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**구문 일치**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick brown')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick brown')─┐
+│                                                      1 │
+└────────────────────────────────────────────────────────┘
+```
+
+**비연속 토큰**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick fox')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick fox')─┐
+│                                                    0 │
+└──────────────────────────────────────────────────────┘
 ```
 
 ## hasSubsequence \{#hasSubsequence\}

@@ -80,12 +80,6 @@ Connect to your Azure Flexible Server Postgres through the admin user and run th
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
-5. Set `wal_sender_timeout` to 0 for `clickpipes_user`
-
-   ```sql
-   ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
-   ```
-
 ## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
 
 Please follow the below steps to add [ClickPipes IPs](../../index.md#list-of-static-ips) to your network.

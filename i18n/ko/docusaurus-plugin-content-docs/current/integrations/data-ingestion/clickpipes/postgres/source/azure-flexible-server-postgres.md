@@ -67,25 +67,19 @@ admin 사용자로 Azure Flexible Server Postgres에 접속한 후 다음 명령
    publication에 포함되는 모든 테이블에는 **primary key**가 정의되어 있거나, **replica identity**가 `FULL`로 설정되어 있어야 합니다. 범위 지정에 대한 안내는 [Postgres FAQ](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)를 참고하십시오.
    :::
 
-   - 특정 테이블에 대한 publication을 생성하려면:
+   * 특정 테이블에 대한 publication을 생성하려면:
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+     ```
 
-   - 특정 스키마의 모든 테이블에 대한 publication을 생성하려면:
+   * 특정 스키마의 모든 테이블에 대한 publication을 생성하려면:
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+     ```
 
    `clickpipes` publication에는 지정된 테이블에서 생성되는 변경 이벤트 집합이 포함되며, 이후 복제 스트림을 수집하는 데 사용됩니다.
-
-5. `clickpipes_user`에 대해 `wal_sender_timeout`을 0으로 설정합니다.
-
-   ```sql
-   ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
-   ```
 
 ## ClickPipes IP를 방화벽에 추가 \{#add-clickpipes-ips-to-firewall\}
 

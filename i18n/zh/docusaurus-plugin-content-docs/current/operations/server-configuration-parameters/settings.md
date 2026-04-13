@@ -1690,7 +1690,7 @@ HSTS 的失效时间（秒）。
 :::note
 
 * 默认情况下，如果省略了 `interserver_http_credentials` 部分，则在复制期间不使用身份验证。
-* `interserver_http_credentials` 设置与 ClickHouse 客户端凭证[配置](../../interfaces/cli.md#configuration_files)无关。
+* `interserver_http_credentials` 设置与 ClickHouse 客户端凭证[配置](../../interfaces/client.md#configuration_files)无关。
 * 这些凭证在通过 `HTTP` 和 `HTTPS` 进行复制时通用。
   :::
 
@@ -1715,7 +1715,7 @@ ClickHouse 支持在无需同时停止所有副本以更新配置的情况下，
 </interserver_http_credentials>
 ```
 
-在配置好所有副本后，将 `allow_empty` 设为 `false`，或移除该设置。这样会强制必须使用新的凭证进行认证。
+在配置好所有副本后，将 `allow_empty` 设为 `false`，或移除该设置。这样会强制必须使用新的凭证进行身份验证。
 
 要更改现有凭证，请将用户名和密码移动到 `interserver_http_credentials.old` 部分，并将 `user` 和 `password` 更新为新值。此时，服务器会使用新凭证连接到其他副本，但同时也会接受使用新旧任一凭证的连接。
 

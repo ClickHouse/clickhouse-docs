@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 導入バージョン: v21.11.0
 
-`L1` 空間 (1-ノルム ([タクシー幾何](https://en.wikipedia.org/wiki/Taxicab_geometry) における距離) ) において、2 つの点 (ベクトルの要素を座標とみなしたもの) 間の距離を計算します。
+`L1` 空間 (1-ノルム ([タクシー幾何学](https://en.wikipedia.org/wiki/Taxicab_geometry) における距離) ) において、2 つの点 (ベクトルの要素を座標とみなしたもの) 間の距離を計算します。
 
 **構文**
 
@@ -38,7 +38,7 @@ L1Distance(vector1, vector2)
 
 **戻り値**
 
-1-ノルム距離を返します。[`UInt32`](/sql-reference/data-types/int-uint) または [`Float64`](/sql-reference/data-types/float)
+1-ノルム距離を返します。`Array` 入力では、要素型の最小共通スーパータイプが `Float32` または `BFloat16` の場合は `Float32`、それ以外の場合は `Float64` を返します。`Tuple` 入力では、戻り値の型は要素ごとの演算の算術結果型に従います (整数型は保持されます) 。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
 **使用例**
 
@@ -130,7 +130,7 @@ SELECT L1Normalize((1, 2))
 
 導入バージョン: v21.11.0
 
-ユークリッド空間において、2 つの点 (ベクトルの要素が座標を表す) 間の距離 ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)) を計算します。
+ユークリッド空間において、2 つの点 (ベクトルの要素が座標を表す) 間の距離 ([ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance)) を計算します。
 
 **構文**
 
@@ -147,7 +147,7 @@ L2Distance(vector1, vector2)
 
 **戻り値**
 
-2-ノルム距離を返します。[`Float64`](/sql-reference/data-types/float)
+2-ノルム距離を返します。`Array` 入力の場合、要素型の最小共通スーパータイプが `Float32` または `BFloat16` であれば `Float32` を返し、それ以外の場合は `Float64` を返します。`Tuple` 入力の場合は、常に `Float64` を返します。[`Float*`](/sql-reference/data-types/float)
 
 **例**
 
@@ -167,7 +167,7 @@ SELECT L2Distance((1, 2), (2, 3))
 
 v25.10.0 で導入。
 
-ユークリッド空間において、2 点間のユークリッド距離 (ベクトルの値を座標とみなす) の近似値を計算します ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
+ユークリッド空間において、2 点間のユークリッド距離 (ベクトルの値を座標とみなす) の近似値を計算します ([ユークリッド距離](https://en.wikipedia.org/wiki/Euclidean_distance)) 。
 
 **構文**
 
@@ -183,9 +183,9 @@ L2DistanceTransposed(vector1, vector2, p)
 * `reference` — 参照ベクトル。[`Array(T)`](/sql-reference/data-types/array)
 * `p` — 距離計算において各ベクトル要素から使用するビット数 (1 から要素のビット幅まで) 。量子化レベルは精度と速度のトレードオフを制御します。使用するビット数を減らすと I/O と計算が高速になりますが精度は低下し、ビット数を増やすと性能を犠牲にして精度が向上します。[`UInt`](/sql-reference/data-types/int-uint)
 
-**返される値**
+**戻り値**
 
-近似的な 2-ノルム距離を返します。[`Float64`](/sql-reference/data-types/float)
+近似的な 2-ノルム距離を返します。常に `Float64` を返します。[`Float64`](/sql-reference/data-types/float)
 
 **例**
 
@@ -296,7 +296,7 @@ L2SquaredDistance(vector1, vector2)
 
 **戻り値**
 
-2つのベクトルにおける対応する要素間の差の二乗和を返します。[`Float64`](/sql-reference/data-types/float)
+2つのベクトルにおける対応する要素間の差の二乗和を返します。`Array` 入力の場合、要素型の最小共通スーパータイプが `Float32` または `BFloat16` であれば `Float32` を返し、それ以外の場合は `Float64` を返します。`Tuple` 入力の場合、戻り値の型は要素ごとの演算の算術結果型に従います (整数型は保持される) 。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
 **例**
 
@@ -360,16 +360,16 @@ SELECT L2SquaredNorm((1, 2))
 LinfDistance(vector1, vector2)
 ```
 
-**エイリアス**: `distanceLinf`
+**別名**: `distanceLinf`
 
 **引数**
 
 * `vector1` — 1 番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
 * `vector2` — 2 番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
 
-**返される値**
+**戻り値**
 
-無限ノルム (Infinity-norm) による距離を返します。[`Float64`](/sql-reference/data-types/float)
+無限ノルム (Infinity-norm) による距離を返します。`Array` 入力の場合、要素型の最小共通スーパータイプが `Float32` または `BFloat16` であれば `Float32`、それ以外の場合は `Float64` を返します。`Tuple` 入力の場合は常に `Float64` を返します。[`Float*`](/sql-reference/data-types/float)
 
 **使用例**
 
@@ -474,12 +474,12 @@ LpDistance(vector1, vector2, p)
 **引数**
 
 * `vector1` — 1 番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — 2 番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/array) または [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — 2 番目のベクトル。[`Tuple(T)`](/sql-reference/data-types/tuple) または [`Array(T)`](/sql-reference/data-types/array)
 * `p` — 冪指数。取りうる値は `[1; inf)` の実数。[`UInt*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
-**返される値**
+**戻り値**
 
-p-ノルム距離を返します。[`Float64`](/sql-reference/data-types/float)
+p-ノルム距離を返します。`Array` 入力の場合、要素型の最小共通スーパータイプが `Float32` または `BFloat16` であれば `Float32` を返し、それ以外の場合は `Float64` を返します。`Tuple` 入力の場合は、常に `Float64` を返します。[`Float*`](/sql-reference/data-types/float)
 
 **例**
 
@@ -596,7 +596,7 @@ cosineDistance(vector1, vector2)
 
 **戻り値**
 
-2 つのベクトルのなす角の余弦から 1 を引いた値を返します。[`Float64`](/sql-reference/data-types/float)
+コサイン距離 (コサイン類似度から 1 を引いた値) を返します。`Array` 入力の場合、要素型の最小共通スーパータイプが `Float32` または `BFloat16` であれば `Float32` を返し、それ以外の場合は `Float64` を返します。`Tuple` 入力の場合は、常に `Float64` を返します。[`Float*`](/sql-reference/data-types/float)
 
 **使用例**
 
@@ -632,9 +632,9 @@ cosineDistanceTransposed(vector1, vector2, p)
 * `reference` — 参照ベクトル。[`Array(T)`](/sql-reference/data-types/array)
 * `p` — 距離計算において各ベクトル要素から使用するビット数 (1 から要素のビット幅まで) 。量子化レベルにより、精度と速度のトレードオフが決まります。使用するビット数が少ないほど I/O と計算は高速になりますが精度は低下し、ビット数が多いほど精度は向上しますがパフォーマンスは低下します。[`UInt`](/sql-reference/data-types/int-uint)
 
-**返される値**
+**戻り値**
 
-2 つのベクトル間の角度の余弦の近似値を 1 から引いた値を返します。[`Float64`](/sql-reference/data-types/float)
+近似的なコサイン距離 (コサイン類似度を 1 から引いた値) を返します。戻り値の型は常に Float64 です。[`Float64`](/sql-reference/data-types/float)
 
 **例**
 

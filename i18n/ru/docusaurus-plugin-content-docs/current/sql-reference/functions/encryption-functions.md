@@ -25,68 +25,35 @@ doc_type: 'reference'
 
 ## HMAC \{#HMAC\}
 
-Добавлено в v25.12.0
+Добавлено в: v25.12.0
 
-Вычисляет HMAC (код аутентификации сообщения, основанный на хешировании) для заданного сообщения с использованием указанного алгоритма хеширования и секретного ключа.
+Вычисляет HMAC (Hash-based Message Authentication Code) для указанного сообщения с использованием заданного алгоритма хеширования и секретного ключа.
 
 Поддерживаемые алгоритмы хеширования:
 
-* RSA-MD4 (псевдонимы: MD4, RSA-MD4)
-* RSA-MD5 (псевдонимы: MD5, RSA-MD5)
-* RSA-MDC2 (псевдонимы: MDC2, RSA-MDC2)
-* RSA-RIPEMD160 (псевдонимы: RIPEMD160, RSA-RIPEMD160)
-* RSA-SHA1 (псевдонимы: RSA-SHA1, SHA1)
-* RSA-SHA1-2 (псевдонимы: RSA-SHA1, RSA-SHA1-2)
-* RSA-SHA224 (псевдонимы: RSA-SHA224, SHA224)
-* RSA-SHA256 (псевдонимы: RSA-SHA256, SHA256)
-* RSA-SHA3-224 (псевдонимы: RSA-SHA3-224, SHA3-224)
-* RSA-SHA3-256 (псевдонимы: RSA-SHA3-256, SHA3-256)
-* RSA-SHA3-384 (псевдонимы: RSA-SHA3-384, SHA3-384)
-* RSA-SHA3-512 (псевдонимы: RSA-SHA3-512, SHA3-512)
-* RSA-SHA384 (псевдонимы: RSA-SHA384, SHA384)
-* RSA-SHA512 (псевдонимы: RSA-SHA512, SHA512)
-* RSA-SHA512/224 (псевдонимы: RSA-SHA512/224, SHA512-224)
-* RSA-SHA512/256 (псевдонимы: RSA-SHA512/256, SHA512-256)
-* RSA-SM3 (псевдонимы: RSA-SM3, SM3)
 * blake2b512
 * blake2s256
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-224 (псевдонимы: SHA3-224, id-rsassa-pkcs1-v1&#95;5-with-sha3-224)
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-256 (псевдонимы: SHA3-256, id-rsassa-pkcs1-v1&#95;5-with-sha3-256)
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-384 (псевдонимы: SHA3-384, id-rsassa-pkcs1-v1&#95;5-with-sha3-384)
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-512 (псевдонимы: SHA3-512, id-rsassa-pkcs1-v1&#95;5-with-sha3-512)
 * md4
-* md4WithRSAEncryption (псевдонимы: MD4, md4WithRSAEncryption)
 * md5
 * md5-sha1
-* md5WithRSAEncryption (псевдонимы: MD5, md5WithRSAEncryption)
 * mdc2
-* mdc2WithRSA (псевдонимы: MDC2, mdc2WithRSA)
 * ripemd (псевдонимы: RIPEMD160, ripemd)
 * ripemd160
-* ripemd160WithRSA (псевдонимы: RIPEMD160, ripemd160WithRSA)
 * rmd160 (псевдонимы: RIPEMD160, rmd160)
 * sha1
-* sha1WithRSAEncryption (псевдонимы: SHA1, sha1WithRSAEncryption)
 * sha224
-* sha224WithRSAEncryption (псевдонимы: SHA224, sha224WithRSAEncryption)
 * sha256
-* sha256WithRSAEncryption (псевдонимы: SHA256, sha256WithRSAEncryption)
 * sha3-224
 * sha3-256
 * sha3-384
 * sha3-512
 * sha384
-* sha384WithRSAEncryption (псевдонимы: SHA384, sha384WithRSAEncryption)
 * sha512
 * sha512-224
-* sha512-224WithRSAEncryption (псевдонимы: SHA512-224, sha512-224WithRSAEncryption)
 * sha512-256
-* sha512-256WithRSAEncryption (псевдонимы: SHA512-256, sha512-256WithRSAEncryption)
-* sha512WithRSAEncryption (псевдонимы: SHA512, sha512WithRSAEncryption)
 * shake128
 * shake256
 * sm3
-* sm3WithRSAEncryption (псевдонимы: SM3, sm3WithRSAEncryption)
 * ssl3-md5 (псевдонимы: MD5, ssl3-md5)
 * ssl3-sha1 (псевдонимы: SHA1, ssl3-sha1)
 * whirlpool
@@ -98,7 +65,6 @@ HMAC(mode, message, key)
 ```
 
 **Аргументы**
-
 
 * `mode` — Имя алгоритма хеширования (регистронезависимое). Поддерживаются: md5, sha1, sha224, sha256, sha384, sha512. [`String`](/sql-reference/data-types/string)
 * `message` — Сообщение, для которого вычисляется код аутентификации. [`String`](/sql-reference/data-types/string)
@@ -113,7 +79,7 @@ HMAC(mode, message, key)
 **Простейший HMAC-SHA256**
 
 ```sql title=Query
-SELECT hex(HMAC('sha256', 'Быстрая коричневая лиса прыгает через ленивую собаку', 'secret_key'));
+SELECT hex(HMAC('sha256', 'The quick brown fox jumps over the lazy dog', 'secret_key'));
 ```
 
 ```response title=Response

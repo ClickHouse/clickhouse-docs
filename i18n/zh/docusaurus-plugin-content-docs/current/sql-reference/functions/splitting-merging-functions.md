@@ -509,10 +509,10 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 
 * `splitByNonAlpha` 使用非字母数字的 ASCII 字符来拆分字符串 (另见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)) 。
 * `splitByString(S)` 使用用户定义的分隔字符串 `S` 来拆分字符串 (另见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)) 。可以通过可选参数指定分隔符列表，例如：`tokens(value, 'splitByString', [', ', '; ', '\n', '\\'])`。注意，每个分隔字符串可以由多个字符组成 (如示例中的 `', '`) 。如果未显式指定，默认的分隔符列表是单个空白字符 `[' ']`。
+* `asciiCJK` 使用 Unicode 单词边界规则 (类似 UAX #29) 将字符串拆分为 标记。ASCII 字母数字字符和下划线会与连接符一起构成 标记 (字母使用 `:`，同类字符使用 `.` 和 `'`) 。非 ASCII Unicode 字符会成为单字符 标记。
 * `ngrams(N)` 将字符串拆分为长度相同的 `N`-gram (另见函数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams)) 。ngram 的长度可以通过 1 到 8 之间的可选整数参数指定，例如：`tokens(value, 'ngrams', 3)`。如果未显式指定，默认的 ngram 长度为 3。
 * `sparseGrams(min_length, max_length, min_cutoff_length)` 将字符串拆分为长度在 `min_length` 到 `max_length` (含) 之间的可变长度 n-gram (另见函数 [sparseGrams](/sql-reference/functions/string-functions#sparseGrams)) 。如果未显式指定，`min_length` 和 `max_length` 的默认值分别为 3 和 100。如果提供参数 `min_cutoff_length`，则只返回长度大于或等于 `min_cutoff_length` 的 n-gram。与 `ngrams(N)` 相比，`sparseGrams` 分词器 生成可变长度的 N-gram，从而可以更灵活地表示原始文本。例如，`tokens(value, 'sparseGrams', 3, 5, 4)` 会在内部从输入字符串生成 3、4、5-gram，但只返回 4 和 5-gram。
 * `array` 不进行任何 tokenization，即每行的值本身就是一个 标记 (另见函数 [array](/sql-reference/functions/array-functions.md/#array)) 。
-* `asciiCJK` 使用 Unicode 单词边界规则 (类似 UAX #29) 将字符串拆分为 标记。ASCII 字母数字字符和下划线会与连接符一起构成 标记 (字母使用 `:`，同类字符使用 `.` 和 `'`) 。非 ASCII Unicode 字符会成为单字符 标记。
 
 对于 `splitByString` 分词器，如果这些 标记 并不构成一个 [前缀码](https://en.wikipedia.org/wiki/Prefix_code)，通常希望在匹配时优先选择更长的分隔符。
 要做到这一点，请按照分隔符长度的降序传入它们。
@@ -524,16 +524,16 @@ SELECT splitByWhitespace('  1!  a,  b.  ');
 tokens(value) -- 'splitByNonAlpha' tokenizer
 tokens(value, 'splitByNonAlpha')
 tokens(value, 'splitByString'[, separators])
+tokens(value, 'asciiCJK')
 tokens(value, 'ngrams'[, n])
 tokens(value, 'sparseGrams'[, min_length, max_length[, min_cutoff_length]])
 tokens(value, 'array')
-tokens(value, 'asciiCJK')
 ```
 
 **参数**
 
 * `value` — 输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — 要使用的 分词器 (分词器) 。可用参数为 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `asciiCJK`。可选，如未显式设置，默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的 分词器 (分词器) 。可用参数为 `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams` 和 `array`。可选，如未显式设置，默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 * `n` — 仅当参数 `tokenizer` 为 `ngrams` 时相关：可选参数，用于定义 n-gram 的长度。如未显式设置，默认为 `3`。[`const UInt8`](/sql-reference/data-types/int-uint)
 * `separators` — 仅当参数 `tokenizer` 为 `split` 时相关：可选参数，用于定义分隔符字符串。如未显式设置，默认为 `[' ']`。[`const Array(String)`](/sql-reference/data-types/array)
 * `min_length` — 仅当参数 `tokenizer` 为 `sparseGrams` 时相关：可选参数，用于定义最小 gram 长度，默认为 3。[`const UInt8`](/sql-reference/data-types/int-uint)
@@ -593,7 +593,7 @@ tokensForLikePattern(value[, tokenizer[, tokenizer_specific_arguments...]])
 **参数**
 
 * `value` — 输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `tokenizer` — 要使用的 分词器 (分词器) 。可用参数为 `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams` 和 `asciiCJK`。可选，如未显式设置，默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的 分词器 (分词器) 。可用参数为 `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams` 和 `array`。可选，如未显式设置，默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 * `n` — 仅当参数 `tokenizer` 为 `ngrams` 时相关：可选参数，用于定义 n-gram 的长度。如未显式设置，默认为 `3`。[`const UInt8`](/sql-reference/data-types/int-uint)
 * `separators` — 仅当参数 `tokenizer` 为 `split` 时相关：可选参数，用于定义分隔符字符串。如未显式设置，默认为 `[' ']`。[`const Array(String)`](/sql-reference/data-types/array)
 * `min_length` — 仅当参数 `tokenizer` 为 `sparseGrams` 时相关：可选参数，用于定义最小 gram 长度，默认为 3。[`const UInt8`](/sql-reference/data-types/int-uint)

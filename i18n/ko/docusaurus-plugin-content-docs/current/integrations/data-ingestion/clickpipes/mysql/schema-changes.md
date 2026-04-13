@@ -19,6 +19,10 @@ MySQL용 ClickPipes는 소스 테이블의 스키마 변경을 감지하고, 일
 | 기본값이 있는 새 컬럼 추가 (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | 자동으로 전파됩니다. 새 컬럼은 스키마 변경 이후에 복제되는 모든 행에 대해 값이 채워지지만, 전체 테이블을 다시 적재(full refresh)하지 않는 한 기존 행에는 기본값이 나타나지 않습니다 |
 | 기존 컬럼 삭제 (`ALTER TABLE DROP COLUMN ...`)                   | 감지되지만 전파되지는 **않습니다**. 삭제된 컬럼은 스키마 변경 이후에 복제되는 모든 행에 대해 `NULL`로 채워집니다                                          |
 
+:::note
+snapshot 중 컬럼 추가는 현재 지원되지 않습니다. 권장되는 우회 방법은 계획된 스키마 변경 전이나 후에 snapshot을 수행하는 것입니다. 또는 ClickPipe가 이미 실패한 경우에는 적절한 타입의 컬럼을 대상 테이블에 수동으로 추가하십시오.
+:::
+
 ### MySQL 5.x 제한 사항 \{#mysql-5-limitations\}
 
 [8.0.1](https://dev.mysql.com/blog-archive/more-metadata-is-written-into-binary-log/) 이전 MySQL 버전은 binlog에 전체 컬럼 메타데이터(`binlog_row_metadata=FULL`)를 포함하지 않으므로, ClickPipes는 컬럼을 순서(ordinal position) 기준으로 추적합니다. 이는 다음을 의미합니다.

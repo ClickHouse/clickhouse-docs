@@ -12,7 +12,6 @@ integration:
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
-import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';
 import modify_parameter_group from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/modify_parameter_group.png';
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
@@ -30,9 +29,8 @@ ClickPipes は Aurora PostgreSQL-Compatible Edition バージョン 12 以降を
 Aurora インスタンスで以下の設定がすでに設定されている場合は、このセクションをスキップできます。
 
 * `rds.logical_replication = 1`
-* `wal_sender_timeout = 0`
 
-以前に別のデータレプリケーションツールを使用していた場合、これらの設定は通常、あらかじめ設定されています。
+以前に別のデータレプリケーションツールを使用していた場合、この設定は通常、あらかじめ設定されています。
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -40,25 +38,16 @@ postgres=> SHOW rds.logical_replication ;
 -------------------------
  on
 (1 row)
-
-postgres=> SHOW wal_sender_timeout ;
- wal_sender_timeout
---------------------
- 0
-(1 row)
 ```
 
 まだ設定していない場合は、次の手順に従ってください。
 
 1. 必須の設定を含む、使用中の Aurora PostgreSQL バージョン向けの新しいパラメータグループを作成します。
    * `rds.logical_replication` を 1 に設定します
-   * `wal_sender_timeout` を 0 に設定します
 
 <Image img={parameter_group_in_blade} alt="Aurora でパラメータグループを確認する場所" size="lg" border />
 
 <Image img={change_rds_logical_replication} alt="rds.logical_replication の変更" size="lg" border />
-
-<Image img={change_wal_sender_timeout} alt="wal_sender_timeout の変更" size="lg" border />
 
 2. 新しいパラメータグループを Aurora PostgreSQL クラスタに適用します
 

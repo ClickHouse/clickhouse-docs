@@ -378,6 +378,18 @@ doc_type: 'reference'
 
 [CHouse UI Source Code](https://github.com/daun-gatal/chouse-ui)
 
+### clickhouse-flow \{#clickhouse-flow\}
+
+[clickhouse-flow](https://github.com/MikeAmputer/clickhouse-flow) — это инструмент с открытым исходным кодом для визуализации потоков данных и зависимостей между таблицами, представлениями и materialized views в ClickHouse.
+
+Возможности:
+
+* Автоматическое построение графа схема на основе метаданных ClickHouse.
+* Визуализация потоков данных через materialized views.
+* Интерактивный интерфейс для изучения структуры схема.
+* Экспорт диаграмм в PDF или SVG для документирования и совместного использования.
+* Развертывание с помощью Docker для быстрой настройки в средах разработки.
+
 ## Коммерческие решения \{#commercial\}
 
 ### DataGrip \{#datagrip\}

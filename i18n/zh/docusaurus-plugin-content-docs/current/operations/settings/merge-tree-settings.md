@@ -418,6 +418,18 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 Marks 支持压缩，有助于减小标记文件大小并加快网络传输。
 
+## compress_per_column_in_compact_parts \{#compress_per_column_in_compact_parts\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "«Новая настройка»"}]}]} />
+
+控制 Compact parts 的物理布局。如果为 true (默认) ，则每个 granule 中的每一列
+都会从新的压缩块开始，从而使 ClickHouse 可以跳过从磁盘读取不需要的列。
+如果为 false，则一个 granule 内的所有列都会打包到同一个压缩块中，
+这样可以提高压缩率，但在读取期间需要解压更多数据。
+这对于总是读取所有列的工作负载 (例如投影) 很有帮助。
+
 ## compress_primary_key \{#compress_primary_key\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

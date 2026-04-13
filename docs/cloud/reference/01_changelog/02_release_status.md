@@ -67,11 +67,12 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      regular_start_date: '2026-03-09',
      regular_end_date: '2026-03-18',
      slow_start_date: '2026-04-07',
-     slow_end_date: 'TBD',
+     slow_end_date: '2026-04-09',
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green',
      regular_delay_note: 'Services with scheduled upgrade windows will receive 25.12 during their scheduled window in the week after Mar 23',
+     slow_delay_note: 'Services with scheduled upgrade windows will receive 25.12 during their scheduled window in the week after Apr 13',
    },
    {
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',

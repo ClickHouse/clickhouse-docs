@@ -497,7 +497,7 @@ SYSTEM STOP MERGES;
 
 4. 可选但建议执行：找到 ZooKeeper 领导者 节点，将其重新启动后再停止。这会强制 ZooKeeper 在转换前将一致性快照写入磁盘。
 
-5. 在 领导者 节点上运行 `clickhouse-keeper-converter`。如果已安装完整的 ClickHouse 二进制文件，请改用 `keeper-converter` 子命令 (`clickhouse keeper-converter`) 。如果两者都不可用，请[下载二进制文件](/getting-started/quick-start/oss#download-the-binary)。
+5. 在 领导者 节点上运行 `clickhouse-keeper-converter`。如果已安装完整的 ClickHouse 二进制文件，请改用 `keeper-converter` 子命令 (`clickhouse keeper-converter`) 。如果两者都不可用，请[下载二进制文件](/getting-started/quick-start/oss#install-clickhouse)。
 
 ```bash
 clickhouse-keeper-converter \

@@ -45,7 +45,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 ```
 
 You can also cancel, stop, or start a view.
-For more details, see the [managing refreshable materialized views](/sql-reference/statements/system#refreshable-materialized-views) documentation.
+For more details, see the [managing refreshable materialized views](/sql-reference/statements/system#managing-refreshable-materialized-views) documentation.
 
 ## When was a refreshable materialized view last refreshed? {#when-was-a-refreshable-materialized-view-last-refreshed}
 

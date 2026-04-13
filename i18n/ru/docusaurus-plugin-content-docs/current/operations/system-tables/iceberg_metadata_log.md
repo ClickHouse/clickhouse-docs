@@ -1,6 +1,6 @@
 ---
-description: 'Системная таблица, содержащая информацию о файлах метаданных, прочитанных из таблиц Iceberg. Каждая запись
-  представляет либо корневой файл метаданных, метаданные, извлечённые из файла Avro, либо запись из файла Avro.'
+description: 'Системная таблица, содержащая сведения о файлах метаданных, считанных из таблиц Iceberg. Каждая запись
+  представляет собой либо корневой файл метаданных, либо метаданные, извлечённые из файла Avro, либо запись из файла Avro.'
 keywords: ['системная таблица', 'iceberg_metadata_log']
 slug: /operations/system-tables/iceberg_metadata_log
 title: 'system.iceberg_metadata_log'
@@ -9,48 +9,23 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.iceberg_metadata_log \{#systemiceberg_metadata_log\}
+<SystemTableCloud />
 
-Таблица `system.iceberg_metadata_log` фиксирует события доступа к метаданным и их разбора для таблиц Iceberg, прочитанных ClickHouse. Она предоставляет подробную информацию о каждом обработанном файле или записи метаданных, что полезно для отладки, аудита и анализа эволюции структуры таблиц Iceberg.
+## Описание \{#description\}
 
-## Назначение \{#purpose\}
+Таблица `system.iceberg_metadata_log` фиксирует события доступа к метаданным и их разбора для таблиц Iceberg, которые читает ClickHouse. Она содержит подробную информацию о каждом обработанном файле метаданных или записи, что полезно для отладки, аудита и понимания того, как меняется структура таблиц Iceberg.
 
-Эта таблица фиксирует каждый файл и каждую запись метаданных, прочитанные из таблиц Iceberg, включая корневые файлы метаданных, списки манифестов и записи манифестов. Она помогает пользователям отследить, как ClickHouse интерпретирует метаданные таблиц Iceberg, и диагностировать проблемы, связанные с эволюцией схемы, поиском и разрешением файлов или планированием выполнения запросов.
+В этой таблице регистрируются все файлы метаданных и все записи, прочитанные из таблиц Iceberg, включая корневые файлы метаданных, списки манифестов и записи манифестов. Она помогает отслеживать, как ClickHouse интерпретирует метаданные таблиц Iceberg, и диагностировать проблемы, связанные со schema, определением файлов или построением плана запроса.
 
 :::note
 Эта таблица в первую очередь предназначена для отладки.
 :::
 
-## Столбцы \{#columns\}
+### Управление подробностью логов \{#controlling-log-verbosity\}
 
-| Имя           | Тип      | Описание                                                                                       |
-|---------------|----------|------------------------------------------------------------------------------------------------|
-| `event_date`   | [Date](../../sql-reference/data-types/date.md)      | Дата записи лога.                                                                           |
-| `event_time`   | [DateTime](../../sql-reference/data-types/datetime.md)  | Временная метка события.                                                                    |
-| `query_id`     | [String](../../sql-reference/data-types/string.md)    | Идентификатор запроса, который инициировал чтение метаданных.                               |
-| `content_type` | [Enum8](../../sql-reference/data-types/enum.md)     | Тип содержимого метаданных (см. ниже).                                                      |
-| `table_path`   | [String](../../sql-reference/data-types/string.md)    | Путь к таблице Iceberg.                                                                     |
-| `file_path`    | [String](../../sql-reference/data-types/string.md)    | Путь к корневому файлу метаданных в формате JSON, списку манифестов Avro или файлу манифеста. |
-| `content`      | [String](../../sql-reference/data-types/string.md)    | Содержимое в формате JSON (исходные метаданные из файла .json, метаданные Avro или запись Avro). |
-| `row_in_file`  | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | Номер строки в файле, если применимо. Заполняется для типов содержимого `ManifestListEntry` и `ManifestFileEntry`. |
-| `pruning_status`  | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md)) | Статус отсечения для записи. `NotPruned`, `PartitionPruned`, `MinMaxIndexPruned`. Учтите, что отсечение по партиции выполняется до отсечения по minmax, поэтому `PartitionPruned` означает, что запись была отброшена фильтром по партиции и отсечение по minmax даже не выполнялось. Заполняется для типа содержимого `ManifestFileEntry`. |
+Вы можете указать, какие события метаданных будут записываться в лог, с помощью настройки [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level).
 
-## Значения `content_type` \{#content-type-values\}
-
-- `None`: Нет содержимого.
-- `Metadata`: Корневой файл метаданных.
-- `ManifestListMetadata`: Метаданные списка манифестов.
-- `ManifestListEntry`: Запись в списке манифестов.
-- `ManifestFileMetadata`: Метаданные файла манифеста.
-- `ManifestFileEntry`: Запись в файле манифеста.
-
-<SystemTableCloud/>
-
-## Управление подробностью журналирования \{#controlling-log-verbosity\}
-
-Вы можете управлять тем, какие события, связанные с метаданными, записываются в журнал, с помощью настройки [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level).
-
-Чтобы записывать в журнал все метаданные, используемые в текущем запросе:
+Чтобы записывать в лог все метаданные, используемые в текущем запросе:
 
 ```sql
 SELECT * FROM my_iceberg_table SETTINGS iceberg_metadata_log_level = 'manifest_file_entry';
@@ -62,7 +37,7 @@ FROM system.iceberg_metadata_log
 WHERE query_id = '{previous_query_id}';
 ```
 
-Чтобы логировать только корневой JSON‑файл метаданных, используемый в текущем запросе:
+Чтобы логировать только корневой JSON-файл метаданных, используемый в текущем запросе:
 
 ```sql
 SELECT * FROM my_iceberg_table SETTINGS iceberg_metadata_log_level = 'metadata';
@@ -74,19 +49,45 @@ FROM system.iceberg_metadata_log
 WHERE query_id = '{previous_query_id}';
 ```
 
-См. дополнительную информацию в описании настройки [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level).
+Дополнительную информацию см. в описании настройки [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level).
 
+### Полезно знать \{#good-to-know\}
 
-### Полезная информация \{#good-to-know\}
+* Используйте `iceberg_metadata_log_level` на уровне запроса только тогда, когда нужно детально исследовать таблицу Iceberg. В противном случае таблица логов может заполниться избыточными метаданными, что приведет к снижению производительности.
+* Таблица содержит повторяющиеся записи, так как предназначена в первую очередь для отладки и не гарантирует уникальность для каждой сущности. Содержимое и статус отсечения хранятся в отдельных строках, поскольку собираются в разные моменты работы программы. Содержимое собирается при чтении метаданных, а статус отсечения — при проверке метаданных на отсечение. **Никогда не используйте саму таблицу для дедупликации.**
+* Если используется `content_type` с уровнем детализации выше, чем `ManifestListMetadata`, кэш метаданных Iceberg для списков манифестов отключается.
+* Аналогично, если используется `content_type` с уровнем детализации выше, чем `ManifestFileMetadata`, кэш метаданных Iceberg для файлов манифестов отключается.
+* Если запрос SELECT был отменен или завершился ошибкой, таблица логов может по-прежнему содержать записи о метаданных, обработанных до сбоя, но не будет содержать информацию о сущностях метаданных, которые не были обработаны.
 
-- Используйте `iceberg_metadata_log_level` на уровне запроса только тогда, когда вам нужно детально исследовать таблицу Iceberg. В противном случае вы можете заполнить таблицу логов избыточными метаданными и столкнуться с ухудшением производительности.
-- Таблица содержит дублирующиеся записи, так как она предназначена в первую очередь для отладки и не гарантирует уникальность записей для каждой сущности. Отдельные строки хранят содержимое и статус отсечения, потому что они собираются в разные моменты выполнения программы: содержимое — при чтении метаданных, статус отсечения — при проверке метаданных на возможность отсечения. **Никогда не полагайтесь на саму таблицу для дедупликации.**
-- Если вы используете `content_type`, более подробный, чем `ManifestListMetadata`, кэш метаданных Iceberg для списков манифестов отключается.
-- Аналогично, если вы используете `content_type`, более подробный, чем `ManifestFileMetadata`, кэш метаданных Iceberg для файлов манифестов отключается.
-- Если запрос SELECT был отменён или завершился ошибкой, таблица логов всё равно может содержать записи о метаданных, обработанных до сбоя, но не будет содержать информацию о сущностях метаданных, которые не были обработаны.
+## Столбцы \{#columns\}
+
+{/*AUTOGENERATED_START*/ }
+
+| Имя              | Тип                                                                                                          | Описание                                                                                                                                                                                                                                                                                                                                                                |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `event_date`     | [Date](../../sql-reference/data-types/date.md)                                                               | Дата записи в журнале.                                                                                                                                                                                                                                                                                                                                                  |
+| `event_time`     | [DateTime](../../sql-reference/data-types/datetime.md)                                                       | Метка времени события.                                                                                                                                                                                                                                                                                                                                                  |
+| `query_id`       | [String](../../sql-reference/data-types/string.md)                                                           | Идентификатор запроса, который инициировал чтение метаданных.                                                                                                                                                                                                                                                                                                           |
+| `content_type`   | [Enum8](../../sql-reference/data-types/enum.md)                                                              | Тип содержимого метаданных (см. ниже).                                                                                                                                                                                                                                                                                                                                  |
+| `table_path`     | [String](../../sql-reference/data-types/string.md)                                                           | Путь к таблице Iceberg.                                                                                                                                                                                                                                                                                                                                                 |
+| `file_path`      | [String](../../sql-reference/data-types/string.md)                                                           | Путь к корневому JSON-файлу метаданных, списку манифестов Avro или файлу манифеста.                                                                                                                                                                                                                                                                                     |
+| `content`        | [String](../../sql-reference/data-types/string.md)                                                           | Содержимое в формате JSON (исходные метаданные из .json, метаданные Avro или запись Avro).                                                                                                                                                                                                                                                                              |
+| `row_in_file`    | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | Номер строки в файле, если применимо. Присутствует для типов содержимого `ManifestListEntry` и `ManifestFileEntry`.                                                                                                                                                                                                                                                     |
+| `pruning_status` | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md))      | Статус отсечения для записи. &#39;NotPruned&#39;, &#39;PartitionPruned&#39;, &#39;MinMaxIndexPruned&#39;. Обратите внимание: отсечение партиций выполняется до minmax-отсечения, поэтому &#39;PartitionPruned&#39; означает, что запись была отсечена фильтром партиций, и minmax-отсечение даже не выполнялось. Присутствует для типа содержимого `ManifestFileEntry`. |
+
+{/*AUTOGENERATED_END*/ }
+
+### Значения `content_type` \{#content-type-values\}
+
+* `None`: Содержимое отсутствует.
+* `Metadata`: Корневой файл метаданных.
+* `ManifestListMetadata`: Файл метаданных списка манифестов.
+* `ManifestListEntry`: Запись в списке манифестов.
+* `ManifestFileMetadata`: Файл метаданных манифеста.
+* `ManifestFileEntry`: Запись в файле манифеста.
 
 ## См. также \{#see-also\}
 
-- [Движок таблиц Iceberg](../../engines/table-engines/integrations/iceberg.md)
-- [Табличная функция Iceberg](../../sql-reference/table-functions/iceberg.md)
-- [system.iceberg_history](./iceberg_history.md)
+* [Движок таблицы Iceberg](../../engines/table-engines/integrations/iceberg.md)
+* [Табличная функция Iceberg](../../sql-reference/table-functions/iceberg.md)
+* [system.iceberg&#95;history](./iceberg_history.md)

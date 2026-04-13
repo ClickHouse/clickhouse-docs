@@ -630,7 +630,7 @@ __exception__
 
 ## パラメータ付きクエリ \{#cli-queries-with-parameters\}
 
-パラメータ付きのクエリを作成し、対応する HTTP リクエストのパラメータから値を渡すことができます。詳細については、[CLI でのパラメータ付きクエリ](../../interfaces/cli.md#cli-queries-with-parameters)を参照してください。
+パラメータ付きのクエリを作成し、対応する HTTP リクエストのパラメータから値を渡すことができます。詳細については、[CLI でのパラメータ付きクエリ](/interfaces/client#cli-queries-with-parameters)を参照してください。
 
 ### 例 \{#example-3\}
 

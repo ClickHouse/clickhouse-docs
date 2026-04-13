@@ -726,23 +726,11 @@ SYSTEM UNLOAD PRIMARY KEY
 ```
 
 
-## 管理可刷新materialized view \{#refreshable-materialized-views\}
+## 管理可刷新materialized view \{#managing-refreshable-materialized-views\}
 
 用于控制[可刷新materialized view](../../sql-reference/statements/create/view.md#refreshable-materialized-view)后台任务的命令。
 
 在使用它们时，请关注[`system.view_refreshes`](../../operations/system-tables/view_refreshes.md)。
-
-### SYSTEM REFRESH VIEW \{#refresh-view\}
-
-触发一次对指定 VIEW 的计划外立即刷新。
-
-```sql
-SYSTEM REFRESH VIEW [db.]name
-```
-
-### SYSTEM WAIT VIEW \{#wait-view\}
-
-等待当前正在进行的刷新操作完成。如果刷新失败，则抛出异常。如果当前没有刷新在运行，则立即返回；如果上一次刷新失败，同样会抛出异常。
 
 ### SYSTEM STOP [REPLICATED] VIEW, STOP VIEWS \{#stop-view-stop-views\}
 
@@ -779,6 +767,27 @@ SYSTEM START VIEWS
 ```
 
 
+### SYSTEM REFRESH VIEW \{#refresh-view\}
+
+触发一次对指定 VIEW 的计划外立即刷新。
+
+```sql
+SYSTEM REFRESH VIEW [db.]name
+```
+
+### SYSTEM WAIT VIEW \{#wait-view\}
+
+等待正在运行的刷新完成。如果当前没有刷新在运行，则立即返回。如果最近一次刷新尝试失败，则会报错。
+
+可以在创建新的可刷新materialized view (未使用 `EMPTY` 关键字) 之后立刻使用，以等待初始刷新完成。
+
+如果该 VIEW 位于 Replicated 或 Shared 数据库中，并且刷新正在另一副本上运行，则会等待该刷新完成。
+
+```sql
+SYSTEM WAIT VIEW [db.]name
+```
+
+
 ### SYSTEM CANCEL VIEW \{#cancel-view\}
 
 如果当前副本上的指定 VIEW 正在刷新，则中断并取消该刷新；否则，不执行任何操作。
@@ -788,14 +797,10 @@ SYSTEM CANCEL VIEW [db.]name
 ```
 
 
-### SYSTEM WAIT VIEW \{#system-wait-view\}
+## SYSTEM FLUSH OBJECT STORAGE QUEUE \{#flush-object-storage-queue\}
 
-等待正在运行的刷新完成。如果当前没有刷新在运行，则立即返回。如果最近一次刷新尝试失败，则会报错。
-
-可以在创建新的可刷新materialized view（未使用 `EMPTY` 关键字）之后立刻使用，以等待初始刷新完成。
-
-如果该 VIEW 位于 Replicated 或 Shared 数据库中，并且刷新正在另一副本上运行，则会等待该刷新完成。
+阻塞执行，直到指定文件被给定的 [S3Queue](../../engines/table-engines/integrations/s3queue.md) 或 [AzureQueue](../../engines/table-engines/integrations/azure-queue.md) 表处理完成，或永久失败。如果该文件已处理完成，则立即返回。如果该文件已永久失败 (即所有重试均已耗尽) ，则会引发错误。
 
 ```sql
-SYSTEM WAIT VIEW [db.]name
+SYSTEM FLUSH OBJECT STORAGE QUEUE [db.]table_name PATH 'path'
 ```

@@ -46,7 +46,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 ```
 
 또한 뷰를 취소, 중지 또는 시작할 수 있습니다.
-자세한 내용은 [갱신 가능 구체화 뷰 관리](/sql-reference/statements/system#refreshable-materialized-views) 문서를 참조하십시오.
+자세한 내용은 [갱신 가능 구체화 뷰 관리](/sql-reference/statements/system#managing-refreshable-materialized-views) 문서를 참조하십시오.
 
 
 ## 갱신 가능 구체화 뷰는 마지막으로 언제 갱신되었습니까? \{#when-was-a-refreshable-materialized-view-last-refreshed\}

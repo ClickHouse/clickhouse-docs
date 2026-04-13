@@ -32,6 +32,7 @@ doc_type: 'landing-page'
 | [Testing ClickHouse](/development/tests)                                         | Руководство по тестированию ClickHouse и запуску набора тестов                                                      |
 | [Architecture Overview](/development/architecture)                               | Подробный обзор архитектуры ClickHouse и его столбцово-ориентированной организации                                  |
 | [Continuous Integration (CI)](/development/continuous-integration)               | Обзор системы непрерывной интеграции ClickHouse                                                                     |
+| [Backport System](/development/backports)                                        | Обзор политики переноса исправлений в ClickHouse и её автоматизации                                                 |
 | [Third-Party Libraries](/development/contrib)                                    | Страница, описывающая использование сторонних библиотек в ClickHouse, а также порядок их добавления и сопровождения |
 | [C++ Style Guide](/development/style)                                            | Рекомендации по стилю кодирования для разработки ClickHouse на C++                                                  |
 | [Integrating Rust Libraries](/development/integrating_rust_libraries)            | Руководство по интеграции библиотек Rust в ClickHouse                                                               |

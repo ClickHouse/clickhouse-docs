@@ -21,20 +21,16 @@ import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committ
 
 ## 前提条件 \{#prerequisites\}
 
-- 特定の契約条件に基づく ClickHouse からのプライベートオファー。
-- コミット済み支出オファーに ClickHouse の組織を紐付けるには、その組織の管理者である必要があります。
-
-:::note
-1 つの AWS アカウントは、1 つの ClickHouse 組織にのみリンク可能な 1 件の「ClickHouse Cloud - Committed Contract」プライベートオファーにだけ申し込むことができます。
-:::
+* 特定の契約条件に基づく ClickHouse からのプライベートオファー。
+* コミット済み支出オファーに ClickHouse の組織を紐付けるには、その組織の管理者である必要があります。
 
 AWS 上でコミット済み契約を表示および受諾するために必要な権限:
 
-- AWS マネージドポリシーを使用する場合、以下の権限が必要です:
-  - `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
-  - または `AWSMarketplaceFullAccess`
-- AWS マネージドポリシーを使用しない場合、以下の権限が必要です:
-  - IAM アクション `aws-marketplace:ListPrivateListings` および `aws-marketplace:ViewSubscriptions`
+* AWS マネージドポリシーを使用する場合、以下の権限が必要です:
+  * `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
+  * または `AWSMarketplaceFullAccess`
+* AWS マネージドポリシーを使用しない場合、以下の権限が必要です:
+  * IAM アクション `aws-marketplace:ListPrivateListings` および `aws-marketplace:ViewSubscriptions`
 
 ## サインアップ手順 \{#steps-to-sign-up\}
 

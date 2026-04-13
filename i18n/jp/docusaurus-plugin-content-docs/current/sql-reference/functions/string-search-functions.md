@@ -464,7 +464,7 @@ hasAllTokens(input, needles)
 
 * `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 使用するトークナイザ。有効な引数は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams`、`asciiCJK` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルトです。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 使用するトークナイザ。有効な引数は `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams`、`array` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルトです。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -622,7 +622,7 @@ hasAnyTokens(input, needles)
 
 * `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Nullable(String)`](/sql-reference/data-types/nullable) または [`Nullable(FixedString)`](/sql-reference/data-types/nullable) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array) または [`Array(Nullable(String))`](/sql-reference/data-types/array) または [`Array(Nullable(FixedString))`](/sql-reference/data-types/array)
 * `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 使用する tokenizer を指定します。利用可能な値は `splitByNonAlpha`、`ngrams`、`splitByString`、`array`、`sparseGrams`、`asciiCJK` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルト値になります。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 使用する tokenizer を指定します。利用可能な値は `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams`、`array` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルト値になります。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -732,6 +732,63 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 ┌─count()─┐
 │       2 │
 └─────────┘
+```
+
+## hasPhrase \{#hasPhrase\}
+
+導入バージョン: v26.4.0
+
+haystack に、phrase 内のすべてのトークンが連続した順序で含まれているかを確認します。
+
+検索の前に、この関数は省略可能な第3引数として指定されたトークナイザーを使用して、`input` 引数と `phrase` 引数の両方をトークン化します。
+トークナイザーが指定されていない場合は、デフォルトで `splitByNonAlpha` トークナイザーが使用されます。
+
+[`hasToken`](#hasToken)、[`hasAnyTokens`](#hasAnyTokens)、[`hasAllTokens`](#hasAllTokens) とは異なり、`hasPhrase` ではトークンが同じ順序で現れ、
+その間に別のトークンが挟まらないことが必要です。たとえば、`hasPhrase('the quick brown fox', 'quick fox')` は 0 を返します。
+これは、&quot;quick&quot; と &quot;fox&quot; の間に &quot;brown&quot; があるためです。
+
+**構文**
+
+```sql
+hasPhrase(input, phrase[, tokenizer])
+```
+
+**別名**: `matchPhrase`
+
+**引数**
+
+* `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `phrase` — 検索対象のフレーズ。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 使用するトークナイザー。省略可能です。デフォルトは `splitByNonAlpha` です。[`const String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+フレーズが連続したトークン列として見つかった場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**フレーズの一致**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick brown')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick brown')─┐
+│                                                      1 │
+└────────────────────────────────────────────────────────┘
+```
+
+**非連続なトークン**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick fox')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick fox')─┐
+│                                                    0 │
+└──────────────────────────────────────────────────────┘
 ```
 
 ## hasSubsequence \{#hasSubsequence\}

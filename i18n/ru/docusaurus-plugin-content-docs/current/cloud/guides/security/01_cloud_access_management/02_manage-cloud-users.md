@@ -8,97 +8,92 @@ keywords: ['пользователи облака', 'управление дос
 ---
 
 import Image from '@theme/IdealImage';
-import step_1 from '@site/static/images/cloud/guides/sql_console/org_level_access/1_org_settings.png'
-import step_2 from '@site/static/images/cloud/guides/sql_console/org_level_access/2_org_settings.png'
-import step_3 from '@site/static/images/cloud/guides/sql_console/org_level_access/3_org_settings.png'
-import step_4 from '@site/static/images/cloud/guides/sql_console/org_level_access/4_org_settings.png'
-import step_5 from '@site/static/images/cloud/guides/sql_console/org_level_access/5_org_settings.png'
-import step_6 from '@site/static/images/cloud/guides/sql_console/org_level_access/6_org_settings.png'
-import step_7 from '@site/static/images/cloud/guides/sql_console/org_level_access/7_org_settings.png'
+import step_1 from '@site/static/images/cloud/guides/control_plane/1_users_and_roles.png'
+import step_2 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/2_invite_user.png'
+import step_3 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/3_invite_user.png'
+import step_4 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/4_invite_user.png'
+import step_5 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/5_edit_user.png'
+import step_6 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/6_edit_user.png'
+
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-Это руководство предназначено для пользователей с ролью Organization Admin в ClickHouse Cloud.
-
+Это руководство предназначено для пользователей с ролью Admin в ClickHouse Cloud.
 
 ## Добавление пользователей в организацию \{#add-users\}
 
 ### Приглашение пользователей \{#invite-users\}
 
-Администраторы могут приглашать до трёх (3) пользователей одновременно и назначать им роли уровня организации и сервиса в момент приглашения. 
+Администраторы могут одновременно приглашать нескольких пользователей и назначать одну или несколько ролей при отправке приглашения.
 
-Чтобы пригласить пользователей:
-1. Выберите название организации в левом нижнем углу
-2. Нажмите `Users and roles`
-3. Выберите `Invite members` в левом верхнем углу
-4. Введите адреса электронной почты (до трёх) новых пользователей
-5. Выберите роли уровня организации и сервиса, которые будут назначены пользователям
-6. Нажмите `Send invites`
+<VerticalStepper headerLevel="h3">
+  ### Откройте настройки организации и выберите Users and roles
 
-Пользователи получат электронное письмо, из которого они смогут присоединиться к организации. Дополнительные сведения о принятии приглашений см. в разделе [Управление учётной записью](/cloud/security/manage-my-account).
+  На странице сервисов выберите название своей организации. Во всплывающем меню выберите пункт `Users and roles`.
 
-### Добавление пользователей через поставщика удостоверений SAML \{#add-users-via-saml\}
+  <Image img={step_1} size="lg" />
 
-<EnterprisePlanFeatureBadge feature="SAML SSO"/>
+  ### Выберите `Invite members` в левом верхнем углу
+
+  Нажмите кнопку `Invite members` в левом верхнем углу.
+
+  <Image img={step_2} size="lg" />
+
+  ### Введите адреса электронной почты новых участников и назначьте роли
+
+  Введите адреса электронной почты в верхней части экрана приглашения. Затем выберите одну или несколько ролей для назначения пользователям.
+
+  <Image img={step_3} size="lg" />
+
+  ### Нажмите `Send invites`
+
+  Нажмите `Send invites` в нижней части экрана. Пользователи получат электронное письмо, с помощью которого смогут присоединиться к организации. Дополнительная информация о принятии приглашений приведена в разделе [Manage my account](/cloud/security/manage-my-account).
+
+  <Image img={step_4} size="lg" />
+</VerticalStepper>
+
+### Добавление пользователей через провайдера идентификации SAML \{#users-and-roles-1\}
+
+<EnterprisePlanFeatureBadge feature="SAML SSO" />
 
 Если ваша организация настроена для [SAML SSO](/cloud/security/saml-setup), выполните следующие шаги, чтобы добавить пользователей в организацию.
 
-1. Добавьте пользователей в приложение SAML у вашего поставщика удостоверений; пользователи не появятся в ClickHouse, пока не выполнят хотя бы один вход
-2. Когда пользователь входит в ClickHouse Cloud, ему автоматически назначается роль `Member`, которая позволяет только вход в систему и не предоставляет никаких других прав доступа
-3. Чтобы предоставить разрешения, выполните инструкции в разделе `Manage user role assignments` ниже
+1. Добавьте пользователей в приложение SAML у вашего провайдера идентификации. Пользователи не появятся в ClickHouse, пока не выполнят хотя бы один вход.
+2. Когда пользователь входит в ClickHouse Cloud, ему автоматически назначается роль по умолчанию, выбранная в вашей конфигурации SAML.
+3. Чтобы предоставить разрешения, выполните инструкции в разделе `управление назначение ролей пользователей` ниже
 
-### Принудительное использование аутентификации только через SAML \{#enforce-saml\}
+### Принудительное использование аутентификации только через SAML \{#invite-members\}
 
-После того как в организации будет как минимум один пользователь SAML с ролью Organization Admin, удалите из организации пользователей, использующих другие методы аутентификации, чтобы обеспечить использование в организации только аутентификации SAML.
+После того как в организации будет как минимум один пользователь SAML с ролью Admin, удалите из организации пользователей, использующих другие методы аутентификации, чтобы обеспечить использование в организации только аутентификации SAML.
 
-## Управление назначениями ролей пользователей \{#manage-role-assignments\}
+## Управление назначениями ролей пользователей
 
-Пользователи с ролью Organization Admin могут в любое время обновлять разрешения для других пользователей.
+Пользователи с ролью Admin могут в любое время изменять разрешения других пользователей.
 
 <VerticalStepper headerLevel="h3">
+  ### Откройте настройки организации и выберите Users and roles
 
-### Доступ к настройкам организации \{#access-organization-settings\}
+  На странице сервисов выберите имя своей организации. Во всплывающем меню выберите пункт `Users and roles`.
 
-На странице сервисов выберите название вашей организации:
+  <Image img={step_1} size="lg" />
 
-<Image img={step_1} size="md"/>
+  ### Выберите пользователя, которого нужно обновить, и нажмите Edit
 
-### Доступ к пользователям и ролям \{#access-users-and-roles\}
+  Выберите пункт меню в конце строки пользователя, для которого нужно изменить доступ. Во всплывающем меню выберите `edit`.
 
-Выберите пункт `Users and roles` во всплывающем меню.
+  <Image img={step_5} size="lg" />
 
-<Image img={step_2} size="md"/>
+  ### Обновите разрешения
 
-### Выбор пользователя для обновления \{#select-user-to-update\}
+  Щелкните по полю `Roles`, чтобы развернуть меню. Установите или снимите флажки, чтобы добавить пользователю роли или удалить их. Список ролей и связанных с ними разрешений см. в разделе [Роли и разрешения консоли](/cloud/security/console-roles).
 
-Выберите пункт меню в конце строки пользователя, для которого вы хотите изменить доступ:
+  <Image img={step_6} size="lg" />
 
-<Image img={step_3} size="lg"/>
+  ### Сохраните изменения
 
-### Выберите `edit` \{#select-edit\}
-
-<Image img={step_4} size="lg"/>
-
-Справа на странице отобразится вкладка:
-
-<Image img={step_5} size="lg"/>
-
-### Обновление разрешений \{#update-permissions\}
-
-Выберите значения в раскрывающихся списках, чтобы настроить глобальные разрешения доступа к консоли и указать, к каким функциям пользователь может получать доступ из консоли ClickHouse. Список ролей и связанных с ними разрешений см. в разделе [Console roles and permissions](/cloud/security/console-roles).
-
-Выберите значения в раскрывающихся списках, чтобы настроить область доступа сервисной роли выбранного пользователя. При выборе `Specific services` вы можете управлять ролью пользователя для каждого сервиса.
-
-<Image img={step_6} size="md"/>
-
-### Сохранение изменений \{#save-changes\}
-
-Сохраните изменения с помощью кнопки `Save changes` внизу вкладки:
-
-<Image img={step_7} size="md"/>
-
+  Сохраните изменения с помощью кнопки `Save changes` в нижней части вкладки.
 </VerticalStepper>
 
-## Удаление пользователя \{#remove-user\}
+## Удаление пользователя {#remove-user}
 
 :::note Удаление пользователей SAML
 Пользователи SAML, для которых в вашем провайдере идентификации была отменена привязка к приложению ClickHouse, не могут войти в ClickHouse Cloud. При этом учетная запись не удаляется из консоли и должна быть удалена вручную.

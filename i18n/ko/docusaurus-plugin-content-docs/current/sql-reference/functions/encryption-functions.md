@@ -25,68 +25,35 @@ doc_type: 'reference'
 
 ## HMAC \{#HMAC\}
 
-도입된 버전: v25.12.0
+도입 버전: v25.12.0
 
-지정된 해시 알고리즘과 비밀 키를 사용하여 주어진 메시지에 대한 HMAC(Hash-based Message Authentication Code)를 계산합니다.
+지정된 해시 알고리즘과 비밀 키를 사용하여 주어진 메시지에 대한 HMAC(Hash-based Message Authentication Code)을 계산합니다.
 
 지원되는 해시 알고리즘:
 
-* RSA-MD4 (별칭: MD4, RSA-MD4)
-* RSA-MD5 (별칭: MD5, RSA-MD5)
-* RSA-MDC2 (별칭: MDC2, RSA-MDC2)
-* RSA-RIPEMD160 (별칭: RIPEMD160, RSA-RIPEMD160)
-* RSA-SHA1 (별칭: RSA-SHA1, SHA1)
-* RSA-SHA1-2 (별칭: RSA-SHA1, RSA-SHA1-2)
-* RSA-SHA224 (별칭: RSA-SHA224, SHA224)
-* RSA-SHA256 (별칭: RSA-SHA256, SHA256)
-* RSA-SHA3-224 (별칭: RSA-SHA3-224, SHA3-224)
-* RSA-SHA3-256 (별칭: RSA-SHA3-256, SHA3-256)
-* RSA-SHA3-384 (별칭: RSA-SHA3-384, SHA3-384)
-* RSA-SHA3-512 (별칭: RSA-SHA3-512, SHA3-512)
-* RSA-SHA384 (별칭: RSA-SHA384, SHA384)
-* RSA-SHA512 (별칭: RSA-SHA512, SHA512)
-* RSA-SHA512/224 (별칭: RSA-SHA512/224, SHA512-224)
-* RSA-SHA512/256 (별칭: RSA-SHA512/256, SHA512-256)
-* RSA-SM3 (별칭: RSA-SM3, SM3)
 * blake2b512
 * blake2s256
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-224 (별칭: SHA3-224, id-rsassa-pkcs1-v1&#95;5-with-sha3-224)
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-256 (별칭: SHA3-256, id-rsassa-pkcs1-v1&#95;5-with-sha3-256)
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-384 (별칭: SHA3-384, id-rsassa-pkcs1-v1&#95;5-with-sha3-384)
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-512 (별칭: SHA3-512, id-rsassa-pkcs1-v1&#95;5-with-sha3-512)
 * md4
-* md4WithRSAEncryption (별칭: MD4, md4WithRSAEncryption)
 * md5
 * md5-sha1
-* md5WithRSAEncryption (별칭: MD5, md5WithRSAEncryption)
 * mdc2
-* mdc2WithRSA (별칭: MDC2, mdc2WithRSA)
 * ripemd (별칭: RIPEMD160, ripemd)
 * ripemd160
-* ripemd160WithRSA (별칭: RIPEMD160, ripemd160WithRSA)
 * rmd160 (별칭: RIPEMD160, rmd160)
 * sha1
-* sha1WithRSAEncryption (별칭: SHA1, sha1WithRSAEncryption)
 * sha224
-* sha224WithRSAEncryption (별칭: SHA224, sha224WithRSAEncryption)
 * sha256
-* sha256WithRSAEncryption (별칭: SHA256, sha256WithRSAEncryption)
 * sha3-224
 * sha3-256
 * sha3-384
 * sha3-512
 * sha384
-* sha384WithRSAEncryption (별칭: SHA384, sha384WithRSAEncryption)
 * sha512
 * sha512-224
-* sha512-224WithRSAEncryption (별칭: SHA512-224, sha512-224WithRSAEncryption)
 * sha512-256
-* sha512-256WithRSAEncryption (별칭: SHA512-256, sha512-256WithRSAEncryption)
-* sha512WithRSAEncryption (별칭: SHA512, sha512WithRSAEncryption)
 * shake128
 * shake256
 * sm3
-* sm3WithRSAEncryption (별칭: SM3, sm3WithRSAEncryption)
 * ssl3-md5 (별칭: MD5, ssl3-md5)
 * ssl3-sha1 (별칭: SHA1, ssl3-sha1)
 * whirlpool
@@ -97,7 +64,7 @@ doc_type: 'reference'
 HMAC(mode, message, key)
 ```
 
-**매개변수**
+**인수**
 
 * `mode` — 해시 알고리즘 이름(대소문자 구분 없음). 지원되는 알고리즘: md5, sha1, sha224, sha256, sha384, sha512. [`String`](/sql-reference/data-types/string)
 * `message` — 인증할 메시지. [`String`](/sql-reference/data-types/string)

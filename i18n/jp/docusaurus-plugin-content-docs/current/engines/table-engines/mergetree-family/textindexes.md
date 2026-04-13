@@ -83,6 +83,7 @@ CREATE TABLE table
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
                                             | ngrams[(N)]
+                                            | asciiCJK
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -103,7 +104,7 @@ ORDER BY key
 * [String](/sql-reference/data-types/string.md) および [FixedString](/sql-reference/data-types/fixedstring.md)、
 * [Array(String)](/sql-reference/data-types/array.md) および [Array(FixedString)](/sql-reference/data-types/array.md)、
 * [Map](/sql-reference/data-types/map.md) ([mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) および [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 関数を通じて) 、
-* [JSON](/sql-reference/data-types/newjson.md) ([JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 関数を通じて) 。
+* [JSON](/sql-reference/data-types/newjson.md) ([JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) および [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) 関数を通じて) 。
 
 [Nullable(T)](/sql-reference/data-types/nullable.md) 型および [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 型のカラムもサポートされており、`Array(Nullable(String または FixedString))` も含まれます。
 
@@ -115,6 +116,7 @@ ALTER TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
+                                            | asciiCJK
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
@@ -149,6 +151,7 @@ ALTER TABLE table DROP INDEX text_idx;
   セパレーターはオプション引数で指定できます。たとえば `tokenizer = splitByString([', ', '; ', '\n', '\\'])` のように指定します。
   各セパレーター文字列は複数文字から構成できる点に注意してください (この例では `', '`) 。
   セパレーターリストを明示的に指定しない場合 (たとえば `tokenizer = splitByString`) 、デフォルトのセパレーターリストは空白 1 文字 `[' ']` です。
+* `asciiCJK` は、Unicode の単語境界規則 ([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/) に類似) を使用して文字列をトークンに分割します。ASCII の英数字とアンダースコアは、コネクタ (文字には ASCII `:`、同種の文字には `.` と `'`) とともにトークンを構成します。[CJK](https://en.wikipedia.org/wiki/CJK_characters) 文字を含む非 ASCII の Unicode 文字は 1 文字のトークンになります。
 * `ngrams(N)` は、文字列を同じ長さの `N`-gram に分割します (関数 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams) を参照) 。
   N-gram の長さは 1 から 8 までの整数をオプション引数として指定できます。たとえば `tokenizer = ngrams(3)` のように指定します。
   N-gram のサイズを明示的に指定しない場合 (たとえば `tokenizer = ngrams`) 、デフォルトのサイズは 3 です。
@@ -158,7 +161,6 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)` と比較して、`sparseGrams` トークナイザーは可変長の N-gram を生成するため、元のテキストをより柔軟に表現できます。
   たとえば、`tokenizer = sparseGrams(3, 5, 4)` は内部的には入力文字列から 3-, 4-, 5-gram を生成しますが、返されるのは 4-gram と 5-gram のみです。
 * `array` はトークナイズ処理を行いません。つまり、各行の値全体が 1 つのトークンになります (関数 [array](/sql-reference/functions/array-functions.md/#array) を参照) 。
-* `asciiCJK` は、Unicode の単語境界規則 ([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/) に類似) を使用して文字列をトークンに分割します。ASCII の英数字とアンダースコアは、コネクタ (文字には ASCII `:`、同種の文字には `.` と `'`) とともにトークンを構成します。[CJK](https://en.wikipedia.org/wiki/CJK_characters) 文字を含む非 ASCII の Unicode 文字は 1 文字のトークンになります。
 
 利用可能なすべてのトークナイザーは [system.tokenizers](../../../operations/system-tables/tokenizers.md) に一覧表示されています。
 
@@ -394,17 +396,17 @@ SELECT * from table WHERE str IN ('Hello', 'World');
 #### `LIKE` および `match` \{#functions-example-like-match\}
 
 :::note
-これらの関数がテキストインデックスをフィルタリングに利用するのは、インデックスの tokenizer が `splitByNonAlpha`、`ngrams`、または `sparseGrams` のいずれかである場合に限られます。
+これらの関数がテキスト索引をフィルタリングに利用するのは、インデックスの トークナイザー が `splitByNonAlpha`、`ngrams`、または `sparseGrams` のいずれかである場合に限られます。
 :::
 
 :::note
 `NOT LIKE` (`notLike`) はテキスト索引ではサポートされません。
 :::
 
-テキストインデックスで `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) および [match](/sql-reference/functions/string-search-functions.md/#match) 関数を使用するには、ClickHouse が検索語から完全なトークンを抽出できる必要があります。
-`ngrams` tokenizer を持つインデックスでは、ワイルドカードの間にある検索文字列の長さが ngram の長さ以上であれば、この条件を満たします。
+テキスト索引で `LIKE` ([like](/sql-reference/functions/string-search-functions.md/#like)) および [match](/sql-reference/functions/string-search-functions.md/#match) 関数を使用するには、ClickHouse が検索語から完全なトークンを抽出できる必要があります。
+`ngrams` トークナイザー を持つインデックスでは、ワイルドカードの間にある検索文字列の長さが ngram の長さ以上であれば、この条件を満たします。
 
-`splitByNonAlpha` tokenizer を持つテキストインデックスの例:
+`splitByNonAlpha` トークナイザー を持つテキスト索引の例:
 
 ```sql
 SELECT count() FROM table WHERE comment LIKE 'support%';
@@ -421,6 +423,9 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 `support` の左右に空白を入れておくことで、その語をトークンとして抽出できるようにします。
 
+幸い、ClickHouse が転置索引を利用して LIKE クエリを大幅に高速化できる特別なケースがあります。
+
+詳しくは、[LIKE/ILIKE パフォーマンスチューニングのセクション](#like-ilike-queries-perf)を参照してください。
 
 #### `startsWith` と `endsWith` \{#functions-example-startswith-endswith\}
 
@@ -551,9 +556,7 @@ SELECT count() FROM table WHERE map['engine'] = 'clickhouse';
 テキスト索引と併用する `Array(T)` 型および `Map(K, V)` 型カラムの例を以下に示します。
 
 
-### `Array` および `Map` カラムに対するテキストインデックスの例 \{#text-index-array-and-map-examples\}
-
-#### Array(String) カラムのインデックス化 \{#text-index-example-array\}
+### Array(String) カラムのインデックス化 \{#text-index-example-array\}
 
 ブログプラットフォームを想像してください。そこでは、著者がブログ記事にキーワードを付けてカテゴリ分けしています。
 ユーザーには、トピックを検索したりクリックしたりすることで、関連コンテンツを見つけてほしいと考えています。
@@ -572,7 +575,7 @@ ENGINE = MergeTree
 ORDER BY (post_id);
 ```
 
-テキスト索引がない場合、特定のキーワード（例：`clickhouse`）を含む投稿を検索するには、すべてのエントリを走査する必要があります。
+テキスト索引がない場合、特定のキーワード (例：`clickhouse`) を含む投稿を検索するには、すべてのエントリを走査する必要があります。
 
 ```sql
 SELECT count() FROM posts WHERE has(keywords, 'clickhouse'); -- slow full-table scan - checks every keyword in every post
@@ -586,8 +589,7 @@ ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitBy
 ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the index for existing data
 ```
 
-
-#### Map カラムのインデックス作成 \{#text-index-example-map\}
+### Map カラムのインデックス作成 \{#text-index-example-map\}
 
 多くのオブザーバビリティのユースケースでは、ログメッセージは「コンポーネント」に分割され、タイムスタンプには日時型、ログレベルには enum 型など、適切なデータ型として保存されます。
 メトリクスフィールドは、キーと値のペアとして保存するのが最適です。
@@ -607,7 +609,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp);
 ```
 
-テキストインデックスがない場合、[Map](/sql-reference/data-types/map.md) データを検索するにはテーブル全体をフルスキャンする必要があります。
+テキスト索引がない場合、[Map](/sql-reference/data-types/map.md) データを検索するにはテーブル全体をフルスキャンする必要があります。
 
 ```sql
 -- Finds all logs with rate limiting data:
@@ -647,15 +649,15 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
+### JSONカラムのインデックス化 \{#text-index-example-json\}
 
-#### JSONカラムのインデックス化 \{#text-index-example-json\}
+`JSON` カラムでは、テキスト索引を 3 つの方法で利用できます。
 
-`JSON` カラムでは、データスキッピングインデックスを 2 つの方法で利用できます。
+1. **特定のサブカラムに対するインデックス** — 通常のカラムと同様に、既知の JSON パスにテキスト索引を作成します。これにより、そのパスの *値* がインデックス化されます。
+2. **[JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) を使用したパスベースのインデックス** — 各グラニュールに存在する *すべてのパス* をインデックス化し、クエリ対象のパスを含む可能性がないグラニュールをスキップします。`Map` カラムと同様です。
+3. **[JSONAllValues](/sql-reference/functions/json-functions.md#JSONAllValues) を使用した値ベースのインデックス** — すべての JSON パスにまたがる *すべての値* をインデックス化し、単一のインデックスで任意の JSON サブカラムに対する全文検索を高速化します。
 
-1. **特定のサブカラムに対するインデックス** — 通常のカラムと同様に、既知の JSON パスに標準的なスキップインデックスを作成します。これにより、そのパスの *値* がインデックス化されます。
-2. **`JSONAllPaths` を使用したパスベースのインデックス** — 各グラニュールに存在する *パスの集合* をインデックス化し、クエリ対象のパスを含む可能性がないグラニュールをスキップします。`Map` カラムと同様です。
-
-##### 特定のサブカラムに対する索引 \{#json-indexes-on-subcolumns\}
+#### 特定のサブカラムに対する索引 \{#json-indexes-on-subcolumns\}
 
 通常のカラムと同じ構文で、任意の JSON サブカラムにスキップ索引を作成できます。
 
@@ -664,7 +666,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 * **型付きパス** — JSON 型ヒントで宣言し、名前で直接アクセスします: `json.a`.
 * **動的パス** (明示的なキャストあり) — `::` キャスト構文を使用します: `json.b::String`.
 
-クエリ例:
+索引定義の例:
 
 ```sql
 CREATE TABLE sensor_data
@@ -681,11 +683,15 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , '
 INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
 ```
 
-```sql title="Query"
+クエリ例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-```text title="Response"
+結果:
+
+```text
 ...
     Indexes:
       Skip
@@ -696,11 +702,15 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
         Granules: 1/8
 ```
 
-```sql title="Query"
+クエリ例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-```text title="Response"
+結果:
+
+```text
 ...
     Indexes:
       Skip
@@ -711,13 +721,12 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
         Granules: 1/8
 ```
 
-
-##### JSONAllPaths によるパスベース索引 \{#json-indexes-jsonallpaths\}
+#### JSONAllPaths によるパスベース索引 \{#json-indexes-jsonallpaths\}
 
 `Map` カラムと同様に、[JSON](/sql-reference/data-types/newjson.md) カラムにも [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths) を使用してテキスト索引を作成できます。
 この索引は各グラニュールに含まれる JSON パスの集合を保持し、クエリ対象のパスが存在しないグラニュールをスキップするために利用します。
 
-クエリ例:
+索引定義の例:
 
 ```sql
 CREATE TABLE events
@@ -732,13 +741,18 @@ INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
 INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 ```
 
-`EXPLAIN indexes = 1` を使用すると、スキップ索引が使われていることを確認できます。パスが1つのパートにしか存在しない場合、索引はもう一方のパートをスキップします:
+`EXPLAIN indexes = 1` を使用すると、スキップ索引が使われていることを確認できます。
+パスが1つのパートにしか存在しない場合、索引はもう一方のパートをスキップします。
 
-```sql title="Query"
+例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-```text title="Response"
+結果:
+
+```text
 ...
     Indexes:
       Skip
@@ -749,11 +763,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
         Granules: 1/2
 ```
 
-どのパーツにもパスが存在しない場合、すべてのパーツとグラニュールがスキップされます:
+どのパーツにもパスが存在しない場合、すべてのパーツとグラニュールがスキップされます。
 
-```sql title="Query"
+例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
+
+結果:
 
 ```text title="Response"
 ...
@@ -768,11 +786,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 
 `IS NOT NULL` でも索引が使用され、パスが存在しないグラニュールは (その場合、値は `NULL` になるため) スキップされます。
 
-```sql title="Query"
+例:
+
+```sql
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-```text title="Response"
+結果:
+
+```text
 ...
     Indexes:
       Skip
@@ -781,6 +803,65 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
         Condition: (mode: All; tokens: ["user.name"])
         Parts: 1/2
         Granules: 1/2
+```
+
+#### JSONAllValues を使用した値ベースの索引 \{#json-indexes-jsonallvalues\}
+
+テキスト索引は、関数 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) を介して [JSON](/sql-reference/data-types/newjson.md) カラムの検索を高速化するために使用できます。
+
+`JSONAllValues` は、JSON カラムのすべての値を `Array(String)` として返します。
+文字列以外のデータ型の値 (例: 整数や配列) は、そのテキスト表現に変換されます。
+`JSONAllValues` に対するテキスト索引は、各行のすべての JSON パスにまたがって、これらのテキスト表現を索引付けします。
+この索引は、その後、個々の JSON サブカラムで絞り込むクエリを高速化できます。
+クエリが特定のサブカラム (例: `data.user_name = 'alice'`) で絞り込む場合、テキスト索引は、JSON 値のいずれにも検索トークンが含まれていない行 (およびグラニュール) をすばやくスキップできます。
+
+:::note
+異なる JSON パスに同じトークンが含まれている場合、この索引は偽陽性を返すことがあります。
+たとえば、行 1 が `{"a": "hello", "b": "world"}` を持ち、クエリで `data.a = 'world'` を検索する場合、テキスト索引は `world` がパス `a` ではなく `b` に属していることを区別できません。
+このような場合、索引はその行をスキップせず、最終的な評価は実際のカラムデータに対するフィルタリングで行われます。
+これは、索引が高速な事前フィルターとして機能する、他のテキスト索引の利用ケースと同じ動作です。
+:::
+
+##### 索引の作成 \{#json-all-values-creating-the-index\}
+
+索引の定義例:
+
+```sql
+CREATE TABLE events
+(
+    id UInt64,
+    data JSON,
+    INDEX json_idx JSONAllValues(data) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+##### サポートされるクエリパターン \{#json-all-values-supported-query-patterns\}
+
+索引を作成すると、JSONサブカラムに対するクエリは、`String` カラムと同じ関数、およびすべてのカラムで `equals` 関数を使用した場合に高速化できます。
+
+サブカラムへのアクセス:
+
+```sql
+SELECT * FROM events WHERE data.user_name = 'alice';
+SELECT * FROM events WHERE data.message LIKE '% error %';
+SELECT * FROM events WHERE startsWith(data.status, 'fail');
+SELECT * FROM events WHERE hasToken(data.title, 'clickhouse');
+```
+
+明示的な `CAST` によるサブカラムアクセス:
+
+```sql
+SELECT * FROM events WHERE hasAllTokens(data.message::String, 'connection timeout');
+SELECT * FROM events WHERE data.status_code::UInt64 = 404;
+SELECT * FROM events WHERE has(data.tags::Array(String), 'bug')
+```
+
+`IN` 演算子:
+
+```sql
+SELECT * FROM events WHERE data.level IN ('error', 'critical');
 ```
 
 
@@ -920,6 +1001,23 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 このクエリでは、適用順序は `__text_index_...`、次に `greaterOrEquals(...)`、最後に `like(...)` となります。
 この順序付けにより、テキスト索引と元のフィルター条件でスキップされるグラニュールに加えて、クエリの `WHERE` 句以降で使用される重いカラムを読み込む前に、さらに多くのデータグラニュールをスキップできるため、読み取るデータ量を一層削減できます。
 
+
+### LIKE/ILIKE クエリ \{#like-ilike-queries-perf\}
+
+LIKE/ILIKE クエリのパターンが `%<alpha-numeric-characters-without-spaces>%` で、テキスト索引のトークナイザーが `splitByNonAlpha` の場合、ClickHouse は転置索引を利用して LIKE/ILIKE クエリを大幅に高速化できます。これを実現するため、ClickHouse は一致するパターンを見つける際に、テーブル全体をスキャンする代わりに転置索引の Dictionary をスキャンします。
+
+この最適化を有効にすると、LIKE/ILIKE クエリはテーブル全体のスキャンより大幅に高速になるはずです。ただし、パターンが Dictionary 内のほとんどのトークンに一致する場合は、テーブル全体のスキャンよりもパフォーマンスが低下することがあります。幸い、これを防ぐためのフォールバック機構が用意されています。
+
+この最適化は、次の設定で制御されます。
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+フォールバック機構は、次の 2 つの設定で制御されます。
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+この最適化がサポートするのは、関数 `like` と `ilike` のみです。
 
 ### キャッシュ \{#caching\}
 

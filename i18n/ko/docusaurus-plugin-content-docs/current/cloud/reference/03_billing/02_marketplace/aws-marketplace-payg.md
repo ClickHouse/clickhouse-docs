@@ -22,13 +22,9 @@ import Image from '@theme/IdealImage';
 
 ## 사전 준비 사항 \{#prerequisites\}
 
-- 결제 관리자가 구매 권한을 부여한 AWS 계정이 있어야 합니다.
-- 구매하려면 이 계정으로 AWS Marketplace에 로그인해야 합니다.
-- 구독에 ClickHouse 조직을 연결하려면 해당 조직의 관리자여야 합니다.
-
-:::note
-하나의 AWS 계정은 하나의 「ClickHouse Cloud - Pay As You Go」 구독에만 가입할 수 있으며, 이 구독은 하나의 ClickHouse 조직에만 연결할 수 있습니다.
-:::
+* 결제 관리자가 구매 권한을 부여한 AWS 계정이 있어야 합니다.
+* 구매하려면 이 계정으로 AWS Marketplace에 로그인해야 합니다.
+* 구독에 ClickHouse 조직을 연결하려면 해당 조직의 관리자여야 합니다.
 
 ## 가입 단계 \{#steps-to-sign-up\}
 

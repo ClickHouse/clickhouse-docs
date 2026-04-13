@@ -27,15 +27,16 @@ ENGINE = ReplicatedMergeTree
 
 :::
 
-Репликация поддерживается только для таблиц семейства MergeTree:
+Репликация поддерживается только для таблиц семейства MergeTree
 
-* ReplicatedMergeTree
 * ReplicatedSummingMergeTree
+* ReplicatedCoalescingMergeTree
+* ReplicatedVersionedCollapsingMergeTree
+* ReplicatedCollapsingMergeTree
+* ReplicatedGraphiteMergeTree
+* ReplicatedMergeTree
 * ReplicatedReplacingMergeTree
 * ReplicatedAggregatingMergeTree
-* ReplicatedCollapsingMergeTree
-* ReplicatedVersionedCollapsingMergeTree
-* ReplicatedGraphiteMergeTree
 
 Репликация работает на уровне отдельной таблицы, а не всего сервера. Один сервер может одновременно хранить как реплицируемые, так и нереплицируемые таблицы.
 
@@ -116,6 +117,7 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 Вы можете указать любой существующий кластер ZooKeeper, и система будет использовать на нём каталог для собственных данных (каталог задаётся при создании реплицируемой таблицы).
 
 Если ZooKeeper не указан в конфигурационном файле, вы не сможете создавать реплицируемые таблицы, а любые существующие реплицируемые таблицы будут доступны только для чтения.
+
 
 ZooKeeper не используется в запросах `SELECT`, потому что репликация не влияет на производительность `SELECT`, и запросы выполняются так же быстро, как и для нереплицируемых таблиц. При выполнении запросов к распределённым реплицируемым таблицам поведение ClickHouse управляется настройками [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) и [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries).
 

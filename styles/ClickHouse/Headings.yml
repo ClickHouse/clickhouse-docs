@@ -633,3 +633,4 @@ exceptions:
   - I/O
   - JOIN
   - RESTORE
+  - ClickHouse Connect

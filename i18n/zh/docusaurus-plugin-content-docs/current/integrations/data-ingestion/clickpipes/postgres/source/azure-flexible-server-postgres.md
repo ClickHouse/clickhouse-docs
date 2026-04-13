@@ -64,28 +64,22 @@ ClickPipes 支持 Postgres 12 及更高版本。
 4. 使用你希望复制的表创建一个 [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html)。强烈建议只在 publication 中包含你需要的表，以避免不必要的性能开销。
 
    :::warning
-   任何包含在 publication 中的表必须定义有**主键**，_或者_ 将其 **replica identity** 配置为 `FULL`。有关范围设定的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
+   任何包含在 publication 中的表必须定义有**主键**，*或者* 将其 **replica identity** 配置为 `FULL`。有关范围设定的指导，请参阅 [Postgres 常见问题](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication)。
    :::
 
-   - 为特定表创建 publication：
+   * 为特定表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+     ```
 
-   - 为特定模式中的所有表创建 publication：
+   * 为特定模式中的所有表创建 publication：
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+     ```
 
    `clickpipes` publication 将包含由指定表生成的一组变更事件，之后会用于摄取复制流。
-
-5. 将 `wal_sender_timeout` 为 `clickpipes_user` 设置为 0：
-
-   ```sql
-   ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
-   ```
 
 ## 将 ClickPipes IP 添加到防火墙 \{#add-clickpipes-ips-to-firewall\}
 

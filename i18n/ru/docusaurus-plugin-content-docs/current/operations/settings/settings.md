@@ -3280,6 +3280,16 @@ FORMAT PrettyCompactMonoBlock
 
 Удаляет лишние операции обмена данными в распределённом плане запроса. Отключите для отладки.
 
+## distributed_plan_prefer_replicas_over_workers \{#distributed_plan_prefer_replicas_over_workers\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка для сериализации распределённого плана запроса для выполнения на репликах"}]}]} />
+
+Сериализует распределённый план запроса для выполнения на репликах.
+
 ## distributed_product_mode \{#distributed_product_mode\}
 
 <SettingsInfoBlock type="DistributedProductMode" default_value="deny" />
@@ -7236,6 +7246,22 @@ SELECT getSetting('max_memory_usage_for_user');
 `max_query_size` нельзя задать внутри SQL-запроса (например, `SELECT now() SETTINGS max_query_size=10000`), потому что ClickHouse должен выделить буфер для разбора запроса, и размер этого буфера определяется настройкой `max_query_size`, которая должна быть настроена до выполнения запроса.
 :::
 
+## max_rand_distribution_parameter \{#max_rand_distribution_parameter\}
+
+<SettingsInfoBlock type="Float" default_value="1000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000000"},{"label": "Новая настройка для ограничения параметров формы распределения в функциях случайных распределений, предотвращающая зависания при экстремальных входных значениях."}]}]} />
+
+Максимальное значение параметров формы распределения в функциях случайных распределений, таких как `randChiSquared`, `randStudentT` и `randFisherF`. Это предотвращает чрезмерно долгие вычисления при экстремальных значениях параметров.
+
+## max_rand_distribution_trials \{#max_rand_distribution_trials\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000000000"},{"label": "Новая настройка для ограничения числа попыток в функциях случайного распределения, предотвращающая зависания при экстремальных входных данных."}]}]} />
+
+Максимальное число попыток, допустимое для функций случайного распределения, таких как `randBinomial` и `randNegativeBinomial`. Это позволяет избежать чрезмерно долгого времени вычисления при большом числе попыток.
+
 ## max_read_buffer_size \{#max_read_buffer_size\}
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1048576" />
@@ -7630,6 +7656,14 @@ SELECT getSetting('max_memory_usage_for_user');
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
 
 Небольшие выделения и освобождения памяти группируются в локальной для потока переменной и отслеживаются или профилируются только тогда, когда их общий объем (по абсолютному значению) становится больше указанного значения. Если это значение больше, чем `memory_profiler_step`, оно будет фактически уменьшено до `memory_profiler_step`.
+
+## max_wkb_geometry_elements \{#max_wkb_geometry_elements\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000000"},{"label": "Новая настройка для ограничения количества элементов при разборе WKB-геометрии, чтобы предотвратить чрезмерное выделение памяти на повреждённых данных."}]}]} />
+
+Максимальное количество точек, колец или полигонов, допустимое в одном элементе WKB-геометрии при разборе функцией `readWKB` и связанными с ней функциями. Это защищает от чрезмерного выделения памяти из-за повреждённых данных WKB. Установите 0, чтобы использовать жёстко заданный предел (100 миллионов).
 
 ## memory_overcommit_ratio_denominator \{#memory_overcommit_ratio_denominator\}
 
@@ -11489,6 +11523,27 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 
 Максимальная селективность фильтра для использования подсказки, основанной на инвертированном текстовом индексе.
 
+## text_index_like_max_postings_to_read \{#text_index_like_max_postings_to_read\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "50"},{"label": "Новая настройка"}]}]} />
+
+Максимальное количество крупных постингов, считываемых при вычислении `LIKE` для текстового индекса, если включено вычисление через сканирование словаря.
+
+Требуется одновременно включить `use_text_index_like_evaluation_by_dictionary_scan`.
+
+## text_index_like_min_pattern_length \{#text_index_like_min_pattern_length\}
+
+<SettingsInfoBlock type="UInt64" default_value="4" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4"},{"label": "Новая настройка"}]}]} />
+
+Минимальная длина буквенно-цифрового `needle` в шаблоне LIKE/ILIKE, необходимая для использования вычисления LIKE с помощью текстового индекса при сканировании словаря.
+Шаблоны короче этого порога соответствуют слишком большому числу токенов словаря и пропускаются во избежание ресурсоемкого сканирования.
+
+Требуется включить `use_text_index_like_evaluation_by_dictionary_scan`.
+
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -12119,6 +12174,14 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Нужно ли использовать кэш десериализованного заголовка текстового индекса.
 Использование кэша заголовка текстового индекса может значительно уменьшить задержки и увеличить пропускную способность при работе с большим количеством запросов к текстовому индексу.
+
+## use_text_index_like_evaluation_by_dictionary_scan \{#use_text_index_like_evaluation_by_dictionary_scan\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Новая настройка"}]}]} />
+
+Включает обработку запросов LIKE/ILIKE путем сканирования словаря инвертированного текстового индекса.
 
 ## use_text_index_postings_cache \{#use_text_index_postings_cache\}
 

@@ -125,6 +125,45 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+## JSONAllValues \{#JSONAllValues\}
+
+Добавлено в: v26.4.0
+
+Возвращает все значения из каждой строки в JSON-столбце в виде массива строк.
+Значения сериализуются в текстовом виде и упорядочиваются по именам путей.
+
+**Синтаксис**
+
+```sql
+JSONAllValues(json)
+```
+
+**Аргументы**
+
+* `json` — JSON-столбец. [`JSON`](/sql-reference/data-types/newjson)
+
+**Возвращаемое значение**
+
+Возвращает массив всех значений из JSON-столбца в виде строк. [`Array(String)`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
+INSERT INTO test FORMAT JSONEachRow {"json": {"a": 42}}, {"json": {"b": "Hello"}}, {"json": {"a": [1, 2, 3], "c": "2020-01-01"}}
+SELECT json, JSONAllValues(json) FROM test;
+```
+
+```response title=Response
+┌─json─────────────────────────────────┬─JSONAllValues(json)──────┐
+│ {"a":42}                             │ ['42']                   │
+│ {"b":"Hello"}                        │ ['Hello']                │
+│ {"a":[1,2,3],"c":"2020-01-01"}       │ ['[1,2,3]','2020-01-01'] │
+└──────────────────────────────────────┴──────────────────────────┘
+```
+
 ## JSONArrayLength \{#JSONArrayLength\}
 
 Появилась в версии: v23.2.0

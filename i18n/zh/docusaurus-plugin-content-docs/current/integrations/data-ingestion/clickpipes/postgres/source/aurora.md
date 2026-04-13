@@ -12,7 +12,6 @@ integration:
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
-import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';
 import modify_parameter_group from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/modify_parameter_group.png';
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
@@ -30,9 +29,8 @@ ClickPipes 支持 Aurora PostgreSQL-Compatible Edition 12 及以上版本。
 如果您的 Aurora 实例已配置以下设置，则可以跳过本节：
 
 * `rds.logical_replication = 1`
-* `wal_sender_timeout = 0`
 
-如果您之前使用过其他数据复制工具，这些设置通常已预先配置。
+如果您之前使用过其他数据复制工具，此设置通常已预先配置。
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -40,25 +38,16 @@ postgres=> SHOW rds.logical_replication ;
 -------------------------
  on
 (1 row)
-
-postgres=> SHOW wal_sender_timeout ;
- wal_sender_timeout
---------------------
- 0
-(1 row)
 ```
 
 如果尚未完成配置，请按以下步骤操作：
 
 1. 为您的 Aurora PostgreSQL 版本创建一个包含必需设置的新参数组：
    * 将 `rds.logical_replication` 设置为 1
-   * 将 `wal_sender_timeout` 设置为 0
 
 <Image img={parameter_group_in_blade} alt="在 Aurora 中查找参数组的位置" size="lg" border />
 
 <Image img={change_rds_logical_replication} alt="修改 rds.logical_replication" size="lg" border />
-
-<Image img={change_wal_sender_timeout} alt="修改 wal_sender_timeout" size="lg" border />
 
 2. 将新参数组应用到您的 Aurora PostgreSQL 集群
 

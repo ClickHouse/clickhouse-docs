@@ -12,7 +12,6 @@ integration:
 
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';
 import cloudsql_logical_decoding1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding1.png';
-import cloudsql_logical_decoding2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding2.png';
 import cloudsql_logical_decoding3 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding3.png';
 import connections from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections.png';
 import connections_networking from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections_networking.png';
@@ -34,19 +33,17 @@ Postgres 12 及更高版本
 
 ## 启用逻辑复制 \{#enable-logical-replication\}
 
-**如果** `cloudsql. logical_decoding` 已经为 on 且 `wal_sender_timeout` 为 0，**则无需**执行以下步骤。若您是从其他数据复制工具迁移，这些设置通常已经预先配置好。
+**如果** `cloudsql. logical_decoding` 已经为 on，**则无需**执行以下步骤。若您是从其他数据复制工具迁移，此设置通常已经预先配置好。
 
 1. 在概览页面点击 **Edit** 按钮。
 
-<Image img={edit_button} alt="Cloud SQL Postgres 中的 Edit 按钮" size="lg" border/>
+<Image img={edit_button} alt="Cloud SQL Postgres 中的 Edit 按钮" size="lg" border />
 
-2. 打开 Flags，将 `cloudsql.logical_decoding` 修改为 on，并将 `wal_sender_timeout` 修改为 0。这些更改需要重启您的 Postgres 服务器才能生效。
+2. 打开 Flags，将 `cloudsql.logical_decoding` 修改为 on。此更改需要重启您的 Postgres 服务器才能生效。
 
-<Image img={cloudsql_logical_decoding1} alt="将 cloudsql.logical_decoding 修改为 on" size="lg" border/>
+<Image img={cloudsql_logical_decoding1} alt="将 cloudsql.logical_decoding 修改为 on" size="lg" border />
 
-<Image img={cloudsql_logical_decoding2} alt="已修改 cloudsql.logical_decoding 和 wal_sender_timeout" size="lg" border/>
-
-<Image img={cloudsql_logical_decoding3} alt="重启服务器" size="lg" border/>
+<Image img={cloudsql_logical_decoding3} alt="重启服务器" size="lg" border />
 
 ## 创建 ClickPipes 用户并授予权限 \{#creating-clickpipes-user-and-granting-permissions\}
 
