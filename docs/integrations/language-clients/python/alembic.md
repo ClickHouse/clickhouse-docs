@@ -4,7 +4,7 @@ sidebar_position: 6
 keywords: ['clickhouse', 'python', 'alembic', 'migrations', 'sqlalchemy', 'schema']
 description: 'Alembic database migration support for the ClickHouse SQLAlchemy dialect'
 slug: /integrations/language-clients/python/alembic
-title: 'Alembic Migrations'
+title: 'Alembic migrations'
 doc_type: 'guide'
 ---
 

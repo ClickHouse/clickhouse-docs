@@ -8,7 +8,7 @@ title: 'Advanced querying'
 doc_type: 'reference'
 ---
 
-# Advanced Querying {#advanced-querying}
+# Advanced querying {#advanced-querying}
 
 For common query workflows, see [Querying](querying.md). This page covers QueryContexts, streaming internals, read formats, external data, and timezone handling.
 

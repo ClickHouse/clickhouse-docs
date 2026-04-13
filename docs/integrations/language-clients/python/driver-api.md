@@ -8,7 +8,7 @@ title: 'Driver API reference'
 doc_type: 'reference'
 ---
 
-# Driver API Reference {#driver-api-reference}
+# Driver API reference {#driver-api-reference}
 
 This is the reference page for connection arguments, method signatures, and settings. For usage guides, see [Querying](querying.md), [Inserting](inserting.md), and [Async and Concurrency](async-concurrency.md).
 
