@@ -572,9 +572,9 @@ consumer.fetch.max.wait.ms=300
 2. 데이터를 디스크에 바로 기록하지 않고 메모리 버퍼에 기록합니다.
 3. `wait_for_async_insert=0`인 경우 커넥터에 성공 응답을 반환합니다.
 4. 다음 조건 중 하나를 만족하면 버퍼를 디스크로 플러시합니다:
-   - 버퍼가 `async_insert_max_data_size`에 도달한 경우 (기본값: 10 MB)
-   - 최초 insert 이후 `async_insert_busy_timeout_ms` 밀리초가 경과한 경우 (기본값: 1000 ms)
-   - 누적된 쿼리 수가 최대값(`async_insert_max_query_number`, 기본값: 100)에 도달한 경우
+   * 버퍼가 `async_insert_max_data_size`에 도달한 경우 (기본값: 100 MB)
+   * 최초 insert 이후 `async_insert_busy_timeout_ms` 밀리초가 경과한 경우 (기본값: 1000 ms)
+   * 누적된 쿼리 수가 최대값(`async_insert_max_query_number`, 기본값: 100)에 도달한 경우
 
 이는 생성되는 파트 수를 크게 줄이고 전체 처리량을 향상시킵니다.
 
@@ -605,12 +605,12 @@ consumer.fetch.max.wait.ms=300
 비동기 INSERT 플러시 동작을 세밀하게 조정할 수 있습니다.
 
 ```json
-"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=104857600,async_insert_busy_timeout_ms=1000"
 ```
 
 일반적인 튜닝 파라미터:
 
-* **`async_insert_max_data_size`** (기본값: 10485760 / 10 MB): 플러시 전 최대 버퍼 크기
+* **`async_insert_max_data_size`** (기본값: 104857600 / 100 MB): 플러시 전 최대 버퍼 크기
 * **`async_insert_busy_timeout_ms`** (기본값: 1000): 플러시까지의 최대 시간(ms)
 * **`async_insert_stale_timeout_ms`** (기본값: 0): 마지막 insert 이후 플러시까지의 시간(ms)
 * **`async_insert_max_query_number`** (기본값: 100): 플러시 전 최대 쿼리 수
@@ -618,9 +618,8 @@ consumer.fetch.max.wait.ms=300
 **트레이드오프**:
 
 * **장점**: 파트 수 감소, 머지 성능 향상, CPU 오버헤드 감소, 높은 동시성 환경에서 처리량 개선
-* **고려사항**: 데이터가 즉시 쿼리되지 않음, 엔드 투 엔드 지연 시간이 소폭 증가
+* **고려사항**: 데이터를 즉시 쿼리할 수 없음, 엔드 투 엔드 지연 시간이 소폭 증가
 * **위험**: `wait_for_async_insert=0`인 경우 서버 크래시 시 데이터 손실 가능, 큰 버퍼로 인한 메모리 압박 가능성
-
 
 ##### 정확히 한 번 의미론을 사용하는 비동기 insert \{#async-inserts-with-exactly-once\}
 

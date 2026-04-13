@@ -17,7 +17,7 @@ ClickHouse의 비동기 삽입는 클라이언트 측 배치가 불가능할 때
 
 이 기능을 활성화하면(`async_insert = 1`), 삽입는 버퍼링되며 다음 플러시 조건 중 하나가 충족될 때만 디스크에 기록됩니다:
 
-* 버퍼가 지정된 데이터 크기에 도달할 때([`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size), 기본값 10 MiB).
+* 버퍼가 지정된 데이터 크기에 도달할 때([`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size), 기본값 100 MiB).
 * 시간 임계값이 경과할 때([`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_busy_timeout_max_ms), 기본값 200 ms 또는 Cloud에서는 1000 ms).
 * 삽입 쿼리의 개수가 최대값에 도달할 때([`async_insert_max_query_number`](/operations/settings/settings#async_insert_max_query_number), 기본값 450).
 

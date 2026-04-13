@@ -6352,9 +6352,34 @@ log_query_views=1
 
 ## materialize_statistics_on_insert \{#materialize_statistics_on_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "Added new setting to allow to disable materialization of statistics on insert"}]}]}/>
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      {
+        label:
+          "默认禁用在 INSERT 时构建统计信息，改为依赖合并"
+      }
+    ]
+  },
+  {
+    id: "row-2",
+    items: [
+      { label: "24.6" },
+      { label: "1" },
+      {
+        label:
+          "Added new setting to allow to disable materialization of statistics on insert"
+      }
+    ]
+  }
+]}
+/>
 
 控制是否在执行 INSERT 时构建并写入统计信息。若禁用，则统计信息会在合并期间或通过显式执行 MATERIALIZE STATISTICS 来构建并存储。
 

@@ -17,13 +17,13 @@ import async_inserts from '@site/static/images/bestpractices/async_inserts.png';
 
 启用 (`async_insert = 1`) 后，插入会被缓冲，只有在满足以下任一刷新条件时才会写入磁盘：
 
-* 缓冲区达到指定的数据大小 ([`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size)，默认为 10 MiB) 。
+* 缓冲区达到指定的数据大小 ([`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size)，默认为 100 MiB) 。
 * 达到时间阈值 ([`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_busy_timeout_max_ms)，默认为 200 毫秒，在 Cloud 中为 1000 毫秒) 。
 * 累积的插入查询数量达到上限 ([`async_insert_max_query_number`](/operations/settings/settings#async_insert_max_query_number)，默认为 450) 。
 
 先达到的阈值会触发刷新。
 
-这一批处理过程对客户端是透明的，有助于 ClickHouse 高效合并来自多个源的插入流量。但在刷新发生之前，这些数据无法被查询。需要注意的是，对于每种插入数据结构 (insert shape) 与设置组合会有多个缓冲区，在集群中，缓冲区按节点维护——从而在多租户环境中实现细粒度控制。其余插入机制与[同步插入](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default)中描述的相同。
+这一批处理过程对客户端是透明的，有助于 ClickHouse 高效合并来自多个源的插入流量。但在刷新发生之前，这些数据无法被查询。需要注意的是，对于每种插入形态 (insert shape) 与设置组合会有多个缓冲区，在集群中，缓冲区按节点维护——从而在多租户环境中实现细粒度控制。其余插入机制与[同步插入](/best-practices/selecting-an-insert-strategy#synchronous-inserts-by-default)中描述的相同。
 
 ### 选择返回模式 \{#choosing-a-return-mode\}
 

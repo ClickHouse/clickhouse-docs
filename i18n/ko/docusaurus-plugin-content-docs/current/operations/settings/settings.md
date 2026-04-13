@@ -6355,9 +6355,34 @@ INSERT 시 skip 인덱스를 생성하고 저장합니다. 비활성화하면 sk
 
 ## materialize_statistics_on_insert \{#materialize_statistics_on_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "Added new setting to allow to disable materialization of statistics on insert"}]}]}/>
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      {
+        label:
+          "기본적으로 INSERT 시 통계를 생성하지 않고, 대신 병합에 의존합니다"
+      }
+    ]
+  },
+  {
+    id: "row-2",
+    items: [
+      { label: "24.6" },
+      { label: "1" },
+      {
+        label:
+          "Added new setting to allow to disable materialization of statistics on insert"
+      }
+    ]
+  }
+]}
+/>
 
 활성화된 경우 INSERT 시 통계가 생성되어 함께 삽입됩니다. 비활성화하면 통계는 머지(merge) 작업 동안 또는 명시적인 MATERIALIZE STATISTICS 실행 시 생성 및 저장됩니다.
 
