@@ -570,11 +570,11 @@ consumer.fetch.max.wait.ms=300
 2. 将数据写入内存缓冲区(而不是立即写入磁盘)
 3. 向连接器返回成功(如果 `wait_for_async_insert=0`)
 4. 当满足以下条件之一时将缓冲区刷新到磁盘:
-   - 缓冲区达到 `async_insert_max_data_size`(默认值:10 MB)
-   - 自首次插入以来经过 `async_insert_busy_timeout_ms` 毫秒(默认值:1000 毫秒)
-   - 累积的查询数量达到最大值(`async_insert_max_query_number`,默认值:100)
+   * 缓冲区达到 `async_insert_max_data_size`(默认值:100 MB)
+   * 自首次插入以来经过 `async_insert_busy_timeout_ms` 毫秒(默认值:1000 毫秒)
+   * 累积的查询数量达到最大值(`async_insert_max_query_number`,默认值:100)
 
-这显著减少了创建的数据分片数量并提高了整体吞吐量。
+这显著减少了创建的parts数量并提高了整体吞吐量。
 
 ##### 启用异步插入 \{#enabling-async-inserts\}
 
@@ -603,12 +603,12 @@ consumer.fetch.max.wait.ms=300
 可以对异步插入的刷新策略进行精细调优：
 
 ```json
-"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=104857600,async_insert_busy_timeout_ms=1000"
 ```
 
 Common tuning parameters:
 
-* **`async_insert_max_data_size`**(默认值:10485760 / 10 MB):触发刷新前的最大缓冲区大小
+* **`async_insert_max_data_size`**(默认值:104857600 / 100 MB):触发刷新前的最大缓冲区大小
 * **`async_insert_busy_timeout_ms`**(默认值:1000):触发刷新前的最长等待时间(毫秒)
 * **`async_insert_stale_timeout_ms`**(默认值:0):自上次插入以来触发刷新前的时间(毫秒)
 * **`async_insert_max_query_number`**(默认值:100):触发刷新前的最大查询次数
@@ -618,7 +618,6 @@ Common tuning parameters:
 * **优点**:更少的数据分片,更好的合并性能,更低的 CPU 开销,在高并发下具备更高吞吐量
 * **注意事项**:数据无法被立即查询,端到端延迟略有增加
 * **风险**:如果 `wait_for_async_insert=0`,服务器崩溃时可能发生数据丢失;缓冲区过大时可能导致内存压力
-
 
 ##### 具有 exactly-once 语义的异步插入 \{#async-inserts-with-exactly-once\}
 

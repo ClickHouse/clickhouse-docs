@@ -6358,9 +6358,34 @@ log_query_views=1
 
 ## materialize_statistics_on_insert \{#materialize_statistics_on_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "Добавлена новая настройка, позволяющая отключить материализацию статистики при вставке"}]}]}/>
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      {
+        label:
+          "По умолчанию отключено построение статистики при INSERT, вместо этого используется слияние"
+      }
+    ]
+  },
+  {
+    id: "row-2",
+    items: [
+      { label: "24.6" },
+      { label: "1" },
+      {
+        label:
+          "Добавлена новая настройка, позволяющая отключить материализацию статистики при вставке"
+      }
+    ]
+  }
+]}
+/>
 
 Определяет, будут ли операторы INSERT создавать и вставлять статистику. Если настройка отключена, статистика будет строиться и сохраняться во время слияний или явным выполнением MATERIALIZE STATISTICS.
 
