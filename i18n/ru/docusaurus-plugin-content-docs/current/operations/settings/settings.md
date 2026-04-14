@@ -1253,6 +1253,26 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 - 0 - отключено
 - 1 - включено
 
+## asterisk_include_virtual_columns \{#asterisk_include_virtual_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [{ label: "26.4" }, { label: "0" }, { label: "Новая настройка" }]
+  }
+]}
+/>
+
+Добавлять виртуальные столбцы в запросы с подстановочным символом (`SELECT *`).
+
+Возможные значения:
+
+* 0 - отключено
+* 1 - включено
+
 ## async_insert \{#async_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
