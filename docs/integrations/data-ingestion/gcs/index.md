@@ -30,7 +30,6 @@ To utilize a GCS bucket as a disk, we must first declare it within the ClickHous
 #### Storage configuration > disks > gcs {#storage_configuration--disks--gcs}
 
 This part of the configuration is shown in the highlighted section and specifies that:
-- Batch deletes aren't to be performed.  GCS doesn't currently support batch deletes, so the autodetect is disabled to suppress error messages.
 - The type of the disk is `s3` because the S3 API is in use.
 - The endpoint as provided by GCS
 - The service account HMAC key and secret
