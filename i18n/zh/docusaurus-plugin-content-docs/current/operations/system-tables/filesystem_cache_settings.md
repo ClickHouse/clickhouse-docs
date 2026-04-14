@@ -26,7 +26,7 @@ doc_type: 'reference'
 * `background_download_threads` ([UInt64](../../sql-reference/data-types/)) — 后台下载线程数。值为 0 时禁用后台下载
 * `background_download_queue_size_limit` ([UInt64](../../sql-reference/data-types/)) — 后台下载队列大小。值为 0 时禁用后台下载
 * `background_download_max_file_segment_size` ([UInt64](../../sql-reference/data-types/)) — 可通过后台下载下载的最大大小
-* `load_metadata_threads` ([UInt64](../../sql-reference/data-types/)) — 服务器启动时加载缓存元数据的线程数。值为 0 时禁用元数据异步加载
+* `load_metadata_threads` ([UInt64](../../sql-reference/data-types/)) — 服务器启动时用于加载缓存元数据的最大线程数
 * `load_metadata_asynchronously` ([UInt8](../../sql-reference/data-types/)) — 启用在服务器启动时异步加载元数据
 * `keep_free_space_size_ratio` ([Float64](../../sql-reference/data-types/)) — 缓存在后台尝试维持的空闲空间比例
 * `keep_free_space_elements_ratio` ([Float64](../../sql-reference/data-types/)) — 缓存在后台尝试维持的空闲元素比例

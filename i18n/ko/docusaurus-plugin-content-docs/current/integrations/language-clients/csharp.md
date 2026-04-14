@@ -99,14 +99,15 @@ ClickHouse 연결을 구성하는 방법은 두 가지가 있습니다:
 
 ### 데이터 형식 및 직렬화 \{#data-format-serialization\}
 
-| 속성 | 타입 | 기본값 | 연결 문자열 키 | 설명 |
-|----------|------|---------|----------------------|-------------|
-| UseCompression | `bool` | `true` | `Compression` | 데이터 전송 시 gzip 압축을 사용하도록 설정합니다 |
-| UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | 임의 정밀도를 위해 `ClickHouseDecimal`을 사용합니다. `false`인 경우 .NET `decimal`(128비트 한계)을 사용합니다 |
-| ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | `String` 및 `FixedString` 컬럼을 `string` 대신 `byte[]`로 읽습니다. 바이너리 데이터에 유용합니다 |
-| UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | 매개변수를 URL 쿼리 문자열 대신 폼 데이터로 전송합니다 |
-| JsonReadMode | `JsonReadMode` | `Binary` | `JsonReadMode` | JSON 데이터 반환 방식: `Binary`( `JsonObject`를 반환) 또는 `String`(원시 JSON 문자열을 반환) |
-| JsonWriteMode | `JsonWriteMode` | `String` | `JsonWriteMode` | JSON 데이터 전송 방식: `String`( `JsonSerializer`를 통해 직렬화하며 모든 입력을 허용) 또는 `Binary`(타입 힌트가 있는 등록된 POCO에만 사용 가능) |
+| 속성                      | 타입                       | 기본값      | 연결 문자열 키                  | 설명                                                                                                      |
+| ----------------------- | ------------------------ | -------- | ------------------------- | ------------------------------------------------------------------------------------------------------- |
+| UseCompression          | `bool`                   | `true`   | `Compression`             | 데이터 전송 시 gzip 압축을 사용하도록 설정합니다                                                                           |
+| UseCustomDecimals       | `bool`                   | `true`   | `UseCustomDecimals`       | 임의 정밀도를 위해 `ClickHouseDecimal`을 사용합니다. `false`인 경우 .NET `decimal`(128비트 한계)을 사용합니다                      |
+| ReadStringsAsByteArrays | `bool`                   | `false`  | `ReadStringsAsByteArrays` | `String` 및 `FixedString` 컬럼을 `string` 대신 `byte[]`로 읽습니다. 바이너리 데이터에 유용합니다                                |
+| UseFormDataParameters   | `bool`                   | `false`  | `UseFormDataParameters`   | 매개변수를 URL 쿼리 문자열 대신 폼 데이터로 전송합니다                                                                        |
+| ParameterTypeResolver   | `IParameterTypeResolver` | `null`   | —                         | `@` 스타일 매개변수 타입 대응을 위한 사용자 지정 리졸버입니다. [사용자 지정 매개변수 타입 대응](#parameter-type-mapping)을 참조하십시오         |
+| JsonReadMode            | `JsonReadMode`           | `Binary` | `JsonReadMode`            | JSON 데이터 반환 방식: `Binary`( `JsonObject`를 반환) 또는 `String`(원시 JSON 문자열을 반환)                                |
+| JsonWriteMode           | `JsonWriteMode`          | `String` | `JsonWriteMode`           | JSON 데이터 전송 방식: `String`( `JsonSerializer`를 통해 직렬화하며 모든 입력을 허용) 또는 `Binary`(타입 힌트가 있는 등록된 POCO에만 사용 가능) |
 
 ### 세션 관리 \{#session-management\}
 
@@ -179,17 +180,18 @@ Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 
 `QueryOptions`를 사용하면 쿼리 단위로 클라이언트 수준 설정을 재정의할 수 있습니다. 모든 속성은 선택 사항이며, 지정한 경우에만 클라이언트 기본값을 재정의합니다.
 
-| Property         | Type                          | Description                                                       |
-| ---------------- | ----------------------------- | ----------------------------------------------------------------- |
-| QueryId          | `string`                      | `system.query_log`에서 추적 또는 취소를 위한 사용자 정의 쿼리 식별자                   |
-| Database         | `string`                      | 이 쿼리에 대해 기본 데이터베이스 재정의                                            |
-| Roles            | `IReadOnlyList<string>`       | 이 쿼리에 대해 클라이언트 역할 재정의                                             |
-| CustomSettings   | `IDictionary<string, object>` | 이 쿼리에 대한 ClickHouse 서버 설정(예: `max_threads`)                       |
-| CustomHeaders    | `IDictionary<string, string>` | 이 쿼리에 대한 추가 HTTP 헤더                                               |
-| UseSession       | `bool?`                       | 이 쿼리에 대한 세션 동작 재정의                                                |
-| SessionId        | `string`                      | 이 쿼리에 대한 세션 ID (`UseSession = true` 필요)                           |
-| BearerToken      | `string`                      | 이 쿼리에 대한 인증 토큰 재정의                                                |
-| MaxExecutionTime | `TimeSpan?`                   | 서버 측 쿼리 타임아웃(SETTING `max_execution_time`으로 전달됨); 초과 시 서버에서 쿼리 취소 |
+| Property              | Type                          | Description                                                                           |
+| --------------------- | ----------------------------- | ------------------------------------------------------------------------------------- |
+| QueryId               | `string`                      | `system.query_log`에서 추적 또는 취소를 위한 사용자 정의 쿼리 식별자                                       |
+| Database              | `string`                      | 이 쿼리에 대해 기본 데이터베이스 재정의                                                                |
+| Roles                 | `IReadOnlyList<string>`       | 이 쿼리에 대해 클라이언트 역할 재정의                                                                 |
+| CustomSettings        | `IDictionary<string, object>` | 이 쿼리에 대한 ClickHouse 서버 설정(예: `max_threads`)                                           |
+| CustomHeaders         | `IDictionary<string, string>` | 이 쿼리에 대한 추가 HTTP 헤더                                                                   |
+| UseSession            | `bool?`                       | 이 쿼리에 대한 세션 동작 재정의                                                                    |
+| SessionId             | `string`                      | 이 쿼리에 대한 세션 ID (`UseSession = true` 필요)                                               |
+| BearerToken           | `string`                      | 이 쿼리에 대한 인증 토큰 재정의                                                                    |
+| ParameterTypeResolver | `IParameterTypeResolver`      | `@` 스타일 매개변수 타입 대응용 클라이언트 수준 리졸버 재정의; [사용자 정의 매개변수 타입 대응](#parameter-type-mapping) 참조 |
+| MaxExecutionTime      | `TimeSpan?`                   | 서버 측 쿼리 타임아웃(SETTING `max_execution_time`으로 전달됨); 초과 시 서버에서 쿼리 취소                     |
 
 **예시:**
 
@@ -214,7 +216,6 @@ var reader = await client.ExecuteReaderAsync(
 ```
 
 ***
-
 
 ### InsertOptions \{#insert-options\}
 
@@ -441,8 +442,75 @@ var options = new InsertOptions
 * 값이 제공되지 않은 컬럼에 대해 서버가 DEFAULT 값을 적용하도록 하려면, `InsertOptions.Format`에서 `RowBinaryFormat.RowBinaryWithDefaults`를 사용하십시오.
   :::
 
-***
+#### POCO 삽입 \{#poco-insert\}
 
+`object[]` 배열을 구성하는 대신, 강타입 POCO 객체를 직접 삽입할 수 있습니다. 타입을 한 번 등록한 후 `IEnumerable<T>`를 전달하십시오:
+
+```csharp
+// Define a POCO matching your table columns
+public class SensorReading
+{
+    public ulong Id { get; set; }
+    public string SensorName { get; set; }
+    public double Value { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+// Register the type (once per client lifetime)
+client.RegisterBinaryInsertType<SensorReading>();
+
+// Insert directly — column names are derived from property names
+var readings = Enumerable.Range(0, 100_000)
+    .Select(i => new SensorReading
+    {
+        Id = (ulong)i,
+        SensorName = $"sensor_{i % 10}",
+        Value = Random.Shared.NextDouble() * 100,
+        Timestamp = DateTime.UtcNow,
+    });
+
+long rowsInserted = await client.InsertBinaryAsync("sensors", readings);
+```
+
+기본적으로 public으로 읽을 수 있는 모든 속성은 대소문자를 구분하는 엄격한 이름 일치 규칙에 따라 컬럼에 대응됩니다. 특성을 사용해 이 대응을 사용자 지정할 수 있습니다:
+
+```csharp
+public class Event
+{
+    [ClickHouseColumn(Name = "event_id")]     // Map to a differently-named column
+    public ulong Id { get; set; }
+
+    [ClickHouseColumn(Type = "LowCardinality(String)")]  // Explicit ClickHouse type
+    public string Category { get; set; }
+
+    public string Payload { get; set; }
+
+    [ClickHouseNotMapped]                     // Exclude from insert
+    public string InternalTag { get; set; }
+}
+```
+
+| 속성                                 | 용도                         |
+| ---------------------------------- | -------------------------- |
+| `[ClickHouseColumn(Name = "...")]` | 대상 컬럼 이름을 재지정합니다           |
+| `[ClickHouseColumn(Type = "...")]` | ClickHouse 타입을 명시적으로 선언합니다 |
+| `[ClickHouseNotMapped]`            | 속성을 삽입 대상에서 제외합니다          |
+
+매핑된 **모든** 속성에 명시적인 `Type`이 지정되면 스키마 확인 쿼리를 완전히 건너뜁니다. 일부 속성에만 명시적인 `Type`이 있으면 드라이버는 전체 컬럼 집합에 대해 스키마 확인 쿼리를 수행합니다.
+
+`InsertBinaryAsync<T>`는 `object[]` 오버로드와 동일한 `InsertOptions`(batch 처리, 병렬성, 스키마 확인 쿼리 캐싱)를 지원합니다.
+
+:::note
+`object[]` 오버로드와 달리 `InsertBinaryAsync<T>`는 명시적인 컬럼 목록을 허용하지 않습니다. 컬럼은 등록된 타입의 매핑된 속성에 따라 결정됩니다. 삽입할 컬럼을 제어하려면 `[ClickHouseNotMapped]`를 사용해 속성을 제외하거나 `[ClickHouseColumn(Name = "...")]`를 사용해 이름을 변경하십시오.
+
+`InsertOptions`에서 `ColumnTypes`를 설정하면 POCO 특성보다 우선 적용됩니다.
+:::
+
+#### 스키마 변경 \{#poco-insert-schema-evolution\}
+
+타입이 등록된 후 대상 테이블에 컬럼이 추가되더라도 POCO 삽입은 문제없이 작동합니다. 드라이버는 POCO에 매핑된 컬럼만 삽입하므로, `DEFAULT`(또는 다른 기본 표현식)가 지정된 새 컬럼은 서버에서 자동으로 채워집니다. 코드를 변경하거나 다시 등록할 필요가 없습니다.
+
+***
 
 ### 데이터 읽기 \{#reading-data\}
 
@@ -518,6 +586,67 @@ var reader = await client.ExecuteReaderAsync(
 
 ***
 
+
+### 사용자 지정 매개변수 타입 대응 \{#parameter-type-mapping\}
+
+`@` 스타일 매개변수(예: `WHERE id = @id`)를 사용하면 드라이버가 .NET 값 타입을 바탕으로 ClickHouse 타입을 자동으로 추론합니다. 예를 들어 `int`는 `Int32`에 대응되고 `DateTime`은 `DateTime`에 대응됩니다.
+
+이러한 기본값을 재정의하려면 `ClickHouseClientSettings`에서 `ParameterTypeResolver`를 설정하십시오. 이렇게 하면 각 매개변수마다 `ClickHouseType`을 일일이 설정하지 않아도 모든 `DateTime` 매개변수에 밀리초 정밀도를 위해 `DateTime64(3)`를 사용하거나, 모든 decimal에 특정 소수 자릿수를 사용하도록 할 때 유용합니다.
+
+**간단한 타입 대응에 `DictionaryParameterTypeResolver` 사용:**
+
+```csharp
+using ClickHouse.Driver.ADO.Parameters;
+
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    ParameterTypeResolver = new DictionaryParameterTypeResolver(new Dictionary<Type, string>
+    {
+        [typeof(DateTime)] = "DateTime64(3)",
+        [typeof(decimal)] = "Decimal64(4)",
+    }),
+};
+using var client = new ClickHouseClient(settings);
+
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("dt", DateTime.UtcNow);     // Mapped to DateTime64(3)
+parameters.AddParameter("amount", 99.1234m);         // Mapped to Decimal64(4)
+
+await client.ExecuteReaderAsync("SELECT @dt, @amount", parameters);
+```
+
+**고급 시나리오를 위한 사용자 지정 `IParameterTypeResolver`:**
+
+값을 인식하거나 이름 기반으로 확인하려면 `IParameterTypeResolver` 인터페이스를 직접 구현하십시오. 기본 추론이 적용되도록 하려면 `null`을 반환하십시오:
+
+```csharp
+public class SmartDecimalResolver : IParameterTypeResolver
+{
+    public string ResolveType(Type clrType, object value, string parameterName)
+    {
+        if (clrType != typeof(decimal))
+            return null; // Fall through to default
+
+        var scale = (decimal.GetBits((decimal)value)[3] >> 16) & 0x7F;
+        return scale <= 4 ? $"Decimal64({scale})" : $"Decimal128({scale})";
+    }
+}
+```
+
+`QueryOptions.ParameterTypeResolver`를 통해 단일 쿼리에 대한 해석기도 설정할 수 있습니다. 설정하면 클라이언트 수준의 해석기보다 우선합니다.
+
+**형식 해석 우선순위:**
+
+해석기는 우선순위 체계의 한 단계입니다. 우선순위가 높은 순서부터 낮은 순서까지 다음과 같습니다.
+
+1. 매개변수에 명시적으로 설정한 `ClickHouseType`
+2. 쿼리의 `{name:Type}` 구문에 지정한 SQL 형식 힌트
+3. `IParameterTypeResolver` (`QueryOptions.ParameterTypeResolver`를 사용하고, 설정되지 않은 경우 `ClickHouseClientSettings.ParameterTypeResolver`로 대체)
+4. 기본 제공 형식 추론(`TypeConverter.ToClickHouseType`)
+
+해석기는 ADO.NET `ClickHouseConnection` 방식에서도 작동하며, 설정은 클라이언트에서 생성된 연결에 상속됩니다.
+
+***
 
 ### Raw 스트리밍 \{#raw-streaming\}
 

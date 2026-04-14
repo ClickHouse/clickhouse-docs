@@ -99,14 +99,15 @@ ClickHouse への接続を構成する方法は 2 つあります。
 
 ### データ形式とシリアライゼーション \{#data-format-serialization\}
 
-| プロパティ | 型 | デフォルト | 接続文字列キー | 説明 |
-|----------|------|---------|----------------------|-------------|
-| UseCompression | `bool` | `true` | `Compression` | データ転送時に gzip 圧縮を有効にする |
-| UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | 任意精度の数値に `ClickHouseDecimal` を使用。false の場合は .NET の `decimal`（128 ビット上限）を使用 |
-| ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | `String` および `FixedString` カラムを `string` ではなく `byte[]` として読み取る（バイナリデータを扱う場合に便利） |
-| UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | パラメータを URL のクエリ文字列ではなくフォームデータとして送信 |
-| JsonReadMode | `JsonReadMode` | `Binary` | `JsonReadMode` | JSON データの返され方: `Binary`（`JsonObject` を返す）または `String`（生の JSON 文字列を返す） |
-| JsonWriteMode | `JsonWriteMode` | `String` | `JsonWriteMode` | JSON データの送信方法: `String`（`JsonSerializer` 経由でシリアライズし、あらゆる入力を受け付ける）または `Binary`（型ヒント付きの登録済み POCO のみ） |
+| プロパティ                   | 型                        | デフォルト    | 接続文字列キー                   | 説明                                                                                                     |
+| ----------------------- | ------------------------ | -------- | ------------------------- | ------------------------------------------------------------------------------------------------------ |
+| UseCompression          | `bool`                   | `true`   | `Compression`             | データ転送時に gzip 圧縮を有効にする                                                                                  |
+| UseCustomDecimals       | `bool`                   | `true`   | `UseCustomDecimals`       | 任意精度の数値に `ClickHouseDecimal` を使用。false の場合は .NET の `decimal` (128 ビット上限) を使用                           |
+| ReadStringsAsByteArrays | `bool`                   | `false`  | `ReadStringsAsByteArrays` | `String` および `FixedString` カラムを `string` ではなく `byte[]` として読み取る (バイナリデータを扱う場合に便利)                       |
+| UseFormDataParameters   | `bool`                   | `false`  | `UseFormDataParameters`   | パラメータを URL のクエリ文字列ではなくフォームデータとして送信                                                                     |
+| ParameterTypeResolver   | `IParameterTypeResolver` | `null`   | —                         | `@` 形式のパラメータ型対応用のカスタム解析器。[カスタムパラメータ型対応](#parameter-type-mapping) を参照                                   |
+| JsonReadMode            | `JsonReadMode`           | `Binary` | `JsonReadMode`            | JSON データの返され方: `Binary` (`JsonObject` を返す) または `String` (生の JSON 文字列を返す)                               |
+| JsonWriteMode           | `JsonWriteMode`          | `String` | `JsonWriteMode`           | JSON データの送信方法: `String` (`JsonSerializer` 経由でシリアライズし、あらゆる入力を受け付ける) または `Binary` (型ヒント付きの登録済み POCO のみ)  |
 
 ### セッション管理 \{#session-management\}
 
@@ -179,17 +180,18 @@ Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 
 `QueryOptions` を使用すると、クライアントレベルの設定をクエリごとに上書きできます。すべてのプロパティは任意指定であり、指定された場合にのみクライアントのデフォルト設定を上書きします。
 
-| Property         | Type                          | Description                                                                   |
-| ---------------- | ----------------------------- | ----------------------------------------------------------------------------- |
-| QueryId          | `string`                      | `system.query_log` 内でのトラッキングやキャンセルのためのカスタムクエリ識別子                              |
-| Database         | `string`                      | このクエリに対してデフォルトデータベースを上書きする                                                    |
-| Roles            | `IReadOnlyList<string>`       | このクエリに対してクライアントロールを上書きする                                                      |
-| CustomSettings   | `IDictionary<string, object>` | このクエリ用の ClickHouse サーバー設定（例: `max_threads`）                                   |
-| CustomHeaders    | `IDictionary<string, string>` | このクエリに対して追加で送信する HTTP ヘッダー                                                    |
-| UseSession       | `bool?`                       | このクエリに対するセッション動作を上書きする                                                        |
-| SessionId        | `string`                      | このクエリのセッション ID（`UseSession = true` が必要）                                       |
-| BearerToken      | `string`                      | このクエリに対する認証トークンを上書きする                                                         |
-| MaxExecutionTime | `TimeSpan?`                   | サーバー側のクエリタイムアウト（`max_execution_time` SETTING として渡される）。超過した場合、サーバーはクエリをキャンセルする |
+| プロパティ              | Type                          | Description                                                                           |
+| --------------------- | ----------------------------- | ------------------------------------------------------------------------------------- |
+| QueryId               | `string`                      | `system.query_log` 内でのトラッキングやキャンセルのためのカスタムクエリ識別子                                      |
+| Database              | `string`                      | このクエリに対してデフォルトデータベースを上書きする                                                            |
+| Roles                 | `IReadOnlyList<string>`       | このクエリに対してクライアントロールを上書きする                                                              |
+| CustomSettings        | `IDictionary<string, object>` | このクエリ用の ClickHouse サーバー設定 (例: `max_threads`)                                          |
+| CustomHeaders         | `IDictionary<string, string>` | このクエリに対して追加で送信する HTTP ヘッダー                                                            |
+| UseSession            | `bool?`                       | このクエリに対するセッション動作を上書きする                                                                |
+| SessionId             | `string`                      | このクエリのセッション ID (`UseSession = true` が必要)                                              |
+| BearerToken           | `string`                      | このクエリに対する認証トークンを上書きする                                                                 |
+| ParameterTypeResolver | `IParameterTypeResolver`      | `@` 形式のパラメータ型対応に使用するクライアントレベルの解析器を上書きする。[カスタムパラメータ型対応](#parameter-type-mapping) を参照 |
+| MaxExecutionTime      | `TimeSpan?`                   | サーバー側のクエリタイムアウト (`max_execution_time` SETTING として渡される) 。超過した場合、サーバーはクエリをキャンセルする       |
 
 **例:**
 
@@ -214,7 +216,6 @@ var reader = await client.ExecuteReaderAsync(
 ```
 
 ***
-
 
 ### InsertOptions \{#insert-options\}
 
@@ -442,8 +443,75 @@ var options = new InsertOptions
 * 指定していないカラムに対してサーバー側でデフォルト値を適用させたい場合は、`InsertOptions.Format` で `RowBinaryFormat.RowBinaryWithDefaults` を使用してください。
   :::
 
-***
+#### POCO の挿入 \{#poco-insert\}
 
+`object[]` 配列を構築する代わりに、型付きの POCO オブジェクトを直接挿入できます。型を一度登録したら、`IEnumerable<T>` を渡します:
+
+```csharp
+// Define a POCO matching your table columns
+public class SensorReading
+{
+    public ulong Id { get; set; }
+    public string SensorName { get; set; }
+    public double Value { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+// Register the type (once per client lifetime)
+client.RegisterBinaryInsertType<SensorReading>();
+
+// Insert directly — column names are derived from property names
+var readings = Enumerable.Range(0, 100_000)
+    .Select(i => new SensorReading
+    {
+        Id = (ulong)i,
+        SensorName = $"sensor_{i % 10}",
+        Value = Random.Shared.NextDouble() * 100,
+        Timestamp = DateTime.UtcNow,
+    });
+
+long rowsInserted = await client.InsertBinaryAsync("sensors", readings);
+```
+
+デフォルトでは、すべての public な読み取り可能プロパティは、名前の大文字・小文字を厳密に区別してカラムに対応付けられます。属性を使用して、この対応をカスタマイズできます。
+
+```csharp
+public class Event
+{
+    [ClickHouseColumn(Name = "event_id")]     // Map to a differently-named column
+    public ulong Id { get; set; }
+
+    [ClickHouseColumn(Type = "LowCardinality(String)")]  // Explicit ClickHouse type
+    public string Category { get; set; }
+
+    public string Payload { get; set; }
+
+    [ClickHouseNotMapped]                     // Exclude from insert
+    public string InternalTag { get; set; }
+}
+```
+
+| Attribute                          | 目的                     |
+| ---------------------------------- | ---------------------- |
+| `[ClickHouseColumn(Name = "...")]` | 挿入先カラム名を上書きする          |
+| `[ClickHouseColumn(Type = "...")]` | ClickHouse の型を明示的に指定する |
+| `[ClickHouseNotMapped]`            | 挿入対象からそのプロパティを除外する     |
+
+マッピングされたすべてのプロパティで `Type` が明示的に指定されている場合、スキーマ を確認するクエリは完全にスキップされます。明示的な型が指定されているプロパティが一部のみの場合、ドライバーはすべてのカラムについて スキーマ を確認するクエリにフォールバックします。
+
+`InsertBinaryAsync<T>` は、`object[]` オーバーロードと同じ `InsertOptions` (バッチ処理、並列処理、スキーマ キャッシュ) をサポートします。
+
+:::note
+`object[]` オーバーロードとは異なり、`InsertBinaryAsync<T>` は明示的なカラム一覧を受け付けません。カラムは、登録された型にマッピングされたプロパティによって決まります。挿入するカラムを制御するには、`[ClickHouseNotMapped]` を使用してプロパティを除外するか、`[ClickHouseColumn(Name = "...")]` を使用して名前を変更します。
+
+`InsertOptions` で `ColumnTypes` が設定されている場合、そちらが POCO 属性より優先されます。
+:::
+
+#### スキーマ変更 \{#poco-insert-schema-evolution\}
+
+型の登録後に対象テーブルへカラムが追加されても、POCO の insert はそのまま問題なく動作します。ドライバーが insert するのは POCO にマッピングされたカラムだけなので、`DEFAULT` (またはその他のデフォルト式) が設定された新しいカラムの値は、サーバーによって自動的に補われます。コードの変更や再登録は不要です。
+
+***
 
 ### データの読み取り \{#reading-data\}
 
@@ -519,6 +587,67 @@ var reader = await client.ExecuteReaderAsync(
 
 ***
 
+
+### カスタム パラメータ型マッピング \{#parameter-type-mapping\}
+
+`@` 形式のパラメータ (例: `WHERE id = @id`) を使用すると、ドライバは .NET の値の型から ClickHouse の型を自動的に推論します。たとえば、`int` は `Int32` に、`DateTime` は `DateTime` に対応します。
+
+これらの既定値を上書きするには、`ClickHouseClientSettings` で `ParameterTypeResolver` を設定します。これは、個々のパラメータごとに `ClickHouseType` を設定しなくても、すべての `DateTime` パラメータでミリ秒精度の `DateTime64(3)` を使用したい場合や、すべての decimal で特定の小数位精度を使用したい場合に便利です。
+
+**単純な型マッピングに `DictionaryParameterTypeResolver` を使用する場合:**
+
+```csharp
+using ClickHouse.Driver.ADO.Parameters;
+
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    ParameterTypeResolver = new DictionaryParameterTypeResolver(new Dictionary<Type, string>
+    {
+        [typeof(DateTime)] = "DateTime64(3)",
+        [typeof(decimal)] = "Decimal64(4)",
+    }),
+};
+using var client = new ClickHouseClient(settings);
+
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("dt", DateTime.UtcNow);     // Mapped to DateTime64(3)
+parameters.AddParameter("amount", 99.1234m);         // Mapped to Decimal64(4)
+
+await client.ExecuteReaderAsync("SELECT @dt, @amount", parameters);
+```
+
+**進階シナリオ向けのカスタム `IParameterTypeResolver`:**
+
+値に応じた、または名前ベースの解決を行うには、`IParameterTypeResolver` インターフェイスを直接実装します。既定の推論に委ねるには、`null` を返します:
+
+```csharp
+public class SmartDecimalResolver : IParameterTypeResolver
+{
+    public string ResolveType(Type clrType, object value, string parameterName)
+    {
+        if (clrType != typeof(decimal))
+            return null; // Fall through to default
+
+        var scale = (decimal.GetBits((decimal)value)[3] >> 16) & 0x7F;
+        return scale <= 4 ? $"Decimal64({scale})" : $"Decimal128({scale})";
+    }
+}
+```
+
+`QueryOptions.ParameterTypeResolver` を使用すると、単一のクエリに対して解析器を設定することもできます。設定した場合は、クライアントレベルの解析器より優先されます。
+
+**型解決の優先順位:**
+
+解析器は、優先順位チェーンの一要素です。優先度の高いものから低いものの順に示します。
+
+1. パラメータに明示的に設定された `ClickHouseType`
+2. クエリ内の `{name:Type}` 構文による SQL 型ヒント
+3. `IParameterTypeResolver` (`QueryOptions.ParameterTypeResolver` を使用し、未設定の場合は `ClickHouseClientSettings.ParameterTypeResolver` にフォールバック) 
+4. 組み込みの型推論 (`TypeConverter.ToClickHouseType`) 
+
+この解析器は、ADO.NET の `ClickHouseConnection` を使用する経路でも機能します。設定は、クライアントから作成された接続に継承されます。
+
+***
 
 ### 生データストリーミング \{#raw-streaming\}
 

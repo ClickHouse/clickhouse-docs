@@ -100,14 +100,15 @@ Console.WriteLine(version);
 
 ### Формат данных и сериализация \{#data-format-serialization\}
 
-| Свойство | Тип | По умолчанию | Ключ строки подключения | Описание |
-|----------|------|---------|----------------------|-------------|
-| UseCompression | `bool` | `true` | `Compression` | Включить сжатие gzip при передаче данных |
-| UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | Использовать `ClickHouseDecimal` для произвольной точности; если `false`, используется .NET `decimal` (ограничение 128 бит) |
-| ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | Читать столбцы `String` и `FixedString` как массивы байтов `byte[]` вместо строк `string`; полезно для двоичных данных |
-| UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | Отправлять параметры в виде form data вместо URL-строки запроса |
-| JsonReadMode | `JsonReadMode` | `Binary` | `JsonReadMode` | Как возвращаются JSON-данные: `Binary` (возвращает `JsonObject`) или `String` (возвращает исходную строку JSON) |
-| JsonWriteMode | `JsonWriteMode` | `String` | `JsonWriteMode` | Как отправляются JSON-данные: `String` (сериализует через `JsonSerializer`, принимает любые входные данные) или `Binary` (только зарегистрированные объекты POCO с подсказками типов) |
+| Свойство                | Тип                      | По умолчанию | Ключ строки подключения   | Описание                                                                                                                                                                              |
+| ----------------------- | ------------------------ | ------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| UseCompression          | `bool`                   | `true`       | `Compression`             | Включить сжатие gzip при передаче данных                                                                                                                                              |
+| UseCustomDecimals       | `bool`                   | `true`       | `UseCustomDecimals`       | Использовать `ClickHouseDecimal` для произвольной точности; если `false`, используется .NET `decimal` (ограничение 128 бит)                                                           |
+| ReadStringsAsByteArrays | `bool`                   | `false`      | `ReadStringsAsByteArrays` | Читать столбцы `String` и `FixedString` как массивы байтов `byte[]` вместо строк `string`; полезно для двоичных данных                                                                |
+| UseFormDataParameters   | `bool`                   | `false`      | `UseFormDataParameters`   | Отправлять параметры в виде form data вместо URL-строки запроса                                                                                                                       |
+| ParameterTypeResolver   | `IParameterTypeResolver` | `null`       | —                         | Пользовательский резолвер для соответствия типов параметров в стиле `@`; см. [Пользовательское соответствие типов параметров](#parameter-type-mapping)                     |
+| JsonReadMode            | `JsonReadMode`           | `Binary`     | `JsonReadMode`            | Как возвращаются JSON-данные: `Binary` (возвращает `JsonObject`) или `String` (возвращает исходную строку JSON)                                                                       |
+| JsonWriteMode           | `JsonWriteMode`          | `String`     | `JsonWriteMode`           | Как отправляются JSON-данные: `String` (сериализует через `JsonSerializer`, принимает любые входные данные) или `Binary` (только зарегистрированные объекты POCO с подсказками типов) |
 
 ### Управление сессиями \{#session-management\}
 
@@ -180,17 +181,18 @@ Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 
 `QueryOptions` позволяет переопределять клиентские настройки для отдельных запросов. Все свойства являются необязательными и переопределяют значения по умолчанию клиента только если они заданы.
 
-| Property         | Type                          | Description                                                                                                                          |
-| ---------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| QueryId          | `string`                      | Пользовательский идентификатор запроса для отслеживания в `system.query_log` или отмены                                              |
-| Database         | `string`                      | Переопределяет базу данных по умолчанию для этого запроса                                                                            |
-| Roles            | `IReadOnlyList<string>`       | Переопределяет роли клиента для этого запроса                                                                                        |
-| CustomSettings   | `IDictionary<string, object>` | Настройки сервера ClickHouse для этого запроса (например, `max_threads`)                                                             |
-| CustomHeaders    | `IDictionary<string, string>` | Дополнительные HTTP‑заголовки для этого запроса                                                                                      |
-| UseSession       | `bool?`                       | Переопределяет поведение сессии для этого запроса                                                                                    |
-| SessionId        | `string`                      | Идентификатор сессии для этого запроса (требуется `UseSession = true`)                                                               |
-| BearerToken      | `string`                      | Переопределяет токен аутентификации для этого запроса                                                                                |
-| MaxExecutionTime | `TimeSpan?`                   | Тайм‑аут выполнения запроса на стороне сервера (передаётся как настройка `max_execution_time`); сервер отменит запрос при превышении |
+| Property              | Type                          | Description                                                                                                                                               |
+| --------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| QueryId               | `string`                      | Пользовательский идентификатор запроса для отслеживания в `system.query_log` или отмены                                                                   |
+| Database              | `string`                      | Переопределяет базу данных по умолчанию для этого запроса                                                                                                 |
+| Roles                 | `IReadOnlyList<string>`       | Переопределяет роли клиента для этого запроса                                                                                                             |
+| CustomSettings        | `IDictionary<string, object>` | Настройки сервера ClickHouse для этого запроса (например, `max_threads`)                                                                                  |
+| CustomHeaders         | `IDictionary<string, string>` | Дополнительные HTTP‑заголовки для этого запроса                                                                                                           |
+| UseSession            | `bool?`                       | Переопределяет поведение сессии для этого запроса                                                                                                         |
+| SessionId             | `string`                      | Идентификатор сессии для этого запроса (требуется `UseSession = true`)                                                                                    |
+| BearerToken           | `string`                      | Переопределяет токен аутентификации для этого запроса                                                                                                     |
+| ParameterTypeResolver | `IParameterTypeResolver`      | Переопределяет клиентский резолвер для соответствия типов параметров в стиле `@`; см. [Пользовательское соответствие типов параметров](#parameter-type-mapping) |
+| MaxExecutionTime      | `TimeSpan?`                   | Тайм‑аут выполнения запроса на стороне сервера (передаётся как настройка `max_execution_time`); сервер отменит запрос при превышении                      |
 
 **Пример:**
 
@@ -215,7 +217,6 @@ var reader = await client.ExecuteReaderAsync(
 ```
 
 ***
-
 
 ### InsertOptions \{#insert-options\}
 
@@ -443,8 +444,75 @@ var options = new InsertOptions
 * Используйте `RowBinaryFormat.RowBinaryWithDefaults` в `InsertOptions.Format`, если вы хотите, чтобы сервер применял значения DEFAULT для столбцов, которые не были переданы.
   :::
 
-***
+#### Вставка POCO-объектов \{#poco-insert\}
 
+Вместо формирования массивов `object[]` Вы можете напрямую вставлять строго типизированные объекты POCO. Один раз зарегистрируйте тип, а затем передайте `IEnumerable<T>`:
+
+```csharp
+// Define a POCO matching your table columns
+public class SensorReading
+{
+    public ulong Id { get; set; }
+    public string SensorName { get; set; }
+    public double Value { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+// Register the type (once per client lifetime)
+client.RegisterBinaryInsertType<SensorReading>();
+
+// Insert directly — column names are derived from property names
+var readings = Enumerable.Range(0, 100_000)
+    .Select(i => new SensorReading
+    {
+        Id = (ulong)i,
+        SensorName = $"sensor_{i % 10}",
+        Value = Random.Shared.NextDouble() * 100,
+        Timestamp = DateTime.UtcNow,
+    });
+
+long rowsInserted = await client.InsertBinaryAsync("sensors", readings);
+```
+
+По умолчанию все общедоступные свойства, доступные для чтения, сопоставляются со столбцами по точному совпадению имён с учётом регистра. Это соответствие можно настроить с помощью атрибутов:
+
+```csharp
+public class Event
+{
+    [ClickHouseColumn(Name = "event_id")]     // Map to a differently-named column
+    public ulong Id { get; set; }
+
+    [ClickHouseColumn(Type = "LowCardinality(String)")]  // Explicit ClickHouse type
+    public string Category { get; set; }
+
+    public string Payload { get; set; }
+
+    [ClickHouseNotMapped]                     // Exclude from insert
+    public string InternalTag { get; set; }
+}
+```
+
+| Атрибут                            | Назначение                          |
+| ---------------------------------- | ----------------------------------- |
+| `[ClickHouseColumn(Name = "...")]` | Переопределяет имя целевого столбца |
+| `[ClickHouseColumn(Type = "...")]` | Явно задаёт тип ClickHouse          |
+| `[ClickHouseNotMapped]`            | Исключает свойство из вставки       |
+
+Если **для всех** сопоставленных свойств явно указан `Type`, запрос на проверку схемы полностью пропускается. Если явные типы заданы только для части свойств, драйвер возвращается к запросу на проверку схемы для полного набора столбцов.
+
+`InsertBinaryAsync<T>` поддерживает те же `InsertOptions` (пакетную обработку, параллелизм, кэширование схемы), что и перегрузка `object[]`.
+
+:::note
+В отличие от перегрузки `object[]`, `InsertBinaryAsync<T>` не принимает явный список столбцов. Столбцы определяются сопоставленными свойствами зарегистрированного типа. Чтобы управлять тем, какие столбцы вставляются, используйте `[ClickHouseNotMapped]` для исключения свойств или `[ClickHouseColumn(Name = "...")]` для их переименования.
+
+Если в `InsertOptions` задано `ColumnTypes`, они переопределяют атрибуты POCO.
+:::
+
+#### Изменение schema \{#poco-insert-schema-evolution\}
+
+Вставки POCO работают корректно, если после регистрации типа в целевую таблицу добавляются новые столбцы. Поскольку драйвер вставляет значения только в те столбцы, которые сопоставлены с POCO, любые новые столбцы с `DEFAULT` (или другими выражениями по умолчанию) сервер заполняет автоматически. Изменения в коде и повторная регистрация не требуются.
+
+***
 
 ### Чтение данных \{#reading-data\}
 
@@ -520,6 +588,67 @@ var reader = await client.ExecuteReaderAsync(
 
 ***
 
+
+### Настраиваемое соответствие типов параметров \{#parameter-type-mapping\}
+
+При использовании параметров в стиле `@` (например, `WHERE id = @id`) драйвер автоматически определяет тип ClickHouse по типу значения в .NET. Например, `int` соответствует `Int32`, а `DateTime` — `DateTime`.
+
+Чтобы переопределить эти значения по умолчанию, задайте `ParameterTypeResolver` в `ClickHouseClientSettings`. Это удобно, если вы хотите, чтобы для всех параметров `DateTime` использовался `DateTime64(3)` с точностью до миллисекунд или чтобы для всех десятичных чисел использовалось определённое количество знаков в дробной части, не задавая `ClickHouseType` для каждого параметра отдельно.
+
+**Использование `DictionaryParameterTypeResolver` для простых соответствий типов:**
+
+```csharp
+using ClickHouse.Driver.ADO.Parameters;
+
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    ParameterTypeResolver = new DictionaryParameterTypeResolver(new Dictionary<Type, string>
+    {
+        [typeof(DateTime)] = "DateTime64(3)",
+        [typeof(decimal)] = "Decimal64(4)",
+    }),
+};
+using var client = new ClickHouseClient(settings);
+
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("dt", DateTime.UtcNow);     // Mapped to DateTime64(3)
+parameters.AddParameter("amount", 99.1234m);         // Mapped to Decimal64(4)
+
+await client.ExecuteReaderAsync("SELECT @dt, @amount", parameters);
+```
+
+**Пользовательский `IParameterTypeResolver` для сложных сценариев:**
+
+Чтобы определять тип по значению или имени, напрямую реализуйте интерфейс `IParameterTypeResolver`. Верните `null`, чтобы использовать определение типа по умолчанию:
+
+```csharp
+public class SmartDecimalResolver : IParameterTypeResolver
+{
+    public string ResolveType(Type clrType, object value, string parameterName)
+    {
+        if (clrType != typeof(decimal))
+            return null; // Fall through to default
+
+        var scale = (decimal.GetBits((decimal)value)[3] >> 16) & 0x7F;
+        return scale <= 4 ? $"Decimal64({scale})" : $"Decimal128({scale})";
+    }
+}
+```
+
+Вы также можете задать резолвер для отдельного запроса через `QueryOptions.ParameterTypeResolver`. Если он задан, то имеет приоритет над резолвером уровня клиента.
+
+**Приоритет разрешения типов:**
+
+Резолвер — одно из звеньев в цепочке приоритетов. В порядке убывания приоритета:
+
+1. Явно заданный для параметра `ClickHouseType`
+2. Подсказка SQL-типа из синтаксиса `{name:Type}` в запросе
+3. `IParameterTypeResolver` (из `QueryOptions.ParameterTypeResolver`, с переходом к `ClickHouseClientSettings.ParameterTypeResolver`)
+4. Встроенный вывод типа (`TypeConverter.ToClickHouseType`)
+
+Резолвер также работает со сценарием ADO.NET через `ClickHouseConnection` — настройки наследуются соединениями, созданными из клиента.
+
+***
 
 ### Необработанный стриминг \{#raw-streaming\}
 

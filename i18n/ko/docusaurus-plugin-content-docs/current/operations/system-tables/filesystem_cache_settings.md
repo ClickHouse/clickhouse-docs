@@ -26,7 +26,7 @@ doc_type: 'reference'
 * `background_download_threads` ([UInt64](../../sql-reference/data-types/)) — 백그라운드 다운로드 스레드 수입니다. 값이 0이면 백그라운드 다운로드가 비활성화됩니다
 * `background_download_queue_size_limit` ([UInt64](../../sql-reference/data-types/)) — 백그라운드 다운로드 큐 크기입니다. 값이 0이면 백그라운드 다운로드가 비활성화됩니다
 * `background_download_max_file_segment_size` ([UInt64](../../sql-reference/data-types/)) — 백그라운드 다운로드로 가져올 수 있는 최대 크기
-* `load_metadata_threads` ([UInt64](../../sql-reference/data-types/)) — 서버 시작 시 캐시 메타데이터를 로드하는 스레드 수입니다. 값이 0이면 메타데이터의 비동기 로드가 비활성화됩니다
+* `load_metadata_threads` ([UInt64](../../sql-reference/data-types/)) — 서버 시작 시 캐시 메타데이터를 로드하는 데 사용되는 최대 스레드 수
 * `load_metadata_asynchronously` ([UInt8](../../sql-reference/data-types/)) — 서버 시작 시 메타데이터를 비동기로 로드하도록 활성화합니다
 * `keep_free_space_size_ratio` ([Float64](../../sql-reference/data-types/)) — 캐시가 백그라운드에서 유지하려는 여유 공간 비율
 * `keep_free_space_elements_ratio` ([Float64](../../sql-reference/data-types/)) — 캐시가 백그라운드에서 유지하려는 여유 요소 비율

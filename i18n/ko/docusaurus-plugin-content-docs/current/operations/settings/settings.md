@@ -1253,6 +1253,26 @@ fuzzer는 모든 세션의 모든 쿼리에서 AST 조각을 축적하여 시간
 - 0 - 비활성화
 - 1 - 활성화
 
+## asterisk_include_virtual_columns \{#asterisk_include_virtual_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [{ label: "26.4" }, { label: "0" }, { label: "새 설정" }]
+  }
+]}
+/>
+
+와일드카드 쿼리(`SELECT *`)에 가상 컬럼을 포함할지 설정합니다.
+
+가능한 값:
+
+* 0 - 비활성화
+* 1 - 활성화
+
 ## async_insert \{#async_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

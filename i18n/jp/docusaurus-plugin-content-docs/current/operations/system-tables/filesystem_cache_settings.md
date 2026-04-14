@@ -26,7 +26,7 @@ doc_type: 'reference'
 * `background_download_threads` ([UInt64](../../sql-reference/data-types/)) — バックグラウンドダウンロードスレッドの数。値 0 はバックグラウンドダウンロードを無効にします
 * `background_download_queue_size_limit` ([UInt64](../../sql-reference/data-types/)) — バックグラウンドダウンロードキューのサイズ。値 0 はバックグラウンドダウンロードを無効にします
 * `background_download_max_file_segment_size` ([UInt64](../../sql-reference/data-types/)) — バックグラウンドダウンロードでダウンロードできる最大サイズ
-* `load_metadata_threads` ([UInt64](../../sql-reference/data-types/)) — サーバー起動時にキャッシュメタデータを読み込むスレッド数。値 0 はメタデータの非同期読み込みを無効にします
+* `load_metadata_threads` ([UInt64](../../sql-reference/data-types/)) — サーバー起動時にキャッシュメタデータの読み込みに使用されるスレッドの最大数
 * `load_metadata_asynchronously` ([UInt8](../../sql-reference/data-types/)) — サーバー起動時のメタデータの非同期読み込みを有効にします
 * `keep_free_space_size_ratio` ([Float64](../../sql-reference/data-types/)) — キャッシュがバックグラウンドで維持しようとする空き容量の比率
 * `keep_free_space_elements_ratio` ([Float64](../../sql-reference/data-types/)) — キャッシュがバックグラウンドで維持しようとする空き要素数の比率

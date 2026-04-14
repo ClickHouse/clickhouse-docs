@@ -869,7 +869,7 @@ SELECT * FROM events WHERE data.level IN ('error', 'critical');
 
 ### 직접 읽기 \{#direct-read\}
 
-일부 유형의 텍스트 쿼리는 &quot;direct read&quot;라고 하는 최적화를 통해 성능이 상당히 향상될 수 있습니다.
+일부 유형의 텍스트 쿼리는 &quot;직접 읽기&quot;라고 하는 최적화를 통해 성능이 상당히 향상될 수 있습니다.
 
 예시:
 
@@ -885,7 +885,7 @@ WHERE string_search_function(column_with_text_index)
 직접 읽기는 두 개의 설정으로 제어됩니다.
 
 * 설정 [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index) (기본값은 true) – 직접 읽기를 전반적으로 활성화할지 지정합니다.
-* 설정 [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read) – 직접 읽기를 위한 또 다른 전제 조건입니다. ClickHouse 26.1 이상 버전에서는 이 설정이 기본으로 활성화되어 있습니다. 이전 버전에서는 `SET use_skip_indexes_on_data_read = 1` 명령을 명시적으로 실행해야 합니다.
+* 설정 [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read)는 ClickHouse 버전 &lt; 26.4에서 직접 읽기를 위한 전제 조건이었습니다.
 
 **지원되는 함수**
 
@@ -903,10 +903,9 @@ SELECT count()
 FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 0, -- disable direct read
-         use_skip_indexes_on_data_read = 1;
 ```
 
-반환합니다
+반환값
 
 ```text
 [...]
@@ -926,7 +925,6 @@ SELECT count()
 FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
-         use_skip_indexes_on_data_read = 1;
 ```
 
 반환값
@@ -942,35 +940,34 @@ Positions:
 ```
 
 두 번째 EXPLAIN PLAN 출력에는 가상 컬럼 `__text_index_<index_name>_<function_name>_<id>`가 포함됩니다.
-이 컬럼이 존재하면 direct read가 사용됩니다.
+이 컬럼이 존재하면 직접 읽기가 사용됩니다.
 
-WHERE 절의 필터 조건에 텍스트 검색 함수만 포함되어 있는 경우, 쿼리는 컬럼 데이터를 전혀 읽지 않고도 direct read를 통해 가장 큰 성능 향상을 얻을 수 있습니다.
-그러나 쿼리의 다른 부분에서 텍스트 컬럼에 접근하는 경우에도 direct read는 여전히 성능을 개선합니다.
+WHERE 절의 필터 조건에 텍스트 검색 함수만 포함되어 있는 경우, 쿼리는 컬럼 데이터를 전혀 읽지 않고도 직접 읽기를 통해 가장 큰 성능 향상을 얻을 수 있습니다.
+그러나 쿼리의 다른 부분에서 텍스트 컬럼에 접근하는 경우에도 직접 읽기는 여전히 성능을 개선합니다.
 
-**힌트로서의 direct read**
+**힌트로서의 직접 읽기**
 
-힌트로서의 direct read는 기본적으로 일반 direct read와 동일한 원리에 기반하지만, 기본이 되는 텍스트 컬럼을 제거하지 않고 텍스트 인덱스 데이터로부터 추가 필터를 생성해 적용한다는 점이 다릅니다.
+힌트로서의 직접 읽기는 기본적으로 일반 직접 읽기와 동일한 원리에 기반하지만, 기본이 되는 텍스트 컬럼을 제거하지 않고 텍스트 인덱스 데이터로부터 추가 필터를 생성해 적용한다는 점이 다릅니다.
 이는 텍스트 인덱스만 읽어서 처리할 경우 오탐(false positive)이 발생할 수 있는 함수에 사용됩니다.
 
 지원되는 함수는 `like`, `startsWith`, `endsWith`, `equals`, `has`, `mapContainsKey`, `mapContainsValue` 입니다.
 
 이 추가 필터는 다른 필터와 결합되어 결과 집합의 선별성을 더 높여, 다른 컬럼에서 읽어야 하는 데이터 양을 더욱 줄이는 데 도움이 됩니다.
 
-힌트로서의 direct read는 [query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) 설정(기본값으로 활성화됨)으로 제어합니다.
+힌트로서의 직접 읽기는 [query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) 설정(기본값으로 활성화됨)으로 제어합니다.
 
 힌트를 사용하지 않은 쿼리 예시는 다음과 같습니다:
-
 
 ```sql
 EXPLAIN actions = 1
 SELECT count()
 FROM table
 WHERE (col LIKE '%some-token%') AND (d >= today())
-SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 0
+SETTINGS query_plan_text_index_add_hint = 0
 FORMAT TSV
 ```
 
-반환값
+반환합니다
 
 ```text
 [...]
@@ -985,7 +982,7 @@ EXPLAIN actions = 1
 SELECT count()
 FROM table
 WHERE col LIKE '%some-token%'
-SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 1
+SETTINGS query_plan_text_index_add_hint = 1
 ```
 
 반환값
@@ -1000,7 +997,6 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 [PREWHERE](/sql-reference/statements/select/prewhere) 최적화 덕분에 필터 조건은 세 개의 개별 조건 항으로 분해되며, 계산 비용이 낮은 것부터 높은 것 순서대로 적용됩니다.
 이 쿼리에서는 `__text_index_...`, 그다음 `greaterOrEquals(...)`, 마지막으로 `like(...)` 순서로 적용됩니다.
 이러한 적용 순서 덕분에 텍스트 인덱스와 기존 필터만으로 건너뛸 수 있는 그래뉼보다 더 많은 데이터 그래뉼을, `WHERE` 절 이후 쿼리에서 사용되는 읽기 비용이 큰 컬럼을 읽기 전에 건너뛸 수 있어, 최종적으로 읽어야 하는 데이터 양이 더욱 줄어듭니다.
-
 
 ### LIKE/ILIKE 쿼리 \{#like-ilike-queries-perf\}
 
@@ -1257,7 +1253,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1;
 SELECT count()
 FROM hackernews
 WHERE hasAnyTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │  408426 │
@@ -1272,7 +1268,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 SELECT count()
 FROM hackernews
 WHERE hasAnyTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │  408426 │
@@ -1284,21 +1280,20 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 이러한 흔한 「OR」 검색에서는 속도 향상이 한층 더 두드러집니다.
 전체 컬럼 스캔을 피함으로써 쿼리 실행 속도가 거의 89배(1.329초 대비 0.015초) 빨라집니다.
 
-
 ### 3. `hasAllTokens` 사용하기 \{#using-hasAllTokens\}
 
 `hasAllTokens`는 텍스트에 주어진 토큰이 모두 포함되어 있는지 확인합니다.
 &#39;love&#39;와 &#39;ClickHouse&#39;를 모두 포함하는 댓글을 검색합니다.
 
-**Direct read 비활성화 (Standard scan)**
-Direct read가 비활성화된 경우에도 표준 skip 인덱스는 여전히 효과적입니다.
+**직접 읽기 비활성화 (Standard scan)**
+직접 읽기가 비활성화된 경우에도 표준 스킵 인덱스는 여전히 효과적입니다.
 28.7M개의 행을 147.46K개 행으로 줄여 주지만, 여전히 해당 컬럼에서 57.03 MB를 읽어야 합니다.
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAllTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │      11 │
@@ -1314,7 +1309,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 SELECT count()
 FROM hackernews
 WHERE hasAllTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │      11 │
@@ -1323,8 +1318,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.007 sec. Processed 147.46 thousand rows, 147.46 KB
 ```
 
-이 「AND」 검색에서는 direct read 최적화가 표준 skip 인덱스 스캔보다 26배 이상 빠르게 동작합니다(0.184초 vs 0.007초).
-
+이 「AND」 검색에서는 직접 읽기 최적화가 표준 스킵 인덱스 스캔보다 26배 이상 빠르게 동작합니다(0.184초 vs 0.007초).
 
 ### 4. 복합 검색: OR, AND, NOT, ... \{#compound-search\}
 
@@ -1337,7 +1331,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse') OR hasToken(comment, 'clickhouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │     769 │
@@ -1352,7 +1346,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse') OR hasToken(comment, 'clickhouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │     769 │
@@ -1363,7 +1357,6 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 인덱스 결과를 결합하면 직접 읽기 쿼리는 34배 더 빨라지며(0.450초 대비 0.013초), 9.58 GB의 컬럼 데이터를 읽지 않아도 됩니다.
 이러한 특정 사례에서는 `hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])`를 사용하는 구문이 더 효율적이며 권장됩니다.
-
 
 ## 관련 콘텐츠 \{#related-content\}
 

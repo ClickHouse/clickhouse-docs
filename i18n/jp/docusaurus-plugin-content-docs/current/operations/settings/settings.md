@@ -1250,6 +1250,26 @@ fuzzerは、すべてのセッションにわたるすべてのクエリからAS
 - 0 - 無効
 - 1 - 有効
 
+## asterisk_include_virtual_columns \{#asterisk_include_virtual_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [{ label: "26.4" }, { label: "0" }, { label: "新しい設定" }]
+  }
+]}
+/>
+
+ワイルドカードクエリ (`SELECT *`) に仮想カラムを含めるかどうかを指定します。
+
+設定可能な値:
+
+* 0 - 無効
+* 1 - 有効
+
 ## async_insert \{#async_insert\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

@@ -838,6 +838,40 @@ SELECT tuplePlus((1, 2), (2, 3))
 ```
 
 
+## tuplePositiveModuloByNumber \{#tuplePositiveModuloByNumber\}
+
+도입 버전: v26.4.0
+
+튜플과 지정된 제수에 대한 나눗셈 연산의 양의 모듈로(나머지)로 구성된 튜플을 반환합니다.
+tupleModuloByNumber와 달리 결과는 항상 0 이상입니다.
+
+**구문**
+
+```sql
+tuplePositiveModuloByNumber(tuple_num, div)
+```
+
+**인수**
+
+* `tuple_num` — 분자 값으로 이루어진 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `div` — 제수 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal)
+
+**반환값**
+
+음수가 아닌 나머지로 이루어진 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+
+**예시**
+
+**사용법**
+
+```sql title=Query
+SELECT tuplePositiveModuloByNumber((15, 10, 5), 2)
+```
+
+```response title=Response
+(1, 0, 1)
+```
+
 ## tupleToNameValuePairs \{#tupleToNameValuePairs\}
 
 도입 버전: v21.9.0

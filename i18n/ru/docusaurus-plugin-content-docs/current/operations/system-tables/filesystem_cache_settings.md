@@ -26,7 +26,7 @@ doc_type: 'reference'
 * `background_download_threads` ([UInt64](../../sql-reference/data-types/)) — Количество потоков для фоновой загрузки. Значение 0 отключает фоновую загрузку
 * `background_download_queue_size_limit` ([UInt64](../../sql-reference/data-types/)) — Размер очереди фоновой загрузки. Значение 0 отключает фоновую загрузку
 * `background_download_max_file_segment_size` ([UInt64](../../sql-reference/data-types/)) — Максимальный размер, который может быть загружен в фоновом режиме
-* `load_metadata_threads` ([UInt64](../../sql-reference/data-types/)) — Количество потоков для загрузки метаданных кэша при запуске сервера. Значение 0 отключает асинхронную загрузку метаданных
+* `load_metadata_threads` ([UInt64](../../sql-reference/data-types/)) — Максимальное количество потоков, используемых для загрузки метаданных кэша при запуске сервера
 * `load_metadata_asynchronously` ([UInt8](../../sql-reference/data-types/)) — Включает асинхронную загрузку метаданных при запуске сервера
 * `keep_free_space_size_ratio` ([Float64](../../sql-reference/data-types/)) — Доля свободного пространства, которую кэш пытается поддерживать в фоновом режиме
 * `keep_free_space_elements_ratio` ([Float64](../../sql-reference/data-types/)) — Доля свободных элементов, которую кэш пытается поддерживать в фоновом режиме

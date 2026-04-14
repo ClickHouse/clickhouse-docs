@@ -1,32 +1,33 @@
 ---
-title: 'OpenAPI를 통한 DB ClickPipes 확장'
-description: 'OpenAPI를 통한 DB ClickPipes 확장에 대한 문서'
+title: "OpenAPI를 통한 DB ClickPipes 확장"
+description: "OpenAPI를 통해 Postgres ClickPipes를 확장하는 방법"
 slug: /integrations/clickpipes/postgres/scaling
-sidebar_label: '확장'
-doc_type: 'guide'
-keywords: ['clickpipes', 'postgresql', 'cdc', '데이터 수집', 'real-time sync']
+sidebar_label: "확장"
+doc_type: "guide"
+keywords:
+  ["clickpipes", "postgresql", "CDC", "데이터 수집", "실시간 동기화"]
 integration:
-  - support_level: 'core'
-  - category: 'clickpipes'
+  - support_level: "core"
+  - category: "clickpipes"
 ---
 
 :::caution 대부분의 사용자는 이 API가 필요하지 않습니다
-DB ClickPipes의 기본 구성은 별도 설정 없이도 대부분의 워크로드를 처리하도록 설계되어 있습니다. 워크로드에 확장이 필요하다고 판단되면 [support case](https://clickhouse.com/support/program)를 생성하면, 해당 사용 사례에 적합한 최적 설정을 안내합니다.
+DB ClickPipes의 기본 구성은 대부분의 워크로드를 별도 설정 없이 처리할 수 있도록 설계되어 있습니다. 워크로드에 맞춰 확장이 필요하다고 판단되면 [지원 케이스](https://clickhouse.com/support/program)를 등록하십시오. 사용 사례에 가장 적합한 설정을 안내해 드립니다.
 :::
 
-확장 API는 다음과 같은 경우에 유용할 수 있습니다.
+확장 API는 다음과 같은 경우에 유용할 수 있습니다:
 
-- 대용량 초기 로드(4 TB 초과)
-- 적당한 양의 데이터를 가능한 한 빠르게 마이그레이션해야 하는 경우
-- 동일한 서비스에서 8개를 초과하는 CDC ClickPipes를 운영해야 하는 경우
+* 대규모 초기 로드(4 TB 초과)
+* 중간 규모의 데이터를 가능한 한 빠르게 마이그레이션해야 하는 경우
+* 동일한 서비스에서 8개를 초과하는 CDC ClickPipes를 운영해야 하는 경우
 
-확장을 시도하기 전에 다음 사항을 고려하십시오.
+확장을 시도하기 전에 다음 사항을 고려하십시오:
 
-- 소스 DB에 충분한 가용 용량이 있는지 확인
-- ClickPipe를 생성할 때 [initial load parallelism and partitioning](/integrations/clickpipes/postgres/parallel_initial_load)을 먼저 조정
-- CDC 지연을 유발할 수 있는 소스의 [long-running transactions](/integrations/clickpipes/postgres/sync_control#transactions) 존재 여부 확인
+* 소스 DB에 충분한 가용 용량이 있는지 확인
+* ClickPipe를 생성할 때 먼저 [초기 로드 병렬 처리와 파티셔닝](/integrations/clickpipes/postgres/parallel_initial_load)을 조정
+* CDC 지연의 원인이 될 수 있는 소스 측 [장시간 실행 트랜잭션](/integrations/clickpipes/postgres/sync_control#transactions)이 있는지 확인
 
-**스케일을 늘리면 ClickPipes 컴퓨트 비용도 그에 비례하여 증가합니다.** 초기 로드만을 위해 스케일을 확장한 경우, 예상치 못한 요금을 피하려면 스냅샷이 완료된 후 스케일을 축소하는 것이 중요합니다. 요금에 대한 자세한 내용은 [Postgres CDC Pricing](/cloud/reference/billing/clickpipes)을 참조하십시오.
+**확장 규모를 늘리면 ClickPipes 컴퓨팅 비용도 그에 비례해 증가합니다.** 초기 로드만을 위해 확장하는 경우, 스냅샷이 완료된 후에는 예상치 못한 비용이 발생하지 않도록 반드시 다시 축소하십시오. 요금에 대한 자세한 내용은 [Postgres CDC Pricing](/cloud/reference/billing/clickpipes)을 참조하십시오.
 
 ## 이 절차를 위한 사전 준비 사항 \{#prerequisites\}
 

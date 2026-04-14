@@ -879,23 +879,23 @@ FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
 
-ClickHouse における direct read 最適化は、基盤となるテキストカラムにアクセスせず、テキスト索引（つまりテキスト索引ルックアップ）だけを用いてクエリに応答します。
-テキスト索引ルックアップは比較的少量のデータしか読み込まないため、通常の ClickHouse のスキップ索引（スキップ索引のルックアップの後に、残りのグラニュールの読み込みとフィルタリングを行う）よりもはるかに高速です。
+ClickHouse における ダイレクトリード 最適化は、基盤となるテキストカラムにアクセスせず、テキスト索引 (つまりテキスト索引ルックアップ) だけを用いてクエリに応答します。
+テキスト索引ルックアップは比較的少量のデータしか読み込まないため、通常の ClickHouse のスキップ索引 (スキップ索引のルックアップの後に、残りのグラニュールの読み込みとフィルタリングを行う) よりもはるかに高速です。
 
-Direct read は次の 2 つの設定で制御されます。
+ダイレクトリード は次の 2 つの設定で制御されます。
 
-* Setting [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index)（デフォルトで true）。direct read を全般的に有効にするかどうかを指定します。
-* Setting [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read)。direct read のもう一つの前提条件です。ClickHouse バージョン &gt;= 26.1 では、この設定はデフォルトで有効です。以前のバージョンでは、明示的に `SET use_skip_indexes_on_data_read = 1` を実行する必要があります。
+* Setting [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index) (デフォルトで true) 。ダイレクトリード を全般的に有効にするかどうかを指定します。
+* Setting [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read) は、ClickHouse バージョン &lt; 26.4 では ダイレクトリード の前提条件でした。
 
 **サポートされる関数**
 
-Direct read 最適化は、関数 `hasToken`、`hasAllTokens`、および `hasAnyTokens` をサポートします。
-テキスト索引が `array` tokenizer で定義されている場合、関数 `equals`、`has`、`mapContainsKey`、`mapContainsValue` に対しても direct read がサポートされます。
+ダイレクトリード 最適化は、関数 `hasToken`、`hasAllTokens`、および `hasAnyTokens` をサポートします。
+テキスト索引が `array` tokenizer で定義されている場合、関数 `equals`、`has`、`mapContainsKey`、`mapContainsValue` に対しても ダイレクトリード がサポートされます。
 これらの関数は、`AND`、`OR`、`NOT` 演算子で組み合わせることもできます。
-`WHERE` または `PREWHERE` 句には、（テキストカラムまたは他のカラムに対する）追加の非テキスト検索関数によるフィルタを含めることもできます。この場合でも direct read 最適化は使用されますが、その効果は低くなります（サポートされているテキスト検索関数にのみ適用されるためです）。
+`WHERE` または `PREWHERE` 句には、 (テキストカラムまたは他のカラムに対する) 追加の非テキスト検索関数によるフィルタを含めることもできます。この場合でも ダイレクトリード 最適化は使用されますが、その効果は低くなります (サポートされているテキスト検索関数にのみ適用されるためです) 。
 
-あるクエリが direct read を利用しているかを確認するには、そのクエリを `EXPLAIN PLAN actions = 1` 付きで実行します。
-例として、direct read を無効にしたクエリは
+あるクエリが ダイレクトリード を利用しているかを確認するには、そのクエリを `EXPLAIN PLAN actions = 1` 付きで実行します。
+例として、ダイレクトリード を無効にしたクエリは
 
 ```sql
 EXPLAIN PLAN actions = 1
@@ -903,7 +903,6 @@ SELECT count()
 FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 0, -- disable direct read
-         use_skip_indexes_on_data_read = 1;
 ```
 
 戻り値
@@ -926,7 +925,6 @@ SELECT count()
 FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
-         use_skip_indexes_on_data_read = 1;
 ```
 
 戻り値
@@ -942,31 +940,30 @@ Positions:
 ```
 
 2つ目の EXPLAIN PLAN の出力には、仮想カラム `__text_index_<index_name>_<function_name>_<id>` が含まれます。
-このカラムが存在する場合は、direct read が使用されています。
+このカラムが存在する場合は、ダイレクトリード が使用されています。
 
-WHERE 句のフィルタがテキスト検索関数のみで構成されている場合、クエリはカラムデータの読み取り自体を完全に回避でき、direct read によって最大のパフォーマンス向上が得られます。
-ただし、クエリ内の他の箇所でテキストカラムにアクセスしている場合でも、direct read により依然としてパフォーマンス改善が見込めます。
+WHERE 句のフィルタがテキスト検索関数のみで構成されている場合、クエリはカラムデータの読み取り自体を完全に回避でき、ダイレクトリード によって最大のパフォーマンス向上が得られます。
+ただし、クエリ内の他の箇所でテキストカラムにアクセスしている場合でも、ダイレクトリード により依然としてパフォーマンス改善が見込めます。
 
-**ヒントとしての direct read**
+**ヒントとしての ダイレクトリード**
 
-ヒントとしての direct read は、通常の direct read と同じ原理に基づきますが、基礎となるテキストカラムは削除せずに、テキストインデックスのデータから構築された追加フィルタを適用する点が異なります。
-これは、テキストインデックスのみを読んだ場合に誤検出（false positive）が発生しうる関数に対して使用されます。
+ヒントとしての ダイレクトリード は、通常の ダイレクトリード と同じ原理に基づきますが、基礎となるテキストカラムは削除せずに、テキスト索引のデータから構築された追加フィルタを適用する点が異なります。
+これは、テキスト索引のみを読んだ場合に誤検出 (false positive) が発生しうる関数に対して使用されます。
 
 サポートされている関数は、`like`、`startsWith`、`endsWith`、`equals`、`has`、`mapContainsKey`、`mapContainsValue` です。
 
 この追加フィルタにより、他のフィルタと組み合わせて結果セットをさらに絞り込むための追加の選択性が得られ、他のカラムから読み取るデータ量を削減するのに役立ちます。
 
-ヒントとしての direct read は、[query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint)（デフォルトで有効）を設定することで制御できます。
+ヒントとしての ダイレクトリード は、[query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) (デフォルトで有効) を設定することで制御できます。
 
 ヒントを使用しないクエリの例:
-
 
 ```sql
 EXPLAIN actions = 1
 SELECT count()
 FROM table
 WHERE (col LIKE '%some-token%') AND (d >= today())
-SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 0
+SETTINGS query_plan_text_index_add_hint = 0
 FORMAT TSV
 ```
 
@@ -985,7 +982,7 @@ EXPLAIN actions = 1
 SELECT count()
 FROM table
 WHERE col LIKE '%some-token%'
-SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 1
+SETTINGS query_plan_text_index_add_hint = 1
 ```
 
 戻り値
@@ -996,11 +993,10 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 [...]
 ```
 
-2つ目の EXPLAIN PLAN の出力では、フィルター条件に追加の連言条件（`__text_index_...`）が加えられていることが分かります。
+2つ目の EXPLAIN PLAN の出力では、フィルター条件に追加の連言条件 (`__text_index_...`) が加えられていることが分かります。
 [PREWHERE](/sql-reference/statements/select/prewhere) 最適化により、フィルター条件は3つの個別の連言条件に分解され、計算コストが低いものから順に適用されます。
 このクエリでは、適用順序は `__text_index_...`、次に `greaterOrEquals(...)`、最後に `like(...)` となります。
 この順序付けにより、テキスト索引と元のフィルター条件でスキップされるグラニュールに加えて、クエリの `WHERE` 句以降で使用される重いカラムを読み込む前に、さらに多くのデータグラニュールをスキップできるため、読み取るデータ量を一層削減できます。
-
 
 ### LIKE/ILIKE クエリ \{#like-ilike-queries-perf\}
 
@@ -1251,13 +1247,13 @@ SETTINGS query_plan_direct_read_from_text_index = 1;
 `hasAnyTokens` は、テキストに指定したトークンのうち少なくとも 1 つが含まれているかどうかを判定します。
 ここでは、&#39;love&#39; または &#39;ClickHouse&#39; のいずれかを含むコメントを検索します。
 
-**Direct read 無効（標準スキャン）**
+**Direct read 無効 (標準スキャン)&#x20;**
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAnyTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │  408426 │
@@ -1266,13 +1262,13 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 1.329 sec. Processed 28.74 million rows, 9.72 GB
 ```
 
-**ダイレクトリードの有効化（索引の高速読み取り）**
+**ダイレクトリードの有効化 (索引の高速読み取り)&#x20;**
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAnyTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │  408426 │
@@ -1282,23 +1278,21 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 ```
 
 この一般的な「OR」検索では、高速化の度合いはさらに顕著です。
-フルカラムスキャンを回避することで、クエリはほぼ89倍高速になります（1.329秒 vs 0.015秒）。
-
+フルカラムスキャンを回避することで、クエリはほぼ89倍高速になります (1.329秒 vs 0.015秒) 。
 
 ### 3. `hasAllTokens` の使用 \{#using-hasAllTokens\}
 
 `hasAllTokens` は、テキストが指定されたトークンをすべて含んでいるかどうかをチェックします。
 ここでは、`love` と `ClickHouse` の両方を含むコメントを検索します。
 
-**ダイレクトリード無効（標準スキャン）**
-ダイレクトリードを無効化していても、標準のスキップ索引は引き続き機能します。
+**ダイレクトリード無効 (標準スキャン)&#x20;**&#xA;ダイレクトリードを無効化していても、標準のスキップ索引は引き続き機能します。
 28.7M 行をわずか 147.46K 行まで絞り込みますが、それでもカラムから 57.03 MB を読み取る必要があります。
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAllTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │      11 │
@@ -1307,14 +1301,13 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.184 sec. Processed 147.46 thousand rows, 57.03 MB
 ```
 
-**ダイレクトリード有効（高速な索引読み取り）**
-ダイレクトリードでは索引データ上で処理を行うことでクエリに応答し、147.46 KB 分のデータしか読み取りません。
+**ダイレクトリード有効 (高速な索引読み取り)&#x20;**&#xA;ダイレクトリードでは索引データ上で処理を行うことでクエリに応答し、147.46 KB 分のデータしか読み取りません。
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAllTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │      11 │
@@ -1323,21 +1316,20 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.007 sec. Processed 147.46 thousand rows, 147.46 KB
 ```
 
-この「AND」条件の検索では、ダイレクトリード最適化のほうが標準的なスキップ索引スキャンよりも 26 倍以上高速（0.184s 対 0.007s）です。
-
+この「AND」条件の検索では、ダイレクトリード最適化のほうが標準的なスキップ索引スキャンよりも 26 倍以上高速 (0.184s 対 0.007s) です。
 
 ### 4. 複合検索: OR、AND、NOT、... \{#compound-search\}
 
 ダイレクトリードの最適化は、複合ブール式にも適用されます。
 ここでは、「ClickHouse」または「clickhouse」を対象に、大文字と小文字を区別しない検索を行います。
 
-**ダイレクトリード無効（標準スキャン）**
+**ダイレクトリード無効 (標準スキャン)&#x20;**
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse') OR hasToken(comment, 'clickhouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │     769 │
@@ -1346,13 +1338,13 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.450 sec. Processed 25.87 million rows, 9.58 GB
 ```
 
-**ダイレクトリードを有効化（索引の高速読み取り）**
+**ダイレクトリードを有効化 (索引の高速読み取り)&#x20;**
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse') OR hasToken(comment, 'clickhouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │     769 │
@@ -1361,9 +1353,8 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.013 sec. Processed 25.87 million rows, 51.73 MB
 ```
 
-索引からの結果を組み合わせることで、直接読み出しクエリは 34 倍高速（0.450s 対 0.013s）になり、9.58 GB のカラムデータを読み取る必要がなくなります。
+索引からの結果を組み合わせることで、直接読み出しクエリは 34 倍高速 (0.450s 対 0.013s) になり、9.58 GB のカラムデータを読み取る必要がなくなります。
 このケースでは、`hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])` が、より効率的で推奨される構文となります。
-
 
 ## 関連情報 \{#related-content\}
 

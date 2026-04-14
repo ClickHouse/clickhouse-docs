@@ -100,14 +100,15 @@ Console.WriteLine(version);
 
 ### 数据格式与序列化 \{#data-format-serialization\}
 
-| 属性 | 类型 | 默认值 | 连接字符串键名 | 描述 |
-|----------|------|---------|----------------------|-------------|
-| UseCompression | `bool` | `true` | `Compression` | 为数据传输启用 gzip 压缩 |
-| UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | 使用 `ClickHouseDecimal` 处理任意精度小数；如果为 false，则使用 .NET `decimal`（128 位上限） |
-| ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | 将 `String` 和 `FixedString` 列读取为 `byte[]` 而不是 `string`；适用于二进制数据 |
-| UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | 将参数以表单数据的形式发送，而不是作为 URL 查询字符串 |
-| JsonReadMode | `JsonReadMode` | `Binary` | `JsonReadMode` | JSON 数据的返回方式：`Binary`（返回 `JsonObject`）或 `String`（返回原始 JSON 字符串） |
-| JsonWriteMode | `JsonWriteMode` | `String` | `JsonWriteMode` | JSON 数据的发送方式：`String`（通过 `JsonSerializer` 序列化，接受所有输入）或 `Binary`（仅支持带类型提示的已注册 POCO） |
+| 属性                      | 类型                       | 默认值      | 连接字符串键                   | 描述                                                                                     |
+| ----------------------- | ------------------------ | -------- | ------------------------- | -------------------------------------------------------------------------------------- |
+| UseCompression          | `bool`                   | `true`   | `Compression`             | 为数据传输启用 gzip 压缩                                                                        |
+| UseCustomDecimals       | `bool`                   | `true`   | `UseCustomDecimals`       | 使用 `ClickHouseDecimal` 处理任意精度小数；如果为 false，则使用 .NET `decimal` (128 位上限)                 |
+| ReadStringsAsByteArrays | `bool`                   | `false`  | `ReadStringsAsByteArrays` | 将 `String` 和 `FixedString` 列读取为 `byte[]` 而不是 `string`；适用于二进制数据                         |
+| UseFormDataParameters   | `bool`                   | `false`  | `UseFormDataParameters`   | 将参数以表单数据的形式发送，而不是作为 URL 查询字符串                                                          |
+| ParameterTypeResolver   | `IParameterTypeResolver` | `null`   | —                         | 用于 `@` 风格参数类型对照的自定义解析器；请参见[自定义参数类型对照](#parameter-type-mapping)                         |
+| JsonReadMode            | `JsonReadMode`           | `Binary` | `JsonReadMode`            | JSON 数据的返回方式：`Binary` (返回 `JsonObject`) 或 `String` (返回原始 JSON 字符串)                     |
+| JsonWriteMode           | `JsonWriteMode`          | `String` | `JsonWriteMode`           | JSON 数据的发送方式：`String` (通过 `JsonSerializer` 序列化，接受所有输入) 或 `Binary` (仅支持带类型提示的已注册 POCO)  |
 
 ### 会话管理 \{#session-management\}
 
@@ -178,19 +179,20 @@ Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 
 ### QueryOptions \{#query-options\}
 
-`QueryOptions` 允许你在每个查询的基础上覆盖客户端级别的设置。所有属性都是可选的，只有在显式指定时才会覆盖客户端默认值。
+`QueryOptions` 允许你在每个查询的基础上重写客户端级别的设置。所有属性都是可选的，只有在显式指定时才会重写客户端默认值。
 
-| Property         | Type                          | Description                                           |
-| ---------------- | ----------------------------- | ----------------------------------------------------- |
-| QueryId          | `string`                      | 用于在 `system.query_log` 中进行跟踪或取消操作的自定义查询标识符            |
-| Database         | `string`                      | 覆盖此查询的默认数据库                                           |
-| Roles            | `IReadOnlyList<string>`       | 覆盖此查询的客户端角色                                           |
-| CustomSettings   | `IDictionary<string, object>` | 此查询的 ClickHouse 服务器设置（例如 `max_threads`）               |
-| CustomHeaders    | `IDictionary<string, string>` | 此查询的附加 HTTP 头部                                        |
-| UseSession       | `bool?`                       | 覆盖此查询的会话行为                                            |
-| SessionId        | `string`                      | 此查询的会话 ID（需要 `UseSession = true`）                     |
-| BearerToken      | `string`                      | 覆盖此查询的身份验证令牌                                          |
-| MaxExecutionTime | `TimeSpan?`                   | 服务器端查询超时时间（作为 `max_execution_time` 设置传递）；若超时则由服务器取消查询 |
+| Property              | Type                          | Description                                                       |
+| --------------------- | ----------------------------- | ----------------------------------------------------------------- |
+| QueryId               | `string`                      | 用于在 `system.query_log` 中进行跟踪或取消操作的自定义查询标识符                        |
+| Database              | `string`                      | 重写此查询的默认数据库                                                       |
+| Roles                 | `IReadOnlyList<string>`       | 重写此查询的客户端角色                                                       |
+| CustomSettings        | `IDictionary<string, object>` | 此查询的 ClickHouse 服务器设置 (例如 `max_threads`)                          |
+| CustomHeaders         | `IDictionary<string, string>` | 此查询的附加 HTTP 头部                                                    |
+| UseSession            | `bool?`                       | 重写此查询的会话行为                                                        |
+| SessionId             | `string`                      | 此查询的会话 ID (需要 `UseSession = true`)                                |
+| BearerToken           | `string`                      | 重写此查询的身份验证令牌                                                      |
+| ParameterTypeResolver | `IParameterTypeResolver`      | 重写客户端级别的 `@` 样式参数类型对照解析器；请参见 [自定义参数类型对照](#parameter-type-mapping) |
+| MaxExecutionTime      | `TimeSpan?`                   | 服务器端查询超时时间 (作为 `max_execution_time` 设置传递) ；若超时则由服务器取消查询           |
 
 **示例：**
 
@@ -215,7 +217,6 @@ var reader = await client.ExecuteReaderAsync(
 ```
 
 ***
-
 
 ### InsertOptions \{#insert-options\}
 
@@ -443,8 +444,75 @@ var options = new InsertOptions
 * 如果希望服务端为未提供的列应用 DEFAULT 默认值，请在 `InsertOptions.Format` 中使用 `RowBinaryFormat.RowBinaryWithDefaults`。
   :::
 
-***
+#### POCO 插入 \{#poco-insert\}
 
+无需构造 `object[]` 数组，您可以直接插入强类型的 POCO 对象。只需注册一次该类型，然后传入 `IEnumerable<T>`：
+
+```csharp
+// Define a POCO matching your table columns
+public class SensorReading
+{
+    public ulong Id { get; set; }
+    public string SensorName { get; set; }
+    public double Value { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+// Register the type (once per client lifetime)
+client.RegisterBinaryInsertType<SensorReading>();
+
+// Insert directly — column names are derived from property names
+var readings = Enumerable.Range(0, 100_000)
+    .Select(i => new SensorReading
+    {
+        Id = (ulong)i,
+        SensorName = $"sensor_{i % 10}",
+        Value = Random.Shared.NextDouble() * 100,
+        Timestamp = DateTime.UtcNow,
+    });
+
+long rowsInserted = await client.InsertBinaryAsync("sensors", readings);
+```
+
+默认情况下，所有公开的可读取属性都会通过严格区分大小写的名称匹配对照到列。您可以使用特性来自定义这种对照关系：
+
+```csharp
+public class Event
+{
+    [ClickHouseColumn(Name = "event_id")]     // Map to a differently-named column
+    public ulong Id { get; set; }
+
+    [ClickHouseColumn(Type = "LowCardinality(String)")]  // Explicit ClickHouse type
+    public string Category { get; set; }
+
+    public string Payload { get; set; }
+
+    [ClickHouseNotMapped]                     // Exclude from insert
+    public string InternalTag { get; set; }
+}
+```
+
+| Attribute                          | 作用                 |
+| ---------------------------------- | ------------------ |
+| `[ClickHouseColumn(Name = "...")]` | 重写目标列名             |
+| `[ClickHouseColumn(Type = "...")]` | 显式声明 ClickHouse 类型 |
+| `[ClickHouseNotMapped]`            | 将该属性排除在 insert 之外  |
+
+当**所有**已映射属性都显式指定了 `Type` 时，会完全跳过 schema 探测查询。若只有部分属性显式指定了类型，驱动程序则会回退为针对完整列集执行 schema 探测。
+
+`InsertBinaryAsync<T>` 支持与 `object[]` 重载相同的 `InsertOptions` (批次、并行和 schema 缓存) 。
+
+:::note
+与 `object[]` 重载不同，`InsertBinaryAsync<T>` 不接受显式列列表。列由已注册类型的映射属性决定。要控制插入哪些列，请使用 `[ClickHouseNotMapped]` 排除属性，或使用 `[ClickHouseColumn(Name = "...")]` 重命名列。
+
+如果在 `InsertOptions` 中设置了 `ColumnTypes`，它们会重写 POCO 特性。
+:::
+
+#### schema 演进 \{#poco-insert-schema-evolution\}
+
+在注册类型之后，即使向目标表新增列，POCO insert 仍可无缝工作。由于驱动程序只会 insert POCO 映射的列，任何带有 `DEFAULT` (或其他默认 expression) 的新列都会由服务器自动自动填充。无需修改代码，也无需重新注册。
+
+***
 
 ### 读取数据 \{#reading-data\}
 
@@ -520,6 +588,67 @@ var reader = await client.ExecuteReaderAsync(
 
 ***
 
+
+### 自定义参数类型映射 \{#parameter-type-mapping\}
+
+使用 `@` 风格的参数时 (例如 `WHERE id = @id`) ，驱动程序会根据 .NET 值的类型自动推断对应的 ClickHouse 类型。例如，`int` 对应 `Int32`，`DateTime` 对应 `DateTime`。
+
+若要重写这些默认值，请在 `ClickHouseClientSettings` 中设置 `ParameterTypeResolver`。当你希望所有 `DateTime` 参数都使用 `DateTime64(3)` 以实现毫秒精度，或希望所有 decimal 都使用特定的小数位精度，而无需为每个参数单独设置 `ClickHouseType` 时，这样做就很有用。
+
+**使用 `DictionaryParameterTypeResolver` 进行简单的类型映射：**
+
+```csharp
+using ClickHouse.Driver.ADO.Parameters;
+
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    ParameterTypeResolver = new DictionaryParameterTypeResolver(new Dictionary<Type, string>
+    {
+        [typeof(DateTime)] = "DateTime64(3)",
+        [typeof(decimal)] = "Decimal64(4)",
+    }),
+};
+using var client = new ClickHouseClient(settings);
+
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("dt", DateTime.UtcNow);     // Mapped to DateTime64(3)
+parameters.AddParameter("amount", 99.1234m);         // Mapped to Decimal64(4)
+
+await client.ExecuteReaderAsync("SELECT @dt, @amount", parameters);
+```
+
+**用于进阶场景的自定义 `IParameterTypeResolver`：**
+
+对于按值或按名称进行解析的场景，请直接实现 `IParameterTypeResolver` 接口。返回 `null` 以回退到默认推断：
+
+```csharp
+public class SmartDecimalResolver : IParameterTypeResolver
+{
+    public string ResolveType(Type clrType, object value, string parameterName)
+    {
+        if (clrType != typeof(decimal))
+            return null; // Fall through to default
+
+        var scale = (decimal.GetBits((decimal)value)[3] >> 16) & 0x7F;
+        return scale <= 4 ? $"Decimal64({scale})" : $"Decimal128({scale})";
+    }
+}
+```
+
+您也可以通过 `QueryOptions.ParameterTypeResolver` 为单个查询设置解析器。设置后，它会优先于客户端级别的解析器。
+
+**类型解析优先级：**
+
+解析器只是优先级链中的一环。从高到低依次为：
+
+1. 在参数上显式设置的 `ClickHouseType`
+2. 查询中通过 `{name:Type}` 语法指定的 SQL 类型提示
+3. `IParameterTypeResolver` (来自 `QueryOptions.ParameterTypeResolver`，未设置时回退到 `ClickHouseClientSettings.ParameterTypeResolver`) 
+4. 内置类型推断 (`TypeConverter.ToClickHouseType`) 
+
+解析器同样适用于 ADO.NET 的 `ClickHouseConnection` 路径——由客户端创建的连接会继承这些设置。
+
+***
 
 ### 原始数据流 \{#raw-streaming\}
 
