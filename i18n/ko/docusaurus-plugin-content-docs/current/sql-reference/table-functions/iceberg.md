@@ -662,6 +662,89 @@ GRANT ALTER TABLE ON my_iceberg_table TO my_user;
   :::
 
 
+### 고아 파일 제거 \{#iceberg-remove-orphan-files\}
+
+고아 파일은 Iceberg 테이블 메타데이터의 어떤 스냅샷에서도 참조되지 않는 스토리지 내 파일입니다. 이러한 파일은 쓰기 실패, 컴팩션 이후의 불완전한 정리, 중단된 작업으로 인해 누적되며 스토리지 사용량이 제한 없이 증가하는 원인이 됩니다. `remove_orphan_files` 명령어는 이러한 고아 파일을 식별하여 제거합니다.
+
+**구문:**
+
+```sql
+-- Positional form: single unnamed older_than argument
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files('timestamp')
+
+-- Named form
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    older_than = 'timestamp',
+    location = 'path',
+    dry_run = 0|1
+)
+
+-- No arguments: use all defaults (older_than = 3 days ago)
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files()
+```
+
+**매개변수:**
+
+| 매개변수         | 유형               | 기본값                                                     | 설명                                                                                  |
+| ------------ | ---------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `older_than` | `String` (타임스탬프) | 3일 전 (`iceberg_orphan_files_older_than_seconds`로 설정 가능) | 마지막 수정 시간이 이 타임스탬프보다 이전인 파일만 고아 파일 후보로 간주합니다. 진행 중인 쓰기 작업의 파일이 삭제되지 않도록 하는 안전장치입니다. |
+| `location`   | `String`         | 테이블 위치                                                  | 스캔 범위를 테이블 위치 아래의 특정 하위 디렉터리로 제한합니다(예: `'data/'` 또는 `'metadata/'`).                 |
+| `dry_run`    | `UInt64`         | `0`                                                     | `1`로 설정하면 고아 파일을 식별하고, 실제로는 아무 파일도 삭제하지 않은 상태로 결과 요약을 반환합니다.                        |
+
+**예시:**
+
+```sql
+-- Remove orphan files older than a specific timestamp
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files('2026-03-01 00:00:00');
+
+-- Dry run: preview which files would be deleted
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(dry_run = 1);
+
+-- Scan only the data directory
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    older_than = '2026-03-01 00:00:00',
+    location = 'data/'
+);
+
+-- Combine positional older_than with named arguments
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    '2026-03-01 00:00:00',
+    dry_run = 1
+);
+```
+
+**출력:**
+
+이 명령어는 카테고리별 삭제된 파일 수(또는 `dry_run` 모드에서는 삭제 대상 파일 수)를 보여주는 `metric_name` 및 `metric_value` 컬럼이 포함된 테이블을 반환합니다. 파일 카테고리는 파일 이름 규칙을 바탕으로 한 최선형 휴리스틱으로 분류되며, 특정 패턴과 일치하지 않는 파일은 기본적으로 `deleted_data_files_count`로 분류됩니다:
+
+| metric&#95;name                                     | metric&#95;value |
+| --------------------------------------------------- | ---------------- |
+| deleted&#95;data&#95;files&#95;count                | 5                |
+| deleted&#95;position&#95;delete&#95;files&#95;count | 2                |
+| deleted&#95;equality&#95;delete&#95;files&#95;count | 0                |
+| deleted&#95;manifest&#95;files&#95;count            | 3                |
+| deleted&#95;manifest&#95;lists&#95;count            | 1                |
+| deleted&#95;metadata&#95;files&#95;count            | 0                |
+| deleted&#95;statistics&#95;files&#95;count          | 0                |
+| skipped&#95;missing&#95;metadata&#95;count          | 0                |
+| failed&#95;deletions&#95;count                      | 0                |
+
+**설정:**
+
+| Setting                                   | Type     | Default           | Description                                |
+| ----------------------------------------- | -------- | ----------------- | ------------------------------------------ |
+| `allow_iceberg_remove_orphan_files`       | `Bool`   | `false`           | 이 기능을 활성화하는 게이트 설정입니다(Experimental).       |
+| `iceberg_orphan_files_older_than_seconds` | `UInt64` | `259200` (3 days) | 인수가 생략되면 적용되는 초 단위 기본 `older_than` 임곗값입니다. |
+
+:::note
+
+* **Iceberg 형식 버전 2 이상이 필요합니다.** 버전 1 테이블은 스냅샷에 `manifest-list` 포인터가 없어 안전하게 참조 가능한 파일 집합을 판별할 수 없으므로 거부됩니다. v1 테이블에서 이 명령어를 실행하면 `BAD_ARGUMENTS` 오류가 반환됩니다.
+* `allow_insert_into_iceberg`와 `allow_iceberg_remove_orphan_files` 설정을 모두 활성화해야 합니다
+* 만료된 스냅샷에서만 참조되는 파일이 먼저 정리되도록 `remove_orphan_files`를 실행하기 전에 `expire_snapshots`를 실행하는 것이 좋습니다
+* 삭제 전에 고아 파일을 미리 확인하려면 `dry_run = 1`을 사용하십시오
+* `older_than` 임곗값은 진행 중인 쓰기 작업의 파일이 삭제되지 않도록 보호합니다 — 기본 3일 임곗값은 충분한 안전 여유를 제공합니다
+  :::
+
 ## 같이 보기 \{#see-also\}
 
 * [Iceberg 엔진](/engines/table-engines/integrations/iceberg.md)

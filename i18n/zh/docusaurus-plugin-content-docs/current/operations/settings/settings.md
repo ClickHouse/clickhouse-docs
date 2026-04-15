@@ -672,6 +672,27 @@ Cloud 默认值：`1`。
 
 允许使用 Hyperscan 库的函数。禁用该设置可避免潜在的长时间编译以及过多的资源消耗。
 
+## allow_iceberg_remove_orphan_files \{#allow_iceberg_remove_orphan_files\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      { label: "用于控制 Iceberg 孤立文件删除的新设置" }
+    ]
+  }
+]}
+/>
+
+允许对 Iceberg 表执行 &#39;ALTER TABLE ... EXECUTE remove&#95;orphan&#95;files()&#39;。
+
 ## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
 
 <BetaBadge/>
@@ -5092,6 +5113,27 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置，允许在 READ 操作期间使用缓存的元数据版本，以避免从远程目录获取"}]}]} />
 
 如果该值非零，且存在比给定过期窗口更新的缓存元数据快照，则跳过从远程目录获取 Iceberg 元数据。值为 0 表示始终从远程目录获取最新的元数据版本。将此项设为非零，可以用一定的元数据陈旧性换取更低的读操作延迟。
+
+## iceberg_orphan_files_older_than_seconds \{#iceberg_orphan_files_older_than_seconds\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="259200" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "259200" },
+      { label: "默认孤立文件年龄阈值的新设置" }
+    ]
+  }
+]}
+/>
+
+Iceberg 表中删除孤立文件时使用的默认年龄阈值 (以秒为单位) 。比此值新的文件不会被视为孤立文件。当调用 remove&#95;orphan&#95;files() 过程时省略 older&#95;than 参数，将使用此设置。默认值为 259200 (3 天) 。
 
 ## iceberg_snapshot_id \{#iceberg_snapshot_id\}
 

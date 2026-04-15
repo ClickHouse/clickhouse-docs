@@ -652,6 +652,89 @@ GRANT ALTER TABLE ON my_iceberg_table TO my_user;
   :::
 
 
+### 删除孤立文件 \{#iceberg-remove-orphan-files\}
+
+孤立文件是指存储中未被 Iceberg 表元数据中的任何快照引用的文件。它们会因写入失败、合并整理后的部分清理以及操作中断而不断累积，导致存储无限增长。`remove_orphan_files` 命令用于识别并删除这些孤立文件。
+
+**语法：**
+
+```sql
+-- Positional form: single unnamed older_than argument
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files('timestamp')
+
+-- Named form
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    older_than = 'timestamp',
+    location = 'path',
+    dry_run = 0|1
+)
+
+-- No arguments: use all defaults (older_than = 3 days ago)
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files()
+```
+
+**参数：**
+
+| 参数           | 类型              | 默认值                                                      | 说明                                                      |
+| ------------ | --------------- | -------------------------------------------------------- | ------------------------------------------------------- |
+| `older_than` | `String` (时间戳)  | 3 天前 (可通过 `iceberg_orphan_files_older_than_seconds` 配置)  | 仅将最后修改时间早于此时间戳的文件视为孤立文件候选项。这是一项安全保护机制，用于避免删除仍在写入过程中的文件。 |
+| `location`   | `String`        | 表位置                                                      | 将扫描范围限制在表位置下的特定子目录中 (例如 `'data/'` 或 `'metadata/'`) 。    |
+| `dry_run`    | `UInt64`        | `0`                                                      | 当值为 `1` 时，会识别孤立文件并返回结果摘要，但不会实际删除任何文件。                   |
+
+**示例：**
+
+```sql
+-- Remove orphan files older than a specific timestamp
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files('2026-03-01 00:00:00');
+
+-- Dry run: preview which files would be deleted
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(dry_run = 1);
+
+-- Scan only the data directory
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    older_than = '2026-03-01 00:00:00',
+    location = 'data/'
+);
+
+-- Combine positional older_than with named arguments
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    '2026-03-01 00:00:00',
+    dry_run = 1
+);
+```
+
+**输出：**
+
+该命令会返回一个包含 `metric_name` 和 `metric_value` 列的表，按类别显示已删除文件的数量 (在 dry&#95;run 模式下则显示将要删除的文件数量) 。文件类别会根据文件命名约定，通过尽力而为的启发式规则进行分类；未匹配任何特定模式的文件默认计入 `deleted_data_files_count`：
+
+| metric&#95;name                                     | metric&#95;value |
+| --------------------------------------------------- | ---------------- |
+| deleted&#95;data&#95;files&#95;count                | 5                |
+| deleted&#95;position&#95;delete&#95;files&#95;count | 2                |
+| deleted&#95;equality&#95;delete&#95;files&#95;count | 0                |
+| deleted&#95;manifest&#95;files&#95;count            | 3                |
+| deleted&#95;manifest&#95;lists&#95;count            | 1                |
+| deleted&#95;metadata&#95;files&#95;count            | 0                |
+| deleted&#95;statistics&#95;files&#95;count          | 0                |
+| skipped&#95;missing&#95;metadata&#95;count          | 0                |
+| failed&#95;deletions&#95;count                      | 0                |
+
+**设置：**
+
+| 设置                                        | 类型       | 默认值               | 说明                                  |
+| ----------------------------------------- | -------- | ----------------- | ----------------------------------- |
+| `allow_iceberg_remove_orphan_files`       | `Bool`   | `false`           | 用于启用此功能的开关设置 (实验性) 。                |
+| `iceberg_orphan_files_older_than_seconds` | `UInt64` | `259200` (3 days) | 未提供该参数时，`older_than` 的默认阈值 (单位：秒) 。 |
+
+:::note
+
+* **需要 Iceberg 格式版本 2 (或更高版本) 。** 版本 1 的表会被拒绝，因为它们在快照中缺少 `manifest-list` 指针，而安全确定可达文件集合需要这些指针。在 v1 表上运行该命令会返回 `BAD_ARGUMENTS` 错误。
+* 需要同时启用 `allow_insert_into_iceberg` 和 `allow_iceberg_remove_orphan_files` 设置
+* 建议在运行 `remove_orphan_files` 之前先运行 `expire_snapshots`，以便优先清理由过期快照唯一引用的文件
+* 使用 `dry_run = 1` 可在删除前预览孤立文件
+* `older_than` 阈值可防止删除正在进行中的写入所产生的文件——默认 3 天的阈值提供了较大的安全余量
+  :::
+
 ## 另请参阅 \{#see-also\}
 
 * [Iceberg 引擎](/engines/table-engines/integrations/iceberg.md)

@@ -184,22 +184,57 @@ ORDER BY per_trace_sum ASC
 ```
 
 
-## Веб-интерфейс jemalloc \{#jemalloc-web-ui\}
+## Веб-интерфейс Jemalloc \{#jemalloc-web-ui\}
 
 :::note
-Этот раздел применим к версиям 26.2+.
+Этот раздел актуален для версий 26.2+.
 :::
 
-ClickHouse предоставляет встроенный веб-интерфейс для просмотра статистики использования памяти jemalloc по HTTP-эндпоинту `/jemalloc`.
-Он отображает актуальные метрики памяти с графиками, включая выделенную, активную, резидентную и отображённую (mapped) память, а также статистику по аренам и бинaм.
-Также вы можете получать глобальные и по отдельным запросам профили кучи напрямую из интерфейса.
+ClickHouse предоставляет встроенный веб-интерфейс для просмотра статистики памяти jemalloc по конечной точке HTTP `/jemalloc`.
+В нем в реальном времени отображаются метрики памяти с графиками, включая allocated, active, resident и mapped memory, а также статистика по аренам и bin.
+Вы также можете получать глобальные профили кучи и профили кучи отдельных запросов прямо из интерфейса.
 
-Чтобы получить к нему доступ, откройте в браузере:
+<Tabs groupId="binary">
+  <TabItem value="clickhouse" label="ClickHouse">
+    ```text
+    http://localhost:8123/jemalloc
+    ```
 
-```text
-http://localhost:8123/jemalloc
-```
+    Интерфейс сервера содержит все вкладки: Summary, Allocations, Arenas, Operations, Global Profiler, Query Profiler и Raw Output.
+  </TabItem>
 
+  <TabItem value="keeper" label="Keeper">
+    ```text
+    http://localhost:9182/jemalloc
+    ```
+
+    Интерфейс Keeper доступен на порту HTTP-контроля. Этот порт **по умолчанию отключен**, и его нужно явно включить, задав `keeper_server.http_control.port` в конфигурации Keeper:
+
+    ```xml
+    <clickhouse>
+        <keeper_server>
+            <http_control>
+                <port>9182</port>
+            </http_control>
+        </keeper_server>
+    </clickhouse>
+    ```
+
+    После включения интерфейс предоставляет те же визуализации, что и сервер, — Summary, Allocations, Arenas, Operations, Global Profiler и Raw Output — за исключением вкладки Query Profiler, так как для нее требуются SQL и `system.trace_log`.
+
+    :::warning Безопасность
+    Порт HTTP-контроля Keeper не имеет аутентификации на уровне приложения. В отличие от jemalloc UI сервера ClickHouse, где все запросы данных проходят через SQL HTTP handler и требуют имени пользователя и пароля, конечные точки REST API Keeper не требуют аутентификации. Это соответствует другим конечным точкам HTTP-контроля Keeper (команды, хранилище, дашборд).
+
+    Ограничьте доступ к этому порту с помощью сетевых средств: привяжите Keeper к localhost, используйте правила firewall или разместите его за обратным прокси с аутентификацией. Если `listen_host` не настроен, Keeper по умолчанию слушает только localhost.
+    :::
+
+    Keeper также предоставляет конечные точки REST API для программного доступа:
+
+    * `GET /jemalloc/stats` — необработанный вывод `malloc_stats_print`
+    * `GET /jemalloc/status` — состояние профилирования в формате JSON (`prof_enabled`, `prof_active`, `thread_active_init`, `lg_sample`)
+    * `GET /jemalloc/profile?format={collapsed|raw}` — принудительно сбрасывает профиль кучи с серверной символизацией, возвращает collapsed stacks, подходящие для отрисовки флеймграфа (по умолчанию), либо необработанный дамп jemalloc
+  </TabItem>
+</Tabs>
 
 ## Получение heap-профилей через SQL \{#fetching-heap-profiles-from-sql\}
 

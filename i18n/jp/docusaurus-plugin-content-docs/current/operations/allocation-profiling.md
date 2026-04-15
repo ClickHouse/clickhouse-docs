@@ -184,22 +184,57 @@ ORDER BY per_trace_sum ASC
 ```
 
 
-## Jemalloc Web UI \{#jemalloc-web-ui\}
+## Jemalloc web UI \{#jemalloc-web-ui\}
 
 :::note
 このセクションはバージョン 26.2 以降に適用されます。
 :::
 
-ClickHouse には、`/jemalloc` HTTP エンドポイントで jemalloc メモリ統計情報を表示するための組み込みの Web UI が用意されています。
-この UI では、割り当て済みメモリ、アクティブメモリ、常駐メモリ、マップ済みメモリに加えて、アリーナごとおよび bin ごとの統計情報を含むメモリメトリクスを、リアルタイムにグラフで表示します。
-また、グローバルおよびクエリ単位のヒーププロファイルを UI から直接取得することもできます。
+ClickHouse には、`/jemalloc` HTTP エンドポイントで jemalloc のメモリ統計を表示するための組み込み Web UI があります。
+この UI では、allocated、active、resident、mapped memory などのリアルタイムのメモリメトリクスをチャートで表示できるほか、アリーナごとおよび bin ごとの統計も確認できます。
+また、UI からグローバルおよびクエリごとのヒーププロファイルを直接取得することもできます。
 
-アクセスするには、ブラウザで次の URL を開きます。
+<Tabs groupId="binary">
+  <TabItem value="clickhouse" label="ClickHouse">
+    ```text
+    http://localhost:8123/jemalloc
+    ```
 
-```text
-http://localhost:8123/jemalloc
-```
+    サーバー UI には、Summary、Allocations、Arenas、Operations、Global Profiler、Query Profiler、Raw Output のすべてのタブがあります。
+  </TabItem>
 
+  <TabItem value="keeper" label="Keeper">
+    ```text
+    http://localhost:9182/jemalloc
+    ```
+
+    Keeper UI は HTTP control ポートで利用できます。このポートは **デフォルトで無効** のため、Keeper の設定で `keeper_server.http_control.port` を設定して明示的に有効にする必要があります。
+
+    ```xml
+    <clickhouse>
+        <keeper_server>
+            <http_control>
+                <port>9182</port>
+            </http_control>
+        </keeper_server>
+    </clickhouse>
+    ```
+
+    有効にすると、UI ではサーバーと同じ可視化 (Summary、Allocations、Arenas、Operations、Global Profiler、Raw Output) が提供されます。ただし、Query Profiler タブは SQL と `system.trace_log` が必要なため利用できません。
+
+    :::warning セキュリティ
+    Keeper の HTTP control ポートには、アプリケーションレベルの認証がありません。すべてのデータクエリが SQL HTTP handler を経由し、ユーザー名/パスワードの認証情報が必要な ClickHouse サーバーの jemalloc UI とは異なり、Keeper の REST API エンドポイントには認証がありません。これは、他の Keeper HTTP control エンドポイント (commands、storage、dashboard) と同様です。
+
+    このポートへのアクセスは、ネットワークレベルの制御で制限してください。たとえば、Keeper を localhost にバインドする、ファイアウォールルールを使用する、または認証付きのリバースプロキシの背後に配置する方法があります。`listen_host` が設定されていない場合、Keeper はデフォルトで localhost のみで待ち受けます。
+    :::
+
+    Keeper は、プログラムからアクセスするための REST API エンドポイントも公開しています。
+
+    * `GET /jemalloc/stats` — 生の `malloc_stats_print` 出力
+    * `GET /jemalloc/status` — プロファイリングの状態を JSON で返します (`prof_enabled`, `prof_active`, `thread_active_init`, `lg_sample`) 
+    * `GET /jemalloc/profile?format={collapsed|raw}` — サーバー側でシンボル化を行いながらヒーププロファイルを flush し、フレームグラフの描画に適したコラプスされたスタック (デフォルト) または生の jemalloc ダンプを返します
+  </TabItem>
+</Tabs>
 
 ## SQL からヒーププロファイルを取得する \{#fetching-heap-profiles-from-sql\}
 

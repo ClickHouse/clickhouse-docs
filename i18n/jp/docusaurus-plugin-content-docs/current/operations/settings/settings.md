@@ -671,6 +671,27 @@ YTsaurus との統合向けの実験的なテーブルエンジンです。
 
 Hyperscan ライブラリを使用する関数の利用を許可します。コンパイル時間が長くなったり、リソース使用量が過剰になったりする可能性を避ける場合は無効にします。
 
+## allow_iceberg_remove_orphan_files \{#allow_iceberg_remove_orphan_files\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      { label: "Iceberg の孤立ファイル削除の可否を制御する新しい設定" }
+    ]
+  }
+]}
+/>
+
+Iceberg テーブルで &#39;ALTER TABLE ... EXECUTE remove&#95;orphan&#95;files()&#39; を使用できるようにします。
+
 ## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
 
 <BetaBadge/>
@@ -5092,6 +5113,27 @@ Iceberg テーブルに対するメタデータのログ出力レベルを `syst
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "READ 操作でキャッシュされたメタデータバージョンを使用できるようにし、リモートカタログからの取得を防ぐための新しい設定"}]}]}/>
 
 0 以外の場合、指定された陳腐化許容期間より新しいキャッシュ済みメタデータスナップショットがあるときは、リモートカタログから Iceberg メタデータを取得しません。0 は、常にリモートカタログから最新のメタデータバージョンを取得することを意味します。この設定を 0 以外にすると、メタデータの陳腐化を許容する代わりに、読み取り操作のレイテンシが低くなります。
+
+## iceberg_orphan_files_older_than_seconds \{#iceberg_orphan_files_older_than_seconds\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="259200" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "259200" },
+      { label: "デフォルトの孤立ファイル経過時間しきい値に関する新しい設定" }
+    ]
+  }
+]}
+/>
+
+Iceberg テーブルで孤立ファイルを削除する際の、デフォルトの経過時間しきい値 (秒) です。これより新しいファイルは孤立ファイルとは見なされません。`remove_orphan_files()` プロシージャ呼び出しで `older_than` 引数が省略された場合に使用されます。デフォルト値は 259200 (3 日) です。
 
 ## iceberg_snapshot_id \{#iceberg_snapshot_id\}
 
