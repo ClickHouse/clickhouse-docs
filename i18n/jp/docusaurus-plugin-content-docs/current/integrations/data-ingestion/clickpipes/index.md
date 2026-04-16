@@ -34,9 +34,11 @@ import Image from '@theme/IdealImage';
 
 ## はじめに \{#introduction\}
 
-[ClickPipes](/integrations/clickpipes) は、さまざまなデータソースからのデータを、数回クリックするだけで簡単に取り込むことができるマネージド型統合プラットフォームです。最も厳しいワークロード向けに設計された ClickPipes の堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと高い信頼性を実現します。ClickPipes は、長期的なストリーミング用途にも、単発のデータロード・ジョブにも利用できます。
+[ClickPipes](/integrations/clickpipes) は、さまざまなデータソースからのデータを、数回クリックするだけで簡単に取り込むことができるマネージド型インテグレーションプラットフォームです。最も厳しいワークロード向けに設計された ClickPipes の堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと高い信頼性を実現します。ClickPipes は、長期的なストリーミング用途にも、単発のデータロード・ジョブにも利用できます。
 
-<Image img={clickpipes_stack} alt="ClickPipes スタック" size="lg" border/>
+ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムから操作することもできます。
+
+<Image img={clickpipes_stack} alt="ClickPipes スタック" size="lg" border />
 
 ## サポートされているデータソース \{#supported-data-sources\}
 

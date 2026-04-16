@@ -82,8 +82,8 @@ CREATE TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
-                                            | ngrams[(N)]
                                             | asciiCJK
+                                            | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -144,7 +144,6 @@ ALTER TABLE table DROP INDEX text_idx;
 ```
 
 **分词器 参数 (必填)&#x20;**。`tokenizer` 参数指定要使用的分词器：
-
 
 * `splitByNonAlpha` 会根据非字母数字的 ASCII 字符拆分字符串 (参见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)) 。
 * `splitByString(S)` 会根据某些用户自定义的分隔字符串 `S` 拆分字符串 (参见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)) 。
@@ -490,6 +489,24 @@ SELECT count() FROM table WHERE hasAnyTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
+
+#### `hasPhrase` \{#functions-example-hasphrase\}
+
+函数 [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) 用于按短语匹配：所有标记必须按与搜索字符串相同的顺序连续出现。
+
+与 `hasAllTokens` 只要求所有标记出现在任意位置不同，`hasPhrase` 要求它们作为一个连续序列出现。
+搜索短语会使用为索引列配置的同一分词器进行分词。
+请注意，该函数需要使用 `splitByNonAlpha`、`splitByString`、`ngrams` 或 `asciiCJK` 分词器之一。
+
+示例：
+
+```sql
+-- Matches: 'clickhouse' and 'olap' must appear consecutively in that order
+SELECT count() FROM table WHERE hasPhrase(comment, 'clickhouse olap');
+
+-- Does NOT match a row containing 'olap clickhouse' (wrong order)
+-- Does NOT match a row containing 'clickhouse fast olap' (non-consecutive)
+```
 
 #### `has` \{#functions-example-has\}
 
@@ -864,6 +881,51 @@ SELECT * FROM events WHERE data.level IN ('error', 'critical');
 ```
 
 
+### 短语搜索 \{#text-index-phrase-search\}
+
+文本索引支持通过 `hasPhrase` 函数执行短语搜索。
+短语中的所有标记都必须在文档中按相同顺序连续出现。
+
+文本索引通过对短语中所有标记的倒排列表求交来确定候选粒度，从而加速短语搜索。
+在这些粒度内，ClickHouse 随后会验证标记是否精确相邻。
+
+`hasPhrase` 支持与 `splitByNonAlpha`、`splitByString`、`ngrams` 和 `asciiCJK` 分词器配合使用。
+
+短语字符串会使用索引所配置的分词器进行分词。
+短语中的分词器分隔符字符会被忽略：对于 `splitByNonAlpha` 分词器，`hasPhrase(text, 'quick+brown')` 等价于 `hasPhrase(text, 'quick brown')`。
+
+#### 示例 \{#text-index-phrase-search-example\}
+
+```sql
+CREATE TABLE tab (
+    id UInt32,
+    text String,
+    INDEX idx(text) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO tab VALUES
+    (1, 'weather in New York'),
+    (2, 'New weather in York'),
+    (3, 'weather in New Orleans');
+```
+
+```sql
+SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
+```
+
+结果：
+
+```result
+   ┌─id─┬─text────────────────┐
+1. │  1 │ weather in New York │
+   └────┴─────────────────────┘
+```
+
+第 2 行 (`'New weather in York'`) 不匹配，因为这些标记的顺序不对。
+第 3 行 (`'weather in New Orleans'`) 不匹配，因为其中不包含标记 `'York'`。
+
 ## 性能调优 \{#performance-tuning\}
 
 ### 直接读取 \{#direct-read\}
@@ -999,7 +1061,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 ### LIKE/ILIKE 查询 \{#like-ilike-queries-perf\}
 
-当 LIKE/ILIKE 查询模式为 `%<alpha-numeric-characters-without-spaces>%`，且 文本索引 的分词器为 `splitByNonAlpha` 时，ClickHouse 会利用转置索引显著加速 LIKE/ILIKE 查询。为实现这一点，ClickHouse 会扫描转置索引字典来查找匹配模式，而不是执行全表扫描。
+当 LIKE/ILIKE 查询模式为 `%<alpha-numeric-characters-without-spaces>%`，且 文本索引 的分词器为 `splitByNonAlpha` 或 `array` 时，ClickHouse 会利用转置索引显著加速 LIKE/ILIKE 查询。为实现这一点，ClickHouse 会扫描转置索引字典来查找匹配模式，而不是执行全表扫描。
 
 启用该优化后，LIKE/ILIKE 查询通常会比全表扫描快得多。不过，当该模式匹配字典中的大多数标记时，其性能反而可能不如全表扫描。幸运的是，系统提供了回退机制来避免这种情况。
 

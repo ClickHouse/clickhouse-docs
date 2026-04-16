@@ -738,6 +738,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 检查 haystack 是否按连续顺序包含短语中的所有标记。
 
 搜索前，函数会使用可选的第三个参数指定的分词器，对 `input` 和 `phrase` 参数进行分词。
+`tokenizer` 参数必须是 `splitByNonAlpha`、`splitByString`、`ngrams` 或 `asciiCJK` 之一。
 如果未指定分词器，则默认使用 `splitByNonAlpha` 分词器。
 
 与 [`hasToken`](#hasToken)、[`hasAnyTokens`](#hasAnyTokens) 和 [`hasAllTokens`](#hasAllTokens) 不同，`hasPhrase` 要求这些标记按相同顺序出现，

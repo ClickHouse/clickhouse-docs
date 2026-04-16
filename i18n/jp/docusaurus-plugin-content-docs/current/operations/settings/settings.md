@@ -4645,7 +4645,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "h3 関数で無効な入力を許可する従来の動作のための新しい設定"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "0"},{"label": "h3 関数で無効な入力を許可する従来の動作のための新しい設定"}]}]} />
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.2" }, { label: "0" }, { label: "h3 関数で無効な入力を許可する従来の動作のための新しい設定" }] }]} />
 
 false の場合、h3CellAreaM2 などの h3 関数は、入力が無効であれば例外を送出します。true の場合は、0 またはデフォルト値を返します。
 

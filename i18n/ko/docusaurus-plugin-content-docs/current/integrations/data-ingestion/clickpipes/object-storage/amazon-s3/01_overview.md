@@ -1,25 +1,24 @@
 ---
-sidebar_label: '개요'
-description: '객체 스토리지를 ClickHouse Cloud에 원활하게 연결합니다.'
+sidebar_label: "개요"
+description: "객체 스토리지를 ClickHouse Cloud에 원활하게 연결합니다."
 slug: /integrations/clickpipes/object-storage/s3/overview
 sidebar_position: 1
-title: 'Amazon S3를 ClickHouse Cloud와 연동하기'
-doc_type: '가이드'
+title: "Amazon S3를 ClickHouse Cloud와 연동하기"
+doc_type: "가이드"
 ---
 
-import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
-import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
-import OVHpng from '@site/static/images/integrations/logos/ovh.png';
-import R2svg from '@site/static/images/integrations/logos/cloudflare.svg';
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
-import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_credentials.png';
-import Image from '@theme/IdealImage';
+import S3svg from "@site/static/images/integrations/logos/amazon_s3_logo.svg"
+import DOsvg from "@site/static/images/integrations/logos/digitalocean.svg"
+import OVHpng from "@site/static/images/integrations/logos/ovh.png"
+import R2svg from "@site/static/images/integrations/logos/cloudflare.svg"
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import cp_iam from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png"
+import cp_credentials from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_credentials.png"
+import Image from "@theme/IdealImage"
 
-S3 ClickPipe는 Amazon S3 및 S3 호환 오브젝트 스토리지에서 ClickHouse Cloud로 데이터를 수집하기 위한 완전 관리형이고 내결함성이 뛰어난 방식을 제공합니다. **단발성(one-time)** 및 **지속적 수집(continuous ingestion)** 을 모두 지원하며, 정확히 한 번만 처리하는(exactly-once) 시맨틱을 보장합니다.
+S3 ClickPipe는 Amazon S3 및 S3 호환 객체 스토리지에서 ClickHouse Cloud로 데이터를 수집하기 위한 완전 관리형이고 내결함성이 뛰어난 방식을 제공합니다. **단발성(one-time)** 및 **지속적인 수집(continuous ingestion)** 을 모두 지원하며, 정확히 한 번 처리 의미론을 보장합니다.
 
-S3 ClickPipes는 ClickPipes UI를 사용하여 수동으로 배포 및 관리할 수 있고, [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 및 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe)을 사용하여 프로그래밍 방식으로도 관리할 수 있습니다.
-
+S3 ClickPipes는 ClickPipes UI를 사용하여 수동으로 배포 및 관리할 수 있고, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 및 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 사용하여 프로그래밍 방식으로도 관리할 수 있습니다.
 
 ## 지원되는 데이터 소스 \{#supported-data-sources\}
 

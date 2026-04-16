@@ -7,13 +7,12 @@ title: '将 Azure Blob Storage 与 ClickHouse Cloud 集成'
 doc_type: 'guide'
 ---
 
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import Image from '@theme/IdealImage';
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import Image from "@theme/IdealImage"
 
 ABS ClickPipe 提供了一种完全托管且具备高可靠性的方式，将 Azure Blob Storage 中的数据摄取到 ClickHouse Cloud 中。它支持具有精确一次 (exactly-once) 语义的 **一次性摄取** 和 **持续摄取**。
 
-可以通过 ClickPipes UI 手动部署和管理 ABS ClickPipes，也可以以编程方式使用 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) 进行管理。
-
+可以通过 ClickPipes UI 手动部署和管理 ABS ClickPipes，也可以以编程方式使用 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 进行管理。
 
 ## 支持的格式 \{#supported-formats\}
 
