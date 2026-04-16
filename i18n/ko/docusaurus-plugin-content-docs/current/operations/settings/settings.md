@@ -4649,7 +4649,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "h3 함수에서 잘못된 입력을 허용하는 레거시 동작을 위한 새 설정"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "0"},{"label": "h3 함수에서 잘못된 입력을 허용하는 레거시 동작을 위한 새 설정"}]}]} />
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.2" }, { label: "0" }, { label: "h3 함수에서 잘못된 입력을 허용하는 기존 방식을 위한 새 설정" }] }]} />
 
 false인 경우 h3 함수(예: h3CellAreaM2)는 입력이 잘못되면 예외를 발생시킵니다. true인 경우 0 또는 기본값을 반환합니다.
 

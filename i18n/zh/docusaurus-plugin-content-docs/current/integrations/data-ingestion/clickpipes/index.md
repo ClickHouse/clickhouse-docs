@@ -36,7 +36,9 @@ import Image from '@theme/IdealImage';
 
 [ClickPipes](/integrations/clickpipes) 是一个托管集成平台，可将来自多种来源的数据摄取过程简化为只需点击几下。ClickPipes 的强大且可扩展架构专为最严苛的工作负载设计，确保性能和可靠性的一致性。ClickPipes 既可用于长期的流式数据场景，也可用于一次性的数据加载作业。
 
-<Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border/>
+ClickPipes 既可以通过 ClickPipes UI 手动部署和管理，也可以借助 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
+
+<Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border />
 
 ## 支持的数据源 \{#supported-data-sources\}
 

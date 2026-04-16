@@ -12,6 +12,4 @@ import CreateClickPipe from '@site/i18n/ru/docusaurus-plugin-content-docs/curren
 
 GCS ClickPipe обеспечивает полностью управляемый и отказоустойчивый способ приёма данных из Google Cloud Storage (GCS). Он поддерживает как **однократную**, так и **непрерывную ингестию** с семантикой «ровно один раз».
 
-GCS ClickPipes могут быть развернуты и управляться вручную с помощью ClickPipes UI, а также программно с использованием [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) и [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe).
-
 <CreateClickPipe provider="gcs" />
