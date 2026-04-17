@@ -378,6 +378,18 @@ ClickHouse 데이터 소스 플러그인은 ClickHouse를 백엔드 데이터베
 
 [CHouse UI Source Code](https://github.com/daun-gatal/chouse-ui)
 
+### clickhouse-flow \{#clickhouse-flow\}
+
+[clickhouse-flow](https://github.com/MikeAmputer/clickhouse-flow)는 ClickHouse 테이블, 뷰, materialized view 간의 데이터 흐름과 의존 관계를 시각화하는 오픈 소스 도구입니다.
+
+기능:
+
+* ClickHouse 메타데이터를 기반으로 스키마 그래프를 자동으로 구축합니다.
+* materialized view를 거치는 데이터 흐름을 시각화합니다.
+* 스키마 구조를 탐색할 수 있는 대화형 UI를 제공합니다.
+* 문서화 및 공유를 위해 다이어그램을 PDF 또는 SVG로 내보낼 수 있습니다.
+* 개발 환경에서 빠르게 설정할 수 있도록 Docker 기반 배포를 지원합니다.
+
 ## 상용 제품 \{#commercial\}
 
 ### DataGrip \{#datagrip\}

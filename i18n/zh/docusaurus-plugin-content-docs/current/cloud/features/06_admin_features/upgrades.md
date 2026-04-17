@@ -17,7 +17,7 @@ import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled
 
 # 升级 \{#upgrades\}
 
-使用 ClickHouse Cloud，您无需担心打补丁和升级。我们会定期推出包含修复、新功能以及性能改进的升级版本。有关 ClickHouse 新增内容的完整列表，请参阅我们的 [Cloud 变更日志](/whats-new/cloud)。
+使用 ClickHouse Cloud，您无需担心打补丁和升级。我们会定期推出包含修复、新功能以及性能改进的升级版本。有关 ClickHouse 新增内容的完整列表，请参阅我们的 [Cloud 变更日志](/whats-new/changelog/cloud)。
 
 :::note
 我们正在引入一种新的升级机制，即我们称之为“make before break” (或 MBB) 的概念。采用这一新方法，在执行升级操作时，我们会先添加更新后的副本，然后再移除旧副本。这样可以在尽量减少对正在运行工作负载影响的情况下，实现更加平滑的升级。

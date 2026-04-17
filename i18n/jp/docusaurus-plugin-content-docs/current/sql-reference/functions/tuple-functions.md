@@ -838,6 +838,40 @@ SELECT tuplePlus((1, 2), (2, 3))
 ```
 
 
+## tuplePositiveModuloByNumber \{#tuplePositiveModuloByNumber\}
+
+導入バージョン: v26.4.0
+
+タプルの各要素を指定した除数で割ったときの、正の剰余を要素とするタプルを返します。
+tupleModuloByNumber とは異なり、結果は常に非負です。
+
+**構文**
+
+```sql
+tuplePositiveModuloByNumber(tuple_num, div)
+```
+
+**引数**
+
+* `tuple_num` — 分子の値からなるタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `div` — 除数の値。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+
+**戻り値**
+
+非負の剰余からなるタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+
+**例**
+
+**使用法**
+
+```sql title=Query
+SELECT tuplePositiveModuloByNumber((15, 10, 5), 2)
+```
+
+```response title=Response
+(1, 0, 1)
+```
+
 ## tupleToNameValuePairs \{#tupleToNameValuePairs\}
 
 導入バージョン: v21.9.0

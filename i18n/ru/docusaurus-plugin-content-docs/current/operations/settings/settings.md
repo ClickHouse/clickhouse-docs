@@ -673,6 +673,27 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использование функций, которые используют библиотеку Hyperscan. Отключите, чтобы избежать потенциально длительного времени компиляции и чрезмерного использования ресурсов.
 
+## allow_iceberg_remove_orphan_files \{#allow_iceberg_remove_orphan_files\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      { label: "Новая настройка, управляющая удалением файлов-сирот Iceberg" }
+    ]
+  }
+]}
+/>
+
+Разрешает использовать `ALTER TABLE ... EXECUTE remove_orphan_files()` для таблиц Iceberg.
+
 ## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
 
 <BetaBadge/>
@@ -1252,6 +1273,26 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 - 0 - отключено
 - 1 - включено
+
+## asterisk_include_virtual_columns \{#asterisk_include_virtual_columns\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [{ label: "26.4" }, { label: "0" }, { label: "Новая настройка" }]
+  }
+]}
+/>
+
+Добавлять виртуальные столбцы в запросы с подстановочным символом (`SELECT *`).
+
+Возможные значения:
+
+* 0 - отключено
+* 1 - включено
 
 ## async_insert \{#async_insert\}
 
@@ -5080,6 +5121,27 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Если значение не равно нулю, пропускается получение метаданных iceberg из удалённого каталога, если существует кэшированный снимок метаданных, более новый, чем заданное окно устаревания. Ноль означает, что последняя версия метаданных всегда будет запрашиваться из удалённого каталога. Установка этого SETTING в ненулевое значение означает компромисс: большая устарелость в обмен на меньшую задержку операций чтения.
 
+## iceberg_orphan_files_older_than_seconds \{#iceberg_orphan_files_older_than_seconds\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="259200" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "259200" },
+      { label: "Новая настройка для порога возраста файлов-сирот по умолчанию" }
+    ]
+  }
+]}
+/>
+
+Порог возраста по умолчанию в секундах для удаления файлов-сирот в таблицах Iceberg. Файлы новее этого значения не считаются сиротами. Используется, если в вызове процедуры `remove_orphan_files()` не указан аргумент `older_than`. Значение по умолчанию — 259200 (3 дня).
+
 ## iceberg_snapshot_id \{#iceberg_snapshot_id\}
 
 <SettingsInfoBlock type="Int64" default_value="0" />
@@ -6358,9 +6420,34 @@ log_query_views=1
 
 ## materialize_statistics_on_insert \{#materialize_statistics_on_insert\}
 
-<SettingsInfoBlock type="Bool" default_value="1" />
+<SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "Добавлена новая настройка, позволяющая отключить материализацию статистики при вставке"}]}]}/>
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      {
+        label:
+          "По умолчанию отключено построение статистики при INSERT, вместо этого используется слияние"
+      }
+    ]
+  },
+  {
+    id: "row-2",
+    items: [
+      { label: "24.6" },
+      { label: "1" },
+      {
+        label:
+          "Добавлена новая настройка, позволяющая отключить материализацию статистики при вставке"
+      }
+    ]
+  }
+]}
+/>
 
 Определяет, будут ли операторы INSERT создавать и вставлять статистику. Если настройка отключена, статистика будет строиться и сохраняться во время слияний или явным выполнением MATERIALIZE STATISTICS.
 
@@ -10402,6 +10489,30 @@ a   Tuple(
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.11"},{"label": "0"},{"label": "Использовать виртуальную строку при чтении в порядке первичного ключа или его монотонной функции. Полезно при поиске по нескольким частям таблицы, так как затрагиваются только соответствующие части."}]}]}/>
 
 Использовать виртуальную строку при чтении в порядке первичного ключа или его монотонной функции. Полезно при поиске по нескольким частям таблицы, так как затрагиваются только соответствующие части.
+
+## read_in_order_use_virtual_row_per_block \{#read_in_order_use_virtual_row_per_block\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      {
+        label:
+          "Выводить виртуальную строку после чтения каждого блока при упорядоченном чтении, чтобы источники в MergingSortedTransform можно было переприоритизировать чаще."
+      }
+    ]
+  }
+]}
+/>
+
+Если параметр включён вместе с `read_in_order_use_virtual_row`, после чтения каждого блока выводится виртуальная строка (а не только в начале каждой части).
+Это позволяет `MergingSortedTransform` чаще переприоритизировать источники, что полезно, когда нижестоящие фильтры отбрасывают много строк, а данные распределены по частям неравномерно.
+Обратите внимание, что при этом отключаются оптимизация `read_in_order_use_buffering` и предварительное слияние (`read_in_order_two_level_merge_threshold`) при чтении.
 
 ## read_overflow_mode \{#read_overflow_mode\}
 

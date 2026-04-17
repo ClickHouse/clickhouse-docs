@@ -113,8 +113,8 @@ SELECT * FROM a AS a1 JOIN a AS a2 ON a1.x <=> a2.x;
 :::
 
 `<=>` 演算子は `NULL` セーフな等価比較演算子であり、`IS NOT DISTINCT FROM` と同等です。
-通常の等価演算子（`=`）と同様に動作しますが、`NULL` 値を互いに比較可能なものとして扱います。
-2 つの `NULL` 値は等しいと見なされ、`NULL` と `NULL` 以外の値を比較した場合は、`NULL` ではなく 0（偽）を返します。
+通常の等価演算子 (`=`) と同様に動作しますが、`NULL` 値を互いに比較可能なものとして扱います。
+2 つの `NULL` 値は等しいと見なされ、`NULL` と `NULL` 以外の値を比較した場合は、`NULL` ではなく 0 (偽) を返します。
 
 ```sql
 SELECT
@@ -150,7 +150,7 @@ SELECT
 
 ### in サブクエリ用関数 \{#in-subquery-function\}
 
-`a = ANY (subquery)` – `in(a, subquery)` 関数です。  
+`a = ANY (subquery)` – `in(a, subquery)` 関数です。
 
 ### notIn サブクエリ関数 \{#notin-subquery-function\}
 
@@ -336,7 +336,7 @@ SELECT now() AS current_date_time, current_date_time + INTERVAL '4' day + INTERV
 ```
 
 :::note
-`INTERVAL` 構文または `addDays` 関数の使用を常に推奨します。単純な加算や減算（`now() + ...` のような構文）は、サマータイムなどの時間関連の設定を考慮しません。
+`INTERVAL` 構文または `addDays` 関数の使用を常に推奨します。単純な加算や減算 (`now() + ...` のような構文) は、サマータイムなどの時間関連の設定を考慮しません。
 :::
 
 例:
@@ -356,6 +356,55 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 型変換関数
 
+### 日付と時刻の加算 \{#date-time-addition\}
+
+[Date](../../sql-reference/data-types/date.md) または [Date32](../../sql-reference/data-types/date32.md) の値には、`+` 演算子を使って [Time](../../sql-reference/data-types/time.md) または [Time64](../../sql-reference/data-types/time64.md) の値を加算できます。結果は、指定した時刻の日付を表す [DateTime](../../sql-reference/data-types/datetime.md) または [DateTime64](../../sql-reference/data-types/datetime64.md) になります。この演算は可換です。
+
+結果の型は、オペランドの型によって決まります。
+
+| 左オペランド   | 右オペランド      | 結果の型            |
+| -------- | ----------- | --------------- |
+| `Date`   | `Time`      | `DateTime`      |
+| `Date`   | `Time64(s)` | `DateTime64(s)` |
+| `Date32` | `Time`      | `DateTime64(0)` |
+| `Date32` | `Time64(s)` | `DateTime64(s)` |
+
+:::note
+結果には [session timezone](../../operations/settings/settings.md#session_timezone) が使用されます (session timezone が設定されていない場合は、サーバーのデフォルトタイムゾーンが使用されます) 。[`date_time_overflow_behavior`](../../operations/settings/settings-formats.md#date_time_overflow_behavior) 設定は、結果が表現可能な範囲を超えた場合の動作を制御します。
+:::
+
+例:
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25 │ DateTime       │
+└─────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+┌─────────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+└────────────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toTime64('23:59:59.999', 3) + toDate32('2024-07-15') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 23:59:59.999 │ DateTime64(3)  │
+└─────────────────────────┴────────────────┘
+```
 
 ## 論理AND演算子 \{#logical-and-operator\}
 

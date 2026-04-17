@@ -90,16 +90,46 @@ for line in sys.stdin:
 EOF
 ```
 
-Now compress the file into a ZIP archive:
+If your Python script imports third-party packages, you must create a `requirements.txt` file listing those dependencies. For example:
 
-```bash
-zip is_business_hours.zip main.py
+```text
+requests>=2.28.0
+numpy>=1.23.0
 ```
 
 :::note
 ClickHouse Cloud expects to find `main.py` in the zip file you will upload via the UI in the next step.
 If you name the file something else you will encounter an error.
 :::
+
+### Bundle dependencies and local files {#bundle-dependencies}
+
+To include dependency packages and any additional local files (such as wheel files, configuration files, or data files), place them in the same directory as your `main.py` and `requirements.txt`. When you create the ZIP archive, include all files:
+
+```bash
+zip is_business_hours.zip main.py requirements.txt
+```
+
+You can reference the local bundled path base directory in your Python code using `os.path.dirname(os.path.abspath(__file__))`. This returns the absolute path to the directory where your `main.py` is located within the ZIP archive, allowing you to access other bundled files:
+
+```python
+import os
+
+# Get the base directory of the bundled files
+base_dir = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(base_dir, 'config.json')
+```
+
+This is useful when you need to:
+- Access configuration files bundled with your UDF
+- Load wheel packages for custom dependencies
+- Reference additional scripts or data files
+
+Now compress the file into a ZIP archive:
+
+```bash
+zip is_business_hours.zip main.py
+```
 
 ### Create a UDF via the UI {#create-udf-via-ui}
 

@@ -569,12 +569,12 @@ consumer.fetch.max.wait.ms=300
 非同期インサートを有効にすると、ClickHouse は次のように動作します:
 
 1. コネクタからインサートクエリを受信する
-2. データを（すぐにディスクへ書き込むのではなく）メモリ上のバッファに書き込む
-3. コネクタに成功を返す（`wait_for_async_insert=0` の場合）
+2. データを (すぐにディスクへ書き込むのではなく) メモリ上のバッファに書き込む
+3. コネクタに成功を返す (`wait_for_async_insert=0` の場合) 
 4. 次のいずれかの条件を満たしたときにバッファをディスクへフラッシュする:
-   - バッファが `async_insert_max_data_size` に到達した場合（デフォルト: 10 MB）
-   - 最初のインサートから `async_insert_busy_timeout_ms` ミリ秒が経過した場合（デフォルト: 1000 ms）
-   - 蓄積されたクエリ数が上限に達した場合（`async_insert_max_query_number`, デフォルト: 100）
+   * バッファが `async_insert_max_data_size` に到達した場合 (デフォルト: 100 MB) 
+   * 最初のインサートから `async_insert_busy_timeout_ms` ミリ秒が経過した場合 (デフォルト: 1000 ms) 
+   * 蓄積されたクエリ数が上限に達した場合 (`async_insert_max_query_number`, デフォルト: 100) 
 
 これにより作成されるパーツの数が大幅に削減され、全体的なスループットが向上します。
 
@@ -600,17 +600,17 @@ consumer.fetch.max.wait.ms=300
 * **`wait_for_async_insert=0`**: コネクタはバッファリング直後に即座に ACK を返す。パフォーマンスは向上するが、フラッシュ前にサーバーがクラッシュした場合、データが失われる可能性がある。
 
 
-##### 非同期挿入動作のチューニング \{#tuning-async-inserts\}
+##### 非同期 INSERT 動作のチューニング \{#tuning-async-inserts\}
 
-非同期挿入におけるフラッシュ動作を細かく調整できます。
+非同期 INSERT におけるフラッシュ動作を細かく調整できます。
 
 ```json
-"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=104857600,async_insert_busy_timeout_ms=1000"
 ```
 
 一般的なチューニングパラメータ:
 
-* **`async_insert_max_data_size`** (デフォルト: 10485760 / 10 MB): フラッシュ前の最大バッファサイズ
+* **`async_insert_max_data_size`** (デフォルト: 104857600 / 100 MB): フラッシュ前の最大バッファサイズ
 * **`async_insert_busy_timeout_ms`** (デフォルト: 1000): フラッシュまでの最大時間 (ミリ秒)
 * **`async_insert_stale_timeout_ms`** (デフォルト: 0): 最後の挿入からフラッシュまでの経過時間 (ミリ秒)
 * **`async_insert_max_query_number`** (デフォルト: 100): フラッシュ前の最大クエリ数
@@ -620,7 +620,6 @@ consumer.fetch.max.wait.ms=300
 * **利点**: パーツ数の削減、マージ性能の向上、CPU オーバーヘッドの低減、高い同時実行時のスループット向上
 * **考慮点**: データが即座にはクエリ可能にならない、エンドツーエンドのレイテンシがわずかに増加
 * **リスク**: `wait_for_async_insert=0` の場合、サーバークラッシュ時のデータ損失の可能性、大きなバッファによるメモリ圧迫の可能性
-
 
 ##### exactly-once セマンティクスを持つ非同期インサート \{#async-inserts-with-exactly-once\}
 

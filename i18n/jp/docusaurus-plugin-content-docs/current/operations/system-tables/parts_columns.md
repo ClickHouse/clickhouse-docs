@@ -6,57 +6,75 @@ title: 'system.parts_columns'
 doc_type: 'reference'
 ---
 
-# system.parts_columns \{#systemparts_columns\}
+## 説明 \{#description\}
 
 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) テーブルのパーツおよびカラムに関する情報を保持します。
 各行は 1 つのデータパートを表します。
 
-| Column                                  | Type     | Description                                                                                                                                     |
-| --------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `partition`                             | String   | パーティション名。形式: 月ごとの自動パーティションでは `YYYYMM`、手動パーティションでは `any_string`。                                                                                 |
-| `name`                                  | String   | データパートの名前。                                                                                                                                      |
-| `part_type`                             | String   | データパートの保存フォーマット。値: `Wide` (各カラムを個別ファイルに保存) または `Compact` (すべてのカラムを 1 ファイルに保存) 。`min_bytes_for_wide_part` および `min_rows_for_wide_part` 設定によって制御されます。 |
-| `active`                                | UInt8    | データパートがアクティブかどうかを示すフラグ。アクティブなパーツはテーブルで使用され、非アクティブなパーツは削除されるかマージ後に残ります。                                                                          |
-| `marks`                                 | UInt64   | マーク数。インデックス粒度 (通常 8192) を掛けることで、おおよその行数を取得できます。                                                                                                   |
-| `rows`                                  | UInt64   | 行数。                                                                                                                                             |
-| `bytes_on_disk`                         | UInt64   | データパート内のすべてのファイルの合計サイズ (バイト単位) 。                                                                                                                  |
-| `data_compressed_bytes`                 | UInt64   | データパート内の圧縮データの合計サイズ (マークなどの補助ファイルを除く) 。                                                                                                           |
-| `data_uncompressed_bytes`               | UInt64   | データパート内の非圧縮データの合計サイズ (マークなどの補助ファイルを除く) 。                                                                                                          |
-| `marks_bytes`                           | UInt64   | マークファイルのサイズ。                                                                                                                                    |
-| `modification_time`                     | DateTime | データパートを含むディレクトリが更新された時刻 (通常は作成時刻に相当) 。                                                                                                            |
-| `remove_time`                           | DateTime | データパートが非アクティブになった時刻。                                                                                                                            |
-| `refcount`                              | UInt32   | データパートが使用されている箇所の数。値が 2 より大きい場合、クエリまたはマージで使用されていることを示します。                                                                                       |
-| `min_date`                              | Date     | データパート内の日付キーの最小値。                                                                                                                               |
-| `max_date`                              | Date     | データパート内の日付キーの最大値。                                                                                                                               |
-| `partition_id`                          | String   | パーティションの ID。                                                                                                                                    |
-| `min_block_number`                      | UInt64   | マージ後に現在のパートを構成するデータパートの最小ブロック番号。                                                                                                                |
-| `max_block_number`                      | UInt64   | マージ後に現在のパートを構成するデータパートの最大ブロック番号。                                                                                                                |
-| `level`                                 | UInt32   | マージツリーの深さ。ゼロは INSERT によって作成され、マージによるものではないことを意味します。                                                                                             |
-| `data_version`                          | UInt64   | どのミューテーションを適用すべきかを決定するために使用される番号であり、`data_version` より大きいバージョンを持つミューテーションが対象になります。                                                               |
-| `primary_key_bytes_in_memory`           | UInt64   | プライマリキー値に使用されているメモリ量 (バイト単位) 。                                                                                                                    |
-| `primary_key_bytes_in_memory_allocated` | UInt64   | プライマリキー値のために確保されているメモリ量 (バイト単位) 。                                                                                                                 |
-| `database`                              | String   | データベース名。                                                                                                                                        |
-| `table`                                 | String   | テーブル名。                                                                                                                                          |
-| `engine`                                | String   | パラメータを除いたテーブルエンジン名。                                                                                                                             |
-| `disk_name`                             | String   | データパートを保存しているディスク名。                                                                                                                             |
-| `path`                                  | String   | データパートファイルが格納されているフォルダへの絶対パス。                                                                                                                   |
-| `column`                                | String   | カラム名。                                                                                                                                           |
-| `type`                                  | String   | カラムの型。                                                                                                                                          |
-| `statistics`                            | String   | カラムに対して作成された統計情報。                                                                                                                               |
-| `estimates.min`                         | String   | カラムの最小値の推定値。                                                                                                                                    |
-| `estimates.max`                         | String   | カラムの最大値の推定値。                                                                                                                                    |
-| `estimates.cardinality`                 | String   | カラムのカーディナリティの推定値。                                                                                                                               |
-| `column_position`                       | UInt64   | テーブル内でのカラムの位置 (1 から始まる序数) 。                                                                                                                       |
-| `default_kind`                          | String   | デフォルト値の式の種類 (`DEFAULT`、`MATERIALIZED`、`ALIAS`) 、または未定義の場合は空文字列。                                                                                   |
-| `default_expression`                    | String   | デフォルト値の式、または未定義の場合は空文字列。                                                                                                                        |
-| `column_bytes_on_disk`                  | UInt64   | カラムの合計サイズ (バイト単位) 。                                                                                                                               |
-| `column_data_compressed_bytes`          | UInt64   | カラム内の圧縮データの合計サイズ (バイト単位) 。注意: コンパクトパーツについては計算されません。                                                                                               |
-| `column_data_uncompressed_bytes`        | UInt64   | カラム内の非圧縮データの合計サイズ (バイト単位) 。注意: コンパクトパーツについては計算されません。                                                                                              |
-| `column_marks_bytes`                    | UInt64   | カラムのマークファイルのサイズ (バイト単位) 。                                                                                                                         |
-| `bytes`                                 | UInt64   | `bytes_on_disk` のエイリアス。                                                                                                                         |
-| `marks_size`                            | UInt64   | `marks_bytes` のエイリアス。                                                                                                                           |
+## カラム \{#columns\}
 
-**例**
+{/*AUTOGENERATED_START*/ }
+
+* `partition` ([String](../../sql-reference/data-types/)) — パーティションの名前。
+* `name` ([String](../../sql-reference/data-types/)) — データパートの名前。
+* `uuid` ([UUID](../../sql-reference/data-types/)) — パーツのUUID。
+* `part_type` ([String](../../sql-reference/data-types/)) — データパートの保存フォーマット。設定可能な値: Wide — 各カラムはファイルシステム内の個別のファイルに保存されます。Compact — すべてのカラムはファイルシステム内の1つのファイルに保存されます。
+* `active` ([UInt8](../../sql-reference/data-types/)) — データパーツがアクティブかどうかを示すフラグです。データパーツがアクティブな場合はテーブルで使用され、そうでない場合は削除されます。非アクティブなデータパーツは、マージ後も残ります。
+* `marks` ([UInt64](../../sql-reference/data-types/)) — マーク数。データパート内のおおよその行数を取得するには、marks に索引の粒度 (通常は 8192) を掛けます (この方法は適応的な粒度では機能しません) 。
+* `rows` ([UInt64](../../sql-reference/data-types/)) — 行数。
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — すべてのデータパートファイルの合計サイズ (バイト) 。
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — データパート内の圧縮データの合計サイズです。補助ファイル (たとえば、マークを含むファイル) は含まれません。
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — データパート内の非圧縮データの合計サイズです。すべての補助ファイル (たとえば、マークファイル) は含まれません。
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/)) — マークファイルのサイズ。
+* `modification_time` ([DateTime](../../sql-reference/data-types/)) — データパートが格納されているディレクトリが変更された時刻です。通常、これはデータパートの作成時刻に対応します。
+* `remove_time` ([DateTime](../../sql-reference/data-types/)) — データパートが非アクティブになった時刻。
+* `refcount` ([UInt32](../../sql-reference/data-types/)) — データパートが使用されている箇所の数です。値が 2 を超える場合、そのデータパートはクエリまたはマージ処理で使用されています。
+* `min_date` ([Date](../../sql-reference/data-types/)) — パーティションキーに含まれている場合の、Dateカラムの最小値。
+* `max_date` ([Date](../../sql-reference/data-types/)) — Dateカラムがパーティションキーに含まれる場合の最大値。
+* `min_time` ([DateTime](../../sql-reference/data-types/)) — パーティションキーに含まれるDateTimeカラムの最小値。
+* `max_time` ([DateTime](../../sql-reference/data-types/)) — パーティションキーに含まれている場合の DateTime カラムの最大値。
+* `partition_id` ([String](../../sql-reference/data-types/)) — パーティション ID。
+* `min_block_number` ([Int64](../../sql-reference/data-types/)) — マージ後の現在のパーツを構成するデータパーツのうち、最小の番号。
+* `max_block_number` ([Int64](../../sql-reference/data-types/)) — マージ後の現在のパーツを構成するデータパーツのうち、最大の番号。
+* `level` ([UInt32](../../sql-reference/data-types/)) — マージツリーの深さ。ゼロの場合、現在のパーツは他のパーツのマージではなく、`insert` によって作成されたことを示します。
+* `data_version` ([UInt64](../../sql-reference/data-types/)) — データパートに適用すべき mutation を判定するために使用される数値 (`data_version` より大きいバージョンを持つ mutation) 。
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 主キーの値に使用されるメモリ量 (バイト単位) 。
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 主キーの値用に確保されているメモリ量 (バイト単位) 。
+* `database` ([String](../../sql-reference/data-types/)) — データベース名。
+* `table` ([String](../../sql-reference/data-types/)) — テーブル名。
+* `engine` ([String](../../sql-reference/data-types/)) — パラメータを含まないテーブルエンジン名。
+* `disk_name` ([String](../../sql-reference/data-types/)) — データパートを格納するディスクの名前。
+* `path` ([String](../../sql-reference/data-types/)) — データパートファイルが格納されているフォルダーの絶対パス。
+* `column` ([String](../../sql-reference/data-types/)) — カラム名。
+* `type` ([String](../../sql-reference/data-types/)) — カラムのデータ型。
+* `column_position` ([UInt64](../../sql-reference/data-types/)) — テーブル内でのカラムの序数位置 (1から始まる) 。
+* `default_kind` ([String](../../sql-reference/data-types/)) — デフォルト値の式の種別 (DEFAULT、MATERIALIZED、ALIAS) 。未定義の場合は空文字列です。
+* `default_expression` ([String](../../sql-reference/data-types/)) — デフォルト値の式。未定義の場合は空文字列。
+* `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — カラムの合計サイズ (バイト数) 。
+* `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — カラム内の圧縮データの合計サイズ (単位: バイト) 。
+* `column_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — カラム内の展開後データの合計サイズ (バイト単位) 。
+* `column_marks_bytes` ([UInt64](../../sql-reference/data-types/)) — カラムのマークのサイズ (バイト) 。
+* `column_modification_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — カラムが最後に変更された日時。
+* `column_ttl_min` ([Nullable(DateTime)](../../sql-reference/data-types/)) — カラムの計算済みTTL式の最小値。
+* `column_ttl_max` ([Nullable(DateTime)](../../sql-reference/data-types/)) — カラムのTTL式の計算結果の最大値。
+* `statistics` ([Array(String)](../../sql-reference/data-types/)) — カラムの統計情報です。
+* `estimates.min` ([Nullable(String)](../../sql-reference/data-types/)) — カラムの推定される最小値。
+* `estimates.max` ([Nullable(String)](../../sql-reference/data-types/)) — カラムの推定最大値。
+* `estimates.cardinality` ([Nullable(UInt64)](../../sql-reference/data-types/)) — カラムの推定カーディナリティ。
+* `serialization_kind` ([String](../../sql-reference/data-types/)) — カラムのシリアライゼーションの種類
+* `substreams` ([Array(String)](../../sql-reference/data-types/)) — カラムのシリアライズ先となるサブストリーム名
+* `filenames` ([Array(String)](../../sql-reference/data-types/)) — カラムの各サブストリームそれぞれのファイル名
+* `subcolumns.names` ([Array(String)](../../sql-reference/data-types/)) — カラムのサブカラム名
+* `subcolumns.types` ([Array(String)](../../sql-reference/data-types/)) — カラムのサブカラムのデータ型
+* `subcolumns.serializations` ([Array(String)](../../sql-reference/data-types/)) — カラムのサブカラムにおけるシリアライゼーションの種類
+* `subcolumns.bytes_on_disk` ([Array(UInt64)](../../sql-reference/data-types/)) — 各サブカラムのサイズ (バイト)
+* `subcolumns.data_compressed_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — 各サブカラムの圧縮データのサイズ (単位: バイト)
+* `subcolumns.data_uncompressed_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — 各サブカラムの解凍後データのサイズ (バイト単位)
+* `subcolumns.marks_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — カラムの各サブカラムに対応するマークのサイズ (バイト単位)
+
+{/*AUTOGENERATED_END*/ }
+
+## 例 \{#example\}
 
 ```sql
 SELECT * FROM system.parts_columns LIMIT 1 FORMAT Vertical;
@@ -103,7 +121,7 @@ column_data_uncompressed_bytes:        2
 column_marks_bytes:                    48
 ```
 
-**関連項目**
+## 関連項目 \{#see-also\}
 
 * [MergeTree ファミリー](../../engines/table-engines/mergetree-family/mergetree.md)
 * [コンパクトおよびワイドパーツの数とサイズの算出](/knowledgebase/count-parts-by-type)

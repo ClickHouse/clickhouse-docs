@@ -3809,6 +3809,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/whats-new/cloud",
+      "destination": "/docs/whats-new/changelog/cloud",
+      "permanent": true
+    },
+    {
       "source": "/docs/cloud/reference/byoc/faq/:path*",
       "destination": "/docs/cloud/reference/byoc/reference/faq",
       "permanent": true

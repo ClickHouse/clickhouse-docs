@@ -43,11 +43,11 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_2} size="md" alt="Сводка предложения GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_2} size="md" alt="Сводка предложения GCP Marketplace" border />
 
 <br />
 
-<Image img={gcp_marketplace_committed_3} size="md" alt="Сводка цен GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_3} size="md" alt="Сводка цен GCP Marketplace" border />
 
 <br />
 
@@ -55,7 +55,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_4} size="md" alt="Страница принятия предложения GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_4} size="md" alt="Страница принятия предложения GCP Marketplace" border />
 
 <br />
 
@@ -63,7 +63,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_5} size="md" alt="Подтверждение принятия в GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_5} size="md" alt="Подтверждение принятия в GCP Marketplace" border />
 
 <br />
 
@@ -71,7 +71,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_6} size="md" alt="Страница ClickHouse Cloud в GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_6} size="md" alt="Страница ClickHouse Cloud в GCP Marketplace" border />
 
 <br />
 
@@ -79,7 +79,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_7} size="md" alt="Модальное окно подтверждения перехода с сайта GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_7} size="md" alt="Модальное окно подтверждения перехода с сайта GCP Marketplace" border />
 
 <br />
 
@@ -87,7 +87,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="Страница входа в ClickHouse Cloud" border/>
+<Image img={aws_marketplace_payg_6} size="md" alt="Страница входа в ClickHouse Cloud" border />
 
 <br />
 
@@ -95,7 +95,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="Страница регистрации в ClickHouse Cloud" border/>
+<Image img={aws_marketplace_payg_7} size="md" alt="Страница регистрации в ClickHouse Cloud" border />
 
 <br />
 
@@ -103,11 +103,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud, часть 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border />
 
 <br />
 
@@ -119,11 +115,11 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="Страница входа в ClickHouse Cloud" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="Страница входа в ClickHouse Cloud" border />
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="Страница новых сервисов ClickHouse Cloud" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="Страница новых сервисов ClickHouse Cloud" border />
 
 <br />
 
@@ -133,7 +129,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="Подтверждающее письмо GCP Marketplace" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="Подтверждающее письмо GCP Marketplace" border />
 
 <br />
 

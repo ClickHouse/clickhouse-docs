@@ -43,11 +43,11 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace 오퍼 요약" border/>
+<Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace 오퍼 요약" border />
 
 <br />
 
-<Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace 가격 요약" border/>
+<Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace 가격 요약" border />
 
 <br />
 
@@ -55,7 +55,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace 수락 페이지" border/>
+<Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace 수락 페이지" border />
 
 <br />
 
@@ -63,7 +63,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace 수락 완료 확인" border/>
+<Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace 수락 완료 확인" border />
 
 <br />
 
@@ -71,7 +71,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace ClickHouse Cloud 페이지" border/>
+<Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace ClickHouse Cloud 페이지" border />
 
 <br />
 
@@ -79,15 +79,15 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace 웹사이트 이탈 확인 모달" border/>
+<Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace 웹사이트 이탈 확인 모달" border />
 
 <br />
 
-6. ClickHouse Cloud로 리다이렉트되면, 기존 계정으로 로그인하거나 새 계정을 등록할 수 있습니다. 
+6. ClickHouse Cloud로 리다이렉트되면, 기존 계정으로 로그인하거나 새 계정을 등록할 수 있습니다.
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud 로그인 페이지" border/>
+<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud 로그인 페이지" border />
 
 <br />
 
@@ -95,7 +95,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud 회원가입 페이지" border/>
+<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud 회원가입 페이지" border />
 
 <br />
 
@@ -103,11 +103,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 회원가입 정보 입력 폼" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud 회원가입 정보 입력 폼 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 회원가입 정보 입력 폼" border />
 
 <br />
 
@@ -119,11 +115,11 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud 로그인 페이지" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud 로그인 페이지" border />
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 신규 서비스 페이지" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 신규 서비스 페이지" border />
 
 <br />
 
@@ -133,7 +129,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 확인 이메일" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 확인 이메일" border />
 
 <br />
 

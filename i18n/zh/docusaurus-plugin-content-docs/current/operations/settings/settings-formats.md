@@ -1597,6 +1597,28 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 
 对 String 列使用 Arrow 的 String 类型而不是 Binary
 
+## output_format_arrow_unsupported_types_as_binary \{#output_format_arrow_unsupported_types_as_binary\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "1" },
+      {
+        label:
+          "新增设置，将不受支持的 CH 类型转换为 Arrow 二进制数据，而不是抛出 UNKNOWN_TYPE 异常。"
+      }
+    ]
+  }
+]}
+/>
+
+将无法转换的类型以原始二进制数据形式输出。如果为 false，则此类类型会抛出 UNKNOWN&#95;TYPE 异常。
+
 ## output_format_arrow_use_64_bit_indexes_for_dictionary \{#output_format_arrow_use_64_bit_indexes_for_dictionary\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2200,6 +2222,28 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse 在 String 数据类型中允许任意二进制数据，通常为 UTF-8 编码。Parquet/ORC/Arrow 的 String 仅支持 UTF-8。因此，可以选择为 ClickHouse 的 String 数据类型使用哪种 Arrow 数据类型 —— String 或 Binary。虽然 Binary 在语义上更准确且兼容性更好，但在大多数情况下，默认使用 String 更符合用户预期。"}]}]}/>
 
 对 String 列使用 Parquet 的 String 类型，而不是 Binary 类型。
+
+## output_format_parquet_unsupported_types_as_binary \{#output_format_parquet_unsupported_types_as_binary\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      {
+        label:
+          "用于将不受支持的 CH 类型转换为 parquet（arrow）二进制，而不是抛出 UNKNOWN_TYPE 异常的新设置。"
+      }
+    ]
+  }
+]}
+/>
+
+将无法转换的类型作为原始二进制数据输出。如果为 false，则此类类型会引发 UNKNOWN&#95;TYPE 异常。
 
 ## output_format_parquet_use_custom_encoder \{#output_format_parquet_use_custom_encoder\}
 

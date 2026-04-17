@@ -8,13 +8,11 @@ title: 'Time64'
 doc_type: 'reference'
 ---
 
-
-
 # Time64 \{#time64\}
 
 `Time64` 데이터 타입은 소수 초를 포함한 하루 중 시각을 표현합니다.
 날짜(일, 월, 연도)에 해당하는 달력 구성 요소는 포함하지 않습니다.
-`precision` 파라미터는 소수 자릿수의 개수를 정의하며, 이에 따라 틱 크기(tick size)가 결정됩니다.
+`precision` 매개변수는 소수 자릿수의 개수를 정의하며, 이에 따라 틱 크기(tick size)가 결정됩니다.
 
 틱 크기(precision): 10<sup>-precision</sup>초. 유효 범위: 0..9. 일반적으로 3(밀리초), 6(마이크로초), 9(나노초)를 사용합니다.
 
@@ -32,7 +30,6 @@ Time64(precision)
 [`Time`](../../sql-reference/data-types/time.md)도 참고하십시오.
 
 텍스트 표현 가능 범위: `precision = 3`인 경우 [-999:59:59.000, 999:59:59.999]입니다. 일반적으로 최소값은 `-999:59:59`, 최대값은 `999:59:59`이며, 분수 자릿수는 최대 `precision`자리까지 가질 수 있습니다 (`precision = 9`인 경우 최소값은 `-999:59:59.999999999`입니다).
-
 
 ## 구현 세부 사항 \{#implementation-details\}
 
@@ -56,8 +53,6 @@ Time64(precision)
 `Time64`는 시간대를 지원하지 않습니다.
 `Time64` 타입 또는 값을 생성할 때 시간대를 지정하면 오류가 발생합니다.
 마찬가지로, `Time64` 컬럼에 시간대를 적용하거나 변경하려는 시도는 지원되지 않으며 오류가 발생합니다.
-
-
 
 ## 예시 \{#examples\}
 
@@ -125,6 +120,23 @@ SELECT CAST('14:30:25.250' AS Time64(3)) AS column, toTypeName(column) AS type;
 1. │ 14:30:25.250 │ Time64(3) │
    └───────────────┴───────────┘
 ```
+
+## Date와의 덧셈 \{#addition-with-date\}
+
+[Time64](time64.md) 값은 [Date](date.md) 또는 [Date32](date32.md) 값에 더할 수 있으며, 그 결과 `Time64`와 동일한 소수 자릿수 정밀도(scale)를 가진 [DateTime64](datetime64.md)가 됩니다:
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+   ┌─────────────────────────dt─┬─toTypeName(dt)─┐
+1. │ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+   └────────────────────────────┴────────────────┘
+```
+
+지원되는 모든 조합과 결과 타입에 대한 자세한 내용은 [날짜 및 시간 덧셈](../operators/index.md#date-time-addition)을 참조하십시오.
 
 **함께 보기**
 

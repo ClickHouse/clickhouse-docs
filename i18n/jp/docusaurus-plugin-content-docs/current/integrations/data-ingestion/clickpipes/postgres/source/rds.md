@@ -12,13 +12,11 @@ integration:
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
-import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';
 import modify_parameter_group from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/modify_parameter_group.png';
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
-
 
 # RDS Postgres ソース設定ガイド \{#rds-postgres-source-setup-guide\}
 
@@ -31,9 +29,8 @@ ClickPipes は Postgres 12 以降のバージョンに対応しています。
 RDS インスタンスですでに次の設定が行われている場合、このセクションはスキップできます。
 
 * `rds.logical_replication = 1`
-* `wal_sender_timeout = 0`
 
-これらの設定は、以前に別のデータレプリケーションツールを使用していた場合、あらかじめ設定されていることが一般的です。
+この設定は、以前に別のデータレプリケーションツールを使用していた場合、あらかじめ設定されていることが一般的です。
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -41,25 +38,16 @@ postgres=> SHOW rds.logical_replication ;
 -------------------------
  on
 (1 row)
-
-postgres=> SHOW wal_sender_timeout ;
- wal_sender_timeout
---------------------
- 0
-(1 row)
 ```
 
 まだ設定していない場合は、次の手順に従ってください。
 
 1. 必要な設定を行った、利用している Postgres バージョン用の新しいパラメータグループを作成します:
    * `rds.logical_replication` を 1 に設定します
-   * `wal_sender_timeout` を 0 に設定します
 
 <Image img={parameter_group_in_blade} alt="RDS で Parameter groups を確認する場所" size="lg" border />
 
 <Image img={change_rds_logical_replication} alt="rds.logical_replication の変更" size="lg" border />
-
-<Image img={change_wal_sender_timeout} alt="wal_sender_timeout の変更" size="lg" border />
 
 2. 作成した新しいパラメータグループを対象の RDS Postgres データベースに適用します
 
@@ -68,7 +56,6 @@ postgres=> SHOW wal_sender_timeout ;
 3. 変更を反映するために RDS インスタンスを再起動します
 
 <Image img={reboot_rds} alt="RDS Postgres を再起動する" size="lg" border />
-
 
 ## データベースユーザーを設定する \{#configure-database-user\}
 

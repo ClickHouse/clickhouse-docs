@@ -12,7 +12,7 @@ import Image from '@theme/IdealImage';
 
 The ABS ClickPipe provides a fully-managed and resilient way to ingest data from Azure Blob Storage into ClickHouse Cloud. It supports both **one-time** and **continuous ingestion** with exactly-once semantics.
 
-ABS ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) and [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe).
+ABS ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Supported formats {#supported-formats}
 

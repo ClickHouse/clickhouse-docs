@@ -17,7 +17,7 @@ import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled
 
 # アップグレード \{#upgrades\}
 
-ClickHouse Cloud を利用すると、パッチ適用やアップグレードについて心配する必要はありません。修正、新機能、パフォーマンス向上を含むアップグレードを、定期的に順次適用します。ClickHouse における新機能の一覧については、[Cloud changelog](/whats-new/cloud) を参照してください。
+ClickHouse Cloud を利用すると、パッチ適用やアップグレードについて心配する必要はありません。修正、新機能、パフォーマンス向上を含むアップグレードを、定期的に順次適用します。ClickHouse における新機能の一覧については、[Cloud changelog](/whats-new/changelog/cloud) を参照してください。
 
 :::note
 新しいアップグレードメカニズムとして、「make before break」(MBB) というコンセプトを導入しています。この新しいアプローチでは、アップグレード処理中に古いレプリカを削除する前に、更新されたレプリカを追加します。これにより、実行中のワークロードへの影響が少ない、よりシームレスなアップグレードが可能になります。

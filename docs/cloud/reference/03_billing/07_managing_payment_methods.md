@@ -117,3 +117,13 @@ After completing this flow, the selected organization’s billing will be linked
 ## Support {#support}
 
 If you run into any issues, please do not hesitate to [contact our support team](https://clickhouse.com/support/program).
+
+## FAQs {#faqs}
+
+### What happens to my usage charges if I switch billing methods mid billing cycle? {#what-happens-to-my-usage-charges-if-i-switch-billing-methods-mid-billing-cycle}
+
+It depends on the direction of the switch:
+
+Switching from Marketplace to credit card billing: Usage from the start of the billing cycle up to the point of the switch is sent to the Marketplace. The remaining usage from the switch point to the end of the billing cycle is invoiced to the credit card at the end of the billing cycle.
+
+Switching from credit card to Marketplace billing: All uninvoiced usage for the entire billing period is sent to the Marketplace.

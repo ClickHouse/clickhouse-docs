@@ -22,19 +22,18 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-PAYG（従量課金制）のパブリックオファーを通じて、[Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) から ClickHouse Cloud の利用を開始しましょう。
-
+PAYG (従量課金制) のパブリックオファーを通じて、[Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) から ClickHouse Cloud の利用を開始しましょう。
 
 ## 前提条件 \{#prerequisites\}
 
-- 課金管理者によって購入権限が付与されている Azure プロジェクト。
-- Azure Marketplace で ClickHouse Cloud をサブスクライブするには、購入権限を持つアカウントでログインし、適切なプロジェクトを選択する必要があります。
+* 課金管理者によって購入権限が付与されている Azure プロジェクト。
+* Azure Marketplace で ClickHouse Cloud をサブスクライブするには、購入権限を持つアカウントでログインし、適切なプロジェクトを選択する必要があります。
 
 1. [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) にアクセスし、ClickHouse Cloud を検索します。Marketplace 上のオファリングを購入できるよう、ログインしていることを確認してください。
 
 <br />
 
-<Image img={azure_marketplace_payg_1} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_1} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -42,7 +41,7 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={azure_marketplace_payg_2} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_2} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -50,7 +49,7 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={azure_marketplace_payg_3} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_3} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -58,7 +57,7 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={azure_marketplace_payg_4} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_4} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -66,7 +65,7 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={azure_marketplace_payg_5} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_5} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -74,17 +73,17 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={azure_marketplace_payg_6} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_6} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
-7. **"レビュー + サブスクライブ (Review + subscribe)"** をクリックします。
+7. **&quot;レビュー + サブスクライブ (Review + subscribe)&quot;** をクリックします。
 
 8. 次の画面で、すべての内容が正しいことを確認し、**サブスクライブ (Subscribe)** をクリックします。
 
 <br />
 
-<Image img={azure_marketplace_payg_7} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_7} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -92,7 +91,7 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={azure_marketplace_payg_8} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_8} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -100,7 +99,7 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={azure_marketplace_payg_9} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_9} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -112,7 +111,7 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={azure_marketplace_payg_10} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_10} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -122,11 +121,7 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud サインアップ情報フォーム 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -136,13 +131,13 @@ PAYG（従量課金制）のパブリックオファーを通じて、[Azure Mar
 
 <br />
 
-<Image img={azure_marketplace_payg_11} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_11} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 

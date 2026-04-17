@@ -128,7 +128,6 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
-
 ## 데이터 Set 작업을 위한 연산자 \{#operators-for-working-with-data-sets\}
 
 [IN 연산자](../../sql-reference/operators/in.md) 및 [EXISTS](../../sql-reference/operators/exists.md) 연산자를 참고하십시오.
@@ -149,9 +148,9 @@ SELECT
 
 `a GLOBAL NOT IN ...` – `globalNotIn(a, b)` 함수입니다.
 
-### in 서브쿼리 함수 \{#in-subquery-function\}
+### in 서브쿼리 FUNCTION \{#in-subquery-function\}
 
-`a = ANY (subquery)` – `in(a, subquery)` 함수와 동일합니다.  
+`a = ANY (subquery)` – `in(a, subquery)` FUNCTION와 동일합니다.
 
 ### notIn 서브쿼리 함수 \{#notin-subquery-function\}
 
@@ -161,9 +160,9 @@ SELECT
 
 `a = ALL (subquery)` – `a IN (SELECT singleValueOrNull(*) FROM subquery)`와 동일합니다.
 
-### notIn 서브쿼리 함수 \{#notin-subquery-function-1\}
+### notIn 서브쿼리 FUNCTION \{#notin-subquery-function-1\}
 
-`a != ALL (subquery)` – `notIn(a, subquery)` 함수입니다.
+`a != ALL (subquery)` – `notIn(a, subquery)` FUNCTION입니다.
 
 **예시**
 
@@ -202,7 +201,6 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 │ 9 │
 └───┘
 ```
-
 
 ## 날짜 및 시간 처리를 위한 연산자 \{#operators-for-working-with-dates-and-times\}
 
@@ -357,6 +355,55 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) 데이터 형식
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 변환 함수
 
+### 날짜 및 시간 덧셈 \{#date-time-addition\}
+
+[Date](../../sql-reference/data-types/date.md) 또는 [Date32](../../sql-reference/data-types/date32.md) 값은 `+` 연산자를 사용해 [Time](../../sql-reference/data-types/time.md) 또는 [Time64](../../sql-reference/data-types/time64.md) 값과 더할 수 있습니다. 결과는 해당 날짜의 지정된 시각을 나타내는 [DateTime](../../sql-reference/data-types/datetime.md) 또는 [DateTime64](../../sql-reference/data-types/datetime64.md)입니다. 이 연산은 교환법칙이 성립합니다.
+
+결과 타입은 피연산자 타입에 따라 달라집니다.
+
+| Left operand | Right operand | Result type     |
+| ------------ | ------------- | --------------- |
+| `Date`       | `Time`        | `DateTime`      |
+| `Date`       | `Time64(s)`   | `DateTime64(s)` |
+| `Date32`     | `Time`        | `DateTime64(0)` |
+| `Date32`     | `Time64(s)`   | `DateTime64(s)` |
+
+:::note
+결과에는 [세션 시간대](../../operations/settings/settings.md#session_timezone)가 사용됩니다(세션 시간대가 설정되지 않은 경우 서버 기본 시간대가 사용됩니다). [`date_time_overflow_behavior`](../../operations/settings/settings-formats.md#date_time_overflow_behavior) 설정은 결과가 표현 가능한 범위를 벗어날 때의 동작을 제어합니다.
+:::
+
+예시:
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25 │ DateTime       │
+└─────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+┌─────────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+└────────────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toTime64('23:59:59.999', 3) + toDate32('2024-07-15') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 23:59:59.999 │ DateTime64(3)  │
+└─────────────────────────┴────────────────┘
+```
 
 ## 논리 AND 연산자 \{#logical-and-operator\}
 

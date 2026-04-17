@@ -656,6 +656,89 @@ GRANT ALTER TABLE ON my_iceberg_table TO my_user;
   :::
 
 
+### 孤立ファイルの削除 \{#iceberg-remove-orphan-files\}
+
+孤立ファイルとは、ストレージ上に存在するものの、Iceberg テーブルのメタデータ内でどのスナップショットからも参照されていないファイルを指します。これらは、書き込みの失敗、compaction 後の不完全なクリーンアップ、操作の中断によって蓄積し、ストレージ使用量が際限なく増加する原因となります。`remove_orphan_files` コマンドは、こうした孤立ファイルを特定して削除します。
+
+**構文:**
+
+```sql
+-- Positional form: single unnamed older_than argument
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files('timestamp')
+
+-- Named form
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    older_than = 'timestamp',
+    location = 'path',
+    dry_run = 0|1
+)
+
+-- No arguments: use all defaults (older_than = 3 days ago)
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files()
+```
+
+**パラメータ:**
+
+| Parameter    | Type                 | Default                                               | Description                                                                |
+| ------------ | -------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------- |
+| `older_than` | `String` (timestamp) | 3日前 (`iceberg_orphan_files_older_than_seconds`で設定可能)  | 最終更新時刻がこのタイムスタンプより古いファイルのみを、孤立ファイルの候補として扱います。進行中の書き込み中のファイルを削除しないための安全策です。 |
+| `location`   | `String`             | テーブルの格納場所                                             | スキャン対象を、テーブルの格納場所配下にある特定のサブディレクトリ (例: `'data/'` または `'metadata/'`) に限定します。 |
+| `dry_run`    | `UInt64`             | `0`                                                   | `1` の場合、孤立ファイルを特定し、実際には何も削除せずに結果の概要を返します。                                  |
+
+**例:**
+
+```sql
+-- Remove orphan files older than a specific timestamp
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files('2026-03-01 00:00:00');
+
+-- Dry run: preview which files would be deleted
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(dry_run = 1);
+
+-- Scan only the data directory
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    older_than = '2026-03-01 00:00:00',
+    location = 'data/'
+);
+
+-- Combine positional older_than with named arguments
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    '2026-03-01 00:00:00',
+    dry_run = 1
+);
+```
+
+**出力:**
+
+このコマンドは、カテゴリごとの削除済みファイル数 (`dry_run` モードでは削除対象となるファイル数) を示す `metric_name` と `metric_value` のカラムを持つテーブルを返します。ファイルカテゴリは、ファイル名の規則に基づくベストエフォートのヒューリスティクスによって分類されます。特定のパターンに一致しないファイルは、既定で `deleted_data_files_count` に分類されます。
+
+| metric&#95;name                                     | metric&#95;value |
+| --------------------------------------------------- | ---------------- |
+| deleted&#95;data&#95;files&#95;count                | 5                |
+| deleted&#95;position&#95;delete&#95;files&#95;count | 2                |
+| deleted&#95;equality&#95;delete&#95;files&#95;count | 0                |
+| deleted&#95;manifest&#95;files&#95;count            | 3                |
+| deleted&#95;manifest&#95;lists&#95;count            | 1                |
+| deleted&#95;metadata&#95;files&#95;count            | 0                |
+| deleted&#95;statistics&#95;files&#95;count          | 0                |
+| skipped&#95;missing&#95;metadata&#95;count          | 0                |
+| failed&#95;deletions&#95;count                      | 0                |
+
+**設定:**
+
+| 設定                                        | 型        | デフォルト             | 説明                                           |
+| ----------------------------------------- | -------- | ----------------- | -------------------------------------------- |
+| `allow_iceberg_remove_orphan_files`       | `Bool`   | `false`           | この機能を有効にするためのゲート設定です (Experimental) 。        |
+| `iceberg_orphan_files_older_than_seconds` | `UInt64` | `259200` (3 days) | 引数を省略した場合に使用される、秒単位の既定の `older_than` しきい値です。 |
+
+:::note
+
+* **Iceberg フォーマットバージョン 2 以上が必要です。** バージョン 1 のテーブルは、到達可能なファイル集合を安全に判定するために必要な、スナップショット内の `manifest-list` ポインタを持たないため拒否されます。v1 テーブルでこのコマンドを実行すると、`BAD_ARGUMENTS` エラーが返されます。
+* `allow_insert_into_iceberg` と `allow_iceberg_remove_orphan_files` の両方の設定を有効にする必要があります
+* 期限切れのスナップショットのみが参照しているファイルを先にクリーンアップできるよう、`remove_orphan_files` の前に `expire_snapshots` を実行することを推奨します
+* 削除前に孤立ファイルをプレビューするには、`dry_run = 1` を使用します
+* `older_than` しきい値は、進行中の書き込みに由来するファイルが削除されるのを防ぎます。既定の 3 日間のしきい値には、十分な安全マージンがあります
+  :::
+
 ## 関連項目 \{#see-also\}
 
 * [Iceberg エンジン](/engines/table-engines/integrations/iceberg.md)

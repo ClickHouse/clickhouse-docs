@@ -109,7 +109,7 @@ You may need to reload the page to ensure the full list of databases is listed i
 
 ### Adjust the time frame {#adjust-the-timeframe}
 
-Adjust the time to show all data from the previous `1 day` using the time picker in the top right.
+Adjust the time to show all data from the previous `2 days` using the time picker in the top right.
 
 <Image img={step_2} alt="Step 2" size="lg"/>
 
@@ -219,11 +219,11 @@ Remove the errors filter and select `Event Deltas` from the left `Analysis Mode`
 
 The top panel shows the distribution of timings, with colors indicating event density (number of spans). The subset of events outside of the main concentration are typically those worth investigating.
 
-If we select the events with a duration greater than `200ms`, and apply the filter `Filter by selection`, we can limit our analysis to slower events:
+If we select the events with a duration greater than `1ms`, and apply the filter `Filter by selection`, we can analyze the differences between the "normal" events and the high-density group of ~0ms duration spans:
 
 <Image img={step_17} alt="Step 17" size="lg"/>
 
-With analysis performed on the subset of data, we can see most performance spikes are associated with `visa` transactions.
+With analysis performed on the subset of data, we can see that the "background" spans outside of the selection are mostly visa transactions, associated with 0ms responses due to cache errors.
 
 ### Using charts for more context {#using-charts-for-more-context}
 
@@ -288,13 +288,13 @@ Sessions allow us to replay the user experience, offering a visual account of ho
 
 In HyperDX, sessions are linked to traces and logs, providing a complete view of the underlying cause.
 
-For example, if the support team provides the email of a user who encountered a payment issue `Braulio.Roberts23@hotmail.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
+For example, if the support team provides the email of a user who encountered a payment issue `Eddie86@yahoo.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
 
 Navigate to the `Client Sessions` tab from the left menu before ensuring the data source is set to `Sessions` and the time period is set to the `Last 1 day`:
 
 <Image img={step_21} alt="Step 21" size="lg"/>
 
-Search for `SpanAttributes.userEmail: Braulio` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
+Search for `SpanAttributes.userEmail: Eddie` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
 
 <Image img={step_22} alt="Step 22" size="lg"/>
 

@@ -553,7 +553,7 @@ With asynchronous inserts enabled, ClickHouse:
 2. Writes data to an in-memory buffer (instead of immediately to disk)
 3. Returns success to the connector (if `wait_for_async_insert=0`)
 4. Flushes the buffer to disk when one of these conditions is met:
-   - Buffer reaches `async_insert_max_data_size` (default: 10 MB)
+   - Buffer reaches `async_insert_max_data_size` (default: 100 MB)
    - `async_insert_busy_timeout_ms` milliseconds elapsed since first insert (default: 1000 ms)
    - Maximum number of queries accumulated (`async_insert_max_query_number`, default: 100)
 
@@ -585,12 +585,12 @@ Add async insert settings to the `clickhouseSettings` configuration parameter:
 You can fine-tune the async insert flush behavior:
 
 ```json
-"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=104857600,async_insert_busy_timeout_ms=1000"
 ```
 
 Common tuning parameters:
 
-- **`async_insert_max_data_size`** (default: 10485760 / 10 MB): Maximum buffer size before flush
+- **`async_insert_max_data_size`** (default: 104857600 / 100 MB): Maximum buffer size before flush
 - **`async_insert_busy_timeout_ms`** (default: 1000): Maximum time (ms) before flush
 - **`async_insert_stale_timeout_ms`** (default: 0): Time (ms) since last insert before flush
 - **`async_insert_max_query_number`** (default: 100): Maximum queries before flush

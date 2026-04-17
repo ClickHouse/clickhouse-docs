@@ -125,10 +125,6 @@ You will receive an email like the one below with details on configuring your ac
 
 <br />
 
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
-
-<br />
-
 Once you hit **Complete sign up**, you will be taken to your organization within ClickHouse Cloud where you can view the billing screen to ensure you're being billed via the Azure Marketplace and can create services.
 
 <br />

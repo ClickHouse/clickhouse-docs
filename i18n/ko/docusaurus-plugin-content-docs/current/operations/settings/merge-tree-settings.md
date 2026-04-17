@@ -281,7 +281,24 @@ true인 경우, 이 레플리카는 파트를 머지하지 않고 항상 다른 
 
 ## auto_statistics_types \{#auto_statistics_types\}
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "minmax, uniq"},{"label": "기본적으로 자동 통계를 활성화"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "minmax, uniq"},{"label": "기본적으로 자동 통계를 활성화"}]}, {"id": "row-3","items": [{"label": "25.10"},{"label": ""},{"label": "새 설정"}]}]}/>
+<SettingsInfoBlock type="String" default_value="minmax, uniq" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "minmax, uniq" },
+      { label: "기본적으로 자동 통계를 활성화" }
+    ]
+  },
+  {
+    id: "row-2",
+    items: [{ label: "25.10" }, { label: "" }, { label: "새 설정" }]
+  }
+]}
+/>
 
 적합한 모든 컬럼에서 자동으로 계산할 통계 타입의 쉼표로 구분된 목록입니다.
 지원되는 통계 타입: tdigest, countmin, minmax, uniq.

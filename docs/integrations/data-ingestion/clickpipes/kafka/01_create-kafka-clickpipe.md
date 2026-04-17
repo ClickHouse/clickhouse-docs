@@ -26,6 +26,8 @@ import Image from '@theme/IdealImage';
 
 > In this guide, we will walk you through the process of creating your first Kafka ClickPipe.
 
+Kafka ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).
+
 <VerticalStepper type="numbered" headerLevel="h2">
 
 ## Navigate to data sources {#1-load-sql-console}

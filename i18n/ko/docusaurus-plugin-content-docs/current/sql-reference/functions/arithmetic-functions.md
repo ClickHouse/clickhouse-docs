@@ -1203,8 +1203,11 @@ SELECT negate(10)
 도입된 버전: v1.1.0
 
 두 값 `x`와 `y`의 합을 계산합니다. 별칭: `x + y` (연산자).
-정수와 날짜를 더하거나, 정수와 날짜-시간 값을 더할 수도 있습니다. 전자의
-연산은 날짜의 일(day) 수를 증가시키고, 후자의 연산은 날짜-시간 값의 초(second) 수를 증가시킵니다.
+정수와 날짜를 더하거나, 정수와 날짜와 시간 값을 더할 수도 있습니다. 전자의
+연산은 날짜의 일(day) 수를 증가시키고, 후자의 연산은 날짜와 시간 값의 초(second) 수를 증가시킵니다.
+날짜와 시간을 더할 수도 있습니다. `Date`와 `Time`을 더하면
+`DateTime`이 생성됩니다. `Date`와 `Time64`를 더하거나, `Date32`와
+`Time` 또는 `Time64`를 더하면 `DateTime64`가 생성됩니다.
 
 **구문**
 
@@ -1240,6 +1243,16 @@ SELECT plus(toDate('2025-01-01'),5)
 
 ```response title=Response
 2025-01-06
+```
+
+**날짜와 시간의 덧셈**
+
+```sql title=Query
+SELECT toDate('2025-01-01') + CAST('14:30:25', 'Time')
+```
+
+```response title=Response
+2025-01-01 14:30:25
 ```
 
 ## positiveModulo \{#positiveModulo\}

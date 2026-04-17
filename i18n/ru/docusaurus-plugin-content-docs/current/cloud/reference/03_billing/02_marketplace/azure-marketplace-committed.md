@@ -34,7 +34,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_1} size="md" alt="Письмо Azure Marketplace с приватным предложением" border/>
+<Image img={azure_marketplace_committed_1} size="md" alt="Письмо Azure Marketplace с приватным предложением" border />
 
 <br />
 
@@ -42,7 +42,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_2} size="md" alt="Детали приватного предложения Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_2} size="md" alt="Детали приватного предложения Azure Marketplace" border />
 
 <br />
 
@@ -50,11 +50,11 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_3} size="md" alt="Страница управления приватным предложением Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_3} size="md" alt="Страница управления приватным предложением Azure Marketplace" border />
 
 <br />
 
-<Image img={azure_marketplace_committed_4} size="md" alt="Загрузка страницы управления приватным предложением Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_4} size="md" alt="Загрузка страницы управления приватным предложением Azure Marketplace" border />
 
 <br />
 
@@ -62,7 +62,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_5} size="md" alt="Страница управления приватным предложением Azure Marketplace, покупка доступна" border/>
+<Image img={azure_marketplace_committed_5} size="md" alt="Страница управления приватным предложением Azure Marketplace, покупка доступна" border />
 
 <br />
 
@@ -70,15 +70,15 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-- Подписка и группа ресурсов (Subscription and resource group)
-- Укажите имя для SaaS-подписки
-- Выберите тарифный план, для которого у вас есть приватное предложение. Только срок, для которого было создано приватное предложение (например, 1 год), будет иметь ненулевую сумму. Другие варианты сроков оплаты будут с суммой $0. 
-- Выберите, нужна ли вам регулярная (recurring) оплата или нет. Если регулярная оплата не выбрана, контракт завершится в конце расчетного периода, а ресурсы будут выведены из эксплуатации.
-- Нажмите **Review + subscribe**.
+* Подписка и группа ресурсов (Subscription and resource group)
+* Укажите имя для SaaS-подписки
+* Выберите тарифный план, для которого у вас есть приватное предложение. Только срок, для которого было создано приватное предложение (например, 1 год), будет иметь ненулевую сумму. Другие варианты сроков оплаты будут с суммой $0.
+* Выберите, нужна ли вам регулярная (recurring) оплата или нет. Если регулярная оплата не выбрана, контракт завершится в конце расчетного периода, а ресурсы будут выведены из эксплуатации.
+* Нажмите **Review + subscribe**.
 
 <br />
 
-<Image img={azure_marketplace_committed_6} size="md" alt="Форма подписки Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_6} size="md" alt="Форма подписки Azure Marketplace" border />
 
 <br />
 
@@ -86,7 +86,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_7} size="md" alt="Подтверждение подписки Azure Marketplace" border/>
+<Image img={azure_marketplace_committed_7} size="md" alt="Подтверждение подписки Azure Marketplace" border />
 
 <br />
 
@@ -94,9 +94,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_8} size="md" alt="Страница отправки подписки Azure Marketplace" border/>
-
-<br />
+<Image img={azure_marketplace_committed_8} size="md" alt="Страница отправки подписки Azure Marketplace" border />
 
 <br />
 
@@ -104,7 +102,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_9} size="md" alt="Кнопка Azure Marketplace Configure account now" border/>
+<Image img={azure_marketplace_committed_9} size="md" alt="Кнопка Azure Marketplace Configure account now" border />
 
 <br />
 
@@ -114,11 +112,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border />
 
 <br />
 
@@ -128,13 +122,13 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_11} size="sm" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_11} size="sm" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border />
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_12} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border />
 
 <br />
 

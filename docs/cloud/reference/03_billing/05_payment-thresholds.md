@@ -16,7 +16,7 @@ import billing_2 from '@site/static/images/cloud/reference/billing_payment_thres
 If you are a pay as you go customer and your amount due in a billing period for ClickHouse Cloud reaches $1,000 USD or the equivalent value, your payment method configured to your organization will be automatically charged.
 
 :::tip
-If you wish to adjust the default payment threshold amount, [contact support](mailto:support@clickhouse.com).
+Upon the first successful invoice payment, the threshold is raised to $5,000 USD. A second successful invoice payment raises the threshold to $10,000 USD. If you wish to adjust your payment threshold amount, [contact support](mailto:support@clickhouse.com). 
 :::
 
 A failed charge will result in the suspension of your services after a 14 day grace period.

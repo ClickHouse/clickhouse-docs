@@ -656,6 +656,89 @@ GRANT ALTER TABLE ON my_iceberg_table TO my_user;
   :::
 
 
+### Удаление осиротевших файлов \{#iceberg-remove-orphan-files\}
+
+Осиротевшие файлы — это файлы в хранилище, на которые не ссылается ни один снимок в метаданных таблицы Iceberg. Они накапливаются из-за неудачных записей, неполной очистки после компактации и прерванных операций, что приводит к неограниченному росту объёма хранилища. Команда `remove_orphan_files` обнаруживает и удаляет эти осиротевшие файлы.
+
+**Синтаксис:**
+
+```sql
+-- Positional form: single unnamed older_than argument
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files('timestamp')
+
+-- Named form
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    older_than = 'timestamp',
+    location = 'path',
+    dry_run = 0|1
+)
+
+-- No arguments: use all defaults (older_than = 3 days ago)
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files()
+```
+
+**Параметры:**
+
+| Параметр     | Тип                      | По умолчанию                                                                | Описание                                                                                                                                                            |
+| ------------ | ------------------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `older_than` | `String` (метка времени) | 3 дня назад (настраивается через `iceberg_orphan_files_older_than_seconds`) | Считать кандидатами в осиротевшие только файлы, время последнего изменения которых старше этой метки времени. Это защита от удаления файлов при незавершённой записи. |
+| `location`   | `String`                 | Расположение таблицы                                                        | Ограничить сканирование конкретным подкаталогом в расположении таблицы (например, `'data/'` или `'metadata/'`).                                                     |
+| `dry_run`    | `UInt64`                 | `0`                                                                         | Если указано `1`, определить осиротевшие файлы и вернуть итоговую сводку, фактически ничего не удаляя.                                                                |
+
+**Примеры:**
+
+```sql
+-- Remove orphan files older than a specific timestamp
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files('2026-03-01 00:00:00');
+
+-- Dry run: preview which files would be deleted
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(dry_run = 1);
+
+-- Scan only the data directory
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    older_than = '2026-03-01 00:00:00',
+    location = 'data/'
+);
+
+-- Combine positional older_than with named arguments
+ALTER TABLE iceberg_table EXECUTE remove_orphan_files(
+    '2026-03-01 00:00:00',
+    dry_run = 1
+);
+```
+
+**Вывод:**
+
+Команда возвращает таблицу со столбцами `metric_name` и `metric_value`, в которой показано количество удалённых файлов (или файлов, которые были бы удалены в режиме dry&#95;run) по категориям. Категории файлов определяются эвристически на основе соглашений об именовании файлов; если файл не соответствует ни одному конкретному шаблону, он по умолчанию относится к `deleted_data_files_count`:
+
+| metric&#95;name                                     | metric&#95;value |
+| --------------------------------------------------- | ---------------- |
+| deleted&#95;data&#95;files&#95;count                | 5                |
+| deleted&#95;position&#95;delete&#95;files&#95;count | 2                |
+| deleted&#95;equality&#95;delete&#95;files&#95;count | 0                |
+| deleted&#95;manifest&#95;files&#95;count            | 3                |
+| deleted&#95;manifest&#95;lists&#95;count            | 1                |
+| deleted&#95;metadata&#95;files&#95;count            | 0                |
+| deleted&#95;statistics&#95;files&#95;count          | 0                |
+| skipped&#95;missing&#95;metadata&#95;count          | 0                |
+| failed&#95;deletions&#95;count                      | 0                |
+
+**Settings:**
+
+| Настройка                                 | Тип      | По умолчанию     | Описание                                                                          |
+| ----------------------------------------- | -------- | ---------------- | --------------------------------------------------------------------------------- |
+| `allow_iceberg_remove_orphan_files`       | `Bool`   | `false`          | Флаг, включающий эту возможность (экспериментальную).                             |
+| `iceberg_orphan_files_older_than_seconds` | `UInt64` | `259200` (3 дня) | Пороговое значение `older_than` в секундах по умолчанию, если аргумент не указан. |
+
+:::note
+
+* **Требуется Iceberg формата версии 2 (или выше).** Таблицы версии 1 отклоняются, поскольку в них нет указателей `manifest-list` в снимках, которые нужны для безопасного определения множества достижимых файлов. При выполнении команды для таблицы v1 возвращается ошибка `BAD_ARGUMENTS`.
+* Требуется включить обе настройки: `allow_insert_into_iceberg` и `allow_iceberg_remove_orphan_files`
+* Рекомендуется запускать `expire_snapshots` перед `remove_orphan_files`, чтобы сначала очистить файлы, на которые есть уникальные ссылки из истёкших снимков
+* Используйте `dry_run = 1`, чтобы предварительно просмотреть осиротевшие файлы перед удалением
+* Порог `older_than` защищает от удаления файлов из незавершённых операций записи — значение по умолчанию, равное 3 дням, обеспечивает достаточный запас безопасности
+  :::
+
 ## См. также \{#see-also\}
 
 * [Движок Iceberg](/engines/table-engines/integrations/iceberg.md)

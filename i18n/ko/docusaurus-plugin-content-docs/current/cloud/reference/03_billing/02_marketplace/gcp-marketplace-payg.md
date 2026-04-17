@@ -31,22 +31,22 @@ PAYG(Pay-as-you-go) Public Offer를 통해 [GCP Marketplace](https://console.clo
 
 1. [GCP Marketplace](https://cloud.google.com/marketplace)에 접속한 후 ClickHouse Cloud를 검색합니다. 올바른 프로젝트가 선택되어 있는지 확인합니다.
 
-<Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplace 홈 페이지" border/>
+<Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplace 홈 페이지" border />
 
 2. 해당 [상품 페이지](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud)를 클릭한 다음 **Subscribe**를 클릭합니다.
 
-<Image img={gcp_marketplace_payg_2} size="md" alt="GCP Marketplace의 ClickHouse Cloud" border/>
+<Image img={gcp_marketplace_payg_2} size="md" alt="GCP Marketplace의 ClickHouse Cloud" border />
 
 3. 다음 화면에서 구독을 설정합니다:
 
-- 플랜은 기본값으로 "ClickHouse Cloud"가 선택되어 있습니다.
-- 구독 기간은 "Monthly"입니다.
-- 적절한 결제 계정을 선택합니다.
-- 약관에 동의한 후 **Subscribe**를 클릭합니다.
+* 플랜은 기본값으로 &quot;ClickHouse Cloud&quot;가 선택되어 있습니다.
+* 구독 기간은 &quot;Monthly&quot;입니다.
+* 적절한 결제 계정을 선택합니다.
+* 약관에 동의한 후 **Subscribe**를 클릭합니다.
 
 <br />
 
-<Image img={gcp_marketplace_payg_3} size="sm" alt="GCP Marketplace에서 구독 구성" border/>
+<Image img={gcp_marketplace_payg_3} size="sm" alt="GCP Marketplace에서 구독 구성" border />
 
 <br />
 
@@ -54,7 +54,7 @@ PAYG(Pay-as-you-go) Public Offer를 통해 [GCP Marketplace](https://console.clo
 
 <br />
 
-<Image img={gcp_marketplace_payg_4} size="md" alt="GCP Marketplace 가입 모달" border/>
+<Image img={gcp_marketplace_payg_4} size="md" alt="GCP Marketplace 가입 모달" border />
 
 <br />
 
@@ -64,7 +64,7 @@ PAYG(Pay-as-you-go) Public Offer를 통해 [GCP Marketplace](https://console.clo
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud 로그인 페이지" border/>
+<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud 로그인 페이지" border />
 
 <br />
 
@@ -72,7 +72,7 @@ PAYG(Pay-as-you-go) Public Offer를 통해 [GCP Marketplace](https://console.clo
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud 가입 페이지" border/>
+<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud 가입 페이지" border />
 
 <br />
 
@@ -80,11 +80,7 @@ PAYG(Pay-as-you-go) Public Offer를 통해 [GCP Marketplace](https://console.clo
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 가입 정보 입력 양식" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud 가입 정보 입력 양식 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 가입 정보 입력 양식" border />
 
 <br />
 
@@ -96,11 +92,11 @@ PAYG(Pay-as-you-go) Public Offer를 통해 [GCP Marketplace](https://console.clo
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud 로그인 페이지" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud 로그인 페이지" border />
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 신규 서비스 페이지" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 신규 서비스 페이지" border />
 
 <br />
 
@@ -110,7 +106,7 @@ PAYG(Pay-as-you-go) Public Offer를 통해 [GCP Marketplace](https://console.clo
 
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 확인 이메일" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 확인 이메일" border />
 
 <br />
 

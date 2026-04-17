@@ -83,10 +83,6 @@ Note that if you're a new user, you will also need to provide some basic informa
 
 <br />
 
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud sign up info form 2" border/>
-
-<br />
-
 If you're an existing ClickHouse Cloud user, simply log in using your credentials.
 
 7. After successfully logging in, a new ClickHouse Cloud organization will be created. This organization will be connected to your GCP billing account and all usage will be billed via your GCP account.

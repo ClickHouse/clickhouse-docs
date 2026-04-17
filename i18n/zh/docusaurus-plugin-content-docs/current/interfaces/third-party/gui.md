@@ -378,6 +378,18 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 [CHouse UI 源码](https://github.com/daun-gatal/chouse-ui)
 
+### clickhouse-flow \{#clickhouse-flow\}
+
+[clickhouse-flow](https://github.com/MikeAmputer/clickhouse-flow) 是一款开源工具，用于可视化 ClickHouse 表、视图和 materialized view 之间的数据流及依赖关系。
+
+功能：
+
+* 根据 ClickHouse 元数据自动构建 schema 图。
+* 可视化经由 materialized view 的数据流。
+* 提供用于探索 schema 结构的交互式 UI。
+* 可将图表导出为 PDF 或 SVG，便于编写文档和分享。
+* 提供基于 Docker 的部署方式，可在开发环境中快速完成设置。
+
 ## 商业版 \{#commercial\}
 
 ### DataGrip \{#datagrip\}

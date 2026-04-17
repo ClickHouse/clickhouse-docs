@@ -118,3 +118,13 @@ import add_backup from '@site/static/images/cloud/reference/billing/05-add-backu
 ## 支持 \{#support\}
 
 如果您遇到任何问题，请随时[联系支持团队](https://clickhouse.com/support/program)。
+
+## 常见问题 \{#faqs\}
+
+### 如果我在计费周期中途切换计费方式，我的使用费用会如何处理？ \{#what-happens-to-my-usage-charges-if-i-switch-billing-methods-mid-billing-cycle\}
+
+这取决于切换方向：
+
+从 Marketplace 计费切换到信用卡计费：从计费周期开始到切换时点的用量会发送到 Marketplace。自切换时点起至本计费周期结束的其余用量，将在计费周期结束时计入信用卡。
+
+从信用卡计费切换到 Marketplace 计费：整个计费周期内所有尚未开具发票的用量都会发送到 Marketplace。

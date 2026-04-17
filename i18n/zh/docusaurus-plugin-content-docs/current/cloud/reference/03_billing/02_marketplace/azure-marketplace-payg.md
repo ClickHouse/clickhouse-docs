@@ -22,19 +22,18 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-在 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 上通过按需付费（PAYG，按使用量付费）的公共方案开始使用 ClickHouse Cloud。
-
+在 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 上通过按需付费 (PAYG，按使用量付费) 的公共方案开始使用 ClickHouse Cloud。
 
 ## 先决条件 \{#prerequisites\}
 
-- 一个已由计费管理员授予购买权限的 Azure 项目。
-- 若要在 Azure Marketplace 中订阅 ClickHouse Cloud，必须使用具有购买权限的账户登录，并选择相应的项目。
+* 一个已由计费管理员授予购买权限的 Azure 项目。
+* 若要在 Azure Marketplace 中订阅 ClickHouse Cloud，必须使用具有购买权限的账户登录，并选择相应的项目。
 
 1. 前往 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) 并搜索 ClickHouse Cloud。请确保已登录，这样才能在 Marketplace 上购买产品。
 
 <br />
 
-<Image img={azure_marketplace_payg_1} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_1} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -42,7 +41,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_2} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_2} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -50,7 +49,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_3} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_3} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -58,7 +57,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_4} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_4} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -66,7 +65,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_5} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_5} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -74,17 +73,17 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_6} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_6} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
-7. 点击 **"Review + subscribe"**。
+7. 点击 **&quot;Review + subscribe&quot;**。
 
 8. 在下一个界面中，核实所有信息无误后，点击 **Subscribe**。
 
 <br />
 
-<Image img={azure_marketplace_payg_7} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_7} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -92,7 +91,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -100,7 +99,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_9} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_9} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -112,7 +111,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_10} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_10} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -122,11 +121,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud 注册信息表单 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -136,13 +131,13 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_11} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_11} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 

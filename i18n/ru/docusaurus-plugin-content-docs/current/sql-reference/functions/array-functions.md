@@ -1527,7 +1527,7 @@ SELECT arrayFold(
 
 ## arrayIntersect \{#arrayIntersect\}
 
-Впервые появилась в версии: v1.1.0
+Добавлена в версии: v1.1.0
 
 Принимает несколько массивов и возвращает массив с элементами, которые присутствуют во всех исходных массивах. Результат содержит только уникальные значения.
 
@@ -1556,11 +1556,10 @@ arrayIntersect([1, 2], [1, 3], [1, 4]) AS non_empty_intersection
 ```
 
 ```response title=Response
-┌─non_empty_intersection─┬─empty_intersection─┐
-│ []                     │ [1]                │
-└────────────────────────┴────────────────────┘
+┌─empty_intersection─┬─non_empty_intersection─┐
+│ []                 │ [1]                    │
+└────────────────────┴────────────────────────┘
 ```
-
 
 ## arrayJaccardIndex \{#arrayJaccardIndex\}
 
@@ -2736,7 +2735,7 @@ SELECT arrayRandomSample([[1, 2], [3, 4], [5, 6]], 2) as res;
 
 ## arrayReduce \{#arrayReduce\}
 
-Введена в версии: v1.1.0
+Добавлена в версии: v1.1.0
 
 Применяет агрегатную функцию к элементам массива и возвращает её результат.
 Имя агрегатной функции передаётся в виде строки в одинарных кавычках: `'max'`, `'sum'`.
@@ -2745,13 +2744,13 @@ SELECT arrayRandomSample([[1, 2], [3, 4], [5, 6]], 2) as res;
 **Синтаксис**
 
 ```sql
-arrayReduce(agg_f, arr1 [, arr2, ... , arrN)])
+arrayReduce(agg_f, arr1[, arr2, ... , arrN])
 ```
 
 **Аргументы**
 
 * `agg_f` — имя агрегатной функции, которое должно быть константой. [`String`](/sql-reference/data-types/string)
-* `arr1 [, arr2, ... , arrN)]` — N массивов, соответствующих аргументам `agg_f`. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1[, arr2, ... , arrN]` — N массивов, соответствующих аргументам `agg_f`. [`Array(T)`](/sql-reference/data-types/array)
 
 **Возвращаемое значение**
 
@@ -2797,10 +2796,9 @@ SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 └─────────────────────────────────────────────────────────────┘
 ```
 
-
 ## arrayReduceInRanges \{#arrayReduceInRanges\}
 
-Появилась в версии v20.4.0
+Добавлена в версии v20.4.0
 
 Применяет агрегатную функцию к элементам массива в указанных диапазонах и возвращает массив, содержащий результат для каждого диапазона.
 Функция возвращает тот же результат, что и несколько вызовов `arrayReduce(agg_func, arraySlice(arr1, index, length), ...)`.
@@ -2808,14 +2806,14 @@ SELECT arrayReduce('uniqUpTo(3)', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 **Синтаксис**
 
 ```sql
-arrayReduceInRanges(agg_f, ranges, arr1 [, arr2, ... ,arrN)])
+arrayReduceInRanges(agg_f, ranges, arr1[, arr2, ... ,arrN])
 ```
 
 **Аргументы**
 
 * `agg_f` — имя агрегатной функции, которая будет использоваться. [`String`](/sql-reference/data-types/string)
 * `ranges` — диапазон, по которому выполняется агрегация. Массив кортежей `(i, r)`, содержащих индекс `i`, с которого начинается агрегация, и диапазон `r`, по которому она выполняется. [`Array(T)`](/sql-reference/data-types/array) или [`Tuple(T)`](/sql-reference/data-types/tuple)
-* `arr1 [, arr2, ... ,arrN)]` — N массивов в качестве аргументов агрегатной функции. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1[, arr2, ... ,arrN]` — N массивов в качестве аргументов агрегатной функции. [`Array(T)`](/sql-reference/data-types/array)
 
 **Возвращаемое значение**
 
@@ -2838,7 +2836,6 @@ SELECT arrayReduceInRanges(
 │ [1234500,234000,34560,4567] │
 └─────────────────────────────┘
 ```
-
 
 ## arrayRemove \{#arrayRemove\}
 

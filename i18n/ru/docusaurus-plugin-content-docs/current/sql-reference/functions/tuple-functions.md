@@ -837,6 +837,40 @@ SELECT tuplePlus((1, 2), (2, 3))
 ```
 
 
+## tuplePositiveModuloByNumber \{#tuplePositiveModuloByNumber\}
+
+Добавлено в: v26.4.0
+
+Возвращает кортеж положительных остатков от деления элементов кортежа на заданный делитель.
+В отличие от tupleModuloByNumber, результат всегда неотрицательный.
+
+**Синтаксис**
+
+```sql
+tuplePositiveModuloByNumber(tuple_num, div)
+```
+
+**Аргументы**
+
+* `tuple_num` — Кортеж значений делимого. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) или [`Tuple(Float*)`](/sql-reference/data-types/tuple) или [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `div` — Значение делителя. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+
+**Возвращаемое значение**
+
+Возвращает кортеж неотрицательных остатков. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) или [`Tuple(Float*)`](/sql-reference/data-types/tuple) или [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+
+**Примеры**
+
+**Основное использование**
+
+```sql title=Query
+SELECT tuplePositiveModuloByNumber((15, 10, 5), 2)
+```
+
+```response title=Response
+(1, 0, 1)
+```
+
 ## tupleToNameValuePairs \{#tupleToNameValuePairs\}
 
 Впервые появился в: v21.9.0

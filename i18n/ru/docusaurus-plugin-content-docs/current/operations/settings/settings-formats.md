@@ -1598,6 +1598,28 @@ curl -sS --globoff -H 'Accept: application/json' --no-buffer \
 
 Использовать тип Arrow String вместо Binary для столбцов типа String
 
+## output_format_arrow_unsupported_types_as_binary \{#output_format_arrow_unsupported_types_as_binary\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "1" },
+      {
+        label:
+          "Новая настройка для преобразования неподдерживаемых типов CH в двоичный формат Arrow вместо исключения UNKNOWN_TYPE."
+      }
+    ]
+  }
+]}
+/>
+
+Выводит типы, для которых не предусмотрено преобразование, как необработанные двоичные данные. Если false, для таких типов будет возникать исключение UNKNOWN&#95;TYPE.
+
 ## output_format_arrow_use_64_bit_indexes_for_dictionary \{#output_format_arrow_use_64_bit_indexes_for_dictionary\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2201,6 +2223,28 @@ SELECT area/period FROM account_orders FORMAT JSON;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse допускает произвольные двоичные данные в типе данных String, который обычно используется для строк в кодировке UTF-8. Parquet/ORC/Arrow Strings поддерживают только UTF-8. Поэтому вы можете выбрать, какой тип данных Arrow использовать для типа данных ClickHouse String — String или Binary. Хотя Binary был бы более корректным и совместимым вариантом, использование String по умолчанию в большинстве случаев будет соответствовать ожиданиям пользователей."}]}]}/>
 
 Использовать тип данных Parquet String вместо Binary для строковых столбцов.
+
+## output_format_parquet_unsupported_types_as_binary \{#output_format_parquet_unsupported_types_as_binary\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      {
+        label:
+          "Новая настройка для преобразования неподдерживаемых типов CH в бинарный формат Parquet (Arrow) вместо исключения UNKNOWN_TYPE."
+      }
+    ]
+  }
+]}
+/>
+
+Выводить типы, для которых не предусмотрено преобразование, как необработанные бинарные данные. Если false, для таких типов будет возникать исключение UNKNOWN&#95;TYPE.
 
 ## output_format_parquet_use_custom_encoder \{#output_format_parquet_use_custom_encoder\}
 

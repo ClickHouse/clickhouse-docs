@@ -1,6 +1,6 @@
 ---
-description: 'Iceberg テーブルから読み取られたメタデータファイルに関する情報を保持するシステムテーブル。各エントリは、ルートメタデータファイル、Avro ファイルから抽出されたメタデータ、または Avro ファイル内のエントリのいずれかを表します。'
-keywords: ['システムテーブル', 'iceberg_metadata_log']
+description: 'Iceberg テーブルから読み取られたメタデータファイルに関する情報を含む system テーブル。各エントリは、ルートメタデータファイル、Avro ファイルから抽出されたメタデータ、または Avro ファイル内のエントリのいずれかを表します。'
+keywords: ['system table', 'iceberg_metadata_log']
 slug: /operations/system-tables/iceberg_metadata_log
 title: 'system.iceberg_metadata_log'
 doc_type: 'reference'
@@ -8,48 +8,23 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.iceberg_metadata_log \{#systemiceberg_metadata_log\}
+<SystemTableCloud />
 
-`system.iceberg_metadata_log` テーブルは、ClickHouse が読み取り対象とする Iceberg テーブルに対するメタデータのアクセスおよび解析イベントを記録します。処理された各メタデータファイルやエントリに関する詳細情報を提供し、デバッグや監査、Iceberg テーブル構造の変遷を把握する際に有用です。
+## 説明 \{#description\}
 
-## 目的 \{#purpose\}
+`system.iceberg_metadata_log` テーブルは、ClickHouse が読み取る Iceberg テーブルのメタデータアクセスおよび解析イベントを記録します。処理された各メタデータファイルまたはエントリに関する詳細情報を提供するため、デバッグ、監査、Iceberg テーブル構造の変化の把握に役立ちます。
 
-このテーブルは、Iceberg テーブルから読み取ったすべてのメタデータファイルおよびエントリ（ルートメタデータファイル、マニフェストリスト、マニフェストエントリを含む）を記録します。これにより、ClickHouse が Iceberg テーブルのメタデータをどのように解釈しているかを追跡し、スキーマの進化、ファイルの解決、クエリプランニングに関連する問題の診断に役立ちます。
+このテーブルには、ルートメタデータファイル、マニフェストリスト、マニフェストエントリを含む、Iceberg テーブルから読み取られたすべてのメタデータファイルとエントリが記録されます。これにより、ClickHouse が Iceberg テーブルのメタデータをどのように解釈するかを追跡し、schema の変更、ファイルの解決、またはクエリ計画に関連する問題を診断できます。
 
 :::note
-このテーブルは主にデバッグ目的で使用されます。
+このテーブルは主にデバッグ目的で使用することを想定しています。
 :::
 
-## 列 \{#columns\}
+### ログの詳細度を制御する \{#controlling-log-verbosity\}
 
-| Name           | Type      | Description                                                                                   |
-|----------------|-----------|----------------------------------------------------------------------------------------------|
-| `event_date`   | [Date](../../sql-reference/data-types/date.md)      | ログエントリの日付。                                                                       |
-| `event_time`   | [DateTime](../../sql-reference/data-types/datetime.md)  | イベントのタイムスタンプ。                                                                 |
-| `query_id`     | [String](../../sql-reference/data-types/string.md)    | メタデータの読み取りをトリガーしたクエリ ID。                                               |
-| `content_type` | [Enum8](../../sql-reference/data-types/enum.md)     | メタデータコンテンツの種類（下記参照）。                                                    |
-| `table_path`   | [String](../../sql-reference/data-types/string.md)    | Iceberg テーブルへのパス。                                                                  |
-| `file_path`    | [String](../../sql-reference/data-types/string.md)    | ルートメタデータ JSON ファイル、Avro マニフェストリスト、またはマニフェストファイルへのパス。 |
-| `content`      | [String](../../sql-reference/data-types/string.md)    | JSON 形式のコンテンツ（.json からの生メタデータ、Avro メタデータ、または Avro エントリ）。   |
-| `row_in_file`  | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | ファイル内の行番号（該当する場合）。`ManifestListEntry` および `ManifestFileEntry` のコンテンツタイプに対してのみ設定されます。 |
-| `pruning_status`  | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md)) | エントリのプルーニングステータス。'NotPruned'、'PartitionPruned'、'MinMaxIndexPruned' のいずれかの値を取ります。パーティションプルーニングは minmax プルーニングより先に行われるため、'PartitionPruned' は、そのエントリがパーティションフィルターによってプルーニングされ、minmax プルーニングは試行すらされなかったことを意味します。`ManifestFileEntry` のコンテンツタイプに対してのみ設定されます。 |
+[`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 設定を使用すると、どのメタデータイベントをログに記録するかを制御できます。
 
-## `content_type` の値 \{#content-type-values\}
-
-- `None`: コンテンツなし。
-- `Metadata`: ルートメタデータファイル。
-- `ManifestListMetadata`: マニフェストリストのメタデータ。
-- `ManifestListEntry`: マニフェストリスト内のエントリ。
-- `ManifestFileMetadata`: マニフェストファイルのメタデータ。
-- `ManifestFileEntry`: マニフェストファイル内のエントリ。
-
-<SystemTableCloud/>
-
-## ログの詳細度の制御 \{#controlling-log-verbosity\}
-
-[`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 設定を使用して、どのメタデータイベントをログに出力するかを制御できます。
-
-現在のクエリで使用されるすべてのメタデータをログに出力するには：
+現在のクエリで使用されるすべてのメタデータをログに記録するには、次のようにします。
 
 ```sql
 SELECT * FROM my_iceberg_table SETTINGS iceberg_metadata_log_level = 'manifest_file_entry';
@@ -61,7 +36,7 @@ FROM system.iceberg_metadata_log
 WHERE query_id = '{previous_query_id}';
 ```
 
-現在のクエリで使用されるルートメタデータ JSON ファイルだけをログに記録するには：
+現在のクエリで使用されているルートメタデータJSONファイルのみをログに出力するには:
 
 ```sql
 SELECT * FROM my_iceberg_table SETTINGS iceberg_metadata_log_level = 'metadata';
@@ -73,19 +48,45 @@ FROM system.iceberg_metadata_log
 WHERE query_id = '{previous_query_id}';
 ```
 
-詳細については、[`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 設定の説明を参照してください。
+詳しくは、[`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 設定の説明を参照してください。
 
+### 知っておくとよいこと \{#good-to-know\}
 
-### 補足事項 \{#good-to-know\}
+* `iceberg_metadata_log_level` は、Iceberg テーブルを詳細に調査する必要がある場合にのみ、クエリレベルで使用してください。そうしないと、ログテーブルが過剰なメタデータで埋まり、パフォーマンスが低下するおそれがあります。
+* このテーブルには重複したエントリが含まれます。これは主にデバッグを目的としたもので、エンティティごとの一意性は保証されないためです。内容と剪枝ステータスは、プログラム内の異なるタイミングで収集されるため、別々の行に格納されます。内容はメタデータの読み取り時に収集され、剪枝ステータスはメタデータが剪枝対象かどうかを確認する際に収集されます。**重複排除のために、このテーブル自体に決して依存しないでください。**
+* `ManifestListMetadata` よりも Verbose な `content_type` を使用すると、マニフェストリスト では Iceberg メタデータキャッシュが無効になります。
+* 同様に、`ManifestFileMetadata` よりも Verbose な `content_type` を使用すると、マニフェストファイル では Iceberg メタデータキャッシュが無効になります。
+* SELECT クエリがキャンセルされた場合や失敗した場合でも、失敗前に処理されたメタデータのエントリはログテーブルに残っている可能性がありますが、処理されなかったメタデータエンティティに関する情報は含まれません。
 
-* Iceberg テーブルを詳細に調査する必要がある場合にのみ、クエリ単位で `iceberg_metadata_log_level` を使用してください。そうしないと、ログテーブルに不要なメタデータが大量に蓄積され、パフォーマンス低下を招く可能性があります。
-* このテーブルは主にデバッグ目的で使用され、エンティティごとの一意性は保証されないため、重複したエントリが含まれています。プログラム内で収集されるタイミングが異なるため、コンテンツとプルーニングステータスは別々の行に格納されます。メタデータが読み取られたときにコンテンツが収集され、メタデータがプルーニング対象かどうかチェックされたときにプルーニングステータスが収集されます。**重複排除の目的で、このテーブル自体に依存しないでください。**
-* `ManifestListMetadata` より冗長な `content_type` を使用すると、マニフェストリストに対する Iceberg メタデータキャッシュは無効化されます。
-* 同様に、`ManifestFileMetadata` より冗長な `content_type` を使用すると、マニフェストファイルに対する Iceberg メタデータキャッシュは無効化されます。
-* SELECT クエリがキャンセルまたは失敗した場合でも、失敗前に処理されたメタデータについてはログテーブルにエントリが残る可能性がありますが、処理されなかったメタデータエンティティに関する情報は含まれません。
+## カラム \{#columns\}
+
+{/*AUTOGENERATED_START*/ }
+
+| Name             | Type                                                                                                         | Description                                                                                                                                                                                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `event_date`     | [Date](../../sql-reference/data-types/date.md)                                                               | ログエントリの日付。                                                                                                                                                                                                                                            |
+| `event_time`     | [DateTime](../../sql-reference/data-types/datetime.md)                                                       | イベントのタイムスタンプ。                                                                                                                                                                                                                                         |
+| `query_id`       | [String](../../sql-reference/data-types/string.md)                                                           | メタデータの読み取りをトリガーしたクエリ ID。                                                                                                                                                                                                                              |
+| `content_type`   | [Enum8](../../sql-reference/data-types/enum.md)                                                              | メタデータ内容の種類 (以下を参照) 。                                                                                                                                                                                                                                  |
+| `table_path`     | [String](../../sql-reference/data-types/string.md)                                                           | Iceberg テーブルへのパス。                                                                                                                                                                                                                                     |
+| `file_path`      | [String](../../sql-reference/data-types/string.md)                                                           | ルートメタデータ JSON ファイル、Avro マニフェストリスト、またはマニフェストファイルへのパス。                                                                                                                                                                                                  |
+| `content`        | [String](../../sql-reference/data-types/string.md)                                                           | JSON フォーマットの内容 (.json の生メタデータ、Avro メタデータ、または Avro エントリ) 。                                                                                                                                                                                             |
+| `row_in_file`    | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | 該当する場合のファイル内の行番号。`ManifestListEntry` および `ManifestFileEntry` の `content_type` で存在します。                                                                                                                                                                 |
+| `pruning_status` | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md))      | エントリの剪枝ステータス。&#39;NotPruned&#39;、&#39;PartitionPruned&#39;、&#39;MinMaxIndexPruned&#39;。パーティション剪枝は minmax 剪枝より前に行われるため、&#39;PartitionPruned&#39; は、そのエントリがパーティションフィルターによって剪枝され、minmax 剪枝は試行されていないことを意味します。`ManifestFileEntry` の `content_type` で存在します。 |
+
+{/*AUTOGENERATED_END*/ }
+
+### `content_type` の値 \{#content-type-values\}
+
+* `None`: コンテンツなし。
+* `Metadata`: ルートのメタデータファイル。
+* `ManifestListMetadata`: マニフェストリストのメタデータ。
+* `ManifestListEntry`: マニフェストリスト内のエントリ。
+* `ManifestFileMetadata`: マニフェストファイルのメタデータ。
+* `ManifestFileEntry`: マニフェストファイル内のエントリ。
 
 ## 関連項目 \{#see-also\}
 
-- [Iceberg テーブルエンジン](../../engines/table-engines/integrations/iceberg.md)
-- [Iceberg テーブル関数](../../sql-reference/table-functions/iceberg.md)
-- [system.iceberg_history](./iceberg_history.md)
+* [Iceberg テーブルエンジン](../../engines/table-engines/integrations/iceberg.md)
+* [Iceberg テーブル関数](../../sql-reference/table-functions/iceberg.md)
+* [system.iceberg&#95;history](./iceberg_history.md)

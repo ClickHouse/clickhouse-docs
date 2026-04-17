@@ -837,6 +837,40 @@ SELECT tuplePlus((1, 2), (2, 3))
 ```
 
 
+## tuplePositiveModuloByNumber \{#tuplePositiveModuloByNumber\}
+
+引入版本：v26.4.0
+
+返回一个Tuple，其中包含该Tuple各元素分别与给定除数相除后得到的正模 (余数) 。
+与 tupleModuloByNumber 不同，结果始终为非负。
+
+**语法**
+
+```sql
+tuplePositiveModuloByNumber(tuple_num, div)
+```
+
+**参数**
+
+* `tuple_num` — 由分子值组成的Tuple。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `div` — 除数。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+
+**返回值**
+
+返回由非负余数组成的Tuple。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 或 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT tuplePositiveModuloByNumber((15, 10, 5), 2)
+```
+
+```response title=Response
+(1, 0, 1)
+```
+
 ## tupleToNameValuePairs \{#tupleToNameValuePairs\}
 
 引入于：v21.9.0

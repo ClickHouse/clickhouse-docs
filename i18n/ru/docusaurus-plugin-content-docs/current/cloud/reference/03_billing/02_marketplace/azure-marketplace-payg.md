@@ -24,17 +24,16 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 Начните работу с ClickHouse Cloud на [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) с использованием публичного предложения по модели PAYG (pay-as-you-go, оплата по мере использования).
 
-
 ## Предварительные требования \{#prerequisites\}
 
-- Проект Azure, для которого администратор биллинга включил права на совершение покупок.
-- Чтобы оформить подписку на ClickHouse Cloud в Azure Marketplace, вы должны войти под учетной записью с правами на совершение покупок и выбрать соответствующий проект.
+* Проект Azure, для которого администратор биллинга включил права на совершение покупок.
+* Чтобы оформить подписку на ClickHouse Cloud в Azure Marketplace, вы должны войти под учетной записью с правами на совершение покупок и выбрать соответствующий проект.
 
 1. Перейдите в [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps) и найдите ClickHouse Cloud. Убедитесь, что вы вошли в систему, чтобы иметь возможность приобрести предложение на маркетплейсе.
 
 <br />
 
-<Image img={azure_marketplace_payg_1} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_1} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -42,7 +41,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_2} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_2} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -50,7 +49,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_3} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_3} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -58,7 +57,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_4} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_4} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -66,7 +65,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_5} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_5} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -74,17 +73,17 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_6} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_6} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
-7. Нажмите **"Review + subscribe"**.
+7. Нажмите **&quot;Review + subscribe&quot;**.
 
 8. На следующем экране убедитесь, что все указано верно, и нажмите **Subscribe**.
 
 <br />
 
-<Image img={azure_marketplace_payg_7} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_7} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -92,7 +91,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_8} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_8} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -100,7 +99,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_9} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_9} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -112,7 +111,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_10} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_10} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -122,11 +121,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="Форма регистрации ClickHouse Cloud 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -136,13 +131,13 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_11} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_11} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="Форма регистрации ClickHouse Cloud" border/>
+<Image img={azure_marketplace_payg_12} size="md" alt="Форма регистрации ClickHouse Cloud" border />
 
 <br />
 

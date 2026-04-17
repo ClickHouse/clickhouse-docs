@@ -1,6 +1,7 @@
 ---
-description: '包含从 Iceberg 表中读取的元数据文件信息的系统表。每条记录表示一个根元数据文件、从 Avro 文件中提取的元数据，或某个 Avro 文件中的一条元数据记录。'
-keywords: ['system table', 'iceberg_metadata_log']
+description: '包含从 Iceberg 表读取的元数据文件信息的系统表。每条记录
+  表示根元数据文件、从 Avro 文件提取的元数据，或某个 Avro 文件中的一条记录。'
+keywords: ['系统表', 'iceberg_metadata_log']
 slug: /operations/system-tables/iceberg_metadata_log
 title: 'system.iceberg_metadata_log'
 doc_type: 'reference'
@@ -8,48 +9,23 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.iceberg_metadata_log \{#systemiceberg_metadata_log\}
+<SystemTableCloud />
 
-`system.iceberg_metadata_log` 表记录了 ClickHouse 读取 Iceberg 表时的元数据访问和解析事件。它提供了每个已处理元数据文件或条目的详细信息，有助于调试、审计，以及理解 Iceberg 表结构的演变。
+## 说明 \{#description\}
 
-## 目的 \{#purpose\}
+`system.iceberg_metadata_log` 表会记录 ClickHouse 读取 Iceberg 表时的元数据访问和解析事件。它会提供每个已处理的元数据文件或条目的详细信息，这对于调试、审计以及了解 Iceberg 表结构的演变非常有用。
 
-此表会记录从 Iceberg 表中读取的每个元数据文件及条目，包括根元数据文件、manifest 列表以及 manifest 条目。它帮助用户跟踪 ClickHouse 如何解析 Iceberg 表元数据，并诊断与模式演进、文件解析或查询计划相关的问题。
+该表会记录从 Iceberg 表读取的每个元数据文件和条目，包括根元数据文件、manifest 列表和 manifest 条目。它有助于用户跟踪 ClickHouse 如何解读 Iceberg 表元数据，并诊断与 schema 变更、文件解析或查询计划相关的问题。
 
 :::note
-此表主要用于调试。
+该表主要用于调试。
 :::
 
-## 列 \{#columns\}
+### 控制日志详细级别 \{#controlling-log-verbosity\}
 
-| 名称           | 类型      | 描述                                                                                   |
-|----------------|-----------|----------------------------------------------------------------------------------------------|
-| `event_date`   | [Date](../../sql-reference/data-types/date.md)      | 日志记录的日期。                                                                       |
-| `event_time`   | [DateTime](../../sql-reference/data-types/datetime.md)  | 事件的时间戳。                                                                      |
-| `query_id`     | [String](../../sql-reference/data-types/string.md)    | 触发元数据读取的查询 ID。                                                   |
-| `content_type` | [Enum8](../../sql-reference/data-types/enum.md)     | 元数据内容的类型（见下文）。                                                        |
-| `table_path`   | [String](../../sql-reference/data-types/string.md)    | Iceberg 表的路径。                                                                   |
-| `file_path`    | [String](../../sql-reference/data-types/string.md)    | 根元数据 JSON 文件、Avro 清单列表或清单文件的路径。                   |
-| `content`      | [String](../../sql-reference/data-types/string.md)    | JSON 格式的内容（来自 .json 的原始元数据、Avro 元数据或 Avro 条目）。              |
-| `row_in_file`  | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | 文件中的行号（如适用）。对于 `ManifestListEntry` 和 `ManifestFileEntry` 类型的内容，该列存在。 |
-| `pruning_status`  | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md)) | 条目的剪枝状态：`NotPruned`、`PartitionPruned`、`MinMaxIndexPruned`。请注意，分区剪枝在 minmax 剪枝之前执行，因此 `PartitionPruned` 表示该条目已被分区过滤剪枝，且不会再尝试进行 minmax 剪枝。对于 `ManifestFileEntry` 类型的内容，该列存在。 |
+您可以使用 [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 设置来控制记录哪些元数据事件。
 
-## `content_type` 值 \{#content-type-values\}
-
-- `None`: 无内容。
-- `Metadata`: 根元数据文件。
-- `ManifestListMetadata`: Manifest 列表的元数据。
-- `ManifestListEntry`: Manifest 列表条目。
-- `ManifestFileMetadata`: Manifest 文件的元数据。
-- `ManifestFileEntry`: Manifest 文件条目。
-
-<SystemTableCloud/>
-
-## 控制日志详细程度 \{#controlling-log-verbosity\}
-
-可以通过 [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 设置来控制要记录哪些元数据事件。
-
-要记录当前查询中使用的所有元数据：
+如需记录当前查询使用的所有元数据：
 
 ```sql
 SELECT * FROM my_iceberg_table SETTINGS iceberg_metadata_log_level = 'manifest_file_entry';
@@ -61,7 +37,7 @@ FROM system.iceberg_metadata_log
 WHERE query_id = '{previous_query_id}';
 ```
 
-若要仅记录当前查询使用的根元数据 JSON 文件：
+仅记录当前查询使用的根元数据 JSON 文件：
 
 ```sql
 SELECT * FROM my_iceberg_table SETTINGS iceberg_metadata_log_level = 'metadata';
@@ -75,17 +51,43 @@ WHERE query_id = '{previous_query_id}';
 
 有关更多信息，请参阅 [`iceberg_metadata_log_level`](../../operations/settings/settings.md#iceberg_metadata_log_level) 设置的说明。
 
+### 须知 \{#good-to-know\}
 
-### 注意事项 \{#good-to-know\}
+* 仅当您需要详细排查 Iceberg 表时，才在查询级别使用 `iceberg_metadata_log_level`。否则，日志表可能会写入过多元数据，并导致性能下降。
+* 该表包含重复条目，因为它主要用于调试，且不保证每个实体的唯一性。内容和剪枝状态分别存储在不同的行中，因为它们是在程序运行的不同时间点采集的。读取元数据时会采集内容，检查元数据以进行剪枝时会采集剪枝状态。**切勿依赖该表本身进行去重。**
+* 如果使用比 `ManifestListMetadata` 更详细的 `content_type`，则会禁用 manifest 列表的 Iceberg 元数据缓存。
+* 同样，如果使用比 `ManifestFileMetadata` 更详细的 `content_type`，则会禁用 manifest 文件的 Iceberg 元数据缓存。
+* 如果 SELECT 查询被取消或失败，日志表中仍可能包含在取消或失败前已处理的元数据条目，但不会包含尚未处理的元数据实体信息。
 
-* 仅在需要对 Iceberg 表进行深入排查时才在查询级别使用 `iceberg_metadata_log_level`。否则，可能会在日志表中填充过多元数据，从而导致性能下降。
-* 该表包含重复条目，因为它主要用于调试，并不保证每个实体的唯一性。不同的行分别存储内容和裁剪状态，这是因为它们在程序中的收集时机不同：内容是在读取元数据时收集的，而裁剪状态是在检查元数据是否需要裁剪时收集的。**切勿依赖此表本身进行去重。**
-* 如果使用的 `content_type` 比 `ManifestListMetadata` 更为详尽，则会对 manifest 列表禁用 Iceberg 元数据缓存。
-* 同样地，如果使用的 `content_type` 比 `ManifestFileMetadata` 更为详尽，则会对 manifest 文件禁用 Iceberg 元数据缓存。
-* 如果 SELECT 查询被取消或失败，日志表中可能仍然包含在失败之前已处理元数据的条目，但不会包含尚未处理的元数据实体的信息。
+## 列 \{#columns\}
 
-## 另请参阅 \{#see-also\}
+{/*AUTOGENERATED_START*/ }
 
-- [Iceberg 表引擎](../../engines/table-engines/integrations/iceberg.md)
-- [Iceberg 表函数](../../sql-reference/table-functions/iceberg.md)
-- [system.iceberg_history](./iceberg_history.md)
+| Name             | Type                                                                                                         | Description                                                                                                                                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `event_date`     | [Date](../../sql-reference/data-types/date.md)                                                               | 日志条目的日期。                                                                                                                                                                                                 |
+| `event_time`     | [DateTime](../../sql-reference/data-types/datetime.md)                                                       | 事件的时间戳。                                                                                                                                                                                                  |
+| `query_id`       | [String](../../sql-reference/data-types/string.md)                                                           | 触发元数据读取的查询 ID。                                                                                                                                                                                           |
+| `content_type`   | [Enum8](../../sql-reference/data-types/enum.md)                                                              | 元数据内容类型 (见下文) 。                                                                                                                                                                                          |
+| `table_path`     | [String](../../sql-reference/data-types/string.md)                                                           | Iceberg 表的路径。                                                                                                                                                                                            |
+| `file_path`      | [String](../../sql-reference/data-types/string.md)                                                           | 根元数据 JSON 文件、Avro manifest list 或 manifest 文件的路径。                                                                                                                                                        |
+| `content`        | [String](../../sql-reference/data-types/string.md)                                                           | JSON 格式的内容 (原始 .json 元数据、Avro 元数据或 Avro 条目) 。                                                                                                                                                            |
+| `row_in_file`    | [Nullable](../../sql-reference/data-types/nullable.md)([UInt64](../../sql-reference/data-types/int-uint.md)) | 文件中的行号 (如适用) 。仅在 `ManifestListEntry` 和 `ManifestFileEntry` 内容类型中出现。                                                                                                                                      |
+| `pruning_status` | [Nullable](../../sql-reference/data-types/nullable.md)([Enum8](../../sql-reference/data-types/enum.md))      | 条目的剪枝状态。&#39;NotPruned&#39;、&#39;PartitionPruned&#39;、&#39;MinMaxIndexPruned&#39;。请注意，分区剪枝会先于 minmax 剪枝执行，因此 &#39;PartitionPruned&#39; 表示该条目已被分区过滤器剪枝，且不会再尝试进行 minmax 剪枝。仅在 `ManifestFileEntry` 内容类型中出现。 |
+
+{/*AUTOGENERATED_END*/ }
+
+### `content_type` 取值 \{#content-type-values\}
+
+* `None`：无内容。
+* `Metadata`：根元数据文件。
+* `ManifestListMetadata`：manifest 列表的元数据。
+* `ManifestListEntry`：manifest 列表中的条目。
+* `ManifestFileMetadata`：manifest 文件的元数据。
+* `ManifestFileEntry`：manifest 文件中的条目。
+
+## 另请参见 \{#see-also\}
+
+* [Iceberg 表引擎](../../engines/table-engines/integrations/iceberg.md)
+* [Iceberg 表函数](../../sql-reference/table-functions/iceberg.md)
+* [system.iceberg&#95;history](./iceberg_history.md)
