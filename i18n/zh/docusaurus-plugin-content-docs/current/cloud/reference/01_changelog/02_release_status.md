@@ -1,16 +1,15 @@
 ---
-title: '发布状态页面'
-sidebar_label: '发布状态'
-keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', '区域']
-description: '列出各发布通道发布状态的页面'
+title: "发布状态页面"
+sidebar_label: "发布状态"
+keywords: ["cloud", "发布状态", "发布", "版本", "更新"]
+description: "列出各发布通道发布状态的页面"
 slug: /cloud/release-status
-doc_type: 'reference'
+doc_type: "reference"
 ---
 
-import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
+import ReleaseSchedule from "@site/src/components/ReleaseSchedule/ReleaseSchedule"
 
 ClickHouse Cloud 提供不同的发布通道，以满足用户在稳定性、新特性获取以及升级可预测性方面的不同需求。每个通道都有各自明确的升级节奏，旨在覆盖不同的使用场景——既适用于希望立即获得新版本的用户，也适用于希望推迟升级以确保获得该版本中最稳定版本的用户。
-
 
 ## 发布通道详情 \{#release-channel-details\}
 

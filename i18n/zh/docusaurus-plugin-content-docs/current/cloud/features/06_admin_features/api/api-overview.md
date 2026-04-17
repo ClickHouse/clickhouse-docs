@@ -47,6 +47,22 @@ ClickHouse Cloud API 基于开源的 [OpenAPI 规范](https://www.openapis.org/)
 你现在还可以将 `num_replicas` 字段指定为 service 资源的一个属性。
 :::
 
+## Terraform 提供商 的发布 \{#terraform-provider-releases\}
+
+ClickHouse 维护两个官方 Terraform 提供商：用于云基础设施的 ClickHouse Cloud 提供商，以及用于数据库级对象的 DBops 提供商。两者采用相同的发布模型。
+
+### 稳定版与 Alpha \{#stable-vs-alpha\}
+
+稳定版本 (例如 3.11.1、1.9.0) 仅包含 GA 功能所需的资源。Alpha 版本 (例如 3.12.0-alpha2、1.10.0-alpha1) 除包含稳定版中的全部内容外，还包含仍处于 Beta 或私有预览阶段的功能所需资源，并且必须显式固定到该版本才能使用。
+
+### 版本管理 \{#versioning\}
+
+两个提供商都使用语义化版本 (MAJOR.MINOR.PATCH) 。主版本号在发生破坏性变更时递增，次版本号用于引入新功能或新资源，补丁版本号则用于错误修复。Alpha 版本会在下一个次版本号后附加预发布后缀 (例如 3.12.0-alpha1) ；在晋升为稳定版之前，如果又加入了新的修复或变更，alpha 编号也会随之递增 (例如 alpha1 → alpha2 → alpha3) 。发布是按需进行的，而不是遵循固定计划。当某项尚未达到 GA 的功能新增了资源，或某项修复需要提前验证时，就会创建新的 alpha 版本。当累计的变更 (包括其间已达到 GA 的功能) 准备好用于生产环境时，通常会在经过一段时间的客户反馈后创建新的稳定版本。在最终整合为单个稳定版本之前，可能会先积累多个 alpha 次版本。
+
+### 从 alpha 升级为稳定版本 \{#promotion\}
+
+当某个 Terraform 功能准备好进入 GA 时，相应的 Terraform 资源会在下一个稳定版本发布时从 alpha 升级为稳定版本。在此之前，该资源仅在 alpha 构建版本中可用。
+
 ## Terraform 和 OpenAPI 新定价：副本设置详解 \{#terraform-and-openapi-new-pricing---replica-settings-explained\}
 
 在 Scale 和 Enterprise 层级中，每个服务在创建时的副本数默认是 3，而在 Basic 层级中默认是 1。

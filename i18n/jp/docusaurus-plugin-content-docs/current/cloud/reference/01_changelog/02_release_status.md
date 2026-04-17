@@ -1,16 +1,15 @@
 ---
-title: 'リリース状況ページ'
-sidebar_label: 'リリース状況'
-keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'リージョン']
-description: '各リリースチャネルごとのリリース状況を示すページ'
+title: "リリース状況ページ"
+sidebar_label: "リリース状況"
+keywords: ["cloud", "リリース状況", "ロールアウト", "バージョン", "アップデート"]
+description: "各リリースチャネルごとのリリース状況を示すページ"
 slug: /cloud/release-status
-doc_type: 'reference'
+doc_type: "reference"
 ---
 
-import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
+import ReleaseSchedule from "@site/src/components/ReleaseSchedule/ReleaseSchedule"
 
 ClickHouse Cloud では、安定性・新機能へのアクセス・アップグレードの予測可能性といった異なるニーズに対応するため、複数のリリースチャネルを提供しています。各チャネルにはそれぞれ明確に異なるアップグレードスケジュールがあり、最新リリースに即時アクセスしたいユーザーと、最も安定したバージョンのみを利用できるようアップグレードを延期したいユーザーといった、異なるユースケースに対応することを目的としています。
-
 
 ## リリースチャネルの詳細 \{#release-channel-details\}
 

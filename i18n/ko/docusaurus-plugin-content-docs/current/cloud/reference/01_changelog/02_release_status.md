@@ -1,16 +1,15 @@
 ---
-title: '릴리스 상태 페이지'
-sidebar_label: '릴리스 상태'
-keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
-description: '각 릴리스 채널의 상태를 보여주는 페이지'
+title: "릴리스 상태 페이지"
+sidebar_label: "릴리스 상태"
+keywords: ["cloud", "release status", "rollout", "version", "update"]
+description: "각 릴리스 채널의 상태를 보여주는 페이지"
 slug: /cloud/release-status
-doc_type: 'reference'
+doc_type: "reference"
 ---
 
-import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
+import ReleaseSchedule from "@site/src/components/ReleaseSchedule/ReleaseSchedule"
 
 ClickHouse Cloud는 안정성, 새로운 기능에 대한 접근성, 업그레이드 시점의 예측 가능성에 관한 다양한 사용자 요구를 충족하기 위해 여러 릴리스 채널을 제공합니다. 각 채널은 서로 다른 업그레이드 일정을 가지며, 새 릴리스를 즉시 사용하려는 사용자와 업그레이드를 미뤄 가장 안정적인 릴리스 버전을 사용하려는 등 서로 다른 사용 사례를 지원하도록 설계되었습니다.
-
 
 ## 릴리스 채널 세부 정보 \{#release-channel-details\}
 
