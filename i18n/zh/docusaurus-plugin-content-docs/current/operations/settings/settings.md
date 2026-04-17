@@ -3595,6 +3595,21 @@ Cloud 默认值：`1`。
 
 当作业导致异常时，输出作业创建方的堆栈跟踪。为避免性能开销，默认禁用。
 
+## enable_join_fixed_hash_table_conversion \{#enable_join_fixed_hash_table_conversion\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [{ label: "26.4" }, { label: "1" }, { label: "用于启用以下功能的新设置：当键为单个整数且取值范围较小时，将连接的哈希表转换为扁平数组。" }]
+  }
+]}
+/>
+
+启用以下功能：当键为单个整数且取值范围较小时，将连接的哈希表转换为扁平数组。
+
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
 <BetaBadge/>
@@ -4645,7 +4660,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新的设置，用于保持旧版行为，以允许 h3 函数接受无效输入"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "0"},{"label": "新的设置，用于保持旧版行为，以允许 h3 函数接受无效输入"}]}]} />
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.2" }, { label: "0" }, { label: "新的设置，用于保持旧版行为，以允许 h3 函数接受无效输入" }] }]} />
 
 如果为 false，h3 函数 (例如 h3CellAreaM2) 在输入无效时会抛出异常。如果为 true，则返回 0 或默认值。
 

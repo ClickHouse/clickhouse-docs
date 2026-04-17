@@ -26,6 +26,8 @@ import Image from '@theme/IdealImage';
 
 Вы можете использовать ClickPipes для приёма данных из исходной базы данных Postgres в ClickHouse Cloud. Исходная база данных Postgres может быть развернута в локальной инфраструктуре (on-premises) или в облаке, включая Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase и другие.
 
+Postgres ClickPipes можно развертывать и настраивать вручную через интерфейс ClickPipes, а также программно с использованием [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
+
 ## Предварительные требования \{#prerequisites\}
 
 Прежде чем начать, необходимо убедиться, что ваша база данных Postgres корректно настроена. В зависимости от используемого экземпляра Postgres вы можете следовать одному из следующих руководств:

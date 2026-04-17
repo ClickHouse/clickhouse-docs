@@ -16,7 +16,7 @@ import billing_2 from '@site/static/images/cloud/reference/billing_payment_thres
 如果您是按使用量付费 (pay as you go) 客户，并且在某个计费周期内对 ClickHouse Cloud 的应付金额达到 1,000 美元 (或等值金额) ，系统会自动向为您的组织配置的支付方式扣款。
 
 :::tip
-如果您希望调整默认支付阈值金额，请[联系支持](mailto:support@clickhouse.com)。
+在第一次成功支付发票后，阈值会提高到 5,000 美元。第二次成功支付发票后，阈值会提高到 10,000 美元。如果您希望调整您的支付阈值金额，请[联系支持](mailto:support@clickhouse.com)。
 :::
 
 扣款失败将在 14 天宽限期后导致您的服务被暂停。

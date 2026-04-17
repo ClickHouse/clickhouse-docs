@@ -3599,6 +3599,21 @@ HTTP 요청에 대한 응답으로 반환되는 데이터의 압축을 활성화
 
 작업이 예외로 종료될 때 작업 생성자의 스택 트레이스를 출력합니다. 성능 오버헤드를 피하기 위해 기본적으로 비활성화되어 있습니다.
 
+## enable_join_fixed_hash_table_conversion \{#enable_join_fixed_hash_table_conversion\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [{ label: "26.4" }, { label: "1" }, { label: "키가 값 범위가 작은 단일 정수일 때 조인 시 해시 테이블을 플랫 배열로 변환하도록 하는 새 설정" }]
+  }
+]}
+/>
+
+키가 값 범위가 작은 단일 정수일 때 조인 시 해시 테이블을 플랫 배열로 변환하도록 합니다.
+
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
 <BetaBadge/>
@@ -4649,7 +4664,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "h3 함수에서 잘못된 입력을 허용하는 레거시 동작을 위한 새 설정"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "0"},{"label": "h3 함수에서 잘못된 입력을 허용하는 레거시 동작을 위한 새 설정"}]}]} />
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.2" }, { label: "0" }, { label: "h3 함수에서 잘못된 입력을 허용하는 기존 방식을 위한 새 설정" }] }]} />
 
 false인 경우 h3 함수(예: h3CellAreaM2)는 입력이 잘못되면 예외를 발생시킵니다. true인 경우 0 또는 기본값을 반환합니다.
 

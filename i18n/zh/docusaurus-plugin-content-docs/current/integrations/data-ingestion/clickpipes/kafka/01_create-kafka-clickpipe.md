@@ -26,6 +26,8 @@ import Image from '@theme/IdealImage';
 
 > 本指南将带您逐步完成创建第一个 Kafka ClickPipe 的过程。
 
+Kafka ClickPipes 可以使用 ClickPipes UI 手动部署和管理，也可以通过 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
+
 <VerticalStepper type="numbered" headerLevel="h2">
   ## 前往数据源 \{#1-load-sql-console\}
 
@@ -100,7 +102,7 @@ import Image from '@theme/IdealImage';
 
   ## 完成配置 \{#10-complete-setup\}
 
-  点击“Create ClickPipe”后，将创建并运行您的 ClickPipe。创建完成后，它会显示在 Data Sources 部分。
+  点击“Create ClickPipe”后，将创建并运行您的 ClickPipe。创建完成后，它会显示在数据源部分。
 
   <Image img={cp_overview} alt="查看概览" size="md" />
 </VerticalStepper>

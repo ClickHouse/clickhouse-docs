@@ -2105,6 +2105,10 @@ jemalloc の割り当てサンプルの追跡に失敗した総回数
 
 jemalloc の解放サンプルのトラッキングに失敗した合計回数
 
+### JoinBuildPostProcessingMicroseconds \{#joinbuildpostprocessingmicroseconds\}
+
+右側のJOINを構築した後の後処理ステップにかかった時間。
+
 ### JoinBuildTableRowCount \{#joinbuildtablerowcount\}
 
 JOIN 操作におけるビルド側テーブルの合計行数。

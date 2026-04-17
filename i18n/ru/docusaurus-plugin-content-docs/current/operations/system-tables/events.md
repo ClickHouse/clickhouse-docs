@@ -2106,6 +2106,10 @@ SELECT * FROM system.events LIMIT 5
 
 Общее количество случаев, когда не удалось отследить выборку освобождения памяти jemalloc
 
+### JoinBuildPostProcessingMicroseconds \{#joinbuildpostprocessingmicroseconds\}
+
+Время, затраченное на этапы постобработки после построения правой части соединения.
+
 ### JoinBuildTableRowCount \{#joinbuildtablerowcount\}
 
 Общее количество строк в build-таблице при выполнении операции JOIN.

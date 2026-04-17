@@ -2105,6 +2105,10 @@ jemalloc 할당 샘플 추적이 실패한 총 횟수
 
 jemalloc 할당 해제 샘플 추적이 실패한 총 횟수
 
+### JoinBuildPostProcessingMicroseconds \{#joinbuildpostprocessingmicroseconds\}
+
+오른쪽 JOIN 측을 구축한 후 수행되는 후처리 단계의 경과 시간입니다.
+
 ### JoinBuildTableRowCount \{#joinbuildtablerowcount\}
 
 JOIN 연산의 build 테이블에 있는 총 행 수입니다.

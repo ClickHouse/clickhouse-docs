@@ -3593,6 +3593,21 @@ HTTP リクエストに対するレスポンスで、データ圧縮を有効ま
 
 ジョブが例外を発生させた場合に、そのジョブを作成した側のスタックトレースを出力します。パフォーマンスへの影響を避けるため、デフォルトで無効です。
 
+## enable_join_fixed_hash_table_conversion \{#enable_join_fixed_hash_table_conversion\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [{ label: "26.4" }, { label: "1" }, { label: "キーが値の範囲が小さい単一の整数である場合に、結合用のハッシュテーブルをフラットな配列に変換することを有効にする新しい設定。" }]
+  }
+]}
+/>
+
+キーが値の範囲が小さい単一の整数である場合に、結合用のハッシュテーブルをフラットな配列に変換することを有効にします。
+
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
 <BetaBadge/>
@@ -4645,7 +4660,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "h3 関数で無効な入力を許可する従来の動作のための新しい設定"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "0"},{"label": "h3 関数で無効な入力を許可する従来の動作のための新しい設定"}]}]} />
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.2" }, { label: "0" }, { label: "h3 関数で無効な入力を許可する従来の動作のための新しい設定" }] }]} />
 
 false の場合、h3CellAreaM2 などの h3 関数は、入力が無効であれば例外を送出します。true の場合は、0 またはデフォルト値を返します。
 

@@ -743,6 +743,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 haystack에 phrase의 모든 토큰이 연속된 순서로 포함되어 있는지 확인합니다.
 
 검색에 앞서 함수는 선택적 세 번째 인수로 지정한 토크나이저를 사용해 `input` 인수와 `phrase` 인수를 모두 토큰화합니다.
+토크나이저 인수는 `splitByNonAlpha`, `splitByString`, `ngrams`, `asciiCJK` 중 하나여야 합니다.
 토크나이저를 지정하지 않으면 기본적으로 `splitByNonAlpha` 토크나이저를 사용합니다.
 
 [`hasToken`](#hasToken), [`hasAnyTokens`](#hasAnyTokens), [`hasAllTokens`](#hasAllTokens)과 달리 `hasPhrase`는 토큰이 동일한 순서로 나타나야 하며
