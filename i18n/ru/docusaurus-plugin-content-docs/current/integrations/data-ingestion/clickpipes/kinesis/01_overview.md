@@ -28,6 +28,8 @@ import Image from '@theme/IdealImage';
 
 # Интеграция Amazon Kinesis с ClickHouse Cloud \{#integrating-amazon-kinesis-with-clickhouse-cloud\}
 
+ClickPipes для Kinesis можно вручную развертывать и администрировать через интерфейс ClickPipes, а также программно — с помощью [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
+
 ## Предварительные требования \{#prerequisite\}
 
 Вы ознакомились с [введением в ClickPipes](../index.md) и настроили [учётные данные IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) или [роль IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Следуйте [руководству по доступу к Kinesis на основе ролей](./02_auth.md), чтобы узнать, как настроить роль для работы с ClickHouse Cloud.

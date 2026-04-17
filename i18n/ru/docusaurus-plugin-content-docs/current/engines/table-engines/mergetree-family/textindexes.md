@@ -82,8 +82,8 @@ CREATE TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
-                                            | ngrams[(N)]
                                             | asciiCJK
+                                            | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -144,7 +144,6 @@ ALTER TABLE table DROP INDEX text_idx;
 ```
 
 **Аргумент tokenizer (обязательный)**. Аргумент `tokenizer` определяет используемый токенизатор:
-
 
 * `splitByNonAlpha` разбивает строки по небуквенно-цифровым ASCII-символам (см. функцию [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)).
 * `splitByString(S)` разбивает строки по заданным пользователем строкам-разделителям `S` (см. функцию [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)).
@@ -492,6 +491,24 @@ SELECT count() FROM table WHERE hasAnyTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
+
+#### `hasPhrase` \{#functions-example-hasphrase\}
+
+Функция [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) выполняет поиск по фразе: все токены должны идти подряд и в том же порядке, что и в поисковой строке.
+
+В отличие от `hasAllTokens`, где достаточно, чтобы все токены присутствовали в любом месте, `hasPhrase` требует, чтобы они образовывали непрерывную последовательность.
+Поисковая фраза токенизируется тем же токенизатором, который настроен для столбца индекса.
+Обратите внимание, что функция требует один из токенизаторов: `splitByNonAlpha`, `splitByString`, `ngrams` или `asciiCJK`.
+
+Пример:
+
+```sql
+-- Matches: 'clickhouse' and 'olap' must appear consecutively in that order
+SELECT count() FROM table WHERE hasPhrase(comment, 'clickhouse olap');
+
+-- Does NOT match a row containing 'olap clickhouse' (wrong order)
+-- Does NOT match a row containing 'clickhouse fast olap' (non-consecutive)
+```
 
 #### `has` \{#functions-example-has\}
 
@@ -866,6 +883,51 @@ SELECT * FROM events WHERE data.level IN ('error', 'critical');
 ```
 
 
+### Поиск по фразе \{#text-index-phrase-search\}
+
+Текстовый индекс поддерживает поиск по фразе с помощью функции `hasPhrase`.
+Все токены во фразе должны встречаться в документе подряд и в том же порядке.
+
+Текстовый индекс ускоряет поиск по фразе, пересекая списки вхождений всех токенов фразы, чтобы выявить гранулы-кандидаты.
+Затем в этих гранулах ClickHouse проверяет точное соседство токенов.
+
+`hasPhrase` поддерживается с токенизаторами `splitByNonAlpha`, `splitByString`, `ngrams` и `asciiCJK`.
+
+Строка фразы токенизируется токенизатором, настроенным для индекса.
+Символы-разделители токенизатора во фразе игнорируются: `hasPhrase(text, 'quick+brown')` эквивалентно `hasPhrase(text, 'quick brown')` для токенизатора `splitByNonAlpha`.
+
+#### Пример \{#text-index-phrase-search-example\}
+
+```sql
+CREATE TABLE tab (
+    id UInt32,
+    text String,
+    INDEX idx(text) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO tab VALUES
+    (1, 'weather in New York'),
+    (2, 'New weather in York'),
+    (3, 'weather in New Orleans');
+```
+
+```sql
+SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
+```
+
+Результат:
+
+```result
+   ┌─id─┬─text────────────────┐
+1. │  1 │ weather in New York │
+   └────┴─────────────────────┘
+```
+
+Строка 2 (`'New weather in York'`) не совпадает, поскольку токены идут в неправильном порядке.
+Строка 3 (`'weather in New Orleans'`) не совпадает, поскольку в ней нет токена `'York'`.
+
 ## Настройка производительности \{#performance-tuning\}
 
 ### Прямое чтение \{#direct-read\}
@@ -891,7 +953,7 @@ WHERE string_search_function(column_with_text_index)
 **Поддерживаемые функции**
 
 Оптимизация прямого чтения поддерживает функции `hasToken`, `hasAllTokens` и `hasAnyTokens`.
-Если текстовый индекс определён с `array` tokenizer, прямое чтение также поддерживается для функций `equals`, `has`, `mapContainsKey` и `mapContainsValue`.
+Если текстовый индекс определён с `array` токенизатором, прямое чтение также поддерживается для функций `equals`, `has`, `mapContainsKey` и `mapContainsValue`.
 Эти функции также можно комбинировать операторами `AND`, `OR` и `NOT`.
 Предикаты `WHERE` или `PREWHERE` также могут содержать дополнительные фильтры, не являющиеся текстовыми функциями поиска (для текстовых столбцов или других столбцов) — в этом случае оптимизация прямого чтения по-прежнему будет использоваться, но менее эффективно (она применяется только к поддерживаемым текстовым функциям поиска).
 
@@ -951,7 +1013,7 @@ Positions:
 Прямое чтение как подсказка основано на тех же принципах, что и обычное прямое чтение, но добавляет дополнительный фильтр, построенный по данным текстового индекса, без удаления исходного текстового столбца.
 Оно используется для функций, когда чтение только из текстового индекса привело бы к ложным срабатываниям.
 
-Поддерживаемые функции: `like`, `startsWith`, `endsWith`, `equals`, `has`, `mapContainsKey` и `mapContainsValue`.
+Поддерживаемые функции: `like`, `startsWith`, `endsWith`, `equals`, `has`, `hasPhrase`, `mapContainsKey` и `mapContainsValue`.
 
 Дополнительный фильтр может обеспечить дополнительную селективность для дальнейшего ограничения набора результатов в сочетании с другими фильтрами, помогая уменьшить объем данных, считываемых из других столбцов.
 
@@ -1001,7 +1063,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 ### Запросы LIKE/ILIKE \{#like-ilike-queries-perf\}
 
-Когда шаблон запроса LIKE/ILIKE имеет вид `%<alpha-numeric-characters-without-spaces>%`, а токенизатор текстового индекса — `splitByNonAlpha`, ClickHouse использует инвертированный индекс, чтобы существенно ускорить запросы LIKE/ILIKE. Для этого ClickHouse сканирует словарь инвертированного индекса вместо полного сканирования таблицы в поисках совпадающего шаблона.
+Когда шаблон запроса LIKE/ILIKE имеет вид `%<alpha-numeric-characters-without-spaces>%`, а токенизатор текстового индекса — `splitByNonAlpha` или `array`, ClickHouse использует инвертированный индекс, чтобы существенно ускорить запросы LIKE/ILIKE. Для этого ClickHouse сканирует словарь инвертированного индекса вместо полного сканирования таблицы в поисках совпадающего шаблона.
 
 Когда эта оптимизация включена, запросы LIKE/ILIKE должны выполняться значительно быстрее, чем при полном сканировании таблицы. Однако если шаблон совпадает с большинством токенов в словаре, производительность может оказаться ниже, чем при полном сканировании таблицы. К счастью, чтобы этого избежать, предусмотрен механизм возврата к полному сканированию.
 

@@ -742,6 +742,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 Проверяет, содержит ли haystack все токены из фразы, идущие подряд.
 
 Перед поиском функция токенизирует аргументы `input` и `phrase` с помощью токенизатора, указанного в необязательном третьем аргументе.
+Аргумент токенизатора должен иметь одно из следующих значений: `splitByNonAlpha`, `splitByString`, `ngrams` или `asciiCJK`.
 Если токенизатор не указан, по умолчанию используется токенизатор `splitByNonAlpha`.
 
 В отличие от [`hasToken`](#hasToken), [`hasAnyTokens`](#hasAnyTokens) и [`hasAllTokens`](#hasAllTokens), `hasPhrase` требует, чтобы токены шли в том же порядке

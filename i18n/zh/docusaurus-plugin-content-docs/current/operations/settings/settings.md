@@ -4645,7 +4645,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新的设置，用于保持旧版行为，以允许 h3 函数接受无效输入"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "0"},{"label": "新的设置，用于保持旧版行为，以允许 h3 函数接受无效输入"}]}]} />
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.2" }, { label: "0" }, { label: "新的设置，用于保持旧版行为，以允许 h3 函数接受无效输入" }] }]} />
 
 如果为 false，h3 函数 (例如 h3CellAreaM2) 在输入无效时会抛出异常。如果为 true，则返回 0 或默认值。
 

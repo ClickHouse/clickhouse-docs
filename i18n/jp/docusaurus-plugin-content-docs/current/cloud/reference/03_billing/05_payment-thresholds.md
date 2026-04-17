@@ -16,7 +16,7 @@ import billing_2 from '@site/static/images/cloud/reference/billing_payment_thres
 従量課金制の顧客で、ClickHouse Cloud の 1 請求期間内の支払金額が 1,000 USD (または同等額) に達した場合、組織に設定されている支払い方法に対して自動的に決済が行われます。
 
 :::tip
-デフォルトの支払いしきい値額の変更を希望する場合は、[サポートにお問い合わせ](mailto:support@clickhouse.com)ください。
+最初の請求書の支払いが正常に完了すると、しきい値は 5,000 USD に引き上げられます。2 回目の請求書の支払いが正常に完了すると、しきい値は 10,000 USD に引き上げられます。支払いしきい値額の変更を希望する場合は、[サポートにお問い合わせ](mailto:support@clickhouse.com)ください。
 :::
 
 決済が失敗した場合、14 日間の猶予期間後にサービスは一時停止されます。

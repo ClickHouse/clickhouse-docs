@@ -26,6 +26,8 @@ import Image from '@theme/IdealImage';
 
 > В этом руководстве мы пошагово покажем, как создать свой первый Kafka ClickPipe.
 
+Kafka ClickPipes можно развёртывать и администрировать вручную через UI ClickPipes, а также программно с помощью [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
+
 <VerticalStepper type="numbered" headerLevel="h2">
   ## Перейдите к источникам данных \{#1-load-sql-console\}
 
@@ -51,7 +53,7 @@ import Image from '@theme/IdealImage';
 
   ## Настройте обратную частную конечную точку (необязательно) \{#5-configure-reverse-private-endpoint\}
 
-  Настройте Reverse Private Endpoint, чтобы ClickPipes могли подключаться к вашему кластеру Kafka через AWS PrivateLink.
+  Настройте обратную частную конечную точку, чтобы ClickPipes могли подключаться к вашему кластеру Kafka через AWS PrivateLink.
   Подробнее см. в нашей [документации по AWS PrivateLink](../aws-privatelink.md).
 
   ## Настройте SSH-туннелирование (необязательно) \{#6-configure-ssh-tunneling\}

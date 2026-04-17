@@ -36,7 +36,9 @@ import Image from '@theme/IdealImage';
 
 [ClickPipes](/integrations/clickpipes)는 다양한 소스에서 데이터를 수집하는 작업을 몇 번의 클릭만으로 수행할 수 있게 해 주는 관리형 통합 플랫폼입니다. 가장 높은 수준의 워크로드를 위해 설계된 ClickPipes의 안정적이고 확장 가능한 아키텍처는 일관된 성능과 신뢰성을 보장합니다. ClickPipes는 장기적인 스트리밍 용도는 물론, 일회성 데이터 적재 작업에도 사용할 수 있습니다.
 
-<Image img={clickpipes_stack} alt="ClickPipes 스택" size="lg" border/>
+ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수 있으며, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 및 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 사용해 프로그래밍 방식으로도 배포하고 관리할 수 있습니다.
+
+<Image img={clickpipes_stack} alt="ClickPipes 스택" size="lg" border />
 
 ## 지원되는 데이터 소스 \{#supported-data-sources\}
 

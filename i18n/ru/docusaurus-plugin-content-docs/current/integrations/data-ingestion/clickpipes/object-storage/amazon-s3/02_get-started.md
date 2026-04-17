@@ -21,6 +21,4 @@ import Image from '@theme/IdealImage';
 
 S3 ClickPipe предоставляет полностью управляемый и отказоустойчивый способ приёма данных из Amazon S3 и S3-совместимых объектных хранилищ в ClickHouse Cloud. Он поддерживает как **однократную**, так и **непрерывную ингестию** с семантикой exactly-once.
 
-S3 ClickPipes можно развёртывать и управлять ими вручную через ClickPipes UI, а также программно с помощью [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) и [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe).
-
 <CreateClickPipe provider="s3" />
