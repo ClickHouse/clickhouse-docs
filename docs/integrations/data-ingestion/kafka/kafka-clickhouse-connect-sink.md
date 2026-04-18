@@ -138,27 +138,27 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 
 **With a schema declared:**
 
-| Kafka Connect Type                      | ClickHouse Type       | Supported | Primitive |
-| --------------------------------------- |-----------------------| --------- | --------- |
-| STRING                                  | String                | ✅        | Yes       |
-| STRING                                  | JSON. See below (1)              | ✅        | Yes       |
-| INT8                                    | Int8                  | ✅        | Yes       |
-| INT16                                   | Int16                 | ✅        | Yes       |
-| INT32                                   | Int32                 | ✅        | Yes       |
-| INT64                                   | Int64                 | ✅        | Yes       |
-| FLOAT32                                 | Float32               | ✅        | Yes       |
-| FLOAT64                                 | Float64               | ✅        | Yes       |
-| BOOLEAN                                 | Boolean               | ✅        | Yes       |
-| ARRAY                                   | Array(T)              | ✅        | No        |
-| MAP                                     | Map(Primitive, T)     | ✅        | No        |
-| STRUCT                                  | Variant(T1, T2, ...)    | ✅        | No        |
-| STRUCT                                  | Tuple(a T1, b T2, ...)  | ✅        | No        |
-| STRUCT                                  | Nested(a T1, b T2, ...) | ✅        | No        |
-| STRUCT                                  | JSON. See below (1), (2)          | ✅        | No        |
-| BYTES                                   | String                | ✅        | No        |
-| org.apache.kafka.connect.data.Time      | Int64 / DateTime64    | ✅        | No        |
-| org.apache.kafka.connect.data.Timestamp | Int32 / Date32        | ✅        | No        |
-| org.apache.kafka.connect.data.Decimal   | Decimal               | ✅        | No        |
+| Kafka Connect Type                      | ClickHouse Type          | Supported | Primitive |
+|-----------------------------------------|--------------------------|-----------|-----------|
+| STRING                                  | String                   | ✅         | Yes       |
+| STRING                                  | JSON. See below (1)      | ✅         | Yes       |
+| INT8                                    | Int8                     | ✅         | Yes       |
+| INT16                                   | Int16                    | ✅         | Yes       |
+| INT32                                   | Int32                    | ✅         | Yes       |
+| INT64                                   | Int64                    | ✅         | Yes       |
+| FLOAT32                                 | Float32                  | ✅         | Yes       |
+| FLOAT64                                 | Float64                  | ✅         | Yes       |
+| BOOLEAN                                 | Boolean                  | ✅         | Yes       |
+| ARRAY                                   | Array(T)                 | ✅         | No        |
+| MAP                                     | Map(Primitive, T)        | ✅         | No        |
+| STRUCT                                  | Variant(T1, T2, ...)     | ✅         | No        |
+| STRUCT                                  | Tuple(a T1, b T2, ...)   | ✅         | No        |
+| STRUCT                                  | Nested(a T1, b T2, ...)  | ✅         | No        |
+| STRUCT                                  | JSON. See below (1), (2) | ✅         | No        |
+| BYTES                                   | String                   | ✅         | No        |
+| org.apache.kafka.connect.data.Time      | Int64 / DateTime64       | ✅         | No        |
+| org.apache.kafka.connect.data.Timestamp | Int32 / Date32           | ✅         | No        |
+| org.apache.kafka.connect.data.Decimal   | Decimal                  | ✅         | No        |
 
 - (1) - JSON is supported only when ClickHouse settings has `input_format_binary_read_json_as_string=1`. This works only for RowBinary format family and the setting affects all columns in the insert request so they all should be a string. Connector will convert STRUCT to a JSON string in this case. 
 
@@ -246,6 +246,72 @@ The connector can consume data from multiple topics
     "value.converter.schema.registry.url": "<SCHEMA_REGISTRY_HOST>:<PORT>",
     "value.converter.schemas.enable": "true",
   }
+}
+```
+
+###### Type mapping {#avro-type-mapping}
+✅: Supported
+
+❌: Not supported
+
+️⚠️: Partially supported
+
+| Avro Type | Kafka Connect Type | Supported | Notes                                                                                                                                                                                                                                                                                      |
+|-----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| null      | _N/A_              | ❌         | Not supported as a standalone type, but can be used in unions                                                                                                                                                                                                                              |
+| boolean   | BOOLEAN            | ✅         |                                                                                                                                                                                                                                                                                            |
+| int       | INT8/INT16/INT32   | ✅         | Defaults to INT32. Resolves to INT8 if the schema has property `connect.type=int8` (analagously for INT16 if `connect.type=int16`)                                                                                                                                                         |
+| long      | INT64              | ✅         |                                                                                                                                                                                                                                                                                            |
+| float     | FLOAT32            | ✅         |                                                                                                                                                                                                                                                                                            |
+| double    | FLOAT64            | ✅         |                                                                                                                                                                                                                                                                                            |
+| bytes     | BYTES              | ✅         |                                                                                                                                                                                                                                                                                            |
+| string    | STRING             | ✅         |                                                                                                                                                                                                                                                                                            |
+| record    | STRUCT             | ✅         |                                                                                                                                                                                                                                                                                            |
+| enum      | STRING             | ✅         |                                                                                                                                                                                                                                                                                            |
+| array     | ARRAY/MAP          | ✅         | Defaults to ARRAY. Resolves to MAP if the field was originally constructed via `AvroData.fromConnectSchema` ([source](https://github.com/confluentinc/schema-registry/blob/174907bfc0d9424e8d02e788f450f4afcdda1750/avro-data/src/main/java/io/confluent/connect/avro/AvroData.java#L943)) |
+| map       | MAP                | ✅         |                                                                                                                                                                                                                                                                                            |
+| union     | STRUCT/`<T>`       | ⚠️        | Defaults to STRUCT. Resolves to the singleton type `T` in the union definition if AvroDataConfig property `flatten.singleton.unions=true`                                                                                                                                                  |
+| fixed     | BYTES              | ⚠️        | Fixed `decimal` logical type is not supported (see below)                                                                                                                                                                                                                                  |
+
+Refer to [Supported data types](#supported-data-types) for the mapping between Kafka Connect types and ClickHouse types.
+
+###### Unsupported data types {#unsupported-avro-types}
+
+Currently, the following Avro data types are unsupported by the connector - support for them is forthcoming:
+- fixed `decimal` logical type
+```json
+{"name": "decimal_18_4", "type": "fixed", "size": 8, "logicalType": "decimal", "precision": 18, "scale": 4}
+```
+- nullable unions
+```json
+{"name": "mixed_union", "type": ["null", "string", "int"], "default": null}
+```
+- record unions
+```json
+{
+  "name": "record_union",
+  "type": [
+    {
+      "type": "record",
+      "name": "TypeA",
+      "fields": [
+        {
+          "name": "label",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "type": "record",
+      "name": "TypeB",
+      "fields": [
+        {
+          "name": "count",
+          "type": "int"
+        }
+      ]
+    }
+  ]
 }
 ```
 
