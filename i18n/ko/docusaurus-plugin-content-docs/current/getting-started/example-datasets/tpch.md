@@ -111,7 +111,6 @@ INSERT INTO lineitem SELECT * FROM s3('https://clickhouse-datasets.s3.amazonaws.
 
 :::
 
-
 ## 쿼리 \{#queries\}
 
 22개의 TPC-H 쿼리는 ClickHouse 리포지터리의 [여기](https://github.com/ClickHouse/ClickHouse/tree/master/tests/benchmarks/tpc-h/queries)에서 확인할 수 있습니다.

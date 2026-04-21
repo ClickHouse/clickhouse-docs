@@ -2601,6 +2601,20 @@ ClickHouse は、未定義（ポリシーに含まれていない）のディス
 ローリングアップグレード中は、これを `basic` に設定し、新しいサーバーが古いサーバーと互換性のあるデータパーツを生成するようにします。アップグレードが完了したら、
 型ごとのシリアル化バージョンを有効にするために `WITH_TYPES` に切り替えます。
 
+## share_nested_offsets \{#share_nested_offsets\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "false に設定すると、共通のプレフィックスを持つドット区切りの名前の Array カラムは、従来の Nested セマンティクスでオフセットファイルを共有するのではなく、独立したカラムとして扱われます"}]}]} />
+
+有効時 (デフォルト) は、共通のプレフィックスを持つドット区切りの名前の Array カラム (例: n.a および n.b) は
+Nested 構造の一部として扱われます。つまり、ディスク上で 1 つの offsets ファイル (例: n.size0) を共有し、
+INSERT 時にそれらの配列サイズが等しいことが検証されます。
+無効時は、各 Array カラムがそれぞれ独立した offset ファイルを持ち、ドット区切りの名前に特別な
+セマンティクスはなくなります。また、同じプレフィックスを共有するドット区切りの Array カラムと
+scalar カラムを共存させることもできます
+ (例: n UInt32 と n.a Array(String)) 。この設定は、テーブル作成後は変更できません。
+
 ## shared_merge_tree_activate_coordinated_merges_tasks \{#shared_merge_tree_activate_coordinated_merges_tasks\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

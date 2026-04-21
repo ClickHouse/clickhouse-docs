@@ -8,6 +8,10 @@ keywords: ['ClickStack', 'observability stack', 'HyperDX', 'OpenTelemetry', 'log
 doc_type: 'landing-page'
 ---
 
+:::tip Попробуйте OTel FYI — документация по OTel collector без лишней сложности
+[OTel FYI](https://otel.fyi) — это ресурс сообщества с понятной и лаконичной документацией по OTel collector. Отличное дополнение к ClickStack для понимания и настройки ваших OTel-пайплайнов.
+:::
+
 **ClickStack** — открытая платформа обсервабилити продакшн-класса, построенная на ClickHouse и OpenTelemetry (OTel), которая объединяет журналы, трассировки, метрики и сессии в одном высокопроизводительном решении. Она позволяет разработчикам и SRE выполнять сквозной мониторинг и отладку сложных систем без переключения между инструментами и ручного связывания данных.
 
 ClickStack можно развернуть двумя способами. В варианте **ClickStack Open Source** вы самостоятельно запускаете и управляете всеми компонентами, включая ClickHouse, ClickStack UI (HyperDX) и OpenTelemetry Collector. В варианте **Managed ClickStack** ClickHouse и ClickStack UI (HyperDX) полностью управляются в ClickHouse Cloud, включая аутентификацию и операционные аспекты, а вам остаётся запускать только OpenTelemetry Collector, который получает телеметрию от ваших ворклоадов и по OTLP пересылает её в ClickHouse Cloud.
