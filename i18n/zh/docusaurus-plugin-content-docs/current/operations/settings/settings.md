@@ -6665,6 +6665,14 @@ Cloud 默认值：每个副本可用内存的一半。
 
 在使用带有 LIMIT 的 ORDER BY 时，当内存使用量超过指定阈值后，会在最终合并之前执行额外的块合并操作，仅保留前 LIMIT 行。
 
+## max_bytes_for_lazy_final \{#max_bytes_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="256000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "256000000"},{"label": "Новая настройка：用于惰性 FINAL 优化的集合最大字节数"}]}]} />
+
+用于惰性 FINAL 优化的集合最大字节数。超过该值时，将回退为普通 FINAL。
+
 ## max_bytes_in_distinct \{#max_bytes_in_distinct\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -7517,6 +7525,14 @@ Cloud 默认值：`0`。
 
 `dictGetKeys` 函数在每次查询中使用的反向字典查找缓存的最大字节数。该缓存按属性值存储序列化的键元组，以避免在同一查询中重新扫描字典。达到该限制时，将使用 LRU（最近最少使用）策略淘汰条目。设置为 0 可禁用缓存。
 
+## max_rows_for_lazy_final \{#max_rows_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000000"},{"label": "新增设置：惰性 FINAL 优化中集合的最大行数"}]}]} />
+
+惰性 FINAL 优化中集合的最大行数。超过该值时，将回退为普通 FINAL。
+
 ## max_rows_in_distinct \{#max_rows_in_distinct\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -8189,6 +8205,14 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1048449"},{"label": "如果数据块不够大，则将传递给外部表的数据块合并为指定行数的块"}]}]}/>
 
 如果数据块不够大，则将传递给外部表的数据块合并为指定行数的块。
+
+## min_filtered_ratio_for_lazy_final \{#min_filtered_ratio_for_lazy_final\}
+
+<SettingsInfoBlock type="Float" default_value="0.5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0.5"},{"label": "新增设置：惰性 FINAL 优化继续执行所需的最小标记过滤比例"}]}]} />
+
+索引分析为惰性 FINAL 优化过滤掉的标记最小比例。如果过滤掉的标记比例低于该值，则回退为普通 FINAL。值 `0` 会禁用此检查。
 
 ## min_free_disk_bytes_to_perform_insert \{#min_free_disk_bytes_to_perform_insert\}
 
@@ -10248,6 +10272,14 @@ a   Tuple(
 当该值非 0 时，JOIN 顺序优化器将使用随机生成的基数和 NDV，而不是真实统计信息。
 当设置为 1 时，会生成一个随机种子；当设置为大于 1 的值时，将直接使用该值作为种子。
 此设置用于测试，以发现由不同 JOIN 顺序引起的错误。
+
+## query_plan_optimize_lazy_final \{#query_plan_optimize_lazy_final\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新增设置：通过基于集合的索引分析，优化从 ReplacingMergeTree 中使用 FINAL 读取数据"}]}]} />
+
+通过构建一组主键并将其用于索引分析，优化从 ReplacingMergeTree 中使用 FINAL 读取数据。
 
 ## query_plan_optimize_lazy_materialization \{#query_plan_optimize_lazy_materialization\}
 
