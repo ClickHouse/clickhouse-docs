@@ -21,8 +21,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ExtendingConfig from '@site/i18n/ko/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/ingesting-data/_snippets/_extending_config.md';
 
-이 페이지에서는 공식 ClickStack OpenTelemetry(OTel) collector의 구성 세부 사항을 설명합니다.
+:::tip OTel FYI 살펴보기 - OTel collector 문서를 더 쉽게
+[OTel FYI](https://otel.fyi)는 receiver, processor, exporter, pipeline 전반을 다루는 명확하고 간결한 OpenTelemetry collector 문서를 제공합니다. ClickStack OTel collector를 구성할 때 함께 참고하기 좋은 자료입니다.
+:::
 
+이 페이지에서는 공식 ClickStack OpenTelemetry(OTel) collector의 구성 세부 사항을 설명합니다.
 
 ## Collector roles \{#collector-roles\}
 

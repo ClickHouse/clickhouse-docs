@@ -6670,6 +6670,14 @@ Cloud 기본값은 레플리카당 메모리 용량의 절반입니다.
 
 ORDER BY와 LIMIT이 함께 사용되는 경우, 메모리 사용량이 지정된 임계값을 초과하면, 최종 병합 전에 블록을 추가로 병합하는 단계를 수행하여 상위 LIMIT개의 행만 유지합니다.
 
+## max_bytes_for_lazy_final \{#max_bytes_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="256000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "256000000"},{"label": "지연 FINAL 최적화용 집합의 최대 바이트 수에 대한 새 설정"}]}]} />
+
+지연 FINAL 최적화용 집합의 최대 바이트 수입니다. 이 값을 초과하면 일반 FINAL로 대체됩니다.
+
 ## max_bytes_in_distinct \{#max_bytes_in_distinct\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -7523,6 +7531,14 @@ Cloud 기본값: `0`.
 
 함수 `dictGetKeys`에서 쿼리별 역방향 딕셔너리 조회 캐시로 사용하는 최대 크기(바이트 단위)입니다. 이 캐시는 동일한 쿼리 내에서 딕셔너리를 다시 스캔하지 않도록, 속성 값별로 직렬화된 키 튜플을 저장합니다. 최대 크기에 도달하면 LRU 방식으로 항목을 제거합니다. 캐싱을 비활성화하려면 0으로 설정하십시오.
 
+## max_rows_for_lazy_final \{#max_rows_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000000"},{"label": "지연 FINAL 최적화에 사용되는 Set의 최대 행 수에 대한 새 설정"}]}]} />
+
+지연 FINAL 최적화에 사용되는 Set의 최대 행 수입니다. 이 값을 초과하면 일반 FINAL로 전환됩니다.
+
 ## max_rows_in_distinct \{#max_rows_in_distinct\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -8199,6 +8215,14 @@ JIT 컴파일되기 전에 동일한 정렬 설명이 나타나야 하는 횟수
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1048449"},{"label": "블록이 충분히 크지 않은 경우, 외부 테이블에 전달되는 블록을 지정한 행 수가 되도록 병합합니다."}]}]}/>
 
 블록이 충분히 크지 않은 경우, 외부 테이블에 전달되는 블록을 지정한 행 수가 되도록 병합합니다.
+
+## min_filtered_ratio_for_lazy_final \{#min_filtered_ratio_for_lazy_final\}
+
+<SettingsInfoBlock type="Float" default_value="0.5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0.5"},{"label": "지연 FINAL 최적화를 진행하기 위해 필터링되어야 하는 마크의 최소 비율에 대한 새 설정"}]}]} />
+
+지연 FINAL 최적화에서 인덱스 분석으로 필터링되는 마크의 최소 비율입니다. 필터링된 마크의 비율이 이 값보다 낮으면 일반 FINAL로 되돌아갑니다. 값이 0이면 이 검사는 비활성화됩니다.
 
 ## min_free_disk_bytes_to_perform_insert \{#min_free_disk_bytes_to_perform_insert\}
 
@@ -10259,6 +10283,14 @@ EXPLAIN PLAN에서 단계 설명의 최대 길이를 지정합니다.
 0이 아니면 조인 순서 최적화기는 실제 통계 대신 무작위로 생성된 카디널리티와 NDV를 사용합니다.
 1로 설정하면 무작위 시드가 생성되고, 1보다 큰 값으로 설정하면 해당 값을 시드로 직접 사용합니다.
 이 설정은 서로 다른 조인 순서로 인해 발생하는 오류를 찾기 위한 테스트용입니다.
+
+## query_plan_optimize_lazy_final \{#query_plan_optimize_lazy_final\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "기본 키(primary key) 집합을 구성해 set 기반 인덱스 분석에 사용함으로써 ReplacingMergeTree에서 FINAL을 사용한 읽기를 최적화하는 새 설정"}]}]} />
+
+기본 키(primary key) 집합을 구성하고 이를 인덱스 분석에 사용하여 ReplacingMergeTree에서 FINAL을 사용한 읽기를 최적화합니다.
 
 ## query_plan_optimize_lazy_materialization \{#query_plan_optimize_lazy_materialization\}
 
