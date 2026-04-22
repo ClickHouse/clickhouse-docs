@@ -22,7 +22,11 @@ import view_backups_azure from '@site/static/images/cloud/manage/backups/view_ba
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
 
-# ユーザーインターフェイスからのバックアップ／リストア \{#ui-experience\}
+# ユーザーインターフェイスからのバックアップ／復元 \{#ui-experience\}
+
+:::note
+外部バケットへの自動バックアップは、24時間ごとに「フル」バックアップとして実行されるよう設定されており、実行頻度は変更できません。
+:::
 
 ## AWS \{#AWS\}
 

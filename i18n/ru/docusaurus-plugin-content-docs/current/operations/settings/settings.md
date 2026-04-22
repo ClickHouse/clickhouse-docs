@@ -3081,13 +3081,13 @@ ENGINE = Log
 
 ## distributed_cache_read_request_max_tries \{#distributed_cache_read_request_max_tries\}
 
-<CloudOnlyBadge/>
+<CloudOnlyBadge />
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "10"},{"label": "Изменено значение настройки"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "20"},{"label": "Новая настройка"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "10"},{"label": "Изменено значение настройки"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "20"},{"label": "Новая настройка"}]}]} />
 
-Действует только в ClickHouse Cloud. Количество попыток выполнения запроса к распределённому кэшу при неудаче.
+Действует только в ClickHouse Cloud. Количество попыток выполнения запроса на чтение к распределённому кэшу при неудаче.
 
 ## distributed_cache_receive_response_wait_milliseconds \{#distributed_cache_receive_response_wait_milliseconds\}
 
@@ -3180,6 +3180,16 @@ ENGINE = Log
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "100"},{"label": "Параметр для ClickHouse Cloud"}]}]}/>
 
 Действует только в ClickHouse Cloud. Время ожидания в миллисекундах для получения соединения из пула соединений, если distributed_cache_pool_behaviour_on_limit имеет значение wait.
+
+## distributed_cache_write_request_max_tries \{#distributed_cache_write_request_max_tries\}
+
+<CloudOnlyBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10"},{"label": "Новая настройка"}]}]} />
+
+Действует только в ClickHouse Cloud. Количество попыток выполнения запроса на запись в распределённый кэш при неудаче.
 
 ## distributed_connections_pool_size \{#distributed_connections_pool_size\}
 
@@ -4991,6 +5001,14 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Не отправлять HTTP-заголовки X-ClickHouse-Progress чаще, чем один раз за указанный интервал.
 
+## http_headers_read_timeout \{#http_headers_read_timeout\}
+
+<SettingsInfoBlock type="Seconds" default_value="30" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "30"},{"label": "Новая настройка для ограничения общего времени чтения заголовков HTTP-запроса, защищающая от атак типа slowloris."}]}]} />
+
+Максимальное время в секундах, отводимое на чтение всех заголовков HTTP-запроса. Это общий предельный срок для всей фазы разбора заголовков, а не тайм-аут отдельной операции чтения. Защищает от атак типа slowloris, при которых клиент передает данные заголовков медленно, чтобы удерживать соединения открытыми.
+
 ## http_make_head_request \{#http_make_head_request\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -4999,7 +5017,9 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 ## http_max_field_name_size \{#http_max_field_name_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="131072" />
+<SettingsInfoBlock type="UInt64" default_value="4096" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4096"},{"label": "Значение по умолчанию уменьшено, чтобы ограничить использование памяти HTTP-соединениями до аутентификации."}]}]} />
 
 Максимальная длина имени поля в HTTP-заголовке
 
@@ -5011,7 +5031,9 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 ## http_max_fields \{#http_max_fields\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000"},{"label": "Значение по умолчанию уменьшено, чтобы ограничить использование памяти HTTP-соединениями до аутентификации."}]}]} />
 
 Максимальное количество полей в HTTP-заголовке
 
@@ -5020,6 +5042,14 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
 Ограничение на размер содержимого multipart/form-data. Значение этого параметра не может быть получено из параметров URL и должно быть задано в пользовательском профиле. Обратите внимание, что содержимое разбирается, а внешние таблицы создаются в памяти до начала выполнения запроса. Это единственное ограничение, которое действует на этой стадии (ограничения на максимальное использование памяти и максимальное время выполнения не влияют на чтение данных формы HTTP).
+
+## http_max_request_header_size \{#http_max_request_header_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="10485760" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10485760"},{"label": "Новая настройка для ограничения общего размера заголовков HTTP-запроса до аутентификации."}]}]} />
+
+Максимальный суммарный размер всех заголовков HTTP-запроса (включая имена и значения) в байтах.
 
 ## http_max_request_param_data_size \{#http_max_request_param_data_size\}
 
@@ -6673,6 +6703,14 @@ log_query_views=1
 
 В случае использования ORDER BY с LIMIT, когда объем потребляемой памяти превышает указанный порог, выполняются дополнительные этапы слияния блоков перед финальным слиянием, чтобы сохранить только первые LIMIT строк.
 
+## max_bytes_for_lazy_final \{#max_bytes_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="256000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "256000000"},{"label": "Новая настройка, задающая максимальное количество байт в множестве для ленивой оптимизации FINAL"}]}]} />
+
+Максимальное количество байт в множестве для ленивой оптимизации FINAL. При превышении этого значения используется обычный FINAL.
+
 ## max_bytes_in_distinct \{#max_bytes_in_distinct\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -7546,6 +7584,14 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Максимальный размер в байтах кэша обратного поиска по словарю для одного запроса, используемого функцией `dictGetKeys`. Кэш хранит сериализованные кортежи ключей для каждого значения атрибута, чтобы избежать повторного сканирования словаря в рамках одного запроса. При достижении лимита записи вытесняются по алгоритму LRU. Установите значение 0, чтобы отключить кэширование.
 
+## max_rows_for_lazy_final \{#max_rows_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000000"},{"label": "Новая настройка для максимального числа строк во множестве для ленивой оптимизации FINAL"}]}]} />
+
+Максимальное число строк во множестве для ленивой оптимизации FINAL. При превышении этого значения выполняется возврат к обычному FINAL.
+
 ## max_rows_in_distinct \{#max_rows_in_distinct\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -8225,6 +8271,14 @@ ClickHouse использует эту настройку при чтении д
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1048449"},{"label": "Сжимает блоки, передаваемые во внешнюю таблицу, до указанного размера в строках, если их размер меньше указанного"}]}]}/>
 
 Сжимает блоки, передаваемые во внешнюю таблицу, до указанного размера в строках, если их размер меньше указанного.
+
+## min_filtered_ratio_for_lazy_final \{#min_filtered_ratio_for_lazy_final\}
+
+<SettingsInfoBlock type="Float" default_value="0.5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0.5"},{"label": "Новая настройка минимальной доли марок, отфильтрованных для применения ленивой оптимизации FINAL"}]}]} />
+
+Минимальная доля марок, отфильтрованных при анализе индекса для ленивой оптимизации FINAL. Если отфильтровано меньше этой доли марок, выполняется откат к обычному FINAL. Значение 0 отключает эту проверку.
 
 ## min_free_disk_bytes_to_perform_insert \{#min_free_disk_bytes_to_perform_insert\}
 
@@ -10287,6 +10341,14 @@ a   Tuple(
 Если значение не равно нулю, оптимизатор порядка соединений использует случайно сгенерированные кардинальности и NDV вместо реальной статистики.
 Если задано значение 1, генерируется случайный seed; если задано значение &gt; 1, это значение напрямую используется в качестве seed.
 Эта настройка предназначена для тестирования и помогает выявлять ошибки, вызванные различным порядком соединений.
+
+## query_plan_optimize_lazy_final \{#query_plan_optimize_lazy_final\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка для оптимизации чтения с FINAL из ReplacingMergeTree с использованием анализа индекса на основе множества"}]}]} />
+
+Оптимизирует чтение с FINAL из ReplacingMergeTree путём построения множества первичных ключей и его использования для анализа индекса.
 
 ## query_plan_optimize_lazy_materialization \{#query_plan_optimize_lazy_materialization\}
 

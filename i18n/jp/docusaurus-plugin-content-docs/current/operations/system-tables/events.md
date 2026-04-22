@@ -134,6 +134,14 @@ HTTP 接続での接続エラーにより障害ありとマークされたアド
 
 集計用ハッシュテーブルで事前に割り当てられた要素数。
 
+### AllUsersThrottlerBytes \{#allusersthrottlerbytes\}
+
+&#39;max&#95;network&#95;bandwidth&#95;for&#95;all&#95;users&#39; スロットラーを通過したバイト数。
+
+### AllUsersThrottlerSleepMicroseconds \{#allusersthrottlersleepmicroseconds\}
+
+クエリが `max_network_bandwidth_for_all_users` のスロットリングに従うためにスリープしていた合計時間。
+
 ### AnalyzePatchRangesMicroseconds \{#analyzepatchrangesmicroseconds\}
 
 パッチパーツのインデックスの分析に費やした合計時間
@@ -1273,6 +1281,10 @@ DiskS3ストレージへの POST、DELETE、PUT、PATCH リクエストで発生
 
 分散キャッシュレジストリのイベント。分散キャッシュレジストリの更新回数
 
+### DistrCacheRemoveOutdatedMicroseconds \{#distrcacheremoveoutdatedmicroseconds\}
+
+分散キャッシュの接続イベント。プールから古くなった接続を削除するのにかかった時間
+
 ### DistrCacheReusedConnections \{#distrcachereusedconnections\}
 
 分散キャッシュの接続イベント。分散キャッシュへの再利用された接続数
@@ -1356,6 +1368,10 @@ DiskS3ストレージへの POST、DELETE、PUT、PATCH リクエストで発生
 ### DistrCacheServerUpdates \{#distrcacheserverupdates\}
 
 分散キャッシュに関するイベント。ハッシュで選択されたサーバーの変更 (たとえばサーバーの登録解除など) により、読み取りまたは書き込み時に発生したサーバー切り替えの回数
+
+### DistrCacheStaleReconnections \{#distrcachestalereconnections\}
+
+分散キャッシュの接続イベント。古くなった (ピアによって閉じられた) プールされた接続が原因で発生した再接続回数
 
 ### DistrCacheStartRangeMicroseconds \{#distrcachestartrangemicroseconds\}
 
@@ -4389,6 +4405,10 @@ parts killer のメインスレッドが要する時間
 
 パーツキラーの実行回数
 
+### SharedMergeTreeReplicaSetUpdateTaskRuns \{#sharedmergetreereplicasetupdatetaskruns\}
+
+updateReplicaSetTask が実行された回数
+
 ### SharedMergeTreeReplicaSetUpdatesFromZooKeeper \{#sharedmergetreereplicasetupdatesfromzookeeper\}
 
 ZooKeeper からレプリカセットを更新した回数
@@ -4800,6 +4820,14 @@ usearch索引の検索時に訪問したノード数。
 ### UncompressedCacheWeightLost \{#uncompressedcacheweightlost\}
 
 非圧縮キャッシュから追い出されたバイト数。
+
+### UserThrottlerBytes \{#userthrottlerbytes\}
+
+`max_network_bandwidth_for_user` スロットラーを通過したバイト数。
+
+### UserThrottlerSleepMicroseconds \{#userthrottlersleepmicroseconds\}
+
+クエリが &#39;max&#95;network&#95;bandwidth&#95;for&#95;user&#39; のスロットリングに従うためにスリープしていた合計時間。
 
 ### UserTimeMicroseconds \{#usertimemicroseconds\}
 

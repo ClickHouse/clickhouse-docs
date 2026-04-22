@@ -466,6 +466,19 @@ TSV 格式中 NULL 的自定义表示形式
 
 在对 CapnProto 格式进行模式推断时，跳过具有不受支持类型的列
 
+## input_format_column_name_matching_mode \{#input_format_column_name_matching_mode\}
+
+<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="match_case" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "match_case"},{"label": "新设置。"}]}]} />
+
+定义通过各种格式 (包括但不限于 JSONEachRow、CSVWithNames、JSONColumns、BSONEachRow、RowBinaryWithNames) 摄取数据时，列名的匹配模式。
+支持的模式：
+
+* match&#95;case：区分大小写匹配
+  * ignore&#95;case：不区分大小写匹配
+  * auto：先尝试区分大小写匹配；如果失败，再尝试不区分大小写匹配。
+
 ## input_format_connection_handling \{#input_format_connection_handling\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

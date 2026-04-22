@@ -22,6 +22,7 @@ doc_type: 'reference'
 | 页面                                                                                                            | 描述                                                                                     |
 | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | [系统表概述](/operations/system-tables/overview)                                                                   | 系统表是什么以及它们为何有用的概述。                                                                     |
+| [system.histogram&#95;metric&#95;log](/operations/system-tables/histogram_metric_log)                         | 系统表，包含直方图指标的周期性快照，并会定期写入磁盘。                                                            |
 | [INFORMATION&#95;SCHEMA](/operations/system-tables/information_schema)                                        | 系统数据库，提供近乎标准化、与 DBMS 无关的数据库对象元数据视图。                                                    |
 | [system.aggregate&#95;function&#95;combinators](/operations/system-tables/aggregate_function_combinators)     | 包含所有可用聚合函数组合器列表，这些组合器可应用于聚合函数，以改变其工作方式。                                                |
 | [system.aggregated&#95;zookeeper&#95;log](/operations/system-tables/aggregated_zookeeper_log)                 | 系统表，包含按会话、路径、操作类型、组件和子请求标志分组的 ZooKeeper 操作聚合统计信息。                                      |
@@ -148,7 +149,7 @@ doc_type: 'reference'
 | [system.table&#95;functions](/operations/system-tables/table_functions)                                       | 包含所有可用表函数及其说明的列表。                                                                      |
 | [system.tables](/operations/system-tables/tables)                                                             | 包含服务器已知的每个表元数据的系统表。                                                                    |
 | [system.text&#95;log](/operations/system-tables/text_log)                                                     | 包含日志记录项的系统表。                                                                           |
-| [system.time&#95;zones](/operations/system-tables/time_zones)                                                 | 包含 ClickHouse 服务器所支持的时区列表的系统表。                                                         |
+| [system.time&#95;zones](/operations/system-tables/time_zones)                                                 | 包含 ClickHouse 服务端所支持的时区列表的系统表。                                                         |
 | [system.tokenizers](/operations/system-tables/tokenizers)                                                     | 显示所有可用分词器的系统表。                                                                         |
 | [system.trace&#95;log](/operations/system-tables/trace_log)                                                   | 包含由采样查询分析器收集的堆栈跟踪信息的系统表。                                                               |
 | [system.transactions](/operations/system-tables/transactions)                                                 | 包含事务及其状态的列表。                                                                           |
@@ -158,7 +159,7 @@ doc_type: 'reference'
 | [system.user&#95;processes](/operations/system-tables/user_processes)                                         | 系统表,包含便于概览用户内存使用情况和 ProfileEvents 的信息。                                                 |
 | [system.users](/operations/system-tables/users)                                                               | 包含服务器上已配置的用户账户列表的系统表。                                                                  |
 | [system.view&#95;refreshes](/operations/system-tables/view_refreshes)                                         | 包含可刷新materialized view相关信息的系统表。                                                        |
-| [system.warnings](/operations/system-tables/system_warnings)                                                  | 该表包含有关 ClickHouse 服务器的警告信息。                                                            |
+| [system.warnings](/operations/system-tables/system_warnings)                                                  | 该表包含有关 ClickHouse 服务端的警告信息。                                                            |
 | [system.warnings](/operations/system-tables/warnings)                                                         | 包含服务器配置相关警告信息的系统表，这些信息会在 clickhouse-client 连接到服务器后立即显示。                                |
 | [system.workloads](/operations/system-tables/workloads)                                                       | 包含本地服务器上工作负载信息的系统表。                                                                    |
 | [system.zeros](/operations/system-tables/zeros)                                                               | 生成无限数量的非物化零值。                                                                          |
@@ -168,5 +169,6 @@ doc_type: 'reference'
 | [system.zookeeper&#95;connection&#95;log](/operations/system-tables/zookeeper_connection_log)                 | 显示 ZooKeeper 连接历史 (包括辅助 ZooKeeper) 。                                                   |
 | [system.zookeeper&#95;info](/operations/system-tables/zookeeper_info)                                         | 用于输出所有可用 Keeper 节点内部状态的系统表。                                                            |
 | [system.zookeeper&#95;log](/operations/system-tables/zookeeper_log)                                           | 包含关于向 ZooKeeper 服务器发送的请求参数及其返回的响应信息的系统表。                                               |
+| [system.zookeeper&#95;watches](/operations/system-tables/zookeeper_watches)                                   | 显示由此 ClickHouse 服务端注册的当前处于活动状态的 ZooKeeper watches 的系统表。                                |
 
 {/*AUTOGENERATED_END*/ }

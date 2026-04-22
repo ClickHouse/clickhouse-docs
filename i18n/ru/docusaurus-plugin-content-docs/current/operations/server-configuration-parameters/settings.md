@@ -1430,6 +1430,10 @@ ClickHouse перезагружает встроенные словари каж
 ```
 
 
+## handshake_timeout_milliseconds \{#handshake_timeout_milliseconds\}
+
+<SettingsInfoBlock type="UInt64" default_value="30000" changeable_without_restart="No" />Тайм-аут в миллисекундах по астрономическому времени для всей фазы TCP-рукопожатия (Hello + Addendum). Ограничивает, как долго неаутентифицированное соединение может занимать поток. Установите 0, чтобы отключить.
+
 ## hdfs.libhdfs3_conf \{#hdfs.libhdfs3_conf\}
 
 Задает для libhdfs3 корректное местоположение его конфигурации.

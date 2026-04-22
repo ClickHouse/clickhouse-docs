@@ -595,7 +595,7 @@ Dynamic データ型のシリアライゼーションバージョンを指定し
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "デフォルトで、min_age_to_force_merge_seconds が有効な場合でもパーツサイズを制限します"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "デフォルトで、min_age_to_force_merge_seconds が有効な場合でもパーツサイズを制限します"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]} />
 
 `min_age_to_force_merge_seconds` と
 `min_age_to_force_merge_on_partition_only` の設定が、
@@ -2601,6 +2601,20 @@ ClickHouse は、未定義（ポリシーに含まれていない）のディス
 ローリングアップグレード中は、これを `basic` に設定し、新しいサーバーが古いサーバーと互換性のあるデータパーツを生成するようにします。アップグレードが完了したら、
 型ごとのシリアル化バージョンを有効にするために `WITH_TYPES` に切り替えます。
 
+## share_nested_offsets \{#share_nested_offsets\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "false に設定すると、共通のプレフィックスを持つドット区切りの名前の Array カラムは、従来の Nested セマンティクスでオフセットファイルを共有するのではなく、独立したカラムとして扱われます"}]}]} />
+
+有効時 (デフォルト) は、共通のプレフィックスを持つドット区切りの名前の Array カラム (例: n.a および n.b) は
+Nested 構造の一部として扱われます。つまり、ディスク上で 1 つの offsets ファイル (例: n.size0) を共有し、
+INSERT 時にそれらの配列サイズが等しいことが検証されます。
+無効時は、各 Array カラムがそれぞれ独立した offset ファイルを持ち、ドット区切りの名前に特別な
+セマンティクスはなくなります。また、同じプレフィックスを共有するドット区切りの Array カラムと
+scalar カラムを共存させることもできます
+ (例: n UInt32 と n.a Array(String)) 。この設定は、テーブル作成後は変更できません。
+
 ## shared_merge_tree_activate_coordinated_merges_tasks \{#shared_merge_tree_activate_coordinated_merges_tasks\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2828,11 +2842,12 @@ MergerMutator に対してコーディネータが同時に要求できるマー
 
 ## shared_merge_tree_merge_coordinator_merges_prepare_count \{#shared_merge_tree_merge_coordinator_merges_prepare_count\}
 
-<SettingsInfoBlock type="UInt64" default_value="100" />
+<SettingsInfoBlock type="UInt64Auto" default_value="auto" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "100"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "auto"},{"label": "設定を auto にする: レプリカごとの最大マージタスク数 × アクティブなレプリカ数"}]}, {"id": "row-2","items": [{"label": "25.5"},{"label": "100"},{"label": "新しい設定"}]}]} />
 
-コーディネーターが準備してワーカー間に分配するマージエントリの数
+コーディネーターが準備してワーカー間に分配するマージエントリの数。
+`auto` に設定すると、単一レプリカで許可されるマージタスクの最大数に、アクティブなレプリカ数を掛けた値になります。
 
 ## shared_merge_tree_merge_coordinator_min_period_ms \{#shared_merge_tree_merge_coordinator_min_period_ms\}
 
@@ -2919,11 +2934,11 @@ ClickHouse Cloud でのみ利用可能です。
 
 ## shared_merge_tree_replica_set_max_lifetime_seconds \{#shared_merge_tree_replica_set_max_lifetime_seconds\}
 
-<SettingsInfoBlock type="Seconds" default_value="300" />
+<SettingsInfoBlock type="Seconds" default_value="1800" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "300"},{"label": "New setting"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "300"},{"label": "New setting"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1800"},{"label": "デフォルトの replica set のバックグラウンド更新間隔を 30 分に延長"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "300"},{"label": "新しい設定"}]}, {"id": "row-3","items": [{"label": "26.2"},{"label": "300"},{"label": "新しい設定"}]}]} />
 
-バックグラウンドでレプリカが replica set の更新を試みる頻度。
+バックグラウンドでレプリカが replica set の更新を試みる頻度。次回の実行には [0, value] 秒の範囲で一様にジッターが加えられます。例外: value = 0 はこの条件に従いません。実装では最小 200 ms が適用されるため、次回の実行には [0, 200] ms の範囲で一様にジッターが加えられます。
 
 ## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas\}
 
