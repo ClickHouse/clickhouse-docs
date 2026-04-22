@@ -3075,13 +3075,13 @@ ENGINE = Log
 
 ## distributed_cache_read_request_max_tries \{#distributed_cache_read_request_max_tries\}
 
-<CloudOnlyBadge/>
+<CloudOnlyBadge />
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "10"},{"label": "更改设置值"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "20"},{"label": "新增设置"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "10"},{"label": "更改设置值"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "20"},{"label": "新增设置"}]}]} />
 
-仅在 ClickHouse Cloud 中生效。分布式缓存请求失败后的重试次数。
+仅在 ClickHouse Cloud 中生效。分布式缓存读取请求失败后的重试次数。
 
 ## distributed_cache_receive_response_wait_milliseconds \{#distributed_cache_receive_response_wait_milliseconds\}
 
@@ -3174,6 +3174,16 @@ Cloud 默认值：`20000`。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "100"},{"label": "ClickHouse Cloud 的设置"}]}]}/>
 
 仅在 ClickHouse Cloud 中生效。当 distributed_cache_pool_behaviour_on_limit 为 wait 时，从连接池获取连接的等待时间（毫秒）。
+
+## distributed_cache_write_request_max_tries \{#distributed_cache_write_request_max_tries\}
+
+<CloudOnlyBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10"},{"label": "新增设置"}]}]} />
+
+仅在 ClickHouse Cloud 中生效。分布式缓存写入请求失败后的重试次数。
 
 ## distributed_connections_pool_size \{#distributed_connections_pool_size\}
 
@@ -4984,6 +4994,14 @@ HTTP 连接超时时间（秒）。
 
 不要以小于指定时间间隔的频率发送名为 `X-ClickHouse-Progress` 的 HTTP 头。
 
+## http_headers_read_timeout \{#http_headers_read_timeout\}
+
+<SettingsInfoBlock type="Seconds" default_value="30" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "30"},{"label": "用于限制读取 HTTP 请求头总耗时的新设置，可防御 slowloris 攻击。"}]}]} />
+
+读取全部 HTTP 请求头的最长时间 (以秒为单位) 。这是整个请求头解析阶段的总时限，而不是单次读取的超时。它可防御 slowloris 类攻击；在这类攻击中，客户端会以极慢的速度逐步发送请求头数据，以维持连接处于打开状态。
+
 ## http_make_head_request \{#http_make_head_request\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -4992,7 +5010,9 @@ HTTP 连接超时时间（秒）。
 
 ## http_max_field_name_size \{#http_max_field_name_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="131072" />
+<SettingsInfoBlock type="UInt64" default_value="4096" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4096"},{"label": "降低默认值，以限制 HTTP 连接在身份验证前的内存使用量。"}]}]} />
 
 HTTP 请求头中字段名的最大长度
 
@@ -5004,15 +5024,25 @@ HTTP 头部中字段值的最大长度
 
 ## http_max_fields \{#http_max_fields\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />
+<SettingsInfoBlock type="UInt64" default_value="1000" />
 
-HTTP 头部中的最大字段数
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000"},{"label": "降低默认值，以限制 HTTP 连接在身份验证前的内存使用量。"}]}]} />
+
+HTTP 请求头中的最大字段数
 
 ## http_max_multipart_form_data_size \{#http_max_multipart_form_data_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
 `multipart/form-data` 内容大小的上限。该设置不能通过 URL 参数解析，必须在用户配置文件中设置。注意，在开始执行查询之前，内容会被解析，且外部表会在内存中创建。而且这是在该阶段唯一生效的限制（在读取 HTTP 表单数据时，对最大内存使用量和最大执行时间的限制均不起作用）。
+
+## http_max_request_header_size \{#http_max_request_header_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="10485760" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10485760"},{"label": "在身份验证前限制 HTTP 请求头总大小的新设置。"}]}]} />
+
+所有 HTTP 请求头 (名称和值合并计算) 的最大总大小，以字节为单位。
 
 ## http_max_request_param_data_size \{#http_max_request_param_data_size\}
 
@@ -6665,6 +6695,14 @@ Cloud 默认值：每个副本可用内存的一半。
 
 在使用带有 LIMIT 的 ORDER BY 时，当内存使用量超过指定阈值后，会在最终合并之前执行额外的块合并操作，仅保留前 LIMIT 行。
 
+## max_bytes_for_lazy_final \{#max_bytes_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="256000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "256000000"},{"label": "Новая настройка：用于惰性 FINAL 优化的集合最大字节数"}]}]} />
+
+用于惰性 FINAL 优化的集合最大字节数。超过该值时，将回退为普通 FINAL。
+
 ## max_bytes_in_distinct \{#max_bytes_in_distinct\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -7517,6 +7555,14 @@ Cloud 默认值：`0`。
 
 `dictGetKeys` 函数在每次查询中使用的反向字典查找缓存的最大字节数。该缓存按属性值存储序列化的键元组，以避免在同一查询中重新扫描字典。达到该限制时，将使用 LRU（最近最少使用）策略淘汰条目。设置为 0 可禁用缓存。
 
+## max_rows_for_lazy_final \{#max_rows_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000000"},{"label": "新增设置：惰性 FINAL 优化中集合的最大行数"}]}]} />
+
+惰性 FINAL 优化中集合的最大行数。超过该值时，将回退为普通 FINAL。
+
 ## max_rows_in_distinct \{#max_rows_in_distinct\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -8189,6 +8235,14 @@ ClickHouse 在从表中读取数据时会使用此设置。如果要读取的所
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1048449"},{"label": "如果数据块不够大，则将传递给外部表的数据块合并为指定行数的块"}]}]}/>
 
 如果数据块不够大，则将传递给外部表的数据块合并为指定行数的块。
+
+## min_filtered_ratio_for_lazy_final \{#min_filtered_ratio_for_lazy_final\}
+
+<SettingsInfoBlock type="Float" default_value="0.5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0.5"},{"label": "新增设置：惰性 FINAL 优化继续执行所需的最小标记过滤比例"}]}]} />
+
+索引分析为惰性 FINAL 优化过滤掉的标记最小比例。如果过滤掉的标记比例低于该值，则回退为普通 FINAL。值 `0` 会禁用此检查。
 
 ## min_free_disk_bytes_to_perform_insert \{#min_free_disk_bytes_to_perform_insert\}
 
@@ -10248,6 +10302,14 @@ a   Tuple(
 当该值非 0 时，JOIN 顺序优化器将使用随机生成的基数和 NDV，而不是真实统计信息。
 当设置为 1 时，会生成一个随机种子；当设置为大于 1 的值时，将直接使用该值作为种子。
 此设置用于测试，以发现由不同 JOIN 顺序引起的错误。
+
+## query_plan_optimize_lazy_final \{#query_plan_optimize_lazy_final\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新增设置：通过基于集合的索引分析，优化从 ReplacingMergeTree 中使用 FINAL 读取数据"}]}]} />
+
+通过构建一组主键并将其用于索引分析，优化从 ReplacingMergeTree 中使用 FINAL 读取数据。
 
 ## query_plan_optimize_lazy_materialization \{#query_plan_optimize_lazy_materialization\}
 

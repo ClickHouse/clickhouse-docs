@@ -21,8 +21,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ExtendingConfig from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/ingesting-data/_snippets/_extending_config.md';
 
-На этой странице представлена подробная информация по настройке официального коллектора OpenTelemetry (OTel) для ClickStack.
+:::tip Попробуйте OTel FYI — документация по OTel collector в простом и понятном виде
+[OTel FYI](https://otel.fyi) предлагает ясную и лаконичную документацию по OTel collector, охватывающую receivers, processors, exporters и pipelines. Это отличный дополнительный ресурс для настройки вашего OTel collector в ClickStack.
+:::
 
+На этой странице представлена подробная информация по настройке официального коллектора OpenTelemetry (OTel) для ClickStack.
 
 ## Роли коллектора \{#collector-roles\}
 

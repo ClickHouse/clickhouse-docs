@@ -1423,6 +1423,10 @@ Graphite 데이터 희소화(롤업)를 위한 설정입니다.
 ```
 
 
+## handshake_timeout_milliseconds \{#handshake_timeout_milliseconds\}
+
+<SettingsInfoBlock type="UInt64" default_value="30000" changeable_without_restart="No" />전체 TCP 핸드셰이크 단계(Hello + Addendum)에 적용되는 밀리초 단위의 실경과 시간 타임아웃입니다. 인증되지 않은 연결이 스레드를 점유할 수 있는 시간을 제한합니다. 비활성화하려면 0으로 설정하십시오.
+
 ## hdfs.libhdfs3_conf \{#hdfs.libhdfs3_conf\}
 
 libhdfs3의 설정 파일이 위치한 올바른 경로를 지정합니다.

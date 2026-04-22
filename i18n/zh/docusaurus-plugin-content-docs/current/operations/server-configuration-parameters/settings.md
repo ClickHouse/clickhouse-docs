@@ -1424,6 +1424,10 @@ ZooKeeper 中的副本名称。
 ```
 
 
+## handshake_timeout_milliseconds \{#handshake_timeout_milliseconds\}
+
+<SettingsInfoBlock type="UInt64" default_value="30000" changeable_without_restart="No" />整个 TCP 握手阶段 (Hello + Addendum) 的挂钟时间超时，单位为毫秒。用于限制未经身份验证的连接占用线程的最长时长。设为 0 可禁用。
+
 ## hdfs.libhdfs3_conf \{#hdfs.libhdfs3_conf\}
 
 指定 libhdfs3 配置文件所在的正确路径。

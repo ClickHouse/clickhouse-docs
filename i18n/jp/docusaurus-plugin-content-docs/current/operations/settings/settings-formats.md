@@ -466,6 +466,19 @@ BSON 形式のスキーマ推論を行う際に、サポートされていない
 
 CapnProto フォーマットでスキーマ推論を行う際に、サポートされていない型のカラムをスキップする
 
+## input_format_column_name_matching_mode \{#input_format_column_name_matching_mode\}
+
+<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="match_case" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "match_case"},{"label": "新しい設定"}]}]} />
+
+さまざまなフォーマット (JSONEachRow、CSVWithNames、JSONColumns、BSONEachRow、RowBinaryWithNames など) でデータを取り込む際のカラム名の照合モードを定義します。
+サポートされるモードは次のとおりです。
+
+* match&#95;case: 大文字と小文字を区別して照合します
+  * ignore&#95;case: 大文字と小文字を区別せずに照合します
+  * auto: まず大文字と小文字を区別して照合を試み、失敗した場合は大文字と小文字を区別せずに照合を試みます。
+
 ## input_format_connection_handling \{#input_format_connection_handling\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

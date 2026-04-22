@@ -8,6 +8,10 @@ keywords: ['ClickStack', 'observability stack', 'HyperDX', 'OpenTelemetry', 'log
 doc_type: 'landing-page'
 ---
 
+:::tip 试试 OTel FYI - 让 OTel collector 文档更简单
+[OTel FYI](https://otel.fyi) 是一个社区资源，提供清晰、简明的 OpenTelemetry collector 文档。它是 ClickStack 的绝佳补充，可帮助您理解和配置 OTel 管道。
+:::
+
 **ClickStack** 是一个开源的、基于 ClickHouse 和 OpenTelemetry (OTel) 构建的生产级可观测性平台，将日志、追踪、指标和会话数据统一到一个高性能解决方案中。ClickStack 专为监控和调试复杂系统而设计，使开发人员和 SRE 能够进行端到端问题追踪，而无需在多个工具之间切换，或手动关联数据。
 
 ClickStack 可以通过两种方式进行部署。使用 **ClickStack Open Source** 时，需要自行运行和管理包括 ClickHouse、ClickStack UI (HyperDX) 以及 OpenTelemetry Collector 在内的所有组件。使用 **Managed ClickStack** 时，ClickHouse 和 ClickStack UI (HyperDX) 在 ClickHouse Cloud 中以完全托管的方式运行，涵盖认证和运维等事项，只需运行 OpenTelemetry Collector，用于接收来自工作负载的遥测数据，并通过 OTLP 将其转发到 ClickHouse Cloud。

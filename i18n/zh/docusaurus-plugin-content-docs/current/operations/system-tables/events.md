@@ -134,6 +134,14 @@ HTTP 连接的 DNS 解析结果中已不再出现的过期地址总数
 
 表示用于聚合的哈希表预先分配了多少个元素。
 
+### AllUsersThrottlerBytes \{#allusersthrottlerbytes\}
+
+通过 `max_network_bandwidth_for_all_users` 限流器传输的字节数。
+
+### AllUsersThrottlerSleepMicroseconds \{#allusersthrottlersleepmicroseconds\}
+
+查询因遵循“max&#95;network&#95;bandwidth&#95;for&#95;all&#95;users”限流而处于休眠状态的总时长。
+
 ### AnalyzePatchRangesMicroseconds \{#analyzepatchrangesmicroseconds\}
 
 分析补丁分区片段索引所耗费的总时间
@@ -1273,6 +1281,10 @@ DiskS3 存储中 POST、DELETE、PUT 和 PATCH 请求的重定向次数。
 
 分布式缓存注册表事件。分布式缓存注册表更新的次数
 
+### DistrCacheRemoveOutdatedMicroseconds \{#distrcacheremoveoutdatedmicroseconds\}
+
+分布式缓存连接事件。表示从连接池中移除过期连接所花费的时间
+
 ### DistrCacheReusedConnections \{#distrcachereusedconnections\}
 
 分布式缓存创建事件。到分布式缓存的复用连接数
@@ -1356,6 +1368,10 @@ DiskS3 存储中 POST、DELETE、PUT 和 PATCH 请求的重定向次数。
 ### DistrCacheServerUpdates \{#distrcacheserverupdates\}
 
 分布式缓存事件。因哈希选定的服务器发生变化 (例如服务器被取消注册) 而在读取或写入期间发生的服务器切换次数
+
+### DistrCacheStaleReconnections \{#distrcachestalereconnections\}
+
+分布式缓存连接事件。因池化连接过期 (对端已关闭) 而发生的重连次数
 
 ### DistrCacheStartRangeMicroseconds \{#distrcachestartrangemicroseconds\}
 
@@ -4389,6 +4405,10 @@ SMT 的合并选择任务耗时 (微秒)
 
 分区片段清理器运行的次数
 
+### SharedMergeTreeReplicaSetUpdateTaskRuns \{#sharedmergetreereplicasetupdatetaskruns\}
+
+updateReplicaSetTask 已运行的次数
+
 ### SharedMergeTreeReplicaSetUpdatesFromZooKeeper \{#sharedmergetreereplicasetupdatesfromzookeeper\}
 
 从 ZooKeeper 更新副本集的次数
@@ -4800,6 +4820,14 @@ ThreadPoolReader 中未从页缓存读取、而是移交给线程池处理的次
 ### UncompressedCacheWeightLost \{#uncompressedcacheweightlost\}
 
 从未压缩缓存中逐出的字节数。
+
+### UserThrottlerBytes \{#userthrottlerbytes\}
+
+经过 `max_network_bandwidth_for_user` 限流器的字节数。
+
+### UserThrottlerSleepMicroseconds \{#userthrottlersleepmicroseconds\}
+
+查询因满足 `max_network_bandwidth_for_user` 的限流要求而休眠的总时长。
 
 ### UserTimeMicroseconds \{#usertimemicroseconds\}
 

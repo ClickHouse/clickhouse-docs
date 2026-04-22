@@ -135,6 +135,14 @@ SELECT * FROM system.events LIMIT 5
 
 Количество элементов, предварительно выделенных в хеш-таблицах при агрегации.
 
+### AllUsersThrottlerBytes \{#allusersthrottlerbytes\}
+
+Байты, прошедшие через ограничитель &#39;max&#95;network&#95;bandwidth&#95;for&#95;all&#95;users&#39;.
+
+### AllUsersThrottlerSleepMicroseconds \{#allusersthrottlersleepmicroseconds\}
+
+Общее время, в течение которого запрос находился в ожидании из-за ограничения `max_network_bandwidth_for_all_users`.
+
 ### AnalyzePatchRangesMicroseconds \{#analyzepatchrangesmicroseconds\}
 
 Общее время, затраченное на анализ индекса патч-частей
@@ -1274,6 +1282,10 @@ SELECT * FROM system.events LIMIT 5
 
 Событие реестра распределённого кэша. Количество обновлений реестра распределённого кэша
 
+### DistrCacheRemoveOutdatedMicroseconds \{#distrcacheremoveoutdatedmicroseconds\}
+
+Событие подключения к распределённому кэшу. Время, затраченное на удаление устаревших соединений из пула
+
 ### DistrCacheReusedConnections \{#distrcachereusedconnections\}
 
 Событие подключения к распределённому кэшу. Количество повторно использованных подключений к распределённому кэшу
@@ -1357,6 +1369,10 @@ SELECT * FROM system.events LIMIT 5
 ### DistrCacheServerUpdates \{#distrcacheserverupdates\}
 
 Событие распределённого кэша. Количество переключений между серверами во время чтения или записи из-за смены сервера, выбранного хеш-функцией (например, из-за снятия сервера с регистрации)
+
+### DistrCacheStaleReconnections \{#distrcachestalereconnections\}
+
+Событие подключения к распределённому кэшу. Количество повторных подключений из-за устаревших (закрытых удалённым узлом) соединений в пуле
 
 ### DistrCacheStartRangeMicroseconds \{#distrcachestartrangemicroseconds\}
 
@@ -4390,6 +4406,10 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Сколько раз запускался процесс удаления частей
 
+### SharedMergeTreeReplicaSetUpdateTaskRuns \{#sharedmergetreereplicasetupdatetaskruns\}
+
+Количество запусков задачи updateReplicaSetTask
+
 ### SharedMergeTreeReplicaSetUpdatesFromZooKeeper \{#sharedmergetreereplicasetupdatesfromzookeeper\}
 
 Сколько раз набор реплик обновлялся из ZooKeeper
@@ -4801,6 +4821,14 @@ Number of queries to be interpreted and potentially executed. Does not include q
 ### UncompressedCacheWeightLost \{#uncompressedcacheweightlost\}
 
 Количество байтов, вытесненных из несжатого кэша.
+
+### UserThrottlerBytes \{#userthrottlerbytes\}
+
+Байты, прошедшие через троттлер &#39;max&#95;network&#95;bandwidth&#95;for&#95;user&#39;.
+
+### UserThrottlerSleepMicroseconds \{#userthrottlersleepmicroseconds\}
+
+Общее время, в течение которого выполнение запроса приостанавливалось для соблюдения ограничения `max_network_bandwidth_for_user`.
 
 ### UserTimeMicroseconds \{#usertimemicroseconds\}
 
