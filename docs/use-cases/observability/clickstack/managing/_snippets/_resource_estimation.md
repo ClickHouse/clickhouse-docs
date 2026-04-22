@@ -8,6 +8,7 @@ When deploying ClickStack, provision compute to cover two independent workloads:
 Assumptions:
 
 - A **10x compression ratio** for storage - typically conservative for logs and traces.
+- An average query response time of 2 seconds with a P99 of 5 seconds.
 - We assume most queries occur over recent data, with a mean lookback window of six hours, with a normal distribution and a standard deviation of one hour on either side. Users may wish to provision dedicated compute to query older data. In ClickHouse Cloud this can be idle (thus not incuring costs) when not in use.
 - While query compute can be scaled independently of ingest compute, it remains intrinsically linked to ingest volume. We assume as ingest increases, data density grows, resulting in larger scan volumes at query time and consequently higher query compute requirements.
 
