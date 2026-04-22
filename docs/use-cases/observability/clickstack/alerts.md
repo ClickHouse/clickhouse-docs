@@ -105,7 +105,7 @@ Select **Add Alert**.
 
 #### Define the alert conditions {#define-alert-conditions}
 
-Define the condition (`>=`, `>`, `<=`, `<`, `=`, `!=`), threshold, duration, and webhook. The duration here will also dictate how often the alert is triggered.
+Define the condition (`>=`, `>`, `<=`, `<`, `=`, `!=`, `<= x >=`, `> or <`), threshold, duration, and webhook. The duration here will also dictate how often the alert is triggered.
 
 <Image img={create_chart_alert} alt="Create alert for chart" size="lg"/>
 
@@ -225,7 +225,7 @@ Choose **Line**, **Stacked Bar**, or **Number** as the display type.
 
 Select **Add Alert** from the alert section of the chart editor. Configure:
 
-- **Threshold type**: `>=` (greater than or equal), `>` (greater than), `<=` (less than or equal), `<` (less than), `=` (equal), or `!=` (not equal)
+- **Threshold type**: `>=` (greater than or equal), `>` (greater than), `<=` (less than or equal), `<` (less than), `=` (equal), `!=` (not equal), `<= x >=` (between), or `> or <` (outside)
 - **Threshold value**: The numeric value to compare against
 - **Interval**: How often the alert is evaluated (1m, 5m, 15m, 30m, 1h, 6h, 12h, or 1d). This also defines the time window for each evaluation.
 - **Webhook**: The notification channel to use when the alert fires. See [Adding a webhook](#add-webhook).
@@ -233,7 +233,7 @@ Select **Add Alert** from the alert section of the chart editor. Configure:
 <Image img={add_raw_sql_alert} alt="Edit chart alert" size="lg"/>
 
 :::warning Alert Time Range
-Typically, alert queries are executed once per interval. However, if one or more intervals are skipped due to errors or slow queries, the following execution will use a date range that includes the missed intervals.
+Typically, alert queries are executed once per interval. However, if one or more intervals are skipped due to errors or slow queries, the following execution will use a time range that includes the missed intervals. In this case, the query's interval parameters would still be set to the alert's configured period, but the time range parameters would reflect the longer time range.
 :::
 
 #### Save the dashboard {#save-sql-dashboard}
@@ -247,8 +247,8 @@ Save the dashboard to activate the alert. The alert will begin evaluating on the
 The alert system inspects the columns returned by your SQL query to determine what to compare against the threshold.
 
 - **Value column**: The **last numeric column** in your `SELECT` clause is used as the alert value. If your query returns multiple numeric columns (e.g., `count, avg_latency, p99_latency`), only the last one (`p99_latency`) is compared to the threshold.
-- **Timestamp column**: For time-series charts (Line and Stacked Bar), the system identifies the Date/DateTime column in your results as the time bucket. Each bucket is evaluated against the threshold independently.
-- **Group columns**: Any non-numeric, non-timestamp columns (e.g., `ServiceName`, `Environment`) are treated as grouping dimensions. When groups are present, each unique combination of group values is tracked and alerted on separately. Groups are only available for time-series charts.
+- **Timestamp column**: For time-series charts (Line and Stacked Bar), the system identifies the Date/DateTime column in your results as the time bucket (i.e. the x-axis on a time-series chart). The value column for each time bucket is evaluated against the threshold independently, and if the value for any time bucket breaches the configured threshold, the alert will trigger.
+- **Group columns**: Any non-numeric, non-timestamp columns (e.g., `ServiceName`, `Environment`) are treated as grouping dimensions. When groups are present, each unique combination of group values is tracked and alerted on separately. ClickStack will send an alert for each group with a value that breaches the configured threshold. Groups are only available for time-series charts.
 
 ### Query parameters and macros {#query-params}
 
@@ -256,15 +256,19 @@ SQL alert queries support template parameters and macros that are automatically 
 
 #### Required and Recommended Parameters {#required-alert-parameters}
 
-Queries used for line or stacked bar chart alerts **must** include an interval parameter or macro (`{intervalSeconds:Int64}`, `{intervalMilliseconds:Int64}`, `$__timeInterval(col)`, or `$__timeInterval_ms(col)`).
+Queries used for line or stacked bar chart alerts **must** include an interval parameter or macro (`{intervalSeconds:Int64}`, `{intervalMilliseconds:Int64}`, `$__timeInterval(col)`, or `$__timeInterval_ms(col)`). During alert execution, it will be replaced with the alert's configured period.
 
-Queries used for alerts **should** include a time range filter (`{startDateMilliseconds:Int64}` and `{endDateMilliseconds:Int64}`, or `$__timeFilter(col)`, etc.), otherwise every alert execution will read the entire time range included in the source table.
+Queries used for alerts **should** include a time range filter (`{startDateMilliseconds:Int64}` and `{endDateMilliseconds:Int64}`, or `$__timeFilter(col)`, etc.). Regardless of whether a time range filter is present in the query, the alert query will run on the alert's configured period. If there is no time range filter, then the query will read the entire time range available in the source table during each execution.
+
+:::warning Alert Time Range
+Typically, alert queries are executed once per interval. However, if one or more intervals are skipped due to errors or slow queries, the following execution will use a time range that includes the missed intervals. In this case, the query's interval parameters would still be set to the alert's configured period, but the time range parameters would reflect the longer time range.
+:::
 
 ### Example alert queries {#example-queries}
 
 #### Error rate per service (time-series) {#example-error-rate}
 
-Alert when any service has an error rate above a threshold, with at least 10 requests to avoid noisy alerts on low-traffic services.
+Alert when any service has an error rate above 5%, with at least 10 requests in the alert period to avoid noisy alerts on low-traffic services.
 
 ```sql
 WITH error_rates AS (
@@ -287,7 +291,7 @@ WHERE request_count > 10
 ```
 
 **Display type**: Line or Stacked Bar
-**Threshold**: `>= 10` (fires when error rate reaches 10%)
+**Threshold**: `>= 5` (fires when error rate reaches 5%)
 
 In this query, `ServiceName` is a non-numeric, non-timestamp column, so each service is tracked as a separate alert group. The alert fires independently per service.
 
