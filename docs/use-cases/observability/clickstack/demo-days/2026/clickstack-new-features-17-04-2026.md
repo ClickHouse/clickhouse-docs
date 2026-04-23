@@ -17,7 +17,7 @@ keywords: ['ClickStack', 'Demo days']
 
 HyperDX now has an AI summarize feature that works across logs, traces, and patterns. The new summarize button condenses your telemetry data into a readable summary, letting you quickly understand what happened across a set of events without manually reading through them one by one.
 
-One particularly fun addition: you can select a tone or theme for your summary, with options like Shakespeare drama giving you a stylized read of what happened in your system. Beyond the novelty, the architecture is designed to hook into Anthropic (or similar) APIs, and is built to support follow-up conversation so users can continue asking questions after the initial summary.
+The architecture is designed to hook into Anthropic (or similar) APIs, and is built to support follow-up conversation so users can continue asking questions after the initial summary.
 
 **Related PRs:** [#2108](https://github.com/hyperdxio/hyperdx/pull/2108) feat: AI summarize with extensible subjects, trace context, and security hardening, [#2100](https://github.com/hyperdxio/hyperdx/pull/2100) Implement real AI summarize callbacks with smart tone mode
 
