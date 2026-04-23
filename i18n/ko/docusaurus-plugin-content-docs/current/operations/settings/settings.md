@@ -9704,6 +9704,14 @@ PostgreSQL 테이블 엔진과 데이터베이스 엔진에서, 연결 풀(conne
 
 PostgreSQL 복제용 내부 쿼리에 장애를 주입할 대략적인 확률입니다. 유효한 값 범위는 [0.0f, 1.0f]입니다.
 
+## predicate_statistics_sample_rate \{#predicate_statistics_sample_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "system.predicate_statistics_log에 프레디케이트 선택도 통계를 수집하는 새 설정"}]}]} />
+
+프레디케이트 선택도 통계를 `system.predicate_statistics_log`에 수집합니다. N &gt; 0으로 설정하면 쿼리 중 약 1/N이 Query id를 기준으로 샘플링됩니다. 0은 비활성화를 의미합니다.
+
 ## prefer_column_name_to_alias \{#prefer_column_name_to_alias\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
