@@ -23,11 +23,50 @@ The model assumes a sustained average of 1 QPS from ClickStack, aggregating all 
 
 For higher query volumes, scale CPU requirements linearly by dividing by CPU requirements by the target QPS. For example, a deployment ingesting at 100 MB/s with a target of 9 QPS would require 90 query CPUs (10 × 9) rather than the baseline 10, giving a revised total of 100 CPUs (10 ingest + 90 query).
 
-Storage estimates assume a conservative 10x compression ratio. In practice, logs, traces, and metrics often achieve higher compression. We recommend testing on a sample of data to establish your compression ratio and storage requirements in advance of production.
+Storage estimates assume a conservative 10x compression ratio. In practice, logs, traces, and metrics often achieve higher compression. We recommend testing on a sample of data to establish your compression ratio and storage requirements in advance of production. To compute the required storage for longer retention, simply multiply the storage per month by the number of months required to retain.
 
-This assumes a relatively balanced query distribution. Workloads skewed toward heavier historical or archival queries may have significantly different compute requirements, and should be validated through load testing.
+This assumes a relatively balanced query distribution. Workloads skewed toward heavier historical or archival queries may have significantly different compute requirements, and should be validated through load testing. We plan to introduce a more flexible sizing model that allows extrapolation of query compute based on varying query distribution patterns.
 
-We plan to introduce a more flexible sizing model that allows extrapolation of query compute based on varying query distribution patterns.
+### Worked example {#worked-example}
+
+**Requirements:** 1.5 PB/month ingest, 5 QPS, 3-month retention.
+
+**Converting to MB/s**
+
+The sizing model is expressed in MB/s. Converting 1.5 PB/month (1,500 TB) to a sustained throughput:
+
+- 1,500 TB = 1,500,000,000 MB
+- Seconds per month (30 days): 30 × 24 × 60 × 60 = 2,592,000
+- MB/s = 1,500,000,000 ÷ 2,592,000 ≈ **579 MB/s**
+
+**Ingest compute**
+
+At 1 vCPU per 10 MB/s of sustained ingest:
+
+579 ÷ 10 = **~58 vCPUs** for ingest
+
+**Query compute**
+
+Query compute scales with both ingest throughput and QPS. At 5 QPS:
+
+(579 ÷ 10) × 5 = 58 × 5 = **290 vCPUs** for query
+
+**Storage**
+
+At 579 MB/s sustained over 30 days, raw ingest equals 1,500 TB/month. Applying the assumed 10x compression ratio:
+
+- Compressed per month: 1,500 TB ÷ 10 = **150 TB/month**
+- For 3-month retention: 150 TB × 3 = **450 TB total**
+
+**Summary**
+
+| Resource | Value |
+|---|---|
+| Ingest compute | 58 vCPUs |
+| Query compute | 290 vCPUs |
+| Total compute | 348 vCPUs |
+| Storage per month (compressed) | 150 TB |
+| Storage for 3-month retention | 450 TB |
 
 ## Isolating observability workloads {#isolating-workloads}
 
