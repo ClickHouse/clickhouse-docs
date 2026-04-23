@@ -7,6 +7,7 @@ docs/engines
 docs/interfaces
 docs/operations
 docs/sql-reference
+docs/kubernetes-operator
 docs/_clients
 docs/ru
 docs/zh
