@@ -3764,6 +3764,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/use-cases/observability/clickstack/demo-days/2026/04/03-04-2026",
+      "destination": "/docs/use-cases/observability/clickstack/demo-days/2026/2026-04-03",
+      "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/clickstack/demo-days/2026/04/10-04-2026",
+      "destination": "/docs/use-cases/observability/clickstack/demo-days/2026/2026-04-10",
+      "permanent": true
+    },
+    {
       "source": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hippa-services",
       "destination": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hipaa-services",
       "permanent": true
