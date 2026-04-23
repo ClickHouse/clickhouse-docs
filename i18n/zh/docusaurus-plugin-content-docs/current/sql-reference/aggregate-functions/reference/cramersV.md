@@ -46,7 +46,7 @@ FROM
             number % 5 AS b
         FROM
             numbers(150)
-    )
+    );
 ```
 
 ```response title=Response
@@ -64,15 +64,15 @@ FROM
     (
         SELECT
             number % 10 AS a,
-            number % 5 AS b
+            if (number % 12 = 0, (number + 1) % 5, number % 5) AS b
         FROM
             numbers(150)
-    )
+    );
 ```
 
 ```response title=Response
 ┌─────cramersV(a, b)─┐
-│ 0.8944271909999159 │
+│ 0.9066801892162646 │
 └────────────────────┘
 ```
 

@@ -519,6 +519,17 @@ SELECT count() FROM table WHERE has(array, 'clickhouse');
 ```
 
 
+#### `hasAny` 和 `hasAll` \{#functions-example-hasany-hasall\}
+
+数组函数 [hasAny](/sql-reference/functions/array-functions#hasAny) 和 [hasAll](/sql-reference/functions/array-functions#hasAll) 用于测试带索引的数组列是否包含某个常量 needle 字符串集合中的任意字符串或全部字符串。
+
+示例：
+
+```sql
+SELECT count() FROM table WHERE hasAny(tags, ['clickhouse', 'olap']);
+SELECT count() FROM table WHERE hasAll(tags, ['clickhouse', 'olap']);
+```
+
 #### `mapContains` \{#functions-example-mapcontains\}
 
 函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey)（`mapContainsKey` 的别名）会在 map 的键中，匹配从待搜索字符串中提取的 token。
@@ -951,7 +962,7 @@ WHERE string_search_function(column_with_text_index)
 **支持的函数**
 
 直接读取优化支持函数 `hasToken`、`hasAllTokens` 和 `hasAnyTokens`。
-如果文本索引是使用 `array` tokenizer 定义的，直接读取同样支持函数 `equals`、`has`、`mapContainsKey` 和 `mapContainsValue`。
+如果文本索引是使用 `array` 分词器 定义的，直接读取同样支持函数 `equals`、`has`、`hasAny`、`hasAll`、`mapContainsKey` 和 `mapContainsValue`。
 这些函数也可以通过 `AND`、`OR` 和 `NOT` 运算符组合使用。
 `WHERE` 或 `PREWHERE` 子句中还可以包含额外的非文本搜索函数过滤条件 (针对文本列或其他列) ——在这种情况下，仍然会使用直接读取优化，但效果会略差一些 (它仅适用于受支持的文本搜索函数) 。
 
