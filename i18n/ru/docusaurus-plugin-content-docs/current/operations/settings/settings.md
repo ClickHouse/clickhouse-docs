@@ -9732,6 +9732,14 @@ FROM default.fuse_tbl AS __table1
 
 Оценочная вероятность сбоя внутренних (репликационных) запросов PostgreSQL. Допустимое значение — в интервале [0.0f, 1.0f].
 
+## predicate_statistics_sample_rate \{#predicate_statistics_sample_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка для сбора статистики селективности предикатов в system.predicate_statistics_log"}]}]} />
+
+Собирает статистику селективности предикатов в `system.predicate_statistics_log`. Если задано значение N &gt; 0, в выборку попадает примерно 1/N запросов (по идентификатору запроса). 0 означает, что сбор отключён.
+
 ## prefer_column_name_to_alias \{#prefer_column_name_to_alias\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
