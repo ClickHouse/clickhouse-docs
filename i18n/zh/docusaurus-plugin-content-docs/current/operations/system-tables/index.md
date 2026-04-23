@@ -105,6 +105,7 @@ doc_type: 'reference'
 | [system.part&#95;moves&#95;between&#95;shards](/operations/system-tables/part_moves_between_shards)           | 包含当前正在分片之间移动的 parts 及其进度信息。                                                            |
 | [system.parts](/operations/system-tables/parts)                                                               | 包含 MergeTree 表分区片段相关信息的系统表                                                             |
 | [system.parts&#95;columns](/operations/system-tables/parts_columns)                                           | 包含 MergeTree 表的分区片段和列信息的系统表。                                                           |
+| [system.predicate&#95;statistics&#95;log](/operations/system-tables/predicate_statistics_log)                 | 系统表，包含在查询执行期间从 `MergeTree` 读取管道中收集的采样过滤器和索引选择性统计信息。                                    |
 | [system.primes](/operations/system-tables/primes)                                                             | 系统表，只包含一个名为 `prime` 的 UInt64 类型列，按升序存储从 2 开始的质数。                                       |
 | [system.privileges](/operations/system-tables/privileges)                                                     | 包含可授予用户或角色的全部可用特权列表。                                                                   |
 | [system.processes](/operations/system-tables/processes)                                                       | 用于实现 `SHOW PROCESSLIST` 查询的系统表。                                                        |

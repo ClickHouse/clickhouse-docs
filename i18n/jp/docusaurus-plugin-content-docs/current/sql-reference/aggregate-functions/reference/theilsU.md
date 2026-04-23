@@ -12,8 +12,7 @@ doc_type: 'reference'
 導入バージョン: v22.1.0
 
 `theilsU` 関数は、[Theil の U 不確実性係数](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient) を計算します。これは、テーブル内の 2 つのカラム間の関連の強さを測定する指標です。
-その値の範囲は −1.0 (100% の負の関連、または完全な反転) から +1.0 (100% の正の関連、または完全な一致) までです。
-0.0 の値は関連がないことを示します。
+その値の範囲は 0.0 (関連なし) から 1.0 (完全な一致) までです。
 
 **構文**
 
@@ -28,7 +27,7 @@ theilsU(column1, column2)
 
 **返り値**
 
--1 から 1 の間の値を返します。[`Float64`](/sql-reference/data-types/float)
+0 から 1 の間の値を返します。[`Float64`](/sql-reference/data-types/float)
 
 **例**
 
@@ -47,7 +46,7 @@ FROM (
 
 ```response title=Response
 ┌────────theilsU(a, b)─┐
-│ -0.30195720557678846 │
+│  0.30195720557678846 │
 └──────────────────────┘
 ```
 
