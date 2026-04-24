@@ -275,9 +275,9 @@ The connector can consume data from multiple topics
 
 Refer to [Supported data types](#supported-data-types) for the mapping between Kafka Connect types and ClickHouse types.
 
-###### Unsupported data types {#unsupported-avro-types}
+###### Unsupported schemas {#unsupported-avro-schemas}
 
-Currently, the following Avro data types are unsupported by the connector - support for them is forthcoming:
+The following Avro schemas are unsupported by the connector:
 - fixed `decimal` logical type
 ```json
 {"name": "decimal_18_4", "type": "fixed", "size": 8, "logicalType": "decimal", "precision": 18, "scale": 4}
