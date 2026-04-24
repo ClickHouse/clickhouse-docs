@@ -9709,6 +9709,14 @@ PostgreSQL テーブルエンジンおよびデータベースエンジンにお
 
 レプリケーション用の内部 PostgreSQL クエリが失敗する近似的な確率です。有効な値の範囲は [0.0f, 1.0f] です。
 
+## predicate_statistics_sample_rate \{#predicate_statistics_sample_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "system.predicate_statistics_log にプレディケートの選択性統計を収集するための新しい設定"}]}]} />
+
+プレディケートの選択性統計を `system.predicate_statistics_log` に収集します。N &gt; 0 に設定すると、クエリ ID に基づいてクエリのおよそ 1/N がサンプリングされます。0 は無効です。
+
 ## prefer_column_name_to_alias \{#prefer_column_name_to_alias\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

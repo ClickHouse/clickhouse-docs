@@ -1,10 +1,10 @@
 ---
-slug: /use-cases/observability/clickstack/demo-days/2026/04/03-04-2026
-title: '데모 데이 - 03/04/2026'
-sidebar_label: '03/04/2026'
+slug: /use-cases/observability/clickstack/demo-days/2026/2026-04-03
+title: '데모 데이 - 2026-04-03'
+sidebar_label: '2026-04-03'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack 데모 데이 - 03/04/2026'
+description: 'ClickStack 데모 데이 - 2026-04-03'
 doc_type: 'guide'
 keywords: ['ClickStack', '데모 데이']
 ---

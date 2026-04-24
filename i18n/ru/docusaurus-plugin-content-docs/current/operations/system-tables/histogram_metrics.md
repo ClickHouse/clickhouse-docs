@@ -472,3 +472,99 @@ FORMAT Prometheus
 ### keeper_write_pre_commit_time_milliseconds_sum \{#keeper_write_pre_commit_time_milliseconds_sum\}
 
 Время предварительной обработки запроса на запись перед фиксацией в Raft
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байт, прочитанных на одно соединение запроса чтения S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байт, прочитанных на одно соединение запроса чтения к S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байтов, прочитанных на одно соединение для запросов чтения S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байт, прочитанных на одно соединение при запросе чтения из S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байтов, прочитанных через одно соединение для запроса чтения к S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байт, считанных на одно соединение для запроса чтения из S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Число байтов, прочитанных на одно соединение для запроса чтения S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байт, прочитанных на одно соединение запроса чтения S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байт, прочитанных на одно соединение запроса на чтение из S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байт, прочитанных на одно соединение для запроса чтения к S3.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+Количество байтов, прочитанных через одно соединение для запросов чтения к S3.
+
+### s3_read_request_bytes_sum \{#s3_read_request_bytes_sum\}
+
+Количество байт, прочитанных через одно соединение запроса чтения S3.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений при запросах на чтение из S3 — от начала запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений для запросов чтения из S3 — от начала запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений для запросов чтения из S3 — от инициации запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений при запросах чтения S3: от инициализации запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений при запросах на чтение из S3 — от инициирования запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений для запросов чтения к S3: от момента инициации запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений для запросов на чтение из S3 — от начала запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений для запросов чтения из S3 — от момента инициации запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений при запросах чтения к S3 — от начала запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений при запросах чтения из S3: от инициализации запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+Длительность соединений для запросов на чтение из S3 — от начала запроса до закрытия соединения, в микросекундах.
+
+### s3_read_request_duration_microseconds_sum \{#s3_read_request_duration_microseconds_sum\}
+
+Длительность соединений при запросах чтения S3 — от начала запроса до закрытия соединения, в микросекундах.
