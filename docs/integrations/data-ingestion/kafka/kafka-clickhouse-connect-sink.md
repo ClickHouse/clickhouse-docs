@@ -266,14 +266,12 @@ The connector can consume data from multiple topics
 
 Please note: if you encounter issues with missing classes, not every environment comes with the protobuf converter and you may need an alternate release of the jar bundled with dependencies.
 
-
 ###### Type mapping {#proto-type-mapping}
 ✅: Supported
 
 ❌: Not supported
 
 ️⚠️: Partially supported
-
 
 | Protobuf Type                           | Kafka Connect Type                      | Supported | Notes                                                                                                                                                                                                                                                                                   |
 |-----------------------------------------|-----------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -312,7 +310,7 @@ Please note: if you encounter issues with missing classes, not every environment
 
 Refer to [Supported data types](#supported-data-types) for the mapping between Kafka Connect types and ClickHouse types.
 
-###### Note on translating `oneof` fields to ClickHouse columns
+###### Note on translating `oneof` fields to ClickHouse columns {#oneof-translation}
 The connector does not support translating Protobuf unions (`oneof`) to the ClickHouse Variant type. Instead, list the `oneof` fields as individual nullable fields in your ClickHouse table schema.
 
 For example:
