@@ -867,7 +867,6 @@ const sidebars = {
       items: [
         'interfaces/cli',
         'interfaces/client',
-        'interfaces/web-terminal',
         {
           type: 'category',
           label: 'Drivers and interfaces',
