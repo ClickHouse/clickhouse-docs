@@ -2768,6 +2768,42 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
+## highlightQuery \{#highlightQuery\}
+
+引入版本：v26.4.0
+
+解析 ClickHouse SQL 查询字符串，并返回一个用于语法高亮的高亮范围数组。
+每个范围都是一个命名元组，包含起始位置 (以字节为单位) 、结束位置以及高亮类型。
+高亮类型描述该片段的语法角色 (关键字、标识符、函数等) ，
+可用于在 UI 中指定颜色。在 LIKE 和 REGEXP 字符串模式中，元字符
+和转义字符会分别高亮显示。
+
+**语法**
+
+```sql
+highlightQuery(query)
+```
+
+**参数**
+
+* `query` — ClickHouse SQL 查询字符串。String。
+
+**返回值**
+
+表示高亮范围的命名元组数组 `(begin UInt64, end UInt64, type Enum8(...))`。[`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**示例**
+
+**simple**
+
+```sql title=Query
+SELECT highlightQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'keyword'),(7,8,'number')]
+```
+
 ## hostName \{#hostName\}
 
 引入版本：v20.5.0
@@ -4982,6 +5018,39 @@ SELECT toTypeName(123)
 ┌─toTypeName(123)─┐
 │ UInt8           │
 └─────────────────┘
+```
+
+## tokenizeQuery \{#tokenizeQuery\}
+
+引入版本：v26.4.0
+
+将 ClickHouse SQL 查询字符串标记化，并返回一个标记数组。
+每个标记都是一个命名元组，包含起始位置 (以字节为单位) 、结束位置以及标记类型。
+
+**语法**
+
+```sql
+tokenizeQuery(query)
+```
+
+**参数**
+
+* `query` — ClickHouse SQL 查询字符串。String。
+
+**返回值**
+
+一个由命名元组 `(begin UInt64, end UInt64, type Enum8(...))` 组成的数组，表示该查询的标记。[`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**示例**
+
+**简单**
+
+```sql title=Query
+SELECT tokenizeQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'BareWord'),(6,7,'Whitespace'),(7,8,'Number')]
 ```
 
 ## transactionID \{#transactionID\}

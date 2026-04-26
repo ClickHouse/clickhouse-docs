@@ -2771,6 +2771,42 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
+## highlightQuery \{#highlightQuery\}
+
+Добавить в: v26.4.0
+
+Разбирает строку SQL-запроса ClickHouse и возвращает массив диапазонов для подсветки синтаксиса.
+Каждый диапазон представляет собой именованный кортеж с начальной позицией (в байтах), конечной позицией и типом подсветки.
+Типы подсветки описывают синтаксическую роль фрагмента (ключевое слово, идентификатор, функция и т. д.)
+и могут использоваться для назначения цветов в интерфейсе пользователя. Внутри строковых шаблонов LIKE и REGEXP метасимволы
+и символы экранирования подсвечиваются отдельно.
+
+**Синтаксис**
+
+```sql
+highlightQuery(query)
+```
+
+**Аргументы**
+
+* `query` — Строка SQL-запроса ClickHouse. String.
+
+**Возвращаемое значение**
+
+Массив именованных кортежей `(begin UInt64, end UInt64, type Enum8(...))`, представляющий диапазоны с подсветкой. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Простой**
+
+```sql title=Query
+SELECT highlightQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'keyword'),(7,8,'number')]
+```
+
 ## hostName \{#hostName\}
 
 Введена в: v20.5.0
@@ -4984,6 +5020,39 @@ SELECT toTypeName(123)
 ┌─toTypeName(123)─┐
 │ UInt8           │
 └─────────────────┘
+```
+
+## tokenizeQuery \{#tokenizeQuery\}
+
+Добавить в: v26.4.0
+
+Разбивает строку SQL-запроса ClickHouse на токены и возвращает массив токенов.
+Каждый токен представляет собой именованный кортеж с начальной позицией (в байтах), конечной позицией и типом токена.
+
+**Синтаксис**
+
+```sql
+tokenizeQuery(query)
+```
+
+**Аргументы**
+
+* `query` — Строка SQL-запроса ClickHouse. String.
+
+**Возвращаемое значение**
+
+Массив именованных кортежей `(begin UInt64, end UInt64, type Enum8(...))`, представляющих токены запроса. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Простой**
+
+```sql title=Query
+SELECT tokenizeQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'BareWord'),(6,7,'Whitespace'),(7,8,'Number')]
 ```
 
 ## transactionID \{#transactionID\}

@@ -27,14 +27,14 @@ doc_type: 'reference'
 | [system.aggregate&#95;function&#95;combinators](/operations/system-tables/aggregate_function_combinators)     | 包含所有可用聚合函数组合器列表，这些组合器可应用于聚合函数，以改变其工作方式。                                                |
 | [system.aggregated&#95;zookeeper&#95;log](/operations/system-tables/aggregated_zookeeper_log)                 | 系统表，包含按会话、路径、操作类型、组件和子请求标志分组的 ZooKeeper 操作聚合统计信息。                                      |
 | [system.asynchronous&#95;insert&#95;log](/operations/system-tables/asynchronous_insert_log)                   | 包含异步插入操作信息的系统表。每条记录对应一个已被缓冲为异步插入的插入查询。                                                 |
-| [system.asynchronous&#95;inserts](/operations/system-tables/asynchronous_inserts)                             | 包含队列中待处理异步插入操作信息的系统表。                                                                  |
-| [system.asynchronous&#95;loader](/operations/system-tables/asynchronous_loader)                               | 包含最近异步作业 (例如正在加载的表) 相关信息和状态的系统表。表中每一行对应一个作业。                                           |
 | [system.asynchronous&#95;metric&#95;log](/operations/system-tables/asynchronous_metric_log)                   | 包含 `system.asynchronous_metrics` 历史值的系统表，这些值会按照固定时间间隔 (默认每秒一次) 进行保存                    |
 | [system.asynchronous&#95;metrics](/operations/system-tables/asynchronous_metrics)                             | 包含在后台周期性计算的指标的系统表。例如，当前使用的内存量。                                                         |
+| [system.asynchronous&#95;inserts](/operations/system-tables/asynchronous_inserts)                             | 包含队列中待处理异步插入操作信息的系统表。                                                                  |
+| [system.asynchronous&#95;loader](/operations/system-tables/asynchronous_loader)                               | 包含最近异步作业 (例如正在加载的表) 相关信息和状态的系统表。表中每一行对应一个作业。                                           |
 | [system.azure&#95;queue&#95;metadata&#95;cache](/operations/system-tables/azure_queue_metadata_cache)         | 包含 AzureQueue 元数据的内存状态，以及当前每个文件正在处理的行信息。                                               |
 | [system.azure&#95;queue&#95;settings](/operations/system-tables/azure_queue_settings)                         | 包含 AzureQueue 表相关设置信息的系统表。从服务器版本 `24.10` 起可用。                                          |
-| [system.background&#95;schedule&#95;pool](/operations/system-tables/background_schedule_pool)                 | 包含后台调度池中任务相关信息的系统表。                                                                    |
 | [system.background&#95;schedule&#95;pool&#95;log](/operations/system-tables/background_schedule_pool_log)     | 记录后台调度池中任务执行历史的系统表。                                                                    |
+| [system.background&#95;schedule&#95;pool](/operations/system-tables/background_schedule_pool)                 | 包含后台调度池中任务相关信息的系统表。                                                                    |
 | [system.backup&#95;log](/operations/system-tables/backup_log)                                                 | 包含 `BACKUP` 和 `RESTORE` 操作相关日志记录项的系统表。                                                 |
 | [system.backups](/operations/system-tables/backups)                                                           | 包含 `BACKUP` 和 `RESTORE` 操作相关日志记录项的系统表。                                                 |
 | [system.blob&#95;storage&#95;log](/operations/system-tables/blob_storage_log)                                 | 包含各种 blob 存储操作 (如上传和删除) 日志记录的系统表。                                                      |
@@ -78,8 +78,8 @@ doc_type: 'reference'
 | [system.grants](/operations/system-tables/grants)                                                             | 系统表,用于显示授予 ClickHouse 用户账号的各项权限。                                                       |
 | [system.graphite&#95;retentions](/operations/system-tables/graphite_retentions)                               | 包含在使用 `GraphiteMergeTree` 类型引擎的表中所用 `graphite_rollup` 参数信息的系统表。                        |
 | [system.histogram&#95;metrics](/operations/system-tables/histogram_metrics)                                   | 该表包含可实时计算并以 Prometheus 格式导出的直方图指标，且始终保持最新。                                             |
-| [system.iceberg&#95;history](/operations/system-tables/iceberg_history)                                       | 系统中的 Iceberg 快照历史                                                                      |
 | [system.iceberg&#95;metadata&#95;log](/operations/system-tables/iceberg_metadata_log)                         | 包含从 Iceberg 表读取的元数据文件信息的系统表。每条记录表示一个根元数据文件、从某个 Avro 文件中提取的元数据,或某个 Avro 文件对应的一条条目。      |
+| [system.iceberg&#95;history](/operations/system-tables/iceberg_history)                                       | 系统中的 Iceberg 快照历史                                                                      |
 | [system.instrumentation](/operations/system-tables/instrumentation)                                           | 包含插桩点信息的系统表                                                                            |
 | [system.jemalloc&#95;bins](/operations/system-tables/jemalloc_bins)                                           | 包含通过 jemalloc 分配器在不同大小类别 (bin) 中的内存分配信息,汇总自所有 arena 的系统表。                              |
 | [system.jemalloc&#95;profile&#95;text](/operations/system-tables/jemalloc_profile_text)                       | 显示带符号信息的 jemalloc 堆分析报告。请先运行 &#39;SYSTEM JEMALLOC FLUSH PROFILE&#39; 生成分析报告。           |
@@ -105,6 +105,7 @@ doc_type: 'reference'
 | [system.part&#95;moves&#95;between&#95;shards](/operations/system-tables/part_moves_between_shards)           | 包含当前正在分片之间移动的 parts 及其进度信息。                                                            |
 | [system.parts](/operations/system-tables/parts)                                                               | 包含 MergeTree 表分区片段相关信息的系统表                                                             |
 | [system.parts&#95;columns](/operations/system-tables/parts_columns)                                           | 包含 MergeTree 表的分区片段和列信息的系统表。                                                           |
+| [system.predicate&#95;statistics&#95;log](/operations/system-tables/predicate_statistics_log)                 | 系统表，包含在查询执行期间从 `MergeTree` 读取管道中收集的采样过滤器和索引选择性统计信息。                                    |
 | [system.primes](/operations/system-tables/primes)                                                             | 系统表，只包含一个名为 `prime` 的 UInt64 类型列，按升序存储从 2 开始的质数。                                       |
 | [system.privileges](/operations/system-tables/privileges)                                                     | 包含可授予用户或角色的全部可用特权列表。                                                                   |
 | [system.processes](/operations/system-tables/processes)                                                       | 用于实现 `SHOW PROCESSLIST` 查询的系统表。                                                        |
@@ -112,12 +113,12 @@ doc_type: 'reference'
 | [system.projection&#95;parts](/operations/system-tables/projection_parts)                                     | 包含 MergeTree 系列表的投影分区片段相关信息的系统表。                                                       |
 | [system.projection&#95;parts&#95;columns](/operations/system-tables/projection_parts_columns)                 | 包含 MergeTree 系列表中投影分区片段的列信息的系统表                                                        |
 | [system.projections](/operations/system-tables/projections)                                                   | 包含所有表中现有 PROJECTION 相关信息的系统表。                                                          |
-| [system.query&#95;cache](/operations/system-tables/query_cache)                                               | 显示查询缓存内容的系统表。                                                                          |
-| [system.query&#95;condition&#95;cache](/operations/system-tables/query_condition_cache)                       | 显示查询条件缓存内容的系统表。                                                                        |
 | [system.query&#95;log](/operations/system-tables/query_log)                                                   | 系统表,包含已执行查询的信息,例如查询开始时间、处理耗时和错误消息。                                                     |
 | [system.query&#95;metric&#95;log](/operations/system-tables/query_metric_log)                                 | 系统表，包含针对各个查询、来自 `system.events` 表的内存和指标值历史记录，并会定期写入磁盘。                                 |
 | [system.query&#95;thread&#95;log](/operations/system-tables/query_thread_log)                                 | 系统表,包含执行查询的线程的信息,例如线程名称、线程启动时间以及查询处理持续时间。                                              |
 | [system.query&#95;views&#95;log](/operations/system-tables/query_views_log)                                   | 用于记录在执行查询时被执行的依赖视图相关信息的系统表，例如视图类型或执行时间。                                                |
+| [system.query&#95;cache](/operations/system-tables/query_cache)                                               | 显示查询缓存内容的系统表。                                                                          |
+| [system.query&#95;condition&#95;cache](/operations/system-tables/query_condition_cache)                       | 显示查询条件缓存内容的系统表。                                                                        |
 | [system.quota&#95;limits](/operations/system-tables/quota_limits)                                             | 包含所有 QUOTA 在各个时间区间内最大限制信息的系统表。一个 QUOTA 可以对应任意数量的行 (包括零行) 。                             |
 | [system.quota&#95;usage](/operations/system-tables/quota_usage)                                               | 系统表,包含当前 USER 的 QUOTA 使用情况,例如已使用的 QUOTA 额度和剩余额度。                                       |
 | [system.quotas](/operations/system-tables/quotas)                                                             | 包含 QUOTA 相关信息的系统表。                                                                     |

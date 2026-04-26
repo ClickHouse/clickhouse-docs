@@ -293,26 +293,60 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 `DEPENDS ON` работает только между refreshable materialized view. Указание обычной таблицы в списке `DEPENDS ON` приведёт к тому, что представление никогда не будет обновляться (зависимости можно удалить с помощью `ALTER`, см. [Изменение параметров обновления](#changing-refresh-parameters)).
 :::
 
-### Параметры обновления \{#refresh-settings\}
+### Настройки обновления \{#refresh-settings\}
 
-Доступные параметры обновления:
+Доступные настройки обновления:
 
-* `refresh_retries` - Сколько раз повторять попытку, если запрос обновления завершился с исключением. Если все попытки не удались, происходит переход к следующему запланированному времени обновления. 0 означает отсутствие повторных попыток, -1 — бесконечное число попыток. По умолчанию: 0.
+* `refresh_retries` - Сколько раз повторять попытку, если запрос обновления завершился с исключением. Если все попытки не удались, происходит переход к следующему запланированному времени обновления. 0 означает отсутствие повторных попыток, -1 — бесконечное число попыток. По умолчанию: 2.
 * `refresh_retry_initial_backoff_ms` - Задержка перед первой повторной попыткой, если `refresh_retries` не равно нулю. Каждая последующая попытка удваивает задержку, вплоть до `refresh_retry_max_backoff_ms`. По умолчанию: 100 мс.
 * `refresh_retry_max_backoff_ms` - Ограничение на экспоненциальный рост задержки между попытками обновления. По умолчанию: 60000 мс (1 минута).
+* `all_replicas` - В [реплицируемой базе данных](../../../engines/database-engines/replicated.md) с `APPEND` определяет, будут ли все реплики обновляться независимо или в каждый запланированный момент обновление будет выполнять только одна реплика. Не может быть изменён после создания представления. По умолчанию: `false`.
+* `prefer_dependency_replica` - Когда у представления есть `DEPENDS ON`, реплика, выполнившая родительское обновление, получает приоритет при выполнении зависимого обновления; другие реплики откладывают свою попытку на `prefer_dependency_replica_delay_ms`. Полезно при использовании `SharedMergeTree`, чтобы избежать отсутствия данных в цепочках зависимых обновлений из-за задержки репликации. По умолчанию: `false`.
+* `prefer_dependency_replica_delay_ms` - Сколько ждут неприоритетные реплики перед попыткой выполнить зависимое обновление, когда включён `prefer_dependency_replica`. По умолчанию: 2000 мс.
 
 ### Изменение параметров обновления \{#changing-refresh-parameters\}
 
-Чтобы изменить параметры обновления:
+Чтобы изменить параметры обновления существующего refreshable materialized view, используйте [`ALTER TABLE ... MODIFY REFRESH`](../alter/view.md#alter-table--modify-refresh-statement):
 
 ```sql
 ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
 ```
 
-:::note
-Это действие одновременно заменяет *все* параметры обновления: расписание, зависимости, настройки и режим добавления (APPEND). Например, если у таблицы был `DEPENDS ON`, выполнение `MODIFY REFRESH` без `DEPENDS ON` удалит зависимости.
-:::
+Расписание (`EVERY` или `AFTER`) обязательно: эта команда всегда заменяет *все* параметры обновления — расписание, `RANDOMIZE FOR`, `DEPENDS ON` и настройки обновления — на указанные значения. Всё, что не указано, сбрасывается к значению по умолчанию (настройки) или удаляется (зависимости, рандомизация).
 
+:::note
+
+* Чтобы изменить только настройки обновления (например, `refresh_retries`), повторно укажите текущее расписание:
+
+  ```sql
+  ALTER TABLE rmv MODIFY REFRESH EVERY 1 HOUR SETTINGS refresh_retries = 5;
+  ```
+
+* `ALTER TABLE ... MODIFY SETTING refresh_retries = ...` не поддерживается для materialized view; необходимо использовать `MODIFY REFRESH`.
+
+* Добавление или удаление `APPEND` не поддерживается.
+
+* Настройку `all_replicas` нельзя изменить после создания.
+  :::
+
+Примеры:
+
+```sql
+-- Change the schedule, drop existing settings and dependencies.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE;
+
+-- Change the schedule and tune retry behavior.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE
+SETTINGS refresh_retries = 5,
+         refresh_retry_initial_backoff_ms = 500,
+         refresh_retry_max_backoff_ms = 60000;
+
+-- Keep the dependency while changing the period.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR DEPENDS ON other_rmv;
+
+-- Drop the dependency by omitting `DEPENDS ON`.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR;
+```
 
 ### Другие операции \{#other-operations\}
 

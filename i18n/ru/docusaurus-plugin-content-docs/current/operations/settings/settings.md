@@ -812,6 +812,14 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 - [Sampling Query Profiler](../../operations/optimizing-performance/sampling-query-profiler.md)
 - Системная таблица [trace_log](/operations/system-tables/trace_log)
 
+## allow_key_condition_coalesce_rewrite \{#allow_key_condition_coalesce_rewrite\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка для переписывания предикатов вида `coalesce(a_1, ..., a_N) <op> const` (а также эквивалентных выражений с `ifNull` или с константой слева) в дизъюнкцию перед анализом индексов, чтобы можно было использовать первичный ключ и индексы пропуска данных для каждого `a_i`. Также обрабатываются варианты с частичными константами, такие как `coalesce(a, 42, b)` и `coalesce(a, b, 42)`."}]}]} />
+
+Переписывает предикаты вида `coalesce(a_1, ..., a_N) <op> const` (а также эквивалентные выражения с `ifNull` или с константой слева) в дизъюнкцию `(a_1 <op> const) OR (a_1 IS NULL AND a_2 <op> const) OR ... OR (a_1 IS NULL AND ... AND a_{N-1} IS NULL AND a_N <op> const)` перед анализом индексов, чтобы можно было использовать первичный ключ и индексы пропуска данных для каждого `a_i`. Также обрабатываются варианты с частичными константами, такие как `coalesce(a, 42, b)` и `coalesce(a, b, 42)`: список аргументов нормализуется так же, как в самом `coalesce` (`NULL`-литералы отбрасываются, аргументы после первого не-`Nullable` отбрасываются), а замыкающая не-`NULL` константа, если она есть, добавляется как последняя ветвь. Это переписывание используется только как дополнительный механизм для отсечения по индексу; фильтрация во время выполнения по-прежнему использует исходный предикат.
+
 ## allow_materialized_view_with_bad_select \{#allow_materialized_view_with_bad_select\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -9072,9 +9080,11 @@ SELECT * FROM test2;
 
 ## optimize_rewrite_array_exists_to_has \{#optimize_rewrite_array_exists_to_has\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Переписывает вызовы функции arrayExists() на has(), когда это логически эквивалентно. Например, arrayExists(x -> x = 1, arr) может быть переписана как has(arr, 1).
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Включить по умолчанию оптимизацию переписывания arrayExists в has, поскольку теперь перед переписыванием проверяется совместимость типов."}]}]} />
+
+Переписывает вызовы функции arrayExists() на has(), когда это логически эквивалентно. Например, arrayExists(x -&gt; x = 1, arr) может быть переписана как has(arr, 1).
 
 ## optimize_rewrite_like_perfect_affix \{#optimize_rewrite_like_perfect_affix\}
 
@@ -9589,6 +9599,16 @@ FROM default.fuse_tbl AS __table1
 
 Если имеет значение true и JOIN может быть выполнен с использованием алгоритма параллельных реплик, а все хранилища правой части JOIN используют движок *MergeTree, будет выполнен локальный JOIN вместо GLOBAL JOIN.
 
+## parallel_replicas_prefer_local_replica \{#parallel_replicas_prefer_local_replica\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка. Если отключена, реплики для параллельного чтения выбираются исключительно алгоритмом балансировки нагрузки, без принудительного включения локальной реплики в набор."}]}]} />
+
+Когда настройка включена (по умолчанию), локальная реплика всегда включается в набор реплик, используемых для параллельного чтения.
+Когда настройка отключена, локальной реплике не отдается предпочтение, и реплики выбираются исключительно алгоритмом балансировки нагрузки.
+Это позволяет направлять запросы с `max_parallel_replicas = 1` на другой хост, что может улучшить локальность кэша, когда множество коротких запросов распределяется по кластеру.
+
 ## parallel_replicas_support_projection \{#parallel_replicas_support_projection\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9731,6 +9751,14 @@ FROM default.fuse_tbl AS __table1
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Оценочная вероятность сбоя внутренних (репликационных) запросов PostgreSQL. Допустимое значение — в интервале [0.0f, 1.0f].
+
+## predicate_statistics_sample_rate \{#predicate_statistics_sample_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка для сбора статистики селективности предикатов в system.predicate_statistics_log"}]}]} />
+
+Собирает статистику селективности предикатов в `system.predicate_statistics_log`. Если задано значение N &gt; 0, в выборку попадает примерно 1/N запросов (по идентификатору запроса). 0 означает, что сбор отключён.
 
 ## prefer_column_name_to_alias \{#prefer_column_name_to_alias\}
 

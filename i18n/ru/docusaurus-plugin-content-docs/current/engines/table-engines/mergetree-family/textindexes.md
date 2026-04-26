@@ -521,6 +521,17 @@ SELECT count() FROM table WHERE has(array, 'clickhouse');
 ```
 
 
+#### `hasAny` и `hasAll` \{#functions-example-hasany-hasall\}
+
+Функции для массивов [hasAny](/sql-reference/functions/array-functions#hasAny) и [hasAll](/sql-reference/functions/array-functions#hasAll) проверяют, содержит ли индексируемый столбец с массивом любые или все строки needle из постоянного набора.
+
+Пример:
+
+```sql
+SELECT count() FROM table WHERE hasAny(tags, ['clickhouse', 'olap']);
+SELECT count() FROM table WHERE hasAll(tags, ['clickhouse', 'olap']);
+```
+
 #### `mapContains` \{#functions-example-mapcontains\}
 
 Функция [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) (псевдоним `mapContainsKey`) сопоставляет токены, извлечённые из искомой строки, с ключами в map.
@@ -932,7 +943,7 @@ SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
 
 ### Прямое чтение \{#direct-read\}
 
-Некоторые типы текстовых запросов могут быть существенно ускорены благодаря оптимизации, называемой &quot;direct read&quot;.
+Некоторые типы текстовых запросов могут быть существенно ускорены благодаря оптимизации, называемой &quot;прямое чтение&quot;.
 
 Пример:
 
@@ -953,7 +964,7 @@ WHERE string_search_function(column_with_text_index)
 **Поддерживаемые функции**
 
 Оптимизация прямого чтения поддерживает функции `hasToken`, `hasAllTokens` и `hasAnyTokens`.
-Если текстовый индекс определён с `array` токенизатором, прямое чтение также поддерживается для функций `equals`, `has`, `mapContainsKey` и `mapContainsValue`.
+Если текстовый индекс определён с `array` токенизатором, прямое чтение также поддерживается для функций `equals`, `has`, `hasAny`, `hasAll`, `mapContainsKey` и `mapContainsValue`.
 Эти функции также можно комбинировать операторами `AND`, `OR` и `NOT`.
 Предикаты `WHERE` или `PREWHERE` также могут содержать дополнительные фильтры, не являющиеся текстовыми функциями поиска (для текстовых столбцов или других столбцов) — в этом случае оптимизация прямого чтения по-прежнему будет использоваться, но менее эффективно (она применяется только к поддерживаемым текстовым функциям поиска).
 
@@ -990,7 +1001,7 @@ WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
 ```
 
-возвращает
+Возвращает
 
 ```text
 [...]

@@ -4274,6 +4274,10 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Время от запуска сервера до начала прослушивания сокетов, в миллисекундах
 
+### Сегменты \{#shards\}
+
+Количество сегментов, задействованных в запросе, суммируется по всем distributed таблицам и табличным функциям. Один и тот же хост учитывается несколько раз, если он встречается в нескольких таблицах. Это число отражает общее ожидаемое количество сегментов, включая пропущенные сегменты при включённой настройке `skip_unavailable_shards`.
+
 ### SharedDatabaseCatalogFailedToApplyState \{#shareddatabasecatalogfailedtoapplystate\}
 
 Количество сбоев при применении нового состояния в SharedDatabaseCatalog

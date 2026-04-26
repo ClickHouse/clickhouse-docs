@@ -471,3 +471,99 @@ Raft 커밋 전에 쓰기 요청을 전처리하는 데 걸리는 시간
 ### keeper_write_pre_commit_time_milliseconds_sum \{#keeper_write_pre_commit_time_milliseconds_sum\}
 
 Raft 커밋 전에 쓰기 요청을 전처리하는 데 걸리는 시간
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결 1건당 읽은 바이트 수입니다.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결당 읽은 바이트 수입니다.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결당 읽은 바이트 수입니다.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결당 읽은 바이트 수입니다.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결별 읽은 바이트 수입니다.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결당 읽은 바이트 수입니다.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결 1건당 읽은 바이트 수입니다.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결당 읽은 바이트 수입니다.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결당 읽은 바이트 수입니다.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결 1건당 읽은 바이트 수.
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+S3 읽기 요청 연결 1건당 읽은 바이트 수입니다.
+
+### s3_read_request_bytes_sum \{#s3_read_request_bytes_sum\}
+
+S3 읽기 요청 연결당 읽은 바이트 수입니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+요청 시작부터 연결 종료까지 측정한 S3 읽기 요청 연결의 지속 시간이며, 단위는 마이크로초입니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+요청 시작부터 연결 종료까지의 S3 읽기 요청 연결 지속 시간이며, 단위는 마이크로초입니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 읽기 요청 연결의 소요 시간입니다. 요청 시작부터 연결 종료까지를 마이크로초 단위로 측정합니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 읽기 요청 연결의 지속 시간으로, 요청 시작부터 연결 종료까지를 마이크로초 단위로 나타냅니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+요청 시작부터 연결이 종료될 때까지의 S3 읽기 요청 연결 소요 시간(마이크로초)입니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+요청 시작부터 연결 종료까지의 S3 읽기 요청 연결 시간을 마이크로초 단위로 나타냅니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+요청 시작부터 연결 종료까지의 S3 읽기 요청 연결 시간을 마이크로초 단위로 나타냅니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+요청 시작부터 연결 종료까지의 S3 읽기 요청 연결 지속 시간(마이크로초)입니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+요청 시작부터 연결 종료까지의 S3 읽기 요청 연결 시간이며, 단위는 마이크로초입니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+요청 시작부터 연결 종료까지의 S3 읽기 요청 연결 시간을 마이크로초 단위로 나타냅니다.
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+요청 시작부터 연결 종료까지의 S3 읽기 요청 연결 소요 시간으로, 단위는 마이크로초입니다.
+
+### s3_read_request_duration_microseconds_sum \{#s3_read_request_duration_microseconds_sum\}
+
+요청 시작부터 연결 종료까지의 S3 읽기 요청 연결 소요 시간의 합계이며, 단위는 마이크로초입니다.
