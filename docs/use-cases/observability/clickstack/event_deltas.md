@@ -41,7 +41,8 @@ The heatmap plots spans across two dimensions:
 
 - **X axis** — time
 - **Y axis** — a numeric value, defaulting to span duration in milliseconds (logarithmic scale)
-- **Color intensity** — event count per bucket; brighter = more spans
+
+Color intensity indicates event count per bucket — brighter means more spans.
 
 You can read patterns straight off the heatmap: bimodal latency, latency spikes at specific times, or a band of consistently slow spans. To investigate a region, click and drag a rectangle on it — that becomes your **Selection** and switches the analysis below into comparison mode.
 
