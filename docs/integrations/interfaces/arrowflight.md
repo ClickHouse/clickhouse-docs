@@ -326,14 +326,16 @@ When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arro
 | `CommandPreparedStatementQuery` | Bind parameter values for a prepared statement when sent via `DoPut`, then return `DoPutPreparedStatementResult` with the statement handle. Only one parameter set (one row) is accepted, and the number of bound values must exactly match the number of `?` placeholders. |
 | `CommandPreparedStatementUpdate` | Execute a prepared DDL/DML statement by handle and return affected row count. |
 
-### Not Yet Implemented {#flightsql-not-implemented}
+### Unsupported in ClickHouse {#flightsql-not-implemented}
 
-| Command | Status |
+These commands map to features that ClickHouse does not provide, so they are not supported by the Arrow Flight SQL interface.
+
+| Command | Reason |
 |---|---|
-| `CommandGetCrossReference` | Not implemented |
-| `CommandGetExportedKeys` | Not implemented |
-| `CommandGetImportedKeys` | Not implemented |
-| `CommandStatementSubstraitPlan` | Not supported (Substrait is not supported) |
+| `CommandGetCrossReference` | ClickHouse does not expose foreign-key cross-reference metadata. |
+| `CommandGetExportedKeys` | ClickHouse does not expose exported foreign-key metadata. |
+| `CommandGetImportedKeys` | ClickHouse does not expose imported foreign-key metadata. |
+| `CommandStatementSubstraitPlan` | ClickHouse does not support Substrait plans. |
 
 ## Complete Example {#complete-example}
 
