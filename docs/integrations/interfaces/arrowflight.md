@@ -332,9 +332,9 @@ These commands map to features that ClickHouse does not provide, so they are not
 
 | Command | Reason |
 |---|---|
-| `CommandGetCrossReference` | ClickHouse does not expose foreign-key cross-reference metadata. |
-| `CommandGetExportedKeys` | ClickHouse does not expose exported foreign-key metadata. |
-| `CommandGetImportedKeys` | ClickHouse does not expose imported foreign-key metadata. |
+| `CommandGetCrossReference` | ClickHouse is not a relational database and does not implement foreign key constraints, so cross-reference metadata is not available. |
+| `CommandGetExportedKeys` | ClickHouse is not a relational database and does not implement foreign key constraints, so exported-key metadata is not available. |
+| `CommandGetImportedKeys` | ClickHouse is not a relational database and does not implement foreign key constraints, so imported-key metadata is not available. |
 | `CommandStatementSubstraitPlan` | ClickHouse does not support Substrait plans. |
 
 ## Complete Example {#complete-example}
