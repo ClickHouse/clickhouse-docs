@@ -127,16 +127,17 @@ This review has two distinct passes with different scopes.
 | 5  | **Product terminology** — correct product names (ClickStack vs HyperDX, etc.) | Block |
 | 6  | **Grammar, spelling, typos** — misspellings, wrong verb forms, missing words, wrong articles | Block |
 | 7  | **Sentence casing** — headings must use sentence case, not Title Case | Block |
-| 8  | **Vale errors in diff** — CI covers these; only flag if CI is not running on this PR | Block/Suggest |
-| 9  | **Voice/style in diff** — "you" not "users," active voice, no AI-isms (see watchlist in check procedure below) | Suggest |
-| 10 | **First-mention links** — ClickHouse features/concepts link to their docs on first use | Suggest |
-| 11 | **Component opportunities** — numbered steps → VerticalStepper, variants → Tabs, etc. | Suggest |
-| 12 | **Structure and flow** — sections in logical order, prerequisites before procedures, page organization matches sibling pages | Suggest |
-| 13 | **Screenshot utility** — screenshots used as shortcuts ("refer to the screenshot") without sufficient prose context | Suggest |
+| 8  | **Content preservation on rewrites** — substantial deletions or rewrites must preserve original information, or the new content must cover it or render it moot | Block |
+| 9  | **Vale errors in diff** — CI covers these; only flag if CI is not running on this PR | Block/Suggest |
+| 10 | **Voice/style in diff** — "you" not "users," active voice, no AI-isms (see watchlist in check procedure below) | Suggest |
+| 11 | **First-mention links** — ClickHouse features/concepts link to their docs on first use | Suggest |
+| 12 | **Component opportunities** — numbered steps → VerticalStepper, variants → Tabs, etc. | Suggest |
+| 13 | **Structure and flow** — sections in logical order, prerequisites before procedures, page organization matches sibling pages | Suggest |
+| 14 | **Screenshot utility** — screenshots used as shortcuts ("refer to the screenshot") without sufficient prose context | Suggest |
 
 #### Blocking check procedures
 
-Block-tier checks (#1–#7) must be **exhaustive** — every instance found,
+Block-tier checks (#1–#8) must be **exhaustive** — every instance found,
 not sampled. Some checks have deterministic patterns that grep can catch;
 others require careful reading. Run the two modes separately, in order:
 grep-based checks first (fast, mechanical), then a reading pass (slower,
@@ -206,6 +207,41 @@ When asking the author, be specific: "Can you confirm this command runs without 
 Read the prose in added lines. Watch for wrong articles, missing words,
 subject-verb disagreement, and misspellings that pass spellcheck (e.g.,
 "form" for "from").
+
+*Content preservation on rewrites (#8):*
+
+Only run this check when the diff is a substantial rewrite or large
+deletion — skip it for small edits. Trigger when any of these are true:
+
+- A single hunk removes 10+ lines of prose.
+- A section heading, table row, code example, admonition, or link is
+  deleted.
+- Total deletions exceed total additions by 20+ lines.
+
+For each substantial deletion, list the distinct claims, warnings,
+examples, and links being removed, then map each one to:
+
+1. **Preserved** — the same information appears in the added or
+   surrounding content (different wording is fine).
+2. **Rendered moot** — the content referred to behavior, a feature, or
+   a version that the new content makes irrelevant.
+3. **Lost** — the information is gone with no replacement, and nothing
+   in the change justifies dropping it.
+
+Litmus test: "If a reader needed information X, could they still find
+it after this change?" If no, flag.
+
+**Flag as Block if:**
+- A specific warning, gotcha, caveat, or limitation is removed without
+  being addressed elsewhere.
+- A code example or command is removed that demonstrated something the
+  new prose doesn't.
+- A link to related docs is dropped without an equivalent path.
+- A table row or list item with distinct information disappears with no
+  equivalent in the new content.
+
+**Do not flag** content that is genuinely redundant with what remains,
+clearly outdated, or replaced by a tighter treatment of the same point.
 
 *No secrets (#4), product terminology (#5), MDX/build safety (#2):*
 These surface during reading. Flag hardcoded credentials, wrong product
@@ -403,6 +439,9 @@ These prevent the PR from shipping. The author must address them.
   missing words, incorrect articles ("an" vs "a")
 - **Sentence casing** — headings must use sentence case ("Tuning performance"),
   not Title Case ("Tuning Performance"). This is a hard site-wide requirement.
+- **Content lost in a rewrite** — a substantial rewrite or large deletion
+  drops a warning, example, link, or distinct claim that isn't preserved
+  elsewhere or rendered moot by the change.
 
 ### Suggest (approve with comments)
 
