@@ -30,6 +30,14 @@ When using TypeScript, make sure it is at least [version 4.5](https://www.typesc
 
 The client source code is available in the [ClickHouse-JS GitHub repository](https://github.com/ClickHouse/clickhouse-js).
 
+:::note AI agent skills
+The JS client ships with AI agent skills that can help coding agents work with the client. Install them with:
+
+```sh
+npm skills add ClickHouse/clickhouse-js
+```
+:::
+
 ## Environment requirements (node.js) {#environment-requirements-nodejs}
 
 Node.js must be available in the environment to run the client.
