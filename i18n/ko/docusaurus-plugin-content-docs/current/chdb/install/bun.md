@@ -32,23 +32,19 @@ curl -sL https://lib.chdb.io | bash
 ```bash
 # Install from the GitHub repository
 bun add github:chdb-io/chdb-bun
-```
 
-# 또는 로컬에서 클론하여 빌드하기
-
+# Or clone and build locally
 git clone https://github.com/chdb-io/chdb-bun.git
 cd chdb-bun
 bun install
 bun run build
-
-```
 ```
 
-## 사용법
+## 사용법 \{#usage\}
 
 chDB-bun은 두 가지 쿼리 모드를 지원합니다. 일회성 작업을 위한 임시 쿼리와 데이터베이스 상태 유지를 위한 지속 세션입니다.
 
-### 임시 쿼리 \{#persistent-sessions\}
+### 임시 쿼리 \{#ephemeral-queries\}
 
 지속 상태가 필요하지 않은 단순한 일회성 쿼리의 경우:
 
@@ -72,7 +68,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
 console.log(systemInfo);
 ```
 
-### 지속 세션
+### 지속 세션 \{#persistent-sessions\}
 
 여러 쿼리 간에 상태를 유지해야 하는 복잡한 작업에는 다음을 사용합니다.
 

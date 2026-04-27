@@ -196,7 +196,37 @@ SELECT * FROM mv;
 └───┘
 ```
 
-
 ## Оператор ALTER TABLE ... MODIFY REFRESH \{#alter-table--modify-refresh-statement\}
 
-Оператор `ALTER TABLE ... MODIFY REFRESH` изменяет параметры обновления для [обновляемого материализованного представления](../create/view.md#refreshable-materialized-view). См. [Изменение параметров обновления](../create/view.md#changing-refresh-parameters).
+`ALTER TABLE ... MODIFY REFRESH` изменяет параметры обновления [Refreshable Materialized View](../create/view.md#refreshable-materialized-view), включая расписание, зависимости, рандомизацию и [настройки обновления](../create/view.md#refresh-settings).
+
+```sql
+ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
+```
+
+Расписание (`EVERY` или `AFTER`) обязательно: этот оператор заменяет *все* параметры обновления сразу. Любая неуказанная часть — `RANDOMIZE FOR`, `DEPENDS ON` или `SETTINGS` — удаляется или сбрасывается до значений по умолчанию. Чтобы изменить только параметры обновления, повторите текущее расписание.
+
+```sql
+-- Change the schedule.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE;
+
+-- Change retry settings (schedule must be repeated).
+ALTER TABLE rmv MODIFY REFRESH EVERY 1 HOUR
+SETTINGS refresh_retries = 5,
+         refresh_retry_initial_backoff_ms = 500,
+         refresh_retry_max_backoff_ms = 60000;
+
+-- Add or keep a dependency.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR DEPENDS ON other_rmv;
+
+-- Drop the dependency by omitting `DEPENDS ON`.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR;
+```
+
+Ограничения:
+
+* `ALTER TABLE ... MODIFY SETTING` не поддерживается для materialized view; изменить настройки обновления можно только с помощью `MODIFY REFRESH`.
+* Добавление или удаление `APPEND` не поддерживается.
+* Настройку обновления `all_replicas` нельзя изменить после создания представления.
+
+Полный список настроек обновления приведён в разделе [Refresh Settings](../create/view.md#refresh-settings). Статус обновления, включая применяемые в данный момент настройки, можно посмотреть в [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md).

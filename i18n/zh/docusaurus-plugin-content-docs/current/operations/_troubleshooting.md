@@ -1,10 +1,9 @@
+[//]: # "This file is included in FAQ > Troubleshooting"
 
-[//]: # (This file is included in FAQ > Troubleshooting)
-
-- [安装](#troubleshooting-installation-errors)
-- [连接服务器](#troubleshooting-accepts-no-connections)
-- [查询处理](#troubleshooting-does-not-process-queries)
-- [查询效率](#troubleshooting-too-slow)
+* [安装](#troubleshooting-installation-errors)
+* [连接服务器](#troubleshooting-accepts-no-connections)
+* [查询处理](#troubleshooting-does-not-process-queries)
+* [查询效率](#troubleshooting-too-slow)
 
 ## 安装 \{#troubleshooting-installation-errors\}
 
@@ -64,9 +63,9 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 之后请按照[安装指南](../getting-started/install.md#from-rpm-packages)进行操作。
 
-### 无法运行 Docker 容器 \{#you-cant-run-docker-container\}
+### 您无法运行 Docker 容器 \{#you-cant-run-docker-container\}
 
-当你运行一个简单的命令 `docker run clickhouse/clickhouse-server` 时，它会崩溃并输出类似如下的堆栈跟踪：
+您运行一个简单的 `docker run clickhouse/clickhouse-server` 命令后，容器会崩溃，并显示类似以下的堆栈跟踪：
 
 ```bash
 $ docker run -it clickhouse/clickhouse-server
@@ -126,29 +125,29 @@ $ sudo service clickhouse-server start
 如果 `clickhouse-server` 因配置错误而启动失败，你应该会看到带有错误描述的 `<Error>` 日志行。例如：
 
 ```text
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: 重新加载外部字典 'event2id' 失败:Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
 如果在文件末尾没有看到错误，请从以下字符串开始检查整个文件：
 
 ```text
-<Information> 应用程序：正在启动。
+<Information> Application: starting up.
 ```
 
 如果你尝试在同一台服务器上启动第二个 `clickhouse-server` 实例，将会看到如下日志：
 
 ```text
-2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : 正在启动 ClickHouse 19.1.0,修订版 54413
-2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: 正在启动
-2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: 状态文件 ./status 已存在 - 非正常重启。内容:
+2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
+2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
+2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
 PID: 8510
-启动于: 2019-01-11 15:24:23
-修订版: 54413
+Started at: 2019-01-11 15:24:23
+Revision: 54413
 
-2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: 无法锁定文件 ./status。同一目录中已有另一个服务器实例正在运行。
-2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: 正在关闭
-2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: 正在取消初始化子系统: 日志子系统
-2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: 停止 SignalListener 线程
+2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Cannot lock file ./status. Another server instance in same directory is already running.
+2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: shutting down
+2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Uninitializing subsystem: Logging Subsystem
+2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
 **查看 system.d 日志**
@@ -175,7 +174,7 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
   如果你在 IPv6 网络中通过 Docker 运行 ClickHouse，确保设置了 `network=host`。
 
-* 端点（Endpoint）设置
+* 端点 (Endpoint) 设置
 
   检查 [listen&#95;host](../operations/server-configuration-parameters/settings.md#listen_host) 和 [tcp&#95;port](../operations/server-configuration-parameters/settings.md#tcp_port) 设置。
 
@@ -204,7 +203,7 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
 ```bash
 $ curl 'http://localhost:8123/' --data-binary "SELECT a"
-Code: 47, e.displayText() = DB::Exception: 未知标识符:a。注意您的查询中没有表(缺少 FROM 子句),上下文:required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
+Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
 ```
 
 如果使用 `stack-trace` 参数启动 `clickhouse-client`，ClickHouse 会连同错误描述一起返回服务器端的堆栈跟踪信息。

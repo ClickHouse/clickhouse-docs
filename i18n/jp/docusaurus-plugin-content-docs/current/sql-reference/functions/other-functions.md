@@ -2769,6 +2769,42 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
+## highlightQuery \{#highlightQuery\}
+
+導入バージョン: v26.4.0
+
+ClickHouse の SQL クエリ文字列を解析し、構文ハイライト用のハイライト範囲の配列を返します。
+各範囲は、開始位置 (バイト単位) 、終了位置、ハイライト種別を持つ名前付きタプルです。
+ハイライト種別は、その断片の構文上の役割 (キーワード、識別子、関数など) を表し、
+UI で色を割り当てるために使用できます。LIKE および REGEXP の文字列パターン内では、メタ文字
+およびエスケープ文字がそれぞれ個別にハイライトされます。
+
+**構文**
+
+```sql
+highlightQuery(query)
+```
+
+**引数**
+
+* `query` — ClickHouse SQL クエリの文字列。String。
+
+**戻り値**
+
+ハイライトされた範囲を表す、名前付きタプル `(begin UInt64, end UInt64, type Enum8(...))` の配列。[`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**例**
+
+**simple**
+
+```sql title=Query
+SELECT highlightQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'keyword'),(7,8,'number')]
+```
+
 ## hostName \{#hostName\}
 
 導入バージョン: v20.5.0
@@ -4960,6 +4996,39 @@ SELECT toTypeName(123)
 ┌─toTypeName(123)─┐
 │ UInt8           │
 └─────────────────┘
+```
+
+## tokenizeQuery \{#tokenizeQuery\}
+
+導入バージョン: v26.4.0
+
+ClickHouse SQLクエリ文字列をトークン化し、トークンの配列を返します。
+各トークンは、開始位置 (バイト単位) 、終了位置、およびトークンの種類を含む名前付きタプルです。
+
+**構文**
+
+```sql
+tokenizeQuery(query)
+```
+
+**引数**
+
+* `query` — ClickHouse SQL クエリ文字列。String。
+
+**戻り値**
+
+クエリのトークンを表す、名前付きタプル `(begin UInt64, end UInt64, type Enum8(...))` の配列。[`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**例**
+
+**simple**
+
+```sql title=Query
+SELECT tokenizeQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'BareWord'),(6,7,'Whitespace'),(7,8,'Number')]
 ```
 
 ## transactionID \{#transactionID\}

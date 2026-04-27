@@ -4273,6 +4273,10 @@ SELECT 查询的总耗时。
 
 从服务器启动到开始监听套接字所经过的时间，以 Milliseconds 为单位
 
+### 分片 \{#shards\}
+
+参与一次查询的分片数量，对所有分布式表和表函数求和。如果同一主机出现在多个表中，则会被重复计数。该数值表示预期的分片总数，其中也包括因 `skip_unavailable_shards` 设置而被跳过的分片。
+
 ### SharedDatabaseCatalogFailedToApplyState \{#shareddatabasecatalogfailedtoapplystate\}
 
 在 SharedDatabaseCatalog 中应用新状态失败的次数

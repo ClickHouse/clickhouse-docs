@@ -2769,6 +2769,42 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
+## highlightQuery \{#highlightQuery\}
+
+도입 버전: v26.4.0
+
+ClickHouse SQL 쿼리 문자열을 파싱하여 구문 강조에 사용할 강조 범위 배열을 반환합니다.
+각 범위는 시작 포지션(바이트 단위), 끝 포지션, 강조 타입으로 구성된 named tuple입니다.
+강조 타입은 해당 부분의 구문적 역할(키워드, 식별자, 함수 등)을 나타내며
+UI에서 색상을 할당하는 데 사용할 수 있습니다. LIKE 및 REGEXP 문자열 패턴 내부에서는 메타문자와
+이스케이프 문자가 각각 별도로 강조됩니다.
+
+**구문**
+
+```sql
+highlightQuery(query)
+```
+
+**인수**
+
+* `query` — ClickHouse SQL 쿼리 문자열입니다. String.
+
+**반환값**
+
+강조 표시된 범위를 나타내는 `(begin UInt64, end UInt64, type Enum8(...))` 형식의 named tuple 배열입니다. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**예시**
+
+**간단한 예시**
+
+```sql title=Query
+SELECT highlightQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'keyword'),(7,8,'number')]
+```
+
 ## hostName \{#hostName\}
 
 도입된 버전: v20.5.0
@@ -4958,6 +4994,39 @@ SELECT toTypeName(123)
 ┌─toTypeName(123)─┐
 │ UInt8           │
 └─────────────────┘
+```
+
+## tokenizeQuery \{#tokenizeQuery\}
+
+도입 버전: v26.4.0
+
+ClickHouse SQL 쿼리 문자열을 토큰화하고 토큰 배열을 반환합니다.
+각 토큰은 시작 포지션(바이트 단위), 끝 포지션, 토큰 유형으로 구성된 named tuple입니다.
+
+**구문**
+
+```sql
+tokenizeQuery(query)
+```
+
+**인수**
+
+* `query` — ClickHouse SQL 쿼리 문자열입니다. String.
+
+**반환값**
+
+쿼리의 토큰을 나타내는 `named tuple` `(begin UInt64, end UInt64, type Enum8(...))` 배열입니다. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**예시**
+
+**간단한 예**
+
+```sql title=Query
+SELECT tokenizeQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'BareWord'),(6,7,'Whitespace'),(7,8,'Number')]
 ```
 
 ## transactionID \{#transactionID\}

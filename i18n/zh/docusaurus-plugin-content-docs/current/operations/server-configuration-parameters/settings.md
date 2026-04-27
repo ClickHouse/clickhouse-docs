@@ -619,7 +619,7 @@ ClickHouse 每隔 x 秒重新加载内置字典，这样就可以在无需重启
 
 ## concurrent_threads_soft_limit_ratio_to_cores \{#concurrent_threads_soft_limit_ratio_to_cores\}
 
-<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="是" />与 [`concurrent_threads_soft_limit_num`](#concurrent_threads_soft_limit_num) 相同，但以 CPU 核心数量的比例形式指定。
+<SettingsInfoBlock type="UInt64" default_value="2" changeable_without_restart="是" />与 [`concurrent_threads_soft_limit_num`](#concurrent_threads_soft_limit_num) 相同，但以 CPU 核心数量的比例形式指定。
 
 ## config-file \{#config-file\}
 

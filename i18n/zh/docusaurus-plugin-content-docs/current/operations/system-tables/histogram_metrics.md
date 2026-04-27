@@ -471,3 +471,99 @@ Raft 提交后处理写请求所耗费的时间
 ### keeper_write_pre_commit_time_milliseconds_sum \{#keeper_write_pre_commit_time_milliseconds_sum\}
 
 在 Raft 提交之前对写请求进行预处理所需的时间
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接所读取的字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes \{#s3_read_request_bytes\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_bytes_sum \{#s3_read_request_bytes_sum\}
+
+每个 S3 读取请求连接的读取字节数。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接的耗时，自请求发起至连接关闭，单位为微秒。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接的耗时，从请求发起到连接关闭，单位为微秒。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接的耗时，从请求发起到连接关闭，以微秒为单位。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接耗时，从请求发起到连接关闭，单位为微秒。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接的耗时，从请求发起到连接关闭，单位为微秒。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接的耗时，自请求发起到连接关闭，单位为微秒。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接的耗时，从请求发起到连接关闭，单位为微秒。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接从请求发起到连接关闭的耗时，单位为微秒。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接从请求发起到连接关闭的耗时，单位为微秒。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接从请求发起到连接关闭的耗时，单位为微秒。
+
+### s3_read_request_duration_microseconds \{#s3_read_request_duration_microseconds\}
+
+S3 读取请求连接的耗时，从请求发起到连接关闭，以微秒计。
+
+### s3_read_request_duration_microseconds_sum \{#s3_read_request_duration_microseconds_sum\}
+
+S3 读取请求连接的耗时 (从请求发起到连接关闭) ，单位为微秒。

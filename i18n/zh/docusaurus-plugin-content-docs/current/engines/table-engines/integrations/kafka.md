@@ -65,29 +65,30 @@ SETTINGS
 
 可选参数：
 
-- `kafka_security_protocol` - 用于与 broker 通信的协议。可选值：`plaintext`、`ssl`、`sasl_plaintext`、`sasl_ssl`。
-- `kafka_sasl_mechanism` - 用于认证的 SASL 机制。可选值：`GSSAPI`、`PLAIN`、`SCRAM-SHA-256`、`SCRAM-SHA-512`、`OAUTHBEARER`。
-- `kafka_sasl_username` - 用于 `PLAIN` 和 `SASL-SCRAM-..` 机制的 SASL 用户名。
-- `kafka_sasl_password` - 用于 `PLAIN` 和 `SASL-SCRAM-..` 机制的 SASL 密码。
-- `kafka_schema` — 当格式需要 schema 定义时必须使用的参数。例如，[Cap'n Proto](https://capnproto.org/) 需要提供到 schema 文件的路径以及根对象 `schema.capnp:Message` 的名称。
-- `kafka_schema_registry_skip_bytes` — 在使用带封装头部（envelope header）的 schema registry 时（例如包含 19 字节 envelope 的 AWS Glue Schema Registry），从每条消息的开头需要跳过的字节数。范围：`[0, 255]`。默认值：`0`。
-- `kafka_num_consumers` — 每个表的 consumer 数量。如果单个 consumer 的吞吐量不足，请配置更多的 consumer。consumer 的总数不应超过 topic 中的分区数，因为每个分区只能分配给一个 consumer，并且不得大于部署 ClickHouse 的服务器上的物理核心数。默认值：`1`。
-- `kafka_max_block_size` — 单次 poll 的最大批大小（按消息数计）。默认值：[max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
-- `kafka_skip_broken_messages` — Kafka 消息解析器对每个块中与 schema 不兼容消息的容忍度。如果 `kafka_skip_broken_messages = N`，则引擎会跳过 *N* 条无法解析的 Kafka 消息（一条消息等于一行数据）。默认值：`0`。
-- `kafka_commit_every_batch` — 对每个已消费并处理的 batch 进行提交，而不是在写入整个块后仅提交一次。默认值：`0`。
-- `kafka_client_id` — 客户端标识符。默认为空。
-- `kafka_poll_timeout_ms` — 从 Kafka 进行单次 poll 的超时时间。默认值：[stream_poll_timeout_ms](../../../operations/settings/settings.md#stream_poll_timeout_ms)。
-- `kafka_poll_max_batch_size` — 单次 Kafka poll 中可被拉取的最大消息数。默认值：[max_block_size](/operations/settings/settings#max_block_size)。
-- `kafka_flush_interval_ms` — 从 Kafka flush（刷新）数据的超时时间。默认值：[stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
-- `kafka_consumer_reschedule_ms` — 当 Kafka 流处理停滞时（例如，没有可供消费的消息）重新调度的时间间隔。此设置控制 consumer 在重新尝试 poll 之前的延迟。不得超过 `kafka_consumers_pool_ttl_ms`。默认值：`500` 毫秒。
-- `kafka_thread_per_consumer` — 为每个 consumer 提供独立线程。启用时，每个 consumer 会独立并行 flush 数据（否则，来自多个 consumer 的行会被合并成一个数据块）。默认值：`0`。
-- `kafka_handle_error_mode` — Kafka 引擎的错误处理模式。可选值：default（如果解析消息失败，将抛出异常）、stream（异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中）、dead_letter_queue（与错误相关的数据将保存在 system.dead_letter_queue 中）。
-- `kafka_commit_on_select` — 在执行 SELECT 查询时提交消息。默认值：`false`。
-- `kafka_max_rows_per_message` — 针对基于行的格式，在一条 Kafka 消息中写入的最大行数。默认值：`1`。
-- `kafka_compression_codec` — 生产消息时使用的压缩 codec。支持：空字符串、`none`、`gzip`、`snappy`、`lz4`、`zstd`。如果为空字符串，则表不会设置压缩 codec，此时将使用配置文件中的值或 `librdkafka` 的默认值。默认值：空字符串。
-- `kafka_compression_level` — 由 `kafka_compression_codec` 选择的算法所使用的压缩级别参数。较高的值会带来更好的压缩效果，但会消耗更多 CPU。可用范围依赖于算法：`gzip` 为 `[0-9]`；`lz4` 为 `[0-12]`；`snappy` 仅支持 `0`；`zstd` 为 `[0-12]`；`-1` 表示由 codec 决定的默认压缩级别。默认值：`-1`。
+* `kafka_security_protocol` - 用于与 broker 通信的协议。可选值：`plaintext`、`ssl`、`sasl_plaintext`、`sasl_ssl`。
+* `kafka_sasl_mechanism` - 用于认证的 SASL 机制。可选值：`GSSAPI`、`PLAIN`、`SCRAM-SHA-256`、`SCRAM-SHA-512`、`OAUTHBEARER`。
+* `kafka_sasl_username` - 用于 `PLAIN` 和 `SASL-SCRAM-..` 机制的 SASL 用户名。
+* `kafka_sasl_password` - 用于 `PLAIN` 和 `SASL-SCRAM-..` 机制的 SASL 密码。
+* `kafka_schema` — 当格式需要 schema 定义时必须使用的参数。例如，[Cap&#39;n Proto](https://capnproto.org/) 需要提供到 schema 文件的路径以及根对象 `schema.capnp:Message` 的名称。
+* `kafka_schema_registry_skip_bytes` — 在使用带封装头部 (envelope header) 的 schema registry 时 (例如包含 19 字节 envelope 的 AWS Glue Schema Registry) ，从每条消息的开头需要跳过的字节数。范围：`[0, 255]`。默认值：`0`。
+* `kafka_num_consumers` — 每个表的 consumer 数量。如果单个 consumer 的吞吐量不足，请配置更多的 consumer。consumer 的总数不应超过 topic 中的分区数，因为每个分区只能分配给一个 consumer，并且不得大于部署 ClickHouse 的服务器上的物理核心数。默认值：`1`。
+* `kafka_max_block_size` — 单次 poll 的最大批大小 (按消息数计) 。默认值：[max&#95;insert&#95;block&#95;size](../../../operations/settings/settings.md#max_insert_block_size)。
+* `kafka_skip_broken_messages` — Kafka 消息解析器对每个块中与 schema 不兼容消息的容忍度。如果 `kafka_skip_broken_messages = N`，则引擎会跳过 *N* 条无法解析的 Kafka 消息 (一条消息等于一行数据) 。默认值：`0`。
+* `kafka_commit_every_batch` — 对每个已消费并处理的 batch 进行提交，而不是在写入整个块后仅提交一次。默认值：`0`。
+* `kafka_client_id` — 客户端标识符。默认为空。
+* `kafka_poll_timeout_ms` — 从 Kafka 进行单次 poll 的超时时间。默认值：[stream&#95;poll&#95;timeout&#95;ms](../../../operations/settings/settings.md#stream_poll_timeout_ms).
+* `kafka_poll_max_batch_size` — 单次 Kafka poll 中可被拉取的最大消息数。默认值：[max&#95;block&#95;size](/operations/settings/settings#max_block_size)。
+* `kafka_flush_interval_ms` — 从 Kafka flush (刷新) 数据的超时时间。默认值：[stream&#95;flush&#95;interval&#95;ms](/operations/settings/settings#stream_flush_interval_ms)。
+* `kafka_consumer_reschedule_ms` — 当 Kafka 流处理停滞时 (例如，没有可供消费的消息) 重新调度的时间间隔。此设置控制 consumer 在重新尝试 poll 之前的延迟。不得超过 `kafka_consumers_pool_ttl_ms`。默认值：`500` 毫秒。
+* `kafka_thread_per_consumer` — 为每个 consumer 提供独立线程。启用时，每个 consumer 会独立并行 flush 数据 (否则，来自多个 consumer 的行会被合并成一个数据块) 。默认值：`0`。
+* `kafka_handle_error_mode` — Kafka 引擎的错误处理模式。可选值：default (如果解析消息失败，将抛出异常) 、stream (异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中) 、dead&#95;letter&#95;queue (与错误相关的数据将保存在 system.dead&#95;letter&#95;queue 中) 。
+* `kafka_commit_on_select` — 在执行 SELECT 查询时提交消息。默认值：`false`。
+* `kafka_max_rows_per_message` — 针对基于行的格式，在一条 Kafka 消息中写入的最大行数。默认值：`1`。
+* `kafka_compression_codec` — 生产消息时使用的压缩 codec。支持：空字符串、`none`、`gzip`、`snappy`、`lz4`、`zstd`。如果为空字符串，则表不会设置压缩 codec，此时将使用配置文件中的值或 `librdkafka` 的默认值。默认值：空字符串。
+* `kafka_compression_level` — 由 kafka&#95;compression&#95;codec 选择的算法对应的压缩级别参数。值越高，压缩效果越好，但 CPU 使用量也会更高。可用范围取决于算法：`gzip` 为 `[0-9]`；`lz4` 为 `[0-12]`；`snappy` 仅支持 `0`；`zstd` 为 `[0-12]`；`-1` 表示由 codec 决定的默认压缩级别。默认值：`-1`。
+* `kafka_map_virtual_columns_on_write` — 如果启用，表 schema 中名称为 `_key`、`_timestamp`、`_headers.name` 和 `_headers.value` 的特殊列会在 `INSERT` 时映射到相应的 Kafka 消息元数据，且不会包含在消息负载中。请参见[将列映射到 Kafka 消息元数据](#mapping-columns-to-kafka-message-metadata)。默认值：`false`。
 
-Examples:
+示例：
 
 ```sql
   CREATE TABLE queue (
@@ -125,13 +126,13 @@ Examples:
   :::
 
   ```sql
-Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
-      [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_consumer_reschedule_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
-```
+  Kafka(kafka_broker_list, kafka_topic_list, kafka_group_name, kafka_format
+        [, kafka_row_delimiter, kafka_schema, kafka_num_consumers, kafka_max_block_size,  kafka_skip_broken_messages, kafka_commit_every_batch, kafka_client_id, kafka_poll_timeout_ms, kafka_poll_max_batch_size, kafka_flush_interval_ms, kafka_consumer_reschedule_ms, kafka_thread_per_consumer, kafka_handle_error_mode, kafka_commit_on_select, kafka_max_rows_per_message]);
+  ```
 </details>
 
 :::info
-Kafka 表引擎不支持带有[默认值](/sql-reference/statements/create/table#default_values)的列。如果需要带默认值的列，可以在 materialized view 层添加（见下文）。
+Kafka 表引擎不支持带有[默认值](/sql-reference/statements/create/table#default_values)的列。如果需要带默认值的列，可以在 materialized view 层添加 (见下文) 。
 :::
 
 ## 描述 \{#description\}
@@ -263,6 +264,43 @@ ClickHouse 可以使用 keytab 文件维护 Kerberos 凭证。请考虑配置 `s
 - `_error` — 解析失败时抛出的异常信息。数据类型：`String`。
 
 注意：只有在解析过程中发生异常时，`_raw_message` 和 `_error` 虚拟列才会被填充；当消息成功解析时，这两个列始终为空。
+
+## 将列映射到 Kafka 消息元数据 \{#mapping-columns-to-kafka-message-metadata\}
+
+使用 `INSERT INTO` 写入消息时，如果表中存在名为 `_key` (类型为 `String`) 的列，Kafka 引擎始终会将其用作 Kafka 消息键；如果存在名为 `_timestamp` (类型为 `DateTime`) 的列，则始终会将其用作 Kafka 消息时间戳。默认情况下，这些列也会与其他列一起出现在写出的消息负载中。
+
+设置 `kafka_map_virtual_columns_on_write = 1` 后，行为会发生变化：
+
+* `_key` (类型为 `String`) — 映射为 Kafka 消息键。
+* `_timestamp` (类型为 `DateTime`) — 映射为 Kafka 消息时间戳。
+* `_headers.name` (类型为 `Array(String)`) 和 `_headers.value` (类型为 `Array(String)`) — 映射为 Kafka 消息头。每一对 `(_headers.name[i], _headers.value[i])` 都会成为一个 Kafka 消息头。由于 `_headers.name` 和 `_headers.value` 共享 `_headers` 这一 Nested 前缀，ClickHouse 要求每一行中的这两个数组长度相同。
+
+只有当具有这些名称的列的类型与上面列出的类型一致时，这些列才会**从消息负载中排除**；否则，它们仍会保留在负载中，因此恰好将这些名称用于无关数据的 schema 仍可正常工作。
+
+示例：
+
+```sql
+CREATE TABLE kafka_out
+(
+    event_json String,
+    `_key` String,
+    `_timestamp` DateTime,
+    `_headers.name` Array(String),
+    `_headers.value` Array(String)
+)
+ENGINE = Kafka
+SETTINGS
+    kafka_broker_list = 'broker:9092',
+    kafka_topic_list = 'events',
+    kafka_group_name = 'events-producer',
+    kafka_format = 'JSONEachRow',
+    kafka_map_virtual_columns_on_write = 1;
+
+INSERT INTO kafka_out VALUES
+    ('{"a":1}', 'session-42', now(), ['source', 'trace_id'], ['api', 'abc-123']);
+```
+
+生成的 Kafka 消息包含负载 `{"event_json":"{\"a\":1}"}`、键 `session-42`、当前时间戳，以及两个头部信息 `source=api` 和 `trace_id=abc-123`。
 
 ## 数据格式支持 \{#data-formats-support\}
 

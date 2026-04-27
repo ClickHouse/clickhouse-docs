@@ -618,7 +618,7 @@ ClickHouse を使い始めたばかりの場合は、これを変更しないこ
 
 ## concurrent_threads_soft_limit_ratio_to_cores \{#concurrent_threads_soft_limit_ratio_to_cores\}
 
-<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="Yes" />[`concurrent_threads_soft_limit_num`](#concurrent_threads_soft_limit_num) と同様ですが、コア数に対する比率で指定します。
+<SettingsInfoBlock type="UInt64" default_value="2" changeable_without_restart="Yes" />[`concurrent_threads_soft_limit_num`](#concurrent_threads_soft_limit_num) と同様ですが、コア数に対する比率で指定します。
 
 ## config-file \{#config-file\}
 

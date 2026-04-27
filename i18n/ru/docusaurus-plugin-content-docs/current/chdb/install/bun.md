@@ -27,13 +27,13 @@ curl -sL https://lib.chdb.io | bash
 
 Вам потребуется установить либо `gcc`, либо `clang` в вашей системе:
 
-### Шаг 2: Установка chDB-bun \{#install-chdb-bun\}
+### Шаг 2: Установите chDB-bun \{#install-chdb-bun\}
 
 ```bash
-# Установка из репозитория GitHub
+# Install from the GitHub repository
 bun add github:chdb-io/chdb-bun
 
-# Или клонирование и локальная сборка
+# Or clone and build locally
 git clone https://github.com/chdb-io/chdb-bun.git
 cd chdb-bun
 bun install
@@ -51,19 +51,19 @@ chDB-bun поддерживает два режима запросов: эфем
 ```typescript
 import { query } from 'chdb-bun';
 
-// Базовый запрос
+// Basic query
 const result = query("SELECT version()", "CSV");
 console.log(result); // "23.10.1.1"
 
-// Запрос с различными форматами вывода
+// Query with different output formats
 const jsonResult = query("SELECT 1 as id, 'Hello' as message", "JSON");
 console.log(jsonResult);
 
-// Запрос с вычислениями
+// Query with calculations
 const mathResult = query("SELECT 2 + 2 as sum, pi() as pi_value", "Pretty");
 console.log(mathResult);
 
-// Запрос системной информации
+// Query system information
 const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
 console.log(systemInfo);
 ```
@@ -75,11 +75,11 @@ console.log(systemInfo);
 ```typescript
 import { Session } from 'chdb-bun';
 
-// Создание сессии с постоянным хранилищем
+// Create a session with persistent storage
 const sess = new Session('./chdb-bun-tmp');
 
 try {
-    // Создание базы данных и таблицы
+    // Create a database and table
     sess.query(`
         CREATE DATABASE IF NOT EXISTS mydb;
         CREATE TABLE IF NOT EXISTS mydb.users (
@@ -89,26 +89,26 @@ try {
         ) ENGINE = MergeTree() ORDER BY id
     `, "CSV");
 
-    // Вставка данных
+    // Insert data
     sess.query(`
-        INSERT INTO mydb.users VALUES
+        INSERT INTO mydb.users VALUES 
         (1, 'Alice', 'alice@example.com'),
         (2, 'Bob', 'bob@example.com'),
         (3, 'Charlie', 'charlie@example.com')
     `, "CSV");
 
-    // Запрос данных
+    // Query the data
     const users = sess.query("SELECT * FROM mydb.users ORDER BY id", "JSON");
     console.log("Users:", users);
 
-    // Создание и использование пользовательских функций
+    // Create and use custom functions
     sess.query("CREATE FUNCTION IF NOT EXISTS hello AS () -> 'Hello chDB'", "CSV");
     const greeting = sess.query("SELECT hello() as message", "Pretty");
     console.log(greeting);
 
-    // Агрегационные запросы
+    // Aggregate queries
     const stats = sess.query(`
-        SELECT
+        SELECT 
             COUNT(*) as total_users,
             MAX(id) as max_id,
             MIN(id) as min_id
@@ -117,7 +117,7 @@ try {
     console.log("Statistics:", stats);
 
 } finally {
-    // Всегда очищайте сессию для освобождения ресурсов
-    sess.cleanup(); // Это удаляет файлы базы данных
+    // Always cleanup the session to free resources
+    sess.cleanup(); // This deletes the database files
 }
 ```

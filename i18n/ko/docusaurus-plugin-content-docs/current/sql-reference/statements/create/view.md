@@ -292,26 +292,60 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 `DEPENDS ON`은 갱신 가능 materialized view(refreshable materialized view) 사이에서만 동작합니다. `DEPENDS ON` 목록에 일반 테이블을 명시하면, 해당 뷰는 절대 갱신되지 않습니다(종속성은 `ALTER`로 제거할 수 있으며, [갱신 매개변수 변경](#changing-refresh-parameters) 내용을 참고하십시오).
 :::
 
-### 새로고침 설정 \{#refresh-settings\}
+### 갱신 설정 \{#refresh-settings\}
 
-사용 가능한 새로고침 설정은 다음과 같습니다.
+사용 가능한 갱신 설정은 다음과 같습니다.
 
-* `refresh_retries` - 새로고침 쿼리가 예외로 실패했을 때 재시도할 횟수입니다. 모든 재시도가 실패하면 다음에 예약된 새로고침 시각까지 건너뜁니다. 0은 재시도 안 함을, -1은 무한 재시도를 의미합니다. 기본값: 0.
+* `refresh_retries` - 새로고침 쿼리가 예외로 실패했을 때 재시도할 횟수입니다. 모든 재시도가 실패하면 다음에 예약된 새로고침 시각까지 건너뜁니다. 0은 재시도 안 함을, -1은 무한 재시도를 의미합니다. 기본값: 2.
 * `refresh_retry_initial_backoff_ms` - `refresh_retries`가 0이 아닐 때 첫 번째 재시도 전에 대기하는 시간입니다. 이후 각 재시도마다 대기 시간이 두 배로 증가하며, `refresh_retry_max_backoff_ms`까지 증가합니다. 기본값: 100 ms.
 * `refresh_retry_max_backoff_ms` - 새로고침 재시도 간 지연 시간이 지수적으로 증가할 때 적용되는 최대 한도입니다. 기본값: 60000 ms (1분).
+* `all_replicas` - `APPEND`가 있는 [복제된 데이터베이스](../../../engines/database-engines/replicated.md)에서 모든 레플리카가 독립적으로 새로고침할지, 아니면 예약된 각 시각마다 하나의 레플리카만 새로고침할지를 제어합니다. 뷰가 생성된 후에는 변경할 수 없습니다. 기본값: `false`.
+* `prefer_dependency_replica` - 뷰에 `DEPENDS ON`이 있을 때 상위 새로고침을 실행한 레플리카가 종속 새로고침을 실행할 우선권을 가지며, 다른 레플리카는 `prefer_dependency_replica_delay_ms`만큼 시도를 지연합니다. `SharedMergeTree`와 함께 사용하면 복제 지연으로 인해 종속 새로고침 체인에서 데이터가 누락되는 문제를 방지하는 데 유용합니다. 기본값: `false`.
+* `prefer_dependency_replica_delay_ms` - `prefer_dependency_replica`가 활성화되어 있을 때 우선권이 없는 레플리카가 종속 새로고침 실행을 시도하기 전에 대기하는 시간입니다. 기본값: 2000 ms.
 
-### 새로고침 매개변수 변경 \{#changing-refresh-parameters\}
+### 갱신 매개변수 수정 \{#changing-refresh-parameters\}
 
-새로고침 매개변수를 변경하려면 다음 단계를 따르십시오.
+기존 갱신 가능 구체화 뷰의 갱신 매개변수는 [`ALTER TABLE ... MODIFY REFRESH`](../alter/view.md#alter-table--modify-refresh-statement)를 사용하여 수정합니다:
 
 ```sql
 ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
 ```
 
-:::note
-이 작업은 스케줄, 의존성, 설정, APPEND 여부 등 *모든* 새로 고침 매개변수를 한 번에 교체합니다. 예를 들어 테이블에 `DEPENDS ON`이 있는 상태에서 `DEPENDS ON` 없이 `MODIFY REFRESH`를 실행하면 의존성이 제거됩니다.
-:::
+일정(`EVERY` 또는 `AFTER`)은 필수입니다. 이 문은 일정, `RANDOMIZE FOR`, `DEPENDS ON`, 갱신 설정을 포함한 *모든* 갱신 매개변수를 지정된 내용으로 항상 대체합니다. 생략된 항목은 기본값으로 재설정되거나(설정), 제거됩니다(의존성, 랜덤화).
 
+:::note
+
+* 갱신 설정만 변경하려면(예: `refresh_retries`) 기존 일정을 다시 지정하십시오:
+
+  ```sql
+  ALTER TABLE rmv MODIFY REFRESH EVERY 1 HOUR SETTINGS refresh_retries = 5;
+  ```
+
+* materialized view에서는 `ALTER TABLE ... MODIFY SETTING refresh_retries = ...`가 지원되지 않습니다. 반드시 `MODIFY REFRESH`를 통해 변경해야 합니다.
+
+* `APPEND`를 추가하거나 제거하는 것은 지원되지 않습니다.
+
+* `all_replicas` 설정은 생성 후에는 변경할 수 없습니다.
+  :::
+
+예시:
+
+```sql
+-- Change the schedule, drop existing settings and dependencies.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE;
+
+-- Change the schedule and tune retry behavior.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE
+SETTINGS refresh_retries = 5,
+         refresh_retry_initial_backoff_ms = 500,
+         refresh_retry_max_backoff_ms = 60000;
+
+-- Keep the dependency while changing the period.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR DEPENDS ON other_rmv;
+
+-- Drop the dependency by omitting `DEPENDS ON`.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR;
+```
 
 ### 기타 작업 \{#other-operations\}
 

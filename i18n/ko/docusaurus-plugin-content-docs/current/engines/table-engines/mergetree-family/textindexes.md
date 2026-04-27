@@ -520,6 +520,17 @@ SELECT count() FROM table WHERE has(array, 'clickhouse');
 ```
 
 
+#### `hasAny` 및 `hasAll` \{#functions-example-hasany-hasall\}
+
+배열 함수 [hasAny](/sql-reference/functions/array-functions#hasAny)와 [hasAll](/sql-reference/functions/array-functions#hasAll)는 인덱싱된 배열 컬럼에 상수 needle 문자열 집합의 일부 또는 전체가 포함되어 있는지 확인합니다.
+
+예시:
+
+```sql
+SELECT count() FROM table WHERE hasAny(tags, ['clickhouse', 'olap']);
+SELECT count() FROM table WHERE hasAll(tags, ['clickhouse', 'olap']);
+```
+
 #### `mapContains` \{#functions-example-mapcontains\}
 
 함수 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) (`mapContainsKey`의 별칭)은 검색 대상 문자열에서 추출된 토큰을 맵의 키에 대해 일치 여부를 검사합니다.
@@ -952,7 +963,7 @@ WHERE string_search_function(column_with_text_index)
 **지원되는 함수**
 
 직접 읽기 최적화는 `hasToken`, `hasAllTokens`, `hasAnyTokens` 함수를 지원합니다.
-텍스트 인덱스가 `array` 토크나이저로 정의된 경우, `equals`, `has`, `mapContainsKey`, `mapContainsValue` 함수에도 직접 읽기가 지원됩니다.
+텍스트 인덱스가 `array` 토크나이저로 정의된 경우, `equals`, `has`, `hasAny`, `hasAll`, `mapContainsKey`, `mapContainsValue` 함수에도 직접 읽기가 지원됩니다.
 이 함수들은 `AND`, `OR`, `NOT` 연산자와 함께 조합하여 사용할 수 있습니다.
 `WHERE` 또는 `PREWHERE` 절에는 (텍스트 컬럼 또는 다른 컬럼에 대한) 추가 비텍스트 검색 함수 기반 필터를 포함할 수도 있습니다. 이 경우에도 직접 읽기 최적화는 여전히 사용되지만, 효과는 줄어듭니다(지원되는 텍스트 검색 함수에만 적용되기 때문입니다).
 
@@ -1012,7 +1023,7 @@ WHERE 절의 필터 조건에 텍스트 검색 함수만 포함되어 있는 경
 힌트로서의 직접 읽기는 기본적으로 일반 직접 읽기와 동일한 원리에 기반하지만, 기본이 되는 텍스트 컬럼을 제거하지 않고 텍스트 인덱스 데이터로부터 추가 필터를 생성해 적용한다는 점이 다릅니다.
 이는 텍스트 인덱스만 읽어서 처리할 경우 오탐(false positive)이 발생할 수 있는 함수에 사용됩니다.
 
-지원되는 함수는 `like`, `startsWith`, `endsWith`, `equals`, `has`, `mapContainsKey`, `mapContainsValue` 입니다.
+지원되는 함수는 `like`, `startsWith`, `endsWith`, `equals`, `has`, `hasPhrase`, `mapContainsKey`, `mapContainsValue` 입니다.
 
 이 추가 필터는 다른 필터와 결합되어 결과 집합의 선별성을 더 높여, 다른 컬럼에서 읽어야 하는 데이터 양을 더욱 줄이는 데 도움이 됩니다.
 

@@ -67,29 +67,30 @@ SETTINGS
 선택적 매개변수:
 
 
-- `kafka_security_protocol` - 브로커와 통신할 때 사용하는 프로토콜입니다. 가능한 값: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`.
-- `kafka_sasl_mechanism` - 인증에 사용할 SASL 메커니즘입니다. 가능한 값: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`.
-- `kafka_sasl_username` - `PLAIN` 및 `SASL-SCRAM-..` 메커니즘에서 사용할 SASL 사용자 이름입니다.
-- `kafka_sasl_password` - `PLAIN` 및 `SASL-SCRAM-..` 메커니즘에서 사용할 SASL 비밀번호입니다.
-- `kafka_schema` — 포맷이 스키마 정의를 필요로 하는 경우 반드시 사용해야 하는 매개변수입니다. 예를 들어 [Cap'n Proto](https://capnproto.org/)는 스키마 파일의 경로와 루트 `schema.capnp:Message` 객체의 이름을 요구합니다.
-- `kafka_schema_registry_skip_bytes` — 스키마 레지스트리를 envelope 헤더와 함께 사용할 때(예: 19바이트 envelope을 포함하는 AWS Glue Schema Registry) 각 메시지의 시작 부분에서 건너뛸 바이트 수입니다. 범위: `[0, 255]`. 기본값: `0`.
-- `kafka_num_consumers` — 테이블당 consumer 수입니다. 하나의 consumer 처리량이 충분하지 않은 경우 더 많은 consumer를 지정합니다. 전체 consumer 수는 토픽의 파티션 수를 초과해서는 안 되는데, 각 파티션에는 오직 하나의 consumer만 할당될 수 있으며, 또한 ClickHouse가 배포된 서버의 물리 코어 수보다 커서는 안 됩니다. 기본값: `1`.
-- `kafka_max_block_size` — poll 시 배치의 최대 크기(메시지 수)입니다. 기본값: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size).
-- `kafka_skip_broken_messages` — 블록당 스키마와 호환되지 않는 Kafka 메시지에 대한 Kafka 메시지 파서 허용 한도입니다. `kafka_skip_broken_messages = N`이면, 엔진은 파싱할 수 없는 Kafka 메시지 *N*개를 건너뜁니다(메시지 1개는 데이터 1행에 해당). 기본값: `0`.
-- `kafka_commit_every_batch` — 전체 블록을 기록한 후 한 번만 커밋하는 대신, 소비 및 처리된 각 배치를 커밋합니다. 기본값: `0`.
-- `kafka_client_id` — 클라이언트 식별자입니다. 기본적으로 빈 문자열입니다.
-- `kafka_poll_timeout_ms` — Kafka에서 단일 poll에 대한 타임아웃입니다. 기본값: [stream_poll_timeout_ms](../../../operations/settings/settings.md#stream_poll_timeout_ms).
-- `kafka_poll_max_batch_size` — 단일 Kafka poll에서 poll할 수 있는 최대 메시지 수입니다. 기본값: [max_block_size](/operations/settings/settings#max_block_size).
-- `kafka_flush_interval_ms` — Kafka에서 데이터를 플러시하는 타임아웃입니다. 기본값: [stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms).
-- `kafka_consumer_reschedule_ms` — Kafka 스트림 처리가 정체된 경우(예: 소비할 메시지가 없는 경우) 다시 스케줄하는 간격입니다. 이 설정은 consumer가 poll을 재시도하기 전의 지연 시간을 제어합니다. `kafka_consumers_pool_ttl_ms`를 초과해서는 안 됩니다. 기본값: `500`밀리초입니다.
-- `kafka_thread_per_consumer` — 각 consumer에 독립적인 스레드를 제공합니다. 활성화된 경우, 각 consumer는 데이터를 병렬로 독립적으로 플러시합니다(비활성화된 경우에는 여러 consumer의 행을 합쳐 하나의 블록을 형성합니다). 기본값: `0`.
-- `kafka_handle_error_mode` — Kafka 엔진의 오류 처리 방식입니다. 가능한 값: default(메시지 파싱에 실패하면 예외를 발생시킵니다), stream(예외 메시지와 원시 메시지를 가상 컬럼 `_error` 및 `_raw_message`에 저장합니다), dead_letter_queue(오류 관련 데이터를 `system.dead_letter_queue`에 저장합니다).
-- `kafka_commit_on_select` — `SELECT` 쿼리가 실행될 때 메시지를 커밋합니다. 기본값: `false`.
-- `kafka_max_rows_per_message` — 행 기반 포맷에서 Kafka 메시지 하나에 기록되는 최대 행 수입니다. 기본값: `1`.
-- `kafka_compression_codec` — 메시지를 생성(프로듀스)하는 데 사용되는 압축 코덱입니다. 지원되는 값: 빈 문자열, `none`, `gzip`, `snappy`, `lz4`, `zstd`. 빈 문자열인 경우 테이블에서 압축 코덱을 설정하지 않으므로, 설정 파일의 값이나 `librdkafka`의 기본값이 사용됩니다. 기본값: 빈 문자열입니다.
-- `kafka_compression_level` — `kafka_compression_codec`으로 선택된 알고리즘에 대한 압축 수준 매개변수입니다. 값이 높을수록 CPU 사용량 증가를 대가로 더 나은 압축률을 제공합니다. 사용 가능한 범위는 알고리즘에 따라 다릅니다: `gzip`의 경우 `[0-9]`; `lz4`의 경우 `[0-12]`; `snappy`의 경우 `0`만; `zstd`의 경우 `[0-12]`; `-1`은 코덱별 기본 압축 수준을 의미합니다. 기본값: `-1`.
+* `kafka_security_protocol` - 브로커와 통신할 때 사용하는 프로토콜입니다. 가능한 값: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`.
+* `kafka_sasl_mechanism` - 인증에 사용할 SASL 메커니즘입니다. 가능한 값: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`.
+* `kafka_sasl_username` - `PLAIN` 및 `SASL-SCRAM-..` 메커니즘에서 사용할 SASL 사용자 이름입니다.
+* `kafka_sasl_password` - `PLAIN` 및 `SASL-SCRAM-..` 메커니즘에서 사용할 SASL 비밀번호입니다.
+* `kafka_schema` — 포맷이 스키마 정의를 필요로 하는 경우 반드시 사용해야 하는 매개변수입니다. 예를 들어 [Cap&#39;n Proto](https://capnproto.org/)는 스키마 파일의 경로와 루트 `schema.capnp:Message` 객체의 이름을 요구합니다.
+* `kafka_schema_registry_skip_bytes` — 스키마 레지스트리를 envelope 헤더와 함께 사용할 때(예: 19바이트 envelope을 포함하는 AWS Glue Schema Registry) 각 메시지의 시작 부분에서 건너뛸 바이트 수입니다. 범위: `[0, 255]`. 기본값: `0`.
+* `kafka_num_consumers` — 테이블당 consumer 수입니다. 하나의 consumer 처리량이 충분하지 않은 경우 더 많은 consumer를 지정합니다. 전체 consumer 수는 토픽의 파티션 수를 초과해서는 안 되는데, 각 파티션에는 오직 하나의 consumer만 할당될 수 있으며, 또한 ClickHouse가 배포된 서버의 물리 코어 수보다 커서는 안 됩니다. 기본값: `1`.
+* `kafka_max_block_size` — poll 시 배치의 최대 크기(메시지 수)입니다. 기본값: [max&#95;insert&#95;block&#95;size](../../../operations/settings/settings.md#max_insert_block_size).
+* `kafka_skip_broken_messages` — 블록당 스키마와 호환되지 않는 Kafka 메시지에 대한 Kafka 메시지 파서 허용 한도입니다. `kafka_skip_broken_messages = N`이면, 엔진은 파싱할 수 없는 Kafka 메시지 *N*개를 건너뜁니다(메시지 1개는 데이터 1행에 해당). 기본값: `0`.
+* `kafka_commit_every_batch` — 전체 블록을 기록한 후 한 번만 커밋하는 대신, 소비 및 처리된 각 배치를 커밋합니다. 기본값: `0`.
+* `kafka_client_id` — 클라이언트 식별자입니다. 기본적으로 빈 문자열입니다.
+* `kafka_poll_timeout_ms` — Kafka에서 단일 poll에 대한 타임아웃입니다. 기본값: [stream&#95;poll&#95;timeout&#95;ms](../../../operations/settings/settings.md#stream_poll_timeout_ms).
+* `kafka_poll_max_batch_size` — 단일 Kafka poll에서 poll할 수 있는 최대 메시지 수입니다. 기본값: [max&#95;block&#95;size](/operations/settings/settings#max_block_size).
+* `kafka_flush_interval_ms` — Kafka에서 데이터를 플러시하는 타임아웃입니다. 기본값: [stream&#95;flush&#95;interval&#95;ms](/operations/settings/settings#stream_flush_interval_ms).
+* `kafka_consumer_reschedule_ms` — Kafka 스트림 처리가 정체된 경우(예: 소비할 메시지가 없는 경우) 다시 스케줄하는 간격입니다. 이 설정은 consumer가 poll을 재시도하기 전의 지연 시간을 제어합니다. `kafka_consumers_pool_ttl_ms`를 초과해서는 안 됩니다. 기본값: `500`밀리초입니다.
+* `kafka_thread_per_consumer` — 각 consumer에 독립적인 스레드를 제공합니다. 활성화된 경우, 각 consumer는 데이터를 병렬로 독립적으로 플러시합니다(비활성화된 경우에는 여러 consumer의 행을 합쳐 하나의 블록을 형성합니다). 기본값: `0`.
+* `kafka_handle_error_mode` — Kafka 엔진의 오류 처리 방식입니다. 가능한 값: default(메시지 파싱에 실패하면 예외를 발생시킵니다), stream(예외 메시지와 원시 메시지를 가상 컬럼 `_error` 및 `_raw_message`에 저장합니다), dead&#95;letter&#95;queue(오류 관련 데이터를 system.dead&#95;letter&#95;queue에 저장합니다).
+* `kafka_commit_on_select` — `SELECT` 쿼리가 실행될 때 메시지를 커밋합니다. 기본값: `false`.
+* `kafka_max_rows_per_message` — 행 기반 포맷에서 Kafka 메시지 하나에 기록되는 최대 행 수입니다. 기본값: `1`.
+* `kafka_compression_codec` — 메시지를 생성(프로듀스)하는 데 사용되는 압축 코덱입니다. 지원되는 값: 빈 문자열, `none`, `gzip`, `snappy`, `lz4`, `zstd`. 빈 문자열인 경우 테이블에서 압축 코덱을 설정하지 않으므로, 설정 파일의 값이나 `librdkafka`의 기본값이 사용됩니다. 기본값: 빈 문자열입니다.
+* `kafka_compression_level` — kafka&#95;compression&#95;codec으로 선택한 알고리즘의 압축 수준 매개변수입니다. 값이 높을수록 CPU 사용량이 늘어나는 대신 더 나은 압축률을 제공합니다. 사용 가능한 범위는 알고리즘에 따라 다릅니다: `gzip`의 경우 `[0-9]`; `lz4`의 경우 `[0-12]`; `snappy`의 경우 `0`만; `zstd`의 경우 `[0-12]`; `-1`은 코덱별 기본 압축 수준을 의미합니다. 기본값: `-1`.
+* `kafka_map_virtual_columns_on_write` — 활성화하면 테이블 schema에서 `_key`, `_timestamp`, `_headers.name`, `_headers.value`와 같은 특수한 이름의 컬럼이 `INSERT` 시 해당 Kafka 메시지 메타데이터에 대응되며, 메시지 페이로드에서는 제외됩니다. [컬럼을 Kafka 메시지 메타데이터에 대응하기](#mapping-columns-to-kafka-message-metadata)를 참조하십시오. 기본값: `false`.
 
-Examples:
+예시:
 
 ```sql
   CREATE TABLE queue (
@@ -135,7 +136,6 @@ Examples:
 :::info
 Kafka 테이블 엔진은 [기본값](/sql-reference/statements/create/table#default_values)이 있는 컬럼을 지원하지 않습니다. 기본값이 필요한 컬럼은 아래에 설명된 것처럼 materialized view 수준에서 추가할 수 있습니다.
 :::
-
 
 ## 설명 \{#description\}
 
@@ -268,6 +268,43 @@ ClickHouse는 keytab 파일을 사용하여 Kerberos 자격 증명을 유지 관
 - `_error` - 파싱 실패 시 발생한 예외 메시지. 데이터 타입: `String`.
 
 참고: `_raw_message`와 `_error` 가상 컬럼은 파싱 중 예외가 발생한 경우에만 채워지며, 메시지가 성공적으로 파싱된 경우에는 항상 비어 있습니다.
+
+## 컬럼을 Kafka 메시지 메타데이터에 대응하기 \{#mapping-columns-to-kafka-message-metadata\}
+
+`INSERT INTO`로 메시지를 생성할 때, Kafka 엔진은 테이블에 해당 컬럼이 있으면 항상 `_key`라는 이름의 컬럼(타입 `String`)을 Kafka 메시지 키로 사용하고, `_timestamp`라는 이름의 컬럼(타입 `DateTime`)을 Kafka 메시지 타임스탬프로 사용합니다. 기본적으로 이 컬럼들은 다른 컬럼과 함께 생성된 메시지 페이로드에도 포함됩니다.
+
+`kafka_map_virtual_columns_on_write = 1`을 사용하면 동작이 다음과 같이 바뀝니다.
+
+* `_key` (타입 `String`) — Kafka 메시지 키에 대응됩니다.
+* `_timestamp` (타입 `DateTime`) — Kafka 메시지 타임스탬프에 대응됩니다.
+* `_headers.name` (타입 `Array(String)`) 및 `_headers.value` (타입 `Array(String)`) — Kafka 메시지 헤더에 대응됩니다. 각 쌍 `(_headers.name[i], _headers.value[i])`은 Kafka 헤더 1개가 됩니다. `_headers.name`과 `_headers.value`는 `_headers` Nested 접두사를 공유하므로, ClickHouse에서는 모든 행에서 두 배열의 크기가 같아야 합니다.
+
+이 이름을 가진 컬럼은 **타입이 위에 나열된 타입과 일치하는 경우에만 메시지 페이로드에서 제외**됩니다. 그렇지 않으면 페이로드에 그대로 남으므로, 우연히 같은 이름을 관련 없는 데이터에 재사용하는 schema도 계속 작동합니다.
+
+예시:
+
+```sql
+CREATE TABLE kafka_out
+(
+    event_json String,
+    `_key` String,
+    `_timestamp` DateTime,
+    `_headers.name` Array(String),
+    `_headers.value` Array(String)
+)
+ENGINE = Kafka
+SETTINGS
+    kafka_broker_list = 'broker:9092',
+    kafka_topic_list = 'events',
+    kafka_group_name = 'events-producer',
+    kafka_format = 'JSONEachRow',
+    kafka_map_virtual_columns_on_write = 1;
+
+INSERT INTO kafka_out VALUES
+    ('{"a":1}', 'session-42', now(), ['source', 'trace_id'], ['api', 'abc-123']);
+```
+
+생성된 Kafka 메시지에는 페이로드 `{"event_json":"{\"a\":1}"}`, 키 `session-42`, 현재 타임스탬프, 그리고 `source=api` 및 `trace_id=abc-123`라는 2개의 헤더가 포함됩니다.
 
 ## 데이터 포맷 지원 \{#data-formats-support\}
 

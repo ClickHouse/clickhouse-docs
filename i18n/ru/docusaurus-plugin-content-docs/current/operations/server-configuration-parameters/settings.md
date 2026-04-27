@@ -621,7 +621,7 @@ ClickHouse перезагружает встроенные словари каж
 
 ## concurrent_threads_soft_limit_ratio_to_cores \{#concurrent_threads_soft_limit_ratio_to_cores\}
 
-<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="Да" />То же, что и [`concurrent_threads_soft_limit_num`](#concurrent_threads_soft_limit_num), но задаётся как отношение к числу ядер.
+<SettingsInfoBlock type="UInt64" default_value="2" changeable_without_restart="Да" />То же, что и [`concurrent_threads_soft_limit_num`](#concurrent_threads_soft_limit_num), но задаётся как отношение к числу ядер.
 
 ## файл конфигурации \{#config-file\}
 
