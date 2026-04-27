@@ -20,16 +20,25 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 ClickHouse へ接続するための公式の JS クライアントです。
 このクライアントは TypeScript で実装されており、クライアントの公開 API 向けの型定義を提供します。
 
-外部依存はなく、パフォーマンスを最大化するよう最適化されており、さまざまな ClickHouse のバージョンおよび構成（オンプレミスの単一ノード、オンプレミスのクラスター、ClickHouse Cloud）でテストされています。
+外部依存はなく、パフォーマンスを最大化するよう最適化されており、さまざまな ClickHouse のバージョンおよび構成 (オンプレミスの単一ノード、オンプレミスのクラスター、ClickHouse Cloud) でテストされています。
 
 利用する環境に応じて、2 種類のクライアントバージョンが利用可能です:
 
-- `@clickhouse/client` - Node.js 専用
-- `@clickhouse/client-web` - ブラウザ（Chrome/Firefox）、Cloudflare Workers
+* `@clickhouse/client` - Node.js 専用
+* `@clickhouse/client-web` - ブラウザ (Chrome/Firefox) 、Cloudflare Workers
 
 TypeScript を使用する場合は、[バージョン 4.5 以上](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html)であることを確認してください。これは、[インラインでの import/export 構文](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names)を有効にします。
 
 クライアントのソースコードは [ClickHouse-JS GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-js)で公開されています。
+
+:::note AI エージェントスキル
+この JS クライアントには、コーディングエージェントがクライアントを扱う際に役立つ AI エージェントスキルが含まれています。次のようにインストールします:
+
+```sh
+npm skills add ClickHouse/clickhouse-js
+```
+
+:::
 
 ## 動作環境要件（Node.js） \{#environment-requirements-nodejs\}
 

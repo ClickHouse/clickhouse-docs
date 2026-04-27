@@ -24,12 +24,21 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 Существует две разные версии клиента для разных сред:
 
-- `@clickhouse/client` - только для Node.js
-- `@clickhouse/client-web` - браузеры (Chrome/Firefox), Cloudflare Workers
+* `@clickhouse/client` - только для Node.js
+* `@clickhouse/client-web` - браузеры (Chrome/Firefox), Cloudflare Workers
 
 При использовании TypeScript убедитесь, что его версия не ниже [4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html), в которой доступен [синтаксис inline import и export](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names).
 
 Исходный код клиента доступен в [GitHub-репозитории ClickHouse-JS](https://github.com/ClickHouse/clickhouse-js).
+
+:::note навыки агента ИИ
+JS‑клиент поставляется с навыками агента ИИ, которые помогают агентам для программирования работать с клиентом. Установите их с помощью:
+
+```sh
+npm skills add ClickHouse/clickhouse-js
+```
+
+:::
 
 ## Требования к среде (Node.js) \{#environment-requirements-nodejs\}
 
