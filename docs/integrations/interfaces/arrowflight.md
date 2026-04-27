@@ -20,6 +20,7 @@ Key capabilities:
 - Execute SQL queries and retrieve results in Apache Arrow format.
 - Insert data into tables using the Arrow format.
 - Query metadata (catalogs, schemas, tables, primary keys) via Flight SQL commands.
+- Create, bind, execute, and close server-side prepared statements via Flight SQL.
 - Manage sessions and settings via Flight SQL actions.
 - TLS encryption and username/password authentication.
 - Incremental result retrieval via `PollFlightInfo`.
@@ -128,6 +129,7 @@ Sessions allow setting persistent ClickHouse settings via the `SetSessionOptions
 | `arrowflight.cancel_ticket_after_do_get` | `false` | If `true`, tickets are cancelled immediately after being consumed by `DoGet`, freeing memory. |
 | `arrowflight.poll_descriptors_lifetime_seconds` | `600` | Time in seconds before poll descriptors expire. Set to `0` to disable automatic expiration. |
 | `arrowflight.cancel_flight_descriptor_after_poll_flight_info` | `false` | If `true`, poll descriptors are cancelled after being consumed by `PollFlightInfo`. |
+| `arrowflight.max_prepared_statements_per_user` | `100` | Maximum number of open prepared statements per user. Set to `0` to disable the limit. |
 | `enable_arrow_close_session` | `true` | Allow clients to close sessions via the `x-clickhouse-session-close` header. |
 | `default_session_timeout` | `60` | Default session timeout in seconds. Also controls Bearer token expiration. |
 | `max_session_timeout` | `3600` | Maximum allowed session timeout in seconds. |
@@ -277,6 +279,25 @@ If a setting name is unknown, the error `INVALID_NAME` is returned. If a value c
 
 Returns all current ClickHouse settings and their values for the session. Returns a map of setting names to string values (queries `system.settings` internally).
 
+#### CreatePreparedStatement {#createpreparedstatement}
+
+Creates a server-side prepared statement and returns a statement handle. The request contains the SQL query text with `?` placeholders.
+
+For query statements, the response may include:
+
+- `dataset_schema`: schema of the result set.
+- `parameter_schema`: schema of statement parameters.
+
+If schema inference fails for a valid query (for example, when replacing placeholders with `NULL` is not valid for that query), ClickHouse still creates the prepared statement and returns the handle without `dataset_schema`.
+
+Prepared statements are owned by the authenticated user. Other users cannot execute, bind, or close a statement handle they did not create.
+
+#### ClosePreparedStatement {#closepreparedstatement}
+
+Closes a prepared statement and releases the associated server-side resources.
+
+If a prepared statement is created in a session (via `x-clickhouse-session-id`), it is also closed automatically when that session is closed.
+
 ## Flight SQL Commands {#flight-sql-commands}
 
 When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arrow.apache.org/docs/format/FlightSql.html) message, ClickHouse handles the following commands:
@@ -292,6 +313,7 @@ When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arro
 | `CommandGetTables` | List tables. Supports filters for schema, table name, table types, and optional schema inclusion. |
 | `CommandGetTableTypes` | List table engine types (from `system.table_engines`). |
 | `CommandGetPrimaryKeys` | Retrieve primary key columns for a specified table. |
+| `CommandPreparedStatementQuery` | Execute a prepared `SELECT`-style statement by handle. |
 
 ### Supported via DoPut {#flightsql-doput}
 
@@ -299,6 +321,8 @@ When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arro
 |---|---|
 | `CommandStatementUpdate` | Execute a DDL/DML statement (CREATE, INSERT, ALTER, etc.). Returns affected row count. |
 | `CommandStatementIngest` | Bulk insert Arrow data into an existing table. Only append mode is supported. |
+| `CommandPreparedStatementQuery` | Bind parameter values for a prepared statement when sent via `DoPut`, then return `DoPutPreparedStatementResult` with the statement handle. |
+| `CommandPreparedStatementUpdate` | Execute a prepared DDL/DML statement by handle and return affected row count. |
 
 ### Not Yet Implemented {#flightsql-not-implemented}
 
@@ -308,8 +332,6 @@ When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arro
 | `CommandGetExportedKeys` | Not implemented |
 | `CommandGetImportedKeys` | Not implemented |
 | `CommandStatementSubstraitPlan` | Not supported (Substrait is not supported) |
-| `CommandPreparedStatementQuery` | Not implemented |
-| `CommandPreparedStatementUpdate` | Not implemented |
 
 ## Complete Example {#complete-example}
 
