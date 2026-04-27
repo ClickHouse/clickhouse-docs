@@ -290,7 +290,9 @@ For query statements, the response may include:
 
 If schema inference fails for a valid query (for example, when replacing placeholders with `NULL` is not valid for that query), ClickHouse still creates the prepared statement and returns the handle without `dataset_schema`.
 
-Prepared statements are owned by the authenticated user. Other users cannot execute, bind, or close a statement handle they did not create.
+Prepared statements are owned by the authenticated user, not by a single session. If you open multiple sessions as the same user, you can execute, re-bind, and close the same statement handle from any of those sessions.
+
+Other users cannot execute, bind, or close a statement handle they did not create.
 
 #### ClosePreparedStatement {#closepreparedstatement}
 
@@ -321,7 +323,7 @@ When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arro
 |---|---|
 | `CommandStatementUpdate` | Execute a DDL/DML statement (CREATE, INSERT, ALTER, etc.). Returns affected row count. |
 | `CommandStatementIngest` | Bulk insert Arrow data into an existing table. Only append mode is supported. |
-| `CommandPreparedStatementQuery` | Bind parameter values for a prepared statement when sent via `DoPut`, then return `DoPutPreparedStatementResult` with the statement handle. |
+| `CommandPreparedStatementQuery` | Bind parameter values for a prepared statement when sent via `DoPut`, then return `DoPutPreparedStatementResult` with the statement handle. Only one parameter set (one row) is accepted, and the number of bound values must exactly match the number of `?` placeholders. |
 | `CommandPreparedStatementUpdate` | Execute a prepared DDL/DML statement by handle and return affected row count. |
 
 ### Not Yet Implemented {#flightsql-not-implemented}
