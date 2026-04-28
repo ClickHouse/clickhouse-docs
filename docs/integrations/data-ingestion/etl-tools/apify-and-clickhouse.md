@@ -11,8 +11,8 @@ integration:
   - website: 'https://apify.com/'
 ---
 
-{/* TODO: ClickHouse team — confirm whether this should be PartnerBadge or CommunityBadge */}
 import PartnerBadge from '@theme/badges/PartnerBadge';
+import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 # Connect Apify to ClickHouse
 
@@ -38,8 +38,8 @@ Connect Apify to ClickHouse to load scraped or processed data into ClickHouse fo
 
 You'll need:
 
-{/* TODO: ClickHouse team — consider replacing the bullet below with the reusable <ConnectionDetails /> snippet for ClickHouse Cloud setup instructions */}
-- A ClickHouse instance (Cloud or self-hosted) with credentials.
+<ConnectionDetails />
+
 - An [Apify account](https://console.apify.com/sign-up) (free tier available).
 - An [Apify API token](https://docs.apify.com/platform/integrations/api#api-token), found in **Settings > Integrations** in the [Apify Console](https://console.apify.com/).
 - Node.js 18+ installed locally (for the JavaScript examples).
@@ -76,8 +76,6 @@ ORDER BY (scraped_at, url);
 ### Fetch Apify dataset and load into ClickHouse {#4-fetch-and-load}
 
 The following script fetches the results of an Apify Actor run and inserts them into ClickHouse:
-
-{/* TODO: ClickHouse team — consider adding a note about creating a dedicated ClickHouse user with appropriate permissions (CREATE, INSERT, SELECT) rather than using 'default', similar to the dlt integration page */}
 
 ```javascript
 import { ApifyClient } from 'apify-client';
@@ -128,10 +126,6 @@ See [Apify webhook documentation](https://docs.apify.com/platform/integrations/w
 An alternative approach is to use [Apify Schedules](https://docs.apify.com/platform/schedules) to run Actors on a cron-like schedule, combined with webhooks for the loading step.
 
 </VerticalStepper>
-
-{/* TODO: ClickHouse team — if ClickPipes supports or plans to support Apify as a native source, consider adding a section here about using ClickPipes as an alternative ingestion method */}
-
-{/* TODO: ClickHouse team — consider adding ClickHouse-specific performance tips: optimal batch sizes for inserts, compression settings, or recommended ORDER BY strategies for scraped data */}
 
 ## Best practices {#best-practices}
 
