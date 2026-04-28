@@ -591,7 +591,7 @@ Dynamic 数据类型的序列化版本。用于确保兼容性。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 parts 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 parts 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]} />
 
 用于控制设置 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循设置
@@ -2891,7 +2891,7 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 
 <SettingsInfoBlock type="Seconds" default_value="1800" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1800"},{"label": "将默认的副本集后台更新间隔增加到 30 分钟"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "300"},{"label": "新增设置"}]}, {"id": "row-3","items": [{"label": "26.2"},{"label": "300"},{"label": "新增设置"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1800"},{"label": "将默认的副本集后台更新间隔增加到 30 分钟"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "300"},{"label": "新增设置"}]}]} />
 
 在后台尝试更新副本集的频率。下一次运行会在 [0, value] 秒范围内进行均匀抖动。
 例外情况：`value = 0` 不遵循该规则；

@@ -40,6 +40,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 * asia-southeast1 (싱가포르)
 * asia-northeast1 (도쿄)
+* europe-west2 (런던)
 * europe-west4 (네덜란드)
 * us-central1 (아이오와)
 * us-east1 (사우스캐롤라이나)

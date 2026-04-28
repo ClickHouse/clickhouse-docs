@@ -40,13 +40,14 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 * asia-southeast1 (Сингапур)
 * asia-northeast1 (Токио)
+* europe-west2 (Лондон)
 * europe-west4 (Нидерланды)
 * us-central1 (Айова)
 * us-east1 (Южная Каролина)
 
 **Частный регион:**
 
-* australia-southeast1 (Сидней)
+* australia-southeast1(Сидней)
 * europe-west3 (Франкфурт)
 * europe-west6 (Цюрих)
 * northamerica-northeast1 (Монреаль)

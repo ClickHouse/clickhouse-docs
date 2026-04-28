@@ -40,13 +40,14 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 * asia-southeast1 (新加坡)
 * asia-northeast1 (东京)
+* europe-west2 (伦敦)
 * europe-west4 (荷兰)
 * us-central1 (爱荷华州)
 * us-east1 (南卡罗来纳州)
 
 **私有区域：**
 
-* australia-southeast1 (悉尼)
+* australia-southeast1(悉尼)
 * europe-west3 (法兰克福)
 * europe-west6 (苏黎世)
 * northamerica-northeast1 (蒙特利尔)

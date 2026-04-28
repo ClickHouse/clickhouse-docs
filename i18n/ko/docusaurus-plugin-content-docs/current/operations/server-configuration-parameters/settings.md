@@ -1020,6 +1020,14 @@ GitLab의 경우에도 도메인 앞에 점이 붙어 있지만 동일하게 적
 
 <SettingsInfoBlock type="UInt64" default_value="200000" changeable_without_restart="No" />이 제한에 도달하면 생성을 시도할 때 예외가 발생합니다. 하드 제한을 비활성화하려면 0으로 설정하십시오. 이 제한은 디스크 연결에 적용됩니다.
 
+## disk_connections_rcvbuf \{#disk_connections_rcvbuf\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />디스크(S3, Azure, GCS) 연결의 SO&#95;RCVBUF 옵션 크기입니다. 0보다 큰 값으로 설정하면 수신 버퍼에 대한 커널 TCP 자동 튜닝을 재정의합니다. 0 = 커널 기본값(자동 튜닝). 주의: 이 설정을 다시 0으로 변경하면 새로 생성되는 연결에만 자동 튜닝이 복원되며, 기존 연결 풀의 연결은 다시 생성될 때까지 고정된 버퍼 크기를 유지합니다.
+
+## disk_connections_sndbuf \{#disk_connections_sndbuf\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />디스크(S3, Azure, GCS) 연결의 `SO_SNDBUF` 옵션 크기입니다. 0보다 큰 값으로 설정하면 전송 버퍼에 대한 커널 TCP 자동 튜닝을 재정의합니다. 0 = 커널 기본값(자동 튜닝)입니다. 주의: 이 설정을 다시 0으로 변경하면 자동 튜닝은 새로 생성되는 연결에만 복원되며, 기존의 풀링된 연결은 다시 생성될 때까지 고정된 버퍼 크기를 유지합니다.
+
 ## disk_connections_soft_limit \{#disk_connections_soft_limit\}
 
 <SettingsInfoBlock type="UInt64" default_value="5000" changeable_without_restart="No" />이 한도를 초과하는 연결은 TTL(time to live)이 크게 더 짧아집니다. 이 한도는 디스크 연결에 적용됩니다.
@@ -1449,6 +1457,14 @@ HSTS 만료 시간(초 단위)입니다.
 ## http_connections_hard_limit \{#http_connections_hard_limit\}
 
 <SettingsInfoBlock type="UInt64" default_value="200000" changeable_without_restart="No" />이 제한에 도달하면 새로 생성하려는 시도 시 예외가 발생합니다. 하드 제한을 비활성화하려면 0으로 설정하십시오. 이 제한은 디스크나 스토리지에 속하지 않는 http 연결에 적용됩니다.
+
+## http_connections_rcvbuf \{#http_connections_rcvbuf\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />일반 HTTP 연결에 사용하는 SO&#95;RCVBUF 옵션의 크기입니다. 0보다 큰 값으로 설정하면 수신 버퍼에 대한 커널 TCP 자동 튜닝을 무시하고 지정한 값을 사용합니다. 0 = 커널 기본값(자동 튜닝). 주의: 이 설정을 다시 0으로 변경하면 새로 생성되는 연결에 대해서만 자동 튜닝이 복원됩니다. 기존 연결 풀의 연결은 다시 생성될 때까지 고정된 버퍼 크기를 유지합니다.
+
+## http_connections_sndbuf \{#http_connections_sndbuf\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />일반 HTTP 연결의 SO&#95;SNDBUF 옵션 크기입니다. 0보다 큰 값으로 설정하면 전송 버퍼에 대한 커널 TCP 자동 튜닝을 이 설정값으로 중단하고 대체합니다. 0 = 커널 기본값(자동 튜닝)입니다. 주의: 이 설정을 다시 0으로 변경하면 새로 생성되는 연결에 대해서만 자동 튜닝이 복원되며, 기존의 풀링된 연결은 다시 생성될 때까지 고정된 버퍼 크기를 유지합니다.
 
 ## http_connections_soft_limit \{#http_connections_soft_limit\}
 
@@ -4364,6 +4380,14 @@ SharedMergeTree에서 스냅샷 파트를 완전히 삭제하는 주기입니다
 ## storage_connections_hard_limit \{#storage_connections_hard_limit\}
 
 <SettingsInfoBlock type="UInt64" default_value="200000" changeable_without_restart="No" />이 제한에 도달하면 생성을 시도할 때 예외가 발생합니다. 하드 제한을 비활성화하려면 0으로 설정하십시오. 이 제한은 스토리지 연결에 적용됩니다.
+
+## storage_connections_rcvbuf \{#storage_connections_rcvbuf\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />스토리지 연결(복제, 분산 쿼리)에 대한 `SO_RCVBUF` 옵션 크기입니다. 0보다 큰 값으로 설정하면 수신 버퍼에 대한 커널 TCP 자동 튜닝을 덮어씁니다. 0 = 커널 기본값(자동 튜닝)입니다. 주의: 이 설정을 다시 0으로 변경하면 자동 튜닝은 새로 생성된 연결에만 복원되며, 기존의 풀링된 연결은 다시 생성될 때까지 고정된 버퍼 크기를 유지합니다.
+
+## storage_connections_sndbuf \{#storage_connections_sndbuf\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="No" />스토리지 연결(복제, 분산 쿼리)의 SO&#95;SNDBUF 옵션 크기입니다. 0보다 큰 값으로 설정하면 송신 버퍼에 대한 커널 TCP 자동 튜닝 대신 해당 값을 사용합니다. 0 = 커널 기본값(자동 튜닝)입니다. 주의: 이 설정을 다시 0으로 변경하면 새로 생성되는 연결에 대해서만 자동 튜닝이 복원되며, 기존의 풀링된 연결은 다시 생성될 때까지 고정된 버퍼 크기를 유지합니다.
 
 ## storage_connections_soft_limit \{#storage_connections_soft_limit\}
 
