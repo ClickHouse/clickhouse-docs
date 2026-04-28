@@ -38,6 +38,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 - asia-southeast1 (Singapore)
 - asia-northeast1 (Tokyo)
+- europe-west2 (London)
 - europe-west4 (Netherlands)
 - us-central1 (Iowa)
 - us-east1 (South Carolina)
