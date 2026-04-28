@@ -3859,6 +3859,143 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 └──────────────────────────────┘
 ```
 
+## obfuscateQuery \{#obfuscateQuery\}
+
+引入版本：v26.3.0
+
+通过将标识符替换为随机词、将字面量替换为随机值，并保留查询结构，来混淆 SQL 查询。
+
+此函数适用于在记录日志或出于调试目的共享查询之前，对查询进行匿名化处理。
+即使输入相同的查询，不同行也会产生不同的混淆结果，这有助于
+在处理多个查询时保护隐私。
+
+可选的 `tag` 参数可在同一函数调用
+在一个查询中被多次使用时，防止公共子表达式消除。这样可确保每次调用都会产生不同的混淆结果。
+
+特性：
+
+* 将表名、列名和别名替换为随机词
+* 将数字和字符串字面量替换为随机值
+* 保留整体查询结构和 SQL 语法
+* 对不同行产生不同的结果
+
+**语法**
+
+```sql
+obfuscateQuery(query[, tag])
+```
+
+**参数**
+
+* `query` — 待混淆的 SQL 查询。[`String`](/sql-reference/data-types/string)
+* `tag` — 可选。用于在多次使用相同函数调用时，防止公共子表达式被消除的值。
+
+**返回值**
+
+混淆后的查询，其中标识符和字面量会被替换，同时保留原始查询结构。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT name, age FROM users WHERE age > 30')
+```
+
+```response title=Response
+SELECT fruit, number FROM table WHERE number > 12
+```
+
+**使用标签防止公共子表达式消除**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT * FROM t', 1), obfuscateQuery('SELECT * FROM t', 2)
+```
+
+```response title=Response
+SELECT a FROM b, SELECT c FROM d
+```
+
+**不同行会产生不同的结果**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT 1') AS a, obfuscateQuery('SELECT 1') AS b
+```
+
+```response title=Response
+A B
+```
+
+## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
+
+引入版本：v26.3.0
+
+使用指定的种子对 SQL 查询进行混淆，以获得确定性结果。
+
+与 `obfuscateQuery()` 不同，此函数在给定相同种子时会产生确定性结果。
+当您需要在多次运行之间保持混淆结果一致，或者希望出于测试或调试目的
+复现相同的已混淆查询时，这个函数非常有用。
+
+特性：
+
+* 基于提供的种子进行确定性混淆
+* 相同的种子始终会产生相同的混淆结果
+* 不同的种子会产生不同的结果
+* 与 obfuscateQuery() 一样保留查询结构
+
+使用场景：
+
+* 可复现的测试用例
+* 在多次运行中保持一致的匿名化结果
+* 使用一致的已混淆查询进行调试
+
+**语法**
+
+```sql
+obfuscateQueryWithSeed(query, seed)
+```
+
+**参数**
+
+* `query` — 要混淆的 SQL 查询。 [`String`](/sql-reference/data-types/string)
+* `seed` — 用于混淆的种子。相同的种子会产生确定性的结果。 [`Integer`](/sql-reference/data-types/int-uint) 或 [`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+根据提供的种子以确定性方式生成的混淆查询。 [`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用整数种子进行确定性混淆**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT name FROM users', 42)
+```
+
+```response title=Response
+SELECT fruit FROM table
+```
+
+**基于字符串种子的确定性混淆**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT id, value FROM data', 'myseed')
+```
+
+```response title=Response
+SELECT a, b FROM c
+```
+
+**相同的种子会得到相同的结果**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT 1', 100) = obfuscateQueryWithSeed('SELECT 1', 100)
+```
+
+```response title=Response
+true
+```
+
 ## parseReadableSize \{#parseReadableSize\}
 
 引入于：v24.6.0

@@ -3746,12 +3746,7 @@ Cloud 默认值：`1`。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory
-  rows={[
-  { id: "row-1", items: [{ label: "26.4" }, { label: "0" }, { label: "用于推导传递性等值连接谓词以优化 JOIN 顺序的新增设置。" }] },
-  { id: "row-2", items: [{ label: "26.4" }, { label: "0" }, { label: "用于推导传递性等值连接谓词以优化 JOIN 顺序的新增设置。" }] }
-]}
-/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "用于推导传递性等值连接谓词以优化 JOIN 顺序的新增设置。"}]}]} />
 
 根据现有连接条件推导传递性等值连接谓词。
 例如，给定 `A.x = B.x` 和 `B.x = C.x`，会额外添加一个 `A.x = C.x` 谓词，
@@ -3791,7 +3786,7 @@ Cloud 默认值：`1`。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "新设置"}]}]} />
 
 启用物化公共表表达式，该设置将优先于 enable&#95;global&#95;with&#95;statement
 
@@ -6576,13 +6571,7 @@ log_query_views=1
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory
-  rows={[
-  { id: "row-1", items: [{ label: "26.4" }, { label: "0" }, { label: "默认禁用在 INSERT 时构建统计信息，改为依赖合并" }] },
-  { id: "row-2", items: [{ label: "26.4" }, { label: "0" }, { label: "默认禁用在 INSERT 时构建统计信息，改为依赖合并" }] },
-  { id: "row-3", items: [{ label: "24.6" }, { label: "1" }, { label: "Added new setting to allow to disable materialization of statistics on insert" }] }
-]}
-/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "默认禁用在 INSERT 时构建统计信息，改为依赖合并"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "1"},{"label": "新增设置，可禁用在 insert 时对统计信息进行物化"}]}]} />
 
 控制是否在执行 INSERT 时构建并写入统计信息。若禁用，则统计信息会在合并期间或通过显式执行 MATERIALIZE STATISTICS 来构建并存储。
 

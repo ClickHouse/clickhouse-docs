@@ -17,19 +17,28 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 # ClickHouse JS \{#clickhouse-js\}
 
-用于连接 ClickHouse 的官方 JS 客户端。
+用于连接 ClickHouse 的官方 JavaScript 客户端。
 该客户端使用 TypeScript 编写，并为客户端公开 API 提供类型定义。
 
-它没有任何依赖项，针对性能进行了优化，并已在多种 ClickHouse 版本和配置（本地单节点、本地集群以及 ClickHouse Cloud）下完成测试。
+它没有任何依赖项，针对性能进行了优化，并已在多种 ClickHouse 版本和配置 (本地单节点、本地集群以及 ClickHouse Cloud) 下完成测试。
 
 针对不同的运行环境，有两个不同版本的客户端可用：
 
-- `@clickhouse/client` - 仅适用于 Node.js
-- `@clickhouse/client-web` - 浏览器（Chrome/Firefox）、Cloudflare Workers
+* `@clickhouse/client` - 仅适用于 Node.js
+* `@clickhouse/client-web` - 浏览器 (Chrome/Firefox) 、Cloudflare Workers
 
 在使用 TypeScript 时，请确保版本至少为 [4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html)，该版本启用了[内联导入与导出语法](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names)。
 
 客户端的源代码可在 [ClickHouse-JS GitHub 仓库](https://github.com/ClickHouse/clickhouse-js)中获取。
+
+:::note AI 智能体技能
+JavaScript 客户端内置 AI 智能体技能，可帮助编码智能体使用该客户端。使用以下命令安装：
+
+```sh
+npm skills add ClickHouse/clickhouse-js
+```
+
+:::
 
 ## 环境要求（Node.js） \{#environment-requirements-nodejs\}
 

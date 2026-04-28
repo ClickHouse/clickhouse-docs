@@ -25,12 +25,21 @@ ClickHouse에 연결하기 위한 공식 JS 클라이언트입니다.
 
 다양한 환경에서 사용할 수 있도록 두 가지 버전의 클라이언트를 제공합니다:
 
-- `@clickhouse/client` - Node.js 전용
-- `@clickhouse/client-web` - 브라우저(Chrome/Firefox), Cloudflare workers용
+* `@clickhouse/client` - Node.js 전용
+* `@clickhouse/client-web` - 브라우저(Chrome/Firefox), Cloudflare workers용
 
 TypeScript를 사용할 때는 [버전 4.5 이상](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html)인지 확인하십시오. 이 버전에서는 [inline import 및 export 구문](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names)을 사용할 수 있습니다.
 
-클라이언트 소스 코드는 [ClickHouse-JS GitHub 리포지토리](https://github.com/ClickHouse/clickhouse-js)에서 확인할 수 있습니다.
+클라이언트 소스 코드는 [ClickHouse-JS GitHub 저장소](https://github.com/ClickHouse/clickhouse-js)에서 확인할 수 있습니다.
+
+:::note AI 에이전트 스킬
+JS 클라이언트에는 코딩 에이전트가 클라이언트와 함께 작업하는 데 도움이 되는 AI 에이전트 스킬이 함께 제공됩니다. 다음과 같이 설치하십시오:
+
+```sh
+npm skills add ClickHouse/clickhouse-js
+```
+
+:::
 
 ## 환경 요구 사항 (Node.js) \{#environment-requirements-nodejs\}
 

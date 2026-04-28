@@ -595,11 +595,11 @@ Dynamic データ型のシリアライゼーションバージョンを指定し
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "デフォルトで、min_age_to_force_merge_seconds が有効な場合でもパーツサイズを制限します"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge 用の最大バイト数を制限する新しい設定を追加"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "デフォルトで、min_age_to_force_merge_seconds が有効な場合でもパーツサイズを制限します"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新しい設定"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "min_age_to_force_merge の最大バイト数を制限する新しい設定を追加"}]}]} />
 
 `min_age_to_force_merge_seconds` と
-`min_age_to_force_merge_on_partition_only` の設定が、
-`max_bytes_to_merge_at_max_space_in_pool` の設定に従うようにするかどうかを制御します。
+`min_age_to_force_merge_on_partition_only` の設定で、
+`max_bytes_to_merge_at_max_space_in_pool` の設定を適用するかどうかを制御します。
 
 設定可能な値:
 
@@ -2936,7 +2936,7 @@ ClickHouse Cloud でのみ利用可能です。
 
 <SettingsInfoBlock type="Seconds" default_value="1800" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1800"},{"label": "デフォルトの replica set のバックグラウンド更新間隔を 30 分に延長"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "300"},{"label": "新しい設定"}]}, {"id": "row-3","items": [{"label": "26.2"},{"label": "300"},{"label": "新しい設定"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1800"},{"label": "デフォルトの replica set のバックグラウンド更新間隔を 30 分に延長"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "300"},{"label": "新しい設定"}]}]} />
 
 バックグラウンドでレプリカが replica set の更新を試みる頻度。次回の実行には [0, value] 秒の範囲で一様にジッターが加えられます。例外: value = 0 はこの条件に従いません。実装では最小 200 ms が適用されるため、次回の実行には [0, 200] ms の範囲で一様にジッターが加えられます。
 
