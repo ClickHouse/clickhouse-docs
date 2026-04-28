@@ -34,17 +34,19 @@ Connect Apify to ClickHouse to load scraped or processed data into ClickHouse fo
 
 <VerticalStepper headerLevel="h3">
 
-### Prerequisites {#1-prerequisites}
-
-You'll need:
+### Gather your ClickHouse connection details {#1-gather-your-connection-details}
 
 <ConnectionDetails />
+
+### Apify prerequisites {#2-apify-prerequisites}
+
+You'll also need:
 
 - An [Apify account](https://console.apify.com/sign-up) (free tier available).
 - An [Apify API token](https://docs.apify.com/platform/integrations/api#api-token), found in **Settings > Integrations** in the [Apify Console](https://console.apify.com/).
 - Node.js 18+ installed locally (for the JavaScript examples).
 
-### Install dependencies {#2-install-dependencies}
+### Install dependencies {#3-install-dependencies}
 
 Install the Apify JavaScript client and the ClickHouse JavaScript client:
 
@@ -56,7 +58,7 @@ npm install apify-client @clickhouse/client
 Apify also provides a [Python client](https://docs.apify.com/api/client/python). If you prefer Python, install `apify-client` via pip and use [clickhouse-connect](https://clickhouse.com/docs/integrations/python) for ClickHouse.
 :::
 
-### Create a target table in ClickHouse {#3-create-a-target-table}
+### Create a target table in ClickHouse {#4-create-a-target-table}
 
 Create a table to hold the scraped data. The schema depends on the Actor you use. This example uses [MergeTree](/engines/table-engines/mergetree-family/mergetree.md) for a product scraping Actor:
 
@@ -73,7 +75,7 @@ ENGINE = MergeTree()
 ORDER BY (scraped_at, url);
 ```
 
-### Fetch Apify dataset and load into ClickHouse {#4-fetch-and-load}
+### Fetch Apify dataset and load into ClickHouse {#5-fetch-and-load}
 
 The following script fetches the results of an Apify Actor run and inserts them into ClickHouse:
 
@@ -111,7 +113,7 @@ await clickhouse.close();
 For large datasets, paginate through results using the `limit` and `offset` parameters of the [List dataset items](https://docs.apify.com/api/v2#/reference/datasets/item-collection/list-items) endpoint. You can also pass `clean=true` to retrieve only non-empty, deduplicated items.
 :::
 
-### Automate with webhooks {#5-automate-with-webhooks}
+### Automate with webhooks {#6-automate-with-webhooks}
 
 Instead of running the script manually, automate the pipeline so data loads into ClickHouse every time an Actor finishes:
 
