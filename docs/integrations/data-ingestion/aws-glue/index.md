@@ -69,6 +69,66 @@ To add the required jars manually, please follow the following:
 </TabItem>
 </Tabs>
 
+## Using AWS Secrets Manager for credentials {#secrets-manager}
+
+Rather than hardcoding your ClickHouse user and password in the job, store them in [AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/) and reference the secret from your Glue connection or job script. At runtime, Glue fetches the secret and merges its key-value pairs into the connector's connection options.
+
+### Create the secret {#create-secret}
+
+In AWS Secrets Manager, create a secret of type **Other type of secret** with key-value pairs whose keys match the connector's option names:
+
+| Key | Value |
+|---|---|
+| `user` | your ClickHouse username |
+| `password` | your ClickHouse password |
+
+Any key you put in the secret is forwarded to the connector, so you can also store `host`, `database`, or any other option there if you'd like to keep them out of code.
+
+### Reference the secret {#reference-secret}
+
+There are two ways to wire the secret into a job.
+
+**Option 1: attach it to the Glue connection.** When creating or editing the ClickHouse connection in Glue Studio, set the **AWS secret** field to the secret's name. Any job that uses this connection resolves the secret automatically — no code changes needed.
+
+**Option 2: pass `secretId` in connection options.** Add `secretId` to the options map and drop the keys the secret provides:
+
+<Tabs>
+<TabItem value="Python" label="Python" default>
+
+```python
+clickhouse_options = {
+    "className": "clickhouse",
+    "secretId": "clickhouse/glue/credentials",
+    "host": "<your-clickhouse-host>",
+    "http_port": "<your-clickhouse-port>",
+    "protocol": "https",
+    "database": "default",
+    "table": "example_table",
+    "ssl": "true"
+}
+```
+
+</TabItem>
+<TabItem value="Scala" label="Scala">
+
+```scala
+val clickHouseOptions = JsonOptions(Map(
+  "className" -> "clickhouse",
+  "secretId" -> "clickhouse/glue/credentials",
+  "host" -> "<your-clickhouse-host>",
+  "http_port" -> "<your-clickhouse-port>",
+  "protocol" -> "https",
+  "database" -> "default",
+  "table" -> "example_table",
+  "ssl" -> "true"
+))
+```
+
+</TabItem>
+</Tabs>
+
+The secret's `user` and `password` keys are merged into these options at runtime, so you never need to read them in your script.
+
 ## Examples {#example}
 <Tabs>
 <TabItem value="Visual Editor" label="Visual Editor" default>
