@@ -90,46 +90,51 @@ There are two ways to wire the secret into a job.
 
 **Option 1: attach it to the Glue connection.** When creating or editing the ClickHouse connection in Glue Studio, set the **AWS secret** field to the secret's name. Any job that uses this connection resolves the secret automatically — no code changes needed.
 
-**Option 2: pass `secretId` in connection options.** Add `secretId` to the options map and drop the keys the secret provides:
+**Option 2: pass `secretId` in connection options.** Use this when the secret isn't attached to the connection. Add `secretId` alongside `connectionName`:
 
 <Tabs>
 <TabItem value="Python" label="Python" default>
 
 ```python
-clickhouse_options = {
-    "className": "clickhouse",
-    "secretId": "clickhouse/glue/credentials",
-    "host": "<your-clickhouse-host>",
-    "http_port": "<your-clickhouse-port>",
-    "protocol": "https",
-    "database": "default",
-    "table": "example_table",
-    "ssl": "true"
-}
+source = glueContext.create_dynamic_frame.from_options(
+    connection_type="marketplace.spark",
+    connection_options={
+        "connectionName": "<your-connection-name>",
+        "secretId": "clickhouse/glue/credentials",
+        "database": "default",
+        "table": "example_table"
+    },
+    transformation_ctx="clickhouse_source"
+)
 ```
 
 </TabItem>
 <TabItem value="Scala" label="Scala">
 
 ```scala
-val clickHouseOptions = JsonOptions(Map(
-  "className" -> "clickhouse",
-  "secretId" -> "clickhouse/glue/credentials",
-  "host" -> "<your-clickhouse-host>",
-  "http_port" -> "<your-clickhouse-port>",
-  "protocol" -> "https",
-  "database" -> "default",
-  "table" -> "example_table",
-  "ssl" -> "true"
-))
+val source = glueContext.getSource(
+  connectionType = "marketplace.spark",
+  connectionOptions = JsonOptions(Map(
+    "connectionName" -> "<your-connection-name>",
+    "secretId" -> "clickhouse/glue/credentials",
+    "database" -> "default",
+    "table" -> "example_table"
+  )),
+  transformationContext = "clickhouseSource"
+)
 ```
 
 </TabItem>
 </Tabs>
 
-The secret's `user` and `password` keys are merged into these options at runtime, so you never need to read them in your script.
+The secret's `user` and `password` keys are merged into the connector options at runtime, so you never need to read them in your script.
 
 ## Examples {#example}
+
+The examples below use `marketplace.spark` and reference the connector by `connectionName`. If you installed the connector manually (Manual Installation tab), use `connection_type="custom.spark"` and pass `className`, `host`, `http_port`, `user`, and `password` directly in the options instead.
+
+If you attached an AWS secret to the connection itself (Option 1 in [Using AWS Secrets Manager for credentials](#secrets-manager)), drop `secretId` from the options — Glue resolves credentials from the connection automatically.
+
 <Tabs>
 <TabItem value="Visual Editor" label="Visual Editor" default>
 
@@ -154,42 +159,29 @@ object ClickHouseGlueExample {
     val glueContext = new GlueContext(sc)
     Job.init(args("JOB_NAME"), glueContext, args.asJava)
 
-    val clickHouseOptions = JsonOptions(Map(
-      "className" -> "clickhouse",
-      "host" -> "<your-clickhouse-host>",
-      "http_port" -> "<your-clickhouse-port>",
-      "protocol" -> "https",
-      "user" -> "default",
-      "password" -> "<your-password>",
+    val readOptions = JsonOptions(Map(
+      "connectionName" -> "<your-connection-name>",
+      "secretId" -> "clickhouse/glue/credentials",
       "database" -> "default",
-      "table" -> "example_table",
-      // for ClickHouse Cloud
-      "ssl" -> "true"
+      "table" -> "example_table"
     ))
 
-    // Read from ClickHouse
     val source = glueContext.getSource(
-      connectionType = "custom.spark",
-      connectionOptions = clickHouseOptions,
+      connectionType = "marketplace.spark",
+      connectionOptions = readOptions,
       transformationContext = "clickhouseSource"
     )
     val dyf = source.getDynamicFrame()
 
-    // Write to ClickHouse
     val writeOptions = JsonOptions(Map(
-      "className" -> "clickhouse",
-      "host" -> "<your-clickhouse-host>",
-      "http_port" -> "<your-clickhouse-port>",
-      "protocol" -> "https",
-      "user" -> "default",
-      "password" -> "<your-password>",
+      "connectionName" -> "<your-connection-name>",
+      "secretId" -> "clickhouse/glue/credentials",
       "database" -> "default",
-      "table" -> "target_table",
-      "ssl" -> "true"
+      "table" -> "target_table"
     ))
 
     glueContext.getSink(
-      connectionType = "custom.spark",
+      connectionType = "marketplace.spark",
       connectionOptions = writeOptions
     ).writeDynamicFrame(dyf)
 
@@ -216,45 +208,32 @@ logger = glueContext.get_logger()
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
 
-clickhouse_options = {
-    "className": "clickhouse",
-    "host": "<your-clickhouse-host>",
-    "http_port": "<your-clickhouse-port>",
-    "protocol": "https",
-    "user": "default",
-    "password": "<your-password>",
+read_options = {
+    "connectionName": "<your-connection-name>",
+    "secretId": "clickhouse/glue/credentials",
     "database": "default",
-    "table": "example_table",
-    # for ClickHouse Cloud
-    "ssl": "true"
+    "table": "example_table"
 }
 
-# Read from ClickHouse
 source = glueContext.create_dynamic_frame.from_options(
-    connection_type="custom.spark",
-    connection_options=clickhouse_options,
+    connection_type="marketplace.spark",
+    connection_options=read_options,
     transformation_ctx="clickhouse_source"
 )
 dyf = source
 
 logger.info(f"Read {dyf.count()} rows from ClickHouse")
 
-# Write to ClickHouse
 write_options = {
-    "className": "clickhouse",
-    "host": "<your-clickhouse-host>",
-    "http_port": "<your-clickhouse-port>",
-    "protocol": "https",
-    "user": "default",
-    "password": "<your-password>",
+    "connectionName": "<your-connection-name>",
+    "secretId": "clickhouse/glue/credentials",
     "database": "default",
-    "table": "target_table",
-    "ssl": "true"
+    "table": "target_table"
 }
 
 glueContext.write_dynamic_frame.from_options(
     frame=dyf,
-    connection_type="custom.spark",
+    connection_type="marketplace.spark",
     connection_options=write_options,
     transformation_ctx="clickhouse_sink"
 )
