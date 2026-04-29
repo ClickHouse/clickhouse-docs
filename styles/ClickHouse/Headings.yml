@@ -96,6 +96,7 @@ exceptions:
   - Linux
   - MERGETREE
   - "AWS Marketplace"
+  - "AWS Secrets Manager"
   - "Azure Marketplace"
   - "GCP Marketplace"
   - Microsoft
