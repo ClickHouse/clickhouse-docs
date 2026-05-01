@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'Building Integrations'
+sidebar_label: 'Building integrations'
 sidebar_position: 10
 keywords: ['clickhouse', 'integration', 'connector', 'developer', 'JDBC', 'HTTP', 'ISV', 'best practices']
 description: 'Best practices for ISVs and developers building integrations, connectors, and tools on top of ClickHouse'
 slug: /integrations/building-integrations
-title: 'Integration Development Best Practices'
+title: 'Integration development best practices'
 doc_type: 'guide'
 ---
 
