@@ -6679,6 +6679,14 @@ log_query_views=1
 Рекомендуемое значение — половина доступной системной памяти.
 :::
 
+## max_bytes_before_external_join \{#max_bytes_before_external_join\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка для управления автоматической выгрузкой хеш-соединений на диск. Ненулевое значение включает выгрузку и задаёт порог в байтах."}]}]} />
+
+Если задано ненулевое значение и `join_algorithm` имеет значение `hash`, `parallel_hash`, `default` или `auto`, хеш-соединение будет автоматически преобразовано в grace hash join, чтобы включить выгрузку на диск, когда объём данных в правой части превысит указанное число байт. Если установлено значение 0 (по умолчанию), автоматическая выгрузка отключена. Это предотвращает применение оптимизации чтения по порядку через соединение.
+
 ## max_bytes_before_external_sort \{#max_bytes_before_external_sort\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -7771,6 +7779,22 @@ SELECT getSetting('max_memory_usage_for_user');
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Если параметр не равен нулю, ограничивает количество потоков чтения для таблицы MergeTree.
+
+## max_streams_for_union_step \{#max_streams_for_union_step\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, ограничивающая количество одновременно активных потоков данных на шаге UNION для снижения пикового потребления памяти."}]}]} />
+
+Ограничивает количество одновременно активных потоков данных на шаге `UNION` (применяется как к `UNION ALL`, так и к `UNION DISTINCT`, поскольку `UNION DISTINCT` реализуется через шаг `UNION ALL`, за которым следует шаг `DISTINCT`). Когда запрос `UNION` содержит много подзапросов, все они одновременно открывают буферы чтения, из-за чего потребление памяти становится пропорциональным числу подзапросов. Эта настройка вставляет процессоры `Concat`, чтобы сузить конвейер и сделать так, чтобы одновременно было активно не более указанного числа потоков, что значительно снижает пиковое потребление памяти. Фактическое ограничение равно минимуму из этого значения и `max_threads * max_streams_for_union_step_to_max_threads_ratio` (если любое из этих значений равно 0, оно игнорируется). Если оба значения равны 0, сужение не применяется.
+
+## max_streams_for_union_step_to_max_threads_ratio \{#max_streams_for_union_step_to_max_threads_ratio\}
+
+<SettingsInfoBlock type="Float" default_value="8" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "8"},{"label": "Новая настройка: предел количества одновременно активных потоков на шаге UNION вычисляется как min(max_streams_for_union_step, max_threads * max_streams_for_union_step_to_max_threads_ratio); если любой из параметров равен 0, соответствующее ограничение отключается."}]}]} />
+
+Это соотношение, умноженное на `max_threads`, задаёт предел количества одновременно активных потоков на шаге `UNION` (применяется как к `UNION ALL`, так и к `UNION DISTINCT`). Фактический предел — минимальное из этого вычисленного значения и `max_streams_for_union_step` (если любое из них равно 0, оно игнорируется). Например, при `max_threads = 8` и значении этого соотношения 1 одновременно будет активно не более 8 потоков. Установите 0, чтобы отключить это ограничение, зависящее от соотношения.
 
 ## max_streams_multiplier_for_merge_tables \{#max_streams_multiplier_for_merge_tables\}
 
@@ -11374,6 +11398,14 @@ FORMAT Null;
 
 - 0 — Отключено.
 - 1 — Включено.
+
+## send_table_structure_on_insert_with_inline_data \{#send_table_structure_on_insert_with_inline_data\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка, определяющая, отправляет ли сервер структуру таблицы для запросов INSERT с inline-данными."}]}]} />
+
+Если параметр отключён и запрос INSERT содержит inline-данные, сервер не будет передавать клиенту по нативному протоколу структуру таблицы и значения по умолчанию для столбцов. Вместо этого сервер сам разберёт inline-данные. Это может повысить производительность при большом количестве небольших вставок по нативному протоколу.
 
 ## send_timeout \{#send_timeout\}
 

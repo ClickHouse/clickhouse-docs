@@ -2149,6 +2149,22 @@ jemalloc 할당 해제 샘플 추적이 실패한 총 횟수
 
 JOIN 연산의 build 테이블에 있는 총 행 수입니다.
 
+### JoinDelayedJoinedTransformBlockCount \{#joindelayedjoinedtransformblockcount\}
+
+DelayedJoinedBlocksWorkerTransform이 내보낸 블록 수입니다.
+
+### JoinDelayedJoinedTransformRowCount \{#joindelayedjoinedtransformrowcount\}
+
+DelayedJoinedBlocksWorkerTransform가 출력한 행 수입니다.
+
+### JoinNonJoinedTransformBlockCount \{#joinnonjoinedtransformblockcount\}
+
+NonJoinedBlocksTransform에서 출력되는 블록 수입니다.
+
+### JoinNonJoinedTransformRowCount \{#joinnonjoinedtransformrowcount\}
+
+NonJoinedBlocksTransform에서 출력된 조인되지 않은 행 수입니다.
+
 ### JoinOptimizeMicroseconds \{#joinoptimizemicroseconds\}
 
 JOIN 계획 최적화에 소요된 총 시간입니다.
@@ -2164,6 +2180,10 @@ JOIN 재정렬 알고리즘 실행에 소요된 총 시간입니다.
 ### JoinResultRowCount \{#joinresultrowcount\}
 
 JOIN 연산 결과의 총 행 수입니다.
+
+### JoinSpillingHashJoinSwitchedToGraceJoin \{#joinspillinghashjoinswitchedtogracejoin\}
+
+SpillingHashJoin에서 메모리 제한으로 인해 (Concurrent)HashJoin이 GraceHashJoin으로 전환된 횟수입니다.
 
 ### KafkaBackgroundReads \{#kafkabackgroundreads\}
 

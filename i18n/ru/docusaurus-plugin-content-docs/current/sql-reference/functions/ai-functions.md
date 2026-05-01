@@ -52,6 +52,19 @@ CREATE NAMED COLLECTION ai_credentials AS
 
 Все настройки, связанные с ИИ, перечислены в разделе [Settings](/operations/settings/settings) с префиксом `ai_function_`.
 
+### Ограничение хостов конечных точек \{#restricting-endpoint-hosts\}
+
+URL `endpoint` в именованной коллекции AI — это адрес исходящего подключения, к которому сервер обращается от своего имени, передавая `api_key` коллекции в заголовках запроса. По умолчанию ClickHouse разрешает любые хосты. Чтобы ограничить функции определённым набором провайдеров, настройте [`remote_url_allow_hosts`](/operations/server-configuration-parameters/settings#remote_url_allow_hosts) в конфигурации сервера, например:
+
+```xml
+<remote_url_allow_hosts>
+    <host>api.openai.com</host>
+    <host>api.anthropic.com</host>
+</remote_url_allow_hosts>
+```
+
+Обратите внимание, что этот параметр действует на уровне всего сервера и распространяется на все функции, использующие HTTP.
+
 ## Поддерживаемые провайдеры \{#supported-providers\}
 
 | Провайдер | Значение `provider` | Функции чата | Примечания                                |

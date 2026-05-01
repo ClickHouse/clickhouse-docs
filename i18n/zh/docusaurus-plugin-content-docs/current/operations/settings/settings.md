@@ -6671,6 +6671,14 @@ Cloud 默认值：每个副本内存容量的一半。
 推荐值为系统可用内存的一半。
 :::
 
+## max_bytes_before_external_join \{#max_bytes_before_external_join\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于控制哈希连接自动落盘的新设置。非零值会启用落盘，并设置字节阈值。"}]}]} />
+
+如果设置为非零值，且 `join_algorithm` 为 `hash`、`parallel_hash`、`default` 或 `auto`，则当右侧数据超过此字节数时，哈希连接会自动转换为 grace hash join，以实现落盘。设置为 0 (默认值) 时，将禁用自动落盘。此设置会阻止通过连接优化进行按顺序读取。
+
 ## max_bytes_before_external_sort \{#max_bytes_before_external_sort\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -7740,6 +7748,22 @@ Cloud 默认值：`0`。
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 如果该值不为 0，则限制读取 MergeTree 表时的流数量。
+
+## max_streams_for_union_step \{#max_streams_for_union_step\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置，用于限制 `UNION` 步骤中同时活跃的数据流数量，以降低峰值内存占用。"}]}]} />
+
+限制 `UNION` 步骤中同时活跃的数据流数量 (同时适用于 `UNION ALL` 和 `UNION DISTINCT`，因为 `UNION DISTINCT` 是通过先执行一个 `UNION ALL` 步骤，再执行一个 `DISTINCT` 步骤来实现的) 。当 `UNION` 查询包含大量子查询时，这些子查询会同时打开各自的读取缓冲区，导致内存占用与子查询数量成正比。此设置会插入 `Concat` 处理器以收窄管道，使同时活跃的流数量最多不超过该值，从而大幅降低峰值内存占用。实际限制值取该值与 `max_threads * max_streams_for_union_step_to_max_threads_ratio` 中的较小者 (任一值为 0 都表示忽略该项) 。当两者都为 0 时，则不会进行收窄。
+
+## max_streams_for_union_step_to_max_threads_ratio \{#max_streams_for_union_step_to_max_threads_ratio\}
+
+<SettingsInfoBlock type="Float" default_value="8" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "8"},{"label": "新设置：`UNION` 步骤中同时活跃的流数量上限按 min(max_streams_for_union_step, max_threads * max_streams_for_union_step_to_max_threads_ratio) 计算，其中任一值为 0 都会禁用这一限制。"}]}]} />
+
+该比率乘以 `max_threads` 后，用于确定 `UNION` 步骤中同时活跃的流数量上限 (适用于 `UNION ALL` 和 `UNION DISTINCT`) 。实际限制为该计算值与 `max_streams_for_union_step` 中的较小值 (两者中任一值为 0，则忽略该值) 。例如，当 `max_threads = 8` 且该比率设为 1 时，最多会有 8 个流同时活跃。将其设为 0 可禁用基于该比率的限制。
 
 ## max_streams_multiplier_for_merge_tables \{#max_streams_multiplier_for_merge_tables\}
 
@@ -11334,6 +11358,14 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 
 - 0 — 禁用。
 - 1 — 启用。
+
+## send_table_structure_on_insert_with_inline_data \{#send_table_structure_on_insert_with_inline_data\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "用于控制服务器是否会为包含内联数据的 INSERT 查询发送表结构的新设置。"}]}]} />
+
+如果禁用此设置，且 INSERT 查询包含内联数据，服务器将不会通过 Native 协议向客户端回传表结构和列默认值。相反，服务器会自行解析内联数据。这可以提升通过 Native 协议执行大量小型插入操作时的性能。
 
 ## send_timeout \{#send_timeout\}
 
