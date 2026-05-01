@@ -1232,6 +1232,11 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: 'doc',
+      id: 'integrations/building-integrations/index',
+      label: 'Building integrations',
+    },
   ],
 
   managingData: [
