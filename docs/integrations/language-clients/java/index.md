@@ -18,6 +18,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 - [Client 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
+- [JDBC Best Practices](./jdbc_best_practices.md)
 - [R2DBC Driver](./r2dbc.md)
 
 ## ClickHouse client {#clickhouse-client}
