@@ -220,7 +220,7 @@ const client = createClient({
 })
 ```
 
-客户端代码仓库包含多个使用环境变量的示例，例如[在 ClickHouse Cloud 中创建表](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts)、[使用异步插入](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts)等。
+客户端代码仓库包含多个使用环境变量的示例，例如[在 ClickHouse Cloud 中创建表](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts)、[使用异步插入](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert.ts)等。
 
 
 #### 连接池（仅限 Node.js） \{#connection-pool-nodejs-only\}
@@ -233,7 +233,7 @@ const client = createClient({
 
 ### 查询 ID \{#query-id\}
 
-每个发送查询或语句（`command`、`exec`、`insert`、`select`）的方法都会在结果中返回 `query_id`。该唯一标识符由客户端为每个查询分配，如果在[服务器配置](/operations/server-configuration-parameters/settings)中启用了 `system.query_log`，则可以用于根据该 ID 从日志中获取数据，或者用于取消长时间运行的查询（参见[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/cancel_query.ts)）。如有需要，用户可以在 `command`/`query`/`exec`/`insert` 方法的参数中自定义 `query_id`。
+每个发送查询或语句（`command`、`exec`、`insert`、`select`）的方法都会在结果中返回 `query_id`。该唯一标识符由客户端为每个查询分配，如果在[服务器配置](/operations/server-configuration-parameters/settings)中启用了 `system.query_log`，则可以用于根据该 ID 从日志中获取数据，或者用于取消长时间运行的查询（参见[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/cancel_query.ts)）。如有需要，用户可以在 `command`/`query`/`exec`/`insert` 方法的参数中自定义 `query_id`。
 
 :::tip
 如果要自定义 `query_id` 参数，需要确保它在每次调用时都是唯一的。随机 UUID 是一个不错的选择。
@@ -339,7 +339,7 @@ interface Row {
 ```
 
 **示例：**（Node.js/Web）一个查询，结果数据集采用 `JSONEachRow` 格式，读取整个流并将内容解析为 JS 对象。
-[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts)。
+[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/array_json_each_row.ts)。
 
 ```ts
 const resultSet = await client.query({
@@ -459,12 +459,12 @@ interface ClickHouseClient {
 
 它既可以与 `Stream.Readable` 一起使用，也可以与普通的 `Array<T>` 一起使用，具体取决于传递给 `insert` 方法的[数据格式](./js.md#supported-data-formats)。另请参阅本节中关于[文件流式处理](./js.md#streaming-files-nodejs-only)的内容。
 
-`insert` 方法应当配合 `await` 使用；不过，也可以先传入一个输入流，而在稍后、仅在该流完成时再等待 `insert` 操作的完成（此时 `insert` 返回的 Promise 也会被 resolve）。这在事件监听器或类似场景中可能会很有用，但在客户端进行错误处理时会有大量边界情况，处理起来较为复杂。作为替代方案，可以考虑使用[异步插入](/optimize/asynchronous-inserts)，如[此示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts)所示。
+`insert` 方法应当配合 `await` 使用；不过，也可以先传入一个输入流，而在稍后、仅在该流完成时再等待 `insert` 操作的完成（此时 `insert` 返回的 Promise 也会被 resolve）。这在事件监听器或类似场景中可能会很有用，但在客户端进行错误处理时会有大量边界情况，处理起来较为复杂。作为替代方案，可以考虑使用[异步插入](/optimize/asynchronous-inserts)，如[此示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert_without_waiting.ts)所示。
 
 :::tip
 如果你有一个难以通过该方法建模的自定义 INSERT 语句，可以考虑使用 [command 方法](./js.md#command-method)。
 
-你可以在 [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_values_and_functions.ts) 或 [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_from_select.ts) 示例中看到它的用法。
+你可以在 [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_values_and_functions.ts) 或 [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_from_select.ts) 示例中看到它的用法。
 :::
 
 ```ts
@@ -491,7 +491,7 @@ interface InsertParams<T> extends BaseQueryParams {
 :::
 
 **示例：**（Node.js/Web）插入一个值数组。
-[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts)。
+[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/array_json_each_row.ts)。
 
 ```ts
 await client.insert({
@@ -555,10 +555,10 @@ await client.insert({
 })
 ```
 
-有关更多详细信息，请参阅[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts)。
+有关更多详细信息，请参阅[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_exclude_columns.ts)。
 
 
-**示例**：向一个不同于客户端实例所配置数据库的其他数据库中插入数据。[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts)。
+**示例**：向一个不同于客户端实例所配置数据库的其他数据库中插入数据。[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_into_different_db.ts)。
 
 ```ts
 await client.insert({
@@ -622,7 +622,7 @@ interface ClickHouseClient {
 参见：[所有客户端方法的基础参数](./js.md#base-parameters-for-all-client-methods)。
 
 **示例：**（Node.js/Web）在 ClickHouse Cloud 中创建一张表。
-[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts)。
+[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts)。
 
 ```ts
 await client.command({
@@ -641,7 +641,7 @@ await client.command({
 ```
 
 **示例：**（Node.js/Web）在自托管的 ClickHouse 实例中创建表。
-[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_single_node.ts)。
+[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_single_node.ts)。
 
 ```ts
 await client.command({
@@ -881,8 +881,8 @@ ClickHouse 支持的数据类型完整列表可在
 
 另请参阅：
 
-- [使用 Dynamic/Variant/JSON 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/dynamic_variant_json.ts)
-- [使用 Time/Time64 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/time_time64.ts)
+- [使用 Dynamic/Variant/JSON 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/dynamic_variant_json.ts)
+- [使用 Time/Time64 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/time_time64.ts)
 
 ### Date/Date32 类型注意事项 \{#datedate32-types-caveats\}
 
@@ -899,7 +899,7 @@ await client.insert({
 })
 ```
 
-但是，如果你使用的是 `DateTime` 或 `DateTime64` 列，则可以同时使用字符串和 JS Date 对象。在将 `date_time_input_format` 设置为 `best_effort` 时，可以将 JS Date 对象原样传递给 `insert`。有关更多详情，请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts)。
+但是，如果你使用的是 `DateTime` 或 `DateTime64` 列，则可以同时使用字符串和 JS Date 对象。在将 `date_time_input_format` 设置为 `best_effort` 时，可以将 JS Date 对象原样传递给 `insert`。有关更多详情，请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_js_dates.ts)。
 
 
 ### Decimal* 类型注意事项 \{#decimal-types-caveats\}
@@ -950,7 +950,7 @@ await client.query({
 })
 ```
 
-更多详细信息请参见[此示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_decimals.ts)。
+更多详细信息请参见[此示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_decimals.ts)。
 
 ### 整数类型：Int64、Int128、Int256、UInt64、UInt128、UInt256 \{#integral-types-int64-int128-int256-uint64-uint128-uint256\}
 
@@ -1023,7 +1023,7 @@ client.query({
 * `data_type` - 应用参数值的[数据类型](/sql-reference/data-types/)。
 
 **示例：** 带参数的查询。
-[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/query_with_parameter_binding.ts)
+[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/query_with_parameter_binding.ts)
 。
 
 ```ts
@@ -1268,7 +1268,7 @@ const client = createClient({
 })
 ```
 
-请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts)，其中更详细地展示了 `readonly=1` 用户的各项限制。
+请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/read_only_user.ts)，其中更详细地展示了 `readonly=1` 用户的各项限制。
 
 
 ### 带路径名的代理 \{#proxy-with-a-pathname\}
@@ -1390,7 +1390,7 @@ const client = createClient({
 
 ## 性能优化提示 \{#tips-for-performance-optimizations\}
 
-- 为了减少应用程序的内存占用，可以在适用的情况下，对大批量插入（例如从文件）和查询操作使用流式处理。对于事件监听器等类似场景，[异步插入](/optimize/asynchronous-inserts) 也是一个不错的选择，它可以最大限度减少，甚至完全避免在客户端进行批处理。异步插入示例可在 [client 仓库](https://github.com/ClickHouse/clickhouse-js/tree/main/examples) 中找到，文件名前缀为 `async_insert_`。
+- 为了减少应用程序的内存占用，可以在适用的情况下，对大批量插入（例如从文件）和查询操作使用流式处理。对于事件监听器等类似场景，[异步插入](/optimize/asynchronous-inserts) 也是一个不错的选择，它可以最大限度减少，甚至完全避免在客户端进行批处理。异步插入示例可在 [client 仓库](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node) 中找到，文件名前缀为 `async_insert_`。
 - 客户端默认不会启用请求或响应压缩。不过，在对大数据集执行查询或插入时，可以考虑通过 `ClickHouseClientConfigOptions.compression` 启用压缩（可以只对 `request` 或 `response` 启用，也可以两者都启用）。
 - 压缩会带来较大的性能开销。为 `request` 或 `response` 启用压缩会分别对查询或插入的速度产生负面影响，但会减少应用程序传输的网络流量。
 
