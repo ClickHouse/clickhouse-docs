@@ -37,7 +37,7 @@ ClickHouse Cloud exposes only the HTTPS port (8443) and the secure native port (
 
 ClickHouse uses username and password authentication. Pass credentials either as HTTP Basic Auth headers or as URL parameters.
 
-### HTTP API
+### HTTP API {#auth-http-api}
 
 ```bash
 # Basic Auth (recommended — credentials not in URL)
@@ -48,7 +48,7 @@ curl --user "myuser:mypassword" \
 curl "https://my-service.clickhouse.cloud:8443/?user=myuser&password=mypassword&query=SELECT+1"
 ```
 
-### JDBC
+### JDBC {#auth-jdbc}
 
 ```java
 Properties props = new Properties();
@@ -63,7 +63,7 @@ Connection conn = DriverManager.getConnection(
 
 Never embed credentials in connection URLs that may appear in logs or error messages. Read them from environment variables or a secrets manager.
 
-### Dedicated service accounts
+### Dedicated service accounts {#service-accounts}
 
 Create a dedicated ClickHouse user for your integration with only the permissions it needs. Avoid connecting as `default`:
 
@@ -74,7 +74,7 @@ GRANT SELECT ON my_database.* TO integration_user;
 GRANT INSERT ON my_database.* TO integration_user;
 ```
 
-### SSL/TLS
+### SSL/TLS {#ssl-tls}
 
 Always use TLS for connections to ClickHouse Cloud and strongly recommended for self-managed production clusters. For HTTPS connections, `sslmode=strict` (the default) verifies the server certificate. Use `sslmode=none` only in isolated development environments — never in production or user-facing integrations.
 
@@ -82,7 +82,7 @@ Always use TLS for connections to ClickHouse Cloud and strongly recommended for 
 
 ClickHouse exposes rich metadata through `system.*` tables. Use these to enumerate databases, tables, columns, and other objects for features like schema browsers, column pickers, and query editors.
 
-### Listing databases
+### Listing databases {#listing-databases}
 
 ```sql
 SELECT name
@@ -91,7 +91,7 @@ WHERE engine NOT IN ('System')
 ORDER BY name;
 ```
 
-### Listing tables
+### Listing tables {#listing-tables}
 
 ```sql
 SELECT
@@ -107,7 +107,7 @@ WHERE database NOT IN ('system', 'information_schema', 'INFORMATION_SCHEMA')
 ORDER BY database, name;
 ```
 
-### Listing columns
+### Listing columns {#listing-columns}
 
 ```sql
 SELECT
@@ -125,7 +125,7 @@ WHERE database NOT IN ('system', 'information_schema', 'INFORMATION_SCHEMA')
 ORDER BY database, table, position;
 ```
 
-### INFORMATION_SCHEMA
+### INFORMATION_SCHEMA {#information-schema}
 
 ClickHouse also implements `INFORMATION_SCHEMA` for compatibility with tools that use standard SQL introspection queries. It covers a subset of metadata and is suitable when portability across databases matters:
 
@@ -144,7 +144,7 @@ Prefer `system.columns` over `INFORMATION_SCHEMA.columns` for ClickHouse-specifi
 
 ClickHouse has a richer type system than most databases your integration will encounter. The following sections cover the types that require special handling.
 
-### Numeric types
+### Numeric types {#numeric-types}
 
 ClickHouse signed integers map predictably. **Unsigned integers require care** — they exceed the range of their same-width signed Java/SQL counterparts and must be promoted:
 
@@ -160,11 +160,11 @@ ClickHouse signed integers map predictably. **Unsigned integers require care** �
 | Float32, Float64 | Float, Double |
 | Decimal32/64/128/256 | BigDecimal |
 
-### String types
+### String types {#string-types}
 
 `String` in ClickHouse is a raw byte sequence with no enforced encoding (UTF-8 is conventional). `FixedString(N)` is zero-padded to N bytes when read — strip trailing null bytes (`\0`) before displaying values to users.
 
-### Date and time types
+### Date and time types {#date-time-types}
 
 | ClickHouse Type | Notes |
 |---|---|
@@ -180,14 +180,14 @@ SET session_timezone = 'UTC';
 SELECT toDateTime('2024-01-15 12:00:00') AS ts;
 ```
 
-### Type modifiers
+### Type modifiers {#type-modifiers}
 
 Two modifiers wrap other types and must be handled by your integration:
 
 - **`Nullable(T)`** — the column may contain NULL. Affects the type name returned in metadata (e.g., `Nullable(Int32)`). Strip the wrapper when mapping to target types.
 - **`LowCardinality(T)`** — a dictionary-encoded form of T, used for performance. Treat identically to the underlying type for all practical purposes.
 
-### Complex types
+### Complex types {#complex-types}
 
 | ClickHouse Type | Behavior |
 |---|---|
@@ -203,7 +203,7 @@ Two modifiers wrap other types and must be handled by your integration:
 
 ## Query patterns {#queries}
 
-### Use parameterized queries
+### Use parameterized queries {#parameterized-queries}
 
 Never concatenate user input into SQL strings. ClickHouse supports named query parameters that prevent SQL injection and improve query plan reuse.
 
@@ -230,7 +230,7 @@ try (PreparedStatement ps = conn.prepareStatement(
 }
 ```
 
-### Assign a query_id to every query
+### Assign a query_id to every query {#query-id}
 
 Set a deterministic `query_id` on each request. This lets you trace queries in `system.query_log`, cancel runaway queries, and implement idempotent retry logic.
 
@@ -273,7 +273,7 @@ curl --user "user:password" \
      --data "SELECT user_id, event_name, created_at FROM events LIMIT 1000"
 ```
 
-### Enable compression
+### Enable compression {#compression}
 
 LZ4 compression over HTTP significantly reduces network transfer for large result sets and inserts, at negligible CPU cost. Enable it by sending the `Accept-Encoding` header:
 
@@ -284,7 +284,7 @@ curl --user "user:password" \
      --data "SELECT * FROM large_table"
 ```
 
-### Paginate large result sets
+### Paginate large result sets {#pagination}
 
 ClickHouse does not have native cursor-based pagination. Use `LIMIT` / `OFFSET` for small datasets, or keyset pagination for large ones:
 
@@ -299,7 +299,7 @@ LIMIT 1000;
 
 For very large exports, prefer streaming: consume `JSONEachRow` output incrementally rather than paginating.
 
-### Set query timeouts
+### Set query timeouts {#timeouts}
 
 Protect your integration from runaway queries. Pass `max_execution_time` (seconds) as a query setting:
 
@@ -316,7 +316,7 @@ props.setProperty("clickhouse_setting_max_execution_time", "30");
 
 ## Writing data {#writes}
 
-### Use batch inserts
+### Use batch inserts {#batch-inserts}
 
 Always batch rows into a single INSERT rather than sending one row per request. The HTTP API accepts INSERT data as the request body:
 
@@ -335,7 +335,7 @@ curl --user "user:password" \
 
 Aim for batches of **10,000–100,000 rows** per request for optimal throughput. Smaller batches create excessive part merges in MergeTree; larger batches increase memory pressure.
 
-### JDBC batch inserts
+### JDBC batch inserts {#jdbc-batch-inserts}
 
 ```java
 try (PreparedStatement ps = conn.prepareStatement(
@@ -350,7 +350,7 @@ try (PreparedStatement ps = conn.prepareStatement(
 }
 ```
 
-### ClickHouse has no ACID transactions
+### ClickHouse has no ACID transactions {#no-transactions}
 
 Do not rely on `BEGIN` / `COMMIT` / `ROLLBACK` for data consistency. ClickHouse is append-optimized. Design writes to be idempotent:
 
@@ -368,7 +368,7 @@ curl --user "user:password" \
 
 Always identify your integration in the HTTP `User-Agent` header and in per-query metadata. This makes queries attributable in `system.query_log`, which is invaluable for debugging customer issues and monitoring usage.
 
-### Set a User-Agent header
+### Set a User-Agent header {#user-agent}
 
 Use the format `product/version (context)`:
 
@@ -384,7 +384,7 @@ Via JDBC:
 props.setProperty("client_name", "MyBITool/3.2");
 ```
 
-### Tag individual queries with log_comment
+### Tag individual queries with log_comment {#log-comment}
 
 Attach operation context to each query so customer support and the customer themselves can filter `system.query_log` by feature or job:
 
@@ -394,7 +394,7 @@ curl --user "user:password" \
      --data "SELECT region, sum(revenue) FROM sales GROUP BY region"
 ```
 
-### Query your tagged queries in system.query_log
+### Query your tagged queries in system.query_log {#query-log}
 
 ```sql
 SELECT
@@ -415,7 +415,7 @@ LIMIT 50;
 
 ## Error handling {#error-handling}
 
-### HTTP status codes
+### HTTP status codes {#http-status-codes}
 
 | Status | Meaning |
 |---|---|
@@ -428,13 +428,13 @@ LIMIT 50;
 
 ClickHouse returns error details in the response body and as `X-ClickHouse-Exception-Code` and `X-ClickHouse-Summary` HTTP headers. Always read the body on non-200 responses:
 
-```
+```text
 Code: 60. DB::Exception: Table my_db.unknown_table doesn't exist. (UNKNOWN_TABLE)
 ```
 
 The numeric code (`60`) is stable across releases and suitable for programmatic handling.
 
-### Retry strategy
+### Retry strategy {#retry-strategy}
 
 Retry on:
 - Network-level errors (connection refused, timeout)
@@ -446,7 +446,7 @@ Do not retry on:
 
 Use exponential backoff with jitter. Reuse the same `query_id` on retries for INSERT operations so ClickHouse can deduplicate.
 
-### Handling streaming errors
+### Handling streaming errors {#streaming-errors}
 
 When using streaming output formats (e.g., `JSONEachRow`), ClickHouse may have already started writing rows before encountering an error. Errors in this case are appended at the end of the response stream rather than returned as an HTTP 500. Always read the full stream and check for a trailing error block:
 
@@ -458,27 +458,27 @@ When using streaming output formats (e.g., `JSONEachRow`), ClickHouse may have a
 
 ## ClickHouse Cloud considerations {#cloud}
 
-### Connection endpoints
+### Connection endpoints {#cloud-endpoints}
 
 ClickHouse Cloud service endpoints follow this pattern:
 
-```
+```text
 {service-id}.{region}.{cloud}.clickhouse.cloud:8443
 ```
 
 Where `cloud` is `aws`, `gcp`, or `azure`. Always use port 8443 (HTTPS) — port 8123 is not available on Cloud.
 
-### Auto-pause and connection retries
+### Auto-pause and connection retries {#auto-pause}
 
 ClickHouse Cloud services on the development tier may auto-pause after a period of inactivity. An initial connection after a pause may take a few seconds to respond. Design your integration to retry connection attempts with a short backoff before surfacing an error to the user.
 
-### ClickHouse Cloud API for programmatic management
+### ClickHouse Cloud API for programmatic management {#cloud-api}
 
 If your integration needs to enumerate or provision Cloud services (rather than query data), use the [ClickHouse Cloud API](https://clickhouse.com/docs/cloud/manage/api/api-overview). It is separate from the query interface and uses API key authentication.
 
 ## Testing your integration {#testing}
 
-### Test against both OSS and ClickHouse Cloud
+### Test against both OSS and ClickHouse Cloud {#test-oss-cloud}
 
 Behavioral differences between self-managed ClickHouse and ClickHouse Cloud are minimal for most integrations, but test both. Specifically:
 
@@ -486,7 +486,7 @@ Behavioral differences between self-managed ClickHouse and ClickHouse Cloud are 
 - Some system table columns may differ between versions
 - Auto-pause behavior is Cloud-only
 
-### Cover edge-case data types
+### Cover edge-case data types {#test-edge-cases}
 
 Most integration bugs are found with edge cases. Explicitly test:
 
@@ -497,7 +497,7 @@ Most integration bugs are found with edge cases. Explicitly test:
 - Arrays and Maps — verify nested types survive serialization
 - Empty result sets and single-row result sets
 
-### Use system.query_log to verify behavior
+### Use system.query_log to verify behavior {#test-query-log}
 
 After running your integration's test suite, inspect `system.query_log` to verify:
 - Queries are attributed to your integration's `User-Agent`
@@ -520,7 +520,7 @@ ORDER BY query_start_time;
 
 ## Implementation examples {#examples}
 
-### HTTP API — Python connector skeleton
+### HTTP API — Python connector skeleton {#example-python}
 
 A minimal pattern for a Python-based connector that queries ClickHouse and streams results:
 
@@ -568,7 +568,7 @@ class ClickHouseConnector:
         return list(self.query_stream(sql))
 ```
 
-### JDBC — Java BI connector skeleton
+### JDBC — Java BI connector skeleton {#example-jdbc}
 
 A minimal pattern for a JDBC-based BI connector with connection pooling and query tagging:
 
