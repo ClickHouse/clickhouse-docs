@@ -55,7 +55,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   clickhousectl local server start --name my-first-server
   ```
 
-  서버는 기본적으로 백그라운드에서 실행됩니다. 실행 중인지 확인하려면 다음을 실행하십시오.
+  서버는 기본적으로 백그라운드에서 실행됩니다. 실행 중인지 확인하려면 다음을 실행하십시오:
 
   ```bash
   clickhousectl local server list
@@ -131,7 +131,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   4 rows in set. Elapsed: 0.008 sec.
   ```
 
-  ## 직접 데이터 삽입 [#insert-own-data} \{#insert-your-own-data-insert-own-data\}
+  ## 직접 데이터 삽입 \{#insert-own-data\}
 
   다음 단계는 ClickHouse에 데이터를 수집하는 것입니다. 데이터 수집을 위한 다양한 [테이블 함수](/sql-reference/table-functions/index.md)와 [통합](/integrations) 기능을 제공합니다. 아래 탭에서 몇 가지 예시를 확인하거나, ClickHouse와 연동되는 기술의 전체 목록은 [통합](/integrations) 페이지를 참조하십시오.
 
@@ -241,9 +241,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       └───────────┴─────────────────────────┘
       ```
 
-      참고로 ClickHouse는 많은 행으로 이루어진 배치를 분석하여
-      컬럼 이름과 데이터 형식을 추론합니다. ClickHouse가 파일 이름만으로 파일 형식을
-      판별하지 못하면 두 번째 인수로 지정할 수 있습니다:
+      참고로 ClickHouse는 대량의 행 배치를 분석하여
+      컬럼 이름과 데이터 타입을 추론합니다. ClickHouse가 파일 이름에서 파일 형식을
+      판별하지 못하는 경우, 두 번째 인수로 지정할 수 있습니다:
 
       ```sql
       SELECT count()
@@ -322,8 +322,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       <br />
     </TabItem>
 
-    <TabItem value="메시지 큐" label="메시지 큐">
-      메시지 큐의 데이터를 해당 테이블 엔진을 사용해 ClickHouse로 스트리밍할 수 있습니다. 예를 들면 다음과 같습니다:
+    <TabItem value="messagequeue" label="메시지 큐">
+      메시지 큐의 데이터를 해당 테이블
+      엔진을 사용해 ClickHouse로 스트리밍할 수 있습니다. 예를 들면 다음과 같습니다:
 
       * **Kafka**: [`Kafka` 테이블 엔진](/engines/table-engines/integrations/kafka)을 사용해 Kafka와 통합합니다
       * **Amazon MSK**: [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/)와 통합합니다
