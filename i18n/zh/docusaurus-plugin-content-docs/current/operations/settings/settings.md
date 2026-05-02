@@ -3601,6 +3601,15 @@ FORMAT PrettyCompactMonoBlock
 
 将 blob 存储操作相关信息写入 system.blob_storage_log 表
 
+## enable_blob_storage_log_for_read_operations \{#enable_blob_storage_log_for_read_operations\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于将 Azure Blob Storage 读取操作记录到 system.blob_storage_log 的新设置"}]}]} />
+
+将 Azure Blob Storage 读取操作的信息写入 system.blob&#95;storage&#95;log 表。
+需要同时启用 `enable_blob_storage_log`。
+
 ## enable_early_constant_folding \{#enable_early_constant_folding\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -7163,6 +7172,18 @@ Cloud 默认值：
 仅当 `SELECT` 部分是并行执行时，并行 `INSERT SELECT` 才会生效，参见 [`max_threads`](#max_threads) 设置。
 较大的取值会导致更高的内存占用。
 
+## max_insert_threads_min_free_memory_per_thread \{#max_insert_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="4294967296" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "4294967296"},{"label": "用于根据可用空闲内存限制插入线程数的新设置"}]}]} />
+
+与 `max_threads_min_free_memory_per_thread` 相同，但它作用于 `max_insert_threads`，而不是 `max_threads`。默认值更高，因为插入管道通常比读取管道持有更大的线程级缓冲区 (MergeTree parts、压缩块) 。
+
+如果空闲内存小于 `max_insert_threads` 与该值的乘积，则会相应下调 `max_insert_threads` 以满足限制，最小可降至 `1`。
+
+将其设置为 `0` 以禁用此限制。
+
 ## max_joined_block_size_bytes \{#max_joined_block_size_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
@@ -7869,6 +7890,22 @@ Cloud 默认值：1 TB。
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 用于处理索引的最大线程数。
+
+## max_threads_min_free_memory_per_thread \{#max_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1073741824"},{"label": "根据可用空闲内存限制线程数的新设置"}]}]} />
+
+当服务器面临内存压力时，此设置会降低 `max_threads`，以避免启动很可能触及内存限制的高并发查询。
+
+空闲内存按以下方式计算：服务器的 `max_server_memory_usage` 减去当前由全局内存跟踪器记录的内存用量。如果空闲内存小于 `max_threads` 乘以此值，则会将 `max_threads` 下调为满足 `N * value <= free_memory` 的最大 N，且最小为 `1`。
+
+将其设为 `0` 可禁用此限制。
+
+例如，在默认值为 1 GiB 且空闲内存为 32 GiB 时，`max_threads` 的上限为 32；当空闲内存为 1 GiB 时，则降至 1。
+
+此设置适用于读取侧并行度 (`SELECT`、`UNION`、`INTERSECT`/`EXCEPT`，以及 `INSERT ... SELECT` 中的 `SELECT` 侧) 。写入侧请参见 `max_insert_threads_min_free_memory_per_thread`。
 
 ## max_untracked_memory \{#max_untracked_memory\}
 

@@ -3607,6 +3607,15 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Записывает сведения об операциях blob-хранилища в таблицу system.blob_storage_log
 
+## enable_blob_storage_log_for_read_operations \{#enable_blob_storage_log_for_read_operations\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка для журналирования операций чтения blob-хранилища в system.blob_storage_log"}]}]} />
+
+Записывает информацию об операциях чтения blob-хранилища в таблицу system.blob&#95;storage&#95;log.
+Требует, чтобы `enable_blob_storage_log` также был включен.
+
 ## enable_early_constant_folding \{#enable_early_constant_folding\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -7187,6 +7196,18 @@ Exception: Total regexp lengths too large.
 Параллельный `INSERT SELECT` даёт эффект только в том случае, если часть `SELECT` выполняется параллельно, смотрите настройку [`max_threads`](#max_threads).
 Более высокие значения приводят к увеличению потребления памяти.
 
+## max_insert_threads_min_free_memory_per_thread \{#max_insert_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="4294967296" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "4294967296"},{"label": "Новая настройка для ограничения числа потоков вставки в зависимости от объёма доступной свободной памяти"}]}]} />
+
+То же, что и `max_threads_min_free_memory_per_thread`, но применяется к `max_insert_threads`, а не к `max_threads`. Значение по умолчанию выше, поскольку конвейеры вставки обычно удерживают более крупные буферы на поток (части MergeTree, блоки сжатия), чем конвейеры чтения.
+
+Если объём свободной памяти меньше значения `max_insert_threads`, умноженного на это значение, `max_insert_threads` уменьшается до допустимого уровня, но не менее `1`.
+
+Установите `0`, чтобы отключить это ограничение.
+
 ## max_joined_block_size_bytes \{#max_joined_block_size_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
@@ -7907,6 +7928,22 @@ SELECT getSetting('max_memory_usage_for_user');
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество потоков, используемых для обработки индексов.
+
+## max_threads_min_free_memory_per_thread \{#max_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1073741824"},{"label": "Новая настройка для ограничения количества потоков в зависимости от объема доступной свободной памяти"}]}]} />
+
+Уменьшает `max_threads`, когда сервер испытывает нехватку памяти, чтобы избежать запуска сильно распараллеленных запросов, которые с высокой вероятностью упрутся в лимит памяти.
+
+Свободная память вычисляется как `max_server_memory_usage` сервера за вычетом объема памяти, который в данный момент отслеживается глобальным трекером памяти. Если этой свободной памяти меньше, чем `max_threads`, умноженное на это значение, `max_threads` уменьшается до наибольшего N, для которого `N * value <= free_memory`, но не ниже `1`.
+
+Установите `0`, чтобы отключить это ограничение.
+
+Например, при значении по умолчанию 1 GiB и 32 GiB свободной памяти `max_threads` ограничивается значением 32; при 1 GiB свободной памяти оно снижается до 1.
+
+Эта настройка применяется к параллелизму на стороне чтения (`SELECT`, `UNION`, `INTERSECT`/`EXCEPT` и часть `SELECT` в `INSERT ... SELECT`). Для стороны записи см. `max_insert_threads_min_free_memory_per_thread`.
 
 ## max_untracked_memory \{#max_untracked_memory\}
 
