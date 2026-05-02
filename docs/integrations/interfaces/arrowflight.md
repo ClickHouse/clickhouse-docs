@@ -130,6 +130,7 @@ Sessions allow setting persistent ClickHouse settings via the `SetSessionOptions
 | `arrowflight.poll_descriptors_lifetime_seconds` | `600` | Time in seconds before poll descriptors expire. Set to `0` to disable automatic expiration. |
 | `arrowflight.cancel_flight_descriptor_after_poll_flight_info` | `false` | If `true`, poll descriptors are cancelled after being consumed by `PollFlightInfo`. |
 | `arrowflight.max_prepared_statements_per_user` | `100` | Maximum number of open prepared statements per user. Set to `0` to disable the limit. |
+| `arrowflight.prepared_statements_lifetime_seconds` | `0` | Time in seconds before prepared statements expire and are removed. Set to `0` to disable automatic expiration. |
 | `enable_arrow_close_session` | `true` | Allow clients to close sessions via the `x-clickhouse-session-close` header. |
 | `default_session_timeout` | `60` | Default session timeout in seconds. Also controls Bearer token expiration. |
 | `max_session_timeout` | `3600` | Maximum allowed session timeout in seconds. |
@@ -294,9 +295,16 @@ Prepared statements are owned by the authenticated user, not by a single session
 
 Other users cannot execute, bind, or close a statement handle they did not create.
 
+If `arrowflight.prepared_statements_lifetime_seconds` is greater than `0`, prepared statements expire automatically after that interval. Expired statements are removed and no longer count toward `arrowflight.max_prepared_statements_per_user`.
+
 #### ClosePreparedStatement {#closepreparedstatement}
 
-Closes a prepared statement and releases the associated server-side resources.
+Closes a prepared statement and releases the associated server-side resources when the request contains a non-empty statement handle.
+
+ClickHouse also supports bulk close with `ClosePreparedStatement` when the handle is empty:
+
+- If `x-clickhouse-session-id` is present, it closes all prepared statements for the authenticated user in that session.
+- If no session ID is present, it closes only session-less prepared statements for the authenticated user.
 
 If a prepared statement is created in a session (via `x-clickhouse-session-id`), it is also closed automatically when that session is closed.
 
