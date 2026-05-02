@@ -130,7 +130,7 @@ Sessions allow setting persistent ClickHouse settings via the `SetSessionOptions
 | `arrowflight.poll_descriptors_lifetime_seconds` | `600` | Time in seconds before poll descriptors expire. Set to `0` to disable automatic expiration. |
 | `arrowflight.cancel_flight_descriptor_after_poll_flight_info` | `false` | If `true`, poll descriptors are cancelled after being consumed by `PollFlightInfo`. |
 | `arrowflight.max_prepared_statements_per_user` | `100` | Maximum number of open prepared statements per user. Set to `0` to disable the limit. |
-| `arrowflight.prepared_statements_lifetime_seconds` | `-1` | Prepared statement lifetime mode. `> 0`: expire after this many seconds. `0`: disable automatic expiration. `-1`: for session-bound statements, use session timeout as lifetime and refresh it on each request; session-less statements do not expire automatically. |
+| `arrowflight.prepared_statements_lifetime_seconds` | `-1` | Prepared statement lifetime mode. `> 0`: use this value as lifetime; for session-bound statements, expiration is refreshed on each request in that session, and for session-less statements expiration is based on creation time. `0`: disable automatic expiration. `-1`: for session-bound statements, use session timeout as lifetime and refresh it on each request; session-less statements do not expire automatically. |
 | `enable_arrow_close_session` | `true` | Allow clients to close sessions via the `x-clickhouse-session-close` header. |
 | `default_session_timeout` | `60` | Default session timeout in seconds. Also controls Bearer token expiration. |
 | `max_session_timeout` | `3600` | Maximum allowed session timeout in seconds. |
@@ -297,7 +297,7 @@ Other users cannot execute, bind, or close a statement handle they did not creat
 
 `arrowflight.prepared_statements_lifetime_seconds` controls expiration behavior:
 
-- `> 0`: prepared statements expire after the configured number of seconds.
+- `> 0`: use the configured value as statement lifetime. For session-bound statements, expiration is refreshed on each request in that session. For session-less statements, expiration is based on creation time.
 - `0`: prepared statements do not expire automatically.
 - `-1` (default): if the statement is created in a session, its lifetime follows that session timeout and is refreshed on each request in that session. If the statement is created without a session, it does not expire automatically.
 
