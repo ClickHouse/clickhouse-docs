@@ -38,7 +38,7 @@
     "@docsearch/react": "^4.5.3",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/faster": "^3.7.0",
-    "@docusaurus/plugin-client-redirects": "^3.7.0",
+    "@docusaurus/plugin-client-redirects": "^3.10.1",
     "@docusaurus/plugin-google-tag-manager": "^3.7.0",
     "@docusaurus/plugin-ideal-image": "^3.7.0",
     "@docusaurus/plugin-vercel-analytics": "^3.7.0",
