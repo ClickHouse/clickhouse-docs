@@ -249,6 +249,8 @@ Flight SQL clients use `CommandStatementUpdate` to execute DDL/DML statements (C
 
 Only appending to existing tables is supported (`TABLE_NOT_EXIST_OPTION_FAIL` + `TABLE_EXISTS_OPTION_APPEND`). Catalogs and temporary tables are not supported for this command.
 
+`transaction_id` is not supported for `CommandStatementUpdate` or `CommandStatementIngest`. If provided, ClickHouse returns a `NotImplemented` error.
+
 :::note
 Only the `Arrow` format is accepted for data transfer. Specifying other formats in SQL (e.g., `FORMAT JSON`) results in an error.
 :::
@@ -283,6 +285,8 @@ Returns all current ClickHouse settings and their values for the session. Return
 #### CreatePreparedStatement {#createpreparedstatement}
 
 Creates a server-side prepared statement and returns a statement handle. The request contains the SQL query text with `?` placeholders.
+
+`transaction_id` is not supported for this action. If it is provided, ClickHouse returns a `NotImplemented` error.
 
 For query statements, the response may include:
 
@@ -322,7 +326,7 @@ When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arro
 
 | Command | Description |
 |---|---|
-| `CommandStatementQuery` | Execute an arbitrary SQL query. |
+| `CommandStatementQuery` | Execute an arbitrary SQL query. `transaction_id` is not supported. |
 | `CommandGetSqlInfo` | Retrieve server metadata (name, version, Arrow version, capabilities). |
 | `CommandGetCatalogs` | List catalogs. Returns an empty result (ClickHouse does not use catalogs). |
 | `CommandGetDbSchemas` | List databases. Supports optional `db_schema_filter_pattern` (SQL `LIKE` pattern). |
@@ -335,8 +339,8 @@ When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arro
 
 | Command | Description |
 |---|---|
-| `CommandStatementUpdate` | Execute a DDL/DML statement (CREATE, INSERT, ALTER, etc.). Returns affected row count. |
-| `CommandStatementIngest` | Bulk insert Arrow data into an existing table. Only append mode is supported. |
+| `CommandStatementUpdate` | Execute a DDL/DML statement (CREATE, INSERT, ALTER, etc.). Returns affected row count. `transaction_id` is not supported. |
+| `CommandStatementIngest` | Bulk insert Arrow data into an existing table. Only append mode is supported. `transaction_id` is not supported. |
 | `CommandPreparedStatementQuery` | Bind parameter values for a prepared statement when sent via `DoPut`, then return `DoPutPreparedStatementResult` with the statement handle. Only one parameter set (one row) is accepted, and the number of bound values must exactly match the number of `?` placeholders. |
 | `CommandPreparedStatementUpdate` | Execute a prepared DDL/DML statement by handle and return affected row count. |
 
