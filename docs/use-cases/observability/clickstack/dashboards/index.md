@@ -32,6 +32,9 @@ import filtered_dashboard from '@site/static/images/clickstack/dashboards/filter
 import filter_dropdown from '@site/static/images/clickstack/dashboards/filter-dropdown.png';
 import save_filter_values from '@site/static/images/clickstack/dashboards/save-filter-values.png';
 import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
+import heatmap_tile_editor from '@site/static/images/clickstack/dashboards/heatmap-tile-editor.png';
+import heatmap_tile_rendered from '@site/static/images/clickstack/dashboards/heatmap-tile-rendered.png';
+import heatmap_tile_drilldown from '@site/static/images/clickstack/dashboards/heatmap-tile-drilldown.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
 ClickStack supports visualizing events, with built-in support for charting in ClickStack UI (HyperDX). These charts can be added to dashboards for sharing with other users.
@@ -144,6 +147,39 @@ Click the **play** button before clicking `Save`.
 Resize the visualization to occupy the full width of the dashboard.
 
 <Image img={dashboard_5} alt="Dashboard with visuals 2" size="lg"/>
+
+### Add a heatmap tile for span duration {#create-a-tile-heatmap}
+
+Heatmap tiles plot the count of events falling into each (time, value) bucket as a colored grid. Use a heatmap when you want to see the **shape** of a distribution over time, not just the average or a single percentile. A latency heatmap reveals bimodal duration patterns, slow-tail clusters, or sudden spreads that a Line chart would average away.
+
+Select `Add New Tile`, then choose the `Heatmap` visualization type from the top menu. The data source dropdown only shows sources whose [source type is `Traces`](/use-cases/observability/clickstack/config#traces); logs, metrics, and session sources are filtered out, since heatmaps need a span duration column that only traces sources provide. Pick any of your traces sources by name; the name itself is arbitrary, only the type matters.
+
+Once a source is selected, the heatmap pre-fills:
+
+- **Value**: the source's `Duration Expression`, scaled to the current display unit (for example `(Duration)/1e6` to convert each event's span duration from nanoseconds to milliseconds)
+- **Count**: `count()`
+
+Set a chart name, and use `Where` to scope the heatmap to a specific service or set of operations whose performance you want to observe. Adjust the time range to match the period of interest; wider ranges expose distribution shifts and bimodal latency patterns that shorter windows can hide. The example below shows a single service over a 24 hour window, with the fast and slow paths of its span duration clearly separated into two horizontal bands. To customize the heatmap further, click **Display Settings** to open a drawer for the **Scale** (Log or Linear), **Value**, and **Count** expression. The full list of options is documented in [Customize the heatmap](/use-cases/observability/clickstack/event_deltas#customize) on the Event Deltas page; the same drawer is reused.
+
+Click the **play** button to preview the chart, then `Save`.
+
+<Image img={heatmap_tile_editor} alt="Heatmap tile editor with span duration defaults pre-filled, ServiceName payment filter, and Display Settings button" size="lg"/>
+
+The saved tile renders as a heatmap on the dashboard. Hover any cell to see the bucket bounds and event count.
+
+<Image img={heatmap_tile_rendered} alt="Heatmap dashboard tile showing payment service span duration distribution over 24 hours" size="lg"/>
+
+:::tip Two ClickHouse queries per heatmap
+The heatmap runs as two sequential queries: a small **bounds query** that resolves the value range, then a **bucket query** that counts events per bucket. Both queries are visible in the editor under **Generated SQL** if you want to inspect or copy them.
+:::
+
+#### Drill down to Event Deltas {#heatmap-tile-drilldown}
+
+Click any cell on a rendered heatmap tile to open a **View in Event Deltas** action.
+
+<Image img={heatmap_tile_drilldown} alt="Heatmap cell click revealing the View in Event Deltas action" size="lg"/>
+
+Selecting it opens the [Event Deltas](/use-cases/observability/clickstack/event_deltas) view with the tile's data source, `Where` clause, and time range carried over. From there you can examine the same distribution interactively, slice by attribute to see what makes the slow spans different from the fast ones, and inspect the individual spans behind any cell, without rebuilding the query by hand.
 
 ### Filter dashboard {#filter-dashboards}
 
