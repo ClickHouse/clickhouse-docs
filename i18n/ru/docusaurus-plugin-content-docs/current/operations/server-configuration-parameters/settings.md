@@ -4963,7 +4963,7 @@ ClickHouse использует этот параметр для всех таб
 и создается заново — в соответствии с существующим поведением ротации `SystemLog`.
 
 Требует, чтобы в конфигурации сервера была задана `<shared_log_pipeline><endpoint>`.
-См. также: `shared_log_pipeline.enable_polling`, `shared_log_pipeline.flush_timeout_seconds`.
+См. также: `shared_log_pipeline.enable_sync_flush`, `shared_log_pipeline.flush_timeout_seconds`.
 
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 

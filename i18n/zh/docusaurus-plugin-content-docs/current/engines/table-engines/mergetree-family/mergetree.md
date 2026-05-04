@@ -1318,47 +1318,55 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 
 ### 可用的列统计类型 \{#available-types-of-column-statistics\}
 
-- `MinMax`
+* `MinMax`
 
-    列的最小值和最大值，用于估计数值列上范围过滤条件的选择性。
+  列的最小值和最大值，用于估计数值列上范围过滤条件的选择性。
 
-    语法：`minmax`
+  语法：`minmax`
 
-- `TDigest`
+* `TDigest`
 
-    基于 [TDigest](https://github.com/tdunning/t-digest) 的 sketch 数据结构，用于计算数值列的近似分位数（例如第 90 百分位）。
+  基于 [TDigest](https://github.com/tdunning/t-digest) 的 sketch 数据结构，用于计算数值列的近似分位数 (例如第 90 百分位) 。
 
-    语法：`tdigest`
+  语法：`tdigest`
 
-- `Uniq`
+* `Uniq`
 
-    基于 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 的 sketch 数据结构，用于估算某列中包含多少个不同的取值。
+  基于 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 的 sketch 数据结构，用于估算某列中包含多少个不同的取值。
 
-    语法：`uniq`
+  语法：`uniq`
 
-- `CountMin`
+* `NullCount`
 
-    基于 [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) 的 sketch 数据结构，用于近似统计某列中每个值出现的频率。
+  跟踪 `Nullable` 列中 `NULL` 值的数量。用于在 PREWHERE 优化中准确估计 `IS NULL`/`IS NOT NULL` 谓词的选择性。
 
-    语法：`countmin`
+  语法：`nullcount`
+
+* `CountMin`
+
+  基于 [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) 的 sketch 数据结构，用于近似统计某列中每个值出现的频率。
+
+  语法：`countmin`
 
 ### 支持的数据类型 \{#supported-data-types\}
 
-|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String 或 FixedString |
-|-----------|----------------------------------------------------|-----------------------|
-| CountMin  | ✔                                                  | ✔                     |
-| MinMax    | ✔                                                  | ✗                     |
-| TDigest   | ✔                                                  | ✗                     |
-| Uniq      | ✔                                                  | ✔                     |
+|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String 或 FixedString | Nullable(*) / LowCardinality(Nullable(*)) |
+| --------- | -------------------------------------------------- | -------------------- | ----------------------------------------- |
+| CountMin  | ✔                                                  | ✔                    | ✗                                         |
+| MinMax    | ✔                                                  | ✗                    | ✔                                         |
+| NullCount | ✗                                                  | ✗                    | ✔                                         |
+| TDigest   | ✔                                                  | ✗                    | ✔                                         |
+| Uniq      | ✔                                                  | ✔                    | ✔                                         |
 
 ### 支持的操作 \{#supported-operations\}
 
-|           | 等值过滤 (==) | 范围过滤 (`>, >=, <, <=`) |
-|-----------|----------------|---------------------------|
-| CountMin  | ✔              | ✗                         |
-| MinMax    | ✗              | ✔                         |
-| TDigest   | ✗              | ✔                         |
-| Uniq      | ✔              | ✗                         |
+|           | 等值过滤 (==) | 范围过滤 (`>, >=, <, <=`) | `IS NULL` / `IS NOT NULL` |
+| --------- | --------- | --------------------- | ------------------------- |
+| CountMin  | ✔         | ✗                     | ✗                         |
+| MinMax    | ✗         | ✔                     | ✗                         |
+| NullCount | ✗         | ✗                     | ✔                         |
+| TDigest   | ✗         | ✔                     | ✗                         |
+| Uniq      | ✔         | ✗                     | ✗                         |
 
 ## 列级别设置 \{#column-level-settings\}
 

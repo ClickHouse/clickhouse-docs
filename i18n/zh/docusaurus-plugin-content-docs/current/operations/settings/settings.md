@@ -533,6 +533,14 @@ Cloud 默认值：`1`。
 
 启用实验性的漏斗分析函数。
 
+## allow_experimental_geo_types_in_iceberg \{#allow_experimental_geo_types_in_iceberg\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置，允许将 Iceberg 的 geometry/geography 字段解析为 Geometry 类型。"}]}]} />
+
+允许将 Iceberg `geometry` 和 `geography` 字段类型解析为 ClickHouse `Geometry` (Variant) 类型。
+
 ## allow_experimental_hash_functions \{#allow_experimental_hash_functions\}
 
 <ExperimentalBadge/>

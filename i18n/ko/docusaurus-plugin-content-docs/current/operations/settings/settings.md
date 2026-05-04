@@ -535,6 +535,14 @@ delta-kernel 쓰기 기능을 활성화합니다.
 
 퍼널 분석용 실험적 함수를 활성화합니다.
 
+## allow_experimental_geo_types_in_iceberg \{#allow_experimental_geo_types_in_iceberg\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Iceberg geometry/geography 필드를 Geometry 타입으로 파싱할 수 있도록 하는 새로운 설정입니다."}]}]} />
+
+Iceberg `geometry` 및 `geography` 필드 타입을 ClickHouse `Geometry` (Variant) 타입으로 파싱할 수 있도록 허용합니다.
+
 ## allow_experimental_hash_functions \{#allow_experimental_hash_functions\}
 
 <ExperimentalBadge/>

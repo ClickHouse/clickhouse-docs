@@ -533,6 +533,14 @@ delta-kernel の書き込み機能を有効にします。
 
 ファネル分析向けの実験的関数を有効にします。
 
+## allow_experimental_geo_types_in_iceberg \{#allow_experimental_geo_types_in_iceberg\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Iceberg の geometry/geography フィールドを Geometry 型として解析できるようにする新しい設定。"}]}]} />
+
+Iceberg の `geometry` および `geography` フィールド型を、ClickHouse の `Geometry` (Variant) 型として解析できるようにします。
+
 ## allow_experimental_hash_functions \{#allow_experimental_hash_functions\}
 
 <ExperimentalBadge/>

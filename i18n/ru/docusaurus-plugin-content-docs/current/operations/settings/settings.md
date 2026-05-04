@@ -535,6 +535,14 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает экспериментальные функции для анализа воронки.
 
+## allow_experimental_geo_types_in_iceberg \{#allow_experimental_geo_types_in_iceberg\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, разрешающая разбор полей geometry/geography в Iceberg как значений типа Geometry."}]}]} />
+
+Разрешает разбирать поля Iceberg типов `geometry` и `geography` как тип ClickHouse `Geometry` (Variant).
+
 ## allow_experimental_hash_functions \{#allow_experimental_hash_functions\}
 
 <ExperimentalBadge/>

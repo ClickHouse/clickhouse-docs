@@ -4955,7 +4955,7 @@ ClickHouse 会对服务器上的所有表使用该设置。可以在任何时间
 然后重新创建，这与现有的 `SystemLog` 轮换行为一致。
 
 需要在服务器配置中设置 `<shared_log_pipeline><endpoint>`。
-另请参见：`shared_log_pipeline.enable_polling`、`shared_log_pipeline.flush_timeout_seconds`。
+另请参见：`shared_log_pipeline.enable_sync_flush`、`shared_log_pipeline.flush_timeout_seconds`。
 
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 

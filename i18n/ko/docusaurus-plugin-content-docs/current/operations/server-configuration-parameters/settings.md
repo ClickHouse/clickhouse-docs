@@ -4947,8 +4947,8 @@ ClickHouse Cloud에서만 사용할 수 있습니다. 활성화하면 `system.*_
 schema 또는 설정이 변경되면 영향을 받는 테이블의 이름이 `<log>_0`, `<log>_1` 등으로 변경된 뒤,
 기존 `SystemLog` 로테이션 동작과 일관되게 다시 생성됩니다.
 
-서버 설정에서 `<shared_log_pipeline><endpoint>`를 설정해야 합니다.
-참고: `shared_log_pipeline.enable_polling`, `shared_log_pipeline.flush_timeout_seconds`.
+서버 구성에서 `<shared_log_pipeline><endpoint>`를 설정해야 합니다.
+참고: `shared_log_pipeline.enable_sync_flush`, `shared_log_pipeline.flush_timeout_seconds`.
 
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 
