@@ -222,7 +222,6 @@ const client = createClient({
 
 クライアントリポジトリには、[ClickHouse Cloud にテーブルを作成する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts)、[非同期インサートを使用する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert.ts) など、環境変数を使用するサンプルが複数含まれており、そのほかにも多数の例があります。
 
-
 #### 接続プール（Node.js のみ） \{#connection-pool-nodejs-only\}
 
 各リクエストごとに接続を確立するオーバーヘッドを回避するため、クライアントは ClickHouse への接続を再利用するための接続プールを作成し、Keep-Alive メカニズムを利用します。デフォルトでは Keep-Alive は有効になっており、接続プールのサイズは `10` に設定されていますが、`max_open_connections` [設定オプション](./js.md#configuration)で変更できます。
@@ -233,7 +232,7 @@ const client = createClient({
 
 ### クエリ ID \{#query-id\}
 
-クエリまたはステートメント（`command`、`exec`、`insert`、`select`）を送信するすべてのメソッドは、結果内に `query_id` を含みます。この一意の識別子はクエリごとにクライアントによって割り当てられ、[サーバー設定](/operations/server-configuration-parameters/settings) で有効化されている場合には `system.query_log` からデータを取得する際や、長時間実行中のクエリをキャンセルする際などに役立ちます（[例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/cancel_query.ts) を参照してください）。必要に応じて、`query_id` は `command` / `query` / `exec` / `insert` メソッドのパラメータでユーザーが上書きできます。
+クエリまたは文 (`command`、`exec`、`insert`、`select`) を送信するすべてのメソッドは、結果内に `query_id` を含みます。この一意の識別子はクエリごとにクライアントによって割り当てられ、[サーバー設定](/operations/server-configuration-parameters/settings) で有効化されている場合には `system.query_log` からデータを取得する際や、長時間実行中のクエリをキャンセルする際などに役立ちます ([例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/cancel_query.ts) を参照してください) 。必要に応じて、`query_id` は `command` / `query` / `exec` / `insert` メソッドのパラメータでユーザーが上書きできます。
 
 :::tip
 `query_id` パラメータを上書きする場合は、呼び出しごとに一意になるようにする必要があります。ランダムな UUID を使用するのが推奨されます。
@@ -300,7 +299,7 @@ Node.js の `ResultSet` 実装は内部的に `Stream.Readable` を使用し、W
 
 `ResultSet` はレスポンスストリームを開いたままにし、その結果として基盤となる接続をビジー状態に保つため、可能な限り早く `ResultSet` の消費を開始する必要があります。アプリケーションによる過剰なメモリ使用を避けるため、クライアントは受信データをバッファリングしません。
 
-あるいは、結果セットが大きすぎて一度にメモリに載せられない場合は、`stream` メソッドを呼び出し、ストリーミングモードでデータを処理できます。レスポンスの各チャンクは、代わりに比較的小さな行配列へと変換されます（この配列のサイズは、サーバーからクライアントが受信する各チャンクのサイズ（可変）や、個々の行のサイズによって決まります）。処理はチャンクごとに順次行われます。
+あるいは、結果セットが大きすぎて一度にメモリに載せられない場合は、`stream` メソッドを呼び出し、ストリーミングモードでデータを処理できます。レスポンスの各チャンクは、代わりに比較的小さな行配列へと変換されます (この配列のサイズは、サーバーからクライアントが受信する各チャンクのサイズ (可変) や、個々の行のサイズによって決まります) 。処理はチャンクごとに順次行われます。
 
 どのフォーマットが利用ケースにおけるストリーミングに最適かを判断するには、[サポートされているデータフォーマット](./js.md#supported-data-formats) の一覧を参照してください。たとえば、JSON オブジェクトをストリームしたい場合は [JSONEachRow](/interfaces/formats/JSONEachRow) を選択でき、この場合、各行は JS オブジェクトとしてパースされます。あるいは、よりコンパクトな [JSONCompactColumns](/interfaces/formats/JSONCompactColumns) フォーマットを選択すると、各行は値のコンパクトな配列として表現されます。あわせて [streaming files](./js.md#streaming-files-nodejs-only) も参照してください。
 
@@ -373,7 +372,6 @@ await new Promise((resolve, reject) => {
 
 **例:** (`Node.js` のみ) 従来の `on('data')` アプローチを使用して、クエリ結果を `CSV` 形式でストリーミングします。これは `for await const` 構文と置き換えて使用できます。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
-
 
 ```ts
 const resultSet = await client.query({
@@ -459,7 +457,7 @@ insert 文がサーバーに送信された場合、`executed` フラグは `tru
 
 `insert` メソッドに指定された [データ形式](./js.md#supported-data-formats) に応じて、`Stream.Readable` と通常の `Array<T>` のいずれにも対応します。あわせて、[ファイルストリーミング](./js.md#streaming-files-nodejs-only) に関するセクションも参照してください。
 
-insert メソッドは `await` されることを想定していますが、入力ストリームを先に指定しておき、ストリームの完了時点になって初めて `insert` 処理を待機することも可能です（そのタイミングで `insert` の Promise も resolve されます）。これはイベントリスナーなどのシナリオで有用な場合がありますが、クライアント側で多数のエッジケースを考慮したエラー処理が必要となり、単純ではない可能性があります。代わりに、[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert_without_waiting.ts) に示すように [非同期 insert](/optimize/asynchronous-inserts) の利用を検討してください。
+Insert method is supposed to be awaited; however, it is possible to specify an input stream and await the `insert` operation later, only when the stream is completed (which will also resolve the `insert` promise). This could potentially be useful for event listeners and similar scenarios, but the error handling might be non-trivial with a lot of edge cases on the client side. 代わりに、[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert_without_waiting.ts) に示すように [非同期 INSERT](/optimize/asynchronous-inserts) の利用を検討してください。
 
 :::tip
 このメソッドでは表現しづらいカスタム INSERT ステートメントがある場合は、[command メソッド](./js.md#command-method) の利用を検討してください。
@@ -505,7 +503,7 @@ await client.insert({
 })
 ```
 
-**例：**（Node.js のみ）CSV ファイルからストリームとして挿入します。
+**例：** (Node.js のみ) CSV ファイルからストリームとして挿入します。
 [ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts)。関連項目：[ファイルストリーミング](./js.md#streaming-files-nodejs-only)。
 
 ```ts
@@ -527,7 +525,7 @@ ENGINE MergeTree()
 ORDER BY (id)
 ```
 
-特定の列のみを挿入する:
+特定のカラムのみを挿入する:
 
 ```ts
 // Generated statement: INSERT INTO mytable (message) FORMAT JSONEachRow
@@ -540,7 +538,7 @@ await client.insert({
 })
 ```
 
-特定の列を除外する：
+特定のカラムを除外する：
 
 ```ts
 // Generated statement: INSERT INTO mytable (* EXCEPT (message)) FORMAT JSONEachRow
@@ -556,7 +554,6 @@ await client.insert({
 ```
 
 詳細については[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_exclude_columns.ts)を参照してください。
-
 
 **例**: クライアントインスタンスで指定されたものとは異なるデータベースに `INSERT` する。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_into_different_db.ts)。
 
@@ -598,7 +595,7 @@ interface InsertParams<T> extends BaseQueryParams {
 
 ### Command メソッド \{#command-method\}
 
-出力を伴わないステートメント、`FORMAT` 句が適用できないステートメント、あるいはレスポンスにまったく関心がない場合に使用できます。このようなステートメントの例としては、`CREATE TABLE` や `ALTER TABLE` があります。
+出力を伴わない文、`FORMAT` 句が適用できない文、あるいはレスポンスにまったく関心がない場合に使用できます。このような文の例としては、`CREATE TABLE` や `ALTER TABLE` があります。
 
 `await` する必要があります。
 
@@ -663,9 +660,8 @@ await client.command({
 ```
 
 :::important
-`abort_signal` によってリクエストがキャンセルされても、そのステートメントがサーバー側で実行されなかったことが保証されるわけではありません。
+`abort_signal` によってリクエストがキャンセルされても、その文がサーバー側で実行されなかったことが保証されるわけではありません。
 :::
-
 
 ### Exec メソッド \{#exec-method\}
 
@@ -841,49 +837,49 @@ ClickHouse の入力および出力フォーマットの完全な一覧は
 ## サポートされている ClickHouse データ型 \{#supported-clickhouse-data-types\}
 
 :::note
-関連する JS 型は、すべてを文字列として表現するフォーマット（例: `JSONStringEachRow`）を除く、任意の `JSON*` フォーマットに対して適用されます。
+関連する JS 型は、すべてを文字列として表現するフォーマット (例: `JSONStringEachRow`) を除く、任意の `JSON*` フォーマットに対して適用されます。
 :::
 
-| Type                   | Status                | JS type                    |
-|------------------------|-----------------------|----------------------------|
-| UInt8/16/32            | ✔️                    | number                     |
-| UInt64/128/256         | ✔️ ❗- 下記を参照      | string                     |
-| Int8/16/32             | ✔️                    | number                     |
-| Int64/128/256          | ✔️ ❗- 下記を参照      | string                     |
-| Float32/64             | ✔️                    | number                     |
-| Decimal                | ✔️ ❗- 下記を参照      | number                     |
-| Boolean                | ✔️                    | boolean                    |
-| String                 | ✔️                    | string                     |
-| FixedString            | ✔️                    | string                     |
-| UUID                   | ✔️                    | string                     |
-| Date32/64              | ✔️                    | string                     |
-| DateTime32/64          | ✔️ ❗- 下記を参照      | string                     |
-| Enum                   | ✔️                    | string                     |
-| LowCardinality         | ✔️                    | string                     |
-| Array(T)               | ✔️                    | T[]                        |
-| (new) JSON             | ✔️                    | object                     |
-| Variant(T1, T2...)     | ✔️                    | T (バリアントに依存)      |
-| Dynamic                | ✔️                    | T (バリアントに依存)      |
-| Nested                 | ✔️                    | T[]                        |
-| Tuple(T1, T2, ...)     | ✔️                    | [T1, T2, ...]              |
-| Tuple(n1 T1, n2 T2...) | ✔️                    | \{ n1: T1; n2: T2; ...}    |
-| Nullable(T)            | ✔️                    | T の JS 型または null      |
-| IPv4                   | ✔️                    | string                     |
-| IPv6                   | ✔️                    | string                     |
-| Point                  | ✔️                    | [ number, number ]         |
-| Ring                   | ✔️                    | Array&lt;Point\>           |
-| Polygon                | ✔️                    | Array&lt;Ring\>            |
-| MultiPolygon           | ✔️                    | Array&lt;Polygon\>         |
-| Map(K, V)              | ✔️                    | Record&lt;K, V\>           |
-| Time/Time64            | ✔️                    | string                     |
+| Type                   | Status      | JS type                          |
+| ---------------------- | ----------- | -------------------------------- |
+| UInt8/16/32            | ✔️          | number                           |
+| UInt64/128/256         | ✔️ ❗- 下記を参照 | string                           |
+| Int8/16/32             | ✔️          | number                           |
+| Int64/128/256          | ✔️ ❗- 下記を参照 | string                           |
+| Float32/64             | ✔️          | number                           |
+| Decimal                | ✔️ ❗- 下記を参照 | number                           |
+| Boolean                | ✔️          | boolean                          |
+| String                 | ✔️          | string                           |
+| FixedString            | ✔️          | string                           |
+| UUID                   | ✔️          | string                           |
+| Date32/64              | ✔️          | string                           |
+| DateTime32/64          | ✔️ ❗- 下記を参照 | string                           |
+| Enum                   | ✔️          | string                           |
+| LowCardinality         | ✔️          | string                           |
+| Array(T)               | ✔️          | T[]                              |
+| (new) JSON             | ✔️          | object                           |
+| Variant(T1, T2...)     | ✔️          | T (バリアントに依存)                     |
+| Dynamic                | ✔️          | T (バリアントに依存)                     |
+| Nested                 | ✔️          | T[]                              |
+| Tuple(T1, T2, ...)     | ✔️          | [T1, T2, ...]                    |
+| Tuple(n1 T1, n2 T2...) | ✔️          | &#123; n1: T1; n2: T2; ...&#125; |
+| Nullable(T)            | ✔️          | T の JS 型または null                 |
+| IPv4                   | ✔️          | string                           |
+| IPv6                   | ✔️          | string                           |
+| Point                  | ✔️          | [ number, number ]               |
+| Ring                   | ✔️          | Array&lt;Point&gt;               |
+| Polygon                | ✔️          | Array&lt;Ring&gt;                |
+| MultiPolygon           | ✔️          | Array&lt;Polygon&gt;             |
+| Map(K, V)              | ✔️          | Record&lt;K, V&gt;               |
+| Time/Time64            | ✔️          | string                           |
 
 サポートされている ClickHouse データ型の全リストは
 [こちら](/sql-reference/data-types/)にあります。
 
 あわせて参照:
 
-- [Dynamic/Variant/JSON を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/dynamic_variant_json.ts)
-- [Time/Time64 を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/time_time64.ts)
+* [Dynamic/Variant/JSON を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/dynamic_variant_json.ts)
+* [Time/Time64 を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/time_time64.ts)
 
 ### Date/Date32 型の注意事項 \{#datedate32-types-caveats\}
 
@@ -900,8 +896,7 @@ await client.insert({
 })
 ```
 
-ただし、`DateTime` や `DateTime64` の列を使用している場合は、文字列と JS Date オブジェクトの両方を利用できます。JS Date オブジェクトは、`date_time_input_format` を `best_effort` に設定した状態で、そのまま `insert` に渡すことができます。詳細については、この[サンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_js_dates.ts)を参照してください。
-
+ただし、`DateTime` や `DateTime64` のカラムを使用している場合は、文字列と JS Date オブジェクトの両方を利用できます。JS Date オブジェクトは、`date_time_input_format` を `best_effort` に設定した状態で、そのまま `insert` に渡すことができます。詳細については、この[サンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_js_dates.ts)を参照してください。
 
 ### Decimal* 型の注意事項 \{#decimal-types-caveats\}
 
@@ -1040,7 +1035,7 @@ await client.query({
 })
 ```
 
-詳細については、[https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax](https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax) を参照してください。
+詳細については、https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax を参照してください。
 
 ### 圧縮 \{#compression\}
 
@@ -1271,7 +1266,6 @@ const client = createClient({
 
 `readonly=1` ユーザーの制限事項についてさらに詳しく説明している [例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/read_only_user.ts) を参照してください。
 
-
 ### パス名付きプロキシ \{#proxy-with-a-pathname\}
 
 ClickHouse インスタンスがプロキシの背後にあり、たとえば [http://proxy:8123/clickhouse&#95;server](http://proxy:8123/clickhouse_server) のように URL にパス名が含まれている場合は、`pathname` 設定オプションとして `clickhouse_server` を指定してください（先頭のスラッシュの有無は問いません）。そうせずに `url` に直接含めた場合は、それが `database` オプションとして解釈されます。`/my_proxy/db` のように複数セグメントを含めることもできます。
@@ -1391,9 +1385,9 @@ const client = createClient({
 
 ## パフォーマンス最適化のためのヒント \{#tips-for-performance-optimizations\}
 
-- アプリケーションのメモリ消費を削減するには、大きな insert（たとえばファイルから）や、可能な場合の select に対してストリームを使用することを検討してください。イベントリスナーなどのユースケースでは、[非同期 insert](/optimize/asynchronous-inserts) も有力な選択肢であり、クライアント側でのバッチ処理を最小限に抑えるか、完全に不要にすることも可能です。非同期 insert の例は、[client リポジトリ](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node) に、ファイル名のプレフィックスが `async_insert_` となっているファイルとして用意されています。
-- クライアントは、デフォルトではリクエストやレスポンスの圧縮を有効にしていません。ただし、大きなデータセットを select または insert する場合は、`ClickHouseClientConfigOptions.compression` を通じて（`request` のみ、`response` のみ、またはその両方に対して）圧縮を有効にすることを検討できます。
-- 圧縮には無視できないパフォーマンス上のオーバーヘッドがあります。`request` または `response` に対して圧縮を有効にすると、それぞれ select や insert の速度には悪影響がありますが、アプリケーションが送受信するネットワークトラフィック量を削減できます。
+* アプリケーションのメモリ消費を削減するには、大きな insert (たとえばファイルから) や、可能な場合の select に対してストリームを使用することを検討してください。イベントリスナーなどのユースケースでは、[非同期 insert](/optimize/asynchronous-inserts) も有力な選択肢であり、クライアント側でのバッチ処理を最小限に抑えるか、完全に不要にすることも可能です。非同期 insert の例は、[クライアントリポジトリ](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node) に、ファイル名のプレフィックスが `async_insert_` となっているファイルとして用意されています。
+* クライアントは、デフォルトではリクエストやレスポンスの圧縮を有効にしていません。ただし、大きなデータセットを select または insert する場合は、`ClickHouseClientConfigOptions.compression` を通じて (`request` のみ、`response` のみ、またはその両方に対して) 圧縮を有効にすることを検討できます。
+* 圧縮には無視できないパフォーマンス上のオーバーヘッドがあります。`request` または `response` に対して圧縮を有効にすると、それぞれ select や insert の速度には悪影響がありますが、アプリケーションが送受信するネットワークトラフィック量を削減できます。
 
 ## お問い合わせ \{#contact-us\}
 

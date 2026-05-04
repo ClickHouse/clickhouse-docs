@@ -222,7 +222,6 @@ const client = createClient({
 
 客户端代码仓库包含多个使用环境变量的示例，例如[在 ClickHouse Cloud 中创建表](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts)、[使用异步插入](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert.ts)等。
 
-
 #### 连接池（仅限 Node.js） \{#connection-pool-nodejs-only\}
 
 为避免为每个请求重新建立连接所带来的开销，客户端会创建一个到 ClickHouse 的连接池以复用连接，并利用 Keep-Alive 机制。默认情况下 Keep-Alive 是启用的，连接池大小为 `10`，但你可以通过 `max_open_connections` [配置项](./js.md#configuration) 来修改它。 
@@ -233,7 +232,7 @@ const client = createClient({
 
 ### 查询 ID \{#query-id\}
 
-每个发送查询或语句（`command`、`exec`、`insert`、`select`）的方法都会在结果中返回 `query_id`。该唯一标识符由客户端为每个查询分配，如果在[服务器配置](/operations/server-configuration-parameters/settings)中启用了 `system.query_log`，则可以用于根据该 ID 从日志中获取数据，或者用于取消长时间运行的查询（参见[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/cancel_query.ts)）。如有需要，用户可以在 `command`/`query`/`exec`/`insert` 方法的参数中自定义 `query_id`。
+每个发送查询或语句 (`command`、`exec`、`insert`、`select`) 的方法都会在结果中返回 `query_id`。该唯一标识符由客户端为每个查询分配，如果在[服务器配置](/operations/server-configuration-parameters/settings)中启用了 `system.query_log`，则可以用于根据该 ID 从日志中获取数据，或者用于取消长时间运行的查询 (参见[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/cancel_query.ts)) 。如有需要，用户可以在 `command`/`query`/`exec`/`insert` 方法的参数中自定义 `query_id`。
 
 :::tip
 如果要自定义 `query_id` 参数，需要确保它在每次调用时都是唯一的。随机 UUID 是一个不错的选择。
@@ -300,7 +299,7 @@ Node.js 中的 `ResultSet` 实现在底层使用 `Stream.Readable`，而 Web 版
 
 你应尽早开始消费 `ResultSet`，因为它会保持响应流处于打开状态，从而使底层连接始终处于忙碌状态。客户端不会缓冲传入数据，以避免应用程序出现潜在的过度内存占用。
 
-或者，如果结果集过大，无法一次性装入内存，你可以调用 `stream` 方法，以流式模式处理数据。每个响应块都会被转换为一个相对较小的行数组（该数组的大小取决于客户端从服务器接收到的具体块大小（可能会变化）以及单行的大小），按块逐个处理。
+或者，如果结果集过大，无法一次性装入内存，你可以调用 `stream` 方法，以流式模式处理数据。每个响应块都会被转换为一个相对较小的行数组 (该数组的大小取决于客户端从服务器接收到的具体块大小 (可能会变化) 以及单行的大小) ，按块逐个处理。
 
 请参考[支持的数据格式](./js.md#supported-data-formats)列表，以确定在你的场景中用于流式传输的最佳格式。例如，如果你想以流式方式传输 JSON 对象，可以选择 [JSONEachRow](/interfaces/formats/JSONEachRow)，这样每一行都会被解析为一个 JS 对象；或者选择更紧凑的 [JSONCompactColumns](/interfaces/formats/JSONCompactColumns) 格式，使每一行成为一个紧凑的值数组。另请参阅：[流式传输文件](./js.md#streaming-files-nodejs-only)。
 
@@ -338,7 +337,7 @@ interface Row {
 }
 ```
 
-**示例：**（Node.js/Web）一个查询，结果数据集采用 `JSONEachRow` 格式，读取整个流并将内容解析为 JS 对象。
+**示例：** (Node.js/Web) 一个查询，结果数据集采用 `JSONEachRow` 格式，读取整个流并将内容解析为 JS 对象。
 [源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/array_json_each_row.ts)。
 
 ```ts
@@ -349,7 +348,7 @@ const resultSet = await client.query({
 const dataset = await resultSet.json() // or `row.text` to avoid parsing JSON
 ```
 
-**示例：**（仅限 Node.js）使用经典的 `on('data')` 方式，以 `JSONEachRow` 格式流式读取查询结果。此方式可以与 `for await const` 语法互换使用。[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts)。
+**示例：** (仅限 Node.js) 使用经典的 `on('data')` 方式，以 `JSONEachRow` 格式流式读取查询结果。此方式可以与 `for await const` 语法互换使用。[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts)。
 
 ```ts
 const rows = await client.query({
@@ -371,9 +370,8 @@ await new Promise((resolve, reject) => {
 })
 ```
 
-**示例：**（仅限 Node.js）通过经典的 `on('data')` 方式，以 `CSV` 格式流式读取查询结果。此方式可与 `for await const` 语法互换使用。
+**示例：** (仅限 Node.js) 通过经典的 `on('data')` 方式，以 `CSV` 格式流式读取查询结果。此方式可与 `for await const` 语法互换使用。
 [源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
-
 
 ```ts
 const resultSet = await client.query({
@@ -459,12 +457,12 @@ interface ClickHouseClient {
 
 它既可以与 `Stream.Readable` 一起使用，也可以与普通的 `Array<T>` 一起使用，具体取决于传递给 `insert` 方法的[数据格式](./js.md#supported-data-formats)。另请参阅本节中关于[文件流式处理](./js.md#streaming-files-nodejs-only)的内容。
 
-`insert` 方法应当配合 `await` 使用；不过，也可以先传入一个输入流，而在稍后、仅在该流完成时再等待 `insert` 操作的完成（此时 `insert` 返回的 Promise 也会被 resolve）。这在事件监听器或类似场景中可能会很有用，但在客户端进行错误处理时会有大量边界情况，处理起来较为复杂。作为替代方案，可以考虑使用[异步插入](/optimize/asynchronous-inserts)，如[此示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert_without_waiting.ts)所示。
+`insert` 方法应当配合 `await` 使用；不过，也可以先传入一个输入流，而在稍后、仅在该流完成时再等待 `insert` 操作的完成 (此时 `insert` 返回的 Promise 也会被 resolve) 。这在事件监听器或类似场景中可能会很有用，但在客户端进行错误处理时会有大量边界情况，处理起来较为复杂。作为替代方案，可以考虑使用[异步插入](/optimize/asynchronous-inserts)，如[此示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert_without_waiting.ts)所示。
 
 :::tip
 如果你有一个难以通过该方法建模的自定义 INSERT 语句，可以考虑使用 [command 方法](./js.md#command-method)。
 
-你可以在 [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_values_and_functions.ts) 或 [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_from_select.ts) 示例中看到它的用法。
+您可以在 [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_values_and_functions.ts) 或 [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_from_select.ts) 示例中看到它的用法。
 :::
 
 ```ts
@@ -490,7 +488,7 @@ interface InsertParams<T> extends BaseQueryParams {
 通过 `abort_signal` 取消的请求并不能保证数据未被插入，因为在取消之前，服务器可能已经接收到部分流式数据。
 :::
 
-**示例：**（Node.js/Web）插入一个值数组。
+**示例：** (Node.js/Web) 插入一个值数组。
 [源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/array_json_each_row.ts)。
 
 ```ts
@@ -505,7 +503,7 @@ await client.insert({
 })
 ```
 
-**示例：**（仅限 Node.js）从 CSV 文件中插入数据流。
+**示例：** (仅限 Node.js) 从 CSV 文件中插入数据流。
 [源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts)。另请参阅：[文件流式传输](./js.md#streaming-files-nodejs-only)。
 
 ```ts
@@ -557,8 +555,7 @@ await client.insert({
 
 有关更多详细信息，请参阅[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_exclude_columns.ts)。
 
-
-**示例**：向一个不同于客户端实例所配置数据库的其他数据库中插入数据。[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_into_different_db.ts)。
+**示例**：向一个不同于客户端实例所配置数据库的其他数据库中插入数据。[源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_into_different_db.ts).
 
 ```ts
 await client.insert({
@@ -621,7 +618,7 @@ interface ClickHouseClient {
 
 参见：[所有客户端方法的基础参数](./js.md#base-parameters-for-all-client-methods)。
 
-**示例：**（Node.js/Web）在 ClickHouse Cloud 中创建一张表。
+**示例：** (Node.js/Web) 在 ClickHouse Cloud 中创建一张表。
 [源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts)。
 
 ```ts
@@ -640,7 +637,7 @@ await client.command({
 })
 ```
 
-**示例：**（Node.js/Web）在自托管的 ClickHouse 实例中创建表。
+**示例：** (Node.js/Web) 在自托管的 ClickHouse 实例中创建表。
 [源代码](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_single_node.ts)。
 
 ```ts
@@ -654,7 +651,7 @@ await client.command({
 })
 ```
 
-**示例：**（Node.js/Web）INSERT FROM SELECT
+**示例：** (Node.js/Web) INSERT FROM SELECT
 
 ```ts
 await client.command({
@@ -665,7 +662,6 @@ await client.command({
 :::important
 使用 `abort_signal` 取消请求并不能保证服务器未执行该语句。
 :::
-
 
 ### Exec 方法 \{#exec-method\}
 
@@ -840,49 +836,49 @@ JSON 作为通用格式和 [ClickHouse JSON 格式](/interfaces/formats/JSON) �
 ## 支持的 ClickHouse 数据类型 \{#supported-clickhouse-data-types\}
 
 :::note
-所列 JS 类型适用于所有 `JSON*` 格式，但将所有内容都表示为字符串的格式除外（例如 `JSONStringEachRow`）
+所列 JS 类型适用于所有 `JSON*` 格式，但将所有内容都表示为字符串的格式除外 (例如 `JSONStringEachRow`) 
 :::
 
-| Type                   | Status          | JS type                    |
-|------------------------|-----------------|----------------------------|
-| UInt8/16/32            | ✔️              | number                     |
-| UInt64/128/256         | ✔️ ❗- 见下文    | string                     |
-| Int8/16/32             | ✔️              | number                     |
-| Int64/128/256          | ✔️ ❗- 见下文    | string                     |
-| Float32/64             | ✔️              | number                     |
-| Decimal                | ✔️ ❗- 见下文    | number                     |
-| Boolean                | ✔️              | boolean                    |
-| String                 | ✔️              | string                     |
-| FixedString            | ✔️              | string                     |
-| UUID                   | ✔️              | string                     |
-| Date32/64              | ✔️              | string                     |
-| DateTime32/64          | ✔️ ❗- 见下文    | string                     |
-| Enum                   | ✔️              | string                     |
-| LowCardinality         | ✔️              | string                     |
-| Array(T)               | ✔️              | T[]                        |
-| (new) JSON             | ✔️              | object                     |
-| Variant(T1, T2...)     | ✔️              | T（取决于具体变体）        |
-| Dynamic                | ✔️              | T（取决于具体变体）        |
-| Nested                 | ✔️              | T[]                        |
-| Tuple(T1, T2, ...)     | ✔️              | [T1, T2, ...]              |
-| Tuple(n1 T1, n2 T2...) | ✔️              | \{ n1: T1; n2: T2; ...}    |
-| Nullable(T)            | ✔️              | T 对应的 JS 类型或 null    |
-| IPv4                   | ✔️              | string                     |
-| IPv6                   | ✔️              | string                     |
-| Point                  | ✔️              | [ number, number ]         |
-| Ring                   | ✔️              | Array&lt;Point\>           |
-| Polygon                | ✔️              | Array&lt;Ring\>            |
-| MultiPolygon           | ✔️              | Array&lt;Polygon\>         |
-| Map(K, V)              | ✔️              | Record&lt;K, V\>           |
-| Time/Time64            | ✔️              | string                     |
+| Type                   | Status    | JS type                          |
+| ---------------------- | --------- | -------------------------------- |
+| UInt8/16/32            | ✔️        | number                           |
+| UInt64/128/256         | ✔️ ❗- 见下文 | string                           |
+| Int8/16/32             | ✔️        | number                           |
+| Int64/128/256          | ✔️ ❗- 见下文 | string                           |
+| Float32/64             | ✔️        | number                           |
+| Decimal                | ✔️ ❗- 见下文 | number                           |
+| Boolean                | ✔️        | boolean                          |
+| String                 | ✔️        | string                           |
+| FixedString            | ✔️        | string                           |
+| UUID                   | ✔️        | string                           |
+| Date32/64              | ✔️        | string                           |
+| DateTime32/64          | ✔️ ❗- 见下文 | string                           |
+| Enum                   | ✔️        | string                           |
+| LowCardinality         | ✔️        | string                           |
+| Array(T)               | ✔️        | T[]                              |
+| (new) JSON             | ✔️        | object                           |
+| Variant(T1, T2...)     | ✔️        | T (取决于具体变体)                      |
+| Dynamic                | ✔️        | T (取决于具体变体)                      |
+| Nested                 | ✔️        | T[]                              |
+| Tuple(T1, T2, ...)     | ✔️        | [T1, T2, ...]                    |
+| Tuple(n1 T1, n2 T2...) | ✔️        | &#123; n1: T1; n2: T2; ...&#125; |
+| Nullable(T)            | ✔️        | T 对应的 JS 类型或 null                |
+| IPv4                   | ✔️        | string                           |
+| IPv6                   | ✔️        | string                           |
+| Point                  | ✔️        | [ number, number ]               |
+| Ring                   | ✔️        | Array&lt;Point&gt;               |
+| Polygon                | ✔️        | Array&lt;Ring&gt;                |
+| MultiPolygon           | ✔️        | Array&lt;Polygon&gt;             |
+| Map(K, V)              | ✔️        | Record&lt;K, V&gt;               |
+| Time/Time64            | ✔️        | string                           |
 
 ClickHouse 支持的数据类型完整列表可在
 [此处](/sql-reference/data-types/)查看。
 
 另请参阅：
 
-- [使用 Dynamic/Variant/JSON 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/dynamic_variant_json.ts)
-- [使用 Time/Time64 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/time_time64.ts)
+* [使用 Dynamic/Variant/JSON 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/dynamic_variant_json.ts)
+* [使用 Time/Time64 的示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/time_time64.ts)
 
 ### Date/Date32 类型注意事项 \{#datedate32-types-caveats\}
 
@@ -900,7 +896,6 @@ await client.insert({
 ```
 
 但是，如果你使用的是 `DateTime` 或 `DateTime64` 列，则可以同时使用字符串和 JS Date 对象。在将 `date_time_input_format` 设置为 `best_effort` 时，可以将 JS Date 对象原样传递给 `insert`。有关更多详情，请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_js_dates.ts)。
-
 
 ### Decimal* 类型注意事项 \{#decimal-types-caveats\}
 
@@ -1037,7 +1032,7 @@ await client.query({
 })
 ```
 
-有关更多详情，请参阅 [https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax](https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax)。
+有关更多详情，请参阅 https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax 。
 
 ### 压缩 \{#compression\}
 
@@ -1270,7 +1265,6 @@ const client = createClient({
 
 请参阅此[示例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/read_only_user.ts)，其中更详细地展示了 `readonly=1` 用户的各项限制。
 
-
 ### 带路径名的代理 \{#proxy-with-a-pathname\}
 
 如果你的 ClickHouse 实例部署在代理之后，并且其 URL 中包含路径名，例如 [http://proxy:8123/clickhouse&#95;server](http://proxy:8123/clickhouse_server)，请将 `clickhouse_server` 设置为 `pathname` 配置选项（可以带或不带前导斜杠）；否则，如果在 `url` 中直接包含该路径，它将被视为 `database` 选项。支持多级路径，例如 `/my_proxy/db`。
@@ -1390,9 +1384,9 @@ const client = createClient({
 
 ## 性能优化提示 \{#tips-for-performance-optimizations\}
 
-- 为了减少应用程序的内存占用，可以在适用的情况下，对大批量插入（例如从文件）和查询操作使用流式处理。对于事件监听器等类似场景，[异步插入](/optimize/asynchronous-inserts) 也是一个不错的选择，它可以最大限度减少，甚至完全避免在客户端进行批处理。异步插入示例可在 [client 仓库](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node) 中找到，文件名前缀为 `async_insert_`。
-- 客户端默认不会启用请求或响应压缩。不过，在对大数据集执行查询或插入时，可以考虑通过 `ClickHouseClientConfigOptions.compression` 启用压缩（可以只对 `request` 或 `response` 启用，也可以两者都启用）。
-- 压缩会带来较大的性能开销。为 `request` 或 `response` 启用压缩会分别对查询或插入的速度产生负面影响，但会减少应用程序传输的网络流量。
+* 为了减少应用程序的内存占用，可以在适用的情况下，对大批量插入 (例如从文件) 和查询操作使用流式处理。对于事件监听器等类似场景，[异步插入](/optimize/asynchronous-inserts) 也是一个不错的选择，它可以最大限度减少，甚至完全避免在客户端进行批处理。异步插入示例可在 [客户端代码仓库](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node) 中找到，文件名前缀为 `async_insert_`。
+* 客户端默认不会启用请求或响应压缩。不过，在对大数据集执行查询或插入时，可以考虑通过 `ClickHouseClientConfigOptions.compression` 启用压缩 (可以只对 `request` 或 `response` 启用，也可以两者都启用) 。
+* 压缩会带来较大的性能开销。为 `request` 或 `response` 启用压缩会分别对查询或插入的速度产生负面影响，但会减少应用程序传输的网络流量。
 
 ## 联系我们 \{#contact-us\}
 

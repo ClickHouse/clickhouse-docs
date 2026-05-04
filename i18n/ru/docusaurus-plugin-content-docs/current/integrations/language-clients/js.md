@@ -223,7 +223,6 @@ const client = createClient({
 
 Репозиторий клиента содержит множество примеров, которые используют переменные окружения, например [создание таблицы в ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts), [использование асинхронных вставок](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert.ts) и многие другие.
 
-
 #### Пул соединений (только Node.js) \{#connection-pool-nodejs-only\}
 
 Чтобы избежать накладных расходов на установку соединения при каждом запросе, клиент создает пул соединений с ClickHouse для их повторного использования, используя механизм Keep-Alive. По умолчанию Keep-Alive включен, а размер пула соединений равен `10`, но вы можете изменить его с помощью параметра конфигурации `max_open_connections` [параметра конфигурации](./js.md#configuration). 
@@ -292,7 +291,7 @@ interface ClickHouseClient {
 :::
 
 
-#### Абстракции набора результатов и строк \{#result-set-and-row-abstractions\}
+#### Абстракции результирующего набора и строк \{#result-set-and-row-abstractions\}
 
 `ResultSet` предоставляет несколько вспомогательных методов для обработки данных в вашем приложении.
 
@@ -340,7 +339,7 @@ interface Row {
 }
 ```
 
-**Пример:** (Node.js/Web) Запрос с результирующим набором данных в формате `JSONEachRow`, который полностью считывает поток и разбирает содержимое в объекты JavaScript.
+**Пример:** (Node.js/Web) Запрос с результирующим результирующим набором данных в формате `JSONEachRow`, который полностью считывает поток и разбирает содержимое в объекты JavaScript.
 [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/array_json_each_row.ts).
 
 ```ts
@@ -375,7 +374,6 @@ await new Promise((resolve, reject) => {
 
 **Пример:** (только Node.js) Потоковая выборка результата запроса в формате `CSV` с использованием классического подхода `on('data')`. Это эквивалентно использованию синтаксиса `for await const`.
 [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
-
 
 ```ts
 const resultSet = await client.query({
@@ -461,7 +459,7 @@ interface ClickHouseClient {
 
 Он может работать как с `Stream.Readable`, так и с обычным `Array<T>`, в зависимости от [формата данных](./js.md#supported-data-formats), указанного для метода `insert`. См. также раздел о [потоковой передаче файлов](./js.md#streaming-files-nodejs-only).
 
-Метод insert предназначен для использования с `await`; однако можно передать входной поток и ожидать завершения операции `insert` позже, только после завершения потока (что также приведёт к разрешению промиса `insert`). Это потенциально может быть полезно для обработчиков событий и подобных сценариев, но обработка ошибок при этом может оказаться нетривиальной из‑за большого количества крайних случаев на стороне клиента. Вместо этого рассмотрите использование [асинхронных вставок](/optimize/asynchronous-inserts), как показано в [этом примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert_without_waiting.ts).
+Метод Insert предполагает использование await; однако можно указать входной поток и выполнить await операции `insert` позже, только когда поток завершится (что также разрешит промис `insert`). Это может быть полезно для обработчиков событий и подобных сценариев, однако обработка ошибок может быть нетривиальной с множеством граничных случаев на стороне клиента. Вместо этого рассмотрите использование [асинхронных вставок](/optimize/asynchronous-inserts), как показано в [этом примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert_without_waiting.ts).
 
 :::tip
 Если у вас есть собственный оператор INSERT, который сложно смоделировать с помощью этого метода, рассмотрите использование [метода command](./js.md#command-method).
@@ -559,7 +557,6 @@ await client.insert({
 
 См. [исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_exclude_columns.ts) для получения дополнительных сведений.
 
-
 **Пример**: Вставка в другую базу данных, а не ту, что указана в экземпляре клиента. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_into_different_db.ts).
 
 ```ts
@@ -621,7 +618,7 @@ interface ClickHouseClient {
 }
 ```
 
-См. также: [Базовые параметры для всех клиентских методов](./js.md#base-parameters-for-all-client-methods).
+См. также: [общий параметр для всех клиентских методов](./js.md#base-parameters-for-all-client-methods).
 
 **Пример:** (Node.js/Web) Создание таблицы в ClickHouse Cloud.
 [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts).
@@ -667,7 +664,6 @@ await client.command({
 :::important
 Отмена запроса с помощью `abort_signal` не гарантирует, что соответствующий оператор не был выполнен сервером.
 :::
-
 
 ### Метод exec \{#exec-method\}
 
@@ -845,46 +841,46 @@ await client.close()
 Соответствующий тип JS актуален для любых форматов `JSON*`, кроме тех, которые представляют всё как строку (например, `JSONStringEachRow`).
 :::
 
-| Type                   | Status          | JS type                                |
-|------------------------|-----------------|----------------------------------------|
-| UInt8/16/32            | ✔️              | number                                 |
-| UInt64/128/256         | ✔️ ❗- см. ниже | string                                 |
-| Int8/16/32             | ✔️              | number                                 |
-| Int64/128/256          | ✔️ ❗- см. ниже | string                                 |
-| Float32/64             | ✔️              | number                                 |
-| Decimal                | ✔️ ❗- см. ниже | number                                 |
-| Boolean                | ✔️              | boolean                                |
-| String                 | ✔️              | string                                 |
-| FixedString            | ✔️              | string                                 |
-| UUID                   | ✔️              | string                                 |
-| Date32/64              | ✔️              | string                                 |
-| DateTime32/64          | ✔️ ❗- см. ниже | string                                 |
-| Enum                   | ✔️              | string                                 |
-| LowCardinality         | ✔️              | string                                 |
-| Array(T)               | ✔️              | T[]                                    |
-| (new) JSON             | ✔️              | object                                 |
-| Variant(T1, T2...)     | ✔️              | T (зависит от варианта)                |
-| Dynamic                | ✔️              | T (зависит от варианта)                |
-| Nested                 | ✔️              | T[]                                    |
-| Tuple(T1, T2, ...)     | ✔️              | [T1, T2, ...]                          |
-| Tuple(n1 T1, n2 T2...) | ✔️              | \{ n1: T1; n2: T2; ...}                |
-| Nullable(T)            | ✔️              | тип JS для T или null                  |
-| IPv4                   | ✔️              | string                                 |
-| IPv6                   | ✔️              | string                                 |
-| Point                  | ✔️              | [ number, number ]                     |
-| Ring                   | ✔️              | Array&lt;Point\>                       |
-| Polygon                | ✔️              | Array&lt;Ring\>                        |
-| MultiPolygon           | ✔️              | Array&lt;Polygon\>                     |
-| Map(K, V)              | ✔️              | Record&lt;K, V\>                       |
-| Time/Time64            | ✔️              | string                                 |
+| Type                   | Status         | JS type                          |
+| ---------------------- | -------------- | -------------------------------- |
+| UInt8/16/32            | ✔️             | number                           |
+| UInt64/128/256         | ✔️ ❗- см. ниже | string                           |
+| Int8/16/32             | ✔️             | number                           |
+| Int64/128/256          | ✔️ ❗- см. ниже | string                           |
+| Float32/64             | ✔️             | number                           |
+| Decimal                | ✔️ ❗- см. ниже | number                           |
+| Boolean                | ✔️             | boolean                          |
+| String                 | ✔️             | string                           |
+| FixedString            | ✔️             | string                           |
+| UUID                   | ✔️             | string                           |
+| Date32/64              | ✔️             | string                           |
+| DateTime32/64          | ✔️ ❗- см. ниже | string                           |
+| Enum                   | ✔️             | string                           |
+| LowCardinality         | ✔️             | string                           |
+| Array(T)               | ✔️             | T[]                              |
+| (new) JSON             | ✔️             | object                           |
+| Variant(T1, T2...)     | ✔️             | T (зависит от варианта)          |
+| Dynamic                | ✔️             | T (зависит от варианта)          |
+| Nested                 | ✔️             | T[]                              |
+| Tuple(T1, T2, ...)     | ✔️             | [T1, T2, ...]                    |
+| Tuple(n1 T1, n2 T2...) | ✔️             | &#123; n1: T1; n2: T2; ...&#125; |
+| Nullable(T)            | ✔️             | тип JS для T или null            |
+| IPv4                   | ✔️             | string                           |
+| IPv6                   | ✔️             | string                           |
+| Point                  | ✔️             | [ number, number ]               |
+| Ring                   | ✔️             | Array&lt;Point&gt;               |
+| Polygon                | ✔️             | Array&lt;Ring&gt;                |
+| MultiPolygon           | ✔️             | Array&lt;Polygon&gt;             |
+| Map(K, V)              | ✔️             | Record&lt;K, V&gt;               |
+| Time/Time64            | ✔️             | string                           |
 
-Полный список поддерживаемых типов данных ClickHouse доступен 
+Полный список поддерживаемых типов данных ClickHouse доступен
 [здесь](/sql-reference/data-types/).
 
-См. также: 
+См. также:
 
-- [Примеры работы с Dynamic/Variant/JSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/dynamic_variant_json.ts)
-- [Примеры работы с Time/Time64](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/time_time64.ts)
+* [Примеры работы с Dynamic/Variant/JSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/dynamic_variant_json.ts)
+* [Примеры работы с Time/Time64](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/time_time64.ts)
 
 ### Особенности типов Date/Date32 \{#datedate32-types-caveats\}
 
@@ -902,7 +898,6 @@ await client.insert({
 ```
 
 Однако, если вы используете столбцы с типом `DateTime` или `DateTime64`, вы можете использовать как строки, так и объекты JS Date. Объекты JS Date можно передавать в `insert` как есть, при значении параметра `date_time_input_format`, установленном в `best_effort`. Подробнее см. в этом [примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_js_dates.ts).
-
 
 ### Особенности типов Decimal* \{#decimal-types-caveats\}
 
@@ -1027,8 +1022,9 @@ client.query({
 * `name` — идентификатор плейсхолдера.
 * `data_type` - [Тип данных](/sql-reference/data-types/) значения параметра приложения.
 
-**Пример:** Запрос с параметрами.\
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/query_with_parameter_binding.ts).
+**Пример:**: Запрос с параметрами.
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/query_with_parameter_binding.ts)
+.
 
 ```ts
 await client.query({
@@ -1041,7 +1037,7 @@ await client.query({
 })
 ```
 
-Дополнительные сведения см. на странице [https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax](https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax).
+Дополнительные сведения см. на странице https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax.
 
 ### Сжатие \{#compression\}
 
@@ -1274,7 +1270,6 @@ const client = createClient({
 
 См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/read_only_user.ts), где подробнее показаны ограничения пользователя с readonly=1.
 
-
 ### Прокси с путем (pathname) \{#proxy-with-a-pathname\}
 
 Если ваш экземпляр ClickHouse находится за прокси и в его URL-адресе есть путь (pathname), как, например, [http://proxy:8123/clickhouse&#95;server](http://proxy:8123/clickhouse_server), укажите `clickhouse_server` в качестве параметра конфигурации `pathname` (с начальным слешем или без него); иначе, если этот путь указан напрямую в `url`, он будет интерпретирован как параметр `database`. Поддерживается несколько сегментов, например `/my_proxy/db`.
@@ -1394,9 +1389,9 @@ const client = createClient({
 
 ## Советы по оптимизации производительности \{#tips-for-performance-optimizations\}
 
-- Чтобы уменьшить потребление памяти приложением, рассмотрите возможность использования потоков для больших вставок (например, из файлов) и выборок, когда это применимо. Для слушателей событий и схожих сценариев использования [асинхронные вставки](/optimize/asynchronous-inserts) могут быть ещё одним хорошим вариантом, позволяя минимизировать или даже полностью избежать батчирования на стороне клиента. Примеры асинхронных вставок доступны в [репозитории клиента](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node) — с префиксом `async_insert_` в имени файла.
-- Клиент по умолчанию не использует сжатие запросов или ответов. Однако при выборке или вставке больших наборов данных вы можете рассмотреть возможность включения сжатия через `ClickHouseClientConfigOptions.compression` (либо только для `request` или `response`, либо для обоих).
-- Сжатие даёт существенные накладные расходы. Включение его для `request` или `response` негативно скажется на скорости выборок или вставок соответственно, но уменьшит объём сетевого трафика, передаваемого приложением.
+* Чтобы уменьшить потребление памяти приложением, рассмотрите возможность использования потоков для больших вставок (например, из файлов) и выборок, когда это применимо. Для слушателей событий и схожих сценариев использования [асинхронные вставки](/optimize/asynchronous-inserts) могут быть ещё одним хорошим вариантом, позволяя минимизировать или даже полностью избежать батчирования на стороне клиента. Примеры асинхронных вставок доступны в [репозитории клиента](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node) — с префиксом `async_insert_` в имени файла.
+* Клиент по умолчанию не использует сжатие запросов или ответов. Однако при выборке или вставке больших наборов данных вы можете рассмотреть возможность включения сжатия через `ClickHouseClientConfigOptions.compression` (либо только для `request` или `response`, либо для обоих).
+* Сжатие даёт существенные накладные расходы. Включение его для `request` или `response` негативно скажется на скорости выборок или вставок соответственно, но уменьшит объём сетевого трафика, передаваемого приложением.
 
 ## Связаться с нами \{#contact-us\}
 
