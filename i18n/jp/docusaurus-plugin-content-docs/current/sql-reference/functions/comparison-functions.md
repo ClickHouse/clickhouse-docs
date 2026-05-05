@@ -516,7 +516,7 @@ SELECT
 
 ## isNotDistinctFrom \{#isNotDistinctFrom\}
 
-導入バージョン: v25.10.0
+導入バージョン: v23.8.0
 
 2 つの値の間で、NULL セーフな「等価」比較を実行します。
 両方の値が等しい場合、両方が NULL の場合も含めて `true` を返します。

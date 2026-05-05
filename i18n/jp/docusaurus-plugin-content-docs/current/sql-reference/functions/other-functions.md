@@ -1646,7 +1646,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-導入バージョン: v25.10.0
+導入バージョン: v25.11.0
 
 ジオメトリオブジェクトの x 座標と y 座標を入れ替えます。この操作では緯度と経度が入れ替わるため、異なる座標系間の変換や座標の順序を修正する際に有用です。
 
@@ -1690,7 +1690,7 @@ SELECT flipCoordinates([(1.0, 2.0), (3.0, 4.0)]);
 [(2.0, 1.0), (4.0, 3.0)]
 ```
 
-**多角形**
+**Polygon**
 
 ```sql title=Query
 SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
@@ -3862,7 +3862,7 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 
 ## obfuscateQuery \{#obfuscateQuery\}
 
-導入バージョン: v26.3.0
+導入バージョン: v26.4.0
 
 識別子をランダムな単語に、リテラルをランダムな値に置き換えながら、クエリの構造を保ったまま SQL クエリを難読化します。
 
@@ -3929,7 +3929,7 @@ A B
 
 ## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
 
-導入バージョン: v26.3.0
+導入バージョン: v26.4.0
 
 指定したシードを使用して、決定論的な結果になるよう SQL クエリを難読化します。
 

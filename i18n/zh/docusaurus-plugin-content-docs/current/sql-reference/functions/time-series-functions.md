@@ -337,7 +337,7 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 
 ## timeSeriesGroupToSamplingKey \{#timeSeriesGroupToSamplingKey\}
 
-引入版本：v26.1.0
+引入版本：v26.4.0
 
 返回一个根据指定标签组的标签派生出的稳定 `UInt64` 采样键。
 
@@ -352,7 +352,7 @@ timeSeriesGroupToSamplingKey(group)
 
 **参数**
 
-* `group` — 一组标签。[`UInt64`](/sql-reference/data-types/int-uint)
+* `group` — 标签组。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **返回值**
 

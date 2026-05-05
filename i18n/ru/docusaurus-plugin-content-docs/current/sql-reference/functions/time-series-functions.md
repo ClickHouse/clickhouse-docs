@@ -339,7 +339,7 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 
 ## timeSeriesGroupToSamplingKey \{#timeSeriesGroupToSamplingKey\}
 
-Добавлено в: v26.1.0
+Добавить в: v26.4.0
 
 Возвращает стабильный ключ сэмплирования `UInt64`, вычисляемый на основе тегов указанной группы.
 

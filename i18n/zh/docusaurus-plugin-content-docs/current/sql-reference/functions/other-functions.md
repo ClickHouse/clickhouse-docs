@@ -1645,7 +1645,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-引入于：v25.10.0
+引入于：v25.11.0
 
 对几何对象的 x 和 y 坐标进行翻转。该操作会交换纬度和经度，这对于在不同坐标系之间转换或纠正坐标顺序非常有用。
 
@@ -1689,7 +1689,7 @@ SELECT flipCoordinates([(1.0, 2.0), (3.0, 4.0)]);
 [(2.0, 1.0), (4.0, 3.0)]
 ```
 
-**多边形**
+**Polygon**
 
 ```sql title=Query
 SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
@@ -3861,7 +3861,7 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 
 ## obfuscateQuery \{#obfuscateQuery\}
 
-引入版本：v26.3.0
+引入版本：v26.4.0
 
 通过将标识符替换为随机词、将字面量替换为随机值，并保留查询结构，来混淆 SQL 查询。
 
@@ -3928,7 +3928,7 @@ A B
 
 ## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
 
-引入版本：v26.3.0
+引入版本：v26.4.0
 
 使用指定的种子对 SQL 查询进行混淆，以获得确定性结果。
 

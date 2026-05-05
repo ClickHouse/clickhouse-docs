@@ -1223,7 +1223,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-Добавлено в версии: v25.9.0
+Добавлено в: v25.10.0
 
 Проверяет, оканчивается ли строка заданным суффиксом без учета регистра.
 
@@ -1256,10 +1256,9 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 └─────────────────────────────────────────┘
 ```
 
-
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-Впервые представлена в: v25.9.0
+Добавлено в: v25.10.0
 
 Возвращает, оканчивается ли строка `s` суффиксом `suffix` без учёта регистра.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -1293,7 +1292,6 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 │                                           1 │
 └─────────────────────────────────────────────┘
 ```
-
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
@@ -2019,7 +2017,7 @@ münchen
 
 ## naturalSortKey \{#naturalSortKey\}
 
-добавлена в версии: v25.11.0
+добавлена в версии: v26.3.0
 
 Функция используется для естественной сортировки.
 
@@ -2033,7 +2031,7 @@ naturalSortKey(s)
 
 **Аргументы**
 
-- `s` — Строка, которую требуется преобразовать в ключ естественной сортировки. [`String`](/sql-reference/data-types/string)
+* `s` — Строка, которую требуется преобразовать в ключ естественной сортировки. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -2911,7 +2909,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-Добавлена в версии: v25.9.0
+Добавлена в версии: v25.10.0
 
 Проверяет, начинается ли строка с заданной подстроки без учета регистра.
 
@@ -2944,10 +2942,9 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 └─────────────────────────────────────────┘
 ```
 
-
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-Появилась в: v25.9.0
+Добавлено в: v25.10.0
 
 Проверяет, начинается ли строка с указанного префикса без учета регистра.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -2981,7 +2978,6 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 │                        1 │
 └──────────────────────────┘
 ```
-
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 

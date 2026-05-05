@@ -1224,7 +1224,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-도입 버전: v25.9.0
+도입 버전: v25.10.0
 
 문자열이 주어진 접미사로 끝나는지 대소문자를 구분하지 않고 확인합니다.
 
@@ -1257,16 +1257,15 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 └─────────────────────────────────────────┘
 ```
 
-
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-도입 버전: v25.9.0
+도입 버전: v25.10.0
 
 문자열 `s`가 대소문자를 구분하지 않고 `suffix`로 끝나는지 여부를 반환합니다.
 문자열이 올바른 UTF-8로 인코딩된 텍스트를 포함한다고 가정합니다.
 이 가정이 위반되더라도 예외는 발생하지 않으며 결과는 정의되지 않습니다.
 
-**문법**
+**구문**
 
 ```sql
 endsWithCaseInsensitiveUTF8(s, suffix)
@@ -1294,7 +1293,6 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 │                                           1 │
 └─────────────────────────────────────────────┘
 ```
-
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
@@ -2040,7 +2038,7 @@ münchen
 
 ## naturalSortKey \{#naturalSortKey\}
 
-도입 버전: v25.11.0
+도입 버전: v26.3.0
 
 이 함수는 자연 정렬에 사용됩니다.
 
@@ -2074,7 +2072,6 @@ SELECT s FROM t ORDER BY naturalSortKey(s)
 | a02 │
 └─────┘
 ```
-
 
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
 
@@ -2931,7 +2928,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-도입 버전: v25.9.0
+도입 버전: v25.10.0
 
 문자열이 대소문자를 구분하지 않고 지정된 문자열로 시작하는지 확인합니다.
 
@@ -2964,10 +2961,9 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 └─────────────────────────────────────────┘
 ```
 
-
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-도입된 버전: v25.9.0
+도입 버전: v25.10.0
 
 문자열이 대소문자를 구분하지 않는 지정된 접두사로 시작하는지 확인합니다.
 문자열이 유효한 UTF-8 인코딩 텍스트를 포함한다고 가정합니다.
@@ -3001,7 +2997,6 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 │                        1 │
 └──────────────────────────┘
 ```
-
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 

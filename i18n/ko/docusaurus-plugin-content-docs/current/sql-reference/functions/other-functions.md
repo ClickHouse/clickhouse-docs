@@ -1646,7 +1646,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-도입 버전: v25.10.0
+도입 버전: v25.11.0
 
 기하 객체의 x, y 좌표를 뒤바꿉니다. 이 연산은 위도와 경도를 서로 바꾸므로, 서로 다른 좌표계 간 변환이나 좌표 순서 교정에 유용합니다.
 
@@ -3862,7 +3862,7 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 
 ## obfuscateQuery \{#obfuscateQuery\}
 
-도입 버전: v26.3.0
+도입 버전: v26.4.0
 
 식별자는 무작위 단어로, 리터럴은 무작위 값으로 바꿔 SQL 쿼리의 구조를 유지하면서 난독화합니다.
 
@@ -3897,7 +3897,7 @@ obfuscateQuery(query[, tag])
 
 **예시**
 
-**사용법**
+**사용 예시**
 
 ```sql title=Query
 SELECT obfuscateQuery('SELECT name, age FROM users WHERE age > 30')
@@ -3929,7 +3929,7 @@ A B
 
 ## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
 
-도입 버전: v26.3.0
+도입 버전: v26.4.0
 
 지정된 시드를 사용해 SQL 쿼리를 난독화하며, 결정론적 결과를 제공합니다.
 
