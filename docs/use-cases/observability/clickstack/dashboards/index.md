@@ -161,7 +161,7 @@ Once a source is selected, the heatmap pre-fills:
 
 Set a chart name, and use `Where` to scope the heatmap to a specific service or set of operations whose performance you want to observe. Adjust the time range to match the period of interest; wider ranges expose distribution shifts and bimodal latency patterns that shorter windows can hide. The example below shows a single service over a 24 hour window, with the fast and slow paths of its span duration clearly separated into two horizontal bands. To customize the heatmap further, click **Display Settings** to open a drawer for the **Scale** (Log or Linear), **Value**, and **Count** expression. The full list of options is documented in [Customize the heatmap](/use-cases/observability/clickstack/event_deltas#customize) on the Event Deltas page; the same drawer is reused.
 
-Click the **play** button to preview the chart, then `Save`.
+Click `Run` to preview the chart, then `Save`.
 
 <Image img={heatmap_tile_editor} alt="Heatmap tile editor with span duration defaults pre-filled, ServiceName payment filter, and Display Settings button" size="lg"/>
 
@@ -170,7 +170,7 @@ The saved tile renders as a heatmap on the dashboard. Hover any cell to see the 
 <Image img={heatmap_tile_rendered} alt="Heatmap dashboard tile showing payment service span duration distribution over 24 hours" size="lg"/>
 
 :::tip Two ClickHouse queries per heatmap
-The heatmap runs as two sequential queries: a small **bounds query** that resolves the value range, then a **bucket query** that counts events per bucket. Both queries are visible in the editor under **Generated SQL** if you want to inspect or copy them.
+The heatmap runs as two sequential queries: a small **bounds query** that resolves the value range, then a **heatmap query** that counts events per bucket. Both queries are visible in the editor under **Generated SQL** if you want to inspect or copy them.
 :::
 
 #### Drill down to Event Deltas {#heatmap-tile-drilldown}
