@@ -11,18 +11,20 @@ keywords: ['clickstack', 'event deltas', 'heatmap', 'attribute distribution', 't
 
 import Image from '@theme/IdealImage';
 import event_deltas_overview from '@site/static/images/clickstack/event-deltas/overview.png';
-import event_deltas_anomaly_box from '@site/static/images/clickstack/event-deltas/anomaly-box.png';
+import event_deltas_before_after from '@site/static/images/clickstack/event-deltas/before-after.png';
 import event_deltas_slow_vs_fast from '@site/static/images/clickstack/event-deltas/slow-vs-fast.png';
 import event_deltas_drill_down from '@site/static/images/clickstack/event-deltas/drill-down.png';
 import settings_drawer from '@site/static/images/clickstack/event-deltas/settings-drawer.png';
 
 Event deltas pair a latency heatmap with automatic attribute analysis so you can see the shape of your trace data and find what makes the slow spans different, without writing queries. There are three ways to use it:
 
-- **Distribution mode (always on)** — when no heatmap selection exists, every attribute's value distribution is shown for the current span population. Useful for spotting dominant or unusually rare values (cardinality outliers).
-- **Comparison mode** — drag a rectangle on the heatmap to compare the spans inside (Selection) against everything outside (Background). Useful for isolating deviations.
-- **Iterative drill-down** — click any bar to filter (or exclude) on that value. The heatmap re-renders against the filtered population, so you can keep narrowing until the cause is obvious.
+- **Distribution mode (always on)**: when no heatmap selection exists, every attribute's value distribution is shown for the current span population. Useful for spotting dominant or unusually rare values (cardinality outliers).
+- **Comparison mode**: drag a rectangle on the heatmap to compare the spans inside (Selection) against everything outside (Background). Useful for isolating deviations.
+- **Iterative drill-down**: click any bar to filter (or exclude) on that value. The heatmap re-renders against the filtered population, so you can keep narrowing until the cause is obvious.
 
-<Image img={event_deltas_overview} alt="Event deltas overview in dark theme: payment-service spans over twelve hours. The latency heatmap is bimodal with a dense fast bulk in orange and yellow at 1 to 10 ms and a sparser slow tail in purple stretching up toward 100 ms, with the slow-tail density visibly growing across the timeline (good early, getting worse later). The bars below are in distribution mode (legend reads All spans) for transaction, payment, risk, and infra attributes" size="lg"/>
+<Image img={event_deltas_overview} alt="Event deltas overview in dark theme on a single payment service over twenty-four hours. The latency heatmap is steady through the morning with a dense bright band around 1 to 10 ms, and visibly drifts upward through the afternoon and evening so that by midnight the bulk of spans sit around 10 to 100 ms with a longer slow tail. Below the heatmap, a grid of distribution-mode bars (legend reads All spans) covers payment-domain attributes including transaction.decline_reason, payment.card_type, payment.card_is_international, transaction.cross_border, risk.3ds_enrolled, security.mfa_verified, infra.circuit_breaker_state, risk.3ds_authenticated, and payment.authorization_code" size="lg"/>
+
+The screenshot above shows a single service over a twenty-four hour window with no selection drawn. The heatmap reveals that latency is not flat: the bright band drifts upward through the day, so spans that took 1 to 10 ms in the morning are taking 10 to 100 ms by evening. That progressive degradation is exactly the kind of pattern Event deltas is built to investigate.
 
 ## Prerequisites {#prerequisites}
 
@@ -39,12 +41,12 @@ Event deltas is a separate analysis mode alongside **Results Table** and **Event
 
 The heatmap plots spans across two dimensions:
 
-- **X axis** — time
-- **Y axis** — a numeric value, defaulting to span duration in milliseconds (logarithmic scale)
+- **X axis**: time
+- **Y axis**: a numeric value, defaulting to span duration in milliseconds (logarithmic scale)
 
 Color intensity indicates event count per bucket; brighter means more spans.
 
-You can read patterns straight off the heatmap: bimodal latency, latency spikes at specific times, or a band of consistently slow spans. To investigate a region, click and drag a rectangle on it. That becomes your **Selection** and switches the analysis below into comparison mode.
+You can read patterns straight off the heatmap: bimodal latency, latency spikes at specific times, a band of consistently slow spans, or a slow band that drifts upward over time (a creeping regression). To investigate a region, click and drag a rectangle on it. That becomes your **Selection** and switches the analysis below into comparison mode.
 
 ## Distribution mode: cardinality outliers {#distribution-mode}
 
@@ -54,34 +56,34 @@ Attributes are ranked by how concentrated their values are: those dominated by a
 
 Use distribution mode when you want to understand the **cardinality shape** of your data:
 
-- **Highs** — which services, endpoints, status codes, or hosts dominate your span population? Often surfaces a single tenant, version, or route doing most of the traffic.
-- **Lows** — values that occur but rarely. A status code that appears in just `0.5%` of spans, or one host that barely shows up, can be the most interesting signal. The long tail is where regressions and bad actors hide.
+- **Highs**: which services, endpoints, status codes, or hosts dominate your span population? Often surfaces a single tenant, version, or route doing most of the traffic.
+- **Lows**: values that occur but rarely. A status code that appears in just `0.5%` of spans, or one host that barely shows up, can be the most interesting signal. The long tail is where regressions and bad actors hide.
 
 Combine with the search bar to narrow the population first (e.g., only error spans, only client spans, only one endpoint), then read the distributions for that subset.
 
 ## Comparison mode: deviations from normal {#comparison-mode}
 
-Click and drag a rectangle on the heatmap to enter comparison mode. The selected spans become the **Selection** (red bars); everything outside becomes the **Background** (green bars). Each attribute chart then shows both populations side by side, sorted so the attributes with the largest divergence appear first. A value present almost exclusively in one side, or absent from one side, is the strongest candidate for what differs.
+Click and drag a rectangle on the heatmap to enter comparison mode. The selected spans become the **Selection** (orange bars); everything outside becomes the **Background** (green bars). Each attribute chart then shows both populations side by side, sorted so the attributes with the largest divergence appear first. A value present almost exclusively in one side, or absent from one side, is the strongest candidate for what differs.
 
-The shape of the rectangle you draw changes the question you're asking. Two common shapes are described below.
+The shape of the rectangle you draw changes the question you're asking. Two common shapes are described below; a third is covered under [Other selection shapes](#other-shapes).
 
-### Use case 1: A specific cluster that feels off {#anomaly-cluster}
+### Use case 1: Before vs after a regression {#before-vs-after}
 
-When you see a localized burst of slow spans on the heatmap (a cluster forming on the right edge of the timeline, the onset of a visible regression, or a tight knot of spans that doesn't fit the rest), draw a small rectangle around just that cluster. The Selection is the cluster, the Background is everything else.
+When the heatmap shows latency drifting upward over the timeline (the slow band thickens, the bright band climbs, or a clear inflection point separates a healthy period from a degraded one), drag a tall rectangle that covers the full latency axis but only the time window after the change. The degraded period becomes the Selection; the healthy period becomes the Background.
 
-<Image img={event_deltas_anomaly_box} alt="Comparison mode on the payment service in dark theme after dragging a small selection over the slow-tail cluster on the right edge of the twelve-hour timeline. The Selection (orange) and Background (green) bars below surface risk.3ds_enrolled (true Selection-biased), security.encryption (ecdhe-p256 strongly Selection-biased), transaction.decline_reason (velocity-exc strongly Selection-biased), risk.cvv_result, payment.card_brand, and security.mfa_verified as the most divergent attributes" size="lg"/>
+<Image img={event_deltas_before_after} alt="Comparison mode on the payment service in dark theme over twenty-four hours after dragging a full-height vertical strip over the right portion of the timeline (roughly 4pm to midnight). The Selection covers the period where latency was visibly creeping upward; the Background covers the earlier healthy period. The bars below surface ScopeName (payment more frequent in the Selection), ScopeVersion (0.57.2 strongly Selection-biased, 0.1.0 Background-biased), payment.tokenization_method (apple-pay-token Selection-biased), and transaction.installments (1 Selection-biased, 12 Background-biased) as the most divergent attributes" size="lg"/>
 
-In the example above, the Selection covers the cluster of slow spans on the right edge of the timeline (the part where duration was visibly creeping up). The bars below surface attributes that diverge between this cluster and the rest of the population: `risk.3ds_enrolled` (`true` Selection-biased), `security.encryption` (`ecdhe-p256` strongly Selection-biased), `transaction.decline_reason` (`velocity-exc` strongly Selection-biased), `security.mfa_verified` (`false` Selection-biased), and `SpanKind` (`Internal` Selection-biased, `Server` Background-biased). Each is a candidate explanation for what makes this specific cluster slower than the rest.
+In the example above, the Selection covers roughly the second half of the day, where the bright band has climbed from a 1 to 10 ms range into a 10 to 100 ms range. The bars below surface attributes that diverge between the degraded period and the earlier healthy one: `ScopeVersion` (`0.57.2` strongly Selection-biased, `0.1.0` Background-biased), `ScopeName` (`payment` more frequent in the Selection), `SpanAttributes.app.payment.tokenization_method` (`apple-pay-token` Selection-biased), and `SpanAttributes.app.transaction.installments` (`1` Selection-biased, `12` Background-biased). Read together, these are the fingerprint of a deployment: a new instrumentation library version came out alongside a code change that altered which payment paths the service is exercising.
 
-This is the right shape to use when something in the heatmap already looks suspicious and you want to investigate it specifically.
+This is the right shape when the heatmap shows a time-localized change in latency and you want to ask "what changed?". The comparison answers that question without you needing to correlate deploy logs by hand.
 
-### Use case 2: Slow versus fast (vertical split) {#slow-vs-fast}
+### Use case 2: Slow versus fast {#slow-vs-fast}
 
-When the heatmap shows two distinct latency bands but no obvious time-localized anomaly, drag a rectangle that spans the entire time range but covers only the upper latency band. The slow tail becomes the Selection; the fast bulk becomes the Background.
+When the heatmap shows two distinct latency bands but no obvious time-localized anomaly, drag a wide rectangle that spans the entire time range but covers only the upper latency band. The slow tail becomes the Selection; the fast bulk becomes the Background.
 
-<Image img={event_deltas_slow_vs_fast} alt="Slow versus fast comparison on the accounting service in dark theme over twelve hours. The heatmap shows two distinct latency bands: a dense slow band in green and yellow at 1 to 100 ms and a sparser fast band in purple at 10 microseconds to 1 ms. The Selection (orange) and Background (green) bars below are nearly identical for every tracked attribute (TraceState, SpanName, SpanKind, ServiceName, k8s pod metadata, container.id, host.name, OS build), indicating no application attribute explains the latency difference" size="lg"/>
+<Image img={event_deltas_slow_vs_fast} alt="Slow versus fast comparison on the accounting service in dark theme over twenty-four hours. The heatmap shows two distinct latency bands: a dense slow band in green and yellow at 1 to 100 ms and a sparser fast band in purple at 10 microseconds to 1 ms. The Selection (orange) and Background (green) bars below are nearly identical for every tracked attribute (TraceState, SpanName, SpanKind, ServiceName, k8s pod metadata, container.id, host.name, OS build), indicating no application attribute explains the latency difference" size="lg"/>
 
-The example above is the accounting service over twelve hours: a dense slow band at 1–100 ms sits clearly separated from a sparser fast band at 10 µs–1 ms. The Selection covers the full time range but only the slow band; the fast band is the Background. What's interesting here is what the comparison _doesn't_ surface: every tracked attribute (`SpanName`, `SpanKind`, `ServiceName`, k8s pod metadata, `container.id`, `host.name`, OS build) shows nearly identical Selection and Background distributions. The slow and fast populations are systemically identical from the application's point of view.
+The example above is a different service whose heatmap separates cleanly into two horizontal bands: a dense slow band at 1 to 100 ms sits above a sparser fast band at 10 µs to 1 ms. The Selection covers the full time range but only the slow band; the fast band is the Background. What's interesting here is what the comparison _doesn't_ surface: every tracked attribute (`SpanName`, `SpanKind`, `ServiceName`, k8s pod metadata, `container.id`, `host.name`, OS build) shows nearly identical Selection and Background distributions. The slow and fast populations are systemically identical from the application's point of view.
 
 When no attribute on the span explains the divergence, the cause is usually below the application: GC pauses, I/O contention, scheduler latency, cold-cache effects, noisy neighbors. The next step is to inspect host- and runtime-level metrics for the same pod over the same time window. Comparison mode reaching this verdict ("nothing on the span differs") is itself a useful result; it tells you to stop looking at span attributes and start looking at infrastructure.
 
@@ -89,21 +91,21 @@ This is the right shape when you want to ask "what makes the slow spans differen
 
 ### Other selection shapes {#other-shapes}
 
-- **Full-height horizontal split (before vs after)** — drag a rectangle covering the full latency axis but only the time window after a suspected change, leaving the earlier period as Background. Compares what changed between the two time windows, independent of latency. Useful when a regression has a clear onset moment.
+- **A small focused rectangle around a localized cluster**: when a tight knot of slow spans doesn't fit the rest of the heatmap (a brief burst on the right edge, a knot in the middle of an otherwise quiet band), draw a small box around just that cluster. The Selection is the cluster, the Background is everything else, and the bars surface what makes that specific cluster different. Use this when you've already spotted the anomaly visually and want to investigate its specific shape.
 
-The full-range splits (vertical and horizontal) are especially useful when nothing in the heatmap jumps out visually; they let the attribute analysis do the work of finding the deviation rather than relying on the eye.
+The choice of shape determines the question. A vertical strip asks _what changed_; a horizontal band asks _what's slower_; a small focused box asks _what's special about this cluster_.
 
 ## Iterative drill-down {#drill-down}
 
 Comparison and distribution modes are most powerful when chained. Click any bar to open a popover with three actions:
 
-- **Filter** — keep only spans with this value
-- **Exclude** — remove spans with this value
-- **Copy** — copy the value to the clipboard
+- **Filter**: keep only spans with this value
+- **Exclude**: remove spans with this value
+- **Copy**: copy the value to the clipboard
 
-<Image img={event_deltas_drill_down} alt="Click popover in dark theme on the webhook.endpoint_count = 3 bar, showing Selection 20.7% versus Background 19.3% and the filter, exclude, and copy action icons" size="lg"/>
+<Image img={event_deltas_drill_down} alt="Click popover in dark theme on the ScopeVersion 0.57.2 bar, showing Selection 53.9% versus Background 49.5% and three action icons (filter, exclude, copy)" size="lg"/>
 
-After applying a filter or exclude, the heatmap selection is cleared, the heatmap re-renders against the new population, and distribution mode resumes against that filtered set. Watch how the heatmap reshapes; a successful filter visibly removes the slow band or collapses the bimodal split. Repeat: spot the next suspicious value, filter, look at the new heatmap, look at the new distributions. A few iterations usually narrow a regression to one or two attributes.
+After applying a filter or exclude, the heatmap selection is cleared, the heatmap re-renders against the new population, and distribution mode resumes against that filtered set. Watch how the heatmap reshapes; a successful filter visibly removes the slow band, collapses the bimodal split, or flattens the upward drift. Repeat: spot the next suspicious value, filter, look at the new heatmap, look at the new distributions. A few iterations usually narrow a regression to one or two attributes.
 
 :::note
 Aggregated **Other (N)** buckets that collapse low-frequency values aren't clickable. To filter for a specific value within that bucket, use the [search bar](/use-cases/observability/clickstack/search) directly.
@@ -136,7 +138,7 @@ Common scenarios where you'd change these defaults:
 A few practices make Event deltas substantially more useful:
 
 - **Filter to a single service first.** Latency varies widely across services and mixing them obscures the signal. Use the search bar to narrow to one `ServiceName` (or one endpoint) before you start, so the heatmap and distributions reflect a comparable population.
-- **Pick selections with clear visual contrast.** Comparison mode works best when the Selection band is visibly distinct from the Background, for example a slow band that begins at a recognizable moment, or a high-latency tail clearly separated from the bulk. Selections that overlap with the rest of the data tend to surface noise rather than the actual deviation.
+- **Pick selections with clear visual contrast.** Comparison mode works best when the Selection band is visibly distinct from the Background, for example a degraded period that begins at a recognizable moment, or a slow tail clearly separated from the bulk. Selections that overlap heavily with the rest of the data tend to surface noise rather than the actual deviation.
 - **Iterate filter, heatmap, filter.** A single selection rarely identifies the cause. Treat the first comparison as a hypothesis, filter on the most divergent value, and re-read the new heatmap and distributions. Two or three iterations usually narrow a regression to one or two attributes.
 - **Use distribution mode without a selection** when no contrast is yet visible (you know there is an issue but the heatmap looks uniform). Apply a hypothesis filter such as only error spans, only client spans, or only one endpoint, and let the attribute distributions point you at the highest-impact values before you draw any rectangle.
 
