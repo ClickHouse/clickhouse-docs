@@ -342,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `StringIntUnion`
 
 ###### Unsupported Protobuf schemas {#unsupported-proto-schemas}
 The following Protobuf schemas are unsupported by the connector:
-- multi-message unions
+- multi-message unions (**before CH version 26.1**)
 ```protobuf
 syntax = "proto3";
 
@@ -365,6 +365,8 @@ message TwoRecords {
   }
 }
 ```
+
+From CH version 26.1 onwards, this schema is supported when `allow_experimental_nullable_tuple_type=1` (see [this documentation page](https://clickhouse.com/docs/operations/settings/settings#allow_experimental_nullable_tuple_type)).
 
 ##### JSON schema support {#json-schema-support}
 
