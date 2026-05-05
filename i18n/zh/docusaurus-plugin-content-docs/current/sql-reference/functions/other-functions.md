@@ -2770,7 +2770,7 @@ SELECT hasThreadFuzzer()
 
 ## highlightQuery \{#highlightQuery\}
 
-引入版本：v26.4.0
+引入版本：v26.5.0
 
 解析 ClickHouse SQL 查询字符串，并返回一个用于语法高亮的高亮范围数组。
 每个范围都是一个命名元组，包含起始位置 (以字节为单位) 、结束位置以及高亮类型。
@@ -5159,7 +5159,7 @@ SELECT toTypeName(123)
 
 ## tokenizeQuery \{#tokenizeQuery\}
 
-引入版本：v26.4.0
+引入版本：v26.5.0
 
 将 ClickHouse SQL 查询字符串标记化，并返回一个标记数组。
 每个标记都是一个命名元组，包含起始位置 (以字节为单位) 、结束位置以及标记类型。

@@ -2771,7 +2771,7 @@ SELECT hasThreadFuzzer()
 
 ## highlightQuery \{#highlightQuery\}
 
-導入バージョン: v26.4.0
+導入バージョン: v26.5.0
 
 ClickHouse の SQL クエリ文字列を解析し、構文ハイライト用のハイライト範囲の配列を返します。
 各範囲は、開始位置 (バイト単位) 、終了位置、ハイライト種別を持つ名前付きタプルです。
@@ -5137,7 +5137,7 @@ SELECT toTypeName(123)
 
 ## tokenizeQuery \{#tokenizeQuery\}
 
-導入バージョン: v26.4.0
+導入バージョン: v26.5.0
 
 ClickHouse SQLクエリ文字列をトークン化し、トークンの配列を返します。
 各トークンは、開始位置 (バイト単位) 、終了位置、およびトークンの種類を含む名前付きタプルです。

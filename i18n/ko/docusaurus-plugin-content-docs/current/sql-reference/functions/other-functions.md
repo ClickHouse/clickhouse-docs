@@ -2771,7 +2771,7 @@ SELECT hasThreadFuzzer()
 
 ## highlightQuery \{#highlightQuery\}
 
-도입 버전: v26.4.0
+도입 버전: v26.5.0
 
 ClickHouse SQL 쿼리 문자열을 파싱하여 구문 강조에 사용할 강조 범위 배열을 반환합니다.
 각 범위는 시작 포지션(바이트 단위), 끝 포지션, 강조 타입으로 구성된 named tuple입니다.
@@ -5135,7 +5135,7 @@ SELECT toTypeName(123)
 
 ## tokenizeQuery \{#tokenizeQuery\}
 
-도입 버전: v26.4.0
+도입 버전: v26.5.0
 
 ClickHouse SQL 쿼리 문자열을 토큰화하고 토큰 배열을 반환합니다.
 각 토큰은 시작 포지션(바이트 단위), 끝 포지션, 토큰 유형으로 구성된 named tuple입니다.
