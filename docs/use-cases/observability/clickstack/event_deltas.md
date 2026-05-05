@@ -107,6 +107,10 @@ The gear icon in the top-right of the heatmap opens the **Heatmap Settings** dra
 
 Click **Apply** to update the heatmap; the attribute analysis below follows.
 
+:::tip Heatmap on dashboards
+The same heatmap is also available as a [dashboard tile](/use-cases/observability/clickstack/dashboards#create-a-tile-heatmap), which is useful when you want to monitor the distribution shape over time outside the Event Deltas drill-down flow.
+:::
+
 ## Troubleshooting {#troubleshooting}
 
 ### Event Deltas tab isn't visible {#tab-not-visible}
