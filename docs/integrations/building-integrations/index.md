@@ -10,9 +10,22 @@ doc_type: 'guide'
 
 # Integration Development Best Practices
 
-This guide is for developers building integrations on top of ClickHouse — BI tool connectors, ETL/ELT pipelines, data catalog adapters, IDE plugins, or any software that connects to ClickHouse on behalf of end users. It covers connectivity choices, schema discovery, data type mapping, query patterns, observability, and ClickHouse Cloud specifics.
+This section is for developers building integrations on top of ClickHouse — BI tool connectors, ETL/ELT pipelines, data catalog adapters, IDE plugins, or any software that connects to ClickHouse on behalf of end users.
 
 If you are a developer writing an application that happens to use ClickHouse directly, the [language client documentation](/integrations/java) is a better starting point.
+
+**Start here based on what you are building:**
+
+| I am building... | Start with |
+|---|---|
+| A data pipeline or ETL connector that writes to ClickHouse | [Ingestion patterns](/integrations/building-integrations/ingestion) |
+| A BI tool, query builder, or data catalog that reads from ClickHouse | [Consumption patterns](/integrations/building-integrations/consumption) |
+| A Java/JDBC connector | [JDBC connector guide](/integrations/building-integrations/jdbc) |
+| A Python integration | [Python connector guide](/integrations/building-integrations/python) |
+| A Go integration | [Go connector guide](/integrations/building-integrations/go) |
+| A JavaScript/TypeScript integration | [JavaScript connector guide](/integrations/building-integrations/javascript) |
+
+The rest of this page covers protocol selection, authentication, and a full gotcha reference and checklist that apply regardless of language.
 
 ## Choosing a connectivity protocol {#connectivity}
 
