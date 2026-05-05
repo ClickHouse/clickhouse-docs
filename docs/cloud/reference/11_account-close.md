@@ -29,10 +29,24 @@ deleting their information.
 ## Preparing for closure {#preparing-for-closure}
 
 Before requesting account closure, please take the following steps to prepare the account.
-1. Export any data from your service that you need to keep.
-2. Stop and delete your services. This will keep additional charges from accruing on your account.
-3. Remove all users except the admin that will request closure. This will help you ensure no new services are created while the process completes.
-4. Review the 'Usage' and 'Billing' tabs in the control panel to verify all charges have been paid. We're not able to close accounts with unpaid balances.
+
+<VerticalStepper headerLevel="h3">
+
+### 1. Export any data you need to keep. {#export-data}
+> Export service content<br/>
+> Export console logs<br/>
+> Export database logs<br/>
+
+### 2. Stop and delete your services. {#stop-and-delete-services}
+> This will stop additional charges from accruing on your account
+
+### 3. Remove all users except the admin that will request closure. {#remove-users}
+> This prevents unexpected activity on the account that could prevent closure
+
+### 4. Review the 'Usage' and 'Billing' tabs to verify all charges have been paid. {#ensure-charges-are-paid}
+> We are not able to close accounts with unpaid balances.
+
+</VerticalStepper>
 
 ## Request an account closure {#request-account-closure}
 
