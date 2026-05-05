@@ -24,7 +24,7 @@ Event deltas pair a latency heatmap with automatic attribute analysis so you can
 
 <Image img={event_deltas_overview} alt="Event deltas overview in dark theme on a single payment service over twenty-four hours. The latency heatmap is steady through the morning with a dense bright band around 1 to 10 ms, and visibly drifts upward through the afternoon and evening so that by midnight the bulk of spans sit around 10 to 100 ms with a longer slow tail. Below the heatmap, a grid of distribution-mode bars (legend reads All spans) covers payment-domain attributes including transaction.decline_reason, payment.card_type, payment.card_is_international, transaction.cross_border, risk.3ds_enrolled, security.mfa_verified, infra.circuit_breaker_state, risk.3ds_authenticated, and payment.authorization_code" size="lg"/>
 
-The screenshot above shows a single service over a twenty-four hour window with no selection drawn. The heatmap reveals that latency is not flat: the bright band drifts upward through the day, so spans that took 1 to 10 ms in the morning are taking 10 to 100 ms by evening. That progressive degradation is exactly the kind of pattern Event deltas is built to investigate.
+The screenshot above shows a single service over a twenty-four hour window with no selection drawn. The heatmap reveals that latency isn't flat: the bright band drifts upward through the day, so spans that took 1 to 10 ms in the morning are taking 10 to 100 ms by evening. That progressive degradation is exactly the kind of pattern Event deltas is built to investigate.
 
 ## Prerequisites {#prerequisites}
 
@@ -75,7 +75,7 @@ When the heatmap shows latency drifting upward over the timeline (the slow band 
 
 In the example above, the Selection covers roughly the second half of the day, where the bright band has climbed from a 1 to 10 ms range into a 10 to 100 ms range. The bars below surface attributes that diverge between the degraded period and the earlier healthy one: `ScopeVersion` (`0.57.2` strongly Selection-biased, `0.1.0` Background-biased), `ScopeName` (`payment` more frequent in the Selection), `SpanAttributes.app.payment.tokenization_method` (`apple-pay-token` Selection-biased), and `SpanAttributes.app.transaction.installments` (`1` Selection-biased, `12` Background-biased). Read together, these are the fingerprint of a deployment: a new instrumentation library version came out alongside a code change that altered which payment paths the service is exercising.
 
-This is the right shape when the heatmap shows a time-localized change in latency and you want to ask "what changed?". The comparison answers that question without you needing to correlate deploy logs by hand.
+This is the right shape when the heatmap shows a time-localized change in latency and you want to ask "what changed?" The comparison answers that question without you needing to correlate deploy logs by hand.
 
 ### Use case 2: Slow versus fast {#slow-vs-fast}
 
