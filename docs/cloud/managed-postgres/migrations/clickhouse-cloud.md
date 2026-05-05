@@ -37,7 +37,7 @@ ClickHouse Cloud includes a built-in import wizard that migrates your external P
 
 ## Considerations before migrating {#considerations}
 
-- **DDL propagation**: continuous replication (CDC) captures DML operations and `ADD COLUMN`. Other DDL changes such as `DROP COLUMN` and `ALTER COLUMN` are not propagated and must be applied manually on the target.
+- **DDL propagation**: continuous replication (CDC) captures DML operations and `ADD COLUMN`. Other DDL changes such as `DROP COLUMN` and `ALTER COLUMN` aren't propagated and must be applied manually on the target.
 - **Foreign key constraints**: to prevent ingestion from being blocked by foreign key checks, you'll temporarily set `session_replication_role = replica` on the target role. This is covered in step 3 below.
 
 ## Step 1: Connect to your source database {#step-1-connect}
@@ -56,7 +56,7 @@ Click **Start import**.
 
 Fill in the connection details for your source PostgreSQL database: host, port, username, password, and database name. Enable **TLS** if your source requires it.
 
-If you require a private connection to your source database, you can opt for **SSH tunneling** and provide the necessary SSH details. This allows the migration to securely connect to databases that are not publicly accessible.
+If you require a private connection to your source database, you can opt for **SSH tunneling** and provide the necessary SSH details. This allows the migration to securely connect to databases that aren't publicly accessible.
 
 Choose an ingestion method:
 
@@ -128,7 +128,7 @@ Expand **Advanced replication settings** to tune throughput:
 |---|---|---|
 | Sync interval (seconds) | 10 | How frequently the replication slot is polled |
 | Parallel threads for initial load | 4 | Number of threads for the bulk copy phase |
-| Pull batch size | 100000 | Rows fetched per replication batch |
+| Pull batch size | 100,000 | Rows fetched per replication batch |
 | Snapshot number of rows per partition | 100000 | Partition size for large table snapshots |
 | Snapshot number of tables in parallel | 1 | Tables snapshotted concurrently |
 
@@ -215,7 +215,7 @@ END $$;
 
 **Cut over application traffic.** Point reads and writes to your Managed Postgres service and monitor for errors, constraint violations, and replication health.
 
-**Clean up.** Once you're satisfied, delete the migration from **Data sources**. If you used CDC, drop the replication slot from the source to free resources:
+**Clean up.**  Once you've cut over and confirmed the new service is healthy, delete the migration from **Data sources**. If you used CDC, drop the replication slot from the source to free resources:
 
 ```sql
 SELECT pg_drop_replication_slot('<slot_name>');
