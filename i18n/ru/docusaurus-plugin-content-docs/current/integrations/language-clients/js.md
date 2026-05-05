@@ -221,7 +221,7 @@ const client = createClient({
 })
 ```
 
-Репозиторий клиента содержит множество примеров, которые используют переменные окружения, например [создание таблицы в ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts), [использование асинхронных вставок](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert.ts) и многие другие.
+Репозиторий клиента содержит множество примеров, которые используют переменные окружения, например [создание таблицы в ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_cloud.ts), [использование асинхронных вставок](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/async_insert.ts) и многие другие.
 
 
 #### Пул соединений (только Node.js) \{#connection-pool-nodejs-only\}
@@ -235,7 +235,7 @@ const client = createClient({
 ### Идентификатор запроса \{#query-id\}
 
 Каждый метод, который отправляет запрос или оператор (`command`, `exec`, `insert`, `select`), возвращает `query_id` в результате выполнения. Этот уникальный идентификатор назначается клиентом для каждого запроса и может быть полезен для выборки данных из `system.query_log`,
-если он включён в [конфигурации сервера](/operations/server-configuration-parameters/settings), или для отмены долгих запросов (см. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/cancel_query.ts)). При необходимости `query_id` может быть переопределён пользователем в параметрах методов `command`/`query`/`exec`/`insert`.
+если он включён в [конфигурации сервера](/operations/server-configuration-parameters/settings), или для отмены долгих запросов (см. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/troubleshooting/cancel_query.ts)). При необходимости `query_id` может быть переопределён пользователем в параметрах методов `command`/`query`/`exec`/`insert`.
 
 :::tip
 Если вы переопределяете параметр `query_id`, необходимо обеспечить его уникальность для каждого вызова. Хорошим вариантом будет случайный UUID.
@@ -341,7 +341,7 @@ interface Row {
 ```
 
 **Пример:** (Node.js/Web) Запрос с результирующим набором данных в формате `JSONEachRow`, который полностью считывает поток и разбирает содержимое в объекты JavaScript.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/array_json_each_row.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/array_json_each_row.ts).
 
 ```ts
 const resultSet = await client.query({
@@ -351,7 +351,7 @@ const resultSet = await client.query({
 const dataset = await resultSet.json() // or `row.text` to avoid parsing JSON
 ```
 
-**Пример:** (только для Node.js) потоковое чтение результата запроса в формате `JSONEachRow` с использованием классического подхода `on('data')`. Этот подход взаимозаменяем с синтаксисом `for await const`. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts).
+**Пример:** (только для Node.js) потоковое чтение результата запроса в формате `JSONEachRow` с использованием классического подхода `on('data')`. Этот подход взаимозаменяем с синтаксисом `for await const`. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_json_each_row.ts).
 
 ```ts
 const rows = await client.query({
@@ -374,7 +374,7 @@ await new Promise((resolve, reject) => {
 ```
 
 **Пример:** (только Node.js) Потоковая выборка результата запроса в формате `CSV` с использованием классического подхода `on('data')`. Это эквивалентно использованию синтаксиса `for await const`.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_text_line_by_line.ts)
 
 
 ```ts
@@ -398,7 +398,7 @@ await new Promise((resolve, reject) => {
 ```
 
 **Пример:** (только Node.js) Потоковая выборка результатов запроса как объекты JS в формате `JSONEachRow`, которые обрабатываются с использованием синтаксиса `for await const`. Это взаимозаменяемо с классическим подходом `on('data')`.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row_for_await.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_json_each_row_for_await.ts).
 
 ```ts
 const resultSet = await client.query({
@@ -461,12 +461,12 @@ interface ClickHouseClient {
 
 Он может работать как с `Stream.Readable`, так и с обычным `Array<T>`, в зависимости от [формата данных](./js.md#supported-data-formats), указанного для метода `insert`. См. также раздел о [потоковой передаче файлов](./js.md#streaming-files-nodejs-only).
 
-Метод insert предназначен для использования с `await`; однако можно передать входной поток и ожидать завершения операции `insert` позже, только после завершения потока (что также приведёт к разрешению промиса `insert`). Это потенциально может быть полезно для обработчиков событий и подобных сценариев, но обработка ошибок при этом может оказаться нетривиальной из‑за большого количества крайних случаев на стороне клиента. Вместо этого рассмотрите использование [асинхронных вставок](/optimize/asynchronous-inserts), как показано в [этом примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert_without_waiting.ts).
+Метод insert предназначен для использования с `await`; однако можно передать входной поток и ожидать завершения операции `insert` позже, только после завершения потока (что также приведёт к разрешению промиса `insert`). Это потенциально может быть полезно для обработчиков событий и подобных сценариев, но обработка ошибок при этом может оказаться нетривиальной из‑за большого количества крайних случаев на стороне клиента. Вместо этого рассмотрите использование [асинхронных вставок](/optimize/asynchronous-inserts), как показано в [этом примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/async_insert_without_waiting.ts).
 
 :::tip
 Если у вас есть собственный оператор INSERT, который сложно смоделировать с помощью этого метода, рассмотрите использование [метода command](./js.md#command-method).
 
-Вы можете посмотреть, как он используется, в примерах [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_values_and_functions.ts) или [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_from_select.ts).
+Вы можете посмотреть, как он используется, в примерах [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_values_and_functions.ts) или [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_from_select.ts).
 :::
 
 ```ts
@@ -493,7 +493,7 @@ interface InsertParams<T> extends BaseQueryParams {
 :::
 
 **Пример:** (Node.js/Web) Вставка массива значений.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/array_json_each_row.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/array_json_each_row.ts).
 
 ```ts
 await client.insert({
@@ -508,7 +508,7 @@ await client.insert({
 ```
 
 **Пример:** (только Node.js) Вставка данных из CSV‑файла потоком.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts). См. также: [потоковая передача файлов](./js.md#streaming-files-nodejs-only).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_csv.ts). См. также: [потоковая передача файлов](./js.md#streaming-files-nodejs-only).
 
 ```ts
 await client.insert({
@@ -557,10 +557,10 @@ await client.insert({
 })
 ```
 
-См. [исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_exclude_columns.ts) для получения дополнительных сведений.
+См. [исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_exclude_columns.ts) для получения дополнительных сведений.
 
 
-**Пример**: Вставка в другую базу данных, а не ту, что указана в экземпляре клиента. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_into_different_db.ts).
+**Пример**: Вставка в другую базу данных, а не ту, что указана в экземпляре клиента. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_into_different_db.ts).
 
 ```ts
 await client.insert({
@@ -624,7 +624,7 @@ interface ClickHouseClient {
 См. также: [Базовые параметры для всех клиентских методов](./js.md#base-parameters-for-all-client-methods).
 
 **Пример:** (Node.js/Web) Создание таблицы в ClickHouse Cloud.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_cloud.ts).
 
 ```ts
 await client.command({
@@ -643,7 +643,7 @@ await client.command({
 ```
 
 **Пример:** (Node.js/Web) создание таблицы в self-hosted экземпляре ClickHouse.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_single_node.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_single_node.ts).
 
 ```ts
 await client.command({
@@ -780,10 +780,10 @@ await client.close()
 
 В клиентском репозитории есть несколько примеров потоковой передачи файлов с популярными форматами данных (NDJSON, CSV, Parquet).
 
-- [Потоковая передача из файла NDJSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_ndjson.ts)
-- [Потоковая передача из файла CSV](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts)
-- [Потоковая передача из файла Parquet](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_parquet.ts)
-- [Потоковая передача в файл Parquet](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts)
+- [Потоковая передача из файла NDJSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_ndjson.ts)
+- [Потоковая передача из файла CSV](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_csv.ts)
+- [Потоковая передача из файла Parquet](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_parquet.ts)
+- [Потоковая передача в файл Parquet](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_parquet_as_file.ts)
 
 Потоковая передача других форматов в файл должна быть аналогична работе с Parquet; единственное отличие будет в формате, используемом при вызове `query` (`JSONEachRow`, `CSV` и т. д.) и имени выходного файла.
 
@@ -832,9 +832,9 @@ await client.close()
 | CustomSeparatedWithNamesAndTypes           | ❌             | ❌              | ✔️                    | ❌             | ✔️             |
 | Parquet                                    | ❌             | ❌              | ✔️                    | ❌             | ✔️❗- см. ниже  |
 
-Для Parquet основным сценарием использования запросов SELECT, скорее всего, будет запись результирующего потока в файл. См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts) в репозитории клиента.
+Для Parquet основным сценарием использования запросов SELECT, скорее всего, будет запись результирующего потока в файл. См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_parquet_as_file.ts) в репозитории клиента.
 
-`JSONEachRowWithProgress` — это формат только для вывода данных, который поддерживает отчёт о прогрессе в потоке. См. [этот пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_json_each_row_with_progress.ts) для получения дополнительной информации.
+`JSONEachRowWithProgress` — это формат только для вывода данных, который поддерживает отчёт о прогрессе в потоке. См. [этот пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_json_each_row_with_progress.ts) для получения дополнительной информации.
 
 Полный список входных и выходных форматов ClickHouse доступен
 [здесь](/interfaces/formats).
@@ -883,8 +883,8 @@ await client.close()
 
 См. также: 
 
-- [Примеры работы с Dynamic/Variant/JSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/dynamic_variant_json.ts)
-- [Примеры работы с Time/Time64](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/time_time64.ts)
+- [Примеры работы с Dynamic/Variant/JSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/dynamic_variant_json.ts)
+- [Примеры работы с Time/Time64](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/time_time64.ts)
 
 ### Особенности типов Date/Date32 \{#datedate32-types-caveats\}
 
@@ -901,7 +901,7 @@ await client.insert({
 })
 ```
 
-Однако, если вы используете столбцы с типом `DateTime` или `DateTime64`, вы можете использовать как строки, так и объекты JS Date. Объекты JS Date можно передавать в `insert` как есть, при значении параметра `date_time_input_format`, установленном в `best_effort`. Подробнее см. в этом [примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_js_dates.ts).
+Однако, если вы используете столбцы с типом `DateTime` или `DateTime64`, вы можете использовать как строки, так и объекты JS Date. Объекты JS Date можно передавать в `insert` как есть, при значении параметра `date_time_input_format`, установленном в `best_effort`. Подробнее см. в этом [примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_js_dates.ts).
 
 
 ### Особенности типов Decimal* \{#decimal-types-caveats\}
@@ -952,7 +952,7 @@ await client.query({
 })
 ```
 
-См. [этот пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_decimals.ts) для получения дополнительных сведений.
+См. [этот пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_decimals.ts) для получения дополнительных сведений.
 
 ### Целочисленные типы: Int64, Int128, Int256, UInt64, UInt128, UInt256 \{#integral-types-int64-int128-int256-uint64-uint128-uint256\}
 
@@ -1028,7 +1028,7 @@ client.query({
 * `data_type` - [Тип данных](/sql-reference/data-types/) значения параметра приложения.
 
 **Пример:** Запрос с параметрами.\
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/query_with_parameter_binding.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/query_with_parameter_binding.ts).
 
 ```ts
 await client.query({
@@ -1154,7 +1154,7 @@ const client = createClient({
 })
 ```
 
-Полные примеры конфигурации TLS для режимов [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) и [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) см. в репозитории.
+Полные примеры конфигурации TLS для режимов [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/basic_tls.ts) и [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/mutual_tls.ts) см. в репозитории.
 
 ### Конфигурация Keep-Alive (только для Node.js) \{#keep-alive-configuration-nodejs-only\}
 
@@ -1272,7 +1272,7 @@ const client = createClient({
 })
 ```
 
-См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/read_only_user.ts), где подробнее показаны ограничения пользователя с readonly=1.
+См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/read_only_user.ts), где подробнее показаны ограничения пользователя с readonly=1.
 
 
 ### Прокси с путем (pathname) \{#proxy-with-a-pathname\}

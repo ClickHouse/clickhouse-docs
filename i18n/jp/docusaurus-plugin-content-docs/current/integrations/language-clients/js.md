@@ -220,7 +220,7 @@ const client = createClient({
 })
 ```
 
-クライアントリポジトリには、[ClickHouse Cloud にテーブルを作成する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts)、[非同期インサートを使用する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert.ts) など、環境変数を使用するサンプルが複数含まれており、そのほかにも多数の例があります。
+クライアントリポジトリには、[ClickHouse Cloud にテーブルを作成する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_cloud.ts)、[非同期インサートを使用する](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/async_insert.ts) など、環境変数を使用するサンプルが複数含まれており、そのほかにも多数の例があります。
 
 
 #### 接続プール（Node.js のみ） \{#connection-pool-nodejs-only\}
@@ -233,7 +233,7 @@ const client = createClient({
 
 ### クエリ ID \{#query-id\}
 
-クエリまたはステートメント（`command`、`exec`、`insert`、`select`）を送信するすべてのメソッドは、結果内に `query_id` を含みます。この一意の識別子はクエリごとにクライアントによって割り当てられ、[サーバー設定](/operations/server-configuration-parameters/settings) で有効化されている場合には `system.query_log` からデータを取得する際や、長時間実行中のクエリをキャンセルする際などに役立ちます（[例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/cancel_query.ts) を参照してください）。必要に応じて、`query_id` は `command` / `query` / `exec` / `insert` メソッドのパラメータでユーザーが上書きできます。
+クエリまたはステートメント（`command`、`exec`、`insert`、`select`）を送信するすべてのメソッドは、結果内に `query_id` を含みます。この一意の識別子はクエリごとにクライアントによって割り当てられ、[サーバー設定](/operations/server-configuration-parameters/settings) で有効化されている場合には `system.query_log` からデータを取得する際や、長時間実行中のクエリをキャンセルする際などに役立ちます（[例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/troubleshooting/cancel_query.ts) を参照してください）。必要に応じて、`query_id` は `command` / `query` / `exec` / `insert` メソッドのパラメータでユーザーが上書きできます。
 
 :::tip
 `query_id` パラメータを上書きする場合は、呼び出しごとに一意になるようにする必要があります。ランダムな UUID を使用するのが推奨されます。
@@ -339,7 +339,7 @@ interface Row {
 ```
 
 **例:** (Node.js/Web) `JSONEachRow` 形式の結果データセットを返すクエリで、ストリーム全体を読み取り、その内容を JS オブジェクトとしてパースします。
-[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/array_json_each_row.ts)。
+[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/array_json_each_row.ts)。
 
 ```ts
 const resultSet = await client.query({
@@ -349,7 +349,7 @@ const resultSet = await client.query({
 const dataset = await resultSet.json() // or `row.text` to avoid parsing JSON
 ```
 
-**例:** (Node.js のみ) 従来の `on('data')` アプローチを使って、`JSONEachRow` フォーマットのクエリ結果をストリーミングします。これは `for await const` 構文と置き換えて使用できます。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts)。
+**例:** (Node.js のみ) 従来の `on('data')` アプローチを使って、`JSONEachRow` フォーマットのクエリ結果をストリーミングします。これは `for await const` 構文と置き換えて使用できます。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_json_each_row.ts)。
 
 ```ts
 const rows = await client.query({
@@ -372,7 +372,7 @@ await new Promise((resolve, reject) => {
 ```
 
 **例:** (`Node.js` のみ) 従来の `on('data')` アプローチを使用して、クエリ結果を `CSV` 形式でストリーミングします。これは `for await const` 構文と置き換えて使用できます。
-[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
+[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_text_line_by_line.ts)
 
 
 ```ts
@@ -396,7 +396,7 @@ await new Promise((resolve, reject) => {
 ```
 
 **例:** （Node.js のみ）クエリ結果を `JSONEachRow` 形式の JS オブジェクトとしてストリーミングし、`for await const` 構文で処理します。これは従来の `on('data')` アプローチと置き換えて使用できます。
-[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row_for_await.ts)。
+[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_json_each_row_for_await.ts)。
 
 ```ts
 const resultSet = await client.query({
@@ -459,12 +459,12 @@ insert 文がサーバーに送信された場合、`executed` フラグは `tru
 
 `insert` メソッドに指定された [データ形式](./js.md#supported-data-formats) に応じて、`Stream.Readable` と通常の `Array<T>` のいずれにも対応します。あわせて、[ファイルストリーミング](./js.md#streaming-files-nodejs-only) に関するセクションも参照してください。
 
-insert メソッドは `await` されることを想定していますが、入力ストリームを先に指定しておき、ストリームの完了時点になって初めて `insert` 処理を待機することも可能です（そのタイミングで `insert` の Promise も resolve されます）。これはイベントリスナーなどのシナリオで有用な場合がありますが、クライアント側で多数のエッジケースを考慮したエラー処理が必要となり、単純ではない可能性があります。代わりに、[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/async_insert_without_waiting.ts) に示すように [非同期 insert](/optimize/asynchronous-inserts) の利用を検討してください。
+insert メソッドは `await` されることを想定していますが、入力ストリームを先に指定しておき、ストリームの完了時点になって初めて `insert` 処理を待機することも可能です（そのタイミングで `insert` の Promise も resolve されます）。これはイベントリスナーなどのシナリオで有用な場合がありますが、クライアント側で多数のエッジケースを考慮したエラー処理が必要となり、単純ではない可能性があります。代わりに、[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/async_insert_without_waiting.ts) に示すように [非同期 insert](/optimize/asynchronous-inserts) の利用を検討してください。
 
 :::tip
 このメソッドでは表現しづらいカスタム INSERT ステートメントがある場合は、[command メソッド](./js.md#command-method) の利用を検討してください。
 
-[INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_values_and_functions.ts) や [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_from_select.ts) の例で、その使用方法を確認できます。
+[INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_values_and_functions.ts) や [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_from_select.ts) の例で、その使用方法を確認できます。
 :::
 
 ```ts
@@ -491,7 +491,7 @@ interface InsertParams<T> extends BaseQueryParams {
 :::
 
 **例:** (Node.js/Web) 配列の値を挿入します。
-[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/array_json_each_row.ts)。
+[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/array_json_each_row.ts)。
 
 ```ts
 await client.insert({
@@ -506,7 +506,7 @@ await client.insert({
 ```
 
 **例：**（Node.js のみ）CSV ファイルからストリームとして挿入します。
-[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts)。関連項目：[ファイルストリーミング](./js.md#streaming-files-nodejs-only)。
+[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_csv.ts)。関連項目：[ファイルストリーミング](./js.md#streaming-files-nodejs-only)。
 
 ```ts
 await client.insert({
@@ -555,10 +555,10 @@ await client.insert({
 })
 ```
 
-詳細については[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_exclude_columns.ts)を参照してください。
+詳細については[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_exclude_columns.ts)を参照してください。
 
 
-**例**: クライアントインスタンスで指定されたものとは異なるデータベースに `INSERT` する。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_into_different_db.ts)。
+**例**: クライアントインスタンスで指定されたものとは異なるデータベースに `INSERT` する。[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_into_different_db.ts)。
 
 ```ts
 await client.insert({
@@ -622,7 +622,7 @@ interface ClickHouseClient {
 参照: [すべてのクライアントメソッドに共通の基本パラメータ](./js.md#base-parameters-for-all-client-methods)。
 
 **例:** (Node.js/Web) ClickHouse Cloud にテーブルを作成する例。
-[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_cloud.ts)。
+[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_cloud.ts)。
 
 ```ts
 await client.command({
@@ -641,7 +641,7 @@ await client.command({
 ```
 
 **例:** (Node.js/Web) セルフホストの ClickHouse インスタンスでテーブルを作成します。
-[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/create_table_single_node.ts)。
+[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_single_node.ts)。
 
 ```ts
 await client.command({
@@ -778,10 +778,10 @@ await client.close()
 
 クライアントのリポジトリには、一般的なデータ形式（NDJSON、CSV、Parquet）を用いたファイルストリーミングのサンプルコードがいくつか用意されています。
 
-- [NDJSON ファイルからのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_ndjson.ts)
-- [CSV ファイルからのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts)
-- [Parquet ファイルからのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_parquet.ts)
-- [Parquet ファイルへのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts)
+- [NDJSON ファイルからのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_ndjson.ts)
+- [CSV ファイルからのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_csv.ts)
+- [Parquet ファイルからのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_parquet.ts)
+- [Parquet ファイルへのストリーミング](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_parquet_as_file.ts)
 
 その他の形式をファイルにストリーミングする場合も、Parquet の場合とほぼ同様です。
 `query` 呼び出しで使用するフォーマット（`JSONEachRow`、`CSV` など）と出力ファイル名だけが異なります。
@@ -831,9 +831,9 @@ await client.close()
 | CustomSeparatedWithNamesAndTypes           | ❌             | ❌              | ✔️                    | ❌             | ✔️             |
 | Parquet                                    | ❌             | ❌              | ✔️                    | ❌             | ✔️❗- see below |
 
-Parquet の場合、`SELECT` の主なユースケースは、結果ストリームを書き出してファイルに保存することです。クライアントリポジトリ内の[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts)を参照してください。
+Parquet の場合、`SELECT` の主なユースケースは、結果ストリームを書き出してファイルに保存することです。クライアントリポジトリ内の[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_parquet_as_file.ts)を参照してください。
 
-`JSONEachRowWithProgress` は、ストリーム内での進捗報告をサポートする出力専用フォーマットです。詳細については[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_json_each_row_with_progress.ts)を参照してください。
+`JSONEachRowWithProgress` は、ストリーム内での進捗報告をサポートする出力専用フォーマットです。詳細については[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_json_each_row_with_progress.ts)を参照してください。
 
 ClickHouse の入力および出力フォーマットの完全な一覧は
 [こちら](/interfaces/formats)で確認できます。
@@ -882,8 +882,8 @@ ClickHouse の入力および出力フォーマットの完全な一覧は
 
 あわせて参照:
 
-- [Dynamic/Variant/JSON を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/dynamic_variant_json.ts)
-- [Time/Time64 を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/time_time64.ts)
+- [Dynamic/Variant/JSON を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/dynamic_variant_json.ts)
+- [Time/Time64 を扱う例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/time_time64.ts)
 
 ### Date/Date32 型の注意事項 \{#datedate32-types-caveats\}
 
@@ -900,7 +900,7 @@ await client.insert({
 })
 ```
 
-ただし、`DateTime` や `DateTime64` の列を使用している場合は、文字列と JS Date オブジェクトの両方を利用できます。JS Date オブジェクトは、`date_time_input_format` を `best_effort` に設定した状態で、そのまま `insert` に渡すことができます。詳細については、この[サンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_js_dates.ts)を参照してください。
+ただし、`DateTime` や `DateTime64` の列を使用している場合は、文字列と JS Date オブジェクトの両方を利用できます。JS Date オブジェクトは、`date_time_input_format` を `best_effort` に設定した状態で、そのまま `insert` に渡すことができます。詳細については、この[サンプル](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_js_dates.ts)を参照してください。
 
 
 ### Decimal* 型の注意事項 \{#decimal-types-caveats\}
@@ -951,7 +951,7 @@ await client.query({
 })
 ```
 
-詳しくは[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_decimals.ts)を参照してください。
+詳しくは[この例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_decimals.ts)を参照してください。
 
 ### 整数型: Int64, Int128, Int256, UInt64, UInt128, UInt256 \{#integral-types-int64-int128-int256-uint64-uint128-uint256\}
 
@@ -1026,7 +1026,7 @@ client.query({
 * `data_type` - アプリケーションパラメータの値の [データ型](/sql-reference/data-types/)。
 
 **例:** パラメータ付きクエリ。
-[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/query_with_parameter_binding.ts)
+[ソースコード](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/query_with_parameter_binding.ts)
 .
 
 ```ts
@@ -1151,7 +1151,7 @@ const client = createClient({
 })
 ```
 
-リポジトリ内の [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) および [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) TLS の完全なサンプルコードを参照してください。
+リポジトリ内の [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/basic_tls.ts) および [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/mutual_tls.ts) TLS の完全なサンプルコードを参照してください。
 
 ### Keep-alive configuration (Node.js only) \{#keep-alive-configuration-nodejs-only\}
 
@@ -1269,7 +1269,7 @@ const client = createClient({
 })
 ```
 
-`readonly=1` ユーザーの制限事項についてさらに詳しく説明している [例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/read_only_user.ts) を参照してください。
+`readonly=1` ユーザーの制限事項についてさらに詳しく説明している [例](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/read_only_user.ts) を参照してください。
 
 
 ### パス名付きプロキシ \{#proxy-with-a-pathname\}
