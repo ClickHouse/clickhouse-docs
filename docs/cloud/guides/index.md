@@ -53,6 +53,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Infrastructure configuration](/cloud/reference/byoc/configurations) | Configure load balancers, node groups, and other BYOC infrastructure components |
 | [Manage cloud users](/cloud/security/manage-cloud-users) | This page describes how administrators can add users, manage assignments, and remove users |
 | [Manage custom roles](/cloud/guides/security/manage-custom-roles) | This page describes how administrators can add, modify, and remove custom roles |
+| [Manage database service accounts](/cloud/security/manage-database-service-accounts) | This page describes how administrators can add database service accounts |
 | [Manage database users](/cloud/security/manage-database-users) | This page describes how administrators can add database users, manage assignments, and remove database users |
 | [Manage my account](/cloud/security/manage-my-account) | This page describes how you can accept invitations, manage MFA settings, and reset passwords |
 | [Manage SQL console role assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments) | Guide showing how to manage SQL console role assignments |

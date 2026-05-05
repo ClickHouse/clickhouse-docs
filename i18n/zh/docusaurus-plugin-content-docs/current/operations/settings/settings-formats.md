@@ -1275,14 +1275,6 @@ Parquet 读取器输出的平均块大小（字节）
 
 在对 Parquet 格式进行模式推断时，跳过所有类型不受支持的列
 
-## input_format_parquet_use_native_reader_v3 \{#input_format_parquet_use_native_reader_v3\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "1"},{"label": "似乎稳定"}]}]}/>
-
-使用 Parquet v3 读取器。
-
 ## input_format_parquet_use_offset_index \{#input_format_parquet_use_offset_index\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -2140,14 +2132,6 @@ ORC 写入器使用的时区名称，默认时区为 GMT。
   * 如果大于所有 Bloom 过滤器的总大小，则会在内存中累积所有行组的 Bloom 过滤器，然后在文件接近末尾的位置一次性写入，
   * 否则，会在内存中累积 Bloom 过滤器，并在其总大小超过该值时写入。
 
-## output_format_parquet_compliant_nested_types \{#output_format_parquet_compliant_nested_types\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.5"},{"label": "1"},{"label": "更改输出 Parquet 文件 schema 中的内部字段名称。"}]}]}/>
-
-在 parquet 文件的 schema 中，对列表元素使用名称 `element` 而不是 `item`。这是 Arrow 库实现遗留下来的历史产物。通常会提升兼容性，但在某些旧版本的 Arrow 上可能例外。
-
 ## output_format_parquet_compression_method \{#output_format_parquet_compression_method\}
 
 <SettingsInfoBlock type="ParquetCompression" default_value="zstd" />
@@ -2214,7 +2198,7 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-在多个线程中进行 Parquet 编码。需要启用 `output_format_parquet_use_custom_encoder`。
+在多个线程中进行 Parquet 编码。
 
 ## output_format_parquet_row_group_size \{#output_format_parquet_row_group_size\}
 
@@ -2236,51 +2220,13 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 对 String 列使用 Parquet 的 String 类型，而不是 Binary 类型。
 
-## output_format_parquet_unsupported_types_as_binary \{#output_format_parquet_unsupported_types_as_binary\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory
-  rows={[
-  {
-    id: "row-1",
-    items: [
-      { label: "26.4" },
-      { label: "0" },
-      {
-        label:
-          "用于将不受支持的 CH 类型转换为 parquet（arrow）二进制，而不是抛出 UNKNOWN_TYPE 异常的新设置。"
-      }
-    ]
-  }
-]}
-/>
-
-将无法转换的类型作为原始二进制数据输出。如果为 false，则此类类型会引发 UNKNOWN&#95;TYPE 异常。
-
-## output_format_parquet_use_custom_encoder \{#output_format_parquet_use_custom_encoder\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.5"},{"label": "1"},{"label": "启用自定义 Parquet 编码器。"}]}]}/>
-
-使用更高效的 Parquet 编码器实现。
-
-## output_format_parquet_version \{#output_format_parquet_version\}
-
-<SettingsInfoBlock type="ParquetVersion" default_value="2.latest" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "2.latest"},{"label": "为输出格式使用最新的 Parquet 格式版本"}]}]}/>
-
-Parquet 输出格式所使用的版本。支持的版本：1.0、2.4、2.6 和 2.latest（默认）。
-
 ## output_format_parquet_write_bloom_filter \{#output_format_parquet_write_bloom_filter\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "添加了对写入 Parquet 布隆过滤器的支持。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "添加了对写入 Parquet 布隆过滤器的支持。"}]}]} />
 
-在 parquet 文件中写入布隆过滤器。需要 output_format_parquet_use_custom_encoder = true。
+在 parquet 文件中写入布隆过滤器。
 
 ## output_format_parquet_write_checksums \{#output_format_parquet_write_checksums\}
 

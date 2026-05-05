@@ -2150,6 +2150,22 @@ SELECT * FROM system.events LIMIT 5
 
 Общее количество строк в build-таблице при выполнении операции JOIN.
 
+### JoinDelayedJoinedTransformBlockCount \{#joindelayedjoinedtransformblockcount\}
+
+Количество блоков, сформированных DelayedJoinedBlocksWorkerTransform.
+
+### JoinDelayedJoinedTransformRowCount \{#joindelayedjoinedtransformrowcount\}
+
+Количество строк, выданных DelayedJoinedBlocksWorkerTransform.
+
+### JoinNonJoinedTransformBlockCount \{#joinnonjoinedtransformblockcount\}
+
+Количество блоков, сформированных NonJoinedBlocksTransform.
+
+### JoinNonJoinedTransformRowCount \{#joinnonjoinedtransformrowcount\}
+
+Количество строк, не участвовавших в соединении, выданных NonJoinedBlocksTransform.
+
 ### JoinOptimizeMicroseconds \{#joinoptimizemicroseconds\}
 
 Общее время, затраченное на оптимизацию плана JOIN.
@@ -2165,6 +2181,10 @@ SELECT * FROM system.events LIMIT 5
 ### JoinResultRowCount \{#joinresultrowcount\}
 
 Общее количество строк в результате операции JOIN.
+
+### JoinSpillingHashJoinSwitchedToGraceJoin \{#joinspillinghashjoinswitchedtogracejoin\}
+
+Количество случаев, когда (Concurrent)HashJoin переключался на GraceHashJoin из-за достижения лимита памяти в SpillingHashJoin.
 
 ### KafkaBackgroundReads \{#kafkabackgroundreads\}
 

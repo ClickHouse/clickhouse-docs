@@ -535,6 +535,14 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает экспериментальные функции для анализа воронки.
 
+## allow_experimental_geo_types_in_iceberg \{#allow_experimental_geo_types_in_iceberg\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, разрешающая разбор полей geometry/geography в Iceberg как значений типа Geometry."}]}]} />
+
+Разрешает разбирать поля Iceberg типов `geometry` и `geography` как тип ClickHouse `Geometry` (Variant).
+
 ## allow_experimental_hash_functions \{#allow_experimental_hash_functions\}
 
 <ExperimentalBadge/>
@@ -3606,6 +3614,15 @@ ClickHouse применяет этот SETTING, когда запрос соде
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "Записывает сведения об операциях blob-хранилища в таблицу system.blob_storage_log"}]}]}/>
 
 Записывает сведения об операциях blob-хранилища в таблицу system.blob_storage_log
+
+## enable_blob_storage_log_for_read_operations \{#enable_blob_storage_log_for_read_operations\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка для журналирования операций чтения blob-хранилища в system.blob_storage_log"}]}]} />
+
+Записывает информацию об операциях чтения blob-хранилища в таблицу system.blob&#95;storage&#95;log.
+Требует, чтобы `enable_blob_storage_log` также был включен.
 
 ## enable_early_constant_folding \{#enable_early_constant_folding\}
 
@@ -6679,6 +6696,14 @@ log_query_views=1
 Рекомендуемое значение — половина доступной системной памяти.
 :::
 
+## max_bytes_before_external_join \{#max_bytes_before_external_join\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка для управления автоматической выгрузкой хеш-соединений на диск. Ненулевое значение включает выгрузку и задаёт порог в байтах."}]}]} />
+
+Если задано ненулевое значение и `join_algorithm` имеет значение `hash`, `parallel_hash`, `default` или `auto`, хеш-соединение будет автоматически преобразовано в grace hash join, чтобы включить выгрузку на диск, когда объём данных в правой части превысит указанное число байт. Если установлено значение 0 (по умолчанию), автоматическая выгрузка отключена. Это предотвращает применение оптимизации чтения по порядку через соединение.
+
 ## max_bytes_before_external_sort \{#max_bytes_before_external_sort\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -7178,6 +7203,18 @@ Exception: Total regexp lengths too large.
 
 Параллельный `INSERT SELECT` даёт эффект только в том случае, если часть `SELECT` выполняется параллельно, смотрите настройку [`max_threads`](#max_threads).
 Более высокие значения приводят к увеличению потребления памяти.
+
+## max_insert_threads_min_free_memory_per_thread \{#max_insert_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="4294967296" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "4294967296"},{"label": "Новая настройка для ограничения числа потоков вставки в зависимости от объёма доступной свободной памяти"}]}]} />
+
+То же, что и `max_threads_min_free_memory_per_thread`, но применяется к `max_insert_threads`, а не к `max_threads`. Значение по умолчанию выше, поскольку конвейеры вставки обычно удерживают более крупные буферы на поток (части MergeTree, блоки сжатия), чем конвейеры чтения.
+
+Если объём свободной памяти меньше значения `max_insert_threads`, умноженного на это значение, `max_insert_threads` уменьшается до допустимого уровня, но не менее `1`.
+
+Установите `0`, чтобы отключить это ограничение.
 
 ## max_joined_block_size_bytes \{#max_joined_block_size_bytes\}
 
@@ -7772,6 +7809,22 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Если параметр не равен нулю, ограничивает количество потоков чтения для таблицы MergeTree.
 
+## max_streams_for_union_step \{#max_streams_for_union_step\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, ограничивающая количество одновременно активных потоков данных на шаге UNION для снижения пикового потребления памяти."}]}]} />
+
+Ограничивает количество одновременно активных потоков данных на шаге `UNION` (применяется как к `UNION ALL`, так и к `UNION DISTINCT`, поскольку `UNION DISTINCT` реализуется через шаг `UNION ALL`, за которым следует шаг `DISTINCT`). Когда запрос `UNION` содержит много подзапросов, все они одновременно открывают буферы чтения, из-за чего потребление памяти становится пропорциональным числу подзапросов. Эта настройка вставляет процессоры `Concat`, чтобы сузить конвейер и сделать так, чтобы одновременно было активно не более указанного числа потоков, что значительно снижает пиковое потребление памяти. Фактическое ограничение равно минимуму из этого значения и `max_threads * max_streams_for_union_step_to_max_threads_ratio` (если любое из этих значений равно 0, оно игнорируется). Если оба значения равны 0, сужение не применяется.
+
+## max_streams_for_union_step_to_max_threads_ratio \{#max_streams_for_union_step_to_max_threads_ratio\}
+
+<SettingsInfoBlock type="Float" default_value="8" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "8"},{"label": "Новая настройка: предел количества одновременно активных потоков на шаге UNION вычисляется как min(max_streams_for_union_step, max_threads * max_streams_for_union_step_to_max_threads_ratio); если любой из параметров равен 0, соответствующее ограничение отключается."}]}]} />
+
+Это соотношение, умноженное на `max_threads`, задаёт предел количества одновременно активных потоков на шаге `UNION` (применяется как к `UNION ALL`, так и к `UNION DISTINCT`). Фактический предел — минимальное из этого вычисленного значения и `max_streams_for_union_step` (если любое из них равно 0, оно игнорируется). Например, при `max_threads = 8` и значении этого соотношения 1 одновременно будет активно не более 8 потоков. Установите 0, чтобы отключить это ограничение, зависящее от соотношения.
+
 ## max_streams_multiplier_for_merge_tables \{#max_streams_multiplier_for_merge_tables\}
 
 <SettingsInfoBlock type="Float" default_value="5" />
@@ -7883,6 +7936,22 @@ SELECT getSetting('max_memory_usage_for_user');
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество потоков, используемых для обработки индексов.
+
+## max_threads_min_free_memory_per_thread \{#max_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1073741824"},{"label": "Новая настройка для ограничения количества потоков в зависимости от объема доступной свободной памяти"}]}]} />
+
+Уменьшает `max_threads`, когда сервер испытывает нехватку памяти, чтобы избежать запуска сильно распараллеленных запросов, которые с высокой вероятностью упрутся в лимит памяти.
+
+Свободная память вычисляется как `max_server_memory_usage` сервера за вычетом объема памяти, который в данный момент отслеживается глобальным трекером памяти. Если этой свободной памяти меньше, чем `max_threads`, умноженное на это значение, `max_threads` уменьшается до наибольшего N, для которого `N * value <= free_memory`, но не ниже `1`.
+
+Установите `0`, чтобы отключить это ограничение.
+
+Например, при значении по умолчанию 1 GiB и 32 GiB свободной памяти `max_threads` ограничивается значением 32; при 1 GiB свободной памяти оно снижается до 1.
+
+Эта настройка применяется к параллелизму на стороне чтения (`SELECT`, `UNION`, `INTERSECT`/`EXCEPT` и часть `SELECT` в `INSERT ... SELECT`). Для стороны записи см. `max_insert_threads_min_free_memory_per_thread`.
 
 ## max_untracked_memory \{#max_untracked_memory\}
 
@@ -11374,6 +11443,14 @@ FORMAT Null;
 
 - 0 — Отключено.
 - 1 — Включено.
+
+## send_table_structure_on_insert_with_inline_data \{#send_table_structure_on_insert_with_inline_data\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка, определяющая, отправляет ли сервер структуру таблицы для запросов INSERT с inline-данными."}]}]} />
+
+Если параметр отключён и запрос INSERT содержит inline-данные, сервер не будет передавать клиенту по нативному протоколу структуру таблицы и значения по умолчанию для столбцов. Вместо этого сервер сам разберёт inline-данные. Это может повысить производительность при большом количестве небольших вставок по нативному протоколу.
 
 ## send_timeout \{#send_timeout\}
 

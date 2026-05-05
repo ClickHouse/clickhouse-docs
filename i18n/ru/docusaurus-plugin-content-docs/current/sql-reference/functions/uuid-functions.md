@@ -420,11 +420,11 @@ SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 
 ## dateTimeToUUIDv7 \{#dateTimeToUUIDv7\}
 
-Введена в версии: v25.9.0
+Добавлена в версии: v25.8.0
 
 Преобразует значение [DateTime](../data-types/datetime.md) в [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7) в заданный момент времени.
 
-См. раздел «[Генерация UUIDv7](#uuidv7-generation)» для подробностей о структуре UUID, управлении счётчиком и гарантиях при параллельном выполнении.
+См. раздел [&quot;Генерация UUIDv7&quot;](#uuidv7-generation) для подробностей о структуре UUID, управлении счётчиком и гарантиях при параллельном выполнении.
 
 :::note
 По состоянию на сентябрь 2025 года UUID версии 7 находятся в статусе черновика, и их структура может измениться в будущем.
@@ -473,7 +473,6 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
 │ 017b4b2d-7720-76ed-ae44-bbcf71ed0fd3 │
 └──────────────────────────────────────┘
 ```
-
 
 ## generateSnowflakeID \{#generateSnowflakeID\}
 

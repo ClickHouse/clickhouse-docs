@@ -339,7 +339,7 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 
 ## timeSeriesGroupToSamplingKey \{#timeSeriesGroupToSamplingKey\}
 
-도입 버전: v26.1.0
+도입 버전: v26.4.0
 
 지정된 그룹의 태그로부터 파생된 안정적인 `UInt64` 샘플링 키를 반환합니다.
 

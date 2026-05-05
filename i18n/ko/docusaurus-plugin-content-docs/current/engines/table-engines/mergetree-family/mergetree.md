@@ -1327,47 +1327,55 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 
 ### 사용 가능한 컬럼 통계 유형 \{#available-types-of-column-statistics\}
 
-- `MinMax`
+* `MinMax`
 
-    숫자 컬럼에 대한 범위 필터의 선택도를 추정할 수 있도록 컬럼 값의 최소값과 최대값을 저장합니다.
+  숫자 컬럼에 대한 범위 필터의 선택도를 추정할 수 있도록 컬럼 값의 최소값과 최대값을 저장합니다.
 
-    구문: `minmax`
+  구문: `minmax`
 
-- `TDigest`
+* `TDigest`
 
-    숫자 컬럼에 대해 근사 백분위수(예: 90번째 백분위수)를 계산할 수 있도록 하는 [TDigest](https://github.com/tdunning/t-digest) 스케치입니다.
+  숫자 컬럼에 대해 근사 백분위수(예: 90번째 백분위수)를 계산할 수 있도록 하는 [TDigest](https://github.com/tdunning/t-digest) 스케치입니다.
 
-    구문: `tdigest`
+  구문: `tdigest`
 
-- `Uniq`
+* `Uniq`
 
-    컬럼에 포함된 서로 다른 값의 개수를 추정할 수 있도록 하는 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 스케치입니다.
+  컬럼에 포함된 서로 다른 값의 개수를 추정할 수 있도록 하는 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 스케치입니다.
 
-    구문: `uniq`
+  구문: `uniq`
 
-- `CountMin`
+* `NullCount`
 
-    컬럼의 각 값이 나타나는 빈도를 근사적으로 계산해 주는 [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) 스케치입니다.
+  `Nullable` 컬럼에서 `NULL` 값의 개수를 추적합니다. PREWHERE 최적화에서 `IS NULL`/`IS NOT NULL` 프레디케이트의 선택도를 정확하게 추정하는 데 사용됩니다.
 
-    구문 `countmin`
+  구문: `nullcount`
+
+* `CountMin`
+
+  컬럼의 각 값이 나타나는 빈도를 근사적으로 계산해 주는 [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) 스케치입니다.
+
+  구문 `countmin`
 
 ### 지원되는 데이터 타입 \{#supported-data-types\}
 
-|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String 또는 FixedString |
-|-----------|----------------------------------------------------|-------------------------|
-| CountMin  | ✔                                                  | ✔                       |
-| MinMax    | ✔                                                  | ✗                       |
-| TDigest   | ✔                                                  | ✗                       |
-| Uniq      | ✔                                                  | ✔                       |
+|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String 또는 FixedString | Nullable(*) / LowCardinality(Nullable(*)) |
+| --------- | -------------------------------------------------- | --------------------- | ----------------------------------------- |
+| CountMin  | ✔                                                  | ✔                     | ✗                                         |
+| MinMax    | ✔                                                  | ✗                     | ✔                                         |
+| NullCount | ✗                                                  | ✗                     | ✔                                         |
+| TDigest   | ✔                                                  | ✗                     | ✔                                         |
+| Uniq      | ✔                                                  | ✔                     | ✔                                         |
 
 ### 지원되는 연산 \{#supported-operations\}
 
-|           | 동등 필터 (==) | 범위 필터 (`>, >=, <, <=`) |
-|-----------|----------------|----------------------------|
-| CountMin  | ✔              | ✗                          |
-| MinMax    | ✗              | ✔                          |
-| TDigest   | ✗              | ✔                          |
-| Uniq      | ✔              | ✗                          |
+|           | 동등 필터 (==) | 범위 필터 (`>, >=, <, <=`) | `IS NULL` / `IS NOT NULL` |
+| --------- | ---------- | ---------------------- | ------------------------- |
+| CountMin  | ✔          | ✗                      | ✗                         |
+| MinMax    | ✗          | ✔                      | ✗                         |
+| NullCount | ✗          | ✗                      | ✔                         |
+| TDigest   | ✗          | ✔                      | ✗                         |
+| Uniq      | ✔          | ✗                      | ✗                         |
 
 ## 컬럼 수준 설정 \{#column-level-settings\}
 

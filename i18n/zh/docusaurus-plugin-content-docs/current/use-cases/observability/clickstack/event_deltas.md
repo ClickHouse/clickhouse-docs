@@ -107,6 +107,10 @@ import settings_drawer from '@site/static/images/clickstack/event-deltas/setting
 
 点击 **Apply** 更新热力图；下方的属性分析也会随之更新。
 
+:::tip 仪表板中的热力图
+同一个热力图也可作为[仪表板卡片](/use-cases/observability/clickstack/dashboards#create-a-tile-heatmap)使用，当你希望在事件增量下钻流程之外监控分布形态随时间的变化时，这会很有用。
+:::
+
 ## 故障排查 \{#troubleshooting\}
 
 ### “事件增量”选项卡不可见 \{#tab-not-visible\}
