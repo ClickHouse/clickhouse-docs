@@ -757,9 +757,9 @@ SYSTEM STOP VIEWS
 
 ### SYSTEM START [REPLICATED] VIEW, START VIEWS \{#start-view-start-views\}
 
-指定したビュー、またはすべてのリフレッシュ可能なビューに対して、定期的なリフレッシュを有効化します。即時のリフレッシュは行われません。
+指定したVIEW、またはすべてのリフレッシュ可能なVIEWに対して、定期的なリフレッシュを有効化します。即時のリフレッシュは行われません。
 
-ビューが Replicated または Shared データベース内にある場合、`START VIEW` は `STOP VIEW` の効果を打ち消し、`START REPLICATED VIEW` は `STOP REPLICATED VIEW` の効果を打ち消します。
+VIEWが Replicated または Shared データベース内にある場合、`START VIEW` は `STOP VIEW` の効果を打ち消し、`START REPLICATED VIEW` は `STOP REPLICATED VIEW` の効果を打ち消します。`START VIEW` は `PAUSE VIEW` の効果も打ち消します。
 
 ```sql
 SYSTEM START VIEW [db.]name
@@ -769,6 +769,25 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
+### SYSTEM PAUSE VIEW, PAUSE VIEWS \{#pause-view-pause-views\}
+
+指定したVIEW、またはすべてのリフレッシュ可能なVIEWの定期的なリフレッシュを無効にします。
+`SYSTEM STOP VIEW` とは異なり、`SYSTEM PAUSE VIEW` はすでに進行中のリフレッシュを中断しません。実行中のリフレッシュは完了まで継続され、以降のリフレッシュのみが停止されます。
+
+解除するには、`SYSTEM START VIEW` または `SYSTEM START VIEWS` を使用します。
+
+:::note
+一時停止状態はサーバーの再起動後も保持されません。再起動後、VIEWは設定されたリフレッシュスケジュールを再開します。
+Replicated または Shared データベースでは、`SYSTEM PAUSE VIEW` は現在のレプリカにのみ影響します。
+:::
+
+```sql
+SYSTEM PAUSE VIEW [db.]name
+```
+
+```sql
+SYSTEM PAUSE VIEWS
+```
 
 ### SYSTEM REFRESH VIEW \{#refresh-view\}
 

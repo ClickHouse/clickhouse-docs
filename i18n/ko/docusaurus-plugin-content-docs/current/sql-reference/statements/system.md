@@ -767,7 +767,7 @@ SYSTEM STOP VIEWS
 
 지정된 VIEW 또는 모든 갱신 가능한 VIEW에 대해 주기적 갱신을 다시 활성화합니다. 즉시 갱신은 수행되지 않습니다.
 
-VIEW가 Replicated 또는 Shared 데이터베이스에 있는 경우, `START VIEW`는 `STOP VIEW`의 영향을 되돌리고, `START REPLICATED VIEW`는 `STOP REPLICATED VIEW`의 영향을 되돌립니다.
+VIEW가 복제된 또는 Shared 데이터베이스에 있는 경우, `START VIEW`는 `STOP VIEW`의 영향을 되돌리고, `START REPLICATED VIEW`는 `STOP REPLICATED VIEW`의 영향을 되돌립니다. `START VIEW`는 `PAUSE VIEW`의 영향도 되돌립니다.
 
 ```sql
 SYSTEM START VIEW [db.]name
@@ -777,6 +777,25 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
+### SYSTEM PAUSE VIEW, PAUSE VIEWS \{#pause-view-pause-views\}
+
+지정한 뷰 또는 모든 갱신 가능한 뷰의 주기적인 갱신을 비활성화합니다.
+`SYSTEM STOP VIEW`와 달리 `SYSTEM PAUSE VIEW`는 이미 진행 중인 갱신을 중단하지 않습니다. 현재 실행 중인 갱신은 끝까지 완료되며, 이후의 갱신만 방지됩니다.
+
+`SYSTEM START VIEW` 또는 `SYSTEM START VIEWS`로 해제할 수 있습니다.
+
+:::note
+일시 중지 상태는 서버를 재시작해도 유지되지 않습니다. 재시작 후에는 뷰가 구성된 갱신 일정에 따라 다시 갱신을 재개합니다.
+복제된 또는 Shared 데이터베이스에서는 `SYSTEM PAUSE VIEW`가 현재 레플리카에만 영향을 미칩니다.
+:::
+
+```sql
+SYSTEM PAUSE VIEW [db.]name
+```
+
+```sql
+SYSTEM PAUSE VIEWS
+```
 
 ### SYSTEM REFRESH VIEW \{#refresh-view\}
 

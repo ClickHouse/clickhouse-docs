@@ -758,7 +758,7 @@ SYSTEM STOP VIEWS
 
 为指定的 VIEW 或所有可刷新 VIEW 启用定期刷新。不会立即触发刷新。
 
-如果该 VIEW 位于 Replicated 或 Shared 数据库中，`START VIEW` 会撤销 `STOP VIEW` 的效果，而 `START REPLICATED VIEW` 会撤销 `STOP REPLICATED VIEW` 的效果。
+如果该 VIEW 位于 Replicated 或 Shared 数据库中，`START VIEW` 会撤销 `STOP VIEW` 的效果，而 `START REPLICATED VIEW` 会撤销 `STOP REPLICATED VIEW` 的效果。`START VIEW` 也会撤销 `PAUSE VIEW` 的效果。
 
 ```sql
 SYSTEM START VIEW [db.]name
@@ -768,6 +768,25 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
+### SYSTEM PAUSE VIEW, PAUSE VIEWS \{#pause-view-pause-views\}
+
+禁用指定VIEW或所有可刷新 VIEW的周期性刷新。
+与 `SYSTEM STOP VIEW` 不同，`SYSTEM PAUSE VIEW` 不会中断已在进行中的刷新：正在运行的刷新会继续直至完成，只有后续刷新会被阻止。
+
+可使用 `SYSTEM START VIEW` 或 `SYSTEM START VIEWS` 恢复。
+
+:::note
+暂停状态在服务器重启后不会保留。重启后，VIEW将恢复为其已配置的刷新调度。
+在 Replicated 或 Shared 数据库中，`SYSTEM PAUSE VIEW` 仅影响当前副本。
+:::
+
+```sql
+SYSTEM PAUSE VIEW [db.]name
+```
+
+```sql
+SYSTEM PAUSE VIEWS
+```
 
 ### SYSTEM REFRESH VIEW \{#refresh-view\}
 
