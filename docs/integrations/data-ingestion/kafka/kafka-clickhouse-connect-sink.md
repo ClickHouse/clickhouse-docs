@@ -249,7 +249,9 @@ The connector can consume data from multiple topics
 }
 ```
 
-###### Type mapping {#avro-type-mapping}
+###### Avro type mapping {#avro-type-mapping}
+The type mapping below is defined by `io.confluent.connect.avro.AvroConverter`, the official Avro serializer/deserializer implementation in Kafka Connect. See the Kafka Connect [docs](https://docs.confluent.io/platform/current/connect/userguide.html#avro) for advanced information on conversion logic.
+
 ✅: Supported
 
 ❌: Not supported
@@ -270,12 +272,12 @@ The connector can consume data from multiple topics
 | enum      | STRING             | ✅         |                                                                                                                                                                                                                                                                                            |
 | array     | ARRAY/MAP          | ✅         | Defaults to ARRAY. Resolves to MAP if the field was originally constructed via `AvroData.fromConnectSchema` ([source](https://github.com/confluentinc/schema-registry/blob/174907bfc0d9424e8d02e788f450f4afcdda1750/avro-data/src/main/java/io/confluent/connect/avro/AvroData.java#L943)) |
 | map       | MAP                | ✅         |                                                                                                                                                                                                                                                                                            |
-| union     | STRUCT/`<T>`       | ⚠️        | Defaults to STRUCT. Resolves to the singleton type `T` in the union definition if AvroDataConfig property `flatten.singleton.unions=true`                                                                                                                                                  |
+| union     | STRUCT/`<T>`       | ⚠️        | Defaults to STRUCT. Resolves to the singleton type `T` in the union definition if `flatten.singleton.unions=true` (see [docs](https://docs.confluent.io/cloud/current/connectors/reference/connector-configuration.html#value-converter-flatten-singleton-unions))                         |
 | fixed     | BYTES              | ⚠️        | Fixed `decimal` logical type is not supported (see below)                                                                                                                                                                                                                                  |
 
 Refer to [Supported data types](#supported-data-types) for the mapping between Kafka Connect types and ClickHouse types.
 
-###### Unsupported schemas {#unsupported-avro-schemas}
+###### Unsupported Avro schemas {#unsupported-avro-schemas}
 
 The following Avro schemas are unsupported by the connector:
 - fixed `decimal` logical type
