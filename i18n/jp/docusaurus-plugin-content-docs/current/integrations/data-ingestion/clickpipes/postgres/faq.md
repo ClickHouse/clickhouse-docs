@@ -17,6 +17,22 @@ import Image from '@theme/IdealImage';
 
 # Postgres 向け ClickPipes に関するよくある質問 \{#clickpipes-for-postgres-faq\}
 
+### トランザクションのロールバックは ClickHouse に複製されますか？ \{#are-transaction-rollbacks-replicated\}
+
+いいえ。CDC はコミット済みトランザクションのみを複製します。ロールバックされたトランザクションが ClickHouse に送られることはありません。
+
+### ソースの Postgres よりも長く ClickHouse にデータを保持できますか？ \{#retain-data-longer-in-clickhouse\}
+
+はい。ソースの Postgres と宛先の ClickHouse の保持期間は、それぞれ独立しています。たとえば、Postgres には 3 か月分のデータだけを保持しつつ、ClickHouse には履歴全体を保持できます。Postgres で古い行を削除すると、DELETE イベントが生成されて ClickHouse にレプリケーションされます。そのため、過去データを保持したい場合は、[publication](/integrations/clickpipes/postgres/faq#ignore-delete-truncate) から DELETE を除外するか、クエリレイヤーで DELETE を扱うようにする必要があります。
+
+### Postgres から ClickHouse へのデータフロー中に、どのようにデータを拡充できますか？ \{#data-enrichment\}
+
+CDC の宛先テーブルに対して [materialized views](/materialized-views) を使用します。ClickHouse の materialized view は insert トリガーとして動作するため、Postgres からレプリケートされた各行は、最終的な target テーブルに書き込まれる前に、変換したり、ルックアップテーブルと結合したり、追加のカラムで拡充したりできます。
+
+### 複数の Postgres インスタンスから 1 つ以上の ClickHouse サービスへレプリケーションできますか？ \{#multi-region-multi-source\}
+
+はい。異なる Postgres インスタンス（AWS リージョンをまたぐものも含む）ごとに個別の ClickPipes を作成し、1 つまたは複数の ClickHouse サービスにレプリケーションできます。たとえば、あるリージョンの Postgres からローカルの ClickHouse クラスターへデータを送信して低レイテンシーな分析を行いつつ、同時に別リージョンの中央集約された ClickHouse クラスターへ送信して集約レポーティングに利用するといった構成が可能です。クロスリージョン構成では、AWS のリージョン間データ転送料金と追加のネットワークレイテンシーが発生する点に注意してください。
+
 ### アイドル状態は Postgres CDC ClickPipe にどのような影響がありますか？ \{#how-does-idling-affect-my-postgres-cdc-clickpipe\}
 
 ClickHouse Cloud サービスがアイドル状態でも、Postgres CDC ClickPipe はデータの同期を継続し、次の同期間隔になるとサービスが起動して受信データを処理します。同期が完了し、設定されたアイドル時間に達すると、サービスは再びアイドル状態に戻ります。
@@ -265,15 +281,14 @@ max_slot_wal_keep_size = 200GB
 
 ### ログに ReceiveMessage EOF エラーが表示されています。これは何を意味しますか？ \{#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean\}
 
-`ReceiveMessage` は、レプリケーションストリームからメッセージを読み取るために使用される Postgres の論理デコードプロトコル内の関数です。EOF (End of File) エラーは、レプリケーションストリームから読み取ろうとしている最中に、Postgres サーバーへの接続が予期せず閉じられたことを示します。
+`ReceiveMessage` は、レプリケーションストリームからメッセージを読み取るために使用される Postgres のロジカルデコードプロトコル内の関数です。EOF (End of File) エラーは、レプリケーションストリームから読み取ろうとしている最中に、Postgres サーバーへの接続が予期せず閉じられたことを示します。
 
 これは復旧可能で、致命的なものではないエラーです。ClickPipes は自動的に再接続を試み、レプリケーション処理を再開します。
 
 このエラーは、いくつかの理由で発生する可能性があります。
 
-- **`wal_sender_timeout` の値が低い:** `wal_sender_timeout` を 5 分以上に設定してください。この設定は、サーバーが接続を切断する前にクライアントからの応答をどの程度の時間待機するかを制御します。タイムアウトが短すぎると、接続が早期に切断される原因になります。
-- **ネットワークの問題:** 一時的なネットワーク障害によって接続が切断される可能性があります。
-- **Postgres サーバーの再起動:** Postgres サーバーが再起動されたりクラッシュした場合、接続は失われます。
+* **ネットワークの問題:** 一時的なネットワーク障害によって接続が切断される可能性があります。
+* **Postgres サーバーの再起動:** Postgres サーバーが再起動されたりクラッシュした場合、接続は失われます。
 
 ### レプリケーションスロットが無効化されました。どうすればよいですか？ \{#my-replication-slot-is-invalidated-what-should-i-do\}
 

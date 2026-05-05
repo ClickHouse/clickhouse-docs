@@ -16,64 +16,66 @@ import step_5 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_access/6_service_settings.png'
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
+:::warning
+この設定は非推奨であり、カスタムロールに移行した組織では、ロール作成画面にある新しい設定に置き換えられています。詳細については、[Cloud ユーザーの管理](/cloud/security/manage-cloud-users)を参照してください。
+:::
+
 # SQL コンソールのロール割り当てを構成する \{#configuring-sql-console-role-assignments\}
 
 > このガイドでは、Cloud コンソール全体でのアクセス権限と、Cloud コンソール内でユーザーが利用できる機能を決定する SQL コンソールのロール割り当ての構成方法について説明します。
 
 <VerticalStepper headerLevel="h3">
+  ### サービス設定にアクセスする \{#access-service-settings\}
 
-### サービス設定にアクセスする \{#access-service-settings\}
+  Services ページで、SQL コンソールのアクセス設定を変更したい対象サービスの右上にあるメニューをクリックします。
 
-Services ページで、SQL コンソールのアクセス設定を変更したい対象サービスの右上にあるメニューをクリックします。
+  <Image img={step_1} size="lg" />
 
-<Image img={step_1} size="lg"/>
+  ポップアップメニューから `settings` を選択します。
 
-ポップアップメニューから `settings` を選択します。
+  <Image img={step_2} size="lg" />
 
-<Image img={step_2} size="lg"/>
+  ### SQL コンソールアクセスを調整する \{#adjust-sql-console-access\}
 
-### SQL コンソールアクセスを調整する \{#adjust-sql-console-access\}
+  &quot;Security&quot; セクション内の &quot;SQL console access&quot; 項目を探します。
 
-"Security" セクション内の "SQL console access" 項目を探します。
+  <Image img={step_3} size="md" />
 
-<Image img={step_3} size="md"/>
+  ### Service Admin の設定を更新する \{#update-settings-for-service-admin\}
 
-### Service Admin の設定を更新する \{#update-settings-for-service-admin\}
+  Service Admin のドロップダウンメニューを選択し、Service Admin ロールのアクセス制御設定を変更します。
 
-Service Admin のドロップダウンメニューを選択し、Service Admin ロールのアクセス制御設定を変更します。
+  <Image img={step_4} size="md" />
 
-<Image img={step_4} size="md"/>
+  次のロールから選択できます。
 
-次のロールから選択できます。
+  | Role          |
+  | ------------- |
+  | `No access`   |
+  | `Read only`   |
+  | `Full access` |
 
-| Role          |
-|---------------|
-| `No access`   |
-| `Read only`   |
-| `Full access` |
+  ### Service Read Only の設定を更新する \{#update-settings-for-service-read-only\}
 
-### Service Read Only の設定を更新する \{#update-settings-for-service-read-only\}
+  Service Read Only のドロップダウンメニューを選択し、Service Read Only ロールのアクセス制御設定を変更します。
 
-Service Read Only のドロップダウンメニューを選択し、Service Read Only ロールのアクセス制御設定を変更します。
+  <Image img={step_5} size="md" />
 
-<Image img={step_5} size="md"/>
+  次のロールから選択できます。
 
-次のロールから選択できます。
+  | Role          |
+  | ------------- |
+  | `No access`   |
+  | `Read only`   |
+  | `Full access` |
 
-| Role          |
-|---------------|
-| `No access`   |
-| `Read only`   |
-| `Full access` |
+  ### アクセス権を持つユーザーを確認する \{#review-users-with-access\}
 
-### アクセス権を持つユーザーを確認する \{#review-users-with-access\}
+  ユーザー数をクリックすると、そのサービスに対するユーザーの概要を表示できます。
 
-ユーザー数をクリックすると、そのサービスに対するユーザーの概要を表示できます。
+  <Image img={step_6} size="md" />
 
-<Image img={step_6} size="md"/>
+  ページ右側にタブが開き、ユーザーの合計数とそれぞれのロールが表示されます。
 
-ページ右側にタブが開き、ユーザーの合計数とそれぞれのロールが表示されます。
-
-<Image img={step_7} size="md"/>
-
+  <Image img={step_7} size="md" />
 </VerticalStepper>

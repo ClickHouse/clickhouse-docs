@@ -14,16 +14,16 @@ doc_type: 'reference'
 ```sql
 ALTER QUOTA [IF EXISTS] name [ON CLUSTER cluster_name]
     [RENAME TO new_name]
-    [KEYED BY {user_name | ip_address | client_key | client_key,user_name | client_key,ip_address} | NOT KEYED]
+    [KEYED BY {user_name | ip_address | client_key | client_key,user_name | client_key,ip_address | normalized_query_hash} | NOT KEYED]
     [FOR [RANDOMIZED] INTERVAL number {second | minute | hour | day | week | month | quarter | year}
-        {MAX { {queries | query_selects | query_inserts | errors | result_rows | result_bytes | read_rows | read_bytes | execution_time} = number } [,...] |
+        {MAX { {queries | query_selects | query_inserts | errors | result_rows | result_bytes | read_rows | read_bytes | execution_time | queries_per_normalized_hash} = number } [,...] |
         NO LIMITS | TRACKING ONLY} [,...]]
     [TO {role [,...] | ALL | ALL EXCEPT role [,...]}]
 ```
 
-键 `user_name`、`ip_address`、`client_key`、`client_key, user_name` 和 `client_key, ip_address` 对应于 [system.quotas](../../../operations/system-tables/quotas.md) 表中的字段。
+键 `user_name`、`ip_address`、`client_key`、`client_key, user_name`、`client_key, ip_address` 和 `normalized_query_hash` 对应于 [system.quotas](../../../operations/system-tables/quotas.md) 表中的字段。
 
-参数 `queries`、`query_selects`、`query_inserts`、`errors`、`result_rows`、`result_bytes`、`read_rows`、`read_bytes`、`execution_time` 对应于 [system.quotas&#95;usage](../../../operations/system-tables/quotas_usage.md) 表中的字段。
+参数 `queries`、`query_selects`、`query_inserts`、`errors`、`result_rows`、`result_bytes`、`read_rows`、`read_bytes`、`execution_time`、`queries_per_normalized_hash` 对应于 [system.quotas&#95;usage](../../../operations/system-tables/quotas_usage.md) 表中的字段。
 
 `ON CLUSTER` 子句允许在集群上创建配额，参见 [Distributed DDL](../../../sql-reference/distributed-ddl.md)。
 

@@ -1,12 +1,12 @@
 ---
-sidebar_label: 'ローカルファイルのインポート'
+sidebar_label: 'ローカルファイルの挿入'
 sidebar_position: 2
-title: 'ローカルファイルのインポート'
+title: 'ローカルファイルの挿入'
 slug: /integrations/data-ingestion/insert-local-files
-description: 'ローカルファイルのインポート方法を学ぶ'
+description: 'ローカルファイルの挿入方法を学ぶ'
 show_related_blogs: true
 doc_type: 'guide'
-keywords: ['ローカルファイル インポート ClickHouse', 'ClickHouse ローカルファイル インポート', 'clickhouse-client ファイルアップロード']
+keywords: ['ローカルファイル 挿入 ClickHouse', 'ClickHouse ローカルファイル インポート', 'clickhouse-client ファイルアップロード']
 ---
 
 # ローカルファイルの挿入 \{#insert-local-files\}

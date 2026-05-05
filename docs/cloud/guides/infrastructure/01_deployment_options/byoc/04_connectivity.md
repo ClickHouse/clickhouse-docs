@@ -99,7 +99,7 @@ The PrivateLink endpoint format is similar to the public endpoint, but includes 
 
 ### Endpoint ID Allowlist {#endpoint-id-allowlist}
 
-In order to use PrivateLink or Private Service Connect, the Endpoint ID of your client connection must be explicitly allowed for each ClickHouse service. Please contact ClickHouse Support and provide your Endpoint ID(s) so they can be added to the service allowlist.
+In order to use PrivateLink or Private Service Connect, the Endpoint ID of your client connection must be explicitly allowed for each ClickHouse service. Please contact ClickHouse Support and provide your Endpoint IDs so they can be added to the service allowlist.
 
 For detailed setup instructions, see the [Private Networking Setup guide](/cloud/reference/byoc/onboarding/network).
 

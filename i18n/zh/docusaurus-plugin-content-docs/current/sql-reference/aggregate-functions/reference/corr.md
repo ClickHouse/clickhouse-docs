@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## corr \{#corr\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
 Calculates the [Pearson correlation coefficient](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient):
 

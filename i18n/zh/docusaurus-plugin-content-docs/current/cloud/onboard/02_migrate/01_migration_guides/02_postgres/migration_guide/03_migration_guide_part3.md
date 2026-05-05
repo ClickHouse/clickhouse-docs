@@ -165,7 +165,7 @@ SELECT * ORDER BY UserId
 ALTER TABLE comments MATERIALIZE PROJECTION comments_user_id
 ```
 
-请注意，我们必须先创建 projection，然后再对其进行物化。后一个命令会使数据以两种不同的顺序在磁盘上各存储一份。projection 也可以在创建数据时一并定义，如下所示，并且在插入数据时会被自动维护。
+请注意，我们必须先创建 projection，然后再对其进行物化。后一条命令会使数据以两种不同的顺序在磁盘上各存储一份。projection 也可以在创建数据时一并定义，如下所示，并且在插入数据时会自动维护。
 
 ```sql
 CREATE TABLE comments
@@ -187,7 +187,7 @@ ENGINE = MergeTree
 ORDER BY PostId
 ```
 
-如果通过 `ALTER` 创建投影，那么在执行 `MATERIALIZE PROJECTION` 命令时，其创建过程是异步进行的。用户可以使用如下查询来确认该操作的进度，并等待直到 `is_done=1`。
+如果通过 `ALTER` 创建投影，那么在执行 `MATERIALIZE PROJECTION` 命令时，其创建过程是异步进行的。可以使用以下查询来确认该操作的进度，并等待直到 `is_done=1`。
 
 ```sql
 SELECT

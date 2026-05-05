@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 
 ### 初始加载 \{#initial-load\}
 
-BigQuery ClickPipe 会在单次批处理操作中，将 BigQuery [dataset](https://docs.cloud.google.com/bigquery/docs/datasets-intro) 中选定的表加载到 ClickHouse 目标表中。一旦摄取任务完成，ClickPipe 会自动停止。初始加载摄取流程需要用户提供一个用于中转的 Google Cloud Storage（GCS）存储桶（bucket）。未来，该中间存储桶将由 ClickPipes 提供并托管。
+BigQuery ClickPipe 会在单次批处理操作中，将 BigQuery [dataset](https://docs.cloud.google.com/bigquery/docs/datasets-intro) 中选定的表加载到 ClickHouse 目标表中。一旦摄取任务完成，ClickPipe 会自动停止。初始加载摄取流程需要用户提供一个用于中转的 Google Cloud Storage (GCS) 存储桶 (bucket) 。未来，该中间存储桶将由 ClickPipes 提供并托管。
 
 :::note
 ClickPipes 依赖批量导出作业，将数据从 BigQuery 导出到中转用的 GCS 存储桶中。此操作在 BigQuery 中**不产生任何处理费用**。

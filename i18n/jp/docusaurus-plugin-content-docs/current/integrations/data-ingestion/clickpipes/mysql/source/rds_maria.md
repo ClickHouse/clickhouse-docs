@@ -43,7 +43,7 @@ import Image from '@theme/IdealImage';
 
 バックアップ保持期間は、レプリケーションのユースケースに応じて、十分に長い期間に設定することを推奨します。
 
-### 2. Binlog 保持時間（hours） \{#binlog-retention-hours-rds\}
+### 2. Binlog 保持時間 \{#binlog-retention-hours-rds\}
 
 Amazon RDS for MariaDB では、変更が含まれる binlog ファイルが保持される時間（binlog 保持期間）を設定する方法が異なります。binlog ファイルが削除される前に一部の変更が読み取られない場合、レプリケーションを継続できなくなります。binlog 保持時間のデフォルト値は NULL であり、これはバイナリログが保持されないことを意味します。
 

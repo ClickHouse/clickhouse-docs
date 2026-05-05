@@ -466,6 +466,31 @@ TSV 格式中 NULL 的自定义表示形式
 
 在对 CapnProto 格式进行模式推断时，跳过具有不受支持类型的列
 
+## input_format_column_name_matching_mode \{#input_format_column_name_matching_mode\}
+
+<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="match_case" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "match_case"},{"label": "新设置。"}]}]} />
+
+定义通过各种格式 (包括但不限于 JSONEachRow、CSVWithNames、JSONColumns、BSONEachRow、RowBinaryWithNames) 摄取数据时，列名的匹配模式。
+支持的模式：
+
+* match&#95;case：区分大小写匹配
+  * ignore&#95;case：不区分大小写匹配
+  * auto：先尝试区分大小写匹配；如果失败，再尝试不区分大小写匹配。
+
+## input_format_connection_handling \{#input_format_connection_handling\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to allow parsing and processing remaining data in the buffer if the connection closes unexpectedly"}]}]}/>
+
+启用此选项后，如果连接意外关闭，缓冲区中剩余的任何数据将被解析和处理，而不是视为错误。
+
+:::note
+启用此选项会禁用并行解析，并且无法进行去重。
+:::
+
 ## input_format_csv_allow_cr_end_of_line \{#input_format_csv_allow_cr_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -970,6 +995,38 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 限制在解析输入格式数据时生成的数据块大小（以字节为单位）。当在 ClickHouse 端构建数据块时，适用于基于行的输入格式。
 0 表示在字节数上不设上限。
+
+## input_format_max_block_wait_ms \{#input_format_max_block_wait_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "New setting to limit maximum wait time in milliseconds before a block is emitted by input format"}]}]} />
+
+限制在基于行的输入格式解析过程中，在输出一个数据块之前所等待的最大时间（毫秒）。0 表示不限制。
+
+:::note
+此选项仅在启用 `input_format_connection_handling` 时有效。设置该值还会禁用并行解析，并使无法进行去重。
+:::
+
+:::note
+对于流式插入，还必须设置 `min_insert_block_size_rows=0` 和 `min_insert_block_size_bytes=0`。否则，在达到这些阈值之前，已解析的数据块仍可能在数据块压缩阶段累积在内存中，从而无法实现及时插入。
+:::
+
+**示例：以流式方式将 Wikipedia 最近更改数据插入 ClickHouse**
+
+```bash
+clickhouse-client --query 'CREATE TABLE wikipedia_edits (data JSON)'
+
+curl -sS --globoff -H 'Accept: application/json' --no-buffer \
+  'https://stream.wikimedia.org/v2/stream/recentchange' \
+  | clickhouse-client \
+      --query 'INSERT INTO wikipedia_edits FORMAT JSONAsObject' \
+      --input_format_max_block_wait_ms 1000 \
+      --input_format_connection_handling 1 \
+      --min_insert_block_size_rows 0 \
+      --min_insert_block_size_bytes 0
+```
+
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 
@@ -1523,6 +1580,14 @@ Parquet 读取器输出的平均块大小（字节）
 
 Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zstd、none（不压缩）
 
+## output_format_arrow_date_as_uint16 \{#output_format_arrow_date_as_uint16\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "默认将 Date 写为 Arrow DATE32，而不是普通的 UInt16。"}]}]}/>
+
+将 Date 值写为普通的 16 位无符号整数（读取时为 UInt16），而不是转换为 32 位的 Arrow DATE32 类型（读取时为 Date32）。
+
 ## output_format_arrow_fixed_string_as_fixed_byte_array \{#output_format_arrow_fixed_string_as_fixed_byte_array\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1544,6 +1609,28 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse 在 String 数据类型中允许任意二进制数据，通常是 UTF-8。Parquet/ORC/Arrow 中的 String 只支持 UTF-8。因此，可以选择在 Arrow 中为 ClickHouse 的 String 数据类型使用哪种数据类型 —— String 或 Binary。虽然 Binary 在语义上更严格且兼容性更好，但在大多数情况下，默认使用 String 更符合用户预期。"}]}]}/>
 
 对 String 列使用 Arrow 的 String 类型而不是 Binary
+
+## output_format_arrow_unsupported_types_as_binary \{#output_format_arrow_unsupported_types_as_binary\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "1" },
+      {
+        label:
+          "新增设置，将不受支持的 CH 类型转换为 Arrow 二进制数据，而不是抛出 UNKNOWN_TYPE 异常。"
+      }
+    ]
+  }
+]}
+/>
+
+将无法转换的类型以原始二进制数据形式输出。如果为 false，则此类类型会抛出 UNKNOWN&#95;TYPE 异常。
 
 ## output_format_arrow_use_64_bit_indexes_for_dictionary \{#output_format_arrow_use_64_bit_indexes_for_dictionary\}
 
@@ -2149,6 +2236,28 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 对 String 列使用 Parquet 的 String 类型，而不是 Binary 类型。
 
+## output_format_parquet_unsupported_types_as_binary \{#output_format_parquet_unsupported_types_as_binary\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      {
+        label:
+          "用于将不受支持的 CH 类型转换为 parquet（arrow）二进制，而不是抛出 UNKNOWN_TYPE 异常的新设置。"
+      }
+    ]
+  }
+]}
+/>
+
+将无法转换的类型作为原始二进制数据输出。如果为 false，则此类类型会引发 UNKNOWN&#95;TYPE 异常。
+
 ## output_format_parquet_use_custom_encoder \{#output_format_parquet_use_custom_encoder\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -2442,6 +2551,14 @@ Pretty 格式的行数上限。
 
 使用 REPLACE 语句替代 INSERT
 
+## output_format_trim_fixed_string \{#output_format_trim_fixed_string\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "用于去除文本输出格式中 FixedString 值末尾空字节的新设置"}]}]}/>
+
+去除文本输出格式中 FixedString 值末尾的空字节。例如，`toFixedString('John', 8)` 会打印为 `John`，而不是 `John\0\0\0\0`。
+
 ## output_format_tsv_crlf_end_of_line \{#output_format_tsv_crlf_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2534,7 +2651,7 @@ z   IPv4
 
 ## type_json_allow_duplicated_key_with_literal_and_nested_object \{#type_json_allow_duplicated_key_with_literal_and_nested_object\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
 启用后，将允许解析类似 `{"a" : 42, "a" : {"b" : 42}}` 的 JSON，即某个键被重复使用，但其中一个对应的值是嵌套对象的情况。
 

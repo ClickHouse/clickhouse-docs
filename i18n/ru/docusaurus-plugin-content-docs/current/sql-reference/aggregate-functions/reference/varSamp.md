@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## varSamp \{#varSamp\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
 Calculate the sample variance of a data set.
 

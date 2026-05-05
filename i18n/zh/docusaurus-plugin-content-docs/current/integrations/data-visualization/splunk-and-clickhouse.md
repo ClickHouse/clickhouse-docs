@@ -30,7 +30,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 <ClickHouseSupportedBadge/>
 
 :::tip
-想要将 ClickHouse Cloud 审计日志存储到 Splunk 吗？请参阅 ["Storing ClickHouse Cloud Audit logs into Splunk"](/integrations/audit-splunk) 指南。
+想要将 ClickHouse 审计日志存储到 Splunk 吗？请参阅 ["Storing ClickHouse Cloud Audit logs into Splunk"](/integrations/audit-splunk) 指南。
 :::
 
 Splunk 是一款广泛使用的安全与可观测性技术平台，同时也是一个强大的搜索与仪表盘引擎。Splunk 生态中有数百款应用，可用于满足不同的使用场景。

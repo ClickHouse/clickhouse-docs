@@ -335,7 +335,7 @@ parameters of the model config.
 
 The `materialized_view` materialization creates a ClickHouse [materialized view](/sql-reference/statements/create/view#materialized-view) that acts as an insert trigger, automatically transforming and inserting new rows from a source table into a target table. This is one of the most powerful materializations available in dbt-clickhouse.
 
-Due to its depth, this materialization has its own dedicated page. **[Go to the Materialized Views guide](/integrations/dbt/materialized-views)** for the full documentation
+Due to its depth, this materialization has its own dedicated page. **[Go to the Materialized Views guide](/integrations/dbt/materialization-materialized-view)** for the full documentation
 
 ## Materialization: dictionary (experimental) {#materialization-dictionary}
 

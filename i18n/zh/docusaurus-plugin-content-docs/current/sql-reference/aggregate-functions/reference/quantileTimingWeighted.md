@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## quantileTimingWeighted \{#quantileTimingWeighted\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 在给定精度下，根据序列中每个元素的权重计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
-结果是确定性的（不依赖于查询的执行顺序）。该函数针对描述分布的序列（例如网页加载时间或后端响应时间）进行了优化。
+结果是确定性的 (不依赖于查询的执行顺序) 。该函数针对描述分布的序列 (例如网页加载时间或后端响应时间) 进行了优化。
 
-在同一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的效率低于理论上可以达到的效率）。在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
+在同一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，该查询的效率低于理论上可以达到的效率) 。在这种情况下，请使用 [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 **精度**
 
@@ -31,7 +31,7 @@ doc_type: 'reference'
 :::
 
 :::note
-如果没有向函数传入任何值（在使用 `quantileTimingIf` 时），则返回 [NaN](/sql-reference/data-types/float#nan-and-inf)。这样做的目的是将这些情况与结果为零的情况区分开来。关于 `NaN` 值排序的说明，参见 [ORDER BY 子句](/sql-reference/statements/select/order-by)。
+如果没有向函数传入任何值 (在使用 `quantileTimingIf` 时) ，则返回 [NaN](/sql-reference/data-types/float#nan-and-inf)。这样做的目的是将这些情况与结果为零的情况区分开来。关于 `NaN` 值排序的说明，参见 [ORDER BY 子句](/sql-reference/statements/select/order-by)。
 :::
 
 **语法**
@@ -48,7 +48,7 @@ quantileTimingWeighted(level)(expr, weight)
 
 **参数说明**
 
-* `expr` — 对列值进行计算的表达式，返回 Float* 类型的数字。如果向函数传入负值，其行为未定义。如果值大于 30,000（页面加载时间超过 30 秒），则将其视为 30,000。[`Float*`](/sql-reference/data-types/float)
+* `expr` — 对列值进行计算的表达式，返回 Float* 类型的数字。如果向函数传入负值，其行为未定义。如果值大于 30,000 (页面加载时间超过 30 秒) ，则将其视为 30,000。[`Float*`](/sql-reference/data-types/float)
 * `weight` — 包含序列元素权重的列。权重表示该值出现的次数。[`UInt*`](/sql-reference/data-types/int-uint)
 
 **返回值**

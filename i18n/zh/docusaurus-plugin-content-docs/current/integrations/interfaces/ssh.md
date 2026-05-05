@@ -11,6 +11,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # 支持 PTY 的 SSH 接口 \{#ssh-interface-with-pty\}
 
 <ExperimentalBadge />
@@ -53,6 +54,7 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 1
 ```
 
+
 ## 服务器配置 \{#server-configuration\}
 
 要启用 SSH 服务器功能，需要在 `config.xml` 文件中取消对以下部分的注释，或将其添加到文件中：
@@ -82,6 +84,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```bash
 ssh -o "StrictHostKeyChecking no" user@host
 ```
+
 
 ## 配置嵌入式客户端 \{#configuring-embedded-client\}
 

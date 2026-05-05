@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/redis
-title: 'Monitoring Redis Logs with ClickStack'
-sidebar_label: 'Redis Logs'
+title: 'Monitoring Redis logs with ClickStack'
+sidebar_label: 'Redis logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Redis Logs with ClickStack'
@@ -20,15 +20,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Redis Logs with ClickStack {#redis-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor Redis with ClickStack by configuring the OpenTelemetry collector to ingest Redis server logs. You'll learn how to:
-
-- Configure the OTel collector to parse the Redis log format
-- Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize Redis Metrics (connections, commands, memory, errors)
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production Redis.
-
-Time Required: 5-10 minutes
+Collect and visualize Redis server logs in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing Redis {#existing-redis}
@@ -293,7 +285,7 @@ To help you get started monitoring Redis with ClickStack, we provide essential v
 #### The dashboard will be created with all visualizations pre-configured {#created-dashboard}
 
 :::note
-For the demo dataset, set the time range to **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-10-27 10:00:00 - 2025-10-28 10:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard won't have a time range specified by default.
 :::
 
 <Image img={example_dashboard} alt="Example Dashboard"/>
@@ -375,9 +367,11 @@ If your Redis Logs have a different format, you may need to adjust the regex pat
 - `pid:role timestamp level message`
 - Example: `12345:M 28 Oct 2024 14:23:45.123 * Server started`
 
-## Next Steps {#next-steps}
-
-If you want to explore further, here are some next steps to experiment with your dashboard
+## Next steps {#next-steps}
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (error rates, latency thresholds)
 - Create additional [dashboards](/use-cases/observability/clickstack/dashboards) for specific use cases (API monitoring, security events)
+
+## Going to production {#going-to-production}
+
+This guide extends ClickStack's built-in OpenTelemetry Collector for quick setup. For production deployments, we recommend running your own OTel Collector and sending data to ClickStack's OTLP endpoint. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.

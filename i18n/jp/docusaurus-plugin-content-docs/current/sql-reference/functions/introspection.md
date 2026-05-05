@@ -34,7 +34,7 @@ ClickHouse はプロファイラのレポートを [trace&#95;log](/operations/s
 
 ## addressToLine \{#addressToLine\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 ClickHouse サーバープロセス内の仮想メモリアドレスを、ClickHouse のソースコード中のファイル名および行番号に変換します。
 
@@ -71,7 +71,7 @@ SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
 ```response title=Response
--- `trace` フィールドには、サンプリング時点のスタックトレースが含まれます。
+-- The `trace` field contains the stack trace at the moment of sampling.
 Row 1:
 ──────
 event_date:              2019-11-19
@@ -83,7 +83,7 @@ query_id:                421b6855-1858-45a5-8f37-f383409d6d72
 trace:                   [140658411141617,94784174532828,94784076370703,94784076372094,94784076361020,94784175007680,140658411116251,140658403895439]
 ```
 
-**単一のアドレスからソースコードのファイル名と行番号を取得する**
+**単一のアドレスに対してソースコードのファイル名と行番号を取得する**
 
 ```sql title=Query
 SET allow_introspection_functions=1;
@@ -96,11 +96,11 @@ Row 1:
 addressToLine(94784076370703): /build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199
 ```
 
-**関数をスタックトレース全体に対して適用する**
+**スタックトレース全体に関数を適用する**
 
 ```sql title=Query
--- この例では、arrayMap関数がaddressToLine関数を使用してtrace配列の各要素を処理しています。
--- この処理結果は、出力のtrace_source_code_linesカラムに表示されます。
+-- The arrayMap function in this example processing each individual element of the trace array by the addressToLine function.
+-- The result of this processing is seen in the trace_source_code_lines column of output.
 
 SELECT
     arrayStringConcat(arrayMap(x -> addressToLine(x), trace), '\n') AS trace_source_code_lines
@@ -122,9 +122,10 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
+
 ## addressToLineWithInlines \{#addressToLineWithInlines\}
 
-導入バージョン: v22.2
+導入バージョン: v22.2.0
 
 `addressToLine` と似ていますが、すべてのインライン関数を含む配列を返します。
 そのため、`addressToLine` よりも低速になります。
@@ -168,7 +169,7 @@ SELECT addressToLineWithInlines(531055181::UInt64);
 ```sql title=Query
 SET allow_introspection_functions=1;
 
--- arrayJoin関数は配列を行に分割します
+-- The arrayJoin function will split array to rows
 
 SELECT
     ta, addressToLineWithInlines(arrayJoin(trace) AS ta)
@@ -176,6 +177,7 @@ FROM system.trace_log
 WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
+
 
 ```response title=Response
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -224,7 +226,7 @@ WHERE
 
 ## addressToSymbol \{#addressToSymbol\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 ClickHouse サーバープロセス内の仮想メモリアドレスを、ClickHouse のオブジェクトファイルに含まれるシンボル名に変換します。
 
@@ -252,7 +254,7 @@ SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
 ```response title=Response
--- `trace` フィールドには、サンプリング時点のスタックトレースが含まれます。
+-- The `trace` field contains the stack trace at the moment of sampling.
 Row 1:
 ──────
 event_date:    2019-11-20
@@ -282,8 +284,8 @@ addressToSymbol(94138803686098): _ZNK2DB24IAggregateFunctionHelperINS_20Aggregat
 ```sql title=Query
 SET allow_introspection_functions=1;
 
--- arrayMap関数により、trace配列の各要素をaddressToSymbol関数で処理できます。
--- この処理結果は、出力のtrace_symbolsカラムに表示されます。
+-- The arrayMap function allows to process each individual element of the trace array by the addressToSymbols function.
+-- The result of this processing is shown in the trace_symbols column of output.
 
 SELECT
     arrayStringConcat(arrayMap(x -> addressToSymbol(x), trace), '\n') AS trace_symbols
@@ -291,6 +293,7 @@ FROM system.trace_log
 LIMIT 1
 \G
 ```
+
 
 ```response title=Response
 Row 1:
@@ -318,7 +321,7 @@ clone
 
 ## demangle \{#demangle\}
 
-導入: v20.1
+導入: v20.1.0
 
 シンボルを C++ の関数名に変換します。
 このシンボルは通常、関数 `addressToSymbol` によって返されます。
@@ -346,7 +349,7 @@ SELECT * FROM system.trace_log LIMIT 1 \G;
 ```
 
 ```response title=Response
--- `trace` フィールドには、サンプリング時点のスタックトレースが含まれます。
+-- The `trace` field contains the stack trace at the moment of sampling.
 Row 1:
 ──────
 event_date:    2019-11-20
@@ -376,8 +379,8 @@ demangle(addressToSymbol(94138803686098)): DB::IAggregateFunctionHelper<DB::Aggr
 ```sql title=Query
 SET allow_introspection_functions=1;
 
--- arrayMap関数を使用すると、demangle関数によってtrace配列の各要素を処理できます。
--- この処理結果は、出力のtrace_functionsカラムに表示されます。
+-- The arrayMap function allows to process each individual element of the trace array by the demangle function.
+-- The result of this processing is shown in the trace_functions column of output.
 
 SELECT
     arrayStringConcat(arrayMap(x -> demangle(addressToSymbol(x)), trace), '\n') AS trace_functions
@@ -385,6 +388,7 @@ FROM system.trace_log
 LIMIT 1
 \G
 ```
+
 
 ```response title=Response
 Row 1:
@@ -412,7 +416,7 @@ clone
 
 ## isMergeTreePartCoveredBy \{#isMergeTreePartCoveredBy\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 第1引数のパーツが第2引数のパーツに含まれているかどうかを判定する関数です。
 
@@ -446,9 +450,10 @@ SELECT isMergeTreePartCoveredBy(rhs, lhs), isMergeTreePartCoveredBy(lhs, rhs);
 └────────────────────────────────────┴────────────────────────────────────┘
 ```
 
+
 ## logTrace \{#logTrace\}
 
-導入バージョン: v20.12
+導入バージョン: v20.12.0
 
 各[Block](/development/architecture/#block)ごとに、サーバーログへトレースログメッセージを出力します。
 
@@ -480,9 +485,10 @@ SELECT logTrace('logTrace message');
 └──────────────────────────────┘
 ```
 
+
 ## mergeTreePartInfo \{#mergeTreePartInfo\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 `MergeTree` パーツ名から有用な情報を抽出するための関数です。
 
@@ -515,9 +521,10 @@ SELECT info.partition_id, info.min_block, info.max_block, info.level, info.mutat
 └───────────────────┴────────────────┴────────────────┴────────────┴───────────────┘
 ```
 
+
 ## tid \{#tid\}
 
-導入バージョン: v20.12
+導入バージョン: v20.12.0
 
 現在の [Block](/development/architecture/#block) が処理されているスレッド ID を返します。
 

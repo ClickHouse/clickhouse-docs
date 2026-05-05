@@ -80,24 +80,38 @@ SELECT value FROM system.settings where name='async_insert';
 ## カスタム設定 \{#custom_settings\}
 
 共通の[設定](/operations/settings/settings.md)に加えて、ユーザーはカスタム設定を定義できます。
+カスタム設定を使用すると、クエリ、ポリシー、または関数内で参照できる**セッション固有のパラメータ**を渡せます。これは、次のような場合に有用です。
 
-カスタム設定名は、あらかじめ定義された接頭辞のいずれかで始まっていなければなりません。これらの接頭辞の一覧は、サーバー設定ファイル内の [custom&#95;settings&#95;prefixes](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) パラメータで宣言しなければなりません。
+* ユーザー ID や組織に基づいてデータをフィルタリングする
+* Context に応じて異なるビジネスロジックを適用する
+* セッション内で複数のクエリにまたがって状態を持つ情報を維持する
+
+カスタム設定名は、定義したリスト内の事前定義済みプレフィックスのいずれかで始まる必要があります。
+プレフィックスのリストは、サーバー設定 [`custom_settings_prefixes`](../../operations/server-configuration-parameters/settings.md#custom_settings_prefixes) を使用して指定でき、これはサーバー設定ファイルで定義します。
+
+次の例では、`SQL_` をカスタムプレフィックスとして使用しています。
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
+
+:::note
+ClickHouse Cloud では、カスタムプレフィックスを指定できません。
+すべてのカスタムユーザー設定は、`SQL_` プレフィックスで始まります。
+:::
 
 カスタム設定を定義するには、`SET` コマンドを使用します。
 
 ```sql
-SET custom_a = 123;
+SET SQL_a = 123;
 ```
 
-カスタム設定の現在値を取得するには、`getSetting()` 関数を使用してください。
+カスタム設定の現在の値を取得するには、`getSetting()` 関数を使用します。
 
 ```sql
-SELECT getSetting('custom_a');
+SELECT getSetting('SQL_a');
 ```
+
 
 ## 例 \{#examples\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## avgWeighted \{#avgWeighted\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 [加重算術平均](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean)を計算します。
 
@@ -43,7 +43,7 @@ FROM VALUES('x Int8, w Int8', (4, 1), (1, 0), (10, 2))
 └───────────────────┘
 ```
 
-**整数値と浮動小数点数の重みの混在**
+**整数と浮動小数点の重みを混在させる場合**
 
 ```sql title=Query
 SELECT avgWeighted(x, w)

@@ -100,7 +100,9 @@ ORDER BY post_id ASC;
 └─────────┴───────────────┴─────────────────┴─────────────┘
 ```
 
+
 ## 另请参阅 \{#see-also\}
+
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`SimpleState 组合器`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`SimpleAggregateFunction 类型`](/sql-reference/data-types/simpleaggregatefunction)

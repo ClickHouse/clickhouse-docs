@@ -72,12 +72,12 @@ export class CatsController {
 ### Replacing the Nest logger (also for bootstrapping) {#replacing-the-nest-logger}
 
 :::note Important
-By doing this, you give up the dependency injection, meaning that `forRoot` and `forRootAsync` are not needed and shouldn't be used. Remove them from your main module.
+By doing this, you give up the dependency injection, meaning that `forRoot` and `forRootAsync` aren't needed and shouldn't be used. Remove them from your main module.
 :::
 
 Using the dependency injection has one minor drawback. Nest has to bootstrap the
 application first (instantiating modules and providers, injecting dependencies,
-etc.) and during this process the instance of `HyperDXNestLogger` is not yet
+etc.) and during this process the instance of `HyperDXNestLogger` isn't yet
 available, which means that Nest falls back to the internal logger.
 
 One solution is to create the logger outside of the application lifecycle, using

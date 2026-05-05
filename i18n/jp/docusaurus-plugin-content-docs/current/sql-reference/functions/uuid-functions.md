@@ -59,7 +59,7 @@ UUID 生成関数は、同時に実行されているスレッドおよびクエ
 
 ## UUIDNumToString \{#UUIDNumToString\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 UUID のバイナリ表現を受け取り、その形式をオプション引数 `variant`（既定値は `Big-endian`）で指定し、テキスト形式の 36 文字からなる文字列を返します。
 
@@ -111,7 +111,7 @@ SELECT
 
 ## UUIDStringToNum \{#UUIDStringToNum\}
 
-導入: v1.1
+導入: v1.1.0
 
 `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` という形式の 36 文字の文字列を受け取り、そのバイナリ表現として [FixedString(16)](../data-types/fixedstring.md) を返します。フォーマットはオプションで `variant` で指定でき、デフォルトは `Big-endian` です。
 
@@ -163,7 +163,7 @@ SELECT
 
 ## UUIDToNum \{#UUIDToNum\}
 
-導入バージョン: v24.5
+導入バージョン: v24.5.0
 
 [UUID](../data-types/uuid.md) を受け取り、そのバイナリ表現を [FixedString(16)](../data-types/fixedstring.md) 型として返します。フォーマットはオプションの `variant` で指定でき、デフォルトは `Big-endian` です。
 この関数は、`UUIDStringToNum(toString(uuid))` という 2 つの関数呼び出しの組み合わせを置き換えるものであり、UUID からバイト列を取り出す際に中間の文字列変換が不要になります。
@@ -216,7 +216,7 @@ SELECT
 
 ## UUIDv7ToDateTime \{#UUIDv7ToDateTime\}
 
-導入バージョン: v24.5
+導入バージョン: v24.5.0
 
 UUID バージョン 7 のタイムスタンプ部分を返します。
 
@@ -264,7 +264,7 @@ SELECT UUIDv7ToDateTime(toUUID('018f05c9-4ab8-7b86-b64e-c9f03fbd45d1'), 'America
 
 ## dateTime64ToSnowflake \{#dateTime64ToSnowflake\}
 
-導入バージョン: v21.10
+導入バージョン: v21.10.0
 
 <DeprecatedBadge />
 
@@ -308,7 +308,7 @@ WITH toDateTime64('2021-08-15 18:57:56.492', 3, 'Asia/Shanghai') AS dt64 SELECT 
 
 ## dateTime64ToSnowflakeID \{#dateTime64ToSnowflakeID\}
 
-導入バージョン: v24.6
+導入バージョン: v24.6.0
 
 [DateTime64](../data-types/datetime64.md) の値を、指定された時刻における最初の [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) に変換します。
 
@@ -342,7 +342,7 @@ SELECT dateTime64ToSnowflakeID(toDateTime64('2021-08-15 18:57:56', 3, 'Asia/Shan
 
 ## dateTimeToSnowflake \{#dateTimeToSnowflake\}
 
-導入バージョン: v21.10
+導入バージョン: v21.10.0
 
 <DeprecatedBadge />
 
@@ -386,7 +386,7 @@ WITH toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai') AS dt SELECT dateTimeToS
 
 ## dateTimeToSnowflakeID \{#dateTimeToSnowflakeID\}
 
-導入バージョン: v24.6
+導入バージョン: v24.6.0
 
 [DateTime](../data-types/datetime.md) の値を、指定した時刻に対応する最初の [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) に変換します。
 
@@ -420,7 +420,7 @@ SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 
 ## dateTimeToUUIDv7 \{#dateTimeToUUIDv7\}
 
-導入バージョン: v25.9
+導入バージョン: v25.9.0
 
 与えられた時刻の [DateTime](../data-types/datetime.md) 値を基に、その時刻の [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7) を生成します。
 
@@ -477,7 +477,7 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
 
 ## generateSnowflakeID \{#generateSnowflakeID\}
 
-導入: v24.6
+導入: v24.6.0
 
 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) を生成します。
 
@@ -532,7 +532,7 @@ SELECT generateSnowflakeID(1), generateSnowflakeID(2);
 └────────────────────────┴────────────────────────┘
 ```
 
-**式とマシン ID を指定する場合**
+**式とマシン ID を指定した場合**
 
 ```sql title=Query
 SELECT generateSnowflakeID('expr', 1);
@@ -547,7 +547,7 @@ SELECT generateSnowflakeID('expr', 1);
 
 ## generateUUIDv4 \{#generateUUIDv4\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 [バージョン 4](https://tools.ietf.org/html/rfc4122#section-4.4)の[UUID](../data-types/uuid.md)を生成します。
 
@@ -596,7 +596,7 @@ SELECT generateUUIDv4(1), generateUUIDv4(1);
 
 ## generateUUIDv7 \{#generateUUIDv7\}
 
-導入バージョン: v24.5
+導入バージョン: v24.5.0
 
 [バージョン7](https://datatracker.ietf.org/doc/html/draft-peabody-dispatch-new-uuid-format-04)の[UUID](../data-types/uuid.md)を生成します。
 
@@ -651,7 +651,7 @@ SELECT generateUUIDv7(1), generateUUIDv7(1);
 
 ## snowflakeIDToDateTime \{#snowflakeIDToDateTime\}
 
-導入: v24.6
+導入: v24.6.0
 
 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) のタイムスタンプ部分を、型 [DateTime](../data-types/datetime.md) の値として返します。
 
@@ -688,7 +688,7 @@ SELECT snowflakeIDToDateTime(7204436857747984384) AS res
 
 ## snowflakeIDToDateTime64 \{#snowflakeIDToDateTime64\}
 
-導入バージョン: v24.6
+導入バージョン: v24.6.0
 
 [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID) のタイムスタンプ部分を、[DateTime64](../data-types/datetime64.md) 型の値として返します。
 
@@ -725,7 +725,7 @@ SELECT snowflakeIDToDateTime64(7204436857747984384) AS res
 
 ## snowflakeToDateTime \{#snowflakeToDateTime\}
 
-導入バージョン: v21.10
+導入バージョン: v21.10.0
 
 <DeprecatedBadge />
 
@@ -770,7 +770,7 @@ SELECT snowflakeToDateTime(CAST('1426860702823350272', 'Int64'), 'UTC');
 
 ## snowflakeToDateTime64 \{#snowflakeToDateTime64\}
 
-導入バージョン: v21.10
+導入バージョン: v21.10.0
 
 <DeprecatedBadge />
 
@@ -815,7 +815,7 @@ SELECT snowflakeToDateTime64(CAST('1426860802823350272', 'Int64'), 'UTC');
 
 ## toUUIDOrDefault \{#toUUIDOrDefault\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 String 型の値を UUID 型に変換します。変換に失敗した場合は、エラーをスローせずに指定されたデフォルトの UUID 値を返します。
 
@@ -850,7 +850,7 @@ SELECT toUUIDOrDefault('61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0c404-
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**変換に失敗した場合、デフォルトの UUID を返す**
+**変換に失敗するとデフォルトの UUID を返す**
 
 ```sql title=Query
 SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0c404-5cb3-11e7-907b-a6006ad3dba0'));
@@ -865,7 +865,7 @@ SELECT toUUIDOrDefault('-----61f0c404-5cb3-11e7-907b-a6006ad3dba0', toUUID('59f0
 
 ## toUUIDOrNull \{#toUUIDOrNull\}
 
-導入バージョン: v20.12
+導入バージョン: v20.12.0
 
 入力値を `UUID` 型に変換しますが、エラーが発生した場合は `NULL` を返します。
 

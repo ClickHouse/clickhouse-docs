@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactInclusive \{#quantileExactInclusive\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 与 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) 类似，它计算数值数据序列的精确[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 为了获得精确值，所有传入的值会被合并为一个数组，然后对该数组进行完整排序。
 排序算法的复杂度为 `O(N·log(N))`，其中 `N = std::distance(first, last)` 次比较。
 
-在一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率低于理论最优）。
+在一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，该查询的执行效率低于理论最优) 。
 在这种情况下，请使用 [quantiles](/sql-reference/aggregate-functions/reference/quantiles) 函数。
 
 **语法**
@@ -31,7 +31,7 @@ quantileExactInclusive(level)(expr)
 
 **参数**
 
-* `level` — 分位数的级别。取值为 0 到 1（含）的常量浮点数。建议将 `level` 设置在 `[0.01, 0.99]` 范围内。[`Float*`](/sql-reference/data-types/float)
+* `level` — 分位数的级别。取值为 0 到 1 (含) 的常量浮点数。建议将 `level` 设置在 `[0.01, 0.99]` 范围内。[`Float*`](/sql-reference/data-types/float)
 
 **参数列表**
 
@@ -55,7 +55,7 @@ SELECT quantileExactInclusive(0.25)(number) FROM numbers(5);
 └──────────────────────────────────────┘
 ```
 
-**计算多个分位点**
+**计算多个分位数级别**
 
 ```sql title=Query
 SELECT quantileExactInclusive(0.1)(number), quantileExactInclusive(0.9)(number) FROM numbers(10);

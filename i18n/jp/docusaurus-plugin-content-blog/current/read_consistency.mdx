@@ -22,7 +22,7 @@ ClickHouse Cloud にデータを書き込んでいます。データを読み込
 
 ### 任意のノードへのアクセス \{#talking-to-a-random-node\}
 
-同じノードと通信していることを保証できない場合（例えば、ロードバランサーによって振り分けられる HTTPS リクエスト経由でノードにアクセスしている場合）、次のいずれかの方法を取ることができます。
+同じノードと通信していることを保証できない場合 (例えば、ロードバランサーによって振り分けられる HTTPS リクエスト経由でノードにアクセスしている場合) 、次のいずれかの方法を取ることができます。
 
 A)
 
@@ -47,4 +47,4 @@ ClickHouse Cloud と、そのデフォルトの [SharedMergeTree](https://clickh
 
 [`SYSTEM SYNC REPLICAS`](https://clickhouse.com/docs/sql-reference/statements/system#sync-replica) や [`select_sequential_consistency`](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency) を使用すると、ClickHouse Keeper への負荷が増加し、サービス自体の負荷状況によってはパフォーマンスが低下する可能性があります。
 
-推奨されるアプローチは、同じセッション、またはネイティブプロトコル（スティッキーコネクション）を用いて書き込み／読み取りを行うことです。
+推奨されるアプローチは、同じセッション、またはネイティブプロトコル (スティッキーコネクション) を用いて書き込み／読み取りを行うことです。

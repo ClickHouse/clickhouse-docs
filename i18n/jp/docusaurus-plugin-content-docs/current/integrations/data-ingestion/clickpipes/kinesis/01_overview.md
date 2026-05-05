@@ -4,7 +4,7 @@ description: 'Amazon Kinesis データソースを ClickHouse Cloud にシーム
 slug: /integrations/clickpipes/kinesis
 title: 'Amazon Kinesis と ClickHouse Cloud の統合'
 doc_type: 'guide'
-keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'データインジェスト']
+keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'データインジェスト', '圧縮', 'gzip', 'zstd', 'lz4', 'snappy']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -26,7 +26,9 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse Cloud への Amazon Kinesis の統合 \{#integrating-amazon-kinesis-with-clickhouse-cloud\}
+# Amazon Kinesis と ClickHouse Cloud の統合 \{#integrating-amazon-kinesis-with-clickhouse-cloud\}
+
+Kinesis ClickPipes は、ClickPipes UI を使って手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使ってプログラムからデプロイおよび管理することもできます。
 
 ## 前提条件 \{#prerequisite\}
 
@@ -96,6 +98,23 @@ import Image from '@theme/IdealImage';
 サポートされているデータ形式は次のとおりです。
 
 - [JSON](/interfaces/formats/JSON)
+
+## Compression \{#compression\}
+
+ClickPipes for Kinesis は、圧縮されたレコードを自動的に検出して解凍します。Kafka ではクライアントライブラリが透過的に解凍を処理するのに対し、Kinesis は生のバイト列を配信しますが、これは ClickPipes が設定不要で処理します。
+
+サポートされている圧縮 codec は次のとおりです。
+
+- **gzip**
+- **zstd**
+- **lz4**
+- **snappy** (フレーム形式)
+
+圧縮は、各レコード内のマジックバイトによって自動的に検出されます。既知の圧縮シグネチャが見つからない場合、そのレコードは非圧縮として扱われます。検出された圧縮の型は schema inference 時にも表示されるため、UI のサンプルデータプレビューには解凍後のデータが正しく表示されます。
+
+:::note
+自動検出は、JSON や CSV などのテキストベースの形式に対して安全です。これは、表示可能な ASCII 文字が圧縮のマジックバイトと衝突することがないためです。
+:::
 
 ## サポート対象のデータ型 \{#supported-data-types\}
 

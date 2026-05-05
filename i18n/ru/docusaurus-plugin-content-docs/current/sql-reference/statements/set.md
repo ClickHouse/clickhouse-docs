@@ -29,6 +29,29 @@ SET force_index_by_date = 1
 SET force_index_by_date
 ```
 
+## SET TIME ZONE \{#set-time-zone\}
+
+```sql
+SET TIME ZONE [=] 'timezone'
+```
+
+Устанавливает часовой пояс сеанса. Это псевдоним для `SET session_timezone = 'timezone'`, предусмотренный для совместимости с PostgreSQL и другими SQL-базами данных.
+
+Многие SQL-клиенты, ORM и JDBC-драйверы автоматически выполняют `SET TIME ZONE` при подключении. Этот синтаксис позволяет таким инструментам работать с ClickHouse без специальных обходных решений.
+
+```sql
+SET TIME ZONE 'UTC';
+SET TIME ZONE 'Europe/Amsterdam';
+SET TIME ZONE 'America/New_York';
+
+-- Verify the current session time zone
+SELECT getSetting('session_timezone');
+```
+
+Значение часового пояса должно быть допустимым именем из [базы данных часовых поясов IANA](https://www.iana.org/time-zones). Недопустимое имя часового пояса приведет к ошибке.
+
+Дополнительные сведения о настройке `session_timezone` см. в разделе [session_timezone](/operations/settings/settings#session_timezone).
+
 ## Настройка параметров запроса \{#setting-query-parameters\}
 
 Оператор `SET` также можно использовать для определения параметров запроса, добавляя к имени параметра префикс `param_`.

@@ -84,7 +84,7 @@ ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL
 
 <AddARemoteSystem />
 
-## 示例 1：使用 Integration 表引擎从 MySQL 迁移到 ClickHouse Cloud \{#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine\}
+## 示例：使用 Integration 表引擎从 MySQL 迁移到 ClickHouse Cloud \{#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine\}
 
 我们将使用 [integration 表引擎](/engines/table-engines/integrations/mysql/)（由 [mysql 表函数](/sql-reference/table-functions/mysql/) 动态创建）从源 MySQL 数据库读取数据，并使用 [remoteSecure 表函数](/sql-reference/table-functions/remote/) 将数据写入您在 ClickHouse Cloud 服务中的目标表。
 
@@ -122,18 +122,3 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 :::note
 在 `clickhouse-local` 主机本地不会存储任何数据。相反，数据会从源 MySQL 表中读取，然后立即写入 ClickHouse Cloud 服务上的目标表。
 :::
-
-## 示例 2：使用 JDBC Bridge 将 MySQL 迁移到 ClickHouse Cloud \{#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge\}
-
-我们将使用 [JDBC 集成表引擎](/engines/table-engines/integrations/jdbc.md)（由 [jdbc 表函数](/sql-reference/table-functions/jdbc.md) 动态创建），配合 [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) 和 MySQL JDBC 驱动，从源 MySQL 数据库中读取数据，并使用 [remoteSecure 表函数](/sql-reference/table-functions/remote.md)
-将数据写入 ClickHouse Cloud 服务中的目标表。
-
-<Image img={ch_local_04} size='lg' alt='迁移自管理 ClickHouse'  />
-
-### 在目标 ClickHouse Cloud 服务中： \{#on-the-destination-clickhouse-cloud-service-1\}
-
-#### 创建目标数据库： \{#create-the-destination-database-1\}
-
-```sql
-  CREATE DATABASE db
-  ```

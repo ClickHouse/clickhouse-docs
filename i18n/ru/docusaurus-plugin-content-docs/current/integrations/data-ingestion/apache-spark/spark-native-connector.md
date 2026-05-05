@@ -16,7 +16,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 # Коннектор Spark \{#spark-connector\}
 
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 Этот коннектор использует оптимизации, специфичные для ClickHouse, такие как расширенное разбиение на партиции и проталкивание предикатов, чтобы
 повысить производительность запросов и эффективность обработки данных.
@@ -32,21 +32,21 @@ Hive Metastore или AWS Glue.
 Каталог по умолчанию в Spark — `spark_catalog`, а таблицы идентифицируются как `{catalog name}.{database}.{table}`. С новой
 функциональностью каталогов теперь можно добавлять и использовать несколько каталогов в одном приложении Spark.
 
+<TOCInline toc={toc} />
+
 ## Выбор между Catalog API и TableProvider API \{#choosing-between-apis\}
 
 Коннектор ClickHouse для Spark поддерживает два варианта доступа: **Catalog API** и **TableProvider API** (форматно-ориентированный доступ). Понимание различий помогает выбрать правильный подход для вашего сценария использования.
 
 ### Catalog API vs TableProvider API \{#catalog-vs-tableprovider-comparison\}
 
-| Возможность | Catalog API | TableProvider API |
-|---------|-------------|-------------------|
-| **Configuration** | Централизованная через конфигурацию Spark | Для каждой операции через параметры (options) |
-| **Table Discovery** | Автоматическое обнаружение через каталог | Ручное указание таблицы |
-| **DDL Operations** | Полная поддержка (CREATE, DROP, ALTER) | Ограниченная (только автоматическое создание таблицы) |
-| **Spark SQL Integration** | Нативная интеграция (`clickhouse.database.table`) | Требуется указание формата |
-| **Use Case** | Долгосрочный, стабильный доступ с централизованной конфигурацией | Разовый, динамический или временный доступ |
-
-<TOCInline toc={toc}></TOCInline>
+| Возможность               | Catalog API                                                      | TableProvider API                                     |
+| ------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------- |
+| **Configuration**         | Централизованная через конфигурацию Spark                        | Для каждой операции через параметры (options)         |
+| **Table Discovery**       | Автоматическое обнаружение через каталог                         | Ручное указание таблицы                               |
+| **DDL Operations**        | Полная поддержка (CREATE, DROP, ALTER)                           | Ограниченная (только автоматическое создание таблицы) |
+| **Spark SQL Integration** | Нативная интеграция (`clickhouse.database.table`)                | Требуется указание формата                            |
+| **Use Case**              | Долгосрочный, стабильный доступ с централизованной конфигурацией | Разовый, динамический или временный доступ            |
 
 ## Требования \{#requirements\}
 
@@ -381,92 +381,88 @@ API TableProvider предоставляет ряд мощных функций:
 
 При записи в несуществующую таблицу коннектор автоматически создаёт таблицу с соответствующей схемой. Коннектор предоставляет разумные значения по умолчанию:
 
-- **Движок (Engine)**: По умолчанию используется `MergeTree()`, если явно не указан. Вы можете указать другой движок с помощью опции `engine` (например, `ReplacingMergeTree()`, `SummingMergeTree()` и т. д.)
-- **ORDER BY**: **Обязательно** — при создании новой таблицы вы должны явно указать опцию `order_by`. Коннектор проверяет, что все указанные столбцы существуют в схеме.
-- **Поддержка ключей с типом Nullable**: Автоматически добавляет `settings.allow_nullable_key=1`, если ORDER BY содержит столбцы типа Nullable
+* **Движок (Engine)**: По умолчанию используется `MergeTree()`, если явно не указан. Вы можете указать другой движок с помощью опции `engine` (например, `ReplacingMergeTree()`, `SummingMergeTree()` и т. д.)
+* **ORDER BY**: **Обязательно** — при создании новой таблицы вы должны явно указать опцию `order_by`. Коннектор проверяет, что все указанные столбцы существуют в схеме.
+* **Поддержка ключей с типом Nullable**: Автоматически добавляет `settings.allow_nullable_key=1`, если ORDER BY содержит столбцы типа Nullable
 
 <Tabs groupId="spark_apis">
-<TabItem value="Python" label="Python" default>
+  <TabItem value="Python" label="Python" default>
+    ```python
+    # Таблица будет создана автоматически с явным ORDER BY (обязательно)
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id") \
+        .mode("append") \
+        .save()
 
-```python
-# Таблица будет создана автоматически с явным ORDER BY (обязательно)
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id") \
-    .mode("append") \
-    .save()
+    # Задание параметров создания таблицы с пользовательским движком
+    df.write \
+        .format("clickhouse") \
+        .option("host", "your-host") \
+        .option("database", "default") \
+        .option("table", "new_table") \
+        .option("order_by", "id, timestamp") \
+        .option("engine", "ReplacingMergeTree()") \
+        .option("settings.allow_nullable_key", "1") \
+        .mode("append") \
+        .save()
+    ```
+  </TabItem>
 
-# Задание параметров создания таблицы с пользовательским движком
-df.write \
-    .format("clickhouse") \
-    .option("host", "your-host") \
-    .option("database", "default") \
-    .option("table", "new_table") \
-    .option("order_by", "id, timestamp") \
-    .option("engine", "ReplacingMergeTree()") \
-    .option("settings.allow_nullable_key", "1") \
-    .mode("append") \
-    .save()
-```
+  <TabItem value="Scala" label="Scala">
+    ```scala
+    // Таблица будет создана автоматически с явным ORDER BY (обязательно)
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id")
+      .mode("append")
+      .save()
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+    // С явными параметрами создания таблицы и пользовательским движком
+    df.write
+      .format("clickhouse")
+      .option("host", "your-host")
+      .option("database", "default")
+      .option("table", "new_table")
+      .option("order_by", "id, timestamp")
+      .option("engine", "ReplacingMergeTree()")
+      .option("settings.allow_nullable_key", "1")
+      .mode("append")
+      .save()
+    ```
+  </TabItem>
 
-```scala
-// Таблица будет создана автоматически с явным ORDER BY (обязательно)
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id")
-  .mode("append")
-  .save()
+  <TabItem value="Java" label="Java">
+    ```java
+    // Таблица будет создана автоматически с явным ORDER BY (обязательно)
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id")
+        .mode("append")
+        .save();
 
-// С явными параметрами создания таблицы и пользовательским движком
-df.write
-  .format("clickhouse")
-  .option("host", "your-host")
-  .option("database", "default")
-  .option("table", "new_table")
-  .option("order_by", "id, timestamp")
-  .option("engine", "ReplacingMergeTree()")
-  .option("settings.allow_nullable_key", "1")
-  .mode("append")
-  .save()
-```
-
-</TabItem>
-<TabItem value="Java" label="Java">
-
-```java
-// Таблица будет создана автоматически с явным ORDER BY (обязательно)
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id")
-    .mode("append")
-    .save();
-
-// С явными параметрами создания таблицы и пользовательским движком
-df.write()
-    .format("clickhouse")
-    .option("host", "your-host")
-    .option("database", "default")
-    .option("table", "new_table")
-    .option("order_by", "id, timestamp")
-    .option("engine", "ReplacingMergeTree()")
-    .option("settings.allow_nullable_key", "1")
-    .mode("append")
-    .save();
-```
-
-</TabItem>
+    // С явными параметрами создания таблицы и пользовательским движком
+    df.write()
+        .format("clickhouse")
+        .option("host", "your-host")
+        .option("database", "default")
+        .option("table", "new_table")
+        .option("order_by", "id, timestamp")
+        .option("engine", "ReplacingMergeTree()")
+        .option("settings.allow_nullable_key", "1")
+        .mode("append")
+        .save();
+    ```
+  </TabItem>
 </Tabs>
 
 :::important
@@ -498,17 +494,17 @@ df.write()
 
 Эти параметры используются, когда таблица ещё не существует и её нужно создать:
 
-| Параметр                    | Описание                                                                    | Значение по умолчанию | Обязательный |
-|-----------------------------|-----------------------------------------------------------------------------|------------------------|--------------|
-| `order_by`                  | Столбец или столбцы, используемые в выражении ORDER BY. Несколько столбцов указываются через запятую | Н/Д                    | **Да**       |
-| `engine`                    | Движок таблицы ClickHouse (например, `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()`, и т. д.) | `MergeTree()`          | Нет          |
-| `settings.allow_nullable_key` | Включить Nullable-ключи в ORDER BY (для ClickHouse Cloud)               | Определяется автоматически** | Нет   |
-| `settings.<key>`            | Любой параметр таблицы ClickHouse                                           | Н/Д                    | Нет          |
-| `cluster`                   | Имя кластера для distributed таблиц                                        | Н/Д                    | Нет          |
-| `clickhouse.column.<name>.variant_types` | Список типов ClickHouse для столбцов типа Variant, разделённый запятыми (например, `String, Int64, Bool, JSON`). Имена типов чувствительны к регистру. Пробелы после запятых необязательны. | Н/Д | Нет |
+| Параметр                                 | Описание                                                                                                                                                                                    | Значение по умолчанию        | Обязательный |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | ------------ |
+| `order_by`                               | Столбцы, используемые в выражении ORDER BY. Несколько столбцов указываются через запятую                                                                                                    | Н/Д                          | **Да**       |
+| `engine`                                 | Движок таблицы ClickHouse (например, `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()`, и т. д.)                                                                                  | `MergeTree()`                | Нет          |
+| `settings.allow_nullable_key`            | Включить Nullable-ключи в ORDER BY (для ClickHouse Cloud)                                                                                                                                   | Определяется автоматически** | Нет          |
+| `settings.<key>`                         | Любой параметр таблицы ClickHouse                                                                                                                                                           | Н/Д                          | Нет          |
+| `cluster`                                | Имя кластера для distributed таблиц                                                                                                                                                         | Н/Д                          | Нет          |
+| `clickhouse.column.<name>.variant_types` | Список типов ClickHouse для столбцов типа Variant, разделённый запятыми (например, `String, Int64, Bool, JSON`). Имена типов чувствительны к регистру. Пробелы после запятых необязательны. | Н/Д                          | Нет          |
 
-\* Параметр `order_by` обязателен при создании новой таблицы. Все указанные столбцы должны существовать в схеме.  
-\** Автоматически устанавливается в `1`, если ORDER BY содержит столбцы типа Nullable и параметр не задан явно.
+* Параметр `order_by` обязателен при создании новой таблицы. Все указанные столбцы должны существовать в схеме.
+** Автоматически устанавливается в `1`, если ORDER BY содержит столбцы типа Nullable и параметр не задан явно.
 
 :::tip
 **Рекомендация**: Для ClickHouse Cloud явно задайте `settings.allow_nullable_key=1`, если ваши столбцы в ORDER BY могут быть Nullable, так как ClickHouse Cloud требует этот параметр.
@@ -1484,11 +1480,11 @@ spark.conf.set("spark.clickhouse.write.format", "json")  // Recommended for Vari
 | ------------------------------------------------------------------------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | spark.clickhouse.ignoreUnsupportedTransform                              | true                                                             | ClickHouse поддерживает использование сложных выражений в качестве ключей сегментирования или значений партиций, например `cityHash64(col_1, col_2)`, которые в данный момент не поддерживаются Spark. Если `true`, игнорировать неподдерживаемые выражения и записывать предупреждение в журнал, иначе немедленно завершать работу с исключением. **Предупреждение**: когда `spark.clickhouse.write.distributed.convertLocal=true`, игнорирование неподдерживаемых ключей сегментирования может привести к порче данных. Коннектор проверяет это и по умолчанию выбрасывает ошибку. Чтобы разрешить такое поведение, явно установите `spark.clickhouse.write.distributed.convertLocal.allowUnsupportedSharding=true`. | 0.4.0    |
 | spark.clickhouse.read.compression.codec                                  | lz4                                                              | Кодек, используемый для декомпрессии данных при чтении. Поддерживаемые кодеки: none и lz4.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | 0.5.0    |
-| spark.clickhouse.read.distributed.convertLocal                           | true                                                             | При чтении distributed таблицы использовать локальную таблицу вместо неё самой. Если `true`, параметр `spark.clickhouse.read.distributed.useClusterNodes` игнорируется.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | 0.1.0    |
+| spark.clickhouse.read.distributed.convertLocal                           | true                                                             | При чтении distributed таблицы читать локальную таблицу вместо неё. Если `true`, параметр `spark.clickhouse.read.distributed.useClusterNodes` игнорируется.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 0.1.0    |
 | spark.clickhouse.read.fixedStringAs                                      | binary                                                           | Считывать тип ClickHouse FixedString как указанный тип данных Spark. Поддерживаемые типы: binary, string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 0.8.0    |
 | spark.clickhouse.read.format                                             | json                                                             | Формат сериализации при чтении. Поддерживаемые форматы: json, binary                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 0.6.0    |
 | spark.clickhouse.read.runtimeFilter.enabled                              | false                                                            | Включить фильтрацию во время выполнения при чтении.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | 0.8.0    |
-| spark.clickhouse.read.splitByPartitionId                                 | true                                                             | Если `true`, формировать фильтр по входной партиции по виртуальному столбцу `_partition_id`, а не по значению партиции. Известны проблемы со сборкой SQL-предикатов по значению партиции. Эта функция требует ClickHouse Server версии v21.6+.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 0.4.0    |
+| spark.clickhouse.read.splitByPartitionId                                 | true                                                             | Если `true`, формировать фильтр по входной партиции по виртуальному столбцу `_partition_id`, а не по значению партиции. Известны проблемы со сборкой SQL-предикатов по значению партиции. Эта функция требует ClickHouse Server версии v21.6+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | 0.4.0    |
 | spark.clickhouse.useNullableQuerySchema                                  | false                                                            | Если значение `true`, помечает все поля схемы запроса как Nullable при выполнении `CREATE/REPLACE TABLE ... AS SELECT ...` при создании таблицы. Обратите внимание: эта конфигурация требует SPARK-43390 (доступно в Spark 3.5); без этого патча она всегда действует как `true`.                                                                                                                                                                                                                                                                                                                                                                                                                                      | 0.8.0    |
 | spark.clickhouse.write.batchSize                                         | 10000                                                            | Количество записей в одном пакете при записи данных в ClickHouse.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | 0.1.0    |
 | spark.clickhouse.write.compression.codec                                 | lz4                                                              | Кодек, используемый для сжатия данных при записи. Поддерживаемые кодеки: none, lz4.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | 0.3.0    |

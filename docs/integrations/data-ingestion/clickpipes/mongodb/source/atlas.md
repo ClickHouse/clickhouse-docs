@@ -22,7 +22,7 @@ import Image from '@theme/IdealImage';
 
 ## Configure oplog retention {#enable-oplog-retention}
 
-Minimum oplog retention of 24 hours is required for replication. We recommend setting the oplog retention to 72 hours or longer to ensure that the oplog is not truncated before the initial snapshot is completed. To set the oplog retention via UI:
+Minimum oplog retention of 24 hours is required for replication. We recommend setting the oplog retention to 72 hours or longer to ensure that the oplog isn't truncated before the initial snapshot is completed. To set the oplog retention via UI:
 
 1. Navigate to your cluster's `Overview` tab in the MongoDB Atlas console and click on the `Configuration` tab.
 <Image img={mongo_atlas_configuration} alt="Navigate to cluster configuration" size="lg" border/>
@@ -37,7 +37,7 @@ Minimum oplog retention of 24 hours is required for replication. We recommend se
 
 ## Configure a database user {#configure-database-user}
 
-Once you are logged in to your MongoDB Atlas console, click `Database Access` under the Security tab in the left navigation bar. Click on "Add New Database User".
+Once you're logged in to your MongoDB Atlas console, click `Database Access` under the Security tab in the left navigation bar. Click on "Add New Database User".
 
 ClickPipes requires password authentication:
 
@@ -52,7 +52,7 @@ You can find them in the `Specific Privileges` section:
 
 <Image img={mongo_atlas_add_roles} alt="Configure user roles" size="lg" border/>
 
-You can further specify the cluster(s)/instance(s) you wish to grant access to ClickPipes user:
+You can further specify the clusters/instances you wish to grant access to ClickPipes user:
 
 <Image img={mongo_atlas_restrict_access} alt="Restrict cluster/instance acces" size="lg" border/>
 

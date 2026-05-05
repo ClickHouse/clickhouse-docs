@@ -22,7 +22,7 @@ keywords: ['读取一致性']
 
 ### 与随机节点通信 \{#talking-to-a-random-node\}
 
-如果你无法保证自己总是与同一个节点通信（例如，通过会被负载均衡器分发到不同节点的 HTTPS 调用与节点通信），你可以选择：
+如果你无法保证自己总是与同一个节点通信 (例如，通过会被负载均衡器分发到不同节点的 HTTPS 调用与节点通信) ，你可以选择：
 
 A)
 
@@ -43,8 +43,8 @@ SELECT
 SETTINGS select_sequential_consistency = 1
 ```
 
-请注意，当使用 ClickHouse Cloud 及其默认的 [SharedMergeTree](https://clickhouse.com/docs/cloud/reference/shared-merge-tree) 表引擎时，无需使用 `insert_quorum_parallel`——对 SharedMergeTree 的所有插入本身就是仲裁式插入（按设计如此）。
+请注意，当使用 ClickHouse Cloud 及其默认的 [SharedMergeTree](https://clickhouse.com/docs/cloud/reference/shared-merge-tree) 表引擎时，无需使用 `insert_quorum_parallel`——对 SharedMergeTree 的所有插入本身就是仲裁式插入 (按设计如此) 。
 
 使用 [`SYSTEM SYNC REPLICAS`](https://clickhouse.com/docs/sql-reference/statements/system#sync-replica) 或 [`select_sequential_consistency`](https://clickhouse.com/docs/operations/settings/settings#select_sequential_consistency) 会增加 ClickHouse Keeper 的负载，并且根据服务当前的负载情况，可能导致性能下降。
 
-推荐的做法是使用同一个会话或使用原生协议（粘性连接）进行写入/读取操作。
+推荐的做法是使用同一个会话或使用原生协议 (粘性连接) 进行写入/读取操作。

@@ -1,6 +1,6 @@
 ---
-title: 'Pausing and Resuming a Postgres ClickPipe'
-description: 'Pausing and Resuming a Postgres ClickPipe'
+title: 'Pausing and resuming a Postgres ClickPipe'
+description: 'Pausing and resuming a Postgres ClickPipe'
 sidebar_label: 'Pause table'
 slug: /integrations/clickpipes/postgres/pause_and_resume
 doc_type: 'guide'
@@ -35,7 +35,7 @@ There are scenarios where it would be useful to pause a Postgres ClickPipe. For 
 5. In around 5 seconds (and also on page refresh), the status of the pipe should be **Paused**.
 
 :::warning
-Pausing a Postgres ClickPipe will not pause the growth of replication slots.
+Pausing a Postgres ClickPipe won't pause the growth of replication slots.
 :::
 
 <Image img={pause_status} border size="md"/>

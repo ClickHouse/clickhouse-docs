@@ -108,30 +108,30 @@ import TabItem from '@theme/TabItem';
       ClickHouse Cloud のランディングページから、マネージド ClickStack を有効化したいサービスを選択します。
 
       :::important リソースの見積もり
-      本ガイドは、ClickStackで取り込みとクエリを実行する予定のオブザーバビリティデータ量を処理するために、十分なリソースがプロビジョニング済みであることを前提としています。必要なリソースを見積もるには、[本番環境ガイド](/use-cases/observability/clickstack/production#estimating-resources)を参照してください。
+      本ガイドは、ClickStackで取り込みとクエリを実行する予定のオブザーバビリティデータ量を処理するために、十分なリソースがプロビジョニング済みであることを前提としています。必要なリソースを見積もるには、[リソースの見積もり](/use-cases/observability/clickstack/estimating-resources)ガイドを参照してください。
 
       ClickHouseサービスが既にリアルタイムアプリケーション分析などの既存のワークロードをホストしている場合は、[ClickHouse Cloudのウェアハウス機能](/cloud/reference/warehouses)を使用して子サービスを作成し、オブザーバビリティワークロードを分離することを推奨します。これにより、既存のアプリケーションを中断することなく、両方のサービスからデータセットへのアクセスを維持できます。
       :::
 
       <Image img={select_service} alt="サービスを選択" size="lg" />
 
-      ### ClickStack UIに移動する
+      ### ClickStack UI に移動する
 
       左側のナビゲーションメニューから&#39;ClickStack&#39;を選択します。ClickStack UIにリダイレクトされ、ClickHouse Cloudの権限に基づいて自動的に認証されます。
 
-      サービス内にOpenTelemetryテーブルが既に存在する場合、自動的に検出され、対応するデータソースが作成されます。
+      サービス内に OpenTelemetry テーブルが既に存在する場合、自動的に検出され、対応するデータソースが作成されます。
 
       :::note データソースの自動検出
       自動検出は、ClickStack ディストリビューションの OpenTelemetry コレクターが提供する標準 OpenTelemetry テーブルスキーマに依存しています。最も完全なテーブルセットを持つデータベースに対してソースが作成されます。必要に応じて、追加のテーブルを[個別のデータソース](/use-cases/observability/clickstack/config#datasource-settings)として追加することができます。
       :::
 
-      自動検出が成功すると、検索ビューにリダイレクトされ、すぐにデータの探索を開始できます。
+      自動検出が成功すると、検索ビューに遷移し、すぐにデータの探索を開始できます。
 
       <Image img={clickstack_managed_ui} size="lg" alt="ClickStack UI" />
 
       このステップが成功した場合、これで完了です 🎉。そうでない場合は、インジェストのセットアップに進んでください。
 
-      ### インジェストの設定
+      ### インジェストをセットアップする
 
       自動検出が失敗した場合、または既存のテーブルが存在しない場合は、インジェストの設定を求められます。
 
@@ -139,7 +139,7 @@ import TabItem from '@theme/TabItem';
 
       &quot;Start Ingestion&quot;を選択すると、インジェストソースの選択を求められます。マネージドClickStackは、主なインジェストソースとしてOpenTelemetryと[Vector](https://vector.dev/)をサポートしています。ただし、ユーザーは[ClickHouse Cloudサポート統合](/integrations)のいずれかを使用して、独自のスキーマでClickHouseに直接データを送信することも可能です。
 
-      <Image img={select_source_clickstack_ui} size="lg" alt="ソースの選択 - ClickStack UI" border />
+      <Image img={select_source_clickstack_ui} size="lg" alt="ソースを選択 - ClickStack UI" border />
 
       :::note[OpenTelemetry推奨]
       インジェスト形式としてOpenTelemetryの使用を強く推奨します。
@@ -147,8 +147,8 @@ import TabItem from '@theme/TabItem';
       :::
 
       <Tabs groupId="ingestion-sources-existing">
-        <TabItem value="OpenTelemetry" label="OpenTelemetry" default>
-          Managed ClickStack に OpenTelemetry データを送信するには、OpenTelemetry Collector を使用することが推奨されます。Collector はゲートウェイとして動作し、アプリケーション（および他の Collector）から OpenTelemetry データを受信し、それを ClickHouse Cloud に転送します。
+        <TabItem value="open-telemetry" label="OpenTelemetry" default>
+          Managed ClickStack に OpenTelemetry データを送信するには、OpenTelemetry Collector を使用することが推奨されます。Collector はゲートウェイとして動作し、アプリケーション (および他の Collector) から OpenTelemetry データを受信し、それを ClickHouse Cloud に転送します。
 
           まだ Collector を稼働させていない場合は、以下の手順に従って Collector を起動してください。既存の Collector がある場合は、設定例も用意されています。
 
@@ -163,10 +163,10 @@ import TabItem from '@theme/TabItem';
           **このコマンドは、サービス作成時に記録したサービス認証情報に置き換えてから実行してください。**
 
           :::note[本番環境へのデプロイ]
-          このコマンドでは `default` ユーザーを使って Managed ClickStack に接続していますが、[本番環境に移行する際](/use-cases/observability/clickstack/production#create-a-user)には専用のユーザーを作成し、それに合わせて設定を変更する必要があります。
+          このコマンドでは `default` ユーザーを使って Managed ClickStack に接続していますが、[本番環境に移行する際](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)には専用のユーザーを作成し、それに合わせて設定を変更する必要があります。
           :::
 
-          この 1 つのコマンドを実行すると、ClickStack Collector が起動し、ポート 4317（gRPC）および 4318（HTTP）で OTLP エンドポイントが公開されます。すでに OpenTelemetry のインストルメンテーションやエージェントがある場合は、すぐにこれらのエンドポイントにテレメトリーデータを送信し始めることができます。
+          この 1 つのコマンドを実行すると、ClickStack Collector が起動し、ポート 4317 (gRPC) および 4318 (HTTP) で OTLP エンドポイントが公開されます。すでに OpenTelemetry のインストルメンテーションやエージェントがある場合は、すぐにこれらのエンドポイントにテレメトリーデータを送信し始めることができます。
 
           ### 既存の Collector を設定する
 
@@ -184,7 +184,7 @@ import TabItem from '@theme/TabItem';
 
           OpenTelemetry Collector の詳細な設定方法については、「[OpenTelemetry を使ったインジェスト](/use-cases/observability/clickstack/ingesting-data/opentelemetry)」を参照してください。
 
-          ### インジェストを開始する（任意）
+          ### インジェストを開始する (任意)
 
           すでに OpenTelemetry でインストルメントする対象となるアプリケーションやインフラストラクチャがある場合は、「Connect an application」からリンクされている関連ガイドを参照してください。
 
@@ -201,7 +201,7 @@ import TabItem from '@theme/TabItem';
           Vector を ClickStack と併用する場合、スキーマの定義はユーザーの責任となります。これらのスキーマは OpenTelemetry の規約に従っていてもよいですし、完全にカスタムで、ユーザー定義のイベント構造を表現していてもかまいません。
 
           :::note タイムスタンプが必須
-          Managed ClickStack における唯一の厳格な要件は、データに **timestamp column**（または同等の時刻フィールド）が含まれていることです。これは ClickStack UI でデータソースを設定する際に宣言できます。
+          Managed ClickStack における唯一の厳格な要件は、データに **timestamp column** (または同等の時刻フィールド) が含まれていることです。これは ClickStack UI でデータソースを設定する際に宣言できます。
           :::
 
           以下では、Vector のインスタンスがすでに稼働しており、事前に設定されたインジェストパイプラインを通じてデータを送信しているものとします。
@@ -218,7 +218,7 @@ import TabItem from '@theme/TabItem';
           CREATE DATABASE IF NOT EXISTS logs
           ```
 
-          次に、ログデータの構造に対応したスキーマを持つテーブルを作成します。以下の例では、一般的な Nginx アクセスログ形式を想定しています。
+          次に、ログデータの構造に一致するスキーマを持つテーブルを作成します。以下の例では、典型的な Nginx アクセスログ形式を想定しています。
 
           ```sql
           CREATE TABLE logs.nginx_logs
@@ -254,7 +254,7 @@ import TabItem from '@theme/TabItem';
         </TabItem>
       </Tabs>
 
-      ### ClickStack UIに移動する
+      ### ClickStack UI に移動する
 
       インジェストの設定を完了し、データの送信を開始したら、&quot;Next&quot;を選択してください。
 

@@ -17,7 +17,7 @@ keywords: [
   'clickhouse batching strategy',
   'database insert patterns'
 ]
-title: 'Lessons - Too Many Parts Problem'
+title: 'Lessons - too many parts problem'
 description: 'Solutions and prevention of Too Many Parts'
 ---
 

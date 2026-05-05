@@ -1,13 +1,13 @@
 ---
-title: 'インフラストラクチャ構成'
+title: 'インフラストラクチャ設定'
 slug: /cloud/reference/byoc/configurations
-sidebar_label: 'インフラストラクチャ構成'
+sidebar_label: 'インフラストラクチャ設定'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'infrastructure', 'configuration']
 description: 'ロードバランサー、ノードグループ、その他の BYOC インフラストラクチャコンポーネントを設定します'
 doc_type: 'reference'
 ---
 
-このページでは、BYOC デプロイメントで利用可能な各種インフラストラクチャ構成オプションについて説明します。これらの構成により、特定の要件を満たすために、ネットワーク、セキュリティ、およびコンピュートリソースをカスタマイズできます。
+このページでは、BYOC デプロイメントで利用可能な各種インフラストラクチャ設定オプションについて説明します。これらの設定により、特定の要件を満たすために、ネットワーク、セキュリティ、およびコンピュートリソースをカスタマイズできます。
 
 ## ロードバランサー \{#load-balancers\}
 

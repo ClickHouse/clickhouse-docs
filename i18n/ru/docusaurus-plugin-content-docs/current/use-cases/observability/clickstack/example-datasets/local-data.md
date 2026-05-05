@@ -156,11 +156,11 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 
       Обратите внимание, что число возвращается в виде числа с плавающей точкой `%`. Для более чёткого отображения выберите `Set number format`.
 
-      <Image img={hyperdx_22} alt="Числовой формат" size="lg" />
+      <Image img={hyperdx_22} alt="Формат чисел" size="lg" />
 
       В открывшемся меню выберите `Percentage` из выпадающего списка `Output format`, после чего нажмите `Apply`.
 
-      <Image img={hyperdx_23} alt="Использование памяти, %" size="lg" />
+      <Image img={hyperdx_23} alt="Использование памяти во времени, %" size="lg" />
     </VerticalStepper>
   </TabItem>
 
@@ -289,11 +289,11 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 
       Обратите внимание, что число возвращается в виде числа с плавающей точкой `%`. Для более чёткого отображения выберите `Set number format`.
 
-      <Image img={hyperdx_22} alt="Формат чисел" size="lg" />
+      <Image img={hyperdx_22} alt="Числовой формат" size="lg" />
 
       В открывшемся меню выберите `Percentage` из выпадающего списка `Output format`, после чего нажмите `Apply`.
 
-      <Image img={hyperdx_23} alt="Использование памяти во времени, %" size="lg" />
+      <Image img={hyperdx_23} alt="Использование памяти, %" size="lg" />
     </VerticalStepper>
   </TabItem>
 </Tabs>

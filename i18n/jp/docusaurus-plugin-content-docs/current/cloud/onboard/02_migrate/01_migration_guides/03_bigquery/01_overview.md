@@ -42,9 +42,9 @@ ClickHouse はテーブルを論理的にデータベースにグループ化し
 
 ### BigQuery Slot reservations と Quotas \{#bigquery-slot-reservations-and-quotas\}
 
-BigQuery の slot reservation と同様に、ClickHouse Cloud では [垂直および水平のオートスケーリングを構成](/manage/scaling#configuring-vertical-auto-scaling)できます。垂直オートスケーリングでは、service のコンピュートノードに対してメモリおよび CPU コアの最小値と最大値を設定できます。service はその範囲内で必要に応じてスケールします。これらの設定は、service の初期作成フローの際にも指定できます。service 内の各コンピュートノードは同じサイズです。[水平スケーリング](/manage/scaling#manual-horizontal-scaling)により、service 内のコンピュートノード数を変更できます。
+BigQuery の slot reservation と同様に、ClickHouse Cloud では [垂直および水平のオートスケーリングを構成](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)できます。垂直オートスケーリングでは、service のコンピュートノードに対してメモリおよび CPU コアの最小値と最大値を設定できます。service はその範囲内で必要に応じてスケールします。これらの設定は、service の初期作成フローの際にも指定できます。service 内の各コンピュートノードは同じサイズです。[水平スケーリング](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling)により、service 内のコンピュートノード数を変更できます。
 
-さらに、BigQuery の quota と同様に、ClickHouse Cloud は同時実行制御、メモリ使用量の制限、および I/O スケジューリングを提供し、クエリをワークロードクラスに分離できるようにします。特定のワークロードクラスに対して共有リソース（CPU コア、DRAM、ディスクおよびネットワーク I/O）の上限を設定することで、それらのクエリがほかの重要なビジネスクエリに影響を与えないようにします。同時実行制御により、多数の同時クエリが存在するシナリオでスレッドの過剰割り当てを防ぎます。
+さらに、BigQuery の quota と同様に、ClickHouse Cloud は同時実行制御、メモリ使用量の制限、および I/O スケジューリングを提供し、クエリをワークロードクラスに分離できるようにします。特定のワークロードクラスに対して共有リソース (CPU コア、DRAM、ディスクおよびネットワーク I/O) の上限を設定することで、それらのクエリがほかの重要なビジネスクエリに影響を与えないようにします。同時実行制御により、多数の同時クエリが存在するシナリオでスレッドの過剰割り当てを防ぎます。
 
 ClickHouse はメモリアロケーションのバイトサイズをサーバー、ユーザー、およびクエリレベルで追跡し、柔軟なメモリ使用量制限を可能にします。メモリオーバーコミットにより、クエリは保証メモリを超えて未使用メモリを追加で利用できますが、ほかのクエリに対するメモリ制限は維持されます。加えて、集約、ソート、結合句で使用されるメモリを制限でき、メモリ上限を超えた場合には外部アルゴリズムへのフォールバックが可能です。
 
@@ -85,7 +85,7 @@ ClickHouse の型に複数の選択肢がある場合は、実際のデータの
 
 BigQuery では、テーブルに [主キーおよび外部キー制約](https://cloud.google.com/bigquery/docs/information-schema-table-constraints) を設定できます。一般的に、主キーと外部キーはリレーショナルデータベースにおいてデータ完全性を保証するために使用されます。主キーの値は通常、各行で一意であり、`NULL` にはなりません。各行の外部キーの値は、主キー側テーブルの主キー列に存在するか、`NULL` でなければなりません。BigQuery では、これらの制約は実際には強制されませんが、クエリオプティマイザがこの情報を利用してクエリをさらに最適化する場合があります。
 
-ClickHouse でも、テーブルに主キーを設定できます。BigQuery と同様に、ClickHouse はテーブルの主キー列の値の一意性を強制しません。BigQuery と異なり、テーブルのデータはディスク上において主キー列で [ソートされた順序](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) で格納されます。クエリオプティマイザはこのソート順を利用して再ソートを防ぎ、JOIN のためのメモリ使用量を最小化し、LIMIT 句の早期打ち切りを可能にします。BigQuery と異なり、ClickHouse は主キー列の値に基づいて [（疎な）プライマリインデックス](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) を自動的に作成します。このインデックスは、主キー列に対するフィルタを含むすべてのクエリの高速化に利用されます。ClickHouse は現在、外部キー制約をサポートしていません。
+ClickHouse でも、テーブルに主キーを設定できます。BigQuery と同様に、ClickHouse はテーブルの主キー列の値の一意性を強制しません。BigQuery と異なり、テーブルのデータはディスク上において主キー列で [ソートされた順序](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) で格納されます。クエリオプティマイザはこのソート順を利用して再ソートを防ぎ、JOIN のためのメモリ使用量を最小化し、LIMIT 句の早期打ち切りを可能にします。BigQuery と異なり、ClickHouse は主キー列の値に基づいて [ (疎な) プライマリインデックス](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) を自動的に作成します。このインデックスは、主キー列に対するフィルタを含むすべてのクエリの高速化に利用されます。ClickHouse は現在、外部キー制約をサポートしていません。
 
 ## セカンダリインデックス（ClickHouse のみで利用可能） \{#secondary-indexes-only-available-in-clickhouse\}
 

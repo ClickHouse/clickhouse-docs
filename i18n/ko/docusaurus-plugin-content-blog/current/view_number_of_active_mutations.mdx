@@ -1,0 +1,46 @@
+---
+date: 2023-06-07
+title: 활성 또는 대기 중인 뮤테이션 수는 어떻게 확인합니까?
+description: 특히 `ALTER` 또는 `UPDATE` 연산을 수행할 때 ClickHouse에서 활성 또는 대기 중인 뮤테이션 수를 모니터링합니다. 이러한 뮤테이션을 추적하기 위해 `system.mutations` 테이블을 사용합니다.
+tags: ['시스템 테이블']
+keywords: ['활성 뮤테이션', '대기 중 뮤테이션']
+---
+
+{frontMatter.description}
+
+{/* 이하 생략 */}
+
+## Question \{#question\}
+
+활성 상태이거나 대기 중인 뮤테이션 수는 어떻게 확인합니까?
+
+## Answer \{#answer\}
+
+테이블에서 `ALTER` 또는 `UPDATE` SQL 문을 많이 수행하는 경우, 활성 상태이거나 대기 중인 뮤테이션 수를 모니터링하는 것이 중요합니다. 이러한 쿼리는 데이터 파트를 다시 기록하며 원자적 연산이 아닙니다. 생성된 파트를 기준으로 정렬된 후, 해당 순서대로 각 파트에 적용됩니다. 뮤테이션에 대한 자세한 내용은 [문서](https://clickhouse.com/docs/sql-reference/statements/alter#mutations)를 참고하십시오.
+
+각 뮤테이션은 `system.mutations` 테이블에 엔트리 하나를 생성합니다. 많은 수의 뮤테이션을 수행하는 경우, 다음과 같이 실행 중이거나 대기 중인 뮤테이션 수를 모니터링할 수 있습니다:
+
+```
+SELECT
+   hostname() AS host,
+   count()
+   FROM clusterAllReplicas('default', 'system.mutations') WHERE not is_done
+   GROUP BY host;
+```
+
+:::note
+이 쿼리는 `default`라는 이름의 클러스터가 실행 중이라고 가정합니다. 이는 ClickHouse Cloud에서 클러스터 이름으로 사용됩니다. `default`를 사용 중인 클러스터 이름으로 변경하십시오.
+
+클러스터가 없는 경우 다음 명령을 사용하십시오:
+
+```sql
+SELECT
+   hostname() AS host,
+   count()
+   FROM system.mutations WHERE not is_done
+   GROUP BY host;
+```
+
+:::
+
+또한 최근 게시된 [업데이트와 삭제에 대한 블로그](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)를 읽어 보실 것을 권장합니다.

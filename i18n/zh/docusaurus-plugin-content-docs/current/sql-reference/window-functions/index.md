@@ -50,9 +50,13 @@ ClickHouse 还提供以下特定窗口函数:
 ```text
 aggregate_function (column_name)
   OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
-        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+        [ROWS or RANGE expression_to_bound_rows_within_the_group]] | [window_name])
 FROM table_name
-WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]])
+WINDOW window_name as ([
+  [PARTITION BY grouping_column]
+  [ORDER BY sorting_column]
+  [ROWS or RANGE expression_to_bound_rows_within_the_group]
+])
 ```
 
 * `PARTITION BY` - 定义如何将结果集划分为多个组。
@@ -89,6 +93,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`dense_rank()`](./dense_rank.md) - 在其分区内对当前行进行连续排名，不存在空缺。
 * [`lagInFrame(x)`](./lagInFrame.md) - 返回在其有序窗口中，相对于当前行之前指定物理偏移量那一行计算得到的值。
 * [`leadInFrame(x)`](./leadInFrame.md) - 返回在其有序窗口中，相对于当前行之后指定偏移量那一行计算得到的值。
+
 
 ## 示例 \{#examples\}
 

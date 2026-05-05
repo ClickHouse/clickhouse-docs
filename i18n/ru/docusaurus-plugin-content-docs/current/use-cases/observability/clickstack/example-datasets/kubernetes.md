@@ -68,7 +68,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   * Автоматическое инструментирование с использованием OTel и SDKS ClickStack для трейсов, метрик и логов.
   * Все сервисы отправляют свою телеметрию в сборщик OpenTelemetry `my-hyperdx-hdx-oss-v2-otel-collector` (не развернут)
-  * [Проброс ресурсных тегов](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods) для корреляции логов, метрик и трассировок с помощью переменной окружения `OTEL_RESOURCE_ATTRIBUTES`.
+  * [Проброс ресурсных тегов](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods), чтобы коррелировать логи, метрики и трассировки через переменную окружения `OTEL_RESOURCE_ATTRIBUTES`.
 
   ```shell
   ## download demo Kubernetes manifest file
@@ -164,7 +164,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
     Если вы предпочитаете использовать управляемый ClickStack, вы можете развернуть ClickStack и [отключить включённый в него ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud).
 
     :::note
-    На данный момент чарт всегда разворачивает и HyperDX, и MongoDB. Хотя эти компоненты предоставляют альтернативный способ доступа, они не интегрированы с аутентификацией ClickHouse Cloud. В этой модели развертывания они предназначены для администраторов, так как [предоставляют доступ к защищённому ключу ингестии](#retrieve-ingestion-api-key), необходимому для приёма данных через развернутый OTel collector, и не должны быть доступны конечным пользователям.
+    На данный момент чарт всегда разворачивает и HyperDX, и MongoDB. Хотя эти компоненты предоставляют альтернативный способ доступа, они не интегрированы с аутентификацией ClickHouse Cloud. В этой модели развертывания они предназначены для администраторов, так как [предоставляют доступ к защищённому ключу ингестии](#retrieve-ingestion-api-key), необходимому для ингестии данных через развернутый OTel collector, и не должны быть доступны конечным пользователям.
     :::
 
     ```shell
@@ -192,10 +192,10 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   ### Доступ к интерфейсу HyperDX
 
   :::note
-  Даже при использовании Managed ClickStack локальный экземпляр HyperDX, развёрнутый в кластере Kubernetes, всё равно необходим. Он предоставляет ключ ингестии, управляемый сервером OpAMP, входящим в состав HyperDX, который обеспечивает безопасный приём данных через развёрнутый OTel collector — возможность, которая в настоящее время недоступна в Managed ClickStack.
+  Даже при использовании Managed ClickStack локальный экземпляр HyperDX, развёрнутый в кластере Kubernetes, всё равно необходим. Он предоставляет ключ ингестии, управляемый сервером OpAMP, входящим в состав HyperDX, который обеспечивает безопасную ингестию данных через развёрнутый OTel collector — возможность, которая в настоящее время недоступна в Managed ClickStack.
   :::
 
-  В целях безопасности сервис использует `Кластерный IP` и по умолчанию не доступен извне.
+  В целях безопасности сервис использует `ClusterIP` и по умолчанию не доступен извне.
 
   Чтобы получить доступ к интерфейсу HyperDX, настройте переадресацию с порта 3000 на локальный порт 8080.
 
@@ -216,7 +216,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   Ингестия данных в OTel collector, развёрнутый с помощью ClickStack, защищена ключом ингестии.
 
-  Перейдите в [`Team Settings`](http://localhost:8080/team) и скопируйте `Ingestion API Key` из раздела `API Keys`. Этот ключ API обеспечивает безопасный приём данных через коллектор OpenTelemetry.
+  Перейдите в [`Team Settings`](http://localhost:8080/team) и скопируйте `Ingestion API Key` из раздела `API Keys`. Этот ключ API обеспечивает безопасную ингестию данных через коллектор OpenTelemetry.
 
   <Image img={copy_api_key} alt="Скопировать API-ключ" size="lg" />
 

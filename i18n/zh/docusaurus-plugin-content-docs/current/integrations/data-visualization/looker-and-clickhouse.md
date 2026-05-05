@@ -18,6 +18,7 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+
 # Looker \{#looker\}
 
 <PartnerBadge/>
@@ -25,6 +26,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 Looker 可以通过官方的 ClickHouse 数据源连接到 ClickHouse Cloud 或自托管的 ClickHouse 部署。
 
 ## 1. 收集连接信息 \{#1-gather-your-connection-details\}
+
 <ConnectionDetails />
 
 ## 2. 创建 ClickHouse 数据源 \{#2-create-a-clickhouse-data-source\}
@@ -32,21 +34,25 @@ Looker 可以通过官方的 ClickHouse 数据源连接到 ClickHouse Cloud 或�
 导航到 Admin -> Database -> Connections，然后单击右上角的 “Add Connection” 按钮。
 
 <Image size="md" img={looker_01} alt="在 Looker 的数据库管理界面中添加新连接" border />
+
 <br/>
 
 为数据源选择一个名称，并在 “Dialect” 下拉列表中选择 `ClickHouse`。在表单中输入连接凭据。
 
 <Image size="md" img={looker_02} alt="在 Looker 连接表单中填写 ClickHouse 凭据" border />
+
 <br/>
 
 如果您使用的是 ClickHouse Cloud，或者部署需要 SSL，请确保在附加设置中启用 SSL。
 
 <Image size="md" img={looker_03} alt="在 Looker 设置中为 ClickHouse 连接启用 SSL" border />
+
 <br/>
 
 请先测试连接，测试通过后，再连接到新的 ClickHouse 数据源。
 
 <Image size="md" img={looker_04} alt="测试并连接到 ClickHouse 数据源" border />
+
 <br/>
 
 现在，您应该可以将 ClickHouse 数据源关联到 Looker 项目中。

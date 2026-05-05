@@ -55,10 +55,10 @@ import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/
 
   Она состоит из двух составляющих:
 
-  * **Compute**: цена за единицу в час\
+  * **Compute**: цена за единицу в час
     Compute отражает стоимость работы подов-реплик ClickPipes, независимо от того, выполняют ли они приём данных или нет.
     Применяется ко всем типам ClickPipes.
-  * **Ingested data**: цена за GB\
+  * **Ingested data**: цена за GB
     Тариф на принятые данные применяется ко всем потоковым ClickPipes
     (Kafka, Confluent, Amazon MSK, Amazon Kinesis, Redpanda, WarpStream,
     Azure Event Hubs) для данных, передаваемых через поды-реплики.

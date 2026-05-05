@@ -119,13 +119,33 @@ SELECT * FROM (
 └───┘
 ```
 
-行 6 は、行 5 と同じ値（`2`）を持つため含まれます。
+行 6 は、行 5 と同じ値 (`2`) を持つため含まれます。
+
+オフセットを `OFFSET` キーワードで指定した場合も、同様です。
+
+```sql
+SELECT * FROM (
+    SELECT number % 50 AS n FROM numbers(100)
+) ORDER BY n LIMIT 3 OFFSET 2 WITH TIES
+```
+
+```response
+┌─n─┐
+│ 1 │
+│ 1 │
+│ 2 │
+│ 2 │
+└───┘
+```
+
+先頭の 2 行をスキップして 3 行を取得すると、通常は `1, 1, 2` が返されますが、2 つ目の `2` は最後の行と同じ値であるため含まれます。
 
 :::note
 `WITH TIES` は負の LIMIT 値ではサポートされていません。
 :::
 
 この修飾子は、[`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier) 修飾子と組み合わせて使用できます。
+
 
 ## 考慮事項 \{#considerations\}
 

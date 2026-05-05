@@ -21,14 +21,14 @@ keywords: ['Parquet', 'S3 存储桶']
 
 下面是一个非常简单的示例，你可以在将其应用到实际数据之前，用来测试访问 Parquet 文件的机制是否正常工作。
 
-如果你需要一个创建用户和存储桶的示例，可以参考前两个小节（创建用户和创建存储桶）：
+如果你需要一个创建用户和存储桶的示例，可以参考前两个小节 (创建用户和创建存储桶) ：
 [https://clickhouse.com/docs/guides/sre/configuring-s3-for-clickhouse-use/](https://clickhouse.com/docs/guides/sre/configuring-s3-for-clickhouse-use/)
 
 我使用了这个示例文件： [https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet](https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet)
 并将其上传到了我的测试存储桶中。
 
 你可以在存储桶上设置类似下面这样的策略：
-（根据需要进行调整，这个策略在权限方面相对比较开放，但便于测试，你可以在之后按需收紧权限）
+ (根据需要进行调整，这个策略在权限方面相对比较开放，但便于测试，你可以在之后按需收紧权限) 
 
 ```
 {
@@ -76,7 +76,7 @@ Parquet 格式的数据类型参考请参阅：
 
 要将数据导入到原生的 ClickHouse 表中：
 
-先创建表，例如如下所示（这里只从 Parquet 文件中选取了几列）：
+先创建表，例如如下所示 (这里只从 Parquet 文件中选取了几列) ：
 
 ```
 clickhouse-cloud :) CREATE TABLE my_parquet_table (id UInt64, first_name String) ENGINE = MergeTree ORDER BY id;

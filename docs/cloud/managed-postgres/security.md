@@ -61,7 +61,7 @@ Backups and Write-Ahead Log (WAL) archives stored in object storage are also enc
 All backup data is stored in dedicated, isolated storage buckets with credentials scoped to each individual instance, ensuring that backup data remains secure and accessible only to authorized systems.
 
 :::info
-Encryption at rest is enabled by default for all Managed Postgres instances and cannot be disabled. No additional configuration is required.
+Encryption at rest is enabled by default for all Managed Postgres instances and can't be disabled. No additional configuration is required.
 :::
 
 ### Encryption in transit {#encryption-in-transit}

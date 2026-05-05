@@ -42,6 +42,7 @@ SELECT 1;
 clickhouse-benchmark [keys] < queries_file;
 ```
 
+
 ## コマンドラインオプション \{#clickhouse-benchmark-command-line-options\}
 
 - `--query=QUERY` — 実行するクエリ。このパラメータが渡されない場合、`clickhouse-benchmark` は標準入力からクエリを読み込みます。
@@ -62,7 +63,7 @@ clickhouse-benchmark [keys] < queries_file;
 - `--database=DATABASE_NAME` — ClickHouse データベース名。デフォルト値: `default`。
 - `--user=USERNAME` — ClickHouse ユーザー名。デフォルト値: `default`。
 - `--password=PSWD` — ClickHouse ユーザーパスワード。デフォルト値: 空文字列。
-- `--stacktrace` — スタックトレースを出力します。このオプションが指定されている場合、`clickhouse-bencmark` は例外のスタックトレースを出力します。
+- `--stacktrace` — スタックトレースを出力します。このオプションが指定されている場合、`clickhouse-benchmark` は例外のスタックトレースを出力します。
 - `--stage=WORD` — サーバー側でのクエリ処理ステージ。ClickHouse は指定されたステージでクエリ処理を停止し、その時点の結果を `clickhouse-benchmark` に返します。指定可能な値: `complete`, `fetch_columns`, `with_mergeable_state`。デフォルト値: `complete`。
 - `--roundrobin` — 複数の `--host`/`--port` を比較する代わりに、クエリごとにランダムに 1 つの `--host`/`--port` を選択して、そのホストにクエリを送信します。
 - `--reconnect=N` — 再接続の動作を制御します。指定可能な値: 0（再接続しない）、1（クエリごとに再接続）、N（N クエリごとに再接続）。デフォルト値: 0。
@@ -122,6 +123,7 @@ localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, resul
   * result MiB/s: `--delay` 引数で指定された期間中に、サーバーがクエリ結果に 1 秒あたりに出力したメビバイト数 (MiB)。
 
 * クエリ実行時間のパーセンタイル値。
+
 
 ## 比較モード \{#clickhouse-benchmark-comparison-mode\}
 

@@ -7,9 +7,9 @@ keywords: ['AMPLab benchmark', 'big data benchmark', 'data warehousing performan
 doc_type: 'guide'
 ---
 
-请参阅 [https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/)
+请参阅 https://amplab.cs.berkeley.edu/benchmark/
 
-在 [https://aws.amazon.com](https://aws.amazon.com) 注册一个免费账户。注册需要信用卡、电子邮件地址和电话号码。然后在 [https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) 获取一个新的访问密钥（access key）。
+在 https://aws.amazon.com 注册一个免费账户。注册需要信用卡、电子邮件地址和电话号码。然后在 https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential 获取一个新的访问密钥 (access key) 。
 
 在控制台中运行以下命令：
 
@@ -34,7 +34,8 @@ CREATE TABLE rankings_tiny
     pageURL String,
     pageRank UInt32,
     avgDuration UInt32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 CREATE TABLE uservisits_tiny
 (
@@ -54,7 +55,8 @@ CREATE TABLE rankings_1node
     pageURL String,
     pageRank UInt32,
     avgDuration UInt32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 CREATE TABLE uservisits_1node
 (
@@ -74,7 +76,8 @@ CREATE TABLE rankings_5nodes_on_single
     pageURL String,
     pageRank UInt32,
     avgDuration UInt32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 CREATE TABLE uservisits_5nodes_on_single
 (

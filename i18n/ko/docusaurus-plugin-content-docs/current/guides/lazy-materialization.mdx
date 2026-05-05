@@ -1,0 +1,177 @@
+---
+slug: /optimize/lazy-materialization
+sidebar_label: '지연 머티리얼라이제이션'
+description: 'ClickHouse에서 지연 머티리얼라이제이션이 무엇인지 설명하는 문서'
+title: '지연 머티리얼라이제이션'
+doc_type: 'guide'
+keywords: ['최적화', '지연 머티리얼라이제이션']
+---
+
+이 문서에서는 지연 머티리얼라이제이션이 어떻게 동작하는지와 ClickHouse의 전반적인 I/O 최적화 스택에서 어떤 역할을 하는지 설명합니다.
+또한 지연 머티리얼라이제이션이 쿼리 성능을 어떻게 향상시키는지 보여 주는 실제 사례를 제공합니다.
+
+:::tip[버전 25.4부터 사용 가능]
+지연 머티리얼라이제이션은 ClickHouse 25.4 버전에서 도입되었으며, 기본값으로 활성화되어 있습니다.
+:::
+
+## 개요 \{#overview\}
+
+수년에 걸쳐 ClickHouse는 I/O를 적극적으로 줄이기 위한 일련의 계층화된 최적화를 도입했습니다.
+이러한 기법은 ClickHouse의 속도와 효율성을 뒷받침하는 기반입니다:
+
+| Optimization | Description |
+|---|---|
+| [**Columnar storage**](/intro#row-oriented-vs-column-oriented-storage) | 쿼리에 필요하지 않은 전체 컬럼을 건너뛸 수 있게 해 주며, 비슷한 값들을 함께 그룹화하여 높은 압축률을 가능하게 함으로써 데이터 적재 시 I/O를 최소화합니다. |
+| [**Sparse primary indexes**](/guides/best-practices/sparse-primary-indexes) \| [**secondary data-skipping indexes**](/optimize/skipping-indexes) \| [**projections**](/data-modeling/projections) | _인덱싱된 컬럼_ 에 대한 필터와 일치할 수 있는 [granules](/concepts/glossary#granule) (행 블록)을 식별하여 관련 없는 데이터를 가지치기(prune)합니다. 이러한 기법은 그래뉼 수준에서 동작하며, 각각 또는 조합해서 사용할 수 있습니다. |
+| [**PREWHERE**](/sql-reference/statements/select/prewhere) | _인덱싱되지 않은_ 컬럼에 대한 필터도 검사하여, 그렇지 않으면 적재 후 버려질 데이터를 초기에 건너뜁니다. 인덱스가 선택한 그래뉼을 정교하게 보완하면서, 모든 컬럼 필터와 일치하지 않는 행을 건너뛰어 그래뉼 단위 가지치기를 보완하거나, 독립적으로 동작할 수 있습니다. |
+| [**Query condition cache**](/operations/query-condition-cache) | 이전에 어떤 그래뉼이 모든 필터와 일치했는지를 기억하여 반복 쿼리를 가속화합니다. 이를 통해 ClickHouse는 쿼리 형태가 바뀌더라도 일치하지 않았던 그래뉼은 읽거나 필터링하지 않고 건너뛸 수 있습니다. |
+
+위에서 언급한 I/O 최적화들은 읽는 데이터 양을 크게 줄일 수 있지만, 여전히 `WHERE` 절을 통과하는 행의 모든 컬럼을 정렬, 집계 또는 `LIMIT` 같은 연산을 실행하기 전에 적재해야 한다고 가정합니다. 그러나 일부 컬럼은 더 나중에야 필요하거나, `WHERE` 절을 통과하더라도 실제로는 전혀 사용되지 않는 데이터라면 어떻게 될까요?
+이 지점에서 lazy materialization이 등장합니다. 이는 I/O 최적화 스택을 완성하는 상호 독립적인(orthogonal) 향상 기능입니다:
+
+- 인덱싱과 `PREWHERE` 를 함께 사용하면, `WHERE` 절의 컬럼 필터와 일치하는 행만 처리되도록 보장합니다.
+- Lazy materialization은 여기에 더해, 쿼리 실행 계획에서 실제로 필요해질 때까지 컬럼 읽기를 지연합니다.
+  필터링 이후에도 정렬과 같은 다음 연산에 필요한 컬럼만 즉시 적재합니다.
+  나머지 컬럼은 나중으로 미루어지며, `LIMIT` 때문에 최종 결과를 생성하는 데 필요한 양만, 흔히 일부만 읽게 됩니다.
+  이로 인해 lazy materialization은 최종 결과가 특정 (종종 매우 큰) 컬럼에서 적은 수의 행만 필요로 하는 Top N 쿼리에서 특히 강력합니다.
+
+## 실제 예시 \{#worked-example\}
+
+지연 머티리얼라이제이션을 깊이 있게 이해하려면 블로그 글 [&quot;ClickHouse gets lazier (and faster): Introducing lazy materialization&quot;](https://clickhouse.com/blog/clickhouse-gets-lazier-and-faster-introducing-lazy-materialization#speed-without-filters-lazy-materialization-in-isolation)을 참고할 것을 강력히 권장합니다. 아래 예시는 앞서 언급한 해당 블로그 글에서 가져온 것으로, ClickHouse 쿼리가 지연 머티리얼라이제이션을 통해 219초에서 단 139밀리초(1576배 속도 향상)로 단축될 수 있음을 보여 주기 위해 여기에서 다시 사용합니다.
+
+인덱싱과 `PREWHERE`의 이점을 얻으려면, 쿼리에 인덱싱을 위한 기본 키 컬럼에 대한 필터와, `PREWHERE`를 위한 임의의 컬럼에 대한 필터가 필요합니다.
+지연 머티리얼라이제이션은 이러한 것들 위에 깔끔하게 추가되며, 앞에서 언급한 다른 최적화와는 달리 컬럼 필터가 전혀 없는 쿼리도 더 빠르게 만들 수 있습니다.
+
+다음 예시 쿼리를 살펴보십시오. 이 쿼리는 날짜, 상품, 평점, 검증 여부와 관계없이 도움이 되는 투표 수가 가장 많은 Amazon 리뷰를 찾고, 그 제목, 헤드라인, 전체 텍스트와 함께 상위 3개를 반환합니다.
+
+먼저 지연 머티리얼라이제이션을 비활성화한 상태에서(파일 시스템 캐시가 콜드인 상태로) 쿼리를 실행합니다. 이때 [`query_plan_optimize_lazy_materialization`](/operations/settings/settings#query_plan_optimize_lazy_materialization)을 사용합니다.
+
+```sql title="Query"
+SELECT
+    helpful_votes,
+    product_title,
+    review_headline,
+    review_body
+FROM amazon.amazon_reviews
+ORDER BY helpful_votes DESC
+LIMIT 3
+FORMAT Vertical
+SETTINGS
+    query_plan_optimize_lazy_materialization = false;
+```
+
+```response title="Response"
+Row 1:
+──────
+helpful_votes:   47524
+product_title:   Kindle: Amazon's Original Wireless Reading Device (1st generation)
+review_headline: Why and how the Kindle changes everything
+review_body:     This is less a \"pros and cons\" review than a hopefully use...
+
+Row 2:
+──────
+helpful_votes:   41393
+product_title:   BIC Cristal For Her Ball Pen, 1.0mm, Black, 16ct (MSLP16-Blk)
+review_headline: FINALLY!
+review_body:     Someone has answered my gentle prayers and FINALLY designed ...
+
+Row 3:
+──────
+helpful_votes:   41278
+product_title:   The Mountain Kids 100% Cotton Three Wolf Moon T-Shirt
+review_headline: Dual Function Design
+review_body:     This item has wolves on it which makes it intrinsically swee...
+
+# highlight-start
+0 rows in set. Elapsed: 219.071 sec. Processed 150.96 million rows, 71.38 GB (689.08 thousand rows/s., 325.81 MB/s.)
+Peak memory usage: 1.11 GiB.
+# highlight-end
+```
+
+다음으로 쿼리를 다시 실행합니다(파일 시스템 캐시를 다시 한 번 비운 상태에서). 이번에는 lazy materialization을 활성화하여 실행합니다:
+
+```sql title="Query"
+SELECT
+    helpful_votes,
+    product_title,
+    review_headline,
+    review_body
+FROM amazon.amazon_reviews
+ORDER BY helpful_votes DESC
+LIMIT 3
+FORMAT Vertical
+SETTINGS
+-- highlight-next-line
+query_plan_optimize_lazy_materialization = true;
+```
+
+:::tip
+일반적으로 지연 구체화의 이점을 얻기 위해 `query_plan_optimize_lazy_materialization = true`를 명시적으로 설정할 필요는 없습니다.
+기본적으로 활성화되어 있습니다.
+:::
+
+```response title="Response"
+Row 1:
+──────
+helpful_votes:   47524
+product_title:   Kindle: Amazon's Original Wireless Reading Device (1st generation)
+review_headline: Why and how the Kindle changes everything
+review_body:     This is less a \"pros and cons\" review than a hopefully use...
+
+Row 2:
+──────
+helpful_votes:   41393
+product_title:   BIC Cristal For Her Ball Pen, 1.0mm, Black, 16ct (MSLP16-Blk)
+review_headline: FINALLY!
+review_body:     Someone has answered my gentle prayers and FINALLY designed ...
+
+Row 3:
+──────
+helpful_votes:   41278
+product_title:   The Mountain Kids 100% Cotton Three Wolf Moon T-Shirt
+review_headline: Dual Function Design
+review_body:     This item has wolves on it which makes it intrinsically swee...
+
+# highlight-start
+0 rows in set. Elapsed: 0.139 sec. Processed 150.96 million rows, 1.81 GB (1.09 billion rows/s., 13.06 GB/s.)
+Peak memory usage: 3.80 MiB.
+# highlight-end
+```
+
+지연 구체화(lazy materialization)를 사용하지 않을 때와 사용할 때의 성능 차이를 살펴보십시오:
+
+
+| 지표 | Lazy materialization 비활성화 | Lazy materialization 활성화 | 개선 효과 |
+|---|---|---|---|
+| 경과 시간 | 219.071초 | 0.139초 | 약 1576배 더 빠름 |
+| 데이터 읽기량 | 71.38 GB | 1.81 GB | 약 40배 적게 읽음 |
+| 피크 메모리 사용량 | 1.11 GiB | 3.80 MiB | 약 300배 적게 사용 |
+
+## 쿼리 실행 계획에서 지연 머티리얼라이제이션을 확인하는 방법 \{#confirm-lazy-materialization\}
+
+[`EXPLAIN`](/sql-reference/statements/explain) 절을 사용하여 쿼리의 논리적 실행 계획을 검사하면, 이전 쿼리에서 지연 머티리얼라이제이션이 사용되었는지 확인할 수 있습니다.
+
+```sql
+EXPLAIN actions = 1
+SELECT
+    helpful_votes,
+    product_title,
+    review_headline,
+    review_body
+FROM amazon.amazon_reviews
+ORDER BY helpful_votes DESC
+LIMIT 3
+SETTINGS
+    query_plan_optimize_lazy_materialization = true;
+```
+
+```response
+...
+# highlight-next-line
+Lazily read columns: review_headline, review_body, product_title
+  Limit
+    Sorting
+      ReadFromMergeTree
+```
+
+연산자 플랜은 아래에서 위로 읽을 수 있으며, ClickHouse가 정렬과 LIMIT 적용 후에야 세 개의 큰 String 컬럼을 읽도록 지연한다는 점을 확인할 수 있습니다.

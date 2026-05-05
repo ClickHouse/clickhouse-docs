@@ -102,10 +102,10 @@ The full table of configuration options:
 | `database`                                      | ClickHouse database name                                                                                                                                                                                                           | `default`                                                |
 | `connector.class` (Required)                    | Connector Class(explicit set and keep as the default value)                                                                                                                                                                        | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
 | `tasks.max`                                     | The number of Connector Tasks                                                                                                                                                                                                      | `"1"`                                                    |
-| `errors.retry.timeout`                          | ClickHouse JDBC Retry Timeout                                                                                                                                                                                                      | `"60"`                                                   |
+| `errors.retry.timeout`                          | Kafka Connect max retry duction in milliseconds. `0` for no retries. `-1` for infinite retries. Recommended value is more then "10000" ms (10 seconds)  Timeout                                                                                                                                                                                                      | `"0"`                                                   |
 | `exactlyOnce`                                   | Exactly Once Enabled                                                                                                                                                                                                               | `"false"`                                                |
 | `topics` (Required)                             | The Kafka topics to poll - topic names must match table names                                                                                                                                                                      | `""`                                                     |
-| `key.converter` (Required* - See Description)   | Set according to the types of your keys. Required here if you are passing keys (and not defined in worker config).                                                                                                                 | `"org.apache.kafka.connect.storage.StringConverter"`     |
+| `key.converter` (Required* - See Description)   | Set according to the types of your keys. Required here if you're passing keys (and not defined in worker config).                                                                                                                 | `"org.apache.kafka.connect.storage.StringConverter"`     |
 | `value.converter` (Required* - See Description) | Set based on the type of data on your topic. Supported: - JSON, String, Avro or Protobuf formats. Required here if not defined in worker config.                                                                                   | `"org.apache.kafka.connect.json.JsonConverter"`          |
 | `value.converter.schemas.enable`                | Connector Value Converter Schema Support                                                                                                                                                                                           | `"false"`                                                |
 | `errors.tolerance`                              | Connector Error Tolerance. Supported: none, all                                                                                                                                                                                    | `"none"`                                                 |
@@ -117,8 +117,11 @@ The full table of configuration options:
 | `keeperOnCluster`                               | Allows configuration of ON CLUSTER parameter for self-hosted instances (e.g. `ON CLUSTER clusterNameInConfigFileDefinition`) for exactly-once connect_state table (see [Distributed DDL Queries](/sql-reference/distributed-ddl)   | `""`                                                     |
 | `bypassRowBinary`                               | Allows disabling use of RowBinary and RowBinaryWithDefaults for Schema-based data (Avro, Protobuf, etc.) - should only be used when data will have missing columns, and Nullable/Default are unacceptable                          | `"false"`                                                |
 | `dateTimeFormats`                               | Date time formats for parsing DateTime64 schema fields, separated by `;` (e.g. `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`).                                                              | `""`                                                     |
-| `tolerateStateMismatch`                         | Allows the connector to drop records "earlier" than the current offset stored AFTER_PROCESSING (e.g. if offset 5 is sent, and offset 250 was the last recorded offset)                                                             | `"false"`                                                |
+| `tolerateStateMismatch`                         | Allows the connector to drop records "earlier" than the current offset stored AFTER_PROCESSING (e.g. if offset 5 is sent, and offset 250 was the last recorded offset). Should be used to fix ingestion after failure and should be reverted back to `"false"` once done.                                                             | `"false"`                                                |
 | `ignorePartitionsWhenBatching`                  | Will ignore partition when collecting messages for insert (though only if `exactlyOnce` is `false`). Performance Note: The more connector tasks, the fewer kafka partitions assigned per task - this can mean diminishing returns. | `"false"`                                                |
+| `bufferCount` (since v1.3.6)                    | Number of records to buffer in memory before flushing to ClickHouse. `0` disables internal buffering. Buffering is not supported with `exactlyOnce=true`.                                                                       | `"0"`                                                    |
+| `bufferFlushTime` (since v1.3.6)                | Maximum time in milliseconds to buffer records before flush when `exactlyOnce=false`. `0` disables time-based flushing. Default value is `0`. Only required for time-base threshold. Only effective when `bufferCount > 0`.                                                                                           | `"0"`                                                    |
+| `reportInsertedOffsets` (since v1.3.6)          | Enables returning only successfully inserted offsets from `preCommit` (instead of `currentOffsets`) when `exactlyOnce=false`. This does not apply when `ignorePartitionsWhenBatching=true`, where `currentOffsets` are still returned. | `"false"`                                                |
 
 ### Target tables {#target-tables}
 
@@ -128,7 +131,7 @@ Each topic requires a dedicated target table in ClickHouse. The target table nam
 
 ### Pre-processing {#pre-processing}
 
-If you need to transform outbound messages before they are sent to ClickHouse Kafka Connect
+If you need to transform outbound messages before they're sent to ClickHouse Kafka Connect
 Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/current/connect/transforms/overview.html).
 
 ### Supported data types {#supported-data-types}
@@ -182,7 +185,7 @@ The most basic configuration to get you started - it assumes you're running Kafk
     "consumer.override.max.poll.records": "5000",
     "consumer.override.max.partition.fetch.bytes": "5242880",
     "database": "default",
-    "errors.retry.timeout": "60",
+    "errors.retry.timeout": "60000",
     "exactlyOnce": "false",
     "hostname": "localhost",
     "port": "8443",
@@ -293,6 +296,37 @@ The connector supports the String Converter in different ClickHouse formats: [JS
 }
 ```
 
+### Internal buffering {#internal-buffering}
+
+Internal buffering allows the sink task to accumulate records from multiple `poll()` calls and flush them to ClickHouse as larger batches. This can improve throughput in workloads where each poll produces many small per-partition batches.
+
+Key behavior:
+
+- `bufferCount` controls how many records are buffered before flushing.
+- `bufferFlushTime` sets a maximum wait time (in milliseconds) before flushing buffered records.
+- `bufferFlushTime` is only effective when `bufferCount > 0`.
+- `bufferCount=0` and `bufferFlushTime=0` keep buffering disabled (default behavior).
+- Buffering is not supported when `exactlyOnce=true`.
+
+Why buffering is incompatible with exactly-once mode:
+Buffering changes batch boundaries, which breaks ClickHouse block deduplication and the connector offset state machine.  
+To resolve this, either disable exactly-once mode with `exactlyOnce=false` in your connector config, or disable buffering with `bufferCount=0`.
+
+Example:
+
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "exactlyOnce": "false",
+    "bufferCount": "5000",
+    "bufferFlushTime": "2000"
+  }
+}
+```
+
 ### Logging {#logging}
 
 Logging is automatically provided by Kafka Connect Platform.
@@ -399,7 +433,7 @@ For detailed JMX metric definitions and Prometheus integration, see the [jmx-exp
 
 ### Limitations {#limitations}
 
-- Deletes are not supported.
+- Deletes aren't supported.
 - Batch size is inherited from the Kafka Consumer properties.
 - When using KeeperMap for exactly-once and the offset is changed or re-wound, you need to delete the content from KeeperMap for that specific topic. (See troubleshooting guide below for more details)
 
@@ -446,7 +480,7 @@ Kafka Connect (the framework) fetches messages from Kafka topics in the backgrou
 
 - **`fetch.min.bytes`**: Minimum amount of data before the framework passes values to the connector (default: 1 byte)
 - **`fetch.max.bytes`**: Maximum amount of data to fetch in a single request (default: 52428800 / 50 MB)
-- **`fetch.max.wait.ms`**: Maximum time to wait before returning data if `fetch.min.bytes` is not met (default: 500 ms)
+- **`fetch.max.wait.ms`**: Maximum time to wait before returning data if `fetch.min.bytes` isn't met (default: 500 ms)
 
 :::note  
 On Confluent Cloud, adjustment of these settings requires opening a support case through Confluent Cloud.  
@@ -519,7 +553,7 @@ With asynchronous inserts enabled, ClickHouse:
 2. Writes data to an in-memory buffer (instead of immediately to disk)
 3. Returns success to the connector (if `wait_for_async_insert=0`)
 4. Flushes the buffer to disk when one of these conditions is met:
-   - Buffer reaches `async_insert_max_data_size` (default: 10 MB)
+   - Buffer reaches `async_insert_max_data_size` (default: 100 MB)
    - `async_insert_busy_timeout_ms` milliseconds elapsed since first insert (default: 1000 ms)
    - Maximum number of queries accumulated (`async_insert_max_query_number`, default: 100)
 
@@ -551,12 +585,12 @@ Add async insert settings to the `clickhouseSettings` configuration parameter:
 You can fine-tune the async insert flush behavior:
 
 ```json
-"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=104857600,async_insert_busy_timeout_ms=1000"
 ```
 
 Common tuning parameters:
 
-- **`async_insert_max_data_size`** (default: 10485760 / 10 MB): Maximum buffer size before flush
+- **`async_insert_max_data_size`** (default: 104857600 / 100 MB): Maximum buffer size before flush
 - **`async_insert_busy_timeout_ms`** (default: 1000): Maximum time (ms) before flush
 - **`async_insert_stale_timeout_ms`** (default: 0): Time (ms) since last insert before flush
 - **`async_insert_max_query_number`** (default: 100): Maximum queries before flush
@@ -753,21 +787,22 @@ Right now the focus is on identifying errors that are transient and can be retri
 - `ClickHouseException` - This is a generic exception that can be thrown by ClickHouse.
   It is usually thrown when the server is overloaded and the following error codes are considered particularly transient:
   - 3 - UNEXPECTED_END_OF_FILE
+  - 107 - FILE_DOESNT_EXIST
   - 159 - TIMEOUT_EXCEEDED
   - 164 - READONLY
   - 202 - TOO_MANY_SIMULTANEOUS_QUERIES
   - 203 - NO_FREE_CONNECTION
   - 209 - SOCKET_TIMEOUT
   - 210 - NETWORK_ERROR
+  - 241 - MEMORY_LIMIT_EXCEEDED
   - 242 - TABLE_IS_READ_ONLY
   - 252 - TOO_MANY_PARTS
   - 285 - TOO_FEW_LIVE_REPLICAS
   - 319 - UNKNOWN_STATUS_OF_INSERT
   - 425 - SYSTEM_ERROR
   - 999 - KEEPER_EXCEPTION
-  - 1002 - UNKNOWN_EXCEPTION
 - `SocketTimeoutException` - This is thrown when the socket times out.
-- `UnknownHostException` - This is thrown when the host cannot be resolved.
+- `UnknownHostException` - This is thrown when the host can't be resolved.
 - `IOException` - This is thrown when there is a problem with the network.
 
 #### "All my data is blank/zeroes" {#all-my-data-is-blankzeroes}
@@ -783,7 +818,7 @@ transforms.flatten.delimiter=_
 This will transform your data from a nested JSON to a flattened JSON (using `_` as a delimiter). Fields in the table would then follow the "field1_field2_field3" format (i.e. "before_id", "after_id", etc.).
 
 #### "I want to use my Kafka keys in ClickHouse" {#i-want-to-use-my-kafka-keys-in-clickhouse}
-Kafka keys are not stored in the value field by default, but you can use the `KeyToValue` transformation to move the key to the value field (under a new `_key` field name):
+Kafka keys aren't stored in the value field by default, but you can use the `KeyToValue` transformation to move the key to the value field (under a new `_key` field name):
 
 ```properties
 transforms=keyToValue

@@ -65,11 +65,11 @@ The following standard ClickHouse data types are currently supported in ClickPip
 ### Avro {#avro}
 
 #### Supported Avro Data Types {#supported-avro-data-types}
-ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/formats/Avro#data-type-mapping) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
+ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `time-millis`, `time-micros`, `local-timestamp-millis`, `local_timestamp-micros`, and `duration`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/formats/Avro#data-type-mapping) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes doesn't check for overflow or precision loss on type conversion.
 Alternatively, all Avro types can be inserted into a `String` column, and will be represented as a valid JSON string in that case.
 
 #### Nullable types and Avro unions {#nullable-types-and-avro-unions}
-Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(null, T)` where T is the base Avro type.  During schema inference, such unions will be mapped to a ClickHouse "Nullable" column.  Note that ClickHouse does not support
+Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(null, T)` where T is the base Avro type.  During schema inference, such unions will be mapped to a ClickHouse "Nullable" column.  Note that ClickHouse doesn't support
 `Nullable(Array)`, `Nullable(Map)`, or `Nullable(Tuple)` types.  Avro null unions for these types will be mapped to non-nullable versions (Avro Record types are mapped to a ClickHouse named Tuple).  Avro "nulls" for these types will be inserted as:
 - An empty Array for a null Avro array
 - An empty Map for a null Avro Map
@@ -78,10 +78,10 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 #### Variant type support {#variant-type-support}
 ClickPipes supports the Variant type in the following circumstances:
 - Avro Unions.  If your Avro schema contains a union with multiple non-null types, ClickPipes will infer the
-  appropriate variant type.  Variant types are not otherwise supported for Avro data.
+  appropriate variant type.  Variant types aren't otherwise supported for Avro data.
 - JSON fields.  You can manually specify a Variant type (such as `Variant(String, Int64, DateTime)`) for any JSON field
-  in the source data stream.  Complex subtypes (arrays/maps/tuples) are not supported.  In addition, because of the way ClickPipes determines
-  the correct variant subtype to use, only one integer or datetime type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
+  in the source data stream.  Complex subtypes (arrays/maps/tuples) aren't supported.  In addition, because of the way ClickPipes determines
+  the correct variant subtype to use, only one integer or datetime type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` isn't supported.
 
 #### JSON type support {#json-type-support}
 ClickPipes support the JSON type in the following circumstances:

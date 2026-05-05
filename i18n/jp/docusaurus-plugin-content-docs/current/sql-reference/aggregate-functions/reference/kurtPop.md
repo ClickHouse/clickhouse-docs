@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## kurtPop \{#kurtPop\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 一連の値の[尖度 (kurtosis)](https://en.wikipedia.org/wiki/Kurtosis)を計算します。
 

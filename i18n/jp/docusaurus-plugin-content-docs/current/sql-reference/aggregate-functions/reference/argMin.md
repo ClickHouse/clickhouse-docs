@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## argMin \{#argMin\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 最小の `val` 値に対応する `arg` の値を計算します。最大の `val` が同一である複数の行が存在する場合、どの行の `arg` が返されるかは決定的ではありません。
 `arg` と `min` の両方の引数は[集約関数](/sql-reference/aggregate-functions/index.md)として動作し、処理中にどちらも[`Null` をスキップ](/sql-reference/aggregate-functions/index.md#null-processing)し、`Null` ではない値が存在する場合は `Null` ではない値を返します。
@@ -47,7 +47,7 @@ SELECT argMin(user, salary) FROM salary;
 └──────────────────────┘
 ```
 
-**NULL 処理を含む発展例**
+**NULL 処理を含む応用例**
 
 ```sql title=Query
 CREATE TABLE test
@@ -68,7 +68,7 @@ SELECT argMin(a, b), min(b) FROM test;
 └──────────────┴────────┘
 ```
 
-**引数における Tuple の使用**
+**引数での Tuple の使用**
 
 ```sql title=Query
 SELECT argMin(a, (b, a)), min(tuple(b, a)) FROM test;

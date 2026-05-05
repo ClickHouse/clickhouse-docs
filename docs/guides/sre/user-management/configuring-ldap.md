@@ -2,7 +2,7 @@
 sidebar_label: 'Configuring LDAP'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: 'Configuring ClickHouse to Use LDAP for Authentication and Role Mapping'
+title: 'Configuring ClickHouse to use LDAP for authentication and role mapping'
 description: 'Describes how to configure ClickHouse to use LDAP for authentication and role mapping'
 keywords: ['LDAP configuration', 'LDAP authentication', 'role mapping', 'user management', 'SRE guide']
 doc_type: 'guide'
@@ -16,7 +16,9 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 ClickHouse can be configured to use LDAP to authenticate ClickHouse database users. This guide provides a simple example of integrating ClickHouse with an LDAP system authenticating to a publicly available directory.
 
-## 1. Configure LDAP connection settings in ClickHouse {#1-configure-ldap-connection-settings-in-clickhouse}
+<VerticalStepper headerLevel="h2">
+
+## Configure LDAP connection settings in ClickHouse {#1-configure-ldap-connection-settings-in-clickhouse}
 
 1. Test your connection to this public LDAP server:
     ```bash
@@ -71,7 +73,7 @@ ClickHouse can be configured to use LDAP to authenticate ClickHouse database use
     |tls_require_cert |whether to require certificate for connection|never|
 
     :::note
-    In this example, since the public server uses 389 and does not use a secure port, we disable TLS for demonstration purposes.
+    In this example, since the public server uses 389 and doesn't use a secure port, we disable TLS for demonstration purposes.
     :::
 
     :::note
@@ -113,7 +115,7 @@ ClickHouse can be configured to use LDAP to authenticate ClickHouse database use
 
 4. Restart your ClickHouse server to apply the settings.
 
-## 2. Configure ClickHouse database roles and permissions {#2-configure-clickhouse-database-roles-and-permissions}
+## Configure ClickHouse database roles and permissions {#2-configure-clickhouse-database-roles-and-permissions}
 
 :::note
 The procedures in this section assumes that SQL Access Control and Account Management in ClickHouse has been enabled. To enable, view the [SQL Users and Roles guide](index.md).
@@ -129,7 +131,7 @@ The procedures in this section assumes that SQL Access Control and Account Manag
     GRANT ALL ON *.* TO scientists_role;
     ```
 
-## 3. Test the LDAP configuration {#3-test-the-ldap-configuration}
+## Test the LDAP configuration {#3-test-the-ldap-configuration}
 
 1. Login using the ClickHouse client
     ```bash
@@ -167,6 +169,8 @@ The procedures in this section assumes that SQL Access Control and Account Manag
 
     9 rows in set. Elapsed: 0.004 sec.
     ```
+
+</VerticalStepper>
 
 ## Summary {#summary}
 This article demonstrated the basics of configuring ClickHouse to authenticate to an LDAP server and also to map to a role.  There are also options for configuring individual users in ClickHouse but having those users be authenticated by LDAP without configuring automated role mapping. The LDAP module can also be used to connect to Active Directory.

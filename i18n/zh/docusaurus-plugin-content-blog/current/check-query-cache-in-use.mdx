@@ -66,7 +66,7 @@ Ok.
 0 rows in set. Elapsed: 0.134 sec.
 ```
 
-运行一个启用查询缓存的查询（在查询末尾追加 `SETTINGS use_query_cache=true`）：
+运行一个启用查询缓存的查询 (在查询末尾追加 `SETTINGS use_query_cache=true`) ：
 
 ```sql
 clickhouse-cloud :) SELECT name FROM query_cache_test WHERE age > 1000 FORMAT Null SETTINGS use_query_cache=true;
@@ -147,9 +147,9 @@ Ok.
 [c-red-qc-36-server-0] 2023.05.29 12:06:17.932043 [ 454 ] {a047527c-9d55-4e6b-9747-0ccad8787515} \<Trace\> QueryCache: 已找到查询缓存条目 SELECT name FROM query_cache_test  WHERE age > 1000 FORMAT `Null` SETTINGS
 ```
 
-在第一次执行时，没有找到对应的缓存条目（`No entry found for query SELECT...`），因此 ClickHouse 为我们将该查询结果存入查询缓存（`Stored result of query SELECT...`）。
+在第一次执行时，没有找到对应的缓存条目 (`No entry found for query SELECT...`) ，因此 ClickHouse 为我们将该查询结果存入查询缓存 (`Stored result of query SELECT...`) 。
 
-在第二次执行时，查询使用了查询缓存，因为它发现该条目已经存在（`Entry found for query SELECT...`）。
+在第二次执行时，查询使用了查询缓存，因为它发现该条目已经存在 (`Entry found for query SELECT...`) 。
 
 ## 仅使用 SQL \{#using-just-sql\}
 
@@ -215,6 +215,6 @@ Query id: d536555e-b8ab-4cd4-9741-c04e95612bec
 
 在最新的结果中，我们看到第一次执行查询 `SELECT 1 SETTINGS use_query_cache=true;` 时出现了 1 次 `QueryCacheMisses`，以及与第二次执行该查询相关的一个 `QueryCacheHits` 事件。
 
-还要注意，默认的单个缓存条目最大大小为 1048576 字节（= 1 MiB），并且默认情况下结果只在缓存中存储 60 秒（例如，你可以在 `SETTINGS` 中使用 `query_cache_ttl=300`，使查询缓存结果改为存储 5 分钟）。
+还要注意，默认的单个缓存条目最大大小为 1048576 字节 (= 1 MiB) ，并且默认情况下结果只在缓存中存储 60 秒 (例如，你可以在 `SETTINGS` 中使用 `query_cache_ttl=300`，使查询缓存结果改为存储 5 分钟) 。
 
 你可以在 [这里](https://clickhouse.com/docs/operations/query-cache) 找到关于 ClickHouse 查询缓存的更详细信息。

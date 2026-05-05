@@ -151,7 +151,7 @@ FROM nyc_taxi.trips;
 
 ## Replacing columns {#replacing-columns}
 
-So far so good. But let’s say we want to adjust one of the values, while leaving the other ones as they are. For example, maybe we want to double the total amount and divide the MTA tax by 1.1. We can do that by using the [`REPLACE`](/sql-reference/statements/select) modifier, which will replace a column while leaving the other ones as they are.
+So far so good. But let’s say we want to adjust one of the values, while leaving the other ones as they're. For example, maybe we want to double the total amount and divide the MTA tax by 1.1. We can do that by using the [`REPLACE`](/sql-reference/statements/select) modifier, which will replace a column while leaving the other ones as they're.
 
 ```sql
 FROM nyc_taxi.trips 

@@ -36,7 +36,7 @@ ed25519 公開鍵/秘密鍵ペアを生成しています。
 .....
 ```
 
-2. 公開鍵（上記の例では ch&#95;key.pub）を使用して USER を作成します。
+2. 公開鍵 (上記の例では ch&#95;key.pub) を使用して USER を作成します。
 
 ```sql
 clickhouse-cloud :) CREATE USER abcuser IDENTIFIED WITH ssh_key BY KEY 'AAAABBBcdE1lZDI1NTE5AAAAIISdl4CrGM8mckXBUXLjL3ef9XwnycDWEvBPu3toB40m' TYPE 'ssh-ed25519';
@@ -50,7 +50,7 @@ Ok.
 
 3. ユーザーが作成されたことを確認するために `SHOW users` を実行します。
 
-4. ユーザーに default&#95;role ロールを付与します（任意）。
+4. ユーザーに default&#95;role ロールを付与します (任意) 。
 
 ```sql
 clickhouse-cloud :) grant default_role to abcuser;

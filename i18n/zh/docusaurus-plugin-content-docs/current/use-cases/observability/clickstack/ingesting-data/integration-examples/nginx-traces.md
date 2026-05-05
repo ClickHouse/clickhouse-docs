@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: '使用 ClickStack 监控 Nginx 追踪'
-sidebar_label: 'Nginx 追踪'
+title: '使用 ClickStack 监控 Nginx 链路追踪'
+sidebar_label: 'Nginx 链路追踪'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 监控 Nginx 追踪'
+description: '使用 ClickStack 监控 Nginx 链路追踪'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Nginx', 'traces', 'otel']
 ---
@@ -20,17 +20,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 Nginx 链路追踪 \{#nginx-traces-clickstack\}
 
 :::note[TL;DR]
-本指南演示如何从现有的 Nginx 部署中捕获分布式链路追踪（traces），并在 ClickStack 中对其进行可视化。您将学习如何：
-
-- 为 Nginx 添加 OpenTelemetry 模块
-- 配置 Nginx 将 traces 发送到 ClickStack 的 OTLP 端点
-- 验证 traces 已出现在 HyperDX 中
-- 使用预构建的仪表板可视化请求性能（延迟、错误、吞吐量）
-
-如果您希望在为生产环境中的 Nginx 配置前先测试集成，可以使用提供的包含示例 traces 的演示数据集。
-
-所需时间：5–10 分钟
-::::
+使用 OpenTelemetry Nginx 模块在 ClickStack 中捕获 Nginx 的分布式链路追踪。包含演示数据集和预置仪表板。
+:::
 
 ## 与现有 Nginx 集成 \{#existing-nginx\}
 
@@ -330,7 +321,9 @@ tail -f /var/log/nginx/access.log
 
 ## 后续步骤 \{#next-steps\}
 
-如果你想进一步探索，可以尝试以下步骤来体验和优化你的仪表板：
+* 为关键指标 (错误率、延迟阈值) 设置[告警](/use-cases/observability/clickstack/alerts)
+* 为特定用例 (API 监控、安全事件) 创建额外的[仪表板](/use-cases/observability/clickstack/dashboards)
 
-- 为关键指标（错误率、延迟阈值）设置告警
-- 为特定用例（API 监控、安全事件）创建额外的仪表板
+## 生产环境部署 \{#going-to-production\}
+
+本指南将链路追踪直接从 Nginx OpenTelemetry 模块发送到 ClickStack 的 OTLP 端点。对于生产环境部署，我们建议运行您自己的 OTel collector 作为网关，以提供批处理和弹性能力。有关生产环境配置，请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

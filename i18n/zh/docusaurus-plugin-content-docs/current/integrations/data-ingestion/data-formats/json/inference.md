@@ -345,7 +345,7 @@ SETTINGS describe_compact_output = 1
 {"a":"22"}
 ```
 
-在这种情况下，ClickHouse 能够通过强制类型转换来解决类型冲突，并将列 `a` 解析为 `Nullable(String)`。
+在这种情况下，ClickHouse 能够通过强制类型转换来解决类型冲突，并将列 `a` 的类型确定为 `Nullable(String)`。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/sample.json')

@@ -103,7 +103,7 @@ $$\$200 \text{ (ingest)} + \$146 \text{ (compute)} = \$346$$
 <summary>Is the ingested data measured in pricing based on compressed or uncompressed size?</summary>
 
 The ingested data is measured as _uncompressed data_ coming from Postgres—both
-during the initial load and CDC (via the replication slot). Postgres does not
+during the initial load and CDC (via the replication slot). Postgres doesn't
 compress data during transit by default, and ClickPipe processes the raw,
 uncompressed bytes.
 
@@ -143,7 +143,7 @@ in conjunction with the ClickPipes pricing.
 
 <summary>Can I scale the compute allocated for Postgres CDC in my service?</summary>
 
-By default, compute scaling is not user-configurable. The provisioned resources
+By default, compute scaling isn't user-configurable. The provisioned resources
 are optimized to handle most customer workloads optimally. If your use case
 requires more or less compute, please open a support ticket so we can evaluate
 your request.

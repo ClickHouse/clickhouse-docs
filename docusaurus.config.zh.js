@@ -5,7 +5,7 @@ import chHeader from "./plugins/header.js";
 import fixLinks from "./src/hooks/fixLinks.js";
 import prismLight from "./src/utils/prismLight";
 import prismDark from "./src/utils/prismDark";
-import glossaryTransformer from "./plugins/glossary-transformer.js";
+// import glossaryTransformer from "./plugins/glossary-transformer.js";
 const remarkCustomBlocks = require('./plugins/remark-custom-blocks');
 
 // Helper function to skip over index.md files.
@@ -46,7 +46,6 @@ const config = {
   tagline:
     "我们提供文档、快速入门指南、用户指南、技术参考、常见问题解答等多种信息。",
   url: "https://clickhouse.com",
-  // url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://bookish-disco-5997zvo.pages.github.io',
   baseUrl: "/docs/zh/",
   baseUrlIssueBanner: true,
   onBrokenLinks: "warn",
@@ -58,7 +57,7 @@ const config = {
   trailingSlash: false,
   i18n: {
     defaultLocale: "zh",
-    locales: ["en", "jp", "zh", "ru"],
+    locales: ["en", "jp", "zh", "ru", "ko"],
     path: "i18n",
     localeConfigs: {
       en: {
@@ -80,6 +79,11 @@ const config = {
         label: "Русский",
         htmlLang: "ru",
         path: "ru",
+      },
+      ko: {
+        label: "한국어",
+        htmlLang: "ko",
+        path: "ko",
       }
     },
   },
@@ -158,7 +162,7 @@ const config = {
               blogPath
             );
           },
-          remarkPlugins: [math, remarkCustomBlocks, glossaryTransformer],
+          remarkPlugins: [math, remarkCustomBlocks],
           beforeDefaultRemarkPlugins: [fixLinks],
           rehypePlugins: [katex],
         },
@@ -294,6 +298,10 @@ const config = {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
+    strapiUrl:
+      process.env.CLIENT_STRAPI_URL || "https://staging-cms.clickhouse.com",
+    strapiToken:
+      process.env.CLIENT_STRAPI_TOKEN || "",
     secondaryNavItems: [
       {
         type: "dropdown",

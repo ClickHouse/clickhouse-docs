@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayInsertAt \{#groupArrayInsertAt\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定された位置に値を配列に挿入します。
 
@@ -52,7 +52,7 @@ SELECT groupArrayInsertAt(toString(number), number * 2) FROM numbers(5);
 └───────────────────────────────────────────────────────────┘
 ```
 
-**デフォルト値パラメータ使用時の利用方法**
+**デフォルト値パラメータを用いた使用例**
 
 ```sql title=Query
 SELECT groupArrayInsertAt('-')(toString(number), number * 2) FROM numbers(5);
@@ -76,7 +76,7 @@ SELECT groupArrayInsertAt('-', 5)(toString(number), number * 2) FROM numbers(5);
 └───────────────────────────────────────────────────────────────────┘
 ```
 
-**同一位置へのマルチスレッド同時挿入**
+**同一位置へのマルチスレッドでの挿入**
 
 ```sql title=Query
 SELECT groupArrayInsertAt(number, 0) FROM numbers_mt(10) SETTINGS max_block_size = 1;

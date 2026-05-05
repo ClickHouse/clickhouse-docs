@@ -17,9 +17,9 @@ doc_type: 'reference'
 `deltaLake` — это псевдоним `deltaLakeS3`, который поддерживается для обеспечения совместимости.
 
 ```sql
-deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
+deltaLake(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression] [,extra_credentials])
 
-deltaLakeS3(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
+deltaLakeS3(url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression] [,extra_credentials])
 
 deltaLakeAzure(connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
 
@@ -31,6 +31,8 @@ deltaLakeLocal(path, [,format])
 
 Описание аргументов совпадает с описанием аргументов табличных функций `s3`, `azureBlobStorage`, `HDFS` и `file` соответственно.
 Аргумент `format` задаёт формат файлов данных в таблице Delta Lake.
+
+Необязательный параметр `extra_credentials` можно использовать для передачи `role_arn` для доступа на основе ролей в ClickHouse Cloud. См. [Secure S3](/cloud/data-sources/secure-s3) для получения инструкций по настройке.
 
 ## Возвращаемое значение \{#returned_value\}
 

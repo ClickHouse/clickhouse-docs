@@ -41,8 +41,12 @@ ENGINE = Alias(target_db, target_table)
 
 ## 引擎参数 \{#engine-parameters\}
 
-- **`target_db（可选）`** — 包含目标表的数据库名称。
-- **`target_table`** — 目标表的名称。
+* **`target_db（可选）`** — 包含目标表的数据库名称。
+* **`target_table`** — 目标表的名称。
+
+:::note
+当省略 `target_db` 且 `target_table` 不是完全限定名称 (例如 `Alias('my_table')`) 时，目标将被解析到与别名本身所在的同一数据库中，而不是会话当前的数据库。
+:::
 
 ## 支持的操作 \{#supported-operations\}
 

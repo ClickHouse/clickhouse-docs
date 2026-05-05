@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevSamp \{#stddevSamp\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回一组数值数据序列的样本标准差。
 结果等于 [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp) 的平方根。

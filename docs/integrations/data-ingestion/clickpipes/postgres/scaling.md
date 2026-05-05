@@ -1,6 +1,6 @@
 ---
 title: 'Scaling DB ClickPipes via OpenAPI'
-description: 'Doc for scaling DB ClickPipes via OpenAPI'
+description: 'How to scale Postgres ClickPipes via OpenAPI'
 slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: 'Scaling'
 doc_type: 'guide'

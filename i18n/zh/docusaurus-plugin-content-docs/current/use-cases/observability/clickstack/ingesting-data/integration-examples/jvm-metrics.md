@@ -16,18 +16,11 @@ import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
+
 # 使用 ClickStack 监控 JVM 指标 \{#jvm-clickstack\}
 
 :::note[TL;DR]
-本指南演示如何使用 OpenTelemetry Java agent 收集指标，从而通过 ClickStack 监控 JVM 应用程序。你将学到如何：
-
-- 将 OpenTelemetry Java agent 附加到你的 JVM 应用程序
-- 配置该 agent 通过 OTLP 将指标发送到 ClickStack
-- 使用预构建的仪表盘可视化堆内存、垃圾回收、线程和 CPU
-
-如果你想在为生产应用接入观测之前先测试集成，可以使用带有示例指标的演示数据集。
-
-所需时间：5-10 分钟
+使用 OpenTelemetry Java agent 在 ClickStack 中监控 JVM 应用程序。包含演示数据集和预置仪表板。
 :::
 
 ## 集成现有 JVM 应用程序 \{#existing-jvm\}
@@ -284,10 +277,8 @@ echo $OTEL_METRICS_EXPORTER
 
 ## 下一步 \{#next-steps\}
 
-现在已经将 JVM 指标导入 ClickStack，可以考虑：
-
-- 为关键指标（如高堆内存使用率、频繁 GC 暂停或线程耗尽）[设置告警](/use-cases/observability/clickstack/alerts)
-- 探索[其他 ClickStack 集成](/use-cases/observability/clickstack/integration-guides)，以统一可观测性数据
+* 为关键指标 (如高堆内存使用率、频繁 GC 暂停或线程耗尽) [设置告警](/use-cases/observability/clickstack/alerts)
+* 探索[其他 ClickStack 集成](/use-cases/observability/clickstack/integration-guides)，以统一可观测性数据
 
 ## 投入生产环境 \{#going-to-production\}
 

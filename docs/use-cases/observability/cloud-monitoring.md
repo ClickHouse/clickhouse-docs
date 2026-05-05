@@ -25,7 +25,7 @@ ClickHouse Cloud provides comprehensive monitoring through built-in dashboard in
 - **Advanced Dashboard**: The main dashboard interface accessible via Monitoring → Advanced dashboard provides real-time visibility into query rates, resource usage, system health, and storage performance. This dashboard doesn't require separate authentication, won't prevent instances from idling, and doesn't add query load to your production system. Each visualization is powered by customizable SQL queries, with out-of-the-box charts grouped into ClickHouse-specific, system health, and Cloud-specific metrics. You can extend monitoring by creating custom queries directly in the SQL console.
 
 :::note
-Accessing these metrics does not issue a query to the underlying service and will not wake idle services. 
+Accessing these metrics doesn't issue a query to the underlying service and won't wake idle services. 
 :::
 
 <Image img={AdvancedDashboard} size="lg" alt="Advanced dashboard"/>
@@ -58,7 +58,7 @@ The organization-level endpoint federates metrics from all services, while per-s
 - Cached metric delivery: Uses materialized views refreshed every minute to minimize query load on production systems
 
 :::note
-This approach respects service idling behavior, allowing for cost optimization when services are not actively processing queries. This API endpoint relies on ClickHouse Cloud API credentials. For complete endpoint configuration details, see the cloud [Prometheus documentation](/integrations/prometheus).
+This approach respects service idling behavior, allowing for cost optimization when services aren't actively processing queries. This API endpoint relies on ClickHouse Cloud API credentials. For complete endpoint configuration details, see the cloud [Prometheus documentation](/integrations/prometheus).
 :::
 
 <ObservabilityIntegrations/>

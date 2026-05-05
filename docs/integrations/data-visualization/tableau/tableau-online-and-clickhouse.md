@@ -62,7 +62,7 @@ NB: if you want to use Tableau Online in combination with Tableau Desktop and sh
 
 ## Connecting Tableau Online to ClickHouse (cloud or on-premise setup with SSL) {#connecting-tableau-online-to-clickhouse-cloud-or-on-premise-setup-with-ssl}
 
-As it is not possible to provide the SSL certificates via the Tableau Online MySQL connection setup wizard, 
+As it isn't possible to provide the SSL certificates via the Tableau Online MySQL connection setup wizard, 
 the only way is to use Tableau Desktop to set the connection up, and then export it to Tableau Online. This process is, however, pretty straightforward.
 
 Run Tableau Desktop on a Windows or Mac machine, and select "Connect" -> "To a Server" -> "MySQL".
@@ -104,4 +104,4 @@ Finally, click "Publish", and your datasource with embedded credentials will be 
 
 ## Known limitations (ClickHouse 23.11) {#known-limitations-clickhouse-2311}
 
-All the known limitations has been fixed in ClickHouse `23.11`. If you encounter any other incompatibilities, please do not hesitate to [contact us](https://clickhouse.com/company/contact) or create a [new issue](https://github.com/ClickHouse/ClickHouse/issues).
+All the known limitations has been fixed in ClickHouse `23.11`. If you encounter any other incompatibilities, please don't hesitate to [contact us](https://clickhouse.com/company/contact) or create a [new issue](https://github.com/ClickHouse/ClickHouse/issues).

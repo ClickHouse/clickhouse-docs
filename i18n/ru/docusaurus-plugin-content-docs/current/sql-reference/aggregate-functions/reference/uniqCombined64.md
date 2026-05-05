@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqCombined64 \{#uniqCombined64\}
 
-Впервые появилась в: v20.1
+Впервые появилась в: v20.1.0
 
 Вычисляет приблизительное количество различных значений аргумента.
 Аналогична функции [`uniqCombined`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/uniqcombined), но использует 64-битный хеш для всех типов данных, а не только для типа данных String.
@@ -68,7 +68,7 @@ SELECT uniqCombined64(number) FROM numbers(1e10);
 └────────────────────────┘
 ```
 
-**Сравнение с функцией uniqCombined**
+**Сравнение с uniqCombined**
 
 ```sql title=Query
 -- uniqCombined64 with large dataset

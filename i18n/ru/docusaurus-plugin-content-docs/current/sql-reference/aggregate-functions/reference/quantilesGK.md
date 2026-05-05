@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesGK \{#quantilesGK\}
 
-Появилась в версии: v23.4
+Появилась в версии: v23.4.0
 
 Вычисляет несколько [квантилей](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных на разных уровнях одновременно, используя алгоритм [Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf).
 

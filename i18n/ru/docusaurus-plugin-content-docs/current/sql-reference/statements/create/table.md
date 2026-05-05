@@ -9,6 +9,7 @@ doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -43,27 +44,34 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 Комментарии могут быть добавлены как для столбцов, так и для таблицы.
 
 
-### Со схемой, аналогичной другой таблице \{#with-a-schema-similar-to-other-table\}
+### Со схемой существующей таблицы \{#with-a-schema-similar-to-other-table\}
+
+ClickHouse поддерживает возможность копировать схему и данные существующей таблицы. 
+
+Для репликации схемы существующей таблицы:
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine]
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone AS [db.]table [ENGINE = engine]
 ```
 
-Создает таблицу с такой же структурой, как у другой таблицы. Вы можете указать для таблицы другой движок. Если движок не указан, используется тот же движок, что и для таблицы `db2.name2`.
+Это создает таблицу с такой же структурой, как у другой таблицы. 
 
+### Со схемой и данными из существующей таблицы \{#with-a-schema-and-data-cloned-from-another-table\}
 
-### Со схемой и данными, клонированными из другой таблицы \{#with-a-schema-and-data-cloned-from-another-table\}
+Чтобы реплицировать схему и данные существующей таблицы:
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name CLONE AS [db2.]name2 [ENGINE = engine]
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone CLONE AS [db.]table [ENGINE = engine]
 ```
 
-Создаёт таблицу с той же структурой, что и другая таблица. Можно указать для неё другой движок. Если движок не указан, будет использован тот же, что и у таблицы `db2.name2`. После создания новой таблицы к ней присоединяются все партиции из `db2.name2`. Другими словами, данные из `db2.name2` клонируются в `db.table_name` при создании. Этот запрос эквивалентен следующему:
+Эта команда создает таблицу с той же структурой и данными, что и существующая таблица. После создания новой таблицы к ней присоединяются все партиции из `db.table`. Иными словами, при создании данные `db.table` клонируются в `db2.table_clone`. Этот запрос эквивалентен следующему:
 
 ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name AS [db2.]name2 [ENGINE = engine];
-ALTER TABLE [db.]table_name ATTACH PARTITION ALL FROM [db2].name2;
+CREATE TABLE [IF NOT EXISTS] [db2.]table_clone AS [db.]table [ENGINE = engine];
+ALTER TABLE [db2.]table_clone ATTACH PARTITION ALL FROM [db.]table;
 ```
+
+Для обеих возможностей можно указать для таблицы другой движок. Если движок не указан, будет использоваться тот же движок, что и для исходной таблицы (`db.table`).
 
 
 ### Из табличной функции \{#from-a-table-function\}
@@ -273,7 +281,7 @@ SELECT * FROM test SETTINGS asterisk_include_alias_columns=1;
 * Внутри списка столбцов
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...,
     PRIMARY KEY(expr1[, expr2,...])
@@ -284,7 +292,7 @@ ENGINE = engine;
 * Вне списка столбцов
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...
 )
@@ -440,6 +448,16 @@ ClickHouse поддерживает кодеки как общего, так и 
 #### Gorilla \{#gorilla\}
 
 `Gorilla(bytes_size)` — вычисляет XOR между текущим и предыдущим значением с плавающей точкой и записывает его в компактном двоичном формате. Чем меньше разница между последовательными значениями, то есть чем медленнее изменяется ряд значений, тем лучше коэффициент сжатия. Реализует алгоритм, используемый в Gorilla TSDB, расширяя его для поддержки 64-битных типов. Возможные значения `bytes_size`: 1, 2, 4, 8, значение по умолчанию — `sizeof(type)`, если оно равно 1, 2, 4 или 8. Во всех остальных случаях — 1. Дополнительные сведения см. в разделе 4.1 статьи [Gorilla: A Fast, Scalable, In-Memory Time Series Database](https://doi.org/10.14778/2824032.2824078).
+
+#### ALP \{#alp\}
+
+<ExperimentalBadge/>
+
+`ALP()` — адаптивное сжатие чисел с плавающей запятой без потерь на основе десятичного масштабирования. ALP пытается представить каждое значение как точное масштабированное целое число, используя степени десяти, затем сжимает полученные целые числа с помощью метода Frame-of-Reference и побитовой упаковки (bit-packing). Значения, которые не могут быть представлены точно, сохраняются как «сырые» исключения. Лучше всего подходит для чисел, полученных из десятичных значений (например, измерений, денежных сумм). Поддерживает `Float32` и `Float64`. Подробности см. в статье [ALP: Adaptive lossless floating-point compression](https://ir.cwi.nl/pub/33334).
+
+:::note
+Этот кодек является экспериментальным, и для его использования требуется установить `SET allow_experimental_codecs = 1`.
+:::
 
 #### FPC \{#fpc\}
 
@@ -716,7 +734,7 @@ WHERE CounterID <12345;
 **Синтаксис**
 
 ```sql
-CREATE TABLE db.table_name
+CREATE TABLE [db.]table_name
 (
     name1 type1, name2 type2, ...
 )

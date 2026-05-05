@@ -50,6 +50,7 @@ keywords: ['示例数据集', 'noaa', '天气数据', '样本数据', '气候']
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriched.parquet
 ```
 
+
 ### 原始数据 \{#original-data\}
 
 下面将说明下载并转换原始数据，以便将其加载到 ClickHouse 的步骤。

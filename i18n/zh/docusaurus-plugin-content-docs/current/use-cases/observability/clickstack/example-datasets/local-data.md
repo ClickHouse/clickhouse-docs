@@ -160,7 +160,7 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 
       在随后的菜单中,您可以从 `Output format` 下拉列表中选择 `Percentage`,然后单击 `Apply`。
 
-      <Image img={hyperdx_23} alt="内存使用率百分比随时间变化" size="lg" />
+      <Image img={hyperdx_23} alt="内存使用率（%）随时间变化" size="lg" />
     </VerticalStepper>
   </TabItem>
 
@@ -285,11 +285,11 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 
       点击运行按钮以可视化内存使用率随时间的变化。
 
-      <Image img={hyperdx_21} alt="内存使用率随时间变化" size="lg" />
+      <Image img={hyperdx_21} alt="内存使用随时间变化" size="lg" />
 
       注意,该数字以浮点数 `%` 的形式返回。为了更清晰地显示,请选择 `Set number format`。
 
-      <Image img={hyperdx_22} alt="数字格式" size="lg" />
+      <Image img={hyperdx_22} alt="数值格式" size="lg" />
 
       在随后的菜单中,您可以从 `Output format` 下拉列表中选择 `Percentage`,然后单击 `Apply`。
 

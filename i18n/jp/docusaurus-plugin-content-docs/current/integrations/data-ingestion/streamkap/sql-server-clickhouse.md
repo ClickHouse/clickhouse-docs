@@ -3,8 +3,8 @@ sidebar_label: 'ClickHouse 向け SQL Server CDC'
 sidebar_position: 13
 keywords: ['clickhouse', 'Streamkap', 'CDC', 'SQL Server', '接続', '連携', 'ETL', 'データ連携', '変更データキャプチャ']
 slug: /integrations/data-ingestion/etl-tools/sql-server-clickhouse
-description: '高速な分析のために SQL Server から ClickHouse へデータをストリーミングする'
-title: '高速な分析のために SQL Server から ClickHouse へデータをストリーミングする'
+description: '高速分析のために SQL Server から ClickHouse へデータをストリーミングする'
+title: '高速分析のために SQL Server から ClickHouse へデータをストリーミングする'
 doc_type: 'guide'
 ---
 
@@ -15,9 +15,9 @@ import image2 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/image3.png';
 
 
-# 高速分析のための SQL Server から ClickHouse へのデータストリーミング：ステップバイステップガイド \{#streaming-data-from-sql-server-to-clickhouse-for-fast-analytics-step-by-step-guide\}
+# 高速分析のための SQL Server から ClickHouse へデータをストリーミングする：ステップバイステップガイド \{#streaming-data-from-sql-server-to-clickhouse-for-fast-analytics-step-by-step-guide\}
 
-この記事では、SQL Server から ClickHouse へデータをストリーミングする方法を、チュートリアル形式で詳しく解説します。ClickHouse は、社内向けまたは顧客向けのダッシュボード向けレポーティングで超高速な分析が必要な場合に理想的です。両方のデータベースのセットアップ方法、接続方法、そして最終的に [Streamkap](https://streamkap.com) を使ってデータをストリーミングする手順まで、ステップごとに見ていきます。日々の業務は SQL Server で処理しつつ、分析には ClickHouse のスピードと高度な分析機能を活用したい場合、本記事が最適なガイドとなります。
+この記事では、SQL Server から ClickHouse へデータをストリーミングする方法を、チュートリアル形式で詳しく解説します。ClickHouse は、社内向けまたはカスタマー向けダッシュボード向けレポーティングで超高速な分析が必要な場合に理想的です。両方のデータベースのセットアップ方法、接続方法、そして最終的に [Streamkap](https://streamkap.com) を使ってデータをストリーミングする手順まで、ステップごとに見ていきます。日々の業務は SQL Server で処理しつつ、分析には ClickHouse のスピードと高度な分析機能を活用したい場合、本記事が最適なガイドとなります。
 
 ## なぜ SQL Server から ClickHouse へデータをストリーミングするのか？ \{#why-stream-data-from-sql-server-to-clickhouse\}
 
@@ -51,9 +51,9 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 次の情報を用意しておいてください。
 
-- SQL Server のサーバーアドレス、ポート、ユーザー名、パスワード。Streamkap が SQL Server データベースへアクセスできるよう、専用のユーザーとロールを作成することを推奨します。[設定方法についてはドキュメントを参照してください。](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server&sa=D&source=editors&ust=1760992472358213&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
-- ClickHouse のサーバーアドレス、ポート、ユーザー名、パスワード。ClickHouse の IP アクセスリストによって、どのサービスが ClickHouse データベースに接続できるかが決まります。[こちらの手順に従ってください。](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse&sa=D&source=editors&ust=1760992472359060&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
-- ストリーミングするテーブル（まずは 1 つから始めてください）
+* SQL Server のサーバーアドレス、ポート、ユーザー名、パスワード。Streamkap が SQL Server データベースへアクセスできるよう、専用のユーザーとロールを作成することを推奨します。[設定方法についてはドキュメントを参照してください。](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server\&sa=D\&source=editors\&ust=1760992472358213\&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
+* ClickHouse のサーバーアドレス、ポート、ユーザー名、パスワード。ClickHouse の IP アクセスリストによって、どのサービスが ClickHouse データベースに接続できるかが決まります。[こちらの手順に従ってください。](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse\&sa=D\&source=editors\&ust=1760992472359060\&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
+* ストリーミングするテーブル (まずは 1 つから始めてください)
 
 ## SQL Server をデータソースとしてセットアップする \{#setting-up-sql-server-as-a-source\}
 

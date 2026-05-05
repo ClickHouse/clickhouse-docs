@@ -17,18 +17,11 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
+
 # 使用 ClickStack 监控 Redis 日志 \{#redis-clickstack\}
 
 :::note[要点速览]
-本指南演示如何通过配置 OpenTelemetry collector 来摄取 Redis 服务器日志，从而使用 ClickStack 监控 Redis。你将了解如何：
-
-- 配置 OTel collector 以解析 Redis 日志格式
-- 使用自定义配置部署 ClickStack
-- 使用预构建的仪表盘可视化 Redis 指标（连接数、命令数、内存、错误）
-
-如果你希望在为生产环境 Redis 配置之前先验证集成效果，可以使用提供的包含示例日志的演示数据集。
-
-预计耗时：5–10 分钟
+使用 OTel `filelog` receiver 在 ClickStack 中采集并可视化 Redis 服务器日志。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 Redis 集成 \{#existing-redis\}
@@ -391,9 +384,11 @@ tail -5 /var/log/redis/redis-server.log
 * `pid:role timestamp level message`
 * 示例：`12345:M 28 Oct 2024 14:23:45.123 * Server started`
 
-## 后续步骤 {#next-steps}
+## 后续步骤
 
-如果你想进一步探索，可以尝试以下与仪表板相关的操作：
+* 为关键指标 (错误率、延迟阈值) 配置[告警](/use-cases/observability/clickstack/alerts)
+* 为特定用例 (API 监控、安全事件) 创建更多[仪表板](/use-cases/observability/clickstack/dashboards)
 
-- 为关键指标（错误率、延迟阈值）配置[告警](/use-cases/observability/clickstack/alerts)
-- 为特定用例（API 监控、安全事件）创建更多[仪表板](/use-cases/observability/clickstack/dashboards)
+## 进入生产环境 {#going-to-production}
+
+本指南基于 ClickStack 内置的 OpenTelemetry Collector 进行了扩展，以便快速完成设置。对于生产部署，我们建议运行您自己的 OTel collector，并将数据发送到 ClickStack 的 OTLP 端点。有关生产环境配置，请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

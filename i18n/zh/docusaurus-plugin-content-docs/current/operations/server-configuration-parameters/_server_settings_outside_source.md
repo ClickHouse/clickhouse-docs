@@ -332,14 +332,14 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 <SystemLogParameters />
 
 
-## custom&#95;settings&#95;prefixes \{#custom_settings_prefixes\}
+## custom_settings_prefixes \{#custom_settings_prefixes\}
 
 [自定义设置](/operations/settings/query-level#custom_settings) 的前缀列表。多个前缀之间必须以逗号分隔。
 
 **示例**
 
 ```xml
-<custom_settings_prefixes>custom_</custom_settings_prefixes>
+<custom_settings_prefixes>SQL_</custom_settings_prefixes>
 ```
 
 **另请参阅**
@@ -375,7 +375,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 ```
 
 
-## dictionaries&#95;config \{#dictionaries_config\}
+## dictionaries_config \{#dictionaries_config\}
 
 字典配置文件的路径。
 
@@ -386,7 +386,7 @@ ClickHouse 每隔 x 秒重新加载一次内置字典。这样就可以在不重
 
 另请参阅：
 
-* &quot;[Dictionaries](../../sql-reference/dictionaries/index.md)&quot;。
+* &quot;[Dictionaries](../../sql-reference/statements/create/dictionary/overview.md)&quot;。
 
 **示例**
 
@@ -628,7 +628,7 @@ HSTS 的有效期（单位：秒）。
 默认值：
 
 
-## interserver&#95;http&#95;credentials \{#interserver_http_credentials\}
+## interserver_http_credentials \{#interserver_http_credentials\}
 
 在[复制](../../engines/table-engines/mergetree-family/replication.md)期间用于连接其他服务器的用户名和密码。此外，服务器也使用这些凭据对其他副本进行身份验证。
 因此，集群中所有副本的 `interserver_http_credentials` 必须相同。
@@ -636,7 +636,7 @@ HSTS 的有效期（单位：秒）。
 :::note
 
 * 默认情况下，如果省略 `interserver_http_credentials` 部分，在复制过程中将不使用身份验证。
-* `interserver_http_credentials` 设置与 ClickHouse 客户端凭据[配置](../../interfaces/cli.md#configuration_files)无关。
+* `interserver_http_credentials` 设置与 ClickHouse 客户端凭据[配置](../../interfaces/client.md#configuration_files)无关。
 * 这些凭据同时适用于通过 `HTTP` 和 `HTTPS` 进行的复制。
   :::
 
@@ -1893,20 +1893,22 @@ curl 127.0.0.1:9363/metrics
 
 访问控制系统可选增强功能的相关设置。
 
-| Setting                                         | Description                                                                                                                                                                                                                                                                                   | Default |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 授权。                                                                                                                                                                                                                                                          | `true`  |
-| `role_cache_expiration_time_seconds`            | 设置自上次访问以来角色在 Role Cache 中保留的时间（以秒为单位）。                                                                                                                                                                                                                                                        | `600`   |
-| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则此查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                    | `true`  |
-| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：少数几个 system 表（`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`）仍然对所有人可访问；并且如果授予了某个 `SHOW` 权限（例如 `SHOW USERS`），则相应的 system 表（即 `system.users`）将可访问。 | `true`  |
-| `settings_constraints_replace_previous`         | 设置配置文件中针对某个设置的约束，是否会覆盖该设置上先前的约束（在其他配置文件中定义），包括那些未被新约束显式设置的字段。它还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                                                             | `true`  |
-| `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时是否需要授权。                                                                                                                                                                                                                                                                         | `false` |
-| `users_without_row_policies_can_read_rows`      | 设置没有宽松行策略的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了行策略，那么当此设置为 true 时，用户 B 将看到所有行；当此设置为 false 时，用户 B 将看不到任何行。                                                                                                                                                                     | `true`  |
+| Setting                                         | Description                                                                                                                                                                                                                                                                                         | Default |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `on_cluster_queries_require_cluster_grant`      | 设置 `ON CLUSTER` 查询是否需要 `CLUSTER` 授权。                                                                                                                                                                                                                                                                | `true`  |
+| `role_cache_expiration_time_seconds`            | 设置自上次访问以来角色在 Role Cache 中保留的时间 (以秒为单位) 。                                                                                                                                                                                                                                                            | `600`   |
+| `select_from_information_schema_requires_grant` | 设置 `SELECT * FROM information_schema.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则此查询需要 `GRANT SELECT ON information_schema.<table>`，与普通表相同。                                                                                                                                                          | `true`  |
+| `select_from_system_db_requires_grant`          | 设置 `SELECT * FROM system.<table>` 是否需要任何授权，以及是否可由任意用户执行。如果设置为 true，则该查询需要 `GRANT SELECT ON system.<table>`，与非 system 表相同。例外情况：少数几个 system 表 (`tables`、`columns`、`databases`，以及一些常量表，如 `one`、`contributors`) 仍然对所有人可访问；并且如果授予了某个 `SHOW` 权限 (例如 `SHOW USERS`) ，则相应的 system 表 (即 `system.users`) 将可访问。 | `true`  |
+| `settings_constraints_replace_previous`         | 设置配置文件中针对某个设置的约束，是否会覆盖该设置上先前的约束 (在其他配置文件中定义) ，包括那些未被新约束显式设置的字段。它还会启用 `changeable_in_readonly` 约束类型。                                                                                                                                                                                                 | `true`  |
+| `table_engines_require_grant`                   | 设置在使用特定表引擎创建表时是否需要授权。                                                                                                                                                                                                                                                                               | `false` |
+| `throw_on_unmatched_row_policies`               | 设置当从某个具有行策略的表中读取数据时，如果没有任何行策略适用于当前用户，是否应抛出异常。                                                                                                                                                                                                                                                       | `false` |
+| `users_without_row_policies_can_read_rows`      | 设置没有宽松行策略的用户是否仍然可以通过 `SELECT` 查询读取行。例如，如果有两个用户 A 和 B，并且只为 A 定义了行策略，那么当此设置为 true 时，用户 B 将看到所有行；当此设置为 false 时，用户 B 将看不到任何行。                                                                                                                                                                           | `true`  |
 
 示例：
 
 ```xml
 <access_control_improvements>
+    <throw_on_unmatched_row_policies>true</throw_on_unmatched_row_policies>
     <users_without_row_policies_can_read_rows>true</users_without_row_policies_can_read_rows>
     <on_cluster_queries_require_cluster_grant>true</on_cluster_queries_require_cluster_grant>
     <select_from_system_db_requires_grant>true</select_from_system_db_requires_grant>
@@ -1956,20 +1958,22 @@ curl 127.0.0.1:9363/metrics
 
 ## zookeeper \{#zookeeper\}
 
-包含允许 ClickHouse 与 [ZooKeeper](http://zookeeper.apache.org/) 集群交互的设置。ClickHouse 在使用复制表（replicated tables）时，会使用 ZooKeeper 存储副本的元数据。如果不使用复制表，可以省略本节参数。
+包含允许 ClickHouse 与 [ZooKeeper](http://zookeeper.apache.org/) 集群交互的设置。ClickHouse 在使用复制表 (replicated tables) 时，会使用 ZooKeeper 存储副本的元数据。如果不使用复制表，可以省略本节参数。
 
 以下设置可以通过子标签进行配置：
 
-| Setting                                    | Description                                                                                                                        |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `node`                                     | ZooKeeper 端点。可以设置多个端点。例如：`<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性指定在尝试连接 ZooKeeper 集群时节点的顺序。 |
-| `operation_timeout_ms`                     | 单个操作的最大超时时间，单位为毫秒。                                                                                                                 |
-| `session_timeout_ms`                       | 客户端会话的最大超时时间，单位为毫秒。                                                                                                                |
-| `root` (optional)                          | ClickHouse 服务器用于其 znodes 的根 znode。                                                                                                 |
-| `fallback_session_lifetime.min` (optional) | 当主节点不可用时（负载均衡场景），到回退节点的 ZooKeeper 会话生命周期的最小限制。单位为秒。默认值：3 小时。                                                                       |
-| `fallback_session_lifetime.max` (optional) | 当主节点不可用时（负载均衡场景），到回退节点的 ZooKeeper 会话生命周期的最大限制。单位为秒。默认值：6 小时。                                                                       |
-| `identity` (optional)                      | 访问目标 znodes 时 ZooKeeper 所需的用户名和密码。                                                                                                 |
-| `use_compression` (optional)               | 若设为 true，则在 Keeper 协议中启用压缩。                                                                                                        |
+| Setting                                         | Description                                                                                                                                                                                                                    |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `node`                                          | ZooKeeper 端点。可以设置多个端点。例如：`<node index="1"><host>example_host</host><port>2181</port></node>`。`index` 属性指定在尝试连接 ZooKeeper 集群时节点的顺序。                                                                                             |
+| `operation_timeout_ms`                          | 单个操作的最大超时时间，单位为毫秒。                                                                                                                                                                                                             |
+| `session_timeout_ms`                            | 客户端会话的最大超时时间，单位为毫秒。                                                                                                                                                                                                            |
+| `root` (optional)                               | ClickHouse 服务器用于其 znodes 的根 znode。                                                                                                                                                                                             |
+| `fallback_session_lifetime.min` (optional)      | 当主节点不可用时 (负载均衡场景) ，到回退节点的 ZooKeeper 会话生命周期的最小限制。单位为秒。默认值：3 小时。                                                                                                                                                                 |
+| `fallback_session_lifetime.max` (optional)      | 当主节点不可用时 (负载均衡场景) ，到回退节点的 ZooKeeper 会话生命周期的最大限制。单位为秒。默认值：6 小时。                                                                                                                                                                 |
+| `identity` (optional)                           | 访问目标 znodes 时 ZooKeeper 所需的用户名和密码。                                                                                                                                                                                             |
+| `use_compression` (optional)                    | 若设为 true，则在 Keeper 协议中启用压缩。                                                                                                                                                                                                    |
+| `use_xid_64` (optional)                         | 启用 64 位事务 ID。设为 `true` 时启用扩展事务 ID 格式。默认值：`false`。                                                                                                                                                                              |
+| `pass_opentelemetry_tracing_context` (optional) | 启用将 OpenTelemetry 跟踪上下文传播到 Keeper 请求。当启用时，会为 Keeper 操作创建 tracing span，从而在 ClickHouse 与 Keeper 之间实现分布式追踪。更多细节参见 [Tracing ClickHouse Keeper Requests](/operations/opentelemetry#tracing-clickhouse-keeper-requests)。默认值：`false`。 |
 
 还有一个可选设置 `zookeeper_load_balancing`，用于选择 ZooKeeper 节点的负载均衡算法：
 
@@ -2002,15 +2006,18 @@ curl 127.0.0.1:9363/metrics
     <identity>user:password</identity>
     <!--<zookeeper_load_balancing>random / in_order / nearest_hostname / hostname_levenshtein_distance / first_or_random / round_robin</zookeeper_load_balancing>-->
     <zookeeper_load_balancing>random</zookeeper_load_balancing>
+    <!-- Optional. Enable 64-bit transaction IDs. -->
+    <use_xid_64>false</use_xid_64>
+    <!-- Optional. Enable OpenTelemetry tracing context propagation. -->
+    <pass_opentelemetry_tracing_context>false</pass_opentelemetry_tracing_context>
 </zookeeper>
 ```
 
 **另请参阅**
 
-* [复制](../../engines/table-engines/mergetree-family/replication.md)
-* [ZooKeeper 程序员指南](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
-* [ClickHouse 与 ZooKeeper 之间的可选安全通信](/operations/ssl-zookeeper)
-
+- [复制](../../engines/table-engines/mergetree-family/replication.md)
+- [ZooKeeper 程序员指南](http://zookeeper.apache.org/doc/current/zookeeperProgrammers.html)
+- [ClickHouse 与 ZooKeeper 之间的可选安全通信](/operations/ssl-zookeeper)
 
 ## use_minimalistic_part_header_in_zookeeper \{#use_minimalistic_part_header_in_zookeeper\}
 

@@ -1,6 +1,6 @@
 ---
 slug: /cloud/marketplace/marketplace-billing
-title: 'Выставление счетов в Marketplace'
+title: 'биллинг через маркетплейс'
 description: 'Оформляйте подписку на ClickHouse Cloud через маркетплейсы AWS, GCP и Azure.'
 keywords: ['aws', 'azure', 'gcp', 'google cloud', 'маркетплейс', 'оплата']
 doc_type: 'guide'
@@ -19,7 +19,6 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 * [Контракт с фиксированными обязательствами в GCP Marketplace](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
 * [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)
 * [Контракт с фиксированными обязательствами в Azure Marketplace](/cloud/billing/marketplace/azure-marketplace-committed-contract)
-
 
 ## Часто задаваемые вопросы \{#faqs\}
 

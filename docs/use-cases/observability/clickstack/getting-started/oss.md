@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/oss
-title: 'Getting Started with Open Source ClickStack'
-sidebar_label: 'Open Source'
+title: 'Getting started with open source ClickStack'
+sidebar_label: 'Open source'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
 description: 'Getting started with Open Source ClickStack'
@@ -25,6 +25,10 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 To deploy **ClickStack Open Source**, where you run and manage ClickHouse and the ClickStack UI yourself, we provide prebuilt Docker images that bundle the UI, an OpenTelemetry collector, and ClickHouse into a single container -  making local development, testing, and self-managed deployments straightforward to get started.
+
+:::tip
+A managed version of ClickStack is also available — see [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed).
+:::
 
 These images are based on the official ClickHouse Debian package and are available in multiple distributions to suit different use cases.
 
@@ -58,7 +62,7 @@ For example:
 ```shell
 # modify command to mount paths
 docker run \
-  --name clickstack
+  --name clickstack \
   -p 8123:8123 \
   -p 8080:8080 \
   -p 4317:4317 \
@@ -102,9 +106,9 @@ Alternatively, you can connect to a demo cluster where you can explore a larger 
 
 Local mode is a way to deploy HyperDX without needing to authenticate. 
 
-**Authentication is not supported**. 
+**Authentication isn't supported**. 
 
-This mode is intended to be used for quick testing, development, demos and debugging use cases where authentication and settings persistence is not necessary.
+This mode is intended to be used for quick testing, development, demos and debugging use cases where authentication and settings persistence isn't necessary.
 
 For further details on this deployment model, see ["Local Mode Only"](/use-cases/observability/clickstack/deployment/local-mode-only).
 
@@ -124,7 +128,7 @@ The self-hosted local mode image comes with an OpenTelemetry collector, the Clic
 docker run -p 8080:8080 clickhouse/clickstack-local:latest
 ```
 
-Unlike the "All in one" image, you will not be promoted to create a user as **local mode does not include authentication**.
+Unlike the "All in one" image, you will not be prompted to create a user as **local mode does not include authentication**.
 
 ### Complete connection credentials {#complete-connection-credentials}
 

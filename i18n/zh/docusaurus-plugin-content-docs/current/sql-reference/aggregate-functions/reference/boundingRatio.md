@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## boundingRatio \{#boundingRatio\}
 
-首次引入版本：v20.1
+首次引入版本：v20.1.0
 
 计算一组数值中最左侧和最右侧点之间的斜率。
 
@@ -54,7 +54,7 @@ FROM numbers(10)
 └────────┴───────────────────────┘
 ```
 
-**用法示例**
+**使用示例**
 
 ```sql title=Query
 SELECT boundingRatio(number, number * 1.5)

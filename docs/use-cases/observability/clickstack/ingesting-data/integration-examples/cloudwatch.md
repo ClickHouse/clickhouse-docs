@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-cloudwatch-logs
-title: 'Monitoring AWS CloudWatch Logs with ClickStack'
-sidebar_label: 'AWS CloudWatch Logs'
+title: 'Monitoring AWS CloudWatch logs with ClickStack'
+sidebar_label: 'AWS CloudWatch logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring AWS CloudWatch Logs with ClickStack'
@@ -24,16 +24,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring AWS CloudWatch Logs with ClickStack {#cloudwatch-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to forward AWS CloudWatch logs to ClickStack using the OpenTelemetry Collector's AWS CloudWatch receiver. You'll learn how to:
-- Configure the OpenTelemetry Collector to pull logs from CloudWatch
-- Set up AWS credentials and IAM permissions
-- Send CloudWatch logs to ClickStack via OTLP
-- Filter and autodiscover log groups
-- Use a pre-built dashboard to visualize CloudWatch log patterns
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production AWS environment.
-
-Time Required: 10-15 minutes
+Forward AWS CloudWatch logs to ClickStack using the OpenTelemetry Collector's CloudWatch receiver. Supports named log groups and autodiscovery. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Overview {#overview}
@@ -58,7 +49,7 @@ If you would like to test the integration before configuring your production set
 - AWS credentials with appropriate IAM permissions
 
 :::note
-Unlike file-based log integrations (nginx, Redis), CloudWatch requires running a separate OpenTelemetry Collector that polls the CloudWatch API. This collector cannot run inside ClickStack's all-in-one image as it needs AWS credentials and API access.
+Unlike file-based log integrations (nginx, Redis), CloudWatch requires running a separate OpenTelemetry Collector that polls the CloudWatch API. This collector can't run inside ClickStack's all-in-one image as it needs AWS credentials and API access.
 :::
 
 <VerticalStepper headerLevel="h4">
@@ -217,7 +208,7 @@ For more configuration options, see the [CloudWatch receiver documentation](http
 - Log group names/prefixes → Your actual CloudWatch log groups
 
 :::note
-The CloudWatch receiver only fetches logs from recent time windows (based on `poll_interval`). When first started, it begins from the current time. Historical logs are not retrieved by default.
+The CloudWatch receiver only fetches logs from recent time windows (based on `poll_interval`). When first started, it begins from the current time. Historical logs aren't retrieved by default.
 :::
 
 #### Start the collector {#start-collector}
@@ -359,7 +350,7 @@ The dashboard will be created with all visualizations pre-configured:
 <Image img={example_dashboard} alt="CloudWatch Logs dashboard"/>
 
 :::note
-For the demo dataset, set the time range to **2025-12-07 00:00:00 - 2025-12-08 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-12-07 00:00:00 - 2025-12-08 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard won't have a time range specified by default.
 :::
 
 </VerticalStepper>
@@ -389,7 +380,7 @@ docker compose logs otel-collector
 Common errors:
 - `The security token included in the request is invalid`: Credentials are invalid or expired. For temporary credentials (SSO), ensure `AWS_SESSION_TOKEN` is set.
 - `operation error CloudWatch Logs: FilterLogEvents, AccessDeniedException`: IAM permissions are insufficient
-- `failed to refresh cached credentials, no EC2 IMDS role found`: AWS credentials environment variables are not set
+- `failed to refresh cached credentials, no EC2 IMDS role found`: AWS credentials environment variables aren't set
 - `connection refused`: ClickStack endpoint is unreachable
 
 **Verify CloudWatch log groups exist and have recent logs:**
@@ -409,7 +400,7 @@ aws logs filter-log-events \
 
 **The CloudWatch receiver starts from "now" by default:**
 
-When the collector first starts, it creates a checkpoint at the current time and only fetches logs after that point. Historical logs are not retrieved.
+When the collector first starts, it creates a checkpoint at the current time and only fetches logs after that point. Historical logs aren't retrieved.
 
 **To collect recent historical logs:**
 
@@ -471,8 +462,6 @@ groups:
 ```
 
 ## Next steps {#next-steps}
-
-Now that you have CloudWatch logs flowing into ClickStack:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical events (connection failures, error spikes)
 - Reduce CloudWatch costs by adjusting retention periods or archiving to S3, now that you have logs in ClickStack

@@ -9,17 +9,17 @@ doc_type: 'guide'
 
 # 如何在 Linux 上构建 ClickHouse \{#how-to-build-clickhouse-on-linux\}
 
-:::info 无需自行构建 ClickHouse！
-你可以按照[快速开始](https://clickhouse.com/#quick-start)中的说明安装预编译的 ClickHouse。
+:::info 本构建指南适用于修改 ClickHouse 自身的贡献者。
+你可以按照[快速开始](https://clickhouse.com/docs/get-started/quick-start)中的说明安装预编译的 ClickHouse。
 :::
 
 ClickHouse 可以在以下平台上构建：
 
-- x86_64
-- AArch64
-- PowerPC 64 LE（实验性）
-- s390/x（实验性）
-- RISC-V 64（实验性）
+* x86&#95;64
+* AArch64
+* PowerPC 64 LE (实验性)
+* s390/x (实验性)
+* RISC-V 64 (实验性)
 
 ## 前提条件 \{#assumptions\}
 
@@ -46,7 +46,9 @@ sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm y
 要在 Ubuntu/Debian 上安装 Clang，请使用 LLVM 的自动安装脚本，详见[此页面](https://apt.llvm.org/)。
 
 ```bash
-sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
+sudo ./llvm.sh 21
 ```
 
 对于其他 Linux 发行版，请查看是否提供可安装的 LLVM [预编译二进制包](https://releases.llvm.org/download.html)。
@@ -55,7 +57,7 @@ sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 不支持 GCC 或其他编译器。
 
 
-## 安装 Rust 编译器（可选） \{#install-the-rust-compiler-optional\}
+## 安装 Rust 编译器 (可选)  \{#install-the-rust-compiler-optional\}
 
 :::note
 Rust 是 ClickHouse 的可选依赖。
@@ -64,15 +66,16 @@ Rust 是 ClickHouse 的可选依赖。
 
 首先，按照官方 [Rust 文档](https://www.rust-lang.org/tools/install)中的步骤安装 `rustup`。
 
-与 C++ 依赖类似，ClickHouse 使用 vendoring 来精确控制安装内容，并避免依赖第三方服务（例如 `crates.io` registry）。
+与 C++ 依赖类似，ClickHouse 使用 vendoring 来精确控制安装内容，并避免依赖第三方服务 (例如 `crates.io` registry) 。
 
-虽然在 release 模式下，任意较新的 Rust toolchain 版本通常都可以与这些依赖一起工作，但如果你计划启用 sanitizers，则必须使用与 CI 中所用版本拥有完全相同 `std` 的 toolchain（我们为此对相关 crates 做了 vendoring）：
+虽然在 release 模式下，任意较新的 Rust toolchain 版本通常都可以与这些依赖一起工作，但如果你计划启用 sanitizers，则必须使用与 CI 中所用版本拥有完全相同 `std` 的 toolchain (我们为此对相关 crates 做了 vendoring) ：
 
 ```bash
-rustup toolchain install nightly-2025-07-07
-rustup default nightly-2025-07-07
+rustup toolchain install nightly-2026-03-22
+rustup default nightly-2026-03-22
 rustup component add rust-src
 ```
+
 
 ## 构建 ClickHouse \{#build-clickhouse\}
 
@@ -83,7 +86,7 @@ mkdir build
 cd build
 ```
 
-你可以为不同的构建类型使用多个目录（例如 `build_release`、`build_debug` 等）。
+你可以为不同的构建类型使用多个目录 (例如 `build_release`、`build_debug` 等) 。
 
 可选：如果你安装了多个编译器版本，可以指定要使用的具体编译器。
 
@@ -92,8 +95,8 @@ export CC=clang-21
 export CXX=clang++-21
 ```
 
-出于开发目的，推荐使用调试构建（debug builds）。
-与发布构建（release builds）相比，它们使用更低的编译器优化级别（`-O`），从而带来更好的调试体验。
+出于开发目的，推荐使用调试构建 (debug builds) 。
+与发布构建 (release builds) 相比，它们使用更低的编译器优化级别 (`-O`) ，从而带来更好的调试体验。
 此外，类型为 `LOGICAL_ERROR` 的内部异常会立即导致崩溃，而不会被优雅地捕获和处理。
 
 ```sh
@@ -110,7 +113,7 @@ cmake -D CMAKE_BUILD_TYPE=Debug ..
 ninja clickhouse
 ```
 
-如果你想构建所有二进制文件（工具和测试），请直接运行不带任何参数的 ninja：
+如果你想构建所有二进制文件 (工具和测试) ，请直接运行不带任何参数的 ninja：
 
 ```sh
 ninja
@@ -119,8 +122,11 @@ ninja
 你可以使用参数 `-j` 来控制并行构建任务的数量：
 
 ```sh
-ninja -j 1 clickhouse-server clickhouse-client
+ninja -j 1 clickhouse
 ```
+
+:::note
+`clickhouse-server`、`clickhouse-client` 以及类似的二进制文件是 `programs/` 目录中的符号链接，这些链接在构建完成后指向 `clickhouse` 可执行文件。
 
 :::tip
 CMake 为这些命令提供了快捷方式：

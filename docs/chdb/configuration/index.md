@@ -1,5 +1,5 @@
 ---
-title: 'DataStore Configuration'
+title: 'DataStore configuration'
 sidebar_label: 'Overview'
 slug: /chdb/configuration
 description: 'Configure DataStore execution engine, logging, caching, and profiling'
@@ -64,7 +64,7 @@ config.set_log_format("verbose")  # More details
 config.enable_debug()  # Sets DEBUG level + verbose format
 ```
 
-See [Logging](logging.md) for details.
+See [Logging](../debugging/logging.md) for details.
 
 ### Cache Configuration {#cache}
 

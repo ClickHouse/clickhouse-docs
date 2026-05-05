@@ -2,7 +2,7 @@
 title: 'Конфигурация на уровне функций'
 sidebar_label: 'Конфигурация функций'
 slug: /chdb/configuration/function-config
-description: 'Настройка движка выполнения и коррекции Dtype на уровне функций'
+description: 'Настройка движка выполнения и коррекции типов данных (Dtype) на уровне функций'
 keywords: ['chdb', 'хранилище данных', 'функция', 'конфигурация', 'Dtype', 'коррекция']
 doc_type: 'reference'
 ---

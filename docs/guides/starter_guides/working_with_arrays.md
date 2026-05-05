@@ -20,7 +20,7 @@ Arrays in ClickHouse can be formed using the [`array`](/sql-reference/data-types
 array(T)
 ```
 
-Or alternatively, using square brackets:
+Or alternatively, using `[]`:
 
 ```sql
 []
@@ -121,7 +121,7 @@ SETTINGS use_variant_as_common_type = 1;
 
 </details>
 
-Use of the index with square brackets provides a convenient way to access array elements.
+Use of the index with `[]` provides a convenient way to access array elements.
 In ClickHouse, it's important to know that the array index always starts from **1**.
 This may be different from other programming languages you're used to where arrays are zero-indexed.
 

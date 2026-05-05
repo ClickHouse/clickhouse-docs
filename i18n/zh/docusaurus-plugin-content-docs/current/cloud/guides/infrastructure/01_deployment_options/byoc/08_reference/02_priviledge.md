@@ -1,9 +1,9 @@
 ---
-title: 'BYOC 权限'
+title: 'BYOC 特权'
 slug: /cloud/reference/byoc/reference/privilege
-sidebar_label: '权限'
-keywords: ['BYOC', '云', 'bring your own cloud', '权限']
-description: '在您自有的云基础设施上部署 ClickHouse'
+sidebar_label: '特权'
+keywords: ['BYOC', 'Cloud', 'bring your own cloud', '特权']
+description: '在您自有的 Cloud 基础设施上部署 ClickHouse'
 doc_type: 'reference'
 ---
 

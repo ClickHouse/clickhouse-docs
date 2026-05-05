@@ -1,3 +1,5 @@
+import Recommendations from '@site/docs/getting-started/install/_snippets/recommendations.md';
+
 # Install ClickHouse on rpm-based distributions {#from-rpm-packages}
 
 > It is recommended to use official pre-compiled `rpm` packages for **CentOS**, **RedHat**, and all other rpm-based 
@@ -5,7 +7,11 @@
 
 <VerticalStepper>
 
-## Setup the RPM repository {#setup-the-rpm-repository}
+## Review recommendations {#review-recommendations}
+
+<Recommendations />
+
+## Set up the RPM repository {#setup-the-rpm-repository}
 
 Add the official repository by running the following command:
 
@@ -22,7 +28,7 @@ sudo zypper --gpg-auto-import-keys refresh clickhouse-stable
 ```
 
 In the steps below, `yum install` can be replaced by `zypper install`, depending
-on which package manager you are using.
+on which package manager you're using.
 
 ## Install ClickHouse server and client {#install-clickhouse-server-and-client-1}
 
@@ -53,7 +59,7 @@ sudo systemctl status clickhouse-server
 
 To start ClickHouse client, run:
 
-```sql
+```bash
 clickhouse-client
 ```
 
@@ -68,7 +74,7 @@ clickhouse-client --password
 :::tip
 In production environments we strongly recommend running ClickHouse Keeper on dedicated nodes.
 In test environments, if you decide to run ClickHouse Server and ClickHouse Keeper on the same server, 
-then you do not need to install ClickHouse Keeper as it is included with ClickHouse server.
+then you don't need to install ClickHouse Keeper as it is included with ClickHouse server.
 :::
 
 To install `clickhouse-keeper` on standalone ClickHouse Keeper servers, run:

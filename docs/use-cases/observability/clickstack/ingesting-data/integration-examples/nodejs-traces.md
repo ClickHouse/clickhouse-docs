@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nodejs-traces
-title: 'Monitoring Node.js Traces with ClickStack'
-sidebar_label: 'Node.js Traces'
+title: 'Monitoring Node.js traces with ClickStack'
+sidebar_label: 'Node.js traces'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Node.js application traces with ClickStack'
@@ -22,16 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Node.js Traces with ClickStack {#nodejs-traces-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to capture distributed traces from your Node.js application and visualize them in ClickStack using OpenTelemetry automatic instrumentation. You'll learn how to:
-
-- Install and configure OpenTelemetry for Node.js with automatic instrumentation
-- Send traces to ClickStack's OTLP endpoint
-- Verify traces are appearing in HyperDX
-- Use a pre-built dashboard to visualize application performance
-
-A demo dataset with sample traces is available if you want to test the integration before instrumenting your production application.
-
-Time Required: 10-15 minutes
+Capture distributed traces from Node.js applications in ClickStack using OpenTelemetry automatic instrumentation. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing Node.js application {#existing-nodejs}
@@ -191,7 +182,7 @@ To help you get started monitoring Node.js application performance, we provide a
 <Image img={example_dashboard} alt="Example dashboard"/>
 
 :::note
-For the demo dataset, set the time range to **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-10-26 13:00:00 - 2025-10-27 13:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard won't have a time range specified by default.
 :::
 
 </VerticalStepper>
@@ -209,7 +200,7 @@ curl -X POST http://localhost:4318/v1/traces \
   -d @nodejs-traces-sample.json
 ```
 
-This is a known issue that occurs when using the demo approach via curl and does not affect instrumented production applications.
+This is a known issue that occurs when using the demo approach via curl and doesn't affect instrumented production applications.
 
 ### No traces appearing in HyperDX {#no-traces}
 
@@ -234,7 +225,6 @@ Should connect successfully to the OTLP endpoint.
 Look for OpenTelemetry initialization messages when your app starts. The HyperDX SDK should output confirmation that it's initialized.
 
 ## Next steps {#next-steps}
-If you want to explore further, here are some next steps to experiment with your dashboard:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (error rates, latency thresholds)
 - Create additional dashboards for specific use cases (API monitoring, security events)

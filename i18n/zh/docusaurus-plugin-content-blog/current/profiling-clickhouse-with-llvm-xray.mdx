@@ -93,7 +93,7 @@ clang++ -o test test.cpp -fxray-instrument -fxray-instruction-threshold=1
 * `-fxray-instrument` 用于对代码进行插桩。
 * `-fxray-instruction-threshold=1` 用于确保对所有函数进行插桩，即使它们像示例中那样非常小。默认情况下，它只会对[至少包含 200 条指令](https://llvm.org/docs/XRay.html#instrumenting-your-c-c-objective-c-application)的函数进行插桩。
 
-我们可以通过检查二进制文件中是否出现了一个新的节（section），来确认代码是否已正确插桩：
+我们可以通过检查二进制文件中是否出现了一个新的节 (section) ，来确认代码是否已正确插桩：
 
 ```bash
 objdump -h -j xray_instr_map test

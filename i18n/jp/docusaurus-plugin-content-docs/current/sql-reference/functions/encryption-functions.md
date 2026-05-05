@@ -25,68 +25,35 @@ doc_type: 'reference'
 
 ## HMAC \{#HMAC\}
 
-導入バージョン: v25.12
+導入バージョン: v25.12.0
 
-指定されたハッシュアルゴリズムと秘密鍵を使用して、指定されたメッセージの HMAC（ハッシュベースメッセージ認証コード）を計算します。
+指定したハッシュアルゴリズムと秘密鍵を使用して、指定したメッセージの HMAC (Hash-based Message Authentication Code) を計算します。
 
-サポートされているハッシュアルゴリズムは次のとおりです:
+サポートされているハッシュアルゴリズム:
 
-* RSA-MD4 (別名: MD4, RSA-MD4)
-* RSA-MD5 (別名: MD5, RSA-MD5)
-* RSA-MDC2 (別名: MDC2, RSA-MDC2)
-* RSA-RIPEMD160 (別名: RIPEMD160, RSA-RIPEMD160)
-* RSA-SHA1 (別名: RSA-SHA1, SHA1)
-* RSA-SHA1-2 (別名: RSA-SHA1, RSA-SHA1-2)
-* RSA-SHA224 (別名: RSA-SHA224, SHA224)
-* RSA-SHA256 (別名: RSA-SHA256, SHA256)
-* RSA-SHA3-224 (別名: RSA-SHA3-224, SHA3-224)
-* RSA-SHA3-256 (別名: RSA-SHA3-256, SHA3-256)
-* RSA-SHA3-384 (別名: RSA-SHA3-384, SHA3-384)
-* RSA-SHA3-512 (別名: RSA-SHA3-512, SHA3-512)
-* RSA-SHA384 (別名: RSA-SHA384, SHA384)
-* RSA-SHA512 (別名: RSA-SHA512, SHA512)
-* RSA-SHA512/224 (別名: RSA-SHA512/224, SHA512-224)
-* RSA-SHA512/256 (別名: RSA-SHA512/256, SHA512-256)
-* RSA-SM3 (別名: RSA-SM3, SM3)
 * blake2b512
 * blake2s256
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-224 (別名: SHA3-224, id-rsassa-pkcs1-v1&#95;5-with-sha3-224)
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-256 (別名: SHA3-256, id-rsassa-pkcs1-v1&#95;5-with-sha3-256)
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-384 (別名: SHA3-384, id-rsassa-pkcs1-v1&#95;5-with-sha3-384)
-* id-rsassa-pkcs1-v1&#95;5-with-sha3-512 (別名: SHA3-512, id-rsassa-pkcs1-v1&#95;5-with-sha3-512)
 * md4
-* md4WithRSAEncryption (別名: MD4, md4WithRSAEncryption)
 * md5
 * md5-sha1
-* md5WithRSAEncryption (別名: MD5, md5WithRSAEncryption)
 * mdc2
-* mdc2WithRSA (別名: MDC2, mdc2WithRSA)
 * ripemd (別名: RIPEMD160, ripemd)
 * ripemd160
-* ripemd160WithRSA (別名: RIPEMD160, ripemd160WithRSA)
 * rmd160 (別名: RIPEMD160, rmd160)
 * sha1
-* sha1WithRSAEncryption (別名: SHA1, sha1WithRSAEncryption)
 * sha224
-* sha224WithRSAEncryption (別名: SHA224, sha224WithRSAEncryption)
 * sha256
-* sha256WithRSAEncryption (別名: SHA256, sha256WithRSAEncryption)
 * sha3-224
 * sha3-256
 * sha3-384
 * sha3-512
 * sha384
-* sha384WithRSAEncryption (別名: SHA384, sha384WithRSAEncryption)
 * sha512
 * sha512-224
-* sha512-224WithRSAEncryption (別名: SHA512-224, sha512-224WithRSAEncryption)
 * sha512-256
-* sha512-256WithRSAEncryption (別名: SHA512-256, sha512-256WithRSAEncryption)
-* sha512WithRSAEncryption (別名: SHA512, sha512WithRSAEncryption)
 * shake128
 * shake256
 * sm3
-* sm3WithRSAEncryption (別名: SM3, sm3WithRSAEncryption)
 * ssl3-md5 (別名: MD5, ssl3-md5)
 * ssl3-sha1 (別名: SHA1, ssl3-sha1)
 * whirlpool
@@ -99,7 +66,7 @@ HMAC(mode, message, key)
 
 **引数**
 
-* `mode` — ハッシュアルゴリズム名（大文字小文字は区別されません）。サポートされる値: md5, sha1, sha224, sha256, sha384, sha512。[`String`](/sql-reference/data-types/string)
+* `mode` — ハッシュアルゴリズム名 (大文字小文字は区別されません) 。サポートされる値: md5, sha1, sha224, sha256, sha384, sha512。[`String`](/sql-reference/data-types/string)
 * `message` — 認証対象のメッセージ。[`String`](/sql-reference/data-types/string)
 * `key` — HMAC 用の秘密鍵。[`String`](/sql-reference/data-types/string)
 
@@ -150,9 +117,9 @@ SELECT
 └─────────────┴───────────┘
 ```
 
-## aes&#95;decrypt&#95;mysql \{#aes&#95;decrypt&#95;mysql\}
+## aes_decrypt_mysql \{#aes_decrypt_mysql\}
 
-導入バージョン: v20.12
+導入バージョン: v20.12.0
 
 MySQL の [`AES_ENCRYPT`](https://dev.mysql.com/doc/refman/8.0/en/encryption-functions.html#function_aes-encrypt) 関数で暗号化されたデータを復号します。
 
@@ -188,7 +155,7 @@ aes_decrypt_mysql(mode, ciphertext, key[, iv])
 **MySQL データの復号**
 
 ```sql title=Query
--- MySQLで事前に暗号化したデータを復号化してみましょう:
+-- Let's decrypt data we've previously encrypted with MySQL:
 mysql> SET  block_encryption_mode='aes-256-ofb';
 Query OK, 0 rows affected (0.00 sec)
 
@@ -198,20 +165,21 @@ mysql> SELECT aes_encrypt('Secret', '123456789101213141516171819202122', 'iviviv
 +------------------------+
 | 0x24E9E4966469         |
 +------------------------+
-1行のセット (0.00秒)
+1 row in set (0.00 sec)
 
 SELECT aes_decrypt_mysql('aes-256-ofb', unhex('24E9E4966469'), '123456789101213141516171819202122', 'iviviviviviviviv123456') AS plaintext
 ```
 
 ```response title=Response
 ┌─plaintext─┐
-│ シークレット    │
+│ Secret    │
 └───────────┘
 ```
 
-## aes&#95;encrypt&#95;mysql \{#aes&#95;encrypt&#95;mysql\}
 
-導入バージョン: v20.12
+## aes_encrypt_mysql \{#aes_encrypt_mysql\}
+
+導入バージョン: v20.12.0
 
 MySQL の `AES_ENCRYPT` 関数と同じ方法でテキストを暗号化します。
 生成された暗号文は、MySQL の `AES_DECRYPT` 関数で復号できます。
@@ -246,7 +214,7 @@ aes_encrypt_mysql(mode, plaintext, key[, iv])
 **同一入力の比較**
 
 ```sql title=Query
--- 同一の入力に対して、encryptとaes_encrypt_mysqlは同じ暗号文を生成します:
+-- Given equal input encrypt and aes_encrypt_mysql produce the same ciphertext:
 SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') = aes_encrypt_mysql('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'iviviviviviviviv') AS ciphertexts_equal;
 ```
 
@@ -259,19 +227,19 @@ SELECT encrypt('aes-256-ofb', 'Secret', '12345678910121314151617181920212', 'ivi
 **長いキーを指定すると Encrypt が失敗する**
 
 ```sql title=Query
--- ただし、keyまたはivが想定より長い場合、encryptは失敗します:
+-- But encrypt fails when key or iv is longer than expected:
 SELECT encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123');
 ```
 
 ```response title=Response
-サーバーから例外を受信しました (バージョン 22.6.1):
-Code: 36. DB::Exception: localhost:9000 から受信しました。DB::Exception: 無効なキーサイズ: 33 が指定されましたが、32 が期待されています: encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123') の処理中。
+Received exception from server (version 22.6.1):
+Code: 36. DB::Exception: Received from localhost:9000. DB::Exception: Invalid key size: 33 expected 32: While processing encrypt('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123').
 ```
 
 **MySQL 互換性**
 
 ```sql title=Query
--- aes_encrypt_mysql は MySQL 互換の出力を生成します:
+-- aes_encrypt_mysql produces MySQL-compatible output:
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123')) AS ciphertext;
 ```
 
@@ -281,10 +249,10 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
-**IV を長くしても結果は同じ**
+**より長い IV でも結果は同じ**
 
 ```sql title=Query
--- より長いIVを指定しても同じ結果が得られることに注意
+-- Notice how supplying even longer IV produces the same result
 SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '123456789101213141516171819202122', 'iviviviviviviviv123456')) AS ciphertext
 ```
 
@@ -294,9 +262,10 @@ SELECT hex(aes_encrypt_mysql('aes-256-ofb', 'Secret', '1234567891012131415161718
 └──────────────┘
 ```
 
+
 ## decrypt \{#decrypt\}
 
-導入バージョン: v20.12
+導入バージョン: v20.12.0
 
 この関数は、以下のモードを使用して AES で暗号化されたバイナリ文字列を復号します。
 
@@ -330,7 +299,7 @@ decrypt(mode, ciphertext, key[, iv, aad])
 **暗号化データを正しく復号する**
 
 ```sql title=Query
--- encrypt関数の例のテーブルを再利用
+-- Re-using the table from the encrypt function example
 SELECT comment, hex(secret) FROM encryption_test;
 ```
 
@@ -347,14 +316,14 @@ SELECT comment, hex(secret) FROM encryption_test;
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-**暗号化されたデータの誤復号**
+**暗号化データを誤って復号する**
 
 ```sql title=Query
 SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920212') AS plaintext FROM encryption_test
 ```
 
 ```response title=Response
--- データの一部のみが正しく復号化され、残りは暗号化時に `mode`、`key`、または `iv` が異なっていたため判読不能になっていることに注意してください。
+-- Notice how only a portion of the data was properly decrypted, and the rest is gibberish since either `mode`, `key`, or `iv` were different upon encryption.
 ┌─comment──────────────┬─plaintext──┐
 │ aes-256-gcm          │ OQ�E
                              �t�7T�\���\�   │
@@ -370,9 +339,10 @@ SELECT comment, decrypt('aes-256-cfb128', secret, '12345678910121314151617181920
 └──────────────────────────────────┴───────────┘
 ```
 
+
 ## encrypt \{#encrypt\}
 
-導入: v20.12
+導入: v20.12.0
 
 平文を、以下のいずれかのモードで AES を用いて暗号化します。
 
@@ -424,10 +394,10 @@ SELECT comment, hex(secret) FROM encryption_test;
 
 ```response title=Response
 ┌─comment──────────────────────────┬─hex(secret)──────────────────────┐
-│ aes-256-ofb IV なし              │ B4972BDC4459                     │
-│ aes-256-ofb IV なし、異なるキー │ 2FF57C092DC9                     │
-│ aes-256-ofb IV あり              │ 5E6CB398F653                     │
-│ aes-256-cbc IV なし              │ 1BC0629A92450D9E73A00E7D02CF4142 │
+│ aes-256-ofb no IV                │ B4972BDC4459                     │
+│ aes-256-ofb no IV, different key │ 2FF57C092DC9                     │
+│ aes-256-ofb with IV              │ 5E6CB398F653                     │
+│ aes-256-cbc no IV                │ 1BC0629A92450D9E73A00E7D02CF4142 │
 └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
@@ -449,9 +419,10 @@ SELECT comment, hex(secret) FROM encryption_test WHERE comment LIKE '%gcm%';
 └──────────────────────┴──────────────────────────────────────────────┘
 ```
 
+
 ## tryDecrypt \{#tryDecrypt\}
 
-導入: v22.10
+導入: v22.10.0
 
 `decrypt` 関数と似ていますが、誤ったキーにより復号に失敗した場合は `NULL` を返します。
 
@@ -478,8 +449,8 @@ tryDecrypt(mode, ciphertext, key[, iv, aad])
 **テーブルを作成してデータを挿入**
 
 ```sql title=Query
--- user_idが一意のユーザーID、encryptedが暗号化された文字列フィールド、ivが復号化/暗号化のための初期ベクトルであるテーブルを作成します。
--- ユーザーは自分のIDと暗号化されたフィールドを復号化するためのキーを知っていることを前提とします:
+-- Let's create a table where user_id is the unique user id, encrypted is an encrypted string field, iv is an initial vector for decrypt/encrypt.
+-- Assume that users know their id and the key to decrypt the encrypted field:
 CREATE TABLE decrypt_null
 (
     dt DateTime,
@@ -489,13 +460,13 @@ CREATE TABLE decrypt_null
 )
 ENGINE = MergeTree;
 
--- データを挿入します:
+-- Insert some data:
 INSERT INTO decrypt_null VALUES
 ('2022-08-02 00:00:00', 1, encrypt('aes-256-gcm', 'value1', 'keykeykeykeykeykeykeykeykeykey01', 'iv1'), 'iv1'),
 ('2022-09-02 00:00:00', 2, encrypt('aes-256-gcm', 'value2', 'keykeykeykeykeykeykeykeykeykey02', 'iv2'), 'iv2'),
 ('2022-09-02 00:00:01', 3, encrypt('aes-256-gcm', 'value3', 'keykeykeykeykeykeykeykeykeykey03', 'iv3'), 'iv3');
 
--- 1つのキーで復号化を試みます:
+-- Try decrypt with one key
 SELECT
     dt,
     user_id,

@@ -34,31 +34,32 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 
 1. 次のようなミューテーションにより、ディクショナリルックアップを使って `visitor_ids` を新しいものに更新できます。
 
-```sql
-ALTER TABLE website.clicks
-UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
-WHERE visit_date < '2022-01-01'
-```
+   ```sql
+   ALTER TABLE website.clicks
+   UPDATE visitor_id = getDict('visitors', 'new_visitor_id', visitor_id)
+   WHERE visit_date < '2022-01-01'
+   ```
 
 2. 1 回のコマンドで複数の値を変更する方が、複数回のコマンド実行より効率的な場合があります。
 
-```sql
-ALTER TABLE website.clicks
-UPDATE url = substring(url, position(url, '://') + 3), visitor_id = new_visit_id
-WHERE visit_date < '2022-01-01'
-```
+   ```sql
+   ALTER TABLE website.clicks
+   UPDATE url = substring(url, position(url, '://') + 3), visitor_id = new_visit_id
+   WHERE visit_date < '2022-01-01'
+   ```
 
 3. シャーディングされたテーブルに対しては、ミューテーションを `ON CLUSTER` で実行できます。
 
-```sql
-ALTER TABLE clicks ON CLUSTER main_cluster
-UPDATE click_count = click_count / 2
-WHERE visitor_id ILIKE '%robot%'
-```
+   ```sql
+   ALTER TABLE clicks ON CLUSTER main_cluster
+   UPDATE click_count = click_count / 2
+   WHERE visitor_id ILIKE '%robot%'
+   ```
 
 :::note
 主キーまたはソートキーの一部になっている列を更新することはできません。
 :::
+
 
 ## データの削除 \{#deleting-data\}
 
@@ -68,7 +69,7 @@ WHERE visitor_id ILIKE '%robot%'
 ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 ```
 
-`<filter_expr>` は、各行のデータに対して UInt8 型の値を返す必要があります。
+`&lt;filter_expr&gt;` は、各行のデータに対して UInt8 型の値を返す必要があります。
 
 **例**
 
@@ -81,7 +82,7 @@ ALTER TABLE website.clicks DELETE WHERE visitor_id in (253, 1002, 4277)
 2. このクエリでどのデータが削除されるか:
 
 ```sql
-ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02 15:00:00' AND page_id = '573'
+ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date &lt; '2022-01-02 15:00:00' AND page_id = '573'
 ```
 
 :::note
@@ -89,6 +90,7 @@ ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date < '2022-01-02
 :::
 
 詳細については、[`DELETE` ステートメント](/sql-reference/statements/delete.md) のドキュメントページを参照してください。
+
 
 ## 軽量削除 \{#lightweight-deletes\}
 
@@ -104,7 +106,7 @@ DELETE FROM [db.]table [ON CLUSTER cluster] [WHERE expr]
 DELETE FROM hits WHERE Title LIKE '%hello%';
 ```
 
-軽量削除についての注意点:
+論理削除についての注意点:
 
 * この機能は `MergeTree` テーブルエンジンファミリーでのみ利用できます。
-* 軽量削除はデフォルトで同期的に実行され、すべてのレプリカが削除処理を完了するまで待機します。この動作は [`lightweight_deletes_sync` 設定](/operations/settings/settings#lightweight_deletes_sync) によって制御されます。
+* 論理削除はデフォルトで同期的に実行され、すべてのレプリカが削除処理を完了するまで待機します。この動作は [`lightweight_deletes_sync` 設定](/operations/settings/settings#lightweight_deletes_sync) によって制御されます。

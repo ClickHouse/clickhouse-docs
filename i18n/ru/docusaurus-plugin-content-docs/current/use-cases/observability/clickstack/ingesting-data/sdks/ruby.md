@@ -78,6 +78,7 @@ Rails.application.configure do
 end
 ```
 
+
 ### Настройка переменных окружения \{#configure-environment-variables\}
 
 Далее вам нужно будет настроить в вашей оболочке следующие переменные окружения для отправки телеметрии в ClickStack через коллектор OpenTelemetry:

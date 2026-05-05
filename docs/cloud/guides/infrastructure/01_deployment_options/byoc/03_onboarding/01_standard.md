@@ -1,7 +1,7 @@
 ---
-title: 'Standard Onboarding'
+title: 'Standard onboarding'
 slug: /cloud/reference/byoc/onboarding/standard
-sidebar_label: 'Standard Process'
+sidebar_label: 'Standard process'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
 doc_type: 'reference'
@@ -13,7 +13,7 @@ import byoc_onboarding_2 from '@site/static/images/cloud/reference/byoc-onboardi
 import byoc_onboarding_3 from '@site/static/images/cloud/reference/byoc-onboarding-3.png'
 import byoc_new_service_1 from '@site/static/images/cloud/reference/byoc-new-service-1.png' 
 
-## What is Standard Onboarding? {#what-is-standard-onboarding}
+## What is standard onboarding? {#what-is-standard-onboarding}
 
 **Standard onboarding** is the default, guided workflow for deploying ClickHouse in your own cloud account using BYOC. In this approach, ClickHouse Cloud provisions all of the core cloud resources required for your deployment—such as the VPC, subnets, security groups, Kubernetes (EKS/GKE) cluster, and supporting IAM roles/service accounts—within your AWS account/GCP project. This ensures consistent, secure configuration, and minimizes the manual steps required from your team.
 
@@ -21,7 +21,7 @@ With standard onboarding, you simply provide a dedicated AWS account/GCP project
 
 Customers are strongly recommended to prepare a **dedicated** AWS account or GCP project for hosting the ClickHouse BYOC deployment to ensure better isolation in terms of permissions and resources. ClickHouse will deploy a dedicated set of cloud resources (VPC, Kubernetes cluster, IAM roles, S3 buckets, etc.) in your account.
 
-If you need a more customized setup (for example, deploying into an existing VPC), refer to the [Customized Onboarding](/cloud/reference/byoc/onboarding/customization) documentation.
+If you need a more customized setup (for example, deploying into an existing VPC), refer to the [Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws) documentation.
 
 ## Request access {#request-access}
 
@@ -46,7 +46,7 @@ The initial BYOC setup can be performed using either a [CloudFormation template(
 <Image img={byoc_onboarding_2} size="lg" alt="BYOC initialize account" background='black'/>
 
 :::note
-Storage buckets, VPC, Kubernetes cluster, and compute resources required for running ClickHouse are not included in this initial setup. They will be provisioned in the next step.
+Storage buckets, VPC, Kubernetes cluster, and compute resources required for running ClickHouse aren't included in this initial setup. They will be provisioned in the next step.
 :::
 #### Alternative Terraform Module for AWS {#terraform-module-aws}
 
@@ -62,11 +62,11 @@ module "clickhouse_onboarding" {
 
 ### Set up BYOC infrastructure {#setup-byoc-infrastructure}
 
-You will be prompted to set up the infrastructure, including S3 buckets, VPC, and the Kubernetes cluster, from the ClickHouse Cloud console. Certain configurations must be determined at this stage, as they cannot be changed later. Specifically:
+You will be prompted to set up the infrastructure, including S3 buckets, VPC, and the Kubernetes cluster, from the ClickHouse Cloud console. Certain configurations must be determined at this stage, as they can't be changed later. Specifically:
 
-- **Region**: All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions are not currently supported.
+- **Region**: All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions aren't currently supported.
 
-- **VPC CIDR range**: By default, we use `10.0.0.0/16` for the BYOC VPC CIDR range. If you plan to use VPC peering with another account, ensure the CIDR ranges do not overlap. Allocate a proper CIDR range for BYOC, with a minimum size of `/22` to accommodate necessary workloads.
+- **VPC CIDR range**: By default, we use `10.0.0.0/16` for the BYOC VPC CIDR range. If you plan to use VPC peering with another account, ensure the CIDR ranges don't overlap. Allocate a proper CIDR range for BYOC, with a minimum size of `/22` to accommodate necessary workloads.
 
 - **Availability Zones**: If you plan to use VPC peering, aligning availability zones between the source and BYOC accounts can help reduce cross-AZ traffic costs. For example, in AWS, availability zone suffixes (`a`, `b`, `c`) may represent different physical zone IDs across accounts. See the [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for details.
 

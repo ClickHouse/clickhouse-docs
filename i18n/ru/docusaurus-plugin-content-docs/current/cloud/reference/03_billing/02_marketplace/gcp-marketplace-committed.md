@@ -22,14 +22,12 @@ import gcp_marketplace_payg_5 from '@site/static/images/cloud/manage/billing/mar
 import aws_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/aws-marketplace-payg-11.png';
 import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/marketplace/gcp-marketplace-payg-6.png';
 
-Начните работу с ClickHouse Cloud в [GCP Marketplace](https://console.cloud.google.com/marketplace) по фиксированному контракту. Фиксированный контракт, также известный как Private Offer (частное предложение), позволяет клиентам зафиксировать обязательство по расходам на ClickHouse Cloud в определённом размере на протяжении оговоренного периода времени.
+Начните работу с ClickHouse Cloud в [GCP Marketplace](https://console.cloud.google.com/marketplace) по фиксированному контракту. Фиксированный контракт, также известный как Private Offer (приватное предложение), позволяет клиентам зафиксировать обязательство по расходам на ClickHouse Cloud в определённом размере на протяжении оговоренного периода времени.
 
 
 ## Предварительные требования \{#prerequisites\}
 
 - Индивидуальное предложение от ClickHouse на основе определённых условий контракта.
-
-
 
 ## Порядок регистрации \{#steps-to-sign-up\}
 
@@ -45,11 +43,11 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_2} size="md" alt="Сводка предложения GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_2} size="md" alt="Сводка предложения GCP Marketplace" border />
 
 <br />
 
-<Image img={gcp_marketplace_committed_3} size="md" alt="Сводка цен GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_3} size="md" alt="Сводка цен GCP Marketplace" border />
 
 <br />
 
@@ -57,7 +55,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_4} size="md" alt="Страница принятия предложения GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_4} size="md" alt="Страница принятия предложения GCP Marketplace" border />
 
 <br />
 
@@ -65,7 +63,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_5} size="md" alt="Подтверждение принятия в GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_5} size="md" alt="Подтверждение принятия в GCP Marketplace" border />
 
 <br />
 
@@ -73,7 +71,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_6} size="md" alt="Страница ClickHouse Cloud в GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_6} size="md" alt="Страница ClickHouse Cloud в GCP Marketplace" border />
 
 <br />
 
@@ -81,7 +79,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_7} size="md" alt="Модальное окно подтверждения перехода с сайта GCP Marketplace" border/>
+<Image img={gcp_marketplace_committed_7} size="md" alt="Модальное окно подтверждения перехода с сайта GCP Marketplace" border />
 
 <br />
 
@@ -89,7 +87,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="Страница входа в ClickHouse Cloud" border/>
+<Image img={aws_marketplace_payg_6} size="md" alt="Страница входа в ClickHouse Cloud" border />
 
 <br />
 
@@ -97,7 +95,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="Страница регистрации в ClickHouse Cloud" border/>
+<Image img={aws_marketplace_payg_7} size="md" alt="Страница регистрации в ClickHouse Cloud" border />
 
 <br />
 
@@ -105,11 +103,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud, часть 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Форма ввода информации при регистрации в ClickHouse Cloud" border />
 
 <br />
 
@@ -121,20 +115,21 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="Страница входа в ClickHouse Cloud" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="Страница входа в ClickHouse Cloud" border />
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="Страница новых сервисов ClickHouse Cloud" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="Страница новых сервисов ClickHouse Cloud" border />
 
 <br />
 
 9. Вы должны получить электронное письмо, подтверждающее регистрацию:
 
 <br />
+
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="Подтверждающее письмо GCP Marketplace" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="Подтверждающее письмо GCP Marketplace" border />
 
 <br />
 

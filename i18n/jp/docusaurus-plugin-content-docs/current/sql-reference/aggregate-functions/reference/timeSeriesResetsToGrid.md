@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesResetsToGrid \{#timeSeriesResetsToGrid\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 この集約関数は、タイムスタンプと値のペアからなる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される一定間隔の時間グリッド上で、このデータから[PromQL 風の resets](https://prometheus.io/docs/prometheus/latest/querying/functions/#resets) を計算します。グリッド上の各ポイントについて、`resets` を計算するために使用するサンプルは、指定された時間ウィンドウ内のものが対象となります。
 
@@ -25,7 +25,7 @@ timeSeriesResetsToGrid(start_timestamp, end_timestamp, grid_step, staleness)(tim
 
 **パラメータ**
 
-* `start_timestamp` — グリッドの開始時刻を指定します。 - `end_timestamp` — グリッドの終了時刻を指定します。 - `grid_step` — グリッドのステップ幅を秒単位で指定します。 - `staleness` — 対象とするサンプルの許容される最大の「staleness」（古さ）を秒単位で指定します。
+* `start_timestamp` — グリッドの開始時刻を指定します。 - `end_timestamp` — グリッドの終了時刻を指定します。 - `grid_step` — グリッドのステップ幅を秒単位で指定します。 - `staleness` — 対象とするサンプルの許容される最大の「staleness」 (古さ) を秒単位で指定します。
 
 **引数**
 
@@ -65,7 +65,7 @@ FROM
 └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**配列引数を使った同じクエリ**
+**引数を配列として指定した同じクエリ**
 
 ```sql title=Query
 WITH

@@ -40,7 +40,7 @@ FROM numbers_mt(2, 10000000000)
 1 row in set. Elapsed: 9.825 sec. Processed 10.00 billion rows, 80.00 GB (1.02 billion rows/s., 8.14 GB/s.)
 ```
 
-3. 在 ClickHouse 里，我们显然最偏爱这一种（而且也是最精确的！）：
+3. 在 ClickHouse 里，我们显然最偏爱这一种 (而且也是最精确的！) ：
 
 ```sql
 SELECT pi()
@@ -106,7 +106,7 @@ SELECT 22 / 7
 └───────────────────┘
 ```
 
-8. 另一个间接方法（由 Alexey Milovidov 提出），精确到小数点后 7 位，且计算速度很快：
+8. 另一个间接方法 (由 Alexey Milovidov 提出) ，精确到小数点后 7 位，且计算速度很快：
 
 ```sql
 WITH

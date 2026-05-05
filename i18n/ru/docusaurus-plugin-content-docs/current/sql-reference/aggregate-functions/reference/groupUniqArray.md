@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupUniqArray \{#groupUniqArray\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Создаёт массив из различных значений аргумента.
 Потребление памяти этой функции такое же, как у функции [`uniqExact`](/sql-reference/aggregate-functions/reference/uniqexact).

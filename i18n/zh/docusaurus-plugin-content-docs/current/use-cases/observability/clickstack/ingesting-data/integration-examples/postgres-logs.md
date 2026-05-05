@@ -22,16 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 PostgreSQL 日志 \{#postgres-logs-clickstack\}
 
 :::note[要点速览]
-本指南介绍如何通过配置 OpenTelemetry collector 来摄取 PostgreSQL 服务器日志，从而使用 ClickStack 监控 PostgreSQL。你将学习如何：
-
-- 将 PostgreSQL 配置为以 CSV 格式输出日志，以便进行结构化解析
-- 为日志摄取创建自定义 OTel collector 配置
-- 使用你的自定义配置部署 ClickStack
-- 使用预构建的仪表盘可视化 PostgreSQL 日志信息（错误、慢查询、连接情况）
-
-如果你希望在为生产环境 PostgreSQL 配置前先测试集成，可使用包含示例日志的演示数据集。
-
-所需时间：10–15 分钟
+使用 OTel `filelog` 接收器，在 ClickStack 中收集并可视化 PostgreSQL 服务器日志 (CSV 格式) 。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 PostgreSQL 的集成 \{#existing-postgres\}
@@ -326,13 +317,13 @@ HyperDX 会以浏览器的本地时区显示时间戳。该演示数据覆盖的
 
 3. 上传 `postgresql-logs-dashboard.json` 文件并点击 **Finish Import**
 
-<Image img={finish_import} alt="完成导入"/>
+<Image img={finish_import} alt="Finish import"/>
 
 #### 查看仪表板 \{#created-dashboard\}
 
 系统会创建一个已预先配置好所有可视化内容的仪表板：
 
-<Image img={logs_dashboard} alt="日志仪表板"/>
+<Image img={logs_dashboard} alt="Logs dashboard"/>
 
 :::note
 对于演示数据集，将时间范围设置为 **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)**（可根据本地时区进行调整）。导入的仪表板默认未指定时间范围。
@@ -378,14 +369,12 @@ docker exec <container> cat /tmp/postgres-demo/postgresql.log | wc -l
 ```
 
 
-## 后续步骤 {#next-steps}
+## 后续步骤
 
-在完成 PostgreSQL 日志监控配置之后：
-
-- 为关键事件（连接失败、慢查询、错误激增）配置[告警](/use-cases/observability/clickstack/alerts)
-- 将日志与[PostgreSQL 指标](/use-cases/observability/clickstack/integrations/postgresql-metrics)关联，实现全面的数据库监控
-- 创建自定义仪表板，以可视化特定于应用的查询模式
-- 配置 `log_min_duration_statement`，以根据你的性能要求识别相应的慢查询
+* 为关键事件 (连接失败、慢查询、错误激增) 配置[告警](/use-cases/observability/clickstack/alerts)
+* 将日志与[PostgreSQL 指标](/use-cases/observability/clickstack/integrations/postgresql-metrics)关联，实现全面的数据库监控
+* 创建自定义仪表板，以可视化特定于应用的查询模式
+* 配置 `log_min_duration_statement`，以根据你的性能要求识别相应的慢查询
 
 ## 迁移到生产环境 {#going-to-production}
 

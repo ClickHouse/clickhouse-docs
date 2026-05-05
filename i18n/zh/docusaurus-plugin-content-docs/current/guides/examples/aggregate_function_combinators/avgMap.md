@@ -16,14 +16,16 @@ doc_type: 'reference'
 
 ## 示例用法 \{#example-usage\}
 
-在这个示例中，我们将创建一张表，用于存储不同时间段的状态码及其计数，每一行都包含一个将状态码映射到其对应计数的 `Map`。我们将使用 `avgMap` 来计算每个时间段内各个状态码的平均计数。
+在这个示例中，我们将创建一张表，用于存储不同时间段的状态码及其计数，每一行都包含一个将状态码映射到其对应计数的 `Map`。我们将使用
+`avgMap` 来计算每个时间段内各个状态码的平均计数。
 
 ```sql title="Query"
 CREATE TABLE metrics(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO metrics VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [15, 25, 35])),
@@ -60,5 +62,6 @@ GROUP BY timeslot;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)
+
+* [`avg`](/sql-reference/aggregate-functions/reference/avg)
+* [`Map 组合器`](/sql-reference/aggregate-functions/combinators#-map)

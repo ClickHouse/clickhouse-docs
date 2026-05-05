@@ -40,7 +40,7 @@ bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exp
 
 Next, you'll need to initialize the OpenTelemetry tracing instrumentation
 and configure the log message formatter for Rails logger so that logs can be
-tied back to traces automatically. Without the custom formatter, logs will not
+tied back to traces automatically. Without the custom formatter, logs won't
 be automatically correlated together in ClickStack.
 
 In `config/initializers` folder, create a file called `hyperdx.rb` and add the

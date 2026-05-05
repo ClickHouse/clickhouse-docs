@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevPop \{#stddevPop\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データ列の母集団標準偏差を返します。
 結果は [`varPop`](/sql-reference/aggregate-functions/reference/varPop) の平方根と同じです。

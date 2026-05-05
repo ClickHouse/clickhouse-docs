@@ -29,7 +29,7 @@ doc_type: 'reference'
 | [Nullable](/sql-reference/data-types/nullable)                  | `Nullable(T)` = 2 つのカラム: 同じ行数を持つ `Nulls ColUInt8, Values T`。Nulls はマスクで、1=null、0=value を表す                     |
 | [UUID](/sql-reference/data-types/uuid)                          | `FixedString(16)` のエイリアスで、バイナリとして表現される                                                                         |
 | [Enum](/sql-reference/data-types/enum)                          | `Int8` または `Int16` のエイリアスで、各整数は String 値にマッピングされる                                                              |
-| [LowCardinality](/sql-reference/data-types/lowcardinality)      | `LowCardinality(T)` = 2 つのカラム: `Index T, Keys K`（K は UInt8/16/32/64）。Index はユニーク値を保持し、Keys は Index へのインデックスを保持 |
+| [LowCardinality](/sql-reference/data-types/lowcardinality)      | `LowCardinality(T)` = 2 つのカラム: `Index T, Keys K` (K は UInt8/16/32/64) 。Index はユニーク値を保持し、Keys は Index へのインデックスを保持 |
 | [Bool](/sql-reference/data-types/boolean)                       | `UInt8` のエイリアス: 0=false、1=true                                                                                 |
 
 **例: Nullable のエンコーディング**

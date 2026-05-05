@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 ## ULIDStringToDateTime \{#ULIDStringToDateTime\}
 
-在 v23.3 中引入
+在 v23.3.0 中引入
 
 该函数用于从 [ULID](https://github.com/ulid/spec) 中提取时间戳。
 
@@ -59,7 +59,7 @@ SELECT ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')
 
 ## generateULID \{#generateULID\}
 
-引入版本：v23.2
+引入版本：v23.2.0
 
 生成一个[通用唯一、按字典序可排序的标识符（ULID）](https://github.com/ulid/spec)。
 

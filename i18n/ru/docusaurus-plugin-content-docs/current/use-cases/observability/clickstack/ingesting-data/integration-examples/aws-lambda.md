@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: 'Мониторинг логов AWS Lambda в ClickStack с использованием Rotel'
+title: 'Мониторинг логов AWS Lambda с помощью ClickStack с использованием Rotel'
 sidebar_label: 'Логи AWS Lambda'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг логов AWS Lambda в ClickStack с использованием Rotel'
+description: 'Мониторинг логов AWS Lambda с помощью ClickStack с использованием Rotel'
 doc_type: 'guide'
 keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', 'logs', 'CloudWatch']
 ---
@@ -14,7 +14,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png';
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
 
 # Мониторинг логов AWS Lambda с ClickStack с использованием Rotel \{#lambda-clickstack\}
 
@@ -38,10 +37,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ### Предварительные требования \{#prerequisites\}
 
-- Запущенный экземпляр ClickStack
-- Функции AWS Lambda для мониторинга
-- AWS CLI, настроенный с соответствующими правами доступа
-- Роль выполнения Lambda с правами на добавление слоёв
+* Запущенный экземпляр ClickStack
+* Функции AWS Lambda для мониторинга
+* AWS CLI, настроенный с соответствующими правами доступа
+* Роль выполнения Lambda с правами на добавление слоёв
 
 <VerticalStepper headerLevel="h4">
   #### Выберите подходящий слой расширения Rotel Lambda Extension
@@ -64,19 +63,19 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   #### Добавьте слой Rotel в вашу Lambda-функцию
 
-  *В этих примерах замените `{arch}`, `{region}` и `{version}` соответствующими значениями, указанными выше.*
+  *В этих примерах замените `{arch}`, `{region}` и `{version}` на соответствующие значения, приведённые выше.*
 
   ##### Вариант 1: Консоль AWS
 
   1. Откройте консоль AWS Lambda
-  2. Перейдите к своей функции Lambda
-  3. Прокрутите страницу до раздела **Layers** и нажмите **Add a layer**
-  4. Выберите **Specify an ARN**
+  2. Перейдите к вашей Lambda-функции
+  3. Прокрутите страницу вниз до раздела **Layers** и нажмите **Add a layer**
+  4. Выберите пункт **Specify an ARN**
   5. Введите ARN слоя Rotel:
      ```text
      arn:aws:lambda:{region}:418653438961:layer:rotel-extension-{arch}:{version}
      ```
-  6. Нажмите кнопку **Add**
+  6. Нажмите **Add**
 
   ##### Вариант 2: AWS CLI
 
@@ -146,7 +145,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ROTEL_OTLP_EXPORTER_CUSTOM_HEADERS="Authorization=${arn:aws:secretsmanager:us-east-1:123456789012:secret:clickstack-api-key-abc123}"
   ```
 
-  **Пример хранилища параметров AWS (AWS Parameter Store):**
+  **Пример использования AWS Parameter Store:**
 
   ```bash
   ROTEL_OTLP_EXPORTER_ENDPOINT=https://clickstack.example.com:4317
@@ -155,7 +154,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
   **Требуемые разрешения IAM:**
 
-  Добавьте эти разрешения в роль выполнения Lambda:
+  Добавьте эти разрешения к роли выполнения Lambda:
 
   Для Secrets Manager:
 

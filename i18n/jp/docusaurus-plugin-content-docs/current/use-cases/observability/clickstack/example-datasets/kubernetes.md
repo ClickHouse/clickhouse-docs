@@ -68,7 +68,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   * OTel および ClickStack SDKS によるトレース、メトリクス、ログの自動インストルメンテーション。
   * すべてのサービスは、`my-hyperdx-hdx-oss-v2-otel-collector` という名前の OpenTelemetry コレクター（まだデプロイされていない）にインストルメンテーションデータを送信します
-  * [リソースタグのポッドへの転送](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods) により、環境変数 `OTEL_RESOURCE_ATTRIBUTES` を使用してログ、メトリクス、トレースを相関付けます。
+  * 環境変数 `OTEL_RESOURCE_ATTRIBUTES` を介してログ、メトリクス、トレースを相関付けるための[リソースタグのポッドへの転送](/use-cases/observability/clickstack/integrations/kubernetes#forwarding-resouce-tags-to-pods)。
 
   ```shell
   ## download demo Kubernetes manifest file
@@ -147,7 +147,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
     :::warning 本番環境での ClickStack
 
-    このチャートは、ClickHouse と OTel collector も併せてインストールします。本番環境では、ClickHouse および OTel collector の Operator を使用するか、ClickHouse Cloud を利用することを推奨します。
+    このチャートは、ClickHouse と OTel collector も併せてインストールします。本番環境では、ClickHouse および OTel collector の Operator を使用するか、Managed ClickStack を利用することを推奨します。
 
     ClickHouse と OTel collector を無効化するには、次の値を設定してください:
 
@@ -195,7 +195,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   Managed ClickStackを使用する場合でも、KubernetesクラスタにデプロイされたローカルのHyperDXインスタンスは引き続き必要です。HyperDXにバンドルされているOpAMPサーバーが管理するインジェストキーを提供し、デプロイされたOTel collectorを通じて安全なインジェストを実現します。この機能は現在、Managed ClickStackでは提供されていません。
   :::
 
-  セキュリティのため、このサービスは`クラスタIP`を使用し、デフォルトでは外部に公開されません。
+  セキュリティのため、このサービスは`ClusterIP`を使用し、デフォルトでは外部に公開されません。
 
   HyperDX UIにアクセスするには、ポート3000をローカルポート8080にポートフォワードしてください。
 
@@ -216,7 +216,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ClickStack collectorによってデプロイされたOTel collectorへのインジェストは、インジェストキーで保護されています。
 
-  [`Team Settings`](http://localhost:8080/team) に移動し、`API Keys` セクションから `Ingestion API Key` をコピーします。このインジェスト API key により、OpenTelemetry コレクターを通じたデータインジェストが安全に行われます。
+  [`Team Settings`](http://localhost:8080/team) に移動し、`API Keys` セクションから `Ingestion API Key` をコピーします。このインジェスト API key により、OpenTelemetry collector を通じたデータインジェストが安全に行われます。
 
   <Image img={copy_api_key} alt="API キーをコピー" size="lg" />
 
@@ -242,7 +242,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   デモサービスからのトレースおよびログデータが、HyperDXへ流入し始めます。
 
-  <Image img={hyperdx_kubernetes_data} alt="HyperDX Kubernetes データ" size="lg" />
+  <Image img={hyperdx_kubernetes_data} alt="HyperDX の Kubernetes データ" size="lg" />
 
   ### OpenTelemetry Helmリポジトリを追加する
 
@@ -259,9 +259,9 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   クラスタ全体と各ノードの両方からログとメトリクスを収集するには、それぞれ独自のマニフェストを持つ2つの個別のOpenTelemetryコレクターをデプロイする必要があります。提供される2つのマニフェスト(`k8s_deployment.yaml`と`k8s_daemonset.yaml`)は連携して、Kubernetesクラスタから包括的なテレメトリデータを収集します。
 
-  * `k8s_deployment.yaml` は、**単一の OpenTelemetry Collector インスタンス** をデプロイし、**クラスタ全体のイベントとメタデータ** の収集を担当します。Kubernetes のイベントやクラスタメトリクスを収集し、ポッドのラベルおよびアノテーションをテレメトリーデータに付与して拡充します。このコレクターは、重複データを防ぐため、レプリカ数 1 のスタンドアロンのデプロイメントとして実行されます。
+  * `k8s_deployment.yaml` は、**単一の OpenTelemetry Collector インスタンス** をデプロイし、**クラスタ全体のイベントとメタデータ** の収集を担当します。Kubernetes のイベントやクラスタメトリクスを収集し、ポッドのラベルおよびアノテーションをテレメトリーデータに付与して拡充します。このコレクターは、データの重複を防ぐため、レプリカ数 1 のスタンドアロンのデプロイメントとして実行されます。
 
-  * `k8s_daemonset.yaml` は、クラスター内のすべてのノードで実行される **デーモンセットベースのコレクター** をデプロイします。これは、`kubeletstats`、`hostmetrics`、Kubernetes Attribute Processor などのコンポーネントを使用して、**ノードレベルおよびポッドレベルのメトリクス** に加えてコンテナログを収集します。これらのコレクターはログにメタデータを付与し、OTLP エクスポーターを使用して HyperDX に送信します。
+  * `k8s_daemonset.yaml` は、クラスタ内のすべてのノードで実行される **デーモンセットベースのコレクター** をデプロイします。これは、`kubeletstats`、`hostmetrics`、Kubernetes Attribute Processor などのコンポーネントを使用して、**ノードレベルおよびポッドレベルのメトリクス** に加え、コンテナログも収集します。これらのコレクターはログにメタデータを付与し、OTLP エクスポーターを使用して HyperDX に送信します。
 
   これらのマニフェストにより、インフラストラクチャからアプリケーションレベルのテレメトリまで、クラスタ全体のフルスタックオブザーバビリティが実現され、エンリッチされたデータがClickStackに送信されて一元的な分析が行われます。
 
@@ -459,14 +459,14 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### HyperDXでKubernetesデータを探索する
 
-  HyperDX UIにアクセスします。Kubernetesにデプロイしたインスタンス、またはClickHouse Cloud経由のいずれかを使用します。
+  HyperDX UIにアクセスします。Kubernetesにデプロイしたインスタンス、またはManaged ClickStack経由のいずれかを使用します。
 
   <p />
 
   <details>
     <summary>マネージド ClickStack</summary>
 
-    マネージド ClickStack を使用している場合は、ClickHouse Cloud サービスにログインし、左側のメニューから「ClickStack」を選択するだけです。自動的に認証されるため、ユーザーを作成する必要はありません。
+    マネージド ClickStack を使用している場合は、ClickHouse Cloud サービスにログインし、左側のメニューから「ClickStack」を選択するだけです。自動的に認証されるため、ユーザーアカウントを作成する必要はありません。
 
     ログ、メトリクス、トレース用のデータソースはあらかじめ作成されています。
   </details>

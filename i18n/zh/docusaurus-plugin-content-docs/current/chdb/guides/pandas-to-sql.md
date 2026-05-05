@@ -1,9 +1,9 @@
 ---
-title: '面向 pandas 用户的 SQL 指南'
-sidebar_label: 'SQL 映射'
+title: '面向 pandas 用户的 SQL'
+sidebar_label: 'SQL 对照'
 slug: /chdb/guides/pandas-to-sql
 description: '了解 pandas 操作在 DataStore 中如何映射到 SQL'
-keywords: ['chdb', 'datastore', 'pandas', 'sql', 'mapping', '查询']
+keywords: ['chdb', 'datastore', 'pandas', 'sql', '对照', '查询']
 doc_type: 'guide'
 ---
 
@@ -14,6 +14,16 @@ DataStore 会将 pandas 风格的操作编译为经过优化的 SQL。本文档�
 ## 查看生成的 SQL 语句 \{#viewing-sql\}
 
 ```python
+from pathlib import Path
+Path("sales.csv").write_text("""\
+region,product,category,amount,quantity,price,date,order_id
+East,Widget,Electronics,5200,10,120,2024-01-15,1001
+West,Gadget,Electronics,800,5,160,2024-02-20,1002
+East,Gizmo,Home,6500,3,100,2024-03-10,1003
+North,Widget,Electronics,4500,6,150,2024-06-18,1004
+West,Gadget,Electronics,2000,8,250,2024-09-14,1005
+""")
+
 from chdb import datastore as pd
 
 ds = pd.read_csv("sales.csv")

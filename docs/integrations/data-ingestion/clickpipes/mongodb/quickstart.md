@@ -141,7 +141,7 @@ SELECT toTypeName(doc.customer_id) AS type FROM t1;
 └─────────┘
 ```
 
-To examine the underlying data type(s) for a field, you can check with the `dynamicType` function. Note that it's possible to have different data types for the same field name in different rows:
+To examine the underlying data types for a field, you can check with the `dynamicType` function. Note that it's possible to have different data types for the same field name in different rows:
 
 ```sql title="Query"
 SELECT dynamicType(doc.customer_id) AS type FROM t1;

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## welchTTest \{#welchTTest\}
 
-導入バージョン: v21.1
+導入バージョン: v21.1.0
 
 2 つの母集団からのサンプルに対して [Welch の t 検定](https://en.wikipedia.org/wiki/Welch%27s_t-test) を適用します。
 
@@ -38,7 +38,7 @@ welchTTest([confidence_level])(sample_data, sample_index)
 
 **返される値**
 
-2 つの要素、または（省略可能な `confidence_level` が指定されている場合は）4 つの要素からなる Tuple を返します。内容は、計算された t 統計量、計算された p 値、そしてオプションで計算された信頼区間の下限値と上限値です。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) または [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+2 つの要素、または (省略可能な `confidence_level` が指定されている場合は) 4 つの要素からなる Tuple を返します。内容は、計算された t 統計量、計算された p 値、そしてオプションで計算された信頼区間の下限値と上限値です。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) または [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
 **例**
 
@@ -57,7 +57,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └────────────────────────────────────────────┘
 ```
 
-**信頼水準あり**
+**信頼水準を指定した場合**
 
 ```sql title=Query
 SELECT welchTTest(0.95)(sample_data, sample_index) FROM welch_ttest;

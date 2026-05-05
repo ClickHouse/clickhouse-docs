@@ -10,8 +10,8 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 <EnterprisePlanFeatureBadge />
 
-ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账户（AWS S3、Google Cloud Storage 或 Azure Blob Storage）。
-关于 ClickHouse Cloud 备份的工作原理（包括“完整”备份与“增量”备份）的详细信息，请参阅 [backups](/cloud/manage/backups/overview) 文档。
+ClickHouse Cloud 支持将备份写入您自己的云服务提供商 (CSP) 账户 (AWS S3、Google Cloud Storage 或 Azure Blob Storage) 。
+关于 ClickHouse Cloud 备份的工作原理 (包括“完整”备份与“增量”备份) 的详细信息，请参阅 [backups](/cloud/manage/backups/overview) 文档。
 
 本指南演示如何将完整和增量备份写入 AWS、GCP、Azure 对象存储，以及如何从这些备份中进行恢复。
 

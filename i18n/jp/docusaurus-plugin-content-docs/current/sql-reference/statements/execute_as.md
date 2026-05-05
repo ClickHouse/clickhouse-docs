@@ -18,9 +18,9 @@ EXECUTE AS target_user;
 EXECUTE AS target_user subquery;
 ```
 
-最初の形式（`subquery` を含まないもの）は、現在のセッション内でその後に実行されるすべてのクエリが、指定された `target_user` として実行されるように設定します。
+最初の形式 (`subquery` を含まないもの) は、現在のセッション内でその後に実行されるすべてのクエリが、指定された `target_user` として実行されるように設定します。
 
-2 番目の形式（`subquery` を含むもの）は、指定された `subquery` のみを、指定された `target_user` として実行します。
+2 番目の形式 (`subquery` を含むもの) は、指定された `subquery` のみを、指定された `target_user` として実行します。
 
 どちらの形式も機能させるには、コンフィグ設定 `access_control_improvements.allow_impersonate_user`
 を `1` に設定し、さらに `IMPERSONATE` 権限が付与されている必要があります。例えば、次のコマンドは

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesExactExclusive \{#quantilesExactExclusive\}
 
-Введена в версии v20.1
+Введена в версии v20.1.0
 
 Точно вычисляет несколько [квантилей](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных на разных уровнях одновременно, используя эксклюзивный метод.
 

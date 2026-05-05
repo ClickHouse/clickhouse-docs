@@ -1,6 +1,6 @@
 ---
-title: 'Execution Engine Configuration'
-sidebar_label: 'Execution Engine'
+title: 'Execution engine configuration'
+sidebar_label: 'Execution engine'
 slug: /chdb/configuration/execution-engine
 description: 'Configure DataStore execution engine - auto, chdb, or pandas'
 keywords: ['chdb', 'datastore', 'execution', 'engine', 'chdb', 'pandas', 'auto']

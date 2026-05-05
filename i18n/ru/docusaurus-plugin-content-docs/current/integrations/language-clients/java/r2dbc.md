@@ -1,11 +1,11 @@
 ---
 sidebar_label: 'Драйвер R2DBC'
 sidebar_position: 5
-keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
+keywords: ['clickhouse', 'java', 'драйвер', 'интеграция', 'r2dbc']
 description: 'Драйвер ClickHouse R2DBC'
 slug: /integrations/java/r2dbc
 title: 'Драйвер R2DBC'
-doc_type: 'reference'
+doc_type: 'справочник'
 integration:
   - support_level: 'core'
   - category: 'language_client'
@@ -19,11 +19,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## Драйвер R2DBC \{#r2dbc-driver\}
 
-[R2DBC](https://r2dbc.io/)‑обёртка над асинхронным Java‑клиентом ClickHouse.
+[R2DBC](https://r2dbc.io/) — обёртка над асинхронным Java-клиентом для ClickHouse.
 
-### Требования к окружению \{#environment-requirements\}
+### Требования к среде \{#environment-requirements\}
 
-- [OpenJDK](https://openjdk.java.net) версии 8 и выше
+* [OpenJDK](https://openjdk.java.net) версии &gt;= 8
 
 ### Настройка \{#setup\}
 
@@ -54,7 +54,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### Query \{#query\}
+### Запрос \{#query\}
 
 ```java showLineNumbers
 connection
@@ -71,7 +71,7 @@ connection
     .subscribe();
 ```
 
-### Insert \{#insert\}
+### Вставка \{#insert\}
 
 ```java showLineNumbers
 connection

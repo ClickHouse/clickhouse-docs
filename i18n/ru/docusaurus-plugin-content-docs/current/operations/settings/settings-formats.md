@@ -466,6 +466,31 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 Пропускать столбцы с неподдерживаемыми типами при определении схемы для формата CapnProto
 
+## input_format_column_name_matching_mode \{#input_format_column_name_matching_mode\}
+
+<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="match_case" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "match_case"},{"label": "Новая настройка"}]}]} />
+
+Определяет режим сопоставления имён столбцов при приёме данных через различные форматы (включая, помимо прочего, JSONEachRow, CSVWithNames, JSONColumns, BSONEachRow, RowBinaryWithNames).
+Поддерживаемые режимы:
+
+* match&#95;case: сопоставление с учётом регистра
+  * ignore&#95;case: регистронезависимое сопоставление
+  * auto: сначала пытается выполнить сопоставление с учётом регистра; если не удаётся, выполняет регистронезависимое сопоставление.
+
+## input_format_connection_handling \{#input_format_connection_handling\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка, которая позволяет разобрать и обработать оставшиеся данные в буфере, если соединение неожиданно закрывается"}]}]}/>
+
+Когда эта опция включена, если соединение неожиданно закрывается, любые оставшиеся данные в буфере будут разобраны и обработаны, а не приведут к ошибке.
+
+:::note
+Включение этой опции отключает параллельный разбор и делает дедупликацию невозможной.
+:::
+
 ## input_format_csv_allow_cr_end_of_line \{#input_format_csv_allow_cr_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -971,6 +996,38 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 Ограничивает размер блоков, формируемых при разборе данных во входных форматах, в байтах. Используется во входных форматах, основанных на строках, когда блок формируется на стороне ClickHouse.
 0 означает отсутствие ограничения по размеру в байтах.
+
+## input_format_max_block_wait_ms \{#input_format_max_block_wait_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "Новая настройка для ограничения максимального времени ожидания в миллисекундах до того, как блок будет сформирован входным форматом"}]}]} />
+
+Ограничивает максимальное время ожидания в миллисекундах перед формированием блока при разборе во входных форматах, ориентированных на строки. Значение 0 означает отсутствие ограничения.
+
+:::note
+Этот параметр работает только в том случае, если включен `input_format_connection_handling`. Установка значения также отключает параллельный разбор и делает дедупликацию невозможной.
+:::
+
+:::note
+Для потоковых вставок также необходимо установить `min_insert_block_size_rows=0` и `min_insert_block_size_bytes=0`. В противном случае разобранные блоки по-прежнему могут накапливаться в памяти на этапе укрупнения блоков до достижения этих порогов, что препятствует своевременным вставкам.
+:::
+
+**Пример: потоковая загрузка последних изменений Википедии в ClickHouse**
+
+```bash
+clickhouse-client --query 'CREATE TABLE wikipedia_edits (data JSON)'
+
+curl -sS --globoff -H 'Accept: application/json' --no-buffer \
+  'https://stream.wikimedia.org/v2/stream/recentchange' \
+  | clickhouse-client \
+      --query 'INSERT INTO wikipedia_edits FORMAT JSONAsObject' \
+      --input_format_max_block_wait_ms 1000 \
+      --input_format_connection_handling 1 \
+      --min_insert_block_size_rows 0 \
+      --min_insert_block_size_bytes 0
+```
+
 
 ## input_format_max_bytes_to_read_for_schema_inference \{#input_format_max_bytes_to_read_for_schema_inference\}
 
@@ -1524,6 +1581,14 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 
 Метод сжатия для формата вывода Arrow. Поддерживаемые кодеки: lz4_frame, zstd, none (без сжатия).
 
+## output_format_arrow_date_as_uint16 \{#output_format_arrow_date_as_uint16\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "0"},{"label": "По умолчанию записывать Date как Arrow DATE32 вместо простого UInt16."}]}]}/>
+
+Записывать значения Date как простые 16-битные числа (при чтении — как UInt16), вместо преобразования их в 32-битный тип Arrow DATE32 (при чтении — как Date32).
+
 ## output_format_arrow_fixed_string_as_fixed_byte_array \{#output_format_arrow_fixed_string_as_fixed_byte_array\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1545,6 +1610,28 @@ DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 4
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse допускает произвольные двоичные данные в типе данных String, который обычно содержит UTF-8. Строки в форматах Parquet/ORC/Arrow поддерживают только UTF-8. Поэтому вы можете выбрать, какой тип данных Arrow использовать для типа данных String в ClickHouse — String или Binary. Хотя Binary был бы более корректным и совместимым вариантом, использование String по умолчанию в большинстве случаев будет соответствовать ожиданиям пользователей."}]}]}/>
 
 Использовать тип Arrow String вместо Binary для столбцов типа String
+
+## output_format_arrow_unsupported_types_as_binary \{#output_format_arrow_unsupported_types_as_binary\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "1" },
+      {
+        label:
+          "Новая настройка для преобразования неподдерживаемых типов CH в двоичный формат Arrow вместо исключения UNKNOWN_TYPE."
+      }
+    ]
+  }
+]}
+/>
+
+Выводит типы, для которых не предусмотрено преобразование, как необработанные двоичные данные. Если false, для таких типов будет возникать исключение UNKNOWN&#95;TYPE.
 
 ## output_format_arrow_use_64_bit_indexes_for_dictionary \{#output_format_arrow_use_64_bit_indexes_for_dictionary\}
 
@@ -2150,6 +2237,28 @@ SELECT area/period FROM account_orders FORMAT JSON;
 
 Использовать тип данных Parquet String вместо Binary для строковых столбцов.
 
+## output_format_parquet_unsupported_types_as_binary \{#output_format_parquet_unsupported_types_as_binary\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      {
+        label:
+          "Новая настройка для преобразования неподдерживаемых типов CH в бинарный формат Parquet (Arrow) вместо исключения UNKNOWN_TYPE."
+      }
+    ]
+  }
+]}
+/>
+
+Выводить типы, для которых не предусмотрено преобразование, как необработанные бинарные данные. Если false, для таких типов будет возникать исключение UNKNOWN&#95;TYPE.
+
 ## output_format_parquet_use_custom_encoder \{#output_format_parquet_use_custom_encoder\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -2443,6 +2552,14 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 Использовать оператор REPLACE вместо INSERT
 
+## output_format_trim_fixed_string \{#output_format_trim_fixed_string\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка для удаления конечных нулевых байтов из значений FixedString в текстовых форматах вывода"}]}]} />
+
+Удаляет конечные нулевые байты из значений FixedString в текстовых форматах вывода. Например, `toFixedString('John', 8)` выводится как `John` вместо `John\0\0\0\0`.
+
 ## output_format_tsv_crlf_end_of_line \{#output_format_tsv_crlf_end_of_line\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2535,9 +2652,9 @@ z   IPv4
 
 ## type_json_allow_duplicated_key_with_literal_and_nested_object \{#type_json_allow_duplicated_key_with_literal_and_nested_object\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Когда настройка включена, допускается разбор JSON-объектов вида `{"a" : 42, "a" : {"b" : 42}}`, где некоторый ключ дублируется, но одно из его значений является вложенным объектом.
+При включении допускается разбор JSON-объектов вида `{"a" : 42, "a" : {"b" : 42}}`, где некоторый ключ дублируется, но одно из его значений является вложенным объектом.
 
 ## type_json_skip_duplicated_paths \{#type_json_skip_duplicated_paths\}
 

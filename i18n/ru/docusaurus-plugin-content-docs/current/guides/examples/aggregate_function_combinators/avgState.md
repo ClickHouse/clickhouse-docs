@@ -87,7 +87,7 @@ INSERT INTO raw_page_views (page_id, page_name, response_time_ms) VALUES
 (4, 'Contact', 65);
 ```
 
-Ознакомьтесь с целевой таблицей `page_performance`:
+Проверьте целевую таблицу `page_performance`:
 
 ```sql
 SELECT 
@@ -142,5 +142,6 @@ ORDER BY page_id;
 ```
 
 ## Смотрите также \{#see-also\}
+
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`State`](/sql-reference/aggregate-functions/combinators#-state)

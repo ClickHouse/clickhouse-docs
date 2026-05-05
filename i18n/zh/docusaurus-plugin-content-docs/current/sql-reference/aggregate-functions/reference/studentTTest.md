@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## studentTTest \{#studentTTest\}
 
-引入于：v21.1
+引入于：v21.1.0
 
 对来自两个总体的样本应用 Student t 检验。
 
@@ -39,7 +39,7 @@ studentTTest([confidence_level])(sample_data, sample_index)
 
 **返回值**
 
-返回一个包含两个或四个元素的元组（如果指定了可选参数 `confidence_level`）：计算得到的 t-统计量、计算得到的 p 值、[计算得到的置信区间下界]、[计算得到的置信区间上界]。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+返回一个包含两个或四个元素的元组 (如果指定了可选参数 `confidence_level`) ：计算得到的 t-统计量、计算得到的 p 值、[计算得到的置信区间下界]、[计算得到的置信区间上界]。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
 **示例**
 

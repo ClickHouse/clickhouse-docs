@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4016 
+personal_ws-1.1 en 4047 
 AArch
 ACLs
 AICPA
@@ -84,6 +84,7 @@ BSON
 BSONEachRow
 BUZZHOUSE
 BYOC
+BYTEA
 BZIP
 Backblaze
 BackgroundBufferFlushSchedulePool
@@ -223,6 +224,8 @@ ClickHouseClient
 ClickHouseClientSettings
 ClickHouseCommand
 ClickHouseConnection
+ClickHouseDataReader
+ClickHouseDataSource
 ClickHouseIO
 ClickHouseMigrator
 ClickHouseNIO
@@ -247,6 +250,7 @@ CloudTrail
 CloudWatch
 Cloudera
 Cloudflare
+Cloudflare's
 CodeBlock
 CodeLLDB
 Codecs
@@ -336,6 +340,8 @@ DataLakeCatalog
 DataLens
 DataPacket
 DataSource
+DataStore
+DataStores
 DataTime
 DataTypes
 DatabaseCatalog
@@ -409,6 +415,8 @@ Doxygen
 Draxlr
 Dremio
 Dresseler
+Dtype
+DuckDB
 Dunamalijevs
 Durre
 ECMA
@@ -752,6 +760,7 @@ LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
 LaGuardia
+LaTeX
 Lakehouses
 Lakekeeper
 LangChain
@@ -793,6 +802,7 @@ LogHouse
 LogQL
 LogQueriesType
 LoggerFactory
+Logpush
 LogsLevel
 Logstash
 LookML
@@ -830,6 +840,7 @@ MV's
 MVCC
 MacBook
 MacOS
+manage-clickpipes
 MapReduce
 MapState
 Mapbox
@@ -901,6 +912,7 @@ Monotonicity
 Montreal
 MsgPack
 MsgPackUUIDRepresentation
+MultiIndex
 MultiLineString
 MultiPolygon
 Multiline
@@ -952,6 +964,7 @@ NetworkSendBytes
 NetworkSendDrop
 NetworkSendErrors
 NetworkSendPackets
+NextJS
 Nginx
 NiFi
 NoSQL
@@ -1126,6 +1139,7 @@ PointDistKm
 PointDistM
 PointDistRads
 PolarDB
+Polars
 PooledConnectionLifetime
 PostGIS
 PostHistory
@@ -1387,6 +1401,7 @@ Spearman's
 Splunk
 Splunkbase
 Splunkd
+SqlCompatibilitySettings
 SquaredDistance
 SquaredNorm
 StartTLS
@@ -1612,6 +1627,7 @@ WALs
 WSFG
 WarpStream
 Warpstream
+WebSocket
 WebUI
 Websocket
 Welch's
@@ -1932,6 +1948,7 @@ brainer
 brotli
 bson
 bsoneachrow
+bucketSizeSeconds
 buffersize
 bugfix
 buildId
@@ -1944,6 +1961,7 @@ byteHammingDistance
 byteSize
 byteSlice
 byteSwap
+bytea
 bytearray
 bytebase
 bytesToCutForIPv
@@ -2025,6 +2043,7 @@ clickstack
 clickstream
 clickvisual
 clockhour
+cloudflare
 cloudwatch
 clusterAllReplicas
 cmake
@@ -2053,6 +2072,7 @@ cond
 conf
 config
 configs
+configurability
 conformant
 congruential
 conjuctive
@@ -2268,6 +2288,7 @@ dplyr
 dragonbox
 dropdown
 dropoff
+dtype
 dumpColumnStructure
 durations
 ePHI
@@ -2844,6 +2865,7 @@ mergetree
 messageID
 metacharacters
 metasymbols
+metric's
 metrica
 metroHash
 mfedotov
@@ -3006,6 +3028,7 @@ nullability
 nullable
 nullables
 nullptr
+nuls
 num
 numerics
 nypd
@@ -3080,9 +3103,9 @@ permalink
 permalinked
 permalinks
 persistency
-pgbench
 pgRouting
 pgSQL
+pgbench
 pgvector
 phpclickhouse
 picklist
@@ -3191,6 +3214,7 @@ protobuf
 protobuflist
 protobufsingle
 protocol
+provisioner
 proxied
 prql
 pseudorandom
@@ -3289,6 +3313,7 @@ recompress
 recompressed
 recompressing
 recompression
+recommender
 reconfiguring
 reconnection
 recurse
@@ -3680,6 +3705,7 @@ timeZoneOffset
 timeslot
 timeslots
 timespan
+timestamptz
 timezones
 tinylog
 tmp
@@ -3897,6 +3923,7 @@ unnest
 unoptimized
 unparsed
 unpooled
+unprocessable
 unrealiable
 unreplicated
 unresolvable
@@ -4025,11 +4052,3 @@ znode
 znodes
 zookeeperSessionUptime
 zstd
-DataStore
-DataStores
-Dtype
-LaTeX
-DuckDB
-Polars
-MultiIndex
-dtype

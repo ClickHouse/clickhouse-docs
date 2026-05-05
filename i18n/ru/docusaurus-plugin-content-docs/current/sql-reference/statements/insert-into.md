@@ -108,6 +108,46 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 Если у таблицы есть [ограничения](../../sql-reference/statements/create/table.md#constraints), их выражения проверяются для каждой строки вставляемых данных. Если какое-либо из этих ограничений нарушено, сервер выбросит исключение с именем ограничения и его выражением, а выполнение запроса будет прекращено.
 
+## Проверка типов данных \{#data-type-validation\}
+
+ClickHouse проверяет допустимые типы данных (контролируемые настройками, такими как `enable_time_time64_type`, `allow_suspicious_low_cardinality_types`, `allow_suspicious_fixed_string_types` и т. д.) только при создании таблицы (`CREATE TABLE`) и изменении schema (`ALTER TABLE`), но не при выполнении `INSERT`.
+
+Это означает, что если таблица с недопустимым типом данных уже существует, в нее можно вставлять данные, даже если соответствующая настройка отключена на сервере. Это сделано намеренно: после создания таблицы операции вставки не должны блокироваться настройками, которые управляют созданием типов.
+
+Например:
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE events
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id;
+
+SET enable_time_time64_type = 0;
+
+-- This works even though the setting is now disabled.
+-- The table already exists, so inserts are not blocked.
+INSERT INTO events VALUES (1, '14:30:25');
+
+-- But creating a new table with the Time type will fail.
+CREATE TABLE events_new
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id; -- ERR: TYPE_TIME_TIME64_IS_NOT_ENABLED
+```
+
+:::note
+В результате клиент более новой версии (где параметр включён по умолчанию) может вставлять в сервер более старой версии данные с недопустимыми типами, если в целевой таблице уже есть столбцы соответствующих типов. Проверка выполняется на уровне DDL, а не DML.
+:::
+
+
 ## Вставка результатов запроса SELECT \{#inserting-the-results-of-select\}
 
 **Синтаксис**
@@ -147,14 +187,14 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 Поддерживаются сжатые файлы. Тип сжатия определяется по расширению имени файла, либо он может быть явно указан в предложении `COMPRESSION`. Поддерживаемые типы: `'none'`, `'gzip'`, `'deflate'`, `'br'`, `'xz'`, `'zstd'`, `'lz4'`, `'bz2'`.
 
-Эта функциональность доступна в [клиенте командной строки](../../interfaces/cli.md) и в [clickhouse-local](../../operations/utilities/clickhouse-local.md).
+Эта функциональность доступна в [клиенте командной строки](../../interfaces/client.md) и в [clickhouse-local](../../operations/utilities/clickhouse-local.md).
 
 **Примеры**
 
 
 ### Один файл с FROM INFILE \{#single-file-with-from-infile\}
 
-Выполните следующие запросы с помощью [клиента командной строки](../../interfaces/cli.md):
+Выполните следующие запросы с помощью [клиента командной строки](../../interfaces/client.md):
 
 ```bash
 echo 1,A > input.csv ; echo 2,B >> input.csv

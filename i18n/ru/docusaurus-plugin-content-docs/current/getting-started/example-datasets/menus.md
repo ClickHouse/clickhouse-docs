@@ -1,19 +1,19 @@
 ---
-description: 'Набор данных, содержащий 1,3 миллиона записей исторических данных о
+description: 'Датасет, содержащий 1,3 миллиона записей исторических данных о
   меню гостиниц, ресторанов и кафе с блюдами и их ценами.'
-sidebar_label: 'Набор данных New York Public Library "what''s on the menu?"'
+sidebar_label: 'Датасет New York Public Library "what''s on the menu?"'
 slug: /getting-started/example-datasets/menus
-title: 'Набор данных New York Public Library "What''s on the Menu?"'
+title: 'Датасет New York Public Library "What''s on the Menu?"'
 doc_type: 'guide'
-keywords: ['пример набора данных', 'меню', 'исторические данные', 'демонстрационные данные', 'nypl']
+keywords: ['пример датасета', 'меню', 'исторические данные', 'демонстрационные данные', 'nypl']
 ---
 
-Набор данных создан New York Public Library. Он содержит исторические данные о меню гостиниц, ресторанов и кафе с блюдами и их ценами.
+Датасет создан New York Public Library. Он содержит исторические данные о меню гостиниц, ресторанов и кафе с блюдами и их ценами.
 
-Источник: http://menus.nypl.org/data  
+Источник: http://menus.nypl.org/data
 Данные находятся в общественном достоянии.
 
-Данные взяты из архива библиотеки, поэтому они могут быть неполными и неудобными для статистического анализа. Тем не менее, они ещё и очень «аппетитные».  
+Данные взяты из архива библиотеки, поэтому они могут быть неполными и неудобными для статистического анализа. Тем не менее, они ещё и очень «аппетитные».
 Объём составляет всего 1,3 миллиона записей о блюдах в меню — это очень небольшой объём данных для ClickHouse, но всё же это хороший пример.
 
 ## Загрузите набор данных \{#download-dataset\}
@@ -130,6 +130,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 Мы отключаем [input&#95;format&#95;null&#95;as&#95;default](/operations/settings/formats#input_format_null_as_default), так как в наших данных нет [NULL](/operations/settings/formats#input_format_null_as_default). В противном случае ClickHouse будет пытаться разбирать последовательности `\N`, и их можно перепутать с символом `\` в данных.
 
 Настройка [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) позволяет разбирать поля [DateTime](../../sql-reference/data-types/datetime.md) в широком диапазоне форматов. Например, будет распознан формат ISO-8601 без секунд, такой как &#39;2000-01-01 01:02&#39;. Без этой настройки разрешён только фиксированный формат DateTime.
+
 
 ## Денормализация данных \{#denormalize-data\}
 

@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## sparkbar \{#sparkbar\}
 
-Введена в версии v21.11
+Введена в версии v21.11.0
 
 Функция строит гистограмму частот для значений `x` и частоты повторений `y` этих значений на интервале `[min_x, max_x]`.
 Повторения для всех `x`, попадающих в один и тот же бакет, усредняются, поэтому данные должны быть предварительно агрегированы.
@@ -61,7 +61,7 @@ SELECT sparkbar(9)(event_date, cnt) FROM (SELECT sum(value) AS cnt, event_date F
 └──────────────────────────────┘
 ```
 
-**С заданным интервалом**
+**С указанием интервала**
 
 ```sql title=Query
 SELECT sparkbar(9, toDate('2020-01-01'), toDate('2020-01-10'))(event_date, cnt) FROM (SELECT sum(value) AS cnt, event_date FROM spark_bar_data GROUP BY event_date);

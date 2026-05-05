@@ -2,7 +2,7 @@
 description: 'Details backup/restore to or from a local disk'
 sidebar_label: 'Local disk / S3 disk'
 slug: /operations/backup/disk
-title: 'Backup and Restore in ClickHouse'
+title: 'Backup and restore in ClickHouse'
 doc_type: 'guide'
 ---
 
@@ -94,7 +94,7 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 ```
 
 :::note
-- This disk should not be used for `MergeTree` itself, only for `BACKUP`/`RESTORE`
+- This disk shouldn't be used for `MergeTree` itself, only for `BACKUP`/`RESTORE`
 - If your tables are backed by S3 storage and the types of the disks are different, 
 it doesn't use `CopyObject` calls to copy parts to the destination bucket, instead,
 it downloads and uploads them, which is very inefficient. In this case prefer using
@@ -203,7 +203,14 @@ FROM Disk('backups', 'incremental-a.zip');
 ### Securing a backup {#assign-a-password-to-the-backup}
 
 Backups written to disk can have a password applied to the file.
-The password can be specified using the `password` setting:
+The password can be specified using the `password` setting.
+
+:::note
+Password protection is only supported for ZIP archives (`.zip`, `.zipx`).
+The backup path must end with `.zip` or `.zipx` for the password to be accepted.
+Using a password with any other format - including tar archives and non-archive paths - will
+result in a `BAD_ARGUMENTS` error: `Password is not applicable, backup cannot be encrypted`.
+:::
 
 ```sql
 BACKUP TABLE test_db.test_table
@@ -223,7 +230,7 @@ SETTINGS password='qwerty'
 ### Backups as tar archives {#backups-as-tar-archives}
 
 Backups can be stored not only as zip archives, but also as tar archives. 
-The functionality is the same as for zip, except that password protection is not 
+The functionality is the same as for zip, except that password protection isn't 
 supported for tar archives. Additionally, tar archives support a variety of 
 compression methods.
 

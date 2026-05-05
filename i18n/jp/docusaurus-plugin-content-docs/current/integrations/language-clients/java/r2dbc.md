@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'R2DBC ドライバ'
+sidebar_label: 'R2DBCドライバ'
 sidebar_position: 5
-keywords: ['clickhouse', 'java', 'driver', 'integrate', 'r2dbc']
-description: 'ClickHouse R2DBC ドライバ'
+keywords: ['clickhouse', 'java', 'ドライバ', '統合', 'r2dbc']
+description: 'ClickHouse R2DBCドライバ'
 slug: /integrations/java/r2dbc
-title: 'R2DBC ドライバ'
+title: 'R2DBCドライバ'
 doc_type: 'reference'
 integration:
   - support_level: 'core'
@@ -15,15 +15,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# R2DBC ドライバ \{#r2dbc-driver\}
+# R2DBCドライバ \{#r2dbc-driver\}
 
-## R2DBC ドライバー \{#r2dbc-driver\}
+## R2DBCドライバ \{#r2dbc-driver\}
 
-ClickHouse 向け非同期 Java クライアントの [R2DBC](https://r2dbc.io/) ラッパーです。
+ClickHouse 向け非同期 Java クライアントの [R2DBC](https://r2dbc.io/) ラッパー。
 
 ### 環境要件 \{#environment-requirements\}
 
-- [OpenJDK](https://openjdk.java.net) バージョン 8 以上
+* [OpenJDK](https://openjdk.java.net) バージョン 8 以上
 
 ### セットアップ \{#setup\}
 
@@ -54,7 +54,7 @@ ConnectionFactory connectionFactory = ConnectionFactories
         .flatMapMany(connection -> connection
 ```
 
-### Query \{#query\}
+### クエリ \{#query\}
 
 ```java showLineNumbers
 connection
@@ -71,7 +71,7 @@ connection
     .subscribe();
 ```
 
-### Insert \{#insert\}
+### データの挿入 \{#insert\}
 
 ```java showLineNumbers
 connection

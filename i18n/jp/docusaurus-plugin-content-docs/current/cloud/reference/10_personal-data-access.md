@@ -23,8 +23,6 @@ import support_case_form from '@site/static/images/cloud/security/support-case-f
 
 ClickHouse が収集する個人データの詳細およびその利用方法については、ClickHouse プライバシーポリシーをご確認ください。
 
-
-
 ## セルフサービス \{#self-service\}
 
 デフォルトでは、ClickHouse により、ユーザーは自分の個人データを ClickHouse コンソールから直接閲覧できます。
@@ -59,8 +57,6 @@ ClickHouse が収集する個人データの詳細およびその利用方法に
 ### アカウントをお持ちでない方 \{#individuals-without-an-account\}
 
 当社のアカウントをお持ちでなく、上記のセルフサービス機能を利用しても個人データに関する問題が解決せず、プライバシーポリシーに従ってデータ主体アクセス要求を行いたい場合は、[privacy@clickhouse.com](mailto:privacy@clickhouse.com) 宛ての電子メールでリクエストを送信できます。
-
-
 
 ## 本人確認 \{#identity-verification\}
 

@@ -148,7 +148,7 @@ FROM s3(
 DETACH TABLE nyc_taxi.trips_small;
 ```
 
-次にレプリカとしてアタッチします:
+次に、レプリカとしてアタッチします：
 
 ```sql
 ATTACH TABLE nyc_taxi.trips_small AS REPLICATED;

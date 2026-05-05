@@ -7,7 +7,7 @@ title: '来自 Criteo 的 1 TB 点击日志'
 doc_type: 'guide'
 ---
 
-从 [http://labs.criteo.com/downloads/download-terabyte-click-logs/](http://labs.criteo.com/downloads/download-terabyte-click-logs/) 下载数据。
+从 http://labs.criteo.com/downloads/download-terabyte-click-logs/ 下载数据。
 
 创建一个用于导入日志的表：
 
@@ -54,7 +54,8 @@ CREATE TABLE criteo_log (
     cat24 String,
     cat25 String,
     cat26 String
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 ```
 
 插入数据：

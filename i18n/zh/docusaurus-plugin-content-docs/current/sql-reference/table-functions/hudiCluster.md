@@ -1,5 +1,5 @@
 ---
-description: 'hudi 表函数的扩展。用于在指定集群中通过多个节点并行处理存储在 Amazon S3 中的 Apache Hudi 表文件。'
+description: 'hudi 表函数的扩展。允许在指定集群中通过多个节点并行处理 Amazon S3 中的 Apache Hudi 表文件。'
 sidebar_label: 'hudiCluster'
 sidebar_position: 86
 slug: /sql-reference/table-functions/hudiCluster
@@ -16,19 +16,20 @@ doc_type: 'reference'
 ## 语法 \{#syntax\}
 
 ```sql
-hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression])
+hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,format] [,structure] [,compression] [,extra_credentials])
 ```
 
 ## 参数 \{#arguments\}
 
-| 参数                                          | 说明                                                                                                                                                                                                                                                                                                                                                                                   |
-|----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cluster_name`                               | 用于构建到远程和本地服务器的地址和连接参数集合的集群名称。                                                                                                                                                                                                                                                                                                                             |
-| `url`                                        | 指向 S3 中现有 Hudi 表路径的 Bucket 的 URL。                                                                                                                                                                                                                                                                                                                                           |
-| `aws_access_key_id`, `aws_secret_access_key` | [AWS](https://aws.amazon.com/) 账户用户的长期凭证。可以使用这些凭证对请求进行身份验证。这些参数为可选参数。如果未指定凭证，则从 ClickHouse 配置中读取。有关更多信息，参见 [Using S3 for Data Storage](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)。  |
-| `format`                                     | 文件的[格式](/interfaces/formats)。                                                                                                                                                                                                                                                                                                                                                   |
-| `structure`                                  | 表的结构。格式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                                                                                                       |
-| `compression`                                | 可选参数。支持的取值：`none`、`gzip/gz`、`brotli/br`、`xz/LZMA`、`zstd/zst`。默认情况下，将根据文件扩展名自动检测压缩格式。                                                                                                                                                                                                                      |
+| 参数                                           | 说明                                                                                                                                                                                                                       |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `cluster_name`                               | 用于构建到远程和本地服务器的地址和连接参数集合的集群名称。                                                                                                                                                                                            |
+| `url`                                        | 指向 S3 中现有 Hudi 表路径的 Bucket 的 URL。                                                                                                                                                                                        |
+| `aws_access_key_id`, `aws_secret_access_key` | [AWS](https://aws.amazon.com/) 账户用户的长期凭证。可以使用这些凭证对请求进行身份验证。这些参数为可选参数。如果未指定凭证，则从 ClickHouse 配置中读取。有关更多信息，参见 [Using S3 for Data Storage](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)。 |
+| `format`                                     | 文件的[格式](/interfaces/formats)。                                                                                                                                                                                            |
+| `structure`                                  | 表的结构。格式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                   |
+| `compression`                                | 可选参数。支持的取值：`none`、`gzip/gz`、`brotli/br`、`xz/LZMA`、`zstd/zst`。默认情况下，将根据文件扩展名自动检测压缩格式。                                                                                                                                     |
+| `extra_credentials`                          | 可选参数。用于在 ClickHouse Cloud 中传递基于角色的访问所需的 `role_arn`。配置步骤请参见 [Secure S3](/cloud/data-sources/secure-s3)。                                                                                                                   |
 
 ## 返回值 \{#returned_value\}
 
@@ -36,13 +37,13 @@ hudiCluster(cluster_name, url [,aws_access_key_id, aws_secret_access_key] [,form
 
 ## 虚拟列 \{#virtual-columns\}
 
-- `_path` — 文件路径。类型：`LowCardinality(String)`。
-- `_file` — 文件名。类型：`LowCardinality(String)`。
-- `_size` — 文件大小（以字节为单位）。类型：`Nullable(UInt64)`。如果文件大小未知，该值为 `NULL`。
-- `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，该值为 `NULL`。
-- `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，该值为 `NULL`。
+* `_path` — 文件路径。类型：`LowCardinality(String)`。
+* `_file` — 文件名。类型：`LowCardinality(String)`。
+* `_size` — 文件大小 (以字节为单位) 。类型：`Nullable(UInt64)`。如果文件大小未知，该值为 `NULL`。
+* `_time` — 文件的最后修改时间。类型：`Nullable(DateTime)`。如果时间未知，该值为 `NULL`。
+* `_etag` — 文件的 ETag。类型：`LowCardinality(String)`。如果 ETag 未知，该值为 `NULL`。
 
 ## 相关 \{#related\}
 
-- [Hudi 引擎](engines/table-engines/integrations/hudi.md)
-- [Hudi 表函数](sql-reference/table-functions/hudi.md)
+* [Hudi 引擎](engines/table-engines/integrations/hudi.md)
+* [Hudi 表函数](sql-reference/table-functions/hudi.md)

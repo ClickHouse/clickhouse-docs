@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## covarPopStable \{#covarPopStable\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
 Calculates the population covariance:
 
@@ -34,13 +34,13 @@ covarPopStable(x, y)
 - `x` — 第一个变量。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 - `y` — 第二个变量。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**返回值**
 
-Returns the population covariance between `x` and `y`. [`Float64`](/sql-reference/data-types/float)
+返回 `x` 与 `y` 的总体协方差。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**示例**
 
-**Basic population covariance calculation with stable algorithm**
+**使用稳定算法计算基本总体协方差**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;

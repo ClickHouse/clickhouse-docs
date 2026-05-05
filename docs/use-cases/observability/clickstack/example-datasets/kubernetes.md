@@ -164,7 +164,7 @@ helm install myrelease <chart-name-or-path> --set clickhouse.enabled=false --set
 If you'd rather use Managed ClickStack, you can deploy ClickStack and [disable the included ClickHouse](https://clickhouse.com/docs/use-cases/observability/clickstack/deployment/helm#using-clickhouse-cloud). 
 
 :::note
-The chart currently always deploys both HyperDX and MongoDB. While these components offer an alternative access path, they are not integrated with ClickHouse Cloud authentication. These components are intended for administrators in this deployment model, [providing access to the secure ingestion key](#retrieve-ingestion-api-key) needed to ingest through the deployed OTel collector, but should not be exposed to end users.
+The chart currently always deploys both HyperDX and MongoDB. While these components offer an alternative access path, they're not integrated with ClickHouse Cloud authentication. These components are intended for administrators in this deployment model, [providing access to the secure ingestion key](#retrieve-ingestion-api-key) needed to ingest through the deployed OTel collector, but shouldn't be exposed to end users.
 :::
 
 ```shell
@@ -196,7 +196,7 @@ my-hyperdx-hdx-oss-v2-otel-collector-64cf698f5c-8s7qj   1/1     Running   0     
 Even when using Managed ClickStack, the local HyperDX instance deployed in the Kubernetes cluster is still required. It provides an ingestion key managed by the OpAMP server bundled with HyperDX, with secures ingestion through the deployed OTel collector - a capability not currently available in Managed ClickStack.
 :::
 
-For security, the service uses `ClusterIP` and is not exposed externally by default.
+For security, the service uses `ClusterIP` and isn't exposed externally by default.
 
 To access the HyperDX UI, port forward from 3000 to the local port 8080.
 
@@ -469,7 +469,7 @@ Navigate to your HyperDX UI - either using your Kubernetes-deployed instance or 
 <details>
 <summary>Managed ClickStack</summary>
 
-If using Managed ClickStack, simply log in to your ClickHouse Cloud service and select "ClickStack" from the left menu. You will be automatically authenticated and will not need to create a user.
+If using Managed ClickStack, simply log in to your ClickHouse Cloud service and select "ClickStack" from the left menu. You will be automatically authenticated and won't need to create a user.
 
 Data sources for logs, metrics and traces will be pre-created for you.
 
@@ -489,7 +489,7 @@ kubectl port-forward \
 ```
 
 :::note ClickStack in production
-In production, we recommend using an ingress with TLS if you are not using Managed ClickStack. For example:
+In production, we recommend using an ingress with TLS if you're not using Managed ClickStack. For example:
 
 ```shell
 helm upgrade my-hyperdx hyperdx/hdx-oss-v2 \

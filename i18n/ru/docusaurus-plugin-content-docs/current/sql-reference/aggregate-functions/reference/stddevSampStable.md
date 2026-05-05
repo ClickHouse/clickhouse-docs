@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevSampStable \{#stddevSampStable\}
 
-Впервые появилась в версии: v1.1
+Впервые появилась в версии: v1.1.0
 
 Результат равен квадратному корню из [varSamp](../../../sql-reference/aggregate-functions/reference/varSamp.md). В отличие от [stddevSamp](../reference/stddevSamp.md) эта функция использует численно устойчивый алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 

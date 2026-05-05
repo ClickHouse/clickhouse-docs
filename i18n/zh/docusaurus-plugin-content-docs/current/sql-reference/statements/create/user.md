@@ -18,6 +18,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [HOST {LOCAL | NAME 'name' | REGEXP 'name_regexp' | IP 'address' | LIKE 'pattern'} [,...] | ANY | NONE]
     [VALID UNTIL datetime]
     [IN access_storage_type]
+    [ROLE role [,...]]
     [DEFAULT ROLE role [,...]]
     [DEFAULT DATABASE database | NONE]
     [GRANTEES {user | role | ANY | NONE} [,...] [EXCEPT {user | role} [,...]]]
@@ -222,24 +223,22 @@ CREATE USER mira HOST IP '127.0.0.1' IDENTIFIED WITH sha256_password BY 'qwerty'
 
 应在运行 ClickHouse 服务器的主机上使用 `mira` 启动客户端应用程序。
 
-创建用户帐户 `john`，为其分配角色并将这些角色设为默认：
+创建用户帐户 `john`，并为其分配角色：
 
 ```sql
-CREATE USER john DEFAULT ROLE role1, role2;
+CREATE USER john ROLE role1, role2;
 ```
 
-创建用户账户 `john`，并将其今后获得的所有角色都设为默认角色：
+创建用户帐户 `john`，为其分配角色并将其中部分角色设为默认：
 
 ```sql
-CREATE USER john DEFAULT ROLE ALL;
+CREATE USER john ROLE role1, role2 DEFAULT ROLE role1;
 ```
 
-将来为 `john` 分配的任何角色都会自动成为默认角色。
-
-创建用户账户 `john`，并将其所有后续分配的角色都设为默认角色，但排除 `role1` 和 `role2`：
+或
 
 ```sql
-CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
+CREATE USER john ROLE role1, role2 DEFAULT ROLE ALL EXCEPT role2;
 ```
 
 创建用户账号 `john`，并允许该用户将其权限授予账号 `jack` 的用户：

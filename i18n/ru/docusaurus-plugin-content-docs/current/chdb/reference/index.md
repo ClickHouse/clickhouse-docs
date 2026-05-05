@@ -6,7 +6,7 @@ keywords: ['chdb', 'форматы данных']
 doc_type: 'reference'
 ---
 
-| Справочная страница  |
-|----------------------|
-| [Форматы данных](/chdb/reference/data-formats)  |
+| Справочная страница                                |
+| -------------------------------------------------- |
+| [Форматы данных](/chdb/reference/data-formats)     |
 | [Справочник по SQL](/chdb/reference/sql-reference) |

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## quantilesExactInclusive \{#quantilesExactInclusive\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
-使用包含式（inclusive）方法，对数值数据序列在多个不同水平上同时精确计算多个[分位数](https://en.wikipedia.org/wiki/Quantile)。
+使用包含式 (inclusive) 方法，对数值数据序列在多个不同水平上同时精确计算多个[分位数](https://en.wikipedia.org/wiki/Quantile)。
 
 该函数等价于 [`quantileExactInclusive`](/sql-reference/aggregate-functions/reference/quantileExactInclusive)，但允许在一次遍历中计算多个分位数水平，这比多次调用单个分位数函数更高效。
 
-此函数使用包含式（inclusive）方法来计算分位数，具体如 [R-7 method](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample) 中所述。
+此函数使用包含式 (inclusive) 方法来计算分位数，具体如 [R-7 method](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample) 中所述。
 这等价于 Excel 函数 [PERCENTILE.INC](https://support.microsoft.com/en-us/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed)。
 
 为了得到精确结果，所有传入的值会被合并到一个数组中，然后对其进行部分排序。
@@ -29,7 +29,7 @@ quantilesExactInclusive(level1, level2, ...)(expr)
 
 **参数**
 
-* `level` — 分位数的水平。取值为 0 到 1（含）之间的常量浮点数。建议将 `level` 设为 `[0.01, 0.99]` 范围内的值。[`Float*`](/sql-reference/data-types/float)
+* `level` — 分位数的水平。取值为 0 到 1 (含) 之间的常量浮点数。建议将 `level` 设为 `[0.01, 0.99]` 范围内的值。[`Float*`](/sql-reference/data-types/float)
 
 **参数说明**
 

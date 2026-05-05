@@ -61,7 +61,7 @@ If a row has more than one match, then all matches are returned (meaning that th
 
 <Image img={inner_join} alt="Inner Join" />
 
-This query finds the genre(s) for each movie by joining the `movies` table with the `genres` table:
+This query finds the genres for each movie by joining the `movies` table with the `genres` table:
 
 ```sql
 SELECT
@@ -178,7 +178,7 @@ LIMIT 10;
 └──────┴────┴──────────┴─────────────┘
 ```
 
-While the previous example query alone didn’t make much sense, it can be extended with a `WHERE` clause for associating matching rows to replicate `INNER JOIN` behavior for finding the genre(s) for each movie:
+While the previous example query alone didn’t make much sense, it can be extended with a `WHERE` clause for associating matching rows to replicate `INNER JOIN` behavior for finding the genres for each movie:
 
 ```sql
 SELECT
@@ -405,7 +405,7 @@ A `trades` table lists symbol trades - a specific volume of a symbol got bought 
 
 In order to calculate the concrete cost of each trade, we need to match the trades with their closest quote time.
 
-This is easy and compact with the `ASOF JOIN`, where you use the `ON` clause for specifying an exact match condition and the `AND` clause for specifying the closest match condition - for a specific symbol (exact match) you are looking for the row with the ‘closest’ time from the `quotes` table at exactly or before the time (non-exact match) of a trade of that symbol:
+This is easy and compact with the `ASOF JOIN`, where you use the `ON` clause for specifying an exact match condition and the `AND` clause for specifying the closest match condition - for a specific symbol (exact match) you're looking for the row with the ‘closest’ time from the `quotes` table at exactly or before the time (non-exact match) of a trade of that symbol:
 
 ```sql
 SELECT

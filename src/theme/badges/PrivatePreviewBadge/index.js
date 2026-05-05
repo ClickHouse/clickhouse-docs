@@ -17,7 +17,7 @@ const Icon = () => {
 const PrivatePreviewBadge = ({ link, galaxyTrack, slug }) => {
     const content = (
         <>
-            <Icon />{'Private preview in ClickHouse Cloud'}
+            <Icon />{'Private preview'}
         </>
     )
 

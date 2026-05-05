@@ -15,7 +15,7 @@ doc_type: 'reference'
 Синтаксис:
 
 ```sql
-Time()
+Time
 ```
 
 Диапазон текстового представления: [-999:59:59, 999:59:59].
@@ -61,9 +61,9 @@ ENGINE = TinyLog;
 ```
 
 ```sql
--- Разбор Time
--- - из строки,
--- - из целого числа, интерпретируемого как количество секунд с 00:00:00.
+-- Parse Time
+-- - from string,
+-- - from integer interpreted as number of seconds since 00:00:00.
 INSERT INTO tab VALUES (1, '14:30:25'), (2, 52225);
 
 SELECT * FROM tab ORDER BY event_id;
@@ -79,6 +79,7 @@ SELECT * FROM tab ORDER BY event_id;
 **2.** Фильтрация по значениям поля `Time`
 
 ```sql
+SET use_legacy_to_time = 0;
 SELECT * FROM tab WHERE time = toTime('14:30:25')
 ```
 
@@ -114,14 +115,31 @@ SELECT CAST('14:30:25' AS Time) AS column, toTypeName(column) AS type
    └───────────┴──────┘
 ```
 
+## Сложение с Date \{#addition-with-date\}
+
+К значению [Date](date.md) или [Date32](date32.md) можно прибавить значение [Time](time.md), чтобы получить [DateTime](datetime.md) или [DateTime64](datetime64.md):
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') as datetime;
+```
+
+```text
+   ┌────────────datetime─┐
+1. │ 2024-07-15 14:30:25 │
+   └─────────────────────┘
+```
+
+Подробную информацию обо всех поддерживаемых комбинациях и типах результатов см. в разделе [Сложение даты и времени](../operators/index.md#date-time-addition).
+
 ## См. также \{#see-also\}
 
-- [Функции преобразования типов](../functions/type-conversion-functions.md)
-- [Функции для работы с датами и временем](../functions/date-time-functions.md)
-- [Функции для работы с массивами](../functions/array-functions.md)
-- [Настройка `date_time_input_format`](../../operations/settings/settings-formats.md#date_time_input_format)
-- [Настройка `date_time_output_format`](../../operations/settings/settings-formats.md#date_time_output_format)
-- [Параметр конфигурации сервера `timezone`](../../operations/server-configuration-parameters/settings.md#timezone)
-- [Настройка `session_timezone`](../../operations/settings/settings.md#session_timezone)
-- [Тип данных `DateTime`](datetime.md)
-- [Тип данных `Date`](date.md)
+* [Функции преобразования типов](../functions/type-conversion-functions.md)
+* [Функции для работы с датами и временем](../functions/date-time-functions.md)
+* [Функции для работы с массивами](../functions/array-functions.md)
+* [Настройка `date_time_input_format`](../../operations/settings/settings-formats.md#date_time_input_format)
+* [Настройка `date_time_output_format`](../../operations/settings/settings-formats.md#date_time_output_format)
+* [Параметр конфигурации сервера `timezone`](../../operations/server-configuration-parameters/settings.md#timezone)
+* [Настройка `session_timezone`](../../operations/settings/settings.md#session_timezone)
+* [Тип данных `DateTime`](datetime.md)
+* [Тип данных `Date`](date.md)

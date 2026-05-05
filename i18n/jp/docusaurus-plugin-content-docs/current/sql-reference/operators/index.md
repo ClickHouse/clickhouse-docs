@@ -113,8 +113,8 @@ SELECT * FROM a AS a1 JOIN a AS a2 ON a1.x <=> a2.x;
 :::
 
 `<=>` 演算子は `NULL` セーフな等価比較演算子であり、`IS NOT DISTINCT FROM` と同等です。
-通常の等価演算子（`=`）と同様に動作しますが、`NULL` 値を互いに比較可能なものとして扱います。
-2 つの `NULL` 値は等しいと見なされ、`NULL` と `NULL` 以外の値を比較した場合は、`NULL` ではなく 0（偽）を返します。
+通常の等価演算子 (`=`) と同様に動作しますが、`NULL` 値を互いに比較可能なものとして扱います。
+2 つの `NULL` 値は等しいと見なされ、`NULL` と `NULL` 以外の値を比較した場合は、`NULL` ではなく 0 (偽) を返します。
 
 ```sql
 SELECT
@@ -150,7 +150,7 @@ SELECT
 
 ### in サブクエリ用関数 \{#in-subquery-function\}
 
-`a = ANY (subquery)` – `in(a, subquery)` 関数です。  
+`a = ANY (subquery)` – `in(a, subquery)` 関数です。
 
 ### notIn サブクエリ関数 \{#notin-subquery-function\}
 
@@ -214,16 +214,26 @@ EXTRACT(part FROM date);
 
 `part`パラメータは、どの部分を取得するかを指定します。指定可能な値は次のとおりです:
 
-* `DAY` — 月の日付。指定可能な値: 1–31。
-* `MONTH` — 月を表す番号。指定可能な値: 1–12。
-* `YEAR` — 年。
 * `SECOND` — 秒。指定可能な値: 0–59。
 * `MINUTE` — 分。指定可能な値: 0–59。
 * `HOUR` — 時。指定可能な値: 0–23。
+* `DAY` — 月の日付。指定可能な値: 1–31。
+* `WEEK` — ISO 8601 の週番号。指定可能な値: 1–53。
+* `MONTH` — 月を表す番号。指定可能な値: 1–12。
+* `QUARTER` — 四半期。指定可能な値: 1–4。
+* `YEAR` — 年。
+* `EPOCH` — Unix タイムスタンプ (1970-01-01 00:00:00 UTC からの秒数) 。注: `DateTime64` では、秒未満の部分は切り捨てられます。
+* `DOW` — 曜日 (PostgreSQL互換) 。0 = 日曜日、6 = 土曜日。
+* `DOY` — 年間通算日。指定可能な値: 1–366。
+* `ISODOW` — ISO の曜日。1 = 月曜日、7 = 日曜日。
+* `ISOYEAR` — ISO 8601 の週番号付け年。
+* `CENTURY` — 世紀。たとえば、2024年は21世紀です。
+* `DECADE` — 十年単位 (年を 10 で割った値) 。たとえば、2024年の decade は 202 です。
+* `MILLENNIUM` — 千年紀。たとえば、2024年は第3千年紀です。
 
 `part`パラメータは大文字小文字を区別しません。
 
-`date` パラメータは処理する日付または時刻を指定します。[Date](../../sql-reference/data-types/date.md) 型または [DateTime](../../sql-reference/data-types/datetime.md) 型を使用できます。
+`date` パラメータは処理する日付または時刻を指定します。[Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md)、および [DateTime64](../../sql-reference/data-types/datetime64.md) 型を使用できます。
 
 例:
 
@@ -231,6 +241,9 @@ EXTRACT(part FROM date);
 SELECT EXTRACT(DAY FROM toDate('2017-06-15'));
 SELECT EXTRACT(MONTH FROM toDate('2017-06-15'));
 SELECT EXTRACT(YEAR FROM toDate('2017-06-15'));
+SELECT EXTRACT(EPOCH FROM toDateTime('2024-01-15 12:30:45', 'UTC'));
+SELECT EXTRACT(DOW FROM toDate('2024-01-15'));
+SELECT EXTRACT(CENTURY FROM toDate('2024-01-01'));
 ```
 
 以下の例では、テーブルを作成し、`DateTime` 型の値を挿入します。
@@ -241,8 +254,8 @@ CREATE TABLE test.Orders
     OrderId UInt64,
     OrderName String,
     OrderDate DateTime
-)
-ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 ```
 
 ```sql
@@ -267,6 +280,7 @@ FROM test.Orders;
 ```
 
 さらに多くの例については、[tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql) を参照してください。
+
 
 ### INTERVAL \{#interval\}
 
@@ -322,7 +336,7 @@ SELECT now() AS current_date_time, current_date_time + INTERVAL '4' day + INTERV
 ```
 
 :::note
-`INTERVAL` 構文または `addDays` 関数の使用を常に推奨します。単純な加算や減算（`now() + ...` のような構文）は、サマータイムなどの時間関連の設定を考慮しません。
+`INTERVAL` 構文または `addDays` 関数の使用を常に推奨します。単純な加算や減算 (`now() + ...` のような構文) は、サマータイムなどの時間関連の設定を考慮しません。
 :::
 
 例:
@@ -342,6 +356,55 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 型変換関数
 
+### 日付と時刻の加算 \{#date-time-addition\}
+
+[Date](../../sql-reference/data-types/date.md) または [Date32](../../sql-reference/data-types/date32.md) の値には、`+` 演算子を使って [Time](../../sql-reference/data-types/time.md) または [Time64](../../sql-reference/data-types/time64.md) の値を加算できます。結果は、指定した時刻の日付を表す [DateTime](../../sql-reference/data-types/datetime.md) または [DateTime64](../../sql-reference/data-types/datetime64.md) になります。この演算は可換です。
+
+結果の型は、オペランドの型によって決まります。
+
+| 左オペランド   | 右オペランド      | 結果の型            |
+| -------- | ----------- | --------------- |
+| `Date`   | `Time`      | `DateTime`      |
+| `Date`   | `Time64(s)` | `DateTime64(s)` |
+| `Date32` | `Time`      | `DateTime64(0)` |
+| `Date32` | `Time64(s)` | `DateTime64(s)` |
+
+:::note
+結果には [session timezone](../../operations/settings/settings.md#session_timezone) が使用されます (session timezone が設定されていない場合は、サーバーのデフォルトタイムゾーンが使用されます) 。[`date_time_overflow_behavior`](../../operations/settings/settings-formats.md#date_time_overflow_behavior) 設定は、結果が表現可能な範囲を超えた場合の動作を制御します。
+:::
+
+例:
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25 │ DateTime       │
+└─────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+┌─────────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+└────────────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toTime64('23:59:59.999', 3) + toDate32('2024-07-15') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 23:59:59.999 │ DateTime64(3)  │
+└─────────────────────────┴────────────────┘
+```
 
 ## 論理AND演算子 \{#logical-and-operator\}
 

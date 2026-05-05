@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## rankCorr \{#rankCorr\}
 
-引入版本：v20.9
+引入版本：v20.9.0
 
 计算秩相关系数。
 

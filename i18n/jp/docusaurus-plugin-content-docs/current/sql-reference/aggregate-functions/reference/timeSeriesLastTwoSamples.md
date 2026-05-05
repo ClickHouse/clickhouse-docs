@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesLastTwoSamples \{#timeSeriesLastTwoSamples\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 PromQL 風の `irate` および `idelta` を計算するために時系列データを再サンプリングする集約関数です。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevSamp \{#stddevSamp\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データ系列の標本標準偏差を返します。
 結果は [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp) の平方根に等しくなります。

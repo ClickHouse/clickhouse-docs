@@ -44,7 +44,7 @@ ClickHouse はインサートされたデータを、テーブルの主キー列
 
 次の**主要な検討事項**は、ClickHouse サーバーへの送信前にデータを④圧縮するかどうかです。圧縮により転送サイズが減り、ネットワーク効率が向上するため、とくに大規模なデータセットではデータ転送が高速化され、帯域幅使用量も削減されます。
 
-データは⑤ ClickHouse のネットワークインターフェイス、すなわち [native](/interfaces/tcp) または[ HTTP](/interfaces/http) インターフェイスのいずれかに送信されます（これらはこの記事の後半で[比較](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient#clickhouse-client-defaults)します）。
+データは⑤ ClickHouse のネットワークインターフェイス、すなわち [native](/interfaces/tcp) または[ HTTP](/interfaces/http) インターフェイスのいずれかに送信されます (これらはこの記事の後半で[比較](https://clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient#clickhouse-client-defaults)します) 。
 
 #### サーバー側のステップ \{#server-side-steps\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactWeighted \{#quantileExactWeighted\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с учётом веса каждого элемента.
 

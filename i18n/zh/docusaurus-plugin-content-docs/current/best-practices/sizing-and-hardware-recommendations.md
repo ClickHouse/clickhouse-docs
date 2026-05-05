@@ -74,6 +74,7 @@ ClickHouse 并没有统一的 CPU 利用率目标。请使用 [iostat](https://l
 与 CPU 的选择类似，内存与存储的比例以及内存与 CPU 的比例应根据具体用例来确定。
 
 所需的 RAM 容量通常取决于：
+
 - 查询的复杂度；
 - 查询中需要处理的数据量。
 
@@ -164,7 +165,7 @@ ClickHouse 的配置高度取决于具体应用程序的需求。如果您希望
     </tr>
 </table>
 
-### Fortune 500 电信运营商（日志用例）\{#fortune-500-telecom-operator-for-a-logging-use-case\}
+### 某 Fortune 500 电信运营商的日志场景 \{#fortune-500-telecom-operator-for-a-logging-use-case\}
 
 <table>
     <tr>

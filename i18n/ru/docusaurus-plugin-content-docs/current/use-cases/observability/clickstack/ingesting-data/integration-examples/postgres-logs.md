@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-logs
-title: 'Мониторинг журналов PostgreSQL с помощью ClickStack'
-sidebar_label: 'Журналы PostgreSQL'
+title: 'Мониторинг лог PostgreSQL с помощью ClickStack'
+sidebar_label: 'Лог PostgreSQL'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг журналов PostgreSQL с помощью ClickStack'
+description: 'Мониторинг лог PostgreSQL с помощью ClickStack'
 doc_type: 'guide'
-keywords: ['PostgreSQL', 'Postgres', 'журналы', 'OTel', 'ClickStack', 'мониторинг баз данных']
+keywords: ['PostgreSQL', 'Postgres', 'лог', 'OTel', 'ClickStack', 'мониторинг баз данных']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,20 +18,10 @@ import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-log
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
 # Мониторинг логов PostgreSQL с помощью ClickStack \{#postgres-logs-clickstack\}
 
 :::note[Кратко]
-В этом руководстве показано, как настроить мониторинг PostgreSQL с помощью ClickStack, настроив OTel collector для приёма серверных логов PostgreSQL. Вы узнаете, как:
-
-- Настроить PostgreSQL на вывод логов в формате CSV для структурированного парсинга
-- Создать пользовательскую конфигурацию OTel collector для ингестии логов
-- Развернуть ClickStack с вашей пользовательской конфигурацией
-- Использовать готовую панель мониторинга для визуализации данных из логов PostgreSQL (ошибки, медленные запросы, подключения)
-
-Доступен демонстрационный набор данных с примерами логов, если вы хотите протестировать интеграцию до настройки продуктивного PostgreSQL.
-
-Оценочное время: 10–15 минут
+Собирайте и визуализируйте серверные логи PostgreSQL (в формате CSV) в ClickStack с помощью приёмника OTel `filelog`. Включает демо-набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим PostgreSQL \{#existing-postgres\}
@@ -378,13 +368,11 @@ docker exec <container> cat /tmp/postgres-demo/postgresql.log | wc -l
 ```
 
 
-## Дальнейшие шаги {#next-steps}
-
-После настройки мониторинга логов PostgreSQL:
+## Следующие шаги {#next-steps}
 
 - Настройте [оповещения](/use-cases/observability/clickstack/alerts) для критических событий (сбоев подключения, медленных запросов, всплесков ошибок)
 - Коррелируйте логи с [метриками PostgreSQL](/use-cases/observability/clickstack/integrations/postgresql-metrics) для всестороннего мониторинга базы данных
-- Создавайте пользовательские дашборды для характерных для приложения шаблонов запросов
+- Создавайте пользовательские панели мониторинга для характерных для приложения шаблонов запросов
 - Настройте `log_min_duration_statement` для выявления медленных запросов с учётом ваших требований к производительности
 
 ## Использование в продакшене {#going-to-production}

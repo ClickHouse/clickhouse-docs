@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilesTimingWeighted \{#quantilesTimingWeighted\}
 
-Введено в: v1.1
+Введено в: v1.1.0
 
 Вычисляет несколько [квантилей](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных на разных уровнях одновременно с заданной точностью, с учётом веса каждого элемента последовательности.
 

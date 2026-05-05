@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactWeightedInterpolated \{#quantileExactWeightedInterpolated\}
 
-Добавлена в: v24.10
+Добавлена в: v24.10.0
 
 Вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с использованием линейной интерполяции с учётом веса каждого элемента.
 
@@ -57,7 +57,7 @@ SELECT quantileExactWeightedInterpolated(n, val) FROM t;
 └───────────────────────────────────────────┘
 ```
 
-**Используйте quantileExactWeightedInterpolated вместо quantileInterpolatedWeighted**
+**Предпочтительно использовать quantileExactWeightedInterpolated вместо quantileInterpolatedWeighted**
 
 ```sql title=Query
 SELECT

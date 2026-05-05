@@ -9,4 +9,4 @@ doc_type: 'reference'
 
 # Cassandra integration
 
-You can integrate with Cassandra via a dictionary. Further details [here](/sql-reference/dictionaries#cassandra).
+You can integrate with Cassandra via a dictionary. Further details [here](/sql-reference/statements/create/dictionary/sources/cassandra).

@@ -33,17 +33,17 @@ ALTER [TEMPORARY] TABLE [db].name [ON CLUSTER cluster] ADD|DROP|RENAME|CLEAR|COM
 
 これらのアクションについては、以下で詳しく説明します。
 
-## ADD COLUMN（列を追加） \{#add-column\}
+## ADD COLUMN (列を追加) \{#add-column\}
 
 ```sql
 ADD COLUMN [IF NOT EXISTS] name [type] [default_expr] [codec] [AFTER name_after | FIRST]
 ```
 
-指定された `name`、`type`、[`codec`](../create/table.md/#column_compression_codec)、および `default_expr`（[デフォルト式](/sql-reference/statements/create/table#default_values) セクションを参照）を持つ新しい列をテーブルに追加します。
+指定された `name`、`type`、[`codec`](../create/table.md/#column_compression_codec)、および `default_expr` ([デフォルト式](/sql-reference/statements/create/table#default_values) セクションを参照) を持つ新しい列をテーブルに追加します。
 
-`IF NOT EXISTS` 句を含めると、列がすでに存在している場合でもクエリはエラーを返しません。`AFTER name_after`（別の列の名前）を指定すると、その列の直後に列がテーブル列リスト内で追加されます。テーブルの先頭に列を追加したい場合は `FIRST` 句を使用します。そうでない場合、列はテーブルの末尾に追加されます。一連の操作として複数のアクションを実行する場合、`name_after` には、前のアクションのいずれかで追加された列名を指定できます。
+`IF NOT EXISTS` 句を含めると、列がすでに存在している場合でもクエリはエラーを返しません。`AFTER name_after` (別の列の名前) を指定すると、その列の直後に列がテーブル列リスト内で追加されます。テーブルの先頭に列を追加したい場合は `FIRST` 句を使用します。そうでない場合、列はテーブルの末尾に追加されます。一連の操作として複数のアクションを実行する場合、`name_after` には、前のアクションのいずれかで追加された列名を指定できます。
 
-列を追加しても、テーブル構造だけが変更され、データに対してはいかなる操作も行われません。`ALTER` の直後にはデータはディスク上に保存されません。テーブルから読み取る際に列のデータが存在しない場合、それはデフォルト値で補完されます（デフォルト式があればそれを評価し、なければゼロまたは空文字列を使用します）。列は、データパーツがマージされた後にディスク上に現れます（[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) を参照）。
+列を追加しても、テーブル構造だけが変更され、データに対してはいかなる操作も行われません。`ALTER` の直後にはデータはディスク上に保存されません。テーブルから読み取る際に列のデータが存在しない場合、それはデフォルト値で補完されます (デフォルト式があればそれを評価し、なければゼロまたは空文字列を使用します) 。列は、データパーツがマージされた後にディスク上に現れます ([MergeTree](/engines/table-engines/mergetree-family/mergetree.md) を参照) 。
 
 このアプローチにより、既存データの容量を増やすことなく、`ALTER` クエリを即座に完了できます。
 
@@ -97,7 +97,7 @@ RENAME COLUMN [IF EXISTS] name to new_name
 
 カラム `name` を `new_name` にリネームします。`IF EXISTS` 句が指定されている場合、そのカラムが存在しなくてもクエリはエラーになりません。リネームは実データを変更しないため、クエリはほぼ即時に完了します。
 
-**注意**: テーブルのキー式（`ORDER BY` または `PRIMARY KEY`）で指定されているカラムはリネームできません。これらのカラムを変更しようとすると、`SQL Error [524]` が発生します。
+**注意**: テーブルのキー式 (`ORDER BY` または `PRIMARY KEY`) で指定されているカラムはリネームできません。これらのカラムを変更しようとすると、`SQL Error [524]` が発生します。
 
 例:
 
@@ -240,7 +240,7 @@ ALTER TABLE table_with_ttl MODIFY COLUMN column_ttl REMOVE TTL;
 
 * [REMOVE TTL](ttl.md)
 
-## MODIFY COLUMN MODIFY SETTING — 列設定の変更 \{#modify-column-modify-setting\}
+## MODIFY COLUMN MODIFY SETTING \{#modify-column-modify-setting\}
 
 列の設定を変更します。
 
@@ -278,7 +278,7 @@ ALTER TABLE table_name MODIFY COLUMN column_name RESET SETTING max_compress_bloc
 
 ## MATERIALIZE COLUMN \{#materialize-column\}
 
-`DEFAULT` または `MATERIALIZED` の値式を持つカラムをマテリアライズします。`ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` を使用してマテリアライズされたカラムを追加する場合、マテリアライズされた値を持たない既存の行は自動的には埋められません。`MATERIALIZE COLUMN` 文は、`DEFAULT` または `MATERIALIZED` の式が追加または更新された後（この操作はメタデータのみを更新し、既存データは変更しない）、既存のカラムデータを書き換えるために使用できます。ソートキー内のカラムをマテリアライズすることは、ソート順を破壊しうるため無効な操作である点に注意してください。
+`DEFAULT` または `MATERIALIZED` の値式を持つカラムをマテリアライズします。`ALTER TABLE table_name ADD COLUMN column_name MATERIALIZED` を使用してマテリアライズされたカラムを追加する場合、マテリアライズされた値を持たない既存の行は自動的には埋められません。`MATERIALIZE COLUMN` 文は、`DEFAULT` または `MATERIALIZED` の式が追加または更新された後 (この操作はメタデータのみを更新し、既存データは変更しない) 、既存のカラムデータを書き換えるために使用できます。ソートキー内のカラムをマテリアライズすることは、ソート順を破壊しうるため無効な操作である点に注意してください。
 [mutation](/sql-reference/statements/alter/index.md#mutations) として実装されています。
 
 新規または更新された `MATERIALIZED` 値式を持つカラムについては、すべての既存の行が書き換えられます。
@@ -338,12 +338,14 @@ SELECT groupArray(x), groupArray(s) FROM tmp;
 
 ## 制限事項 \{#limitations\}
 
-`ALTER` クエリでは、ネストされたデータ構造内の個々の要素（カラム）の作成および削除はできますが、ネストされたデータ構造全体の作成や削除はできません。ネストされたデータ構造を追加するには、`name.nested_name` のような名前と型 `Array(T)` を持つカラムを追加します。ネストされたデータ構造は、「ドットの前のプレフィックスが同じ名前」を持つ複数の配列カラムと同等です。
+`ALTER` クエリでは、ネストされたデータ構造内の個々の要素 (カラム) の作成および削除はできますが、ネストされたデータ構造全体の作成や削除はできません。ネストされたデータ構造を追加するには、`name.nested_name` のような名前と型 `Array(T)` を持つカラムを追加します。ネストされたデータ構造は、「ドットの前のプレフィックスが同じ名前」を持つ複数の配列カラムと同等です。
 
-プライマリキーまたはサンプリングキー（`ENGINE` 式で使用されるカラム）に含まれるカラムの削除はサポートされていません。プライマリキーに含まれているカラムの型変更は、その変更によってデータが変更されない場合にのみ可能です（たとえば、Enum に値を追加する、または型を `DateTime` から `UInt32` に変更することは許可されています）。
+名前にドットを含むカラムのリネームは、部分的にのみサポートされています。ドットは [Nested](/sql-reference/data-types/nested-data-structures/nested) のサブカラムへアクセスするために予約されているため、プレフィックス (親名) は同じでなければなりません。変更できるのはサフィックス (サブカラム名) のみです。たとえば、`a.b` は `a.c` にリネームできますが、`a.b` を `b.d` にリネームすることは、Nested の親プレフィックスが変わってしまうため許可されていません。
+
+プライマリキーまたはサンプリングキー (`ENGINE` 式で使用されるカラム) に含まれるカラムの削除はサポートされていません。プライマリキーに含まれているカラムの型変更は、その変更によってデータが変更されない場合にのみ可能です (たとえば、Enum に値を追加する、または型を `DateTime` から `UInt32` に変更することは許可されています) 。
 
 必要なテーブル変更を `ALTER` クエリだけで実現できない場合は、新しいテーブルを作成し、[INSERT SELECT](/sql-reference/statements/insert-into.md/#inserting-the-results-of-select) クエリを使用してデータをコピーし、その後 [RENAME](/sql-reference/statements/rename.md/#rename-table) クエリを使用してテーブルを切り替え、古いテーブルを削除できます。
 
 `ALTER` クエリは、そのテーブルに対するすべての読み書きをブロックします。言い換えると、`ALTER` クエリの実行時に長時間実行される `SELECT` がある場合、`ALTER` クエリはそれが完了するまで待機します。同時に、同じテーブルに対する新しいクエリも、この `ALTER` が実行中の間は待機します。
 
-自分自身ではデータを保持しないテーブル（[Merge](/sql-reference/statements/alter/index.md) や [Distributed](/sql-reference/statements/alter/index.md) など）の場合、`ALTER` はテーブル構造のみを変更し、従属テーブルの構造は変更しません。たとえば、`Distributed` テーブルに対して `ALTER` を実行する場合、すべてのリモートサーバー上のテーブルに対しても `ALTER` を実行する必要があります。
+自分自身ではデータを保持しないテーブル ([Merge](/sql-reference/statements/alter/index.md) や [Distributed](/sql-reference/statements/alter/index.md) など) の場合、`ALTER` はテーブル構造のみを変更し、従属テーブルの構造は変更しません。たとえば、`Distributed` テーブルに対して `ALTER` を実行する場合、すべてのリモートサーバー上のテーブルに対しても `ALTER` を実行する必要があります。

@@ -78,6 +78,7 @@ Rails.application.configure do
 end
 ```
 
+
 ### 環境変数を設定する \{#configure-environment-variables\}
 
 以降、OpenTelemetry コレクター経由で ClickStack にテレメトリデータを送信するために、シェルで次の環境変数を設定します。

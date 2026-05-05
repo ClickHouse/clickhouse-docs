@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/open-webui
 sidebar_label: 'Integrate Open WebUI'
-title: 'Set Up ClickHouse MCP Server with Open WebUI and ClickHouse Cloud'
+title: 'Set up ClickHouse MCP server with Open WebUI and ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up Open WebUI with a ClickHouse MCP server using Docker.'
@@ -35,7 +35,7 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
 ## Install uv {#install-uv}
 
 You will need to install [uv](https://docs.astral.sh/uv/) to follow the instructions in this guide.
-If you don't want to use uv, you will need to update the MCP Server config to use an alternative package manager.
+If you don't want to use uv, you will need to update the MCP server config to use an alternative package manager.
 
 ## Launch Open WebUI {#launch-open-webui}
 
@@ -47,9 +47,9 @@ uv run --with open-webui open-webui serve
 
 Navigate to http://localhost:8080/ to see the UI.
 
-## Configure ClickHouse MCP Server {#configure-clickhouse-mcp-server}
+## Configure ClickHouse MCP server {#configure-clickhouse-mcp-server}
 
-To setup the ClickHouse MCP Server, we'll need to convert the MCP Server to Open API endpoints.
+To setup the ClickHouse MCP server, we'll need to convert the MCP server to Open API endpoints.
 Let's first set environmental variables that will let us connect to the ClickHouse SQL Playground:
 
 ```bash
@@ -103,10 +103,10 @@ The OpenAI models will then be available on the top menu:
 
 <Image img={OpenAIModels} alt="Open WebUI - Models" size="md"/>
 
-## Chat to ClickHouse MCP Server with Open WebUI {#chat-to-clickhouse-mcp-server}
+## Chat to ClickHouse MCP server with Open WebUI {#chat-to-clickhouse-mcp-server}
 
-We can then have a conversation and Open WebUI will call the MCP Server if necessary:
+We can then have a conversation and Open WebUI will call the MCP server if necessary:
 
-<Image img={Conversation} alt="Open WebUI - Chat with ClickHouse MCP Server" size="md"/>
+<Image img={Conversation} alt="Open WebUI - Chat with ClickHouse MCP server" size="md"/>
 
 </VerticalStepper>

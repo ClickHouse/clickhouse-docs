@@ -21,16 +21,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # 使用 ClickStack 监控 Nginx 日志 \{#nginx-clickstack\}
 
 :::note[摘要]
-本指南演示如何通过配置 OTel collector 来摄取 Nginx 访问日志，从而使用 ClickStack 监控 Nginx。本文将介绍如何：
-
-- 将 Nginx 配置为输出 JSON 格式的日志
-- 创建用于日志摄取的自定义 OTel collector 配置
-- 使用自定义配置部署 ClickStack
-- 使用预构建的仪表板可视化 Nginx 指标
-
-如果希望在为生产环境中的 Nginx 配置前先测试集成，可以使用提供的包含示例日志的演示数据集。
-
-所需时间：5–10 分钟
+使用 OTel `filelog` 接收器在 ClickStack 中采集并可视化 Nginx 访问日志 (JSON 格式) 。包含演示数据集和预置仪表板。
 :::
 
 ## 集成现有的 Nginx \{#existing-nginx\}
@@ -355,7 +346,9 @@ docker exec `<container>` cat /etc/otel/supervisor-data/agent.log
 
 ## 后续步骤 {#next-steps}
 
-如果你想进一步探索，可以在仪表盘上尝试以下步骤：
+- 为关键指标设置[告警](/use-cases/observability/clickstack/alerts)（错误率、延迟阈值）
+- 为特定使用场景创建额外的[仪表板](/use-cases/observability/clickstack/dashboards)（API 监控、安全事件）
 
-- 为关键指标设置告警（错误率、延迟阈值）
-- 为特定使用场景创建额外仪表盘（API 监控、安全事件）
+## 生产环境部署 {#going-to-production}
+
+本指南扩展了 ClickStack 内置的 OpenTelemetry 收集器，以便快速完成设置。对于生产环境部署，我们建议运行您自己的 OTel 收集器，并将数据发送到 ClickStack 的 OTLP 端点。有关生产环境配置，请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

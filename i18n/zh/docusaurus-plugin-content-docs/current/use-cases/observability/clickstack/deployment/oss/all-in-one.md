@@ -57,7 +57,7 @@ ClickStack 镜像现在发布为 `clickhouse/clickstack-*`（之前为 `docker.h
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-有关使用其他 ClickHouse 实例的示例，请参见 ["创建 ClickHouse Cloud 连接"](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)。
+有关使用其他 ClickHouse 实例的示例，请参见 ["使用 ClickHouse Cloud"](#using-clickhouse-cloud)。
 
 ### 摄取数据 \{#ingest-data\}
 
@@ -118,7 +118,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 `CLICKHOUSE_ENDPOINT` 应设置为 ClickHouse Cloud 的 HTTPS 端点，并包含端口 `8443`，例如：`https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
-连接到 HyperDX UI 后，导航至 [`Team Settings`](http://localhost:8080/team)，先创建与你的 ClickHouse Cloud 服务的连接，然后添加所需的数据源。示例流程请参见[此处](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)。
+连接到 HyperDX UI 后，导航至 [`Team Settings`](http://localhost:8080/team)，先创建与你的 ClickHouse Cloud 服务的连接，然后添加所需的数据源。
 
 
 ## 配置 OpenTelemetry collector \{#configuring-collector\}

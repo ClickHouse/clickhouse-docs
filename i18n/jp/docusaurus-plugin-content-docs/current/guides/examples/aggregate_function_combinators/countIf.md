@@ -25,7 +25,8 @@ CREATE TABLE login_attempts(
     user_id UInt32,
     timestamp DateTime,
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO login_attempts VALUES
     (1, '2024-01-01 10:00:00', 1),
@@ -51,6 +52,8 @@ GROUP BY user_id;
    └─────────┴───────────────────┘
 ```
 
+
 ## 関連項目 \{#see-also\}
+
 - [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+- [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)

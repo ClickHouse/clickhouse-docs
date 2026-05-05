@@ -16,18 +16,11 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack を使用した Redis メトリクスの監視 \{#redis-metrics-clickstack\}
 
-:::note[要約]
-このガイドでは、OpenTelemetry collector の Redis receiver を設定し、ClickStack で Redis のパフォーマンスメトリクスを監視する方法を説明します。次のことが行えるようになります。
+# ClickStack による Redis メトリクス監視 \{#redis-metrics-clickstack\}
 
-- Redis メトリクスを収集するように OTel collector を設定する
-- カスタム設定を使用して ClickStack をデプロイする
-- あらかじめ用意されたダッシュボードを使用して Redis のパフォーマンス（commands/sec、メモリ使用量、接続クライアント数、キャッシュ性能）を可視化する
-
-本番環境の Redis を設定する前に連携をテストしたい場合のために、サンプルメトリクスを含むデモデータセットが用意されています。
-
-所要時間: 5～10 分
+:::note[TL;DR]
+OTel Redis receiver を使用して、ClickStack で Redis のパフォーマンスメトリクスを監視します。デモ用データセットと事前構築済みダッシュボードが含まれます。
 :::
 
 ## 既存の Redis との統合 \{#existing-redis\}
@@ -416,10 +409,12 @@ docker exec <clickstack-container> telnet redis 6379
 
 Docker Compose ファイルまたは `docker run` コマンドで、両方のコンテナが同一のネットワーク上に置かれるように構成してください。
 
-## 次のステップ {#next-steps}
+## 次のステップ
 
-さらに踏み込んで試してみたい場合は、監視について次のことに取り組んでみてください：
+* 重要なメトリクス (メモリ使用量のしきい値、接続数の上限、キャッシュヒット率の低下) に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
+* 特定のユースケース (レプリケーション遅延、永続化パフォーマンス) 向けの追加ダッシュボードを作成する
+* 異なるエンドポイントやサービス名で `receiver` 設定を複製し、複数の Redis インスタンスを監視する
 
-- 重要なメトリクス（メモリ使用量のしきい値、接続数の上限、キャッシュヒット率の低下）に対する[アラート](/use-cases/observability/clickstack/alerts)を設定する
-- 特定のユースケース（レプリケーション遅延、永続化パフォーマンス）向けの追加ダッシュボードを作成する
-- 異なるエンドポイントやサービス名で `receiver` 設定を複製し、複数の Redis インスタンスを監視する
+## 本番環境への移行 \{#troubleshooting\}
+
+このガイドでは、迅速にセットアップできるよう、ClickStack に組み込まれた OpenTelemetry Collector を拡張して使用します。本番環境でデプロイする場合は、独自の OTel collector を運用し、ClickStack の OTLP エンドポイントにデータを送信することを推奨します。本番環境向けの設定については、[OpenTelemetry データの送信](/use-cases/observability/clickstack/ingesting-data/opentelemetry) を参照してください。

@@ -1,6 +1,6 @@
 ---
 slug: /deployment-guides/index
-title: 'Deployment Guides Overview'
+title: 'Deployment guides overview'
 description: 'Landing page for the deployment and scaling section'
 keywords: ['deployment guides', 'scaling', 'cluster deployment', 'replication', 'fault tolerance']
 doc_type: 'landing-page'

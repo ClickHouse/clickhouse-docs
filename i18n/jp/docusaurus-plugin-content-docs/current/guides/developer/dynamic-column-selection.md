@@ -25,7 +25,7 @@ LIMIT 10;
 
 > [SQL playground でこのクエリを試す](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudCcpCkZST00gbnljX3RheGkudHJpcHMKTElNSVQgMTA7\&run_query=true)
 
-このクエリは最初の 10 行を返しますが、列名がパターン `.*_amount`（任意の文字列の後に「&#95;amount」が続くもの）に一致する列のみが対象です。
+このクエリは最初の 10 行を返しますが、列名がパターン `.*_amount` (任意の文字列の後に「&#95;amount」が続くもの) に一致する列のみが対象です。
 
 ```text
     ┌─fare_amount─┬─tip_amount─┬─tolls_amount─┬─total_amount─┐

@@ -3,7 +3,7 @@ sidebar_label: 'Splunk'
 slug: /integrations/audit-splunk
 keywords: ['clickhouse', 'Splunk', 'audit', 'cloud']
 description: 'Store ClickHouse Cloud audit logs into Splunk.'
-title: 'Storing ClickHouse Cloud Audit logs into Splunk'
+title: 'Storing ClickHouse Cloud audit logs into Splunk'
 doc_type: 'guide'
 ---
 
@@ -22,7 +22,7 @@ import splunk_011 from '@site/static/images/integrations/tools/data-integration/
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Storing ClickHouse Cloud Audit logs into Splunk
+# Storing ClickHouse Cloud audit logs into Splunk
 
 <PartnerBadge/>
 

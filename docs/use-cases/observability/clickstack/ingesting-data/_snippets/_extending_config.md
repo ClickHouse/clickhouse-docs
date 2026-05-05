@@ -76,7 +76,7 @@ docker run -d \
 ```
 
 :::note
-You only define new receivers, processors, and pipelines in the custom config. The base processors (`memory_limiter`, `batch`) and exporters (`clickhouse`) are already defined—reference them by name. The custom configuration is merged with the base configuration and cannot override existing components.
+You only define new receivers, processors, and pipelines in the custom config. The base processors (`memory_limiter`, `batch`) and exporters (`clickhouse`) are already defined—reference them by name. The custom configuration is merged with the base configuration and can't override existing components.
 :::
 
 For more complex configurations, refer to the [default ClickStack collector configuration](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) and the [ClickHouse exporter documentation](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).

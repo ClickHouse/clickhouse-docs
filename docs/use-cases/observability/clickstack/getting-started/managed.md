@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/managed
-title: 'Getting Started with Managed ClickStack'
+title: 'Getting started with managed ClickStack'
 sidebar_label: 'Managed'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/example-datasets/index
@@ -55,7 +55,7 @@ Once your service has been provisioned, ensure the the service is selected and c
 ## Next Steps {#next-steps}
 
 :::important[Record default credentials]
-If you have not recorded your default credentials during the above steps, navigate to the service and select `Connect`, recording the password and HTTP/native endpoints. Store these admin credentials securely, which can be reused in further guides.
+If you haven't recorded your default credentials during the above steps, navigate to the service and select `Connect`, recording the password and HTTP/native endpoints. Store these admin credentials securely, which can be reused in further guides.
 :::
 
 <Image img={service_connect} size="lg" alt='Service Connect' border/>

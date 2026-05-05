@@ -82,6 +82,50 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ```
 
 
+## Интервалы смешанного типа \{#mixed-type-intervals\}
+
+Интервалы смешанного типа, например включающие часы и минуты, можно создавать с помощью синтаксиса `INTERVAL 'value' <from_kind> TO <to_kind>`.
+Результатом является кортеж из двух или более интервалов.
+
+Поддерживаемые комбинации:
+
+| Синтаксис          | Строковый формат | Пример                                |
+| ------------------ | ---------------- | ------------------------------------- |
+| `YEAR TO MONTH`    | `Y-M`            | `INTERVAL '2-6' YEAR TO MONTH`        |
+| `DAY TO HOUR`      | `D H`            | `INTERVAL '5 12' DAY TO HOUR`         |
+| `DAY TO MINUTE`    | `D H:M`          | `INTERVAL '5 12:30' DAY TO MINUTE`    |
+| `DAY TO SECOND`    | `D H:M:S`        | `INTERVAL '5 12:30:45' DAY TO SECOND` |
+| `HOUR TO MINUTE`   | `H:M`            | `INTERVAL '1:30' HOUR TO MINUTE`      |
+| `HOUR TO SECOND`   | `H:M:S`          | `INTERVAL '1:30:45' HOUR TO SECOND`   |
+| `MINUTE TO SECOND` | `M:S`            | `INTERVAL '5:30' MINUTE TO SECOND`    |
+
+Поля, кроме первого, проверяются в соответствии со стандартом SQL: `MONTH` 0-11, `HOUR` 0-23, `MINUTE` 0-59, `SECOND` 0-59.
+
+```sql
+SELECT INTERVAL '1:30' HOUR TO MINUTE;
+```
+
+```text
+┌─(toIntervalHour(1), toIntervalMinute(30))─┐
+│ (1,30)                                     │
+└────────────────────────────────────────────┘
+```
+
+Необязательный знак `+` или `-` в начале применяется ко всем составляющим:
+
+```sql
+SELECT INTERVAL '+1:30' HOUR TO MINUTE;
+-- this is equivalent to:
+-- SELECT INTERVAL '1:30' HOUR TO MINUTE;
+```
+
+```text
+┌─(toIntervalHour(1), toIntervalMinute(30))─┐
+│ (1,30)                                     │
+└────────────────────────────────────────────┘
+```
+
+
 ## См. также \{#see-also\}
 
 - [INTERVAL](/sql-reference/operators#interval) — оператор

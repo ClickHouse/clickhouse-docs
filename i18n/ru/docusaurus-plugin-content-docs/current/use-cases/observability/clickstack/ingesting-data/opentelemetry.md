@@ -16,13 +16,17 @@ import TabItem from '@theme/TabItem';
 
 Все данные поступают в ClickStack через экземпляр **коллектора OpenTelemetry (OTel)**, который является основной точкой входа для логов, метрик, трейсов и данных сессий. Мы рекомендуем использовать для этого экземпляра официальный [дистрибутив коллектора ClickStack](#installing-otel-collector).
 
-Пользователи отправляют данные в этот коллектор из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, собирающие инфраструктурные метрики и логи (например, экземпляры OTel collector в [роли агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, такие как [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)). Для упрощённой настройки [Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane) представляет собой нативный для OpenTelemetry конвейер телеметрии с нативной поддержкой ClickStack в качестве назначения, который упрощает сбор, обработку и маршрутизацию телеметрии в ClickStack.
+:::tip
+Также доступна управляемая версия ClickStack — см. [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed).
+:::
+
+Пользователи отправляют данные в этот коллектор из [языковых SDK](/use-cases/observability/clickstack/sdks) или через агенты сбора данных, собирающие инфраструктурные метрики и логи (например, экземпляры OTel collector в [роли агента](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) или другие технологии, такие как [Fluentd](https://www.fluentd.org/) или [Vector](https://vector.dev/)). Для команд, которым нужен управляемый конвейер OpenTelemetry, [Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane) предлагает нативное для OpenTelemetry решение с нативной поддержкой ClickStack в качестве назначения, упрощающее сбор, обработку и маршрутизацию телеметрии.
 
 
 ## Отправка данных OpenTelemetry \{#sending-otel-data\}
 
 <Tabs groupId="os-type">
-  <TabItem value="managed-clickstack" label="Управляемый сервис ClickStack" default>
+  <TabItem value="managed-clickstack" label="Управляемый ClickStack" default>
     ### Установка ClickStack OpenTelemetry collector
 
     Чтобы отправлять данные в Managed ClickStack, OTel collector должен быть развернут в роли [gateway](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles). Совместимое с OTel инструментирование будет отправлять события в этот коллектор по OTLP через HTTP или gRPC.
@@ -31,7 +35,7 @@ import TabItem from '@theme/TabItem';
     Это позволяет использовать стандартизированную ингестию, жёстко заданные схемы и готовую совместимость с интерфейсом ClickStack (HyperDX). Применение стандартной схемы обеспечивает автоматическое определение источников и преднастроенные сопоставления столбцов.
     :::
 
-    Для получения более подробной информации см. раздел «[Развертывание коллектора](/use-cases/observability/clickstack/ingesting-data/otel-collector)».
+    Для получения более подробной информации см. [&quot;Развертывание коллектора&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector).
 
     ### Отправка данных в коллектор
 
@@ -73,7 +77,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:
@@ -110,12 +114,12 @@ import TabItem from '@theme/TabItem';
 
     ### Отправка данных в коллектор
 
-    Чтобы отправлять данные в ClickStack, направьте вашу OpenTelemetry-инструментацию на следующие эндпоинты, предоставляемые OpenTelemetry collector:
+    Чтобы отправлять данные в ClickStack, направьте вашу OpenTelemetry-инструментацию на следующие конечные точки, предоставляемые OpenTelemetry collector:
 
     * **HTTP (OTLP):** `http://localhost:4318`
     * **gRPC (OTLP):** `localhost:4317`
 
-    Для [языковых SDKs](/use-cases/observability/clickstack/sdks) и библиотек телеметрии, поддерживающих OpenTelemetry, достаточно задать переменную окружения `OTEL_EXPORTER_OTLP_ENDPOINT` в вашем приложении:
+    Для [языковых SDKs](/use-cases/observability/clickstack/sdks) и библиотек телеметрии, поддерживающих OpenTelemetry, вы можете просто задать переменную окружения `OTEL_EXPORTER_OTLP_ENDPOINT` в вашем приложении:
 
     ```shell
     export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
@@ -162,7 +166,7 @@ import TabItem from '@theme/TabItem';
     processors:
       batch:
         timeout: 5s
-        send_batch_size: 1000
+        send_batch_size: 10000
     service:
       telemetry:
         metrics:

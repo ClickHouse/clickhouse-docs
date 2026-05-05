@@ -283,6 +283,56 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 月単位のパーティションキーは、指定した範囲に含まれる日付を持つデータブロックだけを読み取れるようにします。この場合、データブロックには多数の日付（最大で 1 か月分）に対応するデータが含まれている可能性があります。ブロック内ではデータは主キーでソートされていますが、主キーの先頭のカラムとして日付が含まれていない場合があります。そのため、主キーのプレフィックスを指定せずに日付条件のみを含むクエリを使用すると、単一の日付だけを対象とする場合よりも多くのデータを読み取ることになります。
 
+### 主キー内の決定論的式に対する索引の利用 \{#use-of-index-for-deterministic-expressions-in-primary-keys\}
+
+主キーにはカラム名だけでなく、式を含めることができます。これらの式は単純な関数チェーンに限定されず、決定論的である限り、任意の式ツリー（たとえば、入れ子になった関数や複合式）にすることができます。
+
+式は、同じ入力値に対して常に同じ結果を返す場合に **決定論的** と呼ばれます（例: `length()`, `toDate()`, `lower()`, `left()`, `cityHash64()`, `toUUID()`。`now()` や `rand()` はこれに当てはまりません）。主キーに決定論的な式が含まれている場合、ClickHouse はクエリ内の定数値に対してそれらの式を適用し、その結果を用いて主キー索引に対する条件を構築できます。これにより、`=`, `IN`, `has` のような述語に対してデータスキップが可能になります。
+
+一般的なユースケースとしては、主キーをコンパクトに保ちつつ（例: 長い `String` の代わりにハッシュを保存する）、元のカラムに対する述語でも索引を利用できるようにする、というものがあります。
+
+決定論的（だが単射ではない）主キーの例:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY length(user_id)
+```
+
+索引を使用できる述語の例：
+
+```sql
+SELECT * FROM table WHERE user_id = 'alice';
+SELECT * FROM table WHERE user_id IN ('alice', 'bob');
+SELECT * FROM table WHERE has(['alice', 'bob'], user_id);
+```
+
+これらの場合、ClickHouse は `length('alice')`（およびその他の定数）を一度だけ計算し、その長さの値を使ってプライマリキー索引内の範囲を絞り込みます。文字列の長さは**単射ではない**ため、異なる `user_id` 文字列が同じ長さになることがあります。そのため、索引が余分な granule（偽陽性）を読み取る可能性があります。元の述語（`user_id = ...`、`IN` など）は読み取り後にも適用されるため、結果の正しさは保たれます。
+
+決定的な式がさらに**単射**（使用されている引数型に対して、異なる入力から同じ出力が生成されない）でもある場合、ClickHouse は `!=`、`NOT IN`、`NOT has(...)` といった否定形に対しても索引を効果的に使用できます。たとえば、`reverse(p)` および `hex(p)` は `String` に対して単射です。
+
+単射なプライマリキーの例:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY hex(p)
+```
+
+より複雑な単射な式もサポートされています。たとえば、次のようなものがあります。
+
+```sql
+ENGINE = MergeTree()
+ORDER BY reverse(tuple(reverse(p), hex(p)))
+```
+
+索引を利用できる述語の例:
+
+```sql
+SELECT * FROM table WHERE p != 'abc';
+SELECT * FROM table WHERE p NOT IN ('abc', '12345');
+SELECT * FROM table WHERE NOT has(['abc', '12345'], p);
+```
+
+
 ### 部分的に単調なプライマリキーに対する索引の利用 \{#use-of-index-for-partially-monotonic-primary-keys\}
 
 例として、月の日付を考えます。1 か月という範囲では[単調な数列](https://en.wikipedia.org/wiki/Monotonic_function)ですが、より長い期間では単調ではありません。このようなものは部分的に単調な数列です。ユーザーが部分的に単調なプライマリキーでテーブルを作成すると、ClickHouse は通常どおりスパースな索引を作成します。ユーザーがこの種類のテーブルからデータを取得する際、ClickHouse はクエリ条件を解析します。ユーザーが索引の 2 つのマークの間のデータを取得しようとし、かつその 2 つのマークが同じ 1 か月の範囲内に収まっている場合、ClickHouse はクエリのパラメータと索引マークとの距離を計算できるため、この特定のケースでは索引を使用できます。
@@ -291,7 +341,7 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 ClickHouse は、このロジックを月の日付の数列に対してだけでなく、部分的に単調な数列を表す任意のプライマリキーに対しても適用します。
 
-### データスキップインデックス \{#table_engine-mergetree-data_skipping-indexes\}
+### データスキッピングインデックス \{#table_engine-mergetree-data_skipping-indexes\}
 
 インデックスの宣言は、`CREATE` クエリのカラム定義セクション内に記述します。
 
@@ -299,9 +349,9 @@ ClickHouse は、このロジックを月の日付の数列に対してだけで
 INDEX index_name expr TYPE type(...) [GRANULARITY granularity_value]
 ```
 
-`*MergeTree` ファミリーのテーブルでは、データスキップインデックスを指定できます。
+`*MergeTree` ファミリーのテーブルでは、データスキッピングインデックスを指定できます。
 
-これらのインデックスは、ブロック上で指定された式に関する情報の一部を集約します。ブロックは `granularity_value` 個のグラニュールから構成されます（グラニュールのサイズはテーブルエンジンの `index_granularity` 設定で指定します）。その後、これらの集約値は `SELECT` クエリの実行時に使用され、`WHERE` 句の条件を満たし得ない大きなデータブロックをスキップすることで、ディスクから読み取るデータ量を削減します。
+これらのインデックスは、ブロック上で指定された式に関する情報の一部を集約します。ブロックは `granularity_value` 個のグラニュールから構成されます (グラニュールのサイズはテーブルエンジンの `index_granularity` 設定で指定します) 。その後、これらの集約値は `SELECT` クエリの実行時に使用され、`WHERE` 句の条件を満たし得ない大きなデータブロックをスキップすることで、ディスクから読み取るデータ量を削減します。
 
 `GRANULARITY` 句は省略可能であり、`granularity_value` のデフォルト値は 1 です。
 
@@ -336,6 +386,9 @@ SELECT count() FROM table WHERE u64 * length(s) == 1234
 INDEX map_key_index mapKeys(map_column) TYPE bloom_filter
 INDEX map_value_index mapValues(map_column) TYPE bloom_filter
 
+-- on columns of type JSON:
+INDEX json_paths_index JSONAllPaths(json_column) TYPE bloom_filter
+
 -- on columns of type Tuple:
 INDEX tuple_1_index tuple_column.1 TYPE bloom_filter
 INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
@@ -344,6 +397,7 @@ INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
 INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
+
 
 ### スキップインデックスの種類 \{#skip-index-types\}
 
@@ -354,8 +408,10 @@ INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 - [`MinMax`](#minmax) インデックス
 - [`Set`](#set) インデックス
 - [`bloom_filter`](#bloom-filter) インデックス
-- [`ngrambf_v1`](#n-gram-bloom-filter) インデックス
-- [`tokenbf_v1`](#token-bloom-filter) インデックス
+- [`ngrambf_v1`](#n-gram-bloom-filter) インデックス *(非推奨)*
+- [`tokenbf_v1`](#token-bloom-filter) インデックス *(非推奨)*
+- [`text`](#text) インデックス
+- [`vector_similarity`](#vector-similarity) インデックス
 
 #### MinMax スキップインデックス \{#minmax\}
 
@@ -384,7 +440,7 @@ set(max_rows)
 bloom_filter([false_positive_rate])
 ```
 
-`false_positive_rate` パラメータには 0 から 1 の値を指定でき（デフォルト値: `0.025`）、偽陽性（誤検知）が発生する確率（これにより読み取るデータ量が増加する）を指定します。
+`false_positive_rate` パラメータには 0 から 1 の値を指定でき (デフォルト値: `0.025`) 、偽陽性 (誤検知) が発生する確率 (これにより読み取るデータ量が増加する) を指定します。
 
 サポートされているデータ型は次のとおりです。
 
@@ -405,8 +461,18 @@ bloom_filter([false_positive_rate])
 `Map` データ型では、クライアントは [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapKeys) または [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapValues) 関数を使用して、索引をキーに対して作成するか、値に対して作成するかを指定できます。
 :::
 
+:::note JSON データ型: JSON パスのインデックス作成
+[`JSON`](/sql-reference/data-types/newjson) データ型では、[`JSONAllPaths`](/sql-reference/functions/json-functions#JSONAllPaths) 関数を使用して、パスの集合に対する bloom filter 索引を作成できます。これにより、クエリ対象の JSON パスが存在しないグラニュールをスキップできます。詳細は、[JSON のデータスキッピングインデックス](/sql-reference/data-types/newjson#data-skipping-indexes-for-json)を参照してください。
+:::
 
-#### N-gram ブルームフィルタ \{#n-gram-bloom-filter\}
+
+#### N-gram ブルームフィルタ *(非推奨)* \{#n-gram-bloom-filter\}
+
+:::note
+ClickHouse バージョン 26.2 以降で `text` 索引が一般提供 (GA) されたことに伴い、全文検索での `ngrambf_v1` 索引の利用は推奨されません。
+
+詳細については [&quot;text 索引による全文検索&quot;](./textindexes.md) のページを参照してください。
+:::
 
 各インデックスグラニュールは、指定されたカラムの [N-gram](https://en.wikipedia.org/wiki/N-gram) に対する [ブルームフィルタ](https://en.wikipedia.org/wiki/Bloom_filter) を保持します。
 
@@ -452,8 +518,8 @@ AS
 * `total_number_of_all_grams`
 * `probability_of_false_positives`
 
-たとえば、1 つのグラニュールに `4300` 個の n グラムが含まれていて、偽陽性率を `0.0001` 未満に抑えたいとします。
-この場合、他のパラメータは次のクエリを実行することで推定できます。
+たとえば、1 つのグラニュールに `4300` 個の n-gram が含まれていて、偽陽性率を `0.0001` 未満に抑えたいとします。
+このとき、他のパラメータは次のクエリを実行することで推定できます。
 
 ```sql
 --- estimate number of bits in the filter
@@ -477,7 +543,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### トークン Bloom フィルター \{#token-bloom-filter\}
 
-トークン Bloom フィルターは `ngrambf_v1` と同様ですが、n-gram の代わりに、英数字以外の文字で区切られたトークン（文字列）を格納します。
+:::note
+ClickHouse バージョン 26.2 以降、`text` 索引が一般提供 (GA) となったため、全文検索用途での `tokenbf_v1` 索引の利用は推奨されません。
+
+詳細は [&quot;text 索引を用いた全文検索&quot;](./textindexes.md) のページを参照してください。
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -495,7 +565,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### テキスト索引 \{#text\}
 
-全文検索をサポートしています。詳細は[こちら](textindexes.md)を参照してください。
+トークン化された文字列データに対して倒立索引を構築し、効率的かつ決定論的な全文検索を実現します。詳細は[こちら](textindexes.md)を参照してください。
 
 #### ベクトル類似性 \{#vector-similarity\}
 
@@ -507,22 +577,22 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 `set` 型のインデックスは、あらゆる関数で利用できます。その他のインデックスタイプは次のようにサポートされます。
 
-| 関数（演算子）/ 索引                                                                                                               | 主キー | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | テキスト |
+| 関数 (演算子) / 索引                                                                                                             | 主キー | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | テキスト |
 | ------------------------------------------------------------------------------------------------------------------------- | --- | ------ | -------------- | -------------- | ---------------- | ---------------- | ---- |
 | [equals (=, ==)](/sql-reference/functions/comparison-functions.md/#equals)                                                | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
+| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✗    |
 | [like](/sql-reference/functions/string-search-functions.md/#like)                                                         | ✔   | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
-| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔   | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
+| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔   | ✔      | ✔              | ✔              | ✗                | ✔                | ✗    |
 | [match](/sql-reference/functions/string-search-functions.md/#match)                                                       | ✗   | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
 | [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                    | ✔   | ✔      | ✔              | ✔              | ✗                | ✔                | ✔    |
 | [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                        | ✗   | ✗      | ✔              | ✔              | ✗                | ✔                | ✔    |
 | [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                     | ✗   | ✗      | ✔              | ✗              | ✗                | ✗                | ✗    |
 | [in](/sql-reference/functions/in-functions)                                                                               | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
-| [less（`<`）](/sql-reference/functions/comparison-functions.md/#less)                                                       | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [greater（`>`）](/sql-reference/functions/comparison-functions.md/#greater)                                                 | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [lessOrEquals（`<=`）](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                      | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
-| [greaterOrEquals（`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                                | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✗    |
+| [less (`<`) ](/sql-reference/functions/comparison-functions.md/#less)                                                     | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [greater (`>`) ](/sql-reference/functions/comparison-functions.md/#greater)                                               | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [lessOrEquals (`<=`) ](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                    | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
+| [greaterOrEquals (`>=`)](/sql-reference/functions/comparison-functions.md/#greaterOrEquals)                               | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [empty](/sql-reference/functions/array-functions/#empty)                                                                  | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [notEmpty](/sql-reference/functions/array-functions/#notEmpty)                                                            | ✗   | ✔      | ✗              | ✗              | ✗                | ✔                | ✗    |
 | [has](/sql-reference/functions/array-functions#has)                                                                       | ✔   | ✔      | ✔              | ✔              | ✔                | ✔                | ✔    |
@@ -534,6 +604,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗   | ✗      | ✗              | ✔              | ✗                | ✗                | ✗    |
 | [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 | [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
+| [pointInPolygon](/sql-reference/functions/geo/coordinates.md#pointinpolygon)                                              | ✔   | ✔      | ✗              | ✗              | ✗                | ✗                | ✗    |
 | [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                               | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 | [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                     | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
 | [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                         | ✗   | ✗      | ✗              | ✗              | ✗                | ✗                | ✔    |
@@ -583,10 +654,12 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 
 プロジェクションは [ALTER](/sql-reference/statements/alter/projection.md) 文を使って変更または削除できます。
 
-### Projection indexes \{#projection-index\}
+### PROJECTION 索引 \{#projection-index\}
 
-Projection indexes は、軽量で明示的な方法で projection レベルの索引を定義できるようにすることで、projection サブシステムを拡張します。
-概念的には、projection index も依然として projection の一種ですが、構文が簡略化され、意図がより明確になっています。つまり、マテリアライズされたデータとして利用するのではなく、フィルタリング専用の式を定義します。
+PROJECTION 索引 は、軽量で明示的な方法で PROJECTION レベルの索引を定義できるようにすることで、PROJECTION サブシステムを拡張します。
+外部的には、PROJECTION 索引 も依然として PROJECTION の一種ですが、構文が簡略化され、意図がより明確になっています。つまり、マテリアライズされたデータを提供するのではなく、フィルタリング専用の式を定義します。
+内部的には、PROJECTION 索引 は通常の PROJECTION のように、元のテーブルを並べ替えた行順でマテリアライズしません。
+代わりに、その並び順は数値の permutation カラム `_part_offset` として保存されます。つまり、`SELECT _part_offset ORDER BY <index_expr>` です。
 
 #### 構文 \{#projection-index-syntax\}
 
@@ -634,17 +707,23 @@ Projection はパートディレクトリ内に保存されます。これは索
 
 テーブルからの読み取りは自動的に並列化されます。
 
-## 列およびテーブルの TTL \{#table_engine-mergetree-ttl\}
+## カラムおよびテーブルの 有効期限 (TTL) \{#table_engine-mergetree-ttl\}
 
-値の有効期間（time-to-live）を決定します。
+値の有効期間 (time-to-live) を決定します。
 
-`TTL` 句はテーブル全体にも、各列ごとにも設定できます。テーブルレベルの `TTL` では、ディスクやボリューム間でデータを自動的に移動するロジックや、すべてのデータが期限切れになったパーツを再圧縮するロジックも指定できます。
+`TTL` 句はテーブル全体にも、各カラムごとにも設定できます。テーブルレベルの 有効期限 (TTL) では、ディスクやボリューム間でデータを自動的に移動するロジックや、すべてのデータが期限切れになったパーツを再圧縮するロジックも指定できます。
 
 式は [Date](/sql-reference/data-types/date.md)、[Date32](/sql-reference/data-types/date32.md)、[DateTime](/sql-reference/data-types/datetime.md)、または [DateTime64](/sql-reference/data-types/datetime64.md) 型として評価されなければなりません。
 
+:::tip[有効期限 (TTL) 式では非決定論的関数を避けてください]
+有効期限 (TTL) は挿入時ではなく、バックグラウンドのマージ中に評価されます。
+`rand()`、`now()`、`now64()` のような関数はマージのたびに再評価されるため、予測不能な削除動作につながります。
+ClickHouse はカラムへの依存がまったくない式をブロックしますが、現在のところ、カラム参照と組み合わせた非決定論的関数 (例: `ts + rand()`) は拒否しません。予測可能な結果を得るには、有効期限 (TTL) 式は決定論的で、カラムから導出される値のみに基づかせる必要があります。
+:::
+
 **構文**
 
-列の TTL を設定する場合:
+カラムの 有効期限 (TTL) を設定する場合:
 
 ```sql
 TTL time_column
@@ -657,6 +736,7 @@ TTL time_column + interval
 TTL date_time + INTERVAL 1 MONTH
 TTL date_time + INTERVAL 15 HOUR
 ```
+
 
 ### カラムの有効期限 (TTL) \{#mergetree-column-ttl\}
 
@@ -831,7 +911,9 @@ ClickHouse はデータが有効期限切れであることを検出すると、
 
 ### はじめに \{#introduction\}
 
-`MergeTree` ファミリーのテーブルエンジンは、複数のブロックデバイス上にデータを保存できます。たとえば、特定のテーブルのデータが事実上「ホット」と「コールド」に分割されている場合に有用です。最新のデータは頻繁に参照されますが、必要な容量は小さくて済みます。対照的に、裾の重い履歴データはまれにしか参照されません。複数のディスクが利用可能な場合、「ホット」データは高速なディスク（たとえば NVMe SSD やメモリ上）に配置し、「コールド」データは比較的低速なディスク（たとえば HDD）上に配置できます。
+`MergeTree` ファミリーのテーブルエンジンは、複数のブロックデバイス上にデータを保存できます。たとえば、特定のテーブルのデータが事実上「ホット」と「コールド」に分割されている場合に有用です。最新のデータは頻繁に参照されますが、必要な容量は小さくて済みます。対照的に、裾の重い履歴データはまれにしか参照されません。複数のディスクが利用可能な場合、「ホット」データは高速なディスク (たとえば NVMe SSD やメモリ上) に配置し、「コールド」データは比較的低速なディスク (たとえば HDD) 上に配置できます。
+
+これは、S3 やその他のオブジェクトストレージディスクを含む、すべてのディスクの種類に当てはまります。たとえば、単一のボリューム内で複数の S3 バケットにデータを分散したり、ローカルディスクから S3 にデータを移動する階層型ポリシーを作成したりできます。詳細については、[複数ボリュームで S3 ディスクを使用する](#s3-multiple-volumes) を参照してください。
 
 データパーツは、`MergeTree` エンジンのテーブルにおける最小の移動可能な単位です。1 つのパーツに属するデータは 1 台のディスク上に保存されます。データパーツは、バックグラウンドでユーザー設定に従ってディスク間を移動できるほか、[ALTER](/sql-reference/statements/alter/partition) クエリを使用して移動することもできます。
 
@@ -1080,7 +1162,79 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 
 [外部ストレージオプションの設定](/operations/storing-data.md/#configuring-external-storage)も参照してください。
 
-共有ストレージ上で、1 ライター/多リーダー構成の非レプリケートな MergeTree テーブルを構成することが可能です。これは、リーダー側で設定できるパーツリストの自動リフレッシュによって実現されます。この機能には、レプリカ間でファイルシステムのメタデータを共有していること（またはテーブルローカルディスクを使用する場合の `table_disk = true`）が必要であることに注意してください。[refresh&#95;parts&#95;interval と table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)を参照してください。
+
+### 複数ボリュームで S3 ディスクを使用する \{#s3-multiple-volumes\}
+
+S3 (およびその他のオブジェクトストレージ) ディスクは、ローカルディスクと同様に、マルチディスクおよびマルチボリュームのストレージポリシーで使用できます。これにより、1 つのボリューム内の複数の S3 バケットにデータを分散したり (JBOD 方式) 、S3 ボリュームを使用した階層型ストレージポリシーを設定したりできます。
+
+たとえば、2 つの S3 バケットにラウンドロビン方式でデータを分散するには:
+
+```xml
+<storage_configuration>
+    <disks>
+        <s3_bucket1>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-1/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket1>
+        <s3_bucket2>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-2/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket2>
+    </disks>
+    <policies>
+        <s3_multi_bucket>
+            <volumes>
+                <main>
+                    <disk>s3_bucket1</disk>
+                    <disk>s3_bucket2</disk>
+                </main>
+            </volumes>
+        </s3_multi_bucket>
+    </policies>
+</storage_configuration>
+```
+
+ローカルボリュームと S3 ボリュームを階層化ポリシーで組み合わせることもできます。たとえば、データが古くなるにつれてローカル SSD から S3 に移動する、といった運用が可能です。
+
+```xml
+<storage_configuration>
+    <disks>
+        <local_ssd>
+            <path>/mnt/fast_ssd/clickhouse/</path>
+        </local_ssd>
+        <s3_cold>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/cold-storage/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_cold>
+    </disks>
+    <policies>
+        <local_to_s3>
+            <volumes>
+                <hot>
+                    <disk>local_ssd</disk>
+                    <max_data_part_size_bytes>1073741824</max_data_part_size_bytes>
+                </hot>
+                <cold>
+                    <disk>s3_cold</disk>
+                </cold>
+            </volumes>
+            <move_factor>0.2</move_factor>
+        </local_to_s3>
+    </policies>
+</storage_configuration>
+```
+
+:::note
+S3 認証に `use_environment_credentials` を使用する場合、環境認証情報 (`AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`、`AWS_SESSION_TOKEN`) はすべての S3 ディスクで共有されます。ディスクごとに異なる環境認証情報を使用することはできません。S3 ディスクごとに異なる認証情報が必要な場合は、代わりにディスクごとに `access_key_id` および `secret_access_key` を明示的に設定してください。
+:::
+
+共有ストレージ上で、1 ライター/多リーダー構成の非レプリケートな MergeTree テーブルを構成することが可能です。これは、リーダー側で設定できるパーツリストの自動リフレッシュによって実現されます。この機能には、レプリカ間でファイルシステムのメタデータを共有していること (またはテーブルローカルディスクを使用する場合の `table_disk = true`) が必要であることに注意してください。[refresh&#95;parts&#95;interval と table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk)を参照してください。
 
 :::note キャッシュ設定
 ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設定が使用されています。これらのバージョンのいずれかを使用している場合は、[ローカルキャッシュの使用](/operations/storing-data.md/#using-local-cache)を参照してください。
@@ -1103,13 +1257,11 @@ ClickHouse バージョン 22.3 から 22.7 までは異なるキャッシュ設
 - `_block_offset` — ブロック内の行に対して挿入時に割り当てられた元の行番号で、SETTING `enable_block_offset_column` が有効な場合はマージ時も保持される。
 - `_disk_name` — ストレージに使用されているディスク名。
 
-## カラム統計 \{#column-statistics\}
+## カラム STATISTICS \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-`set allow_experimental_statistics = 1` を有効にすると、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリの `COLUMNS` セクション内で統計を宣言します。
+STATISTICS の宣言は、`*MergeTree*` ファミリーのテーブルに対する `CREATE` クエリのカラムセクションにあります。
 
 ```sql
 CREATE TABLE tab
@@ -1121,15 +1273,49 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-`ALTER` 文を使用して統計情報を操作することもできます。
+`ALTER` 文を使って STATISTICS を操作することもできます:
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-これらの軽量な統計情報は、列内の値の分布に関する情報を集約します。統計情報は各パートごとに保存され、挿入のたびに更新されます。
-`set use_statistics = 1` を有効にした場合にのみ、PREWHERE の最適化に利用できます。
+これらの軽量な STATISTICS は、カラム内の値の分布に関する情報を集約します。STATISTICS は各パートに保存され、挿入のたびに更新されます。
+`set use_statistics = 1` を有効にした場合にのみ、PREWHERE の最適化に使用できます。
+
+#### STATISTICSを用いたパーツ剪枝 \{#part-pruning-with-statistics\}
+
+`use_statistics_for_part_pruning` を有効にすると、STATISTICSを使ってパーツ剪枝を行えます。
+現在、パーツ剪枝に対応しているのは `MinMax` STATISTICSのみです。カラムに MinMax STATISTICSが定義されている場合、ClickHouse は各パーツ内のそのカラムの最小値と最大値を追跡します。
+パーツ剪枝を使用すると、クエリのフィルター条件にそのパーツ内のどの行も一致しない場合、データパーツ全体の読み込みをスキップできます。
+
+**例:**
+
+```sql
+-- Create a table with MinMax statistics on the 'value' column
+CREATE TABLE test_stats
+(
+    id UInt64,
+    value Int64 STATISTICS(MinMax)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+SYSTEM STOP MERGES test_stats;
+
+-- Insert data in separate inserts to create multiple parts
+INSERT INTO test_stats SELECT number, number FROM numbers(1000); -- Part 1: value range [0, 999]
+INSERT INTO test_stats SELECT number, number + 10000 FROM numbers(1000); -- Part 2: value range [10000, 10999]
+
+SET use_statistics_for_part_pruning = 1;
+
+-- This query will skip Part 1 entirely because its max value (999) < 5000
+SELECT count() FROM test_stats WHERE value > 5000;
+
+-- Use EXPLAIN to see the pruning effect
+EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
+-- The output will show "Parts: 1/2" indicating one part was pruned
+```
 
 
 ### 利用可能なカラム統計の種類 \{#available-types-of-column-statistics\}

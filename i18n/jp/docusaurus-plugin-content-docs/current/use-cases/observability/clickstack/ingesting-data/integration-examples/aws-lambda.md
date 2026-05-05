@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: 'Rotel を使用して ClickStack で AWS Lambda ログを監視する'
+title: 'Rotel を使って ClickStack で AWS Lambda のログを監視する'
 sidebar_label: 'AWS Lambda ログ'
 pagination_prev: null
 pagination_next: null
-description: 'Rotel を使用して ClickStack で AWS Lambda ログを監視する'
+description: 'Rotel を使って ClickStack で AWS Lambda のログを監視する'
 doc_type: 'guide'
 keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', 'ログ', 'CloudWatch']
 ---
@@ -14,7 +14,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png';
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
 
 # Rotel を使って ClickStack で AWS Lambda のログを監視する \{#lambda-clickstack\}
 
@@ -38,15 +37,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ### 前提条件 \{#prerequisites\}
 
-- ClickStack インスタンスが稼働していること
-- 監視対象となる AWS Lambda 関数が存在すること
-- 適切な権限で設定された AWS CLI があること
-- レイヤーを追加する権限を持つ Lambda 実行ロールがあること
+* ClickStack インスタンスが稼働していること
+* 監視対象となる AWS Lambda 関数が存在すること
+* 適切な権限で設定された AWS CLI があること
+* レイヤーを追加する権限を持つ Lambda 実行ロールがあること
 
 <VerticalStepper headerLevel="h4">
   #### 適切なRotel Lambda Extensionレイヤーを選択する
 
-  Lambda ランタイムアーキテクチャに対応する Lambda レイヤーを選択してください。`{version}` フィールドは、デプロイ先の AWS リージョンに依存します。お使いのリージョンに対応する最新のバージョン番号については、[リリース](https://github.com/streamfold/rotel-lambda-extension/releases)ページを確認してください。
+  Choose the Lambda layer that matches your Lambda runtime architecture. The `{version}` field
+  は、デプロイ先の AWS リージョンに依存します。お使いのリージョンに対応する最新のバージョン番号については、[リリース](https://github.com/streamfold/rotel-lambda-extension/releases)
+  page for the latest version numbers that correspond to your region.
 
   | アーキテクチャ      | ARN                                                                          |
   | ------------ | ---------------------------------------------------------------------------- |
@@ -69,7 +70,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ##### オプション1：AWSコンソール
 
   1. AWS Lambda コンソールを開きます
-  2. 対象の Lambda 関数に移動します
+  2. 目的の Lambda 関数を開きます
   3. **Layers** セクションまでスクロールし、**Add a layer** をクリックします。
   4. ［**ARN を指定**］を選択します
   5. Rotel レイヤーの ARN を入力してください:
@@ -193,7 +194,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ```
 
   :::note
-  シークレット取得のためのAWS API呼び出しにより、コールドスタート時のレイテンシが100〜150ミリ秒増加します。シークレットはバッチ処理（最大10個）で取得され、初期化時のみ実行されるため、以降の呼び出しには影響しません。
+  シークレット取得のためのAWS API呼び出しにより、コールドスタート時のレイテンシが100〜150ミリ秒増加します。シークレットはバッチ処理(最大10個)で取得され、初期化時のみ実行されるため、以降の呼び出しには影響しません。
   :::
 
   #### 統合をテストする

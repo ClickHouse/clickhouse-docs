@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileDD \{#quantileDD\}
 
-導入バージョン: v24.1
+導入バージョン: v24.1.0
 
 相対誤差が保証された、標本の近似的な[分位点](https://en.wikipedia.org/wiki/Quantile)を計算します。
 これは [DD](https://www.vldb.org/pvldb/vol12/p2195-masson.pdf) を構築することで実現します。

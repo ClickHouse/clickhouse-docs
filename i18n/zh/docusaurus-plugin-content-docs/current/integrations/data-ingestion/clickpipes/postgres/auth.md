@@ -1,7 +1,7 @@
 ---
 slug: /integrations/clickpipes/postgres/auth
-sidebar_label: 'AWS IAM 数据库身份验证（RDS/Aurora）'
-title: 'AWS IAM 数据库身份验证（RDS/Aurora）'
+sidebar_label: 'AWS IAM DB 身份验证（RDS/Aurora）'
+title: 'AWS IAM DB 身份验证（RDS/Aurora）'
 description: '本文演示 ClickPipes 客户如何利用基于角色的访问控制与 Amazon RDS/Aurora 进行身份验证，并安全访问其数据库。'
 doc_type: 'guide'
 keywords: ['clickpipes', 'rds', '安全', 'aws', '私有连接']
@@ -16,7 +16,7 @@ import Image from '@theme/IdealImage';
 本文演示 ClickPipes 客户如何利用基于角色的访问控制与 Amazon Aurora 和 RDS 进行身份验证，并安全访问相应的数据库。
 
 :::warning
-对于 AWS RDS Postgres 和 Aurora Postgres，由于 AWS IAM DB Authentication 的限制，您只能运行 `Initial Load Only` 类型的 ClickPipes。
+对于 AWS RDS Postgres 和 Aurora Postgres，由于 AWS IAM DB 身份验证的限制，您只能运行 `Initial Load Only` 类型的 ClickPipes。
 
 对于 MySQL 和 MariaDB，则不受此限制，您可以同时运行 `Initial Load Only` 和 `CDC` 类型的 ClickPipes。
 :::

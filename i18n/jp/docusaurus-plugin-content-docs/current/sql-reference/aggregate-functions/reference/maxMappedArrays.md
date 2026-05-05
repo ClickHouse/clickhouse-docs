@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## maxMappedArrays \{#maxMappedArrays\}
 
-導入バージョン: v20.5
+導入バージョン: v20.5.0
 
 `key` 配列で指定されたキーに従って、`value` 配列から最大値を計算します。
 

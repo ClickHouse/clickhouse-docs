@@ -9,10 +9,10 @@ keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 
 该数据集由纽约公共图书馆创建。它包含酒店、餐厅和咖啡馆菜单的历史数据，包括菜品及其价格。
 
-来源: http://menus.nypl.org/data  
+来源: http://menus.nypl.org/data
 该数据属于公有领域。
 
-这些数据来自图书馆馆藏档案，可能不完整，也不一定适合严格的统计分析。不过它也非常有趣且“美味”。  
+这些数据来自图书馆馆藏档案，可能不完整，也不一定适合严格的统计分析。不过它也非常有趣且“美味”。
 数据规模仅为关于菜单菜品的 130 万条记录——对 ClickHouse 来说，这个数据量非常小，但仍然是一个很好的示例。
 
 ## 下载数据集 \{#download-dataset\}
@@ -129,6 +129,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 我们禁用 [input&#95;format&#95;null&#95;as&#95;default](/operations/settings/formats#input_format_null_as_default)，因为我们的数据中不包含 [NULL](/operations/settings/formats#input_format_null_as_default)。否则，ClickHouse 会尝试解析 `\N` 序列，并且可能与数据中的 `\` 混淆。
 
 设置 [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 允许以多种格式解析 [DateTime](../../sql-reference/data-types/datetime.md) 字段。例如，不带秒的 ISO-8601 时间（如 `2000-01-01 01:02`）也会被识别。如果不启用此设置，则只允许固定格式的 DateTime。
+
 
 ## 数据反规范化 \{#denormalize-data\}
 

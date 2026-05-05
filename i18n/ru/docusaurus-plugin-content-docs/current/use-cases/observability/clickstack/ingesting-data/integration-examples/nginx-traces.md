@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: 'Мониторинг трассировок Nginx с помощью ClickStack'
-sidebar_label: 'Трассировки Nginx'
+title: 'Мониторинг трейсов Nginx с помощью ClickStack'
+sidebar_label: 'Трейсы Nginx'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг трассировок Nginx с помощью ClickStack'
+description: 'Мониторинг трейсов Nginx с помощью ClickStack'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Nginx', 'traces', 'OTel']
 ---
@@ -17,20 +17,11 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг трасс Nginx с помощью ClickStack \{#nginx-traces-clickstack\}
+# Мониторинг трейсов Nginx с помощью ClickStack \{#nginx-traces-clickstack\}
 
 :::note[TL;DR]
-В этом руководстве показано, как собирать распределённые трассы из существующей установки Nginx и визуализировать их в ClickStack. Вы узнаете, как:
-
-- Добавить модуль OpenTelemetry в Nginx
-- Настроить Nginx на отправку трасс на OTLP-эндпоинт ClickStack
-- Проверить, что трассы появляются в HyperDX
-- Использовать готовую панель для визуализации характеристик запросов (задержка, ошибки, пропускная способность)
-
-Доступен демонстрационный набор данных с примерами трасс, если вы хотите протестировать интеграцию до настройки вашего production Nginx.
-
-Требуемое время: 5–10 минут
-::::
+Собирайте распределённые трейсы из Nginx в ClickStack с помощью модуля OpenTelemetry для Nginx. Включает демонстрационный набор данных и готовую панель мониторинга.
+:::
 
 ## Интеграция с существующим Nginx \{#existing-nginx\}
 
@@ -330,7 +321,9 @@ tail -f /var/log/nginx/access.log
 
 ## Следующие шаги \{#next-steps\}
 
-Если вы хотите продолжить изучение возможностей, ниже приведены варианты для экспериментов с вашей панелью мониторинга:
+* Настройте [оповещения](/use-cases/observability/clickstack/alerts) для критически важных метрик (частота ошибок, пороговые значения задержки)
+* Создайте дополнительные [панели мониторинга](/use-cases/observability/clickstack/dashboards) для конкретных сценариев (мониторинг API, события безопасности)
 
-- Настройте оповещения для критически важных метрик (частота ошибок, пороговые значения задержки)
-- Создайте дополнительные панели мониторинга для конкретных сценариев (мониторинг API, события безопасности)
+## Переход к промышленной эксплуатации \{#going-to-production\}
+
+В этом руководстве трейсы отправляются напрямую из модуля Nginx OpenTelemetry в OTLP-конечную точку ClickStack. Для промышленной эксплуатации мы рекомендуем запускать собственный OTel Collector в качестве шлюза, чтобы обеспечить пакетную обработку и отказоустойчивость. См. [Отправка данных OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) для конфигурации промышленной эксплуатации.

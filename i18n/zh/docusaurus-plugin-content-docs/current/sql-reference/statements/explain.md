@@ -70,7 +70,31 @@ Union
 
 输出查询的 AST。支持所有类型的查询，而不仅仅是 `SELECT`。
 
+设置：
+
+* `graph` – 以 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 图描述语言的图形形式输出 AST。默认：0。
+
 示例：
+
+EXPLAIN AST SELECT 1;
+
+SelectWithUnionQuery (children 1)
+ExpressionList (children 1)
+SelectQuery (children 1)
+ExpressionList (children 1)
+Literal UInt64&#95;1
+
+EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
+
+explain
+AlterQuery  t1 (children 1)
+ExpressionList (children 1)
+AlterCommand 27 (children 1)
+Function equals (children 1)
+ExpressionList (children 2)
+Identifier date
+Function today (children 1)
+ExpressionList
 
 ```sql
 EXPLAIN AST SELECT 1;
@@ -99,6 +123,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
        Function today (children 1)
         ExpressionList
 ```
+
 
 ### EXPLAIN SYNTAX \{#explain-syntax\}
 
@@ -179,15 +204,20 @@ QUERY id: 0
 
 设置：
 
+* `optimize` — 控制在显示查询计划之前是否对其应用优化。默认值：1。
 * `header` — 为每个步骤打印输出头部信息。默认值：0。
 * `description` — 打印步骤描述。默认值：1。
 * `indexes` — 显示已使用的索引、每个应用索引过滤的分区片段数量以及过滤的粒度数量。默认值：0。支持 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表。从 ClickHouse &gt;= v25.9 开始，仅在与 `SETTINGS use_query_condition_cache = 0, use_skip_indexes_on_data_read = 0` 一起使用时，该语句才会输出有意义的结果。
 * `projections` — 显示所有已分析的投影，以及它们基于投影主键条件在分区片段级别过滤方面的效果。对于每个投影，本部分包含统计信息，例如使用该投影主键进行评估的分区片段、行、标记和范围数量。它还会显示由于该过滤而被跳过的数据分区片段数量，而无需从投影本身读取数据。投影是实际用于读取，还是仅用于过滤分析，可以通过 `description` 字段判断。默认值：0。支持 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表。
 * `actions` — 打印关于步骤执行行为的详细信息。默认值：0。
+* `sorting` — 为每个生成已排序输出的计划步骤打印排序描述。默认值：0。
+* `keep_logical_steps` — 保留用于 JOIN 的逻辑计划步骤，而不是将其转换为物理 JOIN 实现。默认值：0。
 * `json` — 以 [JSON](/interfaces/formats/JSON) 格式将查询计划步骤输出为一行。默认值：0。建议使用 [TabSeparatedRaw (TSVRaw)](/interfaces/formats/TabSeparatedRaw) 格式以避免不必要的转义。
-* `input_headers` - 为每个步骤打印输入头部信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
-* `column_structure` - 除名称和类型外，还打印头部中列的结构信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
+* `input_headers` — 为每个步骤打印输入头部信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
+* `column_structure` — 除名称和类型外，还打印头部中列的结构信息。默认值：0。主要仅对开发人员在调试与输入输出头部不匹配相关的问题时有用。
 * `distributed` — 显示在远程节点上针对分布式表或并行副本执行的查询计划。默认值：0。
+* `compact` — 启用时，从计划中隐藏表达式步骤和详细的执行行为信息 (输入、函数、别名和输出位置) 。仅在 actions = 1 时生效。默认值：0。
+* `pretty` — 使用线条绘制字符 (├──、└──、│) 而不是缩进来打印计划树，以便直观展示层级结构。还会以内联方式格式化 JOIN 步骤属性。默认值：0。
 
 当 `json=1` 时，步骤名称将包含一个带有唯一步骤标识符的额外后缀。
 
@@ -252,7 +282,7 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 ]
 ```
 
-将 `description` 设为 1 时，会向该步骤添加 `Description` 键：
+将 `description` 设置为 1 时，会为该步骤添加 `Description` 键：
 
 ```json
 {
@@ -261,7 +291,8 @@ EXPLAIN json = 1, description = 0 SELECT 1 UNION ALL SELECT 2 FORMAT TSVRaw;
 }
 ```
 
-当 `header` = 1 时，`Header` 键会作为列数组添加到该步骤中。
+
+当 `header` = 1 时，会将 `Header` 键作为列数组添加到该步骤中。
 
 示例：
 
@@ -302,15 +333,15 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-当 `indexes` = 1 时，会添加 `Indexes` 键。它包含一个已使用索引的数组。每个索引以 JSON 对象形式描述，具有 `Type` 键（字符串 `MinMax`、`Partition`、`PrimaryKey` 或 `Skip`）以及可选键：
+当 `indexes` = 1 时，会添加 `Indexes` 键。该键包含一个已使用索引的数组。每个索引以 JSON 形式描述，包含 `Type` 键 (字符串 `Partition Min-Max`、`Partition`、`Statistics`、`PrimaryKey` 或 `Skip`) ，以及可选的键：
 
-* `Name` — 索引名称（目前仅用于 `Skip` 索引）。
-* `Keys` — 索引使用的列数组。
+* `Name` — 索引名称 (目前仅对 `Skip` 索引使用) 。
+* `Keys` — 索引所使用列的数组。
 * `Condition` — 实际使用的条件。
-* `Description` — 索引描述（目前仅用于 `Skip` 索引）。
-* `Parts` — 应用索引之前/之后的分区片段数量。
-* `Granules` — 应用索引之前/之后的粒度数量。
-* `Ranges` — 应用索引之后的粒度区间数量。
+* `Description` — 索引描述 (目前仅对 `Skip` 索引使用) 。
+* `Parts` — 应用索引前后分区片段的数量。
+* `Granules` — 应用索引前后粒度的数量。
+* `Ranges` — 应用索引后粒度区间的数量。
 
 示例：
 
@@ -318,7 +349,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,
@@ -356,18 +387,19 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-当 `projections` = 1 时，会新增 `Projections` 键。它包含一个已分析 projection 的数组。每个 projection 以 JSON 形式描述，包含以下键：
+当 `projections` = 1 时，会添加 `Projections` 键。它包含一个已分析的投影数组。每个投影以包含以下键的 JSON 进行描述：
 
-* `Name` — projection 名称。
-* `Condition` — 使用的 projection 主键条件。
-* `Description` — projection 的使用方式说明（例如 part-level 过滤）。
-* `Selected Parts` — 该 projection 选中的分区片段数量。
-* `Selected Marks` — 选中的 marks 数量。
-* `Selected Ranges` — 选中的 ranges 数量。
+* `Name` — 投影 名称。
+* `Condition` — 使用的投影 主键条件。
+* `Description` — 关于该 投影 使用方式的描述 (例如分区片段级过滤) 。
+* `Selected Parts` — 该 投影 选中的分区片段数量。
+* `Selected Marks` — 选中的标记数量。
+* `Selected Ranges` — 选中的范围数量。
 * `Selected Rows` — 选中的行数量。
-* `Filtered Parts` — 由于 part-level 过滤而被跳过的分区片段数量。
+* `Filtered Parts` — 由于分区片段级过滤而被跳过的分区片段数量。
 
 示例：
+
 
 ```json
 "Node Type": "ReadFromMergeTree",
@@ -456,6 +488,23 @@ EXPLAIN json = 1, actions = 1, description = 0 SELECT 1 FORMAT TSVRaw;
 ]
 ```
 
+当 `compact = 1` 时，每个 `Expression` 步骤都会被删除。同时，如果设置了 `actions = 1`，则会隐藏 `Actions` 和 `Positions` 行，只保留步骤描述：
+
+```sql
+EXPLAIN actions = 1, compact = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
+```
+
+```text
+Aggregating
+Keys: modulo(__table1.number, 4_UInt8)
+Aggregates:
+    sum(__table1.number)
+      Function: sum(UInt64) → UInt64
+      Arguments: __table1.number
+Skip merging: 0
+  ReadFromSystemNumbers
+```
+
 当 `distributed` = 1 时，输出不仅包含本地查询计划，还包含将在远程节点上执行的查询计划。这对于分析和调试分布式查询非常有用。
 
 分布式表示例：
@@ -500,15 +549,89 @@ Expression ((Project names + Projection))
 
 在这两个示例中，查询计划显示了整个执行流程，包括本地和远程步骤。
 
+当 `pretty` = 1 时，查询计划树将使用画线字符而不是缩进来显示，并为关键步骤显示附加信息：
+
+* **查询输出列** 显示在计划顶部。
+* **表达式**在过滤条件、聚合键、排序描述和窗口函数中会以易于理解的类 SQL 表示法显示 (例如显示为 `a + 1 > 5`，而不是 `greater(plus(a, 1), 5)`) 。为便于理解，内部列标识符前缀 (例如 `__table1.`) 会被移除。
+* **源步骤** (例如 `ReadFromMergeTree`) 会显示其输出列。
+* **过滤步骤**会以 SQL 表示法显示过滤条件。当存在运行时连接过滤条件时，它们会单独显示。
+* **聚合步骤**会显示键和聚合函数及其参数 (例如 `sum(c)`、`count()`) 。
+* 来自元组字面量的 **IN 集合** 会显示其值 (对于大型集合会截断) ，基于子查询的集合会标记为 `subquery1`、`subquery2` 等，而来自 `Set` 引擎表的集合会显示表名。
+* **Join 步骤**会以数学符号表示连接关系、预估结果行数，
+  以及哪些输出列来自左侧、哪些来自右侧。以下符号用于
+  表示不同的连接类型：
+
+| 符号                     | 连接类型 |
+| ---------------------- | ---- |
+| `⋈`                    | 内连接  |
+| `⟕`                    | 左连接  |
+| `⟖`                    | 右连接  |
+| `⟗`                    | 全连接  |
+| `⋉`                    | 左半连接 |
+| `⋊`                    | 右半连接 |
+| `⋉` with strikethrough | 左反连接 |
+| `⋊` with strikethrough | 右反连接 |
+| `×`                    | 交叉连接 |
+
+例如，`t1 ⟕ t2` 表示表 `t1` 与 `t2` 之间的左连接。
+表名后方括号中的数字 (例如 `t1[100]`) 表示预估行数，
+前提是表统计信息可用。
+
+`pretty` 选项与 `compact = 1` 搭配使用效果很好，它会隐藏 `Expression` 步骤和详细的操作信息，使计划更易于阅读。
+
+```sql
+EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
+```
+
+```text
+Expression ((Project names + Projection))
+└──Aggregating
+   └──Expression ((Before GROUP BY + Change column names to column identifiers))
+      └──ReadFromSystemNumbers
+```
+
+一个包含 JOIN 的更详细示例：
+
+```sql
+CREATE TABLE t1 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+CREATE TABLE t2 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+INSERT INTO t1 SELECT number, toString(number) FROM numbers(100);
+INSERT INTO t2 SELECT number, toString(number) FROM numbers(100);
+
+EXPLAIN actions = 1, compact = 1, pretty = 1
+SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.id FORMAT Raw;
+```
+
+```text
+Output: id, value, t2.id, t2.value
+
+Join (JOIN FillRightFirst)
+│  t1[100] ⋈ t2[100]
+│  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
+│  Result rows: 100
+│  Output:
+│    Left:  id, value
+│    Right: id, value
+│  Join conditions: id = id
+├──ReadFromMergeTree (default.t1)
+│     Read type: Default
+│     Parts: 1 | Granules: 1
+│     Output: id, value
+└──ReadFromMergeTree (default.t2)
+      Read type: Default
+      Parts: 1 | Granules: 1
+      Output: id, value
+```
+
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 
 设置：
 
-* `header` — 为每个输出端口打印头部信息。默认值：0。
-* `graph` — 使用 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 图描述语言打印图。默认值：0。
-* `compact` — 当启用 `graph` 设置时，以紧凑模式打印图。默认值：1。
+* `header` — 为每个输出端口输出表头。默认值：0。
+* `graph` — 使用 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 图描述语言输出图形。默认值：0。
+* `compact` — 当启用 `graph` 设置时，以紧凑模式输出图形。默认值：1。
 
-当 `compact=0` 且 `graph=1` 时，处理器名称会附加一个包含唯一处理器标识符的后缀。
+当 `compact=0` 且 `graph=1` 时，processor 名称会包含一个带有唯一 processor 标识符的额外后缀。
 
 示例：
 
@@ -531,6 +654,7 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
+
 
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 

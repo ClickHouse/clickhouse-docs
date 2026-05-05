@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## 比较规则 \{#comparison-rules\}
 
-下面的比较函数返回类型为 [UInt8](/sql-reference/data-types/int-uint) 的 `0` 或 `1`。只有同一组内的值可以进行比较（例如 `UInt16` 和 `UInt64`），不同组之间的值不能相互比较（例如 `UInt16` 和 `DateTime`）。
+下面的比较函数返回类型为 [UInt8](/sql-reference/data-types/int-uint) 的 `0` 或 `1`。只有同一组内的值可以进行比较 (例如 `UInt16` 和 `UInt64`) ，不同组之间的值不能相互比较 (例如 `UInt16` 和 `DateTime`) 。
 可以比较数字和字符串，也可以比较字符串与日期、日期与时间。
 对于元组和数组，比较是按字典序进行的，这意味着会依次比较左侧和右侧元组/数组中对应位置的元素。
 
@@ -20,8 +20,8 @@ doc_type: 'reference'
 * 字符串和定长字符串
 * 日期
 * 日期时间
-* 元组（按字典序比较）
-* 数组（按字典序比较）
+* 元组 (按字典序比较) 
+* 数组 (按字典序比较) 
 
 :::note
 字符串按字节逐个比较。如果某个字符串包含 UTF-8 编码的多字节字符，这可能会导致意外结果。
@@ -38,7 +38,7 @@ doc_type: 'reference'
 
 ## equals \{#equals\}
 
-在 v1.1 中引入
+在 v1.1.0 中引入
 
 比较两个值是否相等。
 
@@ -72,9 +72,269 @@ SELECT 1 = 1, 1 = 2;
 └──────────────┴──────────────┘
 ```
 
+## globalIn \{#globalIn\}
+
+自 v1.1.0 起引入
+
+与 `in` 相同，但在分布式查询中使用全局 Set 分发机制。该 Set 会被发送到所有远程服务器。
+
+**语法**
+
+```sql
+globalIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 一组值的 Set。
+
+**返回值**
+
+如果 x 在 set 中则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalInIgnoreSet \{#globalInIgnoreSet\}
+
+引入版本：v1.1.0
+
+与 `in` 相同，但在分布式查询中使用全局 Set 分发。该 Set 会被发送到所有远程服务器。
+这是 IgnoreSet 的变体，用于在不创建 Set 的情况下进行类型分析。
+
+**语法**
+
+```sql
+globalIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。- `set` — 值的 Set。
+
+**返回值**
+
+如果 x 在 Set 中则返回 1，否则返回 0。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalNotIn \{#globalNotIn\}
+
+引入版本：v1.1.0
+
+与 `notIn` 相同，但在分布式查询中使用全局 Set 分发机制。该 Set 会被发送到所有远程服务器。
+
+**语法**
+
+```sql
+globalNotIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。- `set` — Set 类型的值集合。
+
+**返回值**
+
+如果 x 不在该 Set 中，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalNotInIgnoreSet \{#globalNotInIgnoreSet\}
+
+引入版本：v1.1.0
+
+与 `notIn` 相同，但在分布式查询中对 Set 使用全局分发机制。Set 会被发送到所有远程服务器。
+这是用于类型分析且无需创建 Set 的 IgnoreSet 变体。
+
+**语法**
+
+```sql
+globalNotIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的集合。
+
+**返回值**
+
+如果 x 不在该集合中，返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## globalNotNullIn \{#globalNotNullIn\}
+
+引入版本：v1.1.0
+
+与 `notNullIn` 相同，但在分布式查询中使用全局 Set 进行分发。该 Set 会被发送到所有远程服务器。
+
+**语法**
+
+```sql
+globalNotNullIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。- `set` — 值的集合。
+
+**返回值**
+
+如果 x 不在该集合中，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## globalNotNullInIgnoreSet \{#globalNotNullInIgnoreSet\}
+
+引入版本：v1.1.0
+
+与 `notNullIn` 相同，但在分布式查询中使用全局 Set 进行分发。该 Set 会被发送到所有远程服务器。
+这是 IgnoreSet 的变体，用于在不创建 Set 的情况下进行类型分析。
+
+**语法**
+
+```sql
+globalNotNullIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的 Set。
+
+**返回值**
+
+若 x 不在 Set 中，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## globalNullIn \{#globalNullIn\}
+
+引入版本：v1.1.0
+
+与 `nullIn` 相同，但在分布式查询中使用全局 Set 分发。该 Set 会被发送到所有远程服务器。
+
+**语法**
+
+```sql
+globalNullIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的 Set。
+
+**返回值**
+
+如果 x 在 Set 中，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
+```
+
+## globalNullInIgnoreSet \{#globalNullInIgnoreSet\}
+
+引入于：v1.1.0
+
+与 `nullIn` 相同，但在分布式查询中采用全局 Set 分发策略。该 Set 会被发送到所有远程服务器。
+这是用于类型分析且无需实际创建 Set 的 IgnoreSet 变体。
+
+**语法**
+
+```sql
+globalNullIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。- `set` — 值的 Set。
+
+**返回值**
+
+如果 x 在 Set 中则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
+```
+
 ## greater \{#greater\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 用于比较两个值是否满足大于关系。
 
@@ -87,8 +347,7 @@ greater(a, b)
 
 **参数**
 
-* `a` — 第一个值。<sup>[*](#comparison-rules)</sup>
-* `b` — 第二个值。<sup>[*](#comparison-rules)</sup>
+* `a` — 第一个值。<sup>[*](#comparison-rules)</sup> - `b` — 第二个值。<sup>[*](#comparison-rules)</sup>
 
 **返回值**
 
@@ -110,7 +369,7 @@ SELECT 2 > 1, 1 > 2;
 
 ## greaterOrEquals \{#greaterOrEquals\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 用于比较两个值是否具有大于或等于的关系。
 
@@ -143,12 +402,77 @@ SELECT 2 >= 1, 2 >= 2, 1 >= 2;
 └───────────────────────┴───────────────────────┴───────────────────────┘
 ```
 
+## in \{#in\}
+
+引入版本：v1.1.0
+
+检查左操作数是否属于右操作数的 Set。若属于则返回 1，否则返回 0。左操作数中的 NULL 值会被忽略 (视为不在该 Set 中) 。
+
+**语法**
+
+```sql
+in(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的 Set 集合。
+
+**返回值**
+
+如果 x 在集合中则返回 1，否则返回 0。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## inIgnoreSet \{#inIgnoreSet\}
+
+引入于：v1.1.0
+
+检查左操作数是否是右操作数 Set 的成员。如果是，则返回 1，否则返回 0。左操作数中的 NULL 值会被跳过 (视为不在该 Set 中) 。
+这是用于类型分析且无需创建 Set 的 IgnoreSet 变体。
+
+**语法**
+
+```sql
+in(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的 Set (值的集合) 。
+
+**返回值**
+
+如果 x 在该集合中则返回 1，否则返回 0。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT 1 IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
 ## isDistinctFrom \{#isDistinctFrom\}
 
-引入版本：v25.11
+引入版本：v25.11.0
 
 对两个值执行 NULL 安全的“不等于”比较。
-如果两个值彼此不同（不相等），则返回 `true`，包括当一个值为 NULL 而另一个不为 NULL 的情况。
+如果两个值彼此不同 (不相等) ，则返回 `true`，包括当一个值为 NULL 而另一个不为 NULL 的情况。
 如果两个值相等，或两者均为 NULL，则返回 `false`。
 
 **语法**
@@ -190,7 +514,7 @@ SELECT
 
 ## isNotDistinctFrom \{#isNotDistinctFrom\}
 
-引入于：v25.10
+引入于：v25.10.0
 
 对两个值执行空值安全的“相等”比较。
 如果两个值相等，则返回 `true`，包括两者都为 NULL 的情况。
@@ -235,7 +559,7 @@ SELECT
 
 ## less \{#less\}
 
-在 v1.1 中引入
+在 v1.1.0 中引入
 
 比较两个值是否满足“小于”关系。
 
@@ -270,7 +594,7 @@ SELECT 1 < 2, 2 < 1;
 
 ## lessOrEquals \{#lessOrEquals\}
 
-自 v1.1 引入
+自 v1.1.0 引入
 
 判断两个值之间是否满足小于等于关系。
 
@@ -305,7 +629,7 @@ SELECT 1 <= 2, 2 <= 2, 3 <= 2;
 
 ## notEquals \{#notEquals\}
 
-自 v1.1 起引入
+自 v1.1.0 起引入
 
 用于比较两个值是否不相等。
 
@@ -337,6 +661,202 @@ SELECT 1 != 2, 1 != 1;
 ┌─notEquals(1, 2)─┬─notEquals(1, 1)─┐
 │               1 │               0 │
 └─────────────────┴─────────────────┘
+```
+
+## notIn \{#notIn\}
+
+引入版本：v1.1.0
+
+检查左侧操作数是否 **不** 是右侧操作数 Set 的成员。如果不在该 Set 中则返回 1，否则返回 0。左侧操作数中的 NULL 值会被忽略。
+
+**语法**
+
+```sql
+notIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的 Set 集合。
+
+**返回值**
+
+如果 x 不在 Set 中，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基础用法**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## notInIgnoreSet \{#notInIgnoreSet\}
+
+引入版本：v1.1.0
+
+检查左操作数是否 *不* 是右操作数 Set 的成员。如果不在该 Set 中则返回 1，否则返回 0。左操作数中的 NULL 值会被跳过。
+这是 IgnoreSet 的一种变体，用于在不创建 Set 的情况下进行类型分析。
+
+**语法**
+
+```sql
+notIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的集合。
+
+**返回值**
+
+如果 x 不在该集合中，则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT 4 NOT IN (1, 2, 3)
+```
+
+```response title=Response
+1
+```
+
+## notNullIn \{#notNullIn\}
+
+引入版本：v1.1.0
+
+检查左操作数是否 **不是** 右操作数 Set 的成员。与 `notIn` 不同，NULL 值不会被忽略：NULL 会与 Set 中的元素进行比较，且 NULL = NULL 的结果为 true。
+
+**语法**
+
+```sql
+notNullIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。
+* `set` — 值的 Set 集合。
+
+**返回值**
+
+如果 x 不在 Set 中，则返回 1；否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## notNullInIgnoreSet \{#notNullInIgnoreSet\}
+
+引入于：v1.1.0
+
+检查左操作数是否 **不** 是右操作数集合的成员。与 `notIn` 不同，NULL 值不会被忽略：会将 NULL 与集合元素进行比较，且 NULL = NULL 的结果为 true。
+这是 IgnoreSet 的变体，用于在不创建 Set 的情况下进行类型分析。
+
+**语法**
+
+```sql
+notNullIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的 Set。
+
+**返回值**
+
+如果 `x` 不在 `set` 中则返回 1，否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT notNullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+0
+```
+
+## nullIn \{#nullIn\}
+
+自 v1.1.0 版本引入
+
+检查左操作数是否是右操作数 Set 的成员。与 `in` 不同，NULL 值不会被跳过：会将 NULL 与 Set 中的元素进行比较，并且 NULL = NULL 的结果为 true。
+
+**语法**
+
+```sql
+nullIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的 Set。
+
+**返回值**
+
+如果 x 在 Set 中则返回 1，否则返回 0。 [`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
+```
+
+## nullInIgnoreSet \{#nullInIgnoreSet\}
+
+引入版本：v1.1.0
+
+检查左操作数是否是右操作数集合的成员。与 `in` 不同，NULL 值不会被跳过：NULL 会与集合元素进行比较，并且 NULL = NULL 的结果为 true。
+这是 IgnoreSet 的一个变体，用于在不创建集合的情况下进行类型分析。
+
+**语法**
+
+```sql
+nullIn(x, set)
+```
+
+**参数**
+
+* `x` — 要检查的值。 - `set` — 值的集合。
+
+**返回值**
+
+如果 x 在集合中，则返回 1；否则返回 0。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT nullIn(NULL, tuple(1, NULL))
+```
+
+```response title=Response
+1
 ```
 
 {/*AUTOGENERATED_END*/ }

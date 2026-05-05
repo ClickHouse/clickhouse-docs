@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## anyLast \{#anyLast\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 选取某列中最后一次出现的值。
 

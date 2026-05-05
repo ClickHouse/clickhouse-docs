@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupUniqArray \{#groupUniqArray\}
 
-導入されたバージョン: v1.1
+導入されたバージョン: v1.1.0
 
 異なる引数の値から配列を作成します。
 この関数のメモリ消費量は、[`uniqExact`](/sql-reference/aggregate-functions/reference/uniqexact) 関数と同じです。
@@ -50,7 +50,7 @@ SELECT groupUniqArray(x) FROM t;
 └───────────────────┘
 ```
 
-**max&#95;size パラメーター指定時**
+**max&#95;size パラメーター使用時**
 
 ```sql title=Query
 SELECT groupUniqArray(2)(x) FROM t;

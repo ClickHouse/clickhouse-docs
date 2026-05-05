@@ -42,6 +42,7 @@ SELECT 1;
 clickhouse-benchmark [keys] < queries_file;
 ```
 
+
 ## Параметры командной строки \{#clickhouse-benchmark-command-line-options\}
 
 - `--query=QUERY` — Запрос для выполнения. Если этот параметр не передан, `clickhouse-benchmark` будет читать запросы из стандартного ввода.
@@ -62,7 +63,7 @@ clickhouse-benchmark [keys] < queries_file;
 - `--database=DATABASE_NAME` — Имя базы данных ClickHouse. Значение по умолчанию: `default`.
 - `--user=USERNAME` — Имя пользователя ClickHouse. Значение по умолчанию: `default`.
 - `--password=PSWD` — Пароль пользователя ClickHouse. Значение по умолчанию: пустая строка.
-- `--stacktrace` — Вывод трассировок стека. При указании этого параметра `clickhouse-bencmark` выводит трассировки стека для исключений.
+- `--stacktrace` — Вывод трассировок стека. При указании этого параметра `clickhouse-benchmark` выводит трассировки стека для исключений.
 - `--stage=WORD` — Стадия обработки запроса на сервере. ClickHouse останавливает обработку запроса и возвращает ответ `clickhouse-benchmark` на указанной стадии. Возможные значения: `complete`, `fetch_columns`, `with_mergeable_state`. Значение по умолчанию: `complete`.
 - `--roundrobin` — Вместо сравнения запросов для разных `--host`/`--port` просто выбирается один случайный `--host`/`--port` для каждого запроса, и запрос отправляется на него.
 - `--reconnect=N` — Управление поведением повторного подключения. Возможные значения: 0 (никогда не переподключаться), 1 (переподключаться для каждого запроса) или N (переподключаться после каждых N запросов). Значение по умолчанию: 0.
@@ -82,9 +83,9 @@ clickhouse-benchmark [keys] < queries_file;
 
 ## Вывод \{#clickhouse-benchmark-output\}
 
-По умолчанию `clickhouse-benchmark` выводит отчет по каждому интервалу `--delay`.
+По умолчанию `clickhouse-benchmark` выводит отчёт по каждому интервалу `--delay`.
 
-Пример отчета:
+Пример отчёта:
 
 ```text
 Queries executed: 10.
@@ -122,6 +123,7 @@ localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, resul
   * result MiB/s: сколько мебибайт сервер поместил в результат запроса в секунду в течение периода, указанного в аргументе `--delay`.
 
 * Перцентили времени выполнения запросов.
+
 
 ## Режим сравнения \{#clickhouse-benchmark-comparison-mode\}
 

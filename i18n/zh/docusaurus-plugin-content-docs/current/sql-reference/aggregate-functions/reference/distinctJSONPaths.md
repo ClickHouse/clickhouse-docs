@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctJSONPaths \{#distinctJSONPaths\}
 
-引入版本：v24.9
+引入版本：v24.9.0
 
 计算存储在 [JSON](https://clickhouse.com/docs/sql-reference/data-types/newjson) 列中的唯一路径列表。
 
@@ -45,7 +45,7 @@ SELECT distinctJSONPaths(json) FROM test_json;
 └───────────────────────────┘
 ```
 
-**使用显式声明的 JSON 路径**
+**使用已声明的 JSON 路径**
 
 ```sql title=Query
 DROP TABLE IF EXISTS test_json;

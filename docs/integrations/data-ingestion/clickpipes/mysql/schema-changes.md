@@ -1,5 +1,5 @@
 ---
-title: 'Schema Changes Propagation Support'
+title: 'Schema changes propagation support'
 slug: /integrations/clickpipes/mysql/schema-changes
 description: 'Page describing schema change types detectable by ClickPipes in the source tables'
 doc_type: 'reference'
@@ -15,9 +15,13 @@ ClickPipes for MySQL can detect schema changes in the source tables and, in some
 
 | Schema Change Type                                                                  | Behaviour                             |
 | ----------------------------------------------------------------------------------- | ------------------------------------- |
-| Adding a new column (`ALTER TABLE ADD COLUMN ...`)                                  | Propagated automatically. The new column(s) will be populated for all rows replicated after the schema change                                                                         |
-| Adding a new column with a default value (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | Propagated automatically. The new column(s) will be populated for all rows replicated after the schema change, but existing rows will not show the default value without a full table refresh |
-| Dropping an existing column (`ALTER TABLE DROP COLUMN ...`)                         | Detected, but **not** propagated. The dropped column(s) will be populated with `NULL` for all rows replicated after the schema change                                                                |
+| Adding a new column (`ALTER TABLE ADD COLUMN ...`)                                  | Propagated automatically. The new columns will be populated for all rows replicated after the schema change                                                                         |
+| Adding a new column with a default value (`ALTER TABLE ADD COLUMN ... DEFAULT ...`) | Propagated automatically. The new columns will be populated for all rows replicated after the schema change, but existing rows won't show the default value without a full table refresh |
+| Dropping an existing column (`ALTER TABLE DROP COLUMN ...`)                         | Detected, but **not** propagated. The dropped columns will be populated with `NULL` for all rows replicated after the schema change                                                                |
+
+:::note
+Column additions during snapshot are currently not supported. The suggested workaround is to perform snapshots before or after planned schema changes, or, if the ClickPipe is already failing, to manually add a column of the appropriate type to the destination table.
+:::
 
 ### MySQL 5.x limitations {#mysql-5-limitations}
 

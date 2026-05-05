@@ -15,9 +15,9 @@ import image2 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/image3.png';
 
 
-# Потоковая передача данных из SQL Server в ClickHouse для высокоскоростной аналитики: пошаговое руководство \{#streaming-data-from-sql-server-to-clickhouse-for-fast-analytics-step-by-step-guide\}
+# Потоковая передача данных из SQL Server в ClickHouse для быстрой аналитики: пошаговое руководство \{#streaming-data-from-sql-server-to-clickhouse-for-fast-analytics-step-by-step-guide\}
 
-В этой статье мы пошагово покажем, как организовать потоковую передачу данных из SQL Server в ClickHouse. ClickHouse идеально подходит, если вам нужна сверхбыстрая аналитика для внутренних отчётных панелей или клиентских дашбордов. Мы по шагам пройдём подготовку обеих баз данных, настройку соединения между ними и, наконец, покажем, как использовать [Streamkap](https://streamkap.com) для потоковой передачи ваших данных. Если SQL Server обслуживает ваши повседневные операции, а для аналитики вам нужна скорость и мощь ClickHouse, вы обратились по адресу.
+В этой статье мы пошагово покажем, как организовать потоковую передачу данных из SQL Server в ClickHouse. ClickHouse идеально подходит, если вам нужна сверхбыстрая аналитика для внутренних отчётных панелей или клиентских панелей мониторинга. Мы по шагам пройдём подготовку обеих баз данных, настройку соединения между ними и, наконец, покажем, как использовать [Streamkap](https://streamkap.com) для потоковой передачи ваших данных. Если SQL Server обслуживает ваши повседневные операции, а для аналитики вам нужна скорость и мощь ClickHouse, вы обратились по адресу.
 
 ## Зачем передавать потоковые данные из SQL Server в ClickHouse? \{#why-stream-data-from-sql-server-to-clickhouse\}
 
@@ -51,9 +51,9 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 Убедитесь, что у вас есть:
 
-- Адрес сервера SQL Server, порт, имя пользователя и пароль. Рекомендуется создать для Streamkap отдельного пользователя и роль для доступа к вашей базе данных SQL Server. [Ознакомьтесь с нашей документацией по конфигурации.](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server&sa=D&source=editors&ust=1760992472358213&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
-- Адрес сервера ClickHouse, порт, имя пользователя и пароль. Списки доступа по IP в ClickHouse определяют, какие сервисы могут подключаться к вашей базе данных ClickHouse. [Следуйте инструкциям здесь.](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse&sa=D&source=editors&ust=1760992472359060&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
-- Таблица (или таблицы), из которых вы хотите передавать данные в поток — пока начните с одной
+* Адрес сервера SQL Server, порт, имя пользователя и пароль. Рекомендуется создать для Streamkap отдельного пользователя и роль для доступа к вашей базе данных SQL Server. [Ознакомьтесь с нашей документацией по конфигурации.](https://www.google.com/url?q=https://docs.streamkap.com/docs/sql-server\&sa=D\&source=editors\&ust=1760992472358213\&usg=AOvVaw3jfocCF1VSijgsq1OCpZPj)
+* Адрес сервера ClickHouse, порт, имя пользователя и пароль. Списки доступа по IP в ClickHouse определяют, какие сервисы могут подключаться к вашей базе данных ClickHouse. [Следуйте инструкциям здесь.](https://www.google.com/url?q=https://docs.streamkap.com/docs/clickhouse\&sa=D\&source=editors\&ust=1760992472359060\&usg=AOvVaw3H1XqqwvqAso_TQPNBKEhD)
+* Таблицы, из которых вы хотите передавать данные в поток — пока начните с одной
 
 ## Настройка SQL Server в качестве источника \{#setting-up-sql-server-as-a-source\}
 

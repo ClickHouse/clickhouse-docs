@@ -37,6 +37,7 @@ SET allow_experimental_lightweight_delete = true;
 
 :::
 
+
 ## ALTER DELETE \{#alter-delete\}
 
 ALTER DELETE は、非同期バッチ処理を使用して行を削除します。`DELETE FROM` と異なり、ALTER DELETE の実行後からバッチ処理の完了までの間に実行されたクエリには、削除対象の行も含まれたままになります。詳細については [ALTER DELETE](/sql-reference/statements/alter/delete.md) のドキュメントを参照してください。

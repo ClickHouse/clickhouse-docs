@@ -2,13 +2,13 @@
 sidebar_label: 'Regexp and templates'
 sidebar_position: 3
 slug: /integrations/data-formats/templates-regexp
-title: 'Importing and exporting custom text data using Templates and Regex in ClickHouse'
+title: 'Importing and exporting custom text data using templates and regex in ClickHouse'
 description: 'Page describing how to import and export custom text using templates and regex in ClickHouse'
 doc_type: 'guide'
 keywords: ['data formats', 'templates', 'regex', 'custom formats', 'parsing']
 ---
 
-# Importing and exporting custom text data using Templates and Regex in ClickHouse
+# Importing and exporting custom text data using templates and regex in ClickHouse
 
 We often have to deal with data in custom text formats. That could be a non-standard format, invalid JSON, or a broken CSV. Using standard parsers like CSV or JSON won't work in all such cases. But ClickHouse has us covered here with powerful Template and Regex formats.
 
@@ -52,7 +52,7 @@ ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
 
 We define a name of a column and escaping rule in a `${name:escaping}` format. Multiple options are available here, like CSV, JSON, Escaped, or Quoted, which implement [respective escaping rules](/interfaces/formats/Template).
 
-Now we can use the given file as an argument to the `format_template_row` settings option while importing data (*note, that template and data files **should not have** an extra `\n` symbol at the end of file*):
+Now we can use the given file as an argument to the `format_template_row` settings option while importing data (*note, that template and data files **shouldn't have** an extra `\n` symbol at the end of file*):
 
 ```sql
 INSERT INTO error_log FROM INFILE 'error.log'

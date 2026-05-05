@@ -1,75 +1,79 @@
+import Recommendations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/getting-started/install/_snippets/recommendations.md';
+
 # NixOS に ClickHouse をインストールする \{#install-from-nix\}
 
 > ClickHouse は Nixpkgs リポジトリで提供されており、**Linux** と **macOS** 上で Nix を使ってインストールできます。
 
 <VerticalStepper>
+  ## 推奨事項を確認する
 
-## Nix を使って ClickHouse をインストールする \{#install-clickhouse-using-nix\}
+  <Recommendations />
 
-Nix を使用すると、ClickHouse をシステムに永続的に追加することなくインストールできます:
+  ## Nix を使って ClickHouse をインストールする
 
-```bash
-# 最新の安定版をインストール
-nix shell nixpkgs#clickhouse
+  Nix を使用すると、ClickHouse をシステムに永続的に追加することなくインストールできます:
 
-# または LTS 版をインストール
-nix shell nixpkgs#clickhouse-lts
-```
+  ```bash
+  # 最新の安定版をインストール
+  nix shell nixpkgs#clickhouse
 
-これにより、現在のシェルセッションで `clickhouse` バイナリが利用可能になります。
+  # または LTS 版をインストール
+  nix shell nixpkgs#clickhouse-lts
+  ```
 
-- `nixpkgs#clickhouse` パッケージは最新の安定版を提供します。
-- `nixpkgs#clickhouse-lts` パッケージは Long Term Support 版を提供します。
-- どちらのパッケージも Linux と macOS で動作します。
+  これにより、現在のシェルセッションで `clickhouse` バイナリが利用可能になります。
 
-## 永続的なインストール \{#permanent-installation\}
+  * `nixpkgs#clickhouse` パッケージは最新の安定版を提供します。
+  * `nixpkgs#clickhouse-lts` パッケージは Long Term Support 版を提供します。
+  * どちらのパッケージも Linux と macOS で動作します。
 
-ClickHouse をシステムに永続的にインストールするには:
+  ## 永続的なインストール
 
-**NixOS ユーザーの場合**、`configuration.nix` に次を追加します:
+  ClickHouse をシステムに永続的にインストールするには:
 
-```nix
-environment.systemPackages = with pkgs; [
-  clickhouse
-];
-```
+  **NixOS ユーザーの場合**、`configuration.nix` に次を追加します:
 
-その後、システムを再構築します:
+  ```nix
+  environment.systemPackages = with pkgs; [
+    clickhouse
+  ];
+  ```
 
-```bash
-sudo nixos-rebuild switch
-```
+  その後、システムを再構築します:
 
-**非 NixOS ユーザーの場合**、Nix プロファイル経由でインストールします:
+  ```bash
+  sudo nixos-rebuild switch
+  ```
 
-```bash
-# 最新の安定版をインストール
-nix profile install nixpkgs#clickhouse
+  **非 NixOS ユーザーの場合**、Nix プロファイル経由でインストールします:
 
-# または LTS 版をインストール
-nix profile install nixpkgs#clickhouse-lts
-```
+  ```bash
+  # 最新の安定版をインストール
+  nix profile install nixpkgs#clickhouse
 
-## ClickHouse サーバーを起動する \{#start-clickhouse-server\}
+  # または LTS 版をインストール
+  nix profile install nixpkgs#clickhouse-lts
+  ```
 
-インストール後、次のコマンドで ClickHouse サーバーを起動できます:
+  ## ClickHouse サーバーを起動する
 
-```bash
-clickhouse-server
-```
+  インストール後、次のコマンドで ClickHouse サーバーを起動できます:
 
-デフォルトでは、サーバーは基本的な設定で起動し、`localhost:9000` で待ち受けます。
+  ```bash
+  clickhouse-server
+  ```
 
-NixOS 上で本番用途とする場合は、ClickHouse をシステムサービスとして構成することを推奨します。利用可能な設定オプションについては、[NixOS マニュアル](https://search.nixos.org/options?query=clickhouse) を参照してください。
+  デフォルトでは、サーバーは基本的な設定で起動し、`localhost:9000` で待ち受けます。
 
-## ClickHouse クライアントを起動する \{#start-clickhouse-client\}
+  NixOS 上で本番用途とする場合は、ClickHouse をシステムサービスとして構成することを推奨します。利用可能な設定オプションについては、[NixOS マニュアル](https://search.nixos.org/options?query=clickhouse) を参照してください。
 
-ClickHouse サーバーに接続するには、新しいターミナルを開き、次を実行します:
+  ## ClickHouse クライアントを起動する
 
-```bash
-clickhouse-client
-```
+  ClickHouse サーバーに接続するには、新しいターミナルを開き、次を実行します:
 
+  ```bash
+  clickhouse-client
+  ```
 </VerticalStepper>
 
 ## Nix パッケージについて \{#about-nix-package\}

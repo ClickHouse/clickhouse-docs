@@ -12,7 +12,7 @@ The `JSON` type is designed for querying, filtering, and aggregating specific fi
 
 - Your data has a dynamic or unpredictable structure with varying keys across documents
 - Field types or schemas change over time or vary between records
-- You need to query, filter, or aggregate on specific paths within JSON objects whose structure you cannot predict upfront
+- You need to query, filter, or aggregate on specific paths within JSON objects whose structure you can't predict upfront
 - Your use case involves semi-structured data like logs, events, or user-generated content with inconsistent schemas
 
 ### Use a `String` column (or structured types) when: {#use-string-type}
@@ -22,7 +22,7 @@ The `JSON` type is designed for querying, filtering, and aggregating specific fi
 - The `JSON` is simply a transport/storage format, not analyzed within ClickHouse
 
 :::tip
-If `JSON` is an opaque document that is not analyzed inside the database, and only stored and retrieved back, it should be stored as a `String` field. The `JSON` type's benefits only materialize when you need to efficiently query, filter, or aggregate on specific fields within dynamic `JSON` structures.
+If `JSON` is an opaque document that isn't analyzed inside the database, and only stored and retrieved back, it should be stored as a `String` field. The `JSON` type's benefits only materialize when you need to efficiently query, filter, or aggregate on specific fields within dynamic `JSON` structures.
 
 You can also mix approaches—use standard columns for predictable top-level fields and a `JSON` column for dynamic sections of the payload.
 :::

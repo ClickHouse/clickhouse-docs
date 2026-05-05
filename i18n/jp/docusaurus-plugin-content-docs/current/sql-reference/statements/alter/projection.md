@@ -1,29 +1,29 @@
 ---
-description: 'プロジェクション操作に関するドキュメント'
+description: 'PROJECTION操作に関するドキュメント'
 sidebar_label: 'PROJECTION'
 sidebar_position: 49
 slug: /sql-reference/statements/alter/projection
-title: 'プロジェクション'
+title: 'PROJECTION'
 doc_type: 'reference'
 ---
 
-この記事では、プロジェクションとは何か、その活用方法、およびプロジェクションを操作するためのさまざまなオプションについて説明します。
+このページでは、PROJECTIONとは何か、その活用方法、およびPROJECTIONを操作するためのさまざまなオプションについて説明します。
 
-## プロジェクションの概要 \{#overview\}
+## PROJECTIONの概要 \{#overview\}
 
-プロジェクションは、クエリ実行を最適化する形式でデータを保存します。この機能は次のような用途に有効です:
+PROJECTIONは、クエリ実行を最適化する形式でデータを保存します。この機能は次のような用途に有効です:
 
-- プライマリキーに含まれていないカラムに対してクエリを実行する場合
-- カラムを事前集約する場合。計算量と I/O の両方を削減できます
+* プライマリキーに含まれていないカラムに対してクエリを実行する場合
+* カラムを事前集約する場合。計算量と I/O の両方を削減できます
 
-テーブルに対して 1 つ以上のプロジェクションを定義できます。クエリ解析時には、ユーザーが指定したクエリを変更することなく、スキャンするデータ量が最も少ないプロジェクションが ClickHouse によって自動的に選択されます。
+テーブルに対して 1 つ以上のPROJECTIONを定義できます。クエリ解析時には、ユーザーが指定したクエリを変更することなく、スキャンするデータ量が最も少ないPROJECTIONが ClickHouse によって自動的に選択されます。
 
 :::note[ディスク使用量]
-プロジェクションは内部的に新しい非表示テーブルを作成します。そのため、より多くの I/O とディスク容量が必要になります。
-たとえば、プロジェクションで異なるプライマリキーを定義した場合、元のテーブルのすべてのデータが複製されます。
+PROJECTIONは内部的に新しい非表示テーブルを作成します。そのため、より多くの I/O とディスク容量が必要になります。
+たとえば、PROJECTIONで異なるプライマリキーを定義した場合、元のテーブルのすべてのデータが複製されます。
 :::
 
-プロジェクションの内部動作に関する、より技術的な詳細はこの[ページ](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)を参照してください。
+PROJECTIONの内部動作に関する、より技術的な詳細はこの[ページ](/guides/best-practices/sparse-primary-indexes.md/#option-3-projections)を参照してください。
 
 ## プロジェクションの使用 \{#examples\}
 
@@ -43,13 +43,12 @@ ENGINE = MergeTree()
 PRIMARY KEY user_agent
 ```
 
-`ALTER TABLE` を使って、既存のテーブルに Projection を追加できます。
+`ALTER TABLE` を使って、既存のテーブルに PROJECTION を追加できます。
 
 ```sql
 ALTER TABLE visits_order ADD PROJECTION user_name_projection (
-SELECT
-*
-ORDER BY user_name
+    SELECT *
+    ORDER BY user_name
 )
 
 ALTER TABLE visits_order MATERIALIZE PROJECTION user_name_projection
@@ -66,8 +65,8 @@ INSERT INTO visits_order SELECT
 FROM numbers(1, 100);
 ```
 
-この Projection により、元のテーブルで `user_name` が `PRIMARY_KEY` として定義されていなくても、`user_name` で高速にフィルタリングできるようになります。
-クエリ実行時に ClickHouse は、データが `user_name` でソートされているため、Projection を使用した方が処理すべきデータ量が少なくなると判断しました。
+この PROJECTION により、元のテーブルで `user_name` が `PRIMARY_KEY` として定義されていなくても、`user_name` で高速にフィルタリングできるようになります。
+クエリ実行時に ClickHouse は、データが `user_name` でソートされているため、PROJECTION を使用した方が処理すべきデータ量が少なくなると判断します。
 
 ```sql
 SELECT
@@ -77,12 +76,11 @@ WHERE user_name='test'
 LIMIT 2
 ```
 
-クエリが Projection を使用しているか確認するには、`system.query_log` テーブルを確認します。`projections` フィールドには、使用された Projection の名前が格納されており、使用されていない場合は空です。
+クエリが PROJECTION を使用しているか確認するには、`system.query_log` テーブルを確認します。`projections` フィールドには、使用された PROJECTION の名前が格納されており、使用されていない場合は空です。
 
 ```sql
 SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
-
 
 ### 事前集計クエリの例 \{#example-pre-aggregation-query\}
 
@@ -165,9 +163,9 @@ SELECT query, projections FROM system.query_log WHERE query_id='<query_id>'
 ```
 
 
-### `_part_offset` フィールドを用いた通常のプロジェクション \{#normal-projection-with-part-offset-field\}
+### PROJECTIONインデックスの作成と使用 \{#projection-indexes\}
 
-`_part_offset` フィールドを利用する通常のプロジェクションを持つテーブルを作成します。
+[PROJECTIONインデックス](../../../engines/table-engines/mergetree-family/mergetree.md#projection-index)の作成:
 
 ```sql
 CREATE TABLE events
@@ -176,25 +174,41 @@ CREATE TABLE events
     `event_id` UInt64,
     `user_id` UInt64,
     `huge_string` String,
-    PROJECTION order_by_user_id
-    (
-        SELECT
-            _part_offset
-        ORDER BY user_id
-    )
+    PROJECTION order_by_user_id INDEX user_id TYPE basic
 )
 ENGINE = MergeTree()
 ORDER BY (event_id);
 ```
 
-サンプルデータを挿入する：
+<details markdown="1">
+  <summary>明示的な `_part_offset` フィールドを使用したPROJECTIONの作成</summary>
+
+  PROJECTIONインデックスは、次の構文でも作成できます (非推奨) 。
+
+  ```sql
+  CREATE TABLE events
+  (
+      `event_time` DateTime,
+      `event_id` UInt64,
+      `user_id` UInt64,
+      `huge_string` String,
+      PROJECTION order_by_user_id
+      (
+          SELECT
+              _part_offset
+          ORDER BY user_id
+      )
+  )
+  ENGINE = MergeTree()
+  ORDER BY (event_id);
+  ```
+</details>
+
+サンプルデータをいくつか挿入します:
 
 ```sql
 INSERT INTO events SELECT * FROM generateRandom() LIMIT 100000;
 ```
-
-
-#### `_part_offset` をセカンダリインデックスとして使用する \{#normal-projection-secondary-index\}
 
 `_part_offset` フィールドはマージやミューテーション後も値が保持されるため、セカンダリインデックスとして有用です。クエリでこれを活用できます。
 
@@ -308,6 +322,48 @@ v24.8 以降では、新しいテーブルレベルの設定 [`deduplicate_merge
 - `throw` (デフォルト): 例外をスローし、プロジェクションのパーツがメインデータと不整合になることを防ぎます。
 - `drop`: 影響を受けるプロジェクションテーブルのパーツを削除します。クエリは、影響を受けるプロジェクションパーツについて元のテーブルパーツの読み取りにフォールバックします。
 - `rebuild`: 影響を受けるプロジェクションパーツを再構築し、元のテーブルパーツ内のデータと整合した状態を保ちます。
+
+## 制限事項 \{#limitations\}
+
+PROJECTION の `ORDER BY` 句では、`ALIAS` カラムを使用できません。例:
+
+```sql
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 ALIAS a + 1,
+--highlight-next-line
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+-- Fails with UNKNOWN_IDENTIFIER
+```
+
+`ALIAS` カラムは物理的に保存されず、クエリ時にその場で計算されるため、ソート式が評価される PROJECTION パートの書き込みパスでは使用できません。
+
+代わりに、`MATERIALIZED` カラムを使用するか、式を直接埋め込んでください。
+
+```sql
+-- using MATERIALIZED column
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    ab_sum UInt64 MATERIALIZED a + 1,
+    PROJECTION p (SELECT a ORDER BY ab_sum)
+)
+ENGINE = MergeTree ORDER BY id;
+
+-- using an inline expression
+CREATE TABLE t
+(
+    id UInt64,
+    a UInt32,
+    PROJECTION p (SELECT a ORDER BY a + 1)
+)
+ENGINE = MergeTree ORDER BY id;
+```
 
 ## 関連項目 \{#see-also\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesChangesToGrid \{#timeSeriesChangesToGrid\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 タイムスタンプと値のペアとして与えられる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される規則的な時間グリッド上で、そのデータから[PromQL 風の変化量](https://prometheus.io/docs/prometheus/latest/querying/functions/#changes)を計算する集約関数です。グリッド上の各ポイントに対して、`changes` を計算するためのサンプルは、指定された時間ウィンドウ内のものが対象になります。
 
@@ -25,7 +25,7 @@ timeSeriesChangesToGrid(start_timestamp, end_timestamp, grid_step, staleness)(ti
 
 **Parameters**
 
-* `start_timestamp` — グリッドの開始時刻を指定します。 - `end_timestamp` — グリッドの終了時刻を指定します。 - `grid_step` — グリッドのステップ（秒）を指定します。 - `staleness` — 対象とするサンプルの最大の「staleness」（秒）を指定します。
+* `start_timestamp` — グリッドの開始時刻を指定します。 - `end_timestamp` — グリッドの終了時刻を指定します。 - `grid_step` — グリッドのステップ (秒) を指定します。 - `staleness` — 対象とするサンプルの最大の「staleness」 (秒) を指定します。
 
 **Arguments**
 
@@ -65,7 +65,7 @@ FROM
 └───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**配列引数を使った同じクエリ**
+**同じクエリ (配列引数版)&#x20;**
 
 ```sql title=Query
 WITH

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArraySorted \{#groupArraySorted\}
 
-導入バージョン: v24.2
+導入バージョン: v24.2.0
 
 最初の N 個の要素を昇順に並べ替えた配列を返します。
 

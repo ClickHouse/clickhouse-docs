@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Spark Native Connector'
+sidebar_label: 'Spark native connector'
 sidebar_position: 2
 slug: /integrations/apache-spark/spark-native-connector
 description: 'Introduction to Apache Spark with ClickHouse'
@@ -31,6 +31,8 @@ catalog plugins.
 Spark's default catalog is `spark_catalog`, and tables are identified by `{catalog name}.{database}.{table}`. With the new
 catalog feature, it is now possible to add and work with multiple catalogs in a single Spark application.
 
+<TOCInline toc={toc}></TOCInline>
+
 ## Choosing Between Catalog API and TableProvider API {#choosing-between-apis}
 
 The ClickHouse Spark connector supports two access patterns: the **Catalog API** and the **TableProvider API** (format-based access). Understanding the differences helps you choose the right approach for your use case.
@@ -44,8 +46,6 @@ The ClickHouse Spark connector supports two access patterns: the **Catalog API**
 | **DDL Operations** | Full support (CREATE, DROP, ALTER) | Limited (automatic table creation only) |
 | **Spark SQL Integration** | Native (`clickhouse.database.table`) | Requires format specification |
 | **Use Case** | Long-term, stable connections with centralized config | Ad-hoc, dynamic, or temporary access |
-
-<TOCInline toc={toc}></TOCInline>
 
 ## Requirements {#requirements}
 
@@ -469,7 +469,7 @@ df.write()
 </Tabs>
 
 :::important
-**ORDER BY Required**: The `order_by` option is **required** when creating a new table via the TableProvider API. You must explicitly specify which column(s) to use for the ORDER BY clause. The connector validates that all specified columns exist in the schema and will throw an error if any columns are missing.
+**ORDER BY Required**: The `order_by` option is **required** when creating a new table via the TableProvider API. You must explicitly specify which columns to use for the ORDER BY clause. The connector validates that all specified columns exist in the schema and will throw an error if any columns are missing.
 
 **Engine Selection**: The default engine is `MergeTree()`, but you can specify any ClickHouse table engine using the `engine` option (e.g., `ReplacingMergeTree()`, `SummingMergeTree()`, `AggregatingMergeTree()`, etc.).
 :::
@@ -499,7 +499,7 @@ These options are used when the table doesn't exist and needs to be created:
 
 | Option                      | Description                                                                 | Default Value     | Required |
 |-----------------------------|-----------------------------------------------------------------------------|-------------------|----------|
-| `order_by`                  | Column(s) to use for ORDER BY clause. Comma-separated for multiple columns | N/A               | **Yes**  |
+| `order_by`                  | Columns to use for ORDER BY clause. Comma-separated for multiple columns | N/A               | **Yes**  |
 | `engine`                    | ClickHouse table engine (e.g., `MergeTree()`, `ReplacingMergeTree()`, `SummingMergeTree()`, etc.) | `MergeTree()`     | No       |
 | `settings.allow_nullable_key` | Enable nullable keys in ORDER BY (for ClickHouse Cloud)                   | Auto-detected**   | No       |
 | `settings.<key>`            | Any ClickHouse table setting                                               | N/A               | No       |
@@ -521,7 +521,7 @@ The Spark connector (both TableProvider API and Catalog API) supports the follow
 - **`overwrite`**: Replace all data in the table (truncates table)
 
 :::important
-**Partition Overwrite Not Supported**: The connector does not currently support partition-level overwrite operations (e.g., `overwrite` mode with `partitionBy`). This feature is in progress. See [GitHub issue #34](https://github.com/ClickHouse/spark-clickhouse-connector/issues/34) for tracking this feature.
+**Partition Overwrite Not Supported**: The connector doesn't currently support partition-level overwrite operations (e.g., `overwrite` mode with `partitionBy`). This feature is in progress. See [GitHub issue #34](https://github.com/ClickHouse/spark-clickhouse-connector/issues/34) for tracking this feature.
 :::
 
 <Tabs groupId="spark_apis">
@@ -773,7 +773,7 @@ df.show()
 ## Write data {#write-data}
 
 :::important
-**Partition Overwrite Not Supported**: The Catalog API does not currently support partition-level overwrite operations (e.g., `overwrite` mode with `partitionBy`). This feature is in progress. See [GitHub issue #34](https://github.com/ClickHouse/spark-clickhouse-connector/issues/34) for tracking this feature.
+**Partition Overwrite Not Supported**: The Catalog API doesn't currently support partition-level overwrite operations (e.g., `overwrite` mode with `partitionBy`). This feature is in progress. See [GitHub issue #34](https://github.com/ClickHouse/spark-clickhouse-connector/issues/34) for tracking this feature.
 :::
 
 <Tabs groupId="spark_apis">
@@ -1272,7 +1272,7 @@ VariantType write support varies by format:
 | Format | Support | Notes |
 |--------|---------|-------|
 | JSON | ✅ Full | Supports both `JSON` and `Variant` types. Recommended for VariantType data |
-| Arrow | ⚠️ Partial | Supports writing to ClickHouse `JSON` type. Does not support ClickHouse `Variant` type. Full support is pending resolution of https://github.com/ClickHouse/ClickHouse/issues/92752 |
+| Arrow | ⚠️ Partial | Supports writing to ClickHouse `JSON` type. Doesn't support ClickHouse `Variant` type. Full support is pending resolution of https://github.com/ClickHouse/ClickHouse/issues/92752 |
 
 Configure the write format:
 
@@ -1291,7 +1291,7 @@ If you need to write to a ClickHouse `Variant` type, use JSON format. Arrow form
 3. **Enable experimental features**: Ensure ClickHouse has `allow_experimental_json_type = 1` enabled
 4. **Use JSON format for writes**: JSON format is recommended for VariantType data for better compatibility
 5. **Consider query patterns**: JSON/Variant types support ClickHouse's JSON path queries for efficient filtering
-6. **Column hints for performance**: When using JSON fields in ClickHouse, adding column hints improves query performance. Currently, adding column hints via Spark is not supported. See [GitHub issue #497](https://github.com/ClickHouse/spark-clickhouse-connector/issues/497) for tracking this feature.
+6. **Column hints for performance**: When using JSON fields in ClickHouse, adding column hints improves query performance. Currently, adding column hints via Spark isn't supported. See [GitHub issue #497](https://github.com/ClickHouse/spark-clickhouse-connector/issues/497) for tracking this feature.
 
 ### Example: Complete Workflow {#varianttype-example-workflow}
 
@@ -1495,7 +1495,7 @@ Alternatively, set them in `spark-defaults.conf` or when creating the Spark sess
 | spark.clickhouse.write.batchSize                   | 10000                                                  | The number of records per batch on writing to ClickHouse.                                                                                                                                                                                                                                                                                                                                                       | 0.1.0 |
 | spark.clickhouse.write.compression.codec           | lz4                                                    | The codec used to compress data for writing. Supported codecs: none, lz4.                                                                                                                                                                                                                                                                                                                                       | 0.3.0 |
 | spark.clickhouse.write.distributed.convertLocal    | false                                                  | When writing Distributed table, write local table instead of itself. If `true`, ignore `spark.clickhouse.write.distributed.useClusterNodes`. This bypasses ClickHouse's native routing, requiring Spark to evaluate the sharding key. When using unsupported sharding expressions, set `spark.clickhouse.ignoreUnsupportedTransform` to `false` to prevent silent data distribution errors. | 0.1.0 |
-| spark.clickhouse.write.distributed.convertLocal.allowUnsupportedSharding | false                                                  | Allow writing to Distributed tables with `convertLocal=true` and `ignoreUnsupportedTransform=true` when the sharding key is unsupported. This is dangerous and may cause data corruption due to incorrect sharding. When set to `true`, you must ensure that your data is properly sorted/sharded before writing, as Spark cannot evaluate the unsupported sharding expression. Only set to `true` if you understand the risks and have verified your data distribution. By default, this combination will throw an error to prevent silent data corruption. | 0.10.0 |
+| spark.clickhouse.write.distributed.convertLocal.allowUnsupportedSharding | false                                                  | Allow writing to Distributed tables with `convertLocal=true` and `ignoreUnsupportedTransform=true` when the sharding key is unsupported. This is dangerous and may cause data corruption due to incorrect sharding. When set to `true`, you must ensure that your data is properly sorted/sharded before writing, as Spark can't evaluate the unsupported sharding expression. Only set to `true` if you understand the risks and have verified your data distribution. By default, this combination will throw an error to prevent silent data corruption. | 0.10.0 |
 | spark.clickhouse.write.distributed.useClusterNodes | true                                                   | Write to all nodes of cluster when writing Distributed table.                                                                                                                                                                                                                                                                                                                                                   | 0.1.0 |
 | spark.clickhouse.write.format                      | arrow                                                  | Serialize format for writing. Supported formats: json, arrow                                                                                                                                                                                                                                                                                                                                                    | 0.4.0 |
 | spark.clickhouse.write.localSortByKey              | true                                                   | If `true`, do local sort by sort keys before writing.                                                                                                                                                                                                                                                                                                                                                           | 0.3.0 |

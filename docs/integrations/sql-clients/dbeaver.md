@@ -56,7 +56,7 @@ DBeaver is available at https://dbeaver.io/download/
 
 <Image img={dbeaver_host_port} size="md" border alt="Set the hostname, port, user, password, and database name" />
 
-- By default the **SSL > Use SSL** property will be unset, if you are connecting to ClickHouse Cloud or a server that requires SSL on the HTTP port, then set **SSL > Use SSL** on:
+- By default the **SSL > Use SSL** property will be unset, if you're connecting to ClickHouse Cloud or a server that requires SSL on the HTTP port, then set **SSL > Use SSL** on:
 
 <Image img={dbeaver_use_ssl} size="md" border alt="Enable SSL if required" />
 
@@ -64,7 +64,7 @@ DBeaver is available at https://dbeaver.io/download/
 
 <Image img={dbeaver_test_connection} size="md" border alt="Test the connection" />
 
-If DBeaver detects that you do not have the ClickHouse driver installed it will offer to download them for you:
+If DBeaver detects that you don't have the ClickHouse driver installed it will offer to download them for you:
 
 <Image img={dbeaver_download_driver} size="md" border alt="Download the ClickHouse driver" />
 

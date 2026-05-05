@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-logs
-title: 'Monitoring PostgreSQL Logs with ClickStack'
-sidebar_label: 'PostgreSQL Logs'
+title: 'Monitoring PostgreSQL logs with ClickStack'
+sidebar_label: 'PostgreSQL logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring PostgreSQL Logs with ClickStack'
@@ -21,16 +21,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring PostgreSQL Logs with ClickStack {#postgres-logs-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor PostgreSQL with ClickStack by configuring the OpenTelemetry collector to ingest PostgreSQL server logs. You'll learn how to:
-
-- Configure PostgreSQL to output logs in CSV format for structured parsing
-- Create a custom OTel collector configuration for log ingestion
-- Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize PostgreSQL log insights (errors, slow queries, connections)
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production PostgreSQL.
-
-Time Required: 10-15 minutes
+Collect and visualize PostgreSQL server logs (CSV format) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing PostgreSQL {#existing-postgres}
@@ -330,7 +321,7 @@ The dashboard will be created with all visualizations pre-configured:
 <Image img={logs_dashboard} alt="Logs dashboard"/>
 
 :::note
-For the demo dataset, set the time range to **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-11-10 00:00:00 - 2025-11-11 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard won't have a time range specified by default.
 :::
 
 </VerticalStepper>
@@ -367,8 +358,6 @@ docker exec <container> cat /tmp/postgres-demo/postgresql.log | wc -l
 ```
 
 ## Next steps {#next-steps}
-
-After setting up PostgreSQL logs monitoring:
 
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical events (connection failures, slow queries, error spikes)
 - Correlate logs with [PostgreSQL metrics](/use-cases/observability/clickstack/integrations/postgresql-metrics) for comprehensive database monitoring

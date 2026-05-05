@@ -22,13 +22,9 @@ import Image from '@theme/IdealImage';
 
 ## 前提条件 \{#prerequisites\}
 
-- 一个已由计费管理员开通购买权限的 AWS 账户。
-- 要进行购买，您必须使用该账户登录 AWS Marketplace。
-- 要将 ClickHouse 组织关联到您的订阅，您必须是该组织的管理员。
-
-:::note
-一个 AWS 账户最多只能订阅一个“ClickHouse Cloud - Pay As You Go”订阅，并且该订阅只能关联到一个 ClickHouse 组织。
-:::
+* 一个已由计费管理员开通购买权限的 AWS 账户。
+* 要进行购买，您必须使用该账户登录 AWS Marketplace。
+* 要将 ClickHouse 组织关联到您的订阅，您必须是该组织的管理员。
 
 ## 注册步骤 \{#steps-to-sign-up\}
 

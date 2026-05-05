@@ -138,7 +138,7 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 
       左側のメニューから`ClickStack`を選択してClickStack UIに移動すると、自動的に認証されます。
 
-      検索UIにローカルシステムログが入力されます。フィルタを展開して`system.log`を選択してください:
+      検索UIにローカルシステムログが表示されます。フィルタを展開して`system.log`を選択してください:
 
       <Image img={hyperdx_20} alt="HyperDX ローカルログ" size="lg" />
 
@@ -160,7 +160,7 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 
       次のメニューから、`Output format`ドロップダウンで`Percentage`を選択してから、`Apply`をクリックします。
 
-      <Image img={hyperdx_23} alt="時間経過に伴うメモリ使用率（％）" size="lg" />
+      <Image img={hyperdx_23} alt="メモリ使用率（％）" size="lg" />
     </VerticalStepper>
   </TabItem>
 
@@ -285,7 +285,7 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 
       実行ボタンを押して、メモリ使用率の時系列推移を可視化してください。
 
-      <Image img={hyperdx_21} alt="時間経過に伴うメモリ使用率" size="lg" />
+      <Image img={hyperdx_21} alt="メモリ使用率の推移" size="lg" />
 
       数値は浮動小数点の`%`として返されることに注意してください。より明確に表示するには、`Set number format`を選択してください。
 

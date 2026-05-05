@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## kurtSamp \{#kurtSamp\}
 
-Появилось в: v20.1
+Появилось в: v20.1.0
 
 Вычисляет [выборочный эксцесс](https://en.wikipedia.org/wiki/Kurtosis) последовательности.
 

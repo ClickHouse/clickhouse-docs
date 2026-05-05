@@ -14,14 +14,14 @@ ClickHouse バージョン `24.3` では、新しいクエリアナライザー�
 
 ## 既知の非互換性 \{#known-incompatibilities\}
 
-多数のバグ修正と新しい最適化を導入した一方で、ClickHouse の動作には後方互換性を破る変更もいくつか含まれています。新しいアナライザ用にクエリを書き換える方法を判断するために、以下の変更点を確認してください。
+多数のバグ修正と新しい最適化を導入した一方で、ClickHouse の動作には後方互換性を破る変更もいくつか含まれています。アナライザ用にクエリを書き換える方法を判断するために、以下の変更点を確認してください。
 
 ### 無効なクエリはこれ以上最適化されない \{#invalid-queries-are-no-longer-optimized\}
 
 以前のクエリプランニング基盤では、クエリの検証ステップより前に AST レベルの最適化が適用されていました。
 この最適化により、元のクエリを書き換えて有効かつ実行可能にできる場合がありました。
 
-新しいアナライザでは、最適化ステップより前にクエリ検証が行われます。
+アナライザでは、最適化ステップより前にクエリ検証が行われます。
 これは、以前は実行可能だった無効なクエリが、現在はサポートされなくなったことを意味します。
 そのような場合、そのクエリは手動で修正する必要があります。
 
@@ -65,7 +65,7 @@ GROUP BY n
 
 ### 無効なクエリを指定した `CREATE VIEW` \{#create-view-with-invalid-query\}
 
-新しいアナライザは常に型チェックを行います。
+アナライザは常に型チェックを行います。
 以前は、無効な `SELECT` クエリを含む `VIEW` を作成できていました。
 その場合、最初の `SELECT` または（`MATERIALIZED VIEW` の場合は）`INSERT` で失敗していました。
 
@@ -109,7 +109,7 @@ USING (b);
 
 #### `JOIN USING` と `ALIAS` / `MATERIALIZED` カラムにおける動作の変更 \{#changes-in-behavior-with-join-using-and-aliasmaterialized-columns\}
 
-新しいアナライザでは、`ALIAS` または `MATERIALIZED` カラムを含む `JOIN USING` クエリで `*` を使用すると、それらのカラムもデフォルトで結果セットに含まれます。
+アナライザでは、`ALIAS` または `MATERIALIZED` カラムを含む `JOIN USING` クエリで `*` を使用すると、それらのカラムもデフォルトで結果セットに含まれます。
 
 例えば次のようになります。
 
@@ -124,11 +124,11 @@ SELECT * FROM t1
 FULL JOIN t2 USING (payload);
 ```
 
-新しいアナライザでは、このクエリの結果には、両方のテーブルの `id` とともに `payload` カラムが含まれます。
+アナライザでは、このクエリの結果には、両方のテーブルの `id` とともに `payload` カラムが含まれます。
 対照的に、以前のアナライザでは、特定の設定（`asterisk_include_alias_columns` または `asterisk_include_materialized_columns`）が有効な場合にのみこれらの `ALIAS` カラムが含まれ、
 また、カラムの並び順が異なる場合もありました。
 
-特に古いクエリを新しいアナライザへ移行する際に、一貫性があり予測可能な結果を得るためには、`*` を使用するのではなく、`SELECT` 句でカラムを明示的に指定することを推奨します。
+特に古いクエリをアナライザへ移行する際に、一貫性があり予測可能な結果を得るためには、`*` を使用するのではなく、`SELECT` 句でカラムを明示的に指定することを推奨します。
 
 
 #### `USING` 句内の列に対する型修飾子の扱い \{#handling-of-type-modifiers-for-columns-in-using-clause\}
@@ -180,7 +180,7 @@ FORMAT PrettyCompact
 
 ### 互換性のない関数引数の型 \{#incompatible-function-arguments-types\}
 
-新しいアナライザーでは、型推論はクエリの初期解析中に行われます。
+アナライザーでは、型推論はクエリの初期解析中に行われます。
 この変更により、短絡評価の前に型チェックが行われるようになり、その結果、`if` 関数の引数は常に共通の上位型（スーパータイプ）を持つ必要があります。
 
 例えば、次のクエリは `There is no supertype for types Array(UInt8), String because some of them are Array and some of them are not` というエラーになり失敗します。
@@ -192,7 +192,7 @@ SELECT toTypeName(if(0, [2, 3, 4], 'String'))
 
 ### 異種クラスタ \{#heterogeneous-clusters\}
 
-新しい analyzer は、クラスタ内のサーバー間の通信プロトコルを大きく変更します。\
+analyzer は、クラスタ内のサーバー間の通信プロトコルを大きく変更します。\
 そのため、`enable_analyzer` の設定値が異なるサーバー間で分散クエリを実行することはできません。
 
 ### ミューテーションは旧 analyzer によって解釈される \{#mutations-are-interpreted-by-previous-analyzer\}
@@ -203,7 +203,7 @@ SELECT toTypeName(if(0, [2, 3, 4], 'String'))
 
 ### 未サポートの機能 \{#unsupported-features\}
 
-新しい analyzer が現在サポートしていない機能の一覧は以下のとおりです。
+analyzer が現在サポートしていない機能の一覧は以下のとおりです。
 
 * Annoy インデックス。
 * Hypothesis インデックス。作業状況は[こちら](https://github.com/ClickHouse/ClickHouse/pull/48381)。
@@ -255,7 +255,7 @@ SETTINGS
 
 Error: `Column ... is not under aggregate function and not in GROUP BY keys (NOT_AN_AGGREGATE)`. Exception code: 215
 
-原因: 旧アナライザーでは、GROUP BY 句に含まれていないカラムを選択することが許可されており（多くの場合、任意の値が選択される）、エラーにはなりませんでした。新しいアナライザーは標準 SQL に従い、SELECT 句で指定されるすべてのカラムは集約関数で囲まれているか、グルーピングキーである必要があります。
+原因: 旧アナライザーでは、GROUP BY 句に含まれていないカラムを選択することが許可されており（多くの場合、任意の値が選択される）、エラーにはなりませんでした。アナライザーは標準 SQL に従い、SELECT 句で指定されるすべてのカラムは集約関数で囲まれているか、グルーピングキーである必要があります。
 
 解決策: 対象のカラムを `any()` や `argMax()` で囲むか、そのカラムを GROUP BY に追加してください。
 
@@ -275,7 +275,7 @@ SELECT user_id, device_id FROM table GROUP BY user_id, device_id
 
 Error: `CTE with name ... already exists (MULTIPLE_EXPRESSIONS_FOR_ALIAS)`. Exception code: 179
 
-原因: 旧アナライザでは、同じ名前の複数の Common Table Expressions（WITH ...）を、前に定義されたものを上書きする形で定義することが許可されていました。新しいアナライザでは、このような曖昧さは許可されません。
+原因: 旧アナライザでは、同じ名前の複数の Common Table Expressions（WITH ...）を、前に定義されたものを上書きする形で定義することが許可されていました。アナライザでは、このような曖昧さは許可されません。
 
 解決策: 重複している CTE の名前を一意になるように変更してください。
 
@@ -298,7 +298,7 @@ SELECT * FROM processed_data;
 
 エラー: `JOIN [JOIN TYPE] ambiguous identifier ... (AMBIGUOUS_IDENTIFIER)` 例外コード: 207
 
-原因: クエリが `JOIN` で結合されている複数のテーブルに存在する同名のカラムを、どのテーブル由来かを指定せずに参照しています。旧アナライザーは内部ロジックに基づいてカラムを推測していましたが、新アナライザーでは明示的な指定が必要です。
+原因: クエリが `JOIN` で結合されている複数のテーブルに存在する同名のカラムを、どのテーブル由来かを指定せずに参照しています。旧アナライザーは内部ロジックに基づいてカラムを推測していましたが、アナライザーでは明示的な指定が必要です。
 
 解決策: カラムを table&#95;alias.column&#95;name の形式で完全修飾します。
 
@@ -315,7 +315,7 @@ SELECT table1.ID AS ID_RENAMED FROM table1, table2 WHERE ID_RENAMED...
 
 Error: `Table expression modifiers FINAL are not supported for subquery...` または `Storage ... doesn't support FINAL` (`UNSUPPORTED_METHOD`). Exception codes: 1, 181
 
-Cause: FINAL はテーブルストレージ（特に [Shared]ReplacingMergeTree）用の修飾子です。新しいアナライザーは、次のような場合に適用された FINAL を拒否します：
+Cause: FINAL はテーブルストレージ（特に [Shared]ReplacingMergeTree）用の修飾子です。アナライザーは、次のような場合に適用された FINAL を拒否します：
 
 * サブクエリまたは派生テーブル（例: FROM (SELECT ...) FINAL）
 * FINAL をサポートしないテーブルエンジン（例: SharedMergeTree）
@@ -335,6 +335,6 @@ SELECT * FROM (SELECT * FROM my_table FINAL) AS subquery ...
 
 エラー: `Function with name countdistinct does not exist (UNKNOWN_FUNCTION)`. 例外コード: 46
 
-原因: 新しい analyzer では関数名は大文字・小文字を区別し、厳密にマッピングされます。`countdistinct`（すべて小文字）はもはや自動的に解決されなくなりました。
+原因: analyzer では関数名は大文字・小文字を区別し、厳密にマッピングされます。`countdistinct`（すべて小文字）はもはや自動的に解決されなくなりました。
 
 解決策: 標準の `countDistinct`（camelCase）か、ClickHouse 固有の `uniq` を使用してください。

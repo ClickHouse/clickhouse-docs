@@ -47,6 +47,7 @@ FORMAT CSV
 В этом случае ClickHouse автоматически определит формат на основе расширения файла.
 :::
 
+
 ### CSV-файлы с заголовками \{#csv-files-with-headers\}
 
 Предположим, что наш [CSV-файл содержит заголовки](assets/data_small_headers.csv):
@@ -73,6 +74,7 @@ clickhouse-client -q "INSERT INTO sometable FORMAT CSVWithNames" < data_small_he
 Начиная с [версии](https://github.com/ClickHouse/ClickHouse/releases) 23.1, ClickHouse автоматически определяет заголовки в CSV-файлах при использовании формата `CSV`, поэтому нет необходимости использовать `CSVWithNames` или `CSVWithNamesAndTypes`.
 :::
 
+
 ### CSV-файлы с пользовательскими разделителями \{#csv-files-with-custom-delimiters\}
 
 Если в CSV-файле используется разделитель, отличный от запятой, мы можем использовать опцию [format&#95;csv&#95;delimiter](/operations/settings/settings-formats.md/#format_csv_delimiter), чтобы задать соответствующий символ:
@@ -82,6 +84,7 @@ SET format_csv_delimiter = ';'
 ```
 
 Теперь при импорте из CSV-файла символ `;` будет использоваться как разделитель вместо запятой.
+
 
 ### Пропуск строк в CSV-файле \{#skipping-lines-in-a-csv-file\}
 
@@ -109,9 +112,10 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 При использовании функции `file()` в ClickHouse Cloud вам потребуется выполнять команды в `clickhouse client` на машине, где находится файл. Другой вариант — использовать [`clickhouse-local`](/operations/utilities/clickhouse-local.md) для локального анализа файлов.
 :::
 
-### Обработка значений NULL в CSV-файлах \{#treating-null-values-in-csv-files\}
 
-Значения NULL могут кодироваться по-разному в зависимости от приложения, которое сгенерировало файл. По умолчанию ClickHouse использует `\N` как представление NULL в CSV. Это поведение можно изменить с помощью опции [format&#95;csv&#95;null&#95;representation](/operations/settings/settings-formats.md/#format_tsv_null_representation).
+### Обработка значений NULL в файлах CSV \{#treating-null-values-in-csv-files\}
+
+Значения NULL могут кодироваться по-разному в зависимости от приложения, которое сгенерировало файл. По умолчанию ClickHouse использует `\N` как значение NULL в CSV. Но мы можем изменить это с помощью параметра [format&#95;csv&#95;null&#95;representation](/operations/settings/settings-formats.md/#format_tsv_null_representation).
 
 Предположим, у нас есть следующий CSV-файл:
 
@@ -156,6 +160,7 @@ SELECT * FROM file('nulls.csv')
 └────────┴──────┘
 ```
 
+
 ## TSV‑файлы (со значениями, разделёнными табуляцией) \{#tsv-tab-separated-files\}
 
 Формат данных с разделителями табуляции широко используется в качестве формата обмена данными. Для загрузки данных из [TSV‑файла](assets/data_small.tsv) в ClickHouse используется формат [TabSeparated](/interfaces/formats/TabSeparated):
@@ -165,6 +170,7 @@ clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.ts
 ```
 
 Существует также формат [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames), который позволяет работать с TSV‑файлами, содержащими заголовки. Аналогично CSV, мы можем пропустить первые X строк с помощью опции [input&#95;format&#95;tsv&#95;skip&#95;first&#95;lines](/operations/settings/settings-formats.md/#input_format_tsv_skip_first_lines).
+
 
 ### Необработанный TSV \{#raw-tsv\}
 
@@ -207,6 +213,7 @@ FORMAT CSVWithNames
 "2016_Greater_Western_Sydney_Giants_season","2017-05-01",86
 ```
 
+
 ### Сохранение экспортированных данных в CSV‑файл \{#saving-exported-data-to-a-csv-file\}
 
 Чтобы сохранить экспортированные данные в файл, можно использовать конструкцию [INTO...OUTFILE](/sql-reference/statements/select/into-outfile.md):
@@ -223,6 +230,7 @@ FORMAT CSVWithNames
 ```
 
 Обратите внимание, что ClickHouse потребовалась всего **~1** секунда, чтобы сохранить 36 млн строк в файл CSV.
+
 
 ### Экспорт CSV с пользовательскими разделителями \{#exporting-csv-with-custom-delimiters\}
 
@@ -249,6 +257,7 @@ FORMAT CSV
 "2016_Greater_Western_Sydney_Giants_season"|"2017-05-01"|86
 ```
 
+
 ### Экспорт CSV для Windows \{#exporting-csv-for-windows\}
 
 Если нам нужен файл CSV, корректно работающий в среде Windows, следует включить настройку [output&#95;format&#95;csv&#95;crlf&#95;end&#95;of&#95;line](/operations/settings/settings-formats.md/#output_format_csv_crlf_end_of_line). В этом случае в качестве символов конца строки будет использоваться `\r\n` вместо `\n`:
@@ -256,6 +265,7 @@ FORMAT CSV
 ```sql
 SET output_format_csv_crlf_end_of_line = 1;
 ```
+
 
 ## Автоматическое определение схемы для файлов CSV \{#schema-inference-for-csv-files\}
 
@@ -279,7 +289,49 @@ DESCRIBE file('data-small.csv', CSV)
 SET input_format_csv_use_best_effort_in_schema_inference = 0
 ```
 
-Во всех столбцах тип данных будет интерпретироваться как `String`.
+Во многих случаях нам приходится работать с неизвестными CSV-файлами, поэтому необходимо определить, какие типы данных использовать для столбцов. По умолчанию ClickHouse пытается определить форматы данных на основе анализа заданного CSV-файла. Это называется «автоматическим определением схемы». Обнаруженные типы данных можно изучить с помощью оператора DESCRIBE в сочетании с функцией file():
+
+DESCRIBE file(&#39;data-small.csv&#39;, CSV)
+
+┌─name─┬─type─────────────┬─default&#95;type─┬─default&#95;expression─┬─comment─┬─codec&#95;expression─┬─ttl&#95;expression─┐
+│ c1   │ Nullable(String) │              │                    │         │                  │                │
+│ c2   │ Nullable(Date)   │              │                    │         │                  │                │
+│ c3   │ Nullable(Int64)  │              │                    │         │                  │                │
+└──────┴──────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
+Здесь ClickHouse смог эффективно угадать типы столбцов для нашего CSV-файла. Если мы не хотим, чтобы ClickHouse делал это, мы можем отключить эту возможность с помощью следующей опции:
+
+SET input&#95;format&#95;csv&#95;use&#95;best&#95;effort&#95;in&#95;schema&#95;inference = 0
+
+Во всех столбцах данные будут рассматриваться как значения типа String.
+
+ClickHouse также позволяет явно задавать типы столбцов при экспорте данных с помощью формата CSVWithNamesAndTypes (и других форматов семейства WithNames):
+
+SELECT *
+FROM sometable
+LIMIT 5
+FORMAT CSVWithNamesAndTypes
+
+&quot;path&quot;,&quot;month&quot;,&quot;hits&quot;
+&quot;String&quot;,&quot;Date&quot;,&quot;UInt32&quot;
+&quot;Akiba&#95;Hebrew&#95;Academy&quot;,&quot;2017-08-01&quot;,241
+&quot;Aegithina&#95;tiphia&quot;,&quot;2018-02-01&quot;,34
+&quot;1971-72&#95;Utah&#95;Stars&#95;season&quot;,&quot;2016-10-01&quot;,1
+&quot;2015&#95;UEFA&#95;European&#95;Under-21&#95;Championship&#95;qualification&#95;Group&#95;8&quot;,&quot;2015-12-01&quot;,73
+&quot;2016&#95;Greater&#95;Western&#95;Sydney&#95;Giants&#95;season&quot;,&quot;2017-05-01&quot;,86
+
+Этот формат включает две строки заголовка — одну с именами столбцов и другую с их типами. Это позволяет ClickHouse (и другим приложениям) определять типы столбцов при загрузке данных из подобных файлов:
+
+DESCRIBE file(&#39;data&#95;csv&#95;types.csv&#39;, CSVWithNamesAndTypes)
+
+┌─name──┬─type───┬─default&#95;type─┬─default&#95;expression─┬─comment─┬─codec&#95;expression─┬─ttl&#95;expression─┐
+│ path  │ String │              │                    │         │                  │                │
+│ month │ Date   │              │                    │         │                  │                │
+│ hits  │ UInt32 │              │                    │         │                  │                │
+└───────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+
+Теперь ClickHouse определяет типы столбцов по (второй) строке заголовка, а не пытается их угадывать.
+
 
 ### Экспорт и импорт CSV с явным указанием типов столбцов \{#exporting-and-importing-csv-with-explicit-column-types\}
 
@@ -318,6 +370,7 @@ DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
 
 Теперь ClickHouse определяет типы столбцов по (второй) строке заголовка, а не пытается их угадывать.
 
+
 ## Пользовательские разделители, сепараторы и правила экранирования \{#custom-delimiters-separators-and-escaping-rules\}
 
 В сложных случаях текстовые данные могут быть отформатированы в сильно кастомизированном виде, но при этом сохранять структуру. В ClickHouse есть специальный формат [CustomSeparated](/interfaces/formats/CustomSeparated) для таких случаев, который позволяет задавать собственные правила экранирования, разделители, разделители строк и начальные/конечные символы.
@@ -338,7 +391,7 @@ SET format_custom_row_between_delimiter = ',';
 SET format_custom_escaping_rule = 'Quoted';
 ```
 
-Теперь мы можем загрузить данные из нашего файла [file](assets/data_small_custom.txt) с пользовательским форматом:
+Теперь мы можем загрузить данные из нашего файла с пользовательским форматом [file](assets/data_small_custom.txt):
 
 ```sql
 SELECT *
@@ -355,6 +408,7 @@ LIMIT 3
 ```
 
 Мы также можем использовать [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames), чтобы корректно экспортировать и импортировать заголовки. Изучите форматы [regex and template](templates-regex.md) для работы с ещё более сложными случаями.
+
 
 ## Работа с большими CSV‑файлами \{#working-with-large-csv-files\}
 
@@ -376,6 +430,7 @@ COMPRESSION 'gzip' FORMAT CSV
 ```
 
 В результате будет создан сжатый файл `data_csv.csv.gz`.
+
 
 ## Другие форматы \{#other-formats\}
 

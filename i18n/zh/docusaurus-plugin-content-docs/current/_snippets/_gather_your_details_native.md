@@ -4,7 +4,7 @@ import Image from '@theme/IdealImage';
 
 要通过原生 TCP 协议连接到 ClickHouse，需要以下信息：
 
-| Parameter(s)              | Description                            |
+| Parameters                | Description                            |
 | ------------------------- | -------------------------------------- |
 | `HOST` and `PORT`         | 通常在使用 TLS 时端口为 9440，不使用 TLS 时端口为 9000。 |
 | `DATABASE NAME`           | 默认提供名为 `default` 的数据库，请使用您要连接的数据库名称。   |

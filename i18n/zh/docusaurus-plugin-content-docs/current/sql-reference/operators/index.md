@@ -113,8 +113,8 @@ SELECT * FROM a AS a1 JOIN a AS a2 ON a1.x <=> a2.x;
 :::
 
 `<=>` 运算符是 `NULL` 安全相等运算符，等同于 `IS NOT DISTINCT FROM`。
-它的行为类似常规相等运算符（`=`），但会将 `NULL` 值视为可参与比较。
-两个 `NULL` 值被视为相等，将 `NULL` 与任意非 `NULL` 值比较时，返回 0（false），而不是 `NULL`。
+它的行为类似常规相等运算符 (`=`) ，但会将 `NULL` 值视为可参与比较。
+两个 `NULL` 值被视为相等，将 `NULL` 与任意非 `NULL` 值比较时，返回 0 (false) ，而不是 `NULL`。
 
 ```sql
 SELECT
@@ -150,7 +150,7 @@ SELECT
 
 ### in 子查询函数 \{#in-subquery-function\}
 
-`a = ANY (subquery)` 等同于 `in (a, subquery)` 函数。  
+`a = ANY (subquery)` 等同于 `in (a, subquery)` 函数。
 
 ### notIn subquery function \{#notin-subquery-function\}
 
@@ -214,16 +214,26 @@ EXTRACT(part FROM date);
 
 `part` 参数指定要从日期中提取的部分。可用值如下：
 
-* `DAY` — 月份中的天数。可能的取值范围：1–31。
-* `MONTH` — 月份的序号。可能的取值范围：1–12。
-* `YEAR` — 年。
 * `SECOND` — 秒。可能的取值范围：0–59。
 * `MINUTE` — 分钟。可能的取值范围：0–59。
 * `HOUR` — 小时。可能的取值范围：0–23。
+* `DAY` — 月份中的天数。可能的取值范围：1–31。
+* `WEEK` — ISO 8601 周序号。可能的取值范围：1–53。
+* `MONTH` — 月份的序号。可能的取值范围：1–12。
+* `QUARTER` — 季度。可能的取值范围：1–4。
+* `YEAR` — 年。
+* `EPOCH` — Unix 时间戳 (自 1970-01-01 00:00:00 UTC 起的秒数) 。注意：对于 `DateTime64`，秒以下部分会被截断。
+* `DOW` — 一周中的第几天 (与 PostgreSQL 兼容) 。0 = 星期日，6 = 星期六。
+* `DOY` — 一年中的第几天。可能的取值范围：1–366。
+* `ISODOW` — ISO 一周中的第几天。1 = 星期一，7 = 星期日。
+* `ISOYEAR` — ISO 8601 周编号年份。
+* `CENTURY` — 世纪。例如，2024 年属于 21 世纪。
+* `DECADE` — 十年期 (年份除以 10) 。例如，2024 年的十年期值为 202。
+* `MILLENNIUM` — 千年。例如，2024 年属于第 3 个千年。
 
 `part` 参数不区分大小写。
 
-`date` 参数指定要处理的日期或时间。支持 [Date](../../sql-reference/data-types/date.md) 或 [DateTime](../../sql-reference/data-types/datetime.md) 类型。
+`date` 参数指定要处理的日期或时间。支持 [Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md) 和 [DateTime64](../../sql-reference/data-types/datetime64.md) 类型。
 
 示例:
 
@@ -231,6 +241,9 @@ EXTRACT(part FROM date);
 SELECT EXTRACT(DAY FROM toDate('2017-06-15'));
 SELECT EXTRACT(MONTH FROM toDate('2017-06-15'));
 SELECT EXTRACT(YEAR FROM toDate('2017-06-15'));
+SELECT EXTRACT(EPOCH FROM toDateTime('2024-01-15 12:30:45', 'UTC'));
+SELECT EXTRACT(DOW FROM toDate('2024-01-15'));
+SELECT EXTRACT(CENTURY FROM toDate('2024-01-01'));
 ```
 
 在以下示例中，我们创建一个表并向其中插入一个 `DateTime` 类型的值。
@@ -241,8 +254,8 @@ CREATE TABLE test.Orders
     OrderId UInt64,
     OrderName String,
     OrderDate DateTime
-)
-ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 ```
 
 ```sql
@@ -267,6 +280,7 @@ FROM test.Orders;
 ```
 
 更多示例请参见[测试用例](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql)。
+
 
 ### INTERVAL \{#interval\}
 
@@ -322,7 +336,7 @@ SELECT now() AS current_date_time, current_date_time + INTERVAL '4' day + INTERV
 ```
 
 :::note
-始终优先使用 `INTERVAL` 语法或 `addDays` 函数。简单的加减运算（例如 `now() + ...` 这样的语法）不会考虑时间相关设置，例如夏令时。
+始终优先使用 `INTERVAL` 语法或 `addDays` 函数。简单的加减运算 (例如 `now() + ...` 这样的语法) 不会考虑时间相关设置，例如夏令时。
 :::
 
 示例:
@@ -342,6 +356,55 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) 数据类型
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 类型转换函数
 
+### 日期和时间加法 \{#date-time-addition\}
+
+可以使用 `+` 运算符将 [Date](../../sql-reference/data-types/date.md) 或 [Date32](../../sql-reference/data-types/date32.md) 值与 [Time](../../sql-reference/data-types/time.md) 或 [Time64](../../sql-reference/data-types/time64.md) 值相加。结果为一个 [DateTime](../../sql-reference/data-types/datetime.md) 或 [DateTime64](../../sql-reference/data-types/datetime64.md)，表示该日期在一天中给定时间点对应的日期时间。该运算满足交换律。
+
+结果类型取决于操作数类型：
+
+| Left operand | Right operand | Result type     |
+| ------------ | ------------- | --------------- |
+| `Date`       | `Time`        | `DateTime`      |
+| `Date`       | `Time64(s)`   | `DateTime64(s)` |
+| `Date32`     | `Time`        | `DateTime64(0)` |
+| `Date32`     | `Time64(s)`   | `DateTime64(s)` |
+
+:::note
+结果使用[会话时区](../../operations/settings/settings.md#session_timezone) (如果未设置会话时区，则使用服务器默认时区) 。[`date_time_overflow_behavior`](../../operations/settings/settings-formats.md#date_time_overflow_behavior) 设置用于控制结果超出可表示范围时的行为。
+:::
+
+示例：
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25 │ DateTime       │
+└─────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+┌─────────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+└────────────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toTime64('23:59:59.999', 3) + toDate32('2024-07-15') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 23:59:59.999 │ DateTime64(3)  │
+└─────────────────────────┴────────────────┘
+```
 
 ## 逻辑 AND 运算符 \{#logical-and-operator\}
 

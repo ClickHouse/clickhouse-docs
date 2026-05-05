@@ -17,18 +17,11 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
+
 # Мониторинг метрик Kafka с помощью ClickStack \{#kafka-metrics-clickstack\}
 
 :::note[TL;DR]
-В этом руководстве показано, как отслеживать метрики производительности Apache Kafka с помощью ClickStack, используя OpenTelemetry JMX Metric Gatherer. Вы узнаете, как:
-
-- Включить JMX на брокерах Kafka и настроить JMX Metric Gatherer
-- Отправлять метрики Kafka в ClickStack через OTLP
-- Использовать готовую панель мониторинга для визуализации производительности Kafka (пропускная способность брокеров, отставание потребителей, состояние партиций, задержка запросов)
-
-Доступен демонстрационный набор данных с примерами метрик, если вы хотите протестировать интеграцию перед настройкой боевого кластера Kafka.
-
-Требуемое время: 10–15 минут
+Мониторьте метрики производительности Apache Kafka в ClickStack с помощью OTel JMX Metric Gatherer. Включает демо-набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим развертыванием Kafka \{#existing-kafka\}
@@ -302,22 +295,22 @@ HyperDX отображает временные метки в локальном
 
 ## Устранение неполадок {#troubleshooting}
 
-#### Метрики не отображаются в HyperDX
+### Метрики не отображаются в HyperDX
 
 **Убедитесь, что API-ключ задан и передаётся в контейнер:**
 
 ```bash
-# Проверка переменной окружения
+# Check environment variable
 echo $CLICKSTACK_API_KEY
 
-# Проверка наличия переменной в контейнере
+# Verify it's in the container
 docker exec <jmx-exporter-container> env | grep CLICKSTACK_API_KEY
 ```
 
 Если параметр не задан, задайте его и перезапустите:
 
 ```bash
-export CLICKSTACK_API_KEY=ваш-api-ключ
+export CLICKSTACK_API_KEY=your-api-key-here
 docker compose up -d kafka-jmx-exporter
 ```
 
@@ -341,14 +334,15 @@ docker compose logs kafka-jmx-exporter | grep -i "error\|connection" | tail -10
 **Сгенерируйте активность в Kafka, чтобы заполнить метрики:**
 
 ```bash
-# Создание тестового топика
+# Create a test topic
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --create --topic test-topic --bootstrap-server kafka:9092 --partitions 3 --replication-factor 1"
 
-# Отправка тестовых сообщений
+# Send test messages
 echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset JMX_PORT && kafka-console-producer --topic test-topic --bootstrap-server kafka:9092"
 ```
 
-#### Ошибки авторизации \{#created-dashboard\}
+
+### Ошибки авторизации
 
 Если вы видите `Authorization failed` или `401 Unauthorized`:
 
@@ -356,17 +350,18 @@ echo -e "Message 1\nMessage 2\nMessage 3" | docker exec -i kafka bash -c "unset 
 2. Повторно выполните экспорт и перезапустите:
 
 ```bash
-export CLICKSTACK_API_KEY=ваш-корректный-api-ключ
+export CLICKSTACK_API_KEY=your-correct-api-key
 docker compose down
 docker compose up -d
 ```
 
-#### Конфликты портов при выполнении команд клиента Kafka \{#import-dashboard\}
+
+### Конфликты портов при выполнении команд клиента Kafka
 
 При выполнении команд клиента Kafka внутри контейнера Kafka вы можете увидеть:
 
 ```bash
-Ошибка: порт уже используется: 9999
+Error: Port already in use: 9999
 ```
 
 Добавьте к каждой команде префикс `unset JMX_PORT &&`:
@@ -375,7 +370,8 @@ docker compose up -d
 docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-server kafka:9092"
 ```
 
-#### Проблемы с сетевым подключением \{#no-metrics\}
+
+### Проблемы с сетевым подключением
 
 Если в логах экспортера JMX появляется сообщение `Connection refused`:
 
@@ -383,17 +379,24 @@ docker exec kafka bash -c "unset JMX_PORT && kafka-topics --list --bootstrap-ser
 
 ```bash
 docker compose ps
-docker network inspect <имя-сети>
+docker network inspect <network-name>
 ```
 
 Проверка подключения:
 
 ```bash
-# Из JMX-экспортера в ClickStack {#check-environment-variable}
+# From JMX exporter to ClickStack
 docker exec <jmx-exporter-container> sh -c "timeout 2 bash -c 'cat < /dev/null > /dev/tcp/clickstack/4318' && echo 'Connected' || echo 'Failed'"
 ```
 
-## Переход в продакшн \{#going-to-production\}
+
+## Следующие шаги \{#next-steps\}
+
+- Настройте [оповещения](/use-cases/observability/clickstack/alerts) для критически важных метрик (недореплицированные партиции, рост отставания потребителей, всплески задержки запросов)
+- Создайте дополнительные панели мониторинга для конкретных сценариев использования (пропускная способность по топикам, мониторинг групп потребителей)
+- Мониторьте несколько брокеров Kafka, добавив дополнительные экземпляры JMX Metric Gatherer с уникальными атрибутами ресурса `kafka.broker.id`
+
+## Переход в продакшн {#going-to-production}
 
 В этом руководстве метрики отправляются напрямую из JMX Metric Gatherer в OTLP-эндпоинт ClickStack, что хорошо подходит для тестирования и небольших развертываний. 
 

@@ -2,7 +2,7 @@
 sidebar_label: 'Supabase Postgres'
 description: 'Set up Supabase instance as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/supabase
-title: 'Supabase Source Setup Guide'
+title: 'Supabase source setup guide'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 integration:
@@ -90,7 +90,7 @@ Head over to your Supabase Project's `Project Settings` -> `Database` (under `Co
 
 :::info
 
-The connection pooler is not supported for CDC based replication, hence it needs to be disabled.
+The connection pooler isn't supported for CDC based replication, hence it needs to be disabled.
 
 :::
 

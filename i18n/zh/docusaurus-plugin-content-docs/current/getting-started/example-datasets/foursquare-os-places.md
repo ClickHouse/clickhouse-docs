@@ -250,6 +250,7 @@ INSERT INTO foursquare_mercator
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
 
+
 ## 可视化数据 \{#data-visualization\}
 
 要了解这个数据集可以实现哪些可视化效果，请查看 [adsb.exposed](https://adsb.exposed/?dataset=Places&zoom=5&lat=52.3488&lng=4.9219)。

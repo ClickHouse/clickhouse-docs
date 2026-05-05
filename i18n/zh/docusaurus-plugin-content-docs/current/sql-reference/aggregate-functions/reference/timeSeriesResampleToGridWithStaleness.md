@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesResampleToGridWithStaleness \{#timeSeriesResampleToGridWithStaleness\}
 
-引入版本：v25.6
+引入版本：v25.6.0
 
 该聚合函数将时间序列数据作为时间戳和值的成对数据进行处理，并根据由起始时间戳、结束时间戳和步长描述的等间隔时间网格对数据进行重新采样。对于网格上的每个点，会在给定时间窗口内选择最近的样本。
 
@@ -31,8 +31,8 @@ timeSeriesResampleToGridWithStaleness(start_timestamp, end_timestamp, grid_step,
 
 * `start_timestamp` — 指定网格的起始时间戳。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
 * `end_timestamp` — 指定网格的结束时间戳。[`UInt32`](/sql-reference/data-types/int-uint) 或 [`DateTime`](/sql-reference/data-types/datetime)
-* `grid_step` — 指定网格的步长（单位：秒）。[`UInt32`](/sql-reference/data-types/int-uint)
-* `staleness_window` — 指定最近样本的最大允许“陈旧”时间（单位：秒）。[`UInt32`](/sql-reference/data-types/int-uint)
+* `grid_step` — 指定网格的步长 (单位：秒) 。[`UInt32`](/sql-reference/data-types/int-uint)
+* `staleness_window` — 指定最近样本的最大允许“陈旧”时间 (单位：秒) 。[`UInt32`](/sql-reference/data-types/int-uint)
 
 **自变量**
 

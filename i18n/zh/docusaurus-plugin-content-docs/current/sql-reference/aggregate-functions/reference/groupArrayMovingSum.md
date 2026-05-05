@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayMovingSum \{#groupArrayMovingSum\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 计算输入值的移动求和。
 

@@ -258,7 +258,7 @@ FOREIGN TABLE](#create-foreign-table).
  ORDER BY id;
 ```
 
-`IMPORT FOREIGN SCHEMA` создаёт следующую внешнюю таблицу:`
+`IMPORT FOREIGN SCHEMA` создаёт следующую внешнюю таблицу:
 
 ```sql
  CREATE TABLE test
@@ -269,7 +269,7 @@ FOREIGN TABLE](#create-foreign-table).
  );
 ```
 
-Поэтому в запросах необходимо корректно использовать кавычки, например:
+Поэтому в запросах такие имена нужно правильно заключать в кавычки, например:
 
 ```sql
  SELECT id, "Name", "updatedAt" FROM test;
@@ -362,7 +362,7 @@ DROP FOREIGN TABLE uact CASCADE;
 
 ## Справочник по SQL DML \{#dml-sql-reference\}
 
-SQL-выражения [DML], приведённые ниже, могут использовать pg&#95;clickhouse. Примеры зависят от следующих таблиц ClickHouse, созданных скриптом [make-logs.sql]:
+SQL-выражения [DML], приведённые ниже, могут использовать pg&#95;clickhouse. Примеры зависят от следующих таблиц ClickHouse:
 
 ```sql
 CREATE TABLE logs (
@@ -577,6 +577,15 @@ try=# EXECUTE avg_durations_between_dates('2025-12-09', '2025-12-13');
 (5 rows)
 ```
 
+:::warning
+Параметризованное выполнение не позволяет [http-драйверу](#create-server)
+корректно преобразовывать часовые пояса для значений `DateTime` в версиях ClickHouse до 25.8,
+когда [основная ошибка] была [исправлена]. Обратите внимание, что PostgreSQL иногда
+использует параметризованный план запроса даже без `PREPARE`. Для любых запросов,
+которым требуется точное преобразование часовых поясов и когда обновление до 25.8 или
+более новой версии невозможно, вместо этого используйте [бинарный драйвер](#create-server).
+:::
+
 pg&#95;clickhouse, как и обычно, проталкивает агрегации на нижележащий уровень, что видно из подробного вывода [EXPLAIN](#explain):
 
 ```pgsql
@@ -676,7 +685,8 @@ pg&#95;clickhouse при первом использовании любой из
 SET pg_clickhouse.session_settings = 'join_use_nulls 1, final 1';
 ```
 
-По умолчанию — `join_use_nulls 1`. Установите пустую строку, чтобы перейти к использованию настроек сервера ClickHouse.
+По умолчанию — `join_use_nulls 1`. Установите пустую строку, чтобы перейти к использованию
+настроек сервера ClickHouse.
 
 ```sql
 SET pg_clickhouse.session_settings = '';
@@ -694,7 +704,8 @@ SET pg_clickhouse.session_settings = 'join_algorithm grace_hash\,hash';
 SET pg_clickhouse.session_settings = $$join_algorithm 'grace_hash,hash'$$;
 ```
 
-Если для вас важна читаемость и нужно задать много параметров, используйте несколько строк, например:
+Если для вас важна читаемость и нужно задать много параметров, используйте несколько
+строк, например:
 
 ```sql
 SET pg_clickhouse.session_settings TO $$
@@ -715,7 +726,14 @@ SET pg_clickhouse.session_settings TO $$
 $$;
 ```
 
-pg&#95;clickhouse не проверяет настройки, а передаёт их в ClickHouse
+Некоторые настройки будут игнорироваться, если они могут помешать
+работе самого pg&#95;clickhouse. К ним относятся:
+
+* `date_time_output_format`: HTTP-драйвер требует, чтобы он был равен «iso»
+* `format_tsv_null_representation`: HTTP-драйвер требует значение по умолчанию
+* `output_format_tsv_crlf_end_of_line`: HTTP-драйвер требует значение по умолчанию
+
+В остальном pg&#95;clickhouse не проверяет настройки, а передаёт их в ClickHouse
 для каждого запроса. Тем самым он поддерживает все настройки для каждой версии ClickHouse.
 
 Обратите внимание, что pg&#95;clickhouse должен быть загружен до задания
@@ -776,19 +794,19 @@ shared_preload_libraries = pg_clickhouse
 Полезно для экономии памяти и снижения накладных расходов на загрузку в каждом сеансе, но при обновлении библиотеки требуется перезапуск кластера.
 
 
-## Справочник функций и операторов \{#function-and-operator-reference\}
-
-### Типы данных \{#data-types\}
+## Типы данных \{#data-types\}
 
 pg_clickhouse сопоставляет следующие типы данных ClickHouse с типами данных
-PostgreSQL:
+PostgreSQL. [IMPORT FOREIGN SCHEMA](#import-foreign-schema) использует первый тип в
+определении столбца PostgreSQL при импорте столбцов; дополнительные типы могут указываться в
+командах [CREATE FOREIGN TABLE](#create-foreign-table):
 
 | ClickHouse |    PostgreSQL    |                   Примечания                    |
-| -----------|------------------|-------------------------------------------------|
+|------------|------------------|-------------------------------------------------|
 | Bool       | boolean          |                                                 |
 | Date       | date             |                                                 |
 | Date32     | date             |                                                 |
-| DateTime   | timestamp        |                                                 |
+| DateTime   | timestamptz      |                                                 |
 | Decimal    | numeric          |                                                 |
 | Float32    | real             |                                                 |
 | Float64    | double precision |                                                 |
@@ -799,12 +817,136 @@ PostgreSQL:
 | Int64      | bigint           |                                                 |
 | Int8       | smallint         |                                                 |
 | JSON       | jsonb            | только для HTTP-движка                         |
-| String     | text             |                                                 |
+| String     | text, bytea      |                                                 |
 | UInt16     | integer          |                                                 |
 | UInt32     | bigint           |                                                 |
 | UInt64     | bigint           | Ошибка для значений > максимального значения BIGINT |
 | UInt8      | smallint         |                                                 |
 | UUID       | uuid             |                                                 |
+
+Дополнительные замечания и подробности приведены ниже.
+
+### BYTEA \{#bytea\}
+
+ClickHouse не предоставляет эквивалента типа PostgreSQL [BYTEA], однако
+позволяет хранить произвольные байты в типе [String]. В общем случае строки ClickHouse
+следует сопоставлять с типом PostgreSQL [TEXT], но при работе с двоичными данными используйте
+тип [BYTEA]. Пример:
+
+```sql
+-- Create clickHouse table with String columns.
+SELECT clickhouse_raw_query($$
+    CREATE TABLE bytes (
+        c1 Int8, c2 String, c3 String
+    ) ENGINE = MergeTree ORDER BY (c1);
+$$);
+
+-- Create foreign table with BYTEA columns.
+CREATE FOREIGN TABLE bytes (
+    c1 int,
+    c2 BYTEA,
+    c3 BYTEA
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Insert binary data into the foreign table.
+INSERT INTO bytes
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the results.
+SELECT * FROM bytes;
+```
+
+Последний запрос `SELECT` выведет:
+
+```pgsql
+ c1 |                             c2                             |                 c3
+----+------------------------------------------------------------+------------------------------------
+  1 | \x1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | \xae3b28cde02542f81acce8783245430d
+  2 | \x5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | \x23e7c6cacb8383f878ad093b0027d72b
+  3 | \x53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | \x7e969132fc656148b97b6a2ee8bc83c1
+  4 | \x4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | \x8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+Обратите внимание: если в столбцах ClickHouse присутствуют нулевые байты, внешняя
+таблица, использующая столбцы [TEXT], не будет выводить правильные значения:
+
+```sql
+-- Create foreign table with TEXT columns.
+CREATE FOREIGN TABLE texts (
+    c1 int,
+    c2 TEXT,
+    c3 TEXT
+) SERVER ch_srv OPTIONS( table_name 'bytes' );
+
+-- Encode binary data as hex.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+Вывод:
+
+```pgsql
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b
+  3 | 53ac2c1fa83c8f64603fe9568d883331                         | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+Обратите внимание, что вторая и третья строки содержат усечённые значения. Это связано с тем, что
+PostgreSQL использует строки, завершающиеся нулевым символом, и не поддерживает нулевые символы внутри
+строк.
+
+Попытка вставить бинарные значения в столбцы [TEXT] завершится успешно и будет
+работать как ожидается:
+
+```sql
+-- Insert via text columns:
+TRUNCATE texts;
+INSERT INTO texts
+SELECT n, sha224(bytea('val'||n)), decode(md5('int'||n), 'hex')
+  FROM generate_series(1, 4) n;
+
+-- View the data.
+SELECT c1, encode(c2::bytea, 'hex'), encode(c3::bytea, 'hex') FROM texts ORDER BY c1;
+```
+
+Текстовые столбцы будут корректными:
+
+```pgdsql
+
+ c1 |                          encode                          |              encode
+----+----------------------------------------------------------+----------------------------------
+  1 | 1bf7f0cc821d31178616a55a8e0c52677735397cdde6f4153a9fd3d7 | ae3b28cde02542f81acce8783245430d
+  2 | 5f6e9e12cd8592712e638016f4b1a2e73230ee40db498c0f0b1dc841 | 23e7c6cacb8383f878ad093b0027d72b
+  3 | 53ac2c1fa83c8f64603fe9568d883331007d6281de330a4b5e728f9e | 7e969132fc656148b97b6a2ee8bc83c1
+  4 | 4e3c2e4cb7542a45173a8dac939ddc4bc75202e342ebc769b0f5da2f | 8ef30f44c65480d12b650ab6b2b04245
+(4 rows)
+```
+
+Но при чтении их как [BYTEA] этого не произойдёт:
+
+```pgsql
+# SELECT * FROM bytes;
+ c1 |                                                           c2                                                           |                                   c3
+----+------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------
+  1 | \x5c783162663766306363383231643331313738363136613535613865306335323637373733353339376364646536663431353361396664336437 | \x5c786165336232386364653032353432663831616363653837383332343534333064
+  2 | \x5c783566366539653132636438353932373132653633383031366634623161326537333233306565343064623439386330663062316463383431 | \x5c783233653763366361636238333833663837386164303933623030323764373262
+  3 | \x5c783533616332633166613833633866363436303366653935363864383833333331303037643632383164653333306134623565373238663965 | \x5c783765393639313332666336353631343862393762366132656538626338336331
+  4 | \x5c783465336332653463623735343261343531373361386461633933396464633462633735323032653334326562633736396230663564613266 | \x5c783865663330663434633635343830643132623635306162366232623034323435
+(4 rows)
+```
+
+:::tip
+Как правило, используйте столбцы [TEXT] только для закодированных строк, а столбцы [BYTEA] —
+только для двоичных данных и никогда не используйте их взаимозаменяемо.
+:::
+
+
+## Справочник функций и операторов \{#function-and-operator-reference\}
 
 ### Функции \{#functions\}
 
@@ -890,6 +1032,7 @@ SELECT clickhouse_raw_query(
 * `btrim`: [trimBoth](https://clickhouse.com/docs/sql-reference/functions/string-functions#trimboth)
 * `strpos`: [position](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#position)
 * `regexp_like`: [match](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match)
+*   `md5`: [MD5](https://clickhouse.com/docs/sql-reference/functions/hash-functions#MD5)
 
 ### Пользовательские функции \{#custom-functions\}
 
@@ -1046,9 +1189,25 @@ Copyright (c) 2025-2026, ClickHouse
     "Документация PostgreSQL: строковые константы в долларовых кавычках"
 
 [library preloading]: https://www.postgresql.org/docs/18/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-PRELOAD
+    "Документация PostgreSQL: предварительная загрузка разделяемых библиотек"
 
-"Документация PostgreSQL: предварительная загрузка разделяемых библиотек
-  [PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
+[PREPARE notes]: https://www.postgresql.org/docs/current/sql-prepare.html#SQL-PREPARE-NOTES
     "Документация PostgreSQL: примечания к PREPARE"
-  [query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
+
+[query parameters]: https://clickhouse.com/docs/guides/developer/stored-procedures-and-prepared-statements#alternatives-to-prepared-statements-in-clickhouse
     "Документация ClickHouse: альтернативы подготовленным запросам в ClickHouse"
+
+[underlying bug]: https://github.com/ClickHouse/ClickHouse/issues/85847
+    "ClickHouse/ClickHouse#85847 Некоторые запросы в multipart-формах не читают настройки"
+
+[fixed]: https://github.com/ClickHouse/ClickHouse/pull/85570
+    "ClickHouse/ClickHouse#85570 исправление обработки HTTP с multipart"
+
+[BYTEA]: https://www.postgresql.org/docs/current/datatype-binary.html
+    "Документация PostgreSQL: двоичные типы данных"
+
+[String]: https://clickhouse.com/docs/sql-reference/data-types/string
+    "Документация ClickHouse: String"
+
+[TEXT]: https://www.postgresql.org/docs/current/datatype-character.html
+    "Документация PostgreSQL: символьные типы"

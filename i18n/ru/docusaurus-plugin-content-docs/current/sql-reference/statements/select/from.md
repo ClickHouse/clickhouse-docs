@@ -6,17 +6,25 @@ title: 'Предложение FROM'
 doc_type: 'reference'
 ---
 
-# Секция FROM \{#from-clause\}
+# Предложение FROM \{#from-clause\}
 
-Секция `FROM` задаёт источник, из которого читаются данные:
+Предложение `FROM` задаёт источник, из которого читаются данные:
 
 * [Таблица](../../../engines/table-engines/index.md)
 * [Подзапрос](../../../sql-reference/statements/select/index.md)
 * [Табличная функция](/sql-reference/table-functions)
 
-Секции [JOIN](../../../sql-reference/statements/select/join.md) и [ARRAY JOIN](../../../sql-reference/statements/select/array-join.md) также могут использоваться для расширения функциональности секции `FROM`.
+Секции [JOIN](../../../sql-reference/statements/select/join.md) и [ARRAY JOIN](../../../sql-reference/statements/select/array-join.md) также могут использоваться для расширения функциональности предложения `FROM`.
 
-Подзапрос — это другой запрос `SELECT`, который может быть указан в скобках внутри секции `FROM`.
+Подзапрос — это другой запрос `SELECT`, который может быть указан в скобках внутри предложения `FROM`.
+
+Стандартная секция SQL `VALUES` также может использоваться как табличное выражение:
+
+```sql
+SELECT * FROM (VALUES (1, 'a'), (2, 'b'), (3, 'c')) AS t(id, val);
+```
+
+Подробнее см. в разделе [табличная функция Values](/sql-reference/table-functions/values#sql-standard-values-clause).
 
 `FROM` может содержать несколько источников данных, разделённых запятыми, что эквивалентно выполнению над ними [CROSS JOIN](../../../sql-reference/statements/select/join.md).
 
@@ -39,7 +47,7 @@ SELECT *
 * `CollapsingMergeTree`
 * `VersionedCollapsingMergeTree`
 
-Запросы `SELECT` с `FINAL` выполняются параллельно. Настройка [max&#95;final&#95;threads](/operations/settings/settings#max_final_threads) ограничивает количество используемых потоков.
+Запросы `SELECT` с `FINAL` выполняются параллельно. SETTING [max&#95;final&#95;threads](/operations/settings/settings#max_final_threads) ограничивает количество используемых потоков.
 
 ### Недостатки \{#drawbacks\}
 
@@ -52,7 +60,7 @@ SELECT *
 
 В качестве альтернативы использованию `FINAL` иногда возможно применять другие запросы, которые предполагают, что фоновые процессы движка `MergeTree` ещё не завершили работу, и обрабатывать это с помощью агрегации (например, чтобы отбросить дубликаты). Если вам нужно использовать `FINAL` в ваших запросах, чтобы получать требуемые результаты, это допустимо, но следует учитывать дополнительную необходимую обработку.
 
-`FINAL` может применяться автоматически с помощью настройки [FINAL](../../../operations/settings/settings.md#final) ко всем таблицам в запросе в рамках сессии или профиля пользователя.
+`FINAL` может применяться автоматически с помощью SETTING [FINAL](../../../operations/settings/settings.md#final) ко всем таблицам в запросе в рамках сессии или профиля пользователя.
 
 ### Пример использования \{#example-usage\}
 
@@ -62,13 +70,13 @@ SELECT *
 SELECT x, y FROM mytable FINAL WHERE x > 1;
 ```
 
-Использование `FINAL` в качестве параметра уровня запроса
+Использование `FINAL` в качестве SETTING уровня запроса
 
 ```sql
 SELECT x, y FROM mytable WHERE x > 1 SETTINGS final = 1;
 ```
 
-Использование `FINAL` в качестве параметра на уровне сеанса
+Использование `FINAL` в качестве SETTING на уровне сеанса
 
 ```sql
 SET final = 1;

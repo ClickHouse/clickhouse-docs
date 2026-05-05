@@ -16,9 +16,11 @@ This section describes how to manage ClickStack.
 | Section | Description |
 |--------|-------------|
 | [Basic administration](/use-cases/observability/clickstack/admin) | An introduction to performing common administrative tasks in ClickStack. |
+| [Estimating resources](/use-cases/observability/clickstack/estimating-resources) | Guidance on sizing compute resources for Managed ClickStack based on ingest volume. |
 | [Going to production](/use-cases/observability/clickstack/production) | Recommended steps and best practices before running ClickStack in production. |
 | [Materialized views](/use-cases/observability/clickstack/materialized_views) | A detailed guide to using materialized views in ClickStack to accelerate query performance. |
 | [Performance tuning](/use-cases/observability/clickstack/performance_tuning) | A comprehensive guide to tuning ClickStack for large-scale workloads. |
+| [RBAC](/use-cases/observability/clickstack/rbac) | Configure role-based access control to manage team permissions for dashboards, saved searches, and sources. |
 
 ## Core ClickHouse concepts {#core-concepts}
 

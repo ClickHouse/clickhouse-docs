@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## argAndMax \{#argAndMax\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 最大の`val`値に対する`arg`と`val`の値を計算します。
 最大値となる同じ`val`を持つ行が複数存在する場合、どの`arg`と`val`が返されるかは非決定的です。
@@ -74,7 +74,7 @@ SELECT argMax(a, b), argAndMax(a, b), max(b) FROM test;
 └──────────────┴─────────────────┴────────┘
 ```
 
-**引数での Tuple の利用**
+**引数での Tuple の使用**
 
 ```sql title=Query
 SELECT argAndMax(a, (b,a)) FROM test;

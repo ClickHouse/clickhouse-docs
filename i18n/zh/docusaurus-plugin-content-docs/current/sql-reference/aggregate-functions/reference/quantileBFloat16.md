@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileBFloat16 \{#quantileBFloat16\}
 
-引入于：v21.7
+引入于：v21.7.0
 
 计算由 [bfloat16](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format) 数值组成的样本的近似[分位数](https://en.wikipedia.org/wiki/Quantile)。
 

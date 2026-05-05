@@ -31,7 +31,7 @@ TTL 不仅可以用于将数据移动到 [/dev/null](https://en.wikipedia.org/wi
 [DELETE FROM](https://clickhouse.com/docs/sql-reference/statements/delete) 允许在 ClickHouse 中运行标准的 DELETE 查询。在过滤子句中被选中的行会被标记为已删除，并从后续的结果集中移除。行的清理是异步进行的。
 
 :::note
-DELETE FROM 从 23.3 及更高版本开始是通用可用（GA）特性。在更早版本中，它属于实验功能，必须通过以下方式启用：
+DELETE FROM 从 23.3 及更高版本开始是通用可用 (GA) 特性。在更早版本中，它属于实验功能，必须通过以下方式启用：
 
 ```
 SET allow_experimental_lightweight_delete = true;
@@ -47,7 +47,7 @@ ALTER DELETE 使用异步批处理操作来删除行。与 DELETE FROM 不同，
 
 这是使基于 ClickHouse 的系统符合 [GDPR](https://gdpr-info.eu) 要求的最常见方法。
 
-关于 [变更操作（mutations）](https://clickhouse.com/docs/sql-reference/statements/alter/#alter-mutations) 的更多详细信息，请参阅相关文档。
+关于 [变更操作 (mutations) ](https://clickhouse.com/docs/sql-reference/statements/alter/#alter-mutations) 的更多详细信息，请参阅相关文档。
 
 ## DROP PARTITION \{#drop-partition\}
 

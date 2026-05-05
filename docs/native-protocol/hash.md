@@ -14,10 +14,10 @@ ClickHouse uses **one of the previous** versions of [CityHash from Google](https
 :::info
 CityHash has changed the algorithm after we have added it into ClickHouse.
 
-CityHash documentation specifically notes that the user should not rely on 
-specific hash values and should not save it anywhere or use it as a sharding key.
+CityHash documentation specifically notes that the user shouldn't rely on 
+specific hash values and shouldn't save it anywhere or use it as a sharding key.
 
-But as we exposed this function to the user, we had to fix the version of CityHash (to 1.0.2). And now we guarantee that the behaviour of CityHash functions available in SQL will not change.
+But as we exposed this function to the user, we had to fix the version of CityHash (to 1.0.2). And now we guarantee that the behaviour of CityHash functions available in SQL won't change.
 
 — Alexey Milovidov
 :::
@@ -26,7 +26,7 @@ But as we exposed this function to the user, we had to fix the version of CityHa
 
 Current version of Google's CityHash [differs](https://github.com/ClickHouse/ClickHouse/issues/8354) from ClickHouse `cityHash64` variant.
 
-Don't use `farmHash64` to get Google's CityHash value! [FarmHash](https://opensource.googleblog.com/2014/03/introducing-farmhash.html) is a successor to CityHash, but they are not fully compatible.
+Don't use `farmHash64` to get Google's CityHash value! [FarmHash](https://opensource.googleblog.com/2014/03/introducing-farmhash.html) is a successor to CityHash, but they're not fully compatible.
 
 | String                                                     | ClickHouse64         | CityHash64          | FarmHash64           |
 |------------------------------------------------------------|----------------------|---------------------|----------------------|

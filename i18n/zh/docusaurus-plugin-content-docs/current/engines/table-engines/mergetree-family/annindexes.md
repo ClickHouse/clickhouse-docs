@@ -96,9 +96,9 @@ ORDER BY [...]
 ALTER TABLE table ADD INDEX <index_name> vectors TYPE vector_similarity(<type>, <distance_function>, <dimensions>) [GRANULARITY <N>];
 ```
 
-向量相似度索引是一种特殊类型的跳过索引（参见[这里](mergetree.md#table_engine-mergetree-data_skipping-indexes)和[这里](../../../optimize/skipping-indexes)）。
+Vector similarity indexes are special kinds of skipping indexes (see [here](mergetree.md#table_engine-mergetree-data_skipping-indexes) and [here](../../../optimize/skipping-indexes)).
 因此，上面的 `ALTER TABLE` 语句只会为之后插入到该表中的新数据构建索引。
-要同时为已有数据构建索引，你需要对其进行物化：
+To build the index for existing data as well, you need to materialize it:
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX <index_name> SETTINGS mutations_sync = 2;
@@ -106,22 +106,28 @@ ALTER TABLE table MATERIALIZE INDEX <index_name> SETTINGS mutations_sync = 2;
 
 函数 `<distance_function>` 必须是
 
-* `L2Distance`，[欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)，表示欧几里得空间中两个点之间线段的长度，或
-* `cosineDistance`，[余弦距离](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)，表示两个非零向量之间的夹角。
+* `L2Distance`，[欧几里得距离](https://en.wikipedia.org/wiki/Euclidean_distance)，表示欧几里得空间中两个点之间线段的长度，
+* `cosineDistance`，[余弦距离](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)，表示两个非零向量之间的夹角，或
+* `dotProduct`，[点积](https://en.wikipedia.org/wiki/Dot_product) (内积) ，表示两个向量逐元素乘积之和。对于已归一化的数据，等同于 `cosineDistance`。
 
 对于已归一化的数据，`L2Distance` 通常是最佳选择；否则，建议使用 `cosineDistance` 来补偿尺度差异。
 
-`<dimensions>` 指定底层列中数组的基数（元素数量）。
+:::note
+对于距离函数 `L2Distance` 和 `cosineDistance`，值越小表示相似度越高；而对于 `dotProduct`，值越大表示相似度越高。
+因此，使用 `L2Distance` 和 `cosineDistance` 构建的向量索引只能用于 `SELECT [...] ORDER BY [...] ASC` 查询 (`ASC` 是 `ORDER BY` 的默认排序方式) ，而使用 `dotProduct` 构建的向量索引只能用于 `SELECT [...] ORDER BY [...] DESC` 查询。
+:::
+
+`<dimensions>` 指定底层列中数组的基数 (元素数量) 。
 如果 ClickHouse 在创建索引时发现数组的基数不同，则会丢弃该索引并返回错误。
 
-可选的 GRANULARITY 参数 `<N>` 指的是索引粒度的大小（参见[此处](../../../optimize/skipping-indexes)）。
+可选的 GRANULARITY 参数 `<N>` 指的是索引粒度的大小 (参见[此处](../../../optimize/skipping-indexes)) 。
 与默认索引粒度为 1 的常规跳过索引不同，向量相似度索引将 1 亿用作默认索引粒度。
 该值确保即使在大型分区片段上，内部构建的索引数量也较少。
-我们建议仅由了解相关影响的高级用户修改索引粒度（参见[下文](#differences-to-regular-skipping-indexes)）。
+我们建议仅由了解相关影响的进阶用户修改索引粒度 (参见[下文](#differences-to-regular-skipping-indexes)) 。
 
 向量相似度索引具有通用性，能够适配不同的近似搜索方法。
 实际使用的方法由参数 `<type>` 指定。
-目前唯一可用的方法是 HNSW（[论文](https://arxiv.org/abs/1603.09320)），这是一种基于分层邻近图的、在近似向量搜索中非常流行且代表当前最新进展的技术。
+目前唯一可用的方法是 HNSW ([论文](https://arxiv.org/abs/1603.09320)) ，这是一种基于分层邻近图的、在近似向量搜索中非常流行且代表当前最新进展的技术。
 如果将 HNSW 用作类型值，用户可以选择性地指定更多 HNSW 特定的参数：
 
 ```sql
@@ -141,25 +147,24 @@ ORDER BY [...]
 * `<hnsw_max_connections_per_layer>` 控制每个图节点的邻居数量，也称为 HNSW 超参数 `M`。默认值为 `32`。值为 `0` 表示使用默认值。
 * `<hnsw_candidate_list_size_for_construction>` 控制构建 HNSW 图时动态候选列表的大小，也称为 HNSW 超参数 `ef_construction`。默认值为 `128`。值为 `0` 表示使用默认值。
 
-所有 HNSW 专用参数的默认值在大多数用例中都能取得较好的效果。
-因此我们不建议自定义 HNSW 专用参数。
+所有 HNSW 特定参数的默认值在大多数场景下都能很好地发挥作用。
+因此，我们不建议自定义 HNSW 特定参数。
 
-另外还有以下限制：
+还存在以下进一步限制：
 
-
-* 向量相似性索引只能构建在类型为 [Array(Float32)](../../../sql-reference/data-types/array.md)、[Array(Float64)](../../../sql-reference/data-types/array.md) 或 [Array(BFloat16)](../../../sql-reference/data-types/array.md) 的列上。不允许在包含 Nullable 或低基数字段的浮点数组（例如 `Array(Nullable(Float32))` 和 `Array(LowCardinality(Float32))`）上构建索引。
-* 向量相似性索引必须构建在单个列上。
-* 向量相似性索引可以构建在计算表达式上（例如 `INDEX index_name arraySort(vectors) TYPE vector_similarity([...])`），但此类索引之后无法用于近似邻居搜索。
-* 向量相似性索引要求底层列中的所有数组都具有 `<dimension>` 个元素——这一点会在索引创建期间进行检查。为了尽早发现对该要求的违规，用户可以为向量列添加一个[约束](/sql-reference/statements/create/table.md#constraints)，例如 `CONSTRAINT same_length CHECK length(vectors) = 256`。
-* 同样，底层列中的数组值不得为空（`[]`），也不得为默认值（同样为 `[]`）。
+* 向量相似度索引只能构建在类型为 [Array(Float32)](../../../sql-reference/data-types/array.md)、[Array(Float64)](../../../sql-reference/data-types/array.md) 或 [Array(BFloat16)](../../../sql-reference/data-types/array.md) 的列上。不允许在包含 Nullable 或低基数字段的浮点数组 (例如 `Array(Nullable(Float32))` 和 `Array(LowCardinality(Float32))`) 上构建索引。
+* 向量相似度索引必须构建在单个列上。
+* 向量相似度索引可以构建在计算表达式上 (例如 `INDEX index_name arraySort(vectors) TYPE vector_similarity([...])`) ，但此类索引之后无法用于近似邻居搜索。
+* 向量相似度索引要求底层列中的所有数组都具有 `<dimension>` 个元素——这一点会在索引创建期间进行检查。为了尽早发现对该要求的违规，用户可以为向量列添加一个[约束](/sql-reference/statements/create/table.md#constraints)，例如 `CONSTRAINT same_length CHECK length(vectors) = 256`。
+* 同样，底层列中的数组值不得为空 (`[]`) ，也不得为默认值 (同样为 `[]`) 。
 
 **估算存储和内存消耗**
 
-为典型 AI 模型（例如大语言模型，[LLMs](https://en.wikipedia.org/wiki/Large_language_model)）生成的向量由数百或数千个浮点值组成。
+为典型 AI 模型 (例如大语言模型，[LLMs](https://en.wikipedia.org/wiki/Large_language_model)) 生成的向量由数百或数千个浮点值组成。
 因此，单个向量值的内存占用可能达到数千字节。
-希望估算表中底层向量列所需存储空间，以及向量相似性索引所需内存的用户，可以使用下面两个公式：
+希望估算表中底层向量列所需存储空间，以及向量相似度索引所需内存的用户，可以使用下面两个公式：
 
-表中向量列（未压缩）的存储占用：
+表中向量列 (未压缩) 的存储占用：
 
 ```text
 Storage consumption = Number of vectors * Dimension * Size of column data type
@@ -171,7 +176,7 @@ Storage consumption = Number of vectors * Dimension * Size of column data type
 Storage consumption = 1 million * 1536 * 4 (for Float32) = 6.1 GB
 ```
 
-向量相似性索引必须从磁盘完整加载到内存中才能执行搜索。
+向量相似度索引必须从磁盘完整加载到内存中才能执行搜索。
 同样，向量索引也会在内存中完全构建，然后再保存到磁盘。
 
 加载向量索引所需的内存占用：
@@ -183,7 +188,7 @@ Memory for in-memory graph (mg) = Number of vectors * hnsw_max_connections_per_l
 Memory consumption: mv + mg
 ```
 
-以 [DBpedia 数据集](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) 为例：
+以 [dbpedia 数据集](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) 为例：
 
 ```text
 Memory for vectors in the index (mv) = 1 million * 1536 * 2 (for BFloat16) = 3072 MB
@@ -192,8 +197,7 @@ Memory for in-memory graph (mg) = 1 million * 64 * 2 * 4 = 512 MB
 Memory consumption = 3072 + 512 = 3584 MB
 ```
 
-上述公式未将向量相似度索引在分配运行时数据结构（如预分配缓冲区和缓存）时所需的额外内存计入在内。
-
+上述公式未将向量相似度索引在分配运行时数据结构 (如预分配缓冲区和缓存) 时所需的额外内存计入在内。
 
 #### 使用向量相似度索引 \{#using-a-vector-similarity-index\}
 
@@ -598,6 +602,8 @@ WHERE type = 'vector_similarity';
 
 #### 示例 \{#approximate-nearest-neighbor-search-example\}
 
+查询：
+
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32), INDEX idx vec TYPE vector_similarity('hnsw', 'L2Distance', 2)) ENGINE = MergeTree ORDER BY id;
 
@@ -610,7 +616,7 @@ ORDER BY L2Distance(vec, reference_vec) ASC
 LIMIT 3;
 ```
 
-返回
+结果:
 
 ```result
    ┌─id─┬─vec─────┐
@@ -626,7 +632,6 @@ LIMIT 3;
 * [LAION-5B](../../../getting-started/example-datasets/laion-5b-dataset)
 * [dbpedia](../../../getting-started/example-datasets/dbpedia-dataset)
 * [hackernews](../../../getting-started/example-datasets/hackernews-vector-search-dataset)
-
 
 ### 量化比特（QBit） \{#approximate-nearest-neighbor-search-qbit\}
 

@@ -17,7 +17,7 @@ keywords: ['JSON', '落地表', '物化视图']
 
 ## Answer \{#answer\}
 
-处理 JSON 数据的常见模式是先将数据写入一个落地表（landing table），然后使用 JSONExtract 函数配合物化视图触发器（Materialized View trigger）将数据抽取到一个新表中。
+处理 JSON 数据的常见模式是先将数据写入一个落地表 (landing table) ，然后使用 JSONExtract 函数配合物化视图触发器 (Materialized View trigger) 将数据抽取到一个新表中。
 通常会按照如下流程和模式进行：
 
 ```

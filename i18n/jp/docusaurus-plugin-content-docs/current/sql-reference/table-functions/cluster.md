@@ -9,12 +9,12 @@ doc_type: 'reference'
 
 # clusterAllReplicas テーブル関数 \{#clusterallreplicas-table-function\}
 
-`remote_servers` セクションで設定されたクラスター内のすべてのシャードに、[Distributed](../../engines/table-engines/special/distributed.md) テーブルを作成せずにアクセスできます。各シャードにつき 1 つのレプリカのみがクエリされます。
+`remote_servers` セクションで設定されたクラスタ内のすべてのシャードに、[Distributed](../../engines/table-engines/special/distributed.md) テーブルを作成せずにアクセスできます。各シャードにつき 1 つのレプリカのみがクエリされます。
 
-`clusterAllReplicas` 関数は `cluster` と同様ですが、すべてのレプリカに対してクエリを実行します。クラスター内の各レプリカは、個別のシャード／接続として扱われます。
+`clusterAllReplicas` 関数は `cluster` と同様ですが、すべてのレプリカに対してクエリを実行します。クラスタ内の各レプリカは、個別のシャード／接続として扱われます。
 
 :::note
-利用可能なすべてのクラスターは、[system.clusters](../../operations/system-tables/clusters.md) テーブルに一覧表示されています。
+利用可能なすべてのクラスタは、[system.clusters](../../operations/system-tables/clusters.md) テーブルに一覧表示されています。
 :::
 
 ## 構文 \{#syntax\}
@@ -40,7 +40,7 @@ clusterAllReplicas(['cluster_name', db, table, sharding_key])
 
 ## マクロの使用 \{#using_macros\}
 
-`cluster_name` にはマクロ（波かっこで囲まれた置換式）を含めることができます。置換される値は、サーバー構成ファイルの [macros](../../operations/server-configuration-parameters/settings.md#macros) セクションから取得されます。
+`cluster_name` にはマクロ (`{}` で囲まれた置換式) を含めることができます。置換される値は、サーバー構成ファイルの [macros](../../operations/server-configuration-parameters/settings.md#macros) セクションから取得されます。
 
 例:
 
@@ -54,13 +54,13 @@ SELECT * FROM cluster('{cluster}', default.example_table);
 
 `cluster` および `clusterAllReplicas` テーブル関数は、次のような場合に有用です。
 
-- データ比較、デバッグ、テストのために特定のクラスタへアクセスする場合
-- 調査目的で、さまざまな ClickHouse クラスタやレプリカに対してクエリを実行する場合
-- 手動で行う、頻度の低い分散リクエスト
+* データ比較、デバッグ、テストのために特定のクラスタへアクセスする場合
+* 調査目的で、さまざまな ClickHouse クラスタやレプリカに対してクエリを実行する場合
+* 手動で行う、頻度の低い分散リクエスト
 
 `host`、`port`、`user`、`password`、`compression`、`secure` といった接続設定は、`<remote_servers>` 設定セクションから取得されます。詳細は [Distributed engine](../../engines/table-engines/special/distributed.md) を参照してください。
 
 ## 関連項目 \{#related\}
 
-- [skip_unavailable_shards](../../operations/settings/settings.md#skip_unavailable_shards)
-- [load_balancing](../../operations/settings/settings.md#load_balancing)
+* [skip&#95;unavailable&#95;shards](../../operations/settings/settings.md#skip_unavailable_shards)
+* [load&#95;balancing](../../operations/settings/settings.md#load_balancing)

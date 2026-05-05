@@ -1,19 +1,19 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/langchain
 sidebar_label: 'Integrate Langchain'
-title: 'How to build a LangChain/LangGraph AI agent using ClickHouse MCP Server.'
+title: 'How to build a LangChain/LangGraph AI agent using ClickHouse MCP server.'
 pagination_prev: null
 pagination_next: null
-description: 'Learn how to build a LangChain/LangGraph AI agent that can interact with ClickHouse''s SQL playground using ClickHouse''s MCP Server.'
+description: 'Learn how to build a LangChain/LangGraph AI agent that can interact with ClickHouse''s SQL playground using ClickHouse''s MCP server.'
 keywords: ['ClickHouse', 'MCP', 'LangChain', 'LangGraph']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a LangChain/LangGraph AI agent using ClickHouse MCP Server
+# How to build a LangChain/LangGraph AI agent using ClickHouse MCP server
 
 In this guide, you'll learn how to build a [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI agent that
-can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP server](https://github.com/ClickHouse/mcp-clickhouse).
 
 :::note Example notebook
 This example can be found as a notebook in the [examples repository](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb).
@@ -55,9 +55,9 @@ If you don't have an Anthropic API key, and want to use another LLM provider,
 you can find the instructions for setting up your credentials in the [Langchain Providers docs](https://python.langchain.com/docs/integrations/providers/)
 :::
 
-## Initialize MCP Server {#initialize-mcp-and-agent}
+## Initialize MCP server {#initialize-mcp-and-agent}
 
-Now configure the ClickHouse MCP Server to point at the ClickHouse SQL playground:
+Now configure the ClickHouse MCP server to point at the ClickHouse SQL playground:
 
 ```python
 from mcp import ClientSession, StdioServerParameters
@@ -82,7 +82,7 @@ server_params = StdioServerParameters(
 ```
 ## Configure the stream handler {#configure-the-stream-handler}
 
-When working with Langchain and ClickHouse MCP Server, query results are often 
+When working with Langchain and ClickHouse MCP server, query results are often 
 returned as streaming data rather than a single response. For large datasets or
 complex analytical queries that may take time to process, it's important to configure
 a stream handler. Without proper handling, this streamed output can be difficult 

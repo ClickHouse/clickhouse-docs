@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctJSONPathsAndTypes \{#distinctJSONPathsAndTypes\}
 
-導入バージョン: v24.9
+導入バージョン: v24.9.0
 
 [JSON](https://clickhouse.com/docs/sql-reference/data-types/newjson) カラムに保存されている異なるパスとその型の一覧を算出します。
 

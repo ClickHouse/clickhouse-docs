@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/alerts
-title: 'Search with ClickStack'
+title: 'Alerts with ClickStack'
 sidebar_label: 'Alerts'
 pagination_prev: null
 pagination_next: null
@@ -20,11 +20,11 @@ import add_webhook_dialog from '@site/static/images/use-cases/observability/add_
 import manage_alerts from '@site/static/images/use-cases/observability/manage_alerts.png';
 import alerts_view from '@site/static/images/use-cases/observability/alerts_view.png';
 import multiple_search_alerts from '@site/static/images/use-cases/observability/multiple_search_alerts.png';
+import add_raw_sql_alert from '@site/static/images/use-cases/observability/add_raw_sql_alert.png';
+import open_sql_chart_mode from '@site/static/images/use-cases/observability/open_sql_chart_mode.png';
 import remove_chart_alert from '@site/static/images/use-cases/observability/remove_chart_alert.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-## Alerting in ClickStack {#alerting-in-clickstack}
 
 ClickStack includes built-in support for alerting, enabling teams to detect and respond to issues in real time across logs, metrics, and traces.
 
@@ -46,7 +46,7 @@ To create a search alert:
 
 <VerticalStepper headerLevel="h4">
 
-For an alert to be created for a search, the search must be saved. You can either create the alert for an existing saved search or save the search during the alert creation process. In the example below, we assume the search is not saved.
+For an alert to be created for a search, the search must be saved. You can either create the alert for an existing saved search or save the search during the alert creation process. In the example below, we assume the search isn't saved.
 
 #### Open alert creation dialog {#open-dialog}
 
@@ -105,7 +105,7 @@ Select **Add Alert**.
 
 #### Define the alert conditions {#define-alert-conditions}
 
-Define the condition (`>=`, `<`), threshold, duration, and webhook. The duration here will also dictate how often the alert is triggered.
+Define the condition (`>=`, `>`, `<=`, `<`, `=`, `!=`, `<= x >=`, `> or <`), threshold, duration, and webhook. The duration here will also dictate how often the alert is triggered.
 
 <Image img={create_chart_alert} alt="Create alert for chart" size="lg"/>
 
@@ -176,7 +176,7 @@ From this view, you can see all alerts that have been created and are currently 
 This view also displays the alert evaluation history. Alerts are evaluated on a recurring time interval (defined by the period/duration set during alert creation). During each evaluation, HyperDX queries your data to check whether the alert condition is met:
 
 - **Red bar**: The threshold condition was met during this evaluation and the alert fired (notification sent)
-- **Green bar**: The alert was evaluated but the threshold condition was not met (no notification sent)
+- **Green bar**: The alert was evaluated but the threshold condition wasn't met (no notification sent)
 
 Each evaluation is independent - the alert checks the data for that time window and fires only if the condition is true at that moment.
 
@@ -190,6 +190,159 @@ To remove an alert, open the edit dialog for the associated search or chart, the
 In the example below, the `Remove Alert` button will remove the alert from the chart.
 
 <Image img={remove_chart_alert} alt="Remove chart alert" size="lg"/>
+
+## SQL-based chart alerts {#sql-based-alerts}
+
+SQL-based chart alerts let you write arbitrary ClickHouse SQL to define alert conditions. This gives you full control over filtering, aggregation, and math — anything you can express in SQL can become an alert.
+
+### Supported chart types {#supported-chart-types}
+
+SQL-based alerts are supported on three chart display types:
+
+| Chart type | Behavior |
+|---|---|
+| **Line** | Time-series alert. The query must produce time-bucketed rows. Each bucket is evaluated independently against the threshold. |
+| **Stacked Bar** | Time-series alert. Same behavior as Line. |
+| **Number** | Single-value alert. The query returns a single numeric result which is compared against the threshold once per evaluation. |
+
+Other SQL-based chart types (Table, Pie, Heatmap, etc.) do not support alerts.
+
+### Creating a SQL alert {#create-sql-based-alert}
+
+To create an alert on a SQL-based chart:
+
+<VerticalStepper headerLevel="h4">
+
+#### Create or open a SQL-based chart on a dashboard {#open-sql-chart}
+
+From a saved dashboard, either [create a new chart with the **SQL** chart mode](./dashboards/sql-visualizations.md), or open an existing SQL-based chart for editing.
+
+Choose **Line**, **Stacked Bar**, or **Number** as the display type.
+
+<Image img={open_sql_chart_mode} alt="Create SQL chart" size="lg"/>
+
+#### Add the alert {#add-sql-alert}
+
+Select **Add Alert** from the alert section of the chart editor. Configure:
+
+- **Threshold type**: `>=` (greater than or equal), `>` (greater than), `<=` (less than or equal), `<` (less than), `=` (equal), `!=` (not equal), `<= x >=` (between), or `> or <` (outside)
+- **Threshold value**: The numeric value to compare against
+- **Interval**: How often the alert is evaluated (1m, 5m, 15m, 30m, 1h, 6h, 12h, or 1d). This also defines the time window for each evaluation.
+- **Webhook**: The notification channel to use when the alert fires. See [Adding a webhook](#add-webhook).
+
+<Image img={add_raw_sql_alert} alt="Edit chart alert" size="lg"/>
+
+:::warning Alert Time Range
+Typically, alert queries are executed once per interval. However, if one or more intervals are skipped due to errors or slow queries, the following execution will use a time range that includes the missed intervals. In this case, the query's interval parameters would still be set to the alert's configured period, but the time range parameters would reflect the longer time range.
+:::
+
+#### Save the dashboard {#save-sql-dashboard}
+
+Save the dashboard to activate the alert. The alert will begin evaluating on the configured interval.
+
+</VerticalStepper>
+
+### How query results are interpreted {#sql-result-interpretation}
+
+The alert system inspects the columns returned by your SQL query to determine what to compare against the threshold.
+
+- **Value column**: The **last numeric column** in your `SELECT` clause is used as the alert value. If your query returns multiple numeric columns (e.g., `count, avg_latency, p99_latency`), only the last one (`p99_latency`) is compared to the threshold.
+- **Timestamp column**: For time-series charts (Line and Stacked Bar), the system identifies the Date/DateTime column in your results as the time bucket (i.e. the x-axis on a time-series chart). The value column for each time bucket is evaluated against the threshold independently, and if the value for any time bucket breaches the configured threshold, the alert will trigger.
+- **Group columns**: Any non-numeric, non-timestamp columns (e.g., `ServiceName`, `Environment`) are treated as grouping dimensions. When groups are present, each unique combination of group values is tracked and alerted on separately. ClickStack will send an alert for each group with a value that breaches the configured threshold. Groups are only available for time-series charts.
+
+### Query parameters and macros {#query-params}
+
+SQL alert queries support template parameters and macros that are automatically replaced at evaluation time. These are the same parameters and macros available when [building a SQL-based chart](./dashboards/sql-visualizations.md).
+
+#### Required and Recommended Parameters {#required-alert-parameters}
+
+Queries used for line or stacked bar chart alerts **must** include an interval parameter or macro (`{intervalSeconds:Int64}`, `{intervalMilliseconds:Int64}`, `$__timeInterval(col)`, or `$__timeInterval_ms(col)`). During alert execution, it will be replaced with the alert's configured period.
+
+Queries used for alerts **should** include a time range filter (`{startDateMilliseconds:Int64}` and `{endDateMilliseconds:Int64}`, or `$__timeFilter(col)`, etc.). Regardless of whether a time range filter is present in the query, the alert query will run on the alert's configured period. If there is no time range filter, then the query will read the entire time range available in the source table during each execution.
+
+:::warning Alert Time Range
+Typically, alert queries are executed once per interval. However, if one or more intervals are skipped due to errors or slow queries, the following execution will use a time range that includes the missed intervals. In this case, the query's interval parameters would still be set to the alert's configured period, but the time range parameters would reflect the longer time range.
+:::
+
+### Example alert queries {#example-queries}
+
+#### Error rate per service (time-series) {#example-error-rate}
+
+Alert when any service has an error rate above 5%, with at least 10 requests in the alert period to avoid noisy alerts on low-traffic services.
+
+```sql
+WITH error_rates AS (
+  SELECT
+    $__timeInterval(Timestamp) as ts,
+    ServiceName,
+    countIf (SpanKind = 'Server') as request_count,
+    countIf (
+      SpanKind = 'Server'
+      and StatusCode = 'Error'
+    ) as error_count,
+    error_count / request_count * 100 AS error_percent
+  FROM $__sourceTable
+  WHERE $__timeFilter(Timestamp)
+  GROUP BY ts, ServiceName
+)
+SELECT ts, ServiceName, error_percent
+FROM error_rates
+WHERE request_count > 10
+```
+
+**Display type**: Line or Stacked Bar
+**Threshold**: `>= 5` (fires when error rate reaches 5%)
+
+In this query, `ServiceName` is a non-numeric, non-timestamp column, so each service is tracked as a separate alert group. The alert fires independently per service.
+
+#### Anomaly detection with lagging average (time-series) {#example-anomaly-detection}
+
+Alert on excess error counts that exceed a rolling average by more than two standard deviations. This catches spikes relative to recent baseline behavior rather than a fixed threshold.
+
+```sql
+WITH buckets AS (
+  SELECT
+    $__timeInterval(Timestamp) AS ts,
+    count() AS bucket_count
+  FROM $__sourceTable
+  WHERE TimestampTime >= fromUnixTimestamp64Milli({startDateMilliseconds:Int64})
+        - toIntervalSecond($__interval_s * 30) -- Fetch 30 intervals back
+    AND TimestampTime < fromUnixTimestamp64Milli({endDateMilliseconds:Int64})
+    AND SeverityText = 'error'
+  GROUP BY ts
+  ORDER BY ts
+  WITH FILL
+    FROM toDateTime(fromUnixTimestamp64Milli({startDateMilliseconds:Int64}))
+    TO toDateTime(fromUnixTimestamp64Milli({endDateMilliseconds:Int64}))
+    STEP toIntervalSecond($__interval_s)
+),
+
+anomaly_detection AS (
+  SELECT
+    ts,
+    bucket_count,
+    avg(bucket_count) OVER (
+      ORDER BY ts ROWS BETWEEN 30 PRECEDING AND 1 PRECEDING
+    ) AS previous_30_avg,
+    stddevPop(bucket_count) OVER (
+      ORDER BY ts ROWS BETWEEN 30 PRECEDING AND 1 PRECEDING
+    ) AS previous_30_stddev,
+    greatest(
+      bucket_count - (previous_30_avg + 2 * previous_30_stddev), 0
+    ) AS excess_error_count
+  FROM buckets
+)
+
+SELECT ts, excess_error_count
+FROM anomaly_detection
+WHERE ts >= fromUnixTimestamp64Milli({startDateMilliseconds:Int64})
+  AND ts < fromUnixTimestamp64Milli({endDateMilliseconds:Int64})
+```
+
+**Display type**: Line
+**Threshold**: `> 0` (fires when excess errors above the rolling baseline are detected)
+
+Note that the query fetches 30 intervals *before* the start of the date range to seed the rolling window calculations, then filters the final output to only the evaluation window.
 
 ## Common alert scenarios {#common-alert-scenarios}
 

@@ -1,9 +1,9 @@
 ---
 slug: /guides/developer/overview
-sidebar_label: '高度なガイドの概要'
-description: '高度なガイドの概要'
-title: '高度なガイド'
-keywords: ['ClickHouse 高度なガイド', '開発者ガイド', 'クエリ最適化', 'マテリアライズドビュー', '重複排除', '時系列データ', 'クエリ実行']
+sidebar_label: '上級ガイドの概要'
+description: '上級ガイドの概要'
+title: '上級ガイド'
+keywords: ['ClickHouse 上級ガイド', '開発者ガイド', 'クエリ最適化', 'マテリアライズドビュー', '重複排除', '時系列データ', 'クエリ実行']
 doc_type: 'guide'
 ---
 

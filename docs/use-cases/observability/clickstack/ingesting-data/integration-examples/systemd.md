@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/systemd-logs
-title: 'Monitoring Systemd Logs with ClickStack'
-sidebar_label: 'Systemd/Journald Logs'
+title: 'Monitoring Systemd logs with ClickStack'
+sidebar_label: 'Systemd/Journald logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Systemd and Journald Logs with ClickStack'
@@ -22,14 +22,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 # Monitoring Systemd Logs with ClickStack {#systemd-logs-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor systemd journal logs with ClickStack by running the OpenTelemetry Collector with the journald receiver. You'll learn how to:
-- Deploy the OpenTelemetry Collector to read systemd journal entries
-- Send systemd logs to ClickStack via OTLP
-- Use a pre-built dashboard to visualize systemd log insights (service status, errors, authentication events)
-
-A demo dataset with sample logs is available if you want to test the integration before configuring your production systems.
-
-Time Required: 10-15 minutes
+Collect and visualize systemd journal logs in ClickStack using the OpenTelemetry Collector's journald receiver. Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing systems {#existing-systems}
@@ -105,7 +98,7 @@ receivers:
 processors:
   batch:
     timeout: 10s
-    send_batch_size: 1024
+    send_batch_size: 10000
   
   resource:
     attributes:
@@ -143,7 +136,7 @@ EOF
 #### Deploy with Docker Compose {#deploy-docker-compose}
 
 :::note
-The `journald` receiver requires the `journalctl` binary to read journal files. The official `otel/opentelemetry-collector-contrib` image does not include `journalctl` by default.
+The `journald` receiver requires the `journalctl` binary to read journal files. The official `otel/opentelemetry-collector-contrib` image doesn't include `journalctl` by default.
 
 For containerized deployments, you can either install the collector directly on the host or build a custom image with systemd utilities. See the [troubleshooting section](#journalctl-not-found) for details.
 :::
@@ -348,7 +341,7 @@ docker logs otel-collector | grep -i "error\|journald" | tail -20
 
 If you see `exec: "journalctl": executable file not found in $PATH`:
 
-The `otel/opentelemetry-collector-contrib` image does not include `journalctl`. You can either:
+The `otel/opentelemetry-collector-contrib` image doesn't include `journalctl`. You can either:
 
 1. **Install the collector on the host**:
 ```bash
@@ -359,6 +352,12 @@ otelcol-contrib --config=otel-config.yaml
 ```
 
 2. **Use the text export approach** (like the demo) with the `filelog` receiver reading journald exports
+
+## Next steps {#next-steps}
+
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical system events (service failures, authentication failures, OOM kills)
+- Create additional [dashboards](/use-cases/observability/clickstack/dashboards) for specific use cases (SSH security monitoring, service health)
+- Filter by specific systemd units to reduce noise and focus on services that matter
 
 ## Going to production {#going-to-production}
 

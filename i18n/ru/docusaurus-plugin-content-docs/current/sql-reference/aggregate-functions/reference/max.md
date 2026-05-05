@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## max \{#max\}
 
-Появилась в версии v1.1
+Появилась в версии v1.1.0
 
 Агрегатная функция, вычисляющая максимум по группе значений.
 
@@ -60,7 +60,7 @@ SELECT department, max(revenue) FROM sales GROUP BY department ORDER BY departme
 └─────────────┴──────────────┘
 ```
 
-**Примечание о неагрегатном максимуме**
+**Примечание о неагрегатной функции максимума**
 
 ```sql title=Query
 -- If you need non-aggregate function to choose a maximum of two values, see greatest():

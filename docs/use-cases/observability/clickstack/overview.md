@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/overview
-title: 'ClickStack - The ClickHouse Observability Stack'
+title: 'ClickStack - the ClickHouse observability stack'
 sidebar_label: 'Overview'
 pagination_prev: null
 pagination_next: use-cases/observability/clickstack/getting-started/index
@@ -106,7 +106,7 @@ Managed ClickStack consists of the following components:
    Users run an OpenTelemetry Collector that receives telemetry data from their applications and infrastructure. This collector forwards data via OTLP to ClickHouse Cloud. While any standards-compliant OpenTelemetry Collector can be used, we strongly recommend the **ClickStack distribution**, which is preconfigured and optimized for ClickHouse ingestion and works out of the box with ClickStack schemas.
 
 3. **ClickHouse Cloud**  
-   ClickHouse is fully managed in ClickHouse Cloud, serving as the storage and query engine for all observability data. Users do not need to manage clusters, upgrades, or operational concerns.
+   ClickHouse is fully managed in ClickHouse Cloud, serving as the storage and query engine for all observability data. Users don't need to manage clusters, upgrades, or operational concerns.
 
 Managed ClickStack provides several key benefits:
 

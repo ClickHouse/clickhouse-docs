@@ -96,9 +96,9 @@ ORDER BY [...]
 ALTER TABLE table ADD INDEX <index_name> vectors TYPE vector_similarity(<type>, <distance_function>, <dimensions>) [GRANULARITY <N>];
 ```
 
-Индексы сходства векторов — это особый вид пропускающих индексов (см. [здесь](mergetree.md#table_engine-mergetree-data_skipping-indexes) и [здесь](../../../optimize/skipping-indexes)).
+Vector similarity indexes are special kinds of skipping indexes (see [here](mergetree.md#table_engine-mergetree-data_skipping-indexes) and [here](../../../optimize/skipping-indexes)).
 Соответственно, оператор `ALTER TABLE`, показанный выше, приводит к тому, что индекс будет построен только для новых данных, которые будут добавлены в таблицу в будущем.
-Чтобы построить индекс также для существующих данных, необходимо его материализовать:
+To build the index for existing data as well, you need to materialize it:
 
 ```sql
 ALTER TABLE table MATERIALIZE INDEX <index_name> SETTINGS mutations_sync = 2;
@@ -106,10 +106,16 @@ ALTER TABLE table MATERIALIZE INDEX <index_name> SETTINGS mutations_sync = 2;
 
 Функция `<distance_function>` должна быть
 
-* `L2Distance`, [евклидовым расстоянием](https://en.wikipedia.org/wiki/Euclidean_distance), представляющим длину отрезка между двумя точками в евклидовом пространстве, или
-* `cosineDistance`, [косинусным расстоянием](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance), представляющим угол между двумя ненулевыми векторами.
+* `L2Distance`, [евклидовым расстоянием](https://en.wikipedia.org/wiki/Euclidean_distance), представляющим длину отрезка между двумя точками в евклидовом пространстве,
+* `cosineDistance`, [косинусным расстоянием](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance), представляющим угол между двумя ненулевыми векторами, или
+* `dotProduct`, [скалярным произведением](https://en.wikipedia.org/wiki/Dot_product) (внутренним произведением), представляющим сумму попарных произведений элементов двух векторов. Эквивалентно `cosineDistance` для нормализованных данных.
 
 Для нормализованных данных обычно лучше всего подходит `L2Distance`, в противном случае рекомендуется `cosineDistance` для компенсации масштаба.
+
+:::note
+Для функций расстояния `L2Distance` и `cosineDistance` меньшее значение означает большее сходство, тогда как для `dotProduct` большее значение означает большее сходство.
+Соответственно, векторные индексы с `L2Distance` и `cosineDistance` могут использоваться только запросами `SELECT [...] ORDER BY [...] ASC` (`ASC` является значением по умолчанию для `ORDER BY`), тогда как векторные индексы, построенные для `dotProduct`, могут использоваться только запросами `SELECT [...] ORDER BY [...] DESC`.
+:::
 
 `<dimensions>` определяет размер массива (число элементов) в базовом столбце.
 Если ClickHouse обнаружит массив с другим размером во время создания индекса, индекс будет отброшен и будет возвращена ошибка.
@@ -141,23 +147,22 @@ ORDER BY [...]
 * `<hnsw_max_connections_per_layer>` задаёт число соседей для каждой вершины графа, также известное как гиперпараметр HNSW `M`. Значение по умолчанию — `32`. Значение `0` означает использование значения по умолчанию.
 * `<hnsw_candidate_list_size_for_construction>` задаёт размер динамического списка кандидатов при построении графа HNSW, также известного как гиперпараметр HNSW `ef_construction`. Значение по умолчанию — `128`. Значение `0` означает использование значения по умолчанию.
 
-Значения по умолчанию для всех параметров, специфичных для HNSW, достаточно хорошо работают в большинстве сценариев использования.
-Поэтому мы не рекомендуем настраивать параметры, специфичные для HNSW.
+Значения по умолчанию для всех параметров, специфичных для HNSW, достаточно хорошо подходят для большинства сценариев использования.
+Поэтому мы не рекомендуем изменять параметры, специфичные для HNSW.
 
 Применяются дополнительные ограничения:
 
-
-* Индексы сходства векторов могут создаваться только на столбцах типа [Array(Float32)](../../../sql-reference/data-types/array.md), [Array(Float64)](../../../sql-reference/data-types/array.md) или [Array(BFloat16)](../../../sql-reference/data-types/array.md). Массивы с типами Nullable и LowCardinality с плавающей запятой, такие как `Array(Nullable(Float32))` и `Array(LowCardinality(Float32))`, не допускаются.
-* Индексы сходства векторов должны создаваться на одном столбце.
-* Индексы сходства векторов могут быть созданы на вычисляемых выражениях (например, `INDEX index_name arraySort(vectors) TYPE vector_similarity([...])`), но такие индексы не могут использоваться для приблизительного поиска ближайших соседей в дальнейшем.
-* Индексы сходства векторов требуют, чтобы все массивы в базовом столбце содержали `<dimension>` элементов — это проверяется во время создания индекса. Чтобы как можно раньше выявлять нарушения этого требования, пользователи могут добавить [ограничение](/sql-reference/statements/create/table.md#constraints) для векторного столбца, например, `CONSTRAINT same_length CHECK length(vectors) = 256`.
+* Индексы векторного сходства могут создаваться только на столбцах типа [Array(Float32)](../../../sql-reference/data-types/array.md), [Array(Float64)](../../../sql-reference/data-types/array.md) или [Array(BFloat16)](../../../sql-reference/data-types/array.md). Массивы с типами Nullable и LowCardinality с плавающей запятой, такие как `Array(Nullable(Float32))` и `Array(LowCardinality(Float32))`, не допускаются.
+* Индексы векторного сходства должны создаваться на одном столбце.
+* Индексы векторного сходства могут быть созданы на вычисляемых выражениях (например, `INDEX index_name arraySort(vectors) TYPE vector_similarity([...])`), но такие индексы не могут использоваться для приблизительного поиска ближайших соседей в дальнейшем.
+* Индексы векторного сходства требуют, чтобы все массивы в базовом столбце содержали `<dimension>` элементов — это проверяется во время создания индекса. Чтобы как можно раньше выявлять нарушения этого требования, пользователи могут добавить [ограничение](/sql-reference/statements/create/table.md#constraints) для векторного столбца, например, `CONSTRAINT same_length CHECK length(vectors) = 256`.
 * Аналогично, значения массивов в базовом столбце не должны быть пустыми (`[]`) или иметь значение по умолчанию (также `[]`).
 
 **Оценка потребления памяти и дискового пространства**
 
 Вектор, сгенерированный для использования с типичной AI-моделью (например, Large Language Model, [LLMs](https://en.wikipedia.org/wiki/Large_language_model)), состоит из сотен или тысяч чисел с плавающей запятой.
 Таким образом, одно векторное значение может потреблять несколько килобайт памяти.
-Пользователи, которые хотят оценить объем хранилища, необходимый для базового векторного столбца таблицы, а также объем оперативной памяти, необходимой для индекса сходства векторов, могут использовать две приведенные ниже формулы:
+Пользователи, которые хотят оценить объем хранилища, необходимый для базового векторного столбца таблицы, а также объем оперативной памяти, необходимой для индекса векторного сходства, могут использовать две приведенные ниже формулы:
 
 Потребление дискового пространства векторным столбцом в таблице (в несжатом виде):
 
@@ -193,7 +198,6 @@ Memory consumption = 3072 + 512 = 3584 MB
 ```
 
 Приведённая выше формула не учитывает дополнительную память, необходимую индексам векторного сходства для размещения структур данных времени выполнения, таких как предварительно выделенные буферы и кэши.
-
 
 #### Использование индекса сходства векторов \{#using-a-vector-similarity-index\}
 
@@ -598,6 +602,8 @@ WHERE type = 'vector_similarity';
 
 #### Пример \{#approximate-nearest-neighbor-search-example\}
 
+Запросы:
+
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32), INDEX idx vec TYPE vector_similarity('hnsw', 'L2Distance', 2)) ENGINE = MergeTree ORDER BY id;
 
@@ -610,7 +616,7 @@ ORDER BY L2Distance(vec, reference_vec) ASC
 LIMIT 3;
 ```
 
-возвращает
+Результат:
 
 ```result
    ┌─id─┬─vec─────┐
@@ -626,7 +632,6 @@ LIMIT 3;
 * [LAION-5B](../../../getting-started/example-datasets/laion-5b-dataset)
 * [dbpedia](../../../getting-started/example-datasets/dbpedia-dataset)
 * [hackernews](../../../getting-started/example-datasets/hackernews-vector-search-dataset)
-
 
 ### Квантованный бит (QBit) \{#approximate-nearest-neighbor-search-qbit\}
 

@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## stddevPopStable \{#stddevPopStable\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Результат равен квадратному корню из [varPop](../../../sql-reference/aggregate-functions/reference/varPop.md). В отличие от [stddevPop](../reference/stddevPop.md), эта функция использует численно устойчивый алгоритм. Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 

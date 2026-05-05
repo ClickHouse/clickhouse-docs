@@ -38,7 +38,7 @@ To understand the backup cost, you can view the backup cost per service from the
 
 <Image img={backup_usage} size="md" alt="Backup usage chart in ClickHouse Cloud" border/>
 
-Estimating the total cost for your backups requires you to set a schedule. We are also working on updating our [pricing calculator](https://clickhouse.com/pricing), so you can get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
+Estimating the total cost for your backups requires you to set a schedule. We're also working on updating our [pricing calculator](https://clickhouse.com/pricing), so you can get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
 - Size of the full and incremental backups
 - Desired frequency
 - Desired retention
@@ -78,11 +78,11 @@ To use the new service, perform these steps:
 
 ### Migrate data from the **newly restored service** back to the **original service** {#migrate-data-from-the-newly-restored-service-back-to-the-original-service}
 
-Suppose you cannot work with the newly restored service for some reason, for example, if you still have users or applications that connect to the existing service. You may decide to migrate the newly restored data into the original service. The migration can be accomplished by following these steps:
+Suppose you can't work with the newly restored service for some reason, for example, if you still have users or applications that connect to the existing service. You may decide to migrate the newly restored data into the original service. The migration can be accomplished by following these steps:
 
 **Allow remote access to the newly restored service**
 
-The new service should be restored from a backup with the same IP Allow List as the original service. This is required as connections will not be allowed to other ClickHouse Cloud services unless you had allowed access from **Anywhere**. Modify the allow list and allow access from **Anywhere** temporarily. See the [IP Access List](/cloud/security/setting-ip-filters) docs for details.
+The new service should be restored from a backup with the same IP Allow List as the original service. This is required as connections won't be allowed to other ClickHouse Cloud services unless you had allowed access from **Anywhere**. Modify the allow list and allow access from **Anywhere** temporarily. See the [IP Access List](/cloud/security/setting-ip-filters) docs for details.
 
 **On the newly restored ClickHouse service (the system that hosts the restored data)**
 
@@ -146,7 +146,7 @@ The `UNDROP` command is supported in ClickHouse Cloud through [Shared Catalog](h
 To prevent users from accidentally dropping tables, you can use [`GRANT` statements](/sql-reference/statements/grant) to revoke permissions for the [`DROP TABLE` command](/sql-reference/statements/drop#drop-table) for a specific user or role.
 
 :::note
-To prevent accidental deletion of data, please note that by default it is not possible to drop tables >`1TB` in size in ClickHouse Cloud.
+To prevent accidental deletion of data, please note that by default it isn't possible to drop tables >`1TB` in size in ClickHouse Cloud.
 Should you wish to drop tables greater than this threshold you can use setting `max_table_size_to_drop` to do so:
 
 ```sql

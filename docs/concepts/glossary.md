@@ -33,7 +33,7 @@ A dictionary is a mapping of key-value pairs that is useful for various types of
 
 ## Distributed table {#distributed-table}
 
-A distributed table in ClickHouse is a special type of table that does not store data itself but provides a unified view for distributed query processing across multiple servers in a cluster.
+A distributed table in ClickHouse is a special type of table that doesn't store data itself but provides a unified view for distributed query processing across multiple servers in a cluster.
 
 ## Granule {#granule}
 
@@ -77,7 +77,7 @@ A partitioning key in ClickHouse is a SQL expression defined in the PARTITION BY
 
 ## Primary key {#primary-key}
 
-In ClickHouse, a primary key determines the order in which data is stored on disk and is used to build a sparse index that speeds up query filtering. Unlike traditional databases, the primary key in ClickHouse does not enforce uniqueness—multiple rows can have the same primary key value.
+In ClickHouse, a primary key determines the order in which data is stored on disk and is used to build a sparse index that speeds up query filtering. Unlike traditional databases, the primary key in ClickHouse doesn't enforce uniqueness—multiple rows can have the same primary key value.
 
 ## Projection {#projection}
 
@@ -93,7 +93,7 @@ A copy of the data stored in a ClickHouse database. You can have any number of r
 
 ## Shard {#shard}
 
-A subset of data. ClickHouse always has at least one shard for your data. If you do not split the data across multiple servers, your data will be stored in one shard. Sharding data across multiple servers can be used to divide the load if you exceed the capacity of a single server.
+A subset of data. ClickHouse always has at least one shard for your data. If you don't split the data across multiple servers, your data will be stored in one shard. Sharding data across multiple servers can be used to divide the load if you exceed the capacity of a single server.
 
 ## Skipping index {#skipping-index}
 
@@ -101,7 +101,7 @@ Skipping indices are used to store small amounts of metadata at the level of mul
 
 ## Sorting key {#sorting-key}
 
-In ClickHouse, a sorting key defines the physical order of rows on disk. If you do not specify a primary key, ClickHouse uses the sorting key as the primary key. If you specify both, the primary key must be a prefix of the sorting key.
+In ClickHouse, a sorting key defines the physical order of rows on disk. If you don't specify a primary key, ClickHouse uses the sorting key as the primary key. If you specify both, the primary key must be a prefix of the sorting key.
 
 ## Sparse index {#sparse-index}
 

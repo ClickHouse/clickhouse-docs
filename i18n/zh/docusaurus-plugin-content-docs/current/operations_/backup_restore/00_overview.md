@@ -1,8 +1,8 @@
 ---
-description: 'ClickHouse 备份和恢复概览'
+description: 'ClickHouse 备份与恢复概览'
 sidebar_label: '概览'
 slug: /operations/backup/overview
-title: 'ClickHouse 中的备份和恢复'
+title: 'ClickHouse 中的备份与恢复'
 doc_type: 'reference'
 ---
 
@@ -11,7 +11,7 @@ import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operati
 import AzureSettings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_azure_settings.md';
 import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 
-> 本节将对 ClickHouse 中的备份和恢复进行总体介绍。若需要了解各备份方法的详细说明，请参阅侧边栏中相应方法的页面。
+> 本节将对 ClickHouse 中的备份与恢复进行总体介绍。若需要了解各备份方法的详细说明，请参阅侧边栏中相应方法的页面。
 
 
 ## 介绍 \{#introduction\}
@@ -27,26 +27,28 @@ import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/ope
 每家公司的可用资源和业务需求都不同，因此不存在一种通用的 ClickHouse 备份与恢复方案可以适用于所有场景。对 1 GB 数据有效的方法，很可能并不适用于数十 PB 的数据。本节文档介绍了多种可选方案及其优缺点。一个好的做法是组合使用多种方案，而不是只依赖单一方案，以此弥补各自的不足。
 
 :::note
-请记住，如果你只做过备份，却从未尝试恢复，那么在真正需要恢复时，很有可能恢复过程无法正常工作（或者至少会比业务可接受的时间长得多）。因此，无论选择哪种备份方案，都务必要同时实现恢复过程的自动化，并定期在备用的 ClickHouse 集群上进行恢复演练。
+请记住，如果你只做过备份，却从未尝试恢复，那么在真正需要恢复时，很有可能恢复过程无法正常工作 (或者至少会比业务可接受的时间长得多) 。因此，无论选择哪种备份方案，都务必要同时实现恢复过程的自动化，并定期在备用的 ClickHouse 集群上进行恢复演练。
 :::
 
 以下页面详细介绍了 ClickHouse 中可用的各种备份与恢复方法：
 
-| 页面                                                                | 说明                                                     |
-|---------------------------------------------------------------------|----------------------------------------------------------|
-| [使用本地磁盘或 S3 磁盘进行备份/恢复](./01_local_disk.md)          | 详细说明使用本地磁盘或 S3 磁盘进行备份/恢复的方法        |
-| [使用 S3 endpoint 进行备份/恢复](./02_s3_endpoint.md)              | 详细说明使用 S3 endpoint 进行备份/恢复的方法             |
-| [使用 AzureBlobStorage 进行备份/恢复](./03_azure_blob_storage.md)  | 详细说明使用 Azure Blob 存储进行备份/恢复的方法          |
-| [替代方法](./04_alternative_methods.md)                             | 讨论其他备份替代方法                                     |        
+| 页面                                                        | 说明                                 |
+| --------------------------------------------------------- | ---------------------------------- |
+| [使用本地磁盘或 S3 磁盘进行备份/恢复](./01_local_disk.md)                | 详细说明使用本地磁盘或 S3 磁盘进行备份/恢复的方法        |
+| [使用 S3 端点进行备份/恢复](./02_s3_endpoint.md)             | 详细说明使用 S3 端点进行备份/恢复的方法      |
+| [使用 AzureBlobStorage 进行备份/恢复](./03_azure_blob_storage.md) | 详细说明使用 Azure Blob 存储进行备份/恢复的方法     |
+| [替代方法](./04_alternative_methods.md)                       | 讨论其他备份替代方法                         |
+| [快照备份](./05_snapshot.md)                                  | 使用云对象存储为 SharedMergeTree 表提供的轻量级快照 |
 
 备份可以：
-- 是[完整或增量](#backup-types)
-- 是[同步或异步](#synchronous-vs-asynchronous)
-- 是[并发或非并发](#concurrent-vs-non-concurrent)
-- 是[压缩或未压缩](#compressed-vs-uncompressed)
-- 使用[命名集合](#using-named-collections)
-- 进行密码保护
-- 针对[系统表、日志表或访问管理表](#system-backups)进行备份
+
+* 是[完整或增量](#backup-types)
+* 是[同步或异步](#synchronous-vs-asynchronous)
+* 是[并发或非并发](#concurrent-vs-non-concurrent)
+* 是[压缩或未压缩](#compressed-vs-uncompressed)
+* 使用[命名集合](#using-named-collections)
+* 进行密码保护
+* 针对[系统表、日志表或访问管理表](#system-backups)进行备份
 
 ## 备份类型 \{#backup-types\}
 

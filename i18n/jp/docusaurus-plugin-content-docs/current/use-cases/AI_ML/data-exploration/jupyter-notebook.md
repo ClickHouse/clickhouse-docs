@@ -172,7 +172,7 @@ df.head()
 
 `df.head` は、返されたデータの先頭数行のみを表示します。
 
-<Image size="md" img={image_6} alt="DataFrame のプレビュー" />
+<Image size="md" img={image_6} alt="dataframe preview" />
 
 新しいセルで次のコマンドを実行して、列の型を確認します。
 
@@ -209,7 +209,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-<Image size="md" img={image_7} alt="dataframe preview" />
+<Image size="md" img={image_7} alt="DataFrame のプレビュー" />
 
 おそらく想像がつくと思いますが、ロンドンの不動産価格は時間の経過とともに大きく上昇しています。
 
@@ -235,40 +235,41 @@ df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
 
+
 <details>
   <summary>1 回のステップで複数のソースから読み込む</summary>
   1 回のステップで複数のソースから読み込むことも可能です。次のクエリのように `JOIN` を使用して実行できます:
 
   ```python
-query = f"""
-SELECT 
-    toYear(date) AS year,
-    avg(price) AS avg_price, housesSold
-FROM remoteSecure(
-'****.europe-west4.gcp.clickhouse.cloud',
-default.pp_complete,
-'{username}',
-'{password}'
-) AS remote
-JOIN (
+  query = f"""
   SELECT 
-    toYear(date) AS year,
-    sum(houses_sold)*1000 AS housesSold
-    FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
-  WHERE area = 'city of london' AND houses_sold IS NOT NULL
+      toYear(date) AS year,
+      avg(price) AS avg_price, housesSold
+  FROM remoteSecure(
+  '****.europe-west4.gcp.clickhouse.cloud',
+  default.pp_complete,
+  '{username}',
+  '{password}'
+  ) AS remote
+  JOIN (
+    SELECT 
+      toYear(date) AS year,
+      sum(houses_sold)*1000 AS housesSold
+      FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
+    WHERE area = 'city of london' AND houses_sold IS NOT NULL
+    GROUP BY toYear(date)
+    ORDER BY year
+  ) AS local ON local.year = remote.year
+  WHERE town = 'LONDON'
   GROUP BY toYear(date)
-  ORDER BY year
-) AS local ON local.year = remote.year
-WHERE town = 'LONDON'
-GROUP BY toYear(date)
-ORDER BY year;
-"""
-```
+  ORDER BY year;
+  """
+  ```
 </details>
 
 <Image size="md" img={image_8} alt="データフレームのプレビュー" />
 
-2020 年以降のデータはありませんが、1995 年から 2019 年までの各年について、2 つのデータセットを比較してプロットできます。
+2020年以降のデータはありませんが、1995年から2019年までの各年について、2つのデータセットを比較してプロットできます。
 新しいセルで次のコマンドを実行します:
 
 ```python
@@ -319,6 +320,7 @@ plt.show()
 一方で価格は、1995年の約£150,000から2005年までに約£300,000へと、着実かつ一貫した成長を示しています。
 2012年以降は成長が大きく加速し、概ね£400,000から2019年までに£1,000,000を超える水準まで急激に上昇しています。
 販売件数とは異なり、価格は2008年の危機の影響をほとんど受けず、上昇基調を維持し続けています。驚くべき動きです。
+
 
 ## まとめ \{#summary\}
 

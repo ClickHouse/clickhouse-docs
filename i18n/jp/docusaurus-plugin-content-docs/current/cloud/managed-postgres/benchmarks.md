@@ -167,13 +167,13 @@ Postgres by ClickHouse は、次のようなアプリケーションに最適で
 
 このパフォーマンス上の優位性は、根本的なアーキテクチャの違いに由来します。
 
-| Aspect                  | NVMe ストレージ（Managed Postgres） | ネットワーク接続ストレージ（プロビジョンド IOPS） |
-|-------------------------|-------------------------------------|----------------------------------------------------|
-| **IOPS**                | 100k から事実上無制限               | 16,000 IOPS をプロビジョニング                     |
-| **Network hops**        | ゼロ（ローカルデバイス）            | すべてのディスク操作でネットワーク往復が必要       |
-| **Performance scaling** | 並行実行数に応じて線形にスケール     | プロビジョニングされた IOPS によって制限される     |
+| Aspect                  | NVMe ストレージ (Managed Postgres)  | ネットワーク接続ストレージ (プロビジョンド IOPS)  |
+| ----------------------- | ------------------------------ | ----------------------------- |
+| **IOPS**                | 100k から事実上無制限                  | 16,000 IOPS をプロビジョニング         |
+| **Network hops**        | ゼロ (ローカルデバイス)                  | すべてのディスク操作でネットワーク往復が必要        |
+| **Performance scaling** | 並行実行数に応じて線形にスケール               | プロビジョニングされた IOPS によって制限される    |
 
-NVMe ストレージによるパフォーマンス上の利点の詳細は、[NVMe を活用したパフォーマンス](/cloud/managed-postgres/overview#nvme-performance)を参照してください。
+NVMe ストレージによるパフォーマンス上の利点の詳細は、[NVMe を活用したパフォーマンス](/cloud/managed-postgres#nvme-performance)を参照してください。
 
 ## コスト効率 \{#cost-effectiveness\}
 
@@ -190,9 +190,9 @@ NVMe ストレージによるパフォーマンス上の利点の詳細は、[NV
 
 完全なベンチマークデータ、設定内容、および詳細なメトリクスは、[ベンチマーク結果スプレッドシート](https://docs.google.com/spreadsheets/d/17TLWmwNKZb3Ie1vSQqvjtqByHskvoX6CF2eQ_FRx1cA/edit?gid=845104392#gid=845104392)で確認できます。
 
-## 参考リソース \{#resources\}
+## 追加リソース \{#resources\}
 
-- [PeerDB: マネージド Postgres サービスの比較](https://blog.peerdb.io/comparing-postgres-managed-services-aws-azure-gcp-and-supabase)
-- [pgbench のドキュメント](https://www.postgresql.org/docs/current/pgbench.html)
-- [マネージド Postgres の概要](/cloud/managed-postgres/overview)
+- [PeerDB: Managed Postgres サービスの比較](https://blog.peerdb.io/comparing-postgres-managed-services-aws-azure-gcp-and-supabase)
+- [pgbench ドキュメント](https://www.postgresql.org/docs/current/pgbench.html)
+- [Managed Postgres の概要](/cloud/managed-postgres)
 - [Postgres インスタンスのスケーリング](/cloud/managed-postgres/scaling)

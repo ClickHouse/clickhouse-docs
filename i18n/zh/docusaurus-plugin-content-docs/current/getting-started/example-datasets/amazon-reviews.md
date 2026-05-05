@@ -7,7 +7,7 @@ doc_type: 'guide'
 keywords: ['Amazon reviews', 'customer reviews dataset', 'e-commerce data', 'example dataset', 'getting started']
 ---
 
-该数据集包含超过 1.5 亿条 Amazon 商品的客户评论。数据以存储在 AWS S3 中的 snappy 压缩 Parquet 文件形式提供，压缩后总大小为 49GB。下面我们逐步演示如何将其导入 ClickHouse。
+该数据集包含超过 1.5 亿条 Amazon 商品的客户评论。数据以存储在 AWS S3 中的 snappy 压缩 Parquet 文件形式提供，压缩后总大小为 49GB。下面我们逐步演示如何将其 INSERT 到 ClickHouse。
 
 :::note
 下面的查询是在 **Production** 环境的 ClickHouse Cloud 实例上执行的。更多信息请参阅
@@ -133,7 +133,7 @@ SELECT formatReadableQuantity(count())
 FROM amazon.amazon_reviews
 ```
 
-6. Let's see how much space our data is using:
+6. Let&#39;s see how much space our data is using:
 
 ```sql runnable
 SELECT
@@ -149,7 +149,8 @@ GROUP BY disk_name
 ORDER BY size DESC
 ```
 
-The original data was about 70G, but compressed in ClickHouse it takes up about 30G.
+原始数据大约为 70G，压缩存入 ClickHouse 后仅占用约 30G。
+
 
 ## Example queries \{#example-queries\}
 

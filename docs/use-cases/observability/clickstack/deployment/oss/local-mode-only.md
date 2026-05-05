@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/deployment/local-mode-only
-title: 'Local Mode Only'
+title: 'Local mode only'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5
-description: 'Deploying ClickStack with Local Mode Only - The ClickHouse Observability Stack'
+description: 'Deploying ClickStack with Local mode only - The ClickHouse Observability Stack'
 doc_type: 'guide'
 keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability']
 ---
@@ -46,7 +46,7 @@ docker run -p 8080:8080 clickhouse/clickstack-local:latest
 
 Visit [http://localhost:8080](http://localhost:8080) to access the HyperDX UI.
 
-**You will not be prompted to create a user, as authentication is not enabled in this deployment mode.**
+**You won't be prompted to create a user, as authentication isn't enabled in this deployment mode.**
 
 Connect to your own external ClickHouse cluster e.g. ClickHouse Cloud.
 

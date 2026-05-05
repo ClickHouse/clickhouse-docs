@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: '使用 ClickStack 和 Rotel 监控 AWS Lambda 日志'
+title: '使用 Rotel 在 ClickStack 中监控 AWS Lambda 日志'
 sidebar_label: 'AWS Lambda 日志'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 和 Rotel 监控 AWS Lambda 日志'
+description: '使用 Rotel 在 ClickStack 中监控 AWS Lambda 日志'
 doc_type: 'guide'
 keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', '日志', 'CloudWatch']
 ---
@@ -38,10 +38,10 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ### 前置条件 \{#prerequisites\}
 
-- 已在运行的 ClickStack 实例
-- 一个或多个需要监控的 AWS Lambda 函数
-- 已配置且具有相应权限的 AWS CLI
-- 具有添加 Layer 权限的 Lambda 执行角色
+* 已在运行的 ClickStack 实例
+* 一个或多个需要监控的 AWS Lambda 函数
+* 已配置且具有相应权限的 AWS CLI
+* 具有添加 Layer 权限的 Lambda 执行角色
 
 <VerticalStepper headerLevel="h4">
   #### 选择合适的 Rotel Lambda Extension 层
@@ -69,7 +69,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
   ##### 选项 1：AWS 控制台
 
   1. 打开 AWS Lambda 控制台
-  2. 导航到你的 Lambda 函数
+  2. 转到您的 Lambda 函数
   3. 向下滚动至 **Layers** 部分，然后单击 **Add a layer**
   4. 选择 **Specify an ARN**
   5. 请输入 Rotel 层的 ARN：

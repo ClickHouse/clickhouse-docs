@@ -23,6 +23,16 @@ Every page in the docs has an **Edit this page** link that opens the page in the
 
 Usually, these plugins provide a preview of how the markdown will render, and they catch basic errors like unclosed tags very early.
 
+## Use sentence case in headings and titles {#use-sentence-case-in-headings-and-titles}
+
+Use sentence case for doc titles and headings:
+
+- Capitalize the first word and proper nouns.
+- Keep official capitalization for product names (for example, `ClickHouse` and `clickhouse-local`).
+- Avoid title case for headers unless there is a specific brand requirement.
+
+For details, see the [ClickHouse docs style guide](./style-guide.md#sentence-casing-for-titles-and-headings) and Google's guidance on [headings](https://developers.google.com/style/headings) and [product names](https://developers.google.com/style/product-names).
+
 ## Building the docs locally {#building-the-docs-locally}
 
 You can build the ClickHouse docs on most machines.

@@ -234,9 +234,9 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 
 ### 转换为 JSON \{#convert-to-json\}
 
-在撰写本文时，ClickHouse 尚未对 XML 输入格式提供原生支持。要将数据加载到 ClickHouse，我们首先需要将其转换为 NDJSON。
+在撰写本文时，ClickHouse 尚未原生支持 XML 作为输入格式。要将数据加载到 ClickHouse，我们首先将其转换为 NDJSON。
 
-要将 XML 转换为 JSON，我们推荐使用 [`xq`](https://github.com/kislyuk/yq) 这一 Linux 命令行工具，它是用于处理 XML 文档的一个简单 `jq` 封装。
+要将 XML 转换为 JSON，我们推荐使用 [`xq`](https://github.com/kislyuk/yq) 这个 Linux 工具，它是针对 XML 文档的简单 `jq` 封装。
 
 安装 xq 和 jq：
 
@@ -245,17 +245,17 @@ sudo apt install jq
 pip install yq
 ```
 
-以下步骤适用于上述任一文件。这里以 `stackoverflow.com-Posts.7z` 文件为例，可根据需要调整。
+以下步骤适用于上述任意文件。我们以 `stackoverflow.com-Posts.7z` 文件为例，根据需要进行调整。
 
-使用 [p7zip](https://p7zip.sourceforge.net/) 解压该文件。解压后会生成一个单独的 XML 文件——在本例中为 `Posts.xml`。
+使用 [p7zip](https://p7zip.sourceforge.net/) 解压该文件。此操作会生成一个单个 XML 文件——在本例中为 `Posts.xml`。
 
-> 文件被压缩了大约 4.5 倍。压缩后为 22GB 的 Posts 文件，解压后大约需要 97GB 的空间。
+> 文件压缩比例约为 4.5 倍。帖子文件压缩后为 22GB，解压后大约占用 97GB 的空间。
 
 ```bash
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-以下示例会将该 XML 文件拆分为多个文件，每个文件包含 10000 行数据。
+下面将 XML 文件拆分为多个文件，每个文件包含 10000 行。
 
 ```bash
 mkdir posts
@@ -264,7 +264,7 @@ cd posts
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-运行完上述命令后，将会得到一组文件，每个文件包含 10000 行。这样可以确保下一条命令的内存开销不会过大（XML 到 JSON 的转换是在内存中完成的）。
+运行完上述命令后，您将得到一组文件，每个文件包含 10000 行。这样可以确保下一条命令的内存开销不会过大（XML 到 JSON 的转换是在内存中完成的）。
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
@@ -272,7 +272,7 @@ find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' >
 
 上述命令将生成一个 `posts.json` 文件。
 
-使用以下命令将其加载到 ClickHouse 中。请注意，这里为 `posts.json` 文件显式指定了 schema。你需要根据各字段的数据类型进行相应调整，使其与目标表保持一致。
+使用以下命令将其导入 ClickHouse。请注意，这里为 `posts.json` 文件显式指定了 schema，需根据具体数据类型进行调整，以与目标表结构对齐。
 
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"

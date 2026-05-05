@@ -60,7 +60,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   ### 部署 OpenTelemetry 演示（可选）
 
-  此**步骤为可选项，适用于没有现有 Pod（容器组）需要监控的用户**。虽然已在 Kubernetes 环境中部署了现有服务的用户可以跳过此步骤，但本演示包含已插桩的微服务，这些微服务会生成追踪和会话回放数据，让用户能够体验 ClickStack 的所有功能。
+  此**步骤为可选项,适用于没有现有 Pod（容器组）需要监控的用户**。虽然已在 Kubernetes 环境中部署了现有服务的用户可以跳过此步骤,但本演示包含已插桩的微服务,这些微服务会生成追踪和会话回放数据,让用户能够体验 ClickStack 的所有功能。
 
   以下步骤将在 Kubernetes 集群中部署 ClickStack 分支版本的 OpenTelemetry Demo Application 堆栈,专为可观测性测试和仪表化演示而定制。该堆栈包含后端微服务、负载生成器、遥测管道、支撑基础设施(如 Kafka、Redis)以及与 ClickStack 的 SDK 集成。
 
@@ -192,10 +192,10 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
   ### 访问 HyperDX UI
 
   :::note
-  即使使用 Managed ClickStack,仍需在 Kubernetes 集群中部署本地 HyperDX 实例。该实例提供由 HyperDX 内置的 OpAMP 服务器管理的摄取密钥,用于保护通过已部署的 OTel collector 进行的数据摄取——此功能目前在 Managed ClickStack 中尚不可用。
+  即使使用托管版 ClickStack,仍需在 Kubernetes 集群中部署本地 HyperDX 实例。该实例提供由 HyperDX 内置的 OpAMP 服务器管理的摄取密钥,用于保护通过已部署的 OTel collector 进行的数据摄取——此功能目前在托管版 ClickStack 中尚不可用。
   :::
 
-  出于安全考虑,该服务使用 `集群IP` 类型,默认不对外暴露。
+  出于安全考虑,该服务使用 `ClusterIP` 类型,默认不对外暴露。
 
   要访问 HyperDX UI,请将端口 3000 转发到本地端口 8080。
 
@@ -218,7 +218,7 @@ import dashboard_kubernetes from '@site/static/images/use-cases/observability/hy
 
   导航至 [`Team Settings`](http://localhost:8080/team) 并从 `API Keys` 部分复制 `Ingestion API Key`。此 API key 可确保通过 OpenTelemetry collector 摄取的数据是安全的。
 
-  <Image img={copy_api_key} alt="复制 API 密钥" size="lg" />
+  <Image img={copy_api_key} alt="复制 API key" size="lg" />
 
   ### 创建 API 密钥 Kubernetes Secret
 

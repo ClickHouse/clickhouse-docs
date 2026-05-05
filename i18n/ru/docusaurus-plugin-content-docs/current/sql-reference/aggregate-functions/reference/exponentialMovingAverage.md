@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## exponentialMovingAverage \{#exponentialMovingAverage\}
 
-Введена в: v21.11
+Введена в: v21.11.0
 
 Вычисляет экспоненциальное скользящее среднее значений за заданный интервал времени.
 

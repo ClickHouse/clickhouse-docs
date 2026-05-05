@@ -64,6 +64,12 @@ Managed Postgres 当前尚不支持 Terraform。我们建议使用 ClickHouse Cl
 带有控制台集成功能的增强型 RBAC 计划于今年推出。
 :::
 
+## 升级 \{#upgrades\}
+
+### PostgreSQL 版本升级如何处理？ \{#version-upgrades\}
+
+次要版本和主要版本升级都通过故障切换机制完成，通常只会导致几秒钟的停机时间。你可以配置维护时间窗口来控制升级的应用时间。完整说明请参阅 [Upgrades](/cloud/managed-postgres/upgrades) 文档。
+
 ## 迁移 \{#migration\}
 
 ### 可用于迁移到 Managed Postgres 的工具有哪些？ \{#migration-tools\}

@@ -11,7 +11,7 @@ import Image from '@theme/IdealImage';
 import no_events_per_day from '@site/static/images/getting-started/example-datasets/sensors_01.png';
 import sensors_02 from '@site/static/images/getting-started/example-datasets/sensors_02.png';
 
-[Sensor.Community](https://sensor.community/en/) 是一个由社区贡献者驱动的全球传感器网络，用于创建开放环境数据（Open Environmental Data）。数据由分布在全球各地的传感器采集。任何人都可以购买传感器并将其放置在任意位置。用于下载数据的 API 位于 [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs)，数据可依据 [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/) 免费获取。
+[Sensor.Community](https://sensor.community/en/) 是一个由社区贡献者驱动的全球传感器网络，用于创建开放环境数据 (Open Environmental Data) 。数据由分布在全球各地的传感器采集。任何人都可以购买传感器并将其放置在任意位置。用于下载数据的 API 位于 [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs)，数据可依据 [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/) 免费获取。
 
 :::important
 该数据集包含超过 200 亿条记录，因此除非你的资源可以处理这种规模的数据量，否则在直接复制粘贴下面的命令时要格外小心。下面的命令是在一套 **生产** 环境的 [ClickHouse Cloud](https://clickhouse.cloud) 实例上执行的。
@@ -31,6 +31,7 @@ SETTINGS format_csv_delimiter = ';';
 
 数据存储在 CSV 文件中，但使用分号作为分隔符。行的格式如下：
 
+
 ```response
 ┌─sensor_id─┬─sensor_type─┬─location─┬────lat─┬────lon─┬─timestamp───────────┬──pressure─┬─altitude─┬─pressure_sealevel─┬─temperature─┐
 │      9119 │ BMP180      │     4594 │ 50.994 │  7.126 │ 2019-06-01T00:00:00 │    101471 │ ᴺᵁᴸᴸ     │ ᴺᵁᴸᴸ              │        19.9 │
@@ -46,7 +47,8 @@ SETTINGS format_csv_delimiter = ';';
 └───────────┴─────────────┴──────────┴────────┴────────┴─────────────────────┴───────────┴──────────┴───────────────────┴─────────────┘
 ```
 
-2. 我们将使用以下 `MergeTree` 表在 ClickHouse 中存储数据：
+2. 我们将使用以下 `MergeTree` 表用于在 ClickHouse 中存储数据：
+
 
 ```sql
 CREATE TABLE sensors
@@ -115,7 +117,7 @@ SETTINGS
     parallel_distributed_insert_select = 1;
 ```
 
-下面是响应结果——显示了行数和处理速度。其写入速率超过每秒 600 万行！
+下面是响应结果——显示了行数和处理速度。数据写入速率超过每秒 600 万行！
 
 ```response
 0 rows in set. Elapsed: 3419.330 sec. Processed 20.69 billion rows, 1.67 TB (6.05 million rows/s., 488.52 MB/s.)
@@ -138,7 +140,7 @@ GROUP BY
 ORDER BY size DESC;
 ```
 
-1.67T 已压缩至 310GiB，共 206.9 亿行：
+这 1.67T 数据被压缩到 310 GiB，共 206.9 亿行：
 
 ```response
 ┌─disk_name─┬─compressed─┬─uncompressed─┬─compr_rate─┬────────rows─┬─part_count─┐
@@ -172,6 +174,7 @@ GROUP BY day
 ORDER BY day ASC;
 ```
 
-以下是结果的可视化：
+下面是结果的可视化展示：
 
-<Image img={sensors_02} size="md" alt="炎热潮湿的天气"/>
+
+<Image img={sensors_02} size="md" alt="炎热潮湿的天数"/>

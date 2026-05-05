@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
 title: 'Monitoring Temporal Cloud with ClickStack'
-sidebar_label: 'Temporal Cloud Metrics'
+sidebar_label: 'Temporal Cloud metrics'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring Temporal Cloud Metrics with ClickStack'
@@ -26,13 +26,7 @@ Temporal offers an abstraction for building simple, sophisticated, resilient app
 # Monitoring Temporal Cloud metrics with ClickStack {#temporal-metrics-clickstack}
 
 :::note[TL;DR]
-This guide shows you how to monitor Temporal Cloud with ClickStack by configuring the OpenTelemetry collector's Prometheus receiver. You'll learn how to:
-
-- Configure the OTel collector to collect Temporal Cloud Metrics
-- Deploy ClickStack with your custom configuration
-- Use a pre-built dashboard to visualize Temporal Cloud performance (open workflows, actions/sec, active namespaces, task backlogs)
-
-Time required: 5-10 minutes
+Monitor Temporal Cloud metrics in ClickStack using the OTel Prometheus receiver. Includes a pre-built dashboard.
 :::
 
 ## Integration with existing Temporal Cloud {#existing-temporal}
@@ -120,7 +114,7 @@ To enable custom collector configuration in your existing ClickStack deployment,
 3. Mount the `temporal.key` file at `/etc/otelcol-contrib/temporal.key`
 4. Ensure network connectivity between ClickStack and Temporal
 
-All commands assume they are executed from the sample directory as where `temporal-metrics.yaml` and `temporal.key` are stored.
+All commands assume they're executed from the sample directory as where `temporal-metrics.yaml` and `temporal.key` are stored.
 
 ##### Option 1: Docker Compose {#docker-compose}
 
@@ -265,8 +259,10 @@ If ClickStack can't reach Temporal Cloud ensure your Docker Compose file or `doc
 
 ## Next steps {#next-steps}
 
-If you want to explore further, here are some next steps to experiment with your monitoring:
-
-- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (memory usage thresholds, connection limits, cache hit rate drops)
-- Create additional dashboards for specific use cases (replication lag, persistence performance)
+- Set up [alerts](/use-cases/observability/clickstack/alerts) for critical metrics (workflow failure rates, task backlog growth, schedule-to-start latency)
+- Create additional dashboards for specific use cases (namespace-level monitoring, workflow type performance)
 - Monitor multiple Temporal Cloud accounts by duplicating the receiver configuration with different endpoints and service names
+
+## Going to production {#going-to-production}
+
+This guide extends ClickStack's built-in OpenTelemetry Collector for quick setup. For production deployments, we recommend running your own OTel Collector and sending data to ClickStack's OTLP endpoint. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.

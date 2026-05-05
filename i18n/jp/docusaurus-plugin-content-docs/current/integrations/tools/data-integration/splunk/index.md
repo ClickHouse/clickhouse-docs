@@ -25,7 +25,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 # ClickHouse Cloud の監査ログを Splunk に保存する \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
 
-<PartnerBadge/>
+<PartnerBadge />
 
 [Splunk](https://www.splunk.com/) は、データ分析およびモニタリングのためのプラットフォームです。
 

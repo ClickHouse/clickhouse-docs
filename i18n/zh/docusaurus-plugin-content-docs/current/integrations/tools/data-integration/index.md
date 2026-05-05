@@ -8,8 +8,9 @@ doc_type: 'landing-page'
 
 # 数据集成 \{#data-integrations\}
 
-| Page      | Description                                                                                                                     |
-|-----------|---------------------------------------------------------------------------------------------------------------------------------|
-| [Easypanel](/integrations/easypanel) | Easypanel 允许您在自己的服务器上部署 ClickHouse                                                                    |
-| [Retool](/integrations/retool)    | 使用丰富的用户界面快速构建 Web 和移动应用，自动化复杂任务，并集成 AI——所有这些都由您的数据驱动。 |
-| [Splunk](/integrations/audit-splunk)     | 将 ClickHouse Cloud 的审计日志存储到 Splunk 中。                                                                                  |
+| Page                                   | Description                                           |
+| -------------------------------------- | ----------------------------------------------------- |
+| [Easypanel](/integrations/easypanel)   | Easypanel 允许您在自己的服务器上部署 ClickHouse                    |
+| [Middleware](/integrations/middleware) | 将 ClickHouse 与 Middleware 连接，用于可观测性和监控工作流。            |
+| [Retool](/integrations/retool)         | 使用丰富的用户界面快速构建 Web 和移动应用，自动化复杂任务，并集成 AI——所有这些都由您的数据驱动。 |
+| [Splunk](/integrations/audit-splunk)   | 将 ClickHouse Cloud 的审计日志存储到 Splunk 中。                 |

@@ -36,7 +36,7 @@ keywords: ['云', 'SSH']
 .....
 ```
 
-2. 使用公钥（上述示例中的 ch&#95;key.pub）创建用户。
+2. 使用公钥 (上述示例中的 ch&#95;key.pub) 创建用户。
 
 ```sql
 clickhouse-cloud :) CREATE USER abcuser IDENTIFIED WITH ssh_key BY KEY 'AAAABBBcdE1lZDI1NTE5AAAAIISdl4CrGM8mckXBUXLjL3ef9XwnycDWEvBPu3toB40m' TYPE 'ssh-ed25519';
@@ -50,7 +50,7 @@ Ok.
 
 3. 运行 `SHOW users` 以确认用户已创建。
 
-4. 将 default&#95;role 授予该用户（可选）。
+4. 将 default&#95;role 授予该用户 (可选) 。
 
 ```sql
 clickhouse-cloud :) grant default_role to abcuser;

@@ -42,9 +42,9 @@ ClickHouse Cloud 当前没有与 BigQuery folders 对应的概念。
 
 ### BigQuery Slot reservations 和 Quotas \{#bigquery-slot-reservations-and-quotas\}
 
-与 BigQuery slot reservations 类似，你可以在 ClickHouse Cloud 中[配置纵向和横向自动扩缩容](/manage/scaling#configuring-vertical-auto-scaling)。对于纵向自动扩缩容，你可以为某个服务的计算节点设置内存和 CPU 核心数的最小值和最大值。随后，服务会在这些边界内按需扩缩容。这些设置也可以在初始创建服务的流程中配置。服务中的每个计算节点规格相同。你可以通过[横向扩缩容](/manage/scaling#manual-horizontal-scaling)更改服务中的计算节点数量。
+与 BigQuery slot reservations 类似，你可以在 ClickHouse Cloud 中[配置纵向和横向自动扩缩容](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)。对于纵向自动扩缩容，你可以为某个服务的计算节点设置内存和 CPU 核心数的最小值和最大值。随后，服务会在这些边界内按需扩缩容。这些设置也可以在初始创建服务的流程中配置。服务中的每个计算节点规格相同。你可以通过[横向扩缩容](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling)更改服务中的计算节点数量。
 
-此外，与 BigQuery quotas 类似，ClickHouse Cloud 提供并发控制、内存使用限制和 I/O 调度，使你能够将查询隔离到不同的工作负载类别中。通过对特定工作负载类别设置共享资源（CPU 核心、DRAM、磁盘和网络 I/O）的限制，可确保这些查询不会影响其他关键业务查询。并发控制可在高并发查询场景中防止线程过度订阅。
+此外，与 BigQuery quotas 类似，ClickHouse Cloud 提供并发控制、内存使用限制和 I/O 调度，使你能够将查询隔离到不同的工作负载类别中。通过对特定工作负载类别设置共享资源 (CPU 核心、DRAM、磁盘和网络 I/O) 的限制，可确保这些查询不会影响其他关键业务查询。并发控制可在高并发查询场景中防止线程过度订阅。
 
 ClickHouse 会在服务器级、用户级和查询级跟踪内存分配的字节大小，从而支持灵活的内存使用限制。内存超分配允许查询在保证内存之外使用额外的空闲内存，同时仍然保证其他查询的内存限制。此外，还可以限制聚合、排序和连接子句的内存使用，在超出内存限制时回退到外部算法。
 
@@ -85,7 +85,7 @@ ClickHouse 在数值类型方面提供了更细粒度的精度控制。比如，
 
 在 BigQuery 中，表可以具有[主键和外键约束](https://cloud.google.com/bigquery/docs/information-schema-table-constraints)。通常，主键和外键在关系型数据库中用于确保数据完整性。主键值通常对每一行都是唯一的，且不为 `NULL`。一行中的每个外键值必须存在于主键表的主键列中，或为 `NULL`。在 BigQuery 中，这些约束不会被强制执行，但查询优化器可以利用这些信息更好地优化查询。
 
-在 ClickHouse 中，表也可以具有主键。与 BigQuery 一样，ClickHouse 不会对表的主键列值强制唯一性。与 BigQuery 不同的是，表数据在磁盘上按照主键列[排序](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)进行存储。查询优化器会利用这一排序来避免重新排序、最小化连接所需的内存使用，并支持对 `LIMIT` 子句进行短路执行。与 BigQuery 不同，ClickHouse 会基于主键列值自动创建[（稀疏）主索引](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。该索引用于加速所有包含针对主键列过滤条件的查询。ClickHouse 目前不支持外键约束。
+在 ClickHouse 中，表也可以具有主键。与 BigQuery 一样，ClickHouse 不会对表的主键列值强制唯一性。与 BigQuery 不同的是，表数据在磁盘上按照主键列[排序](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files)进行存储。查询优化器会利用这一排序来避免重新排序、最小化连接所需的内存使用，并支持对 `LIMIT` 子句进行短路执行。与 BigQuery 不同，ClickHouse 会基于主键列值自动创建[ (稀疏) 主索引](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales)。该索引用于加速所有包含针对主键列过滤条件的查询。ClickHouse 目前不支持外键约束。
 
 ## 二级索引（仅在 ClickHouse 中可用） \{#secondary-indexes-only-available-in-clickhouse\}
 

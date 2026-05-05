@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## groupConcat \{#groupConcat\}
 
-引入于：v24.8
+引入于：v24.8.0
 
 对一组字符串进行拼接，生成一个拼接后的字符串，可选使用分隔符分隔各元素，并可选设置元素数量上限。
 
@@ -54,7 +54,7 @@ SELECT groupConcat(Name) FROM Employees;
 JohnJaneBob
 ```
 
-**使用逗号作为分隔符（参数语法）**
+**使用逗号作为分隔符 (参数语法)&#x20;**
 
 ```sql title=Query
 SELECT groupConcat(', ')(Name) FROM Employees;
@@ -64,7 +64,7 @@ SELECT groupConcat(', ')(Name) FROM Employees;
 John, Jane, Bob
 ```
 
-**使用逗号作为分隔符（参数语法）**
+**使用逗号作为分隔符 (参数语法)&#x20;**
 
 ```sql title=Query
 SELECT groupConcat(Name, ', ') FROM Employees;

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/librechat
 sidebar_label: 'Integrate LibreChat'
-title: 'Set Up ClickHouse MCP Server with LibreChat and ClickHouse Cloud'
+title: 'Set up ClickHouse MCP server with LibreChat and ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up LibreChat with a ClickHouse MCP server using Docker.'
@@ -171,7 +171,7 @@ Once installed, you can run a model like this:
 ollama run qwen3:32b
 ```
 
-This will pull the model to your local machine if it is not present.
+This will pull the model to your local machine if it isn't present.
 
 For a list of models see the [Ollama library](https://ollama.com/library)
 
@@ -229,11 +229,11 @@ What datasets do you have access to?
 </VerticalStepper>
 
 :::note
-If the MCP server option does not appear in the LibreChat UI,
+If the MCP server option doesn't appear in the LibreChat UI,
 check that the proper permissions are set in your `librechat.yaml` file. 
 :::
 
-If `use` is set to `false` in the `mcpServers` section under `interface`, the MCP selection dropdown will not appear in chat:
+If `use` is set to `false` in the `mcpServers` section under `interface`, the MCP selection dropdown won't appear in chat:
 
 ```yml title="librechat.yaml"
 interface:

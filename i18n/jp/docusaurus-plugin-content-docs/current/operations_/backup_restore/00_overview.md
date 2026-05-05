@@ -1,8 +1,8 @@
 ---
-description: 'ClickHouse のバックアップとリストアの概要'
+description: 'ClickHouse のバックアップおよびリストアの概要'
 sidebar_label: '概要'
 slug: /operations/backup/overview
-title: 'ClickHouse のバックアップとリストア'
+title: 'ClickHouse のバックアップおよびリストア'
 doc_type: 'reference'
 ---
 
@@ -11,16 +11,16 @@ import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operati
 import AzureSettings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_azure_settings.md';
 import S3Settings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 
-> このセクションでは、ClickHouse におけるバックアップとリストアの概要を扱います。各バックアップ方式のより詳細な説明については、サイドバーにある各方式のページを参照してください。
+> このセクションでは、ClickHouse におけるバックアップおよびリストアの概要を扱います。各バックアップ方式のより詳細な説明については、サイドバーにある各方式のページを参照してください.
 
 
 ## はじめに \{#introduction\}
 
-[レプリケーション](/engines/table-engines/mergetree-family/replication) はハードウェア障害からの保護を提供しますが、人的ミスからは 
+[レプリケーション](/engines/table-engines/mergetree-family/replication) はハードウェア障害からの保護を提供しますが、人的ミスからは
 保護しません。たとえば、データを誤って削除してしまうこと、誤ったテーブルや誤ったクラスター上のテーブルを削除してしまうこと、誤ったデータ処理やデータ破損を引き起こすソフトウェアバグなどです。
 
 多くの場合、このようなミスはすべてのレプリカに影響します。ClickHouse には一部の種類のミスを防ぐための
-組み込みの安全機構があり、たとえば [デフォルトでは](/operations/settings/settings#max_table_size_to_drop)、50 GB を超えるデータを含む 
+組み込みの安全機構があり、たとえば [デフォルトでは](/operations/settings/settings#max_table_size_to_drop)、50 GB を超えるデータを含む
 `MergeTree` ファミリーエンジンのテーブルを安易に DROP することはできません。しかし、これらの安全機構は
 あらゆるケースを網羅しているわけではなく、問題が発生する可能性は依然としてあります。
 
@@ -35,29 +35,31 @@ ClickHouse のバックアップおよびリストアの万能な解決策は存
 
 :::note
 バックアップを取得していても、一度もリストアを試したことがなければ、
-いざ必要になったときに正しくリストアできない可能性があります（少なくとも、ビジネスが許容できる時間より
-長くかかるかもしれません）。そのため、どのようなバックアップアプローチを選択する場合でも、
+いざ必要になったときに正しくリストアできない可能性があります (少なくとも、ビジネスが許容できる時間より
+長くかかるかもしれません) 。そのため、どのようなバックアップアプローチを選択する場合でも、
 リストア手順も自動化し、予備の ClickHouse クラスター上で定期的にテストするようにしてください。
 :::
 
 次のページでは、ClickHouse で利用可能なさまざまなバックアップおよび
 リストア方法の詳細を説明します。
 
-| Page                                                                | Description                                                         |
-|---------------------------------------------------------------------|---------------------------------------------------------------------|
-| [Backup/restore using local disk or S3 disk](./01_local_disk.md)    | ローカルディスクまたは S3 ディスクへの／からのバックアップ／リストアの詳細 |
-| [Backup/restore using S3 endpoint](./02_s3_endpoint.md)             | S3 エンドポイントへの／からのバックアップ／リストアの詳細                |
-| [Backup/restore using AzureBlobStorage](./03_azure_blob_storage.md) | Azure blob storage への／からのバックアップ／リストアの詳細          |
-| [Alternative methods](./04_alternative_methods.md)                  | 代替的なバックアップ手法についての説明                               |        
+| Page                                                                | Description                                                   |
+| ------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [Backup/restore using local disk or S3 disk](./01_local_disk.md)    | ローカルディスクまたは S3 ディスクへの／からのバックアップ／リストアの詳細                       |
+| [Backup/restore using S3 endpoint](./02_s3_endpoint.md)             | S3 エンドポイントへの／からのバックアップ／リストアの詳細                                |
+| [Backup/restore using AzureBlobStorage](./03_azure_blob_storage.md) | Azure blob storage への／からのバックアップ／リストアの詳細                       |
+| [Alternative methods](./04_alternative_methods.md)                  | 代替的なバックアップ手法についての説明                                           |
+| [Snapshot backup](./05_snapshot.md)                                 | cloud object storage を使用する SharedMergeTree テーブル向けの軽量なスナップショット |
 
 バックアップは次のように分類できます:
-- [フルまたは増分](#backup-types)
-- [同期または非同期](#synchronous-vs-asynchronous)
-- [並行または非並行](#concurrent-vs-non-concurrent)
-- [圧縮ありまたは圧縮なし](#compressed-vs-uncompressed)
-- [名前付きコレクション](#using-named-collections) を使用
-- パスワード保護の有無
-- [system テーブル、log テーブル、アクセス管理テーブル](#system-backups) のバックアップかどうか
+
+* [フルまたは増分](#backup-types)
+* [同期または非同期](#synchronous-vs-asynchronous)
+* [同時実行または非同時実行](#concurrent-vs-non-concurrent)
+* [圧縮ありまたは圧縮なし](#compressed-vs-uncompressed)
+* [名前付きコレクション](#using-named-collections) を使用
+* パスワード保護の有無
+* [system テーブル、ログテーブル、アクセス管理テーブル](#system-backups) のバックアップかどうか
 
 ## バックアップの種類 \{#backup-types\}
 

@@ -54,12 +54,12 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   mkdir cluster_1S_2R
   cd cluster_1S_2R
 
-  # 创建 clickhouse-keeper 目录
+  # Create clickhouse-keeper directories
   for i in {01..03}; do
     mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
   done
 
-  # 创建 clickhouse-server 目录
+  # Create clickhouse-server directories
   for i in {01..02}; do
     mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
   done
@@ -223,7 +223,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   <ListenHost />
 
-  日志记录在 `<logger>` 块中定义。此示例配置提供一个调试日志，该日志将在达到 1000M 时滚动三次：
+  日志记录在 `<logger>` 块中定义。此示例配置提供一个调试日志,该日志将在达到 1000M 时滚动三次:
 
   ```xml
   <logger>
@@ -252,11 +252,11 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   ```xml
   <remote_servers>
-      <!-- 集群名称(不应包含点) -->
+      <!-- cluster name (should not contain dots) -->
       <cluster_1S_2R>
           <!-- <allow_distributed_ddl_queries>false</allow_distributed_ddl_queries> -->
           <shard>
-              <!-- 可选。是否仅向一个副本写入数据。默认值:false(向所有副本写入数据)。 -->
+              <!-- Optional. Whether to write data to just one of the replicas. Default: false (write data to all replicas). -->
               <internal_replication>true</internal_replication>
               <replica>
                   <host>clickhouse-01</host>
@@ -368,7 +368,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_1S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml) |
 
   在此示例中,为简化配置,默认用户未设置密码。
-  在生产环境中,不建议采用此配置。
+  在实际应用中,不建议采用此配置。
 
   :::note
   在此示例中,集群中所有节点的 `users.xml` 文件都相同。
@@ -404,18 +404,18 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   ```bash
   [+] Running 6/6
-   ✔ Network cluster_1s_2r_default   已创建
-   ✔ Container clickhouse-keeper-03  已启动
-   ✔ Container clickhouse-keeper-02  已启动
-   ✔ Container clickhouse-keeper-01  已启动
-   ✔ Container clickhouse-01         已启动
-   ✔ Container clickhouse-02         已启动
+   ✔ Network cluster_1s_2r_default   Created
+   ✔ Container clickhouse-keeper-03  Started
+   ✔ Container clickhouse-keeper-02  Started
+   ✔ Container clickhouse-keeper-01  Started
+   ✔ Container clickhouse-01         Started
+   ✔ Container clickhouse-02         Started
   ```
 
   要验证集群是否正在运行,请连接到 `clickhouse-01` 或 `clickhouse-02` 并运行以下查询。连接到第一个节点的命令如下所示:
 
   ```bash
-  # 连接到任意节点
+  # Connect to any node
   docker exec -it clickhouse-01 clickhouse-client
   ```
 
@@ -438,7 +438,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
+     ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
   1. │ cluster_1S_2R │         1 │           1 │ clickhouse-01 │ 9000 │
   2. │ cluster_1S_2R │         1 │           2 │ clickhouse-02 │ 9000 │
   3. │ default       │         1 │           1 │ localhost     │ 9000 │
@@ -454,7 +454,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name───────┬─value─┬─path────────┐
+     ┌─name───────┬─value─┬─path────────┐
   1. │ sessions   │       │ /clickhouse │
   2. │ task_queue │       │ /clickhouse │
   3. │ keeper     │       │ /           │
@@ -478,14 +478,14 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   docker exec -it clickhouse-02 clickhouse-client
   ```
 
-  您可以在每个主机的 clickhouse-client 中运行以下查询，确认除默认数据库外尚未创建其他数据库：
+  您可以在每个主机的 clickhouse-client 中运行以下查询,确认除默认数据库外尚未创建其他数据库:
 
   ```sql title="Query"
   SHOW DATABASES;
   ```
 
   ```response title="Response"
-  ┌─name───────────────┐
+     ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
@@ -510,7 +510,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response
-  ┌─name───────────────┐
+     ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
@@ -564,7 +564,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name────────────────┐
+     ┌─name────────────────┐
   1. │ uk_price_paid.      │
      └─────────────────────┘
   ```
@@ -615,7 +615,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   SETTINGS max_http_get_redirects=10;
   ```
 
-  请注意，数据在每个主机上都完全复制：
+  请注意,数据在每个主机上都完全复制:
 
   ```sql
   -- clickhouse-01
@@ -682,7 +682,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─id─┬─name───────────────┐
+     ┌─id─┬─name───────────────┐
   1. │  1 │ Clicky McClickface │
   2. │  2 │ Alexey Milovidov   │
      └────┴────────────────────┘
@@ -694,14 +694,14 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   docker start clickhouse-01
   ```
 
-  运行 `docker exec -it clickhouse-01 clickhouse-client` 后,在 `clickhouse-01` 中再次查询测试表:
+  运行 `docker exec -it clickhouse-01 clickhouse-client` 后,从 `clickhouse-01` 再次查询测试表:
 
   ```sql title="Query"
   SELECT * FROM test.test_table
   ```
 
   ```response title="Response"
-  ┌─id─┬─name───────────────┐
+     ┌─id─┬─name───────────────┐
   1. │  1 │ Clicky McClickface │
   2. │  2 │ Alexey Milovidov   │
      └────┴────────────────────┘
@@ -756,8 +756,8 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌──count()─┐
-  1. │ 30212555 │ -- 3021.26万
+     ┌──count()─┐
+  1. │ 30212555 │ -- 30.21 million
      └──────────┘
   ```
 </VerticalStepper>

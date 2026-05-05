@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayInsertAt \{#groupArrayInsertAt\}
 
-引入自：v1.1
+引入自：v1.1.0
 
 在指定位置向数组中插入一个值。
 
@@ -64,7 +64,7 @@ SELECT groupArrayInsertAt('-')(toString(number), number * 2) FROM numbers(5);
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**结合默认值和大小参数的用法**
+**同时使用默认值和大小参数时的用法**
 
 ```sql title=Query
 SELECT groupArrayInsertAt('-', 5)(toString(number), number * 2) FROM numbers(5);

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## simpleLinearRegression \{#simpleLinearRegression\}
 
-Добавлено в: v20.1
+Добавлено в: v20.1.0
 
 Выполняет простую (одномерную) линейную регрессию.
 

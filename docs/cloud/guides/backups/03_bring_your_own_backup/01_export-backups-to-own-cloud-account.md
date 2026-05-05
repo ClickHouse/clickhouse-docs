@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Export backups'
 slug: /cloud/manage/backups/export-backups-to-own-cloud-account
-title: 'Export Backups to your Own Cloud Account'
+title: 'Export backups to your own cloud account'
 description: 'Describes how to export backups to your own Cloud account'
 doc_type: 'guide'
 ---
@@ -78,7 +78,7 @@ Where `uuid` is a unique identifier, used to differentiate a set of backups.
 
 :::note
 You will need to use a different UUID for each new backup in this subdirectory, otherwise you will get a `BACKUP_ALREADY_EXISTS` error.
-For example, if you are taking daily backups, you will need to use a new UUID each day.  
+For example, if you're taking daily backups, you will need to use a new UUID each day.  
 :::
 
 **Incremental Backup**

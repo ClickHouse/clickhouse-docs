@@ -78,7 +78,7 @@ LIMIT 1
 1 row in set. Elapsed: 1.232 sec.
 ```
 
-ファイル形式を指定する必要がないことに注意してください。代わりに、グロブパターンを使用して、バケット内のすべての`*.json.gz`ファイルを読み取ります。ClickHouseは、ファイル拡張子と内容から形式が`JSONEachRow`(ndjson)であることを自動的に推論します。ClickHouseが検出できない場合は、パラメータ関数を介して形式を手動で指定できます。
+ファイル形式を指定する必要がない点に注目してください。代わりに、グロブパターンを使用して、バケット内のすべての`*.json.gz`ファイルを読み取ります。ClickHouseは、ファイル拡張子と内容から形式が`JSONEachRow` (ndjson) であることを自動的に推論します。ClickHouseが形式を判別できない場合は、パラメーター関数を利用して形式を手動で指定できます。
 
 ```sql
 SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONEachRow)
@@ -89,6 +89,7 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi
 :::
 
 これらのファイルの行をロードするには、[`INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select)を使用できます:
+
 
 ```sql
 INSERT INTO pypi SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
@@ -115,6 +116,7 @@ FORMAT JSONEachRow
 ```
 
 これらの例は、`JSONEachRow`形式の使用を前提としています。他の一般的なJSON形式もサポートされており、これらのロード例は[こちら](/integrations/data-formats/json/other-formats)で提供されています。
+
 
 ## 半構造化JSONのロード \{#loading-semi-structured-json\}
 
@@ -163,7 +165,7 @@ ENGINE = MergeTree
 ORDER BY (project, date);
 ```
 
-元のデータセットと同じアプローチを使用してテーブルにデータを入力します:
+元のデータセットと同じ方法でテーブルにデータを投入します:
 
 ```sql
 INSERT INTO pypi_with_tags SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
@@ -192,6 +194,7 @@ LIMIT 2
 
 データのロード時のパフォーマンスの違いに注意してください。JSON列は、挿入時に型推論を必要とし、複数の型を持つ列が存在する場合は追加のストレージも必要とします。JSON型は([JSONスキーマの設計](/integrations/data-formats/json/schema)を参照)、列を明示的に宣言するのと同等のパフォーマンスに設定できますが、デフォルトでは意図的に柔軟です。ただし、この柔軟性にはいくらかのコストが伴います。
 
+
 ### JSON型を使用するタイミング \{#when-to-use-the-json-type\}
 
 次の場合にJSON型を使用します:
@@ -202,8 +205,8 @@ LIMIT 2
 
 データ構造がわかっており一貫している場合、データがJSON形式であっても、JSON型が必要になることはほとんどありません。具体的には、データに次のようなものがある場合:
 
-* **既知のキーを持つフラットな構造**: 標準の列型(例: String)を使用します。
-* **予測可能なネスト**: これらの構造にはTuple、Array、またはNested型を使用します。
-* **異なる型を持つ予測可能な構造**: 代わりにDynamicまたはVariant型を検討してください。
+* **既知のキーを持つフラットな構造**: たとえば String などの標準的なカラム型を使用します。
+* **予測可能なネスト構造**: これらの構造には Tuple、Array、Nested型を使用します。
+* **構造は予測可能だが値の型が異なる場合**: 代わりに Dynamic型またはVariant型の使用を検討します。
 
-上記の例で行ったように、アプローチを組み合わせることもできます。予測可能なトップレベルのキーには静的列を使用し、ペイロードの動的セクションには単一のJSON列を使用します。
+上記の例で行ったように、予測可能なトップレベルキーには静的なカラムを使用し、ペイロード内の動的なセクションには単一のJSONカラムを使用するなど、これらのアプローチを組み合わせることもできます。

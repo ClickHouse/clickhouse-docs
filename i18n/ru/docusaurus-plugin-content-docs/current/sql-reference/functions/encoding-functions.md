@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## bech32Decode \{#bech32Decode\}
 
-Появилась в: v25.6
+Появилась в: v25.6.0
 
 Декодирует строку адреса Bech32, созданную с помощью алгоритма `bech32` или `bech32m`.
 
@@ -65,7 +65,7 @@ tb   751E76E8199196D454941C45D1B3A323F1433BD6
 
 ## bech32Encode \{#bech32Encode\}
 
-Впервые появилась в: v25.6
+Впервые появилась в: v25.6.0
 
 Кодирует строку двоичных данных вместе с человекочитаемой частью (HRP), используя алгоритмы [Bech32 или Bech32m](https://en.bitcoin.it/wiki/Bech32).
 
@@ -130,7 +130,7 @@ abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
 
 ## bin \{#bin\}
 
-Появилась в версии: v21.8
+Появилась в версии: v21.8.0
 
 Возвращает строку, содержащую двоичное представление аргумента
 в соответствии со следующей логикой для разных типов:
@@ -171,7 +171,7 @@ SELECT bin(14)
 └──────────┘
 ```
 
-**Числа типа Float32**
+**Числа Float32**
 
 ```sql title=Query
 SELECT bin(toFloat32(number)) AS bin_presentation FROM numbers(15, 2)
@@ -197,7 +197,7 @@ SELECT bin(toFloat64(number)) AS bin_presentation FROM numbers(15, 2)
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**Конвертация UUID**
+**Преобразование UUID**
 
 ```sql title=Query
 SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
@@ -211,7 +211,7 @@ SELECT bin(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0')) AS bin_uuid
 
 ## bitPositionsToArray \{#bitPositionsToArray\}
 
-Впервые появилась в версии: v21.7
+Впервые появилась в версии: v21.7.0
 
 Эта функция возвращает позиции (в порядке возрастания) битов, равных 1, в двоичном представлении беззнакового целого числа.
 Знаковые целые числа во входных данных предварительно приводятся к беззнаковому целому числу.
@@ -258,7 +258,7 @@ SELECT bitPositionsToArray(toInt8(-1)) AS bit_positions
 
 ## bitmaskToArray \{#bitmaskToArray\}
 
-Введена в версии v1.1
+Введена в версии v1.1.0
 
 Эта функция разлагает целое число в сумму степеней двойки.
 Степени двойки возвращаются в виде массива, отсортированного по возрастанию.
@@ -305,7 +305,7 @@ SELECT bitmaskToArray(8) AS powers_of_two
 
 ## bitmaskToList \{#bitmaskToList\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Аналогична функции bitmaskToArray, но возвращает степени двойки в виде строки, где значения разделены запятыми.
 
@@ -339,7 +339,7 @@ SELECT bitmaskToList(50) AS powers_list
 
 ## char \{#char\}
 
-Впервые появилась в: v20.1
+Впервые появилась в: v20.1.0
 
 Возвращает строку длиной, равной количеству переданных аргументов, где каждый байт
 имеет значение соответствующего аргумента. Принимает несколько аргументов числовых типов.
@@ -375,7 +375,7 @@ SELECT char(104.1, 101, 108.9, 108.9, 111) AS hello;
 └───────┘
 ```
 
-**Создание произвольных кодировок**
+**Формирование строк с произвольной кодировкой**
 
 ```sql title=Query
 -- You can construct a string of arbitrary encoding by passing the corresponding bytes.
@@ -391,7 +391,7 @@ SELECT char(0xD0, 0xBF, 0xD1, 0x80, 0xD0, 0xB8, 0xD0, 0xB2, 0xD0, 0xB5, 0xD1, 0x
 
 ## hex \{#hex\}
 
-Впервые появилась в: v1.1
+Впервые появилась в: v1.1.0
 
 Возвращает строку, содержащую шестнадцатеричное представление аргумента
 в соответствии со следующей логикой для разных типов:
@@ -445,7 +445,7 @@ SELECT hex(toFloat32(number)) AS hex_presentation FROM numbers(15, 2)
 └──────────────────┘
 ```
 
-**Числа с плавающей запятой Float64**
+**Числа типа Float64**
 
 ```sql title=Query
 SELECT hex(toFloat64(number)) AS hex_presentation FROM numbers(15, 2)
@@ -472,7 +472,7 @@ SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
 
 ## hilbertDecode \{#hilbertDecode\}
 
-Добавлена в версии v24.6
+Добавлена в версии v24.6.0
 
 Декодирует индекс кривой Гильберта обратно в кортеж беззнаковых целых чисел, представляющих координаты в многомерном пространстве.
 
@@ -498,6 +498,55 @@ SELECT lower(hex(toUUID('61f0c404-5cb3-11e7-907b-a6006ad3dba0'))) AS uuid_hex
 числами.
 
 **Синтаксис**
+
+hilbertDecode(tuple&#95;size, code)
+
+**Аргументы**
+
+* `tuple_size` — целое число не более `2`. UInt8/16/32/64 или Tuple(UInt8/16/32/64)
+* `code` — код типа `UInt64`. UInt64
+
+**Возвращаемое значение**
+
+Возвращает кортеж указанного размера. Tuple(UInt64)
+
+**Примеры**
+
+**Простой режим**
+
+SELECT hilbertDecode(2, 31)
+
+[&quot;3&quot;, &quot;4&quot;]
+
+**Один аргумент**
+
+-- Hilbert code for one argument is always the argument itself (as a tuple).
+SELECT hilbertDecode(1, 1)
+
+[&quot;1&quot;]
+
+**Расширенный режим**
+
+-- A single argument with a tuple specifying bit shifts will be right-shifted accordingly.
+SELECT hilbertDecode(tuple(2), 32768)
+
+[&quot;128&quot;]
+
+**Использование столбцов**
+
+-- First create the table and insert some data
+CREATE TABLE hilbert&#95;numbers(
+n1 UInt32,
+n2 UInt32
+)
+ENGINE=MergeTree()
+ORDER BY n1 SETTINGS index&#95;granularity&#95;bytes = &#39;10Mi&#39;;
+insert into hilbert&#95;numbers (*) values(1,2);
+
+-- Use column names instead of constants as function arguments
+SELECT untuple(hilbertDecode(2, hilbertEncode(n1, n2))) FROM hilbert&#95;numbers;
+
+1    2
 
 ```sql
 hilbertDecode(tuple_size, code)
@@ -568,7 +617,7 @@ SELECT untuple(hilbertDecode(2, hilbertEncode(n1, n2))) FROM hilbert_numbers;
 
 ## hilbertEncode \{#hilbertEncode\}
 
-Добавлена в версии v24.6
+Добавлена в версии v24.6.0
 
 Вычисляет код кривой Гильберта для списка беззнаковых целых чисел.
 
@@ -647,7 +696,7 @@ SELECT hilbertEncode(1)
 1
 ```
 
-**Расширенный вариант с одним аргументом**
+**Расширенный режим с одним аргументом**
 
 ```sql title=Query
 -- If a single argument is provided with a tuple specifying bit shifts, the function
@@ -681,7 +730,7 @@ SELECT hilbertEncode(n1, n2) FROM hilbert_numbers;
 
 ## mortonDecode \{#mortonDecode\}
 
-Добавлена в: v24.6
+Добавлена в: v24.6.0
 
 Декодирует кодировку Morton (ZCurve) в соответствующий кортеж беззнаковых целых чисел.
 
@@ -790,7 +839,7 @@ SELECT untuple(mortonDecode(8, mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8))) FR
 
 ## mortonEncode \{#mortonEncode\}
 
-Добавлена в: v24.6
+Добавлена в: v24.6.0
 
 Вычисляет кодирование Мортона (ZCurve) для списка беззнаковых целых чисел.
 
@@ -910,7 +959,7 @@ SELECT mortonEncode(n1, n2, n3, n4, n5, n6, n7, n8) FROM morton_numbers;
 
 ## sqidDecode \{#sqidDecode\}
 
-Впервые появилась в версии v24.1
+Впервые появилась в версии v24.1.0
 
 Преобразует [sqid](https://sqids.org/) обратно в массив чисел.
 
@@ -944,7 +993,7 @@ SELECT sqidDecode('gXHfJ1C6dN');
 
 ## sqidEncode \{#sqidEncode\}
 
-Добавлено в версии v24.1
+Добавлено в версии v24.1.0
 
 Преобразует числа в [sqid](https://sqids.org/) — строку идентификатора, похожую на идентификаторы YouTube.
 
@@ -980,7 +1029,7 @@ SELECT sqidEncode(1, 2, 3, 4, 5);
 
 ## unbin \{#unbin\}
 
-Появилась в: v21.8
+Появилась в: v21.8.0
 
 Интерпретирует каждую пару двоичных цифр (в аргументе) как число и преобразует её в байт, представленный этим числом. Функция выполняет операцию, обратную функции `bin`.
 
@@ -1035,7 +1084,7 @@ SELECT reinterpretAsUInt64(reverse(unbin('1110'))) AS num
 
 ## unhex \{#unhex\}
 
-Добавлено в: v1.1
+Добавлено в: v1.1.0
 
 Выполняет операцию, обратную функции [`hex`](#hex). Интерпретирует каждую пару шестнадцатеричных цифр (в аргументе) как число и
 преобразует его в байт, который это число представляет. Возвращаемое значение — бинарная строка (BLOB).

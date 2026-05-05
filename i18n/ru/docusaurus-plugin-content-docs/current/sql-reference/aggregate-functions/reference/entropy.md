@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## entropy \{#entropy\}
 
-Появилась в версии v20.1.
+Появилась в версии v20.1.0.
 
 Вычисляет [энтропию Шеннона](https://en.wikipedia.org/wiki/Entropy_\(information_theory\)) для столбца значений.
 

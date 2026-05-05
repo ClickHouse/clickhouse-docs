@@ -43,7 +43,7 @@ To enable ACME, configure HTTP and HTTPS ports along with the `acme` block:
 
 The HTTP port serves ACME `HTTP-01` challenge (more on challenge types [here](https://letsencrypt.org/docs/challenge-types/)) requests during domain validation. Once validation completes and a certificate is issued, the HTTPS port serves encrypted traffic using the obtained certificate.
 
-The HTTP port does not need to be 80 on the server itself; it may be remapped using `nftables` or similar tools. Check your ACME provider's documentation for accepted ports for `HTTP-01` challenges.
+The HTTP port doesn't need to be 80 on the server itself; it may be remapped using `nftables` or similar tools. Check your ACME provider's documentation for accepted ports for `HTTP-01` challenges.
 
 In the `acme` block, we're defining `email` for account creation, and accepting ACME service terms of service.
 After that, the only thing we need is a list of domains.
@@ -52,7 +52,7 @@ After that, the only thing we need is a list of domains.
 
 - Only `HTTP-01` challenge type is supported.
 - Only `RSA 2048` keys are supported.
-- Rate limiting is not handled.
+- Rate limiting isn't handled.
 
 ## Configuration parameters {#configuration-parameters}
 
@@ -76,13 +76,13 @@ Note that configuration uses Let's Encrypt production directory by default. To a
 
 When enabling the ACME client on a cluster with multiple replicas, additional care is required during the initial certificate issuance.
 
-The first replica that starts with ACME enabled will immediately attempt to create an ACME order and perform HTTP-01 challenge validation. If only a subset of replicas is serving traffic at that moment, the challenge is likely to fail, as other replicas will not be able to respond to validation requests.
+The first replica that starts with ACME enabled will immediately attempt to create an ACME order and perform HTTP-01 challenge validation. If only a subset of replicas is serving traffic at that moment, the challenge is likely to fail, as other replicas won't be able to respond to validation requests.
 
 If possible, it is recommended to temporarily route traffic to a single replica (for example, by adjusting DNS records) and allow it to complete the initial certificate issuance. Once the certificate is successfully issued and stored in Keeper, ACME can be enabled on the remaining replicas. They will automatically reuse the existing certificate and participate in future renewals.
 
-If routing traffic to a single replica is not feasible, an alternative approach is to manually upload the existing certificate and private key into Keeper before enabling the ACME client. This avoids the initial validation step and allows all replicas to start with a valid certificate already present.
+If routing traffic to a single replica isn't feasible, an alternative approach is to manually upload the existing certificate and private key into Keeper before enabling the ACME client. This avoids the initial validation step and allows all replicas to start with a valid certificate already present.
 
-After the initial certificate has been issued or imported, certificate renewal does not require special handling, as all replicas will already be running the ACME client and sharing state through Keeper.
+After the initial certificate has been issued or imported, certificate renewal doesn't require special handling, as all replicas will already be running the ACME client and sharing state through Keeper.
 
 ## Keeper data structure {#keeper-data-structure}
 

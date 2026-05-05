@@ -18,10 +18,11 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 
 * **ClickHouse**
 * **HyperDX**
-* **OpenTelemetry (OTel) collector**（在端口 `4317` 和 `4318` 上暴露 OTLP）
-* **MongoDB**（用于持久化应用状态）
+* **OpenTelemetry (OTel) collector** (在端口 `4317` 和 `4318` 上暴露 OTLP) 
+* **MongoDB** (用于持久化应用状态) 
 
-**但是，此版本的 HyperDX 未启用用户认证功能**
+**但是，此版本的 HyperDX 未启用用户身份验证功能**
+
 
 ### 适用场景 \{#suitable-for\}
 
@@ -39,8 +40,8 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
   本地模式会在端口 8080 上部署 HyperDX UI。
 
   ```shell
-docker run -p 8080:8080 clickhouse/clickstack-local:latest
-```
+  docker run -p 8080:8080 clickhouse/clickstack-local:latest
+  ```
 
   ### 访问 HyperDX UI
 

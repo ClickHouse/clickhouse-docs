@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/admin
-title: 'ClickStack - Adminstration'
+title: 'ClickStack - administration'
 sidebar_label: 'Adminstration'
 description: 'How to perform basic administration tasks with ClickStack.'
 doc_type: 'guide'
@@ -9,7 +9,7 @@ keywords: ['clickstack', 'admin']
 
 Most administrative tasks in ClickStack are performed directly on the underlying ClickHouse database. Users deploying ClickStack should be familiar with ClickHouse concepts and administration basics.
 
-Administrative operations typically involve executing DDL statements. The available options depend on whether you are using Managed ClickStack or ClickStack Open Source.
+Administrative operations typically involve executing DDL statements. The available options depend on whether you're using Managed ClickStack or ClickStack Open Source.
 
 ## ClickStack Open Source {#clickstack-oss}
 

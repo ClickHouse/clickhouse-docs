@@ -38,4 +38,4 @@ import ColumnOriented from '@site/static/images/column-oriented.gif';
 
 <Image img={ColumnOriented} alt="列指向データベースストレージの図解" size="md" />
 
-列指向データベースは分析アプリケーションに最適な選択肢です。テーブルに多数のカラムを「念のため」持たせておいても、読み取り系クエリの実行時に未使用カラムのコストを支払わずに済むためです（従来の OLTP データベースでは、データが列ではなく行として保存されているため、クエリ時にすべてのデータを読み取ります）。列指向データベースはビッグデータ処理およびデータウェアハウス向けに設計されています。一般に、スループットを向上させるために、低コストなハードウェアからなる分散クラスター上でネイティブにスケールアウトするよう設計されています。ClickHouse は、[Distributed](https://clickhouse.com/docs/engines/table-engines/special/distributed) テーブルと [Replicated](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication) テーブルを組み合わせることでこれを実現します。
+列指向データベースは分析アプリケーションに最適な選択肢です。テーブルに多数のカラムを「念のため」持たせておいても、読み取り系クエリの実行時に未使用カラムのコストを支払わずに済むためです (従来の OLTP データベースでは、データが列ではなく行として保存されているため、クエリ時にすべてのデータを読み取ります) 。列指向データベースはビッグデータ処理およびデータウェアハウス向けに設計されています。一般に、スループットを向上させるために、低コストなハードウェアからなる分散クラスター上でネイティブにスケールアウトするよう設計されています。ClickHouse は、[Distributed](https://clickhouse.com/docs/engines/table-engines/special/distributed) テーブルと [Replicated](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication) テーブルを組み合わせることでこれを実現します。

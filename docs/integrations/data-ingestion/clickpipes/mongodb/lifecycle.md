@@ -39,7 +39,7 @@ Once the pipe is in the `Running` state, you can pause it. This will stop the CD
 :::note
 This state is coming soon. If you're using our [OpenAPI](https://clickhouse.com/docs/cloud/manage/openapi), consider adding support for it now to ensure your integration continues working when it's released.
 :::
-When you click on the Pause button, the pipe enters the `Pausing` state. This is a transient state where we are in the process of stopping the CDC process. Once the CDC process is fully stopped, the pipe will enter the `Paused` state.
+When you click on the Pause button, the pipe enters the `Pausing` state. This is a transient state where we're in the process of stopping the CDC process. Once the CDC process is fully stopped, the pipe will enter the `Paused` state.
 
 ## Modifying {#modifying}
 :::note

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileDeterministic \{#quantileDeterministic\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Вычисляет приближенный [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 

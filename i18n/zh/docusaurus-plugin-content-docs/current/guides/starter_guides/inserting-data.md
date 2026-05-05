@@ -87,9 +87,9 @@ PostgreSQL 使用 MVCC（多版本并发控制，Multi-Version Concurrency Contr
 ### 使用官方 ClickHouse 客户端 \{#use-official-clickhouse-clients\}
 
 ClickHouse 为最流行的编程语言提供了客户端。
-这些客户端经过优化，以确保插入被正确执行，并且对异步插入提供了原生支持：要么像 [Go 客户端](/integrations/go#async-insert)那样直接支持，要么通过在查询、用户或连接级别启用相关设置而间接支持。
+这些客户端经过优化，以确保插入被正确执行，并且对异步插入提供了原生支持：要么像 [Go 客户端](/integrations/language-clients/go/clickhouse-api#async-insert)那样直接支持，要么通过在查询、用户或连接级别启用相关设置而间接支持。
 
-有关可用 ClickHouse 客户端和驱动程序的完整列表，请参见 [Clients and Drivers](/interfaces/cli)。
+有关可用 ClickHouse 客户端和驱动的完整列表，请参阅 [Clients and Drivers](/interfaces/cli)。
 
 ### 优先使用 Native 格式 \{#prefer-the-native-format\}
 
@@ -162,104 +162,104 @@ user_id message                                             timestamp           
 ## 从命令行插入数据 \{#inserting-data-from-command-line\}
 
 **前提条件**
-- 您已经[安装](/install)了 ClickHouse
-- `clickhouse-server` 正在运行
-- 您可以访问带有 `wget`、`zcat` 和 `curl` 的终端
 
-在本示例中，您将看到如何在命令行中使用批处理模式的 clickhouse-client 将一个 CSV 文件插入到 ClickHouse 中。关于使用批处理模式的 clickhouse-client 通过命令行插入数据的更多信息和示例，请参阅 [“Batch mode”](/interfaces/cli#batch-mode)。
+* 您已经[安装](/install)了 ClickHouse
+* `clickhouse-server` 正在运行
+* 您可以访问带有 `wget`、`zcat` 和 `curl` 的终端
+
+在本示例中，您将看到如何在命令行中使用批处理模式的 clickhouse-client 将一个 CSV 文件插入到 ClickHouse 中。关于使用批处理模式的 clickhouse-client 通过命令行插入数据的更多信息和示例，请参阅 [“Batch mode”](/interfaces/client#batch-mode)。
 
 在本示例中我们将使用 [Hacker News 数据集](/getting-started/example-datasets/hacker-news)，其中包含 2800 万行 Hacker News 数据。
 
 <VerticalStepper headerLevel="h3">
-    
-### 下载 CSV \{#download-csv\}
+  ### 下载 CSV
 
-运行以下命令，从我们的公共 S3 存储桶中下载该数据集的 CSV 版本：
+  运行以下命令，从我们的公共 S3 存储桶中下载该数据集的 CSV 版本：
 
-```bash
-wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
-```
+  ```bash
+  wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
+  ```
 
-该压缩文件大小为 4.6GB，包含 2800 万行数据，下载大约需要 5–10 分钟。
+  该压缩文件大小为 4.6GB，包含 2800 万行数据，下载大约需要 5–10 分钟。
 
-### 创建表 \{#create-table\}
+  ### 创建表
 
-在 `clickhouse-server` 运行的情况下，您可以在命令行中使用批处理模式的 `clickhouse-client`，直接按照以下表结构创建一个空表：
+  在 `clickhouse-server` 运行的情况下，您可以在命令行中使用批处理模式的 `clickhouse-client`，直接按照以下表结构创建一个空表：
 
-```bash
-clickhouse-client <<'_EOF'
-CREATE TABLE hackernews(
-    `id` UInt32,
-    `deleted` UInt8,
-    `type` Enum('story' = 1, 'comment' = 2, 'poll' = 3, 'pollopt' = 4, 'job' = 5),
-    `by` LowCardinality(String),
-    `time` DateTime,
-    `text` String,
-    `dead` UInt8,
-    `parent` UInt32,
-    `poll` UInt32,
-    `kids` Array(UInt32),
-    `url` String,
-    `score` Int32,
-    `title` String,
-    `parts` Array(UInt32),
-    `descendants` Int32
-)
-ENGINE = MergeTree
-ORDER BY id
-_EOF
-```
+  ```bash
+  clickhouse-client <<'_EOF'
+  CREATE TABLE hackernews(
+      `id` UInt32,
+      `deleted` UInt8,
+      `type` Enum('story' = 1, 'comment' = 2, 'poll' = 3, 'pollopt' = 4, 'job' = 5),
+      `by` LowCardinality(String),
+      `time` DateTime,
+      `text` String,
+      `dead` UInt8,
+      `parent` UInt32,
+      `poll` UInt32,
+      `kids` Array(UInt32),
+      `url` String,
+      `score` Int32,
+      `title` String,
+      `parts` Array(UInt32),
+      `descendants` Int32
+  )
+  ENGINE = MergeTree
+  ORDER BY id
+  _EOF
+  ```
 
-如果没有报错，则说明表已成功创建。上面命令中在 heredoc 分隔符（`_EOF`）外使用了单引号，以避免任何变量替换。如果不使用单引号，则需要对列名周围的反引号进行转义。 
+  如果没有报错，则说明表已成功创建。上面命令中在 heredoc 分隔符 (`_EOF`) 外使用了单引号，以避免任何变量替换。如果不使用单引号，则需要对列名周围的反引号进行转义。
 
-### 从命令行插入数据 \{#insert-data-via-cmd\}
+  ### 从命令行插入数据
 
-接下来运行下面的命令，将之前下载的文件中的数据插入到您的表中：
+  接下来运行下面的命令，将之前下载的文件中的数据插入到您的表中：
 
-```bash
-zcat < hacknernews.csv.gz | ./clickhouse client --query "INSERT INTO hackernews FORMAT CSV"
-```
+  ```bash
+  zcat < hacknernews.csv.gz | ./clickhouse client --query "INSERT INTO hackernews FORMAT CSV"
+  ```
 
-由于我们的数据是压缩的，因此首先需要使用 `gzip`、`zcat` 或类似工具解压文件，然后通过管道将解压后的数据传入 `clickhouse-client`，并使用相应的 `INSERT` 语句和 `FORMAT`。
+  由于我们的数据是压缩的，因此首先需要使用 `gzip`、`zcat` 或类似工具解压文件，然后通过管道将解压后的数据传入 `clickhouse-client`，并使用相应的 `INSERT` 语句和 `FORMAT`。
 
-:::note
-在使用交互模式的 clickhouse-client 插入数据时，可以在插入时使用 `COMPRESSION` 子句，让 ClickHouse 为您处理解压。ClickHouse 可以根据文件扩展名自动检测压缩类型，您也可以显式指定。
+  :::note
+  在使用交互模式的 clickhouse-client 插入数据时，可以在插入时使用 `COMPRESSION` 子句，让 ClickHouse 为您处理解压。ClickHouse 可以根据文件扩展名自动检测压缩类型，您也可以显式指定。
 
-插入数据的查询将如下所示： 
+  插入数据的查询将如下所示：
 
-```bash
-clickhouse-client --query "INSERT INTO hackernews FROM INFILE 'hacknernews.csv.gz' COMPRESSION 'gzip' FORMAT CSV;"
-```
-:::
+  ```bash
+  clickhouse-client --query "INSERT INTO hackernews FROM INFILE 'hacknernews.csv.gz' COMPRESSION 'gzip' FORMAT CSV;"
+  ```
 
-当数据插入完成后，您可以运行以下命令查看 `hackernews` 表中的行数：
+  :::
 
-```bash
-clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
-28.74 million
-```
+  当数据插入完成后，您可以运行以下命令查看 `hackernews` 表中的行数：
 
-### 使用 curl 从命令行插入数据 \{#insert-using-curl\}
+  ```bash
+  clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
+  28.74 million
+  ```
 
-在前面的步骤中，您首先使用 `wget` 将 CSV 文件下载到本地机器。您也可以通过一条命令，直接从远程 URL 插入数据。
+  ### 使用 curl 从命令行插入数据
 
-运行以下命令，清空 `hackernews` 表中的数据，这样您就可以在无需先下载到本地的情况下重新插入数据：
+  在前面的步骤中，您首先使用 `wget` 将 CSV 文件下载到本地机器。您也可以通过一条命令，直接从远程 URL 插入数据。
 
-```bash
-clickhouse-client --query "TRUNCATE hackernews"
-```
+  运行以下命令，清空 `hackernews` 表中的数据，这样您就可以在无需先下载到本地的情况下重新插入数据：
 
-现在运行：
+  ```bash
+  clickhouse-client --query "TRUNCATE hackernews"
+  ```
 
-```bash
-curl https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz | zcat | clickhouse-client --query "INSERT INTO hackernews FORMAT CSV"
-```
+  现在运行：
 
-您现在可以像之前一样运行相同的命令，验证数据已再次成功插入：
+  ```bash
+  curl https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz | zcat | clickhouse-client --query "INSERT INTO hackernews FORMAT CSV"
+  ```
 
-```bash
-clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
-28.74 million
-```
+  您现在可以像之前一样运行相同的命令，验证数据已再次成功插入：
 
+  ```bash
+  clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
+  28.74 million
+  ```
 </VerticalStepper>

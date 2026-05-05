@@ -134,7 +134,7 @@ ORDER BY location_id;
 ```
 
 Notice above that we have two inserted values for each location. This is because
-parts have not yet been merged (and aggregated by `AggregatingMergeTree`). To get
+parts haven't yet been merged (and aggregated by `AggregatingMergeTree`). To get
 the final result from the partial states we need to add a `GROUP BY`:
 
 ```sql
@@ -160,7 +160,7 @@ We now get the expected result:
 ```
 
 :::note
-With `SimpleState`, you do not need to use the `Merge` combinator to combine
+With `SimpleState`, you don't need to use the `Merge` combinator to combine
 partial aggregation states.
 :::
 

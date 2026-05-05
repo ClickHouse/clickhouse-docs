@@ -61,7 +61,7 @@ To use connection pooling, click the **via PgBouncer** toggle at the top of the 
 :::tip When to use PgBouncer
 Use PgBouncer when your application opens many short-lived connections. For long-running connections or applications that use PostgreSQL features incompatible with connection pooling (like prepared statements across transactions), connect directly.
 
-Moving data to ClickHouse using ClickPipes is not supported via PgBouncer. 
+Moving data to ClickHouse using ClickPipes isn't supported via PgBouncer. 
 :::
 
 ## TLS configuration {#tls}
@@ -82,7 +82,7 @@ For production workloads, we recommend connecting with verified TLS to ensure yo
 
 <Image img={tlsCaBundle} alt="Download CA Certificate from the Settings tab" size="md" border/>
 
-The CA certificate is unique to your Managed Postgres instance and will not work with other instances.
+The CA certificate is unique to your Managed Postgres instance and won't work with other instances.
 
 To connect with a verified TLS connection, add `sslmode=verify-full` and the path to your downloaded certificate:
 

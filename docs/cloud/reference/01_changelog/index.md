@@ -8,5 +8,5 @@ keywords: ['ClickHouse Cloud changelog', 'Cloud release notes', 'cloud updates',
 
 | Page                                                          | Description                                     |
 |---------------------------------------------------------------|-------------------------------------------------|
-| [Cloud Changelog](/whats-new/cloud)                   | Changelog for ClickHouse Cloud                  |
+| [Cloud Changelog](/whats-new/changelog/cloud)                   | Changelog for ClickHouse Cloud                  |
 | [Release Notes](/cloud/reference/changelogs/release-notes) | Release notes for all ClickHouse Cloud releases |

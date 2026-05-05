@@ -9,9 +9,9 @@ doc_type: 'reference'
 
 ## sumMapWithOverflow \{#sumMapWithOverflow\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
-根据 `key` 数组中指定的键，对 `value` 数组进行汇总求和。返回一个由两个数组组成的 tuple：按排序顺序排列的键数组，以及对应键的求和值数组。
+根据 `key` 数组中指定的键，对 `value` 数组进行汇总求和。返回一个由两个数组组成的 tuple：按排序后顺序排列的键，以及对应键的求和值数组。
 它与 [`sumMap`](/sql-reference/aggregate-functions/reference/summap) 函数的不同之处在于，它执行的是带溢出的求和——即求和结果的数据类型与参数的数据类型相同。
 
 :::note
@@ -72,7 +72,7 @@ GROUP BY timeslot;
 └─────────────────────┴────────────────────────────────────┴───────────────────────────────────┘
 ```
 
-**等价的元组语法**
+**结果相同的元组语法**
 
 ```sql title=Query
 SELECT

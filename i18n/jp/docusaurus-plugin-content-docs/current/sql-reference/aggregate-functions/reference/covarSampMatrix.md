@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## covarSampMatrix \{#covarSampMatrix\}
 
-導入バージョン: v23.2
+導入バージョン: v23.2.0
 
 N 個の変数に関する標本共分散行列を返します。
 

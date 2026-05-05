@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 ## quantileGK \{#quantileGK\}
 
-導入バージョン: v23.4
+導入バージョン: v23.4.0
 
 数値データ系列の[`quantile`](https://en.wikipedia.org/wiki/Quantile)を、[Greenwald-Khanna](http://infolab.stanford.edu/~datar/courses/cs361a/papers/quantiles.pdf) アルゴリズムを用いて計算します。
 
 Greenwald-Khanna アルゴリズムは、データストリームに対する分位数を高効率に計算するためのアルゴリズムです。
 2001 年に Michael Greenwald と Sanjeev Khanna によって提案されました。
 大量のデータストリームに対してリアルタイムに正確な分位数を計算する必要があるデータベースやビッグデータシステムで広く利用されています。
-このアルゴリズムは非常に効率的で、必要な空間計算量は O(log n)、1 要素あたりの時間計算量は O(log log n) です（ここで n は入力のサイズ）。
+このアルゴリズムは非常に効率的で、必要な空間計算量は O(log n)、1 要素あたりの時間計算量は O(log log n) です (ここで n は入力のサイズ) 。
 また、精度も非常に高く、高い確率で分位数の近似値を提供します。
 
 `quantileGK` は、近似分位数結果の精度をユーザーが制御できる点で、ClickHouse の他の分位数関数とは異なります。
@@ -56,7 +56,7 @@ SELECT quantileGK(1, 0.25)(number + 1) FROM numbers(1000);
 └──────────────────────────────────────┘
 ```
 
-**高精度な分位数**
+**より高精度な分位数**
 
 ```sql title=Query
 SELECT quantileGK(100, 0.25)(number + 1) FROM numbers(1000);

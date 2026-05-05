@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## varSampStable \{#varSampStable\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Вычисляет выборочную дисперсию набора данных. В отличие от [`varSamp`](/sql-reference/aggregate-functions/reference/varSamp), эта функция использует [численно устойчивый](https://en.wikipedia.org/wiki/Numerical_stability) алгоритм. Работает медленнее, но обеспечивает меньшую вычислительную погрешность.
 

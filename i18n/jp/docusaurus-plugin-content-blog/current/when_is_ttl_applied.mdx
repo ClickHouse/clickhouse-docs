@@ -12,9 +12,9 @@ keywords: ['TTL']
 
 ## TTL ルールと制御 \{#ttl-rules-and-control\}
 
-TTL &#x306F;***いずれ***&#x9069;用されます。これはどういう意味でしょうか？`MergeTree` テーブル設定 [`merge_with_ttl_timeout`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#merge_with_ttl_timeout) は、削除 TTL を伴うマージを再度実行するまでの最小待機時間（秒）を設定します。デフォルト値は 14400 秒（4 時間）です。ただしこれはあくまで最小待機時間であり、削除 TTL のためのマージがトリガーされるまでに、それ以上時間がかかることがあります。
+TTL &#x306F;***いずれ***&#x9069;用されます。これはどういう意味でしょうか？`MergeTree` テーブル設定 [`merge_with_ttl_timeout`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree#merge_with_ttl_timeout) は、削除 TTL を伴うマージを再度実行するまでの最小待機時間 (秒) を設定します。デフォルト値は 14400 秒 (4 時間) です。ただしこれはあくまで最小待機時間であり、削除 TTL のためのマージがトリガーされるまでに、それ以上時間がかかることがあります。
 
-次のクエリで（`merge_with_ttl_timeout` のような）現在の TTL 設定をすべて確認できます。
+次のクエリで (`merge_with_ttl_timeout` のような) 現在の TTL 設定をすべて確認できます。
 
 ```sql
 SELECT *

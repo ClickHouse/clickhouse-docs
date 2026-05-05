@@ -3,7 +3,7 @@ sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
-description: 'Explo — это простой в использовании инструмент с открытым исходным кодом и графическим интерфейсом, который упрощает получение ответов на вопросы о ваших данных.'
+description: 'Explo — это простой в использовании UI-инструмент с открытым исходным кодом для исследования ваших данных.'
 title: 'Подключение Explo к ClickHouse'
 doc_type: 'guide'
 integration:
@@ -31,28 +31,30 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+
 # Подключение Explo к ClickHouse \{#connecting-explo-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-Клиентская аналитика для любой платформы. Создана для красивой визуализации. Спроектирована с упором на простоту.
+Аналитика для ваших клиентов на любой платформе. Создана для наглядной визуализации. Спроектирована с упором на простоту.
 
 ## Цель \{#goal\}
 
-В этом руководстве вы подключите данные из ClickHouse к Explo и визуализируете результаты. Диаграмма будет выглядеть так:
-<Image img={explo_15} size="md" alt="Explo Dashboard" />
+В этом руководстве вы подключите данные из ClickHouse к Explo и визуализируете результаты. Диаграмма будет выглядеть следующим образом:
+
+<Image img={explo_15} size="md" alt="Панель Explo" />
 
 <p/>
 
 :::tip Добавьте данные
-Если у вас ещё нет набора данных для работы, вы можете добавить один из примерных наборов. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. В той же категории документации есть и несколько других примеров.
+Если у вас ещё нет набора данных для работы, вы можете добавить один из примеров. В этом руководстве используется набор данных [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md), поэтому вы можете выбрать его. В той же категории документации есть и несколько других примеров, с которыми можно ознакомиться.
 :::
 
-## 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}
+## 1. Соберите параметры подключения \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
-## 2.  Подключение Explo к ClickHouse \{#2--connect-explo-to-clickhouse\}
+## 2. Подключение Explo к ClickHouse \{#2--connect-explo-to-clickhouse\}
 
 1. Зарегистрируйтесь в Explo.
 
@@ -64,23 +66,23 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_02} size="sm" alt="Connect Data Source" border />
 
-4. Заполните данные на странице **Getting Started**.
+4. Заполните поля на странице **Getting Started**.
 
 <Image img={explo_03} size="md" alt="Getting Started" border />
 
 5. Выберите **ClickHouse**.
 
-<Image img={explo_04} size="md" alt="Clickhouse" border />
+<Image img={explo_04} size="md" alt="ClickHouse" border />
 
-6. Введите свои учетные данные **ClickHouse**.
+6. Введите свои **учётные данные ClickHouse**.
 
-<Image img={explo_05} size="md" alt="Credentials" border />
+<Image img={explo_05} size="md" alt="Учетные данные" border />
 
-7. Настройте параметры **Security**.
+7. Настройте **Security**.
 
 <Image img={explo_06} size="md" alt="Security" border />
 
-8. В ClickHouse **добавьте IP-адреса Explo в whitelist**.
+8. В ClickHouse **добавьте IP-адреса Explo в список разрешённых**.
 `
 54.211.43.19, 52.55.98.121, 3.214.169.94 и 54.156.141.148
 `
@@ -91,17 +93,17 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_07} size="sm" alt="Dashboard" border />
 
-2. Нажмите **Create Dashboard** в правом верхнем углу и задайте имя дашборду. Дашборд создан!
+2. Нажмите **Create Dashboard** в правом верхнем углу и задайте имя вашему дашборду. Дашборд создан.
 
 <Image img={explo_08} size="sm" alt="Create Dashboard" border />
 
-3. Теперь вы увидите экран, похожий на этот:
+3. Теперь вы должны увидеть экран, похожий на этот:
 
 <Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
-## 4. Выполните SQL-запрос \{#4-run-a-sql-query\}
+## 4. Запустите SQL-запрос \{#4-run-a-sql-query\}
 
-1. Найдите имя таблицы в правой боковой панели под заголовком схемы. Затем введите следующую команду в редактор датасета:
+1. Найдите имя таблицы на правой боковой панели под заголовком схемы. Затем введите следующую команду в редактор датасета:
 `
 SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100
@@ -109,32 +111,32 @@ LIMIT 100
 
 <Image img={explo_10} size="md" alt="Панель управления Explo" border />
 
-2. Нажмите кнопку `Run` и перейдите на вкладку `Preview`, чтобы просмотреть данные.
+2. Нажмите кнопку «Run» и перейдите на вкладку «Preview», чтобы увидеть свои данные.
 
 <Image img={explo_11} size="md" alt="Панель управления Explo" border />
 
-## 5. Построение графика \{#5-build-a-chart\}
+## 5. Построение диаграммы \{#5-build-a-chart\}
 
-1. С левой стороны экрана перетащите значок столбчатой диаграммы на область построения.
+1. На левой панели перетащите значок столбчатой диаграммы на экран.
 
-<Image img={explo_16} size="sm" alt="Explo Dashboard" border />
+<Image img={explo_16} size="sm" alt="Панель управления Explo" border />
 
 2. Выберите набор данных. Теперь вы должны увидеть экран, похожий на следующий:
 
-<Image img={explo_12} size="sm" alt="Explo Dashboard" border />
+<Image img={explo_12} size="sm" alt="Панель управления Explo" border />
 
-3. Укажите **county** в разделе X Axis и **Price** в разделе Y Axis следующим образом:
+3. Укажите поле **county** на оси X и **Price** в секции оси Y следующим образом:
 
-<Image img={explo_13} size="sm" alt="Explo Dashboard" border />
+<Image img={explo_13} size="sm" alt="Панель управления Explo" border />
 
 4. Теперь измените тип агрегации на **AVG**.
 
-<Image img={explo_14} size="sm" alt="Explo Dashboard" border />
+<Image img={explo_14} size="sm" alt="Панель управления Explo" border />
 
-5. Теперь у нас есть средняя стоимость домов с разбивкой по округам!
+5. Теперь у нас есть средняя цена домов по округам!
 
-<Image img={explo_15} size="md" alt="Explo Dashboard" />
+<Image img={explo_15} size="md" alt="Панель управления Explo" />
 
-## Узнать больше \{#learn-more\}
+## Узнайте больше \{#learn-more\}
 
-Найдите более подробную информацию об Explo и о том, как создавать дашборды, в <a href="https://docs.explo.co/" target="_blank">документации Explo</a>.
+Дополнительную информацию об Explo и о создании панелей (дашбордов) можно найти, <a href="https://docs.explo.co/" target="_blank">ознакомившись с документацией Explo</a>.

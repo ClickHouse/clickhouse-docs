@@ -1,6 +1,6 @@
 ---
-title: 'Pausing and Resuming a MongoDB ClickPipe'
-description: 'Pausing and Resuming a MongoDB ClickPipe'
+title: 'Pausing and resuming a MongoDB ClickPipe'
+description: 'Pausing and resuming a MongoDB ClickPipe'
 sidebar_label: 'Pause table'
 slug: /integrations/clickpipes/mongodb/pause_and_resume
 doc_type: 'guide'

@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## covarSampStable \{#covarSampStable\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
-Calculates the sample covariance:
+Вычисляет выборочную ковариацию:
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n - 1}
@@ -21,8 +21,8 @@ $$
 
 <br />
 
-It is similar to [`covarSamp`](/sql-reference/aggregate-functions/reference/covarsamp) but uses a numerically stable algorithm.
-As a result, `covarSampStable` is slower than `covarSamp` but provides a lower computational error.
+Аналогична функции [`covarSamp`](/sql-reference/aggregate-functions/reference/covarsamp), но использует численно устойчивый алгоритм.
+В результате `covarSampStable` работает медленнее, чем `covarSamp`, но обеспечивает меньшую вычислительную погрешность.
 
 **Syntax**
 
@@ -30,18 +30,18 @@ As a result, `covarSampStable` is slower than `covarSamp` but provides a lower c
 covarSampStable(x, y)
 ```
 
-**Arguments**
+**Аргументы**
 
-- `x` — первая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
-- `y` — вторая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint), [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `x` — Первая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — Вторая переменная. [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**Возвращаемое значение**
 
-Returns the sample covariance between `x` and `y`. For `n <= 1`, `inf` is returned. [`Float64`](/sql-reference/data-types/float)
+Возвращает выборочную ковариацию между `x` и `y`. При `n <= 1` возвращается `inf`. [`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**Примеры**
 
-**Basic sample covariance calculation with stable algorithm**
+**Базовое вычисление выборочной ковариации с устойчивым алгоритмом**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;
@@ -64,7 +64,7 @@ FROM
 └───────────────────────────────────┘
 ```
 
-**Single value returns inf**
+**Одно значение возвращает inf**
 
 ```sql title=Query
 SELECT covarSampStable(x_value, y_value)

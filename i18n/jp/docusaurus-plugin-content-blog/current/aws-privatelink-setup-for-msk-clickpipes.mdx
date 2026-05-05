@@ -44,9 +44,10 @@ MSK クラスターの VPC は、ClickPipes が提供されているリージョ
                      ]
                  },
                  "Action": [
-                     "kafka-cluster:Connect",
-                     "kafka-cluster:DescribeCluster",
-                     "kafka-cluster:ListClusters"
+                     "kafka:CreateVpcConnection",
+                     "kafka:GetBootstrapBrokers",
+                     "kafka:DescribeCluster",
+                     "kafka:DescribeClusterV2"
                  ]
              }
          ]

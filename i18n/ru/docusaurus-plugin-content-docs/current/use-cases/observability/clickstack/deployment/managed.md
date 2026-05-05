@@ -91,7 +91,7 @@ import TabItem from '@theme/TabItem';
 
       <SetupManagedIngestion />
 
-      ### Перейдите к интерфейсу ClickStack
+      ### Перейдите в пользовательский интерфейс ClickStack
 
       <NavigateClickStackUI />
 
@@ -108,9 +108,9 @@ import TabItem from '@theme/TabItem';
       На главной странице ClickHouse Cloud выберите сервис, для которого требуется включить управляемый ClickStack.
 
       :::important Оценка ресурсов
-      Данное руководство предполагает, что вы выделили достаточные ресурсы для обработки объёма данных обсервабилити, которые планируете принимать и запрашивать с помощью ClickStack. Для оценки необходимых ресурсов обратитесь к [руководству по развёртыванию в production](/use-cases/observability/clickstack/production#estimating-resources).
+      Данное руководство предполагает, что вы выделили достаточные ресурсы для обработки объёма данных обсервабилити, которые планируете принимать и запрашивать с помощью ClickStack. Для оценки необходимых ресурсов обратитесь к руководству [Оценка ресурсов](/use-cases/observability/clickstack/estimating-resources).
 
-      Если ваш сервис ClickHouse уже обслуживает существующие рабочие нагрузки, например, аналитику приложений в реальном времени, рекомендуется создать дочерний сервис с помощью [функции warehouses в ClickHouse Cloud](/cloud/reference/warehouses) для изоляции нагрузки обсервабилити. Это обеспечит бесперебойную работу существующих приложений, сохраняя при этом доступность наборов данных из обоих сервисов.
+      Если ваш сервис ClickHouse уже обслуживает существующие рабочие нагрузки, например, аналитику приложений в реальном времени, рекомендуется создать дочерний сервис с помощью [функции warehouses в ClickHouse Cloud](/cloud/reference/warehouses) для изоляции нагрузки обсервабилити. Это обеспечит бесперебойную работу существующих приложений, сохраняя при этом доступность датасетов из обоих сервисов.
       :::
 
       <Image img={select_service} alt="Выберите сервис" size="lg" />
@@ -131,15 +131,15 @@ import TabItem from '@theme/TabItem';
 
       Если этот шаг выполнен успешно, то на этом всё — всё готово 🎉, в противном случае переходите к настройке ингестии.
 
-      ### Настройка приёма данных
+      ### Настройте ингестию
 
-      Если автоматическое обнаружение завершится неудачей или у вас нет существующих таблиц, вам будет предложено настроить приём данных.
+      Если автоматическое обнаружение завершится неудачей или у вас нет существующих таблиц, вам будет предложено настроить ингестию.
 
-      <Image img={clickstack_ui_setup_ingestion} alt="Настройка ингестии в UI ClickStack" size="lg" />
+      <Image img={clickstack_ui_setup_ingestion} alt="Настройка ингестии в интерфейсе ClickStack" size="lg" />
 
       Выберите &quot;Start Ingestion&quot;, и вам будет предложено выбрать источник для ингестии. Управляемый ClickStack поддерживает OpenTelemetry и [Vector](https://vector.dev/) в качестве основных источников ингестии. Однако пользователи также могут отправлять данные напрямую в ClickHouse по собственной схеме, используя любую из [интеграций, поддерживаемых ClickHouse Cloud](/integrations).
 
-      <Image img={select_source_clickstack_ui} size="lg" alt="Выберите источник — ClickStack UI" border />
+      <Image img={select_source_clickstack_ui} size="lg" alt="Выбор источника — интерфейс ClickStack" border />
 
       :::note[Рекомендуется OpenTelemetry]
       Настоятельно рекомендуется использовать OpenTelemetry в качестве формата ингестии.
@@ -147,7 +147,7 @@ import TabItem from '@theme/TabItem';
       :::
 
       <Tabs groupId="ingestion-sources-existing">
-        <TabItem value="OpenTelemetry" label="OpenTelemetry" default>
+        <TabItem value="open-telemetry" label="OpenTelemetry" default>
           Чтобы отправлять данные OpenTelemetry в Managed ClickStack, рекомендуется использовать OpenTelemetry Collector. Collector выступает в роли шлюза, который получает данные OpenTelemetry от ваших приложений (и других коллекторов) и пересылает их в ClickHouse Cloud.
 
           Если у вас ещё не запущен collector, запустите его, выполнив шаги ниже. Если у вас уже есть существующие коллекторы, также приведён пример конфигурации.
@@ -163,7 +163,7 @@ import TabItem from '@theme/TabItem';
           **Измените эту команду, подставив учётные данные сервиса, которые вы сохранили при его создании.**
 
           :::note[Развёртывание в production]
-          Хотя в этой команде используется пользователь `default` для подключения к Managed ClickStack, при [переходе в production](/use-cases/observability/clickstack/production#create-a-user) следует создать выделенного пользователя и изменить конфигурацию.
+          Хотя в этой команде используется пользователь `default` для подключения к Managed ClickStack, при [переходе в production](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed) следует создать выделенного пользователя и изменить конфигурацию.
           :::
 
           Выполнение этой единственной команды запускает ClickStack collector с OTLP-эндпоинтами, доступными на портах 4317 (gRPC) и 4318 (HTTP). Если у вас уже есть инструментация и агенты OpenTelemetry, вы можете сразу начинать отправлять телеметрию на эти эндпоинты.
@@ -218,7 +218,7 @@ import TabItem from '@theme/TabItem';
           CREATE DATABASE IF NOT EXISTS logs
           ```
 
-          Затем создайте таблицу, схема которой соответствует структуре данных ваших логов. В примере ниже предполагается классический формат access-логов Nginx:
+          Затем создайте таблицу со схемой, соответствующей структуре ваших логов. В примере ниже предполагается классический формат access-логов Nginx:
 
           ```sql
           CREATE TABLE logs.nginx_logs
@@ -254,7 +254,7 @@ import TabItem from '@theme/TabItem';
         </TabItem>
       </Tabs>
 
-      ### Перейдите в UI ClickStack
+      ### Перейдите в пользовательский интерфейс ClickStack
 
       После завершения настройки ингестии и начала отправки данных выберите &quot;Next&quot;.
 

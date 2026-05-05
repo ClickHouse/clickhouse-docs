@@ -1,6 +1,6 @@
 ---
 slug: /guides/developer/time-series-filling-gaps
-sidebar_label: 'Time Series - Gap Fill'
+sidebar_label: 'Time series - gap fill'
 sidebar_position: 10
 description: 'Filling gaps in time-series data.'
 keywords: ['time series', 'gap fill']
@@ -161,7 +161,7 @@ We can see from the results that the buckets from `00:24:03.000` to `00:24:03.50
 ## WITH FILL...TO {#with-fillto}
 
 We're still missing some buckets from the end of the time range though, which we can fill by providing a `TO` value.
-`TO` is not inclusive, so we'll add a small amount to the end time to make sure that it's included:
+`TO` isn't inclusive, so we'll add a small amount to the end time to make sure that it's included:
 
 ```sql
 SELECT

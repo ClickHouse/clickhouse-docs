@@ -57,7 +57,7 @@ ClickStack のイメージは現在 `clickhouse/clickstack-*`（以前は `docke
 
 <Image img={hyperdx_login} alt="HyperDX UI" size="lg"/>
 
-別の ClickHouse インスタンスを使用する例については、「[ClickHouse Cloud 接続を作成する](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)」を参照してください。
+別の ClickHouse インスタンスを使用する例については、「[ClickHouse Cloud を使用する](#using-clickhouse-cloud)」を参照してください。
 
 ### データを取り込む \{#ingest-data\}
 
@@ -118,7 +118,7 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 
 `CLICKHOUSE_ENDPOINT` には、ポート `8443` を含む ClickHouse Cloud の HTTPS エンドポイントを指定します。例: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`
 
-HyperDX UI に接続したら、[`Team Settings`](http://localhost:8080/team) に移動し、ClickHouse Cloud サービスへの接続を作成し、その後で必要なソースを追加します。手順の一例については[こちら](/use-cases/observability/clickstack/getting-started/oss#create-a-cloud-connection)を参照してください。
+HyperDX UI に接続したら、[`Team Settings`](http://localhost:8080/team) に移動し、ClickHouse Cloud サービスへの接続を作成し、その後で必要なソースを追加します。
 
 
 ## OpenTelemetry collector の設定 \{#configuring-collector\}

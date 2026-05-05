@@ -138,7 +138,6 @@ Managed Postgres 的自动存储扩缩容功能已在规划中。该功能会在
 
 ## 其他资源 \{#resources\}
 
-- [设置和配置](/cloud/managed-postgres/settings)
-- [只读副本](/cloud/managed-postgres/read-replicas)
-- [高可用性](/cloud/managed-postgres/high-availability)
-- [性能基准测试](/cloud/managed-postgres/benchmarks)
+* [设置和配置](/cloud/managed-postgres/settings)
+* [只读副本](/cloud/managed-postgres/read-replicas)
+* [高可用性](/cloud/managed-postgres/high-availability)

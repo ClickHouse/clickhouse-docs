@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqTheta \{#uniqTheta\}
 
-Добавлено в версии v21.6
+Добавлено в версии v21.6.0
 
 Вычисляет приблизительное количество различных значений аргумента, используя [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketches.html#theta-sketch-framework).
 

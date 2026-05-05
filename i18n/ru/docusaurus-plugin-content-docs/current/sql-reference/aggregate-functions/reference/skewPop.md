@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## skewPop \{#skewPop\}
 
-Введено в версии: v20.1
+Введено в версии: v20.1.0
 
 Вычисляет [асимметрию распределения](https://en.wikipedia.org/wiki/Skewness) последовательности значений.
 

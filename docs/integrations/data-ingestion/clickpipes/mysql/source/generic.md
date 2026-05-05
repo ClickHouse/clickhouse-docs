@@ -91,7 +91,7 @@ You NEED to RESTART the MySQL instance for the changes to take effect.
 
 :::note
 
-Column exclusion and schema changes are not supported for MySQL 5.7 and older versions. These features depend on table metadata not available in the binlog prior to [MySQL 8.0.1](https://dev.mysql.com/blog-archive/more-metadata-is-written-into-binary-log/).
+Column exclusion and schema changes aren't supported for MySQL 5.7 and older versions. These features depend on table metadata not available in the binlog prior to [MySQL 8.0.1](https://dev.mysql.com/blog-archive/more-metadata-is-written-into-binary-log/).
 
 :::
 

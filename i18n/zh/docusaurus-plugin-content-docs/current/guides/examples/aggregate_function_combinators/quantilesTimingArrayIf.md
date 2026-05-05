@@ -23,7 +23,8 @@ CREATE TABLE api_responses(
     endpoint String,
     response_times_ms Array(UInt32),
     success_rate Float32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO api_responses VALUES
     ('orders', [82, 94, 98, 87, 103, 92, 89, 105], 0.98),
@@ -40,13 +41,13 @@ GROUP BY endpoint;
 `quantilesTimingArrayIf` 函数只会对成功率超过 95% 的端点计算分位数。
 返回的数组按以下顺序包含这些分位数：
 
-* 0（最小值）
-* 0.25（第一四分位数）
-* 0.5（中位数）
-* 0.75（第三四分位数）
-* 0.95（第 95 百分位）
-* 0.99（第 99 百分位）
-* 1.0（最大值）
+* 0 (最小值)
+* 0.25 (第一四分位数)
+* 0.5 (中位数)
+* 0.75 (第三四分位数)
+* 0.95 (第 95 百分位)
+* 0.99 (第 99 百分位)
+* 1.0 (最大值)
 
 ```response title="Response"
    ┌─endpoint─┬─response_time_quantiles─────────────────────────────────────────────┐
@@ -57,5 +58,6 @@ GROUP BY endpoint;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

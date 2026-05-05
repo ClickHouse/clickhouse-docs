@@ -64,8 +64,26 @@ INSERT INTO t VALUES (1, 'Hello, world'), (2, 'abc'), (3, 'def')
 
 ClickHouse 支持 SQL 风格和 C 风格的注释：
 
-- SQL 风格的注释以 `--`、`#!` 或 `# ` 开头，并一直到行尾结束。`--` 和 `#!` 之后的空格可以省略。
-- C 风格的注释从 `/*` 开始到 `*/` 结束，可以跨多行。同样不需要空格。
+* SQL 风格的注释以 `--`、`#!` 或 `# ` 开头，并一直到行尾结束。`--` 和 `#!` 之后的空格可以省略。
+* C 风格的注释：
+  * `//` (或多于 2 个 `/` 字符) 后跟文本，并一直延续到行尾。`/` 之后不需要空格。
+  * 从 `/*` 到 `*/` 的注释可以跨多行。同样不需要空格。
+  * C 风格的注释可以嵌套。
+
+例如：
+
+```sql
+/*
+ * Compute the number of days between two dates.
+ * /* Returns NULL if either argument is NULL */
+ */
+SELECT
+    dateDiff('day', toDate('2024-01-01'), toDate('2024-12-31')) AS days_in_year, -- 365
+    dateDiff('day', toDate('2020-01-01'), today()) AS days_since  #! since 2020
+    ///////////////////////////////////////////////////////////////////
+    # TODO: add hour/minute variants
+```
+
 
 ## 关键字 \{#keywords\}
 
@@ -107,14 +125,21 @@ SELECT "FROM" FROM table_name
 未带引号的标识符必须匹配正则表达式 `^[a-zA-Z_][0-9a-zA-Z_]*$`，且不能与[关键字](#keywords)相同。
 参见下表，了解有效和无效标识符示例：
 
-| 有效标识符                                     | 无效标识符                        |
-|------------------------------------------------|-----------------------------------|
+| 有效标识符                                          | 无效标识符                                  |
+| ---------------------------------------------- | -------------------------------------- |
 | `xyz`, `_internal`, `Id_with_underscores_123_` | `1x`, `tom@gmail.com`, `äußerst_schön` |
 
 如果需要使用与关键字相同的标识符，或者想在标识符中使用其他符号，请使用双引号或反引号将其括起来，例如 `"id"`、`` `id` ``。
 
 :::note
 对带引号标识符进行转义的规则同样适用于字符串字面量。有关更多信息，请参阅 [String](#string)。
+:::
+
+:::tip[避免在列名中使用点号]
+当 `flatten_nested = 1` (默认值) 时，包含点号的列名、共享相同点号前缀的列以及类型为 `Array` 的列，都可能被解释为扁平化的 `Nested` 结构的一部分。这可能会在插入时导致意外的数组长度校验以及重命名限制。
+
+如有可能，请避免在列名中使用点号。
+除非你明确需要 `Nested` 语义，否则在列名中应使用下划线 (`_`) 或其他分隔符来代替点号。
 :::
 
 ## 字面量 \{#literals\}
@@ -224,15 +249,15 @@ SELECT "FROM" FROM table_name
 :::
 
 
-### 复合类型 \{#compound\}
+### 复合字面量 \{#compound\}
 
-数组使用方括号构造 `[1, 2, 3]`。元组使用圆括号构造 `(1, 'Hello, world!', 2)`。
+数组使用 `[]` 构造：`[1, 2, 3]`。元组使用 `()` 构造：`(1, 'Hello, world!', 2)`。
 从技术上讲，这些并不是字面量，而是分别带有数组创建运算符和元组创建运算符的表达式。
 数组必须至少包含一个元素，元组必须至少包含两个元素。
 
 :::note
 当元组出现在 `SELECT` 查询的 `IN` 子句中时，属于另一种情况。
-查询结果中可以包含元组，但元组不能保存到数据库中（使用 [Memory](../engines/table-engines/special/memory.md) 引擎的表除外）。
+查询结果中可以包含元组，但元组不能保存到数据库中 (使用 [Memory](../engines/table-engines/special/memory.md) 引擎的表除外) 。
 :::
 
 ### NULL \{#null\}
@@ -280,15 +305,11 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
 当执行带有查询参数的查询时，
 所有占位符都会被解析并替换为实际的查询参数值。
 
-有两种方式定义查询参数：
+查询参数可以通过以下几种方式定义：
 
-* `SET param_<name>=<value>`
-* `--param_<name>='<value>'`
-
-使用第二种方式时，它作为参数在命令行中传递给 `clickhouse-client`，其中：
-
-* `<name>` 是查询参数的名称。
-* `<value>` 是其值。
+* `SET param_<name>=<value>` — 在查询中使用 `SET` 命令。
+* `--param_<name>='<value>'` — 作为命令行中传递给 `clickhouse-client` 的参数。
+* `param_<name>=<value>` — 作为 HTTP interface 的 URL 查询字符串参数。
 
 可以在查询中使用 `{<name>: <datatype>}` 来引用查询参数，其中 `<name>` 是查询参数名，`<datatype>` 是其要转换成的数据类型。
 
@@ -332,6 +353,24 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
   ```
 </details>
 
+<details>
+  <summary>使用 HTTP interface 的示例</summary>
+
+  查询参数可以作为带有 `param_` 前缀的 URL 查询字符串参数传递。例如：
+
+  ```bash
+  curl -s "http://localhost:8123/?param_message=hello" --data-binary "SELECT {message: String}"
+
+  hello
+  ```
+</details>
+
+<details>
+  <summary>使用 Web UI 的示例</summary>
+
+  内置 Web UI (`play.html`) 会自动检测查询中的 `{name:Type}` 参数占位符，并为每个参数显示带标签的输入字段。参数值会包含在 HTTP 请求中，也会持久化保存在页面 URL 中，便于添加书签和共享。
+</details>
+
 :::note
 查询参数并不是一种可以在任意 SQL 查询中任意位置使用的通用文本替换机制。
 它们主要用于在 `SELECT` 语句中替代标识符或字面量。
@@ -339,7 +378,7 @@ SELECT $heredoc$SHOW CREATE VIEW my_view$heredoc$;
 
 ## 函数 \{#functions\}
 
-函数调用的写法是：在标识符后面加上一对圆括号，其中包含参数列表（可以为空）。
+函数调用的写法是：在标识符后面加上包含参数列表 (可以为空) 的 `()`。
 与标准 SQL 不同，括号是必需的，即使参数列表为空也是如此。
 例如：
 

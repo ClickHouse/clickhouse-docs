@@ -33,7 +33,7 @@ Therefore, sending a smaller amount of inserts that each contain more data, comp
 Generally, we recommend inserting data in fairly large batches of at least 1,000 rows at a time, and ideally between 10,000 to 100,000 rows.
 (Further details [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance)).
 
-If large batches are not possible, use asynchronous inserts described below.
+If large batches aren't possible, use asynchronous inserts described below.
 
 ### Ensure consistent batches for idempotent retries {#ensure-consistent-batches-for-idempotent-retries}
 
@@ -58,10 +58,10 @@ It should be noted however that this approach is a little less performant as wri
 
 ### Use asynchronous inserts for small batches {#use-asynchronous-inserts-for-small-batches}
 
-There are scenarios where client-side batching is not feasible e.g. an observability use case with 100s or 1000s of single-purpose agents sending logs, metrics, traces, etc.
+There are scenarios where client-side batching isn't feasible e.g. an observability use case with 100s or 1000s of single-purpose agents sending logs, metrics, traces, etc.
 In this scenario real-time transport of that data is key to detect issues and anomalies as quickly as possible.
 Furthermore, there is a risk of event spikes in the observed systems, which could potentially cause large memory spikes and related issues when trying to buffer observability data client-side.
-If large batches cannot be inserted, you can delegate batching to ClickHouse using [asynchronous inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts).
+If large batches can't be inserted, you can delegate batching to ClickHouse using [asynchronous inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts).
 
 With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later in 3 steps, as illustrated by the diagram below:
 
@@ -78,7 +78,7 @@ The part created from the buffer flush will potentially contain the data from se
 Generally, these mechanics shift the batching of data from the client side to the server side (ClickHouse instance).
 
 :::note
-Note that the data is not searchable by queries before being flushed to the database storage and that the buffer flush is configurable.
+Note that the data isn't searchable by queries before being flushed to the database storage and that the buffer flush is configurable.
 
 Full details on configuring asynchronous inserts can be found [here](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), with a deep dive [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 :::
@@ -86,7 +86,7 @@ Full details on configuring asynchronous inserts can be found [here](/optimize/a
 ### Use official ClickHouse clients {#use-official-clickhouse-clients}
 
 ClickHouse has clients in the most popular programming languages.
-These are optimized to ensure that inserts are performed correctly and natively support asynchronous inserts either directly as in e.g. the [Go client](/integrations/go#async-insert), or indirectly when enabled in the query, user or connection level settings.
+These are optimized to ensure that inserts are performed correctly and natively support asynchronous inserts either directly as in e.g. the [Go client](/integrations/language-clients/go/clickhouse-api#async-insert), or indirectly when enabled in the query, user or connection level settings.
 
 See [Clients and Drivers](/interfaces/cli) for a full list of available ClickHouse clients and drivers.
 
@@ -164,7 +164,7 @@ If you need help inserting large datasets or encounter any errors when importing
 - `clickhouse-server` is running
 - You have access to a terminal with `wget`, `zcat` and `curl`
 
-In this example you'll see how to insert a CSV file into ClickHouse from the command line using clickhouse-client in batch mode. For more information and examples of inserting data via command line using clickhouse-client in batch mode, see ["Batch mode"](/interfaces/cli#batch-mode).
+In this example you'll see how to insert a CSV file into ClickHouse from the command line using clickhouse-client in batch mode. For more information and examples of inserting data via command line using clickhouse-client in batch mode, see ["Batch mode"](/interfaces/client#batch-mode).
 
 We'll be using the [Hacker News dataset](/getting-started/example-datasets/hacker-news) for this example, which contains 28 million rows of Hacker News data.
 

@@ -17,9 +17,9 @@ import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 ## オブジェクトストレージをバックエンドにしたストレージ \{#storage-backed-by-object-store\}
 
-- 事実上無制限のストレージ容量
-- データを手動で共有する必要がない
-- 特にアクセス頻度の低いデータの保存において、コストを大幅に削減できる
+* 事実上無制限のストレージ容量
+* データを手動で分片する必要がない
+* 特にアクセス頻度の低いデータの保存において、コストを大幅に削減できる
 
 ## コンピュート \{#compute\}
 
@@ -56,6 +56,6 @@ GCP および Azure の場合、サービスはオブジェクトストレージ
 
 ## 同時実行制限 \{#concurrency-limits\}
 
-ClickHouse Cloud サービスでは、1 秒あたりのクエリ数（QPS）に上限はありません。ただし、レプリカごとの同時実行クエリ数には 1000 件という上限があります。QPS は最終的には、平均クエリ実行時間とサービス内のレプリカ数によって決まります。
+ClickHouse Cloud サービスでは、1 秒あたりのクエリ数 (QPS) に上限はありません。ただし、レプリカごとの同時実行クエリ数には 1000 件という上限があります。QPS は最終的には、平均クエリ実行時間とサービス内のレプリカ数によって決まります。
 
-自己管理型の ClickHouse インスタンスや他のデータベース／データウェアハウスと比較した場合、ClickHouse Cloud の大きな利点は、[レプリカを追加する（水平スケーリング）ことで](/manage/scaling#manual-horizontal-scaling) 同時実行数を簡単に増やせることです。
+自己管理型の ClickHouse インスタンスや他のデータベース／データウェアハウスと比較した場合、ClickHouse Cloud の大きな利点は、[レプリカを追加する (水平スケーリング) ことで](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling) 同時実行数を簡単に増やせることです。

@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.warnings \{#systemwarnings\}
-
 <SystemTableCloud />
+
+## Описание \{#description\}
 
 Эта таблица показывает предупреждения, связанные с сервером ClickHouse.
 Предупреждения одного и того же типа объединяются в одно предупреждение.
@@ -29,22 +29,18 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 * [max&#95;named&#95;collection&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_named_collection_num_to_warn)
 * [resource&#95;overload&#95;warnings](/operations/settings/server-overload#resource-overload-warnings)
 
-Столбцы:
+## Столбцы \{#columns\}
 
 * `message` ([String](../../sql-reference/data-types/string.md)) — Текст предупреждения.
 * `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Форматная строка, используемая для форматирования сообщения.
 
-**Пример**
+## Пример \{#example\}
 
-Запрос:
-
-```sql
+```sql title="Query"
  SELECT * FROM system.warnings LIMIT 2 \G;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 message:               The number of active parts is more than 10.

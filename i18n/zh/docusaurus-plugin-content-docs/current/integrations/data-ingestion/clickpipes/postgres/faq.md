@@ -17,6 +17,22 @@ import Image from '@theme/IdealImage';
 
 # Postgres 版 ClickPipes 常见问题解答（FAQ） \{#clickpipes-for-postgres-faq\}
 
+### 事务回滚会同步到 ClickHouse 吗？ \{#are-transaction-rollbacks-replicated\}
+
+不会。CDC 只会同步已提交的事务。已回滚的事务不会被发送到 ClickHouse。
+
+### 我可以在 ClickHouse 中保留比源 Postgres 更久的数据吗？ \{#retain-data-longer-in-clickhouse\}
+
+可以。源 Postgres 和目标 ClickHouse 具有各自独立的数据保留策略。比如，你可以在 Postgres 中只保留 3 个月的数据，而在 ClickHouse 中保留完整的历史记录。在 Postgres 中删除旧行会生成 DELETE 事件，这些事件会复制到 ClickHouse，因此如果你希望保留历史数据，应当在你的 [publication](/integrations/clickpipes/postgres/faq#ignore-delete-truncate) 中排除 DELETE，或者在查询层面进行处理。
+
+### 我如何在数据从 Postgres 流向 ClickHouse 的过程中对其进行丰富？ \{#data-enrichment\}
+
+在 CDC 目标表之上使用 [materialized view](/materialized-views)。ClickHouse 中的 materialized view 充当插入触发器，因此从 Postgres 复制过来的每一行数据，都可以在写入最终目标表之前进行转换、与查找表进行关联，或者通过添加额外列来实现数据丰富。
+
+### 我可以将多个 Postgres 实例的数据复制到一个或多个 ClickHouse 服务中吗？ \{#multi-region-multi-source\}
+
+可以。可以从不同的 Postgres 实例（包括跨 AWS 区域）创建单独的 ClickPipes，将数据复制到一个或多个 ClickHouse 服务中。比如，可以将某个区域的 Postgres 实例数据发送到本地 ClickHouse 集群，以实现低延迟分析，同时将相同数据发送到另一个区域的集中式 ClickHouse 集群，用于汇总报表。请注意，跨区域架构会产生 AWS 跨区域数据传输费用以及额外的网络延迟。
+
 ### 空闲状态如何影响我的 Postgres CDC ClickPipe？ \{#how-does-idling-affect-my-postgres-cdc-clickpipe\}
 
 如果您的 ClickHouse Cloud 服务处于空闲状态，您的 Postgres CDC ClickPipe 仍会继续同步数据；您的服务会在下一次同步间隔到来时被唤醒，以处理新到达的数据。一旦同步完成并再次达到空闲时间阈值，您的服务就会重新进入空闲状态。
@@ -265,15 +281,14 @@ max_slot_wal_keep_size = 200GB
 
 ### 我在日志中看到 ReceiveMessage EOF 错误。这意味着什么？ \{#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean\}
 
-`ReceiveMessage` 是 Postgres 逻辑解码协议中的一个函数，用于从复制流中读取消息。EOF（End of File，文件结束）错误表示在尝试从复制流中读取数据时，与 Postgres 服务器的连接被意外关闭。
+`ReceiveMessage` 是 Postgres 逻辑解码协议中的一个函数，用于从复制流中读取消息。EOF (End of File，文件结束) 错误表示在尝试从复制流中读取数据时，与 Postgres 服务器的连接被意外关闭。
 
 这是一个可恢复的、完全不是致命错误。ClickPipes 会自动尝试重新连接并继续复制过程。
 
 出现该问题可能有以下几个原因：
 
-- **wal_sender_timeout 过低：** 请确保 `wal_sender_timeout` 设置为 5 分钟或更长时间。该设置控制服务器在关闭连接之前等待客户端响应的时间。如果超时时间过低，可能会导致连接过早断开。
-- **网络问题：** 临时的网络中断可能导致连接断开。
-- **Postgres 服务器重启：** 如果 Postgres 服务器被重启或发生崩溃，连接将会丢失。
+* **网络问题：** 临时的网络中断可能导致连接断开。
+* **Postgres 服务器重启：** 如果 Postgres 服务器被重启或发生崩溃，连接将会丢失。
 
 ### 我的 replication slot 失效了。我该怎么办？ \{#my-replication-slot-is-invalidated-what-should-i-do\}
 

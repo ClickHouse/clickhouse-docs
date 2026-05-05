@@ -25,24 +25,25 @@ import Image from '@theme/IdealImage';
 Ознакомьтесь с этим [базовым руководством по использованию сертификатов](https://ubuntu.com/server/docs/security-certificates) для вводного обзора.
 :::
 
-## 1. Создание развертывания ClickHouse \{#1-create-a-clickhouse-deployment\}
+<VerticalStepper headerLevel="h2">
 
-Это руководство подготовлено на Ubuntu 20.04 с ClickHouse, установленным на следующих хостах из DEB-пакета (через apt). Домен — `marsnet.local`:
+## Создайте развертывание ClickHouse \{#1-create-a-clickhouse-deployment\}
 
-|Хост |IP-адрес|
+Это руководство было написано с использованием Ubuntu 20.04 и ClickHouse, установленного на следующих хостах из DEB-пакета (с помощью apt). Домен — `marsnet.local`:
+
+|Host |IP Address|
 |--------|-------------|
 |`chnode1` |192.168.1.221|
 |`chnode2` |192.168.1.222|
 |`chnode3` |192.168.1.223|
 
 :::note
-См. раздел [Quick Start](/getting-started/install/install.mdx) для более подробной информации по установке ClickHouse.
+См. руководство [Quick Start](/getting-started/install/install.mdx), чтобы получить более подробную информацию об установке ClickHouse.
 :::
 
-## 2. Создайте TLS-сертификаты \{#2-create-tls-certificates\}
-
+## Создайте TLS-сертификаты \{#2-create-tls-certificates\}
 :::note
-Самоподписанные сертификаты предназначены только для демонстрационных целей и не должны использоваться в рабочей (production) среде. Запросы на сертификаты должны создаваться для подписи вашей организацией и проверяться с использованием цепочки сертификатов CA, которая будет настроена в конфигурации. Тем не менее, эти шаги можно использовать для настройки и тестирования, а затем заменить временные сертификаты на реальные, которые будут использоваться в дальнейшем.
+Самоподписанные сертификаты используются только в демонстрационных целях и не должны использоваться в production-среде. Запросы на сертификаты должны создаваться для подписи организацией и проверяться с использованием цепочки CA, которая будет настроена в параметрах. Однако эти шаги можно использовать для настройки и тестирования параметров, а затем заменить сертификаты на фактические, которые будут использоваться.
 :::
 
 1. Сгенерируйте ключ, который будет использоваться для нового CA:
@@ -56,7 +57,7 @@ import Image from '@theme/IdealImage';
     ```
 
     :::note
-    Создайте резервную копию ключа и сертификата CA в безопасном месте вне кластера. После генерации узловых сертификатов ключ должен быть удалён с узлов кластера.
+    Сохраните резервные копии ключа и сертификата CA в безопасном месте вне кластера. После генерации сертификатов узлов ключ следует удалить с узлов кластера.
     :::
 
 3. Проверьте содержимое нового сертификата CA:
@@ -71,36 +72,36 @@ import Image from '@theme/IdealImage';
     openssl req -newkey rsa:2048 -nodes -subj "/CN=chnode3" -addext "subjectAltName = DNS:chnode3.marsnet.local,IP:192.168.1.223" -keyout chnode3.key -out chnode3.csr
     ```
 
-5. Используя CSR и CA, создайте новые пары «сертификат–ключ»:
+5. Используя CSR и CA, создайте новые пары сертификатов и ключей:
     ```bash
     openssl x509 -req -in chnode1.csr -out chnode1.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     openssl x509 -req -in chnode2.csr -out chnode2.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     openssl x509 -req -in chnode3.csr -out chnode3.crt -CA marsnet_ca.crt -CAkey marsnet_ca.key -days 365 -copy_extensions copy
     ```
 
-6. Проверьте субъект и издателя в сертификате:
+6. Проверьте сертификаты на subject и issuer:
     ```bash
     openssl x509 -in chnode1.crt -text -noout
     ```
 
-7. Убедитесь, что новые сертификаты успешно проверяются относительно сертификата CA:
+7. Убедитесь, что новые сертификаты успешно проверяются по сертификату CA:
     ```bash
     openssl verify -CAfile marsnet_ca.crt chnode1.crt
     chnode1.crt: OK
     ```
 
-## 3. Создайте и настройте каталог для хранения сертификатов и ключей. \{#3-create-and-configure-a-directory-to-store-certificates-and-keys\}
+## Создайте и настройте каталог для хранения сертификатов и ключей. \{#3-create-and-configure-a-directory-to-store-certificates-and-keys\}
 
 :::note
-Это нужно сделать на каждом узле. Используйте соответствующие сертификаты и ключи на каждом хосте.
+Это необходимо сделать на каждом узле. На каждом хосте используйте соответствующие сертификаты и ключи.
 :::
 
-1. Создайте каталог в директории, доступной для ClickHouse на каждом узле. Мы рекомендуем каталог конфигурации по умолчанию (например, `/etc/clickhouse-server`):
+1. Создайте папку в каталоге, доступном ClickHouse на каждом узле. Мы рекомендуем использовать каталог конфигурации по умолчанию (например, `/etc/clickhouse-server`):
     ```bash
     mkdir /etc/clickhouse-server/certs
     ```
 
-2. Скопируйте сертификат CA, сертификат узла и ключ, соответствующие каждому узлу, в новый каталог `certs`.
+2. Скопируйте сертификат CA, сертификат узла и ключ, соответствующие каждому узлу, в новый каталог certs.
 
 3. Обновите владельца и права доступа, чтобы ClickHouse мог читать сертификаты:
     ```bash
@@ -119,21 +120,21 @@ import Image from '@theme/IdealImage';
     -rw------- 1 clickhouse clickhouse 1131 Apr 12 20:23 marsnet_ca.crt
     ```
 
-## 4. Настройка окружения с базовыми кластерами с использованием ClickHouse Keeper \{#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper\}
+## Настройте среду с базовыми кластерами с использованием ClickHouse Keeper \{#4-configure-the-environment-with-basic-clusters-using-clickhouse-keeper\}
 
-Для этой среды развертывания в каждом узле используются следующие параметры ClickHouse Keeper. У каждого сервера будет собственный `<server_id>`. (Например, `<server_id>1</server_id>` для узла `chnode1` и так далее.)
+Для этой среды развертывания на каждом узле используются следующие настройки ClickHouse Keeper. У каждого сервера будет собственный `<server_id>`. (Например, `<server_id>1</server_id>` для узла `chnode1` и так далее.)
 
 :::note
-Рекомендуемый порт для ClickHouse Keeper — `9281`. Однако при необходимости его можно изменить, если этот порт уже используется другим приложением в окружении.
+Рекомендуемый порт для ClickHouse Keeper — `9281`. Однако порт настраиваемый и может быть изменён, если в этой среде он уже используется другим приложением.
 
-Для подробного описания всех параметров посетите https://clickhouse.com/docs/operations/clickhouse-keeper/
+Полное описание всех параметров см. по адресу https://clickhouse.com/docs/operations/clickhouse-keeper/
 :::
 
-1. Добавьте следующий блок внутрь тега `<clickhouse>` в файле `config.xml` сервера ClickHouse.
+1. Добавьте следующее внутрь тега `<clickhouse>` в `config.xml` сервера ClickHouse
 
     :::note
-    Для продуктивных сред рекомендуется использовать отдельный конфигурационный файл `.xml` в директории `config.d`.
-    Для получения дополнительной информации посетите https://clickhouse.com/docs/operations/configuration-files/
+    Для production-сред рекомендуется использовать отдельный файл конфигурации `.xml` в каталоге `config.d`.
+    Дополнительные сведения см. по адресу https://clickhouse.com/docs/operations/configuration-files/
     :::
 
     ```xml
@@ -170,7 +171,11 @@ import Image from '@theme/IdealImage';
     </keeper_server>
     ```
 
-2. Раскомментируйте и обновите настройки Keeper на всех узлах и установите флаг `<secure>` в значение 1:
+    :::note
+    Когда ClickHouse Keeper встроен в сервер ClickHouse (как показано выше), Keeper использует конфигурацию OpenSSL сервера, определённую в разделе OpenSSL статьи [Configure TLS interfaces on ClickHouse nodes](#5-configure-tls-interfaces-on-clickhouse-nodes). Если вы запускаете ClickHouse Keeper как автономный процесс, необходимо добавить раздел `<openSSL>` в файл конфигурации Keeper с теми же настройками сертификата CA и сертификата/ключа узла. Подробности см. в разделе [Configure OpenSSL for standalone ClickHouse Keeper](#configure-openssl-for-standalone-clickhouse-keeper) ниже.
+    :::
+
+2. Раскомментируйте и обновите настройки keeper на всех узлах и установите флаг `<secure>` в значение 1:
     ```xml
     <zookeeper>
         <node>
@@ -191,13 +196,13 @@ import Image from '@theme/IdealImage';
     </zookeeper>
     ```
 
-3. Обновите и добавьте следующие настройки кластера для `chnode1` и `chnode2`. `chnode3` будет использоваться для кворума ClickHouse Keeper.
+3. Обновите и добавьте следующие настройки кластера на `chnode1` и `chnode2`. `chnode3` будет использоваться для кворума ClickHouse Keeper.
 
     :::note
-    В этой конфигурации настроен только один пример кластера. Тестовые примерные кластеры должны быть либо удалены, либо закомментированы, либо, если уже существует кластер, который тестируется, его порт должен быть обновлён и должна быть добавлена опция `<secure>`. Параметры `<user` и `<password>` должны быть заданы, если пользователь `default` изначально был настроен с паролем при установке или в файле `users.xml`.
+    В этой конфигурации настраивается только один пример кластера. Тестовые примерные кластеры необходимо либо удалить, либо закомментировать, либо, если тестируется существующий кластер, следует обновить порт и добавить параметр `<secure>`. Параметры `<user` и `<password>` должны быть заданы, если для пользователя `default` пароль был изначально настроен во время установки или в файле `users.xml`.
     :::
 
-    Следующая конфигурация создаёт кластер с одним сегментом и двумя репликами на двух серверах (по одной на каждом узле).
+    Следующий пример создаёт кластер с одним шардом-репликой на двух серверах (по одному на каждом узле).
     ```xml
     <remote_servers>
         <cluster_1S_2R>
@@ -221,7 +226,7 @@ import Image from '@theme/IdealImage';
     </remote_servers>
     ```
 
-4. Определите значения макросов, чтобы можно было создать таблицу ReplicatedMergeTree для тестирования. На `chnode1`:
+4. Задайте значения macros, чтобы можно было создать таблицу ReplicatedMergeTree для тестирования. На `chnode1`:
     ```xml
     <macros>
         <shard>1</shard>
@@ -237,16 +242,15 @@ import Image from '@theme/IdealImage';
     </macros>
     ```
 
-## 5. Настройка TLS-интерфейсов на узлах ClickHouse \{#5-configure-tls-interfaces-on-clickhouse-nodes\}
-
-Параметры ниже настраиваются в `config.xml` сервера ClickHouse.
+## Настройте TLS-интерфейсы на узлах ClickHouse \{#5-configure-tls-interfaces-on-clickhouse-nodes\}
+Приведённые ниже параметры настраиваются в `config.xml` сервера ClickHouse
 
 1.  Задайте отображаемое имя для развертывания (необязательно):
     ```xml
     <display_name>clickhouse</display_name>
     ```
 
-2. Разрешите ClickHouse прослушивать внешние интерфейсы:
+2. Настройте ClickHouse на прослушивание внешних портов:
     ```xml
     <listen_host>0.0.0.0</listen_host>
     ```
@@ -257,13 +261,13 @@ import Image from '@theme/IdealImage';
     <!--<http_port>8123</http_port>-->
     ```
 
-4. Настройте защищенный ClickHouse Native TCP-порт и отключите незащищенный порт по умолчанию на каждом узле:
+4. Настройте защищённый собственный TCP-порт ClickHouse и отключите стандартный незащищённый порт на каждом узле:
     ```xml
     <tcp_port_secure>9440</tcp_port_secure>
     <!--<tcp_port>9000</tcp_port>-->
     ```
 
-5. Настройте порт `interserver https` и отключите незащищенный порт по умолчанию на каждом узле:
+5. Настройте порт `interserver https` и отключите стандартный незащищённый порт на каждом узле:
     ```xml
     <interserver_https_port>9010</interserver_https_port>
     <!--<interserver_http_port>9009</interserver_http_port>-->
@@ -272,8 +276,8 @@ import Image from '@theme/IdealImage';
 6. Настройте OpenSSL с сертификатами и путями
 
     :::note
-    Каждое имя файла и путь должны быть обновлены в соответствии с узлом, на котором выполняется настройка.
-    Например, обновите запись `<certificateFile>` на `chnode2.crt` при настройке на хосте `chnode2`.
+    Имя каждого файла и путь должны быть обновлены в соответствии с узлом, на котором выполняется настройка.
+    Например, обновите запись `<certificateFile>`, указав `chnode2.crt` при настройке на хосте `chnode2`.
     :::
 
     ```xml
@@ -301,7 +305,7 @@ import Image from '@theme/IdealImage';
     </openSSL>
     ```
 
-    Для получения дополнительной информации см. https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
+    дополнительные сведения см. по адресу https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
 
 7. Настройте TLS для gRPC на каждом узле:
     ```xml
@@ -319,9 +323,9 @@ import Image from '@theme/IdealImage';
     </grpc>
     ```
 
-    Для получения дополнительной информации см. https://clickhouse.com/docs/interfaces/grpc/
+    дополнительные сведения см. по адресу https://clickhouse.com/docs/interfaces/grpc/
 
-8. Настройте клиент ClickHouse как минимум на одном из узлов для использования TLS при подключении в его собственном файле `config.xml` (по умолчанию в `/etc/clickhouse-client/`):
+8. Настройте клиент ClickHouse хотя бы на одном из узлов на использование TLS для подключений в его собственном файле `config.xml` (по умолчанию в `/etc/clickhouse-client/`):
     ```xml
     <openSSL>
         <client>
@@ -337,61 +341,57 @@ import Image from '@theme/IdealImage';
     </openSSL>
     ```
 
-6. Отключите стандартные порты эмуляции для MySQL и PostgreSQL:
+6. Отключите стандартные порты эмуляции MySQL и PostgreSQL:
     ```xml
     <!--mysql_port>9004</mysql_port-->
     <!--postgresql_port>9005</postgresql_port-->
     ```
 
-## 6. Тестирование \{#6-testing\}
+## Тестирование \{#6-testing\}
+1. Запустите все узлы по одному:
+    ```bash
+    service clickhouse-server start
+    ```
 
-1. Запустите все узлы по очереди:
-   ```bash
-   service clickhouse-server start
-   ```
+2. Убедитесь, что защищённые порты подняты и прослушиваются; на каждом узле это должно выглядеть примерно так:
+    ```bash
+    root@chnode1:/etc/clickhouse-server# netstat -ano | grep tcp
+    ```
 
-2. Убедитесь, что защищённые порты запущены и прослушиваются; на каждом узле вывод должен выглядеть примерно так:
+    ```response
+    tcp        0      0 0.0.0.0:9010            0.0.0.0:*               LISTEN      off (0.00/0/0)
+    tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      off (0.00/0/0)
+    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      off (0.00/0/0)
+    tcp        0      0 0.0.0.0:8443            0.0.0.0:*               LISTEN      off (0.00/0/0)
+    tcp        0      0 0.0.0.0:9440            0.0.0.0:*               LISTEN      off (0.00/0/0)
+    tcp        0      0 0.0.0.0:9281            0.0.0.0:*               LISTEN      off (0.00/0/0)
+    tcp        0      0 192.168.1.221:33046     192.168.1.222:9444      ESTABLISHED off (0.00/0/0)
+    tcp        0      0 192.168.1.221:42730     192.168.1.223:9444      ESTABLISHED off (0.00/0/0)
+    tcp        0      0 192.168.1.221:51952     192.168.1.222:9281      ESTABLISHED off (0.00/0/0)
+    tcp        0      0 192.168.1.221:22        192.168.1.210:49801     ESTABLISHED keepalive (6618.05/0/0)
+    tcp        0     64 192.168.1.221:22        192.168.1.210:59195     ESTABLISHED on (0.24/0/0)
+    tcp6       0      0 :::22                   :::*                    LISTEN      off (0.00/0/0)
+    tcp6       0      0 :::9444                 :::*                    LISTEN      off (0.00/0/0)
+    tcp6       0      0 192.168.1.221:9444      192.168.1.222:59046     ESTABLISHED off (0.00/0/0)
+    tcp6       0      0 192.168.1.221:9444      192.168.1.223:41976     ESTABLISHED off (0.00/0/0)
+    ```
 
-   ```bash
-   root@chnode1:/etc/clickhouse-server# netstat -ano | grep tcp
-   ```
+    |ClickHouse Port |Description|
+    |--------|-------------|
+    |8443 | интерфейс https|
+    |9010 | межсерверный порт https|
+    |9281 | защищённый порт ClickHouse Keeper|
+    |9440 | защищённый протокол Native TCP|
+    |9444 | порт Raft ClickHouse Keeper |
 
-   ```response
-   tcp        0      0 0.0.0.0:9010            0.0.0.0:*               LISTEN      off (0.00/0/0)
-   tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      off (0.00/0/0)
-   tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      off (0.00/0/0)
-   tcp        0      0 0.0.0.0:8443            0.0.0.0:*               LISTEN      off (0.00/0/0)
-   tcp        0      0 0.0.0.0:9440            0.0.0.0:*               LISTEN      off (0.00/0/0)
-   tcp        0      0 0.0.0.0:9281            0.0.0.0:*               LISTEN      off (0.00/0/0)
-   tcp        0      0 192.168.1.221:33046     192.168.1.222:9444      ESTABLISHED off (0.00/0/0)
-   tcp        0      0 192.168.1.221:42730     192.168.1.223:9444      ESTABLISHED off (0.00/0/0)
-   tcp        0      0 192.168.1.221:51952     192.168.1.222:9281      ESTABLISHED off (0.00/0/0)
-   tcp        0      0 192.168.1.221:22        192.168.1.210:49801     ESTABLISHED keepalive (6618.05/0/0)
-   tcp        0     64 192.168.1.221:22        192.168.1.210:59195     ESTABLISHED on (0.24/0/0)
-   tcp6       0      0 :::22                   :::*                    LISTEN      off (0.00/0/0)
-   tcp6       0      0 :::9444                 :::*                    LISTEN      off (0.00/0/0)
-   tcp6       0      0 192.168.1.221:9444      192.168.1.222:59046     ESTABLISHED off (0.00/0/0)
-   tcp6       0      0 192.168.1.221:9444      192.168.1.223:41976     ESTABLISHED off (0.00/0/0)
-   ```
+3. Проверьте состояние ClickHouse Keeper
+The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) commands won't work using `echo` without TLS, here is how to use the commands with `openssl`.
+   - Запустите интерактивную сессию `openssl`
 
-   | Порт ClickHouse | Описание                          |
-   | --------------- | --------------------------------- |
-   | 8443            | https-интерфейс                   |
-   | 9010            | межсерверный https-порт           |
-   | 9281            | защищённый порт ClickHouse Keeper |
-   | 9440            | защищённый протокол Native TCP    |
-   | 9444            | Raft-порт ClickHouse Keeper       |
-
-3. Проверьте работоспособность ClickHouse Keeper
-   Типичные команды [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) не будут работать при использовании `echo` без TLS; ниже показано, как использовать эти команды с `openssl`.
-   * Запустите интерактивный сеанс с `openssl`
-
-```bash
+  ```bash
   openssl s_client -connect chnode1.marsnet.local:9281
-```
-
-
-```response
+  ```
+  ```response
   CONNECTED(00000003)
   depth=0 CN = chnode1
   verify error:num=20:unable to get local issuer certificate
@@ -408,14 +408,13 @@ import Image from '@theme/IdealImage';
   -----BEGIN CERTIFICATE-----
   MIICtDCCAZwCFD321grxU3G5pf6hjitf2u7vkusYMA0GCSqGSIb3DQEBCwUAMBsx
   ...
-```
+  ```
 
-* Отправьте 4LW-команды в сеансе OpenSSL
+- Отправьте команды 4LW в сеансе OpenSSL
 
   ```bash
   mntr
   ```
-
   ```response
   ---
   Post-Handshake New Session Ticket arrived:
@@ -448,8 +447,7 @@ import Image from '@theme/IdealImage';
   closed
   ```
 
-
-4. Запустите клиент ClickHouse с флагом `--secure` и через TLS-порт:
+4. Запустите клиент ClickHouse с флагом `--secure` и TLS-портом:
     ```bash
     root@chnode1:/etc/clickhouse-server# clickhouse-client --user default --password ClickHouse123! --port 9440 --secure --host chnode1.marsnet.local
     ClickHouse client version 22.3.3.44 (official build).
@@ -464,8 +462,8 @@ import Image from '@theme/IdealImage';
     <Image img={configuringSsl01} alt="Настройка TLS" size="md" border />
 
     :::note
-    браузер покажет недоверенный сертификат, поскольку доступ осуществляется с рабочей станции, а сертификаты отсутствуют в хранилищах корневых центров сертификации на клиентской машине.
-    При использовании сертификатов, выданных публичным или корпоративным центром сертификации, сертификат будет отображаться как доверенный.
+    браузер покажет недоверенный сертификат, поскольку доступ к нему выполняется с рабочей станции, а сертификаты отсутствуют в хранилищах корневых CA на клиентской машине.
+    При использовании сертификатов, выпущенных публичным центром сертификации или корпоративным CA, он должен отображаться как доверенный.
     :::
 
 6. Создайте реплицируемую таблицу:
@@ -507,6 +505,51 @@ import Image from '@theme/IdealImage';
     │  2 │ 2022-04-02 │ def     │
     └────┴────────────┴─────────┘
     ```
+
+</VerticalStepper>
+
+## Настройка OpenSSL для автономного ClickHouse Keeper \{#configure-openssl-for-standalone-clickhouse-keeper\}
+
+При запуске ClickHouse Keeper как автономного процесса (а не встроенного в сервер ClickHouse) сертификаты и параметры OpenSSL необходимо настраивать отдельно в файле конфигурации Keeper. Без этого Keeper не сможет устанавливать защищенные соединения ни для взаимодействия с клиентами (`tcp_port_secure`), ни для Raft-репликации между узлами Keeper.
+
+Добавьте следующий раздел `<openSSL>` в файл конфигурации автономного ClickHouse Keeper на каждом узле:
+
+:::note
+Имя каждого файла необходимо изменить в соответствии с узлом, на котором выполняется настройка.
+Например, при настройке на хосте `chnode2` укажите в записи `<certificateFile>` значение `chnode2.crt`.
+:::
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-keeper/certs/chnode1.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-keeper/certs/chnode1.key</privateKeyFile>
+        <verificationMode>relaxed</verificationMode>
+        <caConfig>/etc/clickhouse-keeper/certs/marsnet_ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <caConfig>/etc/clickhouse-keeper/certs/marsnet_ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>relaxed</verificationMode>
+        <invalidCertificateHandler>
+            <name>RejectCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+Раздел `<server>` используется для входящих клиентских подключений к защищённому порту Keeper (`tcp_port_secure`). Раздел `<client>` используется для исходящих подключений между узлами Keeper в процессе репликации Raft.
+
+:::note
+В приведённых выше путях к сертификатам используется `/etc/clickhouse-keeper/certs/` — это типичный путь для автономных установок Keeper. Если вы установили Keeper в другой каталог, внесите соответствующие изменения. Сами сертификаты — те же, что были созданы на [шаге 2](#2-create-tls-certificates).
+:::
+
 
 ## Итоги \{#summary\}
 

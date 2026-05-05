@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniqExact \{#uniqExact\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算不同参数取值的精确数量。
 
@@ -58,7 +58,7 @@ FROM example_data;
 └─────────────────────────┘
 ```
 
-**多参数**
+**多个参数**
 
 ```sql title=Query
 SELECT uniqExact(id, category) as exact_unique_combinations

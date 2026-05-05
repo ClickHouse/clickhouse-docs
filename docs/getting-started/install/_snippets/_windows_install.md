@@ -88,6 +88,6 @@ file. All available configuration settings are documented [here](/operations/ser
 [example configuration file
 template](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml).
 
-You are now ready to start sending SQL commands to ClickHouse!
+You're now ready to start sending SQL commands to ClickHouse!
 
 </VerticalStepper>

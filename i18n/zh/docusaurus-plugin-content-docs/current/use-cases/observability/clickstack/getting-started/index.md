@@ -11,5 +11,5 @@ keywords: ['ClickStack', 'Managed ClickStack', 'getting started', 'Docker deploy
 
 ClickStack 可以根据运维偏好和需求采用多种方式进行部署：
 
-- [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed) - 在 **ClickHouse Cloud** 上部署 **Managed ClickStack**，这是入门的**最简单方式**。
-- [Open-Source ClickStack](/use-cases/observability/clickstack/getting-started/oss) - 适用于希望自行运行完全开源架构的用户。
+* [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed) - 在 **ClickHouse Cloud** 上部署 **Managed ClickStack**，这是入门的**最简单方式**。
+* [Open-Source ClickStack](/use-cases/observability/clickstack/getting-started/oss) - 适用于希望自行运行完全开源架构的用户。

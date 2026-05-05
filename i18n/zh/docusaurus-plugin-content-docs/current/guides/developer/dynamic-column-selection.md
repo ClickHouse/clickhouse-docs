@@ -25,7 +25,7 @@ LIMIT 10;
 
 > [在 SQL playground 中试试这个查询](https://sql.clickhouse.com?query=U0VMRUNUIENPTFVNTlMoJy4qX2Ftb3VudCcpCkZST00gbnljX3RheGkudHJpcHMKTElNSVQgMTA7\&run_query=true)
 
-此查询返回前 10 行，但只包含列名匹配模式 `.*_amount`（任意字符后接 `_amount`）的列。
+此查询返回前 10 行，但只包含列名匹配模式 `.*_amount` (任意字符后接 `_amount`) 的列。
 
 ```text
     ┌─fare_amount─┬─tip_amount─┬─tolls_amount─┬─total_amount─┐

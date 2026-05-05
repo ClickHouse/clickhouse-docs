@@ -114,7 +114,7 @@ The SQL console can convert your sorts and filters directly into queries with on
 <Image img={create_a_query_from_sorts_and_filters} size="md" alt='Create a query from sorts and filters' />
 
 :::note
-Filters and sorts are not mandatory when using the 'Create Query' feature.
+Filters and sorts aren't mandatory when using the 'Create Query' feature.
 :::
 
 You can learn more about querying in the SQL console by reading the (link) query documentation.
@@ -132,15 +132,15 @@ There are two ways to create a new query in the SQL console.
 
 ### Running a query {#running-a-query}
 
-To run a query, type your SQL command(s) into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
+To run a query, type your SQL command or commands into the SQL Editor and click the 'Run' button or use the shortcut `cmd / ctrl + enter`. To write and run multiple commands sequentially, make sure to add a semicolon after each command.
 
 Query Execution Options
 By default, clicking the run button will run all commands contained in the SQL Editor. The SQL console supports two other query execution options:
 
-- Run selected command(s)
+- Run selected commands
 - Run command at the cursor
 
-To run selected command(s), highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
+To run selected commands, highlight the desired command or sequence of commands and click the 'Run' button (or use the `cmd / ctrl + enter` shortcut). You can also select 'Run selected' from the SQL Editor context menu (opened by right-clicking anywhere within the editor) when a selection is present.
 
 <Image img={run_selected_query} size="md" alt='run selected query' />
 
@@ -227,7 +227,7 @@ After a query is executed, you can quickly search through the returned result se
 
 <Image img={search_hn} size="md" alt='Search Hacker News Data' />
 
-Note: Any field matching the inputted value will be returned. For example, the third record in the above screenshot does not match 'breakfast' in the `by` field, but the `text` field does:
+Note: Any field matching the inputted value will be returned. For example, the third record in the above screenshot doesn't match 'breakfast' in the `by` field, but the `text` field does:
 
 <Image img={match_in_body} size="md" alt='Match in body' />
 
@@ -303,6 +303,6 @@ Our chart will be updated accordingly:
 
 <Image img={update_subtitle_etc} size="md" alt='Update subtitle etc.' />
 
-In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can also be accomplished in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but in order to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
+In some scenarios, it may be necessary to adjust the axis scales for each field independently. This can be done in the 'Advanced' section of the chart configuration pane by specifying min and max values for an axis range. As an example, the above chart looks good, but to demonstrate the correlation between our `trip_total` and `fare_total` fields, the axis ranges need some adjustment:
 
 <Image img={adjust_axis_scale} size="md" alt='Adjust axis scale' />

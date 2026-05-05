@@ -204,6 +204,7 @@ GRANT SELECT(foo) ON db.table* TO john -- wrong
         * `ALTER MODIFY STATISTICS`
       * `ALTER TTL`
       * `ALTER UPDATE`
+      * `ALTER TABLE EXECUTE`
     * `ALTER VIEW`
       * `ALTER VIEW MODIFY QUERY`
       * `ALTER VIEW REFRESH`
@@ -417,39 +418,40 @@ GRANT INSERT(x,y) ON db.table TO john
 
 - `ALTER`. Уровень: `COLUMN`.
   - `ALTER TABLE`. Уровень: `GROUP`
-  - `ALTER UPDATE`. Уровень: `COLUMN`. Синонимы: `UPDATE`
-  - `ALTER DELETE`. Уровень: `COLUMN`. Синонимы: `DELETE`
+  - `ALTER UPDATE`. Уровень: `COLUMN`. Псевдоним: `UPDATE`
+  - `ALTER DELETE`. Уровень: `COLUMN`. Псевдоним: `DELETE`
   - `ALTER COLUMN`. Уровень: `GROUP`
-  - `ALTER ADD COLUMN`. Уровень: `COLUMN`. Синонимы: `ADD COLUMN`
-  - `ALTER DROP COLUMN`. Уровень: `COLUMN`. Синонимы: `DROP COLUMN`
-  - `ALTER MODIFY COLUMN`. Уровень: `COLUMN`. Синонимы: `MODIFY COLUMN`
-  - `ALTER COMMENT COLUMN`. Уровень: `COLUMN`. Синонимы: `COMMENT COLUMN`
-  - `ALTER CLEAR COLUMN`. Уровень: `COLUMN`. Синонимы: `CLEAR COLUMN`
-  - `ALTER RENAME COLUMN`. Уровень: `COLUMN`. Синонимы: `RENAME COLUMN`
-  - `ALTER INDEX`. Уровень: `GROUP`. Синонимы: `INDEX`
-  - `ALTER ORDER BY`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY ORDER BY`, `MODIFY ORDER BY`
-  - `ALTER SAMPLE BY`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY SAMPLE BY`, `MODIFY SAMPLE BY`
-  - `ALTER ADD INDEX`. Уровень: `TABLE`. Синонимы: `ADD INDEX`
-  - `ALTER DROP INDEX`. Уровень: `TABLE`. Синонимы: `DROP INDEX`
-  - `ALTER MATERIALIZE INDEX`. Уровень: `TABLE`. Синонимы: `MATERIALIZE INDEX`
-  - `ALTER CLEAR INDEX`. Уровень: `TABLE`. Синонимы: `CLEAR INDEX`
-  - `ALTER CONSTRAINT`. Уровень: `GROUP`. Синонимы: `CONSTRAINT`
-  - `ALTER ADD CONSTRAINT`. Уровень: `TABLE`. Синонимы: `ADD CONSTRAINT`
-  - `ALTER DROP CONSTRAINT`. Уровень: `TABLE`. Синонимы: `DROP CONSTRAINT`
-  - `ALTER TTL`. Уровень: `TABLE`. Синонимы: `ALTER MODIFY TTL`, `MODIFY TTL`
-  - `ALTER MATERIALIZE TTL`. Уровень: `TABLE`. Синонимы: `MATERIALIZE TTL`
-  - `ALTER SETTINGS`. Уровень: `TABLE`. Синонимы: `ALTER SETTING`, `ALTER MODIFY SETTING`, `MODIFY SETTING`
-  - `ALTER MOVE PARTITION`. Уровень: `TABLE`. Синонимы: `ALTER MOVE PART`, `MOVE PARTITION`, `MOVE PART`
-  - `ALTER FETCH PARTITION`. Уровень: `TABLE`. Синонимы: `ALTER FETCH PART`, `FETCH PARTITION`, `FETCH PART`
-  - `ALTER FREEZE PARTITION`. Уровень: `TABLE`. Синонимы: `FREEZE PARTITION`
+  - `ALTER ADD COLUMN`. Уровень: `COLUMN`. Псевдоним: `ADD COLUMN`
+  - `ALTER DROP COLUMN`. Уровень: `COLUMN`. Псевдоним: `DROP COLUMN`
+  - `ALTER MODIFY COLUMN`. Уровень: `COLUMN`. Псевдоним: `MODIFY COLUMN`
+  - `ALTER COMMENT COLUMN`. Уровень: `COLUMN`. Псевдоним: `COMMENT COLUMN`
+  - `ALTER CLEAR COLUMN`. Уровень: `COLUMN`. Псевдоним: `CLEAR COLUMN`
+  - `ALTER RENAME COLUMN`. Уровень: `COLUMN`. Псевдоним: `RENAME COLUMN`
+  - `ALTER INDEX`. Уровень: `GROUP`. Псевдоним: `INDEX`
+  - `ALTER ORDER BY`. Уровень: `TABLE`. Псевдоним: `ALTER MODIFY ORDER BY`, `MODIFY ORDER BY`
+  - `ALTER SAMPLE BY`. Уровень: `TABLE`. Псевдоним: `ALTER MODIFY SAMPLE BY`, `MODIFY SAMPLE BY`
+  - `ALTER ADD INDEX`. Уровень: `TABLE`. Псевдоним: `ADD INDEX`
+  - `ALTER DROP INDEX`. Уровень: `TABLE`. Псевдоним: `DROP INDEX`
+  - `ALTER MATERIALIZE INDEX`. Уровень: `TABLE`. Псевдоним: `MATERIALIZE INDEX`
+  - `ALTER CLEAR INDEX`. Уровень: `TABLE`. Псевдоним: `CLEAR INDEX`
+  - `ALTER CONSTRAINT`. Уровень: `GROUP`. Псевдоним: `CONSTRAINT`
+  - `ALTER ADD CONSTRAINT`. Уровень: `TABLE`. Псевдоним: `ADD CONSTRAINT`
+  - `ALTER DROP CONSTRAINT`. Уровень: `TABLE`. Псевдоним: `DROP CONSTRAINT`
+  - `ALTER TTL`. Уровень: `TABLE`. Псевдоним: `ALTER MODIFY TTL`, `MODIFY TTL`
+  - `ALTER MATERIALIZE TTL`. Уровень: `TABLE`. Псевдоним: `MATERIALIZE TTL`
+  - `ALTER SETTINGS`. Уровень: `TABLE`. Псевдоним: `ALTER SETTING`, `ALTER MODIFY SETTING`, `MODIFY SETTING`
+  - `ALTER MOVE PARTITION`. Уровень: `TABLE`. Псевдоним: `ALTER MOVE PART`, `MOVE PARTITION`, `MOVE PART`
+  - `ALTER FETCH PARTITION`. Уровень: `TABLE`. Псевдоним: `ALTER FETCH PART`, `FETCH PARTITION`, `FETCH PART`
+  - `ALTER FREEZE PARTITION`. Уровень: `TABLE`. Псевдоним: `FREEZE PARTITION`
+  - `ALTER EXECUTE`. Уровень: `TABLE`. Псевдоним: `ALTER TABLE EXECUTE`
   - `ALTER VIEW`. Уровень: `GROUP`
-  - `ALTER VIEW REFRESH`. Уровень: `VIEW`. Синонимы: `REFRESH VIEW`
-  - `ALTER VIEW MODIFY QUERY`. Уровень: `VIEW`. Синонимы: `ALTER TABLE MODIFY QUERY`
-  - `ALTER VIEW MODIFY SQL SECURITY`. Уровень: `VIEW`. Синонимы: `ALTER TABLE MODIFY SQL SECURITY`
+  - `ALTER VIEW REFRESH`. Уровень: `VIEW`. Псевдоним: `REFRESH VIEW`
+  - `ALTER VIEW MODIFY QUERY`. Уровень: `VIEW`. Псевдоним: `ALTER TABLE MODIFY QUERY`
+  - `ALTER VIEW MODIFY SQL SECURITY`. Уровень: `VIEW`. Псевдоним: `ALTER TABLE MODIFY SQL SECURITY`
 
-Примеры трактовки этой иерархии:
+Примеры того, как трактуется эта иерархия:
 
-- Привилегия `ALTER` включает в себя все остальные привилегии `ALTER*`.
+- Привилегия `ALTER` включает все остальные привилегии `ALTER*`.
 - `ALTER CONSTRAINT` включает привилегии `ALTER ADD CONSTRAINT` и `ALTER DROP CONSTRAINT`.
 
 **Примечания**
@@ -457,7 +459,7 @@ GRANT INSERT(x,y) ON db.table TO john
 - Привилегия `MODIFY SETTING` позволяет изменять настройки движка таблицы. Она не влияет на настройки или параметры конфигурации сервера.
 - Операция `ATTACH` требует привилегии [CREATE](#create).
 - Операция `DETACH` требует привилегии [DROP](#drop).
-- Чтобы остановить мутацию запросом [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation), необходимо иметь привилегию для запуска этой мутации. Например, если вы хотите остановить запрос `ALTER UPDATE`, вам необходима привилегия `ALTER UPDATE`, `ALTER TABLE` или `ALTER`.
+- Чтобы остановить мутацию с помощью запроса [KILL MUTATION](../../sql-reference/statements/kill.md#kill-mutation), необходимо иметь привилегию на запуск этой мутации. Например, если вы хотите остановить запрос `ALTER UPDATE`, вам нужна привилегия `ALTER UPDATE`, `ALTER TABLE` или `ALTER`.
 
 ### BACKUP \{#backup\}
 

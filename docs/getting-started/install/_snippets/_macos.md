@@ -2,15 +2,20 @@ import Image from "@theme/IdealImage";
 import dev_error from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/dev-verification-error.png";
 import privacy_default from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-default-view.png";
 import privacy_allow from "@site/static/images/knowledgebase/fix-the-developer-verification-error-in-macos/privacy-and-security-screen-allow-anyway.png";
+import Recommendations from '@site/docs/getting-started/install/_snippets/recommendations.md';
 
 # Install ClickHouse using Homebrew
 
 :::warning
 Installation using the Homebrew Formulae has now been deprecated and will be disabled on 2026-09-01.
-We recommend using the [quick install](/install/quick-install-curl) method which works on any platform instead.
+We recommend using the [quick install](/install/quick-install) method which works on any platform instead.
 :::
 
 <VerticalStepper>
+
+## Review recommendations {#review-recommendations}
+
+<Recommendations />
 
 ## Install using the community Homebrew formula {#install-using-community-homebrew-formula}
 
@@ -24,7 +29,7 @@ brew install --cask clickhouse
 ## Fix the developer verification error in macOS {#fix-developer-verification-error-macos}
 
 If you install ClickHouse using `brew`, you may encounter an error from MacOS.
-By default, MacOS will not run applications or tools created by a developer who cannot be verified.
+By default, MacOS won't run applications or tools created by a developer who can't be verified.
 
 When attempting to run any `clickhouse` command, you may see this error:
 
@@ -41,7 +46,7 @@ The easiest way to remove the `clickhouse` executable from the quarantine bin is
 
     <Image img={privacy_default} size="md" alt="MacOS Privacy & Security settings default view" border />
 
-1. Scroll to the bottom of the window to find a message saying _"clickhouse-macos-aarch64" was blocked from use because it is not from an identified developer".
+1. Scroll to the bottom of the window to find a message saying _"clickhouse-macos-aarch64" was blocked from use because it isn't from an identified developer".
 1. Click **Allow Anyway**.
 
     <Image img={privacy_allow} size="md" alt="MacOS Privacy & Security settings showing Allow Anyway button" border />
@@ -52,7 +57,7 @@ You should now be able to run `clickhouse` commands in your terminal.
 
 ### Terminal process {#terminal-process}
 
-Sometimes pressing the `Allow Anyway` button doesn't doesn't fix this issue, in which case you can also perform this process using the command-line.
+Sometimes pressing the `Allow Anyway` button doesn't fix this issue, in which case you can also perform this process using the command-line.
 Or you might just prefer using the command line!
 
 First find out where Homebrew installed the `clickhouse` executable:

@@ -9,10 +9,10 @@ doc_type: 'reference'
 
 ## groupBitmapXor \{#groupBitmapXor\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
-ビットマップカラムの XOR を計算し、その結果の基数（cardinality）を返します。
-サフィックスコンビネーター [`-State`](/sql-reference/aggregate-functions/combinators#-state) が追加された場合は、ビットマップオブジェクトを返します。
+ビットマップカラムの XOR を計算し、その結果の基数 (cardinality) を返します。
+サフィックスコンビネータ [`-State`](/sql-reference/aggregate-functions/combinators#-state) が追加された場合は、ビットマップオブジェクトを返します。
 
 **構文**
 

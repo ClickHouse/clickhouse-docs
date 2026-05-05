@@ -2,7 +2,7 @@
 description: 'Более 150 млн отзывов покупателей о товарах Amazon'
 sidebar_label: 'Отзывы покупателей Amazon'
 slug: /getting-started/example-datasets/amazon-reviews
-title: 'Отзывы покупателей Amazon'
+title: 'Отзыв покупателя Amazon'
 doc_type: 'guide'
 keywords: ['отзывы Amazon', 'датасет с отзывами покупателей', 'данные электронной коммерции', 'пример датасета', 'начало работы']
 ---
@@ -150,6 +150,7 @@ ORDER BY size DESC
 ```
 
 Объём исходных данных составлял около 70 ГБ, но после сжатия в ClickHouse они занимают около 30 ГБ.
+
 
 ## Примеры запросов \{#example-queries\}
 

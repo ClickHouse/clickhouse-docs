@@ -25,6 +25,8 @@ import Image from '@theme/IdealImage';
 
 You can use ClickPipes to ingest data from your source Postgres database into ClickHouse Cloud. The source Postgres database can be hosted on-premises or in the cloud including Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase and others.
 
+Postgres ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).
+
 ## Prerequisites {#prerequisites}
 
 To get started, you first need to make sure that your Postgres database is set up correctly. Depending on your source Postgres instance, you may follow any of the following guides:
@@ -43,13 +45,13 @@ To get started, you first need to make sure that your Postgres database is set u
 
 7. [Crunchy Bridge Postgres](./postgres/source/crunchy-postgres)
 
-8. [Generic Postgres Source](./postgres/source/generic), if you are using any other Postgres provider or using a self-hosted instance.
+8. [Generic Postgres Source](./postgres/source/generic), if you're using any other Postgres provider or using a self-hosted instance.
 
-9. [TimescaleDB](./postgres/source/timescale), if you are using the TimescaleDB extension on a managed service or self-hosted instance.
+9. [TimescaleDB](./postgres/source/timescale), if you're using the TimescaleDB extension on a managed service or self-hosted instance.
 
 :::warning
 
-Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., are not supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
+Postgres Proxies like PgBouncer, RDS Proxy, Supabase Pooler, etc., aren't supported for CDC based replication. Please make sure to NOT use them for the ClickPipes setup and instead add connection details of the actual Postgres database.
 
 :::
 
@@ -57,7 +59,7 @@ Once your source Postgres database is set up, you can continue creating your Cli
 
 ## Creating your ClickPipe {#creating-your-clickpipe}
 
-Make sure you are logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
+Make sure you're logged in to your ClickHouse Cloud account. If you don't have an account yet, you can sign up [here](https://cloud.clickhouse.com/).
 
 [//]: # (   TODO update image here)
 1. In the ClickHouse Cloud console, navigate to your ClickHouse Cloud Service.
@@ -93,7 +95,7 @@ You can follow the [setup guide to set up the connection](/integrations/clickpip
 
 #### (Optional) Setting up SSH tunneling {#optional-setting-up-ssh-tunneling}
 
-You can specify SSH tunneling details if your source Postgres database is not publicly accessible.
+You can specify SSH tunneling details if your source Postgres database isn't publicly accessible.
 
 1. Enable the "Use SSH Tunnelling" toggle.
 2. Fill in the SSH connection details.
@@ -136,7 +138,7 @@ You can configure the Advanced settings if needed. A brief description of each s
 7. You can select the tables you want to replicate from the source Postgres database. While selecting the tables, you can also choose to rename the tables in the destination ClickHouse database as well as exclude specific columns.
 
    :::warning
-   If you are defining an ordering key in ClickHouse differently than from the primary key in Postgres, don't forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it
+   If you're defining an ordering key in ClickHouse differently than from the primary key in Postgres, don't forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it
    :::
 
 ### Review permissions and start the ClickPipe {#review-permissions-and-start-the-clickpipe}

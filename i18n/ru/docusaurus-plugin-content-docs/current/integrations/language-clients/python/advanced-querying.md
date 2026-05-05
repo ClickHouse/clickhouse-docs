@@ -2,7 +2,7 @@
 sidebar_label: 'Расширенные запросы'
 sidebar_position: 4
 keywords: ['clickhouse', 'python', 'query', 'advanced']
-description: 'Расширенные запросы с ClickHouse Connect'
+description: 'Расширенные запросы с помощью ClickHouse Connect'
 slug: /integrations/language-clients/python/advanced-querying
 title: 'Расширенные запросы'
 doc_type: 'reference'
@@ -30,6 +30,7 @@ assert result.result_set[1][0] == 'first_value2'
 ```
 
 Обратите внимание, что экземпляры `QueryContext` не являются потокобезопасными, однако в многопоточной среде можно получить их копию, вызвав метод `QueryContext.updated_copy`.
+
 
 ## Потоковые запросы \{#streaming-queries\}
 
@@ -388,6 +389,7 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
 # Return IPv6 values in the `dev_address` column as strings
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
+
 
 ### Параметры формата чтения (типы Python) \{#read-format-options-python-types\}
 

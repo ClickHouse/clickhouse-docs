@@ -716,7 +716,7 @@ S3 ディスクを使用したレプリケーションは、`ReplicatedMergeTree
 vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
 
-2. ストレージ設定として以下を追加し、先ほどの手順で取得したバケットパス、アクセスキー、シークレットキーに置き換えてください
+2. ストレージ設定として以下を追加し、先ほどの手順で取得したバケットパス、アクセスキー、シークレットキーに置き換えてください。
 
 ```xml
 <clickhouse>
@@ -750,8 +750,8 @@ vim /etc/clickhouse-server/config.d/storage_config.xml
 ```
 
 :::note
-`<disks>` タグ内の `s3_disk` および `s3_cache` は任意のラベルです。これらは別の名前に設定できますが、そのディスクを参照するために、同じラベルを `<policies>` タグ配下の `<disk>` タグでも使用する必要があります。
-`<S3_main>` タグも任意であり、ClickHouse 内でリソースを作成する際に、ストレージターゲットを識別するために使用されるポリシー名です。
+`&lt;disks&gt;` タグ内の `s3_disk` および `s3_cache` は任意のラベルです。これらは別の名前に設定できますが、そのディスクを参照するために、同じラベルを `&lt;policies&gt;` タグ配下の `&lt;disk&gt;` タグでも使用する必要があります。
+`&lt;S3_main&gt;` タグも任意であり、ClickHouse 内でリソースを作成する際に、ストレージターゲットを識別するために使用されるポリシー名です。
 
 上記の設定は ClickHouse バージョン 22.8 以降向けです。以前のバージョンを使用している場合は、[storing data](/operations/storing-data.md/#using-local-cache) ドキュメントを参照してください。
 

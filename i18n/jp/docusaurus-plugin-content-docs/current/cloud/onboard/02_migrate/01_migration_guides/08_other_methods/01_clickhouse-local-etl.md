@@ -84,7 +84,7 @@ Mac で `clickhouse-local` を実行するには、`./clickhouse local` を使�
 
 <AddARemoteSystem />
 
-## 例 1: Integration エンジンを使用して MySQL から ClickHouse Cloud へ移行する \{#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine\}
+## 例: Integration エンジンを使用して MySQL から ClickHouse Cloud へ移行する \{#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine\}
 
 ソースの MySQL データベースからデータを読み取るために、[integration table engine](/engines/table-engines/integrations/mysql/)（[mysql table function](/sql-reference/table-functions/mysql/) によってその場で作成されます）を使用し、[remoteSecure table function](/sql-reference/table-functions/remote/) を使用して、宛先である ClickHouse Cloud 上のテーブルにデータを書き込みます。
 
@@ -122,17 +122,3 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 :::note
 `clickhouse-local` ホストマシン上にデータがローカル保存されることはありません。代わりに、データはソースの MySQL テーブルから読み込まれ、そのまま ClickHouse Cloud サービス上の宛先テーブルに書き込まれます。
 :::
-
-## 例 2: JDBC ブリッジを使用して MySQL から ClickHouse Cloud へ移行する \{#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge\}
-
-ソースの MySQL データベースからデータを読み取るために、[jdbc table function](/sql-reference/table-functions/jdbc.md) によってオンデマンドで作成される [JDBC integration table engine](/engines/table-engines/integrations/jdbc.md) を、[ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) と MySQL JDBC ドライバーと組み合わせて使用します。データを書き込む際には、[remoteSecure table function](/sql-reference/table-functions/remote.md) を使用して、宛先となる ClickHouse Cloud サービス上のテーブルにデータを書き込みます。
-
-<Image img={ch_local_04} size='lg' alt="セルフマネージドな ClickHouse の移行"  />
-
-### 宛先の ClickHouse Cloud サービスで: \{#on-the-destination-clickhouse-cloud-service-1\}
-
-#### ターゲットデータベースを作成します： \{#create-the-destination-database-1\}
-
-```sql
-  CREATE DATABASE db
-```

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## sumMappedArrays \{#sumMappedArrays\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 根据 `key` 数组中指定的键，对一个或多个 `value` 数组进行求和。返回一个数组元组：其中包含按排序顺序排列的键数组，以及对应键的求和值数组，且不会发生溢出。
 

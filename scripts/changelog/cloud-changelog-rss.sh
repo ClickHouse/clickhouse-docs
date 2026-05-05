@@ -4,7 +4,7 @@
 export LC_ALL=C
 export LANG=C
 
-CHANGELOG_FILE="docs/cloud/reference/01_changelog/01_changelog.md"
+CHANGELOG_FILE="docs/cloud/reference/01_changelog/01_cloud_changelog/2026.md"
 OUTPUT_FILE="static/cloud/changelog-rss.xml"
 FEED_URL="https://clickhouse.com/docs/cloud/changelog-rss.xml"
 SITE_URL="https://clickhouse.com/docs/cloud/whats-new/cloud"
@@ -97,7 +97,6 @@ generate_rss() {
     <link>${SITE_URL}</link>
     <description>Latest updates and features in ClickHouse Cloud</description>
     <language>en-us</language>
-    <lastBuildDate>$(date -R 2>/dev/null || date "+%a, %d %b %Y %H:%M:%S %z")</lastBuildDate>
     <atom:link href="${FEED_URL}" rel="self" type="application/rss+xml" />
 ${entries}
   </channel>

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## quantileInterpolatedWeighted \{#quantileInterpolatedWeighted\}
 
-導入バージョン: v23.1
+導入バージョン: v23.1.0
 
 各要素の重みを考慮し、線形補間を用いて数値データシーケンスの[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
 補間値を得るために、渡されたすべての値を1つの配列にまとめ、対応する重みに基づいてソートします。次に、重みに基づいて累積分布を構築し、その上で重みと値を用いた線形補間を行うことにより分位数を計算する、[weighted percentile method](https://en.wikipedia.org/wiki/Percentile#The_weighted_percentile_method) による分位数補間が実行されます。
 
-1つのクエリ内で、異なるレベルを指定した複数の `quantile*` 関数を使用する場合、それぞれの内部状態は共有・統合されません（そのため、そのクエリは本来可能なほど効率的には動作しません）。この場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
+1つのクエリ内で、異なるレベルを指定した複数の `quantile*` 関数を使用する場合、それぞれの内部状態は共有・統合されません (そのため、そのクエリは本来可能なほど効率的には動作しません) 。この場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
 
 **構文**
 

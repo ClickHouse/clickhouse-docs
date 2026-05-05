@@ -72,8 +72,8 @@ import Image from '@theme/IdealImage';
   Resource gateway — это точка, которая принимает трафик для указанных ресурсов в вашей VPC.
 
   :::note
-  Рекомендуется, чтобы подсети, к которым подключён ваш resource gateway, имели достаточно доступных IP-адресов.
-  Желательно использовать маску подсети не менее `/26` для каждой подсети.
+  Рекомендуется, чтобы подсети, к которым подключён ваш шлюз ресурсов, имели достаточно доступных IP-адресов.
+  Рекомендуется использовать маску подсети не менее `/26` для каждой подсети.
 
   Для каждого VPC endpoint (каждого Reverse Private Endpoint) AWS требует последовательный блок из 16 IP-адресов на подсеть (маска подсети `/28`).
   Если это требование не выполняется, Reverse Private Endpoint перейдёт в состояние ошибки.
@@ -98,7 +98,7 @@ import Image from '@theme/IdealImage';
       --resource-gateway-identifier <RESOURCE_GATEWAY_ID>
   ```
 
-  #### Создайте VPC Resource-Configuration
+  #### Создайте ресурс конфигурации VPC
 
   Resource-Configuration ассоциируется с resource gateway, чтобы сделать ваш ресурс доступным.
 
@@ -132,7 +132,7 @@ import Image from '@theme/IdealImage';
   Дополнительные сведения см. в [документации AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
   :::
 
-  Результат выполнения команды будет содержать ARN Resource-Configuration, который понадобится вам на следующем шаге. Он также будет содержать идентификатор Resource-Configuration, который потребуется для настройки подключения ClickPipe к ресурсу VPC.
+  Результат будет содержать ARN конфигурации ресурса (Resource-Configuration), который понадобится вам на следующем шаге. Также он будет содержать идентификатор конфигурации ресурса (Resource-Configuration ID), необходимый для настройки подключения ClickPipe к ресурсу VPC.
 
   #### Создайте Resource-Share
 
@@ -159,9 +159,9 @@ import Image from '@theme/IdealImage';
 
   Теперь вы готовы [создать ClickPipe с Reverse private endpoint](#creating-clickpipe), используя ресурс VPC. Вам нужно:
 
-  * Установите `VPC endpoint type` в значение `VPC Resource`.
+  * Установите для `VPC endpoint type` значение `VPC Resource`.
   * Установить `Resource configuration ID` в идентификатор Resource-Configuration, созданной на шаге 2.
-  * Установить `Resource share ARN` в ARN Resource-Share, созданного на шаге 3.
+  * Установите `Resource share ARN` в ARN Resource-Share, созданного на шаге 3.
 
   Для получения дополнительной информации о PrivateLink с ресурсом VPC см. [документацию AWS](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html).
 </VerticalStepper>

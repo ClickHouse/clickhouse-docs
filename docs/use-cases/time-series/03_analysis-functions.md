@@ -1,5 +1,5 @@
 ---
-title: 'Analysis functions - Time-series'
+title: 'Analysis functions - time-series'
 sidebar_label: 'Analysis functions'
 description: 'Functions for analyzing time-series data in ClickHouse.'
 slug: /use-cases/time-series/analysis-functions

@@ -1,25 +1,24 @@
 ---
-sidebar_label: 'Обзор'
-description: 'Легко подключайте объектное хранилище к ClickHouse Cloud.'
+sidebar_label: "Обзор"
+description: "Легко подключайте объектное хранилище к ClickHouse Cloud."
 slug: /integrations/clickpipes/object-storage/s3/overview
 sidebar_position: 1
-title: 'Интеграция Amazon S3 с ClickHouse Cloud'
-doc_type: 'guide'
+title: "Интеграция Amazon S3 с ClickHouse Cloud"
+doc_type: "guide"
 ---
 
-import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
-import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
-import OVHpng from '@site/static/images/integrations/logos/ovh.png';
-import R2svg from '@site/static/images/integrations/logos/cloudflare.svg';
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
-import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_credentials.png';
-import Image from '@theme/IdealImage';
+import S3svg from "@site/static/images/integrations/logos/amazon_s3_logo.svg"
+import DOsvg from "@site/static/images/integrations/logos/digitalocean.svg"
+import OVHpng from "@site/static/images/integrations/logos/ovh.png"
+import R2svg from "@site/static/images/integrations/logos/cloudflare.svg"
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import cp_iam from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png"
+import cp_credentials from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_credentials.png"
+import Image from "@theme/IdealImage"
 
-S3 ClickPipe обеспечивает полностью управляемый и отказоустойчивый способ ингестии данных из Amazon S3 и S3-совместимых объектных хранилищ в ClickHouse Cloud. Поддерживаются режимы **однократной** и **непрерывной ингестии** с гарантиями exactly-once.
+S3 ClickPipe обеспечивает полностью управляемый и отказоустойчивый способ ингестии данных из Amazon S3 и S3-совместимых объектных хранилищ в ClickHouse Cloud. Поддерживаются режимы **однократной** и **непрерывной ингестии** с семантикой «ровно один раз».
 
-S3 ClickPipes можно разворачивать и управлять ими вручную через ClickPipes UI, а также программно с использованием [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) и [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe).
-
+S3 ClickPipes можно разворачивать и управлять ими вручную через ClickPipes UI, а также программно с использованием [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Поддерживаемые источники данных \{#supported-data-sources\}
 
@@ -60,11 +59,15 @@ S3 ClickPipes можно разворачивать и управлять ими
 
 #### Любой порядок \{#continuous-ingestion-any-order\}
 
-:::note
-Режим без упорядочивания **поддерживается только** для Amazon S3 и **не** поддерживается для публичных бакетов. Для него требуется настроить очередь [Amazon SQS](https://aws.amazon.com/sqs/), подключённую к бакету.
+:::tip
+См. [Настройка режима без упорядочивания для непрерывной ингестии](/integrations/clickpipes/object-storage/s3/unordered-mode) для пошаговых инструкций.
 :::
 
-Можно настроить S3 ClickPipe для приёма файлов, не имеющих неявного порядка, настроив очередь [Amazon SQS](https://aws.amazon.com/sqs/), подключённую к бакету. Это позволяет ClickPipes прослушивать события создания объектов и выполнять ингестию любых новых файлов независимо от схемы именования.
+Можно настроить S3 ClickPipe для приёма файлов, не имеющих неявного порядка, настроив очередь [Amazon SQS](https://aws.amazon.com/sqs/), подключённую к бакету, при необходимости используя [Amazon EventBridge](https://aws.amazon.com/eventbridge/) в качестве маршрутизатора событий. Это позволяет ClickPipes прослушивать события создания объектов и выполнять ингестию любых новых файлов независимо от схемы именования.
+
+:::note
+Режим без упорядочивания **поддерживается только** для Amazon S3 и **не** поддерживается для публичных бакетов или S3-совместимых сервисов. Для него требуется настроить очередь [Amazon SQS](https://aws.amazon.com/sqs/), подключённую к бакету, при необходимости используя [Amazon EventBridge](https://aws.amazon.com/eventbridge/) в качестве маршрутизатора событий.
+:::
 
 В этом режиме S3 ClickPipe сначала выполняет начальную загрузку **всех файлов** по указанному пути, а затем прослушивает в очереди события `ObjectCreated:*`, которые соответствуют этому пути. Любое сообщение о ранее обработанном файле, о файле, не соответствующем пути, или о событии другого типа будет **игнорироваться**.
 
@@ -77,6 +80,10 @@ S3 ClickPipes можно разворачивать и управлять ими
 :::tip
 Настоятельно рекомендуем настроить **Dead-Letter-Queue (DLQ)** для очереди SQS, чтобы упростить отладку и повторную обработку неудачных сообщений.
 :::
+
+##### EventBridge в SQS \{#eb-to-sqs\}
+
+Уведомления о событиях S3 также можно отправлять в SQS через [Amazon EventBridge](https://aws.amazon.com/eventbridge/). Это рекомендуемый подход для большинства сценариев использования, поскольку EventBridge поддерживает более гибкую фильтрацию событий, доставку в несколько целевых систем и не подпадает под ограничение S3: для каждого префикса допускается только одно правило уведомлений на каждый тип события. Пошаговые инструкции см. в разделе [Настройка неупорядоченного режима для непрерывной ингестии](/integrations/clickpipes/object-storage/s3/unordered-mode).
 
 ##### SNS в SQS \{#sns-to-sqs\}
 
@@ -199,7 +206,7 @@ ClickPipes предоставляет оптимальные значения п
 
 ### Масштабирование \{#scaling\}
 
-Object Storage ClickPipes масштабируются исходя из минимального размера сервиса ClickHouse, определённого [настроенными параметрами вертикального автомасштабирования](/manage/scaling#configuring-vertical-auto-scaling). Размер ClickPipe фиксируется при создании конвейера. Последующие изменения настроек сервиса ClickHouse не повлияют на размер ClickPipe.
+ClickPipes для объектного хранилища масштабируются исходя из минимального размера сервиса ClickHouse, определённого [настроенными параметрами вертикального автомасштабирования](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling). Размер ClickPipe фиксируется при создании конвейера. Последующие изменения настроек сервиса ClickHouse не повлияют на размер ClickPipe.
 
 Чтобы увеличить пропускную способность при крупных задачах по приёму данных, рекомендуется масштабировать сервис ClickHouse перед созданием ClickPipe.
 

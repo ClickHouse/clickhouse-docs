@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## 説明 \{#description\}
 
-この形式では、1 つの JSON オブジェクトが 1 つの [JSON](/sql-reference/data-types/newjson.md) 値として解釈されます。入力に複数の JSON オブジェクト（カンマ区切り）が含まれる場合、それぞれが個別の行として解釈されます。入力データが角括弧で囲まれている場合は、JSON の配列として解釈されます。
+このフォーマットでは、1 つの JSON オブジェクトが 1 つの [JSON](/sql-reference/data-types/newjson.md) 値として解釈されます。入力に複数の JSON オブジェクト (カンマ区切り) が含まれる場合、それぞれが個別の行として解釈されます。入力データが `[]` で囲まれている場合は、JSON の配列として解釈されます。
 
-この形式をパースできるのは、[JSON](/sql-reference/data-types/newjson.md) 型のフィールドが 1 つだけのテーブルに対してのみです。残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定されている必要があります。
+このフォーマットをパースできるのは、[JSON](/sql-reference/data-types/newjson.md) 型のフィールドが 1 つだけのテーブルに対してのみです。残りのカラムは [`DEFAULT`](/sql-reference/statements/create/table.md/#default) または [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view) に設定されている必要があります。
 
 ## 使用例 \{#example-usage\}
 

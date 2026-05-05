@@ -11,5 +11,5 @@ keywords: ['ClickStack', 'Managed ClickStack', '入門', 'Docker デプロイメ
 
 ClickStack は、運用上の方針や要件に応じて、いくつかの方法でデプロイできます。
 
-- [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed) - **Managed ClickStack** を **ClickHouse Cloud** 上にデプロイする、**最も簡単でシンプルな** はじめ方です。
-- [Open-Source ClickStack](/use-cases/observability/clickstack/getting-started/oss) - 完全なオープンソースアーキテクチャを自前で運用したい場合に適しています。
+* [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed) - **Managed ClickStack** を **ClickHouse Cloud** 上にデプロイする、**最も簡単でシンプルな** はじめ方です。
+* [Open-Source ClickStack](/use-cases/observability/clickstack/getting-started/oss) - 完全なオープンソースアーキテクチャを自前で運用したい場合に適しています。

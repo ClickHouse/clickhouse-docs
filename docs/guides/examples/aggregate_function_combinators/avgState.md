@@ -36,7 +36,7 @@ ORDER BY (page_id, viewed_at);
 ```
 
 Create the aggregate table that will store average response times. Note that 
-`avg` cannot use the `SimpleAggregateFunction` type as it requires a complex 
+`avg` can't use the `SimpleAggregateFunction` type as it requires a complex 
 state (a sum and a count). We therefore use the `AggregateFunction` type:
 
 ```sql
@@ -112,7 +112,7 @@ FROM page_performance
 
 Notice that the `avg_response_time` column is of type `AggregateFunction(avg, UInt32)`
 and stores intermediate state information. Also notice that the row data for the 
-`avg_response_time` is not useful to us and we see strange text characters such 
+`avg_response_time` isn't useful to us and we see strange text characters such 
 as `�, n, F, }`. This is the terminals attempt to display binary data as text. 
 The reason for this is that `AggregateFunction` types store their state in a 
 binary format that's optimized for efficient storage and computation, not for 

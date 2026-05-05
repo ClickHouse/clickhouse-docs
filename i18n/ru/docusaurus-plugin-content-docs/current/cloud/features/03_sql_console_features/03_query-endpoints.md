@@ -30,27 +30,25 @@ import Link from '@docusaurus/Link'
 Чтобы ограничить клиентов, которые могут вызывать ваши эндпоинты Query API:
 
 <VerticalStepper headerLevel="h4">
+  #### Откройте настройки API-ключа
 
-#### Откройте настройки API-ключа \{#open-settings\}
+  1. Перейдите в ClickHouse Cloud Console → **Organization** → **API Keys**
 
-1. Перейдите в ClickHouse Cloud Console → **Organization** → **API Keys**
+  <Image img={console_api_keys} size="md" alt="API Keys" />
 
-<Image img={console_api_keys} alt="API Keys"/>
+  2. Нажмите **Edit** рядом с API-ключом, который используется для эндпоинтов Query API
 
-2. Нажмите **Edit** рядом с API-ключом, который используется для эндпоинтов Query API
+  <Image img={edit_api_key} size="md" alt="Edit" />
 
-<Image img={edit_api_key} alt="Edit"/>
+  #### Добавьте разрешённые IP-адреса
 
-#### Добавьте разрешённые IP-адреса \{#add-ips\}
+  1. В разделе **Allow access to this API Key** выберите **Specific locations**
+  2. Введите IP-адреса или CIDR-диапазоны (например, `203.0.113.1` или `203.0.113.0/24`)
+  3. При необходимости добавьте несколько записей
 
-1. В разделе **Allow access to this API Key** выберите **Specific locations**
-2. Введите IP-адреса или CIDR-диапазоны (например, `203.0.113.1` или `203.0.113.0/24`)
-3. При необходимости добавьте несколько записей
+  <Image img={specific_locations} size="md" alt="Specific locations" />
 
-<Image img={specific_locations} alt="Specific locations"/>
-
-Для создания эндпоинтов Query API требуется роль Admin Console и API-ключ с соответствующими правами.
-
+  Для создания эндпоинтов Query API требуется роль Admin Console и API-ключ с соответствующими правами.
 </VerticalStepper>
 
 :::tip Совет

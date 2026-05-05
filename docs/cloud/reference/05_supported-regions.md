@@ -1,6 +1,6 @@
 ---
 title: 'Supported cloud regions'
-sidebar_label: 'Supported Cloud regions'
+sidebar_label: 'Supported cloud regions'
 keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
 description: 'Supported regions for ClickHouse Cloud'
 slug: /cloud/reference/supported-regions
@@ -21,7 +21,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - eu-central-1 (Frankfurt)
 - eu-west-1 (Ireland)
 - eu-west-2 (London)
-- me-central-1 (UAE)
 - us-east-1 (N. Virginia)
 - us-east-2 (Ohio)
 - us-west-2 (Oregon)
@@ -39,17 +38,18 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 - asia-southeast1 (Singapore)
 - asia-northeast1 (Tokyo)
+- europe-west2 (London)
 - europe-west4 (Netherlands)
 - us-central1 (Iowa)
 - us-east1 (South Carolina)
 
 **Private Region:**
 
-- us-west1 (Oregon)
 - australia-southeast1(Sydney)
 - europe-west3 (Frankfurt)
 - europe-west6 (Zurich)
 - northamerica-northeast1 (Montréal)
+- us-west1 (Oregon)
 
 ## Azure regions {#azure-regions}
 
@@ -73,9 +73,9 @@ Need to deploy to a region not currently listed? [Submit a request](https://clic
 We offer Private regions for our Enterprise tier services. Please [Contact us](https://clickhouse.com/company/contact) for private region requests.
 
 Key considerations for private regions:
-- Services will not auto-scale; however, manual vertical and horizontal scaling is supported.
-- Services cannot be idled.
-- Status page is not available for private regions.
+- Services won't auto-scale; however, manual vertical and horizontal scaling is supported.
+- Services can't be idled.
+- Status page isn't available for private regions.
   
 Additional requirements may apply for HIPAA compliance (including signing a BAA). Note that HIPAA is currently available only for Enterprise tier services
 

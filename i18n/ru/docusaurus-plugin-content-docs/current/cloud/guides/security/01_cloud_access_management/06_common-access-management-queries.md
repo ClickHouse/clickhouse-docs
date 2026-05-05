@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
+
 # Распространённые вопросы по управлению доступом \{#common-access-management-queries\}
 
 :::tip Самостоятельное развертывание
@@ -21,7 +22,7 @@ import CommonUserRolesContent from '@site/i18n/ru/docusaurus-plugin-content-docs
 
 В сервисах ClickHouse Cloud есть пользователь-администратор `default`, который создаётся при создании сервиса. Пароль задаётся при создании сервиса, и его могут сбросить пользователи ClickHouse Cloud с ролью **Admin**.
 
-Когда вы добавляете дополнительных SQL‑пользователей для своего сервиса ClickHouse Cloud, им понадобятся имя SQL‑пользователя и пароль. Если вы хотите предоставить им привилегии уровня администратора, назначьте новому пользователю (пользователям) роль `default_role`. Например, добавление пользователя `clickhouse_admin`:
+Когда вы добавляете дополнительных SQL‑пользователей для своего сервиса ClickHouse Cloud, им понадобятся имя SQL‑пользователя и пароль. Если вы хотите предоставить им привилегии уровня администратора, назначьте новым пользователям роль `default_role`. Например, добавление пользователя `clickhouse_admin`:
 
 ```sql
 CREATE USER IF NOT EXISTS clickhouse_admin
@@ -37,6 +38,7 @@ GRANT default_role TO clickhouse_admin;
 
 Эти автоматически создаваемые пользователи SQL Console имеют роль `default`.
 :::
+
 
 ## Аутентификация без пароля \{#passwordless-authentication\}
 

@@ -16,18 +16,11 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
+
 # 使用 ClickStack 监控 Redis 指标 \{#redis-metrics-clickstack\}
 
 :::note[TL;DR]
-本指南演示如何通过配置 OpenTelemetry collector 的 Redis receiver，使用 ClickStack 监控 Redis 性能指标。你将学会如何：
-
-- 配置 OTel collector 来采集 Redis 指标
-- 使用自定义配置部署 ClickStack
-- 使用预置仪表板可视化 Redis 性能（commands/sec、内存使用、已连接客户端、缓存性能）
-
-如果你希望在为生产环境 Redis 配置集成之前进行测试，可以使用提供的包含示例指标的演示数据集。
-
-预计耗时：5–10 分钟
+使用 OTel Redis receiver 在 ClickStack 中监控 Redis 性能指标。包含演示数据集和预置仪表板。
 :::
 
 ## 集成现有 Redis \{#existing-redis\}
@@ -417,8 +410,10 @@ docker exec <clickstack-container> telnet redis 6379
 
 ## 后续步骤 {#next-steps}
 
-如果想进一步探索，可以通过以下方式继续改进和试验监控配置：
-
 - 为关键指标（内存使用阈值、连接数上限、缓存命中率下降）设置[告警](/use-cases/observability/clickstack/alerts)
-- 为特定用例（复制延迟、持久化性能）创建额外的仪表盘
+- 为特定用例（复制延迟、持久化性能）创建额外的仪表板
 - 通过复制 receiver 配置并使用不同的端点和服务名称，监控多个 Redis 实例
+
+## 生产环境部署 \{#troubleshooting\}
+
+本指南使用 ClickStack 内置的 OpenTelemetry Collector 进行快速设置。对于生产环境部署，我们建议运行您自己的 OTel Collector，并将数据发送到 ClickStack 的 OTLP 端点。有关生产环境配置，请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

@@ -93,34 +93,37 @@ schemas.enable=false
 
 完整的配置选项表如下:
 
-| Property Name                                   | Description                                                                                                                                                                                                                        | Default Value                                            |
-|-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| `hostname` (Required)                           | 服务器的主机名或 IP 地址                                                                                                                                                                                                           | N/A                                                      |
-| `port`                                          | ClickHouse 端口——云环境中 HTTPS 的默认端口为 8443,自托管环境中默认使用 HTTP 时应使用 8123                                                                                                                                        | `8443`                                                   |
-| `ssl`                                           | 启用到 ClickHouse 的 SSL 连接                                                                                                                                                                                                      | `true`                                                   |
-| `jdbcConnectionProperties`                      | 连接 ClickHouse 时使用的连接属性。必须以 `?` 开头,`param=value` 之间使用 `&` 连接                                                                                                                                                | `""`                                                     |
-| `username`                                      | ClickHouse 数据库用户名                                                                                                                                                                                                            | `default`                                                |
-| `password` (Required)                           | ClickHouse 数据库密码                                                                                                                                                                                                              | N/A                                                      |
-| `database`                                      | ClickHouse 数据库名称                                                                                                                                                                                                              | `default`                                                |
-| `connector.class` (Required)                    | Connector 类(显式设置并保持为默认值)                                                                                                                                                                                             | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
-| `tasks.max`                                     | Connector 任务数量                                                                                                                                                                                                                 | `"1"`                                                    |
-| `errors.retry.timeout`                          | ClickHouse JDBC 重试超时时间(秒)                                                                                                                                                                                                 | `"60"`                                                   |
-| `exactlyOnce`                                   | 是否启用 Exactly Once                                                                                                                                                                                                              | `"false"`                                                |
-| `topics` (Required)                             | 要轮询的 Kafka 主题——主题名称必须与表名一致                                                                                                                                                                                       | `""`                                                     |
-| `key.converter` (Required* - See Description)   | 根据 key 的类型进行设置。如果需要传递 key(且未在 worker 配置中定义),则此项为必填。                                                                                                                                             | `"org.apache.kafka.connect.storage.StringConverter"`     |
-| `value.converter` (Required* - See Description) | 根据主题中的数据类型进行设置。支持:JSON、String、Avro 或 Protobuf 格式。如果未在 worker 配置中定义,则此项为必填。                                                                                                               | `"org.apache.kafka.connect.json.JsonConverter"`          |
-| `value.converter.schemas.enable`                | Connector Value Converter 的 Schema 支持开关                                                                                                                                                                                      | `"false"`                                                |
-| `errors.tolerance`                              | Connector 错误容忍度。支持:none、all                                                                                                                                                                                              | `"none"`                                                 |
-| `errors.deadletterqueue.topic.name`             | 如果设置了该项(且 errors.tolerance=all),将对失败的批次使用 DLQ(参见 [Troubleshooting](#troubleshooting))                                                                                                                     | `""`                                                     |
-| `errors.deadletterqueue.context.headers.enable` | 为 DLQ 添加额外的 header                                                                                                                                                                                                           | `""`                                                     |
-| `clickhouseSettings`                            | 以逗号分隔的 ClickHouse 设置列表(例如 "insert_quorum=2, etc...")                                                                                                                                                                | `""`                                                     |
-| `topic2TableMap`                                | 将主题名称映射到表名的、以逗号分隔的列表(例如 "topic1=table1, topic2=table2, etc...")                                                                                                                                            | `""`                                                     |
-| `tableRefreshInterval`                          | 刷新表定义缓存的时间(单位:秒)                                                                                                                                                                                                  | `0`                                                      |
-| `keeperOnCluster`                               | 允许为自托管实例配置 exactly-once connect_state 表的 ON CLUSTER 参数(例如 `ON CLUSTER clusterNameInConfigFileDefinition`)(参见 [Distributed DDL Queries](/sql-reference/distributed-ddl)) | `""`                                                     |
-| `bypassRowBinary`                               | 允许对基于 Schema 的数据(Avro、Protobuf 等)禁用 RowBinary 和 RowBinaryWithDefaults 的使用——仅应在数据可能缺少列且 Nullable/Default 不可接受时使用                                                                              | `"false"`                                                |
-| `dateTimeFormats`                               | 用于解析 DateTime64 schema 字段的日期时间格式列表,以 `;` 分隔(例如 `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`)。                                                                     | `""`                                                     |
-| `tolerateStateMismatch`                         | 允许 Connector 丢弃"早于"当前 AFTER_PROCESSING 存储偏移量的记录(例如,如果发送了偏移量 5,而最近记录的偏移量是 250)                                                                                                            | `"false"`                                                |
-| `ignorePartitionsWhenBatching`                  | 在收集要插入的消息时忽略分区(仅当 `exactlyOnce` 为 `false` 时)。性能注意:Connector 任务越多,每个任务分配到的 Kafka 分区就越少——这可能会产生收益递减。                                                                        | `"false"`                                                |
+| Property Name                                   | Description                                                                                                                                                                | Default Value                                            |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `hostname` (Required)                           | 服务器的主机名或 IP 地址                                                                                                                                                             | N/A                                                      |
+| `port`                                          | ClickHouse 端口——云环境中 HTTPS 的默认端口为 8443,自托管环境中默认使用 HTTP 时应使用 8123                                                                                                            | `8443`                                                   |
+| `ssl`                                           | 启用到 ClickHouse 的 SSL 连接                                                                                                                                                    | `true`                                                   |
+| `jdbcConnectionProperties`                      | 连接 ClickHouse 时使用的连接属性。必须以 `?` 开头，`param=value` 之间使用 `&` 连接                                                                                                                | `""`                                                     |
+| `username`                                      | ClickHouse 数据库用户名                                                                                                                                                          | `default`                                                |
+| `password` (Required)                           | ClickHouse 数据库密码                                                                                                                                                           | N/A                                                      |
+| `database`                                      | ClickHouse 数据库名称                                                                                                                                                           | `default`                                                |
+| `connector.class` (Required)                    | Connector 类(显式设置并保持为默认值)                                                                                                                                                   | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
+| `tasks.max`                                     | Connector 任务数量                                                                                                                                                             | `"1"`                                                    |
+| `errors.retry.timeout`                          | Kafka Connect 最大重试超时时间，以毫秒为单位。`0` 表示不重试。`-1` 表示无限重试。建议值大于 &quot;10000&quot; ms (10 秒)  Timeout                                                                             | `"0"`                                                    |
+| `exactlyOnce`                                   | 是否启用 Exactly Once                                                                                                                                                          | `"false"`                                                |
+| `topics` (Required)                             | 要轮询的 Kafka 主题——主题名称必须与表名一致                                                                                                                                                 | `""`                                                     |
+| `key.converter` (Required* - See Description)   | 根据 key 的类型进行设置。如果需要传递 key(且未在 worker 配置中定义),则此项为必填。                                                                                                                        | `"org.apache.kafka.connect.storage.StringConverter"`     |
+| `value.converter` (Required* - See Description) | 根据主题中的数据类型进行设置。支持:JSON、String、Avro 或 Protobuf 格式。如果未在 worker 配置中定义,则此项为必填。                                                                                                 | `"org.apache.kafka.connect.json.JsonConverter"`          |
+| `value.converter.schemas.enable`                | Connector Value Converter 的 Schema 支持开关                                                                                                                                    | `"false"`                                                |
+| `errors.tolerance`                              | Connector 错误容忍度。支持:none、all                                                                                                                                                | `"none"`                                                 |
+| `errors.deadletterqueue.topic.name`             | 如果设置了该项(且 errors.tolerance=all),将对失败的批次使用 DLQ(参见 [Troubleshooting](#troubleshooting))                                                                                      | `""`                                                     |
+| `errors.deadletterqueue.context.headers.enable` | 为 DLQ 添加额外的 header                                                                                                                                                         | `""`                                                     |
+| `clickhouseSettings`                            | 以逗号分隔的 ClickHouse 设置列表(例如 &quot;insert&#95;quorum=2, etc...&quot;)                                                                                                         | `""`                                                     |
+| `topic2TableMap`                                | 将主题名称映射到表名的、以逗号分隔的列表(例如 &quot;topic1=table1, topic2=table2, etc...&quot;)                                                                                                  | `""`                                                     |
+| `tableRefreshInterval`                          | 刷新表定义缓存的时间(单位:秒)                                                                                                                                                           | `0`                                                      |
+| `keeperOnCluster`                               | 允许为自托管实例配置 exactly-once connect&#95;state 表的 ON CLUSTER 参数(例如 `ON CLUSTER clusterNameInConfigFileDefinition`)(参见 [Distributed DDL Queries](/sql-reference/distributed-ddl) | `""`                                                     |
+| `bypassRowBinary`                               | 允许对基于 Schema 的数据(Avro、Protobuf 等)禁用 RowBinary 和 RowBinaryWithDefaults 的使用——仅应在数据可能缺少列且 Nullable/Default 不可接受时使用                                                            | `"false"`                                                |
+| `dateTimeFormats`                               | 用于解析 DateTime64 schema 字段的日期时间格式列表,以 `;` 分隔(例如 `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`)。                                      | `""`                                                     |
+| `tolerateStateMismatch`                         | 允许 Connector 丢弃&quot;早于&quot;当前 AFTER&#95;PROCESSING 存储偏移量的记录(例如,如果发送了偏移量 5,而最近记录的偏移量是 250)。应在发生故障后用于修复摄取,完成后应将其改回 `"false"`。                                              | `"false"`                                                |
+| `ignorePartitionsWhenBatching`                  | 在收集要插入的消息时忽略分区(仅当 `exactlyOnce` 为 `false` 时)。性能注意:Connector 任务越多,每个任务分配到的 Kafka 分区就越少——这可能会产生收益递减。                                                                         | `"false"`                                                |
+| `bufferCount` (自 v1.3.6 起)                      | 刷新到 ClickHouse 之前在内存中缓冲的记录数。`0` 表示禁用内部缓冲。`exactlyOnce=true` 时不支持缓冲。                                                                                                        | `"0"`                                                    |
+| `bufferFlushTime` (自 v1.3.6 起)                  | 当 `exactlyOnce=false` 时，刷新前缓冲记录的最长时间，以 Milliseconds 为单位。`0` 表示禁用基于时间的刷新。默认值为 `0`。仅在使用基于时间的阈值时需要。仅当 `bufferCount > 0` 时生效。                                                  | `"0"`                                                    |
+| `reportInsertedOffsets` (自 v1.3.6 起)            | 启用后,当 `exactlyOnce=false` 时,`preCommit` 将仅返回成功插入的偏移量(而非 `currentOffsets`)。当 `ignorePartitionsWhenBatching=true` 时,此设置不适用,仍会返回 `currentOffsets`。                            | `"false"`                                                |
 
 ### 目标表 \{#target-tables\}
 
@@ -183,7 +186,7 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
     "consumer.override.max.poll.records": "5000",
     "consumer.override.max.partition.fetch.bytes": "5242880",
     "database": "default",
-    "errors.retry.timeout": "60",
+    "errors.retry.timeout": "60000",
     "exactlyOnce": "false",
     "hostname": "localhost",
     "port": "8443",
@@ -296,6 +299,38 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
     "value.converter": "org.apache.kafka.connect.storage.StringConverter",
     "customInsertFormat": "true",
     "insertFormat": "CSV"
+  }
+}
+```
+
+
+### 内部缓冲 \{#internal-buffering\}
+
+内部缓冲允许 sink 任务累积来自多次 `poll()` 调用的记录，并将其作为更大的批次刷新到 ClickHouse。在每次 poll 都会产生许多按分区划分的小批次的工作负载中，这可以提高吞吐量。
+
+关键行为：
+
+* `bufferCount` 控制刷新前缓冲的记录数量。
+* `bufferFlushTime` 设置刷新缓冲记录之前的最长等待时间 (以毫秒为单位) 。
+* 仅当 `bufferCount > 0` 时，`bufferFlushTime` 才会生效。
+* `bufferCount=0` 且 `bufferFlushTime=0` 会使缓冲保持禁用状态 (默认行为) 。
+* 当 `exactlyOnce=true` 时，不支持缓冲。
+
+为什么缓冲与 exactly-once 模式不兼容：
+缓冲会改变批次边界，从而破坏 ClickHouse 数据块去重以及连接器 offset 状态机。
+要解决此问题，可以在连接器配置中使用 `exactlyOnce=false` 禁用 exactly-once 模式，或者使用 `bufferCount=0` 禁用缓冲。
+
+示例：
+
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "exactlyOnce": "false",
+    "bufferCount": "5000",
+    "bufferFlushTime": "2000"
   }
 }
 ```
@@ -535,11 +570,11 @@ consumer.fetch.max.wait.ms=300
 2. 将数据写入内存缓冲区(而不是立即写入磁盘)
 3. 向连接器返回成功(如果 `wait_for_async_insert=0`)
 4. 当满足以下条件之一时将缓冲区刷新到磁盘:
-   - 缓冲区达到 `async_insert_max_data_size`(默认值:10 MB)
-   - 自首次插入以来经过 `async_insert_busy_timeout_ms` 毫秒(默认值:1000 毫秒)
-   - 累积的查询数量达到最大值(`async_insert_max_query_number`,默认值:100)
+   * 缓冲区达到 `async_insert_max_data_size`(默认值:100 MB)
+   * 自首次插入以来经过 `async_insert_busy_timeout_ms` 毫秒(默认值:1000 毫秒)
+   * 累积的查询数量达到最大值(`async_insert_max_query_number`,默认值:100)
 
-这显著减少了创建的数据分片数量并提高了整体吞吐量。
+这显著减少了创建的parts数量并提高了整体吞吐量。
 
 ##### 启用异步插入 \{#enabling-async-inserts\}
 
@@ -568,12 +603,12 @@ consumer.fetch.max.wait.ms=300
 可以对异步插入的刷新策略进行精细调优：
 
 ```json
-"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=104857600,async_insert_busy_timeout_ms=1000"
 ```
 
 Common tuning parameters:
 
-* **`async_insert_max_data_size`**(默认值:10485760 / 10 MB):触发刷新前的最大缓冲区大小
+* **`async_insert_max_data_size`**(默认值:104857600 / 100 MB):触发刷新前的最大缓冲区大小
 * **`async_insert_busy_timeout_ms`**(默认值:1000):触发刷新前的最长等待时间(毫秒)
 * **`async_insert_stale_timeout_ms`**(默认值:0):自上次插入以来触发刷新前的时间(毫秒)
 * **`async_insert_max_query_number`**(默认值:100):触发刷新前的最大查询次数
@@ -583,7 +618,6 @@ Common tuning parameters:
 * **优点**:更少的数据分片,更好的合并性能,更低的 CPU 开销,在高并发下具备更高吞吐量
 * **注意事项**:数据无法被立即查询,端到端延迟略有增加
 * **风险**:如果 `wait_for_async_insert=0`,服务器崩溃时可能发生数据丢失;缓冲区过大时可能导致内存压力
-
 
 ##### 具有 exactly-once 语义的异步插入 \{#async-inserts-with-exactly-once\}
 
@@ -771,26 +805,27 @@ SETTINGS
 
 **注意:此类调整可能会对 exactly-once 语义产生影响。**
 
-#### "What errors will the connector retry?" \{#what-errors-will-the-connector-retry\}
+#### &quot;What errors will the connector retry?&quot; \{#what-errors-will-the-connector-retry\}
 
 目前的重点是识别可以视为短暂且可重试的错误,包括:
 
 * `ClickHouseException` - 这是一个由 ClickHouse 抛出的通用异常。
   通常在服务器过载时抛出,以下错误码被认为是典型的短暂性错误:
-  * 3 - UNEXPECTED_END_OF_FILE
-  * 159 - TIMEOUT_EXCEEDED
+  * 3 - UNEXPECTED&#95;END&#95;OF&#95;FILE
+  * 107 - FILE&#95;DOESNT&#95;EXIST
+  * 159 - TIMEOUT&#95;EXCEEDED
   * 164 - READONLY
-  * 202 - TOO_MANY_SIMULTANEOUS_QUERIES
-  * 203 - NO_FREE_CONNECTION
-  * 209 - SOCKET_TIMEOUT
-  * 210 - NETWORK_ERROR
-  * 242 - TABLE_IS_READ_ONLY
-  * 252 - TOO_MANY_PARTS
-  * 285 - TOO_FEW_LIVE_REPLICAS
-  * 319 - UNKNOWN_STATUS_OF_INSERT
-  * 425 - SYSTEM_ERROR
-  * 999 - KEEPER_EXCEPTION
-  * 1002 - UNKNOWN_EXCEPTION
+  * 202 - TOO&#95;MANY&#95;SIMULTANEOUS&#95;QUERIES
+  * 203 - NO&#95;FREE&#95;CONNECTION
+  * 209 - SOCKET&#95;TIMEOUT
+  * 210 - NETWORK&#95;ERROR
+  * 241 - MEMORY&#95;LIMIT&#95;EXCEEDED
+  * 242 - TABLE&#95;IS&#95;READ&#95;ONLY
+  * 252 - TOO&#95;MANY&#95;PARTS
+  * 285 - TOO&#95;FEW&#95;LIVE&#95;REPLICAS
+  * 319 - UNKNOWN&#95;STATUS&#95;OF&#95;INSERT
+  * 425 - SYSTEM&#95;ERROR
+  * 999 - KEEPER&#95;EXCEPTION
 * `SocketTimeoutException` - 在 socket 超时时抛出。
 * `UnknownHostException` - 在无法解析主机名时抛出。
 * `IOException` - 在出现网络问题时抛出。

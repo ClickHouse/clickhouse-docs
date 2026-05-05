@@ -241,7 +241,7 @@ mercator_y UInt32 MATERIALIZED 0xFFFFFFFF * ((1 / 2) - ((log(tan(((latitude + 90
 ORDER BY mortonEncode(mercator_x, mercator_y)
 ```
 
-Также создаются два индекса `minmax` для ускорения поиска:
+Также создаются два индекса типа `minmax` для ускорения поиска:
 
 ```sql
 INDEX idx_x mercator_x TYPE minmax,
@@ -256,6 +256,7 @@ INDEX idx_y mercator_y TYPE minmax
 INSERT INTO foursquare_mercator 
 SELECT * FROM s3('s3://fsq-os-places-us-east-1/release/dt=2025-04-08/places/parquet/*')
 ```
+
 
 ## Визуализация данных \{#data-visualization\}
 

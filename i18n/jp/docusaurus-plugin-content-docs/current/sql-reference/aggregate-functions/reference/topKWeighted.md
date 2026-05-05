@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## topKWeighted \{#topKWeighted\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 指定したカラム内の、おおよそ最も頻出する値の配列を返します。
 結果の配列は、値そのものではなく、値のおおよその出現頻度の降順にソートされます。
@@ -58,7 +58,7 @@ VALUES('k Char, w UInt64', ('y', 1), ('y', 1), ('x', 5), ('y', 1), ('z', 10));
 └────────────────────────┘
 ```
 
-**counts パラメータあり**
+**counts パラメーター使用時**
 
 ```sql title=Query
 SELECT topKWeighted(2, 10, 'counts')(k, w)

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantilePrometheusHistogram \{#quantilePrometheusHistogram\}
 
-導入バージョン: v25.10
+導入バージョン: v25.10.0
 
 線形補間を用いてヒストグラムの[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。各ヒストグラムバケットの累積値と上限値を考慮します。
 

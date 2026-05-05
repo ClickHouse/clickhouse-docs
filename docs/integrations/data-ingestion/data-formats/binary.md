@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Binary and Native'
+sidebar_label: 'Binary and native'
 slug: /integrations/data-formats/binary-native
 title: 'Using native and binary formats in ClickHouse'
 description: 'Page describing how to use native and binary formats in ClickHouse'
@@ -85,7 +85,7 @@ INTO OUTFILE 'data.binary' FORMAT RowBinary
 This will generate [data.binary](assets/data.binary) file in a binary rows format.
 
 ### Exploring RowBinary files {#exploring-rowbinary-files}
-Automatic schema inference is not supported for this format, so to explore before loading, we have to define schema explicitly:
+Automatic schema inference isn't supported for this format, so to explore before loading, we have to define schema explicitly:
 
 ```sql
 SELECT *

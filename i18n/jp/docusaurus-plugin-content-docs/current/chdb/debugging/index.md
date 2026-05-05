@@ -1,5 +1,5 @@
 ---
-title: 'DataStore デバッグ'
+title: 'DataStore のデバッグ'
 sidebar_label: '概要'
 slug: /chdb/debugging
 description: 'explain()、プロファイリング、ロギングを使用して DataStore の操作をデバッグする'

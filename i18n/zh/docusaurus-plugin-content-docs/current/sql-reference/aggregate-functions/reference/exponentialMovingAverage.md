@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialMovingAverage \{#exponentialMovingAverage\}
 
-引入版本：v21.11
+引入版本：v21.11.0
 
 计算在指定时间段内的指数移动平均值。
 
@@ -30,7 +30,7 @@ exponentialMovingAverage(x)(value, timeunit)
 **参数说明**
 
 * `value` — 数值。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
-* `timeunit` — 时间单位。时间单位不是时间戳（秒），而是时间区间的索引。可以使用 `intDiv` 计算得到。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `timeunit` — 时间单位。时间单位不是时间戳 (秒) ，而是时间区间的索引。可以使用 `intDiv` 计算得到。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 
 **返回值**
 

@@ -11,6 +11,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # PTY を使用する SSH インターフェース \{#ssh-interface-with-pty\}
 
 <ExperimentalBadge />
@@ -53,6 +54,7 @@ SSH 経由でのコマンド実行（非対話モード）にも対応してい�
 1
 ```
 
+
 ## サーバー設定 \{#server-configuration\}
 
 SSH サーバー機能を有効にするには、`config.xml` 内で次のセクションのコメントアウトを解除するか、追加する必要があります：
@@ -60,9 +62,9 @@ SSH サーバー機能を有効にするには、`config.xml` 内で次のセク
 ```xml
 <tcp_ssh_port>9022</tcp_ssh_port>
 <ssh_server>
-   <host_rsa_key>鍵へのパス</host_rsa_key>
-   <!--host_ecdsa_key>鍵へのパス</host_ecdsa_key-->
-   <!--host_ed25519_key>鍵へのパス</host_ed25519_key-->
+   <host_rsa_key>path-to-the-key</host_rsa_key>
+   <!--host_ecdsa_key>path-to-the-key</host_ecdsa_key-->
+   <!--host_ed25519_key>path-to-the-key</host_ed25519_key-->
 </ssh_server>
 ```
 
@@ -82,6 +84,7 @@ SSH クライアントにオプションを指定することで、ホストの�
 ```bash
 ssh -o "StrictHostKeyChecking no" user@host
 ```
+
 
 ## 組み込みクライアントの設定 \{#configuring-embedded-client\}
 

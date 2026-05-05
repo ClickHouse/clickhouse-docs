@@ -8,7 +8,7 @@ doc_type: 'reference'
 # last_value \{#last_value\}
 
 `anyLast` と同様に、最後に出現した値を選択しますが、NULL も許容します。
-主に [Window Functions](../../window-functions/index.md)（ウィンドウ関数）と組み合わせて使用します。
+主に [Window Functions](../../window-functions/index.md) (ウィンドウ関数) と組み合わせて使用します。
 Window Functions を使用しない場合、入力ストリームに順序付けがされていないと、結果はランダムになります。
 
 ## 使用例 \{#examples\}

@@ -234,9 +234,9 @@ wget https://archive.org/download/stackexchange/stackoverflow.com-Votes.7z
 
 ### JSON への変換 \{#convert-to-json\}
 
-本稿執筆時点では、ClickHouse は入力フォーマットとしての XML をネイティブにサポートしていません。データを ClickHouse にロードするには、まずデータを NDJSON に変換します。
+本ドキュメント執筆時点では、ClickHouse には XML を入力フォーマットとしてネイティブにサポートする機能がありません。データを ClickHouse にロードするには、まず NDJSON 形式に変換します。
 
-XML を JSON に変換するには、XML ドキュメント向けのシンプルな `jq` ラッパーである [`xq`](https://github.com/kislyuk/yq) Linux ツールを使用することを推奨します。
+XML を JSON に変換するには、XML ドキュメント向けのシンプルな `jq` ラッパーである [`xq`](https://github.com/kislyuk/yq) Linux 用ツールの利用を推奨します。
 
 xq と jq をインストールします:
 
@@ -245,17 +245,17 @@ sudo apt install jq
 pip install yq
 ```
 
-以下の手順は、上記のいずれのファイルにも適用されます。ここでは例として `stackoverflow.com-Posts.7z` ファイルを使用します。必要に応じて読み替えてください。
+以下の手順は、上記のいずれのファイルにも適用できます。ここでは例として `stackoverflow.com-Posts.7z` ファイルを使用します。必要に応じて読み替えてください。
 
-[p7zip](https://p7zip.sourceforge.net/) を使ってファイルを展開します。これにより、単一の XML ファイルが生成されます。この例では `Posts.xml` です。
+[p7zip](https://p7zip.sourceforge.net/) を使用してファイルを展開します。これにより、1 つの xml ファイルが生成されます。この例では `Posts.xml` です。
 
-> ファイルはおよそ 4.5 倍に圧縮されています。圧縮サイズが 22GB の場合、`Posts` ファイルの展開後のサイズは約 97GB になります。
+> ファイルはおよそ 4.5 倍に圧縮されています。圧縮サイズが 22GB の場合、投稿ファイルは展開後におよそ 97GB の容量が必要になります。
 
 ```bash
 p7zip -d stackoverflow.com-Posts.7z
 ```
 
-次のクエリは XML ファイルを、各ファイルに 10000 行ずつになるよう分割します。
+以下の例では、XML ファイルを複数のファイルに分割し、各ファイルに 10,000 行ずつ含めます。
 
 ```bash
 mkdir posts
@@ -264,15 +264,15 @@ cd posts
 tail +3 ../Posts.xml | head -n -1 | split -l 10000 --filter='{ printf "<rows>\n"; cat - ; printf "</rows>\n"; } > $FILE' -
 ```
 
-上記を実行すると、1 万行ずつのファイルが複数生成されます。これにより、次のコマンドのメモリオーバーヘッドが過大にならないようにしています（XML から JSON への変換はメモリ上で実行されます）。
+上記を実行すると、各 10000 行のファイルからなる一連のファイルが作成されます。これは、次に実行するコマンドによるメモリオーバーヘッドが過大にならないようにするためです（XML から JSON への変換はメモリ上で行われます）。
 
 ```bash
 find . -maxdepth 1 -type f -exec xq -c '.rows.row[]' {} \; | sed -e 's:"@:":g' > posts_v2.json
 ```
 
-上記のコマンドにより、単一の `posts.json` ファイルが生成されます。
+上記のコマンドを実行すると、単一の `posts.json` ファイルが生成されます。
 
-次のコマンドで ClickHouse にロードします。`posts.json` ファイルに対してスキーマを指定している点に注意してください。ターゲットのテーブルと整合するよう、データ型ごとに調整する必要があります。
+次のコマンドで ClickHouse にロードします。`posts.json` ファイル用のスキーマが指定されている点に注意してください。対象テーブルのスキーマと整合するよう、データ型に応じて調整する必要があります。
 
 ```bash
 clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int32, PostTypeId UInt8, AcceptedAnswerId UInt32, CreationDate DateTime64(3, \'UTC\'), Score Int32, ViewCount UInt32, Body String, OwnerUserId Int32, OwnerDisplayName String, LastEditorUserId Int32, LastEditorDisplayName String, LastEditDate DateTime64(3, \'UTC\'), LastActivityDate DateTime64(3, \'UTC\'), Title String, Tags String, AnswerCount UInt16, CommentCount UInt8, FavoriteCount UInt8, ContentLicense String, ParentId String, CommunityOwnedDate DateTime64(3, \'UTC\'), ClosedDate DateTime64(3, \'UTC\')') FORMAT Native" | clickhouse client --host <host> --secure --password <password> --query "INSERT INTO stackoverflow.posts_v2 FORMAT Native"

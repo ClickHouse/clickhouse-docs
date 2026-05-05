@@ -3,7 +3,7 @@ description: 'Over 20 billion records of data from Sensor.Community, a contribut
   global sensor network that creates Open Environmental Data.'
 sidebar_label: 'Environmental sensors data'
 slug: /getting-started/example-datasets/environmental-sensors
-title: 'Environmental Sensors Data'
+title: 'Environmental sensors data'
 doc_type: 'guide'
 keywords: ['environmental sensors', 'Sensor.Community', 'air quality data', 'environmental data', 'getting started']
 ---
@@ -76,7 +76,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp, sensor_id);
 ```
 
-3. ClickHouse Cloud services have a cluster named `default`. We will use the `s3Cluster` table function, which reads S3 files in parallel from the nodes in your cluster. (If you do not have a cluster, just use the `s3` function and remove the cluster name.)
+3. ClickHouse Cloud services have a cluster named `default`. We will use the `s3Cluster` table function, which reads S3 files in parallel from the nodes in your cluster. (If you don't have a cluster, just use the `s3` function and remove the cluster name.)
 
 This query will take a while - it's about 1.67T of data uncompressed:
 

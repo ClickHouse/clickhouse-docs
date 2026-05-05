@@ -3,7 +3,7 @@ description: 'COVID-19 Open-Data is a large, open-source database of COVID-19 ep
   data and related factors like demographics, economics, and government responses'
 sidebar_label: 'COVID-19 open-data'
 slug: /getting-started/example-datasets/covid19
-title: 'COVID-19 Open-Data'
+title: 'COVID-19 open data'
 keywords: ['COVID-19 data', 'epidemiological data', 'health dataset', 'example dataset', 'getting started']
 doc_type: 'guide'
 ---
@@ -135,7 +135,7 @@ FROM covid19;
 └────────────────────────────────────────────┘
 ```
 
-7. You will notice the data has a lot of 0's for dates - either weekends or days when numbers were not reported each day. We can use a window function to smooth out the daily averages of new cases:
+7. You will notice the data has a lot of 0's for dates - either weekends or days when numbers weren't reported each day. We can use a window function to smooth out the daily averages of new cases:
 
 ```sql
 SELECT

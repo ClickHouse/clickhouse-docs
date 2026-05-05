@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## varPopStable \{#varPopStable\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 返回总体方差。
 与 [`varPop`](/sql-reference/aggregate-functions/reference/varPop) 不同，此函数使用一种[数值稳定](https://en.wikipedia.org/wiki/Numerical_stability)的算法。

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs/ec2
-title: 'Monitoring EC2 Host Logs with ClickStack'
-sidebar_label: 'EC2 Host Logs'
+title: 'Monitoring EC2 host logs with ClickStack'
+sidebar_label: 'EC2 host logs'
 pagination_prev: null
 pagination_next: null
 description: 'Monitoring EC2 Host Logs with ClickStack'
@@ -25,16 +25,7 @@ import TabItem from '@theme/TabItem';
 # Monitoring EC2 Host Logs with ClickStack {#ec2-host-logs-clickstack}
 
 :::note[TL;DR]
-Monitor EC2 system logs with ClickStack by installing OpenTelemetry Collector on your instances. The collector automatically enriches logs with EC2 metadata (instance ID, region, availability zone, instance type). You'll learn how to:
-
-- Install and configure OpenTelemetry Collector on EC2 instances
-- Automatically enrich logs with EC2 metadata
-- Send logs to ClickStack via OTLP
-- Use a pre-built dashboard to visualize EC2 host logs with cloud context
-
-A demo dataset with sample logs and simulated EC2 metadata is available for testing.
-
-Time Required: 10-15 minutes
+Collect and visualize EC2 system logs in ClickStack using the OpenTelemetry Collector with automatic EC2 metadata enrichment (instance ID, region, AZ, instance type). Includes a demo dataset and pre-built dashboard.
 :::
 
 ## Integration with existing EC2 instance {#existing-ec2}
@@ -70,7 +61,7 @@ curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-da
 
 You should see your instance ID, region, and instance type. If these commands fail, verify:
 - The instance metadata service is enabled
-- IMDSv2 is not blocked by security groups or network ACLs
+- IMDSv2 isn't blocked by security groups or network ACLs
 - You're running these commands from the EC2 instance itself
 
 :::note
@@ -156,7 +147,7 @@ processors:
   
   batch:
     timeout: 10s
-    send_batch_size: 1024
+    send_batch_size: 10000
 
 exporters:
   otlphttp:
@@ -211,7 +202,7 @@ processors:
   
   batch:
     timeout: 10s
-    send_batch_size: 1024
+    send_batch_size: 10000
 
 exporters:
   otlphttp:
@@ -461,7 +452,7 @@ You can filter dashboard visualizations by EC2 context:
 - `host.id:i-0abc123def456` - Logs from specific instance
 
 :::note
-For the demo dataset, set the time range to **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard will not have a time range specified by default.
+For the demo dataset, set the time range to **2025-11-11 00:00:00 - 2025-11-12 00:00:00 (UTC)** (adjust based on your local timezone). The imported dashboard won't have a time range specified by default.
 :::
 
 </VerticalStepper>
@@ -481,7 +472,7 @@ curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-da
 
 If this fails, verify:
 - The instance metadata service is enabled
-- IMDSv2 is not blocked by security groups
+- IMDSv2 isn't blocked by security groups
 - You're running the collector on the EC2 instance itself
 
 **Check collector logs for metadata errors:**
@@ -559,9 +550,11 @@ sudo journalctl -u otelcol-contrib -n 50
 
 ## Next steps {#next-steps}
 
-After setting up EC2 host logs monitoring:
-
 - Set up [alerts](/use-cases/observability/clickstack/alerts) for critical system events (service failures, authentication failures, disk warnings)
 - Filter by EC2 metadata attributes (region, instance type, instance ID) to monitor specific resources
 - Correlate EC2 host logs with application logs for comprehensive troubleshooting
 - Create custom dashboards for security monitoring (SSH attempts, sudo usage, firewall blocks)
+
+## Going to production {#going-to-production}
+
+This guide installs the OpenTelemetry Collector directly on EC2 instances, which is the recommended production pattern for host-level monitoring. For managing collectors across many instances, consider using configuration management tools (Ansible, Chef, Puppet) or the OpenTelemetry Operator in Kubernetes environments. See [Sending OpenTelemetry data](/use-cases/observability/clickstack/ingesting-data/opentelemetry) for production configuration.

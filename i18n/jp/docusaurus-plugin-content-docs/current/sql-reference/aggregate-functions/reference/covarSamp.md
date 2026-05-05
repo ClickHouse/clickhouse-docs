@@ -11,17 +11,17 @@ doc_type: 'reference'
 
 ## covarSamp \{#covarSamp\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
-Calculates the sample covariance:
+標本共分散を計算します：
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n - 1}
 $$
 
 :::note
-This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`covarSampStable`](/sql-reference/aggregate-functions/reference/covarsampstable) function.
-It works slower but provides a lower computational error.
+この関数は数値的に不安定なアルゴリズムを使用しています。計算に[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`covarSampStable`](/sql-reference/aggregate-functions/reference/covarsampstable)関数を使用してください。
+処理は遅くなりますが、計算誤差が小さくなります。
 :::
 
 **Syntax**
@@ -32,18 +32,18 @@ covarSamp(x, y)
 
 **Aliases**: `COVAR_SAMP`
 
-**Arguments**
+**引数**
 
 - `x` — 第1変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
 - `y` — 第2変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**戻り値**
 
-Returns the sample covariance between `x` and `y`. For `n <= 1`, `nan` is returned. [`Float64`](/sql-reference/data-types/float)
+`x`と`y`の標本共分散を返します。`n <= 1`の場合、`nan`が返されます。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**例**
 
-**Basic sample covariance calculation**
+**基本的な標本共分散の計算**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;
@@ -60,7 +60,7 @@ FROM series
 └─────────────────────────────┘
 ```
 
-**Single value returns NaN**
+**単一の値はNaNを返す**
 
 ```sql title=Query
 SELECT covarSamp(x_value, y_value)

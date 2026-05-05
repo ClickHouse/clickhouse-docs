@@ -1,9 +1,9 @@
 ---
-description: 'JOIN句に関するリファレンス'
+description: 'JOIN clause に関するリファレンス'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
-title: 'JOIN句'
-keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN']
+title: 'JOIN clause'
+keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN', 'NATURAL JOIN']
 doc_type: 'reference'
 ---
 
@@ -25,32 +25,34 @@ FROM <left_table>
 
 ## サポートされている JOIN の種類 \{#supported-types-of-join\}
 
-すべての標準的な [SQL JOIN](https://en.wikipedia.org/wiki/Join_(SQL)) タイプがサポートされています:
+すべての標準的な [SQL JOIN](https://en.wikipedia.org/wiki/Join_\(SQL\)) タイプがサポートされています:
 
-| Type              | Description                                                                   |
-|-------------------|-------------------------------------------------------------------------------|
-| `INNER JOIN`      | 一致する行のみが返されます。                                                |
-| `LEFT OUTER JOIN` | 一致する行に加えて、左側のテーブルの一致しない行も返されます。             |
-| `RIGHT OUTER JOIN`| 一致する行に加えて、右側のテーブルの一致しない行も返されます。            |
-| `FULL OUTER JOIN` | 一致する行に加えて、両方のテーブルの一致しない行も返されます。            |
-| `CROSS JOIN`      | テーブル全体のデカルト積を生成します。「join keys」は指定**しません**。   |
+| Type               | Description                                                                                                                                                                |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `INNER JOIN`       | 一致する行のみが返されます。                                                                                                                                                             |
+| `LEFT OUTER JOIN`  | 一致する行に加えて、左側のテーブルの一致しない行も返されます。                                                                                                                                            |
+| `RIGHT OUTER JOIN` | 一致する行に加えて、右側のテーブルの一致しない行も返されます。                                                                                                                                            |
+| `FULL OUTER JOIN`  | 一致する行に加えて、両方のテーブルの一致しない行も返されます。                                                                                                                                            |
+| `CROSS JOIN`       | テーブル全体のデカルト積を生成します。「join keys」は指定**しません**。                                                                                                                                 |
+| `NATURAL JOIN`     | 両方のテーブルで同じ名前を持つすべてのカラムを基に自動的に結合します。各共通カラムは結果に 1 回だけ現れます。`INNER` (デフォルト) 、`LEFT`、`RIGHT`、`FULL` の各バリアントをサポートします。カラムのリストが自動的に導出される `JOIN ... USING (col1, col2, ...)` と等価です。 |
 
-- 種類を指定しない `JOIN` は `INNER` を意味します。
-- キーワード `OUTER` は省略しても問題ありません。
-- `CROSS JOIN` の代替構文として、複数のテーブルをカンマ区切りで [`FROM` 句](../../../sql-reference/statements/select/from.md) に指定する方法があります。
+* 種類を指定しない `JOIN` は `INNER` を意味します。
+* キーワード `OUTER` は省略しても問題ありません。
+* `CROSS JOIN` の代替構文として、複数のテーブルをカンマ区切りで [`FROM` 句](../../../sql-reference/statements/select/from.md) に指定する方法があります。
+* `NATURAL JOIN` に一致するカラムがない場合は、`CROSS JOIN` のように機能します。
 
 ClickHouse では、追加で次の JOIN タイプも利用できます:
 
-| Type                                        | Description                                                                                                                               |
-|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| `LEFT SEMI JOIN`, `RIGHT SEMI JOIN`         | デカルト積を生成せずに、「join keys」に対する許可リストとして機能します。                                                                |
-| `LEFT ANTI JOIN`, `RIGHT ANTI JOIN`         | デカルト積を生成せずに、「join keys」に対する拒否リストとして機能します。                                                                |
+| Type                                                | Description                                                                                |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `LEFT SEMI JOIN`, `RIGHT SEMI JOIN`                 | デカルト積を生成せずに、「join keys」に対する許可リストとして機能します。                                                  |
+| `LEFT ANTI JOIN`, `RIGHT ANTI JOIN`                 | デカルト積を生成せずに、「join keys」に対する拒否リストとして機能します。                                                  |
 | `LEFT ANY JOIN`, `RIGHT ANY JOIN`, `INNER ANY JOIN` | 標準的な `JOIN` タイプにおいて、`LEFT` と `RIGHT` の反対側に対しては部分的に、`INNER` と `FULL` に対しては完全に、デカルト積を無効化します。 |
-| `ASOF JOIN`, `LEFT ASOF JOIN`               | 完全一致ではない条件でシーケンス同士を結合します。`ASOF JOIN` の使用方法は後述します。                                                   |
-| `PASTE JOIN`                                | 2 つのテーブルを水平方向に連結します。                                                                                                   |
+| `ASOF JOIN`, `LEFT ASOF JOIN`                       | 完全一致ではない条件でシーケンス同士を結合します。`ASOF JOIN` の使用方法は後述します。                                          |
+| `PASTE JOIN`                                        | 2 つのテーブルを水平方向に連結します。                                                                       |
 
 :::note
-[join_algorithm](../../../operations/settings/settings.md#join_algorithm) が `partial_merge` に設定されている場合、`RIGHT JOIN` および `FULL JOIN` は `ALL` ストリクト性の場合にのみサポートされます（`SEMI`、`ANTI`、`ANY`、`ASOF` はサポートされません）。
+[join&#95;algorithm](../../../operations/settings/settings.md#join_algorithm) が `partial_merge` に設定されている場合、`RIGHT JOIN` および `FULL JOIN` は `ALL` ストリクト性の場合にのみサポートされます (`SEMI`、`ANTI`、`ANY`、`ASOF` はサポートされません) 。
 :::
 
 ## 設定 \{#settings\}
@@ -406,8 +408,8 @@ SETTINGS max_block_size = 2;
 
 分散テーブルが関わる JOIN を実行する方法は 2 つあります。
 
-- 通常の `JOIN` を使用する場合、クエリはリモートサーバーに送信されます。右側のテーブルを作成するために、各サーバーでサブクエリが実行され、そのテーブルを用いて JOIN が実行されます。言い換えると、右側のテーブルは各サーバー上で個別に構築されます。
-- `GLOBAL ... JOIN` を使用する場合、まずリクエスト元のサーバーがサブクエリを実行して右側のテーブルを計算します。この一時テーブルは各リモートサーバーに渡され、転送された一時データを使用してクエリが実行されます。
+* 通常の `JOIN` を使用する場合、クエリはリモートサーバーに送信されます。右側のテーブルを作成するために、各サーバーでサブクエリが実行され、そのテーブルを用いて JOIN が実行されます。言い換えると、右側のテーブルは各サーバー上で個別に構築されます。
+* `GLOBAL ... JOIN` を使用する場合、まずリクエスト元のサーバーがサブクエリを実行して JOIN の片側を計算し、その結果を一時テーブルに集約します。次に、この一時テーブルが各リモートサーバーに渡され、転送された一時データを使用してそれらのサーバー上でクエリが実行されます。`LEFT` および `INNER` JOIN では、右側のテーブルがサブクエリとして計算されます。`RIGHT` JOIN では、右側のテーブルは保持される側であり分片から読み取る必要があるため、代わりに左側のテーブルが計算されます。
 
 `GLOBAL` を使用する際は注意してください。詳細については、[分散サブクエリ](/sql-reference/operators/in#distributed-subqueries) セクションを参照してください。
 
@@ -488,7 +490,7 @@ SELECT a, b, toTypeName(a), toTypeName(b) FROM t_1 FULL JOIN t_2 USING (a, b);
 
 場合によっては、`JOIN` の代わりに [IN](../../../sql-reference/operators/in.md) を使用した方が効率的です。
 
-ディメンションテーブルとの結合 (広告キャンペーン名などのディメンション属性を含む、比較的小さなテーブル) に `JOIN` が必要な場合、右側テーブルがクエリごとに再アクセスされるため、`JOIN` はあまり便利ではない可能性があります。そのようなケースでは、`JOIN` の代わりに使用すべき「dictionaries」機能があります。詳細については、[Dictionaries](../../../sql-reference/dictionaries/index.md) セクションを参照してください。
+ディメンションテーブルとの結合 (広告キャンペーン名などのディメンション属性を含む、比較的小さなテーブル) に `JOIN` が必要な場合、右側テーブルがクエリごとに再アクセスされるため、`JOIN` はあまり便利ではない可能性があります。そのようなケースでは、`JOIN` の代わりに使用すべき「dictionaries」機能があります。詳細については、[Dictionaries](/sql-reference/statements/create/dictionary/overview.md) セクションを参照してください。
 
 ### メモリ制限 \{#memory-limitations\}
 

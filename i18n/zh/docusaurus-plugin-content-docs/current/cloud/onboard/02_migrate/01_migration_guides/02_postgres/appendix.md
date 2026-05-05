@@ -185,7 +185,5 @@ GROUP BY `table`
 | `HSTORE` | [Map(K, V)](/sql-reference/data-types/map), [Map](/sql-reference/data-types/map)(K,[Variant](/sql-reference/data-types/variant)) |
 | `UUID` | [UUID](/sql-reference/data-types/uuid) |
 | `ARRAY<T>` | [ARRAY(T)](/sql-reference/data-types/array) |
-| `JSON*` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
+| `JSON` | [String](/sql-reference/data-types/string), [Variant](/sql-reference/data-types/variant), [Nested](/sql-reference/data-types/nested-data-structures/nested#nestedname1-type1-name2-type2-), [Tuple](/sql-reference/data-types/tuple) |
 | `JSONB` | [String](/sql-reference/data-types/string) |
-
-*\* ClickHouse 对 JSON 的生产级支持仍在开发中。目前，你可以将 JSON 映射为 String，并使用 [JSON 函数](/sql-reference/functions/json-functions)，或者在结构可预测的情况下，将 JSON 直接映射为 [Tuples](/sql-reference/data-types/tuple) 和 [Nested](/sql-reference/data-types/nested-data-structures/nested)。在 [此处](/integrations/data-formats/json/overview)了解更多关于 JSON 的信息。*

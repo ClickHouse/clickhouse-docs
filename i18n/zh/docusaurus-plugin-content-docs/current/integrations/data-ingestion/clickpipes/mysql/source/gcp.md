@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cloud SQL For MySQL 源设置指南'
+sidebar_label: 'Cloud SQL for MySQL'
 description: '分步指南，介绍如何将 Cloud SQL for MySQL 配置为 ClickPipes 的源'
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL 源设置指南'

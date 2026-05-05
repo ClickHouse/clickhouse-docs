@@ -19,7 +19,7 @@ doc_type: 'reference'
 array(T)
 ```
 
-也可以用方括号。
+也可以使用 `[]`。
 
 ```sql
 []
@@ -51,7 +51,7 @@ SELECT [1, 2] AS x, toTypeName(x)
 
 在临时创建数组时，ClickHouse 会自动将参数类型推断为能够容纳所有列出参数的最窄数据类型。如果其中包含任何 [Nullable](/sql-reference/data-types/nullable) 或字面量 [NULL](/operations/settings/formats#input_format_null_as_default) 值，数组元素的类型也会变成 [Nullable](../../sql-reference/data-types/nullable.md)。
 
-如果 ClickHouse 无法确定数据类型，它会抛出异常。例如，当尝试同时使用字符串和数字创建数组时，就会发生这种情况（`SELECT array(1, 'a')`）。
+如果 ClickHouse 无法确定数据类型，它会抛出异常。例如，当尝试同时使用字符串和数字创建数组时，就会发生这种情况 (`SELECT array(1, 'a')`) 。
 
 自动数据类型检测示例：
 
@@ -102,7 +102,7 @@ SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 
 ## 从 Array 读取嵌套子列 \{#reading-nested-subcolumns-from-array\}
 
-如果 `Array` 中的嵌套类型 `T` 本身包含子列（例如，它是一个[命名元组](./tuple.md)），则可以通过具有相同子列名称的 `Array(T)` 类型来读取这些子列。此时子列的类型将是“原始子列类型”的 `Array`。
+如果 `Array` 中的嵌套类型 `T` 本身包含子列 (例如，它是一个[命名元组](./tuple.md)) ，则可以通过具有相同子列名称的 `Array(T)` 类型来读取这些子列。此时子列的类型将是“原始子列类型”的 `Array`。
 
 **示例**
 

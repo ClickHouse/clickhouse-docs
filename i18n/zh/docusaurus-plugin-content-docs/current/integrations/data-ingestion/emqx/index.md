@@ -39,6 +39,7 @@ import rule_monitor from '@site/static/images/integrations/data-ingestion/emqx/r
 import clickhouse_result from '@site/static/images/integrations/data-ingestion/emqx/clickhouse_result.png';
 import Image from '@theme/IdealImage';
 
+
 # 将 EMQX 与 ClickHouse 集成 \{#integrating-emqx-with-clickhouse\}
 
 ## 连接 EMQX \{#connecting-emqx\}
@@ -97,6 +98,7 @@ PRIMARY KEY (client_id, timestamp)
 
 <Image img={clickhouse_cloud_6} size="lg" border alt="在 ClickHouse Cloud 中执行创建数据库和数据表的 SQL 查询" />
 
+
 ## 在 EMQX Cloud 上创建 MQTT 服务 \{#create-an-mqtt-service-on-emqx-cloud\}
 
 在 EMQX Cloud 上创建一个专用 MQTT broker 只需点击几下即可完成。
@@ -117,7 +119,7 @@ EMQX Cloud 为每个账号提供标准部署和专业部署的 14 天免费试�
 
 在本教程中，我们将使用专业部署，因为只有专业版提供数据集成功能，可以在无需编写任何代码的情况下，将 MQTT 数据直接发送到 ClickHouse。
 
-选择 Pro 版本，并选择 `N.Virginia` 区域，然后点击 `Create Now`。几分钟内，你就会获得一个完全托管的 MQTT broker：
+选择 Pro 版本，并选择 `N.Virginial` 区域，然后点击 `Create Now`。几分钟内，你就会获得一个完全托管的 MQTT broker：
 
 <Image img={emqx_cloud_create_2} size="lg" border alt="EMQX Cloud 创建部署步骤 2，展示区域选择" />
 
@@ -204,6 +206,7 @@ FROM
 
 现在点击 &quot;NEXT&quot; 按钮。此步骤是告诉 EMQX Cloud 如何将处理后的数据写入你的 ClickHouse 数据库。
 
+
 ### 添加响应操作 \{#add-a-response-action\}
 
 如果你只有一个资源，则无需修改 &#39;Resource&#39; 和 &#39;Action Type&#39;。
@@ -215,7 +218,8 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 
 <Image img={data_integration_rule_action} size="md" border alt="使用 SQL 模板配置 EMQX Cloud 数据集成规则动作" />
 
-这是一个用于向 ClickHouse 写入数据的模板，可以看到这里使用了变量。
+这是一个用于向 ClickHouse 写入数据的模板，可以看到其中使用了变量。
+
 
 ### 查看规则详情 \{#view-rules-details\}
 
@@ -265,6 +269,7 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 
 <Image img={mqttx_publish} size="lg" border alt="MQTTX 发布 MQTT 消息界面，展示消息编辑" />
 
+
 ### 查看规则监控 \{#view-rules-monitoring\}
 
 检查规则监控，确认成功次数已增加 1。
@@ -282,7 +287,8 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 SELECT * FROM emqx.temp_hum;
 ```
 
-<Image img={clickhouse_result} size="lg" border alt="ClickHouse 查询结果，显示已持久化的物联网 (IoT) 数据" />
+<Image img={clickhouse_result} size="lg" border alt="ClickHouse 查询结果，展示持久化后的物联网 (IoT) 数据" />
+
 
 ### 总结 \{#summary\}
 

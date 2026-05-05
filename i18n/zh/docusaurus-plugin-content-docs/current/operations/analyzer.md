@@ -14,14 +14,14 @@ doc_type: 'reference'
 
 ## 已知不兼容项 \{#known-incompatibilities\}
 
-尽管修复了大量 bug 并引入了新的优化，但这也对 ClickHouse 的行为带来了一些不兼容的变更。请阅读以下变更说明，以确定如何为新的 analyzer 重写你的查询。
+尽管修复了大量 bug 并引入了新的优化，但这也对 ClickHouse 的行为带来了一些不兼容的变更。请阅读以下变更说明，以确定如何为 analyzer 重写你的查询。
 
 ### 无效查询不再被优化 \{#invalid-queries-are-no-longer-optimized\}
 
 之前的查询规划架构会在查询验证步骤之前应用 AST 级别的优化。
 这些优化可能将初始查询改写为有效且可执行的形式。
 
-在新的 analyzer 中，查询验证发生在优化步骤之前。
+在 analyzer 中，查询验证发生在优化步骤之前。
 这意味着此前仍然可以执行的无效查询，现在将不再被支持。
 在这种情况下，必须手动修正查询。
 
@@ -65,7 +65,7 @@ GROUP BY n
 
 ### 使用无效查询的 `CREATE VIEW` \{#create-view-with-invalid-query\}
 
-新的分析器始终会执行类型检查。
+分析器始终会执行类型检查。
 此前，可以使用无效的 `SELECT` 查询创建一个 `VIEW`。
 然后它会在第一次执行 `SELECT` 或 `INSERT` 时失败（对于 `MATERIALIZED VIEW` 也是如此）。
 
@@ -109,7 +109,7 @@ USING (b);
 
 #### 使用 `JOIN USING` 与 `ALIAS`/`MATERIALIZED` 列时的行为变化 \{#changes-in-behavior-with-join-using-and-aliasmaterialized-columns\}
 
-在新的 analyzer 中，在包含 `ALIAS` 或 `MATERIALIZED` 列的 `JOIN USING` 查询中使用 `*` 时，这些列默认会包含在结果集中。
+在 analyzer 中，对包含 `ALIAS` 或 `MATERIALIZED` 列的 `JOIN USING` 查询使用 `*` 时，这些列会默认包含在结果集中。
 
 例如：
 
@@ -124,11 +124,11 @@ SELECT * FROM t1
 FULL JOIN t2 USING (payload);
 ```
 
-在新的 analyzer 中，该查询的结果将包含两个表中的 `id` 列以及 `payload` 列。
+在 analyzer 中，该查询的结果将包含两个表中的 `id` 列以及 `payload` 列。
 相比之下，先前的 analyzer 只有在启用了特定设置（`asterisk_include_alias_columns` 或 `asterisk_include_materialized_columns`）时才会包含这些 `ALIAS` 列，
 并且这些列可能会以不同的顺序出现。
 
-为了确保结果一致且符合预期，尤其是在将旧查询迁移到新的 analyzer 时，建议在 `SELECT` 子句中显式指定列，而不是使用 `*`。
+为了确保结果一致且符合预期，尤其是在将旧查询迁移到 analyzer 时，建议在 `SELECT` 子句中显式指定列，而不是使用 `*`。
 
 
 #### 在 `USING` 子句中对列表达式类型修饰符的处理 \{#handling-of-type-modifiers-for-columns-in-using-clause\}
@@ -180,7 +180,7 @@ FORMAT PrettyCompact
 
 ### 不兼容的函数参数类型 \{#incompatible-function-arguments-types\}
 
-在新的分析器中，会在初始查询分析阶段执行类型推断。
+在分析器中，会在初始查询分析阶段执行类型推断。
 这意味着类型检查会在短路求值之前进行；因此，`if` 函数的参数必须始终具有一个公共超类型。
 
 例如，下面的查询会失败，并报错 `There is no supertype for types Array(UInt8), String because some of them are Array and some of them are not`：
@@ -192,7 +192,7 @@ SELECT toTypeName(if(0, [2, 3, 4], 'String'))
 
 ### 异构集群 \{#heterogeneous-clusters\}
 
-新的 analyzer 显著改变了集群中服务器之间的通信协议。因此，无法在 `enable_analyzer` 设置值不同的服务器上运行分布式查询。
+analyzer 显著改变了集群中服务器之间的通信协议。因此，无法在 `enable_analyzer` 设置值不同的服务器上运行分布式查询。
 
 ### 变更语句仍由旧版 analyzer 解析 \{#mutations-are-interpreted-by-previous-analyzer\}
 
@@ -202,7 +202,7 @@ SELECT toTypeName(if(0, [2, 3, 4], 'String'))
 
 ### 不支持的功能 \{#unsupported-features\}
 
-当前新 analyzer 尚不支持的功能列表如下：
+当前 analyzer 尚不支持的功能列表如下：
 
 - Annoy 索引。
 - Hypothesis 索引。支持仍在开发中，[见此处](https://github.com/ClickHouse/ClickHouse/pull/48381)。
@@ -254,7 +254,7 @@ SETTINGS
 
 错误：`Column ... is not under aggregate function and not in GROUP BY keys (NOT_AN_AGGREGATE)`。异常代码：215
 
-原因：旧的 analyzer 允许在 SELECT 中引用未出现在 GROUP BY 子句中的列（通常会选取任意值）。新的 analyzer 遵循标准 SQL：SELECT 列表中的每一列必须要么是聚合列，要么是分组键。
+原因：旧的 analyzer 允许在 SELECT 中引用未出现在 GROUP BY 子句中的列（通常会选取任意值）。该 analyzer 遵循标准 SQL：SELECT 列表中的每一列必须要么是聚合列，要么是分组键。
 
 解决方法：将该列包裹在 `any()`、`argMax()` 等聚合函数中，或将其添加到 GROUP BY 中。
 
@@ -274,7 +274,7 @@ SELECT user_id, device_id FROM table GROUP BY user_id, device_id
 
 错误：`CTE with name ... already exists (MULTIPLE_EXPRESSIONS_FOR_ALIAS)`。异常代码：179
 
-原因：旧的分析器允许定义多个具有相同名称的公共表表达式（WITH ...），后定义的会遮蔽先前的。而新的分析器为避免这种歧义，禁止出现同名的 CTE。
+原因：旧的分析器允许定义多个具有相同名称的公共表表达式（WITH ...），后定义的会遮蔽先前的。分析器为避免这种歧义，禁止出现同名的 CTE。
 
 解决方案：将重复的 CTE 重命名为唯一名称。
 
@@ -297,9 +297,9 @@ SELECT * FROM processed_data;
 
 错误：`JOIN [JOIN TYPE] ambiguous identifier ... (AMBIGUOUS_IDENTIFIER)` 异常代码：207
 
-原因：查询在 `JOIN` 中引用了一个在多个表中都存在的列名，但没有指定所属的源表。旧的分析器通常会基于内部逻辑猜测列，而新的分析器则要求显式指定名称。
+原因：查询在 `JOIN` 中引用了一个在多个表中都存在的列名，但没有指定所属的源表。旧的分析器通常会基于内部逻辑猜测列，而分析器则要求显式指定名称。
 
-解决方案：使用 `table_alias.column_name` 的形式对列进行完全限定。
+解决方案：使用 table&#95;alias.column&#95;name 的形式对列进行完全限定。
 
 ```sql
 /* ORIGINAL QUERY */
@@ -314,7 +314,7 @@ SELECT table1.ID AS ID_RENAMED FROM table1, table2 WHERE ID_RENAMED...
 
 错误：`Table expression modifiers FINAL are not supported for subquery...` 或 `Storage ... doesn't support FINAL` (`UNSUPPORTED_METHOD`)。异常代码：1, 181
 
-原因：FINAL 是用于表存储引擎（特别是 [Shared]ReplacingMergeTree）的修饰符。新的 analyzer 会在以下情况下拒绝使用 FINAL：
+原因：FINAL 是用于表存储引擎（特别是 [Shared]ReplacingMergeTree）的修饰符。analyzer 会在以下情况下拒绝使用 FINAL：
 
 * 子查询或派生表（例如：FROM (SELECT ...) FINAL）。
 * 不支持 FINAL 的表引擎（例如：SharedMergeTree）。
@@ -334,6 +334,6 @@ SELECT * FROM (SELECT * FROM my_table FINAL) AS subquery ...
 
 错误：`Function with name countdistinct does not exist (UNKNOWN_FUNCTION)`。异常代码：46
 
-原因：在新的 analyzer 中，函数名区分大小写并且采用严格映射。`countdistinct`（全小写）不再会被自动解析。
+原因：在 analyzer 中，函数名区分大小写并且采用严格映射。`countdistinct`（全小写）不再会被自动解析。
 
 解决方法：使用标准的 `countDistinct`（camelCase）或 ClickHouse 特有的 `uniq`。

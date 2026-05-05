@@ -24,7 +24,11 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-**ClickStack Open Source** をデプロイし、ClickHouse と ClickStack UI を自分で実行・管理する場合のために、UI、OpenTelemetry コレクター、および ClickHouse を 1 つのコンテナにまとめたビルド済み Docker イメージを提供しています。これにより、ローカル開発、テスト、およびセルフマネージドなデプロイメントを簡単に開始できます。
+**ClickStack Open Source** をデプロイし、ClickHouse と ClickStack UI を自分で実行・管理する場合のために、UI、OpenTelemetry collector、および ClickHouse を 1 つのコンテナにまとめたビルド済み Docker イメージを提供しています。これにより、ローカル開発、テスト、およびセルフマネージドなデプロイメントを簡単に開始できます。
+
+:::tip
+ClickStack のマネージド版も利用できます — [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed) を参照してください。
+:::
 
 これらのイメージは公式の ClickHouse 向け Debian パッケージをベースとしており、さまざまなユースケースに対応できるよう複数のディストリビューションで提供されています。
 
@@ -59,7 +63,7 @@ ClickStack イメージは現在 `clickhouse/clickstack-*` として公開され
 ```shell
 # パスをマウントするようにコマンドを変更
 docker run \
-  --name clickstack
+  --name clickstack \
   -p 8123:8123 \
   -p 8080:8080 \
   -p 4317:4317 \
