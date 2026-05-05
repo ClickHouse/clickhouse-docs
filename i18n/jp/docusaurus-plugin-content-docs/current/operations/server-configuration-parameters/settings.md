@@ -4954,7 +4954,7 @@ schema または設定の変更時には、影響を受けるテーブルは `<l
 既存の `SystemLog` のローテーション動作と同様に再作成されます。
 
 サーバー設定で `<shared_log_pipeline><endpoint>` を設定しておく必要があります。
-あわせて参照: `shared_log_pipeline.enable_polling`, `shared_log_pipeline.flush_timeout_seconds`.
+あわせて参照: `shared_log_pipeline.enable_sync_flush`, `shared_log_pipeline.flush_timeout_seconds`.
 
 ## user_defined_executable_functions_config \{#user_defined_executable_functions_config\}
 

@@ -421,6 +421,8 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 
 ### SYSTEM STOP TTL MERGES \{#stop-ttl-merges\}
 
+<CloudNotSupportedBadge />
+
 MergeTree ファミリーのテーブルに対して、[TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) に基づいてバックグラウンドで古いデータを削除する処理を停止します。
 テーブルが存在しない場合や、テーブルが MergeTree エンジンを使用していない場合でも `Ok.` を返します。データベースが存在しない場合はエラーを返します。
 
@@ -428,8 +430,9 @@ MergeTree ファミリーのテーブルに対して、[TTL expression](../../en
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START TTL MERGES \{#start-ttl-merges\}
+
+<CloudNotSupportedBadge />
 
 MergeTree ファミリーのテーブルに対して、[TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) に従い、古いデータのバックグラウンド削除を開始します。
 テーブルが存在しない場合でも `Ok.` を返します。データベースが存在しない場合はエラーを返します。
@@ -437,7 +440,6 @@ MergeTree ファミリーのテーブルに対して、[TTL expression](../../en
 ```sql
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM STOP MOVES \{#stop-moves\}
 

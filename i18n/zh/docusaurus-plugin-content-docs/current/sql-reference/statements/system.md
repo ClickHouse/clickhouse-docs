@@ -420,23 +420,25 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 
 ### SYSTEM STOP TTL MERGES \{#stop-ttl-merges\}
 
-提供根据 [TTL 表达式](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 停止对 MergeTree 系列表中旧数据进行后台删除的功能：
+<CloudNotSupportedBadge />
+
+提供根据 [生存时间 (TTL) 表达式](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 停止对 MergeTree 家族表中旧数据进行后台删除的功能：
 即使表不存在或表不是 MergeTree 引擎表也会返回 `Ok.`。当数据库不存在时返回错误：
 
 ```sql
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START TTL MERGES \{#start-ttl-merges\}
 
-用于为 MergeTree 系列表根据 [TTL 表达式](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 启动后台旧数据删除操作：
+<CloudNotSupportedBadge />
+
+用于为 MergeTree 家族表根据 [生存时间 (TTL) 表达式](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 启动后台旧数据删除操作：
 即使表不存在也会返回 `Ok.`。当数据库不存在时则返回错误：
 
 ```sql
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM STOP MOVES \{#stop-moves\}
 

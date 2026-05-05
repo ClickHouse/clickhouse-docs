@@ -52,6 +52,19 @@ CREATE NAMED COLLECTION ai_credentials AS
 
 AI 関連の設定はすべて、[設定](/operations/settings/settings) の `ai_function_` プレフィックス配下に記載されています。
 
+### エンドポイントホストの制限 \{#restricting-endpoint-hosts\}
+
+AI の名前付きコレクションにおける `endpoint` URL は、サーバーが自身の資格情報で接続する送信先であり、リクエストヘッダーにはその名前付きコレクションの `api_key` が含まれます。デフォルトでは、ClickHouse はすべてのホストを許可します。関数が接続できる先を特定のプロバイダ群に限定するには、サーバー設定で [`remote_url_allow_hosts`](/operations/server-configuration-parameters/settings#remote_url_allow_hosts) を設定します。例:
+
+```xml
+<remote_url_allow_hosts>
+    <host>api.openai.com</host>
+    <host>api.anthropic.com</host>
+</remote_url_allow_hosts>
+```
+
+この設定はサーバー全体に適用され、HTTP を使用するすべての機能に影響することに注意してください。
+
 ## サポート対象のプロバイダー \{#supported-providers\}
 
 | プロバイダー    | `provider` の値 | チャット関数 | 備考                              |

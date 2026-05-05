@@ -52,6 +52,19 @@ CREATE NAMED COLLECTION ai_credentials AS
 
 所有与 AI 相关的设置均列在[设置](/operations/settings/settings)中，前缀为 `ai_function_`。
 
+### 限制 端点 的主机 \{#restricting-endpoint-hosts\}
+
+AI 命名集合中的 `endpoint` URL 是服务器以自身身份连接的出站目标端，并会在请求头中携带该命名集合的 `api_key`。默认情况下，ClickHouse 允许连接任意主机。若要将函数限制为一组特定的提供商，请在服务器配置中设置 [`remote_url_allow_hosts`](/operations/server-configuration-parameters/settings#remote_url_allow_hosts)，例如：
+
+```xml
+<remote_url_allow_hosts>
+    <host>api.openai.com</host>
+    <host>api.anthropic.com</host>
+</remote_url_allow_hosts>
+```
+
+请注意，此设置为服务器级设置，并适用于所有使用 HTTP 的功能。
+
 ## 支持的提供商 \{#supported-providers\}
 
 | 提供商       | `provider` 值  | 聊天功能 | 说明                    |

@@ -533,6 +533,14 @@ Cloud 默认值：`1`。
 
 启用实验性的漏斗分析函数。
 
+## allow_experimental_geo_types_in_iceberg \{#allow_experimental_geo_types_in_iceberg\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置，允许将 Iceberg 的 geometry/geography 字段解析为 Geometry 类型。"}]}]} />
+
+允许将 Iceberg `geometry` 和 `geography` 字段类型解析为 ClickHouse `Geometry` (Variant) 类型。
+
 ## allow_experimental_hash_functions \{#allow_experimental_hash_functions\}
 
 <ExperimentalBadge/>
@@ -3600,6 +3608,15 @@ FORMAT PrettyCompactMonoBlock
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "将 blob 存储操作相关信息写入 system.blob_storage_log 表"}]}]}/>
 
 将 blob 存储操作相关信息写入 system.blob_storage_log 表
+
+## enable_blob_storage_log_for_read_operations \{#enable_blob_storage_log_for_read_operations\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于将 Azure Blob Storage 读取操作记录到 system.blob_storage_log 的新设置"}]}]} />
+
+将 Azure Blob Storage 读取操作的信息写入 system.blob&#95;storage&#95;log 表。
+需要同时启用 `enable_blob_storage_log`。
 
 ## enable_early_constant_folding \{#enable_early_constant_folding\}
 
@@ -6671,6 +6688,14 @@ Cloud 默认值：每个副本内存容量的一半。
 推荐值为系统可用内存的一半。
 :::
 
+## max_bytes_before_external_join \{#max_bytes_before_external_join\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于控制哈希连接自动落盘的新设置。非零值会启用落盘，并设置字节阈值。"}]}]} />
+
+如果设置为非零值，且 `join_algorithm` 为 `hash`、`parallel_hash`、`default` 或 `auto`，则当右侧数据超过此字节数时，哈希连接会自动转换为 grace hash join，以实现落盘。设置为 0 (默认值) 时，将禁用自动落盘。此设置会阻止通过连接优化进行按顺序读取。
+
 ## max_bytes_before_external_sort \{#max_bytes_before_external_sort\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -7154,6 +7179,18 @@ Cloud 默认值：
 
 仅当 `SELECT` 部分是并行执行时，并行 `INSERT SELECT` 才会生效，参见 [`max_threads`](#max_threads) 设置。
 较大的取值会导致更高的内存占用。
+
+## max_insert_threads_min_free_memory_per_thread \{#max_insert_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="4294967296" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "4294967296"},{"label": "用于根据可用空闲内存限制插入线程数的新设置"}]}]} />
+
+与 `max_threads_min_free_memory_per_thread` 相同，但它作用于 `max_insert_threads`，而不是 `max_threads`。默认值更高，因为插入管道通常比读取管道持有更大的线程级缓冲区 (MergeTree parts、压缩块) 。
+
+如果空闲内存小于 `max_insert_threads` 与该值的乘积，则会相应下调 `max_insert_threads` 以满足限制，最小可降至 `1`。
+
+将其设置为 `0` 以禁用此限制。
 
 ## max_joined_block_size_bytes \{#max_joined_block_size_bytes\}
 
@@ -7741,6 +7778,22 @@ Cloud 默认值：`0`。
 
 如果该值不为 0，则限制读取 MergeTree 表时的流数量。
 
+## max_streams_for_union_step \{#max_streams_for_union_step\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置，用于限制 `UNION` 步骤中同时活跃的数据流数量，以降低峰值内存占用。"}]}]} />
+
+限制 `UNION` 步骤中同时活跃的数据流数量 (同时适用于 `UNION ALL` 和 `UNION DISTINCT`，因为 `UNION DISTINCT` 是通过先执行一个 `UNION ALL` 步骤，再执行一个 `DISTINCT` 步骤来实现的) 。当 `UNION` 查询包含大量子查询时，这些子查询会同时打开各自的读取缓冲区，导致内存占用与子查询数量成正比。此设置会插入 `Concat` 处理器以收窄管道，使同时活跃的流数量最多不超过该值，从而大幅降低峰值内存占用。实际限制值取该值与 `max_threads * max_streams_for_union_step_to_max_threads_ratio` 中的较小者 (任一值为 0 都表示忽略该项) 。当两者都为 0 时，则不会进行收窄。
+
+## max_streams_for_union_step_to_max_threads_ratio \{#max_streams_for_union_step_to_max_threads_ratio\}
+
+<SettingsInfoBlock type="Float" default_value="8" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "8"},{"label": "新设置：`UNION` 步骤中同时活跃的流数量上限按 min(max_streams_for_union_step, max_threads * max_streams_for_union_step_to_max_threads_ratio) 计算，其中任一值为 0 都会禁用这一限制。"}]}]} />
+
+该比率乘以 `max_threads` 后，用于确定 `UNION` 步骤中同时活跃的流数量上限 (适用于 `UNION ALL` 和 `UNION DISTINCT`) 。实际限制为该计算值与 `max_streams_for_union_step` 中的较小值 (两者中任一值为 0，则忽略该值) 。例如，当 `max_threads = 8` 且该比率设为 1 时，最多会有 8 个流同时活跃。将其设为 0 可禁用基于该比率的限制。
+
 ## max_streams_multiplier_for_merge_tables \{#max_streams_multiplier_for_merge_tables\}
 
 <SettingsInfoBlock type="Float" default_value="5" />
@@ -7845,6 +7898,22 @@ Cloud 默认值：1 TB。
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 用于处理索引的最大线程数。
+
+## max_threads_min_free_memory_per_thread \{#max_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1073741824"},{"label": "根据可用空闲内存限制线程数的新设置"}]}]} />
+
+当服务器面临内存压力时，此设置会降低 `max_threads`，以避免启动很可能触及内存限制的高并发查询。
+
+空闲内存按以下方式计算：服务器的 `max_server_memory_usage` 减去当前由全局内存跟踪器记录的内存用量。如果空闲内存小于 `max_threads` 乘以此值，则会将 `max_threads` 下调为满足 `N * value <= free_memory` 的最大 N，且最小为 `1`。
+
+将其设为 `0` 可禁用此限制。
+
+例如，在默认值为 1 GiB 且空闲内存为 32 GiB 时，`max_threads` 的上限为 32；当空闲内存为 1 GiB 时，则降至 1。
+
+此设置适用于读取侧并行度 (`SELECT`、`UNION`、`INTERSECT`/`EXCEPT`，以及 `INSERT ... SELECT` 中的 `SELECT` 侧) 。写入侧请参见 `max_insert_threads_min_free_memory_per_thread`。
 
 ## max_untracked_memory \{#max_untracked_memory\}
 
@@ -11334,6 +11403,14 @@ S3Queue 引擎的默认 ZooKeeper 路径前缀
 
 - 0 — 禁用。
 - 1 — 启用。
+
+## send_table_structure_on_insert_with_inline_data \{#send_table_structure_on_insert_with_inline_data\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "用于控制服务器是否会为包含内联数据的 INSERT 查询发送表结构的新设置。"}]}]} />
+
+如果禁用此设置，且 INSERT 查询包含内联数据，服务器将不会通过 Native 协议向客户端回传表结构和列默认值。相反，服务器会自行解析内联数据。这可以提升通过 Native 协议执行大量小型插入操作时的性能。
 
 ## send_timeout \{#send_timeout\}
 

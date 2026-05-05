@@ -395,11 +395,7 @@ y: 993
 ### DELETE \{#iceberg-writes-delete\}
 
 在 merge-on-read 格式中删除多余行在 ClickHouse 中同样受支持。
-此查询会创建一个包含 position delete 文件的新快照。
-
-注意：如果希望将来使用其他 Iceberg 引擎（例如 Spark）读取这些表，则需要禁用 `output_format_parquet_use_custom_encoder` 和 `output_format_parquet_parallel_encoding` 这两个设置项。
-这是因为 Spark 是通过 Parquet 字段 ID 来读取这些文件，而当这些开关启用时，ClickHouse 目前尚不支持写入字段 ID。
-我们计划在未来修复此行为。
+此查询会创建一个包含位置删除文件的新快照。
 
 ### 示例 \{#example-iceberg-writes-delete\}
 

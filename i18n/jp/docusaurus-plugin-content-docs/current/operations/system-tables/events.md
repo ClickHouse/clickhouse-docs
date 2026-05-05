@@ -2149,6 +2149,22 @@ jemalloc の解放サンプルのトラッキングに失敗した合計回数
 
 JOIN 操作におけるビルド側テーブルの合計行数。
 
+### JoinDelayedJoinedTransformBlockCount \{#joindelayedjoinedtransformblockcount\}
+
+DelayedJoinedBlocksWorkerTransform が出力したブロック数。
+
+### JoinDelayedJoinedTransformRowCount \{#joindelayedjoinedtransformrowcount\}
+
+DelayedJoinedBlocksWorkerTransform が出力した行数。
+
+### JoinNonJoinedTransformBlockCount \{#joinnonjoinedtransformblockcount\}
+
+NonJoinedBlocksTransform が出力したブロック数。
+
+### JoinNonJoinedTransformRowCount \{#joinnonjoinedtransformrowcount\}
+
+NonJoinedBlocksTransform が出力した、結合されなかった行数。
+
 ### JoinOptimizeMicroseconds \{#joinoptimizemicroseconds\}
 
 JOIN プラン最適化の実行に要した合計時間です。
@@ -2164,6 +2180,10 @@ JOIN の並べ替えアルゴリズムの実行に費やされた合計時間。
 ### JoinResultRowCount \{#joinresultrowcount\}
 
 JOIN 操作の結果に含まれる行の総数。
+
+### JoinSpillingHashJoinSwitchedToGraceJoin \{#joinspillinghashjoinswitchedtogracejoin\}
+
+SpillingHashJoin で、メモリ制限により (Concurrent)HashJoin から GraceHashJoin に切り替わった回数。
 
 ### KafkaBackgroundReads \{#kafkabackgroundreads\}
 

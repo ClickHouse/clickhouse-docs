@@ -31,12 +31,18 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## 例： \{#example\}
 
-2 種類の統計タイプを 2 つの列に追加する：
+2 種類のSTATISTICSタイプを 2 つの列に追加する：
 
 ```sql
 ALTER TABLE t1 MODIFY STATISTICS c, d TYPE TDigest, Uniq;
 ```
 
+Nullable 列に NullCount STATISTICSを追加する：
+
+```sql
+ALTER TABLE t1 ADD STATISTICS nullable_col TYPE NullCount;
+```
+
 :::note
-統計情報は、[`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md)エンジンテーブル ([レプリケーション](../../../engines/table-engines/mergetree-family/replication.md)バリアントを含む) でのみサポートされています。
+STATISTICSは、[`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md)エンジンテーブル ([レプリケーション](../../../engines/table-engines/mergetree-family/replication.md)バリアントを含む) でのみサポートされています。
 :::

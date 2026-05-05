@@ -37,7 +37,7 @@ doc_type: 'reference'
 * `min_block_number` ([Int64](../../sql-reference/data-types/)) — マージ後の現在のパーツを構成するデータパーツのうち、最小の番号。
 * `max_block_number` ([Int64](../../sql-reference/data-types/)) — マージ後の現在のパーツを構成するデータパーツのうち、最大の番号。
 * `level` ([UInt32](../../sql-reference/data-types/)) — マージツリーの深さ。ゼロの場合、現在のパーツは他のパーツのマージではなく、`insert` によって作成されたことを示します。
-* `data_version` ([UInt64](../../sql-reference/data-types/)) — データパートに適用すべき mutation を判定するために使用される数値 (`data_version` より大きいバージョンを持つ mutation) 。
+* `data_version` ([UInt64](../../sql-reference/data-types/)) — データパートに適用すべき mutation を判定するために使用される数値 (`data&#95;version` より大きいバージョンを持つ mutation) 。
 * `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 主キーの値に使用されるメモリ量 (バイト単位) 。
 * `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 主キーの値用に確保されているメモリ量 (バイト単位) 。
 * `database` ([String](../../sql-reference/data-types/)) — データベース名。
@@ -61,6 +61,7 @@ doc_type: 'reference'
 * `estimates.min` ([Nullable(String)](../../sql-reference/data-types/)) — カラムの推定される最小値。
 * `estimates.max` ([Nullable(String)](../../sql-reference/data-types/)) — カラムの推定最大値。
 * `estimates.cardinality` ([Nullable(UInt64)](../../sql-reference/data-types/)) — カラムの推定カーディナリティ。
+* `estimates.null_count` ([Nullable(UInt64)](../../sql-reference/data-types/)) — カラムの NULL 値の推定数。
 * `serialization_kind` ([String](../../sql-reference/data-types/)) — カラムのシリアライゼーションの種類
 * `substreams` ([Array(String)](../../sql-reference/data-types/)) — カラムのシリアライズ先となるサブストリーム名
 * `filenames` ([Array(String)](../../sql-reference/data-types/)) — カラムの各サブストリームそれぞれのファイル名

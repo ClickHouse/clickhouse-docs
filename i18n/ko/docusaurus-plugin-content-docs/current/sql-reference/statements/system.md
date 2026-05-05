@@ -427,6 +427,8 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 
 ### SYSTEM STOP TTL MERGES \{#stop-ttl-merges\}
 
+<CloudNotSupportedBadge />
+
 MergeTree 계열 테이블에 대해 [TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)에 따라 오래된 데이터를 삭제하는 백그라운드 작업을 중지할 수 있습니다.
 테이블이 존재하지 않거나 테이블이 MergeTree 엔진을 사용하지 않는 경우에도 `Ok.`를 반환합니다. 데이터베이스가 존재하지 않으면 오류를 반환합니다:
 
@@ -434,16 +436,16 @@ MergeTree 계열 테이블에 대해 [TTL expression](../../engines/table-engine
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START TTL MERGES \{#start-ttl-merges\}
 
-MergeTree 패밀리의 테이블에 대해 [TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)에 따라 오래된 데이터를 백그라운드에서 삭제하는 작업을 시작할 수 있습니다.
+<CloudNotSupportedBadge />
+
+MergeTree 계열의 테이블에 대해 [TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)에 따라 오래된 데이터를 백그라운드에서 삭제하는 작업을 시작할 수 있습니다.
 테이블이 존재하지 않아도 `Ok.`를 반환합니다. 데이터베이스가 존재하지 않으면 오류를 반환합니다:
 
 ```sql
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM STOP MOVES \{#stop-moves\}
 

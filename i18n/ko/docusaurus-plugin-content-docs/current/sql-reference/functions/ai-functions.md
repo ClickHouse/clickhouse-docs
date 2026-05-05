@@ -52,6 +52,19 @@ CREATE NAMED COLLECTION ai_credentials AS
 
 모든 AI 관련 설정은 [설정](/operations/settings/settings) 문서의 `ai_function_` 접두사 항목 아래에 나열되어 있습니다.
 
+### 엔드포인트 호스트 제한 \{#restricting-endpoint-hosts\}
+
+AI 명명된 컬렉션의 `endpoint` URL은 서버가 자체 신원으로 연결하는 아웃바운드 대상이며, 요청 헤더에 해당 명명된 컬렉션의 `api_key`를 담아 전송합니다. 기본적으로 ClickHouse는 모든 호스트를 허용합니다. 함수를 특정 프로바이더 집합으로 제한하려면 서버 설정에서 [`remote_url_allow_hosts`](/operations/server-configuration-parameters/settings#remote_url_allow_hosts)를 구성하십시오. 예:
+
+```xml
+<remote_url_allow_hosts>
+    <host>api.openai.com</host>
+    <host>api.anthropic.com</host>
+</remote_url_allow_hosts>
+```
+
+이 설정은 서버 전체에 적용되며, HTTP를 사용하는 모든 기능에 영향을 줍니다.
+
 ## 지원되는 프로바이더 \{#supported-providers\}
 
 | 프로바이더     | `provider` 값  | 채팅 기능 | 비고                           |

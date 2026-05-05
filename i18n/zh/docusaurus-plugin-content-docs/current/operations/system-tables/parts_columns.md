@@ -61,6 +61,7 @@ doc_type: 'reference'
 * `estimates.min` ([Nullable(String)](../../sql-reference/data-types/)) — 该列的预估最小值。
 * `estimates.max` ([Nullable(String)](../../sql-reference/data-types/)) — 该列的估计最大值。
 * `estimates.cardinality` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 列的估计基数。
+* `estimates.null_count` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 该列中 NULL 值的估计数量。
 * `serialization_kind` ([String](../../sql-reference/data-types/)) — 列的序列化方式
 * `substreams` ([Array(String)](../../sql-reference/data-types/)) — 列序列化到的子流名称
 * `filenames` ([Array(String)](../../sql-reference/data-types/)) — 分别对应某一列各个子流的文件名
