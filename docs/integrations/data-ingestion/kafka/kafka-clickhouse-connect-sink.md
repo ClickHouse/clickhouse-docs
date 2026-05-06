@@ -827,7 +827,7 @@ transforms.keyToValue.field=_key
 ```
 
 #### "There are too many open connections to my ClickHouse instance" {#too-many-open-connections}
-In high task count connector deployments where the insert frequency is high, insertions to ClickHouse may result in many open connections to your database. In ClickHouse Cloud, a common symptom of this issue is requests being rate limited by the cloud proxy/load balancer.
+High insertion frequency may result in many open connections to your database. This is common in large task count or distributed connector deployments where the insert rate to a single ClickHouse instance is high. In ClickHouse Cloud, a common symptom of this issue is requests being rate limited by the cloud proxy/load balancer.
 
 Some strategies to reduce the number of open connections are:
 1. Adjust the connection pool settings on the Java client (note that these may reduce overall throughput):
