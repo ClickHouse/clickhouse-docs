@@ -201,6 +201,10 @@ The most basic configuration to get you started - it assumes you're running Kafk
 }
 ```
 
+:::note
+The above connector config requires that you enable client overrides in your worker configuration via `connector.client.config.override.policy=All`. See the [Kafka Connect documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) for more information.
+:::
+
 #### Basic configuration with multiple topics {#basic-configuration-with-multiple-topics}
 
 The connector can consume data from multiple topics
@@ -503,17 +507,21 @@ For optimal performance with ClickHouse, aim for larger batches:
 
 ```properties
 # Increase the number of records per poll
-consumer.max.poll.records=5000
+consumer.override.max.poll.records=5000
 
 # Increase the partition fetch size (5 MB)
-consumer.max.partition.fetch.bytes=5242880
+consumer.override.max.partition.fetch.bytes=5242880
 
 # Optional: Increase minimum fetch size to wait for more data (1 MB)
-consumer.fetch.min.bytes=1048576
+consumer.override.fetch.min.bytes=1048576
 
 # Optional: Reduce wait time if latency is critical
-consumer.fetch.max.wait.ms=300
+consumer.override.fetch.max.wait.ms=300
 ```
+
+:::note
+The above properties require that you enable client overrides in your worker configuration via `connector.client.config.override.policy=All`. See the [Kafka Connect documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) for more information.
+:::
 
 **Important**: Kafka Connect fetch settings represent compressed data, while ClickHouse receives uncompressed data. Balance these settings based on your compression ratio.
 
@@ -753,15 +761,19 @@ Here's a complete example optimized for high throughput:
     "exactlyOnce": "false",
     "ignorePartitionsWhenBatching": "true",
     
-    "consumer.max.poll.records": "10000",
-    "consumer.max.partition.fetch.bytes": "5242880",
-    "consumer.fetch.min.bytes": "1048576",
-    "consumer.fetch.max.wait.ms": "500",
+    "consumer.override.max.poll.records": "10000",
+    "consumer.override.max.partition.fetch.bytes": "5242880",
+    "consumer.override.fetch.min.bytes": "1048576",
+    "consumer.override.fetch.max.wait.ms": "500",
     
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
 ```
+
+:::note
+The above connector config requires that you enable client overrides in your worker configuration via `connector.client.config.override.policy=All`. See the [Kafka Connect documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) for more information.
+:::
 
 **This configuration**:
 - Processes up to 10,000 records per poll
