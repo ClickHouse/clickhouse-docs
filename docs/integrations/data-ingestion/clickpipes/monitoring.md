@@ -9,7 +9,7 @@ keywords: ['ClickPipes', 'monitoring', 'metrics', 'Prometheus', 'observability']
 
 # Monitoring ClickPipes
 
-In addition to in-console monitoring, ClickPipes exposes metrics to a [Prometheus-compatible endpoint](/integrations/prometheus) for scraping. These metrics are published with other ClickHouse Cloud service metrics, and allow you to integrate ClickPipes monitoring with your existing observability stack (e.g., [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-grafana)).
+In addition to in-console monitoring, ClickPipes exposes metrics to a [Prometheus-compatible endpoint](/integrations/prometheus) for scraping. These metrics are published with other ClickHouse Cloud service metrics, and allow you to integrate ClickPipes monitoring with your existing observability stack (e.g., [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog)).
 
 ## Metric labels {#metric-labels}
 
