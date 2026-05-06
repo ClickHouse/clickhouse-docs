@@ -497,22 +497,39 @@ The connector polls for messages from the framework's buffer:
 On Confluent Cloud, adjustment of these settings requires opening a support case through Confluent Cloud.  
 :::  
 
+:::important
+These are **sink connector consumer settings**, not global Kafka Connect configuration. The ClickHouse Kafka Connect Sink is a sink connector - it consumes messages from Kafka topics - so it uses consumer-level settings. Source connectors (which produce to Kafka) use `producer.*` / `producer.override.*` instead.
+
+There are two scopes for these settings, each requiring a different prefix:
+
+- **Worker-level** (`consumer.*`): Set in the Kafka Connect worker properties file (e.g. `connect-distributed.properties`). Applies to all sink connectors on that worker. Use this when you want a default across all sink connectors on the cluster - for example, if you run 10 sink connectors and want them all to use the same `max.poll.records` unless individually overridden, set `consumer.max.poll.records=5000` in `connect-distributed.properties`.
+
+- **Connector-level** (`consumer.override.*`): Set in the individual connector's config JSON (via the REST API or UI). Applies only to that specific connector. Use this when one connector needs different tuning from the worker default - for example, if one high-throughput ClickHouse sink needs `max.poll.records=10000` while the rest stay at the worker default, set `"consumer.override.max.poll.records": "10000"` in that connector's JSON config.
+
+Settings placed in a connector config JSON **without** the `.override` suffix are silently ignored by the Kafka Connect framework.
+
+`consumer.override.*` requires Kafka Connect 2.7+ (the minimum supported version for this connector). The override policy is enabled by default since Kafka 3.0. For Kafka 2.7-2.9, you must set `connector.client.config.override.policy=All` in your worker properties file.
+
+See the [Confluent documentation on connector config overrides](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) for more details.
+:::
+
 ##### Recommended settings for high throughput {#recommended-batch-settings}
 
 For optimal performance with ClickHouse, aim for larger batches:
 
 ```properties
+# Connector-level consumer overrides for the sink connector (set in connector config JSON)
 # Increase the number of records per poll
-consumer.max.poll.records=5000
+consumer.override.max.poll.records=5000
 
 # Increase the partition fetch size (5 MB)
-consumer.max.partition.fetch.bytes=5242880
+consumer.override.max.partition.fetch.bytes=5242880
 
 # Optional: Increase minimum fetch size to wait for more data (1 MB)
-consumer.fetch.min.bytes=1048576
+consumer.override.fetch.min.bytes=1048576
 
 # Optional: Reduce wait time if latency is critical
-consumer.fetch.max.wait.ms=300
+consumer.override.fetch.max.wait.ms=300
 ```
 
 **Important**: Kafka Connect fetch settings represent compressed data, while ClickHouse receives uncompressed data. Balance these settings based on your compression ratio.
@@ -522,7 +539,7 @@ consumer.fetch.max.wait.ms=300
 - **Larger batches** = Higher memory usage, potential increased end-to-end latency
 - **Too large batches** = Risk of timeouts, OutOfMemory errors, or exceeding `max.poll.interval.ms`
 
-More details: [Confluent documentation](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Kafka documentation](https://kafka.apache.org/documentation/#consumerconfigs)
+More details: [Confluent documentation on connector config overrides](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Kafka consumer configuration reference](https://kafka.apache.org/documentation/#consumerconfigs)
 
 #### Asynchronous inserts {#asynchronous-inserts}
 
@@ -753,10 +770,10 @@ Here's a complete example optimized for high throughput:
     "exactlyOnce": "false",
     "ignorePartitionsWhenBatching": "true",
     
-    "consumer.max.poll.records": "10000",
-    "consumer.max.partition.fetch.bytes": "5242880",
-    "consumer.fetch.min.bytes": "1048576",
-    "consumer.fetch.max.wait.ms": "500",
+    "consumer.override.max.poll.records": "10000",
+    "consumer.override.max.partition.fetch.bytes": "5242880",
+    "consumer.override.fetch.min.bytes": "1048576",
+    "consumer.override.fetch.max.wait.ms": "500",
     
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
@@ -769,6 +786,7 @@ Here's a complete example optimized for high throughput:
 - Uses async inserts with 16 MB buffer
 - Runs 8 parallel tasks (match your partition count)
 - Optimized for throughput over strict ordering
+- Uses `consumer.override.*` prefix for per-connector tuning of the sink connector's Kafka consumer (overrides worker-level defaults for this connector only)
 
 ### Troubleshooting {#troubleshooting}
 
