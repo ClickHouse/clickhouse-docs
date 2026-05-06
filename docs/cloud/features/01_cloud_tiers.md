@@ -89,8 +89,8 @@ This page discusses which tiers are right for your specific use case.
   </tr>
   <tr>
     <td>Export backups to your own cloud account</td>
-    <td></td>
-    <td></td>
+    <td>✓</td>
+    <td>✓</td>
     <td>✓</td>
   </tr>
   <tr>
@@ -191,7 +191,6 @@ Caters to large-scale, mission critical deployments that have stringent security
   - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - Allows Scheduled upgrades: you can select the day of the week/time window for upgrades, both database and cloud releases.  
 - Offers [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) and PCI compliance.
-- Exports Backups to the user's account.
 
 :::note 
 Single replica services across all three tiers are meant to be fixed in size (`8 GiB`, `12 GiB`)
