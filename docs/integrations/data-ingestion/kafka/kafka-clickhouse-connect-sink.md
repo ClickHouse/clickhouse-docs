@@ -825,3 +825,15 @@ transforms=keyToValue
 transforms.keyToValue.type=com.clickhouse.kafka.connect.transforms.KeyToValue
 transforms.keyToValue.field=_key
 ```
+
+#### "There are too many open connections to my ClickHouse instance" {#too-many-open-connections}
+In high task count connector deployments where the insert frequency is high, insertions to ClickHouse may result in many open connections to your database. In ClickHouse Cloud, a common symptom of this issue is requests being rate limited by the cloud proxy/load balancer.
+
+Some strategies to reduce the number of open connections are:
+1. Adjust the connection pool settings on the Java client (note that these may reduce overall throughput):
+   - `max_open_connections`: defaults to 10. Reducing this will bound the number of open connections per task.
+   - `connection_ttl`: defaults to -1 (no ttl). Setting this to >0 will eagerly reclaim connections after the ttl expires.
+
+   See the [Java client Connection & Endpoints configuration tab](https://clickhouse.com/docs/integrations/language-clients/java/client#configuration) for more details.
+
+2. Increase `bufferCount`: in high data volume/throughput deployments, this will increase the number of records buffered between inserts and reduce the frequency of insert queries sent to your database. This will reduce the number of new connections needed to write to your database.
