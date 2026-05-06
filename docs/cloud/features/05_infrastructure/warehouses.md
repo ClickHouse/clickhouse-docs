@@ -112,7 +112,7 @@ Services can be one of:
   - Can export data externally
 - **read-only**
   - Can only read data; it cannot write or modify data in ClickHouse
-  - Does not perform background merge operations outside of system tables, so its resources are fully dedicated to read queries
+  - Doesn't perform background merge operations outside of system tables, so its resources are fully dedicated to read queries
   - Can still export data externally (e.g., via table functions), but cannot change data inside ClickHouse
   - Idles without delay, unlike read-write services which may be kept awake by background merges.
 
