@@ -6692,7 +6692,7 @@ Cloud 默认值：每个副本内存容量的一半。
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于控制哈希连接自动落盘的新设置。非零值会启用落盘，并设置字节阈值。"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "用于控制哈希连接自动落盘的新设置。非零值会启用落盘，并设置字节阈值。"}]}]} />
 
 如果设置为非零值，且 `join_algorithm` 为 `hash`、`parallel_hash`、`default` 或 `auto`，则当右侧数据超过此字节数时，哈希连接会自动转换为 grace hash join，以实现落盘。设置为 0 (默认值) 时，将禁用自动落盘。此设置会阻止通过连接优化进行按顺序读取。
 
@@ -12108,6 +12108,27 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.5"},{"label": "1"},{"label": "A new setting"}]}]}/>
 
 如果为 true，则会在执行更新之前将分区片段集合更新到最新版本。
+
+## url_base \{#url_base\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": ""},{"label": "用于指定在 url 表函数和 URL 表引擎中解析相对 URL 时所用基础 URL 的新设置。"}]}]} />
+
+用于在 [url](../../sql-reference/table-functions/url.md) 表函数和 [URL](../../engines/table-engines/special/url.md) 表引擎中解析相对 URL 的基础 URL。
+
+设置后，相对 URL 将按以下方式解析：
+
+* 路径相对 URL (例如 `data.csv`) ：按照 RFC 3986 与基础 URL 的路径合并。基础路径中最后一个 `/` 之后的所有内容都会被相对 URL 替换，因此末尾是否带斜杠很重要：`https://example.com/dir/` + `data.csv` = `https://example.com/dir/data.csv`，而 `https://example.com/dir` + `data.csv` = `https://example.com/data.csv`。如果基础 URL 没有路径 (例如 `https://example.com`) ，则会插入一个 `/`：`https://example.com/data.csv`。相对 URL 中的点分段 (`./` 和 `../`) 会被规范化：`https://example.com/dir/` + `../a.csv` = `https://example.com/a.csv`。
+* 主机相对 URL (例如 `/test/data.csv`) ：根据基础 URL 的 scheme 和 host 解析。
+* scheme 相对 URL (例如 `//other.com/test/data.csv`) ：使用基础 URL 的 scheme 进行解析。
+* 仅查询引用 (例如 `?x=1`) ：附加到基础 URL 路径后 (替换现有的查询字符串和片段) 。
+* 仅片段引用 (例如 `#frag`) ：附加到基础 URL 后，保留查询字符串 (替换现有片段) 。
+* 空引用：返回不带片段的基础 URL。
+
+例如，如果 `url_base` 为 `https://example.com/def/`，则：
+
+* `data.csv` 解析为 `https://example.com/def/data.csv`
+* `/test/data.csv` 解析为 `https://example.com/test/data.csv`
+* `//other.com/test/data.csv` 解析为 `https://other.com/test/data.csv`
 
 ## use_async_executor_for_materialized_views \{#use_async_executor_for_materialized_views\}
 

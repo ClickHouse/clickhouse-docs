@@ -76,10 +76,32 @@ Hive 形式のパーティショニングで作成された仮想列を使用す
 SELECT * FROM url('http://data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
 
+## 相対URLの解決 \{#resolving-relative-urls\}
+
+[url&#95;base](/operations/settings/settings.md#url_base) 設定を使用すると、`url` 関数に相対URLを渡せます。`url_base` が設定されており、関数の引数が相対参照である場合は、[RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) に従ってベースURLに対して解決されます。
+
+解決ルールは次のとおりです。
+
+* **パス相対** (例: `data.csv`) : ベースURLのパスにマージされ、ベースパスの最後の `/` より後ろはすべて置き換えられます。末尾のスラッシュの有無は重要です。`https://example.com/dir/` + `data.csv` は `https://example.com/dir/data.csv` になりますが、`https://example.com/dir` + `data.csv` は `https://example.com/data.csv` になります。ドットセグメント (`./` と `../`) は正規化されます。
+* **ホスト相対** (例: `/test/data.csv`) : ベースURLのスキームとホストを使って解決されます。
+* **スキーム相対** (例: `//other.com/test/data.csv`) : ベースURLのスキームを使って解決されます。
+* **クエリのみ** (例: `?x=1`) : ベースパス全体の末尾に追加され、既存のクエリまたはフラグメントは置き換えられます。
+* **フラグメントのみ** (例: `#frag`) : ベースURLの末尾に追加され、クエリは保持され、既存のフラグメントは置き換えられます。
+* **空**: フラグメントを除いたベースURLを返します。
+* **絶対URL**: そのまま渡され、`url_base` は無視されます。
+
+**例**
+
+```sql
+SET url_base = 'https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/';
+SELECT * FROM url('tests/queries/0_stateless/data_csv/data.csv', CSV) LIMIT 3;
+```
+
 ## ストレージ設定 \{#storage-settings\}
 
 * [engine&#95;url&#95;skip&#95;empty&#95;files](/operations/settings/settings.md#engine_url_skip_empty_files) - 読み込み時に空のファイルをスキップします。デフォルトでは無効です。
 * [enable&#95;url&#95;encoding](/operations/settings/settings.md#enable_url_encoding) - URI 内のパスのデコード／エンコードを有効／無効にします。デフォルトでは有効です。
+* [url&#95;base](/operations/settings/settings.md#url_base) - `url` 関数に渡される相対 URL を解決するためのベース URL です。
 
 ## 権限 \{#permissions\}
 

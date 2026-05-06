@@ -76,10 +76,33 @@ SELECT * FROM test_table;
 SELECT * FROM url('http://data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
 
+## 解析相对 URL \{#resolving-relative-urls\}
+
+[url&#95;base](/operations/settings/settings.md#url_base) 设置允许向 `url` 函数传入相对 URL。当设置了 `url_base`，且函数参数是相对引用时，系统会按照 [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986) 基于基础 URL 对其进行解析。
+
+解析规则如下：
+
+* **路径相对** (例如 `data.csv`) ：与基础 URL 的路径合并——基础路径中最后一个 `/` 之后的所有内容都会被替换。末尾斜杠很重要：`https://example.com/dir/` + `data.csv` 得到 `https://example.com/dir/data.csv`，而 `https://example.com/dir` + `data.csv` 得到 `https://example.com/data.csv`。点分段 (`./` 和 `../`) 会被规范化。
+* **主机相对** (例如 `/test/data.csv`) ：使用基础 URL 的 scheme 和 host 进行解析。
+* **scheme 相对** (例如 `//other.com/test/data.csv`) ：使用基础 URL 的 scheme 进行解析。
+* **仅查询字符串** (例如 `?x=1`) ：附加到完整的基础路径上，并替换现有的查询字符串或片段。
+* **仅片段** (例如 `#frag`) ：附加到基础 URL，并保留查询字符串，同时替换现有片段。
+* **空值**：返回不带片段的基础 URL。
+* **绝对 URL**：保持不变；会忽略 `url_base`。
+
+**示例**
+
+```sql
+SET url_base = 'https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/';
+SELECT * FROM url('tests/queries/0_stateless/data_csv/data.csv', CSV) LIMIT 3;
+```
+
 ## 存储设置 \{#storage-settings\}
 
 * [engine&#95;url&#95;skip&#95;empty&#95;files](/operations/settings/settings.md#engine_url_skip_empty_files) - 用于在读取时跳过空文件。默认禁用。
 * [enable&#95;url&#95;encoding](/operations/settings/settings.md#enable_url_encoding) - 用于控制是否对 URI 中路径进行解码/编码。默认启用。
+
+- [url&#95;base](/operations/settings/settings.md#url_base) - 用于解析传递给 `url` 函数的相对 URL 的基础 URL。
 
 ## 权限 \{#permissions\}
 

@@ -76,10 +76,32 @@ Hive 스타일 파티션으로 생성된 가상 컬럼 사용
 SELECT * FROM url('http://data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
 
+## 상대 URL 해석 \{#resolving-relative-urls\}
+
+[url&#95;base](/operations/settings/settings.md#url_base) 설정을 사용하면 `url` 함수에 상대 URL을 전달할 수 있습니다. `url_base`가 설정되어 있고 함수 인수가 상대 참조인 경우, [RFC 3986](https://datatracker.ietf.org/doc/html/rfc3986)에 따라 기준 URL을 기준으로 해석됩니다.
+
+해석 규칙은 다음과 같습니다.
+
+* **경로 기준 상대** (예: `data.csv`): 기준 URL 경로와 병합됩니다 — 기준 경로의 마지막 `/` 뒤에 있는 모든 내용이 대체됩니다. 후행 슬래시 유무가 중요합니다. `https://example.com/dir/` + `data.csv`는 `https://example.com/dir/data.csv`가 되지만, `https://example.com/dir` + `data.csv`는 `https://example.com/data.csv`가 됩니다. 점 세그먼트(`./` 및 `../`)는 정규화됩니다.
+* **호스트 기준 상대** (예: `/test/data.csv`): 기준 URL의 스킴과 호스트를 사용해 해석됩니다.
+* **스킴 기준 상대** (예: `//other.com/test/data.csv`): 기준 URL의 스킴을 사용해 해석됩니다.
+* **쿼리만 있는 경우** (예: `?x=1`): 전체 기준 경로에 추가되며, 기존 쿼리나 프래그먼트는 대체됩니다.
+* **프래그먼트만 있는 경우** (예: `#frag`): 기준 URL에 추가되며, 쿼리는 유지되고 기존 프래그먼트는 대체됩니다.
+* **비어 있는 경우**: 프래그먼트가 없는 기준 URL을 반환합니다.
+* **절대 URL**: 변경 없이 그대로 전달되며 `url_base`는 무시됩니다.
+
+**예시**
+
+```sql
+SET url_base = 'https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/';
+SELECT * FROM url('tests/queries/0_stateless/data_csv/data.csv', CSV) LIMIT 3;
+```
+
 ## 저장 설정 \{#storage-settings\}
 
 * [engine&#95;url&#95;skip&#95;empty&#95;files](/operations/settings/settings.md#engine_url_skip_empty_files) - 데이터를 읽을 때 비어 있는 파일을 건너뛸 수 있도록 허용합니다. 기본값은 비활성화입니다.
 * [enable&#95;url&#95;encoding](/operations/settings/settings.md#enable_url_encoding) - URI 경로의 인코딩/디코딩을 활성화하거나 비활성화하도록 허용합니다. 기본값은 활성화입니다.
+* [url&#95;base](/operations/settings/settings.md#url_base) - `url` 함수에 전달된 상대 URL을 확인하는 데 사용하는 기준 URL입니다.
 
 ## 권한 \{#permissions\}
 
