@@ -855,6 +855,7 @@ const sidebars = {
             'integrations/data-ingestion/clickpipes/programmatic-access/terraform',
           ],
         },
+        'integrations/data-ingestion/clickpipes/monitoring',
         'integrations/data-ingestion/clickpipes/aws-privatelink',
         'integrations/data-ingestion/dbms/dynamodb/index',
       ],

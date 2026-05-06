@@ -149,6 +149,10 @@ Errors related to the operation of the ClickPipe will be stored in the `system.c
 
 If ClickPipes can't connect to a data source after 15 min or to a destination after 1 hr, the ClickPipes instance stops and stores an appropriate message in the system error table (provided the ClickHouse instance is available).
 
+## Monitoring {#monitoring}
+
+In addition to in-console monitoring, ClickPipes exposes metrics to a [Prometheus-compatible endpoint](/integrations/prometheus) for scraping. These metrics are published with other ClickHouse Cloud service metrics, and allow you to integrate ClickPipes monitoring with your existing observability stack (e.g., [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-grafana)). See [Monitoring ClickPipes](/integrations/clickpipes/monitoring) for the full list of available metrics.
+
 ## FAQ {#faq}
 - **What is ClickPipes?**
 
