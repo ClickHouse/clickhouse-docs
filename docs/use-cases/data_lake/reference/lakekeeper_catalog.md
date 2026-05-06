@@ -13,7 +13,7 @@ doc_type: 'guide'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge/>
+<BetaBadge/>
 
 :::note
 Integration with the Lakekeeper Catalog works with Iceberg tables only.
