@@ -159,6 +159,10 @@ ClickPipes создаст таблицу рядом с целевой табли
 
 Если ClickPipes не удаётся подключиться к источнику данных в течение 15 минут или к приёмнику в течение 1 часа, инстанс ClickPipes останавливается и записывает соответствующее сообщение в таблицу системных ошибок (при условии, что инстанс ClickHouse доступен).
 
+## Мониторинг \{#monitoring\}
+
+Помимо мониторинга в консоли, ClickPipes предоставляет [Prometheus-совместимую конечную точку](/integrations/prometheus) для сбора метрик. Эти метрики публикуются вместе с другими метриками сервиса ClickHouse Cloud и позволяют интегрировать мониторинг ClickPipes в ваш существующий стек обсервабилити (например, [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog)). Полный список доступных метрик см. в разделе [Мониторинг ClickPipes](/integrations/clickpipes/monitoring).
+
 ## FAQ \{#faq\}
 
 - **Что такое ClickPipes?**

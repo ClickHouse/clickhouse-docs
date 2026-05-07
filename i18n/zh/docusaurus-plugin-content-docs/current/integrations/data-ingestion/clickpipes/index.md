@@ -159,6 +159,10 @@ ClickPipes 会在目标表所在的数据库中创建一个后缀为 `<destinati
 
 如果 ClickPipes 在 15 分钟内无法连接到数据源，或在 1 小时内无法连接到目标端，则该 ClickPipes 实例会停止运行，并在系统错误表中存储一条相应的消息 (前提是 ClickHouse 实例可用) 。
 
+## 监控 \{#monitoring\}
+
+除了控制台内的监控外，ClickPipes 还会将指标暴露到一个[兼容 Prometheus 的端点](/integrations/prometheus)，供抓取使用。这些指标会与其他 ClickHouse Cloud 服务指标一同发布，让您能够将 ClickPipes 监控集成到现有的可观测性堆栈中 (例如 [Grafana](/integrations/prometheus#integrating-with-grafana) 和 [Datadog](/integrations/prometheus#integrating-with-datadog)) 。有关可用指标的完整列表，请参阅 [Monitoring ClickPipes](/integrations/clickpipes/monitoring)。
+
 ## 常见问题解答 \{#faq\}
 
 - **什么是 ClickPipes？**
