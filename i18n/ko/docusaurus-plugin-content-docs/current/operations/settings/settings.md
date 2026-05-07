@@ -12623,6 +12623,23 @@ FINAL 수정자가 포함된 쿼리를 실행할 때 스킵 인덱스 사용 여
 - 0 — 비활성화.
 - 1 — 활성화.
 
+## use_top_k_dynamic_filtering_for_variable_length_types \{#use_top_k_dynamic_filtering_for_variable_length_types\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "기본적으로 `String`과 같은 가변 길이 정렬 컬럼에는 `use_top_k_dynamic_filtering`을 비활성화합니다. 이전 동작에서는 이 최적화가 조건 없이 적용되었으며, 해당 동작은 `compatibility`에서 유지됩니다."}]}]} />
+
+정렬 컬럼이 가변 길이 데이터 타입(예: `String`, `Array`, `Map`, 가변 길이 요소를 포함하는 `Tuple`)인 경우에도 `use_top_k_dynamic_filtering`이 적용되도록 허용합니다.
+
+이러한 타입에서는 동적 필터가 행별로 수행하는 임계값 비교 비용이, 필터링으로 얻는 이점보다 더 클 수 있습니다. 특히 컬럼의 사전식 최솟값이 지배적이고(예: 대부분이 빈 문자열) 건너뛸 수 있는 그래뉼이 거의 없을 때 그렇습니다. 이 경우 동적 필터는 쿼리 지연 시간을 줄이기는커녕 오히려 악화시킵니다.
+
+이 설정이 `0`이면 동적 필터링은 메모리에서 값의 최대 크기가 고정된 컬럼(숫자, `Date`, `DateTime`, `FixedString`, `Enum`, 이러한 타입의 `Nullable`, 이러한 타입의 `Tuple`)에만 제한됩니다. `1`로 설정하면 동적 필터링이 가변 길이 타입에도 적용됩니다.
+
+가능한 값:
+
+* 0 — 비활성화됨.
+* 1 — 활성화됨.
+
 ## use_uncompressed_cache \{#use_uncompressed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

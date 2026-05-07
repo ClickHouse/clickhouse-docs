@@ -12627,6 +12627,23 @@ TopK フィルタリングにデータスキッピングインデックスを使
 - 0 — 無効。
 - 1 — 有効。
 
+## use_top_k_dynamic_filtering_for_variable_length_types \{#use_top_k_dynamic_filtering_for_variable_length_types\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "ソートカラムが可変長データ型（例: `String`）の場合、デフォルトで `use_top_k_dynamic_filtering` を無効にします。従来はこの最適化が無条件に適用されていましたが、その動作は `compatibility` で保持されます。"}]}]} />
+
+ソートカラムが可変長データ型 (例: `String`、`Array`、`Map`、可変長要素を含む `Tuple`) の場合に、`use_top_k_dynamic_filtering` を適用できるようにします。
+
+この種の型では、カラムの辞書順最小値が支配的で (例: 空文字列が大半を占める場合) 、スキップできるグラニュールが少ないと、動的フィルターによる行ごとのしきい値比較のコストが、その効果を上回ることがあります。その場合、動的フィルターはクエリレイテンシを改善するどころか、かえって悪化させます。
+
+この設定が `0` の場合、動的フィルタリングは、値がメモリ上で固定の最大サイズを持つカラム (数値、`Date`、`DateTime`、`FixedString`、`Enum`、これらの型の `Nullable`、これらの型の `Tuple`) に制限されます。`1` に設定すると、動的フィルタリングは可変長型にも適用されます。
+
+設定可能な値:
+
+* 0 — 無効。
+* 1 — 有効。
+
 ## use_uncompressed_cache \{#use_uncompressed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

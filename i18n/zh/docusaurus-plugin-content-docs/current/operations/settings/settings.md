@@ -12612,6 +12612,23 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 - 0 — 禁用。
 - 1 — 启用。
 
+## use_top_k_dynamic_filtering_for_variable_length_types \{#use_top_k_dynamic_filtering_for_variable_length_types\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "默认对可变长度排序列（例如 `String`）禁用 `use_top_k_dynamic_filtering`；此前该优化会无条件生效，这一行为在 `compatibility` 下保留。"}]}]} />
+
+允许在排序列为可变长度数据类型 (例如 `String`、`Array`、`Map` 以及包含可变长度元素的 `Tuple`) 时应用 `use_top_k_dynamic_filtering`。
+
+对于这类类型，如果列的字典序最小值占主导 (例如大多数字符串为空) 且只能跳过少量 granules，那么动态过滤器执行的逐行阈值比较所带来的开销，可能会超过它节省的成本。在这种情况下，动态过滤器不但无法改善查询延迟，反而会使其变差。
+
+当此设置为 `0` 时，动态过滤仅限用于其值在内存中具有固定最大大小的列 (数字、`Date`、`DateTime`、`FixedString`、`Enum`、这些类型的 `Nullable` 以及这些类型的 `Tuple`) 。设置为 `1` 时，动态过滤也会应用于可变长度类型。
+
+可选值：
+
+* 0 — 禁用。
+* 1 — 启用。
+
 ## use_uncompressed_cache \{#use_uncompressed_cache\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
