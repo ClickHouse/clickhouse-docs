@@ -211,6 +211,7 @@ exceptions:
   - Splunk
   - Retool
   - Airbyte
+  - Apify
   - RawBLOB
   - RowBinary
   - MessagePack
