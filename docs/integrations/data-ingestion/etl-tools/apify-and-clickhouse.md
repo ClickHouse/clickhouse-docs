@@ -20,7 +20,7 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 
 [Apify](https://apify.com/) is a web scraping and automation platform. You build, run, and scale serverless cloud programs called [**Actors**](https://docs.apify.com/platform/actors). Actors scrape websites, crawl the web, process data, or automate workflows. Every Actor run produces structured output stored in [**Datasets**](https://docs.apify.com/platform/storage/dataset) (collections of JSON objects).
 
-Connect Apify to ClickHouse to load scraped or processed data into ClickHouse for analytics, monitoring, or enrichment pipelines.
+Load scraped or processed data into ClickHouse for analytics, monitoring, or enrichment pipelines.
 
 ## Key concepts {#key-concepts}
 
@@ -55,7 +55,7 @@ npm install apify-client @clickhouse/client
 ```
 
 :::note
-Apify also provides a [Python client](https://docs.apify.com/api/client/python). If you prefer Python, install `apify-client` via pip and use [clickhouse-connect](https://clickhouse.com/docs/integrations/python) for ClickHouse.
+Apify also provides a [Python client](https://docs.apify.com/api/client/python). If you prefer Python, install `apify-client` via pip and use [clickhouse-connect](/integrations/python) for ClickHouse.
 :::
 
 ### Create a target table in ClickHouse {#4-create-a-target-table}
@@ -131,17 +131,23 @@ An alternative approach is to use [Apify Schedules](https://docs.apify.com/platf
 
 ## Best practices {#best-practices}
 
-Use the Apify client library (`apify-client` for [JavaScript](https://docs.apify.com/api/client/js) or [Python](https://docs.apify.com/api/client/python)) instead of raw HTTP calls. It handles pagination, retries, and authentication for you.
+### Fetching data from Apify {#fetching-data-from-apify}
 
-For large datasets, paginate through results using the `limit` and `offset` parameters of the [List dataset items](https://docs.apify.com/api/v2#/reference/datasets/item-collection/list-items) endpoint.
+Use the Apify client library (`apify-client` for [JavaScript](https://docs.apify.com/api/client/js) or [Python](https://docs.apify.com/api/client/python)) instead of raw HTTP calls. It handles pagination, retries, and authentication for you. For large datasets, paginate through results with the `limit` and `offset` parameters of the [List dataset items](https://docs.apify.com/api/v2#/reference/datasets/item-collection/list-items) endpoint.
+
+### Loading into ClickHouse {#loading-into-clickhouse}
 
 Use [`JSONEachRow`](/interfaces/formats/JSONEachRow) format when inserting into ClickHouse. It maps directly to Apify's JSON output with no transformation needed.
 
 Match your ClickHouse table schema to the Actor's output fields. Check the Actor's output schema on its [Apify Store](https://apify.com/store) page or in the **Dataset** tab after a run.
 
-The examples on this page use the `default` user and database to keep things simple. In production, create a dedicated user with the minimum privileges required to insert into your target table, and store credentials securely (for example, in environment variables or a secrets manager rather than in source). See [Cloud access management](/cloud/security/cloud_access_management) for guidance.
+### Performance {#performance}
 
-For high-throughput inserts from the JavaScript client, follow the [Tips for performance optimizations](/integrations/javascript#tips-for-performance-optimizations) — in particular, batch rows into larger inserts rather than inserting one row at a time, and consider async inserts for many small clients.
+For high-throughput inserts from the JavaScript client, follow the [Tips for performance optimizations](/integrations/javascript#tips-for-performance-optimizations). Batch rows into larger inserts rather than inserting one row at a time, and consider [async inserts](/optimize/asynchronous-inserts) when client-side batching isn't practical.
+
+### Security {#security}
+
+The examples on this page use the `default` user and database to keep things simple. In production, create a dedicated user with the minimum privileges required to insert into your target table, and store credentials securely (for example, in environment variables or a secrets manager rather than committing them to source code). See [Cloud access management](/cloud/security/cloud_access_management) for guidance.
 
 ## Related resources {#related-resources}
 
