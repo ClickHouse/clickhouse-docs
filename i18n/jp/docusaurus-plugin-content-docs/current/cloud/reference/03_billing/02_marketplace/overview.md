@@ -52,7 +52,7 @@ ClickHouse Cloud コンソール左下のメニューから組織を切り替え
 
 ClickHouse Cloud の利用を停止し、既存の ClickHouse Cloud サービスをすべて削除するだけでも構いません。購読は有効なままですが、ClickHouse Cloud には継続課金がないため、料金は発生しません。
 
-完全に解約したい場合は、クラウドプロバイダーのコンソールに移動して、そこでサブスクリプションの更新をキャンセルしてください。サブスクリプションが終了すると、既存のサービスはすべて停止され、クレジットカードの追加を求められます。カードが追加されない場合は、2 週間後に既存のサービスはすべて削除されます。
+完全に解約したい場合は、クラウドプロバイダーのコンソールに移動して、そこでサブスクリプションの更新をキャンセルしてください。
 
 ### マーケットプレイスユーザーとして ClickHouse Cloud を購読し、その後解約しました。再度購読したい場合、手順はどうなりますか？​ \{#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-and-then-unsubscribed-now-i-want-to-subscribe-back-what-is-the-process\}
 

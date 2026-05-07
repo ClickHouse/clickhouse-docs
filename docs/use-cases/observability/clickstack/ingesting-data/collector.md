@@ -21,6 +21,10 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ExtendingConfig from '@site/docs/use-cases/observability/clickstack/ingesting-data/_snippets/_extending_config.md';
 
+:::tip Try OTel FYI - OTel collector documentation made simple
+[OTel FYI](https://otel.fyi) offers clear, concise OpenTelemetry collector documentation covering receivers, processors, exporters, and pipelines. A great companion resource for configuring your ClickStack OTel collector.
+:::
+
 This page includes details on configuring the official ClickStack OpenTelemetry (OTel) collector.
 
 ## Collector roles {#collector-roles}

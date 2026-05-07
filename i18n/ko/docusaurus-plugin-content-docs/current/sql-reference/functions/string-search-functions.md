@@ -396,9 +396,9 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 ## extractGroups \{#extractGroups\}
 
-도입: v20.5.0
+도입 버전: v20.5.0
 
-정규 표현식과 일치하는 서로 겹치지 않는 부분 문자열들에서 모든 그룹을 추출합니다.
+정규 표현식과 처음으로 일치하는 부분 문자열에서 캡처 그룹을 추출합니다. 모든 일치 항목에서 그룹을 추출하려면 [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) 또는 [`extractAllGroupsVertical`](#extractAllGroupsVertical)을 사용하십시오.
 
 **구문**
 
@@ -406,14 +406,14 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 extractGroups(s, regexp)
 ```
 
-**인자**
+**인수**
 
 * `s` — 추출할 입력 문자열입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — 정규식 상수입니다. [`const String`](/sql-reference/data-types/string) 또는 [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 정규 표현식입니다. 하나 이상의 캡처 그룹을 포함해야 합니다. 상수입니다. [`const String`](/sql-reference/data-types/string) 또는 [`const FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-함수가 하나 이상의 일치하는 그룹을 찾으면, group&#95;id(`1`에서 `N`까지, 여기서 `N`은 regexp에서 캡처링 그룹의 수)를 기준으로 클러스터링된 Array(Array(String)) 컬럼을 반환합니다. 일치하는 그룹이 없으면 빈 배열을 반환합니다. [`Array(Array(String))`](/sql-reference/data-types/array)
+정규 표현식이 일치하면, 첫 번째 일치 항목의 캡처 그룹(`1`에서 `N`까지, 여기서 `N`은 `regexp`의 캡처 그룹 수)을 포함하는 배열을 반환합니다. 일치하는 항목이 없으면 빈 배열을 반환합니다. [`Array(String)`](/sql-reference/data-types/array)
 
 **예시**
 
@@ -429,7 +429,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
-[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+['Server','nginx']
 ```
 
 ## hasAllTokens \{#hasAllTokens\}

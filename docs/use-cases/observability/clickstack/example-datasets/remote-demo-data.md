@@ -109,7 +109,7 @@ You may need to reload the page to ensure the full list of databases is listed i
 
 ### Adjust the time frame {#adjust-the-timeframe}
 
-Adjust the time to show all data from the previous `2 days` using the time picker in the top right.
+Adjust the time to show all data from the previous `1 day` using the time picker in the top right.
 
 <Image img={step_2} alt="Step 2" size="lg"/>
 
@@ -288,13 +288,13 @@ Sessions allow us to replay the user experience, offering a visual account of ho
 
 In HyperDX, sessions are linked to traces and logs, providing a complete view of the underlying cause.
 
-For example, if the support team provides the email of a user who encountered a payment issue `Eddie86@yahoo.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
+For example, if the support team provides the email of a user who encountered a payment issue `Ronny.Windler@gmail.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
 
 Navigate to the `Client Sessions` tab from the left menu before ensuring the data source is set to `Sessions` and the time period is set to the `Last 1 day`:
 
 <Image img={step_21} alt="Step 21" size="lg"/>
 
-Search for `SpanAttributes.userEmail: Eddie` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
+Search for `SpanAttributes.userEmail: Ronny.Windler` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
 
 <Image img={step_22} alt="Step 22" size="lg"/>
 

@@ -127,7 +127,8 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 :::note
 1. Read-only services currently support user management operations (CREATE, DROP, etc).
-2. [Refreshable materialized views](/materialized-view/refreshable-materialized-view) run **only** on read-write (RW) services in a warehouse. 
+2. [Refreshable materialized views](/materialized-view/refreshable-materialized-view) run **only** on read-write (RW) services in a warehouse.
+3. A service's type (read-only or read-write) is fixed at creation and cannot be changed from the Cloud Console afterwards. To switch between read-only and read-write access, create a new service in the warehouse with the desired type.
 :::
 
 ## Scaling {#scaling}
@@ -171,6 +172,8 @@ Note that read-only services don't execute background merges, thus they don't sp
  one service performs background merge operations for another service. Those background operations can prevent the second service from idling. Once the background operations are finished, the service will idled. Read-only services aren't affected.
 
 ### Helpful Callouts {#callouts}
+
+- **ClickHouse Versions**: The [upgrade schedule](/manage/updates) is dictated by the primary service's settings. Secondary services cannot have a release schedule independent of the primary service.
 
 - **`CREATE`/`RENAME`/`DROP DATABASE` queries could be blocked by idled/stopped services by default.** If these queries are executed when the service is idled or stopped, these queries can hang. To bypass this, you  can run database management queries with [`settings distributed_ddl_task_timeout=0`](/operations/settings/settings#distributed_ddl_task_timeout) at the session or per query level.
 

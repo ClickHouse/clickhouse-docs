@@ -128,6 +128,15 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
+## Операторы для работы со строками \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - функция `overlay(string, replacement, offset)`.
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - функция `overlay(string, replacement, offset, length)`.
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - функция `overlayUTF8(string, replacement, offset)`.
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - функция `overlayUTF8(string, replacement, offset, length)`.
+
 ## Операторы для работы с наборами данных \{#operators-for-working-with-data-sets\}
 
 См. [операторы IN](../../sql-reference/operators/in.md) и оператор [EXISTS](../../sql-reference/operators/exists.md).

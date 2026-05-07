@@ -32,12 +32,14 @@ import filtered_dashboard from '@site/static/images/clickstack/dashboards/filter
 import filter_dropdown from '@site/static/images/clickstack/dashboards/filter-dropdown.png';
 import save_filter_values from '@site/static/images/clickstack/dashboards/save-filter-values.png';
 import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
+import heatmap_tile_editor from '@site/static/images/clickstack/dashboards/heatmap-tile-editor.png';
+import heatmap_tile_rendered from '@site/static/images/clickstack/dashboards/heatmap-tile-rendered.png';
+import heatmap_tile_drilldown from '@site/static/images/clickstack/dashboards/heatmap-tile-drilldown.png';
 import Tagging from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
 ClickStack 支持对事件进行可视化，并在 ClickStack UI (HyperDX) 中内置了图表功能。您可以将这些图表添加到仪表板，与其他用户共享。
 
 可视化可以基于链路追踪、指标、日志，或任意用户自定义的宽表事件 schema 创建。
-
 
 ## 创建可视化 \{#creating-visualizations\}
 
@@ -96,7 +98,7 @@ ClickStack 还支持使用 [text-to-chart](/use-cases/observability/clickstack/t
 下面我们使用日志和链路追踪数据源创建一个包含两个可视化的仪表板。你可以在 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) 上复现这些步骤，或者在本地通过连接托管在 [sql.clickhouse.com](https://sql.clickhouse.com) 上的数据集进行操作，具体请参见指南 [&quot;Remote Demo Dataset&quot;](/use-cases/observability/clickstack/getting-started/remote-demo-data)。
 
 <VerticalStepper headerLevel="h3">
-  ### 导航到 仪表板
+  ### 导航到仪表板
 
   从左侧菜单中选择 `Dashboards`。然后点击 `New Dashboard` 以创建临时仪表板或已保存的仪表板。
 
@@ -108,12 +110,12 @@ ClickStack 还支持使用 [text-to-chart](/use-cases/observability/clickstack/t
 
   在顶部菜单中选择 `Line/Bar` 可视化类型，然后选择 `Traces` (如果使用 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，则选择 `Demo Traces`) 数据集。完成以下配置，以创建一个展示按服务名称划分、随时间变化的平均请求时长的图表：
 
-  * Chart Name: `Average duration by service`
-  * Metric: `Average`
+  * 图表名称：`按服务划分的平均耗时`
+  * 指标：`Average`
   * Column: `Duration/1000`
   * Where: `<empty>`
   * Group By: `ServiceName`
-  * Alias: `Average Time`
+  * 别名: `Average Time`
 
   在点击 `Save` 之前先点击 **play** 按钮。
 
@@ -125,7 +127,7 @@ ClickStack 还支持使用 [text-to-chart](/use-cases/observability/clickstack/t
 
   ### 创建可视化 – 按服务的事件随时间分布
 
-  选择 `Add New Tile` 打开可视化创建面板。
+  选择 `Add New Tile` 以打开可视化创建面板。
 
   在顶部菜单中选择 `Line/Bar` 可视化类型，然后选择 `Logs` (如果使用 [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)，则选择 `Demo Logs`) 数据集。完成以下配置，以创建一个展示按服务名称划分、随时间变化的事件数量的图表：
 
@@ -143,13 +145,55 @@ ClickStack 还支持使用 [text-to-chart](/use-cases/observability/clickstack/t
 
   <Image img={dashboard_5} alt="包含可视化的仪表板 2" size="lg" />
 
+  ### 添加 span 耗时热力图磁贴
+
+  热力图卡片将落入每个 (时间，值) 桶中的事件数量以彩色网格的形式呈现。当你希望观察分布随时间变化的**形态**，而不仅仅是平均值或某个单一百分位数时，请使用热力图。延迟热力图能够揭示双峰耗时模式、慢尾集群或突发性分布扩散——这些特征在折线图中往往会被平均化而难以察觉。
+
+  要添加热力图磁贴：
+
+  1. 选择 `Add New Tile`。
+  2. 从顶部菜单中选择 `Heatmap` 可视化类型。数据源下拉菜单仅显示[数据源类型为 `Traces`](/use-cases/observability/clickstack/config#traces) 的数据源。日志、指标和会话数据源会被过滤掉，因为热力图需要 span 耗时列，而这类列只有链路追踪数据源才会提供。
+  3. 按名称任选一个链路追踪数据源即可。名称本身可以随意填写，只有类型才重要。
+
+  选择数据源后，热力图将自动预填充：
+
+  * **值**：源中的 `Duration Expression`，按当前显示单位进行缩放 (例如，用 `(Duration)/1e6` 将每个事件的 span 耗时从纳秒转换为毫秒)
+  * **计数**: `count()`
+
+  4. 设置图表名称，并使用 `Where` 将热力图限定为特定服务，或限定为一组你想观察其性能的操作。
+  5. 将时间范围调整为你关注的时段。较大的时间范围更容易显现分布偏移和双峰延迟模式，而较短的时间窗口可能会掩盖这些现象。
+
+  下面的示例展示了某个服务在 24 小时窗口内的情况，其 span 耗时的快速路径与慢速路径被清晰地分隔为两条水平带。
+
+  如需进一步自定义热力图，请点击 **Display Settings** 打开一个抽屉面板，其中包含 **Scale** (对数或线性) 、**Value** 和 **Count** 表达式的配置项。完整的选项列表已记录在事件增量页面的[自定义热力图](/use-cases/observability/clickstack/event_deltas#customize)中，使用的是同一个抽屉面板。
+
+  点击 `Run` 预览图表，然后点击 `Save`。
+
+  <Image img={heatmap_tile_editor} alt="预填了 span 耗时基本值、包含 ServiceName payment 筛选器和 Display Settings 按钮的热力图图块编辑器" size="lg" />
+
+  保存后的图块将在仪表板上以热力图的形式呈现。将鼠标悬停在任意单元格上，即可查看该桶的边界范围及事件数量。
+
+  <Image img={heatmap_tile_rendered} alt="展示 24 小时内 payment service span 耗时分布的热力图仪表板图块" size="lg" />
+
+  :::tip 每个热力图执行两次 ClickHouse 查询
+  热力图会依次执行两次查询：首先是一个小型**范围查询**，用于确定数值范围；然后是一个**热力图查询**，用于统计每个区间内的事件数量。如需查看或复制这两个查询，可在编辑器的 **Generated SQL** 下找到它们。
+  :::
+
+  #### 深入查看事件增量
+
+  点击已渲染热力图磁贴上的任意单元格，即可打开 **View in Event Deltas** (在事件增量中查看) 操作。
+
+  <Image img={heatmap_tile_drilldown} alt="点击热力图单元格后显示的“在事件增量中查看”操作" size="lg" />
+
+  选择后将打开 [事件增量](/use-cases/observability/clickstack/event_deltas) 视图，并自动带入该磁贴的数据源、`Where` 子句及时间范围。在此视图中，您可以交互式地查看相同的分布情况，按属性进行切片以了解慢速 span 与快速 span 的差异，并检查任意单元格背后的各个 span，无需手动重新构建查询。
+
   ### 筛选仪表板
 
   可以在仪表板级别应用 Lucene 或 SQL 筛选器，以及时间范围设置，这些会自动作用于所有可视化。
 
   <Image img={dashboard_filter} alt="带筛选的仪表板" size="lg" />
 
-  作为示例，在仪表板上应用 Lucene 筛选器 `ServiceName:\"frontend\"`，并将时间窗口修改为最近 3 小时。此时可视化将仅反映来自 `frontend` 服务的数据。
+  作为示例，在仪表板上应用 Lucene 筛选器 `ServiceName:"frontend"`，并将时间窗口修改为最近 3 小时。此时可视化将仅反映来自 `frontend` 服务的数据。
 
   仪表板会自动保存。要设置仪表板名称，选择标题并修改，然后点击 `Save Name`。
 
@@ -253,7 +297,7 @@ HyperDX 部署时即提供开箱即用的仪表板。
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### Services 仪表板
+### Services 仪表板 \{#filter-dashboards\}
 
 Services 仪表板会基于链路追踪数据展示当前处于活动状态的服务。使用该功能前，您需要先采集链路追踪 并配置一个有效的 链路追踪 数据源。
 

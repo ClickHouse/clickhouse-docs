@@ -394,7 +394,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 引入版本：v20.5.0
 
-从正则表达式匹配到的、互不重叠的子串中提取所有分组。
+从正则表达式匹配到的第一个子串中提取捕获组。要从所有匹配中提取捕获组，请使用 [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) 或 [`extractAllGroupsVertical`](#extractAllGroupsVertical)。
 
 **语法**
 
@@ -405,11 +405,11 @@ extractGroups(s, regexp)
 **参数**
 
 * `s` — 要从中提取的输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — 正则表达式。常量值。[`const String`](/sql-reference/data-types/string) 或 [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 正则表达式。必须至少包含一个捕获组。常量值。[`const String`](/sql-reference/data-types/string) 或 [`const FixedString`](/sql-reference/data-types/fixedstring)
 
 **返回值**
 
-如果函数找到至少一个匹配的分组，则返回按 group&#95;id (从 `1` 到 `N`，其中 `N` 是 regexp 中捕获分组数量) 组织的 Array(Array(String)) 列。如果没有匹配分组，则返回空数组。[`Array(Array(String))`](/sql-reference/data-types/array)
+如果正则表达式匹配，则返回一个数组，其中包含首次匹配中捕获的各组 (从 `1` 到 `N`，其中 `N` 是 `regexp` 中捕获组的数量) 。如果没有匹配，则返回空数组。[`Array(String)`](/sql-reference/data-types/array)
 
 **示例**
 
@@ -425,7 +425,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
-[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+['Server','nginx']
 ```
 
 ## hasAllTokens \{#hasAllTokens\}

@@ -1646,7 +1646,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-導入バージョン: v25.10.0
+導入バージョン: v25.11.0
 
 ジオメトリオブジェクトの x 座標と y 座標を入れ替えます。この操作では緯度と経度が入れ替わるため、異なる座標系間の変換や座標の順序を修正する際に有用です。
 
@@ -1690,7 +1690,7 @@ SELECT flipCoordinates([(1.0, 2.0), (3.0, 4.0)]);
 [(2.0, 1.0), (4.0, 3.0)]
 ```
 
-**多角形**
+**Polygon**
 
 ```sql title=Query
 SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
@@ -2769,6 +2769,42 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
+## highlightQuery \{#highlightQuery\}
+
+導入バージョン: v26.5.0
+
+ClickHouse の SQL クエリ文字列を解析し、構文ハイライト用のハイライト範囲の配列を返します。
+各範囲は、開始位置 (バイト単位) 、終了位置、ハイライト種別を持つ名前付きタプルです。
+ハイライト種別は、その断片の構文上の役割 (キーワード、識別子、関数など) を表し、
+UI で色を割り当てるために使用できます。LIKE および REGEXP の文字列パターン内では、メタ文字
+およびエスケープ文字がそれぞれ個別にハイライトされます。
+
+**構文**
+
+```sql
+highlightQuery(query)
+```
+
+**引数**
+
+* `query` — ClickHouse SQL クエリの文字列。String。
+
+**戻り値**
+
+ハイライトされた範囲を表す、名前付きタプル `(begin UInt64, end UInt64, type Enum8(...))` の配列。[`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**例**
+
+**simple**
+
+```sql title=Query
+SELECT highlightQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'keyword'),(7,8,'number')]
+```
+
 ## hostName \{#hostName\}
 
 導入バージョン: v20.5.0
@@ -3822,6 +3858,143 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 ┌─normalizedQueryHashKeepNames─┐
 │                            1 │
 └──────────────────────────────┘
+```
+
+## obfuscateQuery \{#obfuscateQuery\}
+
+導入バージョン: v26.4.0
+
+識別子をランダムな単語に、リテラルをランダムな値に置き換えながら、クエリの構造を保ったまま SQL クエリを難読化します。
+
+この関数は、クエリをログに記録したり、デバッグのために共有したりする前に匿名化する場合に役立ちます。
+同じ入力クエリであっても、行が異なれば難読化の結果も異なるため、
+複数のクエリを扱う際のプライバシー保護に役立ちます。
+
+省略可能な `tag` パラメータは、同じ関数呼び出しがクエリ内で
+複数回使われる場合に、共通部分式の削除を防ぎます。これにより、呼び出しごとに異なる難読化結果が生成されます。
+
+機能:
+
+* テーブル名、カラム名、別名をランダムな単語に置き換えます
+* 数値リテラルと文字列リテラルをランダムな値に置き換えます
+* クエリ全体の構造と SQL 構文を保持します
+* 行ごとに異なる結果を生成します
+
+**構文**
+
+```sql
+obfuscateQuery(query[, tag])
+```
+
+**引数**
+
+* `query` — 難読化する SQL クエリ。[`String`](/sql-reference/data-types/string)
+* `tag` — 任意。同じ関数呼び出しを複数回使用する場合に、共通部分式の削除を防ぐための値です。
+
+**戻り値**
+
+元のクエリ構造を保持したまま、識別子とリテラルを置き換えた難読化済みクエリ。[`String`](/sql-reference/data-types/string)
+
+**例**
+
+**使用法**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT name, age FROM users WHERE age > 30')
+```
+
+```response title=Response
+SELECT fruit, number FROM table WHERE number > 12
+```
+
+**共通部分式の削除を防ぐためのタグ**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT * FROM t', 1), obfuscateQuery('SELECT * FROM t', 2)
+```
+
+```response title=Response
+SELECT a FROM b, SELECT c FROM d
+```
+
+**行ごとに結果が異なります**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT 1') AS a, obfuscateQuery('SELECT 1') AS b
+```
+
+```response title=Response
+A B
+```
+
+## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
+
+導入バージョン: v26.4.0
+
+指定したシードを使用して、決定論的な結果になるよう SQL クエリを難読化します。
+
+`obfuscateQuery()` とは異なり、この関数は同じシードを指定すると常に同じ結果を生成します。
+そのため、複数回の実行で一貫した難読化が必要な場合や、
+テストやデバッグのために同じ難読化済みクエリを再現したい場合に役立ちます。
+
+機能:
+
+* 指定したシードに基づく決定論的な難読化
+* 同じシードからは常に同じ難読化結果を生成
+* 異なるシードからは異なる結果を生成
+* `obfuscateQuery()` と同様にクエリ構造を保持
+
+使用例:
+
+* 再現可能なテストケース
+* 複数回の実行にわたる一貫した難読化
+* 一貫した難読化済みクエリを用いたデバッグ
+
+**構文**
+
+```sql
+obfuscateQueryWithSeed(query, seed)
+```
+
+**引数**
+
+* `query` — 難読化する SQL クエリ。 [`String`](/sql-reference/data-types/string)
+* `seed` — 難読化に使用するシードです。同じシードを使用すると、決定論的な結果が生成されます。 [`Integer`](/sql-reference/data-types/int-uint) または [`String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+指定したシードに基づいて決定論的に生成された、難読化済みクエリ。 [`String`](/sql-reference/data-types/string)
+
+**例**
+
+**整数のシードを使用した決定論的な難読化**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT name FROM users', 42)
+```
+
+```response title=Response
+SELECT fruit FROM table
+```
+
+**文字列シードによる決定論的難読化**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT id, value FROM data', 'myseed')
+```
+
+```response title=Response
+SELECT a, b FROM c
+```
+
+**同じシードなら同じ結果になります**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT 1', 100) = obfuscateQueryWithSeed('SELECT 1', 100)
+```
+
+```response title=Response
+true
 ```
 
 ## parseReadableSize \{#parseReadableSize\}
@@ -4960,6 +5133,39 @@ SELECT toTypeName(123)
 ┌─toTypeName(123)─┐
 │ UInt8           │
 └─────────────────┘
+```
+
+## tokenizeQuery \{#tokenizeQuery\}
+
+導入バージョン: v26.5.0
+
+ClickHouse SQLクエリ文字列をトークン化し、トークンの配列を返します。
+各トークンは、開始位置 (バイト単位) 、終了位置、およびトークンの種類を含む名前付きタプルです。
+
+**構文**
+
+```sql
+tokenizeQuery(query)
+```
+
+**引数**
+
+* `query` — ClickHouse SQL クエリ文字列。String。
+
+**戻り値**
+
+クエリのトークンを表す、名前付きタプル `(begin UInt64, end UInt64, type Enum8(...))` の配列。[`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**例**
+
+**simple**
+
+```sql title=Query
+SELECT tokenizeQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'BareWord'),(6,7,'Whitespace'),(7,8,'Number')]
 ```
 
 ## transactionID \{#transactionID\}

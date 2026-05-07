@@ -37,6 +37,12 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 ALTER TABLE t1 MODIFY STATISTICS c, d TYPE TDigest, Uniq;
 ```
 
+널 허용 컬럼에 NullCount 통계 추가하기:
+
+```sql
+ALTER TABLE t1 ADD STATISTICS nullable_col TYPE NullCount;
+```
+
 :::note
-통계는 [`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md) 엔진 테이블(복제된 변형 포함) 및 [replicated](../../../engines/table-engines/mergetree-family/replication.md) 변형에만 지원됩니다.
+통계는 [`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md) 엔진 테이블(복제된 변형 포함) 및 [복제된](../../../engines/table-engines/mergetree-family/replication.md) 변형에만 지원됩니다.
 :::

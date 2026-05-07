@@ -514,9 +514,9 @@ SELECT
 
 ## isNotDistinctFrom \{#isNotDistinctFrom\}
 
-引入于：v25.10.0
+引入于：v23.8.0
 
-对两个值执行空值安全的“相等”比较。
+对两个值执行 NULL 安全的“相等”比较。
 如果两个值相等，则返回 `true`，包括两者都为 NULL 的情况。
 如果两个值不同，或者仅有一个为 NULL，则返回 `false`。
 

@@ -21,8 +21,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ExtendingConfig from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/ingesting-data/_snippets/_extending_config.md';
 
-本页详细介绍如何配置官方 ClickStack OpenTelemetry (OTel) Collector。
+:::tip 试试 OTel FYI —— 让 OTel collector 文档一目了然
+[OTel FYI](https://otel.fyi) 提供清晰简明的 OpenTelemetry collector 文档，涵盖接收器、处理器、导出器和管道。它是配置 ClickStack OTel collector 时的绝佳参考资源。
+:::
 
+本页详细介绍如何配置官方 ClickStack OpenTelemetry (OTel) Collector。
 
 ## Collector 角色 \{#collector-roles\}
 

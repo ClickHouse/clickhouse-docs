@@ -128,6 +128,15 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
+## 문자열 작업을 위한 연산자 \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - `overlay(string, replacement, offset)` 함수입니다.
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - `overlay(string, replacement, offset, length)` 함수입니다.
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - `overlayUTF8(string, replacement, offset)` 함수입니다.
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - `overlayUTF8(string, replacement, offset, length)` 함수입니다.
+
 ## 데이터 Set 작업을 위한 연산자 \{#operators-for-working-with-data-sets\}
 
 [IN 연산자](../../sql-reference/operators/in.md) 및 [EXISTS](../../sql-reference/operators/exists.md) 연산자를 참고하십시오.

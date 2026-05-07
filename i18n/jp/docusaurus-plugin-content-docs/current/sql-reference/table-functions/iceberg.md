@@ -401,10 +401,6 @@ y: 993
 `merge-on-read` フォーマットで余分な行を削除することも、ClickHouse でサポートされています。
 このクエリは、position delete ファイルを含む新しいスナップショットを作成します。
 
-NOTE: 将来、他の Iceberg エンジン（Spark など）でテーブルを読み取りたい場合は、`output_format_parquet_use_custom_encoder` と `output_format_parquet_parallel_encoding` の設定を無効化する必要があります。
-これは、Spark がこれらのファイルを Parquet の field-id によって読み取る一方、ClickHouse はこれらのフラグが有効な場合に field-id の書き込みを現在サポートしていないためです。
-この動作は今後修正する予定です。
-
 ### 例 \{#example-iceberg-writes-delete\}
 
 ```sql

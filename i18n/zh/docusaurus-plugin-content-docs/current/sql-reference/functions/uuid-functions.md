@@ -420,11 +420,11 @@ SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 
 ## dateTimeToUUIDv7 \{#dateTimeToUUIDv7\}
 
-引入版本：v25.9.0
+引入版本：v25.8.0
 
 将 [DateTime](../data-types/datetime.md) 值在给定时间点转换为 [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7)。
 
-有关 UUID 结构、计数器管理和并发保证的详细信息，请参阅 [&quot;UUIDv7 generation&quot;](#uuidv7-generation) 一节。
+有关 UUID 结构、计数器管理和并发保证的详细信息，请参阅 [&quot;UUIDv7 生成&quot;](#uuidv7-generation) 一节。
 
 :::note
 截至 2025 年 9 月，UUID 版本 7 仍处于草案阶段，其布局未来可能会发生变化。
@@ -438,7 +438,7 @@ dateTimeToUUIDv7(value)
 
 **参数**
 
-* `value` — DateTime 类型的日期时间值。[`DateTime`](/sql-reference/data-types/datetime)
+* `value` — 日期时间。[`DateTime`](/sql-reference/data-types/datetime)
 
 **返回值**
 
@@ -473,7 +473,6 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
 │ 017b4b2d-7720-76ed-ae44-bbcf71ed0fd3 │
 └──────────────────────────────────────┘
 ```
-
 
 ## generateSnowflakeID \{#generateSnowflakeID\}
 

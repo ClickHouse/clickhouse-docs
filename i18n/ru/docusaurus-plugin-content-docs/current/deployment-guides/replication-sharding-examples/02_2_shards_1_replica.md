@@ -65,7 +65,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   done
   ```
 
-  Добавьте следующий файл `docker-compose.yml` в каталог `clickhouse-cluster`:
+  Добавьте следующий файл `docker-compose.yml` в каталог `cluster_2S_1R`:
 
   ```yaml title="docker-compose.yml"
   version: '3.8'
@@ -490,7 +490,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   <VerifyKeeperStatus />
 
-  Таким образом, вы успешно настроили кластер ClickHouse с одним сегментом и двумя репликами.
+  Таким образом, вы успешно настроили кластер ClickHouse с двумя сегментами и одной репликой в каждом сегменте.
   На следующем шаге вы создадите таблицу в кластере.
 
   ## Создание базы данных

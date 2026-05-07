@@ -1193,9 +1193,9 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.10.0
 
-文字列が、指定されたサフィックスで大小文字を区別せずに終わっているかどうかを判定します。
+文字列が、指定された接尾辞で大小文字を区別せずに終わっているかどうかを判定します。
 
 **構文**
 
@@ -1208,7 +1208,7 @@ endsWithCaseInsensitive(s, suffix)
 * `s` — チェック対象の文字列。[`String`](/sql-reference/data-types/string)
 * `suffix` — 末尾がこの値かどうかを大文字小文字を区別せずにチェックするための接尾辞。[`String`](/sql-reference/data-types/string)
 
-**返り値**
+**戻り値**
 
 `s` が大文字小文字を区別せずに `suffix` で終わる場合は `1` を返し、それ以外は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
@@ -1228,7 +1228,7 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.10.0
 
 文字列 `s` が大文字・小文字を区別せずに `suffix` で終わるかどうかを返します。
 文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
@@ -1243,7 +1243,7 @@ endsWithCaseInsensitiveUTF8(s, suffix)
 **引数**
 
 * `s` — チェックする文字列。[`String`](/sql-reference/data-types/string)
-* `suffix` — 大文字小文字を区別せずに照合する末尾文字列 (サフィックス) 。[`String`](/sql-reference/data-types/string)
+* `suffix` — 大文字小文字を区別せずに照合する末尾文字列 (接尾辞) 。[`String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -1969,7 +1969,7 @@ münchen
 
 ## naturalSortKey \{#naturalSortKey\}
 
-導入バージョン: v25.11.0
+導入バージョン: v26.3.0
 
 この関数は自然順でソートするために使用されます。
 
@@ -2839,7 +2839,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.10.0
 
 文字列が、指定した文字列で大文字小文字を区別せずに始まるかどうかをチェックします。
 
@@ -2852,7 +2852,7 @@ startsWithCaseInsensitive(s, prefix)
 **引数**
 
 * `s` — チェック対象の文字列。[`String`](/sql-reference/data-types/string)
-* `prefix` — 大文字小文字を区別せずに先頭一致を確認するための接頭辞。[`String`](/sql-reference/data-types/string)
+* `prefix` — 大文字小文字を区別せずに先頭一致を確認するためのプレフィックス。[`String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -2874,10 +2874,10 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.10.0
 
 文字列が、指定された大文字・小文字を区別しないプレフィックスで始まっているかを判定します。
-文字列が有効な UTF-8 エンコードされたテキストであることを前提とします。
+文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
 この前提が満たされない場合でも例外はスローされず、結果は未定義です。
 
 **構文**

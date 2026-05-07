@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/data-lake/biglake-catalog
 sidebar_label: 'BigLake Metastore'
-title: 'BigLake Metastore'
+title: 'Каталог среды выполнения Lakehouse (BigLake Metastore)'
 pagination_prev: null
 pagination_next: null
 description: 'В этом руководстве мы пошагово разберем, как выполнять запросы к
- вашим данным в Google Cloud Storage с помощью ClickHouse и BigLake Metastore.'
-keywords: ['BigLake', 'GCS', 'озеро данных', 'Iceberg', 'Google Cloud']
+ вашим данным в Google Cloud Storage с помощью ClickHouse и каталога среды выполнения Lakehouse (BigLake Metastore).'
+keywords: ['BigLake', 'GCS', 'озеро данных', 'Iceberg', 'Google Cloud', 'Каталог среды выполнения Lakehouse']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -15,7 +15,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т. д.). В этом руководстве мы пошагово разберем, как выполнять запросы к вашим таблицам Iceberg в [BigLake Metastore](https://docs.cloud.google.com/biglake/docs/) через ClickHouse.
+ClickHouse поддерживает интеграцию с несколькими каталогами (Unity, Glue, Polaris и т. д.). В этом руководстве мы пошагово разберем, как выполнять запросы к вашим таблицам Iceberg в [каталоге среды выполнения Lakehouse, также известном как BigLake Metastore](https://docs.cloud.google.com/biglake/docs/) через ClickHouse.
 
 :::note
 Поскольку эта функция находится на стадии бета-тестирования, вам потребуется включить ее с помощью:
@@ -24,21 +24,21 @@ ClickHouse поддерживает интеграцию с нескольким
 
 ## Предварительные требования \{#prerequisites\}
 
-Перед созданием подключения из ClickHouse к BigLake Metastore убедитесь, что у вас есть:
+Перед созданием подключения из ClickHouse к каталогу среды выполнения Lakehouse (BigLake Metastore) убедитесь, что у вас есть:
 
-* **Проект Google Cloud** с включённым BigLake Metastore
+* **Проект Google Cloud** с включённым каталогом среды выполнения Lakehouse
 * **Учётные данные Application Default Credentials** (ID клиента OAuth и секрет клиента) для приложения, созданные через [Google Cloud Console](https://docs.cloud.google.com/docs/authentication/provide-credentials-adc)
 * **Токен обновления**, полученный после завершения OAuth-потока с соответствующими областями доступа (например, `https://www.googleapis.com/auth/bigquery` и областью доступа к хранилищу для GCS)
 * Путь к **warehouse**: бакет GCS (и необязательный префикс), где хранятся ваши таблицы, например `gs://your-bucket` или `gs://your-bucket/prefix`
 
-## Создание подключения между BigLake Metastore и ClickHouse \{#creating-a-connection\}
+## Создание подключения между каталогом среды выполнения Lakehouse и ClickHouse \{#creating-a-connection\}
 
 После настройки учетных данных OAuth создайте в ClickHouse базу данных с использованием движка базы данных [DataLakeCatalog](/engines/database-engines/datalakecatalog):
 
 ```sql
 SET allow_database_iceberg = 1;
 
-CREATE DATABASE biglake_metastore
+CREATE DATABASE lakehouse_runtime_catalog
 ENGINE = DataLakeCatalog('https://biglake.googleapis.com/iceberg/v1/restcatalog')
 SETTINGS
     catalog_type = 'biglake',
@@ -49,12 +49,12 @@ SETTINGS
     warehouse = 'gs://<bucket_name>/<optional-prefix>';
 ```
 
-## Запросы к таблицам BigLake Metastore с помощью ClickHouse \{#querying-biglake-metastore-tables\}
+## Запросы к таблицам каталога среды выполнения Lakehouse с помощью ClickHouse \{#querying-lakehouse-runtime-tables\}
 
-После создания подключения вы можете выполнять запросы к таблицам, зарегистрированным в BigLake Metastore.
+После создания подключения вы можете выполнять запросы к таблицам, зарегистрированным в каталоге среды выполнения Lakehouse.
 
 ```sql
-USE biglake_metastore;
+USE LAKEHOUSE_RUNTIME_CATALOG;
 
 SHOW TABLES;
 ```
@@ -62,13 +62,13 @@ SHOW TABLES;
 Пример вывода:
 
 ```response
-┌─name─────────────────────┐
-│icebench.my_iceberg_table │   
-└──────────────────────────┘
+┌─name──────────────────────────────────────┐
+│lakehouse_runtime_catalog.my_iceberg_table │   
+└───────────────────────────────────────────┘
 ```
 
 ```sql
-SELECT count(*) FROM `icebench.my_iceberg_table`;
+SELECT count(*) FROM `lakehouse_runtime_catalog.my_iceberg_table`;
 ```
 
 :::note Требуются обратные кавычки
@@ -78,12 +78,12 @@ SELECT count(*) FROM `icebench.my_iceberg_table`;
 Чтобы просмотреть определение таблицы:
 
 ```sql
-SHOW CREATE TABLE `icebench.my_iceberg_table`;
+SHOW CREATE TABLE `lakehouse_runtime_catalog.my_iceberg_table`;
 ```
 
-## Загрузка данных из BigLake в ClickHouse \{#loading-data-into-clickhouse\}
+## Загрузка данных из Lakehouse в ClickHouse \{#loading-data-into-clickhouse\}
 
-Чтобы загрузить данные из таблицы BigLake Metastore в локальную таблицу ClickHouse для ускорения повторных запросов, создайте таблицу MergeTree и вставьте данные из каталога:
+Чтобы загрузить данные из таблицы каталога среды выполнения Lakehouse в локальную таблицу ClickHouse для ускорения повторных запросов, создайте таблицу MergeTree и вставьте данные из каталога:
 
 ```sql
 CREATE TABLE clickhouse_table
@@ -97,7 +97,7 @@ ENGINE = MergeTree
 ORDER BY (event_time, id);
 
 INSERT INTO local_events
-SELECT * FROM biglake_metastore.`icebench.my_iceberg_table`;
+SELECT * FROM lakehouse_runtime_catalog.`icebench.my_iceberg_table`;
 ```
 
 После первоначальной загрузки выполняйте запросы к `clickhouse_table` с меньшей задержкой. При необходимости повторно выполните `INSERT INTO ... SELECT`, чтобы обновить данные из BigLake.

@@ -55,7 +55,8 @@ restore methods available in ClickHouse:
 | [Backup/restore using local disk or S3 disk](./01_local_disk.md)    | Details backup/restore to or from a local disk or S3 disk |
 | [Backup/restore using S3 endpoint](./02_s3_endpoint.md)             | Details backup/restore to or from an S3 endpoint          |
 | [Backup/restore using AzureBlobStorage](./03_azure_blob_storage.md) | Details backup/restore to or from Azure blob storage      |
-| [Alternative methods](./04_alternative_methods.md)                  | Discusses alternative backup methods                      |        
+| [Alternative methods](./04_alternative_methods.md)                  | Discusses alternative backup methods                      |
+| [Snapshot backup](./05_snapshot.md)                                  | Lightweight snapshots for SharedMergeTree tables using cloud object storage |
 
 Backups can:
 - be [full or incremental](#backup-types)

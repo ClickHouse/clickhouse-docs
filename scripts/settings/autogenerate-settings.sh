@@ -325,6 +325,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
     echo "[$SCRIPT_NAME] Generating function documentation using consolidated SQL file..."
     # Define function categories to process
     FUNCTION_CATEGORIES=(
+      "AI"
       "Arithmetic"
       "Arrays"
       "Bit"
@@ -389,6 +390,7 @@ else
 fi
     # --- Append content between tags for function files ---
     insert_src_files=(
+      "ai-functions.md"
       "arithmetic-functions.md"
       "arrays-functions.md"
       "bit-functions.md"
@@ -427,6 +429,7 @@ fi
       "uuid-functions.md"
     )
     insert_dest_files=(
+        "docs/sql-reference/functions/ai-functions.md"
         "docs/sql-reference/functions/arithmetic-functions.md"
         "docs/sql-reference/functions/array-functions.md"
         "docs/sql-reference/functions/bit-functions.md"

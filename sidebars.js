@@ -358,9 +358,10 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
+            'cloud/managed-postgres/migrations/clickhouse-cloud',
+            'cloud/managed-postgres/migrations/peerdb',
             'cloud/managed-postgres/migrations/pg_dump-pg_restore',
             'cloud/managed-postgres/migrations/logical-replication',
-            'cloud/managed-postgres/migrations/peerdb',
             'cloud/managed-postgres/migrations/data-validation',
           ],
         },
@@ -2076,6 +2077,11 @@ const sidebars = {
               dirName: 'use-cases/observability/clickstack/demo-days',
             },
           ],
+        },
+        {
+          type: 'link',
+          label: 'OTel FYI',
+          href: 'https://otel.fyi',
         },
       ],
     },

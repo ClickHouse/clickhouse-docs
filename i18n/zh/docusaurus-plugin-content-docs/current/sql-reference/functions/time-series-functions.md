@@ -335,6 +335,44 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+## timeSeriesGroupToSamplingKey \{#timeSeriesGroupToSamplingKey\}
+
+引入版本：v26.4.0
+
+返回一个根据指定标签组的标签派生出的稳定 `UInt64` 采样键。
+
+该值具有确定性：相同的输入标签始终会生成相同的键。
+它旨在作为 `limitk` 和 `limit_ratio` 等采样算子的排序键。
+
+**语法**
+
+```sql
+timeSeriesGroupToSamplingKey(group)
+```
+
+**参数**
+
+* `group` — 标签组。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+根据与该标签组关联的标签计算得出的稳定 `UInt64` 哈希值。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**示例**
+
+```sql title=Query
+SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS group,
+       timeSeriesGroupToSamplingKey(group) AS sampling_key
+```
+
+```response title=Response
+┌─group─┬─────────sampling_key─┐
+│     1 │ 12876543210987654321 │
+└───────┴──────────────────────┘
+```
+
 ## timeSeriesGroupToTags \{#timeSeriesGroupToTags\}
 
 自 v26.1.0 起提供

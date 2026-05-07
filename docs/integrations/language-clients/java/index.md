@@ -76,18 +76,21 @@ Java Client was developed far back in 2015. Its codebase became very hard to mai
 |Ring                   |✔                    |✔                    |
 |Polygon                |✔                    |✔                    |
 |SimpleAggregateFunction|✔                    |✔                    |
-|AggregateFunction      |✗                    |✔                    |
+|AggregateFunction*     |✔                    |✔                    |
 |Variant                |✔                    |✗                    |
 |Dynamic                |✔                    |✗                    |
 |JSON                   |✔                    |✗                    |
 
 [ClickHouse Data Types](/sql-reference/data-types)
 
-:::note
-- AggregatedFunction - :warning: doesn't support `SELECT * FROM table ...`
-- Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
-- Enum - can be treated as both string and integer
-- UInt64 - mapped to `long` in client-v1
+:::note[Partial support]
+- **AggregateFunction** — Only `groupBitmap` is supported for direct binary reads. For other aggregate functions (`min`, `max`, `avg`, etc.), use `-Merge` combinators in your query (e.g., `minMerge()`, `avgMerge()`) to resolve the state server-side. `SELECT * FROM table ...` is not supported for columns with `AggregateFunction` type.
+:::
+
+:::note[Data type notes]
+- **Decimal** — `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency.
+- **Enum** — can be treated as both string and integer.
+- **UInt64** — mapped to `long` in client-v1.
 :::
 
 ### Features {#features}

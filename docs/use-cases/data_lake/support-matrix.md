@@ -172,9 +172,9 @@ The following catalogs are currently supported. Refer to each catalog's referenc
 |---------|---------|:-:|:-:|:-:|---------|
 | [AWS Glue Catalog](/use-cases/data-lake/glue-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [Glue catalog guide](/use-cases/data-lake/glue-catalog) |
 | [BigLake Metastore](/use-cases/data-lake/biglake-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [BigLake Metastore guide](/use-cases/data-lake/biglake-catalog) |
-| [Databricks Unity Catalog](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ Experimental | ❌ | ❌ | [Unity Catalog guide](/use-cases/data-lake/unity-catalog) |
+| [Databricks Unity Catalog](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ Beta | ❌ | ❌ | [Unity Catalog guide](/use-cases/data-lake/unity-catalog) |
 | [Iceberg REST](/use-cases/data-lake/rest-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [REST catalog guide](/use-cases/data-lake/rest-catalog) |
-| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) | Iceberg | ✅ Experimental | ❌ | ❌ | [Lakekeeper catalog guide](/use-cases/data-lake/lakekeeper-catalog) |
+| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [Lakekeeper catalog guide](/use-cases/data-lake/lakekeeper-catalog) |
 | [Project Nessie](/use-cases/data-lake/nessie-catalog) | Iceberg | ✅ Experimental | ❌ | ❌ | [Nessie catalog guide](/use-cases/data-lake/nessie-catalog) |
 | [Microsoft OneLake](/use-cases/data-lake/onelake-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [OneLake catalog guide](/use-cases/data-lake/onelake-catalog) |
 

@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
-import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import backup_chain from '@site/static/images/cloud/manage/backup-chain.png';
 
 Database backups provide a safety net by ensuring that if data is lost for any unforeseen reason, the service can be restored to a previous state from the last successful backup.
@@ -54,8 +53,6 @@ In some rare scenarios, the backup scheduler won't respect the **Start Time** sp
 See ["Configure backup schedules"](/cloud/manage/backups/configurable-backups) for steps to configure your backups.
 
 ## Bring Your Own Bucket (BYOB) Backups {#byob}
-
-<EnterprisePlanFeatureBadge/>
 
 ClickHouse Cloud allows exporting backups to your own cloud service provider (CSP) account storage (AWS S3, Google Cloud Storage, or Azure Blob Storage).
 If you configure backups to your own bucket, ClickHouse Cloud will still take daily backups to its own bucket.

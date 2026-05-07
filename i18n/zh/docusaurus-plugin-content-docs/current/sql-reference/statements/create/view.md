@@ -298,22 +298,56 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 
 可用的刷新设置：
 
-* `refresh_retries` - 当刷新查询因异常失败时重试的次数。如果所有重试都失败，则跳过本次并等待下一个计划刷新时间。0 表示不重试，-1 表示无限重试。默认值：0。
+* `refresh_retries` - 当刷新查询因异常失败时重试的次数。如果所有重试都失败，则跳过本次并等待下一个计划刷新时间。0 表示不重试，-1 表示无限重试。默认值：2。
 * `refresh_retry_initial_backoff_ms` - 如果 `refresh_retries` 不为零，第一次重试前的延迟。之后每次重试会将延迟翻倍，直到达到 `refresh_retry_max_backoff_ms`。默认值：100 ms。
 * `refresh_retry_max_backoff_ms` - 刷新重试之间延迟的指数增长上限。默认值：60000 ms (1 分钟) 。
+* `all_replicas` - 在使用 `APPEND` 的[Replicated 数据库](../../../engines/database-engines/replicated.md)中，控制是由所有副本分别独立刷新，还是在每个计划刷新时间点仅由一个副本执行刷新。创建视图后不能修改。默认值：`false`。
+* `prefer_dependency_replica` - 当视图带有 `DEPENDS ON` 时，执行父级刷新的副本会优先执行依赖刷新；其他副本会将其尝试延后 `prefer_dependency_replica_delay_ms`。与 `SharedMergeTree` 搭配使用时，这一设置很有用，可避免因复制延迟而导致依赖刷新链中出现数据缺失。默认值：`false`。
+* `prefer_dependency_replica_delay_ms` - 启用 `prefer_dependency_replica` 时，非优先副本在尝试执行依赖刷新前的等待时长。默认值：2000 ms。
 
-### Changing Refresh Parameters \{#changing-refresh-parameters\}
+### 更改刷新参数 \{#changing-refresh-parameters\}
 
-要更改刷新参数：
+可以使用 [`ALTER TABLE ... MODIFY REFRESH`](../alter/view.md#alter-table--modify-refresh-statement) 修改现有可刷新materialized view 的刷新参数：
 
 ```sql
 ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
 ```
 
-:::note
-这会一次性替换刷新参数的*所有*内容：调度、依赖关系、设置以及是否为 APPEND 模式。例如，如果表之前有 `DEPENDS ON`，在执行不带 `DEPENDS ON` 的 `MODIFY REFRESH` 时将会移除这些依赖关系。
-:::
+调度 (`EVERY` 或 `AFTER`) 是必需项：该语句始终会以指定内容替换*所有*刷新参数——调度、`RANDOMIZE FOR`、`DEPENDS ON` 以及刷新设置。任何未指定的内容都会重置为默认值 (设置) 或被移除 (依赖、随机化) 。
 
+:::note
+
+* 如果仅需修改刷新设置 (例如 `refresh_retries`) ，请重复现有调度：
+
+  ```sql
+  ALTER TABLE rmv MODIFY REFRESH EVERY 1 HOUR SETTINGS refresh_retries = 5;
+  ```
+
+* materialized view 不支持 `ALTER TABLE ... MODIFY SETTING refresh_retries = ...`；必须通过 `MODIFY REFRESH` 进行修改。
+
+* 不支持添加或移除 `APPEND`。
+
+* `all_replicas` 设置在创建后无法修改。
+  :::
+
+示例：
+
+```sql
+-- Change the schedule, drop existing settings and dependencies.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE;
+
+-- Change the schedule and tune retry behavior.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE
+SETTINGS refresh_retries = 5,
+         refresh_retry_initial_backoff_ms = 500,
+         refresh_retry_max_backoff_ms = 60000;
+
+-- Keep the dependency while changing the period.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR DEPENDS ON other_rmv;
+
+-- Drop the dependency by omitting `DEPENDS ON`.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR;
+```
 
 ### 其他操作 \{#other-operations\}
 

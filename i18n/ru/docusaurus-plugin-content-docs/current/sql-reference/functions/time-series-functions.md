@@ -337,6 +337,44 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+## timeSeriesGroupToSamplingKey \{#timeSeriesGroupToSamplingKey\}
+
+Добавить в: v26.4.0
+
+Возвращает стабильный ключ сэмплирования `UInt64`, вычисляемый на основе тегов указанной группы.
+
+Значение является детерминированным: одинаковые входные теги всегда дают один и тот же ключ.
+Оно предназначено для использования в качестве ключа сортировки для операторов сэмплирования, таких как `limitk` и `limit_ratio`.
+
+**Синтаксис**
+
+```sql
+timeSeriesGroupToSamplingKey(group)
+```
+
+**Аргументы**
+
+* `group` — Группа тегов. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Стабильное хеш-значение `UInt64`, вычисленное на основе тегов, связанных с группой. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример**
+
+```sql title=Query
+SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS group,
+       timeSeriesGroupToSamplingKey(group) AS sampling_key
+```
+
+```response title=Response
+┌─group─┬─────────sampling_key─┐
+│     1 │ 12876543210987654321 │
+└───────┴──────────────────────┘
+```
+
 ## timeSeriesGroupToTags \{#timeSeriesGroupToTags\}
 
 Добавлена в версии: v26.1.0

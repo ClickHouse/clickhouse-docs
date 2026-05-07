@@ -37,6 +37,12 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 ALTER TABLE t1 MODIFY STATISTICS c, d TYPE TDigest, Uniq;
 ```
 
+向 Nullable 列添加 NullCount 统计信息：
+
+```sql
+ALTER TABLE t1 ADD STATISTICS nullable_col TYPE NullCount;
+```
+
 :::note
-仅 [`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md) 引擎表 (包括 [replicated](../../../engines/table-engines/mergetree-family/replication.md) 变体) 支持统计信息。
+仅 [`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md) 引擎表 (包括 [复制](../../../engines/table-engines/mergetree-family/replication.md) 变体) 支持统计信息。
 :::

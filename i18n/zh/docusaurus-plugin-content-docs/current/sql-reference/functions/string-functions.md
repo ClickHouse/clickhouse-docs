@@ -1223,7 +1223,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-引入于：v25.9.0
+引入于：v25.10.0
 
 检查字符串的结尾是否为给定的不区分大小写的后缀。
 
@@ -1236,7 +1236,7 @@ endsWithCaseInsensitive(s, suffix)
 **参数**
 
 * `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
-* `suffix` — 要检查的后缀（不区分大小写）。[`String`](/sql-reference/data-types/string)
+* `suffix` — 要检查的后缀 (不区分大小写) 。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -1256,10 +1256,9 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 └─────────────────────────────────────────┘
 ```
 
-
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-引入于：v25.9.0
+引入于：v25.10.0
 
 返回字符串 `s` 是否以不区分大小写的 `suffix` 结尾。
 假定该字符串包含有效的 UTF-8 编码文本。
@@ -1293,7 +1292,6 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 │                                           1 │
 └─────────────────────────────────────────────┘
 ```
-
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
@@ -2039,7 +2037,7 @@ münchen
 
 ## naturalSortKey \{#naturalSortKey\}
 
-引入版本：v25.11.0
+引入版本：v26.3.0
 
 该函数用于自然排序。
 
@@ -2073,7 +2071,6 @@ SELECT s FROM t ORDER BY naturalSortKey(s)
 | a02 │
 └─────┘
 ```
-
 
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
 
@@ -2931,9 +2928,9 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-自 v25.9.0 引入
+自 v25.10.0 引入
 
-检查字符串是否以给定字符串（不区分大小写）开头。
+检查字符串是否以给定字符串 (不区分大小写) 开头。
 
 **语法**
 
@@ -2964,10 +2961,9 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 └─────────────────────────────────────────┘
 ```
 
-
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-引入版本：v25.9.0
+引入版本：v25.10.0
 
 检查字符串是否以给定的不区分大小写的前缀开头。
 假设字符串包含有效的 UTF-8 编码文本。
@@ -2982,7 +2978,7 @@ startsWithCaseInsensitiveUTF8(s, prefix)
 **参数**
 
 * `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
-* `prefix` — 要检查的前缀（不区分大小写）。[`String`](/sql-reference/data-types/string)
+* `prefix` — 要检查的前缀 (不区分大小写) 。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -3001,7 +2997,6 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 │                        1 │
 └──────────────────────────┘
 ```
-
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 
