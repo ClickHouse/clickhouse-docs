@@ -142,14 +142,14 @@ RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 Чтобы восстановить таблицу, уже содержащую данные, выполните:
 
 ```sql
-RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
 Таблицы можно восстанавливать или создавать их резервные копии с новыми именами:
 
 ```sql
-RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
 Архив этой резервной копии имеет следующую структуру:
