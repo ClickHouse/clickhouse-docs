@@ -29,68 +29,72 @@ Java 客户端早在 2015 年就开始开发，其代码库已经变得非常难
 
 ### 支持的数据类型 \{#supported-data-types\}
 
-|**数据类型**           |**Client V2 支持**   |**Client V1 支持**   |
-|-----------------------|---------------------|---------------------|
-|Int8                   |✔                    |✔                    |
-|Int16                  |✔                    |✔                    |
-|Int32                  |✔                    |✔                    |
-|Int64                  |✔                    |✔                    |
-|Int128                 |✔                    |✔                    |
-|Int256                 |✔                    |✔                    |
-|UInt8                  |✔                    |✔                    |
-|UInt16                 |✔                    |✔                    |
-|UInt32                 |✔                    |✔                    |
-|UInt64                 |✔                    |✔                    |
-|UInt128                |✔                    |✔                    |
-|UInt256                |✔                    |✔                    |
-|Float32                |✔                    |✔                    |
-|Float64                |✔                    |✔                    |
-|Decimal                |✔                    |✔                    |
-|Decimal32              |✔                    |✔                    |
-|Decimal64              |✔                    |✔                    |
-|Decimal128             |✔                    |✔                    |
-|Decimal256             |✔                    |✔                    |
-|Bool                   |✔                    |✔                    |
-|String                 |✔                    |✔                    |
-|FixedString            |✔                    |✔                    |
-|Nullable               |✔                    |✔                    |
-|Date                   |✔                    |✔                    |
-|Date32                 |✔                    |✔                    |
-|DateTime               |✔                    |✔                    |
-|DateTime32             |✔                    |✔                    |
-|DateTime64             |✔                    |✔                    |
-|Interval               |✗                    |✗                    |
-|Enum                   |✔                    |✔                    |
-|Enum8                  |✔                    |✔                    |
-|Enum16                 |✔                    |✔                    |
-|Array                  |✔                    |✔                    |
-|Map                    |✔                    |✔                    |
-|Nested                 |✔                    |✔                    |
-|Tuple                  |✔                    |✔                    |
-|UUID                   |✔                    |✔                    |
-|IPv4                   |✔                    |✔                    |
-|IPv6                   |✔                    |✔                    |
-|Object                 |✗                    |✔                    |
-|Point                  |✔                    |✔                    |
-|Nothing                |✔                    |✔                    |
-|MultiPolygon           |✔                    |✔                    |
-|Ring                   |✔                    |✔                    |
-|Polygon                |✔                    |✔                    |
-|SimpleAggregateFunction|✔                    |✔                    |
-|AggregateFunction      |✗                    |✔                    |
-|Variant                |✔                    |✗                    |
-|Dynamic                |✔                    |✗                    |
-|JSON                   |✔                    |✗                    |
+| **数据类型**                | **Client V2 支持** | **Client V1 支持** |
+| ----------------------- | ---------------- | ---------------- |
+| Int8                    | ✔                | ✔                |
+| Int16                   | ✔                | ✔                |
+| Int32                   | ✔                | ✔                |
+| Int64                   | ✔                | ✔                |
+| Int128                  | ✔                | ✔                |
+| Int256                  | ✔                | ✔                |
+| UInt8                   | ✔                | ✔                |
+| UInt16                  | ✔                | ✔                |
+| UInt32                  | ✔                | ✔                |
+| UInt64                  | ✔                | ✔                |
+| UInt128                 | ✔                | ✔                |
+| UInt256                 | ✔                | ✔                |
+| Float32                 | ✔                | ✔                |
+| Float64                 | ✔                | ✔                |
+| Decimal                 | ✔                | ✔                |
+| Decimal32               | ✔                | ✔                |
+| Decimal64               | ✔                | ✔                |
+| Decimal128              | ✔                | ✔                |
+| Decimal256              | ✔                | ✔                |
+| Bool                    | ✔                | ✔                |
+| String                  | ✔                | ✔                |
+| FixedString             | ✔                | ✔                |
+| Nullable                | ✔                | ✔                |
+| Date                    | ✔                | ✔                |
+| Date32                  | ✔                | ✔                |
+| DateTime                | ✔                | ✔                |
+| DateTime32              | ✔                | ✔                |
+| DateTime64              | ✔                | ✔                |
+| Interval                | ✗                | ✗                |
+| Enum                    | ✔                | ✔                |
+| Enum8                   | ✔                | ✔                |
+| Enum16                  | ✔                | ✔                |
+| Array                   | ✔                | ✔                |
+| Map                     | ✔                | ✔                |
+| Nested                  | ✔                | ✔                |
+| Tuple                   | ✔                | ✔                |
+| UUID                    | ✔                | ✔                |
+| IPv4                    | ✔                | ✔                |
+| IPv6                    | ✔                | ✔                |
+| Object                  | ✗                | ✔                |
+| Point                   | ✔                | ✔                |
+| Nothing                 | ✔                | ✔                |
+| MultiPolygon            | ✔                | ✔                |
+| Ring                    | ✔                | ✔                |
+| Polygon                 | ✔                | ✔                |
+| SimpleAggregateFunction | ✔                | ✔                |
+| AggregateFunction*      | ✔                | ✔                |
+| Variant                 | ✔                | ✗                |
+| Dynamic                 | ✔                | ✗                |
+| JSON                    | ✔                | ✗                |
 
 [ClickHouse 数据类型](/sql-reference/data-types)
 
-:::note
+:::note[部分支持]
 
-- AggregatedFunction - :warning: 不支持 `SELECT * FROM table ...`
-- Decimal - 在 21.9+ 中使用 `SET output_format_decimal_trailing_zeros=1` 以获得一致的行为
-- Enum - 可以同时视为字符串和整数
-- UInt64 - 在 client-v1 中映射为 `long` 类型
-:::
+* **AggregateFunction** — 仅支持对 `groupBitmap` 进行直接二进制读取。对于其他聚合函数 (`min`、`max`、`avg` 等) ，请在查询中使用 `-Merge` 组合器 (例如 `minMerge()`、`avgMerge()`) ，以便在服务器端解析状态。不支持对 `AggregateFunction` 类型列使用 `SELECT * FROM table ...`。
+  :::
+
+:::note[数据类型说明]
+
+* **Decimal** — 在 21.9+ 中使用 `SET output_format_decimal_trailing_zeros=1` 以获得一致的行为
+* **Enum** — 可以同时视为字符串和整数
+* **UInt64** — 在 client-v1 中映射为 `long` 类型
+  :::
 
 ### 功能 \{#features\}
 

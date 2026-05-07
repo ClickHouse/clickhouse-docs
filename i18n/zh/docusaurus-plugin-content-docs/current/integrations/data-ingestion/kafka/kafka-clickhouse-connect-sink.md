@@ -163,7 +163,7 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
 
 * (1) - 仅当在 ClickHouse 设置中将 `input_format_binary_read_json_as_string=1` 打开时才支持 JSON。该设置仅对 RowBinary 格式族生效,并且会影响插入请求中的所有列,因此所有列都必须是字符串。在这种情况下,Connector 会将 STRUCT 转换为 JSON 字符串。
 
-* (2) - 当 struct 中包含 `oneof` 之类的 union 时,需要将 converter 配置为**不**在字段名上添加前缀/后缀。可以使用 `ProtobufConverter` 的 `generate.index.for.unions=false` [设置](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf)。
+* (2) - 当 struct 中包含 `oneof` 之类的 union 时,需要将转换器配置为**不**在字段名上添加前缀/后缀。可以使用 `ProtobufConverter` 的 `generate.index.for.unions=false` [设置](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf)。
 
 **未声明 schema 时:**
 
@@ -253,6 +253,81 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
 }
 ```
 
+
+###### Avro 类型对照 \{#avro-type-mapping\}
+
+下方的类型对照由 `io.confluent.connect.avro.AvroConverter` 定义，它是 Kafka Connect 官方的 Avro 序列化/反序列化实现。有关转换逻辑的更多进阶信息，请参阅 Kafka Connect [文档](https://docs.confluent.io/platform/current/connect/userguide.html#avro)。
+
+✅：支持
+
+❌：不支持
+
+️⚠️：部分支持
+
+| Avro 类型 | Kafka Connect 类型 | 是否支持 | 说明                                                                                                                                                                                                                                          |
+| ------- | ---------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| null    | *N/A*            | ❌    | 不支持作为独立类型，但可用于联合类型                                                                                                                                                                                                                          |
+| boolean | BOOLEAN          | ✅    |                                                                                                                                                                                                                                             |
+| int     | INT8/INT16/INT32 | ✅    | 默认为 INT32。如果 schema 具有属性 `connect.type=int8`，则解析为 INT8 (INT16 的情况同理，即 `connect.type=int16`)                                                                                                                                                 |
+| long    | INT64            | ✅    |                                                                                                                                                                                                                                             |
+| float   | FLOAT32          | ✅    |                                                                                                                                                                                                                                             |
+| double  | FLOAT64          | ✅    |                                                                                                                                                                                                                                             |
+| bytes   | BYTES            | ✅    |                                                                                                                                                                                                                                             |
+| string  | STRING           | ✅    |                                                                                                                                                                                                                                             |
+| record  | STRUCT           | ✅    |                                                                                                                                                                                                                                             |
+| enum    | STRING           | ✅    |                                                                                                                                                                                                                                             |
+| array   | ARRAY/MAP        | ✅    | 默认为 ARRAY。如果该字段最初是通过 `AvroData.fromConnectSchema` 构造的，则解析为 MAP ([源代码](https://github.com/confluentinc/schema-registry/blob/174907bfc0d9424e8d02e788f450f4afcdda1750/avro-data/src/main/java/io/confluent/connect/avro/AvroData.java#L943))  |
+| map     | MAP              | ✅    |                                                                                                                                                                                                                                             |
+| union   | STRUCT/`<T>`     | ⚠️   | 默认为 STRUCT。如果 `flatten.singleton.unions=true`，则解析为联合定义中的单一类型 `T` (参见 [文档](https://docs.confluent.io/cloud/current/connectors/reference/connector-configuration.html#value-converter-flatten-singleton-unions))                              |
+| fixed   | BYTES            | ⚠️   | 不支持 fixed `decimal` 逻辑类型 (见下文)                                                                                                                                                                                                              |
+
+有关 Kafka Connect 类型与 ClickHouse 类型之间的对照，请参阅[支持的数据类型](#supported-data-types)。
+
+###### 不受支持的 Avro schema \{#unsupported-avro-schemas\}
+
+该连接器不支持以下 Avro schema：
+
+* 带有 `decimal` 逻辑类型的 fixed
+
+```json
+{"name": "decimal_18_4", "type": "fixed", "size": 8, "logicalType": "decimal", "precision": 18, "scale": 4}
+```
+
+* Nullable 联合类型
+
+```json
+{"name": "mixed_union", "type": ["null", "string", "int"], "default": null}
+```
+
+* 记录的联合类型
+
+```json
+{
+  "name": "record_union",
+  "type": [
+    {
+      "type": "record",
+      "name": "TypeA",
+      "fields": [
+        {
+          "name": "label",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "type": "record",
+      "name": "TypeB",
+      "fields": [
+        {
+          "name": "count",
+          "type": "int"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ##### Protobuf 模式支持 \{#protobuf-schema-support\}
 

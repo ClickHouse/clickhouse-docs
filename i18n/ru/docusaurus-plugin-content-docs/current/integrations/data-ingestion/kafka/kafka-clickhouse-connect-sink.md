@@ -139,31 +139,31 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 
 **При объявленной схеме:**
 
-| Тип Kafka Connect                       | Тип ClickHouse            | Поддерживается | Примитивный |
-| --------------------------------------- |---------------------------|----------------|-------------|
-| STRING                                  | String                    | ✅             | Да          |
-| STRING                                  | JSON. См. ниже (1)        | ✅             | Да          |
-| INT8                                    | Int8                      | ✅             | Да          |
-| INT16                                   | Int16                     | ✅             | Да          |
-| INT32                                   | Int32                     | ✅             | Да          |
-| INT64                                   | Int64                     | ✅             | Да          |
-| FLOAT32                                 | Float32                   | ✅             | Да          |
-| FLOAT64                                 | Float64                   | ✅             | Да          |
-| BOOLEAN                                 | Boolean                   | ✅             | Да          |
-| ARRAY                                   | Array(T)                  | ✅             | Нет         |
-| MAP                                     | Map(Primitive, T)         | ✅             | Нет         |
-| STRUCT                                  | Variant(T1, T2, ...)      | ✅             | Нет         |
-| STRUCT                                  | Tuple(a T1, b T2, ...)    | ✅             | Нет         |
-| STRUCT                                  | Nested(a T1, b T2, ...)   | ✅             | Нет         |
-| STRUCT                                  | JSON. См. ниже (1), (2)   | ✅             | Нет         |
-| BYTES                                   | String                    | ✅             | Нет         |
-| org.apache.kafka.connect.data.Time      | Int64 / DateTime64        | ✅             | Нет         |
-| org.apache.kafka.connect.data.Timestamp | Int32 / Date32            | ✅             | Нет         |
-| org.apache.kafka.connect.data.Decimal   | Decimal                   | ✅             | Нет         |
+| Тип Kafka Connect                       | Тип ClickHouse          | Поддерживается | Примитивный |
+| --------------------------------------- | ----------------------- | -------------- | ----------- |
+| STRING                                  | String                  | ✅              | Да          |
+| STRING                                  | JSON. См. ниже (1)      | ✅              | Да          |
+| INT8                                    | Int8                    | ✅              | Да          |
+| INT16                                   | Int16                   | ✅              | Да          |
+| INT32                                   | Int32                   | ✅              | Да          |
+| INT64                                   | Int64                   | ✅              | Да          |
+| FLOAT32                                 | Float32                 | ✅              | Да          |
+| FLOAT64                                 | Float64                 | ✅              | Да          |
+| BOOLEAN                                 | Boolean                 | ✅              | Да          |
+| ARRAY                                   | Array(T)                | ✅              | Нет         |
+| MAP                                     | Map(Primitive, T)       | ✅              | Нет         |
+| STRUCT                                  | Variant(T1, T2, ...)    | ✅              | Нет         |
+| STRUCT                                  | Tuple(a T1, b T2, ...)  | ✅              | Нет         |
+| STRUCT                                  | Nested(a T1, b T2, ...) | ✅              | Нет         |
+| STRUCT                                  | JSON. См. ниже (1), (2) | ✅              | Нет         |
+| BYTES                                   | String                  | ✅              | Нет         |
+| org.apache.kafka.connect.data.Time      | Int64 / DateTime64      | ✅              | Нет         |
+| org.apache.kafka.connect.data.Timestamp | Int32 / Date32          | ✅              | Нет         |
+| org.apache.kafka.connect.data.Decimal   | Decimal                 | ✅              | Нет         |
 
-- (1) - JSON поддерживается только когда в настройках ClickHouse установлено `input_format_binary_read_json_as_string=1`. Это работает только для семейства форматов RowBinary, и настройка влияет на все столбцы в запросе вставки, поэтому все они должны быть строкой. Коннектор преобразует STRUCT в строку JSON в этом случае. 
+* (1) - JSON поддерживается только когда в настройках ClickHouse установлено `input_format_binary_read_json_as_string=1`. Это работает только для семейства форматов RowBinary, и настройка влияет на все столбцы в запросе вставки, поэтому все они должны быть строкой. Коннектор преобразует STRUCT в строку JSON в этом случае.
 
-- (2) - Когда структура содержит объединения, такие как `oneof`, конвертер должен быть настроен так, чтобы НЕ добавлять префикс/суффикс к именам полей. Существует настройка `generate.index.for.unions=false` [для `ProtobufConverter`](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf).  
+* (2) - Когда структура содержит объединения, такие как `oneof`, конвертер должен быть настроен так, чтобы НЕ добавлять префикс/суффикс к именам полей. Существует настройка `generate.index.for.unions=false` [для `ProtobufConverter`](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf).
 
 **Без объявленной схемы:**
 
@@ -253,6 +253,81 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 }
 ```
 
+
+###### Соответствие типов Avro \{#avro-type-mapping\}
+
+Приведённое ниже соответствие типов определяется в `io.confluent.connect.avro.AvroConverter` — официальной реализации сериализатора/десериализатора Avro для Kafka Connect. Подробную информацию о логике преобразования см. в [документации](https://docs.confluent.io/platform/current/connect/userguide.html#avro) Kafka Connect.
+
+✅: Поддерживается
+
+❌: Не поддерживается
+
+️⚠️: Поддерживается частично
+
+| Тип Avro | Тип Kafka Connect | Поддерживается | Примечания                                                                                                                                                                                                                                                                                                          |
+| -------- | ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| null     | *N/A*             | ❌              | Не поддерживается как отдельный тип, но может использоваться в union                                                                                                                                                                                                                                                |
+| boolean  | BOOLEAN           | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| int      | INT8/INT16/INT32  | ✅              | По умолчанию используется INT32. Преобразуется в INT8, если у schema есть свойство `connect.type=int8` (аналогично для INT16, если `connect.type=int16`)                                                                                                                                                            |
+| long     | INT64             | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| float    | FLOAT32           | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| double   | FLOAT64           | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| bytes    | BYTES             | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| string   | STRING            | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| record   | STRUCT            | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| enum     | STRING            | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| array    | ARRAY/MAP         | ✅              | По умолчанию используется ARRAY. Преобразуется в MAP, если поле изначально было создано с помощью `AvroData.fromConnectSchema` ([исходный код](https://github.com/confluentinc/schema-registry/blob/174907bfc0d9424e8d02e788f450f4afcdda1750/avro-data/src/main/java/io/confluent/connect/avro/AvroData.java#L943)) |
+| map      | MAP               | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| union    | STRUCT/`<T>`      | ⚠️             | По умолчанию используется STRUCT. Преобразуется в singleton-тип `T` из определения union, если `flatten.singleton.unions=true` (см. [документацию](https://docs.confluent.io/cloud/current/connectors/reference/connector-configuration.html#value-converter-flatten-singleton-unions))                             |
+| fixed    | BYTES             | ⚠️             | Логический тип `decimal` для fixed не поддерживается (см. ниже)                                                                                                                                                                                                                                                     |
+
+Сведения о соответствии между типами Kafka Connect и типами ClickHouse см. в разделе [Поддерживаемые типы данных](#supported-data-types).
+
+###### Неподдерживаемые Avro schema \{#unsupported-avro-schemas\}
+
+Коннектор не поддерживает следующие Avro schema:
+
+* логический тип `decimal` для `fixed`
+
+```json
+{"name": "decimal_18_4", "type": "fixed", "size": 8, "logicalType": "decimal", "precision": 18, "scale": 4}
+```
+
+* объединения с Nullable
+
+```json
+{"name": "mixed_union", "type": ["null", "string", "int"], "default": null}
+```
+
+* объединения типов записей
+
+```json
+{
+  "name": "record_union",
+  "type": [
+    {
+      "type": "record",
+      "name": "TypeA",
+      "fields": [
+        {
+          "name": "label",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "type": "record",
+      "name": "TypeB",
+      "fields": [
+        {
+          "name": "count",
+          "type": "int"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ##### Поддержка схемы Protobuf \{#protobuf-schema-support\}
 
