@@ -162,13 +162,12 @@ RESTORE TABLE test_db.test_table AS test_db.test_table_renamed FROM Disk('backup
 ```
 
 {/* TO DO: 
-  Здесь должно быть объяснение формата резервной копии. См. задачу 24a.
+  Здесь должно быть пояснение о формате резервной копии. См. задачу 24a.
   https://github.com/ClickHouse/clickhouse-docs/issues/3968
   */ }
 
 Можно использовать и другие форматы, помимо zip. См. раздел [&quot;Резервные копии в виде tar-архивов&quot;](#backups-as-tar-archives)
 ниже для получения дополнительной информации.
-
 
 ### Инкрементные резервные копии на диск \{#incremental-backups\}
 

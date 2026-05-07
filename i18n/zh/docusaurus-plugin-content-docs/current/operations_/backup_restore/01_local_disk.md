@@ -140,14 +140,14 @@ RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 要在表中已存在数据的情况下恢复该表，请运行：
 
 ```sql
-RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
-在还原或备份表时，可以为其指定新名称：
+在恢复或备份表时，可以为其指定新名称：
 
 ```sql
-RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
 此备份的归档文件结构如下：
@@ -159,13 +159,12 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
         └── test_table.sql
 ```
 
-{/* TO DO: 
-  在此添加关于备份格式的说明。参见 Issue 24a
+{/* 待办： 
+  在此补充关于备份格式的说明。参见 Issue 24a
   https://github.com/ClickHouse/clickhouse-docs/issues/3968
   */ }
 
 除了 zip 之外，还可以使用其他格式。有关更多详细信息，请参见下文[“将备份保存为 tar 归档文件”](#backups-as-tar-archives)。
-
 
 ### 磁盘增量备份 \{#incremental-backups\}
 

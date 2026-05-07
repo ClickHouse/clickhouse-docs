@@ -6767,6 +6767,20 @@ Cloud 默认值：每个副本可用内存的一半。
 例如，如果设置为 `0.6`，`GROUP BY` 在执行开始时最多可以使用 60% 的可用内存
 （分配给 server/user/merges 的内存），之后将开始使用外部聚合。
 
+## max_bytes_ratio_before_external_join \{#max_bytes_ratio_before_external_join\}
+
+<SettingsInfoBlock type="Double" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新设置：将可用内存中用于哈希连接的比例作为落盘阈值。与绝对值设置 `max_bytes_before_external_join` 结合使用（两者中取较小值）。"}]}]} />
+
+允许 `JOIN` 使用的可用内存比例。达到该比例后，哈希连接将转换为 grace hash join，并将右侧数据落盘。
+
+例如，如果设置为 `0.6`，则在执行开始时，`JOIN` 将允许右侧哈希表使用 `60%` 的可用内存 (对 server/user/merges 可用的内存而言) ；之后将开始落盘。
+
+如果同时设置了 `max_bytes_before_external_join` 和 `max_bytes_ratio_before_external_join`，则使用结果中较小的阈值。如果该比例为 `0` (默认值) ，则仅绝对值设置生效。
+
+仅当 `join_algorithm` 为 `hash`、`parallel_hash`、`default` 或 `auto`，且已配置临时数据路径时，此设置才生效。
+
 ## max_bytes_ratio_before_external_sort \{#max_bytes_ratio_before_external_sort\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />
