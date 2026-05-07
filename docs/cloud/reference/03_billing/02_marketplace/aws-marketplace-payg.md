@@ -29,7 +29,7 @@ Get started with ClickHouse Cloud on the [AWS Marketplace](https://aws.amazon.co
 
 <VerticalStepper headerLevel="h3">
 
-### Search for Clickhouse Cloud - Pay As You Go {#search-payg}
+### Search for ClickHouse Cloud - Pay As You Go {#search-payg}
 
 Go to the [AWS Marketplace](https://aws.amazon.com/marketplace) and search for “ClickHouse Cloud - Pay As You Go”.
 
@@ -44,11 +44,6 @@ Click on the [listing](https://aws.amazon.com/marketplace/pp/prodview-p4gwofrqpk
 ### Subscribe {#subscribe}
 
 On the next screen, click subscribe.
-
-:::note
-**Purchase order (PO) number** is optional and can be ignored.
-**There are two offers available on this listing.** If you choose the offer option for "ClickHouse Cloud - Pay As You Go Free Trial," you’ll be subscribing to a 30-day AWS-managed free trial. However, once the 30 days have passed, the listing subscription will end, and you’ll need to re-subscribe to the other "ClickHouse Cloud - Pay As You Go" offer option on this listing to continue using ClickHouse Pay As You Go.
-:::
 
 <Image img={aws_marketplace_payg_3} alt="AWS Marketplace subscribe" border/>
 
