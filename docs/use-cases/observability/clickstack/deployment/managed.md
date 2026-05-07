@@ -374,5 +374,3 @@ Users looking to connect ClickStack to an existing service with data can complet
 If using your own schema, we recommend creating a Logs source ensuring the required fields are specified - see ["Log source settings"](/use-cases/observability/clickstack/config#logs) for further details.
 
 <JSONSupport/>
-
-Additionally, you should contact support@clickhouse.com to ensure JSON is enabled on your ClickHouse Cloud service.
