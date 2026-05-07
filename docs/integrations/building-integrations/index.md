@@ -20,6 +20,7 @@ If you are a developer writing an application that happens to use ClickHouse dir
 |---|---|
 | A data pipeline or ETL connector that writes to ClickHouse | [Ingestion patterns](/integrations/building-integrations/ingestion) |
 | A BI tool, query builder, or data catalog that reads from ClickHouse | [Consumption patterns](/integrations/building-integrations/consumption) |
+| An AI agent or LLM-powered tool | [MCP integration guide](/integrations/building-integrations/mcp) |
 | A Java/JDBC connector | [JDBC connector guide](/integrations/building-integrations/jdbc) |
 | A Python integration | [Python connector guide](/integrations/building-integrations/python) |
 | A Go integration | [Go connector guide](/integrations/building-integrations/go) |
@@ -90,6 +91,55 @@ GRANT INSERT ON my_database.* TO integration_user;
 ### SSL/TLS {#ssl-tls}
 
 Always use TLS for connections to ClickHouse Cloud and strongly recommended for self-managed production clusters. For HTTPS connections, `sslmode=strict` (the default) verifies the server certificate. Use `sslmode=none` only in isolated development environments — never in production or user-facing integrations.
+
+## Identifying your integration {#identification}
+
+Always identify your integration in the HTTP `User-Agent` header and in per-query metadata. This makes queries attributable in `system.query_log`, which is invaluable for debugging customer issues and monitoring usage. Do this from day one — it is much harder to add retroactively once users are in production.
+
+### Set a User-Agent header {#user-agent}
+
+Use the format `product/version (context)`:
+
+```bash
+curl --user "user:password" \
+     -H "User-Agent: MyBITool/3.2 (ClickHouse connector)" \
+     "https://host:8443/?query=SELECT+1"
+```
+
+Via JDBC:
+
+```java
+props.setProperty("client_name", "MyBITool/3.2");
+```
+
+### Tag individual queries with log_comment {#log-comment}
+
+Attach operation context to each query so customer support and the customer themselves can filter `system.query_log` by feature or job:
+
+```bash
+curl --user "user:password" \
+     "https://host:8443/?log_comment=dashboard%3Arevenue-by-region" \
+     --data "SELECT region, sum(revenue) FROM sales GROUP BY region"
+```
+
+### Query your tagged queries in system.query_log {#query-log}
+
+```sql
+SELECT
+    query_id,
+    query,
+    log_comment,
+    query_duration_ms,
+    read_rows,
+    read_bytes,
+    exception
+FROM system.query_log
+WHERE http_user_agent LIKE 'MyBITool%'
+  AND event_time > now() - INTERVAL 1 HOUR
+  AND type = 'QueryFinish'
+ORDER BY event_time DESC
+LIMIT 50;
+```
 
 ## Schema discovery {#schema-discovery}
 
@@ -437,55 +487,6 @@ curl --user "user:password" \
      --data "INSERT INTO events FORMAT JSONEachRow ..."
 ```
 
-## Identifying your integration {#identification}
-
-Always identify your integration in the HTTP `User-Agent` header and in per-query metadata. This makes queries attributable in `system.query_log`, which is invaluable for debugging customer issues and monitoring usage.
-
-### Set a User-Agent header {#user-agent}
-
-Use the format `product/version (context)`:
-
-```bash
-curl --user "user:password" \
-     -H "User-Agent: MyBITool/3.2 (ClickHouse connector)" \
-     "https://host:8443/?query=SELECT+1"
-```
-
-Via JDBC:
-
-```java
-props.setProperty("client_name", "MyBITool/3.2");
-```
-
-### Tag individual queries with log_comment {#log-comment}
-
-Attach operation context to each query so customer support and the customer themselves can filter `system.query_log` by feature or job:
-
-```bash
-curl --user "user:password" \
-     "https://host:8443/?log_comment=dashboard%3Arevenue-by-region" \
-     --data "SELECT region, sum(revenue) FROM sales GROUP BY region"
-```
-
-### Query your tagged queries in system.query_log {#query-log}
-
-```sql
-SELECT
-    query_id,
-    query,
-    log_comment,
-    query_duration_ms,
-    read_rows,
-    read_bytes,
-    exception
-FROM system.query_log
-WHERE http_user_agent LIKE 'MyBITool%'
-  AND event_time > now() - INTERVAL 1 HOUR
-  AND type = 'QueryFinish'
-ORDER BY event_time DESC
-LIMIT 50;
-```
-
 ## Error handling {#error-handling}
 
 ### HTTP 200 does not mean success {#http-200-not-success}
@@ -723,152 +724,9 @@ public class ClickHouseJdbcConnector {
 }
 ```
 
-## Remote MCP integrations {#mcp}
+## MCP integrations {#mcp}
 
-Model Context Protocol (MCP) is an open standard that lets AI agents and LLM-powered tools discover and invoke capabilities exposed by a server. For ClickHouse integrations, MCP is the right surface when your integration is **AI-native** — meaning an agent or LLM is driving the queries — rather than a traditional BI tool, ETL pipeline, or application making programmatic requests.
-
-| Integration type | Recommended surface |
-|---|---|
-| BI tool / query builder | JDBC or HTTP API |
-| ETL / data pipeline | HTTP API or JDBC |
-| AI agent / LLM assistant | Remote MCP server |
-| IDE coding assistant | Local MCP server (stdio) or remote MCP |
-
-### ClickHouse Cloud built-in remote MCP server {#mcp-cloud}
-
-ClickHouse Cloud includes a fully managed remote MCP server. It requires no infrastructure to deploy and authenticates via OAuth 2.0.
-
-**Endpoint:**
-
-```text
-https://mcp.clickhouse.cloud/mcp
-```
-
-**Transport:** Streamable HTTP (MCP standard)
-
-**Authentication:** OAuth 2.0 — the MCP client initiates a browser-based OAuth flow using ClickHouse Cloud credentials on first connect.
-
-**Capabilities:** 13 read-only tools across querying, schema discovery, service management, backups, ClickPipes, and billing. All tools are annotated with `readOnlyHint: true`.
-
-Enable it per service in the ClickHouse Cloud console under **Connect → MCP**. Once enabled, point any MCP client at the endpoint above. See the [remote MCP setup guide](/use-cases/AI/MCP/remote_mcp) for IDE-specific configuration steps.
-
-If your integration targets ClickHouse Cloud users, this is the fastest path to MCP connectivity — recommend it over building your own server.
-
-### Open-source MCP server for self-hosted ClickHouse {#mcp-oss}
-
-For integrations that must support self-hosted ClickHouse instances, use the [mcp-clickhouse](https://github.com/ClickHouse/mcp-clickhouse) open-source server as a starting point. It exposes three core tools (`run_query`, `list_databases`, `list_tables`) and supports both local stdio and remote HTTP/SSE transports.
-
-### Building your own remote MCP server {#mcp-build}
-
-Build a custom MCP server when you need tools or behavior that neither the Cloud server nor the open-source server provides — for example, domain-specific query templates, write operations under controlled conditions, or integration with your own auth system.
-
-#### Choose the right transport {#mcp-transport}
-
-| Transport | Use when |
-|---|---|
-| **stdio** | Local dev tools (Claude Code, Cursor, VS Code Copilot). No network exposure. |
-| **Streamable HTTP** | Cloud-deployed servers, multi-tenant services, load-balanced deployments. The MCP standard transport for remote servers. |
-| **SSE** (legacy) | Legacy MCP clients that predate Streamable HTTP. Prefer HTTP for new servers. |
-
-For remote servers, Streamable HTTP is the current standard. Design stateless request handlers — do not store session state in memory, as load balancers will distribute requests across instances.
-
-#### Authentication {#mcp-auth}
-
-| Scenario | Recommended approach |
-|---|---|
-| User-facing (human authenticates) | OAuth 2.0 with PKCE — consistent with ClickHouse Cloud's own approach |
-| Service-to-service (agent authenticates) | Static Bearer token via `Authorization` header; rotate regularly |
-| Development / local-only | Disable auth (`CLICKHOUSE_MCP_AUTH_DISABLED=true`); never in production |
-
-Always require authentication for any remotely accessible MCP server. The `/health` endpoint is the only route that should remain unauthenticated (for orchestrator probes).
-
-#### Design read-only tools by default {#mcp-readonly}
-
-Annotate every tool with `readOnlyHint: true` in its MCP metadata unless writes are explicitly part of your design. This signals to MCP hosts that the tool has no side effects, enabling better agent planning.
-
-**`readOnlyHint` is advisory only** — it informs the LLM host but is not enforced. Apply server-side enforcement as well:
-
-- Connect to ClickHouse with a **read-only user** (no INSERT, ALTER, DROP grants)
-- Validate that query strings begin with `SELECT` or `WITH` before execution
-- Use ClickHouse's `readonly` setting (`SET readonly = 1`) at the session level as a secondary guard:
-
-```sql
-SET readonly = 1;
-SELECT ...
-```
-
-If your server must support writes (e.g., agent-driven INSERT), expose write tools under a separate, explicitly named operation, require an additional confirmation parameter, and log every invocation.
-
-#### Apply resource limits to all queries {#mcp-limits}
-
-Agents can generate unbounded queries. Always enforce limits to prevent runaway execution:
-
-```bash
-# Apply limits on the ClickHouse user level (recommended)
-ALTER USER mcp_user SETTINGS
-    max_execution_time = 30,       -- seconds
-    max_result_rows = 10000,       -- rows returned to the agent
-    max_bytes_to_read = 1073741824 -- 1 GB read limit
-```
-
-Or pass them per query via HTTP parameters:
-
-```bash
-curl --user "mcp_user:password" \
-     "https://host:8443/?max_execution_time=30&max_result_rows=10000" \
-     --data "SELECT ..."
-```
-
-10,000 rows is a reasonable ceiling for agent-readable results — LLMs cannot usefully process millions of rows. Design tool descriptions to guide agents toward aggregating queries rather than full table scans.
-
-#### Write tool descriptions that constrain agent behavior {#mcp-descriptions}
-
-Tool descriptions are read by the LLM to decide how and when to invoke a tool. Vague descriptions lead to over-use and inefficient queries. Be specific:
-
-```python
-# Too vague
-Tool(
-    name="run_query",
-    description="Run a SQL query."
-)
-
-# Better
-Tool(
-    name="run_select_query",
-    description=(
-        "Execute a read-only SELECT query against ClickHouse. "
-        "Use aggregation functions (count(), sum(), avg()) rather than returning raw rows when possible. "
-        "Results are limited to 10,000 rows. "
-        "Always include a WHERE clause or LIMIT to avoid full table scans."
-    ),
-    annotations={"readOnlyHint": True}
-)
-```
-
-Include parameter descriptions that tell the agent what valid input looks like, including ClickHouse SQL syntax specifics (e.g., `count()` not `COUNT(*)`, `toDate()` for date literals).
-
-#### Guard against prompt injection {#mcp-injection}
-
-Query results returned by your MCP server flow back into the LLM's context. If a ClickHouse table contains user-generated text, that text could carry adversarial instructions targeting the agent.
-
-Mitigations:
-- **Limit result size** — small result sets reduce the attack surface
-- **Return structured data** — prefer `JSONEachRow` and parse it server-side; avoid returning raw string columns that could contain markdown or instruction-like text directly into the agent's context
-- **Sanitize schema names** — when returning database, table, or column names, strip or escape characters that could be interpreted as markdown formatting or instructions
-
-#### Identify your MCP server in query logs {#mcp-observability}
-
-Set a `User-Agent` and `log_comment` on all queries issued by your MCP server, exactly as you would for any integration. This makes it possible to distinguish agent-driven queries from human queries in `system.query_log`:
-
-```python
-params = {
-    "log_comment": f"mcp:{tool_name}/session:{session_id}",
-    "query_id": request_id,
-}
-headers = {
-    "User-Agent": "MyMCPServer/1.0 (ClickHouse MCP)",
-}
-```
+For AI agent and LLM-powered integrations, see the dedicated [MCP integration guide](/integrations/building-integrations/mcp). It covers when to use MCP vs HTTP/JDBC, the ClickHouse Cloud built-in MCP server, the open-source server for self-hosted deployments, and best practices for building a custom MCP server.
 
 ## Integration development checklist {#checklist}
 
@@ -893,7 +751,7 @@ headers = {
 - [ ] JDBC: new `PreparedStatement` created per batch (reuse causes duplicate inserts in driver 0.8.6+)
 - [ ] Integration tested against both ClickHouse OSS and ClickHouse Cloud
 - [ ] Edge-case types (Nullable, UInt64, DateTime64, Array, Map) covered in tests
-- **If building an MCP server:**
+- **If building an MCP server** (see [MCP integration guide](/integrations/building-integrations/mcp) for details):
 - [ ] Remote server uses Streamable HTTP transport and stateless request handlers
 - [ ] All tools annotated with `readOnlyHint: true` unless writes are explicitly required
 - [ ] Server-side enforcement: read-only ClickHouse user + SQL validation, not just `readOnlyHint`

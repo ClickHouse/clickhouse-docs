@@ -1241,6 +1241,7 @@ const sidebars = {
       items: [
         'integrations/building-integrations/ingestion',
         'integrations/building-integrations/consumption',
+        'integrations/building-integrations/mcp',
         {
           type: 'category',
           label: 'Language guides',
