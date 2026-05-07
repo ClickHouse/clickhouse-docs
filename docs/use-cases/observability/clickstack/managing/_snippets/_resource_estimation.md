@@ -27,7 +27,7 @@ In most self-managed deployments, ingest and query share the same nodes. In this
 
 </details>
 
-The following table provides example sizings based on increasing ingest throughput in megabytes per second, alongside the corresponding data volumes in terabytes per month. This assumes a sustained average of **3 QPS** from ClickStack across all query types (search, dashboards, alerting). 
+The following table provides example sizings based on increasing ingest throughput in megabytes per second, alongside the corresponding data volumes in terabytes per month. This assumes a sustained average of **1 QPS** from ClickStack across all query types (search, dashboards, alerting). 
 
 | MB/s | TB/month | Ingest CPUs | Query CPUs | Total CPUs | Total Storage (per month) (GB) |
 |-----:|--------:|------------:|-----------:|-----------:|-------------:|

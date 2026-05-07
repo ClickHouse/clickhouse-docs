@@ -15,11 +15,11 @@ import ResourceEstimation from '@site/docs/use-cases/observability/clickstack/ma
 
 ## Refining sizing assumptions for your environment {#refining-sizing-assumptions}
 
-The model assumes a sustained average of 1 QPS from ClickStack, aggregating all query types including search, dashboards, and alerting. 
+The model assumes a sustained average of 1 QPS from ClickStack, aggregating all query types including search, dashboards, and alerting.
 
-For higher query volumes, scale CPU requirements linearly by dividing by CPU requirements by the target QPS. For example, a deployment ingesting at 100 MB/s with a target of 9 QPS would require 90 query CPUs (10 × 9) rather than the baseline 10, giving a revised total of 100 CPUs (10 ingest + 90 query).
+For higher query volumes, scale CPU requirements linearly by multiplying CPU requirements by the target QPS. For example, a deployment ingesting at 100 MB/s with a target of 9 QPS would require 90 query CPUs (10 × 9) rather than the baseline 10, giving a revised total of 100 CPUs (10 ingest + 90 query).
 
-Storage estimates assume a conservative 10x compression ratio. In practice, logs, traces, and metrics often achieve higher compression. We recommend testing on a sample of data to establish your compression ratio and storage requirements in advance of production. To compute the required storage for longer retention, simply multiply the storage per month by the number of months required to retain.
+Storage estimates assume a conservative 10x compression ratio. In practice, logs, traces, and metrics often achieve higher compression. We recommend testing on a sample of data to establish your compression ratio and storage requirements in advance of production. To compute the required storage for longer retention, multiply the storage per month by the number of months required to retain.
 
 This assumes a relatively balanced query distribution. Workloads skewed toward heavier historical or archival queries may have significantly different compute requirements, and should be validated through load testing. We plan to introduce a more flexible sizing model that allows extrapolation of query compute based on varying query distribution patterns.
 
