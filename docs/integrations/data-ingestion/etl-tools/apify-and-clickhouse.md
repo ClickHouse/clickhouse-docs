@@ -11,7 +11,7 @@ integration:
   - website: 'https://apify.com/'
 ---
 
-import CommunityMaintainedBadge from '@theme/badges/CommunityBadge';
+import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
 # Connect Apify to ClickHouse
