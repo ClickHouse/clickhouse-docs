@@ -13,10 +13,6 @@ import ResourceEstimation from '@site/docs/use-cases/observability/clickstack/ma
 
 <ResourceEstimation/>
 
-:::note Isolation of Queries vs Ingest
-In most self-managed deployments, ingest and query roles share the same nodes. In this case, use the **Total CPUs** column from the table below as your baseline. Isolated scaling - where ingest and query compute are provisioned independently - is supported in ClickHouse Cloud through [separate compute pools aka Warehouses](/cloud/reference/warehouses).
-:::
-
 ## Refining sizing assumptions for your environment {#refining-sizing-assumptions}
 
 The model assumes a sustained average of 1 QPS from ClickStack, aggregating all query types including search, dashboards, and alerting. 

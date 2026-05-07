@@ -1,3 +1,11 @@
+The following provides a model for estimating the compute and storage resources required for a ClickStack deployment based on your expected ingest volume. The values produced are **estimates only** and should be used as an **initial baseline** - they are not a prescriptive answer. Actual requirements depend on query complexity, concurrency, retention policies, and variance in ingestion throughput. Always monitor resource usage and scale as needed.
+
+:::important All figures are based on uncompressed raw ingest
+Every number on this page - throughput (MB/s, TB/month), CPU sizing, and storage - is expressed in terms of **uncompressed raw ingest volume**, i.e. the size of the data as produced by your applications and sent to the OpenTelemetry collector before any compression is applied.
+
+This is the figure you should estimate from your existing logs, traces, and metrics pipelines. Storage figures in the table below already have the assumed **10x compression ratio** applied to this raw volume.
+:::
+
 When deploying ClickStack, provision compute to cover two independent workloads: **ingest** and **query**.
 
 | Workload | Estimated resources |
@@ -5,16 +13,19 @@ When deploying ClickStack, provision compute to cover two independent workloads:
 | **Ingest** | 1 vCPU per 10 MB/s of sustained ingest throughput |
 | **Query** | 1 vCPU per 1 QPS and per 10 MB/s of sustained ingest throughput |
 
-Assumptions:
+:::note Isolation of Queries vs Ingest
+In most self-managed deployments, ingest and query share the same nodes. In this case, use the **Total CPUs** as your baseline. Isolated scaling - where ingest and query compute are provisioned independently - is supported in ClickHouse Cloud through [separate compute pools aka Warehouses](/cloud/reference/warehouses).
+:::
+
+<details>
+<summary><strong>Assumptions</strong></summary>
 
 - A **10x compression ratio** for storage - typically conservative for logs and traces.
-- An average query response time of 2 seconds with a P99 of 5 seconds.
-- We assume most queries occur over recent data, with a mean lookback window of six hours, with a normal distribution and a standard deviation of one hour on either side. Users may wish to provision dedicated compute to query older data. In ClickHouse Cloud this can be idle (thus not incuring costs) when not in use.
+- Query SLAs of a P50 of 1.5 seconds and a P99 of 5 seconds.
+- We assume most queries occur over recent data, following a log-normal distribution that peaks at around one hour and tails out to around six hours. Users may wish to provision dedicated compute to query older data. In ClickHouse Cloud this can be idle (thus not incuring costs) when not in use.
 - While query compute can be scaled independently of ingest compute, it remains intrinsically linked to ingest volume. We assume as ingest increases, data density grows, resulting in larger scan volumes at query time and consequently higher query compute requirements.
 
-:::note
-These values are **estimates only** and should be used as an initial baseline. Actual requirements depend on query complexity, concurrency, retention policies, and variance in ingestion throughput. Always monitor resource usage and scale as needed.
-:::
+</details>
 
 The following table provides example sizings based on increasing ingest throughput in megabytes per second, alongside the corresponding data volumes in terabytes per month. This assumes a sustained average of **3 QPS** from ClickStack across all query types (search, dashboards, alerting). 
 

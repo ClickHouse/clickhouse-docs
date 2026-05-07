@@ -53,10 +53,6 @@ Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has bee
 
 <ResourceEstimation/>
 
-:::note Isolation of Queries vs Ingest
-In most self-managed deployments, ingest and query roles share the same nodes. In this case, use the **Total CPUs** column from the table below as your baseline. Isolated scaling - where ingest and query compute are provisioned independently - is supported in ClickHouse Cloud through [separate compute pools aka Warehouses](/cloud/reference/warehouses).
-:::
-
 For more details on refining sizing assumptions for your environment, see ["Refining sizing assumptions for your environment"](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions).
 
 #### Isolating observability workloads {#isolating-workloads}
