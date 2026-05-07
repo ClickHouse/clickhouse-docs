@@ -11,7 +11,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/ExperimentalBadge';
 
 <BetaBadge/>
 
