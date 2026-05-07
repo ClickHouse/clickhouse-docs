@@ -10,7 +10,6 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
-import alterRole from '@site/static/images/managed-postgres/pgpg/alterrole.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
 import migrationForm from '@site/static/images/managed-postgres/pgpg/migrationform.png';
 import migrationList from '@site/static/images/managed-postgres/pgpg/migrationlist.png';
@@ -37,8 +36,12 @@ ClickHouse Cloud includes a built-in import wizard that migrates your external P
 
 ## Considerations before migrating {#considerations}
 
+<<<<<<< Updated upstream
 - **DDL propagation**: continuous replication (CDC) captures DML operations and `ADD COLUMN`. Other DDL changes such as `DROP COLUMN` and `ALTER COLUMN` aren't propagated and must be applied manually on the target.
 - **Foreign key constraints**: to prevent ingestion from being blocked by foreign key checks, you'll temporarily set `session_replication_role = replica` on the target role. This is covered in step 3 below.
+=======
+- **DDL propagation**: continuous replication (CDC) captures DML operations and `ADD COLUMN`. Other DDL changes such as `DROP COLUMN` and `ALTER COLUMN` are not propagated and must be applied manually on the target.
+>>>>>>> Stashed changes
 
 ## Step 1: Connect to your source database {#step-1-connect}
 
@@ -108,14 +111,6 @@ psql \
 
 <Image img={psqlImport} alt="Terminal output after running psql schema import" size="lg" border />
 
-After the schema is applied, set `session_replication_role` to `replica` on the target role so that foreign key constraints don't block ingestion:
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'replica';
-```
-
-<Image img={alterRole} alt="ALTER ROLE command setting session_replication_role to replica" size="lg" border />
-
 Click **Next**.
 
 ## Step 4: Configure ingestion settings {#step-4-ingestion-settings}
@@ -175,12 +170,6 @@ ALTER DATABASE <source_db> SET default_transaction_read_only = on;
 ```sql
 -- Run on both source and target
 SELECT MAX(id), MAX(updated_at) FROM public.orders;
-```
-
-**Re-enable constraints and restore the replication role.** Apply any indexes, constraints, and triggers you deferred during import, then reset the target role:
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'origin';
 ```
 
 **Reset sequences.** Align sequences with the current maximum values in each table:
