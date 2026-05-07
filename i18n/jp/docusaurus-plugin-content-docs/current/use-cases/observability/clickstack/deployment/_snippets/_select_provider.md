@@ -13,10 +13,12 @@ Cloud プロバイダーとリージョンを選択します。
 
 <Image img={region_resources} size="md" alt="リソースセレクター" border />
 
-CPU とメモリを指定する際は、想定される ClickStack のインジェストスループットに基づいて見積もってください。以下の表は、これらのリソースのサイジングに関するガイドラインを示します。
+CPU とメモリを指定する際は、想定される ClickStack のインジェスト処理量に基づいて見積もってください。以下の表は、これらのリソースのサイジングに関する指針を示します。
 
 <ResourceEstimation />
 
-要件を指定すると、Managed ClickStack サービスのプロビジョニングに数分かかります。プロビジョニングを待つ間、[ClickHouse Cloud コンソール](/cloud/overview) の他の部分を自由に閲覧できます。
+要件を指定すると、Managed ClickStack サービスのプロビジョニングに数分かかります。プロビジョニングを待つ間、[ClickHouse Cloud console](/cloud/overview) の他の部分を自由に閲覧できます。
+
+環境に合わせてサイジングの前提条件をさらに調整する方法の詳細については、[&quot;環境に合わせたサイジング前提条件の調整&quot;](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions) を参照してください。
 
 **プロビジョニングが完了すると、左側メニューの &#39;ClickStack&#39; オプションが有効になります。**
