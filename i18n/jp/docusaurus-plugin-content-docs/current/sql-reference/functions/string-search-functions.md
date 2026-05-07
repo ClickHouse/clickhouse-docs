@@ -396,7 +396,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 導入バージョン: v20.5.0
 
-正規表現にマッチした、重なりのない部分文字列に含まれるすべてのグループを抽出します。
+正規表現にマッチした最初の部分文字列からキャプチャグループを抽出します。すべてのマッチからグループを抽出するには、[`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) または [`extractAllGroupsVertical`](#extractAllGroupsVertical) を使用します。
 
 **構文**
 
@@ -407,11 +407,11 @@ extractGroups(s, regexp)
 **引数**
 
 * `s` — 抽出対象の入力文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — 正規表現の定数。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 正規表現。少なくとも 1 つのキャプチャグループを含む必要があります。定数。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
 
 **戻り値**
 
-関数が少なくとも 1 つのマッチするグループを見つけた場合、`group_id` (`1` から `N`。ここで `N` は regexp 内のキャプチャグループの数) ごとにまとめられた Array(Array(String)) カラムを返します。一致するグループがない場合は、空の配列を返します。[`Array(Array(String))`](/sql-reference/data-types/array)
+正規表現にマッチした場合、最初のマッチのキャプチャグループ (`1` から `N`。ここで `N` は `regexp` 内のキャプチャグループの数) を含む配列を返します。マッチしない場合は、空の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
 **例**
 
@@ -427,7 +427,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
-[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+['Server','nginx']
 ```
 
 ## hasAllTokens \{#hasAllTokens\}
