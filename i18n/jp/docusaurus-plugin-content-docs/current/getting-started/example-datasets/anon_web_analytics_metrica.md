@@ -64,12 +64,11 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 ### visits テーブルの圧縮 TSV ファイルをダウンロードする \{#download-the-visits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
+curl -L https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | xz -d > visits_v1.tsv
 # Validate the checksum
 md5sum visits_v1.tsv
 # Checksum should be equal to: 6dafe1a0f24e59e3fc2d0fed85601de6
 ```
-
 
 ### visits テーブルの作成 \{#create-the-visits-table\}
 

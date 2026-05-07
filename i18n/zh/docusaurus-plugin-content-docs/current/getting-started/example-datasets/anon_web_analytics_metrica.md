@@ -61,15 +61,14 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 ```
 
 
-### 下载访问数据的压缩 TSV 文件 \{#download-the-visits-compressed-tsv-file\}
+### 下载 visits 的压缩 TSV 文件 \{#download-the-visits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
+curl -L https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | xz -d > visits_v1.tsv
 # Validate the checksum
 md5sum visits_v1.tsv
 # Checksum should be equal to: 6dafe1a0f24e59e3fc2d0fed85601de6
 ```
-
 
 ### 创建 `visits` 表 \{#create-the-visits-table\}
 
