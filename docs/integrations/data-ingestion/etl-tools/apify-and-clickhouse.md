@@ -6,7 +6,7 @@ description: 'Load web scraping and automation data from Apify into ClickHouse'
 title: 'Connect Apify to ClickHouse'
 doc_type: 'guide'
 integration:
-  - support_level: 'partner'
+  - support_level: 'community'
   - category: 'data_ingestion'
   - website: 'https://apify.com/'
 ---
@@ -138,6 +138,10 @@ For large datasets, paginate through results using the `limit` and `offset` para
 Use [`JSONEachRow`](/interfaces/formats/JSONEachRow) format when inserting into ClickHouse. It maps directly to Apify's JSON output with no transformation needed.
 
 Match your ClickHouse table schema to the Actor's output fields. Check the Actor's output schema on its [Apify Store](https://apify.com/store) page or in the **Dataset** tab after a run.
+
+The examples on this page use the `default` user and database to keep things simple. In production, create a dedicated user with the minimum privileges required to insert into your target table, and store credentials securely (for example, in environment variables or a secrets manager rather than in source). See [Cloud access management](/cloud/security/cloud_access_management) for guidance.
+
+For high-throughput inserts from the JavaScript client, follow the [Tips for performance optimizations](/integrations/javascript#tips-for-performance-optimizations) — in particular, batch rows into larger inserts rather than inserting one row at a time, and consider async inserts for many small clients.
 
 ## Related resources {#related-resources}
 
