@@ -155,7 +155,7 @@ Elasticsearch also requires a [`size` setting](https://www.elastic.co/guide/en/e
 
 ClickHouse, by contrast, performs exact aggregations out of the box. Functions like `count(*)` return accurate results without needing configuration tweaks, making query behavior simpler and more predictable.
 
-ClickHouse imposes no size limits. You can perform unbounded group-by queries across large datasets. If memory thresholds are exceeded, ClickHouse [can spill to disk](https://clickhouse.com/docs/en/sql-reference/statements/select/group-by#group-by-in-external-memory). Aggregations that group by a prefix of the primary key are especially efficient, often running with minimal memory consumption.
+ClickHouse imposes no size limits. You can perform unbounded group-by queries across large datasets. If memory thresholds are exceeded, ClickHouse [can spill to disk](/sql-reference/statements/select/group-by#group-by-in-external-memory). Aggregations that group by a prefix of the primary key are especially efficient, often running with minimal memory consumption.
 
 #### Execution model {#execution-model}
 
@@ -213,7 +213,7 @@ Continuous transforms use transform [checkpoints](https://www.elastic.co/guide/e
 
 ClickHouse takes a fundamentally different approach. Rather than re-aggregating data periodically, ClickHouse supports **incremental materialized views**, which transform and aggregate data **at insert time**. When new data is written to a source table, a materialized view executes a pre-defined SQL aggregation query on only the new **inserted blocks**, and writes the aggregated results to a target table.
 
-This model is made possible by ClickHouse's support for [**partial aggregate states**](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction) — intermediate representations of aggregation functions that can be stored and later merged. This allows you to maintain partially aggregated results that are fast to query and cheap to update. Since the aggregation happens as data arrives, there's no need to run expensive recurring jobs or re-summarize older data.
+This model is made possible by ClickHouse's support for [**partial aggregate states**](/sql-reference/data-types/aggregatefunction) — intermediate representations of aggregation functions that can be stored and later merged. This allows you to maintain partially aggregated results that are fast to query and cheap to update. Since the aggregation happens as data arrives, there's no need to run expensive recurring jobs or re-summarize older data.
 
 We sketch the mechanics of incremental materialized views abstractly (note that we use the blue color for all rows belonging to the same group for which we want to pre-calculate aggregate values): 
 
@@ -221,7 +221,7 @@ We sketch the mechanics of incremental materialized views abstractly (note that 
 
 In the diagram above, the materialized view's source table already contains a data part storing some `blue` rows (1 to 10) belonging to the same group. For this group, there also already exists a data part in the view's target table storing a [partial aggregation state](https://www.youtube.com/watch?v=QDAJTKZT8y4) for the `blue` group. When ① ② ③ inserts into the source table with new rows take place, a corresponding source table data part is created for each insert, and, in parallel, (just) for each block of newly inserted rows, a partial aggregation state is calculated and inserted in the form of a data part into the materialized view's target table. ④ During background part merges, the partial aggregation states are merged, resulting in incremental data aggregation. 
 
-Note that all [aggregate functions](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference) (over 90 of them), including their combinations with aggregate function [combinators](https://www.youtube.com/watch?v=7ApwD0cfAFI), support [partial aggregation states](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction). 
+Note that all [aggregate functions](/sql-reference/aggregate-functions/reference) (over 90 of them), including their combinations with aggregate function [combinators](https://www.youtube.com/watch?v=7ApwD0cfAFI), support [partial aggregation states](/sql-reference/data-types/aggregatefunction). 
 
 For a more concrete example of Elasticsearch vs ClickHouse for incremental aggregates, see this [example](https://github.com/ClickHouse/examples/tree/main/blog-examples/clickhouse-vs-elasticsearch/continuous-data-transformation#continuous-data-transformation-example). 
 

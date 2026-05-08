@@ -76,7 +76,7 @@ Additional syntax and clauses define how these models should be updated if their
 
 The[ current adapter](https://github.com/silentsokolov/dbt-clickhouse) for ClickHouse supports also support **dictionary**, **distributed table** and **distributed incremental** materializations. The adapter also supports dbt [snapshots](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots#check-strategy) and [seeds](https://docs.getdbt.com/docs/building-a-dbt-project/seeds).
 
-The following are [experimental features](https://clickhouse.com/docs/en/beta-and-experimental-features) in `dbt-clickhouse`:
+The following are [experimental features](/beta-and-experimental-features) in `dbt-clickhouse`:
 
 | Type                                    | Supported?                                    | Details                                                                                                                                                                                 |
 |-----------------------------------------|-----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
