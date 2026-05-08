@@ -81,15 +81,15 @@ doc_type: 'reference'
 
 * `level` ([UInt32](../../sql-reference/data-types/)) — 머지 트리의 깊이입니다. 0은 현재 파트가 다른 파트들을 병합해 생성된 것이 아니라, 삽입으로 생성되었음을 의미합니다.
 
-* `data_version` ([UInt64](../../sql-reference/data-types/)) — 데이터 파트에 어떤 뮤테이션을 적용할지 결정하는 데 사용되는 숫자입니다(`data_version`보다 버전이 높은 뮤테이션).
+* `data_version` ([UInt64](../../sql-reference/data-types/)) — 데이터 파트에 어떤 뮤테이션을 적용할지 결정하는 데 사용되는 숫자입니다(`data&#95;version`보다 버전이 높은 뮤테이션).
 
-* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 기본 키(primary key) 값이 사용하는 메모리 크기(바이트)입니다. `primary_key_lazy_load`가 활성화되어 있고 키가 로드되지 않은 경우에는 0입니다.
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 기본 키(primary key) 값이 사용하는 메모리 크기(바이트)입니다. `primary_key_lazy_load`가 활성화되어 있고 키가 로드되지 않은 경우에는 0입니다. 0이 아닌 경우 이 바이트는 파트 자체에 있으며, `jemalloc.mergetree_arena.active_bytes`에 포함되어 집계됩니다. 이 값은 `PrimaryIndexCacheBytes`에는 절대로 포함되지 않습니다. 파트별로 둘은 서로 배타적입니다. 즉, `primary_key_lazy_load` 및 `use_primary_key_cache`에 따라 인덱스는 파트 자체(이 메트릭) 또는 공유 `PrimaryIndexCache`(다른 메트릭) 중 하나에만 존재합니다.
 
-* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 기본 키(primary key) 값에 할당하기 위해 예약된 메모리 양(바이트)입니다. `primary_key_lazy_load`가 활성화되어 있고 키가 로드되지 않은 경우에는 0입니다.
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 기본 키(primary key) 값에 할당하기 위해 예약된 메모리 양(바이트)입니다. `primary_key_lazy_load`가 활성화되어 있고 키가 로드되지 않은 경우에는 0입니다. 0이 아닌 경우 `jemalloc.mergetree_arena.active_bytes`에 포함됩니다. `PrimaryIndexCacheBytes`와의 관계는 `primary_key_bytes_in_memory`에 대한 참고 사항을 참조하십시오.
 
-* `index_granularity_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 인덱스 세분성 값에 사용되는 메모리 크기(바이트)입니다 (`primary&#95;key&#95;lazy&#95;load=1` 및 `use&#95;primary&#95;key&#95;cache=1`인 경우 0입니다).
+* `index_granularity_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 인덱스 세분성 값에 사용되는 메모리 크기(바이트)입니다 (`primary&#95;key&#95;lazy&#95;load=1` 및 `use&#95;primary&#95;key&#95;cache=1`인 경우 0입니다). 0이 아닌 경우 해당 바이트는 파트별로 소유되며 `jemalloc.mergetree_arena.active_bytes`에 포함되어 계산됩니다.
 
-* `index_granularity_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 인덱스 세분성 값에 대해 예약된 메모리 크기(바이트 단위)입니다(`primary&#95;key&#95;lazy&#95;load=1` 및 `use&#95;primary&#95;key&#95;cache=1`인 경우 0입니다).
+* `index_granularity_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 인덱스 세분성 값에 대해 예약된 메모리 크기(바이트 단위)입니다(`primary&#95;key&#95;lazy&#95;load=1` 및 `use&#95;primary&#95;key&#95;cache=1`인 경우 0입니다). 0이 아닌 경우 `jemalloc.mergetree_arena.active_bytes`에 포함됩니다.
 
 * `is_frozen` ([UInt8](../../sql-reference/data-types/)) — 파티션 데이터의 백업이 있는지 나타내는 플래그입니다. 1이면 백업이 있습니다. 0이면 백업이 없습니다. 자세한 내용은 FREEZE PARTITION을 참조하십시오.
 

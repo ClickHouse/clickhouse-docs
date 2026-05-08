@@ -137,27 +137,27 @@ BACKUP TABLE test.table
 
 上述每个命令的详细说明如下：
 
-| **命令**                                                               | **说明**                                                                                                                                             |
-|------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `BACKUP`                                                               | 创建指定对象的备份                                                                                                                                    |
-| `RESTORE`                                                              | 从备份中恢复对象                                                                                                                                     |
-| `[ASYNC]`                                                              | 使操作异步执行（立即返回一个可用于监控的 ID）                                                                                                        |
-| `TABLE [db.]table_name [AS [db.]table_name_in_backup]`                 | 备份/恢复某个特定表（可重命名）                                                                                                                      |
-| `[PARTITION[S] partition_expr [,...]]`                                 | 仅备份/恢复表中的指定分区                                                                                                                            |
-| `DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup]`             | 备份/恢复字典对象                                                                                                                                    |
-| `DATABASE database_name [AS database_name_in_backup]`                  | 备份/恢复整个数据库（可重命名）                                                                                                                      |
-| `TEMPORARY TABLE table_name [AS table_name_in_backup]`                 | 备份/恢复临时表（可重命名）                                                                                                                          |
-| `VIEW view_name [AS view_name_in_backup]`                              | 备份/恢复视图（可重命名）                                                                                                                            |
-| `[EXCEPT TABLES ...]`                                                  | 在备份数据库时排除指定的表                                                                                                                           |
-| `ALL`                                                                  | 备份/恢复全部内容（所有数据库、表等）。在 ClickHouse 23.4 版本之前，`ALL` 仅适用于 `RESTORE` 命令。                                                  |
-| `[EXCEPT {TABLES\|DATABASES}...]`                                      | 在使用 `ALL` 时排除指定的表或数据库                                                                                                                  |
-| `[ON CLUSTER 'cluster_name']`                                          | 在 ClickHouse 集群范围内执行备份/恢复                                                                                                                |
-| `TO\|FROM`                                                             | 方向：`TO` 表示备份目标，`FROM` 表示恢复来源                                                                                                         |
-| `File('<path>/<filename>')`                                            | 存储到本地文件系统 / 从本地文件系统恢复                                                                                                             |
-| `Disk('<disk_name>', '<path>/')`                                       | 存储到已配置的磁盘 / 从已配置的磁盘恢复                                                                                                             |
-| `S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>')` | 存储到 Amazon S3 或 S3 兼容存储 / 从中恢复                                                                                                           |
-| `[SETTINGS ...]`                                                       | 完整的设置列表见下文                                                                                                                                 |
-|                                                                        |                                                                                                                                                      |
+| **命令**                                                                 | **说明**                                                                |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `BACKUP`                                                               | 创建指定对象的备份                                                             |
+| `RESTORE`                                                              | 从备份中恢复对象                                                              |
+| `TABLE [db.]table_name [AS [db.]table_name_in_backup]`                 | 备份/恢复某个特定表 (可重命名)                                                     |
+| `[PARTITION[S] partition_expr [,...]]`                                 | 仅备份/恢复表中的指定分区                                                         |
+| `DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup]`             | 备份/恢复字典对象                                                             |
+| `DATABASE database_name [AS database_name_in_backup]`                  | 备份/恢复整个数据库 (可重命名)                                                     |
+| `TEMPORARY TABLE table_name [AS table_name_in_backup]`                 | 备份/恢复临时表 (可重命名)                                                       |
+| `VIEW view_name [AS view_name_in_backup]`                              | 备份/恢复视图 (可重命名)                                                        |
+| `[EXCEPT TABLES ...]`                                                  | 在备份数据库时排除指定的表                                                         |
+| `ALL`                                                                  | 备份/恢复全部内容 (所有数据库、表等) 。在 ClickHouse 23.4 版本之前，`ALL` 仅适用于 `RESTORE` 命令。 |
+| `[EXCEPT {TABLES\|DATABASES}...]`                                      | 在使用 `ALL` 时排除指定的表或数据库                                                 |
+| `[ON CLUSTER 'cluster_name']`                                          | 在 ClickHouse 集群范围内执行备份/恢复                                             |
+| `TO\|FROM`                                                             | 方向：`TO` 表示备份目标，`FROM` 表示恢复来源                                          |
+| `File('<path>/<filename>')`                                            | 存储到本地文件系统 / 从本地文件系统恢复                                                 |
+| `Disk('<disk_name>', '<path>/')`                                       | 存储到已配置的磁盘 / 从已配置的磁盘恢复                                                 |
+| `S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>')` | 存储到 Amazon S3 或兼容 S3 的存储 / 从中恢复                                       |
+| `[SETTINGS ...]`                                                       | 完整的设置列表见下文                                                            |
+| `[ASYNC]`                                                              | 使操作异步执行 (立即返回一个可用于监控的 ID)                                             |
+| `[`                                                                    |                                                                       |
 
 ### 设置 \{#settings\}
 

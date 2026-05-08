@@ -1373,7 +1373,7 @@ PostgreSQL プロトコルを使用するクライアント接続数
 
 ### PrimaryIndexCacheBytes \{#primaryindexcachebytes\}
 
-主索引キャッシュの合計サイズ (バイト)
+プライマリ索引キャッシュの合計サイズ (バイト単位) 。`primary_key_lazy_load=1` および `use_primary_key_cache=1` の場合に、オンデマンドで読み込まれる主キー索引を保持します。割り当ては、専用のキャッシュ用 jemalloc アリーナ (`jemalloc.cache_arena.*`) に存在します。`system.parts.primary_key_bytes_in_memory[_allocated]` と重複することは決してありません。つまり、あるパーツの索引はこのキャッシュ内 (ここで計上) にあるか、パーツ自体の中 (そちらで計上) にあるかのいずれかであり、両方に同時に存在することはありません。すべてのパーツにまたがる主索引メモリの総量を取得するには、この 2 つを合計してください。
 
 ### PrimaryIndexCacheFiles \{#primaryindexcachefiles\}
 

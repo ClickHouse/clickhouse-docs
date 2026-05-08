@@ -84,13 +84,13 @@ doc_type: 'reference'
 
 * `data_version` ([UInt64](../../sql-reference/data-types/)) — Число, используемое для определения того, какие мутации следует применить к части данных (мутации с версией выше, чем data&#95;version).
 
-* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — Объём памяти (в байтах), используемый для хранения значений первичного ключа. Будет равен 0, если включён `primary_key_lazy_load` и ключ не загружен.
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — Объём памяти (в байтах), используемый для хранения значений первичного ключа. Будет равен 0, если включён `primary_key_lazy_load` и ключ не загружен. Если значение не равно нулю, эти байты находятся в самой части и учитываются в `jemalloc.mergetree_arena.active_bytes`. Они НИКОГДА не учитываются в `PrimaryIndexCacheBytes` — для каждой части это взаимоисключающие варианты: индекс находится либо в части (эта метрика), либо в общем `PrimaryIndexCache` (другая метрика), в зависимости от `primary_key_lazy_load` и `use_primary_key_cache`.
 
-* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — Объём памяти (в байтах), зарезервированный для значений первичного ключа. Равен 0, если включён `primary_key_lazy_load` и ключ не загружен.
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — Объём памяти (в байтах), зарезервированный для значений первичного ключа. Равен 0, если включён `primary_key_lazy_load` и ключ не загружен. Если значение не равно нулю, оно включается в `jemalloc.mergetree_arena.active_bytes`. См. примечание к `primary_key_bytes_in_memory`, где описана связь с `PrimaryIndexCacheBytes`.
 
-* `index_granularity_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — Объём памяти (в байтах), который занимают значения гранулярности индекса (будет равен 0 в случае primary&#95;key&#95;lazy&#95;load=1 и use&#95;primary&#95;key&#95;cache=1).
+* `index_granularity_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — Объём памяти (в байтах), который занимают значения гранулярности индекса (будет равен 0 в случае primary&#95;key&#95;lazy&#95;load=1 и use&#95;primary&#95;key&#95;cache=1). Если значение не равно нулю, эти байты принадлежат части и учитываются в `jemalloc.mergetree_arena.active_bytes`.
 
-* `index_granularity_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — Объём памяти (в байтах), зарезервированный для значений гранулярности индекса (будет равен 0, если primary&#95;key&#95;lazy&#95;load=1 и use&#95;primary&#95;key&#95;cache=1).
+* `index_granularity_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — Объём памяти (в байтах), зарезервированный для значений гранулярности индекса (будет равен 0, если primary&#95;key&#95;lazy&#95;load=1 и use&#95;primary&#95;key&#95;cache=1). Если значение не равно нулю, оно включается в `jemalloc.mergetree_arena.active_bytes`.
 
 * `is_frozen` ([UInt8](../../sql-reference/data-types/)) — Флаг, указывающий на наличие резервной копии данных партиции. 1 — резервная копия существует. 0 — резервная копия отсутствует. Подробнее см. FREEZE PARTITION.
 

@@ -83,13 +83,13 @@ doc_type: 'reference'
 
 * `data_version` ([UInt64](../../sql-reference/data-types/)) — 用于确定哪些 mutation 应该应用到数据分区片段的编号 (即版本高于 data&#95;version 的 mutations) 。
 
-* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 主键值占用的内存量 (以字节为单位) 。当启用 `primary_key_lazy_load` 且主键尚未加载时，其值为 0。
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 主键值占用的内存量 (以字节为单位) 。当启用 `primary_key_lazy_load` 且主键尚未加载时，其值为 0。当该值非 0 时，这些字节驻留在 part 本身中，并计入 `jemalloc.mergetree_arena.active_bytes`。它们绝不会计入 `PrimaryIndexCacheBytes` —— 对于每个 part，这两者是互斥的：索引要么位于 part 中 (此指标)，要么位于共享的 `PrimaryIndexCache` 中 (另一个指标)，具体取决于 `primary_key_lazy_load` 和 `use_primary_key_cache`。
 
-* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 为主键值预留的内存大小 (以字节为单位) 。启用 `primary_key_lazy_load` 且主键尚未加载时，该值为 0。
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 为主键值预留的内存大小 (以字节为单位) 。启用 `primary_key_lazy_load` 且主键尚未加载时，该值为 0。非零时，会计入 `jemalloc.mergetree_arena.active_bytes`。有关其与 `PrimaryIndexCacheBytes` 之间的关系，请参见 `primary_key_bytes_in_memory` 的说明。
 
-* `index_granularity_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 索引粒度值占用的内存量 (以字节为单位)  (当 `primary&#95;key&#95;lazy&#95;load=1` 且 `use&#95;primary&#95;key&#95;cache=1` 时，该值为 0) 。
+* `index_granularity_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 索引粒度值占用的内存量 (以字节为单位)  (当 `primary&#95;key&#95;lazy&#95;load=1` 且 `use&#95;primary&#95;key&#95;cache=1` 时，该值为 0) 。当该值非 0 时，这些字节归当前 part 所有，并计入 `jemalloc.mergetree_arena.active_bytes`。
 
-* `index_granularity_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 为索引粒度值预留的内存大小 (以字节为单位)  (当 primary&#95;key&#95;lazy&#95;load=1 且 use&#95;primary&#95;key&#95;cache=1 时，该值为 0) 。
+* `index_granularity_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 为索引粒度值预留的内存大小 (以字节为单位)  (当 primary&#95;key&#95;lazy&#95;load=1 且 use&#95;primary&#95;key&#95;cache=1 时，该值为 0) 。当该值非 0 时，会被计入 `jemalloc.mergetree_arena.active_bytes`。
 
 * `is_frozen` ([UInt8](../../sql-reference/data-types/)) — 用于指示分区数据备份是否存在的标志。1 表示备份存在。0 表示备份不存在。更多详细信息，请参见 FREEZE PARTITION。
 
@@ -155,7 +155,7 @@ doc_type: 'reference'
 
 * `has_lightweight_delete` ([UInt8](../../sql-reference/data-types/)) — 指示 part 是否带有轻量级删除掩码的标志。
 
-* `last_removal_attempt_time` ([DateTime](../../sql-reference/data-types/)) — 服务器最近一次尝试删除此часть的时间。
+* `last_removal_attempt_time` ([DateTime](../../sql-reference/data-types/)) — 服务器最近一次尝试删除此 part 的时间。
 
 * `removal_state` ([String](../../sql-reference/data-types/)) — part 移除过程的当前状态。
 
