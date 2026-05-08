@@ -372,7 +372,8 @@ These settings can't be modified when HyperDX is managed in ClickHouse Cloud.
   - **Default:** `false`
   - **Description:** Enables Beta support for the JSON type in HyperDX. See also [`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) to enable JSON support in the OTel collector.
   - **Guidance:**
-  - Set to `true` to enable JSON support in ClickStack.
+    - Enables a **beta feature**. JSON-typed schemas are **not recommended** for typical observability workloads. See [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json) for the comparison and when each is appropriate.
+    - Set to `true` to enable JSON support in the ClickStack UI.
 
 ## OpenTelemetry collector {#otel-collector}
 
@@ -429,9 +430,10 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
 
 - `OTEL_AGENT_FEATURE_GATE_ARG`
   - **Default:** `<empty string>`
-  - **Description:** Enables feature flags to enabled in the collector. If set to `--feature-gates=clickhouse.json` enables Beta support for the JSON type in collector, ensuring schemas are created with the type. See also [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) to enable JSON support in HyperDX.
+  - **Description:** Enables feature flags in the collector. If set to `--feature-gates=clickhouse.json`, enables Beta support for the JSON type in the collector, ensuring schemas are created with that type. See also [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) to enable JSON support in HyperDX.
   - **Guidance:**
-  - Set to `true` to enable JSON support in ClickStack.
+    - Enables a **beta feature**. JSON-typed schemas are **not recommended** for typical observability workloads. See [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json) for the comparison and when each is appropriate.
+    - Set to `--feature-gates=clickhouse.json` to create new tables using the JSON type.
 
 ## ClickHouse {#clickhouse}
 

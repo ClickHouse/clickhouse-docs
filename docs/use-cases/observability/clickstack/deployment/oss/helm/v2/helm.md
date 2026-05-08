@@ -313,22 +313,6 @@ For ingress-specific issues, TLS problems, or cloud deployment troubleshooting, 
 
 <JSONSupport/>
 
-You can set these environment variables via `hyperdx.config` in your `values.yaml`:
-
-```yaml
-hyperdx:
-  config:
-    BETA_CH_OTEL_JSON_SCHEMA_ENABLED: "true"
-    OTEL_AGENT_FEATURE_GATE_ARG: "--feature-gates=clickhouse.json"
-```
-
-or via `--set`:
-```shell
-helm install my-clickstack clickstack/clickstack \
-  --set "hyperdx.config.BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true" \
-  --set "hyperdx.config.OTEL_AGENT_FEATURE_GATE_ARG=--feature-gates=clickhouse.json"
-```
-
 ## Related documentation {#related-documentation}
 
 ### Deployment guides {#deployment-guides}

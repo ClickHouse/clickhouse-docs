@@ -1937,6 +1937,7 @@ const sidebars = {
             'use-cases/observability/clickstack/ingesting-data/vector',
             'use-cases/observability/clickstack/ingesting-data/collector',
             'use-cases/observability/clickstack/ingesting-data/schemas',
+            'use-cases/observability/clickstack/ingesting-data/schema/map-vs-json',
             'use-cases/observability/clickstack/ingesting-data/trace-sampling',
             {
               type: 'category',
