@@ -38,23 +38,23 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ### 支持的表引擎 \{#supported-table-engines\}
 
-| 类型                   | 详情                                                                                      |
-|------------------------|-------------------------------------------------------------------------------------------|
-| MergeTree (default)    | https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/.         |
-| HDFS                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hdfs                    |
-| MaterializedPostgreSQL | https://clickhouse.com/docs/en/engines/table-engines/integrations/materialized-postgresql |
-| S3                     | https://clickhouse.com/docs/en/engines/table-engines/integrations/s3                      |
-| EmbeddedRocksDB        | https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb        |
-| Hive                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hive                    |
+| 类型                     | 详情                                                                |
+| ---------------------- | ----------------------------------------------------------------- |
+| MergeTree (default)    | [文档](/engines/table-engines/mergetree-family/mergetree/).         |
+| HDFS                   | [文档](/engines/table-engines/integrations/hdfs)                    |
+| MaterializedPostgreSQL | [文档](/engines/table-engines/integrations/materialized-postgresql) |
+| S3                     | [文档](/engines/table-engines/integrations/s3)                      |
+| EmbeddedRocksDB        | [文档](/engines/table-engines/integrations/embedded-rocksdb)        |
+| Hive                   | [文档](/engines/table-engines/integrations/hive)                    |
 
 **注意**：对于 materialized view，支持所有 *MergeTree 引擎。
 
 #### 实验性支持的表引擎 \{#experimental-supported-table-engines\}
 
-| 类型              | 详情                                                                     |
-|-------------------|---------------------------------------------------------------------------|
-| 分布式表          | https://clickhouse.com/docs/en/engines/table-engines/special/distributed |
-| 字典              | https://clickhouse.com/docs/en/engines/table-engines/special/dictionary   |
+| 类型   | 详情                                                |
+| ---- | ------------------------------------------------- |
+| 分布式表 | [文档](/engines/table-engines/special/distributed). |
+| 字典   | [文档](/engines/table-engines/special/dictionary)   |
 
 如果你在使用 dbt 通过上述任一引擎连接 ClickHouse 时遇到问题，请在[这里](https://github.com/ClickHouse/dbt-clickhouse/issues)提交 issue。
 

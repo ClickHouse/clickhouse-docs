@@ -38,23 +38,23 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ### 지원되는 테이블 엔진 \{#supported-table-engines\}
 
-| 유형                   | 상세 정보                                                                                |
-|------------------------|-------------------------------------------------------------------------------------------|
-| MergeTree (default)    | https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/.         |
-| HDFS                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hdfs                    |
-| MaterializedPostgreSQL | https://clickhouse.com/docs/en/engines/table-engines/integrations/materialized-postgresql |
-| S3                     | https://clickhouse.com/docs/en/engines/table-engines/integrations/s3                      |
-| EmbeddedRocksDB        | https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb        |
-| Hive                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hive                    |
+| 유형                     | 상세 정보                                                             |
+| ---------------------- | ----------------------------------------------------------------- |
+| MergeTree (default)    | [문서](/engines/table-engines/mergetree-family/mergetree/).         |
+| HDFS                   | [문서](/engines/table-engines/integrations/hdfs)                    |
+| MaterializedPostgreSQL | [문서](/engines/table-engines/integrations/materialized-postgresql) |
+| S3                     | [문서](/engines/table-engines/integrations/s3)                      |
+| EmbeddedRocksDB        | [문서](/engines/table-engines/integrations/embedded-rocksdb)        |
+| Hive                   | [문서](/engines/table-engines/integrations/hive)                    |
 
 **참고**: materialized view에서는 모든 *MergeTree 엔진이 지원됩니다.
 
 #### 실험적으로 지원되는 테이블 엔진 \{#experimental-supported-table-engines\}
 
-| Type          | Details                                                                   |
-|---------------|---------------------------------------------------------------------------|
-| 분산 테이블   | https://clickhouse.com/docs/en/engines/table-engines/special/distributed. |
-| 딕셔너리      | https://clickhouse.com/docs/en/engines/table-engines/special/dictionary   |
+| Type   | Details                                           |
+| ------ | ------------------------------------------------- |
+| 분산 테이블 | [문서](/engines/table-engines/special/distributed). |
+| 딕셔너리   | [문서](/engines/table-engines/special/dictionary)   |
 
 위 엔진 중 하나를 사용해 dbt에서 ClickHouse에 연결할 때 문제가 발생하면 [여기](https://github.com/ClickHouse/dbt-clickhouse/issues)에 이슈를 등록해 주십시오.
 
