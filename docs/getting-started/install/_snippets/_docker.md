@@ -130,7 +130,7 @@ For more information see ["Configuring CAP_IPC_LOCK and CAP_SYS_NICE Capabilitie
 
 ## Configuration {#configuration}
 
-The container exposes port 8123 for the [HTTP interface](/interfaces/http) and port 9000 for the [native client](/interfaces/cli).
+The container exposes port 8123 for the [HTTP interface](/interfaces/http) and port 9000 for the [native client](/interfaces/tcp).
 
 ClickHouse configuration is represented with a file "config.xml" ([documentation](/operations/configuration-files))
 
