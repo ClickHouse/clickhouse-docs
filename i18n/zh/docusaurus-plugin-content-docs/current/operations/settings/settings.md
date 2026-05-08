@@ -6767,6 +6767,20 @@ Cloud 默认值：每个副本可用内存的一半。
 例如，如果设置为 `0.6`，`GROUP BY` 在执行开始时最多可以使用 60% 的可用内存
 （分配给 server/user/merges 的内存），之后将开始使用外部聚合。
 
+## max_bytes_ratio_before_external_join \{#max_bytes_ratio_before_external_join\}
+
+<SettingsInfoBlock type="Double" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新设置：将可用内存中用于哈希连接的比例作为落盘阈值。与绝对值设置 `max_bytes_before_external_join` 结合使用（两者中取较小值）。"}]}]} />
+
+允许 `JOIN` 使用的可用内存比例。达到该比例后，哈希连接将转换为 grace hash join，并将右侧数据落盘。
+
+例如，如果设置为 `0.6`，则在执行开始时，`JOIN` 将允许右侧哈希表使用 `60%` 的可用内存 (对 server/user/merges 可用的内存而言) ；之后将开始落盘。
+
+如果同时设置了 `max_bytes_before_external_join` 和 `max_bytes_ratio_before_external_join`，则使用结果中较小的阈值。如果该比例为 `0` (默认值) ，则仅绝对值设置生效。
+
+仅当 `join_algorithm` 为 `hash`、`parallel_hash`、`default` 或 `auto`，且已配置临时数据路径时，此设置才生效。
+
 ## max_bytes_ratio_before_external_sort \{#max_bytes_ratio_before_external_sort\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" />
@@ -8793,6 +8807,14 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 — 禁用优化。
 - 1 — 启用优化。
 
+## optimize_dictget_tuple_element \{#optimize_dictget_tuple_element\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "将 tupleElement(dictGet(..., tuple_of_attrs, ...), N) 重写为单属性的 dictGet 调用。"}]}]} />
+
+将 `tupleElement(dictGet('dict', ('a', 'b', 'c'), key), 2)` 重写为 `dictGet('dict', 'b', key)`，以避免拉取不必要的字典属性。支持按位置 (`.1`、`.2`、...) 或按名称 (`.b`) 访问，也适用于 `dictGetOrDefault`，前提是默认参数为常量 Tuple，或由常量构成的 `tuple(...)`。
+
 ## optimize_distinct_in_order \{#optimize_distinct_in_order\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9405,6 +9427,16 @@ FROM default.fuse_tbl AS __table1
 在 userspace 页缓存未命中时，如果底层存储中后续连续的块同样不在缓存中，则一次性从底层存储中读取最多这么多连续的块。每个块的大小为 page_cache_block_size 字节。
 
 较高的取值有利于高吞吐量查询，而低延迟的点查询在不启用预读时效果会更好。
+
+## page_cache_max_coalesced_bytes \{#page_cache_max_coalesced_bytes\}
+
+<SettingsInfoBlock type="UInt64" default_value="16777216" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "16777216"},{"label": "新增设置，用于限制缓存未命中时填充用户态页缓存所执行的单次合并读取大小。"}]}]} />
+
+当 `readBigAt` 填充用户态页缓存时，连续的缓存未命中会合并为一次对底层存储的读取。此设置以字节为单位限制单次合并读取的大小；如果连续未命中的范围更长，则会拆分为多次读取。它可在并行冷读期间限制临时缓冲区的瞬时内存占用。
+
+较高的值可减少对象存储冷扫描时的 HTTP 请求次数；较低的值可降低瞬时内存峰值。
 
 ## parallel_distributed_insert_select \{#parallel_distributed_insert_select\}
 
@@ -12579,6 +12611,23 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 - 0 — 禁用。
 - 1 — 启用。
+
+## use_top_k_dynamic_filtering_for_variable_length_types \{#use_top_k_dynamic_filtering_for_variable_length_types\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "默认对可变长度排序列（例如 `String`）禁用 `use_top_k_dynamic_filtering`；此前该优化会无条件生效，这一行为在 `compatibility` 下保留。"}]}]} />
+
+允许在排序列为可变长度数据类型 (例如 `String`、`Array`、`Map` 以及包含可变长度元素的 `Tuple`) 时应用 `use_top_k_dynamic_filtering`。
+
+对于这类类型，如果列的字典序最小值占主导 (例如大多数字符串为空) 且只能跳过少量 granules，那么动态过滤器执行的逐行阈值比较所带来的开销，可能会超过它节省的成本。在这种情况下，动态过滤器不但无法改善查询延迟，反而会使其变差。
+
+当此设置为 `0` 时，动态过滤仅限用于其值在内存中具有固定最大大小的列 (数字、`Date`、`DateTime`、`FixedString`、`Enum`、这些类型的 `Nullable` 以及这些类型的 `Tuple`) 。设置为 `1` 时，动态过滤也会应用于可变长度类型。
+
+可选值：
+
+* 0 — 禁用。
+* 1 — 启用。
 
 ## use_uncompressed_cache \{#use_uncompressed_cache\}
 

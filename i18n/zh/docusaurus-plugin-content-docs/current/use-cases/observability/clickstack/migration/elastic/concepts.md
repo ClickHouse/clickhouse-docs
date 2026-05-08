@@ -144,19 +144,19 @@ Elasticsearch 中的索引路由可以确保特定文档始终被路由到特定
 
 虽然两个系统都支持数据聚合，但 ClickHouse 提供了显著[更多的函数](/sql-reference/aggregate-functions/reference)，包括统计函数、近似计算函数以及专用分析函数。
 
-在可观测性场景中，聚合最常见的用途之一是统计特定日志消息或事件出现的次数（并在出现频率异常时触发告警）。
+在可观测性场景中，聚合最常见的用途之一是统计特定日志消息或事件出现的次数 (并在出现频率异常时触发告警) 。
 
 在 Elasticsearch 中，与 ClickHouse 中 `SELECT count(*) FROM ... GROUP BY ...` SQL 查询等价的是 [terms 聚合](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html)，它是一种 Elasticsearch 的[桶聚合](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html)。
 
 ClickHouse 的 `GROUP BY` 加 `count(*)` 与 Elasticsearch 的 terms 聚合在功能上通常是等价的，但在实现方式、性能和结果质量方面存在较大差异。
 
-当查询的数据跨多个分片时，Elasticsearch 中这种聚合会[对“top-N”查询的结果进行估算](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation#terms-agg-doc-count-error)（例如按计数排序的前 10 个主机）。这种估算可以提高速度，但可能会影响准确性。用户可以通过[检查 `doc_count_error_upper_bound`](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#terms-agg-doc-count-error)并增大 `shard_size` 参数来降低该误差——代价是更高的内存占用和更慢的查询性能。
+当查询的数据跨多个分片时，Elasticsearch 中这种聚合会[对“top-N”查询的结果进行估算](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation#terms-agg-doc-count-error) (例如按计数排序的前 10 个主机) 。这种估算可以提高速度，但可能会影响准确性。用户可以通过[检查 `doc_count_error_upper_bound`](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#terms-agg-doc-count-error)并增大 `shard_size` 参数来降低该误差——代价是更高的内存占用和更慢的查询性能。
 
 Elasticsearch 还要求为所有桶聚合设置 [`size` 参数](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size)——不显式设置上限就无法返回所有唯一分组。高基数聚合存在触及 [`max_buckets` 限制](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-settings.html#search-settings-max-buckets)的风险，或者需要通过[复合聚合](https://www.elastic.co/docs/reference/aggregations/bucket/composite-aggregation)进行分页，而这通常既复杂又低效。
 
 相比之下，ClickHouse 默认执行精确聚合。像 `count(*)` 这样的函数无需调整配置就能返回精确结果，使查询行为更简单、更可预测。
 
-ClickHouse 不施加大小限制。您可以在大型数据集上执行不设上限的 `GROUP BY` 查询。如果超出内存阈值，ClickHouse [可以将数据溢写到磁盘](https://clickhouse.com/docs/en/sql-reference/statements/select/group-by#group-by-in-external-memory)。按主键前缀进行分组的聚合尤其高效，通常只需极少的内存即可运行。
+ClickHouse 不施加大小限制。您可以在大型数据集上执行不设上限的 `GROUP BY` 查询。如果超出内存阈值，ClickHouse [可以将数据溢写到磁盘](/sql-reference/statements/select/group-by#group-by-in-external-memory)。按主键前缀进行分组的聚合尤其高效，通常只需极少的内存即可运行。
 
 #### 执行模型 \{#execution-model\}
 
@@ -205,27 +205,27 @@ ClickHouse 通过原生表引擎（如 `MergeTree`）支持 **分层存储（tie
 在 **ClickHouse Cloud** 中，这一点变得更加无缝：所有数据都存储在 **对象存储（例如 S3）** 中，计算与存储解耦。数据可以一直保留在对象存储中，直到被查询为止；在查询时数据会被拉取并缓存到本地（或分布式缓存）——在保持与 Elastic 冻结层类似成本结构的同时，具备更好的性能特性。这种方式意味着无需在不同存储层级之间迁移数据，从而使热-温架构不再必要。
 :::
 
-### 汇总（Rollups）与增量聚合 \{#rollups-vs-incremental-aggregates\}
+### 汇总 (Rollups) 与增量聚合 \{#rollups-vs-incremental-aggregates\}
 
-在 Elasticsearch 中，**rollups** 或 **aggregates** 是通过一种称为 [**transforms**](https://www.elastic.co/guide/en/elasticsearch/reference/current/transforms.html) 的机制来实现的。它们用于以固定时间间隔（例如按小时或按天），通过**滑动窗口**模型对时序数据进行汇总。这些被配置为周期性运行的后台任务，从一个索引聚合数据，并将结果写入单独的 **rollup 索引**。这样可以避免对高基数原始数据进行重复扫描，从而降低长时间范围查询的成本。
+在 Elasticsearch 中，**rollups** 或 **aggregates** 是通过一种称为 [**transforms**](https://www.elastic.co/guide/en/elasticsearch/reference/current/transforms.html) 的机制来实现的。它们用于以固定时间间隔 (例如按小时或按天) ，通过**滑动窗口**模型对时序数据进行汇总。这些被配置为周期性运行的后台任务，从一个索引聚合数据，并将结果写入单独的 **rollup 索引**。这样可以避免对高基数原始数据进行重复扫描，从而降低长时间范围查询的成本。
 
-下图以抽象方式示意了 transforms 的工作原理（注意我们使用蓝色来表示属于同一分桶、且需要预先计算聚合值的所有文档）：
+下图以抽象方式示意了 transforms 的工作原理 (注意我们使用蓝色来表示属于同一分桶、且需要预先计算聚合值的所有文档) ：
 
-<Image img={elasticsearch_transforms} alt="Elasticsearch transforms" size="lg"/>
+<Image img={elasticsearch_transforms} alt="Elasticsearch transforms" size="lg" />
 
-连续 transforms 使用基于可配置检查间隔时间的 transform [检查点（checkpoints）](https://www.elastic.co/guide/en/elasticsearch/reference/current/transform-checkpoints.html)（transform [frequency](https://www.elastic.co/guide/en/elasticsearch/reference/current/put-transform.html) 的默认值为 1 分钟）。在上图中，我们假定 ① 在检查间隔时间过去之后会创建一个新的检查点。此时 Elasticsearch 会检查 transform 源索引中的变化，并检测到自上一个检查点以来新出现了三个 `blue` 文档（11、12 和 13）。因此，会在源索引中筛选出所有现有的 `blue` 文档，并使用[复合聚合](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-composite-aggregation.html)（以利用结果[分页](https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html)）重新计算聚合值（然后用包含新聚合值的文档替换目标索引中之前的聚合文档）。类似地，在 ② 和 ③，会处理新的检查点：通过检查变更并从所有属于同一 “blue” 分桶的现有文档重新计算聚合值。
+连续 transforms 使用基于可配置检查间隔时间的 transform [检查点 (checkpoints) ](https://www.elastic.co/guide/en/elasticsearch/reference/current/transform-checkpoints.html) (transform [frequency](https://www.elastic.co/guide/en/elasticsearch/reference/current/put-transform.html) 的默认值为 1 分钟) 。在上图中，我们假定 ① 在检查间隔时间过去之后会创建一个新的检查点。此时 Elasticsearch 会检查 transform 源索引中的变化，并检测到自上一个检查点以来新出现了三个 `blue` 文档 (11、12 和 13) 。因此，会在源索引中筛选出所有现有的 `blue` 文档，并使用[复合聚合](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-composite-aggregation.html) (以利用结果[分页](https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html)) 重新计算聚合值 (然后用包含新聚合值的文档替换目标索引中之前的聚合文档) 。类似地，在 ② 和 ③，会处理新的检查点：通过检查变更并从所有属于同一 “blue” 分桶的现有文档重新计算聚合值。
 
-ClickHouse 采用了完全不同的方法。ClickHouse 不会周期性地重新聚合数据，而是通过支持**增量物化视图**，在**写入时（insert time）**对数据进行转换和聚合。当新数据写入源表时，物化视图仅对新的**插入数据块（inserted blocks）**执行预定义的 SQL 聚合查询，并将聚合结果写入目标表。
+ClickHouse 采用了完全不同的方法。ClickHouse 不会周期性地重新聚合数据，而是通过支持**增量物化视图**，在**写入时 (insert time) **对数据进行转换和聚合。当新数据写入源表时，物化视图仅对新的**插入数据块 (inserted blocks) **执行预定义的 SQL 聚合查询，并将聚合结果写入目标表。
 
-这种模型之所以可行，是因为 ClickHouse 支持[**部分聚合状态（partial aggregate states）**](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction)——即可以存储并在之后合并的聚合函数中间表示。借助这一特性，用户可以维护部分聚合结果，它们查询速度快、更新成本低。由于聚合在数据到达时就已完成，无需再运行昂贵的周期性任务或对旧数据进行重新汇总。
+这种模型之所以可行，是因为 ClickHouse 支持[**部分聚合状态 (partial aggregate states)&#x20;**](/sql-reference/data-types/aggregatefunction)——即可以存储并在之后合并的聚合函数中间表示。借助这一特性，用户可以维护部分聚合结果，它们查询速度快、更新成本低。由于聚合在数据到达时就已完成，无需再运行昂贵的周期性任务或对旧数据进行重新汇总。
 
-我们以抽象方式示意增量物化视图的机制（注意我们使用蓝色来表示属于同一分组、且需要预先计算聚合值的所有行）：
+我们以抽象方式示意增量物化视图的机制 (注意我们使用蓝色来表示属于同一分组、且需要预先计算聚合值的所有行) ：
 
-<Image img={clickhouse_mvs} alt="ClickHouse Materialized Views" size="lg"/>
+<Image img={clickhouse_mvs} alt="ClickHouse Materialized Views" size="lg" />
 
-在上图中，物化视图的源表已经包含了一个数据部分（data part），其中存储了一些属于同一分组的 `blue` 行（1 到 10）。对于该分组，在视图的目标表中也已经存在一个数据部分，用于存储该 `blue` 分组的[部分聚合状态](https://www.youtube.com/watch?v=QDAJTKZT8y4)。当 ① ② ③ 多次向源表插入新行时，每次插入都会在源表中创建一个对应的数据部分，并且同时，仅针对每个新插入行所在的数据块，计算一个部分聚合状态，并以数据部分的形式插入到物化视图的目标表中。④ 在后台的数据部分合并过程中，这些部分聚合状态会被合并，从而实现增量数据聚合。
+在上图中，物化视图的源表已经包含了一个数据部分 (data part) ，其中存储了一些属于同一分组的 `blue` 行 (1 到 10) 。对于该分组，在视图的目标表中也已经存在一个数据部分，用于存储该 `blue` 分组的[部分聚合状态](https://www.youtube.com/watch?v=QDAJTKZT8y4)。当 ① ② ③ 多次向源表插入新行时，每次插入都会在源表中创建一个对应的数据部分，并且同时，仅针对每个新插入行所在的数据块，计算一个部分聚合状态，并以数据部分的形式插入到物化视图的目标表中。④ 在后台的数据部分合并过程中，这些部分聚合状态会被合并，从而实现增量数据聚合。
 
-请注意，所有[聚合函数](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference)（超过 90 个），以及它们与聚合函数[组合器（combinators）](https://www.youtube.com/watch?v=7ApwD0cfAFI)的组合，都支持[部分聚合状态](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction)。
+请注意，所有[聚合函数](/sql-reference/aggregate-functions/reference) (超过 90 个) ，以及它们与聚合函数[组合器 (combinators) ](https://www.youtube.com/watch?v=7ApwD0cfAFI)的组合，都支持[部分聚合状态](/sql-reference/data-types/aggregatefunction)。
 
 关于 Elasticsearch 与 ClickHouse 在增量聚合上的更具体示例，请参见此[示例](https://github.com/ClickHouse/examples/tree/main/blog-examples/clickhouse-vs-elasticsearch/continuous-data-transformation#continuous-data-transformation-example)。
 

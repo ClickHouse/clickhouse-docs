@@ -1373,7 +1373,7 @@ PostgreSQL 프로토콜을 사용하는 클라이언트 연결 수
 
 ### PrimaryIndexCacheBytes \{#primaryindexcachebytes\}
 
-바이트 단위의 프라이머리 인덱스 캐시 총 크기
+프라이머리 인덱스 캐시의 총 크기(바이트)입니다. `primary_key_lazy_load=1` 및 `use_primary_key_cache=1`일 때 필요에 따라 로드되는 프라이머리 키 인덱스를 저장합니다. 메모리 할당은 전용 캐시 jemalloc arena(`jemalloc.cache_arena.*`)에서 이루어집니다. `system.parts.primary_key_bytes_in_memory[_allocated]`와는 절대로 중복되지 않습니다. 즉, 파트의 인덱스는 이 캐시(여기서 집계됨) 또는 파트 자체(거기서 집계됨) 중 한 곳에만 존재하며, 둘 다에 동시에 존재하지는 않습니다. 모든 파트에 걸친 프라이머리 인덱스의 총 메모리를 확인하려면 두 값을 합산하십시오.
 
 ### PrimaryIndexCacheFiles \{#primaryindexcachefiles\}
 

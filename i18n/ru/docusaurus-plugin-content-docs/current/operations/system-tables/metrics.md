@@ -1374,7 +1374,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### PrimaryIndexCacheBytes \{#primaryindexcachebytes\}
 
-Общий размер кэша первичного индекса в байтах
+Общий размер кэша первичного индекса в байтах. Содержит данные индекса первичного ключа, загружаемые по требованию, когда `primary_key_lazy_load=1` и `use_primary_key_cache=1`. Выделение памяти происходит в отдельной jemalloc-арене кэша (`jemalloc.cache_arena.*`). НИКОГДА не дублируется с `system.parts.primary_key_bytes_in_memory[_allocated]` — индекс части находится либо в этом кэше (учитывается здесь), либо в самой части (учитывается там), но никогда в обоих местах одновременно. Чтобы получить общий объём памяти, занимаемой первичными индексами во всех частях, суммируйте эти два значения.
 
 ### PrimaryIndexCacheFiles \{#primaryindexcachefiles\}
 

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat
-sidebar_label: '在 ClickHouse Cloud 中使用 ClickHouse Assistant Chat'
-title: '在 ClickHouse Cloud 中使用 ClickHouse Assistant Chat'
+sidebar_label: '在 ClickHouse Cloud 中使用 ClickHouse Assistant 聊天'
+title: '在 ClickHouse Cloud 中使用 ClickHouse Assistant 聊天'
 pagination_prev: null
 pagination_next: null
 description: '在 ClickHouse Cloud 控制台中启用和使用 AI Chat 功能的指南'
@@ -11,7 +11,6 @@ sidebar_position: 2
 doc_type: 'guide'
 ---
 
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import img_open from '@site/static/images/use-cases/AI_ML/AIChat/1_open_chat.png';
 import img_consent from '@site/static/images/use-cases/AI_ML/AIChat/2_consent.png';

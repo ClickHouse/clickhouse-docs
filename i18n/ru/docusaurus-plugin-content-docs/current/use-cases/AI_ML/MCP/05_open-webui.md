@@ -1,17 +1,15 @@
 ---
 slug: /use-cases/AI/MCP/open-webui
 sidebar_label: 'Интеграция Open WebUI'
-title: 'Настройка сервера ClickHouse MCP для работы с Open WebUI и ClickHouse Cloud'
+title: 'Настройка MCP-сервера ClickHouse для работы с Open WebUI и ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве объясняется, как настроить Open WebUI для работы с сервером ClickHouse MCP с использованием Docker.'
+description: 'В этом руководстве объясняется, как настроить Open WebUI для работы с MCP-сервером ClickHouse с использованием Docker.'
 keywords: ['AI', 'Open WebUI', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
 import Endpoints from '@site/static/images/use-cases/AI_ML/MCP/0_endpoints.png';

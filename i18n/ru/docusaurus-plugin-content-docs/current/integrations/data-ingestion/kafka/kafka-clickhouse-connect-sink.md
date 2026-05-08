@@ -202,6 +202,9 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 }
 ```
 
+:::note
+Приведённая выше конфигурация коннектора требует включить переопределение клиентских параметров в конфигурации воркера с помощью `connector.client.config.override.policy=All`. См. [документацию Kafka Connect](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) для дополнительной информации.
+:::
 
 #### Базовая конфигурация для нескольких топиков \{#basic-configuration-with-multiple-topics\}
 
@@ -596,28 +599,31 @@ Kafka Connect (фреймворк) выбирает сообщения из то
 
 ```properties
 # Increase the number of records per poll
-consumer.max.poll.records=5000
+consumer.override.max.poll.records=5000
 
 # Increase the partition fetch size (5 MB)
-consumer.max.partition.fetch.bytes=5242880
+consumer.override.max.partition.fetch.bytes=5242880
 
 # Optional: Increase minimum fetch size to wait for more data (1 MB)
-consumer.fetch.min.bytes=1048576
+consumer.override.fetch.min.bytes=1048576
 
 # Optional: Reduce wait time if latency is critical
-consumer.fetch.max.wait.ms=300
+consumer.override.fetch.max.wait.ms=300
 ```
+
+:::note
+Указанные выше свойства требуют включить переопределение клиентских настроек в конфигурации воркера с помощью `connector.client.config.override.policy=All`. Дополнительная информация приведена в [документации Kafka Connect](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration).
+:::
 
 **Важно**: Настройки получения Kafka Connect представляют сжатые данные, в то время как ClickHouse получает несжатые данные. Балансируйте эти настройки на основе вашего коэффициента сжатия.
 
 **Компромиссы**:
 
-* **Большие пакеты** = Лучшая производительность приёма данных в ClickHouse, меньше частей, меньше накладных расходов
+* **Большие пакеты** = Лучшая производительность ингестии в ClickHouse, меньше частей, меньше накладных расходов
 * **Большие пакеты** = Более высокое потребление памяти, потенциальное увеличение сквозной задержки
 * **Слишком большие пакеты** = Риск таймаутов, ошибок OutOfMemory или превышения `max.poll.interval.ms`
 
 Подробнее: [Документация Confluent](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Документация Kafka](https://kafka.apache.org/documentation/#consumerconfigs)
-
 
 #### Асинхронные вставки                         \{#asynchronous-inserts\}
 
@@ -854,15 +860,19 @@ SETTINGS
     "exactlyOnce": "false",
     "ignorePartitionsWhenBatching": "true",
     
-    "consumer.max.poll.records": "10000",
-    "consumer.max.partition.fetch.bytes": "5242880",
-    "consumer.fetch.min.bytes": "1048576",
-    "consumer.fetch.max.wait.ms": "500",
+    "consumer.override.max.poll.records": "10000",
+    "consumer.override.max.partition.fetch.bytes": "5242880",
+    "consumer.override.fetch.min.bytes": "1048576",
+    "consumer.override.fetch.max.wait.ms": "500",
     
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
 ```
+
+:::note
+Для приведённой выше конфигурации коннектора необходимо включить переопределения параметров клиента в конфигурации вашего воркера через `connector.client.config.override.policy=All`. См. [документацию Kafka Connect](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) для дополнительной информации.
+:::
 
 **Эта конфигурация**:
 
@@ -871,7 +881,6 @@ SETTINGS
 * Использует асинхронные вставки с буфером 16 MB
 * Запускает 8 параллельных задач (подберите значение под количество партиций)
 * Оптимизирована на максимальную пропускную способность, а не на строгий порядок
-
 
 ### Устранение неполадок \{#troubleshooting\}
 

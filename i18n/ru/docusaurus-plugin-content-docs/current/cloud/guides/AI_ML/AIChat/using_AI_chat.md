@@ -4,14 +4,13 @@ sidebar_label: 'Использование чата ClickHouse Assistant в Clic
 title: 'Использование чата ClickHouse Assistant в ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
-description: 'Руководство по включению и использованию функции чата Ask AI в консоли ClickHouse Cloud'
+description: 'Руководство по включению и использованию функции чата AI Chat в консоли ClickHouse Cloud'
 keywords: ['AI', 'ClickHouse Cloud', 'Chat', 'SQL Console', 'Agent', 'Docs AI']
 show_related_blogs: true
 sidebar_position: 2
 doc_type: 'guide'
 ---
 
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import img_open from '@site/static/images/use-cases/AI_ML/AIChat/1_open_chat.png';
 import img_consent from '@site/static/images/use-cases/AI_ML/AIChat/2_consent.png';

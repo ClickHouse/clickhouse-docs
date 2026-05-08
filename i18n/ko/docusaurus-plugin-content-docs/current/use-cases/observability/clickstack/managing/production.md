@@ -52,6 +52,8 @@ import ResourceEstimation from '@site/i18n/ko/docusaurus-plugin-content-docs/cur
 
     <ResourceEstimation />
 
+    환경에 맞는 사이징 가정을 더 정교하게 조정하는 방법에 대한 자세한 내용은 [「Refining sizing assumptions for your environment」](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions)를 참조하십시오.
+
     #### 관측성 워크로드 격리 \{#isolating-workloads\}
 
     이미 실시간 애플리케이션 분석 등 다른 워크로드를 지원하는 **기존 ClickHouse Cloud 서비스**에 ClickStack을 추가하는 경우, 관측성 트래픽을 격리하는 것이 강력히 권장됩니다.
@@ -65,10 +67,10 @@ import ResourceEstimation from '@site/i18n/ko/docusaurus-plugin-content-docs/cur
 
     이 접근 방식은 ClickStack이 관측성 데이터 증가에 따라 독립적으로 확장되도록 하면서, 기존 워크로드가 영향을 받지 않도록 보장합니다.
 
-    대규모 배포 또는 맞춤형 사이징 가이드가 필요한 경우, 보다 정확한 추정을 위해 지원팀에 문의하십시오.
+    대규모 배포 또는 맞춤형 사이징 지침이 필요한 경우, 보다 정확한 추정을 위해 지원팀에 문의하십시오.
   </TabItem>
 
-  <TabItem value="oss-clickstack" label="ClickStack 오픈소스">
+  <TabItem value="oss-clickstack" label="ClickStack 오픈 소스">
     ### 네트워크 및 포트 보안 \{#network-security\}
 
     기본적으로 Docker Compose는 호스트에서 포트를 노출하여 컨테이너 외부에서 접근 가능하도록 합니다. `ufw`(Uncomplicated Firewall)와 같은 도구가 활성화되어 있는 경우에도 마찬가지입니다. 이는 Docker 네트워킹 스택이 명시적으로 구성되지 않는 한 호스트 수준의 방화벽 규칙을 우회할 수 있기 때문입니다.

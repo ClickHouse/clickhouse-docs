@@ -159,6 +159,10 @@ ClickPipe 동작과 관련된 오류는 `system.clickpipes_log` 테이블에 저
 
 ClickPipes가 데이터 소스에는 15분 동안, 대상에는 1시간 동안 연결하지 못하면, ClickHouse 인스턴스를 사용할 수 있는 경우에 한해 ClickPipes 인스턴스가 중지되고 시스템 오류 테이블에 적절한 메시지를 저장합니다.
 
+## 모니터링 \{#monitoring\}
+
+콘솔 내 모니터링 외에도 ClickPipes는 스크레이핑을 위해 [Prometheus 호환 엔드포인트](/integrations/prometheus)로 메트릭을 노출합니다. 이러한 메트릭은 다른 ClickHouse Cloud 서비스 메트릭과 함께 게시되며, 기존 관측성 스택(예: [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog))에 ClickPipes 모니터링을 통합할 수 있도록 합니다. 사용 가능한 전체 메트릭 목록은 [Monitoring ClickPipes](/integrations/clickpipes/monitoring)를 참조하십시오.
+
 ## FAQ \{#faq\}
 
 - **ClickPipes란 무엇입니까?**

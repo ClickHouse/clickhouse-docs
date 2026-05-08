@@ -2,15 +2,14 @@
 sidebar_label: 'Использование clickhouse-local'
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/clickhouse-local
-title: 'Миграция на ClickHouse с использованием clickhouse-local'
-description: 'Руководство по миграции на ClickHouse с использованием clickhouse-local'
+title: 'Миграция в ClickHouse с использованием clickhouse-local'
+description: 'Руководство по миграции в ClickHouse с использованием clickhouse-local'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import AddARemoteSystem from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_add_remote_ip_access_list_detail.md';
 import ch_local_01 from '@site/static/images/integrations/migration/ch-local-01.png';
 import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.png';

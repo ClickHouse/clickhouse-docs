@@ -38,6 +38,7 @@ SETTINGS
     [kafka_sasl_mechanism = '',]
     [kafka_sasl_username = '',]
     [kafka_sasl_password = '',]
+    [kafka_autodetect_client_rack = '',]
     [kafka_schema = '',]
     [kafka_num_consumers = N,]
     [kafka_max_block_size = 0,]
@@ -58,7 +59,7 @@ SETTINGS
 
 必需参数：
 
-* `kafka_broker_list` — 以逗号分隔的 broker 列表（例如，`localhost:9092`）。
+* `kafka_broker_list` — 以逗号分隔的 broker 列表 (例如，`localhost:9092`) 。
 * `kafka_topic_list` — Kafka topic 列表。
 * `kafka_group_name` — Kafka consumer 组。针对每个组分别跟踪读取偏移量。如果不希望在集群中出现消息重复消费的情况，请在所有位置使用相同的组名。
 * `kafka_format` — 消息格式。使用与 SQL `FORMAT` 函数相同的格式表示法，例如 `JSONEachRow`。更多信息，参见 [Formats](../../../interfaces/formats.md) 部分。
@@ -84,6 +85,16 @@ SETTINGS
 * `kafka_handle_error_mode` — Kafka 引擎的错误处理模式。可选值：default (如果解析消息失败，将抛出异常) 、stream (异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中) 、dead&#95;letter&#95;queue (与错误相关的数据将保存在 system.dead&#95;letter&#95;queue 中) 。
 * `kafka_commit_on_select` — 在执行 SELECT 查询时提交消息。默认值：`false`。
 * `kafka_max_rows_per_message` — 针对基于行的格式，在一条 Kafka 消息中写入的最大行数。默认值：`1`。
+* `kafka_autodetect_client_rack` — 自动为 `librdkafka` 设置 `client.rack` 参数，以优先选择最近的 Kafka 副本。
+  支持的来源：
+  `AWS_ZONE_ID` 表示 AWS IMDSv2 可用区 ID，例如 `euc1-az1`；
+  `AWS_ZONE_NAME` 表示 AWS IMDSv2 可用区名称，例如 `eu-central-1a`；
+  `GCP_ZONE` 表示 GCP 元数据服务的区域，例如 `europe-central2-a`；
+  `CLICKHOUSE` 表示使用 ClickHouse 内部检测，可能依赖云元数据或配置；
+  `AWS_ZONE_NAME_THEN_GCP_ZONE` 表示先尝试 `AWS_ZONE_NAME`，再尝试 `GCP_ZONE`。
+  默认值：空字符串，即禁用。
+  提示：不同环境使用的可用区格式不同。Amazon MSK 通常使用可用区 ID，因此优先选择 `AWS_ZONE_ID`。Confluent Cloud 通常使用可用区名称，因此优先选择 `AWS_ZONE_NAME`。如果不确定，请使用 `AWS_ZONE_NAME_THEN_GCP_ZONE`，或检查集群上的 `broker.rack` 值。
+  注意：Kafka broker 必须配置 `broker.rack` 和 `replica.selector.class=org.apache.kafka.common.replica.RackAwareReplicaSelector`。
 * `kafka_compression_codec` — 生产消息时使用的压缩 codec。支持：空字符串、`none`、`gzip`、`snappy`、`lz4`、`zstd`。如果为空字符串，则表不会设置压缩 codec，此时将使用配置文件中的值或 `librdkafka` 的默认值。默认值：空字符串。
 * `kafka_compression_level` — 由 kafka&#95;compression&#95;codec 选择的算法对应的压缩级别参数。值越高，压缩效果越好，但 CPU 使用量也会更高。可用范围取决于算法：`gzip` 为 `[0-9]`；`lz4` 为 `[0-12]`；`snappy` 仅支持 `0`；`zstd` 为 `[0-12]`；`-1` 表示由 codec 决定的默认压缩级别。默认值：`-1`。
 * `kafka_map_virtual_columns_on_write` — 如果启用，表 schema 中名称为 `_key`、`_timestamp`、`_headers.name` 和 `_headers.value` 的特殊列会在 `INSERT` 时映射到相应的 Kafka 消息元数据，且不会包含在消息负载中。请参见[将列映射到 Kafka 消息元数据](#mapping-columns-to-kafka-message-metadata)。默认值：`false`。

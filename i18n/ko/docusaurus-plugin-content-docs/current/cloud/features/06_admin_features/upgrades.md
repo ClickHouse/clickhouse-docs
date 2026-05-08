@@ -86,22 +86,23 @@ Basic 티어 서비스는 Fast 릴리스 채널 이후 곧 업그레이드됩니
 
 ### 느린 릴리스 채널(지연 업그레이드) \{#slow-release-channel-deferred-upgrades\}
 
-<EnterprisePlanFeatureBadge feature="The slow release channel"/>
+<EnterprisePlanFeatureBadge feature="The slow release channel" />
 
 정기 릴리스 일정 이후에 업그레이드를 받도록 서비스를 설정하고자 하는 경우 **느린 릴리스(Slow release)** 채널을 제공합니다.
 
 구체적으로, 서비스는 다음과 같이 동작합니다:
 
-- 빠른(Fast) 및 일반(Regular) 릴리스 채널 롤아웃이 완료된 이후에 업그레이드됩니다.
-- 정기 릴리스 이후 약 2주 뒤에 ClickHouse 릴리스를 받습니다.
-- 운영 환경을 업그레이드하기 전에 비운영 환경에서 ClickHouse 릴리스를 테스트하기 위해 추가 시간이 필요한 고객을 위한 채널입니다. 비운영 환경은 테스트 및 검증을 위해 빠른(Fast) 또는 일반(Regular) 릴리스 채널 중 하나로 업그레이드를 받을 수 있습니다.
+* 빠른(Fast) 및 정기 릴리스 채널 롤아웃이 완료된 이후에 업그레이드됩니다.
+* 정기 릴리스 이후 약 2주 뒤에 ClickHouse 릴리스를 받습니다.
+* 운영 환경을 업그레이드하기 전에 비운영 환경에서 ClickHouse 릴리스를 테스트하기 위해 추가 시간이 필요한 고객을 위한 채널입니다. 비운영 환경은 테스트 및 검증을 위해 빠른(Fast) 또는 정기 릴리스 채널 중 하나로 업그레이드를 받을 수 있습니다.
 
 :::note
-릴리스 채널은 언제든지 변경할 수 있습니다. 다만, 일부 경우에는 변경 사항이 향후 릴리스부터 적용됩니다. 
+릴리스 채널은 언제든지 변경할 수 있습니다. 다만, 일부 경우에는 변경 사항이 향후 릴리스부터 적용됩니다.
 
-- 더 빠른 채널로 이동하면 서비스가 즉시 업그레이드됩니다. 예: Slow → Regular, Regular → Fast
-- 더 느린 채널로 이동해도 서비스가 다운그레이드되지는 않으며, 해당 채널에서 더 새로운 버전이 제공될 때까지 현재 버전으로 유지됩니다. 예: Regular → Slow, Fast → Regular 또는 Slow
-:::
+* 더 빠른 채널로 이동하면 서비스가 즉시 업그레이드됩니다. 예: Slow → Regular, Regular → Fast
+* 서비스가 [예약된 업그레이드](#scheduled-upgrades))를 사용 중인 경우에는, 대신 다음 예약된 업그레이드 시점에 업그레이드가 수행됩니다.
+* 더 느린 채널로 이동해도 서비스가 다운그레이드되지는 않으며, 해당 채널에서 더 새로운 버전이 제공될 때까지 현재 버전으로 유지됩니다. 예: Regular → Slow, Fast → Regular 또는 Slow
+  :::
 
 ## 예약 업그레이드 \{#scheduled-upgrades\}
 

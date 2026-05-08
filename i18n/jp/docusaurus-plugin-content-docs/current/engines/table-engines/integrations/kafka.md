@@ -38,6 +38,7 @@ SETTINGS
     [kafka_sasl_mechanism = '',]
     [kafka_sasl_username = '',]
     [kafka_sasl_password = '',]
+    [kafka_autodetect_client_rack = '',]
     [kafka_schema = '',]
     [kafka_num_consumers = N,]
     [kafka_max_block_size = 0,]
@@ -58,7 +59,7 @@ SETTINGS
 
 必須パラメータ：
 
-* `kafka_broker_list` — ブローカーのカンマ区切りリスト（例：`localhost:9092`）。
+* `kafka_broker_list` — ブローカーのカンマ区切りリスト (例：`localhost:9092`) 。
 * `kafka_topic_list` — Kafka トピックのリスト。
 * `kafka_group_name` — Kafka コンシューマーのグループ。読み取りオフセットはグループごとに個別に追跡されます。クラスター内でメッセージを重複処理させたくない場合は、同じグループ名を一貫して使用してください。
 * `kafka_format` — メッセージ形式。SQL の `FORMAT` 関数と同じ指定方法を使用し、`JSONEachRow` などを指定します。詳細については、[Formats](../../../interfaces/formats.md) セクションを参照してください。
@@ -84,8 +85,18 @@ SETTINGS
 * `kafka_handle_error_mode` — Kafka エンジンのエラー処理方法。設定可能な値: default (メッセージのパースに失敗した場合に例外をスローする), stream (例外メッセージと生のメッセージを仮想カラム `_error` および `_raw_message` に保存する), dead&#95;letter&#95;queue (エラー関連データを system.dead&#95;letter&#95;queue に保存する)。
 * `kafka_commit_on_select` — `SELECT` クエリが実行された際にメッセージをコミットします。デフォルト: `false`。
 * `kafka_max_rows_per_message` — 行ベースフォーマットにおいて、1 つの Kafka メッセージに書き込まれる行数の上限。デフォルト: `1`。
+* `kafka_autodetect_client_rack` — 最寄りの Kafka レプリカを優先するために、`librdkafka` の `client.rack` パラメータを自動的に設定します。
+  サポートされるソース:
+  AWS IMDSv2 のアベイラビリティゾーン ID には `AWS_ZONE_ID` (例: `euc1-az1`);
+  AWS IMDSv2 のアベイラビリティゾーン名には `AWS_ZONE_NAME` (例: `eu-central-1a`);
+  GCP メタデータサービスのゾーンには `GCP_ZONE` (例: `europe-central2-a`);
+  Cloud メタデータまたは設定に依存する可能性がある ClickHouse の内部検出を使用するには `CLICKHOUSE`;
+  まず `AWS_ZONE_NAME` を試し、次に `GCP_ZONE` を試すには `AWS_ZONE_NAME_THEN_GCP_ZONE`。
+  デフォルト: 空文字列、無効。
+  ヒント: アベイラビリティゾーンの形式は環境によって異なります。Amazon MSK では通常ゾーン ID が使用されるため、`AWS_ZONE_ID` を推奨します。Confluent Cloud では通常ゾーン名が使用されるため、`AWS_ZONE_NAME` を推奨します。判断に迷う場合は、`AWS_ZONE_NAME_THEN_GCP_ZONE` を使用するか、クラスター上の `broker.rack` の値を確認してください。
+  注意: Kafka ブローカーでは、`broker.rack` および `replica.selector.class=org.apache.kafka.common.replica.RackAwareReplicaSelector` を設定しておく必要があります。
 * `kafka_compression_codec` — メッセージ生成に使用される圧縮コーデック。サポートされる値: 空文字列, `none`, `gzip`, `snappy`, `lz4`, `zstd`。空文字列が指定された場合、テーブルによって圧縮コーデックは設定されず、設定ファイルからの値または `librdkafka` のデフォルト値が使用されます。デフォルト: 空文字列。
-* `kafka_compression_level` — `kafka_compression_codec` で選択されたアルゴリズムの圧縮レベル。値を大きくするほど圧縮率は向上しますが、CPU 使用率も増加します。利用可能な範囲はアルゴリズム依存です: `gzip` の場合 `[0-9]`; `lz4` の場合 `[0-12]`; `snappy` は `0` のみ; `zstd` の場合 `[0-12]`; `-1` = コーデック依存のデフォルト圧縮レベル。デフォルト: `-1`。
+* `kafka_compression_level` — `kafka&#95;compression&#95;codec` で選択されたアルゴリズムの圧縮レベル。値を大きくするほど圧縮率は向上しますが、CPU 使用率も増加します。利用可能な範囲はアルゴリズム依存です: `gzip` の場合 `[0-9]`; `lz4` の場合 `[0-12]`; `snappy` は `0` のみ; `zstd` の場合 `[0-12]`; `-1` = コーデック依存のデフォルト圧縮レベル。デフォルト: `-1`。
 * `kafka_map_virtual_columns_on_write` — 有効にすると、テーブル schema 内で `_key`、`_timestamp`、`_headers.name`、`_headers.value` という特別な名前を持つカラムは、`INSERT` 時に対応する Kafka メッセージメタデータに対応付けられ、メッセージペイロードからは除外されます。[Kafka メッセージメタデータへのカラムの対応付け](#mapping-columns-to-kafka-message-metadata) を参照してください。デフォルト: `false`。
 
 例:

@@ -6,10 +6,6 @@ description: 'バックアップを自分のクラウドアカウントへエク
 doc_type: 'guide'
 ---
 
-import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
-
-<EnterprisePlanFeatureBadge />
-
 ClickHouse Cloud では、お客様のクラウドサービスプロバイダ (CSP) アカウント (AWS S3、Google Cloud Storage、Azure Blob Storage) へのバックアップ取得をサポートしています。
 「フル」バックアップと「増分」バックアップを含む ClickHouse Cloud のバックアップの仕組みについては、[backups](/cloud/manage/backups/overview) ドキュメントを参照してください。
 
@@ -18,7 +14,6 @@ ClickHouse Cloud では、お客様のクラウドサービスプロバイダ (C
 :::note
 バックアップを同一クラウドプロバイダ内で別リージョンにエクスポートするあらゆる利用形態では、[data transfer](/cloud/manage/network-data-transfer) の料金が発生することに注意してください。現在は、異なるクラウド間でのバックアップはサポートしていません。
 :::
-
 
 ## 前提条件 \{#requirements\}
 

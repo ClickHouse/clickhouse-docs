@@ -202,6 +202,9 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
 }
 ```
 
+:::note
+上述连接器配置需要你在工作线程配置中通过 `connector.client.config.override.policy=All` 启用客户端重写。更多信息，请参阅 [Kafka Connect 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)。
+:::
 
 #### 多个 topic 的基本配置 \{#basic-configuration-with-multiple-topics\}
 
@@ -593,28 +596,31 @@ Connector 从框架的缓冲区轮询消息:
 
 ```properties
 # Increase the number of records per poll
-consumer.max.poll.records=5000
+consumer.override.max.poll.records=5000
 
 # Increase the partition fetch size (5 MB)
-consumer.max.partition.fetch.bytes=5242880
+consumer.override.max.partition.fetch.bytes=5242880
 
 # Optional: Increase minimum fetch size to wait for more data (1 MB)
-consumer.fetch.min.bytes=1048576
+consumer.override.fetch.min.bytes=1048576
 
 # Optional: Reduce wait time if latency is critical
-consumer.fetch.max.wait.ms=300
+consumer.override.fetch.max.wait.ms=300
 ```
+
+:::note
+上述属性要求您在工作线程配置中通过 `connector.client.config.override.policy=All` 启用客户端配置重写。更多信息，请参阅 [Kafka Connect 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)。
+:::
 
 **重要提示**: Kafka Connect 的 fetch 设置针对的是压缩后的数据，而 ClickHouse 接收的是未压缩的数据。请根据压缩比来平衡这些设置。
 
 **权衡取舍**:
 
-* **更大的批次** = 更好的 ClickHouse 摄取性能、更少的分区片段、更低的开销
+* **更大的批次** = 更好的 ClickHouse 摄取性能、更少的parts、更低的开销
 * **更大的批次** = 更高的内存占用、端到端延迟可能增加
 * **批次过大** = 存在超时、OutOfMemory 错误或超过 `max.poll.interval.ms` 的风险
 
 更多详情: [Confluent 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Kafka 文档](https://kafka.apache.org/documentation/#consumerconfigs)
-
 
 #### 异步插入 \{#asynchronous-inserts\}
 
@@ -851,15 +857,19 @@ SETTINGS
     "exactlyOnce": "false",
     "ignorePartitionsWhenBatching": "true",
     
-    "consumer.max.poll.records": "10000",
-    "consumer.max.partition.fetch.bytes": "5242880",
-    "consumer.fetch.min.bytes": "1048576",
-    "consumer.fetch.max.wait.ms": "500",
+    "consumer.override.max.poll.records": "10000",
+    "consumer.override.max.partition.fetch.bytes": "5242880",
+    "consumer.override.fetch.min.bytes": "1048576",
+    "consumer.override.fetch.max.wait.ms": "500",
     
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
 ```
+
+:::note
+上述连接器配置要求你通过 `connector.client.config.override.policy=All` 在 worker 配置中启用客户端重写。更多信息请参阅 [Kafka Connect 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)。
+:::
 
 **此配置**:
 
@@ -868,7 +878,6 @@ SETTINGS
 * 使用 16 MB 缓冲区的异步插入
 * 运行 8 个并行任务(与分区数量匹配)
 * 针对吞吐量进行了优化,而非严格顺序
-
 
 ### 故障排查 \{#troubleshooting\}
 
