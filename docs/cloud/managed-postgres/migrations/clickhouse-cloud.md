@@ -36,12 +36,7 @@ ClickHouse Cloud includes a built-in import wizard that migrates your external P
 
 ## Considerations before migrating {#considerations}
 
-<<<<<<< Updated upstream
 - **DDL propagation**: continuous replication (CDC) captures DML operations and `ADD COLUMN`. Other DDL changes such as `DROP COLUMN` and `ALTER COLUMN` aren't propagated and must be applied manually on the target.
-- **Foreign key constraints**: to prevent ingestion from being blocked by foreign key checks, you'll temporarily set `session_replication_role = replica` on the target role. This is covered in step 3 below.
-=======
-- **DDL propagation**: continuous replication (CDC) captures DML operations and `ADD COLUMN`. Other DDL changes such as `DROP COLUMN` and `ALTER COLUMN` are not propagated and must be applied manually on the target.
->>>>>>> Stashed changes
 
 ## Step 1: Connect to your source database {#step-1-connect}
 
