@@ -550,6 +550,109 @@ ClickHouse Keeper를 독립 실행형 프로세스로 실행하는 경우(ClickH
 위 인증서 경로는 독립 실행형 Keeper 설치에서 일반적으로 사용하는 경로인 `/etc/clickhouse-keeper/certs/`를 기준으로 합니다. Keeper를 다른 경로에 설치했다면 그에 맞게 조정하십시오. 인증서 자체는 [2단계](#2-create-tls-certificates)에서 생성한 것과 동일합니다.
 :::
 
+## OpenSSL 검증 모드와 인증서 handler \{#openssl-verification-modes\}
+
+`<openSSL>` 설정은 ClickHouse가 TLS 인증서를 검증하는 방식을 제어하는 `<verificationMode>` 및 `<invalidCertificateHandler>`에 대해 여러 옵션을 제공합니다. 이러한 설정은 ClickHouse 서버, `clickhouse-client`, 그리고 독립 실행형 ClickHouse Keeper에 적용됩니다.
+
+### 검증 모드 \{#verification-modes\}
+
+`<openSSL>`의 `<server>` 또는 `<client>` 섹션에서 `<verificationMode>`를 설정합니다:
+
+| Mode      | Description                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------- |
+| `none`    | 인증서를 검증하지 않습니다. 연결은 암호화되지만 상대방의 신원은 확인하지 않습니다. 테스트용으로만 사용하십시오.                              |
+| `relaxed` | 상대방 인증서가 제시되면 이를 검증하지만, 인증서가 제공되지 않아도 실패하지 않습니다.                                            |
+| `once`    | 서버 측에서는 초기 핸드셰이크에서만 클라이언트 인증서를 검증하고 재협상은 건너뜁니다. 클라이언트 측에서는 `relaxed`와 동일하게 동작합니다.           |
+| `strict`  | 상대방 인증서를 요구하며 완전히 검증합니다. 인증서가 없거나 만료되었거나 신뢰할 수 있는 CA가 서명하지 않은 경우 연결이 실패합니다. 프로덕션 환경에 권장됩니다. |
+
+### 유효하지 않은 인증서 handler \{#invalid-certificate-handlers\}
+
+`<openSSL>`의 `<server>` 또는 `<client>` 섹션 안에 `<invalidCertificateHandler>`를 설정합니다. 이 handler는 인증서 검증이 실패했을 때 어떻게 처리할지를 결정합니다. 서버 측에서는 유효하지 않은 클라이언트 인증서에 대한 응답을 제어합니다. 클라이언트 측에서는 유효하지 않은 서버 인증서에 대한 응답을 제어합니다.
+
+| Handler                    | 설명                                         |
+| -------------------------- | ------------------------------------------ |
+| `RejectCertificateHandler` | 인증서가 유효하지 않으면 연결을 거부합니다. 기본값이며 권장되는 설정입니다. |
+| `AcceptCertificateHandler` | 인증서가 유효하지 않아도 연결을 허용합니다. 테스트용으로만 사용하십시오.   |
+
+### 예시: 인증서 검증 비활성화 \{#disabling-certificate-verification\}
+
+:::warning
+인증서 검증을 비활성화하면 TLS 신원 검증이 제거되어 연결이 중간자 공격에 노출됩니다. 이 설정은 격리된 개발 또는 테스트 환경에서만 사용하십시오.
+:::
+
+인증서 검증을 완전히 생략하려면(예: 테스트 환경에서 자체 서명 인증서를 사용하는 경우) `verificationMode`를 `none`으로 설정하고 `AcceptCertificateHandler`를 사용하십시오.
+
+`clickhouse-client`에서는 `--accept-invalid-certificate` CLI 플래그를 사용할 수도 있습니다. 이 플래그를 사용하면 두 설정이 모두 자동으로 적용됩니다.
+
+**clickhouse-client** (`/etc/clickhouse-client/config.xml`):
+
+```xml
+<openSSL>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+**ClickHouse 서버**(`config.xml` 또는 `config.d/`의 파일). 서버는 클라이언트에 자체 인증서를 제시해야 하므로, 클라이언트 인증서를 검증하지 않더라도 `<server>` 섹션에는 여전히 인증서 및 키 경로가 필요합니다:
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-server/certs/server.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-server/certs/server.key</privateKeyFile>
+        <verificationMode>none</verificationMode>
+        <caConfig>/etc/clickhouse-server/certs/ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+**독립 실행형 ClickHouse Keeper** (Keeper 설정 파일):
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-keeper/certs/keeper.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-keeper/certs/keeper.key</privateKeyFile>
+        <verificationMode>none</verificationMode>
+        <caConfig>/etc/clickhouse-keeper/certs/ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
 ## 요약 \{#summary\}
 
 이 문서에서는 ClickHouse 환경에서 TLS를 사용하도록 구성하는 방법에 중점을 두었습니다. 프로덕션 환경에서는 인증서 검증 수준, 프로토콜, 암호 스위트 등 요구 사항에 따라 설정이 달라집니다. 이제 TLS를 사용한 보안 연결을 구성하고 구현하는 데 필요한 단계들을 잘 이해했을 것입니다.

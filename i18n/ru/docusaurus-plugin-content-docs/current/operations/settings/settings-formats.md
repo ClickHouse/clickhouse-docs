@@ -468,16 +468,16 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 ## input_format_column_name_matching_mode \{#input_format_column_name_matching_mode\}
 
-<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="match_case" />
+<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="auto" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "match_case"},{"label": "Новая настройка"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "auto"},{"label": "Сначала сопоставляет имена входных столбцов с учётом регистра, а если это не удаётся, переходит к регистронезависимому сопоставлению вместо того, чтобы требовать точного совпадения регистра."}]}, {"id": "row-2","items": [{"label": "26.4"},{"label": "match_case"},{"label": "Новая настройка"}]}]} />
 
 Определяет режим сопоставления имён столбцов при приёме данных через различные форматы (включая, помимо прочего, JSONEachRow, CSVWithNames, JSONColumns, BSONEachRow, RowBinaryWithNames).
 Поддерживаемые режимы:
 
 * match&#95;case: сопоставление с учётом регистра
   * ignore&#95;case: регистронезависимое сопоставление
-  * auto: сначала пытается выполнить сопоставление с учётом регистра; если не удаётся, выполняет регистронезависимое сопоставление.
+  * auto: сначала пытается выполнить сопоставление с учётом регистра, если не удаётся — выполняет регистронезависимое сопоставление.
 
 ## input_format_connection_handling \{#input_format_connection_handling\}
 
