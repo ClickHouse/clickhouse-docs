@@ -120,7 +120,7 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 ## ClickHouse Cloud 사용 \{#using-clickhouse-cloud\}
 
-이 배포판은 ClickHouse Cloud와 함께 사용할 수 있지만, [Managed ClickStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud)과는 다릅니다. 이 구성에서는 ClickStack UI는 직접 관리하면서 ClickHouse Cloud는 컴퓨트와 스토리지용으로만 사용합니다. UI를 독립적으로 운영해야 하는 특별한 이유가 없다면, 통합 인증과 추가 엔터프라이즈 기능을 제공하고 ClickStack UI를 직접 관리할 필요를 제거해 주는 Managed ClickStack 사용을 권장합니다.
+이 배포판은 ClickHouse Cloud와 함께 사용할 수 있지만, [Managed ClickStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud)과는 다릅니다. 이 구성에서는 ClickStack UI는 직접 관리하면서 ClickHouse Cloud는 컴퓨트와 스토리지용으로만 사용합니다. UI를 독립적으로 운영해야 하는 특별한 이유가 없다면, 통합 authentication과 추가 엔터프라이즈 기능을 제공하고 ClickStack UI를 직접 관리할 필요를 없애 주는 Managed ClickStack 사용을 권장합니다.
 
 다음 작업을 수행해야 합니다:
 
@@ -132,7 +132,7 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
   otel-collector:
       image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
       environment:
-        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # 여기에 HTTPS 엔드포인트 입력
+        CLICKHOUSE_ENDPOINT: '<CLICKHOUSE_ENDPOINT>' # 여기에 HTTPS endpoint 입력
         CLICKHOUSE_USER: '<CLICKHOUSE_USER>'
         CLICKHOUSE_PASSWORD: '<CLICKHOUSE_PASSWORD>'
         HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE: ${HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE}
@@ -149,31 +149,8 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
         - internal
   ```
 
-  `CLICKHOUSE_ENDPOINT`는 포트 `8443`을 포함한 ClickHouse Cloud HTTPS 엔드포인트여야 합니다. 예를 들어 `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443` 와 같습니다.
+  `CLICKHOUSE_ENDPOINT`는 포트 `8443`을 포함한 ClickHouse Cloud HTTPS endpoint여야 합니다. 예를 들어 `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`와 같습니다.
 
 * HyperDX UI에 연결하여 ClickHouse 연결을 생성할 때 Cloud 자격 증명을 사용합니다.
 
 <JSONSupport />
-
-이를 설정하려면 `docker-compose.yml`에서 관련 서비스를 수정하십시오:
-
-```yaml
-  app:
-    image: ${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    ports:
-      - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
-      - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
-    environment:
-      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # enable JSON
-      FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
-      HYPERDX_API_KEY: ${HYPERDX_API_KEY}
-      HYPERDX_API_PORT: ${HYPERDX_API_PORT}
-    # truncated for brevity
-
-  otel-collector:
-    image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    environment:
-      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
-      CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s' 
-      # truncated for brevity
-```

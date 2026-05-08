@@ -359,12 +359,10 @@ ClickStack 对 OpenTelemetry 提供原生支持，但并不限于 OpenTelemetry 
 请注意，ClickStack 中的不同数据源（例如 logs 和 traces）可以彼此关联。要启用此功能，需要在每个数据源上进行额外配置。例如，在日志数据源中，你可以指定对应的 trace 数据源，在 traces 数据源中也可以指定对应的日志数据源。有关更多详细信息，请参阅 ["关联来源"](/use-cases/observability/clickstack/config#correlated-sources)。
 :::
 
-#### 使用自定义 Schema {#using-custom-schemas}
+#### 使用自定义 Schema
 
 希望将 ClickStack 连接到已有数据的现有服务的用户，可以根据需要配置数据库和表。如果表符合 ClickHouse 的 OpenTelemetry Schema，这些设置将会被自动检测。
 
-如果使用自定义 Schema，建议创建一个 Logs 数据源，并确保指定所有必需字段——详情参见[“Log source settings”](/use-cases/observability/clickstack/config#logs)。
+如果使用自定义 Schema，建议创建一个日志数据源，并确保指定所有必需字段——详情参见[“Log source settings”](/use-cases/observability/clickstack/config#logs)。
 
-<JSONSupport/>
-
-此外，您还应联系 support@clickhouse.com，以确保在您的 ClickHouse Cloud 服务上已启用 JSON 支持。
+<JSONSupport />

@@ -78,9 +78,3 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 독립 실행형 collector 배포 및 구성에 대한 자세한 내용은 [「Ingesting with OpenTelemetry」](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration)를 참고하십시오.
 
 <JSONSupport />
-
-HyperDX 전용 이미지의 경우에는 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` 파라미터만 설정하면 됩니다. 예:
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
-```
