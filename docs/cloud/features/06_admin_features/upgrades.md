@@ -96,7 +96,7 @@ Specifically, services will:
 :::note
 You can change release channels at any time. However, in certain cases, the change will only apply to future releases. 
 - Moving to a faster channel will immediately upgrade your service. i.e. Slow to Regular, Regular to Fast
-- However, If your service is using the [scheduled upgrade](#scheduled-upgrades)), then the upgrade will happen on the next scheduled upgrade instead immediately.
+- If your service is using [scheduled upgrades](#scheduled-upgrades)), then the upgrade will happen on the next scheduled upgrade instead
 - Moving to a slower channel won't downgrade your service and keep you on your current version until a newer one is available in that channel. i.e. Regular to Slow, Fast to Regular or Slow
 :::
 
