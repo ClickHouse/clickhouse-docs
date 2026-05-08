@@ -33,6 +33,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - sa-east-1 (South America)
 - ap-southeast-3 (Jakarta)
 - ap-east-1 (Hong Kong)
+- mx-central-1 (Mexico)
  
 ## Google Cloud regions {#google-cloud-regions}
 
@@ -61,6 +62,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 - Japan East (Tokyo, Saitama)
 - UAE North (Dubai)
+- Australia East (New South Wales)
 
 :::note 
 Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 
