@@ -90,7 +90,7 @@ ClickHouse chooses the join algorithm adaptively: it starts with fast hash joins
 ## Superior query performance {#superior-query-performance}
 
 ClickHouse is well known for having extremely fast query performance.
-To learn why ClickHouse is so fast, see the [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.mdx) guide.
+To learn why ClickHouse is so fast, see the [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast) guide.
 
 <!--
 ## What is OLAP? {#what-is-olap}
@@ -111,7 +111,7 @@ Column-oriented databases are better suited to OLAP scenarios: they're at least 
 
 See the difference?
 
-The rest of this article explains why column-oriented databases work well for these scenarios, and why ClickHouse in particular [outperforms](/concepts/why-clickhouse-is-so-fast/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-and-selects-are-isolated) others in this category.
+The rest of this article explains why column-oriented databases work well for these scenarios, and why ClickHouse in particular [outperforms](/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-and-selects-are-isolated) others in this category.
 
 ## Why is ClickHouse so fast? {#why-is-clickhouse-so-fast}
 
