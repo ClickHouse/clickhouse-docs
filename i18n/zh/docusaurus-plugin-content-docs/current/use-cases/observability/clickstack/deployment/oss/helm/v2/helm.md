@@ -306,7 +306,6 @@ helm uninstall clickstack-operators     # Remove operators + CRDs
 **注意：**由 MongoDB 和 ClickHouse Operator 创建的 PersistentVolumeClaim **不会**在执行 `helm uninstall` 时被删除。这是有意为之，旨在防止意外数据丢失。要清理 PVC，请参阅：
 
 * [MongoDB Kubernetes Operator 文档](https://github.com/mongodb/mongodb-kubernetes/tree/master/docs/mongodbcommunity)
-* [ClickHouse Operator 清理文档](https://clickhouse.com/docs/clickhouse-operator/managing-clusters/cleanup)
 
 ## 故障排查 \{#troubleshooting\}
 

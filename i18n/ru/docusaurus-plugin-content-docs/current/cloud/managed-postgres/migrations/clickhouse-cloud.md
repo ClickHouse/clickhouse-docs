@@ -10,7 +10,6 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
-import alterRole from '@site/static/images/managed-postgres/pgpg/alterrole.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
 import migrationForm from '@site/static/images/managed-postgres/pgpg/migrationform.png';
 import migrationList from '@site/static/images/managed-postgres/pgpg/migrationlist.png';
@@ -38,7 +37,6 @@ import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.p
 ## Что нужно учесть перед миграцией \{#considerations\}
 
 * **Распространение DDL**: непрерывная репликация (CDC) фиксирует операции DML и `ADD COLUMN`. Другие изменения DDL, такие как `DROP COLUMN` и `ALTER COLUMN`, не распространяются и должны применяться вручную на целевой стороне.
-* **Ограничения внешних ключей**: чтобы проверки внешних ключей не блокировали ингестию, вы временно установите `session_replication_role = replica` для целевой роли. Это рассматривается ниже, в шаге 3.
 
 ## Шаг 1: Подключитесь к исходной базе данных \{#step-1-connect\}
 
@@ -108,14 +106,6 @@ psql \
 
 <Image img={psqlImport} alt="Вывод в терминале после импорта схемы с помощью psql" size="lg" border />
 
-После применения схемы задайте для целевой роли значение `replica` параметра `session_replication_role`, чтобы ограничения внешних ключей не блокировали ингестию:
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'replica';
-```
-
-<Image img={alterRole} alt="Команда ALTER ROLE, устанавливающая для session_replication_role значение replica" size="lg" border />
-
 Нажмите **Next**.
 
 ## Шаг 4: Настройте параметры ингестии \{#step-4-ingestion-settings\}
@@ -156,7 +146,7 @@ ALTER ROLE <target_role> SET session_replication_role TO 'replica';
 
 ## Действия после миграции \{#post-migration\}
 
-После завершения первоначальной загрузки и, если используется CDC, когда задержка репликации близка к нулю:
+После завершения начальной загрузки и, если используется CDC, когда задержка репликации близка к нулю:
 
 **Сверьте количество строк.** Выборочно проверьте критически важные таблицы в исходной и целевой системах перед переключением трафика:
 
@@ -175,12 +165,6 @@ ALTER DATABASE <source_db> SET default_transaction_read_only = on;
 ```sql
 -- Run on both source and target
 SELECT MAX(id), MAX(updated_at) FROM public.orders;
-```
-
-**Снова включите ограничения и восстановите роль репликации.** Примените все индексы, ограничения и триггеры, которые вы отложили во время импорта, затем сбросьте целевую роль:
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'origin';
 ```
 
 **Сбросьте последовательности.** Приведите последовательности в соответствие с текущими максимальными значениями в каждой таблице:

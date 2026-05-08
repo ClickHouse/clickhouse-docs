@@ -638,6 +638,16 @@ Cloud 默认值：`1`。
 
 允许在 S3Queue/AzureQueue 引擎中使用 Hive 分区
 
+## allow_experimental_paimon_storage_engine \{#allow_experimental_paimon_storage_engine\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新设置。"}]}]} />
+
+允许创建使用 Paimon* 表引擎的表。
+
 ## allow_experimental_parallel_reading_from_replicas \{#allow_experimental_parallel_reading_from_replicas\}
 
 **别名**: `enable_parallel_replicas`
@@ -6897,6 +6907,16 @@ Cloud 默认值：`1000`。
 ```
 
 
+## max_consume_snapshots \{#max_consume_snapshots\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新设置"}]}]} />
+
+每次增量读取最多可消费的 Paimon 快照数量。0 表示不受限制。
+
 ## max_distributed_connections \{#max_distributed_connections\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
@@ -9437,6 +9457,18 @@ FROM default.fuse_tbl AS __table1
 当 `readBigAt` 填充用户态页缓存时，连续的缓存未命中会合并为一次对底层存储的读取。此设置以字节为单位限制单次合并读取的大小；如果连续未命中的范围更长，则会拆分为多次读取。它可在并行冷读期间限制临时缓冲区的瞬时内存占用。
 
 较高的值可减少对象存储冷扫描时的 HTTP 请求次数；较低的值可降低瞬时内存峰值。
+
+## paimon_target_snapshot_id \{#paimon_target_snapshot_id\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Int64" default_value="-1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "-1"},{"label": "新增设置"}]}]} />
+
+用于 Paimon 增量模式的查询级定向快照读取。当 &gt;0 时，读取器将仅拉取指定 snapshot&#95;id 的增量，
+而不会推进已提交的水位。
+默认值：-1 (禁用)
 
 ## parallel_distributed_insert_select \{#parallel_distributed_insert_select\}
 

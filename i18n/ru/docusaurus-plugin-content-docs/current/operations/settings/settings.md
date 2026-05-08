@@ -640,6 +640,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использовать Hive‑партиционирование с движками S3Queue/AzureQueue
 
+## allow_experimental_paimon_storage_engine \{#allow_experimental_paimon_storage_engine\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Разрешает создавать таблицы на движках таблиц Paimon*.
+
 ## allow_experimental_parallel_reading_from_replicas \{#allow_experimental_parallel_reading_from_replicas\}
 
 **Псевдонимы**: `enable_parallel_replicas`
@@ -6918,6 +6928,16 @@ log_query_views=1
 ```
 
 
+## max_consume_snapshots \{#max_consume_snapshots\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Максимальное количество снимков Paimon за одно инкрементальное чтение. 0 означает отсутствие ограничений.
+
 ## max_distributed_connections \{#max_distributed_connections\}
 
 <SettingsInfoBlock type="UInt64" default_value="1024" />
@@ -9475,6 +9495,18 @@ FROM default.fuse_tbl AS __table1
 Когда `readBigAt` заполняет кэш страниц в пространстве пользователя, последовательные промахи кэша объединяются в одно чтение из нижележащего хранилища. Эта настройка ограничивает размер одного такого объединённого чтения в байтах; более длинные последовательности промахов разбиваются на несколько чтений. Она ограничивает временное потребление памяти буфером при параллельных холодных чтениях.
 
 Большее значение уменьшает количество HTTP-запросов при холодном сканировании в объектном хранилище; меньшее — снижает пиковое временное потребление памяти.
+
+## paimon_target_snapshot_id \{#paimon_target_snapshot_id\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Int64" default_value="-1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "-1"},{"label": "Новая настройка"}]}]} />
+
+Чтение указанного снимка на уровне запроса в инкрементальном режиме Paimon. Если значение &gt;0, модуль чтения будет извлекать только дельту
+для указанного `snapshot_id`, не продвигая зафиксированный watermark.
+По умолчанию: -1 (отключено)
 
 ## parallel_distributed_insert_select \{#parallel_distributed_insert_select\}
 
