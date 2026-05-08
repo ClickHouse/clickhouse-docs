@@ -12,8 +12,6 @@ integration:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-
 
 # Java クライアントの概要 \{#java-clients-overview\}
 
