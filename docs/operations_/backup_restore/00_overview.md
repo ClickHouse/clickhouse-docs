@@ -177,7 +177,6 @@ Each of the commands above is detailed below:
 |------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `BACKUP`                                                               | Creates a backup of specified objects                                                                                                                |
 | `RESTORE`                                                              | Restores objects from a backup                                                                                                                       |
-| `[ASYNC]`                                                              | Makes the operation run asynchronously (returns immediately with an ID you can monitor)                                                              |
 | `TABLE [db.]table_name [AS [db.]table_name_in_backup]`                 | Backs up/restores a specific table (can be renamed)                                                                                                  |
 | `[PARTITION[S] partition_expr [,...]]`                                 | Only backup/restore specific partitions of the table                                                                                                 |
 | `DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup]`             | Backs up/restores a dictionary object                                                                                                                |
@@ -193,6 +192,7 @@ Each of the commands above is detailed below:
 | `Disk('<disk_name>', '<path>/')`                                       | Store to/restore from a configured disk                                                                                                              |
 | `S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>')` | Store to/restore from Amazon S3 or S3-compatible storage                                                                                             |
 | `[SETTINGS ...]`                                                       | See below for complete list of settings                                                                                                              |                                                                                                                         |
+| `[ASYNC]`                                                              | Makes the operation run asynchronously (returns immediately with an ID you can monitor)                                                              |
 
 ### Settings {#settings}
 
