@@ -13,7 +13,6 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import ActionsMenu from '@site/docs/_snippets/_service_actions_menu.md';
 import SQLConsoleDetail from '@site/docs/_snippets/_launch_sql_console.md';
 import SupersetDocker from '@site/docs/_snippets/_add_superset_detail.md';
