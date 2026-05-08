@@ -35,6 +35,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 * sa-east-1 (남아메리카)
 * ap-southeast-3 (자카르타)
 * ap-east-1 (홍콩)
+* mx-central-1 (멕시코)
 
 ## Google Cloud 리전 \{#google-cloud-regions\}
 
@@ -63,9 +64,10 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 * Japan East (Tokyo, Saitama)
 * UAE North (Dubai)
+* Australia East (New South Wales)
 
 :::note
-현재 나열되어 있지 않은 리전에 배포해야 하는 경우 [요청을 제출하십시오](https://clickhouse.com/pricing?modal=open).
+현재 목록에 없는 리전에 배포해야 합니까? [요청을 제출하십시오](https://clickhouse.com/pricing?modal=open).
 :::
 
 ## 프라이빗 리전 \{#private-regions\}
