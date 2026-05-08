@@ -71,51 +71,43 @@ AWS PrivateLink поддерживается. См. [документацию](/
 ### Azure Event Hubs \{#azure-eventhubs\}
 
 <details>
+  <summary>Работает ли ClickPipe для Azure Event Hubs без интерфейса Kafka?</summary>
 
-<summary>Работает ли ClickPipe для Azure Event Hubs без интерфейса Kafka?</summary>
-
-Нет. ClickPipes требует, чтобы для пространства имен Event Hubs был включен интерфейс Kafka. Это доступно только в тарифах выше **basic**. См. [документацию Azure Event Hubs](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quickstart-kafka-enabled-event-hubs?tabs=passwordless#create-an-azure-event-hubs-namespace) для получения дополнительной информации.
+  Нет. ClickPipes требует, чтобы для пространства имен Event Hubs был включен интерфейс Kafka. Это доступно только в тарифах выше **basic**. См. [документацию Azure Event Hubs](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quickstart-kafka-enabled-event-hubs?tabs=passwordless#create-an-azure-event-hubs-namespace) для получения дополнительной информации.
 </details>
 
 <details>
+  <summary>Работает ли Azure Schema Registry с ClickPipes?</summary>
 
-<summary>Работает ли Azure Schema Registry с ClickPipes?</summary>
-
-Нет. ClickPipes поддерживает только реестры схем, которые совместимы по API с Confluent Schema Registry, что не относится к Azure Schema Registry. Если вам требуется поддержка этого реестра схем, [свяжитесь с нашей командой](https://clickhouse.com/company/contact?loc=clickpipes).
+  Нет. ClickPipes поддерживает только реестры схем, которые совместимы по API с Confluent Schema Registry, что не относится к Azure Schema Registry. Если вам требуется поддержка этого реестра схем, [свяжитесь с нашей командой](https://clickhouse.com/company/contact?loc=clickpipes).
 </details>
 
 <details>
+  <summary>Какие разрешения нужны моей политике, чтобы потреблять данные из Azure Event Hubs?</summary>
 
-<summary>Какие разрешения нужны моей политике, чтобы потреблять данные из Azure Event Hubs?</summary>
-
-Чтобы перечислять топики и потреблять события, для ClickPipes в политике общего доступа требуется как минимум право «Listen».
+  Чтобы перечислять топики и потреблять события, для ClickPipes в политике общего доступа требуется как минимум право «Listen».
 </details>
 
 <details>
+  <summary>Почему мой Event Hubs не возвращает никаких данных?</summary>
 
-<summary>Почему мой Event Hubs не возвращает никаких данных?</summary>
-
-Если ваш экземпляр ClickHouse находится в другом регионе или на другом континенте по сравнению с вашим развертыванием Event Hubs, вы можете столкнуться с тайм-аутами при первичной настройке ClickPipes и с повышенной задержкой при чтении данных из Event Hub. Мы рекомендуем развертывать ClickHouse Cloud и Azure Event Hubs в одном регионе облака или в регионах, расположенных близко друг к другу, чтобы избежать издержек по производительности.
+  Если ваш экземпляр ClickHouse находится в другом регионе или на другом континенте по сравнению с вашим развертыванием Event Hubs, вы можете столкнуться с тайм-аутами при первичной настройке ClickPipes и с повышенной задержкой при чтении данных из Event Hub. Мы рекомендуем развертывать ClickHouse Cloud и Azure Event Hubs в одном регионе облака или в регионах, расположенных близко друг к другу, чтобы избежать издержек по производительности.
 </details>
 
 <details>
+  <summary>Нужно ли указывать номер порта для Azure Event Hubs?</summary>
 
-<summary>Нужно ли указывать номер порта для Azure Event Hubs?</summary>
-
-Да. ClickPipes ожидает, что вы укажете номер порта для интерфейса Kafka, который должен быть `:9093`.
+  Да. ClickPipes ожидает, что вы укажете номер порта для интерфейса Kafka, который должен быть `:9093`.
 </details>
 
 <details>
+  <summary>Остаются ли IP-адреса ClickPipes актуальными для Azure Event Hubs?</summary>
 
-<summary>Остаются ли IP-адреса ClickPipes актуальными для Azure Event Hubs?</summary>
-
-Да. Чтобы ограничить трафик к вашему экземпляру Event Hubs, добавьте [задокументированные статические NAT IP-адреса](../
-/index.md#list-of-static-ips) в список разрешённых IP-адресов.
-
+  Да. Чтобы ограничить трафик к вашему экземпляру Event Hubs, добавьте [задокументированные статические NAT IP-адреса](/integrations/clickpipes#list-of-static-ips) в список разрешённых IP-адресов.
 </details>
 
 <details>
-<summary>Строка подключения предназначена для конкретного Event Hub или для пространства имен Event Hub?</summary>
+  <summary>Строка подключения предназначена для конкретного Event Hub или для пространства имен Event Hub?</summary>
 
-Подойдут оба варианта. Мы настоятельно рекомендуем использовать политику общего доступа на **уровне пространства имен**, чтобы получать данные из нескольких Event Hubs.
+  Подойдут оба варианта. Мы настоятельно рекомендуем использовать политику общего доступа на **уровне пространства имен**, чтобы получать данные из нескольких Event Hubs.
 </details>
