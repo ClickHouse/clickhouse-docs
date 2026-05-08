@@ -13,11 +13,11 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 ClickStack's [default schema](/use-cases/observability/clickstack/ingesting-data/schemas) stores resource, scope, log, and span attributes as `Map(LowCardinality(String), String)` columns. ClickHouse also supports a strongly typed [`JSON` type](/interfaces/formats/JSON), and ClickStack has beta support for using it in place of `Map`.
 
-**For typical observability workloads we recommend keeping the [default `Map`-based schema](/use-cases/observability/clickstack/ingesting-data/schemas).** The JSON type is available for users who want to evaluate it on workloads with a small, stable set of attribute keys, but it is not the recommended schema for general use.
+**For typical observability workloads we recommend keeping the [default `Map`-based schema](/use-cases/observability/clickstack/ingesting-data/schemas).** The JSON type is available for users who want to evaluate it on workloads with a small, stable set of attribute keys, but it isn't the recommended schema for general use.
 
 ## Why Map is the recommended default {#why-map}
 
-Observability data is dominated by attributes such as resource attributes, scope attributes, and span and log attributes, and these sets are typically large, high-cardinality, and ingested at high throughput. The schema you pick for those attributes is the dominant factor in ingest cost and storage layout.
+Observability data is dominated by attributes such as resource attributes, scope attributes, and span and log attributes. These sets are typically large, high-cardinality, and ingested at high throughput. The schema you pick for those attributes is the dominant factor in ingest cost and storage layout.
 
 `Map(LowCardinality(String), String)` stores keys and values as a single structure. The historical disadvantage of `Map` was that reading a single key required reading the entire map column. That's no longer true: ClickHouse now supports [bucketed map serialization](/sql-reference/data-types/map#bucketed-map-serialization), which splits the map into buckets so queries only read the buckets they need. Combined with [text indexes](/engines/table-engines/mergetree-family/textindexes) on map keys and values, which is how [ClickStack's default schema](/use-cases/observability/clickstack/ingesting-data/schemas) is configured, this makes `Map` selective and fast at read time without paying any ingest penalty for new keys.
 
@@ -26,7 +26,7 @@ In practice this means:
 - **Stable ingest cost as keys grow.** Adding a new attribute key doesn't change the on-disk column layout or create new column files. Ingest cost is bounded by the data volume, not the key cardinality.
 - **No metadata explosion.** The number of column files on disk doesn't track the number of unique attribute keys.
 - **Selective lookups via indexes.** Text indexes on map keys and values give point lookups without scanning every row.
-- **Predictable behaviour at high throughput.** Map handles bursty, schemaless attribute sets, common in tracing and logs, without per-key overhead.
+- **Predictable behavior at high throughput.** Map handles bursty, schemaless attribute sets, which are common in tracing and logs, without per-key overhead.
 
 ## Why not JSON by default {#why-not-json}
 
@@ -40,7 +40,7 @@ With bucketed map serialization removing most of the historical read-time overhe
 
 The JSON type can be a reasonable fit when *all* of the following hold:
 
-- Your attribute key-set is **small and stable**, meaning you are not seeing thousands of unique keys, and new keys appear rarely.
+- Your attribute key-set is **small and stable**, meaning you aren't seeing thousands of unique keys, and new keys appear rarely.
 - Ingest throughput is **modest** relative to the attribute cardinality.
 - You want **strongly typed access** to attributes without query-time casts (numbers stay numbers, booleans stay booleans).
 - You are willing to operate a **beta feature** in ClickStack and accept that the integration may change.
@@ -76,7 +76,7 @@ Set `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` on the colle
 docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
 
-### Open Source ClickStack {#oss-clickstack}
+### Open source ClickStack {#oss-clickstack}
 
 Set `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` on any deployment that includes the collector, and `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` on the HyperDX application layer so it can query the JSON-typed schemas.
 
