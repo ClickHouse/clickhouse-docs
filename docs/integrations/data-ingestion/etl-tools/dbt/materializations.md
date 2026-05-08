@@ -39,12 +39,12 @@ The following table shows configurations shared by some of the available materia
 
 | Type                   | Details                                                                                   |
 |------------------------|-------------------------------------------------------------------------------------------|
-| MergeTree (default)    | /engines/table-engines/mergetree-family/mergetree/.         |
-| HDFS                   | /engines/table-engines/integrations/hdfs                    |
-| MaterializedPostgreSQL | /engines/table-engines/integrations/materialized-postgresql |
-| S3                     | /engines/table-engines/integrations/s3                      |
-| EmbeddedRocksDB        | /engines/table-engines/integrations/embedded-rocksdb        |
-| Hive                   | /engines/table-engines/integrations/hive                    |
+| MergeTree (default)    | [docs](/engines/table-engines/mergetree-family/mergetree/).         |
+| HDFS                   | [docs](/engines/table-engines/integrations/hdfs)                    |
+| MaterializedPostgreSQL | [docs](/engines/table-engines/integrations/materialized-postgresql) |
+| S3                     | [docs](/engines/table-engines/integrations/s3)                      |
+| EmbeddedRocksDB        | [docs](/engines/table-engines/integrations/embedded-rocksdb)        |
+| Hive                   | [docs](/engines/table-engines/integrations/hive)                    |
 
 **Note**: for materialized views, all *MergeTree engines are supported.
 
@@ -52,8 +52,8 @@ The following table shows configurations shared by some of the available materia
 
 | Type              | Details                                                                   |
 |-------------------|---------------------------------------------------------------------------|
-| Distributed Table | /engines/table-engines/special/distributed. |
-| Dictionary        | /engines/table-engines/special/dictionary   |
+| Distributed Table | [docs](/engines/table-engines/special/distributed). |
+| Dictionary        | [docs](/engines/table-engines/special/dictionary)   |
 
 If you encounter issues connecting to ClickHouse from dbt with one of the above engines, please report an
 issue [here](https://github.com/ClickHouse/dbt-clickhouse/issues).
