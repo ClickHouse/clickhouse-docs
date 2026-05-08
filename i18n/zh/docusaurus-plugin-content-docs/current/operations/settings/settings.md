@@ -12441,9 +12441,9 @@ Cloud 默认值：`0`。
 
 ## use_skip_indexes_for_top_k \{#use_skip_indexes_for_top_k\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "默认启用在 TopK 过滤中使用数据跳过索引"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]} />
 
 启用在 TopK 过滤中使用数据跳过索引。
 
@@ -12451,8 +12451,8 @@ Cloud 默认值：`0`。
 
 可能的取值：
 
-- 0 — 禁用。
-- 1 — 启用。
+* 0 — 禁用。
+* 1 — 启用。
 
 ## use_skip_indexes_if_final \{#use_skip_indexes_if_final\}
 
@@ -12599,9 +12599,9 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "默认对 TopK 查询启用动态过滤优化"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]} />
 
 在执行 `ORDER BY <column> LIMIT n` 查询时启用动态过滤优化。
 
@@ -12609,8 +12609,8 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 可能的取值：
 
-- 0 — 禁用。
-- 1 — 启用。
+* 0 — 禁用。
+* 1 — 启用。
 
 ## use_top_k_dynamic_filtering_for_variable_length_types \{#use_top_k_dynamic_filtering_for_variable_length_types\}
 

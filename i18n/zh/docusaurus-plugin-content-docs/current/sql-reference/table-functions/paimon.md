@@ -51,7 +51,7 @@ paimonLocal(path_to_table, [,format] [,compression_method])
     <named_collections>
         <paimon_conf>
             <url>http://test.s3.amazonaws.com/clickhouse-bucket/</url>
-            <access_key_id>test<access_key_id>
+            <access_key_id>test</access_key_id>
             <secret_access_key>test</secret_access_key>
             <format>auto</format>
             <structure>auto</structure>
@@ -64,7 +64,6 @@ paimonLocal(path_to_table, [,format] [,compression_method])
 SELECT * FROM paimonS3(paimon_conf, filename = 'test_table')
 DESCRIBE paimonS3(paimon_conf, filename = 'test_table')
 ```
-
 
 ## 别名 \{#aliases\}
 

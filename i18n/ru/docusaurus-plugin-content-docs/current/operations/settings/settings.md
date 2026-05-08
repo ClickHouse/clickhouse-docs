@@ -12486,9 +12486,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_skip_indexes_for_top_k \{#use_skip_indexes_for_top_k\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "По умолчанию включает использование индексов пропуска данных для фильтрации TopK"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]} />
 
 Включает использование индексов пропуска данных при фильтрации TopK.
 
@@ -12496,8 +12496,8 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Возможные значения:
 
-- 0 — отключено.
-- 1 — включено.
+* 0 — отключено.
+* 1 — включено.
 
 ## use_skip_indexes_if_final \{#use_skip_indexes_if_final\}
 
@@ -12644,9 +12644,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Включить оптимизацию динамической фильтрации для запросов TopK по умолчанию"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]} />
 
 Включает оптимизацию динамической фильтрации при выполнении запроса `ORDER BY <column> LIMIT n`.
 
@@ -12654,8 +12654,8 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Возможные значения:
 
-- 0 — Отключено.
-- 1 — Включено.
+* 0 — Отключено.
+* 1 — Включено.
 
 ## use_top_k_dynamic_filtering_for_variable_length_types \{#use_top_k_dynamic_filtering_for_variable_length_types\}
 
