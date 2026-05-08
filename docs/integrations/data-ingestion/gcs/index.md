@@ -180,7 +180,7 @@ Replication with GCS disks can be accomplished by using the `ReplicatedMergeTree
 
 The [Cloud Storage XML API](https://cloud.google.com/storage/docs/xml-api/overview) is interoperable with some tools and libraries that work with services such as Amazon Simple Storage Service (Amazon S3).
 
-For further information on tuning threads, see [Optimizing for Performance](../s3/index.md#s3-optimizing-performance).
+For further information on tuning threads, see [Optimizing for Performance](/integrations/s3#s3-optimizing-performance).
 
 ## Using Google Cloud Storage (GCS) {#gcs-multi-region}
 
