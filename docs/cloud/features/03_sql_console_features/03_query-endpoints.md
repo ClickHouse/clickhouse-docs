@@ -8,11 +8,9 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import {CardSecondary} from '@clickhouse/click-ui/bundled';
 import console_api_keys from '@site/static/images/cloud/guides/query-endpoints/console-api-keys.png';
 import edit_api_key from '@site/static/images/cloud/guides/query-endpoints/api-key-edit.png';
 import specific_locations from '@site/static/images/cloud/guides/query-endpoints/specific-locations.png';
-import Link from '@docusaurus/Link'
 
 # Query API endpoints {#query-api-endpoints}
 
