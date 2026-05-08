@@ -11,16 +11,9 @@ sidebar_position: 1
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import img1 from '@site/static/images/use-cases/AI_ML/MCP/1connectmcpmodal.png';
 import img2 from '@site/static/images/use-cases/AI_ML/MCP/2enable_mcp.png';
-import img3 from '@site/static/images/use-cases/AI_ML/MCP/3oauth.png';
-import img4 from '@site/static/images/use-cases/AI_ML/MCP/4oauth_success.png';
-import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.png';
-import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
-import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 このガイドでは、ClickHouse Cloud リモートMCPサーバー を有効にし、一般的な開発ツールで使用できるようにセットアップする方法を説明します。
 
@@ -28,7 +21,6 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 * 稼働中の [ClickHouse Cloud サービス](/getting-started/quick-start/cloud)
 * 任意の IDE または AI エージェント型開発ツール
-
 
 ## Cloud 向けのリモートMCPサーバーを有効にする \{#enable-remote-mcp-server\}
 
