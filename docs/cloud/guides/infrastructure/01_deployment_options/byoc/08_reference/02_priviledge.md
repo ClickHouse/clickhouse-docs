@@ -23,6 +23,7 @@ The bootstrap IAM role has the following permissions:
 In addition to the `ClickHouseManagementRole` created via CloudFormation, the controller will create several additional roles.
 
 These roles are assumed by applications running within the customer's EKS cluster:
+
 - **State Exporter Role**
   - ClickHouse component that reports service health information to ClickHouse Cloud.
   - Requires permission to write to an SQS queue owned by ClickHouse Cloud.
@@ -39,3 +40,29 @@ These roles are assumed by applications running within the customer's EKS cluste
 **K8s-control-plane** and **k8s-worker** roles are meant to be assumed by AWS EKS services.
 
 Lastly, **`data-plane-mgmt`** allows a ClickHouse Cloud Control Plane component to reconcile necessary custom resources, such as `ClickHouseCluster` and the Istio Virtual Service/Gateway.
+
+## GCP Service Accounts {#gcp-service-accounts}
+
+### Bootstrap service account {#bootstrap-service-account}
+
+The bootstrap Service Account is granted project-scoped custom roles with the following permissions:
+
+- **Common**: Baseline read and identity permissions.
+- **VPC**: Manage the VPC, subnets, routing, and Private Service Connect attachments that host your BYOC infrastructure.
+- **Cluster**: Manages GKE clusters and in-cluster resources.
+- **Storage**: Used to manage Cloud Storage buckets used for ClickHouse backups, shared state, and monitoring data.
+- **IAM Role**: Manages service accounts and custom roles inside the project. This role does not grant the ability to create service account keys, bind organization policies, or touch any resources in other projects.
+
+### Additional Service Accounts created by the controller {#additional-service-accounts-created-by-the-controller}
+
+In addition to the `clickhouse-management` service account created via Terraform as part of onboarding; when you provision your first BYOC service, ClickHouse’s control plane (authenticating as `clickhouse-management`) creates additional service accounts in your project for specific in-cluster workloads. Each of these is created with a narrow, single-purpose permission set.
+
+- **GKE Node Runtime Identity**
+  - Attached to every GKE node virtual machine in your BYOC cluster.
+  - Used by kubelet, node-local agents, and the Cloud Operations collectors to emit logs and metrics, and by the image pulling subsystem to download container images.
+- **Billing scraper identity**
+  - Used by standalone scraper workload to collect billing telemetry.
+- **Monitoring Identity**
+  - Target identity for the monitoring stack running in your cluster. Used to read/write long-term metric storage in a GCS bucket dedicated to this deployment.
+- **ClickHouse runtime management identity**
+  - Used by ClickHouse's runtime data-plane management controller which handles day-2 operations such as Private Service Connect endpoint management, bucket lifecycle adjustments, and service-account rotations.
