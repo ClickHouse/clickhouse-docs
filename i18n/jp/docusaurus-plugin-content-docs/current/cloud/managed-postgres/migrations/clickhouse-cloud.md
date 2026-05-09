@@ -10,7 +10,6 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
-import alterRole from '@site/static/images/managed-postgres/pgpg/alterrole.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
 import migrationForm from '@site/static/images/managed-postgres/pgpg/migrationform.png';
 import migrationList from '@site/static/images/managed-postgres/pgpg/migrationlist.png';
@@ -114,7 +113,6 @@ schema を適用したら、外部キー制約がインジェストを妨げな�
 ALTER ROLE <target_role> SET session_replication_role TO 'replica';
 ```
 
-<Image img={alterRole} alt="session_replication_role を replica に設定する ALTER ROLE 命令語" size="lg" border />
 
 **次へ** をクリックします。
 

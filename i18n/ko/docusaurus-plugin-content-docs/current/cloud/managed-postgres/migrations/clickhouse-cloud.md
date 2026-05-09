@@ -10,7 +10,6 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
-import alterRole from '@site/static/images/managed-postgres/pgpg/alterrole.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
 import migrationForm from '@site/static/images/managed-postgres/pgpg/migrationform.png';
 import migrationList from '@site/static/images/managed-postgres/pgpg/migrationlist.png';
@@ -114,7 +113,6 @@ schema를 적용한 후에는 외래 키 제약 조건이 수집을 막지 않�
 ALTER ROLE <target_role> SET session_replication_role TO 'replica';
 ```
 
-<Image img={alterRole} alt="session_replication_role을 replica로 설정하는 ALTER ROLE 명령어" size="lg" border />
 
 **다음**을 클릭하세요.
 
