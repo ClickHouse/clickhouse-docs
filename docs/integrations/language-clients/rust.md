@@ -11,7 +11,6 @@ integration:
   - category: 'language_client'
 ---
 
-# ClickHouse Rust client
 
 The official Rust client for connecting to ClickHouse, originally developed by [Paul Loyd](https://github.com/loyd). The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-rs).
 

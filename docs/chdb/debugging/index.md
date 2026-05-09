@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'debug', 'explain', 'profiling', 'logging']
 doc_type: 'guide'
 ---
 
-# DataStore Debugging
 
 DataStore provides comprehensive debugging tools to understand and optimize your data pipelines.
 

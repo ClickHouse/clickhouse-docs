@@ -8,7 +8,6 @@ title: 'Advanced usage'
 doc_type: 'reference'
 ---
 
-# Advanced usage {#advanced-usage}
 
 ## Raw API {#raw-api}
 

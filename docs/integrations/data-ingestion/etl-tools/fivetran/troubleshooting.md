@@ -8,7 +8,6 @@ doc_type: 'guide'
 keywords: ['fivetran', 'clickhouse destination', 'troubleshooting', 'best practices', 'debugging']
 ---
 
-# Troubleshooting & best practices
 
 ## Common errors {#common-errors}
 

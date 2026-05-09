@@ -6,7 +6,6 @@ keywords: ['json', 'formats']
 doc_type: 'reference'
 ---
 
-# Other approaches to modeling JSON
 
 **The following are alternatives to modeling JSON in ClickHouse. These are documented for completeness and were applicable before the development of the JSON type and are thus generally not recommended or applicable in most use cases.**
 

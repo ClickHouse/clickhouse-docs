@@ -7,7 +7,6 @@ sidebar_label: 'uniqArray'
 doc_type: 'reference'
 ---
 
-# uniqArray {#uniqarray}
 
 ## Description {#description}
 

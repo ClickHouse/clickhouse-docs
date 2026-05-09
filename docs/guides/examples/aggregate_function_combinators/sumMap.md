@@ -7,7 +7,6 @@ sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-# sumMap {#summap}
 
 ## Description {#description}
 

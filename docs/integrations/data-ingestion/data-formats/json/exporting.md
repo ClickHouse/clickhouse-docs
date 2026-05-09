@@ -6,7 +6,6 @@ keywords: ['json', 'clickhouse', 'formats', 'exporting']
 doc_type: 'guide'
 ---
 
-# Exporting JSON
 
 Almost any JSON format used for import can be used for export as well. The most popular is [`JSONEachRow`](/interfaces/formats/JSONEachRow):
 

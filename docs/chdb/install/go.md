@@ -7,7 +7,6 @@ keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
 
-# chDB for Go
 
 chDB-go provides Go bindings for chDB, enabling you to run ClickHouse queries directly in your Go applications with zero external dependencies.
 

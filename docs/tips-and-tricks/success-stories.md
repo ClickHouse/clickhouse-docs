@@ -21,7 +21,6 @@ title: 'Lessons - creative use cases'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
 ---
 
-# Success stories {#breaking-the-rules}
 
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Need tips on debugging an issue in prod? Check out the [Debugging Insights](./debugging-insights.md) community guide.*

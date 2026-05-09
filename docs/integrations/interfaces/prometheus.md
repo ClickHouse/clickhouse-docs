@@ -7,7 +7,6 @@ title: 'Prometheus protocols'
 doc_type: 'reference'
 ---
 
-# Prometheus protocols
 
 ## Exposing metrics {#expose}
 

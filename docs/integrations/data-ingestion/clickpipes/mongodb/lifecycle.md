@@ -10,7 +10,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Lifecycle of a MongoDB ClickPipe {#lifecycle}
 
 This is a document on the various phases of a MongoDB ClickPipe, the different statuses it can have, and what they mean.
 

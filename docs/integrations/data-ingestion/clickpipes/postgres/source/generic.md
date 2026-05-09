@@ -10,7 +10,6 @@ integration:
    - category: 'clickpipes'
 ---
 
-# Generic Postgres source setup guide
 
 :::info
 

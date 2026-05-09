@@ -9,7 +9,6 @@ show_related_blogs: false
 doc_type: 'guide'
 ---
 
-# Updating and deleting ClickHouse data with mutations
 
 Although ClickHouse is geared toward high volume analytic workloads, it is possible in some situations to modify or 
 delete existing data. These operations are labeled "mutations" and are executed using the `ALTER TABLE` command.

@@ -8,7 +8,6 @@ title: 'Anonymized web analytics'
 doc_type: 'guide'
 ---
 
-# Anonymized web analytics data
 
 This dataset consists of two tables containing anonymized web analytics data with hits (`hits_v1`) and visits (`visits_v1`).
 

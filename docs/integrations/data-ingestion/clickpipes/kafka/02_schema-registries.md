@@ -11,7 +11,6 @@ integration:
    - category: 'clickpipes'
 ---
 
-# Schema registries {#schema-registries}
 
 ClickPipes supports schema registries for Avro data streams.
 

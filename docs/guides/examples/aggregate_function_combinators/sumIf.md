@@ -7,7 +7,6 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-# sumIf {#sumif}
 
 ## Description {#description}
 

@@ -8,7 +8,6 @@ title: 'Advanced querying'
 doc_type: 'reference'
 ---
 
-# Querying data with ClickHouse Connect: Advanced usage {#querying-data-with-clickhouse-connect--advanced-usage}
 
 ## QueryContexts {#querycontexts}
 
