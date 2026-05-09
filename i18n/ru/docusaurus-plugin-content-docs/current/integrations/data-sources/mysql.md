@@ -70,9 +70,8 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 :::note
 Если вы используете эту возможность в ClickHouse Cloud, возможно, вам потребуется разрешить IP-адресам ClickHouse Cloud доступ к вашему экземпляру MySQL.
-Обратитесь к ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) для получения сведений об исходящем трафике.
+Обратитесь к ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints) для получения сведений об исходящем трафике.
 :::
-
 
 ### 2. Определите таблицу в ClickHouse \{#2-define-a-table-in-clickhouse\}
 

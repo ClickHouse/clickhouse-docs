@@ -640,6 +640,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использовать Hive‑партиционирование с движками S3Queue/AzureQueue
 
+## allow_experimental_paimon_storage_engine \{#allow_experimental_paimon_storage_engine\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Разрешает создавать таблицы на движках таблиц Paimon*.
+
 ## allow_experimental_parallel_reading_from_replicas \{#allow_experimental_parallel_reading_from_replicas\}
 
 **Псевдонимы**: `enable_parallel_replicas`
@@ -6702,7 +6712,7 @@ log_query_views=1
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка для управления автоматическим сбросом хеш-соединений на диск. Ненулевое значение включает сброс и задаёт порог в байтах."}]}]} />
 
-Если задано ненулевое значение и `join_algorithm` имеет значение `hash`, `parallel_hash`, `default` или `auto`, хеш-соединение будет автоматически преобразовано в grace hash join, чтобы включить сброс на диск, когда объём данных в правой части превысит указанное число байт. Если установлено значение 0 (по умолчанию), автоматический сброс отключен. Это предотвращает применение оптимизации чтения по порядку через соединение.
+Если задано ненулевое значение и `join_algorithm` имеет значение `hash`, `parallel_hash`, `default` или `auto`, хеш-соединение будет автоматически преобразовано в grace хеш-соединение, чтобы включить сброс на диск, когда объём данных в правой части превысит указанное число байт. Если установлено значение 0 (по умолчанию), этот абсолютный порог в байтах отключается, но автоматический сброс всё ещё может происходить через `max_bytes_ratio_before_external_join` (по умолчанию равно `0.5`); установите оба значения в `0`, чтобы полностью отключить автоматический сброс. Это предотвращает применение оптимизации чтения по порядку через соединение.
 
 ## max_bytes_before_external_sort \{#max_bytes_before_external_sort\}
 
@@ -6781,15 +6791,15 @@ log_query_views=1
 
 ## max_bytes_ratio_before_external_join \{#max_bytes_ratio_before_external_join\}
 
-<SettingsInfoBlock type="Double" default_value="0" />
+<SettingsInfoBlock type="Double" default_value="0.5" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка: доля доступной памяти, используемая как порог выгрузки на диск для хеш-соединений. Используется вместе с абсолютным значением `max_bytes_before_external_join` (применяется меньшее из двух)."}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0.5"},{"label": "Новая настройка: доля доступной памяти, используемая как порог сброса для хеш-соединений. Включена по умолчанию со значением `0.5`, аналогично `max_bytes_ratio_before_external_group_by` и `max_bytes_ratio_before_external_sort`. Используется вместе с абсолютным значением `max_bytes_before_external_join` (применяется меньшее из двух)."}]}]} />
 
-Доля доступной памяти, которую разрешено использовать для `JOIN`. После достижения этого значения хеш-соединение преобразуется в grace хеш-соединение, чтобы выгружать данные правой части на диск.
+Доля доступной памяти, которую разрешено использовать для `JOIN`. После достижения этого значения хеш-соединение преобразуется в grace хеш-соединение, чтобы выполнять сброс данных правой части на диск.
 
-Например, если установить значение `0.6`, `JOIN` позволит использовать `60%` доступной памяти (для server/user/merges) для хеш-таблицы правой части в начале выполнения; после этого начнется выгрузка на диск.
+Например, если установить значение `0.6`, `JOIN` позволит использовать `60%` доступной памяти (для server/user/merges) для хеш-таблицы правой части в начале выполнения; после этого начнется сброс на диск.
 
-Если заданы и `max_bytes_before_external_join`, и `max_bytes_ratio_before_external_join`, используется меньшее из получившихся пороговых значений. Если доля равна `0` (значение по умолчанию), применяется только абсолютная настройка.
+Если заданы и `max_bytes_before_external_join`, и `max_bytes_ratio_before_external_join`, используется меньшее из получившихся пороговых значений. Если доля равна `0`, применяется только абсолютная настройка.
 
 Действует только тогда, когда `join_algorithm` имеет значение `hash`, `parallel_hash`, `default` или `auto` и настроен путь для временных данных.
 
@@ -6917,6 +6927,16 @@ log_query_views=1
 <max_concurrent_queries_for_user>5</max_concurrent_queries_for_user>
 ```
 
+
+## max_consume_snapshots \{#max_consume_snapshots\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Максимальное количество снимков Paimon за одно инкрементальное чтение. 0 означает отсутствие ограничений.
 
 ## max_distributed_connections \{#max_distributed_connections\}
 
@@ -7378,21 +7398,17 @@ SELECT getSetting('max_memory_usage_for_user');
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "По умолчанию используется до 1000 параллельных реплик."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "По умолчанию используется до 1000 параллельных реплик."}]}]} />
 
 Максимальное число реплик для каждого сегмента при выполнении запроса.
 
 Возможные значения:
 
-- Положительное целое число.
+* Положительное целое число.
 
 **Дополнительная информация**
 
 Эта настройка может приводить к различным результатам в зависимости от используемых настроек.
-
-:::note
-Эта настройка приведёт к некорректным результатам, если используются объединения (JOIN) или подзапросы и все таблицы не удовлетворяют определённым требованиям. Подробнее см. [Distributed Subqueries and max_parallel_replicas](/operations/settings/settings#max_parallel_replicas).
-:::
 
 ### Параллельная обработка с использованием ключа `SAMPLE` \{#parallel-processing-using-sample-key\}
 
@@ -9475,6 +9491,18 @@ FROM default.fuse_tbl AS __table1
 Когда `readBigAt` заполняет кэш страниц в пространстве пользователя, последовательные промахи кэша объединяются в одно чтение из нижележащего хранилища. Эта настройка ограничивает размер одного такого объединённого чтения в байтах; более длинные последовательности промахов разбиваются на несколько чтений. Она ограничивает временное потребление памяти буфером при параллельных холодных чтениях.
 
 Большее значение уменьшает количество HTTP-запросов при холодном сканировании в объектном хранилище; меньшее — снижает пиковое временное потребление памяти.
+
+## paimon_target_snapshot_id \{#paimon_target_snapshot_id\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Int64" default_value="-1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "-1"},{"label": "Новая настройка"}]}]} />
+
+Чтение указанного снимка на уровне запроса в инкрементальном режиме Paimon. Если значение &gt;0, модуль чтения будет извлекать только дельту
+для указанного `snapshot_id`, не продвигая зафиксированный watermark.
+По умолчанию: -1 (отключено)
 
 ## parallel_distributed_insert_select \{#parallel_distributed_insert_select\}
 
@@ -11582,6 +11610,30 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - `break`: прекратить выполнение запроса и вернуть частичный результат, как если бы
 исходные данные закончились.
 
+## shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "50"},{"label": "Новая настройка для уменьшения случайных ошибок UNFINISHED в запросах с последовательной согласованностью в SharedMergeTree."}]}]} />
+
+Начальный бэкофф в миллисекундах при обновлении частей при использовании `select_sequential_consistency` с `SharedMergeTree`. Доступно только в ClickHouse Cloud.
+
+## shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1000"},{"label": "Новая настройка для уменьшения случайных ошибок UNFINISHED в запросах с последовательной согласованностью для SharedMergeTree."}]}]} />
+
+Максимальный бэкофф в миллисекундах при обновлении частей при использовании `select_sequential_consistency` с `SharedMergeTree`. Доступно только в ClickHouse Cloud.
+
+## shared_merge_tree_sequential_consistency_parts_update_max_retries \{#shared_merge_tree_sequential_consistency_parts_update_max_retries\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "Новая настройка для уменьшения спорадических ошибок UNFINISHED в запросах с последовательной согласованностью для SharedMergeTree."}]}]} />
+
+Максимальное число повторных попыток обновления частей при использовании `select_sequential_consistency` с `SharedMergeTree`. Доступно только в ClickHouse Cloud.
+
 ## shared_merge_tree_sync_parts_on_partition_operations \{#shared_merge_tree_sync_parts_on_partition_operations\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -12486,9 +12538,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_skip_indexes_for_top_k \{#use_skip_indexes_for_top_k\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "По умолчанию включает использование индексов пропуска данных для фильтрации TopK"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]} />
 
 Включает использование индексов пропуска данных при фильтрации TopK.
 
@@ -12496,8 +12548,8 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Возможные значения:
 
-- 0 — отключено.
-- 1 — включено.
+* 0 — отключено.
+* 1 — включено.
 
 ## use_skip_indexes_if_final \{#use_skip_indexes_if_final\}
 
@@ -12644,9 +12696,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Включить оптимизацию динамической фильтрации для запросов TopK по умолчанию"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]} />
 
 Включает оптимизацию динамической фильтрации при выполнении запроса `ORDER BY <column> LIMIT n`.
 
@@ -12654,8 +12706,8 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Возможные значения:
 
-- 0 — Отключено.
-- 1 — Включено.
+* 0 — Отключено.
+* 1 — Включено.
 
 ## use_top_k_dynamic_filtering_for_variable_length_types \{#use_top_k_dynamic_filtering_for_variable_length_types\}
 

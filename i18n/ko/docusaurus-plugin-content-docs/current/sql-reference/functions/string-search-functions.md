@@ -398,7 +398,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 도입 버전: v20.5.0
 
-정규 표현식과 처음으로 일치하는 부분 문자열에서 캡처 그룹을 추출합니다. 모든 일치 항목에서 그룹을 추출하려면 [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) 또는 [`extractAllGroupsVertical`](#extractAllGroupsVertical)을 사용하십시오.
+정규 표현식과 처음으로 일치하는 부분 문자열에서 캡처 그룹을 추출합니다. 모든 일치 항목에서 그룹을 추출하려면 [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) 또는 [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical)을 사용하십시오.
 
 **구문**
 

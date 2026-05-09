@@ -10,7 +10,6 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
-import alterRole from '@site/static/images/managed-postgres/pgpg/alterrole.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
 import migrationForm from '@site/static/images/managed-postgres/pgpg/migrationform.png';
 import migrationList from '@site/static/images/managed-postgres/pgpg/migrationlist.png';
@@ -38,7 +37,6 @@ ClickHouse Cloud에는 외부 PostgreSQL 데이터베이스를 Managed Postgres 
 ## 마이그레이션 전에 고려할 사항 \{#considerations\}
 
 * **DDL 전파**: 지속적 복제(CDC)는 DML 작업과 `ADD COLUMN`만 캡처합니다. `DROP COLUMN`, `ALTER COLUMN`과 같은 다른 DDL 변경은 전파되지 않으므로 대상에 수동으로 적용해야 합니다.
-* **외래 키 제약 조건**: 외래 키 검사로 인해 수집이 차단되지 않도록 대상 역할에 일시적으로 `session_replication_role = replica`를 설정합니다. 이 내용은 아래 3단계에서 다룹니다.
 
 ## 1단계: 원본 데이터베이스에 연결 \{#step-1-connect\}
 
@@ -108,14 +106,6 @@ psql \
 
 <Image img={psqlImport} alt="psql schema 가져오기 실행 후 터미널 출력" size="lg" border />
 
-schema를 적용한 후에는 외래 키 제약 조건이 수집을 막지 않도록 대상 역할에서 `session_replication_role`을 `replica`로 설정합니다:
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'replica';
-```
-
-<Image img={alterRole} alt="session_replication_role을 replica로 설정하는 ALTER ROLE 명령어" size="lg" border />
-
 **다음**을 클릭하세요.
 
 ## 4단계: 수집 설정 구성 \{#step-4-ingestion-settings\}
@@ -175,12 +165,6 @@ ALTER DATABASE <source_db> SET default_transaction_read_only = on;
 ```sql
 -- Run on both source and target
 SELECT MAX(id), MAX(updated_at) FROM public.orders;
-```
-
-**제약 조건을 다시 활성화하고 복제 역할을 복원합니다.** 가져오는 동안 미뤄 둔 인덱스, 제약 조건, 트리거를 모두 적용한 다음 대상 역할을 다시 설정합니다:
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'origin';
 ```
 
 **시퀀스를 재설정합니다.** 각 테이블의 현재 최댓값에 맞게 시퀀스를 조정합니다:

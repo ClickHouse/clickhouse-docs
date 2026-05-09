@@ -59,9 +59,3 @@ import JSONSupport from '@site/i18n/ko/docusaurus-plugin-content-docs/current/us
 </VerticalStepper>
 
 <JSONSupport />
-
-로컬 모드 전용 이미지의 경우에는 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` 파라미터만 설정하면 됩니다. 예를 들어:
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest
-```

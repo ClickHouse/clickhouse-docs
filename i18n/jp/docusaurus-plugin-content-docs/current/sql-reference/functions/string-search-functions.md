@@ -396,7 +396,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 導入バージョン: v20.5.0
 
-正規表現にマッチした最初の部分文字列からキャプチャグループを抽出します。すべてのマッチからグループを抽出するには、[`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) または [`extractAllGroupsVertical`](#extractAllGroupsVertical) を使用します。
+正規表現にマッチした最初の部分文字列からキャプチャグループを抽出します。すべてのマッチからグループを抽出するには、[`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) または [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical) を使用します。
 
 **構文**
 

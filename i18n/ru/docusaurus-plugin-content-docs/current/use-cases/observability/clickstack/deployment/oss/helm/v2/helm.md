@@ -306,7 +306,6 @@ helm uninstall clickstack-operators     # Remove operators + CRDs
 **Примечание:** Объекты PersistentVolumeClaim, созданные операторами MongoDB и ClickHouse, **не** удаляются командой `helm uninstall`. Это сделано намеренно, чтобы предотвратить случайную потерю данных. Чтобы удалить PVC, см.:
 
 * [документацию MongoDB Kubernetes Operator](https://github.com/mongodb/mongodb-kubernetes/tree/master/docs/mongodbcommunity)
-* [документацию по очистке ClickHouse Operator](https://clickhouse.com/docs/clickhouse-operator/managing-clusters/cleanup)
 
 ## Устранение неполадок \{#troubleshooting\}
 
@@ -336,23 +335,6 @@ kubectl get pods -l app.kubernetes.io/name=clickstack
   :::
 
 <JSONSupport />
-
-Эти переменные среды можно задать через `hyperdx.config` в файле `values.yaml`:
-
-```yaml
-hyperdx:
-  config:
-    BETA_CH_OTEL_JSON_SCHEMA_ENABLED: "true"
-    OTEL_AGENT_FEATURE_GATE_ARG: "--feature-gates=clickhouse.json"
-```
-
-или с помощью `--set`:
-
-```shell
-helm install my-clickstack clickstack/clickstack \
-  --set "hyperdx.config.BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true" \
-  --set "hyperdx.config.OTEL_AGENT_FEATURE_GATE_ARG=--feature-gates=clickhouse.json"
-```
 
 ## Сопутствующая документация \{#related-documentation\}
 

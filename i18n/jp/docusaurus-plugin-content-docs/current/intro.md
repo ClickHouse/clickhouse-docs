@@ -92,7 +92,7 @@ ClickHouse は状況に応じて結合アルゴリズムを選択します。ま
 ## 優れたクエリパフォーマンス \{#superior-query-performance\}
 
 ClickHouse は、非常に高速なクエリパフォーマンスで広く知られています。
-ClickHouse がこれほど高速な理由については、[Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.mdx) ガイドを参照してください。
+ClickHouse がこれほど高速な理由については、[Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast) ガイドを参照してください。
 
 {/*
   ## What is OLAP?                
@@ -113,7 +113,7 @@ ClickHouse がこれほど高速な理由については、[Why is ClickHouse fa
 
   違いがわかりますか?
 
-  この記事の残りの部分では、カラム指向データベースがこれらのシナリオでうまく機能する理由、そして特に ClickHouse がこのカテゴリの他のデータベースを[上回る性能](/concepts/why-clickhouse-is-so-fast/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-and-selects-are-isolated)を発揮する理由を説明します。
+  この記事の残りの部分では、カラム指向データベースがこれらのシナリオでうまく機能する理由、そして特に ClickHouse がこのカテゴリの他のデータベースを[上回る性能](/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-and-selects-are-isolated)を発揮する理由を説明します。
 
   ## Why is ClickHouse so fast?                             
 
