@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-sidebar_label: '베타 기능 및 실험적 기능'
+sidebar_label: '베타 및 실험적 기능'
 title: '베타 및 실험적 기능'
 description: 'ClickHouse에는 베타 기능과 실험적 기능이 있습니다. 이 문서에서는 해당 개념을 정의합니다.'
 slug: /beta-and-experimental-features

@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Beta 功能和实验性功能'
+sidebar_label: 'Beta 和实验性功能'
 title: 'Beta 和实验性功能'
 description: 'ClickHouse 具有 Beta 和实验性功能。本文将对其进行定义说明。'
 slug: /beta-and-experimental-features
 doc_type: 'reference'
 ---
 
-由于 ClickHouse 是开源的，它不仅接受来自 ClickHouse 员工的贡献，也接受来自社区的贡献。这些贡献的开发节奏往往不同；某些功能可能需要较长时间的原型设计阶段，或者需要更多时间来收集足够的社区反馈并进行迭代，才能被视为一般可用（GA）。
+由于 ClickHouse 是开源的，它不仅接受来自 ClickHouse 员工的贡献，也接受来自社区的贡献。这些贡献的开发节奏往往不同；某些功能可能需要较长时间的原型设计阶段，或者需要更多时间来收集足够的社区反馈并进行迭代，才能被视为一般可用 (GA) 。
 
 鉴于将功能归类为一般可用的时间存在不确定性，我们将功能划分为两类：**Beta** 和 **Experimental**。
 

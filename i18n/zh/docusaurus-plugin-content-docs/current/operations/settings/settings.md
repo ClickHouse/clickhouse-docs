@@ -7371,21 +7371,17 @@ SELECT getSetting('max_memory_usage_for_user');
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "默认最多使用 1000 个并行副本。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "默认最多使用 1000 个并行副本。"}]}]} />
 
 在执行查询时，每个分片可以使用的最大并行副本数。
 
 可能的取值：
 
-- 正整数。
+* 正整数。
 
 **附加信息**
 
 此选项在不同设置组合下会产生不同的结果。
-
-:::note
-当涉及 `JOIN` 或子查询，且所有表未满足特定要求时，此设置会产生不正确的结果。有关更多详细信息，请参阅 [Distributed Subqueries and max_parallel_replicas](/operations/settings/settings#max_parallel_replicas)。
-:::
 
 ### 使用 `SAMPLE` 键进行并行处理 \{#parallel-processing-using-sample-key\}
 
@@ -11572,6 +11568,30 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 - `throw`: 抛出异常（默认）。
 - `break`: 停止执行查询并返回部分结果，仿佛源数据已经耗尽。
+
+## shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "50"},{"label": "新增设置，用于减少 SharedMergeTree 中启用顺序一致性的查询偶发出现的 UNFINISHED 错误。"}]}]} />
+
+使用 `select_sequential_consistency` 和 `SharedMergeTree` 时，更新 parts 的初始退避时间 (毫秒) 。仅在 ClickHouse Cloud 中可用。
+
+## shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1000"},{"label": "用于减少 SharedMergeTree 中启用顺序一致性的查询偶发 UNFINISHED 错误的新设置。"}]}]} />
+
+在将 `select_sequential_consistency` 与 `SharedMergeTree` 结合使用时，parts 更新的最大退避时间 (以毫秒为单位) 。仅在 ClickHouse Cloud 中可用。
+
+## shared_merge_tree_sequential_consistency_parts_update_max_retries \{#shared_merge_tree_sequential_consistency_parts_update_max_retries\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "用于减少 SharedMergeTree 中启用顺序一致性的查询出现的偶发 UNFINISHED 错误的新设置。"}]}]} />
+
+在配合 `SharedMergeTree` 使用 `select_sequential_consistency` 时，更新 parts 的最大重试次数。仅在 ClickHouse Cloud 中可用。
 
 ## shared_merge_tree_sync_parts_on_partition_operations \{#shared_merge_tree_sync_parts_on_partition_operations\}
 

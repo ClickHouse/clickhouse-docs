@@ -7398,21 +7398,17 @@ SELECT getSetting('max_memory_usage_for_user');
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "По умолчанию используется до 1000 параллельных реплик."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "По умолчанию используется до 1000 параллельных реплик."}]}]} />
 
 Максимальное число реплик для каждого сегмента при выполнении запроса.
 
 Возможные значения:
 
-- Положительное целое число.
+* Положительное целое число.
 
 **Дополнительная информация**
 
 Эта настройка может приводить к различным результатам в зависимости от используемых настроек.
-
-:::note
-Эта настройка приведёт к некорректным результатам, если используются объединения (JOIN) или подзапросы и все таблицы не удовлетворяют определённым требованиям. Подробнее см. [Distributed Subqueries and max_parallel_replicas](/operations/settings/settings#max_parallel_replicas).
-:::
 
 ### Параллельная обработка с использованием ключа `SAMPLE` \{#parallel-processing-using-sample-key\}
 
@@ -11613,6 +11609,30 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - `throw`: генерировать исключение (по умолчанию).
 - `break`: прекратить выполнение запроса и вернуть частичный результат, как если бы
 исходные данные закончились.
+
+## shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "50"},{"label": "Новая настройка для уменьшения случайных ошибок UNFINISHED в запросах с последовательной согласованностью в SharedMergeTree."}]}]} />
+
+Начальный бэкофф в миллисекундах при обновлении частей при использовании `select_sequential_consistency` с `SharedMergeTree`. Доступно только в ClickHouse Cloud.
+
+## shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1000"},{"label": "Новая настройка для уменьшения случайных ошибок UNFINISHED в запросах с последовательной согласованностью для SharedMergeTree."}]}]} />
+
+Максимальный бэкофф в миллисекундах при обновлении частей при использовании `select_sequential_consistency` с `SharedMergeTree`. Доступно только в ClickHouse Cloud.
+
+## shared_merge_tree_sequential_consistency_parts_update_max_retries \{#shared_merge_tree_sequential_consistency_parts_update_max_retries\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "Новая настройка для уменьшения спорадических ошибок UNFINISHED в запросах с последовательной согласованностью для SharedMergeTree."}]}]} />
+
+Максимальное число повторных попыток обновления частей при использовании `select_sequential_consistency` с `SharedMergeTree`. Доступно только в ClickHouse Cloud.
 
 ## shared_merge_tree_sync_parts_on_partition_operations \{#shared_merge_tree_sync_parts_on_partition_operations\}
 

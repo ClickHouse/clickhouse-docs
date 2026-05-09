@@ -394,7 +394,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 引入版本：v20.5.0
 
-从正则表达式匹配到的第一个子串中提取捕获组。要从所有匹配中提取捕获组，请使用 [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) 或 [`extractAllGroupsVertical`](#extractAllGroupsVertical)。
+从正则表达式匹配到的第一个子串中提取捕获组。要从所有匹配中提取捕获组，请使用 [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) 或 [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical)。
 
 **语法**
 

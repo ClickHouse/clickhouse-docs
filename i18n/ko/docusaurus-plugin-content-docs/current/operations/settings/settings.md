@@ -7375,21 +7375,17 @@ SELECT getSetting('max_memory_usage_for_user');
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "기본적으로 최대 1000개의 병렬 레플리카를 사용합니다."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "기본적으로 최대 1000개의 병렬 레플리카를 사용합니다."}]}]} />
 
 쿼리를 실행할 때 각 세그먼트당 사용할 수 있는 레플리카의 최대 개수입니다.
 
 가능한 값:
 
-- 양의 정수.
+* 양의 정수.
 
 **추가 정보**
 
 이 설정은 사용되는 다른 설정값에 따라 서로 다른 결과가 나올 수 있습니다.
-
-:::note
-이 설정은 조인 또는 서브쿼리가 관련되어 있고, 모든 테이블이 특정 요구 사항을 충족하지 못하는 경우 잘못된 결과를 초래할 수 있습니다. 자세한 내용은 [Distributed Subqueries and max_parallel_replicas](/operations/settings/settings#max_parallel_replicas)를 참조하십시오.
-:::
 
 ### `SAMPLE` 키를 사용한 병렬 처리 \{#parallel-processing-using-sample-key\}
 
@@ -11582,6 +11578,30 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 
 - `throw`: 예외를 발생시킵니다(기본값).
 - `break`: 쿼리 실행을 중단하고, 소스 데이터가 소진된 것처럼 부분 결과만 반환합니다.
+
+## shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "50"},{"label": "SharedMergeTree에서 순차 일관성을 사용하는 쿼리에서 간헐적으로 발생하는 UNFINISHED 오류를 줄이기 위한 새 설정입니다."}]}]} />
+
+`SharedMergeTree`에서 `select_sequential_consistency`를 사용할 때 파트 업데이트에 대한 초기 백오프 시간(밀리초)입니다. ClickHouse Cloud에서만 사용할 수 있습니다.
+
+## shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1000"},{"label": "SharedMergeTree에서 순차 일관성을 사용하는 쿼리에서 간헐적으로 발생하는 UNFINISHED 오류를 줄이기 위한 새 설정입니다."}]}]} />
+
+`SharedMergeTree`에서 `select_sequential_consistency`를 사용할 때 파트 업데이트에 적용되는 최대 백오프 시간(밀리초)입니다. ClickHouse Cloud에서만 사용할 수 있습니다.
+
+## shared_merge_tree_sequential_consistency_parts_update_max_retries \{#shared_merge_tree_sequential_consistency_parts_update_max_retries\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "순차 일관성이 적용된 SharedMergeTree 쿼리에서 간헐적으로 발생하는 UNFINISHED 오류를 줄이기 위한 새 설정입니다."}]}]} />
+
+`SharedMergeTree`에서 `select_sequential_consistency`를 사용할 때 파트 업데이트의 최대 재시도 횟수입니다. ClickHouse Cloud에서만 사용할 수 있습니다.
 
 ## shared_merge_tree_sync_parts_on_partition_operations \{#shared_merge_tree_sync_parts_on_partition_operations\}
 
