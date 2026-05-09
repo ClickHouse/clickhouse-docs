@@ -38,7 +38,7 @@ To understand the backup cost, you can view the backup cost per service from the
 
 <Image img={backup_usage} size="md" alt="Backup usage chart in ClickHouse Cloud" border/>
 
-Estimating the total cost for your backups requires you to set a schedule. We're also working on updating our [pricing calculator](https://clickhouse.com/pricing), so you can get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
+Estimating the total cost for your backups requires you to set a schedule. Please look at the [pricing calculator](https://clickhouse.com/pricing), to get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
 - Size of the full and incremental backups
 - Desired frequency
 - Desired retention
