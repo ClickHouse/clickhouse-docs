@@ -338,6 +338,108 @@ The following Avro schemas are unsupported by the connector:
 
 Please note: if you encounter issues with missing classes, not every environment comes with the protobuf converter and you may need an alternate release of the jar bundled with dependencies.
 
+###### Protobuf type mapping {#proto-type-mapping}
+The type mapping below is defined by `io.confluent.connect.protobuf.ProtobufConverter`, the official Protobuf serializer/deserializer implementation in Kafka Connect. See the Kafka Connect [docs](https://docs.confluent.io/platform/current/connect/userguide.html#json-schema-and-protobuf) for advanced information on conversion logic.
+
+✅: Supported
+
+❌: Not supported
+
+️⚠️: Partially supported
+
+| Protobuf Type                           | Kafka Connect Type                      | Supported | Notes                                                                                                                                                                        |
+|-----------------------------------------|-----------------------------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| double                                  | FLOAT64                                 | ✅         |                                                                                                                                                                              |
+| float                                   | FLOAT32                                 | ✅         |                                                                                                                                                                              |
+| int32                                   | INT8/INT16/INT32                        | ✅         | Defaults to INT32. Resolves to INT8 if the schema has option `connect.type=int8` (analogously for INT16 if `connect.type=int16`)                                             |
+| sint32                                  | INT8/INT16/INT32                        | ✅         | Defaults to INT32. Resolves to INT8 if the schema has option `connect.type=int8` (analogously for INT16 if `connect.type=int16`)                                             |
+| sfixed32                                | INT8/INT16/INT32                        | ✅         | Defaults to INT32. Resolves to INT8 if the schema has option `connect.type=int8` (analogously for INT16 if `connect.type=int16`)                                             |
+| uint32                                  | INT64                                   | ✅         |                                                                                                                                                                              |
+| fixed32                                 | INT64                                   | ✅         |                                                                                                                                                                              |
+| int64                                   | INT64                                   | ✅         |                                                                                                                                                                              |
+| uint64                                  | INT64                                   | ✅         |                                                                                                                                                                              |
+| sint64                                  | INT64                                   | ✅         |                                                                                                                                                                              |
+| fixed64                                 | INT64                                   | ✅         |                                                                                                                                                                              |
+| sfixed64                                | INT64                                   | ✅         |                                                                                                                                                                              |
+| bool                                    | BOOLEAN                                 | ✅         |                                                                                                                                                                              |
+| string                                  | STRING                                  | ✅         |                                                                                                                                                                              |
+| bytes                                   | BYTES                                   | ✅         |                                                                                                                                                                              |
+| enum                                    | INT32/STRING                            | ✅         | Defaults to STRING. Resolves to INT32 if `int.for.enums=true` (see [schema registry docs](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf)) |
+| message                                 | STRUCT                                  | ⚠️        | See Unsupported schemas section below                                                                                                                                        |
+| repeated T (where T is not a map entry) | ARRAY                                   | ✅         |                                                                                                                                                                              |
+| `map<K, V>`                             | MAP                                     | ✅         |                                                                                                                                                                              |
+| oneof                                   | STRUCT                                  | ⚠️        | See section below on translating oneof to ClickHouse schema                                                                                                                  |
+| google.protobuf.DoubleValue             | FLOAT64                                 | ✅         |                                                                                                                                                                              |
+| google.protobuf.FloatValue              | FLOAT32                                 | ✅         |                                                                                                                                                                              |
+| google.protobuf.Int64Value              | INT64                                   | ✅         |                                                                                                                                                                              |
+| google.protobuf.UInt64Value             | INT64                                   | ✅         |                                                                                                                                                                              |
+| google.protobuf.UInt32Value             | INT64                                   | ✅         |                                                                                                                                                                              |
+| google.protobuf.Int32Value              | INT32                                   | ✅         |                                                                                                                                                                              |
+| google.protobuf.BoolValue               | BOOLEAN                                 | ✅         |                                                                                                                                                                              |
+| google.protobuf.StringValue             | STRING                                  | ✅         |                                                                                                                                                                              |
+| google.protobuf.BytesValue              | BYTES                                   | ✅         |                                                                                                                                                                              |
+| google.protobuf.Timestamp               | org.apache.kafka.connect.data.Timestamp | ✅         |                                                                                                                                                                              |
+| google.type.Date                        | org.apache.kafka.connect.data.Date      | ✅         |                                                                                                                                                                              |
+| google.type.TimeOfDay                   | org.apache.kafka.connect.data.Time      | ✅         |                                                                                                                                                                              |
+
+Refer to [Supported data types](#supported-data-types) for the mapping between Kafka Connect types and ClickHouse types.
+
+###### Note on translating `oneof` fields to ClickHouse columns {#oneof-translation}
+The connector does not support translating Protobuf unions (`oneof`) to the ClickHouse Variant type. Instead, list the `oneof` fields as individual nullable fields in your ClickHouse table schema.
+
+For example:
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message StringIntUnion {
+  oneof mixed {
+    string mixed_string = 2;
+    int32 mixed_int = 3;
+  }
+}
+
+```
+
+translates to the following ClickHouse table definition:
+
+```sql
+CREATE TABLE IF NOT EXISTS `StringIntUnion`
+(
+    mixed_string Nullable(String),
+    mixed_int Nullable(Int32)
+) ENGINE = ...;
+```
+
+###### Unsupported Protobuf schemas {#unsupported-proto-schemas}
+The following Protobuf schemas are unsupported by the connector:
+- multi-message unions (**before CH version 26.1**)
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message TwoRecords {
+  oneof payload {
+    TypeA type_a = 2;
+    TypeB type_b = 3;
+  }
+
+  // translates to Nullable(Tuple(label String)) in ClickHouse, which is unsupported
+  message TypeA {
+    string label = 1;
+  }
+
+  // translates to Nullable(Tuple(count Int32)) in ClickHouse, which is unsupported
+  message TypeB {
+    int32 count = 1;
+  }
+}
+```
+
+From CH version 26.1 onwards, this schema is supported when `allow_experimental_nullable_tuple_type=1` (see [this documentation page](https://clickhouse.com/docs/operations/settings/settings#allow_experimental_nullable_tuple_type)).
+
 ##### JSON schema support {#json-schema-support}
 
 ```json
