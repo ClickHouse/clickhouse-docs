@@ -15,13 +15,13 @@ const MobileLanguagePicker = ({ onLanguageChange }) => {
         const pathname = location.pathname;
 
         // Check if we're in a docs path with locale
-        const docsLocaleMatch = pathname.match(/^\/docs\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/);
+        const docsLocaleMatch = pathname.match(/^\/docs\/(jp|ja|ko|ru|zh|zh-CN)(?=\/|$)/);
         if (docsLocaleMatch) {
             return docsLocaleMatch[1];
         }
 
         // Check for root-level locale
-        const rootLocaleMatch = pathname.match(/^\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/);
+        const rootLocaleMatch = pathname.match(/^\/(jp|ja|ko|ru|zh|zh-CN)(?=\/|$)/);
         if (rootLocaleMatch) {
             return rootLocaleMatch[1];
         }
@@ -61,6 +61,7 @@ const MobileLanguagePicker = ({ onLanguageChange }) => {
             en: 'EN',
             jp: 'JP',
             ja: 'JP', // Handle both jp and ja for Japanese
+            ko: 'KO',
             ru: 'RU',
             zh: 'ZH',
             'zh-CN': 'ZH',
@@ -76,6 +77,7 @@ const MobileLanguagePicker = ({ onLanguageChange }) => {
             en: 'English',
             jp: '日本語',
             ja: '日本語', // Handle both jp and ja for Japanese
+            ko: '한국어',
             ru: 'Русский',
             zh: '中文',
             'zh-CN': '中文',
@@ -165,7 +167,7 @@ const MobileLanguagePicker = ({ onLanguageChange }) => {
                                 }
                             } else {
                                 // Remove existing locale from docs path if present
-                                let cleanPath = currentPath.replace(/^\/docs\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/, '/docs');
+                                let cleanPath = currentPath.replace(/^\/docs\/(jp|ja|ko|ru|zh|zh-CN)(?=\/|$)/, '/docs');
 
                                 // Build new URL with target locale
                                 if (locale === i18n.defaultLocale || locale === 'en') {
@@ -178,7 +180,7 @@ const MobileLanguagePicker = ({ onLanguageChange }) => {
                         } else {
                             // Handle non-docs paths (like home page, blog, etc.)
                             // Remove any existing locale prefix first
-                            let cleanPath = currentPath.replace(/^\/(jp|ja|ru|zh|zh-CN)(?=\/|$)/, '');
+                            let cleanPath = currentPath.replace(/^\/(jp|ja|ko|ru|zh|zh-CN)(?=\/|$)/, '');
 
                             // If nothing was removed, we're on a clean path already
                             if (cleanPath === currentPath) {

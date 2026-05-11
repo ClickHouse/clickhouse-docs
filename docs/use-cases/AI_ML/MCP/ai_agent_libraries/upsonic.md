@@ -1,19 +1,19 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/upsonic
 sidebar_label: 'Integrate Upsonic'
-title: 'How to build an AI Agent with Upsonic and the ClickHouse MCP Server'
+title: 'How to build an AI Agent with Upsonic and the ClickHouse MCP server'
 pagination_prev: null
 pagination_next: null
-description: 'Learn how build an AI Agent with Upsonic and the ClickHouse MCP Server'
+description: 'Learn how build an AI Agent with Upsonic and the ClickHouse MCP server'
 keywords: ['ClickHouse', 'MCP', 'Upsonic']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build an AI Agent with Upsonic and the ClickHouse MCP Server
+# How to build an AI Agent with Upsonic and the ClickHouse MCP server
 
 In this guide you'll learn how to build a [Upsonic](https://github.com/Upsonic/Upsonic/tree/master) AI agent that can interact with 
-[ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP Server](https://github.com/ClickHouse/mcp-clickhouse).
+[ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP server](https://github.com/ClickHouse/mcp-clickhouse).
 
 :::note Example notebook
 This example can be found as a notebook in the [examples repository](https://github.com/ClickHouse/examples/blob/main/ai/mcp/upsonic/upsonic.ipynb).
@@ -63,9 +63,9 @@ env = {
 }
 ```
 
-## Initialize MCP Server and Upsonic agent {#initialize-mcp-and-agent}
+## Initialize MCP server and Upsonic agent {#initialize-mcp-and-agent}
 
-Now configure the ClickHouse MCP Server to point at the ClickHouse SQL playground 
+Now configure the ClickHouse MCP server to point at the ClickHouse SQL playground 
 and also initialize our agent and ask it a question:
 
 ```python

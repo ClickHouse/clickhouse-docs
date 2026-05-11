@@ -7,24 +7,23 @@ title: '継続的インテグレーション (CI)'
 doc_type: 'reference'
 ---
 
-# 継続的インテグレーション (CI) \{#continuous-integration-ci\}
+# Continuous Integration (CI) \{#continuous-integration-ci\}
 
-プルリクエストを作成すると、ClickHouse の [継続的インテグレーション (CI) システム](tests.md#test-automation) によって、あなたのコードに対していくつかの自動チェックが実行されます。
-これは、リポジトリのメンテナー (ClickHouse チームのメンバー) があなたのコードを確認し、プルリクエストに `can be tested` ラベルを追加した後に行われます。
-チェック結果は、[GitHub のチェックに関するドキュメント](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks)で説明されているように、GitHub のプルリクエストページに一覧表示されます。
+プルリクエストを送信すると、ClickHouse の [continuous integration (CI) system](tests.md#test-automation) によって、あなたのコードに対していくつかの自動チェックが実行されます。
+これは、リポジトリのメンテナー（ClickHouse チームのメンバー）があなたのコードを確認し、プルリクエストに `can be tested` ラベルを追加した後に行われます。
+チェック結果は、[GitHub checks documentation](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks) で説明されているように、GitHub のプルリクエストページに一覧表示されます。
 いずれかのチェックが失敗した場合、それを修正する必要があるかもしれません。
-このページでは、遭遇しうるチェックの概要と、それらを修正するためにできることを説明します。
+このページでは、遭遇する可能性のあるチェックの概要と、それらを修正するためにできることを説明します。
 
-チェックの失敗が自分の変更内容とは無関係に見える場合、一時的な失敗やインフラ上の問題である可能性があります。
-CI チェックを再実行するには、空のコミットをプッシュしてプルリクエストを更新します。
+チェックの失敗が自分の変更内容とは無関係に見える場合、一時的な失敗やインフラストラクチャの問題である可能性があります。
+CI チェックを再実行するには、空のコミットをプッシュしてプルリクエストを更新します:
 
 ```shell
-git reset
 git commit --allow-empty
 git push
 ```
 
-どうすればよいか分からない場合は、メンテナーに相談してください。
+どうすればよいか分からない場合は、メンテナーに助けを求めてください。
 
 ## master とのマージ \{#merge-with-master\}
 
@@ -98,21 +97,74 @@ python -m ci.praktika run "Style check" --test cpp
 これらのコマンドは `clickhouse/style-test` の Docker イメージを取得して、コンテナ環境でジョブを実行します。
 Python 3 と Docker 以外に必要な依存関係はありません。
 
-## Fast test \{#fast-test\}
 
-通常、これは PR に対して最初に実行されるチェックです。
-ClickHouse をビルドし、一部を除くほとんどの [stateless functional tests](tests.md#functional-tests) を実行します。
-これが失敗すると、問題が修正されるまで後続のチェックは実行されません。
-どのテストが失敗したかを確認するにはレポートを参照し、その後[こちら](/development/tests#running-a-test-locally)で説明されているとおりにローカルでその失敗を再現します。
+## ステートレステストの実行 \{#running-stateless-tests\}
 
-#### Fast test をローカルで実行する: \{#running-fast-test-locally\}
+デフォルト設定でローカルにインストールした ClickHouse は、特定のテストケースでは動作することがありますが、すべてのテストクエリを正しく実行できるわけではありません。CI では、各ジョブで特定の ClickHouse 設定 (例: S3 ストレージ、Parallel Replicas) が適用されるため、これを手動で再現するのは煩雑になることがあります。これを避けるには、CI と同じオーケストレーションを使って、任意の CI ジョブをローカルで再現できます。手動で設定する必要はありません。
+
+#### 前提条件 \{#ci-prerequisites\}
+
+* Python 3 (標準ライブラリのみ) 
+* Docker
+
+必要に応じて、Ubuntu に Docker をインストールし、再ログインしてください。
 
 ```sh
-python -m ci.praktika run "Fast test" [--test some_test_name]
+sudo apt-get update
+sudo apt-get install docker.io
+sudo usermod -aG docker "$USER"
+sudo tee /etc/docker/daemon.json <<'EOF'
+{
+  "ipv6": true,
+  "ip6tables": true
+}
+EOF
+sudo systemctl restart docker
 ```
 
-これらのコマンドは `clickhouse/fast-test` の Docker イメージを取得し、コンテナ化された環境でジョブを実行します。
-Python 3 と Docker 以外の依存関係は必要ありません。
+
+#### CIジョブをローカルで実行する \{#run-ci-job-locally\}
+
+CIレポートから任意のジョブ名を選択し、ローカルで実行します。
+
+```bash
+python -m ci.praktika run "<JOB_NAME>"
+```
+
+* ジョブ名は、CI レポートに表示されている表記を必ずそのまま引用してください (スペースやカンマが含まれる場合があります) 。例: `"Stateless tests (amd_debug, parallel)"`。これにより、CI と同じ ClickHouse の設定で、同じテストが実行されます。
+* ジョブ名に含まれるアーキテクチャとビルド種別 (例: `amd_debug`) は、CI 固有のラベルです。ローカルで実行する場合、これらは影響しません。ジョブは、実行中のアーキテクチャ上で、指定したバイナリをそのまま使用します。ジョブ名で決まるのは、ClickHouse の設定とテストセットだけです (`--test`` で上書きしない限り) 。
+* CI では、リソース利用効率を高めるため、機能テストは複数のバッチに分割されています。たとえば、`"Stateless tests (amd_debug, parallel)"` と `"Stateless tests (amd_debug, sequential)"` を合わせると、対象範囲全体をカバーできます。並列実行しても安全なテストは同時に実行され、それ以外は順次実行されます。この分割により、可能な箇所では並列性を最大化し、CI 全体の所要時間を短縮できます。ローカルでテスト範囲全体を再現するには、両方のバッチを実行してください。
+* 基本的な ClickHouse の機能を検証するために、限定された範囲の機能テストを実行する `"Fast test"` CI ジョブもあります。これは、すべてのオプションモジュールを含まないビルドを使用し、リグレッションをすばやく検出する最も手軽な方法です。ローカルでも同じ方法で実行できます。ClickHouse バイナリをデフォルトの検索パスのいずれか (`./ci/tmp/clickhouse`、`./build/programs/clickhouse`、または `./clickhouse`) に配置してください。そうしないと、ジョブはまず ClickHouse のビルドを試みます。
+  ```bash
+  python -m ci.praktika run "Fast test"
+  ```
+
+
+#### CI ジョブ内で特定のテストを実行する \{#run-specific-tests-within-ci-job\}
+
+`--test` を使用すると、ジョブは CI で使用されているものと同一の ClickHouse セットアップを用意し、選択したテストのみを実行します。
+
+```bash
+python -m ci.praktika run "Stateless tests (amd_debug, parallel)" \
+  --test 00001_select1
+```
+
+* 複数のテスト名を指定できます:
+  ```bash
+  python -m ci.praktika run "Stateless tests (amd_debug, parallel)" \
+    --test 00001_select1 00002_log_and_exception_messages_formatting
+  ```
+* ヒント: ClickHouse の設定がどれでも問題なく、特定のテストだけを実行したい場合は、完全なジョブ名の代わりにエイリアス `functional` を使用してください:
+  ```bash
+  python -m ci.praktika run functional --test 00001_select1
+  ```
+
+
+#### 追加のカスタマイズオプション \{#additional-customization-options\}
+
+* `--path PATH` — ClickHouse バイナリへのカスタムパス。デフォルトでは、ランナーは `./ci/tmp/clickhouse`、`./build/programs/clickhouse`、`./clickhouse` の順に検索します。
+* `--count N` — 各テストを N 回繰り返します。
+* `--workers N` — マシンの性能に基づいて自動計算される並列ワーカー数を上書きします。
 
 ## ビルドチェック \{#build-check\}
 
@@ -127,6 +179,7 @@ python -m ci.praktika run "<BUILD_JOB_NAME>"
 ```
 
 Python 3 と Docker 以外に必要な依存関係はありません。
+
 
 #### 利用可能なビルドジョブ \{#available-build-jobs\}
 
@@ -168,13 +221,15 @@ Python 3 と Docker 以外に必要な依存関係はありません。
 
 #### 例 \{#example-run-local\}
 
-ローカルでデバッグビルドを実行するには:
+ローカルで debug ビルドを実行するには、次を実行します：
 
 ```bash
 python -m ci.praktika run "Build (amd_debug)"
 ```
 
 上記の方法がうまくいかない場合は、ビルドログに出力されている cmake オプションを使用し、[一般的なビルド手順](../development/build.md)に従ってください。
+
+
 ## Functional stateless tests \{#functional-stateless-tests\}
 
 さまざまな構成（release、debug、sanitizer 有効など）でビルドされた ClickHouse バイナリに対して [stateless functional tests](tests.md#functional-tests) を実行します。
@@ -195,7 +250,7 @@ python -m ci.praktika run "Build (amd_debug)"
 
 複数のクライアントからステートレスなファンクショナルテストを同時に実行し、同時実行に起因するエラーを検出します。これが失敗した場合は、次を行います。
 
-    * まず他のすべてのテスト失敗を修正する
+* まず他のすべてのテスト失敗を修正する
     * レポートを確認してサーバーログの場所を特定し、エラーの原因となり得る事項がないか確認する
 
 ## 互換性チェック \{#compatibility-check\}
@@ -212,4 +267,4 @@ python -m ci.praktika run "Build (amd_debug)"
 
 クエリのパフォーマンスの変化を測定します。
 これは最も時間のかかるテストで、実行にはおよそ 6 時間弱を要します。
-パフォーマンス テスト レポートの詳細な説明は[こちら](https://github.com/ClickHouse/ClickHouse/tree/master/docker/test/performance-comparison#how-to-read-the-report)にあります。
+パフォーマンス テスト レポートの詳細な説明は[こちら](https://github.com/ClickHouse/ClickHouse/blob/master/tests/performance/scripts/README.md#how-to-read-the-report)にあります。

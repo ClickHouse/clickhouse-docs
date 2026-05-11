@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 ## covarPop \{#covarPop\}
 
-Introduced in: v1.1
+Introduced in: v1.1.0
 
 Calculates the population covariance:
 
@@ -33,7 +33,7 @@ covarPop(x, y)
 
 **Aliases**: `COVAR_POP`
 
-**参数**
+**Arguments**
 
 - `x` — 第一个变量。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
 - `y` — 第二个变量。[`(U)Int*`](/sql-reference/data-types/int-uint) 或 [`Float*`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)

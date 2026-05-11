@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitXor \{#groupBitXor\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 对一组数字执行按位异或运算。
 

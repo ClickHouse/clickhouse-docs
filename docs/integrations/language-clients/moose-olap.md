@@ -14,7 +14,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-[Moose OLAP](https://docs.fiveonefour.com/moose/olap) is a core module of the [Moose Stack](https://docs.fiveonefour.com/moose), an open source developer toolkit for building real-time analytical backends in Typescript and Python. 
+[Moose OLAP](https://docs.fiveonefour.com/moosestack/olap) is a core module of the [Moose Stack](https://docs.fiveonefour.com/moosestack), an open source developer toolkit for building real-time analytical backends in Typescript and Python. 
 
 Moose OLAP offers developer-friendly abstractions and ORM-like functionality, built natively for ClickHouse.
 
@@ -29,7 +29,7 @@ Moose OLAP offers developer-friendly abstractions and ORM-like functionality, bu
 
 ## Getting started in under 5 minutes {#getting-started}
 
-For the latest and greatest Installation and Getting Started guides, see the [Moose Stack documentation](https://docs.fiveonefour.com/moose/getting-started/from-clickhouse).
+For the latest and greatest Installation and Getting Started guides, see the [Moose Stack documentation](https://docs.fiveonefour.com/moosestack/getting-started/from-clickhouse).
 
 Or follow this guide to get up and running with Moose OLAP on an existing ClickHouse or ClickHouse Cloud deployment in under 5 minutes.
 
@@ -132,9 +132,9 @@ moose seed --connection-string https://explorer:@play.clickhouse.com:443/?databa
 ### Building with Moose OLAP {#step-7-building-with-moose-olap}
 
 Now that you have your Tables defined in code, you get the same benefits as ORM data models in web apps - type safety and autocomplete when building APIs and Materialized Views on top of your analytical data. As a next step, you could try:
-* Building a REST API with [Moose API](https://docs.fiveonefour.com/moose/apis)
-* Ingesting or transforming data with [Moose Workflows](https://docs.fiveonefour.com/moose/workflows) or [Moose Streaming](https://docs.fiveonefour.com/moose/workflows)
-* Explore going to production with [Moose Build](https://docs.fiveonefour.com/moose/deploying/summary) and [Moose Migrate](https://docs.fiveonefour.com/moose/migrate)
+* Building a REST API with [Moose API](https://docs.fiveonefour.com/moosestack/apis)
+* Ingesting or transforming data with [Moose Workflows](https://docs.fiveonefour.com/moosestack/workflows) or [Moose Streaming](https://docs.fiveonefour.com/moosestack/workflows)
+* Explore going to production with [Moose Build](https://docs.fiveonefour.com/moosestack/deploying) and [Moose Migrate](https://docs.fiveonefour.com/moosestack/migrate)
 
 </VerticalStepper>
 

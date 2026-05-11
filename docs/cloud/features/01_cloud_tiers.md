@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'ClickHouse Cloud tiers'
 slug: /cloud/manage/cloud-tiers
-title: 'ClickHouse Cloud Tiers'
+title: 'ClickHouse Cloud tiers'
 description: 'Cloud tiers available in ClickHouse Cloud'
 keywords: ['cloud tiers', 'service plans', 'cloud pricing tiers', 'cloud service levels']
 doc_type: 'reference'
@@ -89,8 +89,8 @@ This page discusses which tiers are right for your specific use case.
   </tr>
   <tr>
     <td>Export backups to your own cloud account</td>
-    <td></td>
-    <td></td>
+    <td>✓</td>
+    <td>✓</td>
     <td>✓</td>
   </tr>
   <tr>
@@ -162,10 +162,10 @@ This page discusses which tiers are right for your specific use case.
 ## Basic {#basic}
 
 - Cost-effective option that supports single-replica deployments.
-- Ideal for departmental use cases with smaller data volumes that do not have hard reliability guarantees.
+- Ideal for departmental use cases with smaller data volumes that don't have hard reliability guarantees.
 
 :::note
-Services in the basic tier are meant to be fixed in size and do not allow scaling, both automatic and manual. 
+Services in the basic tier are meant to be fixed in size and don't allow scaling, both automatic and manual. 
 You can upgrade to the Scale or Enterprise tier to scale their services.
 :::
 
@@ -184,14 +184,13 @@ Designed for workloads requiring enhanced SLAs (2+ replica deployments), scalabi
 Caters to large-scale, mission critical deployments that have stringent security and compliance needs.
 
 - Everything in Scale, **plus**
-- Flexible scaling: standard profiles (`1:4 vCPU:memory ratio`), as well as `HighMemory (1:8 ratio)` and `HighCPU (1:2 ratio)` custom profiles.
+- Flexible scaling: standard profiles (`1:4 vCPU:memory ratio`), as well as `HighMemory (1:8 ratio)` custom profiles.
 - Provides the highest levels of performance and resilience guarantees.
 - Supports enterprise-grade security:
   - Single Sign On (SSO)
   - Enhanced Encryption: For AWS and GCP services. Services are encrypted by our key by default and can be rotated to their key to enable Customer Managed Encryption Keys (CMEK).
 - Allows Scheduled upgrades: you can select the day of the week/time window for upgrades, both database and cloud releases.  
 - Offers [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) and PCI compliance.
-- Exports Backups to the user's account.
 
 :::note 
 Single replica services across all three tiers are meant to be fixed in size (`8 GiB`, `12 GiB`)

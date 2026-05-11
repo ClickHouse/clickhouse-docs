@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 # Executable および ExecutablePool テーブルエンジン \{#executable-and-executablepool-table-engines\}
 
-`Executable` および `ExecutablePool` テーブルエンジンを使用すると、（行を **stdout** に書き出すことで）ユーザー定義のスクリプトによって行が生成されるテーブルを定義できます。実行可能スクリプトは `users_scripts` ディレクトリに保存され、任意のソースからデータを読み取ることができます。
+`Executable` および `ExecutablePool` テーブルエンジンを使用すると、 (行を **stdout** に書き出すことで) ユーザー定義のスクリプトによって行が生成されるテーブルを定義できます。実行可能スクリプトは `users_scripts` ディレクトリに保存され、任意のソースからデータを読み取ることができます。
 
 * `Executable` テーブル: クエリごとにスクリプトが実行されます
 * `ExecutablePool` テーブル: 永続プロセスのプールを維持し、読み取り時にそのプールからプロセスを取得します
@@ -30,13 +30,13 @@ Executable(script_name, format, [input_query...])
   * 説明: チャンクを処理に送る前に、そのチャンク内の行数を送信します。この設定を有効にすると、スクリプト側でリソースを事前割り当てするなど、より効率的な記述が可能になります。
   * デフォルト値: false
 * `command_termination_timeout`
-  * 説明: コマンドを終了させるタイムアウト（秒）
+  * 説明: コマンドを終了させるタイムアウト (秒) 
   * デフォルト値: 10
 * `command_read_timeout`
-  * 説明: コマンドの標準出力からデータを読み取るタイムアウト（ミリ秒）
+  * 説明: コマンドの標準出力からデータを読み取るタイムアウト (ミリ秒) 
   * デフォルト値: 10000
 * `command_write_timeout`
-  * 説明: コマンドの標準入力へデータを書き込むタイムアウト（ミリ秒）
+  * 説明: コマンドの標準入力へデータを書き込むタイムアウト (ミリ秒) 
   * デフォルト値: 10000
 
 例を見てみましょう。次の Python スクリプトは `my_script.py` という名前で、`user_scripts` フォルダ内に保存されています。数値 `i` を入力として受け取り、`i` 個のランダムな文字列を出力します。各文字列の先頭には、タブ区切りの番号が付与されます：
@@ -100,7 +100,7 @@ SELECT * FROM my_executable_table
 
 ## クエリ結果をスクリプトに渡す \{#passing-query-results-to-a-script\}
 
-Hacker News サイトのユーザーはコメントを投稿します。Python には自然言語処理ツールキット (`nltk`) があり、その中の `SentimentIntensityAnalyzer` を使うと、コメントがポジティブかネガティブかニュートラルかを判定し、-1（非常にネガティブなコメント）から 1（非常にポジティブなコメント）の値を割り当てることができます。`nltk` を使って Hacker News のコメントのセンチメント（感情）を計算する `Executable` テーブルを作成してみましょう。
+Hacker News サイトのユーザーはコメントを投稿します。Python には自然言語処理ツールキット (`nltk`) があり、その中の `SentimentIntensityAnalyzer` を使うと、コメントがポジティブかネガティブかニュートラルかを判定し、-1 (非常にネガティブなコメント) から 1 (非常にポジティブなコメント) の値を割り当てることができます。`nltk` を使って Hacker News のコメントのセンチメント (感情) を計算する `Executable` テーブルを作成してみましょう。
 
 この例では、[こちら](/engines/table-engines/mergetree-family/textindexes/#hacker-news-dataset) で説明している `hackernews` テーブルを使用します。`hackernews` テーブルには、型が `UInt64` の `id` カラムと、`comment` という名前の `String` 型のカラムがあります。まずは `Executable` テーブルを定義することから始めましょう。
 
@@ -118,9 +118,9 @@ ENGINE = Executable(
 
 `sentiment` テーブルについての補足:
 
-* ファイル `sentiment.py` は `user_scripts` フォルダ（`user_scripts_path` 設定のデフォルトフォルダ）に保存されています
+* ファイル `sentiment.py` は `user_scripts` フォルダ (`user_scripts_path` 設定のデフォルトフォルダ) に保存されています
 * `TabSeparated` フォーマットは、Python スクリプトがタブ区切りの値を含む生データ行を生成する必要があることを意味します
-* クエリは `hackernews` から 2 つのカラムを選択します。Python スクリプトでは、入力として渡される各行からこれらのカラム値をパース（抽出）する必要があります
+* クエリは `hackernews` から 2 つのカラムを選択します。Python スクリプトでは、入力として渡される各行からこれらのカラム値をパース (抽出) する必要があります
 
 `sentiment.py` の定義は次のとおりです:
 
@@ -205,7 +205,7 @@ FROM sentiment
   * 説明: プロセスプールのサイズ。サイズが 0 の場合はサイズ制限がありません。
   * デフォルト値: 16
 * `max_command_execution_time`
-  * 説明: コマンドの最大実行時間（秒単位）
+  * 説明: コマンドの最大実行時間 (秒単位) 
   * デフォルト値: 10
 
 上記の `sentiment` テーブルは、`Executable` の代わりに `ExecutablePool` を使用するように容易に変更できます。

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctJSONPathsAndTypes \{#distinctJSONPathsAndTypes\}
 
-Введено в версии: v24.9
+Введено в версии: v24.9.0
 
 Вычисляет список уникальных путей и их типов данных, хранящихся в столбце [JSON](https://clickhouse.com/docs/sql-reference/data-types/newjson).
 

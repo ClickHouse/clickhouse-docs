@@ -48,6 +48,10 @@ Granule 是未压缩数据块中的一批行。在读取数据时，ClickHouse �
 
 ClickHouse 中的轻量级更新是一项实验性特性，它允许你使用标准 SQL `UPDATE` 语法来更新表中的行，不同于传统 mutation 需要重写整个列或数据部分（data parts），它会创建仅包含已更新列和行的“补丁部分”（patch parts）。这些更新通过应用补丁在 `SELECT` 查询中会立即可见，但底层物理数据只会在后续合并（merge）过程中才被真正更新。
 
+## 标记文件 \{#mark-file\}
+
+ClickHouse 中的标记文件用于存储“标记”（mark），这些标记是索引条目，可帮助 ClickHouse 快速定位数据文件中特定数据范围的位置。
+
 ## 物化视图 \{#materialized-view\}
 
 在 ClickHouse 中，物化视图是一种机制：当数据插入源表时，会自动对其运行查询，并将转换或聚合后的结果存储到单独的目标表中，从而加速查询。

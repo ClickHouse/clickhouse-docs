@@ -3,7 +3,7 @@ sidebar_label: 'Explo'
 sidebar_position: 131
 slug: /integrations/explo
 keywords: ['clickhouse', 'Explo', 'connect', 'integrate', 'ui']
-description: 'Explo は、データに関する疑問に簡単に答えるための、使いやすいオープンソースの UI ツールです。'
+description: 'Explo は、データに関する疑問に答えるための、使いやすいオープンソースの UI ツールです。'
 title: 'Explo を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
@@ -31,31 +31,32 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+
 # Explo を ClickHouse に接続する \{#connecting-explo-to-clickhouse\}
 
 <CommunityMaintainedBadge/>
 
-あらゆるプラットフォームに組み込める顧客向けアナリティクス。美しい可視化を実現するためにデザインされ、シンプルさを追求して設計されています。
+あらゆるプラットフォームに対応した顧客向けアナリティクス。美しい可視化のためにデザインされ、シンプルさを徹底して設計されています。
 
-## 目標 \{#goal\}
+## ゴール \{#goal\}
 
-このガイドでは、ClickHouse のデータを Explo に接続して結果を可視化します。チャートは次のようになります。
+このガイドでは、ClickHouse のデータを Explo と連携させ、その結果を可視化します。チャートは次のようになります。
 
 <Image img={explo_15} size="md" alt="Explo ダッシュボード" />
 
 <p/>
 
 :::tip データを追加する
-まだ扱うデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用しているので、それを選んでもよいでしょう。同じドキュメントカテゴリに、他にもいくつかのデータセットが掲載されています。
+作業用のデータセットがない場合は、サンプルデータセットのいずれかを追加できます。このガイドでは [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) データセットを使用しているため、それを選択するとよいでしょう。同じドキュメントカテゴリ内には、他にもいくつかのデータセットがあります。
 :::
 
-## 1. 接続情報を取得する \{#1-gather-your-connection-details\}
+## 1. 接続情報を確認する \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
 ## 2.  Explo を ClickHouse に接続する \{#2--connect-explo-to-clickhouse\}
 
-1. Explo アカウントにサインアップします。
+1. Explo アカウントに登録します。
 
 2. 左側のサイドバーにある Explo の **data** タブをクリックします。
 
@@ -71,9 +72,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 5. **ClickHouse** を選択します。
 
-<Image img={explo_04} size="md" alt="ClickHouse" border />
+<Image img={explo_04} size="md" alt="Clickhouse" border />
 
-6. **ClickHouse Credentials** を入力します。
+6. **Clickhouse Credentials** を入力します。
 
 <Image img={explo_05} size="md" alt="Credentials" border />
 
@@ -81,28 +82,28 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <Image img={explo_06} size="md" alt="Security" border />
 
-8. ClickHouse 内で **Explo の IP アドレスをホワイトリストに登録します**。
+8. ClickHouse 側で、**Explo の IP をホワイトリストに登録**します。
 `
-54.211.43.19, 52.55.98.121, 3.214.169.94, and 54.156.141.148
+54.211.43.19, 52.55.98.121, 3.214.169.94, 54.156.141.148
 `
 
 ## 3. ダッシュボードを作成する \{#3-create-a-dashboard\}
 
-1. 左側のナビゲーションバーから **Dashboard** タブを開きます。
+1. 左側のナビゲーションバーで **Dashboard** タブをクリックします。
 
 <Image img={explo_07} size="sm" alt="Dashboard" border />
 
-2. 右上の **Create Dashboard** をクリックし、ダッシュボード名を指定します。これでダッシュボードが作成されました。
+2. 右上の **Create Dashboard** をクリックし、ダッシュボードに名前を付けます。これでダッシュボードが作成されました。
 
 <Image img={explo_08} size="sm" alt="Create Dashboard" border />
 
-3. 次のような画面が表示されているはずです。
+3. 次のような画面が表示されます。
 
 <Image img={explo_09} size="md" alt="Explo Dashboard" border />
 
 ## 4. SQL クエリを実行する \{#4-run-a-sql-query\}
 
-1. 右側のサイドバーで、スキーマ名の下に表示されているテーブル名を取得します。その後、データセットエディタに次のコマンドを入力します：
+1. 右側のサイドバーで、スキーマタイトルの下にあるテーブル名を確認します。次に、以下のコマンドを dataset editor に入力します:
 `
 SELECT * FROM YOUR_TABLE_NAME
 LIMIT 100
@@ -110,13 +111,13 @@ LIMIT 100
 
 <Image img={explo_10} size="md" alt="Explo ダッシュボード" border />
 
-2. 「Run」をクリックし、「Preview」タブに移動してデータを確認します。
+2. run をクリックし、preview タブに移動してデータを確認します。
 
 <Image img={explo_11} size="md" alt="Explo ダッシュボード" border />
 
 ## 5. チャートを作成する \{#5-build-a-chart\}
 
-1. 左側の棒グラフアイコンを画面上にドラッグ＆ドロップします。
+1. 左側のパネルから棒グラフのアイコンを画面上にドラッグします。
 
 <Image img={explo_16} size="sm" alt="Explo ダッシュボード" border />
 
@@ -124,18 +125,18 @@ LIMIT 100
 
 <Image img={explo_12} size="sm" alt="Explo ダッシュボード" border />
 
-3. X 軸には **county** を、Y 軸セクションには **Price** を次のように設定します。
+3. X 軸の **county** と Y Axis セクションの **Price** を次のように設定します。
 
 <Image img={explo_13} size="sm" alt="Explo ダッシュボード" border />
 
-4. 次に、集計方法を **AVG** に変更します。
+4. 集計方法を **AVG** に変更します。
 
 <Image img={explo_14} size="sm" alt="Explo ダッシュボード" border />
 
-5. これで、郡ごとの住宅の平均価格を示すチャートができました。
+5. これで、住宅の平均価格が価格ごとにブレークダウンされたチャートが作成されました。
 
 <Image img={explo_15} size="md" alt="Explo ダッシュボード" />
 
 ## 詳細情報 \{#learn-more\}
 
-Explo の詳細やダッシュボードの作成方法については、<a href="https://docs.explo.co/" target="_blank">Explo ドキュメントをご覧ください</a>。
+Explo の詳細やダッシュボードの構築方法については、<a href="https://docs.explo.co/" target="_blank">Explo のドキュメント</a>をご覧ください。

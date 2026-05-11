@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileDD \{#quantileDD\}
 
-首次引入于：v24.1
+首次引入于：v24.1.0
 
 计算样本的近似[分位数](https://en.wikipedia.org/wiki/Quantile)，并提供相对误差保证。
 通过构建一个 [DD](https://www.vldb.org/pvldb/vol12/p2195-masson.pdf) 来实现。

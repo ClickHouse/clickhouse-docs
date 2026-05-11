@@ -18,9 +18,17 @@ doc_type: 'reference'
 
 子查询是另一个 `SELECT` 查询，可以在 `FROM` 子句中以括号形式指定。
 
+符合 SQL 标准的 `VALUES` 子句也可以用作表表达式：
+
+```sql
+SELECT * FROM (VALUES (1, 'a'), (2, 'b'), (3, 'c')) AS t(id, val);
+```
+
+有关更多详细信息，请参见 [Values 表函数](/sql-reference/table-functions/values#sql-standard-values-clause)。
+
 `FROM` 可以包含多个数据源，以逗号分隔，这等价于对这些数据源执行 [CROSS JOIN](../../../sql-reference/statements/select/join.md)。
 
-`FROM` 也可以出现在 `SELECT` 子句之前（可选）。这是 ClickHouse 对标准 SQL 的扩展，使 `SELECT` 语句更易于阅读。例如：
+`FROM` 也可以出现在 `SELECT` 子句之前 (可选) 。这是 ClickHouse 对标准 SQL 的扩展，使 `SELECT` 语句更易于阅读。例如：
 
 ```sql
 FROM table
@@ -48,9 +56,9 @@ SELECT *
 * 在查询执行期间需要进行数据合并。
 * 带有 `FINAL` 的查询除了查询中指定的列之外，可能还会读取主键列。
 
-`FINAL` 需要额外的计算和内存资源，因为原本应在合并时进行的处理必须在查询时在内存中完成。不过，有时为了生成准确的结果（因为数据可能尚未完全合并）必须使用 FINAL。与运行 `OPTIMIZE` 来强制合并相比，这样做的开销更小。
+`FINAL` 需要额外的计算和内存资源，因为原本应在合并时进行的处理必须在查询时在内存中完成。不过，有时为了生成准确的结果 (因为数据可能尚未完全合并) 必须使用 FINAL。与运行 `OPTIMIZE` 来强制合并相比，这样做的开销更小。
 
-作为使用 `FINAL` 的替代方案，有时可以通过编写不同的查询来实现：这类查询假设 `MergeTree` 引擎的后台合并过程尚未完成，并通过应用聚合（例如丢弃重复数据）来加以处理。如果需要在查询中使用 `FINAL` 才能获得所需结果，可以这样做，但需要注意由此产生的额外处理开销。
+作为使用 `FINAL` 的替代方案，有时可以通过编写不同的查询来实现：这类查询假设 `MergeTree` 引擎的后台合并过程尚未完成，并通过应用聚合 (例如丢弃重复数据) 来加以处理。如果需要在查询中使用 `FINAL` 才能获得所需结果，可以这样做，但需要注意由此产生的额外处理开销。
 
 可以使用 [FINAL](../../../operations/settings/settings.md#final) 设置，将 `FINAL` 自动应用到某个会话或用户配置文件中查询的所有表。
 
@@ -78,7 +86,7 @@ SELECT x, y FROM mytable WHERE x > 1;
 ## 实现细节 \{#implementation-details\}
 
 如果省略 `FROM` 子句，将会从 `system.one` 表中读取数据。
-`system.one` 表中只包含一行数据（该表与其他 DBMS 中的 DUAL 表用途相同）。
+`system.one` 表中只包含一行数据 (该表与其他 DBMS 中的 DUAL 表用途相同) 。
 
 在执行查询时，查询中列出的所有列都会从相应的表中被提取。对于外层查询不需要的列，会在子查询阶段被丢弃。
-如果查询中没有列出任何列（例如 `SELECT count() FROM t`），仍然会从表中提取某一列（优先选择最小的那一列），以便计算行数。
+如果查询中没有列出任何列 (例如 `SELECT count() FROM t`) ，仍然会从表中提取某一列 (优先选择最小的那一列) ，以便计算行数。

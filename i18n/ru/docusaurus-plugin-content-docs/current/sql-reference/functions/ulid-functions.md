@@ -23,7 +23,7 @@ doc_type: 'reference'
 
 ## ULIDStringToDateTime \{#ULIDStringToDateTime\}
 
-Введена в версии v23.3
+Введена в версии v23.3.0
 
 Эта функция извлекает временную метку из [ULID](https://github.com/ulid/spec).
 
@@ -59,7 +59,7 @@ SELECT ULIDStringToDateTime('01GNB2S2FGN2P93QPXDNB4EN2R')
 
 ## generateULID \{#generateULID\}
 
-Введена в версии: v23.2
+Введена в версии: v23.2.0
 
 Генерирует [универсальный уникальный лексикографически упорядочиваемый идентификатор (ULID)](https://github.com/ulid/spec).
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileDD \{#quantileDD\}
 
-Введена в версии v24.1
+Введена в версии v24.1.0
 
 Вычисляет приближенный [квантиль](https://en.wikipedia.org/wiki/Quantile) выборки с гарантированными относительными ошибками.
 Работает за счет построения структуры данных [DD](https://www.vldb.org/pvldb/vol12/p2195-masson.pdf).

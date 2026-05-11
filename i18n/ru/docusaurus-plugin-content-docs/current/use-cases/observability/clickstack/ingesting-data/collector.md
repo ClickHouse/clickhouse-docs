@@ -6,16 +6,23 @@ description: 'Коллектор OpenTelemetry для ClickStack — стек н
 sidebar_label: 'Коллектор OpenTelemetry'
 title: 'Коллектор OpenTelemetry ClickStack'
 doc_type: 'guide'
+toc_max_heading_level: 2
 keywords: ['ClickStack', 'коллектор OpenTelemetry', 'наблюдаемость ClickHouse', 'конфигурация коллектора OTel', 'OpenTelemetry для ClickHouse']
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';
 import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
 import clickstack_with_gateways from '@site/static/images/use-cases/observability/clickstack-with-gateways.png';
 import clickstack_with_kafka from '@site/static/images/use-cases/observability/clickstack-with-kafka.png';
 import ingestion_key from '@site/static/images/use-cases/observability/ingestion-keys.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import ExtendingConfig from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/ingesting-data/_snippets/_extending_config.md';
+
+:::tip Попробуйте OTel FYI — документация по OTel collector в простом и понятном виде
+[OTel FYI](https://otel.fyi) предлагает ясную и лаконичную документацию по OTel collector, охватывающую receivers, processors, exporters и pipelines. Это отличный дополнительный ресурс для настройки вашего OTel collector в ClickStack.
+:::
 
 На этой странице представлена подробная информация по настройке официального коллектора OpenTelemetry (OTel) для ClickStack.
 
@@ -33,204 +40,222 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 
 ## Развертывание коллектора \{#configuring-the-collector\}
 
-Если вы управляете собственным коллектором OpenTelemetry в автономном развертывании — например, при использовании дистрибутива HyperDX-only, — мы [по‑прежнему рекомендуем использовать официальный дистрибутив коллектора ClickStack](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) в роли шлюза, где это возможно, но если вы решите использовать собственный вариант, убедитесь, что он включает [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
+<br/>
 
-### Автономный режим \{#standalone\}
+<Tabs groupId="otel-collector">
+  <TabItem value="managed-clickstack" label="Управляемый ClickStack" default>
+    Мы [рекомендуем использовать официальный дистрибутив коллектора ClickStack](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) в роли шлюза при отправке данных в Managed ClickStack, когда это возможно. Если вы решите развернуть свой собственный коллектор, убедитесь, что он включает [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
-Чтобы развернуть дистрибутив коннектора OTel ClickStack в автономном режиме, выполните следующую docker-команду:
+    Чтобы развернуть дистрибутив ClickStack OTel-коннектора в режиме standalone, выполните следующую команду docker:
 
-```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-```
+    ```shell
+    docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+    ```
 
-Обратите внимание, что мы можем переопределить целевой экземпляр ClickHouse с помощью переменных среды `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`. Значение `CLICKHOUSE_ENDPOINT` должно быть полным HTTP‑эндпоинтом ClickHouse, включая протокол и порт — например, `http://localhost:8123`.
+    :::note Обновление имени образа
+    Образы ClickStack теперь публикуются как `clickhouse/clickstack-*` (ранее `docker.hyperdx.io/hyperdx/*`).
+    :::
 
-**Эти переменные среды можно использовать с любыми docker-дистрибутивами, которые включают коннектор.**
+    Обратите внимание, что мы можем изменить целевой экземпляр ClickHouse, задав переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`. Значение `CLICKHOUSE_ENDPOINT` должно быть полным HTTP-эндпоинтом ClickHouse Cloud, включая протокол и порт — например, `https://99rr6dm6v3.us-central1.gcp.clickhouse.cloud:8443`.
 
-`OPAMP_SERVER_URL` должен указывать на ваше развертывание HyperDX — например, `http://localhost:4320`. HyperDX по умолчанию поднимает сервер OpAMP (Open Agent Management Protocol) по пути `/v1/opamp` на порту `4320`. Убедитесь, что этот порт проброшен из контейнера, в котором запущен HyperDX (например, с помощью `-p 4320:4320`).
+    Подробнее о получении учётных данных Managed ClickStack см. [здесь](/cloud/guides/sql-console/gather-connection-details).
 
-:::note Exposing and connecting to the OpAMP port
-Чтобы коллектор смог подключиться к порту OpAMP, он должен быть проброшен из контейнера HyperDX, например `-p 4320:4320`. Для локального тестирования пользователи macOS могут задать `OPAMP_SERVER_URL=http://host.docker.internal:4320`. Пользователи Linux могут запускать контейнер коллектора с параметром `--network=host`.
-:::
+    :::note Пользователь для продакшена
+    В продакшене следует использовать пользователя с [подходящими учётными данными](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
+    :::
 
-В production-среде вам следует использовать пользователя с [соответствующими учётными данными](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
+    ### Изменение конфигурации
 
+    #### Настройка экземпляра Managed ClickStack
 
-### Изменение конфигурации \{#modifying-otel-collector-configuration\}
+    Все Docker-образы, включающие коллектор OpenTelemetry, можно настроить для использования экземпляра Managed ClickStack через переменные окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`:
 
-#### Использование Docker \{#using-docker\}
+    Например, образ «all-in-one»:
 
-Все образы Docker, включающие OpenTelemetry collector, можно настроить для работы с экземпляром ClickHouse через переменные окружения `OPAMP_SERVER_URL`, `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`:
+    ```shell
+    export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
+    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+    ```
 
-Например, универсальный (all-in-one) образ:
+    ```shell
+    docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+    ```
 
-```shell
-export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
-export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
-export CLICKHOUSE_USER=<CLICKHOUSE_USER>
-export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-```
+    <ExtendingConfig />
 
-```shell
-docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
-```
+    #### Docker Compose
 
-:::note Изменение имени образа
-Образы ClickStack теперь публикуются под именем `clickhouse/clickstack-*` (ранее `docker.hyperdx.io/hyperdx/*`).
-:::
+    При использовании Docker Compose изменяйте конфигурацию коллектора, используя те же переменные окружения, что и выше:
 
+    ```yaml
+      otel-collector:
+        image: hyperdx/hyperdx-otel-collector
+        environment:
+          CLICKHOUSE_ENDPOINT: 'https://mxl4k3ul6a.us-east-2.aws.clickhouse-staging.com:8443'
+          HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+          CLICKHOUSE_USER: 'default'
+          CLICKHOUSE_PASSWORD: 'password'
+          CUSTOM_OTELCOL_CONFIG_FILE: '/etc/otelcol-contrib/custom.config.yaml'
+        ports:
+          - '13133:13133' # health_check extension
+          - '24225:24225' # fluentd receiver
+          - '4317:4317' # OTLP gRPC receiver
+          - '4318:4318' # OTLP http receiver
+          - '8888:8888' # metrics extension
+        volumes:
+          - ./custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+        restart: always
+        networks:
+          - internal
+    ```
+  </TabItem>
 
-#### Docker Compose \{#docker-compose-otel\}
+  <TabItem value="oss-clickstack" label="Open Source-версия ClickStack" default>
+    Если вы управляете собственным коллектором OpenTelemetry в отдельном развертывании — например, при использовании дистрибутива только с HyperDX, — мы [по‑прежнему рекомендуем использовать официальный ClickStack‑дистрибутив коллектора](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) для использования в роли шлюза, когда это возможно, но если вы решите использовать собственный, убедитесь, что он включает [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
-В Docker Compose измените конфигурацию коллектора, используя те же переменные окружения, что и выше:
+    Чтобы развернуть ClickStack‑дистрибутив OTel connector в автономном режиме, выполните следующую команду docker:
 
-```yaml
-  otel-collector:
-    image: hyperdx/hyperdx-otel-collector
-    environment:
-      CLICKHOUSE_ENDPOINT: 'https://mxl4k3ul6a.us-east-2.aws.clickhouse-staging.com:8443'
-      HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
-      CLICKHOUSE_USER: 'default'
-      CLICKHOUSE_PASSWORD: 'password'
-      OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
-    ports:
-      - '13133:13133' # расширение health_check
-      - '24225:24225' # получатель fluentd
-      - '4317:4317' # получатель OTLP gRPC
-      - '4318:4318' # получатель OTLP http
-      - '8888:8888' # расширение metrics
-    restart: always
-    networks:
-      - internal
-```
+    ```shell
+    docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+    ```
 
-### Расширенная конфигурация \{#advanced-configuration\}
+    :::note Обновление имени образа
+    Образы ClickStack теперь публикуются как `clickhouse/clickstack-*` (ранее `docker.hyperdx.io/hyperdx/*`).
+    :::
 
-Дистрибутив OTel collector в составе ClickStack поддерживает расширение базовой конфигурации за счёт монтирования пользовательского конфигурационного файла и задания переменной окружения. Пользовательская конфигурация объединяется с базовой конфигурацией, управляемой HyperDX через OpAMP.
+    Обратите внимание, что целевой экземпляр ClickHouse можно переопределить с помощью переменных окружения `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`. Значение `CLICKHOUSE_ENDPOINT` должно быть полным HTTP-эндпоинтом ClickHouse, включая протокол и порт — например, `http://localhost:8123`.
 
-#### Расширение конфигурации коллектора \{#extending-collector-config\}
+    **Эти переменные окружения могут использоваться с любыми Docker-дистрибутивами, которые содержат коннектор.**
 
-Чтобы добавить пользовательские приёмники (receivers), процессоры (processors) или конвейеры (pipelines):
+    `OPAMP_SERVER_URL` должен указывать на ваше развёртывание HyperDX — например, `http://localhost:4320`. HyperDX по умолчанию предоставляет сервер OpAMP (Open Agent Management Protocol) по адресу `/v1/opamp` на порту `4320`. Убедитесь, что этот порт проброшен из контейнера, в котором запущен HyperDX (например, с помощью `-p 4320:4320`).
 
-1. Создайте пользовательский файл конфигурации с вашей дополнительной конфигурацией
-2. Смонтируйте файл по пути `/etc/otelcol-contrib/custom.config.yaml`
-3. Установите переменную окружения `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+    :::note Открытие и подключение к порту OpAMP
+    Чтобы коллектор смог подключиться к порту OpAMP, этот порт должен быть проброшен из контейнера HyperDX, например `-p 4320:4320`. Для локального тестирования пользователи OSX могут затем задать `OPAMP_SERVER_URL=http://host.docker.internal:4320`. Пользователи Linux могут запустить контейнер коллектора с опцией `--network=host`.
+    :::
 
-**Пример пользовательской конфигурации:**
+    :::note Пользователь для production-среды
+    В production-среде следует использовать пользователя с [подходящими учетными данными](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
+    :::
 
-```yaml
-receivers:
-  # Сбор логов из локальных файлов
-  filelog:
-    include:
-      - /var/log/**/*.log
-      - /var/log/syslog
-      - /var/log/messages
-    start_at: beginning
+    ### Изменение конфигурации
 
-  # Сбор метрик системы хоста
-  hostmetrics:
-    collection_interval: 30s
-    scrapers:
-      cpu:
-        metrics:
-          system.cpu.utilization:
-            enabled: true
-      memory:
-        metrics:
-          system.memory.utilization:
-            enabled: true
-      disk:
-      network:
-      filesystem:
-        metrics:
-          system.filesystem.utilization:
-            enabled: true
+    #### Настройка экземпляра ClickHouse
 
-service:
-  pipelines:
-    # Конвейер логов
-    logs/host:
-      receivers: [filelog]
-      processors:
-        - memory_limiter
-        - transform
-        - batch
-      exporters:
-        - clickhouse
-    
-    # Конвейер метрик
-    metrics/hostmetrics:
-      receivers: [hostmetrics]
-      processors:
-        - memory_limiter
-        - batch
-      exporters:
-        - clickhouse
-```
+    Все образы Docker, которые включают коллектор OpenTelemetry, можно настроить на использование экземпляра ClickHouse через переменные окружения `OPAMP_SERVER_URL`, `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` и `CLICKHOUSE_PASSWORD`:
 
-**Развертывание с использованием образа all-in-one:**
+    Например, образ «all-in-one»:
 
-```bash
-docker run -d --name clickstack \
-  -p 8080:8080 -p 4317:4317 -p 4318:4318 \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  clickhouse/clickstack-all-in-one:latest
-```
+    ```shell
+    export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
+    export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
+    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+    ```
 
-**Развертывание с автономным коллектором:**
+    ```shell
+    docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+    ```
 
-```bash
-docker run -d \
-  -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
-  -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} \
-  -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
-  -e CLICKHOUSE_USER=default \
-  -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
-  -v "$(pwd)/custom-config.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
-  -p 4317:4317 -p 4318:4318 \
-  clickhouse/clickstack-otel-collector:latest
-```
+    <ExtendingConfig />
 
-:::note
-В пользовательской конфигурации вы определяете только новые `receivers`, `processors` и `pipelines`. Базовые `processors` (`memory_limiter`, `batch`) и `exporters` (`clickhouse`) уже определены — ссылайтесь на них по имени. Пользовательская конфигурация объединяется с базовой и не может переопределять уже существующие компоненты.
-:::
+    #### Docker Compose
 
-Для более сложных конфигураций обратитесь к [конфигурации коллектора ClickStack по умолчанию](https://github.com/hyperdxio/hyperdx/blob/main/docker/otel-collector/config.yaml) и к [документации по экспортеру ClickHouse](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
+    При использовании Docker Compose изменяйте конфигурацию коллектора с помощью тех же переменных окружения, что и выше:
 
+    ```yaml
+      otel-collector:
+        image: hyperdx/hyperdx-otel-collector
+        environment:
+          CLICKHOUSE_ENDPOINT: 'https://mxl4k3ul6a.us-east-2.aws.clickhouse-staging.com:8443'
+          HYPERDX_LOG_LEVEL: ${HYPERDX_LOG_LEVEL}
+          CLICKHOUSE_USER: 'default'
+          CLICKHOUSE_PASSWORD: 'password'
+          OPAMP_SERVER_URL: 'http://app:${HYPERDX_OPAMP_PORT}'
+        ports:
+          - '13133:13133' # health_check extension
+          - '24225:24225' # fluentd receiver
+          - '4317:4317' # OTLP gRPC receiver
+          - '4318:4318' # OTLP http receiver
+          - '8888:8888' # metrics extension
+        restart: always
+        networks:
+          - internal
+    ```
+  </TabItem>
+</Tabs>
 
-#### Структура конфигурации \{#configuration-structure\}
+## Обеспечение безопасности коллектора
 
-Подробную информацию о настройке OTel collector, включая [`receivers`](https://opentelemetry.io/docs/collector/transforming-telemetry/), [`operators`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) и [`processors`](https://opentelemetry.io/docs/collector/configuration/#processors), см. в [официальной документации по OpenTelemetry collector](https://opentelemetry.io/docs/collector/configuration).
+<Tabs groupId="securing-collector">
+  <TabItem value="managed-clickstack" label="Managed ClickStack" default>
+    По умолчанию ClickStack коллектор OpenTelemetry не защищён при развертывании вне Open Source‑дистрибутивов и не требует аутентификации на своих OTLP‑портах.
 
-## Обеспечение безопасности коллектора \{#securing-the-collector\}
+    Чтобы защитить ингестию, укажите токен аутентификации при развертывании коллектора с помощью переменной окружения `OTLP_AUTH_TOKEN`. Например:
 
-Дистрибутив ClickStack с коллектором OpenTelemetry включает встроенную поддержку OpAMP (Open Agent Management Protocol), который используется для безопасной конфигурации и управления конечной точкой OTLP. При запуске пользователям необходимо указать переменную окружения `OPAMP_SERVER_URL` — она должна указывать на приложение HyperDX, которое предоставляет OpAMP API по адресу `/v1/opamp`.
+    ```sh
+    export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
+    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+    export OTLP_AUTH_TOKEN="a_very_secure_string"
 
-Эта интеграция гарантирует, что конечная точка OTLP защищена с помощью автоматически сгенерированного ключа API для приёма данных (ingestion API key), создаваемого при развертывании приложения HyperDX. Все телеметрические данные, отправляемые в коллектор, должны включать этот API key для аутентификации. Найти ключ можно в приложении HyperDX в разделе `Team Settings → API Keys`.
+    docker run \
+      -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
+      -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+      -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+      -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+      -p 4317:4317 \
+      -p 4318:4318 \
+      clickhouse/clickstack-otel-collector:latest
+    ```
 
-<Image img={ingestion_key} alt="Ключи приёма данных" size="lg"/>
+    Дополнительно мы рекомендуем:
 
-Для дополнительной защиты вашего развертывания мы рекомендуем:
+    * Настроить коллектор на взаимодействие с ClickHouse по HTTPS.
+    * Создать отдельного пользователя для приёма данных с ограниченными правами — см. ниже.
+    * Включить TLS для конечной точки OTLP, обеспечив шифрованное взаимодействие между SDKs/агентами и коллектором. Это можно настроить через [пользовательскую конфигурацию коллектора](#extending-collector-config).
 
-- Настроить коллектор на взаимодействие с ClickHouse по HTTPS.
-- Создать отдельного пользователя для приёма данных с ограниченными правами — см. ниже.
-- Включить TLS для конечной точки OTLP, обеспечив шифрованное взаимодействие между SDKs/агентами и коллектором. Это можно настроить через [пользовательскую конфигурацию коллектора](#extending-collector-config).
+    ### Создание пользователя для приёма данных
 
-### Создание пользователя для ингестии \{#creating-an-ingestion-user\}
+    Мы рекомендуем создать отдельную базу данных и пользователя для коллектора OpenTelemetry, чтобы выполнять ингестию в Управляемый ClickStack. У этого пользователя должны быть права на создание и вставку данных в [таблицы, создаваемые и используемые ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas).
 
-Мы рекомендуем создать отдельную базу данных и пользователя для коллектора OTel для ингестии данных в ClickHouse. У этого пользователя должны быть права на создание и вставку данных в [таблицы, созданные и используемые ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas).
+    ```sql
+    CREATE DATABASE otel;
+    CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
+    GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
+    ```
 
-```sql
-CREATE DATABASE otel;
-CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
-GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
-```
+    Предполагается, что коллектор настроен на использование базы данных `otel`. Это можно контролировать через переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`. Передайте её в коллектор [аналогично другим переменным окружения](#modifying-otel-collector-configuration).
+  </TabItem>
 
-Предполагается, что коллектор настроен на использование базы данных `otel`. Этим можно управлять через переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`. Передайте её в образ контейнера с коллектором [аналогично другим переменным окружения](#modifying-otel-collector-configuration).
+  <TabItem value="oss-clickstack" label="Open Source ClickStack" default>
+    Дистрибутив ClickStack с коллектором OpenTelemetry включает встроенную поддержку OpAMP (Open Agent Management Protocol), который используется для безопасной конфигурации и управления конечной точкой OTLP. При запуске пользователям необходимо указать переменную окружения `OPAMP_SERVER_URL` — она должна указывать на приложение HyperDX, которое предоставляет OpAMP API по адресу `/v1/opamp`.
 
-## Обработка — фильтрация, трансформация и обогащение \{#processing-filtering-transforming-enriching\}
+    Эта интеграция гарантирует, что конечная точка OTLP защищена с помощью автоматически сгенерированного ключа API для приёма данных (ingestion API key), создаваемого при развертывании приложения HyperDX. Все телеметрические данные, отправляемые в коллектор, должны включать этот API key для аутентификации. Найти ключ можно в приложении HyperDX в разделе `Team Settings → API Keys`.
+
+    <Image img={ingestion_key} alt="Ключи приёма данных" size="lg" />
+
+    Для дополнительной защиты вашего развертывания мы рекомендуем:
+
+    * Настроить коллектор на взаимодействие с ClickHouse по HTTPS.
+    * Создать отдельного пользователя для приёма данных с ограниченными правами — см. ниже.
+    * Включить TLS для конечной точки OTLP, обеспечив шифрованное взаимодействие между SDKs/агентами и коллектором. Это можно настроить через [пользовательскую конфигурацию коллектора](#extending-collector-config).
+
+    ### Создание пользователя для приёма данных
+
+    Мы рекомендуем создать отдельную базу данных и пользователя для коллектора OpenTelemetry, чтобы выполнять ингестию в ClickHouse. У этого пользователя должны быть права на создание и вставку данных в [таблицы, создаваемые и используемые ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas).
+
+    ```sql
+    CREATE DATABASE otel;
+    CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
+    GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
+    ```
+
+    Предполагается, что коллектор настроен на использование базы данных `otel`. Это можно контролировать через переменную окружения `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`. Передайте её в образ, в котором запущен коллектор, [аналогично другим переменным окружения](#modifying-otel-collector-configuration).
+  </TabItem>
+</Tabs>
+
+## Обработка — фильтрация, трансформация и обогащение {#processing-filtering-transforming-enriching}
 
 Пользователям в большинстве случаев потребуется фильтровать, трансформировать и обогащать сообщения событий во время ингестии. Поскольку конфигурацию коннектора ClickStack нельзя изменить, мы рекомендуем пользователям, которым требуется дополнительная фильтрация и обработка событий, либо:
 
@@ -253,7 +278,7 @@ OpenTelemetry поддерживает следующие возможности
 
 Мы рекомендуем пользователям избегать чрезмерной обработки событий с использованием operators или [transform processors](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md). Они могут приводить к значительным накладным расходам по памяти и CPU, особенно при JSON‑парсинге. Возможно выполнять всю обработку в ClickHouse на этапе вставки с помощью материализованных представлений и столбцов с некоторыми исключениями — в частности, для контекстно‑зависимого обогащения, например добавления k8s‑метаданных. Для более подробной информации см. [Extracting structure with SQL](/use-cases/observability/schema-design#extracting-structure-with-sql).
 
-### Пример \{#example-processing\}
+### Пример
 
 Следующая конфигурация демонстрирует сбор данных из этого [неструктурированного файла логов](https://datasets-documentation.s3.eu-west-3.amazonaws.com/http_logs/access-unstructured.log.gz). Эту конфигурацию может использовать коллектор в роли агента, отправляющий данные на шлюз ClickStack.
 
@@ -275,29 +300,29 @@ receivers:
 processors:
   batch:
     timeout: 1s
-    send_batch_size: 100
+    send_batch_size: 10000
   memory_limiter:
     check_interval: 1s
     limit_mib: 2048
     spike_limit_mib: 256
 exporters:
-  # Настройка HTTP
+  # HTTP setup
   otlphttp/hdx:
     endpoint: 'http://localhost:4318'
     headers:
-      authorization: <ВАШ_КЛЮЧ_API_ПРИЁМА>
+      authorization: <YOUR_INGESTION_API_KEY>
     compression: gzip
 
-  # Настройка gRPC (альтернативный вариант)
+  # gRPC setup (alternative)
   otlp/hdx:
     endpoint: 'localhost:4317'
     headers:
-      authorization: <ВАШ_КЛЮЧ_API_ПРИЁМА>
+      authorization: <YOUR_API_INGESTION_KEY>
     compression: gzip
 service:
   telemetry:
     metrics:
-      address: 0.0.0.0:9888 # Изменено, поскольку на одном хосте работают 2 коллектора
+      address: 0.0.0.0:9888 # Modified as 2 collectors running on same host
   pipelines:
     logs:
       receivers: [filelog]
@@ -310,24 +335,25 @@ service:
 
 Для более сложной конфигурации мы рекомендуем обратиться к [документации по OpenTelemetry collector](https://opentelemetry.io/docs/collector/).
 
-## Оптимизация вставок \{#optimizing-inserts\}
+
+## Оптимизация вставок {#optimizing-inserts}
 
 Чтобы обеспечить высокую производительность операций вставки при одновременном соблюдении строгих гарантий согласованности, вам следует придерживаться нескольких простых правил при вставке данных обсервабилити в ClickHouse через коллектор ClickStack. При корректной настройке OTel collector следовать этим правилам должно быть несложно. Это также позволяет избежать [распространённых проблем](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse), с которыми пользователи сталкиваются при первом знакомстве с ClickHouse.
 
-### Пакетирование \{#batching\}
+### Пакетирование
 
 По умолчанию каждый запрос `INSERT`, отправленный в ClickHouse, приводит к немедленному созданию части данных, содержащей данные из этого `INSERT` вместе с другой метаинформацией, которую нужно сохранять. Поэтому отправка меньшего количества `INSERT`‑запросов, каждый из которых содержит больше данных, по сравнению с отправкой большего количества `INSERT`‑запросов с меньшим объемом данных, уменьшит число необходимых операций записи. Мы рекомендуем вставлять данные достаточно крупными пакетами — как минимум по 1 000 строк за раз. Дополнительные подробности приведены [здесь](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse#data-needs-to-be-batched-for-optimal-performance).
 
 По умолчанию вставки в ClickHouse являются синхронными и идемпотентными, если данные идентичны. Для таблиц семейства движков MergeTree ClickHouse по умолчанию автоматически [дедуплицирует вставки](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#5-deduplication-at-insert-time). Это означает, что вставки устойчивы к сбоям в следующих случаях:
 
-- (1) Если у узла, принимающего данные, возникают проблемы, запрос `INSERT` завершится по таймауту (или выдаст более специфичную ошибку) и не получит подтверждения.
-- (2) Если данные были записаны узлом, но подтверждение не может быть возвращено отправителю запроса из‑за перебоев в сети, отправитель получит либо таймаут, либо сетевую ошибку.
+* (1) Если у узла, принимающего данные, возникают проблемы, запрос `INSERT` завершится по таймауту (или выдаст более специфичную ошибку) и не получит подтверждения.
+* (2) Если данные были записаны узлом, но подтверждение не может быть возвращено отправителю запроса из‑за перебоев в сети, отправитель получит либо таймаут, либо сетевую ошибку.
 
 С точки зрения коллектора различить (1) и (2) может быть сложно. Однако в обоих случаях неподтвержденную вставку можно просто немедленно повторить. Пока повторный запрос `INSERT` содержит те же данные в том же порядке, ClickHouse автоматически проигнорирует повторную вставку, если исходная (неподтвержденная) вставка уже была успешно выполнена.
 
-По этой причине дистрибутив ClickStack с OTel collector использует [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). Это гарантирует, что вставки отправляются как согласованные пакеты строк, удовлетворяющие указанным выше требованиям. Если от коллектора ожидается высокая пропускная способность (событий в секунду) и в каждой вставке можно отправлять как минимум 5 000 событий, этого пакетирования обычно достаточно для всего конвейера. В этом случае коллектор будет отправлять пакеты до того, как будет достигнут `timeout` batch processor, обеспечивая низкую сквозную задержку конвейера и стабильный размер пакетов.
+По этой причине дистрибутив ClickStack с OTel collector использует [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). Это гарантирует, что вставки отправляются как согласованные пакеты строк, удовлетворяющие указанным выше требованиям. Если от коллектора ожидается высокая пропускная способность (событий в секунду) и в каждой вставке можно отправлять как минимум 10 000 событий, этого пакетирования обычно достаточно для всего конвейера. Можно использовать значения до 100 000, если позволяет память. В этом случае коллектор будет отправлять пакеты до того, как будет достигнут `timeout` batch processor, обеспечивая низкую сквозную задержку конвейера и стабильный размер пакетов.
 
-### Используйте асинхронные вставки \{#use-asynchronous-inserts\}
+### Используйте асинхронные вставки {#use-asynchronous-inserts}
 
 Обычно пользователи вынуждены отправлять меньшие батчи, когда пропускная способность коллектора низкая, при этом они все равно ожидают доставки данных в ClickHouse с минимальной сквозной задержкой. В этом случае маленькие батчи отправляются при истечении `timeout` у batch processor. Это может вызывать проблемы и в таких сценариях требуются асинхронные вставки. Такая ситуация встречается редко, если вы отправляете данные в коллектор ClickStack, работающий в роли Gateway: выступая в качестве агрегатора, он сглаживает эту проблему — см. [Collector roles](#collector-roles).
 
@@ -375,7 +401,7 @@ OTel collector в составе ClickStack действует как экзем
 Дистрибутив ClickStack OpenTelemetry collector можно настроить для работы с Kafka с помощью [кастомной конфигурации коллектора](#extending-collector-config).
 :::
 
-## Оценка ресурсов \{#estimating-resources\}
+## Оценка ресурсов {#estimating-resources}
 
 Требования к ресурсам для OTel collector будут зависеть от пропускной способности событий, размера сообщений и объёма выполняемой обработки. Проект OpenTelemetry ведёт [бенчмарки](https://opentelemetry.io/docs/collector/benchmarks/), которыми пользователи могут воспользоваться для оценки требований к ресурсам.
 
@@ -389,90 +415,8 @@ OTel collector в составе ClickStack действует как экзем
 | 5k/сек       | 0.5 CPU, 0.5 GiB            |
 | 10k/сек      | 1 CPU, 1 GiB                |
 
-## Поддержка JSON \{#json-support\}
+## Выбор schema: Map или JSON \{#processing-filtering-transforming-enriching\}
 
-<BetaBadge/>
+Коллектор ClickStack по умолчанию создаёт таблицы, в которых атрибуты хранятся в столбцах `Map(LowCardinality(String), String)`. Это рекомендуемая schema для рабочих нагрузок обсервабилити. Schema с типом `JSON` доступна в бета-версии для оценки на рабочих нагрузках с небольшим стабильным набором ключей атрибутов.
 
-:::warning Функция в бета-версии
-Поддержка типа JSON в **ClickStack** является **функцией в бета-версии**. Хотя сам тип JSON готов к промышленной эксплуатации в ClickHouse 25.3+, его интеграция в ClickStack все еще активно развивается и может иметь ограничения, изменяться в будущем или содержать ошибки.
-:::
-
-Начиная с версии `2.0.4`, ClickStack в бета-режиме поддерживает [тип JSON](/interfaces/formats/JSON).
-
-### Преимущества типа JSON \{#benefits-json-type\}
-
-Тип JSON предоставляет пользователям ClickStack следующие преимущества:
-
-- **Сохранение типов** - Числа остаются числами, логические значения остаются логическими — больше не нужно превращать всё в строки. Это означает меньше приведений типов, более простые запросы и более точные агрегаты.
-- **Столбцы на уровне путей** - Каждый JSON-путь становится отдельным подстолбцом, уменьшая объём операций ввода-вывода. Запросы считывают только нужные поля, обеспечивая существенный прирост производительности по сравнению со старым типом Map, который требовал чтения всего столбца для выборки одного конкретного поля.
-- **Глубокая вложенность «просто работает»** - Естественная обработка сложных, глубоко вложенных структур без ручной развёртки (как это требовалось для типа Map) и последующего использования неудобных функций JSONExtract.
-- **Динамические, эволюционирующие схемы** - Идеально для данных наблюдаемости, где команды со временем добавляют новые теги и атрибуты. JSON автоматически обрабатывает эти изменения без миграций схемы. 
-- **Быстрые запросы, меньший объём памяти** - Типичные агрегаты по атрибутам вроде `LogAttributes` приводят к 5–10-кратному уменьшению объёма читаемых данных и существенному ускорению запросов, сокращая и время выполнения запросов, и пиковое потребление памяти.
-- **Простое управление** - Нет необходимости заранее материализовывать столбцы ради производительности. Каждое поле становится отдельным подстолбцом, обеспечивая ту же скорость, что и нативные столбцы ClickHouse.
-
-### Включение поддержки JSON \{#enabling-json-support\}
-
-Чтобы включить эту поддержку для коллектора, установите переменную окружения `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` в любом развертывании, где используется коллектор. Это гарантирует создание схем в ClickHouse с использованием типа JSON.
-
-:::note Поддержка HyperDX
-Чтобы выполнять запросы к типу JSON, поддержку также необходимо включить на уровне приложения HyperDX с помощью переменной окружения `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
-:::
-
-Например:
-
-```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-```
-
-
-### Миграция со схем на основе Map к типу JSON \{#migrating-from-map-based-schemas-to-json\}
-
-:::important Обратная совместимость
-[Тип JSON](/interfaces/formats/JSON) **не совместим** с существующими схемами на основе Map. Включение этой функции приведёт к созданию новых таблиц с использованием типа `JSON` и требует ручной миграции данных.
-:::
-
-Чтобы выполнить миграцию со схем на основе Map, выполните следующие шаги:
-
-<VerticalStepper headerLevel="h4">
-
-#### Остановите OTel collector \{#stop-the-collector\}
-
-#### Переименуйте существующие таблицы и обновите источники \{#rename-existing-tables-sources\}
-
-Переименуйте существующие таблицы и обновите источники данных в HyperDX. 
-
-Например:
-
-```sql
-RENAME TABLE otel_logs TO otel_logs_map;
-RENAME TABLE otel_metrics TO otel_metrics_map;
-```
-
-#### Разверните OTel collector \{#deploy-the-collector\}
-
-Разверните OTel collector с установленным параметром `OTEL_AGENT_FEATURE_GATE_ARG`.
-
-#### Перезапустите контейнер HyperDX с поддержкой схемы JSON \{#restart-the-hyperdx-container\}
-
-```shell
-export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
-```
-
-#### Создайте новые источники данных \{#create-new-data-sources\}
-
-Создайте новые источники данных в HyperDX, указывающие на таблицы с типом JSON.
-
-</VerticalStepper>
-
-#### Перенос существующих данных (необязательно) \{#migrating-existing-data\}
-
-Чтобы перенести старые данные в новые таблицы формата JSON:
-
-```sql
-INSERT INTO otel_logs SELECT * FROM otel_logs_map;
-INSERT INTO otel_metrics SELECT * FROM otel_metrics_map;
-```
-
-:::warning
-Рекомендуется только для наборов данных объемом менее ~10 миллиардов строк. Данные, ранее хранившиеся с типом Map, не сохраняли точность типов (все значения были строками). В результате эти старые данные будут отображаться как строки в новой схеме до тех пор, пока не будут вытеснены из хранения, что потребует дополнительного приведения типов на фронтенде. Тип для новых данных будет сохраняться при использовании типа JSON.
-:::
+Полное сравнение, описание того, в каких случаях подходит каждый вариант, переменные среды, необходимые для включения schema с типом `JSON`, и пошаговое руководство по миграции см. в разделе [Map или тип JSON](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json).

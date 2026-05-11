@@ -21,13 +21,13 @@ keywords: ['Parquet', 'S3 バケット']
 
 以下は、実際のデータに適用する前に、Parquet ファイルへ正常にアクセスできるかどうかを確認するために使用できる、非常にシンプルなサンプルです。
 
-ユーザーとバケットの作成例が必要な場合は、最初の 2 セクション（ユーザー作成とバケット作成）を参照してください:
+ユーザーとバケットの作成例が必要な場合は、最初の 2 セクション (ユーザー作成とバケット作成) を参照してください:
 [https://clickhouse.com/docs/guides/sre/configuring-s3-for-clickhouse-use/](https://clickhouse.com/docs/guides/sre/configuring-s3-for-clickhouse-use/)
 
 このサンプルファイルを使用し、テスト用バケットにアップロードしました: [https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet](https://github.com/Teradata/kylo/tree/master/samples/sample-data/parquet)
 
 バケットには、次のようなポリシーを設定できます:
-（必要に応じて調整してください。この例はテストしやすいように権限がかなり広めですが、必要に応じて権限を絞り込んでください）
+ (必要に応じて調整してください。この例はテストしやすいように権限がかなり広めですが、必要に応じて権限を絞り込んでください) 
 
 ```
 {
@@ -75,7 +75,7 @@ Parquet フォーマットにおけるデータ型のリファレンスはこち
 
 データを ClickHouse のネイティブテーブルに取り込むには:
 
-テーブルを作成します。例えば次のようにします（Parquet ファイル内のカラムのうち、いくつかだけを選んでいます）:
+テーブルを作成します。例えば次のようにします (Parquet ファイル内のカラムのうち、いくつかだけを選んでいます) :
 
 ```
 clickhouse-cloud :) CREATE TABLE my_parquet_table (id UInt64, first_name String) ENGINE = MergeTree ORDER BY id;

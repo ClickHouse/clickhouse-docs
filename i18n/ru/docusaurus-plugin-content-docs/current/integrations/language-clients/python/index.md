@@ -12,7 +12,6 @@ integration:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 

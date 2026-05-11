@@ -8,11 +8,11 @@ keywords: ['故障排查', '调试', '问题解决', '错误', '诊断']
 
 ## 安装 \{#installation\}
 
-### 无法使用 apt-key 从 keyserver.ubuntu.com 导入 GPG 密钥 \{#cannot-import-gpg-keys-from-keyserverubuntucom-with-apt-key\}
+### 无法使用 apt-key 从 keyserver.ubuntu.com 导入 GPG 密钥 \{#cant-import-gpg-keys-from-keyserverubuntucom-with-apt-key\}
 
 [APT 高级包管理工具中的 `apt-key` 功能已被弃用](https://manpages.debian.org/bookworm/apt/apt-key.8.en.html)。用户应改为使用 `gpg` 命令。请参阅[安装指南](../getting-started/install/install.mdx)一文。
 
-### 无法使用 gpg 从 keyserver.ubuntu.com 导入 GPG 密钥 \{#cannot-import-gpg-keys-from-keyserverubuntucom-with-gpg\}
+### 无法使用 gpg 从 keyserver.ubuntu.com 导入 GPG 密钥 \{#cant-import-gpg-keys-from-keyserverubuntucom-with-gpg\}
 
 1. 检查是否已安装 `gpg`：
 
@@ -21,12 +21,12 @@ sudo apt-get install gnupg
 ```
 
 
-### 无法使用 apt-get 从 ClickHouse 仓库获取 deb 包 \{#cannot-get-deb-packages-from-clickhouse-repository-with-apt-get\}
+### 无法使用 apt-get 从 ClickHouse 仓库获取 deb 包 \{#cant-get-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 1. 检查防火墙设置。
 2. 如果由于任何原因无法访问仓库，请按照 [安装指南](../getting-started/install/install.mdx) 一文中的说明下载软件包，并使用 `sudo dpkg -i <packages>` 命令手动安装。还需要安装 `tzdata` 软件包。
 
-### 无法使用 apt-get 从 ClickHouse 仓库更新 deb 包 \{#cannot-update-deb-packages-from-clickhouse-repository-with-apt-get\}
+### 无法使用 apt-get 从 ClickHouse 仓库更新 deb 包 \{#cant-update-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 当 GPG 密钥发生更改时，可能会出现此问题。
 
@@ -83,8 +83,8 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 可能出现的问题：
 
-* 服务器未运行。
-* 配置参数异常或错误。
+- 服务器未运行。
+- 配置参数异常或错误。
 
 ### 服务器未运行 \{#server-is-not-running\}
 

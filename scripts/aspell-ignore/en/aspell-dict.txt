@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4011 
+personal_ws-1.1 en 4047 
 AArch
 ACLs
 AICPA
@@ -84,6 +84,7 @@ BSON
 BSONEachRow
 BUZZHOUSE
 BYOC
+BYTEA
 BZIP
 Backblaze
 BackgroundBufferFlushSchedulePool
@@ -223,6 +224,8 @@ ClickHouseClient
 ClickHouseClientSettings
 ClickHouseCommand
 ClickHouseConnection
+ClickHouseDataReader
+ClickHouseDataSource
 ClickHouseIO
 ClickHouseMigrator
 ClickHouseNIO
@@ -247,6 +250,7 @@ CloudTrail
 CloudWatch
 Cloudera
 Cloudflare
+Cloudflare's
 CodeBlock
 CodeLLDB
 Codecs
@@ -336,6 +340,8 @@ DataLakeCatalog
 DataLens
 DataPacket
 DataSource
+DataStore
+DataStores
 DataTime
 DataTypes
 DatabaseCatalog
@@ -409,6 +415,8 @@ Doxygen
 Draxlr
 Dremio
 Dresseler
+Dtype
+DuckDB
 Dunamalijevs
 Durre
 ECMA
@@ -752,11 +760,13 @@ LOCALTIMESTAMP
 LONGLONG
 LOONGARCH
 LaGuardia
+LaTeX
 Lakehouses
 Lakekeeper
 LangChain
 LangGraph
 Langchain
+Langfuse
 Lemire
 Levenshtein
 Lhotsky
@@ -792,6 +802,7 @@ LogHouse
 LogQL
 LogQueriesType
 LoggerFactory
+Logpush
 LogsLevel
 Logstash
 LookML
@@ -829,6 +840,7 @@ MV's
 MVCC
 MacBook
 MacOS
+manage-clickpipes
 MapReduce
 MapState
 Mapbox
@@ -897,9 +909,10 @@ Mixpanel
 Mongo
 Mongodb
 Monotonicity
-Montréal
+Montreal
 MsgPack
 MsgPackUUIDRepresentation
+MultiIndex
 MultiLineString
 MultiPolygon
 Multiline
@@ -951,6 +964,7 @@ NetworkSendBytes
 NetworkSendDrop
 NetworkSendErrors
 NetworkSendPackets
+NextJS
 Nginx
 NiFi
 NoSQL
@@ -1125,6 +1139,7 @@ PointDistKm
 PointDistM
 PointDistRads
 PolarDB
+Polars
 PooledConnectionLifetime
 PostGIS
 PostHistory
@@ -1189,6 +1204,7 @@ QTCreator
 Quantile
 Quantised
 Quantized
+Querio
 QueryCacheBytes
 QueryCacheEntries
 QueryCacheHits
@@ -1199,6 +1215,7 @@ QueryPreempted
 QueryThread
 QuickAssist
 QuickSight
+Quickstarts
 QuoteMeta
 RBAC
 RClickHouse
@@ -1384,6 +1401,7 @@ Spearman's
 Splunk
 Splunkbase
 Splunkd
+SqlCompatibilitySettings
 SquaredDistance
 SquaredNorm
 StartTLS
@@ -1566,8 +1584,8 @@ Uint
 Unbatched
 UncompressedCacheBytes
 UncompressedCacheCells
-UnidirectionalEdgeIsValid
 UniForm
+UnidirectionalEdgeIsValid
 UnionStep
 UniqThetaSketch
 Updatable
@@ -1609,6 +1627,7 @@ WALs
 WSFG
 WarpStream
 Warpstream
+WebSocket
 WebUI
 Websocket
 Welch's
@@ -1814,6 +1833,7 @@ auditability
 auth
 authenticator
 authenticators
+autoPlay
 autocomplete
 autocompletion
 autodetect
@@ -1862,6 +1882,7 @@ balancer's
 balancers
 basename
 bcrypt
+benchmarked
 benchmarking
 bfloat
 bigint
@@ -1917,14 +1938,17 @@ bool
 boolean
 booleans
 bools
+borderRadius
 boringssl
 bottlenecked
 boundingRatio
+boxShadow
 bozerkins
 brainer
 brotli
 bson
 bsoneachrow
+bucketSizeSeconds
 buffersize
 bugfix
 buildId
@@ -1932,10 +1956,12 @@ buildable
 builtins
 bundler
 burstable
+bursty
 byteHammingDistance
 byteSize
 byteSlice
 byteSwap
+bytea
 bytearray
 bytebase
 bytesToCutForIPv
@@ -2017,6 +2043,7 @@ clickstack
 clickstream
 clickvisual
 clockhour
+cloudflare
 cloudwatch
 clusterAllReplicas
 cmake
@@ -2045,6 +2072,7 @@ cond
 conf
 config
 configs
+configurability
 conformant
 congruential
 conjuctive
@@ -2260,6 +2288,7 @@ dplyr
 dragonbox
 dropdown
 dropoff
+dtype
 dumpColumnStructure
 durations
 ePHI
@@ -2334,6 +2363,7 @@ extractable
 facto
 failover
 fallbacks
+fanout
 farmFingerprint
 farmHash
 fastmcp
@@ -2835,6 +2865,7 @@ mergetree
 messageID
 metacharacters
 metasymbols
+metric's
 metrica
 metroHash
 mfedotov
@@ -2997,6 +3028,7 @@ nullability
 nullable
 nullables
 nullptr
+nuls
 num
 numerics
 nypd
@@ -3073,12 +3105,15 @@ permalinks
 persistency
 pgRouting
 pgSQL
+pgbench
+pgvector
 phpclickhouse
 picklist
 pipelined
 pipelining
 plaintext
 plantuml
+playsInline
 plperl
 plperlu
 plpgsql
@@ -3179,6 +3214,7 @@ protobuf
 protobuflist
 protobufsingle
 protocol
+provisioner
 proxied
 prql
 pseudorandom
@@ -3277,6 +3313,7 @@ recompress
 recompressed
 recompressing
 recompression
+recommender
 reconfiguring
 reconnection
 recurse
@@ -3352,6 +3389,7 @@ retryable
 reusability
 reverseUTF
 rewritable
+rgba
 rightPad
 rightPadUTF
 rightUTF
@@ -3463,6 +3501,7 @@ skewsamp
 skippingerrors
 sleepEachRow
 smallint
+snapshotting
 snowflakeIDToDateTime
 snowflakeToDateTime
 socketcache
@@ -3666,6 +3705,7 @@ timeZoneOffset
 timeslot
 timeslots
 timespan
+timestamptz
 timezones
 tinylog
 tmp
@@ -3883,6 +3923,7 @@ unnest
 unoptimized
 unparsed
 unpooled
+unprocessable
 unrealiable
 unreplicated
 unresolvable

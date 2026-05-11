@@ -28,7 +28,6 @@ import GCSConnection from '@site/i18n/jp/docusaurus-plugin-content-docs/current/
 
 {props.provider === 's3' && <S3DataSource />}
 {props.provider === 'gcs' && <GCSSDataSource />}
-{props.provider === 'abs' && <ABSDataSource />}
 
 ## ClickPipe 接続をセットアップする \{#2-setup-your-clickpipe-connection\}
 

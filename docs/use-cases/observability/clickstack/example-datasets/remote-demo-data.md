@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/remote-demo-data
-title: 'Remote Demo Dataset'
+title: 'Remote demo dataset'
 sidebar_position: 2
 pagination_prev: null
 pagination_next: null
@@ -40,12 +40,12 @@ import demo_sources from '@site/static/images/use-cases/observability/hyperdx-de
 import edit_connection from '@site/static/images/use-cases/observability/edit_connection.png';
 import DemoArchitecture from '@site/docs/use-cases/observability/clickstack/example-datasets/_snippets/_demo.md';
 
-**The following guide assumes you have deployed ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started), or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation. Alternatively, you can skip all local setup and simply connect to our ClickStack hosted demo [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) which uses this dataset.**
+**The following guide assumes you have deployed Open Source ClickStack using the [instructions for the all-in-one image](/use-cases/observability/clickstack/getting-started/oss), or [Local Mode Only](/use-cases/observability/clickstack/deployment/local-mode-only) and completed initial user creation. Alternatively, you can skip all local setup and simply connect to our ClickStack hosted demo [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) which uses this dataset.**
 
-This guide uses a sample dataset hosted on the public ClickHouse playground at [sql.clickhouse.com](https://sql.clickhpouse.com), which you can connect to from your local ClickStack deployment.
+This guide uses a sample dataset hosted on the public ClickHouse playground at [sql.clickhouse.com](https://sql.clickhouse.com), which you can connect to from your local ClickStack deployment.
 
-:::warning Not supported with HyperDX in ClickHouse Cloud
-Remote databases are not supported when HyperDX is hosted in ClickHouse Cloud. This dataset is therefore not supported. 
+:::warning Not supported with Managed ClickStack
+Remote databases aren't supported when using Managed ClickStack. This dataset is therefore not supported. 
 :::
 
 It contains approximately 40 hours of data captured from the ClickHouse version of the official OpenTelemetry (OTel) demo. The data is replayed nightly with timestamps adjusted to the current time window, allowing users to explore system behavior using HyperDX's integrated logs, traces, and metrics.
@@ -62,7 +62,7 @@ The customer support team has reported that users are experiencing issues comple
 
 Using HyperDX, the SRE team will analyze logs, traces, and metrics to diagnose and resolve the issue—then review session data to confirm whether their conclusions align with actual user behavior.
 
-## Open Telemetry Demo {#otel-demo}
+## OpenTelemetry Demo {#otel-demo}
 
 This demo uses a [ClickStack maintained fork](https://github.com/ClickHouse/opentelemetry-demo) of the official OpenTelemetry demo.
 
@@ -161,7 +161,7 @@ Select the `Infrastructure` tab to view the metrics associated with the underlyi
 
 <Image img={step_7} alt="Step 7" size="lg"/>
 
-The issue does not seem to infrastructure related - no metrics have appreciably changed over the time period: either before or after the error. Close the infrastructure tab.
+The issue doesn't seem to infrastructure related - no metrics have appreciably changed over the time period: either before or after the error. Close the infrastructure tab.
 
 ### Explore a trace {#explore-a-trace}
 
@@ -219,11 +219,11 @@ Remove the errors filter and select `Event Deltas` from the left `Analysis Mode`
 
 The top panel shows the distribution of timings, with colors indicating event density (number of spans). The subset of events outside of the main concentration are typically those worth investigating.
 
-If we select the events with a duration greater than `200ms`, and apply the filter `Filter by selection`, we can limit our analysis to slower events:
+If we select the events with a duration greater than `1ms`, and apply the filter `Filter by selection`, we can analyze the differences between the "normal" events and the high-density group of ~0ms duration spans:
 
 <Image img={step_17} alt="Step 17" size="lg"/>
 
-With analysis performed on the subset of data, we can see most performance spikes are associated with `visa` transactions.
+With analysis performed on the subset of data, we can see that the "background" spans outside of the selection are mostly visa transactions, associated with 0ms responses due to cache errors.
 
 ### Using charts for more context {#using-charts-for-more-context}
 
@@ -284,17 +284,17 @@ In summary, by exploring logs, traces and finally metrics we have concluded:
 
 ### Using sessions {#using-sessions}
 
-Sessions allow us to replay the user experience, offering a visual account of how an error occurred from the user's perspective. While not typically used to diagnose root causes, they are valuable for confirming issues reported to customer support and can serve as a starting point for deeper investigation.
+Sessions allow us to replay the user experience, offering a visual account of how an error occurred from the user's perspective. While not typically used to diagnose root causes, they're valuable for confirming issues reported to customer support and can serve as a starting point for deeper investigation.
 
 In HyperDX, sessions are linked to traces and logs, providing a complete view of the underlying cause.
 
-For example, if the support team provides the email of a user who encountered a payment issue `Braulio.Roberts23@hotmail.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
+For example, if the support team provides the email of a user who encountered a payment issue `Ronny.Windler@gmail.com` - it's often more effective to begin with their session rather than directly searching logs or traces.
 
 Navigate to the `Client Sessions` tab from the left menu before ensuring the data source is set to `Sessions` and the time period is set to the `Last 1 day`:
 
 <Image img={step_21} alt="Step 21" size="lg"/>
 
-Search for `SpanAttributes.userEmail: Braulio` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
+Search for `SpanAttributes.userEmail: Ronny.Windler` to find our customer's session. Selecting the session will show the browser events and associated spans for the customer's session on the left, with the user's browser experience re-rendered to the right:
 
 <Image img={step_22} alt="Step 22" size="lg"/>
 
@@ -306,7 +306,7 @@ If we scroll to the bottom of the spans we can see a `500` error associated with
 
 <Image img={step_23} alt="Step 23" size="lg"/>
 
-Selecting the span we can confirm this was caused by an internal error. By clicking the `Trace` tab and scrolling though the connected spans, we are able to confirm the customer indeed was a victim of our cache issue.
+Selecting the span we can confirm this was caused by an internal error. By clicking the `Trace` tab and scrolling though the connected spans, we're able to confirm the customer indeed was a victim of our cache issue.
 
 <Image img={step_24} alt="Step 24" size="lg"/>
 

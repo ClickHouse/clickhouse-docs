@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedCount \{#exponentialTimeDecayedCount\}
 
-引入版本：v21.12
+引入版本：v21.12.0
 
 返回时间序列在时间索引 `t` 处的累积指数衰减值。
 

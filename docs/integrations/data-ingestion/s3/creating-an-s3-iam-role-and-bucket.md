@@ -92,7 +92,7 @@ Click on the newly created user
 The bucket name must be unique across AWS, not just the organization, or it will emit an error.
 :::
 
-3. Leave `Block all Public Access` enabled; public access is not needed.
+3. Leave `Block all Public Access` enabled; public access isn't needed.
 
 <Image size="lg" img={s3_12} alt="AWS IAM Management Console - Adding a new user" />
 

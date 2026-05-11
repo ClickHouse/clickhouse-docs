@@ -9,41 +9,54 @@ doc_type: 'reference'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# 用户定义函数（UDF） \{#executable-user-defined-functions\}
+
+# UDFs 用户自定义函数 \{#udfs-user-defined-functions\}
+
+ClickHouse 支持多种类型的用户自定义函数（UDF）：
+
+- [可执行 UDF](#executable-user-defined-functions) 会启动一个外部程序或脚本（Python、Bash 等），并通过 STDIN / STDOUT 以数据块的形式向其进行流式传输。可以使用它们在不重新编译 ClickHouse 的情况下集成现有代码或工具。相比进程内选项，它们的单次调用开销更高，更适合较重的逻辑，或需要不同运行时的场景。
+- [SQL UDF](#sql-user-defined-functions) 使用纯 SQL 的 `CREATE FUNCTION` 定义。它们会被内联/展开到查询计划中（无进程边界），因此非常轻量，适合复用表达式逻辑或简化复杂的计算列。
+- [实验性的 WebAssembly UDF](#webassembly-user-defined-functions) 在服务器进程内的沙箱中运行编译为 WebAssembly 的代码。与外部可执行程序相比，它们具有更低的单次调用开销，同时比本地扩展具有更好的隔离性，适用于使用可编译为 WASM 的语言（例如 C/C++/Rust）编写的自定义算法。
+
+## 可执行用户自定义函数 \{#executable-user-defined-functions\}
 
 <PrivatePreviewBadge/>
 
 :::note
-此功能目前在 ClickHouse Cloud 中提供私有预览。
-如需开通访问权限，请通过 https://clickhouse.cloud/support 联系 ClickHouse 支持。
+此功能在 ClickHouse Cloud 中以私有预览形式提供支持。
+请通过 https://clickhouse.cloud/support 联系 ClickHouse 支持以获得访问权限。
 :::
 
-ClickHouse 可以调用任意外部可执行程序或脚本来处理数据。
+ClickHouse 可以调用任何外部可执行程序或脚本来处理数据。
 
-可执行用户定义函数的配置可以位于一个或多个 XML 文件中。
-配置路径通过 [`user_defined_executable_functions_config`](../../operations/server-configuration-parameters/settings.md#user_defined_executable_functions_config) 参数指定。
+可执行用户自定义函数的配置可以位于一个或多个 xml 文件中。
+配置路径由 [`user_defined_executable_functions_config`](../../operations/server-configuration-parameters/settings.md#user_defined_executable_functions_config) 参数指定。
 
 函数配置包含以下设置：
 
-| Parameter                     | Description                                                                                                                                                                                                                                                                                                                                                                                   | Required  | Default Value         |
-|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-----------------------|
-| `name`                        | 函数名称                                                                                                                                                                                                                                                                                                                                                                                      | Yes       | -                     |
-| `command`                     | 要执行的脚本名称，或者在 `execute_direct` 为 false 时要执行的命令                                                                                                                                                                                                                                                                                                                             | Yes       | -                     |
-| `argument`                    | 参数描述，包含参数的 `type` 以及可选的参数 `name`。每个参数在单独的配置项中描述。如果参数名称是用户定义函数序列化格式（例如 [Native](/interfaces/formats/Native) 或 [JSONEachRow](/interfaces/formats/JSONEachRow)）的一部分，则必须指定名称                                                                                                                                        | Yes       | `c` + argument_number |
-| `format`                      | 向命令传递参数所使用的[格式](../../interfaces/formats.md)。命令的输出也必须使用相同的格式                                                                                                                                                                                                                                                                                                      | Yes       | -                     |
-| `return_type`                 | 返回值的类型                                                                                                                                                                                                                                                                                                                                                                                  | Yes       | -                     |
-| `return_name`                 | 返回值名称。如果返回名称是用户定义函数序列化格式（例如 [Native](/interfaces/formats/Native) 或 [JSONEachRow](/interfaces/formats/JSONEachRow)）的一部分，则必须指定返回名称                                                                                                                                                                                                                | Optional  | `result`              |
-| `type`                        | 可执行类型。如果 `type` 设置为 `executable`，则启动单个命令；如果设置为 `executable_pool`，则创建一个命令池                                                                                                                                                                                                                                                                                  | Yes       | -                     |
-| `max_command_execution_time`  | 处理一块数据的最大执行时间（秒）。此设置仅对 `executable_pool` 命令有效                                                                                                                                                                                                                                                                                                                      | Optional  | `10`                  |
-| `command_termination_timeout` | 在管道关闭后，命令应在该秒数内结束。超过该时间后，将向执行该命令的进程发送 `SIGTERM`                                                                                                                                                                                                                                                                                                          | Optional  | `10`                  |
-| `command_read_timeout`        | 从命令 stdout 读取数据的超时时间（毫秒）                                                                                                                                                                                                                                                                                                                                                     | Optional  | `10000`               |
-| `command_write_timeout`       | 向命令 stdin 写入数据的超时时间（毫秒）                                                                                                                                                                                                                                                                                                                                                      | Optional  | `10000`               |
-| `pool_size`                   | 命令池的大小                                                                                                                                                                                                                                                                                                                                                                                  | Optional  | `16`                  |
-| `send_chunk_header`           | 控制在发送要处理的数据块之前是否先发送行数                                                                                                                                                                                                                                                                                                                                                    | Optional  | `false`               |
-| `execute_direct`              | 如果 `execute_direct` = `1`，则会在由 [user_scripts_path](../../operations/server-configuration-parameters/settings.md#user_scripts_path) 指定的 user_scripts 目录中搜索 `command`。可以通过空格分隔指定额外的脚本参数，例如：`script_name arg1 arg2`。如果 `execute_direct` = `0`，则将 `command` 作为参数传递给 `bin/sh -c`                                      | Optional  | `1`                   |
-| `lifetime`                    | 函数的重新加载间隔（秒）。如果设置为 `0`，则函数不会被重新加载                                                                                                                                                                                                                                                                                                                                | Optional  | `0`                   |
-| `deterministic`               | 是否为确定性函数（对相同输入返回相同结果）                                                                                                                                                                                                                                                                                                                                                    | Optional  | `false`               |
+| Parameter                     | Description                                                                                                                                                                                                                                                                               | Required | Default Value             |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------- |
+| `name`                        | 函数名称                                                                                                                                                                                                                                                                                      | Yes      | -                         |
+| `command`                     | 要执行的脚本名称，或者在 `execute_direct` 为 false 时要执行的命令                                                                                                                                                                                                                                             | Yes      | -                         |
+| `argument`                    | 参数描述，包含参数的 `type` 以及可选的参数 `name`。每个参数在单独的配置项中描述。如果参数名称是用户定义函数序列化格式 (例如 [Native](/interfaces/formats/Native) 或 [JSONEachRow](/interfaces/formats/JSONEachRow)) 的一部分，则必须指定名称                                                                                                                | Yes      | `c` + argument&#95;number |
+| `format`                      | 向命令传递参数所使用的[格式](../../interfaces/formats.md)。命令的输出也必须使用相同的格式                                                                                                                                                                                                                              | Yes      | -                         |
+| `return_type`                 | 返回值的类型                                                                                                                                                                                                                                                                                    | Yes      | -                         |
+| `return_name`                 | 返回值名称。如果返回名称是用户定义函数序列化格式 (例如 [Native](/interfaces/formats/Native) 或 [JSONEachRow](/interfaces/formats/JSONEachRow)) 的一部分，则必须指定返回名称                                                                                                                                                        | Optional | `result`                  |
+| `type`                        | 可执行类型。如果 `type` 设置为 `executable`，则启动单个命令；如果设置为 `executable_pool`，则创建一个命令池                                                                                                                                                                                                                 | Yes      | -                         |
+| `max_command_execution_time`  | 处理一块数据的最大执行时间 (秒) 。此设置仅对 `executable_pool` 命令有效                                                                                                                                                                                                                                           | Optional | `10`                      |
+| `command_termination_timeout` | 在管道关闭后，命令应在该秒数内结束。超过该时间后，将向执行该命令的进程发送 `SIGTERM`                                                                                                                                                                                                                                           | Optional | `10`                      |
+| `command_read_timeout`        | 从命令 stdout 读取数据的超时时间 (毫秒)                                                                                                                                                                                                                                                                 | Optional | `10000`                   |
+| `command_write_timeout`       | 向命令 stdin 写入数据的超时时间 (毫秒)                                                                                                                                                                                                                                                                  | Optional | `10000`                   |
+| `pool_size`                   | 命令池的大小                                                                                                                                                                                                                                                                                    | Optional | `16`                      |
+| `send_chunk_header`           | 控制在向进程发送一块数据之前是否先发送行数                                                                                                                                                                                                                                                                     | Optional | `false`                   |
+| `execute_direct`              | 如果 `execute_direct` = `1`，则会在由 [user&#95;scripts&#95;path](../../operations/server-configuration-parameters/settings.md#user_scripts_path) 指定的 user&#95;scripts 目录中搜索 `command`。可以通过空白字符分隔指定额外的脚本参数。例如：`script_name arg1 arg2`。如果 `execute_direct` = `0`，则将 `command` 作为参数传递给 `bin/sh -c` | Optional | `1`                       |
+| `lifetime`                    | 函数的重新加载间隔 (秒) 。如果设置为 `0`，则函数不会被重新加载                                                                                                                                                                                                                                                       | Optional | `0`                       |
+| `deterministic`               | 是否为确定性函数 (对相同输入返回相同结果)                                                                                                                                                                                                                                                                    | Optional | `false`                   |
+| `stderr_reaction`             | 如何处理命令的 stderr 输出。取值包括：`none` (忽略) 、`log` (立即记录全部 stderr) 、`log_first` (退出后记录前 4 KiB) 、`log_last` (退出后记录后 4 KiB) 、`throw` (一旦有任何 stderr 输出立即抛出异常) 。当 `log_first` 或 `log_last` 与非零退出码一起使用时，stderr 内容会包含在异常消息中                                                                              | Optional | `log_last`                |
+| `check_exit_code`             | 如果为 true，ClickHouse 将检查命令的退出码。非零退出码会导致异常                                                                                                                                                                                                                                                  | Optional | `true`                    |
 
 命令必须从 `STDIN` 读取参数，并将结果输出到 `STDOUT`。命令必须以迭代方式处理参数。也就是说，在处理完一块参数后，它必须等待下一块参数。
 
@@ -115,6 +128,7 @@ SELECT test_function_sum(2, 2);
 └─────────────────────────┘
 ```
 
+
 ### 来自 Python 脚本的 UDF \{#udf-python\}
 
 在本示例中，我们创建一个 UDF，它从 `STDIN` 读取一个值，并将其作为字符串返回。
@@ -180,13 +194,14 @@ SELECT test_function_python(toUInt64(2));
 
 ```text title="Result"
 ┌─test_function_python(2)─┐
-│ 值 2                    │
+│ Value 2                 │
 └─────────────────────────┘
 ```
 
-### 从 `STDIN` 读取两个值，并以 JSON 对象形式返回它们的和 \{#udf-stdin\}
 
-使用命名参数和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式，通过 XML 或 YAML 配置创建 `test_function_sum_json`。
+### 从 `STDIN` 读取两个值并以 JSON 对象形式返回它们的和 \{#udf-stdin\}
+
+使用具名参数和 [JSONEachRow](/interfaces/formats/JSONEachRow) 格式，通过 XML 或 YAML 配置创建 `test_function_sum_json`。
 
 <Tabs>
   <TabItem value="XML" label="XML" default>
@@ -264,6 +279,7 @@ SELECT test_function_sum_json(2, 2);
 └──────────────────────────────┘
 ```
 
+
 ### 在 `command` 设置中使用参数 \{#udf-parameters-in-command\}
 
 可执行类型的用户自定义函数可以在 `command` 设置中接受常量参数（这仅适用于 `executable` 类型的用户自定义函数）。
@@ -328,9 +344,10 @@ SELECT test_function_parameter_python(1)(2);
 
 ```text title="Result"
 ┌─test_function_parameter_python(1)(2)─┐
-│ 参数 1 值 2                          │
+│ Parameter 1 value 2                  │
 └──────────────────────────────────────┘
 ```
+
 
 ### 基于 shell 脚本的 UDF \{#udf-shell-script\}
 
@@ -405,6 +422,7 @@ SELECT test_shell(number) FROM numbers(10);
     └────────────────────┘
 ```
 
+
 ## 错误处理 \{#error-handling\}
 
 如果数据无效，某些函数可能会抛出异常。
@@ -438,5 +456,53 @@ SELECT test_shell(number) FROM numbers(10);
 
 可以使用 [CREATE FUNCTION](../statements/create/function.md) 语句，基于 lambda 表达式创建自定义函数。要删除这些函数，请使用 [DROP FUNCTION](../statements/drop.md#drop-function) 语句。
 
+## WebAssembly 用户自定义函数 \{#webassembly-user-defined-functions\}
+
+<CloudNotSupportedBadge/>
+
+<ExperimentalBadge/>
+
+WebAssembly 用户自定义函数（WASM UDF）允许在 ClickHouse 服务器进程中运行编译为 WebAssembly 的自定义代码。
+
+### 快速入门 \{#quick-start\}
+
+在 ClickHouse 配置中启用 WebAssembly 实验性支持：
+
+```xml
+<clickhouse>
+    <allow_experimental_webassembly_udf>true</allow_experimental_webassembly_udf>
+</clickhouse>
+```
+
+将已编译好的 WASM 模块插入系统表：
+
+```sql
+INSERT INTO system.webassembly_modules (name, code)
+SELECT 'my_module', base64Decode('AGFzbQEAAAA...');
+```
+
+使用 WASM 模块创建一个函数：
+
+```sql
+CREATE FUNCTION my_function
+LANGUAGE WASM
+ABI ROW_DIRECT
+FROM 'my_module'
+ARGUMENTS (x UInt32, y UInt32)
+RETURNS UInt32;
+```
+
+在查询中使用该函数：
+
+```sql
+SELECT my_function(10, 20);
+```
+
+
+### 更多信息 \{#more-information\}
+
+更多信息请参阅 [WebAssembly 用户自定义函数](wasm_udf.md) 文档。
+
 ## 相关内容 \{#related-content\}
+
 - [ClickHouse Cloud 中的用户自定义函数](https://clickhouse.com/blog/user-defined-functions-clickhouse-udfs)

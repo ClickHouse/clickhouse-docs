@@ -35,8 +35,9 @@ Initialize the library as early in your app lifecycle as possible:
 import { HyperDXRum } from '@hyperdx/otel-react-native';
 
 HyperDXRum.init({
+  url: 'http://your-otel-collector:4318',
   service: 'my-rn-app',
-  apiKey: '<YOUR_INGESTION_API_KEY>',
+  apiKey: '<YOUR_INGESTION_API_KEY>', // Omit for Managed ClickStack
   tracePropagationTargets: [/api.myapp.domain/i], // Set to link traces from frontend to backend requests
 });
 ```

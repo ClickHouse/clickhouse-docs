@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupUniqArray \{#groupUniqArray\}
 
-引入于：v1.1
+引入于：v1.1.0
 
 根据不同的参数值创建一个数组。
 此函数的内存消耗与 [`uniqExact`](/sql-reference/aggregate-functions/reference/uniqexact) 相同。

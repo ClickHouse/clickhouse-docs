@@ -11,13 +11,26 @@ keywords: ['clickstack', 'обсервабилити', 'логи', 'монито
 ---
 
 import Image from '@theme/IdealImage';
-import architecture_with_flow from '@site/static/images/use-cases/observability/simple-architecture-with-flow.png';
+import oss_architecture_with_flow from '@site/static/images/use-cases/observability/clickstack-oss-architecture-with-flow.png';
+import managed_architecture_with_flow from '@site/static/images/use-cases/observability/clickstack-managed-architecture-with-flow.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Все данные поступают в ClickStack через **сборщик OpenTelemetry (OTel)**, который выступает основной точкой входа для логов, метрик, трейсов и данных сессий.
+Все данные поступают в ClickStack Open Source или управляемый Managed ClickStack через **сборщик OpenTelemetry (OTel)**. Он выступает основной точкой входа для логов, метрик, трейсов и данных сессий.
 
-<Image img={architecture_with_flow} alt="Простая архитектура с потоком" size="md" />
+Ключевое отличие между архитектурами заключается в том, где размещаются компоненты. В обоих случаях вы запускаете OpenTelemetry collector для приёма телеметрии от ваших приложений. В случае ClickStack Open Source вы также самостоятельно управляете и размещаете как ClickHouse, так и UI ClickStack (HyperDX). В случае Managed ClickStack, ClickHouse и UI HyperDX размещаются и управляются в ClickHouse Cloud, с интегрированной аутентификацией и операционным управлением, выполняемым за вас.
 
-Этот сборщик предоставляет два OTLP-эндпоинта:
+<Tabs groupId="architecture">
+  <TabItem value="managed-clickstack" label="Managed ClickStack" default>
+    <Image img={managed_architecture_with_flow} alt="Управляемая архитектура с потоком" size="md" />
+  </TabItem>
+
+  <TabItem value="oss-clickstack" label="Open Source ClickStack">
+    <Image img={oss_architecture_with_flow} alt="Простая архитектура с потоком" size="md" />
+  </TabItem>
+</Tabs>
+
+В обеих моделях развертывания сборщик предоставляет два OTLP-эндпоинта:
 
 * **HTTP** — порт `4318`
 * **gRPC** — порт `4317`

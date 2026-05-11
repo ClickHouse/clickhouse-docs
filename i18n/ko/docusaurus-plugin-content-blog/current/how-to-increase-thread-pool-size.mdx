@@ -1,0 +1,35 @@
+---
+title: ClickHouse에서 스레드 수를 늘리는 방법
+description: "`max_thread_pool_size`, `thread_pool_queue_size`, `max_thread_pool_free_size`와 같은 설정을 조정하여 ClickHouse에서 Global Thread 풀(Global Thread pool)을 구성하는 방법을 알아봅니다."
+date: 2023-03-01
+tags: ['성능 및 최적화']
+keywords: ['사용 가능한 스레드']
+---
+
+{frontMatter.description}
+
+{{/* 이하 생략 */}}
+
+## ClickHouse에서 스레드 수 늘리기 \{#increasing-the-number-of-threads-in-clickhouse\}
+
+ClickHouse는 쿼리를 처리하고 머지 및 뮤테이션과 같은 백그라운드 작업을 수행하기 위해 **Global Thread pool**의 스레드를 사용합니다. 쿼리를 처리할 유휴 스레드가 없으면 풀에 새 스레드가 생성됩니다.
+
+글로벌 스레드 풀의 최대 크기는 `max_thread_pool_size` 설정으로 결정되며, 기본값은 10,000입니다. 이 값은 설정 파일에서 변경할 수 있으며, 여기서는 20,000으로 설정합니다:
+
+```xml
+<max_thread_pool_size>20000</max_thread_pool_size>
+```
+
+`max_thread_pool_size`를 변경하는 경우 `thread_pool_queue_size`도 동일한 값으로 설정할 것을 권장합니다. `thread_pool_queue_size` 설정은 Global Thread 풀에 스케줄링할 수 있는 작업의 최대 개수를 지정합니다:
+
+```xml
+<thread_pool_queue_size>20000</thread_pool_queue_size>
+```
+
+서버에 유휴 스레드가 많다면 `max_thread_pool_free_size` 설정을 사용하여 리소스를 확보할 수도 있습니다. 이 설정값의 기본값은 1,000으로, Global Thread 풀에 유휴 스레드가 1,000개를 초과하여 존재하지 않음을 의미합니다. 다음 예시는 이 값을 2,000으로 늘리는 것입니다:
+
+```xml
+<max_thread_pool_free_size>2000</max_thread_pool_free_size>
+```
+
+위의 설정과 글로벌 스레드 풀(Global Thread Pool)에 영향을 미치는 기타 설정에 대한 자세한 내용은 [문서](https://clickhouse.com/docs/operations/server-configuration-parameters/settings#max-thread-pool-size)를 참고하십시오.

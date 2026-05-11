@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## boundingRatio \{#boundingRatio\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 値のグループにおいて、左端の点と右端の点の間の傾きを計算します。
 

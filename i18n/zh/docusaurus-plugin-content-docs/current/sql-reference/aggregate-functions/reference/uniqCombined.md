@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## uniqCombined \{#uniqCombined\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算不同参数值的大致数量。
-它以确定性的方式提供结果（不依赖于查询处理顺序）。
+它以确定性的方式提供结果 (不依赖于查询处理顺序) 。
 
 :::note
-由于对非 String 类型使用 32 位哈希，对于明显大于 `UINT_MAX` 的基数，结果会有非常大的误差（在几十亿个不同值之后误差会迅速增大）。
+由于对非 String 类型使用 32 位哈希，对于明显大于 `UINT_MAX` 的基数，结果会有非常大的误差 (在几十亿个不同值之后误差会迅速增大) 。
 如果基数大于 `UINT_MAX`，应改用 [`uniqCombined64`](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference/uniqcombined64)。
 :::
 
@@ -27,7 +27,7 @@ doc_type: 'reference'
 
 <details>
   <summary>实现细节</summary>
-  此函数为聚合中的所有参数计算哈希（String 使用 64 位哈希，否则为 32 位哈希），然后在计算中使用该哈希值。
+  此函数为聚合中的所有参数计算哈希 (String 使用 64 位哈希，否则为 32 位哈希) ，然后在计算中使用该哈希值。
   它结合使用了三种算法：数组、哈希表和带误差校正表的 HyperLogLog：
 
   * 对于少量不同元素，使用数组
@@ -44,7 +44,7 @@ uniqCombined(x[, ...])
 
 **参数**
 
-* `HLL_precision` — 可选。HyperLogLog 中单元格数量的以 2 为底的对数。默认值为 17，对应约 96 KiB 的空间（2^17 个单元格，每个单元格 6 位）。取值范围：[12, 20]。[`UInt8`](/sql-reference/data-types/int-uint)
+* `HLL_precision` — 可选。HyperLogLog 中单元格数量的以 2 为底的对数。默认值为 17，对应约 96 KiB 的空间 (2^17 个单元格，每个单元格 6 位) 。取值范围：[12, 20]。[`UInt8`](/sql-reference/data-types/int-uint)
 
 **参数说明**
 

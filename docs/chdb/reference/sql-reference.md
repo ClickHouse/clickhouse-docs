@@ -1,5 +1,5 @@
 ---
-title: 'SQL Reference'
+title: 'SQL reference'
 sidebar_label: 'SQL reference'
 slug: /chdb/reference/sql-reference
 description: 'SQL Reference for chDB'

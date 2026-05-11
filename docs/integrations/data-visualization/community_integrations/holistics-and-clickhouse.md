@@ -70,7 +70,7 @@ Since Holistics is a cloud-based application, its servers must be able to reach 
 
    <Image size="md" img={holistics_02} alt="Example of IP allowlisting in ClickHouse Cloud" border />
 
-2. **Reverse SSH Tunnel:** If your database is in a private network (VPC) and cannot be exposed publicly, use a [Reverse SSH Tunnel](https://docs.holistics.io/docs/connect/connect-tunnel).
+2. **Reverse SSH Tunnel:** If your database is in a private network (VPC) and can't be exposed publicly, use a [Reverse SSH Tunnel](https://docs.holistics.io/docs/connect/connect-tunnel).
 
 ## Add data source in Holistics {#step-3-add-data-source-in-holistics}
 

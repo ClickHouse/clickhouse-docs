@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## avgWeighted \{#avgWeighted\}
 
-自 v20.1 起引入
+自 v20.1.0 起引入
 
 计算[加权算术平均值](https://en.wikipedia.org/wiki/Weighted_arithmetic_mean)。
 

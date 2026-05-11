@@ -97,7 +97,7 @@ The `Vertical` format is used to more easily see the data for each column.
 The simplest and most powerful tool for data loading is the `clickhouse-client`: a feature-rich native command-line client.
 To load data, you can again exploit schema inference, relying on ClickHouse to determine the types of the columns.
 
-Run the following command to create a table and insert the data directly from the remote CSV file, accessing the contents via the [`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url) function.
+Run the following command to create a table and insert the data directly from the remote CSV file, accessing the contents via the [`url`](/sql-reference/table-functions/url) function.
 The schema is automatically inferred:
 
 ```sql
@@ -444,7 +444,7 @@ LIMIT 5
 ## Parquet {#parquet}
 
 One of the strengths of ClickHouse is its ability to handle any number of [formats](/interfaces/formats).
-CSV represents a rather ideal use case, and is not the most efficient for data exchange.
+CSV represents a rather ideal use case, and isn't the most efficient for data exchange.
 
 Next, you'll load the data from a Parquet file which is an efficient column-oriented format.
 

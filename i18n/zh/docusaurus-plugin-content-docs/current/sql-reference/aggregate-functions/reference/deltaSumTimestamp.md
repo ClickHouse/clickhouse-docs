@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 ## deltaSumTimestamp \{#deltaSumTimestamp\}
 
-引入版本：v21.6
+引入版本：v21.6.0
 
 对相邻行之间的差值求和。
 如果差值为负，则会被忽略。
 
-此函数主要用于 [materialized views](/sql-reference/statements/create/view#materialized-view)，这些视图按某个时间桶对齐的时间戳（timestamp）排序并存储数据，例如按 `toStartOfMinute` 分桶。
+此函数主要用于 [materialized views](/sql-reference/statements/create/view#materialized-view)，这些视图按某个时间桶对齐的时间戳 (timestamp) 排序并存储数据，例如按 `toStartOfMinute` 分桶。
 由于此类 materialized view 中的行都具有相同的时间戳，如果不存储原始的、未取整的时间戳值，就无法以正确的顺序合并它们。
-`deltaSumTimestamp` 函数会跟踪其已处理值的原始 `timestamp`，因此在分区片段合并期间可以正确计算函数的值（状态）。
+`deltaSumTimestamp` 函数会跟踪其已处理值的原始 `timestamp`，因此在分区片段合并期间可以正确计算函数的值 (状态) 。
 
 若要计算有序集合上的增量和，可以直接使用 [`deltaSum`](/sql-reference/aggregate-functions/reference/deltasum) 函数。
 

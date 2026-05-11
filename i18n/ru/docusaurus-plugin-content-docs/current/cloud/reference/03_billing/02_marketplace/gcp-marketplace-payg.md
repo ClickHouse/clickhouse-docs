@@ -27,28 +27,26 @@ import Image from '@theme/IdealImage';
 - Проект GCP, в котором ваш администратор биллинга включил возможность совершать покупки.
 - Чтобы оформить подписку на ClickHouse Cloud в GCP Marketplace, войдите под учетной записью с правами на совершение покупок и выберите соответствующий проект.
 
-
-
 ## Шаги для регистрации \{#steps-to-sign-up\}
 
 1. Перейдите в [GCP Marketplace](https://cloud.google.com/marketplace) и найдите ClickHouse Cloud. Убедитесь, что выбран корректный проект.
 
-<Image img={gcp_marketplace_payg_1} size="md" alt="Домашняя страница GCP Marketplace" border/>
+<Image img={gcp_marketplace_payg_1} size="md" alt="Домашняя страница GCP Marketplace" border />
 
 2. Нажмите на [страницу продукта](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud), а затем на **Subscribe**.
 
-<Image img={gcp_marketplace_payg_2} size="md" alt="ClickHouse Cloud в GCP Marketplace" border/>
+<Image img={gcp_marketplace_payg_2} size="md" alt="ClickHouse Cloud в GCP Marketplace" border />
 
 3. На следующем экране настройте подписку:
 
-- План по умолчанию — «ClickHouse Cloud»
-- Период подписки — «Monthly»
-- Выберите соответствующий платежный аккаунт
-- Примите условия и нажмите **Subscribe**
+* План по умолчанию — «ClickHouse Cloud»
+* Период подписки — «Monthly»
+* Выберите соответствующий платежный аккаунт
+* Примите условия и нажмите **Subscribe**
 
 <br />
 
-<Image img={gcp_marketplace_payg_3} size="sm" alt="Настройка подписки в GCP Marketplace" border/>
+<Image img={gcp_marketplace_payg_3} size="sm" alt="Настройка подписки в GCP Marketplace" border />
 
 <br />
 
@@ -56,7 +54,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={gcp_marketplace_payg_4} size="md" alt="Модальное окно регистрации GCP Marketplace" border/>
+<Image img={gcp_marketplace_payg_4} size="md" alt="Модальное окно регистрации GCP Marketplace" border />
 
 <br />
 
@@ -66,7 +64,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="Страница входа в ClickHouse Cloud" border/>
+<Image img={aws_marketplace_payg_6} size="md" alt="Страница входа в ClickHouse Cloud" border />
 
 <br />
 
@@ -74,7 +72,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="Страница регистрации ClickHouse Cloud" border/>
+<Image img={aws_marketplace_payg_7} size="md" alt="Страница регистрации ClickHouse Cloud" border />
 
 <br />
 
@@ -82,11 +80,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="Форма с информацией для регистрации в ClickHouse Cloud" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="Форма с информацией для регистрации в ClickHouse Cloud 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="Форма с информацией для регистрации в ClickHouse Cloud" border />
 
 <br />
 
@@ -98,20 +92,21 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="Страница входа в ClickHouse Cloud" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="Страница входа в ClickHouse Cloud" border />
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="Страница новых сервисов ClickHouse Cloud" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="Страница новых сервисов ClickHouse Cloud" border />
 
 <br />
 
 9. Вы получите электронное письмо с подтверждением регистрации:
 
 <br />
+
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="Подтверждающее письмо GCP Marketplace" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="Подтверждающее письмо GCP Marketplace" border />
 
 <br />
 

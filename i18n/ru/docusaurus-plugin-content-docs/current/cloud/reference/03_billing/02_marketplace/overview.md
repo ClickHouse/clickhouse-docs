@@ -1,6 +1,6 @@
 ---
 slug: /cloud/marketplace/marketplace-billing
-title: 'Выставление счетов в Marketplace'
+title: 'биллинг через маркетплейс'
 description: 'Оформляйте подписку на ClickHouse Cloud через маркетплейсы AWS, GCP и Azure.'
 keywords: ['aws', 'azure', 'gcp', 'google cloud', 'маркетплейс', 'оплата']
 doc_type: 'guide'
@@ -19,7 +19,6 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 * [Контракт с фиксированными обязательствами в GCP Marketplace](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
 * [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)
 * [Контракт с фиксированными обязательствами в Azure Marketplace](/cloud/billing/marketplace/azure-marketplace-committed-contract)
-
 
 ## Часто задаваемые вопросы \{#faqs\}
 
@@ -53,7 +52,7 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 
 Обратите внимание, что вы можете просто прекратить использование ClickHouse Cloud и удалить все существующие сервисы ClickHouse Cloud. Даже если подписка формально останется активной, вы не будете ничего платить, так как в ClickHouse Cloud нет регулярных платежей.
 
-Если вы хотите отписаться, перейдите в консоль облачного провайдера и отмените продление подписки там. После окончания подписки все существующие сервисы будут остановлены, и вам будет предложено добавить кредитную карту. Если карта не будет добавлена, через две недели все существующие сервисы будут удалены.
+Если вы хотите отписаться, перейдите в консоль облачного провайдера и отмените продление подписки там.
 
 ### Я оформил подписку на ClickHouse Cloud как пользователь маркетплейса, затем отписался. Теперь хочу оформить подписку снова — каков процесс?​ \{#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-and-then-unsubscribed-now-i-want-to-subscribe-back-what-is-the-process\}
 

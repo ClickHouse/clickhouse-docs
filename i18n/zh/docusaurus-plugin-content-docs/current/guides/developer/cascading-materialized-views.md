@@ -1,8 +1,8 @@
 ---
 slug: /guides/developer/cascading-materialized-views
-title: '级联物化视图'
-description: '如何在单个源表上使用多个物化视图。'
-keywords: ['物化视图', '聚合']
+title: '级联materialized view'
+description: '如何在单个源表上使用多个materialized view。'
+keywords: ['materialized view', '聚合']
 doc_type: 'guide'
 ---
 
@@ -230,7 +230,7 @@ GROUP BY
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
-按年份汇总的各域名数据：
+每个域名按年份聚合的数据：
 
 ```sql
 SELECT

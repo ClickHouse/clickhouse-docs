@@ -1,15 +1,15 @@
 ---
 slug: /managing-data/materialized-views-versus-projections
-sidebar_label: 'マテリアライズドビュー vs プロジェクション'
-title: 'マテリアライズドビューとプロジェクションの比較'
+sidebar_label: 'materialized view vs プロジェクション'
+title: 'materialized viewとプロジェクションの比較'
 hide_title: false
-description: 'ClickHouse におけるマテリアライズドビューとプロジェクションを、ユースケース、パフォーマンス、制約の観点から比較する記事です。'
+description: 'ClickHouse におけるmaterialized viewとプロジェクションを、ユースケース、パフォーマンス、制約の観点から比較する記事です。'
 doc_type: 'reference'
-keywords: ['マテリアライズドビュー', 'プロジェクション', '違い']
+keywords: ['materialized view', 'プロジェクション', '違い']
 ---
 
-> ユーザーからよく寄せられる質問のひとつが、マテリアライズドビューと
-プロジェクションのどちらをいつ使うべきかという点です。本記事では、この 2 つの主な違いと、どのような場面で一方を他方より選択すべきかを解説します。
+> ユーザーからよく寄せられる質問のひとつが、materialized viewと
+> プロジェクションのどちらをいつ使うべきかという点です。本記事では、この 2 つの主な違いと、どのような場面で一方を他方より選択すべきかを解説します。
 
 ## 重要な違いのまとめ \{#key-differences\}
 

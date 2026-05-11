@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## corrMatrix \{#corrMatrix\}
 
-引入版本：v23.2
+引入版本：v23.2.0
 
 计算 N 个变量的相关矩阵。
 

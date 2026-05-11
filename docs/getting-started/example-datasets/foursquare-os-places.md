@@ -232,7 +232,7 @@ This column converts a latitude value into a Y coordinate in the Mercator projec
 - multiplying by `0xFFFFFFFF` scales to the full 32-bit integer range
 
 Specifying `MATERIALIZED` makes sure that ClickHouse calculates the values for these 
-columns when we `INSERT` the data, without having to specify these columns (which are not
+columns when we `INSERT` the data, without having to specify these columns (which aren't
 part of the original data schema) in the `INSERT statement.
 
 The table is ordered by `mortonEncode(mercator_x, mercator_y)` which produces a 

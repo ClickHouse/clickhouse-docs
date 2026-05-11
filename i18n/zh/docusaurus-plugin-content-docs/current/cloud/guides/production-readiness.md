@@ -175,7 +175,7 @@ scrape_configs:
 
 ### 备份策略评估 \{#backup-strategy\}
 
-ClickHouse Cloud 提供带有可配置保留期的自动备份。根据合规性和恢复要求评估你当前的备份配置。对备份位置或加密有特定合规性要求的企业客户，可以将 ClickHouse Cloud 配置为将备份存储在其自有的云存储桶中（BYOB）。有关 BYOB 配置，请联系 ClickHouse 支持。
+ClickHouse Cloud 提供带有可配置保留期的自动备份。根据合规性和恢复要求评估你当前的备份配置。如果您对备份位置或加密有特定的合规性要求，可以将 ClickHouse Cloud 配置为将备份存储在您自己的云存储桶中 (BYOB) 。有关 BYOB 配置，请联系 ClickHouse Support。
 
 ### 验证并测试恢复流程 \{#validate-test-recovery\}
 

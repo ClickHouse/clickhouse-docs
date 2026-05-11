@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## quantileDeterministic \{#quantileDeterministic\}
 
-Введена в: v1.1
+Введена в: v1.1.0
 
 Вычисляет приближенный [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 
 Эта функция применяет [выборку из резервуара](https://en.wikipedia.org/wiki/Reservoir_sampling) с размером резервуара до 8192 и детерминированным алгоритмом выборки.
 Результат детерминирован.
-Чтобы получить точный квантиль, используйте функцию [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact).
+Чтобы получить точный квантиль, используйте функцию [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact).
 
 При использовании нескольких функций `quantile*` с разными уровнями в запросе их внутренние состояния не объединяются (то есть запрос работает менее эффективно, чем мог бы).
 В этом случае используйте функцию [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles).

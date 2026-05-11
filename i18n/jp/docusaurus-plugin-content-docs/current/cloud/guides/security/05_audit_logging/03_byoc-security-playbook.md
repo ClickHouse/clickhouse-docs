@@ -29,7 +29,7 @@ FROM clusterAllReplicas('default',system.crash_log)
 
 ClickHouse は、システム機能を有効にするためにあらかじめ作成されたロールを使用します。このセクションでは、お客様が CloudTrail を有効にした AWS を利用しており、CloudTrail ログにアクセスできることを前提としています。
 
-インシデントがロールの侵害によるものである可能性がある場合は、ClickHouse の IAM ロールおよびアクションに関連する CloudTrail と CloudWatch 内のアクティビティを確認してください。IAM ロールの一覧については、セットアップの一部として提供される [CloudFormation](/cloud/reference/byoc/reference/priviledge#cloudformation-iam-roles) スタックまたは Terraform モジュールを参照してください。
+インシデントがロールの侵害によるものである可能性がある場合は、ClickHouse の IAM ロールおよびアクションに関連する CloudTrail と CloudWatch 内のアクティビティを確認してください。IAM ロールの一覧については、セットアップの一部として提供される [CloudFormation](/cloud/reference/byoc/reference/privilege#cloudformation-iam-roles) スタックまたは Terraform モジュールを参照してください。
 
 ## EKS クラスターへの不正アクセス \{#unauthorized-access-eks-cluster\}
 

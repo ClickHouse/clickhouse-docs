@@ -1,0 +1,25 @@
+.cloudBadge {
+    background-color: #DAE6FC;
+    color: #061D48;
+    border-radius: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    display: inline-flex;
+    margin-right: 5px;
+}
+
+[data-theme='dark'] .cloudBadge {
+    background-color: #061D48;
+    color: #DAE6FC;
+}
+
+.cloudIcon svg path {
+    stroke: #061D48;
+}
+
+[data-theme='dark'] .cloudIcon svg path {
+    stroke: #DAE6FC;
+}

@@ -28,7 +28,6 @@ import GCSConnection from '@site/docs/_snippets/clickpipes/object-storage/google
 
 {props.provider === 's3' && <S3DataSource />}
 {props.provider === 'gcs' && <GCSSDataSource />}
-{props.provider === 'abs' && <ABSDataSource />}
 
 ## Setup your ClickPipe connection {#2-setup-your-clickpipe-connection}
 

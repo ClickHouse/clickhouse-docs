@@ -25,7 +25,7 @@ Elasticsearch and ClickHouse support a wide variety of data types, but their und
 | `unsigned_long`              | [`UInt64`](/sql-reference/data-types/int-uint)                    | Unsigned 64-bit integer. |
 | `double`                      | [`Float64`](/sql-reference/data-types/float)                   | 64-bit floating-point. |
 | `float`                       | [`Float32`](/sql-reference/data-types/float)                   | 32-bit floating-point. |
-| `half_float`                 | [`Float32`](/sql-reference/data-types/float) or [`BFloat16`](/sql-reference/data-types/float)      | Closest equivalent. ClickHouse does not have a 16-bit float. ClickHouse has a `BFloat16`- this is different from Half-float IEE-754: half-float offers higher precision with a smaller range, while bfloat16 sacrifices precision for a wider range, making it better suited for machine learning workloads. |
+| `half_float`                 | [`Float32`](/sql-reference/data-types/float) or [`BFloat16`](/sql-reference/data-types/float)      | Closest equivalent. ClickHouse doesn't have a 16-bit float. ClickHouse has a `BFloat16`- this is different from Half-float IEE-754: half-float offers higher precision with a smaller range, while bfloat16 sacrifices precision for a wider range, making it better suited for machine learning workloads. |
 | `scaled_float`              | [`Decimal(x, y)`](/sql-reference/data-types/decimal)             | Store fixed-point numeric values. |
 | `date`         | [`DateTime`](/sql-reference/data-types/datetime)    | Equivalent date types with second precision. |
 | `date_nanos`         | [`DateTime64`](/sql-reference/data-types/datetime64)    | ClickHouse supports nanosecond precision with `DateTime64(9)`. |
@@ -49,7 +49,7 @@ Elasticsearch and ClickHouse support a wide variety of data types, but their und
 | `geo_point`                   | [`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) or [`Point`](/sql-reference/data-types/geo#point) | Use tuple of (latitude, longitude). [`Point`](/sql-reference/data-types/geo#point) is available as a ClickHouse type. |
 | `geo_shape`, `shape`          | [`Ring`](/sql-reference/data-types/geo#ring), [`LineString`](/sql-reference/data-types/geo#linestring), [`MultiLineString`](/sql-reference/data-types/geo#multilinestring), [`Polygon`](/sql-reference/data-types/geo#polygon), [`MultiPolygon`](/sql-reference/data-types/geo#multipolygon)                          | Native support for geo shapes and spatial indexing. |
 | `percolator`                  | NA                           | No concept of indexing queries. Use standard SQL + Incremental Materialized Views instead. |
-| `version`                     | [`String`](/sql-reference/data-types/string)                    | ClickHouse does not have a native version type. Store versions as strings and use custom UDFs functions to perform semantic comparisons if needed. Consider normalizing to numeric formats if range queries are required. |
+| `version`                     | [`String`](/sql-reference/data-types/string)                    | ClickHouse doesn't have a native version type. Store versions as strings and use custom UDFs functions to perform semantic comparisons if needed. Consider normalizing to numeric formats if range queries are required. |
 
 ### Notes {#notes}
 
@@ -57,9 +57,9 @@ Elasticsearch and ClickHouse support a wide variety of data types, but their und
 - **Multi-fields**: Elasticsearch allows indexing the [same field multiple ways](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/multi-fields#_multi_fields_with_multiple_analyzers) (e.g., both `text` and `keyword`). In ClickHouse, this pattern must be modeled using separate columns or views.
 - **Map and JSON Types** - In ClickHouse, the [`Map`](/sql-reference/data-types/map) type is commonly used to model dynamic key-value structures such as `resourceAttributes` and `logAttributes`. This type enables flexible schema-less ingestion by allowing arbitrary keys to be added at runtime — similar in spirit to JSON objects in Elasticsearch. However, there are important limitations to consider:
 
-  - **Uniform value types**: ClickHouse [`Map`](/sql-reference/data-types/map) columns must have a consistent value type (e.g., `Map(String, String)`). Mixed-type values are not supported without coercion.
+  - **Uniform value types**: ClickHouse [`Map`](/sql-reference/data-types/map) columns must have a consistent value type (e.g., `Map(String, String)`). Mixed-type values aren't supported without coercion.
   - **Performance cost**: accessing any key in a [`Map`](/sql-reference/data-types/map) requires loading the entire map into memory, which can be suboptimal for performance.
-  - **No subcolumns**: unlike JSON, keys in a [`Map`](/sql-reference/data-types/map) are not represented as true subcolumns, which limits ClickHouse’s ability to index, compress, and query efficiently.
+  - **No subcolumns**: unlike JSON, keys in a [`Map`](/sql-reference/data-types/map) aren't represented as true subcolumns, which limits ClickHouse’s ability to index, compress, and query efficiently.
 
   Because of these limitations, ClickStack is migrating away from [`Map`](/sql-reference/data-types/map) in favor of ClickHouse's enhanced [`JSON`](/sql-reference/data-types/newjson) type. The [`JSON`](/sql-reference/data-types/newjson) type addresses many of the shortcomings of `Map`:
 

@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 ## quantilesExactInclusive \{#quantilesExactInclusive\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 数値データ系列に対して、インクルーシブ方式を用いて複数の異なるレベルの[分位数](https://en.wikipedia.org/wiki/Quantile)を同時に厳密に計算します。
 
-この関数は [`quantileExactInclusive`](/sql-reference/aggregate-functions/reference/quantileexactinclusive) と同等ですが、複数の分位数レベルを 1 回の処理で計算できるため、個々の分位数関数をそれぞれ呼び出すよりも効率的です。
+この関数は [`quantileExactInclusive`](/sql-reference/aggregate-functions/reference/quantileExactInclusive) と同等ですが、複数の分位数レベルを 1 回の処理で計算できるため、個々の分位数関数をそれぞれ呼び出すよりも効率的です。
 
 この関数は、[R-7 method](https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample) で説明されているように、分位数の計算にインクルーシブ方式を使用します。
 これは Excel の関数 [PERCENTILE.INC](https://support.microsoft.com/en-us/office/percentile-inc-function-680f9539-45eb-410b-9a5e-c1355e5fe2ed) と同等です。
@@ -29,7 +29,7 @@ quantilesExactInclusive(level1, level2, ...)(expr)
 
 **パラメータ**
 
-* `level` — 分位数のレベル。0 から 1（両端を含む）までの定数浮動小数点数。`level` の値として `[0.01, 0.99]` の範囲を使用することを推奨します。[`Float*`](/sql-reference/data-types/float)
+* `level` — 分位数のレベル。0 から 1 (両端を含む) までの定数浮動小数点数。`level` の値として `[0.01, 0.99]` の範囲を使用することを推奨します。[`Float*`](/sql-reference/data-types/float)
 
 **引数**
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesDerivToGrid \{#timeSeriesDerivToGrid\}
 
-導入バージョン: v25.6
+導入バージョン: v25.6.0
 
 タイムスタンプと値のペアとして与えられる時系列データを受け取り、開始タイムスタンプ・終了タイムスタンプ・ステップで定義される規則的な時間グリッド上で、そのデータから [PromQL 風の導関数 (derivative)](https://prometheus.io/docs/prometheus/latest/querying/functions/#deriv) を計算する集約関数です。グリッド上の各ポイントについて、`deriv` を計算するためのサンプルは、指定された時間ウィンドウ内のものが対象となります。
 
@@ -65,7 +65,7 @@ FROM
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**配列引数を使用した同じクエリ**
+**配列引数を使った同じクエリ**
 
 ```sql title=Query
 WITH

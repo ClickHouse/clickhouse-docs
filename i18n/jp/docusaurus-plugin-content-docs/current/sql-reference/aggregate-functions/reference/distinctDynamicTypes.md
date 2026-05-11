@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctDynamicTypes \{#distinctDynamicTypes\}
 
-導入バージョン: v24.9
+導入バージョン: v24.9.0
 
 [Dynamic](https://clickhouse.com/docs/sql-reference/data-types/dynamic) カラムに格納されているデータ型のうち、異なるものの一覧を返します。
 

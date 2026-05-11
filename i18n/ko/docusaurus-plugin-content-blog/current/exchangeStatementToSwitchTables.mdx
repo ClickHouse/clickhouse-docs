@@ -1,0 +1,91 @@
+---
+title: EXCHANGE 명령을 사용하여 테이블을 교환하는 방법
+description: "EXCHANGE 명령을 사용하여 테이블을 교환하는 방법"
+date: 2024-11-21
+tags: ['데이터 관리']
+keywords: ['EXCHANGE']
+---
+
+{frontMatter.description}
+
+{/* 일부 생략 */}
+
+***
+
+## 질문 \{#question\}
+
+[`EXCHANGE`](/sql-reference/statements/exchange) 명령을 사용하여 테이블 이름을 바꾸는 방법은 무엇입니까?
+
+## 답변 \{#answer\}
+
+`EXCHANGE` 명령은 현재 테이블을 Primary Key나 기타 설정이 변경되었을 수 있는 임시 테이블과 교체해야 할 때 유용합니다.
+이는 `RENAME` 명령과 달리 원자적으로 수행됩니다.
+또한 소스 테이블에서 materialized view가 트리거되고 있을 때, 해당 뷰를 다시 재구성하는 작업을 피하려는 경우에도 유용합니다.
+
+아래는 이 명령이 어떻게 동작하는지, 그리고 이를 테스트하는 방법을 보여 주는 간단한 예시입니다:
+
+* 샘플 데이터베이스를 생성합니다.
+
+```sql
+create database db1;
+```
+
+* 예제 테이블 생성
+
+```sql
+create table db1.table1_exchange
+(
+ id Int32,
+ string_field String
+)
+engine = MergeTree()
+order by id;
+```
+
+* 샘플 행을 삽입합니다
+
+```sql
+insert into db1.table1_exchange
+values
+(1, 'a');
+```
+
+* 교환 대상이 될 예제 임시 테이블을 생성합니다
+
+```sql
+create table db1.table1_exchange_temp
+(
+ id Int32,
+ string_field String
+)
+engine = MergeTree()
+order by id;
+```
+
+* 임시 테이블에 샘플 행을 삽입합니다
+
+```sql
+insert into db1.table1_exchange_temp
+values
+(2, 'b');
+```
+
+* `EXCHANGE` 명령을 실행하여 테이블을 교체합니다
+
+```sql
+exchange tables db1.table1_exchange and db1.table1_exchange_temp;
+```
+
+* 테이블이 서로 교체되었는지 테스트하고, 행이 서로 바뀌었는지 확인합니다
+
+```sql
+select * from db1.table1_exchange;
+```
+
+```text
+┌─id─┬─string_field─┐
+│  2 │ b            │
+└────┴──────────────┘
+
+1 row in set. Elapsed: 0.002 sec. 
+```

@@ -192,6 +192,17 @@ df.write
 
 ## Особенности Databricks \{#considerations\}
 
+### Требования к режиму доступа \{#access-mode\}
+
+Коннектор ClickHouse Spark требует использования режима доступа **Dedicated** (ранее Single User). Режим доступа **Standard** (ранее Shared) не поддерживается при включённом Unity Catalog, поскольку Databricks блокирует внешние коннекторы DataSource V2 в этой конфигурации.
+
+| Режим доступа | Unity Catalog | Поддерживается |
+|-------------|---------------|-----------|
+| Dedicated (Single User) | Enabled | ✅ Да |
+| Dedicated (Single User) | Disabled | ✅ Да |
+| Standard (Shared) | Enabled | ❌ Нет |
+| Standard (Shared) | Disabled | ✅ Да |
+
 ### Управление секретами \{#secret-management\}
 
 Используйте области секретов Databricks для безопасного хранения учетных данных ClickHouse:

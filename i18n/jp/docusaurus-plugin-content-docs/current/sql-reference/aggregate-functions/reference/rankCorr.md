@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## rankCorr \{#rankCorr\}
 
-導入バージョン: v20.9
+導入バージョン: v20.9.0
 
 順位相関係数を計算します。
 
@@ -48,7 +48,7 @@ SELECT rankCorr(number, number) FROM numbers(100);
 └──────────────────────────┘
 ```
 
-**非線形の関係**
+**非線形な関係**
 
 ```sql title=Query
 SELECT roundBankers(rankCorr(exp(number), sin(number)), 3) FROM numbers(100);

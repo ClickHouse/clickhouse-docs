@@ -1,7 +1,7 @@
 ---
-sidebar_label: 'ClickHouse Cloud 层级'
+sidebar_label: 'ClickHouse Cloud 服务层级'
 slug: /cloud/manage/cloud-tiers
-title: 'ClickHouse Cloud 层级'
+title: 'ClickHouse Cloud 服务层级'
 description: 'ClickHouse Cloud 中可用的云服务层级'
 keywords: ['云服务层级', '服务方案', '云定价层级', '云服务级别']
 doc_type: 'reference'
@@ -21,7 +21,7 @@ ClickHouse Cloud 提供多个不同的服务层级。
       <th />
 
       <th>[基础](#basic)</th>
-      <th>[扩展（推荐）](#scale)</th>
+      <th>[扩展 (推荐) ](#scale)</th>
       <th>[企业版](#enterprise)</th>
     </tr>
   </thead>
@@ -113,11 +113,8 @@ ClickHouse Cloud 提供多个不同的服务层级。
 
     <tr>
       <td>将备份导出到您自己的云账户</td>
-
-      <td />
-
-      <td />
-
+      <td>✓</td>
+      <td>✓</td>
       <td>✓</td>
     </tr>
 
@@ -197,7 +194,7 @@ ClickHouse Cloud 提供多个不同的服务层级。
     </tr>
 
     <tr>
-      <td>透明数据加密（TDE，支持 CMEK）</td>
+      <td>透明数据加密 (TDE，支持 CMEK) </td>
 
       <td />
 
@@ -238,22 +235,21 @@ ClickHouse Cloud 提供多个不同的服务层级。
   - [灵活伸缩](/manage/scaling) 选项（纵向扩容/缩容、横向扩容/缩容）。
   - [可配置备份](/cloud/manage/backups/configurable-backups)。
 
-## 企业版 \{#enterprise\}
+## Enterprise \{#enterprise\}
 
-面向大规模、关键业务部署，满足严苛的安全与合规要求。
+面向大规模、关键任务部署，满足严苛的安全与合规要求。
 
-- 包含 Scale 中的所有内容，**另外还提供：**
-- 灵活伸缩：标准规格（`1:4 vCPU:memory ratio`），以及 `HighMemory (1:8 ratio)` 和 `HighCPU (1:2 ratio)` 自定义规格。
-- 提供最高级别的性能与韧性保障。
-- 支持企业级安全：
-  - 单点登录（SSO）
-  - 增强加密：适用于 AWS 和 GCP 服务。服务默认使用我们的密钥进行加密，并可切换为用户自己的密钥，从而启用客户管理的加密密钥（CMEK）。
-- 支持计划内升级：您可以为数据库和云版本升级选择一周中的特定日期和时间窗口。  
-- 符合 [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) 和 PCI 合规要求。
-- 支持将备份导出到用户自己的账户。
+* 包含 Scale 中的所有内容，**另外还提供：**
+* 灵活伸缩：标准配置 (`1:4 vCPU:memory ratio`)，以及 `HighMemory (1:8 ratio)` 自定义配置。
+* 提供最高级别的性能与韧性保障。
+* 支持企业级安全：
+  * 单点登录 (SSO)
+  * 增强加密：适用于 AWS 和 GCP 服务。服务默认使用我们的密钥进行加密，并可轮换为他们的密钥，以启用客户管理的加密密钥 (CMEK)。
+* 支持计划升级：您可以为数据库和云版本升级选择一周中的特定日期和时间窗口。
+* 提供 [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) 和 PCI 合规支持。
 
-:::note 
-在所有三个层级中，单副本服务均被设计为固定规格（`8 GiB`、`12 GiB`）
+:::note
+所有三个层级中的单副本服务都设计为固定大小 (`8 GiB`, `12 GiB`)
 :::
 
 ## 升级到不同的层级 \{#upgrading-to-a-different-tier\}

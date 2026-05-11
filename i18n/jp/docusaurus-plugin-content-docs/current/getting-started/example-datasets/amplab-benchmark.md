@@ -7,9 +7,9 @@ keywords: ['AMPLab ベンチマーク', 'ビッグデータベンチマーク', 
 doc_type: 'guide'
 ---
 
-[https://amplab.cs.berkeley.edu/benchmark/](https://amplab.cs.berkeley.edu/benchmark/) を参照してください。
+https://amplab.cs.berkeley.edu/benchmark/ を参照してください。
 
-[https://aws.amazon.com](https://aws.amazon.com) で無料アカウントに登録します。クレジットカード、メールアドレス、電話番号が必要です。[https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential) で新しいアクセスキーを取得します。
+https://aws.amazon.com で無料アカウントに登録します。クレジットカード、メールアドレス、電話番号が必要です。https://console.aws.amazon.com/iam/home?nc2=h&#95;m&#95;sc#security&#95;credential で新しいアクセスキーを取得します。
 
 コンソールで次を実行します。
 
@@ -34,7 +34,8 @@ CREATE TABLE rankings_tiny
     pageURL String,
     pageRank UInt32,
     avgDuration UInt32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 CREATE TABLE uservisits_tiny
 (
@@ -54,7 +55,8 @@ CREATE TABLE rankings_1node
     pageURL String,
     pageRank UInt32,
     avgDuration UInt32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 CREATE TABLE uservisits_1node
 (
@@ -74,7 +76,8 @@ CREATE TABLE rankings_5nodes_on_single
     pageURL String,
     pageRank UInt32,
     avgDuration UInt32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 CREATE TABLE uservisits_5nodes_on_single
 (

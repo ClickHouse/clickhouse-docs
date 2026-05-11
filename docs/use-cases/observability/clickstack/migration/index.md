@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/migration
-title: 'Migrating to ClickStack from other Observability solutions'
+title: 'Migrating to ClickStack from other observability solutions'
 pagination_prev: null
 pagination_next: null
 sidebar_label: 'Migration guides'
-description: 'Migrating to ClickStack from other Observability solutions'
+description: 'Migrating to ClickStack from other observability solutions'
 doc_type: 'guide'
 keywords: ['migrate to ClickStack', 'ClickStack migration guide
 ', 'ClickStack migration from Elastic', 'ELK']

@@ -70,7 +70,7 @@ docker rm some-clickhouse-server
 ### Networking {#networking}
 
 :::note
-the predefined user `default` does not have the network access unless the password is set,
+the predefined user `default` doesn't have the network access unless the password is set,
 see "How to create default database and user on starting" and "Managing `default` user" below
 :::
 
@@ -118,7 +118,7 @@ You may also want to mount:
 
 ClickHouse has some advanced functionality, which requires enabling several [Linux capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html)
 
-They are optional and can be enabled using the following [docker command-line arguments](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities):
+They're optional and can be enabled using the following [docker command-line arguments](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities):
 
 ```bash
 docker run -d \
@@ -130,9 +130,9 @@ For more information see ["Configuring CAP_IPC_LOCK and CAP_SYS_NICE Capabilitie
 
 ## Configuration {#configuration}
 
-The container exposes port 8123 for the [HTTP interface](https://clickhouse.com/docs/interfaces/http_interface/) and port 9000 for the [native client](https://clickhouse.com/docs/interfaces/tcp/).
+The container exposes port 8123 for the [HTTP interface](/interfaces/http) and port 9000 for the [native client](/interfaces/tcp).
 
-ClickHouse configuration is represented with a file "config.xml" ([documentation](https://clickhouse.com/docs/operations/configuration_files/))
+ClickHouse configuration is represented with a file "config.xml" ([documentation](/operations/configuration-files))
 
 ### Start server instance with custom configuration {#start-server-instance-with-custom-config}
 
@@ -194,5 +194,6 @@ set -e
 
 clickhouse client -n <<-EOSQL
     CREATE DATABASE docker;
-    CREATE TABLE docker.docker (x Int32) ENGINE = Log;
+    CREATE TABLE docker.docker (x Int32) ENGINE = MergeTree
+    ORDER BY ();
 EOSQL

@@ -40,7 +40,7 @@ FROM numbers_mt(2, 10000000000)
 1 row in set. Elapsed: 9.825 sec. Processed 10.00 billion rows, 80.00 GB (1.02 billion rows/s., 8.14 GB/s.)
 ```
 
-3. これは ClickHouse ではもちろん私たちのお気に入りであり（しかも最も正確です！）：
+3. これは ClickHouse ではもちろん私たちのお気に入りであり (しかも最も正確です！) ：
 
 ```sql
 SELECT pi()
@@ -106,7 +106,7 @@ SELECT 22 / 7
 └───────────────────┘
 ```
 
-8. 別の間接的な方法（Alexey Milovidov が考案したもので）、小数点以下 7 桁まで正確で、高速です。
+8. 別の間接的な方法 (Alexey Milovidov が考案したもので) 、小数点以下 7 桁まで正確で、高速です。
 
 ```sql
 WITH

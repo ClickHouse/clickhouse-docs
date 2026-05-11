@@ -7,13 +7,13 @@ doc_type: 'guide'
 keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
-このデータセットは New York Public Library（ニューヨーク公共図書館）によって作成されたものです。ホテル、レストラン、カフェのメニューに関する履歴データが含まれており、料理名とその価格が記録されています。
+このデータセットは New York Public Library (ニューヨーク公共図書館) によって作成されたものです。ホテル、レストラン、カフェのメニューに関する履歴データが含まれており、料理名とその価格が記録されています。
 
-出典: http://menus.nypl.org/data  
+出典: http://menus.nypl.org/data
 データはパブリックドメインです。
 
-このデータは図書館アーカイブ由来であるため、不完全であったり、統計解析には扱いづらい場合があります。それでも、とても「おいしい」データです。  
-メニューに掲載された料理に関するレコードはわずか130万件で、ClickHouse にとってはごく小さなデータ量ですが、良いサンプルとして利用できます。
+このデータは図書館アーカイブ由来であるため、不完全であったり、統計解析には扱いづらい場合があります。それでも、とても「おいしい」データです。
+メニューに掲載された料理に関するレコードはわずか130万件で、ClickHouse にとってはごく小さなデータ量ですが、良い例として利用できます。
 
 ## データセットをダウンロードする \{#download-dataset\}
 
@@ -129,6 +129,7 @@ clickhouse-client --format_csv_allow_single_quotes 0 --input_format_null_as_defa
 [NULL](/operations/settings/formats#input_format_null_as_default) をデータとして使用していないため、[input&#95;format&#95;null&#95;as&#95;default](/operations/settings/formats#input_format_null_as_default) を無効にします。有効な場合、ClickHouse は `\N` というシーケンスをパースしようとし、データ内の `\` と紛らわしくなる可能性があります。
 
 [date&#95;time&#95;input&#95;format best&#95;effort](/operations/settings/formats#date_time_input_format) 設定により、[DateTime](../../sql-reference/data-types/datetime.md) フィールドをさまざまなフォーマットでパースできます。例えば、秒なしの ISO-8601 形式である「2000-01-01 01:02」も認識されます。この設定を有効にしない場合、固定形式の DateTime フォーマットのみが許可されます。
+
 
 ## データを非正規化する \{#denormalize-data\}
 

@@ -42,7 +42,7 @@ In this guide you will build a dashboard in Superset with data from a ClickHouse
 <br/>
 
 :::tip Add some data
-If you do not have a dataset to work with you can add one of the examples. This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset, so you might choose that one. There are several others to look at in the same documentation category.
+If you don't have a dataset to work with you can add one of the examples. This guide uses the [UK Price Paid](/getting-started/example-datasets/uk-price-paid.md) dataset, so you might choose that one. There are several others to look at in the same documentation category.
 :::
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}
@@ -93,11 +93,11 @@ If you do not have a dataset to work with you can add one of the examples. This 
 <Image size="sm" img={superset_04} alt="Superset dataset creation dialog showing available tables from ClickHouse database" border />
 <br/>
 
-3. Click the **ADD** button at the bottom of the dialog window and your table appears in the list of datasets. You are ready to build a dashboard and analyze your ClickHouse data!
+3. Click the **ADD** button at the bottom of the dialog window and your table appears in the list of datasets. You're ready to build a dashboard and analyze your ClickHouse data!
 
 ## 5.  Creating charts and a dashboard in Superset {#5--creating-charts-and-a-dashboard-in-superset}
 
-If you are familiar with Superset, then you will feel right at home with this next section. If you are new to Superset, well...it's like a lot of the other cool visualization tools out there in the world - it doesn't take long to get started, but the details and nuances get learned over time as you use the tool.
+If you're familiar with Superset, then you will feel right at home with this next section. If you're new to Superset, well...it's like a lot of the other cool visualization tools out there in the world - it doesn't take long to get started, but the details and nuances get learned over time as you use the tool.
 
 1. You start with a dashboard. From the top menu in Superset, select **Dashboards**. Click the button in the upper-right to add a new dashboard. The following dashboard is named **UK property prices**:
 

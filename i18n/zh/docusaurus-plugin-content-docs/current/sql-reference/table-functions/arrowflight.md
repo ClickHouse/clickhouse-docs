@@ -24,7 +24,7 @@ arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 * `username` - 用于基本 HTTP 认证的用户名。
 * `password` - 用于基本 HTTP 认证的密码。
   如果未指定 `username` 和 `password`，则表示不使用认证
-  （仅在 Arrow Flight 服务器允许匿名访问时可用）。
+   (仅在 Arrow Flight 服务器允许匿名访问时可用) 。
 
 **返回值**
 

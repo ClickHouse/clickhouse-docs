@@ -20,8 +20,8 @@ We decided to keep the slogan even on t-shirts produced for international events
 
 So, what does it mean? Here are some ways to translate *"не тормозит"*:
 
-- If you translate it literally, it sounds something like *"ClickHouse does not press the brake pedal"*.
-- Shorter, but less precise translations might be *"ClickHouse is not slow"*, *"ClickHouse does not lag"* or just *"ClickHouse is fast"*.
+- If you translate it literally, it sounds something like *"ClickHouse doesn't press the brake pedal"*.
+- Shorter, but less precise translations might be *"ClickHouse isn't slow"*, *"ClickHouse doesn't lag"* or just *"ClickHouse is fast"*.
 
 If you haven't seen one of those t-shirts in person, you can check them out online in many ClickHouse-related videos. For example, this one:
 
@@ -29,4 +29,4 @@ If you haven't seen one of those t-shirts in person, you can check them out onli
 <iframe width="560" height="315" src="http://www.youtube.com/embed/bSyQahMVZ7w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-_P.S. These t-shirts are not for sale_, they were given away for free at some [ClickHouse Meetups](https://www.meetup.com/pro/clickhouse/), usually as a gift for best questions or other forms of active participation. Now, these t-shirts are no longer produced, and they have become highly valued collector's items.
+_P.S. These t-shirts aren't for sale_, they were given away for free at some [ClickHouse Meetups](https://www.meetup.com/pro/clickhouse/), usually as a gift for best questions or other forms of active participation. Now, these t-shirts are no longer produced, and they have become highly valued collector's items.

@@ -115,6 +115,7 @@ asyncio.run(main())
 
 另请参阅：[run&#95;async 示例](https://github.com/ClickHouse/clickhouse-connect/blob/main/examples/run_async.py)。
 
+
 ## 管理 ClickHouse 会话 ID \{#managing-clickhouse-session-ids\}
 
 每个 ClickHouse 查询都会在一个 ClickHouse “会话”的上下文中执行。会话目前用于两个目的：
@@ -139,6 +140,7 @@ client = clickhouse_connect.get_client(host='somehost.com', user='dbuser', passw
 或者，将 `autogenerate_session_id=False` 直接传递给 `get_client(...)`。
 
 在这种情况下，ClickHouse Connect 不会发送 `session_id`；服务器不会将各个请求视为同一会话的一部分。临时表和会话级别的设置不会在请求之间保留。
+
 
 ## 自定义 HTTP 连接池 \{#customizing-the-http-connection-pool\}
 

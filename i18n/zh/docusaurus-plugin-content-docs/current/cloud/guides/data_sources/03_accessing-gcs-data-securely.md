@@ -52,7 +52,7 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
 
   <Image img={IAM_and_admin} size="md" alt="" />
 
-  2. 在左侧菜单中点击 `Service accounts`，然后点击 `Create service account`：
+  2. 在左侧菜单中点击 `Service accounts`，然后点击 `Create service account`:
 
   <Image img={create_service_account} size="md" alt="" />
 
@@ -74,13 +74,13 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
   该角色提供对 GCS 对象的读写访问权限
 
   :::tip
-  对于只读访问权限,请使用 `Storage Object Viewer`
-  如需更精细的控制,可以创建自定义角色
+  对于只读访问权限，请改用 `Storage Object Viewer`
+  如需更细粒度的控制，可以创建自定义角色
   :::
 
   点击 `Continue`,然后点击 `Done`
 
-  记录服务账号的电子邮件地址:
+  记下服务账号的电子邮件地址：
 
   <Image img={note_service_account_email} size="md" alt="" />
 
@@ -88,31 +88,31 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
 
   您可以在项目级别或单个存储桶级别授予访问权限。
 
-  #### 选项 1:授予特定存储桶的访问权限(推荐)
+  #### 选项 1：授予对特定存储桶的访问权限（推荐）
 
   1. 转到 `Cloud Storage` → `Buckets`
   2. 点击要授予访问权限的存储桶
   3. 进入 `Permissions` 选项卡
-  4. 在“Permissions”部分中，为在前面步骤中创建的 principal 点击 `Grant access`
-  5. 在“New principals”字段中输入您的服务账户电子邮件地址
+  4. 在“Permissions”部分中，为前面步骤中创建的主体点击 `Grant access`
+  5. 在&quot;New principals&quot;字段中输入您的服务账户电子邮件地址
   6. 请选择合适的角色：
 
   * 用于读写访问的对象存储用户
   * 用于只读访问的 Storage Object Viewer 角色
 
   7. 单击 `Save`
-  8. 如有其他 bucket，请重复上述步骤
+  8. 如有其他存储桶，请重复上述步骤
 
   #### 选项 2:授予项目级别访问权限
 
   1. 前往 `IAM & Admin` → `IAM`
   2. 单击 `Grant access`
   3. 在 `New principals` 字段中输入您的服务账号电子邮箱地址
-  4. 选择 Storage Object User（只读访问请选择 Storage Object Viewer）
+  4. 选择 Storage Object User（如需只读访问，请选择 Storage Object Viewer）
   5. 点击“保存”
 
   :::warning 安全最佳实践
-  仅授予 ClickHouse 访问所需特定存储桶的权限,而非项目级权限。
+  仅授予 ClickHouse 访问所需的特定存储桶，而非项目范围的权限。
   :::
 
   ### 为服务账户生成 HMAC 密钥
@@ -134,7 +134,7 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
   <Image img={create_key} size="md" alt="" />
 
   系统将显示 HMAC 密钥。
-  请立即保存访问密钥和密钥 - 之后将无法再次查看该密钥。
+  请立即保存 Access Key 和 Secret —— 之后将无法再次查看该 Secret。
 
   示例密钥如下所示:
 
@@ -146,7 +146,7 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
   :::danger 重要
   请妥善保管这些凭据。
   关闭此页面后将无法再次获取该密钥。
-  如果丢失密钥,您需要重新生成。
+  如果丢失该密钥，您需要重新生成新的密钥。
   :::
 
   ## 在 ClickHouse Cloud 中使用 HMAC 密钥
@@ -164,7 +164,7 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
   );
   ```
 
-  使用通配符匹配多个文件:
+  使用通配符处理多个文件：
 
   ```sql
   SELECT *
@@ -180,9 +180,9 @@ ClickHouse Cloud 使用与 Google Cloud 服务账号关联的 HMAC（基于哈�
 
   ClickPipes 使用 HMAC(基于哈希的消息身份验证码)密钥向 Google Cloud Storage 进行身份验证。
 
-  当[设置 GCS ClickPipe](/integrations/clickpipes/object-storage/gcs/get-started) 时:
+  当[设置 GCS ClickPipe](/integrations/clickpipes/object-storage/gcs/get-started) 时：
 
-  1. 在 ClickPipe 设置过程中，将 `Authentication method` 设置为 `Credentials`
+  1. 在 ClickPipe 设置过程中，在 `Authentication method` 中选择 `Credentials`
   2. 提供在前述步骤中获取的 HMAC 凭据
 
   <Image img={clickpipes_hmac_key} size="md" alt="" />

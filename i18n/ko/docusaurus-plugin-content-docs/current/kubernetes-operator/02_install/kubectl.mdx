@@ -1,0 +1,98 @@
+---
+slug: /clickhouse-operator/install/kubectl
+title: "kubectl로 ClickHouse Operator 설치하기"
+keywords: ['kubernetes']
+description: "이 가이드는 kubectl과 매니페스트 파일을 사용하여 ClickHouse Operator를 설치하는 방법을 설명합니다."
+doc_type: 'guide'
+sidebar_label: 'kubectl'
+---
+
+이 가이드는 kubectl과 매니페스트 파일을 사용하여 ClickHouse Operator를 설치하는 방법을 설명합니다.
+
+## 사전 준비 사항 \{#prerequisites\}
+
+- Kubernetes 클러스터 v1.33.0 이상
+- kubectl v1.33.0 이상
+- 클러스터 관리자 권한
+
+## 릴리스 매니페스트를 사용하여 설치 \{#install-from-release-manifests\}
+
+:::note
+webhook 인증서를 발급하려면 cert-manager가 필요합니다.
+:::
+
+최신 릴리스에 포함된 operator와 CRD를 설치합니다.
+
+```bash
+kubectl apply -f https://github.com/ClickHouse/clickhouse-operator/releases/latest/download/clickhouse-operator.yaml
+```
+
+이를 통해 다음 작업이 수행됩니다:
+
+1. `clickhouse-operator-system` 네임스페이스를 생성합니다
+2. ClickHouseCluster 및 KeeperCluster에 대한 CustomResourceDefinition(CRD)를 설치합니다
+3. 필요한 ServiceAccount, Role 및 RoleBinding을 생성합니다
+4. operator controller manager를 배포합니다
+5. 리소스 검증 및 기본값 설정을 위한 webhook을 등록합니다
+6. cert-manager를 사용하여 SSL 인증서를 구성합니다
+7. metrics 엔드포인트를 활성화합니다
+
+
+## 설치 확인 \{#verify-installation\}
+
+Operator가 실행 중인지 확인합니다:
+
+```bash
+kubectl get pods -n clickhouse-operator-system
+```
+
+예상 출력:
+
+```
+NAME                                                 READY   STATUS    RESTARTS   AGE
+clickhouse-operator-controller-manager-xxxxxxxxxx    1/1     Running   0          1m
+```
+
+CRD가 설치되었는지 확인하십시오:
+
+```bash
+kubectl get crd | grep clickhouse.com
+```
+
+예상 출력 결과:
+
+```
+clickhouseclusters.clickhouse.com    2025-01-06T00:00:00Z
+keeperclusters.clickhouse.com        2025-01-06T00:00:00Z
+```
+
+
+## 사용자 지정 배포 옵션 구성 \{#configure-custom-deployment-options\}
+
+Operator 배포 옵션을 구성하려면 다음 단계를 따르십시오.
+
+### 1. 리포지토리 복제하기 \{#clone-the-repository\}
+
+```bash
+git clone https://github.com/ClickHouse/clickhouse-operator.git
+cd clickhouse-operator
+```
+
+
+### 2. 설치 옵션 구성 \{#configure-installation-options\}
+
+필요에 따라 기능을 활성화하거나 비활성화하려면 config/default/kustomization.yaml을 편집하십시오.
+
+* webhook을 비활성화하려면 `[WEBHOOK]` 및 `[CERTMANAGER]` 섹션을 주석 처리하십시오.
+* 보안 metrics 엔드포인트를 활성화하려면 `[METRICS]` 섹션을 주석 처리하고 `[METRICS SECURE]` 및 `[CERTMANAGER]` 섹션의 주석을 해제하십시오.
+* Prometheus Operator용 ServiceMonitor를 활성화하려면 `[PROMETHEUS]` 섹션의 주석을 해제하십시오.
+* 오퍼레이터 네트워크 정책을 활성화하려면 `[NETWORK POLICY]` 섹션의 주석을 해제하십시오.
+
+### 3. 빌드 및 배포 \{#build-and-deploy\}
+
+Operator 매니페스트를 빌드하고 적용합니다:
+
+```bash
+make build-installer VERSION=<required operator version> [IMG=<custom registry path>]
+kubectl apply -k dist/install.yaml
+```

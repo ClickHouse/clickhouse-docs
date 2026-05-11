@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## flameGraph \{#flameGraph\}
 
-引入版本：v23.8
+引入版本：v23.8.0
 
-使用堆栈跟踪列表构建一个 [火焰图（flamegraph）](https://www.brendangregg.com/flamegraphs.html)。
+使用堆栈跟踪列表构建一个 [火焰图 (flamegraph) ](https://www.brendangregg.com/flamegraphs.html)。
 输出一个字符串数组，可供 [flamegraph.pl](https://github.com/brendangregg/FlameGraph) 工具使用，用于渲染该火焰图的 SVG。
 
 :::note
-在 `ptr != 0` 的情况下，flameGraph 会将具有相同 size 和 ptr 的分配（size &gt; 0）与释放（size &lt; 0）对应起来。
+在 `ptr != 0` 的情况下，flameGraph 会将具有相同 size 和 ptr 的分配 (size &gt; 0) 与释放 (size &lt; 0) 对应起来。
 只显示尚未被释放的分配。
 未对应上的释放操作会被忽略。
 :::
@@ -29,8 +29,8 @@ flameGraph(traces[, size[, ptr]])
 **参数**
 
 * `traces` — 堆栈回溯。[`Array(UInt64)`](/sql-reference/data-types/array)
-* `size` — 可选。用于内存分析的分配大小（默认值为 1）。[`UInt64`](/sql-reference/data-types/int-uint)
-* `ptr` — 可选。分配地址（默认值为 0）。[`UInt64`](/sql-reference/data-types/int-uint)
+* `size` — 可选。用于内存分析的分配大小 (默认值为 1) 。[`UInt64`](/sql-reference/data-types/int-uint)
+* `ptr` — 可选。分配地址 (默认值为 0) 。[`UInt64`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -60,7 +60,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(trace, size)) from system.trace_log where trace_type = 'MemorySample' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem.svg
 ```
 
-**基于内存查询分析器构建火焰图，用于展示尚未释放的内存分配**
+**基于内存查询分析器构建火焰图，展示未释放的内存分配**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1, use_uncompressed_cache=1, merge_tree_max_rows_to_use_cache=100000000000, merge_tree_max_bytes_to_use_cache=1000000000000;
@@ -71,7 +71,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGraph(trace, size, ptr)) FROM system.trace_log WHERE trace_type = 'MemorySample' AND query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem_untracked.svg
 ```
 
-**基于内存查询分析器构建火焰图，在某个固定时间点展示活动内存分配情况**
+**基于内存查询分析器构建火焰图，用于在某个固定时间点展示当前活动的内存分配情况**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

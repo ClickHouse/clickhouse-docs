@@ -1,18 +1,15 @@
 ---
-description: '列統計の操作方法に関するドキュメント'
-sidebar_label: '統計'
+description: '列統計情報の操作に関するドキュメント'
+sidebar_label: 'STATISTICS'
 sidebar_position: 45
 slug: /sql-reference/statements/alter/statistics
-title: '列統計の操作'
+title: '列統計情報の操作'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # 列統計の操作 \{#manipulating-column-statistics\}
-
-<ExperimentalBadge />
 
 <CloudNotSupportedBadge />
 
@@ -34,12 +31,18 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## 例： \{#example\}
 
-2 種類の統計タイプを 2 つの列に追加する：
+2 種類のSTATISTICSタイプを 2 つの列に追加する：
 
 ```sql
 ALTER TABLE t1 MODIFY STATISTICS c, d TYPE TDigest, Uniq;
 ```
 
+Nullable 列に NullCount STATISTICSを追加する：
+
+```sql
+ALTER TABLE t1 ADD STATISTICS nullable_col TYPE NullCount;
+```
+
 :::note
-統計情報は、[`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md)エンジンテーブル（[レプリケーション](../../../engines/table-engines/mergetree-family/replication.md)バリアントを含む）でのみサポートされています。
+STATISTICSは、[`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md)エンジンテーブル ([レプリケーション](../../../engines/table-engines/mergetree-family/replication.md)バリアントを含む) でのみサポートされています。
 :::

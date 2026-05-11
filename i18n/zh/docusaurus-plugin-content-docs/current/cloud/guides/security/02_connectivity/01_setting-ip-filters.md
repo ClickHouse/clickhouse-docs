@@ -11,12 +11,13 @@ import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
 
+
 ## 设置 IP 过滤器 \{#setting-ip-filters\}
 
 IP 访问列表通过指定允许连接的源地址来过滤到 ClickHouse 服务或使用 API 密钥的流量。可以为每个服务和每个 API 密钥分别配置这些列表。列表既可以在创建服务或 API 密钥时配置，也可以在之后进行配置。
 
-:::important
-如果在创建 ClickHouse Cloud 服务时跳过 IP 访问列表的创建，那么将不允许任何流量访问该服务。如果 ClickHouse 服务的 IP 访问列表设置为 `Allow from anywhere`，互联网爬虫和扫描器在查找公共 IP 时，可能会周期性地将您的服务从空闲状态切换为活动状态，从而产生少量意料之外的费用。
+:::warning[为您的服务配置 IP 访问列表]
+在创建 ClickHouse Cloud 服务时，IP 允许列表的默认设置是“Allow from anywhere”。我们强烈建议尽快将访问限制为特定的 IP 地址或网段。对于设置为 `Allow from anywhere` 的服务，互联网爬虫和扫描器在查找公共 IP 时，可能会周期性地将您的服务从空闲状态切换为活动状态，从而导致意料之外的费用。
 :::
 
 ## 准备 \{#prepare\}
@@ -35,7 +36,7 @@ IP 访问列表仅适用于来自公共互联网、即 [PrivateLink](/cloud/secu
 <details>
   <summary>ClickHouse 服务的 IP 访问列表</summary>
 
-  创建 ClickHouse 服务时，IP Allow list 的默认设置为“Allow from nowhere”。
+  创建 ClickHouse 服务时，IP Allow list 的默认设置为“Allow from anywhere”。
   
   在 ClickHouse Cloud 服务列表中选择该服务，然后选择 **Settings**。在 **Security** 部分可以找到 IP 访问列表。点击 **Add IPs** 按钮。
   
@@ -46,6 +47,7 @@ IP 访问列表仅适用于来自公共互联网、即 [PrivateLink](/cloud/secu
 - 拒绝所有到该服务的访问
   
 </details>
+
 <details>
   <summary>API key 的 IP 访问列表</summary>
 
@@ -60,7 +62,7 @@ IP 访问列表仅适用于来自公共互联网、即 [PrivateLink](/cloud/secu
 </details>
 
 下图展示了一个访问列表，它允许来自一段 IP 地址范围的流量，描述为 “NY Office range”：
-  
+
 <Image img={ip_filtering_after_provisioning} size="md" alt="ClickHouse Cloud 中现有的访问列表" border/>
 
 ### 可执行的操作 \{#possible-actions\}
@@ -110,6 +112,7 @@ curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```response
 Ok.
 ```
+
 
 ## 限制 \{#limitations\}
 

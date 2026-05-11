@@ -1,8 +1,8 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumIf'
 title: 'sumIf'
-description: 'sumIf コンビネータの使用例'
-keywords: ['sum', 'if', 'コンビネータ', '例', 'sumIf']
+description: 'sumIf コンビネーターの使用例'
+keywords: ['sum', 'if', 'コンビネーター', '例', 'sumIf']
 sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
@@ -25,7 +25,8 @@ CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO sales VALUES
     (1, 100.50, 1),
@@ -84,7 +85,7 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### 株式銘柄別の取引量を計算する \{#calculate-trading-volume\}
+### 銘柄シンボル別の取引量を算出する \{#calculate-trading-volume\}
 
 この例では、[ClickHouse playground](https://sql.clickhouse.com/) で利用可能な `stock` テーブルを使用し、
 2006 年における当時の大手テクノロジー企業 3 社の銘柄シンボルごとの取引量を算出します。
@@ -121,5 +122,6 @@ ORDER BY month;
 ```
 
 ## 関連項目 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`If` コンビネーター](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`If` コンビネーター](/sql-reference/aggregate-functions/combinators#-if)

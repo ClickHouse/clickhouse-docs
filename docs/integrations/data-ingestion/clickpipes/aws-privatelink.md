@@ -49,7 +49,7 @@ ClickPipes reverse private endpoint can be configured with one of the following 
 ### VPC resource {#vpc-resource}
 
 :::info
-Cross-region is not supported.
+Cross-region isn't supported.
 :::
 
 Your VPC resources can be accessed in ClickPipes using [PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-resources.html). This approach doesn't require setting up a load balancer in front of your data source.
@@ -74,7 +74,7 @@ Your resource gateway attached subnets are recommended to have sufficient IP add
 It's recommended to have at least `/26` subnet mask for each subnet.
 
 For each VPC endpoint (each Reverse Private Endpoint), AWS requires a consecutive block of 16 IP addresses per subnet. (`/28` subnet mask)
-If this requirement is not met, Reverse Private Endpoint will transition to a failed state.
+If this requirement isn't met, Reverse Private Endpoint will transition to a failed state.
 :::
 
 You can create a resource gateway from the [AWS console](https://docs.aws.amazon.com/vpc/latest/privatelink/create-resource-gateway.html) or with the following command:
@@ -136,6 +136,14 @@ The output will contain a Resource-Configuration ARN, which you will need for th
 
 Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
 
+:::note
+A Resource-Share can only be used for a single Reverse Private Endpoint and cannot be reused.
+If you need to use the same Resource-Configuration for multiple Reverse Private Endpoints, 
+you must create a separate Resource-Share for each endpoint.
+The Resource-Share remains in your AWS account after a Reverse Private Endpoint is deleted 
+and must be manually removed if no longer needed.
+:::
+
 You can put the Resource-Configuration into the Resource-Share through [AWS console](https://docs.aws.amazon.com/ram/latest/userguide/working-with-sharing-create.html) or by running the following command with ClickPipes account ID `072088201116` (arn:aws:iam::072088201116:root):
 
 ```bash
@@ -147,7 +155,7 @@ aws ram create-resource-share \
 
 The output will contain a Resource-Share ARN, which you will need to set up a ClickPipe connection with VPC resource.
 
-You are ready to [create a ClickPipe with Reverse private endpoint](#creating-clickpipe) using VPC resource. You will need to:
+You're ready to [create a ClickPipe with Reverse private endpoint](#creating-clickpipe) using VPC resource. You will need to:
 - Set `VPC endpoint type` to `VPC Resource`.
 - Set `Resource configuration ID` to the ID of the Resource-Configuration created in step 2.
 - Set `Resource share ARN` to the ARN of the Resource-Share created in step 3.
@@ -159,8 +167,8 @@ For more details on PrivateLink with VPC resource, see [AWS documentation](https
 ### MSK multi-VPC connectivity {#msk-multi-vpc}
 
 The [Multi-VPC connectivity](https://docs.aws.amazon.com/msk/latest/developerguide/aws-access-mult-vpc.html) is a built-in feature of AWS MSK that allows you to connect multiple VPCs to a single MSK cluster.
-Private DNS support is out of the box and does not require any additional configuration.
-Cross-region is not supported.
+Private DNS support is out of the box and doesn't require any additional configuration.
+Cross-region isn't supported.
 
 It is a recommended option for ClickPipes for MSK.
 See the [getting started](https://docs.aws.amazon.com/msk/latest/developerguide/mvpc-getting-started.html) guide for more details.
@@ -239,7 +247,7 @@ For same-region access, creating a VPC Resource is the recommended approach.
 
 7. Click on `Create` and wait for the reverse private endpoint to be ready.
 
-   If you are creating a new endpoint, it will take some time to set up the endpoint.
+   If you're creating a new endpoint, it will take some time to set up the endpoint.
    The page will refresh automatically once the endpoint is ready.
    VPC endpoint service might require accepting the connection request in your AWS console.
 
@@ -249,7 +257,7 @@ For same-region access, creating a VPC Resource is the recommended approach.
 
    On a list of endpoints, you can see the DNS name for the available endpoint.
    It can be either an internally ClickPipes provisioned DNS name or a private DNS name supplied by a PrivateLink service.
-   DNS name is not a complete network address.
+   DNS name isn't a complete network address.
    Add the port according to the data source.
 
    MSK connection string can be accessed in the AWS console.
@@ -283,17 +291,37 @@ You can manage existing reverse private endpoints in the ClickHouse Cloud servic
 AWS PrivateLink support is limited to specific AWS regions for ClickPipes.
 Please refer to the [ClickPipes regions list](/integrations/clickpipes#list-of-static-ips) to see the available regions.
 
-This restriction does not apply to PrivateLink VPC endpoint service with a cross-region connectivity enabled.
+This restriction doesn't apply to PrivateLink VPC endpoint service with a cross-region connectivity enabled.
 
 ## Limitations {#limitations}
 
-AWS PrivateLink endpoints for ClickPipes created in ClickHouse Cloud are not guaranteed to be created
+AWS PrivateLink endpoints for ClickPipes created in ClickHouse Cloud aren't guaranteed to be created
 in the same AWS region as the ClickHouse Cloud service.
 
 Currently, only VPC endpoint service supports
 cross-region connectivity.
 
-Private endpoints are linked to a specific ClickHouse service and are not transferable between services.
+Private endpoints are linked to a specific ClickHouse service and aren't transferable between services.
 Multiple ClickPipes for a single ClickHouse service can reuse the same endpoint.
 
 AWS MSK supports only one PrivateLink (VPC endpoint) per MSK cluster per authentication type (SASL_IAM or SASL_SCRAM). As a result, multiple ClickHouse Cloud services or organizations cannot create separate PrivateLink connections to the same MSK cluster using the same auth type.
+
+### Automatic cleanup of inactive endpoints {#automatic-cleanup}
+
+Reverse private endpoints that remain in a terminal state are automatically removed after a defined grace period.
+This ensures unused or misconfigured endpoints do not persist indefinitely.
+
+The following grace periods apply based on the endpoint status:
+
+| Status | Grace Period | Description |
+|---|---|---|
+| **Failed** | 7 days | The endpoint encountered an error during provisioning. |
+| **Pending Acceptance** | 1 day | The endpoint connection has not been accepted by the service owner. |
+| **Rejected** | 1 day | The endpoint connection was rejected by the service owner. |
+| **Expired** | Immediate | The endpoint has already expired and is removed promptly. |
+
+Once the grace period elapses, the endpoint and all associated resources are automatically deleted.
+
+To prevent automatic removal, resolve the underlying issue before the grace period expires.
+For example, accept a pending connection request in your AWS console,
+or recreate the endpoint if it has entered a failed state.

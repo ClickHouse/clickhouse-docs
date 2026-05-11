@@ -13,7 +13,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## SYSTEM RELOAD EMBEDDED DICTIONARIES \{#reload-embedded-dictionaries\}
 
-Перезагружает все [внутренние словари](../../sql-reference/dictionaries/index.md).
+Перезагружает все [внутренние словари](./create/dictionary/overview.md).
 По умолчанию внутренние словари отключены.
 Всегда возвращает `Ok.` независимо от результата обновления внутреннего словаря.
 
@@ -105,6 +105,10 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 ## SYSTEM CLEAR|DROP ICEBERG METADATA CACHE \{#drop-iceberg-metadata-cache\}
 
 Очищает кеш метаданных Iceberg.
+
+## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
+
+Очищает кеш метаданных Parquet.
 
 ## SYSTEM CLEAR|DROP TEXT INDEX CACHES \{#drop-text-index-caches\}
 
@@ -417,6 +421,8 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 
 ### SYSTEM STOP TTL MERGES \{#stop-ttl-merges\}
 
+<CloudNotSupportedBadge />
+
 Позволяет остановить фоновое удаление старых данных в соответствии с [выражением TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) для таблиц семейства MergeTree.
 Возвращает `Ok.` даже если таблица не существует или таблица не использует движок MergeTree. Возвращает ошибку, если база данных не существует.
 
@@ -424,16 +430,16 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START TTL MERGES \{#start-ttl-merges\}
 
-Позволяет запустить фоновое удаление устаревших данных в соответствии с [выражением TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) для таблиц семейства MergeTree.
-Возвращает `Ok.` даже если таблица не существует. Возвращает ошибку, если база данных не существует.
+<CloudNotSupportedBadge />
+
+Позволяет запустить фоновое удаление устаревших данных в соответствии с [выражением TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) для таблиц семейства MergeTree:
+Возвращает `Ok.` даже если таблица не существует. Возвращает ошибку, если база данных не существует:
 
 ```sql
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM STOP MOVES \{#stop-moves\}
 
@@ -723,23 +729,11 @@ SYSTEM UNLOAD PRIMARY KEY
 ```
 
 
-## Управление Refreshable Materialized Views \{#refreshable-materialized-views\}
+## Управление Refreshable Materialized Views \{#managing-refreshable-materialized-views\}
 
 Команды для управления фоновыми задачами, выполняемыми [Refreshable Materialized Views](../../sql-reference/statements/create/view.md#refreshable-materialized-view).
 
 При работе с ними отслеживайте таблицу [`system.view_refreshes`](../../operations/system-tables/view_refreshes.md).
-
-### SYSTEM REFRESH VIEW \{#refresh-view\}
-
-Запускает немедленное внеплановое обновление указанного представления.
-
-```sql
-SYSTEM REFRESH VIEW [db.]name
-```
-
-### SYSTEM WAIT VIEW \{#wait-view\}
-
-Ожидает завершения текущего обновления, выполняющегося в данный момент. Если обновление завершается с ошибкой, генерируется исключение. Если обновление не выполняется, немедленно завершает выполнение, генерируя исключение, если предыдущее обновление завершилось с ошибкой.
 
 ### SYSTEM STOP [REPLICATED] VIEW, STOP VIEWS \{#stop-view-stop-views\}
 
@@ -763,9 +757,9 @@ SYSTEM STOP VIEWS
 
 ### SYSTEM START [REPLICATED] VIEW, START VIEWS \{#start-view-start-views\}
 
-Запускает периодическое обновление для указанного представления или для всех представлений с поддержкой обновления. Немедленное обновление при этом не выполняется.
+Запускает периодическое обновление для указанного представления или для всех обновляемых представлений. Немедленное обновление при этом не выполняется.
 
-Если представление находится в базе данных типа Replicated или Shared, `START VIEW` отменяет действие `STOP VIEW`, а `START REPLICATED VIEW` отменяет действие `STOP REPLICATED VIEW`.
+Если представление находится в базе данных типа Replicated или Shared, `START VIEW` отменяет действие `STOP VIEW`, а `START REPLICATED VIEW` отменяет действие `STOP REPLICATED VIEW`. `START VIEW` также отменяет действие `PAUSE VIEW`.
 
 ```sql
 SYSTEM START VIEW [db.]name
@@ -773,6 +767,46 @@ SYSTEM START VIEW [db.]name
 
 ```sql
 SYSTEM START VIEWS
+```
+
+### SYSTEM PAUSE VIEW, PAUSE VIEWS \{#pause-view-pause-views\}
+
+Отключает периодическое обновление указанного представления или всех обновляемых представлений.
+В отличие от `SYSTEM STOP VIEW`, команда `SYSTEM PAUSE VIEW` не прерывает уже выполняющееся обновление: текущему обновлению даётся завершиться, а предотвращаются только последующие обновления.
+
+Отменяется с помощью `SYSTEM START VIEW` или `SYSTEM START VIEWS`.
+
+:::note
+Состояние паузы не сохраняется при перезапуске сервера. После перезапуска представления возобновят обновление по настроенному расписанию.
+В базах данных Replicated или Shared команда `SYSTEM PAUSE VIEW` действует только на текущую реплику.
+:::
+
+```sql
+SYSTEM PAUSE VIEW [db.]name
+```
+
+```sql
+SYSTEM PAUSE VIEWS
+```
+
+### SYSTEM REFRESH VIEW \{#refresh-view\}
+
+Запускает немедленное внеплановое обновление указанного представления.
+
+```sql
+SYSTEM REFRESH VIEW [db.]name
+```
+
+### SYSTEM WAIT VIEW \{#wait-view\}
+
+Ожидает завершения текущего обновления. Если обновление не выполняется, немедленно возвращает управление. Если последняя попытка обновления завершилась с ошибкой, генерирует ошибку.
+
+Может использоваться сразу после создания нового refreshable materialized view (без ключевого слова EMPTY), чтобы дождаться завершения начального обновления.
+
+Если представление находится в базе данных Replicated или Shared и обновление выполняется на другой реплике, ожидает завершения этого обновления.
+
+```sql
+SYSTEM WAIT VIEW [db.]name
 ```
 
 
@@ -785,14 +819,10 @@ SYSTEM CANCEL VIEW [db.]name
 ```
 
 
-### SYSTEM WAIT VIEW \{#system-wait-view\}
+## SYSTEM FLUSH OBJECT STORAGE QUEUE \{#flush-object-storage-queue\}
 
-Ожидает завершения текущего обновления. Если обновление не выполняется, немедленно возвращает управление. Если последняя попытка обновления завершилась с ошибкой, генерирует ошибку.
-
-Может использоваться сразу после создания нового refreshable materialized view (без ключевого слова EMPTY), чтобы дождаться завершения начального обновления.
-
-Если представление находится в базе данных Replicated или Shared и обновление выполняется на другой реплике, ожидает завершения этого обновления.
+Блокирует выполнение до тех пор, пока указанный файл не будет обработан или не завершится необратимой ошибкой в указанной таблице [S3Queue](../../engines/table-engines/integrations/s3queue.md) или [AzureQueue](../../engines/table-engines/integrations/azure-queue.md). Если файл уже обработан, управление возвращается немедленно. Выдаёт ошибку, если обработка файла завершилась необратимой ошибкой (все повторные попытки исчерпаны).
 
 ```sql
-SYSTEM WAIT VIEW [db.]name
+SYSTEM FLUSH OBJECT STORAGE QUEUE [db.]table_name PATH 'path'
 ```

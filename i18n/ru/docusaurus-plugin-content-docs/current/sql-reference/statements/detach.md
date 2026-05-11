@@ -35,7 +35,7 @@ DETACH TABLE|VIEW|DICTIONARY|DATABASE [IF EXISTS] [db.]name [ON CLUSTER cluster]
 Запрос:
 
 ```sql
-CREATE TABLE test ENGINE = Log AS SELECT * FROM numbers(10);
+CREATE TABLE test ENGINE = MergeTree ORDER BY () AS SELECT * FROM numbers(10);
 SELECT * FROM test;
 ```
 
@@ -79,4 +79,4 @@ Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table defa
 **См. также**
 
 * [Материализованное представление](/sql-reference/statements/create/view#materialized-view)
-* [Словари](../../sql-reference/dictionaries/index.md)
+* [Словари](./create/dictionary/overview.md)

@@ -1,20 +1,20 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/slackbot
 sidebar_label: 'Integrate SlackBot'
-title: 'How to build a SlackBot agent using ClickHouse MCP Server.'
+title: 'How to build a SlackBot agent using ClickHouse MCP server.'
 pagination_prev: null
 pagination_next: null
-description: 'Learn how to build a SlackBot agent that can interact with ClickHouse MCP Server.'
+description: 'Learn how to build a SlackBot agent that can interact with ClickHouse MCP server.'
 keywords: ['ClickHouse', 'MCP', 'Slack', 'SlackBot', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a SlackBot agent using ClickHouse MCP Server
+# How to build a SlackBot agent using ClickHouse MCP server
 
 In this guide, you'll learn how to build a [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) agent.
 This bot allows you to ask questions about your ClickHouse data directly from Slack, using natural language. It uses the
-[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) and [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1).
+[ClickHouse MCP server](https://github.com/ClickHouse/mcp-clickhouse) and [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1).
 
 :::note Example project
 The code for this example can be found in the [examples repository](https://github.com/ClickHouse/examples/blob/main/ai/mcp/slackbot/README.md).

@@ -31,6 +31,7 @@ assert result.result_set[1][0] == 'first_value2'
 
 `QueryContext` はスレッドセーフではありませんが、マルチスレッド環境で使用する場合は、`QueryContext.updated_copy` メソッドを呼び出してコピーを取得できます。
 
+
 ## ストリーミングクエリ \{#streaming-queries\}
 
 ClickHouse Connect Client は、ストリームとしてデータを取得するための複数のメソッド（Python のジェネレーターとして実装されています）を提供します。
@@ -357,7 +358,7 @@ print([int.from_bytes(n, byteorder="little") for n in df["int_128_col"].to_list(
 
 ## 読み取りフォーマット \{#read-formats\}
 
-読み取りフォーマットは、クライアントの `query`、`query_np`、`query_df` メソッドから返される値のデータ型を制御します（`raw_query` と `query_arrow` は ClickHouse から受信したデータを変更しないため、フォーマット制御は適用されません）。たとえば、UUID の読み取りフォーマットをデフォルトの `native` フォーマットから代替の `string` フォーマットに変更すると、UUID 型カラムに対する ClickHouse のクエリ結果は、Python の UUID オブジェクトではなく、（標準的な 8-4-4-4-12 の RFC 1422 形式を使用した）文字列値として返されます。
+読み取りフォーマットは、クライアントの `query`、`query_np`、`query_df` メソッドから返される値のデータ型を制御します (`raw_query` と `query_arrow` は ClickHouse から受信したデータを変更しないため、フォーマット制御は適用されません) 。たとえば、UUID の読み取りフォーマットをデフォルトの `native` フォーマットから代替の `string` フォーマットに変更すると、UUID 型カラムに対する ClickHouse のクエリ結果は、Python の UUID オブジェクトではなく、 (標準的な 8-4-4-4-12 の RFC 1422 形式を使用した) 文字列値として返されます。
 
 任意のフォーマット関数の &quot;data type&quot; 引数にはワイルドカードを含めることができます。フォーマット指定は、小文字のみから成る 1 つの文字列です。
 
@@ -375,7 +376,7 @@ set_read_format('IPv*', 'string')
 set_read_format('Date*', 'int')
 ```
 
-* クエリ全体に対してオプションの `query_formats` 辞書引数を使用する方法。この場合、指定したデータ型の任意の列（またはサブカラム）には、設定されたフォーマットが適用されます。
+* クエリ全体に対してオプションの `query_formats` 辞書引数を使用する方法。この場合、指定したデータ型のカラム (またはサブカラム) はすべて、設定されたフォーマットを使用します。
 
 ```python
 # Return any UUID column as a string
@@ -388,6 +389,7 @@ client.query('SELECT user_id, user_uuid, device_uuid from users', query_formats=
 # Return IPv6 values in the `dev_address` column as strings
 client.query('SELECT device_id, dev_address, gw_address from devices', column_formats={'dev_address':'string'})
 ```
+
 
 ### 読み取りフォーマットオプション（Python 型） \{#read-format-options-python-types\}
 

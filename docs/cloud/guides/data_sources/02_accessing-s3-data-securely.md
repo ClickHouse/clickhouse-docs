@@ -17,8 +17,6 @@ Before diving into the setup for secure S3 access, it is important to understand
 
 <Image img={secure_s3} size="lg" alt="Overview of Secure S3 Access with ClickHouse"/>
 <br/>
-<Image img={secure_s3} size="md" alt="Overview of Secure S3 Access with ClickHouse"/>
-<br/>
 
 This approach allows customers to manage all access to their S3 buckets in a single place (the IAM policy of the assumed-role) without having to go through all of their bucket policies to add or remove access.
 In the section below, you will learn how to set this up.
@@ -55,7 +53,7 @@ The IAM assume role can be setup in one of two ways:
 4. Enter your bucket name in the input titled "Bucket Names". If your bucket URL is `https://ch-docs-s3-bucket.s3.eu-central-1.amazonaws.com/clickhouseS3/` then the bucket name is `ch-docs-s3-bucket`.
 
 :::note
-Do not put the full bucket ARN but instead just the bucket name only.
+Don't put the full bucket ARN but instead just the bucket name only.
 :::
 
 5. Configure the CloudFormation stack. Below is additional information about these parameters.
@@ -145,7 +143,7 @@ DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWit
 ```
 
 Below is an example query that uses the `role_session_name` as a shared secret to query data from a bucket.
-If the `role_session_name` is not correct, this operation will fail.
+If the `role_session_name` isn't correct, this operation will fail.
 
 ```sql
 DESCRIBE TABLE s3('https://s3.amazonaws.com/BUCKETNAME/BUCKETOBJECT.csv','CSVWithNames',extra_credentials(role_arn = 'arn:aws:iam::111111111111:role/ClickHouseAccessRole-001', role_session_name = 'secret-role-name'))

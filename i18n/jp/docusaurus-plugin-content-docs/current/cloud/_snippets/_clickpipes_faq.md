@@ -55,10 +55,10 @@ import clickpipesPricingFaq3 from '@site/static/images/cloud/manage/jan2025_faq/
 
   2 つの要素で構成されています:
 
-  * **Compute**: ユニットあたり時間単価\
+  * **Compute**: ユニットあたり時間単価
     Compute は、ClickPipes レプリカのポッドが実際にデータを取り込んでいるかどうかに関わらず、稼働していることに対するコストを表します。
     これはすべての ClickPipes タイプに適用されます。
-  * **Ingested data**: GB あたりの料金\
+  * **Ingested data**: GB あたりの料金
     取り込まれたデータレートは、すべてのストリーミング ClickPipes
     （Kafka、Confluent、Amazon MSK、Amazon Kinesis、Redpanda、WarpStream、
     Azure Event Hubs）で、レプリカのポッドを経由して転送されるデータに適用されます。

@@ -1,18 +1,5 @@
-import BetaBadge from '@theme/badges/BetaBadge';
+## Выбор schema: Map или JSON \{#schema-choice-map-vs-json\}
 
-## Поддержка типа JSON \{#json-type-support\}
+По умолчанию ClickStack хранит атрибуты в столбцах `Map(LowCardinality(String), String)`. Это рекомендуемая schema для рабочих нагрузок обсервабилити. В сочетании с [бакетизированной сериализацией Map](/sql-reference/data-types/map#bucketed-map-serialization) и текстовыми индексами по ключам и значениям Map она обеспечивает выборочный поиск без накладных расходов на приём данных для каждого ключа, характерных для динамических JSON-подстолбцов.
 
-<BetaBadge/>
-
-:::warning Beta Feature - not production ready
-Поддержка типа JSON в **ClickStack** находится в статусе **бета-версии**. Хотя сам тип JSON готов к промышленной эксплуатации в ClickHouse 25.3+, его интеграция в ClickStack всё ещё активно разрабатывается и может иметь ограничения, изменяться в будущем или содержать ошибки.
-:::
-
-Поддержка [типа JSON](/interfaces/formats/JSON) в ClickStack доступна в статусе бета-версии, начиная с версии `2.0.4`.
-
-О преимуществах этого типа см. раздел [Преимущества типа JSON](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type).
-
-Чтобы включить поддержку типа JSON, вам необходимо задать следующие переменные окружения:
-
-- `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` — включает поддержку в OTel collector, гарантируя, что схемы создаются с использованием типа JSON.
-- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` — включает поддержку в приложении HyperDX, позволяя выполнять запросы к данным JSON.
+Schema с типом `JSON` доступна в статусе бета для оценки на рабочих нагрузках с небольшим стабильным набором ключей атрибутов. Она **не рекомендуется** в качестве schema по умолчанию. Полное сравнение и список переменных окружения, необходимых для включения поддержки JSON, см. в разделе [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json).

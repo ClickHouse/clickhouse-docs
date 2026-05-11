@@ -87,7 +87,7 @@ PostgreSQL использует MVCC (Multi-Version Concurrency Control) для 
 ### Используйте официальные клиенты ClickHouse \{#use-official-clickhouse-clients\}
 
 Для ClickHouse доступны клиенты на наиболее популярных языках программирования.
-Они оптимизированы для корректного выполнения вставок и нативно поддерживают асинхронные вставки либо напрямую, как, например, [Go-клиент](/integrations/go#async-insert), либо косвенно, когда они включены в настройках запроса, пользователя или соединения.
+Они оптимизированы для корректного выполнения вставок и нативно поддерживают асинхронные вставки либо напрямую, как, например, [Go-клиент](/integrations/language-clients/go/clickhouse-api#async-insert), либо косвенно, когда они включены в настройках запроса, пользователя или соединения.
 
 См. [Clients and Drivers](/interfaces/cli) для полного списка доступных клиентов и драйверов ClickHouse.
 
@@ -163,104 +163,103 @@ user_id message                                             timestamp           
 
 **Предварительные требования**
 
-- У вас [установлен](/install) ClickHouse
-- `clickhouse-server` запущен
-- У вас есть доступ к терминалу с `wget`, `zcat` и `curl`
+* У вас [установлен](/install) ClickHouse
+* `clickhouse-server` запущен
+* У вас есть доступ к терминалу с `wget`, `zcat` и `curl`
 
-В этом примере показано, как вставить CSV-файл в ClickHouse из командной строки с помощью clickhouse-client в пакетном режиме. Для получения дополнительной информации и примеров вставки данных через командную строку с использованием clickhouse-client в пакетном режиме см. раздел ["Batch mode"](/interfaces/cli#batch-mode).
+В этом примере показано, как вставить CSV-файл в ClickHouse из командной строки с помощью clickhouse-client в пакетном режиме. Для получения дополнительной информации и примеров вставки данных через командную строку с использованием clickhouse-client в пакетном режиме см. раздел [&quot;Batch mode&quot;](/interfaces/client#batch-mode).
 
 В этом примере мы будем использовать [набор данных Hacker News](/getting-started/example-datasets/hacker-news), который содержит 28 миллионов строк данных Hacker News.
 
 <VerticalStepper headerLevel="h3">
-    
-### Загрузка CSV \{#download-csv\}
+  ### Загрузка CSV
 
-Выполните следующую команду, чтобы скачать CSV-версию набора данных из нашего публичного бакета S3:
+  Выполните следующую команду, чтобы скачать CSV-версию набора данных из нашего публичного бакета S3:
 
-```bash
-wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
-```
+  ```bash
+  wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz
+  ```
 
-При размере 4.6 GB и 28 млн строк загрузка этого сжатого файла должна занять 5–10 минут.
+  При размере 4.6 GB и 28 млн строк загрузка этого сжатого файла должна занять 5–10 минут.
 
-### Создание таблицы \{#create-table\}
+  ### Создание таблицы
 
-При запущенном `clickhouse-server` вы можете создать пустую таблицу со следующей схемой непосредственно из командной строки с помощью `clickhouse-client` в пакетном режиме:
+  При запущенном `clickhouse-server` вы можете создать пустую таблицу со следующей схемой непосредственно из командной строки с помощью `clickhouse-client` в пакетном режиме:
 
-```bash
-clickhouse-client <<'_EOF'
-CREATE TABLE hackernews(
-    `id` UInt32,
-    `deleted` UInt8,
-    `type` Enum('story' = 1, 'comment' = 2, 'poll' = 3, 'pollopt' = 4, 'job' = 5),
-    `by` LowCardinality(String),
-    `time` DateTime,
-    `text` String,
-    `dead` UInt8,
-    `parent` UInt32,
-    `poll` UInt32,
-    `kids` Array(UInt32),
-    `url` String,
-    `score` Int32,
-    `title` String,
-    `parts` Array(UInt32),
-    `descendants` Int32
-)
-ENGINE = MergeTree
-ORDER BY id
-_EOF
-```
+  ```bash
+  clickhouse-client <<'_EOF'
+  CREATE TABLE hackernews(
+      `id` UInt32,
+      `deleted` UInt8,
+      `type` Enum('story' = 1, 'comment' = 2, 'poll' = 3, 'pollopt' = 4, 'job' = 5),
+      `by` LowCardinality(String),
+      `time` DateTime,
+      `text` String,
+      `dead` UInt8,
+      `parent` UInt32,
+      `poll` UInt32,
+      `kids` Array(UInt32),
+      `url` String,
+      `score` Int32,
+      `title` String,
+      `parts` Array(UInt32),
+      `descendants` Int32
+  )
+  ENGINE = MergeTree
+  ORDER BY id
+  _EOF
+  ```
 
-Если ошибок нет, значит таблица успешно создана. В приведённой выше команде одинарные кавычки используются вокруг разделителя heredoc (`_EOF`), чтобы предотвратить интерполяцию. Без одинарных кавычек пришлось бы экранировать обратные кавычки вокруг имён столбцов. 
+  Если ошибок нет, значит таблица успешно создана. В приведённой выше команде одинарные кавычки используются вокруг разделителя heredoc (`_EOF`), чтобы предотвратить интерполяцию. Без одинарных кавычек пришлось бы экранировать обратные кавычки вокруг имён столбцов.
 
-### Вставка данных из командной строки \{#insert-data-via-cmd\}
+  ### Вставка данных из командной строки
 
-Затем выполните следующую команду, чтобы вставить данные из ранее загруженного файла в вашу таблицу:
+  Затем выполните следующую команду, чтобы вставить данные из ранее загруженного файла в вашу таблицу:
 
-```bash
-zcat < hacknernews.csv.gz | ./clickhouse client --query "INSERT INTO hackernews FORMAT CSV"
-```
+  ```bash
+  zcat < hacknernews.csv.gz | ./clickhouse client --query "INSERT INTO hackernews FORMAT CSV"
+  ```
 
-Поскольку наши данные сжаты, нам сначала нужно распаковать файл с помощью инструмента вроде `gzip`, `zcat` или аналогичного, а затем передать распакованные данные в `clickhouse-client` с соответствующим оператором `INSERT` и параметром `FORMAT`.
+  Поскольку наши данные сжаты, нам сначала нужно распаковать файл с помощью инструмента вроде `gzip`, `zcat` или аналогичного, а затем передать распакованные данные в `clickhouse-client` с соответствующим оператором `INSERT` и параметром `FORMAT`.
 
-:::note
-При вставке данных с помощью clickhouse-client в интерактивном режиме можно позволить ClickHouse обработать распаковку за вас при вставке, используя предложение `COMPRESSION`. ClickHouse может автоматически определить тип сжатия по расширению файла, но вы также можете указать его явно.
+  :::note
+  При вставке данных с помощью clickhouse-client в интерактивном режиме можно позволить ClickHouse обработать распаковку за вас при вставке, используя предложение `COMPRESSION`. ClickHouse может автоматически определить тип сжатия по расширению файла, но вы также можете указать его явно.
 
-Запрос на вставку тогда будет выглядеть так: 
+  Запрос на вставку тогда будет выглядеть так:
 
-```bash
-clickhouse-client --query "INSERT INTO hackernews FROM INFILE 'hacknernews.csv.gz' COMPRESSION 'gzip' FORMAT CSV;"
-```
-:::
+  ```bash
+  clickhouse-client --query "INSERT INTO hackernews FROM INFILE 'hacknernews.csv.gz' COMPRESSION 'gzip' FORMAT CSV;"
+  ```
 
-Когда вставка данных завершится, вы можете выполнить следующую команду, чтобы увидеть количество строк в таблице `hackernews`:
+  :::
 
-```bash
-clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
-28.74 million
-```
+  Когда вставка данных завершится, вы можете выполнить следующую команду, чтобы увидеть количество строк в таблице `hackernews`:
 
-### Вставка данных из командной строки с помощью curl \{#insert-using-curl\}
+  ```bash
+  clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
+  28.74 million
+  ```
 
-В предыдущих шагах вы сначала скачивали CSV-файл на локальную машину с помощью `wget`. Также возможно напрямую вставить данные с удалённого URL одной командой.
+  ### Вставка данных из командной строки с помощью curl
 
-Выполните следующую команду, чтобы очистить таблицу `hackernews`, чтобы вы могли вставить данные снова без промежуточного шага скачивания на локальную машину:
+  В предыдущих шагах вы сначала скачивали CSV-файл на локальную машину с помощью `wget`. Также возможно напрямую вставить данные с удалённого URL одной командой.
 
-```bash
-clickhouse-client --query "TRUNCATE hackernews"
-```
+  Выполните следующую команду, чтобы очистить таблицу `hackernews`, чтобы вы могли вставить данные снова без промежуточного шага скачивания на локальную машину:
 
-Теперь выполните:
+  ```bash
+  clickhouse-client --query "TRUNCATE hackernews"
+  ```
 
-```bash
-curl https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz | zcat | clickhouse-client --query "INSERT INTO hackernews FORMAT CSV"
-```
+  Теперь выполните:
 
-Теперь вы можете выполнить ту же команду, что и ранее, чтобы убедиться, что данные были вставлены снова:
+  ```bash
+  curl https://datasets-documentation.s3.eu-west-3.amazonaws.com/hackernews/hacknernews.csv.gz | zcat | clickhouse-client --query "INSERT INTO hackernews FORMAT CSV"
+  ```
 
-```bash
-clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
-28.74 million
-```
+  Теперь вы можете выполнить ту же команду, что и ранее, чтобы убедиться, что данные были вставлены снова:
 
+  ```bash
+  clickhouse-client --query "SELECT formatReadableQuantity(count(*)) FROM hackernews"
+  28.74 million
+  ```
 </VerticalStepper>

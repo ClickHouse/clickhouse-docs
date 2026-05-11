@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayLast \{#groupArrayLast\}
 
-導入バージョン: v23.1
+導入バージョン: v23.1.0
 
 引数の末尾の値からなる配列を作成します。
 例えば、`groupArrayLast(1)(x)` は `[anyLast(x)]` と同等です。
@@ -29,7 +29,7 @@ groupArrayLast(max_size)(x)
 **引数**
 
 * `max_size` — 結果配列の最大サイズ。[`UInt64`](/sql-reference/data-types/int-uint)
-* `x` — 引数（カラム名または式）。[`Any`](/sql-reference/data-types)
+* `x` — 引数 (カラム名または式) 。[`Any`](/sql-reference/data-types)
 
 **戻り値**
 

@@ -1,17 +1,17 @@
 ---
-description: 'COVID-19 Open-Data は、COVID-19 の疫学データと、人口統計、経済、政府対応などの関連要因を含む、大規模なオープンソースデータベースです'
+description: '新型コロナウイルス感染症（COVID-19） Open-Data は、新型コロナウイルス感染症（COVID-19） の疫学データと、人口統計、経済、政府対応などの関連要因を含む、大規模なオープンソースデータベースです'
 sidebar_label: 'COVID-19 open-data'
 slug: /getting-started/example-datasets/covid19
-title: 'COVID-19 Open-Data'
-keywords: ['COVID-19 データ', '疫学データ', 'ヘルスケアデータセット', 'サンプルデータセット', 'はじめに']
+title: '新型コロナウイルス感染症（COVID-19） オープンデータ'
+keywords: ['新型コロナウイルス感染症（COVID-19） データ', '疫学データ', 'ヘルスケアデータセット', 'サンプルデータセット', 'はじめに']
 doc_type: 'guide'
 ---
 
-COVID-19 Open-Data は、最大規模の COVID-19 疫学データベースを構築するとともに、強力で網羅的な共変量データ群を提供することを目指しています。人口統計、経済、疫学、地理、健康、入院状況、モビリティ、政府対応、気象などに関する、オープンかつパブリックソースのライセンス済みデータが含まれています。
+新型コロナウイルス感染症（COVID-19） Open-Data は、最大規模の 新型コロナウイルス感染症（COVID-19） 疫学データベースを構築するとともに、強力で網羅的な共変量データ群を提供することを目指しています。人口統計、経済、疫学、地理、健康、入院状況、モビリティ、政府対応、気象などに関する、オープンかつパブリックソースのライセンス済みデータが含まれています。
 
 詳細は GitHub の[こちら](https://github.com/GoogleCloudPlatform/covid-19-open-data)にあります。
 
-このデータを ClickHouse に取り込むのは簡単です...
+このデータを ClickHouse に insert するのは簡単です...
 
 :::note
 以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の **Production** インスタンス上で実行されたものです。ローカル環境にインストールした ClickHouse でも同様に簡単に実行できます。
@@ -55,6 +55,7 @@ LIMIT 100;
 
 ここで注目してほしいのは、`url` 関数を使うと CSV ファイルからデータを簡単に読み取れる点です。
 
+
 ```response
 ┌─c1─────────┬─c2───────────┬─c3────────────┬─c4───────────┬─c5────────────┬─c6─────────┬─c7───────────────────┬─c8──────────────────┬─c9───────────────────┬─c10───────────────┐
 │ date       │ location_key │ new_confirmed │ new_deceased │ new_recovered │ new_tested │ cumulative_confirmed │ cumulative_deceased │ cumulative_recovered │ cumulative_tested │
@@ -67,7 +68,7 @@ LIMIT 100;
 └────────────┴──────────────┴───────────────┴──────────────┴───────────────┴────────────┴──────────────────────┴─────────────────────┴──────────────────────┴───────────────────┘
 ```
 
-3. データの構造が把握できたので、テーブルを作成します。
+3. データの内容が分かったので、ここでテーブルを作成します:
 
 ```sql
 CREATE TABLE covid19 (
@@ -86,7 +87,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 次のコマンドは、`covid19` テーブルにデータセット全体を挿入します。
+4. 以下のコマンドは、`covid19` テーブルにデータセット全体を挿入します。
 
 ```sql
 INSERT INTO covid19
@@ -108,7 +109,7 @@ INSERT INTO covid19
     );
 ```
 
-5. 処理はかなり速く終わります ― 挿入された行数を確認してみましょう：
+5. 処理はすぐに終わります - では、何行挿入されたか確認してみましょう:
 
 ```sql
 SELECT formatReadableQuantity(count())
@@ -121,7 +122,7 @@ FROM covid19;
 └─────────────────────────────────┘
 ```
 
-6. COVID-19 の累計症例数がどれだけ記録されているか確認してみましょう：
+6. 新型コロナウイルス感染症（COVID-19）の累計症例数がいくつ記録されているか確認しましょう。
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -133,6 +134,7 @@ FROM covid19;
 │ 1.39 billion                               │
 └────────────────────────────────────────────┘
 ```
+
 
 7. データを見ると、日付の値が 0 になっている箇所が多いことに気づくはずです。これは週末であったり、数値が毎日報告されなかった日であったりします。ウィンドウ関数を使って、新規症例数の日次平均を平滑化できます。
 
@@ -231,6 +233,7 @@ WHERE location_key = 'US_DC';
 
 結果は次のようになります。
 
+
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
 │ 2020-03-08 │             0 │            nan │ decrease  │
@@ -263,5 +266,5 @@ WHERE location_key = 'US_DC';
 ```
 
 :::note
-[GitHub リポジトリ](https://github.com/GoogleCloudPlatform/covid-19-open-data)で説明されているとおり、このデータセットは 2022 年 9 月 15 日以降更新されていません。
+[GitHub リポジトリ](https://github.com/GoogleCloudPlatform/covid-19-open-data) で述べられているように、このデータセットの更新は 2022 年 9 月 15 日をもって終了しています。
 :::

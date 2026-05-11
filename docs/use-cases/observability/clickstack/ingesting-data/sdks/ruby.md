@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This guide integrates:
 
 <table>
@@ -37,7 +40,7 @@ bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exp
 
 Next, you'll need to initialize the OpenTelemetry tracing instrumentation
 and configure the log message formatter for Rails logger so that logs can be
-tied back to traces automatically. Without the custom formatter, logs will not
+tied back to traces automatically. Without the custom formatter, logs won't
 be automatically correlated together in ClickStack.
 
 In `config/initializers` folder, create a file called `hyperdx.rb` and add the
@@ -76,7 +79,20 @@ end
 
 ### Configure environment variables {#configure-environment-variables}
 
-Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
+Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack via the OpenTelemetry collector:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Managed ClickStack" default>
+
+```shell
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source" >
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
@@ -84,6 +100,9 @@ OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
+
+</TabItem>
+</Tabs>
 
 _The `OTEL_SERVICE_NAME` environment variable is used to identify your service
 in the HyperDX app, it can be any name you want._

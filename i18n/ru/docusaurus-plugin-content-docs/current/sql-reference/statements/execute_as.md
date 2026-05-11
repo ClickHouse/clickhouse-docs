@@ -22,7 +22,7 @@ EXECUTE AS target_user subquery;
 
 Вторая форма (с `subquery`) выполняет только указанный `subquery` от имени указанного `target_user`.
 
-Для работы обеих форм необходимо, чтобы параметр сервера [allow&#95;impersonate&#95;user](/operations/server-configuration-parameters/settings#allow_impersonate_user)
+Для работы обеих форм необходимо, чтобы параметр конфигурации `access_control_improvements.allow_impersonate_user`
 был установлен в значение `1`, а привилегия `IMPERSONATE` была выдана. Например, следующие команды
 
 ```sql
@@ -34,6 +34,7 @@ GRANT IMPERSONATE ON * TO user3;
 
 При работе от имени другого пользователя функция [currentUser()](/sql-reference/functions/other-functions#currentUser) возвращает имя этого пользователя,
 а функция [authenticatedUser()](/sql-reference/functions/other-functions#authenticatedUser) возвращает имя пользователя, который был фактически аутентифицирован.
+
 
 ## Примеры \{#examples\}
 

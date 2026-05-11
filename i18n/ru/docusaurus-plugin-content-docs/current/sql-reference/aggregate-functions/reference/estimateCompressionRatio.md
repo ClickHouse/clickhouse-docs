@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## estimateCompressionRatio \{#estimateCompressionRatio\}
 
-Добавлено в версии v25.4
+Добавлено в версии v25.4.0
 
 Оценивает коэффициент сжатия заданного столбца без фактического сжатия.
 
@@ -27,7 +27,7 @@ estimateCompressionRatio([codec, block_size_bytes])(column)
 **Параметры**
 
 * `codec` — Строка, содержащая кодек сжатия или несколько кодеков, разделённых запятыми, в одной строке. [`String`](/sql-reference/data-types/string)
-* `block_size_bytes` — Размер блока сжатых данных. Эквивалентно одновременному заданию [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) и [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size). Значение по умолчанию — 1 MiB (1048576 байт). [`UInt64`](/sql-reference/data-types/int-uint)
+* `block_size_bytes` — Размер блока сжатых данных. Эквивалентно одновременному заданию [`max_compress_block_size`](../../../operations/settings/merge-tree-settings.md#max_compress_block_size) и [`min_compress_block_size`](../../../operations/settings/merge-tree-settings.md#min_compress_block_size). Значение по умолчанию — 1 MiB (1048576 байт). Максимально допустимое значение — 256 MiB (268435456 байт). [`UInt64`](/sql-reference/data-types/int-uint)
 
 **Аргументы**
 
@@ -62,7 +62,7 @@ SELECT estimateCompressionRatio(number) AS estimate FROM compression_estimate_ex
 └────────────────────┘
 ```
 
-**Использование определённого кодека**
+**Использование конкретного кодека**
 
 ```sql title=Query
 SELECT estimateCompressionRatio('T64')(number) AS estimate FROM compression_estimate_example
@@ -74,7 +74,7 @@ SELECT estimateCompressionRatio('T64')(number) AS estimate FROM compression_esti
 └───────────────────┘
 ```
 
-**Использование нескольких кодировщиков**
+**Использование нескольких кодеков**
 
 ```sql title=Query
 SELECT estimateCompressionRatio('T64, ZSTD')(number) AS estimate FROM compression_estimate_example

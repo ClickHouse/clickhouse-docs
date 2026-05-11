@@ -6,10 +6,6 @@ description: 'Описывает, как экспортировать резер
 doc_type: 'guide'
 ---
 
-import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
-
-<EnterprisePlanFeatureBadge />
-
 ClickHouse Cloud поддерживает создание резервных копий в вашу собственную учётную запись облачного провайдера (CSP) (AWS S3, Google Cloud Storage или Azure Blob Storage).
 Подробную информацию о том, как работают резервные копии ClickHouse Cloud, включая «полные» и «инкрементальные» резервные копии, см. в документации по [резервному копированию](/cloud/manage/backups/overview).
 
@@ -18,7 +14,6 @@ ClickHouse Cloud поддерживает создание резервных к
 :::note
 При любом сценарии, когда резервные копии экспортируются в другой регион того же облачного провайдера, будет взиматься плата за [передачу данных](/cloud/manage/network-data-transfer). В настоящий момент мы не поддерживаем резервное копирование между разными облачными провайдерами.
 :::
-
 
 ## Требования \{#requirements\}
 

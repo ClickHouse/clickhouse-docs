@@ -37,7 +37,7 @@ The architecture of the cluster you will be setting up is shown below:
 ## Prerequisites {#pre-requisites}
 
 - You've set up a [local ClickHouse server](/install) before
-- You are familiar with basic configuration concepts of ClickHouse such as [configuration files](/operations/configuration-files)
+- You're familiar with basic configuration concepts of ClickHouse such as [configuration files](/operations/configuration-files)
 - You have docker installed on your machine
 
 <VerticalStepper level="h2">
@@ -282,7 +282,7 @@ are allowed, but can also be turned off with setting `allow_distributed_ddl_quer
 #### Keeper configuration {#keeper-config-explanation}
 
 The `<ZooKeeper>` section tells ClickHouse where ClickHouse Keeper (or ZooKeeper) is running.
-As we are using a ClickHouse Keeper cluster, each `<node>` of the cluster needs to be specified,
+As we're using a ClickHouse Keeper cluster, each `<node>` of the cluster needs to be specified,
 along with its hostname and port number using the `<host>` and `<port>` tags respectively.
 
 Set up of ClickHouse Keeper is explained in the next step of the tutorial.

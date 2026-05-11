@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## flameGraph \{#flameGraph\}
 
-Добавлена в: v23.8
+Добавлена в: v23.8.0
 
 Строит [flamegraph](https://www.brendangregg.com/flamegraphs.html) на основе списка стеков вызовов.
 Возвращает массив строк, который может быть использован утилитой [flamegraph.pl](https://github.com/brendangregg/FlameGraph) для построения SVG-графика flamegraph.

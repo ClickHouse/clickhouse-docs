@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitmapXor \{#groupBitmapXor\}
 
-Введена в версии v20.1
+Введена в версии v20.1.0
 
 Вычисляет XOR битмап-столбца и возвращает его мощность множества.
 Если добавлен комбинатор-суффикс [`-State`](/sql-reference/aggregate-functions/combinators#-state), то возвращается объект bitmap.

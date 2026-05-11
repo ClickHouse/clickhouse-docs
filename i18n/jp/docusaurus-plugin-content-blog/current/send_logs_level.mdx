@@ -27,6 +27,6 @@ SET send_logs_level = 'trace';
 * `SET send_logs_level = 'trace';` を実行して `clickhouse-client` でログを有効にする
 * `INSERT` クエリを実行する
 * `Distributed` テーブルへの INSERT は、デフォルトでは非同期です。データはまずローカルのバッファとしてディスクに書き込まれ、その後バックグラウンドでリモートサーバーへ送信されます。
-* クエリ処理に参加しているすべてのノードからログが送信されます（分散トレーシング）
+* クエリ処理に参加しているすべてのノードからログが送信されます (分散トレーシング) 
 
 分散 INSERT のステータスを確認するには、[`system.distribution_queue` テーブル](https://clickhouse.com/docs/operations/system-tables/distribution_queue/)を参照します。このテーブルには、シャードに送信されるキューに入っているローカルファイルに関する情報が含まれています。これらのローカルファイルには、非同期モードで `Distributed` テーブルに新しいデータを挿入することで作成された新しいパーツが含まれます。

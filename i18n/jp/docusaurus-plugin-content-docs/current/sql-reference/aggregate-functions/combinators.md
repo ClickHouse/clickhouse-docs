@@ -7,13 +7,13 @@ title: '集約関数コンビネータ'
 doc_type: 'reference'
 ---
 
-# 集約関数のコンビネーター \{#aggregate-function-combinators\}
+# 集約関数のコンビネータ \{#aggregate-function-combinators\}
 
-集約関数の名前には、接尾辞を付けることができます。これにより、その集約関数の挙動が変化します。
+集約関数の名前には、サフィックスを付けることができます。これにより、その集約関数の挙動が変化します。
 
 ## -If \{#-if\}
 
-サフィックス -If は、任意の集約関数名に付与できます。この場合、集約関数は追加の引数として条件（`UInt8` 型）を受け取ります。集約関数は、その条件が真となる行だけを処理します。条件が一度も真とならなかった場合、デフォルト値（通常はゼロまたは空文字列）を返します。
+サフィックス -If は、任意の集約関数名に付加できます。この場合、集約関数は追加の引数として条件 (`UInt8` 型) を受け取ります。集約関数は、その条件が真となる行だけを処理します。条件が一度も真とならなかった場合、デフォルト値 (通常はゼロまたは空文字列) を返します。
 
 例: `sumIf(column, cond)`, `countIf(cond)`, `avgIf(x, cond)`, `quantilesTimingIf(level1, level2)(x, cond)`, `argMinIf(arg, val, cond)` など。
 
@@ -21,13 +21,13 @@ doc_type: 'reference'
 
 ## -Array \{#-array\}
 
--Array サフィックスは、任意の集約関数に付加できます。この場合、集約関数は引数として型 'T' ではなく、型 'Array(T)'（配列）を取ります。集約関数が複数の引数を受け取る場合、これらの引数はすべて長さが等しい配列でなければなりません。配列を処理する際、集約関数は、すべての配列要素に対して元の集約関数と同様に動作します。
+-Array サフィックスは、任意の集約関数に付加できます。この場合、集約関数は引数として型 &#39;T&#39; ではなく、型 &#39;Array(T)&#39; (配列) を取ります。集約関数が複数の引数を受け取る場合、これらの引数はすべて長さが等しい配列でなければなりません。配列を処理する際、集約関数は、すべての配列要素に対して元の集約関数と同様に動作します。
 
-例 1: `sumArray(arr)` - すべての 'arr' 配列に含まれるすべての要素を合計します。この例では、より単純に `sum(arraySum(arr))` と書くこともできます。
+例 1: `sumArray(arr)` - すべての &#39;arr&#39; 配列に含まれるすべての要素を合計します。この例では、より単純に `sum(arraySum(arr))` と書くこともできます。
 
-例 2: `uniqArray(arr)` – すべての 'arr' 配列に含まれる一意な要素の数を数えます。これは、より簡単な方法として `uniq(arrayJoin(arr))` でも実行できますが、常にクエリに 'arrayJoin' を追加できるとは限りません。
+例 2: `uniqArray(arr)` – すべての &#39;arr&#39; 配列に含まれる一意な要素の数を数えます。これは、より簡単な方法として `uniq(arrayJoin(arr))` でも実行できますが、常にクエリに &#39;arrayJoin&#39; を追加できるとは限りません。
 
--If と -Array は組み合わせて使用できます。ただし、'Array' を先に、次に 'If' を付ける必要があります。例: `uniqArrayIf(arr, cond)`, `quantilesTimingArrayIf(level1, level2)(arr, cond)`。この順序により、'cond' 引数は配列型の引数にはなりません。
+-If と -Array は組み合わせて使用できます。ただし、&#39;Array&#39; を先に、次に &#39;If&#39; を付ける必要があります。例: `uniqArrayIf(arr, cond)`, `quantilesTimingArrayIf(level1, level2)(arr, cond)`。この順序により、&#39;cond&#39; 引数は配列型の引数にはなりません。
 
 ## -Map \{#-map\}
 
@@ -40,7 +40,8 @@ CREATE TABLE map_map(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO map_map VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [10, 10, 10])),
@@ -98,7 +99,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 ## -State \{#-state\}
 
-このコンビネータを適用すると、集約関数は結果の値（[uniq](/sql-reference/aggregate-functions/reference/uniq) 関数における一意な値の個数など）ではなく、集約の中間状態（`uniq` では、一意な値の数を計算するためのハッシュテーブル）を返します。これは `AggregateFunction(...)` 型であり、さらなる処理に利用したり、テーブルに保存して後から集約処理を完了させたりできます。
+このコンビネータを適用すると、集約関数は結果の値 ([uniq](/sql-reference/aggregate-functions/reference/uniq) 関数における一意な値の個数など) ではなく、集約の中間状態 (`uniq` では、一意な値の数を計算するためのハッシュテーブル) を返します。これは `AggregateFunction(...)` 型であり、さらなる処理に利用したり、テーブルに保存して後から集約処理を完了させたりできます。
 
 :::note
 同一のデータに対しても、-MapState は中間状態におけるデータの順序が変化しうるため不変ではないことに注意してください。ただし、これはこのデータのインジェストには影響しません。
@@ -106,11 +107,11 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 これらの状態を扱うには、次を使用します。
 
-- [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) テーブルエンジン
-- [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation) 関数
-- [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate) 関数
-- [-Merge](#-merge) コンビネータ
-- [-MergeState](#-mergestate) コンビネータ
+* [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md) テーブルエンジン
+* [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation) 関数
+* [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate) 関数
+* [-Merge](#-merge) コンビネータ
+* [-MergeState](#-mergestate) コンビネータ
 
 ## -Merge \{#-merge\}
 
@@ -127,7 +128,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 ## -Distinct \{#-distinct\}
 
 引数の一意な組み合わせごとに、集約は 1 回だけ行われます。重複する値は無視されます。
-例: `sum(DISTINCT x)`（または `sumDistinct(x)`）、`groupArray(DISTINCT x)`（または `groupArrayDistinct(x)`）、`corrStable(DISTINCT x, y)`（または `corrStableDistinct(x, y)`）など。
+例: `sum(DISTINCT x)` (または `sumDistinct(x)`) 、`groupArray(DISTINCT x)` (または `groupArrayDistinct(x)`) 、`corrStable(DISTINCT x, y)` (または `corrStableDistinct(x, y)`) など。
 
 ## -OrDefault \{#-ordefault\}
 
@@ -135,7 +136,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 集約関数に入力値がまったくない場合、このコンビネータを使用すると、その戻り値のデータ型に対するデフォルト値を返します。空の入力データを取り得る集約関数に適用できます。
 
-`-OrDefault` は他のコンビネータと併用できます。
+`-OrDefault` は他のコンビネータと組み合わせて使用できます。
 
 **構文**
 
@@ -205,12 +206,12 @@ FROM
 
 **引数**
 
-* `x` — 集約関数のパラメーター。
+* `x` — 集約関数のパラメータ。
 
 **戻り値**
 
 * 集約関数の結果を `Nullable` データ型に変換した値。
-* 集約対象の値が存在しない場合は `NULL`。
+* 集約する対象が何もない場合は `NULL`。
 
 型: `Nullable(集約関数の戻り値の型)`。
 
@@ -232,7 +233,7 @@ SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE n
 └───────────────────┴───────────────────────────────┘
 ```
 
-`-OrNull` は他のコンビネータと組み合わせて使用することもできます。これは、集約関数が空の入力を許容しない場合に有用です。
+`-OrNull` は他のコンビネータと組み合わせて使用することもできます。これは、集約関数が空の入力を受け付けない場合に有用です。
 
 クエリ:
 
@@ -322,7 +323,7 @@ FROM people
 
 ## -ArgMin \{#-argmin\}
 
-接尾辞 -ArgMin は、任意の集約関数の名前に付加できます。この場合、その集約関数は追加の引数を 1 つ受け取り、この引数には任意の比較可能な式を指定できます。集約関数は、指定された追加の式が最小値となる行だけを処理します。
+サフィックス -ArgMin は、任意の集約関数の名前に付加できます。この場合、その集約関数は追加の引数を 1 つ受け取り、この引数には任意の比較可能な式を指定できます。集約関数は、指定された追加の式が最小値となる行だけを処理します。
 
 例: `sumArgMin(column, expr)`, `countArgMin(expr)`, `avgArgMin(x, expr)` など。
 
@@ -332,4 +333,4 @@ FROM people
 
 ## 関連コンテンツ \{#related-content\}
 
-- ブログ記事: [Using Aggregate Combinators in ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* ブログ記事: [Using Aggregate Combinators in ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

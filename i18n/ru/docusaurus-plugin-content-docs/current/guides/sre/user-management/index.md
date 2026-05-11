@@ -2,9 +2,9 @@
 slug: /operations/access-rights
 sidebar_position: 1
 sidebar_label: 'Пользователи и роли'
-title: 'Контроль доступа и управление учетными записями'
-keywords: ['ClickHouse Cloud', 'Контроль доступа', 'Управление пользователями', 'RBAC', 'Безопасность']
-description: 'Описывает контроль доступа и управление учетными записями в ClickHouse Cloud'
+title: 'Управление доступом и учетными записями'
+keywords: ['ClickHouse Cloud', 'Управление доступом', 'Управление пользователями', 'RBAC', 'Безопасность']
+description: 'Описывает управление доступом и управление учетными записями в ClickHouse Cloud'
 doc_type: 'guide'
 ---
 
@@ -510,7 +510,7 @@ Received exception from server (version 22.5.1):
 Code: 497. DB::Exception: Received from chnode1.marsnet.local:9440. DB::Exception: my_user: Not enough privileges. To execute this query it's necessary to have grant ALTER DROP COLUMN(column2) ON my_db.my_table. (ACCESS_DENIED)
 ```
 
-5. Проверка привилегии `ALTER ADMIN` путём выдачи соответствующих прав
+5. Проверка пользователя alter admin путём выдачи ему привилегий
 
 ```sql
 GRANT SELECT, ALTER COLUMN ON my_db.my_table TO my_alter_admin WITH GRANT OPTION;
@@ -536,7 +536,7 @@ Query id: 1c7622fa-9df1-4c54-9fc3-f984c716aeba
 Ok.
 ```
 
-8. Проверьте, что привилегия, которой пользователь alter admin не обладает, не считается подпривилегией уже выданных этому администратору привилегий.
+8. Проверьте, что привилегия, которой пользователь alter admin не обладает, не рассматривается как подпривилегия уже выданных этому администратору привилегий.
 
 ```sql
 GRANT ALTER UPDATE ON my_db.my_table TO my_user;

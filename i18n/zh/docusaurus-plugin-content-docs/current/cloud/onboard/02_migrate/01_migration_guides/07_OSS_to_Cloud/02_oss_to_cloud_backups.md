@@ -77,24 +77,24 @@ docker exec -it clickhouse-01 clickhouse-client
 ```
 
 
-### 创建示例数据 \{#create-sample-data\}
+### 从 MergeTree 表迁移到 ReplicatedMergeTree 表 \{#mergetree-to-replicatedmergetree\}
 
 ClickHouse Cloud 使用 [`SharedMergeTree`](/cloud/reference/shared-merge-tree)。
 在恢复备份时，ClickHouse 会自动将使用 `ReplicatedMergeTree` 的表转换为 `SharedMergeTree` 表。
 
-如果您正在运行一个集群，您的表很可能已经在使用 `ReplciatedMergeTree` 引擎。
+如果您正在运行一个集群，您的表很可能已经在使用 `ReplicatedMergeTree` 引擎。
 如果没有，则需要在备份之前将所有 `MergeTree` 表转换为 `ReplicatedMergeTree`。
 
 为了演示如何将 `MergeTree` 表转换为 `ReplicatedMergeTree`，我们将从一个 `MergeTree` 表开始，并在稍后将其转换为 `ReplicatedMergeTree`。
 我们将按照 [New York taxi data guide](/getting-started/example-datasets/nyc-taxi) 的前两步来创建一个示例表并向其中加载数据。
 为方便起见，这些步骤在下方再次列出。
 
-运行以下命令以创建一个新数据库，并从 S3 存储桶中向一个新表插入数据：
+运行以下命令以创建一个新数据库，并从 S3 bucket 中向一个新表插入数据：
 
 ```sql
 CREATE DATABASE nyc_taxi;
 
-CREATE TABLE nyc_taxi.trips_small (
+CREATE TABLE nyc_taxi.trips_small_adapted (
     trip_id             UInt32,
     pickup_datetime     DateTime,
     dropoff_datetime    DateTime,
@@ -118,7 +118,7 @@ PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ```
 
 ```sql
-INSERT INTO nyc_taxi.trips_small
+INSERT INTO nyc_taxi.trips_small_adapted
 SELECT
     trip_id,
     pickup_datetime,
@@ -143,22 +143,22 @@ FROM s3(
 );
 ```
 
-运行以下命令将该表 `DETACH`。
+运行以下命令以 `DETACH` 该表。
 
 ```sql
-DETACH TABLE nyc_taxi.trips_small;
+DETACH TABLE nyc_taxi.trips_small_adapted;
 ```
 
 然后将其附加为副本：
 
 ```sql
-ATTACH TABLE nyc_taxi.trips_small AS REPLICATED;
+ATTACH TABLE nyc_taxi.trips_small_adapted AS REPLICATED;
 ```
 
-最后，恢复副本元数据：
+最后，恢复副本的元数据：
 
 ```sql
-SYSTEM RESTORE REPLICA nyc_taxi.trips_small;
+SYSTEM RESTORE REPLICA nyc_taxi.trips_small_adapted;
 ```
 
 检查是否已转换为 `ReplicatedMergeTree`：
@@ -166,15 +166,102 @@ SYSTEM RESTORE REPLICA nyc_taxi.trips_small;
 ```sql
 SELECT engine
 FROM system.tables
-WHERE name = 'trips_small' AND database = 'nyc_taxi';
+WHERE name = 'trips_small_adapted' AND database = 'nyc_taxi';
 
 ┌─engine──────────────┐
 │ ReplicatedMergeTree │
 └─────────────────────┘
 ```
 
-现在，您已经可以继续配置 Cloud 服务，为稍后从 S3 存储桶中恢复备份做准备。
+现在，您已经可以继续配置 Cloud 服务，为稍后从 S3 bucket 中恢复备份做准备。
 
+### 使用 ReplicatedMergeTree 的分布式表 \{#distributed-tables\}
+
+如果您的部署使用跨多个分片的分布式表，则需要在每个节点上创建一个本地 `ReplicatedMergeTree` 表，并使用一个 `Distributed` 表作为查询入口。
+
+运行以下命令，在集群的所有节点上创建本地复制表：
+
+```sql
+CREATE DATABASE IF NOT EXISTS nyc_taxi ON CLUSTER 'cluster_2S_2R';
+
+CREATE TABLE nyc_taxi.trips_small_dist_local ON CLUSTER 'cluster_2S_2R'
+(
+    trip_id             UInt32,
+    pickup_datetime     DateTime,
+    dropoff_datetime    DateTime,
+    pickup_longitude    Nullable(Float64),
+    pickup_latitude     Nullable(Float64),
+    dropoff_longitude   Nullable(Float64),
+    dropoff_latitude    Nullable(Float64),
+    passenger_count     UInt8,
+    trip_distance       Float32,
+    fare_amount         Float32,
+    extra               Float32,
+    tip_amount          Float32,
+    tolls_amount        Float32,
+    total_amount        Float32,
+    payment_type        Enum('CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4, 'UNK' = 5),
+    pickup_ntaname      LowCardinality(String),
+    dropoff_ntaname     LowCardinality(String)
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{database}/{table}/{shard}', '{replica}')
+PRIMARY KEY (pickup_datetime, dropoff_datetime);
+```
+
+然后在其上创建 `Distributed` 表：
+
+```sql
+
+CREATE TABLE nyc_taxi.trips_small_dist ON CLUSTER 'cluster_2S_2R'
+(
+    trip_id             UInt32,
+    pickup_datetime     DateTime,
+    dropoff_datetime    DateTime,
+    pickup_longitude    Nullable(Float64),
+    pickup_latitude     Nullable(Float64),
+    dropoff_longitude   Nullable(Float64),
+    dropoff_latitude    Nullable(Float64),
+    passenger_count     UInt8,
+    trip_distance       Float32,
+    fare_amount         Float32,
+    extra               Float32,
+    tip_amount          Float32,
+    tolls_amount        Float32,
+    total_amount        Float32,
+    payment_type        Enum('CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4, 'UNK' = 5),
+    pickup_ntaname      LowCardinality(String),
+    dropoff_ntaname     LowCardinality(String)
+)
+ENGINE = Distributed('cluster_2S_2R', 'nyc_taxi', 'trips_small_dist_local', rand());
+```
+
+通过分布式表插入数据：
+
+```sql
+INSERT INTO nyc_taxi.trips_small_dist
+SELECT
+    trip_id,
+    pickup_datetime,
+    dropoff_datetime,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    passenger_count,
+    trip_distance,
+    fare_amount,
+    extra,
+    tip_amount,
+    tolls_amount,
+    total_amount,
+    payment_type,
+    pickup_ntaname,
+    dropoff_ntaname
+FROM s3(
+    'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..2}.gz',
+    'TabSeparatedWithNames'
+);
+```
 
 ## Cloud 准备工作 \{#cloud-setup\}
 
@@ -245,22 +332,36 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 
 </VerticalStepper>
 
-## 执行备份（在自管理部署中） \{#taking-a-backup-on-oss\}
+## 执行备份 (在自管理部署中)  \{#taking-a-backup-on-oss\}
 
-要对单个数据库进行备份，请在连接到 OSS 部署的 clickhouse-client 中运行以下命令：
+必须分别备份每个分片。连接到每个分片上的一个节点，并为每个分片指定唯一的目标路径来运行
+备份命令。
+
+将 `BUCKET_URL`、`KEY_ID` 和 `SECRET_KEY` 替换为您自己的 AWS 凭证。
+指南 [&quot;How to create an S3 bucket and IAM role&quot;](/integrations/s3/creating-iam-user-and-s3-bucket)
+介绍了在您尚未拥有这些凭证时如何获取它们。
+
+**分片 1：**
 
 ```sql
 BACKUP DATABASE nyc_taxi
 TO S3(
-  'BUCKET_URL',
+  'BUCKET_URL/backup_s1.zip',
   'KEY_ID',
   'SECRET_KEY'
 )
 ```
 
-将 `BUCKET_URL`、`KEY_ID` 和 `SECRET_KEY` 替换为您自己的 AWS 凭证。
-指南 [&quot;How to create an S3 bucket and IAM role&quot;](/integrations/s3/creating-iam-user-and-s3-bucket)
-介绍了在您尚未拥有这些凭证时如何获取它们。
+**分片 2：**
+
+```sql
+BACKUP DATABASE nyc_taxi
+TO S3(
+  'BUCKET_URL/backup_s2.zip',
+  'KEY_ID',
+  'SECRET_KEY'
+)
+```
 
 如果一切配置正确，您会看到类似下面的响应，
 其中包含分配给该备份的唯一 ID 以及备份的状态。
@@ -272,6 +373,20 @@ Query id: efcaf053-75ed-4924-aeb1-525547ea8d45
 │ e73b99ab-f2a9-443a-80b4-533efe2d40b3 │ BACKUP_CREATED │
 └──────────────────────────────────────┴────────────────┘
 ```
+
+:::note[单节点部署]
+如果您未使用分布式表，只需一条命令即可备份整个数据库：
+
+```sql
+BACKUP DATABASE nyc_taxi
+TO S3(
+  'BUCKET_URL',
+  'KEY_ID',
+  'SECRET_KEY'
+)
+```
+
+:::
 
 如果你检查之前空的 S3 存储桶，现在会看到其中已经出现了一些文件夹：
 
@@ -308,7 +423,7 @@ SETTINGS
 * 配额
 * 用户定义函数
 
-如果你使用的是其他云服务提供商（CSP），可以使用 `TO S3()`（适用于 AWS 和 GCP）以及 `TO AzureBlobStorage()` 语法。
+如果你使用的是其他云服务提供商 (CSP) ，可以使用 `TO S3()` (适用于 AWS 和 GCP) 以及 `TO AzureBlobStorage()` 语法。
 
 对于非常大的数据库，建议使用 `ASYNC` 在后台执行备份：
 
@@ -324,7 +439,7 @@ ASYNC;
 -- └─────────────────────────────────────┴───────────────────┘
 ```
 
-之后即可使用该备份 ID 来监控备份进度：
+随后可以使用该备份 ID 来监控备份进度：
 
 ```sql
 SELECT * 
@@ -335,11 +450,35 @@ WHERE id = 'abc123-def456-789'
 还可以执行增量备份。
 有关备份的一般信息，请参阅[备份与恢复](/operations/backup/overview)文档。
 
-
 ## 恢复到 ClickHouse Cloud \{#restore-to-clickhouse-cloud\}
 
-要恢复单个数据库，请在你的 Cloud 服务中运行以下查询，将其中的 AWS 凭证替换为你的实际值，
-并将 `ROLE_ARN` 设置为你在[“安全访问 S3 数据”](/cloud/data-sources/secure-s3)中按照步骤获取的输出值。
+将各个分片的备份依次恢复到您的 Cloud 服务中。将 `ROLE_ARN` 设置为从[“安全访问 S3 数据”](/cloud/data-sources/secure-s3)获取的值。
+在第二次及后续每次恢复时，使用 `SETTINGS allow_non_empty_tables=true`，
+这样会将分片数据追加到已恢复的表中，而不会因冲突而失败：
+
+**分片 1：**
+
+```sql
+RESTORE DATABASE nyc_taxi
+FROM S3(
+    'BUCKET_URL/backup_s1.zip',
+    extra_credentials(role_arn = 'ROLE_ARN')
+)
+```
+
+**分片 2：**
+
+```sql
+RESTORE DATABASE nyc_taxi
+FROM S3(
+    'BUCKET_URL/backup_s2.zip',
+    extra_credentials(role_arn = 'ROLE_ARN')
+)
+SETTINGS allow_non_empty_tables=true;
+```
+
+:::note[非分布式部署]
+如果您未使用分布式表，请使用单条命令恢复数据库：
 
 ```sql
 RESTORE DATABASE nyc_taxi
@@ -349,7 +488,9 @@ FROM S3(
 )
 ```
 
-同样可以通过类似方式执行完整服务还原：
+:::
+
+您可以用类似的方式对整个服务执行恢复：
 
 ```sql
 RESTORE
@@ -365,9 +506,26 @@ FROM S3(
 )
 ```
 
-现在在 Cloud 中运行以下查询，即可看到该数据库和表已经成功恢复到 Cloud：
+恢复完成后，您可以验证数据是否已在 Cloud 中可用：
 
 ```sql
-SELECT count(*) FROM nyc_taxi.trips_small;
+-- ClickHouse Cloud restores everything in your local table
+SELECT count() from nyc_taxi.trips_small_dist_local;
+3000317
+```
+
+由于 ClickHouse Cloud 内部使用 `SharedMergeTree`，因此旧的分布式表已不再需要。您可以将其删除，并替换为一个视图，以保留查询中使用的原始表名：
+
+```sql
+DROP TABLE drop table nyc_taxi.trips_small_dist;
+CREATE VIEW nyc_taxi.trips_small_dist AS SELECT * FROM nyc_taxi.trips_small_dist_local;
+SELECT count() from nyc_taxi.trips_small_dist;
+3000317
+```
+
+非分布式 `ReplicatedMergeTree` 表将恢复为 `SharedMergeTree`：
+
+```sql
+SELECT count() FROM nyc_taxi.trips_small_adapted;
 3000317
 ```

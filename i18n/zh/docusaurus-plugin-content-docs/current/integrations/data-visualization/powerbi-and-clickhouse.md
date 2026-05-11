@@ -179,21 +179,25 @@ Power BI 要求先在 Desktop 版本中创建仪表板，然后将其发布到 P
 当驱动程序安装完成后，就可以创建一个 ODBC 数据源。在开始菜单中搜索 ODBC，并选择 "ODBC Data Sources (64-bit)"。
 
 <Image size="md" img={powerbi_odbc_search} alt="Windows 搜索结果中显示 ODBC Data Sources (64-bit) 选项" border />
+
 <br/>
 
 我们需要在这里新增一个用户 DSN。点击左侧的 "Add" 按钮。
 
 <Image size="md" img={powerbi_add_dsn} alt="ODBC 数据源管理器中高亮用于创建新 DSN 的 Add 按钮" border />
+
 <br/>
 
 选择 ODBC 驱动程序的 Unicode 版本。
 
 <Image size="md" img={powerbi_select_unicode} alt="创建新数据源对话框中选中 ClickHouse Unicode Driver 的界面" border />
+
 <br/>
 
 填写连接信息。
 
 <Image size="sm" img={powerbi_connection_details} alt="ClickHouse ODBC Driver 配置对话框以及连接参数" border />
+
 <br/>
 
 :::note

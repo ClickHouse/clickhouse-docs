@@ -42,6 +42,7 @@ SELECT 1;
 clickhouse-benchmark [keys] < queries_file;
 ```
 
+
 ## 命令行选项 \{#clickhouse-benchmark-command-line-options\}
 
 - `--query=QUERY` — 要执行的查询。如果未传递此参数，`clickhouse-benchmark` 将从标准输入读取查询。
@@ -122,6 +123,7 @@ localhost:9000, queries 10, QPS: 6.772, RPS: 67904487.440, MiB/s: 518.070, resul
   * result MiB/s：在 `--delay` 参数指定的时间段内，服务器每秒写入到查询结果中的数据量（以 MiB 为单位）。
 
 * 查询执行时间的分位数（百分位）。
+
 
 ## 比较模式 \{#clickhouse-benchmark-comparison-mode\}
 

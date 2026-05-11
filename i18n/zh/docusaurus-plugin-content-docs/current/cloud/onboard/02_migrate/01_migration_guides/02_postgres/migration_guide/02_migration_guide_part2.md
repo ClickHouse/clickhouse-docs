@@ -7,7 +7,7 @@ sidebar_label: '第 2 部分'
 doc_type: 'guide'
 ---
 
-> 这是从 PostgreSQL 迁移到 ClickHouse 指南的**第 2 部分**。通过一个实际示例，本文演示了如何采用实时复制（CDC，变更数据捕获）方式高效完成迁移。文中涉及的许多概念同样适用于从 PostgreSQL 到 ClickHouse 的手动批量数据传输。
+> 这是从 PostgreSQL 迁移到 ClickHouse 指南的**第 2 部分**。通过一个实际示例，本文演示了如何采用实时复制 (CDC，变更数据捕获) 方式高效完成迁移。文中涉及的许多概念同样适用于从 PostgreSQL 到 ClickHouse 的手动批量数据传输。
 
 在大多数情况下，现有 PostgreSQL 环境中的 SQL 查询无需修改即可在 ClickHouse 上运行，并且通常会执行得更快。
 

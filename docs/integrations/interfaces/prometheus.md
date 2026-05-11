@@ -3,7 +3,7 @@ description: 'Documentation for the Prometheus protocol support in ClickHouse'
 sidebar_label: 'Prometheus protocols'
 sidebar_position: 19
 slug: /interfaces/prometheus
-title: 'Prometheus Protocols'
+title: 'Prometheus protocols'
 doc_type: 'reference'
 ---
 
@@ -12,7 +12,7 @@ doc_type: 'reference'
 ## Exposing metrics {#expose}
 
 :::note
-If you are using ClickHouse Cloud, you can expose metrics to Prometheus using the [Prometheus Integration](/integrations/prometheus).
+If you're using ClickHouse Cloud, you can expose metrics to Prometheus using the [Prometheus Integration](/integrations/prometheus).
 :::
 
 ClickHouse can expose its own metrics for scraping from Prometheus:

@@ -5,7 +5,7 @@ import ip_allow_list_add_current_ip from '@site/static/images/_snippets/ip-allow
 <details>
     <summary>Manage your IP Access List</summary>
 
-From your ClickHouse Cloud services list choose the service that you will work with and switch to **Settings**.  If the IP Access List does not contain the IP Address or range of the remote system that needs to connect to your ClickHouse Cloud service, then you can resolve the problem with **Add IPs**:
+From your ClickHouse Cloud services list choose the service that you will work with and switch to **Settings**.  If the IP Access List doesn't contain the IP Address or range of the remote system that needs to connect to your ClickHouse Cloud service, then you can resolve the problem with **Add IPs**:
 
 <Image size="md" img={ip_allow_list_check_list} alt="Check to see if the service allows traffic from your IP address in the IP Access List" border />
 

@@ -142,7 +142,7 @@ Secret: nFy6DFRr4sM9OnV6BG4FtWVPR25JfqpmcdZ6w9nV
 
 :::danger Important
 Store these credentials securely.
-The secret cannot be retrieved again after this screen is closed.
+The secret can't be retrieved again after this screen is closed.
 You will need to generate new keys if you lose the secret.
 :::
 
@@ -185,7 +185,7 @@ When [setting up a GCS ClickPipe](/integrations/clickpipes/object-storage/gcs/ge
 <Image img={clickpipes_hmac_key} size="md" alt=""/>
 
 :::note
-Service account authentication is not currently supported - you must use HMAC keys
+Service account authentication isn't currently supported - you must use HMAC keys
 The GCS bucket URL must use the format: `https://storage.googleapis.com/<bucket>/<path>` (not `gs://`)
 :::
 

@@ -38,13 +38,28 @@ opentelemetry-bootstrap -a install
 
 ### 配置环境变量 \{#configure-environment-variables\}
 
-接下来，需要在 shell 中配置以下环境变量，用于将遥测数据上报到 ClickStack：
+接下来，需要在 shell 中配置以下环境变量，用于通过 OpenTelemetry collector 将遥测数据上报到 ClickStack：
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="托管 ClickStack" default>
+
+```shell
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack 开源版" >
 
 ```shell
 export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
 ```
+
+</TabItem>
+</Tabs>
 
 *`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，它可以是任意你希望的名称。*
 

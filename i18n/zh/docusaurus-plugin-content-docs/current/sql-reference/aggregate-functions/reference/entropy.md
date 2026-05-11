@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## entropy \{#entropy\}
 
-引入版本：v20.1
+引入版本：v20.1.0
 
 计算某列数值的[香农熵](https://en.wikipedia.org/wiki/Entropy_\(information_theory\))。
 

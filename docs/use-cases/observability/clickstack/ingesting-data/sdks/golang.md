@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['Golang ClickStack SDK', 'Go OpenTelemetry integration', 'Golang observability', 'Go tracing instrumentation', 'ClickStack Go SDK']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ClickStack uses the OpenTelemetry standard for collecting telemetry data (logs and
 traces). Traces are auto-generated with automatic instrumentation, so manual
 instrumentation isn't required to get value out of tracing.
@@ -232,13 +235,29 @@ func main() {
 
 ### Configure environment variables {#configure-environment-variables}
 
-Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
+Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack via the OpenTelemetry collector:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Managed ClickStack" default>
 
 ```shell
-export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source" >
+
+```shell
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
+
+</TabItem>
+</Tabs>
 
 The `OTEL_EXPORTER_OTLP_HEADERS` environment variable contains the API Key available via HyperDX app in `Team Settings → API Keys`.

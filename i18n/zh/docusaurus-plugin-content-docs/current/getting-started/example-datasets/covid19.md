@@ -1,23 +1,23 @@
 ---
-description: 'COVID-19 Open-Data 是一个大型的开源 COVID-19 流行病学数据库，包含与人口统计、经济和政府响应等相关因素的数据'
-sidebar_label: 'COVID-19 open-data'
+description: 'COVID-19 开放数据 是一个大型的开源 COVID-19 流行病学数据库，包含与人口统计、经济和政府响应等相关因素的数据'
+sidebar_label: 'COVID-19 开放数据'
 slug: /getting-started/example-datasets/covid19
-title: 'COVID-19 Open-Data'
+title: 'COVID-19 开放数据'
 keywords: ['COVID-19 数据', '流行病学数据', '健康数据集', '示例数据集', '入门']
 doc_type: 'guide'
 ---
 
-COVID-19 Open-Data 旨在构建最大规模的 COVID-19 流行病学数据库，并提供一套功能强大且覆盖面广泛的协变量。其内容包括与人口统计、经济、流行病学、地理、健康、住院、流动性、政府响应、天气等相关的开放数据，这些数据来自公开渠道并具有相应许可证。
+COVID-19 开放数据 旨在构建最大规模的 COVID-19 流行病学数据库，并提供一套功能强大且覆盖面广泛的协变量。其内容包括与人口统计、经济、流行病学、地理、健康、住院、流动性、政府响应、天气等相关的开放数据，这些数据来自公开渠道并具有相应许可证。
 
 详细信息请参阅 GitHub 仓库[此处](https://github.com/GoogleCloudPlatform/covid-19-open-data)。
 
-将这些数据写入 ClickHouse 非常简单……
+将这些数据插入 ClickHouse 非常简单……
 
 :::note
 以下命令是在 [ClickHouse Cloud](https://clickhouse.cloud) 的 **生产** 实例上执行的。您也可以轻松地在本地安装的实例中运行这些命令。
 :::
 
-1. 让我们先来看一下这些数据是什么样子的：
+1. 让我们先来看一下数据的情况：
 
 ```sql
 DESCRIBE url(
@@ -55,6 +55,7 @@ LIMIT 100;
 
 请注意，`url` 函数可以方便地从 CSV 文件读取数据：
 
+
 ```response
 ┌─c1─────────┬─c2───────────┬─c3────────────┬─c4───────────┬─c5────────────┬─c6─────────┬─c7───────────────────┬─c8──────────────────┬─c9───────────────────┬─c10───────────────┐
 │ date       │ location_key │ new_confirmed │ new_deceased │ new_recovered │ new_tested │ cumulative_confirmed │ cumulative_deceased │ cumulative_recovered │ cumulative_tested │
@@ -67,7 +68,7 @@ LIMIT 100;
 └────────────┴──────────────┴───────────────┴──────────────┴───────────────┴────────────┴──────────────────────┴─────────────────────┴──────────────────────┴───────────────────┘
 ```
 
-3. 现在我们已经了解了数据的结构，来创建一张表：
+3. 现在我们已经了解了数据的情况，可以创建一张表：
 
 ```sql
 CREATE TABLE covid19 (
@@ -86,7 +87,7 @@ ENGINE = MergeTree
 ORDER BY (location_key, date);
 ```
 
-4. 使用以下命令将整个数据集插入到 `covid19` 表中：
+4. 使用以下命令将整个数据集插入 `covid19` 表：
 
 ```sql
 INSERT INTO covid19
@@ -121,7 +122,7 @@ FROM covid19;
 └─────────────────────────────────┘
 ```
 
-6. 来看一下共记录了多少例新冠肺炎（COVID-19）病例：
+6. 让我们来看一下共记录了多少例 COVID-19 病例：
 
 ```sql
 SELECT formatReadableQuantity(sum(new_confirmed))
@@ -133,6 +134,7 @@ FROM covid19;
 │ 1.39 billion                               │
 └────────────────────────────────────────────┘
 ```
+
 
 7. 你会注意到数据中有很多日期对应的数值为 0——要么是周末，要么是某些天没有按日上报数据。我们可以使用窗口函数来平滑新确诊病例的每日平均值：
 
@@ -231,6 +233,7 @@ WHERE location_key = 'US_DC';
 
 结果如下：
 
+
 ```response
 ┌───────date─┬─new_confirmed─┬─percent_change─┬─trend─────┐
 │ 2020-03-08 │             0 │            nan │ decrease  │
@@ -263,5 +266,5 @@ WHERE location_key = 'US_DC';
 ```
 
 :::note
-正如 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中所述，自 2022 年 9 月 15 日起，该数据集不再更新。
+如 [GitHub 仓库](https://github.com/GoogleCloudPlatform/covid-19-open-data) 中所述，自 2022 年 9 月 15 日起，该数据集不再更新。
 :::

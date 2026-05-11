@@ -1,6 +1,7 @@
 // customParseFrontMatter.js
 const path = require('path');
 const fs = require('fs');
+const { loadExceptions: loadCasingExceptions, checkSentenceCasing, isInIgnoredDir } = require('./sentenceCasing');
 
 // List to track files with issues
 let filesWithIssues = [];
@@ -60,6 +61,9 @@ function loadExceptions() {
 // Initialize exception list when module is loaded
 exceptionList = loadExceptions();
 
+// Initialize sentence casing exceptions from Headings.yml
+let { regexPatterns: casingRegex, literalWords: casingLiterals } = loadCasingExceptions();
+
 /**
  * Checks if a file path should be excluded from validation
  * @param {string} filePath - Path to the file
@@ -78,6 +82,10 @@ function isExcluded(filePath) {
 
 function reloadExceptions() {
     exceptionList = loadExceptions();
+    // Also reload casing exceptions
+    const casing = loadCasingExceptions();
+    casingRegex = casing.regexPatterns;
+    casingLiterals = casing.literalWords;
     return exceptionList.length;
 }
 
@@ -164,6 +172,20 @@ async function customParseFrontMatter(params) {
             }
         }
 
+        // Check sentence casing on title and sidebar_label
+        // Skip files in ignored directories (synced from core repo, etc.)
+        if (!isInIgnoredDir(relativePath)) {
+            for (const casingField of ['title', 'sidebar_label']) {
+                const value = parsedData.frontMatter[casingField];
+                if (value && typeof value === 'string') {
+                    const violations = checkSentenceCasing(value, casingRegex, casingLiterals);
+                    if (violations.length > 0) {
+                        issues.push(`sentence casing violation in ${casingField}: "${value}" — capitalized words: ${violations.join(', ')}`);
+                    }
+                }
+            }
+        }
+
         // Check optional fields format
         if (parsedData.frontMatter["keywords"] && !Array.isArray(parsedData.frontMatter["keywords"])) {
             issues.push('keywords must be a list');
@@ -245,17 +267,16 @@ async function customParseFrontMatter(params) {
                         currentFieldName === 'pagination_prev';
 
                     if (!isExcludedField && !inMultiLineValue && (
-                        line.includes(': "') || (
-                            line.includes(': ') &&
-                            !line.includes(': \'') &&
-                            !line.includes(': [') &&
-                            !line.includes(': {') &&
-                            !line.includes(': true') &&
-                            !line.includes(': false') &&
-                            !/: \d+/.test(line)
-                        )
+                        line.includes(': ') &&
+                        !line.includes(': \'') &&
+                        !line.includes(': "') &&
+                        !line.includes(': [') &&
+                        !line.includes(': {') &&
+                        !line.includes(': true') &&
+                        !line.includes(': false') &&
+                        !/: \d+/.test(line)
                     )) {
-                        issues.push(`value should use single quotes in line: "${line.trim()}"`);
+                        issues.push(`value should be quoted in line: "${line.trim()}"`);
                     }
                 } else if (inMultiLineValue) {
                     // This is a continuation of a multi-line value

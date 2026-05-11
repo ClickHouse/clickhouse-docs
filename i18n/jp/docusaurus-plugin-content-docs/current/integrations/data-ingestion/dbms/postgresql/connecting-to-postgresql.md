@@ -66,7 +66,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
     (2, 'def');
 ```
 
-6. レプリケーション用の新しいユーザーが新しいデータベースに接続できるように PostgreSQL を設定するには、`pg_hba.conf` ファイルに次のエントリを追加します。`address` 行のアドレスを、PostgreSQL サーバーのサブネットまたは IP アドレスに更新してください。
+6. レプリケーション用の新しいユーザーが新しいデータベースへ接続できるよう PostgreSQL を設定するには、`pg_hba.conf` ファイルに次のエントリを追加します。`address` 行は、PostgreSQL サーバーのサブネットまたは IP アドレスに書き換えてください。
 
 ```text
   # TYPE  DATABASE        USER            ADDRESS                 METHOD

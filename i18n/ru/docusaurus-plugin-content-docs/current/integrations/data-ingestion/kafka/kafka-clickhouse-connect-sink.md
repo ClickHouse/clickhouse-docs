@@ -93,34 +93,37 @@ schemas.enable=false
 
 Полная таблица параметров конфигурации:
 
-| Имя параметра                               | Описание                                                                                                                                                                                                                           | Значение по умолчанию                                    |
-|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| `hostname` (Обязательно)                   | Имя хоста или IP-адрес сервера                                                                                                                                                                                                     | N/A                                                      |
-| `port`                                     | Порт ClickHouse - по умолчанию 8443 (для HTTPS в облаке), но для HTTP (по умолчанию для self-hosted) должен быть 8123                                                                                                              | `8443`                                                   |
-| `ssl`                                      | Включить ssl-соединение с ClickHouse                                                                                                                                                                                               | `true`                                                   |
-| `jdbcConnectionProperties`                 | Свойства подключения при соединении с ClickHouse. Должны начинаться с `?` и объединяться с помощью `&` между `param=value`                                                                                                         | `""`                                                     |
-| `username`                                 | Имя пользователя базы данных ClickHouse                                                                                                                                                                                            | `default`                                                |
-| `password` (Обязательно)                   | Пароль базы данных ClickHouse                                                                                                                                                                                                      | N/A                                                      |
-| `database`                                 | Имя базы данных ClickHouse                                                                                                                                                                                                         | `default`                                                |
-| `connector.class` (Обязательно)            | Класс коннектора (явно установите и сохраните значение по умолчанию)                                                                                                                                                               | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
-| `tasks.max`                                | Количество задач коннектора                                                                                                                                                                                                        | `"1"`                                                    |
-| `errors.retry.timeout`                     | Время ожидания повтора JDBC для ClickHouse                                                                                                                                                                                         | `"60"`                                                   |
-| `exactlyOnce`                              | Включена семантика Exactly Once                                                                                                                                                                                                    | `"false"`                                                |
-| `topics` (Обязательно)                     | Топики Kafka для опроса - имена топиков должны совпадать с именами таблиц                                                                                                                                                          | `""`                                                     |
-| `key.converter` (Обязательно* - См. Описание) | Устанавливается в соответствии с типами ваших ключей. Обязательно здесь, если вы передаете ключи (и не определено в конфигурации воркера).                                                                                          | `"org.apache.kafka.connect.storage.StringConverter"`     |
-| `value.converter` (Обязательно* - См. Описание) | Устанавливается в зависимости от типа данных в вашем топике. Поддерживаются форматы: JSON, String, Avro или Protobuf. Обязательно здесь, если не определено в конфигурации воркера.                                                 | `"org.apache.kafka.connect.json.JsonConverter"`          |
-| `value.converter.schemas.enable`           | Поддержка схемы конвертером значений коннектора                                                                                                                                                                                    | `"false"`                                                |
-| `errors.tolerance`                         | Толерантность коннектора к ошибкам. Поддерживаются: none, all                                                                                                                                                                     | `"none"`                                                 |
-| `errors.deadletterqueue.topic.name`        | Если установлено (с errors.tolerance=all), DLQ будет использоваться для неудачных батчей (см. [Устранение неполадок](#troubleshooting))                                                                                            | `""`                                                     |
-| `errors.deadletterqueue.context.headers.enable` | Добавляет дополнительные заголовки для DLQ                                                                                                                                                                                         | `""`                                                     |
-| `clickhouseSettings`                       | Список настроек ClickHouse через запятую (например, "insert_quorum=2, etc...")                                                                                                                                                    | `""`                                                     |
-| `topic2TableMap`                           | Список через запятую, который сопоставляет имена топиков с именами таблиц (например, "topic1=table1, topic2=table2, etc...")                                                                                                      | `""`                                                     |
-| `tableRefreshInterval`                     | Время (в секундах) для обновления кэша определения таблицы                                                                                                                                                                         | `0`                                                      |
-| `keeperOnCluster`                          | Позволяет настроить параметр ON CLUSTER для self-hosted экземпляров (например, `ON CLUSTER clusterNameInConfigFileDefinition`) для таблицы connect_state с exactly-once (см. [Распределенные DDL-запросы](/sql-reference/distributed-ddl)) | `""`                                                     |
-| `bypassRowBinary`                          | Позволяет отключить использование RowBinary и RowBinaryWithDefaults для данных на основе схемы (Avro, Protobuf и т.д.) - следует использовать только когда в данных будут отсутствующие столбцы, а Nullable/Default неприемлемы    | `"false"`                                                |
-| `dateTimeFormats`                          | Форматы даты и времени для разбора полей схемы DateTime64, разделенные `;` (например, `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`).                                                       | `""`                                                     |
-| `tolerateStateMismatch`                    | Позволяет коннектору отбрасывать записи "раньше", чем текущее смещение, сохраненное AFTER_PROCESSING (например, если отправлено смещение 5, а последнее записанное смещение было 250)                                              | `"false"`                                                |
-| `ignorePartitionsWhenBatching`             | Будет игнорировать партицию при сборе сообщений для вставки (но только если `exactlyOnce` равно `false`). Примечание о производительности: чем больше задач коннектора, тем меньше партиций kafka назначается на задачу - это может означать уменьшающуюся отдачу. | `"false"`                                                |
+| Имя параметра                                   | Описание                                                                                                                                                                                                                                                                                                         | Значение по умолчанию                                    |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `hostname` (Обязательно)                        | Имя хоста или IP-адрес сервера                                                                                                                                                                                                                                                                                   | N/A                                                      |
+| `port`                                          | Порт ClickHouse - по умолчанию 8443 (для HTTPS в облаке), но для HTTP (по умолчанию для self-hosted) должен быть 8123                                                                                                                                                                                            | `8443`                                                   |
+| `ssl`                                           | Включить ssl-соединение с ClickHouse                                                                                                                                                                                                                                                                             | `true`                                                   |
+| `jdbcConnectionProperties`                      | Свойства подключения при соединении с ClickHouse. Должны начинаться с `?` и объединяться с помощью `&` между `param=value`                                                                                                                                                                                       | `""`                                                     |
+| `username`                                      | Имя пользователя базы данных ClickHouse                                                                                                                                                                                                                                                                          | `default`                                                |
+| `password` (Обязательно)                        | Пароль базы данных ClickHouse                                                                                                                                                                                                                                                                                    | N/A                                                      |
+| `database`                                      | Имя базы данных ClickHouse                                                                                                                                                                                                                                                                                       | `default`                                                |
+| `connector.class` (Обязательно)                 | Класс коннектора (явно установите и сохраните значение по умолчанию)                                                                                                                                                                                                                                             | `"com.clickhouse.kafka.connect.ClickHouseSinkConnector"` |
+| `tasks.max`                                     | Количество задач коннектора                                                                                                                                                                                                                                                                                      | `"1"`                                                    |
+| `errors.retry.timeout`                          | Максимальный таймаут повторных попыток Kafka Connect в миллисекундах. `0` — без повторных попыток. `-1` — бесконечные повторные попытки. Рекомендуемое значение — более &quot;10000&quot; мс (10 секунд)  Таймаут                                                                                                | `"0"`                                                    |
+| `exactlyOnce`                                   | Включена семантика Exactly Once                                                                                                                                                                                                                                                                                  | `"false"`                                                |
+| `topics` (Обязательно)                          | Топики Kafka для опроса - имена топиков должны совпадать с именами таблиц                                                                                                                                                                                                                                        | `""`                                                     |
+| `key.converter` (Обязательно* - См. Описание)   | Устанавливается в соответствии с типами ваших ключей. Обязательно здесь, если вы передаете ключи (и не определено в конфигурации воркера).                                                                                                                                                                       | `"org.apache.kafka.connect.storage.StringConverter"`     |
+| `value.converter` (Обязательно* - См. Описание) | Устанавливается в зависимости от типа данных в вашем топике. Поддерживаются форматы: JSON, String, Avro или Protobuf. Обязательно здесь, если не определено в конфигурации воркера.                                                                                                                              | `"org.apache.kafka.connect.json.JsonConverter"`          |
+| `value.converter.schemas.enable`                | Поддержка схемы конвертером значений коннектора                                                                                                                                                                                                                                                                  | `"false"`                                                |
+| `errors.tolerance`                              | Толерантность коннектора к ошибкам. Поддерживаются: none, all                                                                                                                                                                                                                                                    | `"none"`                                                 |
+| `errors.deadletterqueue.topic.name`             | Если установлено (с errors.tolerance=all), DLQ будет использоваться для неудачных батчей (см. [Устранение неполадок](#troubleshooting))                                                                                                                                                                          | `""`                                                     |
+| `errors.deadletterqueue.context.headers.enable` | Добавляет дополнительные заголовки для DLQ                                                                                                                                                                                                                                                                       | `""`                                                     |
+| `clickhouseSettings`                            | Список настроек ClickHouse через запятую (например, &quot;insert&#95;quorum=2, etc...&quot;)                                                                                                                                                                                                                     | `""`                                                     |
+| `topic2TableMap`                                | Список через запятую, который сопоставляет имена топиков с именами таблиц (например, &quot;topic1=table1, topic2=table2, etc...&quot;)                                                                                                                                                                           | `""`                                                     |
+| `tableRefreshInterval`                          | Время (в секундах) для обновления кэша определения таблицы                                                                                                                                                                                                                                                       | `0`                                                      |
+| `keeperOnCluster`                               | Позволяет настроить параметр ON CLUSTER для self-hosted экземпляров (например, `ON CLUSTER clusterNameInConfigFileDefinition`) для таблицы connect&#95;state с exactly-once (см. [Распределенные DDL-запросы](/sql-reference/distributed-ddl)                                                                    | `""`                                                     |
+| `bypassRowBinary`                               | Позволяет отключить использование RowBinary и RowBinaryWithDefaults для данных на основе схемы (Avro, Protobuf и т.д.) - следует использовать только когда в данных будут отсутствующие столбцы, а Nullable/Default неприемлемы                                                                                  | `"false"`                                                |
+| `dateTimeFormats`                               | Форматы даты и времени для разбора полей схемы DateTime64, разделенные `;` (например, `someDateField=yyyy-MM-dd HH:mm:ss.SSSSSSSSS;someOtherDateField=yyyy-MM-dd HH:mm:ss`).                                                                                                                                     | `""`                                                     |
+| `tolerateStateMismatch`                         | Позволяет коннектору отбрасывать записи &quot;раньше&quot;, чем текущее смещение, сохраненное AFTER&#95;PROCESSING (например, если отправлено смещение 5, а последнее записанное смещение было 250). Следует использовать для восстановления ингестии после сбоя, а после завершения вернуть значение `"false"`. | `"false"`                                                |
+| `ignorePartitionsWhenBatching`                  | Будет игнорировать партицию при сборе сообщений для вставки (но только если `exactlyOnce` равно `false`). Примечание о производительности: чем больше задач коннектора, тем меньше партиций kafka назначается на задачу - это может означать уменьшающуюся отдачу.                                               | `"false"`                                                |
+| `bufferCount` (с версии v1.3.6)                 | Количество записей для буферизации в памяти перед сбросом в ClickHouse. `0` отключает внутреннюю буферизацию. Буферизация не поддерживается при `exactlyOnce=true`.                                                                                                                                              | `"0"`                                                    |
+| `bufferFlushTime` (с v1.3.6)                    | Максимальное время буферизации записей в миллисекундах перед сбросом, когда `exactlyOnce=false`. `0` отключает сброс по времени. Значение по умолчанию — `0`. Требуется только для порога по времени. Работает только при `bufferCount > 0`.                                                                     | `"0"`                                                    |
+| `reportInsertedOffsets` (начиная с v1.3.6)      | Включает возврат из `preCommit` только успешно вставленных смещений (вместо `currentOffsets`), когда `exactlyOnce=false`. Это не применяется, когда `ignorePartitionsWhenBatching=true`: в этом случае по-прежнему возвращаются `currentOffsets`.                                                                | `"false"`                                                |
 
 ### Целевые таблицы \{#target-tables\}
 
@@ -136,31 +139,31 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 
 **При объявленной схеме:**
 
-| Тип Kafka Connect                       | Тип ClickHouse            | Поддерживается | Примитивный |
-| --------------------------------------- |---------------------------|----------------|-------------|
-| STRING                                  | String                    | ✅             | Да          |
-| STRING                                  | JSON. См. ниже (1)        | ✅             | Да          |
-| INT8                                    | Int8                      | ✅             | Да          |
-| INT16                                   | Int16                     | ✅             | Да          |
-| INT32                                   | Int32                     | ✅             | Да          |
-| INT64                                   | Int64                     | ✅             | Да          |
-| FLOAT32                                 | Float32                   | ✅             | Да          |
-| FLOAT64                                 | Float64                   | ✅             | Да          |
-| BOOLEAN                                 | Boolean                   | ✅             | Да          |
-| ARRAY                                   | Array(T)                  | ✅             | Нет         |
-| MAP                                     | Map(Primitive, T)         | ✅             | Нет         |
-| STRUCT                                  | Variant(T1, T2, ...)      | ✅             | Нет         |
-| STRUCT                                  | Tuple(a T1, b T2, ...)    | ✅             | Нет         |
-| STRUCT                                  | Nested(a T1, b T2, ...)   | ✅             | Нет         |
-| STRUCT                                  | JSON. См. ниже (1), (2)   | ✅             | Нет         |
-| BYTES                                   | String                    | ✅             | Нет         |
-| org.apache.kafka.connect.data.Time      | Int64 / DateTime64        | ✅             | Нет         |
-| org.apache.kafka.connect.data.Timestamp | Int32 / Date32            | ✅             | Нет         |
-| org.apache.kafka.connect.data.Decimal   | Decimal                   | ✅             | Нет         |
+| Тип Kafka Connect                       | Тип ClickHouse          | Поддерживается | Примитивный |
+| --------------------------------------- | ----------------------- | -------------- | ----------- |
+| STRING                                  | String                  | ✅              | Да          |
+| STRING                                  | JSON. См. ниже (1)      | ✅              | Да          |
+| INT8                                    | Int8                    | ✅              | Да          |
+| INT16                                   | Int16                   | ✅              | Да          |
+| INT32                                   | Int32                   | ✅              | Да          |
+| INT64                                   | Int64                   | ✅              | Да          |
+| FLOAT32                                 | Float32                 | ✅              | Да          |
+| FLOAT64                                 | Float64                 | ✅              | Да          |
+| BOOLEAN                                 | Boolean                 | ✅              | Да          |
+| ARRAY                                   | Array(T)                | ✅              | Нет         |
+| MAP                                     | Map(Primitive, T)       | ✅              | Нет         |
+| STRUCT                                  | Variant(T1, T2, ...)    | ✅              | Нет         |
+| STRUCT                                  | Tuple(a T1, b T2, ...)  | ✅              | Нет         |
+| STRUCT                                  | Nested(a T1, b T2, ...) | ✅              | Нет         |
+| STRUCT                                  | JSON. См. ниже (1), (2) | ✅              | Нет         |
+| BYTES                                   | String                  | ✅              | Нет         |
+| org.apache.kafka.connect.data.Time      | Int64 / DateTime64      | ✅              | Нет         |
+| org.apache.kafka.connect.data.Timestamp | Int32 / Date32          | ✅              | Нет         |
+| org.apache.kafka.connect.data.Decimal   | Decimal                 | ✅              | Нет         |
 
-- (1) - JSON поддерживается только когда в настройках ClickHouse установлено `input_format_binary_read_json_as_string=1`. Это работает только для семейства форматов RowBinary, и настройка влияет на все столбцы в запросе вставки, поэтому все они должны быть строкой. Коннектор преобразует STRUCT в строку JSON в этом случае. 
+* (1) - JSON поддерживается только когда в настройках ClickHouse установлено `input_format_binary_read_json_as_string=1`. Это работает только для семейства форматов RowBinary, и настройка влияет на все столбцы в запросе вставки, поэтому все они должны быть строкой. Коннектор преобразует STRUCT в строку JSON в этом случае.
 
-- (2) - Когда структура содержит объединения, такие как `oneof`, конвертер должен быть настроен так, чтобы НЕ добавлять префикс/суффикс к именам полей. Существует настройка `generate.index.for.unions=false` [для `ProtobufConverter`](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf).  
+* (2) - Когда структура содержит объединения, такие как `oneof`, конвертер должен быть настроен так, чтобы НЕ добавлять префикс/суффикс к именам полей. Существует настройка `generate.index.for.unions=false` [для `ProtobufConverter`](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf).
 
 **Без объявленной схемы:**
 
@@ -183,7 +186,7 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
     "consumer.override.max.poll.records": "5000",
     "consumer.override.max.partition.fetch.bytes": "5242880",
     "database": "default",
-    "errors.retry.timeout": "60",
+    "errors.retry.timeout": "60000",
     "exactlyOnce": "false",
     "hostname": "localhost",
     "port": "8443",
@@ -199,6 +202,9 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 }
 ```
 
+:::note
+Приведённая выше конфигурация коннектора требует включить переопределение клиентских параметров в конфигурации воркера с помощью `connector.client.config.override.policy=All`. См. [документацию Kafka Connect](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) для дополнительной информации.
+:::
 
 #### Базовая конфигурация для нескольких топиков \{#basic-configuration-with-multiple-topics\}
 
@@ -251,6 +257,81 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 ```
 
 
+###### Соответствие типов Avro \{#avro-type-mapping\}
+
+Приведённое ниже соответствие типов определяется в `io.confluent.connect.avro.AvroConverter` — официальной реализации сериализатора/десериализатора Avro для Kafka Connect. Подробную информацию о логике преобразования см. в [документации](https://docs.confluent.io/platform/current/connect/userguide.html#avro) Kafka Connect.
+
+✅: Поддерживается
+
+❌: Не поддерживается
+
+️⚠️: Поддерживается частично
+
+| Тип Avro | Тип Kafka Connect | Поддерживается | Примечания                                                                                                                                                                                                                                                                                                          |
+| -------- | ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| null     | *N/A*             | ❌              | Не поддерживается как отдельный тип, но может использоваться в union                                                                                                                                                                                                                                                |
+| boolean  | BOOLEAN           | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| int      | INT8/INT16/INT32  | ✅              | По умолчанию используется INT32. Преобразуется в INT8, если у schema есть свойство `connect.type=int8` (аналогично для INT16, если `connect.type=int16`)                                                                                                                                                            |
+| long     | INT64             | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| float    | FLOAT32           | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| double   | FLOAT64           | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| bytes    | BYTES             | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| string   | STRING            | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| record   | STRUCT            | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| enum     | STRING            | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| array    | ARRAY/MAP         | ✅              | По умолчанию используется ARRAY. Преобразуется в MAP, если поле изначально было создано с помощью `AvroData.fromConnectSchema` ([исходный код](https://github.com/confluentinc/schema-registry/blob/174907bfc0d9424e8d02e788f450f4afcdda1750/avro-data/src/main/java/io/confluent/connect/avro/AvroData.java#L943)) |
+| map      | MAP               | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| union    | STRUCT/`<T>`      | ⚠️             | По умолчанию используется STRUCT. Преобразуется в singleton-тип `T` из определения union, если `flatten.singleton.unions=true` (см. [документацию](https://docs.confluent.io/cloud/current/connectors/reference/connector-configuration.html#value-converter-flatten-singleton-unions))                             |
+| fixed    | BYTES             | ⚠️             | Логический тип `decimal` для fixed не поддерживается (см. ниже)                                                                                                                                                                                                                                                     |
+
+Сведения о соответствии между типами Kafka Connect и типами ClickHouse см. в разделе [Поддерживаемые типы данных](#supported-data-types).
+
+###### Неподдерживаемые Avro schema \{#unsupported-avro-schemas\}
+
+Коннектор не поддерживает следующие Avro schema:
+
+* логический тип `decimal` для `fixed`
+
+```json
+{"name": "decimal_18_4", "type": "fixed", "size": 8, "logicalType": "decimal", "precision": 18, "scale": 4}
+```
+
+* объединения с Nullable
+
+```json
+{"name": "mixed_union", "type": ["null", "string", "int"], "default": null}
+```
+
+* объединения типов записей
+
+```json
+{
+  "name": "record_union",
+  "type": [
+    {
+      "type": "record",
+      "name": "TypeA",
+      "fields": [
+        {
+          "name": "label",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "type": "record",
+      "name": "TypeB",
+      "fields": [
+        {
+          "name": "count",
+          "type": "int"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ##### Поддержка схемы Protobuf \{#protobuf-schema-support\}
 
 ```json
@@ -296,6 +377,38 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
     "value.converter": "org.apache.kafka.connect.storage.StringConverter",
     "customInsertFormat": "true",
     "insertFormat": "CSV"
+  }
+}
+```
+
+
+### Внутренняя буферизация \{#internal-buffering\}
+
+Внутренняя буферизация позволяет задаче sink накапливать записи из нескольких вызовов `poll()` и отправлять их в ClickHouse более крупными пакетами. Это может повысить пропускную способность в сценариях, где каждый опрос дает множество небольших пакетов для каждой партиции.
+
+Основное поведение:
+
+* `bufferCount` определяет, сколько записей буферизуется перед отправкой.
+* `bufferFlushTime` задает максимальное время ожидания (в миллисекундах) перед отправкой буферизованных записей.
+* `bufferFlushTime` действует только при `bufferCount > 0`.
+* `bufferCount=0` и `bufferFlushTime=0` оставляют буферизацию отключенной (поведение по умолчанию).
+* Буферизация не поддерживается, если `exactlyOnce=true`.
+
+Почему буферизация несовместима с режимом exactly-once:
+Буферизация изменяет границы пакетов, что нарушает дедупликацию блоков ClickHouse и автомат состояний смещений connector.
+Чтобы устранить эту проблему, либо отключите режим exactly-once, указав `exactlyOnce=false` в конфигурации connector, либо отключите буферизацию, установив `bufferCount=0`.
+
+Пример:
+
+```json
+{
+  "name": "clickhouse-connect",
+  "config": {
+    "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
+    ...
+    "exactlyOnce": "false",
+    "bufferCount": "5000",
+    "bufferFlushTime": "2000"
   }
 }
 ```
@@ -486,28 +599,31 @@ Kafka Connect (фреймворк) выбирает сообщения из то
 
 ```properties
 # Increase the number of records per poll
-consumer.max.poll.records=5000
+consumer.override.max.poll.records=5000
 
 # Increase the partition fetch size (5 MB)
-consumer.max.partition.fetch.bytes=5242880
+consumer.override.max.partition.fetch.bytes=5242880
 
 # Optional: Increase minimum fetch size to wait for more data (1 MB)
-consumer.fetch.min.bytes=1048576
+consumer.override.fetch.min.bytes=1048576
 
 # Optional: Reduce wait time if latency is critical
-consumer.fetch.max.wait.ms=300
+consumer.override.fetch.max.wait.ms=300
 ```
+
+:::note
+Указанные выше свойства требуют включить переопределение клиентских настроек в конфигурации воркера с помощью `connector.client.config.override.policy=All`. Дополнительная информация приведена в [документации Kafka Connect](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration).
+:::
 
 **Важно**: Настройки получения Kafka Connect представляют сжатые данные, в то время как ClickHouse получает несжатые данные. Балансируйте эти настройки на основе вашего коэффициента сжатия.
 
 **Компромиссы**:
 
-* **Большие пакеты** = Лучшая производительность приёма данных в ClickHouse, меньше частей, меньше накладных расходов
+* **Большие пакеты** = Лучшая производительность ингестии в ClickHouse, меньше частей, меньше накладных расходов
 * **Большие пакеты** = Более высокое потребление памяти, потенциальное увеличение сквозной задержки
 * **Слишком большие пакеты** = Риск таймаутов, ошибок OutOfMemory или превышения `max.poll.interval.ms`
 
 Подробнее: [Документация Confluent](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Документация Kafka](https://kafka.apache.org/documentation/#consumerconfigs)
-
 
 #### Асинхронные вставки                         \{#asynchronous-inserts\}
 
@@ -538,9 +654,9 @@ consumer.fetch.max.wait.ms=300
 2. Записывает данные в буфер в памяти (вместо немедленной записи на диск)
 3. Возвращает успех коннектору (если `wait_for_async_insert=0`)
 4. Сбрасывает буфер на диск, когда выполнено одно из этих условий:
-   - Буфер достигает `async_insert_max_data_size` (по умолчанию: 10 МБ)
-   - Прошло `async_insert_busy_timeout_ms` миллисекунд с момента первой вставки (по умолчанию: 1000 мс)
-   - Накоплено максимальное количество запросов (`async_insert_max_query_number`, по умолчанию: 100)
+   * Буфер достигает `async_insert_max_data_size` (по умолчанию: 100 МБ)
+   * Прошло `async_insert_busy_timeout_ms` миллисекунд с момента первой вставки (по умолчанию: 1000 мс)
+   * Накоплено максимальное количество запросов (`async_insert_max_query_number`, по умолчанию: 100)
 
 Это значительно уменьшает количество создаваемых частей и улучшает общую пропускную способность.
 
@@ -571,12 +687,12 @@ consumer.fetch.max.wait.ms=300
 Вы можете более детально настроить поведение сброса буфера при асинхронных вставках:
 
 ```json
-"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=10485760,async_insert_busy_timeout_ms=1000"
+"clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=104857600,async_insert_busy_timeout_ms=1000"
 ```
 
 Общие параметры настройки:
 
-* **`async_insert_max_data_size`** (по умолчанию: 10485760 / 10 MB): Максимальный размер буфера перед сбросом
+* **`async_insert_max_data_size`** (по умолчанию: 104857600 / 100 MB): Максимальный размер буфера перед сбросом
 * **`async_insert_busy_timeout_ms`** (по умолчанию: 1000): Максимальное время (мс) до сброса
 * **`async_insert_stale_timeout_ms`** (по умолчанию: 0): Время (мс) с момента последней вставки до сброса
 * **`async_insert_max_query_number`** (по умолчанию: 100): Максимальное количество запросов до сброса
@@ -586,7 +702,6 @@ consumer.fetch.max.wait.ms=300
 * **Преимущества**: Меньше частей, лучшая производительность слияний, меньшая нагрузка на CPU, улучшенная пропускная способность при высокой конкурентности
 * **Особенности**: Данные не сразу доступны для запросов, немного увеличенная сквозная задержка
 * **Риски**: Потеря данных при сбое сервера, если `wait_for_async_insert=0`, повышенная нагрузка на память при больших буферах
-
 
 ##### Асинхронные вставки с семантикой «exactly-once» \{#async-inserts-with-exactly-once\}
 
@@ -745,15 +860,19 @@ SETTINGS
     "exactlyOnce": "false",
     "ignorePartitionsWhenBatching": "true",
     
-    "consumer.max.poll.records": "10000",
-    "consumer.max.partition.fetch.bytes": "5242880",
-    "consumer.fetch.min.bytes": "1048576",
-    "consumer.fetch.max.wait.ms": "500",
+    "consumer.override.max.poll.records": "10000",
+    "consumer.override.max.partition.fetch.bytes": "5242880",
+    "consumer.override.fetch.min.bytes": "1048576",
+    "consumer.override.fetch.max.wait.ms": "500",
     
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
 ```
+
+:::note
+Для приведённой выше конфигурации коннектора необходимо включить переопределения параметров клиента в конфигурации вашего воркера через `connector.client.config.override.policy=All`. См. [документацию Kafka Connect](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) для дополнительной информации.
+:::
 
 **Эта конфигурация**:
 
@@ -762,7 +881,6 @@ SETTINGS
 * Использует асинхронные вставки с буфером 16 MB
 * Запускает 8 параллельных задач (подберите значение под количество партиций)
 * Оптимизирована на максимальную пропускную способность, а не на строгий порядок
-
 
 ### Устранение неполадок \{#troubleshooting\}
 
@@ -781,19 +899,20 @@ SETTINGS
 * `ClickHouseException` — это общее исключение, которое может быть выброшено ClickHouse.
   Обычно оно выбрасывается, когда сервер перегружен, и следующие коды ошибок считаются особенно подходящими для повторной попытки:
   * 3 - UNEXPECTED&#95;END&#95;OF&#95;FILE
+  * 107 - FILE&#95;DOESNT&#95;EXIST
   * 159 - TIMEOUT&#95;EXCEEDED
   * 164 - READONLY
-  * 202 - TOO&#95;MANY&#95;SIMULTANЕОUS&#95;QUERIES
+  * 202 - TOO&#95;MANY&#95;SIMULTANЕОУС&#95;QUERIES
   * 203 - NO&#95;FREE&#95;CONNECTION
   * 209 - SOCKET&#95;TIMEOUT
   * 210 - NETWORK&#95;ERROR
+  * 241 - MEMORY&#95;LIMIT&#95;EXCEEDED
   * 242 - TABLE&#95;IS&#95;READ&#95;ONLY
   * 252 - TOO&#95;MANY&#95;PARTS
   * 285 - TOO&#95;FEW&#95;LIVE&#95;REPLICAS
   * 319 - UNKNOWN&#95;STATUS&#95;OF&#95;INSERT
   * 425 - SYSTEM&#95;ERROR
   * 999 - KEEPER&#95;EXCEPTION
-  * 1002 - UNKNOWN&#95;EXCEPTION
 * `SocketTimeoutException` — выбрасывается, когда соединение по сокету превышает таймаут.
 * `UnknownHostException` — выбрасывается, когда не удаётся разрешить имя хоста.
 * `IOException` — выбрасывается, когда возникает проблема с сетью.

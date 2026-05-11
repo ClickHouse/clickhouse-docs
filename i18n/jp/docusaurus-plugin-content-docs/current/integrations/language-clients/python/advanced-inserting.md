@@ -2,7 +2,7 @@
 sidebar_label: '高度なデータ挿入'
 sidebar_position: 5
 keywords: ['clickhouse', 'python', 'insert', 'advanced']
-description: 'ClickHouse Connect を用いた高度なデータ挿入'
+description: 'ClickHouse Connect を使った高度なデータ挿入'
 slug: /integrations/language-clients/python/advanced-inserting
 title: '高度なデータ挿入'
 doc_type: 'reference'
@@ -29,7 +29,8 @@ assert qr.row_count == 4
 assert qr[0][0] == 4
 ```
 
-`InsertContext` には挿入処理中に更新される可変な状態が含まれるため、スレッドセーフではありません。
+`InsertContext` には挿入処理の過程で更新される可変状態が含まれるため、スレッドセーフではありません。
+
 
 ### 書き込みフォーマット \{#write-formats\}
 

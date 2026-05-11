@@ -12,7 +12,6 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import ActionsMenu from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_service_actions_menu.md';
 import SQLConsoleDetail from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 import SupersetDocker from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_add_superset_detail.md';
@@ -168,7 +167,8 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 根据上述查询以及 [MCC 列表](https://en.wikipedia.org/wiki/Mobile_country_code)，基站数量最多的国家包括：美国、德国和俄罗斯。
 
-您可以考虑在 ClickHouse 中创建一个 [Dictionary](../../sql-reference/dictionaries/index.md) 来对这些值进行解码。
+您可以考虑在 ClickHouse 中创建一个 [Dictionary](/sql-reference/statements/create/dictionary) 来对这些值进行解码。
+
 
 ## 使用场景：集成地理数据 \{#use-case\}
 

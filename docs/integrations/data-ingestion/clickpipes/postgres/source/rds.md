@@ -2,7 +2,7 @@
 sidebar_label: 'Amazon RDS Postgres'
 description: 'Set up Amazon RDS Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/rds
-title: 'RDS Postgres Source Setup Guide'
+title: 'RDS Postgres source setup guide'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'data ingestion', 'real-time sync']
 integration:
@@ -12,7 +12,6 @@ integration:
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
-import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';
 import modify_parameter_group from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/modify_parameter_group.png';
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
@@ -27,11 +26,10 @@ ClickPipes supports Postgres version 12 and later.
 
 ## Enable logical replication {#enable-logical-replication}
 
-You can skip this section if your RDS instance already has the following settings configured:
+You can skip this section if your RDS instance already has the following setting configured:
 - `rds.logical_replication = 1`
-- `wal_sender_timeout = 0`
 
-These settings are typically pre-configured if you previously used another data replication tool.
+This setting is typically pre-configured if you previously used another data replication tool.
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -39,25 +37,16 @@ postgres=> SHOW rds.logical_replication ;
 -------------------------
  on
 (1 row)
-
-postgres=> SHOW wal_sender_timeout ;
- wal_sender_timeout
---------------------
- 0
-(1 row)
 ```
 
 If not already configured, follow these steps:
 
 1. Create a new parameter group for your Postgres version with the required settings:
     - Set `rds.logical_replication` to 1
-    - Set `wal_sender_timeout` to 0
 
 <Image img={parameter_group_in_blade} alt="Where to find Parameter groups in RDS?" size="lg" border/>
 
 <Image img={change_rds_logical_replication} alt="Changing rds.logical_replication" size="lg" border/>
-
-<Image img={change_wal_sender_timeout} alt="Changing wal_sender_timeout" size="lg" border/>
 
 2. Apply the new parameter group to your RDS Postgres database
 
@@ -126,7 +115,7 @@ If you want to restrict traffic to your RDS instance, please add the [documented
 To connect to your RDS instance through a private network, you can use AWS PrivateLink. Follow our [AWS PrivateLink setup guide for ClickPipes](/knowledgebase/aws-privatelink-setup-for-clickpipes) to set up the connection.
 
 ### Workarounds for RDS Proxy {#workarounds-for-rds-proxy}
-RDS Proxy does not support logical replication connections. If you have dynamic IP addresses in RDS and cannot use DNS name or a lambda, here are some alternatives:
+RDS Proxy doesn't support logical replication connections. If you have dynamic IP addresses in RDS and can't use DNS name or a lambda, here are some alternatives:
 
 1. Using a cron job, resolve the RDS endpoint's IP periodically and update the NLB if it has changed.
 2. Using RDS Event Notifications with EventBridge/SNS: Trigger updates automatically using AWS RDS event notifications

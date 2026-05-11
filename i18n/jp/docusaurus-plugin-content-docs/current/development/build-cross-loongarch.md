@@ -13,12 +13,12 @@ ClickHouse は LoongArch64 を実験的にサポートしています
 
 ## ClickHouse をビルドする \{#build-clickhouse\}
 
-ビルドに必要な LLVM のバージョンは 19.1.0 以上である必要があります。
+ビルドに必要な LLVM のバージョンは 21.1.0 以上である必要があります。
 
 ```bash
 cd ClickHouse
 mkdir build-loongarch64
-CC=clang-19 CXX=clang++-19 cmake . -Bbuild-loongarch64 -G Ninja -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-loongarch64.cmake
+cmake . -Bbuild-loongarch64 -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-loongarch64.cmake
 ninja -C build-loongarch64
 ```
 

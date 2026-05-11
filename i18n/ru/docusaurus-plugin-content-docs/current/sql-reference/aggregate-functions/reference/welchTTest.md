@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## welchTTest \{#welchTTest\}
 
-Введена в версии: v21.1
+Введена в версии: v21.1.0
 
 Применяет [t-критерий Уэлча](https://en.wikipedia.org/wiki/Welch%27s_t-test) к выборкам из двух генеральных совокупностей.
 

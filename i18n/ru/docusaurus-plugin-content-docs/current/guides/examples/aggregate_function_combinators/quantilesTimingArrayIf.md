@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## Описание \{#description\}
 
-К комбинатору [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) 
-можно применить функцию [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-для вычисления квантилей временных значений в массивах для строк, где условие истинно,
+К [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) 
+комбинатору можно применить функцию [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+для вычисления квантилей временных значений в массивах для строк, в которых условие истинно,
 используя агрегатную функцию-комбинатор `quantilesTimingArrayIf`.
 
 ## Пример использования \{#example-usage\}
@@ -26,7 +26,8 @@ CREATE TABLE api_responses(
     endpoint String,
     response_times_ms Array(UInt32),
     success_rate Float32
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO api_responses VALUES
     ('orders', [82, 94, 98, 87, 103, 92, 89, 105], 0.98),
@@ -59,6 +60,8 @@ GROUP BY endpoint;
    └──────────┴─────────────────────────────────────────────────────────────────────┘
 ```
 
+
 ## См. также \{#see-also\}
-- [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
-- [Комбинатор `If`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)
+* [Комбинатор `If`](/sql-reference/aggregate-functions/combinators#-if)

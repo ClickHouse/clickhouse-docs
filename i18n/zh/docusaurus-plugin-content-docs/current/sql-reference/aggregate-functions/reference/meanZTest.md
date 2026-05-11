@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## meanZTest \{#meanZTest\}
 
-引入于：v22.2
+引入于：v22.2.0
 
 对来自两个总体的样本应用均值 Z 检验。
 

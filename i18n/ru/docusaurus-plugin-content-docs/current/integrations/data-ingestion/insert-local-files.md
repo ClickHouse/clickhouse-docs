@@ -1,7 +1,7 @@
 ---
-sidebar_label: 'Загрузка локальных файлов'
+sidebar_label: 'Вставка локальных файлов'
 sidebar_position: 2
-title: 'Загрузка локальных файлов'
+title: 'Вставка локальных файлов'
 slug: /integrations/data-ingestion/insert-local-files
 description: 'Узнайте, как загружать локальные файлы'
 show_related_blogs: true

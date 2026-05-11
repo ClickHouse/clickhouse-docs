@@ -9,11 +9,10 @@ doc_type: 'reference'
 
 ## theilsU \{#theilsU\}
 
-引入版本：v22.1
+引入版本：v22.1.0
 
-`theilsU` 函数用于计算 [Theil&#39;s U 不确定性系数](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient)，该系数用于衡量表中两列之间的关联程度。
-其取值范围为 −1.0（100% 负相关，或完全反向）到 +1.0（100% 正相关，或完全一致）。
-值为 0.0 表示无关联。
+`theilsU` 函数用于计算 [Theil&#39;s U 不确定性系数](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient)，该系数用于衡量表中两列之间的关联性。
+其取值范围为 0.0 (无关联) 到 1.0 (完全一致) 。
 
 **语法**
 
@@ -28,7 +27,7 @@ theilsU(column1, column2)
 
 **返回值**
 
-返回介于 -1 和 1 之间的数值。[`Float64`](/sql-reference/data-types/float)
+返回介于 0 和 1 之间的数值。[`Float64`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -47,7 +46,7 @@ FROM (
 
 ```response title=Response
 ┌────────theilsU(a, b)─┐
-│ -0.30195720557678846 │
+│  0.30195720557678846 │
 └──────────────────────┘
 ```
 

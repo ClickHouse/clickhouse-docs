@@ -13,6 +13,13 @@ doc_type: 'guide'
 
 嵌套数据结构就像表格单元格中的一张表。嵌套数据结构的参数——列名和类型——的指定方式与 [CREATE TABLE](../../../sql-reference/statements/create/table.md) 查询中相同。表中的每一行都可以对应嵌套数据结构中的任意数量的行。
 
+:::tip[避免在列名中使用点号]
+包含点号的列名、具有相同点号前缀的列，以及类型为 `Array` 的列，在 `flatten_nested = 1` (默认值) 时，都可能被解释为扁平化的 `Nested` 结构的一部分。这可能会在插入时触发意外的数组长度校验，并带来重命名限制。
+
+尽可能避免在列名中使用点号。
+除非你是有意使用 `Nested` 语义，否则请在列名中使用下划线 (`_`) 或其他分隔符来替代点号。
+:::
+
 示例：
 
 ```sql
@@ -38,9 +45,9 @@ CREATE TABLE test.visits
 ) ENGINE = CollapsingMergeTree(StartDate, intHash32(UserID), (CounterID, StartDate, intHash32(UserID), VisitID), 8192, Sign)
 ```
 
-此示例声明了 `Goals` 嵌套数据结构，其中包含关于转化（已达成目标）的数据。`visits` 表中的每一行都可以对应零个或任意数量的转化。
+此示例声明了 `Goals` 嵌套数据结构，其中包含关于转化 (已达成目标) 的数据。`visits` 表中的每一行都可以对应零个或任意数量的转化。
 
-当将 [flatten&#95;nested](/operations/settings/settings#flatten_nested) 设置为 `0`（默认值并非如此）时，将支持任意层级的嵌套。
+当将 [flatten&#95;nested](/operations/settings/settings#flatten_nested) 设置为 `0` (默认值并非如此) 时，将支持任意层级的嵌套。
 
 在大多数情况下，处理嵌套数据结构时，其列通过用点分隔的列名来指定。这些列都是相同类型的数组。单个嵌套数据结构中的所有数组列长度都相同。
 
@@ -101,7 +108,7 @@ LIMIT 10
 
 不能对整个嵌套数据结构执行 SELECT 查询，只能显式列出其中的各个单独列。
 
-对于 INSERT 查询，需要分别传递嵌套数据结构中各个组成列的数组（就像它们是独立的列数组一样）。在插入时，系统会检查它们的长度是否一致。
+对于 INSERT 查询，需要分别传递嵌套数据结构中各个组成列的数组 (就像它们是独立的列数组一样) 。在插入时，系统会检查它们的长度是否一致。
 
 对于 DESCRIBE 查询，嵌套数据结构中的列也会以同样的方式分别列出。
 

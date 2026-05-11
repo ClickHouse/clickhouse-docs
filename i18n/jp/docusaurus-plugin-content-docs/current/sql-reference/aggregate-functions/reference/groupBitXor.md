@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitXor \{#groupBitXor\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 一連の数値に対してビット単位の XOR を適用します。
 

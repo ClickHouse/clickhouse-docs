@@ -21,8 +21,9 @@ Elastic Stack は、アプリケーションを計装するための言語 SDK �
 2. **[Elastic Distributions of OpenTelemetry (EDOT SDKs)](https://www.elastic.co/docs/reference/opentelemetry/edot-sdks/)** – これは標準 OpenTelemetry SDKs の Elastic ディストリビューションであり、.NET、Java、Node.js、PHP、Python 向けに提供されています。アプリケーションがすでに EDOT SDK を使用している場合、コードを再計装する必要はありません。その代わりに、ClickStack に含まれる OTLP Collector へテレメトリデータをエクスポートするように SDK を再構成するだけでかまいません。詳細は [&quot;Migrating EDOT SDKs&quot;](#migrating-edot-sdks) を参照してください。
 
 :::note 可能な限り ClickStack SDKs を使用する
-標準の OpenTelemetry SDKs もサポートされていますが、各言語向けには [**ClickStack-distributed SDKs**](/use-cases/observability/clickstack/sdks) の使用を強く推奨します。これらのディストリビューションには、追加の計装、強化されたデフォルト設定、ClickStack パイプラインおよび HyperDX UI とシームレスに連携するよう設計されたカスタム拡張機能が含まれています。ClickStack SDKs を使用することで、プレーンな OpenTelemetry や EDOT SDKs では利用できない例外スタックトレースなどの高度な機能を活用できます。
+標準の OpenTelemetry SDKs もサポートされていますが、各言語向けには [**ClickStack-distributed SDKs**](/use-cases/observability/clickstack/sdks) の使用を強く推奨します。これらのディストリビューションには、追加の計装、強化されたデフォルト設定、ClickStack パイプラインおよび UI とシームレスに連携するよう設計されたカスタム拡張機能が含まれています。ClickStack SDKs を使用することで、プレーンな OpenTelemetry や EDOT SDKs では利用できない例外スタックトレースなどの高度な機能を活用できます。
 :::
+
 
 ## EDOT SDK の移行 \{#migrating-edot-sdks\}
 

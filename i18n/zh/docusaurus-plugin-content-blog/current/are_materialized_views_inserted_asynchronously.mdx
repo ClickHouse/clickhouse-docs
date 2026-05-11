@@ -18,7 +18,7 @@ keywords: ['物化视图']
 
 1. 当 `INSERT` 成功时，数据会同时插入到表和所有物化视图中。
 2. 对物化视图而言，该插入操作不是原子的。在 `INSERT` 正在执行的那一刻，并发客户端可能会看到中间状态：数据已经插入主表但尚未插入物化视图，或者相反。
-3. 如果你使用的是[异步插入（async inserts）](https://clickhouse.com/docs/optimize/asynchronous-inserts/)，它们会先收集数据，然后在内部执行一次常规插入，并向客户端返回与常规插入相同类型的响应。如果客户端在带有 `wait_for_async_insert` 选项（默认如此）的异步插入中收到了成功响应，则表示数据已同时插入到表及其所有物化视图中。
+3. 如果你使用的是[异步插入 (async inserts) ](https://clickhouse.com/docs/optimize/asynchronous-inserts/)，它们会先收集数据，然后在内部执行一次常规插入，并向客户端返回与常规插入相同类型的响应。如果客户端在带有 `wait_for_async_insert` 选项 (默认如此) 的异步插入中收到了成功响应，则表示数据已同时插入到表及其所有物化视图中。
 
 **问题：** 那链式 / 级联物化视图呢？
 

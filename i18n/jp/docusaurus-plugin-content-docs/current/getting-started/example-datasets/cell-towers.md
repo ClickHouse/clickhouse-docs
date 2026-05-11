@@ -2,8 +2,8 @@
 description: 'OpenCelliD データを ClickHouse に読み込み、Apache Superset を ClickHouse に接続して、そのデータに基づいたダッシュボードを作成する方法を説明します'
 sidebar_label: '基地局'
 slug: /getting-started/example-datasets/cell-towers
-title: '基地局データセットを用いたジオデータ'
-keywords: ['基地局データ', 'ジオデータ', 'OpenCelliD', '地理空間データセット', 'はじめに']
+title: '基地局データセットを用いた地理データ'
+keywords: ['基地局データ', '地理データ', 'OpenCelliD', '地理空間データセット', 'はじめに']
 doc_type: 'guide'
 ---
 
@@ -12,7 +12,6 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import ActionsMenu from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_service_actions_menu.md';
 import SQLConsoleDetail from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 import SupersetDocker from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_add_superset_detail.md';
@@ -168,7 +167,8 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 上記のクエリおよび [MCC リスト](https://en.wikipedia.org/wiki/Mobile_country_code) に基づくと、基地局数が最も多い国は米国、ドイツ、ロシアです。
 
-これらの値をデコードするために、ClickHouse で [Dictionary](../../sql-reference/dictionaries/index.md) を作成することを検討してもよいでしょう。
+これらの値をデコードするために、ClickHouse で [Dictionary](/sql-reference/statements/create/dictionary) を作成することを検討してもよいでしょう。
+
 
 ## ユースケース：地理データの活用 \{#use-case\}
 

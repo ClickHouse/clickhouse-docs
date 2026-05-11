@@ -17,7 +17,7 @@ ClickHouse provides support services for our ClickHouse Cloud users and customer
 You can also subscribe to our [status page](https://status.clickhouse.com) to get notified quickly about any incidents affecting our platform.
 
 :::note
-Please note that only subscription customers have a service level agreement on support incidents. If you are not currently a ClickHouse Cloud user – while we will try to answer your question, we'd encourage you to go instead to one of our community resources:
+Please note that only subscription customers have a service level agreement on support incidents. If you're not currently a ClickHouse Cloud user – while we will try to answer your question, we'd encourage you to go instead to one of our community resources:
 
 - [ClickHouse community Slack channel](https://clickhouse.com/slack)
 - [Other community options](https://github.com/ClickHouse/ClickHouse/blob/master/README.md#useful-links)

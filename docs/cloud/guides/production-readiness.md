@@ -53,7 +53,7 @@ Establish separate environments to safely test changes before impacting producti
 
 ## Private networking {#private-networking}
 
-[Private networking](/cloud/security/connectivity/private-networking) in ClickHouse Cloud allows you to connect your ClickHouse services directly to your cloud virtual network, ensuring that data does not traverse the public internet. This is essential for organizations with strict security or compliance requirements, or for those running applications in private subnets.
+[Private networking](/cloud/security/connectivity/private-networking) in ClickHouse Cloud allows you to connect your ClickHouse services directly to your cloud virtual network, ensuring that data doesn't traverse the public internet. This is essential for organizations with strict security or compliance requirements, or for those running applications in private subnets.
 
 ClickHouse Cloud supports private networking through the following mechanisms:
 
@@ -74,7 +74,7 @@ Moving from console-based user management to enterprise authentication integrati
 [Social SSO](/cloud/security/manage-my-account): ClickHouse Cloud also supports social authentication providers (Google, Microsoft, GitHub) as an equally secure alternative to SAML SSO. Social SSO provides faster setup for organizations without existing SAML infrastructure while maintaining enterprise security standards.
 
 :::note Important limitation
-Users authenticated through SAML or social SSO are assigned the "Member" role by default and must be manually granted additional roles by an admin after their first login. Group-to-role mapping and automatic role assignment are not currently supported.
+Users authenticated through SAML or social SSO are assigned the "Member" role by default and must be manually granted additional roles by an admin after their first login. Group-to-role mapping and automatic role assignment aren't currently supported.
 :::
 
 ### Access control design {#access-control-design}
@@ -89,7 +89,7 @@ Configure quotas, limits, and settings profiles to manage resource usage for dif
 
 ### User lifecycle management limitations {#user-lifecycle-management}
 
-ClickHouse Cloud does not currently support SCIM or automated provisioning/deprovisioning via identity providers. Users must be manually removed from the ClickHouse Cloud console after being removed from your IdP. Plan for manual user management processes until these features become available.
+ClickHouse Cloud doesn't currently support SCIM or automated provisioning/deprovisioning via identity providers. Users must be manually removed from the ClickHouse Cloud console after being removed from your IdP. Plan for manual user management processes until these features become available.
 
 Learn more about [Cloud Access Management](/cloud/security/cloud_access_management) and [SAML SSO setup](/cloud/security/saml-setup).
 
@@ -171,7 +171,7 @@ Establishing backup validation procedures and support integration ensures your C
 
 ### Backup strategy assessment {#backup-strategy}
 
-ClickHouse Cloud provides automatic backups with configurable retention periods. Assess your current backup configuration against compliance and recovery requirements. Enterprise customers with specific compliance requirements around backup location or encryption can configure ClickHouse Cloud to store backups in their own cloud storage buckets (BYOB). Contact ClickHouse support for BYOB configuration.
+ClickHouse Cloud provides automatic backups with configurable retention periods. Assess your current backup configuration against compliance and recovery requirements. If you have specific compliance requirements around backup location or encryption, you can configure ClickHouse Cloud to store backups in your own cloud storage buckets (BYOB). Contact ClickHouse support for BYOB configuration.
 
 ### Validate and test recovery procedures {#validate-test-recovery}
 

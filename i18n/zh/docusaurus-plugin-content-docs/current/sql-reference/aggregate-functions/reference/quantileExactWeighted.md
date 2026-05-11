@@ -9,17 +9,17 @@ doc_type: 'reference'
 
 ## quantileExactWeighted \{#quantileExactWeighted\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 精确计算数值数据序列的[分位数](https://en.wikipedia.org/wiki/Quantile)，并考虑每个元素的权重。
 
 为了获得精确值，所有传入的值会被组合成一个数组，然后对该数组进行部分排序。
 每个值按照其权重计数，就好像它出现了 `weight` 次一样。
 算法中使用了哈希表。
-因此，如果传入的值频繁重复，该函数比 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact) 消耗更少的 RAM。
+因此，如果传入的值频繁重复，该函数比 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact) 消耗更少的 RAM。
 可以使用此函数替代 `quantileExact`，并将权重指定为 1。
 
-在一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并（也就是说，该查询的执行效率低于本可达到的效率）。
+在一个查询中使用多个具有不同 level 的 `quantile*` 函数时，其内部状态不会被合并 (也就是说，该查询的执行效率低于本可达到的效率) 。
 在这种情况下，请使用 [quantiles](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 函数。
 
 **语法**

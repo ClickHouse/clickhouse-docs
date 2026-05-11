@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitoring']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 本指南集成了：
 
 <table>
@@ -21,7 +24,8 @@ keywords: ['clickstack', 'sdk', 'logging', 'integration', 'application monitorin
   </tbody>
 </table>
 
-_要将日志发送到 ClickStack，请通过 [OpenTelemetry Collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) 发送日志。_
+*要将日志发送到 ClickStack，请通过 [OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) 发送日志。*
+
 
 ## 快速开始 \{#getting-started\}
 
@@ -42,19 +46,19 @@ bundle add opentelemetry-sdk opentelemetry-instrumentation-all opentelemetry-exp
 在 `config/initializers` 目录中创建一个名为 `hyperdx.rb` 的文件，并添加以下内容：
 
 ```ruby
-# config/initializers/hyperdx.rb {#configinitializershyperdxrb}
+# config/initializers/hyperdx.rb
 
 require 'opentelemetry-exporter-otlp'
 require 'opentelemetry/instrumentation/all'
 require 'opentelemetry/sdk'
 
 OpenTelemetry::SDK.configure do |c|
-  c.use_all() # 启用所有追踪埋点！
+  c.use_all() # enables all trace instrumentation!
 end
 
 Rails.application.configure do
   Rails.logger = Logger.new(STDOUT)
-  # Rails.logger.log_level = Logger::INFO # 默认为 DEBUG，但在生产环境中可能需要 INFO 或更高级别
+  # Rails.logger.log_level = Logger::INFO # default is DEBUG, but you might want INFO or above in production
   Rails.logger.formatter = proc do |severity, time, progname, msg|
     span_id = OpenTelemetry::Trace.current_span.context.hex_span_id
     trace_id = OpenTelemetry::Trace.current_span.context.hex_trace_id
@@ -68,20 +72,37 @@ Rails.application.configure do
       "operation" => operation }.to_json + "\n"
   end
 
-  Rails.logger.info "日志记录器已初始化!! 🐱"
+  Rails.logger.info "Logger initialized !! 🐱"
 end
 ```
 
+
 ### 配置环境变量 \{#configure-environment-variables\}
 
-接下来需要在 shell 中配置以下环境变量，用于将遥测数据发送到 ClickStack：
+接下来需要在 shell 中配置以下环境变量，用于通过 OpenTelemetry collector 将遥测数据发送到 ClickStack：
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="托管 ClickStack" default>
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
-OTEL_SERVICE_NAME='<您的应用或服务名称>' \
-OTEL_EXPORTER_OTLP_HEADERS='authorization=<您的摄取 API 密钥>'
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 ```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack 开源版" >
+
+```shell
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
+```
+
+</TabItem>
+</Tabs>
 
 *`OTEL_SERVICE_NAME` 环境变量用于在 HyperDX 应用中标识你的服务，可以是任意你想要的名称。*
 

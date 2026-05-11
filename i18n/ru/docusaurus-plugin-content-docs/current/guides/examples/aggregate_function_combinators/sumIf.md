@@ -25,7 +25,8 @@ CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO sales VALUES
     (1, 100.50, 1),
@@ -48,6 +49,7 @@ FROM sales;
 1. │                  776.50 │
    └───────────────────────┘
 ```
+
 
 ### Расчет торгового объема по направлению движения цены \{#calculate-trading-vol-price-direction\}
 
@@ -84,7 +86,8 @@ ORDER BY month;
     └────────────┴───────────────────┴─────────────────────┴────────────────────────┴───────────────┘
 ```
 
-### Рассчитать торговый объём по тикеру \{#calculate-trading-volume\}
+
+### Расчёт объёма торгов по тикеру акции \{#calculate-trading-volume\}
 
 В этом примере мы будем использовать таблицу `stock`, доступную в [ClickHouse playground](https://sql.clickhouse.com/),
 чтобы посчитать объём торгов по биржевому тикеру в 2006 году для трёх крупнейших
@@ -121,6 +124,8 @@ ORDER BY month;
     └────────────┴────────────────┴──────────────────┴────────────────┴──────────────┴───────────────────────┘
 ```
 
+
 ## Смотрите также \{#see-also\}
+
 - [`sum`](/sql-reference/aggregate-functions/reference/sum)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

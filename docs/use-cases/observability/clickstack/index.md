@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack
-title: 'ClickStack - The ClickHouse Observability Stack'
+title: 'ClickStack - the ClickHouse observability stack'
 pagination_prev: null
 pagination_next: null
 description: 'Landing page for the ClickHouse Observability Stack'
@@ -8,7 +8,13 @@ keywords: ['ClickStack', 'observability stack', 'HyperDX', 'OpenTelemetry', 'log
 doc_type: 'landing-page'
 ---
 
-**ClickStack** is a production-grade observability platform built on ClickHouse and OpenTelemetry (OTel), unifying logs, traces, metrics and session in a single high-performance solution. Designed for monitoring and debugging complex systems, ClickStack enables developers and SREs to trace issues end-to-end without switching between tools or manually stitching together data using timestamps or correlation IDs.
+:::tip Try OTel FYI - OTel collector documentation made simple
+[OTel FYI](https://otel.fyi) is a community resource with clear, concise OpenTelemetry collector documentation. A great companion to ClickStack for understanding and configuring your OTel pipelines.
+:::
+
+**ClickStack** is an open source, production-grade observability platform built on ClickHouse and OpenTelemetry (OTel) that unifies logs, traces, metrics, and sessions in a single high-performance solution. It enables developers and SREs to monitor and debug complex systems end-to-end without switching tools or manually correlating data.
+
+ClickStack can be deployed in two ways. With **ClickStack Open Source**, you run and manage all components yourself, including ClickHouse, the ClickStack UI (HyperDX), and the OpenTelemetry Collector. With **Managed ClickStack**, ClickHouse and the ClickStack UI (HyperDX) are fully managed in ClickHouse Cloud, including authentication and operational concerns, leaving you to run only the OpenTelemetry Collector that receives telemetry from your workloads and forwards it via OTLP to ClickHouse Cloud.
 
 | Section | Description |
 |---------|-------------|
@@ -21,3 +27,4 @@ doc_type: 'landing-page'
 | [Ingesting Data](/use-cases/observability/clickstack/ingesting-data) | Guidelines for ingesting data to ClickStack |
 | [Search](/use-cases/observability/clickstack/search) | How to search and query your observability data |
 | [Production](/use-cases/observability/clickstack/production) | Best practices for production deployment |
+| [FAQ](/use-cases/observability/clickstack/faq) | Frequently asked questions |

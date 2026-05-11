@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## quantileTiming \{#quantileTiming\}
 
-Впервые представлена в: v1.1
+Впервые представлена в: v1.1.0
 
 С заданной точностью вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 

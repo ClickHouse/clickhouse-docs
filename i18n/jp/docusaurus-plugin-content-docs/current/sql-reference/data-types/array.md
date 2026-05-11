@@ -19,7 +19,7 @@ doc_type: 'reference'
 array(T)
 ```
 
-角括弧（[]）を使用することもできます。
+`[]` を使うこともできます。
 
 ```sql
 []
@@ -51,7 +51,7 @@ SELECT [1, 2] AS x, toTypeName(x)
 
 配列をその場で作成する場合、ClickHouse は、指定されたすべての引数を格納できる中で最も狭いデータ型を自動的に選択します。[Nullable](/sql-reference/data-types/nullable) やリテラルの [NULL](/operations/settings/formats#input_format_null_as_default) 値が含まれている場合、配列要素の型も [Nullable](../../sql-reference/data-types/nullable.md) になります。
 
-ClickHouse がデータ型を決定できない場合は、例外をスローします。例えば、文字列と数値を同時に含む配列を作成しようとした場合（`SELECT array(1, 'a')`）にこのような状況が発生します。
+ClickHouse がデータ型を決定できない場合は、例外を送出します。例えば、文字列と数値を同時に含む配列を作成しようとした場合 (`SELECT array(1, 'a')`) にこのような状況が発生します。
 
 自動データ型推定の例:
 
@@ -65,7 +65,7 @@ SELECT array(1, 2, NULL) AS x, toTypeName(x)
 └────────────┴───────────────────────────────┘
 ```
 
-互換性のないデータ型の配列を作成しようとすると、ClickHouse は例外を発生させます。
+互換性のないデータ型の配列を作成しようとすると、ClickHouse は例外を送出します。
 
 ```sql
 SELECT array(1, 'a')
@@ -102,7 +102,7 @@ SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 
 ## Array からのネストされたサブカラムの読み取り \{#reading-nested-subcolumns-from-array\}
 
-`Array` 内のネストされた型 `T` がサブカラムを持つ場合（たとえば [named tuple](./tuple.md) である場合など）、`Array(T)` 型から同じサブカラム名を使ってサブカラムを読み取ることができます。サブカラムの型は、元のサブカラムの型を要素とする `Array` 型になります。
+`Array` 内のネストされた型 `T` がサブカラムを持つ場合 (たとえば [named tuple](./tuple.md) である場合など) 、`Array(T)` 型から同じサブカラム名を使ってサブカラムを読み取ることができます。サブカラムの型は、元のサブカラムの型を要素とする `Array` 型になります。
 
 **例**
 

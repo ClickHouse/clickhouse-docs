@@ -11,7 +11,7 @@ For plugin installation and configuration details, see the ClickHouse [data sour
 
 Datadog offers a Clickhouse Monitoring plugin for its agent which queries system tables directly. This integration provides comprehensive database monitoring with cluster awareness through clusterAllReplicas functionality. 
 :::note
-This integration is not recommended for ClickHouse Cloud deployments due to incompatibility with cost-optimizing idle behavior and operational limitations of the cloud proxy layer.
+This integration isn't recommended for ClickHouse Cloud deployments due to incompatibility with cost-optimizing idle behavior and operational limitations of the cloud proxy layer.
 :::
 
 ### Using system tables directly {#system-tables}

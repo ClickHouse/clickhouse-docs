@@ -78,12 +78,12 @@ docker exec -it clickhouse-01 clickhouse-client
 ```
 
 
-### Создание демонстрационных данных \{#create-sample-data\}
+### От таблицы MergeTree к таблице ReplicatedMergeTree \{#mergetree-to-replicatedmergetree\}
 
 ClickHouse Cloud работает с [`SharedMergeTree`](/cloud/reference/shared-merge-tree).
 При восстановлении резервной копии ClickHouse автоматически преобразует таблицы с `ReplicatedMergeTree` в таблицы `SharedMergeTree`.
 
-Скорее всего, ваши таблицы уже используют движок `ReplciatedMergeTree`, если вы запускаете кластер.
+Скорее всего, ваши таблицы уже используют движок `ReplicatedMergeTree`, если вы запускаете кластер.
 Если нет, вам нужно будет преобразовать все таблицы `MergeTree` в `ReplicatedMergeTree` перед созданием резервной копии.
 
 В целях демонстрации того, как преобразовывать таблицы `MergeTree` в `ReplicatedMergeTree`, мы начнём с таблицы `MergeTree` и затем преобразуем её в `ReplicatedMergeTree`.
@@ -95,7 +95,7 @@ ClickHouse Cloud работает с [`SharedMergeTree`](/cloud/reference/shared
 ```sql
 CREATE DATABASE nyc_taxi;
 
-CREATE TABLE nyc_taxi.trips_small (
+CREATE TABLE nyc_taxi.trips_small_adapted (
     trip_id             UInt32,
     pickup_datetime     DateTime,
     dropoff_datetime    DateTime,
@@ -119,7 +119,7 @@ PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ```
 
 ```sql
-INSERT INTO nyc_taxi.trips_small
+INSERT INTO nyc_taxi.trips_small_adapted
 SELECT
     trip_id,
     pickup_datetime,
@@ -144,22 +144,22 @@ FROM s3(
 );
 ```
 
-Выполните следующую команду, чтобы отсоединить таблицу с помощью `DETACH`.
+Выполните следующую команду, чтобы отсоединить таблицу.
 
 ```sql
-DETACH TABLE nyc_taxi.trips_small;
+DETACH TABLE nyc_taxi.trips_small_adapted;
 ```
 
 Затем подключите её как реплицированную таблицу:
 
 ```sql
-ATTACH TABLE nyc_taxi.trips_small AS REPLICATED;
+ATTACH TABLE nyc_taxi.trips_small_adapted AS REPLICATED;
 ```
 
 Наконец, восстановите метаданные реплики:
 
 ```sql
-SYSTEM RESTORE REPLICA nyc_taxi.trips_small;
+SYSTEM RESTORE REPLICA nyc_taxi.trips_small_adapted;
 ```
 
 Убедитесь, что таблица была преобразована в `ReplicatedMergeTree`:
@@ -167,16 +167,103 @@ SYSTEM RESTORE REPLICA nyc_taxi.trips_small;
 ```sql
 SELECT engine
 FROM system.tables
-WHERE name = 'trips_small' AND database = 'nyc_taxi';
+WHERE name = 'trips_small_adapted' AND database = 'nyc_taxi';
 
 ┌─engine──────────────┐
 │ ReplicatedMergeTree │
 └─────────────────────┘
 ```
 
-Теперь вы готовы перейти к настройке сервиса Cloud в рамках подготовки к последующему
+Теперь вы готовы перейти к настройке сервиса ClickHouse Cloud в рамках подготовки к последующему
 восстановлению резервной копии из вашего S3-бакета.
 
+### Distributed таблицы с ReplicatedMergeTree \{#distributed-tables\}
+
+Если в вашей конфигурации используются distributed таблицы, охватывающие несколько сегментов, вам понадобится локальная таблица `ReplicatedMergeTree` на каждом узле и таблица `Distributed` в качестве точки входа для запросов.
+
+Выполните следующую команду, чтобы создать локальную реплицированную таблицу на всех узлах кластера:
+
+```sql
+CREATE DATABASE IF NOT EXISTS nyc_taxi ON CLUSTER 'cluster_2S_2R';
+
+CREATE TABLE nyc_taxi.trips_small_dist_local ON CLUSTER 'cluster_2S_2R'
+(
+    trip_id             UInt32,
+    pickup_datetime     DateTime,
+    dropoff_datetime    DateTime,
+    pickup_longitude    Nullable(Float64),
+    pickup_latitude     Nullable(Float64),
+    dropoff_longitude   Nullable(Float64),
+    dropoff_latitude    Nullable(Float64),
+    passenger_count     UInt8,
+    trip_distance       Float32,
+    fare_amount         Float32,
+    extra               Float32,
+    tip_amount          Float32,
+    tolls_amount        Float32,
+    total_amount        Float32,
+    payment_type        Enum('CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4, 'UNK' = 5),
+    pickup_ntaname      LowCardinality(String),
+    dropoff_ntaname     LowCardinality(String)
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{database}/{table}/{shard}', '{replica}')
+PRIMARY KEY (pickup_datetime, dropoff_datetime);
+```
+
+Затем создайте над ней таблицу `Distributed`:
+
+```sql
+
+CREATE TABLE nyc_taxi.trips_small_dist ON CLUSTER 'cluster_2S_2R'
+(
+    trip_id             UInt32,
+    pickup_datetime     DateTime,
+    dropoff_datetime    DateTime,
+    pickup_longitude    Nullable(Float64),
+    pickup_latitude     Nullable(Float64),
+    dropoff_longitude   Nullable(Float64),
+    dropoff_latitude    Nullable(Float64),
+    passenger_count     UInt8,
+    trip_distance       Float32,
+    fare_amount         Float32,
+    extra               Float32,
+    tip_amount          Float32,
+    tolls_amount        Float32,
+    total_amount        Float32,
+    payment_type        Enum('CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4, 'UNK' = 5),
+    pickup_ntaname      LowCardinality(String),
+    dropoff_ntaname     LowCardinality(String)
+)
+ENGINE = Distributed('cluster_2S_2R', 'nyc_taxi', 'trips_small_dist_local', rand());
+```
+
+Вставьте данные через distributed таблицу:
+
+```sql
+INSERT INTO nyc_taxi.trips_small_dist
+SELECT
+    trip_id,
+    pickup_datetime,
+    dropoff_datetime,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    passenger_count,
+    trip_distance,
+    fare_amount,
+    extra,
+    tip_amount,
+    tolls_amount,
+    total_amount,
+    payment_type,
+    pickup_ntaname,
+    dropoff_ntaname
+FROM s3(
+    'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..2}.gz',
+    'TabSeparatedWithNames'
+);
+```
 
 ## Подготовка Cloud \{#cloud-setup\}
 
@@ -249,21 +336,34 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 
 ## Создание резервной копии (в самоуправляемом развертывании) \{#taking-a-backup-on-oss\}
 
-Чтобы создать резервную копию одной базы данных, выполните следующую команду из clickhouse-client,
-подключённого к вашему развертыванию OSS:
+Резервную копию каждого сегмента необходимо создавать отдельно. Подключитесь к узлу в каждом сегменте и выполните
+команду резервного копирования, указав уникальный путь назначения для каждого сегмента.
+
+Замените `BUCKET_URL`, `KEY_ID` и `SECRET_KEY` на ваши собственные учётные данные AWS.
+Руководство [&quot;How to create an S3 bucket and IAM role&quot;](/integrations/s3/creating-iam-user-and-s3-bucket)
+объясняет, как получить эти данные, если у вас их ещё нет.
+
+**Сегмент 1:**
 
 ```sql
 BACKUP DATABASE nyc_taxi
 TO S3(
-  'BUCKET_URL',
+  'BUCKET_URL/backup_s1.zip',
   'KEY_ID',
   'SECRET_KEY'
 )
 ```
 
-Замените `BUCKET_URL`, `KEY_ID` и `SECRET_KEY` на ваши собственные учётные данные AWS.
-Руководство [&quot;How to create an S3 bucket and IAM role&quot;](/integrations/s3/creating-iam-user-and-s3-bucket)
-объясняет, как получить эти данные, если у вас их ещё нет.
+**Сегмент 2:**
+
+```sql
+BACKUP DATABASE nyc_taxi
+TO S3(
+  'BUCKET_URL/backup_s2.zip',
+  'KEY_ID',
+  'SECRET_KEY'
+)
+```
 
 Если всё настроено правильно вы увидите ответ похожий на приведённый ниже
 содержащий уникальный id присвоенный бэкапу и статус этого бэкапа.
@@ -275,6 +375,20 @@ Query id: efcaf053-75ed-4924-aeb1-525547ea8d45
 │ e73b99ab-f2a9-443a-80b4-533efe2d40b3 │ BACKUP_CREATED │
 └──────────────────────────────────────┴────────────────┘
 ```
+
+:::note[Одноузловые развертывания]
+Если вы не используете distributed таблицы, вы можете создать резервную копию всей базы данных одной командой:
+
+```sql
+BACKUP DATABASE nyc_taxi
+TO S3(
+  'BUCKET_URL',
+  'KEY_ID',
+  'SECRET_KEY'
+)
+```
+
+:::
 
 Если вы проверите ранее пустой бакет S3, то теперь увидите, что в нём появились некоторые папки:
 
@@ -327,7 +441,7 @@ ASYNC;
 -- └─────────────────────────────────────┴───────────────────┘
 ```
 
-Затем можно использовать идентификатор резервной копии, чтобы отслеживать ход выполнения резервного копирования:
+Затем можно использовать идентификатор резервной копии для отслеживания хода резервного копирования:
 
 ```sql
 SELECT * 
@@ -338,10 +452,36 @@ WHERE id = 'abc123-def456-789'
 Можно также создавать инкрементальные резервные копии.
 За более подробной информацией о резервном копировании в целом обратитесь к документации по [резервному копированию и восстановлению](/operations/backup/overview).
 
-
 ## Восстановление в ClickHouse Cloud \{#restore-to-clickhouse-cloud\}
 
-Чтобы восстановить одну базу данных, выполните следующий запрос из вашего сервиса в ClickHouse Cloud, подставив ниже свои учётные данные AWS и задав `ROLE_ARN` равным значению, которое вы получили в результате выполнения шагов, описанных в разделе «Безопасный доступ к данным в S3» ([@link](/cloud/data-sources/secure-s3))
+Восстанавливайте резервную копию каждого сегмента по очереди в свой сервис ClickHouse Cloud. Установите `ROLE_ARN` в
+значение, полученное в разделе [&quot;Безопасный доступ к данным S3&quot;](/cloud/data-sources/secure-s3).
+При втором (и каждом последующем) восстановлении используйте `SETTINGS allow_non_empty_tables=true`,
+чтобы данные сегмента добавлялись в уже восстановленные таблицы, а не возникала ошибка из-за конфликта:
+
+**Сегмент 1:**
+
+```sql
+RESTORE DATABASE nyc_taxi
+FROM S3(
+    'BUCKET_URL/backup_s1.zip',
+    extra_credentials(role_arn = 'ROLE_ARN')
+)
+```
+
+**Сегмент 2:**
+
+```sql
+RESTORE DATABASE nyc_taxi
+FROM S3(
+    'BUCKET_URL/backup_s2.zip',
+    extra_credentials(role_arn = 'ROLE_ARN')
+)
+SETTINGS allow_non_empty_tables=true;
+```
+
+:::note[развертывания без distributed таблиц]
+Если вы не используете distributed таблицы, восстановите базу данных одной командой:
 
 ```sql
 RESTORE DATABASE nyc_taxi
@@ -351,7 +491,9 @@ FROM S3(
 )
 ```
 
-Полное восстановление сервиса можно выполнить аналогичным образом:
+:::
+
+Вы можете аналогичным образом выполнить полное восстановление сервиса:
 
 ```sql
 RESTORE
@@ -367,10 +509,26 @@ FROM S3(
 )
 ```
 
-Если теперь выполните следующий запрос в Cloud, вы увидите, что база данных и таблица были
-успешно восстановлены в Cloud:
+После завершения восстановления вы можете убедиться, что данные доступны в Cloud:
 
 ```sql
-SELECT count(*) FROM nyc_taxi.trips_small;
+-- ClickHouse Cloud restores everything in your local table
+SELECT count() from nyc_taxi.trips_small_dist_local;
+3000317
+```
+
+Поскольку ClickHouse Cloud внутренне использует `SharedMergeTree`, старая distributed таблица больше не нужна. Вы можете удалить её и заменить представлением, сохранив исходное имя таблицы для ваших запросов:
+
+```sql
+DROP TABLE drop table nyc_taxi.trips_small_dist;
+CREATE VIEW nyc_taxi.trips_small_dist AS SELECT * FROM nyc_taxi.trips_small_dist_local;
+SELECT count() from nyc_taxi.trips_small_dist;
+3000317
+```
+
+Нераспределённые таблицы `ReplicatedMergeTree` будут восстановлены как `SharedMergeTree`:
+
+```sql
+SELECT count() FROM nyc_taxi.trips_small_adapted;
 3000317
 ```

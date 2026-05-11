@@ -9,10 +9,10 @@ doc_type: 'reference'
 
 ## stddevPop \{#stddevPop\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Возвращает стандартное отклонение генеральной совокупности для числовой последовательности данных.
-Результат равен квадратному корню из [`varPop`](/sql-reference/aggregate-functions/reference/varpop).
+Результат равен квадратному корню из [`varPop`](/sql-reference/aggregate-functions/reference/varPop).
 
 :::note
 Эта функция использует численно неустойчивый алгоритм. Если вам нужна [численная устойчивость](https://en.wikipedia.org/wiki/Numerical_stability) при вычислениях, используйте функцию [`stddevPopStable`](/sql-reference/aggregate-functions/reference/stddevpopstable). Она работает медленнее, но обеспечивает меньшую вычислительную погрешность.

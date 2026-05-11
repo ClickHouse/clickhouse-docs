@@ -1,0 +1,17 @@
+| Topic                                                                           | Description                                                                                                                                                       |
+|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Query optimization guide](/optimize/query-optimization)                        | 쿼리 최적화의 기초를 다루며, 일반적인 시나리오와 쿼리 실행 속도를 향상시키는 성능 최적화 기법을 소개합니다.                                                    |
+| [Primary indexes advanced guide](/guides/best-practices/sparse-primary-indexes) | ClickHouse의 고유한 희소 기본 인덱싱 시스템이 기존 데이터베이스와 어떻게 다른지, 그리고 최적 인덱싱 전략을 위한 모범 사례를 심층적으로 다룹니다.             |
+| [Query parallelism](/optimize/query-parallelism)                                | ClickHouse가 처리 레인과 `max_threads` 설정을 사용하여 쿼리 실행을 어떻게 병렬화하는지, 그리고 병렬 실행을 점검하고 최적화하는 방법을 살펴봅니다.            |
+| [Partitioning key](/optimize/partitioning-key)                                  | 효율적인 데이터 세그먼트 프루닝을 가능하게 하고 일반적인 파티셔닝 함정을 피함으로써 쿼리 성능을 획기적으로 향상시키기 위한 파티셔닝 키 선택 방법을 익힙니다. |
+| [Data skipping indexes](/optimize/skipping-indexes)                             | 보조 인덱스를 전략적으로 적용하여 관련 없는 데이터 블록을 건너뛰고 기본 키가 아닌 컬럼에 대한 필터링된 쿼리를 가속합니다.                                   |
+| [`PREWHERE` optimization](/optimize/prewhere)                                   | `PREWHERE`가 불필요한 컬럼을 읽기 전에 데이터를 필터링하여 I/O를 자동으로 줄이는 방식과, 그 효과를 모니터링하는 방법을 이해합니다.                         |
+| [Bulk inserts](/optimize/bulk-inserts)                                          | 데이터 삽입을 효과적으로 일괄 처리하여 수집 처리량을 최대화하고 리소스 오버헤드를 줄입니다.                                                                    |
+| [Asynchronous inserts](/optimize/asynchronous-inserts)                          | 서버 측 배치를 활용하여 클라이언트 측 복잡성을 줄이고, 고빈도 삽입 워크로드에서 처리량을 높여 삽입 성능을 개선합니다.                                         |
+| [Avoid mutations](/optimize/avoid-mutations)                                    | 비용이 큰 `UPDATE` 및 `DELETE` 작업을 제거하면서도 데이터 정확성과 성능을 유지하는 추가 전용(append-only) 워크플로를 설계합니다.                             |
+| [Avoid nullable columns](/optimize/avoid-nullable-columns)                      | 가능한 경우 널 허용 컬럼 대신 기본값을 사용하여 스토리지 오버헤드를 줄이고 쿼리 성능을 향상합니다.                                                             |
+| [Avoid `OPTIMIZE FINAL`](/optimize/avoidoptimizefinal)                          | `OPTIMIZE TABLE FINAL`을 사용해야 하는 경우와 사용하지 말아야 하는 경우를 이해합니다.                                                                           |
+| [Analyzer](/operations/analyzer)                                                | ClickHouse의 새로운 쿼리 분석기를 활용하여 성능 병목 구간을 식별하고, 더 나은 효율을 위해 쿼리 실행 계획을 최적화합니다.                                      |
+| [Query profiling](/operations/optimizing-performance/sampling-query-profiler)   | 샘플링 쿼리 프로파일러를 사용하여 쿼리 실행 패턴을 분석하고, 성능 핫스폿을 식별하며, 리소스 사용을 최적화합니다.                                                |
+| [Query cache](/operations/query-cache)                                          | ClickHouse의 내장 쿼리 캐시를 활성화하고 구성하여 자주 실행되는 `SELECT` 쿼리를 가속합니다.                                                                    |
+| [Testing hardware](/operations/performance-test)                                | 설치 없이 어떤 서버에서든 ClickHouse 성능 벤치마크를 실행하여 하드웨어 성능을 평가합니다. (ClickHouse Cloud에는 적용되지 않습니다)                           |

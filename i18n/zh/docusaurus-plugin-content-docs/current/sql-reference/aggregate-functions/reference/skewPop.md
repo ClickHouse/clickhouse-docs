@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## skewPop \{#skewPop\}
 
-引入自：v20.1
+引入自：v20.1.0
 
 计算序列的[偏度](https://en.wikipedia.org/wiki/Skewness)。
 

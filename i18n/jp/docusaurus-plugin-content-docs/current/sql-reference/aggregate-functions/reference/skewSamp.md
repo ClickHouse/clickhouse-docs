@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## skewSamp \{#skewSamp\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 シーケンスの[標本歪度 (sample skewness)](https://en.wikipedia.org/wiki/Skewness) を計算します。
 
@@ -27,7 +27,7 @@ skewSamp(expr)
 
 **戻り値**
 
-この関数は、指定された分布の歪度を返します。`n <= 1`（`n` は標本サイズ）の場合は、`nan` を返します。[`Float64`](/sql-reference/data-types/float)
+この関数は、指定された分布の歪度を返します。`n <= 1` (`n` は標本サイズ) の場合は、`nan` を返します。[`Float64`](/sql-reference/data-types/float)
 
 **例**
 

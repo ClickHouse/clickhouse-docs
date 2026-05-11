@@ -22,7 +22,7 @@ Schema registries that are API-compatible with the Confluent Schema Registry are
 - Confluent Schema Registry
 - Redpanda Schema Registry
 
-ClickPipes does not support AWS Glue Schema Registry or Azure Schema Registry yet. If you require support for these schema registries, [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
+ClickPipes doesn't support AWS Glue Schema Registry or Azure Schema Registry yet. If you require support for these schema registries, [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ## Configuration {#schema-registry-configuration}
 

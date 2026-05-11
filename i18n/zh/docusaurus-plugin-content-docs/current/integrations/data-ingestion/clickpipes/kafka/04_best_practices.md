@@ -20,8 +20,9 @@ integration:
 
 ## 限制 \{#limitations\}
 
-- 不支持 [`DEFAULT`](/sql-reference/statements/create/table#default)。
-- 在使用最小 (XS) 副本大小运行时，单条消息在默认情况下（未压缩）限制为 8MB，对于更大的副本则为 16MB（未压缩）。超出此限制的消息将被拒绝并返回错误。如需发送更大的消息，请联系支持团队。
+* 不支持 [`DEFAULT`](/sql-reference/statements/create/table#default)。
+* 使用大量分区可能会导致延迟增加。ClickPipes 会根据副本大小，限制每个副本一次可读取的分区数，范围从 10 (XS) 到 240 (XL) 。如果存在许多没有数据或数据量很少的分区，这些消息的处理可能会延迟。
+* 在使用最小 (XS) 副本大小运行时，单条消息在默认情况下 (未压缩) 限制为 8MB，对于更大的副本则为 16MB (未压缩) 。超出此限制的消息将被拒绝并返回错误。如需发送更大的消息，请联系支持团队。
 
 ## 传输语义 \{#delivery-semantics\}
 
@@ -36,10 +37,6 @@ integration:
 ClickPipes 依赖 Kafka 设置 `max.fetch_bytes` 来限制任意时刻单个 ClickPipes 节点可处理的数据量。在某些情况下，Warpstream 不会遵循此设置，这可能导致管道意外失败。我们强烈建议在配置 Warpstream 代理时，将 Warpstream 专用设置 `kafkaMaxFetchPartitionBytesUncompressedOverride` 设为 8MB（或更小），以防止 ClickPipes 故障。
 
 ### IAM \{#iam\}
-
-:::info
-用于 MSK ClickPipe 的 IAM 身份验证当前为测试版功能。
-:::
 
 ClickPipes 支持以下 AWS MSK 身份验证方式：
 
@@ -106,7 +103,7 @@ ClickPipes 支持以下 AWS MSK 身份验证方式：
                 "AWS": "arn:aws:iam::12345678912:role/CH-S3-your-clickhouse-cloud-role"
             },
             "Action": "sts:AssumeRole"
-        },
+        }
     ]
 }
 ```

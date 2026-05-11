@@ -99,7 +99,7 @@ You can easily combine ClickHouse with data lakes, with built-in functions to qu
 **Transformation engine** - SQL provides a natural means of declaring data transformations.
 When extended with ClickHouse’s analytical and statistical functions, these transformations become succinct and optimized.
 As well as applying to either ClickHouse tables, in cases where ClickHouse is used as a data store, table functions allow SQL queries to be written against data stored in formats such as Parquet, on-disk or object storage, or even other data stores such as Postgres and MySQL.
-A completely parallelization query execution engine, combined with a column-oriented storage format, allows ClickHouse to perform aggregations over PBs of data in seconds - unlike transformations on in memory data frames, users are not memory-bound.
+A completely parallelization query execution engine, combined with a column-oriented storage format, allows ClickHouse to perform aggregations over PBs of data in seconds - unlike transformations on in memory data frames, users aren't memory-bound.
 Furthermore, materialized views allow data to be transformed at insert time, thus overloading compute to data load time from query time.
 These views can exploit the same range of analytical and statistical functions ideal for data analysis and summarization.
 Should any of ClickHouse’s existing analytical functions be insufficient or custom libraries need to be integrated, you can also utilize User Defined Functions (UDFs).
@@ -111,7 +111,7 @@ This generally means that the features themselves are produced through batch-pro
 
 With capabilities to read data from multiple sources and apply transformations via SQL queries, the results of these queries can also be persisted in ClickHouse via `INSERT INTO SELECT` statements.
 With transformations often grouped by an entity ID and returning a number of columns as results, ClickHouse’s schema inference can automatically detect the required types from these results and produce an appropriate table schema to store them.
-Functions for generating random numbers and statistical sampling allow data to be efficiently iterated and scaled at millions or rows per second for feeding to model training pipelines.
+Functions for generating random numbers and statistical sampling allow data to be efficiently iterated and scaled at millions of rows per second for feeding to model training pipelines.
 
 Often, features are represented in tables with a timestamp indicating the value for an entity and feature at a specific point in time.
 As described earlier, training pipelines often need the state of features at specific points in time and in groups. ClickHouse’s sparse indices allow fast filtering of data to satisfy point-in-time queries and feature selection filters. While other technologies such as Spark, Redshift, and BigQuery rely on slow stateful windowed approaches to identify the state of features at a specific point in time, ClickHouse supports the ASOF (as-of-this-time) LEFT JOIN query and argMax function.

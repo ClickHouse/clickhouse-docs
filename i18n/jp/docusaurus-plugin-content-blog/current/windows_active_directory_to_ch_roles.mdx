@@ -23,7 +23,7 @@ import ad_user_group from "@site/static/images/knowledgebase/windows-ad-ch-roles
 この環境には、次のものがあります。
 
 * Windows Active Directory ドメイン: `marsnet2.local`
-* ClickHouse クラスター: `cluster_1S_3R`（1 シャード 3 レプリカ構成・3 ノード）
+* ClickHouse クラスター: `cluster_1S_3R` (1 シャード 3 レプリカ構成・3 ノード) 
 * 3 人の AD ユーザー
 
 | AD User                     | 説明                                        |
@@ -53,7 +53,7 @@ import ad_user_group from "@site/static/images/knowledgebase/windows-ad-ch-roles
 
 <Image img={ad_user} size="md" alt="AD ユーザー構成の例" />
 
-1. Windows AD Users and Groups で、各ユーザーを対応するグループに追加します。これらは ClickHouse のロールにマッピングされます（次のステップで例を示します）。
+1. Windows AD Users and Groups で、各ユーザーを対応するグループに追加します。これらは ClickHouse のロールにマッピングされます (次のステップで例を示します) 。
 
 | AD Security Group           | ClickHouse ロール                                                              |
 | --------------------------- | --------------------------------------------------------------------------- |
@@ -136,7 +136,7 @@ import ad_user_group from "@site/static/images/knowledgebase/windows-ad-ch-roles
 [https://clickhouse.com/docs/operations/external-authenticators/ldap#ldap-external-user-directory](https://clickhouse.com/docs/operations/external-authenticators/ldap#ldap-external-user-directory)
 
 **note:::**
-この例では AD セキュリティ グループにプレフィックスが付けられています（例: `clickhouse_ad_db1_users`）。システムがこれらを取得する際、プレフィックスは削除され、`clickhouse_ad_db1_users` に対応付けるために、`ad_db1_users` という名前の ClickHouse ロールを探します。
+この例では AD セキュリティ グループにプレフィックスが付けられています (例: `clickhouse_ad_db1_users`) 。システムがこれらを取得する際、プレフィックスは削除され、`clickhouse_ad_db1_users` に対応付けるために、`ad_db1_users` という名前の ClickHouse ロールを探します。
 **:::**
 
 4. サンプルデータベースを作成します。

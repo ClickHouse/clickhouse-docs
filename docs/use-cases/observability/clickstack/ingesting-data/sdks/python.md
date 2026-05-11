@@ -41,13 +41,28 @@ opentelemetry-bootstrap -a install
 
 ### Configure environment variables {#configure-environment-variables}
 
-Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack:
+Afterwards you'll need to configure the following environment variables in your shell to ship telemetry to ClickStack via the OpenTelemetry collector:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Managed ClickStack" default>
+
+```shell
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source" >
 
 ```shell
 export HYPERDX_API_KEY='<YOUR_INGESTION_API_KEY>' \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 
 ```
+
+</TabItem>
+</Tabs>
 
 _The `OTEL_SERVICE_NAME` environment variable is used to identify your service in the HyperDX app, it can be any name you want._
 
@@ -59,7 +74,7 @@ Now you can run the application with the OpenTelemetry Python agent (`openteleme
 opentelemetry-instrument python app.py
 ```
 
-#### If you are using `Gunicorn`, `uWSGI` or `uvicorn` {#using-uvicorn-gunicorn-uwsgi}
+#### If you're using `Gunicorn`, `uWSGI` or `uvicorn` {#using-uvicorn-gunicorn-uwsgi}
 
 In this case, the OpenTelemetry Python agent will require additional changes to work. 
 
@@ -90,7 +105,7 @@ def init_tracing():
 
 <TabItem value="uvicorn" label="uvicorn" default>
 
-OpenTelemetry [currently does not work](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385) with `uvicorn` run using the `--reload` 
+OpenTelemetry [currently doesn't work](https://github.com/open-telemetry/opentelemetry-python-contrib/issues/385) with `uvicorn` run using the `--reload` 
 flag or with multi-workers (`--workers`). We recommend disabling those flags while testing, or using Gunicorn.
 
 </TabItem>

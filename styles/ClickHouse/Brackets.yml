@@ -1,0 +1,16 @@
+---
+extends: substitution
+message: "Prefer the symbol instead of '%s'. Use () for parentheses, [] for brackets, {} for braces."
+level: warning
+ignorecase: true
+swap:
+  # British/Indian English
+  curly brackets: '{}'
+  curly bracket: '{}'
+  square brackets: '[]'
+  square bracket: '[]'
+  round brackets: ()
+  round bracket: ()
+  # American English
+  curly braces: '{}'
+  curly brace: '{}'

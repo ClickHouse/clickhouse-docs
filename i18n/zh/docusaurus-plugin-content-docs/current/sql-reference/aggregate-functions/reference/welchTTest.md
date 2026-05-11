@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## welchTTest \{#welchTTest\}
 
-引入版本：v21.1
+引入版本：v21.1.0
 
 对来自两个总体的样本应用 [Welch&#39;s t-test](https://en.wikipedia.org/wiki/Welch%27s_t-test)。
 
@@ -38,7 +38,7 @@ welchTTest([confidence_level])(sample_data, sample_index)
 
 **返回值**
 
-返回一个包含两个或四个元素的 Tuple（如果指定了 `confidence_level` 参数）：计算得到的 t 统计量、计算得到的 p 值，以及可选的置信区间下界和置信区间上界。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
+返回一个包含两个或四个元素的 Tuple (如果指定了 `confidence_level` 参数) ：计算得到的 t 统计量、计算得到的 p 值，以及可选的置信区间下界和置信区间上界。[`Tuple(Float64, Float64)`](/sql-reference/data-types/tuple) 或 [`Tuple(Float64, Float64, Float64, Float64)`](/sql-reference/data-types/tuple)
 
 **示例**
 
@@ -57,7 +57,7 @@ SELECT welchTTest(sample_data, sample_index) FROM welch_ttest;
 └────────────────────────────────────────────┘
 ```
 
-**包含置信水平**
+**带置信水平**
 
 ```sql title=Query
 SELECT welchTTest(0.95)(sample_data, sample_index) FROM welch_ttest;

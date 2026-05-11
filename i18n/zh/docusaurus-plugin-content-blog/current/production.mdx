@@ -41,7 +41,7 @@ keywords: ['生产环境版本']
 
 第二个需要投入的领域是**自动化测试基础设施**。不要假设某类查询一旦成功执行过一次，就会永远成功执行。使用一些把 ClickHouse 模拟掉的单元测试是可以的，但务必确保你的产品有一套合理的自动化测试集，在真实的 ClickHouse 上运行，用于检查所有重要用例是否仍按预期工作。
 
-更进一步的一步，是把这些自动化测试贡献给 [ClickHouse 的开源测试基础设施](https://github.com/ClickHouse/ClickHouse/tree/master/tests)，该基础设施在日常开发中被持续使用。学习[如何运行它](/development/tests)，以及如何将你的测试适配到这个框架，肯定需要额外的时间和精力，但其回报在于：当某个 ClickHouse 版本被宣布为稳定版时，它已经在这些测试之下被验证过，而不是你一再在事后花时间去报告问题，然后再等待 bug 修复的实现、回溯修复并发布。一些公司甚至把这类对基础设施的测试贡献，作为其内部策略的一部分（在 Google 被称为 [Beyonce&#39;s Rule](https://www.oreilly.com/library/view/software-engineering-at/9781492082781/ch01.html#policies_that_scale_well)）。
+更进一步的一步，是把这些自动化测试贡献给 [ClickHouse 的开源测试基础设施](https://github.com/ClickHouse/ClickHouse/tree/master/tests)，该基础设施在日常开发中被持续使用。学习[如何运行它](/development/tests)，以及如何将你的测试适配到这个框架，肯定需要额外的时间和精力，但其回报在于：当某个 ClickHouse 版本被宣布为稳定版时，它已经在这些测试之下被验证过，而不是你一再在事后花时间去报告问题，然后再等待 bug 修复的实现、回溯修复并发布。一些公司甚至把这类对基础设施的测试贡献，作为其内部策略的一部分 (在 Google 被称为 [Beyonce&#39;s Rule](https://www.oreilly.com/library/view/software-engineering-at/9781492082781/ch01.html#policies_that_scale_well)) 。
 
 当你拥有预生产环境和测试基础设施后，选择最佳版本就很直接了：
 
@@ -57,11 +57,11 @@ keywords: ['生产环境版本']
 如果你查看 ClickHouse 软件包仓库中的内容，会看到两种类型的软件包：
 
 1. `stable`
-2. `lts`（长期支持版，long-term support）
+2. `lts` (长期支持版，long-term support) 
 
 下面是关于如何在它们之间进行选择的一些指导建议：
 
-* `stable` 是我们默认推荐的软件包类型。它们大约每月发布一次（因此可以在合理的延迟内获得新特性），并且最新的三个 `stable` 版本在诊断和缺陷（bug）修复回溯方面都处于支持范围内。
+* `stable` 是我们默认推荐的软件包类型。它们大约每月发布一次 (因此可以在合理的延迟内获得新特性) ，并且最新的三个 `stable` 版本在诊断和缺陷 (bug) 修复回溯方面都处于支持范围内。
 * `lts` 每年发布两次，并在初始发布后提供一年的支持。在以下情况下，你可能会更倾向于选择 `lts` 而不是 `stable`：
   * 你的公司有内部策略，不允许频繁升级或使用非 LTS 软件。
   * 你在一些次要产品中使用 ClickHouse，这些产品要么不需要任何复杂的 ClickHouse 功能，要么没有足够的资源来保持其持续升级。

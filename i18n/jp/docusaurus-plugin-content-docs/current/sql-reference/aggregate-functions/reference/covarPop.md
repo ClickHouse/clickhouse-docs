@@ -11,9 +11,9 @@ doc_type: 'reference'
 
 ## covarPop \{#covarPop\}
 
-Introduced in: v1.1
+導入バージョン: v1.1.0
 
-Calculates the population covariance:
+母共分散を計算します:
 
 $$
 \frac{\Sigma{(x - \bar{x})(y - \bar{y})}}{n}
@@ -22,7 +22,7 @@ $$
 <br />
 
 :::note
-This function uses a numerically unstable algorithm. If you need [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) in calculations, use the [`covarPopStable`](../reference/covarPopStable.md) function. It works slower but provides a lower computational error.
+この関数は数値的に不安定なアルゴリズムを使用しています。計算に[数値安定性](https://en.wikipedia.org/wiki/Numerical_stability)が必要な場合は、[`covarPopStable`](../reference/covarPopStable.md)関数を使用してください。処理は遅くなりますが、計算誤差が小さくなります。
 :::
 
 **Syntax**
@@ -31,20 +31,20 @@ This function uses a numerically unstable algorithm. If you need [numerical stab
 covarPop(x, y)
 ```
 
-**Aliases**: `COVAR_POP`
+**エイリアス**: `COVAR_POP`
 
 **引数**
 
-- `x` — 第1変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
-- `y` — 第2変数。[`(U)Int*`](/sql-reference/data-types/int-uint)、[`Float*`](/sql-reference/data-types/float)、または[`Decimal`](/sql-reference/data-types/decimal)
+- `x` — 第1変数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+- `y` — 第2変数。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
 
-**Returned value**
+**戻り値**
 
-Returns the population covariance between `x` and `y`. [`Float64`](/sql-reference/data-types/float)
+`x` と `y` の間の母共分散を返します。[`Float64`](/sql-reference/data-types/float)
 
-**Examples**
+**例**
 
-**Basic population covariance calculation**
+**基本的な母共分散の計算**
 
 ```sql title=Query
 DROP TABLE IF EXISTS series;

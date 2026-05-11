@@ -9,14 +9,14 @@ doc_type: 'reference'
 
 ## deltaSumTimestamp \{#deltaSumTimestamp\}
 
-導入バージョン: v21.6
+導入バージョン: v21.6.0
 
 連続する行同士の差分を加算します。
 差分が負の場合は無視されます。
 
 この関数は主に、`toStartOfMinute` バケットのような、ある時間バケットに揃えた timestamp でソートされたデータを保存する [materialized view](/sql-reference/statements/create/view#materialized-view) 向けです。
 そのような materialized view 内の行はすべて同じ timestamp を持つため、元の丸め前の timestamp 値を保持しない限り、正しい順序でマージすることはできません。
-`deltaSumTimestamp` 関数は、これまでに見た値の元の `timestamp` を追跡することで、パーツのマージ中に関数の値（状態）が正しく計算されるようにします。
+`deltaSumTimestamp` 関数は、これまでに見た値の元の `timestamp` を追跡することで、パーツのマージ中に関数の値 (状態) が正しく計算されるようにします。
 
 順序付けられたコレクションに対してデルタの合計を計算するには、単に [`deltaSum`](/sql-reference/aggregate-functions/reference/deltasum) 関数を使用できます。
 

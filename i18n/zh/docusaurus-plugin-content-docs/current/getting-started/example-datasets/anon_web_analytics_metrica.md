@@ -18,12 +18,11 @@ doc_type: 'guide'
 ### 下载压缩的 hits TSV 文件 \{#download-the-hits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | unxz --threads=`nproc` > hits_v1.tsv
+curl -L https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | xz -d > hits_v1.tsv
 # Validate the checksum
 md5sum hits_v1.tsv
 # Checksum should be equal to: f3631b6295bf06989c1437491f7592cb
 ```
-
 
 ### 创建数据库和表 \{#create-the-database-and-table\}
 
@@ -62,15 +61,14 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 ```
 
 
-### 下载访问数据的压缩 TSV 文件 \{#download-the-visits-compressed-tsv-file\}
+### 下载 visits 的压缩 TSV 文件 \{#download-the-visits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
+curl -L https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | xz -d > visits_v1.tsv
 # Validate the checksum
 md5sum visits_v1.tsv
 # Checksum should be equal to: 6dafe1a0f24e59e3fc2d0fed85601de6
 ```
-
 
 ### 创建 `visits` 表 \{#create-the-visits-table\}
 

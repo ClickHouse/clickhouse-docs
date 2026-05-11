@@ -235,35 +235,36 @@ df_2 = chdb.query(query, "DataFrame")
 df_2.head()
 ```
 
+
 <details>
-  <summary>在一步中从多个数据源读取</summary>
-  你也可以在一步中从多个数据源读取。可以使用下面带有 `JOIN` 的查询来实现：
+  <summary>在单个步骤中从多个数据源读取</summary>
+  你也可以在单个步骤中从多个数据源读取。可以使用下面带有 `JOIN` 的查询来实现：
 
   ```python
-query = f"""
-SELECT 
-    toYear(date) AS year,
-    avg(price) AS avg_price, housesSold
-FROM remoteSecure(
-'****.europe-west4.gcp.clickhouse.cloud',
-default.pp_complete,
-'{username}',
-'{password}'
-) AS remote
-JOIN (
+  query = f"""
   SELECT 
-    toYear(date) AS year,
-    sum(houses_sold)*1000 AS housesSold
-    FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
-  WHERE area = 'city of london' AND houses_sold IS NOT NULL
+      toYear(date) AS year,
+      avg(price) AS avg_price, housesSold
+  FROM remoteSecure(
+  '****.europe-west4.gcp.clickhouse.cloud',
+  default.pp_complete,
+  '{username}',
+  '{password}'
+  ) AS remote
+  JOIN (
+    SELECT 
+      toYear(date) AS year,
+      sum(houses_sold)*1000 AS housesSold
+      FROM file('/Users/datasci/Desktop/housing_in_london_monthly_variables.csv')
+    WHERE area = 'city of london' AND houses_sold IS NOT NULL
+    GROUP BY toYear(date)
+    ORDER BY year
+  ) AS local ON local.year = remote.year
+  WHERE town = 'LONDON'
   GROUP BY toYear(date)
-  ORDER BY year
-) AS local ON local.year = remote.year
-WHERE town = 'LONDON'
-GROUP BY toYear(date)
-ORDER BY year;
-"""
-```
+  ORDER BY year;
+  """
+  ```
 </details>
 
 <Image size="md" img={image_8} alt="DataFrame 预览" />
@@ -319,6 +320,7 @@ plt.show()
 另一方面，价格则从 1995 年约 £150,000 起，持续、稳定增长，到 2005 年达到约 £300,000。
 2012 年之后增速显著加快，从约 £400,000 急剧上升，到 2019 年超过 £1,000,000。
 与销售量不同，价格几乎未受到 2008 年危机的影响，并一直保持上升趋势。真是惊人！
+
 
 ## 总结 \{#summary\}
 

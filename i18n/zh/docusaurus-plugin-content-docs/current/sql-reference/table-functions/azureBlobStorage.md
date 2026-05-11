@@ -10,6 +10,9 @@ doc_type: 'reference'
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 
 # azureBlobStorage 表函数 \{#azureblobstorage-table-function\}
 
@@ -17,25 +20,99 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## 语法 \{#syntax\}
 
+<Tabs>
+<TabItem value="connection_string" label="连接字符串" default>
+
+凭证信息已嵌入到连接字符串中，因此无需单独提供 `account_name`/`account_key` 参数：
+
 ```sql
-azureBlobStorage(- connection_string|storage_account_url, container_name, blobpath, [account_name, account_key, format, compression, structure, partition_strategy, partition_columns_in_data_file, extra_credentials(client_id=, tenant_id=)])
+azureBlobStorage(connection_string, container_name, blobpath [, format, compression, structure])
 ```
+
+</TabItem>
+<TabItem value="storage_account_url" label="存储帐户 URL">
+
+需要将 `account_name` 和 `account_key` 作为单独的参数传入：
+
+```sql
+azureBlobStorage(storage_account_url, container_name, blobpath, account_name, account_key [, format, compression, structure])
+```
+
+</TabItem>
+<TabItem value="named_collection" label="命名集合">
+
+有关受支持的键的完整列表，请参阅下文的 [Named Collections](#named-collections)：
+
+```sql
+azureBlobStorage(named_collection[, option=value [,..]])
+```
+
+</TabItem>
+</Tabs>
 
 ## 参数 \{#arguments\}
 
-| 参数                                         | 说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `connection_string`\| `storage_account_url` | `connection_string` 包含账户名称和密钥（[创建 connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)），也可以在此处提供存储账户的 URL，并将账户名称和账户密钥作为单独参数提供（参见参数 `account_name` 和 `account_key`）。 |
-| `container_name`                            | 容器名称                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `blobpath`                                  | 文件路径。在只读模式下支持以下通配符：`*`、`**`、`?`、`{abc,def}` 和 `{N..M}`，其中 `N`、`M` 为数字，`'abc'`、`'def'` 为字符串。                                                                                                                                                                                                                                                                                                                                 |
-| `account_name`                              | 如果使用了 `storage_account_url`，则可以在此指定账户名称。                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `account_key`                               | 如果使用了 `storage_account_url`，则可以在此指定账户密钥。                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `format`                                    | 文件的[格式](/sql-reference/formats)。                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `compression`                               | 支持的值：`none`、`gzip/gz`、`brotli/br`、`xz/LZMA`、`zstd/zst`。默认情况下，会根据文件扩展名自动检测压缩方式（等同于设置为 `auto`）。                                                                                                                                                                                                                                                                                                                                                     | 
-| `structure`                                 | 表结构。格式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `partition_strategy`                        | 可选参数。支持的值：`WILDCARD` 或 `HIVE`。`WILDCARD` 要求路径中包含 `{_partition_id}`，该占位符会被分区键替换。`HIVE` 不允许使用通配符，假定路径为表的根路径，并生成 Hive 风格的分区目录，使用 Snowflake ID 作为文件名，文件格式作为扩展名。默认值为 `WILDCARD`。                                                                                                                                                                                                 |
-| `partition_columns_in_data_file`            | 可选参数。仅在使用 `HIVE` 分区策略时生效。用于告知 ClickHouse 数据文件中是否会写入分区列。默认值为 `false`。                                                                                                                                                                                                                                                                                                                                                                             |
-| `extra_credentials`                         | 使用 `client_id` 和 `tenant_id` 进行身份验证。如果提供了 `extra_credentials`，则其优先级高于 `account_name` 和 `account_key`。                                                                                                                                                                                                                                                                                                                                                             |
+| Argument                         | Description                                                                                                                                                                                                                                                                                                                                               |
+|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `connection_string`              | 包含嵌入凭证（账户名称 + 账户密钥或 SAS 令牌）的连接字符串。使用此形式时，`account_name` 和 `account_key` **不应**单独传入。参见[配置连接字符串](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)。 |
+| `storage_account_url`            | 存储账户的终结点 URL，例如 `https://myaccount.blob.core.windows.net/`。使用此形式时，**必须**同时传入 `account_name` 和 `account_key`。                                                                                                                                                                                         |
+| `container_name`                 | 容器名称。                                                                                                                                                                                                                                                                                                                                           |
+| `blobpath`                       | 文件路径。在只读模式下支持以下通配符：`*`、`**`、`?`、`{abc,def}` 以及 `{N..M}`，其中 `N`、`M` 为数字，`'abc'`、`'def'` 为字符串。                                                                                                                                                                                            |
+| `account_name`                   | 存储账户名称。使用不带 SAS 的 `storage_account_url` 时为**必需**；使用 `connection_string` 时**不得**传入。                                                                                                                                                                                                                               |
+| `account_key`                    | 存储账户密钥。使用不带 SAS 的 `storage_account_url` 时为**必需**；使用 `connection_string` 时**不得**传入。                                                                                                                                                                                                                                |
+| `format`                         | 文件的[格式](/sql-reference/formats)。                                                                                                                                                                                                                                                                                                         |
+| `compression`                    | 支持的取值：`none`、`gzip/gz`、`brotli/br`、`xz/LZMA`、`zstd/zst`。默认情况下，会根据文件扩展名自动检测压缩格式（等同于设置为 `auto`）。                                                                                                                                                                                       |
+| `structure`                      | 表结构。格式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                                                             |
+| `partition_strategy`             | 可选。支持的取值：`WILDCARD` 或 `HIVE`。`WILDCARD` 要求路径中包含 `{_partition_id}`，该占位符会被分区键替换。`HIVE` 不允许使用通配符，假定路径为表根目录，并生成 Hive 风格的分区目录，使用 Snowflake ID 作为文件名，并以文件格式作为扩展名。默认值为 `WILDCARD`。 |
+| `partition_columns_in_data_file` | 可选。仅在 `HIVE` 分区策略下使用。用于告知 ClickHouse 数据文件中是否会写入分区列。默认值为 `false`。                                                                                                                                                                                                 |
+| `extra_credentials`              | 使用 `client_id` 和 `tenant_id` 进行认证。如果提供了 `extra_credentials`，则其优先级高于 `account_name` 和 `account_key`。                                                                                                                                                                                                     |
+
+## 命名集合 \{#named-collections\}
+
+参数也可以通过[命名集合](/operations/named-collections)传递。在这种情况下支持以下键：
+
+| Key                   | Required | Description                                                        |
+| --------------------- | -------- | ------------------------------------------------------------------ |
+| `container`           | Yes      | 容器名称。对应位置参数 `container_name`。                                      |
+| `blob_path`           | Yes      | 文件路径（可带通配符）。对应位置参数 `blobpath`。                                     |
+| `connection_string`   | No*      | 带有内嵌凭证的连接字符串。*必须提供 `connection_string` 或 `storage_account_url` 之一。 |
+| `storage_account_url` | No*      | 存储账户端点 URL。*必须提供 `connection_string` 或 `storage_account_url` 之一。   |
+| `account_name`        | No       | 使用 `storage_account_url` 时必填。                                      |
+| `account_key`         | No       | 使用 `storage_account_url` 时必填。                                      |
+| `format`              | No       | 文件格式。                                                              |
+| `compression`         | No       | 压缩类型。                                                              |
+| `structure`           | No       | 表结构。                                                               |
+| `client_id`           | No       | 用于认证的 Client ID。                                                   |
+| `tenant_id`           | No       | 用于认证的 Tenant ID。                                                   |
+
+:::note
+命名集合的键名与位置参数名不同：`container`（不是 `container_name`）和 `blob_path`（不是 `blobpath`）。
+:::
+
+**示例：**
+
+```sql
+CREATE NAMED COLLECTION azure_my_data AS
+    storage_account_url = 'https://myaccount.blob.core.windows.net/',
+    container = 'mycontainer',
+    blob_path = 'data/*.parquet',
+    account_name = 'myaccount',
+    account_key = 'mykey...==',
+    format = 'Parquet';
+
+SELECT *
+FROM azureBlobStorage(azure_my_data)
+LIMIT 5;
+```
+
+你还可以在执行查询时重写命名集合中的值：
+
+```sql
+SELECT *
+FROM azureBlobStorage(azure_my_data, blob_path = 'other_data/*.csv', format = 'CSVWithNames')
+LIMIT 5;
+```
+
 
 ## 返回值 \{#returned_value\}
 
@@ -43,42 +120,70 @@ azureBlobStorage(- connection_string|storage_account_url, container_name, blobpa
 
 ## 示例 \{#examples\}
 
-与 [AzureBlobStorage](/engines/table-engines/integrations/azureBlobStorage) 表引擎类似，用户可以使用 Azurite 模拟器进行本地 Azure 存储的开发。更多详情参见[此处](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)。下面我们假设可以通过主机名 `azurite1` 访问 Azurite。
-
-使用以下方式将数据写入 Azure Blob Storage：
+### 使用 `storage_account_url` 形式读取数据 \{#reading-with-storage-account-url\}
 
 ```sql
-INSERT INTO TABLE FUNCTION azureBlobStorage('http://azurite1:10000/devstoreaccount1',
-    'testcontainer', 'test_{_partition_id}.csv', 'devstoreaccount1', 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==',
-    'CSV', 'auto', 'column1 UInt32, column2 UInt32, column3 UInt32') PARTITION BY column3 VALUES (1, 2, 3), (3, 2, 1), (78, 43, 3);
+SELECT *
+FROM azureBlobStorage(
+    'https://myaccount.blob.core.windows.net/',
+    'mycontainer',
+    'data/*.parquet',
+    'myaccount',
+    'mykey...==',
+    'Parquet'
+)
+LIMIT 5;
 ```
 
-然后可以通过以下方式读取：
+
+### 使用 `connection_string` 形式读取数据 \{#reading-with-connection-string\}
 
 ```sql
-SELECT * FROM azureBlobStorage('http://azurite1:10000/devstoreaccount1',
-    'testcontainer', 'test_1.csv', 'devstoreaccount1', 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==',
-    'CSV', 'auto', 'column1 UInt32, column2 UInt32, column3 UInt32');
+SELECT *
+FROM azureBlobStorage(
+    'DefaultEndpointsProtocol=https;AccountName=myaccount;AccountKey=mykey...==;EndPointSuffix=core.windows.net',
+    'mycontainer',
+    'data/*.csv',
+    'CSVWithNames'
+)
+LIMIT 5;
+```
+
+
+### 使用分区写入 \{#writing-with-partitions\}
+
+```sql
+INSERT INTO TABLE FUNCTION azureBlobStorage(
+    'DefaultEndpointsProtocol=https;AccountName=myaccount;AccountKey=mykey...==;EndPointSuffix=core.windows.net',
+    'mycontainer',
+    'test_{_partition_id}.csv',
+    'CSV',
+    'auto',
+    'column1 UInt32, column2 UInt32, column3 UInt32'
+) PARTITION BY column3
+VALUES (1, 2, 3), (3, 2, 1), (78, 43, 3);
+```
+
+然后再读取特定的分区：
+
+```sql
+SELECT *
+FROM azureBlobStorage(
+    'DefaultEndpointsProtocol=https;AccountName=myaccount;AccountKey=mykey...==;EndPointSuffix=core.windows.net',
+    'mycontainer',
+    'test_1.csv',
+    'CSV',
+    'auto',
+    'column1 UInt32, column2 UInt32, column3 UInt32'
+);
 ```
 
 ```response
-┌───column1─┬────column2─┬───column3─┐
-│     3     │       2    │      1    │
-└───────────┴────────────┴───────────┘
+┌─column1─┬─column2─┬─column3─┐
+│       3 │       2 │       1 │
+└─────────┴─────────┴─────────┘
 ```
 
-或使用连接字符串（connection&#95;string）
-
-```sql
-SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;EndPointSuffix=core.windows.net',
-    'testcontainer', 'test_3.csv', 'CSV', 'auto' , 'column1 UInt32, column2 UInt32, column3 UInt32');
-```
-
-```text
-┌─count()─┐
-│      2  │
-└─────────┘
-```
 
 ## 虚拟列 \{#virtual-columns\}
 
@@ -100,11 +205,26 @@ SELECT count(*) FROM azureBlobStorage('DefaultEndpointsProtocol=https;AccountNam
 **`HIVE` 分区策略示例**
 
 ```sql
-INSERT INTO TABLE FUNCTION azureBlobStorage(azure_conf2, storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='azure_table_root', format='CSVWithNames', compression='auto', structure='year UInt16, country String, id Int32', partition_strategy='hive') PARTITION BY (year, country) VALUES (2020, 'Russia', 1), (2021, 'Brazil', 2);
+INSERT INTO TABLE FUNCTION azureBlobStorage(
+    azure_conf2,
+    storage_account_url = 'https://myaccount.blob.core.windows.net/',
+    container = 'cont',
+    blob_path = 'azure_table_root',
+    format = 'CSVWithNames',
+    compression = 'auto',
+    structure = 'year UInt16, country String, id Int32',
+    partition_strategy = 'hive'
+) PARTITION BY (year, country)
+VALUES (2020, 'Russia', 1), (2021, 'Brazil', 2);
 ```
 
 ```result
-select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='azure_table_root/**.csvwithnames')
+SELECT _path, * FROM azureBlobStorage(
+    azure_conf2,
+    storage_account_url = 'https://myaccount.blob.core.windows.net/',
+    container = 'cont',
+    blob_path = 'azure_table_root/**.csvwithnames'
+)
 
    ┌─_path───────────────────────────────────────────────────────────────────────────┬─id─┬─year─┬─country─┐
 1. │ cont/azure_table_root/year=2021/country=Brazil/7351307847391293440.csvwithnames │  2 │ 2021 │ Brazil  │
@@ -112,19 +232,21 @@ select _path, * from azureBlobStorage(azure_conf2, storage_account_url = 'http:/
    └─────────────────────────────────────────────────────────────────────────────────┴────┴──────┴─────────┘
 ```
 
-## use&#95;hive&#95;partitioning 设置 \{#hive-style-partitioning\}
+
+## use_hive_partitioning 设置 \{#hive-style-partitioning\}
 
 这是一个设置，用于让 ClickHouse 在读取时解析 Hive 风格分区文件。它对写入没有任何影响。若要在读写两侧保持对称，请使用 `partition_strategy` 参数。
 
-当将 `use_hive_partitioning` 设置为 1 时，ClickHouse 会在路径中检测 Hive 风格分区（`/name=value/`），并允许在查询中将分区列作为虚拟列来使用。这些虚拟列的名称将与分区路径中的名称相同，但会以 `_` 作为前缀。
+当将 `use_hive_partitioning` 设置为 1 时，ClickHouse 会在路径中检测 Hive 风格分区 (`/name=value/`) ，并允许在查询中将分区列作为虚拟列来使用。这些虚拟列的名称将与分区路径中的名称相同。
 
 **示例**
 
 在查询中使用由 Hive 风格分区创建的虚拟列
 
 ```sql
-SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE _date > '2020-01-01' AND _country = 'Netherlands' AND _code = 42;
+SELECT * FROM azureBlobStorage(config, storage_account_url='...', container='...', blob_path='http://data/path/date=*/country=*/code=*/*.parquet') WHERE date > '2020-01-01' AND country = 'Netherlands' AND code = 42;
 ```
+
 
 ## 使用共享访问签名 (SAS) \{#using-shared-access-signatures-sas-sas-tokens\}
 
@@ -145,7 +267,7 @@ FROM azureBlobStorage('BlobEndpoint=https://clickhousedocstest.blob.core.windows
 1 row in set. Elapsed: 0.425 sec.
 ```
 
-或者，您可以使用生成的 [Blob SAS URL](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers)：
+或者，您可以使用生成的 [Blob SAS URL](https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens?tabs=Containers):
 
 ```sql
 SELECT count()
@@ -158,5 +280,7 @@ FROM azureBlobStorage('https://clickhousedocstest.blob.core.windows.net/?sp=r&st
 1 row in set. Elapsed: 0.153 sec.
 ```
 
+
 ## 相关内容 \{#related\}
+
 - [AzureBlobStorage 表引擎](engines/table-engines/integrations/azureBlobStorage.md)

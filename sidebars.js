@@ -1,6 +1,8 @@
 // Important note: When linking to pages, you must link to the file path
 // and NOT the URL slug
 
+const { FALSE } = require('sass');
+
 // The top bar nav links are defined in src/theme/Navbar/Content/index.js
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
@@ -39,7 +41,7 @@ const sidebars = {
             'getting-started/install/macos',
             'getting-started/install/windows',
             'getting-started/install/docker',
-            'getting-started/install/quick-install-curl',
+            'getting-started/install/quick-install',
             'getting-started/install/advanced',
           ],
         },
@@ -335,26 +337,34 @@ const sidebars = {
       className: 'top-nav-item',
       link: { type: 'doc', id: 'cloud/managed-postgres/overview' },
       items: [
-          'cloud/managed-postgres/overview',
-          'cloud/managed-postgres/quickstart',
-          'cloud/managed-postgres/connection',
-          'cloud/managed-postgres/clickhouse-integration',
-          'cloud/managed-postgres/high-availability',
-          'cloud/managed-postgres/read-replicas',
-          'cloud/managed-postgres/backup-and-restore',
-          'cloud/managed-postgres/extensions',
-          'cloud/managed-postgres/settings',
-          {
-            type: 'category',
-            label: 'Data migration',
-            collapsed: true,
-            collapsible: true,
-            items: [
-              'cloud/managed-postgres/migrations/pg_dump-pg_restore',
-              'cloud/managed-postgres/migrations/logical-replication',
-              'cloud/managed-postgres/migrations/peerdb',
-            ],
-          },
+        'cloud/managed-postgres/overview',
+        'cloud/managed-postgres/quickstart',
+        'cloud/managed-postgres/connection',
+        'cloud/managed-postgres/clickhouse-integration',
+        'cloud/managed-postgres/high-availability',
+        'cloud/managed-postgres/read-replicas',
+        'cloud/managed-postgres/scaling',
+        'cloud/managed-postgres/backup-and-restore',
+        'cloud/managed-postgres/security',
+        'cloud/managed-postgres/extensions',
+        'cloud/managed-postgres/settings',
+        'cloud/managed-postgres/upgrades',
+        'cloud/managed-postgres/benchmarks',
+        'cloud/managed-postgres/openapi',
+        'cloud/managed-postgres/faq',
+        {
+          type: 'category',
+          label: 'Data migration',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'cloud/managed-postgres/migrations/clickhouse-cloud',
+            'cloud/managed-postgres/migrations/peerdb',
+            'cloud/managed-postgres/migrations/pg_dump-pg_restore',
+            'cloud/managed-postgres/migrations/logical-replication',
+            'cloud/managed-postgres/migrations/data-validation',
+          ],
+        },
       ],
     },
   ],
@@ -519,7 +529,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Data Lakes',
+      label: 'Data lakes',
       collapsed: false,
       collapsible: false,
       link: { type: 'doc', id: 'sql-reference/datalakes' },
@@ -530,7 +540,7 @@ const sidebars = {
   integrations: [
     {
       type: 'category',
-      label: 'All Integrations',
+      label: 'All integrations',
       link: {
         type: 'doc',
         id: 'integrations/index',
@@ -545,7 +555,22 @@ const sidebars = {
       link: { type: 'doc', id: 'integrations/language-clients/index' },
       items: [
         'integrations/language-clients/cpp',
-        'integrations/language-clients/go/index',
+        {
+          type: 'category',
+          label: 'Go',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/language-clients/go/index',
+          },
+          items: [
+            'integrations/language-clients/go/configuration',
+            'integrations/language-clients/go/clickhouse-api',
+            'integrations/language-clients/go/database-sql-api',
+            'integrations/language-clients/go/data-types',
+          ],
+        },
         'integrations/language-clients/js',
         {
           type: 'category',
@@ -560,7 +585,16 @@ const sidebars = {
             },
             // "integrations/language-clients/java/index",
             'integrations/language-clients/java/client/client',
-            'integrations/language-clients/java/jdbc/jdbc',
+            {
+              type: 'category',
+              label: 'JDBC',
+              collapsed: true,
+              collapsible: true,
+              items: [
+                'integrations/language-clients/java/jdbc/jdbc',
+                'integrations/language-clients/java/date_time_guide',
+              ],
+            },
             'integrations/language-clients/java/r2dbc',
           ],
         },
@@ -587,7 +621,7 @@ const sidebars = {
         'integrations/language-clients/csharp',
         {
           type: 'category',
-          label: 'Third-party Clients',
+          label: 'Third-party clients',
           collapsed: true,
           collapsible: true,
           items: [
@@ -606,7 +640,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'ClickPipes for Object Storage',
+          label: 'ClickPipes for object storage',
           className: 'top-nav-item',
           collapsed: true,
           collapsible: true,
@@ -619,6 +653,7 @@ const sidebars = {
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/overview',
                 'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/get-started',
+                'integrations/data-ingestion/clickpipes/object-storage/amazon-s3/unordered-mode',
               ],
             },
             {
@@ -629,6 +664,7 @@ const sidebars = {
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/overview',
                 'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/get-started',
+                'integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/unordered-mode',
               ],
             },
             {
@@ -638,11 +674,11 @@ const sidebars = {
               collapsible: true,
               items: [
                 'integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/overview',
+                'integrations/data-ingestion/clickpipes/object-storage/azure-blob-storage/get-started',
               ],
             },
           ],
         },
-        'integrations/data-ingestion/clickpipes/aws-privatelink',
         {
           type: 'category',
           label: 'ClickPipes for Postgres',
@@ -746,6 +782,7 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mysql/table_resync',
                 'integrations/data-ingestion/clickpipes/mysql/resync',
                 'integrations/data-ingestion/clickpipes/mysql/controlling_sync',
+                'integrations/data-ingestion/clickpipes/mysql/scaling',
               ],
             },
             {
@@ -784,6 +821,7 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mongodb/table_resync',
                 'integrations/data-ingestion/clickpipes/mongodb/resync',
                 'integrations/data-ingestion/clickpipes/mongodb/controlling_sync',
+                'integrations/data-ingestion/clickpipes/mongodb/scaling',
               ],
             },
             {
@@ -797,6 +835,27 @@ const sidebars = {
             },
           ],
         },
+        {
+          type: 'category',
+          label: 'ClickPipes for BigQuery',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'integrations/data-ingestion/clickpipes/bigquery/overview',
+            'integrations/data-ingestion/clickpipes/bigquery/get-started',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'OpenAPI & Terraform',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'integrations/data-ingestion/clickpipes/programmatic-access/openapi',
+            'integrations/data-ingestion/clickpipes/programmatic-access/terraform',
+          ],
+        },
+        'integrations/data-ingestion/clickpipes/monitoring',
         'integrations/data-ingestion/clickpipes/aws-privatelink',
         'integrations/data-ingestion/dbms/dynamodb/index',
       ],
@@ -809,9 +868,10 @@ const sidebars = {
       link: { type: 'doc', id: 'interfaces/native-clients-interfaces-index' },
       items: [
         'interfaces/cli',
+        'interfaces/client',
         {
           type: 'category',
-          label: 'Drivers and Interfaces',
+          label: 'Drivers and interfaces',
           collapsed: true,
           collapsible: true,
           link: { type: 'doc', id: 'integrations/interfaces/overview' },
@@ -1000,6 +1060,7 @@ const sidebars = {
       },
       items: [
         'integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
+        'integrations/data-ingestion/etl-tools/apify-and-clickhouse',
         {
           type: 'category',
           label: 'Apache Spark',
@@ -1013,6 +1074,7 @@ const sidebars = {
             'integrations/data-ingestion/apache-spark/spark-jdbc',
           ],
         },
+        'integrations/data-ingestion/apache-flink/flink-connector',
         'integrations/data-ingestion/aws-glue/index',
         {
           type: 'category',
@@ -1061,15 +1123,34 @@ const sidebars = {
           className: 'top-nav-item',
           collapsed: true,
           collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/data-ingestion/etl-tools/dbt/index',
+          },
           items: [
-            'integrations/data-ingestion/etl-tools/dbt/index',
             'integrations/data-ingestion/etl-tools/dbt/features-and-configurations',
+            'integrations/data-ingestion/etl-tools/dbt/materializations',
+            'integrations/data-ingestion/etl-tools/dbt/materialization-materialized-view',
             'integrations/data-ingestion/etl-tools/dbt/guides',
           ],
         },
         'integrations/data-ingestion/etl-tools/dlt-and-clickhouse',
         'integrations/data-ingestion/etl-tools/estuary',
-        'integrations/data-ingestion/etl-tools/fivetran/index',
+        {
+          type: 'category',
+          label: 'Fivetran',
+          className: 'top-nav-item',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/data-ingestion/etl-tools/fivetran/index',
+          },
+          items: [
+            'integrations/data-ingestion/etl-tools/fivetran/reference',
+            'integrations/data-ingestion/etl-tools/fivetran/troubleshooting',
+          ],
+        },
         'integrations/data-ingestion/etl-tools/nifi-and-clickhouse',
         'integrations/data-ingestion/etl-tools/vector-to-clickhouse',
         {
@@ -1118,6 +1199,7 @@ const sidebars = {
             id: 'integrations/tools/data-integration/index',
           },
           items: [
+            'integrations/tools/data-integration/middleware/index',
             'integrations/tools/data-integration/retool/index',
             'integrations/tools/data-integration/easypanel/index',
             'integrations/tools/data-integration/splunk/index',
@@ -1147,7 +1229,7 @@ const sidebars = {
             {
               type: 'doc',
               id: 'interfaces/third-party/integrations',
-              label: 'Third-party Libraries',
+              label: 'Third-party libraries',
             },
           ],
         },
@@ -1179,12 +1261,6 @@ const sidebars = {
       link: { type: 'doc', id: 'managing-data/updating-data/index' },
       items: [
         'managing-data/updating-data/overview',
-        'managing-data/updating-data/update_mutations',
-        {
-          type: 'doc',
-          label: 'Lightweight updates',
-          id: 'guides/developer/on-fly-mutations',
-        },
         {
           type: 'doc',
           label: 'ReplacingMergeTree',
@@ -1223,7 +1299,7 @@ const sidebars = {
           label: 'Dictionary',
           collapsible: true,
           collapsed: true,
-          items: ['dictionary/index', 'sql-reference/dictionaries/index'],
+          items: ['dictionary/index', 'dictionary/best-practices'],
         },
         {
           type: 'category',
@@ -1305,6 +1381,7 @@ const sidebars = {
           items: ['guides/best-practices/skipping-indexes-examples'],
         },
         'guides/best-practices/prewhere',
+        'guides/lazy-materialization',
         'guides/best-practices/bulkinserts',
         'guides/best-practices/asyncinserts',
         'guides/best-practices/avoidmutations',
@@ -1421,7 +1498,7 @@ const sidebars = {
               type: 'autogenerated',
               dirName: 'kubernetes-operator',
             },
-          ]
+          ],
         },
         'guides/separation-storage-compute',
         'guides/sre/keeper/index',
@@ -1593,18 +1670,47 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Language integrations',
+      label: 'DataStore API',
       className: 'top-nav-item',
       collapsed: false,
       collapsible: false,
-      link: { type: 'doc', id: 'chdb/install/index' },
+      link: { type: 'doc', id: 'chdb/datastore/index' },
       items: [
-        'chdb/install/python',
-        'chdb/install/nodejs',
-        'chdb/install/go',
-        'chdb/install/rust',
-        'chdb/install/bun',
-        'chdb/install/c',
+        'chdb/datastore/quickstart',
+        'chdb/datastore/factory-methods',
+        'chdb/datastore/query-building',
+        'chdb/datastore/pandas-compat',
+        'chdb/datastore/accessors',
+        'chdb/datastore/aggregation',
+        'chdb/datastore/io',
+        'chdb/datastore/execution-model',
+        'chdb/datastore/class-reference',
+        'chdb/configuration/performance-mode',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Configuration',
+      className: 'top-nav-item',
+      collapsed: false,
+      collapsible: false,
+      link: { type: 'doc', id: 'chdb/configuration/index' },
+      items: [
+        'chdb/configuration/execution-engine',
+        'chdb/configuration/function-config',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Debugging',
+      className: 'top-nav-item',
+      collapsed: false,
+      collapsible: false,
+      link: { type: 'doc', id: 'chdb/debugging/index' },
+      items: [
+        'chdb/debugging/explain',
+        'chdb/debugging/profiling',
+        'chdb/debugging/logging',
       ],
     },
     {
@@ -1615,6 +1721,19 @@ const sidebars = {
       collapsible: false,
       link: { type: 'doc', id: 'chdb/guides/index' },
       items: [
+        {
+          type: 'category',
+          label: 'For pandas users',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'chdb/guides/migration-from-pandas',
+            'chdb/guides/pandas-cookbook',
+            'chdb/guides/pandas-differences',
+            'chdb/guides/pandas-performance',
+            'chdb/guides/pandas-to-sql',
+          ],
+        },
         'chdb/guides/jupysql',
         'chdb/guides/querying-pandas',
         'chdb/guides/querying-apache-arrow',
@@ -1644,6 +1763,21 @@ const sidebars = {
       collapsed: false,
       collapsible: false,
       items: [
+        {
+          type: 'category',
+          label: 'Language bindings',
+          collapsed: false,
+          collapsible: true,
+          link: { type: 'doc', id: 'chdb/install/index' },
+          items: [
+            'chdb/install/python',
+            'chdb/install/nodejs',
+            'chdb/install/go',
+            'chdb/install/rust',
+            'chdb/install/bun',
+            'chdb/install/c',
+          ],
+        },
         {
           type: 'link',
           label: 'JupySQL',
@@ -1680,12 +1814,37 @@ const sidebars = {
         },
         {
           type: 'link',
+          label: 'A Rocket Engine on a Bicycle',
+          href: 'https://clickhouse.com/blog/chdb-embedded-clickhouse-rocket-engine-on-a-bicycle',
+        },
+        {
+          type: 'link',
           label: 'Joining ClickHouse, Inc.',
           href: 'https://clickhouse.com/blog/welcome-chdb-to-clickhouse',
         },
         {
           type: 'link',
-          label: 'Team and dontributors',
+          label: '87x Faster Pandas DataFrames',
+          href: 'https://clickhouse.com/blog/chdb-pandas-dataframes-87x-faster',
+        },
+        {
+          type: 'link',
+          label: 'The Journey to Zero-Copy',
+          href: 'https://clickhouse.com/blog/chdb-journey-to-zero-copy',
+        },
+        {
+          type: 'link',
+          label: 'Kernel Upgrade to v25.8',
+          href: 'https://clickhouse.com/blog/chdb-kernel-update-25.8',
+        },
+        {
+          type: 'link',
+          label: 'chDB intro video',
+          href: 'https://www.youtube.com/watch?v=e_yL0dlX6k4',
+        },
+        {
+          type: 'link',
+          label: 'Team and contributors',
           href: 'https://github.com/chdb-io/chdb#contributors',
         },
       ],
@@ -1701,7 +1860,22 @@ const sidebars = {
       link: { type: 'doc', id: 'use-cases/observability/clickstack/index' },
       items: [
         'use-cases/observability/clickstack/overview',
-        'use-cases/observability/clickstack/getting-started',
+        {
+          type: 'category',
+          label: 'Getting started',
+          collapsed: false,
+          collapsible: false,
+          link: {
+            type: 'doc',
+            id: 'use-cases/observability/clickstack/getting-started/index',
+          },
+          items: [
+            {
+              type: 'autogenerated',
+              dirName: 'use-cases/observability/clickstack/getting-started',
+            },
+          ],
+        },
         {
           type: 'category',
           label: 'Sample datasets',
@@ -1730,9 +1904,22 @@ const sidebars = {
           },
           items: [
             {
-              type: 'autogenerated',
-              dirName: 'use-cases/observability/clickstack/deployment',
+              type: 'category',
+              label: 'Open source',
+              collapsed: true,
+              collapsible: true,
+              link: {
+                type: 'doc',
+                id: 'use-cases/observability/clickstack/deployment/oss/index',
+              },
+              items: [
+                {
+                  type: 'autogenerated',
+                  dirName: 'use-cases/observability/clickstack/deployment/oss',
+                },
+              ],
             },
+            'use-cases/observability/clickstack/deployment/managed',
           ],
         },
         {
@@ -1747,11 +1934,31 @@ const sidebars = {
           items: [
             'use-cases/observability/clickstack/ingesting-data/overview',
             'use-cases/observability/clickstack/ingesting-data/opentelemetry',
+            'use-cases/observability/clickstack/ingesting-data/vector',
             'use-cases/observability/clickstack/ingesting-data/collector',
             'use-cases/observability/clickstack/ingesting-data/schemas',
+            'use-cases/observability/clickstack/ingesting-data/schema/map-vs-json',
+            'use-cases/observability/clickstack/ingesting-data/trace-sampling',
             {
               type: 'category',
-              label: 'SDKs',
+              label: 'Integrations',
+              link: {
+                type: 'doc',
+                id: 'use-cases/observability/clickstack/ingesting-data/integration-examples/index',
+              },
+              collapsed: true,
+              collapsible: true,
+              items: [
+                {
+                  type: 'autogenerated',
+                  dirName:
+                    'use-cases/observability/clickstack/ingesting-data/integration-examples',
+                },
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Language SDKs',
               collapsed: true,
               collapsible: true,
               link: {
@@ -1771,13 +1978,45 @@ const sidebars = {
         'use-cases/observability/clickstack/config',
         'use-cases/observability/clickstack/ttl',
         'use-cases/observability/clickstack/search',
-        'use-cases/observability/clickstack/dashboards',
+        {
+          type: 'category',
+          label: 'Dashboards',
+          link: {
+            type: 'doc',
+            id: 'use-cases/observability/clickstack/dashboards/index',
+          },
+          collapsed: false,
+          collapsible: true,
+          items: [
+            'use-cases/observability/clickstack/dashboards/sql-visualizations',
+            'use-cases/observability/clickstack/dashboards/dashboard-templates',
+          ],
+        },
+        'use-cases/observability/clickstack/notebooks',
+        'use-cases/observability/clickstack/text-to-chart',
         'use-cases/observability/clickstack/event_patterns',
         'use-cases/observability/clickstack/event_deltas',
         'use-cases/observability/clickstack/alerts',
-        'use-cases/observability/clickstack/production',
-        'use-cases/observability/clickstack/materialized_views',
-        'use-cases/observability/clickstack/performance_tuning',
+        'use-cases/observability/clickstack/service-maps',
+        'use-cases/observability/clickstack/session-replay',
+        {
+          type: 'category',
+          label: 'Managing ClickStack',
+          link: {
+            type: 'doc',
+            id: 'use-cases/observability/clickstack/managing/index',
+          },
+          collapsed: false,
+          collapsible: true,
+          items: [
+            'use-cases/observability/clickstack/managing/admin',
+            'use-cases/observability/clickstack/managing/estimating-resources',
+            'use-cases/observability/clickstack/managing/production',
+            'use-cases/observability/clickstack/managing/materialized_views',
+            'use-cases/observability/clickstack/managing/performance_tuning',
+            'use-cases/observability/clickstack/managing/rbac',
+          ],
+        },
         {
           type: 'category',
           label: 'Migration guides',
@@ -1807,36 +2046,8 @@ const sidebars = {
             },
           ],
         },
-        {
-          type: 'category',
-          label: 'Integration quickstarts',
-          link: {
-            type: 'doc',
-            id: 'use-cases/observability/clickstack/integration-examples/index',
-          },
-          collapsed: true,
-          collapsible: true,
-          items: [
-            {
-              type: 'category',
-              label: 'Host Logs',
-              collapsed: true,
-              collapsible: true,
-              items: [
-                {
-                  type: 'autogenerated',
-                  dirName: 'use-cases/observability/clickstack/host-logs',
-                },
-              ],
-            },
-            {
-              type: 'autogenerated',
-              dirName:
-                'use-cases/observability/clickstack/integration-examples',
-            },
-          ],
-        },
         'use-cases/observability/clickstack/api-reference',
+        'use-cases/observability/clickstack/faq',
         {
           type: 'category',
           label: 'Integration partners',
@@ -1853,6 +2064,27 @@ const sidebars = {
                 'use-cases/observability/clickstack/integration-partners',
             },
           ],
+        },
+        {
+          type: 'category',
+          label: 'Demo days',
+          link: {
+            type: 'doc',
+            id: 'use-cases/observability/clickstack/demo-days/index',
+          },
+          collapsed: true,
+          collapsible: true,
+          items: [
+            {
+              type: 'autogenerated',
+              dirName: 'use-cases/observability/clickstack/demo-days',
+            },
+          ],
+        },
+        {
+          type: 'link',
+          label: 'OTel FYI',
+          href: 'https://otel.fyi',
         },
       ],
     },

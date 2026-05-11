@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## aggThrow \{#aggThrow\}
 
-Introduced in: v20.1
+Introduced in: v20.1.0
 
 此函数可用于测试异常安全。它会在创建时以指定的概率抛出异常。
 

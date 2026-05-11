@@ -109,7 +109,7 @@ INSERT INTO raw_temperature_readings (location_id, location_name, temperature) V
     (4, 'East', 2);
 ```
 
-Просмотрите обновлённые экстремумы после поступления новых данных:
+Просмотрите обновлённые минимальные и максимальные значения после добавления новых данных:
 
 ```sql
 SELECT
@@ -147,7 +147,8 @@ GROUP BY location_id, location_name
 ORDER BY location_id;
 ```
 
-Теперь мы видим ожидаемый результат:
+Теперь мы получаем ожидаемый результат:
+
 
 ```sql
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
@@ -163,7 +164,9 @@ ORDER BY location_id;
 частичных агрегатных состояний.
 :::
 
+
 ## См. также \{#see-also\}
+
 - [`min`](/sql-reference/aggregate-functions/reference/min)
 - [`комбинатор SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate)
 - [`тип SimpleAggregateFunction`](/sql-reference/data-types/simpleaggregatefunction)

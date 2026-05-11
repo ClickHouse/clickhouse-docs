@@ -120,7 +120,7 @@ BACKUP TABLE test_db.test_table TO Disk('backups', '1.zip')
    └──────────────────────────────────────┴────────────────┘
 ```
 
-テーブルが空の場合は、次のコマンドでバックアップからテーブルを復元できます。
+テーブルが空の場合は、次のコマンドでバックアップからテーブルをリストアできます。
 
 ```sql title="Query"
 RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
@@ -135,21 +135,21 @@ RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 :::note
 上記の `RESTORE` は、テーブル `test.table` にデータが含まれている場合は失敗します。
 設定 `allow_non_empty_tables=true` を有効にすると、`RESTORE TABLE` がデータを
-空ではないテーブルに挿入できるようになります。これにより、テーブル内の既存データと、バックアップから復元されるデータが混在します。
+空ではないテーブルに挿入できるようになります。これにより、テーブル内の既存データと、バックアップからリストアされるデータが混在します。
 そのため、この設定はテーブル内のデータが重複する可能性があるため、注意して使用する必要があります。
 :::
 
-既にデータが入っているテーブルを復元するには、次を実行します。
+既にデータが入っているテーブルをリストアするには、次を実行します。
 
 ```sql
-RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
 テーブルは新しい名前を指定してリストアまたはバックアップできます。
 
 ```sql
-RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
 このバックアップ・アーカイブの構造は次のとおりです。
@@ -162,12 +162,11 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
 ```
 
 {/* TO DO: 
-  ここにバックアップ形式についての説明を追加すること。Issue 24a を参照。
+  バックアップのフォーマットに関する説明をここに記載します。Issue 24a を参照してください。
   https://github.com/ClickHouse/clickhouse-docs/issues/3968
   */ }
 
 zip 以外の形式も使用できます。詳細については、後述の [&quot;Backups as tar archives&quot;](#backups-as-tar-archives) を参照してください。
-
 
 ### ディスクへの増分バックアップ \{#incremental-backups\}
 
@@ -203,8 +202,15 @@ FROM Disk('backups', 'incremental-a.zip');
 
 ### バックアップの保護 \{#assign-a-password-to-the-backup\}
 
-ディスクに出力されるバックアップファイルには、パスワードを設定できます。
-パスワードは `password` 設定を使用して指定します。
+ディスクに書き込まれるバックアップファイルには、パスワードを設定できます。
+パスワードは `password` 設定を使用して指定できます。
+
+:::note
+パスワード保護がサポートされているのは ZIP アーカイブ (`.zip`、`.zipx`) のみです。
+パスワードが受け付けられるには、バックアップパスの末尾が `.zip` または `.zipx` である必要があります。
+tar アーカイブや非アーカイブパスを含むその他の形式でパスワードを使用すると、
+`BAD_ARGUMENTS` エラー: `Password is not applicable, backup cannot be encrypted` が発生します。
+:::
 
 ```sql
 BACKUP TABLE test_db.test_table
@@ -212,14 +218,14 @@ TO Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-パスワードで保護されたバックアップを復元するには、`password` 設定でパスワードを再度指定する必要があります。
+パスワードで保護されたバックアップをリストアするには、`password` 設定を使用して
+再度パスワードを指定する必要があります。
 
 ```sql
 RESTORE TABLE test_db.test_table
 FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
-
 
 ### tar アーカイブとしてのバックアップ \{#backups-as-tar-archives\}
 

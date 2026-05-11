@@ -94,15 +94,30 @@ export async function register() {
 
 ### Настройка переменных окружения \{#configure-environment-variables\}
 
-Если вы отправляете трассировки напрямую в ClickStack, вам потребуется запустить сервер Next.js
-со следующими переменными окружения, чтобы направлять спаны на OTel collector:
+Если вы отправляете трейсы напрямую в ClickStack с помощью OpenTelemetry, вам нужно запустить сервер Next.js
+со следующими переменными окружения, чтобы направить спаны в OTel collector:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Управляемый ClickStack" default>
+
+```sh copy
+OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
+npm run dev
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source" >
 
 ```sh copy
 HYPERDX_API_KEY=<YOUR_INGESTION_API_KEY> \
 OTEL_SERVICE_NAME=<MY_SERVICE_NAME> \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318
 npm run dev
 ```
+</TabItem>
+</Tabs>
 
-Если вы разворачиваете приложение на Vercel, убедитесь, что все перечисленные выше переменные окружения настроены
-для этого развертывания.
+Если вы разворачиваете приложение в Vercel, убедитесь, что все переменные окружения, перечисленные выше, настроены
+в конфигурации вашего развертывания.

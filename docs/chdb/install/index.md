@@ -1,5 +1,5 @@
 ---
-title: 'Language Integrations Index'
+title: 'Language integrations index'
 slug: /chdb/install
 description: 'Index page for chDB language integrations'
 keywords: ['python', 'NodeJS', 'Go', 'Rust', 'Bun', 'C', 'C++']

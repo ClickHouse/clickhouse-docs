@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['Golang ClickStack SDK', 'Go OpenTelemetry 連携', 'Golang オブザーバビリティ', 'Go トレース計装', 'ClickStack Go SDK']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ClickStack は、テレメトリデータ（ログおよびトレース）を収集するために OpenTelemetry の標準を使用します。トレースは自動計装によって自動生成されるため、トレースの活用価値を得るために手動で計装する必要はありません。
 
 **このガイドで統合するもの:**
@@ -22,6 +25,7 @@ ClickStack は、テレメトリデータ（ログおよびトレース）を収
     </tr>
   </tbody>
 </table>
+
 
 ## はじめに \{#getting-started\}
 
@@ -230,13 +234,29 @@ func main() {
 
 ### 環境変数を設定する \{#configure-environment-variables\}
 
-続いて、ClickStack にテレメトリを送信するために、シェルに次の環境変数を設定する必要があります。
+次に、OpenTelemetry collector を経由して ClickStack にテレメトリをインジェストするため、シェルで次の環境変数を設定します:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Managed ClickStack" default>
 
 ```shell
-export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack Open Source" >
+
+```shell
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-`OTEL_EXPORTER_OTLP_HEADERS` 環境変数には、HyperDX アプリの `Team Settings → API Keys` で取得できる API キーを設定します。
+</TabItem>
+</Tabs>
+
+`OTEL_EXPORTER_OTLP_HEADERS` 環境変数には、HyperDX アプリの `Team Settings → API Keys` で取得できる API Key を指定します。

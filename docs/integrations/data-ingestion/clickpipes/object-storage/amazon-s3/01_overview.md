@@ -18,19 +18,19 @@ import Image from '@theme/IdealImage';
 
 The S3 ClickPipe provides a fully-managed and resilient way to ingest data from Amazon S3 and S3-compatible object stores into ClickHouse Cloud. It supports both **one-time** and **continuous ingestion** with exactly-once semantics.
 
-S3 ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) and [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe).
+S3 ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Supported data sources {#supported-data-sources}
 
 | Name                 | Logo                                                                                      | Details           |
 |----------------------|-------------------------------------------------------------------------------------------|-------------------|
 | **Amazon S3**            | <S3svg class="image" alt="Amazon S3 logo" style={{width: '2.5rem', height: 'auto'}}/>     | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order) by default, but can be configured to [ingest files in any order](#continuous-ingestion-any-order). |
-| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 logo" style={{width: '2.5rem', height: 'auto'}}/> | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode is not supported. |
-| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '2.5rem', height: 'auto'}}/> |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode is not supported. |
-| **OVH Object Storage** <br></br> _S3-compatible_ | <Image img={OVHpng} alt="Cloud Storage logo" size="logo" border/>                         |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode is not supported. |
+| **Cloudflare R2** <br></br> _S3-compatible_ | <R2svg class="image" alt="Cloudflare R2 logo" style={{width: '2.5rem', height: 'auto'}}/> | Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode isn't supported. |
+| **DigitalOcean Spaces** <br></br> _S3-compatible_ | <DOsvg class="image" alt="Digital Ocean logo" style={{width: '2.5rem', height: 'auto'}}/> |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode isn't supported. |
+| **OVH Object Storage** <br></br> _S3-compatible_ | <Image img={OVHpng} alt="Cloud Storage logo" size="logo" border/>                         |  Continuous ingestion requires [lexicographical order](#continuous-ingestion-lexicographical-order). Unordered mode isn't supported. |
 
 :::tip
-Due to differences in URL formats and API implementations across object storage service providers, not all S3-compatible services are supported out-of-the-box. If you're running into issues with a service that is not listed above, please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
+Due to differences in URL formats and API implementations across object storage service providers, not all S3-compatible services are supported out-of-the-box. If you're running into issues with a service that isn't listed above, please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
 :::
 
 ## Supported formats {#supported-formats}
@@ -53,17 +53,21 @@ When continuous ingestion is enabled, ClickPipes continuously ingests data from 
 
 #### Lexicographical order {#continuous-ingestion-lexicographical-order}
 
-By default, the S3 ClickPipe assumes files are added to a bucket in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the bucket, it will be **ignored** because the file name is not lexically greater than the last ingested file.
+By default, the S3 ClickPipe assumes files are added to a bucket in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the bucket, it will be **ignored** because the file name isn't lexically greater than the last ingested file.
 
 In this mode, the S3 ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the specified path.
 
 #### Any order {#continuous-ingestion-any-order}
 
-:::note
-Unordered mode is **only** supported for Amazon S3 and is **not** supported for public buckets. It requires setting up an [Amazon SQS](https://aws.amazon.com/sqs/) queue connected to the bucket.
+:::tip
+See [Configuring unordered mode for continuous ingestion](/integrations/clickpipes/object-storage/s3/unordered-mode) for step-by-step instructions.
 :::
 
-It's possible to configure an S3 ClickPipe to ingest files that don't have an implicit order by setting up an [Amazon SQS](https://aws.amazon.com/sqs/) queue connected to the bucket. This allows ClickPipes to listen for object created events and ingest any new files regardless of the file naming convention.
+It's possible to configure an S3 ClickPipe to ingest files that don't have an implicit order by setting up an [Amazon SQS](https://aws.amazon.com/sqs/) queue connected to the bucket, optionally using [Amazon EventBridge](https://aws.amazon.com/eventbridge/) as an event router. This allows ClickPipes to listen for object created events and ingest any new files regardless of the file naming convention.
+
+:::note
+Unordered mode is **only** supported for Amazon S3 and is **not** supported for public buckets or S3-compatible services. It requires setting up an [Amazon SQS](https://aws.amazon.com/sqs/) queue connected to the bucket, optionally using [Amazon EventBridge](https://aws.amazon.com/eventbridge/) as an event router.
+:::
 
 In this mode, the S3 ClickPipe does an initial load of **all files** in the selected path, and then listens for `ObjectCreated:*` events in the queue that match the specified path. Any message for a previously seen file, file not matching the path, or event of a different type will be **ignored**.
 
@@ -76,6 +80,10 @@ Files are ingested once the threshold configured in `max insert bytes` or `max f
 :::tip
 We strongly recommend configuring a **Dead-Letter-Queue (DLQ)** for the SQS queue, so it's easier to debug and retry failed messages.
 :::
+
+##### EventBridge to SQS {#eb-to-sqs}
+
+It is also possible to emit S3 event notifications to SQS via [Amazon EventBridge](https://aws.amazon.com/eventbridge/). This is the recommended approach for most use cases, as EventBridge supports richer event filtering, fan-out to multiple targets, and is not subject to S3's one notification rule per event type per prefix limitation. See [Configuring unordered mode for continuous ingestion](/integrations/clickpipes/object-storage/s3/unordered-mode) for step-by-step instructions.
 
 ##### SNS to SQS {#sns-to-sqs}
 
@@ -198,7 +206,7 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 
 ### Scaling {#scaling}
 
-Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings will not affect the ClickPipe size.
+Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings won't affect the ClickPipe size.
 
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 
@@ -210,10 +218,10 @@ ClickPipes will only attempt to ingest objects that are **10GB or smaller** in s
 
 ### Compatibility {#compatibility}
 
-Despite being S3-compatible, some services use a different URL structure that the S3 ClickPipe might not be able to parse (e.g., Backblaze B2), or require integration with provider-specific queue services for continuous, unordered ingestion. If you're running into issues with a service that is not listed under [Supported data sources](#supported-data-sources), please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
+Despite being S3-compatible, some services use a different URL structure that the S3 ClickPipe might not be able to parse (e.g., Backblaze B2), or require integration with provider-specific queue services for continuous, unordered ingestion. If you're running into issues with a service that isn't listed under [Supported data sources](#supported-data-sources), please [reach out to our team](https://clickhouse.com/company/contact?loc=clickpipes).
 
 ### View support {#view-support}
 
 Materialized views on the target table are also supported. ClickPipes will create staging tables not only for the target table, but also any dependent materialized view.
 
-We do not create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you are missing data in the materialized view.
+We don't create staging tables for non-materialized views. This means that if you have a target table with one of more downstream materialized views, those materialized views should avoid selecting data via a view from the target table. Otherwise, you may find that you're missing data in the materialized view.

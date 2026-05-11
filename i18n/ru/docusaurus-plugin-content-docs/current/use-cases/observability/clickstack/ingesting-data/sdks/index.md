@@ -46,19 +46,24 @@ keywords: ['ClickStack SDKs', 'языковые SDK ClickStack', 'OpenTelemetry 
 
 ## Защита с помощью ключа API \{#securing-api-key\}
 
+:::Not required for Managed ClickStack
+Ключ API не требуется для управляемого ClickStack.
+:::
+
 Для отправки данных в ClickStack через OTel collector SDK должны указывать ключ API для приёма данных (ingestion API key). Его можно задать либо с помощью функции `init` в SDK, либо через переменную окружения `OTEL_EXPORTER_OTLP_HEADERS`:
 
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-Этот API-ключ генерируется приложением HyperDX и доступен в разделе `Team Settings → API Keys` самого приложения.
+Этот API-ключ генерируется приложением ClickStack UI (HyperDX) и доступен в разделе `Team Settings → API Keys` самого приложения.
 
 Для большинства [языковых SDK](/use-cases/observability/clickstack/sdks) и библиотек телеметрии, поддерживающих OpenTelemetry, вы можете просто задать переменную окружения `OTEL_EXPORTER_OTLP_ENDPOINT` в вашем приложении или указать её при инициализации SDK:
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
+
 
 ## Интеграция с Kubernetes \{#kubernetes-integration\}
 

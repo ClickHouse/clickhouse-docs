@@ -15,14 +15,14 @@ doc_type: 'reference'
 
 ## 描述 \{#description\}
 
-在这种格式中，单个 JSON 对象会被解释为一个单独的值。  
-如果输入包含多个 JSON 对象（用逗号分隔），它们会被解释为多行记录。  
-如果输入数据被方括号包裹，则会被解释为一个 JSON 对象数组。
+在这种格式中，单个 JSON 对象会被解释为一个单独的值。
+如果输入包含多个 JSON 对象 (用逗号分隔) ，它们会被解释为多行记录。
+如果输入数据被 `[]` 包裹，则会被解释为一个 JSON 对象数组。
 
 :::note
-此格式只能用于解析仅包含一个 [String](/sql-reference/data-types/string.md) 类型字段的表。  
-其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 或 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)，  
-或者直接省略。 
+此格式只能用于解析仅包含一个 [String](/sql-reference/data-types/string.md) 类型字段的表。
+其余列必须设置为 [`DEFAULT`](/sql-reference/statements/create/table.md/#default) 或 [`MATERIALIZED`](/sql-reference/statements/create/view#materialized-view)，
+或者直接省略。
 :::
 
 将整个 JSON 对象序列化为一个 String 值之后，就可以使用 [JSON 函数](/sql-reference/functions/json-functions.md) 来处理它。

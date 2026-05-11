@@ -27,15 +27,16 @@ ENGINE = ReplicatedMergeTree
 
 :::
 
-Репликация поддерживается только для таблиц семейства MergeTree:
+Репликация поддерживается только для таблиц семейства MergeTree
 
-* ReplicatedMergeTree
 * ReplicatedSummingMergeTree
+* ReplicatedCoalescingMergeTree
+* ReplicatedVersionedCollapsingMergeTree
+* ReplicatedCollapsingMergeTree
+* ReplicatedGraphiteMergeTree
+* ReplicatedMergeTree
 * ReplicatedReplacingMergeTree
 * ReplicatedAggregatingMergeTree
-* ReplicatedCollapsingMergeTree
-* ReplicatedVersionedCollapsingMergeTree
-* ReplicatedGraphiteMergeTree
 
 Репликация работает на уровне отдельной таблицы, а не всего сервера. Один сервер может одновременно хранить как реплицируемые, так и нереплицируемые таблицы.
 
@@ -117,6 +118,7 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 
 Если ZooKeeper не указан в конфигурационном файле, вы не сможете создавать реплицируемые таблицы, а любые существующие реплицируемые таблицы будут доступны только для чтения.
 
+
 ZooKeeper не используется в запросах `SELECT`, потому что репликация не влияет на производительность `SELECT`, и запросы выполняются так же быстро, как и для нереплицируемых таблиц. При выполнении запросов к распределённым реплицируемым таблицам поведение ClickHouse управляется настройками [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) и [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries).
 
 Для каждого запроса `INSERT` в ZooKeeper добавляется примерно десять записей через несколько транзакций. (Более точно: для каждого вставленного блока данных; один запрос `INSERT` содержит один блок или один блок на `max_insert_block_size = 1048576` строк.) Это приводит к немного большему времени ожидания для `INSERT` по сравнению с нереплицируемыми таблицами. Но если вы следуете рекомендациям и вставляете данные пакетами не чаще одного `INSERT` в секунду, это не создаёт никаких проблем. Весь кластер ClickHouse, используемый для координации одного кластера ZooKeeper, в сумме обрабатывает несколько сотен запросов `INSERT` в секунду. Пропускная способность по вставке данных (количество строк в секунду) столь же высока, как и для нереплицируемых данных.
@@ -178,16 +180,16 @@ SAMPLE BY intHash32(UserID);
   <summary>Пример с устаревшим синтаксисом</summary>
 
   ```sql
-CREATE TABLE table_name
-(
-    EventDate DateTime,
-    CounterID UInt32,
-    UserID UInt32
-) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
-```
+  CREATE TABLE table_name
+  (
+      EventDate DateTime,
+      CounterID UInt32,
+      UserID UInt32
+  ) ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/table_name', '{replica}', EventDate, intHash32(UserID), (CounterID, EventDate, intHash32(UserID), EventTime), 8192);
+  ```
 </details>
 
-Как видно из примера, эти параметры могут содержать подстановки в фигурных скобках. Значения для подстановки берутся из раздела [macros](/operations/server-configuration-parameters/settings.md/#macros) файла конфигурации.
+Как видно из примера, эти параметры могут содержать подстановки в `{}`. Значения для подстановки берутся из раздела [macros](/operations/server-configuration-parameters/settings.md/#macros) файла конфигурации.
 
 Пример:
 
@@ -247,6 +249,7 @@ ORDER BY x;
 Если вы добавляете новую реплику после того, как таблица уже содержит какие‑то данные на других репликах, данные будут скопированы с других реплик на новую реплику после выполнения этого запроса. Другими словами, новая реплика синхронизируется с остальными.
 
 Чтобы удалить реплику, выполните `DROP TABLE`. Однако удаляется только одна реплика — та, которая находится на сервере, где вы выполняете запрос.
+
 
 ## Восстановление после сбоев \{#recovery-after-failures\}
 

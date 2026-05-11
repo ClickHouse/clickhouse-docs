@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'Обзор'
 slug: /migrations/elastic-overview
-description: 'Переход с Snowflake на ClickHouse'
-keywords: ['Snowflake']
-title: 'Переход с Snowflake на ClickHouse'
+description: 'Миграция с Elasticsearch на ClickHouse'
+keywords: ['Elasticsearch']
+title: 'Миграция с Elasticsearch на ClickHouse'
 show_related_blogs: true
 doc_type: 'landing-page'
 ---

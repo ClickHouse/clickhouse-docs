@@ -11,12 +11,13 @@ import Image from '@theme/IdealImage';
 import ip_filtering_after_provisioning from '@site/static/images/cloud/security/ip-filtering-after-provisioning.png';
 import ip_filter_add_single_ip from '@site/static/images/cloud/security/ip-filter-add-single-ip.png';
 
+
 ## IP フィルターの設定 \{#setting-ip-filters\}
 
 IP アクセスリストは、どの送信元アドレスからの接続を許可するかを指定することで、ClickHouse の各種サービスまたは API キーへのトラフィックを制限します。これらのリストは、サービスごとおよび API キーごとに設定できます。リストは、サービスや API キーの作成時だけでなく、作成後にも設定・変更できます。
 
-:::important
-ClickHouse Cloud サービスに対して IP アクセスリストを作成しなかった場合、そのサービスには一切のトラフィックが許可されません。ClickHouse サービスの IP アクセスリストを `Allow from anywhere` に設定していると、パブリック IP を探索するインターネットクローラーやスキャナーによって、アイドル状態からアクティブ状態へサービスが定期的に移行させられる可能性があり、その結果として、少額ではあるものの想定外のコストが発生することがあります。
+:::warning[サービス用の IP アクセスリストを必ず設定してください]
+ClickHouse Cloud サービスを作成するとき、IP 許可リストのデフォルト設定は 'Allow from anywhere.' です。できるだけ早く、アクセスを特定の IP アドレスまたは範囲に制限することを強く推奨します。`Allow from anywhere` に設定されたサービスは、パブリック IP を探索するインターネットクローラーやスキャナーによって、アイドル状態からアクティブ状態へ定期的に移行させられる可能性があり、その結果として、想定外のコストが発生することがあります。
 :::
 
 ## 準備 \{#prepare\}
@@ -35,7 +36,7 @@ IP アクセスリストは、[PrivateLink](/cloud/security/connectivity/private
 <details>
   <summary>ClickHouse サービス用の IP アクセスリスト</summary>
 
-  ClickHouse サービスを作成するとき、IP allow list のデフォルト設定は「Allow from nowhere.」です。 
+  ClickHouse サービスを作成するとき、IP allow list のデフォルト設定は「Allow from anywhere.」です。 
   
   ClickHouse Cloud のサービス一覧から対象のサービスを選択し、**Settings** を選択します。**Security** セクションの下に IP アクセスリストが表示されるので、**Add IPs** ボタンをクリックします。
   
@@ -46,6 +47,7 @@ IP アクセスリストは、[PrivateLink](/cloud/security/connectivity/private
 - サービスへのすべてのアクセスを拒否する
   
 </details>
+
 <details>
   <summary>API キー用の IP アクセスリスト</summary>
 
@@ -110,6 +112,7 @@ curl https://<HOSTNAME>.clickhouse.cloud:8443
 ```response
 Ok.
 ```
+
 
 ## 制限事項 \{#limitations\}
 

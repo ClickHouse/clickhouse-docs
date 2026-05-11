@@ -32,16 +32,17 @@ INSERT INTO user_events
 SELECT
   generateUUIDv4() AS event_id,
   rand() % 10000 AS user_id,
-  arrayJoin(['click','view','purchase']) AS event_type,
+  arrayElement(['click','view','purchase'], toUInt32(rand()) % 3 + 1) AS event_type,
   now() - INTERVAL rand() % 3600*24 SECOND AS event_time
 FROM numbers(1000000);
 ```
 
 * `rand() % 10000`：表示对 1 万个用户的均匀分布
-* `arrayJoin(...)`：从三种事件类型中随机选择一种
+* `arrayElement(...)`：从三种事件类型中随机选择一种
 * 时间戳分布在过去 24 小时内
 
 ***
+
 
 ## 指数分布 \{#exponential-distribution\}
 
@@ -64,13 +65,14 @@ FROM numbers(500000);
 ```
 
 * 在最近一段时间内均匀分布的时间戳
-* `randExponential(1/10)` — 大多数结果接近 0，然后整体加上 15 作为最小值（[ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4]）
+* `randExponential(1/10)` — 大多数结果接近 0，然后整体加上 15 作为最小值 ([ClickHouse][1], [ClickHouse][2], [Atlantic.Net][3], [GitHub][4]) 
 
 ***
 
+
 ## 时间分布的事件（泊松） \{#poisson-distribution\}
 
-**适用场景**：模拟在特定时间段（例如高峰时段）附近集中发生的事件。
+**使用场景**：模拟在特定时间段（例如高峰时段）附近集中发生的事件。
 
 ```sql
 CREATE TABLE events (
@@ -89,27 +91,28 @@ FROM numbers(200000);
 
 * 事件在中午前后达到峰值，偏差服从泊松分布
 
-***
+---
 
 ## 随时间变化的正态分布 \{#time-varying-normal-distribution\}
 
-**使用场景**：模拟会随时间变化的系统指标（如 CPU 使用率）。
+**使用场景**：模拟会随时间变化的系统指标 (如 CPU 使用率) 。
 
 ```sql
-CREATE TABLE cpu_metrics (
-  host String,
-  ts DateTime,
-  usage Float32
+CREATE TABLE IF NOT EXISTS cpu_metrics (
+    host String,
+    ts   DateTime,
+    usage Float32
 ) ENGINE = MergeTree
 ORDER BY (host, ts);
 
 INSERT INTO cpu_metrics
 SELECT
-  arrayJoin(['host1','host2','host3']) AS host,
-  now() - INTERVAL number SECOND AS ts,
-  greatest(0.0, least(100.0,
-    randNormal(50 + 30*sin(toUInt32(ts)%86400/86400*2*pi()), 10)
-  )) AS usage
+    arrayJoin(['host1','host2','host3']) AS host,
+    now() - INTERVAL number SECOND AS ts,
+    greatest(0.0, least(100.0,
+        (50 + 30 * sin(toUInt32(number) % 86400 / 86400.0 * 2 * pi()))
+        + randNormal(0, 10)
+    )) AS usage
 FROM numbers(10000);
 ```
 
@@ -117,6 +120,7 @@ FROM numbers(10000);
 * 数值被限定在 [0,100] 区间内
 
 ***
+
 
 ## 分类和嵌套数据 \{#categorical-and-nested-data\}
 
@@ -144,6 +148,7 @@ FROM numbers(20000);
 :::tip
 阅读博客文章 [Generating Random Data in ClickHouse](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse) 以获取更多示例。
 :::
+
 
 ## 生成随机表 \{#generating-random-tables\}
 
@@ -224,6 +229,7 @@ LIMIT 1000;
 
 DESCRIBE TABLE fully_random_table;
 ```
+
 
 ```response
    ┌─name─┬─type─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐

@@ -12,14 +12,12 @@ integration:
 
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';
 import cloudsql_logical_decoding1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding1.png';
-import cloudsql_logical_decoding2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding2.png';
 import cloudsql_logical_decoding3 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding3.png';
 import connections from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections.png';
 import connections_networking from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections_networking.png';
 import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall1.png';
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
-
 
 # Google Cloud SQL Postgres ソース設定ガイド \{#google-cloud-sql-postgres-source-setup-guide\}
 
@@ -35,19 +33,17 @@ Postgres 12 以降のすべてのバージョン
 
 ## 論理レプリケーションを有効にする \{#enable-logical-replication\}
 
-設定 `cloudsql. logical_decoding` が on で、かつ `wal_sender_timeout` が 0 の場合は、**以下の手順を実行する必要はありません**。これらの設定は、他のデータレプリケーションツールから移行する場合、ほとんどのケースで事前に構成されています。
+設定 `cloudsql. logical_decoding` が on の場合は、**以下の手順を実行する必要はありません**。この設定は、他のデータレプリケーションツールから移行する場合、ほとんどのケースで事前に構成されています。
 
 1. 概要ページで **Edit** ボタンをクリックします。
 
-<Image img={edit_button} alt="Cloud SQL Postgres の Edit ボタン" size="lg" border/>
+<Image img={edit_button} alt="Cloud SQL Postgres の Edit ボタン" size="lg" border />
 
-2. Flags に移動し、`cloudsql.logical_decoding` を on にし、`wal_sender_timeout` を 0 に変更します。これらの変更を反映するには、Postgres サーバーの再起動が必要です。
+2. Flags に移動し、`cloudsql.logical_decoding` を on に変更します。この変更を反映するには、Postgres サーバーの再起動が必要です。
 
-<Image img={cloudsql_logical_decoding1} alt="cloudsql.logical_decoding を on に変更" size="lg" border/>
+<Image img={cloudsql_logical_decoding1} alt="cloudsql.logical_decoding を on に変更" size="lg" border />
 
-<Image img={cloudsql_logical_decoding2} alt="cloudsql.logical_decoding と wal_sender_timeout を変更" size="lg" border/>
-
-<Image img={cloudsql_logical_decoding3} alt="サーバーを再起動" size="lg" border/>
+<Image img={cloudsql_logical_decoding3} alt="サーバーを再起動" size="lg" border />
 
 ## ClickPipes ユーザーの作成と権限付与 \{#creating-clickpipes-user-and-granting-permissions\}
 

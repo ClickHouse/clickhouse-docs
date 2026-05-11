@@ -16,7 +16,7 @@ import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
 ## Storage backed by object store {#storage-backed-by-object-store}
 - Virtually unlimited storage
-- No need to manually share data
+- No need to manually shard data
 - Significantly lower price point for storing data, especially data that is accessed less frequently
 
 ## Compute {#compute}
@@ -53,4 +53,4 @@ For GCP and Azure, services have object storage isolation (all services have the
 
 There is no limit to the number of queries per second (QPS) in your ClickHouse Cloud service. There is, however, a limit of 1000 concurrent queries per replica. QPS is ultimately a function of your average query execution time and the number of replicas in your service.
 
-A major benefit of ClickHouse Cloud compared to a self-managed ClickHouse instance or other databases/data warehouses is that you can easily increase concurrency by [adding more replicas (horizontal scaling)](/manage/scaling#manual-horizontal-scaling).
+A major benefit of ClickHouse Cloud compared to a self-managed ClickHouse instance or other databases/data warehouses is that you can easily increase concurrency by [adding more replicas (horizontal scaling)](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling).

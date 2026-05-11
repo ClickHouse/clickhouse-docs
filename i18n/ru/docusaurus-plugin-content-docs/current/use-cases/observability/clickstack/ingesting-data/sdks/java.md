@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['Java SDK ClickStack', 'Java OpenTelemetry ClickStack', 'Java observability SDK', 'ClickStack Java integration', 'Java application monitoring']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ClickStack использует стандарт OpenTelemetry для сбора данных телеметрии (логов и
 трейсов). Трейсы автоматически создаются с помощью автоматического инструментиования, поэтому
 ручное инструментиование не требуется, чтобы извлекать пользу из трассировки.
@@ -25,13 +28,14 @@ ClickStack использует стандарт OpenTelemetry для сбора
   </tbody>
 </table>
 
+
 ## Начало работы \{#getting-started\}
 
 :::note
 В настоящее время интеграция поддерживает только **Java 8+**.
 :::
 
-### Загрузка Java-агента OpenTelemetry \{#download-opentelemtry-java-agent\}
+### Загрузка Java-агента OpenTelemetry \{#download-opentelemetry-java-agent\}
 
 Скачайте [`opentelemetry-javaagent.jar`](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar)
 и поместите JAR-файл в выбранный каталог. JAR-файл содержит агент
@@ -42,18 +46,37 @@ ClickStack использует стандарт OpenTelemetry для сбора
 curl -L -O https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
+
 ### Настройте переменные окружения \{#configure-environment-variables\}
 
-Далее необходимо настроить в оболочке следующие переменные окружения для отправки телеметрии в ClickStack:
+Далее необходимо настроить в оболочке следующие переменные окружения для отправки телеметрии в ClickStack через коллектор OpenTelemetry:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Управляемый ClickStack" default>
 
 ```shell
 export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
-OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
+OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_LOGS_EXPORTER=otlp \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack с открытым исходным кодом" >
+
+```shell
+export JAVA_TOOL_OPTIONS="-javaagent:PATH/TO/opentelemetry-javaagent.jar" \
+OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>' \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_LOGS_EXPORTER=otlp \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>'
 ```
+
+</TabItem>
+</Tabs>
 
 *Переменная окружения `OTEL_SERVICE_NAME` используется для идентификации сервиса в приложении HyperDX. Можно указать любое удобное имя.*
 

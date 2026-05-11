@@ -44,7 +44,7 @@ from sklearn_evaluation import plot
 
 **在继续后续步骤之前，需要确保你的 ClickHouse 已经启动并且可访问。你可以使用本地版本或 ClickHouse Cloud 版本。**
 
-**注意：**你需要根据要连接的实例类型调整连接字符串（URL、user、password）。在下面的示例中，我们使用的是本地实例。要了解更多信息，请查看[本指南](/get-started/quick-start)。
+**注意：**你需要根据要连接的实例类型调整连接字符串 (URL、user、password) 。在下面的示例中，我们使用的是本地实例。要了解更多信息，请查看[本指南](/get-started/quick-start)。
 
 ```python
 %sql clickhouse://default:@localhost:8123/default

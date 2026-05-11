@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## deltaSum \{#deltaSum\}
 
-導入バージョン: v21.3
+導入バージョン: v21.3.0
 
 連続する行間の算術差分の合計を返します。
 差分が負の場合は無視されます。
@@ -35,7 +35,7 @@ deltaSum(x1[, x2, ...])
 
 **返される値**
 
-入力値の増分（算術差分）の合計を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
+入力値の増分 (算術差分) の合計を返します。[`(U)Int*`](/sql-reference/data-types/int-uint) または [`Float*`](/sql-reference/data-types/float)
 
 **例**
 
@@ -51,7 +51,7 @@ SELECT deltaSum(arrayJoin([1, 2, 3]))
 └────────────────────────────────┘
 ```
 
-**値が混在し、負の差分は無視**
+**値が混在する場合 (負の差分は無視)&#x20;**
 
 ```sql title=Query
 SELECT deltaSum(arrayJoin([1, 2, 3, 0, 3, 4, 2, 3]))

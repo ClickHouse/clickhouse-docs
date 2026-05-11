@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitmapOr \{#groupBitmapOr\}
 
-Впервые представлена в версии v20.1.
+Впервые представлена в версии v20.1.0.
 
 Вычисляет операцию OR над битмап-столбцом и возвращает его кардинальность.
 Если добавлен суффикс-комбинатор [`-State`](/sql-reference/aggregate-functions/combinators#-state), то функция возвращает объект bitmap.

@@ -11,7 +11,160 @@ doc_type: 'guide'
 
 データマスキングはデータ保護のための手法であり、元のデータの形式や構造は維持したまま、個人を特定できる情報 (PII) や機密情報を取り除いた別バージョンのデータに置き換えるものです。
 
-このガイドでは、ClickHouse でデータをマスクする方法を説明します。
+このガイドでは、ClickHouse でデータをマスクするために利用できるいくつかのアプローチを説明します。
+
+- **Masking policies** (ClickHouse Cloud, 25.12+): クエリ実行時に特定のユーザーやロールに対して適用されるネイティブな動的マスキング
+- **String replacement functions**: 組み込み関数による基本的なマスキング
+- **Masked views**: 変換ロジックを組み込んだマスク済みビューの作成
+- **Materialized columns**: 元データと並行してマスク済みデータを保持するマテリアライズドカラム
+- **Query masking rules**: ログ内の機密データをマスクするためのクエリマスキングルール (ClickHouse OSS)
+
+## マスキングポリシーを使用する (ClickHouse Cloud) \{#masking-policies\}
+
+:::note
+マスキングポリシーは、バージョン 25.12 以降の ClickHouse Cloud で利用可能です。
+:::
+
+[`CREATE MASKING POLICY`](/sql-reference/statements/create/masking-policy) 文は、特定のユーザーまたはロールに対して、クエリ実行時にカラム値を動的にマスクするためのネイティブな手段を提供します。他の方法と異なり、マスキングポリシーでは、別の VIEW を作成したり、マスク済みデータを保存したりする必要はありません。変換は、ユーザーがテーブルをクエリした際に透過的に行われます。
+
+### 基本的なマスキングポリシー \{#basic-maasking-policy\}
+
+マスキングポリシーを示すために、顧客情報を含む `orders` テーブルを作成します。
+
+```sql
+CREATE TABLE orders (
+    user_id UInt32,
+    name String,
+    email String,
+    phone String,
+    total_amount Decimal(10,2),
+    order_date Date,
+    shipping_address String
+)
+ENGINE = MergeTree()
+ORDER BY user_id;
+
+INSERT INTO orders VALUES
+    (1001, 'John Smith', 'john.smith@gmail.com', '555-123-4567', 299.99, '2024-01-15', '123 Main St, New York, NY 10001'),
+    (1002, 'Sarah Johnson', 'sarah.johnson@outlook.com', '555-987-6543', 149.50, '2024-01-16', '456 Oak Ave, Los Angeles, CA 90210'),
+    (1003, 'Michael Brown', 'mbrown@company.com', '555-456-7890', 599.00, '2024-01-17', '789 Pine Rd, Chicago, IL 60601'),
+    (1004, 'Emily Rogers', 'emily.rogers@yahoo.com', '555-321-0987', 89.99, '2024-01-18', '321 Elm St, Houston, TX 77001'),
+    (1005, 'David Wilson', 'dwilson@email.net', '555-654-3210', 449.75, '2024-01-19', '654 Cedar Blvd, Phoenix, AZ 85001');
+```
+
+次に、マスクされたデータを閲覧するユーザー向けのロールを作成します。
+
+```sql
+CREATE ROLE masked_data_viewer;
+```
+
+`masked_data_viewer` ロールに適用されるマスキングポリシーを作成します。
+
+```sql
+CREATE MASKING POLICY mask_pii_data ON orders
+    UPDATE
+        name = replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****'),
+        email = replaceRegexpOne(email, '^(.{2})[^@]*(@.*)$', '\\1****\\2'),
+        phone = replaceRegexpOne(phone, '^(\\d{3})-(\\d{3})-(\\d{4})$', '\\1-***-\\3'),
+        shipping_address = replaceRegexpOne(shipping_address, '^[^,]+,\\s*(.*)$', '*** \\1')
+    TO masked_data_viewer;
+```
+
+`masked_data_viewer` ロールを持つユーザーが `orders` テーブルに対してクエリを実行すると、自動的にマスク済みデータが表示されます。
+
+```sql title="Query"
+SELECT * FROM orders ORDER BY user_id;
+```
+
+```response title="Response (for masked_data_viewer role)"
+┌─user_id─┬─name─────────┬─email──────────────┬─phone────────┬─total_amount─┬─order_date─┬─shipping_address──────────┐
+│    1001 │ John ****    │ jo****@gmail.com   │ 555-***-4567 │       299.99 │ 2024-01-15 │ *** New York, NY 10001    │
+│    1002 │ Sarah ****   │ sa****@outlook.com │ 555-***-6543 │        149.5 │ 2024-01-16 │ *** Los Angeles, CA 90210 │
+│    1003 │ Michael **** │ mb****@company.com │ 555-***-7890 │          599 │ 2024-01-17 │ *** Chicago, IL 60601     │
+│    1004 │ Emily ****   │ em****@yahoo.com   │ 555-***-0987 │        89.99 │ 2024-01-18 │ *** Houston, TX 77001     │
+│    1005 │ David ****   │ dw****@email.net   │ 555-***-3210 │       449.75 │ 2024-01-19 │ *** Phoenix, AZ 85001     │
+└─────────┴──────────────┴────────────────────┴──────────────┴──────────────┴────────────┴───────────────────────────┘
+```
+
+`masked_data_viewer` ロールを持たないユーザーには、マスクされていない元のデータが表示されます。
+
+
+### 条件付きマスキング \{#conditional-masking\}
+
+特定の行に対してのみマスキングを適用するには、`WHERE` 句を使用できます。たとえば、高額な注文のみをマスキングする場合は、次のようにします。
+
+```sql
+CREATE MASKING POLICY mask_high_value_orders ON orders
+    UPDATE
+        name = replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****'),
+        email = replaceRegexpOne(email, '^(.{2})[^@]*(@.*)$', '\\1****\\2')
+    WHERE total_amount > 200
+    TO masked_data_viewer;
+```
+
+
+### 優先度付きの複数ポリシー \{#multiple-policies-with-priority\}
+
+同じカラムに複数のマスキングポリシーが適用される場合は、どの変換が最終的に適用されるかを制御するために `PRIORITY` 句を使用します。優先度の値が高いポリシーほど、後から適用されます。
+
+```sql
+-- Lower priority: Basic masking for all sensitive data
+CREATE MASKING POLICY basic_masking ON orders
+    UPDATE
+        name = '****',
+        email = '****@****.com'
+    TO masked_data_viewer
+    PRIORITY 0;
+
+-- Higher priority: More refined masking (overrides basic_masking)
+CREATE MASKING POLICY refined_masking ON orders
+    UPDATE
+        name = replaceRegexpOne(name, '^([A-Za-z]+)\\s+(.*)$', '\\1 ****')
+    WHERE total_amount > 100
+    TO masked_data_viewer
+    PRIORITY 10;
+```
+
+この例では、`total_amount > 100` の注文に対しては、`name` カラムについて `refined_masking` ポリシー（優先度 10）が `basic_masking` ポリシー（優先度 0）を上書きし、一方で `email` には引き続き basic マスキングが適用されます。
+
+
+### ハッシュベースのマスキング \{#hash-based-masking\}
+
+一貫したマスキング（同じ入力からは常に同じマスク済み出力が生成される必要がある場合）が必要なケースでは、ハッシュ関数を使用してください。
+
+```sql
+CREATE MASKING POLICY hash_sensitive_data ON orders
+    UPDATE
+        email = concat(toString(cityHash64(email)), '@masked.com'),
+        phone = concat('555-', toString(cityHash64(phone) % 10000000))
+    TO masked_data_viewer;
+```
+
+
+### マスキングポリシーの管理 \{#managing-masking-policies\}
+
+すべてのマスキングポリシーを表示:
+
+```sql
+SHOW MASKING POLICIES;
+```
+
+マスキングポリシーを削除する：
+
+```sql
+DROP MASKING POLICY mask_pii_data ON orders;
+```
+
+既存のポリシーを置き換える：
+
+```sql
+CREATE OR REPLACE MASKING POLICY mask_pii_data ON orders
+    UPDATE name = '[REDACTED]'
+    TO masked_data_viewer;
+```
+
+詳細については、[CREATE MASKING POLICY](/sql-reference/statements/create/masking-policy) ドキュメントを参照してください。
+
 
 ## 文字列置換関数を使用する \{#using-string-functions\}
 
@@ -40,7 +193,7 @@ SELECT replaceOne(
 └───────────────────────────────────────────────────┘
 ```
 
-より一般的には、`replaceRegexpOne` を使用すると任意の顧客名を置き換えることができます。
+より汎用的には、`replaceRegexpOne` を使用して任意の顧客名を置換できます。
 
 ```sql title="Query"
 SELECT 
@@ -74,6 +227,7 @@ SELECT replaceRegexpAll(
 │ SSN: XXX-XX-6789 │
 └──────────────────┘
 ```
+
 
 ## マスクされた `VIEW` の作成 \{#masked-views\}
 
@@ -139,6 +293,7 @@ SELECT * FROM masked_orders
 └─────────┴──────────────┴────────────────────┴──────────────┴──────────────┴────────────┴───────────────────────────┘
 ```
 
+
 ビューから返されるデータは一部マスキングされており、機密情報が秘匿されていることに注意してください。
 また、閲覧者が持つ情報への特権アクセスレベルに応じて、マスキングの度合いが異なる複数のビューを作成することもできます。
 
@@ -170,7 +325,8 @@ REVOKE SELECT ON orders FROM masked_orders_viewer;
 GRANT masked_orders_viewer TO your_user;
 ```
 
-これにより、`masked_orders_viewer` ロールを持つユーザーは、ビューからマスクされたデータのみを閲覧でき、テーブルにある元のマスクされていないデータは閲覧できなくなります。
+これにより、`masked_orders_viewer` ロールを持つユーザーは、ビューからマスキングされたデータのみを閲覧でき、テーブルにある元のマスクされていないデータは閲覧できなくなります。
+
 
 ## `MATERIALIZED` カラムとカラムレベルのアクセス制限を使用する \{#materialized-ephemeral-column-restrictions\}
 
@@ -221,6 +377,7 @@ FROM orders
 ORDER BY user_id ASC
 ```
 
+
 ```response title="Response"
    ┌─user_id─┬─name──────────┬─email─────────────────────┬─phone────────┬─total_amount─┬─order_date─┬─shipping_address───────────────────┬─name_masked──┬─email_masked───────┬─phone_masked─┬─shipping_address_masked────┐
 1. │    1001 │ John Smith    │ john.smith@gmail.com      │ 555-123-4567 │       299.99 │ 2024-01-15 │ 123 Main St, New York, NY 10001    │ John ****    │ jo****@gmail.com   │ 555-***-4567 │ **** New York, NY 10001    │
@@ -240,13 +397,13 @@ DROP ROLE IF EXISTS masked_order_viewer;
 CREATE ROLE masked_order_viewer;
 ```
 
-次に、`orders` テーブルに対して `SELECT` 権限を付与します。
+次に、`orders` テーブルに `SELECT` 権限を付与します。
 
 ```sql
 GRANT SELECT ON orders TO masked_data_reader;
 ```
 
-機密情報を含むカラムへのアクセス権を取り消します：
+機密なカラムへのアクセス権を取り消します：
 
 ```sql
 REVOKE SELECT(name) ON orders FROM masked_data_reader;
@@ -255,7 +412,7 @@ REVOKE SELECT(phone) ON orders FROM masked_data_reader;
 REVOKE SELECT(shipping_address) ON orders FROM masked_data_reader;
 ```
 
-最後に、該当するユーザーにそのロールを割り当てます。
+最後に、該当するユーザーにこのロールを割り当てます。
 
 ```sql
 GRANT masked_orders_viewer TO your_user;
@@ -264,6 +421,7 @@ GRANT masked_orders_viewer TO your_user;
 `orders` テーブルにマスク済みデータのみを保存したい場合は、
 マスクされていない機密性の高いカラムに [`EPHEMERAL`](/sql-reference/statements/create/table#ephemeral) を指定できます。
 これにより、この種類のカラムはテーブルに保存されなくなります。
+
 
 ```sql
 DROP TABLE IF EXISTS orders;
@@ -313,6 +471,7 @@ ORDER BY user_id ASC
 5. │    1005 │       449.75 │ 2024-01-19 │ David ****   │ dw****@email.net   │ 555-***-3210 │ *** Phoenix, AZ 85001     │
    └─────────┴──────────────┴────────────┴──────────────┴────────────────────┴──────────────┴───────────────────────────┘
 ```
+
 
 ## クエリマスキングルールでログデータをマスクする \{#use-query-masking-rules\}
 

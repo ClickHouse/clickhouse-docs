@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupBitOr \{#groupBitOr\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 一連の数値に対してビットごとの OR 演算を行います。
 

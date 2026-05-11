@@ -50,9 +50,13 @@ ClickHouse は、ウィンドウおよびウィンドウ関数を定義するた
 ```text
 aggregate_function (column_name)
   OVER ([[PARTITION BY grouping_column] [ORDER BY sorting_column] 
-        [ROWS or RANGE expression_to_bound_rows_withing_the_group]] | [window_name])
+        [ROWS or RANGE expression_to_bound_rows_within_the_group]] | [window_name])
 FROM table_name
-WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]])
+WINDOW window_name as ([
+  [PARTITION BY grouping_column]
+  [ORDER BY sorting_column]
+  [ROWS or RANGE expression_to_bound_rows_within_the_group]
+])
 ```
 
 * `PARTITION BY` - 結果セットをどのようなグループに分割するかを定義します。
@@ -89,6 +93,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 * [`dense_rank()`](./dense_rank.md) - パーティション内で現在の行に順位を付けます（欠番なし）。
 * [`lagInFrame(x)`](./lagInFrame.md) - 順序付けられたフレーム内で、現在の行から指定された物理オフセットだけ前の行で評価された値を返します。
 * [`leadInFrame(x)`](./leadInFrame.md) - 順序付けられたフレーム内で、現在の行から指定されたオフセットだけ後ろの行で評価された値を返します。
+
 
 ## 例 \{#examples\}
 

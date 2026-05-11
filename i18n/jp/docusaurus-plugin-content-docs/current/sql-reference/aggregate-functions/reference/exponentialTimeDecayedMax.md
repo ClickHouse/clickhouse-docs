@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedMax \{#exponentialTimeDecayedMax\}
 
-導入バージョン: v21.12
+導入バージョン: v21.12.0
 
 時刻 `t` と `t-1` における計算済み指数平滑移動平均のうち、大きい方の値を返します。
 

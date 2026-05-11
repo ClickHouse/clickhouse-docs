@@ -21,6 +21,7 @@ DateTime([timezone])
 
 精度: 1秒。
 
+
 ## 速度 \{#speed\}
 
 `Date` データ型は、_ほとんど_ の場合において `DateTime` より高速です。
@@ -29,23 +30,23 @@ DateTime([timezone])
 
 ## 使用上の注意 \{#usage-remarks\}
 
-時刻は、タイムゾーンや夏時間に関係なく [Unix タイムスタンプ](https://en.wikipedia.org/wiki/Unix_time) として保存されます。タイムゾーンは、`DateTime` 型の値がテキスト形式でどのように表示されるか、および文字列として指定された値（`'2020-01-01 05:00:01'`）がどのようにパースされるかに影響します。
+時刻は、タイムゾーンや夏時間に関係なく [Unix タイムスタンプ](https://en.wikipedia.org/wiki/Unix_time) として保存されます。タイムゾーンは、`DateTime` 型の値がテキスト形式でどのように表示されるか、および文字列として指定された値 (`'2020-01-01 05:00:01'`) がどのようにパースされるかに影響します。
 
-テーブルにはタイムゾーンに依存しない Unix タイムスタンプが保存され、タイムゾーンはデータのインポート/エクスポート時にそれをテキスト形式へ、またはその逆へ変換したり、値に対して暦に基づく計算（例: `toDate`, `toHour` 関数など）を行うために使用されます。タイムゾーンはテーブルの行（または結果セット）には保存されず、カラムのメタデータに保存されます。
+テーブルにはタイムゾーンに依存しない Unix タイムスタンプが保存され、タイムゾーンはデータのインポート/エクスポート時にそれをテキスト形式へ、またはその逆へ変換したり、値に対して暦に基づく計算 (例: `toDate`, `toHour` 関数など) を行うために使用されます。タイムゾーンはテーブルの行 (または結果セット) には保存されず、カラムのメタデータに保存されます。
 
 サポートされているタイムゾーンの一覧は [IANA Time Zone Database](https://www.iana.org/time-zones) で確認でき、`SELECT * FROM system.time_zones` によって問い合わせることもできます。[一覧](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) は Wikipedia にも掲載されています。
 
 テーブル作成時に、`DateTime` 型カラムに対して明示的にタイムゾーンを設定できます。例: `DateTime('UTC')`。タイムゾーンが設定されていない場合、ClickHouse はサーバー設定における [timezone](../../operations/server-configuration-parameters/settings.md#timezone) パラメータの値、もしくは ClickHouse サーバー起動時点のオペレーティングシステムの設定値を使用します。
 
-[clickhouse-client](../../interfaces/cli.md) は、データ型の初期化時にタイムゾーンが明示的に設定されていない場合、デフォルトでサーバーのタイムゾーンを適用します。クライアント側のタイムゾーンを使用するには、`--use_client_time_zone` パラメータを付けて `clickhouse-client` を実行します。
+[clickhouse-client](../../interfaces/client.md) は、データ型の初期化時にタイムゾーンが明示的に設定されていない場合、デフォルトでサーバーのタイムゾーンを適用します。クライアント側のタイムゾーンを使用するには、`--use_client_time_zone` パラメータを付けて `clickhouse-client` を実行します。
 
-ClickHouse は、[date_time_output_format](../../operations/settings/settings-formats.md#date_time_output_format) 設定の値に応じて値を出力します。デフォルトでは `YYYY-MM-DD hh:mm:ss` 形式のテキストで出力されます。さらに、[formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime) 関数を使用して出力形式を変更できます。
+ClickHouse は、[date&#95;time&#95;output&#95;format](../../operations/settings/settings-formats.md#date_time_output_format) 設定の値に応じて値を出力します。デフォルトでは `YYYY-MM-DD hh:mm:ss` 形式のテキストで出力されます。さらに、[formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime) 関数を使用して出力形式を変更できます。
 
-ClickHouse にデータを挿入する際には、[date_time_input_format](../../operations/settings/settings-formats.md#date_time_input_format) 設定の値に応じて、さまざまな形式の日付および時刻文字列を使用できます。
+ClickHouse にデータを挿入する際には、[date&#95;time&#95;input&#95;format](../../operations/settings/settings-formats.md#date_time_input_format) 設定の値に応じて、さまざまな形式の日付および時刻文字列を使用できます。
 
 ## 例 \{#examples\}
 
-**1.** `DateTime` 型の列を持つテーブルを作成し、そのテーブルにデータを挿入する：
+**1.** `DateTime` 型のカラムを持つテーブルを作成し、そのテーブルにデータを挿入する：
 
 ```sql
 CREATE TABLE dt
@@ -116,18 +117,19 @@ SELECT toDateTime(now(), 'Asia/Istanbul') AS column, toTypeName(column) AS x
 ```sql
 SELECT
 toDateTime(timestamp, 'Europe/London') AS lon_time,
-toDateTime(timestamp, 'Asia/Istanbul') AS mos_time
+toDateTime(timestamp, 'Asia/Istanbul') AS istanbul_time
 FROM dt
 ```
 
 ```text
-┌───────────lon_time──┬────────────mos_time─┐
+┌───────────lon_time──┬───────istanbul_time─┐
 │ 2019-01-01 00:00:00 │ 2019-01-01 03:00:00 │
 │ 2018-12-31 21:00:00 │ 2019-01-01 00:00:00 │
 └─────────────────────┴─────────────────────┘
 ```
 
-タイムゾーン変換はメタデータのみを変更するため、この操作に計算コストは発生しません。
+タイムゾーン変換はメタデータだけを変更する処理なので、この操作に追加の計算コストは発生しません。
+
 
 ## タイムゾーンサポートの制限事項 \{#limitations-on-time-zones-support\}
 
@@ -183,6 +185,7 @@ SELECT '2023-03-26 01:30:00'::DateTime('Europe/London') AS time, time + toInterv
 ```
 
 この場合、ClickHouse は存在しない時刻 `2023-03-26 01:30:00` を、ひとつ前の時刻である `2023-03-26 00:30:00` にずらします。
+
 
 ## 関連項目 \{#see-also\}
 

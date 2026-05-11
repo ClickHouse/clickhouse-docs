@@ -7,11 +7,11 @@ doc_type: 'reference'
 
 # first_value \{#first_value\}
 
-它是 [`any`](../../../sql-reference/aggregate-functions/reference/any.md) 的别名，但之所以引入它，是为了兼容 [窗口函数](../../window-functions/index.md)，在这些场景下有时需要处理 `NULL` 值（默认情况下，所有 ClickHouse 聚合函数都会忽略 NULL 值）。
+它是 [`any`](../../../sql-reference/aggregate-functions/reference/any.md) 的别名，但之所以引入它，是为了兼容 [窗口函数](../../window-functions/index.md)，在这些场景下有时需要处理 `NULL` 值 (默认情况下，所有 ClickHouse 聚合函数都会忽略 NULL 值) 。
 
-它支持声明一个用于保留 `NULL` 值的修饰符（`RESPECT NULLS`），既可以在 [窗口函数](../../window-functions/index.md) 中使用，也可以在普通聚合中使用。
+它支持声明一个用于保留 `NULL` 值的修饰符 (`RESPECT NULLS`) ，既可以在 [窗口函数](../../window-functions/index.md) 中使用，也可以在普通聚合中使用。
 
-与 `any` 一样，如果不在窗口函数中使用且源数据流未排序，则结果是随机的，并且返回类型与输入类型一致（只有当输入是 Nullable 或者添加了 -OrNull 组合器时，才会返回 Null）。
+与 `any` 一样，如果不在窗口函数中使用且源数据流未排序，则结果是随机的，并且返回类型与输入类型一致 (只有当输入是 Nullable 或者添加了 -OrNull 组合器时，才会返回 Null) 。
 
 ## 示例 \{#examples\}
 

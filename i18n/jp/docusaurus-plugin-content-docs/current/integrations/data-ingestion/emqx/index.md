@@ -39,6 +39,7 @@ import rule_monitor from '@site/static/images/integrations/data-ingestion/emqx/r
 import clickhouse_result from '@site/static/images/integrations/data-ingestion/emqx/clickhouse_result.png';
 import Image from '@theme/IdealImage';
 
+
 # EMQX と ClickHouse の統合 \{#integrating-emqx-with-clickhouse\}
 
 ## EMQX への接続 \{#connecting-emqx\}
@@ -53,12 +54,19 @@ import Image from '@theme/IdealImage';
 
 ### 前提条件 \{#assumptions\}
 
+非常に軽量な publish/subscribe 型のメッセージング・トランスポート・プロトコルとして設計された [MQTT プロトコル](https://mqtt.org/) に精通している。
+大規模な IoT デバイス向けイベントストリーミングを実現するリアルタイムメッセージ処理エンジンとして、EMQX または EMQX Cloud を利用している。
+デバイスデータを永続化するための ClickHouse Cloud インスタンスを用意している。
+EMQX Cloud のデプロイに接続して MQTT データをパブリッシュするための MQTT クライアントテストツールとして、[MQTT X](https://mqttx.app/) を使用している。または、MQTT ブローカーへの接続が可能な他の方法を使用してもよい。
+
+### 前提条件 {#assumptions}
+
 * 非常に軽量な publish/subscribe 型のメッセージング・トランスポート・プロトコルとして設計された [MQTT プロトコル](https://mqtt.org/) に精通している。
 * 大規模な IoT デバイス向けイベントストリーミングを実現するリアルタイムメッセージ処理エンジンとして、EMQX または EMQX Cloud を利用している。
 * デバイスデータを永続化するための ClickHouse Cloud インスタンスを用意している。
 * EMQX Cloud のデプロイに接続して MQTT データをパブリッシュするための MQTT クライアントテストツールとして、[MQTT X](https://mqttx.app/) を使用している。または、MQTT ブローカーへの接続が可能な他の方法を使用してもよい。
 
-## ClickHouse Cloud サービスを取得する \{#get-your-clickhouse-cloudservice\}
+## ClickHouse Cloud サービスを取得する \{#create-an-mqtt-service-on-emqx-cloud\}
 
 このセットアップでは、ClickHouse インスタンスを N. Virginia (us-east-1) の AWS 上にデプロイし、同じリージョンに EMQX Cloud インスタンスもデプロイしました。
 
@@ -97,7 +105,8 @@ PRIMARY KEY (client_id, timestamp)
 
 <Image img={clickhouse_cloud_6} size="lg" border alt="ClickHouse Cloud におけるデータベースおよびテーブル作成用 SQL クエリの実行画面" />
 
-## EMQX Cloud 上に MQTT サービスを作成する \{#create-an-mqtt-service-on-emqx-cloud\}
+
+## EMQX Cloud 上に MQTT サービスを作成する {#create-an-mqtt-service-on-emqx-cloud}
 
 EMQX Cloud 上に専用の MQTT ブローカーを作成するのは、数回クリックするだけで済みます。
 
@@ -135,7 +144,7 @@ EMQX Cloud はデフォルトで匿名接続を許可しないため、MQTT ク�
 
 「Confirm」をクリックすると、フルマネージドの MQTT ブローカーの準備が完了します。
 
-### NAT ゲートウェイを有効化する \{#enable-nat-gateway\}
+### NAT ゲートウェイを有効化する {#enable-nat-gateway}
 
 ClickHouse との連携を設定し始める前に、まず NAT ゲートウェイを有効にする必要があります。デフォルトでは、MQTT ブローカーはプライベート VPC 内にデプロイされており、インターネット経由でサードパーティシステムにデータを送信することはできません。
 
@@ -145,7 +154,7 @@ Overview ページに戻り、ページの一番下までスクロールする�
 
 作成が完了すると、ウィジェット内にパブリック IP アドレスが表示されます。ClickHouse Cloud のセットアップ時に「Connect from a specific location」を選択した場合は、この IP アドレスをホワイトリストに追加する必要がある点に注意してください。
 
-## EMQX Cloud と ClickHouse Cloud の統合 \{#integration-emqx-cloud-with-clickhouse-cloud\}
+## EMQX Cloud と ClickHouse Cloud の統合 {#integration-emqx-cloud-with-clickhouse-cloud}
 
 [EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow) 機能は、EMQX のメッセージフローおよびデバイスイベントを処理し応答するためのルールを構成するために使用されます。Data Integrations は、明確かつ柔軟な「設定可能な」アーキテクチャソリューションを提供するだけでなく、開発プロセスを簡素化し、ユーザビリティを向上させ、業務システムと EMQX Cloud 間の結合度を低減します。また、EMQX Cloud 固有機能のカスタマイズに対して優れた基盤インフラストラクチャも提供します。
 
@@ -169,7 +178,7 @@ ClickHouse カードをクリックして新しいリソースを作成します
 
 <Image img={data_integration_resource} size="lg" border alt="接続情報を入力する EMQX Cloud ClickHouse Resource 設定フォーム" />
 
-### 新しいルールの作成 \{#create-a-new-rule\}
+### 新しいルールの作成 \{#add-a-response-action\}
 
 リソース作成時にポップアップが表示され、「New」をクリックするとルール作成ページに移動します。
 
@@ -204,7 +213,8 @@ SQL のテスト機能を使ってテストを実行し、結果を確認でき�
 
 次に「NEXT」ボタンをクリックします。このステップでは、EMQX Cloud に対して、整形されたデータを ClickHouse データベースにどのように挿入するかを指定します。
 
-### レスポンスアクションを追加する \{#add-a-response-action\}
+
+### レスポンスアクションを追加する \{#view-rules-details\}
 
 リソースが 1 つだけの場合は、「Resource」と「Action Type」を変更する必要はありません。
 SQL テンプレートを設定するだけで構いません。このチュートリアルで使用している例は次のとおりです。
@@ -215,9 +225,10 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 
 <Image img={data_integration_rule_action} size="md" border alt="SQL テンプレートを使用した EMQX Cloud データ統合ルールアクションのセットアップ" />
 
-これは ClickHouse にデータを挿入するためのテンプレートです。ここで変数がどのように利用されているか確認できます。
+これは ClickHouse にデータを挿入するためのテンプレートです。ここで変数がどのように使われているか確認できます。
 
-### ルールの詳細を表示 \{#view-rules-details\}
+
+### ルールの詳細を表示 {#view-rules-details}
 
 「Confirm」と「View Details」をクリックします。これで、すべての設定が完了しているはずです。ルール詳細ページから、データ統合が正しく動作していることを確認できます。
 
@@ -225,13 +236,13 @@ INSERT INTO temp_hum (client_id, timestamp, topic, temp, hum) VALUES ('${client_
 
 `temp_hum/emqx` トピックに送信されたすべての MQTT メッセージは、ClickHouse Cloud データベースに永続化されます。
 
-## ClickHouse へのデータ保存 \{#saving-data-into-clickhouse\}
+## ClickHouse へのデータ保存 {#saving-data-into-clickhouse}
 
 温度と湿度のデータをシミュレートし、そのデータを MQTT X を介して EMQX Cloud に送信します。その後、EMQX Cloud Data Integrations を使用してデータを ClickHouse Cloud に保存します。
 
 <Image img={work_flow} size="lg" border alt="EMQX Cloud から ClickHouse へのワークフローを示すデータフロー図" />
 
-### MQTT メッセージを EMQX Cloud にパブリッシュする \{#publish-mqtt-messages-to-emqx-cloud\}
+### MQTT メッセージを EMQX Cloud にパブリッシュする \{#view-rules-monitoring\}
 
 メッセージのパブリッシュには、任意の MQTT クライアントまたは SDK を使用できます。本チュートリアルでは、EMQ が提供するユーザーフレンドリーな MQTT クライアントアプリケーションである [MQTT X](https://mqttx.app/) を使用します。
 
@@ -265,15 +276,16 @@ EMQX Cloud に送信されたデータは、ルールエンジンによって処
 
 <Image img={mqttx_publish} size="lg" border alt="MQTTX Publish MQTT Messages インターフェースにおけるメッセージ作成画面" />
 
+
 ### ルール監視を確認する \{#view-rules-monitoring\}
 
 ルール監視を開き、成功数が 1 件増えていることを確認します。
 
 <Image img={rule_monitor} size="lg" border alt="EMQX Cloud Rule Monitoring ダッシュボードにおけるメッセージ処理メトリクス" />
 
-### 永続化されたデータを確認する \{#check-the-data-persisted\}
+### 永続化されたデータを確認する \{#summary\}
 
-ClickHouse Cloud 上のデータを確認します。理想的には、MQTTX を使って送信したデータは EMQX Cloud に送られ、ネイティブなデータ統合機能により ClickHouse Cloud のデータベースに永続化されます。
+ここで ClickHouse Cloud 上のデータを確認します。通常は、MQTTX を使って送信したデータは EMQX Cloud に送られ、ネイティブなデータ統合機能によって ClickHouse Cloud のデータベースに永続化されます。
 
 ClickHouse Cloud のパネルから SQL コンソールに接続するか、任意のクライアントツールを使用して ClickHouse からデータを取得できます。このチュートリアルでは SQL コンソールを使用します。
 次の SQL を実行します:
@@ -282,8 +294,9 @@ ClickHouse Cloud のパネルから SQL コンソールに接続するか、任�
 SELECT * FROM emqx.temp_hum;
 ```
 
-<Image img={clickhouse_result} size="lg" border alt="ClickHouse のクエリ結果で永続化された IoT データを表示している画面" />
+<Image img={clickhouse_result} size="lg" border alt="ClickHouse のクエリ結果画面に永続化された IoT データが表示されている" />
 
-### まとめ \{#summary\}
+
+### まとめ {#summary}
 
 コードを一行も書くことなく、MQTT データを EMQX Cloud から ClickHouse Cloud へ送れるようになりました。EMQX Cloud と ClickHouse Cloud を使えば、インフラの運用・管理は不要になり、ClickHouse Cloud に安全に保存されたデータを活用して IoT アプリケーションの開発に専念できます。

@@ -283,6 +283,56 @@ SELECT count() FROM table WHERE CounterID = 34 OR URL LIKE '%upyachka%'
 
 Ключ партиционирования по месяцам позволяет читать только те блоки данных, которые содержат даты из нужного диапазона. В этом случае блок данных может содержать данные за множество дат (вплоть до целого месяца). Внутри блока данные отсортированы по первичному ключу, который может не содержать дату в качестве первого столбца. Из-за этого использование запроса только с условием по дате, без указания префикса первичного ключа, приведёт к чтению большего объёма данных, чем при выборке за одну дату.
 
+### Использование индекса для детерминированных выражений в первичных ключах \{#use-of-index-for-deterministic-expressions-in-primary-keys\}
+
+Первичный ключ может содержать выражения, а не только имена столбцов. Эти выражения не ограничены простыми цепочками функций: это могут быть произвольные деревья выражений (например, вложенные функции и составные выражения), при условии, что они детерминированы.
+
+Выражение **детерминировано**, если оно всегда возвращает один и тот же результат для одинаковых входных значений (например: `length()`, `toDate()`, `lower()`, `left()`, `cityHash64()`, `toUUID()`; в отличие от `now()` или `rand()`). Если первичный ключ содержит детерминированные выражения, ClickHouse может применить их к константным значениям из запроса и использовать результат для построения условий по индексу первичного ключа. Это позволяет выполнять пропуск данных для предикатов вида `=`, `IN` и `has`.
+
+Распространённый сценарий — сделать первичный ключ компактным (например, хранить хэш вместо длинного `String`), при этом всё ещё позволяя предикатам по исходному столбцу использовать индекс.
+
+Пример детерминированного (но не инъективного) первичного ключа:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY length(user_id)
+```
+
+Примеры предикатов, использующих индекс:
+
+```sql
+SELECT * FROM table WHERE user_id = 'alice';
+SELECT * FROM table WHERE user_id IN ('alice', 'bob');
+SELECT * FROM table WHERE has(['alice', 'bob'], user_id);
+```
+
+В этих случаях ClickHouse вычисляет `length('alice')` (и другие константы) один раз и использует значения длины, чтобы сузить диапазоны в индексе по первичному ключу. Поскольку длина строки **не является инъективной**, разные строки `user_id` могут иметь одинаковую длину, поэтому индекс может читать дополнительные гранулы (ложные срабатывания). Результат при этом остаётся корректным, потому что исходный предикат (`user_id = ...`, `IN` и т. д.) всё равно применяется после чтения.
+
+Если детерминированное выражение также **инъективно** (разные входные значения не могут давать одинаковый результат для используемых типов аргументов), дополнительно ClickHouse может эффективно использовать индекс для отрицательных форм условий: `!=`, `NOT IN` и `NOT has(...)`. Например, `reverse(p)` и `hex(p)` инъективны для `String`.
+
+Пример инъективного первичного ключа:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY hex(p)
+```
+
+Поддерживаются также более сложные инъективные выражения, например:
+
+```sql
+ENGINE = MergeTree()
+ORDER BY reverse(tuple(reverse(p), hex(p)))
+```
+
+Примеры предикатов, для которых может использоваться индекс:
+
+```sql
+SELECT * FROM table WHERE p != 'abc';
+SELECT * FROM table WHERE p NOT IN ('abc', '12345');
+SELECT * FROM table WHERE NOT has(['abc', '12345'], p);
+```
+
+
 ### Использование индекса для частично монотонных первичных ключей \{#use-of-index-for-partially-monotonic-primary-keys\}
 
 Рассмотрим, например, дни месяца. В пределах одного месяца они образуют [монотонную последовательность](https://en.wikipedia.org/wiki/Monotonic_function), но на более длительных периодах уже не являются монотонными. Это частично монотонная последовательность. Если пользователь создаёт таблицу с частично монотонным первичным ключом, ClickHouse, как обычно, создаёт разреженный индекс. Когда пользователь выбирает данные из такой таблицы, ClickHouse анализирует условия запроса. Если нужно получить данные между двумя метками индекса и обе эти метки приходятся на один месяц, ClickHouse может использовать индекс в этом частном случае, потому что он может вычислить расстояние между параметрами запроса и метками индекса.
@@ -336,6 +386,9 @@ SELECT count() FROM table WHERE u64 * length(s) == 1234
 INDEX map_key_index mapKeys(map_column) TYPE bloom_filter
 INDEX map_value_index mapValues(map_column) TYPE bloom_filter
 
+-- on columns of type JSON:
+INDEX json_paths_index JSONAllPaths(json_column) TYPE bloom_filter
+
 -- on columns of type Tuple:
 INDEX tuple_1_index tuple_column.1 TYPE bloom_filter
 INDEX tuple_2_index tuple_column.2 TYPE bloom_filter
@@ -345,18 +398,20 @@ INDEX nested_1_index col.nested_col1 TYPE bloom_filter
 INDEX nested_2_index col.nested_col2 TYPE bloom_filter
 ```
 
+
 ### Типы индексов пропуска данных \{#skip-index-types\}
 
 Движок таблицы `MergeTree` поддерживает следующие типы индексов пропуска данных.
 Подробнее о том, как индексы пропуска данных могут использоваться для оптимизации производительности,
-см. раздел «Понимание индексов пропуска данных в ClickHouse»(/optimize/skipping-indexes).
+см. раздел ["Понимание индексов пропуска данных в ClickHouse"](/optimize/skipping-indexes).
 
 - [`MinMax`](#minmax) индекс
 - [`Set`](#set) индекс
 - [`bloom_filter`](#bloom-filter) индекс
-- [`ngrambf_v1`](#n-gram-bloom-filter) индекс
-- [`tokenbf_v1`](#token-bloom-filter) индекс
-- [Параметры индексов пропуска данных](/optimize/skipping-indexes)
+- [`ngrambf_v1`](#n-gram-bloom-filter) индекс *(Устарело)*
+- [`tokenbf_v1`](#token-bloom-filter) индекс *(Устарело)*
+- [`text`](#text) индекс
+- [`vector_similarity`](#vector-similarity) индекс
 
 #### Индекс MinMax \{#minmax\}
 
@@ -406,8 +461,18 @@ bloom_filter([false_positive_rate])
 Для типа данных `Map` клиент может указать, должен ли индекс создаваться по ключам или по значениям, используя функции [`mapKeys`](/sql-reference/functions/tuple-map-functions.md/#mapKeys) или [`mapValues`](/sql-reference/functions/tuple-map-functions.md/#mapValues).
 :::
 
+:::note Тип данных JSON: индексация путей JSON
+Для типа данных [`JSON`](/sql-reference/data-types/newjson) можно создать индекс bloom filter по набору путей с помощью функции [`JSONAllPaths`](/sql-reference/functions/json-functions#JSONAllPaths). Это позволяет пропускать гранулы, в которых отсутствует запрашиваемый путь JSON. Подробности см. в разделе [Индексы пропуска данных для JSON](/sql-reference/data-types/newjson#data-skipping-indexes-for-json).
+:::
 
-#### N-граммный фильтр Блума \{#n-gram-bloom-filter\}
+
+#### N-граммный фильтр Блума *(Устаревший)* \{#n-gram-bloom-filter\}
+
+:::note
+С момента, когда индекс `text` стал общедоступным (GA), начиная с версии ClickHouse 26.2, индекс `ngrambf_v1` больше не рекомендуется для полнотекстового поиска.
+
+Подробности см. на странице [&quot;Полнотекстовый поиск с текстовыми индексами&quot;](./textindexes.md).
+:::
 
 Каждая гранула индекса хранит [фильтр Блума](https://en.wikipedia.org/wiki/Bloom_filter) для [n-грамм](https://en.wikipedia.org/wiki/N-gram) указанных столбцов.
 
@@ -478,7 +543,11 @@ SELECT bfEstimateFunctions(4300, bfEstimateBmSize(4300, 0.0001)) as number_of_ha
 
 #### Блум-фильтр по токенам \{#token-bloom-filter\}
 
-Блум-фильтр по токенам аналогичен `ngrambf_v1`, но хранит токены (последовательности, разделённые символами, не являющимися буквенно-цифровыми), а не n-граммы.
+:::note
+С момента общей доступности (GA) индекса `text`, начиная с версии ClickHouse 26.2, индекс `tokenbf_v1` больше не рекомендуется для полнотекстового поиска.
+
+См. страницу [&quot;Full-text search with text indexes&quot;](./textindexes.md) для подробностей.
+:::
 
 ```text title="Syntax"
 tokenbf_v1(size_of_bloom_filter_in_bytes, number_of_hash_functions, random_seed)
@@ -496,7 +565,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 
 ### Текстовый индекс \{#text\}
 
-Поддерживает полнотекстовый поиск, подробнее см. [здесь](textindexes.md).
+Строит инвертированный индекс по токенизированным строковым данным, обеспечивая эффективный и детерминированный полнотекстовый поиск. Подробнее см. [здесь](textindexes.md).
 
 #### Сходство векторов \{#vector-similarity\}
 
@@ -511,15 +580,15 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | Функция (оператор) / Индекс                                                                                               | первичный ключ | minmax | ngrambf&#95;v1 | tokenbf&#95;v1 | bloom&#95;filter | sparse&#95;grams | текст |
 | ------------------------------------------------------------------------------------------------------------------------- | -------------- | ------ | -------------- | -------------- | ---------------- | ---------------- | ----- |
 | [равно (=, ==)](/sql-reference/functions/comparison-functions.md/#equals)                                                 | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✔     |
-| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✔     |
+| [notEquals(!=, &lt;&gt;)](/sql-reference/functions/comparison-functions.md/#notEquals)                                    | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✗     |
 | [like](/sql-reference/functions/string-search-functions.md/#like)                                                         | ✔              | ✔      | ✔              | ✔              | ✗                | ✔                | ✔     |
-| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔              | ✔      | ✔              | ✔              | ✗                | ✔                | ✔     |
+| [notLike](/sql-reference/functions/string-search-functions.md/#notLike)                                                   | ✔              | ✔      | ✔              | ✔              | ✗                | ✔                | ✗     |
 | [match](/sql-reference/functions/string-search-functions.md/#match)                                                       | ✗              | ✗      | ✔              | ✔              | ✗                | ✔                | ✔     |
 | [startsWith](/sql-reference/functions/string-functions.md/#startsWith)                                                    | ✔              | ✔      | ✔              | ✔              | ✗                | ✔                | ✔     |
 | [endsWith](/sql-reference/functions/string-functions.md/#endsWith)                                                        | ✗              | ✗      | ✔              | ✔              | ✗                | ✔                | ✔     |
 | [multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny)                                     | ✗              | ✗      | ✔              | ✗              | ✗                | ✗                | ✗     |
 | [in](/sql-reference/functions/in-functions)                                                                               | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✔     |
-| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✔     |
+| [notIn](/sql-reference/functions/in-functions)                                                                            | ✔              | ✔      | ✔              | ✔              | ✔                | ✔                | ✗     |
 | [меньше (`<`)](/sql-reference/functions/comparison-functions.md/#less)                                                    | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [больше (`>`)](/sql-reference/functions/comparison-functions.md/#greater)                                                 | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [меньше или равно (`<=`)](/sql-reference/functions/comparison-functions.md/#lessOrEquals)                                 | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
@@ -535,6 +604,7 @@ sparse_grams(min_ngram_length, max_ngram_length, min_cutoff_length, size_of_bloo
 | [hasTokenCaseInsensitiveOrNull (`*`)](/sql-reference/functions/string-search-functions.md/#hasTokenCaseInsensitiveOrNull) | ✗              | ✗      | ✗              | ✔              | ✗                | ✗                | ✗     |
 | [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)                                         | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
 | [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)                                         | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
+| [pointInPolygon](/sql-reference/functions/geo/coordinates.md#pointinpolygon)                                              | ✔              | ✔      | ✗              | ✗              | ✗                | ✗                | ✗     |
 | [mapContains (mapContainsKey)](/sql-reference/functions/tuple-map-functions#mapContainsKey)                               | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
 | [mapContainsKeyLike](/sql-reference/functions/tuple-map-functions#mapContainsKeyLike)                                     | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
 | [mapContainsValue](/sql-reference/functions/tuple-map-functions#mapContainsValue)                                         | ✗              | ✗      | ✗              | ✗              | ✗                | ✗                | ✔     |
@@ -587,7 +657,9 @@ SELECT <column list expr> [GROUP BY] <group keys expr> [ORDER BY] <expr>
 ### Индексы проекций \{#projection-index\}
 
 Индексы проекций расширяют подсистему проекций, предоставляя облегчённый и явный способ определения индексов на уровне проекций.
-Концептуально индекс проекции по‑прежнему является проекцией, но с упрощённым синтаксисом и более понятным назначением: он определяет выражение, предназначенное для фильтрации, а не для того, чтобы служить материализованными данными.
+С внешней точки зрения индекс проекции по‑прежнему является проекцией, но с упрощённым синтаксисом и более понятным назначением: он определяет выражение, предназначенное для фильтрации, а не для того, чтобы служить материализованными данными.
+Внутренне индекс проекции не материализует исходную таблицу в переставленном порядке строк, как обычная проекция.
+Вместо этого перестановка хранится в виде числового столбца перестановки `_part_offset`, то есть `SELECT _part_offset ORDER BY <index_expr>`.
 
 #### Синтаксис \{#projection-index-syntax\}
 
@@ -639,9 +711,15 @@ ORDER BY id;
 
 Определяет время жизни значений.
 
-Выражение `TTL` может быть задано как для всей таблицы, так и для каждого отдельного столбца. `TTL` на уровне таблицы также может задавать логику автоматического перемещения данных между дисками и томами, а также перекомпрессии частей, в которых срок жизни всех данных истёк.
+Предложение `TTL` может быть задано как для всей таблицы, так и для каждого отдельного столбца. `TTL` на уровне таблицы также может задавать логику автоматического перемещения данных между дисками и томами, а также перекомпрессии частей, в которых срок жизни всех данных истёк.
 
 Выражения должны вычисляться в значение типа данных [Date](/sql-reference/data-types/date.md), [Date32](/sql-reference/data-types/date32.md), [DateTime](/sql-reference/data-types/datetime.md) или [DateTime64](/sql-reference/data-types/datetime64.md).
+
+:::tip[Избегайте недетерминированных функций в выражениях TTL]
+TTL вычисляется во время фоновых слияний, а не в момент вставки.
+Такие функции, как `rand()`, `now()` или `now64()`, будут вычисляться заново при каждом слиянии, что приведёт к непредсказуемому удалению данных.
+ClickHouse блокирует выражения, которые вообще не зависят от столбцов, но в настоящее время не отклоняет недетерминированные функции, используемые вместе со ссылкой на столбец (например, `ts + rand()`). Чтобы результаты были предсказуемыми, выражения TTL должны основываться только на детерминированных значениях, производных от столбцов.
+:::
 
 **Синтаксис**
 
@@ -833,6 +911,8 @@ TTL d + INTERVAL 1 MONTH GROUP BY k1, k2 SET x = max(x), y = min(y);
 ### Введение \{#introduction\}
 
 Семейство движков таблиц `MergeTree` может хранить данные на нескольких блочных устройствах. Например, это может быть полезно, когда данные определённой таблицы фактически разделены на «горячие» и «холодные». Самые свежие данные запрашиваются регулярно, но занимают небольшой объём. Напротив, большой «хвост» исторических данных запрашивается редко. Если доступно несколько дисков, «горячие» данные могут располагаться на быстрых дисках (например, NVMe SSD или в памяти), а «холодные» — на относительно медленных (например, HDD).
+
+Это применимо ко всем типам дисков, включая S3 и другие диски объектного хранилища. Например, можно распределять данные между несколькими S3 бакетами в пределах одного тома или создать многоуровневые политики, которые перемещают данные с локальных дисков в S3. Подробности см. в [Использование дисков S3 с несколькими томами](#s3-multiple-volumes).
 
 Часть данных (data part) — минимальная единица, которую можно перемещать, для таблиц на движке `MergeTree`. Данные, принадлежащие одной части, хранятся на одном диске. Части данных могут перемещаться между дисками в фоновом режиме (в соответствии с пользовательскими настройками), а также с помощью запросов [ALTER](/sql-reference/statements/alter/partition).
 
@@ -1080,7 +1160,80 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 </storage_configuration>
 ```
 
-См. также [настройку вариантов внешних хранилищ](/operations/storing-data.md/#configuring-external-storage).
+См. также [настройка параметров внешнего хранилища](/operations/storing-data.md/#configuring-external-storage).
+
+### Использование дисков S3 с несколькими томами \{#s3-multiple-volumes\}
+
+Диски S3 (и других объектных хранилищ) можно использовать в политиках хранения с несколькими дисками и томами так же, как локальные диски. Это позволяет распределять данные между несколькими S3 бакетами в пределах одного тома (по аналогии с JBOD) или настраивать многоуровневые политики хранения с томами S3.
+
+Например, чтобы распределять данные между двумя S3 бакетами по кругу:
+
+```xml
+<storage_configuration>
+    <disks>
+        <s3_bucket1>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-1/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket1>
+        <s3_bucket2>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/bucket-2/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_bucket2>
+    </disks>
+    <policies>
+        <s3_multi_bucket>
+            <volumes>
+                <main>
+                    <disk>s3_bucket1</disk>
+                    <disk>s3_bucket2</disk>
+                </main>
+            </volumes>
+        </s3_multi_bucket>
+    </policies>
+</storage_configuration>
+```
+
+Вы также можете комбинировать локальные тома и тома S3 в многоуровневой политике, например перемещать данные с локального SSD в S3 по мере их старения:
+
+```xml
+<storage_configuration>
+    <disks>
+        <local_ssd>
+            <path>/mnt/fast_ssd/clickhouse/</path>
+        </local_ssd>
+        <s3_cold>
+            <type>s3</type>
+            <endpoint>https://s3.amazonaws.com/cold-storage/data/</endpoint>
+            <access_key_id>your_access_key_id</access_key_id>
+            <secret_access_key>your_secret_access_key</secret_access_key>
+        </s3_cold>
+    </disks>
+    <policies>
+        <local_to_s3>
+            <volumes>
+                <hot>
+                    <disk>local_ssd</disk>
+                    <max_data_part_size_bytes>1073741824</max_data_part_size_bytes>
+                </hot>
+                <cold>
+                    <disk>s3_cold</disk>
+                </cold>
+            </volumes>
+            <move_factor>0.2</move_factor>
+        </local_to_s3>
+    </policies>
+</storage_configuration>
+```
+
+:::note
+При использовании `use_environment_credentials` для аутентификации в S3 учетные данные окружения (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`) являются общими для всех S3-дисков. Использовать разные учетные данные окружения для разных дисков невозможно. Если для каждого S3-диска нужны свои учетные данные, вместо этого задайте явные настройки `access_key_id` и `secret_access_key` для каждого диска.
+:::
+
+Можно настроить нереплицируемые таблицы MergeTree для сценария с одним писателем и многими читателями на общем хранилище. Это обеспечивается автоматическим обновлением списка частей, которое можно настроить на стороне читателей. Обратите внимание, что для этого требуются общие метаданные файловой системы между репликами (или `table_disk = true` с локальным диском таблицы). См. раздел [refresh&#95;parts&#95;interval и table&#95;disk](/operations/storing-data.md/#refresh-parts-interval-and-table-disk).
 
 :::note конфигурация кэша
 Версии ClickHouse с 22.3 по 22.7 используют другую конфигурацию кэша, см. [использование локального кэша](/operations/storing-data.md/#using-local-cache), если вы используете одну из этих версий.
@@ -1102,13 +1255,11 @@ SETTINGS storage_policy = 'moving_from_ssd_to_hdd'
 - `_block_offset` — Исходный номер строки в блоке, который был назначен при вставке и сохраняется при слияниях, когда включена настройка `enable_block_offset_column`.
 - `_disk_name` — Имя диска, на котором хранятся данные.
 
-## Статистика по столбцам \{#column-statistics\}
+## Статистика столбцов \{#column-statistics\}
 
-<ExperimentalBadge />
+<CloudNotSupportedBadge/>
 
-<CloudNotSupportedBadge />
-
-Объявление статистики задаётся в секции `COLUMNS` запроса `CREATE` для таблиц из семейства `*MergeTree*` при включённой настройке `set allow_experimental_statistics = 1`.
+Объявление статистики находится в секции столбцов запроса `CREATE` для таблиц из семейства `*MergeTree*`:
 
 ```sql
 CREATE TABLE tab
@@ -1120,60 +1271,102 @@ ENGINE = MergeTree
 ORDER BY a
 ```
 
-Мы также можем изменять статистику с помощью команд `ALTER`.
+Мы также можем управлять статистикой с помощью операторов `ALTER`:
 
 ```sql
 ALTER TABLE tab ADD STATISTICS b TYPE TDigest, Uniq;
 ALTER TABLE tab DROP STATISTICS a;
 ```
 
-Эта лёгкая статистика агрегирует информацию о распределении значений по столбцам. Статистика хранится в каждой части и обновляется при каждой вставке.
-Её можно использовать для оптимизации `PREWHERE` только при включённой настройке `set use_statistics = 1`.
+Эта лёгкая статистика агрегирует информацию о распределении значений в столбцах. Статистика хранится в каждой части и обновляется при каждой вставке.
+Её можно использовать для оптимизации `prewhere` только если включить `set use_statistics = 1`.
+
+#### Отсечение частей по статистике \{#part-pruning-with-statistics\}
+
+Когда включён параметр `use_statistics_for_part_pruning`, статистику можно использовать для отсечения частей.
+В настоящее время отсечение частей поддерживается только статистикой `MinMax`. Если для столбца определена статистика MinMax, ClickHouse отслеживает минимальные и максимальные значения этого столбца в каждой части.
+Отсечение частей позволяет пропускать чтение целых частей данных, если условие фильтра в запросе не может соответствовать ни одной строке в этой части.
+
+**Пример:**
+
+```sql
+-- Create a table with MinMax statistics on the 'value' column
+CREATE TABLE test_stats
+(
+    id UInt64,
+    value Int64 STATISTICS(MinMax)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+SYSTEM STOP MERGES test_stats;
+
+-- Insert data in separate inserts to create multiple parts
+INSERT INTO test_stats SELECT number, number FROM numbers(1000); -- Part 1: value range [0, 999]
+INSERT INTO test_stats SELECT number, number + 10000 FROM numbers(1000); -- Part 2: value range [10000, 10999]
+
+SET use_statistics_for_part_pruning = 1;
+
+-- This query will skip Part 1 entirely because its max value (999) < 5000
+SELECT count() FROM test_stats WHERE value > 5000;
+
+-- Use EXPLAIN to see the pruning effect
+EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
+-- The output will show "Parts: 1/2" indicating one part was pruned
+```
 
 
 ### Доступные типы статистики столбцов \{#available-types-of-column-statistics\}
 
-- `MinMax`
+* `MinMax`
 
-    Минимальное и максимальное значение столбца, что позволяет оценивать селективность диапазонных фильтров по числовым столбцам.
+  Минимальное и максимальное значение столбца, что позволяет оценивать селективность диапазонных фильтров по числовым столбцам.
 
-    Синтаксис: `minmax`
+  Синтаксис: `minmax`
 
-- `TDigest`
+* `TDigest`
 
-    Скетчи [TDigest](https://github.com/tdunning/t-digest), которые позволяют вычислять приблизительные перцентили (например, 90-й процентиль) для числовых столбцов.
+  Скетчи [TDigest](https://github.com/tdunning/t-digest), которые позволяют вычислять приблизительные перцентили (например, 90-й процентиль) для числовых столбцов.
 
-    Синтаксис: `tdigest`
+  Синтаксис: `tdigest`
 
-- `Uniq`
+* `Uniq`
 
-    Скетчи [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog), которые позволяют оценить, сколько различных значений содержит столбец.
+  Скетчи [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog), которые позволяют оценить, сколько различных значений содержит столбец.
 
-    Синтаксис: `uniq`
+  Синтаксис: `uniq`
 
-- `CountMin`
+* `NullCount`
 
-    Скетчи [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch), которые обеспечивают приблизительный подсчёт частоты каждого значения в столбце.
+  Отслеживает количество значений `NULL` в столбцах `Nullable`. Используется для точной оценки селективности предикатов `IS NULL`/`IS NOT NULL` при оптимизации PREWHERE.
 
-    Синтаксис `countmin`
+  Синтаксис: `nullcount`
+
+* `CountMin`
+
+  Скетчи [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch), которые обеспечивают приблизительный подсчёт частоты каждого значения в столбце.
+
+  Синтаксис `countmin`
 
 ### Поддерживаемые типы данных \{#supported-data-types\}
 
-|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String или FixedString |
-|-----------|----------------------------------------------------|------------------------|
-| CountMin  | ✔                                                  | ✔                      |
-| MinMax    | ✔                                                  | ✗                      |
-| TDigest   | ✔                                                  | ✗                      |
-| Uniq      | ✔                                                  | ✔                      |
+|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String или FixedString | Nullable(*) / LowCardinality(Nullable(*)) |
+| --------- | -------------------------------------------------- | ---------------------- | ----------------------------------------- |
+| CountMin  | ✔                                                  | ✔                      | ✗                                         |
+| MinMax    | ✔                                                  | ✗                      | ✔                                         |
+| NullCount | ✗                                                  | ✗                      | ✔                                         |
+| TDigest   | ✔                                                  | ✗                      | ✔                                         |
+| Uniq      | ✔                                                  | ✔                      | ✔                                         |
 
 ### Поддерживаемые операции \{#supported-operations\}
 
-|           | Фильтры на равенство (==) | Диапазонные фильтры (`>, >=, <, <=`) |
-|-----------|---------------------------|--------------------------------------|
-| CountMin  | ✔                         | ✗                                    |
-| MinMax    | ✗                         | ✔                                    |
-| TDigest   | ✗                         | ✔                                    |
-| Uniq      | ✔                         | ✗                                    |
+|           | Фильтры на равенство (==) | Диапазонные фильтры (`>, >=, <, <=`) | `IS NULL` / `IS NOT NULL` |
+| --------- | ------------------------- | ------------------------------------ | ------------------------- |
+| CountMin  | ✔                         | ✗                                    | ✗                         |
+| MinMax    | ✗                         | ✔                                    | ✗                         |
+| NullCount | ✗                         | ✗                                    | ✔                         |
+| TDigest   | ✗                         | ✔                                    | ✗                         |
+| Uniq      | ✔                         | ✗                                    | ✗                         |
 
 ## Параметры на уровне столбцов \{#column-level-settings\}
 

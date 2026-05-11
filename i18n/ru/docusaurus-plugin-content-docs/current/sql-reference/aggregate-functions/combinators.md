@@ -31,7 +31,7 @@ doc_type: 'reference'
 
 ## -Map \{#-map\}
 
-Суффикс -Map можно добавить к любой агрегатной функции. Это создаст агрегатную функцию, которая принимает аргумент типа Map и агрегирует значения для каждого ключа этой Map отдельно, используя указанную агрегатную функцию. Результат также имеет тип Map.
+Суффикс -Map может быть добавлен к любой агрегатной функции. Это создаст агрегатную функцию, которая принимает аргумент типа Map и агрегирует значения для каждого ключа этой Map отдельно, используя указанную агрегатную функцию. Результат также имеет тип Map.
 
 **Пример**
 
@@ -40,7 +40,8 @@ CREATE TABLE map_map(
     date Date,
     timeslot DateTime,
     status Map(String, UInt64)
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO map_map VALUES
     ('2000-01-01', '2000-01-01 00:00:00', (['a', 'b', 'c'], [10, 10, 10])),
@@ -106,11 +107,11 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 Для работы с этими состояниями используйте:
 
-- Табличный движок [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md).
-- Функцию [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation).
-- Функцию [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate).
-- Комбинатор [-Merge](#-merge).
-- Комбинатор [-MergeState](#-mergestate).
+* Табличный движок [AggregatingMergeTree](../../engines/table-engines/mergetree-family/aggregatingmergetree.md).
+* Функцию [finalizeAggregation](/sql-reference/functions/other-functions#finalizeAggregation).
+* Функцию [runningAccumulate](../../sql-reference/functions/other-functions.md#runningAccumulate).
+* Комбинатор [-Merge](#-merge).
+* Комбинатор [-MergeState](#-mergestate).
 
 ## -Merge \{#-merge\}
 
@@ -118,7 +119,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 ## -MergeState \{#-mergestate\}
 
-Объединяет промежуточные состояния агрегации так же, как комбинатор -Merge. Однако он не возвращает результирующее значение, а промежуточное состояние агрегации — аналогично комбинатору -State.
+Объединяет промежуточные состояния агрегации так же, как комбинатор -Merge. Однако он не возвращает итоговое значение, а промежуточное состояние агрегации — аналогично комбинатору -State.
 
 ## -ForEach \{#-foreach\}
 
@@ -131,7 +132,7 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 ## -OrDefault \{#-ordefault\}
 
-Модифицирует поведение агрегатной функции.
+Изменяет поведение агрегатной функции.
 
 Если агрегатная функция не получает входных значений, с этим комбинатором она возвращает значение по умолчанию для своего возвращаемого типа данных. Применяется к агрегатным функциям, которые могут работать с пустыми входными данными.
 
@@ -332,4 +333,4 @@ FROM people
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* Блог: [Использование агрегатных комбинаторов в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

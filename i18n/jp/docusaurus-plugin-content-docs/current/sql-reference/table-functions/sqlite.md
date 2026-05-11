@@ -17,6 +17,7 @@ doc_type: 'reference'
 sqlite('db_path', 'table_name')
 ```
 
+
 ## 引数 \{#arguments\}
 
 - `db_path` — SQLite データベースファイルへのパス。[String](../../sql-reference/data-types/string.md)。
@@ -44,6 +45,8 @@ SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 └───────┴──────┘
 ```
 
+
 ## 関連項目 \{#related\}
 
 - [SQLite](../../engines/table-engines/integrations/sqlite.md) テーブルエンジン
+- [SQLite データベースエンジン](../../engines/database-engines/sqlite.md) — データ型サポートのセクション

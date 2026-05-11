@@ -37,6 +37,15 @@ For logical replication to work, we need to ensure that the source database is s
     ```sql
     GRANT rds_replication TO <your-username>;
     ```
+- The role you use for the target database must have write privileges on the target database's objects:
+    ```sql
+    GRANT USAGE ON SCHEMA <schema_i> TO subscriber_user;
+    GRANT CREATE ON DATABASE destination_db TO subscriber_user;
+    GRANT pg_create_subscription TO subscriber_user;
+
+    -- Grant table rights
+    GRANT INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA <schema_i> TO subscriber_user;
+    ```
 
 Make sure your source database is set up like this:
 <Image img={sourceReplicationSetup} alt="Source PostgreSQL Replication Setup" size="md" border />
@@ -55,13 +64,13 @@ Here:
 - Replace `<user>`, `<password>`, `<host>`, `<port>`, and `<database>` with your source database credentials.
 - `-s` specifies that we want a schema-only dump.
 - `--format directory` specifies that we want the dump in a directory format, which is suitable for `pg_restore`.
-- `-f rds-dump` specifies the output directory for the dump files. Note that this directory will be created automatically and should not exist beforehand.
+- `-f rds-dump` specifies the output directory for the dump files. Note that this directory will be created automatically and shouldn't exist beforehand.
 
 In our case, we have two tables - `events` and `users`. `events` has a million rows, and `users` has a thousand rows.
 <Image img={sourceSetup} alt="Source PostgreSQL Tables Setup" size="xl" border />
 
 ### Create a Managed Postgres instance {#migration-pgdump-pg-restore-create-pg}
-First, ensure you have a Managed Postgres instance set up, preferably in the same region as the source. You can follow the quick guide [here](../quickstart#create-postgres-database). Here's what we are going to spin up for this guide:
+First, ensure you have a Managed Postgres instance set up, preferably in the same region as the source. You can follow the quick guide [here](../quickstart#create-postgres-database). Here's what we're going to spin up for this guide:
 <Image img={createPgForMigrate} alt="Create ClickHouse Managed Postgres Instance" size="md" border />
 
 ## Restore the schema to ClickHouse Managed Postgres {#migration-logical-replication-restore-schema}
@@ -114,5 +123,5 @@ New rows inserted into the source database will now be replicated to the target 
 - Depending on your use case, you might want to set up monitoring and alerting for the replication process.
 
 ## Next steps {#migration-pgdump-pg-restore-next-steps}
-Congratulations! You have successfully migrated your PostgreSQL database to ClickHouse Managed Postgres using pg_dump and pg_restore. You are now all set to explore Managed Postgres features and its integration with ClickHouse. Here's a 10 minute quickstart to get you going:
+Congratulations! You have successfully migrated your PostgreSQL database to ClickHouse Managed Postgres using pg_dump and pg_restore. You're now all set to explore Managed Postgres features and its integration with ClickHouse. Here's a 10 minute quickstart to get you going:
 - [Managed Postgres Quickstart Guide](../quickstart)

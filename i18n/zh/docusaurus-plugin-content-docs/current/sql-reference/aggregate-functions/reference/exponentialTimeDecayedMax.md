@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedMax \{#exponentialTimeDecayedMax\}
 
-引入版本：v21.12
+引入版本：v21.12.0
 
 返回时间点 `t` 与 `t-1` 处计算得到的指数平滑移动平均值中的最大值。
 

@@ -9,13 +9,13 @@ doc_type: 'reference'
 
 ## quantile \{#quantile\}
 
-Добавлена в: v1.1
+Добавлена в: v1.1.0
 
 Вычисляет приближённую [`quantile`](https://en.wikipedia.org/wiki/Quantile) для числовой последовательности данных.
 
 Эта функция использует [reservoir sampling](https://en.wikipedia.org/wiki/Reservoir_sampling) с размером резервуара до 8192 и генератором случайных чисел для отбора элементов.
 Результат недетерминирован.
-Чтобы получить точную квантиль, используйте функцию [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileexact).
+Чтобы получить точную квантиль, используйте функцию [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact#quantileExact).
 
 При использовании в запросе нескольких функций `quantile*` с разными уровнями квантилей их внутренние состояния не комбинируются (то есть запрос работает менее эффективно, чем мог бы).
 В этом случае используйте функцию [`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles).

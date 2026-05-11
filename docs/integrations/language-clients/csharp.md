@@ -4,7 +4,7 @@ sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
 description: 'The official C# client for connecting to ClickHouse.'
-title: 'ClickHouse C# Driver'
+title: 'ClickHouse C# driver'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -22,6 +22,14 @@ The official C# client for connecting to ClickHouse.
 The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-cs).
 Originally developed by [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 
+The library provides two main APIs:
+
+- **`ClickHouseClient`** (recommended): A high-level, thread-safe client designed for singleton use. Provides a simple async API for queries and bulk inserts. Best for most applications.
+
+- **ADO.NET** (`ClickHouseDataSource`, `ClickHouseConnection`, `ClickHouseCommand`): Standard .NET database abstractions. Required for ORM integration (Dapper, Linq2db) and when you need ADO.NET compatibility. `ClickHouseBulkCopy` is a helper class for efficiently inserting data using an ADO.NET connection. `ClickHouseBulkCopy` is deprecated and will be removed in a future release; use `ClickHouseClient.InsertBinaryAsync` instead.
+
+Both APIs share the same underlying HTTP connection pool and can be used together in the same application.
+
 ## Migration guide {#migration-guide}
 
 1. Update your `.csproj` file with the new package name `ClickHouse.Driver` and [the latest version on NuGet](https://www.nuget.org/packages/ClickHouse.Driver).
@@ -33,9 +41,6 @@ Originally developed by [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 
 `ClickHouse.Driver` supports the following .NET versions:
 
-* .NET Framework 4.6.2
-* .NET Framework 4.8
-* .NET Standard 2.1
 * .NET 6.0
 * .NET 8.0
 * .NET 9.0
@@ -58,13 +63,14 @@ Install-Package ClickHouse.Driver
 ## Quick start {#quick-start}
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 
-using (var connection = new ClickHouseConnection("Host=my.clickhouse;Protocol=https;Port=8443;Username=user"))
-{
-    var version = await connection.ExecuteScalarAsync("SELECT version()");
-    Console.WriteLine(version);
-}
+// Create a client (typically as a singleton)
+using var client = new ClickHouseClient("Host=my.clickhouse;Protocol=https;Port=8443;Username=user");
+
+// Execute a query
+var version = await client.ExecuteScalarAsync("SELECT version()");
+Console.WriteLine(version);
 ```
 
 ## Configuration {#configuration}
@@ -95,7 +101,11 @@ Below is a full list of all the settings, their default values, and their effect
 |----------|------|---------|----------------------|-------------|
 | UseCompression | `bool` | `true` | `Compression` | Enable gzip compression for data transfer |
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | Use `ClickHouseDecimal` for arbitrary precision; if false, uses .NET `decimal` (128-bit limit) |
+| ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | Read `String` and `FixedString` columns as `byte[]` instead of `string`; useful for binary data |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | Send parameters as form data instead of URL query string |
+| ParameterTypeResolver | `IParameterTypeResolver` | `null` | — | Custom resolver for `@`-style parameter type mapping; see [Custom parameter type mapping](#parameter-type-mapping) |
+| JsonReadMode | `JsonReadMode` | `Binary` | `JsonReadMode` | How JSON data is returned: `Binary` (returns `JsonObject`) or `String` (returns raw JSON string) |
+| JsonWriteMode | `JsonWriteMode` | `String` | `JsonWriteMode` | How JSON data is sent: `String` (serializes via `JsonSerializer`, accepts all inputs) or `Binary` (registered POCOs only with type hints) |
 
 ### Session management {#session-management}
 
@@ -139,7 +149,7 @@ The `ClickHouseConnection` class normally allows for parallel operation (multipl
 | Roles | `IReadOnlyList<string>` | Empty | `Roles` | Comma-separated ClickHouse roles (e.g., `Roles=admin,reader`) |
 
 :::note
-When using a connection string to set custom settings, use the `set_` prefix, e.g. "set_max_threads=4". When using a ClickHouseClientSettings object, do not use the `set_` prefix.
+When using a connection string to set custom settings, use the `set_` prefix, e.g. "set_max_threads=4". When using a ClickHouseClientSettings object, don't use the `set_` prefix.
 
 For a full list of available settings, see [here](https://clickhouse.com/docs/operations/settings/settings).
 :::
@@ -160,11 +170,130 @@ Host=localhost;Port=8123;Username=default;Password=secret;Database=mydb
 Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 ```
 
-## Usage {#usage}
+---
 
-### Connecting {#connecting}
+### QueryOptions {#query-options}
 
-To connect to ClickHouse, create a `ClickHouseConnection` with a connection string or a `ClickHouseClientSettings` object. See the [Configuration](#configuration) section for available options.
+`QueryOptions` allows you to override client-level settings on a per-query basis. All properties are optional and only override the client defaults when specified.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| QueryId | `string` | Custom query identifier for tracking in `system.query_log` or cancellation |
+| Database | `string` | Override the default database for this query |
+| Roles | `IReadOnlyList<string>` | Override client roles for this query |
+| CustomSettings | `IDictionary<string, object>` | ClickHouse server settings for this query (e.g., `max_threads`) |
+| CustomHeaders | `IDictionary<string, string>` | Additional HTTP headers for this query |
+| UseSession | `bool?` | Override session behavior for this query |
+| SessionId | `string` | Session ID for this query (requires `UseSession = true`) |
+| BearerToken | `string` | Override authentication token for this query |
+| ParameterTypeResolver | `IParameterTypeResolver` | Override client-level resolver for `@`-style parameter type mapping; see [Custom parameter type mapping](#parameter-type-mapping) |
+| MaxExecutionTime | `TimeSpan?` | Server-side query timeout (passed as `max_execution_time` setting); server cancels query if exceeded |
+
+**Example:**
+
+```csharp
+var options = new QueryOptions
+{
+    QueryId = "report-2024-001",
+    Database = "analytics",
+    CustomSettings = new Dictionary<string, object>
+    {
+        { "max_threads", 4 },
+        { "max_memory_usage", 10_000_000_000 }
+    },
+    MaxExecutionTime = TimeSpan.FromMinutes(5)
+};
+
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM large_table",
+    parameters: null,
+    options: options
+);
+```
+
+---
+
+### InsertOptions {#insert-options}
+
+`InsertOptions` extends `QueryOptions` with settings specific to bulk insert operations via `InsertBinaryAsync`.
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| BatchSize | `int` | 100,000 | Number of rows per batch |
+| MaxDegreeOfParallelism | `int` | 1 | Number of parallel batch uploads |
+| Format | `RowBinaryFormat` | `RowBinary` | Binary format: `RowBinary` or `RowBinaryWithDefaults` |
+| ColumnTypes | `IReadOnlyDictionary<string, string>` | `null` | Column name → ClickHouse type string. Skips the schema probe query when set. |
+| UseSchemaCache | `bool` | `false` | Cache full table schema per (database, table) for the client's lifetime. |
+
+All `QueryOptions` properties are also available on `InsertOptions`.
+
+**Example:**
+
+```csharp
+var insertOptions = new InsertOptions
+{
+    BatchSize = 50_000,
+    MaxDegreeOfParallelism = 4,
+    QueryId = "bulk-import-001"
+};
+
+long rowsInserted = await client.InsertBinaryAsync(
+    "my_table",
+    columns,
+    rows,
+    insertOptions
+);
+```
+
+#### Skipping the schema probe query {#skip-schema-query}
+
+By default, `InsertBinaryAsync` sends a `SELECT ... WHERE 1=0` query before each insert to discover column types. For high-throughput scenarios, you can eliminate this overhead with two options:
+
+**Option 1: Provide column types explicitly**
+
+When you know the table schema at compile time, pass it directly via `ColumnTypes`. No schema query is sent at all:
+
+```csharp
+var options = new InsertOptions
+{
+    ColumnTypes = new Dictionary<string, string>
+    {
+        ["id"] = "UInt64",
+        ["name"] = "Nullable(String)",
+        ["score"] = "Float32",
+    },
+};
+
+await client.InsertBinaryAsync("my_table", ["id", "name", "score"], rows, options);
+```
+
+**Option 2: Cache the schema**
+
+When you insert into the same table repeatedly, set `UseSchemaCache = true` to query the schema once and reuse it for subsequent inserts on the same `ClickHouseClient` instance:
+
+```csharp
+var options = new InsertOptions { UseSchemaCache = true };
+
+// First call fetches schema from the server
+await client.InsertBinaryAsync("my_table", columns, batch1, options);
+
+// Second call reuses cached schema — no extra round-trip
+await client.InsertBinaryAsync("my_table", columns, batch2, options);
+```
+
+:::note
+* `ColumnTypes` takes priority over `UseSchemaCache`. If both are set, the explicit types are used.
+* The schema cache does not detect `ALTER TABLE` changes. If you modify the table schema, create a new `ClickHouseClient` or avoid `UseSchemaCache` for that table.
+* The cache is scoped to the `ClickHouseClient` instance and keyed by (database, table). Different column subsets on the same table share a single cached schema.
+:::
+
+## ClickHouseClient {#clickhouse-client}
+
+`ClickHouseClient` is the recommended API for interacting with ClickHouse. It is thread-safe, designed for singleton use, and manages HTTP connection pooling internally.
+
+### Creating a client {#creating-a-client}
+
+Create a `ClickHouseClient` with a connection string or a `ClickHouseClientSettings` object. See the [Configuration](#configuration) section for available options.
 
 The details for your ClickHouse Cloud service are available in the ClickHouse Cloud console.
 
@@ -176,149 +305,223 @@ Choose **C#**. Connection details are displayed below.
 
 <Image img={connection_details_csharp} size="md" alt="ClickHouse Cloud C# connection details" border />
 
-If you are using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
+If you're using self-managed ClickHouse, the connection details are set by your ClickHouse administrator.
 
 Using a connection string:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 
-using var connection = new ClickHouseConnection("Host=localhost;Username=default;Password=secret");
-await connection.OpenAsync();
+using var client = new ClickHouseClient("Host=localhost;Username=default;Password=secret");
 ```
 
 Or using `ClickHouseClientSettings`:
 
 ```csharp
+using ClickHouse.Driver;
+
 var settings = new ClickHouseClientSettings
 {
     Host = "localhost",
     Username = "default",
     Password = "secret"
 };
-using var connection2 = new ClickHouseConnection(settings);
-await connection2.OpenAsync();
+using var client = new ClickHouseClient(settings);
+```
+
+For dependency injection scenarios, use `IHttpClientFactory`:
+
+```csharp
+// In your DI configuration
+services.AddHttpClient("ClickHouse", client =>
+{
+    client.Timeout = TimeSpan.FromMinutes(5);
+}).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+});
+
+// Create client with factory
+var factory = serviceProvider.GetRequiredService<IHttpClientFactory>();
+var client = new ClickHouseClient("Host=localhost", factory, "ClickHouse");
 ```
 
 :::note
-* A `ClickHouseConnection` represents a "session" with the server. It performs feature discovery by querying server version (so there is a minor overhead on opening), but generally it is safe to create and destroy such objects multiple times.
-* Recommended lifetime for a connection is one connection object per large "transaction" spanning multiple queries. The `ClickHouseConnection` object can be long-lived. There is a minor overhead on connection startup, so it's not recommended to create a connection object for each query.
-* If an application operates on large volumes of transactions and requires to create/destroy `ClickHouseConnection` objects often, it is recommended to use `IHttpClientFactory` or a static instance of `HttpClient` to manage connections.
+`ClickHouseClient` is designed to be long-lived and shared across your application. Create it once (typically as a singleton) and reuse it for all database operations. The client manages HTTP connection pooling internally.
 :::
 
 ---
 
-### Creating a table {#creating-a-table}
+### Executing queries {#executing-queries}
 
-Create a table using standard SQL syntax:
+Use `ExecuteNonQueryAsync` for statements that don't return results:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+// Create a table
+await client.ExecuteNonQueryAsync(
+    "CREATE TABLE IF NOT EXISTS default.my_table (id Int64, name String) ENGINE = Memory"
+);
 
-using (var connection = new ClickHouseConnection(connectionString))
-{
-    await connection.OpenAsync();
+// Drop a table
+await client.ExecuteNonQueryAsync("DROP TABLE IF EXISTS default.my_table");
+```
 
-    using (var command = connection.CreateCommand())
-    {
-        command.CommandText = "CREATE TABLE IF NOT EXISTS default.my_table (id Int64, name String) ENGINE = Memory";
-        await command.ExecuteNonQueryAsync();
-    }
-}
+Use `ExecuteScalarAsync` to retrieve a single value:
+
+```csharp
+var count = await client.ExecuteScalarAsync("SELECT count() FROM default.my_table");
+Console.WriteLine($"Row count: {count}");
+
+var version = await client.ExecuteScalarAsync("SELECT version()");
+Console.WriteLine($"Server version: {version}");
 ```
 
 ---
 
 ### Inserting data {#inserting-data}
 
-Insert data using parameterized queries:
+#### Parameterized inserts {#parameterized-inserts}
+
+Insert data using parameterized queries with `ExecuteNonQueryAsync`. Parameter types must be specified in the SQL using `{name:Type}` syntax:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
+using ClickHouse.Driver.ADO.Parameters;
 
-using (var connection = new ClickHouseConnection(connectionString))
-{
-    await connection.OpenAsync();
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("id", 1L);
+parameters.AddParameter("name", "Alice");
 
-    using (var command = connection.CreateCommand())
-    {
-        command.AddParameter("id", "Int64", 1);
-        command.AddParameter("name", "String", "test");
-        command.CommandText = "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})";
-        await command.ExecuteNonQueryAsync();
-    }
-}
+await client.ExecuteNonQueryAsync(
+    "INSERT INTO default.my_table (id, name) VALUES ({id:Int64}, {name:String})",
+    parameters
+);
 ```
 
 ---
 
-### Bulk insert {#bulk-insert}
+#### Bulk inserts {#bulk-insert}
 
-Use `ClickHouseBulkCopy` for inserting large numbers of rows. It streams data efficiently using ClickHouse's native row binary format, works in parallel, and can split the data into batches. It also avoids limitations with large parameter sets causing "URL too long" errors.
-
-Using `ClickHouseBulkCopy` requires:
-
-* Target connection (`ClickHouseConnection` instance)
-* Target table name (`DestinationTableName` property)
-* Data source (`IDataReader` or `IEnumerable<object[]>`)
+Use `InsertBinaryAsync` for inserting large numbers of rows efficiently. It streams data using ClickHouse's native row binary format, supports parallel batch uploads, and avoids "URL too long" errors that can occur with parameterized queries.
 
 ```csharp
-using ClickHouse.Driver.ADO;
-using ClickHouse.Driver.Copy;
+// Prepare data as IEnumerable<object[]>
+var rows = Enumerable.Range(0, 1_000_000)
+    .Select(i => new object[] { (long)i, $"value{i}" });
 
-using var connection = new ClickHouseConnection(connectionString);
-await connection.OpenAsync();
+var columns = new[] { "id", "name" };
 
-using var bulkCopy = new ClickHouseBulkCopy(connection)
+// Basic insert
+long rowsInserted = await client.InsertBinaryAsync("default.my_table", columns, rows);
+Console.WriteLine($"Rows inserted: {rowsInserted}");
+```
+
+For large datasets, configure batching and parallelism with `InsertOptions`:
+
+```csharp
+var options = new InsertOptions
 {
-    DestinationTableName = "default.my_table",
-    BatchSize = 100000,
-    MaxDegreeOfParallelism = 2
+    BatchSize = 100_000,           // Rows per batch (default: 100,000)
+    MaxDegreeOfParallelism = 4     // Parallel batch uploads (default: 1)
 };
-
-await bulkCopy.InitAsync(); // Prepares ClickHouseBulkCopy instance by loading target column types
-
-var values = Enumerable.Range(0, 1000000)
-    .Select(i => new object[] { (long)i, "value" + i });
-
-await bulkCopy.WriteToServerAsync(values);
-Console.WriteLine($"Rows written: {bulkCopy.RowsWritten}");
 ```
 
 :::note
-* For optimal performance, ClickHouseBulkCopy uses the Task Parallel Library (TPL) to process batches of data, with up to 4 parallel insertion tasks (this can be tuned).
-* Column names can be optionally provided via `ColumnNames` property if source data has fewer columns than target table.
-* Configurable parameters: `Columns`, `BatchSize`, `MaxDegreeOfParallelism`.
-* Before copying, a `SELECT * FROM <table> LIMIT 0` query is performed to get information about target table structure. Types of provided objects must reasonably match the target table.
-* Sessions are not compatible with parallel insertion. Connection passed to `ClickHouseBulkCopy` must have sessions disabled, or `MaxDegreeOfParallelism` must be set to `1`.
+* The client automatically fetches table structure via `SELECT * FROM <table> WHERE 1=0` before inserting. Provided values must match the target column types. To skip this query, use [`InsertOptions.ColumnTypes` or `InsertOptions.UseSchemaCache`](#skip-schema-query).
+* When `MaxDegreeOfParallelism > 1`, batches are uploaded in parallel. Sessions are not compatible with parallel insertion; either disable sessions or set `MaxDegreeOfParallelism = 1`.
+* Use `RowBinaryFormat.RowBinaryWithDefaults` in `InsertOptions.Format` if you want the server to apply DEFAULT values for columns not provided.
 :::
+
+#### POCO inserts {#poco-insert}
+
+Instead of constructing `object[]` arrays, you can insert strongly-typed POCO objects directly. Register the type once, then pass `IEnumerable<T>`:
+
+```csharp
+// Define a POCO matching your table columns
+public class SensorReading
+{
+    public ulong Id { get; set; }
+    public string SensorName { get; set; }
+    public double Value { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+// Register the type (once per client lifetime)
+client.RegisterBinaryInsertType<SensorReading>();
+
+// Insert directly — column names are derived from property names
+var readings = Enumerable.Range(0, 100_000)
+    .Select(i => new SensorReading
+    {
+        Id = (ulong)i,
+        SensorName = $"sensor_{i % 10}",
+        Value = Random.Shared.NextDouble() * 100,
+        Timestamp = DateTime.UtcNow,
+    });
+
+long rowsInserted = await client.InsertBinaryAsync("sensors", readings);
+```
+
+By default, all public readable properties are mapped to columns using strict case-sensitive name matching. You can customize the mapping with attributes:
+
+```csharp
+public class Event
+{
+    [ClickHouseColumn(Name = "event_id")]     // Map to a differently-named column
+    public ulong Id { get; set; }
+
+    [ClickHouseColumn(Type = "LowCardinality(String)")]  // Explicit ClickHouse type
+    public string Category { get; set; }
+
+    public string Payload { get; set; }
+
+    [ClickHouseNotMapped]                     // Exclude from insert
+    public string InternalTag { get; set; }
+}
+```
+
+| Attribute | Purpose |
+|-----------|---------|
+| `[ClickHouseColumn(Name = "...")]` | Override the target column name |
+| `[ClickHouseColumn(Type = "...")]` | Declare the ClickHouse type explicitly |
+| `[ClickHouseNotMapped]` | Exclude the property from the insert |
+
+When **all** mapped properties specify an explicit `Type`, the schema probe query is skipped entirely. When only some properties have explicit types, the driver falls back to the schema probe for the full column set.
+
+`InsertBinaryAsync<T>` supports the same `InsertOptions` (batching, parallelism, schema caching) as the `object[]` overload.
+
+:::note
+Unlike the `object[]` overload, `InsertBinaryAsync<T>` does not accept an explicit column list. Columns are determined by the registered type's mapped properties. To control which columns are inserted, use `[ClickHouseNotMapped]` to exclude properties or `[ClickHouseColumn(Name = "...")]` to rename them.
+
+If `ColumnTypes` is set in `InsertOptions`, they will override the POCO attributes.
+:::
+
+#### Schema evolution {#poco-insert-schema-evolution}
+
+POCO inserts work seamlessly when columns are added to the target table after the type is registered. Because the driver only inserts the columns mapped by the POCO, any new columns with `DEFAULT` (or other default expressions) are filled in by the server automatically. No code changes or re-registration are needed.
 
 ---
 
-### Performing SELECT queries {#performing-select-queries}
+### Reading data {#reading-data}
 
-Execute SELECT queries using `ExecuteReader()` or `ExecuteReaderAsync()`. The returned `DbDataReader` provides typed access to result columns via methods like `GetInt64()`, `GetString()`, and `GetFieldValue<T>()`.
+Use `ExecuteReaderAsync` to execute SELECT queries. The returned `ClickHouseDataReader` provides typed access to result columns via methods like `GetInt64()`, `GetString()`, and `GetFieldValue<T>()`.
 
 Call `Read()` to advance to the next row. It returns `false` when there are no more rows. Access columns by index (0-based) or by column name.
 
 ```csharp
-using ClickHouse.Driver.ADO;
-using System.Data;
+using ClickHouse.Driver.ADO.Parameters;
 
-using (var connection = new ClickHouseConnection(connectionString))
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("max_id", 100L);
+
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM default.my_table WHERE id < {max_id:Int64}",
+    parameters
+);
+
+while (reader.Read())
 {
-    await connection.OpenAsync();
-
-    using (var command = connection.CreateCommand())
-    {
-        command.AddParameter("id", "Int64", 10);
-        command.CommandText = "SELECT * FROM default.my_table WHERE id < {id:Int64}";
-        using var reader = await command.ExecuteReaderAsync();
-        while (reader.Read())
-        {
-            Console.WriteLine($"select: Id: {reader.GetInt64(0)}, Name: {reader.GetString(1)}");
-        }
-    }
+    Console.WriteLine($"Id: {reader.GetInt64(0)}, Name: {reader.GetString(1)}");
 }
 ```
 
@@ -343,61 +546,128 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 ```
 
 :::note
-SQL 'bind' parameters are passed as HTTP URI query parameters, so using too many of them may result in a "URL too long" exception. Using ClickHouseBulkInsert can bypass this limitation.
+SQL 'bind' parameters are passed as HTTP URI query parameters, so using too many of them may result in a "URL too long" exception. Use `InsertBinaryAsync` for bulk data insertion to avoid this limitation.
 :::
 
 ---
 
 ### Query ID {#query-id}
 
-Every method that makes a query will also include a query_id in the result. This unique identifier is assigned by the client per query and can be used to fetch data from the `system.query_log` table (if it is enabled), or cancel long-running queries. If necessary, the query ID can be overridden by the user in the ClickHouseCommand object.
+Every query is assigned a unique `query_id` that can be used to fetch data from the `system.query_log` table or cancel long-running queries. You can specify a custom query ID via `QueryOptions`:
 
 ```csharp
-var customQueryId = $"qid-{Guid.NewGuid()}";
+var options = new QueryOptions
+{
+    QueryId = $"report-{Guid.NewGuid()}"
+};
 
-using var command = connection.CreateCommand();
-command.CommandText = "SELECT version()";
-command.QueryId = customQueryId;
-
-var version = await command.ExecuteScalarAsync();
-Console.WriteLine($"QueryId: {command.QueryId}");
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM large_table",
+    parameters: null,
+    options: options
+);
 ```
 
 :::tip
-If you are overriding the `QueryId` parameter, you need to ensure its uniqueness for every call. A random GUID is a good choice.
+If you're specifying a custom `QueryId`, ensure it is unique for every call. A random GUID is a good choice.
 :::
+
+---
+
+### Custom parameter type mapping {#parameter-type-mapping}
+
+When using `@`-style parameters (e.g., `WHERE id = @id`), the driver automatically infers the ClickHouse type from the .NET value type. For example, `int` maps to `Int32`, and `DateTime` maps to `DateTime`.
+
+To override these defaults, set `ParameterTypeResolver` on `ClickHouseClientSettings`. This is useful when you want all `DateTime` parameters to use `DateTime64(3)` for millisecond precision, or all decimals to use a specific scale, without setting `ClickHouseType` on every individual parameter.
+
+**Using `DictionaryParameterTypeResolver` for simple type mappings:**
+
+```csharp
+using ClickHouse.Driver.ADO.Parameters;
+
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    ParameterTypeResolver = new DictionaryParameterTypeResolver(new Dictionary<Type, string>
+    {
+        [typeof(DateTime)] = "DateTime64(3)",
+        [typeof(decimal)] = "Decimal64(4)",
+    }),
+};
+using var client = new ClickHouseClient(settings);
+
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("dt", DateTime.UtcNow);     // Mapped to DateTime64(3)
+parameters.AddParameter("amount", 99.1234m);         // Mapped to Decimal64(4)
+
+await client.ExecuteReaderAsync("SELECT @dt, @amount", parameters);
+```
+
+**Custom `IParameterTypeResolver` for advanced scenarios:**
+
+For value-aware or name-based resolution, implement the `IParameterTypeResolver` interface directly. Return `null` to fall through to the default inference:
+
+```csharp
+public class SmartDecimalResolver : IParameterTypeResolver
+{
+    public string ResolveType(Type clrType, object value, string parameterName)
+    {
+        if (clrType != typeof(decimal))
+            return null; // Fall through to default
+
+        var scale = (decimal.GetBits((decimal)value)[3] >> 16) & 0x7F;
+        return scale <= 4 ? $"Decimal64({scale})" : $"Decimal128({scale})";
+    }
+}
+```
+
+You can also set a resolver for a single query via `QueryOptions.ParameterTypeResolver`. When set, it takes precedence over the client-level resolver.
+
+**Type resolution precedence:**
+
+The resolver is one step in a precedence chain. From highest to lowest priority:
+
+1. Explicit `ClickHouseType` set on the parameter
+2. SQL type hint from `{name:Type}` syntax in the query
+3. `IParameterTypeResolver` (from `QueryOptions.ParameterTypeResolver`, falling back to `ClickHouseClientSettings.ParameterTypeResolver`)
+4. Built-in type inference (`TypeConverter.ToClickHouseType`)
+
+The resolver also works with the ADO.NET `ClickHouseConnection` path — the settings are inherited by connections created from the client.
 
 ---
 
 ### Raw streaming {#raw-streaming}
 
-It's possible to stream data in a particular format directly, bypassing the data reader. This can be useful in situations where you want to save the data to file in a particular format. For example:
+Use `ExecuteRawResultAsync` to stream query results in a specific format directly, bypassing the data reader. This is useful for exporting data to files or passing through to other systems:
 
 ```csharp
-using var command = connection.CreateCommand();
-command.CommandText = "SELECT * FROM default.my_table LIMIT 100 FORMAT JSONEachRow";
-using var result = await command.ExecuteRawResultAsync(CancellationToken.None);
-using var stream = await result.ReadAsStreamAsync();
+using var result = await client.ExecuteRawResultAsync(
+    "SELECT * FROM default.my_table LIMIT 100 FORMAT JSONEachRow"
+);
+
+await using var stream = await result.ReadAsStreamAsync();
 using var reader = new StreamReader(stream);
 var json = await reader.ReadToEndAsync();
 ```
+
+Common formats: `JSONEachRow`, `CSV`, `TSV`, `Parquet`, `Native`. See the [formats documentation](/docs/interfaces/formats) for all options.
 
 ---
 
 ### Raw stream insert {#raw-stream-insert}
 
-Use `InsertRawStreamAsync` to insert data directly from file or memory streams in formats like CSV, JSON, or any [supported ClickHouse format](/docs/interfaces/formats).
+Use `InsertRawStreamAsync` to insert data directly from file or memory streams in formats like CSV, JSON, Parquet, or any [supported ClickHouse format](/docs/interfaces/formats).
 
 **Insert from a CSV file:**
 
 ```csharp
 await using var fileStream = File.OpenRead("data.csv");
 
-using var response = await connection.InsertRawStreamAsync(
+using var response = await client.InsertRawStreamAsync(
     table: "my_table",
     stream: fileStream,
     format: "CSV",
-    columns: ["id", "product", "price"]); // Optional: specify columns
+    columns: ["id", "product", "price"] // Optional: specify columns
+);
 ```
 
 :::note
@@ -410,22 +680,147 @@ See the [format settings documentation](/docs/operations/settings/formats) for o
 
 For additional practical usage examples, see the [examples directory](https://github.com/ClickHouse/clickhouse-cs/tree/main/examples) in the GitHub repository.
 
+## ADO.NET {#ado-net}
+
+The library provides full ADO.NET support through `ClickHouseConnection`, `ClickHouseCommand`, and `ClickHouseDataReader`. This API is required for ORM integration (Dapper, Linq2db) and when you need standard .NET database abstractions.
+
+### Lifetime management with ClickHouseDataSource {#ado-net-datasource}
+
+**Always create connections from a `ClickHouseDataSource`** to ensure proper lifetime management and connection pooling. The DataSource manages a single `ClickHouseClient` internally, and all connections share its HTTP connection pool.
+
+```csharp
+using ClickHouse.Driver.ADO;
+
+// Create DataSource once (register as singleton in DI)
+var dataSource = new ClickHouseDataSource("Host=localhost;Username=default;Password=secret");
+
+// Create lightweight connections as needed
+await using var connection = await dataSource.OpenConnectionAsync();
+
+// Use the connection
+await using var command = connection.CreateCommand("SELECT version()");
+var version = await command.ExecuteScalarAsync();
+```
+
+For dependency injection:
+
+```csharp
+// In Startup.cs or Program.cs
+services.AddSingleton(sp =>
+{
+    var factory = sp.GetRequiredService<IHttpClientFactory>();
+    return new ClickHouseDataSource("Host=localhost", factory, "ClickHouse");
+});
+
+// In your service
+public class MyService
+{
+    private readonly ClickHouseDataSource _dataSource;
+
+    public MyService(ClickHouseDataSource dataSource)
+    {
+        _dataSource = dataSource;
+    }
+
+    public async Task DoWorkAsync()
+    {
+        await using var connection = await _dataSource.OpenConnectionAsync();
+        // Use connection...
+    }
+}
+```
+
+:::warning
+**Do not create `ClickHouseConnection` directly** in production code. Each direct instantiation creates a new HTTP client and connection pool, which can lead to socket exhaustion under load:
+
+```csharp
+// DON'T DO THIS - creates new connection pool each time
+using var conn = new ClickHouseConnection("Host=localhost");
+await conn.OpenAsync();
+```
+
+Instead, always use `ClickHouseDataSource` or share a single `ClickHouseClient` instance.
+:::
+
+---
+
+### Using ClickHouseCommand {#ado-net-command}
+
+Create commands from a connection to execute SQL:
+
+```csharp
+await using var connection = await dataSource.OpenConnectionAsync();
+
+// Create command with SQL
+await using var command = connection.CreateCommand("SELECT * FROM my_table WHERE id = {id:Int64}");
+command.AddParameter("id", 42L);
+
+// Execute and read results
+await using var reader = await command.ExecuteReaderAsync();
+while (reader.Read())
+{
+    Console.WriteLine($"Name: {reader.GetString("name")}");
+}
+```
+
+Command methods:
+- `ExecuteNonQueryAsync()` - For INSERT, UPDATE, DELETE, DDL statements
+- `ExecuteScalarAsync()` - Returns first column of first row
+- `ExecuteReaderAsync()` - Returns a `ClickHouseDataReader` for iterating results
+
+---
+
+### Using ClickHouseDataReader {#ado-net-reader}
+
+The `ClickHouseDataReader` provides typed access to query results:
+
+```csharp
+await using var reader = await command.ExecuteReaderAsync();
+
+while (reader.Read())
+{
+    // Access by column index
+    var id = reader.GetInt64(0);
+    var name = reader.GetString(1);
+
+    // Access by column name
+    var email = reader.GetString("email");
+
+    // Generic access
+    var timestamp = reader.GetFieldValue<DateTime>("created_at");
+
+    // Check for null
+    if (!reader.IsDBNull("optional_field"))
+    {
+        var value = reader.GetString("optional_field");
+    }
+}
+```
+
 ## Best practices {#best-practices}
 
 ### Connection lifetime and pooling {#best-practices-connection-lifetime}
 
 `ClickHouse.Driver` uses `System.Net.Http.HttpClient` under the hood. `HttpClient` has a per-endpoint connection pool. As a consequence:
 
-* A `ClickHouseConnection` object does not have 1:1 mapping to TCP connections - multiple database sessions will be multiplexed through several TCP connections per server.
-* `ClickHouseConnection` objects can be long-lived; the actual TCP connections underneath will be recycled by the connection pool.
-* Let `HttpClient` manage connection pooling internally. Do not pool `ClickHouseConnection` objects yourself. 
-* Connections can stay alive after `ClickHouseConnection` object was disposed.
-* This behavior can be tweaked by passing a custom `HttpClientFactory` or `HttpClient` with custom `HttpClientHandler`.
+* Database sessions are multiplexed through HTTP connections managed by the connection pool.
+* HTTP connections are recycled automatically by the pool.
+* Connections can stay alive after `ClickHouseClient` or `ClickHouseConnection` objects are disposed.
 
-For DI environments, there is a bespoke constructor `ClickHouseConnection(string connectionString, IHttpClientFactory httpClientFactory, string httpClientName = "")` which makes the ClickHouseConnection request a named http client.
+**Recommended patterns:**
+
+| Scenario | Recommended Approach |
+|----------|---------------------|
+| General use | Use a singleton `ClickHouseClient` |
+| ADO.NET / ORMs | Use `ClickHouseDataSource` (creates connections that share the same pool) |
+| DI environments | Register `ClickHouseClient` or `ClickHouseDataSource` as singleton with `IHttpClientFactory` |
 
 :::important
-When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `PooledConnectionIdleTimeout` is set to a value smaller than the server's `keep_alive_timeout`, in order to avoid errors due to half-closed connections. The default `keep_alive_timeout` for Cloud deployments is 10 seconds. 
+When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `PooledConnectionIdleTimeout` is set to a value smaller than the server's `keep_alive_timeout`, in order to avoid errors due to half-closed connections. The default `keep_alive_timeout` for Cloud deployments is 10 seconds.
+:::
+
+:::warning
+Avoid creating multiple `ClickHouseClient` or standalone `ClickHouseConnection` instances without a shared `HttpClient`. Each instance creates its own connection pool.
 :::
 
 ---
@@ -436,9 +831,15 @@ When using a custom `HttpClient` or `HttpClientFactory`, ensure that the `Pooled
 
 2. **Use `DateTimeOffset` for explicit timezone handling.** It always represents a specific instant and includes the offset information.
 
-3. **Specify timezone in HTTP parameter type hints.** When using parameters with `Unspecified` DateTime values targeting non-UTC columns:
+3. **Specify timezone in SQL type hints.** When using parameters with `Unspecified` DateTime values targeting non-UTC columns, include the timezone in the SQL:
    ```csharp
-   command.AddParameter("dt", value, "DateTime('Europe/Amsterdam')");
+   var parameters = new ClickHouseParameterCollection();
+   parameters.AddParameter("dt", myDateTime);
+
+   await client.ExecuteNonQueryAsync(
+       "INSERT INTO table (dt) VALUES ({dt:DateTime('Europe/Amsterdam')})",
+       parameters
+   );
    ```
 
 ---
@@ -467,7 +868,7 @@ settings.CustomSettings["wait_for_async_insert"] = 1; // Recommended: wait for f
 | `wait_for_async_insert=0` | Insert returns immediately when data is buffered. No guarantee data will be persisted. | Only when data loss is acceptable |
 
 :::warning
-With `wait_for_async_insert=0`, errors only surface during flush and cannot be traced back to the original insert. The client also provides no backpressure, risking server overload.
+With `wait_for_async_insert=0`, errors only surface during flush and can't be traced back to the original insert. The client also provides no backpressure, risking server overload.
 :::
 
 **Key settings:**
@@ -498,8 +899,28 @@ var settings = new ClickHouseClientSettings
     SessionId = "my-session", // Optional -- will be auto-generated if not provided
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
+
+await client.ExecuteNonQueryAsync("CREATE TEMPORARY TABLE temp_ids (id UInt64)");
+await client.ExecuteNonQueryAsync("INSERT INTO temp_ids VALUES (1), (2), (3)");
+
+var reader = await client.ExecuteReaderAsync(
+    "SELECT * FROM users WHERE id IN (SELECT id FROM temp_ids)"
+);
+```
+
+**Using ADO.NET (for ORM compatibility):**
+
+```csharp
+var settings = new ClickHouseClientSettings
+{
+    Host = "localhost",
+    UseSession = true,
+    SessionId = "my-session",
+};
+
+var dataSource = new ClickHouseDataSource(settings);
+await using var connection = await dataSource.OpenConnectionAsync();
 
 await using var cmd1 = connection.CreateCommand("CREATE TEMPORARY TABLE temp_ids (id UInt64)");
 await cmd1.ExecuteNonQueryAsync();
@@ -575,7 +996,11 @@ Decimal type conversion is controlled via the UseCustomDecimals setting.
 | ClickHouse Type | .NET Type |
 |-----------------|-----------|
 | String | `string` |
-| FixedString(N) | `byte[]` |
+| FixedString(N) | `string` |
+
+:::note
+By default, both `String` and `FixedString(N)` columns are returned as `string`. Set `ReadStringsAsByteArrays=true` in your connection string to read them as `byte[]` instead. This is useful when storing binary data that may not be valid UTF-8.
+:::
 
 ---
 
@@ -620,6 +1045,32 @@ If you need timezone-aware behavior for columns without explicit timezones, eith
 
 ---
 
+#### JSON type {#type-map-reading-json}
+
+| ClickHouse Type | .NET Type | Notes |
+|-----------------|-----------|-------|
+| Json | `JsonObject` | Default (`JsonReadMode=Binary`) |
+| Json | `string` | When `JsonReadMode=String` |
+
+The return type for JSON columns is controlled by the `JsonReadMode` setting:
+
+- **`Binary` (default)**: Returns `System.Text.Json.Nodes.JsonObject`. Provides structured access to JSON data, but specialized ClickHouse types (like IP addresses, UUIDs, large decimals) are converted to their string representations within the JSON structure.
+
+- **`String`**: Returns the raw JSON as a `string`. Preserves the exact JSON representation from ClickHouse, which is useful when you need to pass the JSON through without parsing, or when you want to handle deserialization yourself.
+
+```csharp
+// Configure string mode via settings
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    JsonReadMode = JsonReadMode.String
+};
+
+// Or via connection string
+// "Host=localhost;JsonReadMode=String"
+```
+
+---
+
 #### Other types {#type-map-reading-other}
 
 | ClickHouse Type | .NET Type |
@@ -629,7 +1080,6 @@ If you need timezone-aware behavior for columns without explicit timezones, eith
 | IPv6 | `IPAddress` |
 | Nothing | `DBNull` |
 | Dynamic | See note |
-| Json | `JsonObject` |
 | Array(T) | `T[]` |
 | Tuple(T1, T2, ...) | `Tuple<T1, T2, ...>` / `LargeTuple` |
 | Map(K, V) | `Dictionary<K, V>` |
@@ -711,8 +1161,8 @@ When inserting data, the driver converts .NET types to their corresponding Click
 
 | ClickHouse Type | Accepted .NET Types | Notes |
 |-----------------|---------------------|-------|
-| String | `string`, any `Convert.ToString()` compatible |  |
-| FixedString(N) | `string`, `byte[]` | String is UTF-8 encoded and padded/truncated; byte[] must be exactly N bytes |
+| String | `string`, `byte[]`, `ReadOnlyMemory<byte>`, `Stream` | Binary types written directly; streams can be seekable or non-seekable |
+| FixedString(N) | `string`, `byte[]`, `ReadOnlyMemory<byte>`, `Stream` | String is UTF-8 encoded and padded; binary types must be exactly N bytes |
 
 ---
 
@@ -730,11 +1180,11 @@ When inserting data, the driver converts .NET types to their corresponding Click
 
 The driver respects `DateTime.Kind` when writing values:
 
-| `DateTime.Kind` | Behavior |
-|-----------------|----------|
-| `Utc` | Instant is preserved exactly |
-| `Local` | Converted to UTC using system timezone, instant preserved |
-| `Unspecified` | Treated as wall-clock time in target column's timezone |
+ | DateTime.Kind | HTTP Parameters | Bulk |
+ | --- | --- | --- |
+  | Utc           | Instant preserved | Instant preserved |
+  | Local         | Instant preserved | Instant preserved |
+  | Unspecified   | Treated as wall-clock in parameter type's timezone (defaults to UTC) | Treated as wall-clock in column's timezone |
 
 `DateTimeOffset` values always preserve the exact instant.
 
@@ -761,16 +1211,16 @@ There is an important difference between HTTP parameter binding and bulk copy wh
 
 **Bulk Copy** knows the target column's timezone and correctly interprets `Unspecified` values in that timezone.
 
-**HTTP Parameters** do not automatically know the column timezone. You must specify it in the parameter type hint:
+**HTTP Parameters** do not automatically know the column timezone. You must specify it in the SQL type hint:
 
 ```csharp
-// CORRECT: Timezone in type hint
-command.AddParameter("dt", myDateTime, "DateTime('Europe/Amsterdam')");
+// CORRECT: Timezone in SQL type hint - type is extracted automatically
 command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime('Europe/Amsterdam')})";
+command.AddParameter("dt", myDateTime);
 
 // INCORRECT: Without timezone hint, interpreted as UTC
-command.AddParameter("dt", myDateTime);
 command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
+command.AddParameter("dt", myDateTime);
 // String value "2024-01-15 14:30:00" interpreted as UTC, not Amsterdam time!
 ```
 
@@ -796,6 +1246,107 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 
 ---
 
+#### JSON type {#type-map-writing-json}
+
+| ClickHouse Type | Accepted .NET Types | Notes |
+|-----------------|---------------------|-------|
+| Json | `string`, `JsonObject`, `JsonNode`, any object | Behavior depends on `JsonWriteMode` setting |
+
+The behavior when writing JSON is controlled by the `JsonWriteMode` setting:
+
+| Input Type | `JsonWriteMode.String` (default) | `JsonWriteMode.Binary` |
+|------------|----------------------------------|------------------------|
+| `string` | Passed through directly | Throws `ArgumentException` |
+| `JsonObject` | Serialized via `ToJsonString()` | Throws `ArgumentException` |
+| `JsonNode` | Serialized via `ToJsonString()` | Throws `ArgumentException` |
+| Registered POCO | Serialized via `JsonSerializer.Serialize()` | Binary encoding with type hints, custom path attributes supported |
+| Unregistered POCO / Anonymous object | Serialized via `JsonSerializer.Serialize()` | Throws `ClickHouseJsonSerializationException` |
+
+- **`String` (default)**: Accepts `string`, `JsonObject`, `JsonNode`, or any object. All inputs are serialized via `System.Text.Json.JsonSerializer` and sent as JSON strings for server-side parsing. This is the most flexible mode and works without type registration.
+
+- **`Binary`**: Only accepts registered POCO types. Data is converted to ClickHouse's binary JSON format client-side with full type hint support. Requires calling `connection.RegisterJsonSerializationType<T>()` before use. Writing `string` or `JsonNode` values in this mode throws `ArgumentException`.
+
+```csharp
+// Default String mode works with any input
+await client.InsertBinaryAsync(
+    "my_table",
+    new[] { "id", "data" },
+    new[] { new object[] { 1u, new { name = "test", value = 42 } } }
+);
+
+// Binary mode requires explicit opt-in and type registration
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    JsonWriteMode = JsonWriteMode.Binary
+};
+using var client = new ClickHouseClient(settings);
+client.RegisterJsonSerializationType<MyPocoType>();
+```
+
+##### Typed JSON columns {#json-typed-columns}
+
+When a JSON column has type hints (e.g., `JSON(id UInt64, price Decimal128(2))`), the driver uses these hints to serialize values with full type fidelity. This preserves precision for types like `UInt64`, `Decimal`, `UUID`, and `DateTime64` that would otherwise lose precision when serialized as generic JSON.
+
+##### POCO serialization {#json-poco-serialization}
+
+POCOs can be written to JSON columns in two ways depending on the `JsonWriteMode`:
+
+**String mode (default)**: POCOs are serialized via `System.Text.Json.JsonSerializer`. No type registration is required. This is the simplest approach and works with anonymous objects.
+
+**Binary mode**: POCOs are serialized using the driver's binary JSON format with full type hint support. Types must be registered with `connection.RegisterJsonSerializationType<T>()` before use. This mode supports custom path mappings via attributes:
+
+- **`[ClickHouseJsonPath("path")]`**: Maps a property to a custom JSON path. Useful for nested structures or when the property name differs from the desired JSON key. **Only works in Binary mode.**
+
+- **`[ClickHouseJsonIgnore]`**: Excludes a property from serialization. **Only works in Binary mode.**
+
+```sql
+CREATE TABLE events (
+    id UInt32,
+    data JSON(`user.id` Int64, `user.name` String, Timestamp DateTime64(3))
+) ENGINE = MergeTree() ORDER BY id
+```
+
+```csharp
+using ClickHouse.Driver.Json;
+
+public class UserEvent
+{
+    [ClickHouseJsonPath("user.id")]
+    public long UserId { get; set; }
+
+    [ClickHouseJsonPath("user.name")]
+    public string UserName { get; set; }
+
+    public DateTime Timestamp { get; set; }
+
+    [ClickHouseJsonIgnore]
+    public string InternalData { get; set; }  // Not serialized
+}
+
+// For Binary mode: Register the type and enable Binary mode
+var settings = new ClickHouseClientSettings("Host=localhost") { JsonWriteMode = JsonWriteMode.Binary };
+using var client = new ClickHouseClient(settings);
+client.RegisterJsonSerializationType<UserEvent>();
+
+// Insert POCO - serialized to JSON with nested structure via custom path attributes
+await client.InsertBinaryAsync(
+    "events",
+    new[] { "id", "data" },
+    new[] { new object[] { 1u, new UserEvent { UserId = 123, UserName = "Alice", Timestamp = DateTime.UtcNow } } }
+);
+// Resulting JSON: {"user": {"id": 123, "name": "Alice"}, "Timestamp": "2024-01-15T..."}
+```
+
+Property name matching with column type hints is case-sensitive. A property `UserId` will only match a hint defined as `UserId`, not `userid`. This matches ClickHouse behavior which allows paths like `userName` and `UserName` to coexist as separate fields.
+
+**Limitations (Binary mode only):**
+- POCO types must be registered on the connection with `connection.RegisterJsonSerializationType<T>()` before serialization. Attempting to serialize an unregistered type throws `ClickHouseJsonSerializationException`.
+- Dictionary and array/list properties require type hints in the column definition to be serialized correctly. Without hints, use String mode instead.
+- Null values in POCO properties are only written when the path has a `Nullable(T)` type hint in the column definition. ClickHouse doesn't allow `Nullable` types inside dynamic JSON paths, so un-hinted null properties are skipped.
+- `ClickHouseJsonPath` and `ClickHouseJsonIgnore` attributes are ignored in String mode (they only work in Binary mode).
+
+---
+
 #### Other types {#type-map-writing-other}
 
 | ClickHouse Type | Accepted .NET Types | Notes |
@@ -805,7 +1356,6 @@ command.CommandText = "INSERT INTO table (dt_amsterdam) VALUES ({dt:DateTime})";
 | IPv6 | `IPAddress`, `string` | Must be IPv6; string parsed via `IPAddress.Parse()` |
 | Nothing | Any | Writes nothing (no-op) |
 | Dynamic | — | **Not supported** (throws `NotImplementedException`) |
-| Json | `string`, `JsonObject`, any object | String parsed as JSON; objects serialized via `JsonSerializer` |
 | Array(T) | `IList`, `null` | Null writes empty array |
 | Tuple(T1, T2, ...) | `ITuple`, `IList` | Element count must match tuple arity |
 | Map(K, V) | `IDictionary` | |
@@ -855,27 +1405,24 @@ CREATE TABLE test.nested (
 ```
 
 ```csharp
-using var bulkCopy = new ClickHouseBulkCopy(connection)
-{
-    DestinationTableName = "test.nested"
-};
-
 var row1 = new object[] { 1, new[] { 1, 2, 3 }, new[] { "v1", "v2", "v3" } };
 var row2 = new object[] { 2, new[] { 4, 5, 6 }, new[] { "v4", "v5", "v6" } };
 
-await bulkCopy.WriteToServerAsync(new[] { row1, row2 });
+await client.InsertBinaryAsync(
+    "test.nested",
+    new[] { "id", "params.param_id", "params.param_val" },
+    new[] { row1, row2 }
+);
 ```
 
 ## Logging and diagnostics {#logging-and-diagnostics}
 
-The ClickHouse .NET client integrates with the `Microsoft.Extensions.Logging` abstractions to offer lightweight, opt-in logging. When enabled, the driver emits structured messages for connection lifecycle events, command execution, transport operations, and bulk copy uploads. Logging is entirely optional—applications that do not configure a logger continue to run without additional overhead.
+The ClickHouse .NET client integrates with the `Microsoft.Extensions.Logging` abstractions to offer lightweight, opt-in logging. When enabled, the driver emits structured messages for connection lifecycle events, command execution, transport operations, and bulk insert operations. Logging is entirely optional—applications that do not configure a logger continue to run without additional overhead.
 
 ### Quick start {#logging-quick-start}
 
-#### Using ClickHouseConnection {#logging-clickhouseconnection}
-
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 using Microsoft.Extensions.Logging;
 
 var loggerFactory = LoggerFactory.Create(builder =>
@@ -890,8 +1437,7 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
     LoggerFactory = loggerFactory
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
 
 #### Using appsettings.json {#logging-appsettings-config}
@@ -899,7 +1445,7 @@ await connection.OpenAsync();
 You can configure logging levels using standard .NET configuration:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -920,8 +1466,7 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
     LoggerFactory = loggerFactory
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
 
 #### Using in-memory configuration {#logging-inmemory-config}
@@ -929,7 +1474,7 @@ await connection.OpenAsync();
 You can also configure logging verbosity by category in code:
 
 ```csharp
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -956,8 +1501,7 @@ var settings = new ClickHouseClientSettings("Host=localhost;Port=8123")
     LoggerFactory = loggerFactory
 };
 
-await using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
 
 ### Categories and emitters {#logging-categories}
@@ -969,7 +1513,7 @@ The driver uses dedicated categories so that you can fine-tune log levels per co
 | `ClickHouse.Driver.Connection` | `ClickHouseConnection` | Connection lifecycle, HTTP client factory selection, connection opening/closing, session management. |
 | `ClickHouse.Driver.Command` | `ClickHouseCommand` | Query execution start/completion, timing, query IDs, server statistics, and error details. |
 | `ClickHouse.Driver.Transport` | `ClickHouseConnection` | Low-level HTTP streaming requests, compression flags, response status codes, and transport failures. |
-| `ClickHouse.Driver.BulkCopy` | `ClickHouseBulkCopy` | Metadata loading, batch operations, row counts, and upload completions. |
+| `ClickHouse.Driver.Client` | `ClickHouseClient` | Binary insert, queries, and other operations |
 | `ClickHouse.Driver.NetTrace` | `TraceHelper` | Network tracing, only when debug mode is enabled |
 
 #### Example: Diagnosing connection issues {#logging-config-example}
@@ -996,7 +1540,7 @@ This will log:
 
 ### Debug mode: network tracing and diagnostics {#logging-debugmode}
 
-To help with diagnosing networking issues, the driver library includes a helper that enables low-level tracing of .NET networking internals. To enable it you must pass a LoggerFactory with the level set to Trace, and set EnableDebugMode to true (or manually enable it via the `ClickHouse.Driver.Diagnostic.TraceHelper` class). Events will be logged to the `ClickHouse.Driver.NetTrace` category. Warning: this will generate extremely verbose logs, and impact performance. It is not recommended to enable debug mode in production.
+To help with diagnosing networking issues, the driver library includes a helper that enables low-level tracing of .NET networking internals. To enable it you must pass a LoggerFactory with the level set to Trace, and set EnableDebugMode to true (or manually enable it via the `ClickHouse.Driver.Diagnostic.TraceHelper` class). Events will be logged to the `ClickHouse.Driver.NetTrace` category. Warning: this will generate extremely verbose logs, and impact performance. It isn't recommended to enable debug mode in production.
 
 ```csharp
 var loggerFactory = LoggerFactory.Create(builder =>
@@ -1086,7 +1630,7 @@ For production environments requiring custom certificate validation logic, provi
 ```csharp
 using System.Net;
 using System.Net.Security;
-using ClickHouse.Driver.ADO;
+using ClickHouse.Driver;
 
 var handler = new HttpClientHandler
 {
@@ -1117,39 +1661,176 @@ var settings = new ClickHouseClientSettings
     HttpClient = httpClient,
 };
 
-using var connection = new ClickHouseConnection(settings);
-await connection.OpenAsync();
+using var client = new ClickHouseClient(settings);
 ```
 
 :::note 
 Important considerations when providing a custom HttpClient
-- **Automatic decompression**: You must enable `AutomaticDecompression` if compression is not disabled (compression is enabled by default).
+- **Automatic decompression**: You must enable `AutomaticDecompression` if compression isn't disabled (compression is enabled by default).
 - **Idle timeout**: Set `PooledConnectionIdleTimeout` smaller than the server's `keep_alive_timeout` (10 seconds for ClickHouse Cloud) to avoid connection errors from half-open connections.
 :::
 
 ## ORM support {#orm-support}
 
+ORMs require the ADO.NET API (`ClickHouseConnection`). For proper connection lifetime management, create connections from a `ClickHouseDataSource`:
+
+```csharp
+// Register DataSource as singleton
+var dataSource = new ClickHouseDataSource("Host=localhost;Username=default");
+
+// Create connections for ORM use
+await using var connection = await dataSource.OpenConnectionAsync();
+// Pass connection to your ORM...
+```
+
 ### Dapper {#orm-support-dapper}
 
-`ClickHouse.Driver` can be used with Dapper, but anonymous objects are not supported.
+`ClickHouse.Driver` works with Dapper. The driver automatically converts Dapper's `@parameter` syntax to ClickHouse's native `{parameter:Type}` syntax, with types inferred from .NET values.
 
-**Working example:**
-
-```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new Dictionary<string, object> { { "p1", 42 } }
-);
-```
-
-**Not supported:**
+Use `ClickHouseDataSource` for proper connection lifetime management:
 
 ```csharp
-connection.QueryAsync<string>(
-    "SELECT {p1:Int32}",
-    new { p1 = 42 }
-);
+var dataSource = new ClickHouseDataSource("Host=localhost");
+services.AddSingleton(dataSource); // Register as singleton in DI
+
+using var connection = dataSource.CreateConnection();
 ```
+
+#### Parameter passing styles {#dapper-parameter-passing}
+
+All standard Dapper parameter styles are supported:
+
+**Anonymous objects:**
+
+```csharp
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)",
+    new { Id = 1, Name = "alice", Balance = 3.14 });
+```
+
+**POCO classes:**
+
+```csharp
+class InsertParams
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+var param = new InsertParams { Id = 42, Name = "bob", Balance = 99.9 };
+await connection.ExecuteAsync(
+    "INSERT INTO users (id, name, balance) VALUES (@Id, @Name, @Balance)", param);
+```
+
+**Dictionary:**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "Id", 2 } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", parameters);
+```
+
+**`DynamicParameters` (from dictionary or anonymous object):**
+
+```csharp
+var dynParams = new DynamicParameters(new { Id = 1 });
+// or: new DynamicParameters(new Dictionary<string, object> { { "Id", 1 } });
+
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id = @Id", dynParams);
+```
+
+#### Querying into POCOs {#dapper-pocos}
+
+Dapper maps columns to properties by name (case-insensitive):
+
+```csharp
+class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Balance { get; set; }
+}
+
+// From a table
+var users = (await connection.QueryAsync<User>("SELECT id, name, balance FROM users")).ToList();
+
+// From a literal
+var row = (await connection.QueryAsync<User>("SELECT 1 as id, 'hello' as name, 2.5 as balance")).Single();
+```
+
+#### ClickHouse-native parameter syntax {#dapper-clickhouse-param-syntax}
+
+When you need explicit type control, use ClickHouse's `{param:Type}` syntax directly in the SQL with a `Dictionary<string, object>` for the parameter values. Don't combine `@param` syntax and `{param:Type}` syntax for the same parameter.
+
+```csharp
+var parameters = new Dictionary<string, object> { { "value", 42 } };
+var result = await connection.QueryAsync<int>("SELECT {value:Int32}", parameters);
+```
+
+#### WHERE IN {#dapper-where-in}
+
+**Dapper's native IN expansion works:**
+
+```csharp
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE id IN @Ids ORDER BY id",
+    new { Ids = new[] { 1, 3, 5 } });
+```
+
+Dapper rewrites this to `WHERE id IN (@Ids1, @Ids2, @Ids3)`, and the driver converts each expanded parameter.
+
+**ClickHouse's `has()` with Array parameter also works:**
+
+```csharp
+var parameters = new Dictionary<string, object> { { "ids", new[] { 1, 3, 5 } } };
+var rows = await connection.QueryAsync<User>(
+    "SELECT id, name FROM users WHERE has({ids:Array(Int32)}, id) ORDER BY id",
+    parameters);
+```
+
+#### Custom type handlers {#dapper-type-handlers}
+
+Some ClickHouse types, eg `ITuple`, `BigInteger`, and `ClickHouseDecimal` need handlers registered at startup:
+
+```csharp
+// ClickHouseDecimal (for Decimal64/128/256 columns)
+SqlMapper.AddTypeHandler(new ClickHouseDecimalHandler());
+
+// BigInteger (for Int128/Int256/UInt128/UInt256 columns)
+SqlMapper.AddTypeHandler(new BigIntegerHandler());
+
+// IPAddress (for IPv4/IPv6 columns)
+SqlMapper.AddTypeHandler(new IpAddressHandler());
+```
+
+See the [Dapper example](https://github.com/ClickHouse/clickhouse-cs/blob/main/examples/ORM/ORM_001_Dapper.cs) for an example type handler implementation.
+
+#### Dapper.Contrib {#dapper-contrib}
+
+`GetAll<T>()` and `Get<T>(id)` work. `Insert<T>()` does not — it generates SQL Server syntax (`SCOPE_IDENTITY`, `[]`). It is recommended to use the `ClickHouseClient` native `InsertBinaryAsync` method instead.
+
+```csharp
+[Table("test.users")]
+record class UserRecord(int Id, string Name, DateTime Timestamp);
+
+var all = await connection.GetAllAsync<UserRecord>();
+var one = await connection.GetAsync<UserRecord>(1);
+```
+
+Property names must match ClickHouse column names exactly (case-sensitive).
+
+#### Limitations {#dapper-limitations}
+
+| What | Status | Details |
+|---|---|---|
+| Tuple as **result** | Works | Requires `SqlMapper.TypeHandler<ITuple>` registration |
+| Tuple as **parameter** | Not supported | Dapper cannot serialize `ITuple`/`Tuple<>` as a `DbParameter` value |
+| Nested types as parameter | Not supported | Same reason — Dapper rejects complex types as parameter values |
+| Geo types as parameter | Not supported | Point, Ring, Polygon, LineString, MultiLineString, MultiPolygon |
+| `Dapper.Contrib.Insert<T>()` | Not supported | Generates SQL Server-specific syntax |
+| `Nothing` type | Not supported | No meaningful .NET representation |
 
 ### Linq2db {#orm-support-linq2db}
 
@@ -1211,15 +1892,447 @@ var options = new BulkCopyOptions
 await table.BulkCopyAsync(options, products);
 ```
 
-### Entity framework core {#orm-support-ef-core}
+### Entity Framework Core {#orm-support-ef-core}
 
-Entity Framework Core is currently not supported.
+The official Entity Framework Core provider for ClickHouse. Map C# classes to ClickHouse tables, query with LINQ, and insert data via `SaveChanges` — all using familiar EF Core patterns.
+
+- **NuGet**: [`ClickHouse.EntityFrameworkCore`](https://www.nuget.org/packages/ClickHouse.EntityFrameworkCore)
+- **Source**: [GitHub](https://github.com/ClickHouse/ClickHouse.EntityFrameworkCore)
+
+:::note
+This provider is in active development. Current release supports LINQ queries (including JOINs, subqueries, and set operations), `INSERT` via `SaveChanges` / `BulkInsertAsync`, migrations with full DDL (CREATE / ALTER / DROP), and ClickHouse-specific table engine configuration. `UPDATE` / `DELETE` are not supported.
+:::
+
+#### Installation {#ef-core-installation}
+
+```bash
+dotnet add package ClickHouse.EntityFrameworkCore
+```
+
+Requires .NET 10.0 and EF Core 10.
+
+#### Quick start {#ef-core-quick-start}
+
+Define your entity and `DbContext`, then query with LINQ:
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+
+public class PageView
+{
+    public long Id { get; set; }
+    public string Path { get; set; }
+    public DateOnly Date { get; set; }
+    public string UserAgent { get; set; }
+}
+
+public class AnalyticsContext : DbContext
+{
+    public DbSet<PageView> PageViews { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseClickHouse("Host=localhost;Database=analytics");
+}
+
+// Query
+await using var ctx = new AnalyticsContext();
+
+var topPages = await ctx.PageViews
+    .Where(v => v.Date >= new DateOnly(2024, 1, 1))
+    .GroupBy(v => v.Path)
+    .Select(g => new { Path = g.Key, Views = g.Count() })
+    .OrderByDescending(x => x.Views)
+    .Take(10)
+    .ToListAsync();
+```
+
+#### Supported types {#ef-core-types}
+
+| Category | ClickHouse Types | CLR Types |
+|---|---|---|
+| **Integers** | `Int8`–`Int64`, `UInt8`–`UInt64` | `sbyte`, `short`, `int`, `long`, `byte`, `ushort`, `uint`, `ulong` |
+| **Big integers** | `Int128`, `Int256`, `UInt128`, `UInt256` | `BigInteger` |
+| **Floats** | `Float32`, `Float64`, `BFloat16` | `float`, `double` |
+| **Decimals** | `Decimal(P,S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)` | `decimal` or `ClickHouseDecimal` |
+| **Bool** | `Bool` | `bool` |
+| **Strings** | `String`, `FixedString(N)` | `string` |
+| **Enums** | `Enum8(...)`, `Enum16(...)` | `string` or C# `enum` |
+| **Date/time** | `Date`, `Date32`, `DateTime`, `DateTime64(P, 'TZ')` | `DateOnly`, `DateTime` |
+| **Time** | `Time`, `Time64(N)` | `TimeSpan` |
+| **UUID** | `UUID` | `Guid` |
+| **Network** | `IPv4`, `IPv6` | `IPAddress` |
+| **Arrays** | `Array(T)` | `T[]`, `List<T>`, `IList<T>`, `ICollection<T>`, `IReadOnlyList<T>`, `IReadOnlyCollection<T>`, `IEnumerable<T>` |
+| **Maps** | `Map(K, V)` | `Dictionary<K,V>` |
+| **Tuples** | `Tuple(T1, ...)` | `Tuple<...>` or `ValueTuple<...>` |
+| **Variant** | `Variant(T1, T2, ...)` | `object` |
+| **Dynamic** | `Dynamic` | `object` |
+| **JSON** | `Json` | `JsonNode` or `string` |
+| **Geographic** | `Point`, `Ring`, `LineString`, `Polygon`, `MultiLineString`, `MultiPolygon`, `Geometry` | `Tuple<double,double>` and arrays thereof; `object` for Geometry |
+| **Wrappers** | `Nullable(T)`, `LowCardinality(T)` | Unwrapped automatically |
+
+Use `ClickHouseDecimal` (from `ClickHouse.Driver.Numerics`) instead of `decimal` when you need the full precision of `Decimal128`/`Decimal256` columns — .NET `decimal` is limited to 28–29 significant digits.
+
+#### Supported LINQ operations {#ef-core-linq}
+
+**Queries:** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `All`, `Count`, `Distinct`, `AsNoTracking`
+
+**GROUP BY & aggregates:** `GroupBy` with `Count`, `LongCount`, `Sum`, `Average`, `Min`, `Max` — including `HAVING` (`.Where()` after `.GroupBy()`), multiple aggregates in a single projection, and `OrderBy` on aggregate results.
+
+**JOINs:** `Join` (INNER), `GroupJoin`/`SelectMany` patterns (LEFT and CROSS). LEFT JOIN returns real `null` for non-matching rows (see [LEFT JOIN null semantics](#ef-core-join-nulls) below).
+
+**Subqueries:** correlated `Contains` / `IN`, `Any` / `EXISTS`, `All`, and scalar subqueries in projections.
+
+**Set operations:** `Concat` (→ `UNION ALL`), `Union` (→ `UNION DISTINCT`), `Intersect`, `Except`.
+
+**Inline local collections:** joins and `Contains` against in-memory collections (`int[]`, `List<T>`, etc.) translate into a series of UNIONs.
+
+**String methods:** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat` (and `+` operator).
+
+**Math functions:** standard `Math` and `MathF` methods translated to their ClickHouse equivalents — arithmetic, logarithmic, trigonometric, and utility functions.
+
+##### LEFT JOIN null semantics {#ef-core-join-nulls}
+
+The provider injects `set_join_use_nulls=1` into every connection path automatically to match Entity Framework expectations on JOIN behavior.
+
+If your ClickHouse server or profile forbids changing this setting (e.g. a `readonly=1` profile), opt out with:
+
+```csharp
+optionsBuilder.UseClickHouse(connectionString, o => o.DisableJoinNullSemantics());
+```
+
+With the opt-out enabled, LEFT JOIN returns ClickHouse column defaults and EF's null-based navigation detection no longer works as expected. Use explicit comparisons against `0` / `""` instead of `== null`.
+
+#### Inserting data {#ef-core-insert}
+
+`SaveChanges` uses the driver's native `InsertBinaryAsync` API — RowBinary encoding with GZip compression, far more efficient than parameterized SQL:
+
+```csharp
+await using var ctx = new AnalyticsContext();
+
+ctx.PageViews.Add(new PageView
+{
+    Id = 1,
+    Path = "/home",
+    Date = new DateOnly(2024, 6, 15),
+    UserAgent = "Mozilla/5.0"
+});
+
+await ctx.SaveChangesAsync();
+```
+
+Entities transition from `Added` to `Unchanged` after save, just like any other EF Core provider.
+
+**Batch size** is configurable (default 1000):
+
+```csharp
+optionsBuilder.UseClickHouse("Host=localhost", o => o.MaxBatchSize(5000));
+```
+
+#### Bulk insert {#ef-core-bulk-insert}
+
+For high-throughput loads, use `BulkInsertAsync` instead of `SaveChanges`. This is an extension method on `DbContext` that bypasses EF Core's change tracker, identity resolution, and state management entirely — it calls the driver's `InsertBinaryAsync` directly with RowBinary encoding and GZip compression.
+
+This makes it suitable for loading large datasets where you don't need entity tracking after insert:
+
+```csharp
+var events = Enumerable.Range(0, 100_000)
+    .Select(i => new PageView
+    {
+        Id = i,
+        Path = $"/page/{i}",
+        Date = DateOnly.FromDateTime(DateTime.Today)
+    });
+
+long rowsInserted = await ctx.BulkInsertAsync(events);
+```
+
+The input can be any `IEnumerable<T>` — it streams through the entities without loading them all into memory. The return value is the number of rows inserted. Entities are **not** attached to the `DbContext` after insert, so there is no `Added` → `Unchanged` state transition.
+
+#### Enums {#ef-core-enums}
+
+ClickHouse `Enum8`/`Enum16` columns can be mapped as `string` properties or as C# `enum` types. When using C# enums, the provider automatically converts between the enum and its string representation:
+
+```csharp
+public enum Status { Active, Inactive, Pending }
+
+public class User
+{
+    public long Id { get; set; }
+    public Status Status { get; set; }
+}
+
+// Query with enum values
+var active = await ctx.Users
+    .Where(u => u.Status == Status.Active)
+    .ToListAsync();
+```
+
+#### Custom type conversions {#ef-core-value-converters}
+
+EF Core's `ValueConverter` system lets you map custom types to types the provider already supports. The provider never sees your custom type — EF Core converts at the boundary.
+
+**Per-property conversion:**
+
+```csharp
+public class Money
+{
+    public decimal Amount { get; set; }
+    public string Currency { get; set; }
+}
+
+public class Order
+{
+    public long Id { get; set; }
+    public Money Price { get; set; }
+}
+
+// In OnModelCreating:
+modelBuilder.Entity<Order>()
+    .Property(o => o.Price)
+    .HasConversion(
+        m => $"{m.Amount}|{m.Currency}",
+        s => new Money
+        {
+            Amount = decimal.Parse(s.Split('|')[0]),
+            Currency = s.Split('|')[1]
+        })
+    .HasColumnType("String");
+```
+
+**Reusable converter class:**
+
+```csharp
+public class MoneyConverter : ValueConverter<Money, string>
+{
+    public MoneyConverter() : base(
+        m => $"{m.Amount}|{m.Currency}",
+        s => Parse(s)) { }
+
+    private static Money Parse(string s)
+    {
+        var parts = s.Split('|');
+        return new Money { Amount = decimal.Parse(parts[0]), Currency = parts[1] };
+    }
+}
+
+// Apply to a single property:
+.HasConversion<MoneyConverter>()
+
+// Or apply to all properties of a type via conventions:
+protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+{
+    configurationBuilder.Properties<Money>()
+        .HaveConversion<MoneyConverter>();
+}
+```
+
+#### Column type annotations {#ef-core-column-types}
+
+For scalar types like `string`, `int`, `DateTime`, etc., the provider infers the ClickHouse type automatically. For parameterized types and wrappers, you need to specify the ClickHouse type explicitly.
+
+**Using data annotations (attributes):**
+
+```csharp
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+[Table("sensor_readings")]
+public class SensorReading
+{
+    public long Id { get; set; }
+
+    [Column(TypeName = "Array(String)")]
+    public string[] Tags { get; set; }
+
+    [Column(TypeName = "Map(String, String)")]
+    public Dictionary<string, string> Metadata { get; set; }
+
+    [Column(TypeName = "Nullable(Float64)")]
+    public double? Value { get; set; }
+
+    [Column(TypeName = "Decimal128(18)")]
+    public decimal HighPrecision { get; set; }
+}
+```
+
+**Using the fluent API in `OnModelCreating`:**
+
+```csharp
+modelBuilder.Entity<SensorReading>(e =>
+{
+    e.ToTable("sensor_readings");
+    e.Property(x => x.Tags).HasColumnType("Array(String)");
+    e.Property(x => x.Metadata).HasColumnType("Map(String, String)");
+    e.Property(x => x.Value).HasColumnType("Nullable(Float64)");
+    e.Property(x => x.Category).HasColumnType("LowCardinality(String)");
+    e.Property(x => x.HighPrecision).HasColumnType("Decimal128(18)");
+});
+```
+
+Nested wrappers like `Array(Nullable(Int32))` and `LowCardinality(Nullable(String))` are supported — the provider unwraps `Nullable` and `LowCardinality` automatically at every nesting level.
+
+#### Variant and Dynamic columns {#ef-core-variant-dynamic}
+
+ClickHouse `Variant(T1, T2, ...)` and `Dynamic` columns map to `object` in .NET. Since `object` is too generic for automatic type inference, you must declare the store type explicitly via `.HasColumnType()`:
+
+```csharp
+public class Event
+{
+    public long Id { get; set; }
+    public object? Payload { get; set; }
+}
+
+// In OnModelCreating:
+entity.Property(e => e.Payload).HasColumnType("Variant(String, UInt64, Array(UInt64))");
+// or:
+entity.Property(e => e.Payload).HasColumnType("Dynamic");
+```
+
+When reading, the value is automatically deserialized to the corresponding .NET type for the stored discriminator (e.g. `string`, `ulong`, `ulong[]`).
+
+#### JSON columns {#ef-core-json}
+
+The provider supports ClickHouse's `Json` column type, mapping to `System.Text.Json.Nodes.JsonNode` (primary) or `string` (via automatic `ValueConverter`):
+
+```csharp
+using System.Text.Json.Nodes;
+
+public class Event
+{
+    public long Id { get; set; }
+    public JsonNode? Data { get; set; }
+}
+
+// In OnModelCreating:
+entity.Property(e => e.Data).HasColumnType("Json");
+```
+
+Reading and writing JSON works through both `SaveChanges` and `BulkInsertAsync`:
+
+```csharp
+ctx.Events.Add(new Event
+{
+    Id = 1,
+    Data = JsonNode.Parse("""{"action": "click", "x": 100, "y": 200}""")
+});
+await ctx.SaveChangesAsync();
+
+var ev = await ctx.Events.Where(e => e.Id == 1).SingleAsync();
+string action = ev.Data!["action"]!.GetValue<string>(); // "click"
+```
+
+If you prefer raw JSON strings, map the property as `string` with a `Json` column type — the provider applies a `ValueConverter` automatically:
+
+```csharp
+public class Event
+{
+    public long Id { get; set; }
+    public string? Data { get; set; }  // raw JSON string
+}
+
+entity.Property(e => e.Data).HasColumnType("Json");
+```
+
+:::note
+- **No JSON path translation** — `entity.Data["name"]` in LINQ does not translate to ClickHouse's `data.name` SQL syntax. Filter on non-JSON columns and inspect JSON in memory.
+- **NULL semantics** — ClickHouse's JSON type returns `{}` (empty object) for NULL values rather than SQL NULL.
+- **Integer precision** — ClickHouse JSON stores all integers as `Int64`. When reading via `JsonNode`, use `GetValue<long>()` rather than `GetValue<int>()`.
+:::
+
+#### Table engines {#ef-core-engines}
+
+Configure ClickHouse table engines and engine-specific clauses via the `ToTable(name, t => ...)` fluent API. When no engine is configured, the provider defaults to `MergeTree` with `ORDER BY` derived from the entity's primary key.
+
+```csharp
+modelBuilder.Entity<Event>(e =>
+{
+    e.ToTable("events", t => t
+        .HasMergeTreeEngine()
+        .WithOrderBy("UserId", "Timestamp")
+        .WithPartitionBy("toYYYYMM(Timestamp)")
+        .WithPrimaryKey("UserId")
+        .WithSettings("index_granularity = 8192"));
+});
+```
+
+Supported engine families:
+
+| Engine | Fluent method | Notes |
+|---|---|---|
+| `MergeTree` | `HasMergeTreeEngine()` | Default when none configured |
+| `ReplacingMergeTree` | `HasReplacingMergeTreeEngine("Version", "IsDeleted")` or `HasReplacingMergeTreeEngine<T>(e => e.Version)` | Version / IsDeleted columns optional |
+| `SummingMergeTree` | `HasSummingMergeTreeEngine(…)` or `HasSummingMergeTreeEngine<T>(e => new { … })` | Optional columns-to-sum |
+| `AggregatingMergeTree` | `HasAggregatingMergeTreeEngine()` | — |
+| `CollapsingMergeTree` | `HasCollapsingMergeTreeEngine("Sign")` or `HasCollapsingMergeTreeEngine<T>(e => e.Sign)` | `Sign` column must be `Int8` |
+| `VersionedCollapsingMergeTree` | `HasVersionedCollapsingMergeTreeEngine("Sign", "Version")` or `<T>(e => e.Sign, e => e.Version)` | — |
+| `GraphiteMergeTree` | `HasGraphiteMergeTreeEngine("config_section")` | — |
+| `Log`, `TinyLog`, `StripeLog`, `Memory` | `HasLogEngine()`, `HasTinyLogEngine()`, `HasStripeLogEngine()`, `HasMemoryEngine()` | No ORDER BY / PARTITION BY |
+
+**Engine clauses:** `WithOrderBy`, `WithPartitionBy`, `WithPrimaryKey`, `WithSampleBy`, `WithTtl`, `WithSettings`. All attach to the engine builder returned from `HasXxxEngine()`.
+
+**Column-level features:** `HasCodec`, `HasTtl`, `HasComment`, `HasDefault` — all participate in migrations.
+
+**Data-skipping indexes** — via `HasIndex(...).HasSkippingIndexType(...)`:
+
+```csharp
+modelBuilder.Entity<Event>()
+    .HasIndex(e => e.UserId)
+    .HasSkippingIndexType("minmax")
+    .HasGranularity(4);
+
+// Index with parameters (e.g. bloom_filter, tokenbf_v1):
+modelBuilder.Entity<Event>()
+    .HasIndex(e => e.Tag)
+    .HasSkippingIndexType("bloom_filter")
+    .HasSkippingIndexParams("0.01")
+    .HasGranularity(1);
+```
+
+Standard (non-skipping) indexes are silently ignored since ClickHouse has no equivalent. Unique indexes throw, as ClickHouse does not enforce uniqueness.
+
+#### Migrations {#ef-core-migrations}
+
+Standard EF Core migrations workflow:
+
+```bash
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
+Supported operations:
+
+| Operation | Emits |
+|---|---|
+| `CREATE TABLE` | Includes engine clause, ORDER BY, PARTITION BY, SETTINGS, column codecs/TTL/comments/defaults |
+| `ALTER TABLE ADD COLUMN` | — |
+| `ALTER TABLE DROP COLUMN` | — |
+| `ALTER TABLE MODIFY COLUMN` | Handles type change plus annotation add/remove (CODEC, TTL, COMMENT, DEFAULT) |
+| `ALTER TABLE RENAME COLUMN` | — |
+| `RENAME TABLE` | — |
+| `ALTER TABLE ADD INDEX` / `DROP INDEX` | Data-skipping indexes only |
+| `CREATE DATABASE` / `DROP DATABASE` | Via `EnsureCreated` / `EnsureDeleted` and migrations |
+
+#### Migration limitations {#ef-core-limitations}
+
+| Feature | Reason |
+|---|---|
+| Foreign keys | ClickHouse does not enforce foreign keys. Migrations reject `AddForeignKey`; the model validator emits a warning at model build time. |
+| Unique constraints / unique indexes | ClickHouse does not enforce uniqueness. Unique indexes throw at migration time. |
+| Server-generated values (auto-increment / `IDENTITY`) | ClickHouse has no equivalent. |
+| `Nested(…)` columns | Not yet supported as a mapped CLR type. |
+| Owned entities as JSON (`.ToJson()`) | Structural JSON mapping for owned entities is not yet implemented. Use `JsonNode` / `string` on a `Json` column instead (see [JSON columns](#ef-core-json)). |
+
+Beyond migrations, the provider also does not yet support:
+
+- **`UPDATE` / `DELETE`**
+- **Transactions**: `BeginTransaction` is a no-op. No support for ACID transactions in ClickHouse.
+- **JSON path query translation**: `entity.Data["key"]` in LINQ does not translate to ClickHouse's `data.key` SQL syntax. Filter on non-JSON columns and inspect JSON in memory.
 
 ## Limitations {#limitations}
 
 ### AggregateFunction columns {#aggregatefunction-columns}
 
-Columns of type `AggregateFunction(...)` cannot be queried or inserted directly.
+Columns of type `AggregateFunction(...)` can't be queried or inserted directly.
 
 To insert:
 

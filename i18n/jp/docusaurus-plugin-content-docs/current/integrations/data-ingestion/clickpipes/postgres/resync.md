@@ -1,10 +1,10 @@
 ---
 title: 'データベース ClickPipe の再同期'
-description: 'データベース ClickPipe を再同期するための手順書'
+description: 'データベース ClickPipe の再同期に関するドキュメント'
 slug: /integrations/clickpipes/postgres/resync
 sidebar_label: 'ClickPipe の再同期'
 doc_type: 'guide'
-keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+keywords: ['ClickPipes', 'postgresql', 'CDC', 'データインジェスト', 'リアルタイム同期']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -13,41 +13,41 @@ integration:
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync は何を行いますか？ \{#what-postgres-resync-do\}
+### 再同期 は何を行うのか？ \{#what-postgres-resync-do\}
 
-Resync では、次の処理がこの順番で行われます。
+再同期 では、次の操作がこの順序で実行されます。
 
-1. 既存の ClickPipe が削除され、新しい「Resync」ClickPipe が起動されます。これにより、ソーステーブル構造への変更は Resync を実行したタイミングで取り込まれます。
-2. Resync ClickPipe は、元のテーブルと同じ名前に `_resync` サフィックスを付けた、新しい宛先テーブル群を作成（または置き換え）します。
-3. `_resync` テーブルに対して初期ロードが実行されます。
-4. その後、`_resync` テーブルと元のテーブルが入れ替えられます。この入れ替えの前に、ソフトデリートされた行は元のテーブルから `_resync` テーブルに転送されます。
+1. 既存の ClickPipe が削除され、新しい「再同期」ClickPipe が開始されます。そのため、再同期 を実行すると、ソース テーブル構造の変更が反映されます。
+2. 再同期 ClickPipe は、元のテーブルと同じ名前で、`_resync` サフィックスが付いた新しい一式の宛先テーブルを作成します (または置き換えます) 。
+3. `_resync` テーブルに対して初回ロードが実行されます。
+4. その後、`_resync` テーブルが元のテーブルと入れ替えられます。論理削除された行は、入れ替え前に元のテーブルから `_resync` テーブルに移されます。
 
-元の ClickPipe のすべての設定は、Resync ClickPipe に引き継がれます。元の ClickPipe の統計情報は、UI 上ではリセットされます。
+元の ClickPipe のすべての設定は、再同期 ClickPipe に引き継がれます。元の ClickPipe の統計値は UI でクリアされます。
 
-### ClickPipe を Resync するユースケース \{#use-cases-postgres-resync\}
+### ClickPipe を再同期するユースケース \{#use-cases-postgres-resync\}
 
-いくつかのシナリオを挙げます。
+主なシナリオをいくつか示します。
 
-1. 既存の ClickPipe が壊れてしまうような大きなスキーマ変更をソーステーブルに対して行う必要があり、再起動が必要になる場合があります。その場合は、変更を行ったあとに Resync をクリックするだけで済みます。
-2. 特に ClickHouse の場合、ターゲットテーブルの ORDER BY キーを変更する必要があるかもしれません。Resync を実行することで、新しいテーブルに正しいソートキーでデータを再投入できます。
-3. ClickPipe のレプリケーションスロットが無効になった場合、Resync を実行すると、新しい ClickPipe とソースデータベース上の新しいスロットが作成されます。
+1. ソース テーブルに大幅なスキーマ変更を加える必要があり、その結果、既存の ClickPipe が使えなくなって再開が必要になる場合があります。変更を行った後に 再同期 をクリックするだけで再同期できます。
+2. 特に ClickHouse では、target テーブルの ORDER BY キーを変更する必要がある場合があります。再同期 を実行すると、正しいソートキーで新しいテーブルにデータを再投入できます。
+3. ClickPipe のレプリケーション スロット が無効になった場合: 再同期 によって、新しい ClickPipe とソース データベース上の新しい スロット が作成されます。
 
 :::note
-Resync は複数回実行できますが、そのたびに並列スレッドによる初期ロードが発生するため、
-Resync 実行時にはソースデータベースへの負荷を考慮してください。
+再同期は複数回実行できますが、再同期のたびに parallel threads を使用した初回ロードが行われるため、
+ソース データベースへの load を考慮してください。
 :::
 
-### Resync ClickPipe ガイド \{#guide-postgres-resync\}
+### ClickPipe の再同期ガイド \{#guide-postgres-resync\}
 
-1. **Data Sources** タブで、Resync を実行したい Postgres ClickPipe をクリックします。
+1. **Data Sources** タブで、再同期する Postgres ClickPipe をクリックします。
 2. **Settings** タブに移動します。
-3. **Resync** ボタンをクリックします。
+3. **再同期** ボタンをクリックします。
 
 <Image img={resync_button} border size="md" />
 
-4. 確認用のダイアログボックスが表示されます。もう一度 Resync をクリックします。
+4. 確認ダイアログが表示されます。もう一度 **再同期** をクリックします。
 5. **Metrics** タブに移動します。
-6. 約 5 秒後（およびページをリフレッシュしたとき）、ClickPipe のステータスは **Setup** または **Snapshot** になっているはずです。
-7. Resync の初期ロードは、**Tables** タブの **Initial Load Stats** セクションで監視できます。
-8. 初期ロードが完了すると、ClickPipe は `_resync` テーブルと元のテーブルをアトミックに入れ替えます。入れ替え中、ステータスは **Resync** になります。
-9. 入れ替えが完了すると、ClickPipe は **Running** 状態に入り、有効化されていれば CDC を実行します。
+6. 約 5 秒後 (またはページを更新すると) 、パイプのステータスは **Setup** または **Snapshot** になります。
+7. 再同期の初回ロードは、**Tables** タブの **Initial Load Stats** セクションで確認できます。
+8. 初回ロードが完了すると、パイプは `_resync` テーブルを元のテーブルとアトミックに入れ替えます。入れ替え中のステータスは **再同期** になります。
+9. 入れ替えが完了すると、パイプは **Running** 状態に入り、有効にすると CDC を実行します。

@@ -32,12 +32,12 @@ In general, we would recommend denormalizing in the following cases:
 
 - Denormalize tables which change infrequently or for which a delay before data is available for analytical queries can be tolerated i.e. the data can be completely reloaded in a batch.
 - Avoid denormalizing many-to-many relationships. This can result in the need to update many rows if a single source row changes.
-- Avoid denormalizing high cardinality relationships. If each row in a table has thousands of related entries in another table, these will need to be represented as an `Array` - either of a primitive type or tuples. Generally, arrays with more than 1000 tuples would not be recommended.
+- Avoid denormalizing high cardinality relationships. If each row in a table has thousands of related entries in another table, these will need to be represented as an `Array` - either of a primitive type or tuples. Generally, arrays with more than 1000 tuples wouldn't be recommended.
 - Rather than denormalizing all columns as nested objects, consider denormalizing just a statistic using materialized views (see below).
 
 All information doesn't need to be denormalized - just the key information that needs to be frequently accessed.
 
-The denormalization work can be handled in either ClickHouse or upstream e.g. using Apache Flink.
+The denormalization work can be handled in either ClickHouse or upstream e.g. using [Apache Flink](/integrations/data-ingestion/apache-flink/flink-connector.md).
 
 ## Avoid denormalization on frequently updated data {#avoid-denormalization-on-frequently-updated-data}
 
@@ -127,7 +127,7 @@ LIMIT 5
 └──────────┴──────────────────────────────────────────────┴───────┘
 ```
 
-The main observation here is that aggregated vote statistics for each post would be sufficient for most analysis - we do not need to denormalize all of the vote information. For example, the current `Score` column represents such a statistic i.e. total up votes minus down votes. Ideally, we would just be able to retrieve these statistics at query time with a simple lookup (see [dictionaries](/dictionary)).
+The main observation here is that aggregated vote statistics for each post would be sufficient for most analysis - we don't need to denormalize all of the vote information. For example, the current `Score` column represents such a statistic i.e. total up votes minus down votes. Ideally, we would just be able to retrieve these statistics at query time with a simple lookup (see [dictionaries](/dictionary)).
 
 ### Users and Badges {#users-and-badges}
 
@@ -237,7 +237,7 @@ ORDER BY c DESC LIMIT 5
 └──────────┴─────┘
 ```
 
-Likewise, these links are not events which occur overly frequently:
+Likewise, these links aren't events which occur overly frequently:
 
 ```sql
 SELECT
@@ -371,4 +371,4 @@ Users have several options for orchestrating this in ClickHouse, assuming a peri
 
 ### Streaming {#streaming}
 
-You may alternatively wish to perform this outside of ClickHouse, prior to insertion, using streaming technologies such as [Apache Flink](https://flink.apache.org/). Alternatively, incremental [materialized views](/guides/developer/cascading-materialized-views) can be used to perform this process as data is inserted.
+You may alternatively wish to perform this outside of ClickHouse, prior to insertion, using streaming technologies such as [Apache Flink](/integrations/data-ingestion/apache-flink/flink-connector.md). Alternatively, incremental [materialized views](/guides/developer/cascading-materialized-views) can be used to perform this process as data is inserted.

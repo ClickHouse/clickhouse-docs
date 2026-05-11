@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 import event_patterns from '@site/static/images/use-cases/observability/event_patterns.png';
 import event_patterns_highlight from '@site/static/images/use-cases/observability/event_patterns_highlight.png';
 
-ClickStack 中的事件模式可以通过自动将相似的消息聚类在一起，帮助你快速理解海量日志或 Traces，因此你不必在数百万条单独事件中逐条排查，而只需要审阅少量有意义的分组。
+ClickStack 中的事件模式可以通过自动将相似的消息聚类在一起，帮助你快速理解海量日志或 链路追踪，因此你不必在数百万条单独事件中逐条排查，而只需要审阅少量有意义的分组。
 
 <Image img={event_patterns} alt="事件模式" size="lg" />
 
@@ -24,13 +24,13 @@ ClickStack 中的事件模式可以通过自动将相似的消息聚类在一起
 
 ## 访问事件模式 \{#accessing-event-patterns\}
 
-可以直接通过 ClickStack 中的 **Search** 面板访问事件模式。  
+可以直接通过 ClickStack 中的 **Search** 面板访问事件模式。
 
-在左上角的 **Analysis Mode** 选择器中选择 **Event Patterns**，即可从标准结果表切换到相似事件的聚类视图。  
+在左上角的 **Analysis Mode** 选择器中选择 **Event patterns**，即可从标准结果表切换到相似事件的聚类视图。
 
-<Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
+<Image img={event_patterns_highlight} alt="Event patterns" size="lg" />
 
-这提供了相对于默认 **Results Table** 的另一种视图，默认视图允许你逐条滚动浏览每一条日志或跟踪（trace）。
+这提供了相对于默认 **Results Table** 的另一种视图，默认视图允许你逐条滚动浏览每一条日志或链路追踪。
 
 ## 建议 \{#recommendations\}
 

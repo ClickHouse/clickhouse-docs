@@ -20,6 +20,7 @@ import TabItem from '@theme/TabItem';
 
 Этот документ описывает бинарный протокол для TCP‑клиентов ClickHouse.
 
+
 ## Varint \{#varint\}
 
 Для длин, кодов пакетов и в других случаях используется кодирование в формате *unsigned varint*.
@@ -59,7 +60,7 @@ buf = append(buf, s...)
 
 ```go
 r := bytes.NewReader([]byte{
-    0xd, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c,
+    0xd, 0x48, 0x65, 0x6c, 0x6f, 0x2c,
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 })
 
@@ -106,7 +107,7 @@ DUhlbGxvLCB3b3JsZCE
 
 ```go
 data := []byte{
-    0xd, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c,
+    0xd, 0x48, 0x65, 0x6c, 0x6f, 0x2c,
     0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21,
 }
 ```
@@ -137,16 +138,17 @@ fmt.Println(d) // 1000
 <Tabs>
   <TabItem value="hexdump" label="Hex-дамп">
     ```hexdump
-00000000  e8 03 00 00 00 00 00 00                           |........|
-```
+    00000000  e8 03 00 00 00 00 00 00                           |........|
+    ```
   </TabItem>
 
   <TabItem value="base64" label="Base64">
     ```text
-6AMAAAAAAAA
-```
+    6AMAAAAAAAA
+    ```
   </TabItem>
 </Tabs>
+
 
 ## Boolean \{#boolean\}
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## count \{#count\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 行数、または NULL 以外の値の数を数えます。
 

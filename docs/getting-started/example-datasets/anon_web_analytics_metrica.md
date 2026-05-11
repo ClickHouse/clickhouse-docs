@@ -19,7 +19,7 @@ The tables can be downloaded as compressed `tsv.xz` files. In addition to the sa
 ### Download the hits compressed TSV file {#download-the-hits-compressed-tsv-file}
 
 ```bash
-curl https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | unxz --threads=`nproc` > hits_v1.tsv
+curl -L https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | xz -d > hits_v1.tsv
 # Validate the checksum
 md5sum hits_v1.tsv
 # Checksum should be equal to: f3631b6295bf06989c1437491f7592cb
@@ -62,7 +62,7 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 ### Download the visits compressed TSV file {#download-the-visits-compressed-tsv-file}
 
 ```bash
-curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
+curl -L https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | xz -d > visits_v1.tsv
 # Validate the checksum
 md5sum visits_v1.tsv
 # Checksum should be equal to: 6dafe1a0f24e59e3fc2d0fed85601de6

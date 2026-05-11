@@ -1,18 +1,5 @@
-import BetaBadge from '@theme/badges/BetaBadge';
+## schema の選択: Map vs JSON \{#schema-choice-map-vs-json\}
 
-## JSON 型サポート \{#json-type-support\}
+ClickStack では、デフォルトで属性を `Map(LowCardinality(String), String)` カラムに格納します。これはオブザーバビリティのワークロードに推奨される schema です。[バケット化された map のシリアライゼーション](/sql-reference/data-types/map#bucketed-map-serialization) と、map のキーおよび値に対するテキスト索引を組み合わせることで、動的な JSON subcolumns で発生するキーごとの取り込みオーバーヘッドなしに、必要な項目を選択的に検索できます。
 
-<BetaBadge/>
-
-:::warning ベータ機能 - 本番環境向けではありません
-**ClickStack** における JSON 型サポートは **ベータ機能** です。JSON 型自体は ClickHouse 25.3+ では本番環境向けとして利用可能ですが、ClickStack との統合はまだ積極的に開発中であり、制限があったり、将来的に変更されたり、不具合を含む可能性があります。
-:::
-
-ClickStack では、バージョン `2.0.4` 以降で [JSON 型](/interfaces/formats/JSON) をベータ機能としてサポートしています。
-
-この型の利点については [JSON 型の利点](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type) を参照してください。
-
-JSON 型のサポートを有効にするには、以下の環境変数を設定する必要があります。
-
-- `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` - OTel collector でのサポートを有効にし、スキーマが JSON 型を使用して作成されるようにします。
-- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` - HyperDX アプリケーションでのサポートを有効にし、JSON データに対してクエリを実行できるようにします。
+`JSON` 型の schema は、属性キーの集合が小さく安定しているワークロードでの評価用として、ベータで利用できます。ただし、デフォルトとしては**推奨されません**。完全な比較と、JSON サポートを有効にするために必要な環境変数については、[Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json) を参照してください。

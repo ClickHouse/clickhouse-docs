@@ -156,38 +156,36 @@ FROM AzureBlobStorage(
 上記で説明した構文を利用することで、GCS や Azure Blob Storage に対するバックアップも取得できます。
 
 <Tabs>
-<TabItem value="Backup" label="バックアップ" default>
+  <TabItem value="Backup" label="バックアップ" default>
+    ```sql
+    BACKUP 
+        TABLE system.users,
+        TABLE system.roles,
+        TABLE system.settings_profiles,
+        TABLE system.row_policies,
+        TABLE system.quotas,
+        TABLE system.functions,
+        ALL EXCEPT DATABASES INFORMATION_SCHEMA, information_schema, system
+    TO S3(
+        'https://testchbackups.s3.amazonaws.com/<uuid>',
+        '<key id>',
+        '<key secret>'
+    )
+    ```
 
-```sql
-BACKUP 
-    TABLE system.users,
-    TABLE system.roles,
-    TABLE system.settings_profiles,
-    TABLE system.row_policies,
-    TABLE system.quotas,
-    TABLE system.functions,
-    ALL EXCEPT DATABASES INFORMATION_SCHEMA, information_schema, system
-TO S3(
-    'https://testchbackups.s3.amazonaws.com/<uuid>',
-    '<key id>',
-    '<key secret>'
-)
-```
+    ここで `uuid` は、バックアップを識別するために使用される一意の識別子です。
+  </TabItem>
 
-ここで `uuid` は、バックアップを識別するために使用される一意の識別子です。
-
-</TabItem>
-<TabItem value="Restore" label="リストア" default>
-
-```sql
-RESTORE ALL
-FROM S3(
-    'https://testchbackups.s3.amazonaws.com/<uuid>',
-    '<key id>',
-    '<key secret>'
-)
-```
-</TabItem>
+  <TabItem value="Restore" label="リストア" default>
+    ```sql
+    RESTORE ALL EXCEPT TABLES system.users, system.roles
+    FROM S3(
+        'https://testchbackups.s3.amazonaws.com/<uuid>',
+        '<key id>',
+        '<key secret>'
+    )
+    ```
+  </TabItem>
 </Tabs>
 
 ## FAQ \{#backups-faq\}

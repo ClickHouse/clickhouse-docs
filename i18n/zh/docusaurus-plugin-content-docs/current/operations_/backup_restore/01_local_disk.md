@@ -95,7 +95,7 @@ RESTORE TABLE data AS data_restored FROM Disk('s3_plain', 'cloud_backup');
 
 * 该磁盘不应直接用于 `MergeTree` 本身，只应用于 `BACKUP`/`RESTORE`。
 * 如果你的表后端使用的是 S3 存储，并且这些磁盘的类型不同，
-  将不会通过 `CopyObject` 调用将数据分片复制到目标 bucket，而是先下载再上传，这非常低效。在这种情况下，建议针对该场景使用
+  将不会通过 `CopyObject` 调用将分区片段复制到目标 bucket，而是先下载再上传，这非常低效。在这种情况下，建议针对该场景使用
   `BACKUP ... TO S3(<endpoint>)` 语法。
   :::
 
@@ -140,14 +140,14 @@ RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 要在表中已存在数据的情况下恢复该表，请运行：
 
 ```sql
-RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
-在还原或备份表时，可以为其指定新名称：
+在恢复或备份表时，可以为其指定新名称：
 
 ```sql
-RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
 此备份的归档文件结构如下：
@@ -159,13 +159,12 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
         └── test_table.sql
 ```
 
-{/* TO DO: 
-  在此添加关于备份格式的说明。参见 Issue 24a
+{/* 待办： 
+  在此补充关于备份格式的说明。参见 Issue 24a
   https://github.com/ClickHouse/clickhouse-docs/issues/3968
   */ }
 
 除了 zip 之外，还可以使用其他格式。有关更多详细信息，请参见下文[“将备份保存为 tar 归档文件”](#backups-as-tar-archives)。
-
 
 ### 磁盘增量备份 \{#incremental-backups\}
 
@@ -196,8 +195,15 @@ FROM Disk('backups', 'incremental-a.zip');
 
 ### 保护备份 \{#assign-a-password-to-the-backup\}
 
-备份写入磁盘后，可以为文件设置密码。
-可以使用 `password` 配置项来指定密码：
+写入磁盘的备份可以为文件设置密码。
+可以使用 `password` SETTING 来指定密码。
+
+:::note
+密码保护仅支持 ZIP 归档文件（`.zip`、`.zipx`）。
+备份路径必须以 `.zip` 或 `.zipx` 结尾，系统才会接受该密码。
+如果将密码用于任何其他格式——包括 tar 归档文件和非归档路径——将会
+导致 `BAD_ARGUMENTS` 错误：`Password is not applicable, backup cannot be encrypted`。
+:::
 
 ```sql
 BACKUP TABLE test_db.test_table
@@ -205,14 +211,13 @@ TO Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
 
-要恢复受密码保护的备份，必须再次通过 `password` 设置项指定该密码：
+要恢复受密码保护的备份，必须再次使用 `password` SETTING 指定该密码：
 
 ```sql
 RESTORE TABLE test_db.test_table
 FROM Disk('backups', 'password-protected.zip')
 SETTINGS password='qwerty'
 ```
-
 
 ### 以 tar 归档形式的备份 \{#backups-as-tar-archives\}
 

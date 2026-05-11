@@ -46,19 +46,24 @@ keywords: ['ClickStack SDKs', 'ClickStack language SDKs', 'OpenTelemetry SDKs Cl
 
 ## 使用 API key 进行安全防护 \{#securing-api-key\}
 
+:::Not required for Managed ClickStack
+对于托管版 ClickStack，不需要使用 API key。
+:::
+
 为了通过 OTel collector 将数据发送到 ClickStack，SDK 需要指定一个摄取 API key。可以通过在 SDK 中使用 `init` 函数进行设置，或者通过设置 `OTEL_EXPORTER_OTLP_HEADERS` 环境变量来完成：
 
 ```shell
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-此 API 密钥由 HyperDX 应用程序生成，可在应用的 `Team Settings → API Keys` 中查看。
+此 API 密钥由 ClickStack UI（HyperDX）应用程序生成，可在应用的 `Team Settings → API Keys` 中查看。
 
 对于大多数支持 OpenTelemetry 的[语言 SDK](/use-cases/observability/clickstack/sdks) 和遥测库，你只需在应用程序中设置 `OTEL_EXPORTER_OTLP_ENDPOINT` 环境变量，或者在初始化 SDK 时进行配置即可：
 
 ```shell
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
+
 
 ## Kubernetes 集成 \{#kubernetes-integration\}
 

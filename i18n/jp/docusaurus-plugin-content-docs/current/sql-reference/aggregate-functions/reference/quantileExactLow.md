@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactLow \{#quantileExactLow\}
 
-導入バージョン: v20.8
+導入バージョン: v20.8.0
 
 [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact) と同様に、数値データ列の正確な[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
@@ -21,7 +21,7 @@ doc_type: 'reference'
 
 その他のレベルについては、`level * size_of_array` の値に対応するインデックスの要素が返されます。
 
-`quantile*` 関数を同じクエリ内で異なるレベルで複数使用する場合、内部状態はまとめて処理されません（そのため、クエリの効率は本来よりも低くなります）。このような場合は、[quantiles](/sql-reference/aggregate-functions/reference/quantiles) 関数を使用してください。
+`quantile*` 関数を同じクエリ内で異なるレベルで複数使用する場合、内部状態はまとめて処理されません (そのため、クエリの効率は本来よりも低くなります) 。このような場合は、[quantiles](/sql-reference/aggregate-functions/reference/quantiles) 関数を使用してください。
 
 **構文**
 
@@ -57,7 +57,7 @@ SELECT quantileExactLow(number) FROM numbers(10);
 └──────────────────────────┘
 ```
 
-**特定の分位レベルの算出**
+**特定の分位レベルの計算**
 
 ```sql title=Query
 SELECT quantileExactLow(0.1)(number) FROM numbers(10);

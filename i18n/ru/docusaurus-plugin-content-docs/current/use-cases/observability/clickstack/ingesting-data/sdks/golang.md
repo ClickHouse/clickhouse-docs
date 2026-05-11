@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['Golang ClickStack SDK', 'интеграция Go с OpenTelemetry', 'наблюдаемость в Golang', 'инструментирование трассировки в Go', 'ClickStack Go SDK']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ClickStack использует стандарт OpenTelemetry для сбора телеметрии (логов и
 трейсов). Трейсы автоматически генерируются с помощью автоматического инструментирования, поэтому
 ручное инструментирование не требуется, чтобы извлекать пользу из трассировки.
@@ -24,6 +27,7 @@ ClickStack использует стандарт OpenTelemetry для сбора
     </tr>
   </tbody>
 </table>
+
 
 ## Первые шаги \{#getting-started\}
 
@@ -232,13 +236,29 @@ func main() {
 
 ### Настройка переменных окружения \{#configure-environment-variables\}
 
-Далее необходимо задать в оболочке следующие переменные окружения, чтобы отправлять телеметрию в ClickStack:
+После этого необходимо настроить следующие переменные окружения в вашей оболочке, чтобы отправлять телеметрию в ClickStack через коллектор OpenTelemetry:
+
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="Управляемый ClickStack" default>
 
 ```shell
-export OTEL_EXPORTER_OTLP_ENDPOINT=https://localhost:4318 \
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
+OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
+```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack с открытым исходным кодом" >
+
+```shell
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://your-otel-collector:4318 \
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf \
 OTEL_SERVICE_NAME='<NAME_OF_YOUR_APP_OR_SERVICE>' \
 OTEL_EXPORTER_OTLP_HEADERS='authorization=<YOUR_INGESTION_API_KEY>'
 ```
 
-Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` должна содержать API-ключ, который можно получить в приложении HyperDX в разделе `Team Settings → API Keys`.
+</TabItem>
+</Tabs>
+
+Переменная окружения `OTEL_EXPORTER_OTLP_HEADERS` содержит API-ключ, который можно получить в приложении HyperDX в разделе `Team Settings → API Keys`.

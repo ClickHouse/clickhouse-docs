@@ -9,13 +9,12 @@ doc_type: 'reference'
 
 # argMinIf \{#argminif\}
 
-## 説明 \{#description\}
+## Description \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-関数に適用することで、条件が真となる行について `val` の最小値に対応する `arg` の値を求めることができます。この処理には `argMinIf` 集約コンビネータ関数を使用します。
+関数に適用でき、`argMinIf` 集約コンビネータ関数を使用して、条件が真である行について `val` の最小値に対応する `arg` の値を求めることができます。
 
-`argMinIf` 関数は、データセット内で最小値に対応する値を特定する必要があるものの、
-特定の条件を満たす行に限定してそれを行いたい場合に有用です。
+`argMinIf` 関数は、データセット内の最小値に関連付けられた値を求める必要があるものの、特定の条件を満たす行に対してのみそれを行いたい場合に便利です。
 
 ## 使用例 \{#example-usage\}
 
@@ -28,7 +27,8 @@ CREATE TABLE product_prices(
     price Decimal(10,2),
     timestamp DateTime,
     in_stock UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO product_prices VALUES
     (1, 10.99, '2024-01-01 10:00:00', 1),
@@ -57,8 +57,10 @@ GROUP BY product_id;
    └────────────┴────────────────────────────┘
 ```
 
+
 ## 関連項目 \{#see-also\}
-- [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-- [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-- [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
-- [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+* [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+* [`argMaxIf`](/examples/aggregate-function-combinators/argMaxIf)
+* [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)

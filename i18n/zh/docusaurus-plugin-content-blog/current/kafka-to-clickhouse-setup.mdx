@@ -12,7 +12,7 @@ keywords: ['Kafka']
 
 ## 概述 \{#overview\}
 
-本文将演示如何将数据从一个 Kafka topic 发送到一个 ClickHouse 表。我们将使用 Wiki 最近更改（recent changes）feed，它提供了一个[事件流](https://stream.wikimedia.org/v2/stream/recentchange)，用于表示对各个 Wikimedia 项目所做的更改。具体步骤包括：
+本文将演示如何将数据从一个 Kafka topic 发送到一个 ClickHouse 表。我们将使用 Wiki 最近更改 (recent changes) feed，它提供了一个[事件流](https://stream.wikimedia.org/v2/stream/recentchange)，用于表示对各个 Wikimedia 项目所做的更改。具体步骤包括：
 
 1. 如何在 Ubuntu 上安装和配置 Kafka
 2. 将数据流摄取到一个 Kafka topic 中
@@ -26,7 +26,7 @@ keywords: ['Kafka']
 ssh -i ~/training.pem ubuntu@ec2.compute.amazonaws.com
 ```
 
-2. 安装 Kafka（按照此处文档中的步骤进行： [https://www.linode.com/docs/guides/how-to-install-apache-kafka-on-ubuntu/](https://www.linode.com/docs/guides/how-to-install-apache-kafka-on-ubuntu/)）：
+2. 安装 Kafka (按照此处文档中的步骤进行： [https://www.linode.com/docs/guides/how-to-install-apache-kafka-on-ubuntu/](https://www.linode.com/docs/guides/how-to-install-apache-kafka-on-ubuntu/)) ：
 
 ```bash
 sudo apt update

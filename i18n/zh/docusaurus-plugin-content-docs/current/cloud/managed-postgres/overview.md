@@ -4,6 +4,8 @@ title: '托管 Postgres'
 description: '基于 NVMe 存储构建的快速、可扩展企业级 Postgres，原生集成 ClickHouse，用于实时分析'
 keywords: ['托管 Postgres', 'PostgreSQL', '云数据库', 'Postgres 服务', 'NVMe Postgres', 'ClickHouse 集成']
 doc_type: '指南'
+pagination_next: cloud/managed-postgres/quickstart
+pagination_prev: null
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';

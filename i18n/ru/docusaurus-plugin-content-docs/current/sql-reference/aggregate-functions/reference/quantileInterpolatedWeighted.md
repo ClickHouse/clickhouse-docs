@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileInterpolatedWeighted \{#quantileInterpolatedWeighted\}
 
-Появилась в: v23.1
+Появилась в: v23.1.0
 
 Вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных с использованием линейной интерполяции с учётом веса каждого элемента.
 

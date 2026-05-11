@@ -73,16 +73,16 @@ The Keeper cluster must be referenced in the ClickHouseCluster spec using `keepe
 
 ###  One-to-One Keeper relationship {#one-to-one-keeper-relationship}
 
-Each ClickHouseCluster must have its own dedicated KeeperCluster. You cannot share a single KeeperCluster between multiple ClickHouseClusters.
+Each ClickHouseCluster must have its own dedicated KeeperCluster. You can't share a single KeeperCluster between multiple ClickHouseClusters.
 
-**Why?** The operator automatically generates a unique authentication key for each ClickHouseCluster to access its Keeper. This key is stored in a Secret and cannot be shared.
+**Why?** The operator automatically generates a unique authentication key for each ClickHouseCluster to access its Keeper. This key is stored in a Secret and can't be shared.
 
 **Consequences**:
-- Multiple ClickHouseClusters cannot reference the same KeeperCluster
+- Multiple ClickHouseClusters can't reference the same KeeperCluster
 - Recreating a ClickHouseCluster requires recreating its KeeperCluster
 
 :::note
-Persistent Volumes are not deleted automatically when ClickHouseCluster or KeeperCluster resources are deleted.
+Persistent Volumes aren't deleted automatically when ClickHouseCluster or KeeperCluster resources are deleted.
 :::
 
 When recreating a cluster:
@@ -132,7 +132,7 @@ CREATE DATABASE my_database ON CLUSTER 'default' ENGINE = Replicated;
 Non-replicated database engines (Atomic, Lazy, SQLite, Ordinary) require manual schema management:
 - Tables must be created individually on each replica
 - Schema drift can occur between nodes
-- Operator cannot automatically sync new replicas
+- Operator can't automatically sync new replicas
 
 ### Disable schema replication {#disable-schema-replication}
 

@@ -19,11 +19,13 @@ import retool_04 from '@site/static/images/integrations/tools/data-integration/r
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+
 # Подключение Retool к ClickHouse \{#connecting-retool-to-clickhouse\}
 
 <PartnerBadge/>
 
 ## 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}
+
 <ConnectionDetails />
 
 ## 2. Создайте ресурс ClickHouse \{#2-create-a-clickhouse-resource\}
@@ -31,27 +33,32 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 Войдите в свой аккаунт Retool и перейдите на вкладку _Resources_. Выберите «Create New» → «Resource»:
 
 <Image img={retool_01} size="lg" border alt="Создание нового ресурса" />
+
 <br/>
 
 Выберите «JDBC» из списка доступных коннекторов:
 
 <Image img={retool_02} size="lg" border alt="Выбор коннектора JDBC" />
+
 <br/>
 
 В мастере настройки убедитесь, что в поле «Driver name» выбран `com.clickhouse.jdbc.ClickHouseDriver`:
 
 <Image img={retool_03} size="lg" border alt="Выбор правильного драйвера" />
+
 <br/>
 
 Укажите учетные данные ClickHouse в следующем формате: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`.
 Если для вашего экземпляра требуется SSL или вы используете ClickHouse Cloud, добавьте `&ssl=true` к строке подключения, чтобы она выглядела так: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
 
 <Image img={retool_04} size="lg" border alt="Указание учетных данных" />
+
 <br/>
 
 После этого протестируйте подключение:
 
 <Image img={retool_05} size="lg" border alt="Тестирование подключения" />
+
 <br/>
 
 Теперь вы можете перейти к работе в приложении, используя ресурс ClickHouse.

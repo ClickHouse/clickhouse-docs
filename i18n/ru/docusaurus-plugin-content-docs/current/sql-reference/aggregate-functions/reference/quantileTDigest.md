@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileTDigest \{#quantileTDigest\}
 
-Введена в версии: v1.1
+Введена в версии: v1.1.0
 
 Вычисляет приближенный [квантиль](https://en.wikipedia.org/wiki/Quantile) последовательности числовых данных с помощью алгоритма [t-digest](https://github.com/tdunning/t-digest/blob/master/docs/t-digest-paper/histo.pdf).
 

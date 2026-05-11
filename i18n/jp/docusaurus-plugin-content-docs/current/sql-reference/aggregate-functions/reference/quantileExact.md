@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## quantileExact \{#quantileExact\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データ列の[分位数](https://en.wikipedia.org/wiki/Quantile)を厳密に計算します。
 
@@ -18,7 +18,7 @@ doc_type: 'reference'
 そのため、この関数は `O(n)` のメモリを消費します。ここで `n` は渡された値の数です。
 ただし、値の数が少ない場合には、この関数は非常に効率的です。
 
-1つのクエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません（つまり、そのクエリは本来可能な場合ほど効率的には動作しません）。
+1つのクエリ内で異なるレベルを持つ複数の `quantile*` 関数を使用する場合、内部状態は結合されません (つまり、そのクエリは本来可能な場合ほど効率的には動作しません) 。
 このような場合は、[`quantiles`](/sql-reference/aggregate-functions/reference/quantiles#quantiles) 関数を使用してください。
 
 **構文**

@@ -1,0 +1,67 @@
+복제가 동작하려면 ClickHouse Keeper 클러스터를 설정하고 구성해야 합니다.
+ClickHouse Keeper는 데이터 복제를 위한 조정 시스템을 제공하며,
+대체로 사용할 수 있는 ZooKeeper를 대체하는 역할을 합니다.
+하지만 ClickHouse Keeper는 ZooKeeper보다 더 나은 보증과 신뢰성을 제공하고
+리소스를 더 적게 사용하므로 권장됩니다. 고가용성과 정족수(quorum)를 유지하기 위해
+최소 3개의 ClickHouse Keeper 노드를 실행하는 것이 좋습니다.
+
+:::note
+ClickHouse Keeper는 클러스터의 어느 노드에서든 ClickHouse와 함께 실행될 수 있지만,
+확장 및 ClickHouse Keeper 클러스터를 데이터베이스 클러스터와 독립적으로 관리할 수 있도록
+전용 노드에서 실행하는 것이 권장됩니다.
+:::
+
+다음 명령을 예제 폴더의 루트에서 실행하여 각 ClickHouse Keeper 노드에 대한
+`keeper_config.xml` 파일을 생성하십시오:
+
+```bash
+for i in {01..03}; do
+  touch fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper/keeper_config.xml
+done
+```
+
+각 노드 디렉터리 `fs/volumes/clickhouse-keeper-{}/etc/clickhouse-keeper`에 생성된
+비어 있는 설정 파일을 수정하십시오. 아래에서 강조 표시된 줄을 각 노드에
+맞게 변경해야 합니다.
+
+```xml title="/clickhouse-keeper/keeper_config.xml"
+<clickhouse replace="true">
+    <logger>
+        <level>information</level>
+        <log>/var/log/clickhouse-keeper/clickhouse-keeper.log</log>
+        <errorlog>/var/log/clickhouse-keeper/clickhouse-keeper.err.log</errorlog>
+        <size>1000M</size>
+        <count>3</count>
+    </logger>
+    <listen_host>0.0.0.0</listen_host>
+    <keeper_server>
+        <tcp_port>9181</tcp_port>
+        <!--highlight-next-line-->
+        <server_id>1</server_id>
+        <log_storage_path>/var/lib/clickhouse/coordination/log</log_storage_path>
+        <snapshot_storage_path>/var/lib/clickhouse/coordination/snapshots</snapshot_storage_path>
+        <coordination_settings>
+            <operation_timeout_ms>10000</operation_timeout_ms>
+            <session_timeout_ms>30000</session_timeout_ms>
+            <raft_logs_level>information</raft_logs_level>
+        </coordination_settings>
+        <raft_configuration>
+            <server>
+                <id>1</id>
+                <hostname>clickhouse-keeper-01</hostname>
+                <port>9234</port>
+            </server>
+            <server>
+                <id>2</id>
+                <hostname>clickhouse-keeper-02</hostname>
+                <port>9234</port>
+            </server>
+            <server>
+                <id>3</id>
+                <hostname>clickhouse-keeper-03</hostname>
+                <port>9234</port>
+            </server>
+        </raft_configuration>
+    </keeper_server>
+</clickhouse>
+```

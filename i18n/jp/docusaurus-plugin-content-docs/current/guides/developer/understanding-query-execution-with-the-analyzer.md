@@ -14,6 +14,7 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
+
 # アナライザーを使用したクエリ実行の理解 \{#understanding-query-execution-with-the-analyzer\}
 
 ClickHouseはクエリを非常に高速に処理しますが、クエリの実行は単純な話ではありません。`SELECT`クエリがどのように実行されるかを理解してみましょう。これを説明するために、ClickHouseのテーブルにいくつかのデータを追加しましょう：
@@ -36,9 +37,10 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 
 ClickHouseにデータがあるので、いくつかのクエリを実行して、その実行を理解したいと思います。クエリの実行は多くのステップに分解されます。クエリ実行の各ステップは、対応する`EXPLAIN`クエリを使用して分析およびトラブルシューティングできます。これらのステップを以下のチャートにまとめます：
 
-<Image img={analyzer1} alt="Explainクエリステップ" size="md"/>
+<Image img={analyzer1} alt="Explainクエリステップ" size="md" />
 
 クエリ実行中に動作する各エンティティを見てみましょう。いくつかのクエリを取り、`EXPLAIN`文を使用してそれらを検査します。
+
 
 ## パーサー \{#parser\}
 
@@ -67,9 +69,10 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 
 出力は、以下に示すように視覚化できる抽象構文木です：
 
-<Image img={analyzer2} alt="AST出力" size="md"/>
+<Image img={analyzer2} alt="AST出力" size="md" />
 
 各ノードには対応する子があり、ツリー全体がクエリの全体構造を表します。これは、クエリを処理するのに役立つ論理構造です。エンドユーザーの観点から（クエリ実行に興味がある場合を除く）、それほど有用ではありません。このツールは主に開発者によって使用されます。
+
 
 ## アナライザー \{#analyzer\}
 
@@ -126,7 +129,8 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 └───────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-2つの実行の間で、エイリアスと射影の解決を確認できます。
+2つの実行結果を比較すると、エイリアスや射影がどのように解決されるかが分かります。
+
 
 ## プランナー \{#planner\}
 
@@ -186,6 +190,7 @@ GROUP BY type
 
 これで、最後の射影（`minimum_date`、`maximum_date`、`percentage`）のために作成する必要がある列名がわかりますが、実行する必要があるすべてのアクションの詳細も知りたいかもしれません。`actions=1`を設定することでこれを行えます。
 
+
 ```sql
 EXPLAIN actions = 1
 WITH (
@@ -240,6 +245,7 @@ GROUP BY type
 
 これで、使用されているすべての入力、関数、エイリアス、データ型を確認できます。プランナーが適用する最適化のいくつかは[ここ](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)で確認できます。
 
+
 ## クエリパイプライン \{#query-pipeline\}
 
 クエリパイプラインはクエリプランから生成されます。クエリパイプラインはクエリプランと非常に似ていますが、違いは木ではなくグラフであることです。ClickHouseがクエリをどのように実行し、どのリソースが使用されるかを強調します。クエリパイプラインを分析することは、入出力の観点からボトルネックがどこにあるかを確認するのに非常に便利です。以前のクエリを取り、クエリパイプラインの実行を見てみましょう：
@@ -271,7 +277,7 @@ GROUP BY type;
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-括弧内はクエリプランのステップで、その隣がプロセッサです。これは素晴らしい情報ですが、これはグラフなので、そのように視覚化したいと思います。設定`graph`を1に設定し、出力形式をTSVに指定できます：
+括弧内はクエリプランのステップで、その隣がプロセッサです。これは有用な情報ですが、せっかくグラフ構造なので、そのように可視化できると便利です。`graph` 設定を 1 にし、出力形式を TSV に指定できます：
 
 ```sql
 EXPLAIN PIPELINE graph=1 WITH
@@ -334,7 +340,7 @@ digraph
 
 この出力をコピーして[ここ](https://dreampuf.github.io/GraphvizOnline)に貼り付けると、次のグラフが生成されます：
 
-<Image img={analyzer3} alt="グラフ出力" size="md"/>
+<Image img={analyzer3} alt="グラフ出力" size="md" />
 
 白い長方形はパイプラインノードに対応し、灰色の長方形はクエリプランステップに対応し、`x`の後に数字が続くのは使用されている入出力の数に対応します。コンパクトな形式で表示したくない場合は、いつでも`compact=0`を追加できます：
 
@@ -373,6 +379,7 @@ digraph
  n3 -> n5;
 }
 ```
+
 
 <Image img={analyzer4} alt="コンパクトグラフ出力" size="md" />
 
@@ -436,6 +443,7 @@ digraph
 <Image img={analyzer5} alt="並列グラフ出力" size="md" />
 
 つまり、エグゼキュータはデータ量が十分に多くなかったため、操作を並列化しないことを決定しました。より多くの行を追加することで、エグゼキュータはグラフに示されているように複数のスレッドを使用することを決定しました。
+
 
 ## エグゼキュータ \{#executor\}
 

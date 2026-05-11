@@ -12,6 +12,7 @@ keywords: ['clickstack', 'search', 'logs', 'observability', 'full-text search']
 import Image from '@theme/IdealImage';
 import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.png';
 import saved_search from '@site/static/images/use-cases/observability/clickstack-saved-search.png';
+import saved_search_listing from '@site/static/images/use-cases/observability/clickstack-saved-search-listing.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
 ClickStack allows you to do a full-text search on your events (logs and traces). You can get started searching by just typing keywords that match your events. For example, if your log contains "Error", you can find it by just typing in "Error" in the search bar.
@@ -19,11 +20,11 @@ ClickStack allows you to do a full-text search on your events (logs and traces).
 This same search syntax is used for filtering events with Dashboards and Charts
 as well.
 
-## Search Features {#search-features}
+## Search features {#search-features}
 
 ### Natural language search syntax {#natural-language-syntax}
 
-- Searches are not case sensitive
+- Searches aren't case sensitive
 - Searches match by whole word by default (ex. `Error` will match `Error here`
   but not `Errors here`). You can surround a word by wildcards to match partial
   words (ex. `*Error*` will match `AnyError` and `AnyErrors`)
@@ -59,18 +60,20 @@ as well.
 ### SQL search syntax {#sql-syntax}
 
 You can optionally toggle search inputs to be in SQL mode. This will accept any valid
-SQL WHERE clause for searching. This is useful for complex queries that cannot be
+SQL WHERE clause for searching. This is useful for complex queries that can't be
 expressed in Lucene syntax.
 
 ### Select statement {#select-statement}
 
 To specify the columns to display in the search results, you can use the `SELECT`
 input. This is a SQL SELECT expression for the columns to select in the search page.
-Aliases are not supported at this time (ex. you can not use `column as "alias"`).
+Aliases aren't supported at this time (ex. you can not use `column as "alias"`).
 
 ## Saved searches {#saved-searches}
 
-You can save your searches for quick access later. Once saved, your searches will appear in the left sidebar, making it easy to revisit frequently used search queries without having to reconstruct them.
+You can save your searches for quick access later. Once saved, your searches will appear on the `Saved Searches` page, making it easy to revisit frequently used search queries without having to reconstruct them.
+
+<Image img={saved_search_listing} alt="Saved Search Listing Page" size="lg" />
 
 To save a search, simply configure your search query and click the save button. You can give your saved search a descriptive name to help identify it later.
 

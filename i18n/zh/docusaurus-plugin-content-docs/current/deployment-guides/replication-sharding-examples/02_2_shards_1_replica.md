@@ -40,7 +40,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 - 你的机器上已安装 Docker
 
 <VerticalStepper level="h2">
-  ## 设置目录结构和测试环境
+  ## 搭建目录结构和测试环境
 
   <ExampleFiles />
 
@@ -54,18 +54,18 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   mkdir cluster_2S_1R
   cd cluster_2S_1R
 
-  # 创建 clickhouse-keeper 目录
+  # Create clickhouse-keeper directories
   for i in {01..03}; do
     mkdir -p fs/volumes/clickhouse-keeper-${i}/etc/clickhouse-keeper
   done
 
-  # 创建 clickhouse-server 目录
+  # Create clickhouse-server directories
   for i in {01..02}; do
     mkdir -p fs/volumes/clickhouse-${i}/etc/clickhouse-server
   done
   ```
 
-  将以下 `docker-compose.yml` 文件添加到 `clickhouse-cluster` 目录：
+  将以下 `docker-compose.yml` 文件添加到 `cluster_2S_1R` 目录：
 
   ```yaml title="docker-compose.yml"
   version: '3.8'
@@ -264,11 +264,11 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   集群配置在 `<remote_servers>` 块中设置。
   这里定义了集群名称 `cluster_2S_1R`。
 
-  `<cluster_2S_1R></cluster_2S_1R>` 块定义了集群的布局，
-  使用 `<shard></shard>` 和 `<replica></replica>` 设置，并作为
+  `<cluster_2S_1R></cluster_2S_1R>` 块定义了集群的布局,
+  使用 `<shard></shard>` 和 `<replica></replica>` 设置,并作为
   分布式 DDL 查询的模板。分布式 DDL 查询是指使用 `ON CLUSTER` 子句在整个
-  集群中执行的查询。默认情况下，分布式 DDL 查询
-  处于启用状态，但也可以通过设置 `allow_distributed_ddl_queries` 来禁用。
+  集群中执行的查询。默认情况下,分布式 DDL 查询
+  处于启用状态,但也可以通过设置 `allow_distributed_ddl_queries` 来禁用。
 
   `internal_replication` 默认设置为 false,因为每个分片仅有一个副本。
 
@@ -295,11 +295,11 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   #### Keeper 配置
 
-  `<ZooKeeper>` 部分用于指定 ClickHouse Keeper(或 ZooKeeper)的运行位置。
-  由于使用的是 ClickHouse Keeper 集群,需要指定集群中的每个 `<node>`,
+  `<ZooKeeper>` 部分用于指定 ClickHouse Keeper (或 ZooKeeper) 的运行位置。
+  由于使用的是 ClickHouse Keeper 集群，需要指定集群中的每个 `<node>`，
   并分别通过 `<host>` 和 `<port>` 标签指定其主机名和端口号。
 
-  ClickHouse Keeper 的设置将在教程的下一步骤中进行说明。
+  ClickHouse Keeper 的搭建将在教程的下一步骤中进行说明。
 
   ```xml
   <zookeeper>
@@ -319,7 +319,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   :::note
-  尽管可以在与 ClickHouse Server 相同的服务器上运行 ClickHouse Keeper,但在生产环境中,我们强烈建议将 ClickHouse Keeper 部署在专用主机上。
+  尽管可以在与 ClickHouse 服务端相同的服务器上运行 ClickHouse Keeper,但在生产环境中,我们强烈建议将 ClickHouse Keeper 部署在专用主机上。
   :::
 
   #### 宏配置
@@ -387,7 +387,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml) |
 
   在此示例中,为简化配置,默认用户未设置密码。
-  在生产环境中,不建议采用此配置。
+  在实际应用中,不建议采用此配置。
 
   :::note
   在此示例中,集群中所有节点的 `users.xml` 文件都相同。
@@ -434,7 +434,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   要验证集群是否正在运行,请连接到 `clickhouse-01` 或 `clickhouse-02` 并运行以下查询。连接到第一个节点的命令如下所示:
 
   ```bash
-  # 连接到任意节点
+  # Connect to any node
   docker exec -it clickhouse-01 clickhouse-client
   ```
 
@@ -457,7 +457,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
+     ┌─cluster───────┬─shard_num─┬─replica_num─┬─host_name─────┬─port─┐
   1. │ cluster_2S_1R │         1 │           1 │ clickhouse-01 │ 9000 │
   2. │ cluster_2S_1R │         2 │           1 │ clickhouse-02 │ 9000 │
   3. │ default       │         1 │           1 │ localhost     │ 9000 │
@@ -473,7 +473,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name───────┬─value─┬─path────────┐
+     ┌─name───────┬─value─┬─path────────┐
   1. │ task_queue │       │ /clickhouse │
   2. │ sessions   │       │ /clickhouse │
   3. │ clickhouse │       │ /           │
@@ -483,7 +483,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   <VerifyKeeperStatus />
 
-  至此,您已成功部署了一个单分片双副本的 ClickHouse 集群。
+  至此,您已成功搭建了一个包含两个分片、每个分片一个副本的 ClickHouse 集群。
   下一步,您将在该集群中创建表。
 
   ## 创建数据库
@@ -504,7 +504,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name───────────────┐
+     ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
@@ -529,7 +529,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response
-  ┌─name───────────────┐
+     ┌─name───────────────┐
   1. │ INFORMATION_SCHEMA │
   2. │ default            │
   3. │ information_schema │
@@ -570,7 +570,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   请注意,该查询与 [英国房产价格](/getting-started/example-datasets/uk-price-paid) 示例数据集教程中原始 `CREATE` 语句所使用的查询完全相同,唯一的区别是增加了 `ON CLUSTER` 子句。
 
-  `ON CLUSTER` 子句用于分布式执行 DDL(数据定义语言)查询,例如 `CREATE`、`DROP`、`ALTER` 和 `RENAME`,以确保这些架构变更应用于集群中的所有节点。
+  `ON CLUSTER` 子句用于分布式执行 DDL (数据定义语言) 查询，例如 `CREATE`、`DROP`、`ALTER` 和 `RENAME`，以确保这些 schema 变更应用于集群中的所有节点。
 
   您可以在各主机的客户端上运行以下查询，以确认表已在集群中创建：
 
@@ -579,7 +579,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌─name────────────────┐
+     ┌─name────────────────┐
   1. │ uk_price_paid_local │
      └─────────────────────┘
   ```
@@ -614,13 +614,13 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   现在从 `clickhouse-01` 或 `clickhouse-02` 运行以下查询：
 
   ```sql
-  -- 来自 clickhouse-01
+  -- from clickhouse-01
   SELECT * FROM test.test_table;
   --   ┌─id─┬─name───────────────┐
   -- 1.│  1 │ Clicky McClickface │
   --   └────┴────────────────────┘
 
-  -- 来自 clickhouse-02
+  --from clickhouse-02
   SELECT * FROM test.test_table;
   --   ┌─id─┬─name───────────────┐
   -- 1.│  1 │ Alexey Milovidov   │
@@ -635,7 +635,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   ## 创建分布式表
 
-  使用以下查询创建分布式表：
+  使用以下查询创建分布式表:
 
   ```sql
   CREATE TABLE test.test_table_dist ON CLUSTER cluster_2S_1R AS test.test_table
@@ -651,7 +651,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```sql
-  ┌─id─┬─name───────────────┐
+     ┌─id─┬─name───────────────┐
   1. │  1 │ Alexey Milovidov   │
   2. │  1 │ Clicky McClickface │
      └────┴────────────────────┘
@@ -716,26 +716,26 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  ┌──count()─┐
-  1. │ 30212555 │ -- 3021.26万
+     ┌──count()─┐
+  1. │ 30212555 │ -- 30.21 million
      └──────────┘
   ```
 
   在任一主机上运行以下查询,您将看到数据已基本均匀地分布在各个分片上(请注意,由于插入分片的选择是通过 `rand()` 设置的,因此您的结果可能会有所不同):
 
   ```sql
-  -- 来自 clickhouse-01
+  -- from clickhouse-01
   SELECT count(*)
   FROM uk.uk_price_paid_local
   --    ┌──count()─┐
-  -- 1. │ 15107353 │ -- 1511 万
+  -- 1. │ 15107353 │ -- 15.11 million
   --    └──────────┘
 
-  -- 来自 clickhouse-02
+  --from clickhouse-02
   SELECT count(*)
   FROM uk.uk_price_paid_local
   --    ┌──count()─┐
-  -- 1. │ 15105202 │ -- 1511 万
+  -- 1. │ 15105202 │ -- 15.11 million
   --    └──────────┘
   ```
 
@@ -767,15 +767,15 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   ```response title="Response"
-  从服务器收到异常（版本 25.5.2）：
-  Code: 279. DB::Exception: Received from localhost:9000. DB::Exception: 所有连接尝试均已失败。日志：
+  Received exception from server (version 25.5.2):
+  Code: 279. DB::Exception: Received from localhost:9000. DB::Exception: All connection tries failed. Log:
 
-  Code: 32. DB::Exception: 尝试在 EOF 后读取。 (ATTEMPT_TO_READ_AFTER_EOF) (version 25.5.2.47 (official build))
-  Code: 209. DB::NetException: 超时：连接超时： 192.168.7.1:9000 (clickhouse-01:9000, 192.168.7.1, 本地地址： 192.168.7.2:37484, 连接超时 1000 毫秒). (SOCKET_TIMEOUT) (version 25.5.2.47 (official build))
+  Code: 32. DB::Exception: Attempt to read after eof. (ATTEMPT_TO_READ_AFTER_EOF) (version 25.5.2.47 (official build))
+  Code: 209. DB::NetException: Timeout: connect timed out: 192.168.7.1:9000 (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484, connection timeout 1000 ms). (SOCKET_TIMEOUT) (version 25.5.2.47 (official build))
   #highlight-next-line
-  Code: 198. DB::NetException: 未找到主机地址： clickhouse-01: (clickhouse-01:9000, 192.168.7.1, 本地地址： 192.168.7.2:37484). (DNS_ERROR) (version 25.5.2.47 (official build))
+  Code: 198. DB::NetException: Not found address of host: clickhouse-01: (clickhouse-01:9000, 192.168.7.1, local address: 192.168.7.2:37484). (DNS_ERROR) (version 25.5.2.47 (official build))
 
-  : 执行远程操作时。 (ALL_CONNECTION_TRIES_FAILED)
+  : While executing Remote. (ALL_CONNECTION_TRIES_FAILED)
   ```
 
   遗憾的是,我们的集群不具备容错能力。如果其中一台主机发生故障,集群将被视为不健康状态,查询将会失败。这与我们在[前面示例](/architecture/replication)中看到的复制表不同——在复制表的情况下,即使其中一台主机发生故障,我们仍然能够插入数据。

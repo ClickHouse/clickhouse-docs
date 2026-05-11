@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## groupArrayLast \{#groupArrayLast\}
 
-Впервые появилась в: v23.1
+Впервые появилась в: v23.1.0
 
 Создает массив из последних значений аргумента.
 Например, `groupArrayLast(1)(x)` эквивалентно `[anyLast(x)]`.

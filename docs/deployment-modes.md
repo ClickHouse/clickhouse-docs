@@ -1,7 +1,7 @@
 ---
 slug: /deployment-modes
 sidebar_label: 'Deployment modes'
-description: 'ClickHouse offers four deployment options that all use the same powerful database engine, just packaged differently to suit your specific needs.'
+description: 'ClickHouse offers five deployment options that all use the same powerful database engine, just packaged differently to suit your specific needs.'
 title: 'Deployment modes'
 keywords: ['Deployment Modes', 'chDB']
 show_related_blogs: true
@@ -17,10 +17,11 @@ import Image from '@theme/IdealImage';
 ClickHouse is a versatile database system that can be deployed in several different ways depending on your needs. At its core, all deployment options **use the same powerful ClickHouse database engine** – what differs is how you interact with it and where it runs.
 
 Whether you're running large-scale analytics in production, doing local data analysis, or building applications, there's a deployment option designed for your use case. The consistency of the underlying engine means you get the same high performance and SQL compatibility across all deployment modes.
-This guide explores the four main ways to deploy and use ClickHouse:
+This guide explores the five main ways to deploy and use ClickHouse:
 
 * ClickHouse Server for traditional client/server deployments
 * ClickHouse Cloud for fully managed database operations
+* ClickHouse CLI for local development and cloud management
 * clickhouse-local for command-line data processing
 * chDB for embedding ClickHouse directly in applications
 
@@ -53,6 +54,24 @@ The SQL Console in ClickHouse Cloud includes a powerful [dashboarding](/cloud/ma
 For monitoring and optimization, ClickHouse Cloud includes built-in charts and [query insights](/cloud/get-started/query-insights). These tools provide deep visibility into your cluster's performance, helping you understand query patterns, resource utilization, and potential optimization opportunities. This level of observability is particularly valuable for teams that need to maintain high-performance analytics operations without dedicating resources to infrastructure management.
 
 The managed nature of the service means you don't need to worry about updates, backups, scaling, or security patches – these are all handled automatically. This makes it an ideal choice for organizations that want to focus on their data and applications rather than database administration.
+
+## ClickHouse CLI {#clickhouse-cli}
+
+The ClickHouse CLI (`clickhousectl`) is a command-line tool for local ClickHouse development and ClickHouse Cloud management. It simplifies the workflow of installing ClickHouse versions, launching and managing local server instances, and running queries.
+
+For local development, `clickhousectl` helps to install ClickHouse versions and run servers. You can install any ClickHouse version, spin up named servers, and connect via the built-in client. Each server gets its own data directory, so you can run multiple isolated environments side by side.
+
+`clickhousectl` also provides full management of ClickHouse Cloud resources, including creating and scaling services, managing API keys, and administering organizations, making it a unified tool for both local and cloud workflows.
+
+```bash
+# Install the CLI
+curl https://clickhouse.com/cli | sh
+
+# Install and start ClickHouse locally
+clickhousectl local install stable
+clickhousectl local server start
+clickhousectl local client
+```
 
 ## clickhouse-local {#clickhouse-local}
 

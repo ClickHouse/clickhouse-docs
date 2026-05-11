@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # Движок таблиц SQLite \{#sqlite-table-engine\}
 
 <CloudNotSupportedBadge />
@@ -29,6 +30,22 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 * `db_path` — Путь к файлу базы данных SQLite.
 * `table` — Название таблицы в базе данных SQLite.
+
+
+## Поддержка типов данных \{#data-types-support\}
+
+Когда вы явно указываете типы столбцов ClickHouse в определении таблицы, из столбцов SQLite типа TEXT могут быть распознаны следующие типы ClickHouse:
+
+- [Date](../../../sql-reference/data-types/date.md), [Date32](../../../sql-reference/data-types/date32.md)
+- [DateTime](../../../sql-reference/data-types/datetime.md), [DateTime64](../../../sql-reference/data-types/datetime64.md)
+- [UUID](../../../sql-reference/data-types/uuid.md)
+- [Enum8, Enum16](../../../sql-reference/data-types/enum.md)
+- [Decimal32, Decimal64, Decimal128, Decimal256](../../../sql-reference/data-types/decimal.md)
+- [FixedString](../../../sql-reference/data-types/fixedstring.md)
+- Все целочисленные типы ([UInt8, UInt16, UInt32, UInt64, Int8, Int16, Int32, Int64](../../../sql-reference/data-types/int-uint.md))
+- [Float32, Float64](../../../sql-reference/data-types/float.md)
+
+См. [SQLite database engine](../../../engines/database-engines/sqlite.md#data_types-support) для сопоставления типов по умолчанию.
 
 ## Пример использования \{#usage-example\}
 

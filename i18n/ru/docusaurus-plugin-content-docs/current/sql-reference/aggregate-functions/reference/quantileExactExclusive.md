@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantileExactExclusive \{#quantileExactExclusive\}
 
-Введена в: v20.1
+Введена в: v20.1.0
 
 Аналогично функции [`quantileExact`](/sql-reference/aggregate-functions/reference/quantileexact), эта функция вычисляет точный [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 

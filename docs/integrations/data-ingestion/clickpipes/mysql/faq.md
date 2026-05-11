@@ -17,14 +17,14 @@ integration:
 Yes, the MySQL ClickPipe supports MariaDB 10.0 and above. The configuration for it is very similar to MySQL, using GTID replication by default.
 
 ### Does the MySQL ClickPipe support PlanetScale, Vitess, or TiDB? {#does-the-clickpipe-support-planetscale-vitess}
-No, these do not support MySQL's binlog API.
+No, these don't support MySQL's binlog API.
 
 ### How is replication managed? {#how-is-replication-managed}
 We support both `GTID` & `FilePos` replication. Unlike Postgres there is no slot to manage offset. Instead, you must configure your MySQL server to have a sufficient binlog retention period. If our offset into the binlog becomes invalidated *(eg, mirror paused too long, or database failover occurs while using `FilePos` replication)* then you will need to resync the pipe. Make sure to optimize materialized views depending on destination tables, as inefficient queries can slow down ingestion to fall behind the retention period.
 
 It's also possible for an inactive database to rotate the log file without allowing ClickPipes to progress to a more recent offset. You may need to setup a heartbeat table with regularly scheduled updates.
 
-At the start of an initial load we record the binlog offset to start at. This offset must still be valid when the initial load finishes in order for CDC to progress. If you are ingesting a large amount of data be sure to configure an appropriate binlog retention period. While setting up tables you can speed up initial load by configuring *Use a custom partitioning key for initial load* for large tables under advanced settings so that we can load a single table in parallel.
+At the start of an initial load we record the binlog offset to start at. This offset must still be valid when the initial load finishes in order for CDC to progress. If you're ingesting a large amount of data be sure to configure an appropriate binlog retention period. While setting up tables you can speed up initial load by configuring *Use a custom partitioning key for initial load* for large tables under advanced settings so that we can load a single table in parallel.
 
 ### Why am I getting a TLS certificate validation error when connecting to MySQL? {#tls-certificate-validation-error}
 
@@ -46,11 +46,11 @@ Please refer to the [ClickPipes for MySQL: Schema Changes Propagation Support](.
 
 ### Do you support replicating MySQL foreign key cascading deletes `ON DELETE CASCADE`? {#support-on-delete-cascade}
 
-Due to how MySQL [handles cascading deletes](https://dev.mysql.com/doc/refman/8.0/en/innodb-and-mysql-replication.html), they are not written to the binlog. Therefore it's not possible for ClickPipes (or any CDC tool) to replicate them. This can lead to inconsistent data. It's advised to use triggers instead for supporting cascading deletes.
+Due to how MySQL [handles cascading deletes](https://dev.mysql.com/doc/refman/8.0/en/innodb-and-mysql-replication.html), they're not written to the binlog. Therefore it's not possible for ClickPipes (or any CDC tool) to replicate them. This can lead to inconsistent data. It's advised to use triggers instead for supporting cascading deletes.
 
 ### Why can I not replicate my table which has a dot in it? {#replicate-table-dot}
-PeerDB has a limitation currently where dots in source table identifiers - aka either schema name or table name - is not supported for replication as PeerDB cannot discern, in that case, what is the schema and what is the table as it splits on dot.
+PeerDB has a limitation currently where dots in source table identifiers - aka either schema name or table name - isn't supported for replication as PeerDB can't discern, in that case, what is the schema and what is the table as it splits on dot.
 Effort is being made to support input of schema and table separately to get around this limitation.
 
 ### Can I include columns I initially excluded from replication? {#include-excluded-columns}
-This is not yet supported, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.
+This isn't yet supported, an alternative would be to [resync the table](./table_resync.md) whose columns you want to include.

@@ -2,7 +2,7 @@
 sidebar_label: 'SSL user certificate authentication'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
-title: 'Configuring SSL User Certificate for Authentication'
+title: 'Configuring SSL user certificate for authentication'
 description: 'This guide provides simple and minimal settings to configure authentication with SSL user certificates.'
 doc_type: 'guide'
 keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
@@ -72,7 +72,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
     :::
 
     :::note
-    We recommend using SQL to define users and roles. However, if you are currently defining users and roles in configuration files, the user will look like:
+    We recommend using SQL to define users and roles. However, if you're currently defining users and roles in configuration files, the user will look like:
     ```xml
     <users>
         <cert_user>
@@ -94,7 +94,7 @@ For details on how to enable SQL users and set roles, refer to [Defining SQL Use
 
 1. Copy the user certificate, user key and CA certificate to a remote node.
 
-2. Configure OpenSSL in the ClickHouse [client config](/interfaces/cli.md#configuration_files) with certificate and paths.
+2. Configure OpenSSL in the ClickHouse [client config](/interfaces/client#configuration_files) with certificate and paths.
 
     ```xml
     <openSSL>

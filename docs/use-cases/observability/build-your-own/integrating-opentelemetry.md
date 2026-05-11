@@ -22,14 +22,14 @@ Any Observability solution requires a means of collecting and exporting logs and
 
 "OpenTelemetry is an Observability framework and toolkit designed to create and manage telemetry data such as traces, metrics, and logs."
 
-Unlike ClickHouse or Prometheus, OpenTelemetry is not an observability backend and rather focuses on the generation, collection, management, and export of telemetry data. While the initial goal of OpenTelemetry was to allow you to instrument your applications or systems using language-specific SDKs easily, it has expanded to include the collection of logs through the OpenTelemetry collector - an agent or proxy that receives, processes, and exports telemetry data.
+Unlike ClickHouse or Prometheus, OpenTelemetry isn't an observability backend and rather focuses on the generation, collection, management, and export of telemetry data. While the initial goal of OpenTelemetry was to allow you to instrument your applications or systems using language-specific SDKs easily, it has expanded to include the collection of logs through the OpenTelemetry collector - an agent or proxy that receives, processes, and exports telemetry data.
 
 ## ClickHouse relevant components {#clickhouse-relevant-components}
 
 OpenTelemetry consists of a number of components. As well as providing a data and API specification, standardized protocol, and naming conventions for fields/columns, OTel provides two capabilities which are fundamental to building an Observability solution with ClickHouse:
 
 - The [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) is a proxy that receives, processes, and exports telemetry data. A ClickHouse-powered solution uses this component for both log collection and event processing prior to batching and inserting.
-- [Language SDKs](https://opentelemetry.io/docs/languages/) that implement the specification, APIs, and export of telemetry data. These SDKs effectively ensure traces are correctly recorded within an application's code, generating constituent spans and ensuring context is propagated across services through metadata - thus formulating distributed traces and ensuring spans can be correlated. These SDKs are complemented by an ecosystem that automatically implements common libraries and frameworks, thus meaning the user is not required to change their code and obtains out-of-the-box instrumentation.
+- [Language SDKs](https://opentelemetry.io/docs/languages/) that implement the specification, APIs, and export of telemetry data. These SDKs effectively ensure traces are correctly recorded within an application's code, generating constituent spans and ensuring context is propagated across services through metadata - thus formulating distributed traces and ensuring spans can be correlated. These SDKs are complemented by an ecosystem that automatically implements common libraries and frameworks, thus meaning the user isn't required to change their code and obtains out-of-the-box instrumentation.
 
 A ClickHouse-powered Observability solution exploits both of these tools.
 
@@ -53,7 +53,7 @@ In order to collect logs and insert them into ClickHouse, we recommend using the
 - **Agent** - Agent instances collect data at the edge e.g. on servers or on Kubernetes nodes, or receive events directly from applications - instrumented with an OpenTelemetry SDK. In the latter case, the agent instance runs with the application or on the same host as the application (such as a sidecar or a DaemonSet). Agents can either send their data directly to ClickHouse or to a gateway instance. In the former case, this is referred to as [Agent deployment pattern](https://opentelemetry.io/docs/collector/deployment/agent/).
 - **Gateway**  - Gateway instances provide a standalone service (for example, a deployment in Kubernetes), typically per cluster, per data center, or per region. These receive events from applications (or other collectors as agents) via a single OTLP endpoint. Typically, a set of gateway instances are deployed, with an out-of-the-box load balancer used to distribute the load amongst them. If all agents and applications send their signals to this single endpoint, it is often referred to as a [Gateway deployment pattern](https://opentelemetry.io/docs/collector/deployment/gateway/).
 
-Below we assume a simple agent collector, sending its events directly to ClickHouse. See [Scaling with Gateways](#scaling-with-gateways) for further details on using gateways and when they are applicable.
+Below we assume a simple agent collector, sending its events directly to ClickHouse. See [Scaling with Gateways](#scaling-with-gateways) for further details on using gateways and when they're applicable.
 
 ### Collecting logs {#collecting-logs}
 
@@ -283,7 +283,7 @@ As demonstrated in the earlier example of setting the timestamp for a log event,
   - A [memory_limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) is used to prevent out of memory situations on the collector. See [Estimating Resources](#estimating-resources) for recommendations.
   - Any processor that does enrichment based on context. For example, the [Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor) allows the automatic setting of spans, metrics, and logs resource attributes with k8s metadata e.g. enriching events with their source pod id.
   - [Tail or head sampling](https://opentelemetry.io/docs/concepts/sampling/) if required for traces.
-  - [Basic filtering](https://opentelemetry.io/docs/collector/transforming-telemetry/) - Dropping events that are not required if this cannot be done via operator (see below).
+  - [Basic filtering](https://opentelemetry.io/docs/collector/transforming-telemetry/) - Dropping events that aren't required if this can't be done via operator (see below).
   - [Batching](https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/batchprocessor) - essential when working with ClickHouse to ensure data is sent in batches. See ["Exporting to ClickHouse"](#exporting-to-clickhouse).
 
 - **Operators** - [Operators](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/pkg/stanza/docs/operators/README.md) provide the most basic unit of processing available at the receiver. Basic parsing is supported, allowing fields such as the Severity and Timestamp to be set. JSON and regex parsing are supported here along with event filtering and basic transformations. We recommend performing event filtering here.
@@ -344,7 +344,7 @@ The ClickHouse exporter is part of the [OpenTelemetry Collector Contrib](https:/
 
 A full configuration file is shown below.
 
-[clickhouse-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N_otlp%3A*N____protocols%3A*N______grpc%3A*N________endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_5000*N*Nexporters%3A*N_clickhouse%3A*N___endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*Aasync*_insert*E1*N___*H_ttl%3A_72h*N___traces*_table*_name%3A_otel*_traces*N___logs*_table*_name%3A_otel*_logs*N___create*_schema%3A_true*N___timeout%3A_5s*N___database%3A_default*N___sending*_queue%3A*N_____queue*_size%3A_1000*N___retry*_on*_failure%3A*N_____enabled%3A_true*N_____initial*_interval%3A_5s*N_____max*_interval%3A_30s*N_____max*_elapsed*_time%3A_300s*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Bclickhouse%5D*N___traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Bclickhouse%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
+[clickhouse-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N_otlp%3A*N____protocols%3A*N______grpc%3A*N________endpoint%3A_0.0.0.0%3A4317*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_10000*N*Nexporters%3A*N_clickhouse%3A*N___endpoint%3A_tcp%3A%2F%2Flocalhost%3A9000*Qdial*_timeout*E10s*Acompress*Elz4*Aasync*_insert*E1*N___*H_ttl%3A_72h*N___traces*_table*_name%3A_otel*_traces*N___logs*_table*_name%3A_otel*_logs*N___create*_schema%3A_true*N___timeout%3A_5s*N___database%3A_default*N___sending*_queue%3A*N_____queue*_size%3A_1000*N___retry*_on*_failure%3A*N_____enabled%3A_true*N_____initial*_interval%3A_5s*N_____max*_interval%3A_30s*N_____max*_elapsed*_time%3A_300s*N*Nservice%3A*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Bclickhouse%5D*N___traces%3A*N____receivers%3A_%5Botlp%5D*N____processors%3A_%5Bbatch%5D*N____exporters%3A_%5Bclickhouse%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
@@ -364,7 +364,7 @@ receivers:
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 5000
+    send_batch_size: 10000
 exporters:
   clickhouse:
     endpoint: tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1
@@ -399,14 +399,14 @@ Note the following key settings:
 - **pipelines** - The above configuration highlights the use of [pipelines](https://opentelemetry.io/docs/collector/configuration/#pipelines), consisting of a set of receivers, processors and exporters with one for logs and traces.
 - **endpoint** - Communication with ClickHouse is configured via the `endpoint` parameter. The connection string `tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1` causes communication to occur over TCP. If you prefer HTTP for traffic-switching reasons, modify this connection string as described [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options). Full connection details, with the ability to specify a username and password within this connection string, are described [here](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options).
 
-**Important:** Note the above connection string enables both compression (lz4) as well as asynchronous inserts. We recommend both are always enabled. See [Batching](#batching) for further details on asynchronous inserts. Compression should always be specified and will not by default be enabled by default on older versions of the exporter.
+**Important:** Note the above connection string enables both compression (lz4) as well as asynchronous inserts. We recommend both are always enabled. See [Batching](#batching) for further details on asynchronous inserts. Compression should always be specified and won't by default be enabled by default on older versions of the exporter.
 
 - **ttl** - the value here determines how long data is retained. Further details in "Managing data". This should be specified as a time unit in hours e.g. 72h. We disable TTL in the example below since our data is from 2019 and will be removed by ClickHouse immediately if inserted.
 - **traces_table_name** and **logs_table_name** - determines the name of the logs and traces table.
 - **create_schema** - determines if tables are created with the default schemas on startup. Defaults to true for getting started. You should set it to false and define their own schema.
 - **database** - target database.
 - **retry_on_failure** - settings to determine whether failed batches should be tried.
-- **batch** - a batch processor ensures events are sent as batches. We recommend a value of around 5000 with a timeout of 5s. Whichever of these is reached first will initiate a batch to be flushed to the exporter. Lowering these values will mean a lower latency pipeline with data available for querying sooner, at the expense of more connections and batches sent to ClickHouse. This is not recommended if you are not using [asynchronous inserts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) as it may cause issues with [too many parts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts) in ClickHouse. Conversely, if you are using asynchronous inserts these availability data for querying will also be dependent on asynchronous insert settings - although data will still be flushed from the connector sooner. See [Batching](#batching) for more details.
+- **batch** - a batch processor ensures events are sent as batches. We recommend a value of at least 10,000 with a timeout of 5s (values up to 100,000 can be used if memory allows). Whichever of these is reached first will initiate a batch to be flushed to the exporter. Lowering these values will mean a lower latency pipeline with data available for querying sooner, at the expense of more connections and batches sent to ClickHouse. This isn't recommended if you're not using [asynchronous inserts](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) as it may cause issues with [too many parts](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts) in ClickHouse. Conversely, if you're using asynchronous inserts these availability data for querying will also be dependent on asynchronous insert settings - although data will still be flushed from the connector sooner. See [Batching](#batching) for more details.
 - **sending_queue** - controls the size of the sending queue. Each item in the queue contains a batch. If this queue is exceeded e.g. due to ClickHouse being unreachable but events continue to arrive, batches will be dropped.
 
 Assuming users have extracted the structured log file and have a [local instance of ClickHouse](/install) running (with default authentication), you can run this configuration via the command:
@@ -533,7 +533,7 @@ A few important notes on this schema:
 
 - By default, the table is partitioned by date via `PARTITION BY toDate(Timestamp)`. This makes it efficient to drop data that expires.
 - The TTL is set via `TTL toDateTime(Timestamp) + toIntervalDay(3)` and corresponds to the value set in the collector configuration. [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) means only whole parts are dropped when all the contained rows have expired. This is more efficient than dropping rows within parts, which incurs an expensive delete. We recommend this always be set. See [Data management with TTL](/observability/managing-data#data-management-with-ttl-time-to-live) for more details.
-- The table uses the classic [`MergeTree` engine](/engines/table-engines/mergetree-family/mergetree). This is recommended for logs and traces and should not need to be changed.
+- The table uses the classic [`MergeTree` engine](/engines/table-engines/mergetree-family/mergetree). This is recommended for logs and traces and shouldn't need to be changed.
 - The table is ordered by `ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)`. This means queries will be optimized for filters on `ServiceName`, `SeverityText`, `Timestamp` and `TraceId` - earlier columns in the list will filter faster than later ones e.g. filtering by `ServiceName` will be significantly faster than filtering by `TraceId`. You should modify this ordering according to their expected access patterns - see [Choosing a primary key](/use-cases/observability/schema-design#choosing-a-primary-ordering-key).
 - The above schema applies `ZSTD(1)` to columns. This offers the best compression for logs. You can increase the ZSTD compression level (above the default of 1) for better compression, although this is rarely beneficial.  Increasing this value will incur greater CPU overhead at insert time (during compression), although decompression (and thus queries) should remain comparable. See [here](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) for further details. Additional [delta encoding](/sql-reference/statements/create/table#delta) is applied to the Timestamp with the aim of reducing its size on disk.
 - Note how [`ResourceAttributes`](https://opentelemetry.io/docs/specs/otel/resource/sdk/), [`LogAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-attributes) and [`ScopeAttributes`](https://opentelemetry.io/docs/specs/otel/logs/data-model/#field-instrumentationscope) are maps. It's important to understand the differences between them. See ["Using maps"](/use-cases/observability/schema-design#using-maps) for how to access these maps and optimize accessing keys within them.
@@ -598,27 +598,27 @@ By default, inserts into ClickHouse are synchronous and idempotent if identical.
 
 From the collector's perspective, (1) and (2) can be hard to distinguish. However, in both cases, the unacknowledged insert can just immediately be retried. As long as the retried insert query contains the same data in the same order, ClickHouse will automatically ignore the retried insert if the (unacknowledged) original insert succeeded.
 
-We recommend users use the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) shown in earlier configurations to satisfy the above. This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 5000 events can be sent in each insert, this is usually the only batching required in the pipeline. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
+We recommend users use the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) shown in earlier configurations to satisfy the above. This ensures inserts are sent as consistent batches of rows satisfying the above requirements. If a collector is expected to have high throughput (events per second), and at least 10,000 events can be sent in each insert, this is usually the only batching required in the pipeline. Values up to 100,000 can be used if memory allows. In this case the collector will flush batches before the batch processor's `timeout` is reached, ensuring the end-to-end latency of the pipeline remains low and batches are of a consistent size.
 
 ### Use asynchronous inserts {#use-asynchronous-inserts}
 
 Typically, users are forced to send smaller batches when the throughput of a collector is low, and yet they still expect data to reach ClickHouse within a minimum end-to-end latency. In this case, small batches are sent when the `timeout` of the batch processor expires. This can cause problems and is when asynchronous inserts are required. This case typically arises when **collectors in the agent role are configured to send directly to ClickHouse**. Gateways, by acting as aggregators, can alleviate this problem - see [Scaling with Gateways](#scaling-with-gateways).
 
-If large batches cannot be guaranteed, you can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
+If large batches can't be guaranteed, you can delegate batching to ClickHouse using [Asynchronous Inserts](/best-practices/selecting-an-insert-strategy#asynchronous-inserts). With asynchronous inserts, data is inserted into a buffer first and then written to the database storage later or asynchronously respectively.
 
 <Image img={observability_6} alt="Async inserts" size="md"/>
 
-With [enabled asynchronous inserts](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data is not searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
+With [enabled asynchronous inserts](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), when ClickHouse ① receives an insert query, the query's data is ② immediately written into an in-memory buffer first. When ③ the next buffer flush takes place, the buffer's data is [sorted](/guides/best-practices/sparse-primary-indexes#data-is-stored-on-disk-ordered-by-primary-key-columns) and written as a part to the database storage. Note, that the data isn't searchable by queries before being flushed to the database storage; the buffer flush is [configurable](/optimize/asynchronous-inserts).
 
 To enable asynchronous inserts for the collector, add `async_insert=1` to the connection string. We recommend users use `wait_for_async_insert=1` (the default) to get delivery guarantees - see [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse) for further details.
 
 Data from an async insert is inserted once the ClickHouse buffer is flushed. This occurs either after the [`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size) is exceeded or after [`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_max_data_size) milliseconds since the first INSERT query. If the `async_insert_stale_timeout_ms` is set to a non-zero value, the data is inserted after `async_insert_stale_timeout_ms milliseconds` since the last query. You can tune these settings to control the end-to-end latency of their pipeline. Further settings which can be used to tune buffer flushing are documented [here](/operations/settings/settings#async_insert). Generally, defaults are appropriate.
 
 :::note Consider Adaptive Asynchronous Inserts
-In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these are not applicable to high throughput Observability use cases, as seen with ClickHouse.
+In cases where a low number of agents are in use, with low throughput but strict end-to-end latency requirements, [adaptive asynchronous inserts](https://clickhouse.com/blog/clickhouse-release-24-02#adaptive-asynchronous-inserts) may be useful. Generally, these aren't applicable to high throughput Observability use cases, as seen with ClickHouse.
 :::
 
-Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse is not enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate).
+Finally, the previous deduplication behavior associated with synchronous inserts into ClickHouse isn't enabled by default when using asynchronous inserts. If required, see the setting [`async_insert_deduplicate`](/operations/settings/settings#async_insert_deduplicate).
 
 Full details on configuring this feature can be found [here](/optimize/asynchronous-inserts#enabling-asynchronous-inserts), with a deep dive [here](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse).
 
@@ -632,7 +632,7 @@ In an agent only architecture, users deploy the OTel collector as agents to the 
 
 <Image img={observability_7} alt="Agents only" size="md"/>
 
-This architecture is appropriate for small to medium-sized deployments. Its principal advantage is it does not require additional hardware and keeps the total resource footprint of the ClickHouse observability solution minimal, with a simple mapping between applications and collectors.
+This architecture is appropriate for small to medium-sized deployments. Its principal advantage is it doesn't require additional hardware and keeps the total resource footprint of the ClickHouse observability solution minimal, with a simple mapping between applications and collectors.
 
 You should consider migrating to a Gateway-based architecture once the number of agents exceeds several hundred. This architecture has several disadvantages which make it challenging to scale:
 
@@ -648,7 +648,7 @@ OTel collectors can be deployed as Gateway instances to address the above limita
 
 The objective of this architecture is to offload computationally intensive processing from the agents, thereby minimizing their resource usage. These gateways can perform transformation tasks that would otherwise need to be done by agents. Furthermore, by aggregating events from many agents, the gateways can ensure large batches are sent to ClickHouse - allowing efficient insertion. These gateway collectors can easily be scaled as more agents are added and event throughput increases. An example gateway configuration, with an associated agent config consuming the example structured log file, is shown below. Note the use of OTLP for communication between the agent and gateway.
 
-[clickhouse-agent-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_1000*N*Nexporters%3A*N_otlp%3A*N___endpoint%3A_localhost%3A4317*N___tls%3A*N_____insecure%3A_true_*H_Set_to_false_if_you_are_using_a_secure_connection*N*Nservice%3A*N_telemetry%3A*N___metrics%3A*N_____address%3A_0.0.0.0%3A9888_*H_Modified_as_2_collectors_running_on_same_host*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Botlp%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
+[clickhouse-agent-config.yaml](https://www.otelbin.io/#config=receivers%3A*N_filelog%3A*N___include%3A*N_____-_%2Fopt%2Fdata%2Flogs%2Faccess-structured.log*N___start*_at%3A_beginning*N___operators%3A*N_____-_type%3A_json*_parser*N_______timestamp%3A*N_________parse*_from%3A_attributes.time*_local*N_________layout%3A_*%22*.Y-*.m-*.d_*.H%3A*.M%3A*.S*%22*N*Nprocessors%3A*N_batch%3A*N___timeout%3A_5s*N___send*_batch*_size%3A_10000*N*Nexporters%3A*N_otlp%3A*N___endpoint%3A_localhost%3A4317*N___tls%3A*N_____insecure%3A_true_*H_Set_to_false_if_you_are_using_a_secure_connection*N*Nservice%3A*N_telemetry%3A*N___metrics%3A*N_____address%3A_0.0.0.0%3A9888_*H_Modified_as_2_collectors_running_on_same_host*N_pipelines%3A*N___logs%3A*N_____receivers%3A_%5Bfilelog%5D*N_____processors%3A_%5Bbatch%5D*N_____exporters%3A_%5Botlp%5D%7E&distro=otelcol-contrib%7E&distroVersion=v0.103.1%7E)
 
 ```yaml
 receivers:
@@ -664,7 +664,7 @@ receivers:
 processors:
   batch:
     timeout: 5s
-    send_batch_size: 1000
+    send_batch_size: 10000
 exporters:
   otlp:
     endpoint: localhost:4317
@@ -730,11 +730,11 @@ For an example of managing larger gateway-based architectures with associated le
 
 ### Adding Kafka {#adding-kafka}
 
-Readers may notice the above architectures do not use Kafka as a message queue.
+Readers may notice the above architectures don't use Kafka as a message queue.
 
 Using a Kafka queue as a message buffer is a popular design pattern seen in logging architectures and was popularized by the ELK stack. It provides a few benefits; principally, it helps provide stronger message delivery guarantees and helps deal with backpressure. Messages are sent from collection agents to Kafka and written to disk. In theory, a clustered Kafka instance should provide a high throughput message buffer since it incurs less computational overhead to write data linearly to disk than parse and process a message – in Elastic, for example, the tokenization and indexing incurs significant overhead. By moving data away from the agents, you also incur less risk of losing messages as a result of log rotation at the source. Finally, it offers some message reply and cross-region replication capabilities, which might be attractive for some use cases.
 
-However, ClickHouse can handle inserting data very quickly - millions of rows per second on moderate hardware. Back pressure from ClickHouse is **rare**. Often, leveraging a Kafka queue means more architectural complexity and cost. If you can embrace the principle that logs do not need the same delivery guarantees as bank transactions and other mission-critical data, we recommend avoiding the complexity of Kafka.
+However, ClickHouse can handle inserting data very quickly - millions of rows per second on moderate hardware. Back pressure from ClickHouse is **rare**. Often, leveraging a Kafka queue means more architectural complexity and cost. If you can embrace the principle that logs don't need the same delivery guarantees as bank transactions and other mission-critical data, we recommend avoiding the complexity of Kafka.
 
 However, if you require high delivery guarantees or the ability to replay data (potentially to multiple sources), Kafka can be a useful architectural addition.
 

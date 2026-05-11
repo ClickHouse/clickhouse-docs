@@ -251,7 +251,7 @@ ALTER TABLE my_table
       trade_date + INTERVAL 4 YEAR TO VOLUME 'cold_volume';
 ```
 
-5. 新的 `TTL` 规则应该已经生效，不过您可以手动触发以确保其已应用：
+5. 新的 `TTL` 规则应会自动生效，但您也可以手动触发以确保其已应用：
 
 ```sql
 ALTER TABLE my_table

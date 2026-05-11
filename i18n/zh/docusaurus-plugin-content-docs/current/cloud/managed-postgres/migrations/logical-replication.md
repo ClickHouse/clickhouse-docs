@@ -44,6 +44,15 @@ dig +short <your-managed-postgres-hostname>
     ```sql
     GRANT rds_replication TO <your-username>;
     ```
+- 用于目标数据库的角色必须对目标数据库中的对象具有写权限：
+    ```sql
+    GRANT USAGE ON SCHEMA <schema_i> TO subscriber_user;
+    GRANT CREATE ON DATABASE destination_db TO subscriber_user;
+    GRANT pg_create_subscription TO subscriber_user;
+
+    -- 授予表级权限
+    GRANT INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA <schema_i> TO subscriber_user;
+    ```
 
 确保你的源数据库按如下所示完成配置：
 

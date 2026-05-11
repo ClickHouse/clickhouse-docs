@@ -2,7 +2,7 @@
 description: 'Набор данных, содержащий все события на GitHub с 2011 года по 6 декабря 2020 года, объемом 3,1 миллиарда записей.'
 sidebar_label: 'События GitHub'
 slug: /getting-started/example-datasets/github-events
-title: 'Набор данных GitHub Events'
+title: 'Набор данных GitHub events'
 doc_type: 'guide'
 keywords: ['события GitHub', 'данные систем контроля версий', 'данные об активности разработчиков', 'пример набора данных', 'начало работы']
 ---

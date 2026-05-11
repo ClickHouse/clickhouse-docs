@@ -17,7 +17,7 @@ import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
 # Confluent HTTP sink connector
-The HTTP Sink Connector is data type agnostic and thus does not need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
+The HTTP Sink Connector is data type agnostic and thus doesn't need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
 
 Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table.
 
@@ -105,7 +105,7 @@ and verify the created message's been written to your ClickHouse instance.
 #### HTTP Sink doesn't batch messages {#http-sink-doesnt-batch-messages}
 
 From the [Sink documentation](https://docs.confluent.io/kafka-connectors/http/current/overview.html#http-sink-connector-for-cp):
-> The HTTP Sink connector does not batch requests for messages containing Kafka header values that are different.
+> The HTTP Sink connector doesn't batch requests for messages containing Kafka header values that are different.
 
 1. Verify your Kafka records have the same key.
 2. When you add parameters to the HTTP API URL, each record can result in a unique URL. For this reason, batching is disabled when using additional URL parameters.
@@ -128,7 +128,7 @@ Note that this example preserves the Array fields of the Github dataset. We assu
 
 Follow [these instructions](https://docs.confluent.io/cloud/current/cp-component/connect-cloud-config.html#set-up-a-local-connect-worker-with-cp-install) for setting up Connect relevant to your installation type, noting the differences between a standalone and distributed cluster. If using Confluent Cloud, the distributed setup is relevant.
 
-The most important parameter is the `http.api.url`. The [HTTP interface](/interfaces/http) for ClickHouse requires you to encode the INSERT statement as a parameter in the URL. This must include the format (`JSONEachRow` in this case) and target database. The format must be consistent with the Kafka data, which will be converted to a string in the HTTP payload. These parameters must be URL escaped. An example of this format for the Github dataset (assuming you are running ClickHouse locally) is shown below:
+The most important parameter is the `http.api.url`. The [HTTP interface](/interfaces/http) for ClickHouse requires you to encode the INSERT statement as a parameter in the URL. This must include the format (`JSONEachRow` in this case) and target database. The format must be consistent with the Kafka data, which will be converted to a string in the HTTP payload. These parameters must be URL escaped. An example of this format for the Github dataset (assuming you're running ClickHouse locally) is shown below:
 
 ```response
 <protocol>://<clickhouse_host>:<clickhouse_port>?query=INSERT%20INTO%20<database>.<table>%20FORMAT%20JSONEachRow
@@ -141,14 +141,14 @@ The following additional parameters are relevant to using the HTTP Sink with Cli
 * `request.method` - Set to **POST**
 * `retry.on.status.codes` - Set to 400-500 to retry on any error codes. Refine based expected errors in data.
 * `request.body.format` - In most cases this will be JSON.
-* `auth.type` - Set to BASIC if you security with ClickHouse. Other ClickHouse compatible authentication mechanisms are not currently supported.
+* `auth.type` - Set to BASIC if you security with ClickHouse. Other ClickHouse compatible authentication mechanisms aren't currently supported.
 * `ssl.enabled` - set to true if using SSL.
 * `connection.user` - username for ClickHouse.
 * `connection.password` - password for ClickHouse.
 * `batch.max.size` - The number of rows to send in a single batch. Ensure this set is to an appropriately large number. Per ClickHouse [recommendations](/sql-reference/statements/insert-into#performance-considerations) a value of 1000 should be considered a minimum.
 * `tasks.max` - The HTTP Sink connector supports running one or more tasks. This can be used to increase performance. Along with batch size this represents your primary means of improving performance.
 * `key.converter` - set according to the types of your keys.
-* `value.converter` - set based on the type of data on your topic. This data does not need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. [Avro format](/interfaces/formats/Avro) is also supported in ClickHouse if using the io.confluent.connect.avro.AvroConverter converter.
+* `value.converter` - set based on the type of data on your topic. This data doesn't need a schema. The format here must be consistent with the FORMAT specified in the parameter `http.api.url`. The simplest here is to use JSON and the org.apache.kafka.connect.json.JsonConverter converter. Treating the value as a string, via the converter org.apache.kafka.connect.storage.StringConverter, is also possible - although this will require the user to extract a value in the insert statement using functions. [Avro format](/interfaces/formats/Avro) is also supported in ClickHouse if using the io.confluent.connect.avro.AvroConverter converter.
 
 A full list of settings, including how to configure a proxy, retries, and advanced SSL, can be found [here](https://docs.confluent.io/kafka-connect-http/current/connector_config.html).
 

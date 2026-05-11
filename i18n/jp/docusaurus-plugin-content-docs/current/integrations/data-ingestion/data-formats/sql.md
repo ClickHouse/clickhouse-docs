@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'SQL ダンプ'
 slug: /integrations/data-formats/sql
-title: 'ClickHouse への SQL データの挿入とダンプ'
+title: 'ClickHouse での SQL データの挿入とダンプ'
 description: '他のデータベースと ClickHouse の間で、SQL ダンプを使用してデータを転送する方法を説明するページです。'
 doc_type: 'guide'
-keywords: ['SQL 形式', 'データエクスポート', 'データインポート', 'バックアップ', 'SQL ダンプ']
+keywords: ['SQL フォーマット', 'データエクスポート', 'データインポート', 'バックアップ', 'SQL ダンプ']
 ---
 
 # ClickHouse での SQL データの挿入とダンプ \{#inserting-and-dumping-sql-data-in-clickhouse\}
@@ -13,7 +13,7 @@ ClickHouse は、さまざまな方法で OLTP データベース基盤に容易
 
 ## SQL ダンプの作成 \{#creating-sql-dumps\}
 
-[SQLInsert](/interfaces/formats/SQLInsert) を使用すると、データを SQL 形式でダンプできます。ClickHouse はデータを `INSERT INTO &lt;table name&gt; VALUES(...` 形式で出力し、テーブル名として [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) 設定オプションを使用します。
+[SQLInsert](/interfaces/formats/SQLInsert) を使用すると、データを SQL フォーマットでダンプできます。ClickHouse はデータを `INSERT INTO <table name> VALUES(...` 形式で出力し、テーブル名として [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) 設定オプションを使用します。
 
 ```sql
 SET output_format_sql_insert_table_name = 'some_table';
@@ -56,7 +56,7 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 
 ## SQLダンプからのデータ挿入 \{#inserting-data-from-sql-dumps\}
 
-SQL ダンプを読み込むには、[MySQLDump](/interfaces/formats/MySQLDump) を使用します。
+SQL ダンプを読み込むには、[MySQLDump](/interfaces/formats/MySQLDump) を使用します：
 
 ```sql
 SELECT *
@@ -74,7 +74,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-デフォルトでは、ClickHouse は未知のカラムをスキップし（[input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) オプションで制御）、ダンプ内で最初に見つかったテーブルのデータのみを処理します（複数のテーブルが 1 つのファイルにダンプされている場合）。DDL ステートメントはスキップされます。MySQL のダンプ（[mysql.sql](assets/mysql.sql) ファイル）からテーブルにデータをロードするには、次のようにします：
+デフォルトでは、ClickHouse は未知のカラムをスキップし ([input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) オプションで制御) 、ダンプ内で最初に見つかったテーブルのデータのみを処理します (複数のテーブルが 1 つのファイルにダンプされている場合) 。DDL ステートメントはスキップされます。MySQL のダンプ ([mysql.sql](assets/mysql.sql) ファイル) からテーブルにデータをロードするには、次のようにします：
 
 ```sql
 INSERT INTO some_data
@@ -109,11 +109,11 @@ DESCRIBE TABLE table_from_mysql;
 
 ClickHouse は多くのフォーマットをサポートしており、テキスト形式とバイナリ形式の両方を提供して、さまざまなユースケースやプラットフォームをカバーします。以下の記事では、さらに多くのフォーマットとその扱い方を紹介します。
 
-- [CSV と TSV フォーマット](csv-tsv.md)
-- [Parquet](parquet.md)
-- [JSON フォーマット](/integrations/data-ingestion/data-formats/json/intro.md)
-- [Regex とテンプレート](templates-regex.md)
-- [ネイティブおよびバイナリフォーマット](binary.md)
-- **SQL フォーマット**
+* [CSV と TSV フォーマット](csv-tsv.md)
+* [Parquet](parquet.md)
+* [JSON フォーマット](/integrations/data-ingestion/data-formats/json/intro.md)
+* [Regex とテンプレート](templates-regex.md)
+* [ネイティブおよびバイナリフォーマット](binary.md)
+* **SQL フォーマット**
 
 また、[clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) も参照してください。ClickHouse サーバーを起動することなく、ローカル／リモートファイルを扱うことができる移植性の高いフル機能ツールです。

@@ -192,6 +192,17 @@ df.write
 
 ## Databricks 特有の考慮事項 \{#considerations\}
 
+### アクセスモードの要件 \{#access-mode\}
+
+ClickHouse Spark Connector を使用するには、**Dedicated**（旧 Single User）アクセスモードが必須です。Unity Catalog が有効な場合、その構成では Databricks が外部の DataSource V2 コネクタをブロックするため、**Standard**（旧 Shared）アクセスモードはサポートされません。
+
+| アクセスモード | Unity Catalog | サポート状況 |
+|-------------|---------------|-----------|
+| Dedicated (Single User) | 有効 | ✅ Yes |
+| Dedicated (Single User) | 無効 | ✅ Yes |
+| Standard (Shared) | 有効 | ❌ No |
+| Standard (Shared) | 無効 | ✅ Yes |
+
 ### シークレット管理 \{#secret-management\}
 
 Databricks のシークレットスコープを利用して、ClickHouse の認証情報を安全に格納します。

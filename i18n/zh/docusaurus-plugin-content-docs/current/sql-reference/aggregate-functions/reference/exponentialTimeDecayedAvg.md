@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## exponentialTimeDecayedAvg \{#exponentialTimeDecayedAvg\}
 
-引入版本：v21.12
+引入版本：v21.12.0
 
 返回在时间点 `t` 处基于时间序列值计算得到的指数平滑加权移动平均值。
 

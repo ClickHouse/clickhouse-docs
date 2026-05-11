@@ -12,9 +12,9 @@ keywords: ['Map 性能']
 
 ## 问题 \{#problem\}
 
-类似 `a['key']` 的 Map 查找具有线性时间复杂度（参见[这里](https://clickhouse.com/docs/sql-reference/data-types/map)），因此可能效率较低。原因是：要从表中根据特定键选择对应的值，需要在 Map 列中跨所有行 (N) 遍历所有键 (~M)，最终产生约 M×N 次查找。
+类似 `a['key']` 的 Map 查找具有线性时间复杂度 (参见[这里](https://clickhouse.com/docs/sql-reference/data-types/map)) ，因此可能效率较低。原因是：要从表中根据特定键选择对应的值，需要在 Map 列中跨所有行 (N) 遍历所有键 (~M)，最终产生约 M×N 次查找。
 
-使用 Map 进行查找可能比使用 String 列慢 10 倍。下面的实验还展示了在冷查询场景下约 10 倍的性能下降，以及在处理数据量上的数量级差异（7.21 MB 对比 5.65 GB）。
+使用 Map 进行查找可能比使用 String 列慢 10 倍。下面的实验还展示了在冷查询场景下约 10 倍的性能下降，以及在处理数据量上的数量级差异 (7.21 MB 对比 5.65 GB) 。
 
 ```sql
 -- 创建表,SpanName 为 String 类型,ResourceAttributes 为 Map 类型

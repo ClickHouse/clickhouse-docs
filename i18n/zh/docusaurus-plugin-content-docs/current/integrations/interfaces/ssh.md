@@ -11,6 +11,7 @@ doc_type: 'reference'
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+
 # 支持 PTY 的 SSH 接口 \{#ssh-interface-with-pty\}
 
 <ExperimentalBadge />
@@ -19,15 +20,15 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## 前言 \{#preface\}
 
-ClickHouse 服务器支持通过 SSH 协议直接连接到自身，任何客户端都可以使用该方式连接。
+ClickHouse 服务器允许客户端通过 SSH 协议直接连接到服务器本身。任何客户端都可以连接。
 
-在创建了[通过 SSH 密钥标识的数据库用户](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys)之后：
+在创建了一个[以 SSH 密钥标识的数据库用户](/knowledgebase/how-to-connect-to-ch-cloud-using-ssh-keys)之后：
 
 ```sql
 CREATE USER abcuser IDENTIFIED WITH ssh_key BY KEY '<REDACTED>' TYPE 'ssh-ed25519';
 ```
 
-你可以使用该密钥连接到 ClickHouse 服务器。它会打开一个伪终端（PTY），并提供一个交互式的 clickhouse-client 会话。
+你可以使用此密钥连接到 ClickHouse 服务器。这会打开一个伪终端（PTY），并启动一个交互式的 clickhouse-client 会话。
 
 ```bash
 > ssh -i ~/test_ssh/id_ed25519 abcuser@localhost -p 9022
@@ -46,16 +47,17 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-同样支持通过 SSH 执行命令（非交互模式）：
+还支持通过 SSH 以非交互模式执行命令：
 
 ```bash
 > ssh -i ~/test_ssh/id_ed25519 abcuser@localhost -p 9022 "select 1"
 1
 ```
 
+
 ## 服务器配置 \{#server-configuration\}
 
-要启用 SSH 服务器功能，需要在 `config.xml` 中取消注释或添加以下配置片段：
+要启用 SSH 服务器功能，需要在 `config.xml` 文件中取消对以下部分的注释，或将其添加到文件中：
 
 ```xml
 <tcp_ssh_port>9022</tcp_ssh_port>
@@ -66,7 +68,7 @@ Query id: cdd91b7f-215b-4537-b7df-86d19bf63f64
 </ssh_server>
 ```
 
-主机密钥是 SSH 协议中不可或缺的一部分。该密钥的公钥部分存储在客户端的 `~/.ssh/known_hosts` 文件中，通常用于防止中间人攻击。首次连接到服务器时，您会看到如下所示的消息：
+主机密钥是 SSH 协议中的重要组成部分。该密钥的公钥部分保存在客户端的 `~/.ssh/known_hosts` 文件中，通常用于防止中间人攻击。首次连接到服务器时，您会看到类似下面的消息：
 
 ```shell
 The authenticity of host '[localhost]:9022 ([127.0.0.1]:9022)' can't be established.
@@ -75,18 +77,19 @@ This key is not known by any other names
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
 
-这实际上意味着：“是否要记住此主机的公钥并继续连接？”。
+事实上，这句话的意思是：“是否要记住该主机的公钥并继续连接？”
 
-你可以通过传递一个选项，告诉 SSH 客户端不要验证主机：
+你可以通过添加一个参数，让 SSH 客户端跳过主机验证：
 
 ```bash
 ssh -o "StrictHostKeyChecking no" user@host
 ```
 
+
 ## 配置嵌入式客户端 \{#configuring-embedded-client\}
 
-你可以像使用普通的 `clickhouse-client` 一样向嵌入式客户端传递选项，但存在一些限制。
-由于这里使用的是 SSH 协议，向目标主机传递参数的唯一方式是通过环境变量。
+您可以像使用普通的 `clickhouse-client` 一样向嵌入式客户端传递选项，但会有一些限制。
+由于使用的是 SSH 协议，向目标主机传递参数的唯一方式是通过环境变量。
 
 例如，可以通过以下方式设置 `format`：
 
@@ -99,11 +102,11 @@ ssh -o "StrictHostKeyChecking no" user@host
    └───┘
 ```
 
-你可以通过这种方式修改任意用户级别的设置，并且还可以额外传递大多数常规的 `clickhouse-client` 选项（除了那些在此场景下不适用的选项）。
+你可以通过这种方式更改任意用户级设置，并且还可以额外传递大多数常规的 `clickhouse-client` 选项（不包括在此场景下没有意义的那些选项）。
 
 重要说明：
 
-如果同时传递了 `query` 选项和 SSH 命令，后者会被追加到要执行的查询列表中：
+如果同时传递了 `query` 选项和 SSH 命令，则后者会被添加到要执行的查询列表中：
 
 ```bash
 ubuntu ip-10-1-13-116@~$ ssh -o SetEnv="format=Pretty query=\"SELECT 2;\"" -i ~/test_ssh/id_ed25519  abcuser@localhost -p 9022 "SELECT 1"

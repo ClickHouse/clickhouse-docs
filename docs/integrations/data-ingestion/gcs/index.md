@@ -16,7 +16,7 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 # Integrate Google Cloud Storage with ClickHouse
 
 :::note
-If you are using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), this page does not apply as your services will already be using [Google Cloud Storage](https://cloud.google.com/storage). If you are looking to `SELECT` or `INSERT` data from GCS, please see the [`gcs` table function](/sql-reference/table-functions/gcs).
+If you're using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), this page doesn't apply as your services will already be using [Google Cloud Storage](https://cloud.google.com/storage). If you're looking to `SELECT` or `INSERT` data from GCS, please see the [`gcs` table function](/sql-reference/table-functions/gcs).
 :::
 
 ClickHouse recognizes that GCS represents an attractive storage solution if you're seeking to separate storage and compute. To help achieve this, support is provided for using GCS as the storage for a MergeTree engine. This will enable you to exploit the scalability and cost benefits of GCS, and the insert and query performance of the MergeTree engine.
@@ -30,7 +30,7 @@ To utilize a GCS bucket as a disk, we must first declare it within the ClickHous
 #### Storage configuration > disks > gcs {#storage_configuration--disks--gcs}
 
 This part of the configuration is shown in the highlighted section and specifies that:
-- Batch deletes are not to be performed.  GCS does not currently support batch deletes, so the autodetect is disabled to suppress error messages.
+- Batch deletes aren't to be performed.  GCS doesn't currently support batch deletes, so the autodetect is disabled to suppress error messages.
 - The type of the disk is `s3` because the S3 API is in use.
 - The endpoint as provided by GCS
 - The service account HMAC key and secret
@@ -185,7 +185,7 @@ For further information on tuning threads, see [Optimizing for Performance](../s
 ## Using Google Cloud Storage (GCS) {#gcs-multi-region}
 
 :::tip
-Object storage is used by default in ClickHouse Cloud, you do not need to follow this procedure if you are running in ClickHouse Cloud.
+Object storage is used by default in ClickHouse Cloud, you don't need to follow this procedure if you're running in ClickHouse Cloud.
 :::
 
 ### Plan the deployment {#plan-the-deployment}
@@ -220,7 +220,7 @@ Deploy ClickHouse on two hosts, in the sample configurations these are named `ch
 Place `chnode1` in one GCP region, and `chnode2` in a second.  In this guide `us-east1` and `us-east4` are used for the compute engine VMs, and also for GCS buckets.
 
 :::note
-Do not start `clickhouse server` until after it is configured.  Just install it.
+Don't start `clickhouse server` until after it is configured.  Just install it.
 :::
 
 Refer to the [installation instructions](/getting-started/install/install.mdx) when performing the deployment steps on the ClickHouse server nodes.
@@ -235,7 +235,7 @@ Refer to the [installation instructions](/getting-started/install/install.mdx) w
 
 The two ClickHouse servers will be located in different regions for high availability.  Each will have a GCS bucket in the same region.
 
-In **Cloud Storage > Buckets** choose **CREATE BUCKET**. For this tutorial two buckets are created, one in each of `us-east1` and `us-east4`.  The buckets are single region, standard storage class, and not public.  When prompted, enable public access prevention.  Do not create folders, they will be created when ClickHouse writes to the storage.
+In **Cloud Storage > Buckets** choose **CREATE BUCKET**. For this tutorial two buckets are created, one in each of `us-east1` and `us-east4`.  The buckets are single region, standard storage class, and not public.  When prompted, enable public access prevention.  Don't create folders, they will be created when ClickHouse writes to the storage.
 
 If you need step-by-step instructions to create buckets and an HMAC key, then expand **Create GCS buckets and an HMAC key** and follow along:
 
@@ -362,7 +362,7 @@ This file configures the hostname and port of each ClickHouse server in the clus
 
 #### Replica identification {#replica-identification}
 
-This file configures settings related to the ClickHouse Keeper path.  Specifically the macros used to identify which replica the data is part of.  On one server the replica should be specified as `replica_1`, and on the other server `replica_2`.  The names can be changed, based on our example of one replica being stored in South Carolina and the other in Northern Virginia the values could be `carolina` and `virginia`; just make sure that they are different on each machine.
+This file configures settings related to the ClickHouse Keeper path.  Specifically the macros used to identify which replica the data is part of.  On one server the replica should be specified as `replica_1`, and on the other server `replica_2`.  The names can be changed, based on our example of one replica being stored in South Carolina and the other in Northern Virginia the values could be `carolina` and `virginia`; just make sure that they're different on each machine.
 
 ```xml title=/etc/clickhouse-server/config.d/macros.xml
 <clickhouse>

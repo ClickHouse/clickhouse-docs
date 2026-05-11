@@ -23,9 +23,9 @@ import splunk_012 from '@site/static/images/integrations/tools/data-integration/
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
 
-# Сохранение журналов аудита ClickHouse Cloud в Splunk \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
+# Хранение журналов аудита ClickHouse Cloud в Splunk \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
 
-<PartnerBadge/>
+<PartnerBadge />
 
 [Splunk](https://www.splunk.com/) — это платформа для аналитики данных и мониторинга.
 

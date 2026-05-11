@@ -12,7 +12,6 @@ integration:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 
 # Java clients overview
 
@@ -76,18 +75,21 @@ Java Client was developed far back in 2015. Its codebase became very hard to mai
 |Ring                   |✔                    |✔                    |
 |Polygon                |✔                    |✔                    |
 |SimpleAggregateFunction|✔                    |✔                    |
-|AggregateFunction      |✗                    |✔                    |
+|AggregateFunction*     |✔                    |✔                    |
 |Variant                |✔                    |✗                    |
 |Dynamic                |✔                    |✗                    |
 |JSON                   |✔                    |✗                    |
 
 [ClickHouse Data Types](/sql-reference/data-types)
 
-:::note
-- AggregatedFunction - :warning: does not support `SELECT * FROM table ...`
-- Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
-- Enum - can be treated as both string and integer
-- UInt64 - mapped to `long` in client-v1
+:::note[Partial support]
+- **AggregateFunction** — Only `groupBitmap` is supported for direct binary reads. For other aggregate functions (`min`, `max`, `avg`, etc.), use `-Merge` combinators in your query (e.g., `minMerge()`, `avgMerge()`) to resolve the state server-side. `SELECT * FROM table ...` is not supported for columns with `AggregateFunction` type.
+:::
+
+:::note[Data type notes]
+- **Decimal** — `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency.
+- **Enum** — can be treated as both string and integer.
+- **UInt64** — mapped to `long` in client-v1.
 :::
 
 ### Features {#features}
@@ -129,7 +131,7 @@ JDBC Drive inherits same features as underlying client implementation. Other JDB
 ### Logging {#logging}
 
 Our Java language client uses [SLF4J](https://www.slf4j.org/) for logging. You can use any SLF4J-compatible logging framework, such as `Logback` or `Log4j`.
-For example, if you are using Maven you could add the following dependency to your `pom.xml` file:
+For example, if you're using Maven you could add the following dependency to your `pom.xml` file:
 
 ```xml title="pom.xml"
 <dependencies>
@@ -158,7 +160,7 @@ For example, if you are using Maven you could add the following dependency to yo
 
 #### Configuring logging {#configuring-logging}
 
-This is going to depend on the logging framework you are using. For example, if you are using `Logback`, you could configure logging in a file called `logback.xml`:
+This is going to depend on the logging framework you're using. For example, if you're using `Logback`, you could configure logging in a file called `logback.xml`:
 
 ```xml title="logback.xml"
 <configuration>

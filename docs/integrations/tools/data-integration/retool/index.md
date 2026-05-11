@@ -44,7 +44,7 @@ In the setup wizard, make sure you select `com.clickhouse.jdbc.ClickHouseDriver`
 <br/>
 
 Fill in your ClickHouse credentials in the following format: `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD`.
-If your instance requires SSL or you are using ClickHouse Cloud, add `&ssl=true` to the connection string, so it looks like `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
+If your instance requires SSL or you're using ClickHouse Cloud, add `&ssl=true` to the connection string, so it looks like `jdbc:clickhouse://HOST:PORT/DATABASE?user=USERNAME&password=PASSWORD&ssl=true`
 
 <Image img={retool_04} size="lg" border alt="Specifying your credentials" />
 <br/>

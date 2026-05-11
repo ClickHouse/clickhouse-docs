@@ -1,16 +1,16 @@
 ---
-sidebar_label: '正規表現とテンプレート'
+sidebar_label: 'Regexpとテンプレート'
 sidebar_position: 3
 slug: /integrations/data-formats/templates-regexp
-title: 'ClickHouse でテンプレートと正規表現を使用してカスタムテキストデータをインポートおよびエクスポートする'
-description: 'ClickHouse でテンプレートと正規表現を使用してカスタムテキストをインポートおよびエクスポートする方法について説明するページ'
+title: 'ClickHouse でテンプレートとRegexを使用してカスタムテキストデータをインポートおよびエクスポートする'
+description: 'ClickHouse でテンプレートとRegexを使用してカスタムテキストをインポートおよびエクスポートする方法について説明するページ'
 doc_type: 'guide'
-keywords: ['データ形式', 'テンプレート', '正規表現', 'カスタム形式', '解析']
+keywords: ['データ形式', 'テンプレート', 'Regex', 'カスタム形式', '解析']
 ---
 
-# ClickHouse で Templates と Regex を使用してカスタムテキストデータをインポートおよびエクスポートする \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}
+# ClickHouse で テンプレート と Regex を使用してカスタムテキストデータをインポートおよびエクスポートする \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}
 
-独自テキスト形式のデータ、たとえば非標準的なフォーマット、不正な JSON、壊れた CSV などを扱わなければならないことはよくあります。CSV や JSON といった標準パーサーでは、こうしたすべてのケースを扱えるとは限りません。しかし ClickHouse には強力な Template フォーマットと Regex フォーマットが用意されており、これらのケースにも対応できます。
+独自テキスト形式のデータ、たとえば非標準的なフォーマット、不正な JSON、壊れた CSV などを扱わなければならないことはよくあります。CSV や JSON といった標準パーサーでは、こうしたすべてのケースを扱えるとは限りません。しかし ClickHouse には強力な テンプレート フォーマットと Regex フォーマットが用意されており、これらのケースにも対応できます。
 
 ## テンプレートに基づくインポート \{#importing-based-on-a-template\}
 
@@ -84,14 +84,16 @@ GROUP BY request
 └──────────────────────────────────────────────────┴─────────┘
 ```
 
+
 ### 空白のスキップ \{#skipping-whitespaces\}
 
-テンプレート内の区切り文字同士の間にある空白を無視できるようにするには、[TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces) の利用を検討してください。
+テンプレート内の区切り文字間の空白文字をスキップしたい場合は、[TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces) の利用を検討してください。
 
 ```text
 Template:               -->  "p1: ${p1:CSV}, p2: ${p2:CSV}"
 TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 ```
+
 
 ## テンプレートを使用したデータのエクスポート \{#exporting-data-using-templates\}
 
@@ -111,7 +113,7 @@ ${data}
 ${ip:Escaped} generated ${total:Escaped} requests
 ```
 
-では、これらのテンプレートを使って次のクエリをエクスポートしてみましょう。
+では、これらのテンプレートを使用して次のクエリをエクスポートしてみましょう。
 
 ```sql
 SELECT
@@ -137,6 +139,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 --- 1000 rows read in 0.001380604 ---
 ```
 
+
 ### HTML ファイルへのエクスポート \{#exporting-to-html-files\}
 
 テンプレートベースの結果は、[`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 句を使用してファイルにエクスポートすることもできます。次の [resultset](assets/html.results) および [row](assets/html.row) のフォーマットに基づいて HTML ファイルを生成してみましょう。
@@ -151,6 +154,7 @@ FORMAT Template
 SETTINGS format_template_resultset = 'html.results',
          format_template_row = 'html.row'
 ```
+
 
 ### XML へのエクスポート \{#exporting-to-xml\}
 
@@ -196,6 +200,7 @@ FORMAT XML
 </result>
 
 ```
+
 
 ## 正規表現に基づくデータのインポート \{#importing-data-based-on-regular-expressions\}
 
@@ -244,6 +249,7 @@ SELECT * FROM error_log LIMIT 5
 ```sql
 SET format_regexp_skip_unmatched = 1;
 ```
+
 
 ## その他のフォーマット \{#other-formats\}
 

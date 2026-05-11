@@ -21,6 +21,7 @@ DateTime([timezone])
 
 时间精度：1 秒。
 
+
 ## 速度 \{#speed\}
 
 在 _大多数_ 情况下，`Date` 数据类型比 `DateTime` 更快。
@@ -29,19 +30,19 @@ DateTime([timezone])
 
 ## 使用说明 \{#usage-remarks\}
 
-时间点一律以[Unix 时间戳](https://en.wikipedia.org/wiki/Unix_time)的形式存储，与时区或夏令时无关。时区会影响 `DateTime` 类型值在文本格式中的显示方式，以及以字符串形式指定的值（如 `2020-01-01 05:00:01`）的解析方式。
+时间点一律以[Unix 时间戳](https://en.wikipedia.org/wiki/Unix_time)的形式存储，与时区或夏令时无关。时区会影响 `DateTime` 类型值在文本格式中的显示方式，以及以字符串形式指定的值 (如 `2020-01-01 05:00:01`) 的解析方式。
 
-与时区无关的 Unix 时间戳会被存储在表中，而时区则用于在数据导入/导出期间将其与文本格式互相转换，或者用于对这些值进行日历计算（例如：`toDate`、`toHour` 函数等）。时区不会存储在表的行中（或结果集中），而是存储在列的元数据中。
+与时区无关的 Unix 时间戳会被存储在表中，而时区则用于在数据导入/导出期间将其与文本格式互相转换，或者用于对这些值进行日历计算 (例如：`toDate`、`toHour` 函数等) 。时区不会存储在表的行中 (或结果集中) ，而是存储在列的元数据中。
 
 支持的时区列表可以在 [IANA Time Zone Database](https://www.iana.org/time-zones) 中找到，也可以通过 `SELECT * FROM system.time_zones` 查询。[该列表](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) 也可以在 Wikipedia 上查看。
 
 在创建表时，可以为 `DateTime` 类型的列显式设置时区。例如：`DateTime('UTC')`。如果未设置时区，ClickHouse 会使用服务器设置中 [timezone](../../operations/server-configuration-parameters/settings.md#timezone) 参数的值，或者 ClickHouse 服务器启动时操作系统中的时区设置。
 
-如果在初始化数据类型时没有显式设置时区，[clickhouse-client](../../interfaces/cli.md) 会默认应用服务器时区。要使用客户端时区，请在运行 `clickhouse-client` 时加上 `--use_client_time_zone` 参数。
+如果在初始化数据类型时没有显式设置时区，[clickhouse-client](../../interfaces/client.md) 会默认应用服务器时区。要使用客户端时区，请在运行 `clickhouse-client` 时加上 `--use_client_time_zone` 参数。
 
-ClickHouse 会根据 [date_time_output_format](../../operations/settings/settings-formats.md#date_time_output_format) 设置的值输出时间值。默认的文本格式为 `YYYY-MM-DD hh:mm:ss`。此外，还可以使用 [formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime) 函数更改输出格式。
+ClickHouse 会根据 [date&#95;time&#95;output&#95;format](../../operations/settings/settings-formats.md#date_time_output_format) 设置的值输出时间值。默认的文本格式为 `YYYY-MM-DD hh:mm:ss`。此外，还可以使用 [formatDateTime](../../sql-reference/functions/date-time-functions.md#formatDateTime) 函数更改输出格式。
 
-向 ClickHouse 插入数据时，可以使用不同格式的日期和时间字符串，具体取决于 [date_time_input_format](../../operations/settings/settings-formats.md#date_time_input_format) 设置的值。
+向 ClickHouse 插入数据时，可以使用不同格式的日期和时间字符串，具体取决于 [date&#95;time&#95;input&#95;format](../../operations/settings/settings-formats.md#date_time_input_format) 设置的值。
 
 ## 示例 \{#examples\}
 
@@ -116,18 +117,19 @@ SELECT toDateTime(now(), 'Asia/Istanbul') AS column, toTypeName(column) AS x
 ```sql
 SELECT
 toDateTime(timestamp, 'Europe/London') AS lon_time,
-toDateTime(timestamp, 'Asia/Istanbul') AS mos_time
+toDateTime(timestamp, 'Asia/Istanbul') AS istanbul_time
 FROM dt
 ```
 
 ```text
-┌───────────lon_time──┬────────────mos_time─┐
+┌───────────lon_time──┬───────istanbul_time─┐
 │ 2019-01-01 00:00:00 │ 2019-01-01 03:00:00 │
 │ 2018-12-31 21:00:00 │ 2019-01-01 00:00:00 │
 └─────────────────────┴─────────────────────┘
 ```
 
-由于时区转换只会更改元数据，因此该操作不会产生计算开销。
+由于时区转换只会修改元数据，因此该操作不会带来任何计算开销。
+
 
 ## 对时区支持的限制 \{#limitations-on-time-zones-support\}
 
@@ -183,6 +185,7 @@ SELECT '2023-03-26 01:30:00'::DateTime('Europe/London') AS time, time + toInterv
 ```
 
 在这种情况下，ClickHouse 会将不存在的时间 `2023-03-26 01:30:00` 调整为 `2023-03-26 00:30:00`。
+
 
 ## 另请参阅 \{#see-also\}
 

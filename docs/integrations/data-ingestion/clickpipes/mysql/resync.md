@@ -1,5 +1,5 @@
 ---
-title: 'Resyncing a Database ClickPipe'
+title: 'Resyncing a database ClickPipe'
 description: 'Doc for resyncing a database ClickPipe'
 slug: /integrations/clickpipes/mysql/resync
 sidebar_label: 'Resync ClickPipe'

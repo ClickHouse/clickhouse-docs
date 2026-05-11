@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## categoricalInformationValue \{#categoricalInformationValue\}
 
-Введено в версии v20.1
+Введено в версии v20.1.0
 
 Вычисляет информационную ценность (Information Value, IV) для категориальных признаков относительно бинарной целевой переменной.
 
@@ -55,7 +55,7 @@ FROM metrica.hits;
 [0.0014814694805292418]
 ```
 
-**Несколько категориальных признаков, описывающих демографию пользователей**
+**Несколько категориальных признаков по демографии пользователей**
 
 ```sql title=Query
 SELECT categoricalInformationValue(

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## distinctJSONPathsAndTypes \{#distinctJSONPathsAndTypes\}
 
-引入版本：v24.9
+引入版本：v24.9.0
 
 计算存储在 [JSON](https://clickhouse.com/docs/sql-reference/data-types/newjson) 列中的不同路径及其对应类型的列表。
 

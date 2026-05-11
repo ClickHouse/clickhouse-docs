@@ -9,12 +9,13 @@ keywords: ['ClickStack data ingestion', 'observability data ingestion
 ', 'ClickStack OpenTelemetry', 'ClickHouse observability ingestion', 'telemetry data collection']
 ---
 
-ClickStack provides multiple ways to ingest observability data into your ClickHouse instance. Whether you're collecting logs, metrics, traces, or session data, you can use the OpenTelemetry (OTel) collector as a unified ingestion point or leverage platform-specific integrations for specialized use cases.
+Managed and Open Source ClickStack provides multiple ways to ingest observability data into your ClickHouse instance. Whether you're collecting logs, metrics, traces, or session data, you can use the OpenTelemetry (OTel) collector as a unified ingestion point or leverage platform-specific integrations for specialized use cases.
 
 | Section | Description |
 |------|-------------|
 | [Overview](/use-cases/observability/clickstack/ingesting-data/overview) | Introduction to data ingestion methods and architecture |
 | [Ingesting data with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry) | For users using OpenTelemetry and looking to quickly integrate with ClickStack |
 | [OpenTelemetry collector](/use-cases/observability/clickstack/ingesting-data/otel-collector) | Advanced details for the ClickStack OpenTelemetry collector |
+| [Ingesting data with Vector](/use-cases/observability/clickstack/ingesting-data/vector) | For users using Vector and looking to quickly integrate with ClickStack |
 | [Tables and Schemas](/use-cases/observability/clickstack/ingesting-data/schemas) | Overview of the ClickHouse tables and their schemas used by ClickStack |
 | [Language SDKs](/use-cases/observability/clickstack/sdks) | ClickStack SDKs for instrumenting programming languages and collecting telemetry data |

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## uniq \{#uniq\}
 
-引入版本：v1.1
+引入版本：v1.1.0
 
 计算参数中不同值的近似数量。
 

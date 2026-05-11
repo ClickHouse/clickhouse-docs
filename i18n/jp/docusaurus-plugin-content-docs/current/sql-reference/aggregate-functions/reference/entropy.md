@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## entropy \{#entropy\}
 
-導入バージョン: v20.1
+導入バージョン: v20.1.0
 
 列内の値に対して[シャノンエントロピー](https://en.wikipedia.org/wiki/Entropy_\(information_theory\))を計算します。
 

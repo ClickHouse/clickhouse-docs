@@ -7,19 +7,19 @@ title: 'Как собрать ClickHouse на Linux'
 doc_type: 'guide'
 ---
 
-# Как собрать ClickHouse под Linux \{#how-to-build-clickhouse-on-linux\}
+# Как собрать ClickHouse на Linux \{#how-to-build-clickhouse-on-linux\}
 
-:::info Вам не обязательно собирать ClickHouse самостоятельно!
-Вы можете установить уже собранный ClickHouse, как описано в разделе [Быстрый старт](https://clickhouse.com/#quick-start).
+:::info Это руководство по сборке предназначено для участников, изменяющих сам ClickHouse.
+Если вы не изменяете исходный код ClickHouse, вы можете установить уже собранный ClickHouse, как описано в разделе [Быстрый старт](https://clickhouse.com/docs/get-started/quick-start).
 :::
 
 ClickHouse может быть собран на следующих платформах:
 
-- x86_64
-- AArch64
-- PowerPC 64 LE (экспериментально)
-- s390/x (экспериментально)
-- RISC-V 64 (экспериментально)
+* x86&#95;64
+* AArch64
+* PowerPC 64 LE (экспериментально)
+* s390/x (экспериментально)
+* RISC-V 64 (экспериментально)
 
 ## Предположения \{#assumptions\}
 
@@ -46,13 +46,16 @@ sudo apt-get install build-essential git cmake ccache python3 ninja-build nasm y
 Чтобы установить Clang в Ubuntu/Debian, используйте автоматический скрипт установки LLVM, доступный [здесь](https://apt.llvm.org/).
 
 ```bash
-sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
+sudo ./llvm.sh 21
 ```
 
 Для других дистрибутивов Linux проверьте, можно ли установить один из [предварительно собранных пакетов LLVM](https://releases.llvm.org/download.html).
 
-По состоянию на март 2025 года требуется Clang 19 или выше.
+По состоянию на февраль 2026 года требуется Clang 21 или выше.
 Компилятор GCC и другие компиляторы не поддерживаются.
+
 
 ## Установка компилятора Rust (необязательно) \{#install-the-rust-compiler-optional\}
 
@@ -68,10 +71,11 @@ Rust является необязательной зависимостью дл
 Хотя в режиме release любая современная версия toolchain `rustup` должна работать с этими зависимостями, если вы планируете включить санитайзеры, необходимо использовать версию, у которой `std` в точности совпадает с той, что используется в CI (для которой мы вендорим соответствующие crates):
 
 ```bash
-rustup toolchain install nightly-2025-07-07
-rustup default nightly-2025-07-07
+rustup toolchain install nightly-2026-03-22
+rustup default nightly-2026-03-22
 rustup component add rust-src
 ```
+
 
 ## Сборка ClickHouse \{#build-clickhouse\}
 
@@ -93,7 +97,7 @@ export CXX=clang++-21
 
 Для целей разработки рекомендуется использовать отладочные сборки.
 По сравнению с релизными, у них ниже уровень оптимизации компилятора (`-O`), что обеспечивает более удобную отладку.
-Также внутренние исключения типа `LOGICAL_ERROR` приводят к немедленному аварийному завершению работы вместо корректной обработки ошибки.
+Также внутренние исключения типа `LOGICAL_ERROR` приводят к немедленному аварийнному завершению работы вместо корректной обработки ошибки.
 
 ```sh
 cmake -D CMAKE_BUILD_TYPE=Debug ..
@@ -118,8 +122,11 @@ ninja
 Вы можете управлять количеством параллельных задач сборки с помощью параметра `-j`:
 
 ```sh
-ninja -j 1 clickhouse-server clickhouse-client
+ninja -j 1 clickhouse
 ```
+
+:::note
+`clickhouse-server`, `clickhouse-client` и другие подобные бинарные файлы являются символическими ссылками в каталоге `programs/`, которые после завершения сборки указывают на исполняемый файл `clickhouse`.
 
 :::tip
 CMake предоставляет сокращённые варианты для приведённых выше команд:

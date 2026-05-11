@@ -7,13 +7,13 @@ doc_type: 'guide'
 keywords: ['SQL 格式', '数据导出', '数据导入', '备份', 'SQL 转储']
 ---
 
-# 在 ClickHouse 中插入和导出 SQL 数据 \{#inserting-and-dumping-sql-data-in-clickhouse\}
+# 在 ClickHouse 中插入和转储 SQL 数据 \{#inserting-and-dumping-sql-data-in-clickhouse\}
 
 ClickHouse 可以通过多种方式轻松集成到 OLTP 数据库基础架构中。其中一种方式是使用 SQL 转储文件在其他数据库与 ClickHouse 之间传输数据。
 
 ## 创建 SQL 转储 \{#creating-sql-dumps\}
 
-可以使用 [SQLInsert](/interfaces/formats/SQLInsert) 以 SQL 格式导出数据。ClickHouse 会以 `INSERT INTO <table name> VALUES(...` 的形式输出数据，并使用 [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) 设置项作为表名：
+可以使用 [SQLInsert](/interfaces/formats/SQLInsert) 以 SQL 格式转储数据。ClickHouse 会以 `INSERT INTO <table name> VALUES(...` 的形式输出数据，并使用 [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) 设置项作为表名：
 
 ```sql
 SET output_format_sql_insert_table_name = 'some_table';
@@ -74,14 +74,14 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-默认情况下，ClickHouse 会跳过未知列（由 [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 选项控制），并处理转储中首先找到的表的数据（当多个表被转储到同一个文件时）。DDL 语句会被忽略。要将 MySQL 转储中的数据加载到表中（[mysql.sql](assets/mysql.sql) 文件）：
+默认情况下，ClickHouse 会跳过未知列 (由 [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 选项控制) ，并处理转储中首先找到的表的数据 (当多个表被转储到同一个文件时) 。DDL 语句会被忽略。要将 MySQL 转储中的数据加载到表中 ([mysql.sql](assets/mysql.sql) 文件) ：
 
 ```sql
 INSERT INTO some_data
 FROM INFILE 'mysql.sql' FORMAT MySQLDump
 ```
 
-我们也可以直接根据 MySQL dump 文件自动创建表：
+我们也可以直接根据 MySQL 转储文件自动创建表：
 
 ```sql
 CREATE TABLE table_from_mysql
@@ -109,11 +109,11 @@ DESCRIBE TABLE table_from_mysql;
 
 ClickHouse 支持多种格式，包括文本格式和二进制格式，以适配各种场景和平台。可以在以下文章中了解更多格式以及使用它们的方式：
 
-- [CSV 和 TSV 格式](csv-tsv.md)
-- [Parquet](parquet.md)
-- [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
-- [正则表达式和模板](templates-regex.md)
-- [Native 与二进制格式](binary.md)
-- **SQL 格式**
+* [CSV 和 TSV 格式](csv-tsv.md)
+* [Parquet](parquet.md)
+* [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
+* [正则表达式和模板](templates-regex.md)
+* [Native 与二进制格式](binary.md)
+* **SQL 格式**
 
 同时也可以查看 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) —— 一个可移植的、功能完备的工具，可在无需 ClickHouse 服务器的情况下处理本地/远程文件。

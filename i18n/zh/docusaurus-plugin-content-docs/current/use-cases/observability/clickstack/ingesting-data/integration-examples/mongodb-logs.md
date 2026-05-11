@@ -1,0 +1,351 @@
+---
+slug: /use-cases/observability/clickstack/integrations/mongodb-logs
+title: '通过 ClickStack 监控 MongoDB 日志'
+sidebar_label: 'MongoDB 日志'
+pagination_prev: null
+pagination_next: null
+description: '通过 ClickStack 监控 MongoDB 日志'
+doc_type: 'guide'
+keywords: ['MongoDB', '日志', 'OTEL', 'ClickStack', '数据库监控', '慢查询']
+---
+
+import Image from '@theme/IdealImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import log_view from '@site/static/images/clickstack/mongodb/log-view.png';
+import search_view from '@site/static/images/clickstack/mongodb/search-view.png';
+import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
+import finish_import from '@site/static/images/clickstack/mongodb/finish-import.png';
+import example_dashboard from '@site/static/images/clickstack/mongodb/example-dashboard.png';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+
+
+# 通过 ClickStack 监控 MongoDB 日志 \{#mongodb-logs-clickstack\}
+
+:::note[简而言之]
+使用 OTel `filelog` 接收器在 ClickStack 中采集并可视化 MongoDB 服务器日志（4.4+ JSON 格式）。包含演示数据集和预置仪表板。
+:::
+
+## 与现有 MongoDB 集成 \{#existing-mongodb\}
+
+本节介绍如何通过修改 ClickStack OTel collector 的配置，将现有 MongoDB 部署的日志发送到 ClickStack。
+如果您想在配置自己的现有环境之前先测试 MongoDB 集成，可以在[&quot;演示数据集&quot;](/use-cases/observability/clickstack/integrations/mongodb-logs#demo-dataset)部分使用我们预先配置的环境和示例数据进行测试。
+
+### 前提条件 \{#prerequisites\}
+
+* ClickStack 实例正在运行
+* 已有的自管理 MongoDB 安装 (版本 4.4 或更高) 
+* 可访问 MongoDB 日志文件
+
+<VerticalStepper headerLevel="h4">
+  #### 验证 MongoDB 日志配置
+
+  MongoDB 4.4+ 默认输出结构化 JSON 日志。请确认您的日志文件路径：
+
+  ```bash
+  cat /etc/mongod.conf | grep -A 5 systemLog
+  ```
+
+  常见的 MongoDB 日志位置：
+
+  * **Linux (apt/yum)**：`/var/log/mongodb/mongod.log`
+  * **macOS (Homebrew)**：`/usr/local/var/log/mongodb/mongo.log`
+  * **Docker**：通常会记录到 stdout，但也可配置为写入 `/var/log/mongodb/mongod.log`
+
+  如果 MongoDB 当前将日志输出到 stdout，请更新 `mongod.conf`，将其配置为写入文件：
+
+  ```yaml
+  systemLog:
+    destination: file
+    path: /var/log/mongodb/mongod.log
+    logAppend: true
+  ```
+
+  更改配置后，重启 MongoDB：
+
+  ```bash
+  # For systemd
+  sudo systemctl restart mongod
+
+  # For Docker
+  docker restart <mongodb-container>
+  ```
+
+  #### 为 MongoDB 创建自定义 OTel collector 配置
+
+  ClickStack 支持通过挂载自定义配置文件并设置环境变量来扩展基础 OpenTelemetry Collector 配置。自定义配置将通过 OpAMP 与 HyperDX 管理的基础配置进行合并。
+
+  创建一个名为 `mongodb-monitoring.yaml` 的文件，配置如下：
+
+  ```yaml
+  receivers:
+    filelog/mongodb:
+      include:
+        - /var/log/mongodb/mongod.log
+      start_at: beginning
+      operators:
+        - type: json_parser
+          parse_from: body
+          parse_to: attributes
+          timestamp:
+            parse_from: attributes.t.$$date
+            layout: '2006-01-02T15:04:05.000-07:00'
+            layout_type: gotime
+          severity:
+            parse_from: attributes.s
+            overwrite_text: true
+            mapping:
+              fatal: F
+              error: E
+              warn: W
+              info: I
+              debug:
+                - D1
+                - D2
+                - D3
+                - D4
+                - D5
+
+        - type: move
+          from: attributes.msg
+          to: body
+
+        - type: add
+          field: attributes.source
+          value: "mongodb"
+
+        - type: add
+          field: resource["service.name"]
+          value: "mongodb-production"
+
+  service:
+    pipelines:
+      logs/mongodb:
+        receivers: [filelog/mongodb]
+        processors:
+          - memory_limiter
+          - transform
+          - batch
+        exporters:
+          - clickhouse
+  ```
+
+  :::note
+
+  * 你只需在自定义配置中定义新的 receiver 和 pipeline。处理器 (`memory_limiter`、`transform`、`batch`) 和 exporter (`clickhouse`) 已在 ClickStack 基础配置中预先定义——你只需按名称引用它们。
+  * 此配置使用 `start_at: beginning`，使采集器在启动时读取所有现有日志。对于生产环境中的部署，请改为 `start_at: end`，以避免采集器重启时重复摄取日志。
+    :::
+
+  #### 配置 ClickStack 以加载自定义配置
+
+  要在现有 ClickStack 部署中启用自定义采集器配置，您需要：
+
+  1. 将自定义配置文件挂载至 `/etc/otelcol-contrib/custom.config.yaml`
+  2. 设置环境变量 `CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml`
+  3. 挂载 MongoDB 的日志目录，以便采集器能够读取日志
+
+  <Tabs groupId="deployMethod">
+    <TabItem value="docker-compose" label="Docker Compose" default>
+      更新 ClickStack 的部署配置：
+
+      ```yaml
+      services:
+        clickstack:
+          # ... 现有配置 ...
+          environment:
+            - CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml
+            # ... 其他环境变量 ...
+          volumes:
+            - ./mongodb-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro
+            - /var/log/mongodb:/var/log/mongodb:ro
+            # ... 其他卷 ...
+      ```
+    </TabItem>
+
+    <TabItem value="docker-run" label="Docker Run（All-in-One 镜像）">
+      如果你使用 Docker 运行 all-in-one 镜像，请执行：
+
+      ```bash
+      docker run --name clickstack \
+        -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+        -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+        -v "$(pwd)/mongodb-monitoring.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+        -v /var/log/mongodb:/var/log/mongodb:ro \
+        clickhouse/clickstack-all-in-one:latest
+      ```
+    </TabItem>
+  </Tabs>
+
+  :::note
+  确保 ClickStack 收集器具有读取 MongoDB 日志文件的适当权限。在生产环境中，请使用只读挂载 (`:ro`) 并遵循最小权限原则。
+  :::
+
+  #### 在 HyperDX 中验证日志
+
+  配置完成后，登录 HyperDX 并验证日志是否正常流入：
+
+  <Image img={search_view} alt="MongoDB 日志搜索视图" />
+
+  <Image img={log_view} alt="MongoDB 日志详情视图" />
+</VerticalStepper>
+
+## 演示数据集
+
+在配置生产系统之前，先使用预先生成的示例数据集测试 MongoDB 集成。
+
+<VerticalStepper headerLevel="h4">
+  #### 下载示例数据集
+
+  下载示例日志文件：
+
+  ```bash
+  curl -O https://datasets-documentation.s3.eu-west-3.amazonaws.com/clickstack-integrations/mongodb/mongod.log
+  ```
+
+  #### 创建测试采集器配置
+
+  创建一个名为 `mongodb-demo.yaml` 的文件，内容如下：
+
+  ```yaml
+  cat > mongodb-demo.yaml << 'EOF'
+  receivers:
+    filelog/mongodb:
+      include:
+        - /tmp/mongodb-demo/mongod.log
+      start_at: beginning
+      operators:
+        - type: json_parser
+          parse_from: body
+          parse_to: attributes
+          timestamp:
+            parse_from: attributes.t.$$date
+            layout: '2006-01-02T15:04:05.000-07:00'
+            layout_type: gotime
+          severity:
+            parse_from: attributes.s
+            overwrite_text: true
+            mapping:
+              fatal: F
+              error: E
+              warn: W
+              info: I
+              debug:
+                - D1
+                - D2
+                - D3
+                - D4
+                - D5
+
+        - type: move
+          from: attributes.msg
+          to: body
+
+        - type: add
+          field: attributes.source
+          value: "mongodb-demo"
+
+        - type: add
+          field: resource["service.name"]
+          value: "mongodb-demo"
+
+  service:
+    pipelines:
+      logs/mongodb-demo:
+        receivers: [filelog/mongodb]
+        processors:
+          - memory_limiter
+          - transform
+          - batch
+        exporters:
+          - clickhouse
+  EOF
+  ```
+
+  #### 使用演示配置运行 ClickStack
+
+  使用演示日志和配置运行 ClickStack：
+
+  ```bash
+  docker run --name clickstack-demo \
+    -p 8080:8080 -p 4317:4317 -p 4318:4318 \
+    -e CUSTOM_OTELCOL_CONFIG_FILE=/etc/otelcol-contrib/custom.config.yaml \
+    -v "$(pwd)/mongodb-demo.yaml:/etc/otelcol-contrib/custom.config.yaml:ro" \
+    -v "$(pwd)/mongod.log:/tmp/mongodb-demo/mongod.log:ro" \
+    clickhouse/clickstack-all-in-one:latest
+  ```
+
+  ## 在 HyperDX 中验证日志
+
+  ClickStack 运行后：
+
+  1. 打开 [HyperDX](http://localhost:8080/) 并登录你的账户 (你可能需要先创建账户) 
+  2. 进入 Search 视图，并将 source 设置为 `Logs`
+  3. 将时间范围设置为包含 **2026-03-09 00:00:00 - 2026-03-10 00:00:00 (UTC)**
+
+  <Image img={search_view} alt="MongoDB 日志搜索视图" />
+
+  <Image img={log_view} alt="MongoDB 日志详情视图" />
+</VerticalStepper>
+
+## 仪表板和可视化 {#dashboards}
+
+<VerticalStepper headerLevel="h4">
+
+#### <TrackedLink href={useBaseUrl('/examples/mongodb-logs-dashboard.json')} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
+
+#### 导入预置仪表板 \{#import-dashboard\}
+
+1. 打开 HyperDX，导航到 Dashboards 部分。
+2. 点击右上角省略号菜单中的“Import Dashboard”。
+
+<Image img={import_dashboard} alt="导入仪表板"/>
+
+3. 上传 mongodb-logs-dashboard.json 文件，然后点击完成导入。
+
+<Image img={finish_import} alt="完成导入 MongoDB 日志仪表板"/>
+
+#### 将创建一个已预先配置好所有可视化内容的仪表板 {#created-dashboard}
+
+对于演示数据集，将时间范围设置为包含 **2026-03-09 00:00:00 - 2026-03-10 00:00:00 (UTC)**。
+
+<Image img={example_dashboard} alt="MongoDB 日志仪表板"/>
+
+</VerticalStepper>
+
+## 故障排查
+
+### HyperDX 中未显示日志
+
+验证当前生效的配置是否包含 filelog 接收器：
+
+```bash
+docker exec <container> cat /etc/otel/supervisor-data/effective.yaml | grep -A 10 filelog
+```
+
+检查采集器日志中的错误：
+
+```bash
+docker exec <container> cat /etc/otel/supervisor-data/agent.log
+```
+
+
+### 日志未正确解析
+
+确认 MongoDB 是否输出 JSON 日志 (4.4+) ：
+
+```bash
+tail -1 /var/log/mongodb/mongod.log | python3 -m json.tool
+```
+
+如果输出不是有效的 JSON，你的 MongoDB 版本可能使用的是旧版文本日志格式 (4.4 之前) 。你需要将 `json_parser` 运算符替换为 `regex_parser`，或者升级到 MongoDB 4.4+。
+
+
+## 后续步骤 \{#verify-demo-logs\}
+
+* 为关键事件设置[告警](/use-cases/observability/clickstack/alerts) (如错误激增、慢查询阈值) 
+* 针对特定用例创建更多[仪表板](/use-cases/observability/clickstack/dashboards) (如副本集监控、连接跟踪)
+
+## 进入生产环境 \{#dashboards\}
+
+本指南基于 ClickStack 内置的 OpenTelemetry Collector，便于快速完成设置。对于生产部署，我们建议运行您自己的 OTel collector，并将数据发送到 ClickStack 的 OTLP 端点。有关生产环境配置，请参阅[发送 OpenTelemetry 数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。

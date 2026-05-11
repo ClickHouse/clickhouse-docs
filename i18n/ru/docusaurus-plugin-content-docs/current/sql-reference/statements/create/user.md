@@ -18,6 +18,7 @@ CREATE USER [IF NOT EXISTS | OR REPLACE] name1 [, name2 [,...]] [ON CLUSTER clus
     [HOST {LOCAL | NAME 'name' | REGEXP 'name_regexp' | IP 'address' | LIKE 'pattern'} [,...] | ANY | NONE]
     [VALID UNTIL datetime]
     [IN access_storage_type]
+    [ROLE role [,...]]
     [DEFAULT ROLE role [,...]]
     [DEFAULT DATABASE database | NONE]
     [GRANTEES {user | role | ANY | NONE} [,...] [EXCEPT {user | role} [,...]]]
@@ -189,16 +190,20 @@ ClickHouse рассматривает `user_name@'address'` как имя пол
 
 ## Оператор VALID UNTIL \{#valid-until-clause\}
 
-Позволяет задать дату окончания срока действия и, при необходимости, время для метода аутентификации. В качестве параметра принимает строку. Рекомендуется использовать формат `YYYY-MM-DD [hh:mm:ss] [timezone]` для даты и времени. По умолчанию этот параметр имеет значение `'infinity'`.
+Позволяет задать дату окончания срока действия и, при необходимости, время для метода аутентификации. В качестве параметра принимает строку. Рекомендуется использовать для даты и времени формат `YYYY-MM-DD [hh:mm:ss] [timezone]`, где `[timezone]` должно быть числовым смещением, например `+09:00`, или одним из значений `UTC`, `GMT`, `Z`, `MSK`, `MSD`; именованные зоны IANA, такие как `Asia/Tokyo`, не распознаются (см. примечание ниже). По умолчанию этот параметр имеет значение `'infinity'`.
 Оператор `VALID UNTIL` может быть указан только вместе с методом аутентификации, за исключением случая, когда в запросе не задан ни один метод аутентификации. В этом случае оператор `VALID UNTIL` будет применён ко всем существующим методам аутентификации.
 
 Примеры:
 
-- `CREATE USER name1 VALID UNTIL '2025-01-01'`
-- `CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 UTC'`
-- `CREATE USER name1 VALID UNTIL 'infinity'`
-- ```CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 `Asia/Tokyo`'```
-- `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01''`
+* `CREATE USER name1 VALID UNTIL '2025-01-01'`
+* `CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 UTC'`
+* `CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 +09:00'`
+* `CREATE USER name1 VALID UNTIL 'infinity'`
+* `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01'`
+
+:::note
+Строка даты и времени разбирается функцией `parseDateTimeBestEffort`, которая распознаёт только токены часового пояса `UTC`, `GMT`, `Z`, `MSK`, `MSD` и числовые смещения, такие как `+09:00` или `-05:00`. Именованные часовые пояса IANA, такие как `Asia/Tokyo` или `Europe/London`, не поддерживаются, а фиксированное смещение не эквивалентно зоне IANA для регионов, где используется переход на летнее время, поэтому необходимо вычислить правильное смещение для конкретной даты, которую вы задаёте.
+:::
 
 ## GRANTEES Clause \{#grantees-clause\}
 
@@ -221,24 +226,22 @@ CREATE USER mira HOST IP '127.0.0.1' IDENTIFIED WITH sha256_password BY 'qwerty'
 
 `mira` should start client app at the host where the ClickHouse server runs.
 
-Create the user account `john`, assign roles to it and make this roles default:
+Создайте учетную запись пользователя `john` и назначьте роли:
 
 ```sql
-CREATE USER john DEFAULT ROLE role1, role2;
+CREATE USER john ROLE role1, role2;
 ```
 
-Create the user account `john` and make all his future roles default:
+Создайте учетную запись пользователя `john`, назначьте ему роли и некоторые из них сделайте ролями по умолчанию:
 
 ```sql
-CREATE USER john DEFAULT ROLE ALL;
+CREATE USER john ROLE role1, role2 DEFAULT ROLE role1;
 ```
 
-When some role is assigned to `john` in the future, it will become default automatically.
-
-Create the user account `john` and make all his future roles default excepting `role1` and `role2`:
+или
 
 ```sql
-CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
+CREATE USER john ROLE role1, role2 DEFAULT ROLE ALL EXCEPT role2;
 ```
 
 Создайте учетную запись пользователя `john` и разрешите ему передавать свои привилегии пользователю с учетной записью `jack`:
@@ -247,7 +250,7 @@ CREATE USER john DEFAULT ROLE ALL EXCEPT role1, role2;
 CREATE USER john GRANTEES jack;
 ```
 
-Use a query parameter to create the user account `john`:
+Используйте параметр запроса, чтобы создать учетную запись пользователя `john`:
 
 ```sql
 SET param_user=john;

@@ -50,6 +50,7 @@ The sections below give a brief overview of the steps that were involved in brin
 wget https://datasets-documentation.s3.eu-west-3.amazonaws.com/noaa/noaa_enriched.parquet
 ```
 
+
 ### 元データ \{#original-data\}
 
 以下では、ClickHouse にロードするための準備として、元データをダウンロードおよび変換する手順を説明します。

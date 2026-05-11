@@ -9,12 +9,12 @@ doc_type: 'reference'
 
 ## cramersV \{#cramersV\}
 
-引入于：v22.1
+引入于：v22.1.0
 
-[Cramer&#39;s V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V)（有时也称为 Cramer&#39;s phi）是用于度量一张表中两列之间关联程度的指标。`cramersV` 函数的结果范围为 0（表示变量之间没有关联）到 1，且只有当每个值都完全由另一个变量决定时才会达到 1。可以将其理解为两个变量之间关联程度占其最大可能变动的百分比。
+[Cramer&#39;s V](https://en.wikipedia.org/wiki/Cram%C3%A9r%27s_V) (有时也称为 Cramer&#39;s phi) 是用于度量一张表中两列之间关联程度的指标。`cramersV` 函数的结果范围为 0 (表示变量之间没有关联) 到 1，且只有当每个值都完全由另一个变量决定时才会达到 1。可以将其理解为两个变量之间关联程度占其最大可能变动的百分比。
 
 :::note
-关于偏差校正版本的 Cramer&#39;s V，请参阅：[cramersVBiasCorrected](./cramersvbiascorrected.md)
+关于偏差校正版本的 Cramer&#39;s V，请参阅：[cramersVBiasCorrected](/sql-reference/aggregate-functions/reference/cramersvbiascorrected)
 :::
 
 **语法**
@@ -30,7 +30,7 @@ cramersV(column1, column2)
 
 **返回值**
 
-返回一个介于 0（对应列取值之间没有任何关联）到 1（完全相关）之间的值。[`Float64`](/sql-reference/data-types/float)
+返回一个介于 0 (对应列取值之间没有任何关联) 到 1 (完全相关) 之间的值。[`Float64`](/sql-reference/data-types/float)
 
 **示例**
 
@@ -46,7 +46,7 @@ FROM
             number % 5 AS b
         FROM
             numbers(150)
-    )
+    );
 ```
 
 ```response title=Response
@@ -55,7 +55,7 @@ FROM
 └────────────────┘
 ```
 
-**列之间的关联性较强**
+**列之间高度相关**
 
 ```sql title=Query
 SELECT
@@ -64,15 +64,15 @@ FROM
     (
         SELECT
             number % 10 AS a,
-            number % 5 AS b
+            if (number % 12 = 0, (number + 1) % 5, number % 5) AS b
         FROM
             numbers(150)
-    )
+    );
 ```
 
 ```response title=Response
 ┌─────cramersV(a, b)─┐
-│ 0.8944271909999159 │
+│ 0.9066801892162646 │
 └────────────────────┘
 ```
 

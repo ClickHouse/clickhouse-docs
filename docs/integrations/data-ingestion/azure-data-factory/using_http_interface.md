@@ -3,7 +3,7 @@ sidebar_label: 'Using the HTTP interface'
 slug: /integrations/azure-data-factory/http-interface
 description: 'Using ClickHouse''s HTTP interface to bring data from Azure Data Factory into ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
-title: 'Using ClickHouse HTTP Interface to bring Azure data into ClickHouse'
+title: 'Using ClickHouse HTTP interface to bring Azure data into ClickHouse'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -267,7 +267,7 @@ Data](https://clickhouse.com/docs/getting-started/example-datasets/environmental
 
 ### Setting up an example dataset {#setting-up-an-example-dataset}
 
-In this example, we will not use the full Environmental Sensors Dataset, but
+In this example, we won't use the full Environmental Sensors Dataset, but
 just a small subset available at the
 [Sensors Dataset Sample](https://datasets-documentation.s3.eu-west-3.amazonaws.com/environmental/sensors.csv).
 
@@ -305,7 +305,7 @@ Now that we've configured both the input and output datasets, we can set up a
    sensors table. Set **Request method** to POST. Ensure **HTTP compression
    type** is set to **None**.
    :::warning
-   HTTP compression does not work correctly in Azure Data Factory's Copy Data
+   HTTP compression doesn't work correctly in Azure Data Factory's Copy Data
    activity. When enabled, Azure sends a payload consisting of zero bytes only
    — likely a bug in the service. Be sure to leave compression disabled.
    :::

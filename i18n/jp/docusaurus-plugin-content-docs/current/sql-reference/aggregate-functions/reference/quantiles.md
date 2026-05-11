@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## quantiles \{#quantiles\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 数値データ列に対して、複数の異なるレベルの近似[分位点](https://en.wikipedia.org/wiki/Quantile)を同時に計算します。
 

@@ -8,6 +8,7 @@ doc_type: 'guide'
 ---
 
 import InstallSelector from '@site/src/components/Install/Install'
+import CLIInstall from './_snippets/_cli_install.md'
 import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
 import QuickInstall from './_snippets/_quick_install.md'
@@ -19,6 +20,7 @@ import Docker from './_snippets/_docker.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
+
 # Инструкции по установке \{#installation-instructions\}
 
 <CardPrimary alignContent="center" description="Начните работу мгновенно, без необходимости выбирать размер и масштабировать кластер. Мы берём на себя выбор размера, масштабирование, безопасность, надёжность и обновления." icon="cloud" infoText="Начните бесплатно" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="Рекомендуется" />
@@ -27,4 +29,4 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 Или выберите ниже платформу, дистрибутив и способ установки, чтобы просмотреть инструкции по установке ClickHouse (open source):
 
-<InstallSelector windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />
+<InstallSelector cli={<CLIInstall/>} windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />

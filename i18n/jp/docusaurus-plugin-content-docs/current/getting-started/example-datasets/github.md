@@ -14,7 +14,7 @@ import superset_commits_authors from '@site/static/images/getting-started/exampl
 import superset_authors_matrix from '@site/static/images/getting-started/example-datasets/superset-authors-matrix.png'
 import superset_authors_matrix_v2 from '@site/static/images/getting-started/example-datasets/superset-authors-matrix_v2.png'
 
-このデータセットには、ClickHouse リポジトリに対するすべてのコミットと変更が含まれています。ClickHouse に同梱されているネイティブな `git-import` ツールを使用して生成できます。
+このデータセットには、ClickHouse リポジトリのすべてのコミットと変更が含まれています。ClickHouse に同梱されているネイティブな `git-import` ツールを使用して生成できます。
 
 生成されたデータでは、次の各テーブルごとに 1 つの `tsv` ファイルが生成されます。
 

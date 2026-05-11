@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## maxIntersectionsPosition \{#maxIntersectionsPosition\}
 
-Добавлена в версии: v1.1
+Добавлена в версии: v1.1.0
 
 Агрегатная функция, вычисляющая позиции вхождений функции [`maxIntersections`](/sql-reference/aggregate-functions/reference/maxintersections).
 

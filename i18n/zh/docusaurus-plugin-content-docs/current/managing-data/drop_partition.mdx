@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 在创建表时，通过 `PARTITION BY` 子句来指定分区。该子句可以包含针对任意列的 SQL 表达式，其结果将决定每一行被发送到哪个分区。
 
-数据片段在磁盘上在逻辑上与各个分区关联，并且可以被单独查询。对于下面的示例，我们使用表达式 `toYear(CreationDate)` 按年份对 `posts` 表进行分区。当向 ClickHouse 插入行时，会对每一行计算该表达式，并将其路由到对应的分区（如果该年份尚无数据行，则会创建对应的分区）。
+数据片段在磁盘上在逻辑上与各个分区关联，并且可以被单独查询。对于下面的示例，我们使用表达式 `toYear(CreationDate)` 按年份对 `posts` 表进行分区。当向 ClickHouse 插入行时，会对每一行计算该表达式，并将其路由到对应的分区 (如果该年份尚无数据行，则会创建对应的分区) 。
 
 ```sql
  CREATE TABLE posts
@@ -31,7 +31,7 @@ PARTITION BY toYear(CreationDate)
 
 请参阅章节[如何设置分区表达式](/sql-reference/statements/alter/partition/#how-to-set-partition-expression)了解如何设置分区表达式。
 
-在 ClickHouse 中，分区原则上应被视为一种数据管理功能，而不是查询优化技术。通过基于某个键对数据进行逻辑划分，可以对每个分区进行独立操作，例如删除。这样，用户就可以根据时间在[存储层级](/integrations/s3#storage-tiers)之间高效地移动分区（即数据子集），或[让数据过期/从集群中高效删除数据](/sql-reference/statements/alter/partition)。
+在 ClickHouse 中，分区原则上应被视为一种数据管理功能，而不是查询优化技术。通过基于某个键对数据进行逻辑划分，可以对每个分区进行独立操作，例如删除。这样，用户就可以根据时间在[存储层级](/integrations/s3#storage-tiers)之间高效地移动分区 (即数据子集) ，或[让数据过期/从集群中高效删除数据](/sql-reference/statements/alter/partition)。
 
 ## 删除分区 \{#drop-partitions\}
 

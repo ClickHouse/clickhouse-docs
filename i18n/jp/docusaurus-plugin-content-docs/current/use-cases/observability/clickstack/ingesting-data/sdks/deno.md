@@ -9,6 +9,9 @@ doc_type: 'guide'
 keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno 統合', 'Deno オブザーバビリティ', 'Deno ロギング SDK']
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 このガイドでは、次の内容を統合します:
 
 * **ログ**
@@ -16,6 +19,7 @@ keywords: ['Deno ClickStack SDK', 'Deno OpenTelemetry', 'ClickStack Deno 統合'
 :::note
 現在は OpenTelemetry Logging のみをサポートしています。トレースを利用する場合は、[次のガイドを参照してください](https://dev.to/grunet/leveraging-opentelemetry-in-deno-45bj#a-minimal-interesting-example)。
 :::
+
 
 ## ロギング \{#logging\}
 
@@ -45,9 +49,25 @@ log.getLogger('my-otel-logger').info('Hello from Deno!');
 
 ### アプリケーションを実行する \{#run-the-application\}
 
+<Tabs groupId="service-type">
+<TabItem value="clickstack-managed" label="マネージド ClickStack" default>
+
 ```shell
-OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318 \
 OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
 deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
 ```
+
+</TabItem>
+
+<TabItem value="clickstack-oss" label="ClickStack オープンソース版" >
+
+```shell
+OTEL_EXPORTER_OTLP_HEADERS="authorization=<YOUR_INGESTION_API_KEY>" \
+OTEL_EXPORTER_OTLP_ENDPOINT=http://your-otel-collector:4318 \
+OTEL_SERVICE_NAME="<NAME_OF_YOUR_APP_OR_SERVICE>" \
+deno run --allow-net --allow-env --allow-read --allow-sys --allow-run app.ts
+```
+
+</TabItem>
+</Tabs>

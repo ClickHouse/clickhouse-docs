@@ -1,5 +1,5 @@
 ---
-title: 'BYOC Observability'
+title: 'BYOC observability'
 slug: /cloud/reference/byoc/observability
 sidebar_label: 'Observability'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'observability', 'monitoring', 'Prometheus', 'Grafana']
@@ -53,13 +53,15 @@ To connect to the built-in Prometheus stack:
 2. **Request the Prometheus endpoint URL** from ClickHouse Support.
 3. **Verify private network connectivity** to the Prometheus endpoint—typically via VPC peering or other private network setup.
 
-The Prometheus endpoint will be in the following format:
-```bash
-https://prometheus-internal.<subdomain>.<region>.<cloud>.clickhouse-byoc.com
-```
+Endpoint formats vary by connectivity type:
+
+| Connectivity | Endpoint format |
+|---|---|
+| VPC / VPC peering | `https://prometheus-internal.<subdomain>.<region>.<cloud>.clickhouse-byoc.com` |
+| PrivateLink | `https://prometheus.vpce.<subdomain>.<region>.<cloud>.clickhouse-byoc.com` |
 
 :::note
-The Prometheus stack URL is only accessible via private network connections and does not require authentication. Access is restricted to networks that can reach your BYOC VPC through VPC peering or other private connectivity options.
+The Prometheus stack URL is only accessible via private network connections and doesn't require authentication. Access is restricted to networks that can reach your BYOC VPC through VPC peering or other private connectivity options.
 :::
 
 ### Integrating with Your Monitoring Tools {#prometheus-stack-integration}
@@ -71,7 +73,7 @@ You can utilize the BYOC Prometheus stack in your monitoring ecosystem in severa
 - Use PromQL queries to extract, aggregate, and visualize the metrics you need.
 - Ideal for building bespoke dashboards or alerting pipelines.
 
-Prometheus query endpoint:
+Prometheus query endpoint `/query`:
 ```text
 https://prometheus-internal.<subdomain>.<region>.<cloud>.clickhouse-byoc.com/query
 ```
@@ -97,7 +99,7 @@ scrape_configs:
 
 ## ClickHouse service Prometheus Integration {#direct-prometheus-integration}
 
-ClickHouse services expose a Prometheus-compatible metrics endpoint that you can scrape directly using your own Prometheus instance. This approach provides ClickHouse-specific metrics but does not include Kubernetes or supporting service metrics.
+ClickHouse services expose a Prometheus-compatible metrics endpoint that you can scrape directly using your own Prometheus instance. This approach provides ClickHouse-specific metrics but doesn't include Kubernetes or supporting service metrics.
 
 ### Accessing the Metrics Endpoint {#metrics-endpoint}
 

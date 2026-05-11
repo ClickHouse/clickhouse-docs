@@ -16,6 +16,7 @@ import createMirror from '@site/static/images/managed-postgres/peerdb/create-mir
 import tablePicker from '@site/static/images/managed-postgres/peerdb/table-picker.png';
 import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-load.png';
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
+import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
 # Migrate to Managed Postgres using PeerDB {#peerdb-migration}
 This guide provides step-by-step instructions on how to migrate your PostgreSQL database to ClickHouse Managed Postgres using PeerDB.
@@ -29,8 +30,8 @@ This guide provides step-by-step instructions on how to migrate your PostgreSQL 
 ## Considerations before migration {#migration-peerdb-considerations-before}
 Before starting your migration, keep the following in mind:
 
-- **Database objects**: PeerDB will create tables automatically in the target database based on the source schema. However, certain database objects like indexes, constraints, and triggers will not be migrated automatically. You'll need to recreate these objects manually in the target database after the migration.
-- **DDL changes**: If you enable continuous replication, PeerDB will keep the target database in sync with the source for DML operations (INSERT, UPDATE, DELETE) and will propagate ADD COLUMN operations. However, other DDL changes (like DROP COLUMN, ALTER COLUMN) are not propagated automatically. More on schema changes support [here](../../../integrations/clickpipes/postgres/schema-changes.md)
+- **Database objects**: PeerDB will create tables automatically in the target database based on the source schema. However, certain database objects like indexes, constraints, and triggers won't be migrated automatically. You'll need to recreate these objects manually in the target database after the migration.
+- **DDL changes**: If you enable continuous replication, PeerDB will keep the target database in sync with the source for DML operations (INSERT, UPDATE, DELETE) and will propagate ADD COLUMN operations. However, other DDL changes (like DROP COLUMN, ALTER COLUMN) aren't propagated automatically. More on schema changes support [here](/integrations/clickpipes/postgres/schema-changes)
 - **Network connectivity**: Ensure that both the source and target databases are reachable from the machine where PeerDB is running. You may need to configure firewall rules or security group settings to allow connectivity.
 
 ## Create peers {#migration-peerdb-create-peers}
@@ -47,14 +48,89 @@ Similarly, create a peer for your ClickHouse Managed Postgres instance by provid
 Now, you should see both the source and target peers listed in the "Peers" section.
 <Image img={peers} alt="Peers List" size="md" border />
 
+### Obtain source schema dump {#migration-peerdb-source-schema-dump}
+To mirror the setup of the source database in the target database, we need to obtain a schema dump of the source database. You can use `pg_dump` to create a schema-only dump of your source PostgreSQL database:
+
+<details>
+
+<summary>Installing pg_dump</summary>
+
+**Ubuntu:**
+
+Update package lists:
+```shell
+sudo apt update
+```
+
+Install PostgreSQL client:
+```shell
+sudo apt install postgresql-client
+```
+
+**macOS:**
+
+Method 1: Using Homebrew (Recommended)
+
+Install Homebrew if you don't have it:
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Install PostgreSQL:
+```shell
+brew install postgresql
+```
+
+Verify installation:
+```shell
+pg_dump --version
+```
+
+</details>
+
+```shell
+pg_dump -d 'postgresql://<user>:<password>@<host>:<port>/<database>'  -s > source_schema.sql
+```
+
+#### Remove unique constraints and indexes from the schema dump {#migration-peerdb-remove-constraints-indexes}
+Before applying this to the target database, we need to remove UNIQUE constraints and indexes from the dump file so that PeerDB ingestion to target tables is not blocked by these constraints. These can be removed using:
+```shell
+# Preview
+grep -n "CONSTRAINT.*UNIQUE" <dump_file_path>
+grep -n "CREATE UNIQUE INDEX" <dump_file_path>
+grep -n -E "(CONSTRAINT.*UNIQUE|CREATE UNIQUE INDEX)" <dump_file_path>
+
+# Remove
+sed -i.bak -E '/CREATE UNIQUE INDEX/,/;/d; /(CONSTRAINT.*UNIQUE|ADD CONSTRAINT.*UNIQUE)/d' <dump_file_path>
+```
+
+### Apply schema dump to target database {#migration-peerdb-apply-schema-dump}
+After cleaning up the schema dump file, you can apply it to your target ClickHouse Managed Postgres database by [connecting](../connection) via `psql` and running the schema dump file:
+```shell
+psql -h <target_host> -p <target_port> -U <target_username> -d <target_database> -f source_schema.sql
+```
+
+Here on the target side, we do not want PeerDB ingestion to be blocked by foreign key constraints. For this, we can alter the target role (used above in the target peer) to have `session_replication_role` set to `replica`:
+```sql
+ALTER ROLE <target_role> SET session_replication_role = replica;
+```
+
 ## Create a mirror {#migration-peerdb-create-mirror}
 Next, we need to create a mirror to define the data migration process between the source and target peers. In PeerDB UI, navigate to the "Mirrors" section by clicking on "Mirrors" in the sidebar. To create a new mirror, click on the `+ New mirror` button.
 <Image img={createMirror} alt="Create Mirror" size="md" border />
 1. Give your mirror a name that describes the migration.
 2. Select the source and target peers you created earlier from the dropdown menus.
-3. You may choose to enable continuous replication if you want to keep the target database in sync with the source after the initial migration. Otherwise, under **Advanced settings**, you can enable **Initial copy only** to perform a one-time migration.
+3. Make sure that:
+- Soft delete is OFF.
+- Expand `Advanced settings`. Make sure that the **Postgres type system is enabled** and **PeerDB columns are disabled**.
+<Image img={settings} alt="Mirror Settings" size="md" border />
 4. Select the tables you want to migrate. You can choose specific tables or select all tables from the source database.
 <Image img={tablePicker} alt="Table Picker" size="md" border />
+
+:::info Selecting tables
+Make sure the destination table names are the same as the source table names in the target database, as we have migrated the schema as is in the earlier step.
+:::
+
 5. Once you have configured the mirror settings, click on the `Create mirror` button.
 
 You should see your newly created mirror in the "Mirrors" section.
@@ -72,14 +148,108 @@ If you click on the source peer, you can see a list of running commands which Pe
 3. We then do FETCH commands to pull data from the source database and then PeerDB syncs them to the target database.
 
 ## Post-migration tasks {#migration-peerdb-considerations}
+:::note 
+These steps may vary based on your specific use case and application requirements. The key is to ensure data consistency, minimize downtime, and validate the integrity of the migrated data before fully switching over to the new system.
+:::
+
 After the migration is complete:
 
-- **Recreate database objects**: Remember to manually recreate indexes, constraints, and triggers in the target database, as these are not migrated automatically.
-- **Test your application**: Make sure to test your application against the ClickHouse Managed Postgres instance to ensure everything is working as expected.
-- **Clean up resources**: Once you are satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB to clean up resources.
+- **Run pre-cutover validation checks**
+
+Compare key tables between source and target before switching traffic:
+
+```sql
+-- Row count comparison for critical tables
+SELECT 'public.orders' AS table_name, COUNT(*) AS row_count FROM public.orders;
+SELECT 'public.customers' AS table_name, COUNT(*) AS row_count FROM public.customers;
+
+-- Spot-check latest records in high-activity tables
+SELECT MAX(updated_at) FROM public.orders;
+SELECT MAX(id) FROM public.orders;
+```
+
+- **Stop writes on the source system**
+
+Pause application writes first. As an additional safeguard, set the source database to read-only during cutover:
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = on;
+```
+
+If rollback is needed, you can re-enable writes:
+
+```sql
+ALTER DATABASE <source_db> SET default_transaction_read_only = off;
+```
+
+- **Confirm replication is fully caught up**
+
+Check that the latest row in one or more high-write tables matches on source and target:
+
+```sql
+-- Run on both source and target and compare results
+SELECT MAX(id) AS latest_id, MAX(updated_at) AS latest_ts FROM public.orders;
+```
+
+- **Recreate and enable constraints, indexes, and triggers**
+
+If you removed or deferred constraints/indexes for ingestion, re-apply them now. Also reset the replication role on target if you previously set it to `replica`:
+
+```sql
+ALTER ROLE <target_role> SET session_replication_role = origin;
+```
+
+```shell
+# Example: apply a SQL file containing constraints/indexes/triggers
+psql -h <target_host> -p <target_port> -U <target_user> -d <target_db> -f post_migration_objects.sql
+```
+
+- **Reset sequences on target tables**
+
+After data load, align sequences with current table values:
+
+```sql
+-- Generic sequence reset for all serial/identity-backed columns in non-system schemas
+DO $$
+DECLARE r RECORD;
+BEGIN
+    FOR r IN
+        SELECT
+            n.nspname AS schema_name,
+            c.relname AS table_name,
+            a.attname AS column_name,
+            pg_get_serial_sequence(format('%I.%I', n.nspname, c.relname), a.attname) AS seq_name
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        JOIN pg_attribute a ON a.attrelid = c.oid
+        WHERE c.relkind = 'r'
+            AND a.attnum > 0
+            AND NOT a.attisdropped
+            AND n.nspname NOT IN ('pg_catalog', 'information_schema')
+    LOOP
+        IF r.seq_name IS NOT NULL THEN
+            EXECUTE format(
+                'SELECT setval(%L, COALESCE((SELECT MAX(%I) FROM %I.%I), 0) + 1, false)',
+                r.seq_name, r.column_name, r.schema_name, r.table_name
+            );
+        END IF;
+    END LOOP;
+END $$;
+```
+
+- **Cut over application traffic**
+
+Once validation passes and sequences/constraints are in place:
+1. Point read traffic to ClickHouse Managed Postgres.
+2. Point write traffic to ClickHouse Managed Postgres.
+3. Monitor application errors, constraint violations, and database health.
+
+- **Clean up resources**
+
+Once you're satisfied with the migration and have switched your application to use ClickHouse Managed Postgres, you can delete the mirror and peers in PeerDB.
 
 :::info Replication slots
-If you enabled continuous replication, PeerDB will create a **replication slot** on the source PostgreSQL database. Make sure to drop the replication slot manually from the source database after you are done with the migration to avoid unnecessary resource usage.
+If you enabled continuous replication, PeerDB will create a **replication slot** on the source PostgreSQL database. Make sure to drop the replication slot manually from the source database after you're done with the migration to avoid unnecessary resource usage.
 :::
 
 ## References {#migration-peerdb-references}
@@ -88,5 +258,5 @@ If you enabled continuous replication, PeerDB will create a **replication slot**
 - [Postgres ClickPipe FAQ (holds true for PeerDB as well)](../../../integrations/data-ingestion/clickpipes/postgres/faq.md)
 
 ## Next steps {#migration-pgdump-pg-restore-next-steps}
-Congratulations! You have successfully migrated your PostgreSQL database to ClickHouse Managed Postgres using pg_dump and pg_restore. You are now all set to explore Managed Postgres features and its integration with ClickHouse. Here's a 10 minute quickstart to get you going:
+Congratulations! You have successfully migrated your PostgreSQL database to ClickHouse Managed Postgres using pg_dump and pg_restore. You're now all set to explore Managed Postgres features and its integration with ClickHouse. Here's a 10 minute quickstart to get you going:
 - [Managed Postgres Quickstart Guide](../quickstart)

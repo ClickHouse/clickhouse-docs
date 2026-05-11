@@ -57,11 +57,11 @@ ClickHouse 支持以下几种 JOIN 类型：
 ## INNER JOIN \{#inner-join\}
 
 `INNER JOIN` 会针对每一对在连接键上匹配的行，返回左表中该行的列值与右表中该行的列值的组合。
-如果某一行有多条匹配记录，则会返回所有匹配记录（这意味着对于连接键匹配的行会产生[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)）。
+如果某一行有多条匹配记录，则会返回所有匹配记录 (这意味着对于连接键匹配的行会产生[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)) 。
 
 <Image img={inner_join} alt="Inner Join" />
 
-下面这个查询通过将 `movies` 表与 `genres` 表进行连接，为每部电影查找其所属的一个或多个类型：
+下面这个查询通过将 `movies` 表与 `genres` 表进行连接，为每部电影查找其所属的类型：
 
 ```sql
 SELECT
@@ -180,7 +180,7 @@ LIMIT 10;
 └──────┴────┴──────────┴─────────────┘
 ```
 
-虽然前一个示例查询本身意义不大，但可以通过添加一个 `WHERE` 子句进行扩展，将匹配的行关联起来，从而重现 `INNER JOIN` 的行为，用于查找每部电影所属的类型（可以是多个）：
+虽然前一个示例查询本身意义不大，但可以通过添加一个 `WHERE` 子句进行扩展，将匹配的行关联起来，从而重现 `INNER JOIN` 的行为，用于查找每部电影所属的类型：
 
 ```sql
 SELECT
@@ -200,7 +200,7 @@ LIMIT 10;
 
 如果在查询的 `WHERE` 子句中存在连接条件，ClickHouse 会将 `CROSS JOIN` [重写](https://github.com/ClickHouse/ClickHouse/blob/23.2/src/Core/Settings.h#L896) 为 `INNER JOIN`。
 
-你可以通过 [EXPLAIN SYNTAX](/sql-reference/statements/explain/#explain-syntax) 来检查示例查询（它会返回查询在被[执行](https://youtu.be/hP6G2Nlz_cA)之前被重写成的语法优化版本）：
+你可以通过 [EXPLAIN SYNTAX](/sql-reference/statements/explain/#explain-syntax) 来检查示例查询 (它会返回查询在被[执行](https://youtu.be/hP6G2Nlz_cA)之前被重写成的语法优化版本) ：
 
 ```sql
 EXPLAIN SYNTAX
@@ -233,13 +233,13 @@ LIMIT 10;
 └─────────────────────────────────────────────┘
 ```
 
-在语法优化后的 `CROSS JOIN` 查询版本中，`INNER JOIN` 子句包含了 `ALL` 关键字，该关键字是显式添加的，用于在将 `CROSS JOIN` 重写为 `INNER JOIN` 时，仍然保持 `CROSS JOIN` 的笛卡尔积语义；而对于 `INNER JOIN`，其笛卡尔积行为可以通过[禁用](/operations/settings/settings#join_default_strictness)相关设置来关闭。
+在语法优化后的 `CROSS JOIN` 查询版本中，`INNER JOIN` 子句包含了 `ALL` 关键字，该关键字是显式添加的，用于在将 `CROSS JOIN` 重写为 `INNER JOIN` 时，仍然保持 `CROSS JOIN` 的笛卡尔积语义；而对于 `INNER JOIN`，则可以通过[禁用](/operations/settings/settings#join_default_strictness)相关设置来关闭其笛卡尔积行为。
 
 ```sql
 ALL
 ```
 
-由于如上所述，在 `RIGHT OUTER JOIN` 中可以省略 `OUTER` 关键字，并且可以添加可选的 `ALL` 关键字，所以你可以写成 `ALL RIGHT JOIN`，它同样可以正常工作。
+由于如上所述，在 `RIGHT OUTER JOIN` 中可以省略 `OUTER` 关键字，并且可以添加可选的 `ALL` 关键字，因此你可以写成 `ALL RIGHT JOIN`，并且它同样可以正常工作。
 
 
 ## (LEFT / RIGHT) SEMI JOIN \{#left--right-semi-join\}

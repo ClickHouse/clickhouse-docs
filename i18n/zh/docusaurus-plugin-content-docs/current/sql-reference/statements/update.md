@@ -52,7 +52,7 @@ UPDATE wikistat SET hits = hits + 1, time = now() WHERE path = 'ClickHouse';
 
 ## 轻量级更新的要求 \{#lightweight-update-requirements\}
 
-轻量级更新适用于 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree)、[`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree)、[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree) 引擎及其 [`Replicated`](/engines/table-engines/mergetree-family/replication.md) 和 [`Shared`](/cloud/reference/shared-merge-tree) 版本。
+轻量级更新适用于 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree)、[`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree)、[`CollapsingMergeTree`](/engines/table-engines/mergetree-family/collapsingmergetree)、[`VersionedCollapsingMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/versionedcollapsingmergetree) 引擎及其 [`Replicated`](/engines/table-engines/mergetree-family/replication.md) 和 [`Shared`](/cloud/reference/shared-merge-tree) 版本。
 
 要使用轻量级更新，必须通过表设置 [`enable_block_number_column`](/operations/settings/merge-tree-settings#enable_block_number_column) 和 [`enable_block_offset_column`](/operations/settings/merge-tree-settings#enable_block_offset_column) 启用 `_block_number` 和 `_block_offset` 列的物化。
 

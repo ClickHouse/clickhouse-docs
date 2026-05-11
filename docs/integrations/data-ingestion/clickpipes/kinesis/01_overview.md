@@ -4,7 +4,7 @@ description: 'Seamlessly connect your Amazon Kinesis data sources to ClickHouse 
 slug: /integrations/clickpipes/kinesis
 title: 'Integrating Amazon Kinesis with ClickHouse Cloud'
 doc_type: 'guide'
-keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion']
+keywords: ['clickpipes', 'kinesis', 'streaming', 'aws', 'data ingestion', 'compression', 'gzip', 'zstd', 'lz4', 'snappy']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -26,6 +26,9 @@ import cp_overview from '@site/static/images/integrations/data-ingestion/clickpi
 import Image from '@theme/IdealImage';
 
 # Integrating Amazon Kinesis with ClickHouse Cloud
+
+Kinesis ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).
+
 ## Prerequisite {#prerequisite}
 You have familiarized yourself with the [ClickPipes intro](../index.md) and setup [IAM credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) or an [IAM Role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html). Follow the [Kinesis Role-Based Access guide](./02_auth.md) for information on how to setup a role that works with ClickHouse Cloud.
 
@@ -92,6 +95,23 @@ You have familiarized yourself with the [ClickPipes intro](../index.md) and setu
 The supported formats are:
 - [JSON](/interfaces/formats/JSON)
 
+## Compression {#compression}
+
+ClickPipes for Kinesis automatically detects and decompresses compressed records. Unlike Kafka, where the client library handles decompression transparently, Kinesis delivers raw bytes — ClickPipes handles this for you with no configuration required.
+
+The following compression codecs are supported:
+
+- **gzip**
+- **zstd**
+- **lz4**
+- **snappy** (framed format)
+
+Compression is detected automatically via magic bytes in each record. If no known compression signature is found, the record is treated as uncompressed. The detected compression type is also surfaced during schema inference, so the sample data preview in the UI will correctly show the decompressed data.
+
+:::note
+Auto-detection is safe for text-based formats like JSON and CSV, as printable ASCII characters will never collide with compression magic bytes.
+:::
+
 ## Supported data types {#supported-data-types}
 
 ### Standard types support {#standard-types-support}
@@ -117,7 +137,7 @@ The following ClickHouse data types are currently supported in ClickPipes:
 ### Variant type support {#variant-type-support}
 You can manually specify a Variant type (such as `Variant(String, Int64, DateTime)`) for any JSON field
 in the source data stream.  Because of the way ClickPipes determines the correct variant subtype to use, only one integer or datetime
-type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` is not supported.
+type can be used in the Variant definition - for example, `Variant(Int64, UInt32)` isn't supported.
 
 ### JSON type support {#json-type-support}
 JSON fields that are always a JSON object can be assigned to a JSON destination column.  You will have to manually change the destination
@@ -140,7 +160,7 @@ view).  For such pipes, it may improve ClickPipes performance to delete all the 
 
 ## Limitations {#limitations}
 
-- [DEFAULT](/sql-reference/statements/create/table#default) is not supported.
+- [DEFAULT](/sql-reference/statements/create/table#default) isn't supported.
 - Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Performance {#performance}
@@ -163,9 +183,9 @@ If you have specific low-latency requirements, please [contact us](https://click
 We strongly recommend limiting the number concurrently active shards to match your throughput requirements.  For an "On Demand" Kinesis stream, AWS will automatically assign a matching number of shards based on throughput,
 but for "Provisioned" streams, provisioning too many shards can cause latency as described below, plus have increased costs because Kinesis pricing for such streams is on a "per shard" basis.
 
-If your producer application writes continuously to a large number of active shards, this can cause latency if your pipe is not scaled high enough to efficiently process those shards.  Based on Kinesis throughput limits,
+If your producer application writes continuously to a large number of active shards, this can cause latency if your pipe isn't scaled high enough to efficiently process those shards.  Based on Kinesis throughput limits,
 ClickPipes assigns a specific number of "workers" per replica to read shard data.  For example, at the smallest size, a ClickPipes replica will have 4 of these worker threads.  If the producer is writing
-to more than 4 shards at the same time, data will not be processed from the "extra" shards until a worker thread is available.  In particular, if the pipe is using "enhanced fanout", each worker thread will subscribe to a
+to more than 4 shards at the same time, data won't be processed from the "extra" shards until a worker thread is available.  In particular, if the pipe is using "enhanced fanout", each worker thread will subscribe to a
 single shard for 5 minutes, and is unavailable to read any other shard during that time.  This can cause latency "spikes" of 5 minute multiples.
 
 ### Scaling {#scaling}

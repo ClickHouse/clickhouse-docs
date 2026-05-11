@@ -85,11 +85,13 @@ Note that you will have to manually change the destination column to the desired
 ### Avro {#avro}
 
 #### Supported Avro Data Types {#supported-avro-data-types}
+
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `local-timestamp-millis` and `local_timestamp-micros`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/schema-inference#avro) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 Alternatively, all Avro types can be inserted into a `String` column, and will be represented as a valid JSON string in that case.
 
 #### Nullable types and Avro unions {#nullable-types-and-avro-unions}
-Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(null, T)` where T is the base Avro type.  During schema inference, such unions will be mapped to a ClickHouse "Nullable" column.  Note that ClickHouse does not support
+
+Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(null, T)` where T is the base Avro type.  During schema inference, such unions will be mapped to a ClickHouse "Nullable" column.  Note that ClickHouse doesn't support
 `Nullable(Array)`, `Nullable(Map)`, or `Nullable(Tuple)` types.  Avro null unions for these types will be mapped to non-nullable versions (Avro Record types are mapped to a ClickHouse named Tuple).  Avro "nulls" for these types will be inserted as:
 - An empty Array for a null Avro array
 - An empty Map for a null Avro Map

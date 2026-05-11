@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## stddevSampStable \{#stddevSampStable\}
 
-導入バージョン: v1.1
+導入バージョン: v1.1.0
 
 結果は [varSamp](../../../sql-reference/aggregate-functions/reference/varSamp.md) の平方根になります。[stddevSamp](../reference/stddevSamp.md) とは異なり、この関数は数値的に安定なアルゴリズムを使用します。処理は遅くなりますが、計算誤差をより小さく抑えることができます。
 

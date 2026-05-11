@@ -2,15 +2,14 @@
 sidebar_label: 'Использование clickhouse-local'
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/clickhouse-local
-title: 'Миграция на ClickHouse с использованием clickhouse-local'
-description: 'Руководство по миграции на ClickHouse с использованием clickhouse-local'
+title: 'Миграция в ClickHouse с использованием clickhouse-local'
+description: 'Руководство по миграции в ClickHouse с использованием clickhouse-local'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import AddARemoteSystem from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_add_remote_ip_access_list_detail.md';
 import ch_local_01 from '@site/static/images/integrations/migration/ch-local-01.png';
 import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.png';
@@ -86,7 +85,7 @@ ClickHouse предоставляет интеграционные движки 
 
 <AddARemoteSystem />
 
-## Пример 1: Миграция с MySQL в ClickHouse Cloud с использованием интеграционного табличного движка \{#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine\}
+## Пример: Миграция с MySQL в ClickHouse Cloud с использованием интеграционного табличного движка \{#example-1-migrating-from-mysql-to-clickhouse-cloud-with-an-integration-engine\}
 
 Мы будем использовать [integration table engine](/engines/table-engines/integrations/mysql/) (динамически создаваемый с помощью [mysql table function](/sql-reference/table-functions/mysql/)) для чтения данных из исходной базы данных MySQL, а также [remoteSecure table function](/sql-reference/table-functions/remote/) для записи данных в целевую таблицу в вашем сервисе ClickHouse Cloud.
 
@@ -125,17 +124,3 @@ SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password');"
 На хосте `clickhouse-local` данные локально не сохраняются. Вместо этого данные считываются из исходной таблицы MySQL
 и затем сразу записываются в целевую таблицу в ClickHouse Cloud.
 :::
-
-## Пример 2. Миграция с MySQL в ClickHouse Cloud с использованием JDBC bridge \{#example-2-migrating-from-mysql-to-clickhouse-cloud-with-the-jdbc-bridge\}
-
-Мы будем использовать [табличный движок интеграции JDBC](/engines/table-engines/integrations/jdbc.md) (создаваемый на лету с помощью [табличной функции jdbc](/sql-reference/table-functions/jdbc.md)) вместе с [ClickHouse JDBC Bridge](https://github.com/ClickHouse/clickhouse-jdbc-bridge) и JDBC-драйвером MySQL для чтения данных из исходной базы данных MySQL, а [табличную функцию remoteSecure](/sql-reference/table-functions/remote.md) — для записи данных в целевую таблицу в вашем сервисе ClickHouse Cloud.
-
-<Image img={ch_local_04} size='lg' alt='Миграция самоуправляемого ClickHouse'  />
-
-### На целевом сервисе ClickHouse Cloud: \{#on-the-destination-clickhouse-cloud-service-1\}
-
-#### Создайте целевую базу данных: \{#create-the-destination-database-1\}
-
-```sql
-CREATE DATABASE db
-```

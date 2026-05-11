@@ -25,7 +25,7 @@ keywords: ['向量搜索']
 
 ## 1. 创建 embeddings \{#1-create-embeddings\}
 
-必须先将你的数据（文档、图像或结构化数据）转换为 *embeddings*。我们建议使用 [OpenAI Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) 或开源 Python 库 [SentenceTransformers](https://www.sbert.net/) 来创建 embeddings。
+必须先将你的数据 (文档、图像或结构化数据) 转换为 *embeddings*。我们建议使用 [OpenAI Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) 或开源 Python 库 [SentenceTransformers](https://www.sbert.net/) 来创建 embeddings。
 
 你可以将 embedding 理解为一个由大量浮点数组成的向量，用于表示你的数据。[查看 OpenAI 的这篇指南，进一步了解 embeddings](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings)。
 
@@ -61,7 +61,7 @@ ORDER BY score ASC
 LIMIT 10
 ```
 
-此查询将返回与您提供的狗狗图像最可能相关的前 10 张图像的 `_file` 名称和说明文字（`caption`）。
+此查询将返回与您提供的狗狗图像最可能相关的前 10 张图像的 `_file` 名称和说明文字 (`caption`) 。
 
 ## 延伸阅读 \{#further-reading\}
 

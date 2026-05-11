@@ -10,7 +10,7 @@ doc_type: 'reference'
 
 ## quantileExact \{#quantileExact\}
 
-Появилось в: v1.1
+Появилось в: v1.1.0
 
 Точно вычисляет [квантиль](https://en.wikipedia.org/wiki/Quantile) числовой последовательности данных.
 

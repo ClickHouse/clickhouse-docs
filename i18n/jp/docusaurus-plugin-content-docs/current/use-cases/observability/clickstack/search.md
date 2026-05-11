@@ -12,11 +12,13 @@ keywords: ['clickstack', '検索', 'ログ', 'オブザーバビリティ', '全
 import Image from '@theme/IdealImage';
 import hyperdx_27 from '@site/static/images/use-cases/observability/hyperdx-27.png';
 import saved_search from '@site/static/images/use-cases/observability/clickstack-saved-search.png';
+import saved_search_listing from '@site/static/images/use-cases/observability/clickstack-saved-search-listing.png';
 import Tagging from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
-ClickStack を使用すると、イベント（ログやトレース）に対してフルテキスト検索を行えます。イベント内に含まれるキーワードを入力するだけで検索を開始できます。たとえば、ログに &quot;Error&quot; が含まれている場合、検索バーに &quot;Error&quot; と入力するだけでそのログを見つけることができます。
+ClickStack を使用すると、イベント (ログやトレース) に対してフルテキスト検索を行えます。イベント内に含まれるキーワードを入力するだけで検索を開始できます。たとえば、ログに &quot;Error&quot; が含まれている場合、検索バーに &quot;Error&quot; と入力するだけでそのログを見つけることができます。
 
 同じ検索構文は、ダッシュボードやチャートでイベントをフィルタリングする際にも使用されます。
+
 
 ## 検索機能 \{#search-features\}
 
@@ -56,7 +58,9 @@ ClickStack を使用すると、イベント（ログやトレース）に対し
 
 ## 保存済み検索 \{#saved-searches\}
 
-後で素早くアクセスできるように、検索条件を保存できます。保存すると、検索は左側のサイドバーに表示され、よく使用する検索クエリを毎回作り直すことなく簡単に再利用できます。
+後で素早くアクセスできるように、検索条件を保存できます。保存すると、検索は`保存済み検索`ページに表示され、よく使用する検索クエリを毎回作り直すことなく簡単に再利用できます。
+
+<Image img={saved_search_listing} alt="保存済み検索の一覧ページ" size="lg" />
 
 検索を保存するには、検索クエリを設定し、保存ボタンをクリックします。後で判別しやすいように、保存済み検索にわかりやすい名前を付けることができます。
 

@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesDerivToGrid \{#timeSeriesDerivToGrid\}
 
-自 v25.6 版本引入
+自 v25.6.0 版本引入
 
 聚合函数，接收由时间戳和值组成的时间序列数据对作为输入，并在由起始时间戳、结束时间戳和步长描述的规则时间网格上，从这些数据计算出[类似 PromQL 的导数](https://prometheus.io/docs/prometheus/latest/querying/functions/#deriv)。对于网格上的每个点，用于计算 `deriv` 的样本都限制在指定的时间窗口内。
 
@@ -25,9 +25,9 @@ timeSeriesDerivToGrid(start_timestamp, end_timestamp, grid_step, staleness)(time
 
 **参数**
 
-* `start_timestamp` — 指定网格的起始时间。- `end_timestamp` — 指定网格的结束时间。- `grid_step` — 指定网格的步长（秒）。- `staleness` — 指定被考虑样本的最大“陈旧度”（秒）。陈旧度窗口是一个左开右闭区间。
+* `start_timestamp` — 指定网格的起始时间。- `end_timestamp` — 指定网格的结束时间。- `grid_step` — 指定网格的步长 (秒) 。- `staleness` — 指定被考虑样本的最大“陈旧度” (秒) 。陈旧度窗口是一个左开右闭区间。
 
-**参数（Arguments）**
+**参数 (Arguments)&#x20;**
 
 * `timestamp` — 样本的时间戳。可以是单个值或数组。- `value` — 与该时间戳对应的时间序列值。可以是单个值或数组。
 
@@ -65,7 +65,7 @@ FROM
 └─────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**使用数组参数时的同一查询**
+**相同查询 (使用数组参数)&#x20;**
 
 ```sql title=Query
 WITH

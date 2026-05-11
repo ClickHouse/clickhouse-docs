@@ -1,7 +1,7 @@
 ---
-title: 'BYOC Operations and Maintenance'
+title: 'BYOC operations and maintenance'
 slug: /cloud/reference/byoc/operations
-sidebar_label: 'Operations and Maintenance'
+sidebar_label: 'Operations and maintenance'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'operations', 'maintenance']
 description: 'Deploy ClickHouse on your own cloud infrastructure'
 doc_type: 'reference'
@@ -32,7 +32,7 @@ The Kubernetes cluster (EKS for AWS, GKE for GCP) that hosts your ClickHouse ser
 
 ### Cluster Upgrade Types {#cluster-upgrade-types}
 
-**Control Plane Upgrades**: The Kubernetes control plane components (API server, etcd, controller manager) are upgraded by ClickHouse Cloud. These upgrades are typically transparent to your workloads and do not require pod restarts.
+**Control Plane Upgrades**: The Kubernetes control plane components (API server, etcd, controller manager) are upgraded by ClickHouse Cloud. These upgrades are typically transparent to your workloads and don't require pod restarts.
 
 **Node Group Upgrades**: Worker node upgrades require node replacement, which may impact running pods. ClickHouse Cloud coordinates these upgrades using a make-before-break approach to minimize disruption:
 

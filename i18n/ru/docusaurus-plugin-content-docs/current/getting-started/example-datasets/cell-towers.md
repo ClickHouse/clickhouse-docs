@@ -1,10 +1,10 @@
 ---
 description: 'Узнайте, как загрузить данные OpenCelliD в ClickHouse, подключить Apache Superset
   к ClickHouse и создать дашборд на их основе'
-sidebar_label: 'Сотовые вышки'
+sidebar_label: 'Базовые станции сотовой связи'
 slug: /getting-started/example-datasets/cell-towers
-title: 'Геоданные на основе набора данных о сотовых вышках'
-keywords: ['данные о сотовых вышках', 'геоданные', 'OpenCelliD', 'геопространственный набор данных', 'начало работы']
+title: 'Геоданные на основе датасета о базовых станциях сотовой связи'
+keywords: ['данные о базовых станциях сотовой связи', 'геоданные', 'OpenCelliD', 'геопространственный датасет', 'начало работы']
 doc_type: 'guide'
 ---
 
@@ -13,7 +13,6 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import ActionsMenu from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_service_actions_menu.md';
 import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 import SupersetDocker from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_add_superset_detail.md';
@@ -169,7 +168,8 @@ SELECT mcc, count() FROM cell_towers GROUP BY mcc ORDER BY count() DESC LIMIT 10
 
 На основе приведённого выше запроса и [списка MCC](https://en.wikipedia.org/wiki/Mobile_country_code) странами с наибольшим количеством сотовых вышек являются США, Германия и Россия.
 
-Вы можете создать в ClickHouse [словарь (Dictionary)](../../sql-reference/dictionaries/index.md) для расшифровки этих значений.
+Вы можете создать в ClickHouse [словарь (Dictionary)](/sql-reference/statements/create/dictionary) для расшифровки этих значений.
+
 
 ## Сценарий использования: использование геоданных \{#use-case\}
 

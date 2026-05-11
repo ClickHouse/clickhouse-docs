@@ -25,7 +25,8 @@ CREATE TABLE sales(
     transaction_id UInt32,
     amount Decimal(10,2),
     is_successful UInt8
-) ENGINE = Log;
+) ENGINE = MergeTree
+ORDER BY ();
 
 INSERT INTO sales VALUES
     (1, 100.50, 1),
@@ -49,6 +50,8 @@ FROM sales;
    └─────────────────────┘
 ```
 
+
 ## См. также \{#see-also\}
+
 - [`avg`](/sql-reference/aggregate-functions/reference/avg)
 - [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

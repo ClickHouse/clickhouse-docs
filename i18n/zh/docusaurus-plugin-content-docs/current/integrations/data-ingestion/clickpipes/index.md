@@ -36,7 +36,9 @@ import Image from '@theme/IdealImage';
 
 [ClickPipes](/integrations/clickpipes) 是一个托管集成平台，可将来自多种来源的数据摄取过程简化为只需点击几下。ClickPipes 的强大且可扩展架构专为最严苛的工作负载设计，确保性能和可靠性的一致性。ClickPipes 既可用于长期的流式数据场景，也可用于一次性的数据加载作业。
 
-<Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border/>
+ClickPipes 既可以通过 ClickPipes UI 手动部署和管理，也可以借助 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
+
+<Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border />
 
 ## 支持的数据源 \{#supported-data-sources\}
 
@@ -61,30 +63,50 @@ import Image from '@theme/IdealImage';
 
 ## 静态 IP 列表 \{#list-of-static-ips\}
 
-下面是 ClickPipes 用于连接到你外部服务的静态 NAT IP（按区域划分）。将与你实例所在区域对应的 IP 添加到你的 IP 允许列表中以放通流量。对于对象存储管道，你还应将 [ClickHouse cluster IPs](/manage/data-sources/cloud-endpoints-api) 添加到 IP 允许列表中。
+下面是 ClickPipes 用于连接到你外部服务的静态 NAT IP (按区域划分) 。将与你实例所在区域对应的 IP 添加到你的 IP 允许列表中以放通流量。对于对象存储管道，你还应将 [ClickHouse 集群 IPs](/manage/data-sources/cloud-endpoints-api) 添加到 IP 允许列表中。
 
 对于所有服务，ClickPipes 的流量将基于你的服务所在位置，从默认区域发出：
 
-- **eu-central-1**：适用于所有未明确列出的欧盟区域（包括 GCP 和 Azure 的欧盟区域）。
-- **eu-west-1**：适用于在 2026 年 1 月 20 日或之后创建的 AWS `eu-west-1` 中的所有服务（在此日期之前创建的服务使用 `eu-central-1` 的 IP）。
-- **us-east-1**：适用于 AWS `us-east-1` 中的所有服务。
-- **ap-south-1**：适用于在 2025 年 6 月 25 日或之后创建的 AWS `ap-south-1` 中的所有服务（在此日期之前创建的服务使用 `us-east-2` 的 IP）。
-- **ap-northeast-2**：适用于在 2025 年 11 月 14 日或之后创建的 AWS `ap-northeast-2` 中的所有服务（在此日期之前创建的服务使用 `us-east-2` 的 IP）。
-- **ap-southeast-2**：适用于在 2025 年 6 月 25 日或之后创建的 AWS `ap-southeast-2` 中的所有服务（在此日期之前创建的服务使用 `us-east-2` 的 IP）。
-- **us-west-2**：适用于在 2025 年 6 月 24 日或之后创建的 AWS `us-west-2` 中的所有服务（在此日期之前创建的服务使用 `us-east-2` 的 IP）。
-- **us-east-2**：适用于所有未明确列出的其他区域（包括 GCP 和 Azure 区域）。
+* **eu-central-1**：适用于所有未明确列出的欧盟区域 (包括 GCP 和 Azure 的欧盟区域) 。
+* **eu-west-1**：适用于在 2026 年 1 月 20 日或之后创建的 AWS `eu-west-1` 中的所有服务 (在此日期之前创建的服务使用 `eu-central-1` 的 IP) 。
+* **us-east-1**：适用于 AWS `us-east-1` 中的所有服务。
+* **ap-south-1**：适用于在 2025 年 6 月 25 日或之后创建的 AWS `ap-south-1` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **ap-northeast-2**：适用于在 2025 年 11 月 14 日或之后创建的 AWS `ap-northeast-2` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **af-south-1**：适用于在 2026 年 4 月 15 日或之后创建的 AWS `af-south-1` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **ap-east-1**：适用于在 2026 年 4 月 15 日或之后创建的 AWS `ap-east-1` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **ap-northeast-1**：适用于在 2026 年 4 月 15 日或之后创建的 AWS `ap-northeast-1` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **ap-southeast-1**：适用于在 2026 年 3 月 18 日或之后创建的 AWS `ap-southeast-1` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **ap-southeast-2**：适用于在 2025 年 6 月 25 日或之后创建的 AWS `ap-southeast-2` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **ap-southeast-3**：适用于在 2026 年 3 月 6 日或之后创建的 AWS `ap-southeast-3` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **ca-central-1**：适用于在 2026 年 4 月 15 日或之后创建的 AWS `ca-central-1` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **eu-north-1**：适用于在 2026 年 4 月 15 日或之后创建的 AWS `eu-north-1` 中的所有服务 (在此日期之前创建的服务使用 `eu-central-1` 的 IP) 。
+* **eu-west-2**：适用于在 2026 年 4 月 15 日或之后创建的 AWS `eu-west-2` 中的所有服务 (在此日期之前创建的服务使用 `eu-central-1` 的 IP) 。
+* **il-central-1**：适用于在 2026 年 4 月 15 日或之后创建的 AWS `il-central-1` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **sa-east-1**：适用于在 2026 年 4 月 15 日或之后创建的 AWS `sa-east-1` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **us-west-2**：适用于在 2025 年 6 月 24 日或之后创建的 AWS `us-west-2` 中的所有服务 (在此日期之前创建的服务使用 `us-east-2` 的 IP) 。
+* **us-east-2**：适用于所有未明确列出的其他区域 (包括 GCP 和 Azure 区域) 。
 
-| AWS 区域                              | IP 地址                                                                                                                                          |
-|---------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **eu-central-1**                      | `18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `18.197.167.47`, `3.122.25.29`, `52.28.148.40`                                                       |
-| **eu-west-1** (from 20 Jan 2026)      | `54.228.1.92` , `54.72.101.254`, `54.228.16.208`, `54.76.200.104`, `52.211.2.177`, `54.77.10.134`                                                      |
-| **us-east-1**                         | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150`      |
-| **us-east-2**                         | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`, `3.132.20.192`, `18.119.76.110`, `3.134.185.180`                                                     |
-| **ap-south-1** (from 25 Jun 2025)     | `13.203.140.189`, `13.232.213.12`, `13.235.145.208`, `35.154.167.40`, `65.0.39.245`, `65.1.225.89`                                                   |
-| **ap-northeast-2** (from 14 Nov 2025) | `3.38.68.69`, `52.78.68.128`, `13.209.152.13`, `3.38.24.84`, `3.37.159.31`, `3.34.25.104` 
-                    |
-| **ap-southeast-2** (from 25 Jun 2025) | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                                     |
-| **us-west-2** (from 24 Jun 2025)      | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
+| AWS 区域                                        | IP 地址                                                                                                                                       |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **eu-central-1** - 法兰克福                       | `18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `18.197.167.47`, `3.122.25.29`, `52.28.148.40`                                              |
+| **eu-west-1** - 爱尔兰 (自 2026 年 1 月 20 日起)      | `54.228.1.92`, `54.72.101.254`, `54.228.16.208`, `54.76.200.104`, `52.211.2.177`, `54.77.10.134`                                            |
+| **us-east-1** - 弗吉尼亚北部                        | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
+| **us-east-2** - 俄亥俄                           | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`, `3.132.20.192`, `18.119.76.110`, `3.134.185.180`                                            |
+| **ap-south-1** - 孟买 (自 2025 年 6 月 25 日起)      | `13.203.140.189`, `13.232.213.12`, `13.235.145.208`, `35.154.167.40`, `65.0.39.245`, `65.1.225.89`                                          |
+| **ap-northeast-2** - 首尔 (自 2025 年 11 月 14 日起) | `3.38.68.69`, `52.78.68.128`, `13.209.152.13`, `3.38.24.84`, `3.37.159.31`, `3.34.25.104`                                                   |
+| **ap-southeast-1** - 新加坡 (自 2026 年 3 月 18 日起) | `13.215.65.134`, `18.139.118.108`, `47.130.197.47`, `54.251.134.219`, `54.254.98.29`, `54.255.153.106`                                      |
+| **ap-southeast-2** - 悉尼 (自 2025 年 6 月 25 日起)  | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                            |
+| **af-south-1** - 开普敦 (自 2026 年 4 月 15 日起)     | `13.245.187.24`, `15.240.60.178`, `15.240.81.191`, `13.245.25.101`, `13.245.91.225`, `15.240.54.195`                                        |
+| **ap-east-1** - 香港 (自 2026 年 4 月 15 日起)       | `18.166.168.168`, `43.199.224.85`, `95.40.0.242`, `16.162.107.229`, `43.199.125.240`, `54.46.86.27`                                         |
+| **ap-northeast-1** - 东京 (自 2026 年 4 月 15 日起)  | `54.168.88.92`, `35.76.97.79`, `54.64.100.89`, `54.178.40.17`, `52.195.101.208`, `13.193.109.245`                                           |
+| **ap-southeast-1** - 新加坡 (自 2026 年 3 月 18 日起) | `47.130.197.47`, `54.251.134.219`, `18.139.118.108`, `54.255.153.106`, `54.254.98.29`, `13.215.65.134`                                      |
+| **ap-southeast-3** - 雅加达 (自 2026 年 3 月 6 日起)  | `16.78.195.195`, `43.218.184.235`, `16.79.88.54`, `16.78.153.162`, `16.79.6.125`, `108.137.52.155`                                          |
+| **ca-central-1** - 加拿大 (自 2026 年 4 月 15 日起)   | `52.60.123.235`, `3.97.222.98`, `3.99.62.248`, `15.223.61.186`, `3.96.255.101`, `3.97.29.96`                                                |
+| **eu-north-1** - 斯德哥尔摩 (自 2026 年 4 月 15 日起)   | `13.63.1.65`, `16.171.127.30`, `56.228.76.44`, `13.63.101.248`, `16.170.124.188`, `13.60.109.201`                                           |
+| **eu-west-2** - 伦敦 (自 2026 年 4 月 15 日起)       | `13.134.82.158`, `16.60.209.167`, `18.134.221.203`, `16.60.139.176`, `13.43.66.75`, `3.11.78.183`                                           |
+| **il-central-1** - 特拉维夫 (自 2026 年 4 月 15 日起)  | `16.164.25.13`, `51.84.162.29`, `51.85.90.183`, `51.84.36.146`, `51.84.72.29`, `51.85.28.184`                                               |
+| **sa-east-1** - 圣保罗 (自 2026 年 4 月 15 日起)      | `18.230.164.131`, `56.126.1.234`, `18.230.39.24`, `15.229.102.116`, `18.230.174.204`, `18.229.237.116`                                      |
+| **us-west-2** - 俄勒冈 (自 2025 年 6 月 24 日起)      | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                            |
 
 ## 调整 ClickHouse 设置 \{#adjusting-clickhouse-settings\}
 
@@ -102,26 +124,26 @@ ClickPipes 提供了合理的默认设置，可满足大多数使用场景的需
 
 ### 对象存储 ClickPipes \{#clickpipes-advanced-settings-object-storage\}
 
-| Setting                            | Default value |  Description                     |                    
-|------------------------------------|---------------|---------------------------------------------------------------------------------------|
-| `Max insert bytes`                 | 10GB          | 在单个插入批次中可处理的最大字节数。                                                     |
-| `Max file count`                   | 100           | 在单个插入批次中可处理的最大文件数。                                                     |
-| `Max threads`                      | auto(3)       | 用于文件处理的[最大并发线程数](/operations/settings/settings#max_threads)。            |
-| `Max insert threads`               | 1             | 用于文件处理的[最大并发插入线程数](/operations/settings/settings#max_insert_threads)。 |
-| `Min insert block size bytes`      | 1GB           | [可插入到表中的数据块的最小字节大小](/operations/settings/settings#min_insert_block_size_bytes)。 |
-| `Max download threads`             | 4             | [最大并发下载线程数](/operations/settings/settings#max_download_threads)。             |
-| `Object storage polling interval`  | 30s           | 配置在将数据插入 ClickHouse 集群前的最大等待时间。                                      |
-| `Parallel distributed insert select` | 2           | [并行分布式 INSERT SELECT 设置](/operations/settings/settings#parallel_distributed_insert_select)。 |
-| `Parallel view processing`         | false         | 是否启用并行而非顺序地将数据推送到附加 VIEW。详见[相关设置](/operations/settings/settings#parallel_view_processing)。 |
-| `Use cluster function`             | true          | 是否在多个节点之间并行处理文件。                                                        |
+| Setting                              | Default value | Description                                                                                 |
+| ------------------------------------ | ------------- | ------------------------------------------------------------------------------------------- |
+| `Max insert bytes`                   | 10 GB         | 在单个插入批次中可处理的最大字节数。                                                                          |
+| `Max file count`                     | 100           | 在单个插入批次中可处理的最大文件数。                                                                          |
+| `Max threads`                        | auto(3)       | 用于文件处理的[最大并发线程数](/operations/settings/settings#max_threads)。                                |
+| `Max insert threads`                 | 1             | 用于文件处理的[最大并发插入线程数](/operations/settings/settings#max_insert_threads)。                       |
+| `Min insert block size bytes`        | 1 GB          | [可插入到表中的数据块的最小字节大小](/operations/settings/settings#min_insert_block_size_bytes)。             |
+| `Max download threads`               | 4             | [最大并发下载线程数](/operations/settings/settings#max_download_threads)。                            |
+| `Object storage polling interval`    | 30 s          | 配置在将数据插入 ClickHouse 集群前的最大等待时间。                                                             |
+| `Parallel distributed insert select` | 2             | [并行分布式 INSERT SELECT 设置](/operations/settings/settings#parallel_distributed_insert_select)。 |
+| `Parallel view processing`           | false         | 是否启用并行而非顺序地将数据推送到附加 VIEW。详见[相关设置](/operations/settings/settings#parallel_view_processing)。  |
+| `Use cluster function`               | true          | 是否在多个节点之间并行处理文件。                                                                            |
 
-<Image img={cp_advanced_settings} alt="ClickPipes 的高级设置" size="lg" border/>
+<Image img={cp_advanced_settings} alt="ClickPipes 的高级设置" size="lg" border />
 
 ### 流式 ClickPipes \{#clickpipes-advanced-settings-streaming\}
 
-| 设置                               | 默认值        |  描述                              |                    
-|------------------------------------|---------------|---------------------------------------------------------------------------------------|
-| `Streaming max insert wait time`   | 5s            | 配置在将数据插入 ClickHouse 集群之前的最长等待时间。 |
+| 设置                               | 默认值 | 描述                               |
+| -------------------------------- | --- | -------------------------------- |
+| `Streaming max insert wait time` | 5 s | 配置在将数据插入 ClickHouse 集群之前的最长等待时间。 |
 
 ## 错误报告 \{#error-reporting\}
 
@@ -129,13 +151,17 @@ ClickPipes 会根据摄取过程中遇到的错误类型，将错误分别存储
 
 ### 记录错误 \{#record-errors\}
 
-ClickPipes 会在目标表所在的数据库中创建一个后缀为 `<destination_table_name>_clickpipes_error` 的表。该表会包含由于数据格式不正确或表结构不匹配而产生的所有错误，并保存整条无效消息。此表的[生存时间 (TTL)](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)为 7 天。
+ClickPipes 会在目标表所在的数据库中创建一个后缀为 `<destination_table_name>_clickpipes_error` 的表。该表会包含由于数据格式不正确或 schema 不匹配而产生的所有错误，并保存整条无效消息。此表的[生存时间 (TTL)](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)为 7 天。
 
 ### 系统错误 \{#system-errors\}
 
-与 ClickPipe 运行相关的错误将存储在 `system.clickpipes_log` 表中。该表还会记录所有与 ClickPipe 运行相关的其他错误（如网络、连接等）。此表的[生存时间 (TTL)](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 为 7 天。
+与 ClickPipe 运行相关的错误将存储在 `system.clickpipes_log` 表中。该表还会记录所有与 ClickPipe 运行相关的其他错误 (如网络、连接等) 。此表的[生存时间 (TTL)](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 为 7 天。
 
-如果 ClickPipes 在 15 分钟内无法连接到数据源，或在 1 小时内无法连接到目标端，则该 ClickPipes 实例会停止运行，并在系统错误表中存储一条相应的消息（前提是 ClickHouse 实例可用）。
+如果 ClickPipes 在 15 分钟内无法连接到数据源，或在 1 小时内无法连接到目标端，则该 ClickPipes 实例会停止运行，并在系统错误表中存储一条相应的消息 (前提是 ClickHouse 实例可用) 。
+
+## 监控 \{#monitoring\}
+
+除了控制台内的监控外，ClickPipes 还会将指标暴露到一个[兼容 Prometheus 的端点](/integrations/prometheus)，供抓取使用。这些指标会与其他 ClickHouse Cloud 服务指标一同发布，让您能够将 ClickPipes 监控集成到现有的可观测性堆栈中 (例如 [Grafana](/integrations/prometheus#integrating-with-grafana) 和 [Datadog](/integrations/prometheus#integrating-with-datadog)) 。有关可用指标的完整列表，请参阅 [Monitoring ClickPipes](/integrations/clickpipes/monitoring)。
 
 ## 常见问题解答 \{#faq\}
 

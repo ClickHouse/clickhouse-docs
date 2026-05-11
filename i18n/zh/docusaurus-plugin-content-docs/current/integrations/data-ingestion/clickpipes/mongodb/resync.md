@@ -1,10 +1,10 @@
 ---
 title: '重新同步数据库 ClickPipe'
-description: '用于重新同步数据库 ClickPipe 的文档'
+description: '关于重新同步数据库 ClickPipe 的文档'
 slug: /integrations/clickpipes/mongodb/resync
 sidebar_label: '重新同步 ClickPipe'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+keywords: ['clickpipes', 'mongodb', 'CDC', '数据摄取', '实时同步']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -13,35 +13,35 @@ integration:
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync 有什么作用？ \{#what-mongodb-resync-do\}
+### 重新同步 的作用是什么？ \{#what-mongodb-resync-do\}
 
-Resync 按如下顺序执行以下操作：
+重新同步 会按顺序执行以下操作：
 
-1. 删除现有的 ClickPipe，并启动一个新的名为 “resync” 的 ClickPipe。这样，当你执行 Resync 时，对源表结构的更改会被识别并同步。
-2. resync ClickPipe 会创建（或替换）一组新的目标表，这些表与原始表同名，但会带有 `_resync` 后缀。
-3. 在 `_resync` 表上执行初始加载。
-4. 然后将 `_resync` 表与原始表进行交换。在交换前，会将原始表中被软删除的行转移到 `_resync` 表中。
+1. 删除现有的 ClickPipe，并启动一个新的 “重新同步” ClickPipe。因此，重新同步时会识别到源表结构的变更。
+2. 重新同步 ClickPipe 会创建 (或替换) 一组新的目标表，这些表除了附加 `_resync` 后缀外，名称与原始表相同。
+3. 对 `_resync` 表执行初始导入。
+4. 然后将 `_resync` 表与原始表互换。在互换之前，原始表中被软删除的行会转移到 `_resync` 表中。
 
-原始 ClickPipe 的所有设置都会在 resync ClickPipe 中保留。原始 ClickPipe 的统计信息会在 UI 中被清除。
+原始 ClickPipe 的所有设置都会在 重新同步 ClickPipe 中保留。原始 ClickPipe 的统计信息会在 UI 中清除。
 
-### 何时需要对 ClickPipe 进行 Resync \{#use-cases-mongodb-resync\}
+### 重新同步 ClickPipe 的用例 \{#use-cases-mongodb-resync\}
 
-以下是一些典型场景：
+以下是几个场景：
 
-1. 你可能需要对源表进行较大的 schema 变更，这会破坏现有的 ClickPipe，并需要重新启动。在完成这些变更后，你可以直接点击 Resync。
-2. 尤其是对于 ClickHouse，可能需要更改目标表上的 ORDER BY 键。你可以通过 Resync 将数据重新填充到具有正确排序键的新表中。
+1. 您可能需要对源表进行重大的 schema 变更，这可能会导致现有的 ClickPipe 无法继续工作，并需要重新开始。完成这些变更后，只需点击“重新同步”即可。
+2. 对于 ClickHouse，您可能需要更改目标表的 ORDER BY 键。您可以通过重新同步，将数据重新填充到具有正确排序键的新表中。
 
-### Resync ClickPipe 指南 \{#guide-mongodb-resync\}
+### ClickPipe 重新同步指南 \{#guide-mongodb-resync\}
 
-1. 在 **Data Sources** 选项卡中，点击你想要执行 Resync 的 MongoDB ClickPipe。
+1. 在 Data Sources 选项卡中，点击要重新同步的 MongoDB ClickPipe。
 2. 转到 **Settings** 选项卡。
-3. 点击 **Resync** 按钮。
+3. 点击 **重新同步** 按钮。
 
-<Image img={resync_button} border size="md"/>
+<Image img={resync_button} border size="md" />
 
-4. 会弹出一个确认对话框。再次点击 Resync。
-5. 前往 **Metrics** 选项卡。
+4. 此时会出现确认对话框。再次点击 重新同步。
+5. 转到 **Metrics** 选项卡。
 6. 等待管道状态变为 **Setup** 或 **Snapshot**。
-7. 可以在 **Tables** 选项卡的 **Initial Load Stats** 部分监控 Resync 的初始加载。
-8. 初始加载完成后，管道会以原子方式将 `_resync` 表与原始表进行交换。在交换期间，状态将为 **Resync**。
-9. 交换完成后，管道会进入 **Running** 状态，并在启用时执行 CDC（变更数据捕获）。
+7. 可以在 **Tables** 选项卡的 **Initial Load Stats** 部分查看此次重新同步的初始导入进度。
+8. 初始导入完成后，管道会以原子方式将 `_resync` 表与原始表互换。互换期间，状态将显示为 **重新同步**。
+9. 互换完成后，管道将进入 **Running** 状态，并在启用时执行 CDC。
