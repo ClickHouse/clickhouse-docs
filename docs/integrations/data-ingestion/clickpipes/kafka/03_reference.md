@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Reference'
-description: 'Details supported formats, sources, delivery semantics, authentication and experimental features supported by Kafka ClickPipes'
+description: 'Details supported formats, sources, delivery semantics, authentication and experimental features supported by Kafka ClickPipes.'
 slug: /integrations/clickpipes/kafka/reference
 sidebar_position: 1
 title: 'Reference'
@@ -77,7 +77,7 @@ ClickPipes supports the Variant type in the following circumstances:
 ClickPipes support the JSON type in the following circumstances:
 - Avro Record and Protobuf Message fields can always be assigned to a JSON column.
 - Avro String and Bytes fields can be assigned to a JSON column if the Avro field actually contains JSON String objects.
-- Protobuf string and bytes Kinds can be assigned to a JSON column if the Protobuf field actually contains JSON String objects.
+- Protobuf String and Bytes kinds can be assigned to a JSON column if the Protobuf field actually contains JSON String objects.
 - JSON fields that are always a JSON object can be assigned to a JSON destination column.
 
 Note that you will have to manually change the destination column to the desired JSON type, including any fixed or skipped paths.
@@ -98,23 +98,20 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 ### Protobuf {#protobuf}
 
 #### Supported Protobuf Data Types {#supported-protobuf-data-types}
-ClickPipes supports all Protobuf version 2 and 3 types (except the long deprecated proto 2 `group` type).  Basic conversions are identical to those used for the ClickHouse Protobuf format listed [here](/interfaces/schema-inference#protobuf).
-We recommend exact type matching for Protobuf numeric types, as type conversion can result overflows or precision loss.  Protobuf maps, arrays, and Nullable variations of basic types are also supported.  ClickPipes also recognizes a
-limited set of Google "well known types": Timestamp, Duration, and "wrapper" messages.  Timestamps can be accurately mapped to DateTime or DateTime64 types, Durations to Time or Time64 types, and wrapper messages to the
-underlying type.  All Protobuf types can also be mapped to a ClickHouse `String` column and will be represented by a JSON string in that case.
+ClickPipes supports all Protobuf version 2 and 3 types (except the long-deprecated proto 2 `group` type). Basic conversions are identical to those used for the ClickHouse Protobuf format listed [here](/interfaces/schema-inference#protobuf).
+We recommend exact type matching for Protobuf numeric types, as type conversion can result in overflows or precision loss. Protobuf maps, arrays, and Nullable variations of basic types are also supported. ClickPipes also recognizes a
+limited set of Google "well-known types": Timestamp, Duration, and "wrapper" messages. Timestamps can be accurately mapped to `DateTime` or `DateTime64` types, Durations to `Time` or `Time64` types, and wrapper messages to the underlying type.  All Protobuf types can also be mapped to a ClickHouse `String` column, which will be represented by a JSON string.
 
 #### Protobuf One-Ofs {#protobuf-one-ofs}
-During schema inference, protobuf "One Of" special fields will normally be mapped to a named Tuple, where only one of the fields will have a "non-default" value.  Alternatively, some "One Ofs" may be automatically mapped to a name variant field
-with the name of the "One Of", and a value representing using one of the valid types of the constituent fields.  Alternatively, each "One Of" constituent field can be manually mapped to a ClickHouse column, where only one of the constituent fields
+During schema inference, Protobuf "One Of" special fields will normally be mapped to a named Tuple, where only one of the fields will have a "non-default" value.  Alternatively, some "One Ofs" may be automatically mapped to a name variant field with the name of the "One Of", and a value representing one of the valid types of the constituent fields.  Alternatively, each "One Of" constituent field can be manually mapped to a ClickHouse column, where only one of the constituent fields
 will ever be populated during processing.
 
 #### Message Lists (Envelopes) {#protobuf-message-lists}
-If the top level Protobuf schema defined for the ClickPipe contains a single repeated field that is itself a protobuf Message, schema inference and column mapping will be based on the "contained" Message field.  The Kafka message will be processed as a
-list of such messages, and a single Kafka message will generate multiple ClickHouse rows.
+If the top level Protobuf schema defined for the ClickPipe contains a single repeated field that is itself a protobuf Message, schema inference and column mapping will be based on the "contained" Message field.  The Kafka message will be processed as a list of such messages, and a single Kafka message will unwrap into multiple ClickHouse rows.
 
 ## Kafka virtual columns {#kafka-virtual-columns}
 
-The following virtual columns are supported for Kafka compatible streaming data sources.  When creating a new destination table virtual columns can be added by using the `Add Column` button.
+The following virtual columns are supported for Kafka compatible streaming data sources.  When creating a new destination, virtual columns can be added to the target table by using the `Add Column` button.
 
 | Name             | Description                                     | Recommended Data Type  |
 |------------------|-------------------------------------------------|------------------------|
