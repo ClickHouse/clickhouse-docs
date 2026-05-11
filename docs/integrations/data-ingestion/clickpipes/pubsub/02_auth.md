@@ -1,7 +1,7 @@
 ---
 slug: /integrations/clickpipes/pubsub/auth
-sidebar_label: 'Pub/Sub IAM Permissions'
-title: 'Pub/Sub IAM Permissions'
+sidebar_label: 'Pub/Sub IAM permissions'
+title: 'Pub/Sub IAM permissions'
 description: 'This article describes the GCP IAM permissions ClickPipes requires to authenticate with Google Cloud Pub/Sub and consume data from your topics.'
 doc_type: 'guide'
 keywords: ['Google Cloud Pub/Sub', 'GCP IAM', 'service account']

@@ -35,7 +35,7 @@ ClickPipes for GCP Pub/Sub is in Public Beta.
 Pub/Sub ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Prerequisite {#prerequisite}
-You have familiarized yourself with the [ClickPipes intro](../index.md), have access to a GCP project containing the topic you want to ingest from, and have created a service account with the appropriate Pub/Sub permissions. Follow the [Pub/Sub IAM Permissions guide](./02_auth.md) for the exact set of permissions ClickPipes requires.
+You have familiarized yourself with the [ClickPipes intro](../index.md), have access to a GCP project containing the topic you want to ingest from, and have created a service account with the appropriate Pub/Sub permissions. Follow the [Pub/Sub IAM permissions guide](./02_auth.md) for the exact set of permissions ClickPipes requires.
 
 ## Creating your first ClickPipe {#creating-your-first-clickpipe}
 
@@ -114,7 +114,7 @@ Pub/Sub messages are consumed through subscriptions, not directly from topics. C
 - During topic discovery and message sampling, ClickPipes also creates short-lived ephemeral subscriptions (`clickpipes-discovery-{uuid}`) that are deleted immediately after sampling completes.
 - When the pipe is deleted, ClickPipes deletes the managed subscription as part of teardown.
 
-The service account you provide must therefore have permission to create and delete subscriptions on the project, in addition to consuming from them. See the [Pub/Sub IAM Permissions guide](./02_auth.md) for the full list.
+The service account you provide must therefore have permission to create and delete subscriptions on the project, in addition to consuming from them. See the [Pub/Sub IAM permissions guide](./02_auth.md) for the full list.
 
 ## Supported data formats {#supported-data-formats}
 
@@ -231,4 +231,4 @@ ClickPipes for Pub/Sub provides **at-least-once** delivery. A Pub/Sub message is
 
 ClickPipes for Pub/Sub authenticates with GCP using a service account JSON key. You upload the key file when creating the pipe; ClickPipes encrypts it at rest and uses it at runtime to consume messages and manage the lifecycle of the managed subscription.
 
-For the exact list of IAM permissions required and a recommended custom-role definition, see the [Pub/Sub IAM Permissions guide](./02_auth.md).
+For the exact list of IAM permissions required and a recommended custom-role definition, see the [Pub/Sub IAM permissions guide](./02_auth.md).
