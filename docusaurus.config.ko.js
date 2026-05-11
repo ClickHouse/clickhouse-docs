@@ -56,7 +56,7 @@ const config = {
   organizationName: "ClickHouse",
   trailingSlash: false,
   i18n: {
-    defaultLocale: "ko",
+    defaultLocale: "en",
     locales: ["en", "jp", "zh", "ru", "ko"],
     path: "i18n",
     localeConfigs: {
