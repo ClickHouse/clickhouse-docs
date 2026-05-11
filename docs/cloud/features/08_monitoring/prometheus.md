@@ -22,6 +22,8 @@ The feature supports integrating [Prometheus](https://prometheus.io/) to monitor
 
 To get started, [generate an API key](/cloud/manage/openapi).
 
+If you're looking for the equivalent endpoint for [Managed Postgres](/cloud/managed-postgres) services, see the [Managed Postgres Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus).
+
 ## Prometheus endpoint API to retrieve ClickHouse Cloud metrics {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
 
 ### API reference {#api-reference}
@@ -329,3 +331,4 @@ instances:
 - [Cloud Console monitoring](/cloud/monitoring/cloud-console) — Built-in dashboards that require no external tools
 - [Community and partner integrations](/cloud/monitoring/integrations) — Datadog agent integration and community solutions
 - [Querying system tables](/cloud/monitoring/system-tables) — Direct SQL access to system metrics
+- [Managed Postgres Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus) — Scrape metrics from your Managed Postgres services
