@@ -87,11 +87,15 @@ gcloud iam roles create clickpipes.pubsub.ingestion \
   --project=YOUR_PROJECT_ID \
   --title="ClickPipes Pub/Sub Ingestion" \
   --description="Permissions required by ClickHouse ClickPipes to ingest from Pub/Sub" \
-  --permissions=pubsub.topics.list,pubsub.topics.get,pubsub.topics.attachSubscription,pubsub.subscriptions.create,pubsub.subscriptions.get,pubsub.subscriptions.delete,pubsub.subscriptions.consume,pubsub.snapshots.seek,pubsub.schemas.get \
+  --permissions=pubsub.topics.list,pubsub.topics.get,pubsub.topics.attachSubscription,pubsub.subscriptions.create,pubsub.subscriptions.get,pubsub.subscriptions.delete,pubsub.subscriptions.consume \
   --stage=GA
 ```
 
 Or, in the GCP Console, go to **IAM & Admin → Roles → Create role** and add the permissions listed in [Required permissions](#required-permissions).
+
+:::note Optional permissions
+Append `pubsub.snapshots.seek` to the `--permissions` list if you plan to use the **Seek to Snapshot** starting offset, and `pubsub.schemas.get` if you ingest from topics that use native Pub/Sub Avro or Protobuf schemas. Leave them out otherwise to keep the role minimal.
+:::
 
 If you prefer to skip the custom role, you can grant `roles/pubsub.editor` instead.
 

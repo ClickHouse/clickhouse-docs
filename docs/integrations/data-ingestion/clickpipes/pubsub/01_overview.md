@@ -51,14 +51,14 @@ You have familiarized yourself with the [ClickPipes intro](../index.md), have ac
 
 <Image img={cp_step1_pubsub} alt="Select GCP Pub/Sub as the data source" size="lg" border/>
 
-4. Fill out the form by providing your ClickPipe with a name, your **GCP Project ID**, and the **service account JSON file** for the service account that has been granted Pub/Sub access. The Project ID must be 6–30 characters, lowercase, and begin with a letter.
+4. Fill out the form by providing your ClickPipe with a name, your **GCP Project ID**, and the **service account JSON file** for the service account that has been granted Pub/Sub access. The Project ID must be 6–30 characters, can contain lowercase letters, digits, and hyphens, must start with a letter, and cannot end with a hyphen.
 
 <Image img={cp_step2_pubsub} alt="Fill out connection details" size="lg" border/>
 
 5. Select the **Pub/Sub topic** to ingest from. The dropdown is auto-populated from the topics in your GCP project (sorted alphabetically) once your credentials validate.
 
    - **Data format.** ClickPipes queries the Pub/Sub schema registry when you select a topic. If the topic has a native Avro or Protobuf schema attached, the Data format and Schema are auto-detected and the selectors are locked to the latest schema on the topic. Topics without a native schema default to JSONEachRow.
-   - **Starting offset.** Choose where to begin consuming. Available modes are `latest` (new messages only), `earliest` (oldest retained messages), `timestamp` (with a UTC datetime picker), and `snapshot` (with a snapshot name input).
+   - **Starting offset.** Choose where to begin consuming. The available options are **Latest** (new messages only), **Earliest** (oldest retained messages), **Seek to Timestamp** (with a UTC datetime picker), and **Seek to Snapshot** (with a snapshot name input).
    - **Filter expression (optional).** A Pub/Sub [subscription filter](https://cloud.google.com/pubsub/docs/subscription-message-filter) on message attributes — for example, `attributes.type = "telemetry"`. Filters apply to message attributes only, not the payload, and cannot be changed after the pipe is created (changing the filter requires recreating the pipe).
    - The UI will show a sample message from the selected topic, with a **Flatten object** toggle that lets you preview how nested JSON would be flattened on the destination side.
 
@@ -139,7 +139,7 @@ The following compression codecs are supported:
 Compression is detected automatically via magic bytes in each message. If no known compression signature is found, the message is treated as uncompressed. The detected compression type is also surfaced during schema inference, so the sample data preview in the UI will correctly show the decompressed payload.
 
 :::note
-Auto-detection is safe for text-based formats like JSON and CSV, as printable ASCII characters will never collide with compression magic bytes. The decompressed payload is limited to 64MB.
+Auto-detection is safe for text-based formats like JSON, as printable ASCII characters will never collide with compression magic bytes. The decompressed payload is limited to 64MB.
 :::
 
 ## Supported data types {#supported-data-types}
@@ -217,9 +217,9 @@ If your producer publishes all messages under a small number of ordering keys (o
 
 ### Scaling {#scaling}
 
-ClickPipes for Pub/Sub is designed to scale both horizontally and vertically. By default, we create a consumer group with one consumer. This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
+ClickPipes for Pub/Sub is designed to scale both horizontally and vertically. Each pipe uses a single managed Pub/Sub subscription — this is not configurable. By default, one consumer pulls from that subscription; you can increase the number of consumers during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**. ClickPipes distributes messages from the subscription across the running consumers automatically — no additional coordination is required.
 
-Pub/Sub distributes messages across multiple subscribers on the same subscription automatically — no additional coordination is required. ClickPipes provides high availability with an availability-zone-distributed architecture; this requires scaling to at least two consumers.
+ClickPipes provides high availability with an availability-zone-distributed architecture; this requires scaling to at least two consumers.
 
 Regardless of the number of running consumers, fault tolerance is available by design. If a consumer or its underlying infrastructure fails, ClickPipes will automatically restart the consumer and continue processing messages.
 
