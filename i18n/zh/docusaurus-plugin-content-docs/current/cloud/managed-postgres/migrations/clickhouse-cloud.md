@@ -10,7 +10,6 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
-import alterRole from '@site/static/images/managed-postgres/pgpg/alterrole.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
 import migrationForm from '@site/static/images/managed-postgres/pgpg/migrationform.png';
 import migrationList from '@site/static/images/managed-postgres/pgpg/migrationlist.png';
@@ -38,7 +37,6 @@ ClickHouse Cloud 内置了一个导入向导，可将外部 PostgreSQL 数据库
 ## 迁移前的注意事项 \{#considerations\}
 
 * **DDL 传播**：持续复制 (CDC) 会捕获 DML 操作以及 `ADD COLUMN`。其他 DDL 修改 (如 `DROP COLUMN` 和 `ALTER COLUMN`) 不会传播，必须在目标端手动执行。
-* **外键约束**：为避免摄取因外键检查而受阻，你需要在目标角色上临时设置 `session_replication_role = replica`。这将在下文的第 3 步中说明。
 
 ## 步骤 1：连接到源数据库 \{#step-1-connect\}
 
@@ -108,14 +106,6 @@ psql \
 
 <Image img={psqlImport} alt="运行 psql schema 导入后的终端输出" size="lg" border />
 
-应用 schema 后，在目标角色上将 `session_replication_role` 设置为 `replica`，以防外键约束阻碍摄取：
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'replica';
-```
-
-<Image img={alterRole} alt="将 session_replication_role 设为 replica 的 ALTER ROLE 命令" size="lg" border />
-
 点击 **Next**。
 
 ## 第 4 步：配置摄取设置 \{#step-4-ingestion-settings\}
@@ -175,12 +165,6 @@ ALTER DATABASE <source_db> SET default_transaction_read_only = on;
 ```sql
 -- Run on both source and target
 SELECT MAX(id), MAX(updated_at) FROM public.orders;
-```
-
-**重新启用约束并恢复复制角色。** 重新应用在导入期间暂缓处理的所有索引、约束和触发器，然后重置目标角色：
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'origin';
 ```
 
 **重置序列。** 使序列与各表中的当前最大值保持一致：

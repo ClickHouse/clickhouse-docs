@@ -251,7 +251,7 @@ ClickStack 随 ClickHouse 分发的默认 schema 是由 [ClickHouse exporter for
 :::
 
 * `HYPERDX_API_KEY`
-  * **默认值：** 无（必填）
+  * **默认值：** 无 (必填)
   * **描述：** 用于 HyperDX API 的认证密钥。
   * **指导：**
   * 遥测和日志采集必需
@@ -272,7 +272,7 @@ ClickStack 随 ClickHouse 分发的默认 schema 是由 [ClickHouse exporter for
   * **默认值：** `8000`
   * **说明：** HyperDX API 服务器使用的端口。
   * **指导：**
-  * 确保该端口在主机上可用（未被占用）
+  * 确保该端口在主机上可用 (未被占用)
   * 如有端口冲突，请修改该端口
   * 必须与 API 客户端配置中的端口保持一致
 
@@ -289,8 +289,8 @@ ClickStack 随 ClickHouse 分发的默认 schema 是由 [ClickHouse exporter for
   * **描述：** 前端应用的基础 URL。
   * **指导：**
   * 在生产环境中设置为您的域名
-  * 必须包含协议（http 或 https）
-  * 不要在末尾加斜杠（/）
+  * 必须包含协议 (http 或 https)
+  * 不要在末尾加斜杠 (/)
 
 * `MONGO_URI`
   * **默认值：** `mongodb://db:27017/hyperdx`
@@ -377,66 +377,68 @@ ClickStack 随 ClickHouse 分发的默认 schema 是由 [ClickHouse exporter for
   * **默认值：** `false`
   * **描述：** 在 HyperDX 中启用对 JSON 类型的测试版支持。另请参阅 [`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) 以在 OTel collector 中启用 JSON 支持。
   * **指导：**
-  * 将其设置为 `true` 以在 ClickStack 中启用 JSON 支持。
+    * 启用一项 **Beta 功能**。对于典型的可观测性工作负载，**不建议**使用 JSON 类型的 schema。有关两者的对比以及各自适用的场景，请参阅 [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json)。
+    * 将其设置为 `true` 以在 ClickStack UI 中启用 JSON 支持。
 
 ## OpenTelemetry collector \{#otel-collector\}
 
-参见 ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector) 了解更多详情。
+参见 [&quot;ClickStack OpenTelemetry Collector&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector) 了解更多详情。
 
-- `CLICKHOUSE_ENDPOINT`
-  - **默认值：** *无（必填）*（若为独立镜像）。如果是 All-in-one 或 Docker Compose 发行版，则会设置为集成的 ClickHouse 实例。
-  - **说明：** 用于导出遥测数据的 ClickHouse 实例的 HTTPS URL。
-  - **指南：**
-    - 必须是包含端口的完整 HTTPS 端点（例如 `https://clickhouse.example.com:8443`）
-    - 采集器向 ClickHouse 发送数据时必需
+* `CLICKHOUSE_ENDPOINT`
+  * **默认值：** *无 (必填)&#x20;*&#x20;(若为独立镜像) 。如果是 All-in-one 或 Docker Compose 发行版，则会设置为集成的 ClickHouse 实例。
+  * **说明：** 用于导出遥测数据的 ClickHouse 实例的 HTTPS URL。
+  * **指南：**
+    * 必须是包含端口的完整 HTTPS 端点 (例如 `https://clickhouse.example.com:8443`) 
+    * 采集器向 ClickHouse 发送数据时必需
 
-- `CLICKHOUSE_USER`
-  - **默认值：** `default`
-  - **说明：** 用于与 ClickHouse 实例进行身份验证的用户名。
-  - **指南：**
-    - 确保该用户具有 `INSERT` 和 `CREATE TABLE` 权限
-    - 推荐为摄取创建专用用户
+* `CLICKHOUSE_USER`
+  * **默认值：** `default`
+  * **说明：** 用于与 ClickHouse 实例进行身份验证的用户名。
+  * **指南：**
+    * 确保该用户具有 `INSERT` 和 `CREATE TABLE` 权限
+    * 推荐为摄取创建专用用户
 
-- `CLICKHOUSE_PASSWORD`
-  - **默认值：** *无（启用认证时必填）*
-  - **说明：** 指定 ClickHouse 用户的密码。
-  - **指南：**
-    - 如果该用户账户设置了密码，则必需
-    - 在生产环境部署中通过 secret 安全存储
+* `CLICKHOUSE_PASSWORD`
+  * **默认值：** *无 (启用认证时必填)&#x20;*
+  * **说明：** 指定 ClickHouse 用户的密码。
+  * **指南：**
+    * 如果该用户账户设置了密码，则必需
+    * 在生产环境部署中通过 secret 安全存储
 
-- `HYPERDX_LOG_LEVEL`
-  - **默认值：** `info`
-  - **说明：** 采集器的日志详细程度级别。
-  - **指南：**
-    - 接受 `debug`、`info`、`warn`、`error` 等值
-    - 排查问题时使用 `debug`
+* `HYPERDX_LOG_LEVEL`
+  * **默认值：** `info`
+  * **说明：** 采集器的日志详细程度级别。
+  * **指南：**
+    * 接受 `debug`、`info`、`warn`、`error` 等值
+    * 排查问题时使用 `debug`
 
-- `OPAMP_SERVER_URL`
-  - **默认值：** *无（必填）*（若为独立镜像）。如果是 All-in-one 或 Docker Compose 发行版，则指向已部署的 HyperDX 实例。
-  - **说明：** 用于管理采集器的 OpAMP 服务器 URL（例如 HyperDX 实例）。默认端口为 `4320`。
-  - **指南：**
-    - 必须指向你的 HyperDX 实例
-    - 启用动态配置和安全摄取
-    - 如果省略，则除非指定了 `OTLP_AUTH_TOKEN` 值，否则安全摄取将被禁用。
+* `OPAMP_SERVER_URL`
+  * **默认值：** *无 (必填)&#x20;*&#x20;(若为独立镜像) 。如果是 All-in-one 或 Docker Compose 发行版，则指向已部署的 HyperDX 实例。
+  * **说明：** 用于管理采集器的 OpAMP 服务器 URL (例如 HyperDX 实例) 。默认端口为 `4320`。
+  * **指南：**
+    * 必须指向你的 HyperDX 实例
+    * 启用动态配置和安全摄取
+    * 如果省略，则除非指定了 `OTLP_AUTH_TOKEN` 值，否则安全摄取将被禁用。
 
-- `OTLP_AUTH_TOKEN`
-  - **默认值：** *无*。仅用于独立镜像。
-  - **说明：** 允许指定 OTLP 认证 token。若设置，则所有通信都需要该 bearer token。
-  - **指南：**
-    - 建议在生产环境中使用独立采集器镜像时启用。
+* `OTLP_AUTH_TOKEN`
+  * **默认值：** *无*。仅用于独立镜像。
+  * **说明：** 允许指定 OTLP 认证 token。若设置，则所有通信都需要该 bearer token。
+  * **指南：**
+    * 建议在生产环境中使用独立采集器镜像时启用。
 
-- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
-  - **默认值：** `default`
-  - **说明：** 采集器写入遥测数据的 ClickHouse 数据库。
-  - **指南：**
-    - 若使用自定义数据库名，则需设置
-    - 确保指定用户对该数据库具有访问权限
+* `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
+  * **默认值：** `default`
+  * **说明：** 采集器写入遥测数据的 ClickHouse 数据库。
+  * **指南：**
+    * 若使用自定义数据库名，则需设置
+    * 确保指定用户对该数据库具有访问权限
 
-- `OTEL_AGENT_FEATURE_GATE_ARG`
-  - **默认值：** `<empty string>`
-  - **说明：** 用于在采集器中启用 feature flag。如果设置为 `--feature-gates=clickhouse.json`，则在采集器中启用对 JSON 类型的 Beta 支持，确保 schema 使用该类型创建。另见 [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) 以在 HyperDX 中启用 JSON 支持。
-  - **指南：**
-  - 将其设置为 `true` 以在 ClickStack 中启用 JSON 支持。
+* `OTEL_AGENT_FEATURE_GATE_ARG`
+  * **默认值：** `<empty string>`
+  * **说明：** 用于在采集器中启用 feature flags。如果设置为 `--feature-gates=clickhouse.json`，则会在采集器中启用对 JSON type 的 Beta 支持，确保 schema 使用该类型创建。另见 [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) 以在 HyperDX 中启用 JSON 支持。
+  * **指南：**
+    * 这会启用一个 **Beta 功能**。对于典型的可观测性 workloads，**不建议**使用 JSON 类型的 schema。有关对比以及各自适用场景，请参见 [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json)。
+    * 将其设置为 `--feature-gates=clickhouse.json` 以使用 JSON 类型创建新表。
 
 ## ClickHouse \{#clickhouse\}
 

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Beta Features and Experimental'
-title: 'Beta and Experimental Features'
+sidebar_label: 'Beta and experimental features'
+title: 'Beta and experimental features'
 description: 'ClickHouse has beta and experimental features. This documentation page discusses definition.'
 slug: /beta-and-experimental-features
 doc_type: 'reference'
@@ -161,6 +161,9 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [promql_table](/operations/settings/settings#promql_table) | `` |
 | [promql_evaluation_time](/operations/settings/settings#promql_evaluation_time) | `auto` |
 | [allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine) | `0` |
+| [allow_experimental_paimon_storage_engine](/operations/settings/settings#allow_experimental_paimon_storage_engine) | `0` |
+| [paimon_target_snapshot_id](/operations/settings/settings#paimon_target_snapshot_id) | `-1` |
+| [max_consume_snapshots](/operations/settings/settings#max_consume_snapshots) | `0` |
 | [use_paimon_partition_pruning](/operations/settings/settings#use_paimon_partition_pruning) | `0` |
 | [allow_experimental_object_storage_queue_hive_partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning) | `0` |
 | [query_plan_optimize_join_order_algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm) | `greedy` |

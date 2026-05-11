@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-sidebar_label: '베타 기능 및 실험적 기능'
+sidebar_label: '베타 및 실험적 기능'
 title: '베타 및 실험적 기능'
 description: 'ClickHouse에는 베타 기능과 실험적 기능이 있습니다. 이 문서에서는 해당 개념을 정의합니다.'
 slug: /beta-and-experimental-features
@@ -162,6 +162,9 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 | [promql&#95;table](/operations/settings/settings#promql_table)                                                                                                                                                                      | ``                      |
 | [promql&#95;evaluation&#95;time](/operations/settings/settings#promql_evaluation_time)                                                                                                                                              | `auto`                  |
 | [allow&#95;experimental&#95;alias&#95;table&#95;engine](/operations/settings/settings#allow_experimental_alias_table_engine)                                                                                                        | `0`                     |
+| [allow&#95;experimental&#95;paimon&#95;storage&#95;engine](/operations/settings/settings#allow_experimental_paimon_storage_engine)                                                                                                  | `0`                     |
+| [paimon&#95;target&#95;snapshot&#95;id](/operations/settings/settings#paimon_target_snapshot_id)                                                                                                                                    | `-1`                    |
+| [max&#95;consume&#95;snapshots](/operations/settings/settings#max_consume_snapshots)                                                                                                                                                | `0`                     |
 | [use&#95;paimon&#95;partition&#95;pruning](/operations/settings/settings#use_paimon_partition_pruning)                                                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;object&#95;storage&#95;queue&#95;hive&#95;partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning)                                                        | `0`                     |
 | [query&#95;plan&#95;optimize&#95;join&#95;order&#95;algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm)                                                                                              | `greedy`                |

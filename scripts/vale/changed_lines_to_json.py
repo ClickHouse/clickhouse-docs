@@ -51,11 +51,14 @@ def get_changed_lines(file_path, base_sha, head_sha):
         changed_lines = []
         for line in diff_output.splitlines():
             if line.startswith("@@"):
-                # Extract line number from git diff header
-                match = re.search(r"^@@ -[0-9]+(?:,[0-9]+)? \+([0-9]+)(?:,[0-9]+)? @@", line)
+                # Extract the full added range from a unified=0 hunk header.
+                # Format: @@ -A,B +C[,D] @@ — D is omitted when exactly 1 line
+                # was added; D is 0 for pure deletions.
+                match = re.search(r"^@@ -[0-9]+(?:,[0-9]+)? \+([0-9]+)(?:,([0-9]+))? @@", line)
                 if match:
-                    line_number = int(match.group(1))
-                    changed_lines.append(line_number)
+                    start = int(match.group(1))
+                    count = int(match.group(2)) if match.group(2) is not None else 1
+                    changed_lines.extend(range(start, start + count))
 
         return changed_lines
     except subprocess.CalledProcessError as e:

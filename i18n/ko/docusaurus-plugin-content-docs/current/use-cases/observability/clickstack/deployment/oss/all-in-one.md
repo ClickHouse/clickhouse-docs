@@ -126,9 +126,3 @@ HyperDX UI에 접속한 후 [`Team Settings`](http://localhost:8080/team)로 이
 필요한 경우 OTel collector 구성을 수정할 수 있습니다. 자세한 내용은 [「구성 수정」](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration)을 참조하십시오.
 
 <JSONSupport />
-
-예를 들어 다음과 같습니다.
-
-```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-all-in-one:latest
-```

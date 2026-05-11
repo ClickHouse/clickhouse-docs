@@ -71,51 +71,43 @@ ClickPipes 是一项独立于 ClickHouse 服务运行的云服务。它连接到
 ### Azure Event Hubs \{#azure-eventhubs\}
 
 <details>
+  <summary>Azure Event Hubs ClickPipe 可以在没有 Kafka 接口的情况下工作吗？</summary>
 
-<summary>Azure Event Hubs ClickPipe 可以在没有 Kafka 接口的情况下工作吗？</summary>
-
-不可以。ClickPipes 要求 Event Hubs 命名空间启用 Kafka 接口层。该功能仅在高于 **basic** 的层级中提供。更多信息请参阅 [Azure Event Hubs 文档](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quickstart-kafka-enabled-event-hubs?tabs=passwordless#create-an-azure-event-hubs-namespace)。
+  不可以。ClickPipes 要求 Event Hubs 命名空间启用 Kafka 接口层。该功能仅在高于 **basic** 的层级中提供。更多信息请参阅 [Azure Event Hubs 文档](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-quickstart-kafka-enabled-event-hubs?tabs=passwordless#create-an-azure-event-hubs-namespace)。
 </details>
 
 <details>
+  <summary>Azure Schema Registry 可以与 ClickPipes 一起使用吗？</summary>
 
-<summary>Azure Schema Registry 可以与 ClickPipes 一起使用吗？</summary>
-
-不可以。ClickPipes 仅支持与 Confluent Schema Registry API 兼容的模式注册表，而 Azure Schema Registry 不满足这一条件。如果您需要对此模式注册表的支持，请[联系我们的团队](https://clickhouse.com/company/contact?loc=clickpipes)。
+  不可以。ClickPipes 仅支持与 Confluent Schema Registry API 兼容的模式注册表，而 Azure Schema Registry 不满足这一条件。如果您需要对此模式注册表的支持，请[联系我们的团队](https://clickhouse.com/company/contact?loc=clickpipes)。
 </details>
 
 <details>
+  <summary>我的策略需要哪些权限才能从 Azure Event Hubs 进行消费？</summary>
 
-<summary>我的策略需要哪些权限才能从 Azure Event Hubs 进行消费？</summary>
-
-为了列出主题并消费事件，授予 ClickPipes 的共享访问策略至少需要具有一个 `Listen` 声明。
+  为了列出主题并消费事件，授予 ClickPipes 的共享访问策略至少需要具有一个 `Listen` 声明。
 </details>
 
 <details>
+  <summary>为什么我的 Event Hubs 不返回任何数据？</summary>
 
-<summary>为什么我的 Event Hubs 不返回任何数据？</summary>
-
-如果您的 ClickHouse 实例所在的区域或洲与 Event Hubs 部署位置不同，那么在接入 ClickPipes 时，您可能会遇到超时，并且从 Event Hub 消费数据时会有更高的延迟。我们建议将 ClickHouse Cloud 和 Azure Event Hubs 部署在同一云区域，或部署在彼此相近的区域，以避免性能开销。
+  如果您的 ClickHouse 实例所在的区域或洲与 Event Hubs 部署位置不同，那么在接入 ClickPipes 时，您可能会遇到超时，并且从 Event Hub 消费数据时会有更高的延迟。我们建议将 ClickHouse Cloud 和 Azure Event Hubs 部署在同一云区域，或部署在彼此相近的区域，以避免性能开销。
 </details>
 
 <details>
+  <summary>我是否应该为 Azure Event Hubs 包含端口号？</summary>
 
-<summary>我是否应该为 Azure Event Hubs 包含端口号？</summary>
-
-是的。ClickPipes 期望您为 Kafka 接口包含端口号，该端口应为 `:9093`。
+  是的。ClickPipes 期望您为 Kafka 接口包含端口号，该端口应为 `:9093`。
 </details>
 
 <details>
+  <summary>ClickPipes 的 IP 在 Azure Event Hubs 中仍然相关吗？</summary>
 
-<summary>ClickPipes 的 IP 在 Azure Event Hubs 中仍然相关吗？</summary>
-
-是的。要限制到您的 Event Hubs 实例的流量，请将[文档中列出的静态 NAT IP](../
-/index.md#list-of-static-ips) 添加到相应配置中。
-
+  是的。要限制到您的 Event Hubs 实例的流量，请将[文档中列出的静态 NAT IP](/integrations/clickpipes#list-of-static-ips) 添加到相应配置中。
 </details>
 
 <details>
-<summary>连接字符串是用于 Event Hub，还是用于 Event Hub 命名空间？</summary>
+  <summary>连接字符串是用于 Event Hub，还是用于 Event Hub 命名空间？</summary>
 
-两者都可以。我们强烈建议在**命名空间级别**使用共享访问策略，以便从多个 Event Hubs 中获取数据样本。
+  两者都可以。我们强烈建议在**命名空间级别**使用共享访问策略，以便从多个 Event Hubs 中获取数据样本。
 </details>

@@ -44,7 +44,6 @@ helm uninstall clickstack-operators
 MongoDB および ClickHouse のオペレーターが作成した PersistentVolumeClaims は、`helm uninstall` を実行しても**削除されません**。これは、意図しないデータ損失を防ぐための仕様です。アンインストール後に PVC をクリーンアップするには、以下を参照してください。
 
 * [MongoDB Kubernetes Operator のドキュメント](https://github.com/mongodb/mongodb-kubernetes/tree/master/docs/mongodbcommunity)
-* [ClickHouse Operator のクリーンアップ ドキュメント](https://clickhouse.com/docs/clickhouse-operator/managing-clusters/cleanup)
 
 ### ストレージクラス \{#storage-class\}
 

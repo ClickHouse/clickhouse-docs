@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Бета-функции и экспериментальные'
-title: 'Бета-функции и экспериментальные функции'
+sidebar_label: 'бета и экспериментальные функции'
+title: 'бета-функции и экспериментальные функции'
 description: 'В ClickHouse есть бета-функции и экспериментальные функции. На этой странице документации обсуждается их определение.'
 slug: /beta-and-experimental-features
 doc_type: 'reference'
@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 Поскольку ClickHouse является проектом с открытым исходным кодом, он получает множество изменений не только от сотрудников ClickHouse, но и от сообщества. Эти изменения часто развиваются с разной скоростью; для некоторых функций может потребоваться длительная стадия прототипирования или больше времени для получения достаточного объёма отзывов и итераций в сообществе, прежде чем их можно будет считать общедоступными (GA).
 
-Из-за неопределённости момента, когда функции классифицируются как общедоступные, мы разделяем функции на две категории: **Beta** и **Experimental**.
+Из-за неопределённости момента, когда функции классифицируются как общедоступные, мы разделяем функции на две категории: **бета** и **экспериментальные**.
 
-Функции **Beta** официально поддерживаются командой ClickHouse. Функции **Experimental** — это ранние прототипы, разрабатываемые либо командой ClickHouse, либо сообществом, и официально не поддерживаются.
+Функции **бета** официально поддерживаются командой ClickHouse. Функции **экспериментальные** — это ранние прототипы, разрабатываемые либо командой ClickHouse, либо сообществом, и официально не поддерживаются.
 
-В разделах ниже подробно описываются свойства функций **Beta** и **Experimental**:
+В разделах ниже подробно описываются свойства функций **бета** и **экспериментальных**:
 
 ## Бета-функции \{#beta-features\}
 
@@ -162,6 +162,9 @@ doc_type: 'reference'
 | [promql&#95;table](/operations/settings/settings#promql_table)                                                                                                                                                                      | ``                      |
 | [promql&#95;evaluation&#95;time](/operations/settings/settings#promql_evaluation_time)                                                                                                                                              | `auto`                  |
 | [allow&#95;experimental&#95;alias&#95;table&#95;engine](/operations/settings/settings#allow_experimental_alias_table_engine)                                                                                                        | `0`                     |
+| [allow&#95;experimental&#95;paimon&#95;storage&#95;engine](/operations/settings/settings#allow_experimental_paimon_storage_engine)                                                                                                  | `0`                     |
+| [paimon&#95;target&#95;snapshot&#95;id](/operations/settings/settings#paimon_target_snapshot_id)                                                                                                                                    | `-1`                    |
+| [max&#95;consume&#95;snapshots](/operations/settings/settings#max_consume_snapshots)                                                                                                                                                | `0`                     |
 | [use&#95;paimon&#95;partition&#95;pruning](/operations/settings/settings#use_paimon_partition_pruning)                                                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;object&#95;storage&#95;queue&#95;hive&#95;partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning)                                                        | `0`                     |
 | [query&#95;plan&#95;optimize&#95;join&#95;order&#95;algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm)                                                                                              | `greedy`                |

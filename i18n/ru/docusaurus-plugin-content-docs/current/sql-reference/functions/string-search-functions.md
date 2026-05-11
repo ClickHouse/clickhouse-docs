@@ -397,7 +397,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 Добавлена в: v20.5.0
 
-Извлекает группы захвата из первой подстроки, найденной по регулярному выражению. Чтобы извлечь группы из всех совпадений, используйте [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) или [`extractAllGroupsVertical`](#extractAllGroupsVertical).
+Извлекает группы захвата из первой подстроки, найденной по регулярному выражению. Чтобы извлечь группы из всех совпадений, используйте [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) или [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical).
 
 **Синтаксис**
 
