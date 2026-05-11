@@ -468,9 +468,9 @@ TSV 格式中 NULL 的自定义表示形式
 
 ## input_format_column_name_matching_mode \{#input_format_column_name_matching_mode\}
 
-<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="match_case" />
+<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="auto" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "match_case"},{"label": "新设置。"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "auto"},{"label": "首先区分大小写匹配输入列名；如果失败，则回退到不区分大小写匹配，而不是要求大小写完全精确一致。"}]}, {"id": "row-2","items": [{"label": "26.4"},{"label": "match_case"},{"label": "新设置。"}]}]} />
 
 定义通过各种格式 (包括但不限于 JSONEachRow、CSVWithNames、JSONColumns、BSONEachRow、RowBinaryWithNames) 摄取数据时，列名的匹配模式。
 支持的模式：

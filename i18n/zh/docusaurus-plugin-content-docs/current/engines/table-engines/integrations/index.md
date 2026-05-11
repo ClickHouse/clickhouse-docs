@@ -26,11 +26,12 @@ ClickHouse 提供多种与外部系统集成的方式，其中包括表引擎。
 | [DeltaLake 表引擎](/engines/table-engines/integrations/deltalake)                            | 该引擎可与 Amazon S3 中已有的 Delta Lake 表进行只读集成。                                                                         |
 | [EmbeddedRocksDB 表引擎](/engines/table-engines/integrations/embedded-rocksdb)               | 该引擎允许将 ClickHouse 与 RocksDB 集成                                                                                   |
 | [ExternalDistributed 表引擎](/engines/table-engines/integrations/ExternalDistributed)        | `ExternalDistributed` 引擎允许对存储在远程服务器上 MySQL 或 PostgreSQL 中的数据执行 `SELECT` 查询。它接受 MySQL 或 PostgreSQL 引擎作为参数，从而支持分片。 |
-| [TimeSeries 表引擎](/engines/table-engines/special/time_series)                              | 一种用于存储时间序列的表引擎，即由与时间戳和标签（或标记）关联的一组数值组成的数据。                                                                       |
+| [TimeSeries 表引擎](/engines/table-engines/special/time_series)                              | 一种用于存储时间序列的表引擎，即由与时间戳和标签 (或标记) 关联的一组数值组成的数据。                                                                     |
 | [HDFS 表引擎](/engines/table-engines/integrations/hdfs)                                      | 此引擎通过在 ClickHouse 中管理 HDFS 上的数据，与 Apache Hadoop 生态系统集成。该引擎类似于 File 和 URL 引擎，但提供了 Hadoop 特有的功能。                   |
 | [Hive 表引擎](/engines/table-engines/integrations/hive)                                      | Hive 引擎允许你对存储在 HDFS 上的 Hive 表执行 `SELECT` 查询。                                                                     |
 | [Hudi 表引擎](/engines/table-engines/integrations/hudi)                                      | 此引擎为存储在 Amazon S3 中的现有 Apache Hudi 表提供只读方式的集成。                                                                   |
 | [Iceberg 表引擎](/engines/table-engines/integrations/iceberg)                                | 该引擎以只读方式与现有的 Apache Iceberg 表集成，支持位于 Amazon S3、Azure、HDFS 以及本地存储的表。                                              |
+| [Paimon 表引擎](/engines/table-engines/integrations/paimon)                                  | 该引擎以只读方式与现有的 Apache Paimon 表集成，支持位于 Amazon S3、Azure、HDFS 以及本地存储的表。                                               |
 | [JDBC 表引擎](/engines/table-engines/integrations/jdbc)                                      | 使 ClickHouse 能够通过 JDBC 连接到外部数据库。                                                                                 |
 | [Kafka 表引擎](/engines/table-engines/integrations/kafka)                                    | Kafka 表引擎可以与 Apache Kafka 配合使用，使你能够发布或订阅数据流、构建容错存储，并在数据流可用时对其进行处理。                                               |
 | [MaterializedPostgreSQL 表引擎](/engines/table-engines/integrations/materialized-postgresql) | 创建一个基于 PostgreSQL 表初始数据导出的 ClickHouse 表，并启动复制过程。                                                                 |

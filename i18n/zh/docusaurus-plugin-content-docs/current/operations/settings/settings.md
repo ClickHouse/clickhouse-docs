@@ -638,6 +638,16 @@ Cloud 默认值：`1`。
 
 允许在 S3Queue/AzureQueue 引擎中使用 Hive 分区
 
+## allow_experimental_paimon_storage_engine \{#allow_experimental_paimon_storage_engine\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新设置。"}]}]} />
+
+允许创建使用 Paimon* 表引擎的表。
+
 ## allow_experimental_parallel_reading_from_replicas \{#allow_experimental_parallel_reading_from_replicas\}
 
 **别名**: `enable_parallel_replicas`
@@ -6694,7 +6704,7 @@ Cloud 默认值：每个副本内存容量的一半。
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "用于控制哈希连接自动落盘的新设置。非零值会启用落盘，并设置字节阈值。"}]}]} />
 
-如果设置为非零值，且 `join_algorithm` 为 `hash`、`parallel_hash`、`default` 或 `auto`，则当右侧数据超过此字节数时，哈希连接会自动转换为 grace hash join，以实现落盘。设置为 0 (默认值) 时，将禁用自动落盘。此设置会阻止通过连接优化进行按顺序读取。
+如果设置为非零值，且 `join_algorithm` 为 `hash`、`parallel_hash`、`default` 或 `auto`，则当右侧数据超过此字节数时，哈希连接会自动转换为 grace hash join，以实现落盘。设置为 0 (默认值) 时，将禁用此绝对字节阈值，但仍可能通过 `max_bytes_ratio_before_external_join` (默认值为 `0.5`) 触发自动落盘；将两者都设置为 `0` 可完全禁用自动落盘。此设置会阻止通过连接优化进行按顺序读取。
 
 ## max_bytes_before_external_sort \{#max_bytes_before_external_sort\}
 
@@ -6769,15 +6779,15 @@ Cloud 默认值：每个副本可用内存的一半。
 
 ## max_bytes_ratio_before_external_join \{#max_bytes_ratio_before_external_join\}
 
-<SettingsInfoBlock type="Double" default_value="0" />
+<SettingsInfoBlock type="Double" default_value="0.5" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新设置：将可用内存中用于哈希连接的比例作为落盘阈值。与绝对值设置 `max_bytes_before_external_join` 结合使用（两者中取较小值）。"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0.5"},{"label": "新设置：将可用内存中用于哈希连接的比例作为落盘阈值。默认启用值为 `0.5`，与 `max_bytes_ratio_before_external_group_by` 和 `max_bytes_ratio_before_external_sort` 保持一致。与绝对值设置 `max_bytes_before_external_join` 结合使用（两者中取较小值）。"}]}]} />
 
 允许 `JOIN` 使用的可用内存比例。达到该比例后，哈希连接将转换为 grace hash join，并将右侧数据落盘。
 
 例如，如果设置为 `0.6`，则在执行开始时，`JOIN` 将允许右侧哈希表使用 `60%` 的可用内存 (对 server/user/merges 可用的内存而言) ；之后将开始落盘。
 
-如果同时设置了 `max_bytes_before_external_join` 和 `max_bytes_ratio_before_external_join`，则使用结果中较小的阈值。如果该比例为 `0` (默认值) ，则仅绝对值设置生效。
+如果同时设置了 `max_bytes_before_external_join` 和 `max_bytes_ratio_before_external_join`，则使用结果中较小的阈值。如果该比例为 `0`，则仅绝对值设置生效。
 
 仅当 `join_algorithm` 为 `hash`、`parallel_hash`、`default` 或 `auto`，且已配置临时数据路径时，此设置才生效。
 
@@ -6896,6 +6906,16 @@ Cloud 默认值：`1000`。
 <max_concurrent_queries_for_user>5</max_concurrent_queries_for_user>
 ```
 
+
+## max_consume_snapshots \{#max_consume_snapshots\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新设置"}]}]} />
+
+每次增量读取最多可消费的 Paimon 快照数量。0 表示不受限制。
 
 ## max_distributed_connections \{#max_distributed_connections\}
 
@@ -7351,21 +7371,17 @@ SELECT getSetting('max_memory_usage_for_user');
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "默认最多使用 1000 个并行副本。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "默认最多使用 1000 个并行副本。"}]}]} />
 
 在执行查询时，每个分片可以使用的最大并行副本数。
 
 可能的取值：
 
-- 正整数。
+* 正整数。
 
 **附加信息**
 
 此选项在不同设置组合下会产生不同的结果。
-
-:::note
-当涉及 `JOIN` 或子查询，且所有表未满足特定要求时，此设置会产生不正确的结果。有关更多详细信息，请参阅 [Distributed Subqueries and max_parallel_replicas](/operations/settings/settings#max_parallel_replicas)。
-:::
 
 ### 使用 `SAMPLE` 键进行并行处理 \{#parallel-processing-using-sample-key\}
 
@@ -9437,6 +9453,18 @@ FROM default.fuse_tbl AS __table1
 当 `readBigAt` 填充用户态页缓存时，连续的缓存未命中会合并为一次对底层存储的读取。此设置以字节为单位限制单次合并读取的大小；如果连续未命中的范围更长，则会拆分为多次读取。它可在并行冷读期间限制临时缓冲区的瞬时内存占用。
 
 较高的值可减少对象存储冷扫描时的 HTTP 请求次数；较低的值可降低瞬时内存峰值。
+
+## paimon_target_snapshot_id \{#paimon_target_snapshot_id\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Int64" default_value="-1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "-1"},{"label": "新增设置"}]}]} />
+
+用于 Paimon 增量模式的查询级定向快照读取。当 &gt;0 时，读取器将仅拉取指定 snapshot&#95;id 的增量，
+而不会推进已提交的水位。
+默认值：-1 (禁用)
 
 ## parallel_distributed_insert_select \{#parallel_distributed_insert_select\}
 
@@ -11541,6 +11569,30 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - `throw`: 抛出异常（默认）。
 - `break`: 停止执行查询并返回部分结果，仿佛源数据已经耗尽。
 
+## shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "50"},{"label": "新增设置，用于减少 SharedMergeTree 中启用顺序一致性的查询偶发出现的 UNFINISHED 错误。"}]}]} />
+
+使用 `select_sequential_consistency` 和 `SharedMergeTree` 时，更新 parts 的初始退避时间 (毫秒) 。仅在 ClickHouse Cloud 中可用。
+
+## shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1000"},{"label": "用于减少 SharedMergeTree 中启用顺序一致性的查询偶发 UNFINISHED 错误的新设置。"}]}]} />
+
+在将 `select_sequential_consistency` 与 `SharedMergeTree` 结合使用时，parts 更新的最大退避时间 (以毫秒为单位) 。仅在 ClickHouse Cloud 中可用。
+
+## shared_merge_tree_sequential_consistency_parts_update_max_retries \{#shared_merge_tree_sequential_consistency_parts_update_max_retries\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "用于减少 SharedMergeTree 中启用顺序一致性的查询出现的偶发 UNFINISHED 错误的新设置。"}]}]} />
+
+在配合 `SharedMergeTree` 使用 `select_sequential_consistency` 时，更新 parts 的最大重试次数。仅在 ClickHouse Cloud 中可用。
+
 ## shared_merge_tree_sync_parts_on_partition_operations \{#shared_merge_tree_sync_parts_on_partition_operations\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -12441,9 +12493,9 @@ Cloud 默认值：`0`。
 
 ## use_skip_indexes_for_top_k \{#use_skip_indexes_for_top_k\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "默认启用在 TopK 过滤中使用数据跳过索引"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]} />
 
 启用在 TopK 过滤中使用数据跳过索引。
 
@@ -12451,8 +12503,8 @@ Cloud 默认值：`0`。
 
 可能的取值：
 
-- 0 — 禁用。
-- 1 — 启用。
+* 0 — 禁用。
+* 1 — 启用。
 
 ## use_skip_indexes_if_final \{#use_skip_indexes_if_final\}
 
@@ -12599,9 +12651,9 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "默认对 TopK 查询启用动态过滤优化"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]} />
 
 在执行 `ORDER BY <column> LIMIT n` 查询时启用动态过滤优化。
 
@@ -12609,8 +12661,8 @@ skipping 索引可能会排除包含最新数据的行（数据粒度，granules
 
 可能的取值：
 
-- 0 — 禁用。
-- 1 — 启用。
+* 0 — 禁用。
+* 1 — 启用。
 
 ## use_top_k_dynamic_filtering_for_variable_length_types \{#use_top_k_dynamic_filtering_for_variable_length_types\}
 

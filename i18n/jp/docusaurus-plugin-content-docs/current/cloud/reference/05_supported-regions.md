@@ -34,6 +34,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 * sa-east-1 (South America)
 * ap-southeast-3 (ジャカルタ)
 * ap-east-1 (香港)
+* mx-central-1 (メキシコ)
 
 ## Google Cloud リージョン \{#google-cloud-regions\}
 
@@ -62,6 +63,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 * Japan East (Tokyo, Saitama)
 * UAE North (Dubai)
+* Australia East (New South Wales)
 
 :::note
 現在リストにないリージョンにデプロイする必要がありますか？[リクエストを送信](https://clickhouse.com/pricing?modal=open)してください。

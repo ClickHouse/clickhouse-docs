@@ -35,6 +35,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 * sa-east-1 (Южная Америка)
 * ap-southeast-3 (Джакарта)
 * ap-east-1 (Гонконг)
+* mx-central-1 (Мексика)
 
 ## Регионы Google Cloud \{#google-cloud-regions\}
 
@@ -63,6 +64,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 * Japan East (Токио, Сайтама)
 * UAE North (Дубай)
+* Australia East (Новый Южный Уэльс)
 
 :::note
 Нужно развернуть в регионе, который сейчас не указан в списке? [Отправьте запрос](https://clickhouse.com/pricing?modal=open).

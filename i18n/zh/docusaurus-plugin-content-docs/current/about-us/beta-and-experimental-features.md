@@ -1,13 +1,13 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Beta 功能和实验性功能'
+sidebar_label: 'Beta 和实验性功能'
 title: 'Beta 和实验性功能'
 description: 'ClickHouse 具有 Beta 和实验性功能。本文将对其进行定义说明。'
 slug: /beta-and-experimental-features
 doc_type: 'reference'
 ---
 
-由于 ClickHouse 是开源的，它不仅接受来自 ClickHouse 员工的贡献，也接受来自社区的贡献。这些贡献的开发节奏往往不同；某些功能可能需要较长时间的原型设计阶段，或者需要更多时间来收集足够的社区反馈并进行迭代，才能被视为一般可用（GA）。
+由于 ClickHouse 是开源的，它不仅接受来自 ClickHouse 员工的贡献，也接受来自社区的贡献。这些贡献的开发节奏往往不同；某些功能可能需要较长时间的原型设计阶段，或者需要更多时间来收集足够的社区反馈并进行迭代，才能被视为一般可用 (GA) 。
 
 鉴于将功能归类为一般可用的时间存在不确定性，我们将功能划分为两类：**Beta** 和 **Experimental**。
 
@@ -162,6 +162,9 @@ doc_type: 'reference'
 | [promql&#95;table](/operations/settings/settings#promql_table)                                                                                                                                                                      | ``                      |
 | [promql&#95;evaluation&#95;time](/operations/settings/settings#promql_evaluation_time)                                                                                                                                              | `auto`                  |
 | [allow&#95;experimental&#95;alias&#95;table&#95;engine](/operations/settings/settings#allow_experimental_alias_table_engine)                                                                                                        | `0`                     |
+| [allow&#95;experimental&#95;paimon&#95;storage&#95;engine](/operations/settings/settings#allow_experimental_paimon_storage_engine)                                                                                                  | `0`                     |
+| [paimon&#95;target&#95;snapshot&#95;id](/operations/settings/settings#paimon_target_snapshot_id)                                                                                                                                    | `-1`                    |
+| [max&#95;consume&#95;snapshots](/operations/settings/settings#max_consume_snapshots)                                                                                                                                                | `0`                     |
 | [use&#95;paimon&#95;partition&#95;pruning](/operations/settings/settings#use_paimon_partition_pruning)                                                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;object&#95;storage&#95;queue&#95;hive&#95;partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning)                                                        | `0`                     |
 | [query&#95;plan&#95;optimize&#95;join&#95;order&#95;algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm)                                                                                              | `greedy`                |

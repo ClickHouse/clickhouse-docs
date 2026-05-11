@@ -49,7 +49,7 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 
   **このデプロイモードでは認証が有効になっていないため、ユーザー作成画面は表示されません。**
 
-  外部の ClickHouse クラスター（例: ClickHouse Cloud）に接続します。
+  外部の ClickHouse クラスター (例: ClickHouse Cloud) に接続します。
 
   <Image img={hyperdx_2} alt="ログイン情報を作成" size="md" />
 
@@ -59,9 +59,3 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 </VerticalStepper>
 
 <JSONSupport />
-
-ローカルモード専用イメージの場合は、`BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` パラメーターを設定するだけで十分です（例: 環境変数として設定）。
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest
-```

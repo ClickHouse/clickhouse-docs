@@ -37,7 +37,6 @@ ClickHouse Cloudには、外部のPostgreSQLデータベースをManaged Postgre
 ## 移行前の考慮事項 \{#considerations\}
 
 * **DDL の伝播**: 継続的レプリケーション (CDC) では、DML 操作と `ADD COLUMN` が取り込まれます。`DROP COLUMN` や `ALTER COLUMN` などのその他の DDL 変更は伝播されないため、ターゲット側で手動で適用する必要があります。
-* **外部キー制約**: 外部キーのチェックによってインジェストが妨げられないように、ターゲットロールで一時的に `session_replication_role = replica` を設定します。これについては、以下のステップ 3 で説明します。
 
 ## ステップ 1: ソースデータベースに接続する \{#step-1-connect\}
 
@@ -107,13 +106,6 @@ psql \
 
 <Image img={psqlImport} alt="psql schema インポート実行後のターミナル出力" size="lg" border />
 
-schema を適用したら、外部キー制約がインジェストを妨げないよう、対象のロールで `session_replication_role` を `replica` に設定します。
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'replica';
-```
-
-
 **次へ** をクリックします。
 
 ## ステップ4: インジェスト設定を構成する \{#step-4-ingestion-settings\}
@@ -168,20 +160,14 @@ SELECT COUNT(*) FROM public.orders;
 ALTER DATABASE <source_db> SET default_transaction_read_only = on;
 ```
 
-**レプリケーションが追いついていることを確認します。** ソースとターゲットの最新行を比較します。
+**レプリケーションが追いついていることを確認します。** ソースとターゲットの最新行を比較します:
 
 ```sql
 -- Run on both source and target
 SELECT MAX(id), MAX(updated_at) FROM public.orders;
 ```
 
-**制約を再度有効化し、レプリケーションロールを復元します。** インポート中に後回しにした索引、制約、トリガーを適用した後、ターゲットロールをリセットします。
-
-```sql
-ALTER ROLE <target_role> SET session_replication_role TO 'origin';
-```
-
-**シーケンスをリセットします。** 各テーブルの現在の最大値に合わせてシーケンスを調整します。
+**シーケンスをリセットします。** 各テーブルの現在の最大値に合わせてシーケンスを調整します:
 
 ```sql
 DO $$
