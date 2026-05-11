@@ -7,7 +7,7 @@ description: 'Deploy ClickHouse on your own cloud infrastructure'
 doc_type: 'reference'
 ---
 
-## CloudFormation IAM roles {#cloudformation-iam-roles}
+## AWS IAM roles {#aws-iam-roles}
 
 ### Bootstrap IAM role {#bootstrap-iam-role}
 
