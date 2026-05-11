@@ -189,7 +189,7 @@ If you manually stop a service, you will need to start it up again in order for 
 - **There is currently a soft limit of 5 services per warehouse.** Contact the support team if you need more than 5 services in a single warehouse.
 - **One replia Primary Sservice** Today, the default behavior is the secondary services can have one replica, the primary service must have at least 2.
   To enable single replica primary services, please contact support. This behavior will be enabled by default in Q2 2026.
-- **Primary service idling** Today, the default behavior is that the primary service cannot auto-idling. It is disabled once the secondary service is created. To enable this, contact support to enable parent service idling. Parent service auto-idling will be enabled by default in Q2 2026 (existing services will have access to the feature, new services will have it enabled by default). 
+- **Primary service idling**: Previously, primary services could not auto-idle by default. As of May 2026, primary service auto-idling is enabled by default. As part of the rollout, existing services have access to the feature while new services created post rollout have it enabled by default. 
 
 ## Pricing {#pricing}
 
