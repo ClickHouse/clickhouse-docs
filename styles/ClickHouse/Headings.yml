@@ -21,6 +21,7 @@ exceptions:
   - ALTER DELETE
   - DROP PARTITION
   - TRUNCATE
+  - "`OPTIMIZE FINAL`"
   - Arrow
   - AWS
   - Apache
