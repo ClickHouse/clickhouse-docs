@@ -351,6 +351,18 @@ const sidebars = {
         'cloud/managed-postgres/upgrades',
         'cloud/managed-postgres/benchmarks',
         'cloud/managed-postgres/openapi',
+        {
+          type: 'category',
+          label: 'Monitoring',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'cloud/managed-postgres/monitoring/overview',
+            'cloud/managed-postgres/monitoring/dashboard',
+            'cloud/managed-postgres/monitoring/prometheus',
+            'cloud/managed-postgres/monitoring/metrics',
+          ],
+        },
         'cloud/managed-postgres/faq',
         {
           type: 'category',
