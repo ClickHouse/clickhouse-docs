@@ -709,6 +709,16 @@ Cloud 默认值：`1`。
 - 0 — 禁用 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 表引擎。
 - 1 — 启用 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 表引擎。
 
+## allow_experimental_unique_key \{#allow_experimental_unique_key\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于控制是否在 MergeTree 系列引擎表上启用实验性 `UNIQUE KEY` 子句的新设置"}]}]} />
+
+允许在 MergeTree 系列引擎表上使用 `UNIQUE KEY` 子句创建表。
+
 ## allow_experimental_window_view \{#allow_experimental_window_view\}
 
 <ExperimentalBadge/>
@@ -10846,6 +10856,14 @@ Cloud 默认值：`3000000000`。
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 从网络接收数据的超时时间（以秒为单位）。如果在此时间间隔内未接收到任何字节，将抛出异常。如果在客户端设置该配置项，则会在服务器端对应连接的套接字上同时设置 `send_timeout`。
+
+## recursive_cte_max_steps_in_type_inference \{#recursive_cte_max_steps_in_type_inference\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "在递归 CTE 中通过迭代式 getLeastSupertype 推断列类型时的最大迭代次数"}]}]} />
+
+在递归 CTE 中推断列类型时允许的最大迭代次数。列类型是通过在 UNION ALL 的非递归分支和递归分支之间反复应用 `getLeastSupertype` 直至收敛来确定的。将其设为 0 可禁用类型扩展，仅使用非递归部分的类型。
 
 ## regexp_dict_allow_hyperscan \{#regexp_dict_allow_hyperscan\}
 

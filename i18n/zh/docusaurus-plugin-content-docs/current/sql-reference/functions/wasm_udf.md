@@ -165,6 +165,7 @@ FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
 [ABI ROW_DIRECT | ABI BUFFERED_V1]
+[DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
 ```
@@ -177,6 +178,7 @@ RETURNS return_type
 * `ABI`: Application Binary Interface (应用二进制接口) 版本
   * `ROW_DIRECT`: 直接类型映射，逐行处理
   * `BUFFERED_V1`: 采用基于块 (block) 的处理并进行序列化
+* `DETERMINISTIC`: 将该函数声明为决定论的——对于相同输入始终返回相同输出。指定后，ClickHouse 可能会对所有参数均为常量的调用进行常量折叠：函数会在查询解析阶段计算一次，结果会在每一行中复用。
 * `SHA256_HASH`: 用于校验的期望模块哈希 (如果省略则自动填充) ，可用于确保在不同副本上加载的是正确的 WASM 模块。
 * `SETTINGS`: 每个函数的设置
   * `serialization_format` String — 当 ABI 需要时使用的序列化格式。默认值：`MsgPack`。

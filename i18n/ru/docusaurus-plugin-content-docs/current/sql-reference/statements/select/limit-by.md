@@ -6,7 +6,7 @@ title: 'Предложение LIMIT BY'
 doc_type: 'справочник'
 ---
 
-# Клауза LIMIT BY \{#limit-by-clause\}
+# Предложение LIMIT BY \{#limit-by-clause\}
 
 Запрос с клаузой `LIMIT n BY expressions` выбирает первые `n` строк для каждого различного значения `expressions`. Ключ `LIMIT BY` может содержать любое количество [выражений](/sql-reference/syntax#expressions).
 
@@ -35,7 +35,7 @@ INSERT INTO limit_by VALUES (1, 10), (1, 11), (1, 12), (2, 20), (2, 21);
 Запросы:
 
 ```sql
-SELECT * FROM limit_by ORDER BY id, val LIMIT 2 BY id
+SELECT * FROM limit_by ORDER BY id, val LIMIT 2 BY id;
 ```
 
 ```text
@@ -48,7 +48,7 @@ SELECT * FROM limit_by ORDER BY id, val LIMIT 2 BY id
 ```
 
 ```sql
-SELECT * FROM limit_by ORDER BY id, val LIMIT 1, 2 BY id
+SELECT * FROM limit_by ORDER BY id, val LIMIT 1, 2 BY id;
 ```
 
 ```text
@@ -73,8 +73,54 @@ FROM hits
 GROUP BY domain, referrer, device_type
 ORDER BY cnt DESC
 LIMIT 5 BY domain, device_type
-LIMIT 100
+LIMIT 100;
 ```
+
+`LIMIT BY` также работает с отрицательными лимитами и смещениями. Аналогично [отрицательному ограничению LIMIT](/sql-reference/statements/select/limit#negative-limits), Вы можете использовать отрицательные значения с `LIMIT BY`, чтобы выбирать строки с *конца* каждой группы.
+
+```sql
+SELECT * FROM limit_by ORDER BY id, val LIMIT -2 BY id;
+```
+
+```text
+┌─id─┬─val─┐
+│  1 │  11 │
+│  1 │  12 │
+│  2 │  20 │
+│  2 │  21 │
+└────┴─────┘
+```
+
+Возвращает по 2 последние строки для каждого `id`. Для `id = 1` получаем строки `11` и `12`; для `id = 2` возвращаются обе строки, поскольку в группе всего 2 строки.
+
+```sql
+SELECT * FROM limit_by ORDER BY id, val LIMIT -1 OFFSET -1 BY id;
+```
+
+```text
+┌─id─┬─val─┐
+│  1 │  11 │
+│  2 │  20 │
+└────┴─────┘
+```
+
+Возвращает предпоследнюю строку для каждого `id`: завершающий `OFFSET -1` отбрасывает последнюю строку в каждой группе, а начальный `-1` затем оставляет последнюю строку из оставшихся.
+
+Также можно комбинировать `LIMIT` и `OFFSET` с разными знаками. Например, чтобы отбросить первую строку каждой группы, а затем оставить последние 2 из оставшихся:
+
+```sql
+SELECT * FROM limit_by ORDER BY id, val LIMIT -2 OFFSET 1 BY id;
+```
+
+```text
+┌─id─┬─val─┐
+│  1 │  11 │
+│  1 │  12 │
+│  2 │  21 │
+└────┴─────┘
+```
+
+Для `id = 1` первая строка (`10`) пропускается; возвращаются обе последние строки: `11` и `12`. Для `id = 2` первая строка (`20`) пропускается, остаётся только `21`.
 
 ## LIMIT BY ALL \{#limit-by-all\}
 
@@ -83,13 +129,13 @@ LIMIT 100
 Например:
 
 ```sql
-SELECT col1, col2, col3 FROM table LIMIT 2 BY ALL
+SELECT col1, col2, col3 FROM table LIMIT 2 BY ALL;
 ```
 
 то же самое, что и
 
 ```sql
-SELECT col1, col2, col3 FROM table LIMIT 2 BY col1, col2, col3
+SELECT col1, col2, col3 FROM table LIMIT 2 BY col1, col2, col3;
 ```
 
 В особом случае, когда функция принимает в качестве аргументов и агрегатные функции, и другие поля, ключи `LIMIT BY` будут содержать максимально возможное число неагрегированных полей, которые можно из неё извлечь.
@@ -97,13 +143,13 @@ SELECT col1, col2, col3 FROM table LIMIT 2 BY col1, col2, col3
 Например:
 
 ```sql
-SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIMIT 2 BY ALL
+SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIMIT 2 BY ALL;
 ```
 
 то же, что и
 
 ```sql
-SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIMIT 2 BY substring(a, 4, 2), substring(a, 1, 2)
+SELECT substring(a, 4, 2), substring(substring(a, 1, 2), 1, count(b)) FROM t LIMIT 2 BY substring(a, 4, 2), substring(a, 1, 2);
 ```
 
 ## Примеры \{#examples-limit-by-all\}
@@ -118,7 +164,7 @@ INSERT INTO limit_by VALUES (1, 10), (1, 11), (1, 12), (2, 20), (2, 21);
 Запросы:
 
 ```sql
-SELECT * FROM limit_by ORDER BY id, val LIMIT 2 BY id
+SELECT * FROM limit_by ORDER BY id, val LIMIT 2 BY id;
 ```
 
 ```text
@@ -131,7 +177,7 @@ SELECT * FROM limit_by ORDER BY id, val LIMIT 2 BY id
 ```
 
 ```sql
-SELECT * FROM limit_by ORDER BY id, val LIMIT 1, 2 BY id
+SELECT * FROM limit_by ORDER BY id, val LIMIT 1, 2 BY id;
 ```
 
 ```text
@@ -142,31 +188,16 @@ SELECT * FROM limit_by ORDER BY id, val LIMIT 1, 2 BY id
 └────┴─────┘
 ```
 
-Запрос `SELECT * FROM limit_by ORDER BY id, val LIMIT 2  1 BY id` возвращает тот же результат.
+Запрос `SELECT * FROM limit_by ORDER BY id, val LIMIT 2 OFFSET 1 BY id` возвращает тот же результат.
 
 Использование `LIMIT BY ALL`:
 
 ```sql
-SELECT id, val FROM limit_by ORDER BY id, val LIMIT 2 BY ALL
+SELECT id, val FROM limit_by ORDER BY id, val LIMIT 2 BY ALL;
 ```
 
 Это эквивалентно:
 
 ```sql
-SELECT id, val FROM limit_by ORDER BY id, val LIMIT 2 BY id, val
-```
-
-Следующий запрос возвращает топ‑5 рефереров для каждой пары `domain, device_type`, но не более 100 строк в общей сложности (`LIMIT n BY + LIMIT`).
-
-```sql
-SELECT
-    domainWithoutWWW(URL) AS domain,
-    domainWithoutWWW(REFERRER_URL) AS referrer,
-    device_type,
-    count() cnt
-FROM hits
-GROUP BY domain, referrer, device_type
-ORDER BY cnt DESC
-LIMIT 5 BY domain, device_type
-LIMIT 100
+SELECT id, val FROM limit_by ORDER BY id, val LIMIT 2 BY id, val;
 ```

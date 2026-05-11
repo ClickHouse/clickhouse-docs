@@ -709,6 +709,16 @@ Prometheus ライクな時系列データの再サンプリングや rate・delt
 - 0 — [TimeSeries](../../engines/table-engines/integrations/time-series.md) テーブルエンジンは無効です。
 - 1 — [TimeSeries](../../engines/table-engines/integrations/time-series.md) テーブルエンジンは有効です。
 
+## allow_experimental_unique_key \{#allow_experimental_unique_key\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "MergeTreeファミリーのテーブルで実験的な `UNIQUE KEY` 句を有効にするための新しい設定"}]}]} />
+
+MergeTreeファミリーのエンジンで、`UNIQUE KEY` 句を持つテーブルの作成を許可します。
+
 ## allow_experimental_window_view \{#allow_experimental_window_view\}
 
 <ExperimentalBadge/>
@@ -10861,6 +10871,14 @@ ClickHouse Cloud でのみ有効です。分散キャッシュからの読み取
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 ネットワークからデータを受信する際のタイムアウト（秒）です。この時間内に 1 バイトも受信しなかった場合、例外がスローされます。クライアント側でこの設定を行うと、対応するサーバー側接続のソケットにも `send_timeout` が設定されます。
+
+## recursive_cte_max_steps_in_type_inference \{#recursive_cte_max_steps_in_type_inference\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "反復的な getLeastSupertype によって再帰CTEのカラム型を推論する際の最大反復回数"}]}]} />
+
+再帰CTEでカラム型を推論する際の最大反復回数です。カラム型は、非再帰側と再帰側の UNION ALL に対して `getLeastSupertype` を繰り返し適用し、収束するまで判定されます。0 に設定すると型の拡張を無効にし、非再帰部分の型のみを使用します。
 
 ## regexp_dict_allow_hyperscan \{#regexp_dict_allow_hyperscan\}
 

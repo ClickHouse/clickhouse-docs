@@ -285,6 +285,22 @@ file3.xml
 ```
 
 
+### CLEAR 命令 \{#clear-command\}
+
+清空终端屏幕 (类似于 Linux 上的 `clear` 命令，或许多终端中的 Ctrl+L) 。这是客户端侧操作：不会发送到 SQL 引擎。
+
+在 `clickhouse-local` 中，该元命令会在**交互式**模式下，以及使用 **`-q`** 和 **`--queries-file`** 输入时被识别 (与 `-q` 走同一客户端路径，原理上与 `ls` 类似) ，因此单独输入 `clear` 不会产生 `UNKNOWN_IDENTIFIER` 错误。远程 **`clickhouse-client --queries-file`** 的行为不变：文件内容仍只按 SQL 执行 (不支持文本级元命令) 。
+
+在 `clickhouse-client` 中，它仅在**交互式**模式下会被识别。使用 **`-q`** 或查询文件时，`clear` 仍会按 SQL 解析，因此自动化场景会保持此前的报错行为，而不会把拼写错误变成静默空操作。
+
+支持的形式：`clear`、`CLEAR`、`/clear` (可选的结尾 `;` 会被忽略) 。如果标准输出不是终端 (例如将输出通过管道传递时) ，那么在可识别该元命令的情况下仍会接受它，但不会输出控制序列。
+
+在 `clickhouse-local` 中配合 `-q` 使用：
+
+```sh
+./clickhouse-local -q clear
+```
+
 ## 示例 \{#examples\}
 
 ```bash

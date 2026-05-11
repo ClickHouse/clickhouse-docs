@@ -711,6 +711,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 - 0 — движок таблицы [TimeSeries](../../engines/table-engines/integrations/time-series.md) отключен.
 - 1 — движок таблицы [TimeSeries](../../engines/table-engines/integrations/time-series.md) включен.
 
+## allow_experimental_unique_key \{#allow_experimental_unique_key\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, управляющая доступностью экспериментальной клаузы `UNIQUE KEY` для таблиц на движках семейства MergeTree"}]}]} />
+
+Разрешает создавать таблицы с клаузой `UNIQUE KEY` на движках семейства MergeTree.
+
 ## allow_experimental_window_view \{#allow_experimental_window_view\}
 
 <ExperimentalBadge/>
@@ -10885,6 +10895,14 @@ a   Tuple(
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 Таймаут ожидания получения данных из сети, в секундах. Если в течение этого интервала не было получено ни одного байта, будет сгенерировано исключение. Если вы задаёте этот параметр на клиенте, для сокета на сервере на соответствующем конце соединения также будет установлен `send_timeout`.
+
+## recursive_cte_max_steps_in_type_inference \{#recursive_cte_max_steps_in_type_inference\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "Максимальное число итераций для определения типов столбцов в рекурсивных CTE с помощью итеративного getLeastSupertype"}]}]} />
+
+Максимальное число итераций для определения типов столбцов в рекурсивных CTE. Типы столбцов определяются итеративным применением `getLeastSupertype` к нерекурсивной и рекурсивной частям UNION ALL до достижения сходимости. Установите 0, чтобы отключить расширение типов и использовать только типы из нерекурсивной части.
 
 ## regexp_dict_allow_hyperscan \{#regexp_dict_allow_hyperscan\}
 

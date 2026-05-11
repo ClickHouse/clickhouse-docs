@@ -154,7 +154,7 @@ DELETE FROM system.webassembly_modules WHERE name = 'collatz';
 
 Если какие-либо существующие UDF ссылаются на модуль, удаление завершится с ошибкой, поэтому сначала нужно удалить эти UDF.
 
-## Создайте UDF на WebAssembly \{#create-a-webassembly-udf\}
+## Создайте WebAssembly UDF \{#create-a-webassembly-udf\}
 
 **Синтаксис**:
 
@@ -165,6 +165,7 @@ FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
 [ABI ROW_DIRECT | ABI BUFFERED_V1]
+[DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
 ```
@@ -177,6 +178,7 @@ RETURNS return_type
 * `ABI`: Версия Application Binary Interface
   * `ROW_DIRECT`: Прямое сопоставление типов, построчная обработка
   * `BUFFERED_V1`: Блочная обработка с сериализацией
+* `DETERMINISTIC`: Объявляет функцию детерминированной — она всегда возвращает один и тот же результат для одних и тех же входных данных. Если указано, ClickHouse может выполнить свёртку в константу для вызовов, где все аргументы являются константами: функция вычисляется один раз на этапе анализа запроса, и результат повторно используется для каждой строки.
 * `SHA256_HASH`: Ожидаемый хэш модуля для проверки (автоматически заполняется, если опущен); может использоваться для обеспечения загрузки корректного модуля WASM на разных репликах.
 * `SETTINGS`: Настройки для отдельной функции
   * `serialization_format` String — Формат сериализации для ABI, где это требуется. Значение по умолчанию: `MsgPack`.

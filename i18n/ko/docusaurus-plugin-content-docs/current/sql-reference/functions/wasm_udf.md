@@ -165,6 +165,7 @@ FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
 [ABI ROW_DIRECT | ABI BUFFERED_V1]
+[DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
 ```
@@ -173,10 +174,11 @@ RETURNS return_type
 
 * `function_name`: ClickHouse의 함수 이름입니다. 모듈에서 내보내는 함수 이름과 다를 수 있습니다.
 * `FROM 'module_name' :: 'source_function_name'`: 로드된 WASM 모듈의 이름과, 해당 WASM 모듈에서 사용할 함수 이름입니다(기본값은 `function_name`).
-* `ARGUMENTS`: 인자 이름과 데이터 타입 목록입니다(이름은 선택 사항이며, 필드 이름을 지원하는 직렬화 형식에서 사용됩니다).
+* `ARGUMENTS`: 인수 이름과 데이터 타입 목록입니다(이름은 선택 사항이며, 필드 이름을 지원하는 직렬화 형식에서 사용됩니다).
 * `ABI`: Application Binary Interface 버전입니다.
   * `ROW_DIRECT`: 직접 타입 매핑, 행 단위 처리
   * `BUFFERED_V1`: 직렬화를 사용하는 블록 기반 처리
+* `DETERMINISTIC`: 함수를 결정론적으로 선언합니다. 즉, 동일한 입력에 대해 항상 동일한 출력을 반환합니다. 지정하면 ClickHouse는 모든 인수가 상수인 호출을 상수 폴딩할 수 있습니다. 이 경우 함수는 쿼리 분석 시점에 한 번 평가되며, 그 결과가 모든 행에 재사용됩니다.
 * `SHA256_HASH`: 검증을 위한 예상 모듈 해시입니다(생략 시 자동으로 채워지며), 서로 다른 레플리카에서 올바른 WASM 모듈이 로드되었는지 보장하는 데 사용할 수 있습니다.
 * `SETTINGS`: 함수별 설정입니다.
   * `serialization_format` String — ABI에서 요구하는 경우 사용할 직렬화 형식입니다. 기본값: `MsgPack`.
