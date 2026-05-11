@@ -99,16 +99,16 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 
 ### Protobuf {#protobuf}
 
-#### Supported Protobuf Data Types {#supported-protobuf-data-types}
+#### Supported protobuf data types {#supported-protobuf-data-types}
 ClickPipes supports all Protobuf version 2 and 3 types (except the long-deprecated proto 2 `group` type). Basic conversions are identical to those used for the ClickHouse Protobuf format listed [here](/interfaces/schema-inference#protobuf).
 We recommend exact type matching for Protobuf numeric types, as type conversion can result in overflows or precision loss. Protobuf maps, arrays, and Nullable variations of basic types are also supported. ClickPipes also recognizes a
-limited set of Google "well-known types": Timestamp, Duration, and "wrapper" messages. Timestamps can be accurately mapped to `DateTime` or `DateTime64` types, Durations to `Time` or `Time64` types, and wrapper messages to the underlying type.  All Protobuf types can also be mapped to a ClickHouse `String` column, which will be represented by a JSON string.
+limited set of Google "well-known types": timestamp, duration, and "wrapper" messages. Timestamps can be accurately mapped to `DateTime` or `DateTime64` types, Durations to `Time` or `Time64` types, and wrapper messages to the underlying type.  All Protobuf types can also be mapped to a ClickHouse `String` column, which will be represented by a JSON string.
 
-#### Protobuf One-Ofs {#protobuf-one-ofs}
-During schema inference, Protobuf "One Of" special fields will normally be mapped to a named Tuple, where only one of the fields will have a "non-default" value.  Alternatively, some "One Ofs" may be automatically mapped to a name variant field with the name of the "One Of", and a value representing one of the valid types of the constituent fields.  Alternatively, each "One Of" constituent field can be manually mapped to a ClickHouse column, where only one of the constituent fields
+#### Protobuf one-ofs {#protobuf-one-ofs}
+During schema inference, Protobuf "One Of" special fields will normally be mapped to a named Tuple, where only one of the fields will have a "non-default" value.  Alternatively, some "One Ofs" may be automatically mapped to a name variant field with the name of the "One Of," and a value representing one of the valid types of the constituent fields.  Alternatively, each "One Of" constituent field can be manually mapped to a ClickHouse column, where only one of the constituent fields
 will ever be populated during processing.
 
-#### Message Lists (Envelopes) {#protobuf-message-lists}
+#### Message lists (envelopes) {#protobuf-message-lists}
 If the top level Protobuf schema defined for the ClickPipe contains a single repeated field that is itself a protobuf Message, schema inference and column mapping will be based on the "contained" Message field.  The Kafka message will be processed as a list of such messages, and a single Kafka message will unwrap into multiple ClickHouse rows.
 
 ## Kafka virtual columns {#kafka-virtual-columns}
