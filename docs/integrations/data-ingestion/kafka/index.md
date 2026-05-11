@@ -42,7 +42,7 @@ This is the recommended option if you're a ClickHouse Cloud user. ClickPipes is 
 * Optimized for ClickHouse Cloud, delivering blazing-fast performance
 * Horizontal and vertical scalability for high-throughput workloads
 * Built-in fault tolerance with configurable replicas and automatic retries
-* Deployment and management via ClickHouse Cloud UI, [Open API](../clickpipes/programmatic-access/openapi), or [Terraform](../clickpipes/programmatic-access/terraform)
+* Deployment and management via ClickHouse Cloud UI, [Open API](/integrations/clickpipes/programmatic-access/openapi), or [Terraform](/integrations/clickpipes/programmatic-access/terraform)
 * Enterprise-grade security with support for cloud-native authorization (IAM) and private connectivity (PrivateLink)
 * Supports a wide range of [data sources](/integrations/clickpipes/kafka/reference/), including Confluent Cloud, Amazon MSK, Redpanda Cloud, and Azure Event Hubs
 * Supports most common serialization formats (JSON, Avro, Protobuf)
