@@ -350,6 +350,114 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 Обратите внимание: если вы столкнётесь с проблемами из-за отсутствующих классов, учтите, что не во всех средах доступен конвертер Protobuf, и вам может потребоваться альтернативная версия jar-файла, собранная вместе с зависимостями.
 
 
+###### Соответствие типов Protobuf \{#proto-type-mapping\}
+
+Ниже приведено соответствие типов, определяемое `io.confluent.connect.protobuf.ProtobufConverter` — официальной реализацией сериализатора/десериализатора Protobuf в Kafka Connect. Дополнительные сведения о логике преобразования см. в [документации](https://docs.confluent.io/platform/current/connect/userguide.html#json-schema-and-protobuf) Kafka Connect.
+
+✅: Поддерживается
+
+❌: Не поддерживается
+
+️⚠️: Поддерживается частично
+
+| Тип Protobuf                            | Тип Kafka Connect                       | Поддерживается | Примечания                                                                                                                                                                                                |
+| --------------------------------------- | --------------------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| double                                  | FLOAT64                                 | ✅              |                                                                                                                                                                                                           |
+| float                                   | FLOAT32                                 | ✅              |                                                                                                                                                                                                           |
+| int32                                   | INT8/INT16/INT32                        | ✅              | По умолчанию используется INT32. Преобразуется в INT8, если в схеме задана настройка `connect.type=int8` (аналогично для INT16, если `connect.type=int16`)                                               |
+| sint32                                  | INT8/INT16/INT32                        | ✅              | По умолчанию используется INT32. Преобразуется в INT8, если в схеме задана настройка `connect.type=int8` (аналогично для INT16, если `connect.type=int16`)                                               |
+| sfixed32                                | INT8/INT16/INT32                        | ✅              | По умолчанию используется INT32. Преобразуется в INT8, если в схеме задана настройка `connect.type=int8` (аналогично для INT16, если `connect.type=int16`)                                               |
+| uint32                                  | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| fixed32                                 | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| int64                                   | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| uint64                                  | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| sint64                                  | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| fixed64                                 | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| sfixed64                                | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| bool                                    | BOOLEAN                                 | ✅              |                                                                                                                                                                                                           |
+| string                                  | STRING                                  | ✅              |                                                                                                                                                                                                           |
+| bytes                                   | BYTES                                   | ✅              |                                                                                                                                                                                                           |
+| enum                                    | INT32/STRING                            | ✅              | По умолчанию используется STRING. Преобразуется в INT32, если `int.for.enums=true` (см. [документацию Schema Registry](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf)) |
+| message                                 | STRUCT                                  | ⚠️             | См. раздел ниже о неподдерживаемых схемах                                                                                                                                                                 |
+| repeated T (where T is not a map entry) | ARRAY                                   | ✅              |                                                                                                                                                                                                           |
+| `map<K, V>`                             | MAP                                     | ✅              |                                                                                                                                                                                                           |
+| oneof                                   | STRUCT                                  | ⚠️             | См. раздел ниже о преобразовании oneof в схему ClickHouse                                                                                                                                                |
+| google.protobuf.DoubleValue             | FLOAT64                                 | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.FloatValue              | FLOAT32                                 | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.Int64Value              | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.UInt64Value             | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.UInt32Value             | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.Int32Value              | INT32                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.BoolValue               | BOOLEAN                                 | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.StringValue             | STRING                                  | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.BytesValue              | BYTES                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.Timestamp               | org.apache.kafka.connect.data.Timestamp | ✅              |                                                                                                                                                                                                           |
+| google.type.Date                        | org.apache.kafka.connect.data.Date      | ✅              |                                                                                                                                                                                                           |
+| google.type.TimeOfDay                   | org.apache.kafka.connect.data.Time      | ✅              |                                                                                                                                                                                                           |
+
+Соответствие типов Kafka Connect и ClickHouse см. в разделе [Поддерживаемые типы данных](#supported-data-types).
+
+###### Примечание о преобразовании полей `oneof` в столбцы ClickHouse \{#oneof-translation\}
+
+Коннектор не поддерживает преобразование объединений Protobuf (`oneof`) в тип ClickHouse Variant. Вместо этого перечислите поля `oneof` как отдельные Nullable-поля в схеме таблицы ClickHouse.
+
+Например:
+
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message StringIntUnion {
+  oneof mixed {
+    string mixed_string = 2;
+    int32 mixed_int = 3;
+  }
+}
+
+```
+
+преобразуется в следующее определение таблицы ClickHouse:
+
+```sql
+CREATE TABLE IF NOT EXISTS `StringIntUnion`
+(
+    mixed_string Nullable(String),
+    mixed_int Nullable(Int32)
+) ENGINE = ...;
+```
+
+###### Неподдерживаемые схемы Protobuf \{#unsupported-proto-schemas\}
+
+Следующие схемы Protobuf не поддерживаются коннектором:
+
+* объединения нескольких сообщений (**до версии CH 26.1**)
+
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message TwoRecords {
+  oneof payload {
+    TypeA type_a = 2;
+    TypeB type_b = 3;
+  }
+
+  // translates to Nullable(Tuple(label String)) in ClickHouse, which is unsupported
+  message TypeA {
+    string label = 1;
+  }
+
+  // translates to Nullable(Tuple(count Int32)) in ClickHouse, which is unsupported
+  message TypeB {
+    int32 count = 1;
+  }
+}
+```
+
+Начиная с версии ClickHouse 26.1, эта схема поддерживается при `allow_experimental_nullable_tuple_type=1` (см. [эту страницу документации](https://clickhouse.com/docs/operations/settings/settings#allow_experimental_nullable_tuple_type)).
+
 ##### Поддержка схем JSON \{#json-schema-support\}
 
 ```json
