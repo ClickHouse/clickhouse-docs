@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['example dataset', 'hacker news', 'sample data', 'text analysis', 'vector search']
 ---
 
-# Hacker News dataset
 
 > In this tutorial, you'll insert 28 million rows of Hacker News data into a ClickHouse
 > table from both CSV and Parquet formats and run some simple queries to explore the data.

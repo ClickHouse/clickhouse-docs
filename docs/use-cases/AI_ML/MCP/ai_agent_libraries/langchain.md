@@ -10,7 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a LangChain/LangGraph AI agent using ClickHouse MCP server
 
 In this guide, you'll learn how to build a [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI agent that
 can interact with [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP server](https://github.com/ClickHouse/mcp-clickhouse).

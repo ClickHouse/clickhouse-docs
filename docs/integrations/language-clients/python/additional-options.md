@@ -8,7 +8,6 @@ title: 'Additional options'
 doc_type: 'reference'
 ---
 
-# Additional options {#additional-options}
 
 ClickHouse Connect provides a number of additional options for advanced use cases.
 

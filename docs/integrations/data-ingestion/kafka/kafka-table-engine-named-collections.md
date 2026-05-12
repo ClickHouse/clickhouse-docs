@@ -6,7 +6,6 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-# Integrating ClickHouse with Kafka using named collections
 
 ## Introduction {#introduction}
 

@@ -8,7 +8,6 @@ description: 'Learn about Visualizing Data in ClickHouse'
 doc_type: 'guide'
 ---
 
-# Visualizing data in ClickHouse
 
 <div class='vimeo-container'>
 <iframe

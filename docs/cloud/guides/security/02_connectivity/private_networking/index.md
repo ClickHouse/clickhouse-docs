@@ -7,7 +7,6 @@ doc_type: 'landing-page'
 keywords: ['private networking', 'network security', 'vpc', 'connectivity', 'cloud features']
 ---
 
-# Private networking
 
 ClickHouse Cloud provides the ability to connect your services to your cloud virtual network. Refer to the guides below for set up steps for your provider:
 

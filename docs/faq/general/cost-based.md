@@ -8,7 +8,6 @@ doc_type: 'reference'
 keywords: ['CBE', 'optimizer']
 ---
 
-# Does ClickHouse have a cost-based optimizer?
 
 ClickHouse has certain isolated cost-based optimization mechanics, such as: the order of reading columns is determined by the cost of reading compressed ranges of data from disk.
 

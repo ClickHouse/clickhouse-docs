@@ -8,7 +8,6 @@ doc_type: 'changelog'
 keywords: ['security', 'CVE', 'vulnerabilities', 'security fixes', 'patches']
 ---
 
-# Security changelog
 
 ## Fixed in ClickHouse v25.1.5.5, 2025-01-05 {#fixed-in-clickhouse-release-2025-01-05}
 

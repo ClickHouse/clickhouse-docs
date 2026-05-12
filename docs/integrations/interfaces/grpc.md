@@ -7,7 +7,6 @@ title: 'gRPC interface'
 doc_type: 'reference'
 ---
 
-# gRPC Interface
 
 ## Introduction {#grpc-interface-introduction}
 

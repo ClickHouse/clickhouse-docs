@@ -7,7 +7,6 @@ title: 'Arrow Flight interface'
 doc_type: 'reference'
 ---
 
-# Apache Arrow Flight Interface
 
 ## Overview {#overview}
 

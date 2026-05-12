@@ -8,7 +8,6 @@ title: 'ClickHouse Connect driver API'
 doc_type: 'reference'
 ---
 
-# ClickHouse Connect driver API {#clickhouse-connect-driver-api}
 
 :::note
 Passing keyword arguments is recommended for most api methods given the number of possible arguments, most of which are optional.

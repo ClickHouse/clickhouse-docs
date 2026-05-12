@@ -7,7 +7,6 @@ keywords: ['production readiness', 'enterprise', 'saml', 'sso', 'terraform', 'mo
 doc_type: 'guide'
 ---
 
-# ClickHouse Cloud Production Readiness Guide {#production-readiness}
 
 For organizations who have completed the quick start guide and have an active service with data flowing
 

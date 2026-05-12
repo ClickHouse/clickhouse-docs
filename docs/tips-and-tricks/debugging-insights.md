@@ -19,7 +19,7 @@ title: 'Lessons - debugging insights'
 description: 'Find solutions to the most common ClickHouse problems including slow queries, memory errors, connection issues, and configuration problems.'
 ---
 
-# ClickHouse operations: community debugging insights {#clickhouse-operations-community-debugging-insights}
+
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Suffering from high operational costs? Check out the [Cost Optimization](./cost-optimization.md) community insights guide.*
 

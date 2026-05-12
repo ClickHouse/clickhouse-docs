@@ -8,7 +8,6 @@ doc_type: 'reference'
 keywords: ['concurrency', 'QPS']
 ---
 
-# Does ClickHouse support frequent, concurrent queries?
 
 ClickHouse is designed for real-time analytical applications that can serve external users directly. It can serve analytical queries with low latency (less than 10 milliseconds) and high concurrency (exceeding 10,000 queries per second) on petabyte-scale databases, combining historical data and real-time insertions.
 

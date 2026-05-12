@@ -7,7 +7,6 @@ keywords: ['CSV format', 'TSV format', 'comma separated values', 'tab separated 
 doc_type: 'guide'
 ---
 
-# Working with CSV and TSV data in ClickHouse
 
 ClickHouse supports importing data from and exporting to CSV. Since CSV files can come with different format specifics, including header rows, custom delimiters, and escape symbols, ClickHouse provides formats and settings to address each case efficiently.
 
