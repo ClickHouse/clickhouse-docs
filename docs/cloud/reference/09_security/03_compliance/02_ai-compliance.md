@@ -14,11 +14,19 @@ By default, none of our AI features retain customer data or use customer data to
 
 ## AI Support {#ai-support}
 
-ClickHouse provides AI functionality for customers to interact with a chat agent for configuration or troubleshooting assistance. The agent uses information from our documentation and case management systems to provide quick response to customer inquiries. ClickHouse collects de-identified AI usage data, such as number of inquiries and feedback like whether a result was good or bad (thumbs up/ thumbs down).  Customers may disable this functionality within the organization settings tab.
+The setting to enable AI support may be reviewed and modified by a user with `organization:manage` permissions. It is available in the organization settings page.
+
+ClickHouse provides AI functionality for customers to interact with a chat agent for configuration or troubleshooting assistance. The agent uses information from our documentation and case management systems to provide quick responses to customer inquiries. 
+
+## Sharing data for product improvement {#sharing-data-for-product-improvement}
+
+The setting to enable data sharing for product improvement may be reviewed and modified by a user with `organization:manage` permissions. It is available in the organization settings page.
+
+When the administrator-level setting for sharing data with ClickHouse for product improvement purposes is toggled on for your organization, ClickHouse may use data generated or collected through your users' use of an AI Feature, including inputs, outputs, logs, and metadata (but excluding the direct results of queries to ClickHouse Cloud), for purposes like model evaluations (accuracy, performance, and safety/compliance testing), improving service reliability, safety, user experience, and conducting analytics. We will not use this data to train, re-train, or fine-tune models.
 
 ## ClickHouse Assistant {#clickhouse-assistant}
 
-[ClickHouse Assistant](/cloud/features/ai-ml/ask-ai) may be enabled at the service level within the SQL console. This feature enables two distinct pieces of functionality:
+The setting to enable [ClickHouse Assistant](/cloud/features/ai-ml/ask-ai) may be reviewed and modified by a user with `service:manage-generative-ai` permissions. It is available in the service settings page. This feature enables two distinct pieces of functionality:
 
 | Feature              | Description                                                      | Data used                                       | User validation |
 |:---------------------|:-----------------------------------------------------------------|:------------------------------------------------|:----------------|
