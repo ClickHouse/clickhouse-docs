@@ -1247,6 +1247,30 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'Building integrations',
+      collapsed: true,
+      collapsible: true,
+      link: { type: 'doc', id: 'integrations/building-integrations/index' },
+      items: [
+        'integrations/building-integrations/ingestion',
+        'integrations/building-integrations/consumption',
+        'integrations/building-integrations/mcp',
+        {
+          type: 'category',
+          label: 'Language guides',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'integrations/building-integrations/jdbc',
+            'integrations/building-integrations/python',
+            'integrations/building-integrations/go',
+            'integrations/building-integrations/javascript',
+          ],
+        },
+      ],
+    },
   ],
 
   managingData: [
