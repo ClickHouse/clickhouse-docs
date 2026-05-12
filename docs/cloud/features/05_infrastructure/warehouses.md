@@ -88,7 +88,7 @@ _Fig. 4 - User Alice was created in Service 1, but she can use the same credenti
 ### Network access control {#network-access-control}
 
 To restrict access to specific services by other applications or ad-hoc users, you can apply network restrictions.
-To do so, navigate to **Settings** in the service tab of the particular service you wish to restrict access to in ClickHouse Cloud console).
+To do so, navigate to **Settings** in the service tab of the particular service you wish to restrict access to in the ClickHouse Cloud console.
 
 IP filtering settings can be applied to each service separately, which means you can control which application can access which service.
 This allows you to restrict users from using specific services.
@@ -171,11 +171,11 @@ Note that read-only services don't execute background merges, thus they don't sp
 - **Inserts on one read-write service can prevent another read-write service from idling if idling is enabled.** There are situations where
  one service performs background merge operations for another service. Those background operations can prevent the second service from idling. Once the background operations are finished, the service will idled. Read-only services aren't affected.
 
-### Helpful Callouts {#callouts}
+### Helpful callouts {#callouts}
 
 - **ClickHouse Versions**: The [upgrade schedule](/manage/updates) is dictated by the primary service's settings. Secondary services cannot have a release schedule independent of the primary service.
 
-- **`CREATE`/`RENAME`/`DROP DATABASE` queries could be blocked by idled/stopped services by default.** If these queries are executed when the service is idled or stopped, these queries can hang. To bypass this, you  can run database management queries with [`settings distributed_ddl_task_timeout=0`](/operations/settings/settings#distributed_ddl_task_timeout) at the session or per query level.
+- **`CREATE`/`RENAME`/`DROP DATABASE` queries could be blocked by idled/stopped services by default.** If these queries are executed when the service is idled or stopped, these queries can hang. To bypass this, you can run database management queries with [`settings distributed_ddl_task_timeout=0`](/operations/settings/settings#distributed_ddl_task_timeout) at the session or per query level.
 
 For example:
 
@@ -192,13 +192,13 @@ If you manually stop a service, you will need to start it up again in order for 
 
 ## Pricing {#pricing}
 
-Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once - it is included in the first (original) service.
+Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once—it is included in the first (original) service.
 
 Please refer to the pricing calculator on the [pricing](https://clickhouse.com/pricing) page, which will help estimate the cost based on your workload size and tier selection. The Usage Breakdown table will show you the breakdown of compute costs across services. 
 
 ## Backups {#backups}
 
-- As all services in a single warehouse share the same storage, backups are made only on the primary (initial) service. By this, the data for all services in a warehouse is backed up.
+- As all services in a single warehouse share the same storage, backups are made only on the primary (initial) service. This way, the data for all services in a warehouse is backed up.
 - If you restore a backup from a primary service of a warehouse, it will be restored to a completely new service, not connected to the existing warehouse. You can then add more services to the new service immediately after the restore is finished.
 
 ## How to set up a warehouse {#setup-warehouses}
