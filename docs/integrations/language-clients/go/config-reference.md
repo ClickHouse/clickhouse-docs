@@ -12,6 +12,10 @@ doc_type: 'reference'
 
 This page documents every configurable option in `clickhouse-go` v2.x. For narrative guides with code examples, see [Configuration](/integrations/language-clients/go/configuration).
 
+:::note Version annotations
+Options added in `clickhouse-go` v2.35.0 or later are marked with *(Since vX.Y.Z)* next to their description. Options without a "Since" tag have been available since v2.0 and are present in every supported release.
+:::
+
 ## How options are set {#how-options-are-set}
 
 Options exist at three scopes:
@@ -84,7 +88,7 @@ rows, err := conn.Query(ctx, "SELECT ...")
 | `Auth.Username` | `string` | `"default"` | `username` or URL user portion | Username for ClickHouse authentication | Never use `default` in production. Create dedicated users with minimal permissions. | Wrong username: `"Code: 516. DB::Exception: Authentication failed"`. Empty string: silently uses `"default"`. |
 | `Auth.Password` | `string` | `""` | `password` or URL password portion | Password for ClickHouse authentication | Use env vars or secret managers in production. URL-encode special characters in DSN. | Wrong password: `"Code: 516. DB::Exception: Authentication failed"`. Special chars not URL-encoded: parsing errors. |
 | `Auth.Database` | `string` | `""` (server default) | `database` or URL path (`/mydb`) | Default database for the connection | Always specify explicitly. Use dedicated databases per application in production. | Non-existent: `"Code: 81. DB::Exception: Database xyz doesn't exist"`. Empty in multi-tenant setup: queries hit wrong database. |
-| `GetJWT` | `func(ctx) (string, error)` | `nil` | — (programmatic only) | Callback returning JWT for ClickHouse Cloud auth. Overridable per query with `WithJWT(token)`. | Implement token caching/refresh -- called per connection/request. | Expired token: auth errors. Blocking callback: timeouts. JWT takes precedence over user/pass. Requires TLS -- without it, falls back to user/pass silently. |
+| `GetJWT` | `func(ctx) (string, error)` | `nil` | — (programmatic only) | Callback returning JWT for ClickHouse Cloud auth. Overridable per query with `WithJWT(token)`. *(Since v2.35.0)* | Implement token caching/refresh -- called per connection/request. | Expired token: auth errors. Blocking callback: timeouts. JWT takes precedence over user/pass. Requires TLS -- without it, falls back to user/pass silently. |
 
 ```go
 GetJWT: func(ctx context.Context) (string, error) {
@@ -176,7 +180,7 @@ See [TLS](/integrations/language-clients/go/configuration#using-tls) for code ex
 
 | Option | Type | Default | DSN param | Description | Best practice | When misconfigured |
 |--------|------|---------|-----------|-------------|---------------|-------------------|
-| `Logger` | `*slog.Logger` | `nil` (no logging) | — | Structured logger via Go's `log/slog`. Priority: `Debug`+`Debugf` > `Logger` > no-op. | Use `slog` with JSON handler in production. Add app context with `logger.With(...)`. | — |
+| `Logger` | `*slog.Logger` | `nil` (no logging) | — | Structured logger via Go's `log/slog`. Priority: `Debug`+`Debugf` > `Logger` > no-op. *(Since v2.43.0)* | Use `slog` with JSON handler in production. Add app context with `logger.With(...)`. | — |
 | `Debug` (deprecated) | `bool` | `false` | `debug` | Legacy debug toggle. Use `Logger` instead. Logs to stdout unless `Debugf` is set. | — | Enabled in production: performance overhead, verbose logs, sensitive data in output. |
 | `Debugf` (deprecated) | `func(string, ...any)` | `nil` | — | Custom debug log function. Use `Logger` instead. Requires `Debug: true`. | — | — |
 
@@ -213,7 +217,7 @@ These options only affect `Protocol: clickhouse.HTTP`. They are silently ignored
 | `HttpUrlPath` | `string` | `""` | `http_path` | URL path appended to requests. Leading `/` added automatically. | Use when behind reverse proxy with path routing. | Wrong path: HTTP 404 from proxy/LB. |
 | `HttpMaxConnsPerHost` | `int` | `0` (unlimited) | — | TCP connections per host at transport layer (`http.Transport.MaxConnsPerHost`). | Leave at 0 for most apps. Only set when server has strict connection limits. | Too low (e.g., 10 with `MaxOpenConns`=50): transport bottleneck, slow queries despite low server load. |
 | `HTTPProxyURL` | `*url.URL` | `nil` (uses env vars) | `http_proxy` (URL-encoded) | HTTP proxy for routing requests | Set explicitly if proxy required. Overrides `HTTP_PROXY`/`HTTPS_PROXY` env vars. | Wrong address: `"dial tcp: lookup proxy: no such host"`. Proxy needs auth: HTTP 407. |
-| `TransportFunc` | `func(*http.Transport) (http.RoundTripper, error)` | `nil` | — | Custom HTTP transport factory. Receives default transport for wrapping. | Use for observability middleware. Don't override `Proxy`, `DialContext`, `TLSClientConfig`. | Returning `nil`: panic. Overriding client fields: TLS/proxy silently ignored. Blocking RoundTripper: deadlocks. |
+| `TransportFunc` | `func(*http.Transport) (http.RoundTripper, error)` | `nil` | — | Custom HTTP transport factory. Receives default transport for wrapping. *(Since v2.41.0)* | Use for observability middleware. Don't override `Proxy`, `DialContext`, `TLSClientConfig`. | Returning `nil`: panic. Overriding client fields: TLS/proxy silently ignored. Blocking RoundTripper: deadlocks. |
 
 :::note Two-layer HTTP pooling
 When using HTTP, there are two connection pools:
@@ -301,20 +305,20 @@ If the context has a deadline > 1s, `max_execution_time` is automatically set to
 |--------|------|---------|----------|-------------|---------------|-------------------|
 | `WithQueryID` | `string` | Auto-generated | Both | Custom query identifier. Visible in `system.query_log` and `system.processes`. | Use UUIDs. Useful for `KILL QUERY WHERE query_id='...'`. | Duplicate IDs: confusion in `system.query_log`. |
 | `WithQuotaKey` | `string` | `""` | Both | Quota key for multi-tenant resource limits. Requires server-side quota config. | Use for per-customer/per-user limits. | Quota not configured: silently ignored. |
-| `WithJWT` | `string` | `""` | HTTPS only | Per-query JWT override for ClickHouse Cloud. | Use for per-request auth in multi-tenant proxies. | Without TLS: ignored, falls back to connection auth. Expired: `"Token has expired"`. |
+| `WithJWT` | `string` | `""` | HTTPS only | Per-query JWT override for ClickHouse Cloud. *(Since v2.35.0)* | Use for per-request auth in multi-tenant proxies. | Without TLS: ignored, falls back to connection auth. Expired: `"Token has expired"`. |
 | `WithSettings` | `Settings` | Inherits connection | Both | Per-query server settings. Merged with connection settings; context wins on conflict. | Override `max_execution_time` or `max_rows_to_read` per query type. | Same as connection-level `Settings`. |
 | `WithParameters` | `Parameters` (`map[string]string`) | `nil` | Both | Server-side parameterized query values. Query syntax: `{param_name:Type}`. | Use instead of string concatenation for SQL injection safety. | Missing param: `"Substitution {param_name:Type} is not set"`. Wrong type: `"Cannot parse string 'abc' as UInt64"`. |
-| `WithAsync` | `bool` (wait) | Sync | Both | Async insert mode. Sets `async_insert=1`. `wait=true` adds `wait_for_async_insert=1`. Requires ClickHouse 21.11+. | Use for high-throughput inserts. | `wait=false`: errors may be async -- check `system.asynchronous_insert_log`. With SELECT: ignored. Old server: `"Unknown setting async_insert"`. |
+| `WithAsync` | `bool` (wait) | Sync | Both | Async insert mode. Sets `async_insert=1`. `wait=true` adds `wait_for_async_insert=1`. Requires ClickHouse 21.11+. *(Since v2.41.0; supersedes the older `WithStdAsync`.)* | Use for high-throughput inserts. | `wait=false`: errors may be async -- check `system.asynchronous_insert_log`. With SELECT: ignored. Old server: `"Unknown setting async_insert"`. |
 | `WithLogs` | `func(*Log)` | `nil` | Native only | Server log entries callback during query execution. | Keep fast -- blocks execution. Use goroutines for heavy processing. | On HTTP: silently never called. |
 | `WithProgress` | `func(*Progress)` | `nil` | Native only | Query progress updates (rows/bytes processed). | Keep fast -- blocks execution. | On HTTP: silently never called. |
 | `WithProfileInfo` | `func(*ProfileInfo)` | `nil` | Native only | Query execution statistics callback. | Keep fast -- blocks execution. | On HTTP: silently never called. |
 | `WithProfileEvents` | `func([]ProfileEvent)` | `nil` | Native only | Performance counters callback. | Keep fast -- blocks execution. | On HTTP: silently never called. |
-| `WithoutProfileEvents` | — | Events sent | Native only | Suppress profile events. Performance optimization for servers ≥ 25.11. | Use when you don't need profile events. | On older servers: error for unknown setting. |
+| `WithoutProfileEvents` | — | Events sent | Native only | Suppress profile events. Performance optimization for servers ≥ 25.11. *(Since v2.44.0)* | Use when you don't need profile events. | On older servers: error for unknown setting. |
 | `WithExternalTable` | `...*ext.Table` | `nil` | Both | Attach temporary lookup tables to query. Data transferred per query. | Keep tables &#60; 10 MB. Native more efficient than HTTP (multipart). | Large tables: network overhead per query. |
 | `WithUserLocation` | `*time.Location` | Server timezone | Both | Override timezone for DateTime parsing. | Set explicitly when client/server timezones differ. | Wrong timezone: DateTime values silently off by hours, potential data corruption. |
-| `WithColumnNamesAndTypes` | `[]ColumnNameAndType` | `nil` (runs DESCRIBE) | HTTP only | Skip `DESCRIBE TABLE` round trip on HTTP inserts by providing column info upfront. | Use when schema is known and stable. | Wrong types: `"Cannot convert String to UInt64"`. Schema drift after migration: stale info. |
+| `WithColumnNamesAndTypes` | `[]ColumnNameAndType` | `nil` (runs DESCRIBE) | HTTP only | Skip `DESCRIBE TABLE` round trip on HTTP inserts by providing column info upfront. *(Since v2.37.0)* | Use when schema is known and stable. | Wrong types: `"Cannot convert String to UInt64"`. Schema drift after migration: stale info. |
 | `WithBlockBufferSize` | `uint8` | Connection-level (2) | Both | Override connection-level `BlockBufferSize` for a single query. | Increase for large result sets on specific queries. | — |
-| `WithClientInfo` | `ClientInfo` | Connection-level | Both | Append additional client info for a single query. Does not replace, appends. | Add per-request context (e.g., endpoint name). | — |
+| `WithClientInfo` | `ClientInfo` | Connection-level | Both | Append additional client info for a single query. Does not replace, appends. *(Since v2.42.0)* | Add per-request context (e.g., endpoint name). | — |
 | `WithSpan` | `trace.SpanContext` | Empty | Native only | OpenTelemetry span context for distributed tracing. | See [OpenTelemetry](/integrations/language-clients/go/clickhouse-api#open-telemetry). | — |
 
 ```go
