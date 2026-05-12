@@ -124,7 +124,7 @@ See [Connection Pooling](/integrations/language-clients/go/configuration#connect
 
 ---
 
-### database/sql post-creation settings {#sql-db-settings}
+### Standard database/sql pool settings {#sql-db-settings}
 
 When using `clickhouse.OpenDB()` or `sql.Open("clickhouse", dsn)`, the returned `*sql.DB` supports Go's standard pool methods. `OpenDB()` auto-applies the first three from `Options`:
 
@@ -402,7 +402,7 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO table",
 
 ## Troubleshooting {#troubleshooting}
 
-### "acquire conn timeout" {#acquire-conn-timeout}
+### Connection pool exhausted: "acquire conn timeout" {#acquire-conn-timeout}
 
 **Cause:** Connection pool exhausted -- all `MaxOpenConns` connections are in use and none became available within `DialTimeout`.
 
@@ -412,7 +412,7 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO table",
 3. Increase `MaxOpenConns` to match observed concurrency.
 4. Increase `DialTimeout` only if bursts are expected and acquisition wait is the actual bottleneck.
 
-### "i/o timeout" or "read: connection reset by peer" {#io-timeout}
+### Read timeout and connection reset errors {#io-timeout}
 
 **Cause:** `ReadTimeout` exceeded while waiting for a server response, or the connection was closed by the server/network.
 
