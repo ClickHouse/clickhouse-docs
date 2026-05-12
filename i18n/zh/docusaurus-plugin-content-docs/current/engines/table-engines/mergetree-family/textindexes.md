@@ -82,8 +82,8 @@ CREATE TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
-                                            | ngrams[(N)]
                                             | asciiCJK
+                                            | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -144,7 +144,6 @@ ALTER TABLE table DROP INDEX text_idx;
 ```
 
 **分词器 参数 (必填)&#x20;**。`tokenizer` 参数指定要使用的分词器：
-
 
 * `splitByNonAlpha` 会根据非字母数字的 ASCII 字符拆分字符串 (参见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)) 。
 * `splitByString(S)` 会根据某些用户自定义的分隔字符串 `S` 拆分字符串 (参见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)) 。
@@ -491,6 +490,24 @@ SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
 
+#### `hasPhrase` \{#functions-example-hasphrase\}
+
+函数 [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) 用于按短语匹配：所有标记必须按与搜索字符串相同的顺序连续出现。
+
+与 `hasAllTokens` 只要求所有标记出现在任意位置不同，`hasPhrase` 要求它们作为一个连续序列出现。
+搜索短语会使用为索引列配置的同一分词器进行分词。
+请注意，该函数需要使用 `splitByNonAlpha`、`splitByString`、`ngrams` 或 `asciiCJK` 分词器之一。
+
+示例：
+
+```sql
+-- Matches: 'clickhouse' and 'olap' must appear consecutively in that order
+SELECT count() FROM table WHERE hasPhrase(comment, 'clickhouse olap');
+
+-- Does NOT match a row containing 'olap clickhouse' (wrong order)
+-- Does NOT match a row containing 'clickhouse fast olap' (non-consecutive)
+```
+
 #### `has` \{#functions-example-has\}
 
 数组函数 [has](/sql-reference/functions/array-functions#has) 用于在字符串数组中匹配单个 token。
@@ -501,6 +518,17 @@ SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM table WHERE has(array, 'clickhouse');
 ```
 
+
+#### `hasAny` 和 `hasAll` \{#functions-example-hasany-hasall\}
+
+数组函数 [hasAny](/sql-reference/functions/array-functions#hasAny) 和 [hasAll](/sql-reference/functions/array-functions#hasAll) 用于测试带索引的数组列是否包含某个常量 needle 字符串集合中的任意字符串或全部字符串。
+
+示例：
+
+```sql
+SELECT count() FROM table WHERE hasAny(tags, ['clickhouse', 'olap']);
+SELECT count() FROM table WHERE hasAll(tags, ['clickhouse', 'olap']);
+```
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
@@ -864,6 +892,51 @@ SELECT * FROM events WHERE data.level IN ('error', 'critical');
 ```
 
 
+### 短语搜索 \{#text-index-phrase-search\}
+
+文本索引支持通过 `hasPhrase` 函数执行短语搜索。
+短语中的所有标记都必须在文档中按相同顺序连续出现。
+
+文本索引通过对短语中所有标记的倒排列表求交来确定候选粒度，从而加速短语搜索。
+在这些粒度内，ClickHouse 随后会验证标记是否精确相邻。
+
+`hasPhrase` 支持与 `splitByNonAlpha`、`splitByString`、`ngrams` 和 `asciiCJK` 分词器配合使用。
+
+短语字符串会使用索引所配置的分词器进行分词。
+短语中的分词器分隔符字符会被忽略：对于 `splitByNonAlpha` 分词器，`hasPhrase(text, 'quick+brown')` 等价于 `hasPhrase(text, 'quick brown')`。
+
+#### 示例 \{#text-index-phrase-search-example\}
+
+```sql
+CREATE TABLE tab (
+    id UInt32,
+    text String,
+    INDEX idx(text) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO tab VALUES
+    (1, 'weather in New York'),
+    (2, 'New weather in York'),
+    (3, 'weather in New Orleans');
+```
+
+```sql
+SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
+```
+
+结果：
+
+```result
+   ┌─id─┬─text────────────────┐
+1. │  1 │ weather in New York │
+   └────┴─────────────────────┘
+```
+
+第 2 行 (`'New weather in York'`) 不匹配，因为这些标记的顺序不对。
+第 3 行 (`'weather in New Orleans'`) 不匹配，因为其中不包含标记 `'York'`。
+
 ## 性能调优 \{#performance-tuning\}
 
 ### 直接读取 \{#direct-read\}
@@ -878,20 +951,20 @@ FROM [...]
 WHERE string_search_function(column_with_text_index)
 ```
 
-直接读取优化会仅使用文本索引来回答查询（即通过文本索引查找），而无需访问底层文本列。
-文本索引查找读取的数据量相对较少，因此比 ClickHouse 中常规的 skip 索引快得多（后者会先执行 skip 索引查找，然后再加载并过滤剩余的数据颗粒 granules）。
+直接读取优化会仅使用文本索引来回答查询 (即通过文本索引查找) ，而无需访问底层文本列。
+文本索引查找读取的数据量相对较少，因此比 ClickHouse 中常规的 跳过索引快得多 (后者会先执行 跳过索引查找，然后再加载并过滤剩余的数据颗粒 granules) 。
 
 直接读取由两个设置控制：
 
-* 设置 [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index)（默认值为 true），用于指定是否全局启用直接读取。
-* 设置 [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read)，这是启用直接读取的另一个前提条件。在 ClickHouse 版本 &gt;= 26.1 中，该设置默认启用。在更早的版本中，需要显式执行 `SET use_skip_indexes_on_data_read = 1`。
+* 设置 [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index) (默认值为 true) ，用于指定是否全局启用直接读取。
+* 设置 [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read) 在 ClickHouse 版本 &lt; 26.4 中是启用直接读取的前提条件。
 
 **支持的函数**
 
 直接读取优化支持函数 `hasToken`、`hasAllTokens` 和 `hasAnyTokens`。
-如果文本索引是使用 `array` tokenizer 定义的，直接读取同样支持函数 `equals`、`has`、`mapContainsKey` 和 `mapContainsValue`。
+如果文本索引是使用 `array` 分词器 定义的，直接读取同样支持函数 `equals`、`has`、`hasAny`、`hasAll`、`mapContainsKey` 和 `mapContainsValue`。
 这些函数也可以通过 `AND`、`OR` 和 `NOT` 运算符组合使用。
-`WHERE` 或 `PREWHERE` 子句中还可以包含额外的非文本搜索函数过滤条件（针对文本列或其他列）——在这种情况下，仍然会使用直接读取优化，但效果会略差一些（它仅适用于受支持的文本搜索函数）。
+`WHERE` 或 `PREWHERE` 子句中还可以包含额外的非文本搜索函数过滤条件 (针对文本列或其他列) ——在这种情况下，仍然会使用直接读取优化，但效果会略差一些 (它仅适用于受支持的文本搜索函数) 。
 
 要确认查询是否使用了直接读取，请使用 `EXPLAIN PLAN actions = 1` 来运行查询。
 例如，一个禁用了直接读取的查询
@@ -902,7 +975,6 @@ SELECT count()
 FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 0, -- disable direct read
-         use_skip_indexes_on_data_read = 1;
 ```
 
 返回
@@ -925,7 +997,6 @@ SELECT count()
 FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
-         use_skip_indexes_on_data_read = 1;
 ```
 
 返回
@@ -941,31 +1012,30 @@ Positions:
 ```
 
 第二个 EXPLAIN PLAN 输出包含一个虚拟列 `__text_index_<index_name>_<function_name>_<id>`。
-如果该列存在，则会使用 direct read。
+如果该列存在，则会使用 直接读取。
 
-如果 WHERE 过滤子句只包含文本搜索函数，则查询可以完全避免读取该列的数据，并通过 direct read 获得最大的性能收益。
-不过，即使在查询的其他部分访问了该文本列，direct read 仍然可以带来性能提升。
+如果 WHERE 过滤子句只包含文本搜索函数，则查询可以完全避免读取该列的数据，并通过 直接读取 获得最大的性能收益。
+不过，即使在查询的其他部分访问了该文本列，直接读取 仍然可以带来性能提升。
 
-**Direct read 作为提示**
+**直接读取 作为提示**
 
-Direct read 作为提示与普通 direct read 基于相同的原理，但会在不移除底层文本列的情况下，额外添加一个基于文本索引数据构建的过滤条件。
+直接读取 作为提示与普通 直接读取 基于相同的原理，但会在不移除底层文本列的情况下，额外添加一个基于文本索引数据构建的过滤条件。
 它用于那些如果只从文本索引中读取数据会产生误报的函数。
 
 支持的函数有：`like`、`startsWith`、`endsWith`、`equals`、`has`、`mapContainsKey` 和 `mapContainsValue`。
 
 这个额外的过滤条件在与其他过滤条件组合使用时，可以提供更高的选择性，进一步收缩结果集，有助于减少从其他列读取的数据量。
 
-Direct read 作为提示可以通过设置 [query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) 来控制（默认启用）。
+直接读取 作为提示可以通过设置 [query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) 来控制 (默认启用) 。
 
 不使用提示的查询示例：
-
 
 ```sql
 EXPLAIN actions = 1
 SELECT count()
 FROM table
 WHERE (col LIKE '%some-token%') AND (d >= today())
-SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 0
+SETTINGS query_plan_text_index_add_hint = 0
 FORMAT TSV
 ```
 
@@ -984,10 +1054,10 @@ EXPLAIN actions = 1
 SELECT count()
 FROM table
 WHERE col LIKE '%some-token%'
-SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 1
+SETTINGS query_plan_text_index_add_hint = 1
 ```
 
-返回
+返回值
 
 ```text
 [...]
@@ -995,15 +1065,14 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 [...]
 ```
 
-在第二个 EXPLAIN PLAN 输出中，你可以看到在过滤条件中被添加了一个额外的合取项（`__text_index_...`）。
+在第二个 EXPLAIN PLAN 输出中，你可以看到在过滤条件中被添加了一个额外的合取项 (`__text_index_...`) 。
 得益于 [PREWHERE](/sql-reference/statements/select/prewhere) 优化，过滤条件被拆分为三个独立的合取项，并按照计算复杂度从低到高的顺序依次应用。
 对于这个查询，应用顺序是先 `__text_index_...`，然后是 `greaterOrEquals(...)`，最后是 `like(...)`。
 这种顺序使得在读取 `WHERE` 子句中使用的开销较大的列之前，就能在文本索引和原始过滤条件已经跳过的数据粒度基础上，进一步跳过更多数据粒度，从而减少需要读取的数据量。
 
-
 ### LIKE/ILIKE 查询 \{#like-ilike-queries-perf\}
 
-当 LIKE/ILIKE 查询模式为 `%<alpha-numeric-characters-without-spaces>%`，且 文本索引 的分词器为 `splitByNonAlpha` 时，ClickHouse 会利用转置索引显著加速 LIKE/ILIKE 查询。为实现这一点，ClickHouse 会扫描转置索引字典来查找匹配模式，而不是执行全表扫描。
+当 LIKE/ILIKE 查询模式为 `%<alpha-numeric-characters-without-spaces>%`，且 文本索引 的分词器为 `splitByNonAlpha` 或 `array` 时，ClickHouse 会利用转置索引显著加速 LIKE/ILIKE 查询。为实现这一点，ClickHouse 会扫描转置索引字典来查找匹配模式，而不是执行全表扫描。
 
 启用该优化后，LIKE/ILIKE 查询通常会比全表扫描快得多。不过，当该模式匹配字典中的大多数标记时，其性能反而可能不如全表扫描。幸运的是，系统提供了回退机制来避免这种情况。
 
@@ -1248,13 +1317,13 @@ SETTINGS query_plan_direct_read_from_text_index = 1;
 `hasAnyTokens` 用于检查文本是否至少包含任意一个指定的 token。
 我们将搜索包含 &#39;love&#39; 或 &#39;ClickHouse&#39; 的评论。
 
-**已禁用直接读取（标准扫描）**
+**已禁用直接读取 (标准扫描)&#x20;**
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAnyTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │  408426 │
@@ -1263,13 +1332,13 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 1.329 sec. Processed 28.74 million rows, 9.72 GB
 ```
 
-**已启用直接读取（快速索引读取）**
+**已启用直接读取 (快速索引读取)&#x20;**
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAnyTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │  408426 │
@@ -1279,23 +1348,21 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 ```
 
 对于这种常见的“OR”搜索，加速效果更加显著。
-通过避免对整列进行扫描，该查询速度提升了近 89 倍（1.329s vs 0.015s）。
-
+通过避免对整列进行扫描，该查询速度提升了近 89 倍 (1.329s vs 0.015s) 。
 
 ### 3. 使用 `hasAllTokens` \{#using-hasAllTokens\}
 
 `hasAllTokens` 会检查文本是否包含给定的所有 token。
 我们将搜索同时包含 &#39;love&#39; 和 &#39;ClickHouse&#39; 的评论。
 
-**禁用直接读取（标准扫描）**
-即使禁用了直接读取，标准跳过索引依然有效。
+**禁用直接读取 (标准扫描)&#x20;**&#xA;即使禁用了直接读取，标准跳过索引依然有效。
 它将 2870 万行过滤到仅 14.746 万行，但仍然必须从列中读取 57.03 MB 的数据。
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAllTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │      11 │
@@ -1304,14 +1371,13 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.184 sec. Processed 147.46 thousand rows, 57.03 MB
 ```
 
-**已启用直接读取（快速索引读取）**
-直接读取通过仅操作索引数据来完成该查询，只需读取 147.46 KB 的数据。
+**已启用直接读取 (快速索引读取)&#x20;**&#xA;直接读取通过仅操作索引数据来完成该查询，只需读取 147.46 KB 的数据。
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAllTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │      11 │
@@ -1320,21 +1386,20 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.007 sec. Processed 147.46 thousand rows, 147.46 KB
 ```
 
-对于这种“AND”搜索，直接读取优化比标准跳过索引的扫描快 26 倍以上（0.184 秒 vs 0.007 秒）。
-
+对于这种“AND”搜索，直接读取优化比标准跳过索引的扫描快 26 倍以上 (0.184 秒 vs 0.007 秒) 。
 
 ### 4. 复合搜索：OR、AND、NOT 等 \{#compound-search\}
 
 直接读取优化同样适用于复合布尔表达式。
 在这里，我们将执行对 &#39;ClickHouse&#39; 或 &#39;clickhouse&#39; 的不区分大小写的搜索。
 
-**已禁用直接读取（标准扫描）**
+**已禁用直接读取 (标准扫描)&#x20;**
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse') OR hasToken(comment, 'clickhouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │     769 │
@@ -1343,13 +1408,13 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.450 sec. Processed 25.87 million rows, 9.58 GB
 ```
 
-**已启用直接读取（快速索引读取）**
+**已启用直接读取 (快速索引读取)&#x20;**
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse') OR hasToken(comment, 'clickhouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │     769 │
@@ -1358,9 +1423,8 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.013 sec. Processed 25.87 million rows, 51.73 MB
 ```
 
-通过结合索引过滤的结果，直接读取的查询快了 34 倍（0.450s 对比 0.013s），并且避免了读取 9.58 GB 的列数据。
+通过结合索引过滤的结果，直接读取的查询快了 34 倍 (0.450s 对比 0.013s) ，并且避免了读取 9.58 GB 的列数据。
 对于这个特定场景，`hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])` 将是更推荐使用的、更高效的写法。
-
 
 ## 相关内容 \{#related-content\}
 

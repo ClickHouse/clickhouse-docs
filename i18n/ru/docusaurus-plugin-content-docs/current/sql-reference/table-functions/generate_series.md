@@ -7,7 +7,7 @@ description: 'Возвращает таблицу с единственным с
 doc_type: 'reference'
 ---
 
-# Табличная функция generate&#95;series \{#generate&#95;series-table-function\}
+# Табличная функция generate_series \{#generate_series-table-function\}
 
 Псевдоним: `generateSeries`
 
@@ -25,18 +25,85 @@ generate_series(START, STOP)
 generate_series(START, STOP, STEP)
 ```
 
+`STEP` может быть отрицательным; в этом случае последовательность генерируется в порядке убывания от `START` к `STOP`. Если `STEP` отрицательный и `START < STOP`, результат будет пустым.
+
 ## Примеры \{#examples\}
 
 Следующие запросы возвращают таблицы с одинаковым содержимым, но разными именами столбцов:
 
 ```sql
 SELECT * FROM numbers(10, 5);
+```
+
+```response
+┌─number─┐
+│     10 │
+│     11 │
+│     12 │
+│     13 │
+│     14 │
+└────────┘
+```
+
+```sql
 SELECT * FROM generate_series(10, 14);
+```
+
+```response
+┌─generate_series─┐
+│              10 │
+│              11 │
+│              12 │
+│              13 │
+│              14 │
+└─────────────────┘
 ```
 
 Следующие запросы возвращают таблицы с тем же содержимым, но с другими именами столбцов (при этом второй вариант выполняется эффективнее):
 
 ```sql
 SELECT * FROM numbers(10, 11) WHERE number % 3 == (10 % 3);
+```
+
+```response
+┌─number─┐
+│     10 │
+│     13 │
+│     16 │
+│     19 │
+└────────┘
+```
+
+```sql
 SELECT * FROM generate_series(10, 20, 3);
+```
+
+```response
+┌─generate_series─┐
+│              10 │
+│              13 │
+│              16 │
+│              19 │
+└─────────────────┘
+```
+
+Сгенерируйте убывающую последовательность:
+
+```sql
+SELECT * FROM generate_series(9, 0, -1);
+```
+
+```response
+┌─generate_series─┐
+│               9 │
+│               8 │
+│               7 │
+│               6 │
+│               5 │
+│               4 │
+│               3 │
+│               2 │
+│               1 │
+│               0 │
+└─────────────────┘
 ```

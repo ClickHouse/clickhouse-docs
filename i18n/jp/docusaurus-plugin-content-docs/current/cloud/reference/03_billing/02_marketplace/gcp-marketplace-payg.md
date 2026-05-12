@@ -31,22 +31,22 @@ import Image from '@theme/IdealImage';
 
 1. [GCP Marketplace](https://cloud.google.com/marketplace) を開き、ClickHouse Cloud を検索します。対象となるプロジェクトが正しく選択されていることを確認します。
 
-<Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplace のホームページ" border/>
+<Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplace のホームページ" border />
 
 2. [商品ページ](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud) をクリックし、その後 **Subscribe** をクリックします。
 
-<Image img={gcp_marketplace_payg_2} size="md" alt="GCP Marketplace 内の ClickHouse Cloud" border/>
+<Image img={gcp_marketplace_payg_2} size="md" alt="GCP Marketplace 内の ClickHouse Cloud" border />
 
 3. 次の画面で、サブスクリプションを設定します:
 
-- プランはデフォルトで「ClickHouse Cloud」になります
-- サブスクリプション期間は「Monthly」です
-- 適切な課金アカウントを選択します
-- 利用規約に同意し、**Subscribe** をクリックします
+* プランはデフォルトで「ClickHouse Cloud」になります
+* サブスクリプション期間は「Monthly」です
+* 適切な課金アカウントを選択します
+* 利用規約に同意し、**Subscribe** をクリックします
 
 <br />
 
-<Image img={gcp_marketplace_payg_3} size="sm" alt="GCP Marketplace でのサブスクリプション設定画面" border/>
+<Image img={gcp_marketplace_payg_3} size="sm" alt="GCP Marketplace でのサブスクリプション設定画面" border />
 
 <br />
 
@@ -54,7 +54,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={gcp_marketplace_payg_4} size="md" alt="GCP Marketplace のサインアップモーダル" border/>
+<Image img={gcp_marketplace_payg_4} size="md" alt="GCP Marketplace のサインアップモーダル" border />
 
 <br />
 
@@ -64,7 +64,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud のサインインページ" border/>
+<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud のサインインページ" border />
 
 <br />
 
@@ -72,7 +72,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud のサインアップページ" border/>
+<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud のサインアップページ" border />
 
 <br />
 
@@ -80,11 +80,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud のサインアップ情報入力フォーム" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud のサインアップ情報入力フォーム 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud のサインアップ情報入力フォーム" border />
 
 <br />
 
@@ -96,11 +92,11 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud のサインインページ" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud のサインインページ" border />
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud の新規サービスページ" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud の新規サービスページ" border />
 
 <br />
 
@@ -110,7 +106,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace の確認メール" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace の確認メール" border />
 
 <br />
 

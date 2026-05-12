@@ -1209,7 +1209,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 
 指定した `unit` の境界が `startdate` と `enddate` の間でいくつ跨いだかを返します。
 差分は相対単位を用いて計算されます。例えば、2021-12-29 と 2022-01-01 の差分は、単位 day の場合は 3 日
- ([`toRelativeDayNum`](#toRelativeDayNum) を参照) 、単位 month の場合は 1 か月 ([`toRelativeMonthNum`](#toRelativeMonthNum) を参照) 、単位 year の場合は 1 年 ([`toRelativeYearNum`](#toRelativeYearNum) を参照) です。
+([`toRelativeDayNum`](#toRelativeDayNum) を参照) 、単位 month の場合は 1 か月 ([`toRelativeMonthNum`](#toRelativeMonthNum) を参照) 、単位 year の場合は 1 年 ([`toRelativeYearNum`](#toRelativeYearNum) を参照) です。
 
 単位 `week` が指定された場合、`dateDiff` は週の開始日を月曜日とみなします。
 この挙動は、デフォルトで週の開始日が日曜日である `toWeek()` 関数とは異なる点に注意してください。
@@ -1222,7 +1222,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**別名**: `timestampDiff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `date_diff`, `timestamp_diff`
+**別名**: `timestampDiff`, `DATE_DIFF`, `date_diff`, `TIMESTAMP_DIFF`, `timestamp_diff`
 
 **引数**
 
@@ -1242,8 +1242,8 @@ dateDiff(unit, startdate, enddate[, timezone])
 | quarter     | `quarter`, `quarters`, `qq`, `q`         |
 | year        | `year`, `years`, `yyyy`, `yy`            |
 
-* `startdate` — 減算される最初の時刻値 (被減数) 。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
-* `enddate` — 減算の基準となる 2 つ目の時刻値 (減数) 。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+* `startdate` — 減算される最初の時刻値 (減数) 。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
+* `enddate` — 減算の基準となる 2 つ目の時刻値 (被減数) 。[`Date`](/sql-reference/data-types/date) または [`Date32`](/sql-reference/data-types/date32) または [`DateTime`](/sql-reference/data-types/datetime) または [`DateTime64`](/sql-reference/data-types/datetime64)
 * `timezone` — 任意。タイムゾーン名。指定された場合、`startdate` と `enddate` の両方に適用されます。指定されない場合は、`startdate` と `enddate` のタイムゾーンが使用されます。それらが同じでない場合、結果は未定義です。[`String`](/sql-reference/data-types/string)
 
 **戻り値**

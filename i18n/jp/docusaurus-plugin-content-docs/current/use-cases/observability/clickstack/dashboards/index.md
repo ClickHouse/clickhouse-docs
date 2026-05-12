@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/dashboards
-title: 'ClickStack を用いたビジュアライゼーションとダッシュボード'
+title: 'ClickStack を用いた可視化とダッシュボード'
 sidebar_label: 'ダッシュボード'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack を用いたビジュアライゼーションとダッシュボード'
+description: 'ClickStack を用いた可視化とダッシュボード'
 doc_type: 'guide'
 keywords: ['clickstack', 'dashboards', 'visualization', 'monitoring', 'observability']
 ---
@@ -32,12 +32,14 @@ import filtered_dashboard from '@site/static/images/clickstack/dashboards/filter
 import filter_dropdown from '@site/static/images/clickstack/dashboards/filter-dropdown.png';
 import save_filter_values from '@site/static/images/clickstack/dashboards/save-filter-values.png';
 import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
+import heatmap_tile_editor from '@site/static/images/clickstack/dashboards/heatmap-tile-editor.png';
+import heatmap_tile_rendered from '@site/static/images/clickstack/dashboards/heatmap-tile-rendered.png';
+import heatmap_tile_drilldown from '@site/static/images/clickstack/dashboards/heatmap-tile-drilldown.png';
 import Tagging from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
-ClickStack はイベントのビジュアライゼーションをサポートしており、ClickStack UI (HyperDX) にはチャート機能が組み込まれています。これらのチャートはダッシュボードに追加し、他のユーザーと共有できます。
+ClickStack はイベントの可視化をサポートしており、ClickStack UI (HyperDX) にはチャート機能が組み込まれています。これらのチャートはダッシュボードに追加し、他のユーザーと共有できます。
 
-ビジュアライゼーションは、トレース、メトリクス、ログ、または任意のユーザー定義のワイドイベントスキーマに基づいて作成できます.
-
+可視化は、トレース、メトリクス、ログ、または任意のユーザー定義のワイドイベントスキーマに基づいて作成できます.
 
 ## 可視化の作成 \{#creating-visualizations\}
 
@@ -115,13 +117,13 @@ ClickStack は、[text-to-chart](/use-cases/observability/clickstack/text-to-cha
   * Group By: `ServiceName`
   * Alias: `Average Time`
 
-  `Save` をクリックする前に **再生 (play)&#x20;**&#x20;ボタンをクリックします。
+  `Save` をクリックする前に **再生 (play)** ボタンをクリックします。
 
-  <Image img={dashboard_2} alt="ダッシュボード可視化の作成" size="lg" />
+  <Image img={dashboard_2} alt="ダッシュボードの可視化を作成する" size="lg" />
 
   可視化のサイズを変更し、ダッシュボードの幅いっぱいに配置します。
 
-  <Image img={dashboard_3} alt="ビジュアルを含むダッシュボード" size="lg" />
+  <Image img={dashboard_3} alt="可視化を含むダッシュボード" size="lg" />
 
   ### 可視化を作成する – サービスごとの時間経過に伴うイベント数
 
@@ -135,7 +137,7 @@ ClickStack は、[text-to-chart](/use-cases/observability/clickstack/text-to-cha
   * Group By: `ServiceName`
   * Alias: `Count of events`
 
-  `Save` をクリックする前に **再生 (play)&#x20;**&#x20;ボタンをクリックします。
+  `Save` をクリックする前に **再生 (play)** ボタンをクリックします。
 
   <Image img={dashboard_4} alt="ダッシュボード可視化 2" size="lg" />
 
@@ -143,9 +145,51 @@ ClickStack は、[text-to-chart](/use-cases/observability/clickstack/text-to-cha
 
   <Image img={dashboard_5} alt="ビジュアルを含むダッシュボード 2" size="lg" />
 
+  ### スパンのDurationのヒートマップタイルを追加する
+
+  ヒートマップのタイルは、各 (時間, 値) バケットに該当するイベント数を色付きのグリッドとして描画します。平均値や単一のパーセンタイルだけでなく、時間経過に伴う分布の**形状**を把握したい場合にヒートマップを使用します。レイテンシのヒートマップは、双峰性の Duration パターン、スロー・テールのクラスター、または折れ線グラフでは平均化されてしまうような急激な広がりを明らかにします。
+
+  ヒートマップタイルを追加するには:
+
+  1. `Add New Tile` をクリックします。
+  2. 上部メニューから可視化タイプとして `Heatmap` を選択します。データソースのドロップダウンには、[ソースタイプが `Traces` である](/use-cases/observability/clickstack/config#traces) ソースのみが表示されます。ヒートマップではトレースソースでのみ提供される span の継続時間カラムが必要になるため、ログ、メトリクス、セッションのソースは除外されます。
+  3. 任意のトレースソースを名前で選択します。名前自体は任意で、重要なのはタイプのみです。
+
+  ソースを選択すると、ヒートマップに値が自動入力されます:
+
+  * **値**: ソースの `Duration Expression` を現在の表示単位に合わせてスケーリングしたもの (たとえば、各イベントの span の Duration をナノ秒からミリ秒に変換するには `(Duration)/1e6`)
+  * **件数**: `count()`
+
+  4. チャート名を設定し、`Where` を使用して、パフォーマンスを観測したい特定のサービスまたは一連の操作にヒートマップの範囲を絞ります。
+  5. 確認したい期間に合わせてタイムレンジを調整します。タイムレンジを広げると、短い時間枠では見えにくい分布の変化やレイテンシの二峰性パターンを捉えやすくなります。
+
+  以下の例では、24 時間のウィンドウにわたる単一サービスを示しており、そのスパンの Duration における高速パスと低速パスが 2 つの水平帯に明確に分離されています。
+
+  ヒートマップをさらにカスタマイズするには、**Display Settings** をクリックして、**Scale** (Log または Linear)、**Value**、および **Count** 式のドロワーを開きます。オプションの全一覧は、イベントデルタページの [Customize the heatmap](/use-cases/observability/clickstack/event_deltas#customize) に記載されています。同じドロワーが再利用されます。
+
+  チャートをプレビューするには、`Run` をクリックしてから `Save` をクリックします。
+
+  <Image img={heatmap_tile_editor} alt="span の Duration の基本値が事前入力され、ServiceName の payment フィルターと Display Settings ボタンを備えたヒートマップタイルエディター" size="lg" />
+
+  保存されたタイルは、ダッシュボード上でヒートマップとして表示されます。任意のセルにカーソルを合わせると、バケットの範囲とイベント数を確認できます。
+
+  <Image img={heatmap_tile_rendered} alt="24 時間にわたる payment service のスパン継続時間の分布を示すヒートマップのダッシュボードタイル" size="lg" />
+
+  :::tip ヒートマップごとに 2 つの ClickHouse クエリが実行される
+  ヒートマップは 2 つの順次クエリとして実行されます。まず値の範囲を解決する小さな **bounds クエリ**、次にバケットごとのイベント数を集計する **heatmap クエリ**です。両方のクエリは、確認またはコピーしたい場合、エディター内の **Generated SQL** から参照できます。
+  :::
+
+  #### イベントデルタへのドリルダウン
+
+  レンダリングされたヒートマップタイルの任意のセルをクリックすると、**イベントデルタで表示 (View in Event Deltas)** アクションが開きます。
+
+  <Image img={heatmap_tile_drilldown} alt="ヒートマップのセルをクリックすると、`View in イベントデルタ` アクションが表示される" size="lg" />
+
+  これを選択すると、タイルのデータソース、`Where` 句、およびタイムレンジを引き継いだ状態で [イベントデルタ](/use-cases/observability/clickstack/event_deltas) ビューが開きます。そこから、同じ分布をインタラクティブに確認したり、属性でスライスして遅いスパンと速いスパンの違いを調べたり、クエリを手動で再構築することなく任意のセルの背後にある個々のスパンを検査したりすることができます。
+
   ### ダッシュボードをフィルタリングする
 
-  Lucene または SQL フィルターと時間範囲は、ダッシュボードレベルで適用でき、すべての可視化に自動的に伝播します。
+  Lucene または SQL フィルターとタイムレンジは、ダッシュボードレベルで適用でき、すべての可視化に自動的に伝播します。
 
   <Image img={dashboard_filter} alt="フィルタリングされたダッシュボード" size="lg" />
 
@@ -253,7 +297,7 @@ HyperDX は、標準のダッシュボード付きでデプロイされます。
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### サービスダッシュボード
+### サービスダッシュボード \{#filter-dashboards\}
 
 サービスダッシュボードは、トレースデータに基づいて現在アクティブなサービスを表示します。これには、トレースが収集されており、有効な Traces データソースが構成されている必要があります。
 

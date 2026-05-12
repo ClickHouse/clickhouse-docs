@@ -52,6 +52,8 @@ import ResourceEstimation from '@site/i18n/ru/docusaurus-plugin-content-docs/cur
 
     <ResourceEstimation />
 
+    Подробнее о том, как скорректировать исходные допущения по размеру под вашу среду, см. в разделе [&quot;Refining sizing assumptions for your environment&quot;](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions).
+
     #### Изоляция нагрузок обсервабилити \{#isolating-workloads\}
 
     Если вы добавляете ClickStack к **существующему сервису ClickHouse Cloud**, который уже обслуживает другие нагрузки, например аналитику приложений в реальном времени, настоятельно рекомендуется изолировать трафик обсервабилити.
@@ -139,11 +141,11 @@ import ResourceEstimation from '@site/i18n/ru/docusaurus-plugin-content-docs/cur
 
     #### Создание пользователя для ингестии \{#create-a-database-ingestion-user-oss\}
 
-    Рекомендуется создать выделенного пользователя для OTel collector для ингестии в ClickHouse и обеспечить, чтобы данные ингестии отправлялись в конкретную базу данных, например `otel`. Подробнее см. [&quot;Создание пользователя для ингестии&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
+    Рекомендуется создать выделенного пользователя для OTel collector для ингестии в ClickHouse и обеспечить, чтобы данные ингестии отправлялись в конкретную базу данных, например `otel`. Подробнее см. [&quot;Creating an ingestion user&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user).
 
     ### ClickHouse \{#clickhouse\}
 
-    Пользователи, управляющие собственным экземпляром ClickHouse, должны придерживаться следующих рекомендаций.
+    Пользователи, управляющие собственным экземпляром ClickHouse, должны придерживаться следующих лучших практик.
 
     #### Рекомендации по обеспечению безопасности \{#self-managed-security\}
 

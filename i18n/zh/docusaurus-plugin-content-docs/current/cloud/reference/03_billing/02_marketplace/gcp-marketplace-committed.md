@@ -43,11 +43,11 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace 优惠摘要" border/>
+<Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace 优惠摘要" border />
 
 <br />
 
-<Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace 价格摘要" border/>
+<Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace 价格摘要" border />
 
 <br />
 
@@ -55,7 +55,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace 接受优惠页面" border/>
+<Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace 接受优惠页面" border />
 
 <br />
 
@@ -63,7 +63,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace 接受确认" border/>
+<Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace 接受确认" border />
 
 <br />
 
@@ -71,7 +71,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace ClickHouse Cloud 页面" border/>
+<Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace ClickHouse Cloud 页面" border />
 
 <br />
 
@@ -79,15 +79,15 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace 离开网站确认弹窗" border/>
+<Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace 离开网站确认弹窗" border />
 
 <br />
 
-6. 当您被重定向到 ClickHouse Cloud 后，可以使用已有账户登录，或者注册一个新账户。 
+6. 当您被重定向到 ClickHouse Cloud 后，可以使用已有账户登录，或者注册一个新账户。
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud 登录页面" border/>
+<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud 登录页面" border />
 
 <br />
 
@@ -95,7 +95,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud 注册页面" border/>
+<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud 注册页面" border />
 
 <br />
 
@@ -103,11 +103,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud 注册信息表单 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -119,11 +115,11 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud 登录页面" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud 登录页面" border />
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新服务页面" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新服务页面" border />
 
 <br />
 
@@ -133,7 +129,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 确认邮件" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 确认邮件" border />
 
 <br />
 

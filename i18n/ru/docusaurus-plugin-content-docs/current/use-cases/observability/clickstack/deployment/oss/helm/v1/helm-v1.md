@@ -346,34 +346,6 @@ kubectl get pods -l app.kubernetes.io/name=clickstack
 
 <JSONSupport />
 
-Вы можете задать эти переменные окружения либо через параметры, либо через `values.yaml`, например:
-
-*values.yaml*
-
-```yaml
-hyperdx:
-  ...
-  env:
-    - name: BETA_CH_OTEL_JSON_SCHEMA_ENABLED
-      value: "true"
-
-otel:
-  ...
-  env:
-    - name: OTEL_AGENT_FEATURE_GATE_ARG
-      value: "--feature-gates=clickhouse.json"
-```
-
-или с помощью `--set`:
-
-```shell
-helm install my-clickstack clickstack/clickstack \
-  --set "hyperdx.env[0].name=BETA_CH_OTEL_JSON_SCHEMA_ENABLED" \
-  --set "hyperdx.env[0].value=true" \
-  --set "otel.env[0].name=OTEL_AGENT_FEATURE_GATE_ARG" \
-  --set "otel.env[0].value=--feature-gates=clickhouse.json"
-```
-
 ## Сопутствующая документация \{#related-documentation\}
 
 ### Руководства по развертыванию v1.x \{#deployment-guides\}

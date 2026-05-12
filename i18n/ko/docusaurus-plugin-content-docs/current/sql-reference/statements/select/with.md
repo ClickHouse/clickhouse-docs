@@ -526,3 +526,15 @@ SELECT sum(number) FROM (SELECT number FROM test_table LIMIT 100);
 │        5050 │
 └─────────────┘
 ```
+
+
+## 후행 쉼표 \{#trailing-comma\}
+
+`WITH` 절의 마지막 요소 뒤에도 쉼표를 사용할 수 있습니다:
+
+```sql
+WITH
+    (SELECT sum(number) FROM numbers(10)) AS total,
+    total * 2 AS doubled,
+SELECT total, doubled;
+```

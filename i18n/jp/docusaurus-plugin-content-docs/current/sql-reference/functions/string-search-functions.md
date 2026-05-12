@@ -396,7 +396,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 導入バージョン: v20.5.0
 
-正規表現にマッチした、重なりのない部分文字列に含まれるすべてのグループを抽出します。
+正規表現にマッチした最初の部分文字列からキャプチャグループを抽出します。すべてのマッチからグループを抽出するには、[`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) または [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical) を使用します。
 
 **構文**
 
@@ -407,11 +407,11 @@ extractGroups(s, regexp)
 **引数**
 
 * `s` — 抽出対象の入力文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — 正規表現の定数。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 正規表現。少なくとも 1 つのキャプチャグループを含む必要があります。定数。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
 
 **戻り値**
 
-関数が少なくとも 1 つのマッチするグループを見つけた場合、`group_id` (`1` から `N`。ここで `N` は regexp 内のキャプチャグループの数) ごとにまとめられた Array(Array(String)) カラムを返します。一致するグループがない場合は、空の配列を返します。[`Array(Array(String))`](/sql-reference/data-types/array)
+正規表現にマッチした場合、最初のマッチのキャプチャグループ (`1` から `N`。ここで `N` は `regexp` 内のキャプチャグループの数) を含む配列を返します。マッチしない場合は、空の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
 **例**
 
@@ -427,7 +427,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
-[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+['Server','nginx']
 ```
 
 ## hasAllTokens \{#hasAllTokens\}
@@ -732,6 +732,64 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 ┌─count()─┐
 │       2 │
 └─────────┘
+```
+
+## hasPhrase \{#hasPhrase\}
+
+導入バージョン: v26.4.0
+
+haystack に、phrase 内のすべてのトークンが連続した順序で含まれているかを確認します。
+
+検索の前に、この関数は省略可能な第3引数として指定されたトークナイザーを使用して、`input` 引数と `phrase` 引数の両方をトークン化します。
+`tokenizer` 引数には、`splitByNonAlpha`、`splitByString`、`ngrams`、`asciiCJK` のいずれかを指定する必要があります。
+トークナイザーが指定されていない場合は、デフォルトで `splitByNonAlpha` トークナイザーが使用されます。
+
+[`hasToken`](#hasToken)、[`hasAnyTokens`](#hasAnyTokens)、[`hasAllTokens`](#hasAllTokens) とは異なり、`hasPhrase` ではトークンが同じ順序で現れ、
+その間に別のトークンが挟まらないことが必要です。たとえば、`hasPhrase('the quick brown fox', 'quick fox')` は 0 を返します。
+これは、&quot;quick&quot; と &quot;fox&quot; の間に &quot;brown&quot; があるためです。
+
+**構文**
+
+```sql
+hasPhrase(input, phrase[, tokenizer])
+```
+
+**別名**: `matchPhrase`
+
+**引数**
+
+* `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
+* `phrase` — 検索対象のフレーズ。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 使用するトークナイザー。省略可能です。デフォルトは `splitByNonAlpha` です。[`const String`](/sql-reference/data-types/string)
+
+**戻り値**
+
+フレーズが連続したトークン列として見つかった場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**フレーズの一致**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick brown')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick brown')─┐
+│                                                      1 │
+└────────────────────────────────────────────────────────┘
+```
+
+**非連続なトークン**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick fox')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick fox')─┐
+│                                                    0 │
+└──────────────────────────────────────────────────────┘
 ```
 
 ## hasSubsequence \{#hasSubsequence\}

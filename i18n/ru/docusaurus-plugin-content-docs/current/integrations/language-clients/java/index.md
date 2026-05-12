@@ -12,8 +12,6 @@ integration:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-
 
 # Обзор Java‑клиентов \{#java-clients-overview\}
 
@@ -29,68 +27,72 @@ Java client был разработан ещё в 2015 году. Его кодо
 
 ### Поддерживаемые типы данных \{#supported-data-types\}
 
-|**Тип данных**         |**Поддержка в Client V2**|**Поддержка в Client V1**|
-|-----------------------|-------------------------|-------------------------|
-|Int8                   |✔                        |✔                        |
-|Int16                  |✔                        |✔                        |
-|Int32                  |✔                        |✔                        |
-|Int64                  |✔                        |✔                        |
-|Int128                 |✔                        |✔                        |
-|Int256                 |✔                        |✔                        |
-|UInt8                  |✔                        |✔                        |
-|UInt16                 |✔                        |✔                        |
-|UInt32                 |✔                        |✔                        |
-|UInt64                 |✔                        |✔                        |
-|UInt128                |✔                        |✔                        |
-|UInt256                |✔                        |✔                        |
-|Float32                |✔                        |✔                        |
-|Float64                |✔                        |✔                        |
-|Decimal                |✔                        |✔                        |
-|Decimal32              |✔                        |✔                        |
-|Decimal64              |✔                        |✔                        |
-|Decimal128             |✔                        |✔                        |
-|Decimal256             |✔                        |✔                        |
-|Bool                   |✔                        |✔                        |
-|String                 |✔                        |✔                        |
-|FixedString            |✔                        |✔                        |
-|Nullable               |✔                        |✔                        |
-|Date                   |✔                        |✔                        |
-|Date32                 |✔                        |✔                        |
-|DateTime               |✔                        |✔                        |
-|DateTime32             |✔                        |✔                        |
-|DateTime64             |✔                        |✔                        |
-|Interval               |✗                        |✗                        |
-|Enum                   |✔                        |✔                        |
-|Enum8                  |✔                        |✔                        |
-|Enum16                 |✔                        |✔                        |
-|Array                  |✔                        |✔                        |
-|Map                    |✔                        |✔                        |
-|Nested                 |✔                        |✔                        |
-|Tuple                  |✔                        |✔                        |
-|UUID                   |✔                        |✔                        |
-|IPv4                   |✔                        |✔                        |
-|IPv6                   |✔                        |✔                        |
-|Object                 |✗                        |✔                        |
-|Point                  |✔                        |✔                        |
-|Nothing                |✔                        |✔                        |
-|MultiPolygon           |✔                        |✔                        |
-|Ring                   |✔                        |✔                        |
-|Polygon                |✔                        |✔                        |
-|SimpleAggregateFunction|✔                        |✔                        |
-|AggregateFunction      |✗                        |✔                        |
-|Variant                |✔                        |✗                        |
-|Dynamic                |✔                        |✗                        |
-|JSON                   |✔                        |✗                        |
+| **Тип данных**          | **Поддержка в Client V2** | **Поддержка в Client V1** |
+| ----------------------- | ------------------------- | ------------------------- |
+| Int8                    | ✔                         | ✔                         |
+| Int16                   | ✔                         | ✔                         |
+| Int32                   | ✔                         | ✔                         |
+| Int64                   | ✔                         | ✔                         |
+| Int128                  | ✔                         | ✔                         |
+| Int256                  | ✔                         | ✔                         |
+| UInt8                   | ✔                         | ✔                         |
+| UInt16                  | ✔                         | ✔                         |
+| UInt32                  | ✔                         | ✔                         |
+| UInt64                  | ✔                         | ✔                         |
+| UInt128                 | ✔                         | ✔                         |
+| UInt256                 | ✔                         | ✔                         |
+| Float32                 | ✔                         | ✔                         |
+| Float64                 | ✔                         | ✔                         |
+| Decimal                 | ✔                         | ✔                         |
+| Decimal32               | ✔                         | ✔                         |
+| Decimal64               | ✔                         | ✔                         |
+| Decimal128              | ✔                         | ✔                         |
+| Decimal256              | ✔                         | ✔                         |
+| Bool                    | ✔                         | ✔                         |
+| String                  | ✔                         | ✔                         |
+| FixedString             | ✔                         | ✔                         |
+| Nullable                | ✔                         | ✔                         |
+| Date                    | ✔                         | ✔                         |
+| Date32                  | ✔                         | ✔                         |
+| DateTime                | ✔                         | ✔                         |
+| DateTime32              | ✔                         | ✔                         |
+| DateTime64              | ✔                         | ✔                         |
+| Interval                | ✗                         | ✗                         |
+| Enum                    | ✔                         | ✔                         |
+| Enum8                   | ✔                         | ✔                         |
+| Enum16                  | ✔                         | ✔                         |
+| Array                   | ✔                         | ✔                         |
+| Map                     | ✔                         | ✔                         |
+| Nested                  | ✔                         | ✔                         |
+| Tuple                   | ✔                         | ✔                         |
+| UUID                    | ✔                         | ✔                         |
+| IPv4                    | ✔                         | ✔                         |
+| IPv6                    | ✔                         | ✔                         |
+| Object                  | ✗                         | ✔                         |
+| Point                   | ✔                         | ✔                         |
+| Nothing                 | ✔                         | ✔                         |
+| MultiPolygon            | ✔                         | ✔                         |
+| Ring                    | ✔                         | ✔                         |
+| Polygon                 | ✔                         | ✔                         |
+| SimpleAggregateFunction | ✔                         | ✔                         |
+| AggregateFunction*      | ✔                         | ✔                         |
+| Variant                 | ✔                         | ✗                         |
+| Dynamic                 | ✔                         | ✗                         |
+| JSON                    | ✔                         | ✗                         |
 
 [Типы данных ClickHouse](/sql-reference/data-types)
 
-:::note
+:::note[Частичная поддержка]
 
-- AggregatedFunction — :warning: не поддерживает `SELECT * FROM table ...`
-- Decimal — `SET output_format_decimal_trailing_zeros=1` в версии 21.9+ для согласованности
-- Enum — может рассматриваться и как строка, и как целое число
-- UInt64 — отображается в тип `long` в client-v1
-:::
+* **AggregateFunction** — Для прямого чтения бинарных данных поддерживается только `groupBitmap`. Для других агрегатных функций (`min`, `max`, `avg` и т. д.) используйте комбинаторы `-Merge` в вашем запросе (например, `minMerge()`, `avgMerge()`), чтобы обработать состояние на стороне сервера. `SELECT * FROM table ...` не поддерживается для столбцов типа `AggregateFunction`.
+  :::
+
+:::note[Примечания по типам данных]
+
+* **Decimal** — `SET output_format_decimal_trailing_zeros=1` в версии 21.9+ для согласованности
+* **Enum** — может рассматриваться и как строка, и как целое число
+* **UInt64** — отображается в тип `long` в client-v1
+  :::
 
 ### Возможности \{#features\}
 

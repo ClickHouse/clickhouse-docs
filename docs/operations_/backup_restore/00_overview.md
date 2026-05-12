@@ -55,7 +55,8 @@ restore methods available in ClickHouse:
 | [Backup/restore using local disk or S3 disk](./01_local_disk.md)    | Details backup/restore to or from a local disk or S3 disk |
 | [Backup/restore using S3 endpoint](./02_s3_endpoint.md)             | Details backup/restore to or from an S3 endpoint          |
 | [Backup/restore using AzureBlobStorage](./03_azure_blob_storage.md) | Details backup/restore to or from Azure blob storage      |
-| [Alternative methods](./04_alternative_methods.md)                  | Discusses alternative backup methods                      |        
+| [Alternative methods](./04_alternative_methods.md)                  | Discusses alternative backup methods                      |
+| [Snapshot backup](./05_snapshot.md)                                  | Lightweight snapshots for SharedMergeTree tables using cloud object storage |
 
 Backups can:
 - be [full or incremental](#backup-types)
@@ -176,7 +177,6 @@ Each of the commands above is detailed below:
 |------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `BACKUP`                                                               | Creates a backup of specified objects                                                                                                                |
 | `RESTORE`                                                              | Restores objects from a backup                                                                                                                       |
-| `[ASYNC]`                                                              | Makes the operation run asynchronously (returns immediately with an ID you can monitor)                                                              |
 | `TABLE [db.]table_name [AS [db.]table_name_in_backup]`                 | Backs up/restores a specific table (can be renamed)                                                                                                  |
 | `[PARTITION[S] partition_expr [,...]]`                                 | Only backup/restore specific partitions of the table                                                                                                 |
 | `DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup]`             | Backs up/restores a dictionary object                                                                                                                |
@@ -192,6 +192,7 @@ Each of the commands above is detailed below:
 | `Disk('<disk_name>', '<path>/')`                                       | Store to/restore from a configured disk                                                                                                              |
 | `S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>')` | Store to/restore from Amazon S3 or S3-compatible storage                                                                                             |
 | `[SETTINGS ...]`                                                       | See below for complete list of settings                                                                                                              |                                                                                                                         |
+| `[ASYNC]`                                                              | Makes the operation run asynchronously (returns immediately with an ID you can monitor)                                                              |
 
 ### Settings {#settings}
 

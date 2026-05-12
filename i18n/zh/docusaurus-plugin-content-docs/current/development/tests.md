@@ -196,32 +196,32 @@ SELECT 1
 
 可用标签列表：
 
-| Tag name                       | 功能说明                                       | 使用示例                                    |
-| ------------------------------ | ------------------------------------------ | --------------------------------------- |
-| `disabled`                     | 不运行该测试                                     |                                         |
-| `long`                         | 将测试的执行时间从 1 分钟延长到 10 分钟                    |                                         |
-| `deadlock`                     | 将测试长时间循环运行                                 |                                         |
-| `race`                         | 与 `deadlock` 相同。优先使用 `deadlock`            |                                         |
-| `shard`                        | 要求服务器监听 `127.0.0.*`                        |                                         |
-| `distributed`                  | 与 `shard` 相同。优先使用 `shard`                  |                                         |
-| `global`                       | 与 `shard` 相同。优先使用 `shard`                  |                                         |
-| `zookeeper`                    | 测试需要 Zookeeper 或 ClickHouse Keeper 才能运行    | 测试使用 `ReplicatedMergeTree`              |
-| `replica`                      | 与 `zookeeper` 相同。优先使用 `zookeeper`          |                                         |
-| `no-fasttest`                  | 在 [Fast test](#test-types) 中不运行该测试         | 测试使用在 Fast test 中被禁用的 `MySQL` 表引擎       |
-| `fasttest-only`                | 仅在 [Fast test](#test-types) 中运行该测试         |                                         |
-| `no-[asan, tsan, msan, ubsan]` | 在带有 [sanitizers](#sanitizers) 的构建中禁用该测试    | 测试在 QEMU 下运行，而 QEMU 无法与 sanitizers 配合使用 |
-| `no-replicated-database`       | 当默认数据库使用 `ReplicatedDatabaseEngine` 时禁用该测试 |                                         |
-| `no-ordinary-database`         | 当默认数据库引擎为 `Ordinary` 时禁用该测试                |                                         |
-| `no-parallel`                  | 禁止与其他测试并行运行                                | 测试从 `system` 表读取数据，可能破坏不变式              |
-| `no-parallel-replicas`         | 当启用并行副本时禁用该测试                              |                                         |
-| `no-debug`                     | 在 Debug 构建中禁用该测试                           |                                         |
-| `no-release`                   | 在 Release 构建中禁用该测试                         |                                         |
+| Tag name                       | 功能说明                                       | 使用示例                                        |
+| ------------------------------ | ------------------------------------------ | ------------------------------------------- |
+| `disabled`                     | 不运行该测试                                     |                                             |
+| `long`                         | 将测试的执行时间从 1 分钟延长到 10 分钟                    |                                             |
+| `deadlock`                     | 将测试长时间循环运行                                 |                                             |
+| `race`                         | 与 `deadlock` 相同。优先使用 `deadlock`            |                                             |
+| `shard`                        | 要求服务器监听 `127.0.0.*`                        |                                             |
+| `distributed`                  | 与 `shard` 相同。优先使用 `shard`                  |                                             |
+| `global`                       | 与 `shard` 相同。优先使用 `shard`                  |                                             |
+| `zookeeper`                    | 测试需要 Zookeeper 或 ClickHouse Keeper 才能运行    | 测试使用 `ReplicatedMergeTree`                  |
+| `replica`                      | 与 `zookeeper` 相同。优先使用 `zookeeper`          |                                             |
+| `no-fasttest`                  | 在 [快速测试](#test-types) 中不运行该测试         | 测试使用在 快速测试 中被禁用的 `MySQL` 表引擎           |
+| `fasttest-only`                | 仅在 [快速测试](#test-types) 中运行该测试         |                                             |
+| `no-[asan, tsan, msan, ubsan]` | 在带有 [sanitizers](#sanitizers) 的构建中禁用该测试    | 测试在 QEMU 下运行，而 QEMU 无法与 sanitizers 配合使用     |
+| `no-replicated-database`       | 当默认数据库使用 `ReplicatedDatabaseEngine` 时禁用该测试 |                                             |
+| `no-ordinary-database`         | 当默认数据库引擎为 `Ordinary` 时禁用该测试                |                                             |
+| `no-parallel`                  | 禁止与其他测试并行运行                                | 测试从 `system` 表读取数据，可能破坏不变式                  |
+| `no-parallel-replicas`         | 当启用并行副本时禁用该测试                              |                                             |
+| `no-debug`                     | 在 Debug 构建中禁用该测试                           |                                             |
+| `no-release`                   | 在 Release 构建中禁用该测试                         |                                             |
+| `no-darwin`                    | 在 macOS (Darwin) 上禁用该测试                    | 测试依赖 Linux 特有功能，例如分布式查询、`procfs` 或 HTTP 服务器 |
 
 还支持以下选项：`no-stress`、`no-polymorphic-parts`、`no-random-settings`、`no-random-merge-tree-settings`、`no-backward-compatibility-check`、`no-cpu-x86_64`、`no-cpu-aarch64`、`no-cpu-ppc64le`、`no-s3-storage`。
 
 除上述设置外，你还可以使用 `system.build_options` 中的 `USE_*` 标志来定义是否使用特定的 ClickHouse 特性。
 例如，如果你的测试使用了 MySQL 表，则应添加标签 `use-mysql`。
-
 
 ### 为随机化的 settings 指定限制 \{#specifying-limits-for-random-settings\}
 

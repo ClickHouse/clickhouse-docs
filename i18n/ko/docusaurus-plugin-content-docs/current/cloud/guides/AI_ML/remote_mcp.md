@@ -11,16 +11,9 @@ sidebar_position: 1
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import img1 from '@site/static/images/use-cases/AI_ML/MCP/1connectmcpmodal.png';
 import img2 from '@site/static/images/use-cases/AI_ML/MCP/2enable_mcp.png';
-import img3 from '@site/static/images/use-cases/AI_ML/MCP/3oauth.png';
-import img4 from '@site/static/images/use-cases/AI_ML/MCP/4oauth_success.png';
-import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.png';
-import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
-import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 이 가이드에서는 ClickHouse Cloud 원격 MCP 서버를 활성화하고, 일반적인 개발자 도구에서 사용할 수 있도록 설정하는 방법을 설명합니다.
 
@@ -28,7 +21,6 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 * 실행 중인 [ClickHouse Cloud 서비스](/getting-started/quick-start/cloud)
 * 사용 중인 IDE 또는 에이전트 기반 개발 도구
-
 
 ## Cloud용 원격 MCP 서버 활성화 \{#enable-remote-mcp-server\}
 

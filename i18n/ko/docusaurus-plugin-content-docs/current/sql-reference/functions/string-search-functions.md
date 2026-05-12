@@ -396,9 +396,9 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 ## extractGroups \{#extractGroups\}
 
-도입: v20.5.0
+도입 버전: v20.5.0
 
-정규 표현식과 일치하는 서로 겹치지 않는 부분 문자열들에서 모든 그룹을 추출합니다.
+정규 표현식과 처음으로 일치하는 부분 문자열에서 캡처 그룹을 추출합니다. 모든 일치 항목에서 그룹을 추출하려면 [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) 또는 [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical)을 사용하십시오.
 
 **구문**
 
@@ -406,14 +406,14 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 extractGroups(s, regexp)
 ```
 
-**인자**
+**인수**
 
 * `s` — 추출할 입력 문자열입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — 정규식 상수입니다. [`const String`](/sql-reference/data-types/string) 또는 [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 정규 표현식입니다. 하나 이상의 캡처 그룹을 포함해야 합니다. 상수입니다. [`const String`](/sql-reference/data-types/string) 또는 [`const FixedString`](/sql-reference/data-types/fixedstring)
 
 **반환 값**
 
-함수가 하나 이상의 일치하는 그룹을 찾으면, group&#95;id(`1`에서 `N`까지, 여기서 `N`은 regexp에서 캡처링 그룹의 수)를 기준으로 클러스터링된 Array(Array(String)) 컬럼을 반환합니다. 일치하는 그룹이 없으면 빈 배열을 반환합니다. [`Array(Array(String))`](/sql-reference/data-types/array)
+정규 표현식이 일치하면, 첫 번째 일치 항목의 캡처 그룹(`1`에서 `N`까지, 여기서 `N`은 `regexp`의 캡처 그룹 수)을 포함하는 배열을 반환합니다. 일치하는 항목이 없으면 빈 배열을 반환합니다. [`Array(String)`](/sql-reference/data-types/array)
 
 **예시**
 
@@ -429,7 +429,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
-[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+['Server','nginx']
 ```
 
 ## hasAllTokens \{#hasAllTokens\}
@@ -734,6 +734,64 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 ┌─count()─┐
 │       2 │
 └─────────┘
+```
+
+## hasPhrase \{#hasPhrase\}
+
+도입 버전: v26.4.0
+
+haystack에 phrase의 모든 토큰이 연속된 순서로 포함되어 있는지 확인합니다.
+
+검색에 앞서 함수는 선택적 세 번째 인수로 지정한 토크나이저를 사용해 `input` 인수와 `phrase` 인수를 모두 토큰화합니다.
+토크나이저 인수는 `splitByNonAlpha`, `splitByString`, `ngrams`, `asciiCJK` 중 하나여야 합니다.
+토크나이저를 지정하지 않으면 기본적으로 `splitByNonAlpha` 토크나이저를 사용합니다.
+
+[`hasToken`](#hasToken), [`hasAnyTokens`](#hasAnyTokens), [`hasAllTokens`](#hasAllTokens)과 달리 `hasPhrase`는 토큰이 동일한 순서로 나타나야 하며
+그 사이에 다른 토큰이 끼어들어서는 안 됩니다. 예를 들어 `hasPhrase('the quick brown fox', 'quick fox')`는 0을 반환합니다.
+이는 &quot;quick&quot;과 &quot;fox&quot; 사이에 &quot;brown&quot;이 있기 때문입니다.
+
+**구문**
+
+```sql
+hasPhrase(input, phrase[, tokenizer])
+```
+
+**별칭**: `matchPhrase`
+
+**인수**
+
+* `input` — 입력 컬럼입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `phrase` — 검색할 구문입니다. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 사용할 토크나이저입니다. 선택 사항이며, 기본값은 `splitByNonAlpha`입니다. [`const String`](/sql-reference/data-types/string)
+
+**반환값**
+
+구문이 연속된 토큰 시퀀스로 발견되면 `1`을 반환하며, 그렇지 않으면 `0`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**구문 일치**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick brown')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick brown')─┐
+│                                                      1 │
+└────────────────────────────────────────────────────────┘
+```
+
+**비연속 토큰**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick fox')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick fox')─┐
+│                                                    0 │
+└──────────────────────────────────────────────────────┘
 ```
 
 ## hasSubsequence \{#hasSubsequence\}

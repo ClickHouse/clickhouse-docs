@@ -1037,7 +1037,7 @@ try (PreparedStatement ps = conn.prepareStatement("select date_time from mytable
 ## Handling `AggregateFunction` {#handling-aggregatefunction}
 
 :::note
-As of now, only `groupBitmap` is supported.
+Direct binary reading of `AggregateFunction` state is only supported for `groupBitmap`. For other aggregate functions (`min`, `max`, `avg`, etc.), use `-Merge` combinators in your query (e.g., `SELECT minMerge(min_state) FROM ...`) to resolve the aggregate state server-side and return a plain value.
 :::
 
 ```java showLineNumbers

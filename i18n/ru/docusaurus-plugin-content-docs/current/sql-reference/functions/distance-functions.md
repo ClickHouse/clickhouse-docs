@@ -19,7 +19,7 @@ doc_type: 'reference'
 
 ## L1Distance \{#L1Distance\}
 
-Введена в версии: v21.11.0
+Добавлена в версии: v21.11.0
 
 Вычисляет расстояние между двумя точками (элементы векторов являются координатами) в пространстве `L1` (1-норма, расстояние в [таксомоторной геометрии](https://en.wikipedia.org/wiki/Taxicab_geometry)).
 
@@ -38,7 +38,7 @@ L1Distance(vector1, vector2)
 
 **Возвращаемое значение**
 
-Возвращает расстояние в 1-норме. [`UInt32`](/sql-reference/data-types/int-uint) или [`Float64`](/sql-reference/data-types/float)
+Возвращает расстояние в 1-норме. Для входных данных `Array` возвращает `Float32`, если наименьший общий супертип типов элементов — `Float32` или `BFloat16`, в противном случае — `Float64`. Для входных данных `Tuple` тип возвращаемого значения соответствует арифметическому типу результата поэлементных операций (целочисленные типы сохраняются). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
 **Примеры**
 
@@ -128,9 +128,9 @@ SELECT L1Normalize((1, 2))
 
 ## L2Distance \{#L2Distance\}
 
-Появилась в версии: v21.11.0
+Добавлена в версии: v21.11.0
 
-Вычисляет расстояние между двумя точками (элементы векторов являются координатами) в евклидовом пространстве ([Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)).
+Вычисляет расстояние между двумя точками (элементы векторов являются координатами) в евклидовом пространстве ([евклидово расстояние](https://en.wikipedia.org/wiki/Euclidean_distance)).
 
 **Синтаксис**
 
@@ -147,7 +147,7 @@ L2Distance(vector1, vector2)
 
 **Возвращаемое значение**
 
-Возвращает расстояние во 2-норме. [`Float64`](/sql-reference/data-types/float)
+Возвращает расстояние во 2-норме. Для входных данных `Array` возвращает `Float32`, если наименьший общий супертип типов элементов — `Float32` или `BFloat16`, в противном случае — `Float64`. Для входных данных `Tuple` всегда возвращает `Float64`. [`Float*`](/sql-reference/data-types/float)
 
 **Примеры**
 
@@ -185,7 +185,7 @@ L2DistanceTransposed(vector1, vector2, p)
 
 **Возвращаемое значение**
 
-Возвращает приближённое расстояние по 2-норме. [`Float64`](/sql-reference/data-types/float)
+Возвращает приближённое расстояние по 2-норме. Всегда возвращает `Float64`. [`Float64`](/sql-reference/data-types/float)
 
 **Примеры**
 
@@ -277,7 +277,7 @@ SELECT L2Normalize((3, 4))
 
 ## L2SquaredDistance \{#L2SquaredDistance\}
 
-Введена в версии: v22.7.0
+Добавлена в версии: v22.7.0
 
 Вычисляет сумму квадратов разностей между соответствующими элементами двух векторов.
 
@@ -296,7 +296,7 @@ L2SquaredDistance(vector1, vector2)
 
 **Возвращаемое значение**
 
-Возвращает сумму квадратов разностей соответствующих элементов двух векторов. [`Float64`](/sql-reference/data-types/float)
+Возвращает сумму квадратов разностей соответствующих элементов двух векторов. Для входных данных `Array` возвращает `Float32`, если наименьший общий супертип типов элементов — `Float32` или `BFloat16`, в противном случае — `Float64`. Для входных данных `Tuple` тип возвращаемого значения определяется арифметическим типом результата поэлементных операций (целочисленные типы сохраняются). [`(U)Int*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
 **Примеры**
 
@@ -350,7 +350,7 @@ SELECT L2SquaredNorm((1, 2))
 
 ## LinfDistance \{#LinfDistance\}
 
-Появилась в версии: v21.11.0
+Добавлена в версии: v21.11.0
 
 Вычисляет расстояние между двумя точками (элементы векторов являются их координатами) в пространстве `L_{inf}` ([максимальная норма](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#Maximum_norm_\(special_case_of:_infinity_norm,_uniform_norm,_or_supremum_norm\))).
 
@@ -369,7 +369,7 @@ LinfDistance(vector1, vector2)
 
 **Возвращаемое значение**
 
-Возвращает расстояние по норме бесконечности. [`Float64`](/sql-reference/data-types/float)
+Возвращает расстояние по норме бесконечности. Для входных данных `Array` возвращает `Float32`, если наименьший общий супертип типов элементов — `Float32` или `BFloat16`, в противном случае — `Float64`. Для входных данных `Tuple` всегда возвращает `Float64`. [`Float*`](/sql-reference/data-types/float)
 
 **Примеры**
 
@@ -459,7 +459,7 @@ SELECT LinfNormalize((3, 4))
 
 ## LpDistance \{#LpDistance\}
 
-Введена в версии: v21.11.0
+Добавлена в версии: v21.11.0
 
 Вычисляет расстояние между двумя точками (элементы векторов интерпретируются как координаты) в пространстве `Lp` ([расстояние в p-норме](https://en.wikipedia.org/wiki/Norm_\(mathematics\)#p-norm)).
 
@@ -474,12 +474,12 @@ LpDistance(vector1, vector2, p)
 **Аргументы**
 
 * `vector1` — первый вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
-* `vector2` — второй вектор. [`Tuple(T)`](/sql-reference/data-types/tuple) или [`Array(T)`](/sql-reference/data-types/array)
+* `vector2` — второй вектор. [`Tuple(T)`](/sql-reference/data-types/array) или [`Array(T)`](/sql-reference/data-types/array)
 * `p` — степень. Возможные значения: вещественное число в диапазоне `[1; inf)`. [`UInt*`](/sql-reference/data-types/int-uint) или [`Float*`](/sql-reference/data-types/float)
 
 **Возвращаемое значение**
 
-Возвращает расстояние в p-норме. [`Float64`](/sql-reference/data-types/float)
+Возвращает расстояние в p-норме. Для входных данных типа `Array` возвращает `Float32`, если наименьший общий супертип типов элементов — `Float32` или `BFloat16`, в противном случае — `Float64`. Для входных данных типа `Tuple` всегда возвращает `Float64`. [`Float*`](/sql-reference/data-types/float)
 
 **Примеры**
 
@@ -596,7 +596,7 @@ cosineDistance(vector1, vector2)
 
 **Возвращаемое значение**
 
-Возвращает единицу минус косинус угла между двумя векторами. [`Float64`](/sql-reference/data-types/float)
+Возвращает косинусное расстояние (единица минус косинусное сходство). Для входных данных типа `Array` возвращает `Float32`, если наименьший общий супертип типов элементов — `Float32` или `BFloat16`, в противном случае — `Float64`. Для входных данных типа `Tuple` всегда возвращает `Float64`. [`Float*`](/sql-reference/data-types/float)
 
 **Примеры**
 
@@ -614,7 +614,7 @@ SELECT cosineDistance((1, 2), (2, 3));
 
 ## cosineDistanceTransposed \{#cosineDistanceTransposed\}
 
-Введена в: v26.1.0
+Добавлена в: v26.1.0
 
 Вычисляет приближённое [косинусное расстояние](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance) между двумя точками (значения векторов являются координатами). Чем меньше возвращаемое значение, тем больше сходство между векторами.
 
@@ -634,7 +634,7 @@ cosineDistanceTransposed(vector1, vector2, p)
 
 **Возвращаемое значение**
 
-Возвращает величину 1 минус приближённый косинус угла между двумя векторами. [`Float64`](/sql-reference/data-types/float)
+Возвращает приближённое косинусное расстояние (единица минус косинусное сходство). Всегда возвращает Float64. [`Float64`](/sql-reference/data-types/float)
 
 **Примеры**
 

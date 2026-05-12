@@ -18,12 +18,11 @@ doc_type: 'guide'
 ### 압축된 hits TSV 파일 다운로드하기 \{#download-the-hits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | unxz --threads=`nproc` > hits_v1.tsv
+curl -L https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | xz -d > hits_v1.tsv
 # Validate the checksum
 md5sum hits_v1.tsv
 # Checksum should be equal to: f3631b6295bf06989c1437491f7592cb
 ```
-
 
 ### 데이터베이스 및 테이블 생성 \{#create-the-database-and-table\}
 
@@ -65,12 +64,11 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 ### visits 데이터 압축 TSV 파일 다운로드 \{#download-the-visits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
+curl -L https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | xz -d > visits_v1.tsv
 # Validate the checksum
 md5sum visits_v1.tsv
 # Checksum should be equal to: 6dafe1a0f24e59e3fc2d0fed85601de6
 ```
-
 
 ### visits 테이블 생성하기 \{#create-the-visits-table\}
 

@@ -33,22 +33,24 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - sa-east-1 (South America)
 - ap-southeast-3 (Jakarta)
 - ap-east-1 (Hong Kong)
+- mx-central-1 (Mexico)
  
 ## Google Cloud regions {#google-cloud-regions}
 
 - asia-southeast1 (Singapore)
 - asia-northeast1 (Tokyo)
+- europe-west2 (London)
 - europe-west4 (Netherlands)
 - us-central1 (Iowa)
 - us-east1 (South Carolina)
 
 **Private Region:**
 
-- us-west1 (Oregon)
 - australia-southeast1(Sydney)
 - europe-west3 (Frankfurt)
 - europe-west6 (Zurich)
 - northamerica-northeast1 (Montréal)
+- us-west1 (Oregon)
 
 ## Azure regions {#azure-regions}
 
@@ -60,6 +62,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 - Japan East (Tokyo, Saitama)
 - UAE North (Dubai)
+- Australia East (New South Wales)
 
 :::note 
 Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 

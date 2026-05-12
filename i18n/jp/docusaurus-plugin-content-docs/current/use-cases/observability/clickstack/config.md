@@ -249,7 +249,7 @@ ClickHouse Cloud で HyperDX が管理されている場合、これらの設定
 :::
 
 * `HYPERDX_API_KEY`
-  * **デフォルト:** なし（必須）
+  * **デフォルト:** なし (必須)
   * **説明:** HyperDX API の認証キー。
   * **ガイダンス:**
   * テレメトリおよびログ収集に必須
@@ -259,7 +259,7 @@ ClickHouse Cloud で HyperDX が管理されている場合、これらの設定
 
 * `HYPERDX_LOG_LEVEL`
   * **デフォルト:** `info`
-  * **説明:** ログ出力レベル（詳細度）を設定します。
+  * **説明:** ログ出力レベル (詳細度) を設定します。
   * **オプション:** `debug`, `info`, `warn`, `error`
   * **ガイダンス:**
   * 詳細なトラブルシューティングには `debug` を使用します。
@@ -375,66 +375,68 @@ ClickHouse Cloud で HyperDX が管理されている場合、これらの設定
   * **デフォルト:** `false`
   * **説明:** HyperDX における JSON 型のベータ版サポートを有効にします。OTel collector で JSON サポートを有効にするには、[`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) も参照してください。
   * **ガイダンス:**
-  * ClickStack で JSON サポートを有効にするには、`true` に設定します。
+    * **ベータ機能**を有効にします。JSON 型の schema は、一般的なオブザーバビリティ workloads には**推奨されません**。比較と、それぞれが適しているケースについては、[Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json) を参照してください。
+    * ClickStack UI で JSON サポートを有効にするには、`true` に設定します。
 
 ## OpenTelemetry collector \{#otel-collector\}
 
-詳しくは ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/ingesting-data/otel-collector) を参照してください。
+詳しくは [&quot;ClickStack OpenTelemetry Collector&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector) を参照してください。
 
-- `CLICKHOUSE_ENDPOINT`
-  - **デフォルト:** スタンドアロンイメージの場合は *なし（必須）*。All-in-one または Docker Compose ディストリビューションの場合は、統合された ClickHouse インスタンスに設定されます。
-  - **説明:** テレメトリデータをエクスポートする ClickHouse インスタンスの HTTPS URL。
-  - **ガイダンス:**
-    - ポートを含む完全な HTTPS エンドポイントである必要があります（例: `https://clickhouse.example.com:8443`）
-    - コレクターが ClickHouse にデータを送信するために必須です
+* `CLICKHOUSE_ENDPOINT`
+  * **デフォルト:** スタンドアロンイメージの場合は *なし (必須)&#x20;*。All-in-one または Docker Compose ディストリビューションの場合は、統合された ClickHouse インスタンスに設定されます。
+  * **説明:** テレメトリデータをエクスポートする ClickHouse インスタンスの HTTPS URL。
+  * **ガイダンス:**
+    * ポートを含む完全な HTTPS エンドポイントである必要があります (例: `https://clickhouse.example.com:8443`) 
+    * コレクターが ClickHouse にデータを送信するために必須です
 
-- `CLICKHOUSE_USER`
-  - **デフォルト:** `default`
-  - **説明:** ClickHouse インスタンスに対して認証するために使用されるユーザー名。
-  - **ガイダンス:**
-    - ユーザーに `INSERT` と `CREATE TABLE` の権限が付与されていることを確認してください
-    - インジェスト専用のユーザーを作成することを推奨します
+* `CLICKHOUSE_USER`
+  * **デフォルト:** `default`
+  * **説明:** ClickHouse インスタンスに対して認証するために使用されるユーザー名。
+  * **ガイダンス:**
+    * ユーザーに `INSERT` と `CREATE TABLE` の権限が付与されていることを確認してください
+    * インジェスト専用のユーザーを作成することを推奨します
 
-- `CLICKHOUSE_PASSWORD`
-  - **デフォルト:** *なし（認証が有効な場合は必須）*
-  - **説明:** 指定された ClickHouse ユーザーのパスワード。
-  - **ガイダンス:**
-    - ユーザーアカウントにパスワードが設定されている場合は必須です
-    - 本番デプロイメントでは Secret などを用いて安全に保存してください
+* `CLICKHOUSE_PASSWORD`
+  * **デフォルト:** *なし (認証が有効な場合は必須)&#x20;*
+  * **説明:** 指定された ClickHouse ユーザーのパスワード。
+  * **ガイダンス:**
+    * ユーザーアカウントにパスワードが設定されている場合は必須です
+    * 本番デプロイメントでは Secret などを用いて安全に保存してください
 
-- `HYPERDX_LOG_LEVEL`
-  - **デフォルト:** `info`
-  - **説明:** コレクターのログ詳細レベル。
-  - **ガイダンス:**
-    - `debug`、`info`、`warn`、`error` などの値を受け付けます
-    - トラブルシューティング時には `debug` を使用してください
+* `HYPERDX_LOG_LEVEL`
+  * **デフォルト:** `info`
+  * **説明:** コレクターのログ詳細レベル。
+  * **ガイダンス:**
+    * `debug`、`info`、`warn`、`error` などの値を受け付けます
+    * トラブルシューティング時には `debug` を使用してください
 
-- `OPAMP_SERVER_URL`
-  - **デフォルト:** スタンドアロンイメージの場合は *なし（必須）*。All-in-one または Docker Compose ディストリビューションの場合は、デプロイされた HyperDX インスタンスを指します。
-  - **説明:** コレクターを管理するために使用される OpAMP サーバー（例: HyperDX インスタンス）の URL。デフォルトではポート `4320` を使用します。
-  - **ガイダンス:**
-    - 自身の HyperDX インスタンスを指す必要があります
-    - 動的な設定と安全なインジェストを有効にします
-    - 省略した場合、`OTLP_AUTH_TOKEN` が指定されていない限り、安全なインジェストは無効になります
+* `OPAMP_SERVER_URL`
+  * **デフォルト:** スタンドアロンイメージの場合は *なし (必須)&#x20;*。All-in-one または Docker Compose ディストリビューションの場合は、デプロイされた HyperDX インスタンスを指します。
+  * **説明:** コレクターを管理するために使用される OpAMP サーバー (例: HyperDX インスタンス) の URL。デフォルトではポート `4320` を使用します。
+  * **ガイダンス:**
+    * 自身の HyperDX インスタンスを指す必要があります
+    * 動的な設定と安全なインジェストを有効にします
+    * 省略した場合、`OTLP_AUTH_TOKEN` が指定されていない限り、安全なインジェストは無効になります
 
-- `OTLP_AUTH_TOKEN`
-  - **デフォルト:** *なし*。スタンドアロンイメージでのみ使用されます。
-  - **説明:** OTLP 認証トークンを指定できます。設定されている場合、すべての通信でこの Bearer トークンが必須になります。
-  - **ガイダンス:**
-    - 本番環境でスタンドアロンのコレクターイメージを使用する場合に推奨されます。
-    
-- `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
-  - **デフォルト:** `default`
-  - **説明:** コレクターがテレメトリデータを書き込む ClickHouse データベース。
-  - **ガイダンス:**
-    - カスタムのデータベース名を使用する場合に設定してください
-    - 指定したユーザーがこのデータベースへアクセスできることを確認してください
+* `OTLP_AUTH_TOKEN`
+  * **デフォルト:** *なし*。スタンドアロンイメージでのみ使用されます。
+  * **説明:** OTLP 認証トークンを指定できます。設定されている場合、すべての通信でこの Bearer トークンが必須になります。
+  * **ガイダンス:**
+    * 本番環境でスタンドアロンのコレクターイメージを使用する場合に推奨されます。
 
-- `OTEL_AGENT_FEATURE_GATE_ARG`
-  - **デフォルト:** `<empty string>`
-  - **説明:** コレクターで有効にするフィーチャーフラグを指定します。`--feature-gates=clickhouse.json` を設定すると、コレクターで JSON 型の Beta サポートが有効になり、スキーマがその型で作成されるようになります。HyperDX で JSON サポートを有効にするには、[`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) も参照してください。
-  - **ガイダンス:**
-  - ClickStack で JSON サポートを有効にするには `true` を設定します。
+* `HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE`
+  * **デフォルト:** `default`
+  * **説明:** コレクターがテレメトリデータを書き込む ClickHouse データベース。
+  * **ガイダンス:**
+    * カスタムのデータベース名を使用する場合に設定してください
+    * 指定したユーザーがこのデータベースへアクセスできることを確認してください
+
+* `OTEL_AGENT_FEATURE_GATE_ARG`
+  * **デフォルト:** `<empty string>`
+  * **説明:** コレクターで有効にするフィーチャーフラグを指定します。`--feature-gates=clickhouse.json` を設定すると、コレクターで JSON type のベータサポートが有効になり、schemas がその型で作成されるようになります。HyperDX で JSON サポートを有効にするには、[`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) も参照してください。
+  * **ガイダンス:**
+    * **ベータ機能**を有効にします。JSON type の schemas は、一般的なオブザーバビリティ workloads には**推奨されません**。比較と、それぞれが適している場面については [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json) を参照してください。
+    * JSON type を使用して新しいテーブルを作成するには、`--feature-gates=clickhouse.json` を設定します。
 
 ## ClickHouse \{#clickhouse\}
 

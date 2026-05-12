@@ -1204,6 +1204,9 @@ SELECT negate(10)
 计算两个值 `x` 和 `y` 的和。别名：`x + y` (运算符) 。
 可以将整数与日期，或整数与日期时间进行相加。前一种
 操作会增加该日期中的天数，后一种操作会增加该日期时间中的秒数。
+也可以将日期与时间相加。将 `Date` 与 `Time`
+相加会生成 `DateTime`。将 `Date` 与 `Time64` 相加，或将 `Date32` 与
+`Time` 或 `Time64` 相加，会生成 `DateTime64`。
 
 **语法**
 
@@ -1213,7 +1216,7 @@ plus(x, y)
 
 **参数**
 
-* `x` — 左侧操作数。- `y` — 右侧操作数。
+* `x` — 左操作数。- `y` — 右操作数。
 
 **返回值**
 
@@ -1239,6 +1242,16 @@ SELECT plus(toDate('2025-01-01'),5)
 
 ```response title=Response
 2025-01-06
+```
+
+**日期和时间相加**
+
+```sql title=Query
+SELECT toDate('2025-01-01') + CAST('14:30:25', 'Time')
+```
+
+```response title=Response
+2025-01-01 14:30:25
 ```
 
 ## positiveModulo \{#positiveModulo\}

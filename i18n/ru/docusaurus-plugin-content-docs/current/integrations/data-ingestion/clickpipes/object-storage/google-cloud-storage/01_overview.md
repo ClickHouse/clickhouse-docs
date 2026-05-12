@@ -7,16 +7,15 @@ title: 'Интеграция Google Cloud Storage с ClickHouse Cloud'
 doc_type: 'guide'
 ---
 
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
-import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
-import gcs_subscription_input from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png';
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import Image from '@theme/IdealImage';
+import cp_iam from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png"
+import cp_credentials from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png"
+import gcs_subscription_input from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png"
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import Image from "@theme/IdealImage"
 
-GCS ClickPipe обеспечивает полностью управляемый и отказоустойчивый способ приёма данных из Google Cloud Storage (GCS). Он поддерживает как **однократную**, так и **непрерывную ингестию** с гарантией exactly-once.
+GCS ClickPipe обеспечивает полностью управляемый и отказоустойчивый способ приёма данных из Google Cloud Storage (GCS). Он поддерживает как **одноразовую**, так и **непрерывную ингестию** с гарантией exactly-once.
 
-GCS ClickPipes могут быть развернуты и управляться вручную через ClickPipes UI, а также программно с помощью [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) и [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe).
-
+GCS ClickPipes могут быть развернуты и управляться вручную через ClickPipes UI, а также программно с помощью [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Поддерживаемые форматы \{#supported-formats\}
 

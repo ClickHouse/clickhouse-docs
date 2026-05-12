@@ -24,6 +24,10 @@ import restore_backups_azure from '@site/static/images/cloud/manage/backups/rest
 
 # 사용자 인터페이스(UI)를 통한 백업 및 복원 \{#ui-experience\}
 
+:::note
+외부 버킷에 대한 자동 백업은 24시간마다 &quot;full&quot; 백업으로 실행되도록 구성되어 있으며, 이 주기는 변경할 수 없습니다.
+:::
+
 ## AWS \{#AWS\}
 
 ### AWS로 백업 전송하기 \{#taking-backups-to-aws\}

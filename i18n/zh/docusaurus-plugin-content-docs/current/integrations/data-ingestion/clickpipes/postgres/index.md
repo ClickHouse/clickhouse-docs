@@ -26,6 +26,8 @@ import Image from '@theme/IdealImage';
 
 你可以使用 ClickPipes 将源 Postgres 数据库中的数据摄取到 ClickHouse Cloud。源 Postgres 数据库可以托管在本地环境或云端，例如 Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase 等。
 
+Postgres ClickPipes 可以通过 ClickPipes UI 手动部署和管理，也可以使用 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式部署和管理。
+
 ## 前提条件 \{#prerequisites\}
 
 在开始之前，需要先确保您的 Postgres 数据库已正确配置。根据您使用的源端 Postgres 实例类型，可以参考以下任一指南：

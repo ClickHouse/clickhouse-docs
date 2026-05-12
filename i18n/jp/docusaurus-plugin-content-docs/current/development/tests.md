@@ -197,32 +197,32 @@ SELECT 1
 
 利用可能なタグの一覧は次のとおりです:
 
-| Tag name                       | What it does                                                   | Usage example                                    |
-| ------------------------------ | -------------------------------------------------------------- | ------------------------------------------------ |
-| `disabled`                     | テストは実行されません                                                    |                                                  |
-| `long`                         | テストの実行時間が 1 分から 10 分に延長されます                                    |                                                  |
-| `deadlock`                     | テストが長時間ループで実行されます                                              |                                                  |
-| `race`                         | `deadlock` と同じです。`deadlock` を優先して使用してください                      |                                                  |
-| `shard`                        | サーバーが `127.0.0.*` をリッスンする必要があります                               |                                                  |
-| `distributed`                  | `shard` と同じです。`shard` を優先して使用してください                            |                                                  |
-| `global`                       | `shard` と同じです。`shard` を優先して使用してください                            |                                                  |
-| `zookeeper`                    | テストの実行に Zookeeper または ClickHouse Keeper が必要です                  | テストで `ReplicatedMergeTree` を使用します                |
-| `replica`                      | `zookeeper` と同じです。`zookeeper` を優先して使用してください                    |                                                  |
-| `no-fasttest`                  | [Fast test](#test-types) では実行されません                             | テストで Fast test では無効化されている `MySQL` テーブルエンジンを使用します |
-| `fasttest-only`                | [Fast test](#test-types) のみで実行されます                             |                                                  |
-| `no-[asan, tsan, msan, ubsan]` | [sanitizers](#sanitizers) を有効にしたビルドではテストを実行しません                | テストは sanitizers と互換性のない QEMU 上で実行されます            |
-| `no-replicated-database`       | デフォルトデータベースで `ReplicatedDatabaseEngine` を使用している場合、このテストを無効にします |                                                  |
-| `no-ordinary-database`         | デフォルトのデータベースエンジンが `Ordinary` の場合、このテストを無効にします                  |                                                  |
-| `no-parallel`                  | このテストと他のテストを並行実行しないようにします                                      | テストは `system` テーブルを読み取り、不変条件が壊れる可能性があります         |
-| `no-parallel-replicas`         | parallel replicas が有効な場合、このテストを無効にします                          |                                                  |
-| `no-debug`                     | Debug ビルドではテストを実行しません                                          |                                                  |
-| `no-release`                   | Release ビルドではテストを実行しません                                        |                                                  |
+| Tag name                       | What it does                                                   | Usage example                                          |
+| ------------------------------ | -------------------------------------------------------------- | ------------------------------------------------------ |
+| `disabled`                     | テストは実行されません                                                    |                                                        |
+| `long`                         | テストの実行時間が 1 分から 10 分に延長されます                                    |                                                        |
+| `deadlock`                     | テストが長時間ループで実行されます                                              |                                                        |
+| `race`                         | `deadlock` と同じです。`deadlock` を優先して使用してください                      |                                                        |
+| `shard`                        | サーバーが `127.0.0.*` をリッスンする必要があります                               |                                                        |
+| `distributed`                  | `shard` と同じです。`shard` を優先して使用してください                            |                                                        |
+| `global`                       | `shard` と同じです。`shard` を優先して使用してください                            |                                                        |
+| `zookeeper`                    | テストの実行に Zookeeper または ClickHouse Keeper が必要です                  | テストで `ReplicatedMergeTree` を使用します                      |
+| `replica`                      | `zookeeper` と同じです。`zookeeper` を優先して使用してください                    |                                                        |
+| `no-fasttest`                  | [Fast test](#test-types) では実行されません                             | テストで Fast test では無効化されている `MySQL` テーブルエンジンを使用します       |
+| `fasttest-only`                | [Fast test](#test-types) のみで実行されます                             |                                                        |
+| `no-[asan, tsan, msan, ubsan]` | [サニタイザ](#sanitizers) を有効にしたビルドではテストを実行しません                | テストはサニタイザと互換性のない QEMU 上で実行されます                  |
+| `no-replicated-database`       | デフォルトデータベースで `ReplicatedDatabaseEngine` を使用している場合、このテストを無効にします |                                                        |
+| `no-ordinary-database`         | デフォルトのデータベースエンジンが `Ordinary` の場合、このテストを無効にします                  |                                                        |
+| `no-parallel`                  | このテストと他のテストを並行実行しないようにします                                      | テストは `system` テーブルを読み取り、不変条件が壊れる可能性があります               |
+| `no-parallel-replicas`         | parallel replicas が有効な場合、このテストを無効にします                          |                                                        |
+| `no-debug`                     | Debug ビルドではテストを実行しません                                          |                                                        |
+| `no-release`                   | Release ビルドではテストを実行しません                                        |                                                        |
+| `no-darwin`                    | macOS (Darwin) ではテストを無効にします                                    | テストが分散クエリ、`procfs`、または HTTP サーバーなどの Linux 固有機能に依存しています |
 
 次のオプションもサポートされています: `no-stress`, `no-polymorphic-parts`, `no-random-settings`, `no-random-merge-tree-settings`, `no-backward-compatibility-check`, `no-cpu-x86_64`, `no-cpu-aarch64`, `no-cpu-ppc64le`, `no-s3-storage`.
 
 上記の設定に加えて、特定の ClickHouse 機能を使用するかどうかを指定するために、`system.build_options` の `USE_*` フラグを使用できます。
 たとえば、テストで MySQL テーブルを使用する場合は、タグ `use-mysql` を追加する必要があります。
-
 
 ### ランダム化される設定に対する制限の指定 \{#specifying-limits-for-random-settings\}
 

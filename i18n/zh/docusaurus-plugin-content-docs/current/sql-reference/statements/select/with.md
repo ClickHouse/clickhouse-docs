@@ -526,3 +526,15 @@ SELECT sum(number) FROM (SELECT number FROM test_table LIMIT 100);
 │        5050 │
 └─────────────┘
 ```
+
+
+## 末尾逗号 \{#trailing-comma\}
+
+`WITH` 子句中最后一个元素后可以使用逗号：
+
+```sql
+WITH
+    (SELECT sum(number) FROM numbers(10)) AS total,
+    total * 2 AS doubled,
+SELECT total, doubled;
+```

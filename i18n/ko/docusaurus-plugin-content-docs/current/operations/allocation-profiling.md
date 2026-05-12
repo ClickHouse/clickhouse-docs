@@ -190,16 +190,51 @@ ORDER BY per_trace_sum ASC
 이 섹션은 버전 26.2 이상에 적용됩니다.
 :::
 
-ClickHouse는 `/jemalloc` HTTP 엔드포인트에서 jemalloc 메모리 통계를 확인할 수 있는 내장 웹 UI를 제공합니다.
-이 UI는 할당된 메모리, 활성 메모리, 상주(resident) 메모리, 매핑(mapped) 메모리뿐만 아니라 arena별, bin별 통계를 포함한 실시간 메모리 지표를 차트로 표시합니다.
-또한 UI에서 전역 및 쿼리별 힙 프로파일을 직접 조회할 수 있습니다.
+ClickHouse는 `/jemalloc` HTTP 엔드포인트에서 jemalloc 메모리 통계를 확인할 수 있는 기본 제공 웹 UI를 제공합니다.
+이 UI는 allocated, active, resident, mapped 메모리를 비롯해 arena별 및 bin별 통계를 포함한 실시간 메모리 메트릭을 차트와 함께 표시합니다.
+또한 UI에서 글로벌 힙 프로필과 쿼리별 힙 프로필을 직접 가져올 수 있습니다.
 
-접속하려면 브라우저에서 다음을 여십시오:
+<Tabs groupId="binary">
+  <TabItem value="clickhouse" label="ClickHouse">
+    ```text
+    http://localhost:8123/jemalloc
+    ```
 
-```text
-http://localhost:8123/jemalloc
-```
+    서버 UI에는 Summary, Allocations, Arenas, Operations, Global Profiler, Query Profiler, Raw Output의 모든 탭이 포함되어 있습니다.
+  </TabItem>
 
+  <TabItem value="keeper" label="Keeper">
+    ```text
+    http://localhost:9182/jemalloc
+    ```
+
+    Keeper UI는 HTTP 제어 포트에서 사용할 수 있습니다. 이 포트는 **기본적으로 비활성화**되어 있으므로, Keeper 설정에서 `keeper_server.http_control.port`를 지정해 명시적으로 활성화해야 합니다:
+
+    ```xml
+    <clickhouse>
+        <keeper_server>
+            <http_control>
+                <port>9182</port>
+            </http_control>
+        </keeper_server>
+    </clickhouse>
+    ```
+
+    활성화되면 UI는 Query Profiler 탭을 제외하고 서버와 동일한 시각화, 즉 Summary, Allocations, Arenas, Operations, Global Profiler, Raw Output을 제공합니다. Query Profiler 탭을 사용하려면 SQL과 `system.trace_log`가 필요합니다.
+
+    :::warning Security
+    Keeper HTTP 제어 포트에는 애플리케이션 수준 인증(authentication)이 없습니다. 모든 데이터 쿼리가 SQL HTTP handler를 통해 전달되고 사용자 이름/비밀번호 자격 증명이 필요한 ClickHouse 서버 jemalloc UI와 달리, Keeper REST API 엔드포인트에는 인증이 적용되지 않습니다. 이는 다른 Keeper HTTP 제어 엔드포인트(명령어, 스토리지, 대시보드)와 동일합니다.
+
+    네트워크 수준 제어를 사용해 이 포트에 대한 접근을 제한하십시오. 예를 들어 Keeper를 localhost에 바인딩하거나, firewall 규칙을 사용하거나, 인증이 적용된 리버스 프록시 뒤에 배치할 수 있습니다. `listen_host`가 구성되지 않은 경우 Keeper는 기본적으로 localhost에서만 수신합니다.
+    :::
+
+    Keeper는 프로그래밍 방식으로 접근할 수 있는 REST API 엔드포인트도 제공합니다:
+
+    * `GET /jemalloc/stats` — 원시 `malloc_stats_print` 출력
+    * `GET /jemalloc/status` — JSON 형식의 프로파일링 상태 (`prof_enabled`, `prof_active`, `thread_active_init`, `lg_sample`)
+    * `GET /jemalloc/profile?format={collapsed|raw}` — 서버 측 심볼화를 사용해 힙 프로필을 플러시하고, flame graph 렌더링에 적합한 collapsed 스택(기본값) 또는 원시 jemalloc 덤프를 반환합니다.
+  </TabItem>
+</Tabs>
 
 ## SQL에서 힙 프로파일 가져오기 \{#fetching-heap-profiles-from-sql\}
 

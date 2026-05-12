@@ -30,11 +30,11 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 ## 注册步骤 \{#steps-to-sign-up\}
 
-1. 您应该已经收到一封包含链接的电子邮件，用于查看并接受您的专属私有优惠（private offer）。
+1. 您应该已经收到一封包含链接的电子邮件，用于查看并接受您的专属私有优惠 (private offer) 。
 
 <br />
 
-<Image img={azure_marketplace_committed_1} size="md" alt="Azure Marketplace 私有优惠电子邮件" border/>
+<Image img={azure_marketplace_committed_1} size="md" alt="Azure Marketplace 私有优惠电子邮件" border />
 
 <br />
 
@@ -42,7 +42,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_2} size="md" alt="Azure Marketplace 私有优惠详情" border/>
+<Image img={azure_marketplace_committed_2} size="md" alt="Azure Marketplace 私有优惠详情" border />
 
 <br />
 
@@ -50,19 +50,19 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_3} size="md" alt="Azure Marketplace 私有优惠管理页面" border/>
+<Image img={azure_marketplace_committed_3} size="md" alt="Azure Marketplace 私有优惠管理页面" border />
 
 <br />
 
-<Image img={azure_marketplace_committed_4} size="md" alt="Azure Marketplace 私有优惠管理页面加载中" border/>
+<Image img={azure_marketplace_committed_4} size="md" alt="Azure Marketplace 私有优惠管理页面加载中" border />
 
 <br />
 
-4. 几分钟后，刷新页面。此时该优惠应该已准备好进行 **Purchase**（购买）。
+4. 几分钟后，刷新页面。此时该优惠应该已准备好进行 **Purchase** (购买) 。
 
 <br />
 
-<Image img={azure_marketplace_committed_5} size="md" alt="Azure Marketplace 私有优惠管理页面已可购买" border/>
+<Image img={azure_marketplace_committed_5} size="md" alt="Azure Marketplace 私有优惠管理页面已可购买" border />
 
 <br />
 
@@ -70,15 +70,15 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-- 选择 Subscription 和 resource group  
-- 为 SaaS 订阅指定一个名称  
-- 选择与您的私有优惠对应的计费方案。只有创建私有优惠时所使用的计费期限（例如 1 年）会显示收费金额。其他计费期限选项的金额将为 $0。  
-- 选择是否启用循环计费。如果未选择循环计费，合约将在计费周期结束时终止，相关资源将被标记为退役。  
-- 点击 **Review + subscribe**。
+* 选择 Subscription 和 resource group
+* 为 SaaS 订阅指定一个名称
+* 选择与您的私有优惠对应的计费方案。只有创建私有优惠时所使用的计费期限 (例如 1 年) 会显示收费金额。其他计费期限选项的金额将为 $0。
+* 选择是否启用循环计费。如果未选择循环计费，合同将在计费周期结束时终止，相关资源将被标记为退役。
+* 点击 **Review + subscribe**。
 
 <br />
 
-<Image img={azure_marketplace_committed_6} size="md" alt="Azure Marketplace 订阅表单" border/>
+<Image img={azure_marketplace_committed_6} size="md" alt="Azure Marketplace 订阅表单" border />
 
 <br />
 
@@ -86,15 +86,15 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_7} size="md" alt="Azure Marketplace 订阅确认" border/>
+<Image img={azure_marketplace_committed_7} size="md" alt="Azure Marketplace 订阅确认" border />
 
 <br />
 
-7. 在接下来的页面中，您会看到 **Your SaaS subscription in progress**（您的 SaaS 订阅正在处理中）。
+7. 在接下来的页面中，您会看到 **Your SaaS subscription in progress** (您的 SaaS 订阅正在处理中) 。
 
 <br />
 
-<Image img={azure_marketplace_committed_8} size="md" alt="Azure Marketplace 订阅提交页面" border/>
+<Image img={azure_marketplace_committed_8} size="md" alt="Azure Marketplace 订阅提交页面" border />
 
 <br />
 
@@ -102,7 +102,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_9} size="md" alt="Azure Marketplace 立即配置账户按钮" border/>
+<Image img={azure_marketplace_committed_9} size="md" alt="Azure Marketplace 立即配置账户按钮" border />
 
 <br />
 
@@ -112,11 +112,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud 注册信息表单 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -126,13 +122,13 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_11} size="sm" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_11} size="sm" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
+<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 

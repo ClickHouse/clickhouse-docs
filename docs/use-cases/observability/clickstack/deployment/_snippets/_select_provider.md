@@ -19,4 +19,6 @@ When specifying the select CPU and memory, estimate it based on your expected Cl
  
 Once you have specified the requirements, your Managed ClickStack service will take several minutes to provision. Feel free to explore the rest of the [ClickHouse Cloud console](/cloud/overview) whilst waiting for provisioning.
 
+For more details on refining sizing assumptions for your environment, see ["Refining sizing assumptions for your environment"](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions).
+
 Once **provisioning is complete, the 'ClickStack' option on the left menu will be enabled**.

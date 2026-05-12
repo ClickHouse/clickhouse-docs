@@ -101,7 +101,7 @@ You will need to go back into your marketplace account to reconfigure it based o
 
 ## Set up marketplace billing from your cloud provider {#set-up-marketplace-billing-from-cp}
 
-You can also set up or update your organization's marketplace subscription directly from the cloud marketplace, rather than through the ClickHouse Cloud console.
+You can also set up or update your organization's marketplace subscription directly from the cloud marketplace, rather than through the ClickHouse Cloud console. This can be helpful if you want to switch your ClickHouse organization to bill through a new subscription on a different marketplace billing account.
 
 Follow the instructions below based on the marketplace and subscription type:
 
@@ -117,3 +117,13 @@ After completing this flow, the selected organization’s billing will be linked
 ## Support {#support}
 
 If you run into any issues, please do not hesitate to [contact our support team](https://clickhouse.com/support/program).
+
+## FAQs {#faqs}
+
+### What happens to my usage charges if I switch billing methods mid billing cycle? {#what-happens-to-my-usage-charges-if-i-switch-billing-methods-mid-billing-cycle}
+
+It depends on the direction of the switch:
+
+Switching from Marketplace to credit card billing: Usage from the start of the billing cycle up to the point of the switch is sent to the Marketplace. The remaining usage from the switch point to the end of the billing cycle is invoiced to the credit card at the end of the billing cycle.
+
+Switching from credit card to Marketplace billing: All uninvoiced usage for the entire billing period is sent to the Marketplace.

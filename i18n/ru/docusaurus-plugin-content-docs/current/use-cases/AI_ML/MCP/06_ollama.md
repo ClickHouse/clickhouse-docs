@@ -10,10 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
-import Image from '@theme/IdealImage';
-
 # Использование сервера ClickHouse MCP с Ollama \{#using-clickhouse-mcp-server-with-ollama\}
 
 > В этом руководстве описано, как использовать сервер ClickHouse MCP с Ollama.

@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/0_janai_openai.png';
@@ -24,7 +22,7 @@ import Question from '@site/static/images/use-cases/AI_ML/MCP/6_janai_question.p
 import MCPToolConfirm from '@site/static/images/use-cases/AI_ML/MCP/7_janai_tool_confirmation.png';
 import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_called.png';  
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
-import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
+import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';  
 
 # 在 Jan.ai 中使用 ClickHouse MCP 服务器 \{#using-clickhouse-mcp-server-with-janai\}
 

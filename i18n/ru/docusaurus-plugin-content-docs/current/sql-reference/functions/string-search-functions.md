@@ -395,9 +395,9 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 ## extractGroups \{#extractGroups\}
 
-Введена в: v20.5.0
+Добавлена в: v20.5.0
 
-Извлекает все группы из непересекающихся подстрок, найденных по регулярному выражению.
+Извлекает группы захвата из первой подстроки, найденной по регулярному выражению. Чтобы извлечь группы из всех совпадений, используйте [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) или [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical).
 
 **Синтаксис**
 
@@ -408,11 +408,11 @@ extractGroups(s, regexp)
 **Аргументы**
 
 * `s` — Входная строка, из которой выполняется извлечение. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — Регулярное выражение. Константное значение. [`const String`](/sql-reference/data-types/string) или [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — Регулярное выражение. Должно содержать как минимум одну группу захвата. Константное значение. [`const String`](/sql-reference/data-types/string) или [`const FixedString`](/sql-reference/data-types/fixedstring)
 
 **Возвращаемое значение**
 
-Если функция находит хотя бы одну совпадающую группу, она возвращает столбец типа Array(Array(String)), упорядоченный по group&#95;id (`1` до `N`, где `N` — количество захватывающих групп в regexp). Если совпадающих групп нет, возвращается пустой массив. [`Array(Array(String))`](/sql-reference/data-types/array)
+Если регулярное выражение соответствует, возвращается массив, содержащий захваченные группы (`1` до `N`, где `N` — количество групп захвата в `regexp`) первого совпадения. Если совпадений нет, возвращается пустой массив. [`Array(String)`](/sql-reference/data-types/array)
 
 **Примеры**
 
@@ -428,7 +428,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
-[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+['Server','nginx']
 ```
 
 ## hasAllTokens \{#hasAllTokens\}
@@ -733,6 +733,64 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 ┌─count()─┐
 │       2 │
 └─────────┘
+```
+
+## hasPhrase \{#hasPhrase\}
+
+Добавлено в: v26.4.0
+
+Проверяет, содержит ли haystack все токены из фразы, идущие подряд.
+
+Перед поиском функция токенизирует аргументы `input` и `phrase` с помощью токенизатора, указанного в необязательном третьем аргументе.
+Аргумент токенизатора должен иметь одно из следующих значений: `splitByNonAlpha`, `splitByString`, `ngrams` или `asciiCJK`.
+Если токенизатор не указан, по умолчанию используется токенизатор `splitByNonAlpha`.
+
+В отличие от [`hasToken`](#hasToken), [`hasAnyTokens`](#hasAnyTokens) и [`hasAllTokens`](#hasAllTokens), `hasPhrase` требует, чтобы токены шли в том же порядке
+и без промежуточных токенов. Например, `hasPhrase('the quick brown fox', 'quick fox')` возвращает 0,
+потому что &quot;brown&quot; находится между &quot;quick&quot; и &quot;fox&quot;.
+
+**Синтаксис**
+
+```sql
+hasPhrase(input, phrase[, tokenizer])
+```
+
+**Псевдонимы**: `matchPhrase`
+
+**Аргументы**
+
+* `input` — Входной столбец. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+* `phrase` — Искомая фраза. [`const String`](/sql-reference/data-types/string)
+* `tokenizer` — Токенизатор, который следует использовать. Необязателен; по умолчанию — `splitByNonAlpha`. [`const String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Возвращает `1`, если фраза найдена как последовательность идущих подряд токенов, в противном случае — `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Совпадение фразы**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick brown')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick brown')─┐
+│                                                      1 │
+└────────────────────────────────────────────────────────┘
+```
+
+**Несмежные токены**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick fox')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick fox')─┐
+│                                                    0 │
+└──────────────────────────────────────────────────────┘
 ```
 
 ## hasSubsequence \{#hasSubsequence\}

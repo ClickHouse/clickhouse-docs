@@ -16,7 +16,7 @@ import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled
 
 # Upgrades
 
-With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis. For the full list of what is new in ClickHouse refer to our [Cloud changelog](/whats-new/cloud).
+With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis. For the full list of what is new in ClickHouse refer to our [Cloud changelog](/whats-new/changelog/cloud).
 
 :::note
 We're introducing a new upgrade mechanism, a concept we call "make before break" (or MBB). With this new approach, we add updated replicas before removing the old ones during the upgrade operation. This results in more seamless upgrades that are less disruptive to running workloads.
@@ -96,6 +96,7 @@ Specifically, services will:
 :::note
 You can change release channels at any time. However, in certain cases, the change will only apply to future releases. 
 - Moving to a faster channel will immediately upgrade your service. i.e. Slow to Regular, Regular to Fast
+- If your service is using [scheduled upgrades](#scheduled-upgrades), then the upgrade will happen on the next scheduled upgrade instead.
 - Moving to a slower channel won't downgrade your service and keep you on your current version until a newer one is available in that channel. i.e. Regular to Slow, Fast to Regular or Slow
 :::
 

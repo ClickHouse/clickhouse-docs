@@ -358,9 +358,10 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
+            'cloud/managed-postgres/migrations/clickhouse-cloud',
+            'cloud/managed-postgres/migrations/peerdb',
             'cloud/managed-postgres/migrations/pg_dump-pg_restore',
             'cloud/managed-postgres/migrations/logical-replication',
-            'cloud/managed-postgres/migrations/peerdb',
             'cloud/managed-postgres/migrations/data-validation',
           ],
         },
@@ -782,6 +783,7 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mysql/table_resync',
                 'integrations/data-ingestion/clickpipes/mysql/resync',
                 'integrations/data-ingestion/clickpipes/mysql/controlling_sync',
+                'integrations/data-ingestion/clickpipes/mysql/scaling',
               ],
             },
             {
@@ -820,6 +822,7 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/mongodb/table_resync',
                 'integrations/data-ingestion/clickpipes/mongodb/resync',
                 'integrations/data-ingestion/clickpipes/mongodb/controlling_sync',
+                'integrations/data-ingestion/clickpipes/mongodb/scaling',
               ],
             },
             {
@@ -843,6 +846,17 @@ const sidebars = {
             'integrations/data-ingestion/clickpipes/bigquery/get-started',
           ],
         },
+        {
+          type: 'category',
+          label: 'OpenAPI & Terraform',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'integrations/data-ingestion/clickpipes/programmatic-access/openapi',
+            'integrations/data-ingestion/clickpipes/programmatic-access/terraform',
+          ],
+        },
+        'integrations/data-ingestion/clickpipes/monitoring',
         'integrations/data-ingestion/clickpipes/aws-privatelink',
         'integrations/data-ingestion/dbms/dynamodb/index',
       ],
@@ -1047,6 +1061,7 @@ const sidebars = {
       },
       items: [
         'integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
+        'integrations/data-ingestion/etl-tools/apify-and-clickhouse',
         {
           type: 'category',
           label: 'Apache Spark',
@@ -1923,6 +1938,8 @@ const sidebars = {
             'use-cases/observability/clickstack/ingesting-data/vector',
             'use-cases/observability/clickstack/ingesting-data/collector',
             'use-cases/observability/clickstack/ingesting-data/schemas',
+            'use-cases/observability/clickstack/ingesting-data/schema/map-vs-json',
+            'use-cases/observability/clickstack/ingesting-data/trace-sampling',
             {
               type: 'category',
               label: 'Integrations',
@@ -2064,6 +2081,11 @@ const sidebars = {
               dirName: 'use-cases/observability/clickstack/demo-days',
             },
           ],
+        },
+        {
+          type: 'link',
+          label: 'OTel FYI',
+          href: 'https://otel.fyi',
         },
       ],
     },

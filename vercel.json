@@ -3033,6 +3033,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/sql-clients/cli",
+      "destination": "/docs/interfaces/cli",
+      "permanent": true
+    },
+    {
       "source": "/docs/getting_started/tutorial",
       "destination": "/docs/tutorial",
       "permanent": true
@@ -3764,6 +3769,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/use-cases/observability/clickstack/demo-days/2026/04/03-04-2026",
+      "destination": "/docs/use-cases/observability/clickstack/demo-days/2026/2026-04-03",
+      "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/clickstack/demo-days/2026/04/10-04-2026",
+      "destination": "/docs/use-cases/observability/clickstack/demo-days/2026/2026-04-10",
+      "permanent": true
+    },
+    {
       "source": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hippa-services",
       "destination": "/docs/cloud/security/compliance/hipaa-onboarding#deploy-hipaa-services",
       "permanent": true
@@ -3806,6 +3821,11 @@
     {
       "source": "/docs/whats-new/TODO",
       "destination": "/docs/whats-new/changelog",
+      "permanent": true
+    },
+    {
+      "source": "/docs/whats-new/cloud",
+      "destination": "/docs/whats-new/changelog/cloud",
       "permanent": true
     },
     {

@@ -245,6 +245,14 @@ PAYG 向けの ClickHouse Cloud クレジットは 0.01 ドル単位で請求さ
 
 Billing UI からクレジットカードを削除することはできませんが、いつでも更新することは可能です。これは、組織に常に有効な支払い方法が設定されている状態を確保するためです。クレジットカードの削除が必要な場合は、[ClickHouse Cloud support](https://console.clickhouse.cloud/support) までお問い合わせください。
 
+### 返金はどこで確認できますか？ \{#where-can-i-see-my-refunds\}
+
+ClickHouse Cloud コンソールで、Organization &gt; Billing に移動します。Refunds セクションは、Invoices と Credits の下に表示されます。表示するには、Organization Admin または Billing Admin である必要があります。
+
+### 返金が反映されるまでにどのくらい時間がかかりますか？ \{#how-long-does-it-take-for-a-refund-to-appear\}
+
+返金は、当社で返金処理が完了すると反映されます。クレジットカードへの返金は、銀行によっては利用明細に表示されるまでさらに時間がかかる場合があります。
+
 ### 課金サイクルはどのくらいの期間ですか？ \{#how-long-is-the-billing-cycle\}
 
 課金は月次サイクルで行われ、開始日は ClickHouse Cloud の組織が作成された日となります。

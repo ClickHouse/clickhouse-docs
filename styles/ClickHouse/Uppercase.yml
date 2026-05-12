@@ -37,6 +37,7 @@ exceptions:
   - CGI
   - CIDR
   - CLI
+  - CMD
   - CNA
   - CNCF
   - CORE
@@ -124,6 +125,8 @@ exceptions:
   - IOPS
   - IRC
   - ISO
+  - IPC
+  - JDBC
   - JPEG
   - JPG
   - JSON
@@ -156,6 +159,7 @@ exceptions:
   - NPM
   - NTP
   - OCI
+  - ODBC
   - OIDC
   - OKD
   - OKR

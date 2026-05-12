@@ -394,7 +394,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 引入版本：v20.5.0
 
-从正则表达式匹配到的、互不重叠的子串中提取所有分组。
+从正则表达式匹配到的第一个子串中提取捕获组。要从所有匹配中提取捕获组，请使用 [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) 或 [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical)。
 
 **语法**
 
@@ -405,11 +405,11 @@ extractGroups(s, regexp)
 **参数**
 
 * `s` — 要从中提取的输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — 正则表达式。常量值。[`const String`](/sql-reference/data-types/string) 或 [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 正则表达式。必须至少包含一个捕获组。常量值。[`const String`](/sql-reference/data-types/string) 或 [`const FixedString`](/sql-reference/data-types/fixedstring)
 
 **返回值**
 
-如果函数找到至少一个匹配的分组，则返回按 group&#95;id (从 `1` 到 `N`，其中 `N` 是 regexp 中捕获分组数量) 组织的 Array(Array(String)) 列。如果没有匹配分组，则返回空数组。[`Array(Array(String))`](/sql-reference/data-types/array)
+如果正则表达式匹配，则返回一个数组，其中包含首次匹配中捕获的各组 (从 `1` 到 `N`，其中 `N` 是 `regexp` 中捕获组的数量) 。如果没有匹配，则返回空数组。[`Array(String)`](/sql-reference/data-types/array)
 
 **示例**
 
@@ -425,7 +425,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
-[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+['Server','nginx']
 ```
 
 ## hasAllTokens \{#hasAllTokens\}
@@ -729,6 +729,64 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 ┌─count()─┐
 │       2 │
 └─────────┘
+```
+
+## hasPhrase \{#hasPhrase\}
+
+引入版本：v26.4.0
+
+检查 haystack 是否按连续顺序包含短语中的所有标记。
+
+搜索前，函数会使用可选的第三个参数指定的分词器，对 `input` 和 `phrase` 参数进行分词。
+`tokenizer` 参数必须是 `splitByNonAlpha`、`splitByString`、`ngrams` 或 `asciiCJK` 之一。
+如果未指定分词器，则默认使用 `splitByNonAlpha` 分词器。
+
+与 [`hasToken`](#hasToken)、[`hasAnyTokens`](#hasAnyTokens) 和 [`hasAllTokens`](#hasAllTokens) 不同，`hasPhrase` 要求这些标记按相同顺序出现，
+并且中间不能插入任何其他标记。例如，`hasPhrase('the quick brown fox', 'quick fox')` 返回 0，
+因为 &quot;brown&quot; 出现在 &quot;quick&quot; 和 &quot;fox&quot; 之间。
+
+**语法**
+
+```sql
+hasPhrase(input, phrase[, tokenizer])
+```
+
+**别名**: `matchPhrase`
+
+**参数**
+
+* `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `phrase` — 要查找的短语。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的分词器。可选，默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+
+**返回值**
+
+如果找到该短语对应的连续标记序列，则返回 `1`；否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**短语匹配**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick brown')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick brown')─┐
+│                                                      1 │
+└────────────────────────────────────────────────────────┘
+```
+
+**非相邻标记**
+
+```sql title=Query
+SELECT hasPhrase('the quick brown fox jumps', 'quick fox')
+```
+
+```response title=Response
+┌─hasPhrase('the quick brown fox jumps', 'quick fox')─┐
+│                                                    0 │
+└──────────────────────────────────────────────────────┘
 ```
 
 ## hasSubsequence \{#hasSubsequence\}

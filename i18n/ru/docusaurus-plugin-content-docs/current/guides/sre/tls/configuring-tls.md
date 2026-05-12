@@ -551,6 +551,109 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
 :::
 
 
+## Режимы проверки OpenSSL и обработчики сертификатов \{#openssl-verification-modes\}
+
+Конфигурация `<openSSL>` поддерживает несколько вариантов значений для `<verificationMode>` и `<invalidCertificateHandler>`, которые определяют, как ClickHouse проверяет TLS-сертификаты. Эти настройки применяются к clickhouse-server, clickhouse-client и автономному ClickHouse Keeper.
+
+### Режимы проверки \{#verification-modes\}
+
+Задайте `<verificationMode>` в разделе `<server>` или `<client>` элемента `<openSSL>`:
+
+| Режим     | Описание                                                                                                                                                                                                          |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `none`    | Без проверки сертификата. Соединение шифруется, но подлинность другой стороны не проверяется. Используйте этот режим только для тестирования.                                                                     |
+| `relaxed` | Проверяет сертификат другой стороны, если он предоставлен, но не завершает работу с ошибкой, если сертификат отсутствует.                                                                                         |
+| `once`    | На стороне сервера проверяет сертификат клиента только при начальном рукопожатии и пропускает повторное согласование. На стороне клиента работает так же, как `relaxed`.                                          |
+| `strict`  | Требует сертификат другой стороны и полностью проверяет его. Соединение завершается ошибкой, если сертификат отсутствует, срок его действия истёк или он не подписан доверенным УЦ. Рекомендуется для продакшена. |
+
+### Обработчики недействительных сертификатов \{#invalid-certificate-handlers\}
+
+Установите `<invalidCertificateHandler>` в разделе `<server>` или `<client>` внутри `<openSSL>`. Этот handler определяет, что происходит, если проверка сертификата завершается ошибкой. На стороне сервера он определяет, как обрабатывать недействительные клиентские сертификаты. На стороне клиента он определяет, как обрабатывать недействительные сертификаты сервера.
+
+| Handler                    | Описание                                                                                                   |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `RejectCertificateHandler` | Отклоняет соединение, если сертификат недействителен. Это значение по умолчанию и рекомендуемая настройка. |
+| `AcceptCertificateHandler` | Принимает соединение, даже если сертификат недействителен. Используйте только для тестирования.            |
+
+### Пример: отключение проверки сертификатов \{#disabling-certificate-verification\}
+
+:::warning
+Отключение проверки сертификатов отменяет проверку подлинности TLS и делает соединения уязвимыми для атак «человек посередине». Используйте эту конфигурацию только в изолированных средах разработки или тестирования.
+:::
+
+Чтобы полностью отключить проверку сертификатов (например, при использовании самоподписанных сертификатов в тестовой среде), установите для `verificationMode` значение `none` и используйте `AcceptCertificateHandler`.
+
+Для `clickhouse-client` вы также можете использовать флаг CLI `--accept-invalid-certificate`, который автоматически применяет обе эти настройки.
+
+**clickhouse-client** (`/etc/clickhouse-client/config.xml`):
+
+```xml
+<openSSL>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+**clickhouse-server** (`config.xml` или файл в `config.d/`). В разделе `<server>` по-прежнему нужно указать пути к сертификату и ключу, поскольку сервер должен предъявлять клиентам собственный сертификат, даже если не проверяет их сертификаты:
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-server/certs/server.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-server/certs/server.key</privateKeyFile>
+        <verificationMode>none</verificationMode>
+        <caConfig>/etc/clickhouse-server/certs/ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+**Автономный ClickHouse Keeper** (файл конфигурации Keeper):
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-keeper/certs/keeper.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-keeper/certs/keeper.key</privateKeyFile>
+        <verificationMode>none</verificationMode>
+        <caConfig>/etc/clickhouse-keeper/certs/ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
 ## Итоги \{#summary\}
 
 В этой статье основное внимание было уделено настройке среды ClickHouse с использованием TLS. Параметры будут отличаться в зависимости от требований в продуктивных средах, например уровни проверки сертификатов, протоколы, шифры и т. д. Теперь у вас должно быть хорошее понимание последовательности шагов по настройке и использованию защищённых соединений.

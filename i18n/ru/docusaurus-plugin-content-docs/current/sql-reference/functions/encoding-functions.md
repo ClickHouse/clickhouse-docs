@@ -19,23 +19,24 @@ doc_type: 'reference'
 
 ## bech32Decode \{#bech32Decode\}
 
-Появилась в: v25.6.0
+Добавлена в: v25.6.0
 
 Декодирует строку адреса Bech32, созданную с помощью алгоритма `bech32` или `bech32m`.
 
 :::note
-В отличие от функции кодирования, `Bech32Decode` автоматически обрабатывает дополненные нулями значения типа `FixedString`.
+В отличие от функции кодирования, `bech32Decode` автоматически обрабатывает дополненные нулями значения типа FixedString.
 :::
 
 **Синтаксис**
 
 ```sql
-bech32Decode(address)
+bech32Decode(address[, 'raw'])
 ```
 
 **Аргументы**
 
 * `address` — строка в формате Bech32 для декодирования. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
+* `mode` — необязательный параметр. Передайте `'raw'`, чтобы декодировать строку без удаления первого байта, используемого как версия witness. Используйте это для адресов, не относящихся к SegWit (например, в Cosmos SDK). [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -65,7 +66,7 @@ tb   751E76E8199196D454941C45D1B3A323F1433BD6
 
 ## bech32Encode \{#bech32Encode\}
 
-Впервые появилась в: v25.6.0
+Добавлена в: v25.6.0
 
 Кодирует строку двоичных данных вместе с человекочитаемой частью (HRP), используя алгоритмы [Bech32 или Bech32m](https://en.bitcoin.it/wiki/Bech32).
 
@@ -79,14 +80,14 @@ tb   751E76E8199196D454941C45D1B3A323F1433BD6
 **Синтаксис**
 
 ```sql
-bech32Encode(hrp, data[, witver])
+bech32Encode(hrp, data[, witver | 'bech32' | 'bech32m'])
 ```
 
 **Аргументы**
 
 * `hrp` — Строка из `1 - 83` строчных символов, задающая «human-readable part» (человекочитаемую часть) кода. Обычно `bc` или `tb`. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 * `data` — Строка двоичных данных для кодирования. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `witver` — Необязательный параметр. Версия witness (по умолчанию = 1). Тип `UInt*`, задающий версию алгоритма. `0` для Bech32 и `1` или больше для Bech32m. [`UInt*`](/sql-reference/data-types/int-uint)
+* `witver_or_variant` — Необязательный параметр. Либо версия witness типа `UInt*` (по умолчанию = 1, `0` для Bech32, `1` или больше для Bech32m), либо строковый вариант кодирования: `'bech32'` (BIP173) или `'bech32m'` (BIP350). При использовании строкового варианта байт версии witness не добавляется в начало — это необходимо для адресов не SegWit, таких как Cosmos SDK. [`UInt*`](/sql-reference/data-types/int-uint) или [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -126,6 +127,18 @@ SELECT bech32Encode('abcdefg', unhex('751e76e8199196d454941c45d1b3a323f1433bd6')
 
 ```response title=Response
 abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
+```
+
+**Адрес Cosmos SDK (BIP173, без версии witness)**
+
+```sql title=Query
+-- Using 'bech32' variant encodes raw data without a witness version byte,
+-- compatible with Cosmos SDK, Injective, Osmosis, and other non-SegWit chains.
+SELECT bech32Encode('inj', unhex('751e76e8199196d454941c45d1b3a323f1433bd6'), 'bech32')
+```
+
+```response title=Response
+inj1w508d6qejxtdg4y5r3zarvary0c5xw7kgj5aqs
 ```
 
 ## bin \{#bin\}

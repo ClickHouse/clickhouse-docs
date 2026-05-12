@@ -12,7 +12,6 @@ integration:
 
 import edit_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/edit.png';
 import cloudsql_logical_decoding1 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding1.png';
-import cloudsql_logical_decoding2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding2.png';
 import cloudsql_logical_decoding3 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/cloudsql_logical_decoding3.png';
 import connections from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections.png';
 import connections_networking from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/connections_networking.png';
@@ -34,19 +33,17 @@ import Image from '@theme/IdealImage';
 
 ## Включение логической репликации \{#enable-logical-replication\}
 
-**Вам не нужно** выполнять следующие шаги, если параметр `cloudsql.logical_decoding` установлен в значение `on`, а `wal_sender_timeout` равен `0`. Эти параметры в большинстве случаев уже предварительно настроены, если вы мигрируете с другого инструмента репликации данных.
+**Вам не нужно** выполнять следующие шаги, если параметр `cloudsql.logical_decoding` установлен в значение `on`. Этот параметр в большинстве случаев уже предварительно настроен, если вы мигрируете с другого инструмента репликации данных.
 
 1. Нажмите кнопку **Edit** на странице Overview.
 
-<Image img={edit_button} alt="Кнопка Edit в Cloud SQL Postgres" size="lg" border/>
+<Image img={edit_button} alt="Кнопка Edit в Cloud SQL Postgres" size="lg" border />
 
-2. Перейдите в раздел Flags и установите `cloudsql.logical_decoding` в `on`, а `wal_sender_timeout` — в `0`. Эти изменения потребуют перезапуска сервера Postgres.
+2. Перейдите в раздел Flags и установите `cloudsql.logical_decoding` в `on`. Это изменение потребует перезапуска сервера Postgres.
 
-<Image img={cloudsql_logical_decoding1} alt="Изменение cloudsql.logical_decoding на on" size="lg" border/>
+<Image img={cloudsql_logical_decoding1} alt="Изменение cloudsql.logical_decoding на on" size="lg" border />
 
-<Image img={cloudsql_logical_decoding2} alt="Изменены cloudsql.logical_decoding и wal_sender_timeout" size="lg" border/>
-
-<Image img={cloudsql_logical_decoding3} alt="Перезапуск сервера" size="lg" border/>
+<Image img={cloudsql_logical_decoding3} alt="Перезапуск сервера" size="lg" border />
 
 ## Создание пользователя ClickPipes и выдача прав \{#creating-clickpipes-user-and-granting-permissions\}
 

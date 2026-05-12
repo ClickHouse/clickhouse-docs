@@ -154,26 +154,3 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 * 在连接到 HyperDX UI 并创建到 ClickHouse 的连接时，使用你的 Cloud 凭证。
 
 <JSONSupport />
-
-要完成上述设置，请修改 `docker-compose.yml` 中相关的服务：
-
-```yaml
-  app:
-    image: ${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    ports:
-      - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
-      - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
-    environment:
-      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # enable JSON
-      FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
-      HYPERDX_API_KEY: ${HYPERDX_API_KEY}
-      HYPERDX_API_PORT: ${HYPERDX_API_PORT}
-    # truncated for brevity
-
-  otel-collector:
-    image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    environment:
-      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
-      CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s' 
-      # truncated for brevity
-```

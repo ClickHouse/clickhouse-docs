@@ -1645,7 +1645,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-引入于：v25.10.0
+引入于：v25.11.0
 
 对几何对象的 x 和 y 坐标进行翻转。该操作会交换纬度和经度，这对于在不同坐标系之间转换或纠正坐标顺序非常有用。
 
@@ -1689,7 +1689,7 @@ SELECT flipCoordinates([(1.0, 2.0), (3.0, 4.0)]);
 [(2.0, 1.0), (4.0, 3.0)]
 ```
 
-**多边形**
+**Polygon**
 
 ```sql title=Query
 SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
@@ -2768,6 +2768,42 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
+## highlightQuery \{#highlightQuery\}
+
+引入版本：v26.5.0
+
+解析 ClickHouse SQL 查询字符串，并返回一个用于语法高亮的高亮范围数组。
+每个范围都是一个命名元组，包含起始位置 (以字节为单位) 、结束位置以及高亮类型。
+高亮类型描述该片段的语法角色 (关键字、标识符、函数等) ，
+可用于在 UI 中指定颜色。在 LIKE 和 REGEXP 字符串模式中，元字符
+和转义字符会分别高亮显示。
+
+**语法**
+
+```sql
+highlightQuery(query)
+```
+
+**参数**
+
+* `query` — ClickHouse SQL 查询字符串。String。
+
+**返回值**
+
+表示高亮范围的命名元组数组 `(begin UInt64, end UInt64, type Enum8(...))`。[`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**示例**
+
+**simple**
+
+```sql title=Query
+SELECT highlightQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'keyword'),(7,8,'number')]
+```
+
 ## hostName \{#hostName\}
 
 引入版本：v20.5.0
@@ -3821,6 +3857,143 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 ┌─normalizedQueryHashKeepNames─┐
 │                            1 │
 └──────────────────────────────┘
+```
+
+## obfuscateQuery \{#obfuscateQuery\}
+
+引入版本：v26.4.0
+
+通过将标识符替换为随机词、将字面量替换为随机值，并保留查询结构，来混淆 SQL 查询。
+
+此函数适用于在记录日志或出于调试目的共享查询之前，对查询进行匿名化处理。
+即使输入相同的查询，不同行也会产生不同的混淆结果，这有助于
+在处理多个查询时保护隐私。
+
+可选的 `tag` 参数可在同一函数调用
+在一个查询中被多次使用时，防止公共子表达式消除。这样可确保每次调用都会产生不同的混淆结果。
+
+特性：
+
+* 将表名、列名和别名替换为随机词
+* 将数字和字符串字面量替换为随机值
+* 保留整体查询结构和 SQL 语法
+* 对不同行产生不同的结果
+
+**语法**
+
+```sql
+obfuscateQuery(query[, tag])
+```
+
+**参数**
+
+* `query` — 待混淆的 SQL 查询。[`String`](/sql-reference/data-types/string)
+* `tag` — 可选。用于在多次使用相同函数调用时，防止公共子表达式被消除的值。
+
+**返回值**
+
+混淆后的查询，其中标识符和字面量会被替换，同时保留原始查询结构。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT name, age FROM users WHERE age > 30')
+```
+
+```response title=Response
+SELECT fruit, number FROM table WHERE number > 12
+```
+
+**使用标签防止公共子表达式消除**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT * FROM t', 1), obfuscateQuery('SELECT * FROM t', 2)
+```
+
+```response title=Response
+SELECT a FROM b, SELECT c FROM d
+```
+
+**不同行会产生不同的结果**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT 1') AS a, obfuscateQuery('SELECT 1') AS b
+```
+
+```response title=Response
+A B
+```
+
+## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
+
+引入版本：v26.4.0
+
+使用指定的种子对 SQL 查询进行混淆，以获得确定性结果。
+
+与 `obfuscateQuery()` 不同，此函数在给定相同种子时会产生确定性结果。
+当您需要在多次运行之间保持混淆结果一致，或者希望出于测试或调试目的
+复现相同的已混淆查询时，这个函数非常有用。
+
+特性：
+
+* 基于提供的种子进行确定性混淆
+* 相同的种子始终会产生相同的混淆结果
+* 不同的种子会产生不同的结果
+* 与 obfuscateQuery() 一样保留查询结构
+
+使用场景：
+
+* 可复现的测试用例
+* 在多次运行中保持一致的匿名化结果
+* 使用一致的已混淆查询进行调试
+
+**语法**
+
+```sql
+obfuscateQueryWithSeed(query, seed)
+```
+
+**参数**
+
+* `query` — 要混淆的 SQL 查询。 [`String`](/sql-reference/data-types/string)
+* `seed` — 用于混淆的种子。相同的种子会产生确定性的结果。 [`Integer`](/sql-reference/data-types/int-uint) 或 [`String`](/sql-reference/data-types/string)
+
+**返回值**
+
+根据提供的种子以确定性方式生成的混淆查询。 [`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**使用整数种子进行确定性混淆**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT name FROM users', 42)
+```
+
+```response title=Response
+SELECT fruit FROM table
+```
+
+**基于字符串种子的确定性混淆**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT id, value FROM data', 'myseed')
+```
+
+```response title=Response
+SELECT a, b FROM c
+```
+
+**相同的种子会得到相同的结果**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT 1', 100) = obfuscateQueryWithSeed('SELECT 1', 100)
+```
+
+```response title=Response
+true
 ```
 
 ## parseReadableSize \{#parseReadableSize\}
@@ -4982,6 +5155,39 @@ SELECT toTypeName(123)
 ┌─toTypeName(123)─┐
 │ UInt8           │
 └─────────────────┘
+```
+
+## tokenizeQuery \{#tokenizeQuery\}
+
+引入版本：v26.5.0
+
+将 ClickHouse SQL 查询字符串标记化，并返回一个标记数组。
+每个标记都是一个命名元组，包含起始位置 (以字节为单位) 、结束位置以及标记类型。
+
+**语法**
+
+```sql
+tokenizeQuery(query)
+```
+
+**参数**
+
+* `query` — ClickHouse SQL 查询字符串。String。
+
+**返回值**
+
+一个由命名元组 `(begin UInt64, end UInt64, type Enum8(...))` 组成的数组，表示该查询的标记。[`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**示例**
+
+**简单**
+
+```sql title=Query
+SELECT tokenizeQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'BareWord'),(6,7,'Whitespace'),(7,8,'Number')]
 ```
 
 ## transactionID \{#transactionID\}

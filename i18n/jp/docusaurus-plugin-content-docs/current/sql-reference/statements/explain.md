@@ -532,7 +532,11 @@ Expression ((Project names + Projection))
 `pretty` = 1 の場合、プランツリーはインデントの代わりに線描文字を使って表示され、主要なステップに関する追加情報も表示されます:
 
 * **クエリの出力カラム**は、計画の先頭に表示されます。
+* フィルター、集約キー、ソート記述、および**ウィンドウ関数**内の**式**は、人が読みやすい SQL 風の表記で表示されます (例: `greater(plus(a, 1), 5)` ではなく `a + 1 > 5`)。わかりやすくするために、内部カラム識別子のプレフィックス (`__table1.` など) は削除されます。
 * **ソースステップ** (`ReadFromMergeTree` など) には、その出力カラムが表示されます。
+* **Filter ステップ**には、SQL 表記によるフィルター条件が表示されます。ランタイム join フィルターが存在する場合は、それらも別個に表示されます。
+* **Aggregation ステップ**には、キーと集約関数がその引数とともに表示されます (例: `sum(c)`, `count()`)。
+* タプルリテラル由来の **IN sets** にはその値が表示され (大きい set の場合は省略表示)、サブクエリベースの set には `subquery1`、`subquery2` などのラベルが付き、`Set` エンジンテーブル由来の set にはテーブル名が表示されます。
 * **Join ステップ**には、数学的な表記による結合関係、推定結果行数、
   および各出力カラムが左側と右側のどちらに由来するかが表示されます。異なる join 種別を
   表すために、次の記号を使用します。
@@ -553,8 +557,7 @@ Expression ((Project names + Projection))
 テーブル名の後の角括弧内の数値 (例: `t1[100]`) は、テーブル統計を利用できる場合の
 推定行数を示します。
 
-`pretty` オプションは `compact = 1` と併用すると効果的で、`Expression` ステップや
-詳細なアクション情報を非表示にできるため、計画が読みやすくなります。
+`pretty` オプションは `compact = 1` と併用すると効果的で、`Expression` ステップや詳細なアクション情報を非表示にできるため、計画が読みやすくなります。
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -586,10 +589,10 @@ Join (JOIN FillRightFirst)
 │  t1[100] ⋈ t2[100]
 │  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
 │  Result rows: 100
-│  Join conditions: [(__table1.id) = (__table2.id)]
 │  Output:
 │    Left:  id, value
 │    Right: id, value
+│  Join conditions: id = id
 ├──ReadFromMergeTree (default.t1)
 │     Read type: Default
 │     Parts: 1 | Granules: 1
@@ -599,7 +602,6 @@ Join (JOIN FillRightFirst)
       Parts: 1 | Granules: 1
       Output: id, value
 ```
-
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 

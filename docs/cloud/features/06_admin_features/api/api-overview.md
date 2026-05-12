@@ -58,6 +58,23 @@ If your organization has been migrated to one of the [new pricing plans](https:/
 You will now also be able to specify the `num_replicas` field as a property of the service resource.
 :::
 
+## Terraform provider releases {#terraform-provider-releases}
+
+ClickHouse maintains two official Terraform providers — the ClickHouse Cloud provider for cloud infrastructure and the DBops provider for database-level objects. Both follow the same release model.
+
+### Stable versus alpha {#stable-vs-alpha}
+
+Stable versions (e.g. 3.11.1, 1.9.0) only include resources for GA features. Alpha versions (e.g. 3.12.0-alpha2, 1.10.0-alpha1) include everything in stable plus resources for features still in beta or private preview, and must be explicitly pinned to use.
+
+### Versioning {#versioning}
+
+Both providers use semantic versioning (MAJOR.MINOR.PATCH). The major version is incremented for breaking changes, the minor version for new features or resources, and the
+patch version for bug fixes. Alpha releases append a pre-release suffix to the next minor version (e.g. 3.12.0-alpha1), with the alpha number incrementing as additional fixes or changes are added before promotion (e.g. alpha1 → alpha2 → alpha3). Releases are cut on demand rather than on a fixed schedule. A new alpha is created when a resource is added for a feature not yet GA, or when a fix needs early validation. A new stable is created once accumulated changes — including any features that have since reached GA — are ready for production, typically after a period of customer feedback. Multiple alpha minor versions may accumulate before being consolidated into a single stable release.
+
+### Promotion from alpha to stable {#promotion}
+
+When a Terraform feature is ready for GA, the Terraform resource is promoted from alpha to stable in the next stable release. Until then, the resource is only available in alpha builds.
+
 ## Terraform and OpenAPI New Pricing: Replica Settings Explained {#terraform-and-openapi-new-pricing---replica-settings-explained}
 
 The number of replicas each service will be created with defaults to 3 for the Scale and Enterprise tiers, while it defaults to 1 for the Basic tier.

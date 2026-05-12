@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesGroupArray \{#timeSeriesGroupArray\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.8.0
 
 時系列データをタイムスタンプで昇順にソートします。
 

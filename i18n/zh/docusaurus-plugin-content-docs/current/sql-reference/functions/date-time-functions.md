@@ -1231,8 +1231,8 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 
 返回在 `startdate` 和 `enddate` 之间跨越的指定 `unit` 边界的次数。
 差值是使用相对单位进行计算的。例如，2021-12-29 和 2022-01-01 之间的差值，对于单位 day 是 3 天
- (参见 [`toRelativeDayNum`](#toRelativeDayNum)) ，对于单位 month 是 1 个月 (参见 [`toRelativeMonthNum`](#toRelativeMonthNum)) ，对于单位 year 是 1 年
- (参见 [`toRelativeYearNum`](#toRelativeYearNum)) 。
+(参见 [`toRelativeDayNum`](#toRelativeDayNum)) ，对于单位 month 是 1 个月 (参见 [`toRelativeMonthNum`](#toRelativeMonthNum)) ，对于单位 year 是 1 年
+(参见 [`toRelativeYearNum`](#toRelativeYearNum)) 。
 
 如果指定的单位为 `week`，则 `dateDiff` 认为每周从星期一开始。
 请注意，此行为与函数 `toWeek()` 不同，后者默认认为每周从星期日开始。
@@ -1245,7 +1245,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**别名**: `timestampDiff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `date_diff`, `timestamp_diff`
+**别名**: `timestampDiff`, `DATE_DIFF`, `date_diff`, `TIMESTAMP_DIFF`, `timestamp_diff`
 
 **参数**
 
@@ -1265,8 +1265,8 @@ dateDiff(unit, startdate, enddate[, timezone])
 | quarter     | `quarter`, `quarters`, `qq`, `q`         |
 | year        | `year`, `years`, `yyyy`, `yy`            |
 
-* `startdate` — 第一个参与运算的时间值 (被减数) 。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
-* `enddate` — 第二个参与运算的时间值 (减数) 。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `startdate` — 第一个参与运算的时间值 (减数) 。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
+* `enddate` — 第二个参与运算的时间值 (被减数) 。[`Date`](/sql-reference/data-types/date) 或 [`Date32`](/sql-reference/data-types/date32) 或 [`DateTime`](/sql-reference/data-types/datetime) 或 [`DateTime64`](/sql-reference/data-types/datetime64)
 * `timezone` — 可选。时区名称。如果指定，则同时应用于 `startdate` 和 `enddate`。如果未指定，则使用 `startdate` 和 `enddate` 自身的时区。如果二者时区不同，则结果未定义。[`String`](/sql-reference/data-types/string)
 
 **返回值**

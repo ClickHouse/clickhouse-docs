@@ -91,16 +91,47 @@ ClickHouse Cloud では、UI からユーザー定義関数を作成するため
   EOF
   ```
 
-  次に、このファイルを ZIP アーカイブに圧縮します。
+  Python スクリプトでサードパーティ製パッケージを import する場合は、それらの依存を記載した `requirements.txt` ファイルを作成する必要があります。例:
 
-  ```bash
-  zip is_business_hours.zip main.py
+  ```text
+  requests>=2.28.0
+  numpy>=1.23.0
   ```
 
   :::note
   ClickHouse Cloud は、次の手順で UI からアップロードする zip ファイル内に `main.py` が含まれていることを前提としています。
   別の名前のファイルにするとエラーが発生します。
   :::
+
+  ### 依存パッケージとローカルファイルをまとめる \{#bundle-dependencies\}
+
+  依存パッケージや追加のローカルファイル (wheel ファイル、設定ファイル、データファイルなど) を含めるには、それらを `main.py` と `requirements.txt` と同じディレクトリに配置します。ZIP アーカイブを作成する際は、すべてのファイルを含めてください。
+
+  ```bash
+  zip is_business_hours.zip main.py requirements.txt
+  ```
+
+  Python コードでは、`os.path.dirname(os.path.abspath(__file__))` を使用して、ローカルでバンドルされたパスのベースディレクトリを参照できます。これにより、ZIP アーカイブ内で `main.py` が配置されているディレクトリの絶対パスが返されるため、同梱されたほかのファイルにアクセスできます。
+
+  ```python
+  import os
+
+  # Get the base directory of the bundled files
+  base_dir = os.path.dirname(os.path.abspath(__file__))
+  config_path = os.path.join(base_dir, 'config.json')
+  ```
+
+  これは、次のような場合に役立ちます。
+
+  * UDF に含まれる設定ファイルにアクセスする
+  * カスタム依存関係用の wheel パッケージを読み込む
+  * 追加のスクリプトやデータファイルを参照する
+
+  次に、このファイルを ZIP アーカイブに圧縮します。
+
+  ```bash
+  zip is_business_hours.zip main.py
+  ```
 
   ### UI から UDF を作成する \{#create-udf-via-ui\}
 

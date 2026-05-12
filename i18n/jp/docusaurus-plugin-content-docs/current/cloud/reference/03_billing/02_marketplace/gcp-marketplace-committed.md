@@ -43,11 +43,11 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace オファー概要" border/>
+<Image img={gcp_marketplace_committed_2} size="md" alt="GCP Marketplace オファー概要" border />
 
 <br />
 
-<Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace 料金概要" border/>
+<Image img={gcp_marketplace_committed_3} size="md" alt="GCP Marketplace 料金概要" border />
 
 <br />
 
@@ -55,7 +55,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace オファー承諾ページ" border/>
+<Image img={gcp_marketplace_committed_4} size="md" alt="GCP Marketplace オファー承諾ページ" border />
 
 <br />
 
@@ -63,7 +63,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace 承諾完了の確認画面" border/>
+<Image img={gcp_marketplace_committed_5} size="md" alt="GCP Marketplace 承諾完了の確認画面" border />
 
 <br />
 
@@ -71,7 +71,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace の ClickHouse Cloud ページ" border/>
+<Image img={gcp_marketplace_committed_6} size="md" alt="GCP Marketplace の ClickHouse Cloud ページ" border />
 
 <br />
 
@@ -79,7 +79,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace サイト離脱確認モーダル" border/>
+<Image img={gcp_marketplace_committed_7} size="md" alt="GCP Marketplace サイト離脱確認モーダル" border />
 
 <br />
 
@@ -87,7 +87,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud サインインページ" border/>
+<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud サインインページ" border />
 
 <br />
 
@@ -95,7 +95,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud サインアップページ" border/>
+<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud サインアップページ" border />
 
 <br />
 
@@ -103,11 +103,7 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud サインアップ情報入力フォーム" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud サインアップ情報入力フォーム 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud サインアップ情報入力フォーム" border />
 
 <br />
 
@@ -119,20 +115,21 @@ import gcp_marketplace_payg_6 from '@site/static/images/cloud/manage/billing/mar
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud サインインページ" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud サインインページ" border />
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新規サービスページ" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新規サービスページ" border />
 
 <br />
 
 9. サインアップ完了を確認するメールが届きます。
 
 <br />
+
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 確認メール" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 確認メール" border />
 
 <br />
 

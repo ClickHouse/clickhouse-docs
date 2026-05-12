@@ -466,6 +466,19 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 Пропускать столбцы с неподдерживаемыми типами при определении схемы для формата CapnProto
 
+## input_format_column_name_matching_mode \{#input_format_column_name_matching_mode\}
+
+<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "auto"},{"label": "Сначала сопоставляет имена входных столбцов с учётом регистра, а если это не удаётся, переходит к регистронезависимому сопоставлению вместо того, чтобы требовать точного совпадения регистра."}]}, {"id": "row-2","items": [{"label": "26.4"},{"label": "match_case"},{"label": "Новая настройка"}]}]} />
+
+Определяет режим сопоставления имён столбцов при приёме данных через различные форматы (включая, помимо прочего, JSONEachRow, CSVWithNames, JSONColumns, BSONEachRow, RowBinaryWithNames).
+Поддерживаемые режимы:
+
+* match&#95;case: сопоставление с учётом регистра
+  * ignore&#95;case: регистронезависимое сопоставление
+  * auto: сначала пытается выполнить сопоставление с учётом регистра, если не удаётся — выполняет регистронезависимое сопоставление.
+
 ## input_format_connection_handling \{#input_format_connection_handling\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -1263,14 +1276,6 @@ curl -sS --globoff -H 'Accept: application/json' --no-buffer \
 
 Пропускать столбцы с неподдерживаемыми типами при определении схемы для формата Parquet
 
-## input_format_parquet_use_native_reader_v3 \{#input_format_parquet_use_native_reader_v3\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "1"},{"label": "Кажется стабильной"}]}]}/>
-
-Использовать ридер Parquet v3.
-
 ## input_format_parquet_use_offset_index \{#input_format_parquet_use_offset_index\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1597,6 +1602,28 @@ curl -sS --globoff -H 'Accept: application/json' --no-buffer \
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "ClickHouse допускает произвольные двоичные данные в типе данных String, который обычно содержит UTF-8. Строки в форматах Parquet/ORC/Arrow поддерживают только UTF-8. Поэтому вы можете выбрать, какой тип данных Arrow использовать для типа данных String в ClickHouse — String или Binary. Хотя Binary был бы более корректным и совместимым вариантом, использование String по умолчанию в большинстве случаев будет соответствовать ожиданиям пользователей."}]}]}/>
 
 Использовать тип Arrow String вместо Binary для столбцов типа String
+
+## output_format_arrow_unsupported_types_as_binary \{#output_format_arrow_unsupported_types_as_binary\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "1" },
+      {
+        label:
+          "Новая настройка для преобразования неподдерживаемых типов CH в двоичный формат Arrow вместо исключения UNKNOWN_TYPE."
+      }
+    ]
+  }
+]}
+/>
+
+Выводит типы, для которых не предусмотрено преобразование, как необработанные двоичные данные. Если false, для таких типов будет возникать исключение UNKNOWN&#95;TYPE.
 
 ## output_format_arrow_use_64_bit_indexes_for_dictionary \{#output_format_arrow_use_64_bit_indexes_for_dictionary\}
 
@@ -2106,14 +2133,6 @@ SELECT area/period FROM account_orders FORMAT JSON;
   * если значение больше суммарного размера всех bloom-фильтров, bloom-фильтры для всех групп строк будут накапливаться в памяти, а затем записываться вместе ближе к концу файла,
   * в противном случае bloom-фильтры будут накапливаться в памяти и записываться, когда их общий размер превысит это значение.
 
-## output_format_parquet_compliant_nested_types \{#output_format_parquet_compliant_nested_types\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.5"},{"label": "1"},{"label": "Изменено имя внутреннего поля в схеме выходного файла Parquet."}]}]}/>
-
-В схеме файла Parquet использовать имя `element` вместо `item` для элементов списка. Это исторический артефакт реализации библиотеки Arrow. В целом повышает совместимость, за исключением, возможно, некоторых старых версий Arrow.
-
 ## output_format_parquet_compression_method \{#output_format_parquet_compression_method\}
 
 <SettingsInfoBlock type="ParquetCompression" default_value="zstd" />
@@ -2180,7 +2199,7 @@ SELECT area/period FROM account_orders FORMAT JSON;
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-Выполнять кодирование Parquet в нескольких потоках. Требует включённой настройки output_format_parquet_use_custom_encoder.
+Выполнять кодирование Parquet в нескольких потоках.
 
 ## output_format_parquet_row_group_size \{#output_format_parquet_row_group_size\}
 
@@ -2202,29 +2221,13 @@ SELECT area/period FROM account_orders FORMAT JSON;
 
 Использовать тип данных Parquet String вместо Binary для строковых столбцов.
 
-## output_format_parquet_use_custom_encoder \{#output_format_parquet_use_custom_encoder\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.5"},{"label": "1"},{"label": "Включить пользовательский кодировщик Parquet."}]}]}/>
-
-Использовать более быструю реализацию кодировщика Parquet.
-
-## output_format_parquet_version \{#output_format_parquet_version\}
-
-<SettingsInfoBlock type="ParquetVersion" default_value="2.latest" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "2.latest"},{"label": "Использовать последнюю версию формата Parquet при выводе данных"}]}]}/>
-
-Версия формата Parquet при выводе данных. Поддерживаемые версии: 1.0, 2.4, 2.6 и 2.latest (по умолчанию).
-
 ## output_format_parquet_write_bloom_filter \{#output_format_parquet_write_bloom_filter\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "Добавлена поддержка записи фильтров Блума в файлы Parquet."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "Добавлена поддержка записи bloom-фильтров в файлы Parquet."}]}]} />
 
-Записывает фильтры Блума в файлы Parquet. Требует, чтобы параметр output_format_parquet_use_custom_encoder был установлен в true.
+Записывает bloom-фильтры в файлы Parquet.
 
 ## output_format_parquet_write_checksums \{#output_format_parquet_write_checksums\}
 

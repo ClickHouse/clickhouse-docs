@@ -1,10 +1,9 @@
+[//]: # "This file is included in FAQ > Troubleshooting"
 
-[//]: # (This file is included in FAQ > Troubleshooting)
-
-- [インストール](#troubleshooting-installation-errors)
-- [サーバーへの接続](#troubleshooting-accepts-no-connections)
-- [クエリ処理](#troubleshooting-does-not-process-queries)
-- [クエリ処理のパフォーマンス](#troubleshooting-too-slow)
+* [インストール](#troubleshooting-installation-errors)
+* [サーバーへの接続](#troubleshooting-accepts-no-connections)
+* [クエリ処理](#troubleshooting-does-not-process-queries)
+* [クエリ処理の効率](#troubleshooting-too-slow)
 
 ## インストール \{#troubleshooting-installation-errors\}
 
@@ -66,7 +65,7 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 ### Docker コンテナを実行できない \{#you-cant-run-docker-container\}
 
-単純に `docker run clickhouse/clickhouse-server` を実行すると、以下のようなスタックトレースが出力されてクラッシュします。
+`docker run clickhouse/clickhouse-server` を単純に実行すると、次のようなスタックトレースが出力されてクラッシュします。
 
 ```bash
 $ docker run -it clickhouse/clickhouse-server
@@ -89,24 +88,7 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
  (version 24.10.1.2812 (official build))
 ```
 
-0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
-1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
-2. BaseDaemon::initializeTerminationAndSignalProcessing() @ 0x000000000d267a14
-3. BaseDaemon::initialize(Poco::Util::Application&) @ 0x000000000d2652cb
-4. DB::Server::initialize(Poco::Util::Application&) @ 0x000000000d128b38
-5. Poco::Util::Application::run() @ 0x000000001581cfda
-6. DB::Server::run() @ 0x000000000d1288f0
-7. Poco::Util::ServerApplication::run(int, char\*\*) @ 0x0000000015825e27
-8. mainEntryClickHouseServer(int, char\*\*) @ 0x000000000d125b38
-9. main @ 0x0000000007ea4eee
-10. ? @ 0x00007f67ff946d90
-11. ? @ 0x00007f67ff946e40
-12. \_start @ 0x00000000062e802e
-    (version 24.10.1.2812 (official build))
-
-```bash
-$ sudo service clickhouse-server status
-```
+原因は、`20.10.10` より古いバージョンの Docker デーモンです。対処方法としては、これをアップグレードするか、`docker run [--privileged | --security-opt seccomp=unconfined]` を実行します。後者にはセキュリティ上の影響があります。
 
 ## サーバーへの接続 \{#troubleshooting-accepts-no-connections\}
 
@@ -122,13 +104,13 @@ $ sudo service clickhouse-server status
 コマンド:
 
 ```bash
-$ sudo service clickhouse-server start
+$ sudo service clickhouse-server status
 ```
 
 サーバーが起動していない場合は、次のコマンドで起動してください。
 
-```text
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
+```bash
+$ sudo service clickhouse-server start
 ```
 
 **ログを確認する**
@@ -143,10 +125,16 @@ $ sudo service clickhouse-server start
 `clickhouse-server` の起動が設定エラーで失敗した場合は、エラー内容の説明とともに `<Error>` という行が表示されます。例えば、次のようになります。
 
 ```text
-<Information> Application: starting up.
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
 ファイルの末尾にエラーが表示されていない場合は、次の文字列以降を起点にファイル全体を確認してください。
+
+```text
+<Information> Application: starting up.
+```
+
+サーバー上で 2 つ目の `clickhouse-server` インスタンスを起動しようとすると、次のようなログが表示されます。
 
 ```text
 2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
@@ -162,28 +150,21 @@ Revision: 54413
 2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
-サーバー上で 2 つ目の `clickhouse-server` インスタンスを起動しようとすると、次のようなログが表示されます。
-
-```bash
-$ sudo journalctl -u clickhouse-server
-```
-
 **systemd のログを確認する**
 
 `clickhouse-server` のログに有用な情報が見つからない場合や、ログ自体が存在しない場合は、次のコマンドを実行して `systemd` のログを確認できます。
 
 ```bash
-$ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
+$ sudo journalctl -u clickhouse-server
 ```
 
 **対話モードで clickhouse-server を起動する**
 
 ```bash
-$ curl 'http://localhost:8123/' --data-binary "SELECT a"
-Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
+$ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-server/config.xml
 ```
 
-このコマンドは、autostart スクリプトの標準パラメータを使用してサーバーを対話型アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
+このコマンドは、autostart スクリプトの標準パラメータを使って、サーバーを対話型アプリケーションとして起動します。このモードでは、`clickhouse-server` はすべてのイベントメッセージをコンソールに出力します。
 
 ### 設定パラメータ \{#configuration-parameters\}
 

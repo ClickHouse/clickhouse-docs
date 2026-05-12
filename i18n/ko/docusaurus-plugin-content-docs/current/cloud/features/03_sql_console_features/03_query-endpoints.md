@@ -1,19 +1,16 @@
 ---
-sidebar_title: '쿼리 API 엔드포인트'
+sidebar_title: 'Query API 엔드포인트'
 slug: /cloud/features/query-api-endpoints
 description: '저장된 쿼리로부터 REST API 엔드포인트를 손쉽게 생성합니다'
 keywords: ['api', '쿼리 api 엔드포인트', '쿼리 엔드포인트', '쿼리 rest api']
-title: '쿼리 API 엔드포인트'
+title: 'Query API 엔드포인트'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import {CardSecondary} from '@clickhouse/click-ui/bundled';
 import console_api_keys from '@site/static/images/cloud/guides/query-endpoints/console-api-keys.png';
 import edit_api_key from '@site/static/images/cloud/guides/query-endpoints/api-key-edit.png';
 import specific_locations from '@site/static/images/cloud/guides/query-endpoints/specific-locations.png';
-import Link from '@docusaurus/Link'
-
 
 # 쿼리 API 엔드포인트 \{#query-api-endpoints\}
 

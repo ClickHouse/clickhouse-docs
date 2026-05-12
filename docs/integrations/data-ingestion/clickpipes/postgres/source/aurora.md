@@ -12,7 +12,6 @@ integration:
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
-import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';
 import modify_parameter_group from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/modify_parameter_group.png';
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
@@ -29,9 +28,8 @@ ClickPipes supports Aurora PostgreSQL-Compatible Edition version 12 and later.
 
 You can skip this section if your Aurora instance already has the following settings configured:
 - `rds.logical_replication = 1`
-- `wal_sender_timeout = 0`
 
-These settings are typically pre-configured if you previously used another data replication tool.
+This setting is typically pre-configured if you previously used another data replication tool.
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -39,25 +37,16 @@ postgres=> SHOW rds.logical_replication ;
 -------------------------
  on
 (1 row)
-
-postgres=> SHOW wal_sender_timeout ;
- wal_sender_timeout
---------------------
- 0
-(1 row)
 ```
 
 If not already configured, follow these steps:
 
-1. Create a new parameter group for your Aurora PostgreSQL version with the required settings:
+1. Create a new parameter group for your Aurora PostgreSQL version with the required setting:
     - Set `rds.logical_replication` to 1
-    - Set `wal_sender_timeout` to 0
 
 <Image img={parameter_group_in_blade} alt="Where to find Parameter groups in Aurora" size="lg" border/>
 
 <Image img={change_rds_logical_replication} alt="Changing rds.logical_replication" size="lg" border/>
-
-<Image img={change_wal_sender_timeout} alt="Changing wal_sender_timeout" size="lg" border/>
 
 2. Apply the new parameter group to your Aurora PostgreSQL cluster
 

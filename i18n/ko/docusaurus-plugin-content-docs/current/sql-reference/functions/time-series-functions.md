@@ -337,6 +337,44 @@ SELECT timeSeriesFromGrid('2025-06-01 00:00:00'::DateTime64(3), '2025-06-01 00:0
 └────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+## timeSeriesGroupToSamplingKey \{#timeSeriesGroupToSamplingKey\}
+
+도입 버전: v26.4.0
+
+지정된 그룹의 태그로부터 파생된 안정적인 `UInt64` 샘플링 키를 반환합니다.
+
+이 값은 결정론적입니다. 동일한 입력 태그는 항상 동일한 키를 생성합니다.
+`limitk` 및 `limit_ratio`와 같은 샘플링 연산자의 정렬 키로 사용하도록 설계되었습니다.
+
+**구문**
+
+```sql
+timeSeriesGroupToSamplingKey(group)
+```
+
+**인수**
+
+* `group` — 태그 그룹입니다. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**반환값**
+
+그룹에 연결된 태그를 기반으로 계산된 안정적인 `UInt64` hash입니다. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**예시**
+
+```sql title=Query
+SELECT timeSeriesTagsToGroup([('region', 'eu'), ('env', 'dev')], '__name__', 'http_requests_count') AS group,
+       timeSeriesGroupToSamplingKey(group) AS sampling_key
+```
+
+```response title=Response
+┌─group─┬─────────sampling_key─┐
+│     1 │ 12876543210987654321 │
+└───────┴──────────────────────┘
+```
+
 ## timeSeriesGroupToTags \{#timeSeriesGroupToTags\}
 
 도입된 버전: v26.1.0

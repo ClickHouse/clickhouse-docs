@@ -17,7 +17,7 @@ Asynchronous inserts are supported over both the HTTP and native TCP interfaces.
 
 When enabled (`async_insert = 1`), inserts are buffered and only written to disk once one of the flush conditions is met:
 
-- The buffer reaches a specified data size ([`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size), default 10 MiB).
+- The buffer reaches a specified data size ([`async_insert_max_data_size`](/operations/settings/settings#async_insert_max_data_size), default 100 MiB).
 - A time threshold elapses ([`async_insert_busy_timeout_ms`](/operations/settings/settings#async_insert_busy_timeout_max_ms), default 200 ms or 1000 ms on Cloud).
 - A maximum number of insert queries accumulate ([`async_insert_max_query_number`](/operations/settings/settings#async_insert_max_query_number), default 450).
 

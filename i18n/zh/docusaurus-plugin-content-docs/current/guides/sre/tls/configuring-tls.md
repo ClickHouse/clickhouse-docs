@@ -551,6 +551,109 @@ The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-c
 :::
 
 
+## OpenSSL 验证模式和证书 handler \{#openssl-verification-modes\}
+
+`<openSSL>` 配置提供了多个 `<verificationMode>` 和 `<invalidCertificateHandler>` 选项，用于控制 ClickHouse 如何验证 TLS 证书。这些设置适用于 `clickhouse-server`、`clickhouse-client` 以及独立运行的 ClickHouse Keeper。
+
+### 验证模式 \{#verification-modes\}
+
+在 `<openSSL>` 的 `<server>` 或 `<client>` 部分中设置 `<verificationMode>`：
+
+| 模式        | 说明                                                       |
+| --------- | -------------------------------------------------------- |
+| `none`    | 不验证证书。连接会加密，但不会检查对端身份。仅用于测试。                             |
+| `relaxed` | 如果对端提供了证书，则会验证该证书；但如果未提供证书，也不会报错。                        |
+| `once`    | 在服务器端，仅在初始握手时验证客户端证书，并跳过重新协商。在客户端，其行为与 `relaxed` 相同。     |
+| `strict`  | 需要提供对端证书并进行完整验证。如果证书缺失、已过期，或不是由受信任 CA 签名，连接将失败。建议用于生产环境。 |
+
+### 无效证书 handler \{#invalid-certificate-handlers\}
+
+在 `<openSSL>` 的 `<server>` 或 `<client>` 部分中设置 `<invalidCertificateHandler>`。该 handler 用于确定证书验证失败时的处理方式。在服务器端，它控制如何响应无效的客户端证书；在客户端，它控制如何响应无效的服务器证书。
+
+| Handler                    | Description              |
+| -------------------------- | ------------------------ |
+| `RejectCertificateHandler` | 如果证书无效，则拒绝连接。这是默认且推荐的设置。 |
+| `AcceptCertificateHandler` | 即使证书无效，也接受连接。仅用于测试。      |
+
+### 示例：禁用证书验证 \{#disabling-certificate-verification\}
+
+:::warning
+禁用证书验证会取消 TLS 身份检查，使连接暴露在中间人攻击风险之下。仅应在隔离的开发或测试环境中使用此配置。
+:::
+
+要完全跳过证书验证 (例如在测试环境中使用自签名证书时) ，请将 `verificationMode` 设置为 `none`，并使用 `AcceptCertificateHandler`。
+
+对于 `clickhouse-client`，您也可以使用 `--accept-invalid-certificate` CLI 参数，该参数会自动应用这两项设置。
+
+**clickhouse-client** (`/etc/clickhouse-client/config.xml`):
+
+```xml
+<openSSL>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+**clickhouse-server** (`config.xml` 或 `config.d/` 中的某个文件) 。`<server>` 部分仍需要提供证书和密钥路径，因为服务器必须向客户端出示自己的证书，即使它并不验证客户端的证书：
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-server/certs/server.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-server/certs/server.key</privateKeyFile>
+        <verificationMode>none</verificationMode>
+        <caConfig>/etc/clickhouse-server/certs/ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
+**独立运行的 ClickHouse Keeper** (Keeper 配置文件) ：
+
+```xml
+<openSSL>
+    <server>
+        <certificateFile>/etc/clickhouse-keeper/certs/keeper.crt</certificateFile>
+        <privateKeyFile>/etc/clickhouse-keeper/certs/keeper.key</privateKeyFile>
+        <verificationMode>none</verificationMode>
+        <caConfig>/etc/clickhouse-keeper/certs/ca.crt</caConfig>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+    </server>
+    <client>
+        <loadDefaultCAFile>false</loadDefaultCAFile>
+        <cacheSessions>true</cacheSessions>
+        <disableProtocols>sslv2,sslv3</disableProtocols>
+        <preferServerCiphers>true</preferServerCiphers>
+        <verificationMode>none</verificationMode>
+        <invalidCertificateHandler>
+            <name>AcceptCertificateHandler</name>
+        </invalidCertificateHandler>
+    </client>
+</openSSL>
+```
+
 ## 摘要 \{#summary\}
 
 本文重点介绍了如何在 ClickHouse 环境中配置 TLS。针对生产环境中的不同需求（例如证书验证级别、协议、密码套件等），具体配置会有所差异。但现在你应该已经对配置和实现安全连接所需的各个步骤有了清晰的理解。

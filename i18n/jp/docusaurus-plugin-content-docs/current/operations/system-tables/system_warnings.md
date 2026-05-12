@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.warnings \{#systemwarnings\}
-
 <SystemTableCloud />
+
+## 説明 \{#description\}
 
 このテーブルは ClickHouse サーバーに関する警告を表示します。
 同種の警告は 1 つの警告にまとめられます。
@@ -29,22 +29,18 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 * [max&#95;named&#95;collection&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_named_collection_num_to_warn)
 * [resource&#95;overload&#95;warnings](/operations/settings/server-overload#resource-overload-warnings)
 
-列:
+## カラム \{#columns\}
 
 * `message` ([String](../../sql-reference/data-types/string.md)) — 警告メッセージ。
 * `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — メッセージの整形に使用されるフォーマット文字列。
 
-**例**
+## 例 \{#example\}
 
-クエリ:
-
-```sql
+```sql title="Query"
  SELECT * FROM system.warnings LIMIT 2 \G;
 ```
 
-結果:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 message:               The number of active parts is more than 10.

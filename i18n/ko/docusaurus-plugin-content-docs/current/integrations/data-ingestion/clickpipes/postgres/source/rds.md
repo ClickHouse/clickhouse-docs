@@ -12,7 +12,6 @@ integration:
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
-import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';
 import modify_parameter_group from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/modify_parameter_group.png';
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
@@ -30,9 +29,8 @@ ClickPipes는 Postgres 버전 12 이상을 지원합니다.
 RDS 인스턴스에 다음 설정이 이미 구성되어 있다면 이 섹션은 건너뛰어도 됩니다.
 
 * `rds.logical_replication = 1`
-* `wal_sender_timeout = 0`
 
-이러한 설정은 이전에 다른 데이터 복제(replication) 도구를 사용했다면 보통 미리 설정되어 있습니다.
+이 설정은 이전에 다른 데이터 복제(replication) 도구를 사용했다면 보통 미리 설정되어 있습니다.
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -40,25 +38,16 @@ postgres=> SHOW rds.logical_replication ;
 -------------------------
  on
 (1 row)
-
-postgres=> SHOW wal_sender_timeout ;
- wal_sender_timeout
---------------------
- 0
-(1 row)
 ```
 
 아직 구성하지 않았다면 다음 단계를 따르십시오.
 
 1. 필요한 설정으로 사용 중인 Postgres 버전에 맞는 새 파라미터 그룹을 생성합니다.
    * `rds.logical_replication`을 1로 설정합니다.
-   * `wal_sender_timeout`을 0으로 설정합니다.
 
 <Image img={parameter_group_in_blade} alt="RDS에서 파라미터 그룹을 찾는 위치" size="lg" border />
 
 <Image img={change_rds_logical_replication} alt="rds.logical_replication 변경" size="lg" border />
-
-<Image img={change_wal_sender_timeout} alt="wal_sender_timeout 변경" size="lg" border />
 
 2. 새 파라미터 그룹을 RDS Postgres 데이터베이스에 적용합니다.
 
@@ -67,7 +56,6 @@ postgres=> SHOW wal_sender_timeout ;
 3. 변경 내용을 적용하기 위해 RDS 인스턴스를 재부팅합니다.
 
 <Image img={reboot_rds} alt="RDS Postgres 재부팅" size="lg" border />
-
 
 ## 데이터베이스 사용자 구성 \{#configure-database-user\}
 

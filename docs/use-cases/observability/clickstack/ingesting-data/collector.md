@@ -11,7 +11,6 @@ keywords: ['ClickStack', 'OpenTelemetry collector', 'ClickHouse observability', 
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';
 import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
 import clickstack_with_gateways from '@site/static/images/use-cases/observability/clickstack-with-gateways.png';
@@ -20,6 +19,10 @@ import ingestion_key from '@site/static/images/use-cases/observability/ingestion
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ExtendingConfig from '@site/docs/use-cases/observability/clickstack/ingesting-data/_snippets/_extending_config.md';
+
+:::tip Try OTel FYI - OTel collector documentation made simple
+[OTel FYI](https://otel.fyi) offers clear, concise OpenTelemetry collector documentation covering receivers, processors, exporters, and pipelines. A great companion resource for configuring your ClickStack OTel collector.
+:::
 
 This page includes details on configuring the official ClickStack OpenTelemetry (OTel) collector.
 
@@ -419,111 +422,8 @@ For agent instances responsible for shipping events to a gateway, and only setti
 | 5k/second    | 0.5 CPU, 0.5GiB             |
 | 10k/second   | 1 CPU, 1GiB                 |
 
-## JSON support {#json-support}
+## Schema choice: Map vs JSON {#schema-choice}
 
-<BetaBadge/>
+The ClickStack collector creates tables that store attributes as `Map(LowCardinality(String), String)` columns by default. This is the recommended schema for observability workloads. A `JSON`-typed schema is available in beta for evaluation on workloads with a small, stable attribute key-set.
 
-ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
-
-:::warning Beta Feature
-JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs
-:::
-
-### Benefits of the JSON type {#benefits-json-type}
-
-The JSON type offers the following benefits to ClickStack users:
-
-- **Type preservation** - Numbers stay numbers, booleans stay booleans—no more flattening everything into strings. This means fewer casts, simpler queries, and more accurate aggregations.
-- **Path-level columns** - Each JSON path becomes its own sub-column, reducing I/O. Queries only read the fields they need, unlocking major performance gains over the old Map type which required the entire column to be read in order to query a specific field.
-- **Deep nesting just works** - Naturally handle complex, deeply nested structures without manual flattening (as required by the Map type) and subsequent awkward JSONExtract functions.
-- **Dynamic, evolving schemas** - Perfect for observability data where teams add new tags and attributes over time. JSON handles these changes automatically, without schema migrations. 
-- **Faster queries, lower memory** - Typical aggregations over attributes like `LogAttributes` see 5-10x less data read and dramatic speedups, cutting both query time and peak memory usage.
-- **Simple management** - No need to pre-materialize columns for performance. Each field becomes its own sub-column, delivering the same speed as native ClickHouse columns.
-
-### Enabling JSON support {#enabling-json-support}
-
-<Tabs groupId="json-support">
-
-<TabItem value="managed-clickstack" label="Managed ClickStack" default>
-
-To enable JSON support in Managed ClickStack, please contact our support team prior to configuring the collector below. **The feature must also be enabled in the ClickStack UI (HyperDX) in ClickHouse Cloud.**
-
-To enable this support for your collector, set the environment variable `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'`. This ensures the schemas are created in ClickHouse using the JSON type.
-
-For example:
-
-```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-```
-
-</TabItem>
-
-<TabItem value="oss-clickstack" label="Open Source ClickStack" default>
-
-To enable this support for the collector, set the environment variable `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` on any deployment that includes the collector. This ensures the schemas are created in ClickHouse using the JSON type.
-
-:::note HyperDX support
-In order to query the JSON type, support must also be enabled in the HyperDX application layer via the environment variable `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
-:::
-
-For example:
-
-```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-```
-
-</TabItem>
-
-</Tabs>
-
-### Migrating from map-based schemas to the JSON type {#migrating-from-map-based-schemas-to-json}
-
-:::important Backwards compatibility
-The [JSON type](/interfaces/formats/JSON) is **not backwards compatible** with existing map-based schemas. Enabling this feature will create new tables using the `JSON` type and requires manual data migration.
-:::
-
-To migrate from the Map-based schemas, follow these steps:
-
-<VerticalStepper headerLevel="h4">
-
-#### Stop the OTel collector {#stop-the-collector}
-
-#### Rename existing tables and update sources {#rename-existing-tables-sources}
-
-Rename existing tables and update data sources in HyperDX. 
-
-For example:
-
-```sql
-RENAME TABLE otel_logs TO otel_logs_map;
-RENAME TABLE otel_metrics TO otel_metrics_map;
-```
-
-#### Deploy the collector {#deploy-the-collector}
-
-Deploy the collector with `OTEL_AGENT_FEATURE_GATE_ARG` set.
-
-#### Restart the HyperDX container with JSON schema support {#restart-the-hyperdx-container}
-
-```shell
-export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
-```
-
-#### Create new data sources {#create-new-data-sources}
-
-Create new data sources in HyperDX pointing to the JSON tables.
-
-</VerticalStepper>
-
-#### Migrating existing data (optional) {#migrating-existing-data}
-
-To move old data into the new JSON tables:
-
-```sql
-INSERT INTO otel_logs SELECT * FROM otel_logs_map;
-INSERT INTO otel_metrics SELECT * FROM otel_metrics_map;
-```
-
-:::warning
-Recommended only for datasets smaller than ~10 billion rows. Data previously stored with the Map type didn't preserve type precision (all values were strings). As a result, this old data will appear as strings in the new schema until it ages out, requiring some casting on the frontend. Type for new data will be preserved with the JSON type.
-:::
+For the full comparison, when each is appropriate, the env vars required to enable the JSON-typed schema, and the migration walkthrough, see [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json).

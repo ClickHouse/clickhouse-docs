@@ -9,130 +9,132 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
+<SystemTableCloud />
 
-# system.query_log \{#systemquery_log\}
+## Описание \{#description\}
 
-<SystemTableCloud/>
+Хранит метаданные и статистику о выполненных запросах: время начала, длительность, сообщения об ошибках, использование ресурсов и другие детали выполнения. Эта таблица не хранит результаты запросов.
 
-Хранит метаданные и статистику о выполненных запросах: время начала, длительность, сообщения об ошибках, использование ресурсов и другие детали выполнения. Эта таблица не хранит результаты запросов. 
+Вы можете изменить настройки логирования запросов в разделе конфигурации сервера [query&#95;log](../../operations/server-configuration-parameters/settings.md#query_log).
 
-Вы можете изменить настройки логирования запросов в разделе конфигурации сервера [query_log](../../operations/server-configuration-parameters/settings.md#query_log).
+Вы можете отключить логирование запросов, установив [log&#95;queries = 0](/operations/settings/settings#log_queries). Мы не рекомендуем отключать логирование, так как информация в этой таблице важна для устранения неполадок.
 
-Вы можете отключить логирование запросов, установив [log_queries = 0](/operations/settings/settings#log_queries). Мы не рекомендуем отключать логирование, так как информация в этой таблице важна для устранения неполадок.
-
-Период сброса данных задаётся параметром `flush_interval_milliseconds` в разделе настроек сервера [query_log](../../operations/server-configuration-parameters/settings.md#query_log). Чтобы принудительно выполнить сброс, используйте запрос [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs).
+Период сброса данных задаётся параметром `flush_interval_milliseconds` в разделе настроек сервера [query&#95;log](../../operations/server-configuration-parameters/settings.md#query_log). Чтобы принудительно выполнить сброс, используйте запрос [SYSTEM FLUSH LOGS](/sql-reference/statements/system#flush-logs).
 
 ClickHouse не удаляет данные из этой таблицы автоматически. См. раздел [Introduction](/operations/system-tables/overview#system-tables-introduction) для получения дополнительной информации.
 
 Таблица `system.query_log` регистрирует два типа запросов:
 
-1.  Первичные запросы, которые были запущены непосредственно клиентом.
-2.  Дочерние запросы, которые были инициированы другими запросами (для распределённого выполнения запросов). Для таких запросов информация о родительских запросах отображается в столбцах `initial_*`.
+1. Первичные запросы, которые были запущены непосредственно клиентом.
+2. Дочерние запросы, которые были инициированы другими запросами (для распределённого выполнения запросов). Для таких запросов информация о родительских запросах отображается в столбцах `initial_*`.
 
 Каждый запрос создаёт одну или две строки в таблице `query_log` в зависимости от статуса запроса (см. столбец `type`):
 
-1.  Если выполнение запроса прошло успешно, создаются две строки с типами `QueryStart` и `QueryFinish`.
-2.  Если при обработке запроса произошла ошибка, создаются два события с типами `QueryStart` и `ExceptionWhileProcessing`.
-3.  Если ошибка произошла до запуска запроса, создаётся одно событие с типом `ExceptionBeforeStart`.
+1. Если выполнение запроса прошло успешно, создаются две строки с типами `QueryStart` и `QueryFinish`.
+2. Если при обработке запроса произошла ошибка, создаются два события с типами `QueryStart` и `ExceptionWhileProcessing`.
+3. Если ошибка произошла до запуска запроса, создаётся одно событие с типом `ExceptionBeforeStart`.
 
-Вы можете использовать настройку [log_queries_probability](/operations/settings/settings#log_queries_probability), чтобы уменьшить количество запросов, регистрируемых в таблице `query_log`.
+Вы можете использовать настройку [log&#95;queries&#95;probability](/operations/settings/settings#log_queries_probability), чтобы уменьшить количество запросов, регистрируемых в таблице `query_log`.
 
-Вы можете использовать настройку [log_formatted_queries](/operations/settings/settings#log_formatted_queries), чтобы логировать форматированные запросы в столбец `formatted_query`.
+Вы можете использовать настройку [log&#95;formatted&#95;queries](/operations/settings/settings#log_formatted_queries), чтобы логировать форматированные запросы в столбец `formatted_query`.
 
 ## Столбцы \{#columns\}
 
-* `hostname` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — Имя хоста сервера, на котором выполняется запрос.
-* `type` ([Enum8](../../sql-reference/data-types/enum.md)) — Тип события, произошедшего при выполнении запроса. Значения:
-  * `'QueryStart' = 1` — Успешное начало выполнения запроса.
-  * `'QueryFinish' = 2` — Успешное завершение выполнения запроса.
-  * `'ExceptionBeforeStart' = 3` — Исключение до начала выполнения запроса.
-  * `'ExceptionWhileProcessing' = 4` — Исключение во время выполнения запроса.
-* `event_date` ([Date](../../sql-reference/data-types/date.md)) — Дата начала запроса.
-* `event_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время начала запроса.
-* `event_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время начала запроса с точностью до микросекунд.
-* `query_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — время начала выполнения запроса.
-* `query_start_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — время начала выполнения запроса с микросекундной точностью.
-* `query_duration_ms` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — время выполнения запроса в миллисекундах.
-* `read_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Общее количество строк, прочитанных из всех таблиц и табличных функций, участвующих в запросе. Включает обычные подзапросы, подзапросы в `IN` и `JOIN`. Для распределённых запросов `read_rows` включает общее количество строк, прочитанных на всех репликах. Каждая реплика отправляет своё значение `read_rows`, а сервер-инициатор запроса суммирует все полученные и локальные значения. Объём кэша не влияет на это значение.
-* `read_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — общее количество байт, прочитанных из всех таблиц и табличных функций, участвовавших в запросе. Включает обычные подзапросы, подзапросы для `IN` и `JOIN`. Для распределённых запросов `read_bytes` включает общее количество байт, прочитанных на всех репликах. Каждая реплика отправляет своё значение `read_bytes`, а сервер-инициатор запроса суммирует все полученные и локальные значения. Объём кэша не влияет на это значение.
-* `written_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — для запросов `INSERT` количество записанных строк. Для остальных запросов значение в этом столбце равно 0.
-* `written_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Для запросов `INSERT` количество записанных байт в несжатом виде. Для других запросов значение столбца равно 0.
-* `result_rows` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Количество строк в результате выполнения запроса `SELECT` или количество строк в запросе `INSERT`.
-* `result_bytes` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — объём оперативной памяти в байтах, используемый для хранения результата запроса.
-* `memory_usage` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — Объём памяти, потребляемой запросом.
-* `current_database` ([String](../../sql-reference/data-types/string.md)) — имя текущей базы данных.
-* `query` ([String](../../sql-reference/data-types/string.md)) — строка запроса.
-* `formatted_query` ([String](../../sql-reference/data-types/string.md)) — Форматированная строка запроса.
-* `normalized_query_hash` ([UInt64](/sql-reference/data-types/int-uint#integer-ranges)) — числовой хэш, одинаковый для запросов, которые отличаются только значениями литералов.
-* `query_kind` ([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md)) — тип запроса.
-* `databases` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Имена баз данных, которые присутствуют в запросе.
-* `tables` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Имена таблиц, используемых в запросе.
-* `columns` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Имена столбцов, имеющихся в запросе.
-* `partitions` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Имена партиций, задействованных в запросе。
-* `projections` ([String](../../sql-reference/data-types/string.md)) — Имена проекций, использованных при выполнении запроса.
-* `views` ([Array](../../sql-reference/data-types/array.md)([LowCardinality(String)](../../sql-reference/data-types/lowcardinality.md))) — Имена материализованных или живых представлений (Live View), присутствующих в запросе.
-* `exception_code` ([Int32](../../sql-reference/data-types/int-uint.md)) — Код исключения.
-* `exception` ([String](../../sql-reference/data-types/string.md)) — сообщение об исключении.
-* `stack_trace` ([String](../../sql-reference/data-types/string.md)) — [трассировка стека](https://en.wikipedia.org/wiki/Stack_trace). Пустая строка, если запрос был успешно выполнен.
-* `is_initial_query` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Тип запроса. Возможные значения:
-  * 1 — Запрос был инициирован клиентом.
-  * 0 — Запрос был инициирован другим запросом в рамках выполнения распределённого запроса.
-* `connection_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес клиента, с которого было установлено соединение. При подключении через прокси это будет адрес прокси.
-* `connection_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — Клиентский порт, с которого было установлено соединение. При подключении через прокси это будет порт прокси-сервера.
-* `user` ([String](../../sql-reference/data-types/string.md)) — Имя пользователя, который инициировал текущий запрос.
-* `query_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор запроса.
-* `address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес, который был использован для выполнения запроса. При подключении через прокси-сервер и включённом параметре [auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) это будет адрес клиента, а не прокси.
-* `port` ([UInt16](/sql-reference/data-types/int-uint#integer-ranges)) — Порт клиента, использованный для выполнения запроса. При подключении через прокси и включённой настройке [auth&#95;use&#95;forwarded&#95;address](/operations/server-configuration-parameters/settings#auth_use_forwarded_address) здесь будет указан порт клиента, а не прокси-сервера.
-* `initial_user` ([String](../../sql-reference/data-types/string.md)) — Имя пользователя, который выполнил исходный запрос (при распределённом выполнении запросов).
-* `initial_query_id` ([String](../../sql-reference/data-types/string.md)) — идентификатор исходного запроса (для распределённого выполнения запросов).
-* `initial_address` ([IPv6](../../sql-reference/data-types/ipv6.md)) — IP-адрес, с которого был инициирован родительский запрос.
-* `initial_port` ([UInt16](../../sql-reference/data-types/int-uint.md)) — клиентский порт, использованный для выполнения родительского запроса.
-* `initial_query_start_time` ([DateTime](../../sql-reference/data-types/datetime.md)) — Время начала исходного запроса (для распределённого выполнения запроса).
-* `initial_query_start_time_microseconds` ([DateTime64](../../sql-reference/data-types/datetime64.md)) — Время начала исходного запроса с точностью до микросекунд (при распределённом выполнении запросов).
-* `interface` ([UInt8](../../sql-reference/data-types/int-uint.md)) — Интерфейс, через который был инициирован запрос. Возможные значения:
-  * 1 — TCP.
-  * 2 — HTTP.
-* `os_user` ([String](../../sql-reference/data-types/string.md)) — Имя пользователя операционной системы, под которым запускается [clickhouse-client](../../interfaces/client.md).
-* `client_hostname` ([String](../../sql-reference/data-types/string.md)) — имя хоста клиентской машины, на которой запущен [clickhouse-client](../../interfaces/client.md) или другой TCP‑клиент.
-* `client_name` ([String](../../sql-reference/data-types/string.md)) — Имя [clickhouse-client](../../interfaces/client.md) или другого TCP-клиента.
-* `client_revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ревизия [clickhouse-client](../../interfaces/client.md) или другого TCP-клиента.
-* `client_version_major` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Старший номер версии [clickhouse-client](../../interfaces/client.md) или другого TCP-клиента.
-* `client_version_minor` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Минорная версия клиента [clickhouse-client](../../interfaces/client.md) или другого TCP‑клиента.
-* `client_version_patch` ([UInt32](../../sql-reference/data-types/int-uint.md)) — номер патч-версии [clickhouse-client](../../interfaces/client.md) или другого TCP-клиента.
-* `script_query_number` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Номер запроса в скрипте с несколькими запросами для [clickhouse-client](../../interfaces/client.md).
-* `script_line_number` ([UInt32](../../sql-reference/data-types/int-uint.md)) — Номер строки начала запроса в скрипте с несколькими запросами для [clickhouse-client](../../interfaces/client.md).
-* `http_method` (UInt8) — HTTP-метод, инициировавший запрос. Возможные значения:
-  * 0 — Запрос был отправлен через TCP-интерфейс.
-  * 1 — Использовался метод `GET`.
-  * 2 — Использовался метод `POST`.
-* `http_user_agent` ([String](../../sql-reference/data-types/string.md)) — HTTP-заголовок `User-Agent`, переданный в HTTP-запросе.
-* `http_referer` ([String](../../sql-reference/data-types/string.md)) — HTTP-заголовок `Referer`, переданный в HTTP-запросе (содержит абсолютный или частичный адрес страницы, выполняющей запрос).
-* `forwarded_for` ([String](../../sql-reference/data-types/string.md)) — HTTP-заголовок `X-Forwarded-For`, переданный в HTTP-запросе.
-* `quota_key` ([String](../../sql-reference/data-types/string.md)) — `quota key`, указанный в настройке [quotas](../../operations/quotas.md) (см. `keyed`).
-* `revision` ([UInt32](../../sql-reference/data-types/int-uint.md)) — ревизия ClickHouse.
-* `ProfileEvents` ([Map(String, UInt64)](../../sql-reference/data-types/map.md)) — события ProfileEvents, измеряющие различные метрики. Их описание приведено в таблице [system.events](/operations/system-tables/events)
-* `Settings` ([Map(String, String)](../../sql-reference/data-types/map.md)) — настройки, которые были изменены при выполнении запроса клиентом. Чтобы включить логирование изменений настроек, установите значение параметра `log_query_settings` равным 1.
-* `log_comment` ([String](../../sql-reference/data-types/string.md)) — комментарий к логу. Может иметь произвольное строковое значение длиной не более [max&#95;query&#95;size](../../operations/settings/settings.md#max_query_size). Пустая строка, если не задан.
-* `thread_ids` ([Array(UInt64)](../../sql-reference/data-types/array.md)) — Идентификаторы потоков, участвующих в выполнении запроса. Эти потоки могли выполняться не одновременно.
-* `peak_threads_usage` ([UInt64)](../../sql-reference/data-types/int-uint.md)) — максимальное число потоков, одновременно выполняющих запрос.
-* `used_aggregate_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — Канонические имена `aggregate functions`, использованных при выполнении запроса.
-* `used_aggregate_function_combinators` ([Array(String)](../../sql-reference/data-types/array.md)) — канонические имена комбинаторов агрегатных функций, использованных при выполнении запроса.
-* `used_database_engines` ([Array(String)](../../sql-reference/data-types/array.md)) — Канонические имена `движков баз данных`, использованных при выполнении запроса.
-* `used_data_type_families` ([Array(String)](../../sql-reference/data-types/array.md)) — Канонические имена семейств типов данных, использованных при выполнении запроса.
-* `used_dictionaries` ([Array(String)](../../sql-reference/data-types/array.md)) — канонические имена `dictionaries`, которые были использованы при выполнении запроса. Для словарей, настроенных с использованием XML-файла, это имя словаря, а для словарей, созданных с помощью SQL-оператора, каноническим именем является полное квалифицированное имя объекта.
-* `used_formats` ([Array(String)](../../sql-reference/data-types/array.md)) — Канонические имена `formats`, использованных при выполнении запроса.
-* `used_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — канонические имена функций, использованных при выполнении запроса.
-* `used_storages` ([Array(String)](../../sql-reference/data-types/array.md)) — канонические имена хранилищ (`storages`), которые использовались при выполнении запроса.
-* `used_table_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — Канонические имена `table functions`, использованных при выполнении запроса.
-* `used_executable_user_defined_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — Канонические имена `executable user defined functions`, которые были использованы при выполнении запроса.
-* `used_sql_user_defined_functions` ([Array(String)](../../sql-reference/data-types/array.md)) — Канонические имена пользовательских SQL‑функций, использованных при выполнении запроса.
-* `used_privileges` ([Array(String)](../../sql-reference/data-types/array.md)) - Права доступа, которые были успешно проверены при выполнении запроса.
-* `missing_privileges` ([Array(String)](../../sql-reference/data-types/array.md)) — Отсутствующие права доступа при выполнении запроса.
-* `query_cache_usage` ([Enum8](../../sql-reference/data-types/enum.md)) — использование [кэша запросов](../query-cache.md) при выполнении запроса. Значения:
-  * `'Unknown'` = Статус неизвестен.
-  * `'None'` = Результат запроса не был ни записан в кэш запросов, ни прочитан из него.
-  * `'Write'` = Результат запроса был записан в кэш запросов.
-  * `'Read'` = Результат запроса был прочитан из кэша запросов.
+{/*AUTOGENERATED_START*/ }
+
+* `hostname` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — Имя хоста сервера, выполняющего запрос.
+* `type` ([Enum8(&#39;QueryStart&#39; = 1, &#39;QueryFinish&#39; = 2, &#39;ExceptionBeforeStart&#39; = 3, &#39;ExceptionWhileProcessing&#39; = 4)](/sql-reference/data-types/enum)) — Тип события, произошедшего при выполнении запроса. Значения: `QueryStart` — успешное начало выполнения запроса, `QueryFinish` — успешное завершение выполнения запроса, `ExceptionBeforeStart` — исключение перед началом выполнения запроса, `ExceptionWhileProcessing` — исключение в ходе выполнения запроса.
+* `event_date` ([Date](/sql-reference/data-types/date)) — Дата, с которой начинается запрос.
+* `event_time` ([DateTime](/sql-reference/data-types/datetime)) — время начала запроса.
+* `event_time_microseconds` ([DateTime64(6)](/sql-reference/data-types/datetime64)) — Время начала выполнения запроса с точностью до микросекунд.
+* `query_start_time` ([DateTime](/sql-reference/data-types/datetime)) — Время начала выполнения запроса.
+* `query_start_time_microseconds` ([DateTime64(6)](/sql-reference/data-types/datetime64)) — Время начала выполнения запроса с точностью до микросекунд.
+* `query_duration_ms` ([UInt64](/sql-reference/data-types/int-uint)) — Продолжительность выполнения запроса в миллисекундах.
+* `read_rows` ([UInt64](/sql-reference/data-types/int-uint)) — Общее количество строк, прочитанных из всех таблиц и табличных функций, участвующих в запросе. В это число входят обычные подзапросы, а также подзапросы для IN и JOIN. Для распределённых запросов `read_rows` включает общее количество строк, прочитанных на всех репликах. Каждая реплика отправляет своё значение `read_rows`, а сервер-инициатор запроса суммирует все полученные и локальные значения. Объём кэша не влияет на это значение.
+* `read_bytes` ([UInt64](/sql-reference/data-types/int-uint)) — Общее количество байтов, прочитанных из всех таблиц и табличных функций, задействованных в запросе. Сюда входят как обычные подзапросы, так и подзапросы для IN и JOIN. Для распределенных запросов read&#95;bytes включает общее количество строк, прочитанных на всех репликах. Каждая реплика отправляет свое значение read&#95;bytes, а сервер-инициатор запроса суммирует все полученные и локальные значения. Размеры кэша не влияют на это значение.
+* `written_rows` ([UInt64](/sql-reference/data-types/int-uint)) — Для запросов INSERT — число записанных строк. Для других запросов значение столбца равно 0.
+* `written_bytes` ([UInt64](/sql-reference/data-types/int-uint)) — Для запросов INSERT — количество записанных байтов (без сжатия). Для остальных запросов значение столбца равно 0.
+* `result_rows` ([UInt64](/sql-reference/data-types/int-uint)) — количество строк в результате SELECT-запроса или в INSERT-запросе.
+* `result_bytes` ([UInt64](/sql-reference/data-types/int-uint)) — объём оперативной памяти в байтах, использованной для хранения результата запроса.
+* `memory_usage` ([UInt64](/sql-reference/data-types/int-uint)) — Потребление памяти запросом.
+* `current_database` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — имя текущей базы данных.
+* `query` ([String](/sql-reference/data-types/string)) — Строка запроса.
+* `formatted_query` ([String](/sql-reference/data-types/string)) — Строка отформатированного запроса.
+* `normalized_query_hash` ([UInt64](/sql-reference/data-types/int-uint)) — Числовое хеш-значение, одинаковое, например, для запросов, различающихся только значениями литералов.
+* `query_kind` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — Тип запроса.
+* `databases` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Названия баз данных, указанных в запросе.
+* `tables` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Имена таблиц, используемых в запросе.
+* `columns` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Имена столбцов, используемых в запросе.
+* `partitions` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Имена партиций, используемых в запросе.
+* `projections` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Имена проекций, используемых при выполнении запроса.
+* `views` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Имена представлений (материализованных или live), присутствующих в запросе.
+* `exception_code` ([Int32](/sql-reference/data-types/int-uint)) — Код исключения.
+* `exception` ([String](/sql-reference/data-types/string)) — Сообщение об исключении.
+* `stack_trace` ([String](/sql-reference/data-types/string)) — Трассировка стека. Пустая строка, если запрос был выполнен успешно.
+* `is_initial_query` ([UInt8](/sql-reference/data-types/int-uint)) — Тип запроса. Возможные значения: 1 — запрос был инициирован клиентом, 0 — запрос был инициирован другим запросом в рамках выполнения распределённого запроса.
+* `connection_address` ([IPv6](/sql-reference/data-types/ipv6)) — IP-адрес клиента, с которого установлено соединение. При подключении через прокси это будет адрес прокси-сервера.
+* `connection_port` ([UInt16](/sql-reference/data-types/int-uint)) — Порт клиента, с которого было установлено это соединение. При подключении через прокси здесь будет указан порт прокси-сервера.
+* `user` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — Имя пользователя, выполнившего текущий запрос.
+* `query_id` ([String](/sql-reference/data-types/string)) — идентификатор запроса.
+* `address` ([IPv6](/sql-reference/data-types/ipv6)) — IP-адрес, использованный для выполнения запроса. При подключении через прокси, если установлен параметр `auth_use_forwarded_address`, здесь будет указан адрес клиента, а не прокси.
+* `port` ([UInt16](/sql-reference/data-types/int-uint)) — Порт клиента, который использовался для выполнения запроса. Если подключение выполняется через прокси и задан параметр `auth_use_forwarded_address`, здесь будет указан порт клиента, а не прокси.
+* `initial_user` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — Имя пользователя, выполнившего исходный запрос (при распределённом выполнении запроса).
+* `initial_query_id` ([String](/sql-reference/data-types/string)) — идентификатор исходного запроса (для распределённого выполнения запросов).
+* `initial_address` ([IPv6](/sql-reference/data-types/ipv6)) — IP-адрес, с которого был выполнен родительский запрос.
+* `initial_port` ([UInt16](/sql-reference/data-types/int-uint)) — Порт клиента, использованный для выполнения родительского запроса.
+* `initial_query_start_time` ([DateTime](/sql-reference/data-types/datetime)) — Время начала исходного запроса (при выполнении распределённого запроса).
+* `initial_query_start_time_microseconds` ([DateTime64(6)](/sql-reference/data-types/datetime64)) — Время начала запроса с точностью до микросекунд (для распределенного выполнения запроса).
+* `authenticated_user` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — Имя пользователя, прошедшего аутентификацию в этом сеансе.
+* `interface` ([UInt8](/sql-reference/data-types/int-uint)) — Интерфейс, через который был отправлен запрос. Возможные значения: 1 — TCP, 2 — HTTP.
+* `is_secure` ([UInt8](/sql-reference/data-types/int-uint)) — Флаг, указывающий, был ли запрос выполнен через защищённый интерфейс
+* `os_user` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — Имя пользователя OS, под которым запускается clickhouse-client.
+* `client_hostname` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — имя хоста клиентской машины, на которой запущен `clickhouse-client` или другой TCP-клиент.
+* `client_name` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — имя `clickhouse-client` или другого TCP-клиента.
+* `client_revision` ([UInt32](/sql-reference/data-types/int-uint)) — Ревизия клиента clickhouse-client или другого TCP-клиента.
+* `client_version_major` ([UInt32](/sql-reference/data-types/int-uint)) — Основная версия clickhouse-client или другого TCP-клиента.
+* `client_version_minor` ([UInt32](/sql-reference/data-types/int-uint)) — младшая версия clickhouse-client или другого TCP-клиента.
+* `client_version_patch` ([UInt32](/sql-reference/data-types/int-uint)) — Патч-компонент версии clickhouse-client или другого TCP-клиента.
+* `script_query_number` ([UInt32](/sql-reference/data-types/int-uint)) — Номер запроса в скрипте, содержащем несколько запросов, для clickhouse-client.
+* `script_line_number` ([UInt32](/sql-reference/data-types/int-uint)) — Номер строки начала запроса в скрипте с несколькими запросами для clickhouse-client.
+* `http_method` ([UInt8](/sql-reference/data-types/int-uint)) — HTTP-метод, которым был инициирован запрос. Возможные значения: 0 — запрос был выполнен через TCP-интерфейс, 1 — использовался метод GET, 2 — использовался метод POST.
+* `http_user_agent` ([LowCardinality(String)](/sql-reference/data-types/lowcardinality)) — HTTP-заголовок UserAgent, передаваемый с HTTP-запросом.
+* `http_referer` ([String](/sql-reference/data-types/string)) — HTTP-заголовок Referer, передаваемый в HTTP-запросе (содержит абсолютный или частичный адрес страницы, с которой отправляется запрос).
+* `forwarded_for` ([String](/sql-reference/data-types/string)) — HTTP-заголовок X-Forwarded-For, передаваемый в HTTP-запросе.
+* `quota_key` ([String](/sql-reference/data-types/string)) — Ключ квоты, указанный в параметре quotas (см. keyed).
+* `distributed_depth` ([UInt64](/sql-reference/data-types/int-uint)) — Сколько раз запрос пересылался между серверами.
+* `revision` ([UInt32](/sql-reference/data-types/int-uint)) — версия ClickHouse.
+* `log_comment` ([String](/sql-reference/data-types/string)) — Комментарий к журналу. Можно задать произвольную строку длиной не более max&#95;query&#95;size. Если не определён, используется пустая строка.
+* `thread_ids` ([Array(UInt64)](/sql-reference/data-types/array)) — Идентификаторы потоков, участвующих в выполнении запроса. Эти потоки могли выполняться не одновременно друг с другом.
+* `peak_threads_usage` ([UInt64](/sql-reference/data-types/int-uint)) — Максимальное количество одновременно выполняющих запрос потоков.
+* `ProfileEvents` ([Map(LowCardinality(String), UInt64)](/sql-reference/data-types/map)) — события профиля, измеряющие различные метрики. Их описание можно найти в таблице system.events
+* `Settings` ([Map(LowCardinality(String), LowCardinality(String))](/sql-reference/data-types/map)) — настройки, которые были изменены при выполнении запроса клиентом. Чтобы включить логирование изменений настроек, установите значение параметра log&#95;query&#95;settings равным 1.
+* `used_aggregate_functions` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена агрегатных функций, использованных при выполнении запроса.
+* `used_aggregate_function_combinators` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена комбинаторов агрегатных функций, использовавшихся при выполнении запроса.
+* `used_database_engines` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена движков баз данных, использовавшихся при выполнении запроса.
+* `used_data_type_families` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена семейств типов данных, использовавшиеся при выполнении запроса.
+* `used_dictionaries` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена словарей, использованных при выполнении запроса.
+* `used_formats` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена форматов, использованных при выполнении запроса.
+* `used_functions` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена функций, использованных при выполнении запроса.
+* `used_storages` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена хранилищ, использованных при выполнении запроса.
+* `used_table_functions` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена табличных функций, использованных при выполнении запроса.
+* `used_executable_user_defined_functions` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена исполняемых пользовательских функций, использованных при выполнении запроса.
+* `used_sql_user_defined_functions` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Канонические имена пользовательских SQL-функций, использованных при выполнении запроса.
+* `used_row_policies` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Список имён политик строк, которые применялись при выполнении запроса.
+* `used_privileges` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — привилегии, успешно проверенные при выполнении запроса.
+* `missing_privileges` ([Array(LowCardinality(String))](/sql-reference/data-types/array)) — Привилегии, отсутствующие при выполнении запроса.
+* `transaction_id` ([Tuple(UInt64, UInt64, UUID)](/sql-reference/data-types/tuple)) — Идентификатор транзакции, в рамках которой был выполнен запрос.
+* `query_cache_usage` ([Enum8(&#39;Unknown&#39; = 0, &#39;None&#39; = 1, &#39;Write&#39; = 2, &#39;Read&#39; = 3)](/sql-reference/data-types/enum)) — Использование кэша запросов при выполнении запроса. Значения: &#39;Unknown&#39; = Статус неизвестен, &#39;None&#39; = Результат запроса не был ни записан в кэш результатов запросов, ни прочитан из него, &#39;Write&#39; = Результат запроса был записан в кэш результатов запросов, &#39;Read&#39; = Результат запроса был прочитан из кэша результатов запросов.
+* `asynchronous_read_counters` ([Map(LowCardinality(String), UInt64)](/sql-reference/data-types/map)) — Метрики асинхронного чтения.
+* `is_internal` ([UInt8](/sql-reference/data-types/int-uint)) — Указывает, является ли запрос вспомогательным и выполняется ли он внутри системы.
+
+**Псевдонимы:**
+
+* `ProfileEvents.Names` — псевдоним для `mapKeys(ProfileEvents)`.
+* `ProfileEvents.Values` — псевдоним для `mapValues(ProfileEvents)`.
+* `Settings.Names` — псевдоним для `mapKeys(Settings)`.
+* `Settings.Values` — псевдоним для `mapValues(Settings)`.
+
+{/*AUTOGENERATED_END*/ }
 
 ## Примеры \{#examples\}
 
@@ -222,7 +224,7 @@ query_cache_usage:                     None
 
 В ClickHouse Cloud `system.query_log` локален для каждого узла; чтобы увидеть все записи, необходимо выполнять запрос через [`clusterAllReplicas`](/sql-reference/table-functions/cluster).
 
-Например, чтобы агрегировать строки `query_log` со всех реплик в кластере «default», можно выполнить:
+Например, чтобы агрегировать строки query&#95;log со всех реплик в кластере «default», можно выполнить:
 
 ```sql
 SELECT * 
@@ -232,6 +234,6 @@ LIMIT 10
 SETTINGS skip_unavailable_shards = 1;
 ```
 
-**См. также**
+## См. также \{#see-also\}
 
 * [system.query&#95;thread&#95;log](/operations/system-tables/query_thread_log) — Эта таблица содержит информацию о каждом потоке выполнения запроса.

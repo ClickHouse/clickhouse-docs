@@ -96,7 +96,7 @@ ORDER BY [...]
 ALTER TABLE table ADD INDEX <index_name> vectors TYPE vector_similarity(<type>, <distance_function>, <dimensions>) [GRANULARITY <N>];
 ```
 
-ベクトル類似度索引は特別な種類のスキッピング索引です（[こちら](mergetree.md#table_engine-mergetree-data_skipping-indexes)および[こちら](../../../optimize/skipping-indexes)を参照してください)。
+ベクトル類似度索引は特別な種類のスキッピング索引です ([こちら](mergetree.md#table_engine-mergetree-data_skipping-indexes)および[こちら](../../../optimize/skipping-indexes)を参照してください)。
 したがって、上記の `ALTER TABLE` ステートメントでは、テーブルに新たに挿入される将来のデータに対してのみ索引が構築されます。
 既存データに対しても索引を構築するには、その索引をマテリアライズする必要があります。
 
@@ -106,22 +106,28 @@ ALTER TABLE table MATERIALIZE INDEX <index_name> SETTINGS mutations_sync = 2;
 
 `<distance_function>` 関数は次のいずれかである必要があります。
 
-* `L2Distance` — [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)（ユークリッド距離）。ユークリッド空間における 2 点間を結ぶ線分の長さを表します。
-* `cosineDistance` — [cosine distance](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance)（コサイン距離）。ゼロでない 2 つのベクトル間の角度を表します。
+* `L2Distance`、[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance) (ユークリッド距離) であり、ユークリッド空間における 2 点間を結ぶ線分の長さを表します。
+* `cosineDistance` — [cosine distance](https://en.wikipedia.org/wiki/Cosine_similarity#Cosine_distance) (コサイン距離) 。ゼロでない 2 つのベクトル間の角度を表します、または
+* `dotProduct` — [dot product](https://en.wikipedia.org/wiki/Dot_product) (内積) 。2 つのベクトルの要素ごとの積の総和を表します。正規化されたデータでは `cosineDistance` と等価です。
 
 正規化されたデータに対しては通常 `L2Distance` が最適な選択であり、それ以外の場合はスケールの違いを補正するために `cosineDistance` を推奨します。
 
-`<dimensions>` は、基となるカラム内の配列の基数（要素数）を指定します。
-ClickHouse がインデックス作成中に異なる基数の配列を検出した場合、そのインデックスは破棄され、エラーが返されます。
+:::note
+距離関数 `L2Distance` および `cosineDistance` では、値が小さいほど類似度が高いことを意味しますが、`dotProduct` では値が大きいほど類似度が高いことを意味します。
+そのため、`L2Distance` および `cosineDistance` を使用したベクトル類似度索引は `SELECT [...] ORDER BY [...] ASC` クエリ (`ASC` は `ORDER BY` のデフォルト) でのみ使用でき、`dotProduct` で構築されたベクトル類似度索引は `SELECT [...] ORDER BY [...] DESC` クエリでのみ使用できます。
+:::
 
-オプションの GRANULARITY パラメータ `<N>` は、インデックスのグラニュールのサイズを表します（[こちら](../../../optimize/skipping-indexes)を参照）。
+`<dimensions>` は、基となるカラム内の配列のカーディナリティ (要素数) を指定します。
+ClickHouse がインデックス作成中に異なるカーディナリティの配列を検出した場合、そのインデックスは破棄され、エラーが返されます。
+
+オプションの GRANULARITY パラメータ `<N>` は、インデックスのグラニュールのサイズを表します ([こちら](../../../optimize/skipping-indexes)を参照) 。
 通常のスキッピング索引では、デフォルトのインデックスグラニュラリティは 1 ですが、ベクトル類似度インデックスでは 1 億がデフォルトのインデックスグラニュラリティとして使用されます。
 この値により、大きなパーツであっても内部的に構築される索引の数が少数に抑えられます。
-インデックスのグラニュラリティを変更することは、自分の行っていることの影響を理解している上級ユーザーにのみ推奨します（[下記](#differences-to-regular-skipping-indexes)を参照）。
+インデックスのグラニュラリティを変更することは、自分の行っていることの影響を理解している上級ユーザーにのみ推奨します ([下記](#differences-to-regular-skipping-indexes)を参照) 。
 
 ベクトル類似度インデックスは汎用的であり、さまざまな近似検索手法を利用できます。
 実際に使用される手法はパラメータ `<type>` によって指定されます。
-現時点で利用可能な手法は HNSW（[academic paper](https://arxiv.org/abs/1603.09320)）のみであり、階層的近傍グラフに基づく、近似ベクトル検索のための一般的かつ最先端の手法です。
+現時点で利用可能な手法は HNSW ([academic paper](https://arxiv.org/abs/1603.09320)) のみであり、階層的近傍グラフに基づく、近似ベクトル検索のための一般的かつ最先端の手法です。
 `type` として HNSW が使用される場合、ユーザーは任意で HNSW 固有の追加パラメータを指定できます。
 
 ```sql
@@ -141,25 +147,24 @@ ORDER BY [...]
 * `<hnsw_max_connections_per_layer>` は、グラフの各ノードあたりの近傍数を制御します。これは HNSW ハイパーパラメータ `M` としても知られています。デフォルト値は `32` です。値が `0` の場合はデフォルト値が使用されます。
 * `<hnsw_candidate_list_size_for_construction>` は、HNSW グラフの構築中に使用される動的候補リストのサイズを制御します。これは HNSW ハイパーパラメータ `ef_construction` としても知られています。デフォルト値は `128` です。値が `0` の場合はデフォルト値が使用されます。
 
-すべての HNSW 固有パラメータのデフォルト値は、ほとんどのユースケースにおいて良好に機能します。
-そのため、HNSW 固有パラメータをカスタマイズすることは推奨しません。
+ほとんどのユースケースでは、HNSW 固有パラメータはデフォルト値のままで十分適切に機能します。
+したがって、HNSW 固有パラメータをカスタマイズすることは推奨しません。
 
-さらに制約が適用されます:
+さらに、以下の制限が適用されます。
 
-
-* ベクトル類似性インデックスは、[Array(Float32)](../../../sql-reference/data-types/array.md)、[Array(Float64)](../../../sql-reference/data-types/array.md)、または [Array(BFloat16)](../../../sql-reference/data-types/array.md) 型のカラム上にのみ構築できます。`Array(Nullable(Float32))` や `Array(LowCardinality(Float32))` などの Nullable や low-cardinality の float 配列は使用できません。
-* ベクトル類似性インデックスは単一カラム上に構築しなければなりません。
-* ベクトル類似性インデックスは計算式上に構築することもできます（例: `INDEX index_name arraySort(vectors) TYPE vector_similarity([...])`）。ただし、そのようなインデックスは後から近似近傍検索には使用できません。
-* ベクトル類似性インデックスでは、基になるカラム内のすべての配列が `<dimension>` 個の要素を持つ必要があります。この要件はインデックス作成時に検証されます。この要件への違反を可能な限り早期に検出するために、ユーザーはベクトルカラムに対して [CONSTRAINT](/sql-reference/statements/create/table.md#constraints) を追加できます（例: `CONSTRAINT same_length CHECK length(vectors) = 256`）。
-* 同様に、基になるカラム内の配列値は空 (`[]`) であってはならず、デフォルト値（同じく `[]`）を持つように設定してもいけません。
+* ベクトル類似度索引は、[Array(Float32)](../../../sql-reference/data-types/array.md)、[Array(Float64)](../../../sql-reference/data-types/array.md)、または [Array(BFloat16)](../../../sql-reference/data-types/array.md) 型のカラム上にのみ構築できます。`Array(Nullable(Float32))` や `Array(LowCardinality(Float32))` などの Nullable や low-cardinality の float 配列は使用できません。
+* ベクトル類似度索引は単一カラム上に構築しなければなりません。
+* ベクトル類似度索引は計算式上に構築することもできます (例: `INDEX index_name arraySort(vectors) TYPE vector_similarity([...])`) 。ただし、そのようなインデックスは後から近似近傍検索には使用できません。
+* ベクトル類似度索引では、基になるカラム内のすべての配列が `<dimension>` 個の要素を持つ必要があります。この要件はインデックス作成時に検証されます。この要件への違反を可能な限り早期に検出するために、ユーザーはベクトルカラムに対して [CONSTRAINT](/sql-reference/statements/create/table.md#constraints) を追加できます (例: `CONSTRAINT same_length CHECK length(vectors) = 256`) 。
+* 同様に、基になるカラム内の配列値は空 (`[]`) であってはならず、デフォルト値 (同じく `[]`) を持つように設定してもいけません。
 
 **ストレージおよびメモリ消費の見積もり**
 
-典型的な AI モデル（例: Large Language Model、[LLMs](https://en.wikipedia.org/wiki/Large_language_model)）で使用するために生成されるベクトルは、数百から数千の浮動小数点値で構成されます。
+典型的な AI モデル (例: Large Language Model、[LLMs](https://en.wikipedia.org/wiki/Large_language_model)) で使用するために生成されるベクトルは、数百から数千の浮動小数点値で構成されます。
 そのため、1 つのベクトル値だけで複数キロバイトのメモリを消費する可能性があります。
 テーブル内の基になるベクトルカラムに必要なストレージ量と、ベクトル類似性インデックスに必要なメインメモリ量を見積もりたいユーザーは、以下の 2 つの式を使用できます。
 
-テーブル内のベクトルカラムのストレージ消費量（非圧縮時）:
+テーブル内のベクトルカラムのストレージ消費量 (非圧縮時) :
 
 ```text
 Storage consumption = Number of vectors * Dimension * Size of column data type
@@ -183,7 +188,7 @@ Memory for in-memory graph (mg) = Number of vectors * hnsw_max_connections_per_l
 Memory consumption: mv + mg
 ```
 
-[dbpedia データセット](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M)を用いた例：
+[dbpedia データセット](https://huggingface.co/datasets/KShivendu/dbpedia-entities-openai-1M) の例：
 
 ```text
 Memory for vectors in the index (mv) = 1 million * 1536 * 2 (for BFloat16) = 3072 MB
@@ -193,7 +198,6 @@ Memory consumption = 3072 + 512 = 3584 MB
 ```
 
 上記の式では、ベクトル類似度索引が事前割り当てバッファやキャッシュといった実行時データ構造を確保するために必要となる追加のメモリは考慮されていません。
-
 
 #### ベクトル類似インデックスの使用 \{#using-a-vector-similarity-index\}
 
@@ -598,6 +602,8 @@ WHERE type = 'vector_similarity';
 
 #### 例 \{#approximate-nearest-neighbor-search-example\}
 
+クエリ:
+
 ```sql
 CREATE TABLE tab(id Int32, vec Array(Float32), INDEX idx vec TYPE vector_similarity('hnsw', 'L2Distance', 2)) ENGINE = MergeTree ORDER BY id;
 
@@ -610,7 +616,7 @@ ORDER BY L2Distance(vec, reference_vec) ASC
 LIMIT 3;
 ```
 
-戻り値
+結果:
 
 ```result
    ┌─id─┬─vec─────┐
@@ -626,7 +632,6 @@ LIMIT 3;
 * [LAION-5B](../../../getting-started/example-datasets/laion-5b-dataset)
 * [dbpedia](../../../getting-started/example-datasets/dbpedia-dataset)
 * [hackernews](../../../getting-started/example-datasets/hackernews-vector-search-dataset)
-
 
 ### Quantized Bit (QBit) \{#approximate-nearest-neighbor-search-qbit\}
 

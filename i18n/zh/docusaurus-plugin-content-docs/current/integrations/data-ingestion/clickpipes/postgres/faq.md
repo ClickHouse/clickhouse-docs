@@ -281,15 +281,14 @@ max_slot_wal_keep_size = 200GB
 
 ### 我在日志中看到 ReceiveMessage EOF 错误。这意味着什么？ \{#im-seeing-a-receivemessage-eof-error-in-the-logs-what-does-it-mean\}
 
-`ReceiveMessage` 是 Postgres 逻辑解码协议中的一个函数，用于从复制流中读取消息。EOF（End of File，文件结束）错误表示在尝试从复制流中读取数据时，与 Postgres 服务器的连接被意外关闭。
+`ReceiveMessage` 是 Postgres 逻辑解码协议中的一个函数，用于从复制流中读取消息。EOF (End of File，文件结束) 错误表示在尝试从复制流中读取数据时，与 Postgres 服务器的连接被意外关闭。
 
 这是一个可恢复的、完全不是致命错误。ClickPipes 会自动尝试重新连接并继续复制过程。
 
 出现该问题可能有以下几个原因：
 
-- **wal_sender_timeout 过低：** 请确保 `wal_sender_timeout` 设置为 5 分钟或更长时间。该设置控制服务器在关闭连接之前等待客户端响应的时间。如果超时时间过低，可能会导致连接过早断开。
-- **网络问题：** 临时的网络中断可能导致连接断开。
-- **Postgres 服务器重启：** 如果 Postgres 服务器被重启或发生崩溃，连接将会丢失。
+* **网络问题：** 临时的网络中断可能导致连接断开。
+* **Postgres 服务器重启：** 如果 Postgres 服务器被重启或发生崩溃，连接将会丢失。
 
 ### 我的 replication slot 失效了。我该怎么办？ \{#my-replication-slot-is-invalidated-what-should-i-do\}
 

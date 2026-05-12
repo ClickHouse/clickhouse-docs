@@ -24,6 +24,10 @@ import restore_backups_azure from '@site/static/images/cloud/manage/backups/rest
 
 # 通过用户界面备份和恢复 \{#ui-experience\}
 
+:::note
+系统已配置为每 24 小时自动向您的外部存储桶执行一次“完整”备份，且该频率无法配置。
+:::
+
 ## AWS \{#AWS\}
 
 ### 将备份导出到 AWS \{#taking-backups-to-aws\}

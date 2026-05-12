@@ -411,7 +411,7 @@ SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 
 ## dateTimeToUUIDv7 \{#dateTimeToUUIDv7\}
 
-도입된 버전: v25.9.0
+도입 버전: v25.8.0
 
 해당 시점의 [DateTime](../data-types/datetime.md) 값을 [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7)로 변환합니다.
 

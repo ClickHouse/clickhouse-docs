@@ -771,18 +771,24 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 ### TABLE ENGINE \{#table-engine\}
 
-Позволяет использовать указанный движок таблицы при создании таблицы. Применяется к [движкам таблиц](../../engines/table-engines/index.md).
+Позволяет использовать указанный движок таблицы при создании таблицы. Применяется к [Движкам таблиц](../../engines/table-engines/index.md).
 
 **Примеры**
 
-- `GRANT TABLE ENGINE ON * TO john`
-- `GRANT TABLE ENGINE ON TinyLog TO john`
+* `GRANT TABLE ENGINE ON * TO john`
+* `GRANT TABLE ENGINE ON TinyLog TO john`
 
 :::note
 По умолчанию из соображений обратной совместимости при создании таблицы с конкретным движком таблицы права игнорируются,
 однако вы можете изменить это поведение, установив [`table_engines_require_grant` в true](https://github.com/ClickHouse/ClickHouse/blob/df970ed64eaf472de1e7af44c21ec95956607ebb/programs/server/config.xml#L853-L855)
 в config.xml.
 :::
+
+Для некоторых Движков таблиц с внешними источниками могут потребоваться разрешения `READ`/`WRITE` на соответствующий источник. См. [Источники](#sources).
+
+Например, для движка таблицы AzureBlobStorage может потребоваться следующая привилегия.
+
+* `GRANT READ, WRITE ON AZURE TO john`
 
 ### ALL \{#all\}
 

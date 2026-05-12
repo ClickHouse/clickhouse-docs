@@ -12,13 +12,11 @@ integration:
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
-import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';
 import modify_parameter_group from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/modify_parameter_group.png';
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
-
 
 # Aurora Postgres 소스 설정 가이드 \{#aurora-postgres-source-setup-guide\}
 
@@ -31,9 +29,8 @@ ClickPipes는 Aurora PostgreSQL-Compatible Edition 버전 12 이상을 지원합
 Aurora 인스턴스에 이미 다음 설정이 되어 있다면 이 섹션은 건너뛰어도 됩니다.
 
 * `rds.logical_replication = 1`
-* `wal_sender_timeout = 0`
 
-이러한 설정은 이전에 다른 데이터 복제(replication) 도구를 사용한 적이 있다면 일반적으로 사전에 구성되어 있습니다.
+이 설정은 이전에 다른 데이터 복제(replication) 도구를 사용한 적이 있다면 일반적으로 사전에 구성되어 있습니다.
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -41,25 +38,16 @@ postgres=> SHOW rds.logical_replication ;
 -------------------------
  on
 (1 row)
-
-postgres=> SHOW wal_sender_timeout ;
- wal_sender_timeout
---------------------
- 0
-(1 row)
 ```
 
 아직 구성하지 않았다면 다음 단계를 따르십시오.
 
 1. Aurora PostgreSQL 버전에 대해 필요한 설정을 포함하는 새 파라미터 그룹을 생성합니다.
    * `rds.logical_replication`을 1로 설정합니다.
-   * `wal_sender_timeout`을 0으로 설정합니다.
 
 <Image img={parameter_group_in_blade} alt="Aurora에서 파라미터 그룹을 찾는 위치" size="lg" border />
 
 <Image img={change_rds_logical_replication} alt="rds.logical_replication 변경" size="lg" border />
-
-<Image img={change_wal_sender_timeout} alt="wal_sender_timeout 변경" size="lg" border />
 
 2. 새 파라미터 그룹을 Aurora PostgreSQL 클러스터에 적용합니다.
 
@@ -68,7 +56,6 @@ postgres=> SHOW wal_sender_timeout ;
 3. 변경 사항을 적용하기 위해 Aurora 클러스터를 재부팅합니다.
 
 <Image img={reboot_rds} alt="Aurora PostgreSQL 재부팅" size="lg" border />
-
 
 ## 데이터베이스 사용자 구성 \{#configure-database-user\}
 

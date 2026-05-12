@@ -34,7 +34,7 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-<Image img={azure_marketplace_committed_1} size="md" alt="Azure Marketplace プライベートオファーのメール" border/>
+<Image img={azure_marketplace_committed_1} size="md" alt="Azure Marketplace プライベートオファーのメール" border />
 
 <br />
 
@@ -42,7 +42,7 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-<Image img={azure_marketplace_committed_2} size="md" alt="Azure Marketplace プライベートオファーの詳細" border/>
+<Image img={azure_marketplace_committed_2} size="md" alt="Azure Marketplace プライベートオファーの詳細" border />
 
 <br />
 
@@ -50,11 +50,11 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-<Image img={azure_marketplace_committed_3} size="md" alt="Azure Marketplace Private Offer Management ページ" border/>
+<Image img={azure_marketplace_committed_3} size="md" alt="Azure Marketplace Private Offer Management ページ" border />
 
 <br />
 
-<Image img={azure_marketplace_committed_4} size="md" alt="Azure Marketplace Private Offer Management ページの読み込み中画面" border/>
+<Image img={azure_marketplace_committed_4} size="md" alt="Azure Marketplace Private Offer Management ページの読み込み中画面" border />
 
 <br />
 
@@ -62,7 +62,7 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-<Image img={azure_marketplace_committed_5} size="md" alt="Azure Marketplace Private Offer Management ページ（購入が有効化された状態）" border/>
+<Image img={azure_marketplace_committed_5} size="md" alt="Azure Marketplace Private Offer Management ページ（購入が有効化された状態）" border />
 
 <br />
 
@@ -70,15 +70,15 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-- サブスクリプションとリソースグループ
-- SaaS サブスクリプション名
-- プライベートオファーが適用される課金プランを選択します。プライベートオファーが作成された契約期間（例: 1 年）のみ金額が設定されています。その他の課金期間オプションは金額 $0 になります。
-- 定期的な課金（自動更新）を有効にするかどうかを選択します。定期的な課金を選択しない場合、契約は課金期間の終了時に終了し、リソースは廃止予定 (decommissioned) 状態に設定されます。
-- **Review + subscribe** をクリックします。
+* サブスクリプションとリソースグループ
+* SaaS サブスクリプション名
+* プライベートオファーが適用される課金プランを選択します。プライベートオファーが作成された契約期間 (例: 1 年) のみ金額が設定されています。その他の課金期間オプションは金額 $0 になります。
+* 定期的な課金 (自動更新) を有効にするかどうかを選択します。定期的な課金を選択しない場合、契約は課金期間の終了時に終了し、リソースは廃止予定 (decommissioned) 状態に設定されます。
+* **Review + subscribe** をクリックします。
 
 <br />
 
-<Image img={azure_marketplace_committed_6} size="md" alt="Azure Marketplace サブスクリプションフォーム" border/>
+<Image img={azure_marketplace_committed_6} size="md" alt="Azure Marketplace サブスクリプションフォーム" border />
 
 <br />
 
@@ -86,7 +86,7 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-<Image img={azure_marketplace_committed_7} size="md" alt="Azure Marketplace サブスクリプション確認画面" border/>
+<Image img={azure_marketplace_committed_7} size="md" alt="Azure Marketplace サブスクリプション確認画面" border />
 
 <br />
 
@@ -94,7 +94,7 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-<Image img={azure_marketplace_committed_8} size="md" alt="Azure Marketplace サブスクリプション送信中のページ" border/>
+<Image img={azure_marketplace_committed_8} size="md" alt="Azure Marketplace サブスクリプション送信中のページ" border />
 
 <br />
 
@@ -102,7 +102,7 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-<Image img={azure_marketplace_committed_9} size="md" alt="Azure Marketplace Configure account now ボタン" border/>
+<Image img={azure_marketplace_committed_9} size="md" alt="Azure Marketplace Configure account now ボタン" border />
 
 <br />
 
@@ -112,11 +112,7 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud サインアップ情報フォーム 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
@@ -126,13 +122,13 @@ ClickHouse Cloud を、コミットメント契約を通じて [Azure Marketplac
 
 <br />
 
-<Image img={azure_marketplace_payg_11} size="sm" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_11} size="sm" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border/>
+<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud サインアップ情報フォーム" border />
 
 <br />
 

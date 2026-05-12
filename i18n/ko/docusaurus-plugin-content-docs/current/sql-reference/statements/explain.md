@@ -490,7 +490,7 @@ Skip merging: 0
 
 `distributed` = 1인 경우 출력에는 로컬 쿼리 플랜뿐만 아니라 원격 노드에서 실행될 쿼리 플랜도 포함됩니다. 이는 분산 쿼리를 분석하고 디버깅하는 데 유용합니다.
 
-분산 테이블을 사용한 예:
+분산 테이블을 사용한 예시:
 
 ```sql
 EXPLAIN distributed=1 SELECT * FROM remote('127.0.0.{1,2}', numbers(2)) WHERE number = 1;
@@ -508,7 +508,7 @@ Union
           ReadFromSystemNumbers
 ```
 
-병렬 레플리카 예제:
+병렬 레플리카 예시:
 
 ```sql
 SET enable_parallel_replicas = 2, max_parallel_replicas = 2, cluster_for_parallel_replicas = 'default';
@@ -532,11 +532,14 @@ Expression ((Project names + Projection))
 
 두 예제 모두에서 쿼리 플랜은 로컬 및 원격 단계를 포함한 전체 실행 흐름을 보여줍니다.
 
-`pretty` = 1인 경우, 플랜 트리는 들여쓰기 대신 선으로 된 문자로 표시되며,
-주요 단계에 대한 추가 정보도 함께 표시됩니다:
+`pretty` = 1인 경우, 플랜 트리는 들여쓰기 대신 선으로 된 문자로 표시되며, 주요 단계에 대한 추가 정보도 함께 표시됩니다:
 
 * **쿼리 출력 컬럼**은 계획 맨 위에 표시됩니다.
+* 필터, 집계 키, 정렬 설명, 윈도 함수의 **표현식**은 사람이 읽기 쉬운 SQL 유사 표기법으로 표시됩니다(예: `greater(plus(a, 1), 5)` 대신 `a + 1 > 5`). 명확성을 위해 내부 컬럼 식별자 접두사(`__table1.` 등)는 제거됩니다.
 * **소스 단계**(`ReadFromMergeTree` 등)는 해당 단계의 출력 컬럼을 표시합니다.
+* **필터 단계**는 SQL 표기법으로 필터 조건을 표시합니다. 런타임 조인 필터가 있는 경우 별도로 표시됩니다.
+* **집계 단계**는 키와 집계 함수 및 해당 인수(예: `sum(c)`, `count()`)를 표시합니다.
+* 튜플 리터럴의 **IN 세트**는 값(큰 세트의 경우 잘려서 표시됨)을 보여주고, 서브쿼리 기반 세트는 `subquery1`, `subquery2` 등의 레이블로 표시되며, `Set` 엔진 테이블의 세트는 테이블 이름을 표시합니다.
 * **조인 단계**는 수학 표기법을 사용한 조인 관계, 예상 결과 행 수,
   그리고 어떤 출력 컬럼이 왼쪽과 오른쪽 중 어느 쪽에서 오는지를 표시합니다. 다음 기호는
   서로 다른 조인 유형을 나타냅니다:
@@ -590,10 +593,10 @@ Join (JOIN FillRightFirst)
 │  t1[100] ⋈ t2[100]
 │  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
 │  Result rows: 100
-│  Join conditions: [(__table1.id) = (__table2.id)]
 │  Output:
 │    Left:  id, value
 │    Right: id, value
+│  Join conditions: id = id
 ├──ReadFromMergeTree (default.t1)
 │     Read type: Default
 │     Parts: 1 | Granules: 1
@@ -603,7 +606,6 @@ Join (JOIN FillRightFirst)
       Parts: 1 | Granules: 1
       Output: id, value
 ```
-
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 

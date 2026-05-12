@@ -202,9 +202,9 @@ SELECT v::Dynamic AS d, dynamicType(d) FROM test;
 └─────────┴────────────────┘
 ```
 
-### Dynamic(max_types=N) 컬럼을 다른 Dynamic(max_types=K) 컬럼으로 변환 \{#converting-a-dynamicmax_typesn-column-to-another-dynamicmax_typesk\}
+### Dynamic(max_types=N) 컬럼을 다른 Dynamic(max_types=K)으로 변환하기 \{#converting-a-dynamicmax_typesn-column-to-another-dynamicmax_typesk\}
 
-`K >= N`인 경우 변환 과정에서 데이터는 변경되지 않습니다:
+`K >= N`이면 변환해도 데이터는 변경되지 않습니다:
 
 ```sql
 CREATE TABLE test (d Dynamic(max_types=3)) ENGINE = Memory;
@@ -222,7 +222,7 @@ SELECT d::Dynamic(max_types=5) as d2, dynamicType(d2) FROM test;
 └───────┴────────────────┘
 ```
 
-`K < N`인 경우, 가장 드물게 나타나는 타입의 값들은 하나의 특수한 서브컬럼에 삽입되지만, 여전히 조회할 수 있습니다:
+`K < N`이면, 가장 드문 타입의 값들이 하나의 특수한 서브컬럼에 삽입되지만, 여전히 접근할 수 있습니다:
 
 ```text
 CREATE TABLE test (d Dynamic(max_types=4)) ENGINE = Memory;
@@ -298,8 +298,8 @@ $$)
 
 ## 함수에서 Dynamic 타입 사용하기 \{#using-dynamic-type-in-functions\}
 
-대부분의 함수는 `Dynamic` 타입의 인자를 지원합니다. 이 경우 함수는 `Dynamic` 컬럼에 저장된 각 내부 데이터 타입마다 별도로 실행됩니다.
-함수의 결과 타입이 인자 타입에 따라 달라지는 경우, `Dynamic` 인자와 함께 실행된 해당 함수의 결과 타입은 `Dynamic`이 됩니다. 함수의 결과 타입이 인자 타입에 의존하지 않는 경우에는 결과가 `Nullable(T)`가 되며, 여기서 `T`는 이 함수의 일반적인 결과 타입입니다.
+대부분의 함수는 `Dynamic` 타입의 인수를 지원합니다. 이 경우 함수는 `Dynamic` 컬럼에 저장된 각 내부 데이터 타입마다 별도로 실행됩니다.
+함수의 결과 타입이 인수 타입에 따라 달라지는 경우, `Dynamic` 인수와 함께 실행된 해당 함수의 결과 타입은 `Dynamic`이 됩니다. 함수의 결과 타입이 인수 타입에 의존하지 않는 경우에는 결과가 `Nullable(T)`가 되며, 여기서 `T`는 이 함수의 일반적인 결과 타입입니다.
 
 예시:
 
@@ -484,7 +484,7 @@ SELECT d, d + 1 AS res, toTypeName(res), dynamicType(res) FROM test WHERE dynami
 └────┴─────┴─────────────────┴──────────────────┘
 ```
 
-또는 필요한 타입만 서브컬럼으로 추출합니다:
+또는 필요한 타입만 서브컬럼으로 추출할 수 있습니다:
 
 ```sql
 SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
@@ -501,6 +501,35 @@ SELECT d, d.Int64 + 1 AS res, toTypeName(res) FROM test;
 │ [1,2] │ ᴺᵁᴸᴸ │ Nullable(Int64) │
 │ [3,4] │ ᴺᵁᴸᴸ │ Nullable(Int64) │
 └───────┴──────┴─────────────────┘
+```
+
+### 타입 불일치 시 동작 \{#dynamic-type-mismatch-behavior\}
+
+설정 `dynamic_throw_on_type_mismatch`는 함수가 `Dynamic` 컬럼에 적용될 때 각 행에 실제로 저장된 타입이 해당 함수와 호환되지 않는 경우 어떻게 처리할지 제어합니다:
+
+* `true` (기본값) — 처음으로 호환되지 않는 행에서 예외(`ILLEGAL_TYPE_OF_ARGUMENT`)를 발생시킵니다.
+* `false` — 호환되지 않는 행에는 `NULL`을 반환하고, 호환되는 행의 결과는 그대로 유지합니다.
+
+**예시:**
+
+```sql
+CREATE TABLE test (d Dynamic) ENGINE = Memory;
+INSERT INTO test VALUES ('world'), (123), (456);
+
+-- Default (throw on mismatch): length() does not accept integers, so the query throws.
+SELECT length(d) FROM test;  -- throws ILLEGAL_TYPE_OF_ARGUMENT
+
+-- With throw disabled: incompatible rows return NULL.
+SET dynamic_throw_on_type_mismatch = false;
+SELECT d, length(d) FROM test ORDER BY d::String NULLS LAST;
+```
+
+```text
+┌─d─────┬─length(d)─┐
+│ world │         5 │
+│ 123   │      ᴺᵁᴸᴸ │
+│ 456   │      ᴺᵁᴸᴸ │
+└───────┴───────────┘
 ```
 
 ## ORDER BY 및 GROUP BY에서 Dynamic 타입 사용 \{#using-dynamic-type-in-order-by-and-group-by\}
@@ -589,13 +618,13 @@ SELECT d, dynamicType(d) FROM test GROUP BY d SETTINGS allow_suspicious_types_in
 ## Dynamic 안에 저장되는 서로 다른 데이터 타입 개수의 한계에 도달하기 \{#reaching-the-limit-in-number-of-different-data-types-stored-inside-dynamic\}
 
 `Dynamic` 데이터 타입은 서로 다른 데이터 타입을 개별 서브컬럼으로 저장할 수 있는 개수에 한계가 있습니다. 기본적으로 이 한계는 32이지만, 타입 선언에서 `Dynamic(max_types=N)` 구문을 사용해 변경할 수 있으며 여기서 N은 0과 254 사이의 값입니다(구현 세부 사항 때문에 Dynamic 안에 개별 서브컬럼으로 저장할 수 있는 서로 다른 데이터 타입의 개수는 254를 넘을 수 없습니다).
-한계에 도달하면 `Dynamic` 컬럼에 삽입되는 모든 새로운 데이터 타입은 서로 다른 데이터 타입의 값을 이진 형식으로 저장하는 하나의 공용 데이터 구조 안에 저장됩니다.
+한계에 도달하면 `Dynamic` 컬럼에 삽입되는 모든 새로운 데이터 타입은 서로 다른 데이터 타입의 값을 이진 형식으로 저장하는 하나의 공유 데이터 구조 안에 저장됩니다.
 
 이제 서로 다른 상황에서 이 한계에 도달했을 때 어떤 일이 발생하는지 살펴보겠습니다.
 
 ### 데이터 파싱 중 한계에 도달하는 경우 \{#reaching-the-limit-during-data-parsing\}
 
-데이터에서 `Dynamic` 값을 파싱하는 동안 현재 데이터 블록에서 이 한계에 도달하면, 그 이후의 모든 새로운 값은 공용 데이터 구조에 삽입됩니다:
+데이터에서 `Dynamic` 값을 파싱하는 동안 현재 데이터 블록에서 이 한계에 도달하면, 그 이후의 모든 새로운 값은 공유 데이터 구조에 삽입됩니다:
 
 ```sql
 SELECT d, dynamicType(d), isDynamicElementInSharedData(d) FROM format(JSONEachRow, 'd Dynamic(max_types=3)', '
@@ -672,7 +701,7 @@ SELECT count(), dynamicType(d), isDynamicElementInSharedData(d), _part FROM test
 └─────────┴─────────────────────┴─────────────────────────────────┴───────────┘
 ```
 
-보는 바와 같이 ClickHouse는 가장 자주 등장하는 타입인 `UInt64`와 `Array(UInt64)`는 서브컬럼으로 유지하고, 나머지 모든 타입은 공유 데이터에 저장했습니다.
+앞에서 보았듯이 ClickHouse는 가장 자주 나타나는 타입인 `UInt64`와 `Array(UInt64)`를 서브컬럼으로 유지하고, 다른 모든 타입은 공유 데이터에 삽입했습니다.
 
 ## Dynamic과 함께 사용하는 JSONExtract 함수 \{#jsonextract-functions-with-dynamic\}
 

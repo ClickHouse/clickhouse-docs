@@ -112,7 +112,7 @@ Services can be one of:
   - Can export data externally
 - **read-only**
   - Can only read data; it cannot write or modify data in ClickHouse
-  - Does not perform background merge operations, so its resources are fully dedicated to read queries
+  - Doesn't perform background merge operations outside of system tables, so its resources are fully dedicated to read queries
   - Can still export data externally (e.g., via table functions), but cannot change data inside ClickHouse
   - Idles without delay, unlike read-write services which may be kept awake by background merges.
 
@@ -127,7 +127,8 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 :::note
 1. Read-only services currently support user management operations (CREATE, DROP, etc).
-2. [Refreshable materialized views](/materialized-view/refreshable-materialized-view) run **only** on read-write (RW) services in a warehouse. 
+2. [Refreshable materialized views](/materialized-view/refreshable-materialized-view) run **only** on read-write (RW) services in a warehouse.
+3. A service's type (read-only or read-write) is fixed at creation and cannot be changed from the Cloud Console afterwards. To switch between read-only and read-write access, create a new service in the warehouse with the desired type.
 :::
 
 ## Scaling {#scaling}
@@ -172,6 +173,8 @@ Note that read-only services don't execute background merges, thus they don't sp
 
 ### Helpful Callouts {#callouts}
 
+- **ClickHouse Versions**: The [upgrade schedule](/manage/updates) is dictated by the primary service's settings. Secondary services cannot have a release schedule independent of the primary service.
+
 - **`CREATE`/`RENAME`/`DROP DATABASE` queries could be blocked by idled/stopped services by default.** If these queries are executed when the service is idled or stopped, these queries can hang. To bypass this, you  can run database management queries with [`settings distributed_ddl_task_timeout=0`](/operations/settings/settings#distributed_ddl_task_timeout) at the session or per query level.
 
 For example:
@@ -184,8 +187,9 @@ SETTINGS distributed_ddl_task_timeout=0
 If you manually stop a service, you will need to start it up again in order for queries to be executed. 
 
 - **There is currently a soft limit of 5 services per warehouse.** Contact the support team if you need more than 5 services in a single warehouse.
-- **Primary services cannot have only one replica** While secondary services can have one replica, the primary service must have at least 2. 
-- **Primary service idling** Today, the default behavior is that the primary service cannot auto-idling. It is disabled once the secondary service is created. To enable this, contact support to enable parent service idling. Parent service auto-idling will be enabled by default in Q2 2026 (existing services will have access to the feature, new services will have it enabled by default). 
+- **One replica Primary Service** Today, the default behavior is the secondary services can have one replica, the primary service must have at least 2.
+  To enable single replica primary services, please contact support. This behavior will be enabled by default in Q2 2026.
+- **Primary service idling**: Previously, primary services could not auto-idle by default. As of May 2026, primary service auto-idling is enabled by default. As part of the rollout, existing services have access to the feature while new services created post rollout have it enabled by default. 
 
 ## Pricing {#pricing}
 

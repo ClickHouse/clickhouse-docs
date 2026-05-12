@@ -574,3 +574,33 @@ SELECT *, toTypeName(v) FROM test WHERE v = 42;
 **오류 처리:** 함수가 특정 variant 타입을 처리할 수 없는 경우, 타입 관련 오류(ILLEGAL&#95;TYPE&#95;OF&#95;ARGUMENT,
 TYPE&#95;MISMATCH, CANNOT&#95;CONVERT&#95;TYPE, NO&#95;COMMON&#95;TYPE)만 포착되며, 해당 행에 대해서는 결과로 NULL이 반환됩니다. 0으로 나누기나 메모리 부족과 같은 기타 오류는 실제 문제를 조용히 숨기지 않기 위해 그대로 발생합니다.
 :::
+
+
+### 타입 불일치 동작 \{#variant-type-mismatch-behavior\}
+
+설정 `variant_throw_on_type_mismatch`는 함수가 `Variant` 컬럼에 적용될 때 각 행에 실제로 저장된 타입이 해당 함수와 호환되지 않는 경우의 처리 방식을 제어합니다.
+
+* `true` (기본값) — 처음으로 호환되지 않는 행에서 예외(`ILLEGAL_TYPE_OF_ARGUMENT`)를 발생시킵니다.
+* `false` — 호환되지 않는 행에는 `NULL`을 반환하고, 호환되는 행에 대해서는 결과를 유지합니다.
+
+**예시:**
+
+```sql
+CREATE TABLE test (v Variant(String, UInt64)) ENGINE = Memory;
+INSERT INTO test VALUES ('hello'), (42), ('foo');
+
+-- Default (throw on mismatch): length() does not accept UInt64, so the query throws.
+SELECT length(v) FROM test;  -- throws ILLEGAL_TYPE_OF_ARGUMENT
+
+-- With throw disabled: incompatible rows return NULL.
+SET variant_throw_on_type_mismatch = false;
+SELECT v, length(v) FROM test ORDER BY v::String NULLS LAST;
+```
+
+```text
+┌─v─────┬─length(v)─┐
+│ foo   │         3 │
+│ hello │         5 │
+│ 42    │      ᴺᵁᴸᴸ │
+└───────┴───────────┘
+```

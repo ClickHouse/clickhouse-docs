@@ -421,6 +421,8 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 
 ### SYSTEM STOP TTL MERGES \{#stop-ttl-merges\}
 
+<CloudNotSupportedBadge />
+
 MergeTree ファミリーのテーブルに対して、[TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) に基づいてバックグラウンドで古いデータを削除する処理を停止します。
 テーブルが存在しない場合や、テーブルが MergeTree エンジンを使用していない場合でも `Ok.` を返します。データベースが存在しない場合はエラーを返します。
 
@@ -428,8 +430,9 @@ MergeTree ファミリーのテーブルに対して、[TTL expression](../../en
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START TTL MERGES \{#start-ttl-merges\}
+
+<CloudNotSupportedBadge />
 
 MergeTree ファミリーのテーブルに対して、[TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) に従い、古いデータのバックグラウンド削除を開始します。
 テーブルが存在しない場合でも `Ok.` を返します。データベースが存在しない場合はエラーを返します。
@@ -437,7 +440,6 @@ MergeTree ファミリーのテーブルに対して、[TTL expression](../../en
 ```sql
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM STOP MOVES \{#stop-moves\}
 
@@ -755,9 +757,9 @@ SYSTEM STOP VIEWS
 
 ### SYSTEM START [REPLICATED] VIEW, START VIEWS \{#start-view-start-views\}
 
-指定したビュー、またはすべてのリフレッシュ可能なビューに対して、定期的なリフレッシュを有効化します。即時のリフレッシュは行われません。
+指定したVIEW、またはすべてのリフレッシュ可能なVIEWに対して、定期的なリフレッシュを有効化します。即時のリフレッシュは行われません。
 
-ビューが Replicated または Shared データベース内にある場合、`START VIEW` は `STOP VIEW` の効果を打ち消し、`START REPLICATED VIEW` は `STOP REPLICATED VIEW` の効果を打ち消します。
+VIEWが Replicated または Shared データベース内にある場合、`START VIEW` は `STOP VIEW` の効果を打ち消し、`START REPLICATED VIEW` は `STOP REPLICATED VIEW` の効果を打ち消します。`START VIEW` は `PAUSE VIEW` の効果も打ち消します。
 
 ```sql
 SYSTEM START VIEW [db.]name
@@ -767,6 +769,25 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
+### SYSTEM PAUSE VIEW, PAUSE VIEWS \{#pause-view-pause-views\}
+
+指定したVIEW、またはすべてのリフレッシュ可能なVIEWの定期的なリフレッシュを無効にします。
+`SYSTEM STOP VIEW` とは異なり、`SYSTEM PAUSE VIEW` はすでに進行中のリフレッシュを中断しません。実行中のリフレッシュは完了まで継続され、以降のリフレッシュのみが停止されます。
+
+解除するには、`SYSTEM START VIEW` または `SYSTEM START VIEWS` を使用します。
+
+:::note
+一時停止状態はサーバーの再起動後も保持されません。再起動後、VIEWは設定されたリフレッシュスケジュールを再開します。
+Replicated または Shared データベースでは、`SYSTEM PAUSE VIEW` は現在のレプリカにのみ影響します。
+:::
+
+```sql
+SYSTEM PAUSE VIEW [db.]name
+```
+
+```sql
+SYSTEM PAUSE VIEWS
+```
 
 ### SYSTEM REFRESH VIEW \{#refresh-view\}
 
@@ -795,4 +816,13 @@ SYSTEM WAIT VIEW [db.]name
 
 ```sql
 SYSTEM CANCEL VIEW [db.]name
+```
+
+
+## SYSTEM FLUSH OBJECT STORAGE QUEUE \{#flush-object-storage-queue\}
+
+指定されたファイルが、指定された [S3Queue](../../engines/table-engines/integrations/s3queue.md) または [AzureQueue](../../engines/table-engines/integrations/azure-queue.md) テーブルによって処理されるか、恒久的な失敗状態になるまで待機します。ファイルがすでに処理済みの場合は、ただちに戻ります。ファイルが恒久的に失敗している場合 (すべての再試行を使い果たした場合) は、エラーを返します。
+
+```sql
+SYSTEM FLUSH OBJECT STORAGE QUEUE [db.]table_name PATH 'path'
 ```
