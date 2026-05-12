@@ -65,13 +65,13 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 }
 ```
 
-Задайте нужные параметры масштабирования. Поддерживаются конфигурации с 1–24 ядрами CPU, при этом объём памяти (ГБ) должен в 4 раза превышать число ядер:
+Задайте нужные параметры масштабирования. Поддерживаются конфигурации с 1–32 ядрами CPU, при этом объём памяти (ГБ) должен в 4 раза превышать число ядер:
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
 {
-  "replicaCpuMillicores": 24000,
-  "replicaMemoryGb": 96
+  "replicaCpuMillicores": 32000,
+  "replicaMemoryGb": 128
 }
 EOF
 
@@ -91,8 +91,8 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 # example result:
 {
   "result": {
-    "replicaCpuMillicores": 24000,
-    "replicaMemoryGb": 96
+    "replicaCpuMillicores": 32000,
+    "replicaMemoryGb": 128
   },
   "requestId": "5a76d642-d29f-45af-a857-8c4d4b947bf0",
   "status": 200
