@@ -1,0 +1,110 @@
+---
+slug: /cloud/managed-postgres/monitoring/prometheus
+sidebar_label: 'Prometheus endpoint'
+title: 'Managed Postgres Prometheus endpoint'
+description: 'Scrape Managed Postgres metrics into Prometheus, Grafana, Datadog, or any OpenMetrics-compatible collector'
+keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', 'metrics', 'openmetrics', 'observability']
+doc_type: 'guide'
+---
+
+import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+
+# Prometheus Integration
+
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-prometheus" />
+
+Managed Postgres exposes two Prometheus-compatible metrics endpoints
+on the [ClickHouse Cloud API][cloud-api]:
+
+| Endpoint | Path                                                                 | Returns                                            |
+| -------- | -------------------------------------------------------------------- | -------------------------------------------------- |
+| Org      | `/v1/organizations/{orgId}/postgres/prometheus`                      | Metrics for every Managed Postgres service in the org |
+| Instance | `/v1/organizations/{orgId}/postgres/{pgId}/prometheus`               | Metrics for a single service                       |
+
+:::note
+The org-level endpoint returns metrics for up to 100 services. If your
+organization has more than 100 Managed Postgres services, [contact
+support](https://clickhouse.com/support/program).
+:::
+
+## Authentication {#authentication}
+
+The endpoint uses the same [API keys] as the rest of the OpenAPI; see
+the [OpenAPI guide](/cloud/managed-postgres/openapi) for how to create
+them and look up your organization and service IDs.
+
+```bash
+KEY_ID=mykeyid
+KEY_SECRET=mykeysecret
+ORG_ID=myorgid
+PG_ID=mypgid
+```
+
+## Scraping all services in an organization {#scrape-org}
+
+```bash
+curl -s --user "$KEY_ID:$KEY_SECRET" \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/prometheus"
+```
+
+## Scraping a single service {#scrape-instance}
+
+```bash
+curl -s --user "$KEY_ID:$KEY_SECRET" \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/prometheus"
+```
+
+## Sample response {#sample-response}
+
+```response
+# HELP PostgresServiceInfo Information about PostgreSQL service, including status and version.
+# TYPE PostgresServiceInfo gauge
+PostgresServiceInfo{clickhouse_org="ca04a310-730d-4ce0-93dd-39f2cd2d5e6f",postgres_service="0c330583-6396-86d0-82cd-ed0f23b0d38c",postgres_service_name="my-postgres",postgres_status="running",postgres_version="18"} 1
+
+# HELP PostgresServer_ActiveConnections Number of active connections by state.
+# TYPE PostgresServer_ActiveConnections gauge
+PostgresServer_ActiveConnections{clickhouse_org="ca04a310-730d-4ce0-93dd-39f2cd2d5e6f",postgres_service="0c330583-6396-86d0-82cd-ed0f23b0d38c",postgres_service_name="my-postgres",state="active"} 1
+PostgresServer_ActiveConnections{clickhouse_org="ca04a310-730d-4ce0-93dd-39f2cd2d5e6f",postgres_service="0c330583-6396-86d0-82cd-ed0f23b0d38c",postgres_service_name="my-postgres",state="idle"} 4
+
+# HELP PostgresServer_CacheHitRatio Buffer cache hit ratio: blocks served from cache vs. total blocks accessed (%).
+# TYPE PostgresServer_CacheHitRatio gauge
+PostgresServer_CacheHitRatio{clickhouse_org="ca04a310-730d-4ce0-93dd-39f2cd2d5e6f",postgres_service="0c330583-6396-86d0-82cd-ed0f23b0d38c",postgres_service_name="my-postgres"} 100
+```
+
+For the full list of metrics and their meanings, see the
+[metrics reference](/cloud/managed-postgres/monitoring/metrics).
+
+## Configuring Prometheus {#configuring-prometheus}
+
+This config scrapes the org-level endpoint every 30 seconds:
+
+```yaml
+scrape_configs:
+  - job_name: "managed-postgres"
+    scheme: https
+    metrics_path: "/v1/organizations/<ORG_ID>/postgres/prometheus"
+    static_configs:
+      - targets: ["api.clickhouse.cloud"]
+    basic_auth:
+      username: <KEY_ID>
+      password: <KEY_SECRET>
+    honor_labels: true
+    scrape_interval: 30s
+```
+
+Set `honor_labels: true` so the `postgres_service` and
+`postgres_service_name` labels from the endpoint are preserved instead
+of being overwritten by Prometheus.
+
+To scrape a single service, append `/<PG_ID>` to the `metrics_path`.
+
+## Integrating with Grafana and Datadog {#third-party-integrations}
+
+The endpoint follows the same shape as the [ClickHouse Prometheus
+endpoint](/integrations/prometheus), so the Grafana Cloud, Grafana
+Alloy, and Datadog OpenMetrics agent configurations described there
+apply here too. Point `metrics_path` at the Managed Postgres org or
+instance path instead of the ClickHouse one.
+
+[cloud-api]: /cloud/manage/cloud-api "Cloud API"
+[API keys]: /cloud/manage/openapi "Managing API Keys"
