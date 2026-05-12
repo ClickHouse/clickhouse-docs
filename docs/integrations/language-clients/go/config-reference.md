@@ -22,6 +22,8 @@ Options exist at three scopes:
 | **Query** | `clickhouse.Context()` with `WithXxx` functions | Single query execution |
 | **Batch** | `PrepareBatch()` option functions | Single batch operation |
 
+Where scopes overlap, the more specific scope wins: **Batch > Query > Connection**. For `Settings`, query-level keys are merged with connection-level keys and query-level wins on conflict.
+
 **Via Options struct:**
 
 ```go
@@ -97,7 +99,7 @@ GetJWT: func(ctx context.Context) (string, error) {
 | Option | Type | Default | DSN param | Description | Best practice | When misconfigured |
 |--------|------|---------|-----------|-------------|---------------|-------------------|
 | `DialTimeout` | `time.Duration` | `30s` | `dial_timeout` | Max time to establish a new connection. Also controls pool acquisition wait when `MaxOpenConns` is reached. | 5-10s on LAN, 15-30s on WAN/cloud. Never below 1s. | Too short: `"clickhouse: acquire conn timeout"` during congestion. Too long (> 60s): app hangs during outages. |
-| `ReadTimeout` | `time.Duration` | `5m` (300s) | `read_timeout` | Max time to wait for a server response per read call. Applied per block, not entire query. Context deadline takes precedence. | 10-30s for OLTP, 5-30m for OLAP/long queries. | Too short: `"i/o timeout"` or `"read: connection reset by peer"` mid-query; server continues executing. Too long: dead connections not detected. |
+| `ReadTimeout` | `time.Duration` | `5m` (300s) | `read_timeout` | Max time to wait for a server response per read call. Applied per block, not entire query. Context deadline takes precedence. | 10-30s for short interactive queries; 5-30m for long analytical queries. | Too short: `"i/o timeout"` or `"read: connection reset by peer"` mid-query; server continues executing. Too long: dead connections not detected. |
 
 ---
 
@@ -201,7 +203,9 @@ See [Logging](/integrations/language-clients/go/configuration#logging) for full 
 
 ### HTTP-specific {#http-specific}
 
-These options only affect `Protocol: clickhouse.HTTP`. Silently ignored for Native.
+:::warning Silently ignored on Native
+These options only affect `Protocol: clickhouse.HTTP`. They are silently ignored when using the Native protocol — no error or warning is emitted.
+:::
 
 | Option | Type | Default | DSN param | Description | Best practice | When misconfigured |
 |--------|------|---------|-----------|-------------|---------------|-------------------|
@@ -348,7 +352,7 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO table",
 
 ## Quick reference tables {#quick-reference-tables}
 
-### Connection pool sizing {#pool-sizing}
+### Connection pool sizing recommendations {#pool-sizing}
 
 | Application type | MaxIdleConns | MaxOpenConns | ConnMaxLifetime |
 |------------------|-------------|-------------|-----------------|
@@ -402,11 +406,11 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO table",
 
 **Cause:** Connection pool exhausted -- all `MaxOpenConns` connections are in use and none became available within `DialTimeout`.
 
-**Fix:**
-- Increase `MaxOpenConns` to match actual concurrency
-- Increase `DialTimeout` for burst tolerance
-- Check for long-running queries holding connections
-- Use `WithReleaseConnection()` for long-lived batches
+**Fix (try in order — diagnose root cause before tuning knobs):**
+1. Check for long-running queries holding connections: `SELECT query_id, elapsed FROM system.processes ORDER BY elapsed DESC`. If found, address the slow queries first.
+2. If you run long-lived batches (minutes/hours between `PrepareBatch()` and `Send()`), use `WithReleaseConnection()` to return the connection to the pool while the batch is open.
+3. Increase `MaxOpenConns` to match observed concurrency.
+4. Increase `DialTimeout` only if bursts are expected and acquisition wait is the actual bottleneck.
 
 ### "i/o timeout" or "read: connection reset by peer" {#io-timeout}
 
