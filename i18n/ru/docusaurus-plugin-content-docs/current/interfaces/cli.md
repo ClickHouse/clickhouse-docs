@@ -165,7 +165,7 @@ clickhousectl cloud auth login
 
 При этом откроется браузер для аутентификации через OAuth Device Flow. Токены сохраняются в `.clickhousectl/tokens.json` (локально для проекта).
 
-### API-ключ/시크릿 \{#api-key\}
+### API-ключ/секрет \{#api-key\}
 
 ```bash
 # Non-interactive (CI-friendly)
