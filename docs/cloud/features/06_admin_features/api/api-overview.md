@@ -8,7 +8,6 @@ doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'API overview', 'cloud API', 'REST API', 'programmatic access']
 ---
 
-# ClickHouse Cloud API
 
 ## Overview {#overview}
 

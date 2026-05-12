@@ -9,7 +9,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Advanced Tutorial
 
 ## Overview {#overview}
 

@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'explain', 'execution', 'plan', 'sql']
 doc_type: 'reference'
 ---
 
-# explain() Method
 
 The `explain()` method shows the execution plan for a DataStore query, helping you understand what operations will be performed and what SQL will be generated.
 

@@ -8,7 +8,6 @@ doc_type: 'landing-page'
 keywords: ['BYOC', 'cloud', 'bring your own cloud', 'vpc peering', 'privatelink', 'private service connect']
 ---
 
-# Private networking setup
 
 ClickHouse BYOC supports various private networking options to enhance security and enable direct connectivity for your services. This guide walks you through the recommended approaches for securely connecting ClickHouse Cloud deployments in your own AWS or GCP account to other networks or services, such as your internal applications or analytics tools. We cover options such as VPC Peering, AWS PrivateLink, and GCP Private Service Connect, and outline the main steps and considerations for each.
 

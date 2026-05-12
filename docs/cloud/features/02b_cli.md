@@ -7,7 +7,6 @@ keywords: ['clickhousectl', 'CLI', 'cloud management', 'local development']
 doc_type: 'reference'
 ---
 
-# ClickHouse CLI {#clickhouse-cli}
 
 The ClickHouse CLI (`clickhousectl`) is a unified command-line tool for managing ClickHouse Cloud resources and local development with ClickHouse.
 

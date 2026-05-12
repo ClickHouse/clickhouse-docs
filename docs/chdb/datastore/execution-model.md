@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---
 
-# DataStore Execution Model
 
 Understanding DataStore's lazy evaluation model is key to using it effectively and achieving optimal performance.
 

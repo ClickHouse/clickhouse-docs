@@ -9,7 +9,6 @@ title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
 
-# ClickHouse Keeper (clickhouse-keeper)
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 

@@ -7,7 +7,6 @@ keywords: ['ClickHouse Cloud', 'compatibility']
 doc_type: 'guide'
 ---
 
-# ClickHouse Cloud compatibility guide
 
 This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud. While ClickHouse Cloud is based on the open-source ClickHouse distribution, there may be some differences in architecture and implementation. You may find this blog on [how we built ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) interesting and relevant to read as background.
 

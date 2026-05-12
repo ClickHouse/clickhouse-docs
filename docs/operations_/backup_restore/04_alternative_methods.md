@@ -6,7 +6,6 @@ title: 'Alternative backup or restore methods'
 doc_type: 'reference'
 ---
 
-# Alternative backup methods
 
 ClickHouse stores data on disk, and there are many ways to back up disks. 
 These are some alternatives that have been used in the past, and that may fit

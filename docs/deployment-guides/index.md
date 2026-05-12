@@ -6,7 +6,6 @@ keywords: ['deployment guides', 'scaling', 'cluster deployment', 'replication', 
 doc_type: 'landing-page'
 ---
 
-# Deployment and scaling
 
 This section covers the following topics:
 

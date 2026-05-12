@@ -8,7 +8,6 @@ doc_type: 'landing-page'
 keywords: ['audit logging', 'compliance', 'security', 'logging', 'monitoring']
 ---
 
-# Audit logging
 
 | Page                                                                | Description                                                                        |
 |---------------------------------------------------------------------|------------------------------------------------------------------------------------|

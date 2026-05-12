@@ -7,7 +7,6 @@ keywords: ['json', 'formats', 'json formats']
 doc_type: 'guide'
 ---
 
-# Handling other JSON formats
 
 Earlier examples of loading JSON data assume the use of [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`). This format reads the keys in each JSON line as columns. For example:
 

@@ -10,7 +10,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Lifecycle of a MySQL ClickPipe {#lifecycle}
 
 This is a document on the various phases of a MySQL ClickPipe, the different statuses it can have, and what they mean. Note that this applies to MariaDB as well.
 

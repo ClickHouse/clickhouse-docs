@@ -11,7 +11,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Best practices {#best-practices}
 
 ## Message Compression {#compression}
 

@@ -8,7 +8,6 @@ doc_type: 'guide'
 keywords: ['scaling', 'clusters', 'horizontal scaling', 'capacity planning', 'performance']
 ---
 
-# Rebalancing data
 
 ClickHouse doesn't support automatic shard rebalancing. However, there are ways to rebalance shards in order of preference:
 

@@ -8,7 +8,6 @@ title: 'Configuration'
 doc_type: 'reference'
 ---
 
-# Configuration {#configuration}
 
 ## Connection settings {#connection-settings}
 

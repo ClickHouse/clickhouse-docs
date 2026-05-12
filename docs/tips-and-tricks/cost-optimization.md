@@ -21,7 +21,7 @@ title: 'Lessons - cost optimization'
 description: 'Cost optimization strategies from ClickHouse community meetups with real production examples and verified techniques.'
 ---
 
-# Cost optimization: strategies from the community {#cost-optimization}
+
 *This guide is part of a collection of findings gained from community meetups. The findings on this page cover community wisdom related to optimizing cost while using ClickHouse that worked well for their specific experience and setup. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 
 *Learn about how [ClickHouse Cloud can help manage operational costs](/cloud/overview)*.

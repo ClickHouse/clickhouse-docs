@@ -7,7 +7,6 @@ sidebar_label: 'avgMap'
 doc_type: 'reference'
 ---
 
-# avgMap {#avgmap}
 
 ## Description {#description}
 

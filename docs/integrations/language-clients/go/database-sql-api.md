@@ -8,7 +8,6 @@ title: 'Database/SQL API'
 doc_type: 'reference'
 ---
 
-# Database/SQL API {#database-sql-api}
 
 Full code examples for the standard API can be found [here](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std).
 

@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['byoc', 'security', 'playbook', 'best practices', 'compliance']
 ---
 
-# BYOC security playbook {#byoc-security-playbook}
 
 ClickHouse operates Bring Your Own Cloud (BYOC) under a security shared responsibility model, which can be downloaded from our Trust Center at https://trust.clickhouse.com. The following information is provided for BYOC customers as examples of how to identify potential security events. Customers should consider this information in the context of their security program to determine if additional detections and alerts may be helpful.
 

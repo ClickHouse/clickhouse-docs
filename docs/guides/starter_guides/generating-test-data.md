@@ -8,7 +8,6 @@ doc_type: 'guide'
 keywords: ['random data', 'test data']
 ---
 
-# Generating random test data in ClickHouse
 
 Generating random data is useful when testing new use cases or benchmarking your implementation.
 ClickHouse has a [wide range of functions for generating random data](/sql-reference/functions/random-functions) that, in many cases, avoid the need for an external data generator.

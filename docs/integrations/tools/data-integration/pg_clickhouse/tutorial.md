@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'tutorial', 'taxi']
 ---
 
-# pg_clickhouse tutorial
 
 ## Overview {#overview}
 

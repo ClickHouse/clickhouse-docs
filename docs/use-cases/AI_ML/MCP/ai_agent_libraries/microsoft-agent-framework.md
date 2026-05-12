@@ -10,7 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build an AI Agent with Microsoft Agent framework and the ClickHouse MCP server
 
 In this guide you'll learn how to build a [Microsoft Agent framework](https://github.com/microsoft/agent-framework) AI agent that can interact with 
 [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP server](https://github.com/ClickHouse/mcp-clickhouse).

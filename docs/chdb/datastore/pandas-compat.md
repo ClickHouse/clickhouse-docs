@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'pandas', 'compatibility', 'dataframe', 'methods
 doc_type: 'reference'
 ---
 
-# Pandas Compatibility
 
 DataStore implements **209 pandas DataFrame methods** for full API compatibility. Your existing pandas code works with minimal changes.
 

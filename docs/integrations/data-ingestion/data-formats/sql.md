@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['sql format', 'data export', 'data import', 'backup', 'sql dumps']
 ---
 
-# Inserting and dumping SQL data in ClickHouse
 
 ClickHouse can be easily integrated into OLTP database infrastructures in many ways. One way is to transfer data between other databases and ClickHouse using SQL dumps.
 

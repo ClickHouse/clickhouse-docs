@@ -7,7 +7,6 @@ description: 'Landing page for the Cloud reference section'
 doc_type: 'landing-page'
 ---
 
-# Cloud reference
 
 This section acts as a reference guide for some of the more technical details of ClickHouse Cloud and contains the following pages:
 

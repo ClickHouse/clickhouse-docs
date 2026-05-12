@@ -13,7 +13,6 @@ integration:
   - category: 'data_ingestion'
 ---
 
-# Integrating Kafka with ClickHouse
 
 [Apache Kafka](https://kafka.apache.org/) is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications. ClickHouse provides multiple options to **read from** and **write to** Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
 
