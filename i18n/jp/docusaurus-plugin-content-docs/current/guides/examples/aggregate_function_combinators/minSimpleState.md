@@ -7,8 +7,6 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState \{#minsimplestate\}
-
 ## 説明 \{#description\}
 
 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネータを [`min`](/sql-reference/aggregate-functions/reference/min)

@@ -1,14 +1,12 @@
 ---
-title: '日期和时间数据类型 - 时间序列'
+title: '日期和时间数据类型 - 时序'
 sidebar_label: '日期和时间数据类型'
 description: 'ClickHouse 中的时序数据类型。'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['时间序列', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', '数据类型', '时序数据', '时间戳']
+keywords: ['时序', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', '数据类型', '时间数据', '时间戳']
 show_related_blogs: true
 doc_type: 'reference'
 ---
-
-# 日期和时间数据类型 \{#date-and-time-data-types\}
 
 要高效管理时间序列数据，必须具备一套完善的日期和时间类型，而 ClickHouse 正是为此而设计。
 从紧凑的日期表示到具备纳秒级精度的高精度时间戳，这些类型旨在兼顾存储效率与各类时间序列应用的实际需求。

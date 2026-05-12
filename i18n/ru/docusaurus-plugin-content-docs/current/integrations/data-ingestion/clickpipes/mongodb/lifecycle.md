@@ -10,9 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Жизненный цикл MongoDB ClickPipe \{#lifecycle\}
-
-В этом документе описаны различные этапы работы MongoDB ClickPipe, его возможные статусы и их значения.
+В этом документе описаны различные фазы ClickPipe для MongoDB, возможные статусы и их значение.
 
 ## Подготовка ресурсов \{#provisioning\}
 

@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', '扩展']
 ---
 
-# pg_clickhouse 参考文档 \{#pg_clickhouse-reference-documentation\}
-
 ## 描述 \{#description\}
 
 pg_clickhouse 是一个 PostgreSQL 扩展，用于在 ClickHouse 数据库上远程执行查询，

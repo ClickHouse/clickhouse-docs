@@ -8,9 +8,7 @@ doc_type: 'reference'
 keywords: ['데이터 삭제', 'TTL', '데이터 보존', '정리', '데이터 수명주기']
 ---
 
-# ClickHouse 테이블에서 오래된 레코드를 삭제할 수 있습니까? \{#is-it-possible-to-delete-old-records-from-a-clickhouse-table\}
-
-간단한 대답은 「예」입니다. ClickHouse에는 오래된 데이터를 제거하여 디스크 공간을 확보할 수 있는 여러 메커니즘이 있습니다. 각 메커니즘은 서로 다른 시나리오에 맞게 설계되었습니다.
+짧게 답하면 &quot;예&quot;입니다. ClickHouse에는 오래된 데이터를 제거하여 디스크 공간을 확보할 수 있는 여러 가지 메커니즘이 있습니다. 각 메커니즘은 서로 다른 시나리오에 적합합니다.
 
 ## TTL \{#ttl\}
 

@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['무작위 데이터', '테스트 데이터']
 ---
 
-# ClickHouse에서 무작위 테스트 데이터 생성 \{#generating-random-test-data-in-clickhouse\}
-
 무작위 데이터 생성은 새로운 사용 사례를 테스트하거나 구현을 벤치마킹할 때 유용합니다.
 ClickHouse에는 많은 경우 외부 데이터 생성기가 필요 없을 정도로 [무작위 데이터를 생성하기 위한 다양한 함수](/sql-reference/functions/random-functions)가 있습니다.
 

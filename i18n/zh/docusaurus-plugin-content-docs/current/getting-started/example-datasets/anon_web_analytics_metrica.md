@@ -1,17 +1,15 @@
 ---
-description: '由两个表组成的数据集，包含经匿名化处理的网站分析数据（hits 和 visits）'
-sidebar_label: '匿名化网站分析数据'
+description: '由两个表组成的数据集，包含带有 hits 和 visits 的匿名化网站分析数据'
+sidebar_label: '匿名化网站分析'
 slug: /getting-started/example-datasets/metrica
-keywords: ['网站分析数据', '匿名化数据', '网站流量数据', '示例数据集', '入门']
-title: '匿名化网站分析数据'
+keywords: ['网站分析数据', '匿名化数据', '网站流量数据', '示例数据集', '快速开始']
+title: '匿名化网站分析'
 doc_type: 'guide'
 ---
 
-# 匿名化 Web 分析数据 \{#anonymized-web-analytics-data\}
+该数据集由两个表组成，分别包含 hits (`hits_v1`) 和 visits (`visits_v1`) 的匿名化 网站分析 数据。
 
-该数据集由两个表组成，分别包含点击（`hits_v1`）和访问（`visits_v1`）的匿名化 Web 分析数据。
-
-这些表可以以压缩的 `tsv.xz` 文件形式下载。除了本篇文档中使用的示例外，还提供了一个更大规模（7.5GB）的 `hits` 表版本，其中包含 1 亿行数据，可作为 TSV 在 [https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz) 获取。
+这些表可以以压缩的 `tsv.xz` 文件形式下载。除了本篇文档中使用的示例外，还提供了一个更大规模 (7.5GB) 的 `hits` 表版本，其中包含 1 亿行数据，可作为 TSV 在 [https://datasets.clickhouse.com/hits/tsv/hits&#95;100m&#95;obfuscated&#95;v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz) 获取。
 
 ## 下载并摄取数据 \{#download-and-ingest-the-data\}
 

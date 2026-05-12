@@ -4,19 +4,16 @@ slug: /guides/sre/keeper/clickhouse-keeper
 sidebar_label: '配置 ClickHouse Keeper'
 sidebar_position: 10
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
-description: 'ClickHouse Keeper（clickhouse-keeper）用于替代 ZooKeeper，提供复制和协调功能。'
+description: 'ClickHouse Keeper（或 clickhouse-keeper）用于替代 ZooKeeper，并提供复制与协调功能。'
 title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
-
-# ClickHouse Keeper（clickhouse-keeper） \{#clickhouse-keeper-clickhouse-keeper\}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
 ClickHouse Keeper 为数据[复制](/engines/table-engines/mergetree-family/replication.md)和[分布式 DDL](/sql-reference/distributed-ddl.md) 查询执行提供协调系统。ClickHouse Keeper 与 ZooKeeper 兼容。
-
 
 ### 实现细节 \{#implementation-details\}
 

@@ -7,8 +7,6 @@ sidebar_label: '개요'
 doc_type: 'guide'
 ---
 
-# ClickHouse와 PostgreSQL 비교 \{#comparing-clickhouse-and-postgresql\}
-
 ## 왜 Postgres 대신 ClickHouse를 사용해야 할까요? \{#why-use-clickhouse-over-postgres\}
 
 요약하면, ClickHouse는 OLAP 데이터베이스로서 빠른 분석, 특히 `GROUP BY` 쿼리를 위해 설계된 반면, Postgres는 트랜잭션 워크로드를 위해 설계된 OLTP 데이터베이스이기 때문입니다.

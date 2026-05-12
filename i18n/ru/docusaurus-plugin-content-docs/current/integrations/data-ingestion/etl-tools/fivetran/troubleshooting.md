@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['fivetran', 'clickhouse destination', 'устранение неполадок', 'лучшие практики', 'отладка']
 ---
 
-# Устранение неполадок &amp; лучшие практики \{#troubleshooting-best-practices\}
-
 ## Распространённые ошибки \{#common-errors\}
 
 ### Сбой при проверке привилегий или ошибки операций, связанные с разрешениями \{#grants-test-failed\}

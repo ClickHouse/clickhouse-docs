@@ -2,14 +2,12 @@
 title: 'DataStore のファクトリーメソッド'
 sidebar_label: 'ファクトリーメソッド'
 slug: /chdb/datastore/factory-methods
-description: 'ファイル、データベース、クラウドストレージ、データレイクから DataStore インスタンスを作成する'
+description: 'ファイル、データベース、Cloud ストレージ、データレイクから DataStore インスタンスを作成する'
 keywords: ['chdb', 'datastore', 'factory', 'from_file', 'from_s3', 'uri', 'mysql', 'postgresql']
 doc_type: 'reference'
 ---
 
-# DataStore ファクトリーメソッド \{#datastore-factory-methods\}
-
-DataStore は、ローカルファイル、データベース、クラウドストレージ、データレイクなど、さまざまなデータソースからインスタンスを生成するための 20 種類以上のファクトリーメソッドを提供します。
+DataStore には、ローカルファイル、データベース、Cloud ストレージ、データレイクなど、さまざまなデータソースからインスタンスを作成するためのファクトリーメソッドが 20 種類以上用意されています。
 
 ## ユニバーサル URI インターフェイス \{#uri\}
 

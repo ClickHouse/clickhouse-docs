@@ -1,14 +1,12 @@
 ---
-title: 'Поддерживает ли ClickHouse обновления в реальном времени?'
+title: 'Поддерживает ли ClickHouse обновления в режиме реального времени?'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/updates
-description: 'ClickHouse поддерживает облегчённые обновления в реальном времени'
+description: 'ClickHouse поддерживает легковесные обновления в режиме реального времени'
 doc_type: 'reference'
-keywords: ['обновления', 'реальное время']
+keywords: ['обновления', 'в реальном времени']
 ---
-
-# Поддерживает ли ClickHouse обновления в режиме реального времени? \{#does-clickhouse-support-real-time-updates\}
 
 ClickHouse поддерживает оператор UPDATE и способен выполнять обновления в реальном времени с той же скоростью, с какой выполняет операции INSERT.
 

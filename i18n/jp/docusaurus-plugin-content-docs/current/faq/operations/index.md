@@ -1,14 +1,12 @@
 ---
 slug: /faq/operations/
 sidebar_position: 3
-sidebar_label: 'ClickHouseサーバーおよびクラスターの運用に関する質問'
-title: 'ClickHouseサーバーおよびクラスターの運用に関する質問'
-description: 'ClickHouseサーバーおよびクラスターの運用に関する質問のためのランディングページ'
+sidebar_label: 'ClickHouse サーバーおよびクラスターの運用に関する質問'
+title: 'ClickHouse サーバーおよびクラスターの運用に関する質問'
+description: 'ClickHouse サーバーおよびクラスターの運用に関する質問のランディングページ'
 doc_type: 'landing-page'
 keywords: ['運用', '管理', 'デプロイメント', 'クラスター管理', 'FAQ']
 ---
-
-# ClickHouse サーバーおよびクラスターの運用に関する質問 \{#question-about-operating-clickhouse-servers-and-clusters\}
 
 * [本番環境ではどの ClickHouse バージョンを使用すべきですか？](/faq/operations/production.md)
 * [ストレージとコンピュートを分離した構成で ClickHouse をデプロイできますか？](/faq/operations/separate_storage.md)

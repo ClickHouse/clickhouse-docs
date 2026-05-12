@@ -11,8 +11,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# ベストプラクティス \{#best-practices\}
-
 ## メッセージ圧縮 \{#compression\}
 
 Kafka トピックにはメッセージ圧縮の利用を強く推奨します。圧縮を行うことで、ほとんどパフォーマンスへの影響なしに、データ転送コストを大幅に削減できます。

@@ -23,6 +23,8 @@ import Image from '@theme/IdealImage';
 
 Чтобы начать, [создайте API-ключ](/cloud/manage/openapi).
 
+Если вам нужна эквивалентная конечная точка для сервисов [Managed Postgres](/cloud/managed-postgres), см. [конечную точку Prometheus для Managed Postgres](/cloud/managed-postgres/monitoring/prometheus).
+
 ## API конечной точки Prometheus для доступа к метрикам ClickHouse Cloud \{#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics\}
 
 ### Справочник API \{#api-reference\}
@@ -335,3 +337,4 @@ instances:
 * [Мониторинг в Cloud Console](/cloud/monitoring/cloud-console) — Встроенные панели мониторинга, не требующие внешних инструментов
 * [Интеграции сообщества и партнеров](/cloud/monitoring/integrations) — Интеграция с агентом Datadog и решения сообщества
 * [Запросы к системным таблицам](/cloud/monitoring/system-tables) — Прямой SQL-доступ к системным метрикам
+* [Конечная точка Prometheus для Managed Postgres](/cloud/managed-postgres/monitoring/prometheus) — Собирайте метрики из сервисов Managed Postgres

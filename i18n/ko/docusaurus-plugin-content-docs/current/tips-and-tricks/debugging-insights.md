@@ -19,10 +19,8 @@ title: '레슨 - 디버깅 인사이트'
 description: '느린 쿼리, 메모리 오류, 연결 문제, 구성 문제 등 가장 흔한 ClickHouse 문제에 대한 해결 방법을 확인할 수 있습니다.'
 ---
 
-# ClickHouse 운영: 커뮤니티 디버깅 인사이트 \{#clickhouse-operations-community-debugging-insights\}
-
-*이 가이드는 커뮤니티 밋업에서 얻은 인사이트를 모은 컬렉션의 일부입니다. 더 많은 실제 사례 기반 해결책과 인사이트는 [구체적인 문제별로 찾아보면](./community-wisdom.md) 확인할 수 있습니다.*
-*운영 비용이 너무 높아 고민하고 있습니까? [비용 최적화](./cost-optimization.md) 커뮤니티 인사이트 가이드를 확인해 보십시오.*
+*이 가이드는 커뮤니티 밋업에서 얻은 인사이트 모음의 일부입니다. 더 많은 실전 해결 방법과 인사이트는 [특정 문제별로 찾아보기](./community-wisdom.md)에서 확인할 수 있습니다.*
+*운영 비용이 많이 발생하고 있습니까? [비용 최적화](./cost-optimization.md) 커뮤니티 인사이트 가이드를 확인해 보십시오.*
 
 ## 핵심 system 테이블 \{#essential-system-tables\}
 

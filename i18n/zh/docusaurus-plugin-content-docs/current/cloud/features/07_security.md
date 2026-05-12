@@ -2,12 +2,10 @@
 sidebar_label: '安全'
 slug: /cloud/security
 title: '安全'
-description: '深入了解如何保障 ClickHouse Cloud 和 BYOC 的安全性'
+description: '详细了解如何保护 ClickHouse Cloud 和 BYOC'
 doc_type: 'reference'
-keywords: ['安全', '云安全', '访问控制', '合规性', '数据保护']
+keywords: ['安全', 'Cloud 安全', '访问控制', '合规', '数据保护']
 ---
-
-# ClickHouse Cloud 安全性 \{#clickhouse-cloud-security\}
 
 本文档详细介绍了用于保护 ClickHouse Cloud 组织和服务的安全选项和最佳实践。
 ClickHouse 致力于提供安全的分析型数据库解决方案，因此保护数据和服务的完整性是重中之重。

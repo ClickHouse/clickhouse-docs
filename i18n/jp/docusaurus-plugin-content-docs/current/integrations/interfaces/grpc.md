@@ -7,8 +7,6 @@ title: 'gRPC インターフェイス'
 doc_type: 'reference'
 ---
 
-# gRPC インターフェイス \{#grpc-interface\}
-
 ## はじめに \{#grpc-interface-introduction\}
 
 ClickHouse は [gRPC](https://grpc.io/) インターフェイスをサポートしています。gRPC は、HTTP/2 と [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol_Buffers) を使用するオープンソースのリモートプロシージャコール (RPC) システムです。ClickHouse における gRPC の実装は、次の機能をサポートします。

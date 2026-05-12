@@ -11,8 +11,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# 모범 사례 \{#best-practices\}
-
 ## 메시지 압축 \{#compression\}
 
 Kafka 토픽에는 메시지 압축 사용을 강력히 권장합니다. 메시지 압축을 사용하면 거의 성능 저하 없이 데이터 전송 비용을 크게 절감할 수 있습니다.

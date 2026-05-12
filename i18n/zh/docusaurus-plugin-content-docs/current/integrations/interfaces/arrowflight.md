@@ -7,8 +7,6 @@ title: 'Arrow Flight 接口'
 doc_type: 'reference'
 ---
 
-# Apache Arrow Flight 接口 \{#apache-arrow-flight-interface\}
-
 ## 概述 \{#overview\}
 
 ClickHouse 支持 [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) 协议。这是一种高性能 RPC 框架，可通过 [gRPC](https://grpc.io/) 使用 [Arrow IPC](https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc) 格式高效传输列式数据。

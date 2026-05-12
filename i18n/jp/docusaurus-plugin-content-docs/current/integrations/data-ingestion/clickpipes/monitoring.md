@@ -1,13 +1,11 @@
 ---
 sidebar_label: '監視'
-description: 'Prometheus メトリクスで ClickPipes を監視します。'
+description: 'Prometheus メトリクスを使用して ClickPipes を監視します。'
 slug: /integrations/clickpipes/monitoring
 title: 'ClickPipes の監視'
 doc_type: 'reference'
 keywords: ['ClickPipes', '監視', 'メトリクス', 'Prometheus', 'オブザーバビリティ']
 ---
-
-# ClickPipes の監視 \{#monitoring-clickpipes\}
 
 コンソールでの監視に加えて、ClickPipes はスクレイピング用に [Prometheus 互換エンドポイント](/integrations/prometheus) でメトリクスを公開しています。これらのメトリクスは、他の ClickHouse Cloud サービスのメトリクスとあわせて公開されるため、既存のオブザーバビリティスタック (例: [Grafana](/integrations/prometheus#integrating-with-grafana)、[Datadog](/integrations/prometheus#integrating-with-datadog)) に ClickPipes の監視を統合できます。
 

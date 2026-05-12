@@ -1,14 +1,12 @@
 ---
 slug: /cloud/billing/marketplace/migrate
-title: '在云市场中将计费从按需付费（PAYG）迁移到承诺消费合同'
-description: '将按需付费迁移为承诺消费合同。'
-keywords: ['marketplace', '计费', 'PAYG', 'pay-as-you-go', '承诺消费合同']
+title: '将按需付费 (PAYG) 计费迁移为云市场中的承诺消费合同'
+description: '从按需付费迁移到承诺消费合同。'
+keywords: ['市场', '计费', 'PAYG', '按需付费', '承诺消费合同']
 doc_type: 'guide'
 ---
 
-# 将按需付费 (PAYG) 计费迁移为云市场中的承诺消费合约 \{#migrate-payg-to-committed\}
-
-如果您的 ClickHouse 组织当前是通过云市场中的有效按需付费 (PAYG) 订阅（或订单）进行计费，并且希望在同一云市场中改为通过承诺消费合约进行计费，请先接受您的新报价，然后根据您的云服务提供商，按照下面的步骤进行操作。
+如果您的 ClickHouse 组织当前是通过云市场中的有效按需付费 (PAYG) 订阅 (或订单) 进行计费，并且希望在同一云市场中改为通过承诺消费合同进行计费，请先接受您的新报价，然后根据您的云服务提供商，按照下面的步骤进行操作。
 
 ## 重要说明 \{#important-notes\}
 

@@ -8,8 +8,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Руководство по преобразованию SQL-запросов Snowflake \{#snowflake-sql-translation-guide\}
-
 ## Типы данных \{#data-types\}
 
 ### Числовые типы \{#numerics\}

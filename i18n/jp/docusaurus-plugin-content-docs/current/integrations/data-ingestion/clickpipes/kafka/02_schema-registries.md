@@ -11,9 +11,7 @@ integration:
    - category: 'clickpipes'
 ---
 
-# スキーマレジストリ \{#schema-registries\}
-
-ClickPipes は、Avro および Protobuf でエンコードされたトピックをデコードするために、スキーマレジストリとの統合をサポートします。
+ClickPipes は、Avro および Protobuf でエンコードされたトピックをデコードするために、スキーマレジストリとの連携をサポートしています。
 
 ## Kafka ClickPipes 向けにサポートされているスキーマレジストリ \{#supported-schema-registries\}
 

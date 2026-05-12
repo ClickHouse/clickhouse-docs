@@ -2,24 +2,22 @@
 slug: /cloud/guides/production-readiness
 sidebar_label: '本番運用準備'
 title: 'ClickHouse Cloud 本番運用準備ガイド'
-description: 'クイックスタートからエンタープライズ対応の ClickHouse Cloud 本番デプロイメントへ移行する組織向けのガイド'
-keywords: ['本番運用準備', 'エンタープライズ', 'saml', 'sso', 'terraform', '監視', 'バックアップ', 'ディザスタリカバリ']
+description: 'クイックスタートからエンタープライズ対応の ClickHouse Cloud デプロイメントへ移行する組織向けガイド'
+keywords: ['本番運用準備', 'エンタープライズ', 'saml', 'sso', 'terraform', '監視', 'バックアップ', '災害復旧']
 doc_type: 'guide'
 ---
-
-# ClickHouse Cloud 本番運用準備ガイド \{#production-readiness\}
 
 クイックスタートガイドを完了し、データが流れているアクティブなサービスをすでに運用している組織向けです。
 
 :::note[要約]
 このガイドは、クイックスタートからエンタープライズレベルの ClickHouse Cloud デプロイメントへ移行する際に役立ちます。次のことを学びます。
 
-- 安全なテストのために、開発・ステージング・本番環境を分離して構築する
-- アイデンティティプロバイダーと SAML/SSO 認証を統合する
-- Terraform または Cloud API を用いてデプロイメントを自動化する
-- 監視をアラート基盤（Prometheus や PagerDuty）と連携させる
-- バックアップ手順を検証し、災害復旧プロセスを文書化する
-:::
+* 安全なテストのために、開発・ステージング・本番環境を分離して構築する
+* アイデンティティプロバイダーと SAML/SSO 認証を統合する
+* Terraform または Cloud API を用いてデプロイメントを自動化する
+* 監視をアラート基盤 (Prometheus や PagerDuty) と連携させる
+* バックアップ手順を検証し、災害復旧プロセスを文書化する
+  :::
 
 ## はじめに \{#introduction\}
 

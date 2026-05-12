@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---
 
-# DataStore の実行モデル \{#datastore-execution-model\}
-
-DataStore の遅延評価モデルを理解することは、DataStore を効果的に利用し、パフォーマンスを最大化するための鍵となります。
+DataStore の遅延評価モデルを理解することは、DataStore を効果的に活用し、最適なパフォーマンスを得るうえで重要です。
 
 ## 遅延評価 \{#lazy-evaluation\}
 

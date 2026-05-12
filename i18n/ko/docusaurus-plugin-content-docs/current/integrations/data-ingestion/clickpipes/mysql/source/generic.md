@@ -10,11 +10,9 @@ integration:
    - category: 'clickpipes'
 ---
 
-# 일반 MySQL 소스 설정 가이드 \{#generic-mysql-source-setup-guide\}
-
 :::info
 
-사이드바에 나열된 지원 프로바이더를 사용하는 경우, 해당 프로바이더 전용 가이드를 참고하십시오.
+지원되는 제공업체 중 하나를 사용하는 경우(사이드바 참조), 해당 제공업체별 가이드를 참조하십시오.
 
 :::
 

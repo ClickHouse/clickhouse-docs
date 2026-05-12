@@ -1,11 +1,11 @@
 ---
 
 
-sidebar_label: 'Kafka と ClickHouse の統合'
+sidebar_label: 'Kafka を ClickHouse と統合する'
 sidebar_position: 1
 slug: /integrations/kafka
-description: 'ClickHouse と連携した Kafka の概要'
-title: 'Kafka と ClickHouse の統合'
+description: 'ClickHouse と Kafka の概要'
+title: 'Kafka を ClickHouse と統合する'
 keywords: ['Apache Kafka', 'イベントストリーミング', 'データパイプライン', 'メッセージブローカー', 'リアルタイムデータ']
 doc_type: 'guide'
 integration:
@@ -13,9 +13,7 @@ integration:
   - category: 'data_ingestion'
 ---
 
-# Kafka を ClickHouse と統合する \{#integrating-kafka-with-clickhouse\}
-
-[Apache Kafka](https://kafka.apache.org/) は、ハイパフォーマンスなデータパイプライン、ストリーミング分析、データ統合、およびミッションクリティカルなアプリケーションのために数千社で利用されている、オープンソースの分散イベントストリーミングプラットフォームです。ClickHouse は、Kafka およびその他の Kafka API 互換ブローカー（例: Redpanda、Amazon MSK）からの**読み取り**およびそれらへの**書き込み**を行うための複数のオプションを提供します。
+[Apache Kafka](https://kafka.apache.org/) は、ハイパフォーマンスなデータパイプライン、ストリーミング分析、データ統合、およびミッションクリティカルなアプリケーションのために数千社で利用されている、オープンソースの分散イベントストリーミングプラットフォームです。ClickHouse は、Kafka およびその他の Kafka API 互換ブローカー (例: Redpanda、Amazon MSK) からの**読み取り**およびそれらへの**書き込み**を行うための複数のオプションを提供します。
 
 ## 利用可能なオプション \{#available-options\}
 

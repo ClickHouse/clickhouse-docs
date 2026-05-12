@@ -8,8 +8,6 @@ title: '고급 쿼리'
 doc_type: 'reference'
 ---
 
-# ClickHouse Connect로 데이터 쿼리하기: 고급 활용 \{#querying-data-with-clickhouse-connect--advanced-usage\}
-
 ## QueryContexts \{#querycontexts\}
 
 ClickHouse Connect는 표준 쿼리를 `QueryContext` 내에서 실행합니다. `QueryContext`에는 ClickHouse 데이터베이스에 대해 쿼리를 구성하는 데 사용되는 핵심 구조와, 결과를 `QueryResult` 또는 다른 응답 데이터 구조로 처리하는 데 사용되는 설정이 포함됩니다. 여기에는 쿼리 자체, 파라미터, settings, 읽기 형식, 그리고 기타 속성이 포함됩니다.

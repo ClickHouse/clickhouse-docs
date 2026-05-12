@@ -2,14 +2,12 @@
 title: '関数レベルの設定'
 sidebar_label: '関数設定'
 slug: /chdb/configuration/function-config
-description: '関数レベルで実行エンジンとDtype の補正を設定する'
+description: '関数レベルで実行エンジンとDtype Correctionを設定する'
 keywords: ['chdb', 'datastore', '関数', '設定', 'Dtype', '補正']
 doc_type: 'reference'
 ---
 
-# 関数レベルの設定 \{#function-level-configuration\}
-
-DataStore では、エンジンの選択や Dtype の補正など、関数レベルでの実行をきめ細かく制御できます。
+DataStore では、エンジンの選択や Dtype Correction を含め、関数レベルで実行を細かく制御できます。
 
 ## 関数エンジンの設定 \{#function-engine\}
 

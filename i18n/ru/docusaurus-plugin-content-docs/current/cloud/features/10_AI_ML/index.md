@@ -2,11 +2,9 @@
 sidebar_label: 'Обзор'
 slug: /cloud/features/ai-ml
 title: 'Функции AI/ML в Cloud'
-description: 'Обзор функций AI/ML, доступных в ClickHouse Cloud'
+description: 'Обзор того, какие функции AI/ML доступны в ClickHouse Cloud'
 doc_type: 'reference'
 ---
-
-# AI/ML в ClickHouse Cloud \{#aiml-in-clickhouse-cloud\}
 
 Традиционные аналитические процессы часто включают несколько этапов передачи задач между инженерами по данным, пишущими запросы, аналитиками, создающими дашборды, и бизнес-пользователями, интерпретирующими результаты.
 Каждый шаг добавляет задержку, измеряемую часами или днями.
@@ -14,4 +12,4 @@ ClickHouse Cloud предлагает следующие агентные воз
 что позволяет продакт-менеджеру спросить: «Что стало причиной всплеска оттока на прошлой неделе?» и сразу получить не только ответ, но и исходный запрос, визуализацию и возможные следующие вопросы для исследования.
 
 * [агент ClickHouse Assistant](/cloud/features/ai-ml/ask-ai)
-* [Remote MCP server](/cloud/features/ai-ml/remote-mcp)
+* [удалённый MCP-сервер](/cloud/features/ai-ml/remote-mcp)

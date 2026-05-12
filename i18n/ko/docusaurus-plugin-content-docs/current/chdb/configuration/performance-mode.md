@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'performance', 'mode', 'compat', 'sql-first', 'o
 doc_type: 'guide'
 ---
 
-# 성능 모드 \{#performance-mode\}
-
-DataStore에는 출력 형식을 pandas와의 호환성에 맞출지, 원시 SQL 성능에 맞춰 최적화할지를 제어하는 두 가지 호환 모드가 있습니다.
+DataStore에는 출력이 Pandas 호환성에 맞게 구성될지, 또는 raw SQL 성능에 맞게 최적화될지를 제어하는 두 가지 호환성 모드가 있습니다.
 
 ## 개요 \{#overview\}
 

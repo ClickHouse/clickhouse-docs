@@ -7,8 +7,6 @@ doc_type: 'landing-page'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
 ---
 
-# pg_clickhouse \{#pg_clickhouse\}
-
 ## 介绍 \{#introduction\}
 
 [pg_clickhouse] 是一个开源的 PostgreSQL 扩展，可以直接在 PostgreSQL 中对 ClickHouse 运行分析查询，而无需重写任何 SQL。它支持 PostgreSQL 13 及以上版本以及 ClickHouse v23 及以上版本。

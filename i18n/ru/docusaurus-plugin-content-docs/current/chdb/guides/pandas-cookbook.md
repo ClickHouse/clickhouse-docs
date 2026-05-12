@@ -7,8 +7,6 @@ keywords: ['chdb', 'datastore', 'pandas', 'сборник рецептов', 'ш
 doc_type: 'guide'
 ---
 
-# Справочник по Pandas \{#pandas-cookbook\}
-
 Типовые приёмы Pandas и их эквиваленты в DataStore. Большая часть кода работает без изменений!
 
 ## Загрузка данных \{#loading\}

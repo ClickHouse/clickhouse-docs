@@ -10,9 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# MongoDB ClickPipe 的生命周期 \{#lifecycle\}
-
-本文档介绍 MongoDB ClickPipe 在其生命周期中的各个阶段、可能处于的不同状态以及这些状态所代表的含义。
+本文档介绍 MongoDB ClickPipe 的各个阶段、可能出现的不同状态及其含义。
 
 ## 预配置 \{#provisioning\}
 

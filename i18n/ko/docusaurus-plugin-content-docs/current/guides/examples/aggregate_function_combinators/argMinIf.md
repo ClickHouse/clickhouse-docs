@@ -7,8 +7,6 @@ sidebar_label: 'argMinIf'
 doc_type: 'reference'
 ---
 
-# argMinIf \{#argminif\}
-
 ## 설명 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 결합자를 [`argMin`](/sql-reference/aggregate-functions/reference/argmin)

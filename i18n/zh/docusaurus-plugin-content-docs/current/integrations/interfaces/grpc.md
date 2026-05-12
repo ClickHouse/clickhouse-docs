@@ -7,8 +7,6 @@ title: 'gRPC 接口'
 doc_type: 'reference'
 ---
 
-# gRPC 接口 \{#grpc-interface\}
-
 ## 介绍 \{#grpc-interface-introduction\}
 
 ClickHouse 支持 [gRPC](https://grpc.io/) 接口。它是一个使用 HTTP/2 和 [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol_Buffers) 的开源远程过程调用系统。ClickHouse 中 gRPC 的实现支持：

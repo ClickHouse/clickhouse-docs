@@ -2,14 +2,12 @@
 title: 'DataStore 配置'
 sidebar_label: '概览'
 slug: /chdb/configuration
-description: '配置 DataStore 的执行引擎、日志配置、缓存和性能分析'
+description: '配置 DataStore 的执行引擎、兼容模式、日志配置、缓存、性能分析和 dtype 校正'
 keywords: ['chdb', 'DataStore', '配置', '配置项', '设置']
 doc_type: 'reference'
 ---
 
-# DataStore 配置 \{#datastore-configuration\}
-
-DataStore 提供了全面的配置选项，用于选择执行引擎、兼容模式、配置日志、缓存、性能分析以及 dtype 类型纠正。
+DataStore 提供了全面的配置选项，用于选择执行引擎、设置兼容模式，以及配置日志记录、缓存、性能分析和 dtype 校正。
 
 ## 快速参考 \{#quick-reference\}
 

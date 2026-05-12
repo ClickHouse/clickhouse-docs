@@ -11,8 +11,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# 最佳实践 \{#best-practices\}
-
 ## 消息压缩 \{#compression\}
 
 我们强烈建议对 Kafka 主题使用压缩。压缩几乎不会带来性能损耗，却可以大幅降低数据传输成本。

@@ -7,9 +7,7 @@ keywords: ['clickhousectl', 'CLI', 'cloud management', 'local development']
 doc_type: 'reference'
 ---
 
-# ClickHouse CLI \{#clickhouse-cli\}
-
-ClickHouse CLI (`clickhousectl`) は、ClickHouse Cloud リソースの管理と、ClickHouse を使ったローカル開発を行うための統合コマンドラインツールです。
+ClickHouse CLI (`clickhousectl`) は、ClickHouse Cloud リソースの管理と、ClickHouse を使ったローカル開発に対応する統合コマンドラインツールです。
 
 ## インストール \{#installation\}
 

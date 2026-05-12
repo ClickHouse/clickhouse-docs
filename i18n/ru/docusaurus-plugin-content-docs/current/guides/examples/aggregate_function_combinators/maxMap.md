@@ -7,8 +7,6 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap \{#maxmap\}
-
 ## Описание \{#description\}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) можно применить к функции [`max`](/sql-reference/aggregate-functions/reference/max),

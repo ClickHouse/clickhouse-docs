@@ -4,19 +4,16 @@ slug: /guides/sre/keeper/clickhouse-keeper
 sidebar_label: 'ClickHouse Keeper 구성'
 sidebar_position: 10
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
-description: 'ClickHouse Keeper 또는 clickhouse-keeper는 ZooKeeper를 대체하며 복제 및 조정을 담당합니다.'
+description: 'ClickHouse Keeper 또는 clickhouse-keeper는 ZooKeeper를 대체하며 복제 및 조정 기능을 제공합니다.'
 title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
-
-# ClickHouse Keeper (clickhouse-keeper) \{#clickhouse-keeper-clickhouse-keeper\}
 
 import SelfManaged from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
 ClickHouse Keeper는 데이터 [복제](/engines/table-engines/mergetree-family/replication.md) 및 [분산 DDL](/sql-reference/distributed-ddl.md) 쿼리 실행을 위한 조정 시스템 역할을 합니다. ClickHouse Keeper는 ZooKeeper와 호환됩니다.
-
 
 ### 구현 세부 사항 \{#implementation-details\}
 

@@ -7,8 +7,6 @@ keywords: ['chdb', 'datastore', 'class', 'reference', 'api', 'columnexpr', 'lazy
 doc_type: 'reference'
 ---
 
-# Справочник по классу DataStore \{#datastore-class-reference\}
-
 В этом справочнике описаны основные классы API DataStore.
 
 ## DataStore \{#datastore\}

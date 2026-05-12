@@ -7,8 +7,6 @@ title: 'ODBC 드라이버'
 doc_type: 'reference'
 ---
 
-# ODBC Driver \{#odbc-driver\}
-
 ClickHouse ODBC 드라이버는 ODBC를 지원하는 애플리케이션을 ClickHouse에 연결하기 위한 표준 준수 인터페이스를 제공합니다. 이 드라이버는 ODBC API를 구현하여 애플리케이션, BI 도구 및 스크립팅 환경에서 SQL 쿼리를 실행하고 결과를 조회하며, 익숙한 방식으로 ClickHouse와 상호 작용할 수 있도록 합니다.
 
 드라이버는 ClickHouse 서버와 [HTTP protocol](/interfaces/http)을 사용해 통신하며, 이는 모든 ClickHouse 배포 환경에서 기본적으로 지원되는 주요 프로토콜입니다. 이를 통해 드라이버는 로컬 설치 환경, Cloud에서 관리되는 서비스, HTTP 기반 액세스만 가능한 환경 등 다양한 환경에서 일관되게 동작합니다.

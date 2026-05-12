@@ -8,10 +8,8 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 시계열 저장 효율성 \{#time-series-storage-efficiency\}
-
-Wikipedia 통계 데이터셋에 대한 쿼리 방법을 살펴보았으니, 이제 ClickHouse에서 이 데이터셋의 저장 효율을 최적화하는 데 집중하겠습니다.
-이 섹션에서는 쿼리 성능을 유지하면서 필요한 저장 용량을 줄이기 위한 실질적인 기법을 설명합니다.
+Wikipedia 통계 데이터셋을 쿼리하는 방법을 살펴보았으니, 이제 ClickHouse에서 이 데이터셋의 저장 효율성을 최적화하는 방법에 집중하겠습니다.
+이 섹션에서는 쿼리 성능을 유지하면서 필요한 저장 공간을 줄이는 실용적인 기법을 소개합니다.
 
 ## 타입 최적화 \{#time-series-type-optimization\}
 

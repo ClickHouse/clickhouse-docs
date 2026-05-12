@@ -16,9 +16,9 @@ keywords: ['변경 이력', '릴리스 노트', '업데이트', '신규 기능',
 | Page                                                      | Description                                                     |
 | --------------------------------------------------------- | --------------------------------------------------------------- |
 | [Cloud changelog - 2026](/whats-new/changelog/cloud)      | 각 ClickHouse Cloud 릴리스에서 새로 추가된 내용을 설명하는 ClickHouse Cloud 변경 로그 |
-| [v26.2 Changelog for Cloud](/changelogs/26.2)             | v26.2 버전의 변경 로그                                                 |
+| [v26.2 changelog for Cloud](/changelogs/26.2)             | v26.2 버전의 변경 로그                                                 |
 | [Cloud changelog - 2025](/whats-new/cloud/2025)           | 2025년 ClickHouse Cloud 변경 로그                                    |
-| [v25.12 Changelog for Cloud](/changelogs/25.12)           | v25.12 버전의 변경 로그                                                |
+| [v25.12 changelog for Cloud](/changelogs/25.12)           | v25.12 버전의 변경 로그                                                |
 | [Cloud changelog - 2024](/whats-new/cloud/2024)           | 2024년 ClickHouse Cloud 변경 로그                                    |
 | [v25.10 Changelog for Cloud](/changelogs/25.10)           | v25.10 버전의 변경 로그                                                |
 | [Cloud changelog - 2023](/whats-new/cloud/2023)           | 2023년 ClickHouse Cloud 변경 로그                                    |
@@ -29,8 +29,8 @@ keywords: ['변경 이력', '릴리스 노트', '업데이트', '신규 기능',
 | [v24.12 Changelog for Cloud](/changelogs/24.12)           | v24.12 버전의 빠른 릴리스 변경 로그                                         |
 | [v24.10 Changelog for Cloud](/changelogs/24.10)           | v24.10 버전의 빠른 릴리스 변경 로그                                         |
 | [v24.8 Changelog for Cloud](/changelogs/24.8)             | v24.8 버전의 빠른 릴리스 변경 로그                                          |
-| [v24.6 Changelog for Cloud](/changelogs/24.6)             | v24.6 버전의 빠른 릴리스 변경 로그                                          |
-| [v24.5 Changelog for Cloud](/changelogs/24.5)             | v24.5 버전의 빠른 릴리스 변경 로그                                          |
+| [v24.6 changelog for Cloud](/changelogs/24.6)             | v24.6 버전의 빠른 릴리스 변경 로그                                          |
+| [v24.5 changelog for Cloud](/changelogs/24.5)             | v24.5 버전의 빠른 릴리스 변경 로그                                          |
 | [v24.2 Changelog](/whats-new/changelog/24.2-fast-release) | v24.2 버전의 빠른 릴리스 변경 로그                                          |
 | [Release status page](/cloud/release-status)              | 각 릴리스 채널의 릴리스 상태를 보여주는 페이지                                      |
 

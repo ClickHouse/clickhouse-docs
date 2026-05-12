@@ -3,11 +3,9 @@ title: '기타 JSON 형식 처리'
 slug: /integrations/data-formats/json/other-formats
 description: '기타 JSON 형식 처리'
 sidebar_label: '기타 형식 처리'
-keywords: ['json', 'formats', 'json formats']
+keywords: ['json', '형식', 'json 형식']
 doc_type: 'guide'
 ---
-
-# 기타 JSON 형식 처리 \{#handling-other-json-formats\}
 
 앞에서 JSON 데이터를 로드하는 예제에서는 [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) 사용을 가정합니다. 이 형식은 각 JSON 행의 키를 컬럼으로 읽습니다. 예를 들어:
 

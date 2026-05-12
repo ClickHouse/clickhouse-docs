@@ -7,8 +7,6 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-# countIf \{#countif\}
-
 ## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`count`](/sql-reference/aggregate-functions/reference/count)

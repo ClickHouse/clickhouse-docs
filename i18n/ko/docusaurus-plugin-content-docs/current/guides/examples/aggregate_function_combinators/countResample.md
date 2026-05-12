@@ -1,25 +1,17 @@
 ---
 slug: '/examples/aggregate-function-combinators/countResample'
 title: 'countResample'
-description: 'count와 함께 Resample 결합자를 사용하는 예'
+description: 'count와 함께 Resample 조합자를 사용하는 예'
 keywords: ['count', 'Resample', 'combinator', '예시', 'countResample']
 sidebar_label: 'countResample'
 doc_type: 'reference'
 ---
 
-
-
-# countResample \{#countResample\}
-
-
-
 ## 설명 \{#description\}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 조합자는 [`count`](/sql-reference/aggregate-functions/reference/count)
 집계 함수에 적용하여, 지정된 키 컬럼 값의 개수를 고정된 개수의 구간(`N`)으로 나누어 셀 수 있습니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -61,7 +53,7 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 └────────┘
 ```
 
-
 ## 함께 보기 \{#see-also\}
-- [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+
+* [`count`](/sql-reference/aggregate-functions/reference/count)
+* [`Resample 조합자`](/sql-reference/aggregate-functions/combinators#-resample)

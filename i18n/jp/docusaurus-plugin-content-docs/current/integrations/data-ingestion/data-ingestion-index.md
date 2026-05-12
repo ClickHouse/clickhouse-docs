@@ -2,11 +2,9 @@
 slug: /integrations/data-ingestion-overview
 keywords: [ 'Airbyte', 'Apache Spark', 'Spark', 'Azure Synapse', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector' ]
 title: 'データインジェスト'
-description: 'データインジェストセクションのトップページ'
+description: 'データインジェストセクションのランディングページ'
 doc_type: 'landing-page'
 ---
-
-# データインジェスト \{#data-ingestion\}
 
 ClickHouse は、データ統合や変換のためのさまざまなソリューションと連携できます。
 詳細については、以下のページをチェックしてください。

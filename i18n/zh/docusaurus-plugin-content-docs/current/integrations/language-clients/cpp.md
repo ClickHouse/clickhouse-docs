@@ -7,11 +7,9 @@ title: 'C++ 客户端库'
 doc_type: 'reference'
 ---
 
-# C++ 客户端库 \{#c-client-library\}
-
 `clickhouse-cpp` 是 ClickHouse 的官方 C++ 客户端库，基于其原生二进制协议为 ClickHouse 提供快速且类型安全的接口。
 
-构建说明、使用示例以及更多文档可在项目的 GitHub 仓库中获取：[https://github.com/ClickHouse/clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp)。 
+构建说明、使用示例以及更多文档可在项目的 GitHub 仓库中获取：[https://github.com/ClickHouse/clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp)。
 
 :::note
 该库仍在积极开发中。虽然它已经支持 ClickHouse 的核心功能，但某些特性和数据类型可能尚未完全实现或支持。

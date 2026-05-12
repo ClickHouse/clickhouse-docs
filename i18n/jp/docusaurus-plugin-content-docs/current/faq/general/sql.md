@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['SQL 構文', 'ANSI SQL']
 ---
 
-# ClickHouse はどのような SQL 構文をサポートしていますか？ \{#what-sql-syntax-does-clickhouse-support\}
-
 ClickHouse は SQL 構文を完全にサポートしており、次のような機能が含まれます。
 
 * SQL/JSON と JSON データ型 (SQL-2023)

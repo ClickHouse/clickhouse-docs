@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', '拡張機能']
 ---
 
-# pg_clickhouse リファレンス ドキュメント \{#pg_clickhouse-reference-documentation\}
-
 ## 説明 \{#description\}
 
 pg_clickhouse は、[foreign data wrapper] を含む ClickHouse データベース上でのリモートでのクエリ実行を可能にする PostgreSQL 拡張機能です。PostgreSQL 13 以降および ClickHouse 23 以降に対応しています。

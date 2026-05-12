@@ -2,13 +2,11 @@
 sidebar_label: '데이터베이스/SQL API'
 sidebar_position: 4
 keywords: ['clickhouse', 'go', 'golang', 'database', 'sql', 'standard']
-description: 'clickhouse-go와 함께 database/sql 표준 인터페이스를 사용하는 방법입니다.'
+description: 'clickhouse-go와 함께 database/sql 표준 인터페이스를 사용합니다.'
 slug: /integrations/language-clients/go/database-sql-api
 title: '데이터베이스/SQL API'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-# 데이터베이스/SQL API \{#database-sql-api\}
 
 표준 API의 전체 코드 예시는 [여기](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std)에서 확인할 수 있습니다.
 

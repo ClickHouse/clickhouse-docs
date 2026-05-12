@@ -6,8 +6,6 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-# 이름이 지정된 컬렉션(named collection)을 사용한 ClickHouse와 Kafka 통합 \{#integrating-clickhouse-with-kafka-using-named-collections\}
-
 ## 소개 \{#introduction\}
 
 이 가이드에서는 named collections를 사용하여 ClickHouse를 Kafka에 연결하는 방법을 설명합니다. named collections용 구성 파일을 사용하면 다음과 같은 장점이 있습니다:

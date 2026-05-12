@@ -11,9 +11,7 @@ integration:
    - category: 'clickpipes'
 ---
 
-# Schema Registry \{#schema-registries\}
-
-ClickPipes 支持集成 Schema Registry，以解码采用 Avro 和 Protobuf 编码的 topic。
+ClickPipes 支持与 Schema Registry 集成，以解码采用 Avro 和 Protobuf 编码的 topics。
 
 ## Kafka ClickPipes 支持的 Schema Registry \{#supported-schema-registries\}
 

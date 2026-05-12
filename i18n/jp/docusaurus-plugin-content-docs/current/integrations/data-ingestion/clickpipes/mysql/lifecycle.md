@@ -10,9 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# MySQL ClickPipe のライフサイクル \{#lifecycle\}
-
-本書では、MySQL ClickPipe のライフサイクルにおける各フェーズと取りうる各ステータス、その意味について説明します。なお、ここで説明する内容は MariaDB にも適用されます。
+このドキュメントでは、MySQL ClickPipe の各フェーズ、取り得るさまざまなステータス、およびそれぞれの意味について説明します。なお、これは MariaDB にも適用されます。
 
 ## プロビジョニング \{#provisioning\}
 

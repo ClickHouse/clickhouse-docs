@@ -8,8 +8,6 @@ title: '구성'
 doc_type: 'reference'
 ---
 
-# 구성 \{#configuration\}
-
 ## 연결 설정 \{#connection-settings\}
 
 연결을 열 때 `Options` 구조체를 사용해 클라이언트 동작을 제어할 수 있습니다. 사용할 수 있는 설정은 다음과 같습니다.

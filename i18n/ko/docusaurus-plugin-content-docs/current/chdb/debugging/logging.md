@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'logging', 'debug', 'log', 'level']
 doc_type: 'reference'
 ---
 
-# DataStore 로깅 \{#datastore-logging\}
-
-DataStore는 Python의 표준 logging 모듈을 사용합니다. 이 가이드에서는 디버깅을 위해 로깅을 구성하는 방법을 설명합니다.
+DataStore는 Python의 표준 로깅 모듈을 사용합니다. 이 가이드에서는 디버깅을 위해 로깅을 구성하는 방법을 설명합니다.
 
 ## 빠른 시작 \{#quick-start\}
 

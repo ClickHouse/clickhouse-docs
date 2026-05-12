@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Универсальный MySQL'
+sidebar_label: 'Общий MySQL'
 description: 'Настройка любого экземпляра MySQL как источника для ClickPipes'
 slug: /integrations/clickpipes/mysql/source/generic
-title: 'Руководство по настройке универсального источника MySQL'
+title: 'Руководство по настройке общего источника MySQL'
 doc_type: 'guide'
 keywords: ['generic mysql', 'clickpipes', 'binary logging', 'ssl tls', 'mysql 8.x']
 integration:
@@ -10,11 +10,9 @@ integration:
    - category: 'clickpipes'
 ---
 
-# Универсальное руководство по настройке источника MySQL \{#generic-mysql-source-setup-guide\}
-
 :::info
 
-Если вы используете одного из поддерживаемых провайдеров (в боковой панели), обратитесь к соответствующему руководству по этому провайдеру.
+Если вы используете одного из поддерживаемых провайдеров (см. боковую панель), обратитесь к руководству для этого провайдера.
 
 :::
 

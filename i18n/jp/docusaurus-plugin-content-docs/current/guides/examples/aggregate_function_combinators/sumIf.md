@@ -7,8 +7,6 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-# sumIf \{#sumif\}
-
 ## 説明 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは [`sum`](/sql-reference/aggregate-functions/reference/sum)

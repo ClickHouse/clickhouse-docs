@@ -7,8 +7,6 @@ title: 'Интерфейс Arrow Flight'
 doc_type: 'reference'
 ---
 
-# Интерфейс Apache Arrow Flight \{#apache-arrow-flight-interface\}
-
 ## Обзор \{#overview\}
 
 ClickHouse поддерживает протокол [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) — высокопроизводительный RPC-фреймворк для эффективной передачи столбцовых данных с использованием формата [Arrow IPC](https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc) поверх [gRPC](https://grpc.io/).

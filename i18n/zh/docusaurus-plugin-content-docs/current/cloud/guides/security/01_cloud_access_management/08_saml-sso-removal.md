@@ -1,18 +1,16 @@
 ---
-sidebar_label: '移除 SAML SSO'
+sidebar_label: 'SAML SSO removal'
 slug: /cloud/security/saml-removal
-title: '移除 SAML SSO'
-description: '如何在 ClickHouse Cloud 中移除 SAML SSO'
+title: 'SAML SSO removal'
+description: '如何移除 ClickHouse Cloud 中的 SAML SSO'
 doc_type: 'guide'
 keywords: ['ClickHouse Cloud', 'SAML', 'SSO', '单点登录', 'IdP']
 ---
 
-# 移除 SAML SSO \{#saml-sso-removal\}
-
 客户可能需要从某个组织中移除 SAML 集成，例如在更换身份提供商时。SAML 用户是独立于其他用户类型的身份。请按照以下说明切换到其他身份验证方式。
 
 :::warning
-此操作无法撤销。移除 SAML 集成会使基于 SAML 的用户账号失效，且无法恢复。请严格按照以下说明操作，以确保您仍然可以访问该组织。
+此操作无法撤销。移除 SAML 集成会使 SAML 用户失效，且无法恢复。请严格按照以下说明操作，以确保您仍然可以访问该组织。
 :::
 
 ## 开始之前 \{#before-you-begin\}

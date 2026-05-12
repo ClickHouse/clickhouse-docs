@@ -10,11 +10,9 @@ integration:
   - category: 'clickpipes'
 ---
 
-# 通用 MongoDB 源配置指南 \{#generic-mongodb-source-setup-guide\}
-
 :::info
 
-如果您使用 MongoDB Atlas，请参阅[此专用指南](./atlas)。
+如果您使用 MongoDB Atlas，请参阅[此处](./atlas)的专用指南。
 
 :::
 

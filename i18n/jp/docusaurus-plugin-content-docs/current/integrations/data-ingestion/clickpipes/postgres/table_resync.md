@@ -2,15 +2,13 @@
 title: '特定のテーブルを再同期する'
 description: 'Postgres ClickPipe で特定のテーブルを再同期する'
 slug: /integrations/clickpipes/postgres/table_resync
-sidebar_label: 'テーブルの再同期'
+sidebar_label: 'テーブルを再同期'
 doc_type: 'guide'
-keywords: ['clickpipes', 'PostgreSQL', 'CDC', 'データインジェスト', 'リアルタイム同期']
+keywords: ['clickpipes', 'postgresql', 'cdc', 'データインジェスト', 'リアルタイム同期']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
-
-# 特定のテーブルを再同期する \{#resync-tables\}
 
 特定のパイプ内のテーブルを再同期したい状況が発生することがあります。たとえば、Postgres 上で大きなスキーマ変更を行った場合や、ClickHouse 上でデータモデリングをやり直した場合などが想定されます。
 

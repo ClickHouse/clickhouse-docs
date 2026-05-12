@@ -3,12 +3,10 @@ sidebar_position: 1
 sidebar_label: '创建表'
 title: '在 ClickHouse 中创建表'
 slug: /guides/creating-tables
-description: '学习在 ClickHouse 中创建表'
-keywords: ['创建表', 'CREATE TABLE', '表创建', '数据库指南', 'MergeTree 引擎']
+description: '了解如何在 ClickHouse 中创建表'
+keywords: ['creating tables', 'CREATE TABLE', 'table creation', 'database guide', 'MergeTree engine']
 doc_type: 'guide'
 ---
-
-# 在 ClickHouse 中创建表 \{#creating-tables-in-clickhouse\}
 
 与大多数数据库一样，ClickHouse 会将表按逻辑分组到**数据库**中。使用 `CREATE DATABASE` 命令在 ClickHouse 中创建一个新数据库：
 
@@ -49,7 +47,6 @@ CREATE DATABASE IF NOT EXISTS helloworld
 
 可以选择的引擎有很多，但对于单节点 ClickHouse 服务器上的简单表，[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) 通常是首选。
 :::
-
 
 ## 主键简介 \{#a-brief-intro-to-primary-keys\}
 

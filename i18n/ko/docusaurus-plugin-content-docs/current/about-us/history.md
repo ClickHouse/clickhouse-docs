@@ -1,16 +1,14 @@
 ---
 slug: /about-us/history
-sidebar_label: '연혁'
+sidebar_label: 'ClickHouse 연혁'
 sidebar_position: 40
-description: 'ClickHouse 개발 역사'
-keywords: ['역사','개발','Metrica']
-title: '연혁'
+description: 'ClickHouse 개발 이력'
+keywords: ['history','development','Metrica']
+title: 'ClickHouse 연혁'
 doc_type: 'reference'
 ---
 
-# ClickHouse 연혁 \{#clickhouse-history\}
-
-ClickHouse는 처음에 [Yandex.Metrica](https://metrica.yandex.com/), [전 세계에서 두 번째로 큰 웹 분석 플랫폼](http://w3techs.com/technologies/overview/traffic_analysis/all)을 구동하기 위해 개발되었으며, 현재까지도 그 핵심 구성 요소로 사용됩니다. 데이터베이스에 13조 개가 넘는 레코드가 저장되어 있고 매일 200억 개가 넘는 이벤트가 발생하는 환경에서 ClickHouse는 사전 집계되지 않은 데이터로부터 실시간으로 사용자 정의 보고서를 생성할 수 있도록 합니다. 이 문서에서는 ClickHouse 개발 초기 단계의 목표를 간략하게 다룹니다.
+ClickHouse는 처음에 [Yandex.Metrica](https://metrica.yandex.com/), [전 세계에서 두 번째로 큰 웹 분석 플랫폼](http://w3techs.com/technologies/overview/traffic_analysis/all)을 구동하기 위해 개발되었으며, 현재까지도 그 핵심 구성 요소로 사용됩니다. 데이터베이스에 13조 개가 넘는 레코드가 저장되어 있고 매일 200억 개가 넘는 이벤트가 발생하는 환경에서 ClickHouse는 비집계 데이터로부터 실시간으로 사용자 정의 보고서를 생성할 수 있도록 합니다. 이 문서에서는 ClickHouse 개발 초기 단계의 목표를 간략하게 다룹니다.
 
 Yandex.Metrica는 히트(hit)와 세션(session)을 기반으로, 사용자가 정의한 임의의 세그먼트를 사용해 실시간으로 사용자 정의 보고서를 생성합니다. 이 과정에서는 종종 고유 사용자 수와 같은 복잡한 집계를 계산해야 하며, 보고서 생성을 위한 새로운 데이터가 실시간으로 유입됩니다.
 

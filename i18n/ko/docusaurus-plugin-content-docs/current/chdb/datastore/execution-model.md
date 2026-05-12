@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---
 
-# DataStore 실행 모델 \{#datastore-execution-model\}
-
-DataStore의 지연 평가(lazy evaluation) 모델을 이해하는 것은 이를 효과적으로 사용하고 최적의 성능을 얻는 데 핵심입니다.
+DataStore의 지연 평가 모델을 이해하는 것은 이를 효과적으로 활용하고 최적의 성능을 얻는 데 핵심입니다.
 
 ## 지연 평가 \{#lazy-evaluation\}
 

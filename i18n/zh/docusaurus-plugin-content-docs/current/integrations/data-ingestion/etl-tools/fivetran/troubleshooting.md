@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['fivetran', 'clickhouse destination', '故障排查', '最佳实践', '调试']
 ---
 
-# 故障排查与最佳实践 \{#troubleshooting-best-practices\}
-
 ## 常见错误 \{#common-errors\}
 
 ### 授权测试失败，或因权限问题导致相关操作失败 \{#grants-test-failed\}

@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'performance', 'mode', 'compat', 'sql-first', 'o
 doc_type: 'guide'
 ---
 
-# 性能模式 \{#performance-mode\}
-
-DataStore 提供两种兼容模式，用于控制输出是面向 pandas 兼容性，还是针对原生 SQL 性能进行优化。
+DataStore 提供两种兼容模式，用于控制输出是适配 pandas 兼容性，还是针对原生 SQL 性能进行优化。
 
 ## 概览 \{#overview\}
 

@@ -2,11 +2,9 @@
 slug: /operations/utilities/static-files-disk-uploader
 title: 'clickhouse-static-files-disk-uploader'
 keywords: ['clickhouse-static-files-disk-uploader', 'utility', 'disk', 'uploader']
-description: '提供 clickhouse-static-files-disk-uploader 实用工具的介绍'
+description: '提供 clickhouse-static-files-disk-uploader 实用工具的说明'
 doc_type: 'guide'
 ---
-
-# clickhouse-static-files-disk-uploader \{#clickhouse-static-files-disk-uploader\}
 
 生成一个数据目录，其中包含指定 ClickHouse 表的元数据。可以使用这些元数据在另一台服务器上创建一个 ClickHouse 表，该表包含由 `web` 磁盘作为后端的只读数据集。
 

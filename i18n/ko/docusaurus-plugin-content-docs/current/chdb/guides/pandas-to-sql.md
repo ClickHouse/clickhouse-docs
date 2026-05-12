@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'sql', '대응', '쿼리']
 doc_type: 'guide'
 ---
 
-# pandas 사용자용 SQL \{#sql-for-pandas-users\}
-
-DataStore는 pandas 스타일의 연산을 최적화된 SQL로 컴파일합니다. 이 가이드는 pandas 사용자가 자신이 수행하는 연산이 어떤 SQL로 변환되는지 이해하는 데 도움이 됩니다.
+DataStore는 pandas 스타일 연산을 최적화된 SQL로 컴파일합니다. 이 가이드는 pandas 사용자가 수행한 연산의 기반이 되는 SQL을 이해하는 데 도움을 줍니다.
 
 ## 생성된 SQL 확인하기 \{#viewing-sql\}
 

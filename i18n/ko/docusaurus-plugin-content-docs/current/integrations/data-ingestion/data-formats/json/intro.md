@@ -1,15 +1,13 @@
 ---
 sidebar_label: '개요'
 sidebar_position: 10
-title: 'JSON 사용하기'
+title: 'JSON 다루기'
 slug: /integrations/data-formats/json/overview
-description: 'ClickHouse에서 JSON 사용하기'
+description: 'ClickHouse에서 JSON 다루기'
 keywords: ['json', 'clickhouse']
 score: 10
 doc_type: 'guide'
 ---
-
-# JSON 개요 \{#json-overview\}
 
 <iframe
   src="//www.youtube.com/embed/gCg5ISOujtc"

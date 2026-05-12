@@ -11,8 +11,6 @@ integration:
   - category: 'language_client'
 ---
 
-# Клиент ClickHouse на Rust \{#clickhouse-rust-client\}
-
 Официальный клиент на Rust для подключения к ClickHouse, первоначально разработанный [Paul Loyd](https://github.com/loyd). Исходный код клиента доступен в [репозитории GitHub](https://github.com/ClickHouse/clickhouse-rs).
 
 ## Обзор \{#overview\}

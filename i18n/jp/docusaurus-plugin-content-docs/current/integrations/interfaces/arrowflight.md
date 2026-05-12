@@ -7,8 +7,6 @@ title: 'Arrow Flight インターフェイス'
 doc_type: 'reference'
 ---
 
-# Apache Arrow Flight インターフェイス \{#apache-arrow-flight-interface\}
-
 ## 概要 \{#overview\}
 
 ClickHouse は、[gRPC](https://grpc.io/) 上で [Arrow IPC](https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc) フォーマットを使用し、効率的な列指向データ転送を実現する高性能 RPC フレームワークである [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) プロトコルをサポートしています。

@@ -1,21 +1,19 @@
 ---
 
 
-sidebar_label: 'Kafka 与 ClickHouse 集成'
+sidebar_label: '在 ClickHouse 中集成 Kafka'
 sidebar_position: 1
 slug: /integrations/kafka
-description: 'Kafka 与 ClickHouse 简介'
-title: 'Kafka 与 ClickHouse 集成'
-keywords: ['Apache Kafka', '事件流处理', '数据管道', '消息代理', '实时数据']
+description: 'ClickHouse 中 Kafka 简介'
+title: '在 ClickHouse 中集成 Kafka'
+keywords: ['Apache Kafka', '事件流', '数据管道', '消息代理', '实时数据']
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
 ---
 
-# 在 ClickHouse 中集成 Kafka \{#integrating-kafka-with-clickhouse\}
-
-[Apache Kafka](https://kafka.apache.org/) 是一个开源的分布式事件流平台，被成千上万的公司用于高性能数据管道、流式分析、数据集成以及关键业务应用。ClickHouse 提供多种方式来**从** Kafka 及其他兼容 Kafka API 的代理（如 Redpanda、Amazon MSK）读取数据，并**向其写入**数据。
+[Apache Kafka](https://kafka.apache.org/) 是一个开源的分布式事件流平台，被成千上万的公司用于高性能数据管道、流式分析、数据集成以及关键业务应用。ClickHouse 提供多种方式来**从** Kafka 及其他兼容 Kafka API 的代理 (如 Redpanda、Amazon MSK) 读取数据，并**向其写入**数据。
 
 ## 可用选项 \{#available-options\}
 

@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Upsonic と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server\}
-
 このガイドでは、[ClickHouse の MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を使用して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる [Upsonic](https://github.com/Upsonic/Upsonic/tree/master) 製 AI エージェントの構築方法を説明します。
 
 :::note サンプルノートブック

@@ -2,12 +2,10 @@
 sidebar_label: 'BYOC セキュリティプレイブック'
 slug: /cloud/security/audit-logging/byoc-security-playbook
 title: 'BYOC セキュリティプレイブック'
-description: 'このページでは、お客様が潜在的なセキュリティインシデントを特定するために利用できる手法を説明します'
+description: 'このページでは、お客様が潜在的なセキュリティイベントを特定するために利用できる方法を示します'
 doc_type: 'guide'
 keywords: ['byoc', 'セキュリティ', 'プレイブック', 'ベストプラクティス', 'コンプライアンス']
 ---
-
-# BYOC セキュリティプレイブック \{#byoc-security-playbook\}
 
 ClickHouse は Trust Center (https://trust.clickhouse.com) からダウンロード可能なセキュリティ共有責任モデルに基づいて、Bring Your Own Cloud (BYOC) を運用しています。以下の情報は、潜在的なセキュリティイベントを識別する方法の例として、BYOC のお客様向けに提供されています。お客様は、自身のセキュリティプログラムの観点からこの情報を検討し、追加の検知やアラートが有用かどうかを判断してください。
 

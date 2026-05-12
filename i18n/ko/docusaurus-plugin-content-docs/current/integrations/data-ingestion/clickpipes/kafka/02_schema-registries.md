@@ -11,9 +11,7 @@ integration:
    - category: 'clickpipes'
 ---
 
-# 스키마 레지스트리 \{#schema-registries\}
-
-ClickPipes는 Avro 및 Protobuf로 인코딩된 토픽을 디코딩할 수 있도록 스키마 레지스트리와의 통합을 지원합니다.
+ClickPipes는 Avro 및 Protobuf로 인코딩된 토픽을 디코딩할 수 있도록 스키마 레지스트리 통합을 지원합니다.
 
 ## Kafka ClickPipes에서 지원되는 스키마 레지스트리 \{#supported-schema-registries\}
 

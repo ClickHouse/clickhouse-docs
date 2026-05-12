@@ -3,12 +3,10 @@ title: 'Поддерживает ли ClickHouse федеративные зап
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/federated
-description: 'ClickHouse поддерживает широкий набор федеративных и гибридных запросов'
+description: 'ClickHouse поддерживает широкий спектр федеративных и гибридных запросов'
 doc_type: 'reference'
 keywords: ['federated', 'hybrid', 'postgres', 'mysql', 'sqlite', 'odbc', 'jdbc']
 ---
-
-# Поддерживает ли ClickHouse федеративные запросы? \{#does-clickhouse-support-federated-queries\}
 
 ClickHouse имеет наиболее широкую поддержку федеративных запросов и гибридного выполнения запросов среди аналитических баз данных.
 

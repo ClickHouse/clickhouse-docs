@@ -1,18 +1,16 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/claude-agent-sdk
 sidebar_label: 'Claude Agent SDK を統合する'
-title: 'Claude Agent SDK と ClickHouse MCP server で AI エージェントを構築する方法'
+title: 'Claude Agent SDK と ClickHouse MCPサーバー を使って AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'Claude Agent SDK と ClickHouse MCP server を使用して AI エージェントを構築する方法を学びます'
+description: 'Claude Agent SDK と ClickHouse MCPサーバー を使って AI エージェントを構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'Claude']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Claude Agent SDK と ClickHouse MCP server を使って AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-claude-agent-sdk-and-the-clickhouse-mcp-server\}
-
-このガイドでは、[Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) を使って、[ClickHouse SQLプレイグラウンド](https://sql.clickhouse.com/) と [ClickHouse MCP server](https://github.com/ClickHouse/mcp-clickhouse) を経由して対話できる AI エージェントを構築する方法を説明します。
+このガイドでは、[Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) を使って、[ClickHouse SQLプレイグラウンド](https://sql.clickhouse.com/) と [ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を経由して対話できる AI エージェントを構築する方法を説明します。
 
 :::note サンプルノートブック
 この例は、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/claude-agent/claude-agent.ipynb) 内のノートブックとして参照できます。

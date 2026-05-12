@@ -4,12 +4,10 @@ sidebar_label: 'データの更新と削除'
 sidebar_position: 1
 keywords: ['UPDATE', 'DELETE', 'mutations']
 title: 'ClickHouse データの更新と削除'
-description: 'ClickHouse でデータの更新および削除操作を行う方法について説明します'
+description: 'ClickHouse で更新および削除操作を実行する方法を説明します'
 show_related_blogs: false
 doc_type: 'guide'
 ---
-
-# ミューテーションを使用した ClickHouse データの更新と削除 \{#updating-and-deleting-clickhouse-data-with-mutations\}
 
 ClickHouse は大規模な分析ワークロード向けに最適化されていますが、状況によっては既存データを変更したり
 削除したりすることも可能です。これらの操作は「ミューテーション (mutation)」と呼ばれ、`ALTER TABLE` コマンドを使って実行されます。
@@ -17,7 +15,7 @@ ClickHouse は大規模な分析ワークロード向けに最適化されてい
 :::tip
 頻繁に更新を行う必要がある場合は、ClickHouse の [deduplication](../developer/deduplication.md) の利用を検討してください。これを利用すると、
 ミューテーションイベントを発生させることなく行の更新および／または削除が可能です。あるいは、[lightweight updates](/docs/sql-reference/statements/update)
-や [lightweight deletes](/guides/developer/lightweight-delete) を使用してください。
+や [論理削除](/guides/developer/lightweight-delete) を使用してください。
 :::
 
 ## データの更新 \{#updating-data\}
@@ -28,7 +26,7 @@ ClickHouse は大規模な分析ワークロード向けに最適化されてい
 ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_expr>
 ```
 
-`<expression>` は、`<filter_expr>` の条件を満たす行に対してその列に設定される新しい値です。`<expression>` は、その列と同じデータ型であるか、`CAST` 演算子を使用して同じデータ型に変換可能である必要があります。`<filter_expr>` は、データの各行に対して `UInt8`（ゼロまたは非ゼロ）の値を返す必要があります。複数の `UPDATE <column>` ステートメントは、カンマで区切って 1 つの `ALTER TABLE` コマンドにまとめることができます。
+`<expression>` は、`<filter_expr>` の条件を満たす行に対してその列に設定される新しい値です。`<expression>` は、その列と同じデータ型であるか、`CAST` 演算子を使用して同じデータ型に変換可能である必要があります。`<filter_expr>` は、データの各行に対して `UInt8` (ゼロまたは非ゼロ) の値を返す必要があります。複数の `UPDATE <column>` ステートメントは、カンマで区切って 1 つの `ALTER TABLE` コマンドにまとめることができます。
 
 **例**:
 
@@ -60,7 +58,6 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 主キーまたはソートキーの一部になっている列を更新することはできません。
 :::
 
-
 ## データの削除 \{#deleting-data\}
 
 `ALTER TABLE` コマンドを使用して行を削除します。
@@ -90,7 +87,6 @@ ALTER TABLE clicks ON CLUSTER main_cluster DELETE WHERE visit_date &lt; '2022-01
 :::
 
 詳細については、[`DELETE` ステートメント](/sql-reference/statements/delete.md) のドキュメントページを参照してください。
-
 
 ## 軽量削除 \{#lightweight-deletes\}
 

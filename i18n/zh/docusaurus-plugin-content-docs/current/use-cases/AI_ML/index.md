@@ -1,14 +1,12 @@
 ---
-description: '机器学习和 GenAI 用例指南的着陆页'
+description: 'Machine Learning 和 GenAI 用例指南的落地页'
 pagination_prev: null
 pagination_next: null
 slug: /use-cases/AI/ask-ai
-title: '机器学习与 GenAI'
-keywords: ['machine learning', 'genAI', 'AI']
+title: '机器学习和 GenAI'
+keywords: ['机器学习', 'genAI', 'AI']
 doc_type: 'landing-page'
 ---
-
-# Machine Learning and GenAI \{#machine-learning-and-genai\}
 
 ClickHouse 非常适合作为实时数据库来支撑机器学习工作负载。
 借助 ClickHouse，在分析数据之上释放生成式 AI 能力比以往更容易。

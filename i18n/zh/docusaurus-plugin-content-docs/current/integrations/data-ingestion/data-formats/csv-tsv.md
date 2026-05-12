@@ -7,9 +7,7 @@ keywords: ['CSV 格式', 'TSV 格式', '逗号分隔值', '制表符分隔值', 
 doc_type: 'guide'
 ---
 
-# 在 ClickHouse 中处理 CSV 和 TSV 数据 \{#working-with-csv-and-tsv-data-in-clickhouse\}
-
-ClickHouse 支持从 CSV 导入数据并导出为 CSV。由于 CSV 文件在具体格式上可能有所不同，包括表头行、自定义分隔符以及转义符号，ClickHouse 提供了相应的格式和设置，以高效处理每种情况。
+ClickHouse 支持从 CSV 导入数据，也支持将数据导出为 CSV。由于 CSV 文件的格式细节可能各不相同，例如是否包含表头、自定义分隔符和转义符，因此 ClickHouse 提供了相应的格式和设置，以便高效处理各种情况。
 
 ## 从 CSV 文件导入数据 \{#importing-data-from-a-csv-file\}
 

@@ -1,12 +1,10 @@
 ---
-title: 'JSON のその他のアプローチ'
+title: 'その他の JSON アプローチ'
 slug: /integrations/data-formats/json/other-approaches
-description: 'JSON モデリングにおけるその他の手法'
-keywords: ['json', 'formats']
+description: 'JSON をモデリングするその他のアプローチ'
+keywords: ['json', 'フォーマット']
 doc_type: 'reference'
 ---
-
-# JSON をモデリングするその他のアプローチ \{#other-approaches-to-modeling-json\}
 
 **以下は、ClickHouse における JSON モデリングの別手法です。網羅性のために記載していますが、これらは JSON 型が登場する以前に有用だったものであり、現在では多くのユースケースにおいて推奨されず、ほとんどの場合適用されません。**
 

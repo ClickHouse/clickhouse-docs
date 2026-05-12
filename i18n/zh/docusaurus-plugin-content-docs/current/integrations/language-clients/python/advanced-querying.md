@@ -8,8 +8,6 @@ title: '进阶查询'
 doc_type: 'reference'
 ---
 
-# 使用 ClickHouse Connect 查询数据：进阶用法 \{#querying-data-with-clickhouse-connect--advanced-usage\}
-
 ## QueryContexts \{#querycontexts\}
 
 ClickHouse Connect 会在 `QueryContext` 中执行常规查询。`QueryContext` 包含用于针对 ClickHouse 数据库构建查询的关键结构，以及用于将结果处理为 `QueryResult` 或其他响应数据结构的配置。这其中包括查询本身、参数、设置、读取格式以及其他属性。

@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
 ---
 
-# pg_clickhouse 참조 문서 \{#pg_clickhouse-reference-documentation\}
-
 ## 설명 \{#description\}
 
 pg_clickhouse는 ClickHouse 데이터베이스에 대한 원격 쿼리 실행을 가능하게 하는 PostgreSQL 확장 기능으로,

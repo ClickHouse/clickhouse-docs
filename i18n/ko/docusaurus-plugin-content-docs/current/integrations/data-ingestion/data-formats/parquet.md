@@ -2,15 +2,11 @@
 sidebar_label: 'Parquet'
 sidebar_position: 3
 slug: /integrations/data-formats/parquet
-title: 'ClickHouse에서 Parquet 다루기'
-description: 'ClickHouse에서 Parquet를 다루는 방법을 설명하는 페이지'
+title: 'ClickHouse에서 Parquet 사용하기'
+description: 'ClickHouse에서 Parquet를 사용하는 방법을 설명하는 페이지'
 doc_type: 'guide'
-keywords: ['parquet', '컬럼형 포맷', '데이터 포맷', '압축', 'apache parquet']
+keywords: ['parquet', '컬럼형 포맷', '데이터 형식', '압축', 'apache parquet']
 ---
-
-
-
-# ClickHouse에서 Parquet 사용하기 \{#working-with-parquet-in-clickhouse\}
 
 Parquet는 데이터를 컬럼 지향 방식으로 저장하기 위한 효율적인 파일 형식입니다.
 ClickHouse는 Parquet 파일을 읽고 쓰는 기능을 모두 제공합니다.
@@ -22,8 +18,6 @@ ClickHouse는 Parquet 파일을 읽고 쓰는 기능을 모두 제공합니다.
 `clickhouse client`를 통해 ClickHouse Server 또는 ClickHouse Cloud를 사용하는 경우 서버의 `/var/lib/clickhouse/user_files/` 디렉터리를 기준으로 한 경로에서 데이터를 읽습니다.
 :::
 
-
-
 ## Parquet에서 가져오기 \{#importing-from-parquet\}
 
 데이터를 로드하기 전에 [file()](/sql-reference/functions/files.md/#file) 함수를 사용하여 [예제 Parquet 파일](assets/data.parquet)의 구조를 살펴볼 수 있습니다.
@@ -32,7 +26,7 @@ ClickHouse는 Parquet 파일을 읽고 쓰는 기능을 모두 제공합니다.
 DESCRIBE TABLE file('data.parquet', Parquet);
 ```
 
-두 번째 인수로 [Parquet](/interfaces/formats/Parquet)을(를) 사용하여 ClickHouse에 파일 포맷을 알려 주었습니다. 그러면 컬럼과 해당 데이터 타입이 출력됩니다:
+두 번째 인수로 [Parquet](/interfaces/formats/Parquet)을(를) 사용하여 ClickHouse에 파일 형식을 알려 주었습니다. 그러면 컬럼과 해당 데이터 타입이 출력됩니다:
 
 ```response
 ┌─name─┬─type─────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
@@ -62,7 +56,6 @@ LIMIT 3;
 `file()` 및 `INFILE`/`OUTFILE`에 대해서는 명시적으로 형식을 설정하지 않아도 됩니다.
 이 경우 ClickHouse는 파일 확장자를 기준으로 형식을 자동으로 감지합니다.
 :::
-
 
 ## 기존 테이블로 데이터 가져오기 \{#importing-to-an-existing-table\}
 
@@ -102,7 +95,6 @@ LIMIT 5;
 
 ClickHouse가 Parquet 문자열(`date` 컬럼)을 `Date` 타입으로 자동 변환한 점에 주목하십시오. 이는 ClickHouse가 대상 테이블의 타입에 따라 자동으로 타입 캐스팅을 수행하기 때문입니다.
 
-
 ## 로컬 파일을 원격 서버에 삽입하기 \{#inserting-a-local-file-to-remote-server\}
 
 로컬 Parquet 파일을 원격 ClickHouse 서버에 삽입하려면 아래와 같이 파일의 내용을 `clickhouse-client`에 파이프로 전달하여 수행할 수 있습니다.
@@ -110,7 +102,6 @@ ClickHouse가 Parquet 문자열(`date` 컬럼)을 `Date` 타입으로 자동 변
 ```sql
 clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
 ```
-
 
 ## Parquet 파일에서 새 테이블 생성 \{#creating-new-tables-from-parquet-files\}
 
@@ -140,7 +131,6 @@ DESCRIBE TABLE imported_from_parquet;
 
 기본적으로 ClickHouse는 컬럼 이름, 타입, 값에 대해 엄격하게 처리합니다. 그러나 경우에 따라 가져오기 과정에서 존재하지 않는 컬럼이나 지원되지 않는 값을 건너뛸 수 있습니다. 이는 [Parquet 설정](/interfaces/formats/Parquet#format-settings)으로 관리할 수 있습니다.
 
-
 ## Parquet 형식으로 내보내기 \{#exporting-to-parquet-format\}
 
 :::tip
@@ -157,7 +147,6 @@ FORMAT Parquet
 ```
 
 이 명령을 실행하면 작업 디렉터리에 `export.parquet` 파일이 생성됩니다.
-
 
 ## ClickHouse 및 Parquet 데이터 유형 \{#clickhouse-and-parquet-data-types\}
 
@@ -196,16 +185,15 @@ FROM file('time.parquet', Parquet);
 └───┴─────────────────────┘
 ```
 
-
 ## 추가 읽을거리 \{#further-reading\}
 
-ClickHouse는 다양한 시나리오와 플랫폼을 지원하기 위해 텍스트 및 바이너리 형식을 포함한 여러 포맷을 지원합니다. 다음 문서에서 더 많은 포맷과 활용 방법을 살펴보십시오:
+ClickHouse는 다양한 시나리오와 플랫폼을 지원하기 위해 텍스트 및 바이너리 형식을 포함한 여러 형식을 지원합니다. 다음 문서에서 더 많은 형식과 활용 방법을 살펴보십시오:
 
-- [CSV 및 TSV 포맷](csv-tsv.md)
-- [Avro, Arrow 및 ORC](arrow-avro-orc.md)
-- [JSON 포맷](/integrations/data-ingestion/data-formats/json/intro.md)
-- [Regex 및 템플릿](templates-regex.md)
-- [네이티브 및 바이너리 포맷](binary.md)
-- [SQL 포맷](sql.md)
+* [CSV 및 TSV 형식](csv-tsv.md)
+* [Avro, Arrow 및 ORC](arrow-avro-orc.md)
+* [JSON 형식](/integrations/data-ingestion/data-formats/json/intro.md)
+* [Regex 및 템플릿](templates-regex.md)
+* [네이티브 및 바이너리 형식](binary.md)
+* [SQL 형식](sql.md)
 
 또한 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)도 확인하십시오. ClickHouse 서버 없이 로컬/원격 파일을 다룰 수 있는 이식 가능한 풀 기능 도구입니다.

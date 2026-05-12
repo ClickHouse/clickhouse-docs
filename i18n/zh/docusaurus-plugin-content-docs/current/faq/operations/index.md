@@ -1,14 +1,12 @@
 ---
 slug: /faq/operations/
 sidebar_position: 3
-sidebar_label: '关于 ClickHouse 服务器和集群运维的常见问题'
-title: '关于 ClickHouse 服务器和集群运维的常见问题'
-description: '关于 ClickHouse 服务器和集群运维问题的汇总页面'
+sidebar_label: '关于运维 ClickHouse 服务器和集群的问题'
+title: '关于运维 ClickHouse 服务器和集群的问题'
+description: '运维 ClickHouse 服务器和集群相关问题的落地页'
 doc_type: 'landing-page'
 keywords: ['运维', '管理', '部署', '集群管理', '常见问题']
 ---
-
-# 关于运维 ClickHouse 服务器和集群的问题 \{#question-about-operating-clickhouse-servers-and-clusters\}
 
 * [在生产环境中应该使用哪个 ClickHouse 版本？](/faq/operations/production.md)
 * [是否可以采用存储与计算分离的方式部署 ClickHouse？](/faq/operations/separate_storage.md)

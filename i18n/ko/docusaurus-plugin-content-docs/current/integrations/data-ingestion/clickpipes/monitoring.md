@@ -1,13 +1,11 @@
 ---
 sidebar_label: '모니터링'
-description: 'Prometheus 메트릭으로 ClickPipes를 모니터링합니다.'
+description: 'Prometheus 메트릭을 사용하여 ClickPipes를 모니터링합니다.'
 slug: /integrations/clickpipes/monitoring
 title: 'ClickPipes 모니터링'
-doc_type: 'reference'
+doc_type: '참고'
 keywords: ['ClickPipes', '모니터링', '메트릭', 'Prometheus', '관측성']
 ---
-
-# ClickPipes 모니터링 \{#monitoring-clickpipes\}
 
 Console에서 제공되는 모니터링 외에도, ClickPipes는 스크레이핑할 수 있도록 [Prometheus 호환 엔드포인트](/integrations/prometheus)에 메트릭을 노출합니다. 이러한 메트릭은 다른 ClickHouse Cloud 서비스 메트릭과 함께 제공되며, 기존 관측성 스택에 ClickPipes 모니터링을 통합할 수 있습니다(예: [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog)).
 

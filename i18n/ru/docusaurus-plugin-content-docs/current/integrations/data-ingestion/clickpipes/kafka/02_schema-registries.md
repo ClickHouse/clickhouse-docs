@@ -11,8 +11,6 @@ integration:
    - category: 'clickpipes'
 ---
 
-# Реестры схем \{#schema-registries\}
-
 ClickPipes поддерживает интеграцию с реестром схем для декодирования топиков в форматах Avro и Protobuf.
 
 ## Поддерживаемые реестры для Kafka ClickPipes \{#supported-schema-registries\}

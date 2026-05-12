@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/copilotkit
 sidebar_label: 'CopilotKit を統合する'
-title: 'CopilotKit と ClickHouse MCPサーバーを使って AI エージェントを構築する方法'
+title: 'CopilotKit と ClickHouse MCPサーバー を使用して AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCP と CopilotKit を使用して、ClickHouse に保存されたデータを活用するエージェント型アプリケーションの構築方法を学びます。'
+description: 'ClickHouse MCP と CopilotKit を使用して、ClickHouse に保存されているデータを利用するエージェント型アプリケーションを構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'copilotkit']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# CopilotKit と ClickHouse MCPサーバー を使用して AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server\}
 
 これは、ClickHouse に保存されているデータを利用してエージェント型アプリケーションを構築する方法の例です。[ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を使用して ClickHouse からデータをクエリし、そのデータに基づいてグラフを生成します。
 

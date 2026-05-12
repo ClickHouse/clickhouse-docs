@@ -3,18 +3,16 @@ sidebar_label: 'SSL 사용자 인증서 기반 인증'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
 title: '인증용 SSL 사용자 인증서 구성'
-description: '이 가이드는 SSL 사용자 인증을 구성하기 위한 간단하고 최소한의 설정을 제공합니다.'
+description: '이 가이드는 SSL 사용자 인증서를 구성하기 위한 간단하고 최소한의 설정을 제공합니다.'
 doc_type: 'guide'
-keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
+keywords: ['SSL', '인증', '보안', '인증서', '사용자 관리']
 ---
-
-# 인증용 SSL 사용자 인증서 구성 \{#configuring-ssl-user-certificate-for-authentication\}
 
 import SelfManaged from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-이 가이드는 SSL 사용자 인증을 구성하기 위한 간단하고 최소한의 설정을 제공합니다. 이 튜토리얼은 [Configuring TLS user guide](../tls/configuring-tls.md)를 기반으로 합니다.
+이 가이드는 SSL 사용자 인증서를 구성하기 위한 간단하고 최소한의 설정을 제공합니다. 이 튜토리얼은 [Configuring TLS user guide](../tls/configuring-tls.md)를 기반으로 합니다.
 
 :::note
 SSL 사용자 인증은 `https`, `native`, `mysql`, `postgresql` 인터페이스를 사용할 때 지원됩니다.
@@ -25,7 +23,6 @@ MySQL 인터페이스와 함께 AWS NLB를 사용하는 경우, 아래와 같은
 
 > `proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`와 같이 NLB proxy protocol v2를 구성할 수 있도록 해 주십시오.
 > :::
-
 
 ## 1. SSL 사용자 인증서를 생성합니다 \{#1-create-ssl-user-certificates\}
 

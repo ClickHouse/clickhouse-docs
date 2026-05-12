@@ -5,12 +5,10 @@ title: 'Streamlit으로 ClickHouse 기반 AI 에이전트를 구축하는 방법
 pagination_prev: null
 pagination_next: null
 description: 'Streamlit과 ClickHouse MCP 서버를 사용해 웹 기반 AI 에이전트를 구축하는 방법을 알아봅니다'
-keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'AI Agent']
+keywords: ['ClickHouse', 'MCP', 'Streamlit', 'Agno', 'AI 에이전트']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# Streamlit으로 ClickHouse 기반 AI 에이전트를 구축하는 방법 \{#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit\}
 
 이 가이드에서는 [Streamlit](https://streamlit.io/)을 사용하여 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)와 [ClickHouse의 MCP 서버](https://github.com/ClickHouse/mcp-clickhouse), [Agno](https://github.com/agno-agi/agno)를 통해 상호작용할 수 있는 웹 기반 AI 에이전트를 구축하는 방법을 알아봅니다.
 

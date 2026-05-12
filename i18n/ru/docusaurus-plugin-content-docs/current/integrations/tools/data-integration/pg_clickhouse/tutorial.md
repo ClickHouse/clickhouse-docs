@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'руководство', 'такси']
 ---
 
-# Руководство по pg_clickhouse \{#pg_clickhouse-tutorial\}
-
 ## Обзор \{#overview\}
 
 В этом руководстве мы повторим шаги из [руководства по ClickHouse], но все запросы будут выполняться через

@@ -7,9 +7,7 @@ keywords: ['chdb', 'nodejs', 'javascript', 'встраиваемая', 'clickhou
 doc_type: 'guide'
 ---
 
-# chDB для Node.js \{#chdb-for-nodejs\}
-
-chDB-node предоставляет биндинги chDB для Node.js, позволяя выполнять запросы к ClickHouse непосредственно в ваших Node.js-приложениях без каких-либо внешних зависимостей.
+chDB-node предоставляет привязки для Node.js к chDB, позволяя выполнять запросы ClickHouse напрямую в приложениях Node.js без каких-либо внешних зависимостей.
 
 ## Установка \{#installation\}
 
@@ -45,7 +43,7 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "Pretty");
 console.log("System functions:", systemInfo);
 ```
 
-### Запросы по сессиям \{#session-based-queries\}
+### Сеансовые запросы \{#session-based-queries\}
 
 ```javascript
 const { Session } = require("chdb");
@@ -188,6 +186,6 @@ safeSessionQuery();
 
 ## Репозиторий на GitHub \{#github-repository\}
 
-- **Репозиторий на GitHub**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
-- **Обсуждение проблем и поддержка**: Создавайте обращения в разделе Issues в [репозитории на GitHub](https://github.com/chdb-io/chdb-node/issues)
-- **Пакет npm**: [chdb на npm](https://www.npmjs.com/package/chdb)
+* **Репозиторий на GitHub**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
+* **Обсуждение проблем и поддержка**: Создавайте обращения в разделе Issues в [репозитории на GitHub](https://github.com/chdb-io/chdb-node/issues)
+* **Пакет npm**: [chdb на npm](https://www.npmjs.com/package/chdb)

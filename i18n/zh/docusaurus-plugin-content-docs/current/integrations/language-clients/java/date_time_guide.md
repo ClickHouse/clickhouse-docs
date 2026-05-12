@@ -1,19 +1,17 @@
 ---
-sidebar_label: '在 JDBC 中处理日期和时间值'
+sidebar_label: '在 JDBC 中处理 Date/Time 值'
 sidebar_position: 4
-keywords: ['java', 'jdbc', 'driver', '集成', '指南', 'Date', 'Time']
-description: '在 JDBC 中使用日期和时间值的指南'
+keywords: ['java', 'jdbc', 'driver', 'integrate', 'guide', 'Date', 'Time']
+description: '在 JDBC 中使用 Date/Time 值的指南'
 slug: /integrations/language-clients/java/jdbc_date_time_guide
-title: '日期和时间值指南'
+title: 'Date/Time 值指南'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'language_client'
 ---
 
-# 在 JDBC 中处理 Date、Time 和 Timestamp \{#working-with-date-time-and-timestamp-in-jdbc\}
-
-在使用 Date、Time 和 Timestamp 时需要格外注意，因为它们常常会引发一些常见问题。
+在使用 Date、Time 和 时间戳 时需要格外注意，因为它们常常会引发一些常见问题。
 最常见的问题是如何处理时区。另一个问题是字符串表示形式以及如何使用它。
 除此之外，每个数据库和驱动程序都有各自的特性和限制。
 

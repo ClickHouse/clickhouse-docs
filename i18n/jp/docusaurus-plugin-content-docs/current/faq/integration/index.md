@@ -1,14 +1,12 @@
 ---
 slug: /faq/integration/
 sidebar_position: 1
-sidebar_label: 'ClickHouse と他のシステムとの連携'
+sidebar_label: 'ClickHouse と他のシステムの連携'
 keywords: ['clickhouse', 'faq', 'questions', 'integrations']
-title: 'ClickHouse と他のシステムとの連携に関する質問'
-description: 'ClickHouse を他のシステムと連携する際の質問を一覧表示するランディングページ'
+title: 'ClickHouse と他のシステムの連携に関する質問'
+description: 'ClickHouse と他のシステムの連携に関連する質問を一覧表示するランディングページ'
 doc_type: 'landing-page'
 ---
-
-# ClickHouse と他のシステムの連携に関する質問 \{#questions-about-integrating-clickhouse-and-other-systems\}
 
 * [ClickHouse からファイルへデータをエクスポートするにはどうすればよいですか？](https://clickhouse.com/docs/knowledgebase/file-export)
 * [JSON を ClickHouse にインポートするにはどうすればよいですか？](/integrations/data-ingestion/data-formats/json/intro.md)

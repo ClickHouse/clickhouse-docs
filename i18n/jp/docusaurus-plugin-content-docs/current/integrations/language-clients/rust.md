@@ -11,9 +11,7 @@ integration:
   - category: 'language_client'
 ---
 
-# ClickHouse Rust クライアント \{#clickhouse-rust-client\}
-
-Rust 用の ClickHouse 公式クライアントであり、元々は [Paul Loyd](https://github.com/loyd) によって開発されました。クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-rs) で公開されています。
+Rust 用の ClickHouse 公式クライアントです。元々は [Paul Loyd](https://github.com/loyd) によって開発されました。クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-rs) で公開されています。
 
 ## 概要 \{#overview\}
 

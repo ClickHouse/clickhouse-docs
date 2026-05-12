@@ -1,14 +1,12 @@
 ---
-title: '기본 시계열 연산'
+title: '기본 연산 - 시계열'
 sidebar_label: '기본 연산'
-description: 'ClickHouse에서 수행하는 기본 시계열 연산.'
+description: 'ClickHouse의 기본 시계열 연산.'
 slug: /use-cases/time-series/basic-operations
 keywords: ['시계열', '기본 연산', '데이터 수집', '쿼리', '필터링', '그룹화', '집계']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 기본 시계열 연산 \{#basic-time-series-operations\}
 
 ClickHouse는 시계열 데이터 작업을 위한 여러 가지 방법을 제공하여, 서로 다른 기간에 걸쳐 데이터 포인트를 집계하고, 그룹화하고, 분석할 수 있도록 합니다.
 이 섹션에서는 시간 기반 데이터를 다룰 때 일반적으로 사용되는 기본 연산을 설명합니다.

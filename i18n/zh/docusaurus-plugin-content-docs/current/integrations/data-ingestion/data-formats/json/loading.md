@@ -9,9 +9,7 @@ score: 15
 doc_type: 'guide'
 ---
 
-# 加载 JSON \{#loading-json\}
-
-以下示例展示了一个非常简单的用例,用于加载结构化和半结构化 JSON 数据。对于更复杂的 JSON(包括嵌套结构),请参阅指南 [**设计 JSON 模式**](/integrations/data-formats/json/schema)。
+以下示例演示了如何以非常简单的方式加载结构化和半结构化 JSON 数据。对于更复杂的 JSON (包括嵌套结构) ，请参阅指南 [**设计 JSON schema**](/integrations/data-formats/json/schema)。
 
 ## 加载结构化 JSON \{#loading-structured-json\}
 

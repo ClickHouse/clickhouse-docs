@@ -1,12 +1,10 @@
 ---
-title: 'Экспорт данных JSON'
+title: 'Экспорт JSON'
 slug: /integrations/data-formats/json/exporting
 description: 'Как экспортировать данные в формате JSON из ClickHouse'
-keywords: ['json', 'clickhouse', 'formats', 'exporting']
+keywords: ['json', 'clickhouse', 'форматы', 'экспорт']
 doc_type: 'guide'
 ---
-
-# Экспорт JSON \{#exporting-json\}
 
 Почти любой формат JSON, используемый для импорта, может использоваться и для экспорта. Наиболее популярный — [`JSONEachRow`](/interfaces/formats/JSONEachRow):
 
@@ -155,7 +153,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 
 ## Экспорт JSON в файл \{#exporting-json-to-a-file\}
 
-Чтобы сохранить экспортируемые данные в формате JSON в файл, можно использовать клаузу [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md):
+Чтобы сохранить экспортируемые данные в формате JSON в файл, можно использовать предложение [INTO OUTFILE](/sql-reference/statements/select/into-outfile.md):
 
 ```sql
 SELECT * FROM sometable INTO OUTFILE 'out.json' FORMAT JSONEachRow

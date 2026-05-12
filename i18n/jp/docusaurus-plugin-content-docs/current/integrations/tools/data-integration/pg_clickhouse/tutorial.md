@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', '外部データラッパー', 'pg_clickhouse', 'extension', 'チュートリアル', 'タクシー']
 ---
 
-# pg_clickhouse チュートリアル \{#pg_clickhouse-tutorial\}
-
 ## 概要 \{#overview\}
 
 本チュートリアルは [ClickHouse tutorial] の流れに従いますが、すべてのクエリを
