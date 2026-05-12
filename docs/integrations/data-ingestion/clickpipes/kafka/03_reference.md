@@ -84,7 +84,7 @@ Note that you will have to manually change the destination column to the desired
 
 ### Avro {#avro}
 
-#### Supported Avro Data Types {#supported-avro-data-types}
+#### Supported Avro data types {#supported-avro-data-types}
 
 ClickPipes supports all Avro Primitive and Complex types, and all Avro Logical types except `local-timestamp-millis` and `local_timestamp-micros`.  Avro `record` types are converted to Tuple, `array` types to Array, and `map` to Map (string keys only).  In general the conversions listed [here](/interfaces/schema-inference#avro) are available.  We recommend using exact type matching for Avro numeric types, as ClickPipes does not check for overflow or precision loss on type conversion.
 Alternatively, all Avro types can be inserted into a `String` column, and will be represented as a valid JSON string in that case.
@@ -99,16 +99,57 @@ Nullable types in Avro are defined by using a Union schema of `(T, null)` or `(n
 
 ### Protobuf {#protobuf}
 
-#### Supported protobuf data types {#supported-protobuf-data-types}
-ClickPipes supports all Protobuf version 2 and 3 types (except the long-deprecated proto 2 `group` type). Basic conversions are identical to those used for the ClickHouse Protobuf format listed [here](/interfaces/schema-inference#protobuf).
-We recommend exact type matching for Protobuf numeric types, as type conversion can result in overflows or precision loss. Protobuf maps, arrays, and Nullable variations of basic types are also supported. ClickPipes also recognizes a
-limited set of Google "well-known types": timestamp, duration, and "wrapper" messages. Timestamps can be accurately mapped to `DateTime` or `DateTime64` types, Durations to `Time` or `Time64` types, and wrapper messages to the underlying type.  All Protobuf types can also be mapped to a ClickHouse `String` column, which will be represented by a JSON string.
+#### Supported Protobuf data types {#supported-protobuf-data-types}
 
-#### Protobuf one-ofs {#protobuf-one-ofs}
-During schema inference, Protobuf "One Of" special fields will normally be mapped to a named Tuple, where only one of the fields will have a "non-default" value.  Alternatively, some "One Ofs" may be automatically mapped to a name variant field with the name of the "One Of," and a value representing one of the valid types of the constituent fields.  Alternatively, each "One Of" constituent field can be manually mapped to a ClickHouse column, where only one of the constituent fields
-will ever be populated during processing.
+ClickPipes supports all Protobuf 2 and 3 types, with the exception of the long-deprecated proto 2 `group` type. Basic type conversions use
+the following mappings:
 
-#### Message lists (envelopes) {#protobuf-message-lists}
+:::note
+`Array`, `Map`, and `Nullable` variants of all basic types are also supported.
+:::
+
+| Protobuf type                 | ClickHouse type   |
+|-------------------------------|-------------------|
+| `bool`                        | `UInt8`           |
+| `float`                       | `Float32`         |
+| `double`                      | `Float64`         |
+| `int32`, `sint32`, `sfixed32` | `Int32`           |
+| `int64`, `sint64`, `sfixed64` | `Int64`           |
+| `uint32`, `fixed32`           | `UInt32`          |
+| `uint64`, `fixed64`           | `UInt64`          |
+| `string`, `bytes`             | `String`          |
+| `enum`                        | `Enum`            |
+| `repeated T`                  | `Array(T)`        |
+| `message`                     | `Tuple`           |
+
+:::tip
+For numeric types, exact matching is recommended to avoid overflows or precision loss.
+:::
+
+The following [well-known types](https://protobuf.dev/reference/protobuf/google.protobuf/) are also supported:
+
+| Well-known type                                                                              | ClickHouse type          |
+|----------------------------------------------------------------------------------------------|--------------------------|
+| `google.protobuf.Timestamp`                                                                  | `DateTime`, `DateTime64` |
+| `google.protobuf.Duration`                                                                   | `Time`, `Time64`         |
+| `google.protobuf.StringValue`, `google.protobuf.BytesValue`                                  | `Nullable(String)`       |
+| `google.protobuf.Int32Value`, `google.protobuf.SInt32Value`, `google.protobuf.SFixed32Value` | `Nullable(Int32)`        |
+| `google.protobuf.Int64Value`, `google.protobuf.SInt64Value`, `google.protobuf.SFixed64Value` | `Nullable(Int64)`        |
+| `google.protobuf.UInt32Value`, `google.protobuf.Fixed32Value`                                | `Nullable(UInt32)`       |
+| `google.protobuf.UInt64Value`, `google.protobuf.Fixed64Value`                                | `Nullable(UInt64)`       |
+| `google.protobuf.FloatValue`                                                                 | `Nullable(Float32)`      |
+| `google.protobuf.DoubleValue`                                                                | `Nullable(Float64)`      |
+| `google.protobuf.BoolValue`                                                                  | `Nullable(UInt8)`        |
+
+#### Protobuf `oneof` {#protobuf-one-ofs}
+
+During schema inference, Protobuf `oneof` fields are mapped by default to a named `Tuple`, where at most one field will hold a non-default
+value. These fields can also be automatically mapped to a `Variant` column where the active value takes the type of
+whichever constituent field is set. Alternatively, each constituent field can be manually mapped to its own ClickHouse column; since `oneof`
+fields are mutually exclusive, only one column will ever be populated per record.
+
+#### Message lists {#protobuf-message-lists}
+
 If the top level Protobuf schema defined for the ClickPipe contains a single repeated field that is itself a protobuf Message, schema inference and column mapping will be based on the "contained" Message field.  The Kafka message will be processed as a list of such messages, and a single Kafka message will unwrap into multiple ClickHouse rows.
 
 ## Kafka virtual columns {#kafka-virtual-columns}
