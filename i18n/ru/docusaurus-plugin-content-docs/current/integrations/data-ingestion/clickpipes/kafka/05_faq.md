@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'FAQ'
-description: 'Часто задаваемые вопросы о ClickPipes для Kafka'
+description: 'Часто задаваемые вопросы о ClickPipes для Kafka.'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
-title: 'FAQ по Kafka ClickPipes'
+title: 'Часто задаваемые вопросы о Kafka ClickPipes'
 doc_type: 'guide'
 keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
 integration:

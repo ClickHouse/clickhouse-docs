@@ -39,15 +39,13 @@ integration:
 
 #### Основные возможности \{#clickpipes-for-kafka-main-features\}
 
-[//]: # "TODO It isn't optimal to link to a static alpha-release of the Terraform provider. Link to a Terraform guide once that's available."
-
 * Оптимизирован для ClickHouse Cloud и обеспечивает сверхвысокую производительность
 * Горизонтальная и вертикальная масштабируемость для высоконагруженных сценариев
 * Встроенная отказоустойчивость с настраиваемыми репликами и автоматическими повторами
-* Развертывание и управление через ClickHouse Cloud UI, [Open API](/cloud/manage/api/api-overview) или [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)
+* Развертывание и управление через ClickHouse Cloud UI, [Open API](/integrations/clickpipes/programmatic-access/openapi) или [Terraform](/integrations/clickpipes/programmatic-access/terraform)
 * Защита уровня Enterprise с поддержкой облачно-нативной авторизации (IAM) и частных сетевых подключений (PrivateLink)
 * Поддержка широкого спектра [источников данных](/integrations/clickpipes/kafka/reference/), включая Confluent Cloud, Amazon MSK, Redpanda Cloud и Azure Event Hubs
-* Поддержка наиболее распространённых форматов сериализации (JSON, Avro, Protobuf — скоро!)
+* Поддержка наиболее распространённых форматов сериализации (JSON, Avro, Protobuf)
 
 #### Начало работы \{#clickpipes-for-kafka-getting-started\}
 

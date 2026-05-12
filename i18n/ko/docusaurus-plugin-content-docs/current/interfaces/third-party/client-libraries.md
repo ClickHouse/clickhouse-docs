@@ -35,7 +35,8 @@ doc_type: 'reference'
 * [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
 * [kolya7k ClickHouse PHP 확장](https://github.com//kolya7k/clickhouse-php)
 * [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
-* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client) 
+* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client)
+* [laravel-clickhouse/laravel-clickhouse](https://github.com/laravel-clickhouse/laravel-clickhouse)
 
 ### Go \{#go\}
 

@@ -49,7 +49,7 @@ Kafka ClickPipes можно развёртывать и администриро
 
   ## Настройте реестр схем (необязательно) \{#4-configure-your-schema-registry\}
 
-  Для потоков Avro требуется корректная схема. Подробнее о настройке реестра схем см. в разделе [Schema registries](./02_schema-registries.md).
+  Для топиков Avro и Protobuf требуется корректная схема. Подробнее о настройке реестра схем см. в разделе [Schema registries](./02_schema-registries.md).
 
   ## Настройте обратную частную конечную точку (необязательно) \{#5-configure-reverse-private-endpoint\}
 

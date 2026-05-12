@@ -1,6 +1,6 @@
 ---
 sidebar_label: '常见问题解答'
-description: '关于 ClickPipes for Kafka 的常见问题解答'
+description: '关于 ClickPipes for Kafka 的常见问题解答。'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
 title: 'Kafka ClickPipes 常见问题解答'

@@ -39,15 +39,13 @@ integration:
 
 #### 主要特性 \{#clickpipes-for-kafka-main-features\}
 
-[//]: # "TODO It isn't optimal to link to a static alpha-release of the Terraform provider. Link to a Terraform guide once that's available."
-
 * 针对 ClickHouse Cloud 优化，提供极速性能
 * 为高吞吐量工作负载提供水平和垂直扩展能力
 * 内置容错能力，可配置副本与自动重试
-* 可通过 ClickHouse Cloud UI、[Open API](/cloud/manage/api/api-overview) 或 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe) 进行部署和管理
-* 企业级安全性，支持云原生授权（IAM）和私有连接（PrivateLink）
+* 可通过 ClickHouse Cloud UI、[Open API](/integrations/clickpipes/programmatic-access/openapi) 或 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 进行部署和管理
+* 企业级安全性，支持云原生授权 (IAM) 和私有连接 (PrivateLink) 
 * 支持广泛的[数据源](/integrations/clickpipes/kafka/reference/)，包括 Confluent Cloud、Amazon MSK、Redpanda Cloud 和 Azure Event Hubs
-* 支持最常见的序列化格式（JSON、Avro，Protobuf 即将推出！）
+* 支持最常见的序列化格式 (JSON、Avro、Protobuf)
 
 #### 入门 \{#clickpipes-for-kafka-getting-started\}
 

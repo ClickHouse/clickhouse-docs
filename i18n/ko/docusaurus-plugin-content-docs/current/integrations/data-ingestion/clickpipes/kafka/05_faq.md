@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'FAQ'
-description: 'Kafka용 ClickPipes에 대한 자주 묻는 질문'
+description: 'Kafka용 ClickPipes에 대한 자주 묻는 질문.'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
 title: 'Kafka ClickPipes 자주 묻는 질문(FAQ)'
