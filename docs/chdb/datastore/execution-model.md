@@ -182,8 +182,7 @@ query = (ds
 query.explain()
 ```
 
-Output:
-```text
+```text title="Response"
 Pipeline:
   1. Source: file('sales.csv', 'CSVWithNames')
   2. Filter: amount > 1000

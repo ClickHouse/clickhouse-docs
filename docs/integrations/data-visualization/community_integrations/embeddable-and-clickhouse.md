@@ -50,8 +50,9 @@ fetch('https://api.embeddable.com/api/v1/connections', {
     },
   }),
 });
+```
 
-Response:
+```text title="Response"
 Status 201 { errorMessage: null }
 ```
 

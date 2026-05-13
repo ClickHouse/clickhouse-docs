@@ -69,8 +69,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
 
-Result:
-```response
+```response title="Response"
 CMPLNT_NUM        Nullable(String)
 ADDR_PCT_CD       Nullable(Float64)
 BORO_NM           Nullable(String)
@@ -125,8 +124,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─JURISDICTION_CODE─┬─count()─┐
 │                 0 │  188875 │
 │                 1 │    4799 │
@@ -162,8 +160,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─uniqExact(PARKS_NM)─┐
 │                 319 │
 └─────────────────────┘
@@ -179,8 +176,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─PARKS_NM───────────────────┐
 │ (null)                     │
 │ ASSER LEVY PARK            │
@@ -208,8 +204,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─min(CMPLNT_FR_DT)─┬─max(CMPLNT_FR_DT)─┐
 │ 01/01/1973        │ 12/31/2021        │
 └───────────────────┴───────────────────┘
@@ -223,8 +218,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─min(CMPLNT_TO_DT)─┬─max(CMPLNT_TO_DT)─┐
 │                   │ 12/31/2021        │
 └───────────────────┴───────────────────┘
@@ -238,8 +232,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─min(CMPLNT_FR_TM)─┬─max(CMPLNT_FR_TM)─┐
 │ 00:00:00          │ 23:59:00          │
 └───────────────────┴───────────────────┘
@@ -253,8 +246,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─min(CMPLNT_TO_TM)─┬─max(CMPLNT_TO_TM)─┐
 │ (null)            │ 23:59:00          │
 └───────────────────┴───────────────────┘
@@ -290,8 +282,7 @@ LIMIT 10
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─complaint_begin─────┐
 │ 07/29/2010 00:01:00 │
 │ 12/01/2011 12:00:00 │
@@ -325,8 +316,7 @@ FORMAT PrettyCompact"
 
 Lines 2 and 3 above contain the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the complaint end time isn't guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
 
-Result:
-```response
+```response title="Response"
 ┌─────────complaint_begin─┬───────────complaint_end─┐
 │ 1925-01-01 10:00:00.000 │ 2021-02-12 09:30:00.000 │
 │ 1925-01-01 11:37:00.000 │ 2022-01-16 11:49:00.000 │
@@ -399,8 +389,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
   FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─cardinality_OFNS_DESC─┬─cardinality_RPT_DT─┬─cardinality_BORO_NM─┐
 │ 60.00                 │ 306.00             │ 6.00                │
 └───────────────────────┴────────────────────┴─────────────────────┘
@@ -546,16 +535,12 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
 The dataset changes once or more per year, your counts may not match what is in this document.
 :::
 
-Query:
-
-```sql
+```sql title="Query"
 SELECT count()
 FROM NYPD_Complaint
 ```
 
-Result:
-
-```text
+```text title="Response"
 ┌─count()─┐
 │  208993 │
 └─────────┘
@@ -565,16 +550,13 @@ Result:
 
 The size of the dataset in ClickHouse is just 12% of the original TSV file, compare the size of the original TSV file with the size of the table:
 
-Query:
-
-```sql
+```sql title="Query"
 SELECT formatReadableSize(total_bytes)
 FROM system.tables
 WHERE name = 'NYPD_Complaint'
 ```
 
-Result:
-```text
+```text title="Response"
 ┌─formatReadableSize(total_bytes)─┐
 │ 8.63 MiB                        │
 └─────────────────────────────────┘
@@ -584,9 +566,7 @@ Result:
 
 ### Query 1. Compare the number of complaints by month {#query-1-compare-the-number-of-complaints-by-month}
 
-Query:
-
-```sql
+```sql title="Query"
 SELECT
     dateName('month', date_reported) AS month,
     count() AS complaints,
@@ -596,8 +576,7 @@ GROUP BY month
 ORDER BY complaints DESC
 ```
 
-Result:
-```response
+```response title="Response"
 Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
 ┌─month─────┬─complaints─┬─bar(count(), 0, 50000, 80)───────────────────────────────┐
@@ -620,9 +599,7 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
 ### Query 2. Compare total number of complaints by borough {#query-2-compare-total-number-of-complaints-by-borough}
 
-Query:
-
-```sql
+```sql title="Query"
 SELECT
     borough,
     count() AS complaints,
@@ -632,8 +609,7 @@ GROUP BY borough
 ORDER BY complaints DESC
 ```
 
-Result:
-```response
+```response title="Response"
 Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
 ┌─borough───────┬─complaints─┬─bar(count(), 0, 125000, 60)──┐

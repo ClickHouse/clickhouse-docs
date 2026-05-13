@@ -70,8 +70,7 @@ query = (ds
 query.explain()
 ```
 
-Output:
-```text
+```text title="Response"
 Pipeline:
   Source: file('data.csv', 'CSVWithNames')
   Filter: amount > 1000
@@ -115,8 +114,7 @@ profiler = get_profiler()
 profiler.report(min_duration_ms=0.1)
 ```
 
-Output:
-```text
+```text title="Response"
 Performance Report
 ==================
 Step                          Duration    Calls

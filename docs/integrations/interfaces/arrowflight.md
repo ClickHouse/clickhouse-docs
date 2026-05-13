@@ -387,9 +387,7 @@ for endpoint in info.endpoints:
     print(table.to_pandas())
 ```
 
-Output:
-
-```text
+```text title="Response"
    id value
 0   1     a
 1   2     b

@@ -92,9 +92,7 @@ cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMA
 ./clickhouse-grpc-client.py --format PrettyCompact -q "SELECT * FROM grpc_example_table;"
 ```
 
-Result:
-
-```text
+```text title="Response"
 ┌─id─┬─text──────────────────┐
 │  0 │ Input data for        │
 │  1 │ gRPC protocol example │
