@@ -47,4 +47,4 @@ This balances the need for existing queries to complete, while at the same time 
 - [Make Before Break (MBB)](/cloud/features/mbb) — How ClickHouse Cloud performs seamless scaling operations
 - [Automatic idling](/cloud/features/autoscaling/idling) — Cost savings through automatic service suspension
 - [Scaling recommendations](/cloud/features/autoscaling/scaling-recommendations) — Understanding scaling recommendations
-- [Scheduled scaling](/cloud/features/autoscaling/scaling-recommendations) — Understanding the Scheduled Scaling feature, which lets you define exactly when your service should scale up or down, independent of real-time metrics
+- [Scheduled scaling](/cloud/features/autoscaling/scheduled-scaling) — Understanding the Scheduled Scaling feature, which lets you define exactly when your service should scale up or down, independent of real-time metrics
