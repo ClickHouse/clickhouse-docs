@@ -718,6 +718,171 @@ SELECT intExp2(3);
 8
 ```
 
+## isPrime \{#isPrime\}
+
+導入バージョン: v26.5.0
+
+引数が素数の場合は `1`、それ以外の場合は `0` を返します。
+
+小さい値には正確なルックアップ用ビットマップを使用し、大きい値には決定論的な [Miller-Rabin test](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test)
+を使用します。結果は、サポートされているすべての入力型に対して正確です。
+
+より大きい符号なし整数型 (`UInt128`、`UInt256`) には、代わりに [`isProbablePrime`](/sql-reference/functions/math-functions#isProbablePrime) を使用してください。
+
+**構文**
+
+```sql
+isPrime(n)
+```
+
+**引数**
+
+* `n` — 素数かどうかを判定する符号なし整数。[`UInt8`](/sql-reference/data-types/int-uint) または [`UInt16`](/sql-reference/data-types/int-uint) または [`UInt32`](/sql-reference/data-types/int-uint) または [`UInt64`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+`n` が素数の場合は `1`、それ以外の場合は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**素数**
+
+```sql title=Query
+SELECT isPrime(17)
+```
+
+```response title=Response
+1
+```
+
+**合成数**
+
+```sql title=Query
+SELECT isPrime(18)
+```
+
+```response title=Response
+0
+```
+
+**大きな `UInt64` の素数**
+
+```sql title=Query
+SELECT isPrime(18446744073709551557)
+```
+
+```response title=Response
+1
+```
+
+**`UInt64` の最大値**
+
+```sql title=Query
+SELECT isPrime(18446744073709551615)
+```
+
+```response title=Response
+0
+```
+
+## isProbablePrime \{#isProbablePrime\}
+
+Introduced in: v26.5.0
+
+引数が素数である可能性が高い場合は `1`、合成数であることが確実な場合は `0` を返します。
+
+`UInt8`、`UInt16`、`UInt32`、`UInt64` では、結果は厳密で、
+[`isPrime`](/sql-reference/functions/math-functions#isPrime) と一致します。`rounds` 引数は無視されます。
+
+`UInt128` と `UInt256` では、戻り値 `1` は確率的です。省略可能な `rounds` 引数は、
+[Miller-Rabin](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test) のラウンド数を制御します。
+ラウンド数を増やすほど偽陽性の確率は低くなりますが、実行時間は長くなります。一様ランダムな
+証人を用いる場合、固定された合成数に対する偽陽性率は `4^(-rounds)` 以下に抑えられます。デフォルト値の `25` では、
+この上限は `10^-15` 未満になります。`256` を超える値は、有意な改善がなく時間を無駄にするだけであるため、
+`BAD_ARGUMENTS` として拒否されます。
+
+この関数は決定論的です。証人は `n` から計算される固定シードから導出されるため、同じ
+`(n, rounds)` の組み合わせからは常に同じ結果が得られます。そのため、この特定の証人列をたまたま通過する合成数は、
+呼び出しごとに独立してテストに失敗するのではなく、再現可能に `1` を返します。したがって、`4^(-rounds)` の上限は、
+固定された入力に対する各呼び出しの確率ではなく、入力全体にわたる典型的な精度の目安として解釈してください。
+
+**構文**
+
+```sql
+isProbablePrime(n[, rounds])
+```
+
+**引数**
+
+* `n` — 素数判定の対象となる符号なし整数。[`UInt8`](/sql-reference/data-types/int-uint) または [`UInt16`](/sql-reference/data-types/int-uint) または [`UInt32`](/sql-reference/data-types/int-uint) または [`UInt64`](/sql-reference/data-types/int-uint) または [`UInt128`](/sql-reference/data-types/int-uint) または [`UInt256`](/sql-reference/data-types/int-uint)
+* `rounds` — `[1, 256]` の範囲の省略可能な正の整数定数。`UInt128`/`UInt256` に対する Miller-Rabin のラウンド数です (それより小さい型では無視されます) 。デフォルトは `25` です。[`UInt8`](/sql-reference/data-types/int-uint) または [`UInt16`](/sql-reference/data-types/int-uint) または [`UInt32`](/sql-reference/data-types/int-uint) または [`UInt64`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+`n` がおそらく素数であれば `1`、確実に合成数であれば `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**小さな素数**
+
+```sql title=Query
+SELECT isProbablePrime(17)
+```
+
+```response title=Response
+1
+```
+
+**小さい合成数**
+
+```sql title=Query
+SELECT isProbablePrime(18)
+```
+
+```response title=Response
+0
+```
+
+**最大の `UInt64` の素数 (正確な結果)&#x20;**
+
+```sql title=Query
+SELECT isProbablePrime(18446744073709551557)
+```
+
+```response title=Response
+1
+```
+
+**メルセンヌ素数 `M_127` (`UInt128`)&#x20;**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt128('170141183460469231731687303715884105727'))
+```
+
+```response title=Response
+1
+```
+
+**Curve25519 の基礎体の素数 `2^255 - 19` (`UInt256`)**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt256('57896044618658097711785492504343953926634992332820282019728792003956564819949'))
+```
+
+```response title=Response
+1
+```
+
+**より高速だが、信頼性の低いチェック: 5ラウンド**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt256('57896044618658097711785492504343953926634992332820282019728792003956564819949'), 5)
+```
+
+```response title=Response
+1
+```
+
 ## lgamma \{#lgamma\}
 
 導入バージョン: v1.1.0

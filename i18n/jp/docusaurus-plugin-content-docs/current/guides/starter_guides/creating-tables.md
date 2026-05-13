@@ -1,14 +1,12 @@
 ---
 sidebar_position: 1
 sidebar_label: 'テーブルの作成'
-title: 'ClickHouse でのテーブル作成'
+title: 'ClickHouse でテーブルを作成する'
 slug: /guides/creating-tables
 description: 'ClickHouse でのテーブル作成について学ぶ'
 keywords: ['テーブルの作成', 'CREATE TABLE', 'テーブル作成', 'データベースガイド', 'MergeTree エンジン']
 doc_type: 'guide'
 ---
-
-# ClickHouse でテーブルを作成する \{#creating-tables-in-clickhouse\}
 
 多くのデータベースと同様に、ClickHouse はテーブルを論理的にグループ化し、**データベース** として管理します。ClickHouse で新しいデータベースを作成するには、`CREATE DATABASE` コマンドを使用します。
 
@@ -49,7 +47,6 @@ CREATE DATABASE IF NOT EXISTS helloworld
 
 選択できるエンジンは多数ありますが、単一ノードの ClickHouse サーバー上にシンプルなテーブルを作成する場合は、[MergeTree](/engines/table-engines/mergetree-family/mergetree.md) が最も一般的な選択肢となるでしょう。
 :::
-
 
 ## プライマリキーの概要 \{#a-brief-intro-to-primary-keys\}
 

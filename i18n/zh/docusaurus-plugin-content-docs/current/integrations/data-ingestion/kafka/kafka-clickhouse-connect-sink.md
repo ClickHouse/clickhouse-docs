@@ -350,6 +350,114 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
 请注意:如果遇到类缺失问题,由于并非所有环境都自带 protobuf 转换器,您可能需要使用一个将依赖一起打包的备用 jar 发行版。
 
 
+###### Protobuf 类型对照 \{#proto-type-mapping\}
+
+下面的类型对照由 `io.confluent.connect.protobuf.ProtobufConverter` 定义，它是 Kafka Connect 官方提供的 Protobuf 序列化器/反序列化器实现。有关转换逻辑的进阶信息，请参阅 Kafka Connect [文档](https://docs.confluent.io/platform/current/connect/userguide.html#json-schema-and-protobuf)。
+
+✅：支持
+
+❌：不受支持
+
+️⚠️：部分支持
+
+| Protobuf 类型                             | Kafka Connect 类型                        | 是否支持 | 说明                                                                                                                                                          |
+| --------------------------------------- | --------------------------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| double                                  | FLOAT64                                 | ✅    |                                                                                                                                                             |
+| float                                   | FLOAT32                                 | ✅    |                                                                                                                                                             |
+| int32                                   | INT8/INT16/INT32                        | ✅    | 默认为 INT32。如果 schema 指定了选项 `connect.type=int8`，则会解析为 INT8 (INT16 的情况同理，即 `connect.type=int16`)                                                               |
+| sint32                                  | INT8/INT16/INT32                        | ✅    | 默认为 INT32。如果 schema 指定了选项 `connect.type=int8`，则会解析为 INT8 (INT16 的情况同理，即 `connect.type=int16`)                                                               |
+| sfixed32                                | INT8/INT16/INT32                        | ✅    | 默认为 INT32。如果 schema 指定了选项 `connect.type=int8`，则会解析为 INT8 (INT16 的情况同理，即 `connect.type=int16`)                                                               |
+| uint32                                  | INT64                                   | ✅    |                                                                                                                                                             |
+| fixed32                                 | INT64                                   | ✅    |                                                                                                                                                             |
+| int64                                   | INT64                                   | ✅    |                                                                                                                                                             |
+| uint64                                  | INT64                                   | ✅    |                                                                                                                                                             |
+| sint64                                  | INT64                                   | ✅    |                                                                                                                                                             |
+| fixed64                                 | INT64                                   | ✅    |                                                                                                                                                             |
+| sfixed64                                | INT64                                   | ✅    |                                                                                                                                                             |
+| bool                                    | BOOLEAN                                 | ✅    |                                                                                                                                                             |
+| string                                  | STRING                                  | ✅    |                                                                                                                                                             |
+| bytes                                   | BYTES                                   | ✅    |                                                                                                                                                             |
+| enum                                    | INT32/STRING                            | ✅    | 默认为 STRING。如果 `int.for.enums=true`，则会解析为 INT32 (参见 [schema registry 文档](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf))  |
+| message                                 | STRUCT                                  | ⚠️   | 请参见下方的“不受支持的 schema”一节                                                                                                                                      |
+| repeated T (where T is not a map entry) | ARRAY                                   | ✅    |                                                                                                                                                             |
+| `map<K, V>`                             | MAP                                     | ✅    |                                                                                                                                                             |
+| oneof                                   | STRUCT                                  | ⚠️   | 请参见下方关于将 oneof 转换为 ClickHouse schema 的章节                                                                                                                    |
+| google.protobuf.DoubleValue             | FLOAT64                                 | ✅    |                                                                                                                                                             |
+| google.protobuf.FloatValue              | FLOAT32                                 | ✅    |                                                                                                                                                             |
+| google.protobuf.Int64Value              | INT64                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.UInt64Value             | INT64                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.UInt32Value             | INT64                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.Int32Value              | INT32                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.BoolValue               | BOOLEAN                                 | ✅    |                                                                                                                                                             |
+| google.protobuf.StringValue             | STRING                                  | ✅    |                                                                                                                                                             |
+| google.protobuf.BytesValue              | BYTES                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.Timestamp               | org.apache.kafka.connect.data.Timestamp | ✅    |                                                                                                                                                             |
+| google.type.Date                        | org.apache.kafka.connect.data.Date      | ✅    |                                                                                                                                                             |
+| google.type.TimeOfDay                   | org.apache.kafka.connect.data.Time      | ✅    |                                                                                                                                                             |
+
+有关 Kafka Connect 类型与 ClickHouse 类型之间的映射关系，请参阅[支持的数据类型](#supported-data-types)。
+
+###### 关于将 `oneof` 字段映射为 ClickHouse 列的说明 \{#oneof-translation\}
+
+该连接器不支持将 Protobuf 联合 (`oneof`) 映射为 ClickHouse 的 Variant 类型。请改为在 ClickHouse 表 schema 中，将 `oneof` 字段分别列为单独的 Nullable 字段。
+
+例如：
+
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message StringIntUnion {
+  oneof mixed {
+    string mixed_string = 2;
+    int32 mixed_int = 3;
+  }
+}
+
+```
+
+转换为以下 ClickHouse 表定义：
+
+```sql
+CREATE TABLE IF NOT EXISTS `StringIntUnion`
+(
+    mixed_string Nullable(String),
+    mixed_int Nullable(Int32)
+) ENGINE = ...;
+```
+
+###### 不受支持的 Protobuf schema \{#unsupported-proto-schemas\}
+
+连接器不支持以下 Protobuf schema：
+
+* 多消息联合类型 (**CH 26.1 之前的版本**) 
+
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message TwoRecords {
+  oneof payload {
+    TypeA type_a = 2;
+    TypeB type_b = 3;
+  }
+
+  // translates to Nullable(Tuple(label String)) in ClickHouse, which is unsupported
+  message TypeA {
+    string label = 1;
+  }
+
+  // translates to Nullable(Tuple(count Int32)) in ClickHouse, which is unsupported
+  message TypeB {
+    int32 count = 1;
+  }
+}
+```
+
+从 CH 26.1 版本起，当 `allow_experimental_nullable_tuple_type=1` 时，即支持此 schema (请参阅[此文档页面](https://clickhouse.com/docs/operations/settings/settings#allow_experimental_nullable_tuple_type)) 。
+
 ##### JSON Schema 支持 \{#json-schema-support\}
 
 ```json

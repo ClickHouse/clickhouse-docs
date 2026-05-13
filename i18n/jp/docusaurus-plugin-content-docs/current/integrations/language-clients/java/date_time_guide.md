@@ -1,17 +1,15 @@
 ---
-sidebar_label: 'JDBC における日付・時刻値の扱い'
+sidebar_label: 'JDBC における Date/Time 値の扱い'
 sidebar_position: 4
-keywords: ['java', 'jdbc', 'driver', '連携', 'ガイド', 'Date', 'Time']
-description: 'JDBC で日付・時刻値を扱うためのガイド'
+keywords: ['java', 'jdbc', 'driver', 'integrate', 'guide', 'Date', 'Time']
+description: 'JDBC で Date/Time 値を使用するためのガイド'
 slug: /integrations/language-clients/java/jdbc_date_time_guide
-title: '日付・時刻値のガイド'
+title: 'Date/Time 値ガイド'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'language_client'
 ---
-
-# JDBC における Date、Time、Timestamp の扱い \{#working-with-date-time-and-timestamp-in-jdbc\}
 
 Date、Time、Timestamp 型には、これらに関連する一般的な問題がいくつかあるため注意が必要です。
 最もよくある問題は、タイムゾーンをどのように扱うかという点です。もう 1 つの問題は、文字列表現とその利用方法です。

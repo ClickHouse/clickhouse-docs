@@ -1,12 +1,10 @@
 ---
 title: '배포 옵션'
 slug: /infrastructure/deployment-options
-description: 'ClickHouse 고객이 사용할 수 있는 배포 옵션'
-keywords: ['사용자 소유 클라우드 사용', 'byoc', '프라이빗', '정부', '자가 배포']
+description: 'ClickHouse 고객을 위한 배포 옵션'
+keywords: ['Bring Your Own Cloud', 'byoc', 'private', '정부', '자가 배포']
 doc_type: 'reference'
 ---
-
-# ClickHouse 배포 옵션 \{#clickhouse-deployment-options\}
 
 ClickHouse는 다양한 고객 요구 사항을 충족하기 위해 여러 배포 옵션을 제공하며, 이를 통해 제어 수준, 규정 준수, 운영 부담을 서로 다른 정도로 조정할 수 있습니다.
 이 문서는 사용 가능한 배포 유형을 구분하여 설명하며, 특정 아키텍처 선호도, 규제 의무, 리소스 관리 전략에 가장 적합한 최적의 솔루션을 선택하는 데 도움이 됩니다.

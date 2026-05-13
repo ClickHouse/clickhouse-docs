@@ -19,10 +19,8 @@ title: '实践经验 - 调试洞见'
 description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询、内存错误、连接问题和配置问题。'
 ---
 
-# ClickHouse 运维：社区调试洞见 \{#clickhouse-operations-community-debugging-insights\}
-
-*本指南是基于社区活动中总结出的经验与结论的一部分。想获取更多真实场景下的解决方案与洞见，可以[按具体问题浏览](./community-wisdom.md)。*
-*是否正为高昂的运维成本发愁？请查看[成本优化](./cost-optimization.md)社区洞见指南。*
+*本指南是社区 meetup 经验总结系列的一部分。要查看更多来自真实场景的解决方案和洞见，您可以[按具体问题浏览](./community-wisdom.md)。*
+*如果您正面临较高的运营成本，请查看社区洞见指南：[成本优化](./cost-optimization.md)。*
 
 ## 关键系统表 \{#essential-system-tables\}
 

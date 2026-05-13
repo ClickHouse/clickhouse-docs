@@ -106,6 +106,10 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 清除 Iceberg 元数据缓存。
 
+## SYSTEM CLEAR|DROP AVRO SCHEMA CACHE \{#drop-avro-schema-cache\}
+
+清除 `AvroConfluent` 格式使用的按 URL 分隔的 Confluent Schema Registry 缓存。这会同时清除 schema 拉取缓存 (id → schema) 和 schema 注册缓存 (subject + schema → id) ，因此后续的读取和写入将回退到 registry 服务器。当 registry 端的 schema 被删除或重写时，此操作非常有用；也可用于在测试中验证 registry 的幂等性。
+
 ## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
 
 清除 parquet 元数据缓存。

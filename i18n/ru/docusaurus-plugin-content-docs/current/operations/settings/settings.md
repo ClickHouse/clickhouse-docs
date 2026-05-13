@@ -711,6 +711,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 - 0 — движок таблицы [TimeSeries](../../engines/table-engines/integrations/time-series.md) отключен.
 - 1 — движок таблицы [TimeSeries](../../engines/table-engines/integrations/time-series.md) включен.
 
+## allow_experimental_unique_key \{#allow_experimental_unique_key\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, управляющая доступностью экспериментальной клаузы `UNIQUE KEY` для таблиц на движках семейства MergeTree"}]}]} />
+
+Разрешает создавать таблицы с клаузой `UNIQUE KEY` на движках семейства MergeTree.
+
 ## allow_experimental_window_view \{#allow_experimental_window_view\}
 
 <ExperimentalBadge/>
@@ -1993,28 +2003,28 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 ## cast_string_to_date_time_mode \{#cast_string_to_date_time_mode\}
 
-<SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
+<SettingsInfoBlock type="DateTimeInputFormat" default_value="best_effort" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "basic"},{"label": "Разрешает использовать различные режимы разбора DateTime при приведении String к DateTime"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "best_effort"},{"label": "Повышение удобства использования"}]}, {"id": "row-2","items": [{"label": "25.6"},{"label": "basic"},{"label": "Разрешает использовать различные режимы разбора DateTime при приведении String к DateTime"}]}]} />
 
 Позволяет выбрать парсер текстового представления даты и времени при приведении из String к DateTime.
 
 Возможные значения:
 
-- `'best_effort'` — Включает расширенный разбор.
+* `'best_effort'` — Включает расширенный разбор.
 
-    ClickHouse может разбирать базовый формат `YYYY-MM-DD HH:MM:SS` и все форматы даты и времени [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). Например, `'2018-06-08T01:02:03.000Z'`.
+  ClickHouse может разбирать базовый формат `YYYY-MM-DD HH:MM:SS` и все форматы даты и времени [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). Например, `'2018-06-08T01:02:03.000Z'`.
 
-- `'best_effort_us'` — Аналогично `best_effort` (см. различия в [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS))
+* `'best_effort_us'` — Аналогично `best_effort` (см. различия в [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS))
 
-- `'basic'` — Использует базовый парсер.
+* `'basic'` — Использует базовый парсер.
 
-    ClickHouse может разбирать только базовый формат `YYYY-MM-DD HH:MM:SS` или `YYYY-MM-DD`. Например, `2019-08-20 10:18:56` или `2019-08-20`.
+  ClickHouse может разбирать только базовый формат `YYYY-MM-DD HH:MM:SS` или `YYYY-MM-DD`. Например, `2019-08-20 10:18:56` или `2019-08-20`.
 
 См. также:
 
-- [Тип данных DateTime.](../../sql-reference/data-types/datetime.md)
-- [Функции для работы с датами и временем.](../../sql-reference/functions/date-time-functions.md)
+* [Тип данных DateTime.](../../sql-reference/data-types/datetime.md)
+* [Функции для работы с датами и временем.](../../sql-reference/functions/date-time-functions.md)
 
 ## cast_string_to_dynamic_use_inference \{#cast_string_to_dynamic_use_inference\}
 
@@ -3564,6 +3574,33 @@ ClickHouse применяет этот SETTING, когда запрос соде
 Улучшает запросы с FINAL за счёт предотвращения слияния данных из разных партиций.
 
 Когда параметр включён, при выполнении запросов SELECT FINAL части из разных партиций не будут объединяться друг с другом. Вместо этого слияние будет происходить только внутри каждой партиции отдельно. Это может значительно повысить производительность запросов при работе с партиционированными таблицами.
+
+## dynamic_disk_allow_from_env \{#dynamic_disk_allow_from_env\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, разрешающая подстановки `from_env` в конфигурации динамического диска (в функции `disk()`). По умолчанию отключена из соображений безопасности."}]}]} />
+
+Разрешает использовать подстановки `from_env` в конфигурации динамического диска (то есть в аргументах функции `disk()`).
+По умолчанию отключено, чтобы пользователи не могли считывать произвольные переменные окружения при определении хранилища таблицы.
+
+## dynamic_disk_allow_from_zk \{#dynamic_disk_allow_from_zk\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, разрешающая подстановки `from_zk` в конфигурации динамического диска (в функции `disk()`). По умолчанию отключена."}]}]} />
+
+Разрешает использовать подстановки `from_zk` в конфигурации динамического диска (то есть в аргументах функции `disk()`).
+Отключено по умолчанию.
+
+## dynamic_disk_allow_include \{#dynamic_disk_allow_include\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, разрешающая использовать `include` в конфигурации динамического диска (в функции `disk()`). По умолчанию отключена."}]}]} />
+
+Разрешает использовать `include` в конфигурации динамического диска (то есть в аргументах функции `disk()`).
+По умолчанию отключена.
 
 ## dynamic_throw_on_type_mismatch \{#dynamic_throw_on_type_mismatch\}
 
@@ -10885,6 +10922,14 @@ a   Tuple(
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 Таймаут ожидания получения данных из сети, в секундах. Если в течение этого интервала не было получено ни одного байта, будет сгенерировано исключение. Если вы задаёте этот параметр на клиенте, для сокета на сервере на соответствующем конце соединения также будет установлен `send_timeout`.
+
+## recursive_cte_max_steps_in_type_inference \{#recursive_cte_max_steps_in_type_inference\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "Максимальное число итераций для определения типов столбцов в рекурсивных CTE с помощью итеративного getLeastSupertype"}]}]} />
+
+Максимальное число итераций для определения типов столбцов в рекурсивных CTE. Типы столбцов определяются итеративным применением `getLeastSupertype` к нерекурсивной и рекурсивной частям UNION ALL до достижения сходимости. Установите 0, чтобы отключить расширение типов и использовать только типы из нерекурсивной части.
 
 ## regexp_dict_allow_hyperscan \{#regexp_dict_allow_hyperscan\}
 

@@ -7,9 +7,7 @@ keywords: ['clickhousectl', 'CLI', 'управление облачными се
 doc_type: 'reference'
 ---
 
-# ClickHouse CLI \{#clickhouse-cli\}
-
-ClickHouse CLI (`clickhousectl`) — это универсальный инструмент командной строки для управления ресурсами ClickHouse Cloud и локальной разработки с ClickHouse.
+ClickHouse CLI (`clickhousectl`) — это единый инструмент командной строки для управления ресурсами ClickHouse Cloud и локальной разработки на базе ClickHouse.
 
 ## Установка \{#installation\}
 
@@ -29,7 +27,7 @@ curl https://clickhouse.com/cli | sh
 clickhousectl cloud auth
 ```
 
-Будут запрошены ваш API-ключ и секрет, после чего они будут сохранены в `.clickhouse/credentials.json` (в каталоге проекта; файл игнорируется git).
+Будут запрошены ваш API-ключ и 시크릿, после чего они будут сохранены в `.clickhouse/credentials.json` (в каталоге проекта; файл игнорируется git).
 
 Вы также можете использовать переменные окружения:
 

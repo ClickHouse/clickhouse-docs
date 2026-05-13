@@ -7,9 +7,8 @@ title: 'ClickHouse Cloud와 Amazon Redshift 비교'
 doc_type: 'guide'
 ---
 
-# Amazon Redshift에서 ClickHouse로 마이그레이션 \{#amazon-redshift-to-clickhouse-migration\}
-
-> 이 문서는 Amazon Redshift에서 ClickHouse로 데이터 마이그레이션에 대한 개요를 제공합니다.
+> 이 문서는 Amazon
+> Redshift에서 ClickHouse로 데이터를 마이그레이션하는 방법을 간략히 소개합니다.
 
 ## 소개 \{#introduction\}
 

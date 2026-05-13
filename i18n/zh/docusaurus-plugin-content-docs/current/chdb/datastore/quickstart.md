@@ -2,14 +2,12 @@
 title: 'DataStore 快速入门'
 sidebar_label: '快速入门'
 slug: /chdb/datastore/quickstart
-description: '开始使用 DataStore：安装、通过一行代码从 Pandas 迁移，以及基本用法'
+description: '开始使用 DataStore：安装、一行代码从 Pandas 迁移，以及基本用法'
 keywords: ['chdb', 'datastore', 'quickstart', 'installation', 'pandas', 'migration']
 doc_type: 'guide'
 ---
 
-# DataStore 快速入门 \{#datastore-quickstart\}
-
-几分钟内即可开始使用 DataStore。本指南涵盖安装、从 pandas 迁移以及基本使用模式。
+只需几分钟即可上手 DataStore。本指南涵盖安装、从 pandas 迁移以及基本用法。
 
 ## 安装 \{#installation\}
 

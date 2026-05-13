@@ -7,9 +7,7 @@ keywords: ['CSV 形式', 'TSV 形式', 'カンマ区切り値', 'タブ区切り
 doc_type: 'guide'
 ---
 
-# ClickHouse での CSV および TSV データの扱い方 \{#working-with-csv-and-tsv-data-in-clickhouse\}
-
-ClickHouse は、CSV 形式でのデータのインポートおよびエクスポートをサポートしています。CSV ファイルは、ヘッダー行、カスタム区切り文字、エスケープ記号など、さまざまな形式上の違いを持つ場合があるため、ClickHouse ではそれぞれのケースに効率的に対処できるよう、フォーマットと設定が用意されています。
+ClickHouse は、CSV からのデータのインポートと CSV へのデータのエクスポートをサポートしています。CSV ファイルでは、ヘッダー行、独自の区切り文字、エスケープ文字など、フォーマットの仕様が異なる場合があるため、ClickHouse ではそれぞれのケースに効率的に対応できるよう、各種フォーマットと設定を用意しています。
 
 ## CSV ファイルからのデータインポート \{#importing-data-from-a-csv-file\}
 

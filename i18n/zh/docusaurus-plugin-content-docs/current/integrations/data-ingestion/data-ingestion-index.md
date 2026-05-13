@@ -2,11 +2,9 @@
 slug: /integrations/data-ingestion-overview
 keywords: [ 'Airbyte', 'Apache Spark', 'Spark', 'Azure Synapse', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector' ]
 title: '数据摄取'
-description: '数据摄取部分的入口页'
+description: '数据摄取部分的落地页'
 doc_type: 'landing-page'
 ---
-
-# 数据摄取 \{#data-ingestion\}
 
 ClickHouse 可与多种数据集成和转换解决方案配合使用。
 如需了解更多信息，请参阅以下页面：

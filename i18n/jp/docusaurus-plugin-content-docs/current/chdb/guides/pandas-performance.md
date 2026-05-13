@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'performance', 'benchmark', 'optimizat
 doc_type: 'guide'
 ---
 
-# パフォーマンスガイド \{#performance-guide\}
-
-DataStore は、多くの処理で pandas と比べて大幅なパフォーマンス向上を実現します。本ガイドでは、その理由とワークロードを最適化する方法について説明します。
+DataStore は、多くの操作で pandas より大幅に高い性能を発揮します。このガイドでは、その理由と、ワークロードを最適化する方法を説明します。
 
 ## DataStore が高速な理由 \{#why-faster\}
 

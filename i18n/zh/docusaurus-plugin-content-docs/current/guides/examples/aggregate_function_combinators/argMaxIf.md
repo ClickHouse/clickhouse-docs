@@ -2,12 +2,10 @@
 slug: '/examples/aggregate-function-combinators/argMaxIf'
 title: 'argMaxIf'
 description: '使用 argMaxIf 聚合函数组合器的示例'
-keywords: ['argMax', 'if', 'combinator', '示例', 'argMaxIf']
+keywords: ['argMax', 'if', '组合器', '示例', 'argMaxIf']
 sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
-
-# argMaxIf \{#argmaxif\}
 
 ## 描述 \{#description\}
 
@@ -41,9 +39,9 @@ SELECT argMaxIf(product_name, price, sales_count >= 10) AS most_expensive_popula
 FROM product_sales;
 ```
 
-`argMaxIf` 函数会在所有销量至少为 10 次（sales&#95;count &gt;= 10）的商品中，
+`argMaxIf` 函数会在所有销量至少为 10 次 (sales&#95;count &gt;= 10) 的商品中，
 返回价格最高的产品名称。
-在这个例子中，它将返回 &#39;Laptop&#39;，因为在这些热门商品中，它的价格最高（999.99）。
+在这个例子中，它将返回 &#39;Laptop&#39;，因为在这些热门商品中，它的价格最高 (999.99) 。
 
 ```response title="Response"
    ┌─most_expensi⋯lar_product─┐
@@ -52,7 +50,8 @@ FROM product_sales;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-- [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-- [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+* [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+* [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

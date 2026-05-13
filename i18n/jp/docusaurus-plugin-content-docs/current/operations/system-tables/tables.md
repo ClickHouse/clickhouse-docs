@@ -37,6 +37,7 @@ doc_type: 'reference'
 * `sorting_key` ([String](../../sql-reference/data-types/)) — テーブルに指定されたソートキーの式。
 * `primary_key` ([String](../../sql-reference/data-types/)) — テーブルに指定された主キー式。
 * `sampling_key` ([String](../../sql-reference/data-types/)) — テーブルで指定されたサンプリングキーの式。
+* `unique_key` ([String](../../sql-reference/data-types/)) — テーブルに指定された一意キー式 (UNIQUE KEY 句)。
 * `storage_policy` ([String](../../sql-reference/data-types/)) — ストレージポリシー。MergeTree および Distributed エンジンを使用するテーブルに適用されます。
 * `total_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 総行数。テーブルの正確な行数を迅速に判定できる場合はその値を返し、そうでない場合は NULL (基になる Buffer テーブルを含む) 。
 * `total_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — ストレージ上のテーブルについて正確なバイト数を迅速に特定できる場合は総バイト数を返し、それ以外の場合は NULL を返します (基盤となるストレージは含みません) 。テーブルがデータをディスクに格納している場合は、ディスク上で使用されている容量 (つまり圧縮後のサイズ) を返します。テーブルがデータをメモリに格納している場合は、メモリ内で使用されているおおよそのバイト数を返します。

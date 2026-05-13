@@ -11,9 +11,7 @@ integration:
   - category: 'language_client'
 ---
 
-# ClickHouse Rust 客户端 \{#clickhouse-rust-client\}
-
-用于连接 ClickHouse 的官方 Rust 客户端，最初由 [Paul Loyd](https://github.com/loyd) 开发。客户端源代码可在 [GitHub 仓库](https://github.com/ClickHouse/clickhouse-rs) 中获取。
+这是用于连接 ClickHouse 的官方 Rust 客户端，最初由 [Paul Loyd](https://github.com/loyd) 开发。客户端源代码可在 [GitHub 代码仓库](https://github.com/ClickHouse/clickhouse-rs) 获取。
 
 ## 概述 \{#overview\}
 

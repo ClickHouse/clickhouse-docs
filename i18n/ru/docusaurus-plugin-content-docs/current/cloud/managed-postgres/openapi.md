@@ -14,8 +14,10 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
 
 Используйте [ClickHouse OpenAPI](/cloud/manage/cloud-api), чтобы программно
-управлять сервисами Managed Postgres так же, как сервисами ClickHouse. Уже
-знакомы с [OpenAPI]? Получите [ключи API] и сразу переходите к
+управлять сервисами Managed Postgres так же, как сервисами ClickHouse. Тот
+же API также предоставляет [конечную точку Prometheus] для сбора метрик
+сервиса. Уже
+знакомы с [OpenAPI]? Получите [API-ключи] и сразу переходите к
 [справочнику по API Managed
 Postgres][pg-openapi]. Если нет, ниже приведён краткий обзор.
 
@@ -279,11 +281,23 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 }
 ```
 
+## Мониторинг \{#monitoring\}
+
+Две совместимые с Prometheus конечные точки предоставляют метрики CPU, памяти, I/O, подключений
+и транзакций для сервисов Managed Postgres: одна возвращает
+метрики для всех сервисов в организации, другая — для одного
+сервиса. Сведения о настройке см. на странице [конечная точка Prometheus], а
+полный список метрик — в [metrics reference].
+
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 
 [OpenAPI]: https://www.openapis.org "Инициатива OpenAPI"
 
 [API keys]: /cloud/manage/openapi "Управление API-ключами"
+
+[конечная точка Prometheus]: /cloud/managed-postgres/monitoring/prometheus "Конечная точка Prometheus для Managed Postgres"
+
+[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Справочник метрик Managed Postgres"
 
 [pg-openapi]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres "Спецификация OpenAPI для ClickHouse Cloud: Postgres"
 

@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', '쿼리', 'select', 'filter', 'where', 'join', '
 doc_type: 'reference'
 ---
 
-# DataStore 쿼리 작성 \{#datastore-query-building\}
-
-DataStore는 최적화된 SQL 쿼리로 컴파일되는 SQL 스타일의 쿼리 작성 메서드를 제공합니다. 결과가 실제로 필요해질 때까지 모든 연산은 지연 평가됩니다.
+DataStore는 최적화된 SQL 쿼리로 컴파일되는 SQL 스타일 쿼리 작성 메서드를 제공합니다. 모든 작업은 결과가 필요할 때까지 지연 평가됩니다.
 
 ## 쿼리 메서드 개요 \{#overview\}
 

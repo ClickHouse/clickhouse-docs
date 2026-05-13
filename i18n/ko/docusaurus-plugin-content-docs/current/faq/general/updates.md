@@ -4,11 +4,9 @@ toc_hidden: true
 toc_priority: 10
 slug: /faq/general/updates
 description: 'ClickHouse는 경량 실시간 업데이트를 지원합니다'
-doc_type: 'reference'
+doc_type: '참고'
 keywords: ['업데이트', '실시간']
 ---
-
-# ClickHouse는 실시간 업데이트를 지원하나요? \{#does-clickhouse-support-real-time-updates\}
 
 ClickHouse는 UPDATE 문을 지원하며, INSERT만큼 빠른 속도로 실시간 업데이트를 수행할 수 있습니다.
 

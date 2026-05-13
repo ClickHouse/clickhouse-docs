@@ -7,19 +7,16 @@ keywords: ['原生协议', 'TCP 协议', '协议基础', '二进制协议', '客
 doc_type: 'guide'
 ---
 
-# 基础知识 \{#basics\}
-
 :::note
-客户端协议参考文档正在编写中。
+客户端协议参考文档仍在编写中。
 
-目前大部分示例仅提供 Go 语言版本。
+大多数示例仅提供 Go 版本。
 :::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-本文档描述了 ClickHouse TCP 客户端使用的二进制协议。
-
+本文档介绍 ClickHouse TCP 客户端使用的二进制协议。
 
 ## Varint \{#varint\}
 

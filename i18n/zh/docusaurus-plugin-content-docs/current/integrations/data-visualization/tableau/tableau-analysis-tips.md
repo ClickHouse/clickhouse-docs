@@ -11,8 +11,6 @@ integration:
   - category: 'data_visualization'
 ---
 
-# 分析提示 \{#analysis-tips\}
-
 ## MEDIAN() 和 PERCENTILE() 函数 \{#median-and-percentile-functions\}
 
 - 在 Live 模式下，MEDIAN() 和 PERCENTILE() 函数（自 connector v0.1.3 版本起）使用 [ClickHouse quantile()() 函数](/sql-reference/aggregate-functions/reference/quantile/)，这可以显著加快计算速度，但基于抽样。如果您需要获得精确的计算结果，请使用 `MEDIAN_EXACT()` 和 `PERCENTILE_EXACT()` 函数（基于 [quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/)）。

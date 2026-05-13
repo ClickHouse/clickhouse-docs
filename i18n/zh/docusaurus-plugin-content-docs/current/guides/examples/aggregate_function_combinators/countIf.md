@@ -7,8 +7,6 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-# countIf \{#countif\}
-
 ## 描述 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`count`](/sql-reference/aggregate-functions/reference/count)

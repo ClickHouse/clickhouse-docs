@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse Playground 允许用户无需自行搭建服务器或集群，通过即时运行查询来试用和探索 ClickHouse。'
-keywords: ['clickhouse', 'playground', '快速入门', '文档']
-sidebar_label: 'ClickHouse Playground'
+description: 'ClickHouse Playground 允许用户无需自行搭建服务器或集群，即可通过即时运行查询来试用和探索 ClickHouse。'
+keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
+sidebar_label: 'ClickHouse playground'
 slug: /getting-started/playground
 title: 'ClickHouse playground'
-doc_type: '指南'
+doc_type: 'guide'
 ---
-
-# ClickHouse playground \{#clickhouse-playground\}
 
 [ClickHouse Playground](https://sql.clickhouse.com) 允许用户无需自行搭建服务器或集群，即可通过即时运行查询来试用和探索 ClickHouse。
 Playground 中提供了若干示例数据集。

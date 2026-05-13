@@ -4,13 +4,11 @@ sidebar_position: 5
 slug: /integrations/data-formats/arrow-avro-orc
 title: 'ClickHouse における Avro、Arrow、ORC データの扱い'
 description: 'ClickHouse で Avro、Arrow、ORC 形式のデータを扱う方法を説明するページ'
-keywords: ['Apache Avro', 'Apache Arrow', 'ORC 形式', 'カラムナ形式', 'ビッグデータ形式']
+keywords: ['Apache Avro', 'Apache Arrow', 'ORC 形式', '列指向形式', 'ビッグデータ形式']
 doc_type: 'guide'
 ---
 
-# ClickHouse で Avro、Arrow、ORC データを扱う \{#working-with-avro-arrow-and-orc-data-in-clickhouse\}
-
-Apache は、分析環境で広く利用されている複数のデータ形式を提供しており、その中には広く利用されている [Avro](https://avro.apache.org/)、[Arrow](https://arrow.apache.org/)、[Orc](https://orc.apache.org/) などが含まれます。ClickHouse では、これらのいずれの形式を用いたデータのインポートおよびエクスポートが可能です。
+Apache は、広く利用されている [Avro](https://avro.apache.org/)、[Arrow](https://arrow.apache.org/)、[Orc](https://orc.apache.org/) をはじめ、分析環境で活発に使われている複数のデータ形式を提供しています。ClickHouse は、この一覧にあるどの形式でもデータのインポートとエクスポートをサポートしています。
 
 ## Avro 形式でのインポートおよびエクスポート \{#importing-and-exporting-in-avro-format\}
 
@@ -90,7 +88,7 @@ kafka_format = 'AvroConfluent';
 
 ## Arrow フォーマットの利用 \{#working-with-arrow-format\}
 
-もう一つのカラムナフォーマットとして [Apache Arrow](https://arrow.apache.org/) があります。これは ClickHouse でのインポートおよびエクスポートにも対応しています。[Arrow ファイル](assets/data.arrow) からデータをインポートするには、[Arrow](/interfaces/formats/Arrow) フォーマットを使用します。
+もう一つの列指向フォーマットとして [Apache Arrow](https://arrow.apache.org/) があります。これは ClickHouse でのインポートおよびエクスポートにも対応しています。[Arrow ファイル](assets/data.arrow) からデータをインポートするには、[Arrow](/interfaces/formats/Arrow) フォーマットを使用します。
 
 ```sql
 INSERT INTO sometable
@@ -106,13 +104,13 @@ INTO OUTFILE 'export.arrow'
 FORMAT Arrow
 ```
 
-また、[data types matching](/interfaces/formats/Arrow#data-types-matching) を参照して、手動で変換が必要な型がないか確認してください。
+また、[データ型の対応](/interfaces/formats/Arrow#data-types-matching) を参照して、手動で変換が必要な型がないか確認してください。
 
 ### Arrow データストリーミング \{#arrow-data-streaming\}
 
-[ArrowStream](/interfaces/formats/ArrowStream) フォーマットは、Arrow ストリーミング（インメモリ処理に使用）データを扱うために利用できます。ClickHouse は Arrow ストリームの読み書きが可能です。
+[ArrowStream](/interfaces/formats/ArrowStream) フォーマットは、Arrow ストリーミング (インメモリ処理に使用) データを扱うために利用できます。ClickHouse は Arrow ストリームの読み書きが可能です。
 
-ClickHouse がどのように Arrow データをストリーミングできるかを示すために、次の Python スクリプトにパイプで渡します（Arrow ストリーミング形式の入力ストリームを読み取り、結果を Pandas のテーブルとして出力します）：
+ClickHouse がどのように Arrow データをストリーミングできるかを示すために、次の Python スクリプトにパイプで渡します (Arrow ストリーミング形式の入力ストリームを読み取り、結果を Pandas のテーブルとして出力します) ：
 
 ```python
 import sys, pyarrow as pa
@@ -163,10 +161,10 @@ FORMAT ORC;
 
 ClickHouse は、多様なシナリオやプラットフォームをカバーするために、テキスト形式とバイナリ形式の両方を含む多数の形式をサポートしています。形式の種類やその扱い方については、次の記事を参照してください。
 
-- [CSV と TSV 形式](csv-tsv.md)
-- [JSON 形式](/integrations/data-ingestion/data-formats/json/intro.md)
-- [正規表現とテンプレート](templates-regex.md)
-- [ネイティブおよびバイナリ形式](binary.md)
-- [SQL 形式](sql.md)
+* [CSV と TSV 形式](csv-tsv.md)
+* [JSON 形式](/integrations/data-ingestion/data-formats/json/intro.md)
+* [正規表現とテンプレート](templates-regex.md)
+* [ネイティブおよびバイナリ形式](binary.md)
+* [SQL 形式](sql.md)
 
 あわせて [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) も参照してください。ClickHouse サーバーを用意することなく、ローカル / リモートのファイルを扱うことができる、ポータブルなフル機能ツールです。

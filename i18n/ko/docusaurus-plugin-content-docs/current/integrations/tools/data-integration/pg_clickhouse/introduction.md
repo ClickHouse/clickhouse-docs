@@ -7,8 +7,6 @@ doc_type: 'landing-page'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
 ---
 
-# pg_clickhouse \{#pg_clickhouse\}
-
 ## 소개 \{#introduction\}
 
 [pg_clickhouse]는 오픈 소스 PostgreSQL 확장 프로그램으로, SQL을 다시 작성할 필요 없이

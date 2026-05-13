@@ -8,8 +8,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Snowflake SQL 변환 가이드 \{#snowflake-sql-translation-guide\}
-
 ## 데이터 형식 \{#data-types\}
 
 ### Numerics \{#numerics\}

@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'sql', '対応', 'クエリ']
 doc_type: 'guide'
 ---
 
-# pandas ユーザー向けの SQL \{#sql-for-pandas-users\}
-
-DataStore は、pandas 風の操作を最適化された SQL にコンパイルします。本ガイドは、pandas ユーザーが自分の操作に対応する SQL を理解するのに役立ちます。
+DataStore は pandas スタイルの操作を最適化された SQL にコンパイルします。このガイドは、pandas ユーザーが各操作の背後にある SQL を理解するのに役立ちます。
 
 ## 生成された SQL の表示 \{#viewing-sql\}
 

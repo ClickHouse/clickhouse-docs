@@ -1,12 +1,10 @@
 ---
-title: '기타 JSON 접근 방식'
+title: 'JSON을 모델링하는 다른 접근 방식'
 slug: /integrations/data-formats/json/other-approaches
 description: 'JSON을 모델링하는 다른 접근 방식'
-keywords: ['json', 'formats']
+keywords: ['json', '형식']
 doc_type: 'reference'
 ---
-
-# JSON을 모델링하는 다른 접근 방식 \{#other-approaches-to-modeling-json\}
 
 **다음 내용은 ClickHouse에서 JSON을 모델링하는 대체 방법들입니다. 이는 완전한 설명을 위해 문서화된 것이며, JSON 타입이 도입되기 이전에는 유효했으나, 일반적으로 대부분의 사용 사례에서는 권장되지 않거나 적용되지 않습니다.**
 

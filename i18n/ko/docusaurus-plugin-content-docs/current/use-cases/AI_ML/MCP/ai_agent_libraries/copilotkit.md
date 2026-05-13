@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/copilotkit
 sidebar_label: 'CopilotKit 통합'
-title: 'CopilotKit과 ClickHouse MCP 서버로 AI 에이전트 구축하기'
+title: 'CopilotKit과 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCP와 CopilotKit을 사용하여 ClickHouse에 저장된 데이터를 기반으로 에이전트 기반 애플리케이션을 구축하는 방법을 알아봅니다'
+description: 'ClickHouse MCP와 CopilotKit을 사용하여 ClickHouse에 저장된 데이터로 에이전트 기반 애플리케이션을 구축하는 방법을 알아보십시오'
 keywords: ['ClickHouse', 'MCP', 'copilotkit']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# CopilotKit과 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server\}
 
 이 예제는 ClickHouse에 저장된 데이터를 활용하여 에이전트 기반 애플리케이션을 구축하는 방법을 보여줍니다.
 이 예제에서는 [ClickHouse MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여

@@ -1,6 +1,6 @@
 ---
-title: 'ClickHouse에서 JSON 데이터 다루기'
-sidebar_label: 'JSON 데이터 다루기'
+title: 'ClickHouse에서 JSON 사용하기'
+sidebar_label: 'JSON 사용하기'
 slug: /integrations/clickpipes/mongodb/quickstart
 description: 'ClickPipes를 통해 MongoDB에서 ClickHouse로 복제된 JSON 데이터를 다루기 위한 일반적인 패턴'
 doc_type: 'guide'
@@ -9,8 +9,6 @@ integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
-
-# ClickHouse에서 JSON 사용하기 \{#working-with-json-in-clickhouse\}
 
 이 가이드는 ClickPipes를 통해 MongoDB에서 ClickHouse로 복제된 JSON 데이터를 다루기 위한 일반적인 패턴을 제공합니다.
 
@@ -52,7 +50,6 @@ _peerdb_synced_at:  2025-08-19 20:50:42.005000000
 _peerdb_is_deleted: 0
 _peerdb_version:    0
 ```
-
 
 ## 테이블 스키마 \{#table-schema\}
 

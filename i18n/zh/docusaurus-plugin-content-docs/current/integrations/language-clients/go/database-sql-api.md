@@ -1,14 +1,12 @@
 ---
 sidebar_label: '数据库/SQL API'
 sidebar_position: 4
-keywords: ['clickhouse', 'go', 'golang', '数据库', 'sql', '标准']
-description: '使用 database/sql 标准接口对接 clickhouse-go。'
+keywords: ['clickhouse', 'go', 'golang', 'database', 'sql', 'standard']
+description: '使用 database/sql 标准接口与 clickhouse-go。'
 slug: /integrations/language-clients/go/database-sql-api
 title: '数据库/SQL API'
 doc_type: '参考'
 ---
-
-# 数据库/SQL API \{#database-sql-api\}
 
 标准 API 的完整代码示例可在[此处](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std)找到。
 

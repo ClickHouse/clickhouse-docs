@@ -1,15 +1,13 @@
 ---
-sidebar_label: 'BYOC 安全操作手册'
+sidebar_label: 'BYOC 安全作战手册'
 slug: /cloud/security/audit-logging/byoc-security-playbook
-title: 'BYOC 安全操作手册'
-description: '本页说明客户可用于识别潜在安全事件的方法'
+title: 'BYOC 安全作战手册'
+description: '本页面说明了客户可用于识别潜在安全事件的方法'
 doc_type: '指南'
-keywords: ['byoc', 'security', 'playbook', 'best practices', 'compliance']
+keywords: ['byoc', '安全', '作战手册', '最佳实践', '合规']
 ---
 
-# BYOC 安全作战手册 \{#byoc-security-playbook\}
-
-ClickHouse 在“自带云”（Bring Your Own Cloud，BYOC）模式下采用共享责任安全模型。该模型可从我们的信任中心（https://trust.clickhouse.com）下载。以下信息提供给 BYOC 客户，用作识别潜在安全事件的示例。客户应结合自身的安全计划来参考这些信息，以判断是否需要额外的检测和告警。
+ClickHouse 在“自带云” (Bring Your Own Cloud，BYOC) 模式下采用共享责任安全模型。该模型可从我们的信任中心 (https://trust.clickhouse.com) 下载。以下信息提供给 BYOC 客户，用作识别潜在安全事件的示例。客户应结合自身的安全计划来参考这些信息，以判断是否需要额外的检测和告警。
 
 ## 可能已泄露的 ClickHouse 凭证 \{#compromised-clickhouse-credentials\}
 

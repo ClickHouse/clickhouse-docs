@@ -21,11 +21,9 @@ title: 'ClickHouse 社区智慧'
 description: '通过真实场景和实践经验向 ClickHouse 社区学习'
 ---
 
-# ClickHouse 社区智慧：线下活动中的技巧与诀窍 \{#community-wisdom\}
+*这些交互式指南汇集了数百个生产环境部署积累的集体经验。每个可运行示例都能帮助您基于真实的 GitHub 事件数据理解 ClickHouse 的使用模式——通过实践这些概念，您可以避免常见错误并更快取得成效。*
 
-*这些交互式指南凝聚了数百次生产环境部署的集体经验。每个可运行示例都使用真实的 GitHub 事件数据，帮助你理解 ClickHouse 的使用模式与实践——通过练习这些概念，避免常见错误并加速取得成果。*
-
-将这些沉淀下来的经验与我们的 [最佳实践](/best-practices) 指南结合使用，以获得最佳的 ClickHouse 体验。
+将这些汇集的知识与我们的[最佳实践](/best-practices)指南结合起来，以获得最佳的 ClickHouse 使用体验。
 
 ## 按问题快速跳转 \{#problem-specific-quick-jumps\}
 

@@ -7,9 +7,7 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bin
 doc_type: 'guide'
 ---
 
-# Rust용 chDB \{#chdb-for-rust\}
-
-chDB-rust는 chDB를 위한 실험적인 FFI(Foreign Function Interface) 바인딩을 제공하며, 이를 통해 Rust 애플리케이션 내에서 외부 종속성 없이 ClickHouse 쿼리를 직접 실행할 수 있도록 합니다.
+chDB-rust는 chDB용 실험적 FFI(Foreign Function Interface) 바인딩을 제공하여, Rust 애플리케이션에서 외부 의존성 없이 ClickHouse 쿼리를 직접 실행할 수 있도록 합니다.
 
 ## 설치 \{#installation\}
 

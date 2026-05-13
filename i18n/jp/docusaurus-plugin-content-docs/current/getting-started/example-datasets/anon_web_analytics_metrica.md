@@ -1,17 +1,15 @@
 ---
-description: '匿名化されたウェブ解析データ（ヒットおよび訪問）を含む 2 つのテーブルで構成されるデータセット'
+description: 'hits と visits を含む匿名化されたウェブ解析データを含む 2 つのテーブルで構成されるデータセット'
 sidebar_label: '匿名化されたウェブ解析'
 slug: /getting-started/example-datasets/metrica
-keywords: ['ウェブ解析データ', '匿名化データ', 'ウェブサイトのトラフィックデータ', 'サンプルデータセット', 'はじめに']
+keywords: ['ウェブ解析データ', '匿名化データ', 'ウェブサイトトラフィックデータ', 'サンプルデータセット', 'はじめに']
 title: '匿名化されたウェブ解析'
 doc_type: 'guide'
 ---
 
-# 匿名化されたウェブ解析データ \{#anonymized-web-analytics-data\}
+このデータセットは、hits (`hits_v1`) と visits (`visits_v1`) の匿名化されたウェブ解析データを含む 2 つのテーブルで構成されています。
 
-このデータセットは、ヒット（`hits_v1`）と訪問（`visits_v1`）の匿名化されたウェブ解析データを含む 2 つのテーブルで構成されています。
-
-テーブルは圧縮された `tsv.xz` ファイルとしてダウンロードできます。本ドキュメントで使用するサンプルに加えて、1 億行を含む `hits` テーブルの拡張版（7.5GB）が TSV 形式で [https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz) から利用可能です。
+テーブルは圧縮された `tsv.xz` ファイルとしてダウンロードできます。本ドキュメントで使用するサンプルに加えて、1 億行を含む `hits` テーブルの拡張版 (7.5GB) が TSV 形式で [https://datasets.clickhouse.com/hits/tsv/hits&#95;100m&#95;obfuscated&#95;v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz) から利用可能です。
 
 ## データをダウンロードして取り込む \{#download-and-ingest-the-data\}
 

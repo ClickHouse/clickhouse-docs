@@ -8,8 +8,6 @@ title: '配置'
 doc_type: 'reference'
 ---
 
-# 配置 \{#configuration\}
-
 ## 连接设置 \{#connection-settings\}
 
 打开连接时，可使用 `Options` 结构体控制客户端行为。可用设置如下：

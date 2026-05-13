@@ -7,10 +7,8 @@ doc_type: 'guide'
 keywords: ['예제 데이터세트', 'Hacker News', '샘플 데이터', '텍스트 분석', '벡터 검색']
 ---
 
-# Hacker News 데이터셋 \{#hacker-news-dataset\}
-
-> 이 튜토리얼에서는 2,800만 행의 Hacker News 데이터를 CSV와 Parquet 형식의 파일에서
-> ClickHouse 테이블로 적재한 다음, 데이터를 탐색하기 위한 간단한 쿼리를 실행합니다.
+> 이 튜토리얼에서는 CSV와 Parquet 형식의 Hacker News 데이터 2,800만 행을 ClickHouse
+> 테이블에 삽입한 후, 몇 가지 간단한 쿼리를 실행해 데이터를 살펴봅니다.
 
 ## CSV \{#csv\}
 

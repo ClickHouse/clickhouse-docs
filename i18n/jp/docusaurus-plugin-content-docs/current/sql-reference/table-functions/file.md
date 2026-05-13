@@ -22,15 +22,21 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 file([path_to_archive ::] path [,format] [,structure] [,compression])
 ```
 
+`SELECT` クエリでは、`path` に `Array(String)` を返す式を指定することもできます。
+
+```sql
+file(['file1.csv', 'file2.csv'], 'CSV', 'column1 UInt32, column2 UInt32')
+```
+
 ## 引数 \{#arguments\}
 
-| パラメータ             | 説明                                                                                                                                                                                                                                           |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `path`            | [user&#95;files&#95;path](operations/server-configuration-parameters/settings.md#user_files_path) からのファイルへの相対パス。読み取り専用モードでは、次の[グロブ](#globs-in-path)パターンをサポートします：`*`、`?`、`{abc,def}` (`'abc'` と `'def'` は文字列) 、および `{N..M}` (`N` と `M` は数値) 。 |
-| `path_to_archive` | zip/tar/7z アーカイブへの相対パス。`path` と同じグロブパターンをサポートします。                                                                                                                                                                                            |
-| `format`          | ファイルの[フォーマット](/interfaces/formats)。                                                                                                                                                                                                          |
-| `structure`       | テーブルの構造。形式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                    |
-| `compression`     | `SELECT` クエリで使用する場合は既存の圧縮形式、`INSERT` クエリで使用する場合は指定する圧縮形式。サポートされる圧縮形式は `gz`、`br`、`xz`、`zst`、`lz4`、`bz2` です。                                                                                                                                   |
+| パラメータ             | 説明                                                                                                                                                                                                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `path`            | [user&#95;files&#95;path](operations/server-configuration-parameters/settings.md#user_files_path) からのファイルへの相対パス、または `SELECT` クエリで指定するパスの `Array(String)`。読み取り専用モードでは、次の[グロブ](#globs-in-path)をサポートします：`*`、`?`、`{abc,def}` (`'abc'` と `'def'` は文字列) 、および `{N..M}` (`N` と `M` は数値) 。 |
+| `path_to_archive` | zip/tar/7z アーカイブへの相対パス。`path` と同じグロブをサポートします。                                                                                                                                                                                                                                     |
+| `format`          | ファイルの[フォーマット](/interfaces/formats)。                                                                                                                                                                                                                                                   |
+| `structure`       | テーブルの構造。形式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                             |
+| `compression`     | `SELECT` クエリで使用する場合は既存の圧縮形式、`INSERT` クエリで使用する場合は指定する圧縮形式。サポートされる圧縮形式は `gz`、`br`、`xz`、`zst`、`lz4`、`bz2` です。                                                                                                                                                                            |
 
 :::tip
 `structure` 引数を省略すると、ClickHouse はフォーマット自体からスキーマを推論します。

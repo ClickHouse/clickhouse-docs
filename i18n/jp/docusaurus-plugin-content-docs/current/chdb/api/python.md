@@ -7,8 +7,6 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'api', 'reference']
 doc_type: 'reference'
 ---
 
-# Python API リファレンス \{#python-api-reference\}
-
 ## コアクエリ関数 \{#core-query-functions\}
 
 ### `chdb.query` \{#chdb-query\}

@@ -35,7 +35,8 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 * [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
 * [PHP-расширение ClickHouse от kolya7k](https://github.com//kolya7k/clickhouse-php)
 * [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
-* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client) 
+* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client)
+* [laravel-clickhouse/laravel-clickhouse](https://github.com/laravel-clickhouse/laravel-clickhouse)
 
 ### Go \{#go\}
 

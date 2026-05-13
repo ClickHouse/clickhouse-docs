@@ -37,6 +37,7 @@ doc_type: 'reference'
 * `bypass_cache_threshold` ([UInt64](../../sql-reference/data-types/)) — Не документировано. Не рекомендуется к использованию
 * `write_cache_per_user_id_directory` ([UInt8](../../sql-reference/data-types/)) — Внутренняя настройка ClickHouse Cloud
 * `allow_dynamic_cache_resize` ([UInt8](../../sql-reference/data-types/)) — Разрешает динамически изменять размер файлового кэша
+* `dynamic_resize_lock_wait_ms` ([UInt64](../../sql-reference/data-types/)) — Таймаут в миллисекундах для получения эксклюзивной блокировки динамического изменения размера перед пропуском попытки изменения размера
 * `max_size_ratio_to_total_space` ([Float64](../../sql-reference/data-types/)) — Отношение `max_size` к общему объёму дискового пространства
 * `skip_cache_on_disk_failure` ([UInt8](../../sql-reference/data-types/)) — Если true, при ошибках дискового ввода-вывода операции файлового кэша будут молча пропускаться. Если false (по умолчанию), ошибки дискового ввода-вывода передаются как ошибки запуска.
 * `use_split_cache` ([UInt8](../../sql-reference/data-types/)) — Использует разделение файлов на системные данные и пользовательские данные.

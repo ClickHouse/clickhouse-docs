@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'compatibility', 'dataframe', 'methods
 doc_type: 'reference'
 ---
 
-# Pandas 互換性 \{#pandas-compatibility\}
-
-DataStore は、完全な API 互換性を実現するために **209 個の pandas DataFrame メソッド** を実装しています。既存の pandas コードは、最小限の変更でそのまま利用できます。
+DataStore は、API との完全な互換性を実現するために、**209 個の pandas DataFrame メソッド** を実装しています。既存の pandas コードも、最小限の変更で動作します。
 
 ## 互換性へのアプローチ \{#approach\}
 

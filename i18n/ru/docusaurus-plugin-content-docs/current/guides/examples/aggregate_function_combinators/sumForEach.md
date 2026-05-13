@@ -2,12 +2,10 @@
 slug: '/examples/aggregate-function-combinators/sumForEach'
 title: 'sumForEach'
 description: 'Пример использования агрегатной функции sumForEach'
-keywords: ['sum', 'ForEach', 'combinator', 'examples', 'sumForEach']
+keywords: ['sum', 'ForEach', 'комбинатор', 'examples', 'sumForEach']
 sidebar_label: 'sumForEach'
 doc_type: 'reference'
 ---
-
-# sumForEach \{#sumforeach\}
 
 ## Описание \{#description\}
 
@@ -27,17 +25,17 @@ doc_type: 'reference'
 SELECT EventTime, IsMobile FROM metrica.hits ORDER BY rand() LIMIT 10
 ```
 
-We'll use the `sumForEach` aggregate combinator function to analyze how 
-desktop versus mobile traffic varies by hour of the day. Click the play button 
+We&#39;ll use the `sumForEach` aggregate combinator function to analyze how
+desktop versus mobile traffic varies by hour of the day. Click the play button
 below to run the query interactively:
 
 ```sql runnable
 SELECT
     toHour(EventTime) AS hour_of_day,
-    -- Используем sumForEach для подсчёта посещений с десктопа и мобильных устройств за один проход
+    -- Use sumForEach to count desktop and mobile visits in one pass
     sumForEach([
-        IsMobile = 0, -- Посещения с десктопа (IsMobile = 0)
-        IsMobile = 1  -- Посещения с мобильных устройств (IsMobile = 1)
+        IsMobile = 0, -- Desktop visits (IsMobile = 0)
+        IsMobile = 1  -- Mobile visits (IsMobile = 1)
     ]) AS device_counts
 FROM metrica.hits
 GROUP BY hour_of_day
@@ -45,5 +43,6 @@ ORDER BY hour_of_day;
 ```
 
 ## См. также \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [комбинатор `ForEach`](/sql-reference/aggregate-functions/combinators#-foreach)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [комбинатор `ForEach`](/sql-reference/aggregate-functions/combinators#-foreach)

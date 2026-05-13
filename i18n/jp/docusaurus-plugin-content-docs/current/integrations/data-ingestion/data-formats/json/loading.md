@@ -9,9 +9,7 @@ score: 15
 doc_type: 'guide'
 ---
 
-# JSONのロード \{#loading-json\}
-
-以下の例では、構造化および半構造化JSONデータをロードする非常にシンプルな例を示します。ネストされた構造を含むより複雑なJSONについては、ガイド[**JSONスキーマの設計**](/integrations/data-formats/json/schema)を参照してください。
+以下の例では、構造化 JSON データと半構造化 JSON データの基本的な読み込み方法を示します。ネスト構造を含む、より複雑な JSON については、ガイド [**JSONスキーマの設計**](/integrations/data-formats/json/schema) を参照してください。
 
 ## 構造化JSONのロード \{#loading-structured-json\}
 

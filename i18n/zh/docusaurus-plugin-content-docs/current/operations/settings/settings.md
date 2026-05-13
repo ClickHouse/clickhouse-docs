@@ -709,6 +709,16 @@ Cloud 默认值：`1`。
 - 0 — 禁用 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 表引擎。
 - 1 — 启用 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 表引擎。
 
+## allow_experimental_unique_key \{#allow_experimental_unique_key\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于控制是否在 MergeTree 系列引擎表上启用实验性 `UNIQUE KEY` 子句的新设置"}]}]} />
+
+允许在 MergeTree 系列引擎表上使用 `UNIQUE KEY` 子句创建表。
+
 ## allow_experimental_window_view \{#allow_experimental_window_view\}
 
 <ExperimentalBadge/>
@@ -1989,28 +1999,28 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 ## cast_string_to_date_time_mode \{#cast_string_to_date_time_mode\}
 
-<SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
+<SettingsInfoBlock type="DateTimeInputFormat" default_value="best_effort" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "basic"},{"label": "Allow to use different DateTime parsing mode in String to DateTime cast"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "best_effort"},{"label": "可用性改进"}]}, {"id": "row-2","items": [{"label": "25.6"},{"label": "basic"},{"label": "Allow to use different DateTime parsing mode in String to DateTime cast"}]}]} />
 
 允许在从 String 转换为 DateTime 时，选择用于解析日期和时间字符串表示形式的解析器。
 
 可能的取值：
 
-- `'best_effort'` — 启用扩展解析。
+* `'best_effort'` — 启用扩展解析。
 
-    ClickHouse 可以解析基础格式 `YYYY-MM-DD HH:MM:SS` 以及所有 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日期和时间格式。例如：`'2018-06-08T01:02:03.000Z'`。
+  ClickHouse 可以解析基础格式 `YYYY-MM-DD HH:MM:SS` 以及所有 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日期和时间格式。例如：`'2018-06-08T01:02:03.000Z'`。
 
-- `'best_effort_us'` — 与 `best_effort` 类似（差异见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS)）
+* `'best_effort_us'` — 与 `best_effort` 类似 (差异见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS)) 
 
-- `'basic'` — 使用基础解析器。
+* `'basic'` — 使用基础解析器。
 
-    ClickHouse 只能解析基础格式 `YYYY-MM-DD HH:MM:SS` 或 `YYYY-MM-DD`。例如：`2019-08-20 10:18:56` 或 `2019-08-20`。
+  ClickHouse 只能解析基础格式 `YYYY-MM-DD HH:MM:SS` 或 `YYYY-MM-DD`。例如：`2019-08-20 10:18:56` 或 `2019-08-20`。
 
 另请参阅：
 
-- [DateTime 数据类型。](../../sql-reference/data-types/datetime.md)
-- [用于处理日期和时间的函数。](../../sql-reference/functions/date-time-functions.md)
+* [DateTime 数据类型。](../../sql-reference/data-types/datetime.md)
+* [用于处理日期和时间的函数。](../../sql-reference/functions/date-time-functions.md)
 
 ## cast_string_to_dynamic_use_inference \{#cast_string_to_dynamic_use_inference\}
 
@@ -3558,6 +3568,33 @@ FORMAT PrettyCompactMonoBlock
 通过避免跨不同分区的合并来优化 FINAL 查询。
 
 启用后，在执行 SELECT FINAL 查询时，来自不同分区的分区片段将不会被合并在一起，合并只会在各自的分区内单独进行。在处理分区表时，这可以显著提升查询性能。
+
+## dynamic_disk_allow_from_env \{#dynamic_disk_allow_from_env\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置，允许在动态磁盘配置（即 `disk()` 函数）中使用 `from_env` 替换。出于安全考虑，默认禁用。"}]}]} />
+
+允许在动态磁盘配置中使用 `from_env` 替换 (即在 `disk()` 函数参数中使用) 。
+默认禁用，以防止用户在定义表存储时读取任意环境变量。
+
+## dynamic_disk_allow_from_zk \{#dynamic_disk_allow_from_zk\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置，允许在动态磁盘配置中使用 `from_zk` 替换（即在 `disk()` 函数参数中）。默认禁用。"}]}]} />
+
+允许在动态磁盘配置中使用 `from_zk` 替换 (即在 `disk()` 函数参数中) 。
+默认禁用。
+
+## dynamic_disk_allow_include \{#dynamic_disk_allow_include\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置，允许在动态磁盘配置中使用 `include`（即在 `disk()` 函数的参数中）。默认禁用。"}]}]} />
+
+允许在动态磁盘配置中使用 `include` (即在 `disk()` 函数的参数中) 。
+默认禁用。
 
 ## dynamic_throw_on_type_mismatch \{#dynamic_throw_on_type_mismatch\}
 
@@ -10846,6 +10883,14 @@ Cloud 默认值：`3000000000`。
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 从网络接收数据的超时时间（以秒为单位）。如果在此时间间隔内未接收到任何字节，将抛出异常。如果在客户端设置该配置项，则会在服务器端对应连接的套接字上同时设置 `send_timeout`。
+
+## recursive_cte_max_steps_in_type_inference \{#recursive_cte_max_steps_in_type_inference\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "在递归 CTE 中通过迭代式 getLeastSupertype 推断列类型时的最大迭代次数"}]}]} />
+
+在递归 CTE 中推断列类型时允许的最大迭代次数。列类型是通过在 UNION ALL 的非递归分支和递归分支之间反复应用 `getLeastSupertype` 直至收敛来确定的。将其设为 0 可禁用类型扩展，仅使用非递归部分的类型。
 
 ## regexp_dict_allow_hyperscan \{#regexp_dict_allow_hyperscan\}
 

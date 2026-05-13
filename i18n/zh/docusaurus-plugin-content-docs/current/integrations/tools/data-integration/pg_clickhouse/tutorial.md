@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'tutorial', 'taxi']
 ---
 
-# pg_clickhouse 教程 \{#pg_clickhouse-tutorial\}
-
 ## 概览 \{#overview\}
 
 本教程基于 [ClickHouse 教程]，但通过 pg_clickhouse 来执行其中的所有查询。

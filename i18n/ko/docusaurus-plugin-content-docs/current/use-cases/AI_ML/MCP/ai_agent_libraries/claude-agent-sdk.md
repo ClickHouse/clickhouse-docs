@@ -4,13 +4,11 @@ sidebar_label: 'Claude Agent SDK 통합'
 title: 'Claude Agent SDK와 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'Claude Agent SDK와 ClickHouse MCP 서버를 사용하여 AI 에이전트를 구축하는 방법을 알아봅니다.'
+description: 'Claude Agent SDK와 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법'
 keywords: ['ClickHouse', 'MCP', 'Claude']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# Claude Agent SDK와 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-claude-agent-sdk-and-the-clickhouse-mcp-server\}
 
 이 가이드에서는 [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview)를 사용하고 [ClickHouse의 MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 통해 [ClickHouse의 SQL 플레이그라운드](https://sql.clickhouse.com/)와 상호작용할 수 있는 AI 에이전트를 구축하는 방법을 설명합니다.
 

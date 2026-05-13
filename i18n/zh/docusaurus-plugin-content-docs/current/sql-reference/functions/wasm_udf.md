@@ -145,14 +145,17 @@ SELECT name, lower(hex(reinterpretAsFixedString(hash))) AS sha256 FROM system.we
 
 ### 删除模块 \{#delete-a-module\}
 
-删除操作通过执行 `DELETE FROM system.webassembly_modules WHERE name = '...'` 语句来完成。
-每条语句仅支持按精确名称删除一个模块。
+通过 `DELETE FROM system.webassembly_modules WHERE name = '...'` 语句执行删除。
+谓词必须为 `name = 'literal'` (精确匹配) 或 `name LIKE 'pattern'` (删除名称匹配该模式的所有模块) ；不接受其他形态。
 
 ```sql
 DELETE FROM system.webassembly_modules WHERE name = 'collatz';
+
+-- Bulk-delete every module whose name starts with `tmp_` (literal underscore is escaped as `\_`):
+DELETE FROM system.webassembly_modules WHERE name LIKE 'tmp\_%';
 ```
 
-如果有任何现有的 UDF 引用了该模块，则删除操作会失败，因此必须先删除这些 UDF。
+如果任何现有 UDF 引用了其中一个匹配的模块，删除操作就会失败，因此必须先删除这些 UDF。
 
 ## 创建 WebAssembly UDF \{#create-a-webassembly-udf\}
 
@@ -165,6 +168,7 @@ FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
 [ABI ROW_DIRECT | ABI BUFFERED_V1]
+[DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
 ```
@@ -177,6 +181,7 @@ RETURNS return_type
 * `ABI`: Application Binary Interface (应用二进制接口) 版本
   * `ROW_DIRECT`: 直接类型映射，逐行处理
   * `BUFFERED_V1`: 采用基于块 (block) 的处理并进行序列化
+* `DETERMINISTIC`: 将该函数声明为决定论的——对于相同输入始终返回相同输出。指定后，ClickHouse 可能会对所有参数均为常量的调用进行常量折叠：函数会在查询解析阶段计算一次，结果会在每一行中复用。
 * `SHA256_HASH`: 用于校验的期望模块哈希 (如果省略则自动填充) ，可用于确保在不同副本上加载的是正确的 WASM 模块。
 * `SETTINGS`: 每个函数的设置
   * `serialization_format` String — 当 ABI 需要时使用的序列化格式。默认值：`MsgPack`。

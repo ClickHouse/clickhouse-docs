@@ -3,14 +3,13 @@ slug: /cloud/managed-postgres/faq
 sidebar_label: 'FAQ'
 title: 'Часто задаваемые вопросы по Managed Postgres'
 description: 'Часто задаваемые вопросы о ClickHouse Managed Postgres'
-keywords: ['faq по managed postgres', 'вопросы по postgres', 'метрики', 'расширения', 'миграция', 'terraform']
+keywords: ['faq по managed postgres', 'вопросы по postgres', 'метрики', 'расширения', 'миграция', 'terraform', 'pgbouncer', 'подготовленные выражения']
 doc_type: 'reference'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="faq" />
-
 
 ## Мониторинг и метрики \{#monitoring-and-metrics\}
 
@@ -49,6 +48,46 @@ Managed Postgres поддерживает более 100 расширений Po
 :::tip
 Если вам нужен параметр, который сейчас недоступен, обратитесь в [службу поддержки](https://clickhouse.com/support/program) с запросом на его добавление.
 :::
+
+## Пул соединений \{#connection-pooling\}
+
+### Почему при работе через PgBouncer возникает ошибка `prepared statement does not exist`? \{#prepared-statement-errors\}
+
+Managed Postgres запускает PgBouncer в режиме **transaction pooling**. В этом режиме backend-соединение Postgres назначается клиенту только на время одной транзакции, а затем возвращается в пул — следующая транзакция от того же клиента может попасть на другое backend-соединение.
+
+Из-за этого не работают **server-side prepared statements**, которые привязаны к конкретному backend-соединению, выполнившему `PREPARE` (или `Parse` в extended query protocol). Когда соответствующий `Execute` попадает на другое backend-соединение, возникают ошибки вида:
+
+```text
+ERROR:  prepared statement "..." does not exist
+ERROR:  unnamed prepared statement does not exist
+```
+
+Симптомы, которые часто связаны с той же первопричиной:
+
+* Всплески ошибок `prepared statement does not exist`, особенно при догрузке исторических данных или при записи с высоким параллелизмом
+* Вставки, которые как будто &quot;тихо завершаются неудачей&quot;: выражение возвращает ошибку, драйвер выполняет повторную попытку, и в итоге пакет может примениться лишь частично или быть отброшен
+* Возвращаемые значения с неверным типом (например, столбец `BIGINT`, декодированный как битовый шаблон `float64`) — это происходит, когда кэшированный план на стороне клиента повторно использует устаревшие коды типа/формата для сервера, которому так и не был отправлен соответствующий `Parse`
+
+**Исправление: отключите подготовленные выражения на стороне сервера в драйвере.** Точный параметр зависит от используемой клиентской библиотеки:
+
+| Driver                           | Setting                                                                                               |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **pgx** (Go)                     | `statement_cache_capacity=0` и `default_query_exec_mode=exec` (или `simple_protocol`)                 |
+| **psycopg3** (Python)            | `prepare_threshold=None`                                                                              |
+| **asyncpg** (Python)             | `statement_cache_size=0`                                                                              |
+| **JDBC** (Java)                  | `prepareThreshold=0`                                                                                  |
+| **node-postgres / pg** (Node.js) | Не передавайте `name` в `query()` (именованные запросы становятся подготовленными на стороне сервера) |
+
+Если ваша нагрузка зависит от подготовленных выражений, подключайтесь **напрямую к PostgreSQL** (порт 5432), а не через пулер PgBouncer — прямые подключения штатно поддерживают подготовленные выражения. Подробнее о выборе между конечной точкой с пулом и прямой конечной точкой см. в разделе [Connection](/cloud/managed-postgres/connection).
+
+### Что означает параметр &quot;max_client_conn&quot; в PgBouncer и как он соотносится с `max_connections` в Postgres? \{#pgbouncer-vs-pg-connections\}
+
+Они отвечают за разные вещи:
+
+* **Postgres `max_connections`** ограничивает число **backend-соединений** с самим PostgreSQL. Это затратный параметр — каждое backend-соединение потребляет память и занимает слот процесса.
+* **PgBouncer `max_client_conn`** ограничивает число **клиентских** соединений, которые могут быть одновременно открыты к пулеру. PgBouncer мультиплексирует множество таких клиентских соединений на гораздо меньшее число backend-соединений.
+
+Типичный экземпляр Managed Postgres настроен так, что PgBouncer принимает примерно **в 10 раз больше клиентских соединений, чем доступно backend-соединений Postgres** (например, 5000 клиентских / 500 backend-соединений). Если вы видите ошибки соединения на уровне пулера, гораздо вероятнее, что вы упираетесь в лимит backend-соединений для конкретного пула (`default_pool_size`), а не в общий лимит клиентских соединений.
 
 ## Возможности базы данных \{#database-capabilities\}
 

@@ -7,8 +7,6 @@ doc_type: 'landing-page'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'обёртка внешних данных', 'pg_clickhouse', 'расширение']
 ---
 
-# pg_clickhouse \{#pg_clickhouse\}
-
 ## Введение \{#introduction\}
 
 [pg_clickhouse], расширение PostgreSQL с открытым исходным кодом, выполняет аналитические запросы

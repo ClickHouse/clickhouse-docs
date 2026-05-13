@@ -1,21 +1,19 @@
 ---
 title: '분석 함수 - 시계열'
 sidebar_label: '분석 함수'
-description: 'ClickHouse에서 시계열 데이터를 분석하는 데 사용하는 함수입니다.'
+description: 'ClickHouse에서 시계열 데이터를 분석하기 위한 함수입니다.'
 slug: /use-cases/time-series/analysis-functions
-keywords: ['시계열', '분석 함수', '윈도우 함수', '집계 함수', '이동 평균', '추세 분석']
+keywords: ['시계열', '분석 함수', '윈도 함수', '집계 함수', '이동 평균', '추세 분석']
 show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# 시계열 분석 함수 \{#time-series-analysis-functions\}
-
-ClickHouse에서 시계열 분석은 표준 SQL 집계 및 윈도 함수(FUNCTION)를 사용하여 수행할 수 있습니다.
+ClickHouse에서 시계열 분석은 표준 SQL 집계 및 윈도 함수를 사용하여 수행할 수 있습니다.
 시계열 데이터를 다룰 때는 일반적으로 다음과 같은 세 가지 주요 유형의 메트릭이 있습니다.
 
 * 시간에 따라 단조 증가하는 카운터(counter) 메트릭 (페이지 조회 수나 전체 이벤트 수처럼)
 * 시점별 측정값을 나타내며 값이 올라갔다 내려갔다 할 수 있는 게이지(gauge) 메트릭 (CPU 사용량이나 온도처럼)
-* 관측값을 샘플링하여 버킷에 개수를 집계하는 히스토그램(histogram) (요청 지연 시간이나 응답 크기처럼)
+* 관측값을 샘플링하여 버킷에 개수를 집계하는 히스토그램 (요청 지연 시간이나 응답 크기처럼)
 
 이러한 메트릭에 대한 일반적인 분석 패턴에는 기간 간 값 비교, 누적 합계 계산, 변화율 산출, 분포 분석 등이 있습니다.
 이러한 분석은 집계, `sum() OVER`와 같은 윈도 함수, `histogram()`와 같은 특수 함수를 조합하여 모두 수행할 수 있습니다.

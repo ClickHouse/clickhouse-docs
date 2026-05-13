@@ -5,14 +5,10 @@ toc_hidden: true
 toc_priority: 101
 description: 'ClickHouse를 시계열 데이터베이스로 사용하는 방법을 설명하는 페이지'
 doc_type: 'guide'
-keywords: ['시계열', '시간 기반 데이터', '사용 사례', '시간 기반 분석', 'timeseries']
+keywords: ['시계열', '시간 데이터', '사용 사례', '시간 기반 분석', 'timeseries']
 ---
 
-
-
-# ClickHouse를 시계열 데이터베이스로 사용할 수 있습니까? \{#can-i-use-clickhouse-as-a-time-series-database\}
-
-_참고: ClickHouse를 사용한 시계열 분석의 추가 예시는 블로그 [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)를 참조하십시오._
+*참고: ClickHouse를 사용한 시계열 분석의 추가 예시는 블로그 [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)를 참조하십시오.*
 
 ClickHouse는 [OLAP](../../faq/general/olap.md) 워크로드를 위한 범용 데이터 저장 솔루션이며, 별도로 특화된 [시계열 데이터베이스 관리 시스템](https://clickhouse.com/engineering-resources/what-is-time-series-database)도 많이 있습니다. 그럼에도 불구하고 ClickHouse는 [쿼리 실행 속도에 대한 집중](../../concepts/why-clickhouse-is-so-fast.mdx) 덕분에 많은 경우 특화된 시스템을 능가합니다. 이 주제에 대한 다양한 벤치마크가 이미 많이 존재하므로, 여기에서 별도의 벤치마크를 수행하지는 않습니다. 대신, 이와 같은 사용 사례에서 중요하게 활용해야 하는 ClickHouse 기능에 초점을 맞추겠습니다.
 

@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'FAQ'
-description: 'Kafka 向け ClickPipes に関するよくある質問'
+description: 'Kafka 向け ClickPipes に関するよくある質問。'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
-title: 'Kafka 向け ClickPipes に関する FAQ'
+title: 'Kafka ClickPipes に関するよくある質問'
 doc_type: 'guide'
 keywords: ['kafka faq', 'clickpipes', 'upstash', 'azure event hubs', 'private link']
 integration:

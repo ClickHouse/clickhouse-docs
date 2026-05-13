@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
 ---
 
-# Справочная документация по pg_clickhouse \{#pg_clickhouse-reference-documentation\}
-
 ## Описание \{#description\}
 
 pg_clickhouse — это расширение PostgreSQL, позволяющее удалённо выполнять запросы

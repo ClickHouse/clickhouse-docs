@@ -1,12 +1,10 @@
 ---
-title: 'JSON 建模的其他方法'
+title: '对 JSON 建模的其他方法'
 slug: /integrations/data-formats/json/other-approaches
 description: '对 JSON 建模的其他方法'
 keywords: ['json', 'formats']
 doc_type: 'reference'
 ---
-
-# 对 JSON 建模的其他方法 \{#other-approaches-to-modeling-json\}
 
 **以下是在 ClickHouse 中对 JSON 建模的替代方法。这些方法为了文档完整性而被记录下来，主要适用于 JSON 类型尚未出现之前的阶段，因此在大多数用例中通常不推荐使用或不再适用。**
 

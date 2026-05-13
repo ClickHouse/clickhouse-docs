@@ -2,11 +2,9 @@
 sidebar_label: 'Агент ClickHouse Assistant'
 slug: /cloud/features/ai-ml/ask-ai
 title: 'Агент ClickHouse Assistant в Cloud'
-description: 'Описание функции чата ClickHouse Assistant в ClickHouse Cloud'
+description: 'Описание функциональности чата ClickHouse Assistant в ClickHouse Cloud'
 doc_type: 'reference'
 ---
-
-# Агент ClickHouse Assistant в Cloud \{#clickhouse-assistant-agent-in-cloud\}
 
 Агент “ClickHouse Assistant” — это готовое решение, которое позволяет пользователям запускать сложные аналитические задачи поверх данных, размещённых в их сервисе ClickHouse Cloud.
 Вместо того чтобы писать SQL или просматривать дашборды, пользователи могут описывать, что им нужно, на естественном языке.

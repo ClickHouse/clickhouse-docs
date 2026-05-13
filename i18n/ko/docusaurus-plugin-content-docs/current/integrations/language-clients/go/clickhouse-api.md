@@ -8,12 +8,10 @@ title: 'ClickHouse API'
 doc_type: '참조'
 ---
 
-# ClickHouse API \{#clickhouse-api\}
-
 ClickHouse API의 모든 코드 예시는 [여기](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/clickhouse_api)에서 확인할 수 있습니다.
 
-연결 구성은 [구성](/integrations/language-clients/go/configuration)을 참조하십시오.
-지원되는 데이터 타입과 Go 타입 매핑은 [데이터 타입](/integrations/language-clients/go/data-types)을 참조하십시오.
+연결 설정은 [Configuration](/integrations/language-clients/go/configuration)을 참조하십시오.
+지원되는 데이터 타입과 Go 타입 대응은 [Data Types](/integrations/language-clients/go/data-types)를 참조하십시오.
 
 ## 연결 \{#connecting\}
 

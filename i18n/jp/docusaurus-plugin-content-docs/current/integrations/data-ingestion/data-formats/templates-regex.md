@@ -8,9 +8,7 @@ doc_type: 'guide'
 keywords: ['データ形式', 'テンプレート', 'Regex', 'カスタム形式', '解析']
 ---
 
-# ClickHouse で テンプレート と Regex を使用してカスタムテキストデータをインポートおよびエクスポートする \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}
-
-独自テキスト形式のデータ、たとえば非標準的なフォーマット、不正な JSON、壊れた CSV などを扱わなければならないことはよくあります。CSV や JSON といった標準パーサーでは、こうしたすべてのケースを扱えるとは限りません。しかし ClickHouse には強力な テンプレート フォーマットと Regex フォーマットが用意されており、これらのケースにも対応できます。
+カスタムのテキスト形式のデータを扱う必要が生じることは少なくありません。たとえば、非標準の形式、無効な JSON、壊れた CSV などです。このようなケースでは、CSV や JSON などの標準的なパーサーでは対応できないことがあります。しかし、ClickHouse には強力な Template および Regex フォーマットが用意されているため、こうした場合にも対応できます。
 
 ## テンプレートに基づくインポート \{#importing-based-on-a-template\}
 

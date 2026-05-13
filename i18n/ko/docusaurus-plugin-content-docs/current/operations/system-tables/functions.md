@@ -19,7 +19,7 @@ doc_type: 'reference'
 * `case_insensitive` ([UInt8](../../sql-reference/data-types/)) — 함수 이름을 대소문자를 구분하지 않고 사용할 수 있는지 여부입니다.
 * `alias_to` ([String](../../sql-reference/data-types/)) — 함수 이름이 별칭인 경우의 원래 함수 이름입니다.
 * `create_query` ([String](../../sql-reference/data-types/)) — 더 이상 사용되지 않습니다.
-* `origin` ([Enum8(&#39;System&#39; = 0, &#39;SQLUserDefined&#39; = 1, &#39;ExecutableUserDefined&#39; = 2)](../../sql-reference/data-types/)) — 더 이상 사용되지 않습니다.
+* `origin` ([Enum8(&#39;System&#39; = 0, &#39;SQLUserDefined&#39; = 1, &#39;ExecutableUserDefined&#39; = 2, &#39;WasmUserDefined&#39; = 3)](../../sql-reference/data-types/)) — 더 이상 사용되지 않습니다.
 * `description` ([String](../../sql-reference/data-types/)) — 함수가 수행하는 작업에 대한 개략적인 설명입니다.
 * `syntax` ([String](../../sql-reference/data-types/)) — 함수 시그니처입니다.
 * `arguments` ([String](../../sql-reference/data-types/)) — 함수 인수(arguments)입니다.

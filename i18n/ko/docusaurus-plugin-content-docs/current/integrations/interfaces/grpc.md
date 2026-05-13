@@ -7,8 +7,6 @@ title: 'gRPC 인터페이스'
 doc_type: 'reference'
 ---
 
-# gRPC 인터페이스 \{#grpc-interface\}
-
 ## 소개 \{#grpc-interface-introduction\}
 
 ClickHouse는 [gRPC](https://grpc.io/) 인터페이스를 지원합니다. gRPC는 HTTP/2와 [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol_Buffers)를 사용하는 오픈 소스 원격 프로시저 호출 시스템입니다. ClickHouse의 gRPC 구현은 다음 기능을 지원합니다:

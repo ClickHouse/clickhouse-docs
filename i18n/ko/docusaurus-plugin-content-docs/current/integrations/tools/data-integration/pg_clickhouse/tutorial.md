@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'tutorial', 'taxi']
 ---
 
-# pg_clickhouse 튜토리얼 \{#pg_clickhouse-tutorial\}
-
 ## 개요 \{#overview\}
 
 이 튜토리얼은 [ClickHouse 튜토리얼]을 기반으로 하되, 모든 쿼리는 pg_clickhouse를 통해 실행합니다.

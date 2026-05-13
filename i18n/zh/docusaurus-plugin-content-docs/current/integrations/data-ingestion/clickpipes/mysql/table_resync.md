@@ -4,13 +4,11 @@ description: '在 MySQL ClickPipe 中重新同步特定表'
 slug: /integrations/clickpipes/mysql/table_resync
 sidebar_label: '重新同步表'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mysql', 'cdc', '数据摄取', '实时同步']
+keywords: ['ClickPipes', 'MySQL', 'CDC', '数据摄取', '实时同步']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
-
-# 重新同步特定表 \{#resync-tables\}
 
 在某些场景下，对某个 pipe 中的特定表执行重新同步操作会很有用。例如，一些典型用例包括 MySQL 上的重大模式变更，或者在 ClickHouse 中进行了数据重新建模。
 

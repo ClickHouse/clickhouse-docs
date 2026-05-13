@@ -17,16 +17,17 @@ ClickHouse は、一般的なテキスト形式およびバイナリ形式のほ
 ## 入力フォーマット \{#input-formats\}
 
 入力フォーマットは次の用途に使用されます:
-- `INSERT` ステートメントに渡されたデータのパース
-- `File`、`URL`、`HDFS` などのファイルをバックエンドに持つテーブルに対する `SELECT` クエリの実行
-- 辞書の読み取り
+
+* `INSERT` ステートメントに渡されたデータのパース
+* `File`、`URL`、`HDFS` などのファイルをバックエンドに持つテーブルに対する `SELECT` クエリの実行
+* 辞書の読み取り
 
 ClickHouse にデータを効率的にインジェストするには、適切な入力フォーマットの選択が重要です。70 を超えるフォーマットがサポートされているため、どのフォーマットを選ぶかによって、挿入速度、CPU・メモリ使用量、およびシステム全体の効率が大きく変わります。これらの選択肢を検討しやすくするため、フォーマットごとにインジェスト性能をベンチマークし、次のような主なポイントが明らかになりました:
 
-- **[Native](formats/Native.md) フォーマットは最も効率的な入力フォーマットであり**、最高の圧縮率、最小のリソース使用量、およびサーバー側処理のオーバーヘッドの最小化を実現します。
-- **圧縮は不可欠です** - LZ4 は CPU コストをほとんど増やさずにデータサイズを削減し、ZSTD は追加の CPU 使用量と引き換えにより高い圧縮率を提供します。
-- **事前のソートの影響は中程度であり**、ClickHouse 自体がすでに効率的なソートを行います。
-- **バッチ処理は効率を大きく改善します** - バッチサイズを大きくすることで挿入時のオーバーヘッドが減り、スループットが向上します。
+* **[Native](formats/Native.md) フォーマットは最も効率的な入力フォーマットであり**、最高の圧縮率、最小のリソース使用量、およびサーバー側処理のオーバーヘッドの最小化を実現します。
+* **圧縮は不可欠です** - LZ4 は CPU コストをほとんど増やさずにデータサイズを削減し、ZSTD は追加の CPU 使用量と引き換えにより高い圧縮率を提供します。
+* **事前のソートの影響は中程度であり**、ClickHouse 自体がすでに効率的なソートを行います。
+* **バッチ処理は効率を大きく改善します** - バッチサイズを大きくすることで挿入時のオーバーヘッドが減り、スループットが向上します。
 
 結果とベストプラクティスの詳細については、
 完全版の [ベンチマーク分析](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient) を参照してください。
@@ -104,7 +105,7 @@ ClickHouse にデータを効率的にインジェストするには、適切な
 | [ProtobufSingle](./formats/Protobuf/ProtobufSingle.md)                                                     | ✔  | ✔  |
 | [ProtobufList](./formats/Protobuf/ProtobufList.md)                                                         | ✔  | ✔  |
 | [Avro](./formats/Avro/Avro.md)                                                                             | ✔  | ✔  |
-| [AvroConfluent](./formats/Avro/AvroConfluent.md)                                                           | ✔  | ✗  |
+| [AvroConfluent](./formats/Avro/AvroConfluent.md)                                                           | ✔  | ✔  |
 | [Parquet](./formats/Parquet/Parquet.md)                                                                    | ✔  | ✔  |
 | [ParquetMetadata](./formats/Parquet/ParquetMetadata.md)                                                    | ✔  | ✗  |
 | [Arrow](./formats/Arrow/Arrow.md)                                                                          | ✔  | ✔  |
@@ -125,7 +126,7 @@ ClickHouse にデータを効率的にインジェストするには、適切な
 | [LineAsString](./formats/LineAsString/LineAsString.md)                                                     | ✔  | ✔  |
 | [LineAsStringWithNames](./formats/LineAsString/LineAsStringWithNames.md)                                   | ✔  | ✔  |
 | [LineAsStringWithNamesAndTypes](./formats/LineAsString/LineAsStringWithNamesAndTypes.md)                   | ✔  | ✔  |
-| [正規表現（Regexp）](./formats/Regexp.md)                                                                        | ✔  | ✗  |
+| [正規表現 (Regexp) ](./formats/Regexp.md)                                                                      | ✔  | ✗  |
 | [RawBLOB](./formats/RawBLOB.md)                                                                            | ✔  | ✔  |
 | [MsgPack](./formats/MsgPack.md)                                                                            | ✔  | ✔  |
 | [MySQLDump](./formats/MySQLDump.md)                                                                        | ✔  | ✗  |

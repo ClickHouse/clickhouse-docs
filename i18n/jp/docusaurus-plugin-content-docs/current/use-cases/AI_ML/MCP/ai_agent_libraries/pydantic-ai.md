@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/pydantic-ai
 sidebar_label: 'PydanticAI を統合する'
-title: 'ClickHouse MCPサーバーを使用して PydanticAI エージェントを構築する方法'
+title: 'ClickHouse MCPサーバーを使用して PydanticAI エージェントを構築する方法。'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCPサーバーと対話できる PydanticAI エージェントの構築方法を学びます。'
+description: 'ClickHouse MCPサーバーと対話できる PydanticAI エージェントを構築する方法を学びます。'
 keywords: ['ClickHouse', 'MCP', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# ClickHouse MCPサーバーを使用して PydanticAI エージェントを構築する方法 \{#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server\}
 
 このガイドでは、[ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を使って [ClickHouse SQL playground](https://sql.clickhouse.com/) と対話できる [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) エージェントを構築する方法を学びます。
 

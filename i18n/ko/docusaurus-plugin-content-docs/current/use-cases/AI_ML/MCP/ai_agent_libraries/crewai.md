@@ -4,13 +4,11 @@ sidebar_label: 'CrewAI 통합'
 title: 'CrewAI와 ClickHouse MCP 서버를 사용하여 AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'CrewAI와 ClickHouse MCP 서버를 사용하여 AI 에이전트를 구축하는 방법을 알아봅니다'
+description: 'CrewAI와 ClickHouse MCP 서버를 사용하여 AI 에이전트를 구축하는 방법을 알아보세요'
 keywords: ['ClickHouse', 'MCP', 'CrewAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# CrewAI와 ClickHouse MCP 서버를 사용하여 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\}
 
 이 가이드에서는 [CrewAI](https://docs.crewai.com/) AI 에이전트가 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)와 [ClickHouse의 MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여 상호 작용할 수 있도록 에이전트를 구축하는 방법을 설명합니다.
 

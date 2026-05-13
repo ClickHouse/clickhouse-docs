@@ -7,11 +7,9 @@ doc_type: 'guide'
 keywords: ['dictionary', 'dictionaries', 'layout', 'dictGet', 'JOIN', 'hashed', 'flat', 'performance']
 ---
 
-# 딕셔너리 모범 사례 \{#dictionary-best-practices\}
+이 페이지에서는 적절한 딕셔너리 레이아웃을 선택하기 위한 실질적인 지침, 딕셔너리가 JOIN보다 더 효과적인 경우와 그렇지 않은 경우, 그리고 딕셔너리 사용량을 모니터링하는 방법을 다룹니다.
 
-이 페이지에서는 적절한 딕셔너리 레이아웃을 선택하기 위한 실용적인 지침, 딕셔너리가 언제 JOIN보다 더 효과적이고 언제 그렇지 않은지, 그리고 딕셔너리 사용 현황을 모니터링하는 방법을 설명합니다.
-
-예시와 함께 딕셔너리를 소개하는 내용은 [딕셔너리 기본 가이드](/dictionary)를 참조하십시오.
+예시를 포함한 딕셔너리 소개는 [메인 딕셔너리 가이드](/dictionary)를 참조하십시오.
 
 ## 딕셔너리와 JOIN을 언제 사용할지 \{#when-to-use-dictionaries-vs-joins\}
 

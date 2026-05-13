@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'logging', 'debug', 'log', 'level']
 doc_type: 'reference'
 ---
 
-# Логирование в DataStore \{#datastore-logging\}
-
-DataStore использует стандартный модуль логирования языка Python. В этом руководстве описано, как настроить логирование для отладки.
+DataStore использует стандартный модуль логирования Python. В этом руководстве показано, как настроить логирование для отладки.
 
 ## Быстрый старт \{#quick-start\}
 

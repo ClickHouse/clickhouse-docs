@@ -1,17 +1,16 @@
 ---
-description: '히트 및 방문 정보가 포함된 익명화된 웹 분석 데이터가 저장된 두 개의 테이블로 구성된 데이터셋'
-sidebar_label: '익명화된 웹 분석 데이터'
+description: 'hits와 visits를 포함하는 익명화된 웹 분석
+  데이터가 담긴 두 개의 테이블로 구성된 데이터셋'
+sidebar_label: '익명화된 웹 분석'
 slug: /getting-started/example-datasets/metrica
-keywords: ['웹 분석 데이터', '익명화된 데이터', '웹사이트 트래픽 데이터', '예제 데이터셋', '시작하기']
-title: '익명화된 웹 분석 데이터'
+keywords: ['웹 분석 데이터', '익명화된 데이터', '웹사이트 트래픽 데이터', '예시 데이터셋', '시작하기']
+title: '익명화된 웹 분석'
 doc_type: 'guide'
 ---
 
-# 익명화된 웹 분석 데이터 \{#anonymized-web-analytics-data\}
+이 데이터셋은 hits(`hits_v1`)와 visits(`visits_v1`)에 대한 익명화된 웹 분석 데이터를 담고 있는 두 개의 테이블로 구성됩니다.
 
-이 데이터셋은 히트(`hits_v1`)와 방문(`visits_v1`)에 대한 익명화된 웹 분석 데이터를 담고 있는 두 개의 테이블로 구성됩니다.
-
-이 테이블들은 압축된 `tsv.xz` 파일로 다운로드할 수 있습니다. 이 문서에서 사용하는 샘플 외에도 1억 개의 행을 포함하는 `hits` 테이블의 확장 버전(7.5GB)이 TSV 형식으로 [https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz)에서 제공됩니다.
+이 테이블들은 압축된 `tsv.xz` 파일로 다운로드할 수 있습니다. 이 문서에서 사용하는 샘플 외에도 1억 개의 행을 포함하는 `hits` 테이블의 확장 버전(7.5GB)이 TSV 형식으로 [https://datasets.clickhouse.com/hits/tsv/hits&#95;100m&#95;obfuscated&#95;v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz)에서 제공됩니다.
 
 ## 데이터 다운로드 및 수집 \{#download-and-ingest-the-data\}
 

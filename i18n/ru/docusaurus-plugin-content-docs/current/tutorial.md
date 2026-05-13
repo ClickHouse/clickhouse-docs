@@ -9,8 +9,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Расширенное руководство \{#advanced-tutorial\}
-
 ## Overview \{#overview\}
 
 Узнайте, как выполнять приём и запросы данных в ClickHouse на примере набора данных о такси Нью-Йорка. 

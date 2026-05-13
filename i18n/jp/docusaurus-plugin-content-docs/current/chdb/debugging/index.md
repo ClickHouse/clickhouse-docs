@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'debug', 'explain', 'profiling', 'logging']
 doc_type: 'guide'
 ---
 
-# DataStore のデバッグ \{#datastore-debugging\}
-
-DataStore は、データパイプラインを理解し、最適化するための包括的なデバッグツール群を提供します。
+DataStore には、データパイプラインの理解と最適化に役立つ包括的なデバッグツールが用意されています。
 
 ## デバッグツールの概要 \{#overview\}
 

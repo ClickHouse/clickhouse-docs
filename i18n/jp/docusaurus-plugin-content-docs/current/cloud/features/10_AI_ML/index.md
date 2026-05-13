@@ -1,12 +1,10 @@
 ---
 sidebar_label: '概要'
 slug: /cloud/features/ai-ml
-title: 'ClickHouse Cloud の AI/ML 機能'
+title: 'ClickHouse Cloud における AI/ML 機能'
 description: 'ClickHouse Cloud で提供される AI/ML 機能の概要'
 doc_type: 'reference'
 ---
-
-# ClickHouse Cloud における AI/ML \{#aiml-in-clickhouse-cloud\}
 
 従来のアナリティクス ワークフローでは、クエリを書くデータエンジニア、ダッシュボードを構築するアナリスト、結果を解釈するビジネスユーザーの間で、複数回の引き継ぎが発生することが一般的です。
 各ステップでは、数時間から数日に及ぶ遅延が発生します。

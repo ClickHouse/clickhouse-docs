@@ -36,16 +36,16 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 根据默认策略，ClickHouse Cloud 要求每天执行一次备份，保留时间为 24 小时。选择需要保留更多数据或更频繁备份的计划，将会为备份产生额外的存储费用。
 
-要了解备份成本，您可以在使用情况界面中查看各服务的备份成本（如下图所示）。在使用自定义计划运行备份几天后，您就可以大致了解成本情况，并据此推算每月的备份成本。
+要了解备份成本，您可以在使用情况界面中查看各服务的备份成本 (如下图所示) 。在使用自定义计划运行备份几天后，您就可以大致了解成本情况，并据此推算每月的备份成本。
 
-<Image img={backup_usage} size="md" alt="ClickHouse Cloud 中的备份使用情况图表" border/>
+<Image img={backup_usage} size="md" alt="ClickHouse Cloud 中的备份使用情况图表" border />
 
-要估算备份的总成本，您需要先设置一个计划。我们也在更新我们的[价格计算器](https://clickhouse.com/pricing)，这样您可以在设置计划之前预估每月的备份成本。您需要提供以下信息来估算成本：
+要估算备份的总成本，您需要先设置一个计划。在设置计划之前，您可以使用[定价计算器](https://clickhouse.com/pricing)，通过提供以下信息来获取每月成本估算：
 
-- 完全备份和增量备份的大小
-- 期望的备份频率
-- 期望的保留时间
-- Cloud 提供商和区域
+* 全量备份和增量备份的大小
+* 期望的备份频率
+* 期望的备份保留时间
+* Cloud 提供商和区域
 
 :::note
 请注意，随着服务中数据规模随时间增长，备份的预估成本也会随之变化。

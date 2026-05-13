@@ -1,12 +1,10 @@
 ---
-sidebar_label: 'ClickHouse Assistant 助手'
+sidebar_label: 'ClickHouse Assistant agent'
 slug: /cloud/features/ai-ml/ask-ai
-title: '在 Cloud 中的 ClickHouse Assistant 助手'
-description: '对 ClickHouse Cloud 中 ClickHouse Assistant 聊天功能的说明'
+title: 'Cloud 中的 ClickHouse Assistant agent'
+description: 'ClickHouse Cloud 中 ClickHouse Assistant 聊天功能的说明'
 doc_type: 'reference'
 ---
-
-# Cloud 中的 ClickHouse Assistant 助手 \{#clickhouse-assistant-agent-in-cloud\}
 
 “ClickHouse Assistant” 助手是一种开箱即用的体验，使用户能够在其 ClickHouse Cloud 服务中托管的数据之上触发复杂的分析任务。
 用户无需编写 SQL 或在仪表板之间导航，只需用自然语言描述他们正在寻找的内容。

@@ -2,14 +2,12 @@
 slug: /guides/developer/mutations
 sidebar_label: '데이터 업데이트 및 삭제'
 sidebar_position: 1
-keywords: ['UPDATE', 'DELETE', '뮤테이션']
+keywords: ['UPDATE', 'DELETE', 'mutations']
 title: 'ClickHouse 데이터 업데이트 및 삭제'
-description: 'ClickHouse에서 데이터 업데이트 및 삭제 작업을 수행하는 방법을 설명합니다'
+description: 'ClickHouse에서 업데이트 및 삭제 작업을 수행하는 방법을 설명합니다'
 show_related_blogs: false
 doc_type: 'guide'
 ---
-
-# 뮤테이션을 사용한 ClickHouse 데이터 업데이트 및 삭제 \{#updating-and-deleting-clickhouse-data-with-mutations\}
 
 ClickHouse는 대량 분석 워크로드에 최적화되어 있지만, 특정 상황에서는 기존 데이터를 수정하거나 삭제할 수 있습니다.
 이러한 작업은 「뮤테이션」이라고 하며 `ALTER TABLE` 명령을 사용하여 실행됩니다.

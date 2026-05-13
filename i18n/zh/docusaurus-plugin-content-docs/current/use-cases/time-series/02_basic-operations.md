@@ -1,14 +1,12 @@
 ---
-title: '基本操作 - 时间序列'
+title: '基本操作 - 时序'
 sidebar_label: '基本操作'
-description: 'ClickHouse 中基本时间序列操作。'
+description: 'ClickHouse 中的基本时间序列操作。'
 slug: /use-cases/time-series/basic-operations
-keywords: ['时间序列', '基本操作', '数据摄取', '查询', '过滤', '分组', '聚合']
+keywords: ['时序', '基本操作', '数据摄取', '查询', '过滤', '分组', '聚合']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 基本时间序列操作 \{#basic-time-series-operations\}
 
 ClickHouse 提供了多种处理时间序列数据的方法，从而可以在不同时间区间内对数据点进行聚合、分组和分析。
 本节介绍在处理时间型数据时常用的基本操作。

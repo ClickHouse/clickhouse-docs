@@ -7,9 +7,7 @@ keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'ola
 doc_type: 'guide'
 ---
 
-# Node.js 向け chDB \{#chdb-for-nodejs\}
-
-chDB-node は chDB の Node.js バインディングを提供し、外部依存なしで Node.js アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
+chDB-node は chDB 向けの Node.js バインディングを提供しており、外部依存関係なしで、Node.js アプリケーションから ClickHouse クエリを直接実行できます。
 
 ## インストール \{#installation\}
 
@@ -188,6 +186,6 @@ safeSessionQuery();
 
 ## GitHub リポジトリ \{#github-repository\}
 
-- **GitHub リポジトリ**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
-- **Issue およびサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb-node/issues) で Issue を報告してください
-- **NPM パッケージ**: [npm 上の chdb](https://www.npmjs.com/package/chdb)
+* **GitHub リポジトリ**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
+* **Issue およびサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb-node/issues) で Issue を報告してください
+* **NPM パッケージ**: [npm 上の chdb](https://www.npmjs.com/package/chdb)

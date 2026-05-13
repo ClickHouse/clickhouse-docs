@@ -8,8 +8,6 @@ title: '高度な利用方法'
 doc_type: 'reference'
 ---
 
-# 高度な利用方法 \{#advanced-usage\}
-
 ## Raw API \{#raw-api\}
 
 ClickHouse データとネイティブまたはサードパーティのデータ型や構造との間で変換を行う必要がないユースケース向けに、ClickHouse Connect クライアントは ClickHouse 接続をそのまま利用するためのメソッドを提供します。

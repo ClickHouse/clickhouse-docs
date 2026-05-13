@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'sql', '对照', '查询']
 doc_type: 'guide'
 ---
 
-# 面向 pandas 用户的 SQL \{#sql-for-pandas-users\}
-
-DataStore 会将 pandas 风格的操作编译为经过优化的 SQL。本文档帮助 pandas 用户理解其操作对应的底层 SQL。
+DataStore 会将 pandas 风格的操作编译为优化后的 SQL。本指南可帮助 pandas 用户理解其操作背后的 SQL。
 
 ## 查看生成的 SQL 语句 \{#viewing-sql\}
 

@@ -1,0 +1,33 @@
+---
+slug: /cloud/managed-postgres/monitoring/overview
+sidebar_label: 'Обзор'
+title: 'Мониторинг Managed Postgres'
+description: 'Обзор возможностей мониторинга и обсервабилити в ClickHouse Managed Postgres'
+keywords: ['Managed Postgres', 'мониторинг', 'обсервабилити', 'метрики', 'дашборд', 'prometheus']
+doc_type: 'guide'
+---
+
+import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+
+# Мониторинг Managed Postgres \{#managed-postgres-monitoring\}
+
+<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-overview" />
+
+Вы можете отслеживать сервисы Managed Postgres следующими
+способами:
+
+| Раздел                                                                     | Описание                                                                                       | Требуется настройка              |
+| -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------- |
+| [Дашборд](/cloud/managed-postgres/monitoring/dashboard)                    | Встроенные графики в облачной консоли для мониторинга использования ресурсов и активности БД   | Не требуется                     |
+| [Конечная точка Prometheus](/cloud/managed-postgres/monitoring/prometheus) | Сбор метрик в Prometheus, Grafana, Datadog или любой коллектор с поддержкой OpenMetrics        | API-ключ + конфигурация сборщика |
+| [Справочник по метрикам](/cloud/managed-postgres/monitoring/metrics)       | Полный список метрик, доступных через конечную точку Prometheus, с типами, метками и описанием | Н/Д                              |
+
+## Быстрый старт \{#quick-start\}
+
+Откройте облачную консоль и перейдите на вкладку **Monitoring** любого
+экземпляра Managed Postgres, чтобы увидеть графики в реальном времени для CPU, памяти, IOPS,
+подключений, транзакций, коэффициента попаданий в кэш и взаимных блокировок. Дополнительная
+настройка не требуется.
+
+Чтобы передавать те же метрики в собственный стек обсервабилити, используйте
+[конечную точку Prometheus](/cloud/managed-postgres/monitoring/prometheus).

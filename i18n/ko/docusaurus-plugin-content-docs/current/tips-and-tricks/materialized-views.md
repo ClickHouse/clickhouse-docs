@@ -21,11 +21,9 @@ title: '교훈 - materialized views'
 description: 'materialized views의 실제 사례, 문제 및 해결 방안'
 ---
 
-# materialized view: 어떻게 양날의 검이 될 수 있는가 \{#materialized-views-the-double-edged-sword\}
-
-*이 가이드는 커뮤니티 밋업에서 얻은 인사이트를 모은 컬렉션의 일부입니다. 더 많은 실제 사례 기반 해결책과 인사이트는 [문제별로 찾아볼 수 있습니다](./community-wisdom.md).*
-*너무 많은 파트 때문에 데이터베이스 성능이 저하되고 있습니까? [Too Many Parts](./too-many-parts.md) 커뮤니티 인사이트 가이드를 확인하십시오.*
-*[Materialized Views](/materialized-views)에 대해 더 알아보십시오.*
+*이 가이드는 커뮤니티 밋업에서 얻은 인사이트 모음의 일부입니다. 더 많은 실제 해결 방안과 인사이트는 [특정 문제별로 둘러보실 수 있습니다](./community-wisdom.md).*
+*너무 많은 파트로 데이터베이스 성능이 저하되고 있습니까? [너무 많은 파트](./too-many-parts.md) 커뮤니티 인사이트 가이드를 확인하세요.*
+*[Materialized Views](/materialized-views)에 대해 자세히 알아보세요.*
 
 ## 10배 스토리지 안티패턴 \{#storage-antipattern\}
 

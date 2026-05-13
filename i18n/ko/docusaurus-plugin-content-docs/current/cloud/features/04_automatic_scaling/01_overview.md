@@ -47,4 +47,4 @@ ClickHouse Cloud의 스케일링은 [&quot;Make Before Break&quot;(MBB)](/cloud/
 * [Make Before Break (MBB)](/cloud/features/mbb) — ClickHouse Cloud에서 중단 없이 스케일링 작업을 수행하는 방법
 * [자동 유휴 상태 전환](/cloud/features/autoscaling/idling) — 서비스 자동 일시 중지를 통한 비용 절감
 * [스케일링 권장 사항](/cloud/features/autoscaling/scaling-recommendations) — 스케일링 권장 사항 이해하기
-* [예약된 스케일링](/cloud/features/autoscaling/scaling-recommendations) — 실시간 메트릭과 관계없이 서비스가 확장 또는 축소될 시점을 정확히 지정할 수 있는 Scheduled Scaling 기능 이해하기
+* [예약된 스케일링](/cloud/features/autoscaling/scheduled-scaling) — 실시간 메트릭과 관계없이 서비스가 확장 또는 축소될 시점을 정확히 지정할 수 있는 Scheduled Scaling 기능 이해하기

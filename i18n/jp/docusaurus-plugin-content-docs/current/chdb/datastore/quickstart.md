@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'quickstart', 'installation', 'pandas', 'migrati
 doc_type: 'guide'
 ---
 
-# DataStore クイックスタート \{#datastore-quickstart\}
-
-数分で DataStore を使い始められます。このガイドでは、インストール手順、pandas からの移行、および基本的な利用パターンについて説明します。
+DataStore を数分で使い始められます。このガイドでは、インストール、pandas からの移行、基本的な使用パターンを説明します。
 
 ## インストール \{#installation\}
 

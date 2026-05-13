@@ -19,7 +19,7 @@ doc_type: 'reference'
 * `case_insensitive` ([UInt8](../../sql-reference/data-types/)) — Можно ли использовать имя функции без учета регистра.
 * `alias_to` ([String](../../sql-reference/data-types/)) — Исходное имя функции, если данное имя является псевдонимом.
 * `create_query` ([String](../../sql-reference/data-types/)) — Устарело.
-* `origin` ([Enum8(&#39;System&#39; = 0, &#39;SQLUserDefined&#39; = 1, &#39;ExecutableUserDefined&#39; = 2)](../../sql-reference/data-types/)) — Устарело.
+* `origin` ([Enum8(&#39;System&#39; = 0, &#39;SQLUserDefined&#39; = 1, &#39;ExecutableUserDefined&#39; = 2, &#39;WasmUserDefined&#39; = 3)](../../sql-reference/data-types/)) — Устарело.
 * `description` ([String](../../sql-reference/data-types/)) — Общее описание назначения функции.
 * `syntax` ([String](../../sql-reference/data-types/)) — Сигнатура функции.
 * `arguments` ([String](../../sql-reference/data-types/)) — Аргументы функции.

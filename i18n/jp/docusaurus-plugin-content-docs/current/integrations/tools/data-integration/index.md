@@ -6,8 +6,6 @@ description: 'データ統合セクションのランディングページ'
 doc_type: 'landing-page'
 ---
 
-# データ統合 \{#data-integrations\}
-
 | ページ                                    | 説明                                                                            |
 | -------------------------------------- | ----------------------------------------------------------------------------- |
 | [Easypanel](/integrations/easypanel)   | Easypanel を使用すると、自前のサーバー上に ClickHouse をデプロイできます                               |

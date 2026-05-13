@@ -1,14 +1,12 @@
 ---
-description: '머신러닝 및 GenAI 활용 사례 가이드용 랜딩 페이지'
+description: 'Machine Learning 및 GenAI 사용 사례 가이드를 위한 랜딩 페이지'
 pagination_prev: null
 pagination_next: null
 slug: /use-cases/AI/ask-ai
-title: '머신러닝 및 GenAI'
-keywords: ['machine learning', 'genAI', 'AI']
+title: 'Machine Learning 및 GenAI'
+keywords: ['머신 러닝', 'GenAI', 'AI']
 doc_type: 'landing-page'
 ---
-
-# Machine Learning 및 GenAI \{#machine-learning-and-genai\}
 
 ClickHouse는 Machine Learning 워크로드를 처리하는 실시간 데이터베이스로 최적입니다.
 ClickHouse를 사용하면 분석 데이터에 GenAI를 활용하는 것이 그 어느 때보다 쉬워집니다.

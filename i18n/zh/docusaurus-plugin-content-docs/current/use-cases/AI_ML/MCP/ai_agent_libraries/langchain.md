@@ -1,21 +1,20 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/langchain
 sidebar_label: '集成 LangChain'
-title: '如何使用 ClickHouse MCP server 构建 LangChain/LangGraph AI 代理'
+title: '如何使用 ClickHouse MCP server 构建 LangChain/LangGraph AI 智能体'
 pagination_prev: null
 pagination_next: null
-description: '了解如何使用 ClickHouse 的 MCP server 构建一个能够与 ClickHouse SQL Playground 交互的 LangChain/LangGraph AI 代理。'
+description: '了解如何使用 ClickHouse 的 MCP server 构建一个能够与 ClickHouse SQL Playground 交互的 LangChain/LangGraph AI 智能体。'
 keywords: ['ClickHouse', 'MCP', 'LangChain', 'LangGraph']
 show_related_blogs: true
 doc_type: '指南'
 ---
 
-# 如何使用 ClickHouse MCP server 构建 LangChain/LangGraph AI 代理 \{#how-to-build-a-langchainlanggraph-ai-agent-using-clickhouse-mcp-server\}
+在本指南中，您将了解如何构建一个 [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI 智能体，它
+可以通过 [ClickHouse 的 MCP server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 交互。
 
-在本指南中，您将学习如何构建一个 [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI 代理，使其能够借助 [ClickHouse 的 MCP server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/) 进行交互。
-
-:::note 示例 Notebook
-该示例以 Notebook 形式提供，您可以在 [examples 仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb) 中找到。
+:::note 示例笔记本
+您可以在 [examples 代码仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb) 中找到此示例对应的笔记本。
 :::
 
 ## 前提条件 \{#prerequisites\}

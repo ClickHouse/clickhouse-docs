@@ -7,12 +7,6 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-
-
-# uniqArrayIf \{#uniqarrayif\}
-
-
-
 ## 설명 \{#description\}
 
 [`uniq`](/sql-reference/aggregate-functions/reference/uniq) 함수에 [`Array`](/sql-reference/aggregate-functions/combinators#-array) 및 [`If`](/sql-reference/aggregate-functions/combinators#-if) 조합자를 적용하면, 조건이 참인 행에 대해 `uniqArrayIf` 집계 조합자 함수를 사용하여 배열 내 고유 값의 개수를 계산할 수 있습니다.
@@ -22,8 +16,6 @@ doc_type: 'reference'
 :::
 
 이는 특정 조건을 기준으로 `arrayJoin`을 사용하지 않고 배열의 고유 요소 개수를 계산하려는 경우에 유용합니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -81,8 +73,8 @@ returning_customer_products: 2
 total_unique_products:       7
 ```
 
-
 ## 참고 \{#see-also\}
-- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+* [`Array 조합자`](/sql-reference/aggregate-functions/combinators#-array)
+* [`If 조합자`](/sql-reference/aggregate-functions/combinators#-if)

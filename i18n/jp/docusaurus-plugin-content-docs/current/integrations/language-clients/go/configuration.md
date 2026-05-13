@@ -8,8 +8,6 @@ title: '設定'
 doc_type: 'reference'
 ---
 
-# 設定 \{#configuration\}
-
 ## 接続設定 \{#connection-settings\}
 
 接続を開く際は、`Options` 構造体を使用してクライアントの動作を制御できます。使用できる設定は次のとおりです。

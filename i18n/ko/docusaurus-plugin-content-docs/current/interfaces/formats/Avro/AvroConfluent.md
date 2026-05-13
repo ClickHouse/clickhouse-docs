@@ -3,7 +3,7 @@ alias: []
 description: 'AvroConfluent 형식에 대한 문서'
 input_format: true
 keywords: ['AvroConfluent']
-output_format: false
+output_format: true
 slug: /interfaces/formats/AvroConfluent
 title: 'AvroConfluent'
 doc_type: 'reference'
@@ -13,16 +13,15 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 | 입력 | 출력 | 별칭 |
 | -- | -- | -- |
-| ✔  | ✗  |    |
-
+| ✔  | ✔  |    |
 
 ## 설명 \{#description\}
 
-[Apache Avro](https://avro.apache.org/)는 이진 인코딩을 사용하여 효율적인 데이터 처리를 지원하는 행 지향 직렬화 포맷입니다. `AvroConfluent` 포맷은 [Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/index.html) (또는 API 호환 서비스)를 사용해 직렬화된, 단일 객체 Avro로 인코딩된 Kafka 메시지의 디코딩을 지원합니다.
+[Apache Avro](https://avro.apache.org/)는 이진 인코딩을 사용하여 효율적인 데이터 처리를 지원하는 행 지향 직렬화 포맷입니다. `AvroConfluent` 포맷은 [Confluent 스키마 레지스트리](https://docs.confluent.io/current/schema-registry/index.html) (또는 API 호환 서비스)를 사용하여 Avro로 인코딩된 메시지를 읽고 쓸 수 있도록 지원합니다.
 
-각 Avro 메시지에는 ClickHouse가 설정된 스키마 레지스트리를 쿼리하여 자동으로 조회하는 스키마 ID가 포함됩니다. 한 번 조회된 스키마는 최적의 성능을 위해 캐시됩니다.
+각 메시지는 Confluent wire 형식을 사용합니다. 즉, 매직 바이트(`0x00`) 뒤에 4바이트 big-endian 스키마 ID가 오고, 그 뒤에 Avro 이진 datum이 이어집니다. 읽을 때 ClickHouse는 레지스트리를 쿼리하여 스키마 ID를 조회합니다. 쓸 때 ClickHouse는 출력 컬럼에서 파생된 스키마를 등록하고, 생성된 ID를 각 행 앞에 덧붙입니다. 스키마는 최적의 성능을 위해 캐시됩니다.
 
-<a id="data-types-matching"></a>
+<a id="data-types-matching" />
 
 ## 데이터 타입 매핑 \{#data-type-mapping\}
 
@@ -32,15 +31,20 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 [//]: # "참고: 이 설정들은 세션 수준에서도 설정할 수 있지만, 흔하지 않으며 이를 지나치게 두드러지게 문서화하면 사용자에게 혼란을 줄 수 있습니다."
 
-| Setting                                     | 설명                                                                                                 | 기본값 |
-|---------------------------------------------|-----------------------------------------------------------------------------------------------------|--------|
-| `input_format_avro_allow_missing_fields`    | 스키마에서 필드를 찾을 수 없는 경우 오류를 발생시키는 대신 기본값을 사용할지 여부입니다.              | `0`    |
-| `input_format_avro_null_as_default`         | 널을 허용하지 않는 컬럼에 `null` 값을 삽입할 때 오류를 발생시키는 대신 기본값을 사용할지 여부입니다.    | `0`    |
-| `format_avro_schema_registry_url`           | Confluent Schema Registry URL입니다. Basic authentication을 사용하는 경우, URL 인코딩된 자격 증명을 URL 경로에 직접 포함할 수 있습니다. |        |
+| Setting                                          | 설명                                                                                                      | 기본값 |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------- | --- |
+| `input_format_avro_allow_missing_fields`         | 스키마에서 필드를 찾을 수 없는 경우 오류를 발생시키는 대신 기본값을 사용할지 여부입니다.                                                      | `0` |
+| `input_format_avro_null_as_default`              | 널을 허용하지 않는 컬럼에 `null` 값을 삽입할 때 오류를 발생시키는 대신 기본값을 사용할지 여부입니다.                                            | `0` |
+| `format_avro_schema_registry_url`                | Confluent 스키마 레지스트리 URL입니다. 기본 인증을 사용하는 경우, URL 인코딩된 자격 증명을 URL 경로에 직접 포함할 수 있습니다. |     |
+| `format_avro_schema_registry_connection_timeout` | 스키마 레지스트리 HTTP 클라이언트의 연결 타임아웃(초)입니다(스키마 가져오기와 등록 모두에 사용됨). 0보다 커야 하며 600(10분)보다 작아야 합니다.                | `1` |
+| `format_avro_schema_registry_send_timeout`       | 스키마 레지스트리 HTTP 클라이언트의 전송 타임아웃(초)입니다. 0보다 커야 하며 600(10분)보다 작아야 합니다.                                      | `1` |
+| `format_avro_schema_registry_receive_timeout`    | 스키마 레지스트리 HTTP 클라이언트의 수신 타임아웃(초)입니다. 0보다 커야 하며 600(10분)보다 작아야 합니다.                                      | `1` |
+| `output_format_avro_confluent_subject`           | 출력용: 스키마 레지스트리에서 스키마가 등록되는 subject 이름입니다. 쓰기 시 필요합니다.                                                   |     |
+| `output_format_avro_string_column_pattern`       | 출력용: Avro `string`으로 직렬화할 String 컬럼의 정규식 패턴입니다(기본값은 `bytes`).                                           |     |
 
 ## 예제 \{#examples\}
 
-### 스키마 레지스트리 사용 \{#using-a-schema-registry\}
+### Kafka에서 읽기 \{#reading-from-kafka\}
 
 Avro로 인코딩된 Kafka 토픽을 [Kafka 테이블 엔진](/engines/table-engines/integrations/kafka.md)으로 읽으려면, 스키마 레지스트리의 URL을 지정하기 위해 `format_avro_schema_registry_url` 설정을 사용하십시오.
 
@@ -61,6 +65,26 @@ format_avro_schema_registry_url = 'http://schema-registry-url';
 SELECT * FROM topic1_stream;
 ```
 
+### Kafka에 쓰기 \{#writing-to-kafka\}
+
+AvroConfluent 메시지를 Kafka 토픽에 쓰려면 스키마 레지스트리 URL과 subject 이름을 모두 설정하십시오. 스키마는 처음 기록할 때 레지스트리에 자동으로 등록됩니다.
+
+```sql
+CREATE TABLE topic1_sink
+(
+    field1 String,
+    field2 String
+)
+ENGINE = Kafka()
+SETTINGS
+kafka_broker_list = 'kafka-broker',
+kafka_topic_list = 'topic1',
+kafka_format = 'AvroConfluent',
+format_avro_schema_registry_url = 'http://schema-registry-url',
+output_format_avro_confluent_subject = 'topic1-value';
+
+INSERT INTO topic1_sink VALUES ('hello', 'world');
+```
 
 #### 기본 인증 사용 \{#using-basic-authentication\}
 

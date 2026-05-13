@@ -11,8 +11,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Часто задаваемые вопросы о ClickPipes для MySQL \{#clickpipes-for-mysql-faq\}
-
 ### Поддерживает ли MySQL ClickPipe MariaDB? \{#does-the-clickpipe-support-mariadb\}
 
 Да, MySQL ClickPipe поддерживает MariaDB версии 10.0 и выше. Настройка для MariaDB очень похожа на MySQL, по умолчанию используется репликация GTID.

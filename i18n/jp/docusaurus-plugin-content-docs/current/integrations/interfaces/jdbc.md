@@ -7,6 +7,4 @@ title: 'JDBC ドライバー'
 doc_type: 'guide'
 ---
 
-# JDBC ドライバー \{#jdbc-driver\}
-
-Java アプリケーションから ClickHouse にアクセスするには、[公式 JDBC ドライバー](/docs/integrations/language-clients/java/jdbc)（および Java クライアント）を使用してください。
+Java アプリケーションから ClickHouse にアクセスするには、[公式 JDBC ドライバー](/docs/integrations/language-clients/java/jdbc) (および Java クライアント) を使用します。

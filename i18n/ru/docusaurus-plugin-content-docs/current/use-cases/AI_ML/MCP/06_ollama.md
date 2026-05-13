@@ -10,9 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Использование сервера ClickHouse MCP с Ollama \{#using-clickhouse-mcp-server-with-ollama\}
-
-> В этом руководстве описано, как использовать сервер ClickHouse MCP с Ollama.
+> В этом руководстве объясняется, как использовать MCP-сервер ClickHouse с Ollama.
 
 <VerticalStepper headerLevel="h2">
   ## Установите Ollama \{#install-ollama\}

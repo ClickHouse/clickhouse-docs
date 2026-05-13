@@ -2,11 +2,9 @@
 slug: /data-modeling/overview
 title: '数据建模概览'
 description: '数据建模概览'
-keywords: ['数据建模', 'schema 设计', '字典', '物化视图', '数据压缩', '数据反规范化']
+keywords: ['数据建模', 'schema 设计', '字典', 'materialized view', '数据压缩', '反规范化数据']
 doc_type: 'landing-page'
 ---
-
-# 数据建模 \{#data-modeling\}
 
 本节介绍 ClickHouse 中的数据建模，包含以下主题：
 

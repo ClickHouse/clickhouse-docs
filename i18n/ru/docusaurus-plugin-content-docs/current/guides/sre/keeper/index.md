@@ -4,19 +4,16 @@ slug: /guides/sre/keeper/clickhouse-keeper
 sidebar_label: 'Настройка ClickHouse Keeper'
 sidebar_position: 10
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
-description: 'ClickHouse Keeper или clickhouse-keeper заменяет ZooKeeper и обеспечивает функции репликации и координации.'
+description: 'ClickHouse Keeper, или clickhouse-keeper, заменяет ZooKeeper и обеспечивает репликацию и координацию.'
 title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
-
-# ClickHouse Keeper (clickhouse-keeper) \{#clickhouse-keeper-clickhouse-keeper\}
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
 ClickHouse Keeper предоставляет систему координации для [репликации](/engines/table-engines/mergetree-family/replication.md) данных и выполнения запросов [распределённого DDL](/sql-reference/distributed-ddl.md). ClickHouse Keeper совместим с ZooKeeper.
-
 
 ### Детали реализации \{#implementation-details\}
 

@@ -4,13 +4,11 @@ sidebar_label: 'Upsonic 통합'
 title: 'Upsonic과 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'Upsonic과 ClickHouse MCP 서버를 사용해 AI 에이전트를 구축하는 방법을 알아봅니다'
+description: 'Upsonic과 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법을 알아봅니다'
 keywords: ['ClickHouse', 'MCP', 'Upsonic']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# Upsonic과 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server\}
 
 이 가이드에서는 [ClickHouse SQL playground](https://sql.clickhouse.com/)과 상호 작용할 수 있는 [Upsonic](https://github.com/Upsonic/Upsonic/tree/master) AI 에이전트를 [ClickHouse MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여 구축하는 방법을 알아봅니다.
 

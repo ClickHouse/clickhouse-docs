@@ -70,7 +70,9 @@ datetime64 の値の末尾のゼロを動的に削除し、出力の小数桁数
 
 ## date_time_input_format \{#date_time_input_format\}
 
-<SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
+<SettingsInfoBlock type="DateTimeInputFormat" default_value="best_effort" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "best_effort"},{"label": "使いやすさの向上"}]}]} />
 
 日付と時刻のテキスト表現に対するパーサーを選択します。
 
@@ -78,22 +80,20 @@ datetime64 の値の末尾のゼロを動的に削除し、出力の小数桁数
 
 指定可能な値:
 
-- `'best_effort'` — 拡張パースを有効にします。
+* `'best_effort'` — 拡張パースを有効にします。
 
-    ClickHouse は基本形式 `YYYY-MM-DD HH:MM:SS` と、すべての [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日付および時刻形式をパースできます。たとえば `'2018-06-08T01:02:03.000Z'` です。
+  ClickHouse は基本形式 `YYYY-MM-DD HH:MM:SS` と、すべての [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日付および時刻形式をパースできます。たとえば `'2018-06-08T01:02:03.000Z'` です。
 
-- `'best_effort_us'` — `best_effort` とほぼ同様です（[parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS) との違いを参照）。
+* `'best_effort_us'` — `best_effort` とほぼ同様です ([parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS) との違いを参照) 。
 
-- `'basic'` — 基本パーサーを使用します。
+* `'basic'` — 基本パーサーを使用します。
 
-    ClickHouse は基本形式 `YYYY-MM-DD HH:MM:SS` または `YYYY-MM-DD` のみをパースできます。たとえば `2019-08-20 10:18:56` または `2019-08-20` です。
-
-Cloud でのデフォルト値: `'best_effort'`。
+  ClickHouse は基本形式 `YYYY-MM-DD HH:MM:SS` または `YYYY-MM-DD` のみをパースできます。たとえば `2019-08-20 10:18:56` または `2019-08-20` です。
 
 関連項目:
 
-- [DateTime データ型。](../../sql-reference/data-types/datetime.md)
-- [日付および時刻を扱う関数。](../../sql-reference/functions/date-time-functions.md)
+* [DateTime データ型。](../../sql-reference/data-types/datetime.md)
+* [日付および時刻を扱う関数。](../../sql-reference/functions/date-time-functions.md)
 
 ## date_time_output_format \{#date_time_output_format\}
 
@@ -139,6 +139,30 @@ Cloud でのデフォルト値: `'best_effort'`。
 <SettingsInfoBlock type="String" default_value="CSV" />
 
 エラーをテキスト出力する際のフォーマット。
+
+## format_avro_schema_registry_connection_timeout \{#format_avro_schema_registry_connection_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "AvroConfluent フォーマットで使用されるConfluentスキーマレジストリ HTTPクライアントの接続タイムアウト（秒）を制御するための新しい設定。"}]}]} />
+
+AvroConfluent フォーマット向け: Confluentスキーマレジストリ HTTPクライアントの接続タイムアウト (秒単位) 。スキーマの取得とスキーマ登録の両方で使用されます。0より大きく、600 (10分) 未満である必要があります。
+
+## format_avro_schema_registry_receive_timeout \{#format_avro_schema_registry_receive_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "AvroConfluent フォーマット で使用される Confluent スキーマレジストリ HTTP クライアントの受信タイムアウト（秒）を制御するための新しい設定。"}]}]} />
+
+AvroConfluent フォーマット: Confluent スキーマレジストリ HTTP クライアントの受信タイムアウト (秒) 。スキーマのフェッチとスキーマ登録の両方で使用されます。0 より大きく、600 (10 分) 未満である必要があります。
+
+## format_avro_schema_registry_send_timeout \{#format_avro_schema_registry_send_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "AvroConfluent フォーマット で使用される Confluent スキーマレジストリ HTTP クライアントの送信タイムアウト（秒）を制御するための新しい設定。"}]}]} />
+
+AvroConfluent フォーマット: Confluent スキーマレジストリ HTTP クライアントの送信タイムアウト (秒) 。スキーマのフェッチとスキーマ登録の両方で使用されます。0 より大きく、600 (10 分) 未満である必要があります。
 
 ## format_avro_schema_registry_url \{#format_avro_schema_registry_url\}
 
@@ -1644,6 +1668,12 @@ Arrow 形式で Dictionary の索引に符号付き整数を使用する
 ## output_format_avro_codec \{#output_format_avro_codec\}
 
 出力に使用される圧縮コーデック。指定可能な値は 'null', 'deflate', 'snappy', 'zstd' です。
+
+## output_format_avro_confluent_subject \{#output_format_avro_confluent_subject\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": ""},{"label": "AvroConfluent 出力の書き込み時に、Confluent スキーマレジストリへのスキーマ登録で使用する subject 名を指定するための新しい設定。"}]}]} />
+
+AvroConfluent の出力フォーマット用: Confluent スキーマレジストリでスキーマが登録される subject 名です。AvroConfluent 出力を書き込む際に必要です。
 
 ## output_format_avro_rows_in_file \{#output_format_avro_rows_in_file\}
 

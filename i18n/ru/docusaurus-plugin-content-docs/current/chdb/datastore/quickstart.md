@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'quickstart', 'installation', 'pandas', 'migrati
 doc_type: 'guide'
 ---
 
-# Быстрый старт по DataStore \{#datastore-quickstart\}
-
-Начните работу с DataStore за считанные минуты. В этом руководстве рассматриваются установка, миграция с pandas и основные сценарии использования.
+Начните работу с DataStore за считаные минуты. В этом руководстве описаны установка, миграция с pandas и основные сценарии использования.
 
 ## Установка \{#installation\}
 

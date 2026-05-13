@@ -14,7 +14,8 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
 
 使用 [ClickHouse OpenAPI](/cloud/manage/cloud-api) 以编程方式
-管理您的 Managed Postgres 服务，就像管理 ClickHouse 服务一样。已
+管理您的 Managed Postgres 服务，就像管理 ClickHouse 服务一样。该
+API 还提供了一个 [Prometheus 端点]，用于抓取服务指标。已
 熟悉 [OpenAPI]？获取您的 [API 密钥] 后，直接前往 [Managed
 Postgres API reference][pg-openapi]。否则，请继续阅读，快速
 了解一下。
@@ -266,11 +267,19 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 }
 ```
 
+## 监控 \{#monitoring\}
+
+两个与 Prometheus 兼容的端点会公开 Managed Postgres 服务的 CPU、内存、I/O、连接和事务指标：一个返回组织中所有服务的指标，另一个返回单个服务的指标。有关设置，请参阅 [Prometheus endpoint] 页面；有关完整指标列表，请参阅 [metrics reference]。
+
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 
 [OpenAPI]: https://www.openapis.org "OpenAPI 计划"
 
 [API keys]: /cloud/manage/openapi "管理 API 密钥"
+
+[Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus "Managed Postgres Prometheus 端点"
+
+[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Managed Postgres 指标参考"
 
 [pg-openapi]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres "ClickHouse Cloud 的 Postgres OpenAPI 规范"
 
