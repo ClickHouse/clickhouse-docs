@@ -624,7 +624,7 @@ ClickHouse サービス内のテーブルに関連付けられた Dictionary を
 実際に必要なカラムだけを取得すべきです。
 :::
 
-[tutorial]: /tutorial "ClickHouse 上級チュートリアル"
+[ClickHouse tutorial]: /tutorial "ClickHouse 上級チュートリアル"
 
 [psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL クライアントアプリケーション: psql"
 

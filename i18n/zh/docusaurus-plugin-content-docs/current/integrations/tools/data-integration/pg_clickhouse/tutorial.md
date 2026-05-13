@@ -620,7 +620,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 你只应检索真正需要的列。
 :::
 
-[tutorial]: /tutorial "ClickHouse 高级教程"
+[ClickHouse tutorial]: /tutorial "ClickHouse 教程"
 
 [psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL 客户端应用：psql"
 

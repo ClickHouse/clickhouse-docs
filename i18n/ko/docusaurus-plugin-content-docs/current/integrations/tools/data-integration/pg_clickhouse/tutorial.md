@@ -608,7 +608,7 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
    Time: 2.012 ms
    ```
 
-2. 이 쿼리는 팁 금액이 가장 높은 1,000개의 운행에 대한 행을 반환한 다음, 각 행을 딕셔너리와 내부 조인을 수행합니다:
+2. 이 쿼리는 팁 금액이 가장 높은 1,000개의 운행에 대한 행을 반환한 다음, 각 행을 딕셔너리와 내부 조인합니다:
 
    ```sql
    taxi=# SELECT *
@@ -624,7 +624,7 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
 일반적으로 PostgreSQL과 ClickHouse에서는 `SELECT *` 사용을 피합니다. 실제로 필요한 컬럼만 조회해야 합니다.
 :::
 
-[tutorial]: /tutorial "ClickHouse 고급 튜토리얼"
+[ClickHouse tutorial]: /tutorial "ClickHouse 고급 튜토리얼"
 
 [psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL 클라이언트 애플리케이션: psql"
 
