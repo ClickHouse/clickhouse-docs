@@ -145,14 +145,17 @@ SELECT name, lower(hex(reinterpretAsFixedString(hash))) AS sha256 FROM system.we
 
 ### 모듈 삭제 \{#delete-a-module\}
 
-`DELETE FROM system.webassembly_modules WHERE name = '...'` 구문으로 삭제를 수행합니다.
-하나의 구문에서는 이름이 정확히 일치하는 하나의 모듈만 삭제할 수 있습니다.
+삭제는 `DELETE FROM system.webassembly_modules WHERE name = '...'` 문으로 수행합니다.
+조건식은 정확히 일치하는 `name = 'literal'` 또는 이름이 패턴과 일치하는 모든 모듈을 삭제하는 `name LIKE 'pattern'` 중 하나여야 하며, 그 밖의 형태는 허용되지 않습니다.
 
 ```sql
 DELETE FROM system.webassembly_modules WHERE name = 'collatz';
+
+-- Bulk-delete every module whose name starts with `tmp_` (literal underscore is escaped as `\_`):
+DELETE FROM system.webassembly_modules WHERE name LIKE 'tmp\_%';
 ```
 
-기존 UDF 중 해당 모듈을 참조하는 것이 하나라도 있으면 삭제 작업이 실패하므로, 먼저 해당 UDF들을 삭제해야 합니다.
+기존 UDF 중 해당 모듈 중 하나를 참조하는 것이 있으면 삭제에 실패하므로, 먼저 그 UDF를 삭제해야 합니다.
 
 ## WebAssembly UDF 생성하기 \{#create-a-webassembly-udf\}
 

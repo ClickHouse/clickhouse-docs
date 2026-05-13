@@ -18,6 +18,7 @@ ClickHouse 支持 [Apache Arrow Flight](https://arrow.apache.org/docs/format/Fli
 * 执行 SQL 查询，并以 Apache Arrow 格式返回结果。
 * 使用 Arrow 格式将数据插入表中。
 * 通过 Flight SQL 命令查询元数据 (目录、schema、表、主键) 。
+* 通过 Flight SQL 创建、绑定、执行和关闭服务器端预处理语句。
 * 通过 Flight SQL 操作管理会话和设置。
 * 支持 TLS 加密以及用户名/密码身份验证。
 * 通过 `PollFlightInfo` 增量获取结果。
@@ -116,19 +117,21 @@ Arrow Flight 接口支持通过自定义 gRPC 元数据头部信息使用 ClickH
 
 ## 服务器配置参考 \{#configuration-reference\}
 
-| 设置项                                                           | 默认值     | 描述                                                      |
-| ------------------------------------------------------------- | ------- | ------------------------------------------------------- |
-| `arrowflight_port`                                            | —       | Arrow Flight 服务器的端口。仅在指定此设置时，服务器才会启动。                   |
-| `arrowflight.enable_ssl`                                      | `false` | 启用 TLS 加密。                                              |
-| `arrowflight.ssl_cert_file`                                   | —       | TLS 证书文件的路径。启用 TLS 时必需。                                 |
-| `arrowflight.ssl_key_file`                                    | —       | TLS 私钥文件的路径。启用 TLS 时必需。                                 |
-| `arrowflight.tickets_lifetime_seconds`                        | `600`   | Flight ticket 过期并清理前的时间 (秒) 。设置为 `0` 可禁用 ticket 自动过期。   |
-| `arrowflight.cancel_ticket_after_do_get`                      | `false` | 如果为 `true`，ticket 在被 `DoGet` 消耗后会立即取消，以释放内存。            |
-| `arrowflight.poll_descriptors_lifetime_seconds`               | `600`   | poll descriptor 过期前的时间 (秒) 。设置为 `0` 可禁用自动过期。            |
-| `arrowflight.cancel_flight_descriptor_after_poll_flight_info` | `false` | 如果为 `true`，poll descriptor 在被 `PollFlightInfo` 消耗后会被取消。 |
-| `enable_arrow_close_session`                                  | `true`  | 允许客户端通过 `x-clickhouse-session-close` 头部信息关闭会话。           |
-| `default_session_timeout`                                     | `60`    | 默认会话超时时间 (秒) 。同时也控制 Bearer token 的过期时间。                 |
-| `max_session_timeout`                                         | `3600`  | 允许的最大会话超时时间 (秒) 。                                       |
+| 设置项                                                           | 默认值     | 描述                                                                                                                                 |
+| ------------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `arrowflight_port`                                            | —       | Arrow Flight 服务器的端口。仅在指定此设置时，服务器才会启动。                                                                                              |
+| `arrowflight.enable_ssl`                                      | `false` | 启用 TLS 加密。                                                                                                                         |
+| `arrowflight.ssl_cert_file`                                   | —       | TLS 证书文件的路径。启用 TLS 时必需。                                                                                                            |
+| `arrowflight.ssl_key_file`                                    | —       | TLS 私钥文件的路径。启用 TLS 时必需。                                                                                                            |
+| `arrowflight.tickets_lifetime_seconds`                        | `600`   | Flight ticket 过期并清理前的时间 (秒) 。设置为 `0` 可禁用 ticket 自动过期。                                                                              |
+| `arrowflight.cancel_ticket_after_do_get`                      | `false` | 如果为 `true`，ticket 在被 `DoGet` 消耗后会立即取消，以释放内存。                                                                                       |
+| `arrowflight.poll_descriptors_lifetime_seconds`               | `600`   | poll descriptor 过期前的时间 (秒) 。设置为 `0` 可禁用自动过期。                                                                                       |
+| `arrowflight.cancel_flight_descriptor_after_poll_flight_info` | `false` | 如果为 `true`，poll descriptor 在被 `PollFlightInfo` 消耗后会被取消。                                                                            |
+| `arrowflight.max_prepared_statements_per_user`                | `100`   | 每个用户可打开的 预处理语句 的最大数量。设置为 `0` 可禁用该限制。                                                                                  |
+| `arrowflight.prepared_statements_lifetime_seconds`            | `-1`    | 预处理语句 生命周期模式。`> 0`：使用该值作为生命周期，并在每次请求时为会话绑定和无会话语句刷新过期时间。`0`：禁用自动过期。`-1`：对于会话绑定语句，使用会话超时时间作为生命周期，并在每次请求时刷新；无会话语句不会自动过期。 |
+| `enable_arrow_close_session`                                  | `true`  | 允许客户端通过 `x-clickhouse-session-close` 请求头关闭会话。                                                                                     |
+| `default_session_timeout`                                     | `60`    | 默认会话超时时间 (秒) 。同时也控制 Bearer token 的过期时间。                                                                                            |
+| `max_session_timeout`                                         | `3600`  | 允许的最大会话超时时间 (秒) 。                                                                                                                  |
 
 ## 受支持的 RPC 方法 \{#rpc-methods\}
 
@@ -245,6 +248,8 @@ Flight SQL 客户端使用 `CommandStatementUpdate` 执行 DDL/DML 语句 (CREAT
 
 仅支持追加到现有表 (`TABLE_NOT_EXIST_OPTION_FAIL` + `TABLE_EXISTS_OPTION_APPEND`) 。此命令不支持目录和临时表。
 
+`transaction_id` 不支持用于 `CommandStatementUpdate` 或 `CommandStatementIngest`。如果提供，ClickHouse 将返回 `NotImplemented` 错误。
+
 :::note
 数据传输仅接受 `Arrow` 格式。在 SQL 中指定其他格式 (例如 `FORMAT JSON`) 会导致错误。
 :::
@@ -276,39 +281,78 @@ result = client.cancel_flight_info(cancel_request, options)
 
 返回当前会话中的所有 ClickHouse 设置及其值。返回一个从设置名称到字符串值的映射 (内部会查询 `system.settings`) 。
 
+#### CreatePreparedStatement \{#createpreparedstatement\}
+
+创建服务器端预处理语句并返回语句句柄。请求中包含带有 `?` 占位符的 SQL 查询文本。
+
+此操作不支持 `transaction_id`。如果提供了该字段，ClickHouse 会返回 `NotImplemented` 错误。
+
+对于查询语句，响应中可能包含：
+
+* `dataset_schema`：结果集的 schema。
+* `parameter_schema`：语句参数的 schema。
+
+如果对有效查询的 schema 推断失败 (例如，对该查询而言，将占位符替换为 `NULL` 并不合法) ，ClickHouse 仍会创建预处理语句，并返回不含 `dataset_schema` 的句柄。
+
+预处理语句归经过身份验证的用户所有，而不隶属于某个单独的会话。如果你以同一用户身份打开多个会话，则可以在其中任意一个会话中执行、重新绑定和关闭同一个语句句柄。
+
+其他用户无法执行、绑定或关闭不是由自己创建的语句句柄。
+
+`arrowflight.prepared_statements_lifetime_seconds` 用于控制过期行为：
+
+* `> 0`：使用配置值作为语句生命周期。对于会话绑定和无会话的语句，每次请求时都会刷新过期时间。
+* `0`：预处理语句不会自动过期。
+* `-1` (默认) ：如果语句是在某个会话中创建的，其生命周期将遵循该会话的超时时间，并在该会话中的每次请求时刷新。如果语句是在没有会话的情况下创建的，则不会自动过期。
+
+已过期的语句会被移除，并且不再计入 `arrowflight.max_prepared_statements_per_user`。
+
+#### ClosePreparedStatement \{#closepreparedstatement\}
+
+当请求包含非空的语句句柄时，会关闭预处理语句，并释放相关的服务器端资源。
+
+当句柄为空时，ClickHouse 也支持使用 `ClosePreparedStatement` 进行批量关闭：
+
+* 如果存在 `x-clickhouse-session-id`，则会关闭该会话中已认证用户的所有预处理语句。
+* 如果不存在会话 ID，则只会关闭已认证用户未关联任何会话的预处理语句。
+
+如果预处理语句是在某个会话中创建的 (通过 `x-clickhouse-session-id`) ，那么在该会话关闭时，它也会自动关闭。
+
 ## Flight SQL 命令 \{#flight-sql-commands\}
 
 当 `CMD` 描述符包含序列化的 [Flight SQL protobuf](https://arrow.apache.org/docs/format/FlightSql.html) 消息时，ClickHouse 处理以下命令：
 
 ### 通过 GetFlightInfo / GetSchema 支持的命令 \{#flightsql-getflightinfo\}
 
-| 命令                      | 说明                                                       |
-| ----------------------- | -------------------------------------------------------- |
-| `CommandStatementQuery` | 执行任意 SQL 查询。                                             |
-| `CommandGetSqlInfo`     | 获取服务器元数据 (名称、版本、Arrow 版本、功能) 。                           |
-| `CommandGetCatalogs`    | 列出目录。返回空结果 (ClickHouse 不使用目录) 。                          |
-| `CommandGetDbSchemas`   | 列出数据库。支持可选的 `db_schema_filter_pattern` (SQL `LIKE` 模式) 。 |
-| `CommandGetTables`      | 列出表。支持按 schema、表名和表类型筛选，并可选择是否包含 schema。                 |
-| `CommandGetTableTypes`  | 列出表引擎类型 (来自 `system.table_engines`) 。                    |
-| `CommandGetPrimaryKeys` | 获取指定表的主键列。                                               |
+| 命令                              | 说明                                                       |
+| ------------------------------- | -------------------------------------------------------- |
+| `CommandStatementQuery`         | 执行任意 SQL 查询。`transaction_id` 不受支持。                       |
+| `CommandGetSqlInfo`             | 获取服务器元数据 (名称、版本、Arrow 版本、功能) 。                           |
+| `CommandGetCatalogs`            | 列出目录。返回空结果 (ClickHouse 不使用目录) 。                          |
+| `CommandGetDbSchemas`           | 列出数据库。支持可选的 `db_schema_filter_pattern` (SQL `LIKE` 模式) 。 |
+| `CommandGetTables`              | 列出表。支持按 schema、表名和表类型筛选，并可选择是否包含 schema。                 |
+| `CommandGetTableTypes`          | 列出表引擎类型 (来自 `system.table_engines`) 。                    |
+| `CommandGetPrimaryKeys`         | 获取指定表的主键列。                                               |
+| `CommandPreparedStatementQuery` | 通过句柄执行预处理的 `SELECT` 风格语句。                                |
 
 ### 通过 DoPut 支持的命令 \{#flightsql-doput\}
 
-| Command                  | Description                                     |
-| ------------------------ | ----------------------------------------------- |
-| `CommandStatementUpdate` | 执行 DDL/DML 文 (CREATE、INSERT、ALTER 等) 。返回受影响的行数。 |
-| `CommandStatementIngest` | 将 Arrow 数据批量插入现有表中。仅支持追加模式。                     |
+| Command                          | Description                                                                                                      |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `CommandStatementUpdate`         | 执行 DDL/DML 文 (CREATE、INSERT、ALTER 等) 。返回受影响的行数。不支持 `transaction_id`。                                             |
+| `CommandStatementIngest`         | 将 Arrow 数据批量插入现有表中。仅支持追加模式。不支持 `transaction_id`。                                                                 |
+| `CommandPreparedStatementQuery`  | 在通过 `DoPut` 发送时，为预处理语句绑定参数值，然后返回包含语句句柄的 `DoPutPreparedStatementResult`。只接受一组参数 (即一行) ，且绑定值的数量必须与 `?` 占位符的数量完全一致。 |
+| `CommandPreparedStatementUpdate` | 通过句柄执行预处理的 DDL/DML 语句，并返回受影响的行数。                                                                                 |
 
-### 尚未实现 \{#flightsql-not-implemented\}
+### ClickHouse 中不支持的内容 \{#flightsql-not-implemented\}
 
-| 命令                               | 状态                    |
-| -------------------------------- | --------------------- |
-| `CommandGetCrossReference`       | 尚未实现                  |
-| `CommandGetExportedKeys`         | 尚未实现                  |
-| `CommandGetImportedKeys`         | 尚未实现                  |
-| `CommandStatementSubstraitPlan`  | 不支持 (Substrait 不受支持)  |
-| `CommandPreparedStatementQuery`  | 尚未实现                  |
-| `CommandPreparedStatementUpdate` | 尚未实现                  |
+这些命令对应的功能在 ClickHouse 中未提供，因此 Arrow Flight SQL 接口不支持它们。
+
+| Command                         | Reason                                     |
+| ------------------------------- | ------------------------------------------ |
+| `CommandGetCrossReference`      | ClickHouse 不是关系型数据库，也不支持外键约束，因此不提供交叉引用元数据。 |
+| `CommandGetExportedKeys`        | ClickHouse 不是关系型数据库，也不支持外键约束，因此不提供导出键元数据。  |
+| `CommandGetImportedKeys`        | ClickHouse 不是关系型数据库，也不支持外键约束，因此不提供导入键元数据。  |
+| `CommandStatementSubstraitPlan` | ClickHouse 不支持 Substrait 计划。               |
 
 ## 完整示例 \{#complete-example\}
 

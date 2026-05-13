@@ -130,7 +130,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### AvroSchemaCacheCells \{#avroschemacachecells\}
 
-Количество схем Avro в кэше
+Количество схем Avro в кэше, включая зарегистрированные и полученные схемы.
 
 ### AvroSchemaRegistryCacheBytes \{#avroschemaregistrycachebytes\}
 

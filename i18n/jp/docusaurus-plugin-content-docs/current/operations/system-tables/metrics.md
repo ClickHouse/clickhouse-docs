@@ -129,7 +129,7 @@ Avroスキーマキャッシュのサイズ (バイト)
 
 ### AvroSchemaCacheCells \{#avroschemacachecells\}
 
-キャッシュされた Avro スキーマの数
+登録済みのスキーマと取得したスキーマの両方を含む、キャッシュされた Avro スキーマの数。
 
 ### AvroSchemaRegistryCacheBytes \{#avroschemaregistrycachebytes\}
 

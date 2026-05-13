@@ -129,7 +129,7 @@ AsynchronousInsert 스레드 풀에서 큐에 대기 중이거나 실행 중인 
 
 ### AvroSchemaCacheCells \{#avroschemacachecells\}
 
-캐시된 Avro 스키마의 수
+등록된 스키마와 가져온 스키마를 모두 포함한 캐시된 Avro 스키마의 수
 
 ### AvroSchemaRegistryCacheBytes \{#avroschemaregistrycachebytes\}
 

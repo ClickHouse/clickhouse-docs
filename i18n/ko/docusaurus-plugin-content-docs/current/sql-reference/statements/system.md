@@ -108,6 +108,10 @@ mark 캐시를 초기화합니다.
 
 iceberg 메타데이터 캐시를 초기화합니다.
 
+## SYSTEM CLEAR|DROP AVRO SCHEMA CACHE \{#drop-avro-schema-cache\}
+
+`AvroConfluent` 형식에서 사용하는 URL별 Confluent 스키마 레지스트리 캐시를 지웁니다. 이 작업은 스키마 fetch 캐시(id → schema)와 스키마 등록 캐시(subject + schema → id)를 모두 삭제하므로, 이후의 읽기 및 쓰기는 다시 레지스트리 서버를 사용합니다. 레지스트리 측에서 스키마가 삭제되었거나 덮어써진 경우에 유용하며, 테스트에서 레지스트리의 멱등성을 검증할 때도 사용할 수 있습니다.
+
 ## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
 
 parquet 메타데이터 캐시를 초기화합니다.

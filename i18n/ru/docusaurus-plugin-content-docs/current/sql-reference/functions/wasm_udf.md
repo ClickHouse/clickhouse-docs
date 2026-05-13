@@ -145,14 +145,17 @@ SELECT name, lower(hex(reinterpretAsFixedString(hash))) AS sha256 FROM system.we
 
 ### Удаление модуля \{#delete-a-module\}
 
-Удаление выполняется запросом `DELETE FROM system.webassembly_modules WHERE name = '...'`.
-Поддерживается только удаление одного модуля за один запрос по его точному имени.
+Удаление выполняется оператором `DELETE FROM system.webassembly_modules WHERE name = '...'`.
+Предикат должен иметь вид либо `name = 'literal'` для точного совпадения, либо `name LIKE 'pattern'` для удаления всех модулей, имена которых соответствуют шаблону; другие формы не допускаются.
 
 ```sql
 DELETE FROM system.webassembly_modules WHERE name = 'collatz';
+
+-- Bulk-delete every module whose name starts with `tmp_` (literal underscore is escaped as `\_`):
+DELETE FROM system.webassembly_modules WHERE name LIKE 'tmp\_%';
 ```
 
-Если какие-либо существующие UDF ссылаются на модуль, удаление завершится с ошибкой, поэтому сначала нужно удалить эти UDF.
+Если какие-либо существующие пользовательские функции (UDF) ссылаются на один из найденных модулей, удалить его не удастся, поэтому сначала необходимо удалить эти UDF.
 
 ## Создайте WebAssembly UDF \{#create-a-webassembly-udf\}
 

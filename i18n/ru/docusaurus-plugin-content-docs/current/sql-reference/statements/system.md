@@ -106,6 +106,10 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 Очищает кеш метаданных Iceberg.
 
+## SYSTEM CLEAR|DROP AVRO SCHEMA CACHE \{#drop-avro-schema-cache\}
+
+Очищает кэши Confluent Schema Registry для каждого URL, используемые форматом `AvroConfluent`. Удаляются и кэш получения схем (id → schema), и кэш регистрации схем (subject + schema → id), поэтому при последующих операциях чтения и записи снова выполняется обращение к серверу реестра. Это полезно, если схема была удалена или перезаписана на стороне реестра, а также для проверки идемпотентности реестра в тестах.
+
 ## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
 
 Очищает кеш метаданных Parquet.

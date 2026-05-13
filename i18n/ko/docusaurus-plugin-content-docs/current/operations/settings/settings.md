@@ -2003,28 +2003,28 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 ## cast_string_to_date_time_mode \{#cast_string_to_date_time_mode\}
 
-<SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
+<SettingsInfoBlock type="DateTimeInputFormat" default_value="best_effort" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "basic"},{"label": "Allow to use different DateTime parsing mode in String to DateTime cast"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "best_effort"},{"label": "사용성 개선"}]}, {"id": "row-2","items": [{"label": "25.6"},{"label": "basic"},{"label": "Allow to use different DateTime parsing mode in String to DateTime cast"}]}]} />
 
 `String`에서 `DateTime`으로 캐스팅할 때, 날짜와 시간의 텍스트 표현을 해석하는 데 사용할 파서를 선택합니다.
 
 가능한 값:
 
-- `'best_effort'` — 확장 파싱을 활성화합니다.
+* `'best_effort'` — 확장 파싱을 활성화합니다.
 
-    ClickHouse는 기본 형식인 `YYYY-MM-DD HH:MM:SS`와 모든 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 날짜 및 시간 형식을 파싱할 수 있습니다. 예: `'2018-06-08T01:02:03.000Z'`.
+  ClickHouse는 기본 형식인 `YYYY-MM-DD HH:MM:SS`와 모든 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 날짜 및 시간 형식을 파싱할 수 있습니다. 예: `'2018-06-08T01:02:03.000Z'`.
 
-- `'best_effort_us'` — `best_effort`와 유사합니다(차이점은 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS) 참고).
+* `'best_effort_us'` — `best_effort`와 유사합니다(차이점은 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS) 참고).
 
-- `'basic'` — 기본 파서를 사용합니다.
+* `'basic'` — 기본 파서를 사용합니다.
 
-    ClickHouse는 `YYYY-MM-DD HH:MM:SS` 또는 `YYYY-MM-DD` 기본 형식만 파싱할 수 있습니다. 예: `2019-08-20 10:18:56` 또는 `2019-08-20`.
+  ClickHouse는 `YYYY-MM-DD HH:MM:SS` 또는 `YYYY-MM-DD` 기본 형식만 파싱할 수 있습니다. 예: `2019-08-20 10:18:56` 또는 `2019-08-20`.
 
 관련 항목:
 
-- [DateTime 데이터 타입.](../../sql-reference/data-types/datetime.md)
-- [날짜와 시간을 다루는 함수.](../../sql-reference/functions/date-time-functions.md)
+* [DateTime 데이터 타입.](../../sql-reference/data-types/datetime.md)
+* [날짜와 시간을 다루는 함수.](../../sql-reference/functions/date-time-functions.md)
 
 ## cast_string_to_dynamic_use_inference \{#cast_string_to_dynamic_use_inference\}
 
@@ -3573,6 +3573,33 @@ ClickHouse는 쿼리에 분산 테이블 간의 곱(product)이 포함된 경우
 서로 다른 파티션 간의 병합을 피하여 FINAL 쿼리를 개선합니다.
 
 이 설정을 활성화하면 SELECT FINAL 쿼리를 수행할 때 서로 다른 파티션에 속한 파트는 서로 병합되지 않습니다. 대신 각 파티션 내부에서만 병합이 수행됩니다. 파티션된 테이블을 사용할 때 쿼리 성능을 크게 향상시킬 수 있습니다.
+
+## dynamic_disk_allow_from_env \{#dynamic_disk_allow_from_env\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "동적 디스크 구성(`disk()` 함수)에서 `from_env` 치환을 허용하는 새 설정입니다. 보안을 위해 기본적으로 비활성화되어 있습니다."}]}]} />
+
+동적 디스크 구성(즉, `disk()` 함수의 인수)에서 `from_env` 치환 사용을 허용합니다.
+테이블 스토리지를 정의할 때 사용자가 임의의 환경 변수를 읽지 못하도록 기본적으로 비활성화되어 있습니다.
+
+## dynamic_disk_allow_from_zk \{#dynamic_disk_allow_from_zk\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "동적 디스크 구성(`disk()` 함수)에서 `from_zk` 치환을 허용하는 새로운 설정입니다. 기본적으로 비활성화되어 있습니다."}]}]} />
+
+동적 디스크 구성(즉, `disk()` 함수의 인수)에서 `from_zk` 치환 사용을 허용합니다.
+기본적으로 비활성화되어 있습니다.
+
+## dynamic_disk_allow_include \{#dynamic_disk_allow_include\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "동적 디스크 구성(`disk()` 함수)에서 `include` 사용을 허용하는 새로운 설정입니다. 기본적으로 비활성화되어 있습니다."}]}]} />
+
+동적 디스크 구성(즉, `disk()` 함수 인수)에서 `include`를 사용할 수 있도록 합니다.
+기본적으로 비활성화되어 있습니다.
 
 ## dynamic_throw_on_type_mismatch \{#dynamic_throw_on_type_mismatch\}
 

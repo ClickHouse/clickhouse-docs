@@ -129,7 +129,7 @@ Avro schema 缓存大小 (字节)
 
 ### AvroSchemaCacheCells \{#avroschemacachecells\}
 
-缓存中的 Avro schema 数量
+缓存中的 Avro schema 数量，包括已注册和已拉取的 schema。
 
 ### AvroSchemaRegistryCacheBytes \{#avroschemaregistrycachebytes\}
 

@@ -144,14 +144,17 @@ SELECT name, lower(hex(reinterpretAsFixedString(hash))) AS sha256 FROM system.we
 
 ### モジュールを削除する \{#delete-a-module\}
 
-削除は `DELETE FROM system.webassembly_modules WHERE name = '...'` ステートメントによって行います。
-1 回のステートメントにつき、名前が完全一致するモジュールを 1 つだけ削除できます。
+削除は、`DELETE FROM system.webassembly_modules WHERE name = '...'` ステートメントで実行します。
+条件式には、完全一致の場合は `name = 'literal'`、名前がパターンに一致するすべてのモジュールを削除する場合は `name LIKE 'pattern'` のいずれかを指定する必要があります。これ以外の形式は使用できません。
 
 ```sql
 DELETE FROM system.webassembly_modules WHERE name = 'collatz';
+
+-- Bulk-delete every module whose name starts with `tmp_` (literal underscore is escaped as `\_`):
+DELETE FROM system.webassembly_modules WHERE name LIKE 'tmp\_%';
 ```
 
-既存の UDF がそのモジュールを参照している場合、削除は失敗するため、まずそれらの UDF を削除する必要があります。
+既存のUDFのいずれかが一致したモジュールのいずれかを参照している場合、削除は失敗するため、先にそれらのUDFを削除する必要があります。
 
 ## WebAssembly UDF を作成する \{#create-a-webassembly-udf\}
 
