@@ -81,7 +81,7 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 
 ### regionToCity
 
-지오베이스(geobase)의 지역 ID를 인수로 받습니다. 이 지역이 도시이거나 도시의 일부인 경우 해당 도시에 대한 지역 ID를 반환합니다. 그렇지 않으면 0을 반환합니다.
+지오베이스(지오베이스)의 지역 ID를 인수로 받습니다. 이 지역이 도시이거나 도시의 일부인 경우 해당 도시에 대한 지역 ID를 반환합니다. 그렇지 않으면 0을 반환합니다.
 
 **구문**
 
@@ -91,7 +91,7 @@ regionToCity(id [, geobase])
 
 **매개변수**
 
-* `id` — 지리 데이터베이스(geobase)의 지역 ID입니다. [UInt32](../data-types/int-uint).
+* `id` — 지리 데이터베이스(지오베이스)의 지역 ID입니다. [UInt32](../data-types/int-uint).
 * `geobase` — 딕셔너리 키입니다. [Multiple Geobases](#multiple-geobases)를 참조하십시오. [String](../data-types/string). 선택 사항입니다.
 
 **반환 값**
@@ -109,7 +109,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 
 결과:
 
-```response
+```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
 │ World                                      │  0 │                                                          │

@@ -94,11 +94,11 @@ regionToCity(id [, geobase])
 **参数**
 
 * `id` — 来自 geobase 的地区 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [多个 geobase](#multiple-geobases)。[String](../data-types/string)。可选。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
-* 对应城市的地区 ID（如果存在）。[UInt32](../data-types/int-uint)。
+* 对应城市的地区 ID (如果存在) 。[UInt32](../data-types/int-uint)。
 * 如果不存在，则返回 0。
 
 **示例**
@@ -111,7 +111,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 
 结果：
 
-```response
+```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
 │ World                                      │  0 │                                                          │
@@ -128,7 +128,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 │ Asia                                       │  0 │                                                          │
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
-
 
 ### regionToArea
 

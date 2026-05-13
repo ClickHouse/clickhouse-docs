@@ -83,7 +83,7 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 
 ### regionToCity
 
-ジオベースからリージョン ID を受け取ります。このリージョンが都市、または都市の一部である場合は、対応する都市のリージョン ID を返します。それ以外の場合は 0 を返します。
+geobase からリージョン ID を受け取ります。このリージョンが都市、または都市の一部である場合は、対応する都市のリージョン ID を返します。それ以外の場合は 0 を返します。
 
 **構文**
 
@@ -94,7 +94,7 @@ regionToCity(id [, geobase])
 **パラメータ**
 
 * `id` — geobase のリージョン ID。 [UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。 [String](../data-types/string)。任意。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。 [String](../data-types/string)。任意。
 
 **戻り値**
 
@@ -111,7 +111,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 
 結果:
 
-```response
+```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
 │ World                                      │  0 │                                                          │
@@ -128,7 +128,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 │ Asia                                       │  0 │                                                          │
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
-
 
 ### regionToArea
 

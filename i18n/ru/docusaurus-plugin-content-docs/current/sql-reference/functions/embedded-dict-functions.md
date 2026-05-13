@@ -111,7 +111,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 
 Результат:
 
-```response
+```text
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
 │ World                                      │  0 │                                                          │
@@ -128,7 +128,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 │ Asia                                       │  0 │                                                          │
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────┘
 ```
-
 
 ### regionToArea
 
