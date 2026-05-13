@@ -636,3 +636,4 @@ exceptions:
   - JOIN
   - RESTORE
   - ClickHouse Connect
+  - re2
