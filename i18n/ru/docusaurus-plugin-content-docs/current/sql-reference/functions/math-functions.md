@@ -718,6 +718,172 @@ SELECT intExp2(3);
 8
 ```
 
+## isPrime \{#isPrime\}
+
+Добавлено в: v26.5.0
+
+Возвращает `1`, если аргумент — простое число, в противном случае — `0`.
+
+Для малых значений использует точную bitmap-таблицу, а для больших — детерминированный [тест Миллера — Рабина](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test).
+Результат точен для всех поддерживаемых входных типов.
+
+Для более широких беззнаковых целочисленных типов (`UInt128`, `UInt256`) используйте [`isProbablePrime`](/sql-reference/functions/math-functions#isProbablePrime).
+
+**Синтаксис**
+
+```sql
+isPrime(n)
+```
+
+**Аргументы**
+
+* `n` — беззнаковое целое число, проверяемое на простоту. [`UInt8`](/sql-reference/data-types/int-uint) или [`UInt16`](/sql-reference/data-types/int-uint) или [`UInt32`](/sql-reference/data-types/int-uint) или [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает `1`, если `n` — простое число, и `0` в противном случае. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Простое число**
+
+```sql title=Query
+SELECT isPrime(17)
+```
+
+```response title=Response
+1
+```
+
+**Составное число**
+
+```sql title=Query
+SELECT isPrime(18)
+```
+
+```response title=Response
+0
+```
+
+**Большое простое число типа `UInt64`**
+
+```sql title=Query
+SELECT isPrime(18446744073709551557)
+```
+
+```response title=Response
+1
+```
+
+**Максимальное значение `UInt64`**
+
+```sql title=Query
+SELECT isPrime(18446744073709551615)
+```
+
+```response title=Response
+0
+```
+
+## isProbablePrime \{#isProbablePrime\}
+
+Добавлено в: v26.5.0
+
+Возвращает `1`, если аргумент, вероятно, является простым числом, и `0`, если он заведомо составное.
+
+Для `UInt8`, `UInt16`, `UInt32` и `UInt64` результат точный и совпадает с
+[`isPrime`](/sql-reference/functions/math-functions#isPrime). Аргумент `rounds` игнорируется.
+
+Для `UInt128` и `UInt256` возвращаемое значение `1` носит вероятностный характер. Необязательный аргумент `rounds` определяет,
+сколько раундов [Миллера—Рабина](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test) используется:
+чем больше раундов, тем ниже вероятность ложноположительного результата и тем больше время выполнения. При равномерно случайном
+выборе свидетелей вероятность ложноположительного результата для фиксированного составного числа ограничена `4^(-rounds)`; значение по умолчанию `25`
+делает эту границу меньше `10^-15`. Значения выше `256` отклоняются с ошибкой `BAD_ARGUMENTS`, поскольку они
+не дают сколько-нибудь значимого улучшения и лишь тратят время.
+
+Функция детерминированная: свидетели выводятся из фиксированного зерна, вычисленного по `n`, поэтому одна и та же
+пара `(n, rounds)` всегда даёт один и тот же результат. Следовательно, составное число, которое случайно проходит
+именно эту последовательность свидетелей, будет стабильно возвращать `1`, а не проваливать тест независимо
+при каждом вызове. Поэтому границу `4^(-rounds)` следует понимать как ориентир типичной точности на разных
+входных данных, а не как вероятность для каждого вызова при фиксированном входе.
+
+**Синтаксис**
+
+```sql
+isProbablePrime(n[, rounds])
+```
+
+**Аргументы**
+
+* `n` — Беззнаковое целое число, проверяемое на простоту. [`UInt8`](/sql-reference/data-types/int-uint) или [`UInt16`](/sql-reference/data-types/int-uint) или [`UInt32`](/sql-reference/data-types/int-uint) или [`UInt64`](/sql-reference/data-types/int-uint) или [`UInt128`](/sql-reference/data-types/int-uint) или [`UInt256`](/sql-reference/data-types/int-uint)
+* `rounds` — Необязательная положительная целочисленная константа в диапазоне `[1, 256]`. Количество раундов Миллера—Рабина для `UInt128`/`UInt256` (для более узких типов игнорируется). По умолчанию — `25`. [`UInt8`](/sql-reference/data-types/int-uint) или [`UInt16`](/sql-reference/data-types/int-uint) или [`UInt32`](/sql-reference/data-types/int-uint) или [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает `1`, если `n`, вероятно, простое число, и `0`, если оно точно составное. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Малое простое число**
+
+```sql title=Query
+SELECT isProbablePrime(17)
+```
+
+```response title=Response
+1
+```
+
+**Малое составное число**
+
+```sql title=Query
+SELECT isProbablePrime(18)
+```
+
+```response title=Response
+0
+```
+
+**Наибольшее простое число типа `UInt64` (точный результат)**
+
+```sql title=Query
+SELECT isProbablePrime(18446744073709551557)
+```
+
+```response title=Response
+1
+```
+
+**Простое число Мерсенна `M_127` (`UInt128`)**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt128('170141183460469231731687303715884105727'))
+```
+
+```response title=Response
+1
+```
+
+**Простое число базового поля кривой Curve25519 `2^255 - 19` (`UInt256`)**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt256('57896044618658097711785492504343953926634992332820282019728792003956564819949'))
+```
+
+```response title=Response
+1
+```
+
+**Более быстрая, но менее надёжная проверка: 5 проходов**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt256('57896044618658097711785492504343953926634992332820282019728792003956564819949'), 5)
+```
+
+```response title=Response
+1
+```
+
 ## lgamma \{#lgamma\}
 
 Появилась в версии: v1.1.0

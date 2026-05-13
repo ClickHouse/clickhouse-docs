@@ -3,14 +3,13 @@ slug: /cloud/managed-postgres/faq
 sidebar_label: '常见问题'
 title: 'Managed Postgres 常见问题解答'
 description: '关于 ClickHouse Managed Postgres 的常见问题解答'
-keywords: ['托管 Postgres 常见问题解答', 'Postgres 问题', '指标', '扩展', '迁移', 'terraform']
+keywords: ['托管 Postgres 常见问题解答', 'Postgres 问题', '指标', '扩展', '迁移', 'terraform', 'pgbouncer', '预处理语句']
 doc_type: 'reference'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="faq" />
-
 
 ## 监控和指标 \{#monitoring-and-metrics\}
 
@@ -49,6 +48,46 @@ Managed Postgres 当前尚不支持 Terraform。我们建议使用 ClickHouse Cl
 :::tip
 如果您需要目前尚不支持的参数，请联系 [support](https://clickhouse.com/support/program) 提交请求。
 :::
+
+## 连接池 \{#connection-pooling\}
+
+### 为什么我会通过 PgBouncer 看到 `prepared statement does not exist` 错误？ \{#prepared-statement-errors\}
+
+Managed Postgres 以 **事务池化** 模式运行 PgBouncer。在这种模式下，后端 Postgres 连接只会在单个事务期间分配给客户端，随后便会返回连接池——同一客户端的下一笔事务可能会落到不同的后端上。
+
+这会导致**服务端预处理语句**失效，因为这类语句会绑定到执行 `PREPARE` (或扩展查询 `Parse`) 的特定后端上。当对应的 `Execute` 落到另一个后端时，就会出现如下错误：
+
+```text
+ERROR:  prepared statement "..." does not exist
+ERROR:  unnamed prepared statement does not exist
+```
+
+通常可追溯到这一根本原因的症状包括：
+
+* `prepared statement does not exist` 错误突增，尤其是在回填或高并发写入期间
+* 看似“静默失败”的插入——语句报错后，驱动会重试，结果一个批次最终可能只部分生效，甚至被丢弃
+* 返回值类型错误 (例如，将 `BIGINT` 列解码成 `float64` 位模式) ——当缓存的客户端执行计划在一个从未收到对应 `Parse` 的后端上复用过时的类型/格式代码时，就会发生这种情况
+
+**修复方法：在驱动中禁用服务端预处理语句。** 具体开关取决于所使用的客户端库：
+
+| Driver                           | Setting                                                                              |
+| -------------------------------- | ------------------------------------------------------------------------------------ |
+| **pgx** (Go)                     | `statement_cache_capacity=0` 和 `default_query_exec_mode=exec` (或 `simple_protocol`)  |
+| **psycopg3** (Python)            | `prepare_threshold=None`                                                             |
+| **asyncpg** (Python)             | `statement_cache_size=0`                                                             |
+| **JDBC** (Java)                  | `prepareThreshold=0`                                                                 |
+| **node-postgres / pg** (Node.js) | 不要向 `query()` 传入 `name` (命名查询会变成服务端预处理语句)                                            |
+
+如果你的工作负载依赖预处理语句，请**直接连接到 PostgreSQL** (端口 5432) ，不要通过 PgBouncer 连接池——直接连接能够正常支持预处理语句。有关如何在连接池端点和直连端点之间进行选择的详细信息，请参阅 [Connection](/cloud/managed-postgres/connection)。
+
+### PgBouncer 中的“max_client_conn”设置是什么意思？它与 Postgres 中的 `max_connections` 有什么关系？ \{#pgbouncer-vs-pg-connections\}
+
+它们控制的是不同的内容：
+
+* **Postgres `max_connections`** 用于限制 PostgreSQL 自身的 **后端** 连接数。这是开销较大的那个数值——每个后端都会占用内存和一个进程槽位。
+* **PgBouncer `max_client_conn`** 用于限制可同时打开到连接池的 **客户端** 连接数。PgBouncer 会将大量客户端连接复用到数量少得多的后端连接上。
+
+典型的 Managed Postgres 实例通常会配置为：PgBouncer 可接受的 **客户端连接数大约是 Postgres 后端连接数的 10 倍** (例如，5000 个客户端 / 500 个后端) 。如果你在连接池处看到连接错误，那么相比触及表面上的客户端连接上限，更有可能是达到了每个池的后端限制 (`default_pool_size`) 。
 
 ## 数据库功能 \{#database-capabilities\}
 

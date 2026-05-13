@@ -47,4 +47,4 @@ ClickHouse Cloud 中的扩缩容采用一种我们称为[&quot;先建后拆&quot
 * [先建后拆 (MBB)](/cloud/features/mbb) — 了解 ClickHouse Cloud 如何无缝执行扩缩容操作
 * [自动闲置状态转换](/cloud/features/autoscaling/idling) — 通过自动暂停服务来节省成本
 * [扩缩容建议](/cloud/features/autoscaling/scaling-recommendations) — 了解扩缩容建议
-* [定时扩缩容](/cloud/features/autoscaling/scaling-recommendations) — 了解定时扩缩容功能，该功能允许您精确定义服务何时扩容或缩容，而不依赖实时指标
+* [定时扩缩容](/cloud/features/autoscaling/scheduled-scaling) — 了解定时扩缩容功能，该功能允许您精确定义服务何时扩容或缩容，而不依赖实时指标
