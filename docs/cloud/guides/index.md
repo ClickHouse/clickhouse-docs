@@ -65,6 +65,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Query API endpoints](/cloud/get-started/query-endpoints) | Easily spin up REST API endpoints from your saved queries |
 | [SAML SSO removal](/cloud/security/saml-removal) | How to remove SAML SSO with ClickHouse Cloud |
 | [SAML SSO setup](/cloud/security/saml-setup) | How to set up SAML SSO with ClickHouse Cloud |
+| [SCIM provisioning with Okta](/cloud/security/scim-setup) | How to set up SCIM provisioning between Okta and ClickHouse Cloud |
 | [Setting IP filters](/cloud/security/setting-ip-filters) | This page explains how to set IP filters in ClickHouse Cloud to control access to ClickHouse services. |
 | [Standard onboarding](/cloud/reference/byoc/onboarding/standard) | Deploy ClickHouse on your own cloud infrastructure |
 | [Usage limits](/cloud/bestpractices/usage-limits) | Describes the recommended usage limits in ClickHouse Cloud |
