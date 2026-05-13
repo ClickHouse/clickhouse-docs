@@ -46,7 +46,7 @@ Some of the benefits of using ClickHouse Cloud are described below:
 
 ## What version of ClickHouse does ClickHouse Cloud use? {#what-version-of-clickhouse-does-clickhouse-cloud-use}
 
-Clickhouse Cloud periodically upgrades your service to newer versions that include fixes, new features and performance improvements. After publishing a core database version in the open source, we do additional validation in our cloud staging environment, which typically takes 6-8 weeks before rolling out to production. The rollout is phased out by cloud service provider, service type, and region.
+Clickhouse Cloud periodically upgrades your service to newer versions that include fixes, new features and performance improvements. After publishing a core open source database version, we do additional validation in our cloud staging environment, which typically takes 6-8 weeks before rolling out to production. The rollout is phased out by cloud service provider, service type, and region.
 
 You can specify the upgrade schedule for your ClickHouse Cloud service by subscribing to a specific release channel. For example, we offer a ["Fast" Release Channel](/manage/updates#fast-release-channel-early-upgrades) for subscribing to updates ahead of the regular release schedule, as well as a ["Slow" Release Channel](/manage/updates#slow-release-channel-deferred-upgrades) and other more granular scheduling options for deferred upgrades.
 
