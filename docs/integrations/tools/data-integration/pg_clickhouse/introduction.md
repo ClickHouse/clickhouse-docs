@@ -22,9 +22,9 @@ ClickHouse.
 
 ## Getting Started {#getting-started}
 
-The simplest way to try pg_clickhouse is the [Docker image], which
-contains the standard PostgreSQL Docker image with the pg_clickhouse
-extension:
+The simplest way to try pg_clickhouse is the [Docker image], which contains
+the standard PostgreSQL Docker image with the pg_clickhouse and [re2]
+extensions:
 
 ```sh
 docker run --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
@@ -300,6 +300,7 @@ adding DML features. Our road map:
   [CMake]: https://cmake.org/ "CMake: A Powerful Software Build System"
   [LibSSL]: https://openssl-library.org "OpenSSL Library"
   [TPC-H]: https://www.tpc.org/tpch/
+  [re2]: https://github.com/ClickHouse/pg_re2 "pg_re2: ClickHouse-compatible regex functions using RE2"
 
   [Query 1] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/1.sql
   [Query 2] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/2.sql
