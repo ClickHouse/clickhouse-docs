@@ -3,7 +3,7 @@ slug: /cloud/managed-postgres/faq
 sidebar_label: 'FAQ'
 title: 'Managed Postgres FAQ'
 description: 'Frequently asked questions about ClickHouse Managed Postgres'
-keywords: ['managed postgres faq', 'postgres questions', 'metrics', 'extensions', 'migration', 'terraform']
+keywords: ['managed postgres faq', 'postgres questions', 'metrics', 'extensions', 'migration', 'terraform', 'pgbouncer', 'prepared statements']
 doc_type: 'reference'
 ---
 
@@ -48,6 +48,46 @@ Yes, you can modify PostgreSQL and PgBouncer configuration parameters through th
 :::tip
 If you need a parameter that isn't currently available, contact [support](https://clickhouse.com/support/program) to request it.
 :::
+
+## Connection pooling {#connection-pooling}
+
+### Why am I seeing `prepared statement does not exist` errors through PgBouncer? {#prepared-statement-errors}
+
+Managed Postgres runs PgBouncer in **transaction pooling** mode. In this mode, a backend Postgres connection is only assigned to your client for the duration of a single transaction, then returned to the pool — the next transaction from the same client may land on a different backend.
+
+That breaks **server-side prepared statements**, which are tied to the specific backend that ran the `PREPARE` (or the extended-query `Parse`). When the matching `Execute` lands on a different backend, you get errors like:
+
+```text
+ERROR:  prepared statement "..." does not exist
+ERROR:  unnamed prepared statement does not exist
+```
+
+Symptoms that often trace back to this same root cause:
+
+- Bursts of `prepared statement does not exist` errors, especially during backfills or high-concurrency writes
+- Inserts that appear to "silently fail" — the statement errors, the driver retries, and a batch can end up partially applied or dropped
+- Returned values with the wrong type (for example, a `BIGINT` column decoded as a `float64` bit pattern) — this happens when a cached client-side plan reuses stale type/format codes against a backend that was never sent the matching `Parse`
+
+**Fix: disable server-side prepared statements in your driver.** The exact knob depends on your client library:
+
+| Driver | Setting |
+|---|---|
+| **pgx** (Go) | `statement_cache_capacity=0` and `default_query_exec_mode=exec` (or `simple_protocol`) |
+| **psycopg3** (Python) | `prepare_threshold=None` |
+| **asyncpg** (Python) | `statement_cache_size=0` |
+| **JDBC** (Java) | `prepareThreshold=0` |
+| **node-postgres / pg** (Node.js) | Don't pass a `name` to `query()` (named queries become server-prepared) |
+
+If your workload depends on prepared statements, connect **directly to PostgreSQL** (port 5432) instead of going through the PgBouncer pooler — direct connections support prepared statements normally. See [Connection](/cloud/managed-postgres/connection) for details on choosing between the pooled and direct endpoints.
+
+### What does the "max_client_conn" setting in PgBouncer mean, and how does it relate to `max_connections` in Postgres? {#pgbouncer-vs-pg-connections}
+
+They control different things:
+
+- **Postgres `max_connections`** caps the number of **backend** connections to PostgreSQL itself. This is the expensive number — each backend uses memory and a process slot.
+- **PgBouncer `max_client_conn`** caps the number of **client** connections that can be open to the pooler at once. PgBouncer multiplexes these many client connections onto a much smaller set of backend connections.
+
+A typical Managed Postgres instance is configured so PgBouncer accepts roughly **10× more client connections than there are Postgres backends** (e.g. 5000 client / 500 backend). If you see connection errors at the pooler, you're far more likely to be hitting a per-pool backend limit (`default_pool_size`) than the headline client limit.
 
 ## Database capabilities {#database-capabilities}
 
