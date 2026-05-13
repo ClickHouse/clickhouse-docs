@@ -74,40 +74,19 @@ The Tailscale connection establishment follows these steps:
    - Each Tailscale agent generates its own public-private key pair (similar to PKI)
    - Traffic remains encrypted regardless of whether it uses direct or relay mode
 
-### Security Features {#tailscale-security}
+### Security features {#tailscale-security}
 
-**Outbound-Only Connections**:
+**Outbound-only connections**:
 - Tailscale agents in your EKS cluster initiate outbound connections to the Tailscale coordination/relay servers
-- **No inbound connections are required**—no security group rules need to allow inbound traffic to Tailscale agents
+- **No inbound connections are required** — no security group rules need to allow inbound traffic to Tailscale agents
 - This reduces the attack surface and simplifies network security configuration
 
-**Access Control**:
-- Access is controlled through ClickHouse's internal approval system
-- Engineers must request access through designated approval workflows
+**Access control**:
+- Engineers must request access through an internal approval workflow before Tailscale can route them to a customer endpoint
 - Access is time-bound and automatically expires
 - All access is audited and logged
 
-**Certificate-Based Authentication**:
-- For ClickHouse system table access, engineers use temporary, time-bound certificates
-- Certificate-based authentication replaces password-based access for all human access in BYOC
-- Access is restricted to system tables only (not customer data)
-- All access attempts are logged in ClickHouse's `query_log` table
-
-### Troubleshooting Access via Tailscale {#troubleshooting-access-tailscale}
-
-When ClickHouse engineers need to troubleshoot issues in your BYOC deployment, they use Tailscale to access:
-
-- **Kubernetes API Server**: For diagnosing EBS mount failures, node-level network issues, and cluster health problems
-- **ClickHouse System Tables**: For query performance analysis and diagnostic queries (read-only access to system tables only)
-
-The troubleshooting access process:
-
-1. **Access Request**: On-call engineers within a designated group request access to the customer ClickHouse instance
-2. **Approval**: The request goes through an internal approval system with designated approvers
-3. **Certificate Generation**: A time-bound certificate is generated for the approved engineer
-4. **ClickHouse Configuration**: The ClickHouse operator configures ClickHouse to accept the certificate
-5. **Connection**: Engineers access the instance via Tailscale using the certificate
-6. **Automatic Expiration**: Access automatically expires after the set time period
+For the full data access policy — what engineers can see, certificate-based authentication, and customer-side auditing — see [ClickHouse data access](/cloud/reference/byoc/reference/clickhouse_data_access).
 
 ### Management Services Access {#management-services-access}
 
@@ -132,15 +111,7 @@ By default, ClickHouse management services access your BYOC Kubernetes cluster v
 - Query traffic and customer data never flow through Tailscale
 - All customer data remains within your VPC
 
-### Monitoring and Auditing {#tailscale-monitoring}
-
-Both ClickHouse and customers can audit Tailscale access activity:
-
-- **ClickHouse Monitoring**: ClickHouse monitors access requests and logs all Tailscale connections
-- **Customer Auditing**: Customers can track activity from ClickHouse engineers within their own systems
-- **Query Logs**: All system table access via Tailscale is logged in ClickHouse's `query_log` table
-
-For more technical details about how Tailscale is implemented in BYOC, see the [Building ClickHouse BYOC on AWS blog post](https://clickhouse.com/blog/building-clickhouse-byoc-on-aws#tailscale-connection).
+For more technical details about how Tailscale is implemented in BYOC, see the [Building ClickHouse BYOC on AWS blog post](https://clickhouse.com/blog/building-clickhouse-byoc-on-aws#tailscale-connection). For what ClickHouse engineers can read once connected and how that is audited, see [ClickHouse data access](/cloud/reference/byoc/reference/clickhouse_data_access).
 
 ## Network boundaries {#network-boundaries}
 
@@ -163,7 +134,7 @@ By default, ingress is publicly accessible with IP allow list filtering. Custome
 
 *Inbound, Private*
 
-ClickHouse Cloud engineers require troubleshooting access via Tailscale. They're provisioned with just-in-time certificate-based authentication for BYOC deployments.
+ClickHouse Cloud engineers require troubleshooting access via Tailscale. They're provisioned with just-in-time certificate-based authentication for BYOC deployments. See [ClickHouse data access](/cloud/reference/byoc/reference/clickhouse_data_access) for the full access policy.
 
 ### Billing scraper {#billing-scraper}
 
