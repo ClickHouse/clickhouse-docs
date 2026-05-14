@@ -1566,3 +1566,90 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 [data-theme='dark'] .table-category-header {
   background-color: #474747;
 }
+
+/* Side-by-side SQL translation tables (e.g., BigQuery -> ClickHouse).
+   Locks columns to 50/50, wraps long code, makes code blocks fill cell height,
+   and styles the spanning notes row as a plain table row. */
+.sql-translation-table {
+  table-layout: fixed;
+  width: 100%;
+
+  colgroup col {
+    width: 50%;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  // Code cells: zero padding so the code block fills the cell.
+  // The custom .code-viewer uses #f5f5f5 in light mode and #282828 in dark
+  // mode (see src/components/CodeViewer); match the cell bg to whichever is
+  // active so any vertical slack below shorter code blocks blends in.
+  tbody td:not([colspan]) {
+    padding: 0;
+    vertical-align: top;
+
+    // Stretch any code-block wrapper (direct child div, descendant
+    // .code-viewer, or bare <pre>) to fill the cell vertically.
+    > div,
+    > pre,
+    .code-viewer {
+      margin: 0;
+      border-radius: 0;
+      box-shadow: none;
+      height: 100%;
+      min-height: 100%;
+    }
+
+    // Text-only cells (e.g., "No equivalent") wrap in a <p>; give them
+    // padding so they don't sit flush against the cell edges.
+    > p {
+      margin: 0;
+      padding: 12px 14px;
+    }
+  }
+
+  // Subtle split between the BigQuery and ClickHouse code cells.
+  // Color is set per-theme below so it's slightly lighter than the cell bg
+  // in light mode and slightly darker in dark mode.
+  tbody td:not([colspan]) + td:not([colspan]) {
+    border-left: 1px solid transparent;
+  }
+}
+
+// Match the horizontal row-divider color used by the global table style
+// (rgb(230,231,233) light / rgb(50,50,50) dark) so vertical and horizontal
+// dividers have the same colour and weight.
+[data-theme='light'] .sql-translation-table tbody td:not([colspan]) + td:not([colspan]) {
+  border-left-color: rgb(230, 231, 233);
+}
+
+[data-theme='dark'] .sql-translation-table tbody td:not([colspan]) + td:not([colspan]) {
+  border-left-color: rgb(50, 50, 50);
+}
+
+.sql-translation-table tbody td[colspan="2"] {
+  padding: 10px 14px;
+  background-color: rgba(127, 127, 127, 0.05);
+  font-size: 0.9rem;
+}
+
+// 3-column variant: BigQuery | ClickHouse | Notes inline.
+.sql-translation-table.has-notes-col colgroup col:nth-child(1),
+.sql-translation-table.has-notes-col colgroup col:nth-child(2) {
+  width: 35%;
+}
+.sql-translation-table.has-notes-col colgroup col:nth-child(3) {
+  width: 30%;
+}
+
+[data-theme='light'] .sql-translation-table tbody td:not([colspan]) {
+  background-color: #f5f5f5;
+}
+
+[data-theme='dark'] .sql-translation-table tbody td:not([colspan]) {
+  background-color: #282828;
+}
