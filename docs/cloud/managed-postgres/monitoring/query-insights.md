@@ -275,24 +275,6 @@ UI interactive as you slice across a week or a month.
 ClickHouse. Source and issues live at
 [github.com/clickhouse/pg_stat_ch](https://github.com/clickhouse/pg_stat_ch).
 
-## What's next {#whats-next}
-
-In active development:
-
-- An Open API exposing the same data the UI runs against, built for
-  agents that read pattern aggregates and per-execution counters to
-  identify bottlenecks and propose fixes.
-- Wait events for per-execution attribution of what Postgres was
-  actually waiting on (I/O, locks, buffer pins, IPC, client), for the
-  case where CPU and I/O counters are both small but the query still
-  took hundreds of milliseconds.
-- EXPLAIN plan collection for slower queries, configurable per
-  instance to manage load on the database.
-- Recommendations such as index hints, `work_mem` tuning, and
-  autovacuum guidance.
-- Regression alerts for cases like p99 doubling, new top offenders
-  emerging, or error counts crossing thresholds.
-
 ## Related pages {#related}
 
 - [Monitoring dashboard](/cloud/managed-postgres/monitoring/dashboard) — built-in resource and activity charts
