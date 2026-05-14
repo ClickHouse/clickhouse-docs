@@ -288,7 +288,7 @@ ORDER BY id
 <tr>
 <td colSpan={2}>
 
-BigQuery partitioning expects a single date/timestamp column; ClickHouse accepts an arbitrary expression. ClickHouse partitions are a storage-organisation feature &mdash; not a substitute for `ORDER BY`.
+BigQuery partitioning expects a single date/timestamp column; ClickHouse accepts an arbitrary expression. ClickHouse partitions are a storage-organization feature &mdash; not a substitute for `ORDER BY`.
 
 </td>
 </tr>
@@ -675,7 +675,7 @@ GROUP BY status
 <tr>
 <td colSpan={2}>
 
-ClickHouse [materialized views](/sql-reference/statements/create/view#materialized-view) are incremental insert-time triggers that write into a target table. For an aggregate MV, use [`AggregatingMergeTree`](/engines/table-engines/mergetree-family/aggregatingmergetree) and the `-State` aggregate-function combinator. Query the MV with `countMerge(c)` to finalise.
+ClickHouse [materialized views](/sql-reference/statements/create/view#materialized-view) are incremental insert-time triggers that write into a target table. For an aggregate MV, use [`AggregatingMergeTree`](/engines/table-engines/mergetree-family/aggregatingmergetree) and the `-State` aggregate-function combinator. Query the MV with `countMerge(c)` to finalize.
 
 </td>
 </tr>
@@ -2992,4 +2992,4 @@ ClickHouse [`range`](/sql-reference/functions/array-functions#range) excludes th
 
 ### Aggregate functions {#aggregate-functions}
 
-BigQuery exposes roughly 18 aggregate functions plus a handful of approximate aggregates. ClickHouse ships [more than 150 aggregate functions](/sql-reference/aggregate-functions/reference) and adds [combinators](/sql-reference/aggregate-functions/combinators) — suffixes such as `-If`, `-Array`, `-Map`, `-ForEach`, `-Merge`, and `-State` — that compose with any aggregate to extend its behaviour across data shapes or to use it inside materialized views.
+BigQuery exposes roughly 18 aggregate functions plus a handful of approximate aggregates. ClickHouse ships [more than 150 aggregate functions](/sql-reference/aggregate-functions/reference) and adds [combinators](/sql-reference/aggregate-functions/combinators) — suffixes such as `-If`, `-Array`, `-Map`, `-ForEach`, `-Merge`, and `-State` — that compose with any aggregate to extend its behavior across data shapes or to use it inside materialized views.
