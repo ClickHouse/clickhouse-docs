@@ -14,7 +14,7 @@ This document details the similarities and differences in SQL syntax between Big
 ClickHouse offers more granular precision than BigQuery for numerics.
 Where BigQuery has [`INT64`, `NUMERIC`, `BIGNUMERIC`, and `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types),
 ClickHouse provides multiple integer, decimal, and float widths so storage
-and memory can be tuned to the actual range of the data. 
+and memory can be tuned to the actual range of the data.
 
 :::tip
 When several
@@ -219,7 +219,7 @@ ORDER BY id
 <tr>
 <td colSpan={2}>
 
-An engine and an `ORDER BY` are required for `MergeTree`-family tables; pick the column(s) that match the query access pattern. See [Sparse primary indexes](/guides/best-practices/sparse-primary-indexes).
+An engine and an `ORDER BY` are required for `MergeTree`-family tables; pick the columns that match the query access pattern. See [Sparse primary indexes](/guides/best-practices/sparse-primary-indexes).
 
 </td>
 </tr>
@@ -288,7 +288,7 @@ ORDER BY id
 <tr>
 <td colSpan={2}>
 
-BigQuery partitioning expects a single date/timestamp column; ClickHouse accepts an arbitrary expression. ClickHouse partitions are a storage-organization feature &mdash; not a substitute for `ORDER BY`.
+BigQuery partitioning expects a single date/timestamp column; ClickHouse accepts an arbitrary expression. ClickHouse partitions are a storage-organization feature, not a substitute for `ORDER BY`.
 
 </td>
 </tr>
@@ -777,7 +777,7 @@ ADD INDEX idx embedding
 <tr>
 <td colSpan={2}>
 
-See [Approximate-nearest-neighbour indexes](/engines/table-engines/mergetree-family/annindexes).
+See [Approximate-nearest-neighbor indexes](/engines/table-engines/mergetree-family/annindexes).
 
 </td>
 </tr>
@@ -1577,6 +1577,55 @@ LEFT JOIN mydb.u AS b ON a.id = b.id
 ```sql
 SELECT a.id
 FROM mydataset.t a
+RIGHT JOIN mydataset.u b ON a.id = b.id
+```
+
+</td>
+<td>
+
+```sql
+SELECT a.id
+FROM mydb.t AS a
+RIGHT JOIN mydb.u AS b ON a.id = b.id
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+SELECT a.id
+FROM mydataset.t a
+FULL OUTER JOIN mydataset.u b ON a.id = b.id
+```
+
+</td>
+<td>
+
+```sql
+SELECT a.id
+FROM mydb.t AS a
+FULL JOIN mydb.u AS b ON a.id = b.id
+```
+
+</td>
+</tr>
+<tr>
+<td colSpan={2}>
+
+ClickHouse spells it `FULL JOIN` (the `OUTER` keyword is optional and usually omitted).
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+SELECT a.id
+FROM mydataset.t a
 CROSS JOIN mydataset.u b
 ```
 
@@ -1608,6 +1657,55 @@ JOIN mydataset.u b USING (id)
 SELECT a.id
 FROM mydb.t AS a
 JOIN mydb.u AS b USING (id)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+SELECT * FROM mydataset.t
+WHERE EXISTS (
+  SELECT 1 FROM mydataset.u WHERE u.id = t.id
+)
+```
+
+</td>
+<td>
+
+```sql
+SELECT * FROM mydb.t
+WHERE id IN (SELECT id FROM mydb.u)
+```
+
+</td>
+</tr>
+<tr>
+<td colSpan={2}>
+
+ClickHouse supports `EXISTS (subquery)` as well, but the more idiomatic and better-optimized form for existence checks is `IN (subquery)`.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+SELECT * FROM mydataset.t
+WHERE NOT EXISTS (
+  SELECT 1 FROM mydataset.u WHERE u.id = t.id
+)
+```
+
+</td>
+<td>
+
+```sql
+SELECT * FROM mydb.t
+WHERE id NOT IN (SELECT id FROM mydb.u)
 ```
 
 </td>
@@ -2221,7 +2319,7 @@ WHILE cond DO ... END WHILE
 </td>
 <td>
 
-_no equivalent &mdash; use a client-driven loop_
+_no equivalent; use a client-driven loop_
 
 </td>
 </tr>
@@ -2326,7 +2424,7 @@ BEGIN TRANSACTION; ...; COMMIT TRANSACTION
 </td>
 <td>
 
-_multi-statement transactions are experimental_ &mdash; see [transactions roadmap](https://github.com/ClickHouse/ClickHouse/issues/58392)
+_multi-statement transactions are experimental_; see [transactions roadmap](https://github.com/ClickHouse/ClickHouse/issues/58392)
 
 </td>
 </tr>
@@ -2992,4 +3090,751 @@ ClickHouse [`range`](/sql-reference/functions/array-functions#range) excludes th
 
 ### Aggregate functions {#aggregate-functions}
 
-BigQuery exposes roughly 18 aggregate functions plus a handful of approximate aggregates. ClickHouse ships [more than 150 aggregate functions](/sql-reference/aggregate-functions/reference) and adds [combinators](/sql-reference/aggregate-functions/combinators) — suffixes such as `-If`, `-Array`, `-Map`, `-ForEach`, `-Merge`, and `-State` — that compose with any aggregate to extend its behavior across data shapes or to use it inside materialized views.
+BigQuery exposes roughly 18 aggregate functions plus a handful of approximate aggregates. ClickHouse ships [more than 150 aggregate functions](/sql-reference/aggregate-functions/reference) and adds [combinators](/sql-reference/aggregate-functions/combinators) (suffixes such as `-If`, `-Array`, `-Map`, `-ForEach`, `-Merge`, and `-State`) that compose with any aggregate to extend its behavior across data shapes or to use it inside materialized views.
+
+<table className="sql-translation-table">
+<colgroup>
+<col />
+<col />
+</colgroup>
+<thead>
+<tr>
+<th>BigQuery</th>
+<th>ClickHouse</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+
+```sql
+COUNT(*) -- or COUNT(col)
+```
+
+</td>
+<td>
+
+```sql
+count() -- or count(col)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+SUM(col), AVG(col), MIN(col), MAX(col)
+```
+
+</td>
+<td>
+
+```sql
+sum(col), avg(col), min(col), max(col)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+COUNTIF(cond)
+```
+
+</td>
+<td>
+
+```sql
+countIf(cond)
+```
+
+</td>
+</tr>
+<tr>
+<td colSpan={2}>
+
+ClickHouse pairs every aggregate with the [`-If` combinator](/sql-reference/aggregate-functions/combinators#-if): `sumIf`, `avgIf`, etc.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+STRING_AGG(name, ',')
+```
+
+</td>
+<td>
+
+```sql
+arrayStringConcat(groupArray(name), ',')
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+ARRAY_AGG(name)
+```
+
+</td>
+<td>
+
+```sql
+groupArray(name)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+ANY_VALUE(name)
+```
+
+</td>
+<td>
+
+```sql
+any(name)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+APPROX_COUNT_DISTINCT(id)
+```
+
+</td>
+<td>
+
+```sql
+uniq(id) -- or uniqExact(id) for exact, uniqHLL12(id) for HyperLogLog
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+### Window functions {#window-functions}
+
+`OVER` and `PARTITION BY` work the same in both engines (see [Query syntax](#query-syntax) for the windowed-query and `QUALIFY` examples).
+
+<table className="sql-translation-table">
+<colgroup>
+<col />
+<col />
+</colgroup>
+<thead>
+<tr>
+<th>BigQuery</th>
+<th>ClickHouse</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+
+```sql
+ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY ts)
+```
+
+</td>
+<td>
+
+```sql
+row_number() OVER (PARTITION BY user_id ORDER BY ts)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+RANK() OVER (ORDER BY score DESC)
+```
+
+</td>
+<td>
+
+```sql
+rank() OVER (ORDER BY score DESC)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+DENSE_RANK() OVER (ORDER BY score DESC)
+```
+
+</td>
+<td>
+
+```sql
+dense_rank() OVER (ORDER BY score DESC)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+NTILE(4) OVER (ORDER BY amount)
+```
+
+</td>
+<td>
+
+```sql
+ntile(4) OVER (ORDER BY amount)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+LAG(amount, 1) OVER (PARTITION BY id ORDER BY ts)
+```
+
+</td>
+<td>
+
+```sql
+lagInFrame(amount, 1) OVER (PARTITION BY id ORDER BY ts)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+LEAD(amount, 1) OVER (PARTITION BY id ORDER BY ts)
+```
+
+</td>
+<td>
+
+```sql
+leadInFrame(amount, 1) OVER (PARTITION BY id ORDER BY ts)
+```
+
+</td>
+</tr>
+<tr>
+<td colSpan={2}>
+
+ClickHouse names its `LAG`/`LEAD` equivalents `lagInFrame` / `leadInFrame`; they're available without enabling experimental settings since version 23.10.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+FIRST_VALUE(name) OVER (PARTITION BY id ORDER BY ts)
+```
+
+</td>
+<td>
+
+```sql
+first_value(name) OVER (PARTITION BY id ORDER BY ts)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+LAST_VALUE(name) OVER (PARTITION BY id ORDER BY ts)
+```
+
+</td>
+<td>
+
+```sql
+last_value(name) OVER (PARTITION BY id ORDER BY ts)
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+### Date and time functions {#date-functions}
+
+<table className="sql-translation-table">
+<colgroup>
+<col />
+<col />
+</colgroup>
+<thead>
+<tr>
+<th>BigQuery</th>
+<th>ClickHouse</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+
+```sql
+CURRENT_DATE()
+```
+
+</td>
+<td>
+
+```sql
+today() -- or toDate(now())
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+CURRENT_TIMESTAMP()
+```
+
+</td>
+<td>
+
+```sql
+now() -- or now64() for sub-second precision
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+EXTRACT(YEAR FROM d) -- MONTH, DAY, HOUR, etc.
+```
+
+</td>
+<td>
+
+```sql
+toYear(d) -- toMonth(d), toDayOfMonth(d), toHour(d), ...
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+DATE_ADD(d, INTERVAL 5 DAY)
+```
+
+</td>
+<td>
+
+```sql
+d + INTERVAL 5 DAY -- or addDays(d, 5)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+DATE_SUB(d, INTERVAL 5 DAY)
+```
+
+</td>
+<td>
+
+```sql
+d - INTERVAL 5 DAY -- or subtractDays(d, 5)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+DATE_DIFF(end, start, DAY)
+```
+
+</td>
+<td>
+
+```sql
+dateDiff('day', start, end)
+```
+
+</td>
+</tr>
+<tr>
+<td colSpan={2}>
+
+Note the argument order: ClickHouse takes `(unit, start, end)`; BigQuery takes `(end, start, unit)`.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+DATE_TRUNC(d, MONTH)
+```
+
+</td>
+<td>
+
+```sql
+toStartOfMonth(d) -- toStartOfWeek, toStartOfQuarter, toStartOfYear, ...
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+FORMAT_DATE('%Y-%m-%d', d)
+```
+
+</td>
+<td>
+
+```sql
+formatDateTime(d, '%F') -- '%F' is ISO date; see formatDateTime docs
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+PARSE_DATE('%Y-%m-%d', s)
+```
+
+</td>
+<td>
+
+```sql
+toDate(s) -- or parseDateTimeBestEffort(s) for permissive parsing
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+TIMESTAMP_SECONDS(n)
+```
+
+</td>
+<td>
+
+```sql
+toDateTime(n)
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+### String functions {#string-functions}
+
+<table className="sql-translation-table">
+<colgroup>
+<col />
+<col />
+</colgroup>
+<thead>
+<tr>
+<th>BigQuery</th>
+<th>ClickHouse</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+
+```sql
+LENGTH(s)
+```
+
+</td>
+<td>
+
+```sql
+lengthUTF8(s) -- length(s) returns bytes
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+SUBSTR(s, pos, len)
+```
+
+</td>
+<td>
+
+```sql
+substring(s, pos, len)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+SPLIT(s, ',')
+```
+
+</td>
+<td>
+
+```sql
+splitByChar(',', s) -- or splitByString(',', s) for multi-char delimiters
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+REPLACE(s, from, to)
+```
+
+</td>
+<td>
+
+```sql
+replaceAll(s, from, to) -- use replaceOne for first match only
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+UPPER(s), LOWER(s)
+```
+
+</td>
+<td>
+
+```sql
+upper(s), lower(s) -- upperUTF8 / lowerUTF8 for Unicode-aware casing
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+TRIM(s)
+```
+
+</td>
+<td>
+
+```sql
+trim(BOTH ' ' FROM s) -- or trimBoth(s)
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+REGEXP_CONTAINS(s, r'^[a-z]')
+```
+
+</td>
+<td>
+
+```sql
+match(s, '^[a-z]')
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+REGEXP_EXTRACT(s, r'([0-9]+)')
+```
+
+</td>
+<td>
+
+```sql
+extract(s, '([0-9]+)')
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+REGEXP_REPLACE(s, r'[0-9]+', 'X')
+```
+
+</td>
+<td>
+
+```sql
+replaceRegexpAll(s, '[0-9]+', 'X')
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>
+
+### JSON functions {#json-functions}
+
+<table className="sql-translation-table">
+<colgroup>
+<col />
+<col />
+</colgroup>
+<thead>
+<tr>
+<th>BigQuery</th>
+<th>ClickHouse</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td>
+
+```sql
+JSON_EXTRACT(j, '$.field')
+```
+
+</td>
+<td>
+
+```sql
+JSONExtract(j, 'field', 'String') -- typed extraction; pass the result type
+```
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+JSON_EXTRACT_SCALAR(j, '$.field')
+```
+
+</td>
+<td>
+
+```sql
+JSONExtractString(j, 'field')
+```
+
+</td>
+</tr>
+<tr>
+<td colSpan={2}>
+
+ClickHouse offers typed extractors per result type: `JSONExtractString`, `JSONExtractInt`, `JSONExtractFloat`, `JSONExtractBool`, `JSONExtractArrayRaw`, etc. See [JSON functions](/sql-reference/functions/json-functions).
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+```sql
+PARSE_JSON(s)
+```
+
+</td>
+<td>
+
+```sql
+CAST(s AS JSON) -- or store as the native JSON column type
+```
+
+</td>
+</tr>
+
+</tbody>
+</table>

@@ -1632,9 +1632,32 @@ input::-ms-input-placeholder { /* Microsoft Edge */
 }
 
 .sql-translation-table tbody td[colspan="2"] {
-  padding: 10px 14px;
+  padding: 10px 14px 10px 36px;
   background-color: rgba(127, 127, 127, 0.05);
   font-size: 0.9rem;
+  position: relative;
+}
+
+// Visual marker tying the note to the row above it: a "↳" return arrow in
+// the gutter, so the reader sees the note belongs to the code pair that
+// just rendered above.
+.sql-translation-table tbody td[colspan="2"]::before {
+  content: '↳';
+  position: absolute;
+  left: 14px;
+  top: 10px;
+  color: var(--ifm-color-emphasis-500);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+// Drop the (invisible) row divider between code-pair row and its note row.
+// Both browsers we care about support :has().
+.sql-translation-table tbody tr:has(> td[colspan="2"]) {
+  border-top: none;
+}
+.sql-translation-table tbody tr:has(> td[colspan="2"]) > td {
+  border-top: none;
 }
 
 // 3-column variant: BigQuery | ClickHouse | Notes inline.
