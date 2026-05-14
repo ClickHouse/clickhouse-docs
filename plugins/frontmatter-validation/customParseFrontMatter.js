@@ -230,7 +230,8 @@ async function customParseFrontMatter(params) {
 
                     // Check for single quotes on regular single-line values
                     const fieldValue = line.substring(line.indexOf(':') + 1).trim();
-                    const isNumericValue = /^-?\d+(\.\d+)?(?:\s+#.*)?$/.test(fieldValue);
+                    const numericCandidate = fieldValue.split(/\s+#/, 1)[0].trim();
+                    const isNumericValue = /^-?\d+(\.\d+)?$/.test(numericCandidate);
 
                     // Check if this might be the start of a multi-line value
                     if (fieldValue.startsWith("'") && !fieldValue.endsWith("'")) {
