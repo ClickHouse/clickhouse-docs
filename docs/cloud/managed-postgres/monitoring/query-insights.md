@@ -33,12 +33,14 @@ exact values you query never enter the telemetry stream.
 ## Open query insights {#open}
 
 Open your Managed Postgres instance in the cloud console and click
-**Query insights** in the left sidebar. The page is divided into three
+**Query insights** in the left sidebar. The page is divided into four
 surfaces, in the order you'd actually use them:
 
 - An **Overview** that fits a database health check on one screen.
 - A **Slow patterns** table that ranks every query pattern your database
   has run, sorted by whatever you suspect.
+- A **Recent queries** panel that lists individual executions in reverse
+  chronological order.
 - A **Detail flyout** that aggregates every counter for a single pattern.
 
 Use the **Time period** selector at the top to switch between the last 15
