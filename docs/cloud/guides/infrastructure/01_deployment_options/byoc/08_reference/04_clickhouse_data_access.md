@@ -15,7 +15,7 @@ ClickHouse Cloud's control plane runs your BYOC deployment without reading custo
 
 | Component | What leaves your VPC |
 |-----------|----------------------|
-| State exporter | Service state (health, status) to an SQS queue owned by ClickHouse Cloud. |
+| State exporter | Service state (health, status) to an `SQS` queue owned by ClickHouse Cloud. |
 | Billing scraper | CPU and memory metrics to an S3 bucket owned by ClickHouse Cloud. |
 | AlertManager | Cluster health alerts to ClickHouse Cloud. |
 
@@ -33,13 +33,13 @@ With approved troubleshooting access, engineers can read ClickHouse system table
 - `system.tables`, `system.columns`, and similar system tables — schema and metadata
 - Other `system.*` tables used for diagnostics (e.g., parts, mutations, replicas)
 
-### What engineers cannot see {#what-engineers-cannot-see}
+### What engineers can't see {#what-engineers-cant-see}
 
-Engineers cannot read customer user tables. Access is scoped to system tables only.
+Engineers can't read customer user tables. Access is scoped to system tables only.
 
 ### How access is enforced {#how-access-is-enforced}
 
-- **Approval required**: every access request goes through an internal approval system with designated approvers. Engineers cannot self-grant access.
+- **Approval required**: every access request goes through an internal approval system with designated approvers. Engineers can't self-grant access.
 - **Time-bound certificates**: a temporary, time-bound certificate is generated per approved session. Access expires automatically.
 - **Certificate-based authentication**: certificates replace password-based access for all human access to BYOC instances.
 - **Read-only on system tables**: the certificate identity is scoped to system table reads.
@@ -50,7 +50,7 @@ Engineers cannot read customer user tables. Access is scoped to system tables on
 Engineer activity is visible to you and audited by ClickHouse:
 
 - **Customer-visible**: every query a ClickHouse engineer runs on your instance appears in your own `system.query_log`, including the query text and the certificate identity. You can audit this from your ClickHouse service directly.
-- **ClickHouse-side**: all access requests, approvals, and Tailscale connections are logged and audited internally by ClickHouse's security team.
+- **ClickHouse-side**: ClickHouse's security team internally logs and audits all access requests, approvals, and Tailscale connections.
 
 ## Future controls {#future-controls}
 

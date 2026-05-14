@@ -111,7 +111,7 @@ By default, ClickHouse management services access your BYOC Kubernetes cluster v
 - Query traffic and customer data never flow through Tailscale
 - All customer data remains within your VPC
 
-For more technical details about how Tailscale is implemented in BYOC, see the [Building ClickHouse BYOC on AWS blog post](https://clickhouse.com/blog/building-clickhouse-byoc-on-aws#tailscale-connection). For what ClickHouse engineers can read once connected and how that is audited, see [ClickHouse data access](/cloud/reference/byoc/reference/clickhouse_data_access).
+For more technical details about how Tailscale is implemented in BYOC, see the [Building ClickHouse BYOC on AWS blog post](https://clickhouse.com/blog/building-clickhouse-byoc-on-aws#tailscale-connection). For what ClickHouse engineers can read once connected and how ClickHouse audits that access, see [ClickHouse data access](/cloud/reference/byoc/reference/clickhouse_data_access).
 
 ## Network boundaries {#network-boundaries}
 
