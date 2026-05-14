@@ -44,10 +44,10 @@ While in there, this PR also tidies up the firing-alert UX in saved searches. Th
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/JZYGz6ZOPf4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-A hackathon experiment that introduces three IDE-inspired themes to HyperDX: Nord (Arctic blues), Catppuccin (pastel), and One Dark (Atom-style), each with light and dark variants. The presenter let the agent generate color tokens from the named source themes, which got it most of the way there with a few rough edges around sidebar colors and line contrast that would still need cleanup.
+This was a hackathon experiment that introduced three IDE-inspired themes to the ClickStack UI: Nord (Arctic blues), Catppuccin (pastel), and One Dark (Atom-style), each with light and dark variants. We tried generated color tokens from the named source themes, which got it most of the way there with a few rough edges around sidebar colors and line contrast that would still need cleanup.
 
 The PR ended up closed rather than merged. The team is moving toward ClickUI, which currently supports a single theme, and maintaining several parallel sets of tokens would create ongoing work, especially once you start checking contrast properly across each combination. The decision was to hold off until ClickUI itself supports multi-theming.
 
-One piece of design logic from the experiment is worth keeping in mind for whenever this comes back. The first iteration recoloured the HyperDX logo per theme, which lost the brand. The cleaner approach: a light theme shows the dark logo, a dark theme shows the light logo, and the green HyperDX wordmark itself stays untouched.
+We felt one piece of design logic from the experiment was worth keeping in mind for whenever this comes back. The first iteration recoloured the HyperDX logo per theme, which lost the brand. The cleaner approach: a light theme shows the dark logo, a dark theme shows the light logo, and the green HyperDX wordmark itself stays untouched.
 
 **Related PRs:** [#2191](https://github.com/hyperdxio/hyperdx/pull/2191) feat: add IDE-inspired themes (Nord, Catppuccin, One Dark)
