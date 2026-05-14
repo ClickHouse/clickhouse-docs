@@ -1,5 +1,5 @@
 ---
-title: 'ClickHouse data access'
+title: 'ClickHouse data access (BYOC)'
 slug: /cloud/reference/byoc/reference/clickhouse_data_access
 sidebar_label: 'ClickHouse data access'
 keywords: ['BYOC', 'bring your own cloud', 'data access', 'employee access', 'system.query_log', 'troubleshooting access', 'compliance']
