@@ -8,9 +8,7 @@ title: 'hudi'
 doc_type: 'reference'
 ---
 
-# Табличная функция hudi \{#hudi-table-function\}
-
-Предоставляет табличный интерфейс только для чтения к таблицам Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
+Предоставляет интерфейс табличного типа только для чтения к таблицам Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
 
 ## Синтаксис \{#syntax\}
 

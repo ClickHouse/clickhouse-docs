@@ -1,13 +1,11 @@
 ---
-description: 'rank ウィンドウ関数のリファレンス'
+description: 'rank ウィンドウ関数のドキュメント'
 sidebar_label: 'rank'
 sidebar_position: 6
 slug: /sql-reference/window-functions/rank
 title: 'rank'
 doc_type: 'reference'
 ---
-
-# rank \{#rank\}
 
 現在の行を、そのパーティション内で「飛び飛びの順位」としてランク付けします。言い換えると、処理中の行の値が、以前に現れた行の値と等しい場合、その行はその前の行と同じ順位になります。
 次の行の順位は、直前の行の順位に、その直前の順位が付与された回数と同じ値のギャップを加えたものになります。
@@ -28,7 +26,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **返される値**
 
-* パーティション内での現在の行番号（欠番を含む）を表す数値。[UInt64](../data-types/int-uint.md)。
+* パーティション内での現在の行番号 (欠番を含む) を表す数値。[UInt64](../data-types/int-uint.md)。
 
 **例**
 

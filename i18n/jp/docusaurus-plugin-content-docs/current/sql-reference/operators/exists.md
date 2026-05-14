@@ -1,17 +1,15 @@
 ---
-description: '`EXISTS` 演算子に関するドキュメント'
+description: '`EXISTS` 演算子のドキュメント'
 slug: /sql-reference/operators/exists
 title: 'EXISTS'
 doc_type: 'reference'
 ---
 
-# EXISTS \{#exists\}
-
 `EXISTS` 演算子は、サブクエリの結果にレコードが存在するかどうかを判定します。結果が空の場合、この演算子は `0` を返し、1 件以上存在する場合は `1` を返します。
 
 `EXISTS` は [WHERE](../../sql-reference/statements/select/where.md) 句でも使用できます。
 
-:::tip\
+:::tip
 メインクエリのテーブルおよびカラムへの参照は、サブクエリ内ではサポートされません。
 :::
 

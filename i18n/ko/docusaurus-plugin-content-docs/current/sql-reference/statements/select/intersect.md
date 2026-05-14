@@ -6,8 +6,6 @@ title: 'INTERSECT 절'
 doc_type: 'reference'
 ---
 
-# INTERSECT 절 \{#intersect-clause\}
-
 `INTERSECT` 절은 첫 번째 쿼리와 두 번째 쿼리 모두의 결과에 포함되는 행만 반환합니다. 두 쿼리는 컬럼의 개수, 순서, 데이터 타입이 일치해야 합니다. `INTERSECT` 결과에는 중복된 행이 포함될 수 있습니다.
 
 괄호를 사용하지 않으면 여러 개의 `INTERSECT` SQL 문은 왼쪽에서 오른쪽 순서로 실행됩니다. `INTERSECT` 연산자는 `UNION` 및 `EXCEPT` 절보다 우선순위가 높습니다.
@@ -131,7 +129,7 @@ WHERE price > 100
 └─────────────┘
 ```
 
-이는 어떤 시점에는 Bitcoin과 Ethereum이 $100 이상에서 거래된 적이 있었고, DOGEFI와 Bitcoin Diamond는 이 예제에서 사용한 데이터 기준으로는 한 번도 $100 이상에서 거래된 적이 없음을 의미합니다.
+이는 어느 시점에는 Bitcoin과 Ethereum이 $100을 넘는 가격에 거래되었고, DOGEFI와 Bitcoin Diamond는 한 번도 $100을 넘는 가격에 거래된 적이 없었음을 의미합니다(적어도 여기 이 예시에서 사용한 데이터를 기준으로 하면 그렇습니다).
 
 ## INTERSECT DISTINCT \{#intersect-distinct\}
 

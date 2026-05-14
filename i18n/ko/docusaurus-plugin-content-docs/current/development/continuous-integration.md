@@ -7,8 +7,6 @@ title: '지속적 통합 (CI)'
 doc_type: 'reference'
 ---
 
-# 지속적 통합 (CI) \{#continuous-integration-ci\}
-
 pull request를 제출하면 ClickHouse [지속적 통합 (CI) 시스템](tests.md#test-automation)이 코드에 대해 몇 가지 자동 검사를 실행합니다.
 이 작업은 저장소 메인테이너(ClickHouse 팀 구성원)가 코드를 검토하고 pull request에 `can be tested` 레이블을 추가한 후에 이루어집니다.
 검사 결과는 [GitHub checks 문서](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks)에 설명된 대로 GitHub pull request 페이지에 표시됩니다.

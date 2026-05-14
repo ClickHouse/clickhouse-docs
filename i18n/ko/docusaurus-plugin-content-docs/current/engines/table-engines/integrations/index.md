@@ -1,13 +1,11 @@
 ---
-description: '통합용 테이블 엔진에 대한 문서'
+description: '통합을 위한 테이블 엔진 문서'
 sidebar_label: '통합'
 sidebar_position: 40
 slug: /engines/table-engines/integrations/
-title: '통합용 테이블 엔진'
-doc_type: 'reference'
+title: '통합을 위한 테이블 엔진'
+doc_type: '참고'
 ---
-
-# 통합을 위한 테이블 엔진 \{#table-engines-for-integrations\}
 
 ClickHouse는 테이블 엔진을 포함하여 외부 시스템과 통합하기 위한 다양한 방법을 제공합니다. 다른 모든 테이블 엔진과 마찬가지로 설정은 `CREATE TABLE` 또는 `ALTER TABLE` 쿼리를 사용하여 수행합니다. 이렇게 설정된 통합은 사용자 입장에서는 일반 테이블처럼 보이지만, 해당 테이블에 대한 쿼리는 프록시를 통해 외부 시스템으로 전달됩니다. 이러한 투명한 쿼리 수행 방식은, 매번 사용자 지정 쿼리 방식을 사용해야 하는 딕셔너리(dictionary)나 테이블 함수(table function)와 같은 다른 통합 방법에 비해 이 접근 방식이 가지는 주요 장점 중 하나입니다.
 

@@ -1,6 +1,6 @@
 ---
-description: 'Google Cloud Storage의 데이터에 대해 `SELECT` 및 `INSERT`를 수행하기 위한 테이블과 유사한 인터페이스를 제공합니다. `Storage Object User` IAM 역할이 필요합니다.'
-keywords: ['gcs', '버킷']
+description: '[Google Cloud Storage](https://cloud.google.com/storage/)에서 `SELECT` 및 `INSERT`를 사용해 데이터를 조회·삽입하기 위한 테이블 형태의 인터페이스를 제공합니다. `Storage Object User` IAM role이 필요합니다.'
+keywords: ['gcs', 'bucket']
 sidebar_label: 'gcs'
 sidebar_position: 70
 slug: /sql-reference/table-functions/gcs
@@ -8,17 +8,11 @@ title: 'gcs'
 doc_type: 'reference'
 ---
 
-
-
-# gcs Table Function \{#gcs-table-function\}
-
 [Google Cloud Storage](https://cloud.google.com/storage/)에서 `SELECT` 및 `INSERT`를 사용해 데이터를 조회·삽입하기 위한 테이블 형태의 인터페이스를 제공합니다. [`Storage Object User` IAM role](https://cloud.google.com/storage/docs/access-control/iam-roles)이 필요합니다.
 
-이는 [s3 table function](../../sql-reference/table-functions/s3.md)의 별칭입니다.
+이는 [s3 테이블 함수](../../sql-reference/table-functions/s3.md)의 별칭입니다.
 
 클러스터에 여러 레플리카가 있는 경우, 대신 [s3Cluster function](../../sql-reference/table-functions/s3Cluster.md)(GCS와 함께 동작함)을 사용하여 insert 작업을 병렬로 수행할 수 있습니다.
-
-
 
 ## 구문 \{#syntax\}
 
@@ -31,7 +25,6 @@ gcs(named_collection[, option=value [,..]])
 GCS Table Function은 GCS XML API와 HMAC 키를 사용하여 Google Cloud Storage와 연동합니다.
 엔드포인트와 HMAC에 대한 자세한 내용은 [Google 상호운용성 문서](https://cloud.google.com/storage/docs/interoperability)를 참조하십시오.
 :::
-
 
 ## Arguments \{#arguments\}
 
@@ -65,12 +58,9 @@ and not ~~https://storage.cloud.google.com~~.
 | `no_sign_request`             | 기본적으로 비활성화되어 있습니다.                                                                                                                                                                                 |
 | `expiration_window_seconds`   | 기본값은 120입니다.                                                                                                                                                                                       |
 
-
 ## 반환 값 \{#returned_value\}
 
 지정된 파일에서 데이터를 읽거나 쓰기 위한 지정된 구조의 테이블입니다.
-
-
 
 ## 예시 \{#examples\}
 
@@ -104,7 +94,6 @@ LIMIT 2;
 └─────────┴─────────┴─────────┘
 ```
 
-
 ## 사용법 \{#usage\}
 
 GCS에 다음 URI를 가진 여러 개의 파일이 있다고 가정합니다:
@@ -118,7 +107,7 @@ GCS에 다음 URI를 가진 여러 개의 파일이 있다고 가정합니다:
 * &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;3.csv&#39;
 * &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;4.csv&#39;
 
-1부터 3까지 숫자로 끝나는 파일의 행 수를 계산하십시오.
+1부터 3까지 숫자로 끝나는 파일의 행 수를 계산하십시오:
 
 ```sql
 SELECT count(*)
@@ -198,7 +187,6 @@ SELECT count(*)
 FROM gcs(creds, url='https://s3-object-url.csv')
 ```
 
-
 ## 파티션별 쓰기 \{#partitioned-write\}
 
 `GCS` 테이블에 데이터를 삽입할 때 `PARTITION BY` 표현식을 지정하면, 각 파티션 값마다 별도의 파일이 생성됩니다. 데이터를 개별 파일로 분할하면 읽기 작업의 효율을 높이는 데 도움이 됩니다.
@@ -215,7 +203,7 @@ INSERT INTO TABLE FUNCTION
 
 그 결과 데이터는 `file_x.csv`, `file_y.csv`, `file_z.csv` 세 개의 파일에 기록됩니다.
 
-2. 버킷 이름에 파티션 ID를 사용하면 서로 다른 버킷에 파일이 생성됩니다.
+2. 버킷 이름에 파티션 ID를 사용하면 서로 다른 버킷에 파일이 생성됩니다:
 
 ```sql
 INSERT INTO TABLE FUNCTION
@@ -225,7 +213,7 @@ INSERT INTO TABLE FUNCTION
 
 그 결과 데이터는 서로 다른 버킷에 있는 세 개의 파일(`my_bucket_1/file.csv`, `my_bucket_10/file.csv`, `my_bucket_20/file.csv`)에 기록됩니다.
 
-
 ## 관련 항목 \{#related\}
-- [S3 테이블 함수](s3.md)
-- [S3 엔진](../../engines/table-engines/integrations/s3.md)
+
+* [S3 테이블 함수](s3.md)
+* [S3 엔진](../../engines/table-engines/integrations/s3.md)

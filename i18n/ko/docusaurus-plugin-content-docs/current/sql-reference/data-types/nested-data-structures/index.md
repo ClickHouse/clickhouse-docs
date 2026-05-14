@@ -7,8 +7,6 @@ title: 'Nested'
 doc_type: 'guide'
 ---
 
-# 중첩 \{#nested\}
-
 ## Nested(name1 Type1, Name2 Type2, ...) \{#nestedname1-type1-name2-type2-\}
 
 중첩 데이터 구조는 셀 안에 있는 테이블과 비슷합니다. 중첩 데이터 구조의 매개변수인 컬럼 이름과 타입은 [CREATE TABLE](../../../sql-reference/statements/create/table.md) 쿼리와 동일한 방식으로 지정합니다. 각 테이블 행은 중첩 데이터 구조에서 임의 개수의 행과 대응될 수 있습니다.

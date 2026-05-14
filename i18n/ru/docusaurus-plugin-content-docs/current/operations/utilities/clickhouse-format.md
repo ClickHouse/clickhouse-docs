@@ -1,11 +1,9 @@
 ---
-description: 'Руководство по работе с утилитой clickhouse-format для форматов данных ClickHouse'
+description: 'Руководство по использованию утилиты format для работы с форматами данных ClickHouse'
 slug: /operations/utilities/clickhouse-format
 title: 'clickhouse-format'
 doc_type: 'reference'
 ---
-
-# Утилита clickhouse-format \{#clickhouse-format-utility\}
 
 Позволяет форматировать входные запросы.
 
@@ -41,7 +39,7 @@ WHERE number % 2
 ORDER BY number DESC
 ```
 
-2. Подсветка и однострочные фрагменты:
+2. Подсветка и строка:
 
 ```bash
 $ clickhouse-format --oneline --hilite <<< "SELECT sum(number) FROM numbers(5);"
@@ -84,7 +82,7 @@ $ clickhouse-format --seed Hello --obfuscate <<< "SELECT cost_first_screen BETWE
 SELECT treasury_mammoth_hazelnut BETWEEN nutmeg AND span, CASE WHEN chive >= 116 THEN switching ELSE ANYTHING END;
 ```
 
-Тот же запрос, но другая строка-затравка:
+Тот же запрос, но другая seed-строка:
 
 ```bash
 $ clickhouse-format --seed World --obfuscate <<< "SELECT cost_first_screen BETWEEN a AND b, CASE WHEN x >= 123 THEN y ELSE NULL END;"

@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции nth_value'
+description: 'Документация по оконной функции nth_value'
 sidebar_label: 'nth_value'
 sidebar_position: 5
 slug: /sql-reference/window-functions/nth_value
 title: 'nth_value'
 doc_type: 'reference'
 ---
-
-# nth&#95;value \{#nth&#95;value\}
 
 Возвращает первое отличное от NULL значение, вычисленное для n-й строки (смещения) в упорядоченном фрейме окна.
 

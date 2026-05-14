@@ -1,11 +1,10 @@
 ---
-description: 'NOT IN、GLOBAL IN、GLOBAL NOT IN 演算子（これらについては別途説明）を除く IN 演算子のドキュメント'
+description: 'NOT IN、GLOBAL IN、GLOBAL
+  NOT IN 演算子を除く IN 演算子のドキュメント'
 slug: /sql-reference/operators/in
 title: 'IN 演算子'
 doc_type: 'reference'
 ---
-
-# IN 演算子 \{#in-operators\}
 
 `IN`、`NOT IN`、`GLOBAL IN`、`GLOBAL NOT IN` 演算子は、その機能がかなり豊富であるため、別途取り上げます。
 
@@ -18,11 +17,11 @@ SELECT UserID IN (123, 456) FROM ...
 SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 ```
 
-左辺が索引に含まれる単一のカラムで、右辺が定数の集合である場合、システムはクエリの処理に索引を使用します。
+左辺が索引に含まれる単一のカラムで、右辺が定数の Set である場合、システムはクエリの処理に索引を使用します。
 
 あまり多くの値を明示的に列挙しないでください (たとえば数百万件) 。データセットが大きい場合は、一時テーブルに入れて (例として、セクション [External data for query processing](../../engines/table-engines/special/external-data.md) を参照) 、そのうえでサブクエリを使用してください。
 
-演算子の右辺には、定数式の集合、定数式を含むタプルの集合 (上記の例で示したもの) 、あるいはデータベーステーブル名、または括弧で囲んだ `SELECT` サブクエリを指定できます。
+演算子の右辺には、定数式の Set、定数式を含むタプルの Set (上記の例で示したもの) 、あるいはデータベーステーブル名、または括弧で囲んだ `SELECT` サブクエリを指定できます。
 
 ClickHouse では、`IN` サブクエリの左辺と右辺で型が異なることを許容します。
 この場合、システムは右辺の値を左辺の型に変換します。これは、右辺に対して [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accurateCastOrNull) 関数が適用されたかのように動作します。
@@ -46,7 +45,7 @@ SELECT '1' IN (SELECT 1);
 └──────────────────────┘
 ```
 
-演算子の右辺がテーブル名である場合 (例えば `UserID IN users`) 、これはサブクエリ `UserID IN (SELECT * FROM users)` と等価です。クエリと一緒に送信される外部データを扱う場合に使用します。例えば、フィルタリング対象のユーザー ID の集合をロードした一時テーブル &#39;users&#39; とクエリを一緒に送信できます。
+演算子の右辺がテーブル名である場合 (例えば `UserID IN users`) 、これはサブクエリ `UserID IN (SELECT * FROM users)` と等価です。クエリと一緒に送信される外部データを扱う場合に使用します。例えば、フィルタリング対象のユーザー ID の Set をロードした一時テーブル &#39;users&#39; とクエリを一緒に送信できます。
 
 演算子の右辺が Set エンジン (常に RAM 上にある準備済みデータセット) を使用するテーブル名である場合、そのデータセットはクエリごとに再作成されません。
 

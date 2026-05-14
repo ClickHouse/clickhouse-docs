@@ -1,12 +1,10 @@
 ---
-description: 'INTO OUTFILE 句に関するドキュメント'
+description: 'INTO OUTFILE 句のドキュメント'
 sidebar_label: 'INTO OUTFILE'
 slug: /sql-reference/statements/select/into-outfile
 title: 'INTO OUTFILE 句'
 doc_type: 'reference'
 ---
-
-# INTO OUTFILE 句 \{#into-outfile-clause\}
 
 `INTO OUTFILE` 句は、`SELECT` クエリの結果を **クライアント** 側のファイルにリダイレクトします。
 

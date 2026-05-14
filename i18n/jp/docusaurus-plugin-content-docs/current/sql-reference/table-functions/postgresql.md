@@ -7,9 +7,7 @@ title: 'postgresql'
 doc_type: 'reference'
 ---
 
-# postgresql テーブル関数 \{#postgresql-table-function\}
-
-リモートの PostgreSQL サーバー上に保存されたデータに対して、`SELECT` および `INSERT` クエリを実行できます。
+リモート PostgreSQL サーバー上に保存されているデータに対して、`SELECT` および `INSERT` クエリを実行できます。
 
 ## 構文 \{#syntax\}
 

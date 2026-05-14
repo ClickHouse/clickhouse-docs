@@ -7,9 +7,7 @@ title: 'deltaLake'
 doc_type: 'reference'
 ---
 
-# deltaLake 表函数 \{#deltalake-table-function\}
-
-为存放在 Amazon S3、Azure Blob Storage 或本地挂载文件系统中的 [Delta Lake](https://github.com/delta-io/delta) 表提供类表访问接口，支持读写操作（自 v25.10 起）。
+为 Amazon S3、Azure Blob 存储或本地挂载文件系统中的 [Delta Lake](https://github.com/delta-io/delta) 表提供类表接口，支持读写 (自 v25.10 起)
 
 ## 语法 \{#syntax\}
 

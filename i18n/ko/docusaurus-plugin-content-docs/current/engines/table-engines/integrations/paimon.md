@@ -7,10 +7,8 @@ title: 'Paimon 테이블 엔진'
 doc_type: 'reference'
 ---
 
-# Paimon 테이블 엔진 \{#paimon-table-engine\}
-
-이 엔진은 Amazon S3, Azure, HDFS 및 로컬에 저장된 기존 Apache [Paimon](https://paimon.apache.org/) 테이블을 읽기 전용으로 통합할 수 있도록 지원합니다.
-스냅샷 읽기, 증분 읽기, 그리고 엔진에서 제공하는 기본적인 파티션 프루닝을 지원합니다.
+이 엔진은 Amazon S3, Azure, HDFS 및 로컬에 저장된 기존 Apache [Paimon](https://paimon.apache.org/) 테이블에 대한 읽기 전용 통합을 제공합니다.
+스냅샷 읽기, 증분 읽기 및 엔진이 제공하는 기본 파티션 프루닝을 지원합니다.
 
 ## 테이블 생성 \{#create-table\}
 

@@ -8,9 +8,8 @@ keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-# ALTER DATABASE ... MODIFY COMMENT \{#alter-database-modify-comment\}
-
-データベースのコメントを、あらかじめ設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.databases`](/operations/system-tables/databases.md) と `SHOW CREATE DATABASE` クエリの両方に反映されます。
+以前に設定されていたかどうかにかかわらず、データベースコメントを追加、変更、または削除します。コメントの変更は、[`system.databases`](/operations/system-tables/databases.md)
+と `SHOW CREATE DATABASE` クエリの両方に反映されます。
 
 ## 構文 \{#syntax\}
 
@@ -23,14 +22,14 @@ ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 コメント付きの `DATABASE` を作成するには：
 
 ```sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT '一時データベース';
+CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
 ```
 
 コメントを編集するには:
 
 ```sql
 ALTER DATABASE database_with_comment 
-MODIFY COMMENT 'データベースに関する新しいコメント';
+MODIFY COMMENT 'new comment on a database';
 ```
 
 変更後のコメントを表示するには：
@@ -43,7 +42,7 @@ WHERE name = 'database_with_comment';
 
 ```text
 ┌─comment─────────────────┐
-│ データベースに関する新しいコメント │
+│ new comment on database │
 └─────────────────────────┘
 ```
 
@@ -70,5 +69,5 @@ WHERE  name = 'database_with_comment';
 
 ## 関連コンテンツ \{#related-content\}
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 句
-- [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)
+* [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 句
+* [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)

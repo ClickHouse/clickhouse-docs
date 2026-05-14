@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции lead'
+description: 'Документация по оконной функции lead'
 sidebar_label: 'lead'
 sidebar_position: 10
 slug: /sql-reference/window-functions/lead
 title: 'lead'
 doc_type: 'reference'
 ---
-
-# lead \{#lead\}
 
 Возвращает значение, вычисленное в строке, которая находится на `offset` строк ниже текущей строки в упорядоченном окне.
 Эта функция похожа на [`leadInFrame`](./leadInFrame.md), но всегда использует окно `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`.

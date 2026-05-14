@@ -7,9 +7,7 @@ title: 'nth_value'
 doc_type: 'reference'
 ---
 
-# nth&#95;value \{#nth&#95;value\}
-
-順序付けられたフレーム内の n 行目（オフセット）に対応して評価された、最初の非 NULL 値を返します。
+順序付けられたフレーム内の n 行目 (オフセット) に対応して評価された、最初の非 NULL 値を返します。
 
 **構文**
 
@@ -30,7 +28,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **戻り値**
 
-* 並び順が定義されたフレーム内で、n 番目の行（`offset`）に対して評価される最初の NULL 以外の値。
+* 並び順が定義されたフレーム内で、n 番目の行 (`offset`) に対して評価される最初の NULL 以外の値。
 
 **例**
 

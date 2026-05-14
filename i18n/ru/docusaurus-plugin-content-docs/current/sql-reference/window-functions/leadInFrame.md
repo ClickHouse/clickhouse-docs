@@ -7,8 +7,6 @@ title: 'leadInFrame'
 doc_type: 'reference'
 ---
 
-# leadInFrame \{#leadinframe\}
-
 Возвращает значение, вычисленное для строки, которая находится через `offset` строк после текущей строки в упорядоченной рамке окна.
 
 :::warning

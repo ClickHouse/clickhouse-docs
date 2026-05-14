@@ -6,8 +6,6 @@ title: '算术函数'
 doc_type: 'reference'
 ---
 
-# 算术函数 \{#arithmetic-functions\}
-
 ## 概览 \{#overview\}
 
 算术函数适用于任意两个操作数，其类型可以是 `UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32`、`Int64`、`Float32` 或 `Float64`。

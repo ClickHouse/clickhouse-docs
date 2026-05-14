@@ -1,13 +1,11 @@
 ---
-description: 'leadInFrame 윈도우 함수에 대한 문서'
+description: 'leadInFrame 윈도 함수에 대한 문서'
 sidebar_label: 'leadInFrame'
 sidebar_position: 10
 slug: /sql-reference/window-functions/leadInFrame
 title: 'leadInFrame'
 doc_type: 'reference'
 ---
-
-# leadInFrame \{#leadinframe\}
 
 정렬된 프레임 내에서 현재 행으로부터 `offset` 행 이후에 위치한 행에서 평가된 값을 반환합니다.
 

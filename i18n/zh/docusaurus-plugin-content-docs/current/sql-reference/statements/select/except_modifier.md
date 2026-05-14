@@ -7,9 +7,7 @@ keywords: ['EXCEPT', 'modifier']
 doc_type: 'reference'
 ---
 
-# EXCEPT 修饰符 \{#except\}
-
-> 指定要从结果中排除的一个或多个列名。所有匹配的列名都会在输出中被省略。
+> 指定要从结果中排除的一个或多个列名。所有匹配的列名都会从输出中省略。
 
 ## 语法 \{#syntax\}
 

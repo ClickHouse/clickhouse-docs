@@ -7,9 +7,7 @@ title: '聚合函数组合器'
 doc_type: 'reference'
 ---
 
-# 聚合函数组合器 \{#aggregate-function-combinators\}
-
-聚合函数名可以追加一个后缀，从而改变该聚合函数的工作方式。
+聚合函数的名称后面可以附加一个后缀，这会改变该聚合函数的工作方式。
 
 ## -If \{#-if\}
 

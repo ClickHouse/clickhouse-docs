@@ -1,13 +1,11 @@
 ---
-description: '매개변수 집계 함수에 대한 문서'
+description: '매개변수형 집계 함수에 대한 문서'
 sidebar_label: '매개변수형'
 sidebar_position: 38
 slug: /sql-reference/aggregate-functions/parametric-functions
-title: '매개변수 집계 함수'
+title: '매개변수형 집계 함수'
 doc_type: 'reference'
 ---
-
-# 매개변수형 집계 함수(Parametric aggregate functions) \{#parametric-aggregate-functions\}
 
 일부 집계 함수는 인수 컬럼(압축에 사용됨)뿐만 아니라 초기화를 위한 상수 매개변수 집합도 받을 수 있습니다. 구문은 하나 대신 두 쌍의 괄호를 사용하는 방식입니다. 첫 번째 괄호 쌍은 매개변수를, 두 번째 괄호 쌍은 인수를 지정합니다.
 

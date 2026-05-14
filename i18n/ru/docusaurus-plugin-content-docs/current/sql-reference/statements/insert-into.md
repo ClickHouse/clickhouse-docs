@@ -7,8 +7,6 @@ title: 'Оператор INSERT INTO'
 doc_type: 'reference'
 ---
 
-# Оператор INSERT INTO \{#insert-into-statement\}
-
 Вставляет данные в таблицу.
 
 **Синтаксис**
@@ -95,14 +93,13 @@ INSERT INTO t FORMAT TabSeparated
 Вы можете загружать данные отдельно от запроса, используя [клиент командной строки](/operations/utilities/clickhouse-local) или [HTTP-интерфейс](/interfaces/http).
 
 :::note
-Если вы хотите указать `SETTINGS` для запроса `INSERT`, это необходимо сделать *перед* секцией `FORMAT`, так как всё, что идёт после `FORMAT format_name`, интерпретируется как данные. Например:
+Если вы хотите указать `SETTINGS` для запроса `INSERT`, это необходимо сделать *перед* предложением `FORMAT`, так как всё, что идёт после `FORMAT format_name`, интерпретируется как данные. Например:
 
 ```sql
 INSERT INTO table SETTINGS ... FORMAT format_name data_set
 ```
 
 :::
-
 
 ## Ограничения \{#constraints\}
 

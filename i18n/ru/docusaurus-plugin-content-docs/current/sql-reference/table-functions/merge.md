@@ -1,13 +1,11 @@
 ---
-description: 'Создаёт временную таблицу типа Merge. Структура будет определена на основе базовых таблиц путём объединения их столбцов и вывода общих типов.'
+description: 'Создаёт временную таблицу Merge. Структура определяется по базовым таблицам путём объединения их столбцов и вывода общих типов.'
 sidebar_label: 'merge'
 sidebar_position: 130
 slug: /sql-reference/table-functions/merge
 title: 'merge'
 doc_type: 'reference'
 ---
-
-# Табличная функция merge \{#merge-table-function\}
 
 Создаёт временную таблицу [Merge](../../engines/table-engines/special/merge.md).
 Схема таблицы выводится из базовых таблиц путём объединения их столбцов и вывода общих типов.
@@ -28,4 +26,4 @@ merge(['db_name',] 'tables_regexp')
 
 ## См. также \{#related\}
 
-- [Merge](../../engines/table-engines/special/merge.md) — движок таблиц
+* [Merge](../../engines/table-engines/special/merge.md) — движок таблиц

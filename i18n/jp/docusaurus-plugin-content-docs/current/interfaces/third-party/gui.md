@@ -7,8 +7,6 @@ title: 'サードパーティ製ビジュアルインターフェイス'
 doc_type: 'reference'
 ---
 
-# サードパーティ開発のビジュアルインターフェース \{#visual-interfaces-from-third-party-developers\}
-
 ## オープンソース \{#open-source\}
 
 ### agx \{#agx\}

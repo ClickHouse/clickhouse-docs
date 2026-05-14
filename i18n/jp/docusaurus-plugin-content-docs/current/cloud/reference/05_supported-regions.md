@@ -115,6 +115,7 @@ PCI 準拠リージョンでサービスをセットアップするには、Sale
 * AWS eu-north-1 (Stockholm) **プライベートリージョン**
 * AWS eu-west-1 (Ireland)
 * AWS eu-west-2 (London)
+* AWS mx-central-1 (Mexico) **プライベートリージョン**
 * AWS sa-east-1 (South America) **プライベートリージョン**
 * AWS us-east-1 (N. Virginia)
 * AWS us-east-2 (Ohio)

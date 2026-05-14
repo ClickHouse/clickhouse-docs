@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse 中 UUID 数据类型文档'
+description: 'ClickHouse 中 UUID 数据类型的文档'
 sidebar_label: 'UUID'
 sidebar_position: 24
 slug: /sql-reference/data-types/uuid
 title: 'UUID'
 doc_type: 'reference'
 ---
-
-# UUID \{#uuid\}
 
 通用唯一标识符 (UUID) 是一种用于标识记录的 16 字节值。有关 UUID 的详细信息，请参阅 [维基百科](https://en.wikipedia.org/wiki/Universally_unique_identifier)。
 
@@ -82,7 +80,6 @@ SELECT * FROM tab;
 ```
 
 结果 (假设插入的是相同的数据) ：
-
 
 ```text
 ┌─uuid─────────────────────────────────┐

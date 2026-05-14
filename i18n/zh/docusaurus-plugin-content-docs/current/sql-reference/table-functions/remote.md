@@ -7,11 +7,9 @@ title: 'remote, remoteSecure'
 doc_type: 'reference'
 ---
 
-# remote、remoteSecure 表函数 \{#remote-remotesecure-table-function\}
+表函数 `remote` 允许按需访问远程服务器，即无需创建 [分布式表](../../engines/table-engines/special/distributed.md) 表。表函数 `remoteSecure` 与 `remote` 相同，但通过安全连接访问。
 
-表函数 `remote` 允许按需访问远程服务器，即无需创建 [分布式表](../../engines/table-engines/special/distributed.md)。表函数 `remoteSecure` 与 `remote` 相同，只是通过安全连接进行访问。
-
-这两个函数都可以在 `SELECT` 和 `INSERT` 查询中使用。
+这两个函数都可用于 `SELECT` 和 `INSERT` 查询。
 
 ## 语法 \{#syntax\}
 

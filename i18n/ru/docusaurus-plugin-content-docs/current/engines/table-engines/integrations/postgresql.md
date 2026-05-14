@@ -1,18 +1,17 @@
 ---
-description: 'Табличный движок PostgreSQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удалённом сервере PostgreSQL.'
+description: 'Движок PostgreSQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся
+  на удалённом сервере PostgreSQL.'
 sidebar_label: 'PostgreSQL'
 sidebar_position: 160
 slug: /engines/table-engines/integrations/postgresql
-title: 'Табличный движок PostgreSQL'
+title: 'Движок таблицы PostgreSQL'
 doc_type: 'guide'
 ---
-
-# Движок таблиц PostgreSQL \{#postgresql-table-engine\}
 
 Движок PostgreSQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удалённом сервере PostgreSQL.
 
 :::note
-В настоящее время для движка таблиц поддерживаются только версии PostgreSQL 12 и выше.
+В настоящее время для движка таблицы поддерживаются только версии PostgreSQL 12 и выше.
 :::
 
 :::tip

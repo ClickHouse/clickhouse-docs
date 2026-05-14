@@ -7,14 +7,12 @@ title: 'RabbitMQ テーブルエンジン'
 doc_type: 'guide'
 ---
 
-# RabbitMQ テーブルエンジン \{#rabbitmq-table-engine\}
-
 このエンジンを使用すると、ClickHouse を [RabbitMQ](https://www.rabbitmq.com) と統合できます。
 
-`RabbitMQ` を利用すると、次のことが可能です。
+`RabbitMQ` では、次のことが可能です。
 
-- データフローを公開または購読できる。
-- ストリームを、利用可能になり次第処理できる。
+* データフローをパブリッシュまたはサブスクライブする。
+* ストリームを利用可能になり次第処理する。
 
 ## テーブルの作成 \{#creating-a-table\}
 

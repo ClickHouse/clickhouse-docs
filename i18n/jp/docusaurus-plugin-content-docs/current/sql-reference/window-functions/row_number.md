@@ -1,13 +1,11 @@
 ---
-description: 'row_number ウィンドウ関数に関するドキュメント'
+description: 'row_number ウィンドウ関数のドキュメント'
 sidebar_label: 'row_number'
 sidebar_position: 2
 slug: /sql-reference/window-functions/row_number
 title: 'row_number'
 doc_type: 'reference'
 ---
-
-# row&#95;number \{#row&#95;number\}
 
 現在のパーティション内の行に対して、1 から始まる連番を振ります。
 

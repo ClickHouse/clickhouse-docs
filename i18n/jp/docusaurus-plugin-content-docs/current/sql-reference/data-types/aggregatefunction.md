@@ -8,8 +8,6 @@ title: 'AggregateFunction 型'
 doc_type: 'reference'
 ---
 
-# AggregateFunction 型 \{#aggregatefunction-type\}
-
 ## 説明 \{#description\}
 
 ClickHouse のすべての [集約関数](/sql-reference/aggregate-functions) には、

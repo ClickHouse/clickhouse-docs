@@ -7,10 +7,8 @@ title: '개발자 사전 준비 사항'
 doc_type: 'guide'
 ---
 
-# 사전 준비 사항 \{#prerequisites\}
-
-ClickHouse는 Linux, FreeBSD 및 macOS에서 빌드할 수 있습니다.
-Windows를 사용하는 경우에도 Linux를 실행하는 가상 머신(예: Ubuntu가 설치된 [VirtualBox](https://www.virtualbox.org/))에서 ClickHouse를 빌드할 수 있습니다.
+ClickHouse는 Linux, FreeBSD, macOS에서 빌드할 수 있습니다.
+Windows를 사용하는 경우에도 Ubuntu가 설치된 [VirtualBox](https://www.virtualbox.org/)와 같은 Linux 가상 머신에서 ClickHouse를 빌드할 수 있습니다.
 
 ## GitHub에 리포지토리 생성하기 \{#create-a-repository-on-github\}
 

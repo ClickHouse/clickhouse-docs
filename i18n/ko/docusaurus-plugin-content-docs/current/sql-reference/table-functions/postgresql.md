@@ -7,9 +7,7 @@ title: 'postgresql'
 doc_type: 'reference'
 ---
 
-# postgresql Table Function \{#postgresql-table-function\}
-
-원격 PostgreSQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 수행할 수 있습니다.
+원격 PostgreSQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 수행할 수 있게 합니다.
 
 ## 구문 \{#syntax\}
 

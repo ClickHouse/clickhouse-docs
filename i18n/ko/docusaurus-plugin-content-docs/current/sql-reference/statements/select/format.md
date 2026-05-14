@@ -6,8 +6,6 @@ title: 'FORMAT 절'
 doc_type: 'reference'
 ---
 
-# FORMAT 절 \{#format-clause\}
-
 ClickHouse는 쿼리 결과를 비롯한 여러 용도에 사용할 수 있는 다양한 [직렬화 포맷](../../../interfaces/formats.md)을 지원합니다. `SELECT` 출력에 사용할 포맷을 선택하는 방법은 여러 가지가 있으며, 그중 하나는 쿼리 끝에 `FORMAT format`을 지정하여 결과 데이터를 특정 포맷으로 받는 것입니다.
 
 특정 포맷은 편의성, 다른 시스템과의 통합 또는 성능 향상을 위해 사용할 수 있습니다.

@@ -1,13 +1,11 @@
 ---
-description: 'Date 데이터 타입과 비교해 더 확장된 범위의 날짜를 저장하는 ClickHouse의 Date32 데이터 타입에 대한 문서'
+description: 'Date보다 확장된 범위의 날짜를 저장하는 ClickHouse의 Date32 데이터 타입 문서'
 sidebar_label: 'Date32'
 sidebar_position: 14
 slug: /sql-reference/data-types/date32
 title: 'Date32'
 doc_type: 'reference'
 ---
-
-# Date32 \{#date32\}
 
 날짜입니다. [DateTime64](../../sql-reference/data-types/datetime64.md)와 동일한 날짜 범위를 지원합니다. 네이티브 바이트 순서의 부호 있는 32비트 정수로 저장되며, 값은 `1900-01-01` 이후의 일 수를 나타냅니다. **중요!** 0은 `1970-01-01`을 나타내며, 음수 값은 `1970-01-01` 이전의 일 수를 나타냅니다.
 

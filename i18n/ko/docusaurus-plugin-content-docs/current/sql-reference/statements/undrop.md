@@ -6,8 +6,6 @@ title: 'UNDROP TABLE'
 doc_type: 'reference'
 ---
 
-# UNDROP TABLE \{#undrop-table\}
-
 테이블 삭제를 취소합니다.
 
 ClickHouse 23.3 버전부터는 Atomic 데이터베이스에서 DROP TABLE SQL 문을 실행한 시점으로부터 `database_atomic_delay_before_drop_table_sec`(기본값 8분) 이내에는 테이블을 UNDROP 할 수 있습니다. 삭제된 테이블은 `system.dropped_tables`라는 시스템 테이블에 나열됩니다.

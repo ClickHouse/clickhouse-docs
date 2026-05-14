@@ -126,20 +126,20 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-````sql
+```sql
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
+```
 
-
-Output:
+출력:
 
 ```text
 ┌─part_path────┬─is_passed─┬─message──────────────────────────────────┐
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │
 └──────────────┴───────────┴──────────────────────────────────────────┘
-````
+```
 
 checksums.txt 파일이 없더라도 복구할 수 있습니다. 특정 파티션에 대해 `CHECK TABLE` 명령을 실행하는 동안 체크섬이 다시 계산되고 다시 기록되며, 상태는 계속해서 &#39;is&#95;passed = 1&#39;로 보고됩니다.
 
@@ -166,8 +166,7 @@ SETTINGS check_query_single_value_result = 0
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
 
-
-## 데이터가 손상된 경우 {#if-the-data-is-corrupted}
+## 데이터가 손상된 경우 \{#if-the-data-is-corrupted\}
 
 테이블이 손상된 경우 손상되지 않은 데이터를 다른 테이블로 복사할 수 있습니다. 이를 위해서는 다음과 같이 합니다:
 

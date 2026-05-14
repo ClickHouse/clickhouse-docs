@@ -1,13 +1,11 @@
 ---
-description: 'row_number 윈도우 함수 문서'
+description: 'row_number 윈도우 함수에 대한 문서'
 sidebar_label: 'row_number'
 sidebar_position: 2
 slug: /sql-reference/window-functions/row_number
 title: 'row_number'
 doc_type: 'reference'
 ---
-
-# row_number \{#row_number\}
 
 현재 파티션 내에서 현재 행에 1부터 번호를 매깁니다.
 

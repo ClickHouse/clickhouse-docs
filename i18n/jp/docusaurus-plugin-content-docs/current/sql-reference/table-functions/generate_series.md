@@ -7,8 +7,6 @@ description: '開始値から終了値までの整数（両端を含む）を格
 doc_type: 'reference'
 ---
 
-# generate_series テーブル関数 \{#generate_series-table-function\}
-
 エイリアス: `generateSeries`
 
 ## 構文 \{#syntax\}

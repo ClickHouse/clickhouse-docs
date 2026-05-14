@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse에서 UUID 데이터 타입 문서'
+description: 'ClickHouse의 UUID 데이터 타입 문서'
 sidebar_label: 'UUID'
 sidebar_position: 24
 slug: /sql-reference/data-types/uuid
 title: 'UUID'
 doc_type: 'reference'
 ---
-
-# UUID \{#uuid\}
 
 범용 고유 식별자(UUID, Universally Unique Identifier)는 레코드를 식별하는 데 사용되는 16바이트 값입니다. UUID에 대한 자세한 정보는 [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier)를 참조하십시오.
 
@@ -82,7 +80,6 @@ SELECT * FROM tab;
 ```
 
 결과(동일한 데이터가 삽입되었다고 가정한 경우):
-
 
 ```text
 ┌─uuid─────────────────────────────────┐

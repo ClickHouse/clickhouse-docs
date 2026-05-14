@@ -7,8 +7,6 @@ title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
 
-# clickhouse-benchmark \{#clickhouse-benchmark\}
-
 连接到 ClickHouse 服务器并反复执行指定查询。
 
 **语法**
@@ -41,7 +39,6 @@ SELECT 1;
 ```bash
 clickhouse-benchmark [keys] < queries_file;
 ```
-
 
 ## 命令行选项 \{#clickhouse-benchmark-command-line-options\}
 

@@ -8,11 +8,9 @@ title: 'mergeTreeTextIndex'
 doc_type: 'reference'
 ---
 
-# mergeTreeTextIndex 테이블 함수 \{#mergetreetextindex-table-function\}
-
-MergeTree 테이블에서 텍스트 인덱스의 딕셔너리를 나타냅니다.
-토큰과 해당 포스팅 리스트 메타데이터를 반환합니다.
-내부 구조를 점검하거나 분석하는 용도로 사용할 수 있습니다.
+MergeTree 테이블의 텍스트 인덱스 딕셔너리를 나타냅니다.
+포스팅 리스트 메타데이터와 함께 토큰을 반환합니다.
+내부 검사에 사용할 수 있습니다.
 
 ## 구문 \{#syntax\}
 

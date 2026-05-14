@@ -6,8 +6,6 @@ title: '형 변환 함수'
 doc_type: 'reference'
 ---
 
-# 데이터 형식 변환 함수 \{#type-conversion-functions\}
-
 ## 데이터 변환 시 일반적인 문제 \{#common-issues-with-data-conversion\}
 
 ClickHouse는 일반적으로 [C++ 프로그램과 동일한 동작 방식](https://en.cppreference.com/w/cpp/language/implicit_conversion)을 사용합니다.

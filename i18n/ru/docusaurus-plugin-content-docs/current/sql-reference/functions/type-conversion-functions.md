@@ -6,8 +6,6 @@ title: 'Функции преобразования типов'
 doc_type: 'reference'
 ---
 
-# Функции преобразования типов \{#type-conversion-functions\}
-
 ## Распространенные проблемы при преобразовании данных \{#common-issues-with-data-conversion\}
 
 ClickHouse обычно использует [то же поведение, что и программы на C++](https://en.cppreference.com/w/cpp/language/implicit_conversion).

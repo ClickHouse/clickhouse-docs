@@ -1,13 +1,11 @@
 ---
-description: '원격 HTTP/HTTPS 서버로부터 데이터를 조회하거나 해당 서버로 데이터를 보냅니다. 이 엔진은 File 엔진과 유사합니다.'
+description: '원격 HTTP/HTTPS 서버에서/서버로 데이터를 조회합니다. 이 엔진은 File 엔진과 유사합니다.'
 sidebar_label: 'URL'
 sidebar_position: 80
 slug: /engines/table-engines/special/url
 title: 'URL 테이블 엔진'
 doc_type: 'reference'
 ---
-
-# URL 테이블 엔진 \{#url-table-engine\}
 
 원격 HTTP/HTTPS 서버에서/서버로 데이터를 조회합니다. 이 엔진은 [File](../../../engines/table-engines/special/file.md) 엔진과 유사합니다.
 

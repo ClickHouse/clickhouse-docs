@@ -1,20 +1,18 @@
 ---
-description: '`Executable` および `ExecutablePool` テーブルエンジンを使用すると、スクリプトの標準出力（**stdout**）に行を書き出すことで、そのスクリプトから行が生成されるテーブルを定義できます。'
+description: '`Executable` および `ExecutablePool` テーブルエンジンでは、（行を **stdout** に書き出すことで）ユーザー定義のスクリプトによって行が生成されるテーブルを定義できます。'
 sidebar_label: 'Executable/ExecutablePool'
 sidebar_position: 40
 slug: /engines/table-engines/special/executable
-title: '`Executable` および `ExecutablePool` テーブルエンジン'
+title: 'Executable および ExecutablePool テーブルエンジン'
 doc_type: 'reference'
 ---
-
-# Executable および ExecutablePool テーブルエンジン \{#executable-and-executablepool-table-engines\}
 
 `Executable` および `ExecutablePool` テーブルエンジンを使用すると、 (行を **stdout** に書き出すことで) ユーザー定義のスクリプトによって行が生成されるテーブルを定義できます。実行可能スクリプトは `users_scripts` ディレクトリに保存され、任意のソースからデータを読み取ることができます。
 
 * `Executable` テーブル: クエリごとにスクリプトが実行されます
 * `ExecutablePool` テーブル: 永続プロセスのプールを維持し、読み取り時にそのプールからプロセスを取得します
 
-オプションとして、1 つ以上の入力用クエリを含めることができ、その結果を **stdin** にストリームしてスクリプトが読み取れるようにできます。
+オプションとして、1 つ以上の入力クエリを含めることができ、その結果を **stdin** にストリームしてスクリプトが読み取れるようにできます。
 
 ## `Executable` テーブルの作成 \{#creating-an-executable-table\}
 

@@ -7,8 +7,6 @@ title: 'Linux 上で AARCH64 向け ClickHouse をビルドする方法'
 doc_type: 'guide'
 ---
 
-# Linux 上で AArch64 向けに ClickHouse をビルドする方法 \{#how-to-build-clickhouse-on-linux-for-aarch64\}
+Aarch64 マシン上で ClickHouse を Aarch64 向けにビルドする場合、特別な手順は必要ありません。
 
-AArch64 マシン上で AArch64 向けに ClickHouse をビルドする場合、特別な手順は必要ありません。
-
-x86 Linux マシン上で AArch64 向けに ClickHouse をクロスコンパイルするには、`cmake` に次のフラグを指定します: `-DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-aarch64.cmake`
+x86 Linux マシン上で ClickHouse を AArch64 向けにクロスコンパイルするには、`cmake` に次のフラグを渡します: `-DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-aarch64.cmake`

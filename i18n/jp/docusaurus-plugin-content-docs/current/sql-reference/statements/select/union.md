@@ -1,12 +1,10 @@
 ---
-description: 'UNION 句に関するドキュメント'
+description: 'UNION 句のドキュメント'
 sidebar_label: 'UNION'
 slug: /sql-reference/statements/select/union
 title: 'UNION 句'
 doc_type: 'reference'
 ---
-
-# UNION 句 \{#union-clause\}
 
 `UNION` は、`UNION ALL` または `UNION DISTINCT` を明示的に指定して使用できます。
 

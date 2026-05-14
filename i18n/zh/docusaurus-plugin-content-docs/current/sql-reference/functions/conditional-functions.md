@@ -6,8 +6,6 @@ title: '条件函数'
 doc_type: 'reference'
 ---
 
-# 条件函数 \{#conditional-functions\}
-
 ## 概述 \{#overview\}
 
 ### 直接使用条件表达式结果 \{#using-conditional-results-directly\}

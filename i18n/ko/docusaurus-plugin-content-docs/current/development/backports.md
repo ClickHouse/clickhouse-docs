@@ -7,9 +7,7 @@ title: '백포트 시스템'
 doc_type: 'reference'
 ---
 
-# 백포트 시스템 \{#backport-system\}
-
-이 문서에서는 ClickHouse의 백포트 정책과 이를 구현하는 자동화 시스템을 설명합니다.
+이 문서에서는 ClickHouse 백포트 정책과 이를 구현하는 자동화 시스템을 설명합니다.
 
 ## 릴리스 모델 \{#release-model\}
 

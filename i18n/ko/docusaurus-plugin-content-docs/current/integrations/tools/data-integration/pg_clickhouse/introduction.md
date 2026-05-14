@@ -21,7 +21,8 @@ pg_clickhouse를 사용하여 [외부 테이블 가져오기]를 통해 PostgreS
 ## 시작하기 \{#getting-started\}
 
 pg&#95;clickhouse를 가장 간단하게 사용해 보는 방법은 [Docker image]를 사용하는 것입니다.
-이 이미지에는 표준 PostgreSQL Docker image와 pg&#95;clickhouse 확장이 포함되어 있습니다.
+이 이미지에는 표준 PostgreSQL Docker image와 pg&#95;clickhouse 및 [re2]
+확장 기능이 포함되어 있습니다:
 
 ```sh
 docker run --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
@@ -30,7 +31,6 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 ```
 
 ClickHouse 테이블 가져오기와 쿼리 푸시다운을 시작하려면 [튜토리얼]을 참조하십시오.
-
 
 ## 테스트 케이스: TPC-H \{#test-case-tpc-h\}
 
@@ -260,18 +260,16 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 
 ## 저작권 \{#copyright\}
 
-*   Copyright (c) 2025-2026, ClickHouse
-*   일부 Copyright (c) 2023-2025, Ildus Kurbangaliev
-*   일부 Copyright (c) 2019-2023, Adjust GmbH
-*   일부 Copyright (c) 2012-2019, PostgreSQL Global Development Group
+* Copyright (c) 2025-2026, ClickHouse
+* 일부 Copyright (c) 2023-2025, Ildus Kurbangaliev
+* 일부 Copyright (c) 2019-2023, Adjust GmbH
+* 일부 Copyright (c) 2012-2019, PostgreSQL Global Development Group
 
-[pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse
-    "GitHub의 pg_clickhouse"
+[pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse "GitHub의 pg_clickhouse"
 
 [import foreign tables]: /integrations/pg_clickhouse/reference#import-foreign-schema
 
-[Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
-    "최신 Docker 릴리스"
+[Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "최신 Docker 릴리스"
 
 [tutorial]: /integrations/pg_clickhouse/tutorial "pg_clickhouse 튜토리얼"
 
@@ -281,11 +279,9 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 
 [PGXN client]: https://pgxn.github.io/pgxnclient/ "PGXN Client 문서화"
 
-[Homebrew]: https://formulae.brew.sh/formula/pgxnclient#default
-    "Homebrew의 PGXN client"
+[Homebrew]: https://formulae.brew.sh/formula/pgxnclient#default "Homebrew의 PGXN client"
 
-[Apt]: https://tracker.debian.org/pkg/pgxnclient
-    "Debian Apt의 PGXN client"
+[Apt]: https://tracker.debian.org/pkg/pgxnclient "Debian Apt의 PGXN client"
 
 [`postgresql.conf` parameters]: https://www.postgresql.org/docs/devel/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-OTHER
 
@@ -302,6 +298,8 @@ CREATE EXTENSION pg_clickhouse SCHEMA env;
 [LibSSL]: https://openssl-library.org "OpenSSL 라이브러리"
 
 [TPC-H]: https://www.tpc.org/tpch/
+
+[re2]: https://github.com/ClickHouse/pg_re2 "pg_re2: RE2를 사용하는 ClickHouse 호환 정규식 함수"
 
 [쿼리 1] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/1.sql
   [쿼리 2] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/2.sql

@@ -6,9 +6,7 @@ title: 'LIMIT 句'
 doc_type: 'reference'
 ---
 
-# LIMIT 句 \{#limit-clause\}
-
-`LIMIT` 句は、クエリの結果として返される行数を制御します。
+`LIMIT` 句は、クエリ結果として返される行数を制御します。
 
 ## 基本構文 \{#basic-syntax\}
 

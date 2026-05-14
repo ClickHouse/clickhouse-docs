@@ -1,14 +1,12 @@
 ---
-description: 'INTERSECT 句に関するリファレンス'
+description: 'INTERSECT 句のドキュメント'
 sidebar_label: 'INTERSECT'
 slug: /sql-reference/statements/select/intersect
 title: 'INTERSECT 句'
 doc_type: 'reference'
 ---
 
-# INTERSECT 句 \{#intersect-clause\}
-
-`INTERSECT` 句は、1つ目と2つ目の両方のクエリ結果に共通して含まれる行のみを返します。クエリは列数、順序、および型が一致している必要があります。`INTERSECT` の結果には重複した行が含まれる場合があります。
+`INTERSECT` 句は、1つ目と2つ目の両方のクエリ結果に共通して含まれる行のみを返します。クエリはカラム数、順序、および型が一致している必要があります。`INTERSECT` の結果には重複した行が含まれる場合があります。
 
 複数の `INTERSECT` 文は、かっこが指定されていない場合は左から右の順に評価されます。`INTERSECT` 演算子は、`UNION` および `EXCEPT` 句よりも高い優先順位を持ちます。
 
@@ -48,7 +46,7 @@ SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 └────────┘
 ```
 
-`INTERSECT` は、共通のカラム（または複数のカラム）を持つ 2 つのテーブルがある場合に便利です。結果セットが同じカラム構成であれば、2 つのクエリ結果の共通部分を取得できます。たとえば、取引価格と出来高を含む数百万行の暗号通貨の過去データがあるとします。
+`INTERSECT` は、共通のカラム (または複数のカラム) を持つ 2 つのテーブルがある場合に便利です。結果セットが同じカラム構成であれば、2 つのクエリ結果の共通部分を取得できます。たとえば、取引価格と出来高を含む数百万行の暗号通貨の過去データがあるとします。
 
 ```sql
 CREATE TABLE crypto_prices
@@ -131,7 +129,7 @@ WHERE price > 100
 └─────────────┘
 ```
 
-これは、ある時点で Bitcoin と Ethereum は 100ドルを上回る価格で取引された一方で、DOGEFI と Bitcoin Diamond は（少なくともこの例で用いているデータの範囲では）100ドルを上回って取引されたことが一度もないことを意味します。
+これは、ある時点では Bitcoin と Ethereum が 100 ドルを超える価格で取引されていた一方、DOGEFI と Bitcoin Diamond は一度も 100 ドルを超える価格で取引されたことがないことを意味します (少なくとも、この例で使用しているデータではそうです) 。
 
 ## INTERSECT DISTINCT \{#intersect-distinct\}
 

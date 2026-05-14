@@ -9,8 +9,6 @@ title: 'Тип AggregateFunction'
 doc_type: 'reference'
 ---
 
-# Тип AggregateFunction \{#aggregatefunction-type\}
-
 ## Описание \{#description\}
 
 Все [агрегатные функции](/sql-reference/aggregate-functions) в ClickHouse имеют

@@ -6,9 +6,7 @@ title: 'clickhouse-keeper-client ユーティリティ'
 doc_type: 'reference'
 ---
 
-# clickhouse-keeper-client ユーティリティ \{#clickhouse-keeper-client-utility\}
-
-ネイティブプロトコルを使用して clickhouse-keeper と通信するためのクライアントアプリケーションです。
+clickhouse-keeper のネイティブプロトコルを介して対話するためのクライアントアプリケーションです。
 
 ## オプション \{#clickhouse-keeper-client\}
 

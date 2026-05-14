@@ -6,8 +6,6 @@ title: '算術関数'
 doc_type: 'reference'
 ---
 
-# 算術関数 \{#arithmetic-functions\}
-
 ## 概要 \{#overview\}
 
 算術関数は、`UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32`、`Int64`、`Float32`、`Float64` 型の任意の 2 つのオペランドに対して動作します。

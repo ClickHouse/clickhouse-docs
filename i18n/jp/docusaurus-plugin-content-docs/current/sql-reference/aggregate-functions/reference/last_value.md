@@ -1,11 +1,9 @@
 ---
-description: '最後に出現した値を選択します。`anyLast` と類似していますが、NULL を許容します。'
+description: '`anyLast` と同様に、最後に出現した値を選択しますが、NULL も許容します。'
 slug: /sql-reference/aggregate-functions/reference/last_value
 title: 'last_value'
 doc_type: 'reference'
 ---
-
-# last_value \{#last_value\}
 
 `anyLast` と同様に、最後に出現した値を選択しますが、NULL も許容します。
 主に [Window Functions](../../window-functions/index.md) (ウィンドウ関数) と組み合わせて使用します。

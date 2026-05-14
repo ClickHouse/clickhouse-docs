@@ -8,14 +8,12 @@ title: 'NATS 테이블 엔진'
 doc_type: 'guide'
 ---
 
-# NATS 테이블 엔진 \{#redisstreams-engine\}
+이 엔진을 사용하면 ClickHouse를 [NATS](https://nats.io/)와 통합할 수 있습니다.
 
-이 엔진은 ClickHouse를 [NATS](https://nats.io/)와 통합합니다.
+`NATS`를 사용하면 다음 작업을 수행할 수 있습니다:
 
-`NATS`를 사용하면 다음을 수행할 수 있습니다.
-
-- 메시지 subject를 발행하거나 구독합니다.
-- 새로운 메시지가 도착하는 대로 처리합니다.
+* 메시지 subject를 발행하거나 구독합니다.
+* 새 메시지가 제공되는 즉시 처리합니다.
 
 ## 테이블 생성 \{#creating-a-table\}
 

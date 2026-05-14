@@ -6,8 +6,6 @@ title: '型変換関数'
 doc_type: 'reference'
 ---
 
-# 型変換関数 \{#type-conversion-functions\}
-
 ## データ変換でよくある問題 \{#common-issues-with-data-conversion\}
 
 ClickHouse は一般的に [C++ プログラムと同じ挙動](https://en.cppreference.com/w/cpp/language/implicit_conversion) を採用しています。

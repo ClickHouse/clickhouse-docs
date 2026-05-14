@@ -1,13 +1,11 @@
 ---
-description: 'lagInFrame ウィンドウ関数に関するドキュメント'
+description: 'lagInFrame ウィンドウ関数のドキュメント'
 sidebar_label: 'lagInFrame'
 sidebar_position: 9
 slug: /sql-reference/window-functions/lagInFrame
 title: 'lagInFrame'
 doc_type: 'reference'
 ---
-
-# lagInFrame \{#laginframe\}
 
 並び替えられたフレーム内で、現在の行から指定された物理オフセット分だけ前にある行で評価された値を返します。
 
@@ -32,8 +30,8 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **パラメーター**
 
 * `x` — 列名。
-* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。（省略可能 — 省略時のデフォルトは `1`）
-* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。（省略可能 — 省略時は列型のデフォルト値）
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (省略可能 — 省略時のデフォルトは `1`) 
+* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。 (省略可能 — 省略時は列型のデフォルト値) 
 
 **戻り値**
 

@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse의 널 허용 데이터 타입 수정자에 대한 문서'
+description: 'ClickHouse의 Nullable 데이터 타입 수정자 문서'
 sidebar_label: 'Nullable(T)'
 sidebar_position: 44
 slug: /sql-reference/data-types/nullable
@@ -7,22 +7,20 @@ title: 'Nullable(T)'
 doc_type: 'reference'
 ---
 
-# Nullable(T) \{#nullablet\}
-
 `T`에서 허용되는 일반 값들과 함께 「누락된 값」을 나타내는 특수 마커([NULL](../../sql-reference/syntax.md))를 저장할 수 있게 합니다. 예를 들어 `Nullable(Int8)` 타입 컬럼은 `Int8` 타입 값을 저장할 수 있으며, 값이 없는 행은 `NULL`을 저장합니다.
 
 `T`는 다음과 같은 복합 데이터 타입이 될 수 없습니다:
 
-- [Array](../../sql-reference/data-types/array.md) — 지원되지 않음
-- [Map](../../sql-reference/data-types/map.md) — 지원되지 않음
-- [Tuple](../../sql-reference/data-types/tuple.md) — 실험적으로 지원됨*
+* [Array](../../sql-reference/data-types/array.md) — 지원되지 않음
+* [Map](../../sql-reference/data-types/map.md) — 지원되지 않음
+* [Tuple](../../sql-reference/data-types/tuple.md) — 실험적으로 지원됨*
 
 그러나 복합 데이터 타입에는 `Nullable` 타입 값을 **포함할 수** 있습니다. 예를 들어 `Array(Nullable(Int8))` 또는 `Tuple(Nullable(String), Nullable(Int64))`와 같이 사용할 수 있습니다.
 
 :::note 실험적 기능: Nullable Tuple
 
 * `allow_experimental_nullable_tuple_type = 1`이 활성화된 경우 [Nullable(Tuple(...))](../../sql-reference/data-types/tuple.md#nullable-tuple)가 지원됩니다.
-:::
+  :::
 
 `Nullable` 타입 필드는 테이블 인덱스에 포함될 수 없습니다.
 

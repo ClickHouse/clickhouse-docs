@@ -1,13 +1,11 @@
 ---
-description: 'JOIN 절에 대한 참고 문서'
+description: 'JOIN 절 문서'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
 title: 'JOIN 절'
 keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN', 'NATURAL JOIN']
 doc_type: 'reference'
 ---
-
-# JOIN 절 \{#join-clause\}
 
 `JOIN` 절은 공통 값을 기준으로 하나 또는 여러 테이블의 컬럼을 결합하여 새로운 테이블을 생성합니다. 이는 SQL을 지원하는 데이터베이스에서 흔히 사용하는 연산으로, [관계 대수(relational algebra)](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)의 조인(join)에 해당합니다. 단일 테이블을 자기 자신과 조인하는 특수한 경우는 흔히 「self-join」이라고 합니다.
 
@@ -20,8 +18,7 @@ FROM <left_table>
 (ON <expr_list>)|(USING <column_list>) ...
 ```
 
-`ON` 절의 표현식과 `USING` 절의 컬럼은 &quot;join keys&quot;라고 합니다. 별도로 명시하지 않는 한, `JOIN`은 &quot;join keys&quot;가 일치하는 행들로부터 [데카르트 곱(Cartesian product)](https://en.wikipedia.org/wiki/Cartesian_product)을 생성하며, 이로 인해 원본 테이블들보다 훨씬 더 많은 행이 결과로 나올 수 있습니다.
-
+`ON` 절의 표현식과 `USING` 절의 컬럼은 &quot;조인 키&quot;라고 합니다. 별도로 명시하지 않는 한, `JOIN`은 &quot;조인 키&quot;가 일치하는 행들로부터 [데카르트 곱(Cartesian product)](https://en.wikipedia.org/wiki/Cartesian_product)을 생성하며, 이로 인해 원본 테이블들보다 훨씬 더 많은 행이 결과로 나올 수 있습니다.
 
 ## 지원되는 JOIN 유형 \{#supported-types-of-join\}
 

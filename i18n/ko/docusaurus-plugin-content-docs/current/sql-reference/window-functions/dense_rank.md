@@ -1,13 +1,11 @@
 ---
-description: 'dense_rank 윈도우 FUNCTION에 대한 설명서'
+description: 'dense_rank 윈도우 함수 문서'
 sidebar_label: 'dense_rank'
 sidebar_position: 7
 slug: /sql-reference/window-functions/dense_rank
 title: 'dense_rank'
 doc_type: 'reference'
 ---
-
-# dense_rank \{#dense_rank\}
 
 현재 파티션 내에서 현재 행의 순위를 건너뛰는 값 없이 매깁니다. 다시 말해, 새로 나타나는 행의 값이 이전 행들 중 하나의 값과 같으면, 순위 값이 건너뛰지 않고 바로 다음 순위를 부여합니다.
 

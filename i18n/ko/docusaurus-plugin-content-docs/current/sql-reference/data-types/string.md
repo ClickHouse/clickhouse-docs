@@ -1,15 +1,11 @@
 ---
-description: 'ClickHouse의 String 데이터 타입에 대한 문서'
+description: 'ClickHouse의 String 데이터 타입 문서'
 sidebar_label: 'String'
 sidebar_position: 8
 slug: /sql-reference/data-types/string
 title: 'String'
 doc_type: 'reference'
 ---
-
-
-
-# String \{#string\}
 
 임의 길이의 문자열입니다. 길이에 제한이 없습니다. 값에는 널 바이트(null byte)를 포함해 임의의 바이트 집합이 들어갈 수 있습니다.
 `String` 타입은 다른 DBMS의 `VARCHAR`, `BLOB`, `CLOB` 등의 타입을 대체합니다.
@@ -18,9 +14,7 @@ doc_type: 'reference'
 
 별칭:
 
-- `String` — `LONGTEXT`, `MEDIUMTEXT`, `TINYTEXT`, `TEXT`, `LONGBLOB`, `MEDIUMBLOB`, `TINYBLOB`, `BLOB`, `VARCHAR`, `CHAR`, `CHAR LARGE OBJECT`, `CHAR VARYING`, `CHARACTER LARGE OBJECT`, `CHARACTER VARYING`, `NCHAR LARGE OBJECT`, `NCHAR VARYING`, `NATIONAL CHARACTER LARGE OBJECT`, `NATIONAL CHARACTER VARYING`, `NATIONAL CHAR VARYING`, `NATIONAL CHARACTER`, `NATIONAL CHAR`, `BINARY LARGE OBJECT`, `BINARY VARYING`,
-
-
+* `String` — `LONGTEXT`, `MEDIUMTEXT`, `TINYTEXT`, `TEXT`, `LONGBLOB`, `MEDIUMBLOB`, `TINYBLOB`, `BLOB`, `VARCHAR`, `CHAR`, `CHAR LARGE OBJECT`, `CHAR VARYING`, `CHARACTER LARGE OBJECT`, `CHARACTER VARYING`, `NCHAR LARGE OBJECT`, `NCHAR VARYING`, `NATIONAL CHARACTER LARGE OBJECT`, `NATIONAL CHARACTER VARYING`, `NATIONAL CHAR VARYING`, `NATIONAL CHARACTER`, `NATIONAL CHAR`, `BINARY LARGE OBJECT`, `BINARY VARYING`,
 
 ## 인코딩 \{#encodings\}
 

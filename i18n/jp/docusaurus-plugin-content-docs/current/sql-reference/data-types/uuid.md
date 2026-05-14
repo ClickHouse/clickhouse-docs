@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse における UUID データ型に関するドキュメント'
+description: 'ClickHouse の UUID データ型に関するドキュメント'
 sidebar_label: 'UUID'
 sidebar_position: 24
 slug: /sql-reference/data-types/uuid
 title: 'UUID'
 doc_type: 'reference'
 ---
-
-# UUID \{#uuid\}
 
 Universally Unique Identifier (UUID、汎用一意識別子) は、レコードを識別するために使用される 16 バイトの値です。UUID の詳細については、[Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier) を参照してください。
 
@@ -82,7 +80,6 @@ SELECT * FROM tab;
 ```
 
 結果 (同じデータを挿入したと仮定した場合) ：
-
 
 ```text
 ┌─uuid─────────────────────────────────┐

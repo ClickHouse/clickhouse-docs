@@ -1,16 +1,14 @@
 ---
 description: 'テキスト内の検索語をすばやく見つけます。'
-keywords: ['全文検索', 'テキストインデックス', '索引', '索引']
-sidebar_label: 'テキストインデックスによる全文検索'
+keywords: ['全文検索', 'テキスト索引', '索引', '索引']
+sidebar_label: 'テキスト索引による全文検索'
 slug: /engines/table-engines/mergetree-family/textindexes
-title: 'テキストインデックスによる全文検索'
+title: 'テキスト索引による全文検索'
 doc_type: 'reference'
 ---
 
-# テキストインデックスによる全文検索 \{#full-text-search-with-text-indexes\}
-
-テキストインデックス（[inverted indexes](https://en.wikipedia.org/wiki/Inverted_index) とも呼ばれます）は、テキストデータに対する高速な全文検索を可能にします。
-テキストインデックスは、トークンから、それぞれのトークンを含む行番号への対応関係を格納します。
+テキスト索引 ([inverted indexes](https://en.wikipedia.org/wiki/Inverted_index) とも呼ばれます) は、テキストデータに対する高速な全文検索を可能にします。
+テキスト索引は、トークンから、それぞれのトークンを含む行番号への対応関係を格納します。
 トークンは、トークナイゼーションと呼ばれる処理によって生成されます。
 たとえば、ClickHouse のデフォルトトークナイザーは、英語の文 &quot;The cat likes mice.&quot; をトークン [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;] に変換します。
 
@@ -46,7 +44,7 @@ doc_type: 'reference'
 3: have, two, dogs, cat
 ```
 
-（概念的には）テキスト索引には次のような情報が含まれます。
+ (概念的には) テキスト索引には次のような情報が含まれます。
 
 ```result
 afraid : [2]
@@ -59,7 +57,6 @@ two    : [3]
 ```
 
 検索トークンが与えられると、この索引構造によって一致するすべての行を高速に検索できます。
-
 
 ## テキスト索引の作成 \{#creating-a-text-index\}
 

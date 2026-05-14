@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse의 맵(Map) 데이터 타입 문서'
-sidebar_label: 'Map(K, V)'
+description: 'ClickHouse의 맵 데이터 타입에 대한 문서'
+sidebar_label: '맵(K, V)'
 sidebar_position: 36
 slug: /sql-reference/data-types/map
-title: 'Map(K, V)'
+title: '맵(K, V)'
 doc_type: 'reference'
 ---
-
-# Map(K, V) \{#mapk-v\}
 
 데이터 타입 `Map(K, V)`은 key-value 쌍을 저장합니다.
 
@@ -19,8 +17,8 @@ doc_type: 'reference'
 
 **파라미터**
 
-* `K` — 맵 키(Map keys)의 타입입니다. [Nullable](../../sql-reference/data-types/nullable.md) 타입 및 [Nullable](../../sql-reference/data-types/nullable.md) 타입과 중첩된 [LowCardinality](../../sql-reference/data-types/lowcardinality.md) 타입을 제외한 임의의 타입입니다.
-* `V` — 맵 값(Map values)의 타입입니다. 임의의 타입입니다.
+* `K` — 맵 키(맵 keys)의 타입입니다. [Nullable](../../sql-reference/data-types/nullable.md) 타입 및 [Nullable](../../sql-reference/data-types/nullable.md) 타입과 중첩된 [LowCardinality](../../sql-reference/data-types/lowcardinality.md) 타입을 제외한 임의의 타입입니다.
+* `V` — 맵 값(맵 values)의 타입입니다. 임의의 타입입니다.
 
 **예시**
 
@@ -48,7 +46,7 @@ SELECT m['key2'] FROM tab;
 ```
 
 요청한 키 `k`가 맵에 포함되어 있지 않으면 `m[k]`는 값 타입의 기본값을 반환합니다. 예를 들어 정수 타입은 `0`, 문자열 타입은 `''`을(를) 반환합니다.
-맵에 키가 존재하는지 확인하려면 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) 함수를 사용할 수 있습니다.
+맵에 키가 존재하는지 확인하려면 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey) 함수를 사용할 수 있습니다。
 
 ```sql
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
@@ -64,7 +62,6 @@ SELECT m['key1'] FROM tab;
 │                       0 │
 └─────────────────────────┘
 ```
-
 
 ## Tuple을 맵(Map)으로 변환하기 \{#converting-tuple-to-map\}
 

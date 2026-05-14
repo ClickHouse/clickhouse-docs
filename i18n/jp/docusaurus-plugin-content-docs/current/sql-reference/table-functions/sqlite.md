@@ -7,9 +7,7 @@ title: 'sqlite'
 doc_type: 'reference'
 ---
 
-# sqlite テーブル関数 \{#sqlite-table-function\}
-
-[SQLite](../../engines/database-engines/sqlite.md) データベースに保存されているデータに対してクエリを実行できます。
+[SQLite](../../engines/database-engines/sqlite.md) データベースに保存されたデータに対してクエリを実行できます。
 
 ## 構文 \{#syntax\}
 

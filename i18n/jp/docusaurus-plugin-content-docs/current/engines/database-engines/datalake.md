@@ -1,12 +1,10 @@
 ---
-description: 'DataLakeCatalogデータベースエンジンを使用すると、ClickHouseを外部データカタログに接続し、オープンなテーブル形式のデータをクエリできます'
+description: 'DataLakeCatalog データベースエンジンを使用すると、ClickHouse を外部のデータカタログに接続し、オープンなテーブル形式のデータをクエリできます'
 sidebar_label: 'DataLakeCatalog'
 slug: /engines/database-engines/datalakecatalog
 title: 'DataLakeCatalog'
 doc_type: 'reference'
 ---
-
-# DataLakeCatalog \{#datalakecatalog\}
 
 `DataLakeCatalog` データベースエンジンを使用すると、ClickHouse を外部の
 データカタログに接続し、データを複製することなくオープンなテーブル形式のデータを

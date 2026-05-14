@@ -1,12 +1,10 @@
 ---
-description: 'Документация по оператору UNION'
+description: 'Документация для оператора UNION'
 sidebar_label: 'UNION'
 slug: /sql-reference/statements/select/union
 title: 'Оператор UNION'
 doc_type: 'reference'
 ---
-
-# Оператор UNION \{#union-clause\}
 
 Вы можете использовать `UNION` с явным указанием `UNION ALL` или `UNION DISTINCT`.
 

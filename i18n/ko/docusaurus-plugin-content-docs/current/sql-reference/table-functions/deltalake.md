@@ -7,9 +7,7 @@ title: 'deltaLake'
 doc_type: 'reference'
 ---
 
-# deltaLake 테이블 함수 \{#deltalake-table-function\}
-
-Amazon S3, Azure Blob Storage 또는 로컬로 마운트된 파일 시스템에 있는 [Delta Lake](https://github.com/delta-io/delta) 테이블에 대해 테이블 형식 인터페이스를 제공하며, v25.10부터 읽기와 쓰기 모두를 지원합니다.
+Amazon S3, Azure Blob Storage 또는 로컬에 마운트된 파일 시스템의 [Delta Lake](https://github.com/delta-io/delta) 테이블에 대해 테이블과 유사한 인터페이스를 제공하며, 읽기와 쓰기를 모두 지원합니다(v25.10부터).
 
 ## 구문 \{#syntax\}
 

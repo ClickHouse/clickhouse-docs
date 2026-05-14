@@ -7,8 +7,6 @@ title: 'Linux에서 macOS용 빌드'
 doc_type: 'guide'
 ---
 
-# Linux에서 macOS용 ClickHouse 빌드 방법 \{#how-to-build-clickhouse-on-linux-for-macos\}
-
 Linux 머신이 있고, 이 머신을 사용해 OS X에서 실행될 `clickhouse` 바이너리를 빌드하려는 경우를 위한 안내입니다.
 주요 사용 사례는 Linux 머신에서 실행되는 지속적 통합(continuous integration) 검사입니다.
 macOS에서 직접 ClickHouse를 빌드하려면 [네이티브 빌드 안내](../development/build-osx.md)를 참고하십시오.

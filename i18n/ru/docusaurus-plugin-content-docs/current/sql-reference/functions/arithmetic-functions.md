@@ -6,8 +6,6 @@ title: 'Арифметические функции'
 doc_type: 'reference'
 ---
 
-# Арифметические функции \{#arithmetic-functions\}
-
 ## Обзор \{#overview\}
 
 Арифметические функции работают для любых двух операндов типов `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Int8`, `Int16`, `Int32`, `Int64`, `Float32` или `Float64`.

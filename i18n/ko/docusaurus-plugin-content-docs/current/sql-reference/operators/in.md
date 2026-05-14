@@ -1,11 +1,9 @@
 ---
-description: 'NOT IN, GLOBAL IN 및 GLOBAL NOT IN 연산자는 별도로 다루며, 그 외 IN 연산자에 대한 문서입니다'
+description: '별도로 다루는 NOT IN, GLOBAL IN, GLOBAL NOT IN 연산자를 제외한 IN 연산자 문서'
 slug: /sql-reference/operators/in
 title: 'IN 연산자'
 doc_type: 'reference'
 ---
-
-# IN 연산자 \{#in-operators\}
 
 `IN`, `NOT IN`, `GLOBAL IN`, `GLOBAL NOT IN` 연산자는 기능이 다양하므로 별도로 설명합니다.
 

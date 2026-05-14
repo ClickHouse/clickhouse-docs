@@ -1,13 +1,11 @@
 ---
-description: 'Linux 上で ClickHouse をソースコードからビルドするためのステップバイステップガイド'
-sidebar_label: 'Linux でのビルド'
+description: 'Linux システムでソースから ClickHouse をビルドするためのステップバイステップガイド'
+sidebar_label: 'Linux でビルド'
 sidebar_position: 10
 slug: /development/build
 title: 'Linux で ClickHouse をビルドする方法'
 doc_type: 'guide'
 ---
-
-# Linux で ClickHouse をビルドする方法 \{#how-to-build-clickhouse-on-linux\}
 
 :::info このビルドガイドは、ClickHouse 自体を変更するコントリビューター向けです。
 ClickHouse のソースコードを変更しない場合は、[Quick Start](https://clickhouse.com/docs/get-started/quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。

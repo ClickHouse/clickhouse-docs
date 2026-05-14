@@ -1,13 +1,11 @@
 ---
-description: '允许对通过 Apache Arrow Flight 服务器暴露的数据执行查询。'
+description: '可对通过 Apache Arrow Flight 服务器公开的数据执行查询。'
 sidebar_label: 'arrowFlight'
 sidebar_position: 186
 slug: /sql-reference/table-functions/arrowflight
 title: 'arrowFlight'
 doc_type: 'reference'
 ---
-
-# arrowFlight 表函数 \{#arrowflight-table-function\}
 
 可对通过 [Apache Arrow Flight](/interfaces/arrowflight) 服务器公开的数据执行查询。
 

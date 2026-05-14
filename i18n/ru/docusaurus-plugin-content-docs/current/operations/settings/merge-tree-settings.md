@@ -1256,15 +1256,15 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, выполнение `INSERT` бу�
 
 ## max_part_loading_threads \{#max_part_loading_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
-Устаревший параметр, не используется.
+Настройка, не используется.
 
 ## max_part_removal_threads \{#max_part_removal_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
-Устаревший параметр, ни на что не влияет.
+Настройка, ни на что не влияет.
 
 ## max_partitions_to_read \{#max_partitions_to_read\}
 

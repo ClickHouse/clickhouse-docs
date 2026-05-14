@@ -1,13 +1,11 @@
 ---
-description: 'SET SQL 문에 대한 문서'
+description: 'SET 문에 대한 문서'
 sidebar_label: 'SET'
 sidebar_position: 50
 slug: /sql-reference/statements/set
-title: 'SET SQL 문'
+title: 'SET 문'
 doc_type: 'reference'
 ---
-
-# SET 문 \{#set-statement\}
 
 ```sql
 SET param = value
@@ -28,7 +26,6 @@ SET profile = 'profile-name-from-the-settings-file'
 SET force_index_by_date = 1
 SET force_index_by_date
 ```
-
 
 ## SET TIME ZONE \{#set-time-zone\}
 

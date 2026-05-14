@@ -1,12 +1,10 @@
 ---
-description: 'LIMIT BY 절에 대한 문서'
+description: 'LIMIT BY 절 문서'
 sidebar_label: 'LIMIT BY'
 slug: /sql-reference/statements/select/limit-by
 title: 'LIMIT BY 절'
 doc_type: 'reference'
 ---
-
-# LIMIT BY 절 \{#limit-by-clause\}
 
 `LIMIT n BY expressions` 절이 있는 쿼리는 `expressions`의 각 고유 값마다 처음 `n`개의 행을 선택합니다. `LIMIT BY`의 키에는 [표현식](/sql-reference/syntax#expressions)을 임의의 개수만큼 포함할 수 있습니다.
 

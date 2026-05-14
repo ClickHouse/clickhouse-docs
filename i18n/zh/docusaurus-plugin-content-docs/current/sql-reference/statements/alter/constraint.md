@@ -1,13 +1,11 @@
 ---
-description: '约束操作文档'
-sidebar_label: 'CONSTRAINT 约束'
+description: '关于操作约束条件的文档'
+sidebar_label: 'CONSTRAINT'
 sidebar_position: 43
 slug: /sql-reference/statements/alter/constraint
-title: '约束操作'
+title: '操作约束条件'
 doc_type: 'reference'
 ---
-
-# 操作约束条件 \{#manipulating-constraints\}
 
 可以使用以下语法添加或删除约束条件：
 

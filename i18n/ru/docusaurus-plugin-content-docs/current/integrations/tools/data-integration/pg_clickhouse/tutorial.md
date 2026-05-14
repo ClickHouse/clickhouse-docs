@@ -561,8 +561,7 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
 
 Напишите несколько запросов, которые объединяют `taxi_zone_dictionary` с вашей таблицей `trips`.
 
-1. Начните с простого `JOIN`, который работает аналогично предыдущему
-   запросу с аэропортом выше:
+1. Начните с простого `JOIN`, который работает аналогично предыдущему запросу с аэропортом выше:
 
    ```pgsql
    taxi=# SELECT
@@ -634,7 +633,7 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
 Следует выбирать только те столбцы, которые вам действительно нужны.
 :::
 
-[tutorial]: /tutorial "Расширенное руководство по ClickHouse"
+[ClickHouse tutorial]: /tutorial "руководство по ClickHouse"
 
 [psql]: https://www.postgresql.org/docs/current/app-psql.html "Клиентские приложения PostgreSQL: psql"
 

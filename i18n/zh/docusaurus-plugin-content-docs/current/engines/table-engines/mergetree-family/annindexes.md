@@ -1,21 +1,19 @@
 ---
-description: '精确和近似向量搜索的文档'
-keywords: ['向量相似度搜索', 'ann', 'knn', 'hnsw', '索引结构', '索引', '最近邻', '向量搜索']
-sidebar_label: '精确和近似向量搜索'
+description: '精确向量搜索与近似向量搜索文档'
+keywords: ['向量相似性搜索', 'ann', 'knn', 'hnsw', '索引', '索引', '最近邻', '向量搜索']
+sidebar_label: '精确向量搜索与近似向量搜索'
 slug: /engines/table-engines/mergetree-family/annindexes
-title: '精确和近似向量搜索'
+title: '精确向量搜索与近似向量搜索'
 doc_type: 'guide'
 ---
 
-# 精确向量搜索与近似向量搜索 \{#exact-and-approximate-vector-search\}
-
-在多维（向量）空间中，为给定点查找最近的 N 个点的问题称为[最近邻搜索](https://en.wikipedia.org/wiki/Nearest_neighbor_search)（nearest neighbor search），简称向量搜索。
+在多维 (向量) 空间中，为给定点查找最近的 N 个点的问题称为[最近邻搜索](https://en.wikipedia.org/wiki/Nearest_neighbor_search) (nearest neighbor search) ，简称向量搜索。
 解决向量搜索通常有两大类方法：
 
 * 精确向量搜索会计算给定点与向量空间中所有点之间的距离。这可以确保尽可能高的准确性，即返回的点被保证为真正的最近邻。由于需要对向量空间进行完全遍历，精确向量搜索在实际场景中可能过于缓慢。
-* 近似向量搜索是一组技术的统称（例如基于图和随机森林等特殊数据结构），可以比精确向量搜索更快地计算结果。结果的准确性通常对实际使用来说“足够好”。许多近似方法提供参数，用于在结果准确性与搜索时间之间进行权衡调优。
+* 近似向量搜索是一组技术的统称 (例如基于图和随机森林等特殊数据结构) ，可以比精确向量搜索更快地计算结果。结果的准确性通常对实际使用来说“足够好”。许多近似方法提供参数，用于在结果准确性与搜索时间之间进行权衡调优。
 
-一个向量搜索（无论是精确还是近似）可以用 SQL 查询如下表示：
+一个向量搜索 (无论是精确还是近似) 可以用 SQL 查询如下表示：
 
 ```sql
 WITH [...] AS reference_vector
@@ -27,11 +25,10 @@ LIMIT <N>
 ```
 
 向量空间中的点存储在数组类型的列 `vectors` 中，例如 [Array(Float64)](../../../sql-reference/data-types/array.md)、[Array(Float32)](../../../sql-reference/data-types/array.md) 或 [Array(BFloat16)](../../../sql-reference/data-types/array.md)。
-参考向量是一个常量数组，通过公共表表达式（CTE）给出。
+参考向量是一个常量数组，通过公共表表达式 (CTE) 给出。
 `<DistanceFunction>` 计算参考点与所有已存储点之间的距离。
 可以使用任意可用的[距离函数](/sql-reference/functions/distance-functions)来完成此操作。
 `<N>` 指定应返回多少个邻居。
-
 
 ## 精确向量搜索 \{#exact-nearest-neighbor-search\}
 

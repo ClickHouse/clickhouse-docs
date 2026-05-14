@@ -1,13 +1,11 @@
 ---
-description: 'first_value 윈도우 함수 문서'
+description: 'first_value 윈도우 함수에 대한 문서'
 sidebar_label: 'first_value'
 sidebar_position: 3
 slug: /sql-reference/window-functions/first_value
 title: 'first_value'
 doc_type: 'reference'
 ---
-
-# first_value \{#first_value\}
 
 정렬된 프레임 내에서 평가되는 첫 번째 값을 반환합니다. 기본적으로 NULL 인수는 건너뛰지만, `RESPECT NULLS` 수정자를 사용하면 이 동작을 변경할 수 있습니다.
 

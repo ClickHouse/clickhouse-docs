@@ -8,8 +8,6 @@ title: 'SQLite'
 doc_type: 'reference'
 ---
 
-# SQLite \{#sqlite\}
-
 Позволяет подключаться к базе данных [SQLite](https://www.sqlite.org/index.html) и выполнять запросы `INSERT` и `SELECT` для обмена данными между ClickHouse и SQLite.
 
 ## Создание базы данных \{#creating-a-database\}

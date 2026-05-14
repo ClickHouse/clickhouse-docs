@@ -7,9 +7,7 @@ title: 'パラメトリック集約関数'
 doc_type: 'reference'
 ---
 
-# パラメトリック集約関数 \{#parametric-aggregate-functions\}
-
-一部の集約関数は、（圧縮に使用される）引数カラムだけでなく、初期化に用いる定数パラメータの集合も受け取ることができます。構文としては、1 組ではなく 2 組の括弧を使用します。最初の括弧はパラメータ用で、2 番目の括弧は引数用です。
+一部の集約関数は、 (圧縮に使用される) 引数カラムだけでなく、初期化に用いる定数パラメータの集合も受け取ることができます。構文としては、1 組ではなく 2 組の括弧を使用します。最初の括弧はパラメータ用で、2 番目の括弧は引数用です。
 
 ## histogram \{#histogram\}
 
@@ -39,7 +37,7 @@ histogram(number_of_bins)(values)
 
   * `lower` — ビンの下限。
   * `upper` — ビンの上限。
-  * `height` — ビンの高さ（計算結果）。
+  * `height` — ビンの高さ (計算結果) 。
 
 **例**
 
@@ -85,7 +83,6 @@ FROM
 
 この場合、ヒストグラムのビンの境界は把握できないことに注意してください。
 
-
 ## sequenceMatch \{#sequencematch\}
 
 シーケンスにパターンに一致するイベントチェーンが含まれているかどうかを判定します。
@@ -117,14 +114,13 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 
 型: `UInt8`。
 
-
 #### パターン構文 \{#pattern-syntax\}
 
 * `(?N)` — 位置 `N` の条件引数に一致します。条件は `[1, 32]` の範囲で番号付けされます。たとえば、`(?1)` は `cond1` パラメータに渡された引数に一致します。
 
 * `.*` — 任意個数のイベントに一致します。このパターン要素に一致させるために条件引数を使用する必要はありません。
 
-* `(?t operator value)` — 2 つのイベントを隔てる時間（秒数）を指定します。たとえば、パターン `(?1)(?t>1800)(?2)` は、互いに 1800 秒より長い間隔で発生したイベントに一致します。これらのイベントの間には、任意の数の任意のイベントが存在し得ます。`>=`、`>`、`<`、`<=`、`==` 演算子を使用できます。
+* `(?t operator value)` — 2 つのイベントを隔てる時間 (秒数) を指定します。たとえば、パターン `(?1)(?t>1800)(?2)` は、互いに 1800 秒より長い間隔で発生したイベントに一致します。これらのイベントの間には、任意の数の任意のイベントが存在し得ます。`>=`、`>`、`<`、`<=`、`==` 演算子を使用できます。
 
 **例**
 
@@ -177,7 +173,6 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM 
 **関連項目**
 
 * [sequenceCount](#sequencecount)
-
 
 ## sequenceCount \{#sequencecount\}
 
@@ -235,7 +230,6 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 │                                                                       2 │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## sequenceMatchEvents \{#sequencematchevents\}
 
@@ -298,7 +292,6 @@ SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2,
 
 * [sequenceMatch](#sequencematch)
 
-
 ## windowFunnel \{#windowfunnel\}
 
 スライディング時間ウィンドウ内でイベントチェーンを探索し、そのチェーンから発生したイベント数の最大値を計算します。
@@ -319,7 +312,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 **引数**
 
-* `timestamp` — タイムスタンプを含む列の名前。サポートされるデータ型: [Date](../../sql-reference/data-types/date.md)、[DateTime](/sql-reference/data-types/datetime) およびその他の符号なし整数型（`timestamp` 列は `UInt64` 型をサポートしますが、その値は Int64 の最大値である 2^63 - 1 を超えることはできません）。
+* `timestamp` — タイムスタンプを含む列の名前。サポートされるデータ型: [Date](../../sql-reference/data-types/date.md)、[DateTime](/sql-reference/data-types/datetime) およびその他の符号なし整数型 (`timestamp` 列は `UInt64` 型をサポートしますが、その値は Int64 の最大値である 2^63 - 1 を超えることはできません) 。
 * `cond` — 事象の連鎖を表す条件またはデータ。[UInt8](../../sql-reference/data-types/int-uint.md)。
 
 **パラメータ**
@@ -345,13 +338,12 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 次のイベントチェーンを設定します:
 
-1. ユーザーがストアのアカウントにログインした（`eventID = 1003`）。
-2. ユーザーが電話を検索した（`eventID = 1007, product = 'phone'`）。
-3. ユーザーが注文を行った（`eventID = 1009`）。
-4. ユーザーがその注文を再度行った（`eventID = 1010`）。
+1. ユーザーがストアのアカウントにログインした (`eventID = 1003`) 。
+2. ユーザーが電話を検索した (`eventID = 1007, product = 'phone'`) 。
+3. ユーザーが注文を行った (`eventID = 1009`) 。
+4. ユーザーがその注文を再度行った (`eventID = 1010`) 。
 
 入力テーブル:
-
 
 ```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
@@ -428,11 +420,10 @@ GROUP BY level
 ORDER BY level ASC;
 ```
 
-
 ## retention \{#retention\}
 
 この関数は、イベントで特定の条件が満たされたかどうかを示す `UInt8` 型の引数を 1〜32 個受け取ります。
-どの条件も（[WHERE](/sql-reference/statements/select/where) と同様に）引数として指定できます。
+どの条件も ([WHERE](/sql-reference/statements/select/where) と同様に) 引数として指定できます。
 
 最初の条件を除き、それ以外の条件はペアで評価されます。2 番目の戻り値は 1 番目と 2 番目の条件がともに真のときに真となり、3 番目の戻り値は 1 番目と 3 番目の条件がともに真のときに真となる、という具合です。
 
@@ -444,7 +435,7 @@ retention(cond1, cond2, ..., cond32);
 
 **引数**
 
-* `cond` — `UInt8` の結果（1 または 0）を返す式。
+* `cond` — `UInt8` の結果 (1 または 0) を返す式。
 
 **戻り値**
 
@@ -534,7 +525,6 @@ ORDER BY uid ASC
 
 結果：
 
-
 ```text
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
@@ -585,16 +575,15 @@ FROM
 
 ここで:
 
-* `r1` - 2020-01-01 の一日を通してサイトを訪問したユニーク訪問者数（`cond1` 条件）。
-* `r2` - 2020-01-01 から 2020-01-02 の間の特定の期間にサイトを訪問したユニーク訪問者数（`cond1` および `cond2` 条件）。
-* `r3` - 2020-01-01 および 2020-01-03 の特定の期間にサイトを訪問したユニーク訪問者数（`cond1` および `cond3` 条件）。
-
+* `r1` - 2020-01-01 の一日を通してサイトを訪問したユニーク訪問者数 (`cond1` 条件) 。
+* `r2` - 2020-01-01 から 2020-01-02 の間の特定の期間にサイトを訪問したユニーク訪問者数 (`cond1` および `cond2` 条件) 。
+* `r3` - 2020-01-01 および 2020-01-03 の特定の期間にサイトを訪問したユニーク訪問者数 (`cond1` および `cond3` 条件) 。
 
 ## uniqUpTo(N)(x) \{#uniquptonx\}
 
 引数の異なる値の個数を、指定された上限 `N` まで数えます。異なる値の個数が `N` より大きい場合、この関数は `N` + 1 を返し、それ以外の場合は正確な値を返します。
 
-小さい `N`（最大 10 程度）での利用を推奨します。`N` の最大値は 100 です。
+小さい `N` (最大 10 程度) での利用を推奨します。`N` の最大値は 100 です。
 
 集約関数の状態に対して、この関数は `1 + N * （1 値あたりのサイズ（バイト））` に等しい量のメモリを使用します。
 文字列を扱う場合、この関数は 8 バイトの非暗号学的ハッシュを保存します。文字列に対する計算は近似となります。
@@ -608,8 +597,7 @@ GROUP BY SearchPhrase
 HAVING uniqUpTo(4)(UserID) >= 5
 ```
 
-`uniqUpTo(4)(UserID)` は、各 `SearchPhrase` ごとの一意な `UserID` の数を計算しますが、数えるのは一意な値を最大 4 個までに制限します。ある `SearchPhrase` に対して一意な `UserID` が 4 個を超えて存在する場合、この関数は 5（4 + 1）を返します。その後、`HAVING` 句で、一意な `UserID` の数が 5 未満である `SearchPhrase` を除外します。これにより、少なくとも 5 人の異なるユーザーによって使用された検索キーワードの一覧を取得できます。
-
+`uniqUpTo(4)(UserID)` は、各 `SearchPhrase` ごとの一意な `UserID` の数を計算しますが、数えるのは一意な値を最大 4 個までに制限します。ある `SearchPhrase` に対して一意な `UserID` が 4 個を超えて存在する場合、この関数は 5 (4 + 1) を返します。その後、`HAVING` 句で、一意な `UserID` の数が 5 未満である `SearchPhrase` を除外します。これにより、少なくとも 5 人の異なるユーザーによって使用された検索キーワードの一覧を取得できます。
 
 ## sumMapFiltered \{#summapfiltered\}
 
@@ -660,7 +648,6 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 1. │ ([1,4,8],[10,20,10])                                            │
    └─────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## sumMapFilteredWithOverflow \{#summapfilteredwithoverflow\}
 
@@ -723,7 +710,6 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt64)) │
    └──────────────────────┴────────────────────────────────────┘
 ```
-
 
 ## sequenceNextNode \{#sequencenextnode\}
 
@@ -801,7 +787,6 @@ INSERT INTO test_flow VALUES (1, 2, 'Home') (2, 2, 'Home') (3, 2, 'Gift') (4, 2,
 INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3, 'Basket');
 ```
 
-
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
 
@@ -862,7 +847,6 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
 ```
-
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
@@ -939,7 +923,6 @@ ORDER BY id;
 
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
 ```
-
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;

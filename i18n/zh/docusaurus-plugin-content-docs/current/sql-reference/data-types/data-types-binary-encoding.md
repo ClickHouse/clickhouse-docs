@@ -1,18 +1,16 @@
 ---
 description: '数据类型二进制编码规范文档'
-sidebar_label: '数据类型二进制编码规范'
+sidebar_label: '数据类型二进制编码规范。'
 sidebar_position: 56
 slug: /sql-reference/data-types/data-types-binary-encoding
 title: '数据类型二进制编码规范'
 doc_type: 'reference'
 ---
 
-# 数据类型二进制编码规范 \{#data-types-binary-encoding-specification\}
-
 本规范描述了一种用于对 ClickHouse 数据类型进行二进制编码和解码的二进制格式。该格式用于 `Dynamic` 列的[二进制序列化](dynamic.md#binary-output-format)，并且在相应设置下可用于输入/输出格式 [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) 和 [Native](/interfaces/formats/Native)。
 
 下表描述了每种数据类型在二进制格式中的表示方式。每种数据类型的编码由 1 个字节的类型标识和一些可选的附加信息组成。
-二进制编码中的 `var_uint` 表示大小使用可变长度整数（Variable-Length Quantity）压缩方式进行编码。
+二进制编码中的 `var_uint` 表示大小使用可变长度整数 (Variable-Length Quantity) 压缩方式进行编码。
 
 | ClickHouse 数据类型                                                                                           | 二进制编码                                                                                                                                                                                                                                                                                                                                                                      |
 | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

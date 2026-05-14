@@ -7,8 +7,6 @@ title: 'Тестирование ClickHouse'
 doc_type: 'guide'
 ---
 
-# Проверка ClickHouse \{#testing-clickhouse\}
-
 ## Типы тестов \{#test-types\}
 
 В ClickHouse есть следующие типы тестов:

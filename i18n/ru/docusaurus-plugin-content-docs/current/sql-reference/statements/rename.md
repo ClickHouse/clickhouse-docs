@@ -1,13 +1,11 @@
 ---
-description: 'Документация по оператору RENAME'
+description: 'Документация для оператора RENAME'
 sidebar_label: 'RENAME'
 sidebar_position: 48
 slug: /sql-reference/statements/rename
 title: 'Оператор RENAME'
 doc_type: 'reference'
 ---
-
-# Оператор RENAME \{#rename-statement\}
 
 Переименовывает базы данных, таблицы или словари. В одном запросе можно переименовать несколько сущностей.
 Обратите внимание, что запрос `RENAME` с несколькими сущностями является не атомарной операцией. Чтобы атомарно поменять местами имена сущностей, используйте оператор [EXCHANGE](./exchange.md).

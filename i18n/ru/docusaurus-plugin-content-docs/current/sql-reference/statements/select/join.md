@@ -1,15 +1,13 @@
 ---
-description: 'Документация по оператору JOIN'
+description: 'Документация по предложению JOIN'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
-title: 'Оператор JOIN'
-keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANТИ JOIN', 'RIGHT ANТИ JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN', 'NATURAL JOIN']
-doc_type: 'справочник'
+title: 'Предложение JOIN'
+keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN', 'NATURAL JOIN']
+doc_type: 'reference'
 ---
 
-# Оператор JOIN \{#join-clause\}
-
-Оператор `JOIN` формирует новую таблицу, объединяя столбцы из одной или нескольких таблиц по общим для них значениям. Это распространённая операция в базах данных с поддержкой SQL, которая соответствует операции соединения в [реляционной алгебре](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators). Особый случай соединения таблицы с самой собой часто называют «self-join».
+Предложение `JOIN` формирует новую таблицу, объединяя столбцы из одной или нескольких таблиц по общим для них значениям. Это распространённая операция в базах данных с поддержкой SQL, которая соответствует операции соединения в [реляционной алгебре](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators). Особый случай соединения таблицы с самой собой часто называют «self-join».
 
 **Синтаксис**
 
@@ -20,8 +18,7 @@ FROM <left_table>
 (ON <expr_list>)|(USING <column_list>) ...
 ```
 
-Выражения из предложения `ON` и столбцы из предложения `USING` называются «ключами соединения». Если не указано иное, оператор `JOIN` формирует [декартово произведение](https://en.wikipedia.org/wiki/Cartesian_product) строк с совпадающими «ключами соединения», что может приводить к получению результата с гораздо большим количеством строк, чем в исходных таблицах.
-
+Выражения из предложения `ON` и столбцы из предложения `USING` называются «ключами соединения». Если не указано иное, предложение `JOIN` формирует [декартово произведение](https://en.wikipedia.org/wiki/Cartesian_product) строк с совпадающими «ключами соединения», что может приводить к получению результата с гораздо большим количеством строк, чем в исходных таблицах.
 
 ## Поддерживаемые типы JOIN \{#supported-types-of-join\}
 

@@ -7,11 +7,9 @@ title: 'ALTER TABLE ... MODIFY QUERY ステートメント'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY QUERY ステートメント \{#alter-table-modify-query-statement\}
+`ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、インジェスト処理を中断することなく、[materialized view](/sql-reference/statements/create/view#materialized-view) 作成時に指定した `SELECT` クエリを変更できます。
 
-`ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、インジェスト処理を中断することなく、[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view) 作成時に指定した `SELECT` クエリを変更できます。
-
-このコマンドは、`TO [db.]name` 句を伴って作成されたマテリアライズドビューを変更するためのものです。基盤となるストレージテーブルの構造や、マテリアライズドビューのカラム定義は変更しないため、`TO [db.]name` 句を指定せずに作成されたマテリアライズドビューに対しては、このコマンドの適用範囲はごく限られます。
+このコマンドは、`TO [db.]name` 句を伴って作成されたmaterialized viewを変更するためのものです。基盤となるストレージテーブルの構造や、materialized viewのカラム定義は変更しないため、`TO [db.]name` 句を指定せずに作成されたmaterialized viewに対しては、このコマンドの適用範囲はごく限られます。
 
 **TO テーブルを使用した例**
 

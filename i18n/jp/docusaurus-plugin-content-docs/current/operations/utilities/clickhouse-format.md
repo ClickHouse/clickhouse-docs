@@ -1,11 +1,9 @@
 ---
-description: 'ClickHouse のデータフォーマットを扱うための `clickhouse-format` ユーティリティの使用ガイド'
+description: 'ClickHouse のデータフォーマットを扱うための format ユーティリティの使用ガイド'
 slug: /operations/utilities/clickhouse-format
 title: 'clickhouse-format'
 doc_type: 'reference'
 ---
-
-# clickhouse-format ユーティリティ \{#clickhouse-format-utility\}
 
 入力クエリを整形します。
 
@@ -32,7 +30,7 @@ doc_type: 'reference'
 $ clickhouse-format --query "select number from numbers(10) where number%2 order by number desc;"
 ```
 
-結果：
+結果:
 
 ```bash
 SELECT number
@@ -47,7 +45,7 @@ ORDER BY number DESC
 $ clickhouse-format --oneline --hilite <<< "SELECT sum(number) FROM numbers(5);"
 ```
 
-結果:
+結果：
 
 ```sql
 SELECT sum(number) FROM numbers(5)
@@ -78,7 +76,7 @@ FROM numbers(5)
 $ clickhouse-format --seed Hello --obfuscate <<< "SELECT cost_first_screen BETWEEN a AND b, CASE WHEN x >= 123 THEN y ELSE NULL END;"
 ```
 
-結果：
+結果:
 
 ```sql
 SELECT treasury_mammoth_hazelnut BETWEEN nutmeg AND span, CASE WHEN chive >= 116 THEN switching ELSE ANYTHING END;

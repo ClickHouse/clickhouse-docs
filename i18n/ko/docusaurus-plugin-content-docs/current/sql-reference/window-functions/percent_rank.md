@@ -7,8 +7,6 @@ title: 'percent_rank'
 doc_type: 'reference'
 ---
 
-# percent_rank \{#percent_rank\}
-
 윈도우 파티션 내에서 각 행의 상대적 순위(백분위)를 반환합니다.
 
 **구문**

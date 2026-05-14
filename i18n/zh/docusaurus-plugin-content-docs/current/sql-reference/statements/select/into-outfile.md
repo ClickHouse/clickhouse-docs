@@ -1,12 +1,10 @@
 ---
-description: 'INTO OUTFILE 子句说明'
+description: 'INTO OUTFILE 子句文档'
 sidebar_label: 'INTO OUTFILE'
 slug: /sql-reference/statements/select/into-outfile
 title: 'INTO OUTFILE 子句'
 doc_type: 'reference'
 ---
-
-# INTO OUTFILE 子句 \{#into-outfile-clause\}
 
 `INTO OUTFILE` 子句会将 `SELECT` 查询的结果重定向到**客户端**本地的文件中。
 

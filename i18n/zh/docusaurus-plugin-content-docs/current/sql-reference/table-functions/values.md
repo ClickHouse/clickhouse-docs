@@ -8,8 +8,6 @@ title: 'values'
 doc_type: 'reference'
 ---
 
-# Values 表函数 \{#values-table-function\}
-
 `Values` 表函数允许你创建一个临时存储，用于为列填充值。它对于快速测试或生成示例数据非常有用。
 
 :::note

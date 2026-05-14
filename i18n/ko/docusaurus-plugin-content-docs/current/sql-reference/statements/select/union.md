@@ -1,12 +1,10 @@
 ---
-description: 'UNION 절 문서'
+description: 'UNION 절에 대한 문서'
 sidebar_label: 'UNION'
 slug: /sql-reference/statements/select/union
 title: 'UNION 절'
 doc_type: 'reference'
 ---
-
-# UNION 절 \{#union-clause\}
 
 `UNION ALL` 또는 `UNION DISTINCT`를 명시적으로 지정하여 `UNION`을 사용할 수 있습니다.
 

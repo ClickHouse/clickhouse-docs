@@ -1,13 +1,12 @@
 ---
-description: 'Документация о типе данных Dynamic в ClickHouse, который позволяет хранить значения различных типов в одном столбце'
+description: 'Документация по типу данных Dynamic в ClickHouse, который может хранить
+  значения разных типов в одном столбце'
 sidebar_label: 'Dynamic'
 sidebar_position: 62
 slug: /sql-reference/data-types/dynamic
 title: 'Dynamic'
 doc_type: 'guide'
 ---
-
-# Dynamic \{#dynamic\}
 
 Этот тип позволяет хранить значения произвольных типов, не зная заранее всех возможных вариантов.
 

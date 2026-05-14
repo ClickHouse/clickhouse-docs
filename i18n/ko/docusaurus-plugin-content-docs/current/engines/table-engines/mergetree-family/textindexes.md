@@ -1,15 +1,13 @@
 ---
-description: '텍스트에서 검색어를 빠르게 찾는 방법입니다.'
+description: '텍스트에서 검색어를 빠르게 찾습니다.'
 keywords: ['전문 검색', '텍스트 인덱스', '인덱스', '인덱스']
-sidebar_label: '텍스트 인덱스를 활용한 전문 검색'
+sidebar_label: '텍스트 인덱스를 사용한 전문 검색'
 slug: /engines/table-engines/mergetree-family/textindexes
-title: '텍스트 인덱스를 활용한 전문 검색'
+title: '텍스트 인덱스를 사용한 전문 검색'
 doc_type: 'reference'
 ---
 
-# 텍스트 인덱스를 사용한 전체 텍스트 검색 \{#full-text-search-with-text-indexes\}
-
-텍스트 인덱스(또는 [inverted index](https://en.wikipedia.org/wiki/Inverted_index))는 텍스트 데이터에 대해 빠른 전체 텍스트 검색을 가능하게 합니다.
+텍스트 인덱스(또는 [inverted indexes](https://en.wikipedia.org/wiki/Inverted_index))는 텍스트 데이터에 대해 빠른 전문 검색을 가능하게 합니다.
 텍스트 인덱스는 토큰에서 각 토큰을 포함하는 행 번호로의 매핑을 저장합니다.
 토큰은 토큰화(tokenization)라고 불리는 과정에 의해 생성됩니다.
 예를 들어, ClickHouse의 기본 토크나이저는 영어 문장 &quot;The cat likes mice.&quot;를 토큰 [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;]로 변환합니다.
@@ -59,7 +57,6 @@ two    : [3]
 ```
 
 검색 토큰이 주어지면 이 인덱스 구조를 통해 모든 일치하는 행을 빠르게 찾을 수 있습니다.
-
 
 ## 텍스트 인덱스 생성 \{#creating-a-text-index\}
 

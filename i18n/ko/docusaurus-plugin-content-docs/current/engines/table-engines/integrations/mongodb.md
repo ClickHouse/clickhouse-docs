@@ -4,19 +4,13 @@ sidebar_label: 'MongoDB'
 sidebar_position: 135
 slug: /engines/table-engines/integrations/mongodb
 title: 'MongoDB 테이블 엔진'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-
-
-# MongoDB 테이블 엔진 \{#mongodb-table-engine\}
 
 MongoDB 엔진은 원격 [MongoDB](https://www.mongodb.com/) 컬렉션에서 데이터를 읽을 수 있게 해 주는 읽기 전용 테이블 엔진입니다.
 
 MongoDB v3.6+ 버전의 서버만 지원됩니다.
 [Seed list(`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list)는 현재 지원되지 않습니다.
-
-
 
 ## 테이블 생성 \{#creating-a-table\}
 
@@ -29,9 +23,9 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 ) ENGINE = MongoDB(host:port, database, collection, user, password[, options[, oid_columns]]);
 ```
 
-**엔진 파라미터**
+**엔진 매개변수**
 
-| Parameter     | Description                                                                                                                                                                           |
+| 매개변수     | Description                                                                                                                                                                           |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `host:port`   | MongoDB 서버 주소입니다.                                                                                                                                                                     |
 | `database`    | 원격 데이터베이스 이름입니다.                                                                                                                                                                      |
@@ -59,7 +53,6 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | `uri`         | MongoDB 서버의 연결 URI입니다.                                     |
 | `collection`  | 원격 컬렉션 이름입니다.                                              |
 | `oid_columns` | WHERE 절에서 `oid`로 처리해야 하는 컬럼을 쉼표로 구분한 목록입니다. 기본값은 `_id`입니다. |
-
 
 ## 타입 매핑 \{#types-mappings\}
 
@@ -131,7 +124,6 @@ CREATE TABLE sample_oid
 SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea41b1'; -- will output 1 now
 ```
 
-
 ## 지원되는 절 \{#supported-clauses\}
 
 단순 표현식을 사용하는 쿼리만 지원됩니다(예: `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`).
@@ -156,7 +148,6 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 이는 `Date`, `Date32`, `DateTime`, `Bool`, `UUID`에도 적용됩니다.
 
 :::
-
 
 ## 사용 예시 \{#usage-example\}
 
@@ -238,8 +229,8 @@ LIMIT 3;
    └────────────────────────┴────────┘
 ```
 
-
 ## 문제 해결 \{#troubleshooting\}
+
 DEBUG 수준 로그에서 생성된 MongoDB 쿼리를 확인할 수 있습니다.
 
 구현 세부 정보는 [mongocxx](https://github.com/mongodb/mongo-cxx-driver) 및 [mongoc](https://github.com/mongodb/mongo-c-driver) 문서를 참조하십시오.

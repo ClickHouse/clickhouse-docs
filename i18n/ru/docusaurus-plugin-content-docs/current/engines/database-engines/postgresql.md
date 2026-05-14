@@ -7,8 +7,6 @@ title: 'PostgreSQL'
 doc_type: 'guide'
 ---
 
-# PostgreSQL \{#postgresql\}
-
 Позволяет подключаться к базам данных на удалённом сервере [PostgreSQL](https://www.postgresql.org). Поддерживает операции чтения и записи (запросы `SELECT` и `INSERT`) для обмена данными между ClickHouse и PostgreSQL.
 
 Обеспечивает доступ в режиме реального времени к списку таблиц и их структуре на удалённом сервере PostgreSQL с помощью запросов `SHOW TABLES` и `DESCRIBE TABLE`.
@@ -33,21 +31,21 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 
 ## Поддержка типов данных \{#data_types-support\}
 
-| PostgreSQL       | ClickHouse                                                   |
-|------------------|--------------------------------------------------------------|
-| DATE             | [Date](../../sql-reference/data-types/date.md)               |
-| TIMESTAMP        | [DateTime](../../sql-reference/data-types/datetime.md)       |
-| REAL             | [Float32](../../sql-reference/data-types/float.md)           |
-| DOUBLE           | [Float64](../../sql-reference/data-types/float.md)           |
-| DECIMAL, NUMERIC | [Decimal](../../sql-reference/data-types/decimal.md)         |
-| SMALLINT         | [Int16](../../sql-reference/data-types/int-uint.md)          |
-| INTEGER          | [Int32](../../sql-reference/data-types/int-uint.md)          |
-| BIGINT           | [Int64](../../sql-reference/data-types/int-uint.md)          |
-| SERIAL           | [UInt32](../../sql-reference/data-types/int-uint.md)         |
-| BIGSERIAL        | [UInt64](../../sql-reference/data-types/int-uint.md)         |
-| TEXT, CHAR       | [String](../../sql-reference/data-types/string.md)           |
-| INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md))|
-| ARRAY            | [Array](../../sql-reference/data-types/array.md)             |
+| PostgreSQL       | ClickHouse                                                    |
+| ---------------- | ------------------------------------------------------------- |
+| DATE             | [Date](../../sql-reference/data-types/date.md)                |
+| TIMESTAMP        | [DateTime](../../sql-reference/data-types/datetime.md)        |
+| REAL             | [Float32](../../sql-reference/data-types/float.md)            |
+| DOUBLE           | [Float64](../../sql-reference/data-types/float.md)            |
+| DECIMAL, NUMERIC | [Decimal](../../sql-reference/data-types/decimal.md)          |
+| SMALLINT         | [Int16](../../sql-reference/data-types/int-uint.md)           |
+| INTEGER          | [Int32](../../sql-reference/data-types/int-uint.md)           |
+| BIGINT           | [Int64](../../sql-reference/data-types/int-uint.md)           |
+| SERIAL           | [UInt32](../../sql-reference/data-types/int-uint.md)          |
+| BIGSERIAL        | [UInt64](../../sql-reference/data-types/int-uint.md)          |
+| TEXT, CHAR       | [String](../../sql-reference/data-types/string.md)            |
+| INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md)) |
+| ARRAY            | [Array](../../sql-reference/data-types/array.md)              |
 
 ## Примеры использования \{#examples-of-use\}
 
@@ -112,7 +110,7 @@ SELECT * FROM test_database.test_table;
 postgre> ALTER TABLE test_table ADD COLUMN data Text
 ```
 
-Поскольку параметр `use_table_cache` был установлен в значение `1` при создании базы данных, структура таблицы в ClickHouse была помещена в кэш и, соответственно, не изменилась:
+Поскольку параметр `use_table_cache` был установлен в значение `1` при создании базы данных, структура таблицы в ClickHouse была кэширована и, соответственно, не изменилась:
 
 ```sql
 DESCRIBE TABLE test_database.test_table;
@@ -143,5 +141,5 @@ DESCRIBE TABLE test_database.test_table;
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+* Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+* Блог: [ClickHouse и PostgreSQL — идеальный союз в мире данных — часть 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

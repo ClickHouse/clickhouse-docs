@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse のクエリキャッシュ機能の利用と設定に関するガイド'
+description: 'ClickHouse でクエリキャッシュ機能を使用および設定するためのガイド'
 sidebar_label: 'クエリキャッシュ'
 sidebar_position: 65
 slug: /operations/query-cache
 title: 'クエリキャッシュ'
 doc_type: 'guide'
 ---
-
-# クエリキャッシュ \{#query-cache\}
 
 クエリキャッシュを使用すると、`SELECT` クエリを一度だけ実行して結果を保存し、同じクエリの後続の実行にはキャッシュから直接結果を返すことができます。
 クエリの種類によっては、これにより ClickHouse サーバーのレイテンシとリソース消費を劇的に削減できます。

@@ -15,8 +15,9 @@ keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhou
 
 ## 入门 \{#getting-started\}
 
-试用 pg&#95;clickhouse 的最简单方式是使用 [Docker 镜像]，它
-基于标准 PostgreSQL Docker 镜像并包含 pg&#95;clickhouse 扩展：
+试用 pg&#95;clickhouse 的最简单方式是使用 [Docker 镜像]，它包含
+标准 PostgreSQL Docker 镜像以及 pg&#95;clickhouse 和 [re2]
+扩展：
 
 ```sh
 docker run --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
@@ -25,7 +26,6 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 ```
 
 请参阅该 [教程]，以开始导入 ClickHouse 表并启用查询下推。
-
 
 ## 测试用例：TPC-H \{#test-case-tpc-h\}
 
@@ -253,18 +253,16 @@ make] 和 [CMake]。
 
 ## 版权 \{#copyright\}
 
-*   版权所有 (c) 2025-2026, ClickHouse
-*   部分版权所有 (c) 2023-2025, Ildus Kurbangaliev
-*   部分版权所有 (c) 2019-2023, Adjust GmbH
-*   部分版权所有 (c) 2012-2019, PostgreSQL Global Development Group
+* 版权所有 (c) 2025-2026, ClickHouse
+* 部分版权所有 (c) 2023-2025, Ildus Kurbangaliev
+* 部分版权所有 (c) 2019-2023, Adjust GmbH
+* 部分版权所有 (c) 2012-2019, PostgreSQL Global Development Group
 
-[pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse
-    "GitHub 上的 pg_clickhouse"
+[pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse "GitHub 上的 pg_clickhouse"
 
 [import foreign tables]: /integrations/pg_clickhouse/reference#import-foreign-schema
 
-[Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
-    "最新 Docker 发布版本"
+[Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "最新 Docker 发布版本"
 
 [tutorial]: /integrations/pg_clickhouse/tutorial "pg_clickhouse 教程"
 
@@ -274,11 +272,9 @@ make] 和 [CMake]。
 
 [PGXN client]: https://pgxn.github.io/pgxnclient/ "PGXN 客户端文档"
 
-[Homebrew]: https://formulae.brew.sh/formula/pgxnclient#default
-    "Homebrew 上的 PGXN 客户端"
+[Homebrew]: https://formulae.brew.sh/formula/pgxnclient#default "Homebrew 上的 PGXN 客户端"
 
-[Apt]: https://tracker.debian.org/pkg/pgxnclient
-    "Debian Apt 上的 PGXN 客户端"
+[Apt]: https://tracker.debian.org/pkg/pgxnclient "Debian Apt 上的 PGXN 客户端"
 
 [`postgresql.conf` parameters]: https://www.postgresql.org/docs/devel/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-OTHER
 
@@ -295,6 +291,8 @@ make] 和 [CMake]。
 [LibSSL]: https://openssl-library.org "OpenSSL 库"
 
 [TPC-H]: https://www.tpc.org/tpch/
+
+[re2]: https://github.com/ClickHouse/pg_re2 "pg_re2：使用 RE2 的 ClickHouse 兼容正则表达式函数"
 
 [查询 1] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/1.sql
   [查询 2] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/2.sql

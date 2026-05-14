@@ -7,9 +7,7 @@ title: 'sqlite'
 doc_type: 'reference'
 ---
 
-# sqlite 表函数 \{#sqlite-table-function\}
-
-用于对存储在 [SQLite](../../engines/database-engines/sqlite.md) 数据库中的数据执行查询。
+可对存储在 [SQLite](../../engines/database-engines/sqlite.md) 数据库中的数据执行查询。
 
 ## 语法 \{#syntax\}
 

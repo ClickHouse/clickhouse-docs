@@ -9381,6 +9381,21 @@ See also:
 
 - [optimize_functions_to_subcolumns](#optimize_functions_to_subcolumns)
 
+## optimize_trivial_group_by_limit_query \{#optimize_trivial_group_by_limit_query\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "`SELECT key_expr FROM t GROUP BY key_expr LIMIT n` クエリで、集約を最大 LIMIT 個の異なるキーに制限する新しい設定。"}]}]} />
+
+`max_rows_to_group_by = n + offset` および `group_by_overflow_mode = 'any'` を設定することで、単純なクエリ `SELECT key_expr FROM table GROUP BY key_expr LIMIT n` の最適化を有効または無効にします (SELECT 句に集約関数がなく、`HAVING`/`ORDER BY`/`LIMIT BY`/ウィンドウ句がなく、`GROUP BY` 修飾子もない場合) 。異なるキーが `n + offset` 個生成された時点で、集約は停止します。
+
+この最適化は、ユーザーが `group_by_overflow_mode` に `any` 以外の値を明示的に設定している場合 (明示した `throw`/`break` の動作を維持するため) 、およびユーザーがすでにより厳しい `max_rows_to_group_by` を設定している場合 (この最適化が実質的に無効になるため) には抑制されます。
+
+設定可能な値:
+
+* 0 — 最適化は無効です。
+  * 1 — 最適化は有効です。
+
 ## optimize_trivial_insert_select \{#optimize_trivial_insert_select\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

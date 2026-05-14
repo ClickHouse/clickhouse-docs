@@ -1,12 +1,10 @@
 ---
-description: '수학 함수 문서'
-sidebar_label: '수학 함수'
+description: '수학 함수에 대한 문서'
+sidebar_label: '수학'
 slug: /sql-reference/functions/math-functions
 title: '수학 함수'
 doc_type: 'reference'
 ---
-
-# 수학 함수 \{#mathematical-functions\}
 
 {/* 
   아래 태그 안의 내용은 문서 프레임워크를 빌드할 때

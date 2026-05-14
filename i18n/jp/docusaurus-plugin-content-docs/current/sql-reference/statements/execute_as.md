@@ -7,6 +7,10 @@ title: 'EXECUTE AS ステートメント'
 doc_type: 'reference'
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
+<CloudNotSupportedBadge />
+
 # EXECUTE AS ステートメント \{#execute-as-statement\}
 
 別のユーザーとしてクエリを実行できるようにします。

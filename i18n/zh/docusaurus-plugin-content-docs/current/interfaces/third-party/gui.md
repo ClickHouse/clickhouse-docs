@@ -7,8 +7,6 @@ title: '第三方开发者提供的图形界面'
 doc_type: 'reference'
 ---
 
-# 第三方开发者的可视化界面 \{#visual-interfaces-from-third-party-developers\}
-
 ## 开源 \{#open-source\}
 
 ### agx \{#agx\}

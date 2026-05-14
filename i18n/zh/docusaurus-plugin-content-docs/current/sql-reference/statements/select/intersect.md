@@ -6,8 +6,6 @@ title: 'INTERSECT 子句'
 doc_type: 'reference'
 ---
 
-# INTERSECT 子句 \{#intersect-clause\}
-
 `INTERSECT` 子句仅返回同时出现在第一个查询和第二个查询结果中的行。两个查询的列数量、顺序和类型必须一致。`INTERSECT` 的结果中可以包含重复行。
 
 如果未使用圆括号，多个 `INTERSECT` 子句按照从左到右的顺序执行。`INTERSECT` 运算符的优先级高于 `UNION` 和 `EXCEPT` 子句。
@@ -131,11 +129,11 @@ WHERE price > 100
 └─────────────┘
 ```
 
-这意味着在某个时点，Bitcoin 和 Ethereum 的价格曾经高于 $100，而 DOGEFI 和 Bitcoin Diamond 从未高于 $100（至少在本示例所用的数据中是如此）。
+这意味着，在某个时间点，Bitcoin 和 Ethereum 的交易价格都曾高于 100 美元，而 DOGEFI 和 Bitcoin Diamond 的交易价格从未高于 100 美元 (至少根据本示例中的数据来看是这样) 。
 
 ## INTERSECT DISTINCT \{#intersect-distinct\}
 
-请注意，在上一个查询中，我们有多笔比特币和以太坊持仓的成交价格都高于 100 美元。去掉这些重复行（因为它们只是重复我们已经知道的内容）可能会更好一些。你可以在 `INTERSECT` 后添加 `DISTINCT` 关键字，以消除结果中的重复行：
+请注意，在上一个查询中，我们有多笔比特币和以太坊持仓的成交价格都高于 100 美元。去掉这些重复行 (因为它们只是重复我们已经知道的内容) 可能会更好一些。你可以在 `INTERSECT` 后添加 `DISTINCT` 关键字，以消除结果中的重复行：
 
 ```sql
 SELECT crypto_name FROM holdings

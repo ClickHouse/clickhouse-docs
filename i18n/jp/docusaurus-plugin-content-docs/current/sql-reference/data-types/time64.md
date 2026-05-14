@@ -1,5 +1,5 @@
 ---
-description: 'サブ秒精度の時間範囲を保持する ClickHouse の Time64 データ型に関するドキュメント'
+description: '小数秒精度で時刻の範囲を格納する ClickHouse の Time64 データ型のドキュメント'
 slug: /sql-reference/data-types/time64
 sidebar_position: 17
 sidebar_label: 'Time64'
@@ -7,11 +7,9 @@ title: 'Time64'
 doc_type: 'reference'
 ---
 
-# Time64 \{#time64\}
-
 データ型 `Time64` は、小数秒を含む一日の時刻を表します。
 日・月・年といった暦の部分は持ちません。
-`precision` パラメータは小数部の桁数、すなわちティックサイズを定義します。
+`precision` パラメータは小数点以下の桁数、すなわちティックサイズを定義します。
 
 ティックサイズ (精度) : 10<sup>-precision</sup> 秒。有効範囲: 0..9。よく使われる値は 3 (ミリ秒) 、6 (マイクロ秒) 、9 (ナノ秒) です。
 
@@ -28,7 +26,7 @@ Time64(precision)
 `DateTime64` と異なり、`Time64` は日付成分を保持しません。
 [`Time`](../../sql-reference/data-types/time.md) も参照してください。
 
-テキスト表現の範囲: `precision = 3` の場合は [-999:59:59.000, 999:59:59.999] です。一般に、最小値は `-999:59:59`、最大値は `999:59:59` で、`precision` で指定された桁数までの小数を持つことができます (`precision = 9` の場合、最小値は `-999:59:59.999999999` です)。
+テキスト表現の範囲: `precision = 3` の場合は [-999:59:59.000, 999:59:59.999] です。一般に、最小値は `-999:59:59`、最大値は `999:59:59` で、`precision` で指定された小数点以下の桁数まで持つことができます (`precision = 9` の場合、最小値は `-999:59:59.999999999` です)。
 
 ## 実装の詳細 \{#implementation-details\}
 

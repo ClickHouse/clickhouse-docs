@@ -7,9 +7,7 @@ title: '运算符'
 doc_type: 'reference'
 ---
 
-# 运算符 \{#operators\}
-
-在查询解析阶段，ClickHouse 会根据运算符的优先级、先后次序和结合性，将其转换为相应的函数。
+ClickHouse 会在查询解析阶段，根据运算符的优先级、结合性和运算顺序，将其转换为对应的函数。
 
 ## 访问运算符 \{#access-operators\}
 

@@ -1,5 +1,5 @@
 ---
-description: 'MongoDB 引擎是一个只读表引擎，支持从远程集合读取数据。'
+description: 'MongoDB 引擎是一种只读表引擎，用于从远程集合中读取数据。'
 sidebar_label: 'MongoDB'
 sidebar_position: 135
 slug: /engines/table-engines/integrations/mongodb
@@ -7,12 +7,10 @@ title: 'MongoDB 表引擎'
 doc_type: 'reference'
 ---
 
-# MongoDB 表引擎 \{#mongodb-table-engine\}
-
 MongoDB 引擎是一种只读表引擎，用于从远程 [MongoDB](https://www.mongodb.com/) 集合中读取数据。
 
 仅支持 MongoDB v3.6 及更高版本的服务器。
-尚不支持 [种子列表（`mongodb+srv`）](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list)。
+尚不支持 [种子列表 (`mongodb+srv`) ](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list)。
 
 ## 创建表 \{#creating-a-table\}
 
@@ -39,7 +37,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 
 :::tip
 如果你使用的是 MongoDB Atlas 云服务，可以从 “Atlas SQL” 选项中获取连接 URL。
-种子列表（`mongodb**+srv**`）目前尚不支持，但会在后续版本中加入。
+种子列表 (`mongodb**+srv**`) 目前尚不支持，但会在后续版本中加入。
 :::
 
 或者，你也可以传入一个 URI：
@@ -64,14 +62,14 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 | double                  | Float64，String                           |
 | date                    | Date，Date32，DateTime，DateTime64，String   |
 | string                  | String，*如果格式正确，则为除 Decimal 外的任意数值类型*     |
-| document                | String（作为 JSON）                          |
-| array                   | Array，String（作为 JSON）                    |
+| document                | String (作为 JSON)                         |
+| array                   | Array，String (作为 JSON)                   |
 | oid                     | String                                   |
 | binary                  | 如果在列中则为 String，如果在数组或文档中则为 base64 编码的字符串 |
 | uuid (binary subtype 4) | UUID                                     |
 | *any other*             | String                                   |
 
-如果在 MongoDB 文档中未找到键（例如列名不匹配），将插入默认值，或者在列可为 `NULL` 的情况下插入 `NULL`。
+如果在 MongoDB 文档中未找到键 (例如列名不匹配) ，将插入默认值，或者在列可为 `NULL` 的情况下插入 `NULL`。
 
 ### OID \{#oid\}
 
@@ -128,13 +126,13 @@ SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea4
 
 ## 支持的子句 \{#supported-clauses\}
 
-仅支持包含简单表达式的查询（例如，`WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
+仅支持包含简单表达式的查询 (例如，`WHERE field = <constant> ORDER BY field2 LIMIT <constant>`) 。
 此类表达式会被转换为 MongoDB 查询语言并在服务器端执行。
 你可以通过 [mongodb&#95;throw&#95;on&#95;unsupported&#95;query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query) 来禁用这些限制。
 在这种情况下，ClickHouse 会尽力转换查询，但可能会导致在 ClickHouse 端进行全表扫描和处理。
 
 :::note
-最好始终显式指定字面量的类型，因为 Mongo 要求严格类型化的过滤条件。\
+最好始终显式指定字面量的类型，因为 Mongo 要求严格类型化的过滤条件。
 例如，你希望按 `Date` 字段进行过滤：
 
 ```sql
@@ -148,6 +146,8 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 ```
 
 这适用于 `Date`、`Date32`、`DateTime`、`Bool` 和 `UUID` 类型。
+
+:::
 
 ## 使用示例 \{#usage-example\}
 
@@ -230,6 +230,7 @@ LIMIT 3;
 ```
 
 ## 故障排查 \{#troubleshooting\}
+
 您可以在 DEBUG 级别日志中看到生成的 MongoDB 查询。
 
 实现细节可以在 [mongocxx](https://github.com/mongodb/mongo-cxx-driver) 和 [mongoc](https://github.com/mongodb/mongo-c-driver) 的文档中找到。

@@ -8,11 +8,9 @@ title: 'mergeTreeTextIndex'
 doc_type: 'reference'
 ---
 
-# mergeTreeTextIndex テーブル関数 \{#mergetreetextindex-table-function\}
-
-MergeTree テーブル内のテキスト索引を表す Dictionary です。
-トークンとそれぞれのポスティングリストに関するメタデータを返します。
-インデックスのインスペクションに利用できます。
+MergeTree テーブル内のテキスト索引用 Dictionary を表します。
+トークンとそのポスティングリストメタデータを返します。
+インスペクションに使用できます。
 
 ## 構文 \{#syntax\}
 

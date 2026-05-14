@@ -7,8 +7,6 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-# clickhouse-local \{#clickhouse-local\}
-
 ## clickhouse-local과 ClickHouse를 언제 사용해야 하는지 \{#when-to-use-clickhouse-local-vs-clickhouse\}
 
 `clickhouse-local`은 전체 데이터베이스 서버를 설치하지 않고도 SQL을 사용하여 로컬 및 원격 파일을 빠르게 처리해야 하는 개발자에게 적합한, 사용하기 쉬운 ClickHouse 버전입니다. `clickhouse-local`을 사용하면 개발자는 명령줄에서 직접 [ClickHouse SQL dialect](../../sql-reference/index.md)를 사용하는 SQL 명령을 실행할 수 있으므로, 전체 ClickHouse를 설치하지 않고도 ClickHouse 기능에 접근할 수 있는 간단하고 효율적인 방법을 제공합니다. `clickhouse-local`의 주요 이점 중 하나는 [clickhouse-client](/operations/utilities/clickhouse-local)를 설치할 때 이미 함께 포함된다는 점입니다. 따라서 개발자는 복잡한 설치 과정 없이도 `clickhouse-local`을 신속하게 사용하기 시작할 수 있습니다.

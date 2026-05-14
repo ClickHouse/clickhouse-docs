@@ -6,8 +6,6 @@ title: 'UNION 子句'
 doc_type: 'reference'
 ---
 
-# UNION 子句 \{#union-clause\}
-
 可以使用 `UNION` 并显式指定 `UNION ALL` 或 `UNION DISTINCT`。
 
 如果不指定 `ALL` 或 `DISTINCT`，则行为取决于 `union_default_mode` 设置。`UNION ALL` 和 `UNION DISTINCT` 的区别在于，`UNION DISTINCT` 会对 UNION 结果集进行去重转换，这等价于对包含 `UNION ALL` 的子查询执行 `SELECT DISTINCT`。

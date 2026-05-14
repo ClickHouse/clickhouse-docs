@@ -1,13 +1,11 @@
 ---
-description: '允许在不创建 Distributed 表的情况下访问集群中在 `remote_servers` 配置段中配置的所有分片。'
+description: '允许在不创建 Distributed 表的情况下，访问集群中在 `remote_servers` 部分配置的所有分片。'
 sidebar_label: 'cluster'
 sidebar_position: 30
 slug: /sql-reference/table-functions/cluster
 title: 'clusterAllReplicas'
 doc_type: 'reference'
 ---
-
-# clusterAllReplicas 表函数 \{#clusterallreplicas-table-function\}
 
 允许在不创建 [Distributed](../../engines/table-engines/special/distributed.md) 表的情况下，访问集群在 `remote_servers` 配置段中配置的所有分片。查询时，每个分片仅会访问一个副本。
 

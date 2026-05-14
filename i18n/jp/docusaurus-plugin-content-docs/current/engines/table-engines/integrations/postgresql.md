@@ -1,13 +1,11 @@
 ---
-description: 'PostgreSQL エンジンを使用すると、リモート PostgreSQL サーバー上に保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。'
+description: 'PostgreSQLエンジンを使用すると、リモートのPostgreSQLサーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。'
 sidebar_label: 'PostgreSQL'
 sidebar_position: 160
 slug: /engines/table-engines/integrations/postgresql
 title: 'PostgreSQL テーブルエンジン'
 doc_type: 'guide'
 ---
-
-# PostgreSQL テーブルエンジン \{#postgresql-table-engine\}
 
 PostgreSQLエンジンを使用すると、リモートのPostgreSQLサーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。
 
@@ -16,7 +14,7 @@ PostgreSQLエンジンを使用すると、リモートのPostgreSQLサーバー
 :::
 
 :::tip
-弊社の [Managed Postgres](/docs/cloud/managed-postgres) サービスをご確認ください。コンピュートと物理的に同一ロケーションに配置された NVMe ストレージを基盤としており、EBS のようなネットワーク接続ストレージを利用する代替手段と比較して、ディスクがボトルネックとなるワークロードで最大 10 倍のパフォーマンスを発揮します。また、ClickPipes の Postgres CDC（変更データキャプチャ）コネクタを使用して、Postgres データを ClickHouse にレプリケートすることもできます。
+弊社の [Managed Postgres](/docs/cloud/managed-postgres) サービスをご確認ください。コンピュートと物理的に同一ロケーションに配置された NVMe ストレージを基盤としており、EBS のようなネットワーク接続ストレージを利用する代替手段と比較して、ディスクがボトルネックとなるワークロードで最大 10 倍のパフォーマンスを発揮します。また、ClickPipes の Postgres CDC (変更データキャプチャ) コネクタを使用して、Postgres データを ClickHouse にレプリケートすることもできます。
 :::
 
 ## テーブルの作成 \{#creating-a-table\}

@@ -7,9 +7,7 @@ title: 'TRUNCATE 文'
 doc_type: 'reference'
 ---
 
-# TRUNCATE 文 \{#truncate-statements\}
-
-ClickHouse の `TRUNCATE` 文は、テーブルまたはデータベースからすべてのデータを、構造を保持したまま高速に削除するために使用されます。
+ClickHouse の `TRUNCATE` ステートメントは、テーブルまたはデータベースの構造を保持したまま、すべてのデータをすばやく削除するために使用されます。
 
 ## TRUNCATE TABLE \{#truncate-table\}
 
@@ -23,7 +21,7 @@ TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 | -------------------- | ---------------------------------------------------------------------------------------- |
 | `IF EXISTS`          | テーブルが存在しない場合にエラーが発生するのを防ぎます。省略した場合、クエリはエラーを返します。                                         |
 | `db.name`            | 任意のデータベース名。                                                                              |
-| `ON CLUSTER cluster` | 指定したクラスタ全体でコマンドを実行します。                                                                   |
+| `ON CLUSTER cluster` | 指定したクラスター全体でコマンドを実行します。                                                                   |
 | `SYNC`               | レプリケートされたテーブルを使用している場合、レプリカ間での TRUNCATE 処理を同期的に実行します。省略した場合、TRUNCATE 処理はデフォルトで非同期に行われます。 |
 
 [alter&#95;sync](/operations/settings/settings#alter_sync) SETTING を使用して、レプリカ上でアクションが実行されるまで待機するように設定できます。
@@ -72,7 +70,7 @@ TRUNCATE DATABASE [IF EXISTS] db [ON CLUSTER cluster]
 | -------------------- | ------------------------------- |
 | `IF EXISTS`          | データベースが存在しない場合にエラーが発生しないようにします。 |
 | `db`                 | データベース名。                        |
-| `ON CLUSTER cluster` | 指定したクラスタ全体でコマンドを実行します。          |
+| `ON CLUSTER cluster` | 指定したクラスター全体でコマンドを実行します。          |
 
 データベース自体は保持したまま、そのデータベース内のすべてのテーブルを削除します。句 `IF EXISTS` を省略すると、データベースが存在しない場合はクエリはエラーとなります。
 

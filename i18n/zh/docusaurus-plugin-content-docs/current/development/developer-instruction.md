@@ -7,10 +7,8 @@ title: '开发者前提条件'
 doc_type: 'guide'
 ---
 
-# 前提条件 \{#prerequisites\}
-
-ClickHouse 可以在 Linux、FreeBSD 和 macOS 上构建。
-如果你使用的是 Windows，仍然可以在运行 Linux 的虚拟机中构建 ClickHouse，例如在安装了 Ubuntu 的 [VirtualBox](https://www.virtualbox.org/) 中。
+ClickHouse 可在 Linux、FreeBSD 和 macOS 上构建。
+如果你使用 Windows，仍然可以在运行 Linux 的虚拟机中构建 ClickHouse，例如使用安装了 Ubuntu 的 [VirtualBox](https://www.virtualbox.org/)。
 
 ## 在 GitHub 上创建仓库 \{#create-a-repository-on-github\}
 

@@ -7,14 +7,11 @@ title: 'CREATE DATABASE'
 doc_type: 'reference'
 ---
 
-# CREATE DATABASE \{#create-database\}
-
-새로운 데이터베이스를 생성합니다.
+새 데이터베이스를 생성합니다.
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [SETTINGS ...] [COMMENT 'Comment']
 ```
-
 
 ## 절 \{#clauses\}
 

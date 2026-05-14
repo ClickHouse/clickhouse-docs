@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse 向けに利用可能なサードパーティツール、ライブラリ、およびインテグレーションの概要'
+description: 'ClickHouse で利用可能なサードパーティ製ツール、ライブラリ、インテグレーションの概要'
 sidebar_position: 24
 slug: /interfaces/third-party/
 toc_folder_title: 'サードパーティ'
-title: 'サードパーティインターフェース'
+title: 'サードパーティインターフェイス'
 doc_type: 'landing-page'
 ---
-
-# サードパーティインターフェイス \{#third-party-interfaces\}
 
 これは、ClickHouse へのインターフェイスを提供するサードパーティ製ツールへのリンク集です。グラフィカルインターフェイス、コマンドラインインターフェイス、API などがあります。
 

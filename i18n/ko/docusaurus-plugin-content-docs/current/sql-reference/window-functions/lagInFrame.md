@@ -1,13 +1,11 @@
 ---
-description: 'lagInFrame 윈도우 함수에 대한 설명서'
+description: 'lagInFrame 윈도우 함수에 대한 문서'
 sidebar_label: 'lagInFrame'
 sidebar_position: 9
 slug: /sql-reference/window-functions/lagInFrame
 title: 'lagInFrame'
 doc_type: 'reference'
 ---
-
-# lagInFrame \{#laginframe\}
 
 정렬된 프레임 내에서 현재 행보다 지정된 물리적 오프셋만큼 앞에 있는 행에서 평가된 값을 반환합니다.
 

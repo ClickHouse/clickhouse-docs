@@ -1,12 +1,10 @@
 ---
-description: "AI 函数文档"
-sidebar_label: "AI"
+description: 'AI 函数文档'
+sidebar_label: 'AI'
 slug: /sql-reference/functions/ai-functions
-title: "AI 函数"
-doc_type: "reference"
+title: 'AI 函数'
+doc_type: 'reference'
 ---
-
-# AI 函数 \{#ai-functions\}
 
 AI 函数是 ClickHouse 中的内置函数，您可以使用它们调用 AI 或生成嵌入，用于处理数据、提取信息、对数据进行分类等……
 

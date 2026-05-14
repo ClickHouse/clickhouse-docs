@@ -7,8 +7,6 @@ title: 'sqlite'
 doc_type: 'reference'
 ---
 
-# Табличная функция SQLite \{#sqlite-table-function\}
-
 Позволяет выполнять запросы к данным, хранящимся в базе данных [SQLite](../../engines/database-engines/sqlite.md).
 
 ## Синтаксис \{#syntax\}

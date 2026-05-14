@@ -1,12 +1,10 @@
 ---
-description: '数学函数参考文档'
+description: '数学函数文档'
 sidebar_label: '数学'
 slug: /sql-reference/functions/math-functions
 title: '数学函数'
 doc_type: 'reference'
 ---
-
-# 数学函数 \{#mathematical-functions\}
 
 {/* 
   下面标签内部的内容会在文档框架构建时被

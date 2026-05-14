@@ -7,9 +7,7 @@ title: 'sqlite'
 doc_type: 'reference'
 ---
 
-# sqlite Table Function \{#sqlite-table-function\}
-
-[SQLite](../../engines/database-engines/sqlite.md) 데이터베이스에 저장된 데이터에 대해 쿼리를 수행할 수 있습니다.
+[SQLite](../../engines/database-engines/sqlite.md) 데이터베이스에 저장된 데이터에 대해 쿼리를 실행할 수 있습니다.
 
 ## 구문 \{#syntax\}
 
