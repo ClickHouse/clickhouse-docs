@@ -79,39 +79,17 @@ Tailscale による接続の確立は、次のステップで行われます。
 
 **送信専用接続 (Outbound-Only Connections)**:
 
-- EKS クラスター内の Tailscale エージェントは、Tailscale のコーディネーション/リレーサーバーへの送信接続のみを開始します
-- **受信接続は不要** であり、Tailscale エージェントへの受信トラフィックを許可するセキュリティグループルールは必要ありません
-- これにより攻撃面が小さくなり、ネットワークセキュリティ構成が簡素化されます
+* EKS クラスター内の Tailscale エージェントは、Tailscale のコーディネーション/リレーサーバーへの送信接続のみを開始します
+* **受信接続は不要** であり、Tailscale エージェントへの受信トラフィックを許可するセキュリティグループルールは必要ありません
+* これにより攻撃面が小さくなり、ネットワークセキュリティ構成が簡素化されます
 
 **アクセス制御**:
 
-- アクセスは ClickHouse の内部承認システムによって制御されます
-- エンジニアは所定の承認ワークフローを通じてアクセスを申請する必要があります
-- アクセスには有効期限が設定されており、自動的に失効します
-- すべてのアクセスは監査され、ログに記録されます
+* エンジニアは、Tailscale によって顧客のエンドポイントへルーティングされる前に、内部承認ワークフローを通じてアクセスを申請する必要があります
+* アクセスには有効期限が設定されており、自動的に失効します
+* すべてのアクセスは監査され、ログに記録されます
 
-**証明書ベース認証**:
-
-- ClickHouse のシステムテーブルへのアクセスには、エンジニアは一時的かつ有効期限付きの証明書を使用します
-- BYOC 環境におけるすべての人間によるアクセスは、パスワードベースではなく証明書ベース認証に置き換えられます
-- アクセスはシステムテーブルのみに制限されます (顧客データにはアクセスできません)
-- すべてのアクセス試行は ClickHouse の `query_log` テーブルに記録されます
-
-### Tailscale 経由でのアクセスのトラブルシューティング \{#troubleshooting-access-tailscale\}
-
-ClickHouse のエンジニアが BYOC デプロイメントで発生した問題をトラブルシュートする必要がある場合、Tailscale を使用して次の対象へアクセスします:
-
-- **Kubernetes API Server**: EBS マウント失敗、ノードレベルのネットワーク問題、およびクラスターの健全性に関する問題の診断のため
-- **ClickHouse System Tables**: クエリのパフォーマンス分析および診断用クエリの実行のため（system テーブルへの読み取り専用アクセスのみ）
-
-トラブルシューティングアクセスのプロセスは次のとおりです:
-
-1. **アクセス要求**: 指定されたグループ内のオンコールエンジニアが、顧客の ClickHouse インスタンスへのアクセスを要求する
-2. **承認**: 要求は、指定された承認者を持つ社内承認システムを通過する
-3. **証明書の生成**: 承認されたエンジニア向けに、有効期間が制限された証明書が生成される
-4. **ClickHouse の設定**: ClickHouse Operator が ClickHouse を設定し、その証明書を受け入れるように構成する
-5. **接続**: エンジニアは証明書を使用して Tailscale 経由でインスタンスにアクセスする
-6. **自動失効**: アクセスは、設定された有効期間が経過すると自動的に失効する
+エンジニアが参照できる内容、証明書ベース認証、顧客側の監査を含む完全なデータアクセス方針については、[ClickHouse data access](/cloud/reference/byoc/reference/clickhouse_data_access) を参照してください。
 
 ### Management Services Access \{#management-services-access\}
 
@@ -127,27 +105,19 @@ ClickHouse のエンジニアが BYOC デプロイメントで発生した問題
 
 **Tailscale 接続フロー**:
 
-1. EKS クラスター内の Tailscale エージェント → Tailscale コーディネーションサーバー（アウトバウンド）
-2. エンジニアのマシン上の Tailscale エージェント → Tailscale コーディネーションサーバー（アウトバウンド）
+1. EKS クラスター内の Tailscale エージェント → Tailscale コーディネーションサーバー (アウトバウンド) 
+2. エンジニアのマシン上の Tailscale エージェント → Tailscale コーディネーションサーバー (アウトバウンド) 
 3. エージェント間で直接接続またはリレー接続が確立される
 4. 暗号化されたトラフィックが確立されたトンネル内を流れる
 5. EKS 内の Nginx ポッドが TLS を終端し、内部サービスへルーティングする
 
 **顧客データは送信されない**:
 
-- Tailscale 接続は管理およびトラブルシューティングの目的にのみ使用される
-- クエリトラフィックおよび顧客データが Tailscale を通過することはない
-- すべての顧客データはお客様の VPC 内に留まる
+* Tailscale 接続は管理およびトラブルシューティングの目的にのみ使用される
+* クエリトラフィックおよび顧客データが Tailscale を通過することはない
+* すべての顧客データはお客様の VPC 内に留まる
 
-### 監視と監査 \{#tailscale-monitoring\}
-
-ClickHouse とお客様の両方が、Tailscale へのアクセス状況を監査できます。
-
-- **ClickHouse による監視**: ClickHouse はアクセス要求を監視し、すべての Tailscale 接続をログに記録します。
-- **お客様による監査**: お客様は、自身のシステム内で ClickHouse エンジニアによるアクティビティを追跡できます。
-- **クエリログ**: Tailscale を介したすべての system テーブルへのアクセスは、ClickHouse の `query_log` テーブルに記録されます。
-
-BYOC における Tailscale 実装の技術的な詳細については、[Building ClickHouse BYOC on AWS ブログ記事](https://clickhouse.com/blog/building-clickhouse-byoc-on-aws#tailscale-connection)を参照してください。
+BYOC における Tailscale の実装に関するさらに技術的な詳細については、[Building ClickHouse BYOC on AWS blog post](https://clickhouse.com/blog/building-clickhouse-byoc-on-aws#tailscale-connection)を参照してください。接続後に ClickHouse のエンジニアが参照できる内容と、ClickHouse がそのアクセスをどのように監査しているかについては、[ClickHouse data access](/cloud/reference/byoc/reference/clickhouse_data_access)を参照してください。
 
 ## ネットワーク境界 \{#network-boundaries\}
 
@@ -170,7 +140,7 @@ Istio イングレスゲートウェイは TLS を終端します。CertManager 
 
 *インバウンド、プライベート*
 
-ClickHouse Cloud のエンジニアは、Tailscale を介してトラブルシューティングを行うためのアクセスを必要とします。BYOC デプロイメントに対しては、ジャストインタイムで証明書ベースの認証情報が付与されます。
+ClickHouse Cloud のエンジニアは、Tailscale を介してトラブルシューティングを行うためのアクセスを必要とします。BYOC デプロイメントに対しては、ジャストインタイムで証明書ベース認証情報が付与されます。アクセス ポリシーの全文については、[ClickHouse data access](/cloud/reference/byoc/reference/clickhouse_data_access) を参照してください。
 
 ### Billing scraper \{#billing-scraper\}
 
