@@ -32,6 +32,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [BYOC privilege](/cloud/reference/byoc/reference/privilege) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC security playbook](/cloud/security/audit-logging/byoc-security-playbook) | This page illustrates methods customers can use to identify potential security events |
 | [ClickHouse Cloud production readiness guide](/cloud/guides/production-readiness) | Guide for organizations transitioning from quick start to enterprise-ready ClickHouse Cloud deployments |
+| [ClickHouse data access (BYOC)](/cloud/reference/byoc/reference/clickhouse_data_access) | What access ClickHouse employees have to customer data in BYOC deployments |
 | [ClickHouse government](/cloud/infrastructure/clickhouse-government) | Overview of ClickHouse Government offering |
 | [ClickHouse Private](/cloud/infrastructure/clickhouse-private) | Overview of ClickHouse Private offering |
 | [Cloud compatibility](/whats-new/cloud-compatibility) | This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud. |
