@@ -996,9 +996,19 @@ SETTINGS
 
 Это происходит, когда смещение, хранящееся в KeeperMap, отличается от смещения, хранящегося в Kafka, обычно когда топик был удалён
 или смещение было изменено вручную.
-Чтобы исправить это, необходимо удалить старые значения, сохранённые для данного топика и партиции.
+Чтобы исправить это, необходимо удалить старые значения, сохранённые для данного топика и партиции:
 
-**ПРИМЕЧАНИЕ: Это изменение может повлиять на семантику exactly-once.**
+```sql
+-- First, identify the database used to store the data.
+SELECT * FROM [database].connect_state
+
+-- Identify the key that matches the topic and partition.
+ALTER TABLE [database].connect_state DELETE WHERE key = [keyname]
+```
+
+:::note
+Это изменение может повлиять на семантику exactly-once.
+:::
 
 #### &quot;What errors will the connector retry?&quot; \{#what-errors-will-the-connector-retry\}
 
