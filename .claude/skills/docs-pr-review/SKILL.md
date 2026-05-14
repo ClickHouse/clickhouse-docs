@@ -129,7 +129,7 @@ This review has two distinct passes with different scopes.
 | 7  | **Sentence casing** — headings must use sentence case, not Title Case | Block |
 | 8  | **Content preservation on rewrites** — substantial deletions or rewrites must preserve original information, or the new content must cover it or render it moot | Block |
 | 9  | **Vale errors in diff** — CI covers these; only flag if CI is not running on this PR | Block/Suggest |
-| 10 | **Voice/style in diff** — "you" not "users," active voice, no AI-isms (see watchlist in check procedure below) | Suggest |
+| 10 | **Voice/style in diff** — mechanical pre-screen for AI density, then watchlist scan; "you" not "users," active voice | Suggest / Block on AI cluster |
 | 11 | **First-mention links** — ClickHouse features/concepts link to their docs on first use | Suggest |
 | 12 | **Component opportunities** — numbered steps → VerticalStepper, variants → Tabs, etc. | Suggest |
 | 13 | **Structure and flow** — sections in logical order, prerequisites before procedures, page organization matches sibling pages | Suggest |
@@ -247,76 +247,165 @@ clearly outdated, or replaced by a tighter treatment of the same point.
 These surface during reading. Flag hardcoded credentials, wrong product
 names, and missing imports as you encounter them.
 
-*Voice/style and AI-isms (#9):*
+*Voice/style and AI-isms (#10):*
 
 Check the `doc_type` in frontmatter before running this check. The
 watchlist and thresholds differ by type.
 
-**Full watchlist (all categories):**
+Run this check in three stages: mechanical pre-screen, watchlist scan,
+escalation decision. Sophisticated AI output (e.g., recent Claude)
+avoids the obvious phrase-based tells in the watchlist below — the
+structural tells (punctuation density, intensifier frequency, header
+voice) are what catches it. Run the pre-screen first; it's
+deterministic and surfaces patterns the eyeball pass misses.
 
-**Transitions:** moreover, furthermore, notably, importantly, crucially,
-interestingly, surprisingly, it's worth noting that, it bears mentioning
+**Stage 1: Mechanical pre-screen.**
 
-**Framing:** let's be clear, let's be honest, here's the reality,
-the truth is, in today's fast-paced, in an era of, at the end of the day
+```bash
+# Em-dash count in additions
+gh pr diff N | grep '^+' | grep -v '^+++' | grep -o '—' | wc -l
 
-**Sentence patterns:** "it's not X — it's Y" contrast,
-question-then-immediate-answer, "in other words" / "put simply"
-re-explanation, tricolon negation lists (no X, no Y, no Z)
+# Em-dash locations (skim to separate bullet "term — def" from prose)
+gh pr diff N | grep -n '^+.*—'
 
-**Buzzwords:** seamless, groundbreaking, revolutionary, game-changing,
-robust, cutting-edge, unlock, leverage, empower, powerful, elegant
+# Semicolon usage in prose additions (excludes table rows)
+gh pr diff N | grep -nE '^\+[^|+].*;'
 
-**Metaphor:** landscape, ecosystem, tapestry, mosaic, fabric,
-paradigm shift, north star
+# "actually" as intensifier
+gh pr diff N | grep -niE '^\+.*\bactually\b'
 
-**Hedging:** one could argue, some might say, while X is beyond the scope,
-without further ado
+# Added section headings (review for folksy/blog-post voice)
+gh pr diff N | grep -nE '^\+#{2,} '
+```
 
-**Thanking:** thank you for reading, thanks for following along
+Thresholds for a new or substantially rewritten page:
 
-**High-severity-only subset** (for reference and landing-page types):
+- **Em-dashes:** 5+ in prose contexts (excluding bullet `term — def`
+  definitions) is a signal. Watch especially for multiple em-dashes
+  in a single sentence ("X — Y — Z") or em-dashes in consecutive
+  paragraphs.
+- **Semicolons:** 3+ in casual guide prose is a signal. Tutorial pages
+  rarely need semicolons; human writers default to periods.
+- **"actually":** 3+ uses as a filler intensifier (e.g., "what your
+  workload is actually made of") is a tell. "Actually" carries almost
+  no information; AI uses it to add conversational texture.
+- **Section headings:** flag headings that read like blog-post hooks
+  rather than reference labels ("Out of the way of the database,"
+  "Same engine our customers use," "Raw events, not aggregates").
+  Reference-quality headings are short and literal ("Overhead,"
+  "Architecture," "Events").
+
+Record counts and note which thresholds tripped. Don't flag yet —
+feed into Stage 3.
+
+**Stage 2: Watchlist scan.**
+
+Read added prose and flag instances from this watchlist.
+
+*Phrase-based (often grep-friendly):*
+
+- **Transitions:** moreover, furthermore, notably, importantly,
+  crucially, interestingly, surprisingly, fascinatingly, that said,
+  that being said, it's worth noting that, it bears mentioning
+- **Framing:** let's be clear, let's be honest, here's the reality,
+  the truth is, here's what most people get wrong, in today's
+  fast-paced, in an era of, at the end of the day, when all is said
+  and done
+- **Buzzwords:** seamless, seamlessly, groundbreaking, revolutionary,
+  game-changing, robust, comprehensive, cutting-edge, unlock, leverage,
+  empower, powerful, elegant, intuitive
+- **Metaphor:** landscape, ecosystem, tapestry, mosaic, fabric,
+  paradigm shift, north star, guiding principle
+- **Hedging/filler:** one could argue, some might say, while X is
+  beyond the scope, without further ado, without getting too deep
+  into, as we'll see, as we've seen, as mentioned earlier
+- **Thanking:** thank you for reading, thanks for following along, we
+  hope this guide
+
+*Pattern tells (require reading):*
+
+- **"It's not X, it's Y" contrast,** including header variants ("Raw
+  events, not aggregates").
+- **Question-then-immediate-answer** ("So why does this matter?
+  Because...").
+- **"In other words" / "Put simply" re-explanation.**
+- **Tricolon negation lists** ("No Kafka. No Connect workers. No
+  Debezium configuration.").
+- **Quoted conversational user-voice fragments** — short quoted
+  strings that read like a person speaking, scattered through prose
+  ("p99 is creeping up", "what is costing me the most?", "Show me only
+  what the orders service is doing"). One or two is fine for flavor;
+  a cluster is a strong signal.
+- **Sentence-fragment summary closers** — short declarative sentences
+  at the end of a section that restate its point in catchy form
+  ("Everything you need to diagnose a slow pattern is in one place,
+  on one screen."). Human writers usually let the section end with
+  its content.
+- **Conversational meta-commentary about article structure** ("in the
+  order you'd actually use them", "becomes two dropdowns").
+- **Anthropomorphic / folksy framing** ("A healthy instance has a
+  familiar shape").
+- **Excessive bold for emphasis** in body text (5+ bold phrases per
+  paragraph).
+
+**High-severity-only subset** (for `reference` and `landing-page` types):
 tapestry, mosaic, fabric, paradigm shift, seamless, groundbreaking,
 revolutionary, game-changing, landscape, ecosystem, north star,
-unlock, leverage, empower, in today's fast-paced, in an era of,
-thank you for reading, thanks for following along
+unlock, leverage, empower, in today's fast-paced, in an era of, thank
+you for reading. Plus em-dash overuse (5+ prose em-dashes). Reference
+pages are structured by nature (parallel lists, topic sentences are
+expected); only the cliches above are flagged.
 
-These are patterns that don't belong in any doc type. The full watchlist
-includes patterns that are suspect in guides but tolerable in structured
-reference content (e.g., moreover, topic-sentence openers, parallel
-phrasing).
+**Stage 3: Escalation decision.**
 
-**Applying the check by doc_type:**
+Tally hits across both stages. Categories: punctuation (em-dash,
+semicolon), sentence patterns (contrast, question-answer,
+re-explanation, tricolon, fragment summaries, meta-commentary),
+transitions, hedging/filler, buzzwords, metaphor, voice (folksy
+headers, anthropomorphism, "actually" intensifier), formatting (bold
+abuse).
 
-`guide`:
-Run the full watchlist. Guides are procedural and conversational —
-AI-isms actively hurt readability. Also watch for general voice issues:
-third person ("the user," "users") in second-person docs, passive voice
-where active is clearer, and em-dash overuse (3+ in a single page).
-
-- **Zero hits** — move on, no comment needed.
-- **1–2 hits** — flag them in a single batched comment with a suggested
-  rewrite. No need to load external references.
-- **3+ hits or a pattern cluster** (hits from 3+ categories) — load the
-  `ai-style-review` catalogue for remediation guidance and severity
-  context. Draft the comment using the catalogue's specific remediation
-  advice rather than generic suggestions. Note the clustering: "This
-  diff has several AI-generated patterns — worth a revision pass."
-
-`reference` and `landing-page`:
-Run the high-severity-only subset. Reference pages are structured by
-nature — parallel lists, topic sentences, and some formality are
-expected. Landing pages are short enough that marginal patterns aren't
-worth flagging. Still check for general voice issues (third person,
-passive voice).
-
-- **Fewer than 3 hits** — move on, no comment needed.
-- **3+ hits** — flag them in a batched comment. Load the `ai-style-review`
-  catalogue only if 5+ hits or patterns from 3+ categories.
+| `doc_type` | Hits | Action |
+|---|---|---|
+| `guide` | 0 | Move on, no comment. |
+| `guide` | 1–2 in one category | Single batched comment with rewrites. **Suggest**. |
+| `guide` | 3+ in one category | Batched comment with rewrites. **Suggest**. Reference load required (see below). |
+| `guide` | 3+ categories (cluster) | **Block**. Reference load required (see below). Flag whole page as AI-generated; ask for a revision pass before merge. Don't comment line-by-line — the page needs a voice rewrite, not patches. |
+| `reference` / `landing-page` | < 3 hits | Move on. |
+| `reference` / `landing-page` | 3+ hits | Batched comment. **Suggest**. Reference load required (see below). |
+| `reference` / `landing-page` | 5+ hits or 3+ categories | **Block**. Reference load required (see below). |
 
 If `doc_type` is missing from frontmatter, default to `guide` thresholds.
 
-*Screenshot utility (#13):*
+**Reference load (gating step — required when any row above says so).**
+
+When a threshold triggers a reference load, **STOP** before drafting any
+AI-tell findings. In order:
+
+1. Read `references/ai-tells.md` in full (use the Read tool, not a grep
+   or partial read).
+2. Map each tripped category to its specific catalogue section
+   (e.g., em-dash overuse → §1.1, "X not Y" contrast → §2.1).
+3. In the review output, cite the section number next to each finding
+   and use the catalogue's remediation language, not your own.
+
+A review that flags an AI cluster without `§`-citations is incomplete —
+the catalogue exists so rewrites are reproducible across sessions, and
+improvised remediation defeats that purpose. If you find yourself
+drafting AI-tell rewrites without the catalogue loaded, stop and load
+it before continuing.
+
+A whole-page AI cluster is qualitatively different from scattered
+style nits. A reader can tell the difference between docs written by
+a person and docs written by an LLM with light edits; a page that
+trips the cluster threshold reads as the latter and shouldn't ship as
+the former.
+
+Always check general voice issues regardless of doc type: third person
+("the user," "users") in second-person docs, passive voice where
+active is clearer.
+
+*Screenshot utility (#14):*
 Scan for crutch phrases like "refer to the screenshot", "see screenshot",
 "as shown in the screenshot below", or "see the image above." These
 indicate the author is relying on a visual instead of explaining the step
@@ -337,7 +426,7 @@ Screenshots earn their place by showing the result of a step
 non-obvious option. They don't earn their place when they substitute for
 writing a clear instruction.
 
-*Structure and flow (#12):*
+*Structure and flow (#13):*
 Read the full file (not just the diff) to evaluate page organization.
 Check that sections follow a logical progression — context before
 procedures, prerequisites before steps, conceptual overview before
@@ -442,6 +531,10 @@ These prevent the PR from shipping. The author must address them.
 - **Content lost in a rewrite** — a substantial rewrite or large deletion
   drops a warning, example, link, or distinct claim that isn't preserved
   elsewhere or rendered moot by the change.
+- **Whole-page AI cluster** — voice/style check #10 trips the cluster
+  threshold (3+ AI-tell categories with hits, see Stage 3). The page
+  reads as LLM-generated and needs a voice rewrite before merge, not
+  line-by-line patches.
 
 ### Suggest (approve with comments)
 
