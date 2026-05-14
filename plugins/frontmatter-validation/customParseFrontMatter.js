@@ -274,7 +274,7 @@ async function customParseFrontMatter(params) {
                         !line.includes(': {') &&
                         !line.includes(': true') &&
                         !line.includes(': false') &&
-                        !/: \d+/.test(line)
+                        !/: -?\d+(\.\d+)?$/.test(line)
                     )) {
                         issues.push(`value should be quoted in line: "${line.trim()}"`);
                     }
