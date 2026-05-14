@@ -958,9 +958,19 @@ The above connector config requires that you enable client overrides in your wor
 
 This happens when the offset stored in KeeperMap is different from the offset stored in Kafka, usually when a topic has been deleted
 or the offset has been manually adjusted.
-To fix this, you would need to delete the old values stored for that given topic + partition.
+To fix this, you would need to delete the old values stored for that given topic + partition:
 
-**NOTE: This adjustment may have exactly-once implications.**
+```sql
+-- First, identify the database used to store the data.
+SELECT * FROM [database].connect_state
+
+-- Identify the key that matches the topic and partition.
+ALTER TABLE [database].connect_state DELETE WHERE key = [keyname]
+```
+
+:::note
+This adjustment may have exactly-once implications.
+:::
 
 #### "What errors will the connector retry?" {#what-errors-will-the-connector-retry}
 
