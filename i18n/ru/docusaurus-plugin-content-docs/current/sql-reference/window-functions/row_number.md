@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции row_number'
+description: 'Документация по оконной функции row_number'
 sidebar_label: 'row_number'
 sidebar_position: 2
 slug: /sql-reference/window-functions/row_number
 title: 'row_number'
 doc_type: 'reference'
 ---
-
-# row&#95;number \{#row&#95;number\}
 
 Нумерует текущую строку внутри её раздела (partition), начиная с 1.
 

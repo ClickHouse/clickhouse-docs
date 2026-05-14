@@ -7,10 +7,8 @@ title: '서드파티 개발자가 제공하는 클라이언트 라이브러리'
 doc_type: 'reference'
 ---
 
-# 타사 개발자가 제공하는 클라이언트 라이브러리 \{#client-libraries-from-third-party-developers\}
-
 :::note
-아래에 나열된 라이브러리는 ClickHouse Inc에서 직접 유지 관리하지 않으며, 품질을 보장하기 위한 광범위한 테스트도 수행하지 않았습니다.
+ClickHouse Inc는 아래에 나열된 라이브러리를 유지 관리하지 않으며, 해당 라이브러리의 품질을 보장하기 위한 광범위한 테스트도 수행하지 않았습니다.
 :::
 
 ### Python \{#python\}

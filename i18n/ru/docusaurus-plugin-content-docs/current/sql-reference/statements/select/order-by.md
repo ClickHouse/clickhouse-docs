@@ -6,16 +6,14 @@ title: 'Оператор ORDER BY'
 doc_type: 'reference'
 ---
 
-# Оператор ORDER BY \{#order-by-clause\}
-
 Оператор `ORDER BY` содержит:
 
-- список выражений, например `ORDER BY visits, search_phrase`,
-- список чисел, указывающих на столбцы в операторе `SELECT`, например `ORDER BY 2, 1`, или
-- `ALL`, что означает все столбцы оператора `SELECT`, например `ORDER BY ALL`.
+* список выражений, например `ORDER BY visits, search_phrase`,
+* список чисел, указывающих на столбцы в операторе `SELECT`, например `ORDER BY 2, 1`, или
+* `ALL`, что означает все столбцы оператора `SELECT`, например `ORDER BY ALL`.
 
-Чтобы отключить сортировку по номерам столбцов, установите настройку [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) = 0.
-Чтобы отключить сортировку по `ALL`, установите настройку [enable_order_by_all](/operations/settings/settings#enable_order_by_all) = 0.
+Чтобы отключить сортировку по номерам столбцов, установите настройку [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments) = 0.
+Чтобы отключить сортировку по `ALL`, установите настройку [enable&#95;order&#95;by&#95;all](/operations/settings/settings#enable_order_by_all) = 0.
 
 Оператор `ORDER BY` может иметь модификаторы `DESC` (по убыванию) или `ASC` (по возрастанию), определяющие направление сортировки.
 Если порядок сортировки явно не указан, по умолчанию используется `ASC`.
@@ -78,7 +76,7 @@ Collation поддерживается для типов [LowCardinality](../../
 
 Мы рекомендуем использовать `COLLATE` только для окончательной сортировки небольшого количества строк, так как сортировка с `COLLATE` менее эффективна, чем обычная сортировка по байтам.
 
-## Примеры сравнения строк \{#collation-examples\}
+## Примеры collation \{#collation-examples\}
 
 Пример только со значениями [String](../../../sql-reference/data-types/string.md):
 
@@ -266,23 +264,23 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 ## Оптимизация чтения данных \{#optimization-of-data-reading\}
 
- Если выражение `ORDER BY` имеет префикс, который совпадает с ключом сортировки таблицы, вы можете оптимизировать запрос с помощью настройки [optimize_read_in_order](../../../operations/settings/settings.md#optimize_read_in_order).
+Если выражение `ORDER BY` имеет префикс, который совпадает с ключом сортировки таблицы, вы можете оптимизировать запрос с помощью настройки [optimize&#95;read&#95;in&#95;order](../../../operations/settings/settings.md#optimize_read_in_order).
 
- Когда настройка `optimize_read_in_order` включена, сервер ClickHouse использует индекс таблицы и читает данные в порядке ключа `ORDER BY`. Это позволяет избежать полного чтения всех данных при указании [LIMIT](../../../sql-reference/statements/select/limit.md). Таким образом, запросы к большим объёмам данных с небольшим значением лимита обрабатываются быстрее.
+Когда настройка `optimize_read_in_order` включена, сервер ClickHouse использует индекс таблицы и читает данные в порядке ключа `ORDER BY`. Это позволяет избежать полного чтения всех данных при указании [LIMIT](../../../sql-reference/statements/select/limit.md). Таким образом, запросы к большим объёмам данных с небольшим значением лимита обрабатываются быстрее.
 
 Оптимизация работает как с `ASC`, так и с `DESC`, но не работает одновременно с оператором [GROUP BY](/sql-reference/statements/select/group-by) и модификатором [FINAL](/sql-reference/statements/select/from#final-modifier).
 
 Когда настройка `optimize_read_in_order` отключена, сервер ClickHouse не использует индекс таблицы при обработке запросов `SELECT`.
 
-Рассмотрите возможность ручного отключения `optimize_read_in_order` при выполнении запросов, которые содержат оператор `ORDER BY`, большое значение `LIMIT` и условие [WHERE](../../../sql-reference/statements/select/where.md), требующее чтения огромного количества записей до того, как будут найдены запрашиваемые данные.
+Рассмотрите возможность ручного отключения `optimize_read_in_order` при выполнении запросов, которые содержат предложение `ORDER BY`, большое значение `LIMIT` и условие [WHERE](../../../sql-reference/statements/select/where.md), требующее чтения огромного количества записей до того, как будут найдены запрашиваемые данные.
 
 Оптимизация поддерживается следующими движками таблиц:
 
-- [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [материализованные представления](/sql-reference/statements/create/view#materialized-view)),
-- [Merge](../../../engines/table-engines/special/merge.md),
-- [Buffer](../../../engines/table-engines/special/buffer.md)
+* [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [материализованные представления](/sql-reference/statements/create/view#materialized-view)),
+* [Merge](../../../engines/table-engines/special/merge.md),
+* [Buffer](../../../engines/table-engines/special/buffer.md)
 
-В таблицах с движком `MaterializedView` оптимизация работает с представлениями вида `SELECT ... FROM merge_tree_table ORDER BY pk`. Однако она не поддерживается в запросах вида `SELECT ... FROM view ORDER BY pk`, если запрос представления не содержит оператора `ORDER BY`.
+В таблицах с движком `MaterializedView` оптимизация работает с представлениями вида `SELECT ... FROM merge_tree_table ORDER BY pk`. Однако она не поддерживается в запросах вида `SELECT ... FROM view ORDER BY pk`, если запрос представления не содержит предложения `ORDER BY`.
 
 ## Модификатор ORDER BY Expr WITH FILL \{#order-by-expr-with-fill-modifier\}
 
@@ -672,4 +670,4 @@ INTERPOLATE ( value AS 9999 )
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Работа с временными рядами в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* Блог: [Работа с временными рядами в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse의 Tuple 데이터 타입에 대한 설명서'
+description: 'ClickHouse의 Tuple 데이터 타입에 대한 문서'
 sidebar_label: 'Tuple(T1, T2, ...)'
 sidebar_position: 34
 slug: /sql-reference/data-types/tuple
 title: 'Tuple(T1, T2, ...)'
 doc_type: 'reference'
 ---
-
-# Tuple(T1, T2, ...) \{#tuplet1-t2\}
 
 각 요소가 개별 [타입](/sql-reference/data-types)을 가지는 요소들의 Tuple입니다. Tuple은 최소 하나의 요소를 포함해야 합니다.
 

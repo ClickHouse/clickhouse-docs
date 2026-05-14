@@ -5,8 +5,6 @@ title: 'EXISTS'
 doc_type: 'reference'
 ---
 
-# EXISTS \{#exists\}
-
 `EXISTS` 연산자는 서브쿼리 결과에 레코드가 몇 개 있는지 확인합니다. 결과가 비어 있으면 `0`을 반환하고, 그렇지 않으면 `1`을 반환합니다.
 
 `EXISTS`는 [WHERE](../../sql-reference/statements/select/where.md) 절에서도 사용할 수 있습니다.

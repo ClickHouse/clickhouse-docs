@@ -7,9 +7,7 @@ title: 'hudi'
 doc_type: 'reference'
 ---
 
-# hudi 表函数 \{#hudi-table-function\}
-
-为 Amazon S3 中的 Apache [Hudi](https://hudi.apache.org/) 表提供类似表的只读接口。
+为 Amazon S3 中的 Apache [Hudi](https://hudi.apache.org/) 表提供只读的类表接口。
 
 ## 语法 \{#syntax\}
 

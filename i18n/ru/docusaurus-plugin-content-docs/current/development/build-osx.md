@@ -1,14 +1,12 @@
 ---
-description: 'Руководство по сборке ClickHouse из исходных кодов в системах macOS'
+description: 'Руководство по сборке ClickHouse из исходного кода в системах macOS'
 sidebar_label: 'Сборка на macOS для macOS'
 sidebar_position: 15
 slug: /development/build-osx
 title: 'Сборка на macOS для macOS'
-keywords: ['MacOS', 'Mac', 'build']
+keywords: ['MacOS', 'Mac', 'сборка']
 doc_type: 'guide'
 ---
-
-# Как собрать ClickHouse на macOS для macOS \{#how-to-build-clickhouse-on-macos-for-macos\}
 
 :::info Это руководство по сборке предназначено для участников, которые вносят изменения в сам ClickHouse.
 Если вы не изменяете исходный код ClickHouse, вы можете установить предварительно собранный ClickHouse, как описано в разделе [Quick Start](https://clickhouse.com/docs/get-started/quick-start).

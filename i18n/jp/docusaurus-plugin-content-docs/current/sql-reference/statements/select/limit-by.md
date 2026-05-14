@@ -1,12 +1,10 @@
 ---
-description: 'LIMIT BY 句に関するドキュメント'
+description: 'LIMIT BY 句のドキュメント'
 sidebar_label: 'LIMIT BY'
 slug: /sql-reference/statements/select/limit-by
 title: 'LIMIT BY 句'
 doc_type: 'reference'
 ---
-
-# LIMIT BY 句 \{#limit-by-clause\}
 
 `LIMIT n BY expressions` 句を含むクエリは、`expressions` のそれぞれの異なる値ごとに先頭の `n` 行を選択します。`LIMIT BY` のキーには任意個数の[式](/sql-reference/syntax#expressions)を含めることができます。
 

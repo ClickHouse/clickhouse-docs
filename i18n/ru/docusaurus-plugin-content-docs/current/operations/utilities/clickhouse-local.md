@@ -7,8 +7,6 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-# clickhouse-local \{#clickhouse-local\}
-
 ## Когда использовать clickhouse-local и когда ClickHouse \{#when-to-use-clickhouse-local-vs-clickhouse\}
 
 `clickhouse-local` — это простая в использовании версия ClickHouse, которая идеально подходит разработчикам, которым нужно быстро обрабатывать локальные и удалённые файлы с помощью SQL без установки полноценного сервера баз данных. С `clickhouse-local` разработчики могут выполнять SQL-команды (используя [SQL-диалект ClickHouse](../../sql-reference/index.md)) прямо из командной строки, что обеспечивает простой и эффективный способ доступа к возможностям ClickHouse без необходимости полной установки ClickHouse. Одно из основных преимуществ `clickhouse-local` заключается в том, что он уже включён при установке [clickhouse-client](/operations/utilities/clickhouse-local). Это означает, что разработчики могут быстро начать работу с `clickhouse-local` без сложного процесса установки.

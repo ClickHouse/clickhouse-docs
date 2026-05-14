@@ -7,6 +7,4 @@ title: 'Expression'
 doc_type: 'reference'
 ---
 
-# 式 \{#expression\}
-
-式は高階関数においてラムダを表すために用いられます。
+Expression は、高階関数におけるラムダ式を表すために使用されます。

@@ -7,8 +7,6 @@ title: 'generateRandom'
 doc_type: 'reference'
 ---
 
-# generateRandom 表函数 \{#generaterandom-table-function\}
-
 根据给定的 schema 生成随机数据。
 可使用这些数据填充测试表。
 并非所有数据类型都受支持。
@@ -21,13 +19,13 @@ generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_str
 
 ## 参数 \{#arguments\}
 
-| 参数                | 描述                                                                                           |
-|---------------------|-------------------------------------------------------------------------------------------------|
-| `name`              | 对应列的名称。                                                                                  |
-| `TypeName`          | 对应列的类型。                                                                                  |
-| `random_seed`       | 手动指定随机种子以生成稳定结果。如果为 `NULL`，则随机生成种子。                                  |
-| `max_string_length` | 所有生成字符串的最大长度。默认值为 `10`。                                                       |
-| `max_array_length`  | 所有生成数组或 Map 的最大元素数量。默认值为 `10`。                                              |
+| 参数                  | 描述                                  |
+| ------------------- | ----------------------------------- |
+| `name`              | 对应列的名称。                             |
+| `TypeName`          | 对应列的类型。                             |
+| `random_seed`       | 手动指定随机种子以生成稳定结果。如果为 `NULL`，则随机生成种子。 |
+| `max_string_length` | 所有生成字符串的最大长度。默认值为 `10`。             |
+| `max_array_length`  | 所有生成数组或 Map 的最大元素数量。默认值为 `10`。      |
 
 ## 返回值 \{#returned_value\}
 
@@ -74,7 +72,7 @@ SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
 └─────────────────────┴─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┘
 ```
 
-当缺少 `structure` 参数时（此时结构是随机的）：
+当缺少 `structure` 参数时 (此时结构是随机的) ：
 
 ```sql
 SELECT * FROM generateRandom() LIMIT 3;
@@ -103,8 +101,9 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 ```
 
 :::note
-在 `max_array_length` 足够大的情况下，`generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` 可能会生成非常庞大的输出，这是因为复杂类型（`Array`、`Tuple`、`Map`、`Nested`）的嵌套深度可能很大（最多可达 16 层）。
+在 `max_array_length` 足够大的情况下，`generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` 可能会生成非常庞大的输出，这是因为复杂类型 (`Array`、`Tuple`、`Map`、`Nested`) 的嵌套深度可能很大 (最多可达 16 层) 。
 :::
 
 ## 相关内容 \{#related-content\}
-- 博客文章：[在 ClickHouse 中生成随机测试分布数据](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)
+
+* 博客文章：[在 ClickHouse 中生成随机测试分布数据](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

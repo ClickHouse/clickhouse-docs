@@ -1,5 +1,6 @@
 ---
-description: 'SummingMergeTree は MergeTree エンジンを継承します。その主な機能は、パーツのマージ時に数値データを自動的に合計できることです。'
+description: 'SummingMergeTree は MergeTree エンジンを継承しています。その主な機能は、
+  パーツのマージ時に数値データを自動的に合計できることです。'
 sidebar_label: 'SummingMergeTree'
 sidebar_position: 50
 slug: /engines/table-engines/mergetree-family/summingmergetree
@@ -7,11 +8,9 @@ title: 'SummingMergeTree テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# SummingMergeTree テーブルエンジン \{#summingmergetree-table-engine\}
+このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) を継承しています。違いは、`SummingMergeTree` テーブルでデータパーツをマージする際に、ClickHouse が同じ主キー (より正確には同じ [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)) を持つすべての行を、数値データ型のカラムの値を合計した 1 行に置き換える点です。ソートキーの構成によって、1 つのキー値に多数の行が対応する場合、これにより必要なストレージ容量を大幅に削減し、データ取得の高速化を実現できます。
 
-このエンジンは [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) を継承しています。違いは、`SummingMergeTree` テーブルでデータパーツをマージする際に、ClickHouse が同じ主キー（より正確には同じ [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)）を持つすべての行を、数値データ型のカラムの値を合計した 1 行に置き換える点です。ソートキーの構成によって、1 つのキー値に多数の行が対応する場合、これにより必要なストレージ容量を大幅に削減し、データ取得の高速化を実現できます。
-
-このエンジンは `MergeTree` と組み合わせて使用することを推奨します。生データ（完全なデータ）は `MergeTree` テーブルに保存し、集計済みデータの保存には `SummingMergeTree` を使用します（たとえばレポートを作成する場合など）。このようなアプローチにより、不適切に構成された主キーが原因で貴重なデータを失うことを防止できます。
+このエンジンは `MergeTree` と組み合わせて使用することを推奨します。生データ (完全なデータ) は `MergeTree` テーブルに保存し、集計済みデータの保存には `SummingMergeTree` を使用します (たとえばレポートを作成する場合など) 。このようなアプローチにより、不適切に構成された主キーが原因で貴重なデータを失うことを防止できます。
 
 ## テーブルを作成する \{#creating-a-table\}
 

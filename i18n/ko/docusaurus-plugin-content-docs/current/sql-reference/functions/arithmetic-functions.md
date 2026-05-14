@@ -6,8 +6,6 @@ title: '산술 함수'
 doc_type: 'reference'
 ---
 
-# 산술 함수 \{#arithmetic-functions\}
-
 ## 개요 \{#overview\}
 
 산술 함수는 `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Int8`, `Int16`, `Int32`, `Int64`, `Float32`, `Float64` 타입의 두 피연산자에 대해 동작합니다.

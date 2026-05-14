@@ -1,13 +1,11 @@
 ---
-description: 'lagInFrame 窗口函数文档'
+description: 'lagInFrame 窗口函数的文档'
 sidebar_label: 'lagInFrame'
 sidebar_position: 9
 slug: /sql-reference/window-functions/lagInFrame
 title: 'lagInFrame'
 doc_type: 'reference'
 ---
-
-# lagInFrame \{#laginframe\}
 
 返回在有序窗口帧内、位于当前行之前指定物理偏移量处那一行所计算得到的值。
 
@@ -32,8 +30,8 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **参数**
 
 * `x` — 列名。
-* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。（可选 — 默认值为 `1`）。
-* `default` — 当计算行超出窗口帧边界时返回的值。（可选 — 省略时使用列类型的默认值）。
+* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 (可选 — 默认值为 `1`) 。
+* `default` — 当计算行超出窗口帧边界时返回的值。 (可选 — 省略时使用列类型的默认值) 。
 
 **返回值**
 

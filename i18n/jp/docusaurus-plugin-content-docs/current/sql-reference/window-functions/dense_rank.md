@@ -1,5 +1,5 @@
 ---
-description: 'dense_rank ウィンドウ関数に関するドキュメント'
+description: 'dense_rank ウィンドウ関数のドキュメント'
 sidebar_label: 'dense_rank'
 sidebar_position: 7
 slug: /sql-reference/window-functions/dense_rank
@@ -7,15 +7,13 @@ title: 'dense_rank'
 doc_type: 'reference'
 ---
 
-# dense&#95;rank \{#dense&#95;rank\}
-
 パーティション内で現在の行に対して、欠番なしで順位を付けます。言い換えると、その後に現れる行の値が、それまでの行のいずれかと等しい場合でも、順位の飛びを生じさせずに、直前の順位に続く次の順位が割り当てられます。
 
 [rank](./rank.md) 関数も同様の動作をしますが、順位に欠番が生じます。
 
 **構文**
 
-エイリアス: `denseRank`（大文字・小文字を区別）
+エイリアス: `denseRank` (大文字・小文字を区別) 
 
 ```sql
 dense_rank ()

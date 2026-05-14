@@ -6,8 +6,6 @@ title: 'TCP 连接数限制'
 doc_type: 'reference'
 ---
 
-# TCP 连接数限制 \{#tcp-connection-limits\}
-
 ## 概览 \{#overview\}
 
 您可能会遇到 ClickHouse 的 TCP 连接 (例如，通过[命令行客户端](https://clickhouse.com/docs/interfaces/client)建立的连接)

@@ -1,13 +1,12 @@
 ---
-description: 'timeSeriesData は、テーブルエンジンが TimeSeries のテーブル `db_name.time_series_table` で使用されるデータテーブルを返します。'
+description: 'timeSeriesData は、テーブルエンジンが TimeSeries である `db_name.time_series_table`
+  テーブルで使用されている data テーブルを返します。'
 sidebar_label: 'timeSeriesData'
 sidebar_position: 145
 slug: /sql-reference/table-functions/timeSeriesData
 title: 'timeSeriesData'
 doc_type: 'reference'
 ---
-
-# timeSeriesData テーブル関数 \{#timeseriesdata-table-function\}
 
 `timeSeriesData(db_name.time_series_table)` - テーブルエンジンが [TimeSeries](../../engines/table-engines/integrations/time-series.md) である `db_name.time_series_table` テーブルで使用されている [data](../../engines/table-engines/integrations/time-series.md#data-table) テーブルを返します。
 

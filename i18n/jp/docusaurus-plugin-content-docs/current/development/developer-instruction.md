@@ -7,10 +7,8 @@ title: '開発者向け前提条件'
 doc_type: 'guide'
 ---
 
-# 前提条件 \{#prerequisites\}
-
 ClickHouse は Linux、FreeBSD、macOS 上でビルドできます。
-Windows を使用している場合でも、Linux を実行している仮想マシン上で ClickHouse をビルドできます。たとえば、Ubuntu を実行する [VirtualBox](https://www.virtualbox.org/) などです。
+Windows を使用している場合でも、Ubuntu を実行する [VirtualBox](https://www.virtualbox.org/) などの Linux 仮想マシン上で ClickHouse をビルドできます。
 
 ## GitHub にリポジトリを作成する \{#create-a-repository-on-github\}
 

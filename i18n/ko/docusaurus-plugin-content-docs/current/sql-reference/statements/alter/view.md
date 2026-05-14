@@ -1,5 +1,5 @@
 ---
-description: 'ALTER TABLE ... MODIFY QUERY SQL 문에 대한 참고 문서'
+description: 'ALTER TABLE ... MODIFY QUERY SQL 문에 대한 문서'
 sidebar_label: 'VIEW'
 sidebar_position: 50
 slug: /sql-reference/statements/alter/view
@@ -7,13 +7,11 @@ title: 'ALTER TABLE ... MODIFY QUERY SQL 문'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY QUERY 문 \{#alter-table-modify-query-statement\}
-
 `ALTER TABLE ... MODIFY QUERY` 문을 사용하면 [materialized view](/sql-reference/statements/create/view#materialized-view)를 생성할 때 지정한 `SELECT` 쿼리를 수집 프로세스를 중단하지 않고 수정할 수 있습니다.
 
 이 명령은 `TO [db.]name` 절로 생성된 materialized view를 변경하도록 설계되었습니다. 이 명령은 내부 스토리지 테이블의 구조를 변경하지 않고, materialized view의 컬럼 정의도 변경하지 않습니다. 이러한 이유로 이 명령은 `TO [db.]name` 절 없이 생성된 materialized view에는 적용이 매우 제한적입니다.
 
-**TO 테이블을 사용하는 예**
+**TO 테이블을 사용하는 예시**
 
 ```sql
 CREATE TABLE events (ts DateTime, event_type String)

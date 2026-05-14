@@ -1,13 +1,12 @@
 ---
-description: 'hudi 表函数的扩展。允许在指定集群中通过多个节点并行处理 Amazon S3 中的 Apache Hudi 表文件。'
+description: 'hudi 表函数的扩展。允许在指定集群中的多个节点上并行处理 Amazon S3 中
+  Apache Hudi 表的文件。'
 sidebar_label: 'hudiCluster'
 sidebar_position: 86
 slug: /sql-reference/table-functions/hudiCluster
 title: 'hudiCluster 表函数'
 doc_type: 'reference'
 ---
-
-# hudiCluster 表函数 \{#hudicluster-table-function\}
 
 这是对 [hudi](sql-reference/table-functions/hudi.md) 表函数的扩展。
 

@@ -7,13 +7,11 @@ title: 'Оператор SET'
 doc_type: 'reference'
 ---
 
-# Оператор SET \{#set-statement\}
-
 ```sql
 SET param = value
 ```
 
-Присваивает значение `value` параметру `param` [настройки](/operations/settings/overview) для текущей сессии. Нельзя изменять [настройки сервера](../../operations/server-configuration-parameters/settings.md) таким способом.
+Присваивает значение `value` параметру `param` [настройки](/operations/settings/overview) для текущего сеанса. Нельзя изменять [настройки сервера](../../operations/server-configuration-parameters/settings.md) таким способом.
 
 Также можно задать все значения из указанного SETTINGS PROFILE одним запросом.
 

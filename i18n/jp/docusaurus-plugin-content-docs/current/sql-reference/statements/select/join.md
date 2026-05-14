@@ -1,13 +1,11 @@
 ---
-description: 'JOIN clause に関するリファレンス'
+description: 'JOIN 句のドキュメント'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
-title: 'JOIN clause'
+title: 'JOIN 句'
 keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN', 'NATURAL JOIN']
 doc_type: 'reference'
 ---
-
-# JOIN clause \{#join-clause\}
 
 `JOIN` 句は、各テーブルに共通する値を用いて 1 つ以上のテーブルの列を結合し、新しいテーブルを生成します。これは SQL をサポートするデータベースで一般的な操作であり、[関係代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)における join に相当します。単一のテーブル内での結合という特殊なケースは、しばしば「自己結合 (self-join)」と呼ばれます。
 
@@ -21,7 +19,6 @@ FROM <left_table>
 ```
 
 `ON` 句の式および `USING` 句の列は「結合キー」と呼ばれます。特に断りがない限り、`JOIN` は一致する「結合キー」を持つ行から [デカルト積](https://en.wikipedia.org/wiki/Cartesian_product) を生成し、その結果、元のテーブルよりもはるかに多くの行を含むことがあります。
-
 
 ## サポートされている JOIN の種類 \{#supported-types-of-join\}
 

@@ -7,9 +7,7 @@ title: 'FixedString(N)'
 doc_type: 'reference'
 ---
 
-# FixedString(N) \{#fixedstringn\}
-
-`N` バイトの固定長文字列（文字数でもコードポイント数でもありません）。
+`N` バイトの固定長文字列 (文字数でもコードポイント数でもありません) 。
 
 `FixedString` 型の列を宣言するには、次の構文を使用します。
 
@@ -23,10 +21,10 @@ doc_type: 'reference'
 
 `FixedString` 型のカラムに効率的に保存できる値の例は次のとおりです。
 
-* IP アドレスのバイナリ表現（IPv6 では `FixedString(16)`）。
-* 言語コード（ru&#95;RU, en&#95;US など）。
-* 通貨コード（USD, RUB など）。
-* ハッシュのバイナリ表現（MD5 では `FixedString(16)`、SHA256 では `FixedString(32)`）。
+* IP アドレスのバイナリ表現 (IPv6 では `FixedString(16)`) 。
+* 言語コード (ru&#95;RU, en&#95;US など) 。
+* 通貨コード (USD, RUB など) 。
+* ハッシュのバイナリ表現 (MD5 では `FixedString(16)`、SHA256 では `FixedString(32)`) 。
 
 UUID の値を保存するには、[UUID](../../sql-reference/data-types/uuid.md) データ型を使用します。
 

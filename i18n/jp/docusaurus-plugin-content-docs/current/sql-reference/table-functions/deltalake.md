@@ -1,5 +1,5 @@
 ---
-description: 'Amazon S3 上の Delta Lake テーブルに対して、読み取り専用のテーブルのようなインターフェイスを提供します。'
+description: 'Amazon S3 上の Delta Lake テーブルに対して、読み取り専用のテーブル形式インターフェイスを提供します。'
 sidebar_label: 'deltaLake'
 sidebar_position: 45
 slug: /sql-reference/table-functions/deltalake
@@ -7,9 +7,7 @@ title: 'deltaLake'
 doc_type: 'reference'
 ---
 
-# deltaLake テーブル関数 \{#deltalake-table-function\}
-
-Amazon S3、Azure Blob Storage、またはローカルにマウントされたファイルシステムにある [Delta Lake](https://github.com/delta-io/delta) テーブルに対して、読み書き両方（v25.10 以降）をサポートするテーブル形式インターフェイスを提供します。
+Amazon S3、Azure Blob Storage、またはローカルにマウントされたファイルシステム上の [Delta Lake](https://github.com/delta-io/delta) テーブルに対するテーブル形式インターフェイスを提供し、読み取りと書き込みの両方をサポートします (v25.10 以降)
 
 ## 構文 \{#syntax\}
 

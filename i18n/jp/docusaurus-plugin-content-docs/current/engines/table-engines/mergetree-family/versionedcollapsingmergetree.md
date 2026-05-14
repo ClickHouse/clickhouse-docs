@@ -1,5 +1,6 @@
 ---
-description: '継続的に変化するオブジェクトの状態を高速に書き込み、古い状態をバックグラウンドで削除できるテーブルエンジンです。'
+description: '継続的に変化するオブジェクトの状態を高速に書き込み、
+  古いオブジェクトの状態をバックグラウンドで削除できます。'
 sidebar_label: 'VersionedCollapsingMergeTree'
 sidebar_position: 80
 slug: /engines/table-engines/mergetree-family/versionedcollapsingmergetree
@@ -7,12 +8,10 @@ title: 'VersionedCollapsingMergeTree テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# VersionedCollapsingMergeTree テーブルエンジン \{#versionedcollapsingmergetree-table-engine\}
-
 このエンジンは次のことができます：
 
-- 継続的に変化するオブジェクトの状態を高速に書き込む。
-- 古いオブジェクトの状態をバックグラウンドで削除する。これにより必要なストレージ容量を大幅に削減できます。
+* 継続的に変化するオブジェクトの状態を高速に書き込む。
+* 古いオブジェクトの状態をバックグラウンドで削除する。これにより必要なストレージ容量を大幅に削減できます。
 
 詳細は [Collapsing](#table_engines_versionedcollapsingmergetree) のセクションを参照してください。
 
@@ -35,7 +34,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 クエリパラメータの説明は、[クエリの説明](../../../sql-reference/statements/create/table.md)を参照してください。
 
-### エンジンのパラメータ \{#engine-parameters\}
+### エンジンパラメータ \{#engine-parameters\}
 
 ```sql
 VersionedCollapsingMergeTree(sign, version)
@@ -57,14 +56,14 @@ VersionedCollapsingMergeTree(sign, version)
   新しいプロジェクトではこの方法を使用しないでください。可能であれば、既存プロジェクトも上で説明した方法に切り替えてください。
   :::
 
-```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
-  name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-  name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-  ...
-) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
-```
+  ```sql
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
+    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+    ...
+  ) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
+  ```
 
   `sign` と `version` 以外のすべてのパラメータは、`MergeTree` における意味と同じです。
 
@@ -77,13 +76,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
     列のデータ型は `UInt*` である必要があります。
 </details>
 
-## 折りたたみ（Collapsing） \{#table_engines_versionedcollapsingmergetree\}
+## 折りたたみ (Collapsing) \{#table_engines_versionedcollapsingmergetree\}
 
 ### データ \{#data\}
 
 あるオブジェクトについて、継続的に変化するデータを保存する必要がある状況を考えます。オブジェクトごとに 1 行を持ち、変更があるたびにその行を更新するのは合理的に思えます。しかし、更新操作はストレージ上のデータを書き換える必要があるため、DBMS にとっては高コストかつ低速です。データを高速に書き込む必要がある場合、更新は適していませんが、その代わりにオブジェクトに対する変更を次のように逐次書き込むことができます。
 
-行を書き込むときに `Sign` 列を使用します。`Sign = 1` の場合、その行はオブジェクトの状態を表す（これを「state 行」と呼びます）ことを意味します。`Sign = -1` の場合、同じ属性を持つオブジェクトの状態を取り消す（これを「cancel 行」と呼びます）ことを意味します。また、`Version` 列も使用し、オブジェクトの各状態を一意の番号で識別します。
+行を書き込むときに `Sign` 列を使用します。`Sign = 1` の場合、その行はオブジェクトの状態を表す (これを「state 行」と呼びます) ことを意味します。`Sign = -1` の場合、同じ属性を持つオブジェクトの状態を取り消す (これを「cancel 行」と呼びます) ことを意味します。また、`Version` 列も使用し、オブジェクトの各状態を一意の番号で識別します。
 
 たとえば、あるサイトでユーザーが閲覧したページ数と、そのページに滞在した時間を集計したいとします。ある時点で、ユーザーのアクティビティ状態を表す次の行を書き込みます。
 
@@ -102,7 +101,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
 ```
 
-最初の行は、オブジェクト（ユーザー）の以前の状態を取り消します。この行には、`Sign` 以外の、取り消される状態のすべてのフィールドをコピーして含める必要があります。
+最初の行は、オブジェクト (ユーザー) の以前の状態を取り消します。この行には、`Sign` 以外の、取り消される状態のすべてのフィールドをコピーして含める必要があります。
 
 2 行目には現在の状態が含まれます。
 
@@ -115,7 +114,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
 ```
 
-は削除され、オブジェクトの無効（古い）状態が折りたたまれます。`VersionedCollapsingMergeTree` は、データパートをマージする際にこれを行います。
+は削除され、オブジェクトの無効 (古い) 状態が折りたたまれます。`VersionedCollapsingMergeTree` は、データパートをマージする際にこれを行います。
 
 各変更ごとに 2 行が必要な理由については、[Algorithm](#table_engines-versionedcollapsingmergetree-algorithm) を参照してください。
 
@@ -133,13 +132,13 @@ ClickHouse がデータを挿入する際には、行は主キーでソートさ
 
 ## データの選択 \{#selecting-data\}
 
-ClickHouse は、同じプライマリキーを持つすべての行が、同じ結果のデータパート内、あるいは同じ物理サーバー上に存在することを保証しません。これは、データを書き込むときと、その後にデータパートをマージするときの両方について当てはまります。さらに、ClickHouse は `SELECT` クエリを複数スレッドで処理するため、結果の行の順序を予測できません。つまり、`VersionedCollapsingMergeTree` テーブルから完全に「折りたたまれた」データを取得する必要がある場合は、集約処理が必要になります。
+ClickHouse は、同じ主キーを持つすべての行が、同じ結果のデータパート内、あるいは同じ物理サーバー上に存在することを保証しません。これは、データを書き込むときと、その後にデータパートをマージするときの両方について当てはまります。さらに、ClickHouse は `SELECT` クエリを複数スレッドで処理するため、結果の行の順序を予測できません。つまり、`VersionedCollapsingMergeTree` テーブルから完全に「折りたたまれた」データを取得する必要がある場合は、集約処理が必要になります。
 
 折りたたみを最終的に確定させるには、`GROUP BY` 句と、符号を考慮した集約関数を使ってクエリを書きます。たとえば数量を計算するには、`count()` の代わりに `sum(Sign)` を使用します。何らかの合計を計算するには、`sum(x)` の代わりに `sum(Sign * x)` を使用し、さらに `HAVING sum(Sign) > 0` を追加します。
 
 `count`、`sum`、`avg` といった集約は、この方法で計算できます。`uniq` 集約は、オブジェクトに少なくとも 1 つの未折りたたみ状態がある場合に計算できます。`min` および `max` 集約は、`VersionedCollapsingMergeTree` が折りたたまれた状態の値の履歴を保存しないため、計算できません。
 
-集約なしで「折りたたみ」を行ったデータを抽出する必要がある場合（たとえば、最新の値が特定の条件に一致する行が存在するかを確認する場合）は、`FROM` 句に対して `FINAL` 修飾子を使用できます。このアプローチは非効率的であり、大きなテーブルには使用すべきではありません。
+集約なしで「折りたたみ」を行ったデータを抽出する必要がある場合 (たとえば、最新の値が特定の条件に一致する行が存在するかを確認する場合) は、`FROM` 句に対して `FINAL` 修飾子を使用できます。このアプローチは非効率的であり、大きなテーブルには使用すべきではありません。
 
 ## 使用例 \{#example-of-use\}
 

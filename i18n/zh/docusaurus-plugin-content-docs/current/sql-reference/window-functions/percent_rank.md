@@ -7,13 +7,11 @@ title: 'percent_rank'
 doc_type: 'reference'
 ---
 
-# percent&#95;rank \{#percent&#95;rank\}
-
-返回窗口分区内各行的相对排名（即百分位排名）。
+返回窗口分区内各行的相对排名 (即百分位排名) 。
 
 **语法**
 
-别名：`percentRank`（区分大小写）
+别名：`percentRank` (区分大小写) 
 
 ```sql
 percent_rank ()

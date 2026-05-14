@@ -1,15 +1,13 @@
 ---
-description: 'Документация по табличному движку MySQL'
+description: 'Документация по движку таблицы MySQL'
 sidebar_label: 'MySQL'
 sidebar_position: 138
 slug: /engines/table-engines/integrations/mysql
-title: 'Табличный движок MySQL'
+title: 'Движок таблицы MySQL'
 doc_type: 'reference'
 ---
 
-# Движок таблицы MySQL \{#mysql-table-engine\}
-
-Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере MySQL.
+Движок MySQL позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удаленном сервере MySQL.
 
 ## Создание таблицы \{#creating-a-table\}
 

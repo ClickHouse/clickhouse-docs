@@ -7,8 +7,6 @@ title: 'コンポーザブルプロトコル'
 doc_type: 'reference'
 ---
 
-# 合成可能なプロトコル \{#composable-protocols\}
-
 ## 概要 \{#overview\}
 
 Composable プロトコルを使用すると、ClickHouse サーバーへの TCP アクセスをより柔軟に設定できます。この設定は、従来の設定と併用することも、置き換えることもできます。

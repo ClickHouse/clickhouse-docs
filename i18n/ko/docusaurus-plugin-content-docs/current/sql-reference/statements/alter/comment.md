@@ -8,20 +8,15 @@ keywords: ['ALTER TABLE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-
-
-# ALTER TABLE ... MODIFY COMMENT \{#alter-table-modify-comment\}
-
-테이블 comment를, 이전에 설정되어 있었는지와 관계없이 추가, 수정 또는 제거합니다. comment 변경 사항은 [`system.tables`](../../../operations/system-tables/tables.md)와 `SHOW CREATE TABLE` 쿼리 모두에 반영됩니다.
-
-
+이 명령은 기존에 주석이 설정되어 있었는지와 관계없이 테이블 주석을
+추가, 수정 또는 제거합니다. 주석 변경 사항은 [`system.tables`](../../../operations/system-tables/tables.md)
+및 `SHOW CREATE TABLE` 쿼리 모두에 반영됩니다.
 
 ## 구문 \{#syntax\}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
-
 
 ## 예시 \{#examples\}
 
@@ -78,17 +73,14 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 └─────────┘
 ```
 
-
 ## 주의사항 \{#caveats\}
 
-복제된 테이블(Replicated Table)에서는 레플리카마다 주석이 서로 다를 수 있습니다. 
+복제된 테이블(Replicated Table)에서는 레플리카마다 주석이 서로 다를 수 있습니다.
 주석을 수정하면 단일 레플리카에만 적용됩니다.
 
 이 기능은 23.9 버전부터 사용할 수 있습니다. 이전 ClickHouse 버전에서는 동작하지 않습니다.
 
-
-
 ## 관련 콘텐츠 \{#related-content\}
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 절
-- [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)
+* [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 절
+* [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)

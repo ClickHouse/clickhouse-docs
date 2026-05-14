@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse의 Boolean 데이터 타입에 대한 문서입니다.'
-sidebar_label: 'Boolean'
+description: 'ClickHouse의 Boolean 데이터 타입 문서'
+sidebar_label: '불리언'
 sidebar_position: 33
 slug: /sql-reference/data-types/boolean
 title: 'Bool'
 doc_type: 'reference'
 ---
-
-# Bool \{#bool\}
 
 `bool` 타입은 내부적으로 UInt8로 저장됩니다. 가능한 값은 `true` (1)와 `false` (0)입니다.
 

@@ -6,9 +6,7 @@ title: 'clickhouse-keeper-client 유틸리티'
 doc_type: 'reference'
 ---
 
-# clickhouse-keeper-client 유틸리티 \{#clickhouse-keeper-client-utility\}
-
-네이티브 프로토콜을 사용하여 clickhouse-keeper와 상호 작용하는 클라이언트 애플리케이션입니다.
+clickhouse-keeper와 네이티브 프로토콜로 상호 작용하기 위한 클라이언트 애플리케이션입니다.
 
 ## Keys \{#clickhouse-keeper-client\}
 

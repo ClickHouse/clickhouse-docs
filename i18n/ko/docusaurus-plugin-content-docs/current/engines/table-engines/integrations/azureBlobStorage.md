@@ -7,13 +7,7 @@ title: 'AzureBlobStorage 테이블 엔진'
 doc_type: 'reference'
 ---
 
-
-
-# AzureBlobStorage 테이블 엔진 \{#azureblobstorage-table-engine\}
-
-이 엔진은 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 에코시스템과 통합을 제공합니다.
-
-
+이 엔진은 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 생태계와의 통합을 제공합니다.
 
 ## 테이블 생성 \{#create-table\}
 
@@ -39,7 +33,7 @@ CREATE TABLE azure_blob_storage_table (name String, value UInt32)
 * `partition_columns_in_data_file` - `HIVE` 파티션 전략에서만 사용됩니다. 데이터 파일에 파티션 컬럼이 기록되어 있을 것으로 ClickHouse가 예상해야 하는지 여부를 지정합니다. 기본값은 `false`입니다.
 * `extra_credentials` - 인증을 위해 `client_id`와 `tenant_id`를 사용합니다. extra&#95;credentials가 제공된 경우, `account_name` 및 `account_key`보다 우선합니다.
 
-**Example**
+**예시**
 
 로컬 Azure Storage 개발을 위해 Azurite 에뮬레이터를 사용할 수 있습니다. 자세한 내용은 [여기](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=docker-hub%2Cblob-storage)를 참고하십시오. 로컬 Azurite 인스턴스를 사용하는 경우, Azurite가 호스트 `azurite1`에서 사용 가능하다고 가정하는 아래 명령에서 `http://azurite1:10000` 대신 `http://localhost:10000`으로 대체해야 할 수도 있습니다.
 
@@ -60,15 +54,12 @@ SELECT * FROM test_table;
 └──────┴───────┘
 ```
 
-
 ## 가상 컬럼 \{#virtual-columns\}
 
-- `_path` — 파일 경로. 형식: `LowCardinality(String)`.
-- `_file` — 파일 이름. 형식: `LowCardinality(String)`.
-- `_size` — 파일 크기(바이트 단위). 형식: `Nullable(UInt64)`. 크기를 알 수 없으면 값은 `NULL`입니다.
-- `_time` — 파일 마지막 수정 시간. 형식: `Nullable(DateTime)`. 시간을 알 수 없으면 값은 `NULL`입니다.
-
-
+* `_path` — 파일 경로. 형식: `LowCardinality(String)`.
+* `_file` — 파일 이름. 형식: `LowCardinality(String)`.
+* `_size` — 파일 크기(바이트 단위). 형식: `Nullable(UInt64)`. 크기를 알 수 없으면 값은 `NULL`입니다.
+* `_time` — 파일 마지막 수정 시간. 형식: `Nullable(DateTime)`. 시간을 알 수 없으면 값은 `NULL`입니다.
 
 ## 인증 \{#authentication\}
 
@@ -76,7 +67,7 @@ SELECT * FROM test_table;
 
 * `Managed Identity` - `endpoint`, `connection_string` 또는 `storage_account_url`을 제공하여 사용할 수 있습니다.
 * `SAS Token` - `endpoint`, `connection_string` 또는 `storage_account_url`을 제공하여 사용할 수 있습니다. URL에 &#39;?&#39;가 포함되어 있는지로 식별할 수 있습니다. 예시는 [azureBlobStorage](/sql-reference/table-functions/azureBlobStorage#using-shared-access-signatures-sas-sas-tokens)를 참고하십시오.
-* `Workload Identity` - `endpoint` 또는 `storage_account_url`을 제공하여 사용할 수 있습니다. config에서 `use_workload_identity` 파라미터를 설정하면 인증에 [workload identity](https://github.com/Azure/azure-sdk-for-cpp/tree/main/sdk/identity/azure-identity#authenticate-azure-hosted-applications)가 사용됩니다.
+* `Workload Identity` - `endpoint` 또는 `storage_account_url`을 제공하여 사용할 수 있습니다. config에서 `use_workload_identity` 매개변수를 설정하면 인증에 [workload identity](https://github.com/Azure/azure-sdk-for-cpp/tree/main/sdk/identity/azure-identity#authenticate-azure-hosted-applications)가 사용됩니다.
 
 ### 데이터 캐시 \{#data-cache\}
 
@@ -109,7 +100,7 @@ SETTINGS filesystem_cache_name = 'cache_for_azure', enable_filesystem_cache = 1;
 
 ### PARTITION BY \{#partition-by\}
 
-`PARTITION BY` — 선택 사항입니다. 대부분의 경우 파티션 키는 필요하지 않으며, 필요하더라도 일반적으로 월 단위보다 더 세분화된 파티션 키는 필요하지 않습니다. 파티션은 쿼리를 빠르게 하지 않습니다(ORDER BY 표현식과는 대조적입니다). 지나치게 세분화된 파티셔닝은 절대 사용하지 말아야 합니다. 데이터는 클라이언트 식별자나 이름으로 파티션하지 말고, 대신 클라이언트 식별자나 이름을 ORDER BY 표현식의 첫 번째 컬럼으로 두십시오.
+`PARTITION BY` — 선택 사항입니다. 대부분의 경우 파티션 키는 필요하지 않으며, 필요하더라도 일반적으로 월 단위보다 더 세분화된 파티션 키는 필요하지 않습니다. 파티셔닝은 쿼리 속도를 높이지 않습니다(ORDER BY 표현식과는 대조적입니다). 지나치게 세분화된 파티셔닝은 절대 사용하지 말아야 합니다. 데이터를 클라이언트 식별자나 이름으로 파티셔닝하지 말고, 대신 클라이언트 식별자나 이름을 ORDER BY 표현식의 첫 번째 컬럼으로 두십시오.
 
 월별 파티셔닝을 위해서는 `toYYYYMM(date_column)` 표현식을 사용합니다. 여기서 `date_column`은 [Date](/sql-reference/data-types/date.md) 타입의 날짜를 가진 컬럼입니다. 이 경우 파티션 이름은 `"YYYYMM"` 형식을 가집니다.
 
@@ -129,18 +120,12 @@ arthur :) create table azure_table (year UInt16, country String, counter UInt8) 
 arthur :) insert into azure_table values (2020, 'Russia', 1), (2021, 'Brazil', 2);
 
 arthur :) select _path, * from azure_table;
-```
 
-
-┌─&#95;path──────────────────────────────────────────────────────────────────────┬─year─┬─country─┬─counter─┐
-
-1. │ cont/hive&#95;partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ 러시아  │       1 │
-2. │ cont/hive&#95;partitioned/year=2021/country=Brazil/7351305360894636032.parquet │ 2021 │ 브라질  │       2 │
+   ┌─_path──────────────────────────────────────────────────────────────────────┬─year─┬─country─┬─counter─┐
+1. │ cont/hive_partitioned/year=2020/country=Russia/7351305360873664512.parquet │ 2020 │ Russia  │       1 │
+2. │ cont/hive_partitioned/year=2021/country=Brazil/7351305360894636032.parquet │ 2021 │ Brazil  │       2 │
    └────────────────────────────────────────────────────────────────────────────┴──────┴─────────┴─────────┘
-
 ```
-```
-
 
 ## 함께 보기 \{#see-also\}
 

@@ -1,5 +1,5 @@
 ---
-description: 'リモート PostgreSQL サーバー上のデータベースへの接続を可能にします。'
+description: 'リモート PostgreSQL サーバー上のデータベースに接続できます。'
 sidebar_label: 'PostgreSQL'
 sidebar_position: 40
 slug: /engines/database-engines/postgresql
@@ -7,13 +7,11 @@ title: 'PostgreSQL'
 doc_type: 'guide'
 ---
 
-# PostgreSQL \{#postgresql\}
-
-リモート [PostgreSQL](https://www.postgresql.org) サーバー上のデータベースに接続できます。ClickHouse と PostgreSQL 間でデータをやり取りするために、読み取りおよび書き込み操作（`SELECT` および `INSERT` クエリ）をサポートします。
+リモート [PostgreSQL](https://www.postgresql.org) サーバー上のデータベースに接続できます。ClickHouse と PostgreSQL 間でデータをやり取りするために、読み取りおよび書き込み操作 (`SELECT` および `INSERT` クエリ) をサポートします。
 
 `SHOW TABLES` および `DESCRIBE TABLE` クエリを利用して、リモート PostgreSQL 上のテーブル一覧およびテーブル構造にリアルタイムでアクセスできます。
 
-テーブル構造の変更（`ALTER TABLE ... ADD|DROP COLUMN`）をサポートします。`use_table_cache` パラメータ（後述の Engine パラメータを参照）が `1` に設定されている場合、テーブル構造はキャッシュされ、変更されているかどうかのチェックは行われませんが、`DETACH` および `ATTACH` クエリで更新できます。
+テーブル構造の変更 (`ALTER TABLE ... ADD|DROP COLUMN`) をサポートします。`use_table_cache` パラメータ (後述の エンジンパラメータを参照) が `1` に設定されている場合、テーブル構造はキャッシュされ、変更されているかどうかのチェックは行われませんが、`DETACH` および `ATTACH` クエリで更新できます。
 
 ## データベースの作成 \{#creating-a-database\}
 
@@ -33,21 +31,21 @@ ENGINE = PostgreSQL('host:port', 'database', 'user', 'password'[, `schema`, `use
 
 ## データ型のサポート \{#data_types-support\}
 
-| PostgreSQL       | ClickHouse                                                   |
-|------------------|--------------------------------------------------------------|
-| DATE             | [Date](../../sql-reference/data-types/date.md)               |
-| TIMESTAMP        | [DateTime](../../sql-reference/data-types/datetime.md)       |
-| REAL             | [Float32](../../sql-reference/data-types/float.md)           |
-| DOUBLE           | [Float64](../../sql-reference/data-types/float.md)           |
-| DECIMAL, NUMERIC | [Decimal](../../sql-reference/data-types/decimal.md)         |
-| SMALLINT         | [Int16](../../sql-reference/data-types/int-uint.md)          |
-| INTEGER          | [Int32](../../sql-reference/data-types/int-uint.md)          |
-| BIGINT           | [Int64](../../sql-reference/data-types/int-uint.md)          |
-| SERIAL           | [UInt32](../../sql-reference/data-types/int-uint.md)         |
-| BIGSERIAL        | [UInt64](../../sql-reference/data-types/int-uint.md)         |
-| TEXT, CHAR       | [String](../../sql-reference/data-types/string.md)           |
-| INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md))|
-| ARRAY            | [Array](../../sql-reference/data-types/array.md)             |
+| PostgreSQL       | ClickHouse                                                    |
+| ---------------- | ------------------------------------------------------------- |
+| DATE             | [Date](../../sql-reference/data-types/date.md)                |
+| TIMESTAMP        | [DateTime](../../sql-reference/data-types/datetime.md)        |
+| REAL             | [Float32](../../sql-reference/data-types/float.md)            |
+| DOUBLE           | [Float64](../../sql-reference/data-types/float.md)            |
+| DECIMAL, NUMERIC | [Decimal](../../sql-reference/data-types/decimal.md)          |
+| SMALLINT         | [Int16](../../sql-reference/data-types/int-uint.md)           |
+| INTEGER          | [Int32](../../sql-reference/data-types/int-uint.md)           |
+| BIGINT           | [Int64](../../sql-reference/data-types/int-uint.md)           |
+| SERIAL           | [UInt32](../../sql-reference/data-types/int-uint.md)          |
+| BIGSERIAL        | [UInt64](../../sql-reference/data-types/int-uint.md)          |
+| TEXT, CHAR       | [String](../../sql-reference/data-types/string.md)            |
+| INTEGER          | Nullable([Int32](../../sql-reference/data-types/int-uint.md)) |
+| ARRAY            | [Array](../../sql-reference/data-types/array.md)              |
 
 ## 利用例 \{#examples-of-use\}
 
@@ -143,5 +141,5 @@ DESCRIBE TABLE test_database.test_table;
 
 ## 関連コンテンツ \{#related-content\}
 
-- ブログ: [ClickHouse と PostgreSQL - データ天国で生まれた理想の組み合わせ - パート 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
-- ブログ: [ClickHouse と PostgreSQL - データ天国で生まれた理想の組み合わせ - パート 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)
+* ブログ: [ClickHouse と PostgreSQL - データ天国で生まれた理想の組み合わせ - パート 1](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres)
+* ブログ: [ClickHouse と PostgreSQL - データ天国で生まれた理想の組み合わせ - パート 2](https://clickhouse.com/blog/migrating-data-between-clickhouse-postgres-part-2)

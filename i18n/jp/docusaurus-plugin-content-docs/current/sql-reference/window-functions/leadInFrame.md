@@ -1,13 +1,11 @@
 ---
-description: 'leadInFrame ウィンドウ関数のリファレンス'
+description: 'leadInFrame ウィンドウ関数のドキュメント'
 sidebar_label: 'leadInFrame'
 sidebar_position: 10
 slug: /sql-reference/window-functions/leadInFrame
 title: 'leadInFrame'
 doc_type: 'reference'
 ---
-
-# leadInFrame \{#leadinframe\}
 
 順序付けされたフレーム内で、現在の行から指定したオフセット行数だけ後方の行で評価された値を返します。
 
@@ -32,8 +30,8 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **パラメーター**
 
 * `x` — カラム名。
-* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。（オプション - 省略時は `1`）
-* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。（オプション - 省略時はカラム型のデフォルト値）
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (オプション - 省略時は `1`) 
+* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。 (オプション - 省略時はカラム型のデフォルト値) 
 
 **返される値**
 

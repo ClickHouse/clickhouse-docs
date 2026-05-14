@@ -7,9 +7,7 @@ title: 'AzureQueue 테이블 엔진'
 doc_type: 'reference'
 ---
 
-# AzureQueue 테이블 엔진 \{#azurequeue-table-engine\}
-
-이 엔진은 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 에코시스템과의 통합 기능을 제공하여 스트리밍 방식의 데이터 입력을 지원합니다.
+이 엔진은 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 생태계와 통합되어 스트리밍 방식의 데이터 가져오기를 지원합니다.
 
 ## 테이블 생성 \{#creating-a-table\}
 

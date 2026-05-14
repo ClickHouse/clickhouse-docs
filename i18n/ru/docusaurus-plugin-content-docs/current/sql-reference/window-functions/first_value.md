@@ -1,13 +1,11 @@
 ---
-description: 'Документация для оконной функции first_value'
+description: 'Документация по оконной функции first_value'
 sidebar_label: 'first_value'
 sidebar_position: 3
 slug: /sql-reference/window-functions/first_value
 title: 'first_value'
 doc_type: 'reference'
 ---
-
-# first&#95;value \{#first&#95;value\}
 
 Возвращает первое значение, вычисленное в пределах упорядоченного окна. По умолчанию аргументы со значением NULL пропускаются, однако модификатор `RESPECT NULLS` можно использовать для переопределения этого поведения.
 

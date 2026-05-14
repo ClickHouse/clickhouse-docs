@@ -1,13 +1,11 @@
 ---
-description: 'Apache Arrow Flight サーバーが公開するデータに対してクエリを実行できるようにします。'
+description: 'Apache Arrow Flight サーバーで公開されているデータに対してクエリを実行できます。'
 sidebar_label: 'arrowFlight'
 sidebar_position: 186
 slug: /sql-reference/table-functions/arrowflight
 title: 'arrowFlight'
 doc_type: 'reference'
 ---
-
-# arrowFlight テーブル関数 \{#arrowflight-table-function\}
 
 [Apache Arrow Flight](/interfaces/arrowflight) サーバーで公開されているデータに対してクエリを実行できます。
 

@@ -1,5 +1,5 @@
 ---
-description: 'ALTER TABLE ... MODIFY QUERY 语句文档'
+description: 'ALTER TABLE ... MODIFY QUERY 语句的文档'
 sidebar_label: 'VIEW'
 sidebar_position: 50
 slug: /sql-reference/statements/alter/view
@@ -7,11 +7,9 @@ title: 'ALTER TABLE ... MODIFY QUERY 语句'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY QUERY 语句 \{#alter-table-modify-query-statement\}
+您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在创建[materialized view](/sql-reference/statements/create/view#materialized-view)时指定的 `SELECT` 查询，而不会中断数据摄取过程。
 
-您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在创建[物化视图](/sql-reference/statements/create/view#materialized-view)时指定的 `SELECT` 查询，而不会中断数据摄取过程。
-
-此命令用于更改使用 `TO [db.]name` 子句创建的物化视图。它不会更改底层存储表的结构，也不会更改物化视图的列定义，因此，对于没有使用 `TO [db.]name` 子句创建的物化视图，此命令的适用范围非常有限。
+此命令用于更改使用 `TO [db.]name` 子句创建的materialized view。它不会更改底层存储表的结构，也不会更改materialized view的列定义，因此，对于没有使用 `TO [db.]name` 子句创建的materialized view，此命令的适用范围非常有限。
 
 **使用 TO 表的示例**
 

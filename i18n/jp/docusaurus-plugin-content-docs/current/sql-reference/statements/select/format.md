@@ -1,14 +1,12 @@
 ---
-description: 'FORMAT 句に関するドキュメント'
+description: 'FORMAT 句のドキュメント'
 sidebar_label: 'FORMAT'
 slug: /sql-reference/statements/select/format
 title: 'FORMAT 句'
 doc_type: 'reference'
 ---
 
-# FORMAT 句 \{#format-clause\}
-
-ClickHouse は、クエリ結果などに対して使用できる幅広い[シリアル化フォーマット](../../../interfaces/formats.md)をサポートしています。`SELECT` の出力フォーマットを選択する方法はいくつかあり、そのひとつはクエリの末尾で `FORMAT format` を指定して、結果データを任意の形式で取得する方法です。
+ClickHouse は、クエリ結果などに対して使用できる幅広い[シリアル化フォーマット](../../../interfaces/formats.md)をサポートしています。`SELECT` の出力フォーマットを選択する方法はいくつかあり、そのひとつはクエリの末尾で `FORMAT format` を指定して、結果データを任意のフォーマットで取得する方法です。
 
 特定のフォーマットは、利便性、他システムとの連携、あるいはパフォーマンス向上を目的として使用される場合があります。
 

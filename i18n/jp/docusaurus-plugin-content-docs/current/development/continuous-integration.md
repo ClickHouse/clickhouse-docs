@@ -1,22 +1,20 @@
 ---
-description: 'ClickHouse の継続的インテグレーション (CI) システムの概要'
-sidebar_label: '継続的インテグレーション (CI)'
+description: 'ClickHouse continuous integration system の概要'
+sidebar_label: 'Continuous Integration (CI)'
 sidebar_position: 55
 slug: /development/continuous-integration
-title: '継続的インテグレーション (CI)'
+title: 'Continuous Integration (CI)'
 doc_type: 'reference'
 ---
 
-# Continuous Integration (CI) \{#continuous-integration-ci\}
-
 プルリクエストを送信すると、ClickHouse の [continuous integration (CI) system](tests.md#test-automation) によって、あなたのコードに対していくつかの自動チェックが実行されます。
-これは、リポジトリのメンテナー（ClickHouse チームのメンバー）があなたのコードを確認し、プルリクエストに `can be tested` ラベルを追加した後に行われます。
+これは、リポジトリのメンテナー (ClickHouse チームのメンバー) があなたのコードを確認し、プルリクエストに `can be tested` ラベルを追加した後に行われます。
 チェック結果は、[GitHub checks documentation](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks) で説明されているように、GitHub のプルリクエストページに一覧表示されます。
 いずれかのチェックが失敗した場合、それを修正する必要があるかもしれません。
 このページでは、遭遇する可能性のあるチェックの概要と、それらを修正するためにできることを説明します。
 
 チェックの失敗が自分の変更内容とは無関係に見える場合、一時的な失敗やインフラストラクチャの問題である可能性があります。
-CI チェックを再実行するには、空のコミットをプッシュしてプルリクエストを更新します:
+CI チェックを再実行するには、空のコミットをプルリクエストにプッシュします:
 
 ```shell
 git commit --allow-empty

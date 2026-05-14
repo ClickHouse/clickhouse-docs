@@ -1,13 +1,11 @@
 ---
-description: 'rank 窗口函数的文档'
+description: 'rank 窗口函数文档'
 sidebar_label: 'rank'
 sidebar_position: 6
 slug: /sql-reference/window-functions/rank
 title: 'rank'
 doc_type: 'reference'
 ---
-
-# rank \{#rank\}
 
 在其所属分区内为当前行计算带空缺的排名。换句话说，如果某一行的值与之前某一行的值相同，那么它将获得与该行相同的排名。
 下一行的排名则等于前一行的排名再加上一个空缺，该空缺等于前一个排名被赋予的次数。

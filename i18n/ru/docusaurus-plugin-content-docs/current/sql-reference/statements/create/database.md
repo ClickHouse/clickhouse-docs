@@ -7,14 +7,11 @@ title: 'CREATE DATABASE'
 doc_type: 'reference'
 ---
 
-# CREATE DATABASE \{#create-database\}
-
 Создает новую базу данных.
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [SETTINGS ...] [COMMENT 'Comment']
 ```
-
 
 ## Условия \{#clauses\}
 

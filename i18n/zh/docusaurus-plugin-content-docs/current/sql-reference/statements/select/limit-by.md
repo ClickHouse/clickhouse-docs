@@ -1,12 +1,10 @@
 ---
-description: 'LIMIT BY 子句参考文档'
+description: 'LIMIT BY 子句文档'
 sidebar_label: 'LIMIT BY'
 slug: /sql-reference/statements/select/limit-by
 title: 'LIMIT BY 子句'
 doc_type: 'reference'
 ---
-
-# LIMIT BY 子句 \{#limit-by-clause\}
 
 带有 `LIMIT n BY expressions` 子句的查询会为 `expressions` 的每个不同取值组合选取前 `n` 行。`LIMIT BY` 的键可以包含任意数量的[表达式](/sql-reference/syntax#expressions)。
 

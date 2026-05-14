@@ -1,33 +1,28 @@
 ---
-description: '동일한 기본 키(primary key)(정확히는 동일한 [정렬 키(sorting key)](../../../engines/table-engines/mergetree-family/mergetree.md))를 가진 모든 행을, 집계 함수 상태들의 조합을 저장하는 단일 행(하나의 데이터 파트 내에서)으로 대체합니다.'
+description: '동일한 기본 키(보다 정확히는 동일한 [정렬 키](../../../engines/table-engines/mergetree-family/mergetree.md))를 가진 모든 행을 집계 함수 상태 조합을 저장하는 단일 행(단일 데이터 파트 내)으로 대체합니다.'
 sidebar_label: 'AggregatingMergeTree'
 sidebar_position: 60
 slug: /engines/table-engines/mergetree-family/aggregatingmergetree
 title: 'AggregatingMergeTree 테이블 엔진'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-
-
-# AggregatingMergeTree 테이블 엔진 \{#aggregatingmergetree-table-engine\}
 
 이 엔진은 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)를 상속하며, 데이터 파트 병합 로직을 변경합니다. ClickHouse는 동일한 기본 키(보다 정확히는 동일한 [정렬 키](../../../engines/table-engines/mergetree-family/mergetree.md))를 가진 모든 행을 단일 행(단일 데이터 파트 내)으로 대체하며, 이 행에는 집계 함수 상태들의 조합이 저장됩니다.
 
 `AggregatingMergeTree` 테이블은 집계된 materialized view를 포함하여 증분 데이터 집계에 사용할 수 있습니다.
 
 아래 동영상에서 AggregatingMergeTree와 Aggregate 함수 사용 예제를 확인할 수 있습니다:
-<div class='vimeo-container'>
-<iframe width="1030" height="579" src="https://www.youtube.com/embed/pryhI4F_zqQ" title="ClickHouse에서 집계 상태 사용하기" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<div class="vimeo-container">
+  <iframe width="1030" height="579" src="https://www.youtube.com/embed/pryhI4F_zqQ" title="ClickHouse에서 집계 상태 사용하기" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 </div>
 
 이 엔진은 다음 타입의 모든 컬럼을 처리합니다:
 
-- [`AggregateFunction`](../../../sql-reference/data-types/aggregatefunction.md)
-- [`SimpleAggregateFunction`](../../../sql-reference/data-types/simpleaggregatefunction.md)
+* [`AggregateFunction`](../../../sql-reference/data-types/aggregatefunction.md)
+* [`SimpleAggregateFunction`](../../../sql-reference/data-types/simpleaggregatefunction.md)
 
 행 수를 자릿수 단위로 크게 줄일 수 있는 경우 `AggregatingMergeTree`를 사용하는 것이 적합합니다.
-
-
 
 ## 테이블 생성 \{#creating-a-table\}
 
@@ -70,15 +65,12 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   모든 매개변수는 `MergeTree`에서와 동일한 의미를 가집니다.
 </details>
 
-
 ## SELECT and INSERT \{#select-and-insert\}
 
 데이터를 삽입하려면 집계 `-State-` 함수와 함께 [INSERT SELECT](../../../sql-reference/statements/insert-into.md) 쿼리를 사용합니다.
 `AggregatingMergeTree` 테이블에서 데이터를 조회할 때는 `GROUP BY` 절과, 데이터를 삽입할 때 사용한 것과 동일한 집계 함수를 사용하되 `-Merge` 접미사를 사용합니다.
 
 `SELECT` 쿼리 결과에서 `AggregateFunction` 타입의 값은 모든 ClickHouse 출력 형식에서 구현별 이진 표현을 가집니다. 예를 들어 `SELECT` 쿼리로 데이터를 `TabSeparated` 형식으로 내보냈다면, 이 데이터를 `INSERT` 쿼리를 사용하여 다시 로드할 수 있습니다.
-
-
 
 ## 집계 materialized view 예시 \{#example-of-an-aggregated-materialized-view\}
 
@@ -154,7 +146,7 @@ ORDER BY StartDate;
 └─────────────────────────┴────────┴───────┘
 ```
 
-`test.visits`에 레코드를 두 개 더 추가합니다. 이번에는 그중 하나에는 다른 타임스탬프를 사용해 보십시오:`
+`test.visits`에 레코드 두 개를 더 추가합니다. 이번에는 그중 하나에 다른 타임스탬프를 사용해 보십시오:
 
 ```sql
 INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
@@ -170,7 +162,10 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
 └─────────────────────────┴────────┴───────┘
 ```
 
-경우에 따라, 집계 비용을 삽입 시점에서 머지 시점으로 이전하기 위해 삽입 시점의 사전 집계를 피하고자 할 수 있습니다. 일반적으로는 오류를 방지하기 위해, 집계에 포함되지 않는 컬럼을 materialized view 정의의 `GROUP BY` 절에 포함해야 합니다. 그러나 기본값으로 활성화되어 있는 설정인 `optimize_on_insert = 0`과 함께 [`initializeAggregation`](/sql-reference/functions/other-functions#initializeAggregation) 함수를 사용하여 이를 달성할 수 있습니다. 이 경우 `GROUP BY`가 더 이상 필요하지 않습니다:
+경우에 따라, 집계 비용을 삽입 시점에서 머지 시점으로 이전하기 위해 삽입 시점의 사전 집계를 피하고자 할 수 있습니다. 일반적으로는 오류를 방지하기 위해, 집계에 포함되지 않는 컬럼을 materialized view 정의의 `GROUP BY`
+절에 포함해야 합니다. 그러나 기본값으로 활성화되어 있는 설정인 `optimize_on_insert = 0`과 함께 [`initializeAggregation`](/sql-reference/functions/other-functions#initializeAggregation)
+함수를 사용하여 이를 달성할 수 있습니다. 이 경우 `GROUP BY`
+가 더 이상 필요하지 않습니다:
 
 ```sql
 CREATE MATERIALIZED VIEW test.visits_mv TO test.agg_visits
@@ -182,15 +177,12 @@ AS SELECT
 FROM test.visits;
 ```
 
-
 :::note
-`initializeAggregation`을 사용할 때는 그룹화 없이 각 개별 행에 대해 집계 상태가 생성됩니다.
-각 소스 행은 구체화된 뷰(Materialized View)에 하나의 행을 생성하며, 실제 집계는 이후 `AggregatingMergeTree`가 파트를 병합할 때 수행됩니다.
+`initializeAggregation`을 사용하면 그룹화 없이 각 개별 행에 대한 집계 상태가 생성됩니다.
+각 소스 행은 materialized view에서 1개의 행을 생성하며, 실제 집계는 이후 `AggregatingMergeTree`가 파트를 머지할 때 이루어집니다.
 이는 `optimize_on_insert = 0`인 경우에만 해당합니다.
 :::
 
-
-
 ## 관련 콘텐츠 \{#related-content\}
 
-- 블로그 글: [ClickHouse에서 Aggregate Combinator 활용하기](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* 블로그 글: [ClickHouse에서 Aggregate Combinator 활용하기](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

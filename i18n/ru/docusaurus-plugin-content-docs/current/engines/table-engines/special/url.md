@@ -1,13 +1,12 @@
 ---
-description: 'Позволяет запрашивать и отправлять данные на удалённый HTTP/HTTPS-сервер. Этот движок аналогичен движку File.'
+description: 'Выполняет чтение и запись данных на удалённый HTTP/HTTPS-сервер. Этот
+  движок похож на движок File.'
 sidebar_label: 'URL'
 sidebar_position: 80
 slug: /engines/table-engines/special/url
-title: 'движок таблицы URL'
+title: 'Движок таблицы URL'
 doc_type: 'reference'
 ---
-
-# Движок таблицы URL \{#url-table-engine\}
 
 Выполняет чтение и запись данных на удалённый HTTP/HTTPS-сервер. Этот движок похож на движок [File](../../../engines/table-engines/special/file.md).
 

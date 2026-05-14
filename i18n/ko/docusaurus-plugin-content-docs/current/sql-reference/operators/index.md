@@ -7,9 +7,7 @@ title: '연산자'
 doc_type: 'reference'
 ---
 
-# 연산자 \{#operators\}
-
-ClickHouse는 연산자의 우선순위(priority), 우선도(precedence), 결합 방향(associativity)에 따라 쿼리 파싱 단계에서 각 연산자를 해당 함수로 변환합니다.
+ClickHouse는 쿼리 파싱 단계에서 연산자의 우선도, 우선순위, 결합 방향에 따라 해당 함수로 변환합니다.
 
 ## Access 연산자 \{#access-operators\}
 

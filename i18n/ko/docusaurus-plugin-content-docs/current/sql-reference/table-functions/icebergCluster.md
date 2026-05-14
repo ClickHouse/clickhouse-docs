@@ -1,13 +1,11 @@
 ---
-description: 'iceberg 테이블 함수의 확장으로, 지정된 클러스터의 여러 노드에서 Apache Iceberg 파일을 병렬로 처리할 수 있도록 합니다.'
+description: 'Apache Iceberg의 파일을 지정된 클러스터의 여러 노드에서 병렬로 처리할 수 있게 해 주는 iceberg 테이블 함수의 확장입니다.'
 sidebar_label: 'icebergCluster'
 sidebar_position: 91
 slug: /sql-reference/table-functions/icebergCluster
 title: 'icebergCluster'
 doc_type: 'reference'
 ---
-
-# icebergCluster 테이블 함수 \{#icebergcluster-table-function\}
 
 이 함수는 [iceberg](/sql-reference/table-functions/iceberg.md) 테이블 함수의 확장입니다.
 

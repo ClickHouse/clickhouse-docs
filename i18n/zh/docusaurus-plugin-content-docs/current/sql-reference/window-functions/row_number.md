@@ -7,8 +7,6 @@ title: 'row_number'
 doc_type: 'reference'
 ---
 
-# row&#95;number \{#row&#95;number\}
-
 对其所在分区内的当前行进行编号，从 1 开始。
 
 **语法**
@@ -21,7 +19,7 @@ FROM table_name
 WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column])
 ```
 
-有关窗口函数语法的更详细说明，请参阅：[Window Functions - Syntax](./index.md/#syntax)。
+有关窗口函数语法的更详细说明，请参阅：[Window Functions - Syntax](./index.md/#syntax).
 
 **返回值**
 

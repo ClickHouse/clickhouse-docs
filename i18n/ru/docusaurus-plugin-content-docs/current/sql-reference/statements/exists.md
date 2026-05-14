@@ -7,8 +7,6 @@ title: 'Оператор EXISTS'
 doc_type: 'reference'
 ---
 
-# Оператор EXISTS \{#exists-statement\}
-
 ```sql
 EXISTS [TEMPORARY] [TABLE|DICTIONARY|DATABASE] [db.]name [INTO OUTFILE filename] [FORMAT format]
 ```

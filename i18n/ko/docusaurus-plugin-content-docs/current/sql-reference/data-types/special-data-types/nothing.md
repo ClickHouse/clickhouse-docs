@@ -1,13 +1,11 @@
 ---
-description: 'Nothing 특수 데이터 타입 문서'
+description: 'Nothing 특수 데이터 타입에 대한 문서'
 sidebar_label: 'Nothing'
 sidebar_position: 60
 slug: /sql-reference/data-types/special-data-types/nothing
 title: 'Nothing'
 doc_type: 'reference'
 ---
-
-# Nothing \{#nothing\}
 
 이 데이터 형식의 유일한 목적은 값이 존재하지 않을 것으로 예상되는 경우를 표현하는 것입니다. 따라서 `Nothing` 형식의 값을 생성할 수 없습니다.
 

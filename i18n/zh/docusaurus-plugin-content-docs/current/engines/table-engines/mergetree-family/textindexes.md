@@ -1,18 +1,16 @@
 ---
-description: '在文本中快速查找搜索词。'
-keywords: ['全文搜索', '文本索引', '索引', '索引（复数形式）']
-sidebar_label: '使用文本索引的全文搜索'
+description: '快速查找文本中的搜索词。'
+keywords: ['全文搜索', '文本索引', '索引', '索引']
+sidebar_label: '使用文本索引进行全文搜索'
 slug: /engines/table-engines/mergetree-family/textindexes
-title: '使用文本索引的全文搜索'
+title: '使用文本索引进行全文搜索'
 doc_type: 'reference'
 ---
 
-# 使用文本索引进行全文搜索 \{#full-text-search-with-text-indexes\}
-
-文本索引（也称为[倒排索引](https://en.wikipedia.org/wiki/Inverted_index)）可以对文本数据进行快速全文搜索。
-文本索引存储从词元到包含该词元的行号的映射关系。
-词元由称为分词（tokenization）的过程生成。
-例如，ClickHouse 的默认分词器会将英文句子 &quot;The cat likes mice.&quot; 转换为词元 [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;]。
+文本索引 (也称为[倒排索引](https://en.wikipedia.org/wiki/Inverted_index)) 可以对文本数据进行快速全文搜索。
+文本索引存储从标记到包含该标记的行号的映射关系。
+标记由称为分词 (tokenization) 的过程生成。
+例如，ClickHouse 的默认分词器会将英文句子 &quot;The cat likes mice.&quot; 转换为标记 [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;]。
 
 例如，假设有一个只有一列且包含三行的表
 
@@ -22,7 +20,7 @@ doc_type: 'reference'
 3: I have two dogs and a cat.
 ```
 
-相应的词元为：
+相应的标记为：
 
 ```result
 1: The, cat, likes, mice
@@ -58,8 +56,7 @@ mice   : [1]
 two    : [3]
 ```
 
-在给定搜索 token 的情况下，该索引结构可以快速定位所有匹配的行。
-
+在给定搜索标记的情况下，该索引结构可以快速定位所有匹配的行。
 
 ## 创建文本索引 \{#creating-a-text-index\}
 

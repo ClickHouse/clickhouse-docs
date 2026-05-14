@@ -1,5 +1,6 @@
 ---
-description: 'CoalescingMergeTree は MergeTree エンジンを継承しています。その主な特徴は、パーツのマージ時に各列の直近の非 NULL 値を自動的に格納できることです。'
+description: 'CoalescingMergeTree は MergeTree エンジンを継承しています。その主な機能は、
+  パーツのマージ時に各カラムの最後の非 NULL 値を自動的に保存できることです。'
 sidebar_label: 'CoalescingMergeTree'
 sidebar_position: 50
 slug: /engines/table-engines/mergetree-family/coalescingmergetree
@@ -9,13 +10,11 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# CoalescingMergeTree テーブルエンジン \{#coalescingmergetree-table-engine\}
-
 :::note Available from version 25.6
 このテーブルエンジンは、OSS と Cloud の両方でバージョン 25.6 以降で利用可能です。
 :::
 
-このエンジンは [MergeTree](/engines/table-engines/mergetree-family/mergetree) を継承しています。主な違いはデータパートのマージ方法です。`CoalescingMergeTree` テーブルでは、ClickHouse は同じ主キー（より正確には、同じ [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)）を持つすべての行を、各カラムについて最新の非 NULL 値を含む 1 行に置き換えます。
+このエンジンは [MergeTree](/engines/table-engines/mergetree-family/mergetree) を継承しています。主な違いはデータパーツのマージ方法です。`CoalescingMergeTree` テーブルでは、ClickHouse は同じ主キー (より正確には、同じ [ソートキー](../../../engines/table-engines/mergetree-family/mergetree.md)) を持つすべての行を、各カラムについて最新の非 NULL 値を含む 1 行に置き換えます。
 
 これによりカラム単位のアップサートが可能になり、行全体ではなく特定のカラムだけを更新できます。
 

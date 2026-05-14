@@ -1,13 +1,11 @@
 ---
-description: 'Interval 특수 데이터 타입 문서'
-sidebar_label: 'Interval'
+description: '인터벌 특수 데이터 타입 문서'
+sidebar_label: '인터벌'
 sidebar_position: 61
 slug: /sql-reference/data-types/special-data-types/interval
-title: 'Interval'
+title: '인터벌'
 doc_type: 'reference'
 ---
-
-# Interval \{#interval\}
 
 시간 및 날짜 간격을 표현하는 데이터 타입 계열입니다. [INTERVAL](/sql-reference/operators#interval) 연산자의 결과 데이터 타입입니다.
 
@@ -41,7 +39,6 @@ SELECT toTypeName(INTERVAL 4 DAY)
 │ IntervalDay                  │
 └──────────────────────────────┘
 ```
-
 
 ## 사용 시 참고 사항 \{#usage-remarks\}
 

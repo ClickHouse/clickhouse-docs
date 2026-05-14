@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse 中 Map 数据类型文档'
+description: 'ClickHouse 中 Map 数据类型的文档'
 sidebar_label: 'Map(K, V)'
 sidebar_position: 36
 slug: /sql-reference/data-types/map
@@ -7,12 +7,10 @@ title: 'Map(K, V)'
 doc_type: 'reference'
 ---
 
-# Map(K, V) \{#mapk-v\}
-
 数据类型 `Map(K, V)` 用于存储键值对。
 
 与其他数据库不同，在 ClickHouse 中 Map 中的键不要求唯一，也就是说，一个 Map 可以包含两个具有相同键的元素。
-（这是因为 Map 在内部实现为 `Array(Tuple(K, V))`。）
+ (这是因为 Map 在内部实现为 `Array(Tuple(K, V))`。) 
 
 你可以使用语法 `m[k]` 来获取 Map `m` 中键 `k` 对应的值。
 同时，`m[k]` 会顺序扫描整个 Map，即该操作的运行时间与 Map 的大小成线性关系。
@@ -64,7 +62,6 @@ SELECT m['key1'] FROM tab;
 │                       0 │
 └─────────────────────────┘
 ```
-
 
 ## 将 Tuple 转换为 Map \{#converting-tuple-to-map\}
 

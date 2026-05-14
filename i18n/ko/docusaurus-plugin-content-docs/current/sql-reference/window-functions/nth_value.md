@@ -1,13 +1,11 @@
 ---
-description: 'nth_value 윈도우 함수 문서'
+description: 'nth_value 윈도우 함수에 대한 문서'
 sidebar_label: 'nth_value'
 sidebar_position: 5
 slug: /sql-reference/window-functions/nth_value
 title: 'nth_value'
 doc_type: 'reference'
 ---
-
-# nth_value \{#nth_value\}
 
 순서가 정의된 프레임에서 n번째 행(오프셋)에 대해 평가된 값들 중 첫 번째 NULL이 아닌 값을 반환합니다.
 

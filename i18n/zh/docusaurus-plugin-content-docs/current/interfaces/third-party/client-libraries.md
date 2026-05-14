@@ -7,10 +7,8 @@ title: '第三方开发者提供的客户端库'
 doc_type: 'reference'
 ---
 
-# 第三方开发者提供的客户端库 \{#client-libraries-from-third-party-developers\}
-
 :::note
-ClickHouse Inc **不**负责维护下列库，也未对其质量进行任何广泛测试。
+ClickHouse Inc **不**维护下方列出的这些库，也未对其质量进行过广泛测试。
 :::
 
 ### Python \{#python\}

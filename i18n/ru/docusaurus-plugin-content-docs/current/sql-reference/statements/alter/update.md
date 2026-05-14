@@ -7,8 +7,6 @@ title: 'Команды ALTER TABLE ... UPDATE'
 doc_type: 'reference'
 ---
 
-# Команды ALTER TABLE ... UPDATE \{#alter-table-update-statements\}
-
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
 ```
@@ -32,7 +30,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 * Настройка [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync)
 * [Легковесное `UPDATE`](/sql-reference/statements/update) — альтернативное легковесное обновление с использованием частей патча
 * [`APPLY PATCHES`](/sql-reference/statements/alter/apply-patches) — ручное применение патчей из легковесных обновлений
-
 
 ## Связанные материалы \{#related-content\}
 

@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции last_value'
+description: 'Документация по оконной функции last_value'
 sidebar_label: 'last_value'
 sidebar_position: 4
 slug: /sql-reference/window-functions/last_value
 title: 'last_value'
 doc_type: 'reference'
 ---
-
-# last&#95;value \{#last&#95;value\}
 
 Возвращает последнее значение, вычисленное в его упорядоченном окне. По умолчанию аргументы со значением NULL пропускаются, однако модификатор `RESPECT NULLS` можно использовать для изменения этого поведения.
 

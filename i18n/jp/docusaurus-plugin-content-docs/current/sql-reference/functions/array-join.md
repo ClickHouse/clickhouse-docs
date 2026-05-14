@@ -1,18 +1,16 @@
 ---
-description: 'arrayJoin 関数に関するドキュメント'
+description: 'arrayJoin 関数のドキュメント'
 sidebar_label: 'arrayJoin'
 slug: /sql-reference/functions/array-join
 title: 'arrayJoin 関数'
 doc_type: 'reference'
 ---
 
-# arrayJoin function \{#arrayjoin-function\}
-
 これは少し特殊な関数です。
 
-通常の関数は、行の集合自体は変更せず、各行の値だけを変更します（map）。
-集約関数は、行の集合を圧縮します（fold または reduce）。
-`arrayJoin` 関数は、各行を取り、それを行の集合に展開します（unfold）。
+通常の関数は、行の集合自体は変更せず、各行の値だけを変更します (map) 。
+集約関数は、行の集合を圧縮します (fold または reduce) 。
+`arrayJoin` 関数は、各行を取り、それを行の集合に展開します (unfold) 。
 
 この関数は引数として配列を受け取り、配列内の要素数分だけ元の行を複数の行に増やします。
 この関数が適用される列以外の列の値は単純にコピーされ、その列の値のみが対応する配列要素の値に置き換えられます。
@@ -85,23 +83,23 @@ GROUP BY
 
 ### ベストプラクティス \{#important-note\}
 
-同じ式に対して複数回 `arrayJoin` を使用すると、共通部分式の除去により意図しない結果になる場合があります。
-そのような場合は、結合の結果に影響を与えない追加の処理を加えて、繰り返し利用される配列式を変更することを検討してください。例えば、`arrayJoin(arraySort(arr))` や `arrayJoin(arrayConcat(arr, []))` などです。
+同じ式に対して複数の `arrayJoin` を使用すると、共通部分式が排除されるため、期待した結果にならない場合があります。
+そのような場合は、join の結果に影響しない追加の操作を加えて、繰り返し使用する配列式を変更することを検討してください。たとえば、`arrayJoin(arraySort(arr))`、`arrayJoin(arrayConcat(arr, []))`
 
-例:
+例：
 
 ```sql
 SELECT
     arrayJoin(dice) AS first_throw,
-    /* arrayJoin(dice) as second_throw */ -- 技術的には正しいが、結果セットが消失する
-    arrayJoin(arrayConcat(dice, [])) AS second_throw -- 再評価を強制するため意図的に式を変更
+    /* arrayJoin(dice) as second_throw */ -- is technically correct, but will annihilate result set
+    arrayJoin(arrayConcat(dice, [])) AS second_throw -- intentionally changed expression to force re-evaluation
 FROM (
     SELECT [1, 2, 3, 4, 5, 6] AS dice
 );
 ```
 
-SELECT クエリ内の [`ARRAY JOIN`](../statements/select/array-join.md) 構文に注目してください。これにより、より幅広い操作が可能になります。
-`ARRAY JOIN` を使用すると、同じ要素数を持つ複数の配列を一度に展開できます。
+SELECT クエリ内の [`ARRAY JOIN`](../statements/select/array-join.md) 構文に注目してください。これにより、より幅広い使い方が可能になります。
+`ARRAY JOIN` を使用すると、同じ数の要素を持つ複数の配列を一度に変換できます。
 
 例：
 
@@ -160,4 +158,4 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-ClickHouse における `arrayJoin` という名称は、1 行内の配列に対して適用されるという点を除けば、JOIN 演算との概念的な類似性に由来しています。従来の JOIN が複数のテーブルから行を結合するのに対し、`arrayJoin` は 1 行内の配列の各要素を「結合」し、配列要素ごとに 1 行ずつ複数の行を生成し、その際に他の列の値は複製されます。ClickHouse には、[`ARRAY JOIN`](/sql-reference/statements/select/array-join) 句の構文も用意されており、なじみのある SQL の JOIN 用語を使うことで、従来の JOIN 操作との関係性をさらに明示的に表現しています。この処理は配列を「展開する」（unfolding）とも呼ばれますが、テーブルを配列要素と結合しているように見え、JOIN 操作と同様の形でデータセットを拡張するため、関数名と句の両方に「join」という用語が使用されています。
+ClickHouse における `arrayJoin` という名称は、1 行内の配列に対して適用されるという点を除けば、JOIN 演算との概念的な類似性に由来しています。従来の JOIN が複数のテーブルから行を結合するのに対し、`arrayJoin` は 1 行内の配列の各要素を「結合」し、配列要素ごとに 1 行ずつ複数の行を生成し、その際に他の列の値は複製されます。ClickHouse には、[`ARRAY JOIN`](/sql-reference/statements/select/array-join) 句の構文も用意されており、なじみのある SQL の JOIN 用語を使うことで、従来の JOIN 操作との関係性をさらに明示的に表現しています。この処理は配列を「展開する」 (unfolding) とも呼ばれますが、テーブルを配列要素と結合しているように見え、JOIN 操作と同様の形でデータセットを拡張するため、関数名と句の両方に「join」という用語が使用されています。

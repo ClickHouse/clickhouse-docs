@@ -1,12 +1,10 @@
 ---
-description: "AI関数のドキュメント"
-sidebar_label: "AI"
+description: 'AI 関数のドキュメント'
+sidebar_label: 'AI'
 slug: /sql-reference/functions/ai-functions
-title: "AI関数"
-doc_type: "reference"
+title: 'AI 関数'
+doc_type: 'reference'
 ---
-
-# AI 関数 \{#ai-functions\}
 
 AI 関数は ClickHouse に組み込まれている関数で、データに対して AI を呼び出したり、埋め込みを生成したり、情報を抽出したり、データを分類したりするために使用できます。
 

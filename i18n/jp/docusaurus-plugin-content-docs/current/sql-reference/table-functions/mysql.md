@@ -7,9 +7,7 @@ title: 'mysql'
 doc_type: 'reference'
 ---
 
-# mysql テーブル関数 \{#mysql-table-function\}
-
-リモートの MySQL サーバー上のデータに対して、`SELECT` および `INSERT` クエリを実行できるようにします。
+リモート MySQL サーバー上に保存されているデータに対して、`SELECT` および `INSERT` クエリを実行できるようにします。
 
 ## 構文 \{#syntax\}
 

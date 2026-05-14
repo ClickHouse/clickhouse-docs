@@ -1,13 +1,11 @@
 ---
-description: 'last_value 윈도우 함수에 대한 문서'
+description: 'last_value 윈도우 함수 문서'
 sidebar_label: 'last_value'
 sidebar_position: 4
 slug: /sql-reference/window-functions/last_value
 title: 'last_value'
 doc_type: 'reference'
 ---
-
-# last_value \{#last_value\}
 
 정렬된 프레임 내에서 평가된 마지막 값을 반환합니다. 기본적으로 NULL 인수는 건너뛰지만, `RESPECT NULLS` 수정자를 사용하여 이 동작을 변경할 수 있습니다.
 

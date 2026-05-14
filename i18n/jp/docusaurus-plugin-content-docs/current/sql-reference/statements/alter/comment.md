@@ -8,9 +8,9 @@ keywords: ['ALTER TABLE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY COMMENT \{#alter-table-modify-comment\}
-
-テーブルコメントを、コメントが事前に設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) と `SHOW CREATE TABLE` クエリの両方に反映されます。
+以前に設定されていたかどうかにかかわらず、テーブルコメントを追加、変更、または削除します。
+コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md)
+と `SHOW CREATE TABLE` クエリの両方に反映されます。
 
 ## 構文 \{#syntax\}
 
@@ -32,7 +32,7 @@ ENGINE = Memory()
 COMMENT 'The temporary table';
 ```
 
-テーブルのコメントを変更するには:
+テーブルコメントを変更するには:
 
 ```sql
 ALTER TABLE table_with_comment 
@@ -82,5 +82,5 @@ Replicated テーブルの場合、コメントはレプリカごとに異なる
 
 ## 関連コンテンツ \{#related-content\}
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 句
-- [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)
+* [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 句
+* [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)

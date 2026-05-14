@@ -7,9 +7,7 @@ title: 'TRUNCATE 语句'
 doc_type: 'reference'
 ---
 
-# TRUNCATE 语句 \{#truncate-statements\}
-
-ClickHouse 中的 `TRUNCATE` 语句用于在保留表或数据库结构的前提下，快速删除其中的所有数据。
+ClickHouse 中的 `TRUNCATE` 语句用于快速删除表或数据库中的所有数据，同时保留其结构。
 
 ## TRUNCATE TABLE \{#truncate-table\}
 
@@ -28,7 +26,7 @@ TRUNCATE TABLE [IF EXISTS] [db.]name [ON CLUSTER cluster] [SYNC]
 
 你可以使用 [alter&#95;sync](/operations/settings/settings#alter_sync) 设置在副本上等待操作执行的行为。
 
-你可以通过 [replication&#95;wait&#95;for&#95;inactive&#95;replica&#95;timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 设置指定在非活动副本上等待其执行 `TRUNCATE` 查询的时间（以秒为单位）。
+你可以通过 [replication&#95;wait&#95;for&#95;inactive&#95;replica&#95;timeout](/operations/settings/settings#replication_wait_for_inactive_replica_timeout) 设置指定在非活动副本上等待其执行 `TRUNCATE` 查询的时间 (以秒为单位) 。
 
 :::note
 如果 `alter_sync` 被设置为 `2`，并且某些副本处于非活动状态的持续时间超过 `replication_wait_for_inactive_replica_timeout` 设置指定的时间，则会抛出 `UNFINISHED` 异常。

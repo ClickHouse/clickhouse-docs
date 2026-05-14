@@ -8,9 +8,7 @@ title: 'deltaLake'
 doc_type: 'reference'
 ---
 
-# Табличная функция deltaLake \{#deltalake-table-function\}
-
-Предоставляет табличный интерфейс к таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе с поддержкой операций чтения и записи (начиная с v25.10)
+Предоставляет табличный интерфейс для таблиц [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или в локально смонтированной файловой системе, с поддержкой чтения и записи (начиная с v25.10)
 
 ## Синтаксис \{#syntax\}
 

@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse における Replicated* ファミリーのテーブルエンジンを用いたデータレプリケーションの概要'
+description: 'ClickHouse の Replicated* テーブルエンジンファミリーにおけるデータレプリケーションの概要'
 sidebar_label: 'Replicated*'
 sidebar_position: 20
 slug: /engines/table-engines/mergetree-family/replication
 title: 'Replicated* テーブルエンジン'
 doc_type: 'reference'
 ---
-
-# Replicated* テーブルエンジン \{#replicated-table-engines\}
 
 :::note
 ClickHouse Cloud ではレプリケーションは ClickHouse Cloud が管理します。テーブルを作成する際は、引数を追加せずに作成してください。たとえば、以下のテキストでは次のように書き換えてください。
@@ -27,7 +25,7 @@ ENGINE = ReplicatedMergeTree
 
 :::
 
-レプリケーションは、MergeTree ファミリーのテーブルに対してのみサポートされています
+レプリケーションは、MergeTree family のテーブルに対してのみサポートされています
 
 * ReplicatedSummingMergeTree
 * ReplicatedCoalescingMergeTree
@@ -38,7 +36,7 @@ ENGINE = ReplicatedMergeTree
 * ReplicatedReplacingMergeTree
 * ReplicatedAggregatingMergeTree
 
-レプリケーションはサーバー全体ではなく、個々のテーブル単位で動作します。1 台のサーバー上で、レプリケートテーブルと非レプリケーションテーブルを同時に保存できます。
+レプリケーションはサーバー全体ではなく、個々のテーブル単位で動作します。1 台のサーバー上で、レプリケートテーブルと非レプリケートテーブルを同時に保存できます。
 
 レプリケーションは分片に依存しません。各分片はそれぞれ独立してレプリケーションされます。
 

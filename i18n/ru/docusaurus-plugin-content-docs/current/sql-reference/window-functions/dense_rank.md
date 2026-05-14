@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции dense_rank'
+description: 'Документация по оконной функции dense_rank'
 sidebar_label: 'dense_rank'
 sidebar_position: 7
 slug: /sql-reference/window-functions/dense_rank
 title: 'dense_rank'
 doc_type: 'reference'
 ---
-
-# dense&#95;rank \{#dense&#95;rank\}
 
 Присваивает текущей строке ранг внутри её раздела без пропусков. Иными словами, если значение любой новой строки совпадает со значением одной из предыдущих строк, то она получит следующий по порядку ранг без каких-либо пропусков в ранжировании.
 

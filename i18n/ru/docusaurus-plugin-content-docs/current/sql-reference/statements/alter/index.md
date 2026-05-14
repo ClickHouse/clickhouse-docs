@@ -1,5 +1,5 @@
 ---
-description: 'Документация по оператору ALTER'
+description: 'Документация по ALTER'
 sidebar_label: 'ALTER'
 sidebar_position: 35
 slug: /sql-reference/statements/alter/
@@ -7,12 +7,10 @@ title: 'ALTER'
 doc_type: 'reference'
 ---
 
-# ALTER \{#alter\}
-
 Большинство запросов `ALTER TABLE` изменяют настройки таблицы или данные:
 
-| Модификатор                                                                        |
-|-------------------------------------------------------------------------------------|
+| Модификатор                                                                 |
+| --------------------------------------------------------------------------- |
 | [COLUMN](/sql-reference/statements/alter/column.md)                         |
 | [PARTITION](/sql-reference/statements/alter/partition.md)                   |
 | [DELETE](/sql-reference/statements/alter/delete.md)                         |
@@ -26,29 +24,29 @@ doc_type: 'reference'
 | [APPLY PATCHES](/sql-reference/statements/alter/apply-patches.md)           |
 
 :::note
-Большинство запросов `ALTER TABLE` поддерживаются только для таблиц типов [\*MergeTree](/engines/table-engines/mergetree-family/index.md), [Merge](/engines/table-engines/special/merge.md) и [Distributed](/engines/table-engines/special/distributed.md).
+Большинство запросов `ALTER TABLE` поддерживаются только для таблиц типов [*MergeTree](/engines/table-engines/mergetree-family/index.md), [Merge](/engines/table-engines/special/merge.md) и [Distributed](/engines/table-engines/special/distributed.md).
 :::
 
 Эти операторы `ALTER` изменяют представления:
 
-| Оператор                                                                            | Описание                                                                              |
-|-------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| [ALTER TABLE ... MODIFY QUERY](/sql-reference/statements/alter/view.md)     | Изменяет структуру [материализованного представления](/sql-reference/statements/create/view).       |
+| Оператор                                                                | Описание                                                                                      |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| [ALTER TABLE ... MODIFY QUERY](/sql-reference/statements/alter/view.md) | Изменяет структуру [материализованного представления](/sql-reference/statements/create/view). |
 
 Эти операторы `ALTER` изменяют объекты, связанные с разграничением доступа на основе ролей:
 
-| Оператор                                                                       |
-|---------------------------------------------------------------------------------|
+| Оператор                                                                |
+| ----------------------------------------------------------------------- |
 | [USER](/sql-reference/statements/alter/user.md)                         |
 | [ROLE](/sql-reference/statements/alter/role.md)                         |
 | [QUOTA](/sql-reference/statements/alter/quota.md)                       |
 | [ROW POLICY](/sql-reference/statements/alter/row-policy.md)             |
 | [SETTINGS PROFILE](/sql-reference/statements/alter/settings-profile.md) |
 
-| Оператор                                                                               | Описание                                                                                      |
-|---------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| Оператор                                                                      | Описание                                                                                             |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | Добавляет, изменяет или удаляет комментарии к таблице, независимо от того, были ли они заданы ранее. |
-| [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | Изменяет [именованные коллекции](/operations/named-collections.md).                      |
+| [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | Изменяет [именованные коллекции](/operations/named-collections.md).                                  |
 
 ## Мутации \{#mutations\}
 

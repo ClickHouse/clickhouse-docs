@@ -1,13 +1,11 @@
 ---
-description: '인코딩 함수 문서'
+description: '인코딩 함수에 대한 문서'
 sidebar_label: '인코딩'
 slug: /sql-reference/functions/encoding-functions
 title: '인코딩 함수'
 keywords: ['인코딩', '일반 함수', '인코드', '디코드']
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-# 인코딩 함수 \{#encoding-functions\}
 
 {/* 
   아래 태그 안의 내용은 문서 프레임워크를 빌드할 때

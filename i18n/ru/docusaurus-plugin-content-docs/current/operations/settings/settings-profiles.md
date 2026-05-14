@@ -1,13 +1,11 @@
 ---
-description: 'Набор настроек, объединённых общим именем.'
+description: 'Набор настроек, объединённых под одним именем.'
 sidebar_label: 'Профили настроек'
 sidebar_position: 61
 slug: /operations/settings/settings-profiles
 title: 'Профили настроек'
 doc_type: 'reference'
 ---
-
-# Профили настроек \{#settings-profiles\}
 
 Профиль настроек — это набор настроек, объединённых под одним именем.
 

@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse에서 이름이 지정된 상수 값들의 집합을 나타내는 Enum 데이터 타입에 대한 문서입니다.'
+description: '이름이 지정된 상수 값의 집합을 나타내는 ClickHouse Enum 데이터 타입에 대한 문서'
 sidebar_label: 'Enum'
 sidebar_position: 20
 slug: /sql-reference/data-types/enum
 title: 'Enum'
 doc_type: 'reference'
 ---
-
-# Enum \{#enum\}
 
 여러 개의 이름이 지정된 값으로 구성된 열거형 타입입니다.
 

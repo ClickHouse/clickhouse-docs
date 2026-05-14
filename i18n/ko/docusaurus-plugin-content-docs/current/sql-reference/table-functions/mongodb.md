@@ -7,9 +7,7 @@ title: 'mongodb'
 doc_type: 'reference'
 ---
 
-# mongodb Table Function \{#mongodb-table-function\}
-
-원격 MongoDB 서버에 저장된 데이터에 대해 `SELECT` 쿼리를 실행할 수 있도록 합니다.
+원격 MongoDB 서버에 저장된 데이터에 대해 `SELECT` 쿼리를 실행할 수 있게 합니다.
 
 ## 구문 \{#syntax\}
 

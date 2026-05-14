@@ -7,9 +7,7 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-# Табличная функция iceberg \{#iceberg-table-function\}
-
-Предоставляет табличный интерфейс только для чтения к таблицам Apache [Iceberg](https://iceberg.apache.org/), размещённым в Amazon S3, Azure, HDFS или в локальном хранилище.
+Предоставляет табличный интерфейс в режиме только для чтения к таблицам Apache [Iceberg](https://iceberg.apache.org/), размещённым в Amazon S3, Azure, HDFS или локально.
 
 ## Синтаксис \{#syntax\}
 

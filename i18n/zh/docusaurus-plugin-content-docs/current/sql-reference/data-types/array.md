@@ -7,9 +7,7 @@ title: 'Array(T)'
 doc_type: 'reference'
 ---
 
-# Array(T) \{#arrayt\}
-
-由 `T` 类型元素组成的数组，数组的起始索引为 1。`T` 可以是任何数据类型，包括数组。
+由 `T` 类型元素组成的数组，数组索引从 1 开始。`T` 可以是任何数据类型，包括数组。
 
 ## 创建数组 \{#creating-an-array\}
 

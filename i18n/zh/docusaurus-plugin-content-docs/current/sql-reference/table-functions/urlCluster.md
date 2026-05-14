@@ -7,8 +7,6 @@ title: 'urlCluster'
 doc_type: 'reference'
 ---
 
-# urlCluster 表函数 \{#urlcluster-table-function\}
-
 允许在指定集群的多个节点上并行处理通过 URL 访问的文件。在发起端，它会与集群中所有节点建立连接，展开 URL 文件路径中的星号，并动态分发每个文件。在工作节点上，它会向发起端请求下一个要处理的任务并进行处理。该过程会重复进行，直到所有任务完成。
 
 ## 语法 \{#syntax\}

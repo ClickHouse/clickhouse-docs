@@ -4,10 +4,8 @@ sidebar_label: 'INSERT INTO'
 sidebar_position: 33
 slug: /sql-reference/statements/insert-into
 title: 'INSERT INTO 语句'
-doc_type: '参考'
+doc_type: 'reference'
 ---
-
-# INSERT INTO 语句 \{#insert-into-statement\}
 
 将数据插入表中。
 
@@ -17,7 +15,7 @@ doc_type: '参考'
 INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] [SETTINGS ...] VALUES (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-你可以使用 `(c1, c2, c3)` 指定要插入的列列表。你也可以使用带有列[匹配器](../../sql-reference/statements/select/index.md#asterisk)（例如 `*`）和/或[修饰符](../../sql-reference/statements/select/index.md#select-modifiers)（如 [APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier)）的表达式。
+你可以使用 `(c1, c2, c3)` 指定要插入的列列表。你也可以使用带有列[匹配器](../../sql-reference/statements/select/index.md#asterisk) (例如 `*`) 和/或[修饰符](../../sql-reference/statements/select/index.md#select-modifiers) (如 [APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier)) 的表达式。
 
 例如，考虑如下所示的表：
 
@@ -40,7 +38,7 @@ ORDER BY a
 INSERT INTO insert_select_testtable (*) VALUES (1, 'a', 1) ;
 ```
 
-如果你想向除列 `b` 之外的所有列插入数据，可以使用 `EXCEPT` 关键字。参考上面的语法，你需要确保插入的值个数（`VALUES (v11, v13)`）与指定的列数（`(c1, c3)`）一致：
+如果你想向除列 `b` 之外的所有列插入数据，可以使用 `EXCEPT` 关键字。参考上面的语法，你需要确保插入的值个数 (`VALUES (v11, v13)`) 与指定的列数 (`(c1, c3)`) 一致：
 
 ```sql
 INSERT INTO insert_select_testtable (* EXCEPT(b)) Values (2, 2);
@@ -82,7 +80,7 @@ INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT Values (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-ClickHouse 会在数据之前移除所有前导空格以及一个换行符（如果存在）。在构造查询时，我们建议将数据放在查询语句中运算符之后的下一行，这在数据以空格开头时尤为重要。
+ClickHouse 会在数据之前移除所有前导空格以及一个换行符 (如果存在) 。在构造查询时，我们建议将数据放在查询语句中运算符之后的下一行，这在数据以空格开头时尤为重要。
 
 示例：
 
@@ -102,7 +100,6 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 ```
 
 :::
-
 
 ## 约束 \{#constraints\}
 

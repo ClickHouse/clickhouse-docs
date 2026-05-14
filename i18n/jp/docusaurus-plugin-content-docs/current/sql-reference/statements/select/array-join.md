@@ -1,12 +1,10 @@
 ---
-description: 'ARRAY JOIN 句に関するドキュメント'
+description: 'ARRAY JOIN 句のドキュメント'
 sidebar_label: 'ARRAY JOIN'
 slug: /sql-reference/statements/select/array-join
 title: 'ARRAY JOIN 句'
 doc_type: 'reference'
 ---
-
-# ARRAY JOIN 句 \{#array-join-clause\}
 
 配列カラムを含むテーブルに対して、元の配列カラムの各要素ごとに 1 行を持つ新しいテーブルを生成し、その他のカラムの値は複製するという操作は一般的です。これは `ARRAY JOIN` 句が行う処理の基本的なケースです。
 
@@ -25,7 +23,7 @@ FROM <left_subquery>
 `ARRAY JOIN` のサポートされている種類は次のとおりです。
 
 * `ARRAY JOIN` - 通常、空配列は `JOIN` の結果に含まれません。
-* `LEFT ARRAY JOIN` - `JOIN` の結果には、空配列を持つ行も含まれます。空配列に対する値は、その配列要素の型のデフォルト値（通常は 0、空文字列、または NULL）に設定されます。
+* `LEFT ARRAY JOIN` - `JOIN` の結果には、空配列を持つ行も含まれます。空配列に対する値は、その配列要素の型のデフォルト値 (通常は 0、空文字列、または NULL) に設定されます。
 
 ## 基本的な ARRAY JOIN の例 \{#basic-array-join-examples\}
 
@@ -111,7 +109,7 @@ LIMIT 10
 └─────────┴───────┘
 ```
 
-この例では、Reaches はコンバージョン数（`ARRAY JOIN` を適用した後に得られる文字列数）、Hits はページビュー数（`ARRAY JOIN` を適用する前の文字列数）を表します。このケースでは、同じ結果をより簡単な方法で得ることができます。
+この例では、Reaches はコンバージョン数 (`ARRAY JOIN` を適用した後に得られる文字列数) 、Hits はページビュー数 (`ARRAY JOIN` を適用する前の文字列数) を表します。このケースでは、同じ結果をより簡単な方法で得ることができます。
 
 ```sql
 SELECT
@@ -131,7 +129,7 @@ WHERE (CounterID = 160656) AND notEmpty(GoalsReached)
 
 この関数は、`ARRAY JOIN` を使用して配列要素を集約する場合に役立ちます。
 
-この例では、各 goal ID について、コンバージョン数（ネストされた Goals データ構造内の各要素は達成されたゴールであり、これをコンバージョンと呼びます）とセッション数を計算しています。`ARRAY JOIN` を使わなければ、セッション数は sum(Sign) として数えます。しかしこのケースでは、行がネストされた Goals 構造によって増えているため、その後に各セッションを 1 回だけ数えるには、`arrayEnumerateUniq(Goals.ID)` 関数の値に条件を適用します。
+この例では、各 goal ID について、コンバージョン数 (ネストされた Goals データ構造内の各要素は達成されたゴールであり、これをコンバージョンと呼びます) とセッション数を計算しています。`ARRAY JOIN` を使わなければ、セッション数は sum(Sign) として数えます。しかしこのケースでは、行がネストされた Goals 構造によって増えているため、その後に各セッションを 1 回だけ数えるには、`arrayEnumerateUniq(Goals.ID)` 関数の値に条件を適用します。
 
 ```sql
 SELECT
@@ -205,7 +203,7 @@ ARRAY JOIN [1, 2, 3] AS arr_external;
 └─────────────┴──────────────┘
 ```
 
-複数の配列を `ARRAY JOIN` 句でカンマ区切りで指定できます。この場合、`JOIN` はそれらに対して同時に実行されます（デカルト積ではなく直和となります）。デフォルトでは、すべての配列は同じサイズである必要がある点に注意してください。例:
+複数の配列を `ARRAY JOIN` 句でカンマ区切りで指定できます。この場合、`JOIN` はそれらに対して同時に実行されます (デカルト積ではなく直和となります) 。デフォルトでは、すべての配列は同じサイズである必要がある点に注意してください。例:
 
 ```sql
 SELECT s, arr, a, num, mapped
@@ -386,4 +384,4 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 
 ## 関連コンテンツ \{#related-content\}
 
-- ブログ記事: [ClickHouse における時系列データの扱い方](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* ブログ記事: [ClickHouse における時系列データの扱い方](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

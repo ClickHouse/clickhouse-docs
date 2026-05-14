@@ -1,13 +1,12 @@
 ---
-description: 'ClickHouse 中 Dynamic 类型的文档，它能够在单个列中存储多种类型的值'
+description: 'ClickHouse 中 Dynamic 数据类型的文档，该类型可以在单个列中存储
+  不同类型的值'
 sidebar_label: 'Dynamic'
 sidebar_position: 62
 slug: /sql-reference/data-types/dynamic
 title: 'Dynamic'
 doc_type: 'guide'
 ---
-
-# Dynamic \{#dynamic\}
 
 此类型允许在其中存储任意类型的值，而无需预先了解或枚举所有可能的类型。
 

@@ -1,13 +1,11 @@
 ---
-description: '1 つの列に異なる型の値を格納できる ClickHouse の Dynamic データ型のドキュメント'
+description: '異なる型の値を 1 つのカラムに格納できる ClickHouse の Dynamic データ型に関するドキュメント'
 sidebar_label: 'Dynamic'
 sidebar_position: 62
 slug: /sql-reference/data-types/dynamic
 title: 'Dynamic'
 doc_type: 'guide'
 ---
-
-# Dynamic \{#dynamic\}
 
 この型は、あらかじめすべての型を把握していなくても、任意の型の値を格納できます。
 

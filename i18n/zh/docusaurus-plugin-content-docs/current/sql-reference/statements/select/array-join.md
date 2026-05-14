@@ -1,12 +1,10 @@
 ---
-description: 'ARRAY JOIN 子句的文档'
+description: 'ARRAY JOIN 子句文档'
 sidebar_label: 'ARRAY JOIN'
 slug: /sql-reference/statements/select/array-join
 title: 'ARRAY JOIN 子句'
 doc_type: 'reference'
 ---
-
-# ARRAY JOIN 子句 \{#array-join-clause\}
 
 对于包含数组列的表，一个常见操作是生成一个新表：在该新表中，原始数组列中的每个数组元素各占一行，而其他列的值会被复制重复。这是 `ARRAY JOIN` 子句的基本用例。
 
@@ -25,7 +23,7 @@ FROM <left_subquery>
 支持的 `ARRAY JOIN` 类型如下所示：
 
 * `ARRAY JOIN` - 在默认情况下，`JOIN` 结果中不包含空数组。
-* `LEFT ARRAY JOIN` - `JOIN` 结果中会包含含有空数组的行。空数组的值被设置为数组元素类型的默认值（通常是 0、空字符串或 NULL）。
+* `LEFT ARRAY JOIN` - `JOIN` 结果中会包含含有空数组的行。空数组的值被设置为数组元素类型的默认值 (通常是 0、空字符串或 NULL) 。
 
 ## 基本 ARRAY JOIN 示例 \{#basic-array-join-examples\}
 
@@ -111,7 +109,7 @@ LIMIT 10
 └─────────┴───────┘
 ```
 
-在本示例中，Reaches 表示转化次数（应用 `ARRAY JOIN` 后得到的字符串数量），而 Hits 表示页面浏览量（应用 `ARRAY JOIN` 之前的字符串数量）。在这种情况下，你可以用一种更简单的方式得到相同的结果：
+在本示例中，Reaches 表示转化次数 (应用 `ARRAY JOIN` 后得到的字符串数量) ，而 Hits 表示页面浏览量 (应用 `ARRAY JOIN` 之前的字符串数量) 。在这种情况下，你可以用一种更简单的方式得到相同的结果：
 
 ```sql
 SELECT
@@ -131,7 +129,7 @@ WHERE (CounterID = 160656) AND notEmpty(GoalsReached)
 
 在使用 `ARRAY JOIN` 并对数组元素进行聚合时，此函数非常有用。
 
-在此示例中，需要针对每个目标 ID 计算转化次数（Goals 嵌套数据结构中的每个元素都表示一次达成的目标，我们称之为一次转化）以及会话次数。如果不使用 `ARRAY JOIN`，会话次数会被统计为 sum(Sign)。但在这个特定场景中，行已经按嵌套的 Goals 结构被展开为多行，因此为了在此之后仍然只对每个会话统计一次，我们对 `arrayEnumerateUniq(Goals.ID)` 函数的返回值应用一个条件。
+在此示例中，需要针对每个目标 ID 计算转化次数 (Goals 嵌套数据结构中的每个元素都表示一次达成的目标，我们称之为一次转化) 以及会话次数。如果不使用 `ARRAY JOIN`，会话次数会被统计为 sum(Sign)。但在这个特定场景中，行已经按嵌套的 Goals 结构被展开为多行，因此为了在此之后仍然只对每个会话统计一次，我们对 `arrayEnumerateUniq(Goals.ID)` 函数的返回值应用一个条件。
 
 ```sql
 SELECT
@@ -205,7 +203,7 @@ ARRAY JOIN [1, 2, 3] AS arr_external;
 └─────────────┴──────────────┘
 ```
 
-可以在 `ARRAY JOIN` 子句中使用逗号分隔多个数组。在这种情况下，将对这些数组同时执行 `JOIN`（是直和，而不是笛卡尔积）。请注意，默认情况下，所有数组的长度必须相同。示例：
+可以在 `ARRAY JOIN` 子句中使用逗号分隔多个数组。在这种情况下，将对这些数组同时执行 `JOIN` (是直和，而不是笛卡尔积) 。请注意，默认情况下，所有数组的长度必须相同。示例：
 
 ```sql
 SELECT s, arr, a, num, mapped
@@ -380,10 +378,10 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 
 ### 与短路函数求值的不兼容性 \{#incompatibility-with-short-circuit-function-evaluation\}
 
-[短路函数求值](/operations/settings/settings#short_circuit_function_evaluation) 是一项功能，用于在特定函数（如 `if`、`multiIf`、`and` 和 `or`）中优化复杂表达式的执行。它可以防止在执行这些函数时出现潜在异常，例如除以零错误。
+[短路函数求值](/operations/settings/settings#short_circuit_function_evaluation) 是一项功能，用于在特定函数 (如 `if`、`multiIf`、`and` 和 `or`) 中优化复杂表达式的执行。它可以防止在执行这些函数时出现潜在异常，例如除以零错误。
 
 `arrayJoin` 始终会被执行，且不支持短路函数求值。这是因为它是一个在查询分析和执行过程中与其他所有函数分开处理的特殊函数，并且需要额外的逻辑，而这些逻辑无法与短路函数执行配合使用。原因在于结果中的行数取决于 `arrayJoin` 的结果，实现对 `arrayJoin` 的惰性执行过于复杂且代价高昂。
 
 ## 相关内容 \{#related-content\}
 
-- 博客文章：[在 ClickHouse 中处理时序数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* 博客文章：[在 ClickHouse 中处理时序数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

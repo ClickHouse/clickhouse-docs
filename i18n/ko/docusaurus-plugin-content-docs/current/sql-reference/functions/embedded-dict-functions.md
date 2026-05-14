@@ -1,12 +1,10 @@
 ---
-description: '내장 딕셔너리 작업용 함수 문서'
-sidebar_label: '내장 딕셔너리'
+description: '임베디드 딕셔너리 작업용 함수에 대한 문서'
+sidebar_label: '임베디드 딕셔너리'
 slug: /sql-reference/functions/ym-dict-functions
-title: '내장 딕셔너리 작업용 함수'
+title: '임베디드 딕셔너리 작업용 함수'
 doc_type: 'reference'
 ---
-
-# 임베디드 딕셔너리 작업용 함수 \{#functions-for-working-with-embedded-dictionaries\}
 
 :::note
 아래 함수들이 동작하려면 서버 설정에서 모든 임베디드 딕셔너리를 가져오기 위한 경로와 주소를 지정해야 합니다. 딕셔너리는 이러한 함수들 중 하나가 처음 호출될 때 로드됩니다. 참조 목록을 로드할 수 없으면 예외가 발생합니다.

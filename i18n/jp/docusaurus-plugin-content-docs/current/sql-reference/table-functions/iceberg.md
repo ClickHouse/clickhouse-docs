@@ -7,9 +7,7 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-# iceberg テーブル関数 \{#iceberg-table-function\}
-
-Amazon S3、Azure、HDFS 上またはローカルに保存された Apache [Iceberg](https://iceberg.apache.org/) テーブルを、読み取り専用のテーブルとして扱うためのインターフェイスを提供します。
+Amazon S3、Azure、HDFS、またはローカルに保存された Apache [Iceberg](https://iceberg.apache.org/) テーブルに対する、読み取り専用のテーブル形式インターフェイスを提供します。
 
 ## 構文 \{#syntax\}
 

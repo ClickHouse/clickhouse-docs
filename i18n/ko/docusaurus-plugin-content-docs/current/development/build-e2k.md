@@ -7,9 +7,7 @@ title: 'E2K용 Linux에서 빌드'
 doc_type: 'guide'
 ---
 
-# Linux에서 E2K용 빌드 \{#build-on-linux-for-e2k\}
-
-ClickHouse는 E2K(Elbrus-2000)를 실험적으로 지원하며, boost, jemalloc, libunwind, zstd와 같이 E2K용으로 별도 빌드된 라이브러리를 사용해 네이티브 모드에서 최소한의 구성으로만 컴파일할 수 있습니다.
+ClickHouse는 E2K(Elbrus-2000)를 실험적으로 지원하며, boost, jemalloc, libunwind, zstd 등 E2K용으로 사용자 지정 빌드된 라이브러리를 사용하는 최소 구성에서만 네이티브 모드로 컴파일할 수 있습니다.
 
 ## ClickHouse 빌드 \{#build-clickhouse\}
 

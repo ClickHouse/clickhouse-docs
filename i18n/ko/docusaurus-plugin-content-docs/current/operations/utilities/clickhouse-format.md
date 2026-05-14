@@ -1,11 +1,9 @@
 ---
-description: 'ClickHouse 데이터 포맷 작업을 위한 format 유틸리티 사용 안내'
+description: 'ClickHouse 데이터 포맷 작업을 위한 format 유틸리티 사용 가이드'
 slug: /operations/utilities/clickhouse-format
 title: 'clickhouse-format'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-# clickhouse-format 유틸리티 \{#clickhouse-format-utility\}
 
 입력 쿼리를 포맷합니다.
 
@@ -53,7 +51,7 @@ $ clickhouse-format --oneline --hilite <<< "SELECT sum(number) FROM numbers(5);"
 SELECT sum(number) FROM numbers(5)
 ```
 
-3. 다중 쿼리:
+3. 다중 쿨리:
 
 ```bash
 $ clickhouse-format -n <<< "SELECT min(number) FROM numbers(5); SELECT max(number) FROM numbers(5);"
@@ -96,7 +94,7 @@ $ clickhouse-format --seed World --obfuscate <<< "SELECT cost_first_screen BETWE
 SELECT horse_tape_summer BETWEEN folklore AND moccasins, CASE WHEN intestine >= 116 THEN nonconformist ELSE FORESTRY END;
 ```
 
-5. 역슬래시 추가:
+5. 백슬래시 추가:
 
 ```bash
 $ clickhouse-format --backslash <<< "SELECT * FROM (SELECT 1 AS x UNION ALL SELECT 1 UNION DISTINCT SELECT 3);"

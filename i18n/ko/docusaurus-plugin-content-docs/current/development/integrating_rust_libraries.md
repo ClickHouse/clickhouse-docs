@@ -6,8 +6,6 @@ title: 'Rust 라이브러리 통합'
 doc_type: 'guide'
 ---
 
-# Rust 라이브러리 \{#rust-libraries\}
-
 Rust 라이브러리 통합은 BLAKE3 해시 함수 통합을 예시로 설명합니다.
 
 통합의 첫 단계는 라이브러리를 /rust 디렉터리에 추가하는 것입니다. 이를 위해 빈 Rust 프로젝트를 생성한 뒤, 필요한 라이브러리를 Cargo.toml에 포함해야 합니다. 또한 Cargo.toml에 `crate-type = ["staticlib"]`를 추가하여 새 라이브러리가 정적 라이브러리로 컴파일되도록 구성해야 합니다.

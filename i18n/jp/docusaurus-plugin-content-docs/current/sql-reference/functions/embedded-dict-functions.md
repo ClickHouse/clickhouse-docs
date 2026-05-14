@@ -1,12 +1,10 @@
 ---
-description: '組み込み辞書を扱う関数のドキュメント'
-sidebar_label: '組み込み辞書'
+description: '埋め込みディクショナリを扱う関数のドキュメント'
+sidebar_label: '埋め込みディクショナリ'
 slug: /sql-reference/functions/ym-dict-functions
-title: '組み込み辞書を扱う関数'
+title: '埋め込みディクショナリを扱う関数'
 doc_type: 'reference'
 ---
-
-# 埋め込みディクショナリを扱う関数 \{#functions-for-working-with-embedded-dictionaries\}
 
 :::note
 以下の関数が動作するためには、サーバー設定で、すべての埋め込みディクショナリを取得するためのパスとアドレスを指定しておく必要があります。ディクショナリは、これらの関数のいずれかが最初に呼び出された時点で読み込まれます。参照リストを読み込めない場合は、例外がスローされます。
@@ -18,7 +16,7 @@ doc_type: 'reference'
 
 ## 複数のジオベース \{#multiple-geobases\}
 
-ClickHouse は、複数の代替ジオベース（地域階層）を同時に扱うことをサポートしており、特定の地域がどの国に属するかについてのさまざまな見方に対応できます。
+ClickHouse は、複数の代替ジオベース (地域階層) を同時に扱うことをサポートしており、特定の地域がどの国に属するかについてのさまざまな見方に対応できます。
 
 &#39;clickhouse-server&#39; の設定では、地域階層を記述したファイルを指定します。
 
@@ -27,7 +25,7 @@ ClickHouse は、複数の代替ジオベース（地域階層）を同時に扱
 このファイルに加えて、拡張子の前に `_` という文字と任意のサフィックスが付いた、同じディレクトリ内のファイルも検索されます。
 たとえば、存在する場合は `/opt/geo/regions_hierarchy_ua.txt` というファイルも検出されます。ここで `ua` は辞書キーと呼ばれます。サフィックスのない辞書の場合、キーは空文字列です。
 
-すべての辞書は実行時に再読み込みされます（[`builtin_dictionaries_reload_interval`](/operations/server-configuration-parameters/settings#builtin_dictionaries_reload_interval) 設定パラメータで定義された一定秒数ごと、またはデフォルトでは 1 時間に 1 回）。ただし、利用可能な辞書の一覧は、サーバー起動時に一度だけ定義されます。
+すべての辞書は実行時に再読み込みされます ([`builtin_dictionaries_reload_interval`](/operations/server-configuration-parameters/settings#builtin_dictionaries_reload_interval) 設定パラメータで定義された一定秒数ごと、またはデフォルトでは 1 時間に 1 回) 。ただし、利用可能な辞書の一覧は、サーバー起動時に一度だけ定義されます。
 
 地域を扱うためのすべての関数は、末尾にオプションの引数として辞書キーを取ります。これはジオベースと呼ばれます。
 
@@ -38,7 +36,6 @@ regionToCountry(RegionID) – Uses the default dictionary: /opt/geo/regions_hier
 regionToCountry(RegionID, '') – Uses the default dictionary: /opt/geo/regions_hierarchy.txt
 regionToCountry(RegionID, 'ua') – Uses the dictionary for the 'ua' key: /opt/geo/regions_hierarchy_ua.txt
 ```
-
 
 ### regionToName
 
@@ -79,7 +76,6 @@ SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 │ Boulder County                             │
 └────────────────────────────────────────────┘
 ```
-
 
 ### regionToCity
 
@@ -131,7 +127,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, r
 
 ### regionToArea
 
-地域をエリア（geobase におけるタイプ 5）に変換します。それ以外の点では、この関数は [&#39;regionToCity&#39;](#regiontocity) と同様です。
+地域をエリア (geobase におけるタイプ 5) に変換します。それ以外の点では、この関数は [&#39;regionToCity&#39;](#regiontocity) と同様です。
 
 **構文**
 
@@ -180,7 +176,6 @@ LIMIT 15
 │ Tula region                                          │
 └──────────────────────────────────────────────────────┘
 ```
-
 
 ### regionToDistrict
 
@@ -234,10 +229,9 @@ LIMIT 15
 └──────────────────────────────────────────────────────────┘
 ```
 
-
 ### regionToCountry
 
-地域を国（geobase におけるタイプ 3）に変換します。それ以外の点では、この関数は `regionToCity` と同じです。
+地域を国 (geobase におけるタイプ 3) に変換します。それ以外の点では、この関数は `regionToCity` と同じです。
 
 **構文**
 
@@ -252,7 +246,7 @@ regionToCountry(id [, geobase])
 
 **戻り値**
 
-* 該当する国のリージョン ID（存在する場合）。[UInt32](../data-types/int-uint)。
+* 該当する国のリージョン ID (存在する場合) 。[UInt32](../data-types/int-uint)。
 * 該当しない場合は 0。
 
 **例**
@@ -283,10 +277,9 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 └────────────────────────────────────────────┴────┴─────────────────────────────────────────────────────────────┘
 ```
 
-
 ### regionToContinent
 
-地域を大陸（geobase におけるタイプ1）に変換します。それ以外の点では、この関数は `regionToCity` と同じです。
+地域を大陸 (geobase におけるタイプ1) に変換します。それ以外の点では、この関数は `regionToCity` と同じです。
 
 **構文**
 
@@ -332,7 +325,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS 
 └────────────────────────────────────────────┴────┴───────────────────────────────────────────────────────────────┘
 ```
 
-
 ### regionToTopContinent
 
 地域に対応する階層内の最上位の大陸を返します。
@@ -350,7 +342,7 @@ regionToTopContinent(id[, geobase])
 
 **戻り値**
 
-* 最上位の大陸の識別子（リージョン階層を親方向にたどっていったときに到達する大陸）。[UInt32](../data-types/int-uint)。
+* 最上位の大陸の識別子 (リージョン階層を親方向にたどっていったときに到達する大陸) 。[UInt32](../data-types/int-uint)。
 * 存在しない場合は 0。
 
 **例**
@@ -380,7 +372,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 │ Asia                                       │ 11 │ Eurasia                                                          │
 └────────────────────────────────────────────┴────┴──────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### regionToPopulation
 
@@ -430,7 +421,6 @@ SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS
 └────────────────────────────────────────────┴────────────┘
 ```
 
-
 ### regionIn
 
 `lhs` のリージョンが `rhs` のリージョンに属しているかどうかをチェックします。属している場合は 1、属していない場合は 0 の UInt8 型の値を返します。
@@ -479,10 +469,9 @@ USA is not in Boulder County
 USA is not in Boulder    
 ```
 
-
 ### regionHierarchy
 
-`UInt32` 型の数値（geobase のリージョン ID）を受け取ります。指定したリージョンと、その親リージョンをチェーンに沿ってすべて含むリージョン ID の配列を返します。
+`UInt32` 型の数値 (geobase のリージョン ID) を受け取ります。指定したリージョンと、その親リージョンをチェーンに沿ってすべて含むリージョン ID の配列を返します。
 
 **構文**
 

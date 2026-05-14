@@ -1,21 +1,19 @@
 ---
-description: 'clickhouse_backupview에 대한 문서 {#clickhouse_backupview}'
+description: 'clickhouse_backupview {#clickhouse_backupview}에 대한 문서'
 slug: /operations/utilities/backupview
 title: 'clickhouse_backupview'
 doc_type: 'reference'
 ---
-
-# clickhouse_backupview \{#clickhouse_backupview\}
 
 [BACKUP](/operations/backup/overview) 명령으로 생성된 백업을 분석하는 데 사용하는 Python 모듈입니다.
 주된 목적은 실제로 복원하지 않고도 백업에서 다양한 정보를 확인할 수 있도록 하는 것입니다.
 
 이 모듈은 다음과 같은 기능을 제공합니다.
 
-- 백업에 포함된 파일 나열
-- 백업에서 파일 읽기
-- 백업에 포함된 데이터베이스, 테이블, 파트에 대한 유용한 정보를 사람이 읽을 수 있는 형태로 제공
-- 백업 무결성 검사
+* 백업에 포함된 파일 나열
+* 백업에서 파일 읽기
+* 백업에 포함된 데이터베이스, TABLES, 파트에 대한 유용한 정보를 사람이 읽을 수 있는 형태로 제공
+* 백업 무결성 검사
 
 ## 예제: \{#example\}
 

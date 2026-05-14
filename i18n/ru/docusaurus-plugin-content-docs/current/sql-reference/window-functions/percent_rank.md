@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции percent_rank'
+description: 'Документация по оконной функции percent_rank'
 sidebar_label: 'percent_rank'
 sidebar_position: 8
 slug: /sql-reference/window-functions/percent_rank
 title: 'percent_rank'
 doc_type: 'reference'
 ---
-
-# percent&#95;rank \{#percent&#95;rank\}
 
 Возвращает относительный ранг (т. е. перцентиль) строк в пределах раздела окна.
 

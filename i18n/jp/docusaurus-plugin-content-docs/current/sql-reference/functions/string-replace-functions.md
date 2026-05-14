@@ -1,13 +1,11 @@
 ---
-description: '文字列置換関数のリファレンス'
+description: '文字列置換関数のドキュメント'
 sidebar_label: '文字列置換'
 slug: /sql-reference/functions/string-replace-functions
-title: '文字列置換関数'
+title: '文字列置換用の関数'
 doc_type: 'reference'
 keywords: ['文字列置換']
 ---
-
-# 文字列置換用の関数 \{#functions-for-string-replacement\}
 
 [一般的な文字列関数](string-functions.md)および[文字列検索用の関数](string-search-functions.md)については別途説明されています。
 

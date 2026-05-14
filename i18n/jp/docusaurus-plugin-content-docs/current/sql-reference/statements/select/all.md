@@ -1,12 +1,10 @@
 ---
-description: 'ALL 句に関するドキュメント'
+description: 'ALL 句のドキュメント'
 sidebar_label: 'ALL'
 slug: /sql-reference/statements/select/all
 title: 'ALL 句'
 doc_type: 'reference'
 ---
-
-# ALL 句 \{#all-clause\}
 
 テーブル内に複数の行が条件に一致する場合、`ALL` はそれらをすべて返します。`SELECT ALL` は `DISTINCT` を付けない `SELECT` と同じです。`ALL` と `DISTINCT` の両方が指定された場合は、例外がスローされます。
 

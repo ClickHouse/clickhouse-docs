@@ -7,8 +7,6 @@ title: 'ALTER TABLE ... DELETE 文'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... DELETE 文 \{#alter-table-delete-statement\}
-
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
 ```
@@ -33,4 +31,4 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
 
 ## 関連コンテンツ \{#related-content\}
 
-- ブログ記事: [ClickHouse における更新と削除の扱い](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* ブログ記事: [ClickHouse における更新と削除の扱い](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

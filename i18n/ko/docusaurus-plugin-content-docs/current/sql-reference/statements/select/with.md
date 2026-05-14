@@ -6,8 +6,6 @@ title: 'WITH 절'
 doc_type: 'reference'
 ---
 
-# WITH 절 \{#with-clause\}
-
 ClickHouse에서는 공통 테이블 표현식([CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)), 공통 스칼라 표현식, 그리고 재귀 쿼리를 지원합니다.
 
 ## 공통 테이블 표현식 \{#common-table-expressions\}

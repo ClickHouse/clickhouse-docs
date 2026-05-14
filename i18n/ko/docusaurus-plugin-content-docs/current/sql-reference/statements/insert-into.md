@@ -1,13 +1,11 @@
 ---
-description: 'INSERT INTO SQL 문 문서'
+description: 'INSERT INTO 구문 문서'
 sidebar_label: 'INSERT INTO'
 sidebar_position: 33
 slug: /sql-reference/statements/insert-into
-title: 'INSERT INTO SQL 문'
+title: 'INSERT INTO 구문'
 doc_type: 'reference'
 ---
-
-# INSERT INTO 구문 \{#insert-into-statement\}
 
 테이블에 데이터를 삽입합니다.
 
@@ -70,7 +68,7 @@ INSERT INTO insert_select_testtable VALUES (1, DEFAULT, 1) ;
 * 테이블 정의에서 지정한 `DEFAULT` 표현식으로 계산된 값
 * `DEFAULT` 표현식이 정의되지 않은 경우 0과 빈 문자열
 
-데이터는 ClickHouse에서 지원하는 [format](/sql-reference/formats)으로 INSERT에 전달할 수 있습니다. format은 쿼리에서 명시적으로 지정해야 합니다.
+데이터는 ClickHouse에서 지원하는 [형식](/sql-reference/formats)으로 INSERT에 전달할 수 있습니다. 형식은 쿼리에서 명시적으로 지정해야 합니다.
 
 ```sql
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
@@ -102,7 +100,6 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 ```
 
 :::
-
 
 ## 제약 조건 \{#constraints\}
 

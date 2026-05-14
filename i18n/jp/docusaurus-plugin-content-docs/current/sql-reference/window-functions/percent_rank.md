@@ -1,5 +1,5 @@
 ---
-description: 'percent_rank ウィンドウ関数に関するドキュメント'
+description: 'percent_rank ウィンドウ関数のドキュメント'
 sidebar_label: 'percent_rank'
 sidebar_position: 8
 slug: /sql-reference/window-functions/percent_rank
@@ -7,13 +7,11 @@ title: 'percent_rank'
 doc_type: 'reference'
 ---
 
-# percent&#95;rank \{#percent&#95;rank\}
-
-ウィンドウパーティション内の行の相対順位（パーセンタイル）を返します。
+ウィンドウパーティション内の行の相対順位 (パーセンタイル) を返します。
 
 **構文**
 
-エイリアス: `percentRank`（大文字小文字を区別します）
+エイリアス: `percentRank` (大文字小文字を区別します) 
 
 ```sql
 percent_rank ()

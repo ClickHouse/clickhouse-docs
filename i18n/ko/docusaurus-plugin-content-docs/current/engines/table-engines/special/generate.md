@@ -7,18 +7,12 @@ title: 'GenerateRandom 테이블 엔진'
 doc_type: 'reference'
 ---
 
-
-
-# GenerateRandom 테이블 엔진 \{#generaterandom-table-engine\}
-
-GenerateRandom 테이블 엔진은 지정된 테이블 스키마에 대해 임의의 데이터를 생성합니다.
+GenerateRandom 테이블 엔진은 주어진 테이블 스키마에 따라 무작위 데이터를 생성합니다.
 
 사용 예시:
 
-- 재현 가능한 대용량 테이블을 채우는 테스트에 사용합니다.
-- 퍼징(fuzzing) 테스트를 위한 임의 입력 데이터를 생성합니다.
-
-
+* 테스트에서 재현 가능한 대규모 테이블을 채우는 데 사용합니다.
+* 퍼징 테스트용 무작위 입력을 생성합니다.
 
 ## ClickHouse 서버에서 사용 \{#usage-in-clickhouse-server\}
 
@@ -31,7 +25,6 @@ ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 Generate 테이블 엔진은 `SELECT` 쿼리만 지원합니다.
 
 테이블에 저장할 수 있는 모든 [DataTypes](../../../sql-reference/data-types/index.md)를 지원하지만 `AggregateFunction`은 제외됩니다.
-
 
 ## 예시 \{#example\}
 
@@ -55,12 +48,11 @@ SELECT * FROM generate_engine_table LIMIT 3
 └──────┴────────────┘
 ```
 
-
 ## 구현 세부 사항 \{#details-of-implementation\}
 
-- 다음 기능은 지원되지 않습니다.
-  - `ALTER`
-  - `SELECT ... SAMPLE`
-  - `INSERT`
-  - 인덱스
-  - 복제
+* 다음 기능은 지원되지 않습니다.
+  * `ALTER`
+  * `SELECT ... SAMPLE`
+  * `INSERT`
+  * 인덱스
+  * 복제

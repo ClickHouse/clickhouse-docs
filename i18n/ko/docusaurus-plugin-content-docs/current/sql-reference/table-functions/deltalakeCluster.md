@@ -7,8 +7,6 @@ title: 'deltaLakeCluster'
 doc_type: 'reference'
 ---
 
-# deltaLakeCluster 테이블 함수 \{#deltalakecluster-table-function\}
-
 이 함수는 [deltaLake](sql-reference/table-functions/deltalake.md) 테이블 함수의 확장입니다.
 
 지정된 클러스터의 여러 노드에서 Amazon S3에 있는 [Delta Lake](https://github.com/delta-io/delta) 테이블의 파일을 병렬로 처리할 수 있습니다. 이니시에이터 노드는 클러스터의 모든 노드와 연결을 맺고 각 파일을 동적으로 분배합니다. 워커 노드는 처리할 다음 작업을 이니시에이터 노드에 요청한 뒤 해당 작업을 처리합니다. 모든 작업이 완료될 때까지 이 과정이 반복됩니다.

@@ -1,12 +1,10 @@
 ---
-description: "AI 함수에 대한 문서"
-sidebar_label: "AI"
+description: 'AI 함수 문서'
+sidebar_label: 'AI'
 slug: /sql-reference/functions/ai-functions
-title: "AI 함수"
-doc_type: "reference"
+title: 'AI 함수'
+doc_type: 'reference'
 ---
-
-# AI 함수 \{#ai-functions\}
 
 AI 함수는 ClickHouse에 내장된 함수로, AI를 호출하거나 임베딩을 생성해 데이터를 처리하고, 정보를 추출하거나, 데이터를 분류하는 등의 작업에 사용할 수 있습니다...
 

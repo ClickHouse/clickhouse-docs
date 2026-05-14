@@ -7,10 +7,8 @@ title: 'サードパーティ製クライアントライブラリ'
 doc_type: 'reference'
 ---
 
-# サードパーティ開発者によるクライアントライブラリ \{#client-libraries-from-third-party-developers\}
-
 :::note
-ClickHouse Inc は、以下に記載されているライブラリをメンテナンスしておらず、その品質を保証するための包括的なテストも実施していません。
+ClickHouse Inc は、以下に記載されているライブラリを保守しておらず、品質を確認するための十分なテストも実施していません。
 :::
 
 ### Python \{#python\}

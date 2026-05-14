@@ -1,14 +1,12 @@
 ---
-description: 'uniqTheta 関数に関するドキュメント'
+description: 'uniqTheta 関数のドキュメント'
 sidebar_label: 'uniqTheta'
 slug: /sql-reference/functions/uniqtheta-functions
 title: 'uniqTheta 関数'
 doc_type: 'reference'
 ---
 
-# uniqTheta 関数 \{#uniqtheta-functions\}
-
-uniqTheta 関数は 2 つの uniqThetaSketch オブジェクトに対して、∪ / ∩ / × (和集合 / 共通部分 / 補集合) などの集合演算を行い、その結果を含む新しい uniqThetaSketch オブジェクトを返します。
+uniqTheta 関数は 2 つの uniqThetaSketch オブジェクトに対して、∪ / ∩ / × (和集合 / 積集合 / 差) などの集合演算を行い、その結果を含む新しい uniqThetaSketch オブジェクトを返します。
 
 uniqThetaSketch オブジェクトは、集約関数 uniqTheta の -State バリアントによって構築されます。
 

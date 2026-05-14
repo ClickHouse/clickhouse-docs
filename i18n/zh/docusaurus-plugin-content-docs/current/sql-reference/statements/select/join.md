@@ -1,5 +1,5 @@
 ---
-description: 'JOIN 子句说明文档'
+description: 'JOIN 子句文档'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
 title: 'JOIN 子句'
@@ -7,9 +7,7 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'reference'
 ---
 
-# JOIN 子句 \{#join-clause\}
-
-`JOIN` 子句通过使用一个或多个表中共有的值，将这些表的列组合在一起生成一个新表。它是支持 SQL 的数据库中常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接（join）。对单个表自身进行连接的特殊情况通常被称为“自连接”（self-join）。
+`JOIN` 子句通过使用一个或多个表中共有的值，将这些表的列组合在一起生成一个新表。它是支持 SQL 的数据库中常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接 (join) 。对单个表自身进行连接的特殊情况通常被称为“自连接” (self-join) 。
 
 **语法**
 
@@ -20,8 +18,7 @@ FROM <left_table>
 (ON <expr_list>)|(USING <column_list>) ...
 ```
 
-`ON` 子句中的表达式和 `USING` 子句中的列称为“连接键”（join keys）。除非另有说明，`JOIN` 会从具有匹配“连接键”的行生成[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)，这可能会产生比源表多得多的结果行。
-
+`ON` 子句中的表达式和 `USING` 子句中的列称为“连接键” (join keys) 。除非另有说明，`JOIN` 会从具有匹配“连接键”的行生成[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)，这可能会产生比源表多得多的结果行。
 
 ## 支持的 JOIN 类型 \{#supported-types-of-join\}
 

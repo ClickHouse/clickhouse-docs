@@ -7,8 +7,6 @@ title: 'ClickHouse のテスト'
 doc_type: 'guide'
 ---
 
-# ClickHouse のテスト \{#testing-clickhouse\}
-
 ## テストの種類 \{#test-types\}
 
 ClickHouse には、次のテストがあります。

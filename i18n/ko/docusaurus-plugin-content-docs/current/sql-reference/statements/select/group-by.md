@@ -6,23 +6,17 @@ title: 'GROUP BY 절'
 doc_type: 'reference'
 ---
 
-
-
-# GROUP BY 절 \{#group-by-clause\}
-
 `GROUP BY` 절은 `SELECT` 쿼리를 다음과 같이 동작하는 집계 모드로 전환합니다:
 
-- `GROUP BY` 절에는 표현식 목록(또는 길이가 1인 목록으로 간주되는 단일 표현식)이 포함됩니다. 이 목록은 「그룹 키(grouping key)」 역할을 하며, 각 개별 표현식은 「키 표현식(key expression)」이라고 부릅니다.
-- [SELECT](/sql-reference/statements/select/index.md), [HAVING](/sql-reference/statements/select/having.md), [ORDER BY](/sql-reference/statements/select/order-by.md) 절의 모든 표현식은 키 표현식에 기반하여 **계산되거나**, 키 표현식이 아닌 표현식(일반 컬럼 포함)에 대한 [집계 함수](../../../sql-reference/aggregate-functions/index.md)를 통해 **계산되어야만** 합니다. 다시 말해, 테이블에서 선택된 각 컬럼은 키 표현식으로 사용되거나 집계 함수 내부에서 사용되어야 하며, 두 가지 방식으로 동시에 사용할 수는 없습니다.
-- 집계를 수행하는 `SELECT` 쿼리의 결과에는 원본 테이블에서 「그룹 키(grouping key)」의 고유 값 개수만큼의 행이 포함됩니다. 일반적으로 이는 행 수를 매우 크게(때로는 몇 자릿수까지) 줄이지만, 반드시 그런 것은 아닙니다. 모든 「그룹 키」 값이 서로 달랐다면 행 수는 그대로 유지됩니다.
+* `GROUP BY` 절에는 표현식 목록(또는 길이가 1인 목록으로 간주되는 단일 표현식)이 포함됩니다. 이 목록은 「그룹 키(grouping key)」 역할을 하며, 각 개별 표현식은 「키 표현식(key expression)」이라고 부릅니다.
+* [SELECT](/sql-reference/statements/select/index.md), [HAVING](/sql-reference/statements/select/having.md), [ORDER BY](/sql-reference/statements/select/order-by.md) 절의 모든 표현식은 키 표현식에 기반하여 **계산되거나**, 키 표현식이 아닌 표현식(일반 컬럼 포함)에 대한 [집계 함수](../../../sql-reference/aggregate-functions/index.md)를 통해 **계산되어야만** 합니다. 다시 말해, 테이블에서 선택된 각 컬럼은 키 표현식으로 사용되거나 집계 함수 내부에서 사용되어야 하며, 두 가지 방식으로 동시에 사용할 수는 없습니다.
+* 집계를 수행하는 `SELECT` 쿼리의 결과에는 원본 테이블에서 「그룹 키(grouping key)」의 고유 값 개수만큼의 행이 포함됩니다. 일반적으로 이는 행 수를 매우 크게(때로는 몇 자릿수까지) 줄이지만, 반드시 그런 것은 아닙니다. 모든 「그룹 키」 값이 서로 달랐다면 행 수는 그대로 유지됩니다.
 
-컬럼 이름 대신 컬럼 번호로 테이블의 데이터를 그룹화하려면, 설정 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments)를 활성화하십시오.
+컬럼 이름 대신 컬럼 번호로 테이블의 데이터를 그룹화하려면, 설정 [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments)를 활성화하십시오.
 
 :::note
 테이블에 대해 집계를 실행하는 또 다른 방법이 있습니다. 쿼리에 포함된 테이블 컬럼이 집계 함수 내부에만 존재하는 경우에는 `GROUP BY 절`을 생략할 수 있으며, 키가 없는 집계를 수행하는 것으로 간주됩니다. 이러한 쿼리는 항상 정확히 1개의 행만 반환합니다.
 :::
-
-
 
 ## NULL 처리 \{#null-processing\}
 
@@ -55,7 +49,6 @@ doc_type: 'reference'
 `y = NULL`에 대한 `GROUP BY`가 `NULL`이 하나의 값인 것처럼 `x`를 합산하는 것을 확인할 수 있습니다.
 
 `GROUP BY`에 여러 키를 전달하면, 결과는 마치 `NULL`이 특정한 하나의 값인 것처럼 선택 결과의 모든 조합을 반환합니다.
-
 
 ## ROLLUP 수정자 \{#rollup-modifier\}
 
@@ -130,7 +123,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
 * SQL 표준 호환성을 위한 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 설정을 참조하십시오.
 
-
 ## CUBE 수정자 \{#cube-modifier\}
 
 `CUBE` 수정자는 `GROUP BY` 목록에 있는 키 표현식의 모든 조합에 대한 소계를 계산하는 데 사용됩니다. 소계 행은 결과 테이블의 마지막에 추가됩니다.
@@ -167,14 +159,13 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 * `GROUP BY year, month, day`
 * `GROUP BY year, month`
 * `GROUP BY year, day`
-  * `GROUP BY year`
+* `GROUP BY year`
 * `GROUP BY month, day`
 * `GROUP BY month`
 * `GROUP BY day`
 * 및 전체 합계.
 
 `GROUP BY`에서 제외된 컬럼은 0으로 채워집니다.
-
 
 ```text
 ┌─year─┬─month─┬─day─┬─count()─┐
@@ -225,10 +216,9 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 ```
 
-**추가 참고**
+**관련 항목**
 
 * SQL 표준 호환성을 위한 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 설정을 참고하십시오.
-
 
 ## WITH TOTALS 수정자 \{#with-totals-modifier\}
 
@@ -236,11 +226,11 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 
 이 추가 행은 다른 행들과는 별도로, `JSON*`, `TabSeparated*`, `Pretty*` 포맷에서만 생성됩니다:
 
-- `XML` 및 `JSON*` 포맷에서는 이 행이 별도의 `totals` 필드로 출력됩니다.
-- `TabSeparated*`, `CSV*`, `Vertical` 포맷에서는 이 행이 기본 결과 뒤에, 그 앞에 빈 행 하나를 두고(다른 데이터 다음에) 출력됩니다.
-- `Pretty*` 포맷에서는 이 행이 기본 결과 뒤에 별도의 테이블로 출력됩니다.
-- `Template` 포맷에서는 지정된 템플릿에 따라 이 행이 출력됩니다.
-- 다른 포맷에서는 사용할 수 없습니다.
+* `XML` 및 `JSON*` 포맷에서는 이 행이 별도의 `totals` 필드로 출력됩니다.
+* `TabSeparated*`, `CSV*`, `Vertical` 포맷에서는 이 행이 기본 결과 뒤에, 그 앞에 빈 행 하나를 두고(다른 데이터 다음에) 출력됩니다.
+* `Pretty*` 포맷에서는 이 행이 기본 결과 뒤에 별도의 테이블로 출력됩니다.
+* `Template` 포맷에서는 지정된 템플릿에 따라 이 행이 출력됩니다.
+* 다른 포맷에서는 사용할 수 없습니다.
 
 :::note
 `totals`는 `SELECT` 쿼리 결과에서는 출력되지만, `INSERT INTO ... SELECT`에서는 출력되지 않습니다.
@@ -265,8 +255,6 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 `max_rows_to_group_by` 및 `group_by_overflow_mode = 'any'`를 사용하지 않으면, 모든 `after_having` 변형은 동일하게 동작하므로 그중 아무 것이나 사용할 수 있습니다(예: `after_having_auto`).
 
 `WITH TOTALS`는 서브쿼리 안에서 사용할 수 있으며, [JOIN](/sql-reference/statements/select/join.md) 절의 서브쿼리에서도 사용할 수 있습니다(이 경우 해당 합계 값들이 결합됩니다).
-
-
 
 ## GROUP BY ALL \{#group-by-all\}
 
@@ -316,10 +304,9 @@ FROM t
 GROUP BY substring(a, 4, 2), substring(a, 1, 2)
 ```
 
+## 예시 \{#examples\}
 
-## 예제 \{#examples\}
-
-예제:
+예시:
 
 ```sql
 SELECT
@@ -343,7 +330,6 @@ GROUP BY domain
 ```
 
 각 서로 다른 키 값마다 `GROUP BY`는 집계 함수 결과의 집합을 계산합니다.
-
 
 ## GROUPING SETS 수정자 \{#grouping-sets-modifier\}
 
@@ -378,10 +364,9 @@ GROUPING SETS
 );
 ```
 
-**참고**
+**관련 항목**
 
 * SQL 표준과의 호환성을 위해 [group&#95;by&#95;use&#95;nulls](/operations/settings/settings.md#group_by_use_nulls) 설정도 함께 참고하십시오.
-
 
 ## 구현 세부 사항 \{#implementation-details\}
 
@@ -389,16 +374,16 @@ GROUPING SETS
 
 ### 테이블 정렬 키에 따른 GROUP BY 최적화 \{#group-by-optimization-depending-on-table-sorting-key\}
 
-테이블이 어떤 키로 정렬되어 있고 `GROUP BY` 식에 해당 정렬 키의 접두(prefix) 또는 단사 함수(injective function)가 최소 하나 이상 포함되어 있으면, 집계를 더 효율적으로 수행할 수 있습니다. 이 경우 테이블에서 새로운 키를 읽을 때마다 집계의 중간 결과를 마무리하여 클라이언트로 전송할 수 있습니다. 이 동작은 [optimize_aggregation_in_order](../../../operations/settings/settings.md#optimize_aggregation_in_order) 설정으로 활성화됩니다. 이러한 최적화는 집계 동안 메모리 사용량을 줄이지만, 경우에 따라 쿼리 실행 속도를 느리게 만들 수 있습니다.
+테이블이 어떤 키로 정렬되어 있고 `GROUP BY` 식에 해당 정렬 키의 접두(prefix) 또는 단사 함수(injective function)가 최소 하나 이상 포함되어 있으면, 집계를 더 효율적으로 수행할 수 있습니다. 이 경우 테이블에서 새로운 키를 읽을 때마다 집계의 중간 결과를 마무리하여 클라이언트로 전송할 수 있습니다. 이 동작은 [optimize&#95;aggregation&#95;in&#95;order](../../../operations/settings/settings.md#optimize_aggregation_in_order) 설정으로 활성화됩니다. 이러한 최적화는 집계 동안 메모리 사용량을 줄이지만, 경우에 따라 쿼리 실행 속도를 느리게 만들 수 있습니다.
 
 ### 외부 메모리에서의 GROUP BY \{#group-by-in-external-memory\}
 
-`GROUP BY` 수행 시 사용하는 메모리를 제한하기 위해, 임시 데이터를 디스크로 덤프하도록 설정할 수 있습니다. [max_bytes_before_external_group_by](/operations/settings/settings#max_bytes_before_external_group_by) 설정은 `GROUP BY` 임시 데이터를 파일 시스템으로 덤프하기 위한 RAM 사용량 임계값을 결정합니다. 0으로 설정되면(기본값) 비활성화됩니다.  
-또는 [max_bytes_ratio_before_external_group_by](/operations/settings/settings#max_bytes_ratio_before_external_group_by)를 설정하여, 쿼리가 사용 중인 메모리가 일정 비율의 임계값에 도달했을 때만 외부 메모리에서 `GROUP BY`를 사용하도록 할 수 있습니다.
+`GROUP BY` 수행 시 사용하는 메모리를 제한하기 위해, 임시 데이터를 디스크로 덤프하도록 설정할 수 있습니다. [max&#95;bytes&#95;before&#95;external&#95;group&#95;by](/operations/settings/settings#max_bytes_before_external_group_by) 설정은 `GROUP BY` 임시 데이터를 파일 시스템으로 덤프하기 위한 RAM 사용량 임계값을 결정합니다. 0으로 설정되면(기본값) 비활성화됩니다.
+또는 [max&#95;bytes&#95;ratio&#95;before&#95;external&#95;group&#95;by](/operations/settings/settings#max_bytes_ratio_before_external_group_by)를 설정하여, 쿼리가 사용 중인 메모리가 일정 비율의 임계값에 도달했을 때만 외부 메모리에서 `GROUP BY`를 사용하도록 할 수 있습니다.
 
 `max_bytes_before_external_group_by`를 사용할 때는 `max_memory_usage`를 그 약 2배 수준(또는 `max_bytes_ratio_before_external_group_by=0.5`)으로 설정할 것을 권장합니다. 집계에는 두 단계가 있기 때문입니다. (1) 데이터 읽기 및 중간 데이터 생성, (2) 중간 데이터 병합입니다. 파일 시스템으로의 덤프는 1단계에서만 수행될 수 있습니다. 임시 데이터가 덤프되지 않은 경우, 2단계에서는 1단계와 거의 동일한 양의 메모리가 추가로 필요할 수 있습니다.
 
-예를 들어 [max_memory_usage](/operations/settings/settings#max_memory_usage)를 10000000000으로 설정했고 외부 집계를 사용하려는 경우, `max_bytes_before_external_group_by`를 10000000000으로, `max_memory_usage`를 20000000000으로 설정하는 것이 합리적입니다. 외부 집계가 트리거되면(임시 데이터가 한 번이라도 덤프된 경우), RAM의 최대 사용량은 `max_bytes_before_external_group_by`보다 약간 더 많을 뿐입니다.
+예를 들어 [max&#95;memory&#95;usage](/operations/settings/settings#max_memory_usage)를 10000000000으로 설정했고 외부 집계를 사용하려는 경우, `max_bytes_before_external_group_by`를 10000000000으로, `max_memory_usage`를 20000000000으로 설정하는 것이 합리적입니다. 외부 집계가 트리거되면(임시 데이터가 한 번이라도 덤프된 경우), RAM의 최대 사용량은 `max_bytes_before_external_group_by`보다 약간 더 많을 뿐입니다.
 
 분산 쿼리 처리 시 외부 집계는 원격 서버에서 수행됩니다. 요청 서버가 사용하는 RAM을 최소로 유지하려면 `distributed_aggregation_memory_efficient`를 1로 설정하십시오.
 

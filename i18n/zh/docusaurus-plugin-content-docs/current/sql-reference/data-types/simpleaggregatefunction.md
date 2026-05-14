@@ -7,8 +7,6 @@ title: 'SimpleAggregateFunction 类型'
 doc_type: 'reference'
 ---
 
-# SimpleAggregateFunction 类型 \{#simpleaggregatefunction-type\}
-
 ## 描述 \{#description\}
 
 `SimpleAggregateFunction` 数据类型用于存储聚合函数的中间状态，但不会像 [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) 类型那样存储其完整状态。

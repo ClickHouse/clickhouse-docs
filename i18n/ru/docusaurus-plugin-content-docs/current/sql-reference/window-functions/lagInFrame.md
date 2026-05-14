@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции lagInFrame'
+description: 'Документация по оконной функции lagInFrame'
 sidebar_label: 'lagInFrame'
 sidebar_position: 9
 slug: /sql-reference/window-functions/lagInFrame
 title: 'lagInFrame'
 doc_type: 'reference'
 ---
-
-# lagInFrame \{#laginframe\}
 
 Возвращает значение, вычисленное для строки, которая находится на заданном количестве строк до текущей строки в пределах упорядоченного фрейма.
 

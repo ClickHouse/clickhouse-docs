@@ -7,9 +7,7 @@ title: '回移系统'
 doc_type: 'reference'
 ---
 
-# 回移系统 \{#backport-system\}
-
-本文档介绍 ClickHouse 的回移策略以及实现该策略的自动化系统。
+本文档介绍 ClickHouse 的回移策略，以及用于实现该策略的自动化系统。
 
 ## 发布模型 \{#release-model\}
 

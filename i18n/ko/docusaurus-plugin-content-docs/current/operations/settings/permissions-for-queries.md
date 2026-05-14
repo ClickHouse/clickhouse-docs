@@ -1,21 +1,19 @@
 ---
-description: '쿼리 권한 설정.'
-sidebar_label: '쿼리 권한'
+description: '쿼리 권한에 대한 설정입니다.'
+sidebar_label: '쿼리에 대한 권한'
 sidebar_position: 58
 slug: /operations/settings/permissions-for-queries
-title: '쿼리 권한'
+title: '쿼리에 대한 권한'
 doc_type: 'reference'
 ---
 
-# 쿼리에 대한 권한 \{#permissions-for-queries\}
-
 ClickHouse에서 쿼리는 다음과 같은 여러 유형으로 나눌 수 있습니다.
 
-1.  데이터 읽기 쿼리: `SELECT`, `SHOW`, `DESCRIBE`, `EXISTS`.
-2.  데이터 쓰기 쿼리: `INSERT`, `OPTIMIZE`.
-3.  설정 변경 쿼리: `SET`, `USE`.
-4.  [DDL](https://en.wikipedia.org/wiki/Data_definition_language) 쿼리: `CREATE`, `ALTER`, `RENAME`, `ATTACH`, `DETACH`, `DROP` `TRUNCATE`.
-5.  `KILL QUERY`.
+1. 데이터 읽기 쿼리: `SELECT`, `SHOW`, `DESCRIBE`, `EXISTS`.
+2. 데이터 쓰기 쿼리: `INSERT`, `OPTIMIZE`.
+3. 설정 변경 쿼리: `SET`, `USE`.
+4. [DDL](https://en.wikipedia.org/wiki/Data_definition_language) 쿼리: `CREATE`, `ALTER`, `RENAME`, `ATTACH`, `DETACH`, `DROP` `TRUNCATE`.
+5. `KILL QUERY`.
 
 다음 설정은 쿼리 유형별로 사용자 권한을 제어합니다.
 

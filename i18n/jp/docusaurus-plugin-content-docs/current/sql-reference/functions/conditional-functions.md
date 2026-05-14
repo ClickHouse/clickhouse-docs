@@ -6,8 +6,6 @@ title: '条件付き関数'
 doc_type: 'リファレンス'
 ---
 
-# 条件付き関数 \{#conditional-functions\}
-
 ## 概要 \{#overview\}
 
 ### 条件式の結果を直接使用する \{#using-conditional-results-directly\}

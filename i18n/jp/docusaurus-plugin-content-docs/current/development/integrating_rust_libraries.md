@@ -6,8 +6,6 @@ title: 'Rust ライブラリの統合'
 doc_type: 'guide'
 ---
 
-# Rust ライブラリ \{#rust-libraries\}
-
 Rust ライブラリの統合については、BLAKE3 ハッシュ関数の統合を例に説明します。
 
 統合の最初のステップは、ライブラリを /rust フォルダに追加することです。これを行うには、空の Rust プロジェクトを作成し、必要なライブラリを Cargo.toml に記述する必要があります。また、Cargo.toml に `crate-type = ["staticlib"]` を追加して、新しいライブラリをスタティックライブラリとしてコンパイルするよう設定する必要があります。
@@ -21,7 +19,7 @@ target_include_directories(_ch_rust_blake3 INTERFACE include)
 add_library(ch_rust::blake3 ALIAS _ch_rust_blake3)
 ```
 
-したがって、まず Corrosion を使って正しい CMake ターゲットを作成し、その後、より扱いやすい名前に変更します。なお、`_ch_rust_blake3` という名前は Cargo.toml でプロジェクト名として使用されているものです（`name = "_ch_rust_blake3"`）。
+したがって、まず Corrosion を使って正しい CMake ターゲットを作成し、その後、より扱いやすい名前に変更します。なお、`_ch_rust_blake3` という名前は Cargo.toml でプロジェクト名として使用されているものです (`name = "_ch_rust_blake3"`) 。
 
 Rust のデータ型は C/C++ のデータ型と互換性がないため、この空のライブラリプロジェクトを利用して、C/C++ から受け取ったデータの変換、ライブラリメソッドの呼び出し、および出力データの逆変換を行うためのシム用メソッドを作成します。例えば、BLAKE3 向けには次のようなメソッドが作成されました。
 

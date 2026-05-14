@@ -7,9 +7,7 @@ keywords: ['APPLY', 'modifier']
 doc_type: 'reference'
 ---
 
-# APPLY 修饰符 \{#apply\}
-
-> 允许对查询的外部表表达式返回的每一行调用某个函数。
+> 可对查询的外层表表达式返回的每一行调用某个函数。
 
 ## 语法 \{#syntax\}
 

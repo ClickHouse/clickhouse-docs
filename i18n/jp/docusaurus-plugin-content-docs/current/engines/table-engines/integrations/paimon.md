@@ -7,10 +7,8 @@ title: 'Paimon テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Paimon テーブルエンジン \{#paimon-table-engine\}
-
 このエンジンは、Amazon S3、Azure、HDFS、およびローカルに保存された既存の Apache [Paimon](https://paimon.apache.org/) テーブルに対する読み取り専用の統合を提供します。
-スナップショット読み取り、増分読み取り、およびエンジンが提供する基本的なパーティション剪枝をサポートしています。
+スナップショット読み取り、増分読み取り、およびこのエンジンが提供する基本的なパーティション剪枝をサポートします。
 
 ## テーブルを作成 \{#create-table\}
 

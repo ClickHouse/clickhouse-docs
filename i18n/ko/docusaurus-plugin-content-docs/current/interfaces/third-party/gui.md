@@ -7,8 +7,6 @@ title: '타사 개발자가 제공하는 시각적 인터페이스'
 doc_type: 'reference'
 ---
 
-# 타사 개발자가 제공하는 시각화 인터페이스 \{#visual-interfaces-from-third-party-developers\}
-
 ## 오픈 소스 \{#open-source\}
 
 ### agx \{#agx\}

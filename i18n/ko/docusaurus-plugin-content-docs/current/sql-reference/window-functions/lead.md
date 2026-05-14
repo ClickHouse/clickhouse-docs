@@ -1,13 +1,11 @@
 ---
-description: 'lead 윈도우 함수에 대한 설명서'
+description: 'lead 윈도우 함수 문서'
 sidebar_label: 'lead'
 sidebar_position: 10
 slug: /sql-reference/window-functions/lead
 title: 'lead'
 doc_type: 'reference'
 ---
-
-# lead \{#lead\}
 
 정렬된 프레임에서 현재 행으로부터 `offset` 행 뒤에 위치한 행에서 계산된 값을 반환합니다.
 이 함수는 [`leadInFrame`](./leadInFrame.md)과 유사하지만, 항상 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` 프레임을 사용합니다.

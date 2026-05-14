@@ -1,13 +1,12 @@
 ---
-description: '초 단위 정밀도로 시간 구간을 저장하는 ClickHouse의 Time 데이터 타입에 대한 문서'
+description: '초 단위 정밀도로 시간 범위를 저장하는 ClickHouse의 Time 데이터 타입
+  문서'
 slug: /sql-reference/data-types/time
 sidebar_position: 15
 sidebar_label: 'Time'
 title: 'Time'
 doc_type: 'reference'
 ---
-
-# Time \{#time\}
 
 데이터 타입 `Time`은 시, 분, 초 구성 요소를 가진 시간을 나타냅니다.
 달력상의 날짜와는 무관하며, 일·월·연도 구성 요소가 필요 없는 값에 적합합니다.

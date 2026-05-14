@@ -1,12 +1,10 @@
 ---
-description: '반올림 함수 관련 문서'
+description: '반올림 함수에 대한 문서'
 sidebar_label: '반올림'
 slug: /sql-reference/functions/rounding-functions
 title: '반올림 함수'
 doc_type: 'reference'
 ---
-
-# 반올림 함수 \{#rounding-functions\}
 
 :::note
 아래 문서는 `system.functions` 시스템 테이블에서 자동 생성되었습니다

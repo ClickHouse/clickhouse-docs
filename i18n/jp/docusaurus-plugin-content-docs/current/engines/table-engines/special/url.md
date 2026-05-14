@@ -1,13 +1,12 @@
 ---
-description: 'リモート HTTP/HTTPS サーバーとの間でデータをクエリします。このエンジンは File エンジンに似ています。'
+description: 'リモートの HTTP/HTTPS サーバーとの間でデータをクエリします。このエンジンは
+  File エンジンに類似しています。'
 sidebar_label: 'URL'
 sidebar_position: 80
 slug: /engines/table-engines/special/url
 title: 'URL テーブルエンジン'
 doc_type: 'reference'
 ---
-
-# URL テーブルエンジン \{#url-table-engine\}
 
 リモートの HTTP/HTTPS サーバーとの間でデータをクエリします。このエンジンは [File](../../../engines/table-engines/special/file.md) エンジンに類似しています。
 

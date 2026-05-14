@@ -6,8 +6,6 @@ title: 'FROM 절'
 doc_type: 'reference'
 ---
 
-# FROM 절 \{#from-clause\}
-
 `FROM` 절은 데이터를 읽어 올 소스를 지정합니다:
 
 * [테이블](../../../engines/table-engines/index.md)

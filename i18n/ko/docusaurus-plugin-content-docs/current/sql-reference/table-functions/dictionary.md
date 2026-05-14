@@ -1,5 +1,5 @@
 ---
-description: '딕셔너리 데이터를 ClickHouse 테이블로 표시합니다. Dictionary 엔진과 동일하게 동작합니다.'
+description: '딕셔너리 데이터를 ClickHouse 테이블로 표시합니다. 딕셔너리 엔진과 동일하게 동작합니다.'
 sidebar_label: 'dictionary'
 sidebar_position: 47
 slug: /sql-reference/table-functions/dictionary
@@ -7,9 +7,7 @@ title: 'dictionary'
 doc_type: 'reference'
 ---
 
-# dictionary 테이블 함수 \{#dictionary-table-function\}
-
-[dictionary](../statements/create/dictionary/overview.md) 데이터를 ClickHouse 테이블로 표시합니다. [Dictionary](../../engines/table-engines/special/dictionary.md) 엔진과 같은 방식으로 동작합니다.
+[딕셔너리](../statements/create/dictionary/overview.md) 데이터를 ClickHouse 테이블로 표시합니다. [딕셔너리](../../engines/table-engines/special/dictionary.md) 엔진과 동일하게 동작합니다.
 
 ## 구문 \{#syntax\}
 

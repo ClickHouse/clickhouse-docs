@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse の Tuple データ型に関するドキュメント'
+description: 'ClickHouse の タプル データ型に関するドキュメント'
 sidebar_label: 'Tuple(T1, T2, ...)'
 sidebar_position: 34
 slug: /sql-reference/data-types/tuple
@@ -7,9 +7,7 @@ title: 'Tuple(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
-# Tuple(T1, T2, ...) \{#tuplet1-t2\}
-
-それぞれが個別の[型](/sql-reference/data-types)を持つ要素からなるタプルです。Tuple には少なくとも 1 つの要素が含まれている必要があります。
+それぞれが個別の[型](/sql-reference/data-types)を持つ要素からなるタプルです。タプル には少なくとも 1 つの要素が含まれている必要があります。
 
 タプルは一時的な列のグループ化に使用されます。クエリで `IN` 式を使用する場合や、ラムダ関数の特定の仮引数を指定する場合に、列をグループ化できます。詳細は、[IN 演算子](../../sql-reference/operators/in.md) と [高階関数](/sql-reference/functions/overview#higher-order-functions) のセクションを参照してください。
 

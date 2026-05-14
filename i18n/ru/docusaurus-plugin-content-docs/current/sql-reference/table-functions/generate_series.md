@@ -7,8 +7,6 @@ description: 'Возвращает таблицу с единственным с
 doc_type: 'reference'
 ---
 
-# Табличная функция generate_series \{#generate_series-table-function\}
-
 Псевдоним: `generateSeries`
 
 ## Синтаксис \{#syntax\}

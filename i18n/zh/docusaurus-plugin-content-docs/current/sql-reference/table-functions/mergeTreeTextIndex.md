@@ -8,11 +8,9 @@ title: 'mergeTreeTextIndex'
 doc_type: 'reference'
 ---
 
-# mergeTreeTextIndex 表函数 \{#mergetreetextindex-table-function\}
-
 表示 MergeTree 表中文本索引的字典。
-返回词元及其倒排列表（posting list）元数据。
-可用于内部检查与分析。
+返回标记及其倒排列表元数据。
+可用于查看内部信息。
 
 ## 语法 \{#syntax\}
 

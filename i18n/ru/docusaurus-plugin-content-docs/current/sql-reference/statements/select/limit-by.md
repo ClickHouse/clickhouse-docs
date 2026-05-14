@@ -1,27 +1,25 @@
 ---
-description: 'Документация по предложению LIMIT BY'
+description: 'Документация для предложения LIMIT BY'
 sidebar_label: 'LIMIT BY'
 slug: /sql-reference/statements/select/limit-by
 title: 'Предложение LIMIT BY'
-doc_type: 'справочник'
+doc_type: 'reference'
 ---
 
-# Предложение LIMIT BY \{#limit-by-clause\}
-
-Запрос с клаузой `LIMIT n BY expressions` выбирает первые `n` строк для каждого различного значения `expressions`. Ключ `LIMIT BY` может содержать любое количество [выражений](/sql-reference/syntax#expressions).
+Запрос с предложением `LIMIT n BY expressions` выбирает первые `n` строк для каждого различного значения `expressions`. Ключ `LIMIT BY` может содержать любое количество [выражений](/sql-reference/syntax#expressions).
 
 ClickHouse поддерживает следующие варианты синтаксиса:
 
 * `LIMIT [offset_value, ]n BY expressions`
 * `LIMIT n OFFSET offset_value BY expressions`
 
-Во время обработки запроса ClickHouse выбирает данные, упорядоченные по ключу сортировки. Ключ сортировки задаётся явно с помощью клаузы [ORDER BY](/sql-reference/statements/select/order-by) или неявно как свойство движка таблицы; порядок строк гарантируется только при использовании [ORDER BY](/sql-reference/statements/select/order-by), в противном случае блоки строк не будут упорядочены из‑за многопоточности. Затем ClickHouse применяет `LIMIT n BY expressions` и возвращает первые `n` строк для каждой различной комбинации значений `expressions`. Если указано смещение, то для каждого блока данных, относящегося к отдельной комбинации `expressions`, ClickHouse пропускает `offset_value` строк с начала блока и возвращает максимум `n` строк в результате. Если `offset_value` больше количества строк в блоке данных, ClickHouse возвращает из этого блока ноль строк.
+Во время обработки запроса ClickHouse выбирает данные, упорядоченные по ключу сортировки. Ключ сортировки задаётся явно с помощью предложения [ORDER BY](/sql-reference/statements/select/order-by) или неявно как свойство движка таблицы (порядок строк гарантируется только при использовании [ORDER BY](/sql-reference/statements/select/order-by), в противном случае блоки строк не будут упорядочены из‑за многопоточности). Затем ClickHouse применяет `LIMIT n BY expressions` и возвращает первые `n` строк для каждой различной комбинации значений `expressions`. Если указано `OFFSET`, то для каждого блока данных, относящегося к отдельной комбинации `expressions`, ClickHouse пропускает `offset_value` строк с начала блока и возвращает максимум `n` строк в результате. Если `offset_value` больше количества строк в блоке данных, ClickHouse возвращает из этого блока ноль строк.
 
 :::note
 `LIMIT BY` не связан с [LIMIT](../../../sql-reference/statements/select/limit.md). Их можно использовать в одном и том же запросе.
 :::
 
-Если вы хотите использовать номера столбцов вместо имён столбцов в клаузе `LIMIT BY`, включите настройку [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments).
+Если вы хотите использовать номера столбцов вместо имён столбцов в предложении `LIMIT BY`, включите настройку [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments).
 
 ## Примеры \{#examples\}
 

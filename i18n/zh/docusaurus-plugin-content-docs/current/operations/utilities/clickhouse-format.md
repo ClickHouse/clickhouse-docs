@@ -1,11 +1,9 @@
 ---
-description: '使用 format 工具处理 ClickHouse 数据格式的指南'
+description: '使用 format 实用工具处理 ClickHouse 数据格式的指南'
 slug: /operations/utilities/clickhouse-format
 title: 'clickhouse-format'
 doc_type: 'reference'
 ---
-
-# clickhouse-format 实用工具 \{#clickhouse-format-utility\}
 
 用于格式化输入的查询语句。
 
@@ -20,7 +18,7 @@ doc_type: 'reference'
 * `--quiet` 或 `-q` — 仅检查语法，成功时不输出任何内容。
 * `--multiquery` 或 `-n` — 允许在同一文件中包含多个查询。
 * `--obfuscate` — 执行混淆而不是格式化。
-* `--seed &lt;string&gt;` — 指定任意字符串作为种子，用于决定混淆结果。
+* `--seed <string>` — 指定任意字符串作为种子，用于决定混淆结果。
 * `--backslash` — 在格式化后的查询每一行末尾添加反斜杠。当你从网页或其他地方复制多行查询并希望在命令行中执行时，这会很有用。
 * `--semicolons_inline` — 在多查询模式下，将分号写在查询的最后一行，而不是单独起一行。
 

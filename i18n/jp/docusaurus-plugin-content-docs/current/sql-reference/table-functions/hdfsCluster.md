@@ -1,13 +1,11 @@
 ---
-description: '指定したクラスター内の複数ノードから HDFS 上のファイルを並列処理できるようにします。'
+description: '指定したクラスター内の複数ノードから、HDFS 上のファイルを並列に処理できます。'
 sidebar_label: 'hdfsCluster'
 sidebar_position: 81
 slug: /sql-reference/table-functions/hdfsCluster
 title: 'hdfsCluster'
 doc_type: 'reference'
 ---
-
-# hdfsCluster テーブル関数 \{#hdfscluster-table-function\}
 
 指定したクラスター内の複数ノードから、HDFS 上のファイルを並列に処理できます。イニシエーターでは、クラスター内のすべてのノードへの接続を確立し、HDFS のファイルパスに含まれるアスタリスクを展開して、各ファイルを動的に振り分けます。ワーカーノードでは、処理すべき次のタスクをイニシエーターに問い合わせ、そのタスクを処理します。これは、すべてのタスクが完了するまで繰り返されます。
 
@@ -19,12 +17,12 @@ hdfsCluster(cluster_name, URI, format, structure)
 
 ## 引数 \{#arguments\}
 
-| 引数           | 説明                                                                                                                                                                                                                                                                                               |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cluster_name` | リモートおよびローカルサーバーへのアドレスと接続パラメータの集合を構成するために使用されるクラスター名。                                                                                                                                                                                            |
+| 引数             | 説明                                                                                                                                                                                                                                       |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cluster_name` | リモートおよびローカルサーバーへのアドレスと接続パラメータの集合を構成するために使用されるクラスター名。                                                                                                                                                                                     |
 | `URI`          | 1 つまたは複数のファイルを指す URI。読み取り専用モードで次のワイルドカードをサポートします: `*`, `**`, `?`, `{'abc','def'}` および `{N..M}`。ここで `N`, `M` は数値、`abc`, `def` は文字列です。詳細は [Wildcards In Path](../../engines/table-engines/integrations/s3.md#wildcards-in-path) を参照してください。 |
-| `format`       | ファイルの[フォーマット](/sql-reference/formats)。                                                                                                                                                                                                                                                |
-| `structure`    | テーブルの構造。形式: `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                             |
+| `format`       | ファイルの[フォーマット](/sql-reference/formats)。                                                                                                                                                                                                   |
+| `structure`    | テーブルの構造。形式: `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                               |
 
 ## 返される値 \{#returned_value\}
 
@@ -61,5 +59,5 @@ FROM hdfsCluster('cluster_simple', 'hdfs://hdfs1:9000/{some,another}_dir/*', 'TS
 
 ## 関連項目 \{#related\}
 
-- [HDFS エンジン](../../engines/table-engines/integrations/hdfs.md)
-- [HDFS テーブル関数](../../sql-reference/table-functions/hdfs.md)
+* [HDFS エンジン](../../engines/table-engines/integrations/hdfs.md)
+* [HDFS テーブル関数](../../sql-reference/table-functions/hdfs.md)

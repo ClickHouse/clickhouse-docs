@@ -1,5 +1,6 @@
 ---
-description: 'hudi テーブル関数の拡張機能です。指定したクラスタ内の多数のノードで、Amazon S3 上の Apache Hudi テーブルのファイルを並列処理できます。'
+description: 'hudi テーブル関数の拡張機能です。指定したクラスター内の多数のノードを使って、Amazon S3 上の
+  Apache Hudi テーブルのファイルを並列処理できます。'
 sidebar_label: 'hudiCluster'
 sidebar_position: 86
 slug: /sql-reference/table-functions/hudiCluster
@@ -7,11 +8,9 @@ title: 'hudiCluster テーブル関数'
 doc_type: 'reference'
 ---
 
-# hudiCluster テーブル関数 \{#hudicluster-table-function\}
-
 これは [hudi](sql-reference/table-functions/hudi.md) テーブル関数の拡張機能です。
 
-指定したクラスタ内の多数のノードを使って、Amazon S3 上の Apache [Hudi](https://hudi.apache.org/) テーブルのファイルを並列処理できます。イニシエータでは、クラスタ内のすべてのノードへの接続を確立し、各ファイルを動的に割り当てます。ワーカーノードでは、次に処理すべきタスクをイニシエータに問い合わせて、そのタスクを処理します。すべてのタスクが完了するまで、これを繰り返します。
+指定したクラスター内の多数のノードを使って、Amazon S3 上の Apache [Hudi](https://hudi.apache.org/) テーブルのファイルを並列処理できます。イニシエータでは、クラスター内のすべてのノードへの接続を確立し、各ファイルを動的に割り当てます。ワーカーノードでは、次に処理すべきタスクをイニシエータに問い合わせて、そのタスクを処理します。すべてのタスクが完了するまで、これを繰り返します。
 
 ## 構文 \{#syntax\}
 

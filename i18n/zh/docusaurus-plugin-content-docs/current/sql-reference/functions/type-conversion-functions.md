@@ -6,8 +6,6 @@ title: '类型转换函数'
 doc_type: 'reference'
 ---
 
-# 类型转换函数 \{#type-conversion-functions\}
-
 ## 数据转换中的常见问题 \{#common-issues-with-data-conversion\}
 
 ClickHouse 通常采用 [与 C++ 程序相同的隐式转换行为](https://en.cppreference.com/w/cpp/language/implicit_conversion)。

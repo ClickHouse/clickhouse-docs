@@ -1,13 +1,11 @@
 ---
-description: 'Возвращает таблицу, подключённую через JDBC-драйвер.'
+description: 'Возвращает таблицу, которая подключена через JDBC-драйвер.'
 sidebar_label: 'jdbc'
 sidebar_position: 100
 slug: /sql-reference/table-functions/jdbc
 title: 'jdbc'
 doc_type: 'reference'
 ---
-
-# Табличная функция jdbc \{#jdbc-table-function\}
 
 :::note
 clickhouse-jdbc-bridge содержит экспериментальный код и больше не поддерживается. В нём могут быть проблемы с надёжностью и уязвимости в области безопасности. Используйте его на свой страх и риск.

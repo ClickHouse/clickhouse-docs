@@ -1,5 +1,5 @@
 ---
-description: 'Google Cloud Storage からデータを `SELECT` および `INSERT` するためのテーブルに似たインターフェイスを提供します。`Storage Object User` IAM ロールが必要です。'
+description: 'Google Cloud Storage からデータを `SELECT` および `INSERT` するためのテーブル形式のインターフェイスを提供します。`Storage Object User` IAM ロールの付与が必要です。'
 keywords: ['gcs', 'bucket']
 sidebar_label: 'gcs'
 sidebar_position: 70
@@ -8,13 +8,11 @@ title: 'gcs'
 doc_type: 'reference'
 ---
 
-# gcs テーブル関数 \{#gcs-table-function\}
-
 [Google Cloud Storage](https://cloud.google.com/storage/) からデータを `SELECT` および `INSERT` するためのテーブル形式のインターフェイスを提供します。[`Storage Object User` IAM ロール](https://cloud.google.com/storage/docs/access-control/iam-roles)の付与が必要です。
 
 これは [s3 テーブル関数](../../sql-reference/table-functions/s3.md) のエイリアスです。
 
-クラスター内に複数のレプリカがある場合は、代わりに [s3Cluster 関数](../../sql-reference/table-functions/s3Cluster.md)（GCS でも動作します）を使用して、INSERT の実行を並列化できます。
+クラスター内に複数のレプリカがある場合は、代わりに [s3Cluster 関数](../../sql-reference/table-functions/s3Cluster.md) (GCS でも動作します) を使用して、INSERT の実行を並列化できます。
 
 ## 構文 \{#syntax\}
 
@@ -30,17 +28,17 @@ GCS Table Function は、GCS XML API と HMAC キーを使用して Google Cloud
 
 ## 引数 \{#arguments\}
 
-| Argument                     | Description                                                                                                                         |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `url`                        | ファイルへのバケットパス。読み取り専用モードでは、次のワイルドカードをサポートします: `*`、`**`、`?`、`{abc,def}`、および `{N..M}`。ここで `N`、`M` は数値、`'abc'`、`'def'` は文字列です。           |
-| `NOSIGN`                     | 資格情報の代わりにこのキーワードが指定された場合、すべてのリクエストは署名されません。                                                                                         |
-| `hmac_key` and `hmac_secret` | 指定されたエンドポイントで使用する資格情報を指定するためのキー。省略可能です。                                                                                             |
-| `format`                     | ファイルの[フォーマット](/sql-reference/formats)。                                                                                              |
-| `structure`                  | テーブルの構造。形式: `'column1_name column1_type, column2_name column2_type, ...'`。                                                          |
-| `compression_method`         | このパラメータは省略可能です。サポートされる値: `none`、`gzip` または `gz`、`brotli` または `br`、`xz` または `LZMA`、`zstd` または `zst`。デフォルトでは、ファイル拡張子により圧縮方式が自動検出されます。 |
+| Argument                     | Description                                                                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `url`                        | ファイルへのバケットパス。読み取り専用モードでは、次のワイルドカードをサポートします: `*`、`**`、`?`、`{abc,def}`、および `{N..M}`。ここで `N`、`M` は数値、`'abc'`、`'def'` は文字列です。            |
+| `NOSIGN`                     | 資格情報の代わりにこのキーワードが指定された場合、すべてのリクエストは署名されません。                                                                                          |
+| `hmac_key` and `hmac_secret` | 指定されたエンドポイントで使用する資格情報を指定するためのキー。省略可能です。                                                                                              |
+| `format`                     | ファイルの[フォーマット](/sql-reference/formats)。                                                                                               |
+| `structure`                  | テーブルの構造。形式: `'column1_name column1_type, column2_name column2_type, ...'`。                                                           |
+| `compression_method`         | このパラメータは省略可能です。サポートされる値: `none`、`gzip` または `gz`、`brotli` または `br`、`xz` または `LZMA`、`zstd` または `zst`。デフォルトでは、ファイル拡張子に基づいて圧縮方式を自動判別します。 |
 
 :::note GCS
-GCS パスは次の形式です。これは、Google XML API のエンドポイントが JSON API と異なるためです。
+GCS パスは次の形式です。これは、Google XML API のエンドポイントが JSON API と異なるためです:
 
 ```text
   https://storage.googleapis.com/<bucket>/<folder>/<filename(s)>
@@ -100,14 +98,14 @@ LIMIT 2;
 
 GCS 上に、次の URI のファイルが複数存在するとします:
 
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;1.csv](https://storage.googleapis.com/my-test-bucket-768/some_prefix/some_file_1.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;2.csv](https://storage.googleapis.com/my-test-bucket-768/some_prefix/some_file_2.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;3.csv](https://storage.googleapis.com/my-test-bucket-768/some_prefix/some_file_3.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;4.csv](https://storage.googleapis.com/my-test-bucket-768/some_prefix/some_file_4.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;1.csv](https://storage.googleapis.com/my-test-bucket-768/another_prefix/some_file_1.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;2.csv](https://storage.googleapis.com/my-test-bucket-768/another_prefix/some_file_2.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;3.csv](https://storage.googleapis.com/my-test-bucket-768/another_prefix/some_file_3.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;4.csv](https://storage.googleapis.com/my-test-bucket-768/another_prefix/some_file_4.csv)&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;1.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;2.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;3.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;4.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;1.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;2.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;3.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;4.csv&#39;
 
 末尾が 1 から 3 の数字で終わるファイルの行数をカウントします:
 
@@ -216,5 +214,6 @@ INSERT INTO TABLE FUNCTION
 その結果、データはそれぞれ異なるバケット内の 3 つのファイル `my_bucket_1/file.csv`、`my_bucket_10/file.csv`、`my_bucket_20/file.csv` に書き込まれます。
 
 ## 関連項目 \{#related\}
-- [S3 テーブル関数](s3.md)
-- [S3 エンジン](../../engines/table-engines/integrations/s3.md)
+
+* [S3 テーブル関数](s3.md)
+* [S3 エンジン](../../engines/table-engines/integrations/s3.md)
