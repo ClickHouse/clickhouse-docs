@@ -176,68 +176,6 @@ the time went:
 Everything you need to diagnose a slow pattern is in one place, on one
 screen.
 
-## A latency regression, end to end {#walkthrough}
-
-A worked example. You run a Managed Postgres instance backing a sales
-orders dashboard. Over the past week, p99 on the dashboard's main
-endpoint has been creeping up. p50 is fine. Users occasionally report
-slow queries and timeouts.
-
-### Open the tab {#walkthrough-open}
-
-Open **Query insights** on the instance. The stats grid reads: query
-volume flat, error rate flat, buffer hit ratio at 99.4%. Nothing
-alarming at first glance.
-
-### Switch the chart metric {#walkthrough-chart}
-
-The default chart is query count. Switch it to p99 duration. The line
-slopes up over the week. p50 stays flat. The regression is real, and
-it's on the tail.
-
-### Find the slow pattern {#walkthrough-find}
-
-Sort the patterns table by **Total runtime** descending. The top row:
-
-```sql
-SELECT * FROM orders JOIN customers ON orders.customer_id = customers.id
-WHERE orders.status = $1 ORDER BY orders.created_at DESC LIMIT $2
-```
-
-### Open the pattern flyout {#walkthrough-flyout}
-
-Average latency is in the single-digit milliseconds. p99 is in the
-hundreds of milliseconds — the tail is the actual problem. Buffer hit
-ratio is near 100%, so the bottleneck isn't shared buffer I/O. WAL
-bytes are zero, as expected for a read-only query.
-
-Drill into recent executions and two counters stand out:
-
-- Temp block ops is non-zero — the sort is spilling to disk.
-- Parallel workers launched is well below parallel workers planned.
-
-That combination matters. It's not a write problem. It's not a
-buffer-pool problem. The query is spilling while sorting, and the spill
-is what's pushing the tail.
-
-### Confirm with EXPLAIN {#walkthrough-explain}
-
-Run `EXPLAIN (ANALYZE, BUFFERS)` on the pattern. A spilling sort shows
-up as `Sort Method: external merge  Disk: NkB` where a healthy plan
-would have shown `Sort Method: quicksort  Memory: NkB`. Compare the
-`Disk` figure to your configured `work_mem`. A small overshoot is a
-tuning problem; a large multiple is a plan-shape problem.
-
-### Fix {#walkthrough-fix}
-
-Add an index that supports the filter and ordering so Postgres can
-avoid the sort entirely, raise `work_mem` for the right role or session
-so the sort fits in memory, or both. Query Insights points you at the
-pattern; `EXPLAIN ANALYZE` tells you what to do about it.
-
-After the fix, the spill disappears from the pattern's detail, parallel
-workers launch as planned, and p99 comes back down to match p50.
-
 ## How it works {#how-it-works}
 
 ### Normalized in Postgres, before the wire {#how-normalized}
