@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/monitoring/query-insights
 sidebar_label: 'Query insights'
-title: 'Postgres Query Insights'
+title: 'Postgres query insights'
 description: 'Per-statement telemetry for Managed Postgres: every query pattern your database runs, ranked by impact, with the diagnostic counters that explain why each one is slow'
 keywords: ['managed postgres', 'query insights', 'pg_stat_ch', 'slow queries', 'p99 latency', 'query patterns', 'postgres performance', 'temp blocks', 'parallel workers', 'wal']
 doc_type: 'guide'
@@ -15,7 +15,7 @@ import queryInsightsRecentQueries from '@site/static/images/managed-postgres/mon
 import queryInsightsDetailAggregate from '@site/static/images/managed-postgres/monitoring/query-insights-detail-aggregate.png';
 import queryInsightsDetailRecent from '@site/static/images/managed-postgres/monitoring/query-insights-detail-recent.png';
 
-# Postgres Query Insights
+# Postgres query insights
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="query-insights" />
 
@@ -30,7 +30,7 @@ ClickHouse Cloud. Telemetry is normalized inside Postgres before it leaves
 the database — literals are stripped and replaced with placeholders, so the
 exact values you query never enter the telemetry stream.
 
-## Open Query Insights {#open}
+## Open query insights {#open}
 
 Open your Managed Postgres instance in the cloud console and click
 **Query insights** in the left sidebar. The page is divided into three
