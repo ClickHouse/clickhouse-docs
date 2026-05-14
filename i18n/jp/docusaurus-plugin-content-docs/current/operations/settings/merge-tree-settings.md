@@ -1175,13 +1175,13 @@ delay_milliseconds = max(min_delay_to_insert_ms, (max_delay_to_insert * 1000)
 
 ## max_part_loading_threads \{#max_part_loading_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 この設定は廃止された設定であり、効果はありません。
 
 ## max_part_removal_threads \{#max_part_removal_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 廃止された設定であり、現在は何の効果もありません。
 

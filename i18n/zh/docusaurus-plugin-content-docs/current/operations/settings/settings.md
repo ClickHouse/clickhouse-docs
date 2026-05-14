@@ -9366,6 +9366,21 @@ FROM default.fuse_tbl AS __table1
 
 - [optimize_functions_to_subcolumns](#optimize_functions_to_subcolumns)
 
+## optimize_trivial_group_by_limit_query \{#optimize_trivial_group_by_limit_query\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置：对于 `SELECT key_expr FROM t GROUP BY key_expr LIMIT n` 查询，将聚合最多限制为 `LIMIT` 个不同键。"}]}]} />
+
+通过设置 `max_rows_to_group_by = n + offset` 和 `group_by_overflow_mode = 'any'`，启用或禁用对简单查询 `SELECT key_expr FROM table GROUP BY key_expr LIMIT n` 的优化 (即投影中不包含聚合函数，也没有 `HAVING`/`ORDER BY`/`LIMIT BY`/窗口子句，且没有 `GROUP BY` 修饰符) 。生成 `n + offset` 个不同键后，聚合即停止。
+
+当用户已显式将 `group_by_overflow_mode` 设置为非 `any` 值时 (为保留其显式指定的 `throw`/`break` 行为) ，以及当用户已设置了更严格的 `max_rows_to_group_by` 时 (此时该优化不会产生任何效果) ，将不会应用此优化。
+
+可能的值：
+
+* 0 — 禁用优化。
+  * 1 — 启用优化。
+
 ## optimize_trivial_insert_select \{#optimize_trivial_insert_select\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

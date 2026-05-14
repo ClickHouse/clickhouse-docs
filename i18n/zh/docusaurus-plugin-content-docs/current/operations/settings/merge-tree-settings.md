@@ -1163,13 +1163,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10，则 `INSERT` 语句将被延迟 `m
 
 ## max_part_loading_threads \{#max_part_loading_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 已废弃的设置，目前不起任何作用。
 
 ## max_part_removal_threads \{#max_part_removal_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 已废弃的设置，目前不起任何作用。
 

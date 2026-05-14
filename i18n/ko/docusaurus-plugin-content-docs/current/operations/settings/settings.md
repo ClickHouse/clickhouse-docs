@@ -9376,6 +9376,21 @@ MergeTree 메타데이터를 사용하여 `SELECT count() FROM table`과 같은 
 
 - [optimize_functions_to_subcolumns](#optimize_functions_to_subcolumns)
 
+## optimize_trivial_group_by_limit_query \{#optimize_trivial_group_by_limit_query\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "`SELECT key_expr FROM t GROUP BY key_expr LIMIT n` 쿼리에서 집계를 최대 LIMIT개의 고유 키까지만 수행하도록 제한하는 새로운 설정입니다."}]}]} />
+
+`max_rows_to_group_by = n + offset` 및 `group_by_overflow_mode = 'any'`를 설정하여, 단순 쿼리 `SELECT key_expr FROM table GROUP BY key_expr LIMIT n`을 최적화할지 여부를 제어합니다(SELECT 목록에 집계 함수가 없고, `HAVING`/`ORDER BY`/`LIMIT BY`/윈도우 절이 없으며, `GROUP BY` 수정자가 없는 경우). 집계는 `n + offset`개의 고유 키가 생성되면 중단됩니다.
+
+사용자가 `group_by_overflow_mode`를 명시적으로 `any`가 아닌 값으로 설정한 경우(명시한 `throw`/`break` 동작을 유지하기 위해), 또는 이미 더 엄격한 `max_rows_to_group_by`를 설정한 경우(이 최적화가 아무 효과도 내지 않으므로)에는 이 최적화가 적용되지 않습니다.
+
+가능한 값:
+
+* 0 — 최적화 비활성화.
+  * 1 — 최적화 활성화.
+
 ## optimize_trivial_insert_select \{#optimize_trivial_insert_select\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

@@ -1193,13 +1193,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10인 경우, `INSERT` 연산은 `max( 
 
 ## max_part_loading_threads \{#max_part_loading_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 더 이상 사용되지 않는 설정으로, 아무 효과도 없습니다.
 
 ## max_part_removal_threads \{#max_part_removal_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
 
 더 이상 사용되지 않는 설정으로, 아무 동작도 하지 않습니다.
 

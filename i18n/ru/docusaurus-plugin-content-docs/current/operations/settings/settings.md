@@ -9404,6 +9404,21 @@ FROM default.fuse_tbl AS __table1
 
 - [optimize_functions_to_subcolumns](#optimize_functions_to_subcolumns)
 
+## optimize_trivial_group_by_limit_query \{#optimize_trivial_group_by_limit_query\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка, ограничивающая агрегацию максимум LIMIT различными ключами для запросов `SELECT key_expr FROM t GROUP BY key_expr LIMIT n`."}]}]} />
+
+Включает или отключает оптимизацию тривиального запроса `SELECT key_expr FROM table GROUP BY key_expr LIMIT n` (без агрегатных функций в проекции, без секций `HAVING`/`ORDER BY`/`LIMIT BY`/оконных функций и без модификаторов `GROUP BY`) путём установки `max_rows_to_group_by = n + offset` и `group_by_overflow_mode = 'any'`. Агрегация останавливается, как только будет получено `n + offset` различных ключей.
+
+Оптимизация не применяется, если пользователь явно установил `group_by_overflow_mode` в значение, отличное от `any` (чтобы сохранить явно заданное поведение `throw`/`break`), а также если пользователь уже задал более жёсткое значение `max_rows_to_group_by` (в этом случае оптимизация ничего не изменит).
+
+Возможные значения:
+
+* 0 — Оптимизация отключена.
+  * 1 — Оптимизация включена.
+
 ## optimize_trivial_insert_select \{#optimize_trivial_insert_select\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
