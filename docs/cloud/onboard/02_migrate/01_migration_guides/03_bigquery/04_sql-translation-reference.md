@@ -1786,7 +1786,7 @@ No equivalent
 <tr>
 <td colSpan={2}>
 
-ClickHouse does not provide row-level time travel. Patterns include [`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree) with a version column or per-day backup tables.
+ClickHouse doesn't provide row-level time travel. Patterns include [`ReplacingMergeTree`](/engines/table-engines/mergetree-family/replacingmergetree) with a version column or per-day backup tables.
 
 </td>
 </tr>
@@ -2117,7 +2117,7 @@ Pipes compose left-to-right; in ClickHouse, layer clauses or use a CTE for reada
 
 ### Procedural language {#procedural-language}
 
-ClickHouse SQL is not a procedural language. Variables, loops, statement-level
+ClickHouse SQL isn't a procedural language. Variables, loops, statement-level
 `IF` / `CASE`, and stored procedures have no first-class equivalents;
 orchestrate multi-step logic from a client library (Python, Go, JavaScript,
 etc.) or use [parameterized views](/sql-reference/statements/create/view#parameterized-view)
