@@ -25,8 +25,8 @@ doc_type: 'landing-page'
 | [Build on macOS for macOS](/development/build-osx)                               | Руководство по сборке ClickHouse из исходного кода в системах macOS                                                 |
 | [Build on Linux for macOS](/development/build-cross-osx)                         | Руководство по кросс-компиляции ClickHouse в Linux для систем macOS                                                 |
 | [How to Build ClickHouse on Linux for AARCH64](/development/build-cross-arm)     | Руководство по сборке ClickHouse из исходного кода для архитектуры AARCH64                                          |
-| [How to Build ClickHouse on Linux for RISC-V 64](/development/build-cross-riscv) | Руководство по сборке ClickHouse из исходного кода для архитектуры RISC-V 64                                        |
 | [Build on Linux for s390x (zLinux)](/development/build-cross-s390x)              | Руководство по сборке ClickHouse из исходного кода для архитектуры s390x                                            |
+| [How to Build ClickHouse on Linux for RISC-V 64](/development/build-cross-riscv) | Руководство по сборке ClickHouse из исходного кода для архитектуры RISC-V 64                                        |
 | [Build on Linux for LoongArch64](/development/build-cross-loongarch)             | Руководство по сборке ClickHouse из исходного кода для архитектуры LoongArch64                                      |
 | [Build on Linux for E2K](/development/build-e2k)                                 | Руководство по сборке ClickHouse из исходного кода для архитектуры E2K                                              |
 | [Testing ClickHouse](/development/tests)                                         | Руководство по тестированию ClickHouse и запуску набора тестов                                                      |

@@ -8,7 +8,7 @@ doc_type: 'landing-page'
 이 섹션에서는 다음 페이지를 확인할 수 있습니다:
 
 {/* 아래 목차는 YAML 
-     프런트 매터 필드인 title, description, slug를 기반으로, 다음 위치에 있는 스크립트로 자동 생성됩니다:
+     프런트 매터 필드인 title, description, slug를 기반으로 아래 스크립트에 의해 자동 생성됩니다:
 
      https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh
      
@@ -24,8 +24,8 @@ doc_type: 'landing-page'
 | [Build on macOS for macOS](/development/build-osx)                               | macOS 시스템에서 ClickHouse를 소스 코드로부터 빌드하는 가이드                               |
 | [Build on Linux for macOS](/development/build-cross-osx)                         | Linux에서 macOS 시스템용 ClickHouse를 크로스 컴파일하는 가이드                            |
 | [How to Build ClickHouse on Linux for AARCH64](/development/build-cross-arm)     | AARCH64 아키텍처용 ClickHouse를 소스 코드로부터 빌드하는 가이드                             |
-| [How to Build ClickHouse on Linux for RISC-V 64](/development/build-cross-riscv) | RISC-V 64 아키텍처용 ClickHouse를 소스 코드로부터 빌드하는 가이드                           |
 | [Build on Linux for s390x (zLinux)](/development/build-cross-s390x)              | s390x 아키텍처용 ClickHouse를 소스 코드로부터 빌드하는 가이드                               |
+| [How to Build ClickHouse on Linux for RISC-V 64](/development/build-cross-riscv) | RISC-V 64 아키텍처용 ClickHouse를 소스 코드로부터 빌드하는 가이드                           |
 | [Build on Linux for LoongArch64](/development/build-cross-loongarch)             | LoongArch64 아키텍처용 ClickHouse를 소스 코드로부터 빌드하는 가이드                         |
 | [Build on Linux for E2K](/development/build-e2k)                                 | E2K 아키텍처용 ClickHouse를 소스 코드로부터 빌드하는 가이드                                 |
 | [Testing ClickHouse](/development/tests)                                         | ClickHouse를 테스트하고 테스트 스위트를 실행하는 방법을 다루는 가이드                             |

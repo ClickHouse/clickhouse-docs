@@ -24,8 +24,8 @@ doc_type: 'landing-page'
 | [Build on macOS for macOS](/development/build-osx)                               | 在 macOS 系统上从源码构建 ClickHouse 的指南               |
 | [Build on Linux for macOS](/development/build-cross-osx)                         | 在 Linux 上为 macOS 系统交叉编译 ClickHouse 的指南        |
 | [How to Build ClickHouse on Linux for AARCH64](/development/build-cross-arm)     | 在 Linux 上为 AARCH64 架构从源码构建 ClickHouse 的指南     |
-| [How to Build ClickHouse on Linux for RISC-V 64](/development/build-cross-riscv) | 在 Linux 上为 RISC-V 64 架构从源码构建 ClickHouse 的指南   |
 | [Build on Linux for s390x (zLinux)](/development/build-cross-s390x)              | 在 Linux 上为 s390x 架构从源码构建 ClickHouse 的指南       |
+| [How to Build ClickHouse on Linux for RISC-V 64](/development/build-cross-riscv) | 在 Linux 上为 RISC-V 64 架构从源码构建 ClickHouse 的指南   |
 | [Build on Linux for LoongArch64](/development/build-cross-loongarch)             | 在 Linux 上为 LoongArch64 架构从源码构建 ClickHouse 的指南 |
 | [Build on Linux for E2K](/development/build-e2k)                                 | 在 Linux 上为 E2K 架构从源码构建 ClickHouse 的指南         |
 | [Testing ClickHouse](/development/tests)                                         | 测试 ClickHouse 并运行测试套件的指南                      |

@@ -25,8 +25,8 @@ doc_type: 'landing-page'
 | [Build on macOS for macOS](/development/build-osx)                               | macOS システム上で ClickHouse をソースからビルドするためのガイド                 |
 | [Build on Linux for macOS](/development/build-cross-osx)                         | Linux 上で macOS システム向けに ClickHouse をクロスコンパイルするためのガイド       |
 | [How to Build ClickHouse on Linux for AARCH64](/development/build-cross-arm)     | AARCH64 アーキテクチャ向けに ClickHouse をソースからビルドするためのガイド           |
-| [How to Build ClickHouse on Linux for RISC-V 64](/development/build-cross-riscv) | RISC-V 64 アーキテクチャ向けに ClickHouse をソースからビルドするためのガイド         |
 | [Build on Linux for s390x (zLinux)](/development/build-cross-s390x)              | s390x アーキテクチャ向けに ClickHouse をソースからビルドするためのガイド             |
+| [How to Build ClickHouse on Linux for RISC-V 64](/development/build-cross-riscv) | RISC-V 64 アーキテクチャ向けに ClickHouse をソースからビルドするためのガイド         |
 | [Build on Linux for LoongArch64](/development/build-cross-loongarch)             | LoongArch64 アーキテクチャ向けに ClickHouse をソースからビルドするためのガイド       |
 | [Build on Linux for E2K](/development/build-e2k)                                 | E2K アーキテクチャ向けに ClickHouse をソースからビルドするためのガイド               |
 | [Testing ClickHouse](/development/tests)                                         | ClickHouse のテストおよびテストスイートの実行方法に関するガイド                     |
