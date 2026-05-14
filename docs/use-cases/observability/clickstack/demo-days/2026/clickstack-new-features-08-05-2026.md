@@ -7,6 +7,7 @@ pagination_next: null
 description: 'ClickStack demo days for 2026-05-08'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Demo days']
+sidebar_position: -20260508
 ---
 
 ## Improved handling of secrets in webhooks {#improved-handling-of-secrets-in-webhooks}
