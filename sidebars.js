@@ -359,6 +359,7 @@ const sidebars = {
           items: [
             'cloud/managed-postgres/monitoring/overview',
             'cloud/managed-postgres/monitoring/dashboard',
+            'cloud/managed-postgres/monitoring/query-insights',
             'cloud/managed-postgres/monitoring/prometheus',
             'cloud/managed-postgres/monitoring/metrics',
           ],
