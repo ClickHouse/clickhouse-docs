@@ -12008,6 +12008,21 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 ```
 
 
+## system_metric_log_show_zero_values_in_histograms \{#system_metric_log_show_zero_values_in_histograms\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, управляющая тем, записываются ли данные гистограмм с нулевыми значениями во вложенный столбец histograms таблицы system.metric_log."}]}]} />
+
+Определяет, записываются ли данные гистограмм с нулевыми значениями во вложенный столбец `histograms` таблицы `system.metric_log`.
+
+По умолчанию гистограммы, у которых общее значение `count` равно нулю, пропускаются, а внутри каждой записываемой гистограммы записи бакетов без наблюдений также не включаются в map `histogram`. Включите этот параметр, чтобы записывать каждую гистограмму и каждый бакет независимо от значения `count` — это полезно для систем мониторинга, которым требуется, чтобы каждая метрика присутствовала в каждой контрольной точке.
+
+Возможные значения:
+
+* 0 — Отключено. Гистограммы с `count = 0` не записываются; записываемые гистограммы включают только те бакеты, в которых было хотя бы одно наблюдение.
+* 1 — Включено. Записываются все гистограммы, и в `histogram` присутствует каждая граница бакета.
+
 ## table_engine_read_through_distributed_cache \{#table_engine_read_through_distributed_cache\}
 
 <CloudOnlyBadge/>

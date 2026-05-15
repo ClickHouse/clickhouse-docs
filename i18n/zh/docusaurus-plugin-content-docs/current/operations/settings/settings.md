@@ -11967,6 +11967,21 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 ```
 
 
+## system_metric_log_show_zero_values_in_histograms \{#system_metric_log_show_zero_values_in_histograms\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于控制是否将零值直方图数据写入 `system.metric_log` 的 `histograms` 嵌套列的新设置。"}]}]} />
+
+控制是否将零值直方图数据写入 `system.metric_log` 的 `histograms` 嵌套列。
+
+默认情况下，总观测 `count` 为零的直方图会被跳过；对于每个已输出的直方图，没有任何观测值的 bucket 条目也会从 `histogram` map 中省略。启用此设置后，无论 `count` 如何，都会写入每个直方图及其所有 bucket——这对于要求每个指标在每个检查点都出现的监控系统尤其有用。
+
+可能的值：
+
+* 0 — 禁用。`count = 0` 的直方图不会输出；已输出的直方图仅包含至少收到一次观测的 bucket。
+* 1 — 启用。写入所有直方图，并且每个 bucket 边界都会出现在 `histogram` 中。
+
 ## table_engine_read_through_distributed_cache \{#table_engine_read_through_distributed_cache\}
 
 <CloudOnlyBadge/>

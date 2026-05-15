@@ -89,20 +89,22 @@ Features:
 * 크로스 플랫폼 데스크톱 앱(macOS, Windows, Linux) 및 Docker 지원
 * 오픈 소스이며 MIT 라이선스를 따름
 
-### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
+### ClickHouse 스키마 플로 시각화 도구 \{#clickhouse-schemaflow-visualizer\}
 
-[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)는 Mermaid.js 다이어그램을 사용하여 ClickHouse 테이블 간 관계를 시각화하는 강력한 오픈 소스 웹 애플리케이션입니다. 직관적인 인터페이스로 데이터베이스와 테이블을 탐색하고, 선택적으로 행 개수와 크기 정보를 포함한 테이블 메타데이터를 살펴보며, 대화형 스키마 다이어그램을 내보낼 수 있습니다.
+[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)는 ClickHouse 테이블 간의 관계를 시각화하는 오픈소스 웹 애플리케이션입니다.
+이 애플리케이션은 ClickHouse 인스턴스에 연결해 `system.tables` 메타데이터(엔진 타입, 의존성, materialized view의 SELECT 문)를 파싱한 뒤, 각 엣지에 변환 표현식 레이블이 표시된 컬럼 수준 관계와 함께 인터랙티브한 테이블 수준 데이터 플로 다이어그램을 렌더링합니다. 다이어그램은 Dagre로 레이아웃이 구성되며 일반 인라인 SVG로 렌더링되므로, 클라이언트 측 다이어그램 런타임은 로드되지 않습니다.
 
 기능:
 
-- 직관적인 인터페이스로 ClickHouse 데이터베이스와 테이블 탐색
-- Mermaid.js 다이어그램으로 테이블 간 관계 시각화
-- 테이블 유형에 맞게 색상으로 구분된 아이콘을 통한 향상된 시각화
-- 테이블 간 데이터 흐름 방향 확인
-- 다이어그램을 독립 실행형 HTML 파일로 내보내기
-- 메타데이터 표시 여부 전환(테이블 행 및 크기 정보)
-- TLS 지원을 통한 ClickHouse에 대한 보안 연결
-- 모든 기기에 대응하는 반응형 웹 인터페이스
+* 직관적인 사이드바에서 ClickHouse 데이터베이스와 테이블 탐색
+* 데이터 플로 보기: 테이블 수준의 업스트림 소스와 다운스트림 materialized view
+* 관계 보기: 각 엣지에 파싱된 변환 표현식(예: `toStartOfHour(scheduled_departure)`, `avgState(delay_minutes)`)이 표시된 컬럼 수준 매핑
+* `MergeTree`, `Replicated*`, `Distributed`, `MaterializedView`, `Dictionary`에 대한 엔진별 아이콘 및 색상 구분
+* 관계 보기에서 컬럼을 클릭해 파이프라인 전체에서 해당 컬럼의 전체 데이터 경로 강조
+* 실시간 사이드바 필터와 `Ctrl+K` / `⌘K` 명령 팔레트로 원하는 테이블, 컬럼 또는 엔진으로 바로 이동
+* 테이블별 행 수와 디스크 사용 크기를 표시하는 선택적 메타데이터 오버레이
+* 현재 다이어그램을 독립형 HTML 파일로 내보내기
+* ClickHouse에 대한 TLS 연결 지원, 선택적 인증서 검증 건너뛰기 및 사용자 지정 CA / 클라이언트 인증서 지원
 
 [ClickHouse Schema Flow Visualizer - 소스 코드](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)
 

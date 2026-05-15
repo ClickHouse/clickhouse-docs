@@ -11984,6 +11984,21 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 ```
 
 
+## system_metric_log_show_zero_values_in_histograms \{#system_metric_log_show_zero_values_in_histograms\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "system.metric_log の histograms ネストカラムに値 0 のヒストグラムデータを書き込むかどうかを制御する新しい設定。"}]}]} />
+
+値 0 のヒストグラムデータを `system.metric_log` の `histograms` ネストカラムに書き込むかどうかを制御します。
+
+デフォルトでは、観測の合計 `count` が 0 のヒストグラムはスキップされ、出力される各ヒストグラム内でも、観測がないバケットのエントリは `histogram` map から省略されます。これを有効にすると、`count` に関係なく、すべてのヒストグラムとすべてのバケットが書き込まれます。これは、すべてのチェックポイントであらゆるメトリクスが必ず現れる必要がある監視システムで有用です。
+
+設定可能な値:
+
+* 0 — 無効。`count = 0` のヒストグラムは出力されません。出力されるヒストグラムには、少なくとも 1 回観測されたバケットのみが含まれます。
+* 1 — 有効。すべてのヒストグラムが書き込まれ、すべてのバケット境界が `histogram` に現れます。
+
 ## table_engine_read_through_distributed_cache \{#table_engine_read_through_distributed_cache\}
 
 <CloudOnlyBadge/>

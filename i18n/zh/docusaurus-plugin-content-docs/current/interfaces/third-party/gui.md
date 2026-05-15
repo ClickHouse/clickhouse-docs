@@ -91,18 +91,20 @@ doc_type: 'reference'
 
 ### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
 
-[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) 是一个用于通过 Mermaid.js 图表可视化 ClickHouse 表关系的强大开源 Web 应用。你可以通过直观界面浏览数据库和数据表，利用可选的行数与大小信息探索表元数据，并导出交互式 schema 图。
+[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) 是一款用于可视化 ClickHouse 表之间关系的开源 Web 应用。
+它可连接到 ClickHouse 实例，解析 `system.tables` 元数据 (引擎类型、依赖关系、materialized view 的 SELECT) ，并渲染交互式表级数据流图，以及列级关系图，其中每条边都标注了转换表达式。图使用 Dagre 进行布局，并以纯内联 SVG 渲染——无需加载客户端图表运行时。
 
-功能特性：
+功能：
 
-- 通过直观界面浏览 ClickHouse 数据库和数据表
-- 使用 Mermaid.js 图表可视化表之间的关系
-- 使用与表类型匹配的颜色编码图标，以获得更佳可视化效果
-- 查看数据在数据表之间流动的方向
-- 将图表导出为独立的 HTML 文件
-- 切换元数据可见性（表行数和大小信息）
-- 通过 TLS 与 ClickHouse 建立安全连接
-- 适配所有设备的响应式 Web 界面
+* 通过直观的侧边栏浏览 ClickHouse 数据库和表
+* 数据流视图：展示表级上游来源和下游 materialized view
+* 关系视图：显示列级映射，并在每条边上展示解析后的转换表达式 (例如 `toStartOfHour(scheduled_departure)`、`avgState(delay_minutes)`) 
+* 为 `MergeTree`、`Replicated*`、`Distributed`、`MaterializedView` 和 `Dictionary` 提供按引擎类型区分的图标和颜色编码
+* 在关系视图中点击某一列，可高亮显示其在整个管道中的完整数据路径
+* 提供实时侧边栏过滤器，以及 `Ctrl+K` / `⌘K` 命令面板，可快速跳转到任意表、列或引擎
+* 可选的元数据叠加层，显示每个表的行数和磁盘占用大小
+* 将当前图导出为独立的 HTML 文件
+* 通过 TLS 连接到 ClickHouse，并可选择跳过验证以及使用自定义 CA / 客户端证书
 
 [ClickHouse Schema Flow Visualizer - 源代码](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)
 

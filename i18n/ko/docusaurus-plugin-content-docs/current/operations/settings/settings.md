@@ -11977,6 +11977,21 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 ```
 
 
+## system_metric_log_show_zero_values_in_histograms \{#system_metric_log_show_zero_values_in_histograms\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "`system.metric_log`의 `histograms` 중첩 컬럼에 값이 0인 히스토그램 데이터를 기록할지 제어하는 새로운 설정입니다."}]}]} />
+
+값이 0인 히스토그램 데이터를 `system.metric_log`의 `histograms` 중첩 컬럼에 기록할지 제어합니다.
+
+기본적으로 총 관측 `count`가 0인 히스토그램은 건너뛰고, 출력되는 각 히스토그램 내에서도 관측값이 없는 버킷 항목은 `histogram` 맵에서 생략됩니다. 이 옵션을 활성화하면 개수와 관계없이 모든 히스토그램과 모든 버킷을 기록합니다. 이는 모든 체크포인트에서 모든 메트릭이 항상 표시되어야 하는 모니터링 시스템에 유용합니다.
+
+가능한 값:
+
+* 0 — 비활성화됨. `count = 0`인 히스토그램은 출력되지 않으며, 출력된 히스토그램에는 하나 이상의 관측값을 받은 버킷만 포함됩니다.
+* 1 — 활성화됨. 모든 히스토그램이 기록되며, 모든 버킷 경계가 `histogram`에 표시됩니다.
+
 ## table_engine_read_through_distributed_cache \{#table_engine_read_through_distributed_cache\}
 
 <CloudOnlyBadge/>

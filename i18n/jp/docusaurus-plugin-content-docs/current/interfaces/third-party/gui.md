@@ -91,18 +91,20 @@ Features:
 
 ### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
 
-[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) は、Mermaid.js ダイアグラムを使用して ClickHouse のテーブル間リレーションシップを可視化する強力なオープンソース Web アプリケーションです。直感的なインターフェイスでデータベースやテーブルをブラウズし、オプションの行数やサイズ情報を含むテーブルメタデータを探索し、インタラクティブなスキーマダイアグラムをエクスポートできます。
+[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) は、ClickHouse テーブル間の関係を可視化するためのオープンソースの Web アプリケーションです。
+ClickHouse インスタンスに接続し、`system.tables` のメタデータ (エンジン種別、依存関係、materialized view の SELECT) を解析して、テーブルレベルのインタラクティブなデータフロー図と、各エッジに変換式のラベルが付いたカラムレベルの関連を描画します。図は Dagre でレイアウトされ、シンプルなインライン SVG として描画されます。クライアント側のダイアグラム描画ランタイムは読み込まれません。
 
-Features:
+機能:
 
-- 直感的なインターフェイスで ClickHouse のデータベースとテーブルをブラウズ
-- Mermaid.js ダイアグラムでテーブル間のリレーションシップを可視化
-- テーブルタイプに対応した色分けアイコンによる視認性の向上
-- テーブル間のデータフロー方向を表示
-- 図をスタンドアロンの HTML ファイルとしてエクスポート
-- メタデータ (テーブル行数およびサイズ情報) の表示切り替え
-- TLS サポート付きの安全な ClickHouse 接続
-- あらゆるデバイス向けのレスポンシブ Web インターフェイス
+* 直感的なサイドバーで ClickHouse のデータベースとテーブルを参照
+* Data Flow ビュー: テーブルレベルの上流ソースと下流の materialized view
+* Relationships ビュー: 各エッジに解析済みの変換式を表示したカラムレベルの対応関係 (例: `toStartOfHour(scheduled_departure)`, `avgState(delay_minutes)`) 
+* `MergeTree`、`Replicated*`、`Distributed`、`MaterializedView`、`Dictionary` に対応したアイコンと色分け
+* Relationships ビューでカラムをクリックすると、パイプライン内のデータ経路全体を強調表示
+* ライブサイドバーフィルターと `Ctrl+K` / `⌘K` コマンドパレットで、任意のテーブル、カラム、またはエンジンにすばやく移動
+* テーブルごとの行数とディスク上のサイズを表示するオプションのメタデータオーバーレイ
+* 現在の図を自己完結型の HTML ファイルとしてエクスポート
+* ClickHouse への TLS 接続。必要に応じて証明書検証のスキップやカスタム CA / クライアント証明書にも対応
 
 [ClickHouse Schema Flow Visualizer - source code](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)
 
