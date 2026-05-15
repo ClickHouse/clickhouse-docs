@@ -10,9 +10,9 @@ doc_type: 'reference'
 
 # Configuration reference {#config-reference}
 
-This page documents every configurable option in `clickhouse-go` v2.x. For narrative guides with code examples, see [Configuration](/integrations/language-clients/go/configuration).
+This page documents every configurable option in `clickhouse-go` v2.x. For a guide with code examples, see [Configuration](/integrations/language-clients/go/configuration).
 
-:::note Version annotations
+:::note[Version annotations]
 Options added in `clickhouse-go` v2.35.0 or later are marked with *(Since vX.Y.Z)* next to their description. Options without a "Since" tag have been available since v2.0 and are present in every supported release.
 :::
 
