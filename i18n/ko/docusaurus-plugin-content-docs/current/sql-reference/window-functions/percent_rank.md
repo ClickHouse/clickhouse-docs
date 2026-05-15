@@ -27,9 +27,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 **예제**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -49,15 +47,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        percent_rank() OVER (ORDER BY salary DESC) AS percent_rank
 FROM salaries;
 ```
 
-결과:
-
-```response
+```response title="Response"
 
    ┌─player──────────┬─salary─┬───────percent_rank─┐
 1. │ Gary Chen       │ 195000 │                  0 │

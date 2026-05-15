@@ -148,7 +148,7 @@ LIMIT 10;
 
 现在假设我们有一个名为 `holdings` 的表,其中包含我们拥有的加密货币列表以及硬币数量:
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,

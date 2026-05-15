@@ -77,9 +77,7 @@ SHOW TABLES FROM information_schema;
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT table_catalog,
        table_schema,
        table_name,
@@ -112,9 +110,7 @@ LIMIT 1
 FORMAT Vertical;
 ```
 
-结果:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 table_catalog:            default
@@ -158,9 +154,7 @@ domain_name:              ᴺᵁᴸᴸ
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT catalog_name,
        schema_name,
        schema_owner,
@@ -174,9 +168,7 @@ LIMIT 1
 FORMAT Vertical;
 ```
 
-结果：
-
-```text
+```text title="Response"
 Row 1:
 ──────
 catalog_name:                  INFORMATION_SCHEMA
@@ -211,9 +203,7 @@ sql_path:                      ᴺᵁᴸᴸ
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT table_catalog, 
        table_schema, 
        table_name, 
@@ -227,9 +217,7 @@ LIMIT 1
 FORMAT Vertical;
 ```
 
-结果：
-
-```text
+```text title="Response"
 Row 1:
 ──────
 table_catalog:   default
@@ -265,9 +253,7 @@ table_comment:
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE VIEW v (n Nullable(Int32), f Float64) AS SELECT n, f FROM t;
 CREATE MATERIALIZED VIEW mv ENGINE = Null AS SELECT * FROM system.one;
 SELECT table_catalog,
@@ -286,9 +272,7 @@ LIMIT 1
 FORMAT Vertical;
 ```
 
-结果：
-
-```text
+```text title="Response"
 Row 1:
 ──────
 table_catalog:              default
@@ -324,7 +308,7 @@ is_trigger_insertable_into: NO
 
 **示例**
 
-```sql
+```sql title="Query"
 CREATE TABLE test (i UInt32, s String) ENGINE MergeTree ORDER BY i;
 SELECT constraint_catalog,
        constraint_schema,
@@ -343,9 +327,7 @@ WHERE table_name = 'test'
 FORMAT Vertical;
 ```
 
-结果：
-
-```response
+```response title="Response"
 Row 1:
 ──────
 constraint_catalog:            def

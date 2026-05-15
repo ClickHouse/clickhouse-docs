@@ -92,15 +92,11 @@ doc_type: 'reference'
 └───┴──────┘
 ```
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─x─┬─s────┐
 │ 3 │ 123a │
 │ 4 │ abc  │
@@ -126,15 +122,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴──────┘
 ```
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─x─┬─s────┐
 │ 4 │ 123a │
 │ 5 │ abc  │
@@ -162,15 +154,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴───────────────┘
 ```
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─x─┬─s─────────────┐
 │ 7 │ ['']          │
 │ 3 │ ['a']         │
@@ -198,15 +186,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────┘
 ```
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─x─┬─s───┐
 │ 7 │     │
 │ 3 │ a   │
@@ -220,7 +204,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 [Tuple](../../../sql-reference/data-types/tuple.md) を使った例:
 
-```response
+```response title="Response"
 ┌─x─┬─s───────┐
 │ 1 │ (1,'Z') │
 │ 2 │ (1,'z') │
@@ -232,15 +216,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────────┘
 ```
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-結果:
-
-```response
+```response title="Response"
 ┌─x─┬─s───────┐
 │ 3 │ (1,'a') │
 │ 5 │ (1,'A') │
@@ -291,7 +271,7 @@ RAM が不足している場合は、外部メモリ (ディスク) を使用し
 
 複数の列を補完するには、`ORDER BY` セクション内のそれぞれのカラム名の後に、オプションのパラメータ付きで `WITH FILL` 修飾子を追加します。
 
-```sql
+```sql title="Query"
 ORDER BY expr [WITH FILL] [FROM const_expr] [TO const_expr] [STEP const_numeric_expr] [STALENESS const_numeric_expr], ... exprN [WITH FILL] [FROM expr] [TO expr] [STEP numeric_expr] [STALENESS numeric_expr]
 [INTERPOLATE [(col [AS expr], ... colN [AS exprN])]]
 ```
@@ -306,16 +286,14 @@ ORDER BY expr [WITH FILL] [FROM const_expr] [TO const_expr] [STEP const_numeric_
 
 `WITH FILL` を使用しないクエリの例:
 
-```sql
+```sql title="Query"
 SELECT n, source FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─n─┬─source───┐
 │ 1 │ original │
 │ 4 │ original │
@@ -325,16 +303,14 @@ SELECT n, source FROM (
 
 `WITH FILL` 修飾子を適用したあとの同じクエリ：
 
-```sql
+```sql title="Query"
 SELECT n, source FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌───n─┬─source───┐
 │   0 │          │
 │ 0.5 │          │
@@ -356,7 +332,7 @@ SELECT n, source FROM (
 
 例:
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -368,9 +344,7 @@ ORDER BY
     d1 WITH FILL STEP 5;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-01 │ 1970-01-03 │          │
@@ -386,7 +360,7 @@ ORDER BY
 
 次のクエリは、`ORDER BY` 句のフィールドを変更したものです。
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -398,9 +372,7 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-16 │ 1970-01-01 │          │
@@ -420,7 +392,7 @@ ORDER BY
 
 次のクエリでは、列 `d1` に格納される各データに対して、1 日の `INTERVAL` 型を使用します。
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -432,9 +404,7 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─────────d1─┬─────────d2─┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-12 │ 1970-01-01 │          │
@@ -502,15 +472,13 @@ ORDER BY
 
 `STALENESS` を指定しないクエリの例:
 
-```sql
+```sql title="Query"
 SELECT number AS key, 5 * number value, 'original' AS source
 FROM numbers(16) WHERE key % 5 == 0
 ORDER BY key WITH FILL;
 ```
 
-結果：
-
-```text
+```text title="Response"
     ┌─key─┬─value─┬─source───┐
  1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
@@ -533,15 +501,13 @@ ORDER BY key WITH FILL;
 
 `STALENESS 3` を指定した場合の同じクエリ：
 
-```sql
+```sql title="Query"
 SELECT number AS key, 5 * number value, 'original' AS source
 FROM numbers(16) WHERE key % 5 == 0
 ORDER BY key WITH FILL STALENESS 3;
 ```
 
-結果：
-
-```text
+```text title="Response"
     ┌─key─┬─value─┬─source───┐
  1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
@@ -560,16 +526,14 @@ ORDER BY key WITH FILL STALENESS 3;
 
 `INTERPOLATE` を使用しないクエリ例:
 
-```sql
+```sql title="Query"
 SELECT n, source, inter FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
 │ 0.5 │          │     0 │
@@ -589,16 +553,14 @@ SELECT n, source, inter FROM (
 
 `INTERPOLATE` を適用後の同じクエリ：
 
-```sql
+```sql title="Query"
 SELECT n, source, inter FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5 INTERPOLATE (inter AS inter + 1);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
 │ 0.5 │          │     0 │

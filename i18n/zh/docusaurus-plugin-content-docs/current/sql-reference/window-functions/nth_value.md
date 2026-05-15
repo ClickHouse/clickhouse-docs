@@ -34,9 +34,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 在此示例中，`nth-value` 函数用于从一个虚构的英超联赛足球运动员薪资数据集中找出第三高的薪资。
 
-查询：
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -57,13 +55,11 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, nth_value(player,3) OVER(ORDER BY salary DESC) AS third_highest_salary FROM salaries;
 ```
 
-结果：
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─third_highest_salary─┐
 1. │ Gary Chen       │ 195000 │                      │
 2. │ Robert George   │ 195000 │                      │

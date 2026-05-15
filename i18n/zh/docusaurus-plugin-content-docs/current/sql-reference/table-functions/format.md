@@ -29,9 +29,7 @@ format(format_name, [structure], data)
 
 不带 `structure` 参数：
 
-**查询：**
-
-```sql
+```sql title="Query"
 SELECT * FROM format(JSONEachRow,
 $$
 {"a": "Hello", "b": 111}
@@ -41,9 +39,7 @@ $$
 $$)
 ```
 
-**结果：**
-
-```response
+```response title="Response"
 ┌───b─┬─a─────┐
 │ 111 │ Hello │
 │ 123 │ World │
@@ -52,9 +48,7 @@ $$)
 └─────┴───────┘
 ```
 
-**查询：**
-
-```sql
+```sql title="Query"
 DESC format(JSONEachRow,
 $$
 {"a": "Hello", "b": 111}
@@ -64,9 +58,7 @@ $$
 $$)
 ```
 
-**结果：**
-
-```response
+```response title="Response"
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ b    │ Nullable(Float64) │              │                    │         │                  │                │
 │ a    │ Nullable(String)  │              │                    │         │                  │                │
@@ -75,9 +67,7 @@ $$)
 
 使用 `structure` 参数：
 
-**查询：**
-
-```sql
+```sql title="Query"
 SELECT * FROM format(JSONEachRow, 'a String, b UInt32',
 $$
 {"a": "Hello", "b": 111}
@@ -87,9 +77,7 @@ $$
 $$)
 ```
 
-**结果：**
-
-```response
+```response title="Response"
 ┌─a─────┬───b─┐
 │ Hello │ 111 │
 │ World │ 123 │

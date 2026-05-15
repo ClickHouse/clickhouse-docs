@@ -30,15 +30,11 @@ arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM arrowFlight('127.0.0.1:9005', 'sample_dataset') ORDER BY id;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─id─┬─name────┬─value─┐
 │  1 │ foo     │ 42.1  │
 │  2 │ bar     │ 13.3  │

@@ -362,9 +362,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 2019年1月から2月にかけての期間に、ユーザー `user_id` がチェーンをどこまで進んだかを確認します。
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT
     level,
     count() AS c
@@ -381,9 +379,7 @@ GROUP BY level
 ORDER BY level ASC;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─level─┬─c─┐
 │     4 │ 1 │
 └───────┴───┘
@@ -452,7 +448,7 @@ retention(cond1, cond2, ..., cond32);
 
 **1.** 例を示すためのテーブルを作成します。
 
-```sql
+```sql title="Query"
 CREATE TABLE retention_test(date Date, uid Int32) ENGINE = Memory;
 
 INSERT INTO retention_test SELECT '2020-01-01', number FROM numbers(5);
@@ -462,15 +458,11 @@ INSERT INTO retention_test SELECT '2020-01-03', number FROM numbers(15);
 
 入力テーブル:
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT * FROM retention_test
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌───────date─┬─uid─┐
 │ 2020-01-01 │   0 │
 │ 2020-01-01 │   1 │
@@ -511,9 +503,7 @@ SELECT * FROM retention_test
 
 **2.** `retention` 関数を使用して、ユーザーを一意の ID `uid` ごとにグループ化します。
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT
     uid,
     retention(date = '2020-01-01', date = '2020-01-02', date = '2020-01-03') AS r
@@ -523,9 +513,7 @@ GROUP BY uid
 ORDER BY uid ASC
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
 │   1 │ [1,1,1] │
@@ -547,9 +535,7 @@ ORDER BY uid ASC
 
 **3.** 1 日あたりのサイト訪問数の合計を計算します。
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT
     sum(r[1]) AS r1,
     sum(r[2]) AS r2,
@@ -565,9 +551,7 @@ FROM
 )
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─r1─┬─r2─┬─r3─┐
 │  5 │  5 │  5 │
 └────┴────┴────┘
@@ -619,9 +603,7 @@ HAVING uniqUpTo(4)(UserID) >= 5
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE sum_map
 (
     `date` Date,
@@ -637,13 +619,11 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10]);
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_map;
 ```
 
-結果:
-
-```response
+```response title="Response"
    ┌─sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests)─┐
 1. │ ([1,4,8],[10,20,10])                                            │
    └─────────────────────────────────────────────────────────────────┘
@@ -671,9 +651,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 
 この例では、まずテーブル `sum_map` を作成し、いくつかのデータを挿入した後、`sumMapFilteredWithOverflow` と `sumMapFiltered` の両方および `toTypeName` 関数を使用し、結果を比較します。作成したテーブルでは `requests` は型 `UInt8` ですが、`sumMapFiltered` はオーバーフローを避けるために合計後の値の型を `UInt64` に昇格させている一方、`sumMapFilteredWithOverflow` は型を `UInt8` のまま保持しており、結果を格納するには十分な大きさではありません。このため、オーバーフローが発生します。
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE sum_map
 (
     `date` Date,
@@ -689,23 +667,21 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10]);
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFilteredWithOverflow([1, 4, 8])(statusMap.status, statusMap.requests) as summap_overflow, toTypeName(summap_overflow) FROM sum_map;
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap, toTypeName(summap) FROM sum_map;
 ```
 
-結果：
-
-```response
+```response title="Response"
    ┌─sum──────────────────┬─toTypeName(sum)───────────────────┐
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt8)) │
    └──────────────────────┴───────────────────────────────────┘
 ```
 
-```response
+```response title="Response"
    ┌─summap───────────────┬─toTypeName(summap)─────────────────┐
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt64)) │
    └──────────────────────┴────────────────────────────────────┘
@@ -755,7 +731,7 @@ sequenceNextNode(direction, base)(timestamp, event_column, base_condition, event
 
 A-&gt;B に続くイベントを検索するクエリ:
 
-```sql
+```sql title="Query"
 CREATE TABLE test_flow (
     dt DateTime,
     id int,
@@ -769,9 +745,7 @@ INSERT INTO test_flow VALUES (1, 1, 'A') (2, 1, 'B') (3, 1, 'C') (4, 1, 'D') (5,
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'A', page = 'A', page = 'B') as next_flow FROM test_flow GROUP BY id;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─id─┬─next_flow─┐
 │  1 │ C         │
 └────┴───────────┘

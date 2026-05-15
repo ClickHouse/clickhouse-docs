@@ -23,13 +23,11 @@ EXISTS(subquery)
 
 サブクエリ内に値が存在するかどうかを確認するクエリ:
 
-```sql
+```sql title="Query"
 SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM numbers(10) WHERE number > 11)
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─in(1, _subquery1)─┬─in(1, _subquery2)─┐
 │                 1 │                 0 │
 └───────────────────┴───────────────────┘
@@ -37,13 +35,11 @@ SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM 
 
 複数行を返す副問い合わせを使用したクエリ:
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 8);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │      10 │
 └─────────┘
@@ -51,13 +47,11 @@ SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHER
 
 結果が空になるサブクエリを含むクエリ:
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 11);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │       0 │
 └─────────┘

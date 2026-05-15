@@ -38,9 +38,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 В этом примере функция `last_value` используется для поиска футболиста с наименьшей заработной платой в вымышленном наборе данных о зарплатах игроков Премьер-лиги.
 
-Запрос:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -61,15 +59,13 @@ INSERT INTO salaries FORMAT VALUES
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        last_value(player) OVER (ORDER BY salary DESC RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lowest_paid_player
 FROM salaries;
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─lowest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Michael Stanley    │
 2. │ Robert George   │ 195000 │ Michael Stanley    │

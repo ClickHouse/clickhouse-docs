@@ -23,13 +23,11 @@ EXISTS(subquery)
 
 用于检查子查询中是否存在某些值的查询：
 
-```sql
+```sql title="Query"
 SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM numbers(10) WHERE number > 11)
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─in(1, _subquery1)─┬─in(1, _subquery2)─┐
 │                 1 │                 0 │
 └───────────────────┴───────────────────┘
@@ -37,13 +35,11 @@ SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM 
 
 包含返回多行结果的子查询的查询：
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 8);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │      10 │
 └─────────┘
@@ -51,13 +47,11 @@ SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHER
 
 带有返回空结果的子查询的查询：
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 11);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │       0 │
 └─────────┘

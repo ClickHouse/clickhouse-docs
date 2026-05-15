@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 `UNION`을 사용하여 결과를 확장하는 방식으로 임의 개수의 `SELECT` 쿼리를 결합할 수 있습니다. 예:
 
-```sql
+```sql title="Query"
 SELECT CounterID, 1 AS table, toInt64(count()) AS c
     FROM test.hits
     GROUP BY CounterID
@@ -33,16 +33,12 @@ SELECT CounterID, 2 AS table, sum(Sign) AS c
 
 `UNION ALL` 또는 `UNION DISTINCT`를 명시적으로 지정하지 않고 `UNION`을 사용하는 경우, [union&#95;default&#95;mode](/operations/settings/settings#union_default_mode) 설정을 사용하여 유니온 모드를 지정할 수 있습니다. 해당 설정 값은 `ALL`, `DISTINCT` 또는 빈 문자열이 될 수 있습니다. 그러나 `UNION`을 사용할 때 `union_default_mode` 설정을 빈 문자열로 지정하면 예외가 발생합니다. 다음 예시는 설정 값이 서로 다른 경우 쿼리 결과가 어떻게 달라지는지 보여줍니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 SET union_default_mode = 'DISTINCT';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─1─┐
 │ 1 │
 └───┘
@@ -54,16 +50,12 @@ SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 └───┘
 ```
 
-쿼리:
-
-```sql
+```sql title="Query"
 SET union_default_mode = 'ALL';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─1─┐
 │ 1 │
 └───┘

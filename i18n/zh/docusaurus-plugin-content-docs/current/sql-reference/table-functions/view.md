@@ -36,15 +36,11 @@ view(subquery)
 └────┴──────────┴──────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM view(SELECT name FROM months);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─name─────┐
 │ January  │
 │ February │
@@ -55,11 +51,11 @@ SELECT * FROM view(SELECT name FROM months);
 
 您可以将 `view` 函数作为 [remote](/sql-reference/table-functions/remote) 和 [cluster](/sql-reference/table-functions/cluster) 表函数的参数使用：
 
-```sql
+```sql title="Query"
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 

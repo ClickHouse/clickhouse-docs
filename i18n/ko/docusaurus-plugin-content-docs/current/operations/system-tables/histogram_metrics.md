@@ -40,6 +40,246 @@ FROM system.histogram_metrics
 FORMAT Prometheus
 ```
 
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며 `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에서 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓별로 1회 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에서 1회 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓별로 한 번 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다, 활성 소켓별로 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓당 1회 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 1회 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 현재 활성 상태인 각 소켓별로 1회 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓당 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 한 번씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고 `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 한 번 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓당 한 번 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 1회씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며 `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 1회 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에서 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 상태인 각 소켓별로 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며 `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 1회 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 1회씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에서 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓별로 1회 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc` / `sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 1회 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 한 번 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓별로 1회 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc` / `sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc` / `sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에 대해 한 번 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 비동기 메트릭을 스크레이프할 때마다 각 활성 소켓별로 한 번씩 관측됩니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓당 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며 `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+비동기 메트릭을 스크레이프할 때마다 현재 활성 상태인 각 소켓에 대해 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓마다 1회씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+비동기 메트릭을 스크레이프할 때마다 활성 소켓당 한 번씩 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓별로 1회 관측되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이고, `direction`은 `rcv` 또는 `snd`입니다.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+비동기 메트릭을 스크레이프할 때마다 각 활성 소켓에서 1회씩 관찰되는 HTTP 연결 풀 소켓의 커널 TCP 버퍼 메모리(`sk_rmem_alloc / sk_wmem_alloc`)입니다. 레이블: `group`은 `disk`, `storage`, `http` 중 하나이며, `direction`은 `rcv` 또는 `snd`입니다.
+
 ### keeper_batch_size_bytes \{#keeper_batch_size_bytes\}
 
 Raft로 전송되는 배치의 크기(바이트 단위)입니다.

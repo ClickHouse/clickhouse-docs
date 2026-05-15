@@ -64,7 +64,7 @@ LIMIT 2
 `S3` ストレージ上の `s3://ch-docs-s3-bucket/people_10k/` にあるテーブルを例に考えます。
 このテーブルにデータを挿入するには、まず実験的機能を有効にします。
 
-```sql
+```sql title="Query"
 SET allow_experimental_delta_lake_writes=1
 ```
 
@@ -97,7 +97,6 @@ Query id: 65032944-bed6-4d45-86b3-a71205a2b659
 1. │ 10001 │ John      │ Smith    │ Male   │  30 │
    └───────┴───────────┴──────────┴────────┴─────┘
 ```
-
 
 ## 仮想カラム \{#virtual-columns\}
 

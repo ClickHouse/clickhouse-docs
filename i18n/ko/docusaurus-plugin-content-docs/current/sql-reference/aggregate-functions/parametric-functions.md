@@ -362,9 +362,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 2019년 1월부터 2월 사이 기간 동안 사용자 `user_id`가 체인에서 어디까지 진행했는지 확인합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT
     level,
     count() AS c
@@ -381,9 +379,7 @@ GROUP BY level
 ORDER BY level ASC;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─level─┬─c─┐
 │     4 │ 1 │
 └───────┴───┘
@@ -427,7 +423,7 @@ ORDER BY level ASC;
 
 첫 번째 조건을 제외한 나머지 조건은 쌍으로 평가됩니다. 첫 번째와 두 번째 조건이 모두 참이면 두 번째 조건의 결과가 참이 되고, 첫 번째와 세 번째 조건이 모두 참이면 세 번째 조건의 결과가 참이 되는 식으로 동작합니다.
 
-**Syntax**
+**구문**
 
 ```sql
 retention(cond1, cond2, ..., cond32);
@@ -452,7 +448,7 @@ retention(cond1, cond2, ..., cond32);
 
 **1.** 예제를 위해 테이블을 생성합니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE retention_test(date Date, uid Int32) ENGINE = Memory;
 
 INSERT INTO retention_test SELECT '2020-01-01', number FROM numbers(5);
@@ -462,15 +458,11 @@ INSERT INTO retention_test SELECT '2020-01-03', number FROM numbers(15);
 
 입력 테이블:
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT * FROM retention_test
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌───────date─┬─uid─┐
 │ 2020-01-01 │   0 │
 │ 2020-01-01 │   1 │
@@ -511,9 +503,7 @@ SELECT * FROM retention_test
 
 **2.** `retention` FUNCTION을 사용하여 고유 ID `uid`를 기준으로 사용자를 그룹화합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT
     uid,
     retention(date = '2020-01-01', date = '2020-01-02', date = '2020-01-03') AS r
@@ -523,9 +513,7 @@ GROUP BY uid
 ORDER BY uid ASC
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
 │   1 │ [1,1,1] │
@@ -547,9 +535,7 @@ ORDER BY uid ASC
 
 **3.** 일별 총 사이트 방문 수를 계산합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT
     sum(r[1]) AS r1,
     sum(r[2]) AS r2,
@@ -565,9 +551,7 @@ FROM
 )
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─r1─┬─r2─┬─r3─┐
 │  5 │  5 │  5 │
 └────┴────┴────┘
@@ -619,9 +603,7 @@ HAVING uniqUpTo(4)(UserID) >= 5
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE sum_map
 (
     `date` Date,
@@ -637,13 +619,11 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10]);
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_map;
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌─sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests)─┐
 1. │ ([1,4,8],[10,20,10])                                            │
    └─────────────────────────────────────────────────────────────────┘
@@ -651,13 +631,13 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 
 ## sumMapFilteredWithOverflow \{#summapfilteredwithoverflow\}
 
-이 함수는 필터링에 사용할 키 배열을 인자로 추가로 받는다는 점을 제외하면 [sumMap](/sql-reference/aggregate-functions/reference/summap) 함수와 동일하게 동작합니다. 이는 키의 카디널리티가 매우 높은 경우에 특히 유용합니다. 오버플로를 허용하는 방식으로 합계를 계산한다는 점에서 [sumMapFiltered](#summapfiltered) 함수와 다르며, 즉 합계에 대해 인자 데이터 타입과 동일한 데이터 타입을 그대로 반환합니다.
+이 함수는 필터링에 사용할 키 배열을 인수로 추가로 받는다는 점을 제외하면 [sumMap](/sql-reference/aggregate-functions/reference/summap) 함수와 동일하게 동작합니다. 이는 키의 카디널리티가 매우 높은 경우에 특히 유용합니다. 오버플로를 허용하는 방식으로 합계를 계산한다는 점에서 [sumMapFiltered](#summapfiltered) 함수와 다르며, 즉 합계에 대해 인수 데이터 타입과 동일한 데이터 타입을 그대로 반환합니다.
 
-**Syntax**
+**구문**
 
 `sumMapFilteredWithOverflow(keys_to_keep)(keys, values)`
 
-**Parameters**
+**매개변수**
 
 * `keys_to_keep`: 필터링에 사용할 키들의 [Array](../data-types/array.md).
 * `keys`: 키들의 [Array](../data-types/array.md).
@@ -667,13 +647,11 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 
 * 정렬된 순서의 키 배열과 해당 키에 대해 합산된 값 배열, 이렇게 두 개의 배열로 이루어진 튜플을 반환합니다.
 
-**Example**
+**예시**
 
 이 예시에서는 `sum_map` 테이블을 생성하고 일부 데이터를 삽입한 뒤, 결과 비교를 위해 `sumMapFilteredWithOverflow`, `sumMapFiltered`, `toTypeName` 함수를 모두 사용합니다. 생성한 테이블에서 `requests`의 타입은 `UInt8`이었기 때문에, `sumMapFiltered`는 오버플로를 방지하기 위해 합산된 값의 타입을 `UInt64`로 승격하는 반면, `sumMapFilteredWithOverflow`는 타입을 `UInt8`로 유지하여 결과를 저장하기에 충분하지 않아 오버플로가 발생합니다.
 
-Query:
-
-```sql
+```sql title="Query"
 CREATE TABLE sum_map
 (
     `date` Date,
@@ -689,23 +667,21 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10]);
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFilteredWithOverflow([1, 4, 8])(statusMap.status, statusMap.requests) as summap_overflow, toTypeName(summap_overflow) FROM sum_map;
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap, toTypeName(summap) FROM sum_map;
 ```
 
-반환값:
-
-```response
+```response title="Response"
    ┌─sum──────────────────┬─toTypeName(sum)───────────────────┐
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt8)) │
    └──────────────────────┴───────────────────────────────────┘
 ```
 
-```response
+```response title="Response"
    ┌─summap───────────────┬─toTypeName(summap)─────────────────┐
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt64)) │
    └──────────────────────┴────────────────────────────────────┘
@@ -755,7 +731,7 @@ sequenceNextNode(direction, base)(timestamp, event_column, base_condition, event
 
 A-&gt;B 다음 이벤트를 찾는 쿼리는 다음과 같습니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE test_flow (
     dt DateTime,
     id int,
@@ -769,9 +745,7 @@ INSERT INTO test_flow VALUES (1, 1, 'A') (2, 1, 'B') (3, 1, 'C') (4, 1, 'D') (5,
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'A', page = 'A', page = 'B') as next_flow FROM test_flow GROUP BY id;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─id─┬─next_flow─┐
 │  1 │ C         │
 └────┴───────────┘

@@ -50,7 +50,7 @@ regionToName(id\[, lang\])
 **参数**
 
 * `id` — 来自 geobase 的区域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
@@ -59,15 +59,11 @@ regionToName(id\[, lang\])
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┐
 │                                            │
 │ World                                      │
@@ -89,25 +85,21 @@ regionToCity(id [, geobase])
 
 **参数**
 
-* `id` — 来自 geobase 的地区 ID。[UInt32](../data-types/int-uint)。
+* `id` — 来自 geobase 的区域 ID。[UInt32](../data-types/int-uint)。
 * `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
-* 对应城市的地区 ID (如果存在) 。[UInt32](../data-types/int-uint)。
+* 对应城市的区域 ID (如果存在) 。[UInt32](../data-types/int-uint)。
 * 如果不存在，则返回 0。
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-结果：
-
-```text
+```response title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
 │ World                                      │  0 │                                                          │
@@ -138,7 +130,7 @@ regionToArea(id [, geobase])
 **参数**
 
 * `id` — geobase 中的区域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
@@ -147,17 +139,13 @@ regionToArea(id [, geobase])
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT DISTINCT regionToName(regionToArea(toUInt32(number), 'ua'))
 FROM system.numbers
 LIMIT 15
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─regionToName(regionToArea(toUInt32(number), \'ua\'))─┐
 │                                                      │
 │ Moscow and Moscow region                             │
@@ -190,7 +178,7 @@ regionToDistrict(id [, geobase])
 **参数**
 
 * `id` — geobase 中的区域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
@@ -199,17 +187,13 @@ regionToDistrict(id [, geobase])
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT DISTINCT regionToName(regionToDistrict(toUInt32(number), 'ua'))
 FROM system.numbers
 LIMIT 15
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─regionToName(regionToDistrict(toUInt32(number), \'ua\'))─┐
 │                                                          │
 │ Central federal district                                 │
@@ -241,8 +225,8 @@ regionToCountry(id [, geobase])
 
 **参数**
 
-* `id` — 来自 geobase 的地域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
+* `id` — 来自 geobase 的区域 ID。[UInt32](../data-types/int-uint)。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
@@ -251,15 +235,11 @@ regionToCountry(id [, geobase])
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCountry(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                             │
 │ World                                      │  0 │                                                             │
@@ -299,15 +279,11 @@ regionToContinent(id [, geobase])
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                               │
 │ World                                      │  0 │                                                               │
@@ -338,7 +314,7 @@ regionToTopContinent(id[, geobase])
 **参数**
 
 * `id` — 来自 geobase 的区域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
@@ -347,15 +323,11 @@ regionToTopContinent(id[, geobase])
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                                  │
 │ World                                      │  0 │                                                                  │
@@ -386,7 +358,7 @@ regionToPopulation(id[, geobase])
 **参数**
 
 * `id` — 来自 geobase 的区域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)，可选。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)，可选。
 
 **返回值**
 
@@ -395,15 +367,11 @@ regionToPopulation(id[, geobase])
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─population─┐
 │                                            │          0 │
 │ World                                      │ 4294967295 │
@@ -435,7 +403,7 @@ regionIn(lhs, rhs\[, geobase\])
 
 * `lhs` — 来自 geobase 的左侧区域 ID。[UInt32](../data-types/int-uint)。
 * `rhs` — 来自 geobase 的右侧区域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
@@ -448,15 +416,11 @@ regionIn(lhs, rhs\[, geobase\])
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT regionToName(n1.number::UInt32, 'en') || (regionIn(n1.number::UInt32, n2.number::UInt32) ? ' is in ' : ' is not in ') || regionToName(n2.number::UInt32, 'en') FROM numbers(1,2) AS n1 CROSS JOIN numbers(1,5) AS n2;
 ```
 
-结果：
-
-```text
+```text title="Response"
 World is in World
 World is not in USA
 World is not in Colorado
@@ -482,7 +446,7 @@ regionHierarchy(id\[, geobase\])
 **参数**
 
 * `id` — 来自 geobase 的区域 ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 字典键。参见 [Multiple Geobases](#multiple-geobases)。[String](../data-types/string)。可选。
+* `geobase` — 字典键。参见 [多个地理库](#multiple-geobases)。[String](../data-types/string)。可选。
 
 **返回值**
 
@@ -490,15 +454,11 @@ regionHierarchy(id\[, geobase\])
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, 'en'), arr) FROM numbers(5);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─arr────────────┬─arrayMap(lambda(tuple(id), regionToName(id, 'en')), regionHierarchy(CAST(number, 'UInt32')))─┐
 │ []             │ []                                                                                           │
 │ [1]            │ ['World']                                                                                    │
@@ -509,9 +469,9 @@ SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, '
 ```
 
 {/* 
-    下方标签内的内容会在文档框架构建时，
-    被替换为由 system.functions 生成的文档。请不要修改或移除这些标签。
-    参见：https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
+  下方标签中的内容会在文档框架构建时被替换为
+  根据 system.functions 生成的文档。请勿修改或移除这些标签。
+  参见：https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
   */ }
 
 {/*AUTOGENERATED_START*/ }

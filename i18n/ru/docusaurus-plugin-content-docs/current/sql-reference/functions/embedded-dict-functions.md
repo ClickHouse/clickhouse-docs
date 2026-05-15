@@ -59,15 +59,11 @@ regionToName(id\[, lang\])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┐
 │                                            │
 │ World                                      │
@@ -99,15 +95,11 @@ regionToCity(id [, geobase])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-Результат:
-
-```text
+```response title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
 │ World                                      │  0 │                                                          │
@@ -147,17 +139,13 @@ regionToArea(id [, geobase])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT DISTINCT regionToName(regionToArea(toUInt32(number), 'ua'))
 FROM system.numbers
 LIMIT 15
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─regionToName(regionToArea(toUInt32(number), \'ua\'))─┐
 │                                                      │
 │ Moscow and Moscow region                             │
@@ -199,17 +187,13 @@ regionToDistrict(id [, geobase])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT DISTINCT regionToName(regionToDistrict(toUInt32(number), 'ua'))
 FROM system.numbers
 LIMIT 15
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─regionToName(regionToDistrict(toUInt32(number), \'ua\'))─┐
 │                                                          │
 │ Central federal district                                 │
@@ -231,7 +215,7 @@ LIMIT 15
 
 ### regionToCountry
 
-Преобразует регион в страну (тип 3 в geobase). В остальном эта функция аналогична функции &#39;regionToCity&#39;.
+Преобразует регион в страну (тип 3 в геобазе). В остальном эта функция аналогична функции &#39;regionToCity&#39;.
 
 **Синтаксис**
 
@@ -241,7 +225,7 @@ regionToCountry(id [, geobase])
 
 **Параметры**
 
-* `id` — ID региона из геобазы. [UInt32](../data-types/int-uint).
+* `id` — идентификатор региона из геобазы. [UInt32](../data-types/int-uint).
 * `geobase` — Ключ словаря. См. [Несколько геобаз](#multiple-geobases). [String](../data-types/string). Необязательный параметр.
 
 **Возвращаемое значение**
@@ -251,15 +235,11 @@ regionToCountry(id [, geobase])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCountry(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                             │
 │ World                                      │  0 │                                                             │
@@ -279,7 +259,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 
 ### regionToContinent
 
-Преобразует регион в континент (тип 1 в geobase). В остальном эта функция аналогична функции &#39;regionToCity&#39;.
+Преобразует регион в континент (тип 1 в геобазе). В остальном эта функция аналогична функции &#39;regionToCity&#39;.
 
 **Синтаксис**
 
@@ -299,15 +279,11 @@ regionToContinent(id [, geobase])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                               │
 │ World                                      │  0 │                                                               │
@@ -347,15 +323,11 @@ regionToTopContinent(id[, geobase])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                                  │
 │ World                                      │  0 │                                                                  │
@@ -375,7 +347,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 ### regionToPopulation
 
-Возвращает численность населения для региона. Данные о населении могут храниться в файлах geobase. См. раздел [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded). Если численность населения для региона не указана, функция возвращает 0. В geobase численность населения может быть указана для дочерних регионов, но не для родительских.
+Возвращает численность населения для региона. Данные о населении могут храниться в файлах геобазы. См. раздел [&quot;Dictionaries&quot;](../statements/create/dictionary/embedded). Если численность населения для региона не указана, функция возвращает 0. В геобазе численность населения может быть указана для дочерних регионов, но не для родительских.
 
 **Синтаксис**
 
@@ -395,15 +367,11 @@ regionToPopulation(id[, geobase])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─population─┐
 │                                            │          0 │
 │ World                                      │ 4294967295 │
@@ -433,9 +401,9 @@ regionIn(lhs, rhs\[, geobase\])
 
 **Параметры**
 
-* `lhs` — ID левого региона из геобазы. [UInt32](../data-types/int-uint).
-* `rhs` — ID правого региона из геобазы. [UInt32](../data-types/int-uint).
-* `geobase` — ключ словаря. См. [Multiple Geobases](#multiple-geobases). [String](../data-types/string). Необязательный параметр.
+* `lhs` — идентификатор левого региона из геобазы. [UInt32](../data-types/int-uint).
+* `rhs` — идентификатор правого региона из геобазы. [UInt32](../data-types/int-uint).
+* `geobase` — ключ словаря. См. [Несколько геобаз](#multiple-geobases). [String](../data-types/string). Необязательный параметр.
 
 **Возвращаемое значение**
 
@@ -448,15 +416,11 @@ regionIn(lhs, rhs\[, geobase\])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT regionToName(n1.number::UInt32, 'en') || (regionIn(n1.number::UInt32, n2.number::UInt32) ? ' is in ' : ' is not in ') || regionToName(n2.number::UInt32, 'en') FROM numbers(1,2) AS n1 CROSS JOIN numbers(1,5) AS n2;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 World is in World
 World is not in USA
 World is not in Colorado
@@ -481,7 +445,7 @@ regionHierarchy(id\[, geobase\])
 
 **Параметры**
 
-* `id` — ID региона из геобазы. [UInt32](../data-types/int-uint).
+* `id` — идентификатор региона из геобазы. [UInt32](../data-types/int-uint).
 * `geobase` — ключ словаря. См. [Несколько геобаз](#multiple-geobases). [String](../data-types/string). Необязательный параметр.
 
 **Возвращаемое значение**
@@ -490,15 +454,11 @@ regionHierarchy(id\[, geobase\])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, 'en'), arr) FROM numbers(5);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─arr────────────┬─arrayMap(lambda(tuple(id), regionToName(id, 'en')), regionHierarchy(CAST(number, 'UInt32')))─┐
 │ []             │ []                                                                                           │
 │ [1]            │ ['World']                                                                                    │
@@ -509,8 +469,8 @@ SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, '
 ```
 
 {/* 
-  Содержимое тегов ниже при сборке фреймворка документации заменяется документацией,
-  сгенерированной из system.functions. Пожалуйста, не изменяйте и не удаляйте эти теги.
+  Внутреннее содержимое приведённых ниже тегов при сборке фреймворка документации заменяется
+  документацией, сгенерированной из system.functions. Пожалуйста, не изменяйте и не удаляйте теги.
   См.: https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md
   */ }
 

@@ -48,7 +48,7 @@ VALUES(
 
 * 제공된 값을 포함하는 임시 테이블을 반환합니다.
 
-## 예제 \{#examples\}
+## 예시 \{#examples\}
 
 ```sql title="Query"
 SELECT *
@@ -152,7 +152,7 @@ FROM VALUES(
     └──────────┴───────────┘
 ```
 
-```sql
+```sql title="Query"
 -- single values
 SELECT *
 FROM VALUES(

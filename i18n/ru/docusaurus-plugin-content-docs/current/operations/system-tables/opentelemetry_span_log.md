@@ -40,15 +40,11 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 ## Пример \{#example\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM system.opentelemetry_span_log LIMIT 1 FORMAT Vertical;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 trace_id:         cdab0847-0d62-61d5-4d38-dd65b19a1914

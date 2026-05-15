@@ -88,7 +88,7 @@ GROUP BY
 
 예시:
 
-```sql
+```sql title="Query"
 SELECT
     arrayJoin(dice) AS first_throw,
     /* arrayJoin(dice) as second_throw */ -- is technically correct, but will annihilate result set
@@ -103,7 +103,7 @@ SELECT 쿼리에서 [`ARRAY JOIN`](../statements/select/array-join.md) 구문에
 
 예시:
 
-```sql
+```sql title="Query"
 SELECT
     sum(1) AS impressions,
     city,
@@ -122,7 +122,7 @@ GROUP BY
     3
 ```
 
-```text
+```text title="Response"
 ┌─impressions─┬─city─────┬─browser─┐
 │           1 │ Istanbul │ Firefox │
 │           1 │ Berlin   │ Chrome  │

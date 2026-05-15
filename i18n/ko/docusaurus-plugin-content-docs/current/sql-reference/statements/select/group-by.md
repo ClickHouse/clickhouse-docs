@@ -77,9 +77,7 @@ doc_type: 'reference'
 └──────┴───────┴─────┘
 ```
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 ```
 
@@ -88,9 +86,9 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 * `GROUP BY year, month, day`;
 * `GROUP BY year, month` (그리고 `day` 컬럼은 0으로 채워집니다);
 * `GROUP BY year` (이때 `month, day` 컬럼은 둘 다 0으로 채워집니다);
-* 그리고 총합(세 개의 키 표현식 컬럼이 모두 0입니다).
+* 그리고 합계(세 개의 키 표현식 컬럼이 모두 0입니다).
 
-```text
+```text title="Response"
 ┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
@@ -115,7 +113,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 
 동일한 쿼리는 `WITH` 키워드를 사용해 작성할 수도 있습니다.
 
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 ```
 
@@ -127,7 +125,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 
 `CUBE` 수정자는 `GROUP BY` 목록에 있는 키 표현식의 모든 조합에 대한 소계를 계산하는 데 사용됩니다. 소계 행은 결과 테이블의 마지막에 추가됩니다.
 
-소계 행에서는 모든 「grouped」 키 표현식의 값이 `0` 또는 빈 문자열로 설정됩니다.
+소계 행에서는 모든 「그룹화된」 키 표현식의 값이 `0` 또는 빈 문자열로 설정됩니다.
 
 :::note
 [HAVING](/sql-reference/statements/select/having.md) 절이 소계 결과에 영향을 줄 수 있습니다.
@@ -148,9 +146,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 └──────┴───────┴─────┘
 ```
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 ```
 
@@ -167,7 +163,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 
 `GROUP BY`에서 제외된 컬럼은 0으로 채워집니다.
 
-```text
+```text title="Response"
 ┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
@@ -212,7 +208,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 
 같은 쿼리는 `WITH` 키워드를 사용해 작성할 수도 있습니다.
 
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 ```
 

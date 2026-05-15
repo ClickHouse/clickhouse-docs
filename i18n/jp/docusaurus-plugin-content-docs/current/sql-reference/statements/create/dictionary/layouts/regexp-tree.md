@@ -21,9 +21,9 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <CloudNotSupportedBadge />
 
-正規表現ツリー Dictionary は、正規表現ツリーを含む YAML ファイルへのパスを指定する [`YAMLRegExpTree`](../sources/yamlregexptree.md) ソースを使用して、ClickHouse オープンソース版で定義されます。
+正規表現ツリー Dictionary は、正規表現ツリーを含む YAML ファイルへのパスを指定する [`YAMLRegExpTree`](../sources/yamlregexptree.md) ソースを使用して、ClickHouse Open Sourceで定義されます。
 
-```sql
+```sql title="Query"
 CREATE DICTIONARY regexp_dict
 (
     regexp String,
@@ -60,8 +60,8 @@ Dictionary のデータソースである [`YAMLRegExpTree`](../sources/yamlrege
 
 * **regexp**: ノードの正規表現。
 * **attributes**: ユーザー定義の Dictionary 属性のリスト。この例では、`name` と `version` の 2 つの属性があります。最初のノードは両方の属性を定義します。2 番目のノードは属性 `name` のみを定義します。属性 `version` は 2 番目のノードの子ノードによって提供されます。
-  * 属性の値には、マッチした正規表現のキャプチャグループを参照する **後方参照 (back reference)** を含めることができます。この例では、最初のノードにおける属性 `version` の値は、正規表現内のキャプチャグループ `(\d+[\.\d]*)` への後方参照 `\1` で構成されています。後方参照番号は 1 から 9 までで、`$1` または `\1`（1 の場合）のように記述します。後方参照は、クエリ実行中にマッチしたキャプチャグループで置き換えられます。
-* **child nodes**: regexp ツリーノードの子ノードのリストであり、それぞれが独自の attributes と（場合によっては）さらに子ノードを持ちます。文字列マッチングは深さ優先で行われます。ある文字列が regexp ノードにマッチした場合、Dictionary はその文字列がそのノードの子ノードにもマッチするかを確認します。マッチする場合、最も深い位置でマッチしたノードの attributes が割り当てられます。子ノードの属性は、親ノードと同名の属性を上書きします。YAML ファイルにおける子ノードの名前は任意であり、上記の例では `versions` などとできます。
+  * 属性の値には、マッチした正規表現のキャプチャグループを参照する **後方参照 (back reference)** を含めることができます。この例では、最初のノードにおける属性 `version` の値は、正規表現内のキャプチャグループ `(\d+[\.\d]*)` への後方参照 `\1` で構成されています。後方参照番号は 1 から 9 までで、`$1` または `\1` (1 の場合) のように記述します。後方参照は、クエリ実行中にマッチしたキャプチャグループで置き換えられます。
+* **child nodes**: regexp ツリーノードの子ノードのリストであり、それぞれが独自の attributes と (場合によっては) さらに子ノードを持ちます。文字列マッチングは深さ優先で行われます。ある文字列が regexp ノードにマッチした場合、Dictionary はその文字列がそのノードの子ノードにもマッチするかを確認します。マッチする場合、最も深い位置でマッチしたノードの attributes が割り当てられます。子ノードの属性は、親ノードと同名の属性を上書きします。YAML ファイルにおける子ノードの名前は任意であり、上記の例では `versions` などとできます。
 
 Regexp ツリー Dictionary は、`dictGet`、`dictGetOrDefault`、`dictGetAll` 関数によるアクセスのみが可能です。例:
 
@@ -77,11 +77,10 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 
 この場合、まず最上位レイヤーの 2 番目のノードで、正規表現 `\d+/tclwebkit(?:\d+[\.\d]*)` にマッチします。
 その後、Dictionary は子ノードの探索を続け、その文字列が `3[12]/tclwebkit` にもマッチすることを見つけます。
-その結果、属性 `name` の値は（第 1 レイヤーで定義されている）`Android` となり、属性 `version` の値は（子ノードで定義されている）`12` となります。
+その結果、属性 `name` の値は (第 1 レイヤーで定義されている) `Android` となり、属性 `version` の値は (子ノードで定義されている) `12` となります。
 
 適切に作り込まれた YAML 設定ファイルを用いることで、正規表現ツリー Dictionary をユーザーエージェント文字列パーサーとして利用できます。
 ClickHouse は [uap-core](https://github.com/ua-parser/uap-core) をサポートしており、機能テスト [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) でその使用方法を確認できます。
-
 
 ### 属性値の収集 \{#collecting-attribute-values\}
 
@@ -128,22 +127,19 @@ LIFETIME(0)
   captured: 'NULL'
 ```
 
-```sql
+```sql title="Query"
 CREATE TABLE urls (url String) ENGINE=MergeTree ORDER BY url;
 INSERT INTO urls VALUES ('clickhouse.com'), ('clickhouse.com/docs/en'), ('github.com/clickhouse/tree/master/docs');
 SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', 'parent'), url, 2) FROM urls;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─url────────────────────────────────────┬─dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', 'parent'), url, 2)─┐
 │ clickhouse.com                         │ (['ClickHouse'],[1],[],[])                                                            │
 │ clickhouse.com/docs/en                 │ (['ClickHouse Documentation','ClickHouse'],[0,1],['/en'],['ClickHouse'])              │
 │ github.com/clickhouse/tree/master/docs │ (['Documentation','GitHub'],[2,3],[NULL],[])                                          │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### マッチングモード \{#matching-modes\}
 

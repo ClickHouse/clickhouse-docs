@@ -70,7 +70,7 @@ two    : [3]
 
 要创建文本索引，请使用以下语法：
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     key UInt64,
@@ -107,7 +107,7 @@ ORDER BY key
 
 或者，要为现有表添加一个文本索引：
 
-```sql
+```sql title="Query"
 ALTER TABLE table
     ADD INDEX text_idx(str) TYPE text(
                                 -- Mandatory parameters:
@@ -130,13 +130,13 @@ ALTER TABLE table
 
 如果你向已有表添加一个索引，我们建议为表中现有的parts物化此索引 (否则，在这些尚未建立索引的parts上进行搜索时，将会回退到较慢的穷举扫描方式) 。
 
-```sql
+```sql title="Query"
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ```
 
 要删除文本索引，请运行
 
-```sql
+```sql title="Query"
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
@@ -173,13 +173,11 @@ ALTER TABLE table DROP INDEX text_idx;
 
 示例：
 
-```sql
+```sql title="Query"
 SELECT tokens('abc def', 'ngrams', 3);
 ```
 
-结果：
-
-```result
+```result title="Response"
 ['abc','bc ','c d',' de','def']
 ```
 
@@ -191,7 +189,6 @@ SELECT tokens('abc def', 'ngrams', 3);
 **预处理器 参数 (可选)&#x20;**。预处理器 指的是在分词之前应用于输入字符串的一个表达式。
 
 预处理器 参数的典型用例包括
-
 
 1. 转换为小写/大写，或进行大小写折叠以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)、[caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)。
 2. UTF-8 归一化，例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
@@ -221,7 +218,7 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 例如，
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -235,7 +232,7 @@ SELECT count() FROM table WHERE hasToken(str, 'Foo');
 
 等价于：
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -251,7 +248,7 @@ SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 
 示例：
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     arr Array(String),
@@ -270,8 +267,7 @@ SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 
 示例：
 
-
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     map Map(String, String),
@@ -310,7 +306,7 @@ SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 
 示例：
 
-```sql
+```sql title="Query"
 CREATE TABLE table(
     k UInt64,
     s String,
@@ -321,9 +317,7 @@ ORDER BY k;
 SHOW CREATE TABLE table;
 ```
 
-结果：
-
-```result
+```result title="Response"
 ┌─statement──────────────────────────────────────────────────────────────┐
 │ CREATE TABLE default.table                                            ↴│
 │↳(                                                                     ↴│
@@ -339,7 +333,6 @@ SHOW CREATE TABLE table;
 
 较大的索引粒度可确保为整个 part 创建文本索引。
 显式指定的索引粒度将被忽略。
-
 
 ## 使用文本索引 \{#using-a-text-index\}
 
@@ -692,7 +685,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 
 示例索引定义：
 
-```sql
+```sql title="Query"
 CREATE TABLE sensor_data
 (
     data JSON(sensor_id String),
@@ -709,13 +702,11 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'l
 
 示例查询：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -728,13 +719,11 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 
 示例查询：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -752,7 +741,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 
 示例索引定义：
 
-```sql
+```sql title="Query"
 CREATE TABLE events
 (
     data JSON,
@@ -770,13 +759,11 @@ INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 
 示例：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -791,11 +778,9 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 
 示例：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
-
-结果：
 
 ```text title="Response"
 ...
@@ -808,17 +793,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
         Granules: 0/2
 ```
 
-`IS NOT NULL` 也会使用索引——它会跳过路径不存在的그래뉼 (因为此时该值会是 `NULL`) ：
+`IS NOT NULL` 也会使用索引——它会跳过路径不存在的粒度 (因为此时该值会是 `NULL`) ：
 
 示例：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -904,7 +887,7 @@ SELECT * FROM events WHERE data.level IN ('error', 'critical');
 
 #### 示例 \{#text-index-phrase-search-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (
     id UInt32,
     text String,
@@ -919,13 +902,11 @@ INSERT INTO tab VALUES
     (3, 'weather in New Orleans');
 ```
 
-```sql
+```sql title="Query"
 SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
 ```
 
-结果：
-
-```result
+```result title="Response"
    ┌─id─┬─text────────────────┐
 1. │  1 │ weather in New York │
    └────┴─────────────────────┘

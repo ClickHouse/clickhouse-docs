@@ -10,7 +10,7 @@ doc_type: 'reference'
 数据类型 `Map(K, V)` 用于存储键值对。
 
 与其他数据库不同，在 ClickHouse 中 Map 中的键不要求唯一，也就是说，一个 Map 可以包含两个具有相同键的元素。
- (这是因为 Map 在内部实现为 `Array(Tuple(K, V))`。) 
+(这是因为 Map 在内部实现为 `Array(Tuple(K, V))`。)
 
 你可以使用语法 `m[k]` 来获取 Map `m` 中键 `k` 对应的值。
 同时，`m[k]` 会顺序扫描整个 Map，即该操作的运行时间与 Map 的大小成线性关系。
@@ -24,20 +24,18 @@ doc_type: 'reference'
 
 创建一个包含 Map 类型列的表：
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
 INSERT INTO tab VALUES ({'key1':1, 'key2':10}), ({'key1':2,'key2':20}), ({'key1':3,'key2':30});
 ```
 
 要查询 `key2` 的值：
 
-```sql
+```sql title="Query"
 SELECT m['key2'] FROM tab;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─arrayElement(m, 'key2')─┐
 │                      10 │
 │                      20 │
@@ -48,15 +46,13 @@ SELECT m['key2'] FROM tab;
 如果访问的键 `k` 不在 map 中，`m[k]` 会返回该值类型的默认值，例如整数类型为 `0`，字符串类型为 `''`。
 要检查某个键是否存在于 map 中，可以使用函数 [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey)。
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
 INSERT INTO tab VALUES ({'key1':100}), ({});
 SELECT m['key1'] FROM tab;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─arrayElement(m, 'key1')─┐
 │                     100 │
 │                       0 │
@@ -69,20 +65,15 @@ SELECT m['key1'] FROM tab;
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─map───────────────────────────┐
 │ {1:'Ready',2:'Steady',3:'Go'} │
 └───────────────────────────────┘
 ```
-
 
 ## 读取 Map 的子列 \{#reading-subcolumns-of-map\}
 
@@ -90,9 +81,7 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE = Memory;
 INSERT INTO tab VALUES (map('key1', 1, 'key2', 2, 'key3', 3));
 
@@ -100,9 +89,7 @@ SELECT m.keys FROM tab; --   same as mapKeys(m)
 SELECT m.values FROM tab; -- same as mapValues(m)
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─m.keys─────────────────┐
 │ ['key1','key2','key3'] │
 └────────────────────────┘
@@ -111,7 +98,6 @@ SELECT m.values FROM tab; -- same as mapValues(m)
 │ [1,2,3]  │
 └──────────┘
 ```
-
 
 ## MergeTree 中的 Map 分桶序列化 \{#bucketed-map-serialization\}
 

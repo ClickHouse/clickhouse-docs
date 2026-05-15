@@ -22,7 +22,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 주석이 포함된 테이블을 생성하려면 다음과 같이 합니다:
 
-```sql
+```sql title="Query"
 CREATE TABLE table_with_comment
 (
     `k` UInt64,
@@ -34,7 +34,7 @@ COMMENT 'The temporary table';
 
 테이블 주석을 수정하려면 다음과 같이 합니다:
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment 
 MODIFY COMMENT 'new comment on a table';
 ```
@@ -55,7 +55,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 테이블 주석을 제거하려면 다음을 실행하십시오:
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment MODIFY COMMENT '';
 ```
 

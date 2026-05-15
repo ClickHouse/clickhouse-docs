@@ -34,9 +34,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 この例では、`nth-value` 関数を使用して、プレミアリーグのサッカー選手の架空の給与データセットから 3 番目に高い給与を求めます。
 
-クエリ:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -57,13 +55,11 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, nth_value(player,3) OVER(ORDER BY salary DESC) AS third_highest_salary FROM salaries;
 ```
 
-結果：
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─third_highest_salary─┐
 1. │ Gary Chen       │ 195000 │                      │
 2. │ Robert George   │ 195000 │                      │

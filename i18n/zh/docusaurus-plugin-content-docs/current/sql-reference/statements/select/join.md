@@ -100,14 +100,14 @@ ClickHouse 服务器在执行 `ANY JOIN` 操作时的行为取决于 [`any_join_
 
 包含一个连接键条件以及针对 `table_2` 的附加条件的查询：
 
-```sql
+```sql title="Query"
 SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
     ON table_1.Id = table_2.Id AND startsWith(table_2.text, 'Text');
 ```
 
-请注意，结果中包含名称为 `C` 且文本列为空的那一行。之所以会出现在结果中，是因为使用了 `OUTER` 类型的联接。
+请注意，结果中包含名称为 `C` 且文本列为空的那一行。之所以会出现在结果中，是因为使用了 `OUTER` 类型的连接。
 
-```response
+```response title="Response"
 ┌─name─┬─text───┐
 │ A    │ Text A │
 │ B    │ Text B │
@@ -117,14 +117,12 @@ SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
 
 使用 `INNER` 连接类型且包含多个条件的查询：
 
-```sql
+```sql title="Query"
 SELECT name, text, scores FROM table_1 INNER JOIN table_2
     ON table_1.Id = table_2.Id AND table_2.scores > 10 AND startsWith(table_2.text, 'Text');
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 ┌─name─┬─text───┬─scores─┐
 │ B    │ Text B │     15 │
 └──────┴────────┴────────┘
@@ -132,7 +130,7 @@ SELECT name, text, scores FROM table_1 INNER JOIN table_2
 
 使用 `INNER` 连接类型且条件中包含 `OR` 的查询：
 
-```sql
+```sql title="Query"
 CREATE TABLE t1 (`a` Int64, `b` Int64) ENGINE = MergeTree() ORDER BY a;
 
 CREATE TABLE t2 (`key` Int32, `val` Int64) ENGINE = MergeTree() ORDER BY key;
@@ -144,9 +142,7 @@ INSERT INTO t2 SELECT if(number % 2 == 0, toInt64(number), -number) as key, numb
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─a─┬──b─┬─val─┐
 │ 0 │  0 │   0 │
 │ 1 │ -1 │   1 │
@@ -156,30 +152,27 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 └───┴────┴─────┘
 ```
 
-使用 `INNER` 类型 JOIN,且包含 `OR` 和 `AND` 条件的查询:
+使用 `INNER` 类型连接,且包含 `OR` 和 `AND` 条件的查询:
 
 :::note
 
-By default, non-equal conditions are supported as long as they use columns from the same table.
+默认情况下，只要非等值条件使用的是同一张表中的列，就支持这类条件。
 例如,`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`,因为 `t1.b > 0` 仅使用来自 `t1` 的列,而 `t2.b > t2.c` 仅使用来自 `t2` 的列。
-However, you can try experimental support for conditions like `t1.a = t2.key AND t1.b > t2.key`, check out the section below for more details.
+不过，你也可以尝试对诸如 `t1.a = t2.key AND t1.b > t2.key` 这类条件的实验性支持，更多详细信息请参见下文。
 
 :::
 
-```sql
+```sql title="Query"
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.val > 3;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─a─┬──b─┬─val─┐
 │ 0 │  0 │   0 │
 │ 2 │ -2 │   2 │
 │ 4 │ -4 │   4 │
 └───┴────┴─────┘
 ```
-
 
 ## 针对来自不同表的列使用非等值条件的 JOIN \{#join-with-inequality-conditions-for-columns-from-different-tables\}
 

@@ -41,15 +41,11 @@ config 파일에 정의된 클러스터와 각 클러스터에 속한 서버에 
 
 ## 예시 \{#example\}
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT * FROM system.clusters LIMIT 2 FORMAT Vertical;
 ```
 
-결과:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 cluster:                 test_cluster_two_shards

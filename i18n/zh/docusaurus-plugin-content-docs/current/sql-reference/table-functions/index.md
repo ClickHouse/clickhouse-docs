@@ -77,11 +77,11 @@ doc_type: 'reference'
 表函数可以在 `SELECT` 查询的 [`FROM`](../../sql-reference/statements/select/from.md)
 子句中使用。比如，你可以使用 `file` 表函数从本地机器上的文件中查询数据。
 
-```bash
+```bash title="Query"
 echo "1, 2, 3" > example.csv
 ```
 
-```text
+```text title="Response"
 ./clickhouse client
 :) SELECT * FROM file('example.csv')
 ┌─c1─┬─c2─┬─c3─┐
@@ -109,7 +109,7 @@ SELECT * FROM generateSeries(1,5);
 
 可以使用表函数来创建表，语法如下：
 
-```sql
+```sql title="Query"
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 ```
 
@@ -120,7 +120,7 @@ CREATE TABLE series AS generateSeries(1, 5);
 SELECT * FROM series;
 ```
 
-```response
+```response title="Response"
 ┌─generate_series─┐
 │               1 │
 │               2 │
@@ -134,11 +134,11 @@ SELECT * FROM series;
 我们可以再次使用 `file` 表函数，将前一个示例中创建的表的内容
 写入磁盘上的文件：
 
-```sql
+```sql title="Query"
 INSERT INTO FUNCTION file('numbers.csv', 'CSV') SELECT * FROM series;
 ```
 
-```bash
+```bash title="Query"
 cat numbers.csv
 1
 2

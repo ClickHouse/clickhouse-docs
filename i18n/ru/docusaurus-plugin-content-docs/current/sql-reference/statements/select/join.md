@@ -100,14 +100,14 @@ FROM <left_table>
 
 Запрос с одним условием соединения по ключу и дополнительным условием для `table_2`:
 
-```sql
+```sql title="Query"
 SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
     ON table_1.Id = table_2.Id AND startsWith(table_2.text, 'Text');
 ```
 
 Обратите внимание, что результат содержит строку с именем `C` и пустым текстовым столбцом. Она включена в результат, так как используется внешнее соединение (`OUTER JOIN`).
 
-```response
+```response title="Response"
 ┌─name─┬─text───┐
 │ A    │ Text A │
 │ B    │ Text B │
@@ -117,14 +117,12 @@ SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
 
 Запрос с соединением типа `INNER` и несколькими условиями:
 
-```sql
+```sql title="Query"
 SELECT name, text, scores FROM table_1 INNER JOIN table_2
     ON table_1.Id = table_2.Id AND table_2.scores > 10 AND startsWith(table_2.text, 'Text');
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 ┌─name─┬─text───┬─scores─┐
 │ B    │ Text B │     15 │
 └──────┴────────┴────────┘
@@ -132,7 +130,7 @@ SELECT name, text, scores FROM table_1 INNER JOIN table_2
 
 Запрос с соединением типа `INNER` и условием с оператором `OR`:
 
-```sql
+```sql title="Query"
 CREATE TABLE t1 (`a` Int64, `b` Int64) ENGINE = MergeTree() ORDER BY a;
 
 CREATE TABLE t2 (`key` Int32, `val` Int64) ENGINE = MergeTree() ORDER BY key;
@@ -144,9 +142,7 @@ INSERT INTO t2 SELECT if(number % 2 == 0, toInt64(number), -number) as key, numb
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─a─┬──b─┬─val─┐
 │ 0 │  0 │   0 │
 │ 1 │ -1 │   1 │
@@ -166,20 +162,17 @@ However, you can try experimental support for conditions like `t1.a = t2.key AND
 
 :::
 
-```sql
+```sql title="Query"
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.val > 3;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─a─┬──b─┬─val─┐
 │ 0 │  0 │   0 │
 │ 2 │ -2 │   2 │
 │ 4 │ -4 │   4 │
 └───┴────┴─────┘
 ```
-
 
 ## JOIN с условиями неравенства для столбцов из разных таблиц \{#join-with-inequality-conditions-for-columns-from-different-tables\}
 

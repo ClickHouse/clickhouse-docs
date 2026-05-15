@@ -29,13 +29,11 @@ FROM table2
 
 下面是一个简单的示例，用来求 1 到 10 与 3 到 8 这两个数字区间的交集：
 
-```sql
+```sql title="Query"
 SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─number─┐
 │      3 │
 │      4 │
@@ -48,7 +46,7 @@ SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 
 当你有两个表，并且它们共享一个或多个相同的列时，`INTERSECT` 非常有用。只要两个查询的结果集包含相同的列，你就可以对它们的结果求交集。比如，假设我们有几百万行历史加密货币数据，其中包含交易价格和交易量：
 
-```sql
+```sql title="Query"
 CREATE TABLE crypto_prices
 (
     trade_date Date,
@@ -74,7 +72,7 @@ ORDER BY trade_date DESC
 LIMIT 10;
 ```
 
-```response
+```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
 │ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
 │ 2020-11-01 │ Bitcoin     │ 24453857000 │ 13737.11 │ 254569760000 │ -0.0031840964 │
@@ -91,7 +89,7 @@ LIMIT 10;
 
 现在假设我们有一张名为 `holdings` 的表，列出了我们持有的各类加密货币及其对应的持币数量：
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,
@@ -111,16 +109,14 @@ INSERT INTO holdings VALUES
 
 我们可以使用 `INTERSECT` 来回答诸如 **&quot;我们持有哪些币种的成交价格曾高于 100 美元？&quot;** 这样的问题：
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 INTERSECT
 SELECT crypto_name FROM crypto_prices
 WHERE price > 100
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Bitcoin     │
@@ -129,22 +125,20 @@ WHERE price > 100
 └─────────────┘
 ```
 
-这意味着，在某个时间点，Bitcoin 和 Ethereum 的交易价格都曾高于 100 美元，而 DOGEFI 和 Bitcoin Diamond 的交易价格从未高于 100 美元 (至少根据本示例中的数据来看是这样) 。
+这意味着，在某个时间点，比特币 和 以太坊 的交易价格都曾高于 100 美元，而 DOGEFI 和 Bitcoin Diamond 的交易价格从未高于 100 美元 (至少根据本示例中的数据来看是这样) 。
 
 ## INTERSECT DISTINCT \{#intersect-distinct\}
 
 请注意，在上一个查询中，我们有多笔比特币和以太坊持仓的成交价格都高于 100 美元。去掉这些重复行 (因为它们只是重复我们已经知道的内容) 可能会更好一些。你可以在 `INTERSECT` 后添加 `DISTINCT` 关键字，以消除结果中的重复行：
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 INTERSECT DISTINCT
 SELECT crypto_name FROM crypto_prices
 WHERE price > 100;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Ethereum    │

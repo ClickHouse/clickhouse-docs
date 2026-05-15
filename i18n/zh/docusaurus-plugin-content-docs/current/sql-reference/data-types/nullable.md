@@ -40,9 +40,7 @@ doc_type: 'reference'
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE nullable (`n` Nullable(UInt32)) ENGINE = MergeTree ORDER BY tuple();
 
 INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
@@ -50,9 +48,7 @@ INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
 SELECT n.null FROM nullable;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─n.null─┐
 │      0 │
 │      1 │
@@ -60,7 +56,6 @@ SELECT n.null FROM nullable;
 │      1 │
 └────────┘
 ```
-
 
 ## 使用示例 \{#usage-example\}
 

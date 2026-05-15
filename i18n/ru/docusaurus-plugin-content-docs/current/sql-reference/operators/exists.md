@@ -23,13 +23,11 @@ EXISTS(subquery)
 
 Запрос, проверяющий существование значений в подзапросе:
 
-```sql
+```sql title="Query"
 SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM numbers(10) WHERE number > 11)
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─in(1, _subquery1)─┬─in(1, _subquery2)─┐
 │                 1 │                 0 │
 └───────────────────┴───────────────────┘
@@ -37,13 +35,11 @@ SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM 
 
 Запрос с подзапросом, возвращающим несколько строк:
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 8);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─count()─┐
 │      10 │
 └─────────┘
@@ -51,13 +47,11 @@ SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHER
 
 Запрос с подзапросом, который возвращает пустой результат:
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 11);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─count()─┐
 │       0 │
 └─────────┘

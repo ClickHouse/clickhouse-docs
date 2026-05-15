@@ -631,37 +631,32 @@ DESC format(JSONEachRow, $$
 
 **Пример**
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2,3]}, {"d" : "2020-01-01"}]}')
 ```
 
-Результат:
-
-```markdown
+```markdown title="Response"
 ┌─name──┬─type────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ array │ Array(Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Nullable(Date))) │              │                    │         │                  │                │
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ##### input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects \{#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects\}
 
-Включение этого параметра позволяет использовать тип данных String для неоднозначных путей при выводе именованных кортежей (Tuples) из JSON-объектов (когда `input_format_json_try_infer_named_tuples_from_objects` включён) вместо генерации исключения.
-Это позволяет читать JSON-объекты как именованные кортежи (Tuples), даже если существуют неоднозначные пути.
+Включение этого параметра позволяет использовать тип данных String для неоднозначных путей при выводе именованных кортежей (Tuple) из JSON-объектов (когда `input_format_json_try_infer_named_tuples_from_objects` включён) вместо генерации исключения.
+Это позволяет читать JSON-объекты как именованные кортежи (Tuple), даже если существуют неоднозначные пути.
 
 По умолчанию параметр отключён.
 
@@ -669,15 +664,13 @@ DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2
 
 При отключённом параметре:
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 0;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
 ```
 
-Результат:
-
-```response
+```response title="Response"
 Code: 636. DB::Exception: The table structure cannot be extracted from a JSONEachRow format file. Error:
 Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path 'a' has type 'Int64' and in some - 'Tuple(b String)'. You can enable setting input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects to use String type for path 'a'. (INCORRECT_DATA) (version 24.3.1.1).
 You can specify the structure manually. (CANNOT_EXTRACT_TABLE_STRUCTURE)
@@ -685,16 +678,14 @@ You can specify the structure manually. (CANNOT_EXTRACT_TABLE_STRUCTURE)
 
 При включённом параметре:
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : "a" : 42}, {"obj" : {"a" : {"b" : "Hello"}}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(String))     │              │                    │         │                  │                │
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
@@ -703,7 +694,6 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 │ ('{"b" : "Hello"}') │
 └─────────────────────┘
 ```
-
 
 ##### input_format_json_read_objects_as_strings \{#input_format_json_read_objects_as_strings\}
 
@@ -820,21 +810,19 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 
 ##### input_format_json_infer_incomplete_types_as_strings \{#input_format_json_infer_incomplete_types_as_strings\}
 
-Включение этого SETTING позволяет использовать тип String для JSON-ключей, которые содержат только `Null`/`{}`/`[]` в выборке данных при выводе схемы.
-В JSON-форматах любое значение может быть прочитано как String, если включены все соответствующие настройки (по умолчанию они все включены), и мы можем избежать ошибок вида `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` при выводе схемы,
+Включение этого SETTING позволяет использовать тип String для JSON-ключей, которые содержат только `Null`/`{}`/`[]` в выборке данных при определении схемы.
+В JSON-форматах любое значение может быть прочитано как String, если включены все соответствующие настройки (по умолчанию они все включены), и мы можем избежать ошибок вида `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` при определении схемы,
 используя тип String для ключей с неизвестными типами.
 
 Пример:
 
-```sql
+```sql title="Query"
 SET input_format_json_infer_incomplete_types_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 1;
 DESCRIBE format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
 ```
 
-Результат:
-
-```markdown
+```markdown title="Response"
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Array(Nullable(Int64)), b Nullable(String), c Nullable(String), d Nullable(String), e Array(Nullable(String))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
@@ -843,7 +831,6 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 │ ([1,2,3],'hello',NULL,'{}',[]) │
 └────────────────────────────────┘
 ```
-
 
 ### CSV \{#csv\}
 
@@ -2267,13 +2254,11 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 Давайте попробуем применить автоматическое определение схемы к этим трём файлам:
 
-```sql
+```sql title="Query"
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='default'
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─name───┬─type─────────────┐
 │ field1 │ Nullable(Int64)  │
 │ field2 │ Nullable(String) │
@@ -2283,7 +2268,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 Как мы видим, у нас нет `field3` из файла `data3.jsonl`.
 Это происходит потому, что ClickHouse сначала попытался определить схему по файлу `data1.jsonl`, но не смог, так как для поля `field2` были только значения NULL,
 затем попытался определить схему по `data2.jsonl` и успешно это сделал, поэтому данные из файла `data3.jsonl` так и не были прочитаны.
-
 
 ### Режим union \{#default-schema-inference-mode-1\}
 
@@ -2317,13 +2301,11 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 Попробуем определить схему по этим трём файлам:
 
-```sql
+```sql title="Query"
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='union'
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─name───┬─type───────────────────┐
 │ field1 │ Nullable(Int64)        │
 │ field2 │ Nullable(String)       │
@@ -2335,10 +2317,9 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 Примечание:
 
-* Поскольку некоторые файлы могут не содержать некоторые столбцы из результирующей схемы, режим объединения (union) поддерживается только для форматов, которые умеют читать подмножество столбцов (таких как JSONEachRow, Parquet, TSVWithNames и т. д.) и не будет работать для других форматов (таких как CSV, TSV, JSONCompactEachRow и т. д.).
+* Поскольку некоторые файлы могут не содержать некоторые столбцы из результирующей схемы, режим union поддерживается только для форматов, которые умеют читать подмножество столбцов (таких как JSONEachRow, Parquet, TSVWithNames и т. д.) и не будет работать для других форматов (таких как CSV, TSV, JSONCompactEachRow и т. д.).
 * Если ClickHouse не может определить схему по одному из файлов, будет сгенерировано исключение.
 * Если у вас много файлов, чтение схемы из всех них может занять много времени.
-
 
 ## Автоматическое определение формата \{#automatic-format-detection\}
 

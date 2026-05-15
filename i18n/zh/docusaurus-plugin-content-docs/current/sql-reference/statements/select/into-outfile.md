@@ -33,13 +33,11 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 使用[命令行客户端](../../../interfaces/client.md)执行以下查询：
 
-```bash
+```bash title="Query"
 clickhouse-client --query="SELECT 1,'ABC' INTO OUTFILE 'select.gz' FORMAT CSV;"
 zcat select.gz 
 ```
 
-结果：
-
-```text
+```text title="Response"
 1,"ABC"
 ```

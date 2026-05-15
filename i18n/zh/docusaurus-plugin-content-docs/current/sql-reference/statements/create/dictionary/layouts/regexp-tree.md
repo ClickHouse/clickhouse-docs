@@ -23,7 +23,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 在 ClickHouse 开源版中，正则表达式树字典是通过 [`YAMLRegExpTree`](../sources/yamlregexptree.md) 源定义的，该源需要提供一个指向包含正则表达式树的 YAML 文件的路径。
 
-```sql
+```sql title="Query"
 CREATE DICTIONARY regexp_dict
 (
     regexp String,
@@ -60,8 +60,8 @@ LAYOUT(regexp_tree)
 
 * **regexp**：该节点所使用的正则表达式。
 * **attributes**：用户定义的字典属性列表。在此示例中，有两个属性：`name` 和 `version`。第一个节点定义了这两个属性，第二个节点只定义属性 `name`。属性 `version` 由第二个节点的子节点提供。
-  * 属性的值可以包含**反向引用**，用于引用所匹配正则表达式中的捕获组。在示例中，第一个节点中属性 `version` 的值由一个对正则表达式中捕获组 `(\d+[\.\d]*)` 的反向引用 `\1` 组成。反向引用编号范围为 1 到 9，写作 `$1` 或 `\1`（对于编号 1）。在查询执行期间，反向引用会被匹配到的捕获组替换。
-* **child nodes**：regexp 树节点的子节点列表，每个子节点都有自己的属性以及（可能还有）子节点。字符串匹配以深度优先方式进行。如果一个字符串匹配某个 regexp 节点，则字典会检查它是否也匹配该节点的子节点。如果是，则会使用匹配最深的节点的属性。子节点的属性会覆盖父节点中同名属性。YAML 文件中子节点的名称可以是任意的，例如上述示例中的 `versions`。
+  * 属性的值可以包含**反向引用**，用于引用所匹配正则表达式中的捕获组。在示例中，第一个节点中属性 `version` 的值由一个对正则表达式中捕获组 `(\d+[\.\d]*)` 的反向引用 `\1` 组成。反向引用编号范围为 1 到 9，写作 `$1` 或 `\1` (对于编号 1) 。在查询执行期间，反向引用会被匹配到的捕获组替换。
+* **child nodes**：regexp 树节点的子节点列表，每个子节点都有自己的属性以及 (可能还有) 子节点。字符串匹配以深度优先方式进行。如果一个字符串匹配某个 regexp 节点，则字典会检查它是否也匹配该节点的子节点。如果是，则会使用匹配最深的节点的属性。子节点的属性会覆盖父节点中同名属性。YAML 文件中子节点的名称可以是任意的，例如上述示例中的 `versions`。
 
 Regexp 树字典只允许通过 `dictGet`、`dictGetOrDefault` 和 `dictGetAll` 函数进行访问。例如：
 
@@ -77,11 +77,10 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 
 在这个例子中，我们首先在顶层的第二个节点上匹配正则表达式 `\d+/tclwebkit(?:\d+[\.\d]*)`。
 然后字典继续查找子节点，并发现该字符串同样匹配 `3[12]/tclwebkit`。
-因此，属性 `name` 的值为 `Android`（在第一层中定义），属性 `version` 的值为 `12`（在子节点中定义）。
+因此，属性 `name` 的值为 `Android` (在第一层中定义) ，属性 `version` 的值为 `12` (在子节点中定义) 。
 
 借助精心编写的 YAML 配置文件，你可以将正则表达式树字典用作 User-Agent 字符串解析器。
 ClickHouse 支持 [uap-core](https://github.com/ua-parser/uap-core)，你可以在功能测试 [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh) 中了解其用法。
-
 
 ### 收集属性值 \{#collecting-attribute-values\}
 
@@ -128,22 +127,19 @@ LIFETIME(0)
   captured: 'NULL'
 ```
 
-```sql
+```sql title="Query"
 CREATE TABLE urls (url String) ENGINE=MergeTree ORDER BY url;
 INSERT INTO urls VALUES ('clickhouse.com'), ('clickhouse.com/docs/en'), ('github.com/clickhouse/tree/master/docs');
 SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', 'parent'), url, 2) FROM urls;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─url────────────────────────────────────┬─dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', 'parent'), url, 2)─┐
 │ clickhouse.com                         │ (['ClickHouse'],[1],[],[])                                                            │
 │ clickhouse.com/docs/en                 │ (['ClickHouse Documentation','ClickHouse'],[0,1],['/en'],['ClickHouse'])              │
 │ github.com/clickhouse/tree/master/docs │ (['Documentation','GitHub'],[2,3],[NULL],[])                                          │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### 匹配模式 \{#matching-modes\}
 

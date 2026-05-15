@@ -119,13 +119,11 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 Примеры:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Вывод:
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -133,13 +131,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 При использовании `run_query_tree_passes`:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -645,21 +641,17 @@ ExpressionTransform
 
 Создание таблицы:
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
@@ -674,21 +666,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 Предположим, у вас есть удалённая таблица MySQL следующего вида:
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

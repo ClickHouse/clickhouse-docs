@@ -153,7 +153,7 @@ FROM VALUES(
     └──────────┴───────────┘
 ```
 
-```sql
+```sql title="Query"
 -- single values
 SELECT *
 FROM VALUES(

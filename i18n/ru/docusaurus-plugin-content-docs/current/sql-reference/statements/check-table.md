@@ -55,60 +55,56 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 
 ## Примеры \{#examples\}
 
-По умолчанию запрос `CHECK TABLE` показывает общий статус проверки таблицы:
+По умолчанию запрос `CHECK TABLE` выводит общий статус проверки таблицы:
 
-```sql
+```sql title="Query"
 CHECK TABLE test_table;
 ```
 
-```text
+```text title="Response"
 ┌─result─┐
 │      1 │
 └────────┘
 ```
 
-Если вы хотите видеть статус проверки для каждой отдельной части данных, вы можете использовать настройку `check_query_single_value_result`.
+Если вы хотите увидеть статус проверки для каждой отдельной части данных, можно использовать настройку `check_query_single_value_result`.
 
-Также, чтобы проверить конкретную партицию таблицы, можно использовать ключевое слово `PARTITION`.
+Кроме того, чтобы проверить конкретную партицию таблицы, можно использовать ключевое слово `PARTITION`.
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-Вывод:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 │ 201003_3_3_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-Аналогичным образом можно проверить отдельную часть таблицы, используя ключевое слово `PART`.
+Аналогично, можно проверить определённую часть таблицы с помощью ключевого слова `PART`.
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_7_7_0'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-Вывод:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-Обратите внимание: если part не существует, запрос вернет ошибку:
+Обратите внимание: если часть не существует, запрос возвращает ошибку:
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_111_222_0'
 ```
 
-```text
+```text title="Response"
 DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
 
@@ -124,15 +120,13 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-Вывод:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message──────────────────────────────────┐
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │

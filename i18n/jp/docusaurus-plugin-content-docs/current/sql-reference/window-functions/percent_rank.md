@@ -11,7 +11,7 @@ doc_type: 'reference'
 
 **構文**
 
-エイリアス: `percentRank` (大文字小文字を区別します) 
+エイリアス: `percentRank` (大文字小文字を区別します)
 
 ```sql
 percent_rank ()
@@ -27,9 +27,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -49,15 +47,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        percent_rank() OVER (ORDER BY salary DESC) AS percent_rank
 FROM salaries;
 ```
 
-結果：
-
-```response
+```response title="Response"
 
    ┌─player──────────┬─salary─┬───────percent_rank─┐
 1. │ Gary Chen       │ 195000 │                  0 │

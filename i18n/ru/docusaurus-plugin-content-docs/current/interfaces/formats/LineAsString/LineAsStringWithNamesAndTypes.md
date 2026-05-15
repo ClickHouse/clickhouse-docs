@@ -10,17 +10,17 @@ doc_type: 'reference'
 ---
 
 | Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| ---- | ----- | --------- |
+| ✗    | ✔     |           |
 
 ## Описание \{#description\}
 
-Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md), 
+Формат `LineAsStringWithNames` похож на формат [`LineAsString`](./LineAsString.md),
 но выводит две строки заголовков: одну с именами столбцов, другую — с их типами.
 
 ## Пример использования \{#example-usage\}
 
-```sql
+```sql title="Query"
 CREATE TABLE example (
     name String,
     value Int32

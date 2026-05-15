@@ -36,15 +36,11 @@ view(subquery)
 └────┴──────────┴──────┘
 ```
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT * FROM view(SELECT name FROM months);
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─name─────┐
 │ January  │
 │ February │
@@ -55,11 +51,11 @@ SELECT * FROM view(SELECT name FROM months);
 
 `view` 関数は、[remote](/sql-reference/table-functions/remote) および [cluster](/sql-reference/table-functions/cluster) テーブル関数の引数として使用できます。
 
-```sql
+```sql title="Query"
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 

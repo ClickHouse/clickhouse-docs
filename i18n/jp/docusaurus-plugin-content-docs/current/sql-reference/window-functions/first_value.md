@@ -38,9 +38,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 
 この例では、架空のプレミアリーグサッカー選手の給与データセットから最も高給のサッカー選手を求めるために、`first_value` 関数を使用しています。
 
-クエリ:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -61,15 +59,13 @@ INSERT INTO salaries FORMAT VALUES
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, 
        first_value(player) OVER (ORDER BY salary DESC) AS highest_paid_player
 FROM salaries;
 ```
 
-結果：
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─highest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Gary Chen           │
 2. │ Robert George   │ 195000 │ Gary Chen           │

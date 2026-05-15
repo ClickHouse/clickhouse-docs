@@ -92,15 +92,11 @@ doc_type: 'reference'
 └───┴──────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─x─┬─s────┐
 │ 3 │ 123a │
 │ 4 │ abc  │
@@ -126,15 +122,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴──────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─x─┬─s────┐
 │ 4 │ 123a │
 │ 5 │ abc  │
@@ -162,15 +154,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴───────────────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─x─┬─s─────────────┐
 │ 7 │ ['']          │
 │ 3 │ ['a']         │
@@ -198,15 +186,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─x─┬─s───┐
 │ 7 │     │
 │ 3 │ a   │
@@ -220,7 +204,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 使用 [Tuple](../../../sql-reference/data-types/tuple.md) 的示例：
 
-```response
+```response title="Response"
 ┌─x─┬─s───────┐
 │ 1 │ (1,'Z') │
 │ 2 │ (1,'z') │
@@ -232,15 +216,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─x─┬─s───────┐
 │ 3 │ (1,'a') │
 │ 5 │ (1,'A') │
@@ -291,7 +271,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 如需对多个列进行填充，可在 `ORDER BY` 子句中每个字段名之后添加带有可选参数的 `WITH FILL` 修饰符。
 
-```sql
+```sql title="Query"
 ORDER BY expr [WITH FILL] [FROM const_expr] [TO const_expr] [STEP const_numeric_expr] [STALENESS const_numeric_expr], ... exprN [WITH FILL] [FROM expr] [TO expr] [STEP numeric_expr] [STALENESS numeric_expr]
 [INTERPOLATE [(col [AS expr], ... colN [AS exprN])]]
 ```
@@ -306,16 +286,14 @@ ORDER BY expr [WITH FILL] [FROM const_expr] [TO const_expr] [STEP const_numeric_
 
 不带 `WITH FILL` 的查询示例：
 
-```sql
+```sql title="Query"
 SELECT n, source FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─n─┬─source───┐
 │ 1 │ original │
 │ 4 │ original │
@@ -325,16 +303,14 @@ SELECT n, source FROM (
 
 使用 `WITH FILL` 修饰符后的同一查询：
 
-```sql
+```sql title="Query"
 SELECT n, source FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───n─┬─source───┐
 │   0 │          │
 │ 0.5 │          │
@@ -356,7 +332,7 @@ SELECT n, source FROM (
 
 示例：
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -368,9 +344,7 @@ ORDER BY
     d1 WITH FILL STEP 5;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-01 │ 1970-01-03 │          │
@@ -386,7 +360,7 @@ ORDER BY
 
 下面是修改了 `ORDER BY` 中字段后的查询：
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -398,9 +372,7 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-16 │ 1970-01-01 │          │
@@ -420,7 +392,7 @@ ORDER BY
 
 下面的查询在列 `d1` 上为每条填充的数据使用 1 天的 `INTERVAL` 类型：
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -432,9 +404,7 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─────────d1─┬─────────d2─┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-12 │ 1970-01-01 │          │
@@ -502,15 +472,13 @@ ORDER BY
 
 未使用 `STALENESS` 的查询示例：
 
-```sql
+```sql title="Query"
 SELECT number AS key, 5 * number value, 'original' AS source
 FROM numbers(16) WHERE key % 5 == 0
 ORDER BY key WITH FILL;
 ```
 
-结果：
-
-```text
+```text title="Response"
     ┌─key─┬─value─┬─source───┐
  1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
@@ -533,15 +501,13 @@ ORDER BY key WITH FILL;
 
 对同一查询应用 `STALENESS 3` 后：
 
-```sql
+```sql title="Query"
 SELECT number AS key, 5 * number value, 'original' AS source
 FROM numbers(16) WHERE key % 5 == 0
 ORDER BY key WITH FILL STALENESS 3;
 ```
 
-结果：
-
-```text
+```text title="Response"
     ┌─key─┬─value─┬─source───┐
  1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
@@ -560,16 +526,14 @@ ORDER BY key WITH FILL STALENESS 3;
 
 未使用 `INTERPOLATE` 的查询示例：
 
-```sql
+```sql title="Query"
 SELECT n, source, inter FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
 │ 0.5 │          │     0 │
@@ -589,16 +553,14 @@ SELECT n, source, inter FROM (
 
 应用 `INTERPOLATE` 后的同一查询：
 
-```sql
+```sql title="Query"
 SELECT n, source, inter FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5 INTERPOLATE (inter AS inter + 1);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
 │ 0.5 │          │     0 │

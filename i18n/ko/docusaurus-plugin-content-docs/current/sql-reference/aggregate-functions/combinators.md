@@ -81,15 +81,11 @@ GROUP BY timeslot;
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─toTypeName(c)────────────────────────┬─c─┐
 │ SimpleAggregateFunction(any, UInt64) │ 0 │
 └──────────────────────────────────────┴───┘
@@ -154,15 +150,11 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─avg(number)─┬─avgOrDefault(number)─┐
 │         nan │                    0 │
 └─────────────┴──────────────────────┘
@@ -170,9 +162,7 @@ SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 
 또한 `-OrDefault`는 다른 조합자(combinator)와 함께 사용할 수 있습니다. 집계 함수가 빈 입력을 허용하지 않을 때 유용합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT avgOrDefaultIf(x, x > 10)
 FROM
 (
@@ -180,9 +170,7 @@ FROM
 )
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─avgOrDefaultIf(x, greater(x, 10))─┐
 │                              0.00 │
 └───────────────────────────────────┘
@@ -192,7 +180,7 @@ FROM
 
 집계 함수의 동작 방식을 변경합니다.
 
-이 조합자는 집계 함수의 결과를 [널 허용](../../sql-reference/data-types/nullable.md) 데이터 타입(data type)으로 변환합니다. 집계 함수가 계산할 값이 없으면 [NULL](/operations/settings/formats#input_format_null_as_default)을 반환합니다.
+이 조합자는 집계 함수의 결과를 [널 허용](../../sql-reference/data-types/nullable.md) 데이터 타입(data type)으로 변환합니다. 집계 함수에 계산할 값이 없으면 [NULL](/operations/settings/formats#input_format_null_as_default)을 반환합니다.
 
 `-OrNull`은 다른 조합자와 함께 사용할 수 있습니다.
 
@@ -217,15 +205,11 @@ FROM
 
 집계 함수 이름 끝에 `-orNull`을 추가합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE number > 10
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─sumOrNull(number)─┬─toTypeName(sumOrNull(number))─┐
 │              ᴺᵁᴸᴸ │ Nullable(UInt64)              │
 └───────────────────┴───────────────────────────────┘
@@ -233,9 +217,7 @@ SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE n
 
 또한 `-OrNull`은 다른 조합자와 함께 사용할 수 있습니다. 집계 함수가 빈 입력값을 허용하지 않을 때 유용합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT avgOrNullIf(x, x > 10)
 FROM
 (
@@ -243,9 +225,7 @@ FROM
 )
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─avgOrNullIf(x, greater(x, 10))─┐
 │                           ᴺᵁᴸᴸ │
 └────────────────────────────────┘

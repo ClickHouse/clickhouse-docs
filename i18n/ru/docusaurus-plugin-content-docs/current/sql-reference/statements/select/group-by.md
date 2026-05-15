@@ -77,9 +77,7 @@ doc_type: 'reference'
 └──────┴───────┴─────┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 ```
 
@@ -90,7 +88,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 * `GROUP BY year` (теперь оба столбца `month` и `day` заполняются нулями);
 * и общие итоги (и все три столбца с ключевыми выражениями заполнены нулями).
 
-```text
+```text title="Response"
 ┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
@@ -115,7 +113,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 
 Этот же запрос можно записать и с использованием ключевого слова `WITH`.
 
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 ```
 
@@ -148,9 +146,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 └──────┴───────┴─────┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 ```
 
@@ -167,7 +163,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 
 Столбцы, не включённые в `GROUP BY`, заполняются нулями.
 
-```text
+```text title="Response"
 ┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
@@ -212,7 +208,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 
 Тот же запрос можно записать и с использованием ключевого слова `WITH`.
 
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 ```
 

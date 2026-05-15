@@ -148,7 +148,7 @@ LIMIT 10;
 
 이제 `holdings`라는 이름의 테이블이 있고, 이 테이블에는 보유 중인 암호화폐 목록과 각 암호화폐의 코인 수가 저장되어 있다고 가정해 보겠습니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,

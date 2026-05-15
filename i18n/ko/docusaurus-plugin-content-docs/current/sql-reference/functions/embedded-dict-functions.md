@@ -49,7 +49,7 @@ regionToName(id\[, lang\])
 
 **매개변수**
 
-* `id` — 지리 데이터베이스(geobase)의 지역 ID입니다. [UInt32](../data-types/int-uint).
+* `id` — 지리 데이터베이스(지오베이스)의 지역 ID입니다. [UInt32](../data-types/int-uint).
 * `geobase` — 딕셔너리 키입니다. [Multiple Geobases](#multiple-geobases)를 참조하십시오. [String](../data-types/string). 선택 사항입니다.
 
 **반환 값**
@@ -57,17 +57,13 @@ regionToName(id\[, lang\])
 * `geobase`에서 지정한 해당 언어로 된 지역 이름입니다. [String](../data-types/string).
 * 그렇지 않으면 빈 문자열입니다.
 
-**예제**
+**예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┐
 │                                            │
 │ World                                      │
@@ -99,15 +95,11 @@ regionToCity(id [, geobase])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-결과:
-
-```text
+```response title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
 │ World                                      │  0 │                                                          │
@@ -147,17 +139,13 @@ regionToArea(id [, geobase])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT DISTINCT regionToName(regionToArea(toUInt32(number), 'ua'))
 FROM system.numbers
 LIMIT 15
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─regionToName(regionToArea(toUInt32(number), \'ua\'))─┐
 │                                                      │
 │ Moscow and Moscow region                             │
@@ -179,7 +167,7 @@ LIMIT 15
 
 ### regionToDistrict
 
-지역을 geobase에서 type 4인 연방 지구로 변환합니다. 그 외의 모든 면에서는 이 함수가 「regionToCity」와 동일하게 동작합니다.
+지역을 지오베이스에서 type 4인 연방 지구로 변환합니다. 그 외의 모든 면에서는 이 함수가 「regionToCity」와 동일하게 동작합니다.
 
 **구문**
 
@@ -189,8 +177,8 @@ regionToDistrict(id [, geobase])
 
 **매개변수**
 
-* `id` — 지리 데이터베이스(geobase)의 지역 ID입니다. [UInt32](../data-types/int-uint).
-* `geobase` — 딕셔너리 키입니다. [여러 지리 데이터베이스](#multiple-geobases)를 참조하십시오. [String](../data-types/string). 선택 사항입니다.
+* `id` — 지리 데이터베이스(지오베이스)의 지역 ID입니다. [UInt32](../data-types/int-uint).
+* `geobase` — 딕셔너리 키입니다. [Multiple Geobases](#multiple-geobases)를 참조하십시오. [String](../data-types/string). 선택 사항입니다.
 
 **반환 값**
 
@@ -199,17 +187,13 @@ regionToDistrict(id [, geobase])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT DISTINCT regionToName(regionToDistrict(toUInt32(number), 'ua'))
 FROM system.numbers
 LIMIT 15
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─regionToName(regionToDistrict(toUInt32(number), \'ua\'))─┐
 │                                                          │
 │ Central federal district                                 │
@@ -231,7 +215,7 @@ LIMIT 15
 
 ### regionToCountry
 
-지역을 국가(geobase에서 타입 3)로 변환합니다. 이외의 모든 점에서 이 FUNCTION은 「regionToCity」와 동일합니다.
+지역을 국가(지오베이스에서 타입 3)로 변환합니다. 이외의 모든 점에서 이 FUNCTION은 「regionToCity」와 동일합니다.
 
 **구문**
 
@@ -241,7 +225,7 @@ regionToCountry(id [, geobase])
 
 **매개변수**
 
-* `id` — 지오베이스(geobase)의 지역 ID. [UInt32](../data-types/int-uint).
+* `id` — 지오베이스(지오베이스)의 지역 ID. [UInt32](../data-types/int-uint).
 * `geobase` — 딕셔너리 키. [Multiple Geobases](#multiple-geobases)를 참조하십시오. [String](../data-types/string). 선택 사항입니다.
 
 **반환 값**
@@ -251,15 +235,11 @@ regionToCountry(id [, geobase])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCountry(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                             │
 │ World                                      │  0 │                                                             │
@@ -279,7 +259,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id
 
 ### regionToContinent
 
-지역을 대륙(geobase에서 타입 1)으로 변환합니다. 이외의 모든 점에서 이 FUNCTION은 「regionToCity」와 동일합니다.
+지역을 대륙(지오베이스에서 타입 1)으로 변환합니다. 이외의 모든 점에서 이 FUNCTION은 「regionToCity」와 동일합니다.
 
 **구문**
 
@@ -289,7 +269,7 @@ regionToContinent(id [, geobase])
 
 **매개변수**
 
-* `id` — geobase의 지역 ID. [UInt32](../data-types/int-uint).
+* `id` — 지오베이스의 지역 ID. [UInt32](../data-types/int-uint).
 * `geobase` — 딕셔너리 키. [Multiple Geobases](#multiple-geobases)를 참조하십시오. [String](../data-types/string). 선택 사항입니다.
 
 **반환 값**
@@ -299,15 +279,11 @@ regionToContinent(id [, geobase])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                               │
 │ World                                      │  0 │                                                               │
@@ -337,7 +313,7 @@ regionToTopContinent(id[, geobase])
 
 **매개변수**
 
-* `id` — geobase의 지역 ID. [UInt32](../data-types/int-uint).
+* `id` — 지오베이스의 지역 ID. [UInt32](../data-types/int-uint).
 * `geobase` — 딕셔너리 키. [Multiple Geobases](#multiple-geobases)를 참조하십시오. [String](../data-types/string). 선택 사항입니다.
 
 **반환 값**
@@ -347,15 +323,11 @@ regionToTopContinent(id[, geobase])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                                  │
 │ World                                      │  0 │                                                                  │
@@ -375,7 +347,7 @@ SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) 
 
 ### regionToPopulation
 
-지역의 인구 수를 가져옵니다. 인구 수는 geobase와 함께 제공되는 파일에 기록될 수 있습니다. 「[Dictionaries](../statements/create/dictionary/embedded)」 섹션을 참조하십시오. 지역에 대한 인구 수가 기록되어 있지 않으면 0을 반환합니다. geobase에서는 상위 지역에는 인구 수가 기록되어 있지 않고 하위 지역에만 기록되어 있을 수 있습니다.
+지역의 인구 수를 가져옵니다. 인구 수는 지오베이스와 함께 제공되는 파일에 기록될 수 있습니다. 「[Dictionaries](../statements/create/dictionary/embedded)」 섹션을 참조하십시오. 지역에 대한 인구 수가 기록되어 있지 않으면 0을 반환합니다. 지오베이스에서는 상위 지역에는 인구 수가 기록되어 있지 않고 하위 지역에만 기록되어 있을 수 있습니다.
 
 **구문**
 
@@ -385,7 +357,7 @@ regionToPopulation(id[, geobase])
 
 **매개변수**
 
-* `id` — geobase의 지역 ID. [UInt32](../data-types/int-uint).
+* `id` — 지오베이스의 지역 ID. [UInt32](../data-types/int-uint).
 * `geobase` — 딕셔너리 키. [Multiple Geobases](#multiple-geobases)를 참조하십시오. [String](../data-types/string). 선택 사항.
 
 **반환 값**
@@ -395,15 +367,11 @@ regionToPopulation(id[, geobase])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─population─┐
 │                                            │          0 │
 │ World                                      │ 4294967295 │
@@ -448,15 +416,11 @@ regionIn(lhs, rhs\[, geobase\])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT regionToName(n1.number::UInt32, 'en') || (regionIn(n1.number::UInt32, n2.number::UInt32) ? ' is in ' : ' is not in ') || regionToName(n2.number::UInt32, 'en') FROM numbers(1,2) AS n1 CROSS JOIN numbers(1,5) AS n2;
 ```
 
-결과:
-
-```text
+```text title="Response"
 World is in World
 World is not in USA
 World is not in Colorado
@@ -471,7 +435,7 @@ USA is not in Boulder
 
 ### regionHierarchy
 
-입력값으로 UInt32 값을 사용합니다. 입력값은 지오베이스(geobase)의 지역 ID입니다. 전달된 지역과 그 상위 체인에 있는 모든 부모 지역의 지역 ID로 구성된 배열을 반환합니다.
+입력값으로 UInt32 값을 사용합니다. 입력값은 지오베이스(지오베이스)의 지역 ID입니다. 전달된 지역과 그 상위 체인에 있는 모든 부모 지역의 지역 ID로 구성된 배열을 반환합니다.
 
 **구문**
 
@@ -481,7 +445,7 @@ regionHierarchy(id\[, geobase\])
 
 **매개변수**
 
-* `id` — 지리 데이터베이스(geobase)의 지역 ID입니다. [UInt32](../data-types/int-uint).
+* `id` — 지리 데이터베이스(지오베이스)의 지역 ID입니다. [UInt32](../data-types/int-uint).
 * `geobase` — 딕셔너리 키입니다. [Multiple Geobases](#multiple-geobases)를 참조하십시오. [String](../data-types/string). 선택 사항입니다.
 
 **반환 값**
@@ -490,15 +454,11 @@ regionHierarchy(id\[, geobase\])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, 'en'), arr) FROM numbers(5);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─arr────────────┬─arrayMap(lambda(tuple(id), regionToName(id, 'en')), regionHierarchy(CAST(number, 'UInt32')))─┐
 │ []             │ []                                                                                           │
 │ [1]            │ ['World']                                                                                    │
@@ -509,7 +469,7 @@ SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, '
 ```
 
 {/* 
-  아래 태그 안의 내용은 문서 프레임워크 빌드 시 
+  아래 태그 안의 내용은 문서 프레임워크 빌드 시
   system.functions에서 생성된 문서로 대체됩니다. 태그를 수정하거나 제거하지 마십시오.
   자세한 내용은 https://github.com/ClickHouse/clickhouse-docs/blob/main/contribute/autogenerated-documentation-from-source.md 를 참조하십시오.
   */ }

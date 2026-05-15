@@ -23,26 +23,26 @@ ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 Чтобы создать базу данных (`DATABASE`) с комментарием:
 
-```sql
+```sql title="Query"
 CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
 ```
 
 Чтобы отредактировать комментарий:
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT 'new comment on a database';
 ```
 
 Чтобы просмотреть изменённый комментарий:
 
-```sql
+```sql title="Query"
 SELECT comment 
 FROM system.databases 
 WHERE name = 'database_with_comment';
 ```
 
-```text
+```text title="Response"
 ┌─comment─────────────────┐
 │ new comment on database │
 └─────────────────────────┘
@@ -50,7 +50,7 @@ WHERE name = 'database_with_comment';
 
 Чтобы удалить комментарий к базе данных:
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```

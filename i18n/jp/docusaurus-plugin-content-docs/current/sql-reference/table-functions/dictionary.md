@@ -35,28 +35,23 @@ ClickHouse テーブルです。
 └────┴───────┘
 ```
 
-辞書を作成する：
+Dictionaryを作成する：
 
-```sql
+```sql title="Query"
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() USER 'default' TABLE 'dictionary_source_table')) LAYOUT(DIRECT());
 ```
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT * FROM dictionary('new_dictionary');
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─id─┬─value─┐
 │  0 │     0 │
 │  1 │     1 │
 └────┴───────┘
 ```
-
 
 ## 関連 \{#related\}
 

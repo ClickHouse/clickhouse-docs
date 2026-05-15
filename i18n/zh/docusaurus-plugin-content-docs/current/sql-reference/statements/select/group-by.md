@@ -77,9 +77,7 @@ doc_type: 'reference'
 └──────┴───────┴─────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 ```
 
@@ -90,7 +88,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 * `GROUP BY year` (此时 `month, day` 两列都用零填充) ；
 * 以及总计 (此时三个键表达式对应的列都为零) 。
 
-```text
+```text title="Response"
 ┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
@@ -115,7 +113,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 
 同一个查询也可以使用 `WITH` 关键字来改写。
 
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 ```
 
@@ -148,9 +146,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 └──────┴───────┴─────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 ```
 
@@ -167,7 +163,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 
 未包含在 `GROUP BY` 中的列会被填充为 0。
 
-```text
+```text title="Response"
 ┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
@@ -212,7 +208,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 
 同一查询也可以写成使用 `WITH` 关键字的形式。
 
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 ```
 

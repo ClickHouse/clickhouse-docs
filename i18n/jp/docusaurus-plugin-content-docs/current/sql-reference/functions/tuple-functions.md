@@ -957,15 +957,11 @@ untuple(x)
 
 `untuple` 関数の引数として `Tuple` 型の列を使用する例：
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT untuple(v6) FROM kv;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─_ut_1─┬─_ut_2─┐
 │    33 │ ab    │
 │    44 │ cd    │
@@ -977,15 +973,11 @@ SELECT untuple(v6) FROM kv;
 
 `EXCEPT` 式の使用例:
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v4─┬─v5─┬─v6────────┐
 │   1 │ 10 │ 30 │ 15 │ (33,'ab') │
 │   2 │ 25 │ 40 │  6 │ (44,'cd') │
@@ -994,7 +986,6 @@ SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 │   5 │ 30 │ 25 │ 55 │ (77,'kl') │
 └─────┴────┴────┴────┴───────────┘
 ```
-
 
 ## 距離関数 \{#distance-functions\}
 

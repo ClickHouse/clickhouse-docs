@@ -38,9 +38,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 
 이 예제에서는 가상의 프리미어 리그 축구 선수 연봉 데이터셋에서 가장 높은 연봉을 받는 선수를 찾기 위해 `first_value` 함수를 사용합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -61,15 +59,13 @@ INSERT INTO salaries FORMAT VALUES
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, 
        first_value(player) OVER (ORDER BY salary DESC) AS highest_paid_player
 FROM salaries;
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─highest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Gary Chen           │
 2. │ Robert George   │ 195000 │ Gary Chen           │

@@ -93,25 +93,20 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)
 
 Если таблица уже существует и указано `IF NOT EXISTS`, запрос ничего не выполнит.
 
-После секции `ENGINE` в запросе могут следовать и другие секции. Подробную документацию по созданию таблиц см. в описаниях [движков таблиц](/engines/table-engines).
+После предложения `ENGINE` в запросе могут следовать и другие предложения. Подробную документацию по созданию таблиц см. в описаниях [движков таблиц](/engines/table-engines).
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory AS SELECT 1;
 SELECT x, toTypeName(x) FROM t1;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─x─┬─toTypeName(x)─┐
 │ 1 │ String        │
 └───┴───────────────┘
 ```
-
 
 ## Модификаторы NULL и NOT NULL \{#null-or-not-null-modifiers\}
 
@@ -757,21 +752,16 @@ COMMENT 'Comment'
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory COMMENT 'The temporary table';
 SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─name─┬─comment─────────────┐
 │ t1   │ The temporary table │
 └──────┴─────────────────────┘
 ```
-
 
 ## Похожие материалы \{#related-content\}
 

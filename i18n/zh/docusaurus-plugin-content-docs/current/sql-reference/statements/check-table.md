@@ -57,58 +57,54 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 
 默认情况下，`CHECK TABLE` 查询会显示表检查的整体状态：
 
-```sql
+```sql title="Query"
 CHECK TABLE test_table;
 ```
 
-```text
+```text title="Response"
 ┌─result─┐
 │      1 │
 └────────┘
 ```
 
-如果您想查看每个数据分区片段各自的检查状态，可以使用 `check_query_single_value_result` 设置。
+如果你想查看每个数据分片各自的检查状态，可以使用 `check_query_single_value_result` 设置。
 
 此外，如需检查表中的特定分区，可以使用 `PARTITION` 关键字。
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-输出：
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 │ 201003_3_3_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-同样，你也可以使用 `PART` 关键字来检查表中的特定部分。
+同样，您也可以使用 `PART` 关键字来检查表的特定分片。
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_7_7_0'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-输出：
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-请注意，当分片不存在时，查询会报错：
+请注意，当分片不存在时，查询会返回错误：
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_111_222_0'
 ```
 
-```text
+```text title="Response"
 DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
 
@@ -124,15 +120,13 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-Output:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message──────────────────────────────────┐
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │

@@ -31,7 +31,7 @@ doc_type: 'reference'
 
 데이터베이스를 생성합니다.
 
-```sql
+```sql title="Query"
 CREATE DATABASE test;
 ```
 

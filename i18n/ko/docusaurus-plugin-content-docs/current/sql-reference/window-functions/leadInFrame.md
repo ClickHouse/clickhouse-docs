@@ -41,15 +41,13 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 이 예시는 노벨상 수상자의 [역사적 데이터](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)를 살펴보고, `leadInFrame` 함수를 사용하여 물리학 부문에서 연이은 수상자 목록을 반환합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE OR REPLACE VIEW nobel_prize_laureates
 AS SELECT *
 FROM file('nobel_laureates_data.csv');
 ```
 
-```sql
+```sql title="Query"
 SELECT
     fullName,
     leadInFrame(year, 1, year) OVER (PARTITION BY category ORDER BY year ASC
@@ -63,9 +61,7 @@ ORDER BY year DESC
 LIMIT 9
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 1. │ Anne L Huillier  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
 2. │ Pierre Agostini  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │

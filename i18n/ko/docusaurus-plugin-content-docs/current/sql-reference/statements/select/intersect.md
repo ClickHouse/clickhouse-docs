@@ -29,13 +29,11 @@ FROM table2
 
 다음은 1부터 10까지의 숫자와 3부터 8까지의 숫자의 교집합을 구하는 간단한 예시입니다:
 
-```sql
+```sql title="Query"
 SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─number─┐
 │      3 │
 │      4 │
@@ -48,7 +46,7 @@ SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 
 `INTERSECT`는 하나 이상의 공통 컬럼을 공유하는 두 테이블이 있을 때 유용합니다. 결과에 동일한 컬럼들이 포함되어 있는 한, 두 쿼리의 결과를 교집합으로 구할 수 있습니다. 예를 들어, 수백만 행에 이르는 과거 암호화폐 데이터가 있고, 이 데이터에 거래 가격과 거래량이 포함되어 있다고 가정해 보겠습니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE crypto_prices
 (
     trade_date Date,
@@ -74,7 +72,7 @@ ORDER BY trade_date DESC
 LIMIT 10;
 ```
 
-```response
+```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
 │ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
 │ 2020-11-01 │ Bitcoin     │ 24453857000 │ 13737.11 │ 254569760000 │ -0.0031840964 │
@@ -91,7 +89,7 @@ LIMIT 10;
 
 이제 `holdings`라는 이름의 테이블에 보유 중인 암호화폐 목록과 각 코인의 개수가 저장되어 있다고 가정합니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,
@@ -109,18 +107,16 @@ INSERT INTO holdings VALUES
    ('Bitcoin Diamond', 5000);
 ```
 
-`INTERSECT`를 사용하면 **「우리가 보유한 코인 중 가격이 $100을 초과하여 거래된 것은 무엇인가?」**와 같은 질문에 답할 수 있습니다.
+`INTERSECT`를 사용하면 **「우리가 보유한 코인 중 가격이 $100을 초과하여 거래된 것은 무엇인가?」**와 같은 질문에 답할 수 있습니다:
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 INTERSECT
 SELECT crypto_name FROM crypto_prices
 WHERE price > 100
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Bitcoin     │
@@ -135,23 +131,21 @@ WHERE price > 100
 
 이전 쿼리에서는 100달러 이상에 거래된 Bitcoin과 Ethereum 보유분이 여러 개 있었던 것을 확인할 수 있습니다. 이미 알고 있는 내용을 반복할 뿐인 중복 행을 제거하면 결과가 더 깔끔해집니다. 결과에서 중복 행을 제거하려면 `INTERSECT`에 `DISTINCT`를 추가하면 됩니다:
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 INTERSECT DISTINCT
 SELECT crypto_name FROM crypto_prices
 WHERE price > 100;
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Ethereum    │
 └─────────────┘
 ```
 
-**함께 보기**
+**관련 항목**
 
 * [UNION](/sql-reference/statements/select/union)
 * [EXCEPT](/sql-reference/statements/select/except)

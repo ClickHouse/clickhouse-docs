@@ -956,15 +956,11 @@ untuple(x)
 
 Пример использования столбца типа данных `Tuple` в качестве параметра функции `untuple`:
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT untuple(v6) FROM kv;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─_ut_1─┬─_ut_2─┐
 │    33 │ ab    │
 │    44 │ cd    │
@@ -976,15 +972,11 @@ SELECT untuple(v6) FROM kv;
 
 Пример использования выражения `EXCEPT`:
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v4─┬─v5─┬─v6────────┐
 │   1 │ 10 │ 30 │ 15 │ (33,'ab') │
 │   2 │ 25 │ 40 │  6 │ (44,'cd') │
