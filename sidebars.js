@@ -1404,7 +1404,6 @@ const sidebars = {
         'operations/optimizing-performance/sampling-query-profiler',
         'operations/query-cache',
         'operations/query-condition-cache',
-        'operations/query-rules',
         'operations/userspace-page-cache',
         'operations/performance-test',
       ],
