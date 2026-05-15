@@ -296,7 +296,7 @@ ctx := clickhouse.Context(context.Background(),
 )
 ```
 
-:::note Context deadline behavior
+:::note[Context deadline behavior]
 If the context has a deadline > 1s, `max_execution_time` is automatically set to `seconds_remaining + 5`. This overrides any manually set value.
 :::
 
