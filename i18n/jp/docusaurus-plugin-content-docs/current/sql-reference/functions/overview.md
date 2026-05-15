@@ -64,6 +64,34 @@ str -> str != Referer
 
 一部の関数では、最初の引数 (ラムダ関数) を省略できます。この場合、恒等写像が指定されたものとして扱われます。
 
+### 関数名をラムダとしてそのまま使う \{#bare-function-names-as-lambdas\}
+
+完全なラムダ式を書く代わりに、関数名を高階関数に直接渡すことができます。関数名は自動的に、等価なラムダ式に変換されます。
+
+たとえば、次の各組み合わせは同等です。
+
+```sql
+SELECT arrayMap(negate, [1, 2, 3]);            -- [-1, -2, -3]
+SELECT arrayMap(x -> negate(x), [1, 2, 3]);    -- [-1, -2, -3]
+
+SELECT arrayMap(plus, [1, 2, 3], [10, 20, 30]);            -- [11, 22, 33]
+SELECT arrayMap((x, y) -> plus(x, y), [1, 2, 3], [10, 20, 30]); -- [11, 22, 33]
+
+SELECT arrayFilter(isNotNull, [1, NULL, 3, NULL, 5]);            -- [1, 3, 5]
+SELECT arrayFilter(x -> isNotNull(x), [1, NULL, 3, NULL, 5]);    -- [1, 3, 5]
+
+SELECT arrayFold(plus, [1, 2, 3, 4, 5], toUInt64(0));                      -- 15
+SELECT arrayFold((acc, x) -> plus(acc, x), [1, 2, 3, 4, 5], toUInt64(0));  -- 15
+```
+
+これは、組み込み関数、SQL UDF、実行可能 UDF、WebAssembly UDF で使用できます。曖昧な場合は、関数名よりもカラム名とエイリアス名が優先されます。
+
+ラムダのアリティは、内側の関数から決まります。たとえば `arrayMap(plus, ...)` では、`plus` が 2 つの引数を取るため、アリティ 2 が使われます。そのため、`arrayMap(plus, [(1, 10), (2, 20)])` のようなタプル入力でも動作し、この場合はタプル要素がラムダ引数に展開されます。
+
+可変長の内側関数 (任意個の引数を受け取る `concat` など) の場合、ラムダのアリティは Array 引数の数にフォールバックします。これは、`arrayMap`、`arrayFilter`、`arrayFold` のような高階関数では正しい動作です。一方、配列に加えて固定の非配列パラメーターも受け取る高階関数、たとえば `arrayPartialSort(f, limit, arr)` では、可変長関数名をそのまま指定するとアリティが誤ることがあり、その場合は明示的なラムダが必要です。
+
+また、可変長の内側関数では、タプル入力は自動展開されません。たとえば、`arrayMap(concat, [('a', 'b'), ('c', 'd')])` は単項ラムダに書き換えられるため、`arrayMap((x, y) -> concat(x, y), [('a', 'b'), ('c', 'd')])` と同等ではありません。タプル要素を分解して可変長呼び出しに渡したい場合は、明示的なラムダを使用してください。
+
 ## ユーザー定義関数 (UDF) \{#user-defined-functions-udfs\}
 
 ClickHouse はユーザー定義関数をサポートしています。詳しくは [UDFs](../functions/udf.md) を参照してください。

@@ -10678,6 +10678,20 @@ Possible values:
 
 クエリプラン内で、インバーテッドテキスト索引に基づいて構築されるフィルタリングに対して、ヒント（追加の述語）を付加できるようにします。
 
+## query_plan_top_k_through_join \{#query_plan_top_k_through_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "ソートキーが join によって保持される側のみを参照する場合に、ORDER BY ... LIMIT n を LEFT/RIGHT join をまたいでプッシュダウンするクエリプランレベルの最適化を有効にする新しい設定。"}]}]} />
+
+ソートキーが join によって保持される側 (LEFT/RIGHT) のカラムのみを参照する場合に、`ORDER BY ... LIMIT n` を join をまたいでプッシュダウンするクエリプランレベルの最適化を切り替えます。これにより、保持側の入力が join 前に生成する必要がある行数を制限します。
+この設定は、[query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) が 1 の場合にのみ有効です。
+
+設定可能な値:
+
+* 0 - 無効
+* 1 - 有効
+
 ## query_plan_try_use_vector_search \{#query_plan_try_use_vector_search\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

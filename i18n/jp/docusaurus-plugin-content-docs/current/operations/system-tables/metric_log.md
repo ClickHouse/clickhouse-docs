@@ -1791,6 +1791,21 @@ CurrentMetric_DistributedFilesToInsert:                          0
 
 `transposed` schema では、`system.asynchronous_metric_log` と同様のフォーマットでデータを格納し、メトリクスとイベントは行として保存されます。この schema は、マージ時のリソース消費を抑えられるため、リソースが限られた構成に適しています。
 
+**Histograms**
+
+各行には、登録されているすべてのヒストグラムメトリクスの snapshot も、`metric`、`labels`、`histogram`、`count`、`sum` の各フィールドを持つ `histograms` Nested カラムとして含まれます。bucket のカウントは、サーバーの起動以降の累積値です。デフォルトでは、合計 `count` がゼロのヒストグラムは出力されず、出力されたヒストグラム内のカウンターがゼロの bucket は `histogram` map から省略されます。すべてのヒストグラムとすべての bucket を保持するには、`system_metric_log_show_zero_values_in_histograms = 1` (デフォルトのユーザープロファイル内) を設定してください。
+
+クエリ例:
+
+```sql
+SELECT h.metric, h.labels, h.histogram, h.count, h.sum
+FROM system.metric_log
+ARRAY JOIN histograms AS h
+WHERE h.metric = 'keeper_response_time_ms' AND h.labels['operation_type'] = 'readonly'
+ORDER BY event_time DESC
+LIMIT 1;
+```
+
 ## 関連項目 \{#see-also\}
 
 * [metric&#95;log setting](../../operations/server-configuration-parameters/settings.md#metric_log) — この設定の有効化と無効化。

@@ -793,17 +793,15 @@ SELECT isPrime(18446744073709551615)
 [`isPrime`](/sql-reference/functions/math-functions#isPrime) 一致。`rounds` 参数会被忽略。
 
 对于 `UInt128` 和 `UInt256`，返回值为 `1` 时仅表示概率上为质数。可选的 `rounds` 参数用于控制
-执行多少轮 [Miller-Rabin](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test) 测试：
+执行多少轮 [Miller-Rabin 素性测试](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test)：
 轮数越多，出现假阳性的概率越低，但运行时间也会增加。在见证值均匀随机的情况下，对于固定的合数，
 假阳性率的上界为 `4^(-rounds)`；默认值 `25`
-可将这一上界控制在 `10^-15` 以下。高于 `256` 的取值会被拒绝并报错为 `BAD_ARGUMENTS`，因为它们
-不会带来任何实质性的提升，只会浪费时间。
+可将这一上界控制在 `10^-15` 以下，而最大值 `256` 可将其控制在 `10^-154` 以下。
 
-该函数是确定性的：见证值由根据 `n` 计算出的固定种子派生，因此相同的
-`(n, rounds)` 组合始终会产生相同的结果。因此，如果某个合数恰好通过了
-这一特定的见证序列，就会稳定地返回 `1`，而不是在每次调用时都独立地未通过测试。
-因此，`4^(-rounds)` 这一上界应被理解为跨不同输入时对典型准确性的参考，
-而不是针对固定输入的单次调用概率。
+该函数是确定性的：见证值以 `n` 为种子生成，因此相同的 `(n, rounds)` 组合始终会产生
+相同的结果。`4^(-rounds)` 这一上界表示在见证值均匀随机时针对单个输入的概率；
+而在我们的确定性种子机制下，它描述的是跨输入的一个比例——某个能够骗过其见证序列的
+合数将会稳定地返回 `1`。
 
 **语法**
 
@@ -814,7 +812,7 @@ isProbablePrime(n[, rounds])
 **参数**
 
 * `n` — 要测试其是否为质数的无符号整数。[`UInt8`](/sql-reference/data-types/int-uint) 或 [`UInt16`](/sql-reference/data-types/int-uint) 或 [`UInt32`](/sql-reference/data-types/int-uint) 或 [`UInt64`](/sql-reference/data-types/int-uint) 或 [`UInt128`](/sql-reference/data-types/int-uint) 或 [`UInt256`](/sql-reference/data-types/int-uint)
-* `rounds` — 可选的位于 `[1, 256]` 范围内的正整数常量。用于 `UInt128`/`UInt256` 的 Miller-Rabin 测试轮数 (对于位宽更小的类型会被忽略) 。默认值为 `25`。[`UInt8`](/sql-reference/data-types/int-uint) 或 [`UInt16`](/sql-reference/data-types/int-uint) 或 [`UInt32`](/sql-reference/data-types/int-uint) 或 [`UInt64`](/sql-reference/data-types/int-uint)
+* `rounds` — 可选的位于 `[1, 256]` 范围内的正整数常量。用于 `UInt128`/`UInt256` 的 Miller-Rabin 素性测试轮数 (对于位宽更小的类型会被忽略) 。默认值为 `25`。[`UInt8`](/sql-reference/data-types/int-uint) 或 [`UInt16`](/sql-reference/data-types/int-uint) 或 [`UInt32`](/sql-reference/data-types/int-uint) 或 [`UInt64`](/sql-reference/data-types/int-uint)
 
 **返回值**
 

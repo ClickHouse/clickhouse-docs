@@ -10702,6 +10702,20 @@ a   Tuple(
 
 Позволяет добавлять подсказку (additional predicate) для фильтрации, выполняемой с использованием инвертированного текстового индекса в плане запроса.
 
+## query_plan_top_k_through_join \{#query_plan_top_k_through_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка для включения оптимизации на уровне плана запроса, которая переносит ORDER BY ... LIMIT n под LEFT/RIGHT JOIN, когда ключ сортировки ссылается только на сохраняемую сторону."}]}]} />
+
+Включает или отключает оптимизацию на уровне плана запроса, которая переносит `ORDER BY ... LIMIT n` под JOIN, когда ключ сортировки ссылается только на столбцы стороны, сохраняемой JOIN (LEFT/RIGHT). Ограничивает количество строк, которое должен вернуть вход сохраняемой стороны до выполнения JOIN.
+Действует только если настройка [query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) имеет значение 1.
+
+Возможные значения:
+
+* 0 - Отключить
+* 1 - Включить
+
 ## query_plan_try_use_vector_search \{#query_plan_try_use_vector_search\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

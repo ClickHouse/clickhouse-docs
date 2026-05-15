@@ -7,6 +7,7 @@ pagination_next: null
 description: '2026-04-17 ClickStack 데모 데이'
 doc_type: 'guide'
 keywords: ['ClickStack', '데모 데이']
+sidebar_position: -20260417
 ---
 
 ## 로그와 트레이스 요약 \{#summarize-logs-and-traces\}

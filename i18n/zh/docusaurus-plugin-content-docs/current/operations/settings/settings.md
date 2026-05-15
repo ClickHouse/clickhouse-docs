@@ -10663,6 +10663,20 @@ a   Tuple(
 
 允许在查询计划中为由倒排文本索引构建的过滤条件添加提示（附加谓词）。
 
+## query_plan_top_k_through_join \{#query_plan_top_k_through_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于启用一种查询计划级别的优化：当排序键仅引用连接中被保留的一侧时，将 ORDER BY ... LIMIT n 下推到 LEFT/RIGHT join 之前。"}]}]} />
+
+用于切换一种查询计划级别的优化：当排序键仅引用 join 中被保留一侧 (LEFT/RIGHT) 的列时，将 `ORDER BY ... LIMIT n` 下推到 join 之前。这会限制被保留侧输入在执行 join 前需要生成的行数。
+仅当设置 [query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) 为 1 时，此设置才会生效。
+
+可能的值：
+
+* 0 - 禁用
+* 1 - 启用
+
 ## query_plan_try_use_vector_search \{#query_plan_try_use_vector_search\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

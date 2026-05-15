@@ -64,6 +64,34 @@ str -> str != Referer
 
 对于某些函数，可以省略第一个参数 (lambda 函数) 。在这种情况下，默认认为执行的是恒等映射。
 
+### 将函数名直接用作 lambda \{#bare-function-names-as-lambdas\}
+
+无需编写完整的 lambda 表达式，可以直接将函数名传给高阶函数。函数名会自动转换为等价的 lambda 表达式。
+
+例如，以下各组写法是等价的：
+
+```sql
+SELECT arrayMap(negate, [1, 2, 3]);            -- [-1, -2, -3]
+SELECT arrayMap(x -> negate(x), [1, 2, 3]);    -- [-1, -2, -3]
+
+SELECT arrayMap(plus, [1, 2, 3], [10, 20, 30]);            -- [11, 22, 33]
+SELECT arrayMap((x, y) -> plus(x, y), [1, 2, 3], [10, 20, 30]); -- [11, 22, 33]
+
+SELECT arrayFilter(isNotNull, [1, NULL, 3, NULL, 5]);            -- [1, 3, 5]
+SELECT arrayFilter(x -> isNotNull(x), [1, NULL, 3, NULL, 5]);    -- [1, 3, 5]
+
+SELECT arrayFold(plus, [1, 2, 3, 4, 5], toUInt64(0));                      -- 15
+SELECT arrayFold((acc, x) -> plus(acc, x), [1, 2, 3, 4, 5], toUInt64(0));  -- 15
+```
+
+这适用于内置函数、SQL UDF、可执行 UDF 和 WebAssembly UDF。存在歧义时，列名和别名的优先级高于函数名。
+
+lambda 的元数由内部函数决定。例如，`arrayMap(plus, ...)` 使用 2 元，因为 `plus` 接受两个参数，因此它也适用于元组输入，例如 `arrayMap(plus, [(1, 10), (2, 20)])`，其中元组元素会被解包并传入 lambda 参数。
+
+对于可变参数的内部函数 (例如 `concat`，可接受任意数量的参数) ，lambda 的元数会退回到数组参数的数量。这对于 `arrayMap`、`arrayFilter` 和 `arrayFold` 这类高阶函数是正确的。对于除数组外还接受固定非数组参数的高阶函数——例如 `arrayPartialSort(f, limit, arr)`——直接使用可变参数函数名可能会得到错误的元数，此时需要显式 lambda。
+
+可变参数的内部函数也不会自动解包元组输入。例如，`arrayMap(concat, [('a', 'b'), ('c', 'd')])` 会被改写为一元 lambda，因此它并不等同于 `arrayMap((x, y) -> concat(x, y), [('a', 'b'), ('c', 'd')])`。如果要将元组元素解构后传给可变参数调用，请使用显式 lambda。
+
 ## 用户自定义函数 (UDF) \{#user-defined-functions-udfs\}
 
 ClickHouse 支持用户自定义函数 (UDF) 。请参阅[用户自定义函数 (UDF) ](../functions/udf.md)。

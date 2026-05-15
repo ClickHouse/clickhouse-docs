@@ -1286,7 +1286,7 @@ ALTER TABLE tab DROP STATISTICS a;
 #### STATISTICSを用いたパーツ剪枝 \{#part-pruning-with-statistics\}
 
 `use_statistics_for_part_pruning` を有効にすると、STATISTICSを使ってパーツ剪枝を行えます。
-現在、パーツ剪枝に対応しているのは `MinMax` STATISTICSのみです。カラムに MinMax STATISTICSが定義されている場合、ClickHouse は各パーツ内のそのカラムの最小値と最大値を追跡します。
+現在、パーツ剪枝に対応しているのは `MinMax` と `NullCount` のSTATISTICSです。カラムに MinMax STATISTICSが定義されている場合、ClickHouse は各パーツ内のそのカラムの最小値と最大値を追跡します。`Nullable` カラムに NullCount STATISTICSが定義されている場合、ClickHouse は各パーツ内の NULL 値の数を追跡し、`IS NULL` / `IS NOT NULL` 述語に基づく剪枝を可能にするとともに、NULL 値を含むカラムに対する範囲フィルターの剪枝精度を向上させます。
 パーツ剪枝を使用すると、クエリのフィルター条件にそのパーツ内のどの行も一致しない場合、データパーツ全体の読み込みをスキップできます。
 
 **例:**
@@ -1317,7 +1317,6 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 -- The output will show "Parts: 1/2" indicating one part was pruned
 ```
 
-
 ### 利用可能なカラム STATISTICSの種類 \{#available-types-of-column-statistics\}
 
 * `MinMax`
@@ -1340,7 +1339,7 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 
 * `NullCount`
 
-  `Nullable` カラム内の `NULL` 値の数を追跡します。PREWHERE optimization において、`IS NULL`/`IS NOT NULL` 述語の選択性を正確に推定するために使用されます。
+  `Nullable` カラム内の `NULL` 値の数を追跡します。PREWHERE optimization において、`IS NULL`/`IS NOT NULL` 述語の選択性を正確に推定するために使用され、NULL の存在に基づく パーツ剪枝 も可能にします。
 
   構文: `nullcount`
 
