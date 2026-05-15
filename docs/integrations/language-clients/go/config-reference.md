@@ -116,7 +116,7 @@ GetJWT: func(ctx context.Context) (string, error) {
 | `ConnMaxIdleTime` | `time.Duration` | `0` (none) | — | `database/sql` only | Max time a connection can sit *idle* before closing. Not in `Options` struct -- set via `db.SetConnMaxIdleTime()`. | 5-10m for K8s/bursty workloads to reclaim idle connections after traffic spikes. | Not set: idle connections persist until `ConnMaxLifetime`. Too short (&#60; 30s): connections recreated during normal gaps. |
 
 :::note database/sql only
-`ConnMaxIdleTime` is a standard Go `database/sql` pool setting. It is not available in the `clickhouse.Options` struct or via `clickhouse.Open()`. Set it after `OpenDB()`:
+`ConnMaxIdleTime` is a standard Go `database/sql` pool setting. It isn't available in the `clickhouse.Options` struct or via `clickhouse.Open()`. Set it after `OpenDB()`:
 ```go
 db := clickhouse.OpenDB(&clickhouse.Options{...})
 db.SetConnMaxIdleTime(5 * time.Minute)
