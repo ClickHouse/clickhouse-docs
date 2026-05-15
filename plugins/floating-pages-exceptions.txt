@@ -13,3 +13,4 @@ integrations/data-ingestion/clickpipes/postgres/maintenance.md
 operations/utilities/clickhouse-keeper-http-api.md
 cloud/features/backups/faq.md
 interfaces/web-terminal
+operations/query-rules
