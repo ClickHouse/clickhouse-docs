@@ -206,8 +206,8 @@ See [Logging](/integrations/language-clients/go/configuration#logging) for full 
 
 ### HTTP-specific {#http-specific}
 
-:::warning Silently ignored on Native
-These options only affect `Protocol: clickhouse.HTTP`. They are silently ignored when using the Native protocol — no error or warning is emitted.
+:::warning[Silently ignored on Native]
+These options only affect `Protocol: clickhouse.HTTP`. They're silently ignored when using the Native protocol, and no error or warning is emitted.
 :::
 
 | Option | Type | Default | DSN param | Description | Best practice | When misconfigured |
