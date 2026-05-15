@@ -139,7 +139,7 @@ When using `clickhouse.OpenDB()` or `sql.Open("clickhouse", dsn)`, the returned 
 | `db.SetConnMaxIdleTime(d)` | *None* | Must be set manually post-creation |
 
 :::note[ClickHouse API (clickhouse.Open)]
-These methods are NOT available on the connection returned by `clickhouse.Open()`. The ClickHouse API manages its own pool internally using the `Options` struct fields directly.
+These methods are **not** available on the connection returned by `clickhouse.Open()`. The ClickHouse API manages its own pool internally using the `Options` struct fields directly.
 :::
 
 ---
