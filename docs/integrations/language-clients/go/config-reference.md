@@ -4,7 +4,7 @@ sidebar_position: 3
 keywords: ['clickhouse', 'go', 'golang', 'configuration', 'options', 'reference', 'DSN', 'connection pool', 'TLS', 'compression', 'timeout']
 description: 'Complete per-option configuration reference for the clickhouse-go client, covering connection-level, context-level, and batch options.'
 slug: /integrations/language-clients/go/config-reference
-title: 'Configuration reference'
+title: 'Go-client configuration reference'
 doc_type: 'reference'
 ---
 
