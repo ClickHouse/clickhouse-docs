@@ -409,7 +409,10 @@ batch, err := conn.PrepareBatch(ctx, "INSERT INTO table",
 
 **Cause:** Connection pool exhausted - all `MaxOpenConns` connections are in use and none became available within `DialTimeout`.
 
-**Fix (try in order — diagnose root cause before tuning knobs):**
+**Fix**
+
+Try the following steps in order, and diagnose the root cause before tuning knobs:
+
 1. Check for long-running queries holding connections: `SELECT query_id, elapsed FROM system.processes ORDER BY elapsed DESC`. If found, address the slow queries first.
 2. If you run long-lived batches (minutes/hours between `PrepareBatch()` and `Send()`), use `WithReleaseConnection()` to return the connection to the pool while the batch is open.
 3. Increase `MaxOpenConns` to match observed concurrency.
