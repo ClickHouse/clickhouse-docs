@@ -2729,6 +2729,32 @@ ENGINE = Log
 
 기본값은 `CURRENT_USER`입니다.
 
+## defer_partition_pruning_after_final \{#defer_partition_pruning_after_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "26.3에서 별도 공지 없이 도입된 FINAL 파티션 프루닝 동작(https://github.com/ClickHouse/ClickHouse/pull/98242)을 제어하기 위해 26.5에 새로 추가된 setting입니다. 의미 있는 동작상의 변경은 26.3 블록에 기록되어 있으므로 `compatibility = '26.2'`를 사용하면 되돌릴 수 있습니다. 이 항목은 26.4에서 업그레이드할 때 검사에서 새로 도입된 이름을 허용할 수 있도록 추가되었습니다."}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "1"},{"label": "파티션 키 컬럼이 sorting key에 없을 때 FINAL 플래너가 파티션 프루닝을 무조건 스키핑하는 동작을 제어합니다. 동작 변경 자체는 https://github.com/ClickHouse/ClickHouse/pull/98242를 통해 26.3에서 별도 공지 없이 도입되었습니다. 이 항목은 이를 사후적으로 문서화하여 `compatibility = '26.2'`가 회귀 이전 동작을 복원하도록 합니다 (0 = FINAL 전에 프루닝, 빠름; 1 = 프루닝 지연, 정확성 보장)."}]}]} />
+
+활성화되면(기본값) 파티션 키 컬럼이 sorting key에 포함되지 않은
+table의 `FINAL` 쿼리에서는 파티션 프루닝을 스키핑합니다. 이는 26.3에서 도입된
+정확성이 보장되는 동작입니다. `FINAL`은 동일한 기본 키를 공유하지만
+서로 다른 파티션에 있는 행을 중복 제거해야 할 수 있으며, 파티션 프루닝을 적용하면
+이러한 행이 중복 제거 입력에서 별도 경고 없이 제외될 수 있습니다.
+
+비활성화되면 `FINAL`이 있는 경우에도 파티션 프루닝이 적용되어 26.3 이전
+동작으로 복원됩니다. 이는 파티션 컬럼에 대한 `WHERE` 프레디케이트가 있는 쿼리에서는
+상당히 더 빠를 수 있지만, 동일한 기본 키를 가진 행이
+서로 다른 파티션에 존재할 수 없을 때만 올바릅니다. 예를 들어 event-log table처럼
+파티션 컬럼이 삽입 시점에 설정되고 이후에는 절대 변경되지 않는 경우가 이에 해당합니다.
+
+이 setting은 파티션 키 컬럼이
+sorting key에 포함되지 않은 파티션된 table에만 영향을 줍니다. 다른 table에는 항상 파티션 프루닝이 적용됩니다.
+
+가능한 값:
+
+* 0 — `FINAL` 전에 파티션 프루닝을 적용합니다(26.3 이전 동작, 더 빠르지만 일반적인 경우에는 안전하지 않음).
+* 1 — `FINAL` 이후로 파티션 프루닝을 지연합니다(기본값, 정확성이 보장됨).
+
 ## delta_lake_enable_engine_predicate \{#delta_lake_enable_engine_predicate\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

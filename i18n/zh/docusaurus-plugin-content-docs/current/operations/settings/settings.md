@@ -2725,6 +2725,23 @@ ENGINE = Log
 
 默认值为 `CURRENT_USER`。
 
+## defer_partition_pruning_after_final \{#defer_partition_pruning_after_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "26.5 中新增的设置，用于控制 26.3 中静默发布的 FINAL 分区裁剪行为 (https://github.com/ClickHouse/ClickHouse/pull/98242)。真正有意义的语义变更记录在 26.3 条目下，因此 `compatibility = '26.2'` 会回退该变更；添加此条目是为了让从 26.4 升级时的检查接受这个新引入的名称。"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "1"},{"label": "控制当分区键列不属于 sorting key 时，FINAL 规划器无条件跳过分区裁剪的行为。该行为变更本身已在 26.3 中通过 https://github.com/ClickHouse/ClickHouse/pull/98242 静默发布；此条目是对该变更的补充文档记录，因此 `compatibility = '26.2'` 会恢复变更前的行为（0 = 在 FINAL 之前裁剪，速度更快；1 = 延后裁剪，保证正确性）。"}]}]} />
+
+启用时 (默认) ，对于分区键列不属于 sorting key 的表，`FINAL` 查询会跳过分区裁剪。这是 26.3 中引入的、能够保证正确性的行为：`FINAL` 可能需要对主键相同但位于不同分区中的行进行去重，而分区裁剪会在不报错的情况下将这些行排除在去重输入之外。
+
+禁用时，即使使用 `FINAL` 也会执行分区裁剪，从而恢复 26.3 之前的行为。对于在分区列上带有 `WHERE` 谓词的查询，这样做可能会快很多，但只有在相同主键的行不可能出现在不同分区中时才是正确的——例如事件日志表，其分区列在插入时确定，之后永不更改。
+
+此设置仅影响分区键列未包含在 sorting key 中的分区表；对于其他表，始终会执行分区裁剪。
+
+可选值：
+
+* 0 — 在 `FINAL` 之前执行分区裁剪 (26.3 之前的行为，速度更快，但一般情况下不安全) 。
+* 1 — 将分区裁剪延后到 `FINAL` 之后 (默认，保证正确性) 。
+
 ## delta_lake_enable_engine_predicate \{#delta_lake_enable_engine_predicate\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
