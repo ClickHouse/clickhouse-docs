@@ -8,7 +8,6 @@ title: 'Go-client configuration reference'
 doc_type: 'reference'
 ---
 
-# Configuration reference {#config-reference}
 
 This page documents every configurable option in `clickhouse-go` v2.x. For a guide with code examples, see [Configuration](/integrations/language-clients/go/configuration).
 
