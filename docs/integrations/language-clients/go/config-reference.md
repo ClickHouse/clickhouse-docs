@@ -218,7 +218,7 @@ These options only affect `Protocol: clickhouse.HTTP`. They're silently ignored 
 | `HTTPProxyURL` | `*url.URL` | `nil` (uses env vars) | `http_proxy` (URL-encoded) | HTTP proxy for routing requests | Set explicitly if proxy required. Overrides `HTTP_PROXY`/`HTTPS_PROXY` env vars. | Wrong address: `"dial tcp: lookup proxy: no such host"`. Proxy needs auth: HTTP 407. |
 | `TransportFunc` | `func(*http.Transport) (http.RoundTripper, error)` | `nil` | — | Custom HTTP transport factory. Receives default transport for wrapping. *(Since v2.41.0)* | Use for observability middleware. Don't override `Proxy`, `DialContext`, `TLSClientConfig`. | Returning `nil`: panic. Overriding client fields: TLS/proxy silently ignored. Blocking RoundTripper: deadlocks. |
 
-:::note Two-layer HTTP pooling
+:::note[Two-layer HTTP pooling]
 When using HTTP, there are two connection pools:
 - **Layer 1 (application):** `MaxIdleConns` / `MaxOpenConns` -- controls `httpConnect` objects
 - **Layer 2 (transport):** `HttpMaxConnsPerHost` -- controls underlying TCP connections
