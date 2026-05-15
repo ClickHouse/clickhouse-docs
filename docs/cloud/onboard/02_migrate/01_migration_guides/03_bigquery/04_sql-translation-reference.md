@@ -398,7 +398,7 @@ INSERT INTO t VALUES (1);
 <tr>
 <td colSpan={2}>
 
-ClickHouse temporary tables are session-scoped and require an explicit engine (commonly [`Memory`](/engines/table-engines/special/memory)).
+ClickHouse temporary tables are session-scoped. The engine clause is optional and defaults to [`Memory`](/engines/table-engines/special/memory); specify a different one only if you need non-Memory storage.
 
 </td>
 </tr>
@@ -740,7 +740,7 @@ CREATE SEARCH INDEX idx ON mydataset.t (name)
 ```sql
 ALTER TABLE mydb.t
 ADD INDEX idx name
-  TYPE text(tokenizer = 'default')
+  TYPE text(tokenizer = splitByNonAlpha)
   GRANULARITY 1
 ```
 
@@ -768,7 +768,7 @@ OPTIONS (distance_type = 'COSINE')
 ```sql
 ALTER TABLE mydb.t
 ADD INDEX idx embedding
-  TYPE vector_similarity('hnsw', 'cosineDistance')
+  TYPE vector_similarity('hnsw', 'cosineDistance', 1536)
   GRANULARITY 1
 ```
 
@@ -777,7 +777,7 @@ ADD INDEX idx embedding
 <tr>
 <td colSpan={2}>
 
-See [Approximate-nearest-neighbor indexes](/engines/table-engines/mergetree-family/annindexes).
+The third argument is the vector dimension and is required; it must match the length of every value stored in the indexed `Array(Float*)` column. See [Approximate-nearest-neighbor indexes](/engines/table-engines/mergetree-family/annindexes).
 
 </td>
 </tr>
@@ -1311,7 +1311,7 @@ SELECT * EXCEPT password FROM mydb.t
 <tr>
 <td colSpan={2}>
 
-ClickHouse [`* EXCEPT`](/sql-reference/statements/select/#except-modifier) accepts a bare list or parenthesised list.
+ClickHouse [`* EXCEPT`](/sql-reference/statements/select/#except-modifier) accepts an unparenthesised single column; multiple columns must be parenthesised.
 
 </td>
 </tr>
@@ -1685,7 +1685,7 @@ WHERE id IN (SELECT id FROM mydb.u)
 <tr>
 <td colSpan={2}>
 
-ClickHouse supports `EXISTS (subquery)` as well, but the more idiomatic and better-optimized form for existence checks is `IN (subquery)`.
+ClickHouse supports `EXISTS (subquery)` as well; `IN (subquery)` is the more idiomatic form for existence checks and is what you'll see in most ClickHouse query examples.
 
 </td>
 </tr>
@@ -1734,7 +1734,7 @@ SELECT a, b FROM mydb.u
 <tr>
 <td colSpan={2}>
 
-ClickHouse rejects bare `UNION`; use `UNION ALL` or `UNION DISTINCT`.
+ClickHouse rejects bare `UNION` by default (controlled by the `union_default_mode` setting); always write `UNION ALL` or `UNION DISTINCT` explicitly to avoid surprises.
 
 </td>
 </tr>
@@ -1753,7 +1753,7 @@ SELECT a FROM mydataset.u
 
 ```sql
 SELECT a FROM mydb.t
-INTERSECT
+INTERSECT DISTINCT
 SELECT a FROM mydb.u
 ```
 
@@ -1774,7 +1774,7 @@ SELECT a FROM mydataset.u
 
 ```sql
 SELECT a FROM mydb.t
-EXCEPT
+EXCEPT DISTINCT
 SELECT a FROM mydb.u
 ```
 
@@ -1951,11 +1951,11 @@ UNPIVOT (v FOR col IN (a, b))
 <td>
 
 ```sql
-SELECT col, v
+SELECT p.1 AS col, p.2 AS v
 FROM (
-  SELECT [('a', a), ('b', b)] AS pairs FROM mydb.t
+  SELECT [tuple('a', a), tuple('b', b)] AS pairs FROM mydb.t
 )
-ARRAY JOIN pairs.1 AS col, pairs.2 AS v
+ARRAY JOIN pairs AS p
 ```
 
 </td>
@@ -2093,7 +2093,7 @@ FROM mydataset.t
 <td>
 
 ```sql
-SELECT * REPLACE (amount AS price) FROM mydb.t
+SELECT * EXCEPT amount, amount AS price FROM mydb.t
 ```
 
 </td>
@@ -2101,7 +2101,7 @@ SELECT * REPLACE (amount AS price) FROM mydb.t
 <tr>
 <td colSpan={2}>
 
-ClickHouse `* REPLACE` substitutes the column expression; rename via an outer `SELECT` if you also need the column name to change.
+ClickHouse `* REPLACE` substitutes the value of an existing column but cannot rename it; use `* EXCEPT` plus an aliased column to drop the original name and reintroduce it under the new one.
 
 </td>
 </tr>
@@ -2929,7 +2929,7 @@ PARSE_NUMERIC('3.14')
 <td>
 
 ```sql
-toDecimal64('3.14', 2)
+toDecimal64('3.14', 9)
 ```
 
 </td>
@@ -2937,7 +2937,7 @@ toDecimal64('3.14', 2)
 <tr>
 <td colSpan={2}>
 
-Specify scale explicitly in ClickHouse.
+BigQuery `NUMERIC` is fixed `(38, 9)`; specify the scale you need in ClickHouse.
 
 </td>
 </tr>
@@ -3462,6 +3462,13 @@ toYear(d) -- toMonth(d), toDayOfMonth(d), toHour(d), ...
 
 </td>
 </tr>
+<tr>
+<td colSpan={2}>
+
+ClickHouse also accepts `EXTRACT(YEAR FROM d)` directly, so EXTRACT-heavy SQL can port as-is; the `toYear(d)` family is just terser.
+
+</td>
+</tr>
 
 <tr>
 <td>
@@ -3703,7 +3710,7 @@ TRIM(s)
 <td>
 
 ```sql
-trim(BOTH ' ' FROM s) -- or trimBoth(s)
+trimBoth(s) -- alias: trim(s); pass a second arg to trim specific characters
 ```
 
 </td>
