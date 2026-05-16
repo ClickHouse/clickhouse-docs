@@ -66,6 +66,25 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 값이 true이면 CollapsingMergeTree 또는 VersionedCollapsingMergeTree 테이블의 `sign` 컬럼에 암시적 제약 조건을 추가하여 유효한 값(`1` 및 `-1`)만 허용합니다.
 
+## add_minmax_index_for_block_number_column \{#add_minmax_index_for_block_number_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "새 설정입니다."}]}]} />
+
+활성화하면 영구 가상 컬럼 `_block_number`에 대해 암시적 min-max (스키핑) 인덱스가 추가됩니다.
+이 설정이 적용되려면 `enable_block_number_column = 1`이어야 합니다. 이 인덱스는 삽입 시에는 생성되지 않고 머지 중에만 생성됩니다.
+삽입 시점에는 블록 번호가 아직 확정되지 않았으므로 상수에 대한 인덱스가 생성됩니다.
+
+## add_minmax_index_for_block_offset_column \{#add_minmax_index_for_block_offset_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "새 설정입니다."}]}]} />
+
+활성화하면 영구 가상 컬럼 `_block_offset`에 대한 암시적 min-max(스키핑) 인덱스가 추가됩니다.
+이 설정을 적용하려면 `enable_block_offset_column = 1`이어야 합니다. 인덱스는 삽입 시에는 생성되지 않고 머지 중에만 생성됩니다.
+
 ## add_minmax_index_for_numeric_columns \{#add_minmax_index_for_numeric_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2142,6 +2161,19 @@ LZ4 또는 ZSTD의 압축률은 평균적으로 20–40% 향상됩니다.
 기본 키 값의 개수가 적은 테이블에서 가장 효과적입니다.
 `DateTime64` 타입의 타임스탬프 컬럼을 포함하는 등 고카디널리티 기본 키를
 가진 테이블은 이 설정의 이점을 기대하기 어렵습니다.
+
+## part_minmax_index_columns \{#part_minmax_index_columns\}
+
+<SettingsInfoBlock type="MergeTreePartMinMaxIndexColumns" default_value="partition_key_only" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "partition_key_only"},{"label": "새 설정입니다."}]}]} />
+
+파트별 최소-최대 인덱스가 포함하는 컬럼을 선택합니다. 각 값은 이전 값에 추가로 다른 컬럼 그룹을 활성화합니다.
+
+가능한 값:
+
+* `partition_key_only` — 파티션 키 컬럼만 추적합니다.
+* `with_block_number_offset` — 파티션 키 컬럼에 더해 영구 저장된 `_block_number` 및 `_block_offset` 가상 컬럼도 추적합니다. 이 컬럼을 기준으로 파트 수준 프루닝이 가능해집니다.
 
 ## part_moves_between_shards_delay_seconds \{#part_moves_between_shards_delay_seconds\}
 

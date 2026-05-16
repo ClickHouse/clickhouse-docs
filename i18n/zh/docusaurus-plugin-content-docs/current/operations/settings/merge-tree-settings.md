@@ -65,6 +65,26 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 若为 true，则会为 CollapsingMergeTree 或 VersionedCollapsingMergeTree 表的 `sign` 列添加一个隐式约束，只允许取值为 `1` 或 `-1`。
 
+## add_minmax_index_for_block_number_column \{#add_minmax_index_for_block_number_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置。"}]}]} />
+
+启用后，会为持久化虚拟列 `_block_number` 添加一个隐式的 min-max（跳过）索引。
+要使其生效，需要设置 `enable_block_number_column = 1`。该索引仅在 merges 期间构建，
+不会在 inserts 期间构建：在写入时，块编号只是暂定值，因此建立的只会是一个常量索引。
+
+## add_minmax_index_for_block_offset_column \{#add_minmax_index_for_block_offset_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置。"}]}]} />
+
+启用后，会为持久化虚拟列 `_block_offset` 添加一个隐式的 min-max（跳过）索引。
+需要启用 `enable_block_offset_column = 1` 才会生效。该索引仅在合并期间构建，
+不会在插入期间构建。
+
 ## add_minmax_index_for_numeric_columns \{#add_minmax_index_for_numeric_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2067,6 +2087,19 @@ LZ4 或 ZSTD 的压缩率平均可提高 20–40%。
 
 此设置最适用于没有主键或主键基数较低的表，即只有少量不同主键值的表。
 高基数主键（例如包含 `DateTime64` 类型时间戳列的主键）预计不会从此设置中获益。
+
+## part_minmax_index_columns \{#part_minmax_index_columns\}
+
+<SettingsInfoBlock type="MergeTreePartMinMaxIndexColumns" default_value="partition_key_only" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "partition_key_only"},{"label": "新增设置。"}]}]} />
+
+选择每个 part 的 min-max 索引覆盖哪些列。每个取值都会在前一个取值的基础上额外启用一组列。
+
+可选值：
+
+* `partition_key_only` — 仅跟踪分区键列。
+* `with_block_number_offset` — 分区键列，以及持久化的 `_block_number` 和 `_block_offset` 虚拟列。启用基于这些列的 part 级剪枝。
 
 ## part_moves_between_shards_delay_seconds \{#part_moves_between_shards_delay_seconds\}
 

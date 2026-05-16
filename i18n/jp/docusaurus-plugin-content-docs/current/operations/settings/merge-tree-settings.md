@@ -65,6 +65,26 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 true に設定されている場合、CollapsingMergeTree または VersionedCollapsingMergeTree テーブルの `sign` カラムに対して、許可される値（`1` および `-1`）のみを許可する暗黙的な制約を追加します。
 
+## add_minmax_index_for_block_number_column \{#add_minmax_index_for_block_number_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新しい設定"}]}]} />
+
+有効にすると、永続仮想カラム `_block_number` に対して暗黙的な min-max (スキッピング) 索引が追加されます。
+有効にするには、`enable_block_number_column = 1` を設定する必要があります。索引が構築されるのはマージ時のみで、
+insert 時には構築されません。insert 時点では block number は暫定的で、定数に対する索引になってしまうためです。
+
+## add_minmax_index_for_block_offset_column \{#add_minmax_index_for_block_offset_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新しい設定"}]}]} />
+
+有効にすると、永続仮想カラム `_block_offset` に対して暗黙的な min-max (スキッピング) 索引が追加されます。
+この設定を有効にするには、`enable_block_offset_column = 1` を設定する必要があります。索引はマージ時にのみ構築され、
+挿入時には構築されません。
+
 ## add_minmax_index_for_numeric_columns \{#add_minmax_index_for_numeric_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2088,6 +2108,19 @@ LZ4 や ZSTD の圧縮率は平均して 20–40% 向上します。
 
 この設定は、primary key を持たないテーブルや low-cardinality の primary key を持つテーブル、すなわち primary key の異なる値の種類が少ないテーブルに対して最も効果的です。
 `DateTime64` 型の timestamp カラムを含むような high-cardinality の primary key は、この設定による恩恵は期待できません。
+
+## part_minmax_index_columns \{#part_minmax_index_columns\}
+
+<SettingsInfoBlock type="MergeTreePartMinMaxIndexColumns" default_value="partition_key_only" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "partition_key_only"},{"label": "新しい設定"}]}]} />
+
+パート単位の min-max 索引がどのカラムを対象とするかを選択します。各値では、前の値で有効になるカラム群に加えて、追加のカラム群が有効になります。
+
+設定可能な値:
+
+* `partition_key_only` — パーティションキーのカラムのみを追跡します。
+* `with_block_number_offset` — パーティションキーのカラムに加えて、永続化された仮想カラム `_block_number` および `_block_offset` も追跡します。これらのカラムによるパートレベルのプルーニングが有効になります。
 
 ## part_moves_between_shards_delay_seconds \{#part_moves_between_shards_delay_seconds\}
 

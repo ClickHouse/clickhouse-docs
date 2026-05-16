@@ -67,6 +67,26 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 Если значение параметра установлено в `true`, добавляет неявное ограничение для столбца `sign` в таблице CollapsingMergeTree
 или VersionedCollapsingMergeTree, чтобы разрешать только значения (`1` и `-1`).
 
+## add_minmax_index_for_block_number_column \{#add_minmax_index_for_block_number_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка."}]}]} />
+
+Если параметр включен, для постоянного виртуального столбца `_block_number` добавляется неявный индекс min-max (skipping).
+Для вступления в силу требуется `enable_block_number_column = 1`. Индекс строится только во время слияний,
+а не при вставке: в момент вставки номер блока еще является предварительным, и индексировалась бы константа.
+
+## add_minmax_index_for_block_offset_column \{#add_minmax_index_for_block_offset_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка."}]}]} />
+
+Если параметр включен, для постоянного виртуального столбца `_block_offset` добавляется неявный min-max-индекс (skipping).
+Чтобы он вступил в силу, требуется `enable_block_offset_column = 1`. Индекс строится только при слияниях,
+а не при вставках.
+
 ## add_minmax_index_for_numeric_columns \{#add_minmax_index_for_numeric_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -2246,6 +2266,19 @@ ClickHouse будет использовать то значение, котор
 низкой кардинальности, то есть таблиц с небольшим числом различных значений первичного ключа.
 От первичных ключей высокой кардинальности, например включающих столбцы меток времени типа
 `DateTime64`, не ожидается выигрыша от этого параметра.
+
+## part_minmax_index_columns \{#part_minmax_index_columns\}
+
+<SettingsInfoBlock type="MergeTreePartMinMaxIndexColumns" default_value="partition_key_only" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "partition_key_only"},{"label": "Новая настройка."}]}]} />
+
+Определяет, какие столбцы охватывает min-max индекс для каждой части. Каждое следующее значение добавляет новую группу столбцов к уже включённым.
+
+Возможные значения:
+
+* `partition_key_only` — отслеживаются только столбцы ключа партиции.
+* `with_block_number_offset` — столбцы ключа партиции, а также сохранённые виртуальные столбцы `_block_number` и `_block_offset`. Позволяет выполнять отсечение на уровне части по этим столбцам.
 
 ## part_moves_between_shards_delay_seconds \{#part_moves_between_shards_delay_seconds\}
 
