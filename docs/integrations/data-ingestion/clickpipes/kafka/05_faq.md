@@ -70,7 +70,7 @@ This can be configured during ClickPipe creation, or at any other point under **
 
 <summary>I can't find some of my Kafka topics in the ClickPipes setup UI. Why?</summary>
 
-The ClickPipes topic discovery UI lists up to 1,500 topics by default. If your Kafka cluster has more than 1,500 topics, some topics may not appear in the dropdown. To verify your topic exists, check directly using a Kafka client with the same credentials. If confirmed and you need to raise the listing limit beyond 1,500, please reach out to ClickHouse Support.
+The ClickPipes topic discovery UI lists up to 1,500 topics by default. If your Kafka cluster has more than 1,500 topics, some topics may not appear in the dropdown. To verify your topic exists, check directly using a Kafka client with the same credentials. If confirmed and you need to raise the listing limit beyond 1,500, reach out to ClickHouse Support.
 </details>
 
 ### Azure Event Hubs {#azure-eventhubs}
