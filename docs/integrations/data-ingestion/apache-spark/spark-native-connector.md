@@ -1583,7 +1583,6 @@ The connector communicates with ClickHouse exclusively over HTTP. There is no mi
 
 | Feature | Minimum ClickHouse Version |
 |---------|---------------------------|
-| General HTTP connectivity | 20.7+ |
 | `spark.clickhouse.read.splitByPartitionId` (partition-id-based filtering) | 21.6+ |
 | `VariantType` / `JSON` type support | 25.3+ |
 
