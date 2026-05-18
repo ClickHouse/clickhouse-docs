@@ -41,15 +41,11 @@ doc_type: 'reference'
 
 ## 例 \{#example\}
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT * FROM system.clusters LIMIT 2 FORMAT Vertical;
 ```
 
-結果：
-
-```text
+```text title="Response"
 Row 1:
 ──────
 cluster:                 test_cluster_two_shards

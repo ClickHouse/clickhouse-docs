@@ -193,22 +193,19 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 다음 쿼리를 [command-line client](../../interfaces/client.md)를 사용하여 실행하십시오:
 
-```bash
+```bash title="Query"
 echo 1,A > input.csv ; echo 2,B >> input.csv
 clickhouse-client --query="CREATE TABLE table_from_file (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;"
 clickhouse-client --query="INSERT INTO table_from_file FROM INFILE 'input.csv' FORMAT CSV;"
 clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─id─┬─text─┐
 │  1 │ A    │
 │  2 │ B    │
 └────┴──────┘
 ```
-
 
 ### 글롭(glob) 패턴을 사용한 FROM INFILE 다중 파일 처리 \{#multiple-files-with-from-infile-using-globs\}
 
@@ -247,21 +244,18 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 
 다음 쿼리에서는 [remote](/sql-reference/table-functions/remote) 테이블 함수를 사용합니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
     VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌──id─┬─text──────────────────┐
 │ 100 │ inserted via remote() │
 └─────┴───────────────────────┘
 ```
-
 
 ## ClickHouse Cloud에 데이터 삽입 \{#inserting-into-clickhouse-cloud\}
 

@@ -362,9 +362,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 找出在 2019 年 1–2 月期间，用户 `user_id` 在这条链路中最多走到了哪一步。
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT
     level,
     count() AS c
@@ -381,9 +379,7 @@ GROUP BY level
 ORDER BY level ASC;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─level─┬─c─┐
 │     4 │ 1 │
 └───────┴───┘
@@ -452,7 +448,7 @@ retention(cond1, cond2, ..., cond32);
 
 **1.** 创建一个表用于演示。
 
-```sql
+```sql title="Query"
 CREATE TABLE retention_test(date Date, uid Int32) ENGINE = Memory;
 
 INSERT INTO retention_test SELECT '2020-01-01', number FROM numbers(5);
@@ -462,15 +458,11 @@ INSERT INTO retention_test SELECT '2020-01-03', number FROM numbers(15);
 
 输入表：
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM retention_test
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───────date─┬─uid─┐
 │ 2020-01-01 │   0 │
 │ 2020-01-01 │   1 │
@@ -511,9 +503,7 @@ SELECT * FROM retention_test
 
 **2.** 使用 `retention` 函数按照唯一 ID `uid` 对用户进行分组。
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT
     uid,
     retention(date = '2020-01-01', date = '2020-01-02', date = '2020-01-03') AS r
@@ -523,9 +513,7 @@ GROUP BY uid
 ORDER BY uid ASC
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
 │   1 │ [1,1,1] │
@@ -547,9 +535,7 @@ ORDER BY uid ASC
 
 **3.** 计算每日站点总访问量。
 
-Query:
-
-```sql
+```sql title="Query"
 SELECT
     sum(r[1]) AS r1,
     sum(r[2]) AS r2,
@@ -565,9 +551,7 @@ FROM
 )
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─r1─┬─r2─┬─r3─┐
 │  5 │  5 │  5 │
 └────┴────┴────┘
@@ -619,9 +603,7 @@ HAVING uniqUpTo(4)(UserID) >= 5
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE sum_map
 (
     `date` Date,
@@ -637,13 +619,11 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10]);
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_map;
 ```
 
-结果：
-
-```response
+```response title="Response"
    ┌─sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests)─┐
 1. │ ([1,4,8],[10,20,10])                                            │
    └─────────────────────────────────────────────────────────────────┘
@@ -669,11 +649,9 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 
 **示例**
 
-在此示例中，我们创建一张表 `sum_map`，向其中插入一些数据，然后同时使用 `sumMapFilteredWithOverflow` 和 `sumMapFiltered` 以及 `toTypeName` 函数来比较结果。在创建的表中，`requests` 的类型为 `UInt8`，`sumMapFiltered` 将累加值的类型提升为 `UInt64` 以避免溢出，而 `sumMapFilteredWithOverflow` 则保持类型为 `UInt8`，该类型不足以存储结果——即发生了溢出。
+在此示例中，我们创建一张表 `sum_map`，向其中插入一些数据，然后同时使用 `sumMapFilteredWithOverflow`、`sumMapFiltered` 和 `toTypeName` 函数来比较结果。在创建的表中，`requests` 的类型为 `UInt8`，`sumMapFiltered` 将累加值的类型提升为 `UInt64` 以避免溢出，而 `sumMapFilteredWithOverflow` 则保持类型为 `UInt8`，该类型不足以存储结果——即发生了溢出。
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE sum_map
 (
     `date` Date,
@@ -689,23 +667,21 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10]);
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFilteredWithOverflow([1, 4, 8])(statusMap.status, statusMap.requests) as summap_overflow, toTypeName(summap_overflow) FROM sum_map;
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap, toTypeName(summap) FROM sum_map;
 ```
 
-结果：
-
-```response
+```response title="Response"
    ┌─sum──────────────────┬─toTypeName(sum)───────────────────┐
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt8)) │
    └──────────────────────┴───────────────────────────────────┘
 ```
 
-```response
+```response title="Response"
    ┌─summap───────────────┬─toTypeName(summap)─────────────────┐
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt64)) │
    └──────────────────────┴────────────────────────────────────┘
@@ -755,7 +731,7 @@ sequenceNextNode(direction, base)(timestamp, event_column, base_condition, event
 
 用于查询紧跟在 A-&gt;B 之后的事件的语句如下：
 
-```sql
+```sql title="Query"
 CREATE TABLE test_flow (
     dt DateTime,
     id int,
@@ -769,9 +745,7 @@ INSERT INTO test_flow VALUES (1, 1, 'A') (2, 1, 'B') (3, 1, 'C') (4, 1, 'D') (5,
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'A', page = 'A', page = 'B') as next_flow FROM test_flow GROUP BY id;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─id─┬─next_flow─┐
 │  1 │ C         │
 └────┴───────────┘

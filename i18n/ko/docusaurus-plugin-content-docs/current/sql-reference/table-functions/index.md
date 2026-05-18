@@ -78,11 +78,11 @@ doc_type: 'reference'
 절에서 사용할 수 있습니다. 예를 들어 로컬 머신에 있는 파일에 대해 `file` 테이블 함수를 사용하여
 데이터를 `SELECT`할 수 있습니다.
 
-```bash
+```bash title="Query"
 echo "1, 2, 3" > example.csv
 ```
 
-```text
+```text title="Response"
 ./clickhouse client
 :) SELECT * FROM file('example.csv')
 ┌─c1─┬─c2─┬─c3─┐
@@ -110,7 +110,7 @@ SELECT * FROM generateSeries(1,5);
 
 테이블 함수는 다음 구문을 사용하여 테이블을 생성하는 방법으로 사용할 수 있습니다:
 
-```sql
+```sql title="Query"
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 ```
 
@@ -121,7 +121,7 @@ CREATE TABLE series AS generateSeries(1, 5);
 SELECT * FROM series;
 ```
 
-```response
+```response title="Response"
 ┌─generate_series─┐
 │               1 │
 │               2 │
@@ -132,14 +132,14 @@ SELECT * FROM series;
 ```
 
 마지막으로, 테이블 함수는 `INSERT` 문을 사용해 데이터를 테이블에 삽입하는 데에도 사용할 수 있습니다. 예를 들어,
-이전 예제에서 생성한 테이블의 내용을 다시 `file` 테이블 함수를 사용하여
-디스크에 있는 파일로 기록할 수 있습니다.
+이전 예시에서 생성한 테이블의 내용을 다시 `file` 테이블 함수를 사용하여
+디스크의 파일에 기록할 수 있습니다:
 
-```sql
+```sql title="Query"
 INSERT INTO FUNCTION file('numbers.csv', 'CSV') SELECT * FROM series;
 ```
 
-```bash
+```bash title="Query"
 cat numbers.csv
 1
 2

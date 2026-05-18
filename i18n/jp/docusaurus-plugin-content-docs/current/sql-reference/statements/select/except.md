@@ -148,7 +148,7 @@ LIMIT 10;
 
 ここで、`holdings` という名前のテーブルがあり、自分たちが保有する暗号通貨の一覧と、それぞれの保有枚数が含まれているとします。
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,

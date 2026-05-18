@@ -23,7 +23,7 @@ view(subquery)
 
 * 테이블
 
-## 예제 \{#examples\}
+## 예시 \{#examples\}
 
 입력 테이블:
 
@@ -36,15 +36,11 @@ view(subquery)
 └────┴──────────┴──────┘
 ```
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT * FROM view(SELECT name FROM months);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─name─────┐
 │ January  │
 │ February │
@@ -53,13 +49,13 @@ SELECT * FROM view(SELECT name FROM months);
 └──────────┘
 ```
 
-`view` 함수를 [remote](/sql-reference/table-functions/remote) 및 [cluster](/sql-reference/table-functions/cluster) 테이블 함수의 인수로 사용할 수 있습니다.
+`VIEW` 함수를 [remote](/sql-reference/table-functions/remote) 및 [cluster](/sql-reference/table-functions/cluster) 테이블 함수의 인수로 사용할 수 있습니다.
 
-```sql
+```sql title="Query"
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 

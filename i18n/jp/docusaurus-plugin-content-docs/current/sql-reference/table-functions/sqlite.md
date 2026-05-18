@@ -27,22 +27,17 @@ sqlite('db_path', 'table_name')
 
 ## 例 \{#example\}
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─col1──┬─col2─┐
 │ line1 │    1 │
 │ line2 │    2 │
 │ line3 │    3 │
 └───────┴──────┘
 ```
-
 
 ## 関連項目 \{#related\}
 

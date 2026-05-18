@@ -17,13 +17,13 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/ESlAhUJMoz8?si=sY2OVm-zcuxlDRaX" title="ClickHouse regex tree 딕셔너리 소개" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## YAMLRegExpTree 소스를 사용하는 정규식 트리 딕셔너리 \{#use-regular-expression-tree-dictionary-in-clickhouse-open-source\}
+## YAMLRegExpTree 소스를 사용하는 정규 표현식 트리 딕셔너리 \{#use-regular-expression-tree-dictionary-in-clickhouse-open-source\}
 
 <CloudNotSupportedBadge />
 
 정규식 트리 딕셔너리는 ClickHouse 오픈 소스 버전에서 [`YAMLRegExpTree`](../sources/yamlregexptree.md) 소스를 사용하여 정의합니다. 이때 정규식 트리가 포함된 YAML 파일의 경로를 해당 소스에 전달합니다.
 
-```sql
+```sql title="Query"
 CREATE DICTIONARY regexp_dict
 (
     regexp String,
@@ -36,7 +36,7 @@ LAYOUT(regexp_tree)
 ...
 ```
 
-딕셔너리 소스 [`YAMLRegExpTree`](../sources/yamlregexptree.md)는 정규식 트리의 구조를 나타냅니다. 예를 들면 다음과 같습니다.
+딕셔너리 소스 [`YAMLRegExpTree`](../sources/yamlregexptree.md)는 regexp 트리의 구조를 나타냅니다. 예를 들면 다음과 같습니다.
 
 ```yaml
 - regexp: 'Linux/(\d+[\.\d]*).+tlinux'
@@ -79,9 +79,8 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 이후 딕셔너리는 자식 노드를 계속 탐색하여 문자열이 `3[12]/tclwebkit`에도 일치한다는 것을 확인합니다.
 그 결과 속성 `name`의 값은 (첫 번째 계층에서 정의된) `Android`가 되고, 속성 `version`의 값은 (자식 노드에서 정의된) `12`가 됩니다.
 
-정교한 YAML 구성 파일을 사용하면 정규식 트리 딕셔너리를 사용자 에이전트 문자열 파서로 활용할 수 있습니다.
+정교한 YAML 구성 파일을 사용하면 정규 표현식 트리 딕셔너리를 사용자 에이전트 문자열 파서로 활용할 수 있습니다.
 ClickHouse는 [uap-core](https://github.com/ua-parser/uap-core)를 지원하며, 기능 테스트 [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh)에서 사용 방법을 확인할 수 있습니다.
-
 
 ### 속성 값 수집 \{#collecting-attribute-values\}
 
@@ -128,22 +127,19 @@ LIFETIME(0)
   captured: 'NULL'
 ```
 
-```sql
+```sql title="Query"
 CREATE TABLE urls (url String) ENGINE=MergeTree ORDER BY url;
 INSERT INTO urls VALUES ('clickhouse.com'), ('clickhouse.com/docs/en'), ('github.com/clickhouse/tree/master/docs');
 SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', 'parent'), url, 2) FROM urls;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─url────────────────────────────────────┬─dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', 'parent'), url, 2)─┐
 │ clickhouse.com                         │ (['ClickHouse'],[1],[],[])                                                            │
 │ clickhouse.com/docs/en                 │ (['ClickHouse Documentation','ClickHouse'],[0,1],['/en'],['ClickHouse'])              │
 │ github.com/clickhouse/tree/master/docs │ (['Documentation','GitHub'],[2,3],[NULL],[])                                          │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### 매칭 모드 \{#matching-modes\}
 

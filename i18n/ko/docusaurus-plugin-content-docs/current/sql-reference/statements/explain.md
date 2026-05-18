@@ -112,21 +112,19 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 이 과정은 쿼리를 파싱하고 쿼리 AST와 쿼리 트리를 구성한 뒤, 필요에 따라 쿼리 분석기와 최적화 패스를 실행하고, 이후 쿼리 트리를 다시 쿼리 AST로 변환하는 방식으로 수행됩니다.
 
-Settings:
+설정:
 
 * `oneline` – 쿼리를 한 줄로 출력합니다. 기본값: `0`.
 * `run_query_tree_passes` – 쿼리 트리를 덤프하기 전에 쿼리 트리 패스를 실행합니다. 기본값: `0`.
 * `query_tree_passes` – `run_query_tree_passes`가 설정된 경우 실행할 패스의 수를 지정합니다. `query_tree_passes`를 지정하지 않으면 모든 패스를 실행합니다.
 
-Examples:
+예시:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-출력 결과:
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -134,13 +132,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 `run_query_tree_passes` 사용 시:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-출력:
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -149,7 +145,6 @@ FROM system.numbers AS __table1
 ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
-
 
 ### EXPLAIN QUERY TREE \{#explain-query-tree\}
 
@@ -648,26 +643,21 @@ ExpressionTransform
 
 테이블 생성:
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-쿼리:
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
 ```
-
 
 ### EXPLAIN TABLE OVERRIDE \{#explain-table-override\}
 
@@ -678,21 +668,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 원격 MySQL 테이블이 다음과 같다고 가정합니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

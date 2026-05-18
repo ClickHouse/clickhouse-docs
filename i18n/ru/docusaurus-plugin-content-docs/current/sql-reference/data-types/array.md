@@ -74,15 +74,13 @@ Received exception from server (version 1.1.54388):
 Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: There is no supertype for types UInt8, String because some of them are String/FixedString and some of them are not.
 ```
 
-## Размер массива \{#array-size\}
+## Размер Array \{#array-size\}
 
-Можно определить размер массива, используя подстолбец `size0`, не считывая весь столбец целиком. Для многомерных массивов вы можете использовать `sizeN-1`, где `N` — требуемая размерность.
+Можно определить размер Array, используя подстолбец `size0`, не считывая весь столбец целиком. Для многомерных Array вы можете использовать `sizeN-1`, где `N` — требуемая размерность.
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE t_arr (`arr` Array(Array(Array(UInt32)))) ENGINE = MergeTree ORDER BY tuple();
 
 INSERT INTO t_arr VALUES ([[[12, 13, 0, 1],[12]]]);
@@ -90,9 +88,7 @@ INSERT INTO t_arr VALUES ([[[12, 13, 0, 1],[12]]]);
 SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─arr.size0─┬─arr.size1─┬─arr.size2─┐
 │         1 │ [2]       │ [[4,1]]   │
 └───────────┴───────────┴───────────┘

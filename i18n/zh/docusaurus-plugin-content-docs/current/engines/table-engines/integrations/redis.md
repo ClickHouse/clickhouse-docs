@@ -44,7 +44,7 @@ PRIMARY KEY(primary_key_name);
 
 在 ClickHouse 中使用 `Redis` 引擎和基本参数创建一张表：
 
-```sql
+```sql title="Query"
 CREATE TABLE redis_table
 (
     `key` String,
@@ -69,7 +69,7 @@ ENGINE = Redis('redis1:6379') PRIMARY KEY(key);
 </named_collections>
 ```
 
-```sql
+```sql title="Query"
 CREATE TABLE redis_table
 (
     `key` String,
@@ -82,37 +82,35 @@ ENGINE = Redis(redis_creds) PRIMARY KEY(key);
 
 插入：
 
-```sql
+```sql title="Query"
 INSERT INTO redis_table VALUES('1', 1, '1', 1.0), ('2', 2, '2', 2.0);
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT COUNT(*) FROM redis_table;
 ```
 
-```text
+```text title="Response"
 ┌─count()─┐
 │       2 │
 └─────────┘
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM redis_table WHERE key='1';
 ```
 
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v2─┬─v3─┐
 │ 1   │  1 │ 1  │  1 │
 └─────┴────┴────┴────┘
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM redis_table WHERE v1=2;
 ```
 
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v2─┬─v3─┐
 │ 2   │  2 │ 2  │  2 │
 └─────┴────┴────┴────┘
@@ -122,13 +120,13 @@ SELECT * FROM redis_table WHERE v1=2;
 
 请注意，主键不可更新。
 
-```sql
+```sql title="Query"
 ALTER TABLE redis_table UPDATE v1=2 WHERE key='1';
 ```
 
 删除：
 
-```sql
+```sql title="Query"
 ALTER TABLE redis_table DELETE WHERE key='1';
 ```
 
@@ -136,7 +134,7 @@ Truncate：
 
 以异步方式清空 Redis 数据库。此外，`Truncate` 也支持 SYNC (同步) 模式。
 
-```sql
+```sql title="Query"
 TRUNCATE TABLE redis_table SYNC;
 ```
 
@@ -144,7 +142,7 @@ Join:
 
 与其他表进行关联 (JOIN) 。
 
-```sql
+```sql title="Query"
 SELECT * FROM redis_table JOIN merge_tree_table ON merge_tree_table.key=redis_table.key;
 ```
 

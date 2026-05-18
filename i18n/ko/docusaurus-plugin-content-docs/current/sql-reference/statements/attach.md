@@ -31,7 +31,7 @@ ATTACH TABLE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 
 테이블이 영구적으로 detach된 경우, 서버 시작 시 자동으로 다시 attach되지 않으므로 `ATTACH` 쿼리를 명시적으로 실행해야 합니다.
 
-## 새 테이블 생성 및 데이터 연결 \{#create-new-table-and-attach-data\}
+## 새 테이블 생성 및 데이터 ATTACH \{#create-new-table-and-attach-data\}
 
 ### 지정된 테이블 데이터 경로 사용 \{#with-specified-path-to-table-data\}
 
@@ -43,20 +43,16 @@ ATTACH TABLE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ATTACH TABLE name FROM 'path/to/data/' (col1 Type1, ...)
 ```
 
-**예제**
+**예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS test;
 INSERT INTO TABLE FUNCTION file('01188_attach/test/data.TSV', 'TSV', 's String, n UInt8') VALUES ('test', 42);
 ATTACH TABLE test FROM '01188_attach/test' (s String, n UInt8) ENGINE = File(TSV);
 SELECT * FROM test;
 ```
 
-결과:
-
-```sql
+```sql title="Response"
 ┌─s────┬──n─┐
 │ test │ 42 │
 └──────┴────┘
@@ -99,13 +95,11 @@ SYSTEM RESTORE REPLICA test;
 
 테이블의 ZooKeeper 경로와 레플리카 이름을 가져옵니다:
 
-```sql
+```sql title="Query"
 SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
 ```
 
-결과:
-
-```sql
+```sql title="Response"
 ┌─replica_name─┬─zookeeper_path─────────────────────────────────────────────┐
 │ r1           │ /clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1 │
 └──────────────┴────────────────────────────────────────────────────────────┘
@@ -113,15 +107,15 @@ SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
 
 테이블을 복제되지 않은(non-replicated) 상태로 ATTACH하고 ZooKeeper에서 레플리카의 데이터를 삭제합니다.
 
-```sql
+```sql title="Query"
 DETACH TABLE test;
 ATTACH TABLE test AS NOT REPLICATED;
 SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1';
 ```
 
-## 기존 딕셔너리 연결 \{#attach-existing-dictionary\}
+## 기존 딕셔너리 ATTACH \{#attach-existing-dictionary\}
 
-이전에 분리한 딕셔너리를 다시 연결합니다.
+이전에 분리된 딕셔너리를 다시 ATTACH합니다.
 
 **구문**
 
@@ -129,9 +123,9 @@ SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900
 ATTACH DICTIONARY [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
-## 기존 데이터베이스 연결 \{#attach-existing-database\}
+## 기존 데이터베이스 ATTACH \{#attach-existing-database\}
 
-이전에 detach된 데이터베이스를 다시 연결합니다.
+이전에 분리된 데이터베이스를 다시 ATTACH합니다.
 
 **구문**
 

@@ -40,6 +40,246 @@ FROM system.histogram_metrics
 FORMAT Prometheus
 ```
 
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP接続プールの各アクティブなソケットごとに1回観測される、カーネルの TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、アクティブな各ソケットごとに1回観測される、HTTP接続プールソケットのカーネルTCPバッファメモリ (`sk_rmem_alloc` / `sk_wmem_alloc`) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測される HTTP 接続プールソケットのカーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、稼働中の各ソケットごとに1回観測される、HTTP接続プールのソケットにおけるカーネルTCPバッファメモリ (`sk_rmem_alloc` / `sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP 接続プール内の各アクティブなソケットごとに 1 回観測される、カーネルの TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、アクティブな各ソケットごとに1回観測される、HTTP 接続プールのソケットにおけるカーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP接続プールのソケットにおけるカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに1回観測されます。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP 接続プール内の生存中の各ソケットについて 1 回観測される、カーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測される、HTTP接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに1回観測される、HTTP接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、アクティブな各ソケットごとに1回観測される、HTTP接続プールソケットのカーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、稼働中の各ソケットごとに 1 回観測される、HTTP接続プールのソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP 接続プール内の生存中の各ソケットについて 1 回観測される、カーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測される HTTP 接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、稼働中の各ソケットごとに1回観測される、HTTP接続プールソケットのカーネルTCPバッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP 接続プール内の生存中の各ソケットごとに 1 回観測される、カーネルの TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP 接続プール内の各アクティブなソケットごとに 1 回観測される、カーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに1回観測される、HTTP接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP接続プールの各アクティブなソケットについて1回観測される、カーネルの TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、稼働中の各ソケットについて 1 回観測される、HTTP接続プールのソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに1回観測される、HTTP接続プールのソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 接続プールのソケットにおけるカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。非同期メトリクスがスクレイプされるたびに、稼働中の各ソケットごとに 1 回観測されます。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、稼働中の各ソケットごとに 1 回観測される、HTTP 接続プールのソケットにおけるカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測される、HTTP 接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測される、HTTP 接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 接続プールのソケットにおけるカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。非同期メトリクスのスクレイプ時に、存続中の各ソケットごとに 1 回観測されます。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP接続プール内の各ライブソケットごとに1回観測されるカーネルのTCPバッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP接続プール内のアクティブな各ソケットごとに1回観測される、カーネルのTCPバッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP 接続プール内の各アクティブなソケットごとに 1 回観測される、カーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP 接続プール内のライブな各ソケットについて 1 回観測される、カーネルの TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットについて毎回観測される、HTTP接続プールのソケットのカーネルTCPバッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP 接続プール内の稼働中の各ソケットごとに 1 回観測される、カーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP接続プールのソケットにおけるカーネルTCPバッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。非同期メトリクスのスクレイプ時に、アクティブな各ソケットごとに1回観測されます。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測される、HTTP 接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP接続プール内の各アクティブなソケットごとに1回観測される、カーネルのTCPバッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP 接続プールの各ライブソケットごとに 1 回観測される、カーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP接続プールの各アクティブなソケットごとに1回観測される、カーネルの TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP接続プール内のライブな各ソケットについて 1 回観測される、カーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP接続プールのソケットにおけるカーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測されます。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP接続プールの各アクティブなソケットごとに1回観測される、カーネルTCPバッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、ライブな各ソケットごとに 1 回観測される、HTTP接続プールソケットのカーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに1回観測される HTTP接続プールのソケットのカーネルTCPバッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、稼働中の各ソケットごとに1回観測される、HTTP接続プールのソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに1回観測される、HTTP接続プールのソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP接続プールの各ライブソケットごとに1回観測される、カーネルのTCPバッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに1回観測される、HTTP接続プールソケットのカーネルTCPバッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、稼働中の各ソケットごとに1回観測される、HTTP 接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、アクティブな各ソケットごとに 1 回観測される HTTP 接続プールソケットのカーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに1回観測される、HTTP接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP接続プールのソケットにおけるカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。非同期メトリクスがスクレイプされるたびに、アクティブな各ソケットごとに 1 回観測されます。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに1回観測される、HTTP接続プールソケットのカーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP接続プール内のアクティブな各ソケットについて1回ずつ観測される、カーネルTCPバッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスがスクレイプされるたびに、HTTP接続プール内の生存中の各ソケットについて1回観測される、カーネルTCPバッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+非同期メトリクスのスクレイプ時に、HTTP 接続プールの生存中の各ソケットについて1回ずつ観測される、カーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれかです。`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測される、HTTP 接続プールソケットのカーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+非同期メトリクスのスクレイプ時に、HTTP接続プール内の各ライブソケットごとに1回観測される、カーネルのTCPバッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) です。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測される HTTP 接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+HTTP接続プールのソケットにおけるカーネル TCP バッファメモリ (`sk_rmem_alloc` / `sk_wmem_alloc`) 。非同期メトリクスのスクレイプ時に、稼働中の各ソケットごとに 1 回観測されます。ラベル: `group` は `disk`、`storage`、`http` のいずれか、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+HTTP接続プールのソケットにおけるカーネル TCP バッファメモリ (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 。非同期メトリクスのスクレイプ時に、稼働中の各ソケットについて1回ずつ観測されます。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+非同期メトリクスのスクレイプ時に、存続中の各ソケットごとに1回観測される HTTP 接続プールソケットのカーネル TCP バッファメモリ (`sk_rmem_alloc / sk_wmem_alloc`) 。ラベル: `group` は `disk`、`storage`、`http` のいずれかで、`direction` は `rcv` または `snd` です。
+
 ### keeper_batch_size_bytes \{#keeper_batch_size_bytes\}
 
 Raft に送信されるバッチのサイズ (バイト単位) 。

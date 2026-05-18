@@ -41,6 +41,246 @@ FROM system.histogram_metrics
 FORMAT Prometheus
 ```
 
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, фиксируемый по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти буферов TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, фиксируемый для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Буферная память TCP в ядре (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; измеряется один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемая один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений, фиксируемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Буферная память TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` принимает одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти буферов TCP в ядре (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, регистрируемый один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Буферная память TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, фиксируемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память ядра, выделенная под буферы TCP (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; фиксируется один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память буфера TCP ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом опросе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, фиксируемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти, выделенной ядром под TCP-буферы (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; фиксируется один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; фиксируется один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Буферная память TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом опросе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти буферов TCP в ядре (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти ядра под буферы TCP (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемый один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) сокетов пула HTTP-соединений; фиксируется один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память буферов TCP ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память буферов TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемая один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память буферов TCP ядра (`sk_rmem_alloc / sk_wmem_alloc`) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти ядра, выделенной под буферы TCP (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; фиксируется один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений, учитываемая один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти буфера TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемый по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, фиксируемая для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти буфера TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, учитываемый один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Буферная память TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти буфера TCP ядра (`sk_rmem_alloc / sk_wmem_alloc`) для сокетов пула HTTP-соединений; фиксируется один раз для каждого активного сокета при каждом опросе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти ядра, выделенной под буферы TCP (`sk_rmem_alloc` / `sk_wmem_alloc`) сокетов пула HTTP-соединений; фиксируется один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти буферов TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; фиксируется один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти буфера TCP ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений, учитываемый по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Объём памяти в TCP-буферах ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, измеряемый для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память буфера TCP ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений, измеряемая один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+Память TCP-буферов ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений, учитываемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+Объём памяти буферов TCP ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) у сокетов пула HTTP-соединений; фиксируется один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+Память TCP-буферов ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений, измеряемая по одному разу для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+Память TCP-буферов ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов из пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+Память TCP-буферов ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений, измеряемая один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+Память TCP-буфера ядра (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` — одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+Память TCP-буферов ядра (`sk_rmem_alloc` / `sk_wmem_alloc`) для сокетов пула HTTP-соединений; учитывается один раз для каждого активного сокета при каждом сборе асинхронных метрик. Метки: `group` принимает одно из значений `disk`, `storage`, `http`; `direction` — `rcv` или `snd`.
+
 ### keeper_batch_size_bytes \{#keeper_batch_size_bytes\}
 
 Размер пакета, отправляемого в Raft, в байтах.

@@ -138,7 +138,7 @@ ClickHouse のメンバーがあなたのプルリクエスト（PR）に「can 
 ドキュメントの変更内容をプレビューしたい場合は、ドキュメントページをローカルでビルドする手順が README.md ファイル内の[こちら](https://github.com/ClickHouse/clickhouse-docs)に記載されています。
 ClickHouse に新しい関数を追加する際は、以下のテンプレートをガイドとして利用できます。
 
-```markdown
+````markdown
 # newFunctionName
 
 A short description of the function goes here. It should describe briefly what it does and a typical usage case.
@@ -165,20 +165,16 @@ A description of implementation details if relevant.
 
 **Example**
 
-Query:
-
-\```sql
+\```sql title="Query"
 SELECT 'write your example query here';
 \```
 
-Response:
-
-\```response
+\```response title="Response"
 ┌───────────────────────────────────┐
 │ the result of the query           │
 └───────────────────────────────────┘
 \```
-```
+````
 
 ## テストデータの利用 \{#using-test-data\}
 

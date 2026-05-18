@@ -22,26 +22,26 @@ ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 要创建带注释的 `DATABASE`：
 
-```sql
+```sql title="Query"
 CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
 ```
 
 如需修改注释：
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT 'new comment on a database';
 ```
 
 要查看修改后的注释：
 
-```sql
+```sql title="Query"
 SELECT comment 
 FROM system.databases 
 WHERE name = 'database_with_comment';
 ```
 
-```text
+```text title="Response"
 ┌─comment─────────────────┐
 │ new comment on database │
 └─────────────────────────┘
@@ -49,7 +49,7 @@ WHERE name = 'database_with_comment';
 
 要移除数据库注释：
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```

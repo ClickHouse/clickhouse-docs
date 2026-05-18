@@ -1791,6 +1791,21 @@ CurrentMetric_DistributedFilesToInsert:                          0
 
 `transposed` 스키마는 메트릭과 이벤트를 행으로 저장하며, `system.asynchronous_metric_log`와 유사한 형식으로 데이터를 저장합니다. 이 스키마는 병합 중 리소스 사용량을 줄여주므로 리소스가 제한된 환경에 유용합니다.
 
+**히스토그램**
+
+각 행에는 등록된 모든 히스토그램 메트릭의 스냅샷도 `metric`, `labels`, `histogram`, `count`, `sum` 필드를 포함하는 `histograms` Nested 컬럼에 저장됩니다. 버킷 개수는 서버 시작 이후 누적됩니다. 기본적으로 전체 `count`가 0인 히스토그램은 출력되지 않으며, 출력된 히스토그램 내에서 카운터가 0인 버킷은 `histogram` 맵에서 생략됩니다. 모든 히스토그램과 모든 버킷을 유지하려면 `system_metric_log_show_zero_values_in_histograms = 1`을 설정하십시오(기본 사용자 프로필에서 설정).
+
+예시 쿼리:
+
+```sql
+SELECT h.metric, h.labels, h.histogram, h.count, h.sum
+FROM system.metric_log
+ARRAY JOIN histograms AS h
+WHERE h.metric = 'keeper_response_time_ms' AND h.labels['operation_type'] = 'readonly'
+ORDER BY event_time DESC
+LIMIT 1;
+```
+
 ## 참고 항목 \{#see-also\}
 
 * [metric&#95;log 설정](../../operations/server-configuration-parameters/settings.md#metric_log) — 설정을 활성화 및 비활성화하는 방법입니다.

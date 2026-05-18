@@ -921,7 +921,7 @@ SELECT tupleToNameValuePairs(tuple(3, 2, 1))
 
 ## untuple \{#untuple\}
 
-호출 위치에서 [tuple](/sql-reference/data-types/tuple) 요소를 구문 수준에서 치환합니다.
+호출 위치에서 [튜플](/sql-reference/data-types/tuple) 요소를 구문 수준에서 치환합니다.
 
 결과 컬럼 이름은 구현에 따라 달라지며 변경될 수 있습니다. `untuple` 이후에 특정 컬럼 이름을 가정하지 마십시오.
 
@@ -931,11 +931,11 @@ SELECT tupleToNameValuePairs(tuple(3, 2, 1))
 untuple(x)
 ```
 
-`EXCEPT` 표현식을 사용하여 쿼리 결과에서 특정 컬럼을 제외할 수 있습니다.
+`EXCEPT` 표현식을 사용하여 쿌리 결과에서 특정 컬럼을 제외할 수 있습니다.
 
 **인수**
 
-* `x` — `tuple` 함수, 컬럼, 또는 요소들로 구성된 tuple입니다. [Tuple](../data-types/tuple.md).
+* `x` — `tuple` 함수, 컬럼, 또는 요소들로 구성된 튜플입니다. [Tuple](../data-types/tuple.md).
 
 **반환 값**
 
@@ -957,15 +957,11 @@ untuple(x)
 
 `Tuple` 타입 컬럼을 `untuple` 함수의 매개변수로 사용하는 예제:
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT untuple(v6) FROM kv;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─_ut_1─┬─_ut_2─┐
 │    33 │ ab    │
 │    44 │ cd    │
@@ -977,15 +973,11 @@ SELECT untuple(v6) FROM kv;
 
 `EXCEPT` 표현식 사용 예:
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v4─┬─v5─┬─v6────────┐
 │   1 │ 10 │ 30 │ 15 │ (33,'ab') │
 │   2 │ 25 │ 40 │  6 │ (44,'cd') │
@@ -994,7 +986,6 @@ SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 │   5 │ 30 │ 25 │ 55 │ (77,'kl') │
 └─────┴────┴────┴────┴───────────┘
 ```
-
 
 ## 거리 함수 \{#distance-functions\}
 

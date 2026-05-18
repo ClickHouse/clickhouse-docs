@@ -45,15 +45,11 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 ## 例 \{#example\}
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT * FROM system.session_log LIMIT 1 FORMAT Vertical;
 ```
 
-結果:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal

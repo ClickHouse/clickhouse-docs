@@ -42,15 +42,11 @@ doc_type: 'reference'
 
 ## Пример \{#example\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM system.clusters LIMIT 2 FORMAT Vertical;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 cluster:                 test_cluster_two_shards

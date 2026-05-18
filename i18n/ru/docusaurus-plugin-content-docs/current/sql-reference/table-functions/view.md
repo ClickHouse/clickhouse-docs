@@ -36,15 +36,11 @@ view(subquery)
 └────┴──────────┴──────┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM view(SELECT name FROM months);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─name─────┐
 │ January  │
 │ February │
@@ -55,11 +51,11 @@ SELECT * FROM view(SELECT name FROM months);
 
 Вы можете использовать функцию `view` в качестве параметра табличных функций [remote](/sql-reference/table-functions/remote) и [cluster](/sql-reference/table-functions/cluster):
 
-```sql
+```sql title="Query"
 SELECT * FROM remote(`127.0.0.1`, view(SELECT a, b, c FROM table_name));
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM cluster(`cluster_name`, view(SELECT a, b, c FROM table_name));
 ```
 

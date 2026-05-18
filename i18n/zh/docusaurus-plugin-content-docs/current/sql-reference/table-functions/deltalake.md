@@ -64,7 +64,7 @@ LIMIT 2
 考虑一个存储在 S3 中、路径为 `s3://ch-docs-s3-bucket/people_10k/` 的表。
 要向该表插入数据，首先启用实验性功能：
 
-```sql
+```sql title="Query"
 SET allow_experimental_delta_lake_writes=1
 ```
 
@@ -97,7 +97,6 @@ Query id: 65032944-bed6-4d45-86b3-a71205a2b659
 1. │ 10001 │ John      │ Smith    │ Male   │  30 │
    └───────┴───────────┴──────────┴────────┴─────┘
 ```
-
 
 ## 虚拟列 \{#virtual-columns\}
 

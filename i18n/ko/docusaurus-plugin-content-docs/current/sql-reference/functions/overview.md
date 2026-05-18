@@ -64,6 +64,34 @@ str -> str != Referer
 
 일부 함수에서는 첫 번째 인수(람다 함수)를 생략할 수 있습니다. 이 경우 항등 매핑이 이루어지는 것으로 간주합니다.
 
+### 람다로 사용하는 함수 이름만 \{#bare-function-names-as-lambdas\}
+
+전체 람다 표현식을 작성하는 대신 함수 이름만 고차 함수에 직접 전달할 수 있습니다. 그러면 함수 이름이 자동으로 동등한 람다 표현식으로 변환됩니다.
+
+예시로, 다음 쌍은 서로 동일합니다.
+
+```sql
+SELECT arrayMap(negate, [1, 2, 3]);            -- [-1, -2, -3]
+SELECT arrayMap(x -> negate(x), [1, 2, 3]);    -- [-1, -2, -3]
+
+SELECT arrayMap(plus, [1, 2, 3], [10, 20, 30]);            -- [11, 22, 33]
+SELECT arrayMap((x, y) -> plus(x, y), [1, 2, 3], [10, 20, 30]); -- [11, 22, 33]
+
+SELECT arrayFilter(isNotNull, [1, NULL, 3, NULL, 5]);            -- [1, 3, 5]
+SELECT arrayFilter(x -> isNotNull(x), [1, NULL, 3, NULL, 5]);    -- [1, 3, 5]
+
+SELECT arrayFold(plus, [1, 2, 3, 4, 5], toUInt64(0));                      -- 15
+SELECT arrayFold((acc, x) -> plus(acc, x), [1, 2, 3, 4, 5], toUInt64(0));  -- 15
+```
+
+이는 내장 함수, SQL UDF, 실행형 UDF, WebAssembly UDF에서 작동합니다. 모호한 경우에는 함수 이름보다 컬럼 이름과 별칭 이름이 우선 적용됩니다.
+
+람다의 인수 개수(arity)는 내부 함수에서 결정됩니다. 예를 들어 `arrayMap(plus, ...)`는 `plus`가 2개의 인수를 받으므로 arity 2를 사용합니다. 따라서 튜플 요소가 람다 인수로 풀려 전달되는 `arrayMap(plus, [(1, 10), (2, 20)])`와 같은 튜플 입력에도 적용됩니다.
+
+가변 인수 내부 함수(예: 개수와 관계없이 인수를 받을 수 있는 `concat`)의 경우, 람다의 arity는 배열 인수의 개수로 결정됩니다. 이는 `arrayMap`, `arrayFilter`, `arrayFold`와 같은 고차 함수에서는 올바르게 동작합니다. 하지만 배열 외에 고정된 비배열 매개변수도 받는 고차 함수(예: `arrayPartialSort(f, limit, arr)`)에서는 가변 인수 함수 이름만 사용하면 잘못된 arity가 계산될 수 있습니다. 이런 경우에는 명시적인 람다가 필요합니다.
+
+가변 인수 내부 함수는 튜플 입력도 자동으로 언패킹하지 않습니다. 예를 들어 `arrayMap(concat, [('a', 'b'), ('c', 'd')])`는 단항 람다로 다시 작성되며, `arrayMap((x, y) -> concat(x, y), [('a', 'b'), ('c', 'd')])`와 동일하지 않습니다. 튜플 요소를 분해해 가변 인수 호출에 전달하려면 명시적인 람다를 사용하십시오.
+
 ## 사용자 정의 함수(UDFs) \{#user-defined-functions-udfs\}
 
 ClickHouse는 사용자 정의 함수(UDF)를 지원합니다. 자세한 내용은 [UDFs](../functions/udf.md)를 참조하십시오.

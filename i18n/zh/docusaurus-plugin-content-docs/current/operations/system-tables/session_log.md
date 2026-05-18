@@ -45,15 +45,11 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 ## 示例 \{#example\}
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM system.session_log LIMIT 1 FORMAT Vertical;
 ```
 
-结果:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal

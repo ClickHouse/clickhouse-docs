@@ -31,7 +31,7 @@ doc_type: 'reference'
 
 创建一个数据库。
 
-```sql
+```sql title="Query"
 CREATE DATABASE test;
 ```
 

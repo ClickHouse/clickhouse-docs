@@ -989,13 +989,23 @@ SETTINGS
 
 ### 故障排查 \{#troubleshooting\}
 
-#### "State mismatch for topic `[someTopic]` partition `[0]`" \{#state-mismatch-for-topic-sometopic-partition-0\}
+#### &quot;State mismatch for topic `[someTopic]` partition `[0]`&quot; \{#state-mismatch-for-topic-sometopic-partition-0\}
 
 当 KeeperMap 中存储的 offset 与 Kafka 中存储的 offset 不一致时,就会出现这种情况,通常发生在某个 topic 被删除
 或 offset 被手动调整之后。
-要修复此问题,需要删除该特定 topic 和分区对应存储的旧值。
+要修复此问题,需要删除该特定 topic 和分区对应存储的旧值:
 
-**注意:此类调整可能会对 exactly-once 语义产生影响。**
+```sql
+-- First, identify the database used to store the data.
+SELECT * FROM [database].connect_state
+
+-- Identify the key that matches the topic and partition.
+ALTER TABLE [database].connect_state DELETE WHERE key = [keyname]
+```
+
+:::note
+此类调整可能会对 exactly-once 语义产生影响。
+:::
 
 #### &quot;What errors will the connector retry?&quot; \{#what-errors-will-the-connector-retry\}
 

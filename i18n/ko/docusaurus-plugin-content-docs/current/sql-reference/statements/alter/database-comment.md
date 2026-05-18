@@ -21,26 +21,26 @@ ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 주석이 있는 `DATABASE`를 생성하려면 다음과 같이 합니다:
 
-```sql
+```sql title="Query"
 CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
 ```
 
 주석을 수정하려면:
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT 'new comment on a database';
 ```
 
 수정된 주석을 확인하려면:
 
-```sql
+```sql title="Query"
 SELECT comment 
 FROM system.databases 
 WHERE name = 'database_with_comment';
 ```
 
-```text
+```text title="Response"
 ┌─comment─────────────────┐
 │ new comment on database │
 └─────────────────────────┘
@@ -48,7 +48,7 @@ WHERE name = 'database_with_comment';
 
 데이터베이스 주석을 제거하려면 다음과 같이 합니다:
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```

@@ -48,7 +48,7 @@ SHOW TABLES FROM information_schema;
 
 ## COLUMNS \{#columns\}
 
-[system.columns](../../operations/system-tables/columns.md) 시스템 테이블에서 읽어온 컬럼과, ClickHouse에서 지원되지 않거나 의미가 없지만(항상 `NULL`) 표준에 따라 반드시 존재해야 하는 컬럼을 포함합니다.
+[system.columns](../../operations/system-tables/columns.md) system 테이블에서 읽어온 컬럼과, ClickHouse에서 지원되지 않거나 의미가 없지만(항상 `NULL`) 표준에 따라 반드시 존재해야 하는 컬럼을 포함합니다.
 
 컬럼:
 
@@ -77,9 +77,7 @@ SHOW TABLES FROM information_schema;
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT table_catalog,
        table_schema,
        table_name,
@@ -112,9 +110,7 @@ LIMIT 1
 FORMAT Vertical;
 ```
 
-결과:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 table_catalog:            default
@@ -144,7 +140,7 @@ domain_name:              ᴺᵁᴸᴸ
 
 ## SCHEMATA \{#schemata\}
 
-[system.databases](../../operations/system-tables/databases.md) 시스템 테이블에서 읽은 컬럼과, ClickHouse에서 지원하지 않거나 의미가 없어 항상 `NULL`이지만 표준에 따라 존재해야 하는 컬럼들을 포함합니다.
+[system.databases](../../operations/system-tables/databases.md) system 테이블에서 읽은 컬럼과, ClickHouse에서 지원하지 않거나 의미가 없어 항상 `NULL`이지만 표준에 따라 존재해야 하는 컬럼들을 포함합니다.
 
 컬럼:
 
@@ -158,9 +154,7 @@ domain_name:              ᴺᵁᴸᴸ
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT catalog_name,
        schema_name,
        schema_owner,
@@ -174,9 +168,7 @@ LIMIT 1
 FORMAT Vertical;
 ```
 
-결과:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 catalog_name:                  INFORMATION_SCHEMA
@@ -190,7 +182,7 @@ sql_path:                      ᴺᵁᴸᴸ
 
 ## TABLES \{#tables\}
 
-[system.tables](../../operations/system-tables/tables.md) 시스템 테이블에서 읽은 컬럼을 포함합니다.
+[system.tables](../../operations/system-tables/tables.md) system 테이블에서 읽은 컬럼을 포함합니다.
 
 컬럼:
 
@@ -211,9 +203,7 @@ sql_path:                      ᴺᵁᴸᴸ
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT table_catalog, 
        table_schema, 
        table_name, 
@@ -227,9 +217,7 @@ LIMIT 1
 FORMAT Vertical;
 ```
 
-결과:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 table_catalog:   default
@@ -242,7 +230,7 @@ table_comment:
 
 ## VIEWS \{#views\}
 
-테이블 엔진 [View](../../engines/table-engines/special/view.md)가 사용될 때 [system.tables](../../operations/system-tables/tables.md) 시스템 테이블에서 읽은 컬럼을 포함합니다.
+테이블 엔진 [View](../../engines/table-engines/special/view.md)가 사용될 때 [system.tables](../../operations/system-tables/tables.md) system 테이블에서 읽은 컬럼을 포함합니다.
 
 컬럼:
 
@@ -265,9 +253,7 @@ table_comment:
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE VIEW v (n Nullable(Int32), f Float64) AS SELECT n, f FROM t;
 CREATE MATERIALIZED VIEW mv ENGINE = Null AS SELECT * FROM system.one;
 SELECT table_catalog,
@@ -286,9 +272,7 @@ LIMIT 1
 FORMAT Vertical;
 ```
 
-결과:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 table_catalog:              default
@@ -305,7 +289,7 @@ is_trigger_insertable_into: NO
 
 ## KEY_COLUMN_USAGE \{#key_column_usage\}
 
-제약 조건으로 제한되는 [system.tables](../../operations/system-tables/tables.md) 시스템 테이블의 컬럼을 포함합니다.
+제약 조건으로 제한되는 [system.tables](../../operations/system-tables/tables.md) system 테이블의 컬럼을 포함합니다.
 
 컬럼:
 
@@ -324,7 +308,7 @@ is_trigger_insertable_into: NO
 
 **예시**
 
-```sql
+```sql title="Query"
 CREATE TABLE test (i UInt32, s String) ENGINE MergeTree ORDER BY i;
 SELECT constraint_catalog,
        constraint_schema,
@@ -343,9 +327,7 @@ WHERE table_name = 'test'
 FORMAT Vertical;
 ```
 
-결과:
-
-```response
+```response title="Response"
 Row 1:
 ──────
 constraint_catalog:            def

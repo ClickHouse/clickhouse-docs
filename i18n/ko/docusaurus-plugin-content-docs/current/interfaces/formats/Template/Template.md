@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'Template 포맷에 대한 문서'
+description: 'Template 형식에 대한 문서'
 input_format: true
 keywords: ['Template']
 output_format: true
@@ -10,29 +10,25 @@ doc_type: 'guide'
 ---
 
 | 입력 | 출력 | 별칭 |
-|-------|--------|-------|
-| ✔     | ✔      |       |
-
-
+| -- | -- | -- |
+| ✔  | ✔  |    |
 
 ## Description \{#description\}
 
 다른 표준 형식이 제공하는 것보다 더 세밀한 사용자 정의가 필요한 경우,
-`Template` 형식을 사용하면 자리 표시자를 포함한 사용자 지정 형식 문자열과
+`Template` 형식을 사용하면 자리 표시자를 포함한 사용자 지정 포맷 문자열과
 데이터에 대한 이스케이프 규칙을 직접 지정할 수 있습니다.
 
 다음 설정을 사용합니다:
 
-| Setting                                                                                                  | Description                                                                                                                |
-|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| [`format_template_row`](#format_template_row)                                                            | 행에 대한 형식 문자열이 들어 있는 파일의 경로를 지정합니다.                                                                |
-| [`format_template_resultset`](#format_template_resultset)                                                | 행에 대한 형식 문자열이 들어 있는 파일의 경로를 지정합니다.                                                                |
-| [`format_template_rows_between_delimiter`](#format_template_rows_between_delimiter)                      | 행 사이의 구분자를 지정하며, 마지막 행을 제외한 각 행 뒤에 출력(또는 예상)되는 구분자입니다 (`\n`가 기본값).              |
-| `format_template_row_format`                                                                             | 행에 대한 형식 문자열을 [인라인](#inline_specification)으로 지정합니다.                                                    |                                                                           
-| `format_template_resultset_format`                                                                       | 결과 집합 형식 문자열을 [인라인](#inline_specification)으로 지정합니다.                                                    |
-| 다른 형식의 일부 설정 (예: `JSON` escaping을 사용할 때 `output_format_json_quote_64bit_integers`)        |                                                                                                                            |
-
-
+| Setting                                                                             | Description                                                        |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| [`format_template_row`](#format_template_row)                                       | 행에 대한 포맷 문자열이 들어 있는 파일의 경로를 지정합니다.                                 |
+| [`format_template_resultset`](#format_template_resultset)                           | 행에 대한 포맷 문자열이 들어 있는 파일의 경로를 지정합니다.                                 |
+| [`format_template_rows_between_delimiter`](#format_template_rows_between_delimiter) | 행 사이의 구분자를 지정하며, 마지막 행을 제외한 각 행 뒤에 출력(또는 예상)되는 구분자입니다 (`\n`가 기본값). |
+| `format_template_row_format`                                                        | 행에 대한 포맷 문자열을 [인라인](#inline_specification)으로 지정합니다.                |
+| `format_template_resultset_format`                                                  | 결과 집합 포맷 문자열을 [인라인](#inline_specification)으로 지정합니다.                |
+| 다른 형식의 일부 설정 (예: `JSON` escaping을 사용할 때 `output_format_json_quote_64bit_integers`)  |                                                                    |
 
 ## 설정 및 이스케이프 규칙 \{#settings-and-escaping-rules\}
 
@@ -66,7 +62,7 @@ delimiter_1${column_1:serializeAs_1}delimiter_2${column_2:serializeAs_2} ... del
 이스케이프 규칙을 생략하면 `None`이 사용됩니다. `XML`은 출력에만 적합합니다.
 :::
 
-예제를 살펴보겠습니다. 다음과 같은 포맷 문자열이 있다고 가정합니다.
+예제를 살펴보겠습니다. 다음과 같은 포맷 문자열이 있다고 가정합니다:
 
 ```text
 Search phrase: ${s:Quoted}, count: ${c:Escaped}, ad price: $$${p:JSON};
@@ -115,33 +111,31 @@ Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 `format_template_resultset` 설정이 빈 문자열이면, 기본값으로 `${data}`가 사용됩니다.
 :::
 
+삽입 쿼리 포맷에서는 접두사 또는 접미사를 사용해 일부 컬럼이나 필드를 건너뛸 수 있습니다(예시 참조).
 
-insert 쿼리에서는 접두사(prefix)나 접미사(suffix)가 있는 경우(예시 참조) 일부 컬럼이나 필드를 생략하는 형식을 사용할 수 있습니다.
-
-### In-line specification \{#inline_specification\}
+### 인라인 지정 \{#inline_specification\}
 
 종종 템플릿 형식에 대한 설정
-(`format_template_row`, `format_template_resultset`로 설정되는)을 클러스터의 모든 노드에 있는 디렉터리에 배포하는 것이 어렵거나 불가능한 상황이 있습니다. 
+(`format_template_row`, `format_template_resultset`로 설정되는)을 클러스터의 모든 노드에 있는 디렉터리에 배포하는 것이 어렵거나 불가능한 상황이 있습니다.
 또한 형식이 너무 단순하여 파일에 둘 필요가 없을 수도 있습니다.
 
-이러한 경우에는 `format_template_row`에 대한 `format_template_row_format`과 `format_template_resultset`에 대한 `format_template_resultset_format`을 사용하여, 
+이러한 경우에는 `format_template_row`에 대한 `format_template_row_format`과 `format_template_resultset`에 대한 `format_template_resultset_format`을 사용하여,
 해당 형식을 포함하는 파일 경로가 아니라 쿼리 안에서 직접 템플릿 문자열을 설정할 수 있습니다.
 
 :::note
 형식 문자열과 이스케이프 시퀀스에 대한 규칙은 다음과 동일합니다.
-- `format_template_row_format`을 사용할 때는 [`format_template_row`](#format_template_row)의 규칙과 동일합니다.
-- `format_template_resultset_format`을 사용할 때는 [`format_template_resultset`](#format_template_resultset)의 규칙과 동일합니다.
-:::
 
-
+* `format_template_row_format`을 사용할 때는 [`format_template_row`](#format_template_row)의 규칙과 동일합니다.
+* `format_template_resultset_format`을 사용할 때는 [`format_template_resultset`](#format_template_resultset)의 규칙과 동일합니다.
+  :::
 
 ## 사용 예 \{#example-usage\}
 
-먼저 데이터를 조회하는 경우와 데이터를 삽입하는 경우, 이렇게 두 가지 예제를 통해 `Template` 포맷을 어떻게 사용할 수 있는지 살펴보겠습니다.
+먼저 데이터를 조회하는 경우와 데이터를 삽입하는 경우, 이렇게 두 가지 예제를 통해 `Template` 형식을 어떻게 사용할 수 있는지 살펴보겠습니다.
 
 ### 데이터 조회 \{#selecting-data\}
 
-```sql
+```sql title="Query"
 SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase ORDER BY c DESC LIMIT 5 FORMAT Template SETTINGS
 format_template_resultset = '/some/path/resultset.format', format_template_row = '/some/path/row.format', format_template_rows_between_delimiter = '\n    '
 ```
@@ -166,9 +160,7 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 <tr> <td>${0:XML}</td> <td>${1:XML}</td> </tr>
 ```
 
-결과:
-
-```html
+```html title="Response"
 <!DOCTYPE HTML>
 <html> <head> <title>Search phrases</title> </head>
  <body>
@@ -216,10 +208,9 @@ Page views: ${PageViews:CSV}, User id: ${UserID:CSV}, Useless field: ${:CSV}, Du
 
 ### 인라인 지정 \{#in-line-specification\}
 
-수동으로 마크다운 테이블을 포맷하는 일은 번거로울 수 있습니다. 이 예제에서는 `Template` 포맷과 인라인 지정 설정을 사용하여 간단한 작업을 수행하는 방법을 살펴봅니다. 이 작업은 `system.formats` 테이블에서 일부 ClickHouse 포맷의 이름을 `SELECT`로 조회한 다음, 이를 마크다운 테이블로 포맷하는 것입니다. 이는 `Template` 포맷과 `format_template_row_format`, `format_template_resultset_format` 설정을 사용하여 쉽게 수행할 수 있습니다.
+마크다운 테이블을 일일이 수동으로 포맷하는 것이 번거로우신가요? 이 예시에서는 `Template` 형식과 인라인 지정 설정을 사용해 간단한 작업을 수행하는 방법을 살펴보겠습니다. 즉, `system.formats` 테이블에서 몇 가지 ClickHouse 포맷 이름을 `SELECT`한 뒤 이를 마크다운 테이블 형식으로 출력하는 방법입니다. 이는 `Template` 형식과 `format_template_row_format`, `format_template_resultset_format` 설정을 사용하면 쉽게 구현할 수 있습니다.
 
-
-이전 예제에서는 결과 집합(result-set)과 행(row) 포맷 문자열을 각각 별도의 파일에 지정하고, 그 파일들의 경로를 `format_template_resultset` 및 `format_template_row` 설정으로 지정했습니다. 여기서는 템플릿이 간단하여 마크다운 테이블을 만들기 위한 몇 개의 `|`와 `-`만 포함하므로 인라인으로 작성합니다. 결과 집합 템플릿 문자열은 `format_template_resultset_format` 설정을 사용하여 지정합니다. 테이블 헤더를 만들기 위해 `${data}` 앞에 `|ClickHouse Formats|\n|---|\n`를 추가했습니다. 행에 대해서는 `format_template_row_format` 설정을 사용하여 행 템플릿 문자열 ``|`{0:XML}`|``을 지정합니다. `Template` 포맷은 지정된 포맷으로 변환된 행들을 플레이스홀더 `${data}` 위치에 삽입합니다. 이 예시에서는 컬럼이 하나뿐이지만, 더 추가하려면 행 템플릿 문자열에 `{1:XML}`, `{2:XML}`... 등을 추가하면 되며, 적절한 이스케이프 규칙을 선택하면 됩니다. 이 예시에서는 `XML` 이스케이프 규칙을 사용했습니다.
+이전 예제에서는 결과 집합(result-set)과 행(row) 포맷 문자열을 각각 별도의 파일에 지정하고, 그 파일들의 경로를 `format_template_resultset` 및 `format_template_row` 설정으로 지정했습니다. 여기서는 템플릿이 간단하여 마크다운 테이블을 만들기 위한 몇 개의 `|`와 `-`만 포함하므로 인라인으로 작성합니다. 결과 집합 템플릿 문자열은 `format_template_resultset_format` 설정을 사용하여 지정합니다. 테이블 헤더를 만들기 위해 `${data}` 앞에 `|ClickHouse Formats|\n|---|\n`를 추가했습니다. 행에 대해서는 `format_template_row_format` 설정을 사용하여 행 템플릿 문자열 ``|`{0:XML}`|``을 지정합니다. `Template` 형식은 지정된 포맷으로 변환된 행들을 플레이스홀더 `${data}` 위치에 삽입합니다. 이 예시에서는 컬럼이 하나뿐이지만, 더 추가하려면 행 템플릿 문자열에 `{1:XML}`, `{2:XML}`... 등을 추가하면 되며, 적절한 이스케이프 규칙을 선택하면 됩니다. 이 예시에서는 `XML` 이스케이프 규칙을 사용했습니다.
 
 ```sql title="Query"
 WITH formats AS

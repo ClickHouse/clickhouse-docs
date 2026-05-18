@@ -36,13 +36,11 @@ ClickHouse 서버 설정에서 별도로 지정하지 않으면, 모든 `Nullabl
 
 ## NULL 찾기 \{#finding-null\}
 
-전체 컬럼을 읽을 필요 없이 `null` 서브컬럼을 사용하여 컬럼에서 `NULL` 값을 찾을 수 있습니다. 해당 값이 `NULL`이면 `1`을, 그렇지 않으면 `0`을 반환합니다.
+전체 컬럼을 읽지 않고도 `null` 서브컬럼을 사용해 컬럼에서 `NULL` 값을 찾을 수 있습니다. 해당 값이 `NULL`이면 `1`을, 그렇지 않으면 `0`을 반환합니다.
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE nullable (`n` Nullable(UInt32)) ENGINE = MergeTree ORDER BY tuple();
 
 INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
@@ -50,9 +48,7 @@ INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
 SELECT n.null FROM nullable;
 ```
 
-실행 결과:
-
-```text
+```text title="Response"
 ┌─n.null─┐
 │      0 │
 │      1 │
@@ -60,7 +56,6 @@ SELECT n.null FROM nullable;
 │      1 │
 └────────┘
 ```
-
 
 ## 사용 예제 \{#usage-example\}
 

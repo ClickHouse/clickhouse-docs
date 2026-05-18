@@ -31,15 +31,11 @@ ClickHouse 允许 `IN` 子查询左右两侧的类型不同。
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT '1' IN (SELECT 1);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─in('1', _subquery49)─┐
 │                    1 │
 └──────────────────────┘
@@ -53,7 +49,7 @@ SELECT '1' IN (SELECT 1);
 
 示例：
 
-```sql
+```sql title="Query"
 SELECT (CounterID, UserID) IN (SELECT CounterID, UserID FROM ...) FROM ...
 ```
 
@@ -62,7 +58,7 @@ SELECT (CounterID, UserID) IN (SELECT CounterID, UserID FROM ...) FROM ...
 `IN` 运算符和子查询可以出现在查询语句的任何部分，包括聚合函数和 lambda 函数中。
 示例：
 
-```sql
+```sql title="Query"
 SELECT
     EventDate,
     avg(UserID IN
@@ -76,7 +72,7 @@ GROUP BY EventDate
 ORDER BY EventDate ASC
 ```
 
-```text
+```text title="Response"
 ┌──EventDate─┬────ratio─┐
 │ 2014-03-17 │        1 │
 │ 2014-03-18 │ 0.807696 │

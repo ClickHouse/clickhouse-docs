@@ -13,7 +13,7 @@ doc_type: 'reference'
 
 **構文**
 
-エイリアス: `denseRank` (大文字・小文字を区別) 
+エイリアス: `denseRank` (大文字・小文字を区別)
 
 ```sql
 dense_rank ()
@@ -33,9 +33,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 次の例は、動画チュートリアル [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA) で示されている例に基づいています。
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -55,15 +53,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        dense_rank() OVER (ORDER BY salary DESC) AS dense_rank
 FROM salaries;
 ```
 
-結果：
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─dense_rank─┐
 1. │ Gary Chen       │ 195000 │          1 │
 2. │ Robert George   │ 195000 │          1 │

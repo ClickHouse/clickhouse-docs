@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 可以使用 `UNION` 将任意数量的 `SELECT` 查询的结果组合在一起。例如：
 
-```sql
+```sql title="Query"
 SELECT CounterID, 1 AS table, toInt64(count()) AS c
     FROM test.hits
     GROUP BY CounterID
@@ -33,16 +33,12 @@ SELECT CounterID, 2 AS table, sum(Sign) AS c
 
 如果在使用 `UNION` 时没有显式指定 `UNION ALL` 或 `UNION DISTINCT`，则可以通过 [union&#95;default&#95;mode](/operations/settings/settings#union_default_mode) 设置来指定 UNION 模式。该设置的取值可以是 `ALL`、`DISTINCT` 或空字符串。然而，如果你在使用 `UNION` 时将 `union_default_mode` 设置为空字符串，将会抛出异常。以下示例演示在不同设置值下的查询结果。
 
-查询：
-
-```sql
+```sql title="Query"
 SET union_default_mode = 'DISTINCT';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─1─┐
 │ 1 │
 └───┘
@@ -54,16 +50,12 @@ SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 └───┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SET union_default_mode = 'ALL';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─1─┐
 │ 1 │
 └───┘

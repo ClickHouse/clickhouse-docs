@@ -54,15 +54,11 @@ doc_type: 'reference'
 
 ## Пример \{#example\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM system.zookeeper_log WHERE (session_id = '106662742089334927') AND (xid = '10858') FORMAT Vertical;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 hostname:         clickhouse.eu-central1.internal

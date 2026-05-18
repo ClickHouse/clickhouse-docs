@@ -81,7 +81,7 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 
 Tuple 요소는 이름 또는 인덱스를 통해 참조할 수 있습니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
 INSERT INTO named_tuples VALUES (('y', 10)), (('x',-10));
 
@@ -89,9 +89,7 @@ SELECT a.s FROM named_tuples; -- by name
 SELECT a.2 FROM named_tuples; -- by index
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a.s─┐
 │ y   │
 │ x   │

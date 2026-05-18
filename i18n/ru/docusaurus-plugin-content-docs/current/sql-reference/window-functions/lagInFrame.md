@@ -41,9 +41,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 В этом примере рассматриваются исторические данные по определённой акции и используется функция `lagInFrame` для вычисления дневной дельты и процентного изменения цены закрытия акции.
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE stock_prices
 (
     `date`   Date,
@@ -63,7 +61,7 @@ INSERT INTO stock_prices FORMAT Values
     ('2024-06-07', 119.77, 121.69, 118.02, 120.89, 412386000);
 ```
 
-```sql
+```sql title="Query"
 SELECT
     date,
     close,
@@ -76,9 +74,7 @@ FROM stock_prices
 ORDER BY date DESC
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌───────date─┬──close─┬─previous_day_close─┬─delta─┬─percent_change─┐
 1. │ 2024-06-07 │ 120.89 │                121 │ -0.11 │          -0.09 │
 2. │ 2024-06-06 │    121 │             122.44 │ -1.44 │          -1.18 │

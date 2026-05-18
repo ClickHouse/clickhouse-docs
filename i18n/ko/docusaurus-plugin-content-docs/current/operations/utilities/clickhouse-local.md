@@ -251,7 +251,7 @@ clickhouse-local에서 접근할 수 있는 현재 작업 디렉터리의 모든
 
 다음과 같이 대화형 모드에서 실행할 수 있습니다:
 
-```sql 
+```sql title="Query"
 ClickHouse local version 26.3.1.1.
 
 :) ls
@@ -297,9 +297,9 @@ file3.xml
 ./clickhouse-local -q clear
 ```
 
-## 예제 \{#examples\}
+## 예시 \{#examples\}
 
-```bash
+```bash title="Query"
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \
     --input-format "CSV" --query "SELECT * FROM table"
 Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
@@ -309,7 +309,7 @@ Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
 
 앞선 예제는 다음과 같습니다:
 
-```bash
+```bash title="Query"
 $ echo -e "1,2\n3,4" | clickhouse-local -n --query "
     CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin);
     SELECT a, b FROM table;
@@ -319,9 +319,9 @@ Read 2 rows, 32.00 B in 0.000 sec., 4987 rows/sec., 77.93 KiB/sec.
 3   4
 ```
 
-`stdin`이나 `--file` 인자를 사용할 필요 없이, [`file` table function](../../sql-reference/table-functions/file.md)을 사용해 원하는 만큼 많은 파일을 열 수 있습니다:
+`stdin`이나 `--file` 인자를 사용할 필요 없이, [`file` 테이블 함수](../../sql-reference/table-functions/file.md)을 사용해 원하는 만큼 많은 파일을 열 수 있습니다:
 
-```bash
+```bash title="Query"
 $ echo 1 | tee 1.tsv
 1
 
@@ -336,18 +336,14 @@ $ clickhouse-local --query "
 
 이제 각 Unix 사용자별 메모리 사용량을 출력해 보겠습니다:
 
-쿼리:
-
-```bash
+```bash title="Query"
 $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
     | clickhouse-local --structure "user String, mem Float64" \
         --query "SELECT user, round(sum(mem), 2) as memTotal
             FROM table GROUP BY user ORDER BY memTotal DESC FORMAT Pretty"
 ```
 
-결과:
-
-```text
+```text title="Response"
 Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ┏━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ user     ┃ memTotal ┃
@@ -358,7 +354,6 @@ Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ├──────────┼──────────┤
 ...
 ```
-
 
 ## 관련 콘텐츠 \{#related-content-1\}
 

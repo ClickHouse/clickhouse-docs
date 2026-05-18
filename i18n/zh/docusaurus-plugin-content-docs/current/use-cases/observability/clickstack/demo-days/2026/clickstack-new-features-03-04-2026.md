@@ -7,6 +7,7 @@ pagination_next: null
 description: 'ClickStack 2026-04-03 演示日'
 doc_type: 'guide'
 keywords: ['ClickStack', '演示日']
+sidebar_position: -20260403
 ---
 
 ## 全新的仪表板和已保存的搜索列表页面 \{#new-dashboard-and-saved-search-listing-pages\}

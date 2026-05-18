@@ -77,9 +77,7 @@ doc_type: 'reference'
 └──────┴───────┴─────┘
 ```
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 ```
 
@@ -88,9 +86,9 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 * `GROUP BY year, month, day`;
 * `GROUP BY year, month` (`day` カラムはゼロで埋められる) ;
 * `GROUP BY year` (この場合は `month, day` の両方のカラムがゼロで埋められる) ;
-* そして合計 (3 つのキー式すべてのカラムがゼロになっている) 。
+* そして totals (3 つのキー式すべてのカラムがゼロになっている) 。
 
-```text
+```text title="Response"
 ┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
@@ -115,7 +113,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY ROLLUP(year, month, day);
 
 同じクエリは、`WITH` キーワードを使って書くこともできます。
 
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 ```
 
@@ -148,9 +146,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH ROLLUP;
 └──────┴───────┴─────┘
 ```
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 ```
 
@@ -163,11 +159,11 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 * `GROUP BY month, day`
 * `GROUP BY month`
 * `GROUP BY day`
-* および合計。
+* および totals。
 
 `GROUP BY` から除外されたカラムはゼロで埋められます。
 
-```text
+```text title="Response"
 ┌─year─┬─month─┬─day─┬─count()─┐
 │ 2020 │    10 │  15 │       1 │
 │ 2020 │     1 │   5 │       1 │
@@ -212,7 +208,7 @@ SELECT year, month, day, count(*) FROM t GROUP BY CUBE(year, month, day);
 
 同じクエリは `WITH` キーワードを使って記述することもできます。
 
-```sql
+```sql title="Query"
 SELECT year, month, day, count(*) FROM t GROUP BY year, month, day WITH CUBE;
 ```
 

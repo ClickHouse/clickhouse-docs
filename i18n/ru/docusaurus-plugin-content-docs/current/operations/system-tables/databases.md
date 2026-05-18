@@ -31,7 +31,7 @@ doc_type: 'reference'
 
 Создайте базу данных.
 
-```sql
+```sql title="Query"
 CREATE DATABASE test;
 ```
 

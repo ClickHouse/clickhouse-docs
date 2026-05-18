@@ -36,7 +36,7 @@ UUID 值示例：
 
 示例：
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (uuid);
 
 INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
@@ -47,9 +47,7 @@ INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
 SELECT * FROM tab;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─uuid─────────────────────────────────┐
 │ 019d2555-7874-7e9d-a284-9b45a0b2f165 │
 │ 019d2555-7874-7e9d-a284-9b46c3353be7 │
@@ -67,7 +65,7 @@ SELECT * FROM tab;
 
 作为一种变通方案，可以将 UUID 转换为由其后半部分提取出的时间戳：
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (UUIDv7ToDateTime(uuid));
 -- Or alternatively:                      [...] PRIMARY KEY (toStartOfHour(UUIDv7ToDateTime(uuid)));
 
@@ -81,7 +79,7 @@ SELECT * FROM tab;
 
 结果 (假设插入的是相同的数据) ：
 
-```text
+```text title="Response"
 ┌─uuid─────────────────────────────────┐
 │ 019d2555-7868-7333-89d1-2bd1639899c3 │
 │ 019d2555-7868-7333-89d1-2bd297eb7d42 │
@@ -99,7 +97,6 @@ SELECT * FROM tab;
 
 ORDER BY (UUIDv7ToDateTime(uuid), uuid)
 
-
 ## 生成 UUID \{#generating-uuids\}
 
 ClickHouse 提供了 [generateUUIDv4](../../sql-reference/functions/uuid-functions.md) 函数，用于生成随机的第 4 版 UUID 值。
@@ -110,7 +107,7 @@ ClickHouse 提供了 [generateUUIDv4](../../sql-reference/functions/uuid-functio
 
 此示例演示如何创建一个带有 UUID 列的表，并向该表插入一个值。
 
-```sql
+```sql title="Query"
 CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog
 
 INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
@@ -118,9 +115,7 @@ INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
 SELECT * FROM t_uuid
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌────────────────────────────────────x─┬─y─────────┐
 │ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 └──────────────────────────────────────┴───────────┘
@@ -142,7 +137,6 @@ SELECT * FROM t_uuid
 │ 00000000-0000-0000-0000-000000000000 │ Example 2 │
 └──────────────────────────────────────┴───────────┘
 ```
-
 
 ## 限制 \{#restrictions\}
 

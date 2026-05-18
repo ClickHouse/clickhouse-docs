@@ -55,31 +55,29 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 
 ## 例 \{#examples\}
 
-デフォルトでは、`CHECK TABLE` クエリはテーブルチェックの全体的なステータスを表示します。
+デフォルトでは、`CHECK TABLE` クエリにはテーブル全体のチェック結果が表示されます。
 
-```sql
+```sql title="Query"
 CHECK TABLE test_table;
 ```
 
-```text
+```text title="Response"
 ┌─result─┐
 │      1 │
 └────────┘
 ```
 
-個々のデータパーツごとのチェック状態を確認するには、`check_query_single_value_result` 設定を使用できます。
+個々のデータパーツのチェック状況を確認したい場合は、`check_query_single_value_result` 設定を使用できます。
 
-また、テーブル内の特定のパーティションを確認するには、`PARTITION` キーワードを使用できます。
+また、テーブル内の特定のパーティションをチェックするには、`PARTITION` キーワードを使用できます。
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-出力:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 │ 201003_3_3_0 │         1 │         │
@@ -88,27 +86,25 @@ SETTINGS check_query_single_value_result = 0
 
 同様に、`PART` キーワードを使用すると、テーブルの特定のパーツを確認できます。
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_7_7_0'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-出力:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-パーツが存在しない場合、クエリはエラーを返します:
+パーツが存在しない場合、クエリはエラーを返す点に注意してください:
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_111_222_0'
 ```
 
-```text
+```text title="Response"
 DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
 
@@ -124,15 +120,13 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-出力:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message──────────────────────────────────┐
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │

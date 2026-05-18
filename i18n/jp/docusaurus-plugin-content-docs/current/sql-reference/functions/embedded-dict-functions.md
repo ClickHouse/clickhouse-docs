@@ -50,7 +50,7 @@ regionToName(id\[, lang\])
 **パラメータ**
 
 * `id` — geobase におけるリージョン ID。 [UInt32](../data-types/int-uint)。
-* `geobase` — 辞書のキー。[Multiple Geobases](#multiple-geobases) を参照。 [String](../data-types/string)。省略可能。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。 [String](../data-types/string)。省略可能。
 
 **戻り値**
 
@@ -59,15 +59,11 @@ regionToName(id\[, lang\])
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32,'en') FROM numbers(0,5);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┐
 │                                            │
 │ World                                      │
@@ -99,15 +95,11 @@ regionToCity(id [, geobase])
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToCity(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-結果:
-
-```text
+```response title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCity(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                          │
 │ World                                      │  0 │                                                          │
@@ -138,26 +130,22 @@ regionToArea(id [, geobase])
 **パラメーター**
 
 * `id` — geobase からのリージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
 
-**返される値**
+**戻り値**
 
 * 対応する地域が存在する場合、そのリージョン ID。[UInt32](../data-types/int-uint)。
 * 存在しない場合は 0。
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT DISTINCT regionToName(regionToArea(toUInt32(number), 'ua'))
 FROM system.numbers
 LIMIT 15
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─regionToName(regionToArea(toUInt32(number), \'ua\'))─┐
 │                                                      │
 │ Moscow and Moscow region                             │
@@ -190,7 +178,7 @@ regionToDistrict(id [, geobase])
 **パラメーター**
 
 * `id` — geobase からのリージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
 
 **戻り値**
 
@@ -199,17 +187,13 @@ regionToDistrict(id [, geobase])
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT DISTINCT regionToName(regionToDistrict(toUInt32(number), 'ua'))
 FROM system.numbers
 LIMIT 15
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─regionToName(regionToDistrict(toUInt32(number), \'ua\'))─┐
 │                                                          │
 │ Central federal district                                 │
@@ -242,7 +226,7 @@ regionToCountry(id [, geobase])
 **パラメータ**
 
 * `id` — ジオベース内のリージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書のキー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
 
 **戻り値**
 
@@ -251,15 +235,11 @@ regionToCountry(id [, geobase])
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToCountry(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToCountry(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                             │
 │ World                                      │  0 │                                                             │
@@ -290,7 +270,7 @@ regionToContinent(id [, geobase])
 **パラメータ**
 
 * `id` — geobase におけるリージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
 
 **戻り値**
 
@@ -299,15 +279,11 @@ regionToContinent(id [, geobase])
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                               │
 │ World                                      │  0 │                                                               │
@@ -338,7 +314,7 @@ regionToTopContinent(id[, geobase])
 **パラメータ**
 
 * `id` — geobase におけるリージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
 
 **戻り値**
 
@@ -347,15 +323,11 @@ regionToTopContinent(id[, geobase])
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToTopContinent(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─id─┬─regionToName(regionToTopContinent(CAST(number, 'UInt32')), 'en')─┐
 │                                            │  0 │                                                                  │
 │ World                                      │  0 │                                                                  │
@@ -386,7 +358,7 @@ regionToPopulation(id[, geobase])
 **パラメータ**
 
 * `id` — geobase のリージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。[複数の geobase](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
 
 **戻り値**
 
@@ -395,15 +367,11 @@ regionToPopulation(id[, geobase])
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT regionToName(number::UInt32, 'en'), regionToPopulation(number::UInt32) AS id, regionToName(id, 'en') FROM numbers(13);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─regionToName(CAST(number, 'UInt32'), 'en')─┬─population─┐
 │                                            │          0 │
 │ World                                      │ 4294967295 │
@@ -435,9 +403,9 @@ regionIn(lhs, rhs\[, geobase\])
 
 * `lhs` — geobase における Lhs リージョン ID。[UInt32](../data-types/int-uint)。
 * `rhs` — geobase における Rhs リージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書キー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。[String](../data-types/string)。省略可。
 
-**返される値**
+**戻り値**
 
 * 1 — 属する場合。[UInt8](../data-types/int-uint)。
 * 0 — 属さない場合。
@@ -448,15 +416,11 @@ regionIn(lhs, rhs\[, geobase\])
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT regionToName(n1.number::UInt32, 'en') || (regionIn(n1.number::UInt32, n2.number::UInt32) ? ' is in ' : ' is not in ') || regionToName(n2.number::UInt32, 'en') FROM numbers(1,2) AS n1 CROSS JOIN numbers(1,5) AS n2;
 ```
 
-結果：
-
-```text
+```text title="Response"
 World is in World
 World is not in USA
 World is not in Colorado
@@ -482,23 +446,19 @@ regionHierarchy(id\[, geobase\])
 **パラメーター**
 
 * `id` — geobase 内のリージョン ID。[UInt32](../data-types/int-uint)。
-* `geobase` — 辞書のキー。[Multiple Geobases](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
+* `geobase` — 辞書キー。[複数のジオベース](#multiple-geobases) を参照。[String](../data-types/string)。省略可能。
 
-**返される値**
+**戻り値**
 
 * 渡されたリージョンおよび、その親チェーン上にあるすべての親リージョンの ID から成る配列。[Array](../data-types/array)([UInt32](../data-types/int-uint))。
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT regionHierarchy(number::UInt32) AS arr, arrayMap(id -> regionToName(id, 'en'), arr) FROM numbers(5);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─arr────────────┬─arrayMap(lambda(tuple(id), regionToName(id, 'en')), regionHierarchy(CAST(number, 'UInt32')))─┐
 │ []             │ []                                                                                           │
 │ [1]            │ ['World']                                                                                    │

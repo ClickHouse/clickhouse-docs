@@ -20,7 +20,7 @@ Aliases: `SVG`, `svg`
 
 **パラメーター**
 
-* `geometry` — ジオデータ。[Geo](../../data-types/geo)。
+* `geometry` — Geoデータ。[Geo](../../data-types/geo)。
 * `style` — オプションのスタイル名。[String](../../data-types/string)。
 
 **返される値**
@@ -34,42 +34,30 @@ Aliases: `SVG`, `svg`
 
 **Circle**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT SVG((0., 0.))
 ```
 
-結果:
-
-```response
+```response title="Response"
 <circle cx="0" cy="0" r="5" style=""/>
 ```
 
 **ポリゴン**
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT SVG([(0., 0.), (10, 0), (10, 10), (0, 10)])
 ```
 
-結果：
-
-```response
+```response title="Response"
 <polygon points="0,0 0,10 10,10 10,0 0,0" style=""/>
 ```
 
 **パス**
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT SVG([[(0., 0.), (10, 0), (10, 10), (0, 10)], [(4., 4.), (5, 4), (5, 5), (4, 5)]])
 ```
 
-結果:
-
-```response
+```response title="Response"
 <g fill-rule="evenodd"><path d="M 0,0 L 0,10 L 10,10 L 10,0 L 0,0M 4,4 L 5,4 L 5,5 L 4,5 L 4,4 z " style=""/></g>
 ```

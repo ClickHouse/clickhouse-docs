@@ -167,21 +167,16 @@ A description of implementation details if relevant.
 
 **Example**
 
-Query:
-
-\```sql
+\```sql title="Query"
 SELECT 'write your example query here';
 \```
 
-Response:
-
-\```response
+\```response title="Response"
 ┌───────────────────────────────────┐
 │ the result of the query           │
 └───────────────────────────────────┘
 \```
 ````
-
 
 ## 테스트 데이터 사용 \{#using-test-data\}
 

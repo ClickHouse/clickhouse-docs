@@ -81,15 +81,11 @@ GROUP BY timeslot;
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─toTypeName(c)────────────────────────┬─c─┐
 │ SimpleAggregateFunction(any, UInt64) │ 0 │
 └──────────────────────────────────────┴───┘
@@ -154,15 +150,11 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─avg(number)─┬─avgOrDefault(number)─┐
 │         nan │                    0 │
 └─────────────┴──────────────────────┘
@@ -170,9 +162,7 @@ SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 
 Также `-OrDefault` можно использовать с другими комбинаторами. Это полезно, когда агрегатная функция не принимает пустой набор входных данных.
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT avgOrDefaultIf(x, x > 10)
 FROM
 (
@@ -180,9 +170,7 @@ FROM
 )
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─avgOrDefaultIf(x, greater(x, 10))─┐
 │                              0.00 │
 └───────────────────────────────────┘
@@ -217,15 +205,11 @@ FROM
 
 Добавьте `-orNull` в конец агрегатной функции.
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE number > 10
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─sumOrNull(number)─┬─toTypeName(sumOrNull(number))─┐
 │              ᴺᵁᴸᴸ │ Nullable(UInt64)              │
 └───────────────────┴───────────────────────────────┘
@@ -233,9 +217,7 @@ SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE n
 
 Также `-OrNull` может использоваться и с другими комбинаторами. Это полезно, когда агрегатная функция не допускает пустой входной набор данных.
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT avgOrNullIf(x, x > 10)
 FROM
 (
@@ -243,9 +225,7 @@ FROM
 )
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─avgOrNullIf(x, greater(x, 10))─┐
 │                           ᴺᵁᴸᴸ │
 └────────────────────────────────┘

@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 Вы можете использовать `UNION` для объединения любого количества запросов `SELECT`, объединяя их результаты. Пример:
 
-```sql
+```sql title="Query"
 SELECT CounterID, 1 AS table, toInt64(count()) AS c
     FROM test.hits
     GROUP BY CounterID
@@ -33,16 +33,12 @@ SELECT CounterID, 2 AS table, sum(Sign) AS c
 
 Если вы используете `UNION` без явного указания `UNION ALL` или `UNION DISTINCT`, вы можете задать режим объединения с помощью настройки [union&#95;default&#95;mode](/operations/settings/settings#union_default_mode). Значениями настройки могут быть `ALL`, `DISTINCT` или пустая строка. Однако, если вы используете `UNION` при установленном значении `union_default_mode` в пустую строку, будет сгенерировано исключение. Следующие примеры демонстрируют результаты запросов при разных значениях этой настройки.
 
-Запрос:
-
-```sql
+```sql title="Query"
 SET union_default_mode = 'DISTINCT';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─1─┐
 │ 1 │
 └───┘
@@ -54,16 +50,12 @@ SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 └───┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SET union_default_mode = 'ALL';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─1─┐
 │ 1 │
 └───┘

@@ -33,7 +33,7 @@ mergeTreeTextIndex(database, table, index_name)
 
 ## 사용 예제 \{#usage-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE tab
 (
     id UInt64,
@@ -49,9 +49,7 @@ INSERT INTO tab SELECT 500 + number, concatWithSeparator(' ', 'cherry', 'date') 
 SELECT * FROM mergeTreeTextIndex(currentDatabase(), tab, idx_s);
 ```
 
-결과:
-
-```text
+```text title="Response"
    ┌─part_name─┬─token──┬─dictionary_compression─┬─cardinality─┬─num_posting_blocks─┬─has_embedded_postings─┬─has_raw_postings─┬─has_compressed_postings─┐
 1. │ all_1_1_0 │ apple  │ front_coded            │         500 │                  1 │                     0 │                0 │                       0 │
 2. │ all_1_1_0 │ banana │ front_coded            │         500 │                  1 │                     0 │                0 │                       0 │

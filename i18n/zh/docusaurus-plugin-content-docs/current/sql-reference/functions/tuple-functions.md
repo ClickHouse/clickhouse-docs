@@ -920,7 +920,7 @@ SELECT tupleToNameValuePairs(tuple(3, 2, 1))
 
 ## untuple \{#untuple\}
 
-在调用处对 [tuple](/sql-reference/data-types/tuple) 元素执行句法替换。
+在调用处对 [Tuple](/sql-reference/data-types/tuple) 元素执行句法替换。
 
 结果列的名称由具体实现决定，并且可能发生变化。请不要在使用 `untuple` 后依赖任何特定的列名。
 
@@ -956,15 +956,11 @@ untuple(x)
 
 将 `Tuple` 类型列用作 `untuple` 函数参数的示例：
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT untuple(v6) FROM kv;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─_ut_1─┬─_ut_2─┐
 │    33 │ ab    │
 │    44 │ cd    │
@@ -976,15 +972,11 @@ SELECT untuple(v6) FROM kv;
 
 使用 `EXCEPT` 表达式的示例：
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v4─┬─v5─┬─v6────────┐
 │   1 │ 10 │ 30 │ 15 │ (33,'ab') │
 │   2 │ 25 │ 40 │  6 │ (44,'cd') │

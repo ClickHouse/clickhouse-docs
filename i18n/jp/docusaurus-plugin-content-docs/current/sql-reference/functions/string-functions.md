@@ -2301,6 +2301,61 @@ SELECT
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
+## regexpPosition \{#regexpPosition\}
+
+導入バージョン: v26.5.0
+
+`haystack` 内で `pattern` の `occurrence` 回目の一致が現れるバイト位置 (1始まり) を返します。検索はバイト位置 `position` から開始されます。
+
+`return_option` が 0 (デフォルト) の場合は一致の先頭バイト位置を返します。1 の場合は、一致の*直後*の先頭バイト位置を返します。
+
+`subexpression` が 0 より大きい場合は、一致全体ではなく、対応するキャプチャグループの位置を返します。
+
+一致が見つからない場合、または要求されたキャプチャグループが一致に含まれていない場合は 0 を返します。
+
+PostgreSQL の `regexp_instr` との互換性のために提供されています (この別名でも使用できます) 。位置はバイト単位で、他の ClickHouse の正規表現関数と一致しています。PostgreSQL の `regexp_instr` は文字単位です。
+
+**構文**
+
+```sql
+regexpPosition(haystack, pattern[, position[, occurrence[, return_option[, flags[, subexpression]]]]])
+```
+
+**別名**: `regexpInstr`, `regexp_instr`
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正規表現パターン。[`const String`](/sql-reference/data-types/string)
+* `position` — 任意。検索を開始する 1 始まりのバイト位置。デフォルト: 1。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `occurrence` — 任意。何番目の一致を返すか。デフォルト: 1。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `return_option` — 任意。`0` は一致開始位置を返し、`1` は一致直後の位置を返します。デフォルト: 0。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `flags` — 任意。正規表現フラグ。対応: `i` (大文字と小文字を区別しない) 、`c` (大文字と小文字を区別する) 、`m`/`n` (複数行アンカー) 、`s` (`.` が改行に一致) 。デフォルト: 空文字列。[`const String`](/sql-reference/data-types/string)
+* `subexpression` — 任意。位置を返すキャプチャグループの索引。`0` は一致全体を意味します。デフォルト: 0。[`(U)Int*`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+一致した位置のバイト位置を返します。見つからない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使い方**
+
+```sql title=Query
+SELECT
+    regexpPosition('hello world', 'world'),
+    regexpPosition('aXbXcXd', 'X', 1, 2),
+    regexpPosition('aXbXcXd', 'X', 1, 2, 1),
+    regexpPosition('Hello WORLD', 'world', 1, 1, 0, 'i'),
+    regexpPosition('foo123bar456', '([a-z]+)([0-9]+)', 1, 2, 0, '', 2);
+```
+
+```response title=Response
+┌─...─┬─...─┬─...─┬─...─┬─...─┐
+│   7 │   4 │   5 │   7 │  10 │
+└─────┴─────┴─────┴─────┴─────┘
+```
+
 ## removeDiacriticsUTF8 \{#removeDiacriticsUTF8\}
 
 導入バージョン: v26.3.0

@@ -270,3 +270,266 @@ WHERE (database = 'default') AND active AND (level = 0)
 ORDER BY modification_time DESC
 LIMIT 100
 ```
+
+
+## クラスター全体の監視クエリ \{#cluster-wide-monitoring-queries\}
+
+以下のクエリは、ClickHouseクラスターの監視に役立ちます。`clusterAllReplicas()` を使用して、すべてのノードのデータを集約します。
+
+:::note
+これらのクエリは、クラスター名が `default` であることを前提としています。クラスター名が異なる場合は、`'default'` と `default` を実際のクラスター名に置き換えてください。
+:::
+
+### 1分あたり・1秒あたりに作成された新規パーツの平均数 (過去1時間)  \{#avg-new-parts-per-minute-and-second\}
+
+```sql
+WITH
+    PER_MINUTE AS
+    (
+    SELECT
+        toStartOfInterval(modification_time, toIntervalMinute(1)) AS t,
+        count() AS new_part_count
+    FROM
+        clusterAllReplicas(default, merge(system, '^parts'))
+    WHERE
+        (database = 'default') AND
+        (table = 'your_table') AND
+        (active = true) AND
+        (level = 0) AND
+        (modification_time >= (now() - toIntervalHour(1)))
+    GROUP BY
+        t
+    ORDER BY
+        t ASC
+    SETTINGS skip_unavailable_shards = 1
+    )
+SELECT
+    AVG(new_part_count) AS new_parts_per_minute,
+    new_parts_per_minute / 60 AS new_parts_per_second
+FROM
+    PER_MINUTE
+```
+
+`'your_table'` を、監視対象の実際のテーブル名に置き換えてください。
+
+### CPU とメモリの負荷が高いクエリ (クラスター全体)  \{#cpu-and-memory-intensive-queries-cluster-wide\}
+
+```sql
+SELECT
+    type,
+    event_time,
+    initial_query_id,
+    formatReadableSize(memory_usage) AS memory,
+    `ProfileEvents.Values`[indexOf(`ProfileEvents.Names`, 'UserTimeMicroseconds')] AS userCPU,
+    `ProfileEvents.Values`[indexOf(`ProfileEvents.Names`, 'SystemTimeMicroseconds')] AS systemCPU,
+    normalizedQueryHash(query) AS normalized_query_hash
+FROM clusterAllReplicas(default, merge(system, '^query_log'))
+ORDER BY memory_usage DESC
+LIMIT 10
+```
+
+### ETA付きの進行中のマージ \{#merges-in-progress-with-eta\}
+
+このクエリは、クラスター上で現在実行中のマージと、その推定完了時間を表示します。
+
+```sql
+SELECT
+    hostName(),
+    database,
+    table,
+    round(elapsed, 0) AS elapsed_seconds,
+    round(progress, 4) AS progress_ratio,
+    formatReadableTimeDelta((elapsed / progress) - elapsed) AS estimated_time_remaining,
+    num_parts,
+    result_part_name
+FROM clusterAllReplicas(default, merge(system, '^merges'))
+ORDER BY (elapsed / progress) - elapsed ASC
+```
+
+### 正規化ハッシュ別の最頻出クエリ \{#most-common-queries-by-normalized-hash\}
+
+最も頻繁に実行されているクエリを確認します (最適化すべきクエリの特定に役立ちます) :
+
+```sql
+SELECT
+    normalizedQueryHash(query) AS query_hash,
+    count() AS execution_count,
+    any(query) AS example_query
+FROM clusterAllReplicas(default, merge(system, '^query_log'))
+WHERE event_date >= today() - 1
+GROUP BY normalizedQueryHash(query)
+ORDER BY execution_count DESC
+LIMIT 20
+```
+
+### イベントタイプ別・日付別のエラー件数 \{#error-counts-by-event-type-and-date\}
+
+クラスター全体でのパーツ作成エラーを分析します。
+
+```sql
+SELECT
+    event_date,
+    event_type,
+    table,
+    error,
+    COUNT() AS error_count
+FROM clusterAllReplicas(default, merge(system, '^part_log'))
+WHERE database = 'default'
+GROUP BY
+    event_date,
+    event_type,
+    error,
+    table
+ORDER BY
+    event_date DESC,
+    error_count DESC
+```
+
+### ノードごとのテーブル数 \{#number-of-tables-by-node\}
+
+クラスター内の各ノードにおけるテーブルの分布を確認します:
+
+```sql
+SELECT
+    hostName() AS host,
+    count() AS table_count
+FROM clusterAllReplicas('default', merge(system, '^tables'))
+WHERE database = 'default'
+GROUP BY hostName()
+ORDER BY table_count DESC
+```
+
+### 非同期 INSERT 操作を確認する \{#check-for-async-insert-operations\}
+
+非同期 INSERT の動作状況を監視します：
+
+```sql
+SELECT
+    event_date,
+    count() AS total_count,
+    sum(if(query LIKE '%async%', 1, 0)) AS async_count,
+    sum(if(query LIKE '%INSERT%', 1, 0)) AS insert_count
+FROM clusterAllReplicas(default, merge(system, '^query_log'))
+WHERE event_date >= today() - 7
+GROUP BY event_date
+ORDER BY event_date DESC
+```
+
+## パーツとマージの解析 \{#parts-and-merges-analysis\}
+
+### テーブルごとの現在アクティブなパーツ \{#currently-active-parts-by-table\}
+
+クラスター全体における、テーブルごとのアクティブなパーツ数を確認します。
+
+```sql
+SELECT
+    database,
+    table,
+    count() AS part_count,
+    formatReadableSize(sum(bytes_on_disk)) AS total_size
+FROM clusterAllReplicas(default, system.parts)
+WHERE active = 1 AND database = 'default'
+GROUP BY database, table
+ORDER BY part_count DESC
+```
+
+### パーツ数が多すぎるパーティション \{#partitions-with-too-many-parts\}
+
+パーツ数が多すぎる可能性のあるパーティションを見つけます (クエリのパフォーマンスに影響する可能性があります) :
+
+```sql
+SELECT
+    database,
+    table,
+    partition,
+    count() AS part_count,
+    formatReadableSize(sum(bytes_on_disk)) AS total_size
+FROM clusterAllReplicas(default, system.parts)
+WHERE active = 1
+GROUP BY database, table, partition
+HAVING part_count > 100
+ORDER BY part_count DESC
+```
+
+### デタッチされたパーツ \{#detached-parts\}
+
+調査が必要な可能性のあるデタッチされたパーツがないか確認します。
+
+```sql
+SELECT
+    database,
+    table,
+    partition_id,
+    name,
+    reason,
+    count()
+FROM clusterAllReplicas(default, system.detached_parts)
+GROUP BY database, table, partition_id, name, reason
+ORDER BY database, table
+```
+
+## システム情報に関するクエリ \{#system-information-queries\}
+
+### ノードごとのクラスター全体のメモリ使用量 \{#cluster-wide-memory-usage-by-node\}
+
+各ノードのメモリ消費量を監視します。
+
+```sql
+SELECT
+    hostName() AS host,
+    formatReadableSize(max(memory_usage)) AS peak_memory,
+    formatReadableSize(avg(memory_usage)) AS avg_memory,
+    formatReadableSize(min(memory_usage)) AS min_memory
+FROM clusterAllReplicas(default, merge(system, '^query_log'))
+WHERE event_date >= today() - 1
+GROUP BY hostName()
+ORDER BY peak_memory DESC
+```
+
+### クラスター上でクエリを実行する \{#running-queries-on-the-cluster\}
+
+現在実行されているクエリを確認します。
+
+```sql
+SELECT
+    hostName() AS host,
+    initial_user,
+    query_id,
+    elapsed,
+    read_rows,
+    formatReadableSize(memory_usage) AS memory_usage,
+    normalizedQueryHash(query) AS query_hash
+FROM clusterAllReplicas(default, system.processes)
+ORDER BY elapsed DESC
+```
+
+### デフォルト設定から変更された項目 \{#modified-settings-from-defaults\}
+
+デフォルト設定から変更された項目を確認します。
+
+```sql
+SELECT
+    hostName() AS host,
+    name,
+    value
+FROM clusterAllReplicas(default, system.settings)
+WHERE changed = 1
+ORDER BY hostName(), name
+```
+
+### レプリケーションキューの状態 \{#replication-queue-status\}
+
+レプリケートテーブルでは、レプリケーションキューを確認します。
+
+```sql
+SELECT
+    hostName() AS host,
+    database,
+    table,
+    count() AS queue_size,
+    sum(if(is_currently_executing = 1, 1, 0)) AS executing_count
+FROM clusterAllReplicas(default, system.replication_queue)
+GROUP BY hostName(), database, table
+HAVING queue_size > 0
+ORDER BY queue_size DESC
+```

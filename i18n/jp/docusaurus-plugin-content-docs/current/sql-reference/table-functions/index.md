@@ -78,11 +78,11 @@ doc_type: 'reference'
 句で使用できます。たとえば、`file` テーブル関数を使ってローカルマシン上のファイルから
 データを `SELECT` できます。
 
-```bash
+```bash title="Query"
 echo "1, 2, 3" > example.csv
 ```
 
-```text
+```text title="Response"
 ./clickhouse client
 :) SELECT * FROM file('example.csv')
 ┌─c1─┬─c2─┬─c3─┐
@@ -110,7 +110,7 @@ SELECT * FROM generateSeries(1,5);
 
 テーブル関数を使うと、次の構文でテーブルを作成できます。
 
-```sql
+```sql title="Query"
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 ```
 
@@ -121,7 +121,7 @@ CREATE TABLE series AS generateSeries(1, 5);
 SELECT * FROM series;
 ```
 
-```response
+```response title="Response"
 ┌─generate_series─┐
 │               1 │
 │               2 │
@@ -133,11 +133,11 @@ SELECT * FROM series;
 
 最後に、テーブル関数を使用してテーブルにデータを `INSERT` することができます。例えば、前の例で作成したテーブルの内容を、再び `file` テーブル関数を使ってディスク上のファイルに書き出すことができます。
 
-```sql
+```sql title="Query"
 INSERT INTO FUNCTION file('numbers.csv', 'CSV') SELECT * FROM series;
 ```
 
-```bash
+```bash title="Query"
 cat numbers.csv
 1
 2

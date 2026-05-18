@@ -2726,6 +2726,34 @@ ENGINE = Log
 
 デフォルト値は `CURRENT_USER` です。
 
+## defer_partition_pruning_after_final \{#defer_partition_pruning_after_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "26.3 でサイレントに導入された FINAL のパーティションプルーニング動作（https://github.com/ClickHouse/ClickHouse/pull/98242）を制御するため、この設定が 26.5 で新たに追加されました。意味のあるセマンティクスの変更は 26.3 の項目に記録されているため、`compatibility = '26.2'` を設定するとその変更は元に戻ります。この項目は、26.4 からのアップグレード時のチェックで新たに導入された設定名が受け入れられるようにするために存在します。"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "1"},{"label": "パーティションキーカラムがソートキーに含まれていない場合に、FINAL プランナーがパーティションプルーニングを無条件にスキップする動作を制御します。動作変更自体は https://github.com/ClickHouse/ClickHouse/pull/98242 により 26.3 でサイレントに導入されました。この項目はそれを事後的に文書化したもので、`compatibility = '26.2'` によって変更前の動作を復元します（0 = FINAL の前にプルーニング、高速; 1 = プルーニングを遅延、正しさを優先）。"}]}]} />
+
+有効にすると (デフォルト) 、パーティションキーカラムがソートキーに含まれていないテーブルに対する `FINAL` クエリでは、
+パーティションプルーニングがスキップされます。これは 26.3 で導入された、
+正しさを優先した動作です。`FINAL` では、同じ主キーを共有しながら
+異なるパーティションに存在する行を重複排除する必要がある場合があり、
+パーティションプルーニングを行うと、そのような行が重複排除の対象から
+暗黙のうちに除外されてしまいます。
+
+無効にすると、`FINAL` を使用していてもパーティションプルーニングが適用され、
+26.3 より前の動作に戻ります。これは、パーティションカラムに対する
+`WHERE` 述語を含むクエリでは大幅に高速になる場合がありますが、
+同じ主キーを持つ行が異なるパーティションに存在しない場合にのみ正しく動作します。
+たとえば、パーティションカラムが挿入時に設定され、その後一切変更されない
+イベントログテーブルが該当します。
+
+この設定の影響を受けるのは、パーティションキーカラムがソートキーに含まれていない
+パーティションテーブルだけです。その他のテーブルでは、パーティションプルーニングは常に適用されます。
+
+設定可能な値:
+
+* 0 — `FINAL` の前にパーティションプルーニングを適用します (26.3 より前の動作。高速ですが、一般的には安全ではありません) 。
+* 1 — パーティションプルーニングを `FINAL` の後まで遅らせます (デフォルト。正しさを優先) 。
+
 ## delta_lake_enable_engine_predicate \{#delta_lake_enable_engine_predicate\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -4102,6 +4130,14 @@ WHERE (_part, _part_offset) IN (
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 集約処理でソフトウェアプリフェッチを有効にします
+
+## enable_software_prefetch_in_join \{#enable_software_prefetch_in_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "ハッシュ結合のプローブフェーズでソフトウェアプリフェッチを使用するようにします。"}]}]} />
+
+大規模なハッシュテーブルでのメモリアクセスのレイテンシを隠蔽するため、ハッシュ結合のプローブフェーズでソフトウェアプリフェッチを使用するようにします。
 
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
@@ -10678,6 +10714,20 @@ Possible values:
 
 クエリプラン内で、インバーテッドテキスト索引に基づいて構築されるフィルタリングに対して、ヒント（追加の述語）を付加できるようにします。
 
+## query_plan_top_k_through_join \{#query_plan_top_k_through_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "ソートキーが join によって保持される側のみを参照する場合に、ORDER BY ... LIMIT n を LEFT/RIGHT join をまたいでプッシュダウンするクエリプランレベルの最適化を有効にする新しい設定。"}]}]} />
+
+ソートキーが join によって保持される側 (LEFT/RIGHT) のカラムのみを参照する場合に、`ORDER BY ... LIMIT n` を join をまたいでプッシュダウンするクエリプランレベルの最適化を切り替えます。これにより、保持側の入力が join 前に生成する必要がある行数を制限します。
+この設定は、[query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) が 1 の場合にのみ有効です。
+
+設定可能な値:
+
+* 0 - 無効
+* 1 - 有効
+
 ## query_plan_try_use_vector_search \{#query_plan_try_use_vector_search\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11969,6 +12019,21 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 └──────────────────────────┴───────┴───────────────────────────────────────────────────────┘
 ```
 
+
+## system_metric_log_show_zero_values_in_histograms \{#system_metric_log_show_zero_values_in_histograms\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "system.metric_log の histograms ネストカラムに値 0 のヒストグラムデータを書き込むかどうかを制御する新しい設定。"}]}]} />
+
+値 0 のヒストグラムデータを `system.metric_log` の `histograms` ネストカラムに書き込むかどうかを制御します。
+
+デフォルトでは、観測の合計 `count` が 0 のヒストグラムはスキップされ、出力される各ヒストグラム内でも、観測がないバケットのエントリは `histogram` map から省略されます。これを有効にすると、`count` に関係なく、すべてのヒストグラムとすべてのバケットが書き込まれます。これは、すべてのチェックポイントであらゆるメトリクスが必ず現れる必要がある監視システムで有用です。
+
+設定可能な値:
+
+* 0 — 無効。`count = 0` のヒストグラムは出力されません。出力されるヒストグラムには、少なくとも 1 回観測されたバケットのみが含まれます。
+* 1 — 有効。すべてのヒストグラムが書き込まれ、すべてのバケット境界が `histogram` に現れます。
 
 ## table_engine_read_through_distributed_cache \{#table_engine_read_through_distributed_cache\}
 

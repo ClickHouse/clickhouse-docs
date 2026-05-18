@@ -1285,7 +1285,7 @@ ALTER TABLE tab DROP STATISTICS a;
 #### 基于统计信息的 parts 剪枝 \{#part-pruning-with-statistics\}
 
 启用 `use_statistics_for_part_pruning` 后，统计信息可用于 parts 剪枝。
-目前，只有 `MinMax` 统计信息支持 parts 剪枝。当对某一列定义了 MinMax 统计信息时，ClickHouse 会跟踪每个 parts 中该列的最小值和最大值。
+目前，`MinMax` 和 `NullCount` 统计信息支持 parts 剪枝。当对某一列定义了 MinMax 统计信息时，ClickHouse 会跟踪每个 parts 中该列的最小值和最大值。当对 `Nullable` 列定义了 NullCount 统计信息时，ClickHouse 会跟踪每个 parts 中 NULL 值的数量，从而能够基于 `IS NULL` / `IS NOT NULL` 谓词进行剪枝，并提高包含 NULL 值的列在范围过滤剪枝中的准确性。
 借助 parts 剪枝，如果查询过滤条件不可能匹配某个 parts 中的任何行，就可以跳过读取整个 parts。
 
 **示例：**
@@ -1338,7 +1338,7 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 
 * `NullCount`
 
-  跟踪 `Nullable` 列中 `NULL` 值的数量。用于在 PREWHERE 优化中准确估计 `IS NULL`/`IS NOT NULL` 谓词的选择性。
+  跟踪 `Nullable` 列中 `NULL` 值的数量。用于在 PREWHERE 优化中准确估计 `IS NULL`/`IS NOT NULL` 谓词的选择性，并可根据是否存在 NULL 进行分片裁剪。
 
   语法：`nullcount`
 

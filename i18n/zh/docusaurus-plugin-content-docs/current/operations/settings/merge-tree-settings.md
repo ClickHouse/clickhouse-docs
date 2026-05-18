@@ -65,6 +65,26 @@ ALTER TABLE tab RESET SETTING max_suspicious_broken_parts;
 
 若为 true，则会为 CollapsingMergeTree 或 VersionedCollapsingMergeTree 表的 `sign` 列添加一个隐式约束，只允许取值为 `1` 或 `-1`。
 
+## add_minmax_index_for_block_number_column \{#add_minmax_index_for_block_number_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置。"}]}]} />
+
+启用后，会为持久化虚拟列 `_block_number` 添加一个隐式的 min-max（跳过）索引。
+要使其生效，需要设置 `enable_block_number_column = 1`。该索引仅在 merges 期间构建，
+不会在 inserts 期间构建：在写入时，块编号只是暂定值，因此建立的只会是一个常量索引。
+
+## add_minmax_index_for_block_offset_column \{#add_minmax_index_for_block_offset_column\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置。"}]}]} />
+
+启用后，会为持久化虚拟列 `_block_offset` 添加一个隐式的 min-max（跳过）索引。
+需要启用 `enable_block_offset_column = 1` 才会生效。该索引仅在合并期间构建，
+不会在插入期间构建。
+
 ## add_minmax_index_for_numeric_columns \{#add_minmax_index_for_numeric_columns\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -459,6 +479,18 @@ Marks 支持压缩，有助于减小标记文件大小并加快网络传输。
 
 仅当不活动的数据分区片段数量至少达到该阈值时，才启用并发分区片段删除（参见 `max_part_removal_threads`）。
 
+## concurrent_part_removal_threshold_for_remote_disk \{#concurrent_part_removal_threshold_for_remote_disk\}
+
+<SettingsInfoBlock type="UInt64" default_value="16" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "16"},{"label": "新设置。当待移除的任意 part 位于远程磁盘上时，降低进入并发移除 part 路径的阈值，因为此时每次移除通常都需要一次网络往返。旧值 (100) 与旧版 `concurrent_part_removal_threshold` 的默认值一致，因此较旧的 `compatibility` 模式会保留之前的行为。"}]}]} />
+
+与 `concurrent_part_removal_threshold` 相同，但用于待移除的
+parts 中至少有一个存储在远程磁盘上的情况。默认值更低，
+因为在远程存储上移除每个 part 通常都需要一次网络
+往返 (例如，在对象存储上每个 part 都需要一次 HTTP `DELETE`) ，因此
+即使串行移除 100 个 parts，也可能让 `DROP TABLE` 阻塞数十秒。
+
 ## deduplicate_merge_projection_mode \{#deduplicate_merge_projection_mode\}
 
 <SettingsInfoBlock type="DeduplicateMergeProjectionMode" default_value="throw" />
@@ -591,7 +623,7 @@ Dynamic 数据类型的序列化版本。用于确保兼容性。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 parts 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认情况下，即使使用 min_age_to_force_merge_seconds 也限制 parts 大小"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新增设置，用于限制 min_age_to_force_merge 的最大字节数。"}]}, {"id": "row-3","items": [{"label": "25.1"},{"label": "0"},{"label": "新设置"}]}]} />
 
 用于控制设置 `min_age_to_force_merge_seconds` 和
 `min_age_to_force_merge_on_partition_only` 是否遵循设置
@@ -1163,13 +1195,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10，则 `INSERT` 语句将被延迟 `m
 
 ## max_part_loading_threads \{#max_part_loading_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
 
 已废弃的设置，目前不起任何作用。
 
 ## max_part_removal_threads \{#max_part_removal_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(1)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
 
 已废弃的设置，目前不起任何作用。
 
@@ -2055,6 +2087,19 @@ LZ4 或 ZSTD 的压缩率平均可提高 20–40%。
 
 此设置最适用于没有主键或主键基数较低的表，即只有少量不同主键值的表。
 高基数主键（例如包含 `DateTime64` 类型时间戳列的主键）预计不会从此设置中获益。
+
+## part_minmax_index_columns \{#part_minmax_index_columns\}
+
+<SettingsInfoBlock type="MergeTreePartMinMaxIndexColumns" default_value="partition_key_only" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "partition_key_only"},{"label": "新增设置。"}]}]} />
+
+选择每个 part 的 min-max 索引覆盖哪些列。每个取值都会在前一个取值的基础上额外启用一组列。
+
+可选值：
+
+* `partition_key_only` — 仅跟踪分区键列。
+* `with_block_number_offset` — 分区键列，以及持久化的 `_block_number` 和 `_block_offset` 虚拟列。启用基于这些列的 part 级剪枝。
 
 ## part_moves_between_shards_delay_seconds \{#part_moves_between_shards_delay_seconds\}
 

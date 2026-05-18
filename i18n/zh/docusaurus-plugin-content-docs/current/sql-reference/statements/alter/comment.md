@@ -22,7 +22,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 要创建包含注释的表：
 
-```sql
+```sql title="Query"
 CREATE TABLE table_with_comment
 (
     `k` UInt64,
@@ -34,7 +34,7 @@ COMMENT 'The temporary table';
 
 若要修改表的注释：
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment 
 MODIFY COMMENT 'new comment on a table';
 ```
@@ -55,7 +55,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 要删除表注释：
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment MODIFY COMMENT '';
 ```
 

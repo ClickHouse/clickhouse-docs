@@ -81,6 +81,10 @@ Example:
 
 <SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="No" />Включает экспериментальную поддержку UDF на WebAssembly
 
+## allow_experimental_webterminal \{#allow_experimental_webterminal\}
+
+<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="No" />Включает экспериментальный интерфейс веб-терминала на HTTP-конечной точке `/webterminal`. Предоставляет интерактивный сеанс `clickhouse-client` в браузере через WebSocket.
+
 ## allow_feature_tier \{#allow_feature_tier\}
 
 <SettingsInfoBlock type="UInt32" default_value="0" changeable_without_restart="Yes" />
@@ -5159,6 +5163,10 @@ ClickHouse использует этот параметр для всех таб
 ## webassembly_udf_engine \{#webassembly_udf_engine\}
 
 <SettingsInfoBlock type="String" default_value="wasmtime" changeable_without_restart="No" />Движок, используемый для выполнения UDF на WebAssembly. Поддерживаемые значения: &#39;wasmtime&#39; и &#39;wasmedge&#39;.
+
+## webterminal_allowed_origins \{#webterminal_allowed_origins\}
+
+Разделённый запятыми список полных источников (схема + хост + необязательный порт), которым разрешено открывать WebSocket-сеансы `/webterminal`. Если список пуст, строго применяется политика same-origin (Origin должен совпадать со схемой, хостом и портом запроса). Укажите этот параметр для развертываний за обратным прокси-сервером с терминацией TLS, где `request.isSecure()` имеет значение `false`, хотя браузер использует `https`. Пример: `https://example.com,https://app.example.com:8443`.
 
 ## workload_path \{#workload_path\}
 

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 ## Geohash \{#geohash\}
 
-[Geohash](https://en.wikipedia.org/wiki/Geohash) 是一种地理编码系统，它将地球表面划分为网格状的区域（bucket），并将每个单元编码为由字母和数字组成的短字符串。它是一种分层数据结构，因此 geohash 字符串越长，表示的地理位置就越精确。
+[Geohash](https://en.wikipedia.org/wiki/Geohash) 是一种地理编码系统，它将地球表面划分为网格状的区域 (bucket) ，并将每个单元编码为由字母和数字组成的短字符串。它是一种分层数据结构，因此 geohash 字符串越长，表示的地理位置就越精确。
 
 如果需要手动将地理坐标转换为 geohash 字符串，可以使用 [geohash.org](http://geohash.co/)。
 
@@ -26,7 +26,7 @@ geohashEncode(longitude, latitude, [precision])
 
 * `longitude` — 要编码的坐标中的经度部分。浮点数，取值范围为 `[-180°, 180°]`。[Float](../../data-types/float.md)。
 * `latitude` — 要编码的坐标中的纬度部分。浮点数，取值范围为 `[-90°, 90°]`。[Float](../../data-types/float.md)。
-* `precision`（可选）— 生成的编码字符串的长度。默认值为 `12`。取值范围为 `[1, 12]` 的整数。[Int8](../../data-types/int-uint.md)。
+* `precision` (可选) — 生成的编码字符串的长度。默认值为 `12`。取值范围为 `[1, 12]` 的整数。[Int8](../../data-types/int-uint.md)。
 
 :::note
 
@@ -36,19 +36,15 @@ geohashEncode(longitude, latitude, [precision])
 
 **返回值**
 
-* 编码后的坐标所对应的字母数字字符串（使用经过修改的 base32 编码字母表）。[String](../../data-types/string.md)。
+* 编码后的坐标所对应的字母数字字符串 (使用经过修改的 base32 编码字母表) 。[String](../../data-types/string.md)。
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─res──────────┐
 │ ezs42d000000 │
 └──────────────┘
@@ -117,15 +113,11 @@ geohashesInBox(longitude_min, latitude_min, longitude_max, latitude_max, precisi
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT geohashesInBox(24.48, 40.56, 24.785, 40.81, 4) AS thasos;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─thasos──────────────────────────────────────┐
 │ ['sx1q','sx1r','sx32','sx1w','sx1x','sx38'] │
 └─────────────────────────────────────────────┘

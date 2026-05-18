@@ -40,15 +40,11 @@ geohashEncode(longitude, latitude, [precision])
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─res──────────┐
 │ ezs42d000000 │
 └──────────────┘
@@ -117,15 +113,11 @@ geohashesInBox(longitude_min, latitude_min, longitude_max, latitude_max, precisi
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT geohashesInBox(24.48, 40.56, 24.785, 40.81, 4) AS thasos;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─thasos──────────────────────────────────────┐
 │ ['sx1q','sx1r','sx32','sx1w','sx1x','sx38'] │
 └─────────────────────────────────────────────┘

@@ -33,13 +33,11 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 다음 쿼리를 [command-line client](../../../interfaces/client.md)를 사용하여 실행하십시오:
 
-```bash
+```bash title="Query"
 clickhouse-client --query="SELECT 1,'ABC' INTO OUTFILE 'select.gz' FORMAT CSV;"
 zcat select.gz 
 ```
 
-결과:
-
-```text
+```text title="Response"
 1,"ABC"
 ```

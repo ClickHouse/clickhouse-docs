@@ -24,20 +24,18 @@ doc_type: 'reference'
 
 Создайте таблицу со столбцом типа Map:
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
 INSERT INTO tab VALUES ({'key1':1, 'key2':10}), ({'key1':2,'key2':20}), ({'key1':3,'key2':30});
 ```
 
 Чтобы выбрать значения по ключу `key2`:
 
-```sql
+```sql title="Query"
 SELECT m['key2'] FROM tab;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─arrayElement(m, 'key2')─┐
 │                      10 │
 │                      20 │
@@ -48,15 +46,13 @@ SELECT m['key2'] FROM tab;
 Если запрошенный ключ `k` отсутствует в Map, `m[k]` возвращает значение по умолчанию для типа значения, например `0` для целочисленных типов и `''` для строковых типов.
 Чтобы проверить, существует ли ключ в Map, можно использовать функцию [mapContains](/sql-reference/functions/tuple-map-functions#mapContainsKey).
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE=Memory;
 INSERT INTO tab VALUES ({'key1':100}), ({});
 SELECT m['key1'] FROM tab;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─arrayElement(m, 'key1')─┐
 │                     100 │
 │                       0 │
@@ -69,20 +65,15 @@ SELECT m['key1'] FROM tab;
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─map───────────────────────────┐
 │ {1:'Ready',2:'Steady',3:'Go'} │
 └───────────────────────────────┘
 ```
-
 
 ## Чтение подстолбцов Map \{#reading-subcolumns-of-map\}
 
@@ -90,9 +81,7 @@ SELECT CAST(([1, 2, 3], ['Ready', 'Steady', 'Go']), 'Map(UInt8, String)') AS map
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE tab (m Map(String, UInt64)) ENGINE = Memory;
 INSERT INTO tab VALUES (map('key1', 1, 'key2', 2, 'key3', 3));
 
@@ -100,9 +89,7 @@ SELECT m.keys FROM tab; --   same as mapKeys(m)
 SELECT m.values FROM tab; -- same as mapValues(m)
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─m.keys─────────────────┐
 │ ['key1','key2','key3'] │
 └────────────────────────┘
@@ -111,7 +98,6 @@ SELECT m.values FROM tab; -- same as mapValues(m)
 │ [1,2,3]  │
 └──────────┘
 ```
-
 
 ## Сериализация по бакетам Map в MergeTree \{#bucketed-map-serialization\}
 

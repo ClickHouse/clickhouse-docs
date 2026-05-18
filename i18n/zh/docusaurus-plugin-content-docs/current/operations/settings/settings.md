@@ -2725,6 +2725,23 @@ ENGINE = Log
 
 默认值为 `CURRENT_USER`。
 
+## defer_partition_pruning_after_final \{#defer_partition_pruning_after_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "26.5 中新增的设置，用于控制 26.3 中静默发布的 FINAL 分区裁剪行为 (https://github.com/ClickHouse/ClickHouse/pull/98242)。真正有意义的语义变更记录在 26.3 条目下，因此 `compatibility = '26.2'` 会回退该变更；添加此条目是为了让从 26.4 升级时的检查接受这个新引入的名称。"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "1"},{"label": "控制当分区键列不属于 sorting key 时，FINAL 规划器无条件跳过分区裁剪的行为。该行为变更本身已在 26.3 中通过 https://github.com/ClickHouse/ClickHouse/pull/98242 静默发布；此条目是对该变更的补充文档记录，因此 `compatibility = '26.2'` 会恢复变更前的行为（0 = 在 FINAL 之前裁剪，速度更快；1 = 延后裁剪，保证正确性）。"}]}]} />
+
+启用时 (默认) ，对于分区键列不属于 sorting key 的表，`FINAL` 查询会跳过分区裁剪。这是 26.3 中引入的、能够保证正确性的行为：`FINAL` 可能需要对主键相同但位于不同分区中的行进行去重，而分区裁剪会在不报错的情况下将这些行排除在去重输入之外。
+
+禁用时，即使使用 `FINAL` 也会执行分区裁剪，从而恢复 26.3 之前的行为。对于在分区列上带有 `WHERE` 谓词的查询，这样做可能会快很多，但只有在相同主键的行不可能出现在不同分区中时才是正确的——例如事件日志表，其分区列在插入时确定，之后永不更改。
+
+此设置仅影响分区键列未包含在 sorting key 中的分区表；对于其他表，始终会执行分区裁剪。
+
+可选值：
+
+* 0 — 在 `FINAL` 之前执行分区裁剪 (26.3 之前的行为，速度更快，但一般情况下不安全) 。
+* 1 — 将分区裁剪延后到 `FINAL` 之后 (默认，保证正确性) 。
+
 ## delta_lake_enable_engine_predicate \{#delta_lake_enable_engine_predicate\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -4104,6 +4121,14 @@ WHERE (_part, _part_offset) IN (
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 启用在聚合操作中使用软件预取
+
+## enable_software_prefetch_in_join \{#enable_software_prefetch_in_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "启用在哈希连接探测阶段使用软件预取。"}]}]} />
+
+启用在哈希连接的探测阶段使用软件预取，以掩盖大型哈希表的内存访问延迟。
 
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
@@ -10663,6 +10688,20 @@ a   Tuple(
 
 允许在查询计划中为由倒排文本索引构建的过滤条件添加提示（附加谓词）。
 
+## query_plan_top_k_through_join \{#query_plan_top_k_through_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于启用一种查询计划级别的优化：当排序键仅引用连接中被保留的一侧时，将 ORDER BY ... LIMIT n 下推到 LEFT/RIGHT join 之前。"}]}]} />
+
+用于切换一种查询计划级别的优化：当排序键仅引用 join 中被保留一侧 (LEFT/RIGHT) 的列时，将 `ORDER BY ... LIMIT n` 下推到 join 之前。这会限制被保留侧输入在执行 join 前需要生成的行数。
+仅当设置 [query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) 为 1 时，此设置才会生效。
+
+可能的值：
+
+* 0 - 禁用
+* 1 - 启用
+
 ## query_plan_try_use_vector_search \{#query_plan_try_use_vector_search\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11952,6 +11991,21 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 └──────────────────────────┴───────┴───────────────────────────────────────────────────────┘
 ```
 
+
+## system_metric_log_show_zero_values_in_histograms \{#system_metric_log_show_zero_values_in_histograms\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于控制是否将零值直方图数据写入 `system.metric_log` 的 `histograms` 嵌套列的新设置。"}]}]} />
+
+控制是否将零值直方图数据写入 `system.metric_log` 的 `histograms` 嵌套列。
+
+默认情况下，总观测 `count` 为零的直方图会被跳过；对于每个已输出的直方图，没有任何观测值的 bucket 条目也会从 `histogram` map 中省略。启用此设置后，无论 `count` 如何，都会写入每个直方图及其所有 bucket——这对于要求每个指标在每个检查点都出现的监控系统尤其有用。
+
+可能的值：
+
+* 0 — 禁用。`count = 0` 的直方图不会输出；已输出的直方图仅包含至少收到一次观测的 bucket。
+* 1 — 启用。写入所有直方图，并且每个 bucket 边界都会出现在 `histogram` 中。
 
 ## table_engine_read_through_distributed_cache \{#table_engine_read_through_distributed_cache\}
 

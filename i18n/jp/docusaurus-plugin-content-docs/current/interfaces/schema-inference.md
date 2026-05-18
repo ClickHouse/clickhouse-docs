@@ -621,44 +621,39 @@ DESC format(JSONEachRow, $$
 
 ##### input_format_json_try_infer_named_tuples_from_objects \{#input_format_json_try_infer_named_tuples_from_objects\}
 
-この設定を有効にすると、JSON オブジェクトから named Tuple を推論できるようになります。生成される named Tuple には、サンプルデータ内の対応するすべての JSON オブジェクトに含まれるすべての要素が含まれます。
+この設定を有効にすると、JSON オブジェクトから 名前付きタプル を推論できるようになります。生成される 名前付きタプル には、サンプルデータ内の対応するすべての JSON オブジェクトに含まれるすべての要素が含まれます。
 JSON データがスパースではなく、サンプルデータに考えられるすべてのオブジェクトキーが含まれている場合に有用です。
 
 この設定はデフォルトで有効になっています。
 
 **使用例**
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
 ```
 
-結果:
-
-```response
+```response title="Response"
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2,3]}, {"d" : "2020-01-01"}]}')
 ```
 
-結果:
-
-```markdown
+```markdown title="Response"
 ┌─name──┬─type────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ array │ Array(Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Nullable(Date))) │              │                    │         │                  │                │
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ##### input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects \{#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects\}
 
-この設定を有効にすると、`input_format_json_try_infer_named_tuples_from_objects` が有効な場合に、JSON オブジェクトから named Tuple を推論する際、あいまいなパスに対して例外をスローする代わりに String 型を使用できるようになります。
-これにより、パスにあいまいさがある JSON オブジェクトであっても、named Tuple として読み取ることができます。
+この設定を有効にすると、`input_format_json_try_infer_named_tuples_from_objects` が有効な場合に、JSON オブジェクトから 名前付きタプル を推論する際、あいまいなパスに対して例外をスローする代わりに String 型を使用できるようになります。
+これにより、パスにあいまいさがある JSON オブジェクトであっても、名前付きタプル として読み取ることができます。
 
 デフォルトでは無効です。
 
@@ -666,15 +661,13 @@ DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2
 
 設定を無効にした場合:
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 0;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
 ```
 
-結果:
-
-```response
+```response title="Response"
 Code: 636. DB::Exception: The table structure cannot be extracted from a JSONEachRow format file. Error:
 Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path 'a' has type 'Int64' and in some - 'Tuple(b String)'. You can enable setting input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects to use String type for path 'a'. (INCORRECT_DATA) (version 24.3.1.1).
 You can specify the structure manually. (CANNOT_EXTRACT_TABLE_STRUCTURE)
@@ -682,16 +675,14 @@ You can specify the structure manually. (CANNOT_EXTRACT_TABLE_STRUCTURE)
 
 この設定を有効にしている場合:
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : "a" : 42}, {"obj" : {"a" : {"b" : "Hello"}}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
 ```
 
-結果:
-
-```response
+```response title="Response"
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(String))     │              │                    │         │                  │                │
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
@@ -700,7 +691,6 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 │ ('{"b" : "Hello"}') │
 └─────────────────────┘
 ```
-
 
 ##### input_format_json_read_objects_as_strings \{#input_format_json_read_objects_as_strings\}
 
@@ -818,19 +808,17 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 ##### input_format_json_infer_incomplete_types_as_strings \{#input_format_json_infer_incomplete_types_as_strings\}
 
 この設定を有効にすると、スキーマ推論時に、サンプルデータ内で `Null`・`{}`・`[]` のみを含む JSON キーに `String` 型を使用できるようになります。
-JSON フォーマットでは、関連する設定がすべて有効になっている場合（既定でいずれも有効）には、任意の値を String として読み取ることができるため、スキーマ推論時に `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` のようなエラーが発生する状況でも、型が不明なキーに対して String 型を使用することでこれを回避できます。
+JSON フォーマットでは、関連する設定がすべて有効になっている場合 (既定でいずれも有効) には、任意の値を String として読み取ることができるため、スキーマ推論時に `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` のようなエラーが発生する状況でも、型が不明なキーに対して String 型を使用することでこれを回避できます。
 
 例:
 
-```sql
+```sql title="Query"
 SET input_format_json_infer_incomplete_types_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 1;
 DESCRIBE format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
 ```
 
-結果：
-
-```markdown
+```markdown title="Response"
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Array(Nullable(Int64)), b Nullable(String), c Nullable(String), d Nullable(String), e Array(Nullable(String))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
@@ -839,7 +827,6 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 │ ([1,2,3],'hello',NULL,'{}',[]) │
 └────────────────────────────────┘
 ```
-
 
 ### CSV \{#csv\}
 
@@ -2225,7 +2212,7 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 ### Default モード \{#default-schema-inference-mode\}
 
-`default` モードでは、ClickHouse はすべてのファイルが同一のスキーマを持つと仮定し、スキーマの推論に成功するまでファイルを 1 つずつ読み込みます。
+`default` モードでは、ClickHouse はすべてのファイルが同一のスキーマを持つと仮定し、スキーマ推論に成功するまでファイルを 1 つずつ読み込みます。
 
 例:
 
@@ -2257,13 +2244,11 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 これら3つのファイルに対してスキーマ推論を試してみましょう。
 
-```sql
+```sql title="Query"
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='default'
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─name───┬─type─────────────┐
 │ field1 │ Nullable(Int64)  │
 │ field2 │ Nullable(String) │
@@ -2271,9 +2256,8 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 ```
 
 ご覧のとおり、ファイル `data3.jsonl` には `field3` がありません。
-これは、ClickHouse がまずファイル `data1.jsonl` からスキーマの推論を行おうとしましたが、`field2` フィールドがすべて null だったために失敗し、
+これは、ClickHouse がまずファイル `data1.jsonl` からスキーマ推論を行おうとしましたが、`field2` フィールドがすべて null だったために失敗し、
 その後 `data2.jsonl` からスキーマ推論を行って成功した結果、ファイル `data3.jsonl` のデータが読み込まれなかったためです。
-
 
 ### Union モード \{#default-schema-inference-mode-1\}
 
@@ -2307,13 +2291,11 @@ Union モードでは、ClickHouse はファイルごとに異なるスキーマ
 
 これら3つのファイルに対してスキーマ推論を試してみましょう。
 
-```sql
+```sql title="Query"
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='union'
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─name───┬─type───────────────────┐
 │ field1 │ Nullable(Int64)        │
 │ field2 │ Nullable(String)       │
@@ -2325,10 +2307,9 @@ Union モードでは、ClickHouse はファイルごとに異なるスキーマ
 
 注意:
 
-* 一部のファイルには結果のスキーマに含まれる特定のカラムが存在しない場合があるため、union モードはカラムのサブセット読み取りをサポートするフォーマット（JSONEachRow、Parquet、TSVWithNames など）でのみ使用でき、それ以外のフォーマット（CSV、TSV、JSONCompactEachRow など）では動作しません。
+* 一部のファイルには結果のスキーマに含まれる特定のカラムが存在しない場合があるため、union モードはカラムのサブセット読み取りをサポートするフォーマット (JSONEachRow、Parquet、TSVWithNames など) でのみ使用でき、それ以外のフォーマット (CSV、TSV、JSONCompactEachRow など) では動作しません。
 * ClickHouse がファイルの 1 つからスキーマを推論できない場合は、例外がスローされます。
 * ファイル数が多い場合、すべてのファイルからスキーマを読み取る処理に多くの時間がかかる可能性があります。
-
 
 ## 自動フォーマット検出 \{#automatic-format-detection\}
 

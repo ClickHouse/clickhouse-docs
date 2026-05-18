@@ -16,56 +16,55 @@ integration:
 ### General \{#general\}
 
 <details>
+  <summary>ClickPipes for Kafka はどのように動作しますか？</summary>
 
-<summary>ClickPipes for Kafka はどのように動作しますか？</summary>
-
-ClickPipes は、Kafka Consumer API を実行する専用アーキテクチャを使用して、指定されたトピックからデータを読み取り、そのデータを特定の ClickHouse Cloud サービス上の ClickHouse テーブルに挿入します。
+  ClickPipes は、Kafka Consumer API を実行する専用アーキテクチャを使用して、指定されたトピックからデータを読み取り、そのデータを特定の ClickHouse Cloud サービス上の ClickHouse テーブルに挿入します。
 </details>
 
 <details>
+  <summary>ClickPipes と ClickHouse Kafka Table Engine の違いは何ですか？</summary>
 
-<summary>ClickPipes と ClickHouse Kafka Table Engine の違いは何ですか？</summary>
+  Kafka Table エンジンは、ClickHouse サーバー自体が Kafka に接続し、イベントを取得してローカルに書き込む「プル型モデル」を実装する、ClickHouse のコア機能です。
 
-Kafka Table エンジンは、ClickHouse サーバー自体が Kafka に接続し、イベントを取得してローカルに書き込む「プル型モデル」を実装する、ClickHouse のコア機能です。
-
-ClickPipes は、ClickHouse サービスとは独立して動作する別個のクラウドサービスです。Kafka（またはその他のデータソース）に接続し、関連付けられた ClickHouse Cloud サービスにイベントをプッシュします。この疎結合アーキテクチャにより、優れた運用上の柔軟性、明確な関心の分離、スケーラブルなインジェスト、障害時のスムーズな管理、拡張性などが実現されます。
+  ClickPipes は、ClickHouse サービスとは独立して動作する別個のクラウドサービスです。Kafka (またはその他のデータソース) に接続し、関連付けられた ClickHouse Cloud サービスにイベントをプッシュします。この疎結合アーキテクチャにより、優れた運用上の柔軟性、明確な関心の分離、スケーラブルなインジェスト、障害時のスムーズな管理、拡張性などが実現されます。
 </details>
 
 <details>
+  <summary>ClickPipes for Kafka を利用するための要件は何ですか？</summary>
 
-<summary>ClickPipes for Kafka を利用するための要件は何ですか？</summary>
-
-ClickPipes for Kafka を使用するには、稼働中の Kafka ブローカーと、ClickPipes が有効化された ClickHouse Cloud サービスが必要です。また、ClickHouse Cloud からお使いの Kafka ブローカーにアクセスできることを確認する必要があります。これは、Kafka 側でリモート接続を許可し、Kafka の設定で [ClickHouse Cloud Egress IP アドレス](/manage/data-sources/cloud-endpoints-api) を許可リストに登録することで実現できます。あるいは、[AWS PrivateLink](/integrations/clickpipes/aws-privatelink) を使用して、ClickPipes for Kafka を Kafka ブローカーに接続することもできます。
+  ClickPipes for Kafka を使用するには、稼働中の Kafka ブローカーと、ClickPipes が有効化された ClickHouse Cloud サービスが必要です。また、ClickHouse Cloud からお使いの Kafka ブローカーにアクセスできることを確認する必要があります。これは、Kafka 側でリモート接続を許可し、Kafka の設定で [ClickHouse Cloud Egress IP アドレス](/manage/data-sources/cloud-endpoints-api) を許可リストに登録することで実現できます。あるいは、[AWS PrivateLink](/integrations/clickpipes/aws-privatelink) を使用して、ClickPipes for Kafka を Kafka ブローカーに接続することもできます。
 </details>
 
 <details>
+  <summary>ClickPipes for Kafka は AWS PrivateLink をサポートしていますか？</summary>
 
-<summary>ClickPipes for Kafka は AWS PrivateLink をサポートしていますか？</summary>
-
-AWS PrivateLink はサポートされています。セットアップ方法の詳細については、[ドキュメント](/integrations/clickpipes/aws-privatelink) を参照してください。
+  AWS PrivateLink はサポートされています。セットアップ方法の詳細については、[ドキュメント](/integrations/clickpipes/aws-privatelink) を参照してください。
 </details>
 
 <details>
+  <summary>ClickPipes for Kafka を使用して Kafka トピックにデータを書き込むことはできますか？</summary>
 
-<summary>ClickPipes for Kafka を使用して Kafka トピックにデータを書き込むことはできますか？</summary>
-
-いいえ、ClickPipes for Kafka は Kafka トピックからデータを読み取るために設計されており、トピックへのデータ書き込みには対応していません。Kafka トピックにデータを書き込むには、専用の Kafka プロデューサーを使用する必要があります。
+  いいえ、ClickPipes for Kafka は Kafka トピックからデータを読み取るために設計されており、トピックへのデータ書き込みには対応していません。Kafka トピックにデータを書き込むには、専用の Kafka プロデューサーを使用する必要があります。
 </details>
 
 <details>
+  <summary>ClickPipes は複数のブローカーをサポートしますか？</summary>
 
-<summary>ClickPipes は複数のブローカーをサポートしますか？</summary>
-
-はい、ブローカーが同じクォーラムの一部であれば、`,` で区切って一緒に設定できます。
+  はい、ブローカーが同じクォーラムの一部であれば、`,` で区切って一緒に設定できます。
 </details>
 
 <details>
+  <summary>ClickPipes のレプリカはスケールできますか？</summary>
 
-<summary>ClickPipes のレプリカはスケールできますか？</summary>
+  はい、ストリーミング用の ClickPipes は水平・垂直の両方にスケール可能です。
+  水平スケーリングではレプリカを追加してスループットを向上させ、垂直スケーリングでは各レプリカに割り当てるリソース (CPU および RAM) を増やして、より負荷の高いワークロードに対応します。
+  これは ClickPipe の作成時、または任意のタイミングで **Settings** -&gt; **Advanced Settings** -&gt; **Scaling** から設定できます。
+</details>
 
-はい、ストリーミング用の ClickPipes は水平・垂直の両方にスケール可能です。
-水平スケーリングではレプリカを追加してスループットを向上させ、垂直スケーリングでは各レプリカに割り当てるリソース（CPU および RAM）を増やして、より負荷の高いワークロードに対応します。
-これは ClickPipe の作成時、または任意のタイミングで **Settings** -> **Advanced Settings** -> **Scaling** から設定できます。
+<details>
+  <summary>ClickPipes のセットアップ UI に Kafka トピックの一部が表示されません。なぜですか？</summary>
+
+  ClickPipes のトピック検出 UI には、デフォルトで最大 1,500 件のトピックが表示されます。Kafka クラスターに 1,500 件を超えるトピックがある場合、一部のトピックはドロップダウンに表示されないことがあります。トピックが存在することを確認するには、同じ認証情報を使用して Kafka クライアントから直接確認してください。存在が確認され、一覧表示の上限を 1,500 件を超えて引き上げる必要がある場合は、ClickHouse Support にお問い合わせください。
 </details>
 
 ### Azure Event Hubs \{#azure-eventhubs\}

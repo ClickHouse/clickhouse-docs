@@ -36,13 +36,11 @@ ClickHouse サーバーの設定で別途指定しない限り、任意の `Null
 
 ## NULL の検索 \{#finding-null\}
 
-列全体を読み取ることなく、`null` サブカラムを使って列内の `NULL` 値を特定できます。対応する値が `NULL` の場合は `1` を、それ以外の場合は `0` を返します。
+カラム全体を読み取ることなく、`null` サブカラムを使ってカラム内の `NULL` 値を特定できます。対応する値が `NULL` の場合は `1` を、それ以外の場合は `0` を返します。
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE nullable (`n` Nullable(UInt32)) ENGINE = MergeTree ORDER BY tuple();
 
 INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
@@ -50,9 +48,7 @@ INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
 SELECT n.null FROM nullable;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─n.null─┐
 │      0 │
 │      1 │
@@ -60,7 +56,6 @@ SELECT n.null FROM nullable;
 │      1 │
 └────────┘
 ```
-
 
 ## 使用例 \{#usage-example\}
 

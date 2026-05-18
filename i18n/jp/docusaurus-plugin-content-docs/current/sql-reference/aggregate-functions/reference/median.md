@@ -34,15 +34,11 @@ doc_type: 'reference'
 └─────┘
 ```
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT medianDeterministic(val, 1) FROM t;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─medianDeterministic(val, 1)─┐
 │                         1.5 │
 └─────────────────────────────┘

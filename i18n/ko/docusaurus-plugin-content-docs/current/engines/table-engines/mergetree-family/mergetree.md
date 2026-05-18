@@ -1293,7 +1293,7 @@ ALTER TABLE tab DROP STATISTICS a;
 #### 통계를 활용한 파트 프루닝 \{#part-pruning-with-statistics\}
 
 `use_statistics_for_part_pruning`이 활성화되면 통계를 파트 프루닝에 사용할 수 있습니다.
-현재는 `MinMax` 통계만 파트 프루닝을 지원합니다. 컬럼에 MinMax 통계가 정의되면 ClickHouse는 각 파트에서 해당 컬럼의 최솟값과 최댓값을 추적합니다.
+현재는 `MinMax` 및 `NullCount` 통계가 파트 프루닝을 지원합니다. 컬럼에 MinMax 통계가 정의되면 ClickHouse는 각 파트에서 해당 컬럼의 최솟값과 최댓값을 추적합니다. `Nullable` 컬럼에 NullCount 통계가 정의되면 ClickHouse는 각 파트에서 NULL 값의 개수를 추적하므로 `IS NULL` / `IS NOT NULL` 프레디케이트를 기준으로 프루닝할 수 있으며, NULL 값이 있는 컬럼에서 범위 필터 프루닝의 정확도도 향상됩니다.
 파트 프루닝을 사용하면 쿼리 필터 조건과 일치할 수 있는 행이 해당 파트에 전혀 없는 경우 전체 데이터 파트를 읽지 않고 건너뛸 수 있습니다.
 
 **예시:**
@@ -1324,7 +1324,6 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 -- The output will show "Parts: 1/2" indicating one part was pruned
 ```
 
-
 ### 사용 가능한 컬럼 통계 유형 \{#available-types-of-column-statistics\}
 
 * `MinMax`
@@ -1347,7 +1346,7 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 
 * `NullCount`
 
-  `Nullable` 컬럼에서 `NULL` 값의 개수를 추적합니다. PREWHERE 최적화에서 `IS NULL`/`IS NOT NULL` 프레디케이트의 선택도를 정확하게 추정하는 데 사용됩니다.
+  `Nullable` 컬럼에서 `NULL` 값의 개수를 추적합니다. PREWHERE 최적화에서 `IS NULL`/`IS NOT NULL` 프레디케이트의 선택도를 정확하게 추정하는 데 사용되며, NULL 존재 여부를 기준으로 파트 프루닝도 수행할 수 있습니다.
 
   구문: `nullcount`
 

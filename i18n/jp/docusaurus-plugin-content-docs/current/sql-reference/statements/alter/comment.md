@@ -22,7 +22,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 コメント付きテーブルを作成するには、次のようにします。
 
-```sql
+```sql title="Query"
 CREATE TABLE table_with_comment
 (
     `k` UInt64,
@@ -34,7 +34,7 @@ COMMENT 'The temporary table';
 
 テーブルコメントを変更するには:
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment 
 MODIFY COMMENT 'new comment on a table';
 ```
@@ -55,7 +55,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 テーブルコメントを削除するには:
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment MODIFY COMMENT '';
 ```
 

@@ -138,7 +138,7 @@ Pull request можно создать даже в том случае, если
 Если вы хотите предварительно просмотреть изменения в документации, инструкции по локальной сборке страницы документации доступны в файле README.md [здесь](https://github.com/ClickHouse/clickhouse-docs).
 При добавлении новой функции в ClickHouse вы можете использовать приведённый ниже шаблон в качестве ориентира:
 
-```markdown
+````markdown
 # newFunctionName
 
 A short description of the function goes here. It should describe briefly what it does and a typical usage case.
@@ -165,20 +165,16 @@ A description of implementation details if relevant.
 
 **Example**
 
-Query:
-
-\```sql
+\```sql title="Query"
 SELECT 'write your example query here';
 \```
 
-Response:
-
-\```response
+\```response title="Response"
 ┌───────────────────────────────────┐
 │ the result of the query           │
 └───────────────────────────────────┘
 \```
-```
+````
 
 ## Использование тестовых данных \{#using-test-data\}
 

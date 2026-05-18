@@ -992,12 +992,22 @@ SETTINGS
 
 ### トラブルシューティング \{#troubleshooting\}
 
-#### "State mismatch for topic `[someTopic]` partition `[0]`" \{#state-mismatch-for-topic-sometopic-partition-0\}
+#### &quot;State mismatch for topic `[someTopic]` partition `[0]`&quot; \{#state-mismatch-for-topic-sometopic-partition-0\}
 
 これは、KeeperMap に保存されているオフセットが Kafka に保存されているオフセットと異なる場合に発生します。通常は、トピックが削除された場合やオフセットが手動で調整された場合に発生します。
 これを修正するには、該当するトピックとパーティションに対して保存されている古い値を削除する必要があります。
 
-**注意: この調整は exactly-once セマンティクスに影響を与える可能性があります。**
+```sql
+-- First, identify the database used to store the data.
+SELECT * FROM [database].connect_state
+
+-- Identify the key that matches the topic and partition.
+ALTER TABLE [database].connect_state DELETE WHERE key = [keyname]
+```
+
+:::note
+この調整は exactly-once セマンティクスに影響を与える可能性があります。
+:::
 
 #### &quot;コネクタはどのエラーをリトライしますか?&quot; \{#what-errors-will-the-connector-retry\}
 

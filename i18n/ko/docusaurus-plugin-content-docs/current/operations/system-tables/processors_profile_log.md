@@ -45,9 +45,7 @@ import SystemTableCloud from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
 ## 예시 \{#example\}
 
-쿼리:
-
-```sql
+```sql title="Query"
 EXPLAIN PIPELINE
 SELECT sleep(1)
 ┌─explain─────────────────────────┐
@@ -76,9 +74,7 @@ WHERE query_id = 'feb5ed16-1c24-4227-aa54-78c02b3b27d4'
 ORDER BY name ASC
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─name────────────────────┬─elapsed_us─┬─input_wait_elapsed_us─┬─output_wait_elapsed_us─┐
 │ ExpressionTransform     │    1000497 │                  2823 │                    197 │
 │ LazyOutputFormat        │         36 │               1002188 │                      0 │

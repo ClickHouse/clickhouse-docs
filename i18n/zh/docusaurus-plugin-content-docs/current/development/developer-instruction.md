@@ -138,7 +138,7 @@ git remote add upstream git@github.com:ClickHouse/ClickHouse.git
 如果你想预览文档修改内容，如何在本地构建文档页面的说明请参见 README.md 文件：[链接](https://github.com/ClickHouse/clickhouse-docs)。
 在向 ClickHouse 添加新函数时，你可以参考下面的模板：
 
-```markdown
+````markdown
 # newFunctionName
 
 A short description of the function goes here. It should describe briefly what it does and a typical usage case.
@@ -165,20 +165,16 @@ A description of implementation details if relevant.
 
 **Example**
 
-Query:
-
-\```sql
+\```sql title="Query"
 SELECT 'write your example query here';
 \```
 
-Response:
-
-\```response
+\```response title="Response"
 ┌───────────────────────────────────┐
 │ the result of the query           │
 └───────────────────────────────────┘
 \```
-```
+````
 
 ## 使用测试数据 \{#using-test-data\}
 

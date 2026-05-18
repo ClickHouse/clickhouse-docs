@@ -78,11 +78,11 @@ doc_type: 'reference'
 команды `SELECT`. Например, вы можете выполнить `SELECT` данных из файла на локальной
 машине, используя табличную функцию `file`.
 
-```bash
+```bash title="Query"
 echo "1, 2, 3" > example.csv
 ```
 
-```text
+```text title="Response"
 ./clickhouse client
 :) SELECT * FROM file('example.csv')
 ┌─c1─┬─c2─┬─c3─┐
@@ -110,7 +110,7 @@ SELECT * FROM generateSeries(1,5);
 
 Табличные функции можно использовать для создания таблиц, используя следующий синтаксис:
 
-```sql
+```sql title="Query"
 CREATE TABLE [IF NOT EXISTS] [db.]table_name AS table_function()
 ```
 
@@ -121,7 +121,7 @@ CREATE TABLE series AS generateSeries(1, 5);
 SELECT * FROM series;
 ```
 
-```response
+```response title="Response"
 ┌─generate_series─┐
 │               1 │
 │               2 │
@@ -135,11 +135,11 @@ SELECT * FROM series;
 мы можем снова использовать табличную функцию `file`, чтобы записать содержимое таблицы,
 созданной в предыдущем примере, в файл на диске:
 
-```sql
+```sql title="Query"
 INSERT INTO FUNCTION file('numbers.csv', 'CSV') SELECT * FROM series;
 ```
 
-```bash
+```bash title="Query"
 cat numbers.csv
 1
 2

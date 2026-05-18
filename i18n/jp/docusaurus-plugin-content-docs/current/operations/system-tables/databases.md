@@ -31,7 +31,7 @@ doc_type: 'reference'
 
 データベースを作成する。
 
-```sql
+```sql title="Query"
 CREATE DATABASE test;
 ```
 

@@ -23,7 +23,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 Чтобы создать таблицу с комментарием:
 
-```sql
+```sql title="Query"
 CREATE TABLE table_with_comment
 (
     `k` UInt64,
@@ -35,7 +35,7 @@ COMMENT 'The temporary table';
 
 Чтобы изменить комментарий к таблице:
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment 
 MODIFY COMMENT 'new comment on a table';
 ```
@@ -56,7 +56,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 Чтобы удалить комментарий к таблице:
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment MODIFY COMMENT '';
 ```
 

@@ -30,8 +30,8 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **パラメーター**
 
 * `x` — 列名。
-* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (省略可能 — 省略時のデフォルトは `1`) 
-* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。 (省略可能 — 省略時は列型のデフォルト値) 
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (省略可能 — 省略時のデフォルトは `1`)
+* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。 (省略可能 — 省略時は列型のデフォルト値)
 
 **戻り値**
 
@@ -41,9 +41,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 この例では、特定の銘柄の過去データを参照し、`lagInFrame` 関数を使用して株価終値の日次差分と変化率を計算します。
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE stock_prices
 (
     `date`   Date,
@@ -63,7 +61,7 @@ INSERT INTO stock_prices FORMAT Values
     ('2024-06-07', 119.77, 121.69, 118.02, 120.89, 412386000);
 ```
 
-```sql
+```sql title="Query"
 SELECT
     date,
     close,
@@ -76,9 +74,7 @@ FROM stock_prices
 ORDER BY date DESC
 ```
 
-結果：
-
-```response
+```response title="Response"
    ┌───────date─┬──close─┬─previous_day_close─┬─delta─┬─percent_change─┐
 1. │ 2024-06-07 │ 120.89 │                121 │ -0.11 │          -0.09 │
 2. │ 2024-06-06 │    121 │             122.44 │ -1.44 │          -1.18 │

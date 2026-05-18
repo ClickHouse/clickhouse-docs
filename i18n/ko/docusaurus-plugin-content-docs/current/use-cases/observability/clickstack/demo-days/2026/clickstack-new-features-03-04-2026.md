@@ -7,6 +7,7 @@ pagination_next: null
 description: 'ClickStack 데모 데이 - 2026-04-03'
 doc_type: 'guide'
 keywords: ['ClickStack', '데모 데이']
+sidebar_position: -20260403
 ---
 
 ## 새로운 대시보드 및 저장된 검색 목록 페이지 \{#new-dashboard-and-saved-search-listing-pages\}

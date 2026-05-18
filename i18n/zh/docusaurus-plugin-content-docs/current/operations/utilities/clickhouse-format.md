@@ -26,40 +26,34 @@ doc_type: 'reference'
 
 1. 格式化查询：
 
-```bash
+```bash title="Query"
 $ clickhouse-format --query "select number from numbers(10) where number%2 order by number desc;"
 ```
 
-结果：
-
-```bash
+```bash title="Response"
 SELECT number
 FROM numbers(10)
 WHERE number % 2
 ORDER BY number DESC
 ```
 
-2. 高亮显示与单行：
+2. 高亮与单行显示：
 
-```bash
+```bash title="Query"
 $ clickhouse-format --oneline --hilite <<< "SELECT sum(number) FROM numbers(5);"
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 SELECT sum(number) FROM numbers(5)
 ```
 
-3. 多重查询：
+3. 多条查询：
 
-```bash
+```bash title="Query"
 $ clickhouse-format -n <<< "SELECT min(number) FROM numbers(5); SELECT max(number) FROM numbers(5);"
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 SELECT min(number)
 FROM numbers(5)
 ;
@@ -72,37 +66,31 @@ FROM numbers(5)
 
 4. 混淆处理：
 
-```bash
+```bash title="Query"
 $ clickhouse-format --seed Hello --obfuscate <<< "SELECT cost_first_screen BETWEEN a AND b, CASE WHEN x >= 123 THEN y ELSE NULL END;"
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 SELECT treasury_mammoth_hazelnut BETWEEN nutmeg AND span, CASE WHEN chive >= 116 THEN switching ELSE ANYTHING END;
 ```
 
-相同的查询，但使用另一个种子字符串：
+相同的查询和另一个种子字符串：
 
-```bash
+```bash title="Query"
 $ clickhouse-format --seed World --obfuscate <<< "SELECT cost_first_screen BETWEEN a AND b, CASE WHEN x >= 123 THEN y ELSE NULL END;"
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 SELECT horse_tape_summer BETWEEN folklore AND moccasins, CASE WHEN intestine >= 116 THEN nonconformist ELSE FORESTRY END;
 ```
 
 5. 添加反斜杠：
 
-```bash
+```bash title="Query"
 $ clickhouse-format --backslash <<< "SELECT * FROM (SELECT 1 AS x UNION ALL SELECT 1 UNION DISTINCT SELECT 3);"
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 SELECT * \
 FROM  \
 ( \
