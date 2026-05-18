@@ -117,9 +117,9 @@ rollback ratio, tuple activity, I/O, per-database storage, and
 deadlocks.
 
 <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', alignItems: 'flex-start' }}>
-  <Image img={grafanaDashboardPage1} alt="Grafana dashboard — page 1 of 3" size="sm" border/>
-  <Image img={grafanaDashboardPage2} alt="Grafana dashboard — page 2 of 3" size="sm" border/>
-  <Image img={grafanaDashboardPage3} alt="Grafana dashboard — page 3 of 3" size="sm" border/>
+  <Image img={grafanaDashboardPage1} alt="Grafana dashboard — page 1 of 3" size="md" border/>
+  <Image img={grafanaDashboardPage2} alt="Grafana dashboard — page 2 of 3" size="md" border/>
+  <Image img={grafanaDashboardPage3} alt="Grafana dashboard — page 3 of 3" size="md" border/>
 </div>
 
 ### Importing the dashboard {#import-dashboard}
