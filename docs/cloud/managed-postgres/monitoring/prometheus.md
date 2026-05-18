@@ -11,9 +11,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-import grafanaDashboardPage1 from '@site/static/images/managed-postgres/monitoring/grafana-dashboard/page1.png';
-import grafanaDashboardPage2 from '@site/static/images/managed-postgres/monitoring/grafana-dashboard/page2.png';
-import grafanaDashboardPage3 from '@site/static/images/managed-postgres/monitoring/grafana-dashboard/page3.png';
+import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
 
 # Prometheus Integration
 
@@ -116,11 +114,7 @@ usage with threshold alerts, connections by state, transactions and
 rollback ratio, tuple activity, I/O, per-database storage, and
 deadlocks.
 
-<div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', alignItems: 'flex-start' }}>
-  <Image img={grafanaDashboardPage1} alt="Grafana dashboard — page 1 of 3" size="md" border/>
-  <Image img={grafanaDashboardPage2} alt="Grafana dashboard — page 2 of 3" size="md" border/>
-  <Image img={grafanaDashboardPage3} alt="Grafana dashboard — page 3 of 3" size="md" border/>
-</div>
+<Image img={grafanaDashboard} alt="Grafana dashboard of Managed Postgres Services" size="md" border/>
 
 ### Importing the dashboard {#import-dashboard}
 
