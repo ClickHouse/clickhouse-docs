@@ -34,11 +34,11 @@ doc_type: 'reference'
 ## 示例 \{#example\}
 
 ```sql title="Query"
- SELECT name, is_aggregate, is_deterministic, case_insensitive, alias_to FROM system.functions LIMIT 5;
+ SELECT name, is_aggregate, deterministic, case_insensitive, alias_to FROM system.functions LIMIT 5;
 ```
 
 ```text title="Response"
-┌─name─────────────────────┬─is_aggregate─┬─is_deterministic─┬─case_insensitive─┬─alias_to─┐
+┌─name─────────────────────┬─is_aggregate─┬─deterministic─┬─case_insensitive─┬─alias_to─┐
 │ BLAKE3                   │            0 │                1 │                0 │          │
 │ sipHash128Reference      │            0 │                1 │                0 │          │
 │ mapExtractKeyLike        │            0 │                1 │                0 │          │
