@@ -4122,6 +4122,14 @@ WHERE (_part, _part_offset) IN (
 
 启用在聚合操作中使用软件预取
 
+## enable_software_prefetch_in_join \{#enable_software_prefetch_in_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "启用在哈希连接探测阶段使用软件预取。"}]}]} />
+
+启用在哈希连接的探测阶段使用软件预取，以掩盖大型哈希表的内存访问延迟。
+
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
 **别名**: `allow_experimental_time_time64_type`

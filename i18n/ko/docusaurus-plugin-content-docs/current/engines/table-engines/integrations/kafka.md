@@ -53,6 +53,7 @@ SETTINGS
     [kafka_thread_per_consumer = 0,]
     [kafka_handle_error_mode = 'default',]
     [kafka_commit_on_select = false,]
+    [kafka_consumer_acquire_timeout_ms = 30000,]
     [kafka_max_rows_per_message = 1,]
     [kafka_compression_codec = '',]
     [kafka_compression_level = -1];
@@ -85,6 +86,7 @@ SETTINGS
 * `kafka_thread_per_consumer` — 각 consumer에 독립적인 스레드를 제공합니다. 활성화된 경우, 각 consumer는 데이터를 병렬로 독립적으로 플러시합니다(비활성화된 경우에는 여러 consumer의 행을 합쳐 하나의 블록을 형성합니다). 기본값: `0`.
 * `kafka_handle_error_mode` — Kafka 엔진의 오류 처리 방식입니다. 가능한 값: default(메시지 파싱에 실패하면 예외를 발생시킵니다), stream(예외 메시지와 원시 메시지를 가상 컬럼 `_error` 및 `_raw_message`에 저장합니다), dead&#95;letter&#95;queue(오류 관련 데이터를 system.dead&#95;letter&#95;queue에 저장합니다).
 * `kafka_commit_on_select` — `SELECT` 쿼리가 실행될 때 메시지를 커밋합니다. 기본값: `false`.
+* `kafka_consumer_acquire_timeout_ms` — `Kafka2` 테이블에서 직접 `SELECT` 쿼리(오프셋을 Keeper 기반 스토리지에 저장하는 경우)를 수행할 때 Kafka consumer를 확보하기 위한 타임아웃(밀리초)입니다. 동일한 테이블에서 여러 개의 동시 직접 `SELECT` 쿼리가 실행되면 각 쿼리는 consumer를 사용할 수 있을 때까지 대기해야 합니다. 이 타임아웃은 쿼리가 서로 다른 consumer 하위 집합을 점유하고 있을 때 발생할 수 있는 교착 상태를 방지합니다. 기본값: `30000`.
 * `kafka_max_rows_per_message` — 행 기반 포맷에서 Kafka 메시지 하나에 기록되는 최대 행 수입니다. 기본값: `1`.
 * `kafka_autodetect_client_rack` — 가장 가까운 Kafka 레플리카를 우선 사용하도록 `librdkafka`의 `client.rack` 매개변수를 자동으로 설정합니다.
   지원되는 소스:
@@ -351,13 +353,11 @@ SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 
 새 엔진은 실험적 단계이므로 아직 프로덕션 환경에서 사용할 준비가 되어 있지 않습니다. 구현에는 다음과 같은 알려진 제한 사항이 있습니다.
 
-- 가장 큰 제한은 엔진이 직접 읽기를 지원하지 않는다는 점입니다. materialized view를 사용해 엔진에서 읽기를 수행하는 것과 엔진으로의 쓰기는 동작하지만, 직접 읽기는 동작하지 않습니다. 그 결과, 모든 직접 `SELECT` 쿼리는 실패합니다.
-- 테이블을 빠르게 삭제했다가 다시 생성하거나, 동일한 ClickHouse Keeper 경로를 서로 다른 엔진에 지정하면 문제가 발생할 수 있습니다. 모범 사례로, 경로 충돌을 피하기 위해 `kafka_keeper_path`에 `{uuid}`를 사용하는 것이 좋습니다.
-- repeatable read를 보장하려면, 단일 스레드에서 여러 파티션의 메시지를 동시에 소비할 수 없습니다. 한편, Kafka 컨슈머는 살아 있도록 정기적으로 폴링해야 합니다. 이 두 가지 요구사항을 모두 충족하기 위해, `kafka_thread_per_consumer`가 활성화된 경우에만 여러 컨슈머를 생성할 수 있도록 했습니다. 그렇지 않으면 컨슈머를 정기적으로 폴링하는 것과 관련된 문제를 피하는 작업이 지나치게 복잡해지기 때문입니다.
-- 새 스토리지 엔진으로 생성된 컨슈머는 [`system.kafka_consumers`](../../../operations/system-tables/kafka_consumers.md) 테이블에 표시되지 않습니다.
+* 테이블을 빠르게 삭제했다가 다시 생성하거나, 동일한 ClickHouse Keeper 경로를 서로 다른 엔진에 지정하면 문제가 발생할 수 있습니다. 모범 사례로, 경로 충돌을 피하기 위해 `kafka_keeper_path`에 `{uuid}`를 사용하는 것이 좋습니다.
+* repeatable read를 보장하려면, 단일 스레드에서 여러 파티션의 메시지를 동시에 소비할 수 없습니다. 한편, Kafka 컨슈머는 살아 있도록 정기적으로 폴링해야 합니다. 이 두 가지 요구사항을 모두 충족하기 위해, `kafka_thread_per_consumer`가 활성화된 경우에만 여러 컨슈머를 생성할 수 있도록 했습니다. 그렇지 않으면 컨슈머를 정기적으로 폴링하는 것과 관련된 문제를 피하는 작업이 지나치게 복잡해지기 때문입니다.
 
 **함께 보기**
 
-- [가상 컬럼](../../../engines/table-engines/index.md#table_engines-virtual_columns)
-- [background_message_broker_schedule_pool_size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
-- [system.kafka_consumers](../../../operations/system-tables/kafka_consumers.md)
+* [가상 컬럼](../../../engines/table-engines/index.md#table_engines-virtual_columns)
+* [background&#95;message&#95;broker&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
+* [system.kafka&#95;consumers](../../../operations/system-tables/kafka_consumers.md)

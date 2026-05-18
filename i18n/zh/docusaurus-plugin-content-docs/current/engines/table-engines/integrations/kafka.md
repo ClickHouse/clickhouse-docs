@@ -52,6 +52,7 @@ SETTINGS
     [kafka_thread_per_consumer = 0,]
     [kafka_handle_error_mode = 'default',]
     [kafka_commit_on_select = false,]
+    [kafka_consumer_acquire_timeout_ms = 30000,]
     [kafka_max_rows_per_message = 1,]
     [kafka_compression_codec = '',]
     [kafka_compression_level = -1];
@@ -61,7 +62,7 @@ SETTINGS
 
 * `kafka_broker_list` — 以逗号分隔的 broker 列表 (例如，`localhost:9092`) 。
 * `kafka_topic_list` — Kafka topic 列表。
-* `kafka_group_name` — Kafka consumer 组。针对每个组分别跟踪读取偏移量。如果不希望在集群中出现消息重复消费的情况，请在所有位置使用相同的组名。
+* `kafka_group_name` — Kafka 消费者组。针对每个组分别跟踪读取偏移量。如果不希望在集群中出现消息重复消费的情况，请在所有位置使用相同的组名。
 * `kafka_format` — 消息格式。使用与 SQL `FORMAT` 函数相同的格式表示法，例如 `JSONEachRow`。更多信息，参见 [Formats](../../../interfaces/formats.md) 部分。
 
 可选参数：
@@ -84,6 +85,7 @@ SETTINGS
 * `kafka_thread_per_consumer` — 为每个 consumer 提供独立线程。启用时，每个 consumer 会独立并行 flush 数据 (否则，来自多个 consumer 的行会被合并成一个数据块) 。默认值：`0`。
 * `kafka_handle_error_mode` — Kafka 引擎的错误处理模式。可选值：default (如果解析消息失败，将抛出异常) 、stream (异常信息和原始消息将保存在虚拟列 `_error` 和 `_raw_message` 中) 、dead&#95;letter&#95;queue (与错误相关的数据将保存在 system.dead&#95;letter&#95;queue 中) 。
 * `kafka_commit_on_select` — 在执行 SELECT 查询时提交消息。默认值：`false`。
+* `kafka_consumer_acquire_timeout_ms` — 在 `Kafka2` 表 (使用基于 Keeper 的 offset 存储) 上执行直接 `SELECT` 查询时，获取 Kafka 消费者的超时时间 (以毫秒为单位) 。当同一张表上同时运行多个并发直接 `SELECT` 查询时，每个查询都必须等待有可用的消费者。该超时时间可防止因不同查询持有不同消费者子集而发生死锁。默认值：`30000`。
 * `kafka_max_rows_per_message` — 针对基于行的格式，在一条 Kafka 消息中写入的最大行数。默认值：`1`。
 * `kafka_autodetect_client_rack` — 自动为 `librdkafka` 设置 `client.rack` 参数，以优先选择最近的 Kafka 副本。
   支持的来源：
@@ -347,13 +349,11 @@ SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 
 由于新引擎仍处于实验阶段，目前尚未准备好用于生产环境。当前实现存在以下一些已知限制：
 
-- 最大的限制在于该引擎不支持直接读取。通过物化视图从该引擎读取以及向该引擎写入是可行的，但无法直接读取。因此，所有直接的 `SELECT` 查询都会失败。
-- 频繁删除并重新创建表，或者为不同引擎指定相同的 ClickHouse Keeper 路径，可能会导致问题。作为最佳实践，建议在 `kafka_keeper_path` 中使用 `{uuid}` 来避免路径冲突。
-- 为了实现可重复读取，消息不能在单个线程上从多个分区进行消费。另一方面，必须定期轮询 Kafka consumer 以保持其存活。鉴于这两个目标，我们决定仅在启用 `kafka_thread_per_consumer` 时才允许创建多个 consumer；否则，要避免与定期轮询 consumer 相关的问题将过于复杂。
-- 由新存储引擎创建的 consumer 不会出现在 [`system.kafka_consumers`](../../../operations/system-tables/kafka_consumers.md) 表中。
+* 频繁删除并重新创建表，或者为不同引擎指定相同的 ClickHouse Keeper 路径，可能会导致问题。作为最佳实践，建议在 `kafka_keeper_path` 中使用 `{uuid}` 来避免路径冲突。
+* 为了实现可重复读取，消息不能在单个线程上从多个分区进行消费。另一方面，必须定期轮询 Kafka 消费者 以保持其存活。鉴于这两个目标，我们决定仅在启用 `kafka_thread_per_consumer` 时才允许创建多个 消费者；否则，要避免与定期轮询 消费者 相关的问题将过于复杂。
 
 **另请参阅**
 
-- [虚拟列](../../../engines/table-engines/index.md#table_engines-virtual_columns)
-- [background_message_broker_schedule_pool_size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
-- [system.kafka_consumers](../../../operations/system-tables/kafka_consumers.md)
+* [虚拟列](../../../engines/table-engines/index.md#table_engines-virtual_columns)
+* [background&#95;message&#95;broker&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
+* [system.kafka&#95;consumers](../../../operations/system-tables/kafka_consumers.md)

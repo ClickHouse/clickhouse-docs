@@ -1243,7 +1243,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**别名**: `timestampDiff`, `DATE_DIFF`, `date_diff`, `TIMESTAMP_DIFF`, `timestamp_diff`
+**别名**: `timestampDiff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `date_diff`, `timestamp_diff`
 
 **参数**
 

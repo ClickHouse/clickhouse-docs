@@ -4137,6 +4137,14 @@ WHERE (_part, _part_offset) IN (
 
 Включает использование программной предварительной выборки (software prefetch) при агрегации
 
+## enable_software_prefetch_in_join \{#enable_software_prefetch_in_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Включает использование программной предварительной выборки на этапе probe в hash join."}]}]} />
+
+Включает использование программной предварительной выборки на этапе probe в hash join, чтобы скрыть задержки доступа к памяти при работе с большими хеш-таблицами.
+
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
 **Псевдонимы**: `allow_experimental_time_time64_type`

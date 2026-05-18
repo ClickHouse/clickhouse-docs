@@ -1225,7 +1225,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 
 ## dateDiff \{#dateDiff\}
 
-Добавлено в: v23.4.0
+Добавленный в: v23.4.0
 
 Возвращает количество границ указанной единицы измерения `unit`, пересечённых между `startdate` и `enddate`.
 Разница вычисляется с использованием относительных единиц. Например, разница между 2021-12-29 и 2022-01-01 составляет 3 дня для единицы day
@@ -1243,7 +1243,7 @@ SELECT changeYear('2024-01-01'::DateTime, 2023)
 dateDiff(unit, startdate, enddate[, timezone])
 ```
 
-**Псевдонимы**: `timestampDiff`, `DATE_DIFF`, `date_diff`, `TIMESTAMP_DIFF`, `timestamp_diff`
+**Псевдонимы**: `timestampDiff`, `TIMESTAMP_DIFF`, `DATE_DIFF`, `date_diff`, `timestamp_diff`
 
 **Аргументы**
 

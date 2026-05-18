@@ -1604,6 +1604,8 @@ SELECT arrayJaccardIndex([1, 2], [2, 3]) AS res
 arrayJoin(arr)
 ```
 
+**별칭**: `unnest`
+
 **인수**
 
 * `arr` — 전개할 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
@@ -1693,7 +1695,6 @@ FROM (
     SELECT [1, 2, 3, 4, 5, 6] as dice
 );
 ```
-
 
 ```response title=Response
 ┌─first_throw─┬─second_throw─┐

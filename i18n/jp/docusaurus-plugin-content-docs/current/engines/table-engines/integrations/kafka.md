@@ -52,6 +52,7 @@ SETTINGS
     [kafka_thread_per_consumer = 0,]
     [kafka_handle_error_mode = 'default',]
     [kafka_commit_on_select = false,]
+    [kafka_consumer_acquire_timeout_ms = 30000,]
     [kafka_max_rows_per_message = 1,]
     [kafka_compression_codec = '',]
     [kafka_compression_level = -1];
@@ -84,6 +85,7 @@ SETTINGS
 * `kafka_thread_per_consumer` — 各コンシューマーごとに独立したスレッドを割り当てます。有効な場合、各コンシューマーは独立して並列にデータをフラッシュします (無効な場合は、複数コンシューマーからの行をまとめて 1 ブロックを形成)。デフォルト: `0`。
 * `kafka_handle_error_mode` — Kafka エンジンのエラー処理方法。設定可能な値: default (メッセージのパースに失敗した場合に例外をスローする), stream (例外メッセージと生のメッセージを仮想カラム `_error` および `_raw_message` に保存する), dead&#95;letter&#95;queue (エラー関連データを system.dead&#95;letter&#95;queue に保存する)。
 * `kafka_commit_on_select` — `SELECT` クエリが実行された際にメッセージをコミットします。デフォルト: `false`。
+* `kafka_consumer_acquire_timeout_ms` — Keeper ベースのオフセット保存を使用する `Kafka2` テーブルに対する直接 `SELECT` クエリで、Kafka コンシューマーを取得する際のタイムアウト (ミリ秒)。同じテーブルに対して複数の同時実行の直接 `SELECT` クエリを実行する場合、各クエリはコンシューマーが利用可能になるまで待機する必要があります。このタイムアウトにより、クエリがそれぞれ異なるコンシューマーの部分集合を保持している場合に発生するデッドロックを防止します。デフォルト: `30000`。
 * `kafka_max_rows_per_message` — 行ベースフォーマットにおいて、1 つの Kafka メッセージに書き込まれる行数の上限。デフォルト: `1`。
 * `kafka_autodetect_client_rack` — 最寄りの Kafka レプリカを優先するために、`librdkafka` の `client.rack` パラメータを自動的に設定します。
   サポートされるソース:
@@ -347,13 +349,11 @@ SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 
 新しいエンジンは実験的なものであり、まだ本番運用の準備ができていません。実装には、いくつか既知の制限があります。
 
-- 最大の制限は、エンジンが直接読み取りをサポートしていないことです。マテリアライズドビューを使ってエンジンから読み取り、エンジンへ書き込むことはできますが、直接読み取りはできません。その結果、すべての直接的な `SELECT` クエリは失敗します。
-- テーブルを短時間に繰り返し削除および再作成したり、同じ ClickHouse Keeper のパスを異なるエンジンに指定したりすると問題が発生する可能性があります。ベストプラクティスとして、パスの衝突を回避するために `kafka_keeper_path` に `{uuid}` を使用することを推奨します。
-- 再現可能な読み取りを行うためには、1 つのスレッドで複数パーティションからメッセージを消費することはできません。一方で、Kafka コンシューマは生存させるために定期的にポーリングする必要があります。これら 2 つの要件の結果として、`kafka_thread_per_consumer` が有効な場合にのみ複数のコンシューマの作成を許可することにしました。そうでない場合は、コンシューマを定期的にポーリングすることに関する問題を回避するのがあまりにも複雑になるためです。
-- 新しいストレージエンジンによって作成されたコンシューマは、[`system.kafka_consumers`](../../../operations/system-tables/kafka_consumers.md) テーブルには表示されません。
+* テーブルを短時間に繰り返し削除および再作成したり、同じ ClickHouse Keeper のパスを異なるエンジンに指定したりすると問題が発生する可能性があります。ベストプラクティスとして、パスの衝突を回避するために `kafka_keeper_path` に `{uuid}` を使用することを推奨します。
+* 再現可能な読み取りを行うためには、1 つのスレッドで複数パーティションからメッセージを消費することはできません。一方で、Kafka コンシューマーは生存させるために定期的にポーリングする必要があります。これら 2 つの要件の結果として、`kafka_thread_per_consumer` が有効な場合にのみ複数のコンシューマーの作成を許可することにしました。そうでない場合は、コンシューマーを定期的にポーリングすることに関する問題を回避するのがあまりにも複雑になるためです。
 
 **関連項目**
 
-- [仮想カラム](../../../engines/table-engines/index.md#table_engines-virtual_columns)
-- [background_message_broker_schedule_pool_size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
-- [system.kafka_consumers](../../../operations/system-tables/kafka_consumers.md)
+* [仮想カラム](../../../engines/table-engines/index.md#table_engines-virtual_columns)
+* [background&#95;message&#95;broker&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
+* [system.kafka&#95;consumers](../../../operations/system-tables/kafka_consumers.md)

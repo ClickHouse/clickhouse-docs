@@ -1610,6 +1610,8 @@ SELECT arrayJaccardIndex([1, 2], [2, 3]) AS res
 arrayJoin(arr)
 ```
 
+**Псевдонимы**: `unnest`
+
 **Аргументы**
 
 * `arr` — массив для разворачивания. [`Array(T)`](/sql-reference/data-types/array)
@@ -1699,7 +1701,6 @@ FROM (
     SELECT [1, 2, 3, 4, 5, 6] as dice
 );
 ```
-
 
 ```response title=Response
 ┌─first_throw─┬─second_throw─┐

@@ -4135,6 +4135,14 @@ WHERE (_part, _part_offset) IN (
 
 집계(aggregation) 과정에서 software prefetch 사용을 활성화합니다.
 
+## enable_software_prefetch_in_join \{#enable_software_prefetch_in_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "해시 조인 프로브 단계에서 소프트웨어 프리페치를 사용하도록 설정합니다."}]}]} />
+
+큰 해시 테이블에서 메모리 접근 지연 시간을 숨기기 위해 해시 조인 프로브 단계에서 소프트웨어 프리페치를 사용하도록 설정합니다.
+
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
 **별칭**: `allow_experimental_time_time64_type`
