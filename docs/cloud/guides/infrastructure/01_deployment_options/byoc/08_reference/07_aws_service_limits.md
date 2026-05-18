@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 A successful BYOC deployment depends on having sufficient AWS service quotas (formerly called *service limits*) in your AWS account. AWS applies default per-Region quotas to most services. Many of these defaults are below what a production BYOC deployment needs, especially in newly created or lightly used AWS accounts.
 
-This page provides a pre-deployment quota checklist, instructions for requesting increases, and ongoing monitoring guidance to prevent quota exhaustion as your services scale.
+This page provides a pre-deployment quota checklist. Please monitor your usage and work directly with the cloud service provider to request quota increases.
 
 ## Pre-deployment quota checklist {#pre-deployment-quota-checklist}
 
