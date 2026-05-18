@@ -116,9 +116,11 @@ usage with threshold alerts, connections by state, transactions and
 rollback ratio, tuple activity, I/O, per-database storage, and
 deadlocks.
 
-<Image img={grafanaDashboardPage1} alt="Grafana dashboard overview showing monitoring panels for a fleet of Managed Postgres services" size="lg" border/>
-<Image img={grafanaDashboardPage2} alt="Grafana dashboard overview showing monitoring panels for a fleet of Managed Postgres services" size="lg" border/>
-<Image img={grafanaDashboardPage3} alt="Grafana dashboard overview showing monitoring panels for a fleet of Managed Postgres services" size="lg" border/>
+<div style={{display: 'flex', flexDirection: 'row', gap: '8px', alignItems: 'flex-start' }}>
+  <Image img={grafanaDashboardPage1} alt="Grafana dashboard — page 1 of 3" size="sm" border/>
+  <Image img={grafanaDashboardPage2} alt="Grafana dashboard — page 2 of 3" size="sm" border/>
+  <Image img={grafanaDashboardPage3} alt="Grafana dashboard — page 3 of 3" size="sm" border/>
+</div>
 
 ### Importing the dashboard {#import-dashboard}
 
