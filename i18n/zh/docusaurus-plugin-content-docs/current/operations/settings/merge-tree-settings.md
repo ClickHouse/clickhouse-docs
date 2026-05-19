@@ -300,22 +300,22 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 <VersionHistory
   rows={[
 {
-  id: "row-1",
-  items: [
-    { label: "26.4" },
-    { label: "minmax, uniq" },
-    { label: "默认启用自动统计信息" }
-  ]
+id: "row-1",
+items: [
+  { label: "26.4" },
+  { label: "minmax, uniq" },
+  { label: "默认启用自动统计信息" }
+]
 },
 {
-  id: "row-2",
-  items: [{ label: "25.10" }, { label: "" }, { label: "新设置" }]
+id: "row-2",
+items: [{ label: "25.10" }, { label: "" }, { label: "新设置" }]
 }
 ]}
 />
 
 在所有适用列上自动计算的统计类型的逗号分隔列表。
-支持的统计类型：tdigest、countmin、minmax、nullcount、uniq。
+支持的统计类型：tdigest、countmin、minmax、uniq。
 
 ## background_task_preferred_step_execution_time_ms \{#background_task_preferred_step_execution_time_ms\}
 
@@ -611,7 +611,7 @@ Dynamic 数据类型的序列化版本。用于确保兼容性。
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-在合并过程中将虚拟列 `_block_number` 持久化。
+在合并过程中将虚拟列 `_block_offset` 持久化。
 
 ## enable_index_granularity_compression \{#enable_index_granularity_compression\}
 
@@ -1195,13 +1195,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10，则 `INSERT` 语句将被延迟 `m
 
 ## max_part_loading_threads \{#max_part_loading_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
 已废弃的设置，目前不起任何作用。
 
 ## max_part_removal_threads \{#max_part_removal_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
 已废弃的设置，目前不起任何作用。
 

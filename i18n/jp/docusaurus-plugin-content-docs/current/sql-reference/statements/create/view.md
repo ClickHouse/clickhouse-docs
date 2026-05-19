@@ -63,35 +63,94 @@ SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
 
 
-## マテリアライズドビュー \{#materialized-view\}
+## materialized view \{#materialized-view\}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
+[REFRESH ...]
 [DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
 AS SELECT ...
 [COMMENT 'comment']
 ```
 
-:::tip
-[マテリアライズドビュー](/guides/developer/cascading-materialized-views.md)のステップバイステップガイドがあります。
-:::
+```sql
+CREATE OR REPLACE MATERIALIZED VIEW [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
+[REFRESH ...]
+[DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
+AS SELECT ...
+[COMMENT 'comment']
+```
 
-マテリアライズドビューは、対応する[SELECT](../../../sql-reference/statements/select/index.md) クエリによって変換されたデータを保存します。
+`OR REPLACE` と `IF NOT EXISTS` は同時に使用できません。組み合わせると構文エラーになります。
 
-`TO [db].[table]` を指定せずにマテリアライズドビューを作成する場合は、データを保存するテーブルエンジンである `ENGINE` を指定する必要があります。
+### CREATE OR REPLACE MATERIALIZED VIEW \{#create-or-replace-materialized-view\}
 
-`TO [db].[table]` を指定してマテリアライズドビューを作成する場合、`POPULATE` を同時に使用することはできません。
+`CREATE OR REPLACE MATERIALIZED VIEW` は、既存のmaterialized viewと、その内部のストレージテーブル (存在する場合) をアトミックに置き換えます。この操作には、`Atomic` または `Replicated` のデータベースエンジンが必要です。
 
-マテリアライズドビューは次のように実装されています。`SELECT` で指定されたテーブルにデータを挿入すると、その挿入データの一部がこの `SELECT` クエリによって変換され、その結果がビューに挿入されます。
+```sql
+CREATE OR REPLACE MATERIALIZED VIEW [db.]name [ON CLUSTER cluster]
+[TO [db.]target_table]
+[ENGINE = engine]
+[POPULATE]
+[REFRESH ...]
+AS SELECT ...
+```
+
+主な動作:
+
+* **`TO` 句なし**: 古い内部テーブルは削除され、新しいテーブルが作成されます。`POPULATE` を指定しない限り、内部テーブル内の既存データは失われます。
+* **`TO` 句あり**: 置き換えられるのはビュー定義のみで、ターゲットテーブルとそのデータには影響しません。
+* `REFRESH`、`ON CLUSTER`、およびすべてのエンジンオプションと互換性があります。`POPULATE` は `Atomic` データベースでのみサポートされ、`Replicated` データベースでは受け付けられません (以下の `POPULATE` に関する注記を参照してください) 。
+* `CREATE VIEW` および `DROP VIEW` 権限が必要です。
 
 :::note
-ClickHouse のマテリアライズドビューでは、デスティネーションテーブルへの挿入時に、列の並び順ではなく**列名**が使用されます。`SELECT` クエリ結果に一部の列名が存在しない場合、たとえその列が [Nullable](../../data-types/nullable.md) でなくても、ClickHouse はその列にデフォルト値を使用します。安全な方法としては、マテリアライズドビューを使用する際に、すべての列に対してエイリアスを追加することが推奨されます。
+`CREATE OR REPLACE MATERIALIZED VIEW` は、`Atomic` または `Replicated` データベースエンジンでのみサポートされます。`Ordinary` データベースエンジンではサポートされません。
+:::
 
-ClickHouse のマテリアライズドビューは、挿入トリガーに近い仕組みで実装されています。ビューのクエリに集約が含まれている場合、その集約は新たに挿入されたバッチデータに対してのみ適用されます。ソーステーブルの既存データに対する変更（update、delete、パーティションの drop など）は、マテリアライズドビューを変更しません。
+**例:**
 
-ClickHouse のマテリアライズドビューは、エラー発生時の動作が決定的ではありません。つまり、すでに書き込まれたブロックはデスティネーションテーブルに保持されますが、エラー以降のブロックは書き込まれません。
+```sql
+-- Create a materialized view with an inner table
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    AS SELECT x, sum(y) AS total FROM src GROUP BY x;
 
-デフォルトでは、いずれかのビューへのプッシュが失敗すると、INSERT クエリ自体も失敗し、一部のブロックがデスティネーションテーブルに書き込まれない可能性があります。これは `materialized_views_ignore_errors` 設定（`INSERT` クエリに対して設定する必要があります）を使用して変更できます。`materialized_views_ignore_errors=true` を設定すると、ビューへのプッシュ中のエラーはすべて無視され、すべてのブロックがデスティネーションテーブルに書き込まれます。
+-- Replace with a new definition (old inner table data is lost)
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    AS SELECT x, count() AS cnt FROM src GROUP BY x;
+
+-- Replace with POPULATE to backfill from existing source data
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    POPULATE
+    AS SELECT x FROM src;
+
+-- Replace an inner-table MV with a TO-table MV (target data is preserved)
+CREATE OR REPLACE MATERIALIZED VIEW mv TO target
+    AS SELECT x FROM src;
+```
+
+:::tip
+[materialized view](/guides/developer/cascading-materialized-views.md)のステップバイステップガイドがあります。
+:::
+
+materialized viewは、対応する[SELECT](../../../sql-reference/statements/select/index.md) クエリによって変換されたデータを保存します。
+
+`TO [db].[table]` を指定せずにmaterialized viewを作成する場合は、データを保存するテーブルエンジンである `ENGINE` を指定する必要があります。
+
+`TO [db].[table]` を指定してmaterialized viewを作成する場合、`POPULATE` を同時に使用することはできません。
+
+materialized viewは次のように実装されています。`SELECT` で指定されたテーブルにデータを挿入すると、その挿入データの一部がこの `SELECT` クエリによって変換され、その結果がビューに挿入されます。
+
+:::note
+ClickHouse のmaterialized viewでは、デスティネーションテーブルへの挿入時に、列の並び順ではなく**列名**が使用されます。`SELECT` クエリ結果に一部の列名が存在しない場合、たとえその列が [Nullable](../../data-types/nullable.md) でなくても、ClickHouse はその列にデフォルト値を使用します。安全な方法としては、materialized viewを使用する際に、すべての列に対してエイリアスを追加することが推奨されます。
+
+ClickHouse のmaterialized viewは、挿入トリガーに近い仕組みで実装されています。ビューのクエリに集約が含まれている場合、その集約は新たに挿入されたバッチデータに対してのみ適用されます。ソーステーブルの既存データに対する変更 (update、delete、パーティションの drop など) は、materialized viewを変更しません。
+
+ClickHouse のmaterialized viewは、エラー発生時の動作が決定的ではありません。つまり、すでに書き込まれたブロックはデスティネーションテーブルに保持されますが、エラー以降のブロックは書き込まれません。
+
+デフォルトでは、いずれかのビューへのプッシュが失敗すると、INSERT クエリ自体も失敗し、一部のブロックがデスティネーションテーブルに書き込まれない可能性があります。これは `materialized_views_ignore_errors` 設定 (`INSERT` クエリに対して設定する必要があります) を使用して変更できます。`materialized_views_ignore_errors=true` を設定すると、ビューへのプッシュ中のエラーはすべて無視され、すべてのブロックがデスティネーションテーブルに書き込まれます。
 
 なお、`materialized_views_ignore_errors` は `system.*_log` テーブルに対してはデフォルトで `true` に設定されています。
 :::
@@ -99,7 +158,7 @@ ClickHouse のマテリアライズドビューは、エラー発生時の動作
 `POPULATE` を指定すると、`CREATE TABLE ... AS SELECT ...` を実行したかのように、既存のテーブルデータがビュー作成時にビューへ挿入されます。指定しない場合、ビューにはビュー作成後にテーブルに挿入されたデータのみが含まれます。ビュー作成中にテーブルへ挿入されたデータはビューへ挿入されないため、**`POPULATE` を使用することは推奨しません**。
 
 :::note
-`POPULATE` は `CREATE TABLE ... AS SELECT ...` のように動作するため、次の制約があります。
+`POPULATE` は `CREATE TABLE ... AS SELECT ...` のように動作するため、次の制約があります:
 
 * Replicated database ではサポートされません
 * ClickHouse Cloud ではサポートされません
@@ -109,14 +168,13 @@ ClickHouse のマテリアライズドビューは、エラー発生時の動作
 
 `SELECT` クエリには `DISTINCT`、`GROUP BY`、`ORDER BY`、`LIMIT` を含めることができます。対応する変換は、挿入されたデータの各ブロックごとに独立して実行される点に注意してください。たとえば、`GROUP BY` が設定されている場合、データは挿入時に集約されますが、単一の挿入パケット内だけで集約されます。その後にさらに集約が行われることはありません。例外として、`SummingMergeTree` のように独立してデータ集約を実行する `ENGINE` を使用する場合があります。
 
-マテリアライズドビューが `TO [db.]name` 構文を使用している場合は、ビューを `DETACH` し、対象テーブルに対して `ALTER` を実行し、その後で先ほど `DETACH` したビューを `ATTACH` できます。
+materialized viewが `TO [db.]name` 構文を使用している場合は、ビューを `DETACH` し、ターゲットテーブルに対して `ALTER` を実行し、その後で先ほど `DETACH` したビューを `ATTACH` できます。
 
-マテリアライズドビューは、[optimize&#95;on&#95;insert](/operations/settings/settings#optimize_on_insert) 設定の影響を受ける点に注意してください。ビューへの挿入前にデータがマージされます。
+materialized viewは、[optimize&#95;on&#95;insert](/operations/settings/settings#optimize_on_insert) 設定の影響を受ける点に注意してください。ビューへの挿入前にデータがマージされます。
 
 ビューは通常のテーブルと同様に扱われます。たとえば、`SHOW TABLES` クエリの結果にも表示されます。
 
 ビューを削除するには、[DROP VIEW](../../../sql-reference/statements/drop.md#drop-view) を使用します。`DROP TABLE` も VIEW に対して動作します。
-
 
 ## SQL セキュリティ \{#sql_security\}
 

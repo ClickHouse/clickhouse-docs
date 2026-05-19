@@ -1608,6 +1608,14 @@ ClickHouse の HTTP(s) サーバーにアクセスしたときに、デフォル
 
 <SettingsInfoBlock type="UInt64" default_value="10000" changeable_without_restart="No" />Iceberg カタログプールにおいてキューに投入可能なタスクの数
 
+## iceberg_compaction_threadpool_pool_size \{#iceberg_compaction_threadpool_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" changeable_without_restart="No" />Iceberg compaction 用のバックグラウンドスレッドプールのサイズ
+
+## iceberg_compaction_threadpool_queue_size \{#iceberg_compaction_threadpool_queue_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" changeable_without_restart="No" />Iceberg compaction pool に投入できるタスク数
+
 ## iceberg_metadata_files_cache_max_entries \{#iceberg_metadata_files_cache_max_entries\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" changeable_without_restart="No" />iceberg メタデータファイルキャッシュの最大サイズ (エントリー数) 。0 の場合は無効になります。
@@ -1623,6 +1631,14 @@ ClickHouse の HTTP(s) サーバーにアクセスしたときに、デフォル
 ## iceberg_metadata_files_cache_size_ratio \{#iceberg_metadata_files_cache_size_ratio\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" changeable_without_restart="No" />iceberg メタデータキャッシュにおける、キャッシュ全体サイズに対する保護キューのサイズの比率 (SLRU ポリシーの場合) 。
+
+## iceberg_scheduler_compaction_threadpool_pool_size \{#iceberg_scheduler_compaction_threadpool_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" changeable_without_restart="No" />Iceberg compaction scheduler 用バックグラウンドスレッドプールのサイズ
+
+## iceberg_scheduler_compaction_threadpool_queue_size \{#iceberg_scheduler_compaction_threadpool_queue_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" changeable_without_restart="No" />Iceberg compaction scheduler pool に投入可能なタスク数
 
 ## ignore_empty_sql_security_in_create_view_query \{#ignore_empty_sql_security_in_create_view_query\}
 

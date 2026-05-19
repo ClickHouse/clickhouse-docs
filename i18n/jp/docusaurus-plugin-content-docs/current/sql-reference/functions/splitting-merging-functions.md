@@ -71,6 +71,8 @@ SELECT alphaTokens('abca1abc');
 arrayStringConcat(arr[, separator])
 ```
 
+**別名**: `array_to_string`
+
 **引数**
 
 * `arr` — 連結する配列。[`Array(T)`](/sql-reference/data-types/array)

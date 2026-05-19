@@ -61,7 +61,7 @@ SELECT alphaTokens('abca1abc');
 
 ## arrayStringConcat \{#arrayStringConcat\}
 
-Добавлено в версии: v1.1.0
+Добавленный в версии: v1.1.0
 
 Соединяет строковые представления значений, перечисленных в массиве, с указанным разделителем; этот параметр является необязательным и по умолчанию равен пустой строке.
 
@@ -70,6 +70,8 @@ SELECT alphaTokens('abca1abc');
 ```sql
 arrayStringConcat(arr[, separator])
 ```
+
+**Псевдонимы**: `array_to_string`
 
 **Аргументы**
 

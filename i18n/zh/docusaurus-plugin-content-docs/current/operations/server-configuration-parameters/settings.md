@@ -1608,6 +1608,14 @@ HSTS 的失效时间（秒）。
 
 <SettingsInfoBlock type="UInt64" default_value="10000" changeable_without_restart="No" />Iceberg 目录 线程池队列中可排队的最大任务数
 
+## iceberg_compaction_threadpool_pool_size \{#iceberg_compaction_threadpool_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" changeable_without_restart="No" />Iceberg 合并整理的后台线程池大小
+
+## iceberg_compaction_threadpool_queue_size \{#iceberg_compaction_threadpool_queue_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" changeable_without_restart="No" />可推入 Iceberg 合并整理线程池队列的任务数量上限
+
 ## iceberg_metadata_files_cache_max_entries \{#iceberg_metadata_files_cache_max_entries\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" changeable_without_restart="No" />iceberg 元数据文件缓存的最大条目数。0 表示禁用。
@@ -1623,6 +1631,14 @@ HSTS 的失效时间（秒）。
 ## iceberg_metadata_files_cache_size_ratio \{#iceberg_metadata_files_cache_size_ratio\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" changeable_without_restart="No" />在 iceberg 元数据缓存中，受保护队列 (在使用 SLRU 策略时) 的大小占缓存总大小的比例。
+
+## iceberg_scheduler_compaction_threadpool_pool_size \{#iceberg_scheduler_compaction_threadpool_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" changeable_without_restart="No" />Iceberg 合并整理调度器的后台线程池大小
+
+## iceberg_scheduler_compaction_threadpool_queue_size \{#iceberg_scheduler_compaction_threadpool_queue_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" changeable_without_restart="No" />可加入 Iceberg 合并整理调度器线程池队列的任务数量
 
 ## ignore_empty_sql_security_in_create_view_query \{#ignore_empty_sql_security_in_create_view_query\}
 

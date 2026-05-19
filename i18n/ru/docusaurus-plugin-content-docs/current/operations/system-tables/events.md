@@ -1530,6 +1530,34 @@ SELECT * FROM system.events LIMIT 5
 
 Количество файлов, прочитанных движками таблиц, работающими с файлами (например, File/S3/URL/HDFS).
 
+### ExecutableUserDefinedFunctionElapsedMicroseconds \{#executableuserdefinedfunctionelapsedmicroseconds\}
+
+Астрономическое время, затраченное на выполнение пользовательских функций executable и executable pool, в микросекундах.
+
+### ExecutableUserDefinedFunctionInputBytes \{#executableuserdefinedfunctioninputbytes\}
+
+Общее количество байтов, записанных в stdin дочерних процессов исполняемых пользовательских функций и executable pool пользовательских функций.
+
+### ExecutableUserDefinedFunctionInvocations \{#executableuserdefinedfunctioninvocations\}
+
+Количество вызовов пользовательских функций типов executable и executable pool.
+
+### ExecutableUserDefinedFunctionOutputBytes \{#executableuserdefinedfunctionoutputbytes\}
+
+Общее количество байтов, прочитанных из stdout дочерних процессов исполняемой пользовательской функции и executable pool пользовательских функций.
+
+### ExecutableUserDefinedFunctionPeakMemoryByteSeconds \{#executableuserdefinedfunctionpeakmemorybyteseconds\}
+
+Пиковый объем памяти на процесс, используемый дочерними процессами исполняемой пользовательской функции и executable pool пользовательских функций, интегрированный по астрономическому времени, в байт-секундах.
+
+### ExecutableUserDefinedFunctionSystemTimeMicroseconds \{#executableuserdefinedfunctionsystemtimemicroseconds\}
+
+Время ЦП в режиме ядра, затраченное дочерними процессами исполняемой пользовательской функции и executable pool пользовательских функций, в микросекундах.
+
+### ExecutableUserDefinedFunctionUserTimeMicroseconds \{#executableuserdefinedfunctionusertimemicroseconds\}
+
+Время ЦП в пользовательском режиме, затраченное дочерними процессами исполняемой пользовательской функции и пула исполняемых пользовательских функций, в микросекундах.
+
 ### ExecuteShellCommand \{#executeshellcommand\}
 
 Количество выполнений команд оболочки.
@@ -2389,6 +2417,10 @@ SELECT * FROM system.events LIMIT 5
 ### KeeperReadSnapshot \{#keeperreadsnapshot\}
 
 Количество завершённых операций чтения снимка
+
+### KeeperReadSnapshotDeferred \{#keeperreadsnapshotdeferred\}
+
+Количество отложенных чтений снимков, так как запрошенный снимок больше недоступен локально; NuRaft повторно попытается прочитать последний доступный снимок.
 
 ### KeeperReadSnapshotFailed \{#keeperreadsnapshotfailed\}
 

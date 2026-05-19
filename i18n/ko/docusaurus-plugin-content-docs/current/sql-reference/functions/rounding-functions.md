@@ -4,6 +4,7 @@ sidebar_label: '반올림'
 slug: /sql-reference/functions/rounding-functions
 title: '반올림 함수'
 doc_type: 'reference'
+keywords: ['반올림 함수']
 ---
 
 :::note

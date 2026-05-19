@@ -311,25 +311,10 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 <SettingsInfoBlock type="String" default_value="minmax, uniq" />
 
-<VersionHistory
-  rows={[
-{
-  id: "row-1",
-  items: [
-    { label: "26.4" },
-    { label: "minmax, uniq" },
-    { label: "Автоматическое включение статистики по умолчанию" }
-  ]
-},
-{
-  id: "row-2",
-  items: [{ label: "25.10" }, { label: "" }, { label: "Новая настройка" }]
-}
-]}
-/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "minmax, uniq"},{"label": "Автоматическое включение статистики по умолчанию"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": ""},{"label": "новая настройка"}]}]} />
 
 Список типов статистики, разделённых запятыми, которые автоматически вычисляются для всех подходящих столбцов.
-Поддерживаемые типы статистики: tdigest, countmin, minmax, nullcount, uniq.
+Поддерживаемые типы статистики: tdigest, countmin, minmax, uniq.
 
 ## background_task_preferred_step_execution_time_ms \{#background_task_preferred_step_execution_time_ms\}
 
@@ -645,7 +630,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-Сохраняет виртуальный столбец `_block_number` во время слияний.
+Сохраняет виртуальный столбец `_block_offset` во время слияний.
 
 ## enable_index_granularity_compression \{#enable_index_granularity_compression\}
 
@@ -1289,13 +1274,13 @@ min&#95;delay&#95;to&#95;insert&#95;ms = 10, выполнение `INSERT` бу�
 
 ## max_part_loading_threads \{#max_part_loading_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
 Настройка, не используется.
 
 ## max_part_removal_threads \{#max_part_removal_threads\}
 
-<SettingsInfoBlock type="MaxThreads" default_value="'auto(2)'" />
+<SettingsInfoBlock type="MaxThreads" default_value="'auto(17)'" />
 
 Настройка, ни на что не влияет.
 

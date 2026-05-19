@@ -8,6 +8,10 @@ doc_type: 'guide'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import Image from '@theme/IdealImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
 
 # Интеграция с Prometheus \{#prometheus-integration\}
 
@@ -76,7 +80,7 @@ PostgresServer_CacheHitRatio{clickhouse_org="ca04a310-730d-4ce0-93dd-39f2cd2d5e6
 
 ## Настройка Prometheus \{#configuring-prometheus\}
 
-Эта конфигурация собирает метрики с конечной точки уровня организации каждые 30 секунд:
+Эта конфигурация собирает метрики с конечной точки уровня организации каждые 60 секунд:
 
 ```yaml
 scrape_configs:
@@ -89,14 +93,66 @@ scrape_configs:
       username: <KEY_ID>
       password: <KEY_SECRET>
     honor_labels: true
-    scrape_interval: 30s
+    scrape_interval: 60s
 ```
+
+Конечная точка обновляет метрики раз в минуту. Сбор метрик чаще, чем
+каждые `60s`, приводит к дублированию точек данных и ступенчатому виду графиков на панелях Gauge.
 
 Установите `honor_labels: true`, чтобы метки `postgres_service` и
 `postgres_service_name` из конечной точки сохранялись, а не
 заменялись Prometheus.
 
 Чтобы собирать метрики только для одного сервиса, добавьте `/<PG_ID>` к `metrics_path`.
+
+## Готовая панель мониторинга Grafana \{#grafana-dashboard\}
+
+Готовая панель мониторинга Grafana визуализирует все метрики, которые
+предоставляет конечная точка: сортируемую таблицу сервисов, загрузку CPU и памяти, использование диска
+с оповещениями о превышении пороговых значений, соединения по состояниям, транзакции и
+долю откатов, активность кортежей, I/O, использование хранилища по базам данных и
+взаимоблокировки.
+
+<Image img={grafanaDashboard} alt="Панель мониторинга Grafana для сервисов Managed Postgres" size="md" border />
+
+### Импорт панели мониторинга \{#import-dashboard\}
+
+<VerticalStepper headerLevel="h4">
+  #### Скачайте JSON‑файл панели мониторинга \{#download\}
+
+  <TrackedLink href={useBaseUrl('/examples/managed-postgres-grafana-dashboard.json')} download="managed-postgres-grafana-dashboard.json" eventName="docs.managed_postgres_grafana_dashboard.download">Скачать JSON‑файл панели мониторинга</TrackedLink>.
+
+  #### Откройте импорт в Grafana \{#open-import\}
+
+  Перейдите в **Dashboards → New → Import**. Загрузите JSON‑файл или вставьте его содержимое.
+
+  #### Выберите источник данных Prometheus \{#pick-datasource\}
+
+  Когда будет предложено указать `DS_PROMETHEUS`, выберите источник данных Prometheus, который собирает данные с конечной точки, настроенной в [предыдущем разделе](#configuring-prometheus).
+</VerticalStepper>
+
+Для развертываний Grafana с provisioning поместите JSON в
+путь provisioning для панелей мониторинга. Grafana сопоставит `${DS_PROMETHEUS}`
+с доступным в экземпляре источником данных Prometheus.
+
+### Переменные шаблона \{#template-variables\}
+
+Панель мониторинга содержит три переменные:
+
+* **Источник данных** — источник данных Prometheus, на котором основана панель мониторинга.
+* **Сервис** — фильтр с множественным выбором по `postgres_service_name`.
+  По умолчанию выбрано *All*; выберите один или несколько сервисов, чтобы применить их ко всем панелям.
+* **Интервал сбора** — скрытая константа со значением по умолчанию `60s`. Используется
+  при вычислении `$__rate_interval` в Grafana. Измените это значение в
+  JSON, если у вас задан другой интервал сбора.
+
+### Отфильтруйте по одному сервису для детального анализа \{#drill-in\}
+
+Несколько панелей предназначены для детального анализа после
+фильтрации по одному сервису с помощью переменной **Service**. Панель CPU by mode,
+например, показывает режимы CPU `user`, `system`, `iowait`, `steal` и другие в виде стека,
+чтобы вы могли определить, чем вызван всплеск: прикладным кодом, работой ядра,
+ожиданием диска или конкуренцией за ресурсы гипервизора.
 
 ## Интеграция с Grafana и Datadog \{#third-party-integrations\}
 
