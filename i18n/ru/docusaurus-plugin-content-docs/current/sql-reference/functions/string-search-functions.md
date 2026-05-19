@@ -443,13 +443,19 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 Перед поиском функция выполняет токенизацию
 
 * аргумента `input` (всегда) и
-* аргумент `needle` (если он задан как [String](../../sql-reference/data-types/string.md)),
+* аргумента `needle` (если он задан как [String](../../sql-reference/data-types/string.md)),
   используя токенизатор, указанный для текстового индекса.
   Если для столбца не определён текстовый индекс, вместо него используется токенизатор `splitByNonAlpha`.
   Если аргумент `needle` имеет тип [Array(String)](../../sql-reference/data-types/array.md), каждый элемент массива рассматривается как токен — дополнительная токенизация не выполняется.
 
 Дубликаты токенов игнорируются.
 Например, `needles = [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;]` обрабатывается так же, как `[&#39;ClickHouse&#39;]`.
+
+:::note
+Когда текстовый индекс определяет [препроцессор](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index) (например, `lowerUTF8`), `hasAllTokens` применяет его к `input` и, если `needles` имеет тип [String](../../sql-reference/data-types/string.md), к `needles` перед токенизацией. Если `needles` имеет тип [Array(String)](../../sql-reference/data-types/array.md), его элементы передаются как есть, и препроцессор к ним не применяется.
+Препроцессор применяется только при использовании текстового индекса, поэтому результаты могут различаться между запросами, использующими текстовый индекс, и запросами, которые его не используют (например, `SETTINGS use_skip_indexes = 0`).
+Это несоответствие допускается для повышения удобства полнотекстового поиска.
+:::
 
 **Синтаксис**
 
@@ -563,7 +569,7 @@ SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**Пример с функцией mapKeys**
+**Пример использования mapKeys**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -575,7 +581,7 @@ SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**Пример с функцией mapValues**
+**Пример с mapValues**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -601,13 +607,19 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
 Перед поиском функция выполняет токенизацию
 
 * аргумента `input` (всегда) и
-* аргумент `needle` (если он задан как [String](../../sql-reference/data-types/string.md)),
-  используя токенизатор, указанный для текстового индекса.
+* аргумент `needle` (если он задан как [String](../../sql-reference/data-types/string.md))
+  с использованием токенизатора, указанного для текстового индекса.
   Если для столбца не определён текстовый индекс, вместо него используется токенизатор `splitByNonAlpha`.
   Если аргумент `needle` имеет тип [Array(String)](../../sql-reference/data-types/array.md), каждый элемент массива рассматривается как отдельный токен — дополнительная токенизация не выполняется.
 
 Дублирующиеся токены игнорируются.
 Например, [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] обрабатывается так же, как [&#39;ClickHouse&#39;].
+
+:::note
+Если текстовый индекс определяет [препроцессор](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index) (например, `lowerUTF8`), `hasAnyTokens` применяет его к `input` и, если `needles` является [String](../../sql-reference/data-types/string.md), к `needles` перед токенизацией. Если `needles` имеет тип [Array(String)](../../sql-reference/data-types/array.md), его элементы передаются без изменений и препроцессор к ним не применяется.
+Препроцессор применяется только на пути через текстовый индекс, поэтому результаты могут различаться между запросами, использующими текстовый индекс, и запросами, которые его не используют (например, `SETTINGS use_skip_indexes = 0`).
+Данное несоответствие допускается намеренно для повышения удобства использования полнотекстового поиска.
+:::
 
 **Синтаксис**
 
@@ -697,7 +709,7 @@ INSERT INTO log VALUES
 ```response title=Response
 ```
 
-**Пример со столбцом массива**
+**Пример со столбцом типа Array**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
@@ -709,7 +721,7 @@ SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**Пример с функцией mapKeys**
+**Пример с mapKeys**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -721,7 +733,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**Пример с функцией mapValues**
+**Пример с mapValues**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -737,11 +749,22 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 
 Добавлено в: v26.4.0
 
-Проверяет, содержит ли haystack все токены из фразы, идущие подряд.
+Проверяет, содержит ли `input` все токены из `phrase`, идущие подряд.
 
-Перед поиском функция токенизирует аргументы `input` и `phrase` с помощью токенизатора, указанного в необязательном третьем аргументе.
+:::note
+Для столбца `input` должен быть определён [текстовый индекс](../../engines/table-engines/mergetree-family/textindexes) для оптимальной производительности.
+Если текстовый индекс не определён, функция выполняет полное сканирование столбца, что на порядки медленнее, чем поиск по индексу.
+:::
+
+Перед поиском функция токенизирует аргументы `input` и `phrase` с помощью токенизатора, указанного для текстового индекса.
+Если для столбца не определён текстовый индекс, вместо него используется токенизатор `splitByNonAlpha` — если только токенизатор не передан в необязательном третьем аргументе.
 Аргумент токенизатора должен иметь одно из следующих значений: `splitByNonAlpha`, `splitByString`, `ngrams` или `asciiCJK`.
-Если токенизатор не указан, по умолчанию используется токенизатор `splitByNonAlpha`.
+
+:::note
+Когда для текстового индекса определён [препроцессор](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index) (например, `lowerUTF8`), `hasPhrase` применяет его к `input` и `phrase` перед токенизацией.
+Препроцессор применяется только при использовании текстового индекса, поэтому результаты могут различаться между запросами, использующими текстовый индекс, и запросами, которые его не используют (например, `SETTINGS use_skip_indexes = 0`).
+Это расхождение допускается для повышения удобства полнотекстового поиска.
+:::
 
 В отличие от [`hasToken`](#hasToken), [`hasAnyTokens`](#hasAnyTokens) и [`hasAllTokens`](#hasAllTokens), `hasPhrase` требует, чтобы токены шли в том же порядке
 и без промежуточных токенов. Например, `hasPhrase('the quick brown fox', 'quick fox')` возвращает 0,

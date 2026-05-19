@@ -688,6 +688,10 @@ SELECT * FROM system.metrics LIMIT 10
 
 Количество ключей в файловом кэше
 
+### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
+
+Количество пользователей, отслеживаемых политикой вытеснения файлового кэша при overcommit
+
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 
 Количество активных буферов кэша

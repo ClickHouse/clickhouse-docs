@@ -687,6 +687,10 @@ ZooKeeper で保持されているエフェメラルノードの数。
 
 ファイルシステムキャッシュ内のキー数
 
+### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
+
+オーバーコミット時のファイルシステムキャッシュのエビクションポリシーによって追跡されるユーザー数
+
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 
 現在アクティブなキャッシュバッファの数

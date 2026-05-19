@@ -440,12 +440,18 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 在搜索之前,函数会对以下内容进行分词(tokenize):
 
 * `input` 参数 (始终如此) ，以及
-* `needle` 参数 (如果以 [String](../../sql-reference/data-types/string.md) 形式给出) ，使用为该 text index 指定的 tokenizer。
-  如果该列未定义 text index，则改用 `splitByNonAlpha` tokenizer。
+* `needle` 参数 (如果以 [String](../../sql-reference/data-types/string.md) 形式给出) ，使用为该 text index 指定的分词器。
+  如果该列未定义 text index，则改用 `splitByNonAlpha` 分词器。
   如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个标记——不会进行额外的分词。
 
 重复的标记会被忽略。
 例如,needles = [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] 与 [&#39;ClickHouse&#39;] 的处理方式相同。
+
+:::note
+当 text index 定义了 [preprocessor](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index) (例如 `lowerUTF8`) 时，`hasAllTokens` 会在分词之前将其应用于 `input`，并且当 `needles` 为 [String](../../sql-reference/data-types/string.md) 时，也会将其应用于 `needles`。当 `needles` 为 [Array(String)](../../sql-reference/data-types/array.md) 时，其元素会按原样传递，不会对其应用 preprocessor。
+preprocessor 仅在 text index 路径上应用，因此，使用 text index 的查询与不使用 text index 的查询之间，结果可能会有所不同 (例如 `SETTINGS use_skip_indexes = 0`) 。
+允许这种不一致性是为了提高 full-text search 的可用性。
+:::
 
 **语法**
 
@@ -459,7 +465,7 @@ hasAllTokens(input, needles)
 
 * `input` — 输入列。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(String)`](/sql-reference/data-types/array) 或 [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 要搜索的标记。[`String`](/sql-reference/data-types/string) 或 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 要使用的 tokenizer。有效参数包括 `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams` 和 `array`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 要使用的分词器。有效参数包括 `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams` 和 `array`。可选参数，如果未显式设置，则默认为 `splitByNonAlpha`。[`const String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -559,7 +565,7 @@ SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**使用 mapKeys 的示例**
+**mapKeys 示例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -585,9 +591,9 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
 
 ## hasAnyTokens \{#hasAnyTokens\}
 
-引入版本:v25.10.0
+引入版本：v25.10.0
 
-如果 `needle` 字符串或数组中至少有一个标记 与 `input` 字符串匹配,则返回 1,否则返回 0。若 `input` 是一列,则返回所有满足此条件的行。
+如果 `needle` 字符串或数组中至少有一个标记与 `input` 字符串匹配,则返回 1,否则返回 0。若 `input` 是一列,则返回所有满足此条件的行。
 
 :::note
 为获得最佳性能,应为列 `input` 定义 [text 索引](../../engines/table-engines/mergetree-family/textindexes)。
@@ -602,8 +608,14 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
   如果该列未定义 text 索引，则会使用 `splitByNonAlpha` 分词器。
   如果 `needle` 参数的类型为 [Array(String)](../../sql-reference/data-types/array.md)，则数组中的每个元素都被视为一个标记——不会进行额外的分词。
 
-重复的标记 会被忽略。
+重复的标记会被忽略。
 例如,[&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] 与 [&#39;ClickHouse&#39;] 被视为相同。
+
+:::note
+当 text 索引定义了[预处理器](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index) (例如 `lowerUTF8`) 时，`hasAnyTokens` 会在分词前将其应用于 `input`，以及当 `needles` 为 [String](../../sql-reference/data-types/string.md) 类型时，也会将其应用于 `needles`。当 `needles` 为 [Array(String)](../../sql-reference/data-types/array.md) 类型时，其元素将按原样传递，预处理器不会对其生效。
+预处理器仅在 text 索引路径上生效，因此使用 text 索引的查询与不使用 text 索引的查询 (例如 `SETTINGS use_skip_indexes = 0`) 所得结果可能存在差异。
+这种不一致性是为了提升全文搜索的易用性而有意保留的。
+:::
 
 **语法**
 
@@ -647,7 +659,7 @@ SELECT count() FROM table WHERE hasAnyTokens(msg, 'a\\d()');
 └─────────┘
 ```
 
-**在数组中指定按原样搜索的 needle (不进行分词)&#x20;**
+**在数组中指定按原样搜索的 needle (不进行分词)**
 
 ```sql title=Query
 SELECT count() FROM table WHERE hasAnyTokens(msg, ['a', 'd']);
@@ -705,7 +717,7 @@ SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**使用 mapKeys 的示例**
+**mapKeys 的使用示例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -733,11 +745,22 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 
 引入版本：v26.4.0
 
-检查 haystack 是否按连续顺序包含短语中的所有标记。
+检查 `input` 是否按连续顺序包含 `phrase` 中的所有标记。
 
-搜索前，函数会使用可选的第三个参数指定的分词器，对 `input` 和 `phrase` 参数进行分词。
+:::note
+为获得最佳性能，列 `input` 应定义 [text index](../../engines/table-engines/mergetree-family/textindexes)。
+如果未定义 text index，该函数会执行暴力列扫描，速度会比索引查找慢几个数量级。
+:::
+
+搜索前，函数会使用为 text index 指定的分词器，对 `input` 和 `phrase` 参数进行分词。
+如果该列未定义 text index，则改为使用 `splitByNonAlpha` 分词器——除非通过可选的第三个参数指定了分词器。
 `tokenizer` 参数必须是 `splitByNonAlpha`、`splitByString`、`ngrams` 或 `asciiCJK` 之一。
-如果未指定分词器，则默认使用 `splitByNonAlpha` 分词器。
+
+:::note
+当 text index 定义了 [preprocessor](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index) (例如 `lowerUTF8`) 时，`hasPhrase` 会在分词前将其应用于 `input` 和 `phrase`。
+preprocessor 仅在 text index 路径上应用，因此使用 text index 的查询与不使用 text index 的查询，结果可能会有所不同 (例如 `SETTINGS use_skip_indexes = 0`) 。
+允许这种不一致，以提升 full-text search 的易用性。
+:::
 
 与 [`hasToken`](#hasToken)、[`hasAnyTokens`](#hasAnyTokens) 和 [`hasAllTokens`](#hasAllTokens) 不同，`hasPhrase` 要求这些标记按相同顺序出现，
 并且中间不能插入任何其他标记。例如，`hasPhrase('the quick brown fox', 'quick fox')` 返回 0，

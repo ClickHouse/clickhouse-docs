@@ -389,16 +389,6 @@ JOIN 키에서 Dynamic 타입 사용을 허용합니다. 호환성을 위해 도
 
 실험적 AI 함수(예: `aiGenerateContent`)를 활성화합니다. 이러한 함수는 AI 제공업체로 외부 HTTP 호출을 수행합니다.
 
-## allow_experimental_alias_table_engine \{#allow_experimental_alias_table_engine\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "새 설정"}]}]}/>
-
-Alias 엔진을 사용한 테이블 생성을 허용합니다.
-
 ## allow_experimental_analyzer \{#allow_experimental_analyzer\}
 
 **별칭**: `enable_analyzer`
@@ -967,6 +957,23 @@ analyzer가 활성화된 분산 서브쿼리에 대해 AST 수준에서 predicat
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 서브쿼리에 WITH 절이 포함되어 있는 경우 프레디케이트 푸시다운을 허용합니다.
+
+## allow_rank_dense_rank_arguments \{#allow_rank_dense_rank_arguments\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "새 설정입니다. 26.5 이전에는 `RANK` 및 `DENSE_RANK` 윈도우 함수가 전달된 인수를 아무 경고 없이 무시했습니다(`allow_rank_dense_rank_arguments = 1`과 동일). 26.5부터는 SQL 표준에 따라 이 함수가 인수를 받지 않으므로, 기본적으로 인수를 거부하고 `NUMBER_OF_ARGUMENTS_DOESNT_MATCH`를 반환합니다. 기존 동작을 복원하려면 이 값을 `1`로 설정하십시오."}]}]} />
+
+하위 호환성을 위해 `RANK` 및 `DENSE_RANK` 윈도우 함수에 인수를 전달할 수 있도록 허용합니다.
+
+SQL 표준에 따르면 `RANK` 및 `DENSE_RANK`는 인수를 받지 않으며, 순위는
+`OVER (ORDER BY ...)` 윈도우만을 기준으로 계산됩니다. ClickHouse 26.5 이전 버전에서는
+`RANK(x) OVER (...)`와 같은 쿼리가 인수를 아무 경고 없이 받아들이고 무시했기 때문에 사용자 혼란이 발생했습니다
+(겉으로는 인수가 순위에 영향을 주는 것처럼 보이지만 실제로는 그렇지 않았습니다).
+
+이 설정이 `false`(기본값)이면 `RANK` 및 `DENSE_RANK`는 모든 인수를 거부하고
+`NUMBER_OF_ARGUMENTS_DOESNT_MATCH`를 발생시킵니다. `true`로 설정하면 이전의 완화된 동작이
+복원되며, 인수는 26.5 이전과 동일하게 아무 경고 없이 무시됩니다.
 
 ## allow_reorder_prewhere_conditions \{#allow_reorder_prewhere_conditions\}
 
