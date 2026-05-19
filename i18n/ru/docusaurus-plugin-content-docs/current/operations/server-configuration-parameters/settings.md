@@ -1614,6 +1614,14 @@ ClickHouse перезагружает встроенные словари каж
 
 <SettingsInfoBlock type="UInt64" default_value="10000" changeable_without_restart="No" />Количество задач, которые можно поместить в очередь пула потоков каталога Iceberg
 
+## iceberg_compaction_threadpool_pool_size \{#iceberg_compaction_threadpool_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" changeable_without_restart="No" />Размер фонового пула для компакции Iceberg
+
+## iceberg_compaction_threadpool_queue_size \{#iceberg_compaction_threadpool_queue_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" changeable_without_restart="No" />Количество задач, которые можно поместить в очередь пула компакции Iceberg
+
 ## iceberg_metadata_files_cache_max_entries \{#iceberg_metadata_files_cache_max_entries\}
 
 <SettingsInfoBlock type="UInt64" default_value="1000" changeable_without_restart="No" />Максимальный размер кэша файлов метаданных iceberg в количестве записей. Нулевое значение отключает кэш.
@@ -1629,6 +1637,14 @@ ClickHouse перезагружает встроенные словари каж
 ## iceberg_metadata_files_cache_size_ratio \{#iceberg_metadata_files_cache_size_ratio\}
 
 <SettingsInfoBlock type="Double" default_value="0.5" changeable_without_restart="No" />Размер защищённой очереди (в случае политики SLRU) в кэше метаданных Iceberg относительно общего размера кэша.
+
+## iceberg_scheduler_compaction_threadpool_pool_size \{#iceberg_scheduler_compaction_threadpool_pool_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" changeable_without_restart="No" />Размер фонового пула потоков для планировщика компакции Iceberg
+
+## iceberg_scheduler_compaction_threadpool_queue_size \{#iceberg_scheduler_compaction_threadpool_queue_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" changeable_without_restart="No" />Количество задач, которое можно поместить в очередь пула планировщика компакции для Iceberg
 
 ## ignore_empty_sql_security_in_create_view_query \{#ignore_empty_sql_security_in_create_view_query\}
 

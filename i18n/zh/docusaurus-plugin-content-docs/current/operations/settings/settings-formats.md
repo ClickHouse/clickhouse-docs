@@ -418,8 +418,11 @@ TSV 格式中 NULL 的自定义表示形式
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-允许在读取 ORC/Parquet/Arrow 输入格式的数据时进行随机访问（seek）。
-
+允许在读取 ORC、Parquet 和 Arrow 输入格式时进行随机访问 (seek) 或范围读取。
+启用后，如果源支持此功能 (例如本地文件、S3、支持范围读取且大小已知的 HTTP) ，
+ClickHouse 只会读取所需的字节范围，并使用更少的内存。
+禁用后，或者当源不支持随机访问 (例如文件大小未知，或 stream 不可寻道) 时，
+某些读取器可能会回退为将整个文件完整加载到内存中。
 默认启用。
 
 ## input_format_arrow_allow_missing_columns \{#input_format_arrow_allow_missing_columns\}

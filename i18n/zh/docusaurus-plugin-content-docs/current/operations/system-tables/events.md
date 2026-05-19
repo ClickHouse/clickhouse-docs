@@ -1529,6 +1529,34 @@ DiskS3 存储中 POST、DELETE、PUT 和 PATCH 请求的重定向次数。
 
 使用 File 的表引擎（如 File/S3/URL/HDFS）读取的 File 数。
 
+### ExecutableUserDefinedFunctionElapsedMicroseconds \{#executableuserdefinedfunctionelapsedmicroseconds\}
+
+执行可执行用户自定义函数及可执行池用户自定义函数所消耗的挂钟时间，单位为微秒。
+
+### ExecutableUserDefinedFunctionInputBytes \{#executableuserdefinedfunctioninputbytes\}
+
+写入可执行用户自定义函数及可执行池用户自定义函数子进程 stdin 的总字节数。
+
+### ExecutableUserDefinedFunctionInvocations \{#executableuserdefinedfunctioninvocations\}
+
+可执行用户自定义函数和可执行池用户自定义函数的调用次数。
+
+### ExecutableUserDefinedFunctionOutputBytes \{#executableuserdefinedfunctionoutputbytes\}
+
+从可执行用户自定义函数及可执行池用户自定义函数子进程的标准输出 (stdout) 读取的总字节数。
+
+### ExecutableUserDefinedFunctionPeakMemoryByteSeconds \{#executableuserdefinedfunctionpeakmemorybyteseconds\}
+
+可执行用户自定义函数及可执行池用户自定义函数子进程的每进程峰值内存，按挂钟时间积分，单位为字节秒。
+
+### ExecutableUserDefinedFunctionSystemTimeMicroseconds \{#executableuserdefinedfunctionsystemtimemicroseconds\}
+
+可执行用户自定义函数及可执行池用户自定义函数的子进程所消耗的内核态 CPU 时间，单位为微秒。
+
+### ExecutableUserDefinedFunctionUserTimeMicroseconds \{#executableuserdefinedfunctionusertimemicroseconds\}
+
+可执行用户自定义函数及可执行池用户自定义函数子进程消耗的用户态 CPU 时间，单位为微秒。
+
 ### 执行 Shell 命令 \{#executeshellcommand\}
 
 执行 Shell 命令的次数。
@@ -2388,6 +2416,10 @@ Keeper 按批次处理的读取请求总数
 ### KeeperReadSnapshot \{#keeperreadsnapshot\}
 
 已完成的快照读取次数
+
+### KeeperReadSnapshotDeferred \{#keeperreadsnapshotdeferred\}
+
+由于请求的快照在本地已不可用而延迟的快照读取次数；NuRaft 将重试最新快照。
 
 ### KeeperReadSnapshotFailed \{#keeperreadsnapshotfailed\}
 

@@ -61,7 +61,6 @@ doc_type: 'reference'
 * `estimates.min` ([Nullable(String)](../../sql-reference/data-types/)) — Оценочное минимальное значение столбца.
 * `estimates.max` ([Nullable(String)](../../sql-reference/data-types/)) — Предполагаемое максимальное значение столбца.
 * `estimates.cardinality` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Приблизительная кардинальность столбца.
-* `estimates.null_count` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Оценочное количество значений NULL в столбце.
 * `serialization_kind` ([String](../../sql-reference/data-types/)) — Тип сериализации столбца
 * `substreams` ([Array(String)](../../sql-reference/data-types/)) — Имена подпотоков, в которые сериализуется столбец
 * `filenames` ([Array(String)](../../sql-reference/data-types/)) — Имена файлов для каждого подпотока столбца

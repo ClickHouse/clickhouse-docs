@@ -856,6 +856,22 @@ SELECT * FROM system.metrics LIMIT 10
 
 Количество задач в очереди или выполняющихся задач в пуле потоков IcebergCatalog.
 
+### IcebergCompactionSnapshots \{#icebergcompactionsnapshots\}
+
+Количество операций компакции Iceberg.
+
+### IcebergCompactionThreads \{#icebergcompactionthreads\}
+
+Число потоков в пуле потоков IcebergCompaction.
+
+### IcebergCompactionThreadsActive \{#icebergcompactionthreadsactive\}
+
+Количество потоков пула потоков IcebergCompaction, выполняющих задачу.
+
+### IcebergCompactionThreadsScheduled \{#icebergcompactionthreadsscheduled\}
+
+Количество задач, находящихся в очереди или выполняющихся, в пуле потоков IcebergCompaction.
+
 ### IcebergMetadataFilesCacheBytes \{#icebergmetadatafilescachebytes\}
 
 Размер кэша метаданных Iceberg в байтах
