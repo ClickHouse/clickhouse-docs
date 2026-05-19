@@ -1,19 +1,16 @@
+[//]: # "이 파일은 FAQ > 문제 해결에 포함됩니다"
 
-[//]: # (이 파일은 FAQ > 문제 해결에 포함됩니다)
-
-- [설치](#troubleshooting-installation-errors)
-- [서버에 연결](#troubleshooting-accepts-no-connections)
-- [쿼리 처리](#troubleshooting-does-not-process-queries)
-- [쿼리 처리 효율성](#troubleshooting-too-slow)
-
-
+* [설치](#troubleshooting-installation-errors)
+* [서버에 연결](#troubleshooting-accepts-no-connections)
+* [쿼리 처리](#troubleshooting-does-not-process-queries)
+* [쿼리 처리 효율성](#troubleshooting-too-slow)
 
 ## 설치 \{#troubleshooting-installation-errors\}
 
 ### apt-get으로 ClickHouse 리포지토리에서 deb 패키지를 가져올 수 없습니다 \{#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 * 방화벽 설정을 확인합니다.
-* 어떤 이유로든 리포지토리에 접근할 수 없는 경우, [설치 가이드](../getting-started/install.md) 문서에 설명된 대로 패키지를 다운로드한 후 `sudo dpkg -i <packages>` 명령을 사용하여 수동으로 설치합니다. 이때 `tzdata` 패키지도 필요합니다.
+* 어떤 이유로든 리포지토리에 접근할 수 없는 경우, [설치 가이드](../getting-started/install.md) 문서에 설명된 대로 패키지를 다운로드한 후 `sudo dpkg -i <packages>` 명령어를 사용하여 수동으로 설치합니다. 이때 `tzdata` 패키지도 필요합니다.
 
 ### apt-get으로 ClickHouse 리포지토리의 deb 패키지를 업데이트할 수 없습니다 \{#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get\}
 
@@ -53,9 +50,9 @@ sudo apt-get clean
 sudo apt-get autoclean
 ```
 
-### 잘못된 서명 때문에 yum으로 패키지를 설치할 수 없음 \{#you-cant-get-packages-with-yum-because-of-wrong-signature\}
+### 잘못된 서명 때문에 yum으로 패키지를 가져올 수 없습니다 \{#you-cant-get-packages-with-yum-because-of-wrong-signature\}
 
-가능한 원인: 캐시가 올바르지 않거나, 2022년 9월에 GPG 키를 업데이트한 이후 손상되었을 수 있습니다.
+가능한 원인: 캐시가 잘못되었거나, 2022년 9월 GPG 키 업데이트 이후 손상되었을 수 있습니다.
 
 해결 방법은 yum의 캐시와 lib 디렉터리를 정리하는 것입니다:
 
@@ -68,14 +65,12 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 ### Docker 컨테이너를 실행할 수 없습니다 \{#you-cant-run-docker-container\}
 
-단순히 `docker run clickhouse/clickhouse-server` 명령을 실행했는데, 아래와 유사한 스택 트레이스를 남기고 비정상 종료됩니다:
+간단히 `docker run clickhouse/clickhouse-server`를 실행하면 아래와 유사한 스택 트레이스가 출력되며 충돌합니다:
 
 ```bash
 $ docker run -it clickhouse/clickhouse-server
 ........
 Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread, Stack trace (when copying this message, always include the lines below):
-```
-
 
 0. Poco::ThreadImpl::startImpl(Poco::SharedPtr<Poco::Runnable, Poco::ReferenceCounter, Poco::ReleasePolicy<Poco::Runnable>>) @ 0x00000000157c7b34
 1. Poco::Thread::start(Poco::Runnable&) @ 0x00000000157c8a0e
@@ -84,20 +79,16 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 4. DB::Server::initialize(Poco::Util::Application&) @ 0x000000000d128b38
 5. Poco::Util::Application::run() @ 0x000000001581cfda
 6. DB::Server::run() @ 0x000000000d1288f0
-7. Poco::Util::ServerApplication::run(int, char\*\*) @ 0x0000000015825e27
-8. mainEntryClickHouseServer(int, char\*\*) @ 0x000000000d125b38
+7. Poco::Util::ServerApplication::run(int, char**) @ 0x0000000015825e27
+8. mainEntryClickHouseServer(int, char**) @ 0x000000000d125b38
 9. main @ 0x0000000007ea4eee
 10. ? @ 0x00007f67ff946d90
 11. ? @ 0x00007f67ff946e40
-12. \_start @ 0x00000000062e802e
-    (version 24.10.1.2812 (official build))
-
+12. _start @ 0x00000000062e802e
+ (version 24.10.1.2812 (official build))
 ```
 
 원인은 `20.10.10`보다 낮은 버전의 오래된 Docker 데몬입니다. 이를 해결하려면 버전을 업그레이드하거나 `docker run [--privileged | --security-opt seccomp=unconfined]`을 실행하십시오. 후자는 보안에 영향을 미칩니다.
-
-```
-
 
 ## 서버에 연결하기 \{#troubleshooting-accepts-no-connections\}
 
@@ -206,7 +197,6 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
   잘못된 사용자 이름이나 비밀번호를 사용하고 있을 수 있습니다.
 
-
 ## 쿼리 처리 \{#troubleshooting-does-not-process-queries\}
 
 ClickHouse가 쿼리를 처리하지 못하면 클라이언트로 오류에 대한 설명을 전송합니다. `clickhouse-client`에서는 콘솔에서 오류 설명을 확인할 수 있습니다. HTTP 인터페이스를 사용하는 경우 ClickHouse는 응답 본문에 오류 설명을 전송합니다. 예를 들어 다음과 같습니다:
@@ -219,7 +209,6 @@ Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that ther
 `clickhouse-client`를 `stack-trace` 매개변수와 함께 시작하면, ClickHouse는 서버 스택 트레이스와 오류 설명을 반환합니다.
 
 연결이 끊어졌다는 메시지가 표시될 수 있습니다. 이 경우 쿼리를 다시 실행해 보십시오. 쿼리를 실행할 때마다 연결이 끊어지는 경우, 서버 로그에서 오류를 확인하십시오.
-
 
 ## 쿼리 처리 효율성 \{#troubleshooting-too-slow\}
 

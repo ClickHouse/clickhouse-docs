@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse에서는 쿼리 처리에 필요한 데이터를 `SELECT` 쿼리와 함께 서버로 전송할 수 있습니다. 이 데이터는 임시 테이블에 저장되며, 쿼리에서 사용할 수 있습니다(예: `IN` 연산자).'
-sidebar_label: '쿼리 처리용 외부 데이터'
+description: 'ClickHouse에서는 `SELECT` 쿼리와 함께, 해당 쿼리를 처리하는 데 필요한 데이터를 서버로 전송할 수 있습니다. 이 데이터는 임시 테이블에 저장되며, 쿼리에서 사용할 수 있습니다(예: `IN` 연산자에서 사용).'
+sidebar_label: '쿼리 처리를 위한 외부 데이터'
 sidebar_position: 130
 slug: /engines/table-engines/special/external-data
-title: '쿼리 처리용 외부 데이터'
-doc_type: 'reference'
+title: '쿼리 처리를 위한 외부 데이터'
+doc_type: '참고'
 ---
-
-# 쿼리 처리를 위한 외부 데이터 \{#external-data-for-query-processing\}
 
 ClickHouse에서는 `SELECT` 쿼리와 함께, 해당 쿼리를 처리하는 데 필요한 데이터를 서버로 전송할 수 있습니다. 이 데이터는 임시 테이블(「임시 테이블(Temporary tables)」 섹션 참고)에 저장되며, 쿼리에서 사용할 수 있습니다(예: `IN` 연산자에서 사용).
 

@@ -10,8 +10,8 @@ doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| -- | -- | -- |
+| ✔  | ✔  |    |
 
 ## 描述 \{#description\}
 
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS example_table
 ) ENGINE = Memory;
 ```
 
-* 如果 `input_format_defaults_for_omitted_fields = 0`，则 `x` 和 `a` 的默认值为 `0`（即 `UInt32` 数据类型的默认值）。
+* 如果 `input_format_defaults_for_omitted_fields = 0`，则 `x` 和 `a` 的默认值为 `0` (即 `UInt32` 数据类型的默认值) 。
 * 如果 `input_format_defaults_for_omitted_fields = 1`，则 `x` 的默认值为 `0`，但 `a` 的默认值为 `x * 2`。
 
 :::note
@@ -155,13 +155,13 @@ CREATE TABLE IF NOT EXISTS example_table
 
 例如，考虑以下数据表：
 
-```sql
+```sql title="Query"
 CREATE TABLE json_each_row_nested (n Nested (s String, i Int32) ) ENGINE = Memory
 ```
 
-正如您在 `Nested` 数据类型的说明中所看到的，ClickHouse 将嵌套结构的每个组件视为单独的一列（在我们的表中为 `n.s` 和 `n.i`）。您可以通过以下方式插入数据：
+正如您在 `Nested` 数据类型的说明中所看到的，ClickHouse 将嵌套结构的每个组件视为单独的一列 (在我们的表中为 `n.s` 和 `n.i`) 。您可以通过以下方式插入数据：
 
-```sql
+```sql title="Query"
 INSERT INTO json_each_row_nested FORMAT JSONEachRow {"n.s": ["abc", "def"], "n.i": [1, 23]}
 ```
 
@@ -212,7 +212,7 @@ SELECT * FROM json_each_row_nested
 
 | 配置                                                                                                                                                                           | 说明                                                                                                    | 默认       | 注意事项                                                                                                                                                |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`input_format_import_nested_json`](/operations/settings/settings-formats.md/#input_format_import_nested_json)                                                               | 将嵌套 JSON 数据映射为嵌套表（适用于 JSONEachRow 格式）。                                                                | `false`  |                                                                                                                                                     |
+| [`input_format_import_nested_json`](/operations/settings/settings-formats.md/#input_format_import_nested_json)                                                               | 将嵌套 JSON 数据映射为嵌套表 (适用于 JSONEachRow 格式) 。                                                                | `false`  |                                                                                                                                                     |
 | [`input_format_json_read_bools_as_numbers`](/operations/settings/settings-formats.md/#input_format_json_read_bools_as_numbers)                                               | 允许在 JSON 输入格式中将布尔值解析为数值。                                                                              | `true`   |                                                                                                                                                     |
 | [`input_format_json_read_bools_as_strings`](/operations/settings/settings-formats.md/#input_format_json_read_bools_as_strings)                                               | 允许在 JSON 输入格式中将布尔值作为字符串进行解析。                                                                          | `true`   |                                                                                                                                                     |
 | [`input_format_json_read_numbers_as_strings`](/operations/settings/settings-formats.md/#input_format_json_read_numbers_as_strings)                                           | 允许在 JSON 输入格式中按字符串方式解析数值。                                                                             | `true`   |                                                                                                                                                     |
@@ -234,4 +234,4 @@ SELECT * FROM json_each_row_nested
 | [`output_format_json_escape_forward_slashes`](/operations/settings/settings-formats.md/#output_format_json_escape_forward_slashes)                                           | 控制是否在 JSON 输出格式的字符串中对正斜杠进行转义。                                                                         | `true`   |                                                                                                                                                     |
 | [`output_format_json_named_tuples_as_objects`](/operations/settings/settings-formats.md/#output_format_json_named_tuples_as_objects)                                         | 将 NamedTuple 列序列化为 JSON 对象。                                                                           | `true`   |                                                                                                                                                     |
 | [`output_format_json_array_of_rows`](/operations/settings/settings-formats.md/#output_format_json_array_of_rows)                                                             | 输出一个包含所有行的 JSON 数组，采用 JSONEachRow(Compact) 格式。                                                        | `false`  |                                                                                                                                                     |
-| [`output_format_json_validate_utf8`](/operations/settings/settings-formats.md/#output_format_json_validate_utf8)                                                             | 在 JSON 输出格式中启用对 UTF-8 序列的校验（注意，这不会影响 JSON/JSONCompact/JSONColumnsWithMetadata 这些格式，它们始终会进行 UTF-8 校验）。 | `false`  |                                                                                                                                                     |
+| [`output_format_json_validate_utf8`](/operations/settings/settings-formats.md/#output_format_json_validate_utf8)                                                             | 在 JSON 输出格式中启用对 UTF-8 序列的校验 (注意，这不会影响 JSON/JSONCompact/JSONColumnsWithMetadata 这些格式，它们始终会进行 UTF-8 校验) 。 | `false`  |                                                                                                                                                     |

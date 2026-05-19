@@ -6,8 +6,6 @@ title: '設定の概要'
 doc_type: 'reference'
 ---
 
-# 設定の概要 \{#settings-overview\}
-
 ## 概要 \{#overview\}
 
 :::note

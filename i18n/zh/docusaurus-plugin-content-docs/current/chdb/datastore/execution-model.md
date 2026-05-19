@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---
 
-# DataStore 执行模型 \{#datastore-execution-model\}
-
-理解 DataStore 的惰性求值模型是充分利用它并实现最佳性能的关键。
+理解 DataStore 的惰性求值模型，是有效使用它并实现最佳性能的关键。
 
 ## 惰性求值 \{#lazy-evaluation\}
 

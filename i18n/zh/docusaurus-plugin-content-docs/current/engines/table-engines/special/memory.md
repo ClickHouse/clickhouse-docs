@@ -1,13 +1,11 @@
 ---
-description: 'Memory 引擎以未压缩形式将数据存储在内存（RAM）中。数据的存储形式与写入时接收到的形式完全相同。换句话说，从该表中读取数据没有任何额外开销。'
+description: 'Memory 引擎以未压缩形式将数据存储在 RAM 中。数据以与读取时接收到的完全相同的形式存储。换句话说，从该表中读取几乎没有任何开销。'
 sidebar_label: 'Memory'
 sidebar_position: 110
 slug: /engines/table-engines/special/memory
 title: 'Memory 表引擎'
 doc_type: 'reference'
 ---
-
-# Memory 表引擎 \{#memory-table-engine\}
 
 :::note
 在 ClickHouse Cloud 上使用 Memory 表引擎时，数据出于设计原因不会在所有节点之间复制。若要保证所有查询都被路由到同一节点，并使 Memory 表引擎按预期工作，可以采用以下任一方式：

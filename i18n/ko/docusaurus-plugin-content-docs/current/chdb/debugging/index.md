@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'debug', 'explain', 'profiling', 'logging']
 doc_type: 'guide'
 ---
 
-# DataStore 디버깅 \{#datastore-debugging\}
-
-DataStore는 데이터 파이프라인을 이해하고 최적화할 수 있도록 종합적인 디버깅 도구를 제공합니다.
+DataStore는 데이터 파이프라인을 이해하고 최적화하는 데 도움이 되는 포괄적인 디버깅 도구를 제공합니다.
 
 ## 디버깅 도구 개요 \{#overview\}
 

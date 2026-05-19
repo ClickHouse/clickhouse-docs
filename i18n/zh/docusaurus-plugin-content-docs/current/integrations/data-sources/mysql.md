@@ -62,7 +62,7 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
   CREATE USER 'mysql_clickhouse'@'%' IDENTIFIED BY 'Password123!';
 ```
 
-5. 根据需要授予权限。（在本示例中，为 `mysql_clickhouse` 用户授予了管理员权限。）
+5. 根据需要授予权限。 (在本示例中，为 `mysql_clickhouse` 用户授予了管理员权限。) 
 
 ```sql
   GRANT ALL PRIVILEGES ON *.* TO 'mysql_clickhouse'@'%';
@@ -70,9 +70,8 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 :::note
 如果您在 ClickHouse Cloud 中使用此功能，可能需要允许 ClickHouse Cloud 的 IP 地址访问您的 MySQL 实例。
-有关出站流量的详细信息，请参阅 ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md)。
+有关出站流量的详细信息，请参阅 ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints)。
 :::
-
 
 ### 2. 在 ClickHouse 中定义一张表 \{#2-define-a-table-in-clickhouse\}
 

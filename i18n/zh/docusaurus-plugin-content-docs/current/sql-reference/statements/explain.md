@@ -127,7 +127,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 ### EXPLAIN SYNTAX \{#explain-syntax\}
 
-在语法分析之后显示查询的抽象语法树（AST）。
+在语法分析之后显示查询的抽象语法树 (AST) 。
 
 该过程通过解析查询、构建查询 AST 和查询树，可选地运行查询分析器和优化 pass，随后将查询树转换回查询 AST 来完成。
 
@@ -139,13 +139,11 @@ Settings:
 
 Examples:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-输出结果：
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -153,13 +151,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 使用 `run_query_tree_passes`：
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-输出结果：
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -552,7 +548,11 @@ Expression ((Project names + Projection))
 当 `pretty` = 1 时，查询计划树将使用画线字符而不是缩进来显示，并为关键步骤显示附加信息：
 
 * **查询输出列** 显示在计划顶部。
+* **表达式**在过滤条件、聚合键、排序描述和窗口函数中会以易于理解的类 SQL 表示法显示 (例如显示为 `a + 1 > 5`，而不是 `greater(plus(a, 1), 5)`) 。为便于理解，内部列标识符前缀 (例如 `__table1.`) 会被移除。
 * **源步骤** (例如 `ReadFromMergeTree`) 会显示其输出列。
+* **过滤步骤**会以 SQL 表示法显示过滤条件。当存在运行时连接过滤条件时，它们会单独显示。
+* **聚合步骤**会显示键和聚合函数及其参数 (例如 `sum(c)`、`count()`) 。
+* 来自元组字面量的 **IN 集合** 会显示其值 (对于大型集合会截断) ，基于子查询的集合会标记为 `subquery1`、`subquery2` 等，而来自 `Set` 引擎表的集合会显示表名。
 * **Join 步骤**会以数学符号表示连接关系、预估结果行数，
   以及哪些输出列来自左侧、哪些来自右侧。以下符号用于
   表示不同的连接类型：
@@ -573,8 +573,7 @@ Expression ((Project names + Projection))
 表名后方括号中的数字 (例如 `t1[100]`) 表示预估行数，
 前提是表统计信息可用。
 
-`pretty` 选项与 `compact = 1` 搭配使用效果很好，它会隐藏 `Expression` 步骤和
-详细的操作信息，使计划更易于阅读。
+`pretty` 选项与 `compact = 1` 搭配使用效果很好，它会隐藏 `Expression` 步骤和详细的操作信息，使计划更易于阅读。
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -606,10 +605,10 @@ Join (JOIN FillRightFirst)
 │  t1[100] ⋈ t2[100]
 │  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
 │  Result rows: 100
-│  Join conditions: [(__table1.id) = (__table2.id)]
 │  Output:
 │    Left:  id, value
 │    Right: id, value
+│  Join conditions: id = id
 ├──ReadFromMergeTree (default.t1)
 │     Read type: Default
 │     Parts: 1 | Granules: 1
@@ -619,7 +618,6 @@ Join (JOIN FillRightFirst)
       Parts: 1 | Granules: 1
       Output: id, value
 ```
-
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 
@@ -662,21 +660,17 @@ ExpressionTransform
 
 创建一个表：
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
@@ -691,21 +685,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 假设你有一个远程的 MySQL 表，如下所示：
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

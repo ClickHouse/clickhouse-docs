@@ -3,11 +3,9 @@ slug: /sql-reference/table-functions/primes
 sidebar_position: 145
 sidebar_label: 'primes'
 title: 'primes'
-description: '素数を格納した単一の `prime` カラムのみを持つテーブルを返します。'
+description: '素数を含む `prime` カラムを 1 つだけ持つテーブルを返します。'
 doc_type: 'reference'
 ---
-
-# primes テーブル関数 \{#primes-table-function\}
 
 * `primes()` – 2 から始まる昇順の素数を含む `prime` カラム (UInt64) を 1 つだけ持つ無限テーブルを返します。行数を制限するには `LIMIT` (および必要に応じて `OFFSET`) を使用します。
 

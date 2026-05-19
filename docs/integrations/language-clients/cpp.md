@@ -8,7 +8,6 @@ title: 'C++ client library'
 doc_type: 'reference'
 ---
 
-# C++ client library
 
 `clickhouse-cpp` is the official C++ client library for ClickHouse, providing a fast and type-safe
 interface to ClickHouse using its native binary protocol.

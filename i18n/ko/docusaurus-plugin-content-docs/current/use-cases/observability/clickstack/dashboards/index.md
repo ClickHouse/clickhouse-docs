@@ -32,12 +32,14 @@ import filtered_dashboard from '@site/static/images/clickstack/dashboards/filter
 import filter_dropdown from '@site/static/images/clickstack/dashboards/filter-dropdown.png';
 import save_filter_values from '@site/static/images/clickstack/dashboards/save-filter-values.png';
 import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
+import heatmap_tile_editor from '@site/static/images/clickstack/dashboards/heatmap-tile-editor.png';
+import heatmap_tile_rendered from '@site/static/images/clickstack/dashboards/heatmap-tile-rendered.png';
+import heatmap_tile_drilldown from '@site/static/images/clickstack/dashboards/heatmap-tile-drilldown.png';
 import Tagging from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_clickstack_tagging.mdx';
 
 ClickStack는 이벤트 시각화를 지원하며, ClickStack UI(HyperDX)에 차트 작성 기능이 기본 제공됩니다. 이러한 차트는 대시보드에 추가하여 다른 사용자와 공유할 수 있습니다.
 
 시각화는 트레이스, 메트릭, 로그 또는 사용자 정의 와이드 이벤트 스키마를 기반으로 생성할 수 있습니다.
-
 
 ## 시각화 생성하기 \{#creating-visualizations\}
 
@@ -115,7 +117,7 @@ ClickStack은 [text-to-chart](/use-cases/observability/clickstack/text-to-chart)
   * Group By: `ServiceName`
   * Alias: `Average Time`
 
-  `Save`를 클릭하기 전에 **재생(play)** 버튼을 클릭합니다.
+  `Save`를 클릭하기 전에 **실행** 버튼을 클릭합니다.
 
   <Image img={dashboard_2} alt="대시보드 시각화 생성" size="lg" />
 
@@ -135,7 +137,7 @@ ClickStack은 [text-to-chart](/use-cases/observability/clickstack/text-to-chart)
   * Group By: `ServiceName`
   * Alias: `Count of events`
 
-  `Save`를 클릭하기 전에 **재생(play)** 버튼을 클릭합니다.
+  `Save`를 클릭하기 전에 **실행** 버튼을 클릭합니다.
 
   <Image img={dashboard_4} alt="대시보드 시각화 2" size="lg" />
 
@@ -143,13 +145,55 @@ ClickStack은 [text-to-chart](/use-cases/observability/clickstack/text-to-chart)
 
   <Image img={dashboard_5} alt="시각화가 포함된 대시보드 2" size="lg" />
 
+  ### 스팬 지속 시간에 대한 히트맵 타일 추가
+
+  히트맵 타일은 각 (시간, 값) 버킷에 해당하는 이벤트 수를 색상 격자로 표시합니다. 평균값이나 단일 백분위수만이 아닌, 시간 경과에 따른 분포의 **형태**를 파악하고자 할 때 히트맵을 사용하십시오. 지연 시간 히트맵은 이중 모드(bimodal) 지속 시간 패턴, 느린 꼬리(slow-tail) 클러스터, 또는 Line 차트에서는 평균화되어 사라질 수 있는 갑작스러운 분산을 드러냅니다.
+
+  히트맵 타일을 추가하려면:
+
+  1. `Add New Tile`을 선택합니다.
+  2. 상단 메뉴에서 `Heatmap` 시각화 유형을 선택합니다. 데이터 소스 드롭다운에는 [소스 유형이 `Traces`인](/use-cases/observability/clickstack/config#traces) 소스만 표시됩니다. 히트맵에는 트레이스 소스에만 있는 스팬 지속 시간 컬럼이 필요하므로, 로그, 메트릭, 세션 소스는 제외됩니다.
+  3. 트레이스 소스 중 아무 것이나 이름으로 선택합니다. 이름 자체는 임의이며, 중요한 것은 유형뿐입니다.
+
+  소스를 선택하면 히트맵이 자동으로 채워집니다:
+
+  * **값**: 소스의 `Duration Expression`을 현재 표시 단위에 맞게 조정한 값입니다(예를 들어 각 이벤트의 스팬 지속 시간을 나노초에서 밀리초로 변환하려면 `(Duration)/1e6`를 사용합니다)
+  * **개수**: `count()`
+
+  4. 차트 이름을 설정하고, 관찰하려는 성능의 특정 서비스 또는 작업 집합으로 히트맵 범위를 좁히려면 `Where`를 사용합니다.
+  5. 관심 있는 기간에 맞게 시간 범위를 조정합니다. 범위를 넓히면 짧은 시간 창에서는 가려지는 분포 변화와 이봉형 지연 시간 패턴을 확인할 수 있습니다.
+
+  아래 예시는 24시간 범위에서 단일 서비스를 보여주며, 스팬 지속 시간의 빠른 경로와 느린 경로가 두 개의 수평 띠로 명확하게 구분되어 있습니다.
+
+  히트맵을 추가로 사용자 정의하려면 **Display Settings**를 클릭하여 **Scale**(Log 또는 Linear), **Value**, **Count** 표현식에 대한 드로어를 엽니다. 전체 옵션 목록은 Event Deltas 페이지의 [히트맵 사용자 정의](/use-cases/observability/clickstack/event_deltas#customize)에 설명되어 있습니다. 동일한 드로어가 재사용됩니다.
+
+  `Run`을 클릭하여 차트를 미리 보고 `Save`를 클릭합니다.
+
+  <Image img={heatmap_tile_editor} alt="스팬 지속 시간 기본값이 미리 채워져 있고, `ServiceName` `payment` 필터와 `Display Settings` 버튼이 있는 히트맵 타일 편집기" size="lg" />
+
+  저장된 타일은 대시보드에 히트맵(heatmap)으로 렌더링됩니다. 셀 위에 마우스를 올리면 버킷 범위와 이벤트 개수를 확인할 수 있습니다.
+
+  <Image img={heatmap_tile_rendered} alt="24시간 동안 `payment` 서비스 스팬의 지속 시간 분포를 보여주는 히트맵 대시보드 타일" size="lg" />
+
+  :::tip 히트맵당 두 개의 ClickHouse 쿼리
+  히트맵은 두 개의 순차적인 쿼리로 실행됩니다. 값 범위를 확인하는 소규모 **bounds 쿼리**와, 버킷별 이벤트 수를 집계하는 **heatmap 쿼리**입니다. 두 쿼리 모두 편집기의 **Generated SQL** 항목에서 확인하거나 복사할 수 있습니다.
+  :::
+
+  #### Event Deltas 드릴다운
+
+  렌더링된 heatmap 타일의 임의 셀을 클릭하면 **View in Event Deltas** 작업이 열립니다.
+
+  <Image img={heatmap_tile_drilldown} alt="「View in Event Deltas」 작업을 표시하는 히트맵 셀 클릭" size="lg" />
+
+  이를 선택하면 타일의 데이터 소스, `Where` 절, 시간 범위가 그대로 유지된 상태로 [Event Deltas](/use-cases/observability/clickstack/event_deltas) 뷰가 열립니다. 이 뷰에서는 동일한 분포를 대화형으로 검토하고, 속성별로 슬라이스하여 느린 스팬과 빠른 스팬의 차이를 파악하며, 쿼리를 직접 재구성하지 않고도 각 셀에 해당하는 개별 스팬을 검사할 수 있습니다.
+
   ### 대시보드 필터링
 
   Lucene 또는 SQL 필터와 시간 범위는 대시보드 수준에서 적용할 수 있으며, 모든 시각화에 자동으로 전파됩니다.
 
   <Image img={dashboard_filter} alt="필터가 적용된 대시보드" size="lg" />
 
-  예시로, 대시보드에 Lucene 필터 `ServiceName:\"frontend\"`를 적용하고 시간 범위를 최근 3시간(Last 3 hours)으로 변경합니다. 그러면 시각화에는 이제 `frontend` 서비스의 데이터만 표시됩니다.
+  예시로, 대시보드에 Lucene 필터 `ServiceName:"frontend"`를 적용하고 시간 범위를 최근 3시간(Last 3 hours)으로 변경합니다. 그러면 시각화에는 이제 `frontend` 서비스의 데이터만 표시됩니다.
 
   대시보드는 자동으로 저장됩니다. 대시보드 이름을 설정하려면 제목을 선택한 후 수정한 다음 `Save Name`을 클릭합니다.
 
@@ -253,7 +297,7 @@ HyperDX는 기본 대시보드를 포함해 배포됩니다.
 `GRANT SHOW COLUMNS, SELECT(event_date, event_time, hostname, metric, value) ON system.transposed_metric_log`
 :::
 
-### Services 대시보드
+### Services 대시보드 \{#filter-dashboards\}
 
 Services 대시보드는 트레이스 데이터를 기반으로 현재 활성화된 서비스를 표시합니다. 이를 위해서는 트레이스를 수집하고 유효한 Traces 데이터 소스를 구성해야 합니다.
 

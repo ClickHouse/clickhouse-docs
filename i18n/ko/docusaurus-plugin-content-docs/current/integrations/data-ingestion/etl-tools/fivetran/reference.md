@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['fivetran', 'ClickHouse 대상', '기술 참조']
 ---
 
-# 기술 참조 \{#technical-reference\}
-
 ## 설정 세부 사항 \{#setup-details\}
 
 ### 사용자 및 역할 관리 \{#user-and-role-management\}

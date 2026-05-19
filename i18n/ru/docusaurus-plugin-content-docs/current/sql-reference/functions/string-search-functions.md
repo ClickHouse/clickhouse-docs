@@ -1,12 +1,10 @@
 ---
-description: 'Справочник по функциям поиска в строках'
+description: 'Документация по функциям для поиска в строках'
 sidebar_label: 'Поиск в строках'
 slug: /sql-reference/functions/string-search-functions
-title: 'Функции поиска в строках'
+title: 'Функции для поиска в строках'
 doc_type: 'reference'
 ---
-
-# Функции для поиска в строках \{#functions-for-searching-in-strings\}
 
 Все функции в этом разделе по умолчанию выполняют поиск с учётом регистра. Поиск без учёта регистра обычно реализуется отдельными вариантами функций.
 
@@ -395,9 +393,9 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 ## extractGroups \{#extractGroups\}
 
-Введена в: v20.5.0
+Добавлена в: v20.5.0
 
-Извлекает все группы из непересекающихся подстрок, найденных по регулярному выражению.
+Извлекает группы захвата из первой подстроки, найденной по регулярному выражению. Чтобы извлечь группы из всех совпадений, используйте [`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) или [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical).
 
 **Синтаксис**
 
@@ -408,11 +406,11 @@ extractGroups(s, regexp)
 **Аргументы**
 
 * `s` — Входная строка, из которой выполняется извлечение. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — Регулярное выражение. Константное значение. [`const String`](/sql-reference/data-types/string) или [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — Регулярное выражение. Должно содержать как минимум одну группу захвата. Константное значение. [`const String`](/sql-reference/data-types/string) или [`const FixedString`](/sql-reference/data-types/fixedstring)
 
 **Возвращаемое значение**
 
-Если функция находит хотя бы одну совпадающую группу, она возвращает столбец типа Array(Array(String)), упорядоченный по group&#95;id (`1` до `N`, где `N` — количество захватывающих групп в regexp). Если совпадающих групп нет, возвращается пустой массив. [`Array(Array(String))`](/sql-reference/data-types/array)
+Если регулярное выражение соответствует, возвращается массив, содержащий захваченные группы (`1` до `N`, где `N` — количество групп захвата в `regexp`) первого совпадения. Если совпадений нет, возвращается пустой массив. [`Array(String)`](/sql-reference/data-types/array)
 
 **Примеры**
 
@@ -428,7 +426,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
-[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+['Server','nginx']
 ```
 
 ## hasAllTokens \{#hasAllTokens\}
@@ -742,6 +740,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 Проверяет, содержит ли haystack все токены из фразы, идущие подряд.
 
 Перед поиском функция токенизирует аргументы `input` и `phrase` с помощью токенизатора, указанного в необязательном третьем аргументе.
+Аргумент токенизатора должен иметь одно из следующих значений: `splitByNonAlpha`, `splitByString`, `ngrams` или `asciiCJK`.
 Если токенизатор не указан, по умолчанию используется токенизатор `splitByNonAlpha`.
 
 В отличие от [`hasToken`](#hasToken), [`hasAnyTokens`](#hasAnyTokens) и [`hasAllTokens`](#hasAllTokens), `hasPhrase` требует, чтобы токены шли в том же порядке

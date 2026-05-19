@@ -30,6 +30,14 @@ When using TypeScript, make sure it is at least [version 4.5](https://www.typesc
 
 The client source code is available in the [ClickHouse-JS GitHub repository](https://github.com/ClickHouse/clickhouse-js).
 
+:::note AI agent skills
+The JS client ships with AI agent skills that can help coding agents work with the client. Install them with:
+
+```sh
+npm skills add ClickHouse/clickhouse-js
+```
+:::
+
 ## Environment requirements (node.js) {#environment-requirements-nodejs}
 
 Node.js must be available in the environment to run the client.
@@ -211,7 +219,7 @@ const client = createClient({
 })
 ```
 
-The client repository contains multiple examples that use environment variables, such as [creating a table in ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts), [using async inserts](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts), and quite a few others.
+The client repository contains multiple examples that use environment variables, such as [creating a table in ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_cloud.ts), [using async inserts](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/async_insert.ts), and quite a few others.
 
 #### Connection pool (Node.js only) {#connection-pool-nodejs-only}
 
@@ -224,7 +232,7 @@ See also: [Keep-Alive configuration](./js.md#keep-alive-configuration-nodejs-onl
 ### Query ID {#query-id}
 
 Every method that sends a query or a statement (`command`, `exec`, `insert`, `select`) will provide `query_id` in the result. This unique identifier is assigned by the client per query, and might be useful to fetch the data from `system.query_log`,
-if it is enabled in the [server configuration](/operations/server-configuration-parameters/settings), or cancel long-running queries (see [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/cancel_query.ts)). If necessary, `query_id` can be overridden by the user in `command`/`query`/`exec`/`insert` methods params.
+if it is enabled in the [server configuration](/operations/server-configuration-parameters/settings), or cancel long-running queries (see [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/troubleshooting/cancel_query.ts)). If necessary, `query_id` can be overridden by the user in `command`/`query`/`exec`/`insert` methods params.
 
 :::tip
 If you're overriding the `query_id` parameter, you need to ensure its uniqueness for every call. A random UUID is a good choice.
@@ -329,7 +337,7 @@ interface Row {
 ```
 
 **Example:** (Node.js/Web) A query with a resulting dataset in `JSONEachRow` format, consuming the entire stream and parsing the contents as JS objects. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts).
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/array_json_each_row.ts).
 
 ```ts
 const resultSet = await client.query({
@@ -339,7 +347,7 @@ const resultSet = await client.query({
 const dataset = await resultSet.json() // or `row.text` to avoid parsing JSON
 ```
 
-**Example:** (Node.js only) Streaming query result in `JSONEachRow` format using the classic `on('data')` approach. This is interchangeable with the `for await const` syntax. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts).
+**Example:** (Node.js only) Streaming query result in `JSONEachRow` format using the classic `on('data')` approach. This is interchangeable with the `for await const` syntax. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_json_each_row.ts).
 
 ```ts
 const rows = await client.query({
@@ -362,7 +370,7 @@ await new Promise((resolve, reject) => {
 ```
 
 **Example:** (Node.js only) Streaming query result in `CSV` format using the classic `on('data')` approach. This is interchangeable with the `for await const` syntax.
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_text_line_by_line.ts)
 
 ```ts
 const resultSet = await client.query({
@@ -385,7 +393,7 @@ await new Promise((resolve, reject) => {
 ```
 
 **Example:** (Node.js only) Streaming query result as JS objects in `JSONEachRow` format consumed using `for await const` syntax. This is interchangeable with the classic `on('data')` approach.
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row_for_await.ts).
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_json_each_row_for_await.ts).
 
 ```ts
 const resultSet = await client.query({
@@ -447,12 +455,12 @@ If the insert statement was sent to the server, the `executed` flag will be `tru
 
 It can work with either a `Stream.Readable` or a plain `Array<T>`, depending on the [data format](./js.md#supported-data-formats) specified to the `insert` method. See also this section about the [file streaming](./js.md#streaming-files-nodejs-only).
 
-Insert method is supposed to be awaited; however, it is possible to specify an input stream and await the `insert` operation later, only when the stream is completed (which will also resolve the `insert` promise). This could potentially be useful for event listeners and similar scenarios, but the error handling might be non-trivial with a lot of edge cases on the client side. Instead, consider using [async inserts](/optimize/asynchronous-inserts) as illustrated in [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts).
+Insert method is supposed to be awaited; however, it is possible to specify an input stream and await the `insert` operation later, only when the stream is completed (which will also resolve the `insert` promise). This could potentially be useful for event listeners and similar scenarios, but the error handling might be non-trivial with a lot of edge cases on the client side. Instead, consider using [async inserts](/optimize/asynchronous-inserts) as illustrated in [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/async_insert_without_waiting.ts).
 
 :::tip
 If you have a custom INSERT statement that is difficult to model with this method, consider using the [command method](./js.md#command-method). 
 
-You can see how it is used in the [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_values_and_functions.ts) or [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_from_select.ts) examples.
+You can see how it is used in the [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_values_and_functions.ts) or [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_from_select.ts) examples.
 :::
 
 ```ts
@@ -479,7 +487,7 @@ A request canceled with `abort_signal` doesn't guarantee that data insertion did
 :::
 
 **Example:** (Node.js/Web) Insert an array of values. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts).
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/array_json_each_row.ts).
 
 ```ts
 await client.insert({
@@ -494,7 +502,7 @@ await client.insert({
 ```
 
 **Example:** (Node.js only) Insert a stream from a CSV file.
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts). See also: [file streaming](./js.md#streaming-files-nodejs-only).
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_csv.ts). See also: [file streaming](./js.md#streaming-files-nodejs-only).
 
 ```ts
 await client.insert({
@@ -543,9 +551,9 @@ await client.insert({
 })
 ```
 
-See the [source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts) for additional details.
+See the [source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_exclude_columns.ts) for additional details.
 
-**Example**: Insert into a database different from the one provided to the client instance. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts).
+**Example**: Insert into a database different from the one provided to the client instance. [Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_into_different_db.ts).
 
 ```ts
 await client.insert({
@@ -608,7 +616,7 @@ interface ClickHouseClient {
 See also: [Base parameters for all client methods](./js.md#base-parameters-for-all-client-methods).
 
 **Example:** (Node.js/Web) Create a table in ClickHouse Cloud. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts).
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_cloud.ts).
 
 ```ts
 await client.command({
@@ -627,7 +635,7 @@ await client.command({
 ```
 
 **Example:** (Node.js/Web) Create a table in a self-hosted ClickHouse instance. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_single_node.ts).
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_single_node.ts).
 
 ```ts
 await client.command({
@@ -761,10 +769,10 @@ await client.close()
 
 There are several file streaming examples with popular data formats (NDJSON, CSV, Parquet) in the client repository.
 
-- [Streaming from an NDJSON file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_ndjson.ts)
-- [Streaming from a CSV file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts)
-- [Streaming from a Parquet file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_parquet.ts)
-- [Streaming into a Parquet file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts)
+- [Streaming from an NDJSON file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_ndjson.ts)
+- [Streaming from a CSV file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_csv.ts)
+- [Streaming from a Parquet file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_parquet.ts)
+- [Streaming into a Parquet file](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_parquet_as_file.ts)
 
 Streaming other formats into a file should be similar to Parquet, 
 the only difference will be in the format used for `query` call (`JSONEachRow`, `CSV`, etc.) and the output file name.
@@ -814,9 +822,9 @@ It's only that formats like [ClickHouse JSON](/interfaces/formats/JSON) and a fe
 | CustomSeparatedWithNamesAndTypes           | ❌             | ❌              | ✔️                    | ❌             | ✔️             |
 | Parquet                                    | ❌             | ❌              | ✔️                    | ❌             | ✔️❗- see below |
 
-For Parquet, the main use case for selects likely will be writing the resulting stream into a file. See [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts) in the client repository.
+For Parquet, the main use case for selects likely will be writing the resulting stream into a file. See [the example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_parquet_as_file.ts) in the client repository.
 
-`JSONEachRowWithProgress` is an output-only format that supports progress reporting in the stream. See [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_json_each_row_with_progress.ts) for more details.
+`JSONEachRowWithProgress` is an output-only format that supports progress reporting in the stream. See [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_json_each_row_with_progress.ts) for more details.
 
 The entire list of ClickHouse input and output formats is available 
 [here](/interfaces/formats).
@@ -865,8 +873,8 @@ The entire list of supported ClickHouse formats is available
 
 See also: 
 
-- [Working with Dynamic/Variant/JSON examples](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/dynamic_variant_json.ts)
-- [Working with Time/Time64 examples](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/time_time64.ts)
+- [Working with Dynamic/Variant/JSON examples](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/dynamic_variant_json.ts)
+- [Working with Time/Time64 examples](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/time_time64.ts)
 
 ### Date/Date32 types caveats {#datedate32-types-caveats}
 
@@ -884,7 +892,7 @@ await client.insert({
 })
 ```
 
-However, if you're using `DateTime` or `DateTime64` columns, you can use both strings and JS Date objects. JS Date objects can be passed to `insert` as-is with `date_time_input_format` set to `best_effort`. See this [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts) for more details.
+However, if you're using `DateTime` or `DateTime64` columns, you can use both strings and JS Date objects. JS Date objects can be passed to `insert` as-is with `date_time_input_format` set to `best_effort`. See this [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_js_dates.ts) for more details.
 
 ### Decimal\* types caveats {#decimal-types-caveats}
 
@@ -934,7 +942,7 @@ await client.query({
 })
 ```
 
-See [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_decimals.ts) for more details.
+See [this example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_decimals.ts) for more details.
 
 ### Integral types: Int64, Int128, Int256, UInt64, UInt128, UInt256 {#integral-types-int64-int128-int256-uint64-uint128-uint256}
 
@@ -1014,7 +1022,7 @@ where:
 - `data_type` - [Data type](/sql-reference/data-types/) of the app parameter value.
 
 **Example:**: Query with parameters. 
-[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/query_with_parameter_binding.ts)
+[Source code](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/query_with_parameter_binding.ts)
 .
 
 ```ts
@@ -1140,7 +1148,7 @@ const client = createClient({
 })
 ```
 
-See full examples for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) TLS in the repository.
+See full examples for [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/basic_tls.ts) and [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/mutual_tls.ts) TLS in the repository.
 
 ### Keep-alive configuration (Node.js only) {#keep-alive-configuration-nodejs-only}
 
@@ -1255,7 +1263,7 @@ const client = createClient({
 })
 ```
 
-See the [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts) that has more highlights of readonly=1 user limitations.
+See the [example](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/read_only_user.ts) that has more highlights of readonly=1 user limitations.
 
 ### Proxy with a pathname {#proxy-with-a-pathname}
 
@@ -1374,7 +1382,7 @@ With certificates _and_ a custom _HTTPS_ Agent, it is likely necessary to disabl
 
 ## Tips for performance optimizations {#tips-for-performance-optimizations}
 
-- To reduce application memory consumption, consider using streams for large inserts (e.g. from files) and selects when applicable. For event listeners and similar use cases, [async inserts](/optimize/asynchronous-inserts) could be another good option, allowing to minimize, or even completely avoid batching on the client side. Async insert examples are available in the [client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples), with `async_insert_` as the file name prefix.
+- To reduce application memory consumption, consider using streams for large inserts (e.g. from files) and selects when applicable. For event listeners and similar use cases, [async inserts](/optimize/asynchronous-inserts) could be another good option, allowing to minimize, or even completely avoid batching on the client side. Async insert examples are available in the [client repository](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node), with `async_insert_` as the file name prefix.
 - The client doesn't enable request or response compression by default. However, when selecting or inserting large datasets, you could consider enabling it via `ClickHouseClientConfigOptions.compression` (either for just `request` or `response`, or both).
 - Compression has significant performance penalty. Enabling it for `request` or `response` will negatively impact the speed of selects or inserts, respectively, but will reduce the amount of network traffic transferred by the application.
 

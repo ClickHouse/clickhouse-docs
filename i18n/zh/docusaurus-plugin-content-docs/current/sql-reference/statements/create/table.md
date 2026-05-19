@@ -96,21 +96,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)
 
 **示例**
 
-查询:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory AS SELECT 1;
 SELECT x, toTypeName(x) FROM t1;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─x─┬─toTypeName(x)─┐
 │ 1 │ String        │
 └───┴───────────────┘
 ```
-
 
 ## NULL 或 NOT NULL 修饰符 \{#null-or-not-null-modifiers\}
 
@@ -749,26 +744,21 @@ COMMENT 'Comment'
 * `ENGINE`
 * 存储子句
 * `COMMENT`
-* 查询设置 (如果有) 
+* 查询设置 (如果有)
   :::
 
 **示例**
 
-查询:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory COMMENT 'The temporary table';
 SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
 
-结果:
-
-```text
+```text title="Response"
 ┌─name─┬─comment─────────────┐
 │ t1   │ The temporary table │
 └──────┴─────────────────────┘
 ```
-
 
 ## 相关内容 \{#related-content\}
 

@@ -6,7 +6,6 @@ keywords: ['marketplace', 'billing', 'PAYG', 'pay-as-you-go', 'committed spend c
 doc_type: 'guide'
 ---
 
-# Migrate billing from pay-as-you-go (PAYG) to a committed spend contract in a cloud marketplace {#migrate-payg-to-committed}
 
 If your ClickHouse organization is currently billed through an active cloud marketplace pay-as-you-go (PAYG) subscription (or order) and you wish to migrate to billing via a committed spend contract through the same cloud marketplace, please accept your new offer and then follow the steps below based on your cloud service provider.
 

@@ -8,8 +8,6 @@ title: 'AggregateFunction 类型'
 doc_type: 'reference'
 ---
 
-# AggregateFunction 数据类型 \{#aggregatefunction-type\}
-
 ## 描述 \{#description\}
 
 ClickHouse 中的所有[聚合函数](/sql-reference/aggregate-functions)都有一个特定于实现的中间状态，可以序列化为

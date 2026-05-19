@@ -7,8 +7,6 @@ title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
 
-# clickhouse-benchmark \{#clickhouse-benchmark\}
-
 ClickHouse サーバーに接続し、指定したクエリを繰り返し送信します。
 
 **構文**
@@ -41,7 +39,6 @@ SELECT 1;
 ```bash
 clickhouse-benchmark [keys] < queries_file;
 ```
-
 
 ## コマンドラインオプション \{#clickhouse-benchmark-command-line-options\}
 

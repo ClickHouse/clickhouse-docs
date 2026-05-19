@@ -1,13 +1,11 @@
 ---
-description: '삭제된 행 마스크 적용 문서'
+description: '삭제된 행 마스크 적용에 대한 문서'
 sidebar_label: 'APPLY DELETED MASK'
 sidebar_position: 46
 slug: /sql-reference/statements/alter/apply-deleted-mask
-title: '삭제된 행 마스크 적용'
+title: '삭제된 행 마스크 적용하기'
 doc_type: 'reference'
 ---
-
-# 삭제된 행 마스크 적용하기 \{#apply-mask-of-deleted-rows\}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] APPLY DELETED MASK [IN PARTITION partition_id]

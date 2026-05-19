@@ -1,13 +1,11 @@
 ---
-description: '인코딩 함수 문서'
+description: '인코딩 함수에 대한 문서'
 sidebar_label: '인코딩'
 slug: /sql-reference/functions/encoding-functions
 title: '인코딩 함수'
 keywords: ['인코딩', '일반 함수', '인코드', '디코드']
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-# 인코딩 함수 \{#encoding-functions\}
 
 {/* 
   아래 태그 안의 내용은 문서 프레임워크를 빌드할 때
@@ -24,18 +22,19 @@ doc_type: 'reference'
 bech32 또는 bech32m 알고리즘으로 생성된 Bech32 주소 문자열을 디코딩합니다.
 
 :::note
-인코딩 함수와 달리 `Bech32Decode`는 패딩된 FixedString 값을 자동으로 처리합니다.
+인코딩 함수와 달리 `bech32Decode`는 패딩된 FixedString 값을 자동으로 처리합니다.
 :::
 
 **구문**
 
 ```sql
-bech32Decode(address)
+bech32Decode(address[, 'raw'])
 ```
 
 **인수**
 
 * `address` — 디코딩할 Bech32 문자열입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `mode` — 선택 사항입니다. 첫 번째 바이트를 witness version으로 제거하지 않고 디코딩하려면 `'raw'`를 전달하십시오. 비-SegWit 주소(예: Cosmos SDK)의 경우 이 값을 사용하십시오. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -79,14 +78,14 @@ tb   751E76E8199196D454941C45D1B3A323F1433BD6
 **구문**
 
 ```sql
-bech32Encode(hrp, data[, witver])
+bech32Encode(hrp, data[, witver | 'bech32' | 'bech32m'])
 ```
 
 **인수**
 
 * `hrp` — 코드의 「human-readable part」를 지정하는, `1 - 83`개의 소문자 문자로 이루어진 String입니다. 일반적으로 &#39;bc&#39; 또는 &#39;tb&#39;입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `data` — 인코딩할 이진 데이터를 담는 String입니다. [`String`](/sql-reference/data-types/string) 또는 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `witver` — 선택 사항입니다. witness 버전(기본값 = 1)입니다. 실행할 알고리즘의 버전을 지정하는 `UInt*`입니다. Bech32에는 `0`, Bech32m에는 `1` 이상을 사용합니다. [`UInt*`](/sql-reference/data-types/int-uint)
+* `witver_or_variant` — 선택 사항입니다. `UInt*` witness 버전(기본값 = 1, Bech32에는 `0`, Bech32m에는 `1` 이상) 또는 String 인코딩 variant 중 하나입니다: `&#39;bech32&#39;` (BIP173) 또는 `&#39;bech32m&#39;` (BIP350). 문자열 variant를 사용하면 witness 버전 바이트가 앞에 추가되지 않으며, 이는 Cosmos SDK와 같은 비-SegWit 주소에 필요합니다. [`UInt*`](/sql-reference/data-types/int-uint) 또는 [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -126,6 +125,18 @@ SELECT bech32Encode('abcdefg', unhex('751e76e8199196d454941c45d1b3a323f1433bd6')
 
 ```response title=Response
 abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
+```
+
+**Cosmos SDK 주소 (BIP173, witness 버전 없음)**
+
+```sql title=Query
+-- Using 'bech32' variant encodes raw data without a witness version byte,
+-- compatible with Cosmos SDK, Injective, Osmosis, and other non-SegWit chains.
+SELECT bech32Encode('inj', unhex('751e76e8199196d454941c45d1b3a323f1433bd6'), 'bech32')
+```
+
+```response title=Response
+inj1w508d6qejxtdg4y5r3zarvary0c5xw7kgj5aqs
 ```
 
 ## bin \{#bin\}

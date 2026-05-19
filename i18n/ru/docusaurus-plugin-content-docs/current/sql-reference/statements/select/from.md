@@ -6,19 +6,17 @@ title: 'Предложение FROM'
 doc_type: 'reference'
 ---
 
-# Предложение FROM \{#from-clause\}
-
 Предложение `FROM` задаёт источник, из которого читаются данные:
 
 * [Таблица](../../../engines/table-engines/index.md)
 * [Подзапрос](../../../sql-reference/statements/select/index.md)
 * [Табличная функция](/sql-reference/table-functions)
 
-Секции [JOIN](../../../sql-reference/statements/select/join.md) и [ARRAY JOIN](../../../sql-reference/statements/select/array-join.md) также могут использоваться для расширения функциональности предложения `FROM`.
+Предложения [JOIN](../../../sql-reference/statements/select/join.md) и [ARRAY JOIN](../../../sql-reference/statements/select/array-join.md) также могут использоваться для расширения функциональности предложения `FROM`.
 
 Подзапрос — это другой запрос `SELECT`, который может быть указан в скобках внутри предложения `FROM`.
 
-Стандартная секция SQL `VALUES` также может использоваться как табличное выражение:
+Стандартное предложение SQL `VALUES` также может использоваться как табличное выражение:
 
 ```sql
 SELECT * FROM (VALUES (1, 'a'), (2, 'b'), (3, 'c')) AS t(id, val);
@@ -28,7 +26,7 @@ SELECT * FROM (VALUES (1, 'a'), (2, 'b'), (3, 'c')) AS t(id, val);
 
 `FROM` может содержать несколько источников данных, разделённых запятыми, что эквивалентно выполнению над ними [CROSS JOIN](../../../sql-reference/statements/select/join.md).
 
-`FROM` может опционально располагаться перед секцией `SELECT`. Это специфичное для ClickHouse расширение стандартного SQL, которое делает запросы `SELECT` более читаемыми. Пример:
+`FROM` может опционально располагаться перед предложением `SELECT`. Это специфичное для ClickHouse расширение стандартного SQL, которое делает запросы `SELECT` более читаемыми. Пример:
 
 ```sql
 FROM table

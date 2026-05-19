@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', '外部データラッパー', 'pg_clickhouse', 'extension', 'チュートリアル', 'タクシー']
 ---
 
-# pg_clickhouse チュートリアル \{#pg_clickhouse-tutorial\}
-
 ## 概要 \{#overview\}
 
 本チュートリアルは [ClickHouse tutorial] の流れに従いますが、すべてのクエリを
@@ -626,7 +624,7 @@ ClickHouse サービス内のテーブルに関連付けられた Dictionary を
 実際に必要なカラムだけを取得すべきです。
 :::
 
-[tutorial]: /tutorial "ClickHouse 上級チュートリアル"
+[ClickHouse tutorial]: /tutorial "ClickHouse 上級チュートリアル"
 
 [psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL クライアントアプリケーション: psql"
 

@@ -2,52 +2,43 @@
 sidebar_label: '概要'
 sidebar_position: 1
 keywords: ['ClickHouse', 'connect', 'Luzmo', 'Explo', 'Fabi.ai', 'Tableau', 'Grafana', 'Metabase', 'Mitzu', 'superset', 'Databrain','Deepnote', 'Draxlr', 'RocketBI', 'Omni', 'Querio', 'bi', 'visualization', 'tool', 'lightdash']
-title: 'ClickHouse におけるデータ可視化'
+title: 'ClickHouse でのデータの可視化'
 slug: /integrations/data-visualization
-description: 'ClickHouse におけるデータ可視化について学ぶ'
+description: 'ClickHouse でのデータの可視化について学びます'
 doc_type: 'guide'
 ---
 
-# ClickHouse でのデータの可視化 \{#visualizing-data-in-clickhouse\}
-
-<div class='vimeo-container'>
-<iframe
-   src="https://player.vimeo.com/video/754460217?h=3dcae2e1ca"
-   width="640"
-   height="360"
-   frameborder="0"
-   allow="autoplay; fullscreen; picture-in-picture"
-   allowfullscreen>
-</iframe>
+<div class="vimeo-container">
+  <iframe src="https://player.vimeo.com/video/754460217?h=3dcae2e1ca" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen />
 </div>
 
-<br/>
+<br />
 
 データが ClickHouse に取り込まれたので、次はそれを分析する段階です。多くの場合、これは BI ツールを使って可視化を作成することを意味します。一般的な BI / 可視化ツールの多くは ClickHouse に接続できます。ClickHouse に標準で対応しているツールもあれば、コネクタのインストールが必要なツールもあります。以下のツールの一部については、ドキュメントを用意しています：
 
-- [Apache Superset](./superset-and-clickhouse.md)
-- [Astrato](./community_integrations/astrato-and-clickhouse.md)
-- [Chartbrew](./community_integrations/chartbrew-and-clickhouse.md)
-- [Databrain](./community_integrations/databrain-and-clickhouse.md)
-- [Deepnote](./community_integrations/deepnote.md)
-- [Dot](./community_integrations/dot-and-clickhouse.md)
-- [Draxlr](./community_integrations/draxlr-and-clickhouse.md)
-- [Embeddable](./community_integrations/embeddable-and-clickhouse.md)
-- [Explo](./community_integrations/explo-and-clickhouse.md)
-- [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)
-- [Grafana](./grafana/index.md)
-- [Lightdash](./lightdash-and-clickhouse.md)
-- [Looker](./looker-and-clickhouse.md)
-- [Luzmo](./community_integrations/luzmo-and-clickhouse.md)
-- [Metabase](./metabase-and-clickhouse.md)
-- [Mitzu](./community_integrations/mitzu-and-clickhouse.md)
-- [Omni](./omni-and-clickhouse.md)
-- [Querio](./community_integrations/querio-and-clickhouse.md)
-- [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
-- [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
-- [Tableau](./tableau/tableau-and-clickhouse.md)
-- [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
-- [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
+* [Apache Superset](./superset-and-clickhouse.md)
+* [Astrato](./community_integrations/astrato-and-clickhouse.md)
+* [Chartbrew](./community_integrations/chartbrew-and-clickhouse.md)
+* [Databrain](./community_integrations/databrain-and-clickhouse.md)
+* [Deepnote](./community_integrations/deepnote.md)
+* [Dot](./community_integrations/dot-and-clickhouse.md)
+* [Draxlr](./community_integrations/draxlr-and-clickhouse.md)
+* [Embeddable](./community_integrations/embeddable-and-clickhouse.md)
+* [Explo](./community_integrations/explo-and-clickhouse.md)
+* [Fabi.ai](./community_integrations/fabi-and-clickhouse.md)
+* [Grafana](./grafana/index.md)
+* [Lightdash](./lightdash-and-clickhouse.md)
+* [Looker](./looker-and-clickhouse.md)
+* [Luzmo](./community_integrations/luzmo-and-clickhouse.md)
+* [Metabase](./metabase-and-clickhouse.md)
+* [Mitzu](./community_integrations/mitzu-and-clickhouse.md)
+* [Omni](./omni-and-clickhouse.md)
+* [Querio](./community_integrations/querio-and-clickhouse.md)
+* [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
+* [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
+* [Tableau](./tableau/tableau-and-clickhouse.md)
+* [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
+* [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
 ## ClickHouse Cloud とデータ可視化ツールの互換性 \{#clickhouse-cloud-compatibility-with-data-visualization-tools\}
 

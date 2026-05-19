@@ -8,9 +8,7 @@ doc_type: 'reference'
 keywords: ['删除数据', 'TTL', '数据保留', '清理', '数据生命周期']
 ---
 
-# 是否可以从 ClickHouse 表中删除旧记录？ \{#is-it-possible-to-delete-old-records-from-a-clickhouse-table\}
-
-简而言之：可以。ClickHouse 提供了多种机制，可以通过移除旧数据来释放磁盘空间。每种机制都针对不同的使用场景。
+简短的回答是“是”。ClickHouse 提供了多种机制，可通过删除旧数据来释放磁盘空间。每种机制都适用于不同的场景。
 
 ## TTL \{#ttl\}
 

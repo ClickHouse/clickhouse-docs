@@ -4,13 +4,11 @@ sidebar_label: '集成 CopilotKit'
 title: '如何使用 CopilotKit 和 ClickHouse MCP server 构建 AI 智能体'
 pagination_prev: null
 pagination_next: null
-description: '学习如何使用 ClickHouse MCP 和 CopilotKit，将存储在 ClickHouse 中的数据用于构建智能体应用'
+description: '了解如何使用存储在 ClickHouse 中的数据，借助 ClickHouse MCP 和 CopilotKit 构建智能体应用'
 keywords: ['ClickHouse', 'MCP', 'copilotkit']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 如何使用 CopilotKit 和 ClickHouse MCP server 构建 AI 智能体 \{#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server\}
 
 这是一个示例，演示如何使用存储在 ClickHouse 中的数据构建智能体应用。它使用 [ClickHouse MCP server](https://github.com/ClickHouse/mcp-clickhouse)
 从 ClickHouse 查询数据，并基于这些数据生成图表。

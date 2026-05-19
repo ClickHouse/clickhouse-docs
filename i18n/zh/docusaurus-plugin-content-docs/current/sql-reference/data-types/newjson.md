@@ -136,13 +136,13 @@ JSON 路径会被存储为扁平结构。这意味着，当根据类似 `a.b.c` 
 
 例如：
 
-```sql
+```sql title="Query"
 SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 ```
 
 将返回：
 
-```response
+```response title="Response"
    ┌─json───────────────────┐
 1. │ {"a":{"b":{"c":"42"}}} │
    └────────────────────────┘
@@ -157,7 +157,6 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 ```
 
 :::
-
 
 ## 将 JSON 路径读取为子列 \{#reading-json-paths-as-sub-columns\}
 
@@ -987,14 +986,13 @@ FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz
 └─arrayJoin(distinctJSONPaths(json))─────────────────────────┘
 ```
 
-```sql
+```sql title="Query"
 SELECT arrayJoin(distinctJSONPathsAndTypes(json))
 FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz', JSONAsObject)
 SETTINGS date_time_input_format = 'best_effort'
 ```
 
-
-```text
+```text title="Response"
 ┌─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┐
 │ ('actor.avatar_url',['String'])                             │
 │ ('actor.display_login',['String'])                          │
@@ -1048,7 +1046,6 @@ SETTINGS date_time_input_format = 'best_effort'
 │ ('type',['String'])                                         │
 └─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┘
 ```
-
 
 ## 使用 ALTER MODIFY COLUMN 修改为 JSON 类型 \{#alter-modify-column-to-json-type\}
 
@@ -1206,7 +1203,7 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 
 #### 示例 \{#json-indexes-on-subcolumns-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE sensor_data
 (
     data JSON(sensor_id UInt32),
@@ -1269,7 +1266,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 
 #### 示例 \{#json-indexes-jsonallpaths-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE events
 (
     data JSON,

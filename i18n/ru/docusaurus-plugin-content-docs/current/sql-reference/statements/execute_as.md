@@ -7,6 +7,10 @@ title: 'Оператор EXECUTE AS'
 doc_type: 'reference'
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
+<CloudNotSupportedBadge />
+
 # Оператор EXECUTE AS \{#execute-as-statement\}
 
 Позволяет выполнять запросы от имени другого пользователя.

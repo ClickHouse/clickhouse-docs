@@ -1,17 +1,15 @@
 ---
-title: '开始使用 chDB'
-sidebar_label: '快速开始'
+title: 'chDB 入门'
+sidebar_label: '入门'
 slug: /chdb/getting-started
-description: 'chDB 是由 ClickHouse 驱动的进程内 SQL OLAP 引擎'
+description: 'chDB 是一个由 ClickHouse 提供支持的进程内 SQL OLAP 引擎'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-# chDB 入门 \{#getting-started-with-chdb\}
-
 在本指南中，我们将快速上手 chDB 的 Python 版本。
 我们会先查询存储在 S3 上的 JSON 文件，然后基于该 JSON 文件在 chDB 中创建一张表，并对其中的数据执行一些查询。
-我们还将了解如何让查询结果以不同格式返回数据，包括 Apache Arrow 和 Pandas，最后我们会学习如何查询 Pandas DataFrame。 
+我们还将了解如何让查询结果以不同格式返回数据，包括 Apache Arrow 和 Pandas，最后我们会学习如何查询 Pandas DataFrame。
 
 ## 环境准备 \{#setup\}
 
@@ -372,7 +370,7 @@ chdb.query(
 
 ## 后续步骤 \{#next-steps\}
 
-本指南希望已为你提供了 chDB 的整体概览。  
+本指南希望已为你提供了 chDB 的整体概览。
 要进一步了解其用法，请参阅以下开发指南：
 
 * [查询 Pandas DataFrame](guides/querying-pandas.md)

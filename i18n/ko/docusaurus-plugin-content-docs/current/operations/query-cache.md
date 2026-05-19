@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse에서 쿼리 캐시 기능 사용 및 구성 방법 안내'
+description: 'ClickHouse에서 쿼리 캐시 기능을 사용하고 구성하는 방법에 대한 안내'
 sidebar_label: '쿼리 캐시'
 sidebar_position: 65
 slug: /operations/query-cache
 title: '쿼리 캐시'
 doc_type: 'guide'
 ---
-
-# 쿼리 캐시 \{#query-cache\}
 
 쿼리 캐시는 `SELECT` 쿼리를 한 번만 실행해 결과를 계산하고, 이후 동일한 쿼리 실행에 대해서는 캐시에 저장된 결과를 직접 반환합니다.
 쿼리의 유형에 따라 ClickHouse 서버의 지연 시간과 리소스 사용량을 크게 줄일 수 있습니다.

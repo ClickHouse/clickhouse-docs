@@ -7,8 +7,6 @@ title: 'Тип данных SimpleAggregateFunction'
 doc_type: 'reference'
 ---
 
-# Тип SimpleAggregateFunction \{#simpleaggregatefunction-type\}
-
 ## Описание \{#description\}
 
 Тип данных `SimpleAggregateFunction` хранит промежуточное состояние 

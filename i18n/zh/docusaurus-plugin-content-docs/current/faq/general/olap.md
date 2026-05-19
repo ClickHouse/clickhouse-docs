@@ -3,14 +3,12 @@ slug: /faq/general/olap
 title: '什么是 OLAP？'
 toc_hidden: true
 toc_priority: 100
-description: '关于联机分析处理（OLAP）的介绍'
+description: '关于什么是 Online Analytical Processing 的说明'
 keywords: ['OLAP']
 doc_type: 'reference'
 ---
 
-# 什么是 OLAP？ \{#what-is-olap\}
-
-[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) 是 Online Analytical Processing（联机分析处理）的缩写。它是一个广泛的术语，可以从技术和业务两个角度来理解。但在更宏观的层面上，你也可以把这个短语倒过来读：
+[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) 是 Online Analytical Processing (联机分析处理) 的缩写。它是一个广泛的术语，可以从技术和业务两个角度来理解。但在更宏观的层面上，你也可以把这个短语倒过来读：
 
 Processing
 :   对一些源数据进行处理……

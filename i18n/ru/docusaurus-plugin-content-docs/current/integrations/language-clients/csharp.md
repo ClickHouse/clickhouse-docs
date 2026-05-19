@@ -1950,7 +1950,7 @@ await table.BulkCopyAsync(options, products);
 * **Источник**: [GitHub](https://github.com/ClickHouse/ClickHouse.EntityFrameworkCore)
 
 :::note
-Этот провайдер находится на ранней стадии разработки. Он поддерживает **запросы только для чтения** и **операции вставки**. UPDATE, DELETE, миграции, JOIN и подзапросы пока не реализованы.
+Этот провайдер активно развивается. Текущий релиз поддерживает LINQ-запросы (включая соединения, подзапросы и операции над множествами), `INSERT` через `SaveChanges` / `BulkInsertAsync`, миграции с полной поддержкой DDL (CREATE / ALTER / DROP), а также настройку движка таблицы ClickHouse. `UPDATE` / `DELETE` не поддерживаются.
 :::
 
 #### Установка \{#ef-core-installation\}
@@ -2000,39 +2000,59 @@ var topPages = await ctx.PageViews
 
 #### Поддерживаемые типы \{#ef-core-types\}
 
-| Категория                    | Типы ClickHouse                                                                         | Типы CLR                                                           |
-| ---------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| **Целые числа**              | `Int8`–`Int64`, `UInt8`–`UInt64`                                                        | `sbyte`, `short`, `int`, `long`, `byte`, `ushort`, `uint`, `ulong` |
-| **Большие целые числа**      | `Int128`, `Int256`, `UInt128`, `UInt256`                                                | `BigInteger`                                                       |
-| **Числа с плавающей точкой** | `Float32`, `Float64`, `BFloat16`                                                        | `float`, `double`                                                  |
-| **Десятичные числа**         | `Decimal(P,S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)`                         | `decimal` или `ClickHouseDecimal`                                  |
-| **Логические значения**      | `Bool`                                                                                  | `bool`                                                             |
-| **Строки**                   | `String`, `FixedString(N)`                                                              | `string`                                                           |
-| **Перечисления**             | `Enum8(...)`, `Enum16(...)`                                                             | `string` или C# `enum`                                             |
-| **Дата/время**               | `Date`, `Date32`, `DateTime`, `DateTime64(P, 'TZ')`                                     | `DateOnly`, `DateTime`                                             |
-| **Время**                    | `Time`, `Time64(N)`                                                                     | `TimeSpan`                                                         |
-| **UUID**                     | `UUID`                                                                                  | `Guid`                                                             |
-| **Сетевые адреса**           | `IPv4`, `IPv6`                                                                          | `IPAddress`                                                        |
-| **Массивы**                  | `Array(T)`                                                                              | `T[]` или `List<T>`                                                |
-| **Map**                      | `Map(K, V)`                                                                             | `Dictionary<K,V>`                                                  |
-| **Кортежи**                  | `Tuple(T1, ...)`                                                                        | `Tuple<...>` или `ValueTuple<...>`                                 |
-| **Variant**                  | `Variant(T1, T2, ...)`                                                                  | `object`                                                           |
-| **Dynamic**                  | `Dynamic`                                                                               | `object`                                                           |
-| **JSON**                     | `Json`                                                                                  | `JsonNode` или `string`                                            |
-| **Географические типы**      | `Point`, `Ring`, `LineString`, `Polygon`, `MultiLineString`, `MultiPolygon`, `Geometry` | `Tuple<double,double>` и их массивы; `object` для `Geometry`       |
-| **Обёртки**                  | `Nullable(T)`, `LowCardinality(T)`                                                      | Автоматически разворачиваются                                      |
+| Категория                    | Типы ClickHouse                                                                         | Типы CLR                                                                                                       |
+| ---------------------------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **Целые числа**              | `Int8`–`Int64`, `UInt8`–`UInt64`                                                        | `sbyte`, `short`, `int`, `long`, `byte`, `ushort`, `uint`, `ulong`                                             |
+| **Большие целые числа**      | `Int128`, `Int256`, `UInt128`, `UInt256`                                                | `BigInteger`                                                                                                   |
+| **Числа с плавающей точкой** | `Float32`, `Float64`, `BFloat16`                                                        | `float`, `double`                                                                                              |
+| **Десятичные числа**         | `Decimal(P,S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)`                         | `decimal` или `ClickHouseDecimal`                                                                              |
+| **Логические значения**      | `Bool`                                                                                  | `bool`                                                                                                         |
+| **Строки**                   | `String`, `FixedString(N)`                                                              | `string`                                                                                                       |
+| **Перечисления**             | `Enum8(...)`, `Enum16(...)`                                                             | `string` или C# `enum`                                                                                         |
+| **Дата/время**               | `Date`, `Date32`, `DateTime`, `DateTime64(P, 'TZ')`                                     | `DateOnly`, `DateTime`                                                                                         |
+| **Время**                    | `Time`, `Time64(N)`                                                                     | `TimeSpan`                                                                                                     |
+| **UUID**                     | `UUID`                                                                                  | `Guid`                                                                                                         |
+| **Сетевые адреса**           | `IPv4`, `IPv6`                                                                          | `IPAddress`                                                                                                    |
+| **Массивы**                  | `Array(T)`                                                                              | `T[]`, `List<T>`, `IList<T>`, `ICollection<T>`, `IReadOnlyList<T>`, `IReadOnlyCollection<T>`, `IEnumerable<T>` |
+| **Map**                      | `Map(K, V)`                                                                             | `Dictionary<K,V>`                                                                                              |
+| **Кортежи**                  | `Tuple(T1, ...)`                                                                        | `Tuple<...>` или `ValueTuple<...>`                                                                             |
+| **Variant**                  | `Variant(T1, T2, ...)`                                                                  | `object`                                                                                                       |
+| **Dynamic**                  | `Dynamic`                                                                               | `object`                                                                                                       |
+| **JSON**                     | `Json`                                                                                  | `JsonNode` или `string`                                                                                        |
+| **Географические типы**      | `Point`, `Ring`, `LineString`, `Polygon`, `MultiLineString`, `MultiPolygon`, `Geometry` | `Tuple<double,double>` и их массивы; `object` для `Geometry`                                                   |
+| **Обёртки**                  | `Nullable(T)`, `LowCardinality(T)`                                                      | Автоматически разворачиваются                                                                                  |
 
 Используйте `ClickHouseDecimal` (из `ClickHouse.Driver.Numerics`) вместо `decimal`, если требуется полная точность столбцов `Decimal128`/`Decimal256` — `decimal` в .NET ограничен 28–29 значащими цифрами.
 
 #### Поддерживаемые операции LINQ \{#ef-core-linq\}
 
-**Запросы:** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `Count`, `Distinct`, `AsNoTracking`
+**Запросы:** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `All`, `Count`, `Distinct`, `AsNoTracking`
 
-**GROUP BY и агрегатные функции:** `GroupBy` с `Count`, `LongCount`, `Sum`, `Average`, `Min`, `Max` — включая `HAVING` (`.Where()` после `.GroupBy()`), несколько агрегатных функций в одной проекции и `OrderBy` для результатов агрегации.
+**GROUP BY и агрегатные функции:** `GroupBy` с `Count`, `LongCount`, `Sum`, `Average`, `Min`, `Max` — включая `HAVING` (`.Where()` после `.GroupBy()`), несколько агрегатных функций в одной проекции и `OrderBy` по результатам агрегирования.
 
-**Строковые методы:** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat` (и оператор `+`)
+**Соединения:** `Join` (INNER), шаблоны `GroupJoin`/`SelectMany` (LEFT и CROSS). LEFT JOIN возвращает значение `null` для строк без совпадений (см. [семантику `null` в LEFT JOIN](#ef-core-join-nulls) ниже).
 
-**Математические функции:** Стандартные методы `Math` и `MathF` преобразуются в соответствующие эквиваленты ClickHouse, включая арифметические, логарифмические, тригонометрические и вспомогательные функции.
+**Подзапросы:** коррелированные `Contains` / `IN`, `Any` / `EXISTS`, `All`, а также скалярные подзапросы в проекциях.
+
+**Операции над множествами:** `Concat` (→ `UNION ALL`), `Union` (→ `UNION DISTINCT`), `Intersect`, `Except`.
+
+**Локальные встроенные коллекции:** соединения и `Contains` для коллекций в памяти (`int[]`, `List<T>` и т. д.) преобразуются в последовательность `UNION`.
+
+**Строковые методы:** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat` (и оператор `+`).
+
+**Математические функции:** стандартные методы `Math` и `MathF`, преобразуемые в их эквиваленты ClickHouse — арифметические, логарифмические, тригонометрические и вспомогательные функции.
+
+##### Семантика NULL в LEFT JOIN \{#ef-core-join-nulls\}
+
+Провайдер автоматически добавляет `set_join_use_nulls=1` ко всем подключениям, чтобы поведение JOIN соответствовало ожиданиям Entity Framework.
+
+Если ваш сервер ClickHouse или профиль не позволяет изменять эту настройку (например, профиль `readonly=1`), отключите это поведение с помощью:
+
+```csharp
+optionsBuilder.UseClickHouse(connectionString, o => o.DisableJoinNullSemantics());
+```
+
+При включённом opt-out оператор LEFT JOIN возвращает значения по умолчанию для столбцов ClickHouse, и определение навигации в EF на основе `null` больше не работает должным образом. Используйте явные сравнения с `0` / `""` вместо `== null`.
 
 #### Вставка данных \{#ef-core-insert\}
 
@@ -2279,20 +2299,94 @@ entity.Property(e => e.Data).HasColumnType("Json");
   :::
 
 
-#### Ограничения \{#ef-core-limitations\}
+#### Движки таблиц \{#ef-core-engines\}
 
-| Возможность                                           | Статус                                                                              |
-| ----------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| SELECT / WHERE / ORDER BY / GROUP BY                  | Поддерживается                                                                      |
-| INSERT через `SaveChanges` / `BulkInsertAsync`        | Поддерживается                                                                      |
-| UPDATE / DELETE                                       | Не поддерживается (Мутации ClickHouse выполняются асинхронно и несовместимы с OLTP) |
-| Миграции                                              | Не поддерживается                                                                   |
-| JOIN, подзапросы, операции над множествами            | Не поддерживается                                                                   |
-| Транзакции                                            | Нет эффекта (ClickHouse не поддерживает ACID-транзакции)                            |
-| Значения, генерируемые сервером (auto-increment)      | Не поддерживается                                                                   |
-| Вложенные типы                                        | Не поддерживается                                                                   |
-| Трансляция пути JSON-запросов (`.Data["key"]` в LINQ) | Не поддерживается                                                                   |
-| Owned entities в формате JSON (`.ToJson()`)           | Не поддерживается                                                                   |
+Настройте движки таблиц ClickHouse и зависящие от движка конструкции через fluent API `ToTable(name, t => ...)`. Если движок не задан, провайдер по умолчанию использует `MergeTree`, а `ORDER BY` определяется по первичному ключу сущности.
+
+```csharp
+modelBuilder.Entity<Event>(e =>
+{
+    e.ToTable("events", t => t
+        .HasMergeTreeEngine()
+        .WithOrderBy("UserId", "Timestamp")
+        .WithPartitionBy("toYYYYMM(Timestamp)")
+        .WithPrimaryKey("UserId")
+        .WithSettings("index_granularity = 8192"));
+});
+```
+
+Поддерживаемые семейства движков:
+
+| Движок                                  | Цепочный метод                                                                                             | Примечания                                          |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `MergeTree`                             | `HasMergeTreeEngine()`                                                                                     | Используется по умолчанию, если ничего не настроено |
+| `ReplacingMergeTree`                    | `HasReplacingMergeTreeEngine("Version", "IsDeleted")` или `HasReplacingMergeTreeEngine<T>(e => e.Version)` | Столбцы Version / IsDeleted необязательны           |
+| `SummingMergeTree`                      | `HasSummingMergeTreeEngine(…)` или `HasSummingMergeTreeEngine<T>(e => new { … })`                          | Столбцы для суммирования необязательны              |
+| `AggregatingMergeTree`                  | `HasAggregatingMergeTreeEngine()`                                                                          | —                                                   |
+| `CollapsingMergeTree`                   | `HasCollapsingMergeTreeEngine("Sign")` или `HasCollapsingMergeTreeEngine<T>(e => e.Sign)`                  | Столбец `Sign` должен иметь тип `Int8`              |
+| `VersionedCollapsingMergeTree`          | `HasVersionedCollapsingMergeTreeEngine("Sign", "Version")` или `<T>(e => e.Sign, e => e.Version)`          | —                                                   |
+| `GraphiteMergeTree`                     | `HasGraphiteMergeTreeEngine("config_section")`                                                             | —                                                   |
+| `Log`, `TinyLog`, `StripeLog`, `Memory` | `HasLogEngine()`, `HasTinyLogEngine()`, `HasStripeLogEngine()`, `HasMemoryEngine()`                        | Без ORDER BY / PARTITION BY                         |
+
+**Параметры движка:** `WithOrderBy`, `WithPartitionBy`, `WithPrimaryKey`, `WithSampleBy`, `WithTtl`, `WithSettings`. Все они применяются к построителю движка, который возвращает `HasXxxEngine()`.
+
+**Возможности на уровне столбца:** `HasCodec`, `HasTtl`, `HasComment`, `HasDefault` — все они используются в миграциях.
+
+**Индексы пропуска данных** — через `HasIndex(...).HasSkippingIndexType(...)`:
+
+```csharp
+modelBuilder.Entity<Event>()
+    .HasIndex(e => e.UserId)
+    .HasSkippingIndexType("minmax")
+    .HasGranularity(4);
+
+// Index with parameters (e.g. bloom_filter, tokenbf_v1):
+modelBuilder.Entity<Event>()
+    .HasIndex(e => e.Tag)
+    .HasSkippingIndexType("bloom_filter")
+    .HasSkippingIndexParams("0.01")
+    .HasGranularity(1);
+```
+
+Обычные индексы (не индексы пропуска данных) игнорируются без предупреждения, поскольку в ClickHouse нет их аналога. Уникальные индексы приводят к ошибке, так как ClickHouse не поддерживает обеспечение уникальности.
+
+#### Миграции \{#ef-core-migrations\}
+
+Стандартный процесс работы с миграциями EF Core:
+
+```bash
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
+Поддерживаемые операции:
+
+| Операция                               | Генерирует                                                                                                            |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `CREATE TABLE`                         | Включает указание движка, ORDER BY, PARTITION BY, SETTINGS, кодеки/TTL/комментарии/значения по умолчанию для столбцов |
+| `ALTER TABLE ADD COLUMN`               | —                                                                                                                     |
+| `ALTER TABLE DROP COLUMN`              | —                                                                                                                     |
+| `ALTER TABLE MODIFY COLUMN`            | Обрабатывает изменение типа, а также добавление/удаление аннотаций (CODEC, TTL, COMMENT, DEFAULT)                     |
+| `ALTER TABLE RENAME COLUMN`            | —                                                                                                                     |
+| `RENAME TABLE`                         | —                                                                                                                     |
+| `ALTER TABLE ADD INDEX` / `DROP INDEX` | Только индексы пропуска данных                                                                                        |
+| `CREATE DATABASE` / `DROP DATABASE`    | Через `EnsureCreated` / `EnsureDeleted` и миграции                                                                    |
+
+#### Ограничения миграций \{#ef-core-limitations\}
+
+| Возможность                                                   | Причина                                                                                                                                                                         |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Внешние ключи                                                 | ClickHouse не обеспечивает соблюдение внешних ключей. Миграции отклоняют `AddForeignKey`; валидатор модели выдаёт предупреждение при построении модели.                         |
+| Ограничения уникальности / уникальные индексы                 | ClickHouse не обеспечивает уникальность. Уникальные индексы приводят к ошибке во время миграции.                                                                                |
+| Значения, генерируемые сервером (auto-increment / `IDENTITY`) | В ClickHouse нет эквивалента.                                                                                                                                                   |
+| Столбцы `Nested(…)`                                           | Пока не поддерживаются как сопоставляемый тип CLR.                                                                                                                              |
+| Owned entities как JSON (`.ToJson()`)                         | Структурное JSON-соответствие для owned entities пока не реализовано. Вместо этого используйте `JsonNode` / `string` в `Json` JSON-столбце (см. [JSON-столбцы](#ef-core-json)). |
+
+Помимо миграций, провайдер также пока не поддерживает:
+
+* **`UPDATE` / `DELETE`**
+* **Транзакции**: `BeginTransaction` — пустая операция. ClickHouse не поддерживает ACID-транзакции.
+* **Преобразование запросов с JSON-путями**: `entity.Data["key"]` в LINQ не преобразуется в SQL-синтаксис ClickHouse `data.key`. Фильтруйте по не-JSON-столбцам и анализируйте JSON в памяти.
 
 ## Ограничения \{#limitations\}
 

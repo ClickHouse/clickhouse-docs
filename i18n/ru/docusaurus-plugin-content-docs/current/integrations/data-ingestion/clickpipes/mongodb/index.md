@@ -21,19 +21,21 @@ import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
 
-# Приём данных из MongoDB в ClickHouse (с использованием CDC) \{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\}
+# Ингестия данных из MongoDB в ClickHouse (с использованием CDC) \{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\}
 
-<BetaBadge/>
+<BetaBadge />
 
 :::info
-Приём данных из MongoDB в ClickHouse Cloud через ClickPipes находится в стадии публичного бета-тестирования.
+Ингестия данных из MongoDB в ClickHouse Cloud через ClickPipes находится в стадии публичного бета-тестирования.
 :::
 
 :::note
 В консоли и документации ClickHouse Cloud термины «table» и «collection» используются как взаимозаменяемые для MongoDB.
 :::
 
-Вы можете использовать ClickPipes для приёма данных из базы данных MongoDB в ClickHouse Cloud. Исходная база данных MongoDB может размещаться в локальной инфраструктуре (on-premises) или в облаке с использованием таких сервисов, как MongoDB Atlas.
+Вы можете использовать ClickPipes для ингестии данных из базы данных MongoDB в ClickHouse Cloud. Исходная база данных MongoDB может размещаться в локальной инфраструктуре (on-premises) или в облаке с использованием таких сервисов, как MongoDB Atlas.
+
+ClickPipes для MongoDB можно развёртывать и администрировать вручную с помощью интерфейса ClickPipes, а также программно с использованием [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Предварительные требования \{#prerequisites\}
 

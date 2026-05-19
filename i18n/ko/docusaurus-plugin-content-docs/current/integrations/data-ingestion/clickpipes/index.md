@@ -36,7 +36,9 @@ import Image from '@theme/IdealImage';
 
 [ClickPipes](/integrations/clickpipes)는 다양한 소스에서 데이터를 수집하는 작업을 몇 번의 클릭만으로 수행할 수 있게 해 주는 관리형 통합 플랫폼입니다. 가장 높은 수준의 워크로드를 위해 설계된 ClickPipes의 안정적이고 확장 가능한 아키텍처는 일관된 성능과 신뢰성을 보장합니다. ClickPipes는 장기적인 스트리밍 용도는 물론, 일회성 데이터 적재 작업에도 사용할 수 있습니다.
 
-<Image img={clickpipes_stack} alt="ClickPipes 스택" size="lg" border/>
+ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수 있으며, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 및 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 사용해 프로그래밍 방식으로도 배포하고 관리할 수 있습니다.
+
+<Image img={clickpipes_stack} alt="ClickPipes 스택" size="lg" border />
 
 ## 지원되는 데이터 소스 \{#supported-data-sources\}
 
@@ -156,6 +158,10 @@ ClickPipes는 대상 테이블과 동일한 데이터베이스에 `<destination_
 ClickPipe 동작과 관련된 오류는 `system.clickpipes_log` 테이블에 저장됩니다. 이 테이블은 ClickPipe 동작과 관련된 기타 모든 오류(네트워크, 연결 문제 등)를 모두 저장하며, [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)은 7일로 설정되어 있습니다.
 
 ClickPipes가 데이터 소스에는 15분 동안, 대상에는 1시간 동안 연결하지 못하면, ClickHouse 인스턴스를 사용할 수 있는 경우에 한해 ClickPipes 인스턴스가 중지되고 시스템 오류 테이블에 적절한 메시지를 저장합니다.
+
+## 모니터링 \{#monitoring\}
+
+콘솔 내 모니터링 외에도 ClickPipes는 스크레이핑을 위해 [Prometheus 호환 엔드포인트](/integrations/prometheus)로 메트릭을 노출합니다. 이러한 메트릭은 다른 ClickHouse Cloud 서비스 메트릭과 함께 게시되며, 기존 관측성 스택(예: [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog))에 ClickPipes 모니터링을 통합할 수 있도록 합니다. 사용 가능한 전체 메트릭 목록은 [Monitoring ClickPipes](/integrations/clickpipes/monitoring)를 참조하십시오.
 
 ## FAQ \{#faq\}
 

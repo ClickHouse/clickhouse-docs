@@ -34,9 +34,11 @@ import Image from '@theme/IdealImage';
 
 ## Введение \{#introduction\}
 
-[ClickPipes](/integrations/clickpipes) — это управляемая платформа интеграции данных, которая делает приём данных из широкого спектра источников таким же простым, как несколько щелчков мышью. Разработанная для самых требовательных нагрузок, надёжная и масштабируемая архитектура ClickPipes обеспечивает стабильную производительность и отказоустойчивость. ClickPipes можно использовать как для долгосрочных сценариев потоковой передачи данных, так и для разовых задач по загрузке данных.
+[ClickPipes](/integrations/clickpipes) — это управляемая интеграционная платформа данных, которая делает приём данных из широкого спектра источников таким же простым, как несколько щелчков мышью. Разработанная для самых требовательных нагрузок, надёжная и масштабируемая архитектура ClickPipes обеспечивает стабильную производительность и отказоустойчивость. ClickPipes можно использовать как для долгосрочных сценариев потоковой передачи данных, так и для разовых задач по загрузке данных.
 
-<Image img={clickpipes_stack} alt="Стек ClickPipes" size="lg" border/>
+ClickPipes можно развернуть и администрировать вручную через интерфейс ClickPipes, а также программно с помощью [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
+
+<Image img={clickpipes_stack} alt="Стек ClickPipes" size="lg" border />
 
 ## Поддерживаемые источники данных \{#supported-data-sources\}
 
@@ -156,6 +158,10 @@ ClickPipes создаст таблицу рядом с целевой табли
 Ошибки, связанные с работой ClickPipe, будут сохраняться в таблице `system.clickpipes_log`. В ней хранятся все прочие ошибки, связанные с работой вашего ClickPipe (сеть, подключение и т. д.). Для этой таблицы настроен [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 7 дней.
 
 Если ClickPipes не удаётся подключиться к источнику данных в течение 15 минут или к приёмнику в течение 1 часа, инстанс ClickPipes останавливается и записывает соответствующее сообщение в таблицу системных ошибок (при условии, что инстанс ClickHouse доступен).
+
+## Мониторинг \{#monitoring\}
+
+Помимо мониторинга в консоли, ClickPipes предоставляет [Prometheus-совместимую конечную точку](/integrations/prometheus) для сбора метрик. Эти метрики публикуются вместе с другими метриками сервиса ClickHouse Cloud и позволяют интегрировать мониторинг ClickPipes в ваш существующий стек обсервабилити (например, [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog)). Полный список доступных метрик см. в разделе [Мониторинг ClickPipes](/integrations/clickpipes/monitoring).
 
 ## FAQ \{#faq\}
 

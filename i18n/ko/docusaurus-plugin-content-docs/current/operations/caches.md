@@ -1,14 +1,12 @@
 ---
-description: '쿼리를 실행할 때 ClickHouse는 여러 종류의 캐시를 사용합니다.'
+description: '쿼리를 수행할 때 ClickHouse는 여러 가지 캐시를 사용합니다.'
 sidebar_label: '캐시'
 sidebar_position: 65
 slug: /operations/caches
 title: '캐시 유형'
-keywords: ['캐시']
+keywords: ['cache']
 doc_type: 'reference'
 ---
-
-# 캐시 유형 \{#cache-types\}
 
 쿼리를 수행할 때 ClickHouse는 여러 가지 캐시를 사용하여 쿼리를 빠르게 처리하고,
 디스크에 대한 읽기 및 쓰기 필요를 줄입니다.

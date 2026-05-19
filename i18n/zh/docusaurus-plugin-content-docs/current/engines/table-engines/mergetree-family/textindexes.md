@@ -1,18 +1,16 @@
 ---
-description: '在文本中快速查找搜索词。'
-keywords: ['全文搜索', '文本索引', '索引', '索引（复数形式）']
-sidebar_label: '使用文本索引的全文搜索'
+description: '快速查找文本中的搜索词。'
+keywords: ['全文搜索', '文本索引', '索引', '索引']
+sidebar_label: '使用文本索引进行全文搜索'
 slug: /engines/table-engines/mergetree-family/textindexes
-title: '使用文本索引的全文搜索'
+title: '使用文本索引进行全文搜索'
 doc_type: 'reference'
 ---
 
-# 使用文本索引进行全文搜索 \{#full-text-search-with-text-indexes\}
-
-文本索引（也称为[倒排索引](https://en.wikipedia.org/wiki/Inverted_index)）可以对文本数据进行快速全文搜索。
-文本索引存储从词元到包含该词元的行号的映射关系。
-词元由称为分词（tokenization）的过程生成。
-例如，ClickHouse 的默认分词器会将英文句子 &quot;The cat likes mice.&quot; 转换为词元 [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;]。
+文本索引 (也称为[倒排索引](https://en.wikipedia.org/wiki/Inverted_index)) 可以对文本数据进行快速全文搜索。
+文本索引存储从标记到包含该标记的行号的映射关系。
+标记由称为分词 (tokenization) 的过程生成。
+例如，ClickHouse 的默认分词器会将英文句子 &quot;The cat likes mice.&quot; 转换为标记 [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;]。
 
 例如，假设有一个只有一列且包含三行的表
 
@@ -22,7 +20,7 @@ doc_type: 'reference'
 3: I have two dogs and a cat.
 ```
 
-相应的词元为：
+相应的标记为：
 
 ```result
 1: The, cat, likes, mice
@@ -58,8 +56,7 @@ mice   : [1]
 two    : [3]
 ```
 
-在给定搜索 token 的情况下，该索引结构可以快速定位所有匹配的行。
-
+在给定搜索标记的情况下，该索引结构可以快速定位所有匹配的行。
 
 ## 创建文本索引 \{#creating-a-text-index\}
 
@@ -73,7 +70,7 @@ two    : [3]
 
 要创建文本索引，请使用以下语法：
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     key UInt64,
@@ -82,8 +79,8 @@ CREATE TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
-                                            | ngrams[(N)]
                                             | asciiCJK
+                                            | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
                                 -- Optional parameters:
@@ -110,7 +107,7 @@ ORDER BY key
 
 或者，要为现有表添加一个文本索引：
 
-```sql
+```sql title="Query"
 ALTER TABLE table
     ADD INDEX text_idx(str) TYPE text(
                                 -- Mandatory parameters:
@@ -133,18 +130,17 @@ ALTER TABLE table
 
 如果你向已有表添加一个索引，我们建议为表中现有的parts物化此索引 (否则，在这些尚未建立索引的parts上进行搜索时，将会回退到较慢的穷举扫描方式) 。
 
-```sql
+```sql title="Query"
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ```
 
 要删除文本索引，请运行
 
-```sql
+```sql title="Query"
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
 **分词器 参数 (必填)&#x20;**。`tokenizer` 参数指定要使用的分词器：
-
 
 * `splitByNonAlpha` 会根据非字母数字的 ASCII 字符拆分字符串 (参见函数 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha)) 。
 * `splitByString(S)` 会根据某些用户自定义的分隔字符串 `S` 拆分字符串 (参见函数 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString)) 。
@@ -177,13 +173,11 @@ ALTER TABLE table DROP INDEX text_idx;
 
 示例：
 
-```sql
+```sql title="Query"
 SELECT tokens('abc def', 'ngrams', 3);
 ```
 
-结果：
-
-```result
+```result title="Response"
 ['abc','bc ','c d',' de','def']
 ```
 
@@ -195,7 +189,6 @@ SELECT tokens('abc def', 'ngrams', 3);
 **预处理器 参数 (可选)&#x20;**。预处理器 指的是在分词之前应用于输入字符串的一个表达式。
 
 预处理器 参数的典型用例包括
-
 
 1. 转换为小写/大写，或进行大小写折叠以实现大小写不敏感匹配，例如 [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)、[caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)。
 2. UTF-8 归一化，例如 [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
@@ -225,7 +218,7 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 例如，
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -239,7 +232,7 @@ SELECT count() FROM table WHERE hasToken(str, 'Foo');
 
 等价于：
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -255,7 +248,7 @@ SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 
 示例：
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     arr Array(String),
@@ -274,8 +267,7 @@ SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 
 示例：
 
-
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     map Map(String, String),
@@ -314,7 +306,7 @@ SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 
 示例：
 
-```sql
+```sql title="Query"
 CREATE TABLE table(
     k UInt64,
     s String,
@@ -325,9 +317,7 @@ ORDER BY k;
 SHOW CREATE TABLE table;
 ```
 
-结果：
-
-```result
+```result title="Response"
 ┌─statement──────────────────────────────────────────────────────────────┐
 │ CREATE TABLE default.table                                            ↴│
 │↳(                                                                     ↴│
@@ -343,7 +333,6 @@ SHOW CREATE TABLE table;
 
 较大的索引粒度可确保为整个 part 创建文本索引。
 显式指定的索引粒度将被忽略。
-
 
 ## 使用文本索引 \{#using-a-text-index\}
 
@@ -491,6 +480,24 @@ SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
 
+#### `hasPhrase` \{#functions-example-hasphrase\}
+
+函数 [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) 用于按短语匹配：所有标记必须按与搜索字符串相同的顺序连续出现。
+
+与 `hasAllTokens` 只要求所有标记出现在任意位置不同，`hasPhrase` 要求它们作为一个连续序列出现。
+搜索短语会使用为索引列配置的同一分词器进行分词。
+请注意，该函数需要使用 `splitByNonAlpha`、`splitByString`、`ngrams` 或 `asciiCJK` 分词器之一。
+
+示例：
+
+```sql
+-- Matches: 'clickhouse' and 'olap' must appear consecutively in that order
+SELECT count() FROM table WHERE hasPhrase(comment, 'clickhouse olap');
+
+-- Does NOT match a row containing 'olap clickhouse' (wrong order)
+-- Does NOT match a row containing 'clickhouse fast olap' (non-consecutive)
+```
+
 #### `has` \{#functions-example-has\}
 
 数组函数 [has](/sql-reference/functions/array-functions#has) 用于在字符串数组中匹配单个 token。
@@ -501,6 +508,17 @@ SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM table WHERE has(array, 'clickhouse');
 ```
 
+
+#### `hasAny` 和 `hasAll` \{#functions-example-hasany-hasall\}
+
+数组函数 [hasAny](/sql-reference/functions/array-functions#hasAny) 和 [hasAll](/sql-reference/functions/array-functions#hasAll) 用于测试带索引的数组列是否包含某个常量 needle 字符串集合中的任意字符串或全部字符串。
+
+示例：
+
+```sql
+SELECT count() FROM table WHERE hasAny(tags, ['clickhouse', 'olap']);
+SELECT count() FROM table WHERE hasAll(tags, ['clickhouse', 'olap']);
+```
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
@@ -667,7 +685,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 
 示例索引定义：
 
-```sql
+```sql title="Query"
 CREATE TABLE sensor_data
 (
     data JSON(sensor_id String),
@@ -684,13 +702,11 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'l
 
 示例查询：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -703,13 +719,11 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 
 示例查询：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -727,7 +741,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 
 示例索引定义：
 
-```sql
+```sql title="Query"
 CREATE TABLE events
 (
     data JSON,
@@ -745,13 +759,11 @@ INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 
 示例：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -766,11 +778,9 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 
 示例：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
-
-结果：
 
 ```text title="Response"
 ...
@@ -783,17 +793,15 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
         Granules: 0/2
 ```
 
-`IS NOT NULL` 也会使用索引——它会跳过路径不存在的그래뉼 (因为此时该值会是 `NULL`) ：
+`IS NOT NULL` 也会使用索引——它会跳过路径不存在的粒度 (因为此时该值会是 `NULL`) ：
 
 示例：
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -864,6 +872,49 @@ SELECT * FROM events WHERE data.level IN ('error', 'critical');
 ```
 
 
+### 短语搜索 \{#text-index-phrase-search\}
+
+文本索引支持通过 `hasPhrase` 函数执行短语搜索。
+短语中的所有标记都必须在文档中按相同顺序连续出现。
+
+文本索引通过对短语中所有标记的倒排列表求交来确定候选粒度，从而加速短语搜索。
+在这些粒度内，ClickHouse 随后会验证标记是否精确相邻。
+
+`hasPhrase` 支持与 `splitByNonAlpha`、`splitByString`、`ngrams` 和 `asciiCJK` 分词器配合使用。
+
+短语字符串会使用索引所配置的分词器进行分词。
+短语中的分词器分隔符字符会被忽略：对于 `splitByNonAlpha` 分词器，`hasPhrase(text, 'quick+brown')` 等价于 `hasPhrase(text, 'quick brown')`。
+
+#### 示例 \{#text-index-phrase-search-example\}
+
+```sql title="Query"
+CREATE TABLE tab (
+    id UInt32,
+    text String,
+    INDEX idx(text) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO tab VALUES
+    (1, 'weather in New York'),
+    (2, 'New weather in York'),
+    (3, 'weather in New Orleans');
+```
+
+```sql title="Query"
+SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
+```
+
+```result title="Response"
+   ┌─id─┬─text────────────────┐
+1. │  1 │ weather in New York │
+   └────┴─────────────────────┘
+```
+
+第 2 行 (`'New weather in York'`) 不匹配，因为这些标记的顺序不对。
+第 3 行 (`'weather in New Orleans'`) 不匹配，因为其中不包含标记 `'York'`。
+
 ## 性能调优 \{#performance-tuning\}
 
 ### 直接读取 \{#direct-read\}
@@ -889,7 +940,7 @@ WHERE string_search_function(column_with_text_index)
 **支持的函数**
 
 直接读取优化支持函数 `hasToken`、`hasAllTokens` 和 `hasAnyTokens`。
-如果文本索引是使用 `array` tokenizer 定义的，直接读取同样支持函数 `equals`、`has`、`mapContainsKey` 和 `mapContainsValue`。
+如果文本索引是使用 `array` 分词器 定义的，直接读取同样支持函数 `equals`、`has`、`hasAny`、`hasAll`、`mapContainsKey` 和 `mapContainsValue`。
 这些函数也可以通过 `AND`、`OR` 和 `NOT` 运算符组合使用。
 `WHERE` 或 `PREWHERE` 子句中还可以包含额外的非文本搜索函数过滤条件 (针对文本列或其他列) ——在这种情况下，仍然会使用直接读取优化，但效果会略差一些 (它仅适用于受支持的文本搜索函数) 。
 
@@ -999,7 +1050,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 ### LIKE/ILIKE 查询 \{#like-ilike-queries-perf\}
 
-当 LIKE/ILIKE 查询模式为 `%<alpha-numeric-characters-without-spaces>%`，且 文本索引 的分词器为 `splitByNonAlpha` 时，ClickHouse 会利用转置索引显著加速 LIKE/ILIKE 查询。为实现这一点，ClickHouse 会扫描转置索引字典来查找匹配模式，而不是执行全表扫描。
+当 LIKE/ILIKE 查询模式为 `%<alpha-numeric-characters-without-spaces>%`，且 文本索引 的分词器为 `splitByNonAlpha` 或 `array` 时，ClickHouse 会利用转置索引显著加速 LIKE/ILIKE 查询。为实现这一点，ClickHouse 会扫描转置索引字典来查找匹配模式，而不是执行全表扫描。
 
 启用该优化后，LIKE/ILIKE 查询通常会比全表扫描快得多。不过，当该模式匹配字典中的大多数标记时，其性能反而可能不如全表扫描。幸运的是，系统提供了回退机制来避免这种情况。
 

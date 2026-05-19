@@ -2,12 +2,10 @@
 sidebar_label: 'Cloud 접근 관리'
 slug: /cloud/security/cloud_access_management
 title: 'Cloud 접근 관리'
-description: 'Cloud 접근 관리에 대해 알아봅니다'
+description: '클라우드 접근 관리에 대해 자세히 알아보세요'
 doc_type: 'landing-page'
 keywords: ['접근 관리', '보안', '사용자 관리', '권한', '인증']
 ---
-
-# Cloud 접근 관리 \{#cloud-access-management\}
 
 이 섹션에는 ClickHouse Cloud에서 접근을 관리하기 위한 상세 가이드가 포함합니다.
 

@@ -1286,7 +1286,7 @@ ALTER TABLE tab DROP STATISTICS a;
 #### STATISTICSを用いたパーツ剪枝 \{#part-pruning-with-statistics\}
 
 `use_statistics_for_part_pruning` を有効にすると、STATISTICSを使ってパーツ剪枝を行えます。
-現在、パーツ剪枝に対応しているのは `MinMax` STATISTICSのみです。カラムに MinMax STATISTICSが定義されている場合、ClickHouse は各パーツ内のそのカラムの最小値と最大値を追跡します。
+現在、パーツ剪枝に対応しているのは `MinMax` と `NullCount` のSTATISTICSです。カラムに MinMax STATISTICSが定義されている場合、ClickHouse は各パーツ内のそのカラムの最小値と最大値を追跡します。`Nullable` カラムに NullCount STATISTICSが定義されている場合、ClickHouse は各パーツ内の NULL 値の数を追跡し、`IS NULL` / `IS NOT NULL` 述語に基づく剪枝を可能にするとともに、NULL 値を含むカラムに対する範囲フィルターの剪枝精度を向上させます。
 パーツ剪枝を使用すると、クエリのフィルター条件にそのパーツ内のどの行も一致しない場合、データパーツ全体の読み込みをスキップできます。
 
 **例:**
@@ -1317,50 +1317,57 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 -- The output will show "Parts: 1/2" indicating one part was pruned
 ```
 
+### 利用可能なカラム STATISTICSの種類 \{#available-types-of-column-statistics\}
 
-### 利用可能なカラム統計の種類 \{#available-types-of-column-statistics\}
+* `MinMax`
 
-- `MinMax`
+  数値カラムに対する範囲フィルターの選択性を推定するために、カラムの最小値と最大値を保持します。
 
-    数値カラムに対する範囲フィルターの選択性を推定するために、カラムの最小値と最大値を保持します。
+  構文: `minmax`
 
-    構文: `minmax`
+* `TDigest`
 
-- `TDigest`
+  数値カラムに対して近似パーセンタイル (例: 第 90 パーセンタイル) を計算するための [TDigest](https://github.com/tdunning/t-digest) スケッチです。
 
-    数値カラムに対して近似パーセンタイル（例: 第 90 パーセンタイル）を計算するための [TDigest](https://github.com/tdunning/t-digest) スケッチです。
+  構文: `tdigest`
 
-    構文: `tdigest`
+* `Uniq`
 
-- `Uniq`
+  カラムに含まれる異なる値の個数を推定するための [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) スケッチです。
 
-    カラムに含まれる異なる値の個数を推定するための [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) スケッチです。
+  構文: `uniq`
 
-    構文: `uniq`
+* `NullCount`
 
-- `CountMin`
+  `Nullable` カラム内の `NULL` 値の数を追跡します。PREWHERE optimization において、`IS NULL`/`IS NOT NULL` 述語の選択性を正確に推定するために使用され、NULL の存在に基づく パーツ剪枝 も可能にします。
 
-    カラム内の各値の出現頻度を近似的にカウントするための [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) スケッチです。
+  構文: `nullcount`
 
-    構文: `countmin`
+* `CountMin`
+
+  カラム内の各値の出現頻度を近似的にカウントするための [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) スケッチです。
+
+  構文: `countmin`
 
 ### サポートされているデータ型 \{#supported-data-types\}
 
-|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String または FixedString |
-|-----------|----------------------------------------------------|---------------------------|
-| CountMin  | ✔                                                  | ✔                         |
-| MinMax    | ✔                                                  | ✗                         |
-| TDigest   | ✔                                                  | ✗                         |
-| Uniq      | ✔                                                  | ✔                         |
+|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String または FixedString | Nullable(*) / LowCardinality(Nullable(*)) |
+| --------- | -------------------------------------------------- | ---------------------- | ----------------------------------------- |
+| CountMin  | ✔                                                  | ✔                      | ✗                                         |
+| MinMax    | ✔                                                  | ✗                      | ✔                                         |
+| NullCount | ✗                                                  | ✗                      | ✔                                         |
+| TDigest   | ✔                                                  | ✗                      | ✔                                         |
+| Uniq      | ✔                                                  | ✔                      | ✔                                         |
 
 ### サポートされる操作 \{#supported-operations\}
 
-|           | 等値フィルター (==) | 範囲フィルター (`>, >=, <, <=`) |
-|-----------|---------------------|------------------------------|
-| CountMin  | ✔                   | ✗                            |
-| MinMax    | ✗                   | ✔                            |
-| TDigest   | ✗                   | ✔                            |
-| Uniq      | ✔                   | ✗                            |
+|           | 等値フィルター (==) | 範囲フィルター (`>, >=, <, <=`) | `IS NULL` / `IS NOT NULL` |
+| --------- | ------------ | ------------------------ | ------------------------- |
+| CountMin  | ✔            | ✗                        | ✗                         |
+| MinMax    | ✗            | ✔                        | ✗                         |
+| NullCount | ✗            | ✗                        | ✔                         |
+| TDigest   | ✗            | ✔                        | ✗                         |
+| Uniq      | ✔            | ✗                        | ✗                         |
 
 ## 列レベルの設定 \{#column-level-settings\}
 

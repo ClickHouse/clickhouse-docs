@@ -9,8 +9,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 고급 튜토리얼 \{#advanced-tutorial\}
-
 ## 개요 \{#overview\}
 
 New York City 택시 예제 데이터셋을 사용하여 ClickHouse에서 데이터를 수집하고 쿼리하는 방법을 알아봅니다. 

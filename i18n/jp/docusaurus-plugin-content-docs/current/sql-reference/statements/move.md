@@ -1,13 +1,11 @@
 ---
-description: 'MOVE アクセスエンティティステートメントのドキュメント'
+description: 'MOVE access entity ステートメントのドキュメント'
 sidebar_label: 'MOVE'
 sidebar_position: 54
 slug: /sql-reference/statements/move
-title: 'MOVE アクセスエンティティステートメント'
+title: 'MOVE access entity ステートメント'
 doc_type: 'reference'
 ---
-
-# MOVE access entity ステートメント \{#move-access-entity-statement\}
 
 このステートメントを使用すると、ある access storage から別の access storage へ access entity を移動できます。
 

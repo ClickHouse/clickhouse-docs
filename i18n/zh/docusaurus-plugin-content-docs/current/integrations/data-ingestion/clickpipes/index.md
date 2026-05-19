@@ -36,7 +36,9 @@ import Image from '@theme/IdealImage';
 
 [ClickPipes](/integrations/clickpipes) 是一个托管集成平台，可将来自多种来源的数据摄取过程简化为只需点击几下。ClickPipes 的强大且可扩展架构专为最严苛的工作负载设计，确保性能和可靠性的一致性。ClickPipes 既可用于长期的流式数据场景，也可用于一次性的数据加载作业。
 
-<Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border/>
+ClickPipes 既可以通过 ClickPipes UI 手动部署和管理，也可以借助 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
+
+<Image img={clickpipes_stack} alt="ClickPipes stack" size="lg" border />
 
 ## 支持的数据源 \{#supported-data-sources\}
 
@@ -156,6 +158,10 @@ ClickPipes 会在目标表所在的数据库中创建一个后缀为 `<destinati
 与 ClickPipe 运行相关的错误将存储在 `system.clickpipes_log` 表中。该表还会记录所有与 ClickPipe 运行相关的其他错误 (如网络、连接等) 。此表的[生存时间 (TTL)](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) 为 7 天。
 
 如果 ClickPipes 在 15 分钟内无法连接到数据源，或在 1 小时内无法连接到目标端，则该 ClickPipes 实例会停止运行，并在系统错误表中存储一条相应的消息 (前提是 ClickHouse 实例可用) 。
+
+## 监控 \{#monitoring\}
+
+除了控制台内的监控外，ClickPipes 还会将指标暴露到一个[兼容 Prometheus 的端点](/integrations/prometheus)，供抓取使用。这些指标会与其他 ClickHouse Cloud 服务指标一同发布，让您能够将 ClickPipes 监控集成到现有的可观测性堆栈中 (例如 [Grafana](/integrations/prometheus#integrating-with-grafana) 和 [Datadog](/integrations/prometheus#integrating-with-datadog)) 。有关可用指标的完整列表，请参阅 [Monitoring ClickPipes](/integrations/clickpipes/monitoring)。
 
 ## 常见问题解答 \{#faq\}
 

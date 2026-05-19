@@ -19,7 +19,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ## 描述 \{#description\}
 
-`ProtobufList` 格式与 [`Protobuf`](./Protobuf.md) 格式类似，但每一行表示为一系列子消息，这些子消息包含在一个名称固定为 "Envelope" 的消息中。
+`ProtobufList` 格式与 [`Protobuf`](./Protobuf.md) 格式类似，但每一行表示为一系列子消息，这些子消息包含在一个名称固定为 &quot;Envelope&quot; 的消息中。
 
 ## 示例用法 \{#example-usage\}
 
@@ -47,5 +47,7 @@ message Envelope {
   MessageType row = 1;
 };
 ```
+
+`format_schema` 中指定的消息类型会先解析为顶层 `Envelope` 消息内部的嵌套类型。如果未找到匹配项——无论是因为 schema 中没有 `Envelope` 消息，还是因为 `Envelope` 中不包含具有所请求名称的消息——则直接使用该名称对应的顶层消息。
 
 ## 格式设置 \{#format-settings\}

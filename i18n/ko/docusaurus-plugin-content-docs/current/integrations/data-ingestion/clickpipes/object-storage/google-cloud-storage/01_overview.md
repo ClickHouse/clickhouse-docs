@@ -1,22 +1,21 @@
 ---
-sidebar_label: '개요'
-description: '객체 스토리지를 ClickHouse Cloud에 원활하게 연결할 수 있습니다.'
+sidebar_label: "개요"
+description: "객체 스토리지를 ClickHouse Cloud에 원활하게 연결할 수 있습니다."
 slug: /integrations/clickpipes/object-storage/gcs/overview
 sidebar_position: 1
-title: 'Google Cloud Storage와 ClickHouse Cloud 통합'
-doc_type: 'guide'
+title: "Google Cloud Storage와 ClickHouse Cloud 통합"
+doc_type: "guide"
 ---
 
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
-import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
-import gcs_subscription_input from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png';
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import Image from '@theme/IdealImage';
+import cp_iam from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png"
+import cp_credentials from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png"
+import gcs_subscription_input from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png"
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import Image from "@theme/IdealImage"
 
-GCS ClickPipe는 Google Cloud Storage(GCS)에서 데이터를 수집하기 위한 완전 관리형이면서 신뢰성 있는 방식을 제공합니다. **일회성 수집**과 **지속적인 수집**을 모두 지원하며, 정확히 한 번만 처리되는(exactly-once) 의미론을 보장합니다.
+GCS ClickPipe는 Google Cloud Storage(GCS)에서 데이터를 수집하기 위한 완전 관리형이면서 신뢰성 있는 방식을 제공합니다. **일회성 수집**과 **연속 수집**을 모두 지원하며, 정확히 한 번 처리 의미론을 보장합니다.
 
-GCS ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수 있을 뿐만 아니라, [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 및 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe)을 사용해 프로그래밍 방식으로도 배포하고 관리할 수 있습니다.
-
+GCS ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수 있을 뿐만 아니라, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 및 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 사용해 프로그래밍 방식으로도 배포하고 관리할 수 있습니다.
 
 ## 지원되는 형식 \{#supported-formats\}
 

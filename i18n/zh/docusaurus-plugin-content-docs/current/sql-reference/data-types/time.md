@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse 中 Time 数据类型的文档，该类型以秒级精度存储时间'
+description: 'ClickHouse 中 Time 数据类型的文档，该类型以秒精度存储时间范围'
 slug: /sql-reference/data-types/time
 sidebar_position: 15
 sidebar_label: 'Time'
 title: 'Time'
 doc_type: 'reference'
 ---
-
-# Time \{#time\}
 
 数据类型 `Time` 表示一个由小时、分钟和秒组成的时间。
 它独立于任何日历日期，适用于不需要日、月、年部分的取值。

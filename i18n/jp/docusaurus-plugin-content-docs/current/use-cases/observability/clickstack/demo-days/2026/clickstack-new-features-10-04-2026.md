@@ -1,12 +1,13 @@
 ---
-slug: /use-cases/observability/clickstack/demo-days/2026/04/10-04-2026
-title: "デモデイズ - 10/04/2026"
-sidebar_label: "10/04/2026"
+slug: /use-cases/observability/clickstack/demo-days/2026/2026-04-10
+title: "デモデイズ - 2026-04-10"
+sidebar_label: "2026-04-10"
 pagination_prev: null
 pagination_next: null
-description: "ClickStack のデモデイズ（10/04/2026）"
+description: "ClickStack のデモデイズ（2026-04-10）"
 doc_type: "guide"
 keywords: ["ClickStack", "デモデイズ"]
+sidebar_position: -20260410
 ---
 
 ## ピン留めできるデータソースフィルター \{#pinnable-datasource-filters\}

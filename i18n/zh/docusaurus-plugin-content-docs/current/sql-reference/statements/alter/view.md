@@ -1,5 +1,5 @@
 ---
-description: 'ALTER TABLE ... MODIFY QUERY 语句文档'
+description: 'ALTER TABLE ... MODIFY QUERY 语句的文档'
 sidebar_label: 'VIEW'
 sidebar_position: 50
 slug: /sql-reference/statements/alter/view
@@ -7,11 +7,9 @@ title: 'ALTER TABLE ... MODIFY QUERY 语句'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY QUERY 语句 \{#alter-table-modify-query-statement\}
+您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在创建[materialized view](/sql-reference/statements/create/view#materialized-view)时指定的 `SELECT` 查询，而不会中断数据摄取过程。
 
-您可以使用 `ALTER TABLE ... MODIFY QUERY` 语句修改在创建[物化视图](/sql-reference/statements/create/view#materialized-view)时指定的 `SELECT` 查询，而不会中断数据摄取过程。
-
-此命令用于更改使用 `TO [db.]name` 子句创建的物化视图。它不会更改底层存储表的结构，也不会更改物化视图的列定义，因此，对于没有使用 `TO [db.]name` 子句创建的物化视图，此命令的适用范围非常有限。
+此命令用于更改使用 `TO [db.]name` 子句创建的materialized view。它不会更改底层存储表的结构，也不会更改materialized view的列定义，因此，对于没有使用 `TO [db.]name` 子句创建的materialized view，此命令的适用范围非常有限。
 
 **使用 TO 表的示例**
 
@@ -196,7 +194,37 @@ SELECT * FROM mv;
 └───┘
 ```
 
-
 ## ALTER TABLE ... MODIFY REFRESH 语句 \{#alter-table--modify-refresh-statement\}
 
-`ALTER TABLE ... MODIFY REFRESH` 语句更改[可刷新物化视图](../create/view.md#refreshable-materialized-view)的刷新参数。请参阅[更改刷新参数](../create/view.md#changing-refresh-parameters)。
+`ALTER TABLE ... MODIFY REFRESH` 用于修改[可刷新materialized view](../create/view.md#refreshable-materialized-view)的刷新参数，包括调度计划、依赖关系、随机化以及[刷新设置](../create/view.md#refresh-settings)。
+
+```sql
+ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
+```
+
+调度 (`EVERY` 或 `AFTER`) 是必填项：该语句会一次性替换*所有*刷新参数。任何未指定的子句——`RANDOMIZE FOR`、`DEPENDS ON` 或 `SETTINGS`——都会被移除或重置为基本值。若只想修改刷新设置，请重复写出当前调度。
+
+```sql
+-- Change the schedule.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE;
+
+-- Change retry settings (schedule must be repeated).
+ALTER TABLE rmv MODIFY REFRESH EVERY 1 HOUR
+SETTINGS refresh_retries = 5,
+         refresh_retry_initial_backoff_ms = 500,
+         refresh_retry_max_backoff_ms = 60000;
+
+-- Add or keep a dependency.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR DEPENDS ON other_rmv;
+
+-- Drop the dependency by omitting `DEPENDS ON`.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR;
+```
+
+限制：
+
+* 不支持对 materialized view 使用 `ALTER TABLE ... MODIFY SETTING`；刷新设置只能通过 `MODIFY REFRESH` 修改。
+* 不支持添加或移除 `APPEND`。
+* 视图创建后，无法再修改 `all_replicas` 刷新设置。
+
+完整的刷新设置列表见 [Refresh Settings](../create/view.md#refresh-settings)。刷新状态 (包括当前生效的设置) 可在 [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) 中查看。

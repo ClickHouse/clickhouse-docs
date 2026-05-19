@@ -114,18 +114,16 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 設定:
 
 * `oneline` – クエリを1行で出力します。デフォルト: `0`。
-* `run_query_tree_passes` – クエリツリーをダンプする前にクエリツリーのパス処理を実行します。デフォルト: `0`。
-* `query_tree_passes` – `run_query_tree_passes` が有効な場合に、実行するパス処理の回数を指定します。`query_tree_passes` を指定しない場合は、すべてのパス処理を実行します。
+* `run_query_tree_passes` – クエリツリーをダンプする前にクエリツリーパスを実行します。デフォルト: `0`。
+* `query_tree_passes` – `run_query_tree_passes` が有効な場合に、実行するクエリツリーパスの回数を指定します。`query_tree_passes` を指定しない場合は、すべてのクエリツリーパスを実行します。
 
 例:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Output:
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -133,13 +131,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 `run_query_tree_passes` を有効にした場合：
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-出力:
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -532,7 +528,11 @@ Expression ((Project names + Projection))
 `pretty` = 1 の場合、プランツリーはインデントの代わりに線描文字を使って表示され、主要なステップに関する追加情報も表示されます:
 
 * **クエリの出力カラム**は、計画の先頭に表示されます。
+* フィルター、集約キー、ソート記述、および**ウィンドウ関数**内の**式**は、人が読みやすい SQL 風の表記で表示されます (例: `greater(plus(a, 1), 5)` ではなく `a + 1 > 5`)。わかりやすくするために、内部カラム識別子のプレフィックス (`__table1.` など) は削除されます。
 * **ソースステップ** (`ReadFromMergeTree` など) には、その出力カラムが表示されます。
+* **Filter ステップ**には、SQL 表記によるフィルター条件が表示されます。ランタイム join フィルターが存在する場合は、それらも別個に表示されます。
+* **Aggregation ステップ**には、キーと集約関数がその引数とともに表示されます (例: `sum(c)`, `count()`)。
+* タプルリテラル由来の **IN sets** にはその値が表示され (大きい set の場合は省略表示)、サブクエリベースの set には `subquery1`、`subquery2` などのラベルが付き、`Set` エンジンテーブル由来の set にはテーブル名が表示されます。
 * **Join ステップ**には、数学的な表記による結合関係、推定結果行数、
   および各出力カラムが左側と右側のどちらに由来するかが表示されます。異なる join 種別を
   表すために、次の記号を使用します。
@@ -553,8 +553,7 @@ Expression ((Project names + Projection))
 テーブル名の後の角括弧内の数値 (例: `t1[100]`) は、テーブル統計を利用できる場合の
 推定行数を示します。
 
-`pretty` オプションは `compact = 1` と併用すると効果的で、`Expression` ステップや
-詳細なアクション情報を非表示にできるため、計画が読みやすくなります。
+`pretty` オプションは `compact = 1` と併用すると効果的で、`Expression` ステップや詳細なアクション情報を非表示にできるため、計画が読みやすくなります。
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -586,10 +585,10 @@ Join (JOIN FillRightFirst)
 │  t1[100] ⋈ t2[100]
 │  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
 │  Result rows: 100
-│  Join conditions: [(__table1.id) = (__table2.id)]
 │  Output:
 │    Left:  id, value
 │    Right: id, value
+│  Join conditions: id = id
 ├──ReadFromMergeTree (default.t1)
 │     Read type: Default
 │     Parts: 1 | Granules: 1
@@ -599,7 +598,6 @@ Join (JOIN FillRightFirst)
       Parts: 1 | Granules: 1
       Output: id, value
 ```
-
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 
@@ -642,21 +640,17 @@ ExpressionTransform
 
 テーブルの作成:
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-クエリ：
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
@@ -671,21 +665,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 次のようなリモートの MySQL テーブルがあるとします：
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

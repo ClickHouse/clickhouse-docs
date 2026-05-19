@@ -1,14 +1,12 @@
 ---
 slug: /faq/integration/json-import
-title: 'JSON を ClickHouse にインポートする方法'
+title: 'ClickHouse に JSON をインポートする方法'
 toc_hidden: true
 toc_priority: 11
-description: 'このページでは、JSON を ClickHouse にインポートする方法を説明します。'
-keywords: ['JSON インポート', 'JSONEachRow フォーマット', 'データインポート', 'JSON インジェスト', 'データフォーマット']
+description: 'このページでは ClickHouse に JSON をインポートする方法を説明します'
+keywords: ['JSON インポート', 'JSONEachRow フォーマット', 'データのインポート', 'JSON インジェスト', 'データ形式']
 doc_type: 'guide'
 ---
-
-# ClickHouse に JSON をインポートする方法 \{#how-to-import-json-into-clickhouse\}
 
 ClickHouse は、[入出力用のさまざまなデータ形式](/interfaces/formats)をサポートしています。その中には複数の JSON 系フォーマットがありますが、データのインジェストで最も一般的に使用されるのは [JSONEachRow](/interfaces/formats/JSONEachRow) です。これは、1 行につき 1 つの JSON オブジェクトがあり、各オブジェクトが改行で区切られている形式を想定しています。
 

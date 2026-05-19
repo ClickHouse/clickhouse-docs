@@ -19,7 +19,7 @@ doc_type: 'reference'
 * `case_insensitive` ([UInt8](../../sql-reference/data-types/)) — 関数名を大文字と小文字を区別せずに使用できるかどうか。
 * `alias_to` ([String](../../sql-reference/data-types/)) — 関数名がエイリアスである場合の元の関数名。
 * `create_query` ([String](../../sql-reference/data-types/)) — 廃止。
-* `origin` ([Enum8(&#39;System&#39; = 0, &#39;SQLUserDefined&#39; = 1, &#39;ExecutableUserDefined&#39; = 2)](../../sql-reference/data-types/)) — 廃止。
+* `origin` ([Enum8(&#39;System&#39; = 0, &#39;SQLUserDefined&#39; = 1, &#39;ExecutableUserDefined&#39; = 2, &#39;WasmUserDefined&#39; = 3)](../../sql-reference/data-types/)) — 廃止。
 * `description` ([String](../../sql-reference/data-types/)) — 関数の動作の概要。
 * `syntax` ([String](../../sql-reference/data-types/)) — 関数のシグネチャ。
 * `arguments` ([String](../../sql-reference/data-types/)) — 関数の引数。

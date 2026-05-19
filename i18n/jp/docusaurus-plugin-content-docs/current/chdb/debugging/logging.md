@@ -1,15 +1,13 @@
 ---
-title: 'DataStore のロギング'
-sidebar_label: 'ロギング'
+title: 'DataStore のログ'
+sidebar_label: 'ログ'
 slug: /chdb/debugging/logging
-description: 'デバッグと監視のために DataStore のロギングを設定する'
+description: 'デバッグと監視のために DataStore のログを設定する'
 keywords: ['chdb', 'datastore', 'logging', 'debug', 'log', 'level']
 doc_type: 'reference'
 ---
 
-# DataStore ロギング \{#datastore-logging\}
-
-DataStore は Python 標準ライブラリの logging モジュールを使用します。本ガイドでは、デバッグ目的でのロギング設定方法について説明します。
+DataStore は Python の標準 logging モジュールを使用します。このガイドでは、デバッグ用のログを設定する方法を説明します。
 
 ## クイックスタート \{#quick-start\}
 

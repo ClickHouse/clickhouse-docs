@@ -8,7 +8,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Basic time-series operations
 
 ClickHouse provides several methods for working with time series data, allowing you to aggregate, group, and analyze data points across different time periods. 
 This section covers the fundamental operations commonly used when working with time-based data.

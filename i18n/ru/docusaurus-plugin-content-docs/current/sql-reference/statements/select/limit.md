@@ -1,14 +1,12 @@
 ---
-description: 'Документация по LIMIT'
+description: 'Документация по предложению LIMIT'
 sidebar_label: 'LIMIT'
 slug: /sql-reference/statements/select/limit
-title: 'LIMIT'
+title: 'Предложение LIMIT'
 doc_type: 'reference'
 ---
 
-# Оператор LIMIT \{#limit-clause\}
-
-Оператор `LIMIT` управляет количеством строк, возвращаемых в результатах запроса.
+Секция `LIMIT` определяет, сколько строк будет возвращено в результатах запроса.
 
 ## Базовый синтаксис \{#basic-syntax\}
 

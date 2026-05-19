@@ -1,13 +1,11 @@
 ---
 description: '`remote_servers` セクションで設定されたクラスタ内のすべてのシャードに、Distributed テーブルを作成せずにアクセスできます。'
-sidebar_label: 'クラスタ'
+sidebar_label: 'cluster'
 sidebar_position: 30
 slug: /sql-reference/table-functions/cluster
 title: 'clusterAllReplicas'
 doc_type: 'reference'
 ---
-
-# clusterAllReplicas テーブル関数 \{#clusterallreplicas-table-function\}
 
 `remote_servers` セクションで設定されたクラスタ内のすべてのシャードに、[Distributed](../../engines/table-engines/special/distributed.md) テーブルを作成せずにアクセスできます。各シャードにつき 1 つのレプリカのみがクエリされます。
 

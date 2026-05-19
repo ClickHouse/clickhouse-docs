@@ -7,9 +7,7 @@ title: 'remote, remoteSecure'
 doc_type: 'reference'
 ---
 
-# remote, remoteSecure Table Function \{#remote-remotesecure-table-function\}
-
-`remote` 테이블 함수는 [Distributed](../../engines/table-engines/special/distributed.md) 테이블을 생성하지 않고도 원격 서버에 즉석에서 접근할 수 있도록 합니다. `remoteSecure` 테이블 함수는 보안 연결을 통해 동작한다는 점을 제외하면 `remote`와 동일합니다.
+테이블 함수 `remote`는 [Distributed](../../engines/table-engines/special/distributed.md) 테이블을 생성하지 않고도 원격 서버에 즉석에서 접근할 수 있게 합니다. 테이블 함수 `remoteSecure`는 보안 연결을 사용하는 점을 제외하면 `remote`와 동일합니다.
 
 두 함수 모두 `SELECT` 및 `INSERT` 쿼리에서 사용할 수 있습니다.
 

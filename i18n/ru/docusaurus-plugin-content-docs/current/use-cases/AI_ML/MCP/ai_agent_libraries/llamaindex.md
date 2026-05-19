@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/llamaindex
-sidebar_label: 'Интеграция с LlamaIndex'
+sidebar_label: 'Интеграция LlamaIndex'
 title: 'Как создать ИИ-агента LlamaIndex с использованием MCP-сервера ClickHouse.'
 pagination_prev: null
 pagination_next: null
@@ -9,8 +9,6 @@ keywords: ['ClickHouse', 'MCP', 'LlamaIndex']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# Как создать ИИ-агента LlamaIndex с использованием MCP-сервера ClickHouse \{#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server\}
 
 В этом руководстве вы узнаете, как создать ИИ-агента [LlamaIndex](https://docs.llamaindex.ai), который
 может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [MCP-сервера ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).

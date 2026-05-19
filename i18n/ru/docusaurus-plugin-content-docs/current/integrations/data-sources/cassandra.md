@@ -7,6 +7,4 @@ keywords: ['cassandra', 'integration', 'dictionary']
 doc_type: 'reference'
 ---
 
-# Интеграция с Cassandra \{#cassandra-integration\}
-
-Интеграцию с Cassandra можно настроить с помощью словаря. Подробности [здесь](/sql-reference/statements/create/dictionary/sources/cassandra).
+Вы можете использовать Cassandra через словарь. Подробности [здесь](/sql-reference/statements/create/dictionary/sources/cassandra).

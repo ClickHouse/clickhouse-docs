@@ -9,9 +9,9 @@ keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-# ALTER DATABASE ... MODIFY COMMENT \{#alter-database-modify-comment\}
-
-Добавляет, изменяет или удаляет комментарий к базе данных, независимо от того, был ли он задан ранее. Изменение комментария отражается как в [`system.databases`](/operations/system-tables/databases.md), так и в результате запроса `SHOW CREATE DATABASE`.
+Добавляет, изменяет или удаляет комментарий к базе данных независимо от того, был ли он
+задан ранее. Изменение комментария отражается как в [`system.databases`](/operations/system-tables/databases.md),
+так и в запросе `SHOW CREATE DATABASE`.
 
 ## Синтаксис \{#syntax\}
 
@@ -23,34 +23,34 @@ ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 Чтобы создать базу данных (`DATABASE`) с комментарием:
 
-```sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'Временная база данных';
+```sql title="Query"
+CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
 ```
 
 Чтобы отредактировать комментарий:
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT 'new comment on a database';
 ```
 
 Чтобы просмотреть изменённый комментарий:
 
-```sql
+```sql title="Query"
 SELECT comment 
 FROM system.databases 
 WHERE name = 'database_with_comment';
 ```
 
-```text
+```text title="Response"
 ┌─comment─────────────────┐
-│ новый комментарий к базе данных │
+│ new comment on database │
 └─────────────────────────┘
 ```
 
 Чтобы удалить комментарий к базе данных:
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```
@@ -71,5 +71,5 @@ WHERE  name = 'database_with_comment';
 
 ## См. также \{#related-content\}
 
-- Предложение [`COMMENT`](/sql-reference/statements/create/table#comment-clause)
-- [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)
+* Предложение [`COMMENT`](/sql-reference/statements/create/table#comment-clause)
+* [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)

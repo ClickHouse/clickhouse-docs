@@ -7,7 +7,6 @@ keywords: ['AI', 'ClickHouse Cloud', 'MCP', 'Model Context Protocol', 'remote MC
 doc_type: 'reference'
 ---
 
-# Remote MCP server in Cloud
 
 Not all users interact with ClickHouse through the Cloud console.
 For example, many developers work directly from their preferred code editors, CLI agents, or connect to the database via custom setups, while others rely on general-purpose AI assistants such as Anthropic Claude for most of their explorations.

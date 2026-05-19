@@ -3,21 +3,19 @@ title: 'ClickHouse 支持哪些 SQL 语法？'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/sql
-description: 'ClickHouse 完全支持 SQL 语法'
+description: 'ClickHouse 支持 100% 的 SQL 语法'
 doc_type: 'reference'
 keywords: ['SQL 语法', 'ANSI SQL']
 ---
 
-# ClickHouse 支持哪些 SQL 语法？ \{#what-sql-syntax-does-clickhouse-support\}
-
 ClickHouse 对 SQL 语法提供了完整支持，包括以下特性：
 
-* SQL/JSON 和 JSON 数据类型（SQL-2023）
-* 窗口函数（SQL-2003）
-* 公用表表达式和递归查询（SQL-1999）
-* ROLLUP、CUBE 和 GROUPING SETS（SQL-1999）
-* 对 RBAC 的完整支持（SQL-1999）
-* 关联子查询（SQL-1992）
+* SQL/JSON 和 JSON 数据类型 (SQL-2023) 
+* 窗口函数 (SQL-2003) 
+* 公用表表达式和递归查询 (SQL-1999) 
+* ROLLUP、CUBE 和 GROUPING SETS (SQL-1999) 
+* 对 RBAC 的完整支持 (SQL-1999) 
+* 关联子查询 (SQL-1992) 
 
 这一支持已经通过 TPC-H 和 TPC-DS 基准测试以及 SQLTest 得到验证。
 

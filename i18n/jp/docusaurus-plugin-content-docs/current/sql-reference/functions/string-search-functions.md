@@ -1,21 +1,20 @@
 ---
-description: '文字列内検索関数に関するドキュメント'
+description: '文字列検索用関数のドキュメント'
 sidebar_label: '文字列検索'
 slug: /sql-reference/functions/string-search-functions
-title: '文字列内検索関数'
+title: '文字列検索用関数'
 doc_type: 'reference'
 ---
-
-# 文字列検索用関数 \{#functions-for-searching-in-strings\}
 
 このセクションのすべての関数は、デフォルトでは大文字小文字を区別して検索します。大文字小文字を区別しない検索は、通常は別の関数バリアントとして提供されます。
 
 :::note
-大文字小文字を区別しない検索は、英語の小文字・大文字の規則に従います。例えば、英語では小文字の `i` の大文字は `I` ですが、トルコ語では `İ` となります。そのため、英語以外の言語では想定外の結果になる可能性があります。
+大文字小文字を区別しない検索は、英語の小文字・大文字の規則に従います。例えば、英語では小文字の `i` の大文字は
+`I` ですが、トルコ語では `İ` となります。そのため、英語以外の言語では想定外の結果になる可能性があります。
 :::
 
-このセクションの関数は、検索対象の文字列 (このセクションでは `haystack` と呼びます) および検索文字列 (このセクションでは `needle` と呼びます) がシングルバイトエンコードされたテキストであることを前提としています。この前提が
-満たされていない場合でも、例外はスローされず、結果は未定義となります。UTF-8 エンコードされた文字列での検索は、通常は別の関数バリアントとして提供されます。同様に、UTF-8 用の関数バリアントを使用し、入力文字列が UTF-8 エンコードされたテキストでない場合も、例外はスローされず、
+このセクションの関数は、検索対象の文字列 (このセクションでは `haystack` と呼びます) および検索文字列 (このセクションでは `needle` と呼びます) がシングルバイトでエンコードされたテキストであることを前提としています。この前提が
+満たされていない場合でも、例外はスローされず、結果は未定義となります。UTF-8 でエンコードされた文字列での検索は、通常は別の関数バリアントとして提供されます。同様に、UTF-8 用の関数バリアントを使用し、入力文字列が UTF-8 でエンコードされたテキストでない場合も、例外はスローされず、
 結果は未定義となります。なお、自動的な Unicode 正規化は行われませんが、そのためには
 [normalizeUTF8*()](/sql-reference/functions/string-functions#normalizeUTF8NFC) 関数を使用できます。
 
@@ -396,7 +395,7 @@ SELECT extractAllGroupsHorizontal(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 導入バージョン: v20.5.0
 
-正規表現にマッチした、重なりのない部分文字列に含まれるすべてのグループを抽出します。
+正規表現にマッチした最初の部分文字列からキャプチャグループを抽出します。すべてのマッチからグループを抽出するには、[`extractAllGroupsHorizontal`](#extractAllGroupsHorizontal) または [`extractAllGroupsVertical`](/sql-reference/functions/splitting-merging-functions#extractAllGroupsVertical) を使用します。
 
 **構文**
 
@@ -407,11 +406,11 @@ extractGroups(s, regexp)
 **引数**
 
 * `s` — 抽出対象の入力文字列。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring)
-* `regexp` — 正規表現の定数。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
+* `regexp` — 正規表現。少なくとも 1 つのキャプチャグループを含む必要があります。定数。[`const String`](/sql-reference/data-types/string) または [`const FixedString`](/sql-reference/data-types/fixedstring)
 
 **戻り値**
 
-関数が少なくとも 1 つのマッチするグループを見つけた場合、`group_id` (`1` から `N`。ここで `N` は regexp 内のキャプチャグループの数) ごとにまとめられた Array(Array(String)) カラムを返します。一致するグループがない場合は、空の配列を返します。[`Array(Array(String))`](/sql-reference/data-types/array)
+正規表現にマッチした場合、最初のマッチのキャプチャグループ (`1` から `N`。ここで `N` は `regexp` 内のキャプチャグループの数) を含む配列を返します。マッチしない場合は、空の配列を返します。[`Array(String)`](/sql-reference/data-types/array)
 
 **例**
 
@@ -427,7 +426,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 ```
 
 ```response title=Response
-[['Server','nginx'],['Date','Tue, 22 Jan 2019 00:26:14 GMT'],['Content-Type','text/html; charset=UTF-8'],['Connection','keep-alive']]
+['Server','nginx']
 ```
 
 ## hasAllTokens \{#hasAllTokens\}
@@ -741,6 +740,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 haystack に、phrase 内のすべてのトークンが連続した順序で含まれているかを確認します。
 
 検索の前に、この関数は省略可能な第3引数として指定されたトークナイザーを使用して、`input` 引数と `phrase` 引数の両方をトークン化します。
+`tokenizer` 引数には、`splitByNonAlpha`、`splitByString`、`ngrams`、`asciiCJK` のいずれかを指定する必要があります。
 トークナイザーが指定されていない場合は、デフォルトで `splitByNonAlpha` トークナイザーが使用されます。
 
 [`hasToken`](#hasToken)、[`hasAnyTokens`](#hasAnyTokens)、[`hasAllTokens`](#hasAllTokens) とは異なり、`hasPhrase` ではトークンが同じ順序で現れ、

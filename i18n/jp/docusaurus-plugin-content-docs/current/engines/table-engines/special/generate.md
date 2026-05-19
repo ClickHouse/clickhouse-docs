@@ -7,14 +7,12 @@ title: 'GenerateRandom テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# GenerateRandom テーブルエンジン \{#generaterandom-table-engine\}
-
-GenerateRandom テーブルエンジンは、指定されたテーブルスキーマに基づいてランダムなデータを生成します。
+GenerateRandom テーブルエンジンは、指定されたテーブルスキーマに従ってランダムなデータを生成します。
 
 使用例:
 
-- テストで再現可能な大規模テーブルを作成するために使用します。
-- ファジングテスト用のランダムな入力データを生成します。
+* テストで再現可能な大規模テーブルを作成するために使用します。
+* ファジングテスト用のランダムな入力を生成します。
 
 ## ClickHouse サーバーでの利用方法 \{#usage-in-clickhouse-server\}
 
@@ -52,9 +50,9 @@ SELECT * FROM generate_engine_table LIMIT 3
 
 ## 実装の詳細 \{#details-of-implementation\}
 
-- サポート対象外:
-  - `ALTER`
-  - `SELECT ... SAMPLE`
-  - `INSERT`
-  - インデックス
-  - レプリケーション
+* サポート対象外:
+  * `ALTER`
+  * `SELECT ... SAMPLE`
+  * `INSERT`
+  * インデックス
+  * レプリケーション

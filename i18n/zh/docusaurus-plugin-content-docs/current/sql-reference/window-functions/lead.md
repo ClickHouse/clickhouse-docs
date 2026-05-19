@@ -1,13 +1,11 @@
 ---
-description: 'lead 窗口函数的文档'
+description: 'lead 窗口函数文档'
 sidebar_label: 'lead'
 sidebar_position: 10
 slug: /sql-reference/window-functions/lead
 title: 'lead'
 doc_type: 'reference'
 ---
-
-# lead \{#lead\}
 
 返回在有序窗口中、相对于当前行向后偏移指定行数的那一行上计算得到的值。
 此函数与 [`leadInFrame`](./leadInFrame.md) 类似，但始终使用 `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` 这一窗口框架。
@@ -26,8 +24,8 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **参数**
 
 * `x` — 列名。
-* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。（可选，默认值为 `1`）。
-* `default` — 当计算得到的行超出窗口帧边界时返回的值。（可选，省略时为列类型的默认值）。
+* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 (可选，默认值为 `1`) 。
+* `default` — 当计算得到的行超出窗口帧边界时返回的值。 (可选，省略时为列类型的默认值) 。
 
 **返回值**
 

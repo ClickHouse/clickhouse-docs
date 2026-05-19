@@ -1,12 +1,10 @@
 ---
-description: '자동 스키마 생성 및 마이그레이션을 위해 ClickHouse에서 SQL 시작 스크립트를 구성하고 사용하는 방법에 대한 가이드'
+description: '자동 스키마 생성 및 마이그레이션을 위해 ClickHouse에서 SQL 시작 스크립트를 구성하고 사용하는 가이드'
 sidebar_label: '시작 스크립트'
 slug: /operations/startup-scripts
 title: '시작 스크립트'
 doc_type: 'guide'
 ---
-
-# 시작 스크립트 \{#startup-scripts\}
 
 ClickHouse는 시작 시 서버 설정에 포함된 임의의 SQL 쿼리를 실행할 수 있습니다. 이는 마이그레이션을 수행하거나 스키마를 자동으로 생성하는 데 유용합니다.
 

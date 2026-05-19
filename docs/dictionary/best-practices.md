@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['dictionary', 'dictionaries', 'layout', 'dictGet', 'JOIN', 'hashed', 'flat', 'performance']
 ---
 
-# Dictionary best practices
 
 This page covers practical guidance for choosing the right dictionary layout, understanding when dictionaries outperform JOINs (and when they don't), and monitoring dictionary usage.
 

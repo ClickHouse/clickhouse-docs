@@ -119,13 +119,11 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 Примеры:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Вывод:
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -133,13 +131,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 При использовании `run_query_tree_passes`:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -532,7 +528,11 @@ Expression ((Project names + Projection))
 При `pretty` = 1 дерево плана отображается с помощью символов псевдографики вместо отступов, а для ключевых шагов выводится дополнительная информация:
 
 * **Выходные столбцы запроса** выводятся в верхней части плана.
+* **Выражения** в фильтрах, ключах агрегации, описаниях сортировки и оконных функциях отображаются в SQL-подобной нотации, удобной для чтения (например, `a + 1 > 5` вместо `greater(plus(a, 1), 5)`). Для ясности внутренние префиксы идентификаторов столбцов (например, `__table1.`) удаляются.
 * **Шаги источника** (например, `ReadFromMergeTree`) показывают свои выходные столбцы.
+* **Шаги фильтрации** показывают условие фильтрации в SQL-нотации. Если присутствуют фильтры соединения, применяемые во время выполнения, они показываются отдельно.
+* **Шаги агрегации** показывают ключи и агрегатные функции с их аргументами (например, `sum(c)`, `count()`).
+* **Множества `IN`**, построенные из литералов кортежей, показывают свои значения (для больших множеств они усекаются), множества на основе подзапросов помечаются как `subquery1`, `subquery2` и т. д., а множества из таблиц с движком `Set` показывают имя таблицы.
 * **Шаги соединения** показывают соединение в математической нотации, оценочное количество строк в результате,
   а также то, какие выходные столбцы приходят с левой и с правой стороны. Для
   обозначения разных типов соединения используются следующие символы:
@@ -586,10 +586,10 @@ Join (JOIN FillRightFirst)
 │  t1[100] ⋈ t2[100]
 │  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
 │  Result rows: 100
-│  Join conditions: [(__table1.id) = (__table2.id)]
 │  Output:
 │    Left:  id, value
 │    Right: id, value
+│  Join conditions: id = id
 ├──ReadFromMergeTree (default.t1)
 │     Read type: Default
 │     Parts: 1 | Granules: 1
@@ -641,21 +641,17 @@ ExpressionTransform
 
 Создание таблицы:
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
@@ -670,21 +666,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 Предположим, у вас есть удалённая таблица MySQL следующего вида:
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

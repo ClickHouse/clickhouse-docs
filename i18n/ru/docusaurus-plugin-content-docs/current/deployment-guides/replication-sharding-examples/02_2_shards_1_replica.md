@@ -65,7 +65,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   done
   ```
 
-  Добавьте следующий файл `docker-compose.yml` в каталог `clickhouse-cluster`:
+  Добавьте следующий файл `docker-compose.yml` в каталог `cluster_2S_1R`:
 
   ```yaml title="docker-compose.yml"
   version: '3.8'
@@ -322,8 +322,8 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   ```
 
   :::note
-  Хотя ClickHouse Keeper можно запустить на том же сервере, что и ClickHouse Server,
-  для production-окружений мы настоятельно рекомендуем использовать выделенные хосты для ClickHouse Keeper.
+  Хотя ClickHouse Keeper можно запустить на том же сервере, что и сервер ClickHouse,
+  для продакшен-окружений мы настоятельно рекомендуем использовать выделенные хосты для ClickHouse Keeper.
   :::
 
   #### Конфигурация макросов
@@ -490,7 +490,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   <VerifyKeeperStatus />
 
-  Таким образом, вы успешно настроили кластер ClickHouse с одним сегментом и двумя репликами.
+  Таким образом, вы успешно настроили кластер ClickHouse с двумя сегментами и одной репликой на каждый сегмент.
   На следующем шаге вы создадите таблицу в кластере.
 
   ## Создание базы данных
@@ -650,16 +650,16 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   В ClickHouse этот интерфейс называется **distributed таблицей**, которую мы создаём с помощью движка таблицы [`Distributed`](/engines/table-engines/special/distributed). Рассмотрим, как это работает.
 
-  ## Создание distributed таблицы
+  ## Создание распределённой таблицы
 
-  Создайте distributed таблицу с помощью следующего запроса:
+  Создайте распределённую таблицу с помощью следующего запроса:
 
   ```sql
   CREATE TABLE test.test_table_dist ON CLUSTER cluster_2S_1R AS test.test_table
   ENGINE = Distributed('cluster_2S_1R', 'test', 'test_table', rand())
   ```
 
-  В данном примере функция `rand()` выбрана в качестве ключа распределения по сегментам, чтобы
+  В данном примере функция `rand()` выбрана в качестве ключа сегментирования, чтобы
   операции вставки случайным образом распределялись между сегментами.
 
   Теперь выполните запрос к distributed таблице с любого из хостов — вы получите

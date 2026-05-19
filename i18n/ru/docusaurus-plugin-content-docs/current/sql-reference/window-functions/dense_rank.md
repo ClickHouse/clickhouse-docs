@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции dense_rank'
+description: 'Документация по оконной функции dense_rank'
 sidebar_label: 'dense_rank'
 sidebar_position: 7
 slug: /sql-reference/window-functions/dense_rank
 title: 'dense_rank'
 doc_type: 'reference'
 ---
-
-# dense&#95;rank \{#dense&#95;rank\}
 
 Присваивает текущей строке ранг внутри её раздела без пропусков. Иными словами, если значение любой новой строки совпадает со значением одной из предыдущих строк, то она получит следующий по порядку ранг без каких-либо пропусков в ранжировании.
 
@@ -35,9 +33,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 Следующий пример основан на примере, приведённом в видеоинструкции [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -57,15 +53,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        dense_rank() OVER (ORDER BY salary DESC) AS dense_rank
 FROM salaries;
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─dense_rank─┐
 1. │ Gary Chen       │ 195000 │          1 │
 2. │ Robert George   │ 195000 │          1 │

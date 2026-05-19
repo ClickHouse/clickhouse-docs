@@ -137,9 +137,9 @@ docker run -d \
 
 ## 設定 \{#configuration\}
 
-コンテナは、[HTTP インターフェイス](https://clickhouse.com/docs/interfaces/http_interface/) 用にポート 8123 を、[ネイティブクライアント](https://clickhouse.com/docs/interfaces/tcp/) 用にポート 9000 を公開します。
+コンテナは、[HTTP インターフェイス](/interfaces/http) 用にポート 8123 を、[ネイティブクライアント](/interfaces/tcp) 用にポート 9000 を公開します。
 
-ClickHouse の設定は「config.xml」ファイルによって定義されます（[ドキュメント](https://clickhouse.com/docs/operations/configuration_files/)）。
+ClickHouse の設定は「config.xml」ファイルによって定義されます ([ドキュメント](/operations/configuration-files)) 。
 
 ### カスタム構成でサーバーインスタンスを起動する \{#start-server-instance-with-custom-config\}
 

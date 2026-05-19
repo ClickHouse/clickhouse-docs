@@ -7,8 +7,6 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-# clickhouse-local \{#clickhouse-local\}
-
 ## clickhouse-local を使うときと ClickHouse を使うとき \{#when-to-use-clickhouse-local-vs-clickhouse\}
 
 `clickhouse-local` は、フル機能のデータベースサーバーをインストールすることなく、SQL を使ってローカルおよびリモートファイルに対して高速な処理を行いたい開発者に最適な、使いやすい ClickHouse のバージョンです。`clickhouse-local` を使用すると、開発者はコマンドラインから直接 [ClickHouse SQL dialect](../../sql-reference/index.md) を用いた SQL コマンドを実行でき、フルの ClickHouse をインストールすることなく ClickHouse の機能にシンプルかつ効率的にアクセスできます。`clickhouse-local` の主な利点の 1 つは、[clickhouse-client](/operations/utilities/clickhouse-local) をインストールする際に同梱されていることです。これにより、複雑なインストール手順なしに、開発者はすぐに `clickhouse-local` を使い始めることができます。
@@ -251,9 +249,9 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 
 clickhouse-local がアクセスできる現在の作業ディレクトリ内のすべてのファイルを一覧表示します。
 
-次のように対話モードで実行できます:
+次のように対話型モードで実行できます:
 
-```sql
+```sql title="Query"
 ClickHouse local version 26.3.1.1.
 
 :) ls
@@ -283,10 +281,25 @@ file2.json
 file3.xml
 ```
 
+### CLEAR コマンド \{#clear-command\}
+
+ターミナル画面をクリアします (Linux の `clear` コマンドや、多くのターミナルでの Ctrl+L と同様です) 。これはクライアント側の動作であり、SQL エンジンには送信されません。
+
+`clickhouse-local` では、このメタコマンドは **対話型モード**、および **`-q`** と **`--queries-file`** の入力で認識されます (`-q` と同じクライアント側の経路で処理され、考え方としては `ls` と同様です) 。そのため、単独の `clear` を入力しても `UNKNOWN_IDENTIFIER` エラーにはなりません。一方、リモートの **`clickhouse-client --queries-file`** の動作は変わりません。ファイルの内容は SQL としてのみ実行されます (テキストレベルのメタコマンドはサポートされません) 。
+
+`clickhouse-client` では、**対話型モード**でのみ認識されます。**`-q`** またはクエリファイルでは、`clear` は引き続き SQL として解析されるため、自動化では、タイプミスが無言の空操作になるのではなく、従来どおりエラーになります。
+
+サポートされる形式: `clear`、`CLEAR`、`/clear` (末尾の `;` は付いていても無視されます) 。標準出力がターミナルでない場合 (たとえば出力をパイプしている場合) 、認識される場面ではこのメタコマンドは受け付けられますが、制御シーケンスは出力されません。
+
+`clickhouse-local` と `-q` を使用する場合:
+
+```sh
+./clickhouse-local -q clear
+```
 
 ## 例 \{#examples\}
 
-```bash
+```bash title="Query"
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \
     --input-format "CSV" --query "SELECT * FROM table"
 Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
@@ -296,7 +309,7 @@ Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
 
 先ほどの例は次と同じです。
 
-```bash
+```bash title="Query"
 $ echo -e "1,2\n3,4" | clickhouse-local -n --query "
     CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin);
     SELECT a, b FROM table;
@@ -308,7 +321,7 @@ Read 2 rows, 32.00 B in 0.000 sec., 4987 rows/sec., 77.93 KiB/sec.
 
 `stdin` や `--file` 引数を使う必要はなく、[`file` テーブル関数](../../sql-reference/table-functions/file.md) を使えば任意の数のファイルを開けます。
 
-```bash
+```bash title="Query"
 $ echo 1 | tee 1.tsv
 1
 
@@ -323,18 +336,14 @@ $ clickhouse-local --query "
 
 では、各 Unix ユーザーごとのメモリ使用量を出力してみましょう。
 
-クエリ:
-
-```bash
+```bash title="Query"
 $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
     | clickhouse-local --structure "user String, mem Float64" \
         --query "SELECT user, round(sum(mem), 2) as memTotal
             FROM table GROUP BY user ORDER BY memTotal DESC FORMAT Pretty"
 ```
 
-結果：
-
-```text
+```text title="Response"
 Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ┏━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ user     ┃ memTotal ┃
@@ -345,7 +354,6 @@ Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ├──────────┼──────────┤
 ...
 ```
-
 
 ## 関連コンテンツ \{#related-content-1\}
 

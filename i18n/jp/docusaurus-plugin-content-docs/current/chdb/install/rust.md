@@ -7,9 +7,7 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'rust', 'install', 'ffi', 'bin
 doc_type: 'guide'
 ---
 
-# Rust 向け chDB \{#chdb-for-rust\}
-
-chDB-rust は chDB 向けの実験的な FFI（Foreign Function Interface）バインディングを提供し、外部への依存関係なしに Rust アプリケーション内から直接 ClickHouse クエリを実行できるようにします。
+chDB-rust は、chDB 向けの実験的な FFI (Foreign Function Interface) バインディングを提供しており、外部依存なしで Rust アプリケーションから ClickHouse クエリを直接実行できます。
 
 ## インストール \{#installation\}
 
@@ -51,7 +49,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### ステートフルな利用（セッション） \{#stateful-usage-sessions\}
+### ステートフルな利用 (セッション) \{#stateful-usage-sessions\}
 
 データベースやテーブルなど、永続的な状態を必要とするクエリの場合:
 

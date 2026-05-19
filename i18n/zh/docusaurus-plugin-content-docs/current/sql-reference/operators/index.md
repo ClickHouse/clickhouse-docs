@@ -7,9 +7,7 @@ title: '运算符'
 doc_type: 'reference'
 ---
 
-# 运算符 \{#operators\}
-
-在查询解析阶段，ClickHouse 会根据运算符的优先级、先后次序和结合性，将其转换为相应的函数。
+ClickHouse 会在查询解析阶段，根据运算符的优先级、结合性和运算顺序，将其转换为对应的函数。
 
 ## 访问运算符 \{#access-operators\}
 
@@ -128,6 +126,15 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
+## 字符串处理运算符 \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - `overlay(string, replacement, offset)` 函数。
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - `overlay(string, replacement, offset, length)` 函数。
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - `overlayUTF8(string, replacement, offset)` 函数。
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - `overlayUTF8(string, replacement, offset, length)` 函数。
+
 ## 用于处理数据集的运算符 \{#operators-for-working-with-data-sets\}
 
 请参阅 [IN 运算符](../../sql-reference/operators/in.md) 和 [EXISTS](../../sql-reference/operators/exists.md) 运算符。
@@ -168,13 +175,11 @@ SELECT
 
 带 ALL 的查询：
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-结果:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -185,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 使用 ANY 的查询：
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-结果:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │

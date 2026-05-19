@@ -139,31 +139,31 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 
 **При объявленной схеме:**
 
-| Тип Kafka Connect                       | Тип ClickHouse            | Поддерживается | Примитивный |
-| --------------------------------------- |---------------------------|----------------|-------------|
-| STRING                                  | String                    | ✅             | Да          |
-| STRING                                  | JSON. См. ниже (1)        | ✅             | Да          |
-| INT8                                    | Int8                      | ✅             | Да          |
-| INT16                                   | Int16                     | ✅             | Да          |
-| INT32                                   | Int32                     | ✅             | Да          |
-| INT64                                   | Int64                     | ✅             | Да          |
-| FLOAT32                                 | Float32                   | ✅             | Да          |
-| FLOAT64                                 | Float64                   | ✅             | Да          |
-| BOOLEAN                                 | Boolean                   | ✅             | Да          |
-| ARRAY                                   | Array(T)                  | ✅             | Нет         |
-| MAP                                     | Map(Primitive, T)         | ✅             | Нет         |
-| STRUCT                                  | Variant(T1, T2, ...)      | ✅             | Нет         |
-| STRUCT                                  | Tuple(a T1, b T2, ...)    | ✅             | Нет         |
-| STRUCT                                  | Nested(a T1, b T2, ...)   | ✅             | Нет         |
-| STRUCT                                  | JSON. См. ниже (1), (2)   | ✅             | Нет         |
-| BYTES                                   | String                    | ✅             | Нет         |
-| org.apache.kafka.connect.data.Time      | Int64 / DateTime64        | ✅             | Нет         |
-| org.apache.kafka.connect.data.Timestamp | Int32 / Date32            | ✅             | Нет         |
-| org.apache.kafka.connect.data.Decimal   | Decimal                   | ✅             | Нет         |
+| Тип Kafka Connect                       | Тип ClickHouse          | Поддерживается | Примитивный |
+| --------------------------------------- | ----------------------- | -------------- | ----------- |
+| STRING                                  | String                  | ✅              | Да          |
+| STRING                                  | JSON. См. ниже (1)      | ✅              | Да          |
+| INT8                                    | Int8                    | ✅              | Да          |
+| INT16                                   | Int16                   | ✅              | Да          |
+| INT32                                   | Int32                   | ✅              | Да          |
+| INT64                                   | Int64                   | ✅              | Да          |
+| FLOAT32                                 | Float32                 | ✅              | Да          |
+| FLOAT64                                 | Float64                 | ✅              | Да          |
+| BOOLEAN                                 | Boolean                 | ✅              | Да          |
+| ARRAY                                   | Array(T)                | ✅              | Нет         |
+| MAP                                     | Map(Primitive, T)       | ✅              | Нет         |
+| STRUCT                                  | Variant(T1, T2, ...)    | ✅              | Нет         |
+| STRUCT                                  | Tuple(a T1, b T2, ...)  | ✅              | Нет         |
+| STRUCT                                  | Nested(a T1, b T2, ...) | ✅              | Нет         |
+| STRUCT                                  | JSON. См. ниже (1), (2) | ✅              | Нет         |
+| BYTES                                   | String                  | ✅              | Нет         |
+| org.apache.kafka.connect.data.Time      | Int64 / DateTime64      | ✅              | Нет         |
+| org.apache.kafka.connect.data.Timestamp | Int32 / Date32          | ✅              | Нет         |
+| org.apache.kafka.connect.data.Decimal   | Decimal                 | ✅              | Нет         |
 
-- (1) - JSON поддерживается только когда в настройках ClickHouse установлено `input_format_binary_read_json_as_string=1`. Это работает только для семейства форматов RowBinary, и настройка влияет на все столбцы в запросе вставки, поэтому все они должны быть строкой. Коннектор преобразует STRUCT в строку JSON в этом случае. 
+* (1) - JSON поддерживается только когда в настройках ClickHouse установлено `input_format_binary_read_json_as_string=1`. Это работает только для семейства форматов RowBinary, и настройка влияет на все столбцы в запросе вставки, поэтому все они должны быть строкой. Коннектор преобразует STRUCT в строку JSON в этом случае.
 
-- (2) - Когда структура содержит объединения, такие как `oneof`, конвертер должен быть настроен так, чтобы НЕ добавлять префикс/суффикс к именам полей. Существует настройка `generate.index.for.unions=false` [для `ProtobufConverter`](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf).  
+* (2) - Когда структура содержит объединения, такие как `oneof`, конвертер должен быть настроен так, чтобы НЕ добавлять префикс/суффикс к именам полей. Существует настройка `generate.index.for.unions=false` [для `ProtobufConverter`](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf).
 
 **Без объявленной схемы:**
 
@@ -202,6 +202,9 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 }
 ```
 
+:::note
+Приведённая выше конфигурация коннектора требует включить переопределение клиентских параметров в конфигурации воркера с помощью `connector.client.config.override.policy=All`. См. [документацию Kafka Connect](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) для дополнительной информации.
+:::
 
 #### Базовая конфигурация для нескольких топиков \{#basic-configuration-with-multiple-topics\}
 
@@ -254,6 +257,81 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 ```
 
 
+###### Соответствие типов Avro \{#avro-type-mapping\}
+
+Приведённое ниже соответствие типов определяется в `io.confluent.connect.avro.AvroConverter` — официальной реализации сериализатора/десериализатора Avro для Kafka Connect. Подробную информацию о логике преобразования см. в [документации](https://docs.confluent.io/platform/current/connect/userguide.html#avro) Kafka Connect.
+
+✅: Поддерживается
+
+❌: Не поддерживается
+
+️⚠️: Поддерживается частично
+
+| Тип Avro | Тип Kafka Connect | Поддерживается | Примечания                                                                                                                                                                                                                                                                                                          |
+| -------- | ----------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| null     | *N/A*             | ❌              | Не поддерживается как отдельный тип, но может использоваться в union                                                                                                                                                                                                                                                |
+| boolean  | BOOLEAN           | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| int      | INT8/INT16/INT32  | ✅              | По умолчанию используется INT32. Преобразуется в INT8, если у schema есть свойство `connect.type=int8` (аналогично для INT16, если `connect.type=int16`)                                                                                                                                                            |
+| long     | INT64             | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| float    | FLOAT32           | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| double   | FLOAT64           | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| bytes    | BYTES             | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| string   | STRING            | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| record   | STRUCT            | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| enum     | STRING            | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| array    | ARRAY/MAP         | ✅              | По умолчанию используется ARRAY. Преобразуется в MAP, если поле изначально было создано с помощью `AvroData.fromConnectSchema` ([исходный код](https://github.com/confluentinc/schema-registry/blob/174907bfc0d9424e8d02e788f450f4afcdda1750/avro-data/src/main/java/io/confluent/connect/avro/AvroData.java#L943)) |
+| map      | MAP               | ✅              |                                                                                                                                                                                                                                                                                                                     |
+| union    | STRUCT/`<T>`      | ⚠️             | По умолчанию используется STRUCT. Преобразуется в singleton-тип `T` из определения union, если `flatten.singleton.unions=true` (см. [документацию](https://docs.confluent.io/cloud/current/connectors/reference/connector-configuration.html#value-converter-flatten-singleton-unions))                             |
+| fixed    | BYTES             | ⚠️             | Логический тип `decimal` для fixed не поддерживается (см. ниже)                                                                                                                                                                                                                                                     |
+
+Сведения о соответствии между типами Kafka Connect и типами ClickHouse см. в разделе [Поддерживаемые типы данных](#supported-data-types).
+
+###### Неподдерживаемые Avro schema \{#unsupported-avro-schemas\}
+
+Коннектор не поддерживает следующие Avro schema:
+
+* логический тип `decimal` для `fixed`
+
+```json
+{"name": "decimal_18_4", "type": "fixed", "size": 8, "logicalType": "decimal", "precision": 18, "scale": 4}
+```
+
+* объединения с Nullable
+
+```json
+{"name": "mixed_union", "type": ["null", "string", "int"], "default": null}
+```
+
+* объединения типов записей
+
+```json
+{
+  "name": "record_union",
+  "type": [
+    {
+      "type": "record",
+      "name": "TypeA",
+      "fields": [
+        {
+          "name": "label",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "type": "record",
+      "name": "TypeB",
+      "fields": [
+        {
+          "name": "count",
+          "type": "int"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ##### Поддержка схемы Protobuf \{#protobuf-schema-support\}
 
 ```json
@@ -271,6 +349,114 @@ ClickHouse Connect Sink читает сообщения из топиков Kafk
 
 Обратите внимание: если вы столкнётесь с проблемами из-за отсутствующих классов, учтите, что не во всех средах доступен конвертер Protobuf, и вам может потребоваться альтернативная версия jar-файла, собранная вместе с зависимостями.
 
+
+###### Соответствие типов Protobuf \{#proto-type-mapping\}
+
+Ниже приведено соответствие типов, определяемое `io.confluent.connect.protobuf.ProtobufConverter` — официальной реализацией сериализатора/десериализатора Protobuf в Kafka Connect. Дополнительные сведения о логике преобразования см. в [документации](https://docs.confluent.io/platform/current/connect/userguide.html#json-schema-and-protobuf) Kafka Connect.
+
+✅: Поддерживается
+
+❌: Не поддерживается
+
+️⚠️: Поддерживается частично
+
+| Тип Protobuf                            | Тип Kafka Connect                       | Поддерживается | Примечания                                                                                                                                                                                                |
+| --------------------------------------- | --------------------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| double                                  | FLOAT64                                 | ✅              |                                                                                                                                                                                                           |
+| float                                   | FLOAT32                                 | ✅              |                                                                                                                                                                                                           |
+| int32                                   | INT8/INT16/INT32                        | ✅              | По умолчанию используется INT32. Преобразуется в INT8, если в схеме задана настройка `connect.type=int8` (аналогично для INT16, если `connect.type=int16`)                                               |
+| sint32                                  | INT8/INT16/INT32                        | ✅              | По умолчанию используется INT32. Преобразуется в INT8, если в схеме задана настройка `connect.type=int8` (аналогично для INT16, если `connect.type=int16`)                                               |
+| sfixed32                                | INT8/INT16/INT32                        | ✅              | По умолчанию используется INT32. Преобразуется в INT8, если в схеме задана настройка `connect.type=int8` (аналогично для INT16, если `connect.type=int16`)                                               |
+| uint32                                  | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| fixed32                                 | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| int64                                   | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| uint64                                  | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| sint64                                  | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| fixed64                                 | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| sfixed64                                | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| bool                                    | BOOLEAN                                 | ✅              |                                                                                                                                                                                                           |
+| string                                  | STRING                                  | ✅              |                                                                                                                                                                                                           |
+| bytes                                   | BYTES                                   | ✅              |                                                                                                                                                                                                           |
+| enum                                    | INT32/STRING                            | ✅              | По умолчанию используется STRING. Преобразуется в INT32, если `int.for.enums=true` (см. [документацию Schema Registry](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf)) |
+| message                                 | STRUCT                                  | ⚠️             | См. раздел ниже о неподдерживаемых схемах                                                                                                                                                                 |
+| repeated T (where T is not a map entry) | ARRAY                                   | ✅              |                                                                                                                                                                                                           |
+| `map<K, V>`                             | MAP                                     | ✅              |                                                                                                                                                                                                           |
+| oneof                                   | STRUCT                                  | ⚠️             | См. раздел ниже о преобразовании oneof в схему ClickHouse                                                                                                                                                |
+| google.protobuf.DoubleValue             | FLOAT64                                 | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.FloatValue              | FLOAT32                                 | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.Int64Value              | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.UInt64Value             | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.UInt32Value             | INT64                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.Int32Value              | INT32                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.BoolValue               | BOOLEAN                                 | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.StringValue             | STRING                                  | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.BytesValue              | BYTES                                   | ✅              |                                                                                                                                                                                                           |
+| google.protobuf.Timestamp               | org.apache.kafka.connect.data.Timestamp | ✅              |                                                                                                                                                                                                           |
+| google.type.Date                        | org.apache.kafka.connect.data.Date      | ✅              |                                                                                                                                                                                                           |
+| google.type.TimeOfDay                   | org.apache.kafka.connect.data.Time      | ✅              |                                                                                                                                                                                                           |
+
+Соответствие типов Kafka Connect и ClickHouse см. в разделе [Поддерживаемые типы данных](#supported-data-types).
+
+###### Примечание о преобразовании полей `oneof` в столбцы ClickHouse \{#oneof-translation\}
+
+Коннектор не поддерживает преобразование объединений Protobuf (`oneof`) в тип ClickHouse Variant. Вместо этого перечислите поля `oneof` как отдельные Nullable-поля в схеме таблицы ClickHouse.
+
+Например:
+
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message StringIntUnion {
+  oneof mixed {
+    string mixed_string = 2;
+    int32 mixed_int = 3;
+  }
+}
+
+```
+
+преобразуется в следующее определение таблицы ClickHouse:
+
+```sql
+CREATE TABLE IF NOT EXISTS `StringIntUnion`
+(
+    mixed_string Nullable(String),
+    mixed_int Nullable(Int32)
+) ENGINE = ...;
+```
+
+###### Неподдерживаемые схемы Protobuf \{#unsupported-proto-schemas\}
+
+Следующие схемы Protobuf не поддерживаются коннектором:
+
+* объединения нескольких сообщений (**до версии CH 26.1**)
+
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message TwoRecords {
+  oneof payload {
+    TypeA type_a = 2;
+    TypeB type_b = 3;
+  }
+
+  // translates to Nullable(Tuple(label String)) in ClickHouse, which is unsupported
+  message TypeA {
+    string label = 1;
+  }
+
+  // translates to Nullable(Tuple(count Int32)) in ClickHouse, which is unsupported
+  message TypeB {
+    int32 count = 1;
+  }
+}
+```
+
+Начиная с версии ClickHouse 26.1, эта схема поддерживается при `allow_experimental_nullable_tuple_type=1` (см. [эту страницу документации](https://clickhouse.com/docs/operations/settings/settings#allow_experimental_nullable_tuple_type)).
 
 ##### Поддержка схем JSON \{#json-schema-support\}
 
@@ -521,28 +707,31 @@ Kafka Connect (фреймворк) выбирает сообщения из то
 
 ```properties
 # Increase the number of records per poll
-consumer.max.poll.records=5000
+consumer.override.max.poll.records=5000
 
 # Increase the partition fetch size (5 MB)
-consumer.max.partition.fetch.bytes=5242880
+consumer.override.max.partition.fetch.bytes=5242880
 
 # Optional: Increase minimum fetch size to wait for more data (1 MB)
-consumer.fetch.min.bytes=1048576
+consumer.override.fetch.min.bytes=1048576
 
 # Optional: Reduce wait time if latency is critical
-consumer.fetch.max.wait.ms=300
+consumer.override.fetch.max.wait.ms=300
 ```
+
+:::note
+Указанные выше свойства требуют включить переопределение клиентских настроек в конфигурации воркера с помощью `connector.client.config.override.policy=All`. Дополнительная информация приведена в [документации Kafka Connect](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration).
+:::
 
 **Важно**: Настройки получения Kafka Connect представляют сжатые данные, в то время как ClickHouse получает несжатые данные. Балансируйте эти настройки на основе вашего коэффициента сжатия.
 
 **Компромиссы**:
 
-* **Большие пакеты** = Лучшая производительность приёма данных в ClickHouse, меньше частей, меньше накладных расходов
+* **Большие пакеты** = Лучшая производительность ингестии в ClickHouse, меньше частей, меньше накладных расходов
 * **Большие пакеты** = Более высокое потребление памяти, потенциальное увеличение сквозной задержки
 * **Слишком большие пакеты** = Риск таймаутов, ошибок OutOfMemory или превышения `max.poll.interval.ms`
 
 Подробнее: [Документация Confluent](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Документация Kafka](https://kafka.apache.org/documentation/#consumerconfigs)
-
 
 #### Асинхронные вставки                         \{#asynchronous-inserts\}
 
@@ -779,15 +968,19 @@ SETTINGS
     "exactlyOnce": "false",
     "ignorePartitionsWhenBatching": "true",
     
-    "consumer.max.poll.records": "10000",
-    "consumer.max.partition.fetch.bytes": "5242880",
-    "consumer.fetch.min.bytes": "1048576",
-    "consumer.fetch.max.wait.ms": "500",
+    "consumer.override.max.poll.records": "10000",
+    "consumer.override.max.partition.fetch.bytes": "5242880",
+    "consumer.override.fetch.min.bytes": "1048576",
+    "consumer.override.fetch.max.wait.ms": "500",
     
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
 ```
+
+:::note
+Для приведённой выше конфигурации коннектора необходимо включить переопределения параметров клиента в конфигурации вашего воркера через `connector.client.config.override.policy=All`. См. [документацию Kafka Connect](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) для дополнительной информации.
+:::
 
 **Эта конфигурация**:
 
@@ -797,16 +990,25 @@ SETTINGS
 * Запускает 8 параллельных задач (подберите значение под количество партиций)
 * Оптимизирована на максимальную пропускную способность, а не на строгий порядок
 
-
 ### Устранение неполадок \{#troubleshooting\}
 
 #### &quot;State mismatch for topic `[someTopic]` partition `[0]`&quot; \{#state-mismatch-for-topic-sometopic-partition-0\}
 
 Это происходит, когда смещение, хранящееся в KeeperMap, отличается от смещения, хранящегося в Kafka, обычно когда топик был удалён
 или смещение было изменено вручную.
-Чтобы исправить это, необходимо удалить старые значения, сохранённые для данного топика и партиции.
+Чтобы исправить это, необходимо удалить старые значения, сохранённые для данного топика и партиции:
 
-**ПРИМЕЧАНИЕ: Это изменение может повлиять на семантику exactly-once.**
+```sql
+-- First, identify the database used to store the data.
+SELECT * FROM [database].connect_state
+
+-- Identify the key that matches the topic and partition.
+ALTER TABLE [database].connect_state DELETE WHERE key = [keyname]
+```
+
+:::note
+Это изменение может повлиять на семантику exactly-once.
+:::
 
 #### &quot;What errors will the connector retry?&quot; \{#what-errors-will-the-connector-retry\}
 

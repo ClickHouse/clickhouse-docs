@@ -8,8 +8,6 @@ keywords: ['JSON 가져오기', 'JSONEachRow 형식', '데이터 가져오기', 
 doc_type: 'guide'
 ---
 
-# ClickHouse에 JSON을 가져오는 방법 \{#how-to-import-json-into-clickhouse\}
-
 ClickHouse는 [입력과 출력을 위한 다양한 데이터 포맷](/interfaces/formats)을 지원합니다. 이들 중에는 여러 JSON 변형 포맷이 포함되어 있지만, 데이터 수집에 가장 일반적으로 사용되는 포맷은 [JSONEachRow](/interfaces/formats/JSONEachRow)입니다. 이 포맷에서는 한 행마다 하나의 JSON 객체가 있어야 하며, 각 객체는 줄바꿈 문자로 구분됩니다.
 
 ## 예제 \{#examples\}

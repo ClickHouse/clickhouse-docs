@@ -1,22 +1,20 @@
 ---
 slug: /native-protocol/client
 sidebar_position: 2
-title: 'ネイティブクライアントのパケット'
-description: 'ネイティブプロトコルのクライアント'
+title: 'ネイティブクライアントパケット'
+description: 'ネイティブプロトコルクライアント'
 doc_type: 'reference'
 keywords: ['クライアントパケット', 'ネイティブプロトコルクライアント', 'プロトコルパケット', 'クライアント通信', 'TCP クライアント']
 ---
 
-# クライアントパケット \{#client-packets\}
-
-| value | name              | description              |
-|-------|-------------------|--------------------------|
+| value | name              | description      |
+| ----- | ----------------- | ---------------- |
 | 0     | [Hello](#hello)   | クライアントのハンドシェイク開始 |
-| 1     | [Query](#query)   | クエリ要求               |
-| 2     | [Data](#data)     | データブロック           |
-| 3     | [Cancel](#cancel) | クエリのキャンセル       |
-| 4     | [Ping](#ping)     | Ping リクエスト          |
-| 5     | TableStatus       | テーブルステータスの要求 |
+| 1     | [クエリ](#query)   | クエリ要求            |
+| 2     | [データ](#data)     | データブロック          |
+| 3     | [キャンセル](#cancel) | クエリのキャンセル        |
+| 4     | [Ping](#ping)     | Ping リクエスト       |
+| 5     | TableStatus       | テーブルステータスの要求     |
 
 `Data` は圧縮可能です。
 

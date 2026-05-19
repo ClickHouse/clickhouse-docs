@@ -1,20 +1,18 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/slackbot
 sidebar_label: 'Интеграция SlackBot'
-title: 'Как создать агента SlackBot с использованием ClickHouse MCP-сервера.'
+title: 'Как создать агента SlackBot с помощью MCP-сервера ClickHouse.'
 pagination_prev: null
 pagination_next: null
-description: 'Узнайте, как создать агента SlackBot, который может взаимодействовать с ClickHouse MCP-сервером.'
+description: 'Узнайте, как создать агента SlackBot, который может взаимодействовать с MCP-сервером ClickHouse.'
 keywords: ['ClickHouse', 'MCP', 'Slack', 'SlackBot', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать агента SlackBot с помощью ClickHouse MCP-сервера \{#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server\}
-
 В этом руководстве вы узнаете, как создать агента [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot).
 Этот бот позволяет задавать вопросы о ваших данных в ClickHouse прямо из Slack, используя естественный язык. Он использует
-[ClickHouse MCP-сервер](https://github.com/ClickHouse/mcp-clickhouse) и [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1).
+[MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1).
 
 :::note Пример проекта
 Код этого примера доступен в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/slackbot/README.md).

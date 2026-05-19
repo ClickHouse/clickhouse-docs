@@ -14,10 +14,11 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
 
 Use the [ClickHouse OpenAPI](/cloud/manage/cloud-api) to programmatically
-control your Managed Postgres services just like ClickHouse services. Already
-familiar with [OpenAPI]? Get your [API keys] and jump right to the [Managed
-Postgres API reference][pg-openapi]. Otherwise, follow along for a quick
-run-through.
+control your Managed Postgres services just like ClickHouse services. The
+same API also exposes a [Prometheus endpoint] for scraping service metrics.
+Already familiar with [OpenAPI]? Get your [API keys] and jump right to the
+[Managed Postgres API reference][pg-openapi]. Otherwise, follow along for a
+quick run-through.
 
 ## API Keys {#api-keys}
 
@@ -278,9 +279,21 @@ On success, the response will report status code 200, e.g.:
 }
 ```
 
+## Monitoring {#monitoring}
+
+Two Prometheus-compatible endpoints expose CPU, memory, I/O, connection,
+and transaction metrics for Managed Postgres services: one returns
+metrics for every service in the organization, the other for a single
+service. See the [Prometheus endpoint] page for setup and the
+[metrics reference] for the full list of metrics.
+
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 [OpenAPI]: https://www.openapis.org "OpenAPI Initiative"
 [API keys]: /cloud/manage/openapi "Managing API Keys"
+[Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus
+  "Managed Postgres Prometheus endpoint"
+[metrics reference]: /cloud/managed-postgres/monitoring/metrics
+  "Managed Postgres metrics reference"
 [pg-openapi]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres
   "OpenAPI spec for ClickHouse Cloud: Postgres"
 [list API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceGetList

@@ -4,18 +4,18 @@ sidebar_label: 'Lakekeeper カタログ'
 title: 'Lakekeeper カタログ'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse と Lakekeeper Catalog を使用してデータを照会する手順を説明します。'
+description: 'このガイドでは、ClickHouse と Lakekeeper カタログ を使用してデータを照会する手順を説明します。'
 keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge />
+<BetaBadge />
 
 :::note
-Lakekeeper Catalog との統合は、Iceberg テーブルでのみ利用できます。
+Lakekeeper カタログ との統合は、Iceberg テーブルでのみ利用できます。
 この統合は AWS S3 およびその他のクラウドストレージプロバイダーの両方をサポートします。
 :::
 

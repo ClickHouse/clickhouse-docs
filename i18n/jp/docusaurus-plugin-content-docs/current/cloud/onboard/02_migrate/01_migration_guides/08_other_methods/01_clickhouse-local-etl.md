@@ -2,7 +2,7 @@
 sidebar_label: 'clickhouse-local の使用'
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/clickhouse-local
-title: 'clickhouse-local を使用して ClickHouse に移行する'
+title: 'clickhouse-local を使用した ClickHouse への移行'
 description: 'clickhouse-local を使用して ClickHouse に移行する方法を解説するガイド'
 doc_type: 'guide'
 ---
@@ -10,7 +10,6 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import AddARemoteSystem from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_add_remote_ip_access_list_detail.md';
 import ch_local_01 from '@site/static/images/integrations/migration/ch-local-01.png';
 import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.png';

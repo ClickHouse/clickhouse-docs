@@ -21,10 +21,9 @@ title: '实践经验 - 性能优化'
 description: '性能优化策略的真实案例'
 ---
 
-# 性能优化：经过社区验证的策略 \{#performance-optimization\}
-*本指南是基于社区 Meetup 活动总结的经验汇总。若想获取更多真实场景中的解决方案与见解，可以[按具体问题浏览](./community-wisdom.md)。*
-*在使用物化视图时遇到问题？请查看[物化视图](./materialized-views.md)社区见解指南。*
-*如果你遇到查询变慢的问题并希望查看更多示例，我们还提供了[查询优化](/optimize/query-optimization)指南。*
+*本指南是社区聚会经验总结系列的一部分。要查看更多真实场景中的解决方案和见解，您可以[按具体问题浏览](./community-wisdom.md)。*
+*如果您在 Materialized Views 方面遇到问题，请查看 [Materialized Views](./materialized-views.md) 社区经验指南。*
+*如果您遇到慢查询并希望查看更多示例，我们还提供了[查询优化](/optimize/query-optimization)指南。*
 
 ## 按基数排序（从低到高） \{#cardinality-ordering\}
 当低基数列排在前面时，ClickHouse 的主索引效果最佳，可以更高效地跳过大块数据。键中后面的高基数列则用于在这些数据块内提供更细粒度的排序。请从具有较少唯一值的列开始（如 status、category、country），最后再放置具有大量唯一值的列（如 user_id、timestamp、session_id）。

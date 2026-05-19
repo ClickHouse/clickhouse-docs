@@ -108,6 +108,10 @@ mark 캐시를 초기화합니다.
 
 iceberg 메타데이터 캐시를 초기화합니다.
 
+## SYSTEM CLEAR|DROP AVRO SCHEMA CACHE \{#drop-avro-schema-cache\}
+
+`AvroConfluent` 형식에서 사용하는 URL별 Confluent 스키마 레지스트리 캐시를 지웁니다. 이 작업은 스키마 fetch 캐시(id → schema)와 스키마 등록 캐시(subject + schema → id)를 모두 삭제하므로, 이후의 읽기 및 쓰기는 다시 레지스트리 서버를 사용합니다. 레지스트리 측에서 스키마가 삭제되었거나 덮어써진 경우에 유용하며, 테스트에서 레지스트리의 멱등성을 검증할 때도 사용할 수 있습니다.
+
 ## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
 
 parquet 메타데이터 캐시를 초기화합니다.
@@ -427,6 +431,8 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 
 ### SYSTEM STOP TTL MERGES \{#stop-ttl-merges\}
 
+<CloudNotSupportedBadge />
+
 MergeTree 계열 테이블에 대해 [TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)에 따라 오래된 데이터를 삭제하는 백그라운드 작업을 중지할 수 있습니다.
 테이블이 존재하지 않거나 테이블이 MergeTree 엔진을 사용하지 않는 경우에도 `Ok.`를 반환합니다. 데이터베이스가 존재하지 않으면 오류를 반환합니다:
 
@@ -434,16 +440,16 @@ MergeTree 계열 테이블에 대해 [TTL expression](../../engines/table-engine
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START TTL MERGES \{#start-ttl-merges\}
 
-MergeTree 패밀리의 테이블에 대해 [TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)에 따라 오래된 데이터를 백그라운드에서 삭제하는 작업을 시작할 수 있습니다.
+<CloudNotSupportedBadge />
+
+MergeTree 계열의 테이블에 대해 [TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)에 따라 오래된 데이터를 백그라운드에서 삭제하는 작업을 시작할 수 있습니다.
 테이블이 존재하지 않아도 `Ok.`를 반환합니다. 데이터베이스가 존재하지 않으면 오류를 반환합니다:
 
 ```sql
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM STOP MOVES \{#stop-moves\}
 
@@ -765,7 +771,7 @@ SYSTEM STOP VIEWS
 
 지정된 VIEW 또는 모든 갱신 가능한 VIEW에 대해 주기적 갱신을 다시 활성화합니다. 즉시 갱신은 수행되지 않습니다.
 
-VIEW가 Replicated 또는 Shared 데이터베이스에 있는 경우, `START VIEW`는 `STOP VIEW`의 영향을 되돌리고, `START REPLICATED VIEW`는 `STOP REPLICATED VIEW`의 영향을 되돌립니다.
+VIEW가 복제된 또는 Shared 데이터베이스에 있는 경우, `START VIEW`는 `STOP VIEW`의 영향을 되돌리고, `START REPLICATED VIEW`는 `STOP REPLICATED VIEW`의 영향을 되돌립니다. `START VIEW`는 `PAUSE VIEW`의 영향도 되돌립니다.
 
 ```sql
 SYSTEM START VIEW [db.]name
@@ -775,6 +781,25 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
+### SYSTEM PAUSE VIEW, PAUSE VIEWS \{#pause-view-pause-views\}
+
+지정한 뷰 또는 모든 갱신 가능한 뷰의 주기적인 갱신을 비활성화합니다.
+`SYSTEM STOP VIEW`와 달리 `SYSTEM PAUSE VIEW`는 이미 진행 중인 갱신을 중단하지 않습니다. 현재 실행 중인 갱신은 끝까지 완료되며, 이후의 갱신만 방지됩니다.
+
+`SYSTEM START VIEW` 또는 `SYSTEM START VIEWS`로 해제할 수 있습니다.
+
+:::note
+일시 중지 상태는 서버를 재시작해도 유지되지 않습니다. 재시작 후에는 뷰가 구성된 갱신 일정에 따라 다시 갱신을 재개합니다.
+복제된 또는 Shared 데이터베이스에서는 `SYSTEM PAUSE VIEW`가 현재 레플리카에만 영향을 미칩니다.
+:::
+
+```sql
+SYSTEM PAUSE VIEW [db.]name
+```
+
+```sql
+SYSTEM PAUSE VIEWS
+```
 
 ### SYSTEM REFRESH VIEW \{#refresh-view\}
 

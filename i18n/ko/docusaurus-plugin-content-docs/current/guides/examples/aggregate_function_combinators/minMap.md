@@ -7,8 +7,6 @@ sidebar_label: 'minMap'
 doc_type: 'reference'
 ---
 
-# minMap \{#minmap\}
-
 ## 설명 \{#description\}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 결합자는 `minMap`

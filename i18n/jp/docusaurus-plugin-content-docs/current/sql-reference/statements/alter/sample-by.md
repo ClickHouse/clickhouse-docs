@@ -7,9 +7,7 @@ title: 'サンプリングキー式の操作'
 doc_type: 'reference'
 ---
 
-# SAMPLE BY 式の操作 \{#manipulating-sample-by-expression\}
-
-次の操作が行えます。
+次の操作を利用できます。
 
 ## 変更 \{#modify\}
 
@@ -17,7 +15,7 @@ doc_type: 'reference'
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 ```
 
-このコマンドは、テーブルの[サンプリングキー](../../../engines/table-engines/mergetree-family/mergetree.md)を `new_expression`（式または式のタプル）に変更します。プライマリキーには、新しいサンプリングキーが含まれている必要があります。
+このコマンドは、テーブルの[サンプリングキー](../../../engines/table-engines/mergetree-family/mergetree.md)を `new_expression` (式または式のタプル) に変更します。プライマリキーには、新しいサンプリングキーが含まれている必要があります。
 
 ## 削除 \{#remove\}
 
@@ -30,5 +28,5 @@ ALTER TABLE [db].name [ON CLUSTER cluster] REMOVE SAMPLE BY
 `MODIFY` と `REMOVE` コマンドは、メタデータのみを変更するか、ファイルを削除するだけの軽量なコマンドです。
 
 :::note
-これらは [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) ファミリー（[replicated](../../../engines/table-engines/mergetree-family/replication.md) テーブルを含む）のテーブルに対してのみ機能します。
+これらは [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) ファミリー ([replicated](../../../engines/table-engines/mergetree-family/replication.md) テーブルを含む) のテーブルに対してのみ機能します。
 :::

@@ -3,12 +3,10 @@ slug: /faq/integration/json-import
 title: '如何将 JSON 导入 ClickHouse？'
 toc_hidden: true
 toc_priority: 11
-description: '本页将向您展示如何将 JSON 导入 ClickHouse'
+description: '本页面介绍如何将 JSON 导入 ClickHouse'
 keywords: ['JSON 导入', 'JSONEachRow 格式', '数据导入', 'JSON 摄取', '数据格式']
 doc_type: 'guide'
 ---
-
-# 如何将 JSON 导入 ClickHouse？ \{#how-to-import-json-into-clickhouse\}
 
 ClickHouse 支持多种[输入和输出数据格式](/interfaces/formats)。其中包含多种 JSON 变体，但在数据摄取场景中最常用的是 [JSONEachRow](/interfaces/formats/JSONEachRow)。它要求每行一个 JSON 对象，各对象之间以换行符分隔。
 

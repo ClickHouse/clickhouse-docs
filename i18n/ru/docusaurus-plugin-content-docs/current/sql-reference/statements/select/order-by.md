@@ -6,16 +6,14 @@ title: 'Оператор ORDER BY'
 doc_type: 'reference'
 ---
 
-# Оператор ORDER BY \{#order-by-clause\}
-
 Оператор `ORDER BY` содержит:
 
-- список выражений, например `ORDER BY visits, search_phrase`,
-- список чисел, указывающих на столбцы в операторе `SELECT`, например `ORDER BY 2, 1`, или
-- `ALL`, что означает все столбцы оператора `SELECT`, например `ORDER BY ALL`.
+* список выражений, например `ORDER BY visits, search_phrase`,
+* список чисел, указывающих на столбцы в операторе `SELECT`, например `ORDER BY 2, 1`, или
+* `ALL`, что означает все столбцы оператора `SELECT`, например `ORDER BY ALL`.
 
-Чтобы отключить сортировку по номерам столбцов, установите настройку [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) = 0.
-Чтобы отключить сортировку по `ALL`, установите настройку [enable_order_by_all](/operations/settings/settings#enable_order_by_all) = 0.
+Чтобы отключить сортировку по номерам столбцов, установите настройку [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments) = 0.
+Чтобы отключить сортировку по `ALL`, установите настройку [enable&#95;order&#95;by&#95;all](/operations/settings/settings#enable_order_by_all) = 0.
 
 Оператор `ORDER BY` может иметь модификаторы `DESC` (по убыванию) или `ASC` (по возрастанию), определяющие направление сортировки.
 Если порядок сортировки явно не указан, по умолчанию используется `ASC`.
@@ -78,7 +76,7 @@ Collation поддерживается для типов [LowCardinality](../../
 
 Мы рекомендуем использовать `COLLATE` только для окончательной сортировки небольшого количества строк, так как сортировка с `COLLATE` менее эффективна, чем обычная сортировка по байтам.
 
-## Примеры сравнения строк \{#collation-examples\}
+## Примеры collation \{#collation-examples\}
 
 Пример только со значениями [String](../../../sql-reference/data-types/string.md):
 
@@ -94,15 +92,11 @@ Collation поддерживается для типов [LowCardinality](../../
 └───┴──────┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─x─┬─s────┐
 │ 3 │ 123a │
 │ 4 │ abc  │
@@ -128,15 +122,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴──────┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─x─┬─s────┐
 │ 4 │ 123a │
 │ 5 │ abc  │
@@ -164,15 +154,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴───────────────┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─x─┬─s─────────────┐
 │ 7 │ ['']          │
 │ 3 │ ['a']         │
@@ -200,15 +186,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─x─┬─s───┐
 │ 7 │     │
 │ 3 │ a   │
@@ -222,7 +204,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 Пример с типом [Tuple](../../../sql-reference/data-types/tuple.md):
 
-```response
+```response title="Response"
 ┌─x─┬─s───────┐
 │ 1 │ (1,'Z') │
 │ 2 │ (1,'z') │
@@ -234,15 +216,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────────┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─x─┬─s───────┐
 │ 3 │ (1,'a') │
 │ 5 │ (1,'A') │
@@ -266,23 +244,23 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 ## Оптимизация чтения данных \{#optimization-of-data-reading\}
 
- Если выражение `ORDER BY` имеет префикс, который совпадает с ключом сортировки таблицы, вы можете оптимизировать запрос с помощью настройки [optimize_read_in_order](../../../operations/settings/settings.md#optimize_read_in_order).
+Если выражение `ORDER BY` имеет префикс, который совпадает с ключом сортировки таблицы, вы можете оптимизировать запрос с помощью настройки [optimize&#95;read&#95;in&#95;order](../../../operations/settings/settings.md#optimize_read_in_order).
 
- Когда настройка `optimize_read_in_order` включена, сервер ClickHouse использует индекс таблицы и читает данные в порядке ключа `ORDER BY`. Это позволяет избежать полного чтения всех данных при указании [LIMIT](../../../sql-reference/statements/select/limit.md). Таким образом, запросы к большим объёмам данных с небольшим значением лимита обрабатываются быстрее.
+Когда настройка `optimize_read_in_order` включена, сервер ClickHouse использует индекс таблицы и читает данные в порядке ключа `ORDER BY`. Это позволяет избежать полного чтения всех данных при указании [LIMIT](../../../sql-reference/statements/select/limit.md). Таким образом, запросы к большим объёмам данных с небольшим значением лимита обрабатываются быстрее.
 
 Оптимизация работает как с `ASC`, так и с `DESC`, но не работает одновременно с оператором [GROUP BY](/sql-reference/statements/select/group-by) и модификатором [FINAL](/sql-reference/statements/select/from#final-modifier).
 
 Когда настройка `optimize_read_in_order` отключена, сервер ClickHouse не использует индекс таблицы при обработке запросов `SELECT`.
 
-Рассмотрите возможность ручного отключения `optimize_read_in_order` при выполнении запросов, которые содержат оператор `ORDER BY`, большое значение `LIMIT` и условие [WHERE](../../../sql-reference/statements/select/where.md), требующее чтения огромного количества записей до того, как будут найдены запрашиваемые данные.
+Рассмотрите возможность ручного отключения `optimize_read_in_order` при выполнении запросов, которые содержат предложение `ORDER BY`, большое значение `LIMIT` и условие [WHERE](../../../sql-reference/statements/select/where.md), требующее чтения огромного количества записей до того, как будут найдены запрашиваемые данные.
 
 Оптимизация поддерживается следующими движками таблиц:
 
-- [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [материализованные представления](/sql-reference/statements/create/view#materialized-view)),
-- [Merge](../../../engines/table-engines/special/merge.md),
-- [Buffer](../../../engines/table-engines/special/buffer.md)
+* [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [материализованные представления](/sql-reference/statements/create/view#materialized-view)),
+* [Merge](../../../engines/table-engines/special/merge.md),
+* [Buffer](../../../engines/table-engines/special/buffer.md)
 
-В таблицах с движком `MaterializedView` оптимизация работает с представлениями вида `SELECT ... FROM merge_tree_table ORDER BY pk`. Однако она не поддерживается в запросах вида `SELECT ... FROM view ORDER BY pk`, если запрос представления не содержит оператора `ORDER BY`.
+В таблицах с движком `MaterializedView` оптимизация работает с представлениями вида `SELECT ... FROM merge_tree_table ORDER BY pk`. Однако она не поддерживается в запросах вида `SELECT ... FROM view ORDER BY pk`, если запрос представления не содержит предложения `ORDER BY`.
 
 ## Модификатор ORDER BY Expr WITH FILL \{#order-by-expr-with-fill-modifier\}
 
@@ -293,7 +271,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 Чтобы заполнить несколько столбцов, добавьте модификатор `WITH FILL` с необязательными параметрами после каждого имени поля в разделе `ORDER BY`.
 
-```sql
+```sql title="Query"
 ORDER BY expr [WITH FILL] [FROM const_expr] [TO const_expr] [STEP const_numeric_expr] [STALENESS const_numeric_expr], ... exprN [WITH FILL] [FROM expr] [TO expr] [STEP numeric_expr] [STALENESS numeric_expr]
 [INTERPOLATE [(col [AS expr], ... colN [AS exprN])]]
 ```
@@ -308,16 +286,14 @@ ORDER BY expr [WITH FILL] [FROM const_expr] [TO const_expr] [STEP const_numeric_
 
 Пример запроса без `WITH FILL`:
 
-```sql
+```sql title="Query"
 SELECT n, source FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─n─┬─source───┐
 │ 1 │ original │
 │ 4 │ original │
@@ -327,16 +303,14 @@ SELECT n, source FROM (
 
 Тот же запрос, но с модификатором `WITH FILL`:
 
-```sql
+```sql title="Query"
 SELECT n, source FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌───n─┬─source───┐
 │   0 │          │
 │ 0.5 │          │
@@ -358,7 +332,7 @@ SELECT n, source FROM (
 
 Пример:
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -370,9 +344,7 @@ ORDER BY
     d1 WITH FILL STEP 5;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-01 │ 1970-01-03 │          │
@@ -388,7 +360,7 @@ ORDER BY
 
 Следующий запрос с изменённым полем в `ORDER BY`:
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -400,9 +372,7 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-16 │ 1970-01-01 │          │
@@ -422,7 +392,7 @@ ORDER BY
 
 В следующем запросе используется тип данных `INTERVAL` с интервалом в 1 день для каждого значения, записываемого в столбец `d1`:
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -434,9 +404,7 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─────────d1─┬─────────d2─┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-12 │ 1970-01-01 │          │
@@ -504,15 +472,13 @@ ORDER BY
 
 Пример запроса без параметра `STALENESS`:
 
-```sql
+```sql title="Query"
 SELECT number AS key, 5 * number value, 'original' AS source
 FROM numbers(16) WHERE key % 5 == 0
 ORDER BY key WITH FILL;
 ```
 
-Результат:
-
-```text
+```text title="Response"
     ┌─key─┬─value─┬─source───┐
  1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
@@ -535,15 +501,13 @@ ORDER BY key WITH FILL;
 
 Тот же запрос с параметром `STALENESS 3`:
 
-```sql
+```sql title="Query"
 SELECT number AS key, 5 * number value, 'original' AS source
 FROM numbers(16) WHERE key % 5 == 0
 ORDER BY key WITH FILL STALENESS 3;
 ```
 
-Результат:
-
-```text
+```text title="Response"
     ┌─key─┬─value─┬─source───┐
  1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
@@ -562,16 +526,14 @@ ORDER BY key WITH FILL STALENESS 3;
 
 Пример запроса без использования `INTERPOLATE`:
 
-```sql
+```sql title="Query"
 SELECT n, source, inter FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
 │ 0.5 │          │     0 │
@@ -591,16 +553,14 @@ SELECT n, source, inter FROM (
 
 Тот же запрос после применения `INTERPOLATE`:
 
-```sql
+```sql title="Query"
 SELECT n, source, inter FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5 INTERPOLATE (inter AS inter + 1);
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
 │ 0.5 │          │     0 │
@@ -672,4 +632,4 @@ INTERPOLATE ( value AS 9999 )
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Работа с временными рядами в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* Блог: [Работа с временными рядами в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

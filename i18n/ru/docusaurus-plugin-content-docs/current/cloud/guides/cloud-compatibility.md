@@ -1,13 +1,11 @@
 ---
 slug: /whats-new/cloud-compatibility
-sidebar_label: 'Совместимость ClickHouse Cloud'
-title: 'Совместимость ClickHouse Cloud'
+sidebar_label: 'Совместимость с ClickHouse Cloud'
+title: 'Совместимость с ClickHouse Cloud'
 description: 'В этом руководстве представлен обзор функциональных возможностей и особенностей эксплуатации ClickHouse Cloud.'
-keywords: ['ClickHouse Cloud', 'совместимость']
+keywords: ['ClickHouse Cloud', 'compatibility']
 doc_type: 'guide'
 ---
-
-# Руководство по совместимости с ClickHouse Cloud \{#clickhouse-cloud-compatibility-guide\}
 
 В этом руководстве представлен обзор функциональных возможностей и особенностей эксплуатации ClickHouse Cloud. Хотя ClickHouse Cloud основан на дистрибутиве ClickHouse с открытым исходным кодом, могут иметься различия в архитектуре и реализации. В качестве вводного материала вам может быть полезно и интересно прочитать эту статью в блоге о том, [как мы создали ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year).
 

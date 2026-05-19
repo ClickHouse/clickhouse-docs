@@ -7,11 +7,9 @@ title: '타사 개발자의 통합 라이브러리'
 doc_type: 'reference'
 ---
 
-# 서드파티 개발자의 통합 라이브러리 \{#integration-libraries-from-third-party-developers\}
-
 :::warning 면책 조항
-ClickHouse, Inc.는 아래에 나열된 도구와 라이브러리를 직접 유지 관리하지 않으며, 품질을 보장하기 위한 광범위한 테스트를 수행하지도 않았습니다.
-공식 통합에 대해서는 [integrations 페이지](/integrations)를 참고하십시오.
+ClickHouse, Inc.는 아래 나열된 도구와 라이브러리를 유지 관리하지 않으며, 품질을 보장하기 위한 충분한 테스트도 수행하지 않았습니다.
+공식 통합은 [통합 페이지](/integrations)를 참조하십시오.
 :::
 
 ## 인프라 제품 \{#infrastructure-products\}

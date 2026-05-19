@@ -1,17 +1,15 @@
 ---
-description: 'ClickHouse C++ 클라이언트 라이브러리 및 u-server 프레임워크와의 통합에 대한 문서'
+description: 'ClickHouse C++ 클라이언트 라이브러리 및 u-server 프레임워크와의 통합 문서'
 sidebar_label: 'C++'
 sidebar_position: 24
 slug: /interfaces/cpp
 title: 'C++ 클라이언트 라이브러리'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-# C++ 클라이언트 라이브러리 \{#c-client-library\}
 
 `clickhouse-cpp`는 ClickHouse를 위한 공식 C++ 클라이언트 라이브러리로, ClickHouse의 네이티브 바이너리 프로토콜을 사용하여 빠르고 타입 안전한(type-safe) 인터페이스를 제공합니다.
 
-빌드 지침, 사용 예시, 추가 문서는 프로젝트의 GitHub 리포지토리에서 확인할 수 있습니다: [https://github.com/ClickHouse/clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp). 
+빌드 지침, 사용 예시, 추가 문서는 프로젝트의 GitHub 리포지토리에서 확인할 수 있습니다: [https://github.com/ClickHouse/clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp).
 
 :::note
 이 라이브러리는 활발하게 개발 중입니다. 이미 핵심 ClickHouse 기능을 지원하지만, 일부 기능과 데이터 타입(data type)은 아직 완전히 구현되지 않았거나 지원되지 않을 수 있습니다.

@@ -1,12 +1,10 @@
 ---
-description: 'Документация по побитовым функциям'
-sidebar_label: 'Побитовые'
+description: 'Документация по битовым функциям'
+sidebar_label: 'Битовые'
 slug: /sql-reference/functions/bit-functions
-title: 'Побитовые функции'
+title: 'Битовые функции'
 doc_type: 'reference'
 ---
-
-# Битовые функции \{#bit-functions\}
 
 Битовые функции могут применяться к любой паре типов из `UInt8`, `UInt16`, `UInt32`, `UInt64`, `Int8`, `Int16`, `Int32`, `Int64`, `Float32` или `Float64`. Некоторые функции поддерживают типы `String` и `FixedString`.
 

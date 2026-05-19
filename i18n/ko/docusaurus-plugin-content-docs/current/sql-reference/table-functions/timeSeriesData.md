@@ -1,13 +1,12 @@
 ---
-description: 'timeSeriesData는 테이블 엔진이 TimeSeries인 `db_name.time_series_table` 테이블에서 사용하는 데이터 테이블을 반환합니다.'
+description: 'timeSeriesData는 테이블 엔진이 TimeSeries인 `db_name.time_series_table`
+  테이블에서 사용하는 data 테이블을 반환합니다.'
 sidebar_label: 'timeSeriesData'
 sidebar_position: 145
 slug: /sql-reference/table-functions/timeSeriesData
 title: 'timeSeriesData'
 doc_type: 'reference'
 ---
-
-# timeSeriesData 테이블 FUNCTION \{#timeseriesdata-table-function\}
 
 `timeSeriesData(db_name.time_series_table)` - 테이블 엔진이 [TimeSeries](../../engines/table-engines/integrations/time-series.md)인
 `db_name.time_series_table` 테이블에서 사용하는 [data](../../engines/table-engines/integrations/time-series.md#data-table) 테이블을 반환합니다:

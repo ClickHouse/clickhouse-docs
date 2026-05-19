@@ -1,13 +1,12 @@
 ---
-description: 'timeSeriesMetrics возвращает таблицу метрик, которую использует таблица `db_name.time_series_table` с движком TimeSeries.'
+description: 'timeSeriesMetrics возвращает таблицу metrics, используемую таблицей `db_name.time_series_table`,
+  движок которой — TimeSeries.'
 sidebar_label: 'timeSeriesMetrics'
 sidebar_position: 145
 slug: /sql-reference/table-functions/timeSeriesMetrics
 title: 'timeSeriesMetrics'
 doc_type: 'reference'
 ---
-
-# Табличная функция timeSeriesMetrics \{#timeseriesmetrics-table-function\}
 
 `timeSeriesMetrics(db_name.time_series_table)` — возвращает таблицу [metrics](../../engines/table-engines/integrations/time-series.md#metrics-table),
 используемую таблицей `db_name.time_series_table`, которая использует движок [TimeSeries](../../engines/table-engines/integrations/time-series.md):

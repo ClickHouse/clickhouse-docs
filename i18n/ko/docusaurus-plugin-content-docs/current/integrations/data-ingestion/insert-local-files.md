@@ -3,13 +3,11 @@ sidebar_label: '로컬 파일 삽입'
 sidebar_position: 2
 title: '로컬 파일 삽입'
 slug: /integrations/data-ingestion/insert-local-files
-description: '로컬 파일을 삽입하는 방법을 알아봅니다'
+description: '로컬 파일 삽입에 대해 알아보기'
 show_related_blogs: true
 doc_type: 'guide'
-keywords: ['insert local files ClickHouse', 'ClickHouse local file import', 'clickhouse-client file upload']
+keywords: ['로컬 파일 삽입 ClickHouse', 'ClickHouse 로컬 파일 가져오기', 'clickhouse-client 파일 업로드']
 ---
-
-# 로컬 파일 삽입 \{#insert-local-files\}
 
 `clickhouse-client`를 사용하여 로컬 파일을 ClickHouse 서비스로 스트리밍할 수 있습니다. 이를 통해 다양한 강력하고 편리한 ClickHouse 함수로
 데이터를 사전 처리할 수 있습니다. 예제를 통해 살펴보겠습니다...
@@ -79,6 +77,7 @@ LIMIT 7
 ```
 
 결과는 다음과 같습니다:
+
 
 ```response
 

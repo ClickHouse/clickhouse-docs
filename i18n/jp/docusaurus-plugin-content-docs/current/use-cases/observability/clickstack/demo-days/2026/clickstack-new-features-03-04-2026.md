@@ -1,12 +1,13 @@
 ---
-slug: /use-cases/observability/clickstack/demo-days/2026/04/03-04-2026
-title: 'デモデー - 03/04/2026'
-sidebar_label: '03/04/2026'
+slug: /use-cases/observability/clickstack/demo-days/2026/2026-04-03
+title: 'デモデー - 2026-04-03'
+sidebar_label: '2026-04-03'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack デモデー - 03/04/2026'
+description: 'ClickStack デモデー - 2026-04-03'
 doc_type: 'guide'
 keywords: ['ClickStack', 'デモデー']
+sidebar_position: -20260403
 ---
 
 ## 新しいダッシュボードと保存済み検索の一覧ページ \{#new-dashboard-and-saved-search-listing-pages\}

@@ -1,14 +1,12 @@
 ---
-title: 'ClickHouse 是否支持分布式 JOIN？'
+title: 'ClickHouse 是否支持分布式连接？'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/distributed-join
 description: 'ClickHouse 支持分布式 JOIN'
 doc_type: 'reference'
-keywords: ['分布式', 'JOIN']
+keywords: ['分布式', '连接']
 ---
-
-# ClickHouse 是否支持分布式连接？ \{#does-clickhouse-support-distributed-joins\}
 
 是的，ClickHouse 支持在集群上进行分布式连接。
 

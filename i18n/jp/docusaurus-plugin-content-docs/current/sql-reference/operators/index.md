@@ -7,9 +7,7 @@ title: '演算子'
 doc_type: 'reference'
 ---
 
-# 演算子 \{#operators\}
-
-ClickHouse は、クエリのパース段階で、演算子の優先度、優先順位、および結合性に従って、それらを対応する関数に変換します。
+ClickHouse は、クエリの解析時に、演算子をその優先度、優先順位、および結合性に従って対応する関数へ変換します。
 
 ## アクセス演算子 \{#access-operators\}
 
@@ -128,6 +126,15 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
+## 文字列を扱うオペレーター \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - `overlay(string, replacement, offset)` 関数です。
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - `overlay(string, replacement, offset, length)` 関数です。
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - `overlayUTF8(string, replacement, offset)` 関数です。
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - `overlayUTF8(string, replacement, offset, length)` 関数です。
+
 ## データセットを扱う演算子 \{#operators-for-working-with-data-sets\}
 
 [IN 演算子](../../sql-reference/operators/in.md)および[EXISTS 演算子](../../sql-reference/operators/exists.md)を参照してください。
@@ -168,13 +175,11 @@ SELECT
 
 ALL を使用したクエリ:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -185,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 ANYを使用したクエリ:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │

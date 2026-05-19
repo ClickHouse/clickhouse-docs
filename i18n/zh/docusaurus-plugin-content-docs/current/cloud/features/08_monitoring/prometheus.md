@@ -22,6 +22,8 @@ import Image from '@theme/IdealImage';
 
 要开始使用，请先[生成一个 API 密钥](/cloud/manage/openapi)。
 
+如果您要查找 [Managed Postgres](/cloud/managed-postgres) 服务的对应端点，请参阅 [Managed Postgres Prometheus 端点](/cloud/managed-postgres/monitoring/prometheus)。
+
 ## 用于拉取 ClickHouse Cloud 指标的 Prometheus 端点 API \{#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics\}
 
 ### API 参考 \{#api-reference\}
@@ -334,3 +336,4 @@ instances:
 * [Cloud 控制台监控](/cloud/monitoring/cloud-console) — 无需外部工具的内置仪表板
 * [社区和合作伙伴集成](/cloud/monitoring/integrations) — Datadog agent 集成和社区解决方案
 * [查询系统表](/cloud/monitoring/system-tables) — 通过 SQL 直接访问系统指标
+* [Managed Postgres Prometheus 端点](/cloud/managed-postgres/monitoring/prometheus) — 从您的 Managed Postgres 服务抓取指标

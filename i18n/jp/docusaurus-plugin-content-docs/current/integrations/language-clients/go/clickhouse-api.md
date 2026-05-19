@@ -2,15 +2,13 @@
 sidebar_label: 'ClickHouse API'
 sidebar_position: 3
 keywords: ['clickhouse', 'go', 'golang', 'api', 'クエリ', 'insert', 'バッチ']
-description: 'clickhouse-go を使用したネイティブ ClickHouse API の利用: クエリの実行、バッチinsert、非同期insert など。'
+description: 'clickhouse-go を使用したネイティブ ClickHouse API の利用: クエリの実行、バッチinsert、非同期 INSERT など。'
 slug: /integrations/language-clients/go/clickhouse-api
 title: 'ClickHouse API'
 doc_type: 'reference'
 ---
 
-# ClickHouse API \{#clickhouse-api\}
-
-ClickHouse API のコード例はすべて、[こちら](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/clickhouse_api)にあります。
+ClickHouse API のコード例はすべて[こちら](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/clickhouse_api)にあります。
 
 接続設定については、[設定](/integrations/language-clients/go/configuration)を参照してください。
 サポートされているデータ型と Go の型マッピングについては、[データ型](/integrations/language-clients/go/data-types)を参照してください。

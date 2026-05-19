@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['fivetran', 'clickhouse destination', 'トラブルシューティング', 'ベストプラクティス', 'デバッグ']
 ---
 
-# トラブルシューティングとベストプラクティス \{#troubleshooting-best-practices\}
-
 ## よくあるエラー \{#common-errors\}
 
 ### 権限テストが失敗した、または権限に関する操作が失敗している \{#grants-test-failed\}

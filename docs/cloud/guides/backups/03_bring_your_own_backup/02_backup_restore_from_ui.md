@@ -23,6 +23,10 @@ import restore_backups_azure from '@site/static/images/cloud/manage/backups/rest
 
 # Backup / restore via user-interface {#ui-experience}
 
+:::note
+Automated backups to your external bucket are configured to run as "full" backups every 24 hours, and the frequency is not configurable.  
+:::
+
 ## AWS {#AWS}
 
 ### Taking backups to AWS {#taking-backups-to-aws}

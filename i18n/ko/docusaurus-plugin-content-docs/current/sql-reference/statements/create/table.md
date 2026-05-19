@@ -97,21 +97,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory AS SELECT 1;
 SELECT x, toTypeName(x) FROM t1;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─x─┬─toTypeName(x)─┐
 │ 1 │ String        │
 └───┴───────────────┘
 ```
-
 
 ## NULL 또는 NOT NULL 수정자 \{#null-or-not-null-modifiers\}
 
@@ -758,21 +753,16 @@ COMMENT 'Comment'
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory COMMENT 'The temporary table';
 SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─name─┬─comment─────────────┐
 │ t1   │ The temporary table │
 └──────┴─────────────────────┘
 ```
-
 
 ## 관련 콘텐츠 \{#related-content\}
 

@@ -136,11 +136,11 @@ docker run -d \
 자세한 내용은 [&quot;Docker에서 CAP&#95;IPC&#95;LOCK 및 CAP&#95;SYS&#95;NICE Capabilities 구성하기&quot;](/knowledgebase/configure_cap_ipc_lock_and_cap_sys_nice_in_docker)를 참조하십시오.
 
 
-## Configuration \{#configuration\}
+## 구성 \{#configuration\}
 
-이 컨테이너는 [HTTP 인터페이스](https://clickhouse.com/docs/interfaces/http_interface/)용으로 포트 8123을, [네이티브 클라이언트](https://clickhouse.com/docs/interfaces/tcp/)용으로 포트 9000을 사용합니다.
+이 컨테이너는 [HTTP 인터페이스](/interfaces/http)용으로 포트 8123을, [네이티브 클라이언트](/interfaces/tcp)용으로 포트 9000을 사용합니다.
 
-ClickHouse 구성은 "config.xml" 파일로 정의됩니다([문서](https://clickhouse.com/docs/operations/configuration_files/)).
+ClickHouse 구성은 &quot;config.xml&quot; 파일로 정의됩니다([문서](/operations/configuration-files)).
 
 ### 사용자 정의 구성으로 서버 인스턴스 시작 \{#start-server-instance-with-custom-config\}
 

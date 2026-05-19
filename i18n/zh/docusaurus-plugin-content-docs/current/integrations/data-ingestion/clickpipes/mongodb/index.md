@@ -21,9 +21,9 @@ import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
 
-# 将 MongoDB 数据摄取到 ClickHouse（使用 CDC（变更数据捕获）） \{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\}
+# 将 MongoDB 数据摄取到 ClickHouse (使用 CDC (变更数据捕获) )  \{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\}
 
-<BetaBadge/>
+<BetaBadge />
 
 :::info
 通过 ClickPipes 将 MongoDB 的数据摄取到 ClickHouse Cloud 目前处于公开测试阶段。
@@ -34,6 +34,8 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 :::
 
 你可以使用 ClickPipes 将 MongoDB 数据库中的数据摄取到 ClickHouse Cloud。源 MongoDB 数据库可以托管在本地部署环境，或者使用 MongoDB Atlas 等服务托管在云上。
+
+还可以使用 ClickPipes UI 手动部署和管理 MongoDB ClickPipes，也可以通过 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
 
 ## 前置条件 \{#prerequisites\}
 

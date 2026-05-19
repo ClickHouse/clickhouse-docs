@@ -1,12 +1,10 @@
 ---
-description: '内省函数参考文档'
-sidebar_label: '内省'
+description: '自省函数文档'
+sidebar_label: '自省'
 slug: /sql-reference/functions/introspection
-title: '内省函数'
+title: '自省函数'
 doc_type: 'reference'
 ---
-
-# 自省函数 \{#introspection-functions\}
 
 您可以使用本章介绍的函数对 [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) 和 [DWARF](https://en.wikipedia.org/wiki/DWARF) 进行自省，以进行查询性能剖析。
 
@@ -122,12 +120,11 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
-
 ## addressToLineWithInlines \{#addressToLineWithInlines\}
 
 引入于：v22.2.0
 
-与 `addressToLine` 类似，但返回包含所有内联函数的数组（Array）。
+与 `addressToLine` 类似，但返回包含所有内联函数的数组 (Array) 。
 因此，它比 `addressToLine` 更慢。
 
 要启用此自省函数：
@@ -147,7 +144,7 @@ addressToLineWithInlines(address_of_binary_instruction)
 
 **返回值**
 
-返回一个数组，第一个元素为源代码文件名和行号，中间以冒号分隔。第二、第三等后续元素用于列出内联函数的源代码文件名、行号和函数名。如果找不到调试信息，则返回仅包含一个元素（等于二进制可执行文件名称）的数组；如果地址无效，则返回空数组。[`Array(String)`](/sql-reference/data-types/array)
+返回一个数组，第一个元素为源代码文件名和行号，中间以冒号分隔。第二、第三等后续元素用于列出内联函数的源代码文件名、行号和函数名。如果找不到调试信息，则返回仅包含一个元素 (等于二进制可执行文件名称) 的数组；如果地址无效，则返回空数组。[`Array(String)`](/sql-reference/data-types/array)
 
 **示例**
 
@@ -177,7 +174,6 @@ FROM system.trace_log
 WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
-
 
 ```response title=Response
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -294,7 +290,6 @@ LIMIT 1
 \G
 ```
 
-
 ```response title=Response
 Row 1:
 ──────
@@ -389,7 +384,6 @@ LIMIT 1
 \G
 ```
 
-
 ```response title=Response
 Row 1:
 ──────
@@ -450,7 +444,6 @@ SELECT isMergeTreePartCoveredBy(rhs, lhs), isMergeTreePartCoveredBy(lhs, rhs);
 └────────────────────────────────────┴────────────────────────────────────┘
 ```
 
-
 ## logTrace \{#logTrace\}
 
 自 v20.12.0 引入
@@ -484,7 +477,6 @@ SELECT logTrace('logTrace message');
 │                            0 │
 └──────────────────────────────┘
 ```
-
 
 ## mergeTreePartInfo \{#mergeTreePartInfo\}
 
@@ -520,7 +512,6 @@ SELECT info.partition_id, info.min_block, info.max_block, info.level, info.mutat
 │ all               │             12 │             25 │          7 │             4 │
 └───────────────────┴────────────────┴────────────────┴────────────┴───────────────┘
 ```
-
 
 ## tid \{#tid\}
 

@@ -9,8 +9,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 高度なチュートリアル \{#advanced-tutorial\}
-
 ## Overview \{#overview\}
 
 ニューヨーク市のタクシーサンプルデータセットを使用して、ClickHouseでデータを取り込み、クエリする方法を学習します。 

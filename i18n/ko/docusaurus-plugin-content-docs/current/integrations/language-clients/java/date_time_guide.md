@@ -1,17 +1,15 @@
 ---
-sidebar_label: 'JDBC에서 Date/Time 값 사용하기'
+sidebar_label: 'JDBC에서 Date/Time 값 다루기'
 sidebar_position: 4
 keywords: ['java', 'jdbc', 'driver', 'integrate', 'guide', 'Date', 'Time']
-description: 'JDBC에서 Date/Time 값을 사용하는 방법에 대한 가이드'
+description: 'JDBC에서 Date/Time 값을 사용하는 가이드'
 slug: /integrations/language-clients/java/jdbc_date_time_guide
-title: 'Date/Time 값 사용 가이드'
+title: 'Date/Time 값 가이드'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'language_client'
 ---
-
-# JDBC에서 Date, Time, Timestamp 다루기 \{#working-with-date-time-and-timestamp-in-jdbc\}
 
 Date, Time, Timestamp는 관련된 몇 가지 일반적인 문제가 있어 주의가 필요합니다.
 가장 흔한 문제는 시간대를 어떻게 처리할 것인가 하는 점입니다. 또 다른 문제는 문자열 표현 방식과 이를 어떻게 사용할 것인가입니다.

@@ -8,7 +8,7 @@ doc_type: 'guide'
 keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
 ---
 
-# Configuring SSL user certificate for authentication
+
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />

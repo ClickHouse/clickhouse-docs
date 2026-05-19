@@ -10,7 +10,6 @@ integration:
    - category: 'clickpipes'
 ---
 
-# Generic MySQL source setup guide
 
 :::info
 

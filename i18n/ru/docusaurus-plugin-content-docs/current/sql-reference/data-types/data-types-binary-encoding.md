@@ -1,13 +1,11 @@
 ---
 description: 'Документация по спецификации двоичного кодирования типов данных'
-sidebar_label: 'Спецификация двоичного кодирования типов данных'
+sidebar_label: 'Спецификация двоичного кодирования типов данных.'
 sidebar_position: 56
 slug: /sql-reference/data-types/data-types-binary-encoding
 title: 'Спецификация двоичного кодирования типов данных'
 doc_type: 'reference'
 ---
-
-# Спецификация двоичного кодирования типов данных \{#data-types-binary-encoding-specification\}
 
 В этой спецификации описывается двоичный формат, который может использоваться для двоичного кодирования и декодирования типов данных ClickHouse. Этот формат используется в [двоичной сериализации](dynamic.md#binary-output-format) столбца `Dynamic` и может использоваться во входных и выходных форматах [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) и [Native](/interfaces/formats/Native) при соответствующих настройках.
 

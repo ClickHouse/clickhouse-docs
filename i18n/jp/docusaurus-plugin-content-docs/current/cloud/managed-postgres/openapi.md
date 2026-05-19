@@ -13,7 +13,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
 
-[ClickHouse OpenAPI](/cloud/manage/cloud-api) を使用すると、ClickHouse サービスと同様に Managed Postgres サービスもプログラムで制御できます。[OpenAPI] にすでに慣れている場合は、[API キー] を取得して [Managed
+[ClickHouse OpenAPI](/cloud/manage/cloud-api) を使用すると、ClickHouse サービスと同様に Managed Postgres サービスもプログラムで制御できます。同じ API では、サービスメトリクスをスクレイピングするための [Prometheus エンドポイント] も公開されています。[OpenAPI] にすでに慣れている場合は、[API キー] を取得して [Managed
 Postgres API リファレンス][pg-openapi] に直接進んでください。そうでない場合は、このまま読み進めて概要をすばやく確認してください。
 
 ## API キー \{#api-keys\}
@@ -268,11 +268,23 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 }
 ```
 
+## 監視 \{#monitoring\}
+
+Prometheus 互換の 2 つのエンドポイントで、Managed Postgres サービスの CPU、メモリ、I/O、接続、
+およびトランザクションのメトリクスを公開します。1 つは組織内のすべてのサービスの
+メトリクスを返し、もう 1 つは単一のサービスのメトリクスを返します。
+設定については [Prometheus エンドポイント] ページを、メトリクスの完全な一覧については
+[metrics reference] を参照してください。
+
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 
 [OpenAPI]: https://www.openapis.org "OpenAPI Initiative"
 
 [API keys]: /cloud/manage/openapi "APIキーの管理"
+
+[Prometheus エンドポイント]: /cloud/managed-postgres/monitoring/prometheus "Managed Postgres の Prometheus エンドポイント"
+
+[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Managed Postgres メトリクスリファレンス"
 
 [pg-openapi]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres "ClickHouse Cloud の OpenAPI 仕様: Postgres"
 

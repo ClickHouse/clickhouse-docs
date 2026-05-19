@@ -1,13 +1,11 @@
 ---
-description: 'Документация по типу данных FixedString(N) в ClickHouse'
+description: 'Документация по типу данных FixedString в ClickHouse'
 sidebar_label: 'FixedString(N)'
 sidebar_position: 10
 slug: /sql-reference/data-types/fixedstring
 title: 'FixedString(N)'
 doc_type: 'reference'
 ---
-
-# FixedString(N) \{#fixedstringn\}
 
 Строка фиксированной длины из `N` байт (не в символах и не в кодовых точках).
 

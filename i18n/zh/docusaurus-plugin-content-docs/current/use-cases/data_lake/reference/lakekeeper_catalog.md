@@ -1,30 +1,30 @@
 ---
 slug: /use-cases/data-lake/lakekeeper-catalog
-sidebar_label: 'Lakekeeper Catalog'
-title: 'Lakekeeper Catalog'
+sidebar_label: 'Lakekeeper 目录'
+title: 'Lakekeeper 目录'
 pagination_prev: null
 pagination_next: null
-description: '在本指南中，我们将逐步演示如何结合使用 ClickHouse 和 Lakekeeper Catalog 来查询您的数据。'
+description: '在本指南中，我们将逐步演示如何结合使用 ClickHouse 和 Lakekeeper 目录 来查询您的数据。'
 keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge />
+<BetaBadge />
 
 :::note
-与 Lakekeeper Catalog 的集成目前仅适用于 Iceberg 表。
+与 Lakekeeper 目录 的集成目前仅适用于 Iceberg 表。
 此集成同时支持 AWS S3 和其他云存储提供商。
 :::
 
-ClickHouse 支持与多个目录服务集成（Unity、Glue、REST、Polaris 等）。本指南将介绍如何使用 ClickHouse 和 [Lakekeeper](https://docs.lakekeeper.io/) catalog 来查询数据。
+ClickHouse 支持与多个目录服务集成 (Unity、Glue、REST、Polaris 等) 。本指南将介绍如何使用 ClickHouse 和 [Lakekeeper](https://docs.lakekeeper.io/) 目录 来查询数据。
 
-Lakekeeper 是一个面向 Apache Iceberg 的开源 REST catalog 实现，提供：
+Lakekeeper 是一个面向 Apache Iceberg 的开源 REST 目录 实现，提供：
 
 * **Rust 原生** 实现，具有高性能和高可靠性
-* **REST API**，遵循 Iceberg REST catalog 规范
+* **REST API**，遵循 Iceberg REST 目录 规范
 * 与 **云存储** 集成，支持兼容 S3 的存储
 
 :::note

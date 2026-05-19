@@ -59,9 +59,3 @@ import JSONSupport from '@site/i18n/zh/docusaurus-plugin-content-docs/current/us
 </VerticalStepper>
 
 <JSONSupport />
-
-对于仅本地模式镜像，用户只需要设置参数 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`，例如：
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest
-```

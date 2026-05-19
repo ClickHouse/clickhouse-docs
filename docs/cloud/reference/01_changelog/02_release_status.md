@@ -1,7 +1,7 @@
 ---
 title: 'Release status page'
 sidebar_label: 'Release status'
-keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
+keywords: ['cloud', 'release status', 'rollout', 'version', 'update']
 description: 'Page with release status for each release channel'
 slug: /cloud/release-status
 doc_type: 'reference'

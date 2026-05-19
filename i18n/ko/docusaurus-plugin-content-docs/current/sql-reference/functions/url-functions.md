@@ -6,8 +6,6 @@ title: 'URL 작업을 위한 함수'
 doc_type: 'reference'
 ---
 
-# URL 작업용 함수 \{#functions-for-working-with-urls\}
-
 ## 개요 \{#overview\}
 
 :::note

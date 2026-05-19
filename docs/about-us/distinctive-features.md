@@ -8,7 +8,6 @@ keywords: ['compression', 'secondary-indexes','column-oriented']
 doc_type: 'guide'
 ---
 
-# Distinctive features of ClickHouse
 
 ## True column-oriented database management system {#true-column-oriented-database-management-system}
 

@@ -247,6 +247,14 @@ ClickHouse Cloud 支持以下计费选项：
 
 您无法在计费 UI 中移除信用卡，但可以随时更新。这有助于确保您的组织始终具有有效的付款方式。如果您需要移除信用卡，请联系 [ClickHouse Cloud 支持](https://console.clickhouse.cloud/support) 获取帮助。
 
+### 我可以在哪里查看我的退款？ \{#where-can-i-see-my-refunds\}
+
+在 ClickHouse Cloud 控制台中，前往 Organization &gt; Billing。“Refunds”部分位于“Invoices”和“Credits”下方。您必须是 Organization Admin 或 Billing Admin，才能查看该部分。
+
+### 退款多久到账？ \{#how-long-does-it-take-for-a-refund-to-appear\}
+
+退款在我们处理完成后会显示。信用卡退款显示在您的账单上可能还需要一些时间，具体取决于您的银行。
+
 ### 计费周期有多长？ \{#how-long-is-the-billing-cycle\}
 
 计费采用月度周期，开始日期为创建 ClickHouse Cloud 组织的日期。

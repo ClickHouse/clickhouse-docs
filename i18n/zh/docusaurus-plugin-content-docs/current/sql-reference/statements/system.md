@@ -106,6 +106,10 @@ SYSTEM RELOAD ASYNCHRONOUS METRICS [ON CLUSTER cluster_name]
 
 清除 Iceberg 元数据缓存。
 
+## SYSTEM CLEAR|DROP AVRO SCHEMA CACHE \{#drop-avro-schema-cache\}
+
+清除 `AvroConfluent` 格式使用的按 URL 分隔的 Confluent Schema Registry 缓存。这会同时清除 schema 拉取缓存 (id → schema) 和 schema 注册缓存 (subject + schema → id) ，因此后续的读取和写入将回退到 registry 服务器。当 registry 端的 schema 被删除或重写时，此操作非常有用；也可用于在测试中验证 registry 的幂等性。
+
 ## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
 
 清除 parquet 元数据缓存。
@@ -420,23 +424,25 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 
 ### SYSTEM STOP TTL MERGES \{#stop-ttl-merges\}
 
-提供根据 [TTL 表达式](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 停止对 MergeTree 系列表中旧数据进行后台删除的功能：
+<CloudNotSupportedBadge />
+
+提供根据 [生存时间 (TTL) 表达式](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 停止对 MergeTree 家族表中旧数据进行后台删除的功能：
 即使表不存在或表不是 MergeTree 引擎表也会返回 `Ok.`。当数据库不存在时返回错误：
 
 ```sql
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START TTL MERGES \{#start-ttl-merges\}
 
-用于为 MergeTree 系列表根据 [TTL 表达式](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 启动后台旧数据删除操作：
+<CloudNotSupportedBadge />
+
+用于为 MergeTree 家族表根据 [生存时间 (TTL) 表达式](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 启动后台旧数据删除操作：
 即使表不存在也会返回 `Ok.`。当数据库不存在时则返回错误：
 
 ```sql
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM STOP MOVES \{#stop-moves\}
 
@@ -756,7 +762,7 @@ SYSTEM STOP VIEWS
 
 为指定的 VIEW 或所有可刷新 VIEW 启用定期刷新。不会立即触发刷新。
 
-如果该 VIEW 位于 Replicated 或 Shared 数据库中，`START VIEW` 会撤销 `STOP VIEW` 的效果，而 `START REPLICATED VIEW` 会撤销 `STOP REPLICATED VIEW` 的效果。
+如果该 VIEW 位于 Replicated 或 Shared 数据库中，`START VIEW` 会撤销 `STOP VIEW` 的效果，而 `START REPLICATED VIEW` 会撤销 `STOP REPLICATED VIEW` 的效果。`START VIEW` 也会撤销 `PAUSE VIEW` 的效果。
 
 ```sql
 SYSTEM START VIEW [db.]name
@@ -766,6 +772,25 @@ SYSTEM START VIEW [db.]name
 SYSTEM START VIEWS
 ```
 
+### SYSTEM PAUSE VIEW, PAUSE VIEWS \{#pause-view-pause-views\}
+
+禁用指定VIEW或所有可刷新 VIEW的周期性刷新。
+与 `SYSTEM STOP VIEW` 不同，`SYSTEM PAUSE VIEW` 不会中断已在进行中的刷新：正在运行的刷新会继续直至完成，只有后续刷新会被阻止。
+
+可使用 `SYSTEM START VIEW` 或 `SYSTEM START VIEWS` 恢复。
+
+:::note
+暂停状态在服务器重启后不会保留。重启后，VIEW将恢复为其已配置的刷新调度。
+在 Replicated 或 Shared 数据库中，`SYSTEM PAUSE VIEW` 仅影响当前副本。
+:::
+
+```sql
+SYSTEM PAUSE VIEW [db.]name
+```
+
+```sql
+SYSTEM PAUSE VIEWS
+```
 
 ### SYSTEM REFRESH VIEW \{#refresh-view\}
 

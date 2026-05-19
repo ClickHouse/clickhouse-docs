@@ -55,67 +55,63 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 
 ## 示例 \{#examples\}
 
-默认情况下，`CHECK TABLE` 查询会显示表的整体检查状态：
+默认情况下，`CHECK TABLE` 查询会显示表检查的整体状态：
 
-```sql
+```sql title="Query"
 CHECK TABLE test_table;
 ```
 
-```text
+```text title="Response"
 ┌─result─┐
 │      1 │
 └────────┘
 ```
 
-如果你想查看每个数据分片的检查状态，可以使用 `check_query_single_value_result` 设置。
+如果你想查看每个数据分片各自的检查状态，可以使用 `check_query_single_value_result` 设置。
 
-另外，如果要检查表的某个特定分区，可以使用 `PARTITION` 关键字。
+此外，如需检查表中的特定分区，可以使用 `PARTITION` 关键字。
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-输出：
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 │ 201003_3_3_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-同样，你可以使用 `PART` 关键字来检查表中的特定数据分片。
+同样，您也可以使用 `PART` 关键字来检查表的特定分片。
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_7_7_0'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-输出：
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-请注意，如果该 part 不存在，查询将报错：
+请注意，当分片不存在时，查询会返回错误：
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_111_222_0'
 ```
 
-```text
+```text title="Response"
 DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
 
 ### 遇到“Corrupted”结果 \{#receiving-a-corrupted-result\}
 
 :::warning
-免责声明：此处描述的操作步骤（包括直接在数据目录中手动修改或删除文件）仅适用于实验或开发环境。**不要**在生产服务器上尝试此操作，否则可能导致数据丢失或其他意外后果。
+免责声明：此处描述的操作步骤 (包括直接在数据目录中手动修改或删除文件) 仅适用于实验或开发环境。**不要**在生产服务器上尝试此操作，否则可能导致数据丢失或其他意外后果。
 :::
 
 删除现有的校验和文件：
@@ -124,15 +120,13 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
+```
 
-
-Output:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message──────────────────────────────────┐
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │
@@ -164,11 +158,11 @@ SETTINGS check_query_single_value_result = 0
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
 
-## 如果数据已损坏 {#if-the-data-is-corrupted}
+## 如果数据已损坏 \{#if-the-data-is-corrupted\}
 
-如果表已损坏，可以将未损坏的数据复制到另一张表。操作步骤如下：
+如果表已损坏，可以将未损坏的数据复制到另一张表中。操作如下：
 
-1.  创建一个与损坏表结构相同的新表。执行查询：`CREATE TABLE <new_table_name> AS <damaged_table_name>`。
-2.  将 `max_threads` 的值设置为 1，以便下一条查询以单线程方式执行。执行查询：`SET max_threads = 1`。
-3.  执行查询：`INSERT INTO <new_table_name> SELECT * FROM <damaged_table_name>`。此查询会将未损坏的数据从损坏表复制到另一张表中，只会复制到损坏位置之前的数据。
-4.  重启 `clickhouse-client` 以重置 `max_threads` 的值。
+1. 创建一个与损坏表结构相同的新表。为此，执行查询 `CREATE TABLE <new_table_name> AS <damaged_table_name>`。
+2. 将 `max_threads` 的值设为 1，以便下一条查询以单线程方式处理。为此，执行查询 `SET max_threads = 1`。
+3. 执行查询 `INSERT INTO <new_table_name> SELECT * FROM <damaged_table_name>`。该查询会将损坏表中未损坏的数据复制到另一张表中。只会复制损坏分片之前的数据。
+4. 重启 `clickhouse-client` 以重置 `max_threads` 的值。

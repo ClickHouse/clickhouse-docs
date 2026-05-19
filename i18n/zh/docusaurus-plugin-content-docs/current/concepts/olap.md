@@ -1,22 +1,20 @@
 ---
 sidebar_position: 2
 sidebar_label: '什么是 OLAP？'
-description: 'OLAP 是联机分析处理（Online Analytical Processing）的缩写。它是一个广义术语，可以从两个角度来理解：技术角度和业务角度。'
+description: 'OLAP 是 Online Analytical Processing（联机分析处理）的缩写。这个术语范围很广，可以从两个角度来理解：技术角度和业务角度。'
 title: '什么是 OLAP？'
 slug: /concepts/olap
 keywords: ['OLAP']
 doc_type: 'reference'
 ---
 
-# 什么是 OLAP？ \{#what-is-olap\}
+[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) 是 Online Analytical Processing (联机分析处理) 的缩写。这个术语范围很广，可以从两个角度来理解：技术角度和业务角度。在最高层面上，你可以简单地将这个短语反向理解：
 
-[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) 是 Online Analytical Processing（联机分析处理）的缩写。这个术语范围很广，可以从两个角度来理解：技术角度和业务角度。在最高层面上，你可以简单地将这个短语反向理解：
+**Processing (处理)&#x20;**&#x20;— 对源数据进行处理……
 
-**Processing（处理）** — 对源数据进行处理……
+**Analytical (分析)&#x20;**&#x20;— ……以生成分析报告和洞察……
 
-**Analytical（分析）** — ……以生成分析报告和洞察……
-
-**Online（联机）** — ……并以实时方式完成。
+**Online (联机)&#x20;**&#x20;— ……并以实时方式完成。
 
 ## 从业务视角看 OLAP \{#olap-from-the-business-perspective\}
 

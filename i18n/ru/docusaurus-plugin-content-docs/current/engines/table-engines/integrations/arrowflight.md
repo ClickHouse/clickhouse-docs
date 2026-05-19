@@ -3,11 +3,9 @@ description: 'Движок позволяет выполнять запросы 
 sidebar_label: 'ArrowFlight'
 sidebar_position: 186
 slug: /engines/table-engines/integrations/arrowflight
-title: 'Табличный движок ArrowFlight'
+title: 'Движок таблицы ArrowFlight'
 doc_type: 'reference'
 ---
-
-# Движок таблицы ArrowFlight \{#arrowflight-table-engine\}
 
 Движок таблицы ArrowFlight позволяет ClickHouse выполнять запросы к удалённым наборам данных по протоколу [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html).
 Эта интеграция даёт возможность ClickHouse получать данные с внешних серверов с поддержкой Flight в колонном формате Arrow с высокой производительностью.

@@ -1,15 +1,13 @@
 ---
-description: '`Dictionary` 引擎以 ClickHouse 表的形式展示字典数据。'
-sidebar_label: 'Dictionary'
+description: '`字典` 引擎以 ClickHouse 表的形式展示字典数据。'
+sidebar_label: '字典'
 sidebar_position: 20
 slug: /engines/table-engines/special/dictionary
-title: 'Dictionary 表引擎'
+title: '字典 表引擎'
 doc_type: 'reference'
 ---
 
-# Dictionary 表引擎 \{#dictionary-table-engine\}
-
-`Dictionary` 引擎将 [dictionary](../../../sql-reference/statements/create/dictionary/overview.md) 数据显示为 ClickHouse 表。
+`字典` 引擎以 ClickHouse 表的形式展示[字典](../../../sql-reference/statements/create/dictionary/overview.md)数据。
 
 ## 示例 \{#example\}
 

@@ -7,8 +7,6 @@ sidebar_label: 'sumIf'
 doc_type: 'reference'
 ---
 
-# sumIf \{#sumif\}
-
 ## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`sum`](/sql-reference/aggregate-functions/reference/sum)

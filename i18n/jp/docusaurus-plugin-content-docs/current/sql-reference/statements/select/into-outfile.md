@@ -1,12 +1,10 @@
 ---
-description: 'INTO OUTFILE 句に関するドキュメント'
+description: 'INTO OUTFILE 句のドキュメント'
 sidebar_label: 'INTO OUTFILE'
 slug: /sql-reference/statements/select/into-outfile
 title: 'INTO OUTFILE 句'
 doc_type: 'reference'
 ---
-
-# INTO OUTFILE 句 \{#into-outfile-clause\}
 
 `INTO OUTFILE` 句は、`SELECT` クエリの結果を **クライアント** 側のファイルにリダイレクトします。
 
@@ -35,13 +33,11 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 [command-line client](../../../interfaces/client.md) を使用して次のクエリを実行します:
 
-```bash
+```bash title="Query"
 clickhouse-client --query="SELECT 1,'ABC' INTO OUTFILE 'select.gz' FORMAT CSV;"
 zcat select.gz 
 ```
 
-結果：
-
-```text
+```text title="Response"
 1,"ABC"
 ```

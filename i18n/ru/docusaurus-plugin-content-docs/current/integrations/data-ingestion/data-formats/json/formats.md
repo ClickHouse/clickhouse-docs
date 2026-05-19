@@ -3,11 +3,9 @@ title: 'Обработка других форматов JSON'
 slug: /integrations/data-formats/json/other-formats
 description: 'Обработка других форматов JSON'
 sidebar_label: 'Обработка других форматов'
-keywords: ['json', 'formats', 'json formats']
+keywords: ['json', 'форматы', 'форматы json']
 doc_type: 'guide'
 ---
-
-# Обработка других форматов JSON \{#handling-other-json-formats\}
 
 В предыдущих примерах загрузки данных в формате JSON предполагается использование формата [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`). Этот формат считывает ключи в каждой строке JSON как названия столбцов. Например:
 

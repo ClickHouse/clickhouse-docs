@@ -1,5 +1,5 @@
 ---
-description: 'Справочная документация по движкам таблиц'
+description: 'Документация по движкам таблиц'
 slug: /engines/table-engines/
 toc_folder_title: 'Движки таблиц'
 toc_priority: 26
@@ -8,35 +8,33 @@ title: 'Движки таблиц'
 doc_type: 'reference'
 ---
 
-# Движки таблиц \{#table-engines\}
-
 Движок таблицы (тип таблицы) определяет:
 
-- Как и где хранятся данные, куда они записываются и откуда читаются.
-- Какие запросы поддерживаются и как.
-- Возможность конкурентного доступа к данным.
-- Использование индексов, если они есть.
-- Возможно ли многопоточное выполнение запросов.
-- Параметры репликации данных.
+* Как и где хранятся данные, куда они записываются и откуда читаются.
+* Какие запросы поддерживаются и как.
+* Возможность конкурентного доступа к данным.
+* Использование индексов, если они есть.
+* Возможно ли многопоточное выполнение запросов.
+* Параметры репликации данных.
 
 ## Семейства движков \{#engine-families\}
 
 ### MergeTree \{#mergetree\}
 
-Наиболее универсальные и функциональные движки таблиц для задач с высокой нагрузкой. Общим свойством этих движков является быстрая вставка данных с последующей фоновой обработкой. Движки семейства `MergeTree` поддерживают репликацию данных (через версии движков [Replicated\*](/engines/table-engines/mergetree-family/replication)), партиционирование, вторичные пропускающие индексы и другие возможности, которые недоступны в других движках.
+Наиболее универсальные и функциональные движки таблиц для задач с высокой нагрузкой. Общим свойством этих движков является быстрая вставка данных с последующей фоновой обработкой. Движки семейства `MergeTree` поддерживают репликацию данных (через версии движков [Replicated*](/engines/table-engines/mergetree-family/replication)), партиционирование, вторичные пропускающие индексы и другие возможности, которые недоступны в других движках.
 
 Движки в семействе:
 
-| Движки MergeTree                                                                                                                         |
-|-------------------------------------------------------------------------------------------------------------------------------------------|
-| [MergeTree](/engines/table-engines/mergetree-family/mergetree)                                                          |
-| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)                               |
-| [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)                                     |
-| [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)                         |
-| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)               |
+| Движки MergeTree                                                                                     |
+| ---------------------------------------------------------------------------------------------------- |
+| [MergeTree](/engines/table-engines/mergetree-family/mergetree)                                       |
+| [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree)                     |
+| [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree)                         |
+| [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree)                 |
+| [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)                   |
 | [VersionedCollapsingMergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) |
-| [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                                  |
-| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)                                     |
+| [GraphiteMergeTree](/engines/table-engines/mergetree-family/graphitemergetree)                       |
+| [CoalescingMergeTree](/engines/table-engines/mergetree-family/coalescingmergetree)                   |
 
 ### Log \{#log\}
 
@@ -44,11 +42,11 @@ doc_type: 'reference'
 
 Движки в семействе:
 
-| Движки Log                                                                |
-|----------------------------------------------------------------------------|
-| [TinyLog](/engines/table-engines/log-family/tinylog)       |
+| Движки Log                                               |
+| -------------------------------------------------------- |
+| [TinyLog](/engines/table-engines/log-family/tinylog)     |
 | [StripeLog](/engines/table-engines/log-family/stripelog) |
-| [Log](/engines/table-engines/log-family/log)                   |
+| [Log](/engines/table-engines/log-family/log)             |
 
 ### Интеграционные движки \{#integration-engines\}
 
@@ -56,8 +54,8 @@ doc_type: 'reference'
 
 Движки в семействе:
 
-| Интеграционные движки                                                             |
-|---------------------------------------------------------------------------------|
+| Интеграционные движки                                                           |
+| ------------------------------------------------------------------------------- |
 | [ODBC](../../engines/table-engines/integrations/odbc.md)                        |
 | [JDBC](../../engines/table-engines/integrations/jdbc.md)                        |
 | [MySQL](../../engines/table-engines/integrations/mysql.md)                      |
@@ -74,26 +72,26 @@ doc_type: 'reference'
 
 ### Специальные движки \{#special-engines\}
 
-Движки в семействе:
+Движки этого семейства:
 
-| Специальные движки                                            |
-|---------------------------------------------------------------|
-| [Distributed](/engines/table-engines/special/distributed)     |
-| [Dictionary](/engines/table-engines/special/dictionary)       |
-| [Merge](/engines/table-engines/special/merge)                 |
-| [Executable](/engines/table-engines/special/executable)       |
-| [File](/engines/table-engines/special/file)                   |
-| [Null](/engines/table-engines/special/null)                   |
-| [Set](/engines/table-engines/special/set)                     |
-| [Join](/engines/table-engines/special/join)                   |
-| [URL](/engines/table-engines/special/url)                     |
-| [View](/engines/table-engines/special/view)                   |
-| [Memory](/engines/table-engines/special/memory)               |
-| [Buffer](/engines/table-engines/special/buffer)               |
+| Специальные движки                                             |
+| -------------------------------------------------------------- |
+| [Distributed](/engines/table-engines/special/distributed)      |
+| [Dictionary](/engines/table-engines/special/dictionary)        |
+| [Merge](/engines/table-engines/special/merge)                  |
+| [Executable](/engines/table-engines/special/executable)        |
+| [File](/engines/table-engines/special/file)                    |
+| [Null](/engines/table-engines/special/null)                    |
+| [Set](/engines/table-engines/special/set)                      |
+| [Join](/engines/table-engines/special/join)                    |
+| [URL](/engines/table-engines/special/url)                      |
+| [View](/engines/table-engines/special/view)                    |
+| [Memory](/engines/table-engines/special/memory)                |
+| [Buffer](/engines/table-engines/special/buffer)                |
 | [Внешние данные](/engines/table-engines/special/external-data) |
-| [GenerateRandom](/engines/table-engines/special/generate)     |
-| [KeeperMap](/engines/table-engines/special/keeper-map)        |
-| [FileLog](/engines/table-engines/special/filelog)             |
+| [GenerateRandom](/engines/table-engines/special/generate)      |
+| [KeeperMap](/engines/table-engines/special/keeper-map)         |
+| [FileLog](/engines/table-engines/special/filelog)              |
 
 ## Виртуальные столбцы \{#table_engines-virtual_columns\}
 
@@ -105,10 +103,10 @@ doc_type: 'reference'
 
 Если вы создаёте таблицу со столбцом, имя которого совпадает с именем одного из виртуальных столбцов таблицы, этот виртуальный столбец становится недоступным. Мы не рекомендуем так делать. Чтобы избежать конфликтов, имена виртуальных столбцов обычно имеют префикс в виде подчёркивания.
 
-- `_table` — содержит имя таблицы, из которой были прочитаны данные. Тип: [String](../../sql-reference/data-types/string.md).
+* `_table` — содержит имя таблицы, из которой были прочитаны данные. Тип: [String](../../sql-reference/data-types/string.md).
 
-    Независимо от используемого движка таблицы, каждая таблица включает универсальный виртуальный столбец с именем `_table`.
+  Независимо от используемого движка таблицы, каждая таблица включает универсальный виртуальный столбец с именем `_table`.
 
-    При выполнении запроса к таблице с движком Merge вы можете задать константные условия по `_table` в предложении `WHERE/PREWHERE` (например, `WHERE _table='xyz'`). В этом случае операция чтения выполняется только для тех таблиц, для которых условие по `_table` выполняется, так что столбец `_table` фактически выступает в роли индекса.
+  При выполнении запроса к таблице с движком Merge вы можете задать константные условия по `_table` в предложении `WHERE/PREWHERE` (например, `WHERE _table='xyz'`). В этом случае операция чтения выполняется только для тех таблиц, для которых условие по `_table` выполняется, так что столбец `_table` фактически выступает в роли индекса.
 
-    При использовании запросов вида `SELECT ... FROM (... UNION ALL ...)` можно определить, из какой фактической таблицы получены возвращаемые строки, указав столбец `_table`.
+  При использовании запросов вида `SELECT ... FROM (... UNION ALL ...)` можно определить, из какой фактической таблицы получены возвращаемые строки, указав столбец `_table`.

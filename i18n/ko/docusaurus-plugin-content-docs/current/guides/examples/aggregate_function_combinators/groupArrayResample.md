@@ -7,22 +7,14 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'reference'
 ---
 
-
-
-# groupArrayResample \{#grouparrayresample\}
-
-
-
 ## Description \{#description\}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
-콤비네이터는 [`groupArray`](/sql-reference/aggregate-functions/reference/sum) 집계 함수에 적용하여,
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
+조합자는 [`groupArray`](/sql-reference/aggregate-functions/reference/sum) 집계 함수에 적용하여,
 지정된 키 컬럼의 범위를 고정된 개수(`N`)의 구간으로 분할한 다음,
 각 구간에 속하는 데이터 포인트들로부터 하나의 대표값
 (키가 최소인 값에 해당하는 값)을 선택해 결과 배열을 구성합니다.
 이는 모든 값을 수집하는 대신 데이터에 대한 다운샘플링된 뷰를 생성합니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -64,7 +56,7 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 └───────────────────────────────────────────────┘
 ```
 
-
 ## 함께 보기 \{#see-also\}
-- [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+
+* [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
+* [`Resample 조합자`](/sql-reference/aggregate-functions/combinators#-resample)

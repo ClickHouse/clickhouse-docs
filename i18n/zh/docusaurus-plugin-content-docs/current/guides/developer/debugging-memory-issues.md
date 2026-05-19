@@ -2,13 +2,11 @@
 slug: /guides/developer/debugging-memory-issues
 sidebar_label: '调试内存问题'
 sidebar_position: 1
-description: '用于帮助你调试内存问题的查询语句。'
+description: '有助于您调试内存问题的查询。'
 keywords: ['内存问题']
 title: '调试内存问题'
 doc_type: 'guide'
 ---
-
-# 调试内存问题 \{#debugging-memory-issues\}
 
 在遇到内存问题或内存泄漏时，了解哪些查询和资源正在消耗大量内存会非常有帮助。下面提供了一些查询，可用于通过找出哪些查询、数据库和表可以优化来排查内存问题：
 

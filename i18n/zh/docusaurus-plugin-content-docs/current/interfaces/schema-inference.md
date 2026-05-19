@@ -623,44 +623,39 @@ DESC format(JSONEachRow, $$
 
 ##### input_format_json_try_infer_named_tuples_from_objects \{#input_format_json_try_infer_named_tuples_from_objects\}
 
-启用此设置后，可以从 JSON 对象中推断命名 Tuple。推断得到的命名 Tuple 将包含示例数据中所有对应 JSON 对象中的全部元素。
+启用此设置后，可以从 JSON 对象中推断命名元组。推断得到的命名元组将包含示例数据中所有对应 JSON 对象中的全部元素。
 当 JSON 数据不是稀疏的，因而数据样本包含所有可能的对象键时，这会非常有用。
 
 此设置默认启用。
 
 **示例**
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42, "b" : "Hello"}}, {"obj" : {"a" : 43, "c" : [1, 2, 3]}}, {"obj" : {"d" : {"e" : 42}}}')
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Tuple(e Nullable(Int64))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2,3]}, {"d" : "2020-01-01"}]}')
 ```
 
-结果：
-
-```markdown
+```markdown title="Response"
 ┌─name──┬─type────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ array │ Array(Tuple(a Nullable(Int64), b Nullable(String), c Array(Nullable(Int64)), d Nullable(Date))) │              │                    │         │                  │                │
 └───────┴─────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-
 ##### input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects \{#input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects\}
 
-启用此设置后，在从 JSON 对象推断具名 Tuple 时（当 `input_format_json_try_infer_named_tuples_from_objects` 已启用），对于存在歧义的路径将使用 String 类型，而不是抛出异常。
-这使得即使存在歧义路径，也可以将 JSON 对象读取为具名 Tuple。
+启用此设置后，在从 JSON 对象推断命名元组时 (当 `input_format_json_try_infer_named_tuples_from_objects` 已启用) ，对于存在歧义的路径将使用 String 类型，而不是抛出异常。
+这使得即使存在歧义路径，也可以将 JSON 对象读取为命名元组。
 
 默认禁用。
 
@@ -668,15 +663,13 @@ DESC format(JSONEachRow, '{"array" : [{"a" : 42, "b" : "Hello"}, {}, {"c" : [1,2
 
 在禁用该设置时：
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 0;
 DESC format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
 ```
 
-结果：
-
-```response
+```response title="Response"
 Code: 636. DB::Exception: The table structure cannot be extracted from a JSONEachRow format file. Error:
 Code: 117. DB::Exception: JSON objects have ambiguous data: in some objects path 'a' has type 'Int64' and in some - 'Tuple(b String)'. You can enable setting input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects to use String type for path 'a'. (INCORRECT_DATA) (version 24.3.1.1).
 You can specify the structure manually. (CANNOT_EXTRACT_TABLE_STRUCTURE)
@@ -684,16 +677,14 @@ You can specify the structure manually. (CANNOT_EXTRACT_TABLE_STRUCTURE)
 
 在启用该设置时：
 
-```sql
+```sql title="Query"
 SET input_format_json_try_infer_named_tuples_from_objects = 1;
 SET input_format_json_use_string_type_for_ambiguous_paths_in_named_tuples_inference_from_objects = 1;
 DESC format(JSONEachRow, '{"obj" : "a" : 42}, {"obj" : {"a" : {"b" : "Hello"}}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : "Hello"}}}');
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Nullable(String))     │              │                    │         │                  │                │
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
@@ -702,7 +693,6 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : 42}}, {"obj" : {"a" : {"b" : 
 │ ('{"b" : "Hello"}') │
 └─────────────────────┘
 ```
-
 
 ##### input_format_json_read_objects_as_strings \{#input_format_json_read_objects_as_strings\}
 
@@ -819,20 +809,18 @@ SELECT arr, toTypeName(arr), JSONExtractArrayRaw(arr)[3] from format(JSONEachRow
 
 ##### input_format_json_infer_incomplete_types_as_strings \{#input_format_json_infer_incomplete_types_as_strings\}
 
-启用此设置后，在模式推断期间，对于数据样本中仅包含 `Null`/`{}`/`[]` 的 JSON 键，可以使用 String 类型。
-在 JSON 格式中，如果启用了所有相关设置（默认均为启用），任何值都可以被读取为 String。通过在模式推断期间对类型未知的键使用 String 类型，可以避免出现类似 `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` 的错误。
+启用此设置后，在推断 schema 期间，对于数据样本中仅包含 `Null`/`{}`/`[]` 的 JSON 键，可以使用 String 类型。
+在 JSON 格式中，如果启用了所有相关设置 (默认均为启用) ，任何值都可以被读取为 String。通过在推断 schema 期间对类型未知的键使用 String 类型，可以避免出现类似 `Cannot determine type for column 'column_name' by first 25000 rows of data, most likely this column contains only Nulls or empty Arrays/Maps` 的错误。
 
 示例：
 
-```sql
+```sql title="Query"
 SET input_format_json_infer_incomplete_types_as_strings = 1, input_format_json_try_infer_named_tuples_from_objects = 1;
 DESCRIBE format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
 SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" : null, "d" : {}, "e" : []}}');
 ```
 
-结果：
-
-```markdown
+```markdown title="Response"
 ┌─name─┬─type───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ obj  │ Tuple(a Array(Nullable(Int64)), b Nullable(String), c Nullable(String), d Nullable(String), e Array(Nullable(String))) │              │                    │         │                  │                │
 └──────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
@@ -841,7 +829,6 @@ SELECT * FROM format(JSONEachRow, '{"obj" : {"a" : [1,2,3], "b" : "hello", "c" :
 │ ([1,2,3],'hello',NULL,'{}',[]) │
 └────────────────────────────────┘
 ```
-
 
 ### CSV \{#csv\}
 
@@ -2258,13 +2245,11 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 我们来尝试对这 3 个文件使用 schema 推断：
 
-```sql
+```sql title="Query"
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='default'
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─name───┬─type─────────────┐
 │ field1 │ Nullable(Int64)  │
 │ field2 │ Nullable(String) │
@@ -2274,7 +2259,6 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 正如我们所见，数据中没有来自文件 `data3.jsonl` 的字段 `field3`。
 这是因为 ClickHouse 首先尝试从文件 `data1.jsonl` 推断 schema，但由于字段 `field2` 仅包含 null 值而失败，
 然后又尝试从 `data2.jsonl` 推断 schema 并成功，因此文件 `data3.jsonl` 中的数据未被读取。
-
 
 ### Union 模式 \{#default-schema-inference-mode-1\}
 
@@ -2308,13 +2292,11 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 我们来对这 3 个文件使用 schema 推断：
 
-```sql
+```sql title="Query"
 :) DESCRIBE file('data{1,2,3}.jsonl') SETTINGS schema_inference_mode='union'
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─name───┬─type───────────────────┐
 │ field1 │ Nullable(Int64)        │
 │ field2 │ Nullable(String)       │
@@ -2326,10 +2308,9 @@ DESC format(JSONAsObject, '{"x" : 42, "y" : "Hello, World!"}');
 
 注意：
 
-* 由于某些文件可能不包含最终 schema 中的某些列，`union` 模式仅适用于支持按列子集读取的格式（例如 `JSONEachRow`、`Parquet`、`TSVWithNames` 等），对其他格式（例如 `CSV`、`TSV`、`JSONCompactEachRow` 等）将无法使用。
+* 由于某些文件可能不包含最终 schema 中的某些列，`union` 模式仅适用于支持按列子集读取的格式 (例如 `JSONEachRow`、`Parquet`、`TSVWithNames` 等) ，对其他格式 (例如 `CSV`、`TSV`、`JSONCompactEachRow` 等) 将无法使用。
 * 如果 ClickHouse 无法从某个文件推断出 schema，将会抛出异常。
 * 如果你有大量文件，从所有文件中读取 schema 可能会花费很多时间。
-
 
 ## 自动格式检测 \{#automatic-format-detection\}
 

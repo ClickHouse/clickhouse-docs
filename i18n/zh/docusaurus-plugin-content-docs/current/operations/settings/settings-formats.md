@@ -70,7 +70,9 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 ## date_time_input_format \{#date_time_input_format\}
 
-<SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
+<SettingsInfoBlock type="DateTimeInputFormat" default_value="best_effort" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "best_effort"},{"label": "更好的易用性"}]}]} />
 
 允许选择用于解析日期和时间文本表示形式的解析器。
 
@@ -78,22 +80,20 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 可能的取值：
 
-- `'best_effort'` — 启用扩展解析。
+* `'best_effort'` — 启用扩展解析。
 
-    ClickHouse 可以解析基本格式 `YYYY-MM-DD HH:MM:SS` 以及所有 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日期和时间格式。例如，`'2018-06-08T01:02:03.000Z'`。
+  ClickHouse 可以解析基本格式 `YYYY-MM-DD HH:MM:SS` 以及所有 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日期和时间格式。例如，`'2018-06-08T01:02:03.000Z'`。
 
-- `'best_effort_us'` — 与 `best_effort` 类似（差异见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS)）。
+* `'best_effort_us'` — 与 `best_effort` 类似 (差异见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS)) 。
 
-- `'basic'` — 使用基本解析器。
+* `'basic'` — 使用基本解析器。
 
-    ClickHouse 只能解析基本格式 `YYYY-MM-DD HH:MM:SS` 或 `YYYY-MM-DD`。例如，`2019-08-20 10:18:56` 或 `2019-08-20`。
-
-Cloud 默认值：`'best_effort'`。
+  ClickHouse 只能解析基本格式 `YYYY-MM-DD HH:MM:SS` 或 `YYYY-MM-DD`。例如，`2019-08-20 10:18:56` 或 `2019-08-20`。
 
 另请参阅：
 
-- [DateTime 数据类型。](../../sql-reference/data-types/datetime.md)
-- [用于处理日期和时间的函数。](../../sql-reference/functions/date-time-functions.md)
+* [DateTime 数据类型。](../../sql-reference/data-types/datetime.md)
+* [用于处理日期和时间的函数。](../../sql-reference/functions/date-time-functions.md)
 
 ## date_time_output_format \{#date_time_output_format\}
 
@@ -139,6 +139,30 @@ Cloud 默认值：`'best_effort'`。
 <SettingsInfoBlock type="String" default_value="CSV" />
 
 用于将错误写入文本输出的格式。
+
+## format_avro_schema_registry_connection_timeout \{#format_avro_schema_registry_connection_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于控制 AvroConfluent 格式所使用的 Confluent Schema Registry HTTP 客户端的连接超时时间（以秒为单位）。"}]}]} />
+
+对于 AvroConfluent 格式：Confluent Schema Registry HTTP 客户端的连接超时时间 (以秒为单位) 。同时用于 schema 拉取和 schema 注册。该值必须大于 0 且小于 600 (10 分钟) 。
+
+## format_avro_schema_registry_receive_timeout \{#format_avro_schema_registry_receive_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于控制 AvroConfluent 格式所使用的 Confluent Schema Registry HTTP 客户端的接收超时时间（以秒为单位）。"}]}]} />
+
+对于 AvroConfluent 格式：Confluent Schema Registry HTTP 客户端的接收超时时间，单位为秒。该设置同时用于 schema 拉取和 schema 注册。必须大于 0 且小于 600 (10 分钟) 。
+
+## format_avro_schema_registry_send_timeout \{#format_avro_schema_registry_send_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于控制 AvroConfluent 格式使用的 Confluent Schema Registry HTTP 客户端的发送超时时间（以秒为单位）。"}]}]} />
+
+对于 AvroConfluent 格式：Confluent Schema Registry HTTP 客户端的发送超时时间 (以秒为单位) 。同时用于 schema 拉取和 schema 注册。该值必须大于 0 且小于 600 (10 分钟) 。
 
 ## format_avro_schema_registry_url \{#format_avro_schema_registry_url\}
 
@@ -465,6 +489,19 @@ TSV 格式中 NULL 的自定义表示形式
 <SettingsInfoBlock type="Bool" default_value="0" />
 
 在对 CapnProto 格式进行模式推断时，跳过具有不受支持类型的列
+
+## input_format_column_name_matching_mode \{#input_format_column_name_matching_mode\}
+
+<SettingsInfoBlock type="InputFormatColumnMatchingCaseSensitivity" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "auto"},{"label": "首先区分大小写匹配输入列名；如果失败，则回退到不区分大小写匹配，而不是要求大小写完全精确一致。"}]}, {"id": "row-2","items": [{"label": "26.4"},{"label": "match_case"},{"label": "新设置。"}]}]} />
+
+定义通过各种格式 (包括但不限于 JSONEachRow、CSVWithNames、JSONColumns、BSONEachRow、RowBinaryWithNames) 摄取数据时，列名的匹配模式。
+支持的模式：
+
+* match&#95;case：区分大小写匹配
+  * ignore&#95;case：不区分大小写匹配
+  * auto：先尝试区分大小写匹配；如果失败，再尝试不区分大小写匹配。
 
 ## input_format_connection_handling \{#input_format_connection_handling\}
 
@@ -1262,14 +1299,6 @@ Parquet 读取器输出的平均块大小（字节）
 
 在对 Parquet 格式进行模式推断时，跳过所有类型不受支持的列
 
-## input_format_parquet_use_native_reader_v3 \{#input_format_parquet_use_native_reader_v3\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "0"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.11"},{"label": "1"},{"label": "似乎稳定"}]}]}/>
-
-使用 Parquet v3 读取器。
-
 ## input_format_parquet_use_offset_index \{#input_format_parquet_use_offset_index\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -1638,6 +1667,12 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 ## output_format_avro_codec \{#output_format_avro_codec\}
 
 输出时使用的压缩编解码器。可选值：'null'、'deflate'、'snappy'、'zstd'。
+
+## output_format_avro_confluent_subject \{#output_format_avro_confluent_subject\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": ""},{"label": "新增设置，用于指定在写入 AvroConfluent 输出时，在 Confluent Schema Registry 中注册 schema 所使用的 subject 名称。"}]}]} />
+
+对于 AvroConfluent 输出格式：schema 在 Confluent Schema Registry 中注册时使用的 subject 名称。写入 AvroConfluent 输出时必需。
 
 ## output_format_avro_rows_in_file \{#output_format_avro_rows_in_file\}
 
@@ -2127,14 +2162,6 @@ ORC 写入器使用的时区名称，默认时区为 GMT。
   * 如果大于所有 Bloom 过滤器的总大小，则会在内存中累积所有行组的 Bloom 过滤器，然后在文件接近末尾的位置一次性写入，
   * 否则，会在内存中累积 Bloom 过滤器，并在其总大小超过该值时写入。
 
-## output_format_parquet_compliant_nested_types \{#output_format_parquet_compliant_nested_types\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.5"},{"label": "1"},{"label": "更改输出 Parquet 文件 schema 中的内部字段名称。"}]}]}/>
-
-在 parquet 文件的 schema 中，对列表元素使用名称 `element` 而不是 `item`。这是 Arrow 库实现遗留下来的历史产物。通常会提升兼容性，但在某些旧版本的 Arrow 上可能例外。
-
 ## output_format_parquet_compression_method \{#output_format_parquet_compression_method\}
 
 <SettingsInfoBlock type="ParquetCompression" default_value="zstd" />
@@ -2201,7 +2228,7 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-在多个线程中进行 Parquet 编码。需要启用 `output_format_parquet_use_custom_encoder`。
+在多个线程中进行 Parquet 编码。
 
 ## output_format_parquet_row_group_size \{#output_format_parquet_row_group_size\}
 
@@ -2223,51 +2250,13 @@ Parquet 输出格式的压缩方法。支持的编解码器：snappy、lz4、bro
 
 对 String 列使用 Parquet 的 String 类型，而不是 Binary 类型。
 
-## output_format_parquet_unsupported_types_as_binary \{#output_format_parquet_unsupported_types_as_binary\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory
-  rows={[
-  {
-    id: "row-1",
-    items: [
-      { label: "26.4" },
-      { label: "0" },
-      {
-        label:
-          "用于将不受支持的 CH 类型转换为 parquet（arrow）二进制，而不是抛出 UNKNOWN_TYPE 异常的新设置。"
-      }
-    ]
-  }
-]}
-/>
-
-将无法转换的类型作为原始二进制数据输出。如果为 false，则此类类型会引发 UNKNOWN&#95;TYPE 异常。
-
-## output_format_parquet_use_custom_encoder \{#output_format_parquet_use_custom_encoder\}
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "24.5"},{"label": "1"},{"label": "启用自定义 Parquet 编码器。"}]}]}/>
-
-使用更高效的 Parquet 编码器实现。
-
-## output_format_parquet_version \{#output_format_parquet_version\}
-
-<SettingsInfoBlock type="ParquetVersion" default_value="2.latest" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "23.3"},{"label": "2.latest"},{"label": "为输出格式使用最新的 Parquet 格式版本"}]}]}/>
-
-Parquet 输出格式所使用的版本。支持的版本：1.0、2.4、2.6 和 2.latest（默认）。
-
 ## output_format_parquet_write_bloom_filter \{#output_format_parquet_write_bloom_filter\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "添加了对写入 Parquet 布隆过滤器的支持。"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "添加了对写入 Parquet 布隆过滤器的支持。"}]}]} />
 
-在 parquet 文件中写入布隆过滤器。需要 output_format_parquet_use_custom_encoder = true。
+在 parquet 文件中写入布隆过滤器。
 
 ## output_format_parquet_write_checksums \{#output_format_parquet_write_checksums\}
 

@@ -3,20 +3,18 @@ slug: /native-protocol/client
 sidebar_position: 2
 title: '原生客户端数据包'
 description: '原生协议客户端'
-doc_type: 'reference'
+doc_type: '参考'
 keywords: ['客户端数据包', '原生协议客户端', '协议数据包', '客户端通信', 'TCP 客户端']
 ---
 
-# 客户端数据包 \{#client-packets\}
-
-| value | name              | description        |
-|-------|-------------------|--------------------|
+| value | name              | description |
+| ----- | ----------------- | ----------- |
 | 0     | [Hello](#hello)   | 客户端握手开始     |
-| 1     | [Query](#query)   | 查询请求           |
-| 2     | [Data](#data)     | 包含数据的数据块   |
-| 3     | [Cancel](#cancel) | 取消查询           |
-| 4     | [Ping](#ping)     | Ping 请求          |
-| 5     | TableStatus       | 表状态请求         |
+| 1     | [Query](#query)   | 查询请求        |
+| 2     | [Data](#data)     | 包含数据的块    |
+| 3     | [Cancel](#cancel) | 取消查询        |
+| 4     | [Ping](#ping)     | Ping 请求     |
+| 5     | TableStatus       | 表状态请求       |
 
 `Data` 可以被压缩。
 

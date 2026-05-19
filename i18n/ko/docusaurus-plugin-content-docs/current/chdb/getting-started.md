@@ -2,24 +2,18 @@
 title: 'chDB 시작하기'
 sidebar_label: '시작하기'
 slug: /chdb/getting-started
-description: 'chDB는 ClickHouse 기반 인프로세스 SQL OLAP 엔진입니다'
+description: 'chDB는 ClickHouse로 구동되는 인프로세스 SQL OLAP 엔진입니다'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-
-
-# chDB 시작하기 \{#getting-started-with-chdb\}
-
 이 가이드에서는 chDB의 Python 버전을 사용해 환경을 준비하는 방법을 살펴봅니다.
 먼저 S3에 있는 JSON 파일을 쿼리한 다음, 해당 JSON 파일을 기반으로 chDB에 테이블을 생성하고 데이터에 대해 일부 쿼리를 실행합니다.
-또한 Apache Arrow와 Pandas를 포함해 쿼리 결과를 다양한 형식으로 반환하는 방법을 살펴보고, 마지막으로 Pandas DataFrame에 대해 쿼리를 실행하는 방법을 알아봅니다. 
-
-
+또한 Apache Arrow와 Pandas를 포함해 쿼리 결과를 다양한 형식으로 반환하는 방법을 살펴보고, 마지막으로 Pandas DataFrame에 대해 쿼리를 실행하는 방법을 알아봅니다.
 
 ## 설정 \{#setup\}
 
-먼저 가상 환경을 생성합니다.
+먼저 가상 환경을 생성합니다:
 
 ```bash
 python -m venv .venv
@@ -50,7 +44,6 @@ ipython
 ```bash
 pip install pandas pyarrow
 ```
-
 
 ## S3에서 JSON 파일 쿼리하기 \{#querying-a-json-file-in-s3\}
 
@@ -149,11 +142,10 @@ chdb.query(
 프로그램에서 정의한 변수에 대해서는 이렇게 해도 괜찮지만, 사용자가 제공한 입력에 대해서는 절대 이렇게 하지 마십시오. 그렇지 않으면 쿼리가 SQL 인젝션 공격에 취약해집니다.
 :::
 
-
 ## 출력 형식 구성하기 \{#configuring-the-output-format\}
 
 기본 출력 형식은 `CSV`이지만 `output_format` 매개변수로 변경할 수 있습니다.
-chDB는 ClickHouse 데이터 포맷뿐만 아니라, `DataFrame`을 포함한 [자체 포맷](/chdb/reference/data-formats.md)도 일부 지원하며, `DataFrame`은 Pandas DataFrame을 반환합니다:
+chDB는 ClickHouse 데이터 형식뿐만 아니라, `DataFrame`을 포함한 [자체 형식](/chdb/reference/data-formats.md)도 일부 지원하며, `DataFrame`은 Pandas DataFrame을 반환합니다:
 
 ```python
 result = chdb.query(
@@ -201,7 +193,6 @@ count(): uint64 not null
 is_live_content: [[false,true]]
 count(): [[315746,20686]]
 ```
-
 
 ## JSON 파일에서 테이블 생성하기 \{#creating-a-table-from-json-file\}
 
@@ -309,7 +300,6 @@ sess.query(f"""
 )
 ```
 
-
 ## 테이블 쿼리하기 \{#querying-a-table\}
 
 마지막으로 테이블에 쿼리를 실행합니다:
@@ -348,7 +338,6 @@ df
 df["likeDislikeRatio"] = df["likeCount"] / df["dislikeCount"]
 ```
 
-
 ## Pandas DataFrame 쿼리하기 \{#querying-a-pandas-dataframe\}
 
 이제 chDB에서 해당 DataFrame에 대해 쿼리를 실행할 수 있습니다:
@@ -379,10 +368,9 @@ chdb.query(
 
 Pandas DataFrame에 쿼리하는 방법은 [Pandas 쿼리 개발자 가이드](guides/querying-pandas.md)에서 더 자세히 확인할 수 있습니다.
 
-
 ## 다음 단계 \{#next-steps\}
 
-이 가이드가 chDB에 대한 전반적인 개요를 제공했기를 바랍니다. 
+이 가이드가 chDB에 대한 전반적인 개요를 제공했기를 바랍니다.
 사용 방법을 더 자세히 알아보려면 아래 개발자 가이드를 참고하십시오:
 
 * [Pandas DataFrame 쿼리하기](guides/querying-pandas.md)

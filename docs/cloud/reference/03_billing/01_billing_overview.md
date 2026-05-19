@@ -242,6 +242,12 @@ ClickHouse Cloud credits for PAYG are invoiced in \$0.01 units, allowing us to c
 ### Can I delete my credit card? {#can-i-delete-my-credit-card}
 You can’t remove a credit card in the Billing UI, but you can update it anytime. This helps ensure your organization always has a valid payment method. If you need to remove your credit card, please contact [ClickHouse Cloud support](https://console.clickhouse.cloud/support) for help.
 
+### Where can I see my refunds? {#where-can-i-see-my-refunds}
+Navigate to Organization > Billing in the ClickHouse Cloud console. The Refunds section appears below Invoices and Credits. You must be an Organization Admin or Billing Admin to view it.
+
+### How long does it take for a refund to appear? {#how-long-does-it-take-for-a-refund-to-appear}
+Refunds appear once processed by us. Credit card refunds may take additional time to show on your statement depending on your bank.
+
 ### How long is the billing cycle? {#how-long-is-the-billing-cycle}
 
 Billing follows a monthly billing cycle and the start date is tracked as the date when the ClickHouse Cloud organization was created.

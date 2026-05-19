@@ -38,23 +38,23 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ### Поддерживаемые движки таблиц \{#supported-table-engines\}
 
-| Тип                      | Подробности                                                                                |
-|--------------------------|--------------------------------------------------------------------------------------------|
-| MergeTree (по умолчанию) | https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/.         |
-| HDFS                     | https://clickhouse.com/docs/en/engines/table-engines/integrations/hdfs                    |
-| MaterializedPostgreSQL   | https://clickhouse.com/docs/en/engines/table-engines/integrations/materialized-postgresql |
-| S3                       | https://clickhouse.com/docs/en/engines/table-engines/integrations/s3                      |
-| EmbeddedRocksDB          | https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb        |
-| Hive                     | https://clickhouse.com/docs/en/engines/table-engines/integrations/hive                    |
+| Тип                      | Подробности                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| MergeTree (по умолчанию) | [документация](/engines/table-engines/mergetree-family/mergetree/).         |
+| HDFS                     | [документация](/engines/table-engines/integrations/hdfs)                    |
+| MaterializedPostgreSQL   | [документация](/engines/table-engines/integrations/materialized-postgresql) |
+| S3                       | [документация](/engines/table-engines/integrations/s3)                      |
+| EmbeddedRocksDB          | [документация](/engines/table-engines/integrations/embedded-rocksdb)        |
+| Hive                     | [документация](/engines/table-engines/integrations/hive)                    |
 
-**Примечание**: для materialized view поддерживаются все движки *MergeTree.
+**Примечание**: для materialized views поддерживаются все движки *MergeTree.
 
 #### Экспериментально поддерживаемые движки таблиц \{#experimental-supported-table-engines\}
 
-| Тип               | Сведения                                                                  |
-|-------------------|---------------------------------------------------------------------------|
-| distributed таблица | https://clickhouse.com/docs/en/engines/table-engines/special/distributed. |
-| словарь           | https://clickhouse.com/docs/en/engines/table-engines/special/dictionary   |
+| Тип                 | Сведения                                                    |
+| ------------------- | ----------------------------------------------------------- |
+| distributed таблица | [документация](/engines/table-engines/special/distributed). |
+| словарь             | [документация](/engines/table-engines/special/dictionary)   |
 
 Если вы столкнетесь с проблемами при подключении к ClickHouse из dbt, используя один из указанных выше движков, пожалуйста, сообщите о проблеме [здесь](https://github.com/ClickHouse/dbt-clickhouse/issues).
 

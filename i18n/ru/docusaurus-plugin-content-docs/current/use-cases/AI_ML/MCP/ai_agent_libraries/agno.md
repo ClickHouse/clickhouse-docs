@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать агента ИИ с помощью Agno и MCP-сервера ClickHouse \{#how-to-build-an-ai-agent-with-agno-and-the-clickhouse-mcp-server\}
-
 В этом руководстве вы узнаете, как создать агента ИИ на базе [Agno](https://github.com/agno-agi/agno), способного взаимодействовать с
 [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).
 

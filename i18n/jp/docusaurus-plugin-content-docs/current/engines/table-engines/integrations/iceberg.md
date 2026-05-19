@@ -1,5 +1,6 @@
 ---
-description: 'このエンジンは、Amazon S3、Azure、HDFS、およびローカルに保存された既存の Apache Iceberg テーブルと読み取り専用で統合します。'
+description: 'このエンジンは、Amazon S3、Azure、HDFS、およびローカルに保存された既存の Apache Iceberg
+  テーブルとの読み取り専用の統合を提供します。'
 sidebar_label: 'Iceberg'
 sidebar_position: 90
 slug: /engines/table-engines/integrations/iceberg
@@ -7,14 +8,12 @@ title: 'Iceberg テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Iceberg テーブルエンジン \{#iceberg-table-engine\}
+:::warning
+ClickHouse で Iceberg データを扱う場合は、[Iceberg テーブル関数](/sql-reference/table-functions/iceberg.md) の使用を推奨します。Iceberg テーブル関数 は現在、Iceberg テーブルに対する読み取り専用の一部機能に限られたインターフェースを提供しますが、現時点では十分な機能を備えています。
 
-:::warning 
-ClickHouse で Iceberg データを扱う場合は、[Iceberg Table Function](/sql-reference/table-functions/iceberg.md) の使用を推奨します。Iceberg Table Function は現在、Iceberg テーブルに対する読み取り専用の一部機能に限られたインターフェースを提供しますが、現時点では十分な機能を備えています。
+Iceberg テーブルエンジン も利用可能ですが、いくつかの制限があります。ClickHouse はもともと外部でスキーマが変更されるテーブルをサポートするように設計されていないため、この特性が Iceberg テーブルエンジン の機能に影響することがあります。その結果、通常のテーブルで動作する一部の機能が利用できなかったり、特に旧アナライザーを使用している場合に正しく動作しなかったりする可能性があります。
 
-Iceberg Table Engine も利用可能ですが、いくつかの制限があります。ClickHouse はもともと外部でスキーマが変更されるテーブルをサポートするように設計されていないため、この特性が Iceberg Table Engine の機能に影響することがあります。その結果、通常のテーブルで動作する一部の機能が利用できなかったり、特に旧アナライザーを使用している場合に正しく動作しなかったりする可能性があります。
-
-可能な限り高い互換性を確保するため、Iceberg Table Engine のサポートを継続的に改善している間は、Iceberg Table Function の使用を推奨します。
+可能な限り高い互換性を確保するため、Iceberg テーブルエンジン のサポートを継続的に改善している間は、Iceberg テーブル関数 の使用を推奨します。
 :::
 
 このエンジンは、Amazon S3、Azure、HDFS 上およびローカルに保存された既存の Apache [Iceberg](https://iceberg.apache.org/) テーブルとの読み取り専用統合を提供します。

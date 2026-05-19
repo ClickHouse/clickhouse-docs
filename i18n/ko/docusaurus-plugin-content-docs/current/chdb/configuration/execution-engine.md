@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'execution', 'engine', 'chdb', 'pandas', 'auto']
 doc_type: 'guide'
 ---
 
-# 실행 엔진 구성 \{#execution-engine-configuration\}
-
-DataStore는 다양한 백엔드를 사용하여 연산을 실행할 수 있습니다. 이 가이드는 엔진 선택을 설정하고 최적화하는 방법을 설명합니다.
+DataStore는 다양한 백엔드를 사용해 작업을 실행할 수 있습니다. 이 가이드는 엔진 선택을 구성하고 최적화하는 방법을 설명합니다.
 
 ## 사용 가능한 엔진 \{#engines\}
 

@@ -1,14 +1,12 @@
 ---
-title: '分析関数 - 時系列'
+title: '分析関数 - 時系列データ'
 sidebar_label: '分析関数'
-description: 'ClickHouse における時系列データ分析用の関数。'
+description: 'ClickHouse における時系列データ分析のための関数。'
 slug: /use-cases/time-series/analysis-functions
-keywords: ['時系列', '分析関数', 'ウィンドウ関数', '集約関数', '移動平均', 'トレンド分析']
+keywords: ['時系列データ', '分析関数', 'ウィンドウ関数', '集約関数', '移動平均', '傾向分析']
 show_related_blogs: true
 doc_type: 'reference'
 ---
-
-# 時系列分析関数 \{#time-series-analysis-functions\}
 
 ClickHouse における時系列分析は、標準的な SQL の集約関数およびウィンドウ関数を用いて実行できます。
 時系列データを扱う際には、一般的に次の 3 種類のメトリクスを扱います。

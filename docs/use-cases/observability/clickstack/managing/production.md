@@ -53,6 +53,8 @@ Ensure the [Time To Live (TTL)](/use-cases/observability/clickstack/ttl) has bee
 
 <ResourceEstimation/>
 
+For more details on refining sizing assumptions for your environment, see ["Refining sizing assumptions for your environment"](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions).
+
 #### Isolating observability workloads {#isolating-workloads}
 
 If you're adding ClickStack to an **existing ClickHouse Cloud service** that already supports other workloads, such as real-time application analytics, isolating observability traffic is strongly recommended.

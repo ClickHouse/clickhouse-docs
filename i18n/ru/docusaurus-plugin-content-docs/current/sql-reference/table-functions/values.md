@@ -1,14 +1,12 @@
 ---
-description: 'создает временное хранилище данных, заполняющее столбцы значениями.'
-keywords: ['значения', 'табличная функция']
+description: 'создает временное хранилище и заполняет столбцы значениями.'
+keywords: ['values', 'табличная функция']
 sidebar_label: 'values'
 sidebar_position: 210
 slug: /sql-reference/table-functions/values
 title: 'values'
 doc_type: 'reference'
 ---
-
-# Табличная функция Values \{#values-table-function\}
 
 Табличная функция `Values` позволяет создать временное хранилище и заполнить
 столбцы значениями. Она полезна для быстрого тестирования или генерации образцов данных.
@@ -159,7 +157,7 @@ FROM VALUES(
     └──────────┴───────────┘
 ```
 
-```sql
+```sql title="Query"
 -- single values
 SELECT *
 FROM VALUES(

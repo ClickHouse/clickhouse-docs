@@ -24,6 +24,10 @@ import byoc_new_service_1 from '@site/static/images/cloud/reference/byoc-new-ser
 
 如果您需要更加定制化的设置 (例如部署到一个已有的 VPC 中) ，请参考 [Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws) 文档。
 
+:::note
+标准 BYOC 接入流程 端到端大约需要 45–90 分钟，时间从启动 CloudFormation 或 Terraform 步骤开始计算，到第一个 ClickHouse 服务可访问为止。
+:::
+
 ## 申请访问权限 \{#request-access\}
 
 要开始接入流程，请[联系我们](https://clickhouse.com/cloud/bring-your-own-cloud)。我们的团队会引导您了解 BYOC 的各项要求，帮助您选择最合适的部署选项，并将您的账户加入允许列表。

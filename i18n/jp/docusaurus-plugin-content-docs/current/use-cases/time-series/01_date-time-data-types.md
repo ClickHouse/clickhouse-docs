@@ -1,14 +1,12 @@
 ---
 title: '日付と時刻のデータ型 - 時系列'
 sidebar_label: '日付と時刻のデータ型'
-description: 'ClickHouseの時系列データ型。'
+description: 'ClickHouse の時系列データ型。'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['時系列', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', 'データ型', '日時データ', 'タイムスタンプ']
+keywords: ['時系列', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', 'データ型', '時間データ', 'タイムスタンプ']
 show_related_blogs: true
 doc_type: 'reference'
 ---
-
-# 日付と時刻のデータ型 \{#date-and-time-data-types\}
 
 日付と時刻の型を包括的に備えることは、時系列データを効果的に管理するうえで不可欠であり、ClickHouse はまさにそれを実現します。
 コンパクトな日付表現から、ナノ秒精度の高精度タイムスタンプまで、これらの型は、ストレージ効率とさまざまな時系列アプリケーションの実用的な要件とのバランスを取るように設計されています。

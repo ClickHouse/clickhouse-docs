@@ -7,6 +7,5 @@ keywords: ['cassandra', 'integration', 'dictionary']
 doc_type: 'reference'
 ---
 
-# Cassandra integration
 
 You can integrate with Cassandra via a dictionary. Further details [here](/sql-reference/statements/create/dictionary/sources/cassandra).

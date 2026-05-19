@@ -1,13 +1,12 @@
 ---
-description: 'hudi 테이블 함수의 확장입니다. 지정된 클러스터의 여러 노드에서 Amazon S3에 있는 Apache Hudi 테이블의 파일을 병렬로 처리할 수 있습니다.'
+description: 'hudi 테이블 함수의 확장입니다. 지정된 클러스터의 여러 노드와 병렬로 Amazon S3에 있는
+  Apache Hudi 테이블의 파일을 처리할 수 있습니다.'
 sidebar_label: 'hudiCluster'
 sidebar_position: 86
 slug: /sql-reference/table-functions/hudiCluster
 title: 'hudiCluster 테이블 함수'
 doc_type: 'reference'
 ---
-
-# hudiCluster 테이블 함수 \{#hudicluster-table-function\}
 
 이 함수는 [hudi](sql-reference/table-functions/hudi.md) 테이블 함수의 확장입니다.
 

@@ -3,13 +3,11 @@ sidebar_label: 'ClickHouse CLI'
 slug: /cloud/features/cli
 title: 'ClickHouse CLI'
 description: '使用 ClickHouse CLI 管理 ClickHouse Cloud 服务及本地 ClickHouse 实例'
-keywords: ['clickhousectl', 'CLI', '云管理', '本地开发']
+keywords: ['clickhousectl', 'CLI', 'Cloud 管理', '本地开发']
 doc_type: 'reference'
 ---
 
-# ClickHouse CLI \{#clickhouse-cli\}
-
-ClickHouse CLI (`clickhousectl`) 是一款统一的命令行工具，用于管理 ClickHouse Cloud 资源，并支持基于 ClickHouse 的本地开发。
+ClickHouse CLI (`clickhousectl`) 是一款统一的命令行工具，用于管理 ClickHouse Cloud 资源，并支持使用 ClickHouse 进行本地开发。
 
 ## 安装 \{#installation\}
 

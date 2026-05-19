@@ -10,9 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# MongoDB ClickPipe のライフサイクル \{#lifecycle\}
-
-本書では、MongoDB ClickPipe のライフサイクルにおける各フェーズと、それぞれで取りうるステータスおよびその意味について説明します。
+このドキュメントでは、MongoDB ClickPipe のさまざまなフェーズ、取りうるステータスの種類、およびそれぞれの意味について説明します。
 
 ## プロビジョニング \{#provisioning\}
 

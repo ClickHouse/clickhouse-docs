@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse의 Tuple 데이터 타입에 대한 설명서'
+description: 'ClickHouse의 Tuple 데이터 타입에 대한 문서'
 sidebar_label: 'Tuple(T1, T2, ...)'
 sidebar_position: 34
 slug: /sql-reference/data-types/tuple
 title: 'Tuple(T1, T2, ...)'
 doc_type: 'reference'
 ---
-
-# Tuple(T1, T2, ...) \{#tuplet1-t2\}
 
 각 요소가 개별 [타입](/sql-reference/data-types)을 가지는 요소들의 Tuple입니다. Tuple은 최소 하나의 요소를 포함해야 합니다.
 
@@ -83,7 +81,7 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 
 Tuple 요소는 이름 또는 인덱스를 통해 참조할 수 있습니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
 INSERT INTO named_tuples VALUES (('y', 10)), (('x',-10));
 
@@ -91,9 +89,7 @@ SELECT a.s FROM named_tuples; -- by name
 SELECT a.2 FROM named_tuples; -- by index
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a.s─┐
 │ y   │
 │ x   │

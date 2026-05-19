@@ -2,11 +2,9 @@
 slug: /operations/utilities/static-files-disk-uploader
 title: 'clickhouse-static-files-disk-uploader'
 keywords: ['clickhouse-static-files-disk-uploader', 'utility', 'disk', 'uploader']
-description: 'clickhouse-static-files-disk-uploader 유틸리티에 대한 설명을 제공합니다'
+description: 'clickhouse-static-files-disk-uploader 유틸리티를 설명합니다'
 doc_type: 'guide'
 ---
-
-# clickhouse-static-files-disk-uploader \{#clickhouse-static-files-disk-uploader\}
 
 지정된 ClickHouse 테이블의 메타데이터가 포함된 데이터 디렉터리를 생성합니다. 이 메타데이터는 `web` 디스크를 기반으로 하는 읽기 전용 데이터셋을 사용하는 ClickHouse 테이블을 다른 서버에 생성하는 데 사용할 수 있습니다.
 

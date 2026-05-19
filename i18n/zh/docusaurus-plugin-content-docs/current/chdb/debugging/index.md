@@ -2,14 +2,12 @@
 title: 'DataStore 调试'
 sidebar_label: '概览'
 slug: /chdb/debugging
-description: '借助 explain()、性能分析和日志配置对 DataStore 操作进行调试'
+description: '借助 explain()、性能分析和日志对 DataStore 操作进行调试'
 keywords: ['chdb', 'datastore', 'debug', 'explain', 'profiling', 'logging']
 doc_type: 'guide'
 ---
 
-# DataStore 调试 \{#datastore-debugging\}
-
-DataStore 提供了一套全面的调试工具，用于帮助理解并优化数据管道。
+DataStore 提供了一套全面的调试工具，帮助您理解并优化数据管道。
 
 ## 调试工具概览 \{#overview\}
 

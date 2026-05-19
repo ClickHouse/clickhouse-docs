@@ -1,91 +1,122 @@
 ---
 slug: /use-cases/observability/clickstack/event_deltas
-title: 'ClickStack에서 이벤트 델타(Event Deltas) 사용하기'
-sidebar_label: '이벤트 델타(Event Deltas)'
+title: 'ClickStack의 Event deltas'
+sidebar_label: 'Event deltas'
 pagination_prev: null
 pagination_next: null
-description: 'ClickStack에서 이벤트 델타(Event Deltas) 사용하기'
+description: 'ClickStack의 Event deltas를 사용해 트레이스 속성 분포를 분석하고 이상치 스팬을 비교합니다'
 doc_type: 'guide'
-keywords: ['clickstack', '이벤트 델타', '변경 추적', '로그', '관측성']
+keywords: ['clickstack', 'event deltas', 'heatmap', 'attribute distribution', 'trace analysis', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
 import event_deltas from '@site/static/images/use-cases/observability/hyperdx-demo/step_17.png';
-import event_deltas_no_selected from '@site/static/images/use-cases/observability/event_deltas_no_selected.png';
-import event_deltas_highlighted from '@site/static/images/use-cases/observability/event_deltas_highlighted.png';
-import event_deltas_selected from '@site/static/images/use-cases/observability/event_deltas_selected.png';
-import event_deltas_issue from '@site/static/images/use-cases/observability/event_deltas_issue.png';
-import event_deltas_outliers from '@site/static/images/use-cases/observability/event_deltas_outliers.png';
 import event_deltas_separation from '@site/static/images/use-cases/observability/event_deltas_separation.png';
-import event_deltas_customization from '@site/static/images/use-cases/observability/event_deltas_customization.png';
-import event_deltas_inappropriate from '@site/static/images/use-cases/observability/event_deltas_inappropriate.png';
+import event_deltas_issue from '@site/static/images/use-cases/observability/event_deltas_issue.png';
+import distribution_mode from '@site/static/images/clickstack/event-deltas/distribution-mode.png';
+import settings_drawer from '@site/static/images/clickstack/event-deltas/settings-drawer.png';
 
-ClickStack의 Event deltas는 트레이스 중심 기능으로, 성능이 저하되거나 회귀했을 때 무엇이 변경되었는지 파악하기 위해 트레이스 속성을 자동으로 분석합니다. 하나의 데이터 집합 안에서 정상 트레이스와 느린 트레이스의 지연 시간 분포를 비교하여, ClickStack은 어떤 속성이 차이와 가장 강하게 연관되어 있는지 강조해 보여 줍니다. 이는 새 배포 버전인지, 특정 엔드포인트인지, 특정 사용자 ID인지 등을 식별하는 데 도움이 됩니다.
+Event deltas는 쿼리를 작성하지 않고도 지연 시간 히트맵과 자동 속성 분석을 결합해 트레이스 데이터의 양상을 파악하고, 느린 스팬을 다르게 만드는 요인을 찾을 수 있게 해줍니다. 사용하는 방법은 세 가지입니다:
 
-트레이스 데이터를 수동으로 일일이 살펴보는 대신, Event deltas는 두 데이터 하위 집합 간 지연 시간 차이를 유발하는 핵심 속성을 드러내어 성능 회귀를 진단하고 근본 원인을 정확히 파악하기 훨씬 쉽도록 합니다. 이 기능을 사용하면 원시 트레이스를 시각화하고 성능 변화에 영향을 주는 요인을 즉시 확인할 수 있어, 인시던트 대응을 가속화하고 평균 해결 시간(MTTR)을 단축할 수 있습니다.
+* **분포 모드(항상 활성화)** — 히트맵에서 선택한 영역이 없으면 현재 스팬 집합에 대한 각 속성 값의 분포가 표시됩니다. 지배적인 값이나 비정상적으로 드문 값(카디널리티 이상치)을 찾는 데 유용합니다.
+* **비교 모드** — 히트맵에서 사각형을 드래그해 내부의 스팬(Selection)과 외부의 모든 스팬(Background)을 비교합니다. 편차를 분리해 살펴보는 데 유용합니다.
+* **반복 드릴다운** — 막대를 클릭해 해당 값으로 필터링하거나 제외합니다. 그러면 필터링된 집합을 기준으로 히트맵이 다시 렌더링되므로 원인이 분명해질 때까지 계속 범위를 좁혀갈 수 있습니다.
 
-<Image img={event_deltas} alt="Event deltas" size="lg" />
+<Image img={event_deltas} alt="Event deltas 개요" size="lg" />
 
-## Event deltas 사용하기 \{#using-event-deltas\}
+## 사전 요구 사항 \{#prerequisites\}
 
-`Trace` 타입의 소스를 선택하면 ClickStack의 **Search** 패널에서 바로 Event deltas를 사용할 수 있습니다.
+Event deltas를 사용하려면 duration 표현식이 있는 **Trace** 데이터 소스가 필요합니다. 스팬 데이터를 생성하는 OpenTelemetry로 계측된 서비스라면 모두 사용할 수 있습니다. 모든 ClickStack 배포 환경(Managed, Open Source, ClickHouse Cloud)에서 사용할 수 있습니다.
 
-왼쪽 상단의 **Analysis Mode** 선택기에서 **Event deltas**를 선택하면(`Trace` 소스가 선택된 상태), 스팬을 행으로 표시하는 표준 결과 테이블 보기에서 전환됩니다.
+## 시작하기 \{#getting-started\}
 
-<Image img={event_deltas_no_selected} alt="선택되지 않은 Event deltas" size="lg" />
+1. **Data Source** 드롭다운에서 트레이스를 포함하는 소스를 선택합니다. 소스명은 임의로 지정할 수 있으며, 중요한 것은 해당 소스가 Trace 유형으로 구성되어 있다는 점입니다. **Event Deltas** 탭은 이런 소스에서만 활성화됩니다.
+2. **Analysis Mode** 섹션에서 **Event Deltas** 탭을 클릭합니다.
 
-이 보기는 시간에 따른 스팬 분포를 렌더링하여, 볼륨과 함께 지연 시간이 어떻게 달라지는지 보여줍니다. 세로축은 지연 시간을 나타내고, 색상은 특정 지점에서의 트레이스 밀도를 나타냅니다. 더 밝은 노란색 영역일수록 트레이스가 더 많이 집중되어 있음을 의미합니다. 이 시각화를 사용하면 스팬이 지연 시간과 개수에 따라 어떻게 분포하는지 빠르게 파악할 수 있으므로, 성능 변화나 이상 징후를 더 쉽게 식별할 수 있습니다.
+Event deltas는 **Results Table** 및 **Event Patterns**와 나란히 제공되는 별도의 분석 모드입니다. 이 모드로 전환하면 보기가 히트맵과 속성 분석 그리드로 바뀌지만, 검색 필터와 시간 범위는 유지되며 언제든지 다시 돌아갈 수 있습니다.
 
-<Image img={event_deltas_highlighted} alt="강조 표시된 Event deltas" size="lg" />
+## 히트맵 \{#the-heatmap\}
 
-그런 다음 시각화에서 영역을 선택할 수 있습니다. 이상적으로는 지속 시간이 더 긴 스팬이면서 밀도도 충분한 영역을 선택한 뒤 **Filter by Selection**을 적용하십시오. 그러면 분석 대상 &quot;이상치&quot;가 지정됩니다. 이후 Event deltas는 나머지 데이터셋과 비교해 이 이상치 하위 집합의 스팬과 가장 밀접하게 연관된 컬럼과 주요 값을 식별합니다. 의미 있는 이상치가 있는 영역에 초점을 맞추면, ClickStack은 이 하위 집합을 전체 데이터셋과 구분하는 고유한 값을 강조하여 관찰된 성능 차이와 가장 강하게 연관된 속성을 드러냅니다.
+히트맵은 스팬을 두 개의 차원으로 표시합니다:
 
-<Image img={event_deltas_selected} alt="선택된 Event deltas" size="lg" />
+* **X축** — 시간
+* **Y축** — 수치 값으로, 기본값은 스팬 지속 시간(밀리초, 로그 척도)입니다
 
-각 컬럼에 대해 ClickStack은 선택된 이상치 하위 집합 쪽으로 크게 치우친 값을 식별합니다. 다시 말해, 어떤 값이 컬럼에 나타날 때 전체 데이터셋(정상치, inliers)보다 이상치에서 주로 발생하면 해당 값은 중요한 것으로 강조됩니다. 가장 편향이 강한 컬럼이 먼저 나열되므로, 비정상적인 스팬과 가장 강하게 연관된 속성이 드러나고 이를 기준 동작과 구분할 수 있습니다.
+색상 강도는 버킷당 이벤트 수를 나타냅니다 — 더 밝을수록 스팬 수가 많습니다.
 
-<Image img={event_deltas_outliers} alt="Event deltas 이상치" size="lg" />
+히트맵에서 이봉형 지연 시간 분포, 특정 시점의 지연 시간 급증, 또는 지속적으로 느린 스팬이 형성하는 띠 같은 패턴을 한눈에 파악할 수 있습니다. 특정 영역을 조사하려면 해당 영역 위에서 사각형을 클릭한 채 드래그하십시오 — 그러면 해당 영역이 **Selection**으로 설정되고, 아래 분석이 비교 모드로 전환됩니다.
 
-위 예시에서 `SpanAttributes.app.payment.card_type` 컬럼이 표시된 경우를 살펴보겠습니다. 여기서 Event deltas 분석은 정상치 중 `29%`가 MasterCard를 사용하고 이상치에서는 `0%`인 반면, 이상치의 `100%`는 Visa를 사용하고 정상치에서는 `71%`임을 보여줍니다. 이는 Visa 카드 타입이 비정상적이면서 지연 시간이 더 높은 트레이스와 강하게 연관되어 있고, MasterCard는 정상 하위 집합에만 나타난다는 점을 시사합니다.
+## 분포 모드: 카디널리티 이상치 \{#distribution-mode\}
 
-<Image img={event_deltas_issue} alt="Event deltas 문제" size="lg" />
+히트맵에서 아무것도 선택하지 않으면 분석 패널에는 일치하는 모든 스팬을 기준으로 계산된 속성별 막대 차트가 하나씩 표시됩니다. 범례에는 **모든 스팬**이라고 표시됩니다.
 
-반대로, 정상치에만 연관된 값도 흥미로울 수 있습니다. 위 예시에서 `Visa Cash Full` 오류는 정상치에만 나타나고 이상치 스팬에는 전혀 나타나지 않습니다. 이런 경우 지연 시간은 항상 약 50밀리초보다 낮으므로, 이 오류는 낮은 지연 시간과 연관되어 있음을 시사합니다.
+<Image img={distribution_mode} alt="모든 스팬에서 속성별 값 분포를 보여주는 분포 모드" size="lg" />
 
-## Event deltas의 작동 방식 \{#how-event-deltas-work\}
+속성은 값이 얼마나 집중되어 있는지에 따라 순위가 매겨집니다. 즉, 소수의 값이 대부분을 차지하는 속성이 먼저 표시되고, 균일하며 엔트로피가 높은 속성은 우선순위가 낮아집니다.
 
-Event deltas는 두 개의 쿼리를 실행하여 동작합니다. 하나는 선택된 이상치(outlier) 영역에 대한 것이고, 다른 하나는 정상치(inlier) 영역에 대한 것입니다. 각 쿼리는 해당 기간과 시간 구간으로 제한됩니다. 그런 다음 두 결과 집합에서 이벤트 샘플을 검사하여, 값의 높은 집중도가 주로 이상치에서 나타나는 컬럼을 식별합니다. 특정 값의 100%가 이상치 하위 집합에서만 발생하는 컬럼은 먼저 표시되며, 관찰된 차이에 가장 크게 기여하는 속성을 강조합니다.
+데이터의 **카디널리티 양상**을 파악하려면 분포 모드를 사용하십시오:
 
-## 그래프 커스터마이징 \{#customizing-the-graph\}
+* **높은 쪽** — 어떤 서비스, 엔드포인트, 상태 코드 또는 호스트가 스팬 집합의 대부분을 차지합니까? 대개 특정 테넌트, 버전 또는 경로 하나가 트래픽의 대부분을 처리하고 있음을 드러냅니다.
+* **낮은 쪽** — 존재하지만 드물게 나타나는 값입니다. 전체 스팬 중 `0.5%`에서만 나타나는 상태 코드나 거의 나타나지 않는 특정 호스트 하나가 가장 흥미로운 신호일 수 있습니다. 회귀와 비정상 행위는 이런 롱테일 구간에 숨어 있는 경우가 많습니다.
 
-그래프 상단에는 히트맵 생성 방식을 사용자 지정할 수 있는 제어 요소가 있습니다. 이 필드를 조정하면 히트맵이 실시간으로 업데이트되며, 임의의 계량 가능한 값과 그 값의 시간에 따른 빈도 간 관계를 시각화하고 비교할 수 있습니다.
+먼저 검색 표시줄과 함께 사용하여 대상을 좁히십시오(예: 오류 스팬만, 클라이언트 스팬만, 하나의 엔드포인트만). 그런 다음 해당 부분집합의 분포를 확인하십시오.
 
-**기본 구성**
+## 비교 모드: 정상 상태에서의 편차 \{#comparison-mode\}
 
-기본적으로 시각화는 다음 설정을 사용합니다:
+히트맵에서 사각형 영역을 클릭한 채 드래그한 다음 **Filter by Selection**을 클릭하여 비교 모드로 전환하십시오. 선택한 스팬은 **Selection**(빨간 막대)이 되고, 선택 영역 밖의 모든 항목은 **Background**(초록 막대)가 됩니다. 그러면 각 속성 차트에 두 집단이 나란히 표시되며, 차이가 가장 큰 속성이 먼저 오도록 정렬됩니다. 즉, 한쪽에만 거의 전적으로 존재하는 값(또는 한쪽에는 없는 값)이 무엇이 다른지 보여 주는 가장 유력한 후보입니다.
 
-* **Y Axis**: `Duration` — 지연 시간(latency) 값을 세로축으로 표시
-* **Color (Z Axis)**: `count()` — 시간(X축)에 따른 요청 개수를 표현
+<Image img={event_deltas_separation} alt="특정 시점에 시작되는 느린 구간 위의 히트맵 선택 영역과 그 아래의 비교 막대" size="lg" />
 
-이 구성은 시간에 따른 지연 시간 분포를 보여 주며, 색상의 강도로 각 구간에 포함되는 이벤트 개수를 나타냅니다.
+어떤 사각형을 선택해도 되지만, 세 가지 선택 방식은 서로 다른 질문에 답합니다:
 
-**매개변수 조정**
+* **이상해 보이는 영역** — 특정 시간 창에만 나타나는 더 높은 지연 시간의 띠, 눈에 띄는 성능 회귀가 시작되는 지점, 나머지와 맞지 않는 스팬의 집합입니다. 히트맵에서 이미 수상해 보이는 부분이 있을 때 사용하십시오.
+* **전체 너비 수직 분할(느림 vs 빠름)** — 전체 시간 범위를 덮되 위쪽 지연 시간 대역(느린 꼬리)만 포함하도록 사각형을 드래그하고, 대부분의 빠른 스팬은 Background로 남겨 두십시오. 이렇게 하면 느린 스팬이 빠른 스팬과 무엇이 다른지 비교할 수 있습니다.
+* **전체 높이 수평 분할(이전 vs 이후)** — 전체 지연 시간 축을 덮되 의심되는 변경 이후의 시간 창만 포함하도록 사각형을 드래그하고, 더 이른 기간은 Background로 남겨 두십시오. 이렇게 하면 지연 시간과 무관하게 두 시간 창 사이에서 무엇이 바뀌었는지 비교할 수 있습니다.
 
-다음 매개변수를 수정하여 데이터의 다양한 차원을 탐색할 수 있습니다:
+세로 및 가로 전체 범위 분할은 특히 히트맵에서 시각적으로 눈에 띄는 것이 없을 때 유용합니다. 이런 방식은 눈으로 판단하는 대신 속성 분석이 편차를 찾아내도록 해줍니다.
 
-* **Value**: Y축에 어떤 값을 표시할지 제어합니다. 예를 들어, `Duration` 대신 에러율(error rate)이나 응답 크기(response size)와 같은 메트릭으로 교체할 수 있습니다.
-* **Count**: 색상 매핑 방식을 제어합니다. `count()`(버킷당 이벤트 개수)에서 `avg()`, `sum()`, `p95()` 등의 다른 집계 함수로 전환하거나, `countDistinct(field)`와 같은 커스텀 표현식을 사용할 수 있습니다.
+## 반복적 드릴다운 \{#drill-down\}
 
-<Image img={event_deltas_customization} alt="Event deltas customization" size="lg" />
+비교 모드와 분포 모드는 연계해서 사용할 때 가장 강력합니다. 막대를 클릭하면 세 가지 작업이 있는 팝오버가 열립니다.
 
-## Recommendations \{#recommendations\}
+* **Filter** — 이 값을 가진 스팬만 유지합니다
+* **Exclude** — 이 값을 가진 스팬을 제외합니다
+* **Copy** — 값을 클립보드에 복사합니다
 
-Event deltas는 특정 서비스에 초점을 맞춘 분석에서 가장 효과적입니다. 여러 서비스에 걸친 지연 시간(latency)은 크게 달라질 수 있어, 이상치에 가장 크게 기여하는 컬럼과 값을 식별하기가 더 어려워집니다. Event deltas를 활성화하기 전에 지연 시간 분포가 유사할 것으로 예상되는 스팬 집합으로 먼저 필터링하십시오. 지연 시간 변동 폭이 넓을 것으로 예상되지 않는 집합을 대상으로 분석해야 가장 유용한 통찰을 얻을 수 있으며, (예: 서로 다른 두 서비스처럼) 지연 시간 편차가 원래 큰 경우는 피하는 것이 좋습니다.
+<Image img={event_deltas_issue} alt="한 모집단에만 나타나는 값 위에 filter, exclude, copy 작업이 표시된 막대 팝오버" size="lg" />
 
-분석 구간을 선택할 때에는 느린 지속 시간과 빠른 지속 시간이 명확히 구분되는 하위 집합을 목표로 하십시오. 이렇게 하면 더 높은 지연 시간을 가진 스팬을 분석을 위해 깔끔하게 분리할 수 있습니다. 예를 들어, 아래에서 선택된 구간은 분석을 위해 더 느린 스팬 집합을 명확히 포착하고 있습니다.
+Filter 또는 Exclude를 적용하면 히트맵 선택이 해제되고, 새 모집단 기준으로 히트맵이 다시 렌더링되며, 분포 모드도 해당 필터링된 집합을 기준으로 다시 이어집니다. 히트맵 형태가 어떻게 바뀌는지 확인하십시오. 필터가 제대로 적용되면 느린 구간이 눈에 띄게 사라지거나 이봉 분포의 분리가 하나로 좁혀집니다. 이를 반복하십시오. 다음으로 의심스러운 값을 찾고, 필터링하고, 새 히트맵을 보고, 새 분포를 확인하십시오. 보통 몇 번만 반복해도 회귀 원인을 한두 개 속성으로 좁힐 수 있습니다.
 
-<Image img={event_deltas_separation} alt="Event deltas 분리" size="lg" />
+:::note
+빈도가 낮은 값을 묶어 축약한 집계 **Other (N)** 버킷은 클릭할 수 없습니다. 해당 버킷 내 특정 값으로 필터링하려면 [검색창](/use-cases/observability/clickstack/search)을 직접 사용하십시오.
+:::
 
-반대로, 다음 데이터 세트는 Event deltas를 사용하여 유용하게 분석하기가 어렵습니다.
+모집단이 충분히 작아지면 **Results Table** 탭으로 전환해 개별 트레이스를 검사하십시오. 적용한 필터는 그대로 유지됩니다.
 
-<Image img={event_deltas_inappropriate} alt="Event deltas 분리가 좋지 않은 예" size="lg" />
+## 히트맵 사용자 지정 \{#customize\}
+
+히트맵 오른쪽 상단의 톱니바퀴 아이콘을 클릭하면 **Heatmap Settings** 드로어가 열립니다.
+
+<Image img={settings_drawer} alt="Scale, Value, Count 필드가 있는 Heatmap Settings 드로어" size="lg" />
+
+| 매개변수      | 기본값              | 설명                                                                                               |
+| --------- | ---------------- | ------------------------------------------------------------------------------------------------ |
+| **Scale** | Log              | Log는 지연 시간 범위가 넓을 때 적합하며, Linear는 범위가 좁고 분포가 균일할 때 더 적합합니다.                                      |
+| **Value** | `(Duration)/1e6` | 응답 크기, 오류 비율, 사용자 정의 스팬 속성 등 임의의 숫자 표현식을 사용할 수 있습니다.                                             |
+| **Count** | `count()`        | 색상을 계산하는 데 사용하는 집계입니다. `avg()`, `sum()`, `p95()` 또는 `countDistinct(field)`와 같은 표현식으로 변경할 수 있습니다. |
+
+히트맵을 업데이트하려면 **Apply**를 클릭하십시오. 그러면 아래의 속성 분석도 이에 맞춰 업데이트됩니다.
+
+:::tip 대시보드의 히트맵
+동일한 히트맵은 [대시보드 타일](/use-cases/observability/clickstack/dashboards#create-a-tile-heatmap)로도 사용할 수 있으며, Event deltas 드릴다운 흐름 외부에서 시간에 따른 분포 형태를 모니터링하려는 경우 유용합니다.
+:::
+
+## 문제 해결 \{#troubleshooting\}
+
+### Event Deltas 탭이 표시되지 않습니다 \{#tab-not-visible\}
+
+**Analysis Mode** 아래의 **Event Deltas** 탭은 duration 표현식이 있는 **Trace** 소스를 선택한 경우에만 표시됩니다. 데이터 소스가 Trace 유형으로 구성되어 있고 duration 정보가 포함된 스팬 데이터가 있는지 확인하십시오.
+
+### 속성 차트에 결과가 거의 없거나 전혀 표시되지 않음 \{#few-results\}
+
+샘플이 너무 작으면(스팬이 수십 개도 되지 않는 경우) 분포가 통계적으로 유의미하지 않을 수 있습니다. 시간 범위를 넓히거나 검색 필터를 완화하세요.

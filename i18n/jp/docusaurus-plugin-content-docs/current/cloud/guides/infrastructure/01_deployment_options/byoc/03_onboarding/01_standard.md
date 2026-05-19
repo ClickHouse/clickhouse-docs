@@ -24,6 +24,10 @@ import byoc_new_service_1 from '@site/static/images/cloud/reference/byoc-new-ser
 
 よりカスタマイズされたセットアップ (たとえば既存の VPC へのデプロイ) が必要な場合は、[Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws) のドキュメントを参照してください。
 
+:::note
+標準的な BYOC オンボーディングは、CloudFormation または Terraform の手順を開始してから最初の ClickHouse サービスに接続可能になるまで、エンドツーエンドでおよそ 45～90 分かかります。
+:::
+
 ## アクセスを申請する \{#request-access\}
 
 オンボーディングを開始するには、[こちらからお問い合わせ](https://clickhouse.com/cloud/bring-your-own-cloud)ください。ClickHouse チームが BYOC の要件についてご案内し、最適なデプロイメントオプションの選定を支援し、お使いのアカウントを許可リスト（allowlist）に追加します。

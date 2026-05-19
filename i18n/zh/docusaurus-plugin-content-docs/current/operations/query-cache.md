@@ -1,13 +1,11 @@
 ---
-description: '使用和配置 ClickHouse 查询缓存功能的指南'
+description: '在 ClickHouse 中使用和配置查询缓存功能的指南'
 sidebar_label: '查询缓存'
 sidebar_position: 65
 slug: /operations/query-cache
 title: '查询缓存'
 doc_type: 'guide'
 ---
-
-# 查询缓存 \{#query-cache\}
 
 查询缓存允许某个 `SELECT` 查询只需计算一次，之后再次执行相同查询时可直接从缓存中返回结果。
 根据查询类型的不同，这可以显著降低 ClickHouse 服务器的延迟和资源消耗。

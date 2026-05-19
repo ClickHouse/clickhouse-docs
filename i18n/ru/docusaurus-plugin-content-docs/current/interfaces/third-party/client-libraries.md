@@ -7,15 +7,13 @@ title: 'Клиентские библиотеки от сторонних раз
 doc_type: 'reference'
 ---
 
-# Клиентские библиотеки от сторонних разработчиков \{#client-libraries-from-third-party-developers\}
-
 :::note
-ClickHouse Inc **не** поддерживает перечисленные ниже библиотеки и не проводила их всестороннего тестирования для оценки их качества.
+ClickHouse Inc **не** поддерживает перечисленные ниже библиотеки и не проводила их всестороннего тестирования, чтобы подтвердить их качество.
 :::
 
 ### Python \{#python\}
 
-- [Moose OLAP](https://docs.fiveonefour.com/moosestack/olap)
+- [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
 - [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm)
 - [clickhouse-driver](https://github.com/mymarilyn/clickhouse-driver)
 - [clickhouse-client](https://github.com/yurial/clickhouse-client)
@@ -35,7 +33,8 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 * [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
 * [PHP-расширение ClickHouse от kolya7k](https://github.com//kolya7k/clickhouse-php)
 * [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
-* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client) 
+* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client)
+* [laravel-clickhouse/laravel-clickhouse](https://github.com/laravel-clickhouse/laravel-clickhouse)
 
 ### Go \{#go\}
 
@@ -53,7 +52,7 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 
 ### Node.js \{#nodejs\}
 
-- [Moose OLAP](https://docs.fiveonefour.com/moosestack/olap)
+- [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
 - [clickhouse (NodeJs)](https://github.com/TimonKK/clickhouse)
 - [node-clickhouse](https://github.com/apla/node-clickhouse)
 - [nestjs-clickhouse](https://github.com/depyronick/nestjs-clickhouse)

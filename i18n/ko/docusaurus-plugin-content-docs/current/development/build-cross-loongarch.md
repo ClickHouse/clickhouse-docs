@@ -7,9 +7,7 @@ title: 'Linux에서 LoongArch64용 빌드'
 doc_type: 'guide'
 ---
 
-# LoongArch64용 Linux에서 빌드하기 \{#build-on-linux-for-loongarch64\}
-
-ClickHouse는 LoongArch64를 실험적으로 지원합니다.
+ClickHouse는 LoongArch64 아키텍처를 실험적으로 지원합니다
 
 ## ClickHouse 빌드 \{#build-clickhouse\}
 

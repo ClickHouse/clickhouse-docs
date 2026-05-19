@@ -8,8 +8,6 @@ keywords: ['compression', 'secondary-indexes','column-oriented']
 doc_type: 'guide'
 ---
 
-# ClickHouse の特長 \{#distinctive-features-of-clickhouse\}
-
 ## 真のカラム指向データベース管理システム \{#true-column-oriented-database-management-system\}
 
 真のカラム指向 DBMS では、値と一緒に余分なデータは一切保存されません。これは、値の長さを示す「数値」を値の隣に保存しないようにするためには、固定長の値をサポートしている必要があることを意味します。例えば、10 億個の `UInt8` 型の値は、非圧縮で約 1 GB を消費するのが本来であり、そうでない場合は CPU 使用率に大きく影響します。データを非圧縮であっても（いかなる「余分な情報」も含めずに）コンパクトに保存することは不可欠です。というのも、伸長処理の速度（CPU 使用率）は主に非圧縮データの量に依存するからです。

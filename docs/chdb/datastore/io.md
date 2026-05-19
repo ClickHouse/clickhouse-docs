@@ -1,5 +1,5 @@
 ---
-title: 'DataStore I/O operations'
+title: 'Datastore I/O operations'
 sidebar_label: 'I/O operations'
 slug: /chdb/datastore/io
 description: 'Reading and writing data with DataStore - all supported formats and destinations'
@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'io', 'read', 'write', 'csv', 'parquet', 'json',
 doc_type: 'reference'
 ---
 
-# DataStore I/O Operations
 
 DataStore supports reading from and writing to various file formats and data sources.
 

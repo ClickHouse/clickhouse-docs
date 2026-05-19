@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'factory', 'from_file', 'from_s3', 'uri', 'mysql
 doc_type: 'reference'
 ---
 
-# DataStore Factory Methods
 
 DataStore provides over 20 factory methods to create instances from various data sources including local files, databases, cloud storage, and data lakes.
 

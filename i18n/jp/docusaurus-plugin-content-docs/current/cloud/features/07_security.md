@@ -2,12 +2,10 @@
 sidebar_label: 'セキュリティ'
 slug: /cloud/security
 title: 'セキュリティ'
-description: 'ClickHouse Cloud と BYOC を保護する方法について学ぶ'
+description: 'ClickHouse Cloud と BYOC のセキュリティ保護について詳しく学ぶ'
 doc_type: 'reference'
-keywords: ['セキュリティ', 'クラウドセキュリティ', 'アクセス制御', 'コンプライアンス', 'データ保護']
+keywords: ['セキュリティ', 'Cloud セキュリティ', 'アクセス制御', 'コンプライアンス', 'データ保護']
 ---
-
-# ClickHouse Cloud のセキュリティ \{#clickhouse-cloud-security\}
 
 本ドキュメントでは、ClickHouse Cloud の組織およびサービスを保護するために利用可能なセキュリティオプションとベストプラクティスについて詳述します。
 ClickHouse は、安全な分析用データベースソリューションを提供することに注力しており、データおよびサービスの完全性を保護することを最優先事項としています。

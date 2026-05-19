@@ -6,8 +6,6 @@ title: 'Функции для работы с URL-адресами'
 doc_type: 'reference'
 ---
 
-# Функции для работы с URL-адресами \{#functions-for-working-with-urls\}
-
 ## Обзор \{#overview\}
 
 :::note

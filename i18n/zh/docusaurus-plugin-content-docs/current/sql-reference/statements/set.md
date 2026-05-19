@@ -1,13 +1,11 @@
 ---
-description: 'SET 语句文档'
+description: 'SET 语句的文档'
 sidebar_label: 'SET'
 sidebar_position: 50
 slug: /sql-reference/statements/set
 title: 'SET 语句'
 doc_type: 'reference'
 ---
-
-# SET 语句 \{#set-statement\}
 
 ```sql
 SET param = value
@@ -21,7 +19,7 @@ SET param = value
 SET profile = 'profile-name-from-the-settings-file'
 ```
 
-对于值为 true 的布尔类型设置，可以通过省略赋值来使用简写语法。仅指定设置名称时，它会自动被设为 `1`（true）。
+对于值为 true 的布尔类型设置，可以通过省略赋值来使用简写语法。仅指定设置名称时，它会自动被设为 `1` (true) 。
 
 ```sql
 -- These are equivalent:

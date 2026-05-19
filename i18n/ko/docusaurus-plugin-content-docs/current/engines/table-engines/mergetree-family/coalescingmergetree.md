@@ -1,6 +1,6 @@
 ---
-description: 'CoalescingMergeTree는 MergeTree 엔진을 상속한 엔진입니다. 핵심 기능은
-  파트 병합 시 각 컬럼의 마지막 NULL이 아닌 값을 자동으로 저장하는 것입니다.'
+description: 'CoalescingMergeTree는 MergeTree 엔진을 기반으로 합니다. 핵심 기능은
+  파트 병합 중 각 컬럼의 마지막 NULL이 아닌 값을 자동으로 저장하는 기능입니다.'
 sidebar_label: 'CoalescingMergeTree'
 sidebar_position: 50
 slug: /engines/table-engines/mergetree-family/coalescingmergetree
@@ -9,8 +9,6 @@ keywords: ['CoalescingMergeTree']
 show_related_blogs: true
 doc_type: 'reference'
 ---
-
-# CoalescingMergeTree 테이블 엔진 \{#coalescingmergetree-table-engine\}
 
 :::note Available from version 25.6
 이 테이블 엔진은 OSS와 Cloud 모두에서 버전 25.6 이상부터 사용할 수 있습니다.

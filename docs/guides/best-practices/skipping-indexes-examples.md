@@ -8,7 +8,6 @@ doc_type: 'guide'
 keywords: ['skipping indexes', 'data skipping', 'performance', 'indexing', 'best practices']
 ---
 
-# Data skipping index examples {#data-skipping-index-examples}
 
 This page consolidates ClickHouse data skipping index examples, showing how to declare each type, when to use them, and how to verify they're applied. All features work with [MergeTree-family tables](/engines/table-engines/mergetree-family/mergetree).
 

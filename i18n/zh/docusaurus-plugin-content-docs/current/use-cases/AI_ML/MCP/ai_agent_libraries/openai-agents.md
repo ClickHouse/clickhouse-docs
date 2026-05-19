@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/openai-agents
 sidebar_label: '集成 OpenAI'
-title: '如何使用 ClickHouse MCP server 构建 OpenAI agent'
+title: '如何使用 ClickHouse MCP server 构建 OpenAI agent。'
 pagination_prev: null
 pagination_next: null
-description: '了解如何构建一个可以与 ClickHouse MCP server 交互的 OpenAI agent。'
+description: '了解如何构建一个可与 ClickHouse MCP server 交互的 OpenAI agent。'
 keywords: ['ClickHouse', 'MCP', 'OpenAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 如何使用 ClickHouse MCP server 构建 OpenAI agent \{#how-to-build-an-openai-agent-using-clickhouse-mcp-server\}
 
 在本指南中，你将学习如何构建一个 [OpenAI](https://github.com/openai/openai-agents-python) agent，使其可以通过 [ClickHouse 的 MCP server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 交互。
 

@@ -12,8 +12,7 @@ doc_type: 'reference'
 도입 버전: v22.1.0
 
 `theilsU` 함수는 테이블의 두 컬럼 간 연관성을 측정하는 값인 [Theil의 U 불확실성 계수](https://en.wikipedia.org/wiki/Contingency_table#Uncertainty_coefficient)를 계산합니다.
-이 값의 범위는 −1.0(100% 부정적 연관성 또는 완전한 반전)부터 +1.0(100% 긍정적 연관성 또는 완전한 일치)까지입니다.
-값이 0.0이면 연관성이 없음을 나타냅니다.
+이 값의 범위는 0.0(연관성 없음)부터 1.0(완전한 일치)까지입니다.
 
 **구문**
 
@@ -28,7 +27,7 @@ theilsU(column1, column2)
 
 **반환 값**
 
--1과 1 사이의 값을 반환합니다. [`Float64`](/sql-reference/data-types/float)
+0과 1 사이의 값을 반환합니다. [`Float64`](/sql-reference/data-types/float)
 
 **예시**
 
@@ -47,7 +46,7 @@ FROM (
 
 ```response title=Response
 ┌────────theilsU(a, b)─┐
-│ -0.30195720557678846 │
+│  0.30195720557678846 │
 └──────────────────────┘
 ```
 

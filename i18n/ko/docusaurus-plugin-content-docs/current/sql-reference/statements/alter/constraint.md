@@ -1,13 +1,11 @@
 ---
-description: 'CONSTRAINT 관리에 대한 문서'
+description: 'CONSTRAINT 관리 문서'
 sidebar_label: 'CONSTRAINT'
 sidebar_position: 43
 slug: /sql-reference/statements/alter/constraint
 title: 'CONSTRAINT 관리'
 doc_type: 'reference'
 ---
-
-# CONSTRAINT 관리 \{#manipulating-constraints\}
 
 CONSTRAINT를 다음 구문을 사용하여 추가하거나 삭제할 수 있습니다:
 

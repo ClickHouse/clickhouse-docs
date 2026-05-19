@@ -1,13 +1,11 @@
 ---
-description: 'rank 윈도우 함수 문서'
+description: 'rank 윈도우 함수에 대한 문서'
 sidebar_label: 'rank'
 sidebar_position: 6
 slug: /sql-reference/window-functions/rank
 title: 'rank'
 doc_type: 'reference'
 ---
-
-# rank \{#rank\}
 
 현재 파티션 내에서 현재 행의 순위를, 중간 순위가 건너뛰어지는(비어 있는) 방식으로 매깁니다. 다시 말해, 읽어 들인 어떤 행의 값이 이전 행의 값과 같다면, 해당 행은 그 이전 행과 동일한 순위를 받습니다.
 그 다음 행의 순위는 이전 행의 순위에, 그 이전 순위가 부여된 횟수만큼의 간격을 더한 값이 됩니다.
@@ -34,9 +32,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 다음 예시는 동영상 강의 [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)에 제공된 예시를 기반으로 합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -56,15 +52,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        rank() OVER (ORDER BY salary DESC) AS rank
 FROM salaries;
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─rank─┐
 1. │ Gary Chen       │ 195000 │    1 │
 2. │ Robert George   │ 195000 │    1 │

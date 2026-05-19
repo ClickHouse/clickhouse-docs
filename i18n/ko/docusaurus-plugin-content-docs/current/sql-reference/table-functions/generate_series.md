@@ -7,8 +7,6 @@ description: '시작값부터 종료값까지(종료값 포함)의 정수를 담
 doc_type: 'reference'
 ---
 
-# generate_series 테이블 함수(Table Function) \{#generate_series-table-function\}
-
 별칭: `generateSeries`
 
 ## 구문 \{#syntax\}
@@ -25,18 +23,85 @@ generate_series(START, STOP)
 generate_series(START, STOP, STEP)
 ```
 
+`STEP`은 음수일 수 있으며, 이 경우 시리즈는 `START`에서 `STOP`까지 내림차순으로 생성됩니다. `STEP`이 음수이고 `START < STOP`이면 결과는 빈 상태입니다.
+
 ## 예시 \{#examples\}
 
 다음 쿼리는 동일한 데이터를 가지되 컬럼 이름만 다른 테이블을 반환합니다:
 
 ```sql
 SELECT * FROM numbers(10, 5);
+```
+
+```response
+┌─number─┐
+│     10 │
+│     11 │
+│     12 │
+│     13 │
+│     14 │
+└────────┘
+```
+
+```sql
 SELECT * FROM generate_series(10, 14);
+```
+
+```response
+┌─generate_series─┐
+│              10 │
+│              11 │
+│              12 │
+│              13 │
+│              14 │
+└─────────────────┘
 ```
 
 그리고 다음 쿼리는 동일한 내용을 가지지만 컬럼 이름이 다른 테이블을 반환합니다(두 번째 옵션이 더 효율적입니다):
 
 ```sql
 SELECT * FROM numbers(10, 11) WHERE number % 3 == (10 % 3);
+```
+
+```response
+┌─number─┐
+│     10 │
+│     13 │
+│     16 │
+│     19 │
+└────────┘
+```
+
+```sql
 SELECT * FROM generate_series(10, 20, 3);
+```
+
+```response
+┌─generate_series─┐
+│              10 │
+│              13 │
+│              16 │
+│              19 │
+└─────────────────┘
+```
+
+내림차순 수열을 생성합니다:
+
+```sql
+SELECT * FROM generate_series(9, 0, -1);
+```
+
+```response
+┌─generate_series─┐
+│               9 │
+│               8 │
+│               7 │
+│               6 │
+│               5 │
+│               4 │
+│               3 │
+│               2 │
+│               1 │
+│               0 │
+└─────────────────┘
 ```

@@ -1,16 +1,15 @@
 ---
-title: 'Страница статуса релизов'
-sidebar_label: 'Статус релизов'
-keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'регионы']
-description: 'Страница со статусом релизов для каждого канала релизов'
+title: "Страница статуса релизов"
+sidebar_label: "Статус релизов"
+keywords: ["cloud", "статус релизов", "раскатка", "версия", "обновление"]
+description: "Страница со статусом релизов для каждого канала релизов"
 slug: /cloud/release-status
-doc_type: 'reference'
+doc_type: "reference"
 ---
 
-import ReleaseSchedule from '@site/src/components/ReleaseSchedule/ReleaseSchedule';
+import ReleaseSchedule from "@site/src/components/ReleaseSchedule/ReleaseSchedule"
 
 ClickHouse Cloud предлагает различные каналы релизов, чтобы удовлетворить разные потребности пользователей в части стабильности, доступа к новым функциям и предсказуемости обновлений. У каждого канала свой график обновлений, и он предназначен для разных сценариев использования — как для пользователей, которым нужен мгновенный доступ к новым релизам, так и для тех, кто предпочитает откладывать обновления, чтобы получать наиболее стабильные версии.
-
 
 ## Подробности о каналах релизов \{#release-channel-details\}
 

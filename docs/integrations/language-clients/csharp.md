@@ -1900,7 +1900,7 @@ The official Entity Framework Core provider for ClickHouse. Map C# classes to Cl
 - **Source**: [GitHub](https://github.com/ClickHouse/ClickHouse.EntityFrameworkCore)
 
 :::note
-This provider is in early development. It supports **read-only queries** and **inserts**. UPDATE, DELETE, migrations, JOINs, and subqueries are not yet implemented.
+This provider is in active development. Current release supports LINQ queries (including JOINs, subqueries, and set operations), `INSERT` via `SaveChanges` / `BulkInsertAsync`, migrations with full DDL (CREATE / ALTER / DROP), and ClickHouse-specific table engine configuration. `UPDATE` / `DELETE` are not supported.
 :::
 
 #### Installation {#ef-core-installation}
@@ -1961,7 +1961,7 @@ var topPages = await ctx.PageViews
 | **Time** | `Time`, `Time64(N)` | `TimeSpan` |
 | **UUID** | `UUID` | `Guid` |
 | **Network** | `IPv4`, `IPv6` | `IPAddress` |
-| **Arrays** | `Array(T)` | `T[]` or `List<T>` |
+| **Arrays** | `Array(T)` | `T[]`, `List<T>`, `IList<T>`, `ICollection<T>`, `IReadOnlyList<T>`, `IReadOnlyCollection<T>`, `IEnumerable<T>` |
 | **Maps** | `Map(K, V)` | `Dictionary<K,V>` |
 | **Tuples** | `Tuple(T1, ...)` | `Tuple<...>` or `ValueTuple<...>` |
 | **Variant** | `Variant(T1, T2, ...)` | `object` |
@@ -1974,13 +1974,33 @@ Use `ClickHouseDecimal` (from `ClickHouse.Driver.Numerics`) instead of `decimal`
 
 #### Supported LINQ operations {#ef-core-linq}
 
-**Queries:** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `Count`, `Distinct`, `AsNoTracking`
+**Queries:** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `All`, `Count`, `Distinct`, `AsNoTracking`
 
-**GROUP BY & Aggregates:** `GroupBy` with `Count`, `LongCount`, `Sum`, `Average`, `Min`, `Max` — including `HAVING` (`.Where()` after `.GroupBy()`), multiple aggregates in a single projection, and `OrderBy` on aggregate results.
+**GROUP BY & aggregates:** `GroupBy` with `Count`, `LongCount`, `Sum`, `Average`, `Min`, `Max` — including `HAVING` (`.Where()` after `.GroupBy()`), multiple aggregates in a single projection, and `OrderBy` on aggregate results.
 
-**String methods:** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat` (and `+` operator)
+**JOINs:** `Join` (INNER), `GroupJoin`/`SelectMany` patterns (LEFT and CROSS). LEFT JOIN returns real `null` for non-matching rows (see [LEFT JOIN null semantics](#ef-core-join-nulls) below).
 
-**Math functions:** Standard `Math` and `MathF` methods are translated to their ClickHouse equivalents, including arithmetic, logarithmic, trigonometric, and utility functions.
+**Subqueries:** correlated `Contains` / `IN`, `Any` / `EXISTS`, `All`, and scalar subqueries in projections.
+
+**Set operations:** `Concat` (→ `UNION ALL`), `Union` (→ `UNION DISTINCT`), `Intersect`, `Except`.
+
+**Inline local collections:** joins and `Contains` against in-memory collections (`int[]`, `List<T>`, etc.) translate into a series of UNIONs.
+
+**String methods:** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat` (and `+` operator).
+
+**Math functions:** standard `Math` and `MathF` methods translated to their ClickHouse equivalents — arithmetic, logarithmic, trigonometric, and utility functions.
+
+##### LEFT JOIN null semantics {#ef-core-join-nulls}
+
+The provider injects `set_join_use_nulls=1` into every connection path automatically to match Entity Framework expectations on JOIN behavior.
+
+If your ClickHouse server or profile forbids changing this setting (e.g. a `readonly=1` profile), opt out with:
+
+```csharp
+optionsBuilder.UseClickHouse(connectionString, o => o.DisableJoinNullSemantics());
+```
+
+With the opt-out enabled, LEFT JOIN returns ClickHouse column defaults and EF's null-based navigation detection no longer works as expected. Use explicit comparisons against `0` / `""` instead of `== null`.
 
 #### Inserting data {#ef-core-insert}
 
@@ -2219,20 +2239,94 @@ entity.Property(e => e.Data).HasColumnType("Json");
 - **Integer precision** — ClickHouse JSON stores all integers as `Int64`. When reading via `JsonNode`, use `GetValue<long>()` rather than `GetValue<int>()`.
 :::
 
-#### Limitations {#ef-core-limitations}
+#### Table engines {#ef-core-engines}
 
-| Feature | Status |
+Configure ClickHouse table engines and engine-specific clauses via the `ToTable(name, t => ...)` fluent API. When no engine is configured, the provider defaults to `MergeTree` with `ORDER BY` derived from the entity's primary key.
+
+```csharp
+modelBuilder.Entity<Event>(e =>
+{
+    e.ToTable("events", t => t
+        .HasMergeTreeEngine()
+        .WithOrderBy("UserId", "Timestamp")
+        .WithPartitionBy("toYYYYMM(Timestamp)")
+        .WithPrimaryKey("UserId")
+        .WithSettings("index_granularity = 8192"));
+});
+```
+
+Supported engine families:
+
+| Engine | Fluent method | Notes |
+|---|---|---|
+| `MergeTree` | `HasMergeTreeEngine()` | Default when none configured |
+| `ReplacingMergeTree` | `HasReplacingMergeTreeEngine("Version", "IsDeleted")` or `HasReplacingMergeTreeEngine<T>(e => e.Version)` | Version / IsDeleted columns optional |
+| `SummingMergeTree` | `HasSummingMergeTreeEngine(…)` or `HasSummingMergeTreeEngine<T>(e => new { … })` | Optional columns-to-sum |
+| `AggregatingMergeTree` | `HasAggregatingMergeTreeEngine()` | — |
+| `CollapsingMergeTree` | `HasCollapsingMergeTreeEngine("Sign")` or `HasCollapsingMergeTreeEngine<T>(e => e.Sign)` | `Sign` column must be `Int8` |
+| `VersionedCollapsingMergeTree` | `HasVersionedCollapsingMergeTreeEngine("Sign", "Version")` or `<T>(e => e.Sign, e => e.Version)` | — |
+| `GraphiteMergeTree` | `HasGraphiteMergeTreeEngine("config_section")` | — |
+| `Log`, `TinyLog`, `StripeLog`, `Memory` | `HasLogEngine()`, `HasTinyLogEngine()`, `HasStripeLogEngine()`, `HasMemoryEngine()` | No ORDER BY / PARTITION BY |
+
+**Engine clauses:** `WithOrderBy`, `WithPartitionBy`, `WithPrimaryKey`, `WithSampleBy`, `WithTtl`, `WithSettings`. All attach to the engine builder returned from `HasXxxEngine()`.
+
+**Column-level features:** `HasCodec`, `HasTtl`, `HasComment`, `HasDefault` — all participate in migrations.
+
+**Data-skipping indexes** — via `HasIndex(...).HasSkippingIndexType(...)`:
+
+```csharp
+modelBuilder.Entity<Event>()
+    .HasIndex(e => e.UserId)
+    .HasSkippingIndexType("minmax")
+    .HasGranularity(4);
+
+// Index with parameters (e.g. bloom_filter, tokenbf_v1):
+modelBuilder.Entity<Event>()
+    .HasIndex(e => e.Tag)
+    .HasSkippingIndexType("bloom_filter")
+    .HasSkippingIndexParams("0.01")
+    .HasGranularity(1);
+```
+
+Standard (non-skipping) indexes are silently ignored since ClickHouse has no equivalent. Unique indexes throw, as ClickHouse does not enforce uniqueness.
+
+#### Migrations {#ef-core-migrations}
+
+Standard EF Core migrations workflow:
+
+```bash
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
+Supported operations:
+
+| Operation | Emits |
 |---|---|
-| SELECT / WHERE / ORDER BY / GROUP BY | Supported |
-| INSERT via `SaveChanges` / `BulkInsertAsync` | Supported |
-| UPDATE / DELETE | Not supported (ClickHouse mutations are async, not OLTP-compatible) |
-| Migrations | Not supported |
-| JOINs, subqueries, set operations | Not supported |
-| Transactions | No-op (ClickHouse does not support ACID transactions) |
-| Server-generated values (auto-increment) | Not supported |
-| Nested types | Not supported |
-| JSON path query translation (`.Data["key"]` in LINQ) | Not supported |
-| Owned entities as JSON (`.ToJson()`) | Not supported |
+| `CREATE TABLE` | Includes engine clause, ORDER BY, PARTITION BY, SETTINGS, column codecs/TTL/comments/defaults |
+| `ALTER TABLE ADD COLUMN` | — |
+| `ALTER TABLE DROP COLUMN` | — |
+| `ALTER TABLE MODIFY COLUMN` | Handles type change plus annotation add/remove (CODEC, TTL, COMMENT, DEFAULT) |
+| `ALTER TABLE RENAME COLUMN` | — |
+| `RENAME TABLE` | — |
+| `ALTER TABLE ADD INDEX` / `DROP INDEX` | Data-skipping indexes only |
+| `CREATE DATABASE` / `DROP DATABASE` | Via `EnsureCreated` / `EnsureDeleted` and migrations |
+
+#### Migration limitations {#ef-core-limitations}
+
+| Feature | Reason |
+|---|---|
+| Foreign keys | ClickHouse does not enforce foreign keys. Migrations reject `AddForeignKey`; the model validator emits a warning at model build time. |
+| Unique constraints / unique indexes | ClickHouse does not enforce uniqueness. Unique indexes throw at migration time. |
+| Server-generated values (auto-increment / `IDENTITY`) | ClickHouse has no equivalent. |
+| `Nested(…)` columns | Not yet supported as a mapped CLR type. |
+| Owned entities as JSON (`.ToJson()`) | Structural JSON mapping for owned entities is not yet implemented. Use `JsonNode` / `string` on a `Json` column instead (see [JSON columns](#ef-core-json)). |
+
+Beyond migrations, the provider also does not yet support:
+
+- **`UPDATE` / `DELETE`**
+- **Transactions**: `BeginTransaction` is a no-op. No support for ACID transactions in ClickHouse.
+- **JSON path query translation**: `entity.Data["key"]` in LINQ does not translate to ClickHouse's `data.key` SQL syntax. Filter on non-JSON columns and inspect JSON in memory.
 
 ## Limitations {#limitations}
 

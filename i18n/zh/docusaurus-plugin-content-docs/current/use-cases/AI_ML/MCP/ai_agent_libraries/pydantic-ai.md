@@ -1,22 +1,20 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/pydantic-ai
 sidebar_label: '集成 PydanticAI'
-title: '如何使用 ClickHouse MCP 服务器构建 PydanticAI agent'
+title: '如何使用 ClickHouse MCP 服务器构建 PydanticAI agent。'
 pagination_prev: null
 pagination_next: null
-description: '了解如何构建一个可以与 ClickHouse MCP 服务器交互的 PydanticAI agent。'
+description: '了解如何构建一个可与 ClickHouse MCP 服务器交互的 PydanticAI agent。'
 keywords: ['ClickHouse', 'MCP', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 ClickHouse MCP 服务器 构建 PydanticAI agent \{#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server\}
-
 在本指南中，您将学习如何构建一个 [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) agent，
 使其能够通过 [ClickHouse 的 MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 ClickHouse SQL playground](https://sql.clickhouse.com/) 进行交互。
 
 :::note 示例 notebook
-该示例可以在 [示例仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb) 中以 notebook 形式查阅。
+该示例可以在 [示例代码仓库](https://github.com/ClickHouse/examples/blob/main/ai/mcp/pydanticai/pydantic.ipynb) 中以 notebook 形式查阅。
 :::
 
 ## 前置条件 \{#prerequisites\}

@@ -7,9 +7,7 @@ title: '연산자'
 doc_type: 'reference'
 ---
 
-# 연산자 \{#operators\}
-
-ClickHouse는 연산자의 우선순위(priority), 우선도(precedence), 결합 방향(associativity)에 따라 쿼리 파싱 단계에서 각 연산자를 해당 함수로 변환합니다.
+ClickHouse는 쿼리 파싱 단계에서 연산자의 우선도, 우선순위, 결합 방향에 따라 해당 함수로 변환합니다.
 
 ## Access 연산자 \{#access-operators\}
 
@@ -128,6 +126,15 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
+## 문자열 작업을 위한 연산자 \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - `overlay(string, replacement, offset)` 함수입니다.
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - `overlay(string, replacement, offset, length)` 함수입니다.
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - `overlayUTF8(string, replacement, offset)` 함수입니다.
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - `overlayUTF8(string, replacement, offset, length)` 함수입니다.
+
 ## 데이터 Set 작업을 위한 연산자 \{#operators-for-working-with-data-sets\}
 
 [IN 연산자](../../sql-reference/operators/in.md) 및 [EXISTS](../../sql-reference/operators/exists.md) 연산자를 참고하십시오.
@@ -168,13 +175,11 @@ SELECT
 
 ALL을 사용하는 쿼리:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -185,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 ANY를 사용하는 쿼리:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │

@@ -7,7 +7,6 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState {#minsimplestate}
 
 ## Description {#description}
 

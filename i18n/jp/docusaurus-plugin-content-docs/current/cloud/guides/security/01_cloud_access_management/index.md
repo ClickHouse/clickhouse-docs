@@ -2,12 +2,10 @@
 sidebar_label: 'クラウドアクセス管理'
 slug: /cloud/security/cloud_access_management
 title: 'クラウドアクセス管理'
-description: 'クラウドアクセス管理について詳しく学ぶ'
+description: 'クラウドアクセス管理の詳細をご覧ください'
 doc_type: 'landing-page'
 keywords: ['アクセス管理', 'セキュリティ', 'ユーザー管理', '権限', '認証']
 ---
-
-# クラウドアクセス管理 \{#cloud-access-management\}
 
 このセクションでは、ClickHouse Cloud におけるアクセス管理に関する詳細なガイドを提供します。
 

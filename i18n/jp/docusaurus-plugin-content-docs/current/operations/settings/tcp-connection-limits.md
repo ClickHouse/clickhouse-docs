@@ -6,8 +6,6 @@ title: 'TCP 接続制限'
 doc_type: 'reference'
 ---
 
-# TCP 接続制限 \{#tcp-connection-limits\}
-
 ## 概要 \{#overview\}
 
 ClickHouse の TCP 接続 (たとえば [コマンドラインクライアント](https://clickhouse.com/docs/interfaces/client) を通したもの) が、

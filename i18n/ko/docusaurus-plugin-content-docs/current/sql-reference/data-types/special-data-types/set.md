@@ -7,6 +7,4 @@ title: 'Set'
 doc_type: 'reference'
 ---
 
-# Set \{#set\}
-
-[IN](/sql-reference/operators/in) 표현식의 오른쪽 피연산자로 사용됩니다.
+[IN](/sql-reference/operators/in) 표현식의 우변에 사용됩니다.

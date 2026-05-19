@@ -10,13 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
-import Image from '@theme/IdealImage';
-
-# 使用 ClickHouse MCP 服务器使用 Ollama \{#using-clickhouse-mcp-server-with-ollama\}
-
-> 本指南介绍如何使用 ClickHouse MCP 服务器使用 Ollama。
+> 本指南介绍如何在 Ollama 中使用 ClickHouse MCP 服务器。
 
 <VerticalStepper headerLevel="h2">
   ## 安装 Ollama \{#install-ollama\}

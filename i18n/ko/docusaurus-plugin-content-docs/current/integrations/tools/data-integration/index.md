@@ -6,8 +6,6 @@ description: '데이터 통합 섹션의 랜딩 페이지'
 doc_type: 'landing-page'
 ---
 
-# 데이터 통합 \{#data-integrations\}
-
 | Page                                   | Description                                                                                  |
 | -------------------------------------- | -------------------------------------------------------------------------------------------- |
 | [Easypanel](/integrations/easypanel)   | Easypanel을 사용하면 자체 서버에 ClickHouse를 배포할 수 있습니다.                                               |

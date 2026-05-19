@@ -1,13 +1,11 @@
 ---
-description: 'INSERT INTO ステートメントのリファレンス'
+description: 'INSERT INTO ステートメントのドキュメント'
 sidebar_label: 'INSERT INTO'
 sidebar_position: 33
 slug: /sql-reference/statements/insert-into
 title: 'INSERT INTO ステートメント'
 doc_type: 'reference'
 ---
-
-# INSERT INTO ステートメント \{#insert-into-statement\}
 
 テーブルにデータを挿入します。
 
@@ -17,7 +15,7 @@ doc_type: 'reference'
 INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] [SETTINGS ...] VALUES (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-`(c1, c2, c3)` を使用して挿入する列のリストを指定できます。列の[マッチャー](../../sql-reference/statements/select/index.md#asterisk)である `*` や、[APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier) などの[モディファイア](../../sql-reference/statements/select/index.md#select-modifiers)を用いた式を使うこともできます。
+`(c1, c2, c3)` を使用して挿入するカラムのリストを指定できます。カラムの[マッチャー](../../sql-reference/statements/select/index.md#asterisk)である `*` や、[APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier) などの[モディファイア](../../sql-reference/statements/select/index.md#select-modifiers)を用いた式を使うこともできます。
 
 たとえば、次のようなテーブルがあるとします。
 
@@ -40,7 +38,7 @@ ORDER BY a
 INSERT INTO insert_select_testtable (*) VALUES (1, 'a', 1) ;
 ```
 
-列 `b` を除くすべての列にデータを挿入したい場合は、`EXCEPT` キーワードを使用して実行できます。上記の構文を参考に、指定した列 (`(c1, c3)`) の数と同じ数だけ値 (`VALUES (v11, v13)`) を挿入するようにする必要があります。
+カラム `b` を除くすべてのカラムにデータを挿入したい場合は、`EXCEPT` キーワードを使用して実行できます。上記の構文を参考に、指定したカラム (`(c1, c3)`) の数と同じ数だけ値 (`VALUES (v11, v13)`) を挿入するようにする必要があります。
 
 ```sql
 INSERT INTO insert_select_testtable (* EXCEPT(b)) Values (2, 2);
@@ -59,13 +57,13 @@ SELECT * FROM insert_select_testtable;
 └───┴───┴───┘
 ```
 
-この例では、2 番目に挿入された行では `a` 列と `c` 列には指定した値が入り、`b` 列にはデフォルト値が入っていることがわかります。`DEFAULT` キーワードを使用してデフォルト値を挿入することもできます。
+この例では、2 番目に挿入された行では `a` カラムと `c` カラムには指定した値が入り、`b` カラムにはデフォルト値が入っていることがわかります。`DEFAULT` キーワードを使用してデフォルト値を挿入することもできます。
 
 ```sql
 INSERT INTO insert_select_testtable VALUES (1, DEFAULT, 1) ;
 ```
 
-列リストに既存のすべての列が含まれていない場合、残りの列には次の値が設定されます。
+カラムリストに既存のすべてのカラムが含まれていない場合、残りのカラムには次の値が設定されます。
 
 * テーブル定義で指定された `DEFAULT` 式から計算された値
 * `DEFAULT` 式が定義されていない場合はゼロおよび空文字列
@@ -82,7 +80,7 @@ INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT Values (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-ClickHouse は、データの前にあるすべての空白文字と（存在する場合は）1 つの改行を削除します。クエリを作成する際は、データがスペースで始まる場合に重要となるため、クエリ演算子の直後で改行し、その次の行にデータを配置することを推奨します。
+ClickHouse は、データの前にあるすべての空白文字と (存在する場合は) 1 つの改行を削除します。クエリを作成する際は、データがスペースで始まる場合に重要となるため、クエリ演算子の直後で改行し、その次の行にデータを配置することを推奨します。
 
 例:
 
@@ -102,7 +100,6 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 ```
 
 :::
-
 
 ## 制約 \{#constraints\}
 
@@ -196,22 +193,19 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 次のクエリを [コマンドラインクライアント](../../interfaces/client.md) を使って実行します。
 
-```bash
+```bash title="Query"
 echo 1,A > input.csv ; echo 2,B >> input.csv
 clickhouse-client --query="CREATE TABLE table_from_file (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;"
 clickhouse-client --query="INSERT INTO table_from_file FROM INFILE 'input.csv' FORMAT CSV;"
 clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─id─┬─text─┐
 │  1 │ A    │
 │  2 │ B    │
 └────┴──────┘
 ```
-
 
 ### FROM INFILE でグロブを使用した複数ファイル \{#multiple-files-with-from-infile-using-globs\}
 
@@ -250,21 +244,18 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 
 以下のクエリでは、[remote](/sql-reference/table-functions/remote) テーブル関数を使用します。
 
-```sql
+```sql title="Query"
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
     VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌──id─┬─text──────────────────┐
 │ 100 │ inserted via remote() │
 └─────┴───────────────────────┘
 ```
-
 
 ## ClickHouse Cloud への挿入 \{#inserting-into-clickhouse-cloud\}
 

@@ -6,8 +6,6 @@ title: 'DataLakeCatalog'
 doc_type: 'reference'
 ---
 
-# DataLakeCatalog \{#datalakecatalog\}
-
 Движок базы данных `DataLakeCatalog` позволяет подключать ClickHouse к внешним
 каталогам данных и выполнять запросы к данным в открытых табличных форматах без
 необходимости дублировать данные.

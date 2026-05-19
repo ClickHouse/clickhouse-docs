@@ -7,9 +7,7 @@ keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
 
-# chDB for Go \{#chdb-for-go\}
-
-chDB-go 为 chDB 提供 Go 语言绑定,使你能够在 Go 应用程序中直接运行 ClickHouse 查询,且完全不依赖任何外部组件。
+chDB-go 为 chDB 提供 Go 绑定，让您能够在 Go 应用程序中直接运行 ClickHouse 查询，而无需任何外部依赖。
 
 ## 安装 \{#installation\}
 

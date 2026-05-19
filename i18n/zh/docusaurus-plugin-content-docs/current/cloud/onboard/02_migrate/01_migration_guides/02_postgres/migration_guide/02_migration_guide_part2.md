@@ -21,13 +21,13 @@ doc_type: 'guide'
 
 虽然可以在对查询做最少改写的情况下完成迁移，但建议充分利用 ClickHouse 的特性，以显著简化查询并进一步提升查询性能。
 
-这里的示例涵盖了常见的查询模式，并展示了如何在 ClickHouse 中对它们进行优化。示例使用了 PostgreSQL 和 ClickHouse 上等价资源（8 核 CPU、32GiB 内存）的完整 [Stack Overflow 数据集](/getting-started/example-datasets/stackoverflow)（截至 2024 年 4 月）。
+这里的示例涵盖了常见的查询模式，并展示了如何在 ClickHouse 中对它们进行优化。示例使用了 PostgreSQL 和 ClickHouse 上等价资源 (8 核 CPU、32GiB 内存) 的完整 [Stack Overflow 数据集](/getting-started/example-datasets/stackoverflow) (截至 2024 年 4 月) 。
 
 > 为了简化示例，下面的查询省略了数据去重技术。
 
 > 这里的计数结果会略有不同，因为 Postgres 数据只包含满足外键参照完整性的行。ClickHouse 不施加此类约束，因此拥有完整的数据集，例如包括匿名用户。
 
-获得最多浏览量的用户（问题数超过 10 个）：
+获得最多浏览量的用户 (问题数超过 10 个) ：
 
 ```sql
 -- ClickHouse
@@ -39,13 +39,13 @@ HAVING count() > 10
 ORDER BY total_views DESC
 LIMIT 5
 
-┌─OwnerDisplayName────────┬─total_views─┐
-│ Joan Venge            │       25520387 │
-│ Ray Vega              │       21576470 │
-│ anon                  │       19814224 │
-│ Tim                   │       19028260 │
-│ John                  │       17638812 │
-└─────────────────────────┴─────────────┘
+┌─OwnerDisplayName─┬─total_views─┐
+│ Joan Venge       │    25520387 │
+│ Ray Vega         │    21576470 │
+│ anon             │    19814224 │
+│ Tim              │    19028260 │
+│ John             │    17638812 │
+└──────────────────┴─────────────┘
 
 5 rows in set. Elapsed: 0.360 sec. Processed 24.37 million rows, 140.45 MB (67.73 million rows/s., 390.38 MB/s.)
 Peak memory usage: 510.71 MiB.
@@ -85,10 +85,10 @@ LIMIT 5
 
 ┌─tags───────┬──────views─┐
 │ javascript │ 8190916894 │
-│ python        │ 8175132834 │
-│ java          │ 7258379211 │
-│ c#            │ 5476932513 │
-│ android       │ 4258320338 │
+│ python     │ 8175132834 │
+│ java       │ 7258379211 │
+│ c#         │ 5476932513 │
+│ android    │ 4258320338 │
 └────────────┴────────────┘
 
 5 rows in set. Elapsed: 0.908 sec. Processed 59.82 million rows, 1.45 GB (65.87 million rows/s., 1.59 GB/s.)
@@ -131,7 +131,6 @@ Time: 112508.083 ms (01:52.508)
 **聚合函数**
 
 在条件允许的情况下，你应尽可能利用 ClickHouse 的聚合函数。下面我们演示如何使用 [argMax](/sql-reference/aggregate-functions/reference/argmax) 函数来计算每一年浏览次数最多的问题。
-
 
 ```sql
 --ClickHouse
@@ -226,11 +225,11 @@ ORDER BY percent_change DESC
 LIMIT 5
 
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
-│ next.js       │       13788 │         10520 │   31.06463878326996 │
-│ spring-boot │         16573 │         17721 │  -6.478189718413183 │
-│ .net          │       11458 │         12968 │ -11.644046884639112 │
-│ azure         │       11996 │         14049 │ -14.613139725247349 │
-│ docker        │       13885 │         16877 │  -17.72826924216389 │
+│ next.js     │      13788 │      10520 │   31.06463878326996 │
+│ spring-boot │      16573 │      17721 │  -6.478189718413183 │
+│ .net        │      11458 │      12968 │ -11.644046884639112 │
+│ azure       │      11996 │      14049 │ -14.613139725247349 │
+│ docker      │      13885 │      16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
 
 5 rows in set. Elapsed: 0.247 sec. Processed 5.08 million rows, 155.73 MB (20.58 million rows/s., 630.61 MB/s.)

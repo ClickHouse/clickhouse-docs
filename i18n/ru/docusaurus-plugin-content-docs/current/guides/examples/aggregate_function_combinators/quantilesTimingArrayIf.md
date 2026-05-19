@@ -7,8 +7,6 @@ sidebar_label: 'quantilesTimingArrayIf'
 doc_type: 'reference'
 ---
 
-# quantilesTimingArrayIf \{#quantilestimingarrayif\}
-
 ## Описание \{#description\}
 
 К [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) 

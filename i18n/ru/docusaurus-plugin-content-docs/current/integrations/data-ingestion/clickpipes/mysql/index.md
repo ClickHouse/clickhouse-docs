@@ -27,17 +27,17 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 
 
-# Ингестия данных из MySQL в ClickHouse (с использованием CDC) \{#ingesting-data-from-mysql-to-clickhouse-using-cdc\}
+# Приём данных из MySQL в ClickHouse (с использованием CDC) \{#ingesting-data-from-mysql-to-clickhouse-using-cdc\}
 
-<BetaBadge/>
+<BetaBadge />
 
 :::info
-Ингестия данных из MySQL в ClickHouse Cloud с помощью ClickPipes находится в стадии публичной беты.
+Приём данных из MySQL в ClickHouse Cloud с помощью ClickPipes находится в стадии публичной беты.
 :::
 
 MySQL ClickPipe предоставляет полностью управляемый и отказоустойчивый способ приёма данных из баз данных MySQL и MariaDB в ClickHouse Cloud. Он поддерживает как **массовые загрузки (bulk loads)** для одноразовой ингестии, так и **Change Data Capture (CDC)** для непрерывной ингестии.
 
-MySQL ClickPipes могут развертываться и управляться вручную через интерфейс ClickPipes UI. В будущем можно будет развертывать и управлять MySQL ClickPipes программно с использованием [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) и [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe).
+MySQL ClickPipes могут развертываться и управляться вручную через интерфейс ClickPipes UI, а также программно с использованием [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Предварительные требования \{#prerequisites\}
 

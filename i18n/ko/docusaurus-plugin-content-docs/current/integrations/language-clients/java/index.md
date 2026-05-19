@@ -12,8 +12,6 @@ integration:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-
 
 # Java 클라이언트 개요 \{#java-clients-overview\}
 
@@ -29,68 +27,72 @@ Java 클라이언트는 이미 2015년에 처음 개발되었으며, 코드베�
 
 ### 지원되는 데이터 타입 \{#supported-data-types\}
 
-|**데이터 타입**        |**Client V2 지원**   |**Client V1 지원**   |
-|-----------------------|---------------------|---------------------|
-|Int8                   |✔                    |✔                    |
-|Int16                  |✔                    |✔                    |
-|Int32                  |✔                    |✔                    |
-|Int64                  |✔                    |✔                    |
-|Int128                 |✔                    |✔                    |
-|Int256                 |✔                    |✔                    |
-|UInt8                  |✔                    |✔                    |
-|UInt16                 |✔                    |✔                    |
-|UInt32                 |✔                    |✔                    |
-|UInt64                 |✔                    |✔                    |
-|UInt128                |✔                    |✔                    |
-|UInt256                |✔                    |✔                    |
-|Float32                |✔                    |✔                    |
-|Float64                |✔                    |✔                    |
-|Decimal                |✔                    |✔                    |
-|Decimal32              |✔                    |✔                    |
-|Decimal64              |✔                    |✔                    |
-|Decimal128             |✔                    |✔                    |
-|Decimal256             |✔                    |✔                    |
-|Bool                   |✔                    |✔                    |
-|String                 |✔                    |✔                    |
-|FixedString            |✔                    |✔                    |
-|Nullable               |✔                    |✔                    |
-|Date                   |✔                    |✔                    |
-|Date32                 |✔                    |✔                    |
-|DateTime               |✔                    |✔                    |
-|DateTime32             |✔                    |✔                    |
-|DateTime64             |✔                    |✔                    |
-|Interval               |✗                    |✗                    |
-|Enum                   |✔                    |✔                    |
-|Enum8                  |✔                    |✔                    |
-|Enum16                 |✔                    |✔                    |
-|Array                  |✔                    |✔                    |
-|Map                    |✔                    |✔                    |
-|Nested                 |✔                    |✔                    |
-|Tuple                  |✔                    |✔                    |
-|UUID                   |✔                    |✔                    |
-|IPv4                   |✔                    |✔                    |
-|IPv6                   |✔                    |✔                    |
-|Object                 |✗                    |✔                    |
-|Point                  |✔                    |✔                    |
-|Nothing                |✔                    |✔                    |
-|MultiPolygon           |✔                    |✔                    |
-|Ring                   |✔                    |✔                    |
-|Polygon                |✔                    |✔                    |
-|SimpleAggregateFunction|✔                    |✔                    |
-|AggregateFunction      |✗                    |✔                    |
-|Variant                |✔                    |✗                    |
-|Dynamic                |✔                    |✗                    |
-|JSON                   |✔                    |✗                    |
+| **데이터 타입**              | **Client V2 지원** | **Client V1 지원** |
+| ----------------------- | ---------------- | ---------------- |
+| Int8                    | ✔                | ✔                |
+| Int16                   | ✔                | ✔                |
+| Int32                   | ✔                | ✔                |
+| Int64                   | ✔                | ✔                |
+| Int128                  | ✔                | ✔                |
+| Int256                  | ✔                | ✔                |
+| UInt8                   | ✔                | ✔                |
+| UInt16                  | ✔                | ✔                |
+| UInt32                  | ✔                | ✔                |
+| UInt64                  | ✔                | ✔                |
+| UInt128                 | ✔                | ✔                |
+| UInt256                 | ✔                | ✔                |
+| Float32                 | ✔                | ✔                |
+| Float64                 | ✔                | ✔                |
+| Decimal                 | ✔                | ✔                |
+| Decimal32               | ✔                | ✔                |
+| Decimal64               | ✔                | ✔                |
+| Decimal128              | ✔                | ✔                |
+| Decimal256              | ✔                | ✔                |
+| Bool                    | ✔                | ✔                |
+| String                  | ✔                | ✔                |
+| FixedString             | ✔                | ✔                |
+| Nullable                | ✔                | ✔                |
+| Date                    | ✔                | ✔                |
+| Date32                  | ✔                | ✔                |
+| DateTime                | ✔                | ✔                |
+| DateTime32              | ✔                | ✔                |
+| DateTime64              | ✔                | ✔                |
+| Interval                | ✗                | ✗                |
+| Enum                    | ✔                | ✔                |
+| Enum8                   | ✔                | ✔                |
+| Enum16                  | ✔                | ✔                |
+| Array                   | ✔                | ✔                |
+| Map                     | ✔                | ✔                |
+| Nested                  | ✔                | ✔                |
+| Tuple                   | ✔                | ✔                |
+| UUID                    | ✔                | ✔                |
+| IPv4                    | ✔                | ✔                |
+| IPv6                    | ✔                | ✔                |
+| Object                  | ✗                | ✔                |
+| Point                   | ✔                | ✔                |
+| Nothing                 | ✔                | ✔                |
+| MultiPolygon            | ✔                | ✔                |
+| Ring                    | ✔                | ✔                |
+| Polygon                 | ✔                | ✔                |
+| SimpleAggregateFunction | ✔                | ✔                |
+| AggregateFunction*      | ✔                | ✔                |
+| Variant                 | ✔                | ✗                |
+| Dynamic                 | ✔                | ✗                |
+| JSON                    | ✔                | ✗                |
 
 [ClickHouse 데이터 타입](/sql-reference/data-types)
 
-:::note
+:::note[부분 지원]
 
-- AggregatedFunction - :warning: `SELECT * FROM table ...`을 지원하지 않습니다
-- Decimal - 일관성을 위해 21.9+ 버전에서 `SET output_format_decimal_trailing_zeros=1`을 설정하십시오
-- Enum - 문자열과 정수 둘 다로 취급될 수 있습니다
-- UInt64 - `client-v1`에서 `long` 타입으로 매핑됩니다
-:::
+* **AggregateFunction** — 직접 이진 읽기에서는 `groupBitmap`만 지원됩니다. 다른 집계 함수(`min`, `max`, `avg` 등)의 경우, 쿼리에서 `-Merge` combinator(예: `minMerge()`, `avgMerge()`)를 사용하여 상태를 서버 측에서 해석하십시오. `AggregateFunction` 타입 컬럼에 대해서는 `SELECT * FROM table ...`을 지원하지 않습니다.
+  :::
+
+:::note[데이터 타입 참고 사항]
+
+* **Decimal** — 일관성을 위해 21.9+ 버전에서 `SET output_format_decimal_trailing_zeros=1`을 설정하십시오.
+* **Enum** — 문자열과 정수 둘 다로 취급될 수 있습니다.
+* **UInt64** — `client-v1`에서 `long` 타입으로 매핑됩니다.
+  :::
 
 ### 기능 \{#features\}
 

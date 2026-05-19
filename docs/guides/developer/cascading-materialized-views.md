@@ -6,7 +6,6 @@ keywords: ['materialized view', 'aggregation']
 doc_type: 'guide'
 ---
 
-# Cascading materialized views
 
 This example demonstrates how to create a materialized view, and then how to cascade a second materialized view on to the first. In this page, you will see how to do it, many of the possibilities, and the limitations. Different use cases can be answered by creating a Materialized view using a second Materialized view as the source.
 

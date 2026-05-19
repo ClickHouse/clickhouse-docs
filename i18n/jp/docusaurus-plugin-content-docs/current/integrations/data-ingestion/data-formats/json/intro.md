@@ -1,15 +1,13 @@
 ---
 sidebar_label: '概要'
 sidebar_position: 10
-title: 'JSON の扱い'
+title: 'JSON の操作'
 slug: /integrations/data-formats/json/overview
-description: 'ClickHouse における JSON の扱い'
+description: 'ClickHouse で JSON を操作する'
 keywords: ['json', 'clickhouse']
 score: 10
 doc_type: 'guide'
 ---
-
-# JSON の概要 \{#json-overview\}
 
 <iframe
   src="//www.youtube.com/embed/gCg5ISOujtc"

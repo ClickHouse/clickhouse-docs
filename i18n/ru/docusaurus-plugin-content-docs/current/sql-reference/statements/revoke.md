@@ -7,13 +7,11 @@ title: 'Оператор REVOKE'
 doc_type: 'reference'
 ---
 
-# Оператор REVOKE \{#revoke-statement\}
-
 Отзывает привилегии у пользователей или ролей.
 
 ## Синтаксис \{#syntax\}
 
-**Отмена привилегий для пользователей**
+**Отзыв привилегий у пользователей**
 
 ```sql
 REVOKE [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.table|db.*|*.*|table|*} FROM {user | CURRENT_USER} [,...] | ALL | ALL EXCEPT {user | CURRENT_USER} [,...]

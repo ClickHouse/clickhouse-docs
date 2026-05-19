@@ -299,22 +299,56 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 
 利用可能なリフレッシュ設定:
 
-* `refresh_retries` - リフレッシュクエリが例外で失敗した場合に再試行する回数。すべての再試行が失敗した場合、次のスケジュールされたリフレッシュ時刻までスキップします。0 は再試行なし、-1 は無制限に再試行することを意味します。デフォルト: 0。
+* `refresh_retries` - リフレッシュクエリが例外で失敗した場合に再試行する回数。すべての再試行が失敗した場合、次のスケジュールされたリフレッシュ時刻までスキップします。0 は再試行なし、-1 は無制限に再試行することを意味します。デフォルト: 2。
 * `refresh_retry_initial_backoff_ms` - `refresh_retries` が 0 でない場合の、最初の再試行までの遅延。以降の再試行ごとに、この遅延は 2 倍になり、`refresh_retry_max_backoff_ms` まで増加します。デフォルト: 100 ms。
 * `refresh_retry_max_backoff_ms` - リフレッシュ試行間の遅延の指数的な増加に対する上限。デフォルト: 60000 ms (1 分) 。
+* `all_replicas` - `APPEND` を使用する [Replicated database](../../../engines/database-engines/replicated.md) で、すべてのレプリカが独立してリフレッシュするか、各スケジュール時刻に 1 つのレプリカだけがリフレッシュするかを制御します。ビューの作成後は変更できません。デフォルト: `false`。
+* `prefer_dependency_replica` - ビューに `DEPENDS ON` がある場合、親のリフレッシュを実行したレプリカが、依存するリフレッシュの実行で優先されます。その他のレプリカは、`prefer_dependency_replica_delay_ms` の分だけ試行を遅らせます。`SharedMergeTree` と組み合わせると、レプリケーションの遅延によって依存リフレッシュの連鎖でデータが欠落するのを防ぐのに役立ちます。デフォルト: `false`。
+* `prefer_dependency_replica_delay_ms` - `prefer_dependency_replica` が有効な場合に、優先されないレプリカが依存するリフレッシュの実行を試みる前に待機する時間。デフォルト: 2000 ms。
 
-### リフレッシュパラメータの変更 \{#changing-refresh-parameters\}
+### リフレッシュ パラメータの変更 \{#changing-refresh-parameters\}
 
-リフレッシュパラメータを変更するには、次のようにします。
+既存のリフレッシャブルmaterialized viewのリフレッシュ パラメータは、[`ALTER TABLE ... MODIFY REFRESH`](../alter/view.md#alter-table--modify-refresh-statement)を使用して変更します。
 
 ```sql
 ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
 ```
 
-:::note
-これは、スケジュール、依存関係、設定、および APPEND モードかどうかを含む *すべて* のリフレッシュパラメータを一括で置き換えます。たとえばテーブルに `DEPENDS ON` がある状態で、`DEPENDS ON` を指定せずに `MODIFY REFRESH` を実行すると、その依存関係は削除されます。
-:::
+スケジュール (`EVERY` または `AFTER`) は必須です。この文では、指定した内容でリフレッシュの*すべて*のパラメータ (スケジュール、`RANDOMIZE FOR`、`DEPENDS ON`、およびリフレッシュ設定) を常に置き換えます。省略した項目は、デフォルトにリセットされる (設定) か、削除されます (依存関係、ランダム化) 。
 
+:::note
+
+* リフレッシュ設定のみ (例: `refresh_retries`) を変更する場合は、既存のスケジュールも再度指定してください。
+
+  ```sql
+  ALTER TABLE rmv MODIFY REFRESH EVERY 1 HOUR SETTINGS refresh_retries = 5;
+  ```
+
+* `ALTER TABLE ... MODIFY SETTING refresh_retries = ...` は materialized view ではサポートされていないため、`MODIFY REFRESH` を使用する必要があります。
+
+* `APPEND` の追加や削除はサポートされていません。
+
+* `all_replicas` 設定は作成後に変更できません。
+  :::
+
+例:
+
+```sql
+-- Change the schedule, drop existing settings and dependencies.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE;
+
+-- Change the schedule and tune retry behavior.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE
+SETTINGS refresh_retries = 5,
+         refresh_retry_initial_backoff_ms = 500,
+         refresh_retry_max_backoff_ms = 60000;
+
+-- Keep the dependency while changing the period.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR DEPENDS ON other_rmv;
+
+-- Drop the dependency by omitting `DEPENDS ON`.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR;
+```
 
 ### その他の操作 \{#other-operations\}
 

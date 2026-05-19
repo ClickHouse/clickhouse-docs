@@ -52,6 +52,8 @@ import ResourceEstimation from '@site/i18n/jp/docusaurus-plugin-content-docs/cur
 
     <ResourceEstimation />
 
+    お使いの環境に合わせてサイジング前提をさらに調整する方法の詳細については、[&quot;Refining sizing assumptions for your environment&quot;](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions) を参照してください。
+
     #### オブザーバビリティワークロードの分離 \{#isolating-workloads\}
 
     リアルタイムアプリケーション分析など、すでに他のワークロードをサポートしている**既存の ClickHouse Cloud サービス**に ClickStack を追加する場合は、オブザーバビリティトラフィックを分離することを強く推奨します。
@@ -68,7 +70,7 @@ import ResourceEstimation from '@site/i18n/jp/docusaurus-plugin-content-docs/cur
     より大規模なデプロイやカスタムサイズのガイダンスが必要な場合は、より正確な見積もりについてサポートまでお問い合わせください。
   </TabItem>
 
-  <TabItem value="oss-clickstack" label="ClickStack オープンソース版">
+  <TabItem value="oss-clickstack" label="ClickStack オープンソース">
     ### ネットワークおよびポートのセキュリティ \{#network-security\}
 
     デフォルトでは、Docker Composeはホスト上のポートを公開し、コンテナ外部からアクセス可能にします。これは`ufw`(Uncomplicated Firewall)などのツールが有効になっている場合でも同様です。この動作はDockerネットワークスタックに起因するもので、明示的に設定しない限り、ホストレベルのファイアウォールルールをバイパスします。
@@ -152,7 +154,7 @@ import ResourceEstimation from '@site/i18n/jp/docusaurus-plugin-content-docs/cur
     ClickHouse OSSは標準で堅牢なセキュリティ機能を提供しています。ただし、これらを利用するには設定が必要です。
 
     * **TLS を使用**するには、`config.xml` で `tcp_port_secure` と `<openSSL>` を設定します。詳細は [guides/sre/configuring-tls](/guides/sre/tls/configuring-tls) を参照してください。
-    * `default` USER のパスワードを **強力なものに設定** するか、そのユーザーを無効化してください。
+    * **Set a strong password** for the `default` user or disable it.
     * **明示的にその意図がある場合を除き、ClickHouse を外部に公開しないでください。** デフォルトでは、`listen_host` を変更しない限り、ClickHouse は `localhost` のみにバインドされます。
     * **認証手段を使用**します。パスワード、証明書、SSHキー、[外部認証機構](/operations/external-authenticators) などがあります。
     * **アクセスを制限**するには、IP フィルタリングと `HOST` 句を使用します。[sql-reference/statements/create/user#user-host](/sql-reference/statements/create/user#user-host) を参照してください。

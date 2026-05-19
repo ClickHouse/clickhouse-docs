@@ -8,7 +8,6 @@ title: 'Debugging memory issues'
 doc_type: 'guide'
 ---
 
-# Debugging memory issues {#debugging-memory-issues}
 
 When encountering memory issues or a memory leak, knowing what queries and resources are consuming a significant amount of memory is helpful. Below you can find queries that can help you to debug memory issues by finding which queries, databases, and tables can be optimized:
 

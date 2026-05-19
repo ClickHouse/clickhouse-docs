@@ -8,8 +8,6 @@ keywords: ['压缩', '二级索引','列式']
 doc_type: 'guide'
 ---
 
-# ClickHouse 的独特特性 \{#distinctive-features-of-clickhouse\}
-
 ## 真正的列式数据库管理系统 \{#true-column-oriented-database-management-system\}
 
 在真正的列式 DBMS 中，值本身不会附带存储任何额外数据。这意味着必须支持定长值，以避免在值旁边额外存储一个表示其长度的“数值”。例如，十亿个 `UInt8` 类型的值在未压缩时应大约只占用 1 GB，否则会对 CPU 的使用造成明显影响。即使在未压缩的情况下，也必须以紧凑的方式存储数据（没有任何“垃圾”），因为解压缩速度（CPU 占用）主要取决于未压缩数据的体积。

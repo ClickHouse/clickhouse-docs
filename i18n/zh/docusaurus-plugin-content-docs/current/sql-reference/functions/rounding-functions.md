@@ -6,8 +6,6 @@ title: '取整函数'
 doc_type: 'reference'
 ---
 
-# 取整函数 \{#rounding-functions\}
-
 :::note
 以下文档由 `system.functions` 系统表生成
 :::

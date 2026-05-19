@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse 中 `WHERE` 子句的文档'
+description: 'ClickHouse `WHERE` 子句文档'
 sidebar_label: 'WHERE'
 slug: /sql-reference/statements/select/where
 title: 'WHERE 子句'
 doc_type: 'reference'
 keywords: ['WHERE']
 ---
-
-# WHERE 子句 \{#where-clause\}
 
 `WHERE` 子句允许您过滤来自 `SELECT` 的 [`FROM`](../../../sql-reference/statements/select/from.md) 子句的数据。
 
@@ -27,8 +25,9 @@ Prewhere 是一种更有效地应用过滤的优化。
 ## 测试 `NULL` \{#testing-for-null\}
 
 如果您需要测试值是否为 [`NULL`](/sql-reference/syntax#null),请使用:
-- [`IS NULL`](/sql-reference/operators#is_null) 或 [`isNull`](../../../sql-reference/functions/functions-for-nulls.md#isNull)
-- [`IS NOT NULL`](/sql-reference/operators#is_not_null) 或 [`isNotNull`](../../../sql-reference/functions/functions-for-nulls.md#isNotNull)
+
+* [`IS NULL`](/sql-reference/operators#is_null) 或 [`isNull`](../../../sql-reference/functions/functions-for-nulls.md#isNull)
+* [`IS NOT NULL`](/sql-reference/operators#is_not_null) 或 [`isNotNull`](../../../sql-reference/functions/functions-for-nulls.md#isNotNull)
 
 否则,带有 `NULL` 的表达式永远不会通过。
 
@@ -36,10 +35,10 @@ Prewhere 是一种更有效地应用过滤的优化。
 
 您可以将以下[逻辑函数](/sql-reference/functions/logical-functions#and)与 `WHERE` 子句一起使用来组合多个条件:
 
-- [`and()`](/sql-reference/functions/logical-functions#and) 或 `AND`
-- [`not()`](/sql-reference/functions/logical-functions#not) 或 `NOT`
-- [`or()`](/sql-reference/functions/logical-functions#or) 或 `OR`
-- [`xor()`](/sql-reference/functions/logical-functions#xor)
+* [`and()`](/sql-reference/functions/logical-functions#and) 或 `AND`
+* [`not()`](/sql-reference/functions/logical-functions#not) 或 `NOT`
+* [`or()`](/sql-reference/functions/logical-functions#or) 或 `OR`
+* [`xor()`](/sql-reference/functions/logical-functions#xor)
 
 ## 将 UInt8 列用作条件 \{#using-uint8-columns-as-a-condition\}
 
@@ -50,65 +49,66 @@ Prewhere 是一种更有效地应用过滤的优化。
 
 可以使用以下[比较运算符](/sql-reference/operators#comparison-operators):
 
-| 运算符 | 函数 | 描述 | 示例 |
-|----------|----------|-------------|---------|
-| `a = b` | `equals(a, b)` | 等于 | `price = 100` |
-| `a == b` | `equals(a, b)` | 等于(替代语法) | `price == 100` |
-| `a != b` | `notEquals(a, b)` | 不等于 | `category != 'Electronics'` |
-| `a <> b` | `notEquals(a, b)` | 不等于(替代语法) | `category <> 'Electronics'` |
-| `a < b` | `less(a, b)` | 小于 | `price < 200` |
-| `a <= b` | `lessOrEquals(a, b)` | 小于或等于 | `price <= 200` |
-| `a > b` | `greater(a, b)` | 大于 | `price > 500` |
-| `a >= b` | `greaterOrEquals(a, b)` | 大于或等于 | `price >= 500` |
-| `a LIKE s` | `like(a, b)` | 模式匹配(区分大小写) | `name LIKE '%top%'` |
-| `a NOT LIKE s` | `notLike(a, b)` | 模式不匹配(区分大小写) | `name NOT LIKE '%top%'` |
-| `a ILIKE s` | `ilike(a, b)` | 模式匹配(不区分大小写) | `name ILIKE '%LAPTOP%'` |
-| `a BETWEEN b AND c` | `a >= b AND a <= c` | 范围检查(包含) | `price BETWEEN 100 AND 500` |
-| `a NOT BETWEEN b AND c` | `a < b OR a > c` | 范围外检查 | `price NOT BETWEEN 100 AND 500` |
+| 运算符                     | 函数                      | 描述           | 示例                              |
+| ----------------------- | ----------------------- | ------------ | ------------------------------- |
+| `a = b`                 | `equals(a, b)`          | 等于           | `price = 100`                   |
+| `a == b`                | `equals(a, b)`          | 等于(替代语法)     | `price == 100`                  |
+| `a != b`                | `notEquals(a, b)`       | 不等于          | `category != 'Electronics'`     |
+| `a <> b`                | `notEquals(a, b)`       | 不等于(替代语法)    | `category <> 'Electronics'`     |
+| `a < b`                 | `less(a, b)`            | 小于           | `price < 200`                   |
+| `a <= b`                | `lessOrEquals(a, b)`    | 小于或等于        | `price <= 200`                  |
+| `a > b`                 | `greater(a, b)`         | 大于           | `price > 500`                   |
+| `a >= b`                | `greaterOrEquals(a, b)` | 大于或等于        | `price >= 500`                  |
+| `a LIKE s`              | `like(a, b)`            | 模式匹配(区分大小写)  | `name LIKE '%top%'`             |
+| `a NOT LIKE s`          | `notLike(a, b)`         | 模式不匹配(区分大小写) | `name NOT LIKE '%top%'`         |
+| `a ILIKE s`             | `ilike(a, b)`           | 模式匹配(不区分大小写) | `name ILIKE '%LAPTOP%'`         |
+| `a BETWEEN b AND c`     | `a >= b AND a <= c`     | 范围检查(包含)     | `price BETWEEN 100 AND 500`     |
+| `a NOT BETWEEN b AND c` | `a < b OR a > c`        | 范围外检查        | `price NOT BETWEEN 100 AND 500` |
 
 ## 模式匹配和条件表达式 \{#pattern-matching-and-conditional-expressions\}
 
 除了比较运算符外,您还可以在 `WHERE` 子句中使用模式匹配和条件表达式。
 
-| 功能 | 语法 | 区分大小写 | 性能 | 最适合 |
-| ----------- | ------------------------------ | -------------- | ----------- | ------------------------------ |
-| `LIKE` | `col LIKE '%pattern%'` | 是 | 快速 | 精确大小写模式匹配 |
-| `ILIKE` | `col ILIKE '%pattern%'` | 否 | 较慢 | 不区分大小写搜索 |
-| `if()` | `if(cond, a, b)` | N/A | 快速 | 简单二元条件 |
-| `multiIf()` | `multiIf(c1, r1, c2, r2, def)` | N/A | 快速 | 多个条件 |
-| `CASE` | `CASE WHEN ... THEN ... END` | N/A | 快速 | SQL 标准条件逻辑 |
+| 功能          | 语法                             | 区分大小写 | 性能 | 最适合        |
+| ----------- | ------------------------------ | ----- | -- | ---------- |
+| `LIKE`      | `col LIKE '%pattern%'`         | 是     | 快速 | 精确大小写模式匹配  |
+| `ILIKE`     | `col ILIKE '%pattern%'`        | 否     | 较慢 | 不区分大小写搜索   |
+| `if()`      | `if(cond, a, b)`               | N/A   | 快速 | 简单二元条件     |
+| `multiIf()` | `multiIf(c1, r1, c2, r2, def)` | N/A   | 快速 | 多个条件       |
+| `CASE`      | `CASE WHEN ... THEN ... END`   | N/A   | 快速 | SQL 标准条件逻辑 |
 
-有关使用示例,请参阅["模式匹配和条件表达式"](#examples-pattern-matching-and-conditional-expressions)。
+有关使用示例,请参阅[&quot;模式匹配和条件表达式&quot;](#examples-pattern-matching-and-conditional-expressions)。
 
 ## 包含文字、列或子查询的表达式 \{#expressions-with-literals-columns-subqueries\}
 
 `WHERE` 子句后面的表达式还可以包括[文字](/sql-reference/syntax#literals)、列或子查询,这些是返回条件中使用的值的嵌套 `SELECT` 语句。
 
-| 类型 | 定义 | 评估 | 性能 | 示例 |
-|------|------------|------------|-------------|---------|
-| **文字** | 固定常量值 | 查询编写时 | 最快 | `WHERE price > 100` |
-| **列** | 表数据引用 | 每行 | 快速 | `WHERE price > cost` |
+| 类型      | 定义        | 评估    | 性能 | 示例                         |
+| ------- | --------- | ----- | -- | -------------------------- |
+| **文字**  | 固定常量值     | 查询编写时 | 最快 | `WHERE price > 100`        |
+| **列**   | 表数据引用     | 每行    | 快速 | `WHERE price > cost`       |
 | **子查询** | 嵌套 SELECT | 查询执行时 | 不定 | `WHERE id IN (SELECT ...)` |
 
 您可以在复杂条件中混合使用文字、列和子查询:
 
 ```sql
--- 文字 + 列
+-- Literal + Column
 WHERE price > 100 AND category = 'Electronics'
 
--- 列 + 子查询
+-- Column + Subquery
 WHERE price > (SELECT AVG(price) FROM products) AND in_stock = true
 
--- 文字 + 列 + 子查询
-WHERE category = 'Electronics'
+-- Literal + Column + Subquery
+WHERE category = 'Electronics' 
   AND price < 500
   AND id IN (SELECT product_id FROM bestsellers)
 
--- 所有三者与逻辑运算符
+-- All three with logical operators
 WHERE (price > 100 OR category IN (SELECT category FROM featured))
   AND in_stock = true
   AND name LIKE '%Special%'
 ```
+
 ## 示例 \{#examples\}
 
 ### 测试 `NULL` \{#examples-testing-for-null\}
@@ -276,7 +276,7 @@ WHERE in_stock
 ```sql
 SELECT * FROM products
 WHERE in_stock = true;
--- 或
+-- or
 WHERE in_stock = 1;
 ```
 
@@ -285,7 +285,7 @@ WHERE in_stock = 1;
 ```sql
 SELECT * FROM products
 WHERE in_stock = false;
--- 或
+-- or
 WHERE in_stock = 0;
 ```
 
@@ -294,7 +294,7 @@ WHERE in_stock = 0;
 ```sql
 SELECT * FROM products
 WHERE in_stock != false;
--- 或
+-- or
 WHERE in_stock != 0;
 ```
 
@@ -349,68 +349,68 @@ WHERE category = 'Electronics' AND in_stock = true;
 #### LIKE 示例 \{#like-examples\}
 
 ```sql
--- 查找名称中包含 'o' 的产品
+-- Find products with 'o' in the name
 SELECT * FROM products WHERE name LIKE '%o%';
--- 结果: Laptop, Monitor
+-- Result: Laptop, Monitor
 
--- 查找以 'L' 开头的产品
+-- Find products starting with 'L'
 SELECT * FROM products WHERE name LIKE 'L%';
--- 结果: Laptop, Lamp
+-- Result: Laptop, Lamp
 
--- 查找恰好有 4 个字符的产品
+-- Find products with exactly 4 characters
 SELECT * FROM products WHERE name LIKE '____';
--- 结果: Desk, Lamp
+-- Result: Desk, Lamp
 ```
 
 #### ILIKE 示例 \{#ilike-examples\}
 
 ```sql
--- 不区分大小写搜索 'LAPTOP'
+-- Case-insensitive search for 'LAPTOP'
 SELECT * FROM products WHERE name ILIKE '%laptop%';
--- 结果: Laptop
+-- Result: Laptop
 
--- 不区分大小写前缀匹配
+-- Case-insensitive prefix match
 SELECT * FROM products WHERE name ILIKE 'l%';
--- 结果: Laptop, Lamp
+-- Result: Laptop, Lamp
 ```
 
 #### IF 示例 \{#if-examples\}
 
 ```sql
--- 按类别设置不同的价格阈值
+-- Different price thresholds by category
 SELECT * FROM products
 WHERE if(category = 'Electronics', price < 500, price < 200);
--- 结果: Mouse, Chair, Monitor
--- (电子产品低于 $500 或家具低于 $200)
+-- Result: Mouse, Chair, Monitor
+-- (Electronics under $500 OR Furniture under $200)
 
--- 基于库存状态过滤
+-- Filter based on stock status
 SELECT * FROM products
 WHERE if(in_stock, price > 100, true);
--- 结果: Laptop, Chair, Monitor, Desk, Lamp
--- (有库存的物品超过 $100 或所有缺货物品)
+-- Result: Laptop, Chair, Monitor, Desk, Lamp
+-- (In stock items over $100 OR all out-of-stock items)
 ```
 
 #### multiIf 示例 \{#multiif-examples\}
 
 ```sql
--- 多个基于类别的条件
+-- Multiple category-based conditions
 SELECT * FROM products
 WHERE multiIf(
     category = 'Electronics', price < 600,
     category = 'Furniture', in_stock = true,
     false
 );
--- 结果: Mouse, Monitor, Chair
--- (电子产品 < $600 或有库存的家具)
+-- Result: Mouse, Monitor, Chair
+-- (Electronics < $600 OR in-stock Furniture)
 
--- 分层过滤
+-- Tiered filtering
 SELECT * FROM products
 WHERE multiIf(
     price > 500, category = 'Electronics',
     price > 100, in_stock = true,
     true
 );
--- 结果: Laptop, Chair, Monitor, Lamp
+-- Result: Laptop, Chair, Monitor, Lamp
 ```
 
 #### CASE 示例 \{#case-examples\}
@@ -418,25 +418,25 @@ WHERE multiIf(
 **简单 CASE:**
 
 ```sql
--- 每个类别的不同规则
+-- Different rules per category
 SELECT * FROM products
 WHERE CASE category
     WHEN 'Electronics' THEN price < 400
     WHEN 'Furniture' THEN in_stock = true
     ELSE false
 END;
--- 结果: Mouse, Monitor, Chair
+-- Result: Mouse, Monitor, Chair
 ```
 
 **搜索 CASE:**
 
 ```sql
--- 基于价格的分层逻辑
+-- Price-based tiered logic
 SELECT * FROM products
 WHERE CASE
     WHEN price > 500 THEN in_stock = true
     WHEN price > 100 THEN category = 'Electronics'
     ELSE true
 END;
--- 结果: Laptop, Monitor, Mouse, Lamp
+-- Result: Laptop, Monitor, Mouse, Lamp
 ```

@@ -3033,6 +3033,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/sql-clients/cli",
+      "destination": "/docs/interfaces/cli",
+      "permanent": true
+    },
+    {
       "source": "/docs/getting_started/tutorial",
       "destination": "/docs/tutorial",
       "permanent": true
@@ -3761,6 +3766,16 @@
     {
       "source": "/docs/use-cases/observability/clickstack/deployment/hyperdx-clickhouse-cloud",
       "destination": "/docs/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud",
+      "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/clickstack/demo-days/2026/04/03-04-2026",
+      "destination": "/docs/use-cases/observability/clickstack/demo-days/2026/2026-04-03",
+      "permanent": true
+    },
+    {
+      "source": "/docs/use-cases/observability/clickstack/demo-days/2026/04/10-04-2026",
+      "destination": "/docs/use-cases/observability/clickstack/demo-days/2026/2026-04-10",
       "permanent": true
     },
     {

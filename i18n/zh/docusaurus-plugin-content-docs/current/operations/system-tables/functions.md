@@ -19,7 +19,7 @@ doc_type: 'reference'
 * `case_insensitive` ([UInt8](../../sql-reference/data-types/)) — 函数名是否可不区分大小写使用。
 * `alias_to` ([String](../../sql-reference/data-types/)) — 如果该函数名是别名，则为其原始函数名。
 * `create_query` ([String](../../sql-reference/data-types/)) — 已废弃。
-* `origin` ([Enum8(&#39;System&#39; = 0, &#39;SQLUserDefined&#39; = 1, &#39;ExecutableUserDefined&#39; = 2)](../../sql-reference/data-types/)) — 已废弃。
+* `origin` ([Enum8(&#39;System&#39; = 0, &#39;SQLUserDefined&#39; = 1, &#39;ExecutableUserDefined&#39; = 2, &#39;WasmUserDefined&#39; = 3)](../../sql-reference/data-types/)) — 已废弃。
 * `description` ([String](../../sql-reference/data-types/)) — 对函数功能的概括性描述。
 * `syntax` ([String](../../sql-reference/data-types/)) — 函数签名。
 * `arguments` ([String](../../sql-reference/data-types/)) — 函数参数。

@@ -7,15 +7,13 @@ title: '서드파티 개발자가 제공하는 클라이언트 라이브러리'
 doc_type: 'reference'
 ---
 
-# 타사 개발자가 제공하는 클라이언트 라이브러리 \{#client-libraries-from-third-party-developers\}
-
 :::note
-아래에 나열된 라이브러리는 ClickHouse Inc에서 직접 유지 관리하지 않으며, 품질을 보장하기 위한 광범위한 테스트도 수행하지 않았습니다.
+ClickHouse Inc는 아래에 나열된 라이브러리를 유지 관리하지 않으며, 해당 라이브러리의 품질을 보장하기 위한 광범위한 테스트도 수행하지 않았습니다.
 :::
 
 ### Python \{#python\}
 
-- [Moose OLAP](https://docs.fiveonefour.com/moosestack/olap)
+- [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
 - [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm)
 - [clickhouse-driver](https://github.com/mymarilyn/clickhouse-driver)
 - [clickhouse-client](https://github.com/yurial/clickhouse-client)
@@ -35,7 +33,8 @@ doc_type: 'reference'
 * [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
 * [kolya7k ClickHouse PHP 확장](https://github.com//kolya7k/clickhouse-php)
 * [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
-* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client) 
+* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client)
+* [laravel-clickhouse/laravel-clickhouse](https://github.com/laravel-clickhouse/laravel-clickhouse)
 
 ### Go \{#go\}
 
@@ -53,7 +52,7 @@ doc_type: 'reference'
 
 ### Node.js \{#nodejs\}
 
-- [Moose OLAP](https://docs.fiveonefour.com/moosestack/olap)
+- [Moose OLAP](https://docs.fiveonefour.com/moose/olap)
 - [clickhouse (Node.js)](https://github.com/TimonKK/clickhouse)
 - [node-clickhouse](https://github.com/apla/node-clickhouse)
 - [nestjs-clickhouse](https://github.com/depyronick/nestjs-clickhouse)

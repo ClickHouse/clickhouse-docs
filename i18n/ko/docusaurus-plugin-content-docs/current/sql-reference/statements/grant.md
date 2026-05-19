@@ -789,13 +789,19 @@ named collection의 이름이 abc라고 할 때, 사용자 john에게 `CREATE NA
 
 **예시**
 
-- `GRANT TABLE ENGINE ON * TO john`
-- `GRANT TABLE ENGINE ON TinyLog TO john`
+* `GRANT TABLE ENGINE ON * TO john`
+* `GRANT TABLE ENGINE ON TinyLog TO john`
 
 :::note
 기본적으로, 하위 호환성을 위해 특정 테이블 엔진으로 테이블을 생성할 때는 GRANT 권한을 무시합니다.
 그러나 config.xml에서 [`table_engines_require_grant`를 true로 설정](https://github.com/ClickHouse/ClickHouse/blob/df970ed64eaf472de1e7af44c21ec95956607ebb/programs/server/config.xml#L853-L855)하여 이 동작을 변경할 수 있습니다.
 :::
+
+외부 소스를 사용하는 일부 테이블 엔진은 해당 소스에 대한 `READ`/`WRITE` 권한이 필요할 수 있습니다. [SOURCES](#sources)를 참조하십시오.
+
+예를 들어 AzureBlobStorage 테이블 엔진의 경우 다음과 같은 권한 부여가 필요할 수 있습니다.
+
+* `GRANT READ, WRITE ON AZURE TO john`
 
 ### ALL \{#all\}
 

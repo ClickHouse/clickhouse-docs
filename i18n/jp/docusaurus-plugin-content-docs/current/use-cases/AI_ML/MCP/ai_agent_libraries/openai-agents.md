@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/openai-agents
-sidebar_label: 'OpenAI を統合する'
-title: 'ClickHouse MCPサーバーを使用して OpenAI エージェントを構築する方法'
+sidebar_label: 'OpenAI を連携'
+title: 'ClickHouse MCPサーバーを使用して OpenAI エージェントを構築する方法。'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCPサーバーと連携して動作する OpenAI エージェントの構築方法を学びます。'
+description: 'ClickHouse MCPサーバーと対話できる OpenAI エージェントを構築する方法を学びます。'
 keywords: ['ClickHouse', 'MCP', 'OpenAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# ClickHouse MCPサーバーを使用して OpenAI エージェントを構築する方法 \{#how-to-build-an-openai-agent-using-clickhouse-mcp-server\}
 
 このガイドでは、[ClickHouseのSQL playground](https://sql.clickhouse.com/) と対話できる [ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を利用して、[OpenAI](https://github.com/openai/openai-agents-python) エージェントを構築する手順を説明します。
 

@@ -7,9 +7,7 @@ title: 'AzureQueue テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# AzureQueue テーブルエンジン \{#azurequeue-table-engine\}
-
-このエンジンは [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムとの統合を提供し、ストリーミングデータのインポートを可能にします。
+このエンジンは、[Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) エコシステムと統合されており、ストリーミングデータをインポートできます。
 
 ## テーブルの作成 \{#creating-a-table\}
 

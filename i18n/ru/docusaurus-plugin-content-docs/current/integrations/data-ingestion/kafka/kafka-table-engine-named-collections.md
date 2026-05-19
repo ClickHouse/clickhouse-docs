@@ -6,8 +6,6 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-# Интеграция ClickHouse с Kafka с использованием именованных коллекций \{#integrating-clickhouse-with-kafka-using-named-collections\}
-
 ## Введение \{#introduction\}
 
 В этом руководстве мы рассмотрим, как подключить ClickHouse к Kafka с использованием именованных коллекций. Использование файла конфигурации для именованных коллекций дает несколько преимуществ:

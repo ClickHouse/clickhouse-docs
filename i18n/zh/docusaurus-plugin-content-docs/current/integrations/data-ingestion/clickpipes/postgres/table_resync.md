@@ -10,9 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# 重新同步特定表 \{#resync-tables\}
-
-在某些场景下，重新同步某个管道（pipe）中的特定表会很有用。例如：在 Postgres 上进行了重大 schema 变更，或者在 ClickHouse 中对数据模型进行了较大规模的重构。
+在某些场景下，重新同步某个 ClickPipe 中的特定表会很有用。例如：在 Postgres 上进行了重大 schema 变更，或者在 ClickHouse 中对数据模型进行了较大规模的重构。
 
 虽然通过单击按钮来重新同步单个表的功能仍在开发中，但本指南将介绍如何在当前的 Postgres ClickPipe 中实现这一操作的步骤。
 

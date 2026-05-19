@@ -121,6 +121,10 @@ The gear icon in the top-right of the heatmap opens the **Display Settings** dra
 
 Click **Apply** to update the heatmap; the attribute analysis below follows.
 
+:::tip Heatmap on dashboards
+The same heatmap is also available as a [dashboard tile](/use-cases/observability/clickstack/dashboards#create-a-tile-heatmap), which is useful when you want to monitor the distribution shape over time outside the Event Deltas drill-down flow.
+:::
+
 Common scenarios where you'd change these defaults:
 
 - **Switch Scale to Linear** when the latency band is narrow (for example, a service whose spans all run between 5 and 50 ms). Log scale wastes vertical range on the upper end where there is no data.

@@ -89,20 +89,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)
 
 テーブルがすでに存在していて `IF NOT EXISTS` が指定されている場合、このクエリは何も行いません。
 
-クエリの `ENGINE` 句の後には、他の句を続けて指定することができます。テーブルの作成方法についての詳細なドキュメントは、[table engines](/engines/table-engines) の説明を参照してください。
+クエリの `ENGINE` 句の後には、他の句を続けて指定することができます。テーブルの作成方法についての詳細なドキュメントは、[テーブルエンジン](/engines/table-engines) の説明を参照してください。
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory AS SELECT 1;
 SELECT x, toTypeName(x) FROM t1;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─x─┬─toTypeName(x)─┐
 │ 1 │ String        │
 └───┴───────────────┘
@@ -739,16 +735,12 @@ COMMENT 'Comment'
 
 **例**
 
-クエリ：
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory COMMENT 'The temporary table';
 SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─name─┬─comment─────────────┐
 │ t1   │ The temporary table │
 └──────┴─────────────────────┘

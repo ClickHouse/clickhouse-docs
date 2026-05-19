@@ -7,8 +7,6 @@ title: 'deltaLakeCluster'
 doc_type: 'reference'
 ---
 
-# deltaLakeCluster Table Function \{#deltalakecluster-table-function\}
-
 Это расширение табличной функции [deltaLake](sql-reference/table-functions/deltalake.md).
 
 Позволяет параллельно обрабатывать файлы из таблиц [Delta Lake](https://github.com/delta-io/delta) в Amazon S3 одновременно с нескольких узлов указанного кластера. На инициаторе создаётся подключение ко всем узлам в кластере, и каждый файл динамически распределяется между ними. Рабочий узел запрашивает у инициатора следующую задачу для обработки и обрабатывает её. Это повторяется до тех пор, пока все задачи не будут выполнены.

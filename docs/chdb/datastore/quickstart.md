@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'quickstart', 'installation', 'pandas', 'migrati
 doc_type: 'guide'
 ---
 
-# DataStore Quickstart
 
 Get up and running with DataStore in minutes. This guide covers installation, migrating from pandas, and basic usage patterns.
 

@@ -7,8 +7,6 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-# anyIf \{#avgif\}
-
 ## 描述 \{#description\}
 
 可以将 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`any`](/sql-reference/aggregate-functions/reference/any)
@@ -53,5 +51,6 @@ FROM sales;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`any`](/sql-reference/aggregate-functions/reference/any)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

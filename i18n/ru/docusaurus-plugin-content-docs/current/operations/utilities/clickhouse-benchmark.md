@@ -1,13 +1,11 @@
 ---
-description: 'Документация по утилите clickhouse-benchmark'
+description: 'Документация по clickhouse-benchmark '
 sidebar_label: 'clickhouse-benchmark'
 sidebar_position: 61
 slug: /operations/utilities/clickhouse-benchmark
 title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
-
-# clickhouse-benchmark \{#clickhouse-benchmark\}
 
 Подключается к серверу ClickHouse и многократно отправляет заданные запросы.
 
@@ -41,7 +39,6 @@ SELECT 1;
 ```bash
 clickhouse-benchmark [keys] < queries_file;
 ```
-
 
 ## Параметры командной строки \{#clickhouse-benchmark-command-line-options\}
 

@@ -7,8 +7,6 @@ sidebar_label: 'uniqArray'
 doc_type: 'reference'
 ---
 
-# uniqArray \{#uniqarray\}
-
 ## 描述 \{#description\}
 
 [`Array`](/sql-reference/aggregate-functions/combinators#-array) 组合器
@@ -19,7 +17,8 @@ doc_type: 'reference'
 
 ## 示例用法 \{#example-usage\}
 
-在这个示例中，我们将使用一个包含不同类别下用户兴趣的样例数据集来演示 `uniqArray` 的工作方式。我们会将它与 `uniq(arrayJoin())` 进行对比，以展示在统计唯一元素数量时的差异。
+在这个示例中，我们将使用一个包含不同类别下用户兴趣的样例数据集来演示 `uniqArray` 的工作方式。我们会将它与
+`uniq(arrayJoin())` 进行对比，以展示在统计唯一元素数量时的差异。
 
 ```sql title="Query"
 CREATE TABLE user_interests
@@ -52,7 +51,8 @@ FROM user_interests;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`arrayJoin`](/sql-reference/functions/array-join)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)
+
+* [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+* [`arrayJoin`](/sql-reference/functions/array-join)
+* [`Array 组合器`](/sql-reference/aggregate-functions/combinators#-array)
+* [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)

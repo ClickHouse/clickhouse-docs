@@ -8,8 +8,6 @@ sidebar_position: 1
 doc_type: 'guide'
 ---
 
-# 监控 ClickHouse Cloud 部署 \{#monitoring-your-clickhouse-cloud-deployment\}
-
 ## 概述 \{#overview\}
 
 本指南为企业团队介绍 ClickHouse Cloud 生产环境部署中的监控与可观测性能力。企业客户经常会询问开箱即用的监控功能、如何与现有可观测性技术栈 (包括 Datadog 和 AWS CloudWatch 等工具) 集成，以及 ClickHouse 的监控能力与自托管部署相比有何差异。

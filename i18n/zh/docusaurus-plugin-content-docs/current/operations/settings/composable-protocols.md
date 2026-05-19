@@ -7,8 +7,6 @@ title: '组合式协议'
 doc_type: 'reference'
 ---
 
-# 组合式协议 \{#composable-protocols\}
-
 ## 概览 \{#overview\}
 
 组合式协议允许更灵活地配置对 ClickHouse 服务器的 TCP 访问。此类配置可以与传统配置并存，也可以替代传统配置。

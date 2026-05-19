@@ -7,8 +7,6 @@ sidebar_label: 'argMinIf'
 doc_type: 'reference'
 ---
 
-# argMinIf \{#argminif\}
-
 ## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`argMin`](/sql-reference/aggregate-functions/reference/argmin),

@@ -7,9 +7,7 @@ title: '在 Linux 上为 E2K 构建'
 doc_type: 'guide'
 ---
 
-# 在 Linux 上为 E2K 构建 \{#build-on-linux-for-e2k\}
-
-ClickHouse 对 E2K (Elbrus-2000) 的支持仍处于实验阶段，目前只能在原生模式下使用最小化配置进行编译，并依赖 e2k 定制构建的库，例如 boost、jemalloc、libunwind、zstd。
+ClickHouse 对 E2K (Elbrus-2000) 提供 Experimental 支持，并且只能在原生模式下以最少配置进行编译，需要使用为 e2k 定制构建的库，例如 boost、jemalloc、libunwind 和 zstd。
 
 ## 构建 ClickHouse \{#build-clickhouse\}
 
@@ -24,7 +22,7 @@ cmake -DCMAKE_CROSSCOMPILING=OFF -DCOMPILER_CACHE=disabled \
  -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr \
  -DGLIBC_COMPATIBILITY=OFF -DENABLE_LIBRARIES=OFF -DWERROR=OFF \
  -DENABLE_SSL=OFF -DENABLE_OPENSSL_DYNAMIC=ON \
- -DUSE_SIMDJSON=OFF -DENABLE_JEMALLOC=OFF -DENABLE_TESTS=OFF -DUSE_SYSTEM_COMPILER_RT=OFF \
+ -DUSE_SIMDJSON=OFF -DENABLE_JEMALLOC=OFF -DENABLE_TESTS=OFF \
  -DBOOST_USE_UCONTEXT=ON -DENABLE_NURAFT=ON -DENABLE_RAPIDJSON=ON -DUSE_LIBFIU=ON ..
 ninja -j8
 ```

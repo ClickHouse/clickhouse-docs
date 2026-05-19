@@ -102,7 +102,7 @@ ClickHouse Cloud を利用するには、組織に少なくとも 1 つの有効
 
 ## クラウドプロバイダからマーケットプレイス課金をセットアップする \{#set-up-marketplace-billing-from-cp\}
 
-ClickHouse Cloud コンソールを介さずに、クラウドマーケットプレイスから組織のマーケットプレイスサブスクリプションを直接セットアップまたは更新することもできます。
+ClickHouse Cloud コンソールを介さずに、クラウドマーケットプレイスから組織のマーケットプレイスサブスクリプションを直接セットアップまたは更新することもできます。これは、別のマーケットプレイス課金アカウント上の新しいサブスクリプションを通じて、ClickHouse 組織の請求先を切り替えたい場合に役立ちます。
 
 マーケットプレイスとサブスクリプションの種類に応じて、以下の手順に従ってください。
 
@@ -113,8 +113,18 @@ ClickHouse Cloud コンソールを介さずに、クラウドマーケットプ
 * [Azure Marketplace PAYG](/cloud/billing/marketplace/azure-marketplace-payg)
 * [Azure Marketplace Committed Contract](/cloud/billing/marketplace/azure-marketplace-committed-contract)
 
-このフローを完了すると、選択した組織の請求は新しい Marketplace サブスクリプションにリンクされ、ClickHouse Cloud コンソールの請求ページに更新内容が反映されます。
+このフローを完了すると、選択した組織の請求は新しい Marketplace サブスクリプションにリンクされ、ClickHouse Cloud コンソールのBilling ページに更新内容が反映されます。
 
 ## サポート \{#support\}
 
 問題が発生した場合は、[サポートチームまでお気軽にお問い合わせください](https://clickhouse.com/support/program)。
+
+## よくある質問 \{#faqs\}
+
+### 請求期間の途中で請求方法を切り替えた場合、使用料金はどうなりますか？ \{#what-happens-to-my-usage-charges-if-i-switch-billing-methods-mid-billing-cycle\}
+
+切り替え先によって異なります。
+
+マーケットプレイス課金からクレジットカード請求に切り替える場合: 請求期間の開始から切り替え時点までの使用量はマーケットプレイスに送られます。切り替え時点から請求期間の終了までの残りの使用量は、請求期間の終了時にクレジットカードへ請求されます。
+
+クレジットカード請求からマーケットプレイス課金に切り替える場合: 請求期間全体の未請求分の使用量は、すべてマーケットプレイスに送られます。

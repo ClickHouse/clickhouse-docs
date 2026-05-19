@@ -7,7 +7,6 @@ description: 'Describes the Shared Catalog component and the Shared database eng
 doc_type: 'reference'
 ---
 
-# Shared catalog and shared database engine {#shared-catalog-and-shared-database-engine}
 
 **Available exclusively in ClickHouse Cloud (and first party partner cloud services)**
 

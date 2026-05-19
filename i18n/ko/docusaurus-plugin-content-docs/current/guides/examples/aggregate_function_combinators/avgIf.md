@@ -7,8 +7,6 @@ sidebar_label: 'avgIf'
 doc_type: 'reference'
 ---
 
-# avgIf \{#avgif\}
-
 ## 설명 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 결합자(combinator)는 [`avg`](/sql-reference/aggregate-functions/reference/avg)

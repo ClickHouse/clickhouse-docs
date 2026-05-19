@@ -3,19 +3,17 @@ slug: /sql-reference/table-functions/numbers
 sidebar_position: 145
 sidebar_label: 'numbers'
 title: 'numbers'
-description: '整数のシーケンスを含む単一の `number` 列のみから成るテーブルを返します。'
+description: '整数のシーケンスを含む単一の `number` カラムを持つテーブルを返します。'
 doc_type: 'reference'
 ---
 
-# numbers テーブル関数 \{#numbers-table-function\}
-
-* `numbers()` – 0 から始まる昇順の整数を含む、単一の `number` カラム (UInt64) を持つ無限テーブルを返します。行数を制限するには `LIMIT`（および必要に応じて `OFFSET`）を使用します。
+* `numbers()` – 0 から始まる昇順の整数を含む、単一の `number` カラム (UInt64) を持つ無限テーブルを返します。行数を制限するには `LIMIT` (および必要に応じて `OFFSET`) を使用します。
 
 * `numbers(N)` – 0 から `N - 1` までの整数を含む、単一の `number` カラム (UInt64) を持つテーブルを返します。
 
 * `numbers(N, M)` – `N` から `N + M - 1` までの `M` 個の整数を含む、単一の `number` カラム (UInt64) を持つテーブルを返します。
 
-* `numbers(N, M, S)` – ステップ `S`（切り上げでおおよそ `M / S` 行）で `[N, N + M)` の範囲の値を含む、単一の `number` カラム (UInt64) を持つテーブルを返します。`S` は `>= 1` でなければなりません。
+* `numbers(N, M, S)` – ステップ `S` (切り上げでおおよそ `M / S` 行) で `[N, N + M)` の範囲の値を含む、単一の `number` カラム (UInt64) を持つテーブルを返します。`S` は `>= 1` でなければなりません。
 
 これは [`system.numbers`](/operations/system-tables/numbers) システムテーブルと同様です。テストや連続値の生成に使用できます。
 
@@ -38,14 +36,13 @@ SELECT * FROM numbers() LIMIT 10 OFFSET 10;
 SELECT * FROM system.numbers LIMIT 10 OFFSET 10;
 ```
 
-次のクエリも等価です。
+以下のクエリも同等です。
 
 ```sql
 SELECT number * 2 FROM numbers(10);
 SELECT (number - 10) * 2 FROM numbers(10, 10);
 SELECT * FROM numbers(0, 20, 2);
 ```
-
 
 ### 例 \{#examples\}
 

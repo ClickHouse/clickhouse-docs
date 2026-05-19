@@ -8,8 +8,6 @@ title: '数据类型'
 doc_type: 'reference'
 ---
 
-# 数据类型 \{#data-types\}
-
 ## 类型转换 \{#type-conversions\}
 
 客户端力求在接受用于插入和响应编组的变量类型时尽可能灵活。在大多数情况下，ClickHouse 列类型都存在对应的 Golang 类型，例如，[UInt64](/sql-reference/data-types/int-uint/) 对应 [uint64](https://pkg.go.dev/builtin#uint64)。这类逻辑映射应始终受到支持。如果变量或接收到的数据能够先完成转换，你也可以使用可插入列中或可用于接收响应的变量类型。客户端致力于透明地支持这些转换，使用户在插入前无需严格调整数据类型，并在查询时提供灵活的编组能力。这种透明转换不允许精度损失。例如，不能使用 uint32 来接收 UInt64 列中的数据。相反，只要满足格式要求，就可以将 string 插入 datetime64 字段。

@@ -22,9 +22,11 @@ import cp_table_settings from '@site/static/images/integrations/data-ingestion/c
 import cp_ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/cp_ssh_tunnel.png';
 import Image from '@theme/IdealImage';
 
-# はじめての Kafka ClickPipe を作成する \{#creating-your-first-kafka-clickpipe\}
+# はじめての Kafka ClickPipe の作成 \{#creating-your-first-kafka-clickpipe\}
 
-> このガイドでは、はじめての Kafka ClickPipe を作成する手順を説明します。
+> このガイドでは、はじめての Kafka ClickPipe の作成手順を説明します。
+
+Kafka ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムからデプロイおよび管理することもできます。
 
 <VerticalStepper type="numbered" headerLevel="h2">
   ## データソースに移動する \{#1-load-sql-console\}
@@ -47,7 +49,7 @@ import Image from '@theme/IdealImage';
 
   ## スキーマレジストリを設定する (任意) \{#4-configure-your-schema-registry\}
 
-  Avro ストリームでは有効な スキーマ が必要です。スキーマレジストリの設定方法の詳細については、[スキーマレジストリ](./02_schema-registries.md) を参照してください。
+  Avro および Protobuf の topic では有効な スキーマ が必要です。スキーマレジストリの設定方法の詳細については、[スキーマレジストリ](./02_schema-registries.md) を参照してください。
 
   ## Reverse Private Endpoint を設定する (任意) \{#5-configure-reverse-private-endpoint\}
 

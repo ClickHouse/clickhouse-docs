@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Бета-функции и экспериментальные'
-title: 'Бета-функции и экспериментальные функции'
+sidebar_label: 'бета и экспериментальные функции'
+title: 'бета-функции и экспериментальные функции'
 description: 'В ClickHouse есть бета-функции и экспериментальные функции. На этой странице документации обсуждается их определение.'
 slug: /beta-and-experimental-features
 doc_type: 'reference'
@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 Поскольку ClickHouse является проектом с открытым исходным кодом, он получает множество изменений не только от сотрудников ClickHouse, но и от сообщества. Эти изменения часто развиваются с разной скоростью; для некоторых функций может потребоваться длительная стадия прототипирования или больше времени для получения достаточного объёма отзывов и итераций в сообществе, прежде чем их можно будет считать общедоступными (GA).
 
-Из-за неопределённости момента, когда функции классифицируются как общедоступные, мы разделяем функции на две категории: **Beta** и **Experimental**.
+Из-за неопределённости момента, когда функции классифицируются как общедоступные, мы разделяем функции на две категории: **бета** и **экспериментальные**.
 
-Функции **Beta** официально поддерживаются командой ClickHouse. Функции **Experimental** — это ранние прототипы, разрабатываемые либо командой ClickHouse, либо сообществом, и официально не поддерживаются.
+Функции **бета** официально поддерживаются командой ClickHouse. Функции **экспериментальные** — это ранние прототипы, разрабатываемые либо командой ClickHouse, либо сообществом, и официально не поддерживаются.
 
-В разделах ниже подробно описываются свойства функций **Beta** и **Experimental**:
+В разделах ниже подробно описываются свойства функций **бета** и **экспериментальных**:
 
 ## Бета-функции \{#beta-features\}
 
@@ -49,25 +49,26 @@ doc_type: 'reference'
 
 ## Бета-настройки \{#beta-settings\}
 
-| Имя                                                                                                                                    | Значение по умолчанию |
-| -------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| [geotoh3&#95;argument&#95;order](/operations/settings/settings#geotoh3_argument_order)                                                 | `lat_lon`             |
-| [enable&#95;lightweight&#95;update](/operations/settings/settings#enable_lightweight_update)                                           | `1`                   |
-| [allow&#95;experimental&#95;correlated&#95;subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries)         | `1`                   |
-| [parallel&#95;replicas&#95;count](/operations/settings/settings#parallel_replicas_count)                                               | `0`                   |
-| [parallel&#95;replica&#95;offset](/operations/settings/settings#parallel_replica_offset)                                               | `0`                   |
-| [parallel&#95;replicas&#95;custom&#95;key](/operations/settings/settings#parallel_replicas_custom_key)                                 | ``                    |
-| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0`                   |
-| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0`                   |
-| [parallel&#95;replicas&#95;filter&#95;pushdown](/operations/settings/settings#parallel_replicas_filter_pushdown)                       | `0`                   |
-| [allow&#95;experimental&#95;database&#95;iceberg](/operations/settings/settings#allow_experimental_database_iceberg)                   | `0`                   |
-| [allow&#95;experimental&#95;database&#95;unity&#95;catalog](/operations/settings/settings#allow_experimental_database_unity_catalog)   | `0`                   |
-| [allow&#95;experimental&#95;database&#95;glue&#95;catalog](/operations/settings/settings#allow_experimental_database_glue_catalog)     | `0`                   |
-| [session&#95;timezone](/operations/settings/settings#session_timezone)                                                                 | ``                    |
-| [low&#95;priority&#95;query&#95;wait&#95;time&#95;ms](/operations/settings/settings#low_priority_query_wait_time_ms)                   | `1000`                |
-| [allow&#95;experimental&#95;delta&#95;kernel&#95;rs](/operations/settings/settings#allow_experimental_delta_kernel_rs)                 | `1`                   |
-| [allow&#95;insert&#95;into&#95;iceberg](/operations/settings/settings#allow_insert_into_iceberg)                                       | `0`                   |
-| [enable&#95;join&#95;runtime&#95;filters](/operations/settings/settings#enable_join_runtime_filters)                                   | `1`                   |
+| Имя                                                                                                                                          | Значение по умолчанию |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| [geotoh3&#95;argument&#95;order](/operations/settings/settings#geotoh3_argument_order)                                                       | `lat_lon`             |
+| [enable&#95;lightweight&#95;update](/operations/settings/settings#enable_lightweight_update)                                                 | `1`                   |
+| [allow&#95;experimental&#95;correlated&#95;subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries)               | `1`                   |
+| [parallel&#95;replicas&#95;count](/operations/settings/settings#parallel_replicas_count)                                                     | `0`                   |
+| [parallel&#95;replica&#95;offset](/operations/settings/settings#parallel_replica_offset)                                                     | `0`                   |
+| [parallel&#95;replicas&#95;custom&#95;key](/operations/settings/settings#parallel_replicas_custom_key)                                       | ``                    |
+| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower)       | `0`                   |
+| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper)       | `0`                   |
+| [parallel&#95;replicas&#95;filter&#95;pushdown](/operations/settings/settings#parallel_replicas_filter_pushdown)                             | `0`                   |
+| [parallel&#95;replicas&#95;allow&#95;view&#95;over&#95;mergetree](/operations/settings/settings#parallel_replicas_allow_view_over_mergetree) | `0`                   |
+| [allow&#95;experimental&#95;database&#95;iceberg](/operations/settings/settings#allow_experimental_database_iceberg)                         | `0`                   |
+| [allow&#95;experimental&#95;database&#95;unity&#95;catalog](/operations/settings/settings#allow_experimental_database_unity_catalog)         | `0`                   |
+| [allow&#95;experimental&#95;database&#95;glue&#95;catalog](/operations/settings/settings#allow_experimental_database_glue_catalog)           | `0`                   |
+| [session&#95;timezone](/operations/settings/settings#session_timezone)                                                                       | ``                    |
+| [low&#95;priority&#95;query&#95;wait&#95;time&#95;ms](/operations/settings/settings#low_priority_query_wait_time_ms)                         | `1000`                |
+| [allow&#95;experimental&#95;delta&#95;kernel&#95;rs](/operations/settings/settings#allow_experimental_delta_kernel_rs)                       | `1`                   |
+| [allow&#95;insert&#95;into&#95;iceberg](/operations/settings/settings#allow_insert_into_iceberg)                                             | `0`                   |
+| [enable&#95;join&#95;runtime&#95;filters](/operations/settings/settings#enable_join_runtime_filters)                                         | `1`                   |
 
 ## Экспериментальные настройки \{#experimental-settings\}
 
@@ -108,6 +109,7 @@ doc_type: 'reference'
 | [allow&#95;experimental&#95;nlp&#95;functions](/operations/settings/settings#allow_experimental_nlp_functions)                                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;hash&#95;functions](/operations/settings/settings#allow_experimental_hash_functions)                                                                                                                    | `0`                     |
 | [allow&#95;experimental&#95;time&#95;series&#95;table](/operations/settings/settings#allow_experimental_time_series_table)                                                                                                          | `0`                     |
+| [allow&#95;experimental&#95;unique&#95;key](/operations/settings/settings#allow_experimental_unique_key)                                                                                                                            | `0`                     |
 | [allow&#95;experimental&#95;codecs](/operations/settings/settings#allow_experimental_codecs)                                                                                                                                        | `0`                     |
 | [throw&#95;on&#95;unsupported&#95;query&#95;inside&#95;transaction](/operations/settings/settings#throw_on_unsupported_query_inside_transaction)                                                                                    | `1`                     |
 | [wait&#95;changes&#95;become&#95;visible&#95;after&#95;commit&#95;mode](/operations/settings/settings#wait_changes_become_visible_after_commit_mode)                                                                                | `wait_unknown`          |
@@ -133,6 +135,8 @@ doc_type: 'reference'
 | [polyglot&#95;dialect](/operations/settings/settings#polyglot_dialect)                                                                                                                                                              | ``                      |
 | [enable&#95;adaptive&#95;memory&#95;spill&#95;scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler)                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;iceberg&#95;compaction](/operations/settings/settings#allow_experimental_iceberg_compaction)                                                                                                            | `0`                     |
+| [allow&#95;iceberg&#95;remove&#95;orphan&#95;files](/operations/settings/settings#allow_iceberg_remove_orphan_files)                                                                                                                | `0`                     |
+| [iceberg&#95;orphan&#95;files&#95;older&#95;than&#95;seconds](/operations/settings/settings#iceberg_orphan_files_older_than_seconds)                                                                                                | `259200`                |
 | [allow&#95;experimental&#95;expire&#95;snapshots](/operations/settings/settings#allow_experimental_expire_snapshots)                                                                                                                | `0`                     |
 | [write&#95;full&#95;path&#95;in&#95;iceberg&#95;metadata](/operations/settings/settings#write_full_path_in_iceberg_metadata)                                                                                                        | `0`                     |
 | [iceberg&#95;metadata&#95;compression&#95;method](/operations/settings/settings#iceberg_metadata_compression_method)                                                                                                                | ``                      |
@@ -159,6 +163,9 @@ doc_type: 'reference'
 | [promql&#95;table](/operations/settings/settings#promql_table)                                                                                                                                                                      | ``                      |
 | [promql&#95;evaluation&#95;time](/operations/settings/settings#promql_evaluation_time)                                                                                                                                              | `auto`                  |
 | [allow&#95;experimental&#95;alias&#95;table&#95;engine](/operations/settings/settings#allow_experimental_alias_table_engine)                                                                                                        | `0`                     |
+| [allow&#95;experimental&#95;paimon&#95;storage&#95;engine](/operations/settings/settings#allow_experimental_paimon_storage_engine)                                                                                                  | `0`                     |
+| [paimon&#95;target&#95;snapshot&#95;id](/operations/settings/settings#paimon_target_snapshot_id)                                                                                                                                    | `-1`                    |
+| [max&#95;consume&#95;snapshots](/operations/settings/settings#max_consume_snapshots)                                                                                                                                                | `0`                     |
 | [use&#95;paimon&#95;partition&#95;pruning](/operations/settings/settings#use_paimon_partition_pruning)                                                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;object&#95;storage&#95;queue&#95;hive&#95;partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning)                                                        | `0`                     |
 | [query&#95;plan&#95;optimize&#95;join&#95;order&#95;algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm)                                                                                              | `greedy`                |
@@ -167,5 +174,14 @@ doc_type: 'reference'
 | [webassembly&#95;udf&#95;max&#95;memory](/operations/settings/settings#webassembly_udf_max_memory)                                                                                                                                  | `134217728`             |
 | [webassembly&#95;udf&#95;max&#95;input&#95;block&#95;size](/operations/settings/settings#webassembly_udf_max_input_block_size)                                                                                                      | `0`                     |
 | [webassembly&#95;udf&#95;max&#95;instances](/operations/settings/settings#webassembly_udf_max_instances)                                                                                                                            | `32`                    |
+| [allow&#95;experimental&#95;ai&#95;functions](/operations/settings/settings#allow_experimental_ai_functions)                                                                                                                        | `0`                     |
+| [ai&#95;function&#95;request&#95;timeout&#95;sec](/operations/settings/settings#ai_function_request_timeout_sec)                                                                                                                    | `60`                    |
+| [ai&#95;function&#95;max&#95;retries](/operations/settings/settings#ai_function_max_retries)                                                                                                                                        | `0`                     |
+| [ai&#95;function&#95;retry&#95;initial&#95;delay&#95;ms](/operations/settings/settings#ai_function_retry_initial_delay_ms)                                                                                                          | `1000`                  |
+| [ai&#95;function&#95;throw&#95;on&#95;error](/operations/settings/settings#ai_function_throw_on_error)                                                                                                                              | `1`                     |
+| [ai&#95;function&#95;max&#95;input&#95;tokens&#95;per&#95;query](/operations/settings/settings#ai_function_max_input_tokens_per_query)                                                                                              | `1000000`               |
+| [ai&#95;function&#95;max&#95;output&#95;tokens&#95;per&#95;query](/operations/settings/settings#ai_function_max_output_tokens_per_query)                                                                                            | `500000`                |
+| [ai&#95;function&#95;max&#95;api&#95;calls&#95;per&#95;query](/operations/settings/settings#ai_function_max_api_calls_per_query)                                                                                                    | `0`                     |
+| [ai&#95;function&#95;throw&#95;on&#95;quota&#95;exceeded](/operations/settings/settings#ai_function_throw_on_quota_exceeded)                                                                                                        | `1`                     |
 
 {/*AUTOGENERATED_END*/ }

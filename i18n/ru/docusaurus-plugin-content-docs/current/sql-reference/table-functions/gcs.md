@@ -1,14 +1,13 @@
 ---
-description: 'Предоставляет интерфейс, аналогичный таблице, для `SELECT` и `INSERT` данных из Google Cloud Storage. Требуется роль IAM `Storage Object User`.'
-keywords: ['gcs', 'bucket']
+description: 'Предоставляет табличный интерфейс для выполнения `SELECT` и `INSERT` данных из Google
+  Cloud Storage. Требуется роль IAM `Storage Object User`.'
+keywords: ['gcs', 'бакет']
 sidebar_label: 'gcs'
 sidebar_position: 70
 slug: /sql-reference/table-functions/gcs
 title: 'gcs'
 doc_type: 'reference'
 ---
-
-# Табличная функция gcs \{#gcs-table-function\}
 
 Предоставляет табличный интерфейс для выполнения `SELECT` и `INSERT` данных из [Google Cloud Storage](https://cloud.google.com/storage/). Требуется роль IAM [`Storage Object User`](https://cloud.google.com/storage/docs/access-control/iam-roles).
 
@@ -25,7 +24,7 @@ gcs(named_collection[, option=value [,..]])
 
 :::tip GCS
 Табличная функция GCS интегрируется с Google Cloud Storage с помощью GCS XML API и HMAC-ключей.
-Дополнительные сведения об endpoint и HMAC см. в [документации по совместимости Google](https://cloud.google.com/storage/docs/interoperability).
+Дополнительные сведения о конечной точке и HMAC см. в [документации по совместимости Google](https://cloud.google.com/storage/docs/interoperability).
 :::
 
 ## Аргументы \{#arguments\}
@@ -46,7 +45,7 @@ gcs(named_collection[, option=value [,..]])
   https://storage.googleapis.com/<bucket>/<folder>/<filename(s)>
 ```
 
-and not ~~[https://storage.cloud.google.com](https://storage.cloud.google.com)~~.
+and not ~~https://storage.cloud.google.com~~.
 :::
 
 Аргументы также могут передаваться с использованием [именованных коллекций](operations/named-collections.md). В этом случае `url`, `format`, `structure`, `compression_method` работают тем же образом, а также поддерживается несколько дополнительных параметров:
@@ -100,14 +99,14 @@ LIMIT 2;
 
 Предположим, что у нас есть несколько файлов со следующими URI в GCS:
 
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;1.csv](https://storage.googleapis.com/my-test-bucket-768/some_prefix/some_file_1.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;2.csv](https://storage.googleapis.com/my-test-bucket-768/some_prefix/some_file_2.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;3.csv](https://storage.googleapis.com/my-test-bucket-768/some_prefix/some_file_3.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;4.csv](https://storage.googleapis.com/my-test-bucket-768/some_prefix/some_file_4.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;1.csv](https://storage.googleapis.com/my-test-bucket-768/another_prefix/some_file_1.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;2.csv](https://storage.googleapis.com/my-test-bucket-768/another_prefix/some_file_2.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;3.csv](https://storage.googleapis.com/my-test-bucket-768/another_prefix/some_file_3.csv)&#39;
-* &#39;[https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;4.csv](https://storage.googleapis.com/my-test-bucket-768/another_prefix/some_file_4.csv)&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;1.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;2.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;3.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/some&#95;prefix/some&#95;file&#95;4.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;1.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;2.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;3.csv&#39;
+* &#39;https://storage.googleapis.com/my-test-bucket-768/another&#95;prefix/some&#95;file&#95;4.csv&#39;
 
 Подсчитаем количество строк в файлах, имена которых оканчиваются на цифры от 1 до 3:
 
@@ -216,5 +215,6 @@ INSERT INTO TABLE FUNCTION
 В результате данные записываются в три файла в разных бакетах: `my_bucket_1/file.csv`, `my_bucket_10/file.csv` и `my_bucket_20/file.csv`.
 
 ## См. также \{#related\}
-- [Табличная функция S3](s3.md)
-- [Движок таблицы S3](../../engines/table-engines/integrations/s3.md)
+
+* [Табличная функция S3](s3.md)
+* [Движок таблицы S3](../../engines/table-engines/integrations/s3.md)

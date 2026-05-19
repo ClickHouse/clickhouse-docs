@@ -7,9 +7,7 @@ title: 'Операторы'
 doc_type: 'reference'
 ---
 
-# Операторы \{#operators\}
-
-ClickHouse преобразует операторы в соответствующие функции при разборе запроса в соответствии с их приоритетом, порядком вычисления и ассоциативностью.
+ClickHouse преобразует операторы в соответствующие им функции на этапе разбора запроса в соответствии с их приоритетом, порядком выполнения и ассоциативностью.
 
 ## Операторы доступа \{#access-operators\}
 
@@ -128,6 +126,15 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
+## Операторы для работы со строками \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - функция `overlay(string, replacement, offset)`.
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - функция `overlay(string, replacement, offset, length)`.
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - функция `overlayUTF8(string, replacement, offset)`.
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - функция `overlayUTF8(string, replacement, offset, length)`.
+
 ## Операторы для работы с наборами данных \{#operators-for-working-with-data-sets\}
 
 См. [операторы IN](../../sql-reference/operators/in.md) и оператор [EXISTS](../../sql-reference/operators/exists.md).
@@ -168,13 +175,11 @@ SELECT
 
 Запрос с ALL:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -185,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 Запрос с использованием ANY:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │

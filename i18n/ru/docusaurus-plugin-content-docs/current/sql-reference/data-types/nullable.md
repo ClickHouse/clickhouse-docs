@@ -7,22 +7,20 @@ title: 'Nullable(T)'
 doc_type: 'reference'
 ---
 
-# Nullable(T) \{#nullablet\}
-
 Позволяет хранить специальный маркер ([NULL](../../sql-reference/syntax.md)), обозначающий «отсутствующее значение», наряду с обычными значениями, допустимыми для `T`. Например, столбец типа `Nullable(Int8)` может хранить значения типа `Int8`, а для строк, в которых нет значения, будет храниться `NULL`.
 
 `T` не может быть ни одним из следующих составных типов данных:
 
-- [Array](../../sql-reference/data-types/array.md) — Не поддерживается
-- [Map](../../sql-reference/data-types/map.md) — Не поддерживается
-- [Tuple](../../sql-reference/data-types/tuple.md) — Доступна экспериментальная поддержка*
+* [Array](../../sql-reference/data-types/array.md) — Не поддерживается
+* [Map](../../sql-reference/data-types/map.md) — Не поддерживается
+* [Tuple](../../sql-reference/data-types/tuple.md) — Доступна экспериментальная поддержка*
 
 Однако составные типы данных **могут содержать** значения типа `Nullable`, например `Array(Nullable(Int8))` или `Tuple(Nullable(String), Nullable(Int64))`.
 
 :::note Экспериментальная функция: Nullable Tuples
 
 * [Nullable(Tuple(...))](../../sql-reference/data-types/tuple.md#nullable-tuple) поддерживается, когда включен параметр `allow_experimental_nullable_tuple_type = 1`.
-:::
+  :::
 
 Поле типа `Nullable` не может участвовать в индексах таблицы.
 
@@ -42,9 +40,7 @@ doc_type: 'reference'
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE nullable (`n` Nullable(UInt32)) ENGINE = MergeTree ORDER BY tuple();
 
 INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
@@ -52,9 +48,7 @@ INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
 SELECT n.null FROM nullable;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─n.null─┐
 │      0 │
 │      1 │
@@ -62,7 +56,6 @@ SELECT n.null FROM nullable;
 │      1 │
 └────────┘
 ```
-
 
 ## Пример использования \{#usage-example\}
 

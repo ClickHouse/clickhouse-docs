@@ -1,5 +1,6 @@
 ---
-description: '秒精度で時刻範囲を保存する ClickHouse の Time データ型に関するドキュメント'
+description: 'ClickHouse の Time データ型に関するドキュメント。この型は秒精度で
+  時刻範囲を格納します'
 slug: /sql-reference/data-types/time
 sidebar_position: 15
 sidebar_label: 'Time'
@@ -7,10 +8,8 @@ title: 'Time'
 doc_type: 'reference'
 ---
 
-# Time \{#time\}
-
-データ型 `Time` は、時・分・秒の要素から成る時刻を表します。
-これはカレンダーの日付とは独立しており、日・月・年の要素を必要としない値に適しています。
+データ型 `Time` は、時・分・秒の部分から成る時刻を表します。
+これはカレンダーの日付とは独立しており、日・月・年の部分を必要としない値に適しています。
 
 構文:
 

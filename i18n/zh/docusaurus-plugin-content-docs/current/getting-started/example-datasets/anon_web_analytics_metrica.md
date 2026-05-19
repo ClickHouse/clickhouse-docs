@@ -1,29 +1,26 @@
 ---
-description: '由两个表组成的数据集，包含经匿名化处理的网站分析数据（hits 和 visits）'
-sidebar_label: '匿名化网站分析数据'
+description: '由两个表组成的数据集，包含带有 hits 和 visits 的匿名化网站分析数据'
+sidebar_label: '匿名化网站分析'
 slug: /getting-started/example-datasets/metrica
-keywords: ['网站分析数据', '匿名化数据', '网站流量数据', '示例数据集', '入门']
-title: '匿名化网站分析数据'
+keywords: ['网站分析数据', '匿名化数据', '网站流量数据', '示例数据集', '快速开始']
+title: '匿名化网站分析'
 doc_type: 'guide'
 ---
 
-# 匿名化 Web 分析数据 \{#anonymized-web-analytics-data\}
+该数据集由两个表组成，分别包含 hits (`hits_v1`) 和 visits (`visits_v1`) 的匿名化 网站分析 数据。
 
-该数据集由两个表组成，分别包含点击（`hits_v1`）和访问（`visits_v1`）的匿名化 Web 分析数据。
-
-这些表可以以压缩的 `tsv.xz` 文件形式下载。除了本篇文档中使用的示例外，还提供了一个更大规模（7.5GB）的 `hits` 表版本，其中包含 1 亿行数据，可作为 TSV 在 [https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz) 获取。
+这些表可以以压缩的 `tsv.xz` 文件形式下载。除了本篇文档中使用的示例外，还提供了一个更大规模 (7.5GB) 的 `hits` 表版本，其中包含 1 亿行数据，可作为 TSV 在 [https://datasets.clickhouse.com/hits/tsv/hits&#95;100m&#95;obfuscated&#95;v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz) 获取。
 
 ## 下载并摄取数据 \{#download-and-ingest-the-data\}
 
 ### 下载压缩的 hits TSV 文件 \{#download-the-hits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | unxz --threads=`nproc` > hits_v1.tsv
+curl -L https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | xz -d > hits_v1.tsv
 # Validate the checksum
 md5sum hits_v1.tsv
 # Checksum should be equal to: f3631b6295bf06989c1437491f7592cb
 ```
-
 
 ### 创建数据库和表 \{#create-the-database-and-table\}
 
@@ -62,15 +59,14 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 ```
 
 
-### 下载访问数据的压缩 TSV 文件 \{#download-the-visits-compressed-tsv-file\}
+### 下载 visits 的压缩 TSV 文件 \{#download-the-visits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
+curl -L https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | xz -d > visits_v1.tsv
 # Validate the checksum
 md5sum visits_v1.tsv
 # Checksum should be equal to: 6dafe1a0f24e59e3fc2d0fed85601de6
 ```
-
 
 ### 创建 `visits` 表 \{#create-the-visits-table\}
 

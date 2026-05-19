@@ -144,14 +144,17 @@ SELECT name, lower(hex(reinterpretAsFixedString(hash))) AS sha256 FROM system.we
 
 ### モジュールを削除する \{#delete-a-module\}
 
-削除は `DELETE FROM system.webassembly_modules WHERE name = '...'` ステートメントによって行います。
-1 回のステートメントにつき、名前が完全一致するモジュールを 1 つだけ削除できます。
+削除は、`DELETE FROM system.webassembly_modules WHERE name = '...'` ステートメントで実行します。
+条件式には、完全一致の場合は `name = 'literal'`、名前がパターンに一致するすべてのモジュールを削除する場合は `name LIKE 'pattern'` のいずれかを指定する必要があります。これ以外の形式は使用できません。
 
 ```sql
 DELETE FROM system.webassembly_modules WHERE name = 'collatz';
+
+-- Bulk-delete every module whose name starts with `tmp_` (literal underscore is escaped as `\_`):
+DELETE FROM system.webassembly_modules WHERE name LIKE 'tmp\_%';
 ```
 
-既存の UDF がそのモジュールを参照している場合、削除は失敗するため、まずそれらの UDF を削除する必要があります。
+既存のUDFのいずれかが一致したモジュールのいずれかを参照している場合、削除は失敗するため、先にそれらのUDFを削除する必要があります。
 
 ## WebAssembly UDF を作成する \{#create-a-webassembly-udf\}
 
@@ -164,6 +167,7 @@ FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
 [ABI ROW_DIRECT | ABI BUFFERED_V1]
+[DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
 ```
@@ -171,11 +175,12 @@ RETURNS return_type
 **パラメータ**:
 
 * `function_name`: ClickHouse 内での関数名。モジュール内でエクスポートされている関数名とは異なる場合があります。
-* `FROM 'module_name' :: 'source_function_name'`: 読み込まれる WASM モジュール名と、使用する WASM モジュール内の関数名 (省略時は `function_name` が既定値) 。
+* `FROM 'module_name' :: 'source_function_name'`: 読み込まれる WASM モジュール名と、使用する WASM モジュール内の関数名 (省略時は `function&#95;name` が既定値) 。
 * `ARGUMENTS`: 引数名と型のリスト (名前は任意。名前付きフィールドをサポートするシリアライゼーション形式で使用されます)
 * `ABI`: Application Binary Interface のバージョン
   * `ROW_DIRECT`: 型を直接マッピングし、行単位で処理
   * `BUFFERED_V1`: シリアライゼーションを伴うブロック単位の処理
+* `DETERMINISTIC`: 関数が決定論的であることを宣言します。つまり、同じ入力に対して常に同じ出力を返します。指定すると、すべての引数が定数である呼び出しについて、ClickHouse は定数畳み込みを行う場合があります。関数はクエリ解析時に一度だけ評価され、その結果はすべての行で再利用されます。
 * `SHA256_HASH`: 検証用の期待されるモジュールハッシュ (省略時は自動設定) 。異なるレプリカ間で正しい WASM モジュールが読み込まれていることを保証するために使用できます。
 * `SETTINGS`: 関数ごとの設定
   * `serialization_format` String — ABI がシリアライゼーション形式を必要とする場合に使用される形式。既定値: `MsgPack`。

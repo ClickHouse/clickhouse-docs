@@ -7,9 +7,7 @@ title: 'deltaLake'
 doc_type: 'reference'
 ---
 
-# deltaLake 테이블 함수 \{#deltalake-table-function\}
-
-Amazon S3, Azure Blob Storage 또는 로컬로 마운트된 파일 시스템에 있는 [Delta Lake](https://github.com/delta-io/delta) 테이블에 대해 테이블 형식 인터페이스를 제공하며, v25.10부터 읽기와 쓰기 모두를 지원합니다.
+Amazon S3, Azure Blob Storage 또는 로컬에 마운트된 파일 시스템의 [Delta Lake](https://github.com/delta-io/delta) 테이블에 대해 테이블과 유사한 인터페이스를 제공하며, 읽기와 쓰기를 모두 지원합니다(v25.10부터).
 
 ## 구문 \{#syntax\}
 
@@ -66,7 +64,7 @@ LIMIT 2
 `s3://ch-docs-s3-bucket/people_10k/` 경로의 S3 스토리지에 테이블이 있다고 가정합니다.
 테이블에 데이터를 삽입하려면 먼저 실험적 기능을 활성화해야 합니다:
 
-```sql
+```sql title="Query"
 SET allow_experimental_delta_lake_writes=1
 ```
 
@@ -84,7 +82,7 @@ Ok.
 1 row in set. Elapsed: 3.426 sec.
 ```
 
-테이블을 다시 조회하여 INSERT가 정상적으로 수행되었는지 확인할 수 있습니다:
+테이블을 다시 조회하여 삽입이 정상적으로 수행되었는지 확인할 수 있습니다:
 
 ```sql title="Query"
 SELECT *
@@ -99,7 +97,6 @@ Query id: 65032944-bed6-4d45-86b3-a71205a2b659
 1. │ 10001 │ John      │ Smith    │ Male   │  30 │
    └───────┴───────────┴──────────┴────────┴─────┘
 ```
-
 
 ## 가상 컬럼 \{#virtual-columns\}
 

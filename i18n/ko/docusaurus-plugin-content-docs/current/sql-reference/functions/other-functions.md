@@ -1646,7 +1646,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-도입 버전: v25.10.0
+도입 버전: v25.11.0
 
 기하 객체의 x, y 좌표를 뒤바꿉니다. 이 연산은 위도와 경도를 서로 바꾸므로, 서로 다른 좌표계 간 변환이나 좌표 순서 교정에 유용합니다.
 
@@ -2769,6 +2769,42 @@ SELECT hasThreadFuzzer()
 └───────────────────┘
 ```
 
+## highlightQuery \{#highlightQuery\}
+
+도입 버전: v26.5.0
+
+ClickHouse SQL 쿼리 문자열을 파싱하여 구문 강조에 사용할 강조 범위 배열을 반환합니다.
+각 범위는 시작 포지션(바이트 단위), 끝 포지션, 강조 타입으로 구성된 named tuple입니다.
+강조 타입은 해당 부분의 구문적 역할(키워드, 식별자, 함수 등)을 나타내며
+UI에서 색상을 할당하는 데 사용할 수 있습니다. LIKE 및 REGEXP 문자열 패턴 내부에서는 메타문자와
+이스케이프 문자가 각각 별도로 강조됩니다.
+
+**구문**
+
+```sql
+highlightQuery(query)
+```
+
+**인수**
+
+* `query` — ClickHouse SQL 쿼리 문자열입니다. String.
+
+**반환값**
+
+강조 표시된 범위를 나타내는 `(begin UInt64, end UInt64, type Enum8(...))` 형식의 named tuple 배열입니다. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**예시**
+
+**간단한 예시**
+
+```sql title=Query
+SELECT highlightQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'keyword'),(7,8,'number')]
+```
+
 ## hostName \{#hostName\}
 
 도입된 버전: v20.5.0
@@ -3822,6 +3858,143 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 ┌─normalizedQueryHashKeepNames─┐
 │                            1 │
 └──────────────────────────────┘
+```
+
+## obfuscateQuery \{#obfuscateQuery\}
+
+도입 버전: v26.4.0
+
+식별자는 무작위 단어로, 리터럴은 무작위 값으로 바꿔 SQL 쿼리의 구조를 유지하면서 난독화합니다.
+
+이 함수는 디버깅을 위해 쿼리를 로깅하거나 공유하기 전에 익명화할 때 유용합니다.
+동일한 입력 쿼리라도 서로 다른 행에서는 서로 다른 난독화 결과가 생성되므로,
+여러 쿼리를 다룰 때 프라이버시를 유지하는 데 도움이 됩니다.
+
+선택 사항인 `tag` 매개변수는 동일한 함수 호출이 쿼리에서 여러 번
+사용될 때 공통 하위 표현식 제거가 일어나지 않도록 합니다. 이렇게 하면 각 호출에서 서로 다른 난독화 결과가 생성됩니다.
+
+기능:
+
+* 테이블 이름, 컬럼 이름, 별칭을 무작위 단어로 대체합니다
+* 숫자 및 문자열 리터럴을 무작위 값으로 대체합니다
+* 전체 쿼리 구조와 SQL 구문을 유지합니다
+* 서로 다른 행에 대해 서로 다른 결과를 생성합니다
+
+**구문**
+
+```sql
+obfuscateQuery(query[, tag])
+```
+
+**인수**
+
+* `query` — 난독화할 SQL 쿼리입니다. [`String`](/sql-reference/data-types/string)
+* `tag` — 선택 사항입니다. 동일한 함수 호출을 여러 번 사용할 때 공통 하위 표현식 제거를 방지하기 위한 값입니다.
+
+**반환값**
+
+원래 쿼리 구조는 유지하면서 식별자와 리터럴을 대체한 난독화된 쿼리입니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**사용 예시**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT name, age FROM users WHERE age > 30')
+```
+
+```response title=Response
+SELECT fruit, number FROM table WHERE number > 12
+```
+
+**공통 하위 표현식 제거를 방지하는 태그 포함**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT * FROM t', 1), obfuscateQuery('SELECT * FROM t', 2)
+```
+
+```response title=Response
+SELECT a FROM b, SELECT c FROM d
+```
+
+**행에 따라 결과가 달라집니다**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT 1') AS a, obfuscateQuery('SELECT 1') AS b
+```
+
+```response title=Response
+A B
+```
+
+## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
+
+도입 버전: v26.4.0
+
+지정된 시드를 사용해 SQL 쿼리를 난독화하며, 결정론적 결과를 제공합니다.
+
+`obfuscateQuery()`와 달리, 이 함수는 동일한 시드가 주어지면 항상 동일한 결과를 생성합니다.
+여러 번 실행해도 일관된 난독화가 필요하거나, 테스트 또는 디버깅 목적으로
+동일한 난독화된 쿼리를 재현해야 할 때 유용합니다.
+
+기능:
+
+* 제공된 시드를 기반으로 한 결정론적 난독화
+* 동일한 시드는 항상 동일한 난독화 결과를 생성합니다
+* 서로 다른 시드는 서로 다른 결과를 생성합니다
+* `obfuscateQuery()`와 같이 쿼리 구조를 유지합니다
+
+사용 사례:
+
+* 재현 가능한 테스트 케이스
+* 여러 번 실행해도 일관된 익명화
+* 일관된 난독화 쿼리를 사용한 디버깅
+
+**구문**
+
+```sql
+obfuscateQueryWithSeed(query, seed)
+```
+
+**인수**
+
+* `query` — 난독화할 SQL 쿼리입니다. [`String`](/sql-reference/data-types/string)
+* `seed` — 난독화에 사용할 시드입니다. 같은 시드를 사용하면 결정론적 결과가 생성됩니다. [`Integer`](/sql-reference/data-types/int-uint) 또는 [`String`](/sql-reference/data-types/string)
+
+**반환값**
+
+지정된 시드를 기반으로 결정론적으로 생성된 난독화 쿼리입니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**정수 시드를 사용한 결정론적 난독화**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT name FROM users', 42)
+```
+
+```response title=Response
+SELECT fruit FROM table
+```
+
+**문자열 시드 기반 결정론적 난독화**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT id, value FROM data', 'myseed')
+```
+
+```response title=Response
+SELECT a, b FROM c
+```
+
+**같은 시드는 같은 결과를 만듭니다**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT 1', 100) = obfuscateQueryWithSeed('SELECT 1', 100)
+```
+
+```response title=Response
+true
 ```
 
 ## parseReadableSize \{#parseReadableSize\}
@@ -4958,6 +5131,39 @@ SELECT toTypeName(123)
 ┌─toTypeName(123)─┐
 │ UInt8           │
 └─────────────────┘
+```
+
+## tokenizeQuery \{#tokenizeQuery\}
+
+도입 버전: v26.5.0
+
+ClickHouse SQL 쿼리 문자열을 토큰화하고 토큰 배열을 반환합니다.
+각 토큰은 시작 포지션(바이트 단위), 끝 포지션, 토큰 유형으로 구성된 named tuple입니다.
+
+**구문**
+
+```sql
+tokenizeQuery(query)
+```
+
+**인수**
+
+* `query` — ClickHouse SQL 쿼리 문자열입니다. String.
+
+**반환값**
+
+쿼리의 토큰을 나타내는 `named tuple` `(begin UInt64, end UInt64, type Enum8(...))` 배열입니다. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**예시**
+
+**간단한 예**
+
+```sql title=Query
+SELECT tokenizeQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'BareWord'),(6,7,'Whitespace'),(7,8,'Number')]
 ```
 
 ## transactionID \{#transactionID\}

@@ -1,11 +1,9 @@
 ---
-description: '`median*` 함수는 해당하는 `quantile*` 함수의 별칭입니다. 수치형 데이터 샘플의 중앙값을 계산합니다.'
+description: '`median*` 함수는 해당하는 `quantile*` 함수의 별칭입니다. 숫자형 데이터 샘플의 중앙값을 계산합니다.'
 slug: /sql-reference/aggregate-functions/reference/median
 title: 'median'
 doc_type: 'reference'
 ---
-
-# median \{#median\}
 
 `median*` 함수는 해당하는 `quantile*` 함수의 별칭입니다. 숫자형 데이터 샘플의 중앙값을 계산합니다.
 
@@ -35,15 +33,11 @@ doc_type: 'reference'
 └─────┘
 ```
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT medianDeterministic(val, 1) FROM t;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─medianDeterministic(val, 1)─┐
 │                         1.5 │
 └─────────────────────────────┘

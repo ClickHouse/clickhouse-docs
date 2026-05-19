@@ -7,13 +7,11 @@ title: 'ALTER TABLE ... UPDATE 语句'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... UPDATE 语句 \{#alter-table-update-statements\}
-
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
 ```
 
-根据指定的过滤表达式对匹配的数据进行操作。实现形式为[变更（mutation）](/sql-reference/statements/alter/index.md#mutations)。
+根据指定的过滤表达式对匹配的数据进行操作。实现形式为[变更 (mutation) ](/sql-reference/statements/alter/index.md#mutations)。
 
 :::note
 `ALTER TABLE` 前缀使得此语法与大多数支持 SQL 的其他系统不同。其目的是表明，与 OLTP 数据库中的类似查询不同，这是一个开销较大的操作，并非为高频使用而设计。
@@ -27,12 +25,11 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 
 **另请参阅**
 
-* [变更（Mutations）](/sql-reference/statements/alter/index.md#mutations)
+* [变更 (Mutations) ](/sql-reference/statements/alter/index.md#mutations)
 * [ALTER 查询的同步方式](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 设置
 * [轻量级 `UPDATE`](/sql-reference/statements/update) - 使用补丁分区片段实现的替代性轻量级更新
 * [`APPLY PATCHES`](/sql-reference/statements/alter/apply-patches) - 手动应用轻量级更新产生的补丁
-
 
 ## 相关内容 \{#related-content\}
 

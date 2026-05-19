@@ -7,8 +7,6 @@ title: 'интерфейс gRPC'
 doc_type: 'reference'
 ---
 
-# Интерфейс gRPC \{#grpc-interface\}
-
 ## Введение \{#grpc-interface-introduction\}
 
 ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/). Это система удалённых вызовов процедур с открытым исходным кодом, которая использует HTTP/2 и [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol_Buffers). Реализация gRPC в ClickHouse поддерживает:

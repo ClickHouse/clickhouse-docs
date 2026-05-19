@@ -11,7 +11,6 @@ keywords: ['ClickStack', 'коллектор OpenTelemetry', 'наблюдаем
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';
 import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
 import clickstack_with_gateways from '@site/static/images/use-cases/observability/clickstack-with-gateways.png';
@@ -21,8 +20,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ExtendingConfig from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/ingesting-data/_snippets/_extending_config.md';
 
-На этой странице представлена подробная информация по настройке официального коллектора OpenTelemetry (OTel) для ClickStack.
+:::tip Попробуйте OTel FYI — документация по OTel collector в простом и понятном виде
+[OTel FYI](https://otel.fyi) предлагает ясную и лаконичную документацию по OTel collector, охватывающую receivers, processors, exporters и pipelines. Это отличный дополнительный ресурс для настройки вашего OTel collector в ClickStack.
+:::
 
+На этой странице представлена подробная информация по настройке официального коллектора OpenTelemetry (OTel) для ClickStack.
 
 ## Роли коллектора \{#collector-roles\}
 
@@ -413,111 +415,8 @@ OTel collector в составе ClickStack действует как экзем
 | 5k/сек       | 0.5 CPU, 0.5 GiB            |
 | 10k/сек      | 1 CPU, 1 GiB                |
 
-## Поддержка JSON \{#json-support\}
+## Выбор schema: Map или JSON \{#processing-filtering-transforming-enriching\}
 
-<BetaBadge/>
+Коллектор ClickStack по умолчанию создаёт таблицы, в которых атрибуты хранятся в столбцах `Map(LowCardinality(String), String)`. Это рекомендуемая schema для рабочих нагрузок обсервабилити. Schema с типом `JSON` доступна в бета-версии для оценки на рабочих нагрузках с небольшим стабильным набором ключей атрибутов.
 
-Начиная с версии `2.0.4`, ClickStack в бета-режиме поддерживает [тип JSON](/interfaces/formats/JSON).
-
-:::warning Функция в бета-версии
-Поддержка типа JSON в **ClickStack** является **функцией в бета-версии**. Хотя сам тип JSON готов к промышленной эксплуатации в ClickHouse 25.3+, его интеграция в ClickStack все еще активно развивается и может иметь ограничения, изменяться в будущем или содержать ошибки.
-:::
-
-### Преимущества типа JSON \{#benefits-json-type\}
-
-Тип JSON предоставляет пользователям ClickStack следующие преимущества:
-
-- **Сохранение типов** - Числа остаются числами, логические значения остаются логическими — больше не нужно превращать всё в строки. Это означает меньше приведений типов, более простые запросы и более точные агрегаты.
-- **Столбцы на уровне путей** - Каждый JSON-путь становится отдельным подстолбцом, уменьшая объём операций ввода-вывода. Запросы считывают только нужные поля, обеспечивая существенный прирост производительности по сравнению со старым типом Map, который требовал чтения всего столбца для выборки одного конкретного поля.
-- **Глубокая вложенность «просто работает»** - Естественная обработка сложных, глубоко вложенных структур без ручной развёртки (как это требовалось для типа Map) и последующего использования неудобных функций JSONExtract.
-- **Динамические, эволюционирующие схемы** - Идеально для данных наблюдаемости, где команды со временем добавляют новые теги и атрибуты. JSON автоматически обрабатывает эти изменения без миграций схемы. 
-- **Быстрые запросы, меньший объём памяти** - Типичные агрегаты по атрибутам вроде `LogAttributes` приводят к 5–10-кратному уменьшению объёма читаемых данных и существенному ускорению запросов, сокращая и время выполнения запросов, и пиковое потребление памяти.
-- **Простое управление** - Нет необходимости заранее материализовывать столбцы ради производительности. Каждое поле становится отдельным подстолбцом, обеспечивая ту же скорость, что и нативные столбцы ClickHouse.
-
-### Включение поддержки JSON {#enabling-json-support}
-
-<Tabs groupId="json-support">
-
-<TabItem value="managed-clickstack" label="Управляемый ClickStack" default>
-
-Чтобы включить поддержку JSON в управляемом ClickStack, свяжитесь с нашей службой поддержки перед настройкой коллектора, описанной ниже. **Эта функция также должна быть включена в интерфейсе ClickStack (HyperDX) в ClickHouse Cloud.**
-
-Чтобы включить эту поддержку для вашего коллектора, установите переменную окружения `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'`. Это гарантирует создание схем в ClickHouse с использованием типа JSON.
-
-Например:
-
-```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-```
-
-</TabItem>
-
-<TabItem value="oss-clickstack" label="Open Source ClickStack" default>
-
-Чтобы включить эту поддержку для коллектора, установите переменную окружения `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` в любом развертывании, где используется коллектор. Это гарантирует создание схем в ClickHouse с использованием типа JSON.
-
-:::note Поддержка HyperDX
-Чтобы выполнять запросы к типу JSON, поддержку также необходимо включить на уровне приложения HyperDX с помощью переменной окружения `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
-:::
-
-Например:
-
-```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-```
-
-</TabItem>
-
-</Tabs>
-
-### Миграция со схем на основе Map к типу JSON \{#migrating-from-map-based-schemas-to-json\}
-
-:::important Обратная совместимость
-[Тип JSON](/interfaces/formats/JSON) **не совместим** с существующими схемами на основе Map. Включение этой функции приведёт к созданию новых таблиц с использованием типа `JSON` и требует ручной миграции данных.
-:::
-
-Чтобы выполнить миграцию со схем на основе Map, выполните следующие шаги:
-
-<VerticalStepper headerLevel="h4">
-
-#### Остановите OTel collector {#stop-the-collector}
-
-#### Переименуйте существующие таблицы и обновите источники {#rename-existing-tables-sources}
-
-Переименуйте существующие таблицы и обновите источники данных в HyperDX. 
-
-Например:
-
-```sql
-RENAME TABLE otel_logs TO otel_logs_map;
-RENAME TABLE otel_metrics TO otel_metrics_map;
-```
-
-#### Разверните OTel collector {#deploy-the-collector}
-
-Разверните OTel collector с установленным параметром `OTEL_AGENT_FEATURE_GATE_ARG`.
-
-#### Перезапустите контейнер HyperDX с поддержкой схемы JSON {#restart-the-hyperdx-container}
-
-```shell
-export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
-```
-
-#### Создайте новые источники данных {#create-new-data-sources}
-
-Создайте новые источники данных в HyperDX, указывающие на таблицы с типом JSON.
-
-</VerticalStepper>
-
-#### Перенос существующих данных (необязательно)
-
-Чтобы перенести старые данные в новые таблицы формата JSON:
-
-```sql
-INSERT INTO otel_logs SELECT * FROM otel_logs_map;
-INSERT INTO otel_metrics SELECT * FROM otel_metrics_map;
-```
-
-:::warning
-Рекомендуется только для наборов данных объемом менее ~10 миллиардов строк. Данные, ранее хранившиеся с типом Map, не сохраняли точность типов (все значения были строками). В результате эти старые данные будут отображаться как строки в новой схеме до тех пор, пока не будут вытеснены из хранения, что потребует дополнительного приведения типов на фронтенде. Тип для новых данных будет сохраняться при использовании типа JSON.
-:::
+Полное сравнение, описание того, в каких случаях подходит каждый вариант, переменные среды, необходимые для включения schema с типом `JSON`, и пошаговое руководство по миграции см. в разделе [Map или тип JSON](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json).

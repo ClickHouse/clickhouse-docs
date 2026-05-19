@@ -1,0 +1,1451 @@
+---
+sidebar_label: '客户端'
+sidebar_position: 2
+keywords: ['clickhouse', 'java', 'client', 'integrate']
+description: 'Java ClickHouse 连接器'
+slug: /integrations/language-clients/java/client
+title: 'Java 客户端'
+doc_type: 'reference'
+integration:
+  - support_level: 'core'
+  - category: 'language_client'
+---
+
+import ClientVersionDropdown from '@theme/ClientVersionDropdown/ClientVersionDropdown';
+import Version from '@theme/ClientVersionDropdown/Version';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import WideTableWrapper from '@site/src/components/WideTableWrapper/WideTableWrapper';
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
+
+export function Anchor(props) {
+    useBrokenLinks().collectAnchor(props.id);
+    return <span style={{scrollMarginTop: "var(--ifm-navbar-height)"}} {...props}/>;
+}
+
+<Anchor id="migration_from_v1_config" />
+
+<ClientVersionDropdown
+  versions={[
+{
+'version': 'v0.8+'
+},
+{
+'version': 'v0.7.x'
+}
+]}
+>
+  <Version>
+    用于通过其协议与数据库服务器通信的 Java 客户端库。当前实现仅支持 [HTTP 接口](/interfaces/http)。
+    该库提供自己的 API 用于向服务器发送请求，并提供用于处理不同二进制数据格式 (RowBinary* 和 Native*) 的工具。
+
+    ## 配置 \{#setup\}
+
+    * Maven Central (项目页面) ：https://mvnrepository.com/artifact/com.clickhouse/client-v2
+    * Nightly 构建版本 (仓库链接) ：https://central.sonatype.com/repository/maven-snapshots/
+    * 旧版每夜构建仓库 (仓库链接) ：https://s01.oss.sonatype.org/content/repositories/snapshots/
+      <br />
+
+    <Tabs groupId="client-setup">
+      <TabItem value="maven" label="Maven">
+        ```xml
+        <dependency>
+          <groupId>com.clickhouse</groupId>
+          <artifactId>client-v2</artifactId>
+          <version>0.9.8</version>
+        </dependency>
+        ```
+      </TabItem>
+
+      <TabItem value="gradle-kt" label="Gradle（Kotlin）">
+        `kotlin // https://mvnrepository.com/artifact/com.clickhouse/client-v2 implementation("com.clickhouse:client-v2:0.9.8") `
+      </TabItem>
+
+      <TabItem value="gradle" label="Gradle">
+        `groovy // https://mvnrepository.com/artifact/com.clickhouse/client-v2 implementation 'com.clickhouse:client-v2:0.9.8' `
+      </TabItem>
+    </Tabs>
+
+    <br />
+
+    ## 初始化 \{#initialization\}
+
+    Client 对象由 `com.clickhouse.client.api.Client.Builder#build()` 初始化。每个客户端都有自己的上下文，客户端之间不共享对象。
+    Builder 提供了便于配置的方法。
+
+    示例：
+
+    ```java showLineNumbers
+     Client client = new Client.Builder()
+                    .addEndpoint("https://clickhouse-cloud-instance:8443/")
+                    .setUsername(user)
+                    .setPassword(password)
+                    .build();
+    ```
+
+    `Client` 实现了 `AutoCloseable` 接口，不再需要时应将其关闭。
+
+    ### 身份验证 \{#authentication\}
+
+    身份验证在初始化阶段为每个客户端单独配置。支持三种身份验证方式：基于密码、基于访问令牌、基于 SSL 客户端证书。
+
+    使用密码进行身份验证时，需要通过调用 `setUsername(String)` 和 `setPassword(String)` 方法来设置用户名和密码：
+
+    ```java showLineNumbers
+     Client client = new Client.Builder()
+            .addEndpoint("https://clickhouse-cloud-instance:8443/")
+            .setUsername(user)
+            .setPassword(password)
+            .build();
+    ```
+
+    使用访问令牌进行身份验证时，需要调用 `setAccessToken(String)` 来设置访问令牌：
+
+    ```java showLineNumbers
+     Client client = new Client.Builder()
+            .addEndpoint("https://clickhouse-cloud-instance:8443/")
+            .setAccessToken(userAccessToken)
+            .build();
+    ```
+
+    通过 SSL 客户端证书进行身份验证时，需要设置用户名、启用 SSL 身份验证，并设置客户端证书和客户端密钥，可分别通过调用 `setUsername(String)`、`useSSLAuthentication(boolean)`、`setClientCertificate(String)` 和 `setClientKey(String)` 来完成：
+
+    ```java showLineNumbers
+    Client client = new Client.Builder()
+            .useSSLAuthentication(true)
+            .setUsername("some_user")
+            .setClientCertificate("some_user.crt")
+            .setClientKey("some_user.key")
+    ```
+
+    :::note
+    SSL 身份验证在生产环境中可能比较难以排查，因为许多来自 SSL 库的错误信息不够详细，无法提供足够的上下文。例如，如果客户端证书与私钥不匹配，服务器会立即终止连接 (对于 HTTP 来说，这发生在连接建立阶段，此时客户端尚未发送任何 HTTP 请求，因此也就不会收到任何响应) 。
+
+    请使用 [openssl](https://docs.openssl.org/master/man1/openssl/) 等工具验证证书和密钥：
+
+    * 校验密钥完整性：`openssl rsa -in [key-file.key] -check -noout`
+    * 检查客户端证书中的 CN 是否与该 USER 匹配：
+      * 从用户证书中获取 CN 值：`openssl x509 -noout -subject -in [user.cert]`
+      * 确认在数据库中已设置相同的值：`select name, auth_type, auth_params from system.users where auth_type = 'ssl_certificate'` (查询会输出 `auth_params` 字段，其内容类似于 ` {"common_names":["some_user"]}`)
+
+    :::
+
+    ## 配置 \{#configuration\}
+
+    所有设置均由实例方法 (亦称配置方法) 定义，从而使每个值的作用域和上下文一目了然。
+    主要配置参数在单一作用域 (客户端或操作) 中定义，互不覆盖。
+
+    客户端配置在创建时定义。请参阅 `com.clickhouse.client.api.Client.Builder`。
+
+    ## 客户端配置 \{#client-configuration\}
+
+    <Tabs groupId="client-config">
+      <TabItem value="连接" label="连接与端点">
+        | Method                                                                  | Arguments                                                        | Description                                         | Default   | Key                         |
+        | ----------------------------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------- | --------- | --------------------------- |
+        | `addEndpoint(String endpoint)`                                          | `endpoint` - URL 格式的服务器地址                                        | 将服务器端点添加到可用服务器列表。目前仅支持一个端点。                         | `none`    | `none`                      |
+        | `addEndpoint(Protocol protocol, String host, int port, boolean secure)` | `protocol` - 连接协议<br />`host` - IP 或主机名<br />`secure` - 使用 HTTPS | 将服务器端点添加到可用服务器列表。目前仅支持一个端点。                         | `none`    | `none`                      |
+        | `enableConnectionPool(boolean enable)`                                  | `enable` - 启用/禁用标志                                               | 设置是否启用连接池                                           | `true`    | `connection_pool_enabled`   |
+        | `setMaxConnections(int maxConnections)`                                 | `maxConnections` - 连接数量                                          | 设置客户端对每个服务器端点最多可以打开的连接数。                            | `10`      | `max_open_connections`      |
+        | `setConnectionTTL(long timeout, ChronoUnit unit)`                       | `timeout` - 超时值<br />`unit` - 时间单位                               | 设置连接的生存时间 (TTL)，超过该时间后连接将被视为不再活动                    | `-1`      | `connection_ttl`            |
+        | `setKeepAliveTimeout(long timeout, ChronoUnit unit)`                    | `timeout` - 超时值<br />`unit` - 时间单位                               | 设置 HTTP 连接的 Keep-Alive 超时时间。设置为 `0` 以禁用 Keep-Alive。 | -         | `http_keep_alive_timeout`   |
+        | `setConnectionReuseStrategy(ConnectionReuseStrategy strategy)`          | `strategy` - `LIFO` 或 `FIFO`                                     | 选择连接池应使用的连接复用策略                                     | `FIFO`    | `connection_reuse_strategy` |
+        | `setDefaultDatabase(String database)`                                   | `database` - 数据库名称                                               | 设置默认数据库。                                            | `default` | `database`                  |
+      </TabItem>
+
+      <TabItem value="身份验证" label="身份验证">
+        | Method                                               | Arguments                             | Description                                            | Default   | Key                   |
+        | ---------------------------------------------------- | ------------------------------------- | ------------------------------------------------------ | --------- | --------------------- |
+        | `setUsername(String username)`                       | `username` - 用于身份验证的用户名               | 为后续配置选定的身份验证方式设置用户名                                    | `default` | `user`                |
+        | `setPassword(String password)`                       | `password` - 机密值                      | 为密码身份验证设置机密信息，并实际选择该身份验证方式                             | -         | `password`            |
+        | `setAccessToken(String accessToken)`                 | `accessToken` - 访问令牌字符串               | 设置访问令牌，以使用相应的身份验证方式进行身份验证                              | -         | `access_token`        |
+        | `useSSLAuthentication(boolean useSSLAuthentication)` | `useSSLAuthentication` - 启用 SSL 认证的标志 | 将 SSL 客户端证书设置为身份验证方式。                                  | -         | `ssl_authentication`  |
+        | `useHTTPBasicAuth(boolean useBasicAuth)`             | `useBasicAuth` - 启用/禁用的标志             | 设置在用户名/密码身份验证中是否使用 HTTP Basic 身份验证。可解决密码中包含特殊字符时出现的问题。 | `true`    | `http_use_basic_auth` |
+        | `useBearerTokenAuth(String bearerToken)`             | `bearerToken` - 编码后的 Bearer 令牌        | 指定是否使用 Bearer 身份验证以及使用哪个令牌。该令牌将按原样发送。                  | -         | `bearer_token`        |
+      </TabItem>
+
+      <TabItem value="超时" label="超时与重试">
+        | Method                                                       | Arguments                                | Description                           | Default                                                      | Key                          |
+        | ------------------------------------------------------------ | ---------------------------------------- | ------------------------------------- | ------------------------------------------------------------ | ---------------------------- |
+        | `setConnectTimeout(long timeout, ChronoUnit unit)`           | `timeout` - 超时时间值<br />`unit` - 时间单位     | 设置所有出站连接在建立连接时的超时时间。                  | -                                                            | `connection_timeout`         |
+        | `setConnectionRequestTimeout(long timeout, ChronoUnit unit)` | `timeout` - 超时时间值<br />`unit` - 时间单位     | 设置连接请求超时时间。仅在从连接池获取连接时生效。             | `10000`                                                      | `connection_request_timeout` |
+        | `setSocketTimeout(long timeout, ChronoUnit unit)`            | `timeout` - 超时时间值<br />`unit` - 时间单位     | 设置用于读写操作的 socket 超时时间                 | `0`                                                          | `socket_timeout`             |
+        | `setExecutionTimeout(long timeout, ChronoUnit timeUnit)`     | `timeout` - 超时时间值<br />`timeUnit` - 时间单位 | 设置查询的最大执行超时时间                         | `0`                                                          | `max_execution_time`         |
+        | `retryOnFailures(ClientFaultCause ...causes)`                | `causes` - `ClientFaultCause` 的枚举常量      | 设置可恢复/可重试的故障类型。                       | `NoHttpResponse` `ConnectTimeout` `ConnectionRequestTimeout` | `client_retry_on_failures`   |
+        | `setMaxRetries(int maxRetries)`                              | `maxRetries` - 重试次数                      | 设置针对由 `retryOnFailures` 定义的故障的最大重试次数。 | `3`                                                          | `retry`                      |
+      </TabItem>
+
+      <TabItem value="套接字" label="套接字选项">
+        | Method                               | Arguments            | Description                                                            | Default | Key                  |
+        | ------------------------------------ | -------------------- | ---------------------------------------------------------------------- | ------- | -------------------- |
+        | `setSocketRcvbuf(long size)`         | `size` - 以字节为单位的大小   | 设置 TCP socket 接收缓冲区。该缓冲区位于 JVM 内存之外 (堆外内存) 。                           | `8196`  | `socket_rcvbuf`      |
+        | `setSocketSndbuf(long size)`         | `size` - 以字节为单位的大小   | 设置 TCP socket 发送缓冲区。该缓冲区位于 JVM 内存之外 (堆外内存) 。                           | `8196`  | `socket_sndbuf`      |
+        | `setSocketKeepAlive(boolean value)`  | `value` - 启用/禁用的标志   | 为每个 TCP socket 设置 `SO_KEEPALIVE` 选项。启用 TCP Keep-Alive 机制，用于检查连接是否仍然存活。 | -       | `socket_keepalive`   |
+        | `setSocketTcpNodelay(boolean value)` | `value` - 启用/禁用的标志   | 为每个 TCP socket 设置 `SO_NODELAY` 选项。该 TCP 选项会使 socket 尽可能立即发送数据。         | -       | `socket_tcp_nodelay` |
+        | `setSocketLinger(int secondsToWait)` | `secondsToWait` - 秒数 | 为客户端创建的每个 TCP socket 设置延迟关闭时间 (linger time) 。                          | -       | `socket_linger`      |
+      </TabItem>
+
+      <TabItem value="压缩" label="压缩">
+        | Method                                    | Arguments           | Description                         | Default | Key                                        |
+        | ----------------------------------------- | ------------------- | ----------------------------------- | ------- | ------------------------------------------ |
+        | `compressServerResponse(boolean enabled)` | `enabled` - 启用/禁用标志 | 设置服务器是否应对其响应进行压缩。                   | `true`  | `compress`                                 |
+        | `compressClientRequest(boolean enabled)`  | `enabled` - 启用/禁用标志 | 设置客户端是否应对其请求进行压缩。                   | `false` | `decompress`                               |
+        | `useHttpCompression(boolean enabled)`     | `enabled` - 启用/禁用标志 | 设置在相应选项启用时，客户端与服务器通信时是否应使用 HTTP 压缩。 | -       | -                                          |
+        | `appCompressedData(boolean enabled)`      | `enabled` - 启用/禁用标志 | 告知客户端压缩将由应用程序负责处理。                  | `false` | `app_compressed_data`                      |
+        | `setLZ4UncompressedBufferSize(int size)`  | `size` - 大小 (字节)    | 设置用于接收数据流未压缩部分的缓冲区大小。               | `65536` | `compression.lz4.uncompressed_buffer_size` |
+        | `disableNativeCompression`                | `disable` - 禁用标志    | 禁用原生压缩。如果设为 true，则会禁用原生压缩。          | `false` | `disable_native_compression`               |
+      </TabItem>
+
+      <TabItem value="ssl" label="SSL/安全性">
+        | Method                                      | Arguments                | Description                                                    | Default | Key                  |
+        | ------------------------------------------- | ------------------------ | -------------------------------------------------------------- | ------- | -------------------- |
+        | `setSSLTrustStore(String path)`             | `path` - 本地系统上的文件路径      | 配置客户端是否使用 SSL truststore 来对服务器主机进行验证。                          | -       | `trust_store`        |
+        | `setSSLTrustStorePassword(String password)` | `password` - 机密值         | 设置用于解锁由 `setSSLTrustStore` 指定的 SSL truststore 的密码              | -       | `key_store_password` |
+        | `setSSLTrustStoreType(String type)`         | `type` - truststore 类型名称 | 设置由 `setSSLTrustStore` 指定的 truststore 类型。                      | -       | `key_store_type`     |
+        | `setRootCertificate(String path)`           | `path` - 本地系统上的文件路径      | 配置客户端是否使用指定的根 (CA) 证书来验证服务器主机。                                 | -       | `sslrootcert`        |
+        | `setClientCertificate(String path)`         | `path` - 本地系统上的文件路径      | 设置在发起 SSL 连接以及进行 SSL 认证时要使用的客户端证书路径。                           | -       | `sslcert`            |
+        | `setClientKey(String path)`                 | `path` - 本地系统上的文件路径      | 设置用于与服务器进行 SSL 加密通信的客户端私钥。                                     | -       | `ssl_key`            |
+        | `sslSocketSNI(String sni)`                  | `sni` - 服务器名称字符串         | 设置在 SSL/TLS 连接中用于 SNI (Server Name Indication，服务器名称指示) 的服务器名称。 | -       | `ssl_socket_sni`     |
+      </TabItem>
+
+      <TabItem value="代理" label="代理">
+        | Method                                            | Arguments                                                | Description         | Default | Key                                      |
+        | ------------------------------------------------- | -------------------------------------------------------- | ------------------- | ------- | ---------------------------------------- |
+        | `addProxy(ProxyType type, String host, int port)` | `type` - 代理类型<br />`host` - 代理主机名或 IP<br />`port` - 代理端口 | 设置与服务器通信时使用的代理。     | -       | `proxy_type`, `proxy_host`, `proxy_port` |
+        | `setProxyCredentials(String user, String pass)`   | `user` - 代理用户名<br />`pass` - 密码                          | 设置用于向代理进行身份验证的用户凭据。 | -       | `proxy_user`, `proxy_password`           |
+      </TabItem>
+
+      <TabItem value="http" label="HTTP 与请求头">
+        | Method                                      | Arguments                                | Description                                                                                                      | Default | Key                                      |
+        | ------------------------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------------------- |
+        | `setHttpCookiesEnabled(boolean enabled)`    | `enabled` - 用于启用/禁用的标志位                  | 设置是否记住 HTTP Cookie，并在后续请求中将其发送回服务器。                                                                              | -       | -                                        |
+        | `httpHeader(String key, String value)`      | `key` - HTTP 请求头键<br />`value` - 字符串值    | 为单个 HTTP 请求头设置值。之前的值将被覆盖。                                                                                        | `none`  | `none`                                   |
+        | `httpHeader(String key, Collection values)` | `key` - HTTP 请求头键<br />`values` - 字符串值列表 | 为单个 HTTP 请求头设置多个值。之前的值将被覆盖。                                                                                      | `none`  | `none`                                   |
+        | `httpHeaders(Map headers)`                  | `headers` - 包含 HTTP 请求头的映射               | 一次设置多个 HTTP 请求头的值。                                                                                               | `none`  | `none`                                   |
+        | `useHttpFormDataForQuery(boolean enable)`   | `enable` - 启用/禁用标志                       | 设置是否将查询参数作为 HTTP 表单数据放在请求体中发送，而不是放在 URL 中。仅在启用服务器端压缩时生效。如果启用了客户端级压缩，则对于带参数的查询请求会禁用该压缩，因为每个参数都会作为 multipart 内容发送。 | `false` | `client.http.use_form_request_for_query` |
+      </TabItem>
+
+      <TabItem value="服务器设置" label="服务器设置">
+        | Method                                          | Arguments                         | Description                                                                                            | Default   | Key                      |
+        | ----------------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------ | --------- | ------------------------ |
+        | `serverSetting(String name, String value)`      | `name` - 设置名称<br />`value` - 设置值  | 设置随每个查询一起发送到服务器的设置。单次操作的设置可以覆盖它。[设置列表](/operations/settings/query-level)                               | `none`    | `none`                   |
+        | `serverSetting(String name, Collection values)` | `name` - 设置名称<br />`values` - 设置值 | 设置随每个查询一起发送到服务器的、包含多个值的设置，例如 [roles](/interfaces/http#setting-role-with-query-parameters)              | `none`    | `none`                   |
+        | `setOption("custom_settings_prefix", value)`    | `value` - 前缀字符串                   | 设置传递给服务器的自定义服务器设置的前缀，应与服务器配置保持一致。参见 [ClickHouse 文档](/operations/settings/query-level#custom_settings)。 | `custom_` | `custom_settings_prefix` |
+      </TabItem>
+
+      <TabItem value="时区" label="时区">
+        | Method                                         | Arguments                     | Description                                       | Default | Key                    |
+        | ---------------------------------------------- | ----------------------------- | ------------------------------------------------- | ------- | ---------------------- |
+        | `useServerTimeZone(boolean useServerTimeZone)` | `useServerTimeZone` - 启用/禁用开关 | 设置在解码 `DateTime` 和 `Date` 列值时客户端是否应使用服务器时区。       | `true`  | `use_server_time_zone` |
+        | `useTimeZone(String timeZone)`                 | `timeZone` - 有效的 Java 时区 ID   | 设置在解码 `DateTime` 和 `Date` 列值时是否应使用指定的时区。将覆盖服务器时区。 | -       | `use_time_zone`        |
+        | `setServerTimeZone(String timeZone)`           | `timeZone` - 有效的 Java 时区 ID   | 设置服务器端时区。默认使用 UTC 时区。                             | `UTC`   | `server_time_zone`     |
+      </TabItem>
+
+      <TabItem value="进阶" label="进阶">
+        | Method                                                                    | Arguments                                               | Description                                                                 | Default  | Key                          |
+        | ------------------------------------------------------------------------- | ------------------------------------------------------- | --------------------------------------------------------------------------- | -------- | ---------------------------- |
+        | `setOption(String key, String value)`                                     | `key` - 配置选项键<br />`value` - 选项值                        | 设置客户端选项的原始值。适用于从属性配置文件读取配置的场景。                                              | -        | -                            |
+        | `useAsyncRequests(boolean async)`                                         | `async` - 启用/禁用标志                                       | 设置客户端是否应在单独线程中执行请求。默认禁用，因为应用程序更清楚如何组织多线程任务。                                 | `false`  | `async`                      |
+        | `setSharedOperationExecutor(ExecutorService executorService)`             | `executorService` - ExecutorService 实例                  | 为操作任务设置 ExecutorService。                                                    | `none`   | `none`                       |
+        | `setQueryIdGenerator(Supplier<String> supplier)`                          | `supplier` - 用于生成查询 ID 的 `Supplier<String>`             | 设置自定义查询 ID 生成器，当操作设置 (`InsertSettings`、`QuerySettings`) 中未指定查询 ID 时将使用该生成器。 | -        | -                            |
+        | `setClientNetworkBufferSize(int size)`                                    | `size` - 以字节为单位的大小                                      | 设置应用程序内存空间中缓冲区的大小，该缓冲区用于在 socket 与应用程序之间复制数据。                               | `300000` | `client_network_buffer_size` |
+        | `allowBinaryReaderToReuseBuffers(boolean reuse)`                          | `reuse` - 启用/禁用标志                                       | 如果启用，读取器将使用预分配的缓冲区执行数值转码。可降低数值数据的 GC 压力。                                    | -        | -                            |
+        | `columnToMethodMatchingStrategy(ColumnToMethodMatchingStrategy strategy)` | `strategy` - 匹配策略实现                                     | 设置在注册 DTO 时用于匹配 DTO 类字段和数据库列的自定义策略。                                         | `none`   | `none`                       |
+        | `setClientName(String clientName)`                                        | `clientName` - 应用程序名称字符串                                | 设置关于调用方应用程序的附加信息。该信息将作为 `User-Agent` 头传递。                                   | -        | `client_name`                |
+        | `registerClientMetrics(Object registry, String name)`                     | `registry` - Micrometer registry 实例<br />`name` - 指标组名称 | 向 Micrometer (https://micrometer.io/) registry 实例注册指标采集器。                   | -        | -                            |
+        | `setServerVersion(String version)`                                        | `version` - 服务器版本字符串                                    | 设置服务器版本以避免版本自动检测。                                                           | -        | `server_version`             |
+        | `typeHintMapping(Map typeHintMapping)`                                    | `typeHintMapping` - 类型提示映射                              | 为 ClickHouse 类型设置类型提示映射。例如，使多维数组可以以 Java 容器的形式呈现。                           | -        | `type_hint_mapping`          |
+      </TabItem>
+    </Tabs>
+
+    <br />
+
+    ### 客户端标识 \{#client-identification\}
+
+    查询日志中有两个字段用于标识发起请求的应用程序：`client_name` 和 `http_user_agent`。原生 TCP 协议使用 `client_name` 来标识应用程序。HTTP 协议使用 `http_user_agent` 来标识应用程序。Client builder 提供了 `setClientName` 方法，可为两种协议设置正确的值。
+    `http_user_agent` 字段按照 `User-Agent` 请求头的通用格式设置：`application-name[/version] [(operating-system; architecture; ...)]`。
+    这组值会在每一层重复出现：应用程序、客户端库、HTTP 客户端库。通过 `setClientName` 方法设置的内容在列表中排在最前面。
+
+    例如：
+
+    ```java showLineNumbers
+    client.setClientName("my-app-01/1.0");
+    ```
+
+    将得到如下 `http_user_agent` 值：
+
+    ```
+    my-app-01/1.0 clickhouse-java-v2/0.9.6-SNAPSHOT (Linux; jvm:17.0.17) Apache-HttpClient/5.4.4
+    ```
+
+    应用程序可以设置自定义 HTTP 请求头 `User-Agent` 来标识自身。但 `clickhouse-java-v2/0.9.6-SNAPSHOT` 部分将被追加到该请求头的末尾。
+
+    ### 操作标识 \{#operation-identification\}
+
+    查询日志还包含两个字段 `query_id` 和 `log_comment`，可用于标识某个操作并为查询日志添加额外信息。
+
+    `query_id` 是操作的唯一标识符。应用程序可以通过调用 `QuerySettings` 类的 `setQueryId` 方法来设置它。
+
+    ```java showLineNumbers
+    QuerySettings querySettings = new QuerySettings();
+    querySettings.setQueryId("some-query-id");
+    ```
+
+    `log_comment` 是可以添加到查询日志的注释。可以在应用程序中通过调用 `QuerySettings` 类的 `logComment` 方法来设置。
+
+    ```java showLineNumbers
+    QuerySettings querySettings = new QuerySettings();
+    querySettings.logComment("some-comment");
+    ```
+
+    ### 服务器设置 \{#server-settings\}
+
+    服务器端设置可以在创建客户端时于客户端级别配置一次 (参见 `Builder` 的 `serverSetting` 方法) ，也可以在操作级别配置 (参见操作设置类的 `serverSetting` 方法) 。
+
+    ```java showLineNumbers
+     try (Client client = new Client.Builder().addEndpoint(Protocol.HTTP, "localhost", mockServer.port(), false)
+            .setUsername("default")
+            .setPassword(ClickHouseServerForTest.getPassword())
+            .compressClientRequest(true)
+
+            // Client level
+            .serverSetting("max_threads", "10")
+            .serverSetting("async_insert", "1")
+            .serverSetting("roles", Arrays.asList("role1", "role2"))
+
+            .build()) {
+
+    	// Operation level
+    	QuerySettings querySettings = new QuerySettings();
+    	querySettings.serverSetting("session_timezone", "Europe/Zurich");
+
+    	...
+    }
+    ```
+
+    ⚠️ 当通过 `setOption` 方法设置选项时 (无论是在 `Client.Builder` 还是在操作设置类中) ，服务器设置名称应以 `clickhouse_setting_` 为前缀。在这种情况下，`com.clickhouse.client.api.ClientConfigProperties#serverSetting()` 可能会很有用。
+
+    ### 自定义 HTTP 请求头 \{#custom-http-header\}
+
+    可以在客户端级别为所有操作设置自定义 HTTP 请求头，也可以在操作级别仅为单个操作设置。
+
+    ```java showLineNumbers
+
+    QuerySettings settings = new QuerySettings()
+        .httpHeader(HttpHeaders.REFERER, clientReferer)
+        .setQueryId(qId);
+
+    ```
+
+    当通过 `setOption` 方法设置选项时 (无论是 `Client.Builder` 还是操作设置类) ，自定义头部名称应以 `http_header_` 为前缀。此情况下，方法 `com.clickhouse.client.api.ClientConfigProperties#httpHeader()` 可能会很有用。
+
+    ## 常用术语定义 \{#common-definitions\}
+
+    ### ClickHouseFormat \{#clickhouseformat\}
+
+    [支持的格式](/interfaces/formats) 的枚举类型，包含 ClickHouse 支持的所有格式。
+
+    * `raw` - 用户需自行对原始数据进行转码
+    * `full` - 客户端可以自行对数据进行转码，并接收原始数据流
+    * `-` - ClickHouse 不支持对该格式执行此操作
+
+    此客户端版本支持：
+
+    | 格式                                                                                                           |  输入  |  输出  |
+    | ------------------------------------------------------------------------------------------------------------ | :--: | :--: |
+    | [TabSeparated](/interfaces/formats/TabSeparated)                                                             |  raw |  raw |
+    | [TabSeparatedRaw](/interfaces/formats/TabSeparatedRaw)                                                       |  raw |  raw |
+    | [TabSeparatedWithNames](/interfaces/formats/TabSeparatedWithNames)                                           |  raw |  raw |
+    | [TabSeparatedWithNamesAndTypes](/interfaces/formats/TabSeparatedWithNamesAndTypes)                           |  raw |  raw |
+    | [TabSeparatedRawWithNames](/interfaces/formats/TabSeparatedRawWithNames)                                     |  raw |  raw |
+    | [TabSeparatedRawWithNamesAndTypes](/interfaces/formats/TabSeparatedRawWithNamesAndTypes)                     |  raw |  raw |
+    | [Template](/interfaces/formats/Template)                                                                     |  raw |  raw |
+    | [TemplateIgnoreSpaces](/interfaces/formats/TemplateIgnoreSpaces)                                             |  raw |   -  |
+    | [CSV](/interfaces/formats/CSV)                                                                               |  raw |  raw |
+    | [CSVWithNames](/interfaces/formats/CSVWithNames)                                                             |  raw |  raw |
+    | [CSVWithNamesAndTypes](/interfaces/formats/CSVWithNamesAndTypes)                                             |  raw |  raw |
+    | [CustomSeparated](/interfaces/formats/CustomSeparated)                                                       |  raw |  raw |
+    | [CustomSeparatedWithNames](/interfaces/formats/CustomSeparatedWithNames)                                     |  raw |  raw |
+    | [CustomSeparatedWithNamesAndTypes](/interfaces/formats/CustomSeparatedWithNamesAndTypes)                     |  raw |  raw |
+    | [SQLInsert](/interfaces/formats/SQLInsert)                                                                   |   -  |  raw |
+    | [Values](/interfaces/formats/Values)                                                                         |  raw |  raw |
+    | [Vertical](/interfaces/formats/Vertical)                                                                     |   -  |  raw |
+    | [JSON](/interfaces/formats/JSON)                                                                             |  raw |  raw |
+    | [JSONAsString](/interfaces/formats/JSONAsString)                                                             |  raw |   -  |
+    | [JSONAsObject](/interfaces/formats/JSONAsObject)                                                             |  raw |   -  |
+    | [JSONStrings](/interfaces/formats/JSONStrings)                                                               |  raw |  raw |
+    | [JSONColumns](/interfaces/formats/JSONColumns)                                                               |  raw |  raw |
+    | [JSONColumnsWithMetadata](/interfaces/formats/JSONColumnsWithMetadata)                                       |  raw |  raw |
+    | [JSONCompact](/interfaces/formats/JSONCompact)                                                               |  raw |  raw |
+    | [JSONCompactStrings](/interfaces/formats/JSONCompactStrings)                                                 |   -  |  raw |
+    | [JSONCompactColumns](/interfaces/formats/JSONCompactColumns)                                                 |  raw |  raw |
+    | [JSONEachRow](/interfaces/formats/JSONEachRow)                                                               |  raw |  raw |
+    | [PrettyJSONEachRow](/interfaces/formats/PrettyJSONEachRow)                                                   |   -  |  raw |
+    | [JSONEachRowWithProgress](/interfaces/formats/JSONEachRowWithProgress)                                       |   -  |  raw |
+    | [JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow)                                                 |  raw |  raw |
+    | [JSONStringsEachRowWithProgress](/interfaces/formats/JSONStringsEachRowWithProgress)                         |   -  |  raw |
+    | [JSONCompactEachRow](/interfaces/formats/JSONCompactEachRow)                                                 |  raw |  raw |
+    | [JSONCompactEachRowWithNames](/interfaces/formats/JSONCompactEachRowWithNames)                               |  raw |  raw |
+    | [JSONCompactEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes)               |  raw |  raw |
+    | [JSONCompactStringsEachRow](/interfaces/formats/JSONCompactStringsEachRow)                                   |  raw |  raw |
+    | [JSONCompactStringsEachRowWithNames](/interfaces/formats/JSONCompactStringsEachRowWithNames)                 |  raw |  raw |
+    | [JSONCompactStringsEachRowWithNamesAndTypes](/interfaces/formats/JSONCompactStringsEachRowWithNamesAndTypes) |  raw |  raw |
+    | [JSONObjectEachRow](/interfaces/formats/JSONObjectEachRow)                                                   |  raw |  raw |
+    | [BSONEachRow](/interfaces/formats/BSONEachRow)                                                               |  raw |  raw |
+    | [TSKV](/interfaces/formats/TSKV)                                                                             |  raw |  raw |
+    | [Pretty](/interfaces/formats/Pretty)                                                                         |   -  |  raw |
+    | [PrettyNoEscapes](/interfaces/formats/PrettyNoEscapes)                                                       |   -  |  raw |
+    | [PrettyMonoBlock](/interfaces/formats/PrettyMonoBlock)                                                       |   -  |  raw |
+    | [PrettyNoEscapesMonoBlock](/interfaces/formats/PrettyNoEscapesMonoBlock)                                     |   -  |  raw |
+    | [PrettyCompact](/interfaces/formats/PrettyCompact)                                                           |   -  |  raw |
+    | [PrettyCompactNoEscapes](/interfaces/formats/PrettyCompactNoEscapes)                                         |   -  |  raw |
+    | [PrettyCompactMonoBlock](/interfaces/formats/PrettyCompactMonoBlock)                                         |   -  |  raw |
+    | [PrettyCompactNoEscapesMonoBlock](/interfaces/formats/PrettyCompactNoEscapesMonoBlock)                       |   -  |  raw |
+    | [PrettySpace](/interfaces/formats/PrettySpace)                                                               |   -  |  raw |
+    | [PrettySpaceNoEscapes](/interfaces/formats/PrettySpaceNoEscapes)                                             |   -  |  raw |
+    | [PrettySpaceMonoBlock](/interfaces/formats/PrettySpaceMonoBlock)                                             |   -  |  raw |
+    | [PrettySpaceNoEscapesMonoBlock](/interfaces/formats/PrettySpaceNoEscapesMonoBlock)                           |   -  |  raw |
+    | [Prometheus](/interfaces/formats/Prometheus)                                                                 |   -  |  raw |
+    | [Protobuf](/interfaces/formats/Protobuf)                                                                     |  raw |  raw |
+    | [ProtobufSingle](/interfaces/formats/ProtobufSingle)                                                         |  raw |  raw |
+    | [ProtobufList](/interfaces/formats/ProtobufList)                                                             |  raw |  raw |
+    | [Avro](/interfaces/formats/Avro)                                                                             |  raw |  raw |
+    | [AvroConfluent](/interfaces/formats/AvroConfluent)                                                           |  raw |   -  |
+    | [Parquet](/interfaces/formats/Parquet)                                                                       |  raw |  raw |
+    | [ParquetMetadata](/interfaces/formats/ParquetMetadata)                                                       |  raw |   -  |
+    | [Arrow](/interfaces/formats/Arrow)                                                                           |  raw |  raw |
+    | [ArrowStream](/interfaces/formats/ArrowStream)                                                               |  raw |  raw |
+    | [ORC](/interfaces/formats/ORC)                                                                               |  raw |  raw |
+    | [One](/interfaces/formats/One)                                                                               |  raw |   *  |
+    | [Npy](/interfaces/formats/Npy)                                                                               |  raw |  raw |
+    | [RowBinary](/interfaces/formats/RowBinary)                                                                   | full | full |
+    | [RowBinaryWithNames](/interfaces/formats/RowBinaryWithNamesAndTypes)                                         | full | full |
+    | [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes)                                 | full | full |
+    | [RowBinaryWithDefaults](/interfaces/formats/RowBinaryWithDefaults)                                           | full |   -  |
+    | [Native](/interfaces/formats/Native)                                                                         | full |  raw |
+    | [Null](/interfaces/formats/Null)                                                                             |   *  |  raw |
+    | [XML](/interfaces/formats/XML)                                                                               |   -  |  原始  |
+    | [CapnProto](/interfaces/formats/CapnProto)                                                                   |  原始  |  原始  |
+    | [LineAsString](/interfaces/formats/LineAsString)                                                             |  原始  |  raw |
+    | [Regexp](/interfaces/formats/Regexp)                                                                         |  raw |   *  |
+    | [RawBLOB](/interfaces/formats/RawBLOB)                                                                       |  raw |  raw |
+    | [MsgPack](/interfaces/formats/MsgPack)                                                                       |  raw |  raw |
+    | [MySQLDump](/interfaces/formats/MySQLDump)                                                                   |  raw |   -  |
+    | [DWARF](/interfaces/formats/DWARF)                                                                           |  raw |   *  |
+    | [Markdown](/interfaces/formats/Markdown)                                                                     |   -  |  raw |
+    | [Form](/interfaces/formats/Form)                                                                             |  raw |   *  |
+
+    ## 插入 API \{#insert-api\}
+
+    ### insert(String tableName, InputStream data, ClickHouseFormat format) \{#insertstring-tablename-inputstream-data-clickhouseformat-format\}
+
+    接受以指定格式编码的字节输入流 (`InputStream`) 形式的数据。假定 `data` 已按 `format` 进行编码。
+
+    **签名**
+
+    ```java
+    CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format, InsertSettings settings)
+    CompletableFuture<InsertResponse> insert(String tableName, InputStream data, ClickHouseFormat format)
+    ```
+
+    **参数**
+
+    `tableName` - 目标表的名称。
+
+    `data` - 已编码数据的输入流。
+
+    `format` - 数据编码所使用的格式。
+
+    `settings` - 请求设置。
+
+    **返回值**
+
+    `InsertResponse` 类型的 Future，包含操作结果以及服务器端指标等附加信息。
+
+    **示例**
+
+    ```java showLineNumbers
+    try (InputStream dataStream = getDataStream()) {
+        try (InsertResponse response = client.insert(TABLE_NAME, dataStream, ClickHouseFormat.JSONEachRow,
+                insertSettings).get(3, TimeUnit.SECONDS)) {
+
+            log.info("Insert finished: {} rows written", response.getMetrics().getMetric(ServerMetrics.NUM_ROWS_WRITTEN).getLong());
+        } catch (Exception e) {
+            log.error("Failed to write JSONEachRow data", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    ```
+
+    ### insert(String tableName, List&lt;?&gt; data, InsertSettings settings) \{#insertstring-tablename-listlt-data-insertsettings-settings\}
+
+    向数据库发送写入请求。对象列表会被转换为高效的内部格式，然后发送到服务器。列表项所属的类应事先使用 `register(Class, TableSchema)` 方法进行注册。
+
+    **签名**
+
+    ```java
+    client.insert(String tableName, List<?> data, InsertSettings settings)
+    client.insert(String tableName, List<?> data)
+    ```
+
+    **参数**
+
+    `tableName` - 目标表名称。
+
+    `data` - DTO (数据传输对象) 对象集合。
+
+    `settings` - 请求设置。
+
+    **返回值**
+
+    返回 `InsertResponse` 类型的 Future，包含操作结果以及服务器端指标等附加信息。
+
+    **示例**
+
+    ```java showLineNumbers
+    // Important step (done once) - register class to pre-compile object serializer according to the table schema.
+    client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
+
+    List<ArticleViewEvent> events = loadBatch();
+
+    try (InsertResponse response = client.insert(TABLE_NAME, events).get()) {
+        // handle response, then it will be closed and connection that served request will be released.
+    }
+    ```
+
+    ### InsertSettings \{#insertsettings\}
+
+    插入操作的配置选项。
+
+    **配置方法**
+
+    | 方法                                              | 说明                                                     |
+    | ----------------------------------------------- | ------------------------------------------------------ |
+    | `setQueryId(String queryId)`                    | 设置将要分配给该操作的查询 ID。默认值：`null`。                           |
+    | `setDeduplicationToken(String token)`           | 设置去重令牌。该令牌将发送到服务器，并可用于标识查询。默认值：`null`。                 |
+    | `setInputStreamCopyBufferSize(int size)`        | 复制缓冲区的大小。在写入操作期间，该缓冲区用于将用户提供的输入流中的数据复制到输出流。默认值：`8196`。 |
+    | `serverSetting(String name, String value)`      | 为操作设置单独的服务器设置。                                         |
+    | `serverSetting(String name, Collection values)` | 为某个操作设置可包含多个值的单个服务器配置项。集合中的元素应为 `String` 值。            |
+    | `setDBRoles(Collection dbRoles)`                | 设置在执行操作前要生效的数据库角色。集合中的元素应为 `String` 值。                 |
+    | `setOption(String option, Object value)`        | 以原始格式设置配置选项。这不是服务器设置。                                  |
+
+    ### InsertResponse \{#insertresponse\}
+
+    用于保存插入操作结果的响应对象。仅当客户端从服务器收到响应时才可用。
+
+    :::note
+    应尽快关闭该对象以释放连接，因为在完全读取完上一个响应的全部数据之前，该连接无法被复用。
+    :::
+
+    | 方法                              | 描述                                              |
+    | ------------------------------- | ----------------------------------------------- |
+    | `OperationMetrics getMetrics()` | 返回一个包含该操作各项指标的对象。                               |
+    | `String getQueryId()`           | 返回为该操作分配的查询 ID，该 ID 可由应用程序 (通过操作设置) 指定，或由服务器分配。 |
+
+    ## 查询 API \{#query-api\}
+
+    ### query(String sqlQuery) \{#querystring-sqlquery\}
+
+    按原样发送 `sqlQuery`。响应格式由查询设置指定。`QueryResponse` 将持有对响应流的引用，该响应流应由能够处理该格式的读取器来消费。
+
+    **签名**
+
+    ```java
+    CompletableFuture<QueryResponse> query(String sqlQuery, QuerySettings settings)
+    CompletableFuture<QueryResponse> query(String sqlQuery)
+    ```
+
+    **参数**
+
+    `sqlQuery` - 单条 SQL 语句。该查询按原样发送到服务器。
+
+    `settings` - 请求设置。
+
+    **返回值**
+
+    类型为 `QueryResponse` 的 Future —— 结果数据集以及服务器端指标等附加信息。使用完数据集后应关闭 Response 对象。
+
+    **示例**
+
+    ```java
+    final String sql = "select * from " + TABLE_NAME + " where title <> '' limit 10";
+
+    // Default format is RowBinaryWithNamesAndTypesFormatReader so reader have all information about columns
+    try (QueryResponse response = client.query(sql).get(3, TimeUnit.SECONDS);) {
+
+        // Create a reader to access the data in a convenient way
+        ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+        while (reader.hasNext()) {
+            reader.next(); // Read the next record from stream and parse it
+
+            // get values
+            double id = reader.getDouble("id");
+            String title = reader.getString("title");
+            String url = reader.getString("url");
+
+            // collecting data
+        }
+    } catch (Exception e) {
+        log.error("Failed to read data", e);
+    }
+
+    // put business logic outside of the reading block to release http connection asap.
+    ```
+
+    ### query(String sqlQuery, Map&lt;String, Object&gt; queryParams, QuerySettings settings) \{#querystring-sqlquery-mapltstring-object-queryparams-querysettings-settings\}
+
+    按原样发送 `sqlQuery`，并同时发送查询参数，以便服务器能够编译该 SQL 表达式。
+
+    **签名**
+
+    ```java
+    CompletableFuture<QueryResponse> query(String sqlQuery, Map<String, Object> queryParams, QuerySettings settings)
+    ```
+
+    **参数**
+
+    `sqlQuery` - 带有占位符 `{}` 的 SQL 表达式。
+
+    `queryParams` - 变量到值的映射，用于在服务器端补全 SQL 表达式。
+
+    `settings` - 请求设置。
+
+    **返回值**
+
+    类型为 `QueryResponse` 的 Future —— 结果数据集以及服务器端指标等附加信息。使用完数据集后应关闭 Response 对象。
+
+    **示例**
+
+    ```java showLineNumbers
+
+    // define parameters. They will be sent to the server along with the request.
+    Map<String, Object> queryParams = new HashMap<>();
+    queryParams.put("param1", 2);
+
+    try (QueryResponse response =
+            client.query("SELECT * FROM " + table + " WHERE col1 >= {param1:UInt32}", queryParams, new QuerySettings()).get()) {
+
+        // Create a reader to access the data in a convenient way
+        ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+
+        while (reader.hasNext()) {
+            reader.next(); // Read the next record from stream and parse it
+
+            // reading data
+        }
+
+    } catch (Exception e) {
+        log.error("Failed to read data", e);
+    }
+
+    ```
+
+    ### queryAll(String sqlQuery) \{#queryallstring-sqlquery\}
+
+    以 `RowBinaryWithNamesAndTypes` 格式查询数据。结果以集合形式返回。读取性能与使用 reader 相同，但需要更多内存来保存整个数据集。
+
+    **签名**
+
+    ```java
+    List<GenericRecord> queryAll(String sqlQuery)
+    ```
+
+    **参数**
+
+    `sqlQuery` - 用于从服务器查询数据的 SQL 表达式。
+
+    **返回值**
+
+    以 `GenericRecord` 对象列表表示的完整数据集，这些对象以按行的方式提供对结果数据的访问。
+
+    **示例**
+
+    ```java showLineNumbers
+    try {
+        log.info("Reading whole table and process record by record");
+        final String sql = "select * from " + TABLE_NAME + " where title <> ''";
+
+        // Read whole result set and process it record by record
+        client.queryAll(sql).forEach(row -> {
+            double id = row.getDouble("id");
+            String title = row.getString("title");
+            String url = row.getString("url");
+
+            log.info("id: {}, title: {}, url: {}", id, title, url);
+        });
+    } catch (Exception e) {
+        log.error("Failed to read data", e);
+    }
+    ```
+
+    ### QuerySettings \{#querysettings\}
+
+    查询操作的配置选项。
+
+    **配置方法**
+
+    | 方法                                                | 描述                                                                                                   |
+    | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+    | `setQueryId(String queryId)`                      | 设置将分配给该操作的查询 ID。                                                                                     |
+    | `setFormat(ClickHouseFormat format)`              | 设置响应格式。完整列表请参见 `RowBinaryWithNamesAndTypes`。                                                         |
+    | `setMaxExecutionTime(Integer maxExecutionTime)`   | 设置操作在服务器上的执行时间，不影响读取超时。                                                                              |
+    | `waitEndOfQuery(Boolean waitEndOfQuery)`          | 请求服务器在发送响应之前等待查询结束。                                                                                  |
+    | `setUseServerTimeZone(Boolean useServerTimeZone)` | 服务端时区 (参见客户端配置) 将用于解析操作结果中的日期/时间类型值。默认值为 `false`。                                                    |
+    | `setUseTimeZone(String timeZone)`                 | 请求服务器使用 `timeZone` 进行时间转换。详见 [session&#95;timezone](/operations/settings/settings#session_timezone)。 |
+    | `serverSetting(String name, String value)`        | 为操作设置单独的服务器配置项。                                                                                      |
+    | `serverSetting(String name, Collection values)`   | 为某个操作设置可包含多个值的单个服务器配置项。集合中的元素应为 `String` 值。                                                          |
+    | `setDBRoles(Collection dbRoles)`                  | 设置在执行操作前要启用的数据库角色。集合中的元素应为 `String` 类型的值。                                                            |
+    | `setOption(String option, Object value)`          | 以原始格式设置配置选项。这不是服务器端设置。                                                                               |
+
+    ### QueryResponse \{#queryresponse\}
+
+    用于保存查询执行结果的响应对象。仅在客户端已从服务器收到响应时才可用。
+
+    :::note
+    应尽快关闭该对象以释放连接，因为在完全读取完上一个响应的全部数据之前，该连接无法被复用。
+    :::
+
+    | 方法                              | 描述                                          |
+    | ------------------------------- | ------------------------------------------- |
+    | `ClickHouseFormat getFormat()`  | 返回响应数据的编码格式。                                |
+    | `InputStream getInputStream()`  | 返回按指定格式编码的未压缩数据字节流。                         |
+    | `OperationMetrics getMetrics()` | 返回包含该操作指标的对象。                               |
+    | `String getQueryId()`           | 返回为该操作分配的查询 ID，该 ID 可由应用程序 (通过操作设置) 或服务器指定。 |
+    | `TimeZone getTimeZone()`        | 返回在处理响应中的 Date/DateTime 类型时应使用的时区。          |
+
+    ### 示例 \{#examples\}
+
+    * 示例代码可在[代码仓库](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2)中获取
+    * 参考 Spring Service 的[实现](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service)
+
+    ## 通用 API \{#common-api\}
+
+    ### getTableSchema(String table) \{#gettableschemastring-table\}
+
+    获取 `table` 的表 schema。
+
+    **签名**
+
+    ```java
+    TableSchema getTableSchema(String table)
+    TableSchema getTableSchema(String table, String database)
+    ```
+
+    **参数**
+
+    `table` - 要获取其 schema 数据的表名。
+
+    `database` - 定义目标表的数据库。
+
+    **返回值**
+
+    返回一个 `TableSchema` 对象，其中包含该表的列列表。
+
+    ### getTableSchemaFromQuery(String sql) \{#gettableschemafromquerystring-sql\}
+
+    从 SQL 语句中获取 schema。
+
+    **签名**
+
+    ```java
+    TableSchema getTableSchemaFromQuery(String sql)
+    ```
+
+    **参数**
+
+    `sql` - &quot;SELECT&quot; SQL 语句，其 schema 将被返回。
+
+    **返回值**
+
+    返回一个列与 `sql` 表达式匹配的 `TableSchema` 对象。
+
+    ### TableSchema \{#tableschema\}
+
+    ### register(Class&lt;?&gt; clazz, TableSchema schema) \{#registerclasslt-clazz-tableschema-schema\}
+
+    为 Java 类编译一个序列化/反序列化层，以便在基于 `schema` 进行数据读写时使用。该方法将为 getter/setter 方法对及其对应的列创建序列化器和反序列化器。
+    列匹配是通过从方法名中提取列名来完成的。例如，`getFirstName` 将对应列 `first_name` 或 `firstname`。
+
+    **签名**
+
+    ```java
+    void register(Class<?> clazz, TableSchema schema)
+    ```
+
+    **参数**
+
+    `clazz` - 表示用于读取/写入数据的 POJO 的 Class。
+
+    `schema` - 用于与 POJO 属性进行匹配的数据 schema。
+
+    **示例**
+
+    ```java showLineNumbers
+    client.register(ArticleViewEvent.class, client.getTableSchema(TABLE_NAME));
+    ```
+
+    ## 使用示例 \{#usage-examples\}
+
+    完整示例代码存放在代码仓库的 &#39;example` [目录](https://github.com/ClickHouse/clickhouse-java/tree/main/examples) 中：
+
+    * [client-v2](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client-v2) - 主要示例代码集。
+    * [demo-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-service) - 在 Spring Boot 应用中使用该客户端的示例项目。
+    * [demo-kotlin-service](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/demo-kotlin-service) - 示例代码，演示如何在 Ktor (Kotlin) 应用中使用该客户端。
+
+    ## 读取数据 \{#reading-data\}
+
+    读取数据通常有两种方式：
+
+    * `query()` 方法返回底层的 `QueryResponse` 对象，该对象包含用于承载数据的 `InputStream`。通常与 `ClickHouseBinaryFormatReader` 搭配使用以进行流式读取，但
+      也可以与任意其他自定义读取器实现配合使用。`QueryResponse` 还提供对结果集元数据和指标的访问能力。
+    * `queryAll()` 方法与 `GenericRecord` 搭配使用，可方便按行访问数据。在这种情况下，会将整个结果集加载到内存中。
+    * `queryRecords()` 方法返回 `com.clickhouse.client.api.query.Records` —— 一个用于迭代 `GenericRecord` 对象的迭代器。该方法采用流式处理方式
+      (不会将数据加载到内存中) ，并通过 `GenericRecord` 来访问数据。
+
+    **注意：** 流式处理方式要求快速读取，否则由于数据直接从网络流读取，可能导致服务器写入超时。
+
+    ### 读取数组 \{#reading-arrays\}
+
+    **`ClickHouseBinaryFormatReader` 方法**
+
+    * `getList(...)` - 将任意 `Array(...)` 读取为 `List<T>`。适合作为灵活类型读取的默认选项。支持嵌套数组。
+    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - 最适合读取元素类型与 Java 原始类型兼容的一维数组。
+    * `getStringArray(...)` - 用于读取 `Array(String)` (以及以名称表示的枚举值) 。
+    * `getObjectArray(...)` - 针对任意 `Array(...)` 元素类型 (包括嵌套数组) 的通用方法。用于读取包含 Nullable 值和嵌套数组的数组。
+
+    所有方法都提供基于索引和基于名称的重载。索引从 1 开始计数。基于索引的重载会直接访问对应的列。
+    基于名称的方法每次调用时都需要执行一次索引查找。
+
+    ```java
+    try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
+        ClickHouseBinaryFormatReader reader = client.newBinaryFormatReader(response);
+        while (reader.next() != null) {
+
+            Object[] uint64 = reader.getObjectArray("uint64_arr"); // Array(UInt64) -> BigInteger[]
+            Object[] arr2d = reader.getObjectArray("arr2d");       // Array(Array(Int64)) -> Object[]
+
+            // nested arrays are returned as nested Object[]:
+            Object[] firstInner = (Object[]) arr2d[0];
+            Long firstValue = (Long) firstInner[0];
+        }
+    }
+    ```
+
+    **`GenericRecord` 方法**
+
+    * `getList(...)` - 将任意 `Array(...)` 读取为 `List<T>`。适合作为灵活类型读取的默认选项。支持嵌套数组。
+    * `getByteArray(...)`, `getShortArray(...)`, `getIntArray(...)`, `getLongArray(...)`, `getFloatArray(...)`, `getDoubleArray(...)`, `getBooleanArray(...)` - 最适合用于元素值与 Java 原始类型兼容的一维数组。
+    * `getStringArray(...)` - 用于 `Array(String)` (以及以名称表示的枚举值) 。
+    * `getObjectArray(...)` - 针对任意 `Array(...)` 元素类型 (包括嵌套数组) 的通用方法。用于读取包含 Nullable 值和嵌套数组的数组。
+
+    所有方法都提供基于索引和基于名称的重载。索引从 1 开始计数。基于索引的重载会直接访问对应的列。
+    基于名称的方法每次调用时都需要执行一次索引查找。
+
+    ```java
+    try (QueryResponse response = client.query("SELECT * FROM my_table").get()) {
+        List<GenericRecord> rows = client.queryAll(
+            "SELECT int_arr, arr2d_nullable FROM test_arrays ORDER BY id");
+
+        for (GenericRecord row : rows) {
+            Object[] intArr = row.getObjectArray("int_arr");                 // Array(Int32) -> Integer[]
+            Object[] arr2d = row.getObjectArray("arr2d_nullable");           // Array(Array(Nullable(Int32)))
+
+            Object[] inner = (Object[]) arr2d[0];
+            Object maybeNull = inner[1]; // may be null
+        }
+    }
+    ```
+
+    ## 迁移指南 \{#migration_guide\}
+
+    旧版客户端 (V1) 以 `com.clickhouse.client.ClickHouseClient#builder` 作为入口点。新版客户端 (V2) 采用类似的模式，使用 `com.clickhouse.client.api.Client.Builder`。主要区别如下：
+
+    * 不使用 service loader 来获取实现。`com.clickhouse.client.api.Client` 是一个外观类，未来可用于各类实现。
+    * 配置来源更少了：一种由 builder 提供，另一种通过操作设置 (`QuerySettings`、`InsertSettings`) 提供。上一版本支持按节点配置，并且在某些情况下还会加载
+      环境变量。
+
+    ### 配置参数对照 \{#migration_from_v1_config\}
+
+    V1 中有 3 个与配置相关的枚举类：
+
+    * `com.clickhouse.client.config.ClickHouseDefaults` - 在大多数使用场景下通常需要设置的配置参数，例如 `USER` 和 `PASSWORD`。
+    * `com.clickhouse.client.config.ClickHouseClientOption` - 客户端专用的配置参数，例如 `HEALTH_CHECK_INTERVAL`。
+    * `com.clickhouse.client.http.config.ClickHouseHttpOption` - HTTP 接口专用的配置参数。例如 `RECEIVE_QUERY_PROGRESS`。
+
+    它们的设计初衷是对参数进行分组并提供清晰的分隔。然而在某些情况下，这会导致混淆 (例如，`com.clickhouse.client.config.ClickHouseDefaults#ASYNC` 与 `com.clickhouse.client.config.ClickHouseClientOption#ASYNC` 之间是否存在区别) 。新的 V2 客户端使用 `com.clickhouse.client.api.Client.Builder` 作为所有可能的客户端配置选项的统一字典。`com.clickhouse.client.api.ClientConfigProperties` 中列出了所有配置参数名称。
+
+    下表列出了新客户端中支持的旧版选项及其新含义。
+
+    **图例：** ✔ = 支持，✗ = 已移除
+
+    <Tabs groupId="v1-migration">
+      <TabItem value="connection-auth" label="连接与身份验证">
+        | V1 Configuration                                                                 | V2 Builder Method                           | Comments                  |
+        | -------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------- |
+        | `ClickHouseDefaults#HOST`                                                        | `Client.Builder#addEndpoint`                |                           |
+        | `ClickHouseDefaults#PROTOCOL`                                                    | ✗                                           | Only HTTP supported in V2 |
+        | `ClickHouseDefaults#DATABASE`<br />`ClickHouseClientOption#DATABASE`             | `Client.Builder#setDefaultDatabase`         |                           |
+        | `ClickHouseDefaults#USER`                                                        | `Client.Builder#setUsername`                |                           |
+        | `ClickHouseDefaults#PASSWORD`                                                    | `Client.Builder#setPassword`                |                           |
+        | `ClickHouseClientOption#CONNECTION_TIMEOUT`                                      | `Client.Builder#setConnectTimeout`          |                           |
+        | `ClickHouseClientOption#CONNECTION_TTL`                                          | `Client.Builder#setConnectionTTL`           |                           |
+        | `ClickHouseHttpOption#MAX_OPEN_CONNECTIONS`                                      | `Client.Builder#setMaxConnections`          |                           |
+        | `ClickHouseHttpOption#KEEP_ALIVE`<br />`ClickHouseHttpOption#KEEP_ALIVE_TIMEOUT` | `Client.Builder#setKeepAliveTimeout`        |                           |
+        | `ClickHouseHttpOption#CONNECTION_REUSE_STRATEGY`                                 | `Client.Builder#setConnectionReuseStrategy` |                           |
+        | `ClickHouseHttpOption#USE_BASIC_AUTHENTICATION`                                  | `Client.Builder#useHTTPBasicAuth`           |                           |
+      </TabItem>
+
+      <TabItem value="SSL" label="SSL & Security">
+        | V1 Configuration                                       | V2 Builder Method                         | Comments                                             |
+        | ------------------------------------------------------ | ----------------------------------------- | ---------------------------------------------------- |
+        | `ClickHouseDefaults#SSL_CERTIFICATE_TYPE`              | ✗                                         |                                                      |
+        | `ClickHouseDefaults#SSL_KEY_ALGORITHM`                 | ✗                                         |                                                      |
+        | `ClickHouseDefaults#SSL_PROTOCOL`                      | ✗                                         |                                                      |
+        | `ClickHouseClientOption#SSL`                           | ✗                                         | See `Client.Builder#addEndpoint`                     |
+        | `ClickHouseClientOption#SSL_MODE`                      | ✗                                         |                                                      |
+        | `ClickHouseClientOption#SSL_ROOT_CERTIFICATE`          | `Client.Builder#setRootCertificate`       | SSL Auth should be enabled by `useSSLAuthentication` |
+        | `ClickHouseClientOption#SSL_CERTIFICATE`               | `Client.Builder#setClientCertificate`     |                                                      |
+        | `ClickHouseClientOption#SSL_KEY`                       | `Client.Builder#setClientKey`             |                                                      |
+        | `ClickHouseClientOption#KEY_STORE_TYPE`                | `Client.Builder#setSSLTrustStoreType`     |                                                      |
+        | `ClickHouseClientOption#TRUST_STORE`                   | `Client.Builder#setSSLTrustStore`         |                                                      |
+        | `ClickHouseClientOption#KEY_STORE_PASSWORD`            | `Client.Builder#setSSLTrustStorePassword` |                                                      |
+        | `ClickHouseClientOption#SSL_SOCKET_SNI`                | `Client.Builder#sslSocketSNI`             |                                                      |
+        | `ClickHouseClientOption#CUSTOM_SOCKET_FACTORY`         | ✗                                         |                                                      |
+        | `ClickHouseClientOption#CUSTOM_SOCKET_FACTORY_OPTIONS` | ✗                                         | See `Client.Builder#sslSocketSNI` to set SNI         |
+      </TabItem>
+
+      <TabItem value="套接字" label="套接字选项">
+        | V1 Configuration                            | V2 Builder Method                      | Comments |
+        | ------------------------------------------- | -------------------------------------- | -------- |
+        | `ClickHouseClientOption#SOCKET_TIMEOUT`     | `Client.Builder#setSocketTimeout`      |          |
+        | `ClickHouseClientOption#SOCKET_REUSEADDR`   | `Client.Builder#setSocketReuseAddress` |          |
+        | `ClickHouseClientOption#SOCKET_KEEPALIVE`   | `Client.Builder#setSocketKeepAlive`    |          |
+        | `ClickHouseClientOption#SOCKET_LINGER`      | `Client.Builder#setSocketLinger`       |          |
+        | `ClickHouseClientOption#SOCKET_IP_TOS`      | ✗                                      |          |
+        | `ClickHouseClientOption#SOCKET_TCP_NODELAY` | `Client.Builder#setSocketTcpNodelay`   |          |
+        | `ClickHouseClientOption#SOCKET_RCVBUF`      | `Client.Builder#setSocketRcvbuf`       |          |
+        | `ClickHouseClientOption#SOCKET_SNDBUF`      | `Client.Builder#setSocketSndbuf`       |          |
+      </TabItem>
+
+      <TabItem value="压缩" label="压缩">
+        | V1 Configuration                              | V2 Builder Method                       | Comments                                         |
+        | --------------------------------------------- | --------------------------------------- | ------------------------------------------------ |
+        | `ClickHouseClientOption#COMPRESS`             | `Client.Builder#compressServerResponse` | See also `useHttpCompression`                    |
+        | `ClickHouseClientOption#DECOMPRESS`           | `Client.Builder#compressClientRequest`  | See also `useHttpCompression`                    |
+        | `ClickHouseClientOption#COMPRESS_ALGORITHM`   | ✗                                       | `LZ4` for non-http. Http uses `Accept-Encoding`  |
+        | `ClickHouseClientOption#DECOMPRESS_ALGORITHM` | ✗                                       | `LZ4` for non-http. Http uses `Content-Encoding` |
+        | `ClickHouseClientOption#COMPRESS_LEVEL`       | ✗                                       |                                                  |
+        | `ClickHouseClientOption#DECOMPRESS_LEVEL`     | ✗                                       |                                                  |
+      </TabItem>
+
+      <TabItem value="代理" label="代理">
+        | V1 Configuration                        | V2 Builder Method                    | Comments |
+        | --------------------------------------- | ------------------------------------ | -------- |
+        | `ClickHouseClientOption#PROXY_TYPE`     | `Client.Builder#addProxy`            |          |
+        | `ClickHouseClientOption#PROXY_HOST`     | `Client.Builder#addProxy`            |          |
+        | `ClickHouseClientOption#PROXY_PORT`     | `Client.Builder#addProxy`            |          |
+        | `ClickHouseClientOption#PROXY_USERNAME` | `Client.Builder#setProxyCredentials` |          |
+        | `ClickHouseClientOption#PROXY_PASSWORD` | `Client.Builder#setProxyCredentials` |          |
+      </TabItem>
+
+      <TabItem value="timeouts-retry" label="超时与重试">
+        | V1 Configuration                                | V2 Builder Method                    | Comments                   |
+        | ----------------------------------------------- | ------------------------------------ | -------------------------- |
+        | `ClickHouseClientOption#MAX_EXECUTION_TIME`     | `Client.Builder#setExecutionTimeout` |                            |
+        | `ClickHouseClientOption#RETRY`                  | `Client.Builder#setMaxRetries`       | See also `retryOnFailures` |
+        | `ClickHouseHttpOption#AHC_RETRY_ON_FAILURE`     | `Client.Builder#retryOnFailures`     |                            |
+        | `ClickHouseClientOption#FAILOVER`               | ✗                                    |                            |
+        | `ClickHouseClientOption#REPEAT_ON_SESSION_LOCK` | ✗                                    |                            |
+        | `ClickHouseClientOption#SESSION_ID`             | ✗                                    |                            |
+        | `ClickHouseClientOption#SESSION_CHECK`          | ✗                                    |                            |
+        | `ClickHouseClientOption#SESSION_TIMEOUT`        | ✗                                    |                            |
+      </TabItem>
+
+      <TabItem value="时区" label="时区">
+        | V1 Configuration                                                                     | V2 Builder Method                  | Comments |
+        | ------------------------------------------------------------------------------------ | ---------------------------------- | -------- |
+        | `ClickHouseDefaults#SERVER_TIME_ZONE`<br />`ClickHouseClientOption#SERVER_TIME_ZONE` | `Client.Builder#setServerTimeZone` |          |
+        | `ClickHouseClientOption#USE_SERVER_TIME_ZONE`                                        | `Client.Builder#useServerTimeZone` |          |
+        | `ClickHouseClientOption#USE_SERVER_TIME_ZONE_FOR_DATES`                              |                                    |          |
+        | `ClickHouseClientOption#USE_TIME_ZONE`                                               | `Client.Builder#useTimeZone`       |          |
+      </TabItem>
+
+      <TabItem value="缓冲区" label="缓冲与性能">
+        | V1 Configuration                                | V2 Builder Method                           | Comments |
+        | ----------------------------------------------- | ------------------------------------------- | -------- |
+        | `ClickHouseClientOption#BUFFER_SIZE`            | `Client.Builder#setClientNetworkBufferSize` |          |
+        | `ClickHouseClientOption#BUFFER_QUEUE_VARIATION` | ✗                                           |          |
+        | `ClickHouseClientOption#READ_BUFFER_SIZE`       | ✗                                           |          |
+        | `ClickHouseClientOption#WRITE_BUFFER_SIZE`      | ✗                                           |          |
+        | `ClickHouseClientOption#REQUEST_CHUNK_SIZE`     | ✗                                           |          |
+        | `ClickHouseClientOption#REQUEST_BUFFERING`      | ✗                                           |          |
+        | `ClickHouseClientOption#RESPONSE_BUFFERING`     | ✗                                           |          |
+        | `ClickHouseClientOption#MAX_BUFFER_SIZE`        | ✗                                           |          |
+        | `ClickHouseClientOption#MAX_QUEUED_BUFFERS`     | ✗                                           |          |
+        | `ClickHouseClientOption#MAX_QUEUED_REQUESTS`    | ✗                                           |          |
+        | `ClickHouseClientOption#REUSE_VALUE_WRAPPER`    | ✗                                           |          |
+      </TabItem>
+
+      <TabItem value="线程" label="线程与异步">
+        | V1 配置                                                          | V2 Builder 方法                     | 备注                              |
+        | -------------------------------------------------------------- | --------------------------------- | ------------------------------- |
+        | `ClickHouseDefaults#ASYNC`<br />`ClickHouseClientOption#ASYNC` | `Client.Builder#useAsyncRequests` |                                 |
+        | `ClickHouseDefaults#MAX_SCHEDULER_THREADS`                     | ✗                                 | 参见 `setSharedOperationExecutor` |
+        | `ClickHouseDefaults#MAX_THREADS`                               | ✗                                 | 参见 `setSharedOperationExecutor` |
+        | `ClickHouseDefaults#THREAD_KEEPALIVE_TIMEOUT`                  | 参见 `setSharedOperationExecutor`   |                                 |
+        | `ClickHouseClientOption#MAX_THREADS_PER_CLIENT`                | ✗                                 |                                 |
+        | `ClickHouseClientOption#MAX_CORE_THREAD_TTL`                   | ✗                                 |                                 |
+      </TabItem>
+
+      <TabItem value="http-headers" label="HTTP 与标头">
+        | V1 配置                                                | V2 Builder 方法                  | 备注                                |
+        | ---------------------------------------------------- | ------------------------------ | --------------------------------- |
+        | `ClickHouseHttpOption#CUSTOM_HEADERS`                | `Client.Builder#httpHeaders`   |                                   |
+        | `ClickHouseHttpOption#CUSTOM_PARAMS`                 | ✗                              | 参见 `Client.Builder#serverSetting` |
+        | `ClickHouseClientOption#CLIENT_NAME`                 | `Client.Builder#setClientName` |                                   |
+        | `ClickHouseHttpOption#CONNECTION_PROVIDER`           | ✗                              |                                   |
+        | `ClickHouseHttpOption#DEFAULT_RESPONSE`              | ✗                              |                                   |
+        | `ClickHouseHttpOption#SEND_HTTP_CLIENT_ID`           | ✗                              |                                   |
+        | `ClickHouseHttpOption#AHC_VALIDATE_AFTER_INACTIVITY` | ✗                              | 使用 Apache Http Client 时始终会启用      |
+      </TabItem>
+
+      <TabItem value="format-query" label="格式与查询">
+        | V1 Configuration                                                 | V2 Builder Method   | Comments                                                                                |
+        | ---------------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------- |
+        | `ClickHouseDefaults#FORMAT`<br />`ClickHouseClientOption#FORMAT` | ✗                   | Moved to operation settings (`QuerySettings` and `InsertSettings`)                      |
+        | `ClickHouseClientOption#QUERY_ID`                                | ✗                   | See `QuerySettings` and `InsertSettings`                                                |
+        | `ClickHouseClientOption#LOG_LEADING_COMMENT`                     | ✗                   | See `QuerySettings#logComment` and `InsertSettings#logComment`                          |
+        | `ClickHouseClientOption#MAX_RESULT_ROWS`                         | ✗                   | Is server side setting                                                                  |
+        | `ClickHouseClientOption#RESULT_OVERFLOW_MODE`                    | ✗                   | Is server side setting                                                                  |
+        | `ClickHouseHttpOption#RECEIVE_QUERY_PROGRESS`                    | ✗                   | Server side setting                                                                     |
+        | `ClickHouseHttpOption#WAIT_END_OF_QUERY`                         | ✗                   | Server side setting                                                                     |
+        | `ClickHouseHttpOption#REMEMBER_LAST_SET_ROLES`                   | `Client#setDBRoles` | Runtime config now. See also `QuerySettings#setDBRoles` and `InsertSettings#setDBRoles` |
+      </TabItem>
+
+      <TabItem value="node-discovery" label="节点发现与负载均衡">
+        | V1 配置                                            | V2 Builder 方法 | 备注 |
+        | ------------------------------------------------ | ------------- | -- |
+        | `ClickHouseClientOption#AUTO_DISCOVERY`          | ✗             |    |
+        | `ClickHouseClientOption#LOAD_BALANCING_POLICY`   | ✗             |    |
+        | `ClickHouseClientOption#LOAD_BALANCING_TAGS`     | ✗             |    |
+        | `ClickHouseClientOption#HEALTH_CHECK_INTERVAL`   | ✗             |    |
+        | `ClickHouseClientOption#HEALTH_CHECK_METHOD`     | ✗             |    |
+        | `ClickHouseClientOption#NODE_DISCOVERY_INTERVAL` | ✗             |    |
+        | `ClickHouseClientOption#NODE_DISCOVERY_LIMIT`    | ✗             |    |
+        | `ClickHouseClientOption#NODE_CHECK_INTERVAL`     | ✗             |    |
+        | `ClickHouseClientOption#NODE_GROUP_SIZE`         | ✗             |    |
+        | `ClickHouseClientOption#CHECK_ALL_NODES`         | ✗             |    |
+      </TabItem>
+
+      <TabItem value="其他" label="杂项">
+        | V1 Configuration                                                                 | V2 Builder Method                 | Comments                         |
+        | -------------------------------------------------------------------------------- | --------------------------------- | -------------------------------- |
+        | `ClickHouseDefaults#AUTO_SESSION`                                                | ✗                                 | Session support will be reviewed |
+        | `ClickHouseDefaults#BUFFERING`                                                   | ✗                                 |                                  |
+        | `ClickHouseDefaults#MAX_REQUESTS`                                                | ✗                                 |                                  |
+        | `ClickHouseDefaults#ROUNDING_MODE`                                               |                                   |                                  |
+        | `ClickHouseDefaults#SERVER_VERSION`<br />`ClickHouseClientOption#SERVER_VERSION` | `Client.Builder#setServerVersion` |                                  |
+        | `ClickHouseDefaults#SRV_RESOLVE`                                                 | ✗                                 |                                  |
+        | `ClickHouseClientOption#CUSTOM_SETTINGS`                                         |                                   |                                  |
+        | `ClickHouseClientOption#PRODUCT_NAME`                                            | ✗                                 | Use client name                  |
+        | `ClickHouseClientOption#RENAME_RESPONSE_COLUMN`                                  | ✗                                 |                                  |
+        | `ClickHouseClientOption#SERVER_REVISION`                                         | ✗                                 |                                  |
+        | `ClickHouseClientOption#TRANSACTION_TIMEOUT`                                     | ✗                                 |                                  |
+        | `ClickHouseClientOption#WIDEN_UNSIGNED_TYPES`                                    | ✗                                 |                                  |
+        | `ClickHouseClientOption#USE_BINARY_STRING`                                       | ✗                                 |                                  |
+        | `ClickHouseClientOption#USE_BLOCKING_QUEUE`                                      | ✗                                 |                                  |
+        | `ClickHouseClientOption#USE_COMPILATION`                                         | ✗                                 |                                  |
+        | `ClickHouseClientOption#USE_OBJECTS_IN_ARRAYS`                                   | ✗                                 |                                  |
+        | `ClickHouseClientOption#MAX_MAPPER_CACHE`                                        | ✗                                 |                                  |
+        | `ClickHouseClientOption#MEASURE_REQUEST_TIME`                                    | ✗                                 |                                  |
+      </TabItem>
+    </Tabs>
+
+    ### 主要差异 \{#general-differences\}
+
+    * Client V2 uses less proprietary classes to increase portability. For example, V2 works with any implementation of `java.io.InputStream` for
+      writing data to a server.
+    * Client V2 的 `async` 设置默认是 `off`。这意味着不会创建额外线程，应用程序对客户端拥有更多控制权。在大多数使用场景下，此设置都应保持为 `off`。启用 `async` 会为每个请求创建一个单独的线程。只有在使用由应用程序控制的
+      executor 时，这样做才有意义 (参见 `com.clickhouse.client.api.Client.Builder#setSharedOperationExecutor`)
+
+    ### 写入数据 \{#writing-data\}
+
+    * 使用 `java.io.InputStream` 的任意实现。支持 V1 的 `com.clickhouse.data.ClickHouseInputStream`，但不推荐使用。
+    * 检测到输入流结束后，会自动进行相应处理。此前则需要关闭请求的输出流。
+
+    **V1 以 TSV 格式插入数据。**
+
+    ```java
+    InputStream inData = getInData();
+    ClickHouseRequest.Mutation request = client.read(server)
+            .write()
+            .table(tableName)
+            .format(ClickHouseFormat.TSV);
+    ClickHouseConfig config = request.getConfig();
+    CompletableFuture<ClickHouseResponse> future;
+    try (ClickHousePipedOutputStream requestBody = ClickHouseDataStreamFactory.getInstance()
+            .createPipedOutputStream(config)) {
+        // start the worker thread which transfer data from the input into ClickHouse
+        future = request.data(requestBody.getInputStream()).execute();
+
+        // Copy data from inData stream to requestBody stream
+
+        // We need to close the stream before getting a response
+        requestBody.close();
+
+        try (ClickHouseResponse response = future.get()) {
+            ClickHouseResponseSummary summary = response.getSummary();
+            Assert.assertEquals(summary.getWrittenRows(), numRows, "Num of written rows");
+        }
+    }
+
+    ```
+
+    **V2 以 TSV 格式插入数据。**
+
+    ```java
+    InputStream inData = getInData();
+    InsertSettings settings = new InsertSettings().setInputStreamCopyBufferSize(8198 * 2); // set copy buffer size
+    try (InsertResponse response = client.insert(tableName, inData, ClickHouseFormat.TSV, settings).get(30, TimeUnit.SECONDS)) {
+
+      // Insert is complete at this point
+
+    } catch (Exception e) {
+     // Handle exception
+    }
+    ```
+
+    * 只需调用一个方法。无需另外创建请求对象。
+    * 当所有数据复制完成后，请求体流会自动关闭。
+    * new low-level API is available `com.clickhouse.client.api.Client#insert(java.lang.String, java.util.List<java.lang.String>, com.clickhouse.client.api.DataStreamWriter, com.clickhouse.data.ClickHouseFormat, com.clickhouse.client.api.insert.InsertSettings)`。`com.clickhouse.client.api.DataStreamWriter` 用于实现自定义数据写入逻辑，例如从
+      队列读取数据。
+
+    ### 读取数据 \{#reading-data\}
+
+    * 默认情况下，数据以 `RowBinaryWithNamesAndTypes` 格式读取。当需要进行数据绑定时，目前仅支持此格式。
+    * 可以使用 `List<GenericRecord> com.clickhouse.client.api.Client#queryAll(java.lang.String)` 方法将数据读取为一组记录。该方法会将数据读入内存并自动释放连接，无需额外处理。`GenericRecord` 提供访问结果数据的接口，并实现了一些类型转换。
+
+    ```java
+    Collection<GenericRecord> records = client.queryAll("SELECT * FROM table");
+    for (GenericRecord record : records) {
+        int rowId = record.getInteger("rowID");
+        String name = record.getString("name");
+        LocalDateTime ts = record.getLocalDateTime("ts");
+    }
+
+    ```
+  </Version>
+
+  <Version>
+    用于通过其协议与数据库服务器通信的 Java 客户端库。当前实现仅支持 [HTTP 接口](/interfaces/http)。该库提供自己的 API，用于向服务器发送请求。
+
+    :::warning 弃用
+    该库即将被弃用。对于新项目，请使用最新的 [Java 客户端](/integrations/language-clients/java/client/client.mdx)
+    :::
+
+    ## 配置 \{#v1-setup\}
+
+    <Tabs groupId="client-v1-setup">
+      <TabItem value="maven" label="Maven">
+        ```xml
+        <!-- https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client -->
+        <dependency>
+            <groupId>com.clickhouse</groupId>
+            <artifactId>clickhouse-http-client</artifactId>
+            <version>0.7.2</version>
+        </dependency>
+        ```
+      </TabItem>
+
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+        `kotlin // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client implementation("com.clickhouse:clickhouse-http-client:0.7.2") `
+      </TabItem>
+
+      <TabItem value="gradle" label="Gradle">
+        `groovy // https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client implementation 'com.clickhouse:clickhouse-http-client:0.7.2' `
+      </TabItem>
+    </Tabs>
+
+    自 `0.5.0` 版本起，该驱动程序使用新的 HTTP 客户端库，需要将其作为依赖添加。
+
+    <Tabs groupId="client-v1-http-client">
+      <TabItem value="maven" label="Maven">
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.3.1</version>
+        </dependency>
+        ```
+      </TabItem>
+
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+        `kotlin // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1") `
+      </TabItem>
+
+      <TabItem value="gradle" label="Gradle">
+        `groovy // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1' `
+      </TabItem>
+    </Tabs>
+
+    ## 初始化 \{#v1-initialization\}
+
+    连接 URL 的格式如下：`protocol://host[:port][/database][?param[=value][&param[=value]][#tag[,tag]]`，例如：
+
+    * `http://localhost:8443?ssl=true&sslmode=NONE`
+    * `https://(https://explorer@play.clickhouse.com:443`
+
+    连接到单个节点：
+
+    ```java showLineNumbers
+    ClickHouseNode server = ClickHouseNode.of("http://localhost:8123/default?compress=0");
+    ```
+
+    连接到多节点集群：
+
+    ```java showLineNumbers
+    ClickHouseNodes servers = ClickHouseNodes.of(
+        "jdbc:ch:http://server1.domain,server2.domain,server3.domain/my_db"
+        + "?load_balancing_policy=random&health_check_interval=5000&failover=2");
+    ```
+
+    ## 查询 API \{#v1-query-api\}
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from numbers limit :limit")
+            .params(1000)
+            .executeAndWait()) {
+                ClickHouseResponseSummary summary = response.getSummary();
+                long totalRows = summary.getTotalRowsToRead();
+    }
+    ```
+
+    ## 流式查询 API \{#v1-streaming-query-api\}
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from numbers limit :limit")
+            .params(1000)
+            .executeAndWait()) {
+                for (ClickHouseRecord r : response.records()) {
+                int num = r.getValue(0).asInteger();
+                // type conversion
+                String str = r.getValue(0).asString();
+                LocalDate date = r.getValue(0).asDate();
+            }
+    }
+    ```
+
+    请参阅[代码仓库](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client)中的[完整代码示例](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L73)。
+
+    ## 插入 API \{#v1-insert-api\}
+
+    ```java showLineNumbers
+
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers).write()
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("insert into my_table select c2, c3 from input('c1 UInt8, c2 String, c3 Int32')")
+            .data(myInputStream) // `myInputStream` is source of data in RowBinary format
+            .executeAndWait()) {
+                ClickHouseResponseSummary summary = response.getSummary();
+                summary.getWrittenRows();
+    }
+    ```
+
+    请参阅[代码仓库](https://github.com/ClickHouse/clickhouse-java/tree/main/examples/client)中的[完整代码示例](https://github.com/ClickHouse/clickhouse-java/blob/main/examples/client/src/main/java/com/clickhouse/examples/jdbc/Main.java#L39)。
+
+    **RowBinary 编码**
+
+    RowBinary 格式在其[页面](/interfaces/formats/RowBinaryWithNamesAndTypes)中有说明。
+
+    可参考以下[代码示例](https://github.com/ClickHouse/clickhouse-kafka-connect/blob/main/src/main/java/com/clickhouse/kafka/connect/sink/db/ClickHouseWriter.java#L622)。
+
+    ## 功能 \{#v1-features\}
+
+    ### 压缩 \{#v1-compression\}
+
+    默认情况下，客户端使用 LZ4 压缩，需要添加以下依赖：
+
+    <Tabs groupId="client-v1-compression-deps">
+      <TabItem value="maven" label="Maven">
+        ```xml
+        <!-- https://mvnrepository.com/artifact/org.lz4/lz4-java -->
+        <dependency>
+            <groupId>org.lz4</groupId>
+            <artifactId>lz4-java</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+        ```
+      </TabItem>
+
+      <TabItem value="gradle-kt" label="Gradle (Kotlin)">
+        `kotlin // https://mvnrepository.com/artifact/org.lz4/lz4-java implementation("org.lz4:lz4-java:1.8.0") `
+      </TabItem>
+
+      <TabItem value="gradle" label="Gradle">
+        `groovy // https://mvnrepository.com/artifact/org.lz4/lz4-java implementation 'org.lz4:lz4-java:1.8.0' `
+      </TabItem>
+    </Tabs>
+
+    您也可以在连接 URL 中将 `compress_algorithm` 参数设置为 `gzip`，以改用 gzip 压缩。
+
+    此外，您还可以通过以下方式禁用压缩。
+
+    1. 在连接 URL 中将 `compress` 设置为 `0` 来禁用压缩：`http://localhost:8123/default?compress=0`
+    2. 通过客户端配置禁用：
+
+    ```java showLineNumbers
+    ClickHouseClient client = ClickHouseClient.builder()
+       .config(new ClickHouseConfig(Map.of(ClickHouseClientOption.COMPRESS, false)))
+       .nodeSelector(ClickHouseNodeSelector.of(ClickHouseProtocol.HTTP))
+       .build();
+    ```
+
+    请参阅[压缩文档](/data-compression/compression-modes)，以进一步了解不同的压缩选项。
+
+    ### 多条查询 \{#v1-multiple-queries\}
+
+    在同一会话中，在一个工作线程内按顺序执行多条查询：
+
+    ```java showLineNumbers
+    CompletableFuture<List<ClickHouseResponseSummary>> future = ClickHouseClient.send(servers.apply(servers.getNodeSelector()),
+        "create database if not exists my_base",
+        "use my_base",
+        "create table if not exists test_table(s String) engine=Memory",
+        "insert into test_table values('1')('2')('3')",
+        "select * from test_table limit 1",
+        "truncate table test_table",
+        "drop table if exists test_table");
+    List<ClickHouseResponseSummary> results = future.get();
+    ```
+
+    ### 命名参数 \{#v1-named-parameters\}
+
+    您可以按名称传递参数，而不必仅依赖它们在参数列表中的位置。该功能可通过 `params` 函数实现。
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from my_table where name=:name limit :limit")
+            .params("Ben", 1000)
+            .executeAndWait()) {
+                //...
+            }
+    }
+    ```
+
+    :::note 参数
+    所有涉及 `String` 类型的 `params` 签名 (`String`、`String[]`、`Map<String, String>`) 均假定传入的键是有效的 ClickHouse SQL 字符串。例如：
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from my_table where name=:name")
+            .params(Map.of("name","'Ben'"))
+            .executeAndWait()) {
+                //...
+            }
+    }
+    ```
+
+    如果您不想手动将 String 对象解析为 ClickHouse SQL，可以使用位于 `com.clickhouse.data` 的辅助函数 `ClickHouseValues.convertToSqlExpression`：
+
+    ```java showLineNumbers
+    try (ClickHouseClient client = ClickHouseClient.newInstance(ClickHouseProtocol.HTTP);
+         ClickHouseResponse response = client.read(servers)
+            .format(ClickHouseFormat.RowBinaryWithNamesAndTypes)
+            .query("select * from my_table where name=:name")
+            .params(Map.of("name", ClickHouseValues.convertToSqlExpression("Ben's")))
+            .executeAndWait()) {
+                //...
+            }
+    }
+    ```
+
+    在上述示例中，`ClickHouseValues.convertToSqlExpression` 会对内部的单引号进行转义，并在变量两侧加上一对有效的单引号。
+
+    其他类型 (如 `Integer`、`UUID`、`Array` 和 `Enum`) 会在 `params` 中自动转换。
+    :::
+
+    ## 节点发现 \{#v1-node-discovery\}
+
+    Java 客户端支持自动发现 ClickHouse 节点。自动发现功能默认禁用。要手动启用该功能，请将 `auto_discovery` 设置为 `true`：
+
+    ```java
+    properties.setProperty("auto_discovery", "true");
+    ```
+
+    或者在连接 URL 中：
+
+    ```plaintext
+    jdbc:ch://my-server/system?auto_discovery=true
+    ```
+
+    启用自动发现后，无需在连接 URL 中指定所有 ClickHouse 节点。URL 中指定的节点将作为种子节点，Java 客户端会自动从系统表以及 clickhouse-keeper 或 zookeeper 中发现更多节点。
+
+    以下选项用于配置自动发现功能：
+
+    | 属性                              | 默认值     | 说明                                                  |
+    | ------------------------------- | ------- | --------------------------------------------------- |
+    | auto&#95;discovery              | `false` | 是否允许客户端从系统表和/或 clickhouse-keeper/zookeeper 中发现更多节点。 |
+    | node&#95;discovery&#95;interval | `0`     | 节点发现间隔 (以毫秒为单位) ；零值或负值表示仅发现一次。                      |
+    | node&#95;discovery&#95;limit    | `100`   | 单次可发现的最大节点数；值为 0 或负数表示不限制。                          |
+
+    ### 负载均衡 \{#v1-load-balancing\}
+
+    Java 客户端会根据负载均衡策略选择 ClickHouse 节点来发送请求。一般来说，负载均衡策略负责以下工作：
+
+    1. 从托管的节点列表中获取一个节点。
+    2. 管理节点的状态。
+    3. (可选) 如果启用了自动发现，则调度一个用于节点发现的后台进程并执行健康检查。
+
+    以下是可用于配置负载均衡的一组选项：
+
+    | 属性                            | 默认值                                      | 描述                                                                                                                                                                                                                                                    |
+    | ----------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | load&#95;balancing&#95;policy | `""`                                     | 负载均衡策略可以是以下之一： <li>`firstAlive` - 请求将被发送到受管节点列表中第一个健康节点</li><li>`random` - 请求将被发送到受管节点列表中随机选取的一个节点</li><li>`roundRobin` - 请求将按照轮询方式依次发送到受管节点列表中的每个节点</li><li>实现 `ClickHouseLoadBalancingPolicy` 的完全限定类名 - 自定义负载均衡策略</li>如果未指定该策略，请求将被发送到受管节点列表中的第一个节点 |
+    | load&#95;balancing&#95;tags   | `""`                                     | 用于过滤节点的负载均衡标签。请求仅发送至具有指定标签的节点。                                                                                                                                                                                                                        |
+    | health&#95;check&#95;interval | `0`                                      | 健康检查间隔 (以毫秒为单位) ，零或负值表示仅执行一次。                                                                                                                                                                                                                         |
+    | health&#95;check&#95;method   | `ClickHouseHealthCheckMethod.SELECT_ONE` | 健康检查方法。可以为以下之一： <li>`ClickHouseHealthCheckMethod.SELECT_ONE` - 通过执行 `select 1` 查询进行检查</li> <li>`ClickHouseHealthCheckMethod.PING` - 协议级检查，通常更快</li>                                                                                                   |
+    | node&#95;check&#95;interval   | `0`                                      | 节点检查间隔，单位为毫秒；负数视为 0。仅当距上次检查已过去指定时间时，才会检查该节点的状态。<br />`health_check_interval` 与 `node_check_interval` 的区别在于：`health_check_interval` 会调度后台作业来检查一组节点 (全部节点或故障节点) 的状态，而 `node_check_interval` 指定的是某个特定节点距离上次检查需间隔多长时间后才会再次检查。                             |
+    | check&#95;all&#95;nodes       | `false`                                  | 是否对所有节点执行健康检查，还是仅对故障节点进行检查。                                                                                                                                                                                                                           |
+
+    ### 故障切换和重试 \{#v1-failover-and-retry\}
+
+    Java 客户端提供一些配置选项，用于设置故障切换和失败查询的重试行为：
+
+    | 属性                                 | 默认值    | 描述                                                                                                                         |
+    | ---------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------- |
+    | 故障转移                               | `0`    | 单个请求可进行故障转移的最大次数。零或负值表示不进行故障转移。发生故障转移时，会将失败的请求发送到其他节点 (根据负载均衡策略) ，以便从故障中恢复。                                                |
+    | 重试                                 | `0`    | 单个请求允许重试的最大次数。为零或负值时表示不进行重试。仅当 ClickHouse 服务器返回 `NETWORK_ERROR` 错误码时，才会在同一节点上对该请求进行重试。                                     |
+    | repeat&#95;on&#95;session&#95;lock | `true` | 当会话被锁定时，是否重复执行直到会话超时 (根据 `session_timeout` 或 `connect_timeout`) 。如果 ClickHouse 服务端返回 `SESSION_IS_LOCKED` 错误码，则会对该失败请求进行重试。 |
+
+    ### 添加自定义 HTTP 请求头 \{#v1-adding-custom-http-headers\}
+
+    Java 客户端在使用 HTTP/S 传输层时支持为请求添加自定义 HTTP 头。
+    应使用 `custom_http_headers` 属性，多个请求头使用 `,` 分隔，单个请求头的键和值使用 `=` 分隔。
+
+    ## Java 客户端支持 \{#v1-java-client-support\}
+
+    ```java
+    options.put("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+    ```
+
+    ## JDBC 驱动 \{#v1-jdbc-driver\}
+
+    ```java
+    properties.setProperty("custom_http_headers", "X-ClickHouse-Quota=test, X-ClickHouse-Test=test");
+    ```
+  </Version>
+</ClientVersionDropdown>

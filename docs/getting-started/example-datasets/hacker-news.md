@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['example dataset', 'hacker news', 'sample data', 'text analysis', 'vector search']
 ---
 
-# Hacker News dataset
 
 > In this tutorial, you'll insert 28 million rows of Hacker News data into a ClickHouse
 > table from both CSV and Parquet formats and run some simple queries to explore the data.
@@ -97,7 +96,7 @@ The `Vertical` format is used to more easily see the data for each column.
 The simplest and most powerful tool for data loading is the `clickhouse-client`: a feature-rich native command-line client.
 To load data, you can again exploit schema inference, relying on ClickHouse to determine the types of the columns.
 
-Run the following command to create a table and insert the data directly from the remote CSV file, accessing the contents via the [`url`](https://clickhouse.com/docs/en/sql-reference/table-functions/url) function.
+Run the following command to create a table and insert the data directly from the remote CSV file, accessing the contents via the [`url`](/sql-reference/table-functions/url) function.
 The schema is automatically inferred:
 
 ```sql

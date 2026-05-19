@@ -1,13 +1,12 @@
 ---
-description: 'SummingMergeTree наследуется от движка MergeTree. Его ключевая особенность — возможность автоматически суммировать числовые данные при слиянии частей.'
+description: 'SummingMergeTree наследуется от движка MergeTree. Его ключевая особенность
+  — возможность автоматически суммировать числовые данные при слиянии частей.'
 sidebar_label: 'SummingMergeTree'
 sidebar_position: 50
 slug: /engines/table-engines/mergetree-family/summingmergetree
-title: 'Табличный движок SummingMergeTree'
+title: 'Движок таблицы SummingMergeTree'
 doc_type: 'reference'
 ---
-
-# Движок таблиц SummingMergeTree \{#summingmergetree-table-engine\}
 
 Этот движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree). Разница в том, что при слиянии частей данных для таблиц `SummingMergeTree` ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой, которая содержит суммы значений для столбцов с числовым типом данных. Если ключ сортировки построен таким образом, что одному значению ключа соответствует большое количество строк, это существенно уменьшает объем хранимых данных и ускоряет выборку.
 

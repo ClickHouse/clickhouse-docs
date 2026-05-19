@@ -7,8 +7,6 @@ title: 'Непрерывная интеграция (CI)'
 doc_type: 'reference'
 ---
 
-# Непрерывная интеграция (CI) \{#continuous-integration-ci\}
-
 Когда вы отправляете pull request, для вашего кода выполняются автоматические проверки системой ClickHouse [непрерывной интеграции (CI)](tests.md#test-automation).
 Это происходит после того, как мейнтейнер репозитория (кто‑то из команды ClickHouse) просмотрел ваш код и добавил к вашему pull request метку `can be tested`.
 Результаты проверок перечислены на странице pull request в GitHub, как описано в [документации по проверкам GitHub](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks).

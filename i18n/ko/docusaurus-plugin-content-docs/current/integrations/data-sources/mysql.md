@@ -30,7 +30,7 @@ ClickHouse Cloud에서는 [MySQL ClickPipe](/integrations/clickpipes/mysql) (현
 
 ### 1. MySQL 구성 \{#1-configure-mysql\}
 
-1. MySQL에서 데이터베이스를 생성하십시오.
+1. MySQL에서 데이터베이스를 생성하십시오:
 
 ```sql
   CREATE DATABASE db1;
@@ -70,9 +70,8 @@ ClickHouse Cloud에서는 [MySQL ClickPipe](/integrations/clickpipes/mysql) (현
 
 :::note
 ClickHouse Cloud에서 이 기능을 사용하는 경우, ClickHouse Cloud IP 주소에 MySQL 인스턴스 접근을 허용해야 할 수 있습니다.
-송신(egress) 트래픽에 대한 자세한 내용은 ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md)를 확인하십시오.
+송신(egress) 트래픽에 대한 자세한 내용은 ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints)를 확인하십시오.
 :::
-
 
 ### 2. ClickHouse에서 테이블 정의하기 \{#2-define-a-table-in-clickhouse\}
 

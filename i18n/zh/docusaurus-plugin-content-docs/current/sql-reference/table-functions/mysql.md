@@ -7,9 +7,7 @@ title: 'mysql'
 doc_type: 'reference'
 ---
 
-# MySQL 表函数 \{#mysql-table-function\}
-
-允许对存储在远程 MySQL 服务器中的数据执行 `SELECT` 和 `INSERT` 查询。
+允许对存储在远程 MySQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
 ## 语法 \{#syntax\}
 

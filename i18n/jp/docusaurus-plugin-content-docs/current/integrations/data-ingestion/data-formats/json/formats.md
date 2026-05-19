@@ -1,15 +1,13 @@
 ---
-title: 'その他のJSON形式の取り扱い'
+title: 'その他の JSON フォーマットの扱い方'
 slug: /integrations/data-formats/json/other-formats
-description: 'その他のJSON形式の取り扱い'
-sidebar_label: 'その他の形式の取り扱い'
-keywords: ['json', 'formats', 'json 形式']
+description: 'その他の JSON フォーマットの扱い方'
+sidebar_label: 'その他のフォーマットの扱い方'
+keywords: ['json', 'formats', 'json formats']
 doc_type: 'guide'
 ---
 
-# その他の JSON フォーマットの扱い方 \{#handling-other-json-formats\}
-
-これまでの JSON データの読み込み例では、[`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) の利用を想定してきました。このフォーマットでは、各 JSON 行のキーを列として解釈します。例えば次のようになります。
+これまでの JSON データの読み込み例では、[`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) の利用を想定してきました。このフォーマットでは、各 JSON 行のキーをカラムとして解釈します。例えば次のようになります。
 
 ```sql
 SELECT *

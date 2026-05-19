@@ -8,7 +8,6 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# Date and time data types
 
 Having a comprehensive suite of date and time types is necessary for effective time series data management, and ClickHouse delivers exactly that. 
 From compact date representations to high-precision timestamps with nanosecond accuracy, these types are designed to balance storage efficiency with practical requirements for different time series applications.

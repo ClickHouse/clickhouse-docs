@@ -189,6 +189,86 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Количество потоков, используемых для слияния промежуточных результатов агрегации в режиме экономичного использования памяти. Чем больше значение, тем больше потребление памяти. 0 означает то же, что и `max_threads`.
 
+## ai_function_max_api_calls_per_query \{#ai_function_max_api_calls_per_query\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "0" }, { label: "Новая настройка" }] }]} />
+
+Максимальное количество HTTP-запросов, которые функции AI могут отправить в рамках одного запроса. Установите 0, чтобы отключить.
+
+## ai_function_max_input_tokens_per_query \{#ai_function_max_input_tokens_per_query\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="1000000" />
+
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "1000000" }, { label: "Новая настройка" }] }]} />
+
+Максимальное суммарное количество входных токенов (prompt) во всех вызовах API AI-функций в рамках одного запроса. Отслеживается накопительно по ответам провайдера. Обратите внимание, что этот лимит может быть превышен на количество входных токенов одного вызова, поскольку число входных токенов для вызова заранее неизвестно. Установите 0, чтобы отключить.
+
+## ai_function_max_output_tokens_per_query \{#ai_function_max_output_tokens_per_query\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="500000" />
+
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "500000" }, { label: "Новая настройка" }] }]} />
+
+Максимальное суммарное число выходных токенов (completion) во всех вызовах API AI-функций в рамках одного запроса. Учитывается накопительно по ответам провайдера. Обратите внимание, что этот лимит может быть превышен на число выходных токенов одного вызова, поскольку количество выходных токенов для вызова заранее неизвестно. Установите значение 0, чтобы отключить ограничение.
+
+## ai_function_max_retries \{#ai_function_max_retries\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "0" }, { label: "Новая настройка" }] }]} />
+
+Максимальное количество повторных попыток при временных ошибках для каждого API-запроса. При каждой повторной попытке используется экспоненциальный бэкофф, начиная с `ai_function_retry_initial_delay_ms`.
+
+## ai_function_request_timeout_sec \{#ai_function_request_timeout_sec\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="60" />
+
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "60" }, { label: "Новая настройка" }] }]} />
+
+Таймаут в секундах для отдельных HTTP-запросов, выполняемых AI-функциями (запросы к AI chat completions и embedding API). Если запрос не завершается в течение этого времени, он считается неуспешным, и для него могут выполняться повторные попытки в соответствии с `ai_function_max_retries`.
+
+## ai_function_retry_initial_delay_ms \{#ai_function_retry_initial_delay_ms\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "1000" }, { label: "Новая настройка" }] }]} />
+
+Начальная задержка в миллисекундах перед первой повторной попыткой API-запроса к AI function, завершившегося ошибкой. При каждой следующей попытке задержка удваивается (экспоненциальный бэкофф). Например, при настройках по умолчанию: 1000ms, 2000ms, 4000ms.
+
+## ai_function_throw_on_error \{#ai_function_throw_on_error\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "1" }, { label: "Новая настройка" }] }]} />
+
+Если true (по умолчанию), вызов AI-функции, который безвозвратно завершается ошибкой после исчерпания всех повторных попыток, прерывает запрос с исключением. Если false, для строки, в которой произошла ошибка, используется значение по умолчанию для типа столбца (пустая строка для String), и обработка продолжается.
+
+## ai_function_throw_on_quota_exceeded \{#ai_function_throw_on_quota_exceeded\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "1" }, { label: "Новая настройка" }] }]} />
+
+Если установлено значение true (по умолчанию), превышение лимита квоты для функции AI (`ai_function_max_input_tokens_per_query`, `ai_function_max_output_tokens_per_query` или `ai_function_max_api_calls_per_query`) прерывает запрос с исключением. Если установлено значение false, для оставшихся строк используется значение по умолчанию для типа столбца (пустая строка для String).
+
 ## allow_aggregate_partitions_independently \{#allow_aggregate_partitions_independently\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -298,6 +378,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает столбцовое выполнение функции multiIf
+
+## allow_experimental_ai_functions \{#allow_experimental_ai_functions\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "0" }, { label: "Новая настройка" }] }]} />
+
+Включает экспериментальные функции ИИ (например, `aiGenerateContent`). Эти функции выполняют внешние HTTP-запросы к провайдерам ИИ.
 
 ## allow_experimental_alias_table_engine \{#allow_experimental_alias_table_engine\}
 
@@ -445,6 +535,14 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает экспериментальные функции для анализа воронки.
 
+## allow_experimental_geo_types_in_iceberg \{#allow_experimental_geo_types_in_iceberg\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, разрешающая разбор полей geometry/geography в Iceberg как значений типа Geometry."}]}]} />
+
+Разрешает разбирать поля Iceberg типов `geometry` и `geography` как тип ClickHouse `Geometry` (Variant).
+
 ## allow_experimental_hash_functions \{#allow_experimental_hash_functions\}
 
 <ExperimentalBadge/>
@@ -542,6 +640,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использовать Hive‑партиционирование с движками S3Queue/AzureQueue
 
+## allow_experimental_paimon_storage_engine \{#allow_experimental_paimon_storage_engine\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Разрешает создавать таблицы на движках таблиц Paimon*.
+
 ## allow_experimental_parallel_reading_from_replicas \{#allow_experimental_parallel_reading_from_replicas\}
 
 **Псевдонимы**: `enable_parallel_replicas`
@@ -602,6 +710,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 - 0 — движок таблицы [TimeSeries](../../engines/table-engines/integrations/time-series.md) отключен.
 - 1 — движок таблицы [TimeSeries](../../engines/table-engines/integrations/time-series.md) включен.
+
+## allow_experimental_unique_key \{#allow_experimental_unique_key\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, управляющая доступностью экспериментальной клаузы `UNIQUE KEY` для таблиц на движках семейства MergeTree"}]}]} />
+
+Разрешает создавать таблицы с клаузой `UNIQUE KEY` на движках семейства MergeTree.
 
 ## allow_experimental_window_view \{#allow_experimental_window_view\}
 
@@ -673,6 +791,27 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Разрешает использование функций, которые используют библиотеку Hyperscan. Отключите, чтобы избежать потенциально длительного времени компиляции и чрезмерного использования ресурсов.
 
+## allow_iceberg_remove_orphan_files \{#allow_iceberg_remove_orphan_files\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "0" },
+      { label: "Новая настройка, управляющая удалением файлов-сирот Iceberg" }
+    ]
+  }
+]}
+/>
+
+Разрешает использовать `ALTER TABLE ... EXECUTE remove_orphan_files()` для таблиц Iceberg.
+
 ## allow_insert_into_iceberg \{#allow_insert_into_iceberg\}
 
 <BetaBadge/>
@@ -700,6 +839,14 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 - [Sampling Query Profiler](../../operations/optimizing-performance/sampling-query-profiler.md)
 - Системная таблица [trace_log](/operations/system-tables/trace_log)
+
+## allow_key_condition_coalesce_rewrite \{#allow_key_condition_coalesce_rewrite\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка для переписывания предикатов вида `coalesce(a_1, ..., a_N) <op> const` (а также эквивалентных выражений с `ifNull` или с константой слева) в дизъюнкцию перед анализом индексов, чтобы можно было использовать первичный ключ и индексы пропуска данных для каждого `a_i`. Также обрабатываются варианты с частичными константами, такие как `coalesce(a, 42, b)` и `coalesce(a, b, 42)`."}]}]} />
+
+Переписывает предикаты вида `coalesce(a_1, ..., a_N) <op> const` (а также эквивалентные выражения с `ifNull` или с константой слева) в дизъюнкцию `(a_1 <op> const) OR (a_1 IS NULL AND a_2 <op> const) OR ... OR (a_1 IS NULL AND ... AND a_{N-1} IS NULL AND a_N <op> const)` перед анализом индексов, чтобы можно было использовать первичный ключ и индексы пропуска данных для каждого `a_i`. Также обрабатываются варианты с частичными константами, такие как `coalesce(a, 42, b)` и `coalesce(a, b, 42)`: список аргументов нормализуется так же, как в самом `coalesce` (`NULL`-литералы отбрасываются, аргументы после первого не-`Nullable` отбрасываются), а замыкающая не-`NULL` константа, если она есть, добавляется как последняя ветвь. Это переписывание используется только как дополнительный механизм для отсечения по индексу; фильтрация во время выполнения по-прежнему использует исходный предикат.
 
 ## allow_materialized_view_with_bad_select \{#allow_materialized_view_with_bad_select\}
 
@@ -1856,28 +2003,28 @@ SELECT CAST(toNullable(toInt32(0)) AS Int32) as x, toTypeName(x);
 
 ## cast_string_to_date_time_mode \{#cast_string_to_date_time_mode\}
 
-<SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
+<SettingsInfoBlock type="DateTimeInputFormat" default_value="best_effort" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.6"},{"label": "basic"},{"label": "Разрешает использовать различные режимы разбора DateTime при приведении String к DateTime"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "best_effort"},{"label": "Повышение удобства использования"}]}, {"id": "row-2","items": [{"label": "25.6"},{"label": "basic"},{"label": "Разрешает использовать различные режимы разбора DateTime при приведении String к DateTime"}]}]} />
 
 Позволяет выбрать парсер текстового представления даты и времени при приведении из String к DateTime.
 
 Возможные значения:
 
-- `'best_effort'` — Включает расширенный разбор.
+* `'best_effort'` — Включает расширенный разбор.
 
-    ClickHouse может разбирать базовый формат `YYYY-MM-DD HH:MM:SS` и все форматы даты и времени [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). Например, `'2018-06-08T01:02:03.000Z'`.
+  ClickHouse может разбирать базовый формат `YYYY-MM-DD HH:MM:SS` и все форматы даты и времени [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). Например, `'2018-06-08T01:02:03.000Z'`.
 
-- `'best_effort_us'` — Аналогично `best_effort` (см. различия в [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS))
+* `'best_effort_us'` — Аналогично `best_effort` (см. различия в [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS))
 
-- `'basic'` — Использует базовый парсер.
+* `'basic'` — Использует базовый парсер.
 
-    ClickHouse может разбирать только базовый формат `YYYY-MM-DD HH:MM:SS` или `YYYY-MM-DD`. Например, `2019-08-20 10:18:56` или `2019-08-20`.
+  ClickHouse может разбирать только базовый формат `YYYY-MM-DD HH:MM:SS` или `YYYY-MM-DD`. Например, `2019-08-20 10:18:56` или `2019-08-20`.
 
 См. также:
 
-- [Тип данных DateTime.](../../sql-reference/data-types/datetime.md)
-- [Функции для работы с датами и временем.](../../sql-reference/functions/date-time-functions.md)
+* [Тип данных DateTime.](../../sql-reference/data-types/datetime.md)
+* [Функции для работы с датами и временем.](../../sql-reference/functions/date-time-functions.md)
 
 ## cast_string_to_dynamic_use_inference \{#cast_string_to_dynamic_use_inference\}
 
@@ -2582,6 +2729,32 @@ ENGINE = Log
 
 Значение по умолчанию — `CURRENT_USER`.
 
+## defer_partition_pruning_after_final \{#defer_partition_pruning_after_final\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Настройка, добавленная в 26.5, управляет поведением отложенного отсечения партиций для FINAL, которое было незаметно введено в 26.3 (https://github.com/ClickHouse/ClickHouse/pull/98242). Существенное изменение семантики зафиксировано в блоке 26.3, поэтому `compatibility = '26.2'` отменяет его; эта запись нужна для того, чтобы проверка обновления с 26.4 принимала новое имя настройки."}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "1"},{"label": "Управляет безусловным отключением отсечения партиций в планировщике FINAL, когда столбец ключа партиции не входит в ключ сортировки. Само изменение поведения было незаметно введено в 26.3 через https://github.com/ClickHouse/ClickHouse/pull/98242; эта запись задним числом документирует его, чтобы `compatibility = '26.2'` восстанавливало дорегрессионное поведение (0 = отсекать до FINAL, быстрее; 1 = откладывать отсечение, безопасно с точки зрения корректности)."}]}]} />
+
+Если настройка включена (по умолчанию), для запросов `FINAL` к таблицам, у которых
+столбцы ключа партиции не входят в ключ сортировки, отсечение партиций не выполняется. Это безопасное с точки зрения корректности поведение,
+введённое в 26.3: `FINAL` может потребоваться дедуплицировать строки с одинаковым первичным ключом, но находящиеся
+в разных партициях, а отсечение партиций незаметно исключило бы такие строки из входных данных
+для дедупликации.
+
+Если настройка отключена, отсечение партиций применяется даже с `FINAL`, что возвращает поведение
+до 26.3. Это может быть значительно быстрее для запросов с предикатами `WHERE` по
+столбцу партиции, но корректно только тогда, когда строки с одинаковым первичным ключом не могут находиться
+в разных партициях — например, в таблицах логов событий, где столбец партиции задаётся при вставке
+и больше никогда не изменяется.
+
+Эта настройка влияет только на партиционированные таблицы, у которых столбцы ключа партиции не входят
+в ключ сортировки; для остальных таблиц отсечение партиций применяется всегда.
+
+Возможные значения:
+
+* 0 — Применять отсечение партиций до `FINAL` (поведение до 26.3, быстрее, но в общем случае небезопасно).
+* 1 — Откладывать отсечение партиций до выполнения `FINAL` (по умолчанию, безопасно с точки зрения корректности).
+
 ## delta_lake_enable_engine_predicate \{#delta_lake_enable_engine_predicate\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -2970,13 +3143,13 @@ ENGINE = Log
 
 ## distributed_cache_read_request_max_tries \{#distributed_cache_read_request_max_tries\}
 
-<CloudOnlyBadge/>
+<CloudOnlyBadge />
 
 <SettingsInfoBlock type="UInt64" default_value="10" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "10"},{"label": "Изменено значение настройки"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "20"},{"label": "Новая настройка"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "10"},{"label": "Изменено значение настройки"}]}, {"id": "row-2","items": [{"label": "25.4"},{"label": "20"},{"label": "Новая настройка"}]}]} />
 
-Действует только в ClickHouse Cloud. Количество попыток выполнения запроса к распределённому кэшу при неудаче.
+Действует только в ClickHouse Cloud. Количество попыток выполнения запроса на чтение к распределённому кэшу при неудаче.
 
 ## distributed_cache_receive_response_wait_milliseconds \{#distributed_cache_receive_response_wait_milliseconds\}
 
@@ -3069,6 +3242,16 @@ ENGINE = Log
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.10"},{"label": "100"},{"label": "Параметр для ClickHouse Cloud"}]}]}/>
 
 Действует только в ClickHouse Cloud. Время ожидания в миллисекундах для получения соединения из пула соединений, если distributed_cache_pool_behaviour_on_limit имеет значение wait.
+
+## distributed_cache_write_request_max_tries \{#distributed_cache_write_request_max_tries\}
+
+<CloudOnlyBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10"},{"label": "Новая настройка"}]}]} />
+
+Действует только в ClickHouse Cloud. Количество попыток выполнения запроса на запись в распределённый кэш при неудаче.
 
 ## distributed_connections_pool_size \{#distributed_connections_pool_size\}
 
@@ -3418,6 +3601,45 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Когда параметр включён, при выполнении запросов SELECT FINAL части из разных партиций не будут объединяться друг с другом. Вместо этого слияние будет происходить только внутри каждой партиции отдельно. Это может значительно повысить производительность запросов при работе с партиционированными таблицами.
 
+## dynamic_disk_allow_from_env \{#dynamic_disk_allow_from_env\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, разрешающая подстановки `from_env` в конфигурации динамического диска (в функции `disk()`). По умолчанию отключена из соображений безопасности."}]}]} />
+
+Разрешает использовать подстановки `from_env` в конфигурации динамического диска (то есть в аргументах функции `disk()`).
+По умолчанию отключено, чтобы пользователи не могли считывать произвольные переменные окружения при определении хранилища таблицы.
+
+## dynamic_disk_allow_from_zk \{#dynamic_disk_allow_from_zk\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, разрешающая подстановки `from_zk` в конфигурации динамического диска (в функции `disk()`). По умолчанию отключена."}]}]} />
+
+Разрешает использовать подстановки `from_zk` в конфигурации динамического диска (то есть в аргументах функции `disk()`).
+Отключено по умолчанию.
+
+## dynamic_disk_allow_include \{#dynamic_disk_allow_include\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, разрешающая использовать `include` в конфигурации динамического диска (в функции `disk()`). По умолчанию отключена."}]}]} />
+
+Разрешает использовать `include` в конфигурации динамического диска (то есть в аргументах функции `disk()`).
+По умолчанию отключена.
+
+## dynamic_throw_on_type_mismatch \{#dynamic_throw_on_type_mismatch\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Новая настройка для управления поведением при несоответствии типов в стандартной реализации Dynamic"}]}]} />
+
+При применении функции к столбцу [Dynamic](../../sql-reference/data-types/dynamic.md) в стандартной реализации
+эта настройка определяет, что происходит со строками, фактический тип которых несовместим с функцией:
+
+* `true` (по умолчанию) — выбрасывается исключение.
+* `false` — для таких строк вместо этого возвращается `NULL`.
+
 ## empty_result_for_aggregation_by_constant_keys_on_empty_set \{#empty_result_for_aggregation_by_constant_keys_on_empty_set\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -3465,6 +3687,15 @@ ClickHouse применяет этот SETTING, когда запрос соде
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.6"},{"label": "1"},{"label": "Записывает сведения об операциях blob-хранилища в таблицу system.blob_storage_log"}]}]}/>
 
 Записывает сведения об операциях blob-хранилища в таблицу system.blob_storage_log
+
+## enable_blob_storage_log_for_read_operations \{#enable_blob_storage_log_for_read_operations\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка для журналирования операций чтения blob-хранилища в system.blob_storage_log"}]}]} />
+
+Записывает информацию об операциях чтения blob-хранилища в таблицу system.blob&#95;storage&#95;log.
+Требует, чтобы `enable_blob_storage_log` также был включен.
 
 ## enable_early_constant_folding \{#enable_early_constant_folding\}
 
@@ -3580,6 +3811,21 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 Выводит стек-трейс компонента, создавшего задание, если выполнение задания приводит к исключению. По умолчанию отключено, чтобы избежать накладных расходов по производительности.
 
+## enable_join_fixed_hash_table_conversion \{#enable_join_fixed_hash_table_conversion\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [{ label: "26.4" }, { label: "1" }, { label: "Новая настройка, включающая преобразование хеш-таблицы в плоский массив для соединений, если ключ представляет собой одно целое число с небольшим диапазоном значений." }]
+  }
+]}
+/>
+
+Включает преобразование хеш-таблицы в плоский массив для соединений, если ключ представляет собой одно целое число с небольшим диапазоном значений.
+
 ## enable_join_runtime_filters \{#enable_join_runtime_filters\}
 
 <BetaBadge/>
@@ -3636,7 +3882,7 @@ ClickHouse применяет этот SETTING, когда запрос соде
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новая настройка"}]}]} />
 
 Включает материализованные общие табличные выражения; имеет приоритет над enable&#95;global&#95;with&#95;statement
 
@@ -3890,6 +4136,14 @@ WHERE (_part, _part_offset) IN (
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Включает использование программной предварительной выборки (software prefetch) при агрегации
+
+## enable_software_prefetch_in_join \{#enable_software_prefetch_in_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Включает использование программной предварительной выборки на этапе probe в hash join."}]}]} />
+
+Включает использование программной предварительной выборки на этапе probe в hash join, чтобы скрыть задержки доступа к памяти при работе с большими хеш-таблицами.
 
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
@@ -4630,7 +4884,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Настройка для унаследованного поведения, позволяющая функциям h3 принимать некорректные входные данные"}]}, {"id": "row-2","items": [{"label": "26.2"},{"label": "0"},{"label": "Настройка для унаследованного поведения, позволяющая функциям h3 принимать некорректные входные данные"}]}]} />
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.2" }, { label: "0" }, { label: "Настройка для унаследованного поведения, позволяющая функциям h3 принимать некорректные входные данные" }] }]} />
 
 Если false, функции h3, например h3CellAreaM2, сгенерируют исключение, если входные данные некорректны. Если true, они возвращают 0 или значение по умолчанию.
 
@@ -4848,6 +5102,14 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Не отправлять HTTP-заголовки X-ClickHouse-Progress чаще, чем один раз за указанный интервал.
 
+## http_headers_read_timeout \{#http_headers_read_timeout\}
+
+<SettingsInfoBlock type="Seconds" default_value="30" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "30"},{"label": "Новая настройка для ограничения общего времени чтения заголовков HTTP-запроса, защищающая от атак типа slowloris."}]}]} />
+
+Максимальное время в секундах, отводимое на чтение всех заголовков HTTP-запроса. Это общий предельный срок для всей фазы разбора заголовков, а не тайм-аут отдельной операции чтения. Защищает от атак типа slowloris, при которых клиент передает данные заголовков медленно, чтобы удерживать соединения открытыми.
+
 ## http_make_head_request \{#http_make_head_request\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -4856,7 +5118,9 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 ## http_max_field_name_size \{#http_max_field_name_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="131072" />
+<SettingsInfoBlock type="UInt64" default_value="4096" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4096"},{"label": "Значение по умолчанию уменьшено, чтобы ограничить использование памяти HTTP-соединениями до аутентификации."}]}]} />
 
 Максимальная длина имени поля в HTTP-заголовке
 
@@ -4868,7 +5132,9 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 ## http_max_fields \{#http_max_fields\}
 
-<SettingsInfoBlock type="UInt64" default_value="1000000" />
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000"},{"label": "Значение по умолчанию уменьшено, чтобы ограничить использование памяти HTTP-соединениями до аутентификации."}]}]} />
 
 Максимальное количество полей в HTTP-заголовке
 
@@ -4877,6 +5143,14 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 <SettingsInfoBlock type="UInt64" default_value="1073741824" />
 
 Ограничение на размер содержимого multipart/form-data. Значение этого параметра не может быть получено из параметров URL и должно быть задано в пользовательском профиле. Обратите внимание, что содержимое разбирается, а внешние таблицы создаются в памяти до начала выполнения запроса. Это единственное ограничение, которое действует на этой стадии (ограничения на максимальное использование памяти и максимальное время выполнения не влияют на чтение данных формы HTTP).
+
+## http_max_request_header_size \{#http_max_request_header_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="10485760" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10485760"},{"label": "Новая настройка для ограничения общего размера заголовков HTTP-запроса до аутентификации."}]}]} />
+
+Максимальный суммарный размер всех заголовков HTTP-запроса (включая имена и значения) в байтах.
 
 ## http_max_request_param_data_size \{#http_max_request_param_data_size\}
 
@@ -5099,6 +5373,27 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "0"},{"label": "Новый SETTING, позволяющий использовать кэшированную версию метаданных при операциях READ, чтобы избежать получения данных из удалённого каталога"}]}]}/>
 
 Если значение не равно нулю, пропускается получение метаданных iceberg из удалённого каталога, если существует кэшированный снимок метаданных, более новый, чем заданное окно устаревания. Ноль означает, что последняя версия метаданных всегда будет запрашиваться из удалённого каталога. Установка этого SETTING в ненулевое значение означает компромисс: большая устарелость в обмен на меньшую задержку операций чтения.
+
+## iceberg_orphan_files_older_than_seconds \{#iceberg_orphan_files_older_than_seconds\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="259200" />
+
+<VersionHistory
+  rows={[
+  {
+    id: "row-1",
+    items: [
+      { label: "26.4" },
+      { label: "259200" },
+      { label: "Новая настройка для порога возраста файлов-сирот по умолчанию" }
+    ]
+  }
+]}
+/>
+
+Порог возраста по умолчанию в секундах для удаления файлов-сирот в таблицах Iceberg. Файлы новее этого значения не считаются сиротами. Используется, если в вызове процедуры `remove_orphan_files()` не указан аргумент `older_than`. Значение по умолчанию — 259200 (3 дня).
 
 ## iceberg_snapshot_id \{#iceberg_snapshot_id\}
 
@@ -6380,32 +6675,7 @@ log_query_views=1
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-<VersionHistory
-  rows={[
-  {
-    id: "row-1",
-    items: [
-      { label: "26.4" },
-      { label: "0" },
-      {
-        label:
-          "По умолчанию отключено построение статистики при INSERT, вместо этого используется слияние"
-      }
-    ]
-  },
-  {
-    id: "row-2",
-    items: [
-      { label: "24.6" },
-      { label: "1" },
-      {
-        label:
-          "Добавлена новая настройка, позволяющая отключить материализацию статистики при вставке"
-      }
-    ]
-  }
-]}
-/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "По умолчанию отключено построение статистики при INSERT, вместо этого используется слияние"}]}, {"id": "row-2","items": [{"label": "24.6"},{"label": "1"},{"label": "Добавлена новая настройка, позволяющая отключить материализацию статистики при вставке"}]}]} />
 
 Определяет, будут ли операторы INSERT создавать и вставлять статистику. Если настройка отключена, статистика будет строиться и сохраняться во время слияний или явным выполнением MATERIALIZE STATISTICS.
 
@@ -6507,6 +6777,14 @@ log_query_views=1
 Рекомендуемое значение — половина доступной системной памяти.
 :::
 
+## max_bytes_before_external_join \{#max_bytes_before_external_join\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка для управления автоматическим сбросом хеш-соединений на диск. Ненулевое значение включает сброс и задаёт порог в байтах."}]}]} />
+
+Если задано ненулевое значение и `join_algorithm` имеет значение `hash`, `parallel_hash`, `default` или `auto`, хеш-соединение будет автоматически преобразовано в grace хеш-соединение, чтобы включить сброс на диск, когда объём данных в правой части превысит указанное число байт. Если установлено значение 0 (по умолчанию), этот абсолютный порог в байтах отключается, но автоматический сброс всё ещё может происходить через `max_bytes_ratio_before_external_join` (по умолчанию равно `0.5`); установите оба значения в `0`, чтобы полностью отключить автоматический сброс. Это предотвращает применение оптимизации чтения по порядку через соединение.
+
 ## max_bytes_before_external_sort \{#max_bytes_before_external_sort\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -6527,6 +6805,14 @@ log_query_views=1
 <SettingsInfoBlock type="UInt64" default_value="1000000000" />
 
 В случае использования ORDER BY с LIMIT, когда объем потребляемой памяти превышает указанный порог, выполняются дополнительные этапы слияния блоков перед финальным слиянием, чтобы сохранить только первые LIMIT строк.
+
+## max_bytes_for_lazy_final \{#max_bytes_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="256000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "256000000"},{"label": "Новая настройка, задающая максимальное количество байт в множестве для ленивой оптимизации FINAL"}]}]} />
+
+Максимальное количество байт в множестве для ленивой оптимизации FINAL. При превышении этого значения используется обычный FINAL.
 
 ## max_bytes_in_distinct \{#max_bytes_in_distinct\}
 
@@ -6573,6 +6859,20 @@ log_query_views=1
 Например, если значение равно `0.6`, `GROUP BY` может использовать 60% доступной памяти
 (для сервера/пользователя/слияний) в начале выполнения, после чего
 будет использоваться внешняя агрегация.
+
+## max_bytes_ratio_before_external_join \{#max_bytes_ratio_before_external_join\}
+
+<SettingsInfoBlock type="Double" default_value="0.5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0.5"},{"label": "Новая настройка: доля доступной памяти, используемая как порог сброса для хеш-соединений. Включена по умолчанию со значением `0.5`, аналогично `max_bytes_ratio_before_external_group_by` и `max_bytes_ratio_before_external_sort`. Используется вместе с абсолютным значением `max_bytes_before_external_join` (применяется меньшее из двух)."}]}]} />
+
+Доля доступной памяти, которую разрешено использовать для `JOIN`. После достижения этого значения хеш-соединение преобразуется в grace хеш-соединение, чтобы выполнять сброс данных правой части на диск.
+
+Например, если установить значение `0.6`, `JOIN` позволит использовать `60%` доступной памяти (для server/user/merges) для хеш-таблицы правой части в начале выполнения; после этого начнется сброс на диск.
+
+Если заданы и `max_bytes_before_external_join`, и `max_bytes_ratio_before_external_join`, используется меньшее из получившихся пороговых значений. Если доля равна `0`, применяется только абсолютная настройка.
+
+Действует только тогда, когда `join_algorithm` имеет значение `hash`, `parallel_hash`, `default` или `auto` и настроен путь для временных данных.
 
 ## max_bytes_ratio_before_external_sort \{#max_bytes_ratio_before_external_sort\}
 
@@ -6698,6 +6998,16 @@ log_query_views=1
 <max_concurrent_queries_for_user>5</max_concurrent_queries_for_user>
 ```
 
+
+## max_consume_snapshots \{#max_consume_snapshots\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Максимальное количество снимков Paimon за одно инкрементальное чтение. 0 означает отсутствие ограничений.
 
 ## max_distributed_connections \{#max_distributed_connections\}
 
@@ -6999,6 +7309,18 @@ Exception: Total regexp lengths too large.
 Параллельный `INSERT SELECT` даёт эффект только в том случае, если часть `SELECT` выполняется параллельно, смотрите настройку [`max_threads`](#max_threads).
 Более высокие значения приводят к увеличению потребления памяти.
 
+## max_insert_threads_min_free_memory_per_thread \{#max_insert_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="4294967296" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "4294967296"},{"label": "Новая настройка для ограничения числа потоков вставки в зависимости от объёма доступной свободной памяти"}]}]} />
+
+То же, что и `max_threads_min_free_memory_per_thread`, но применяется к `max_insert_threads`, а не к `max_threads`. Значение по умолчанию выше, поскольку конвейеры вставки обычно удерживают более крупные буферы на поток (части MergeTree, блоки сжатия), чем конвейеры чтения.
+
+Если объём свободной памяти меньше значения `max_insert_threads`, умноженного на это значение, `max_insert_threads` уменьшается до допустимого уровня, но не менее `1`.
+
+Установите `0`, чтобы отключить это ограничение.
+
 ## max_joined_block_size_bytes \{#max_joined_block_size_bytes\}
 
 <SettingsInfoBlock type="UInt64" default_value="4194304" />
@@ -7147,21 +7469,17 @@ SELECT getSetting('max_memory_usage_for_user');
 
 <SettingsInfoBlock type="NonZeroUInt64" default_value="1000" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "По умолчанию используется до 1000 параллельных реплик."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.1"},{"label": "1000"},{"label": "По умолчанию используется до 1000 параллельных реплик."}]}]} />
 
 Максимальное число реплик для каждого сегмента при выполнении запроса.
 
 Возможные значения:
 
-- Положительное целое число.
+* Положительное целое число.
 
 **Дополнительная информация**
 
 Эта настройка может приводить к различным результатам в зависимости от используемых настроек.
-
-:::note
-Эта настройка приведёт к некорректным результатам, если используются объединения (JOIN) или подзапросы и все таблицы не удовлетворяют определённым требованиям. Подробнее см. [Distributed Subqueries and max_parallel_replicas](/operations/settings/settings#max_parallel_replicas).
-:::
 
 ### Параллельная обработка с использованием ключа `SAMPLE` \{#parallel-processing-using-sample-key\}
 
@@ -7401,6 +7719,14 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Максимальный размер в байтах кэша обратного поиска по словарю для одного запроса, используемого функцией `dictGetKeys`. Кэш хранит сериализованные кортежи ключей для каждого значения атрибута, чтобы избежать повторного сканирования словаря в рамках одного запроса. При достижении лимита записи вытесняются по алгоритму LRU. Установите значение 0, чтобы отключить кэширование.
 
+## max_rows_for_lazy_final \{#max_rows_for_lazy_final\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "10000000"},{"label": "Новая настройка для максимального числа строк во множестве для ленивой оптимизации FINAL"}]}]} />
+
+Максимальное число строк во множестве для ленивой оптимизации FINAL. При превышении этого значения выполняется возврат к обычному FINAL.
+
 ## max_rows_in_distinct \{#max_rows_in_distinct\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -7584,6 +7910,22 @@ SELECT getSetting('max_memory_usage_for_user');
 
 Если параметр не равен нулю, ограничивает количество потоков чтения для таблицы MergeTree.
 
+## max_streams_for_union_step \{#max_streams_for_union_step\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, ограничивающая количество одновременно активных потоков данных на шаге UNION для снижения пикового потребления памяти."}]}]} />
+
+Ограничивает количество одновременно активных потоков данных на шаге `UNION` (применяется как к `UNION ALL`, так и к `UNION DISTINCT`, поскольку `UNION DISTINCT` реализуется через шаг `UNION ALL`, за которым следует шаг `DISTINCT`). Когда запрос `UNION` содержит много подзапросов, все они одновременно открывают буферы чтения, из-за чего потребление памяти становится пропорциональным числу подзапросов. Эта настройка вставляет процессоры `Concat`, чтобы сузить конвейер и сделать так, чтобы одновременно было активно не более указанного числа потоков, что значительно снижает пиковое потребление памяти. Фактическое ограничение равно минимуму из этого значения и `max_threads * max_streams_for_union_step_to_max_threads_ratio` (если любое из этих значений равно 0, оно игнорируется). Если оба значения равны 0, сужение не применяется.
+
+## max_streams_for_union_step_to_max_threads_ratio \{#max_streams_for_union_step_to_max_threads_ratio\}
+
+<SettingsInfoBlock type="Float" default_value="8" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "8"},{"label": "Новая настройка: предел количества одновременно активных потоков на шаге UNION вычисляется как min(max_streams_for_union_step, max_threads * max_streams_for_union_step_to_max_threads_ratio); если любой из параметров равен 0, соответствующее ограничение отключается."}]}]} />
+
+Это соотношение, умноженное на `max_threads`, задаёт предел количества одновременно активных потоков на шаге `UNION` (применяется как к `UNION ALL`, так и к `UNION DISTINCT`). Фактический предел — минимальное из этого вычисленного значения и `max_streams_for_union_step` (если любое из них равно 0, оно игнорируется). Например, при `max_threads = 8` и значении этого соотношения 1 одновременно будет активно не более 8 потоков. Установите 0, чтобы отключить это ограничение, зависящее от соотношения.
+
 ## max_streams_multiplier_for_merge_tables \{#max_streams_multiplier_for_merge_tables\}
 
 <SettingsInfoBlock type="Float" default_value="5" />
@@ -7695,6 +8037,22 @@ SELECT getSetting('max_memory_usage_for_user');
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
 Максимальное количество потоков, используемых для обработки индексов.
+
+## max_threads_min_free_memory_per_thread \{#max_threads_min_free_memory_per_thread\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1073741824"},{"label": "Новая настройка для ограничения количества потоков в зависимости от объема доступной свободной памяти"}]}]} />
+
+Уменьшает `max_threads`, когда сервер испытывает нехватку памяти, чтобы избежать запуска сильно распараллеленных запросов, которые с высокой вероятностью упрутся в лимит памяти.
+
+Свободная память вычисляется как `max_server_memory_usage` сервера за вычетом объема памяти, который в данный момент отслеживается глобальным трекером памяти. Если этой свободной памяти меньше, чем `max_threads`, умноженное на это значение, `max_threads` уменьшается до наибольшего N, для которого `N * value <= free_memory`, но не ниже `1`.
+
+Установите `0`, чтобы отключить это ограничение.
+
+Например, при значении по умолчанию 1 GiB и 32 GiB свободной памяти `max_threads` ограничивается значением 32; при 1 GiB свободной памяти оно снижается до 1.
+
+Эта настройка применяется к параллелизму на стороне чтения (`SELECT`, `UNION`, `INTERSECT`/`EXCEPT` и часть `SELECT` в `INSERT ... SELECT`). Для стороны записи см. `max_insert_threads_min_free_memory_per_thread`.
 
 ## max_untracked_memory \{#max_untracked_memory\}
 
@@ -8080,6 +8438,14 @@ ClickHouse использует эту настройку при чтении д
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.2"},{"label": "1048449"},{"label": "Сжимает блоки, передаваемые во внешнюю таблицу, до указанного размера в строках, если их размер меньше указанного"}]}]}/>
 
 Сжимает блоки, передаваемые во внешнюю таблицу, до указанного размера в строках, если их размер меньше указанного.
+
+## min_filtered_ratio_for_lazy_final \{#min_filtered_ratio_for_lazy_final\}
+
+<SettingsInfoBlock type="Float" default_value="0.5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0.5"},{"label": "Новая настройка минимальной доли марок, отфильтрованных для применения ленивой оптимизации FINAL"}]}]} />
+
+Минимальная доля марок, отфильтрованных при анализе индекса для ленивой оптимизации FINAL. Если отфильтровано меньше этой доли марок, выполняется откат к обычному FINAL. Значение 0 отключает эту проверку.
 
 ## min_free_disk_bytes_to_perform_insert \{#min_free_disk_bytes_to_perform_insert\}
 
@@ -8564,6 +8930,14 @@ SELECT * FROM test LIMIT 10 OFFSET 100;
 - 0 — оптимизация отключена.
 - 1 — оптимизация включена.
 
+## optimize_dictget_tuple_element \{#optimize_dictget_tuple_element\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Переписывает tupleElement(dictGet(..., tuple_of_attrs, ...), N) в вызов dictGet с одним атрибутом."}]}]} />
+
+Переписывает `tupleElement(dictGet('dict', ('a', 'b', 'c'), key), 2)` в `dictGet('dict', 'b', key)`, чтобы не извлекать лишние атрибуты словаря. Поддерживает позиционный (`.1`, `.2`, ...) и именованный (`.b`) доступ, а также применяется к `dictGetOrDefault`, если аргумент значения по умолчанию — константный кортеж или `tuple(...)` из констант.
+
 ## optimize_distinct_in_order \{#optimize_distinct_in_order\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -8873,9 +9247,11 @@ SELECT * FROM test2;
 
 ## optimize_rewrite_array_exists_to_has \{#optimize_rewrite_array_exists_to_has\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-Переписывает вызовы функции arrayExists() на has(), когда это логически эквивалентно. Например, arrayExists(x -> x = 1, arr) может быть переписана как has(arr, 1).
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Включить по умолчанию оптимизацию переписывания arrayExists в has, поскольку теперь перед переписыванием проверяется совместимость типов."}]}]} />
+
+Переписывает вызовы функции arrayExists() на has(), когда это логически эквивалентно. Например, arrayExists(x -&gt; x = 1, arr) может быть переписана как has(arr, 1).
 
 ## optimize_rewrite_like_perfect_affix \{#optimize_rewrite_like_perfect_affix\}
 
@@ -9062,6 +9438,21 @@ FROM default.fuse_tbl AS __table1
 
 - [optimize_functions_to_subcolumns](#optimize_functions_to_subcolumns)
 
+## optimize_trivial_group_by_limit_query \{#optimize_trivial_group_by_limit_query\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка, ограничивающая агрегацию максимум LIMIT различными ключами для запросов `SELECT key_expr FROM t GROUP BY key_expr LIMIT n`."}]}]} />
+
+Включает или отключает оптимизацию тривиального запроса `SELECT key_expr FROM table GROUP BY key_expr LIMIT n` (без агрегатных функций в проекции, без секций `HAVING`/`ORDER BY`/`LIMIT BY`/оконных функций и без модификаторов `GROUP BY`) путём установки `max_rows_to_group_by = n + offset` и `group_by_overflow_mode = 'any'`. Агрегация останавливается, как только будет получено `n + offset` различных ключей.
+
+Оптимизация не применяется, если пользователь явно установил `group_by_overflow_mode` в значение, отличное от `any` (чтобы сохранить явно заданное поведение `throw`/`break`), а также если пользователь уже задал более жёсткое значение `max_rows_to_group_by` (в этом случае оптимизация ничего не изменит).
+
+Возможные значения:
+
+* 0 — Оптимизация отключена.
+  * 1 — Оптимизация включена.
+
 ## optimize_trivial_insert_select \{#optimize_trivial_insert_select\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -9177,6 +9568,28 @@ FROM default.fuse_tbl AS __table1
 
 Большее значение лучше подходит для высокопроизводительных запросов с большим объемом данных, тогда как точечные запросы с низкой задержкой будут работать лучше без предварительного чтения (readahead).
 
+## page_cache_max_coalesced_bytes \{#page_cache_max_coalesced_bytes\}
+
+<SettingsInfoBlock type="UInt64" default_value="16777216" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "16777216"},{"label": "Новая настройка, ограничивающая размер одного объединённого чтения, используемого для заполнения кэша страниц в пространстве пользователя при промахе кэша."}]}]} />
+
+Когда `readBigAt` заполняет кэш страниц в пространстве пользователя, последовательные промахи кэша объединяются в одно чтение из нижележащего хранилища. Эта настройка ограничивает размер одного такого объединённого чтения в байтах; более длинные последовательности промахов разбиваются на несколько чтений. Она ограничивает временное потребление памяти буфером при параллельных холодных чтениях.
+
+Большее значение уменьшает количество HTTP-запросов при холодном сканировании в объектном хранилище; меньшее — снижает пиковое временное потребление памяти.
+
+## paimon_target_snapshot_id \{#paimon_target_snapshot_id\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Int64" default_value="-1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "-1"},{"label": "Новая настройка"}]}]} />
+
+Чтение указанного снимка на уровне запроса в инкрементальном режиме Paimon. Если значение &gt;0, модуль чтения будет извлекать только дельту
+для указанного `snapshot_id`, не продвигая зафиксированный watermark.
+По умолчанию: -1 (отключено)
+
 ## parallel_distributed_insert_select \{#parallel_distributed_insert_select\}
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
@@ -9237,6 +9650,16 @@ FROM default.fuse_tbl AS __table1
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "Разрешает использование materialized views с параллельными репликами"}]}]}/>
 
 Разрешает использование materialized views с параллельными репликами
+
+## parallel_replicas_allow_view_over_mergetree \{#parallel_replicas_allow_view_over_mergetree\}
+
+<BetaBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка"}]}]} />
+
+Разрешить параллельным репликам выполнять внешний запрос простого представления над таблицами `MergeTree` (вместо внутреннего запроса самого представления), что улучшает распараллеливание между узлами. Также применяется к представлениям `UNION ALL`, все ветви которых читают из разных таблиц `MergeTree`.
 
 ## parallel_replicas_connect_timeout_ms \{#parallel_replicas_connect_timeout_ms\}
 
@@ -9380,6 +9803,16 @@ FROM default.fuse_tbl AS __table1
 
 Если имеет значение true и JOIN может быть выполнен с использованием алгоритма параллельных реплик, а все хранилища правой части JOIN используют движок *MergeTree, будет выполнен локальный JOIN вместо GLOBAL JOIN.
 
+## parallel_replicas_prefer_local_replica \{#parallel_replicas_prefer_local_replica\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка. Если отключена, реплики для параллельного чтения выбираются исключительно алгоритмом балансировки нагрузки, без принудительного включения локальной реплики в набор."}]}]} />
+
+Когда настройка включена (по умолчанию), локальная реплика всегда включается в набор реплик, используемых для параллельного чтения.
+Когда настройка отключена, локальной реплике не отдается предпочтение, и реплики выбираются исключительно алгоритмом балансировки нагрузки.
+Это позволяет направлять запросы с `max_parallel_replicas = 1` на другой хост, что может улучшить локальность кэша, когда множество коротких запросов распределяется по кластеру.
+
 ## parallel_replicas_support_projection \{#parallel_replicas_support_projection\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -9522,6 +9955,14 @@ FROM default.fuse_tbl AS __table1
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "0"},{"label": "New setting"}]}]}/>
 
 Оценочная вероятность сбоя внутренних (репликационных) запросов PostgreSQL. Допустимое значение — в интервале [0.0f, 1.0f].
+
+## predicate_statistics_sample_rate \{#predicate_statistics_sample_rate\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка для сбора статистики селективности предикатов в system.predicate_statistics_log"}]}]} />
+
+Собирает статистику селективности предикатов в `system.predicate_statistics_log`. Если задано значение N &gt; 0, в выборку попадает примерно 1/N запросов (по идентификатору запроса). 0 означает, что сбор отключён.
 
 ## prefer_column_name_to_alias \{#prefer_column_name_to_alias\}
 
@@ -10133,6 +10574,14 @@ a   Tuple(
 Если задано значение 1, генерируется случайный seed; если задано значение &gt; 1, это значение напрямую используется в качестве seed.
 Эта настройка предназначена для тестирования и помогает выявлять ошибки, вызванные различным порядком соединений.
 
+## query_plan_optimize_lazy_final \{#query_plan_optimize_lazy_final\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "0"},{"label": "Новая настройка для оптимизации чтения с FINAL из ReplacingMergeTree с использованием анализа индекса на основе множества"}]}]} />
+
+Оптимизирует чтение с FINAL из ReplacingMergeTree путём построения множества первичных ключей и его использования для анализа индекса.
+
 ## query_plan_optimize_lazy_materialization \{#query_plan_optimize_lazy_materialization\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -10286,6 +10735,20 @@ a   Tuple(
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "1"},{"label": "New setting"}]}]}/>
 
 Позволяет добавлять подсказку (additional predicate) для фильтрации, выполняемой с использованием инвертированного текстового индекса в плане запроса.
+
+## query_plan_top_k_through_join \{#query_plan_top_k_through_join\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка для включения оптимизации на уровне плана запроса, которая переносит ORDER BY ... LIMIT n под LEFT/RIGHT JOIN, когда ключ сортировки ссылается только на сохраняемую сторону."}]}]} />
+
+Включает или отключает оптимизацию на уровне плана запроса, которая переносит `ORDER BY ... LIMIT n` под JOIN, когда ключ сортировки ссылается только на столбцы стороны, сохраняемой JOIN (LEFT/RIGHT). Ограничивает количество строк, которое должен вернуть вход сохраняемой стороны до выполнения JOIN.
+Действует только если настройка [query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) имеет значение 1.
+
+Возможные значения:
+
+* 0 - Отключить
+* 1 - Включить
 
 ## query_plan_try_use_vector_search \{#query_plan_try_use_vector_search\}
 
@@ -10522,6 +10985,14 @@ a   Tuple(
 <SettingsInfoBlock type="Seconds" default_value="300" />
 
 Таймаут ожидания получения данных из сети, в секундах. Если в течение этого интервала не было получено ни одного байта, будет сгенерировано исключение. Если вы задаёте этот параметр на клиенте, для сокета на сервере на соответствующем конце соединения также будет установлен `send_timeout`.
+
+## recursive_cte_max_steps_in_type_inference \{#recursive_cte_max_steps_in_type_inference\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "Максимальное число итераций для определения типов столбцов в рекурсивных CTE с помощью итеративного getLeastSupertype"}]}]} />
+
+Максимальное число итераций для определения типов столбцов в рекурсивных CTE. Типы столбцов определяются итеративным применением `getLeastSupertype` к нерекурсивной и рекурсивной частям UNION ALL до достижения сходимости. Установите 0, чтобы отключить расширение типов и использовать только типы из нерекурсивной части.
 
 ## regexp_dict_allow_hyperscan \{#regexp_dict_allow_hyperscan\}
 
@@ -10977,6 +11448,14 @@ FORMAT Null;
 
 Каждый раз, когда в S3 загружается такое количество частей, значение s3_min_upload_part_size умножается на s3_upload_part_size_multiply_factor.
 
+## s3_uri_style \{#s3_uri_style\}
+
+<SettingsInfoBlock type="S3UriStyle" default_value="auto" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "auto"},{"label": "Новая настройка"}]}]} />
+
+Принудительно задаёт стиль конечной точки S3. Возможные значения: auto, virtual&#95;hosted, path.
+
 ## s3_use_adaptive_timeouts \{#s3_use_adaptive_timeouts\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11133,6 +11612,14 @@ FORMAT Null;
 - 0 — Отключено.
 - 1 — Включено.
 
+## send_table_structure_on_insert_with_inline_data \{#send_table_structure_on_insert_with_inline_data\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка, определяющая, отправляет ли сервер структуру таблицы для запросов INSERT с inline-данными."}]}]} />
+
+Если параметр отключён и запрос INSERT содержит inline-данные, сервер не будет передавать клиенту по нативному протоколу структуру таблицы и значения по умолчанию для столбцов. Вместо этого сервер сам разберёт inline-данные. Это может повысить производительность при большом количестве небольших вставок по нативному протоколу.
+
 ## send_timeout \{#send_timeout\}
 
 <SettingsInfoBlock type="Seconds" default_value="300" />
@@ -11230,6 +11717,30 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 - `throw`: генерировать исключение (по умолчанию).
 - `break`: прекратить выполнение запроса и вернуть частичный результат, как если бы
 исходные данные закончились.
+
+## shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_initial_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="50" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "50"},{"label": "Новая настройка для уменьшения случайных ошибок UNFINISHED в запросах с последовательной согласованностью в SharedMergeTree."}]}]} />
+
+Начальный бэкофф в миллисекундах при обновлении частей при использовании `select_sequential_consistency` с `SharedMergeTree`. Доступно только в ClickHouse Cloud.
+
+## shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms \{#shared_merge_tree_sequential_consistency_max_parts_update_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1000"},{"label": "Новая настройка для уменьшения случайных ошибок UNFINISHED в запросах с последовательной согласованностью для SharedMergeTree."}]}]} />
+
+Максимальный бэкофф в миллисекундах при обновлении частей при использовании `select_sequential_consistency` с `SharedMergeTree`. Доступно только в ClickHouse Cloud.
+
+## shared_merge_tree_sequential_consistency_parts_update_max_retries \{#shared_merge_tree_sequential_consistency_parts_update_max_retries\}
+
+<SettingsInfoBlock type="UInt64" default_value="10" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10"},{"label": "Новая настройка для уменьшения спорадических ошибок UNFINISHED в запросах с последовательной согласованностью для SharedMergeTree."}]}]} />
+
+Максимальное число повторных попыток обновления частей при использовании `select_sequential_consistency` с `SharedMergeTree`. Доступно только в ClickHouse Cloud.
 
 ## shared_merge_tree_sync_parts_on_partition_operations \{#shared_merge_tree_sync_parts_on_partition_operations\}
 
@@ -11530,6 +12041,21 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 └──────────────────────────┴───────┴───────────────────────────────────────────────────────┘
 ```
 
+
+## system_metric_log_show_zero_values_in_histograms \{#system_metric_log_show_zero_values_in_histograms\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, управляющая тем, записываются ли данные гистограмм с нулевыми значениями во вложенный столбец histograms таблицы system.metric_log."}]}]} />
+
+Определяет, записываются ли данные гистограмм с нулевыми значениями во вложенный столбец `histograms` таблицы `system.metric_log`.
+
+По умолчанию гистограммы, у которых общее значение `count` равно нулю, пропускаются, а внутри каждой записываемой гистограммы записи бакетов без наблюдений также не включаются в map `histogram`. Включите этот параметр, чтобы записывать каждую гистограмму и каждый бакет независимо от значения `count` — это полезно для систем мониторинга, которым требуется, чтобы каждая метрика присутствовала в каждой контрольной точке.
+
+Возможные значения:
+
+* 0 — Отключено. Гистограммы с `count = 0` не записываются; записываемые гистограммы включают только те бакеты, в которых было хотя бы одно наблюдение.
+* 1 — Включено. Записываются все гистограммы, и в `histogram` присутствует каждая граница бакета.
 
 ## table_engine_read_through_distributed_cache \{#table_engine_read_through_distributed_cache\}
 
@@ -11835,6 +12361,27 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Если установлено значение true, набор частей обновляется до последней версии перед выполнением обновления.
 
+## url_base \{#url_base\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": ""},{"label": "Новая настройка для указания базового URL, используемого для разрешения относительных URL в табличной функции url и движке таблицы URL."}]}]} />
+
+Базовый URL, используемый для разрешения относительных URL в табличной функции [url](../../sql-reference/table-functions/url.md) и движке таблицы [URL](../../engines/table-engines/special/url.md).
+
+Если настройка задана, относительные URL разрешаются следующим образом:
+
+* URL, относительный к пути (например, `data.csv`): объединяется с путём базового URL согласно RFC 3986. Всё после последнего символа `/` в базовом пути заменяется относительным URL, поэтому наличие завершающего слэша имеет значение: `https://example.com/dir/` + `data.csv` = `https://example.com/dir/data.csv`, а `https://example.com/dir` + `data.csv` = `https://example.com/data.csv`. Если у базового URL нет пути (например, `https://example.com`), вставляется `/`: `https://example.com/data.csv`. Сегменты с точками (`./` и `../`) в относительном URL нормализуются: `https://example.com/dir/` + `../a.csv` = `https://example.com/a.csv`.
+* URL, относительный к хосту (например, `/test/data.csv`): разрешается относительно схемы и хоста базового URL.
+* URL, относительный к схеме (например, `//other.com/test/data.csv`): разрешается с использованием схемы базового URL.
+* Ссылка только с параметрами запроса (например, `?x=1`): добавляется к пути базового URL (при этом существующие параметры запроса и фрагмент заменяются).
+* Ссылка только с фрагментом (например, `#frag`): добавляется к базовому URL с сохранением строки запроса (при этом существующий фрагмент заменяется).
+* Пустая ссылка: возвращает базовый URL без фрагмента.
+
+Например, если `url_base` равно `https://example.com/def/`, тогда:
+
+* `data.csv` разрешается в `https://example.com/def/data.csv`
+* `/test/data.csv` разрешается в `https://example.com/test/data.csv`
+* `//other.com/test/data.csv` разрешается в `https://other.com/test/data.csv`
+
 ## use_async_executor_for_materialized_views \{#use_async_executor_for_materialized_views\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -12114,9 +12661,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_skip_indexes_for_top_k \{#use_skip_indexes_for_top_k\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "По умолчанию включает использование индексов пропуска данных для фильтрации TopK"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]} />
 
 Включает использование индексов пропуска данных при фильтрации TopK.
 
@@ -12124,8 +12671,8 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Возможные значения:
 
-- 0 — отключено.
-- 1 — включено.
+* 0 — отключено.
+* 1 — включено.
 
 ## use_skip_indexes_if_final \{#use_skip_indexes_if_final\}
 
@@ -12272,9 +12819,9 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 ## use_top_k_dynamic_filtering \{#use_top_k_dynamic_filtering\}
 
-<SettingsInfoBlock type="Bool" default_value="0" />
+<SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.12"},{"label": "0"},{"label": "New setting."}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Включить оптимизацию динамической фильтрации для запросов TopK по умолчанию"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка"}]}]} />
 
 Включает оптимизацию динамической фильтрации при выполнении запроса `ORDER BY <column> LIMIT n`.
 
@@ -12282,8 +12829,25 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Возможные значения:
 
-- 0 — Отключено.
-- 1 — Включено.
+* 0 — Отключено.
+* 1 — Включено.
+
+## use_top_k_dynamic_filtering_for_variable_length_types \{#use_top_k_dynamic_filtering_for_variable_length_types\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "По умолчанию отключает `use_top_k_dynamic_filtering` для сортировочных столбцов переменной длины (например, `String`); прежнее поведение, при котором оптимизация применялась безусловно, сохраняется при `compatibility`."}]}]} />
+
+Разрешает применять `use_top_k_dynamic_filtering`, если сортировочный столбец имеет тип данных переменной длины (например, `String`, `Array`, `Map`, `Tuple`, содержащий элементы переменной длины).
+
+Для таких типов сравнение с порогом для каждой строки, которое выполняет динамический фильтр, может свести на нет получаемую выгоду, если в столбце преобладает лексикографический минимум (например, в основном пустые строки) и можно пропустить лишь немного гранул. В этом случае динамический фильтр не уменьшает, а увеличивает задержку запроса.
+
+Если эта настройка имеет значение `0`, динамическая фильтрация ограничивается столбцами, значения которых имеют фиксированный максимальный размер в памяти (числа, `Date`, `DateTime`, `FixedString`, `Enum`, `Nullable` таких типов, `Tuple` таких типов). Если установлено значение `1`, динамическая фильтрация также применяется к типам переменной длины.
+
+Возможные значения:
+
+* 0 — Отключено.
+* 1 — Включено.
 
 ## use_uncompressed_cache \{#use_uncompressed_cache\}
 
@@ -12425,6 +12989,18 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 
 - 0 — генерация исключения отключена. `pointInPolygon` принимает некорректные многоугольники и возвращает для них потенциально неверные результаты.
 - 1 — генерация исключения включена.
+
+## variant_throw_on_type_mismatch \{#variant_throw_on_type_mismatch\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1"},{"label": "Новая настройка для управления поведением при несоответствии типов в стандартной реализации Variant"}]}]} />
+
+При применении функции к столбцу [Variant](../../sql-reference/data-types/variant.md) со стандартной реализацией
+эта настройка определяет, что происходит со строками, фактический тип которых несовместим с функцией:
+
+* `true` (по умолчанию) — выбрасывать исключение.
+* `false` — вместо этого возвращать `NULL` для таких строк.
 
 ## vector_search_filter_strategy \{#vector_search_filter_strategy\}
 

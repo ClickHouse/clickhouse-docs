@@ -7,8 +7,6 @@ title: 'clickhouse-benchmark'
 doc_type: 'reference'
 ---
 
-# clickhouse-benchmark \{#clickhouse-benchmark\}
-
 ClickHouse 서버에 연결해 지정한 쿼리를 반복해서 전송합니다.
 
 **구문**
@@ -41,7 +39,6 @@ SELECT 1;
 ```bash
 clickhouse-benchmark [keys] < queries_file;
 ```
-
 
 ## Command-line options \{#clickhouse-benchmark-command-line-options\}
 

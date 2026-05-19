@@ -1,13 +1,11 @@
 ---
-description: 'ユーザーおよびロールの構成設定。'
+description: 'ユーザーおよびロールを設定するための設定項目。'
 sidebar_label: 'ユーザー設定'
 sidebar_position: 63
 slug: /operations/settings/settings-users
 title: 'ユーザーおよびロールの設定'
 doc_type: 'reference'
 ---
-
-# ユーザーおよびロールの設定 \{#users-and-roles-settings\}
 
 `users.xml` 設定ファイルの `users` セクションには、ユーザーの設定が含まれます。
 

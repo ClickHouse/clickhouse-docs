@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/data-lake/biglake-catalog
 sidebar_label: 'BigLake Metastore'
-title: 'BigLake Metastore'
+title: 'Lakehouse runtime catalog (BigLake Metastore)'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
- your data in Google Cloud Storage using ClickHouse and the BigLake Metastore.'
-keywords: ['BigLake', 'GCS', 'Data Lake', 'Iceberg', 'Google Cloud']
+ your data in Google Cloud Storage using ClickHouse and the Lakehouse runtime Catalog (BigLake Metastore).'
+keywords: ['BigLake', 'GCS', 'Data Lake', 'Iceberg', 'Google Cloud', 'Lakehouse Runtime Catalog']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -15,7 +15,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-ClickHouse supports integration with multiple catalogs (Unity, Glue, Polaris, etc.). This guide will walk you through the steps to query your Iceberg tables in [BigLake Metastore](https://docs.cloud.google.com/biglake/docs/) via ClickHouse.
+ClickHouse supports integration with multiple catalogs (Unity, Glue, Polaris, etc.). This guide will walk you through the steps to query your Iceberg tables in [Lakehouse runtime catalog aka BigLake Metastore](https://docs.cloud.google.com/biglake/docs/) via ClickHouse.
 
 :::note
 As this feature is beta, you will need to enable it using:
@@ -24,21 +24,21 @@ As this feature is beta, you will need to enable it using:
 
 ## Prerequisites {#prerequisites}
 
-Before creating a connection from ClickHouse to BigLake Metastore, ensure you have:
+Before creating a connection from ClickHouse to Lakehouse runtime catalog (BigLake Metastore), ensure you have:
 
-- A **Google Cloud project** with BigLake Metastore enabled
+- A **Google Cloud project** with Lakehouse runtime catalog enabled
 - **Application Default credentials** (Oauth client ID and client secret) for an application, created via [Google Cloud Console](https://docs.cloud.google.com/docs/authentication/provide-credentials-adc)
 - A **refresh token** obtained by completing the OAuth flow with the appropriate scopes (e.g. `https://www.googleapis.com/auth/bigquery` and storage scope for GCS)
 - A **warehouse** path: a GCS bucket (and optional prefix) where your tables are stored, e.g. `gs://your-bucket` or `gs://your-bucket/prefix`
 
-## Creating a connection between BigLake Metastore and ClickHouse {#creating-a-connection}
+## Creating a connection between Lakehouse runtime catalog and ClickHouse {#creating-a-connection}
 
 With the OAuth credentials in place, create a database in ClickHouse that uses the [DataLakeCatalog](/engines/database-engines/datalakecatalog) database engine:
 
 ```sql
 SET allow_database_iceberg = 1;
 
-CREATE DATABASE biglake_metastore
+CREATE DATABASE lakehouse_runtime_catalog
 ENGINE = DataLakeCatalog('https://biglake.googleapis.com/iceberg/v1/restcatalog')
 SETTINGS
     catalog_type = 'biglake',
@@ -49,12 +49,12 @@ SETTINGS
     warehouse = 'gs://<bucket_name>/<optional-prefix>';
 ```
 
-## Querying BigLake Metastore tables using ClickHouse {#querying-biglake-metastore-tables}
+## Querying Lakehouse runtime catalog tables using ClickHouse {#querying-lakehouse-runtime-tables}
 
-Once the connection is created, you can query tables registered in the BigLake Metastore.
+Once the connection is created, you can query tables registered in the Lakehouse runtime catalog.
 
 ```sql
-USE biglake_metastore;
+USE LAKEHOUSE_RUNTIME_CATALOG;
 
 SHOW TABLES;
 ```
@@ -62,13 +62,13 @@ SHOW TABLES;
 Example output:
 
 ```response
-┌─name─────────────────────┐
-│icebench.my_iceberg_table │   
-└──────────────────────────┘
+┌─name──────────────────────────────────────┐
+│lakehouse_runtime_catalog.my_iceberg_table │   
+└───────────────────────────────────────────┘
 ```
 
 ```sql
-SELECT count(*) FROM `icebench.my_iceberg_table`;
+SELECT count(*) FROM `lakehouse_runtime_catalog.my_iceberg_table`;
 ```
 
 :::note Backticks required
@@ -78,12 +78,12 @@ Backticks are required because ClickHouse doesn't support more than one namespac
 To inspect the table definition:
 
 ```sql
-SHOW CREATE TABLE `icebench.my_iceberg_table`;
+SHOW CREATE TABLE `lakehouse_runtime_catalog.my_iceberg_table`;
 ```
 
-## Loading data from BigLake into ClickHouse {#loading-data-into-clickhouse}
+## Loading data from Lakehouse into ClickHouse {#loading-data-into-clickhouse}
 
-To load data from a BigLake Metastore table into a local ClickHouse table for faster repeated queries, create a MergeTree table and insert from the catalog:
+To load data from a Lakehouse runtime catalog table into a local ClickHouse table for faster repeated queries, create a MergeTree table and insert from the catalog:
 
 ```sql
 CREATE TABLE clickhouse_table
@@ -97,7 +97,7 @@ ENGINE = MergeTree
 ORDER BY (event_time, id);
 
 INSERT INTO local_events
-SELECT * FROM biglake_metastore.`icebench.my_iceberg_table`;
+SELECT * FROM lakehouse_runtime_catalog.`icebench.my_iceberg_table`;
 ```
 
 After the initial load, query `clickhouse_table` for lower latency. Re-run the `INSERT INTO ... SELECT` to refresh data from BigLake when needed.

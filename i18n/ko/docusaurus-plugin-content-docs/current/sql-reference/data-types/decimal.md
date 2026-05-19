@@ -8,40 +8,31 @@ title: 'Decimal, Decimal(P), Decimal(P, S), Decimal32(S), Decimal64(S), Decimal1
 doc_type: 'reference'
 ---
 
-
-
-# Decimal, Decimal(P), Decimal(P, S), Decimal32(S), Decimal64(S), Decimal128(S), Decimal256(S) \{#decimal-decimalp-decimalp-s-decimal32s-decimal64s-decimal128s-decimal256s\}
-
-덧셈, 뺄셈, 곱셈 연산에서 정밀도가 유지되는 부호 있는 고정 소수점 수입니다. 나눗셈 연산에서는 가장 낮은 자릿수가 버려지며(반올림되지 않습니다).
-
-
+덧셈, 뺄셈, 곱셈 연산 시 정밀도를 유지하는 부호 있는 고정 소수점 숫자입니다. 나눗셈에서는 최하위 자릿수가 버려지며 반올림되지 않습니다.
 
 ## Parameters \{#parameters\}
 
-- P - 정밀도(precision). 유효 범위: \[ 1 : 76 \]. 소수 부분을 포함하여 숫자가 가질 수 있는 10진 자릿수의 개수를 결정합니다. 기본 정밀도는 10입니다.
-- S - 스케일(scale). 유효 범위: \[ 0 : P \]. 소수 부분이 가질 수 있는 10진 자릿수의 개수를 결정합니다.
+* P - 정밀도(precision). 유효 범위: [ 1 : 76 ]. 소수 부분을 포함하여 숫자가 가질 수 있는 10진 자릿수의 개수를 결정합니다. 기본 정밀도는 10입니다.
+* S - 스케일(scale). 유효 범위: [ 0 : P ]. 소수 부분이 가질 수 있는 10진 자릿수의 개수를 결정합니다.
 
 Decimal(P)은 Decimal(P, 0)과 동일합니다. 마찬가지로 Decimal 구문은 Decimal(10, 0)과 동일합니다.
 
 P 매개변수 값에 따라 Decimal(P, S)는 다음과 같이 해석됩니다.
-- P가 \[ 1 : 9 \] 범위일 때 - Decimal32(S)
-- P가 \[ 10 : 18 \] 범위일 때 - Decimal64(S)
-- P가 \[ 19 : 38 \] 범위일 때 - Decimal128(S)
-- P가 \[ 39 : 76 \] 범위일 때 - Decimal256(S)
 
-
+* P가 [ 1 : 9 ] 범위일 때 - Decimal32(S)
+* P가 [ 10 : 18 ] 범위일 때 - Decimal64(S)
+* P가 [ 19 : 38 ] 범위일 때 - Decimal128(S)
+* P가 [ 39 : 76 ] 범위일 때 - Decimal256(S)
 
 ## Decimal 값 범위 \{#decimal-value-ranges\}
 
-- Decimal(P, S) - ( -1 \* 10^(P - S), 1 \* 10^(P - S) )
-- Decimal32(S) - ( -1 \* 10^(9 - S), 1 \* 10^(9 - S) )
-- Decimal64(S) - ( -1 \* 10^(18 - S), 1 \* 10^(18 - S) )
-- Decimal128(S) - ( -1 \* 10^(38 - S), 1 \* 10^(38 - S) )
-- Decimal256(S) - ( -1 \* 10^(76 - S), 1 \* 10^(76 - S) )
+* Decimal(P, S) - ( -1 * 10^(P - S), 1 * 10^(P - S) )
+* Decimal32(S) - ( -1 * 10^(9 - S), 1 * 10^(9 - S) )
+* Decimal64(S) - ( -1 * 10^(18 - S), 1 * 10^(18 - S) )
+* Decimal128(S) - ( -1 * 10^(38 - S), 1 * 10^(38 - S) )
+* Decimal256(S) - ( -1 * 10^(76 - S), 1 * 10^(76 - S) )
 
 예를 들어 Decimal32(4)는 -99999.9999부터 99999.9999까지 0.0001 단위로 숫자를 저장할 수 있습니다.
-
-
 
 ## 내부 표현 \{#internal-representation\}
 
@@ -49,30 +40,26 @@ P 매개변수 값에 따라 Decimal(P, S)는 다음과 같이 해석됩니다.
 
 최신 CPU는 128비트 및 256비트 정수를 직접 지원하지 않으므로, Decimal128 및 Decimal256에 대한 연산은 에뮬레이션됩니다. 따라서 Decimal128 및 Decimal256은 Decimal32/Decimal64보다 상당히 느리게 동작합니다.
 
-
-
 ## 연산과 결과 타입 \{#operations-and-result-type\}
 
 Decimal에 대한 이항 연산은 (인자의 순서와 관계없이) 더 넓은 결과 타입을 생성합니다.
 
-- `Decimal64(S1) <op> Decimal32(S2) -> Decimal64(S)`
-- `Decimal128(S1) <op> Decimal32(S2) -> Decimal128(S)`
-- `Decimal128(S1) <op> Decimal64(S2) -> Decimal128(S)`
-- `Decimal256(S1) <op> Decimal<32|64|128>(S2) -> Decimal256(S)`
+* `Decimal64(S1) <op> Decimal32(S2) -> Decimal64(S)`
+* `Decimal128(S1) <op> Decimal32(S2) -> Decimal128(S)`
+* `Decimal128(S1) <op> Decimal64(S2) -> Decimal128(S)`
+* `Decimal256(S1) <op> Decimal<32|64|128>(S2) -> Decimal256(S)`
 
 스케일(scale)에 대한 규칙:
 
-- 덧셈, 뺄셈: S = max(S1, S2).
-- 곱셈: S = S1 + S2.
-- 나눗셈: S = S1.
+* 덧셈, 뺄셈: S = max(S1, S2).
+* 곱셈: S = S1 + S2.
+* 나눗셈: S = S1.
 
 Decimal과 정수 사이의 유사한 연산에 대해서는, 결과가 인자와 동일한 크기의 Decimal이 됩니다.
 
 Decimal과 Float32/Float64 사이의 연산은 정의되어 있지 않습니다. 해당 연산이 필요하면, 인자 중 하나를 `toDecimal32`, `toDecimal64`, `toDecimal128` 또는 `toFloat32`, `toFloat64` 내장 함수로 명시적으로 캐스팅해야 합니다. 이때 결과의 정밀도가 손실되며, 타입 변환은 계산 비용이 큰 연산이라는 점을 유의해야 합니다.
 
 일부 Decimal용 함수는 결과를 Float64로 반환합니다(예: `var` 또는 `stddev`). 중간 계산은 여전히 Decimal에서 수행될 수 있으며, 동일한 값을 가진 Float64 입력과 Decimal 입력 사이에서 서로 다른 결과가 나올 수 있습니다.
-
-
 
 ## 오버플로우 검사 \{#overflow-checks\}
 
@@ -108,7 +95,7 @@ SELECT toDecimal32(4.2, 8) AS x, 6 * x
 DB::Exception: Decimal math overflow.
 ```
 
-오버플로 검사는 연산 속도를 저하시킵니다. 오버플로가 발생하지 않는 것이 확실한 경우 `decimal_check_overflow` 설정을 사용하여 검사를 비활성화하는 것이 합리적입니다. 검사가 비활성화된 상태에서 오버플로가 발생하면 결과가 잘못됩니다:
+오버플로우 검사는 연산 속도를 저하시킵니다. 오버플로우가 발생하지 않는 것이 확실한 경우 `decimal_check_overflow` 설정을 사용하여 검사를 비활성화하는 것이 합리적입니다. 검사가 비활성화된 상태에서 오버플로우가 발생하면 결과가 잘못됩니다:
 
 ```sql
 SET decimal_check_overflow = 0;
@@ -121,7 +108,7 @@ SELECT toDecimal32(4.2, 8) AS x, 6 * x
 └────────────┴──────────────────────────────────┘
 ```
 
-오버플로 검사는 산술 연산에서만 수행되는 것이 아니라 값 비교 시에도 수행됩니다:
+오버플로우 검사는 산술 연산에서만 수행되는 것이 아니라 값 비교 시에도 수행됩니다:
 
 ```sql
 SELECT toDecimal32(1, 8) < 100

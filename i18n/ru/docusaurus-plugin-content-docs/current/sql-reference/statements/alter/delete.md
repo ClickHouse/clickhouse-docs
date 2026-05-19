@@ -1,13 +1,11 @@
 ---
-description: 'Документация по оператору ALTER TABLE ... DELETE'
+description: 'Документация по инструкции ALTER TABLE ... DELETE'
 sidebar_label: 'DELETE'
 sidebar_position: 39
 slug: /sql-reference/statements/alter/delete
-title: 'Оператор ALTER TABLE ... DELETE'
+title: 'Инструкция ALTER TABLE ... DELETE'
 doc_type: 'reference'
 ---
-
-# Инструкция ALTER TABLE ... DELETE \{#alter-table-delete-statement\}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
@@ -33,4 +31,4 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Обработка обновлений и удалений в ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* Блог: [Обработка обновлений и удалений в ClickHouse](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

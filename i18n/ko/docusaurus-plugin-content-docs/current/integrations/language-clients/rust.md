@@ -11,9 +11,7 @@ integration:
   - category: 'language_client'
 ---
 
-# ClickHouse Rust 클라이언트 \{#clickhouse-rust-client\}
-
-ClickHouse에 연결하기 위한 공식 Rust 클라이언트로, 원래는 [Paul Loyd](https://github.com/loyd)가 개발했습니다. 클라이언트 소스 코드는 [GitHub 저장소](https://github.com/ClickHouse/clickhouse-rs)에서 확인할 수 있습니다.
+ClickHouse에 연결하기 위한 공식 Rust 클라이언트로, [Paul Loyd](https://github.com/loyd)가 처음 개발했습니다. 클라이언트 소스 코드는 [GitHub 저장소](https://github.com/ClickHouse/clickhouse-rs)에서 확인할 수 있습니다.
 
 ## 개요 \{#overview\}
 

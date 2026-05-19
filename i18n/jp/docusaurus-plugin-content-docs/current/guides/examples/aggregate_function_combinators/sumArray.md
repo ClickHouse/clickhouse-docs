@@ -1,13 +1,11 @@
 ---
 slug: '/examples/aggregate-function-combinators/sumArray'
 title: 'sumArray'
-description: 'sumArray コンビネーターの使用例'
+description: 'sumArray コンビネータの使用例'
 keywords: ['sum', 'array', 'combinator', 'examples', 'sumArray']
 sidebar_label: 'sumArray'
 doc_type: 'reference'
 ---
-
-# sumArray \{#sumarray\}
 
 ## 説明 \{#description\}
 
@@ -48,7 +46,8 @@ GROUP BY date, category_sales;
 `arraySum` と同じ結果です。
 
 ## 関連項目 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`arraySum`](/sql-reference/functions/array-functions#arraySum)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`sumMap`](/examples/aggregate-function-combinators/sumMap)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`arraySum`](/sql-reference/functions/array-functions#arraySum)
+* [`Array コンビネータ`](/sql-reference/aggregate-functions/combinators#-array)
+* [`sumMap`](/examples/aggregate-function-combinators/sumMap)

@@ -1,21 +1,19 @@
 ---
 slug: /faq/operations/production
-title: '在生产环境中应使用哪个 ClickHouse 版本？'
+title: '在生产环境中应该使用哪个 ClickHouse 版本？'
 toc_hidden: true
 toc_priority: 10
-description: '本页提供关于在生产环境中选择 ClickHouse 版本的指导'
+description: '本页面提供有关在生产环境中应使用哪个 ClickHouse 版本的指导'
 doc_type: 'guide'
 keywords: ['生产环境', '部署', '版本', '最佳实践', '升级策略']
 ---
 
-# 在生产环境中应该使用哪个 ClickHouse 版本？ \{#which-clickhouse-version-to-use-in-production\}
-
 首先，来看一下大家为什么会问这个问题。主要有两个原因：
 
-1.  ClickHouse 的开发迭代速度非常快，通常每年会发布 10 个以上的稳定版本。可供选择的版本非常多，选起来并不那么简单。
-2.  有些用户不想花时间去摸索哪个版本最适合自己的使用场景，而是希望直接采纳他人的建议。
+1. ClickHouse 的开发迭代速度非常快，通常每年会发布 10 个以上的稳定版本。可供选择的版本非常多，选起来并不那么简单。
+2. 有些用户不想花时间去摸索哪个版本最适合自己的使用场景，而是希望直接采纳他人的建议。
 
-第二个原因更为根本，所以我们先从这一点说起，然后再回到如何在各个 ClickHouse 版本之间做出选择。
+第二个原因更为根本，所以我们先从这一点说起，然后再回到如何在各个 ClickHouse 发行版之间做出选择。
 
 ## 你推荐使用哪个 ClickHouse 版本？ \{#which-clickhouse-version-do-you-recommend\}
 

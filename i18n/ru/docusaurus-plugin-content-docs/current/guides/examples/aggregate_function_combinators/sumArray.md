@@ -7,15 +7,13 @@ sidebar_label: 'sumArray'
 doc_type: 'reference'
 ---
 
-# sumArray \{#sumarray\}
-
 ## Описание \{#description\}
 
-Комбинатор [`Array`](/sql-reference/aggregate-functions/combinators#-array) 
+Комбинатор [`Array`](/sql-reference/aggregate-functions/combinators#-array)
 может быть применён к функции [`sum`](/sql-reference/aggregate-functions/reference/sum)
 для вычисления суммы всех элементов в массиве с использованием агрегатного комбинатора `sumArray`.
 
-Функция `sumArray` полезна, когда необходимо вычислить общую сумму 
+Функция `sumArray` полезна, когда необходимо вычислить общую сумму
 всех элементов во множестве массивов в наборе данных.
 
 ## Пример использования \{#example-usage\}
@@ -50,7 +48,8 @@ GROUP BY date, category_sales;
 тот же результат, что и `arraySum`.
 
 ## См. также \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`arraySum`](/sql-reference/functions/array-functions#arraySum)
-- [`комбинатор Array`](/sql-reference/aggregate-functions/combinators#-array)
-- [`sumMap`](/examples/aggregate-function-combinators/sumMap)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`arraySum`](/sql-reference/functions/array-functions#arraySum)
+* [`комбинатор Array`](/sql-reference/aggregate-functions/combinators#-array)
+* [`sumMap`](/examples/aggregate-function-combinators/sumMap)

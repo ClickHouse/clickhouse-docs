@@ -2,12 +2,10 @@
 slug: /whats-new/cloud-compatibility
 sidebar_label: 'Cloud 互換性'
 title: 'Cloud 互換性'
-description: 'このガイドでは、ClickHouse Cloud における機能面および運用面で何が期待できるかの概要を説明します。'
-keywords: ['ClickHouse Cloud', '互換性']
+description: 'このガイドでは、ClickHouse Cloud における機能面および運用面で何が期待できるか、その概要を説明します。'
+keywords: ['ClickHouse Cloud', 'compatibility']
 doc_type: 'guide'
 ---
-
-# ClickHouse Cloud 互換性ガイド \{#clickhouse-cloud-compatibility-guide\}
 
 このガイドでは、ClickHouse Cloud における機能面および運用面で何が期待できるか、その概要を説明します。ClickHouse Cloud はオープンソース版の ClickHouse ディストリビューションをベースとしていますが、アーキテクチャや実装にいくつかの相違がある場合があります。背景資料として、[ClickHouse Cloud をどのように構築したか](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) を解説したこのブログも、興味深く有用な読み物となるでしょう。
 

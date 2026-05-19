@@ -26,6 +26,8 @@ import Image from '@theme/IdealImage';
 
 > 이 가이드에서는 처음 만드는 Kafka ClickPipe를 만드는 과정을 단계별로 안내합니다.
 
+Kafka ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수 있으며, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 및 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 사용해 프로그래밍 방식으로도 배포하고 관리할 수 있습니다.
+
 <VerticalStepper type="numbered" headerLevel="h2">
   ## 데이터 소스로 이동 \{#1-load-sql-console\}
 
@@ -47,7 +49,7 @@ import Image from '@theme/IdealImage';
 
   ## 스키마 레지스트리 구성(선택 사항) \{#4-configure-your-schema-registry\}
 
-  Avro 스트림에는 유효한 스키마가 필요합니다. 스키마 레지스트리 구성 방법에 대한 자세한 내용은 [Schema registries](./02_schema-registries.md)를 참조하십시오.
+  Avro 및 Protobuf topic에는 유효한 스키마가 필요합니다. 스키마 레지스트리 구성 방법에 대한 자세한 내용은 [Schema registries](./02_schema-registries.md)를 참조하십시오.
 
   ## Reverse Private Endpoint 구성(선택 사항) \{#5-configure-reverse-private-endpoint\}
 

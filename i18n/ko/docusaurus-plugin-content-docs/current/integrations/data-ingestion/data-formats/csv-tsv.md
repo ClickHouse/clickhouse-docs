@@ -7,9 +7,7 @@ keywords: ['CSV 형식', 'TSV 형식', '쉼표로 구분된 값', '탭으로 구
 doc_type: 'guide'
 ---
 
-# ClickHouse에서 CSV 및 TSV 데이터 다루기 \{#working-with-csv-and-tsv-data-in-clickhouse\}
-
-ClickHouse는 CSV 형식으로 데이터를 가져오고 내보내는 작업을 지원합니다. CSV 파일은 헤더 행, 사용자 지정 구분 기호, 이스케이프 기호 등 다양한 형식상의 차이를 가질 수 있으므로, ClickHouse는 각 경우를 효율적으로 처리할 수 있도록 다양한 형식 옵션과 설정을 제공합니다.
+ClickHouse는 CSV 데이터의 가져오기 및 내보내기를 지원합니다. CSV 파일은 헤더 행, 사용자 지정 구분 기호, 이스케이프 기호 등 형식 관련 세부 사항이 서로 다를 수 있으므로, ClickHouse는 각 경우를 효율적으로 처리할 수 있도록 다양한 형식과 설정을 제공합니다.
 
 ## CSV 파일에서 데이터 가져오기 \{#importing-data-from-a-csv-file\}
 

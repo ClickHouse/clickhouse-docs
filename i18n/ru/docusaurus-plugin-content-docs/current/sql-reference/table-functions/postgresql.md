@@ -7,9 +7,7 @@ title: 'postgresql'
 doc_type: 'reference'
 ---
 
-# Табличная функция PostgreSQL \{#postgresql-table-function\}
-
-Позволяет выполнять запросы `SELECT` и `INSERT` к данным, которые хранятся на удалённом сервере PostgreSQL.
+Позволяет выполнять запросы `SELECT` и `INSERT` к данным, хранящимся на удалённом сервере PostgreSQL.
 
 ## Синтаксис \{#syntax\}
 

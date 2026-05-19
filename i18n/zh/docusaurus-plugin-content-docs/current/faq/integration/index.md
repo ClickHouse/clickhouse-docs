@@ -1,14 +1,12 @@
 ---
 slug: /faq/integration/
 sidebar_position: 1
-sidebar_label: 'ClickHouse 与其他系统的集成'
+sidebar_label: '将 ClickHouse 与其他系统集成'
 keywords: ['clickhouse', 'faq', 'questions', 'integrations']
-title: '关于 ClickHouse 与其他系统集成的问题'
-description: '汇总与 ClickHouse 集成到其他系统相关问题的落地页'
+title: '关于将 ClickHouse 与其他系统集成的问题'
+description: '列出与 ClickHouse 和其他系统集成相关问题的落地页'
 doc_type: 'landing-page'
 ---
-
-# 关于将 ClickHouse 与其他系统集成的问题 \{#questions-about-integrating-clickhouse-and-other-systems\}
 
 * [如何将 ClickHouse 中的数据导出到文件？](https://clickhouse.com/docs/knowledgebase/file-export)
 * [如何将 JSON 导入 ClickHouse？](/integrations/data-ingestion/data-formats/json/intro.md)
