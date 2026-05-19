@@ -10194,6 +10194,19 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
+## query_cache_for_subqueries \{#query_cache_for_subqueries\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于启用将 `use_query_cache` 传递到所有子查询的新设置。若不启用，则只有在显式为每个子查询设置 `SETTINGS use_query_cache = true` 时，子查询才会被缓存。"}]}]} />
+
+启用后，子查询结果可写入[查询缓存](../query-cache.md)，也可从中读取。这会将 `use_query_cache` 传递到所有子查询。
+
+可能的值：
+
+* 0 - 禁用
+* 1 - 启用
+
 ## query_cache_max_entries \{#query_cache_max_entries\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

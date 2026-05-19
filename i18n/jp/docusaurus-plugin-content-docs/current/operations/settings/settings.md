@@ -10220,6 +10220,19 @@ promql 方言で使用される評価時刻を設定します。`auto` は現在
 - 0 - 無効
 - 1 - 有効
 
+## query_cache_for_subqueries \{#query_cache_for_subqueries\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "`use_query_cache` をすべてのサブクエリに伝播するための新しい設定です。これを有効にしない場合、サブクエリは、サブクエリごとに `SETTINGS use_query_cache = true` を明示的に指定した場合にのみキャッシュされます。"}]}]} />
+
+有効にすると、サブクエリの結果が [クエリキャッシュ](../query-cache.md) に書き込まれ、そこから読み出される場合があります。これにより、`use_query_cache` がすべてのサブクエリに伝播されます。
+
+設定可能な値:
+
+* 0 - 無効
+* 1 - 有効
+
 ## query_cache_max_entries \{#query_cache_max_entries\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

@@ -10242,6 +10242,19 @@ a   Tuple(
 - 0 - Отключено
 - 1 - Включено
 
+## query_cache_for_subqueries \{#query_cache_for_subqueries\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, включающая распространение `use_query_cache` на все подзапросы. Без нее подзапросы кэшируются только при явном включении для каждого подзапроса через `SETTINGS use_query_cache = true`."}]}]} />
+
+Если параметр включен, результаты подзапросов могут записываться в [кэш запросов](../query-cache.md) и считываться из него. Это обеспечивает распространение `use_query_cache` на все подзапросы.
+
+Возможные значения:
+
+* 0 — Отключено
+* 1 — Включено
+
 ## query_cache_max_entries \{#query_cache_max_entries\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
