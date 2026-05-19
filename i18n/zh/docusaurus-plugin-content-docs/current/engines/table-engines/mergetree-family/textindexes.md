@@ -214,7 +214,8 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 不允许使用非确定性函数。
 
-函数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) 和 [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 会使用预处理器先对搜索词进行转换，然后再进行分词。
+函数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 和 [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) 会使用预处理器先对搜索词进行转换，然后再进行分词。
+请注意，由于预处理器仅应用于文本索引路径，因此这些函数在使用文本索引的查询与不使用文本索引的查询之间，结果可能会不同 (例如 `SETTINGS use_skip_indexes = 0`) 。
 
 例如，
 
@@ -263,7 +264,8 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-要在针对 [Map](/sql-reference/data-types/map.md) 类型列构建的文本索引中定义预处理器，用户需要先决定该索引是基于 Map 的键还是值构建的。
+要在基于 [Map](/sql-reference/data-types/map.md) 类型列构建的文本索引中定义预处理器，用户需要确定该索引是
+基于 map 的键还是值构建的。
 
 示例：
 

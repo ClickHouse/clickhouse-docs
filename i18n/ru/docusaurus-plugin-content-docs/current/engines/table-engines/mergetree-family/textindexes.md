@@ -214,7 +214,8 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 Использование недетерминированных функций не допускается.
 
-Функции [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) и [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) используют препроцессор для предварительного преобразования поискового запроса перед его токенизацией.
+Функции [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens), [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) и [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) используют препроцессор для предварительного преобразования поискового запроса перед его токенизацией.
+Обратите внимание, что, поскольку препроцессор применяется только на пути текстового индекса, результаты этих функций могут различаться между запросами, использующими текстовый индекс, и запросами, которые его не используют (например, `SETTINGS use_skip_indexes = 0`).
 
 Например,
 
@@ -263,8 +264,8 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-Чтобы задать препроцессор в текстовом индексе по столбцам типа [Map](/sql-reference/data-types/map.md), пользователям необходимо решить, строится ли индекс
-по ключам или по значениям Map.
+Чтобы определить препроцессор в текстовом индексе, построенном по столбцам типа [Map](/sql-reference/data-types/map.md), пользователю нужно решить, строится ли индекс
+по ключам или по значениям map.
 
 Пример:
 
