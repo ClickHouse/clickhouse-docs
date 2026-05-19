@@ -133,6 +133,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_polyglot_dialect](/operations/settings/settings#allow_experimental_polyglot_dialect) | `0` |
 | [polyglot_dialect](/operations/settings/settings#polyglot_dialect) | `` |
 | [enable_adaptive_memory_spill_scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler) | `0` |
+| [allow_experimental_cleanup_old_data_files_compaction](/operations/settings/settings#allow_experimental_cleanup_old_data_files_compaction) | `0` |
 | [allow_experimental_iceberg_compaction](/operations/settings/settings#allow_experimental_iceberg_compaction) | `0` |
 | [allow_iceberg_remove_orphan_files](/operations/settings/settings#allow_iceberg_remove_orphan_files) | `0` |
 | [iceberg_orphan_files_older_than_seconds](/operations/settings/settings#iceberg_orphan_files_older_than_seconds) | `259200` |
