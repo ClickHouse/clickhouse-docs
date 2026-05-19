@@ -37,9 +37,9 @@ import Image from '@theme/IdealImage';
 
     <Image img={cp_step1} alt="Select BigQuery tile" size="lg" border/>
 
-## Setup your ClickPipe connection {#2-setup-your-clickpipe-connection}
+## Set up your ClickPipe connection {#2-setup-your-clickpipe-connection}
 
-To setup a new ClickPipe, you must provide details on how to connect to and authenticate with your BigQuery data warehouse, as well as a staging GCS bucket.
+To set up a new ClickPipe, you must provide details on how to connect to and authenticate with your BigQuery data warehouse, as well as a staging GCS bucket.
 
 **1.** Upload the `.json` key for the service account you created for ClickPipes. Ensure the service account has the minimum required set of [permissions](./01_overview.md#permissions).
 
