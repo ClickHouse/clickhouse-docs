@@ -12,7 +12,7 @@ DataStore compiles pandas-style operations into optimized SQL. This guide helps 
 
 ## Viewing Generated SQL {#viewing-sql}
 
-```python
+```python title="Query"
 from pathlib import Path
 Path("sales.csv").write_text("""\
 region,product,category,amount,quantity,price,date,order_id

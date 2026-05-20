@@ -57,7 +57,7 @@ profiler.report()
 
 View the execution plan before running a query.
 
-```python
+```python title="Query"
 ds = pd.read_csv("data.csv")
 
 query = (ds
@@ -92,7 +92,7 @@ See [explain() Documentation](explain.md) for details.
 
 Measure execution time for each operation.
 
-```python
+```python title="Query"
 from chdb.datastore.config import config, get_profiler
 
 # Enable profiling

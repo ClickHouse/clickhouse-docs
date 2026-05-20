@@ -356,7 +356,7 @@ These commands map to features that ClickHouse does not provide, so they are not
 
 ## Complete Example {#complete-example}
 
-```python
+```python title="Query"
 import pyarrow as pa
 import pyarrow.flight as flight
 

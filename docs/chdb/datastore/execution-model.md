@@ -169,7 +169,7 @@ result = (ds
 
 Use `explain()` to see what will be executed:
 
-```python
+```python title="Query"
 ds = pd.read_csv("sales.csv")
 
 query = (ds

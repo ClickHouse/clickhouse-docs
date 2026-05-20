@@ -64,7 +64,7 @@ config.enable_debug()  # Sets DEBUG level + verbose format
 
 ### Simple Format (Default) {#simple}
 
-```python
+```python title="Query"
 config.set_log_format("simple")
 ```
 
@@ -75,7 +75,7 @@ DEBUG - Cache miss for key abc123
 
 ### Verbose Format {#verbose}
 
-```python
+```python title="Query"
 config.set_log_format("verbose")
 ```
 
