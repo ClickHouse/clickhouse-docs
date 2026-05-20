@@ -3,7 +3,7 @@ slug: /best-practices/minimize-optimize-joins
 sidebar_position: 10
 sidebar_label: 'Minimize and optimize JOINs'
 title: 'Minimize and optimize JOINs'
-description: 'Page describing best practices for JOINs'
+description: 'Document describing best practices for using JOINs in ClickHouse'
 keywords: ['JOIN', 'Parallel Hash JOIN']
 show_related_blogs: true
 doc_type: 'guide'
