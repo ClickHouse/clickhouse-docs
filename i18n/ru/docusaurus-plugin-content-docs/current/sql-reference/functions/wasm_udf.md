@@ -133,6 +133,45 @@ SELECT 'my_module', base64Decode('...'), reinterpretAsUInt256(unhex('369f...c57d
 
 Если указанный хэш не совпадает с вычисленным SHA256‑хэшем кода модуля, вставка завершается с ошибкой. Это может быть полезно при загрузке модулей из внешних источников, таких как S3 или HTTP.
 
+### Распределение модуля по кластеру \{#distribute-a-module-across-a-cluster\}
+
+`system.webassembly_modules` — локальная таблица каждого экземпляра: `INSERT` выполняется только на реплике, обрабатывающей соединение. Формы `ON CLUSTER` для оператора `INSERT` не существует, поэтому последующий `CREATE FUNCTION ... ON CLUSTER` завершится ошибкой на репликах, где модуль отсутствует:
+
+```text
+Code: 674. DB::Exception: WebAssembly module 'collatz' not found:
+while adding user defined function `collatz_steps`. (RESOURCE_NOT_FOUND)
+```
+
+Чтобы выполнить вставку на всех узлах, записывайте в табличную функцию `cluster`, а не в локальную таблицу `system.webassembly_modules`:
+
+```bash
+cat collatz.wasm | clickhouse client -q "
+  INSERT INTO FUNCTION cluster('default', 'system', 'webassembly_modules') (name, code)
+  SELECT 'collatz', code FROM input('code String') FORMAT RawBlob"
+```
+
+:::note
+Этот подход опирается на то, что нижележащий механизм распределённой записи проходит через каждую реплику в каждом сегменте, а это происходит только когда кластер настроен с `internal_replication=false`. При `internal_replication=true` (значение по умолчанию для кластеров, использующих `ReplicatedMergeTree` для управления репликацией), вставка доставляется только одной работоспособной реплике в каждом сегменте, а `system.webassembly_modules` по этому пути не реплицируется — поэтому на части реплик модуль по-прежнему будет отсутствовать. В такой конфигурации нужно выполнять вставку в каждую реплику отдельно, например перебирая `system.clusters` и записывая через `remote(...)` для каждого хоста, либо копируя бинарный файл в `user_scripts/wasm/` на каждый хост.
+
+Проверить значение `internal_replication` для кластера можно с помощью `SELECT cluster, shard_num, internal_replication FROM system.clusters`.
+:::
+
+После такой распределённой вставки модуль присутствует на каждой реплике, и `CREATE FUNCTION ... ON CLUSTER` выполняется успешно:
+
+```sql
+CREATE FUNCTION collatz_steps ON CLUSTER 'default'
+LANGUAGE WASM FROM 'collatz' :: 'steps'
+ARGUMENTS (n UInt32) RETURNS UInt32;
+```
+
+Вы можете проверить, что модуль загружен на всех репликах, с помощью `clusterAllReplicas`:
+
+```sql
+SELECT hostName(), name FROM clusterAllReplicas('default', system.webassembly_modules) WHERE name = 'collatz';
+```
+
+Операции вставки в `system.webassembly_modules` идемпотентны для одной и той же пары `(name, hash)`, поэтому повторный запуск распределённой вставки безопасен и вполне подходит для восстановления состояния после замены реплики. Обратите внимание, что вновь добавленные серверы не получают существующие модули задним числом — необходимо повторно выполнить вставку для обновлённого кластера или поместить бинарный файл в каталог `user_scripts/wasm/` на новом хосте.
+
 ### Список модулей \{#list-modules\}
 
 ```sql

@@ -132,6 +132,45 @@ SELECT 'my_module', base64Decode('...'), reinterpretAsUInt256(unhex('369f...c57d
 
 指定されたハッシュ値がモジュールコードから計算された SHA256 と一致しない場合、挿入は行われません。これは、S3 や HTTP などの外部ソースからモジュールを読み込む際に役立ちます。
 
+### モジュールをクラスター全体に配布する \{#distribute-a-module-across-a-cluster\}
+
+`system.webassembly_modules` はインスタンスごとのテーブルであり、`INSERT` で書き込まれるのは接続を処理しているレプリカだけです。`INSERT` ステートメントには `ON CLUSTER` 形式がないため、続けて `CREATE FUNCTION ... ON CLUSTER` を実行すると、モジュールを持たないレプリカでは失敗します:
+
+```text
+Code: 674. DB::Exception: WebAssembly module 'collatz' not found:
+while adding user defined function `collatz_steps`. (RESOURCE_NOT_FOUND)
+```
+
+insert をすべてのノードに展開するには、ローカルの `system.webassembly_modules` テーブルではなく、`cluster` テーブル関数に書き込みます:
+
+```bash
+cat collatz.wasm | clickhouse client -q "
+  INSERT INTO FUNCTION cluster('default', 'system', 'webassembly_modules') (name, code)
+  SELECT 'collatz', code FROM input('code String') FORMAT RawBlob"
+```
+
+:::note
+このパターンは、基盤となる分散書き込みパスが各分片内のすべてのレプリカを経由することを前提としています。これは、クラスターが `internal_replication=false` に設定されている場合にのみ発生します。`internal_replication=true` の場合 (`ReplicatedMergeTree` を使用してレプリケーションを行うクラスターのデフォルト設定) 、insert は各分片ごとに正常なレプリカ 1 つにのみ送られ、`system.webassembly_modules` はその経路ではレプリケーションされません。そのため、一部のレプリカでは引き続きモジュールが存在しないままになります。この構成では、各レプリカに対して個別に insert する必要があります。たとえば、`system.clusters` を反復してホストごとに `remote(...)` 経由で書き込むか、すべてのホストの `user_scripts/wasm/` にバイナリをコピーします。
+
+クラスターの `internal_replication` は、`SELECT cluster, shard_num, internal_replication FROM system.clusters` で確認できます。
+:::
+
+このように展開して insert した後は、すべてのレプリカにモジュールが配置され、`CREATE FUNCTION ... ON CLUSTER` が成功します。
+
+```sql
+CREATE FUNCTION collatz_steps ON CLUSTER 'default'
+LANGUAGE WASM FROM 'collatz' :: 'steps'
+ARGUMENTS (n UInt32) RETURNS UInt32;
+```
+
+`clusterAllReplicas` を使って、すべてのレプリカでモジュールが読み込まれていることを確認できます:
+
+```sql
+SELECT hostName(), name FROM clusterAllReplicas('default', system.webassembly_modules) WHERE name = 'collatz';
+```
+
+`system.webassembly_modules` への insert は、同じ `(name, hash)` の組み合わせに対しては冪等です。そのため、分散された insert を再実行しても安全であり、レプリカの置き換え後に状態を修復する現実的な方法です。なお、新たに追加したサーバーに既存のモジュールがさかのぼって配布されることはありません。更新後のクラスターに対して insert を再実行するか、新しいホストの `user_scripts/wasm/` ディレクトリにそのバイナリを配置する必要があります。
+
 ### モジュールを一覧する \{#list-modules\}
 
 ```sql

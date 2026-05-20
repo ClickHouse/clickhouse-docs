@@ -133,6 +133,45 @@ SELECT 'my_module', base64Decode('...'), reinterpretAsUInt256(unhex('369f...c57d
 
 如果提供的哈希值与模块代码计算得到的 SHA256 不匹配，插入操作将失败。在从 S3 或 HTTP 等外部来源加载模块时，这会非常有用。
 
+### 在集群中分发模块 \{#distribute-a-module-across-a-cluster\}
+
+`system.webassembly_modules` 是按实例分别存储的表——`INSERT` 只会写入处理该连接的那个副本。`INSERT` 语句没有 `ON CLUSTER` 这种用法，因此后续执行 `CREATE FUNCTION ... ON CLUSTER` 时，会在没有该模块的副本上失败：
+
+```text
+Code: 674. DB::Exception: WebAssembly module 'collatz' not found:
+while adding user defined function `collatz_steps`. (RESOURCE_NOT_FOUND)
+```
+
+要将一次插入操作分发到每个节点，请写入 `cluster` 表函数，而不是本地的 `system.webassembly_modules` 表：
+
+```bash
+cat collatz.wasm | clickhouse client -q "
+  INSERT INTO FUNCTION cluster('default', 'system', 'webassembly_modules') (name, code)
+  SELECT 'collatz', code FROM input('code String') FORMAT RawBlob"
+```
+
+:::note
+这种模式依赖底层分布式写入路径能够访问每个分片中的每个副本，而这只有在集群配置为 `internal_replication=false` 时才会发生。当 `internal_replication=true` 时 (对于使用 `ReplicatedMergeTree` 自行进行复制的集群，这是默认值) ，插入只会发送到每个分片中一个健康的副本，而 `system.webassembly_modules` 不会通过这条路径被复制，因此某些副本仍会缺少该模块。在这种配置下，您需要分别向每个副本执行插入，例如遍历 `system.clusters` 并通过 `remote(...)` 按主机写入，或者将二进制文件复制到每台主机上的 `user_scripts/wasm/` 中。
+
+您可以使用 `SELECT cluster, shard_num, internal_replication FROM system.clusters` 查看某个集群的 `internal_replication`。
+:::
+
+扇出插入后，该模块会存在于每个副本上，并且 `CREATE FUNCTION ... ON CLUSTER` 会成功：
+
+```sql
+CREATE FUNCTION collatz_steps ON CLUSTER 'default'
+LANGUAGE WASM FROM 'collatz' :: 'steps'
+ARGUMENTS (n UInt32) RETURNS UInt32;
+```
+
+您可以使用 `clusterAllReplicas` 验证该模块是否已在所有副本上加载：
+
+```sql
+SELECT hostName(), name FROM clusterAllReplicas('default', system.webassembly_modules) WHERE name = 'collatz';
+```
+
+向 `system.webassembly_modules` 中插入相同的 `(name, hash)` 对时具有幂等性，因此重新执行扇出插入是安全的，也是在某个副本被替换后修复状态的合理方式。请注意，新加入的服务器不会自动获得已有模块——你必须针对更新后的集群重新执行插入，或者将该二进制文件放到新主机的 `user_scripts/wasm/` 目录中。
+
 ### 列出模块 \{#list-modules\}
 
 ```sql

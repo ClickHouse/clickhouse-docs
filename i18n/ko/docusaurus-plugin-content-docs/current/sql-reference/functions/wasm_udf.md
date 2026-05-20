@@ -133,6 +133,45 @@ SELECT 'my_module', base64Decode('...'), reinterpretAsUInt256(unhex('369f...c57d
 
 제공된 해시가 모듈 코드의 SHA256 값과 일치하지 않으면 삽입 작업이 실패합니다. 이는 S3나 HTTP와 같은 외부 소스에서 모듈을 로드할 때 유용합니다.
 
+### 클러스터 전체에 모듈 배포하기 \{#distribute-a-module-across-a-cluster\}
+
+`system.webassembly_modules`는 인스턴스별 테이블이므로, `INSERT`는 connection을 처리하는 레플리카에만 반영됩니다. `INSERT` statement에는 `ON CLUSTER` 구문이 없으므로, 이후 `CREATE FUNCTION ... ON CLUSTER`를 실행하면 모듈이 없는 레플리카에서는 실패합니다:
+
+```text
+Code: 674. DB::Exception: WebAssembly module 'collatz' not found:
+while adding user defined function `collatz_steps`. (RESOURCE_NOT_FOUND)
+```
+
+삽입을 모든 노드로 전파하려면, 로컬 `system.webassembly_modules` 테이블 대신 `cluster` 테이블 함수에 기록하십시오:
+
+```bash
+cat collatz.wasm | clickhouse client -q "
+  INSERT INTO FUNCTION cluster('default', 'system', 'webassembly_modules') (name, code)
+  SELECT 'collatz', code FROM input('code String') FORMAT RawBlob"
+```
+
+:::note
+이 패턴은 기본 분산 쓰기 경로가 각 세그먼트의 모든 레플리카를 거치는 것을 전제로 하며, 이는 클러스터가 `internal_replication=false`로 구성된 경우에만 일어납니다. `internal_replication=true`인 경우(`ReplicatedMergeTree`를 사용해 자체적으로 복제를 수행하는 클러스터의 기본값), 삽입은 세그먼트마다 정상 상태인 레플리카 하나에만 전달됩니다. 또한 `system.webassembly_modules`는 이 경로로 복제되지 않으므로 일부 레플리카에는 여전히 모듈이 없습니다. 이 구성에서는 각 레플리카에 개별적으로 삽입해야 합니다. 예를 들어 `system.clusters`를 순회하며 호스트별로 `remote(...)`를 통해 쓰거나, 모든 호스트의 `user_scripts/wasm/`에 바이너리를 복사하십시오.
+
+클러스터의 `internal_replication` 값은 `SELECT cluster, shard_num, internal_replication FROM system.clusters`로 확인할 수 있습니다.
+:::
+
+이처럼 분산 삽입을 수행한 후에는 모든 레플리카에 모듈이 존재하게 되며, `CREATE FUNCTION ... ON CLUSTER`가 성공합니다:
+
+```sql
+CREATE FUNCTION collatz_steps ON CLUSTER 'default'
+LANGUAGE WASM FROM 'collatz' :: 'steps'
+ARGUMENTS (n UInt32) RETURNS UInt32;
+```
+
+`clusterAllReplicas`를 사용하여 모듈이 모든 레플리카에 로드되었는지 확인할 수 있습니다:
+
+```sql
+SELECT hostName(), name FROM clusterAllReplicas('default', system.webassembly_modules) WHERE name = 'collatz';
+```
+
+`system.webassembly_modules`에 대한 삽입은 동일한 `(name, hash)` 쌍에 대해 멱등적이므로, fan-out 삽입을 다시 실행해도 안전하며 레플리카가 대체된 후 상태를 복구하는 합리적인 방법입니다. 새로 추가된 서버는 기존 모듈을 소급 적용받지 않는다는 점에 유의하십시오. 업데이트된 클러스터를 대상으로 삽입을 다시 실행하거나, 새 호스트의 `user_scripts/wasm/` 디렉터리에 바이너리를 배치해야 합니다.
+
 ### 모듈 목록 조회 \{#list-modules\}
 
 ```sql

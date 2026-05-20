@@ -3,7 +3,7 @@ slug: /best-practices/minimize-optimize-joins
 sidebar_position: 10
 sidebar_label: '尽量减少并优化 JOIN 操作'
 title: '尽量减少并优化 JOIN 操作'
-description: '介绍 JOIN 最佳实践的页面'
+description: '介绍在 ClickHouse 中使用 JOIN 的最佳实践的文档'
 keywords: ['JOIN', 'Parallel Hash JOIN']
 show_related_blogs: true
 doc_type: 'guide'
@@ -24,7 +24,6 @@ ClickHouse 支持多种 JOIN 类型和算法，并且在近期版本中 JOIN 性
 并非所有数据都需要反规范化——重点放在那些被频繁查询的属性上。此外，可以考虑使用[物化视图](/best-practices/use-materialized-views)来增量计算聚合，而不是复制整个子表。当模式更新很少且对延迟要求极高时，反规范化通常能提供最佳的性能折中方案。
 
 关于在 ClickHouse 中对数据进行反规范化的完整指南，请参见[此处](/data-modeling/denormalization)。
-
 
 ## 何时需要使用 JOIN \{#when-joins-are-required\}
 
