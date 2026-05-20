@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Estuary'
-slug: /integrations/estuary
-description: 'Stream a variety of sources into ClickHouse with an Estuary integration'
-title: 'Connect Estuary with ClickHouse'
+sidebar_label: 'Connect with ClickPipes'
+slug: /integrations/estuary/clickpipes
+description: 'Set up an integration between Estuary and ClickHouse via ClickPipes'
+title: 'Ingest Estuary Data via ClickPipes'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -13,13 +13,15 @@ keywords: ['estuary', 'data ingestion', 'etl', 'pipeline', 'data integration', '
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Connect Estuary with ClickHouse
+# Ingest Data from Estuary with ClickPipes
 
 <PartnerBadge/>
 
-[Estuary](https://estuary.dev/) is a right-time data platform that flexibly combines real-time and batch data in simple-to-setup ETL pipelines. With enterprise-grade security and deployment options, Estuary unlocks durable data flows from SaaS, database, and streaming sources to a variety of destinations, including ClickHouse.
+Estuary can connect with ClickHouse via the Kafka ClickPipe.
 
-Estuary connects with ClickHouse via the Kafka ClickPipe. You don't need to maintain your own Kafka ecosystem with this integration.
+You don't need to maintain your own Kafka ecosystem with this integration. Instead, Estuary emits new data like Kafka messages. You can configure a Kafka ClickPipe to use Estuary's broker and schema registry information to consume these messages.
+
+See also [Estuary's direct ClickHouse integration](/integrations/estuary/native).
 
 ## Setup guide {#setup-guide}
 
@@ -39,7 +41,7 @@ To move data from your source collections in Estuary to ClickHouse, you will fir
 
 2. Click **+ New Materialization**.
 
-3. Select the **ClickHouse** connector.
+3. Select the **ClickHouse Kafka API** connector.
 
 4. Fill out details in the Materialization, Endpoint, and Source Collections sections:
 
@@ -101,10 +103,8 @@ ClickHouse will provision your new data source and start consuming messages from
 
 ## Additional resources {#additional-resources}
 
-For more on setting up an integration with Estuary, see Estuary's documentation:
+For more on setting up a ClickPipe integration with Estuary, see Estuary's documentation:
 
-* Reference Estuary's [ClickHouse materialization docs](https://docs.estuary.dev/reference/Connectors/materialization-connectors/Dekaf/clickhouse/).
+* Reference Estuary's [ClickHouse materialization docs](https://docs.estuary.dev/reference/Connectors/materialization-connectors/Dekaf/clickhouse/) for the ClickPipes integration.
 
 * Estuary exposes data as Kafka messages using **Dekaf**. You can learn more about Dekaf [here](https://docs.estuary.dev/guides/dekaf_reading_collections_from_kafka/).
-
-* To see a list of sources that you can stream into ClickHouse with Estuary, check out [Estuary's capture connectors](https://docs.estuary.dev/reference/Connectors/capture-connectors/).
