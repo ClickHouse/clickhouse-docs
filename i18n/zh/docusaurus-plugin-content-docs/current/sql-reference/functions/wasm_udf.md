@@ -206,7 +206,7 @@ LANGUAGE WASM
 FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
-[ABI ROW_DIRECT | ABI BUFFERED_V1]
+[ABI ROW_DIRECT | ABI BUFFERED_V1 | ABI ASSEMBLYSCRIPT]
 [DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
@@ -215,11 +215,12 @@ RETURNS return_type
 **参数**：
 
 * `function_name`: ClickHouse 中的函数名。可以与模块中导出的函数名不同。
-* `FROM 'module_name' :: 'source_function_name'`: 已加载 WASM 模块的名称，以及在该 WASM 模块中要使用的函数名 (默认值为 `function_name`)
+* `FROM 'module_name' :: 'source_function_name'`: 已加载 WASM 模块的名称，以及在该 WASM 模块中要使用的函数名 (默认值为 `function&#95;name`)
 * `ARGUMENTS`: 参数名称和类型列表 (名称可选，并用于支持命名字段的序列化格式)
 * `ABI`: Application Binary Interface (应用二进制接口) 版本
   * `ROW_DIRECT`: 直接类型映射，逐行处理
   * `BUFFERED_V1`: 采用基于块 (block) 的处理并进行序列化
+  * `ASSEMBLYSCRIPT`: 适用于由 [AssemblyScript](https://www.assemblyscript.org) 编译器生成的模块的逐行处理。数值类型映射为 AssemblyScript 基元类型；ClickHouse `String` 映射为 AssemblyScript `string`。
 * `DETERMINISTIC`: 将该函数声明为决定论的——对于相同输入始终返回相同输出。指定后，ClickHouse 可能会对所有参数均为常量的调用进行常量折叠：函数会在查询解析阶段计算一次，结果会在每一行中复用。
 * `SHA256_HASH`: 用于校验的期望模块哈希 (如果省略则自动填充) ，可用于确保在不同副本上加载的是正确的 WASM 模块。
 * `SETTINGS`: 每个函数的设置
@@ -229,8 +230,9 @@ RETURNS return_type
 
 要与 ClickHouse 交互，WebAssembly 模块必须遵循受支持的 ABI (Application Binary Interfaces，应用二进制接口) 之一。
 
-* `ROW_DIRECT`：直接类型映射 (仅支持原始类型 `Int32`、`UInt32`、`Int64`、`UInt64`、`Float32`、`Float64`) 
+* `ROW_DIRECT`：直接类型映射 (仅支持原始类型 `Int32`、`UInt32`、`Int64`、`UInt64`、`Float32`、`Float64`)
 * `BUFFERED_V1`：通过序列化处理的复杂类型
+* `ASSEMBLYSCRIPT`：与 [AssemblyScript](https://www.assemblyscript.org) 模块按行互操作；支持数值类型和 `String`。
 
 ### ABI ROW_DIRECT \{#abi-row_direct\}
 
@@ -306,6 +308,55 @@ ClickhouseBuffer * user_defined_function1(ClickhouseBuffer * span, uint32_t n) {
 ClickhouseBuffer * user_defined_function2(ClickhouseBuffer * span, uint32_t n) { /* ... */ }
 ```
 
+### ABI ASSEMBLYSCRIPT \{#abi-assemblyscript\}
+
+适用于由 [AssemblyScript](https://www.assemblyscript.org) 编译器生成的模块。每一行都会触发一次对导出函数的调用，将 ClickHouse 值映射为 AssemblyScript 基本类型和字符串对象。
+
+**支持的类型**：
+
+* 数值类型：`Int8`/`UInt8`、`Int16`/`UInt16` (在边界处会扩展为 `i32`) 、`Int32`/`UInt32`、`Int64`/`UInt64`、`Float32`、`Float64`
+
+* `String` — 映射为 AssemblyScript 的 `string` (WASM 内存中为 UTF-16) 。ClickHouse 会自动处理 UTF-8 ↔ UTF-16 的转换。
+
+* 不支持将自定义 AssemblyScript 类用作参数或返回类型——其运行时类 id 在不同编译之间并不稳定 (参见 [AssemblyScript#2982](https://github.com/AssemblyScript/assemblyscript/issues/2982)) 。
+
+**模块要求**：
+
+模块必须使用 AssemblyScript 托管运行时进行编译，以确保导出 `__new`、`__pin` 和 `__unpin`。标准的输入/输出字符串处理依赖这些导出。推荐的调用方式：
+
+```bash
+asc src.ts --runtime incremental --exportRuntime -o src.wasm
+```
+
+AssemblyScript 还会导入 `env.abort`，用于处理运行时陷阱 (如内存不足、边界检查失败等) 。ClickHouse 会自动提供此导入：触发 `abort` 时，当前查询会因 `WASM_ERROR` 异常而失败，异常中包含已解码的 AssemblyScript 消息和源代码位置。
+
+**示例**:
+
+```typescript
+// src.ts
+export function add(a: u32, b: u32): u32 {
+  return a + b;
+}
+
+export function greet(name: string): string {
+  return "Hello, " + name + "!";
+}
+```
+
+使用 `asc` 编译并将生成的 `.wasm` 加载到 `system.webassembly_modules` 后，按如下方式声明 UDFs：
+
+```sql
+CREATE FUNCTION as_add
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'add'
+    ARGUMENTS (a UInt32, b UInt32) RETURNS UInt32;
+
+CREATE FUNCTION as_greet
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'greet'
+    ARGUMENTS (name String) RETURNS String;
+```
+
 ### 使用 Rust 开发 UDF 的说明 \{#note-for-developing-udfs-in-rust\}
 
 针对 Rust 程序，我们提供了辅助 crate [clickhouse-wasm-udf](https://crates.io/crates/clickhouse-wasm-udf)，用于简化在 ClickHouse 中开发 WebAssembly UDF 的流程。该 crate 提供了用于内存管理的函数，因此无需手动实现 `clickhouse_create_buffer` 和 `clickhouse_destroy_buffer` 函数，只需将该 crate 添加为依赖即可。此外，还提供了 `#[clickhouse_wasm_udf]` 宏，用于将常规 Rust 函数封装为所需的 ABI 格式。
@@ -333,6 +384,7 @@ pub fn some_udf(data: String) -> HashMap<String, String> {
 * `clickhouse_throw(ptr: i32, size: i32)` — 使用提供的消息抛出错误。接受指向错误消息字符串所在内存位置的指针以及字符串的长度。
 * `clickhouse_log(ptr: i32, size: i32)` — 将消息记录到 ClickHouse 服务器文本日志中。
 * `clickhouse_random(ptr: i32, size: i32)` — 使用随机字节填充内存。
+* `env.abort(message: i32, fileName: i32, line: i32, column: i32)` — 为与 AssemblyScript 兼容的模块提供。调用它 (或触发会调用它的 AssemblyScript 运行时 trap) 会终止 UDF，并抛出一个包含已解码消息和源位置的 `WASM_ERROR` 异常。未导入 `env.abort` 的模块不会受影响。
 
 ## 设置 \{#settings\}
 

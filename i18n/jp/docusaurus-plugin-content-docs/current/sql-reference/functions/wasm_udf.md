@@ -205,7 +205,7 @@ LANGUAGE WASM
 FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
-[ABI ROW_DIRECT | ABI BUFFERED_V1]
+[ABI ROW_DIRECT | ABI BUFFERED_V1 | ABI ASSEMBLYSCRIPT]
 [DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
@@ -219,6 +219,7 @@ RETURNS return_type
 * `ABI`: Application Binary Interface のバージョン
   * `ROW_DIRECT`: 型を直接マッピングし、行単位で処理
   * `BUFFERED_V1`: シリアライゼーションを伴うブロック単位の処理
+  * `ASSEMBLYSCRIPT`: [AssemblyScript](https://www.assemblyscript.org) コンパイラで生成されたモジュール向けの行単位処理。数値型は AssemblyScript のプリミティブ型にマッピングされ、ClickHouse の `String` は AssemblyScript の `string` にマッピングされます。
 * `DETERMINISTIC`: 関数が決定論的であることを宣言します。つまり、同じ入力に対して常に同じ出力を返します。指定すると、すべての引数が定数である呼び出しについて、ClickHouse は定数畳み込みを行う場合があります。関数はクエリ解析時に一度だけ評価され、その結果はすべての行で再利用されます。
 * `SHA256_HASH`: 検証用の期待されるモジュールハッシュ (省略時は自動設定) 。異なるレプリカ間で正しい WASM モジュールが読み込まれていることを保証するために使用できます。
 * `SETTINGS`: 関数ごとの設定
@@ -228,8 +229,9 @@ RETURNS return_type
 
 ClickHouse とやり取りするために、WebAssembly モジュールはサポートされているいずれかの ABI (Application Binary Interface) に準拠する必要があります。
 
-* `ROW_DIRECT`: 直接型マッピング (プリミティブ型 `Int32`, `UInt32`, `Int64`, `UInt64`, `Float32`, `Float64` のみ) 
-* `BUFFERED_V1`: シリアル化を用いた複合型
+* `ROW_DIRECT`: 直接型マッピング (プリミティブ型 `Int32`, `UInt32`, `Int64`, `UInt64`, `Float32`, `Float64` のみ)
+* `BUFFERED_V1`: シリアライゼーションを用いた複合型
+* `ASSEMBLYSCRIPT`: [AssemblyScript](https://www.assemblyscript.org) モジュールとの行ごとの相互運用。数値型と `String` をサポートします。
 
 ### ABI ROW_DIRECT \{#abi-row_direct\}
 
@@ -305,6 +307,55 @@ ClickhouseBuffer * user_defined_function1(ClickhouseBuffer * span, uint32_t n) {
 ClickhouseBuffer * user_defined_function2(ClickhouseBuffer * span, uint32_t n) { /* ... */ }
 ```
 
+### ABI ASSEMBLYSCRIPT \{#abi-assemblyscript\}
+
+[AssemblyScript](https://www.assemblyscript.org) コンパイラで生成されたモジュールを対象とします。各行で、エクスポートされた関数が 1 回トリガーされ、ClickHouse の値が AssemblyScript のプリミティブ型および文字列オブジェクトにマッピングされます。
+
+**サポートされる型**:
+
+* 数値: `Int8`/`UInt8`、`Int16`/`UInt16` (境界では `i32` に拡張) 、`Int32`/`UInt32`、`Int64`/`UInt64`、`Float32`、`Float64`
+
+* `String` — AssemblyScript の `string` (WASM メモリ内では UTF-16) にマッピングされます。ClickHouse は UTF-8 ↔ UTF-16 の変換を自動的に処理します。
+
+* カスタム AssemblyScript クラスは、引数型または戻り値型としてはサポートされません。これらのランタイムクラス ID はコンパイルごとに安定しないためです ([AssemblyScript#2982](https://github.com/AssemblyScript/assemblyscript/issues/2982) を参照) 。
+
+**モジュール要件**:
+
+標準の入出力文字列処理ではこれらが必要となるため、モジュールは `__new`、`__pin`、`__unpin` がエクスポートされるよう、AssemblyScript のマネージドランタイムでコンパイルする必要があります。推奨される呼び出しは次のとおりです。
+
+```bash
+asc src.ts --runtime incremental --exportRuntime -o src.wasm
+```
+
+AssemblyScript は、ランタイムトラップ (メモリ不足、境界チェックなど) に対応するために `env.abort` もインポートします。ClickHouse はこのインポートを自動的に提供します。`abort` がトリガーされると、実行中のクエリは、デコード済みの AssemblyScript メッセージとソース位置を含む `WASM_ERROR` 例外で失敗します。
+
+**例**:
+
+```typescript
+// src.ts
+export function add(a: u32, b: u32): u32 {
+  return a + b;
+}
+
+export function greet(name: string): string {
+  return "Hello, " + name + "!";
+}
+```
+
+`asc` でコンパイルし、生成された `.wasm` を `system.webassembly_modules` に読み込んだ後、UDFs を次のように宣言します。
+
+```sql
+CREATE FUNCTION as_add
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'add'
+    ARGUMENTS (a UInt32, b UInt32) RETURNS UInt32;
+
+CREATE FUNCTION as_greet
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'greet'
+    ARGUMENTS (name String) RETURNS String;
+```
+
 ### Rust で UDF を開発する際の注意 \{#note-for-developing-udfs-in-rust\}
 
 Rust プログラム向けに、ClickHouse 用の WebAssembly UDF の開発を容易にするヘルパークレート [clickhouse-wasm-udf](https://crates.io/crates/clickhouse-wasm-udf) を提供しています。このクレートはメモリ管理用の関数を提供しているため、`clickhouse_create_buffer` と `clickhouse_destroy_buffer` 関数を自前で実装する必要はなく、依存関係としてこのクレートを追加するだけで済みます。また、通常の Rust 関数を要求される ABI 形式にラップするためのマクロ `#[clickhouse_wasm_udf]` も用意されています。
@@ -332,6 +383,8 @@ pub fn some_udf(data: String) -> HashMap<String, String> {
 * `clickhouse_throw(ptr: i32, size: i32)` — 指定されたメッセージでエラーをスローします。エラーメッセージ文字列を含むメモリ領域へのポインタと、その文字列のサイズを受け取ります。
 * `clickhouse_log(ptr: i32, size: i32)` — メッセージを ClickHouse サーバーのテキストログに出力します。
 * `clickhouse_random(ptr: i32, size: i32)` — メモリをランダムなバイトで埋めます。
+
+- `env.abort(message: i32, fileName: i32, line: i32, column: i32)` — AssemblyScript 互換モジュール向けに提供されます。これを呼び出すと、またはこれを呼び出す AssemblyScript ランタイムトラップが発生すると、デコードされたメッセージとソース位置を含む `WASM_ERROR` 例外によって UDF は終了します。`env.abort` をインポートしないモジュールには影響しません。
 
 ## 設定 \{#settings\}
 

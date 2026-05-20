@@ -206,7 +206,7 @@ LANGUAGE WASM
 FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
-[ABI ROW_DIRECT | ABI BUFFERED_V1]
+[ABI ROW_DIRECT | ABI BUFFERED_V1 | ABI ASSEMBLYSCRIPT]
 [DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
@@ -220,6 +220,7 @@ RETURNS return_type
 * `ABI`: Версия Application Binary Interface
   * `ROW_DIRECT`: Прямое сопоставление типов, построчная обработка
   * `BUFFERED_V1`: Блочная обработка с сериализацией
+  * `ASSEMBLYSCRIPT`: Построчная обработка для модулей, созданных компилятором [AssemblyScript](https://www.assemblyscript.org). Числовые типы сопоставляются с примитивными типами AssemblyScript; ClickHouse `String` сопоставляется с типом `string` в AssemblyScript.
 * `DETERMINISTIC`: Объявляет функцию детерминированной — она всегда возвращает один и тот же результат для одних и тех же входных данных. Если указано, ClickHouse может выполнить свёртку в константу для вызовов, где все аргументы являются константами: функция вычисляется один раз на этапе анализа запроса, и результат повторно используется для каждой строки.
 * `SHA256_HASH`: Ожидаемый хэш модуля для проверки (автоматически заполняется, если опущен); может использоваться для обеспечения загрузки корректного модуля WASM на разных репликах.
 * `SETTINGS`: Настройки для отдельной функции
@@ -231,6 +232,7 @@ RETURNS return_type
 
 * `ROW_DIRECT`: Прямое отображение типов (только примитивные типы `Int32`, `UInt32`, `Int64`, `UInt64`, `Float32`, `Float64`)
 * `BUFFERED_V1`: Сложные типы с сериализацией
+* `ASSEMBLYSCRIPT`: Построчное взаимодействие с модулями [AssemblyScript](https://www.assemblyscript.org); поддерживаются числовые типы и `String`.
 
 ### ABI ROW_DIRECT \{#abi-row_direct\}
 
@@ -305,6 +307,55 @@ ClickhouseBuffer * user_defined_function1(ClickhouseBuffer * span, uint32_t n) {
 ClickhouseBuffer * user_defined_function2(ClickhouseBuffer * span, uint32_t n) { /* ... */ }
 ```
 
+### ABI ASSEMBLYSCRIPT \{#abi-assemblyscript\}
+
+Предназначен для модулей, скомпилированных компилятором [AssemblyScript](https://www.assemblyscript.org). Каждая строка инициирует один вызов экспортируемой функции, сопоставляя значения ClickHouse с примитивными типами и строковыми объектами AssemblyScript.
+
+**Поддерживаемые типы**:
+
+* Числовые: `Int8`/`UInt8`, `Int16`/`UInt16` (на границе расширяются до `i32`), `Int32`/`UInt32`, `Int64`/`UInt64`, `Float32`, `Float64`
+
+* `String` — сопоставляется со строковым типом AssemblyScript `string` (UTF-16 в памяти WASM). ClickHouse автоматически выполняет преобразование UTF-8 ↔ UTF-16.
+
+* Пользовательские классы AssemblyScript не поддерживаются в качестве типов аргументов или возвращаемых значений — их идентификаторы классов во время выполнения не являются стабильными между компиляциями (см. [AssemblyScript#2982](https://github.com/AssemblyScript/assemblyscript/issues/2982)).
+
+**Требования к модулю**:
+
+Модуль должен быть скомпилирован с управляемой средой выполнения AssemblyScript, чтобы экспортировались `__new`, `__pin` и `__unpin`. Стандартная обработка входящих и исходящих строк рассчитана именно на это. Рекомендуемая команда вызова:
+
+```bash
+asc src.ts --runtime incremental --exportRuntime -o src.wasm
+```
+
+AssemblyScript также импортирует `env.abort` для ловушек среды выполнения (нехватка памяти, проверка границ и т. д.). ClickHouse автоматически предоставляет этот импорт: при срабатывании `abort` активный запрос завершается с исключением `WASM_ERROR`, содержащим декодированное сообщение AssemblyScript и расположение в исходном коде.
+
+**Пример**:
+
+```typescript
+// src.ts
+export function add(a: u32, b: u32): u32 {
+  return a + b;
+}
+
+export function greet(name: string): string {
+  return "Hello, " + name + "!";
+}
+```
+
+После компиляции с помощью `asc` и загрузки полученного файла `.wasm` в `system.webassembly_modules` объявите пользовательские функции (UDF) следующим образом:
+
+```sql
+CREATE FUNCTION as_add
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'add'
+    ARGUMENTS (a UInt32, b UInt32) RETURNS UInt32;
+
+CREATE FUNCTION as_greet
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'greet'
+    ARGUMENTS (name String) RETURNS String;
+```
+
 ### Примечание по разработке UDF на Rust \{#note-for-developing-udfs-in-rust\}
 
 Для программ на Rust мы предоставляем вспомогательный crate [clickhouse-wasm-udf](https://crates.io/crates/clickhouse-wasm-udf), который упрощает разработку UDF на WebAssembly для ClickHouse. Этот crate содержит функции для управления памятью, поэтому вам не нужно вручную реализовывать функции `clickhouse_create_buffer` и `clickhouse_destroy_buffer` — достаточно добавить crate как зависимость. Также доступны макросы `#[clickhouse_wasm_udf]`, которые оборачивают ваши обычные функции Rust в требуемый формат ABI.
@@ -332,6 +383,7 @@ pub fn some_udf(data: String) -> HashMap<String, String> {
 * `clickhouse_throw(ptr: i32, size: i32)` — вызывает ошибку с переданным сообщением. Принимает указатель на область памяти, содержащую строку сообщения об ошибке, и размер строки.
 * `clickhouse_log(ptr: i32, size: i32)` — записывает сообщение в текстовый лог сервера ClickHouse.
 * `clickhouse_random(ptr: i32, size: i32)` — заполняет память случайными байтами.
+* `env.abort(message: i32, fileName: i32, line: i32, column: i32)` — предоставляется для модулей, совместимых с AssemblyScript. Его вызов (или срабатывание ловушки среды выполнения AssemblyScript, которая его вызывает) завершает UDF исключением `WASM_ERROR`, содержащим декодированное сообщение и расположение в исходном коде. На модули, которые не импортируют `env.abort`, это не влияет.
 
 ## Настройки \{#settings\}
 
