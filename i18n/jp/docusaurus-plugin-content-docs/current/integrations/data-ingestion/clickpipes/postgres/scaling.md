@@ -65,13 +65,13 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 }
 ```
 
-希望するスケーリングを設定します。サポートされる構成は、CPU コア数が1～24で、メモリ (GB) はコア数の4倍です：
+希望するスケーリングを設定します。サポートされる構成は、CPU コア数が1～32で、メモリ (GB) はコア数の4倍です：
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
 {
-  "replicaCpuMillicores": 24000,
-  "replicaMemoryGb": 96
+  "replicaCpuMillicores": 32000,
+  "replicaMemoryGb": 128
 }
 EOF
 
@@ -91,8 +91,8 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 # example result:
 {
   "result": {
-    "replicaCpuMillicores": 24000,
-    "replicaMemoryGb": 96
+    "replicaCpuMillicores": 32000,
+    "replicaMemoryGb": 128
   },
   "requestId": "5a76d642-d29f-45af-a857-8c4d4b947bf0",
   "status": 200
