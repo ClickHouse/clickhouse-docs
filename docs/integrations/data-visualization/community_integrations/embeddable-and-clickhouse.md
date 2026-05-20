@@ -30,7 +30,7 @@ Built-in row-level security means that every user only ever sees exactly the dat
 
 You add a database connection using Embeddable API. This connection is used to connect to your ClickHouse service. You can add a connection using the following API call:
 
-```javascript
+```javascript title="Query"
 // for security reasons, this must *never* be called from your client-side
 fetch('https://api.embeddable.com/api/v1/connections', {
   method: 'POST',
@@ -50,8 +50,9 @@ fetch('https://api.embeddable.com/api/v1/connections', {
     },
   }),
 });
+```
 
-Response:
+```text title="Response"
 Status 201 { errorMessage: null }
 ```
 

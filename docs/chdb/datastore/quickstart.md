@@ -234,14 +234,13 @@ df = ds.to_pandas() # Same as to_df()
 
 ### Viewing Generated SQL {#view-sql}
 
-```python
+```python title="Query"
 # See what SQL DataStore will execute
 query = ds.filter(ds['age'] > 25).groupby('city').agg({'salary': 'mean'})
 print(query.to_sql())
 ```
 
-Output:
-```sql
+```sql title="Response"
 SELECT city, AVG(salary) AS mean
 FROM file('data.csv', 'CSVWithNames')
 WHERE age > 25
