@@ -30,9 +30,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 2. ClickHouse 연결 유형 생성 \{#2-create-a-clickhouse-connection-type\}
 
-Embeddable API를 사용하여 데이터베이스 연결을 추가합니다. 이 연결은 ClickHouse 서비스에 연결하는 데 사용됩니다. 다음 API 호출을 사용하여 연결을 추가할 수 있습니다.
+Embeddable API를 사용해 데이터베이스 연결을 추가합니다. 이 연결은 ClickHouse 서비스에 연결하는 데 사용됩니다. 다음 API 호출을 사용하여 연결을 추가할 수 있습니다:
 
-```javascript
+```javascript title="Query"
 // for security reasons, this must *never* be called from your client-side
 fetch('https://api.embeddable.com/api/v1/connections', {
   method: 'POST',
@@ -52,26 +52,27 @@ fetch('https://api.embeddable.com/api/v1/connections', {
     },
   }),
 });
+```
 
-Response:
+```text title="Response"
 Status 201 { errorMessage: null }
 ```
 
-위 예시는 `CREATE` 작업을 나타내지만, 모든 `CRUD` 작업을 사용할 수 있습니다.
+위 내용은 `CREATE` 작업을 나타내지만, 모든 `CRUD` 작업을 사용할 수 있습니다.
 
 `apiKey`는 Embeddable 대시보드 중 하나에서 &quot;**Publish**&quot;를 클릭하면 확인할 수 있습니다.
 
-`name`은 이 연결을 식별하기 위한 고유한 이름입니다.
+`name`은 이 연결을 식별하는 고유한 이름입니다.
 
-* 기본적으로 데이터 모델은 &quot;default&quot;라는 이름의 연결을 찾지만, 서로 다른 데이터 모델을 서로 다른 연결에 매핑할 수 있도록 모델에 다른 `data_source` 이름을 지정할 수 있습니다(모델에서 data&#95;source 이름을 명시하면 됩니다).
+* 기본적으로 데이터 모델은 &quot;default&quot;라는 연결을 찾지만, 서로 다른 데이터 모델을 서로 다른 연결에 연결할 수 있도록 모델마다 다른 `data_source` 이름을 지정할 수 있습니다(모델에서 data&#95;source 이름만 지정하면 됩니다)
 
-`type`은 Embeddable이 어떤 드라이버를 사용할지 나타냅니다.
+`type`은 Embeddable에서 사용할 드라이버를 지정합니다
 
-* 여기에서는 `clickhouse`를 사용하면 되지만, 하나의 Embeddable 워크스페이스에 여러 다른 데이터 소스를 연결할 수 있으므로 `postgres`, `bigquery`, `mongodb` 등 다른 드라이버를 사용할 수도 있습니다.
+* 여기서는 `clickhouse`를 사용하면 되지만, 하나의 Embeddable 워크스페이스에 여러 데이터 소스를 연결할 수 있으므로 `postgres`, `bigquery`, `mongodb` 등 다른 항목도 사용할 수 있습니다.
 
-`credentials`는 드라이버가 필요로 하는 필수 자격 증명이 포함된 JavaScript 객체입니다.
+`credentials`는 드라이버에 필요한 자격 증명을 포함하는 JavaScript 객체입니다
 
-* 이 값들은 안전하게 암호화되며, 데이터 모델에서 정의한 정확한 데이터만 조회하는 데 사용됩니다.
-  Embeddable은 각 연결마다 읽기 전용 데이터베이스 USER를 생성할 것을 강력히 권장합니다(Embeddable은 데이터베이스에서 읽기만 하고, 쓰기는 수행하지 않습니다).
+* 이 값은 안전하게 암호화되며, 데이터 모델에 정의한 데이터만 정확하게 가져오는 데만 사용됩니다.
+  Embeddable은 각 연결마다 읽기 전용 데이터베이스 사용자를 생성할 것을 강력히 권장합니다(Embeddable은 데이터베이스에서 읽기만 하며, 쓰기는 하지 않습니다).
 
-운영(prod), QA, 테스트(test) 등 서로 다른 데이터베이스에 연결하거나(또는 서로 다른 고객에 대해 서로 다른 데이터베이스를 사용하도록) 지원하기 위해, 각 연결을 하나의 환경에 할당할 수 있습니다([Environments API](https://docs.embeddable.com/data/environments) 참조).
+prod, qa, test 등 서로 다른 데이터베이스에 연결할 수 있도록(또는 고객별로 서로 다른 데이터베이스를 지원할 수 있도록) 각 연결을 환경에 할당할 수 있습니다([Environments API](https://docs.embeddable.com/data/environments) 참조).
