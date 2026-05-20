@@ -356,7 +356,7 @@ These commands map to features that ClickHouse does not provide, so they are not
 
 ## Complete Example {#complete-example}
 
-```python
+```python title="Query"
 import pyarrow as pa
 import pyarrow.flight as flight
 
@@ -387,9 +387,7 @@ for endpoint in info.endpoints:
     print(table.to_pandas())
 ```
 
-Output:
-
-```text
+```text title="Response"
    id value
 0   1     a
 1   2     b
