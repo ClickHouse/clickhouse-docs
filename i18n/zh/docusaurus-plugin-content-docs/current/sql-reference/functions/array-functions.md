@@ -2176,7 +2176,7 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 
 自 v23.2.0 版本引入
 
-此函数与 `arrayReverseSort` 相同，但额外增加了一个 `limit` 参数，用于只对部分元素进行排序。
+此函数与 `arrayReverseSort` 相同，但额外增加了一个 `limit` 参数，用于进行部分排序。
 
 :::tip
 若只保留已排序的元素，请使用 `arrayResize`。
@@ -2185,15 +2185,15 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 **语法**
 
 ```sql
-arrayPartialReverseSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialReverseSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **参数**
 
 * `f(arr[, arr1, ... ,arrN])` — 应用于数组 `x` 元素的 lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — 排序执行到的索引值上限。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — 当 `f` 接受多个参数时使用的 N 个附加数组。[`Array(T)`](/sql-reference/data-types/array)
-* `limit` — 排序执行到的索引值上限。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -2250,7 +2250,6 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [0, 1, 2]
 ```
-
 
 ## arrayPartialShuffle \{#arrayPartialShuffle\}
 
@@ -2358,15 +2357,15 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 **语法**
 
 ```sql
-arrayPartialSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **参数**
 
 * `f(arr[, arr1, ... ,arrN])` — 应用于数组 `x` 元素的 lambda 函数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — 执行排序的索引上限值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — 当 `f` 接受多个参数时的 N 个额外数组。[`Array(T)`](/sql-reference/data-types/array)
-* `limit` — 执行排序的索引上限值。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -2424,7 +2423,6 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [2, 1, 0]
 ```
-
 
 ## arrayPopBack \{#arrayPopBack\}
 
@@ -3027,14 +3025,14 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 **语法**
 
 ```sql
-arrayReverseSort([f,] arr [, arr1, ... ,arrN)
+arrayReverseSort([f,] arr [, arr1, ... ,arrN])
 ```
 
 **参数**
 
 * `f(y1[, y2 ... yN])` — 要应用到数组 `x` 元素上的 lambda 函数。
 * `arr` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
-* `arr1, ..., yN` — 可选。当 `f` 接受多个参数时，额外提供的 N 个数组。
+* `arr1, ..., arrN` — 可选。当 `f` 接受多个参数时，额外提供的 N 个数组。
 
 **返回值**
 
@@ -3062,7 +3060,6 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 ```response title=Response
 [4,3,5]
 ```
-
 
 ## arrayReverseSplit \{#arrayReverseSplit\}
 
@@ -3478,7 +3475,7 @@ arraySort([f,] arr [, arr1, ... ,arrN])
 
 * `f(y1[, y2 ... yN])` — 应用于数组 `x` 元素的 lambda 函数。
 * `arr` — 要排序的数组。[`Array(T)`](/sql-reference/data-types/array)
-* `arr1, ..., yN` — 可选。当 `f` 接受多个参数时，额外提供的 N 个数组。
+* `arr1, ..., arrN` — 可选。当 `f` 接受多个参数时，额外提供的 N 个数组。
 
 **返回值**
 
@@ -3515,7 +3512,6 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 ```response title=Response
 [-inf,-4,1,2,3,inf,nan,nan,NULL,NULL]
 ```
-
 
 ## arraySplit \{#arraySplit\}
 

@@ -2188,15 +2188,15 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 **Синтаксис**
 
 ```sql
-arrayPartialReverseSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialReverseSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **Аргументы**
 
 * `f(arr[, arr1, ... ,arrN])` — лямбда-функция, применяемая к элементам массива `x`. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — значение индекса, до которого будет выполняться сортировка. [`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — массив, который требуется упорядочить. [`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — N дополнительных массивов, когда `f` принимает несколько аргументов. [`Array(T)`](/sql-reference/data-types/array)
-* `limit` — значение индекса, до которого будет выполняться сортировка. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -2254,7 +2254,6 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [0, 1, 2]
 ```
-
 
 ## arrayPartialShuffle \{#arrayPartialShuffle\}
 
@@ -2362,15 +2361,15 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 **Синтаксис**
 
 ```sql
-arrayPartialSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **Аргументы**
 
 * `f(arr[, arr1, ... ,arrN])` — лямбда-функция, применяемая к элементам массива `x`. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — значение индекса, до которого выполняется сортировка. [`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — массив, который нужно отсортировать. [`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — N дополнительных массивов, если `f` принимает несколько аргументов. [`Array(T)`](/sql-reference/data-types/array)
-* `limit` — значение индекса, до которого выполняется сортировка. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -2428,7 +2427,6 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [2, 1, 0]
 ```
-
 
 ## arrayPopBack \{#arrayPopBack\}
 
@@ -3039,14 +3037,12 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 **Синтаксис**
 
 ```sql
-arrayReverseSort([f,] arr [, arr1, ... ,arrN)
+arrayReverseSort([f,] arr [, arr1, ... ,arrN])
 ```
 
 **Аргументы**
 
-* `f(y1[, y2 ... yN])` — лямбда-функция, применяемая к элементам массива `x`.
-* `arr` — массив, который нужно отсортировать. [`Array(T)`](/sql-reference/data-types/array)
-* `arr1, ..., yN` — необязательные аргументы. N дополнительных массивов, если `f` принимает несколько аргументов.
+* `f(y1[, y2 ... yN])` — лямбда-функция, применяемая к элементам массива `x`. - `arr` — массив, который нужно отсортировать. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., arrN` — необязательные аргументы. N дополнительных массивов, если `f` принимает несколько аргументов.
 
 **Возвращаемое значение**
 
@@ -3074,7 +3070,6 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 ```response title=Response
 [4,3,5]
 ```
-
 
 ## arrayReverseSplit \{#arrayReverseSplit\}
 
@@ -3490,7 +3485,7 @@ arraySort([f,] arr [, arr1, ... ,arrN])
 
 **Arguments**
 
-* `f(y1[, y2 ... yN])` — лямбда-функция, применяемая к элементам массива `x`. - `arr` — массив для сортировки. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — необязательные: N дополнительных массивов в случае, когда `f` принимает несколько аргументов.
+* `f(y1[, y2 ... yN])` — лямбда-функция, применяемая к элементам массива `x`. - `arr` — массив для сортировки. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., arrN` — необязательные: N дополнительных массивов в случае, когда `f` принимает несколько аргументов.
 
 **Returned value**
 
@@ -3528,7 +3523,6 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 ```response title=Response
 [-inf,-4,1,2,3,inf,nan,nan,NULL,NULL]
 ```
-
 
 ## arraySplit \{#arraySplit\}
 

@@ -2189,15 +2189,15 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 **構文**
 
 ```sql
-arrayPartialReverseSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialReverseSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **引数**
 
 * `f(arr[, arr1, ... ,arrN])` — 配列 `x` の要素に適用するラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — どこまでソートを行うかを示すインデックス値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — `f` が複数の引数を受け取る場合の、追加の N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
-* `limit` — どこまでソートを行うかを示すインデックス値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -2255,7 +2255,6 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [0, 1, 2]
 ```
-
 
 ## arrayPartialShuffle \{#arrayPartialShuffle\}
 
@@ -2363,17 +2362,17 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 **構文**
 
 ```sql
-arrayPartialSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **引数**
 
 * `f(arr[, arr1, ... ,arrN])` — 配列 `x` の要素に適用されるラムダ関数。[`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — ソートが行われる上限となるインデックス値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — `f` が複数の引数を受け取る場合の、追加の N 個の配列。[`Array(T)`](/sql-reference/data-types/array)
-* `limit` — ソートが行われる上限となるインデックス値。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
-**返される値**
+**戻り値**
 
 元の配列と同じサイズの配列を返します。範囲 `[1..limit]` にある要素は昇順にソートされます。残りの要素 `(limit..N]` の順序は未定義です。
 
@@ -2428,7 +2427,6 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [2, 1, 0]
 ```
-
 
 ## arrayPopBack \{#arrayPopBack\}
 
@@ -3031,12 +3029,12 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 **構文**
 
 ```sql
-arrayReverseSort([f,] arr [, arr1, ... ,arrN)
+arrayReverseSort([f,] arr [, arr1, ... ,arrN])
 ```
 
 **引数**
 
-* `f(y1[, y2 ... yN])` — 配列 `x` の要素に適用するラムダ関数。 - `arr` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — 省略可能。`f` が複数の引数を受け取る場合に指定する、N 個の追加配列です。
+* `f(y1[, y2 ... yN])` — 配列 `x` の要素に適用するラムダ関数。 - `arr` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., arrN` — 省略可能。`f` が複数の引数を受け取る場合に指定する、N 個の追加配列です。
 
 **戻り値**
 
@@ -3063,7 +3061,6 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 ```response title=Response
 [4,3,5]
 ```
-
 
 ## arrayReverseSplit \{#arrayReverseSplit\}
 
@@ -3481,9 +3478,9 @@ arraySort([f,] arr [, arr1, ... ,arrN])
 
 * `f(y1[, y2 ... yN])` — 配列 `x` の要素に適用するラムダ関数。
 * `arr` — ソート対象の配列。[`Array(T)`](/sql-reference/data-types/array)
-* `arr1, ..., yN` — 省略可。`f` が複数の引数を受け取る場合に指定する、追加の N 個の配列。
+* `arr1, ..., arrN` — 省略可。`f` が複数の引数を受け取る場合に指定する、追加の N 個の配列。
 
-**返り値**
+**戻り値**
 
 ラムダ関数が指定されていない場合は、配列 `arr` を昇順にソートして返します。ラムダ関数が指定されている場合は、そのロジックに従ってソートされた配列を返します。[`Array(T)`](/sql-reference/data-types/array)。
 
@@ -3518,7 +3515,6 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 ```response title=Response
 [-inf,-4,1,2,3,inf,nan,nan,NULL,NULL]
 ```
-
 
 ## arraySplit \{#arraySplit\}
 
