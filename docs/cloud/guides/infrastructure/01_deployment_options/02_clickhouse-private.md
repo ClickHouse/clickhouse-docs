@@ -44,7 +44,7 @@ ClickHouse Private is currently supported in the following configurations:
 |:------------|:---------------------------------|:----------------------------|:-------------|
 | AWS         | Elastic Kubernetes Service (EKS) | Simple Storage Service (S3) | Available    |
 | GCP         | Google Kubernetes Service (GKS)  | Google Cloud Storage (GCS)  | Preview      |
-| Bare metal  | Kubernetes                       | AIStor (NVMe required)      | Preview      | 
+
 
 ## Onboarding process {#onboarding-process}
 
