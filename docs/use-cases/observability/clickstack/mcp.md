@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/mcp
-title: 'MCP server'
+title: 'ClickStack MCP server'
 sidebar_label: 'MCP Server'
 pagination_prev: null
 pagination_next: null
@@ -27,7 +27,7 @@ The MCP server is available in the following ClickStack deployment types:
 | **Managed ClickStack** | Coming soon |
 | **HyperDX v1** ([hyperdx.io](https://hyperdx.io)) | Not supported |
 
-:::note Managed ClickStack
+:::note[Managed ClickStack]
 MCP server support for Managed ClickStack is under active development and will be available soon. The instructions on this page apply to Open Source and BYOC deployments.
 :::
 
@@ -48,15 +48,9 @@ The Personal API Access Key is different from the **Ingestion API Key** found in
 
 The MCP server is available at the `/api/mcp` path on your ClickStack frontend URL:
 
-```plaintext
-<YOUR_CLICKSTACK_URL>/api/mcp
-```
 
 For example, with a default local deployment:
 
-```plaintext
-http://localhost:8080/api/mcp
-```
 
 Replace `localhost:8080` with your instance's host and port if you have customized the defaults.
 
