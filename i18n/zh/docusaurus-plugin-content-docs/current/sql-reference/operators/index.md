@@ -515,3 +515,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 可以通过启用 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 设置来优化。启用 `optimize_functions_to_subcolumns = 1` 后，函数只会读取 [null](../../sql-reference/data-types/nullable.md#finding-null) 子列，而不是读取并处理整列数据。查询 `SELECT n IS NOT NULL FROM table` 会被转换为 `SELECT NOT n.null FROM TABLE`。
+
+
+## 检查布尔值 \{#checking-boolean-values\}
+
+ClickHouse 支持 `IS TRUE`、`IS FALSE`、`IS UNKNOWN`、`IS NOT TRUE`、`IS NOT FALSE` 和 `IS NOT UNKNOWN` 运算符。
+这些运算符可用于 [Bool](../../sql-reference/data-types/boolean.md) 和 `Nullable(Bool)` 表达式。
+
+* `expr IS TRUE` 仅当 `expr` 为 `true` 时返回 `1`。
+* `expr IS FALSE` 仅当 `expr` 为 `false` 时返回 `1`。
+* `expr IS UNKNOWN` 仅当 `expr` 为 `NULL` 时返回 `1`。
+* `expr IS NOT TRUE` 在 `expr` 为 `false` 或 `NULL` 时返回 `1`。
+* `expr IS NOT FALSE` 在 `expr` 为 `true` 或 `NULL` 时返回 `1`。
+* `expr IS NOT UNKNOWN` 在 `expr` 不为 `NULL` 时返回 `1`。
+
+对于布尔表达式，`IS UNKNOWN` 等同于 `IS NULL`，`IS NOT UNKNOWN` 等同于 `IS NOT NULL`。
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

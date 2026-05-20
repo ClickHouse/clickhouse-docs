@@ -1,14 +1,14 @@
 {
-  "title": {
-    "message": "ClickHouse 知识库",
-    "description": "博客 SEO 标题"
-  },
   "description": {
-    "message": "知识库",
-    "description": "博客 SEO 描述"
+    "description": "博客 SEO 描述",
+    "message": "知识库"
   },
   "sidebar.title": {
-    "message": "所有知识库文章",
-    "description": "左侧边栏中的标签"
+    "description": "左侧边栏中的标签",
+    "message": "所有知识库文章"
+  },
+  "title": {
+    "description": "博客 SEO 标题",
+    "message": "ClickHouse 知识库"
   }
 }

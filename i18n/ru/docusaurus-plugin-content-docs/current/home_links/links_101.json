@@ -1,27 +1,27 @@
 [
   {
-    "title": "Справочник по SQL",
     "description": "Изучите доступные команды, функции и типы данных",
+    "title": "Справочник по SQL",
     "url": "/docs/sql-reference"
   },
   {
-    "title": "Ингестия данных",
     "description": "Изучите различные способы ингестии данных в ClickHouse",
+    "title": "Ингестия данных",
     "url": "/docs/integrations/data-ingestion/"
   },
   {
-    "title": "Визуализация данных",
     "description": "Теперь, когда ваши данные в ClickHouse, пора их проанализировать",
+    "title": "Визуализация данных",
     "url": "/docs/integrations/data-visualization/"
   },
   {
-    "title": "Оптимизация данных",
     "description": "Методы оптимизации производительности сервиса ClickHouse",
+    "title": "Оптимизация данных",
     "url": "/docs/optimize/"
   },
   {
-    "title": "Миграция данных",
     "description": "Импорт данных из внешних источников в ClickHouse",
+    "title": "Миграция данных",
     "url": "/docs/integrations/migration/"
   }
 ]

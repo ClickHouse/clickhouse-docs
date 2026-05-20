@@ -4995,7 +4995,7 @@ SELECT kql_array_sort_desc([3, 1, 2])
 * FixedString 引数に適用された場合、この関数は定数式として評価されます。
 
 文字列中のバイト数は、Unicode の「コードポイント」の数とも、Unicode の「書記素クラスタ」
-（一般的に「文字」と呼ぶもの）の数とも、表示幅とも同じではないことに注意してください。
+ (一般的に「文字」と呼ぶもの) の数とも、表示幅とも同じではないことに注意してください。
 
 文字列中に ASCII の NULL バイトが含まれていても問題はなく、それらもカウントされます。
 
@@ -5005,11 +5005,11 @@ SELECT kql_array_sort_desc([3, 1, 2])
 length(x)
 ```
 
-**別名**: `OCTET_LENGTH`
+**別名**: `CARDINALITY`, `OCTET_LENGTH`
 
 **引数**
 
-* `x` — バイト数（String/FixedString の場合）または要素数（Array の場合）を計算する対象の値。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(T)`](/sql-reference/data-types/array)
+* `x` — バイト数 (String/FixedString の場合) または要素数 (Array の場合) を計算する対象の値。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(T)`](/sql-reference/data-types/array)
 
 **返される値**
 
@@ -5078,7 +5078,6 @@ SELECT 'ábc' AS str, length(str), lengthUTF8(str)
 │ ábc │            4 │               3 │
 └─────┴──────────────┴─────────────────┘
 ```
-
 
 ## notEmpty \{#notEmpty\}
 

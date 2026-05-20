@@ -515,3 +515,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) SETTING を有効にすることで最適化できます。`optimize_functions_to_subcolumns = 1` の場合、関数はカラム全体のデータを読み取って処理するのではなく、[null](../../sql-reference/data-types/nullable.md#finding-null) サブカラムのみを読み込みます。クエリ `SELECT n IS NOT NULL FROM table` は `SELECT NOT n.null FROM TABLE` に変換されます。
+
+
+## 真偽値の判定 \{#checking-boolean-values\}
+
+ClickHouse は、`IS TRUE`、`IS FALSE`、`IS UNKNOWN`、`IS NOT TRUE`、`IS NOT FALSE`、および `IS NOT UNKNOWN` 演算子をサポートしています。
+これらは [Bool](../../sql-reference/data-types/boolean.md) および `Nullable(Bool)` の式で使用されます。
+
+* `expr IS TRUE` は、`expr` が `true` の場合にのみ `1` を返します。
+* `expr IS FALSE` は、`expr` が `false` の場合にのみ `1` を返します。
+* `expr IS UNKNOWN` は、`expr` が `NULL` の場合にのみ `1` を返します。
+* `expr IS NOT TRUE` は、`expr` が `false` または `NULL` の場合に `1` を返します。
+* `expr IS NOT FALSE` は、`expr` が `true` または `NULL` の場合に `1` を返します。
+* `expr IS NOT UNKNOWN` は、`expr` が `NULL` ではない場合に `1` を返します。
+
+真偽値式では、`IS UNKNOWN` は `IS NULL` と同等であり、`IS NOT UNKNOWN` は `IS NOT NULL` と同等です。
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

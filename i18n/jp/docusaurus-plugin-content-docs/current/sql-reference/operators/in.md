@@ -23,6 +23,43 @@ SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 
 演算子の右辺には、定数式の Set、定数式を含むタプルの Set (上記の例で示したもの) 、あるいはデータベーステーブル名、または括弧で囲んだ `SELECT` サブクエリを指定できます。
 
+歴史的な互換性のため、右辺が単一の `tuple` 式である場合、`IN` 演算子の左辺に応じて、値の Set またはひとつのタプル値のいずれかとして解釈されます。左辺がスカラー値の場合、ClickHouse はこの単一の右辺 `tuple` 式の各要素を個別の `IN` 値として扱います。
+
+```sql title="Query"
+SELECT
+    1 IN (tuple(1, 2)) AS one_in_tuple,
+    2 IN (tuple(1, 2)) AS two_in_tuple,
+    3 IN (tuple(1, 2)) AS three_in_tuple;
+```
+
+```text title="Response"
+┌─one_in_tuple─┬─two_in_tuple─┬─three_in_tuple─┐
+│            1 │            1 │              0 │
+└──────────────┴──────────────┴────────────────┘
+```
+
+これは `SELECT 1 IN (1, 2)` と同様に動作します。左辺もタプルである場合、右辺はタプル値の Set として解釈されます。
+
+```sql title="Query"
+SELECT tuple(1, 2) IN (tuple(1, 2)) AS tuple_in_tuple;
+```
+
+```text title="Response"
+┌─tuple_in_tuple─┐
+│              1 │
+└────────────────┘
+```
+
+この特別な処理は、右辺が単一の `tuple` 式である場合にのみ適用されます。スカラーの左辺は、複数のタプル値を含む右辺と照合することはできません。
+
+```sql title="Query"
+SELECT 1 IN (tuple(1, 2), tuple(3, 4));
+```
+
+```text title="Response"
+Code: 43. DB::Exception: Unsupported types for IN. First argument type UInt8. Second argument type Tuple(Tuple(UInt8, UInt8), Tuple(UInt8, UInt8)). (ILLEGAL_TYPE_OF_ARGUMENT)
+```
+
 ClickHouse では、`IN` サブクエリの左辺と右辺で型が異なることを許容します。
 この場合、システムは右辺の値を左辺の型に変換します。これは、右辺に対して [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accurateCastOrNull) 関数が適用されたかのように動作します。
 
