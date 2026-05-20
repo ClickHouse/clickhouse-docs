@@ -20,6 +20,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 
 * `query` ([String](../../sql-reference/data-types/)) — 查询字符串。
 * `query_id` ([String](../../sql-reference/data-types/)) — 查询的 ID。
+* `is_subquery` ([UInt8](../../sql-reference/data-types/)) — 查询缓存条目是否为子查询结果。
 * `result_size` ([UInt64](../../sql-reference/data-types/)) — 查询缓存条目的大小。
 * `tag` ([LowCardinality(String)](../../sql-reference/data-types/)) — 查询缓存条目的标签。
 * `stale` ([UInt8](../../sql-reference/data-types/)) — 查询缓存条目是否已过期。

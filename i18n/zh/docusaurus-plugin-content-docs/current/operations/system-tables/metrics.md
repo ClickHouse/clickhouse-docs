@@ -687,6 +687,10 @@ ZooKeeper 中持有的临时节点数。
 
 文件系统缓存中的键数
 
+### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
+
+被 overcommit 文件系统缓存淘汰策略跟踪的用户数
+
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 
 当前活跃的缓存缓冲区数量

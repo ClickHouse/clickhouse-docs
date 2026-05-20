@@ -57,7 +57,7 @@ profiler.report()
 
 Просмотрите план выполнения перед запуском запроса.
 
-```python
+```python title="Query"
 ds = pd.read_csv("data.csv")
 
 query = (ds
@@ -70,9 +70,7 @@ query = (ds
 query.explain()
 ```
 
-Вывод:
-
-```text
+```text title="Response"
 Pipeline:
   Source: file('data.csv', 'CSVWithNames')
   Filter: amount > 1000
@@ -90,12 +88,11 @@ GROUP BY region
 
 ***
 
-
 ## Профилирование \{#profiling\}
 
 Измеряйте время выполнения каждой операции.
 
-```python
+```python title="Query"
 from chdb.datastore.config import config, get_profiler
 
 # Enable profiling
@@ -117,9 +114,7 @@ profiler = get_profiler()
 profiler.report(min_duration_ms=0.1)
 ```
 
-Вывод:
-
-```text
+```text title="Response"
 Performance Report
 ==================
 Step                          Duration    Calls
@@ -138,7 +133,6 @@ Total                         1.939s      7
 См. [руководство по профилированию](profiling.md) для получения подробной информации.
 
 ***
-
 
 ## Логирование \{#logging\}
 

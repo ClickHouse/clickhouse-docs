@@ -1,13 +1,13 @@
 [
   {
-    "name": "Joe",
     "age": 99,
+    "name": "Joe",
     "type": "ユーザー"
   },
   {
-    "url": "/my.post.MD",
     "hits": 1263,
-    "type": "投稿"
+    "type": "投稿",
+    "url": "/my.post.MD"
   },
   {
     "message": "ディスク使用量の警告",

@@ -174,7 +174,7 @@ result = (ds
 
 `explain()`을 사용하여 어떤 것이 실행될지 확인하십시오:
 
-```python
+```python title="Query"
 ds = pd.read_csv("sales.csv")
 
 query = (ds
@@ -187,9 +187,7 @@ query = (ds
 query.explain()
 ```
 
-출력 결과:
-
-```text
+```text title="Response"
 Pipeline:
   1. Source: file('sales.csv', 'CSVWithNames')
   2. Filter: amount > 1000
@@ -212,7 +210,6 @@ query.explain(verbose=True)
 자세한 내용은 [Debugging: explain()](../debugging/explain.md)를 참고하십시오.
 
 ***
-
 
 ## 캐싱 \{#caching\}
 
