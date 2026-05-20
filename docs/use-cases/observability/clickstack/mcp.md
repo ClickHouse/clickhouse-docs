@@ -48,9 +48,7 @@ The Personal API Access Key is different from the **Ingestion API Key** found in
 
 The MCP server is available at the `/api/mcp` path on your ClickStack frontend URL:
 
-
 For example, with a default local deployment:
-
 
 Replace `localhost:8080` with your instance's host and port if you have customized the defaults.
 
