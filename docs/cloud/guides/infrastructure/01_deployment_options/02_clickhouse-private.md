@@ -45,7 +45,6 @@ ClickHouse Private is currently supported in the following configurations:
 | AWS         | Elastic Kubernetes Service (EKS) | Simple Storage Service (S3) | Available    |
 | GCP         | Google Kubernetes Service (GKS)  | Google Cloud Storage (GCS)  | Preview      |
 
-
 ## Onboarding process {#onboarding-process}
 
 Customers interested in ClickHouse Private can [contact us](https://clickhouse.com/company/contact) to schedule a review call for their use case. Requests that meet minimum size requirements and target supported configurations will be considered - note that onboarding capacity is limited. Setup involves following an environment-specific install guide using images and Helm charts pulled from AWS ECR.
