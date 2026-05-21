@@ -14,7 +14,7 @@ In this guide, we show examples of how to take full and incremental backups to A
 :::note
 Any usage where backups are being exported to a different region in the same cloud provider will incur [data transfer](/cloud/manage/network-data-transfer) charges.  
 
-Cross cloud backups are only supported via the backup/restore commands outlined on this page and not via the UI.
+Cross-Cloud backups are only supported via the backup/restore commands outlined on this page, and not via the UI.
 :::
 
 ## Requirements {#requirements}
