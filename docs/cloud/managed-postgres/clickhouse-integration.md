@@ -7,14 +7,14 @@ keywords: ['postgres', 'clickhouse integration', 'cdc', 'replication', 'clickpip
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
+<BetaBadge/>
 
 Every Managed Postgres instance comes with built-in CDC capabilities to any of your ClickHouse services. This allows you to move some or all of the data on your Postgres instance to ClickHouse and have changes in data on Postgres be reflected on ClickHouse continuous and nearly real-time. This is powered by [ClickPipes](/integrations/clickpipes) under the hood.
 

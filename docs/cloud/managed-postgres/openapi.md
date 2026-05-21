@@ -7,11 +7,11 @@ keywords: ['managed postgres', 'openapi', 'api', 'curl', 'tutorial', 'command li
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # Managed Postgres OpenAPI
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
+<BetaBadge/>
 
 Use the [ClickHouse OpenAPI](/cloud/manage/cloud-api) to programmatically
 control your Managed Postgres services just like ClickHouse services. The

@@ -7,12 +7,12 @@ keywords: ['read replicas', 'scalability', 'read scaling', 'postgres replicas', 
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
+<BetaBadge/>
 
 Read replicas allow you to create one or more copies of your primary Managed Postgres database. These replicas continuously follow your primary database using PostgreSQL's native replication to stay up to date with changes.
 

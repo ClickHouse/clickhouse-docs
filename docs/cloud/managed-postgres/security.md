@@ -7,11 +7,11 @@ keywords: ['postgres security', 'ip whitelisting', 'encryption', 'tls', 'ssl', '
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="security" />
+<BetaBadge/>
 
 Managed Postgres is built with enterprise-grade security features to protect your data and meet compliance requirements. This page covers network security, encryption, and backup retention policies.
 

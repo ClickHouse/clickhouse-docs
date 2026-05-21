@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data t
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
@@ -24,7 +24,7 @@ import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.p
 
 # Migrate to Managed Postgres using ClickHouse Cloud {#migrate-managed-postgres}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-clickhouse-cloud" />
+<BetaBadge/>
 
 ClickHouse Cloud includes a built-in import wizard that migrates your external PostgreSQL database into a Managed Postgres service. The wizard handles the source connection, schema export and import, replication settings, and table selection in five guided steps.
 

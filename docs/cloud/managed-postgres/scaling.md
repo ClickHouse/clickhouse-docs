@@ -7,12 +7,12 @@ keywords: ['postgres scaling', 'vertical scaling', 'vm types', 'nvme scaling', '
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import instanceTypes from '@site/static/images/managed-postgres/instance-types.png';
 import scalingSettings from '@site/static/images/managed-postgres/scaling-settings.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="scaling" />
+<BetaBadge/>
 
 Managed Postgres provides flexible scaling options to match your workload requirements. With 50+ NVMe-backed instance types to choose from, you can independently scale CPU, memory, and storage to optimize performance and cost for your specific use case.
 

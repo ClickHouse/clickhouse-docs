@@ -7,9 +7,9 @@ keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data t
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge />
+<BetaBadge/>
 
 ## Comparing counts of all tables {#data-validation-counts}
 A simple way to validate the correctness of your data after migration is to compare the counts of all tables in the source and target databases. You can do this by running the following query on both databases:
