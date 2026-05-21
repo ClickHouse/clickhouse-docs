@@ -48,4 +48,4 @@ ClickHouse Private is currently supported in the following configurations:
 
 ## Onboarding process {#onboarding-process}
 
-Customers may [contact us](https://clickhouse.com/company/contact?loc=nav) to request a call to review ClickHouse Private for their use case. Use cases meeting minimum size requirements and deployed to supported configurations will be reviewed. Onboarding is limited. The installation process involves following an install guide for the specific environment where ClickHouse will be deployed using images and Helm charts downloaded from AWS ECR.
+Customers interested in ClickHouse Private can [contact us](https://clickhouse.com/company/contact) to schedule a review call for their use case. Requests that meet minimum size requirements and target supported configurations will be considered - note that onboarding capacity is limited. Setup involves following an environment-specific install guide using images and Helm charts pulled from AWS ECR.
