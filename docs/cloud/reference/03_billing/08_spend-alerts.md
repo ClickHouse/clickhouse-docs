@@ -54,7 +54,7 @@ Three alerts are automatically created and triggered based on your configured sp
 | Threshold | Trigger                         | Example ($10 alert) |
 |-----------|---------------------------------|---------------------|
 | **50%**   | Half of spend reached           | $5                  |
-| **75%**   | Three-quarters of spend reached | $8                  |
+| **75%**   | Three-quarters of spend reached | $7.50               |
 | **100%**  | Full spend reached              | $10                 |
 
 ## Notification channels {#notification-channels}
