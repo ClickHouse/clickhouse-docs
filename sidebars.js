@@ -1249,6 +1249,18 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'Partner program',
+      collapsed: true,
+      collapsible: true,
+      link: { type: 'doc', id: 'integrations/partners/index' },
+      items: [
+        'integrations/partners/building-integrations',
+        'integrations/partners/testing-your-integration',
+        'integrations/partners/documenting-your-integration',
+      ],
+    },
   ],
 
   managingData: [

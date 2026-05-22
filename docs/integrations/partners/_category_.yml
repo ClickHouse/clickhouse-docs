@@ -1,0 +1,7 @@
+position: 500
+label: 'Partner program'
+collapsible: true
+collapsed: true
+link:
+  type: doc
+  id: integrations/partners/index
