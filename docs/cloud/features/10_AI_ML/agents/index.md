@@ -20,7 +20,7 @@ This feature is in beta. Functionality and behavior may change before general av
 - [Quickstart](/cloud/features/ai-ml/agents/quickstart) — Build and run your first agent against a ClickHouse service.
 - [Chat](/cloud/features/ai-ml/agents/chat) — Conversations, bookmarks, forking, and sharing chats.
 - [Agent Builder](/cloud/features/ai-ml/agents/builder) — Create and configure agents; attach tools, MCP servers, actions, skills, and subagents.
-- [Presets](/cloud/features/ai-ml/agents/presets) — Saved model and parameter presets.
+- [Model parameters](/cloud/features/ai-ml/agents/model-parameters) — Configure model selection and generation parameters; save as named presets.
 - [Prompts](/cloud/features/ai-ml/agents/prompts) — Saved prompt library.
 - [Memory](/cloud/features/ai-ml/agents/memory) — Memory and personalization.
 - [Marketplace](/cloud/features/ai-ml/agents/marketplace) — Share and discover agents.
