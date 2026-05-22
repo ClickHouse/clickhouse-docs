@@ -11,7 +11,11 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-The Agent Builder is where users create and configure agents. This page covers the core builder UI: name, description, instructions, and model selection. Subpages cover each capability that can be attached to an agent — tools, MCP servers, skills, and subagents.
+The Agent Builder is where users create and configure agents. This page covers the core builder UI: name, description, and instructions. Subpages cover model parameters and each capability that can be attached to an agent — tools, MCP servers, skills, and subagents.
+
+## Core configuration
+
+- [Model parameters](/cloud/features/ai-ml/agents/builder/model-parameters) — Select a model and tune generation parameters; save configurations as named presets.
 
 ## Built-in tools
 
