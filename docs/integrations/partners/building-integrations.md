@@ -28,19 +28,19 @@ Supported sources today include:
 
 ### Path B: Self-driven ingestion via an official language client
 
-If you own the pipeline, use one of the [official language clients](/integrations/language-clients). They handle native-format serialization, batching, TLS, compression, and connection pooling. You pass runtime primitives; the client handles the wire format.
+If you own the pipeline, use one of the [official language clients](/integrations/language-clients). They handle serialization, batching, TLS, compression, and connection pooling. You pass runtime primitives; the client handles the wire format.
 
 - Official clients: Python, Go, Java, JavaScript, Rust, C#, C++
-- Both wire protocols: HTTP (port `8123`, TLS `8443`) and native TCP (port `9000`, TLS `9440`)
+- Both wire protocols: HTTP and native TCP (Go and C++)
 - Auth: username and password over TLS by default; mTLS and SSL client-certificate auth are supported by all major clients
-- Data format is usually an implementation detail. Clients convert runtime types to ClickHouse Native format. If you already produce Arrow, Parquet, JSONEachRow, or another format, most clients expose a raw-bytes API for pre-serialized data
+- Data format is usually an implementation detail. Clients convert runtime types to ClickHouse Native or RowBinary format. If you already produce Arrow, Parquet, JSONEachRow, or another format, most clients expose a raw-bytes API for pre-serialized data
 - For throughput, batch **10K–100K rows** and aim for roughly **one insert per second** as an upper bound for synchronous inserts. If client-side batching is impractical, use [asynchronous inserts](/optimize/asynchronous-inserts) to shift batching to the server
 
 See also: [Bulk inserts](/optimize/bulk-inserts).
 
 ## Consumption
 
-HTTP and native TCP both carry queries. Native is binary and lower overhead (what `clickhouse-client` uses). HTTP works through load balancers and proxies. Both are first-class; pick based on infrastructure, not feature gaps.
+HTTP and native TCP both carry queries. Native is binary and lower overhead. HTTP works through load balancers and proxies. Both are first-class; pick based on infrastructure, not feature gaps.
 
 - **Application code:** use the same [official language clients](/integrations/language-clients) as for ingestion
 - **BI and SQL tools:** ClickHouse ships an official [JDBC v2 driver](/integrations/java) (Java) and an [ODBC driver](/interfaces/odbc). Tableau, Looker, Power BI, Metabase, Apache Superset, and Grafana integrate via these drivers or dedicated connectors maintained by ClickHouse and partners
