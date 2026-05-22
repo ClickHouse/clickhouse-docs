@@ -3,8 +3,8 @@ sidebar_label: 'Skills'
 sidebar_position: 9
 slug: /cloud/features/ai-ml/agents/builder/skills
 title: 'Skills'
-description: 'Reusable skill packages for ClickHouse Agents'
-keywords: ['AI', 'ClickHouse Cloud', 'agents', 'skills']
+description: 'Reusable instruction packs for ClickHouse Agents'
+keywords: ['AI', 'ClickHouse Cloud', 'agents', 'skills', 'SKILL.md']
 doc_type: 'reference'
 ---
 
@@ -12,4 +12,54 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-Skills are reusable packages of instructions and supporting code that can be attached to an agent to add domain-specific behavior without rewriting prompts. Covers authoring, packaging, attaching, and versioning skills.
+A skill is a reusable instruction pack an agent can apply on demand. Use skills for procedures that recur across agents — a brand-style guide, a code-review checklist, a runbook for a specific workflow — instead of duplicating the instructions into each agent's system prompt.
+
+## Anatomy of a skill
+
+A skill is a Markdown file with a small frontmatter header:
+
+```markdown
+---
+name: revenue-report
+description: Generates the weekly revenue report using our standard segments
+always-apply: false
+user-invocable: true
+---
+
+When asked to generate a revenue report:
+1. Filter to the requested period.
+2. Apply the standard MRR formula (see business rules in AGENTS.md).
+3. Break down by segment: Enterprise, Mid-Market, SMB.
+4. Render the result as a Markdown table.
+```
+
+The frontmatter knobs that matter most:
+
+- **`name`** — kebab-case identifier.
+- **`description`** — short summary used by the model to decide when this skill is relevant. Treat this as the most important field. Write it specifically; vague descriptions lead to wrong-skill invocations.
+- **`always-apply`** — when `true`, the skill is primed into every turn instead of being selected. Use sparingly; always-apply skills consume context on every message.
+- **`user-invocable`** — when `true` (the default), the skill appears in the `$` popover for manual selection.
+
+You can bundle supporting files alongside the skill — reference docs, sample queries, small scripts — by uploading a `.zip` containing the `SKILL.md` and its assets.
+
+## Use a skill
+
+Three ways an agent reaches for a skill in a conversation:
+
+- **User invocation** — press `$` in the composer and pick the skill from the popover. The skill's content is primed for the next turn.
+- **Model auto-selection** — based on the skill's `description`, the agent decides on its own when to apply it.
+- **Always-apply** — primed on every turn for skills configured that way.
+
+## Manage skills
+
+The Skills panel in the Cloud console lets you create skills inline, upload `.md` or `.zip` files, and manage which skills are active for your user. Owned skills default to active; deactivate one to remove it from the popover and the model's catalog without deleting it.
+
+Skills can be shared with other users (see [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access)).
+
+## Skills vs. instructions vs. AGENTS.md
+
+- **Agent instructions** define what the agent is and how it behaves overall. Always on for that agent.
+- **AGENTS.md** is service-wide context: schema conventions and business rules injected into every agent that touches your data.
+- **Skills** are situational — applied when relevant, scoped to specific workflows.
+
+Reach for a skill when the same set of step-by-step instructions keeps showing up across multiple agents.

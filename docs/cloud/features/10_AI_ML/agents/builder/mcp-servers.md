@@ -12,4 +12,28 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-MCP servers expose tools and resources that an agent can call through the Model Context Protocol. Covers attaching an MCP server to an agent, supported transports (stdio, SSE, WebSocket), authentication, timeouts, and circuit-breaker behavior.
+Model Context Protocol (MCP) is the open standard for exposing tools and data sources to an AI model. Attaching an MCP server to a ClickHouse Agent gives the agent access to whatever capabilities that server exposes — issue trackers, observability backends, internal APIs, third-party SaaS, or anything else with an MCP endpoint.
+
+## Attach an MCP server
+
+In the Agent Builder, open the **MCP servers** section and click **Add server**. Enter the server's URL and authentication settings, then pick which of the server's tools you want this specific agent to use. Save the agent.
+
+You can attach multiple servers to one agent. Each tool the agent calls is logged in the conversation so users can see what the agent did.
+
+## Transport
+
+ClickHouse Agents speaks Streamable HTTP — the production-grade MCP transport. The server you attach must be reachable over HTTP(S) from ClickHouse Cloud.
+
+## Authentication
+
+MCP servers can require credentials. ClickHouse Agents supports:
+
+- **Bearer tokens** and other static headers — fixed values you provide when configuring the server.
+- **OAuth 2.0** — interactive flow. The first time you (or any user with access) calls a tool on the server, the browser opens a sign-in window; tokens are managed and refreshed automatically.
+- **Per-user credentials** — variables in the server config substituted from the calling user's profile, so each user authenticates with their own identity rather than a shared service account.
+
+User-provided credentials are stored encrypted and scoped to the user who entered them. One user's credentials are never visible to another user's agent runs.
+
+## Limits
+
+A single agent run can reference at most 50 distinct MCP server targets and at most 100 expanded tool configurations per request. Agents that need more should be decomposed using [subagents](/cloud/features/ai-ml/agents/builder/subagents).
