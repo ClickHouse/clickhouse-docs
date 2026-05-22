@@ -12,4 +12,32 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-The code interpreter executes user-supplied or model-generated code in an isolated sandbox. Covers supported languages (Python, Node.js, Go, C/C++, Java, PHP, Rust, Fortran), file upload and download from the sandbox, network policy, and execution limits.
+The code interpreter lets an agent execute code in a managed sandbox. Use it for computation, data transformation, format conversion, plotting, and anything else better done in code than in natural language.
+
+## Enable it
+
+Toggle **Code interpreter** in the Agent Builder's capabilities section, then save. The agent decides when to run code based on the user's request and the agent's instructions.
+
+## Supported languages
+
+Python, Node.js, Go, C/C++, Java, PHP, Rust, and Fortran are available. Python is the default and is what most agents pick by default for data tasks.
+
+## Files
+
+Users can upload files into a conversation; the code interpreter has access to them in the sandbox working directory. Code can also write output files (CSVs, plots, archives) which appear in the conversation as downloadable attachments.
+
+## Sandbox isolation
+
+Each execution runs in an ephemeral sandbox with no network access and no persistent storage. Sessions don't share state — variables and files from one run don't carry into the next unless the agent explicitly re-loads them.
+
+Plan-specific resource limits (memory, files per run, monthly request quotas) apply. Errors and stderr are surfaced in the conversation alongside stdout.
+
+## When to use it
+
+- Parse a CSV or JSON the user uploaded.
+- Compute summary statistics or run a quick simulation.
+- Convert between formats (Parquet, JSON, CSV).
+- Generate a plot from query results.
+- Anything where deterministic computation beats LLM reasoning.
+
+Avoid it for tasks the model can answer directly. Code execution adds latency and consumes quota.
