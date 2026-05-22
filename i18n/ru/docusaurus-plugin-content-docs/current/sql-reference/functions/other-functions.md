@@ -1873,12 +1873,13 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 **Синтаксис**
 
 ```sql
-formatReadableDecimalSize(x)
+formatReadableDecimalSize(value[, precision])
 ```
 
 **Аргументы**
 
-* `x` — размер в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — размер в байтах. [`Int8`](/sql-reference/data-types/int-uint) или [`Int16`](/sql-reference/data-types/int-uint) или [`Int32`](/sql-reference/data-types/int-uint) или [`Int64`](/sql-reference/data-types/int-uint) или [`UInt8`](/sql-reference/data-types/int-uint) или [`UInt16`](/sql-reference/data-types/int-uint) или [`UInt32`](/sql-reference/data-types/int-uint) или [`UInt64`](/sql-reference/data-types/int-uint) или [`Float32`](/sql-reference/data-types/float) или [`Float64`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — необязательный параметр. Количество цифр после десятичной запятой. По умолчанию — 2. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -1903,6 +1904,20 @@ SELECT
 └────────────────┴────────────┘
 ```
 
+**С явно заданной точностью**
+
+```sql title=Query
+SELECT
+    formatReadableDecimalSize(192851925, 0) AS no_decimals,
+    formatReadableDecimalSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals─┐
+│ 193 MB      │ 192.8519 MB   │
+└─────────────┴───────────────┘
+```
+
 ## formatReadableQuantity \{#formatReadableQuantity\}
 
 Введена в версии: v20.10.0
@@ -1915,12 +1930,13 @@ SELECT
 **Синтаксис**
 
 ```sql
-formatReadableQuantity(x)
+formatReadableQuantity(value[, precision])
 ```
 
 **Аргументы**
 
-* `x` — Число, которое нужно отформатировать. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — Число, которое нужно отформатировать. [`Int8`](/sql-reference/data-types/int-uint) или [`Int16`](/sql-reference/data-types/int-uint) или [`Int32`](/sql-reference/data-types/int-uint) или [`Int64`](/sql-reference/data-types/int-uint) или [`UInt8`](/sql-reference/data-types/int-uint) или [`UInt16`](/sql-reference/data-types/int-uint) или [`UInt32`](/sql-reference/data-types/int-uint) или [`UInt64`](/sql-reference/data-types/int-uint) или [`Float32`](/sql-reference/data-types/float) или [`Float64`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — Необязательный параметр. Количество знаков после десятичной точки. По умолчанию: 2. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -1945,6 +1961,20 @@ SELECT
 └────────────────┴───────────────────┘
 ```
 
+**С явно заданной точностью**
+
+```sql title=Query
+SELECT
+    formatReadableQuantity(98765432101234, 0) AS no_decimals,
+    formatReadableQuantity(98765432101234, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals──┬─four_decimals─────┐
+│ 99 trillion  │ 98.7654 trillion  │
+└──────────────┴───────────────────┘
+```
+
 ## formatReadableSize \{#formatReadableSize\}
 
 Добавлено в: v1.1.0
@@ -1952,19 +1982,20 @@ SELECT
 Для заданного размера (количества байт) эта функция возвращает человекочитаемый, округлённый размер с суффиксом (KiB, MiB и т. д.) в виде строки.
 
 Обратными операциями к этой функции являются [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero) и [`parseReadableSizeOrNull`](#parseReadableSizeOrNull).
-Эта функция принимает на вход любое числовое значение, но внутренне преобразует их к `Float64`. Результаты могут быть неточными при очень больших значениях.
+Эта функция принимает на вход любое числовое значение, но внутренне преобразует его к `Float64`. Результаты могут быть неточными при очень больших значениях.
 
 **Синтаксис**
 
 ```sql
-formatReadableSize(x)
+formatReadableSize(value[, precision])
 ```
 
 **Псевдонимы**: `FORMAT_BYTES`
 
 **Аргументы**
 
-* `x` — размер в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — размер в байтах. [`Int8`](/sql-reference/data-types/int-uint) или [`Int16`](/sql-reference/data-types/int-uint) или [`Int32`](/sql-reference/data-types/int-uint) или [`Int64`](/sql-reference/data-types/int-uint) или [`UInt8`](/sql-reference/data-types/int-uint) или [`UInt16`](/sql-reference/data-types/int-uint) или [`UInt32`](/sql-reference/data-types/int-uint) или [`UInt64`](/sql-reference/data-types/int-uint) или [`Float32`](/sql-reference/data-types/float) или [`Float64`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — необязательный параметр. Количество знаков после десятичной точки. По умолчанию: 2. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -1987,6 +2018,20 @@ SELECT
 │        1048576 │ 1.00 MiB   │
 │      192851925 │ 183.92 MiB │
 └────────────────┴────────────┘
+```
+
+**С явным указанием точности**
+
+```sql title=Query
+SELECT
+    formatReadableSize(192851925, 0) AS no_decimals,
+    formatReadableSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals──┐
+│ 184 MiB     │ 183.9179 MiB   │
+└─────────────┴────────────────┘
 ```
 
 ## formatReadableTimeDelta \{#formatReadableTimeDelta\}
