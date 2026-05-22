@@ -2291,11 +2291,19 @@ Kafka テーブルへの書き込み (insert) 回数
 
 ### KeeperBatchMaxCount \{#keeperbatchmaxcount\}
 
-バッチサイズが件数によって制限された回数
+`max_requests_batch_size` の上限に達したバッチ数
+
+### KeeperBatchMaxReadCount \{#keeperbatchmaxreadcount\}
+
+`max_read_batch_size` の上限に達したバッチ数
+
+### KeeperBatchMaxReadTotalSize \{#keeperbatchmaxreadtotalsize\}
+
+`max_read_batch_bytes_size` の上限に達したバッチ数
 
 ### KeeperBatchMaxTotalSize \{#keeperbatchmaxtotalsize\}
 
-バッチサイズが合計バイト数によって制限された回数
+max&#95;requests&#95;batch&#95;bytes&#95;size の上限に達したバッチ数
 
 ### KeeperChangelogFileSyncMicroseconds \{#keeperchangelogfilesyncmicroseconds\}
 
@@ -2524,6 +2532,14 @@ Keeperストレージ共有ロックの取得待機時間
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 単一リクエストのKeeperの総レイテンシ
+
+### KeeperWriteBatchCount \{#keeperwritebatchcount\}
+
+Keeper が処理した書き込みリクエストのバッチ数
+
+### KeeperWriteBatchTotalRequests \{#keeperwritebatchtotalrequests\}
+
+Keeper がバッチ単位で処理した書き込みリクエストの総数
 
 ### LoadedDataParts \{#loadeddataparts\}
 

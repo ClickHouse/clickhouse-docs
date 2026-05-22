@@ -2292,11 +2292,19 @@ SELECT * FROM system.events LIMIT 5
 
 ### KeeperBatchMaxCount \{#keeperbatchmaxcount\}
 
-Количество случаев, когда размер пакета был ограничен количеством элементов
+Количество пакетов, достигнувших ограничения max&#95;requests&#95;batch&#95;size
+
+### KeeperBatchMaxReadCount \{#keeperbatchmaxreadcount\}
+
+Количество пакетов, достигших лимита max&#95;read&#95;batch&#95;size
+
+### KeeperBatchMaxReadTotalSize \{#keeperbatchmaxreadtotalsize\}
+
+Количество пакетов, достигших ограничения max&#95;read&#95;batch&#95;bytes&#95;size
 
 ### KeeperBatchMaxTotalSize \{#keeperbatchmaxtotalsize\}
 
-Количество случаев, когда размер пакета был ограничен общим размером в байтах
+Количество пакетов, для которых достигнут предел `max_requests_batch_bytes_size`
 
 ### KeeperChangelogFileSyncMicroseconds \{#keeperchangelogfilesyncmicroseconds\}
 
@@ -2525,6 +2533,14 @@ SELECT * FROM system.events LIMIT 5
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 Суммарная задержка Keeper для одного запроса
+
+### KeeperWriteBatchCount \{#keeperwritebatchcount\}
+
+Число батчей запросов на запись, обработанных Keeper
+
+### KeeperWriteBatchTotalRequests \{#keeperwritebatchtotalrequests\}
+
+Общее количество запросов на запись, обработанных Keeper батчами
 
 ### LoadedDataParts \{#loadeddataparts\}
 

@@ -2291,11 +2291,19 @@ Kafka 表的写入 (插入) 次数
 
 ### KeeperBatchMaxCount \{#keeperbatchmaxcount\}
 
-批次大小因数量限制而受限的次数
+达到 max&#95;requests&#95;batch&#95;size 限制的批次数
+
+### KeeperBatchMaxReadCount \{#keeperbatchmaxreadcount\}
+
+批次达到 `max_read_batch_size` 限制的次数
+
+### KeeperBatchMaxReadTotalSize \{#keeperbatchmaxreadtotalsize\}
+
+达到 `max_read_batch_bytes_size` 限制的批次数量
 
 ### KeeperBatchMaxTotalSize \{#keeperbatchmaxtotalsize\}
 
-批次大小因总字节数限制而受限的次数
+达到 `max_requests_batch_bytes_size` 限制的批次数
 
 ### KeeperChangelogFileSyncMicroseconds \{#keeperchangelogfilesyncmicroseconds\}
 
@@ -2524,6 +2532,14 @@ Keeper 快照文件在执行 fsync 时花费的时间
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 单次请求的 Keeper 总延迟
+
+### KeeperWriteBatchCount \{#keeperwritebatchcount\}
+
+由 Keeper 处理的写请求批次数
+
+### KeeperWriteBatchTotalRequests \{#keeperwritebatchtotalrequests\}
+
+Keeper 按批次处理的写入请求总数
 
 ### LoadedDataParts \{#loadeddataparts\}
 

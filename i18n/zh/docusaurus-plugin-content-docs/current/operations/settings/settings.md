@@ -9210,6 +9210,18 @@ SELECT * FROM test2;
 
 将多个 OR LIKE 表达式优化为 multiMatchAny。此优化默认不应启用，因为在某些情况下会干扰索引分析。
 
+## optimize_prewhere_after_pushdown \{#optimize_prewhere_after_pushdown\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "新增设置，用于启用第二次 `PREWHERE` 提升处理，将后续优化（如通过 `JOIN` 的谓词下推、投影重写）放置在 `MergeTree` 读取步骤上方的过滤器合并到现有的 `PREWHERE` 链中。"}]}]} />
+
+在后续查询计划优化可能已在 `MergeTree` 读取步骤上方
+放置额外过滤器 (例如通过
+`JOIN` 的谓词下推、投影重写) 之后，再执行一次 `PREWHERE` 提升处理。当已存在
+`PREWHERE` 时，新的
+过滤器会通过 `AND` 合并到其中，而不是保留为单独的过滤步骤。
+
 ## optimize_qbit_distance_function_reads \{#optimize_qbit_distance_function_reads\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

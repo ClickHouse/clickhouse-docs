@@ -9230,6 +9230,17 @@ SELECT * FROM test2;
 
 여러 `OR LIKE`를 `multiMatchAny`로 최적화합니다. 이 최적화는 일부 경우 인덱스 분석을 방해할 수 있으므로 기본값으로 활성화하지 않아야 합니다.
 
+## optimize_prewhere_after_pushdown \{#optimize_prewhere_after_pushdown\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "후속 최적화(예: `JOIN`을 통한 프레디케이트 pushdown, PROJECTION 재작성)로 인해 `MergeTree` 읽기 단계 위에 추가된 필터를 기존 `PREWHERE` 체인에 병합할 수 있도록, 두 번째 `PREWHERE` 승격 패스를 활성화하는 새로운 설정입니다."}]}]} />
+
+후속 쿼리 계획 최적화로 인해
+`MergeTree` 읽기 단계 위에 추가 필터(예: `JOIN`을 통한 프레디케이트 pushdown,
+PROJECTION 재작성)가 배치되었을 수 있는 경우, 두 번째 `PREWHERE` 승격 패스를 실행합니다. 기존 `PREWHERE`가 이미 있으면 새
+필터는 별도의 필터 단계로 남지 않고 여기에 `AND`로 머지됩니다.
+
 ## optimize_qbit_distance_function_reads \{#optimize_qbit_distance_function_reads\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

@@ -2291,11 +2291,19 @@ watch 추가 요청 수
 
 ### KeeperBatchMaxCount \{#keeperbatchmaxcount\}
 
-배치 크기가 개수 제한으로 인해 제한된 횟수
+max&#95;requests&#95;batch&#95;size 제한에 걸린 배치 수
+
+### KeeperBatchMaxReadCount \{#keeperbatchmaxreadcount\}
+
+max&#95;read&#95;batch&#95;size 제한에 걸린 배치 수
+
+### KeeperBatchMaxReadTotalSize \{#keeperbatchmaxreadtotalsize\}
+
+`max_read_batch_bytes_size` 제한에 걸린 배치 수
 
 ### KeeperBatchMaxTotalSize \{#keeperbatchmaxtotalsize\}
 
-총 바이트 크기 제한으로 인해 배치 크기가 제한된 횟수
+`max_requests_batch_bytes_size` 제한값에 도달한 배치 수
 
 ### KeeperChangelogFileSyncMicroseconds \{#keeperchangelogfilesyncmicroseconds\}
 
@@ -2524,6 +2532,14 @@ Keeper storage 공유 잠금을 획득할 때까지 대기한 시간
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 단일 요청의 Keeper 총 지연 시간
+
+### KeeperWriteBatchCount \{#keeperwritebatchcount\}
+
+Keeper가 처리한 쓰기 요청 배치 수
+
+### KeeperWriteBatchTotalRequests \{#keeperwritebatchtotalrequests\}
+
+Keeper가 배치 단위로 처리한 쓰기 요청의 총수
 
 ### 로드된 데이터 파트 수 \{#loadeddataparts\}
 

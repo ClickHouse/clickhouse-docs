@@ -9256,6 +9256,17 @@ SELECT * FROM test2;
 
 Объединяет несколько условий OR LIKE в вызов multiMatchAny. Эту оптимизацию не следует включать по умолчанию, поскольку в некоторых случаях она нарушает анализ индексов.
 
+## optimize_prewhere_after_pushdown \{#optimize_prewhere_after_pushdown\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "Новая настройка, включающая второй проход продвижения PREWHERE, чтобы объединять фильтры, добавленные над шагом чтения MergeTree более поздними оптимизациями (pushdown предикатов через JOIN, переписывание проекций), с существующей цепочкой PREWHERE."}]}]} />
+
+Выполняет второй проход продвижения `PREWHERE`, если более поздние оптимизации плана запроса
+добавили дополнительные фильтры над шагом чтения `MergeTree` (например, pushdown предикатов через
+`JOIN` или переписывание проекций). Если `PREWHERE` уже есть, новый
+фильтр объединяется с ним через `AND`, а не остаётся отдельным шагом фильтрации.
+
 ## optimize_qbit_distance_function_reads \{#optimize_qbit_distance_function_reads\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

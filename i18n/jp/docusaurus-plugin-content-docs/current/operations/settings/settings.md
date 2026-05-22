@@ -9237,6 +9237,17 @@ SELECT * FROM test2;
 
 複数の OR LIKE 式を multiMatchAny に最適化します。この最適化は、場合によっては索引の解析を妨げるため、デフォルトでは有効化すべきではありません。
 
+## optimize_prewhere_after_pushdown \{#optimize_prewhere_after_pushdown\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "後続の最適化（`JOIN` を介した述語 pushdown、projection の rewrite）によって `MergeTree` の read ステップの上に追加された filter を、既存の PREWHERE chain にマージするための 2 回目の PREWHERE 昇格パスを有効にする新しい設定。"}]}]} />
+
+後続のクエリプラン最適化によって `MergeTree` の read ステップの上に
+追加の filter (たとえば `JOIN` を介した述語 pushdown や
+projection の rewrite) が配置されることがあるため、その後に 2 回目の `PREWHERE` 昇格パスを実行します。既存の `PREWHERE` がすでにある場合、新しい
+filter は個別の filter ステップとして残されず、`AND` でそこにマージされます。
+
 ## optimize_qbit_distance_function_reads \{#optimize_qbit_distance_function_reads\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
