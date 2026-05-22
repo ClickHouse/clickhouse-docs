@@ -4,14 +4,12 @@ description: 'Documentation for the HTTP interface in ClickHouse, which provides
 sidebar_label: 'HTTP interface'
 sidebar_position: 15
 slug: /interfaces/http
-title: 'HTTP interface'
+title: 'HTTP Interface'
 doc_type: 'reference'
 ---
 
 import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
-
-# HTTP Interface
 
 ## Prerequisites {#prerequisites}
 

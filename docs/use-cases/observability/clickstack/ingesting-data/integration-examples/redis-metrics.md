@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/redis-metrics
-title: 'Monitoring Redis metrics with ClickStack'
+title: 'Monitoring Redis Metrics with ClickStack'
 sidebar_label: 'Redis metrics'
 pagination_prev: null
 pagination_next: null
@@ -15,8 +15,6 @@ import import_dashboard from '@site/static/images/clickstack/import-dashboard.pn
 import finish_import from '@site/static/images/clickstack/import-redis-metrics-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring Redis Metrics with ClickStack {#redis-metrics-clickstack}
 
 :::note[TL;DR]
 Monitor Redis performance metrics in ClickStack using the OTel Redis receiver. Includes a demo dataset and pre-built dashboard.

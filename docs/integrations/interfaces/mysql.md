@@ -4,7 +4,7 @@ description: 'Documentation for the MySQL protocol interface in ClickHouse, allo
 sidebar_label: 'MySQL interface'
 sidebar_position: 25
 slug: /interfaces/mysql
-title: 'MySQL interface'
+title: 'MySQL Interface'
 doc_type: 'guide'
 ---
 
@@ -13,8 +13,6 @@ import mysql0 from '@site/static/images/interfaces/mysql0.png';
 import mysql1 from '@site/static/images/interfaces/mysql1.png';
 import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
-
-# MySQL Interface
 
 ClickHouse supports the MySQL wire protocol. This allows certain clients that don't have native ClickHouse connectors leverage the MySQL protocol instead, and it has been validated with the following BI tools:
 

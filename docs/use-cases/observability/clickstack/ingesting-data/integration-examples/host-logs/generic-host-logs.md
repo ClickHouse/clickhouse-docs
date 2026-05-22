@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs
-title: 'Monitoring host logs with ClickStack'
+title: 'Monitoring Host Logs with ClickStack'
 sidebar_label: 'Generic host logs'
 pagination_prev: null
 pagination_next: null
@@ -19,8 +19,6 @@ import finish_import from '@site/static/images/clickstack/host-logs/import-dashb
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# Monitoring Host Logs with ClickStack {#host-logs-clickstack}
 
 :::note[TL;DR]
 Collect and visualize host system logs (syslog, auth, kernel) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.

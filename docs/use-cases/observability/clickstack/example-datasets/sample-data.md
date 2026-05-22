@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/sample-data
-title: 'Sample logs, traces and metrics'
+title: 'ClickStack - Sample logs, traces and metrics'
 sidebar_position: 0
 pagination_prev: null
 pagination_next: null
@@ -34,8 +34,6 @@ import copy_api_key from '@site/static/images/use-cases/observability/copy_api_k
 import select_service from '@site/static/images/clickstack/select_service.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ClickStack - Sample logs, traces and metrics {#clickstack-sample-dataset}
 
 This guide demonstrates both ClickStack Open Source and Managed ClickStack using a sample data set.
 

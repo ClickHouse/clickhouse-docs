@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/monitoring/dashboard
 sidebar_label: 'Dashboard'
-title: 'Managed Postgres monitoring dashboard'
+title: 'Monitoring dashboard'
 description: 'Built-in cloud console dashboard for Managed Postgres services'
 keywords: ['managed postgres', 'monitoring', 'dashboard', 'cloud console', 'cpu', 'memory', 'iops']
 doc_type: 'guide'
@@ -10,8 +10,6 @@ doc_type: 'guide'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import dashboard from '@site/static/images/managed-postgres/monitoring/dashboard.png';
-
-# Monitoring dashboard
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-dashboard" />
 

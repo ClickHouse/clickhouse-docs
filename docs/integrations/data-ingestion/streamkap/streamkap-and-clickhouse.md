@@ -16,8 +16,6 @@ integration:
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Connect Streamkap to ClickHouse
-
 <PartnerBadge/>
 
 <a href="https://www.streamkap.com/" target="_blank">Streamkap</a> is a real-time data integration platform that specializes in streaming Change Data Capture (CDC) and stream processing. It is built on a high-throughput, scalable stack using Apache Kafka, Apache Flink, and Debezium, offered as a fully managed service in SaaS or BYOC (Bring your own Cloud) deployments. 

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nodejs-traces
-title: 'Monitoring Node.js traces with ClickStack'
+title: 'Monitoring Node.js Traces with ClickStack'
 sidebar_label: 'Node.js traces'
 pagination_prev: null
 pagination_next: null
@@ -18,8 +18,6 @@ import trace_view from '@site/static/images/clickstack/nodejs/trace-view.png';
 import finish_import from '@site/static/images/clickstack/nodejs/finish-import.png';
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring Node.js Traces with ClickStack {#nodejs-traces-clickstack}
 
 :::note[TL;DR]
 Capture distributed traces from Node.js applications in ClickStack using OpenTelemetry automatic instrumentation. Includes a demo dataset and pre-built dashboard.

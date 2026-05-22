@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-metrics
-title: 'Monitoring PostgreSQL metrics with ClickStack'
+title: 'Monitoring PostgreSQL Metrics with ClickStack'
 sidebar_label: 'PostgreSQL metrics'
 pagination_prev: null
 pagination_next: null
@@ -15,8 +15,6 @@ import import_dashboard from '@site/static/images/clickstack/import-dashboard.pn
 import finish_import from '@site/static/images/clickstack/postgres/import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring PostgreSQL Metrics with ClickStack {#postgres-metrics-clickstack}
 
 :::note[TL;DR]
 Monitor PostgreSQL performance metrics in ClickStack using the OTel PostgreSQL receiver. Includes a demo dataset and pre-built dashboard.

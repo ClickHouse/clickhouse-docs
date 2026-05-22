@@ -1,15 +1,13 @@
 ---
 slug: /cloud/managed-postgres/monitoring/metrics
 sidebar_label: 'Metrics reference'
-title: 'Managed Postgres metrics reference'
+title: 'Metrics reference'
 description: 'Full list of metrics exposed by the Managed Postgres Prometheus endpoint'
 keywords: ['managed postgres', 'metrics', 'prometheus', 'reference', 'observability']
 doc_type: 'reference'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
-
-# Metrics reference
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-metrics" />
 

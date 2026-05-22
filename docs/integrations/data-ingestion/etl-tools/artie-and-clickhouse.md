@@ -16,8 +16,6 @@ import monitor from '@site/static/images/integrations/data-ingestion/etl-tools/a
 import schema_notification from '@site/static/images/integrations/data-ingestion/etl-tools/artie/schema_notification.png';
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# Connect Artie to ClickHouse
-
 <a href="https://www.artie.com/" target="_blank">Artie</a> is fully managed real-time data streaming platform that replicates production data into ClickHouse, unlocking customer-facing analytics, operational workflows, and Agentic AI in production.
 
 ## Overview {#overview}

@@ -1,5 +1,5 @@
 ---
-title: 'Schema design'
+title: 'Designing a schema for observability'
 description: 'Designing a schema design for observability'
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 slug: /use-cases/observability/schema-design
@@ -12,8 +12,6 @@ import observability_11 from '@site/static/images/use-cases/observability/observ
 import observability_12 from '@site/static/images/use-cases/observability/observability-12.png';
 import observability_13 from '@site/static/images/use-cases/observability/observability-13.png';
 import Image from '@theme/IdealImage';
-
-# Designing a schema for observability
 
 We recommend users always create their own schema for logs and traces for the following reasons:
 

@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/monitoring/prometheus
 sidebar_label: 'Prometheus endpoint'
-title: 'Managed Postgres Prometheus endpoint'
+title: 'Prometheus Integration'
 description: 'Scrape Managed Postgres metrics into Prometheus, Grafana, Datadog, or any OpenMetrics-compatible collector'
 keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', 'metrics', 'openmetrics', 'observability']
 doc_type: 'guide'
@@ -12,8 +12,6 @@ import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
-
-# Prometheus Integration
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-prometheus" />
 

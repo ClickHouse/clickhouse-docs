@@ -14,8 +14,6 @@ import fast_release from '@site/static/images/cloud/manage/fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
-# Upgrades
-
 With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis. For the full list of what is new in ClickHouse refer to our [Cloud changelog](/whats-new/changelog/cloud).
 
 :::note

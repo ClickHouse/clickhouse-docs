@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-cloudwatch-logs
-title: 'Monitoring AWS CloudWatch logs with ClickStack'
+title: 'Monitoring AWS CloudWatch Logs with ClickStack'
 sidebar_label: 'AWS CloudWatch logs'
 pagination_prev: null
 pagination_next: null
@@ -20,8 +20,6 @@ import demo_search_view from '@site/static/images/clickstack/cloudwatch/demo-sea
 import error_log_overview from '@site/static/images/clickstack/cloudwatch/error-log-overview.png';
 import error_log_column_values from '@site/static/images/clickstack/cloudwatch/error-log-column-values.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring AWS CloudWatch Logs with ClickStack {#cloudwatch-clickstack}
 
 :::note[TL;DR]
 Forward AWS CloudWatch logs to ClickStack using the OpenTelemetry Collector's CloudWatch receiver. Supports named log groups and autodiscovery. Includes a demo dataset and pre-built dashboard.

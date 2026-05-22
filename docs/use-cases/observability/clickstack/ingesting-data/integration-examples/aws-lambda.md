@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: 'Monitoring AWS Lambda logs with ClickStack using Rotel'
+title: 'Monitoring AWS Lambda Logs with ClickStack using Rotel'
 sidebar_label: 'AWS Lambda logs'
 pagination_prev: null
 pagination_next: null
@@ -14,8 +14,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png';
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
-# Monitoring AWS Lambda Logs with ClickStack using Rotel {#lambda-clickstack}
 
 <CommunityMaintainedBadge/>
 

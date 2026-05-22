@@ -1,6 +1,6 @@
 ---
 slug: /integrations/postgresql/connecting-to-postgresql
-title: 'Connecting to PostgreSQL'
+title: 'Connecting ClickHouse to PostgreSQL'
 keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
 description: 'Page describing the various ways to connect PostgreSQL to ClickHouse'
 show_related_blogs: true
@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
-# Connecting ClickHouse to PostgreSQL
 
 This page covers following options for integrating PostgreSQL with ClickHouse:
 

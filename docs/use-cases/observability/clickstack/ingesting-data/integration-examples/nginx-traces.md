@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: 'Monitoring Nginx traces with ClickStack'
+title: 'Monitoring Nginx Traces with ClickStack'
 sidebar_label: 'Nginx traces'
 pagination_prev: null
 pagination_next: null
@@ -16,8 +16,6 @@ import finish_import from '@site/static/images/clickstack/finish-nginx-traces-da
 import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
 
 :::note[TL;DR]
 Capture distributed traces from Nginx in ClickStack using the OpenTelemetry Nginx module. Includes a demo dataset and pre-built dashboard.

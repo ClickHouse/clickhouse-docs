@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-# Managed Postgres monitoring
-
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-overview" />
 
 You can monitor your Managed Postgres services with the following

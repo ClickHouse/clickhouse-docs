@@ -1,5 +1,5 @@
 ---
-title: 'Getting started with open table formats'
+title: 'Getting started with data lakes'
 sidebar_label: 'Getting started'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
@@ -15,8 +15,6 @@ import iceberg_query_direct from '@site/static/images/datalake/iceberg-query-dir
 import iceberg_query_engine from '@site/static/images/datalake/iceberg-query-engine.png';
 import iceberg_query from '@site/static/images/datalake/iceberg-query.png';
 import clickhouse_query from '@site/static/images/datalake/clickhouse-query.png';
-
-# Getting started with data lakes {#data-lake-getting-started}
 
 :::note[TL;DR]
 A hands-on walkthrough of querying data lake tables, accelerating them with MergeTree, and writing results back to Iceberg. All steps use public datasets and work on both Cloud and OSS.

@@ -3,13 +3,11 @@ description: 'Documentation for the PostgreSQL wire protocol interface in ClickH
 sidebar_label: 'PostgreSQL interface'
 sidebar_position: 20
 slug: /interfaces/postgresql
-title: 'PostgreSQL interface'
+title: 'PostgreSQL Interface'
 doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
-# PostgreSQL Interface
 
 <CloudNotSupportedBadge/>
 

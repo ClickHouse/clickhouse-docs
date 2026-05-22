@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-logs
-title: 'Monitoring PostgreSQL logs with ClickStack'
+title: 'Monitoring PostgreSQL Logs with ClickStack'
 sidebar_label: 'PostgreSQL logs'
 pagination_prev: null
 pagination_next: null
@@ -17,8 +17,6 @@ import log_view from '@site/static/images/clickstack/postgres/postgres-log-view.
 import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-logs-dashboard.png';
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring PostgreSQL Logs with ClickStack {#postgres-logs-clickstack}
 
 :::note[TL;DR]
 Collect and visualize PostgreSQL server logs (CSV format) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.

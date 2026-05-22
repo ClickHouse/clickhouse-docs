@@ -11,8 +11,6 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Features and configurations
-
 <ClickHouseSupportedBadge/>
 
 In this section, we provide documentation about some of the features available for dbt with ClickHouse.

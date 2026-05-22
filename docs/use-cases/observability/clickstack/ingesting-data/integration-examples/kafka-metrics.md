@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/kafka-metrics
-title: 'Monitoring Kafka metrics with ClickStack'
+title: 'Monitoring Kafka Metrics with ClickStack'
 sidebar_label: 'Kafka metrics'
 pagination_prev: null
 pagination_next: null
@@ -16,8 +16,6 @@ import import_dashboard from '@site/static/images/clickstack/import-dashboard.pn
 import finish_import from '@site/static/images/clickstack/kafka/import-kafka-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring Kafka Metrics with ClickStack {#kafka-metrics-clickstack}
 
 :::note[TL;DR]
 Monitor Apache Kafka performance metrics in ClickStack using the OTel JMX Metric Gatherer. Includes a demo dataset and pre-built dashboard.

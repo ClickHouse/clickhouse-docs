@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/kafka-logs
-title: 'Monitoring Kafka logs with ClickStack'
+title: 'Monitoring Kafka Logs with ClickStack'
 sidebar_label: 'Kafka logs'
 pagination_prev: null
 pagination_next: null
@@ -19,8 +19,6 @@ import finish_import from '@site/static/images/clickstack/kafka/logs/finish-impo
 import example_dashboard from '@site/static/images/clickstack/kafka/logs/example-dashboard.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring Kafka Logs with ClickStack {#kafka-logs-clickstack}
 
 :::note[TL;DR]
 Collect and visualize Kafka broker logs (Log4j format) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.

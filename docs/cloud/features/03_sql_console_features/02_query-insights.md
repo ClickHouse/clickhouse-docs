@@ -3,7 +3,7 @@ sidebar_title: 'Query insights'
 slug: /cloud/get-started/query-insights
 description: 'Visualize system.query_log data to simplify query debugging and performance optimization'
 keywords: ['query insights', 'query log', 'query log ui', 'system.query_log insights']
-title: 'Query insights'
+title: 'Query Insights'
 doc_type: 'guide'
 ---
 
@@ -13,8 +13,6 @@ import insights_latency from '@site/static/images/cloud/sqlconsole/insights_late
 import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recent.png';
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
-
-# Query Insights
 
 The **Query Insights** feature makes ClickHouse's built-in query log easier to use through visualizations and tables. ClickHouse's `system.query_log` table is a key source of information for query optimization, debugging, and monitoring overall cluster health and performance.
 

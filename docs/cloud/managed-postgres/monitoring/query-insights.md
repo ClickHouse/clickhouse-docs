@@ -15,8 +15,6 @@ import queryInsightsRecentQueries from '@site/static/images/managed-postgres/mon
 import queryInsightsDetailAggregate from '@site/static/images/managed-postgres/monitoring/query-insights-detail-aggregate.png';
 import queryInsightsDetailRecent from '@site/static/images/managed-postgres/monitoring/query-insights-detail-recent.png';
 
-# Postgres query insights
-
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="query-insights" />
 
 Query Insights captures per-statement telemetry from your

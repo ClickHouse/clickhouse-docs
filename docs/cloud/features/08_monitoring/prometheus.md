@@ -2,7 +2,7 @@
 slug: /integrations/prometheus
 sidebar_label: 'Prometheus endpoint'
 sidebar_position: 4
-title: 'Prometheus-compatible metrics endpoint'
+title: 'Prometheus Integration'
 description: 'Export ClickHouse metrics to Prometheus'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
 doc_type: 'reference'
@@ -15,8 +15,6 @@ import prometheus_grafana_alloy from '@site/static/images/integrations/prometheu
 import prometheus_grafana_metrics_explorer from '@site/static/images/integrations/prometheus-grafana-metrics-explorer.png';
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
-
-# Prometheus Integration
 
 The feature supports integrating [Prometheus](https://prometheus.io/) to monitor ClickHouse Cloud services. Access to Prometheus metrics is exposed via the [ClickHouse Cloud API](/cloud/manage/api/api-overview) endpoint that allows you to securely connect and export metrics into your Prometheus metrics collector. These metrics can be integrated with dashboards e.g., Grafana, Datadog for visualization.
 

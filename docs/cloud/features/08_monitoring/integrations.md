@@ -10,8 +10,6 @@ doc_type: 'guide'
 
 import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
 
-# Community and partner integrations
-
 ## Direct Datadog integration {#direct-datadog}
 
 Datadog offers a ClickHouse Monitoring plugin for its agent which queries system tables directly. This integration provides comprehensive database monitoring with cluster awareness through `clusterAllReplicas` functionality.

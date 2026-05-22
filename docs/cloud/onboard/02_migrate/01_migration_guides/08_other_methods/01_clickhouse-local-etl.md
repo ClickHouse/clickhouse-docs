@@ -16,8 +16,6 @@ import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-# Migrating to ClickHouse using clickhouse-local
-
 <Image img={ch_local_01} size='lg' alt='Migrating Self-managed ClickHouse'/>
 
 You can use ClickHouse, or to be more specific,[`clickhouse-local`](/operations/utilities/clickhouse-local.md)

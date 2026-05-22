@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/systemd-logs
-title: 'Monitoring Systemd logs with ClickStack'
+title: 'Monitoring Systemd Logs with ClickStack'
 sidebar_label: 'Systemd/Journald logs'
 pagination_prev: null
 pagination_next: null
@@ -18,8 +18,6 @@ import example_dashboard from '@site/static/images/clickstack/systemd/systemd-lo
 import search_view from '@site/static/images/clickstack/systemd/systemd-search-view.png';
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring Systemd Logs with ClickStack {#systemd-logs-clickstack}
 
 :::note[TL;DR]
 Collect and visualize systemd journal logs in ClickStack using the OpenTelemetry Collector's journald receiver. Includes a demo dataset and pre-built dashboard.

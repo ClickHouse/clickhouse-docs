@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/migrations/clickhouse-cloud
 sidebar_label: 'ClickHouse Cloud'
-title: 'Migrate PostgreSQL data using Data sources in ClickHouse Cloud'
+title: 'Migrate to Managed Postgres using ClickHouse Cloud'
 description: 'Learn how to migrate your PostgreSQL database to ClickHouse Managed Postgres using the built-in Data sources import wizard in ClickHouse Cloud.'
 keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres', 'data sources', 'import']
 doc_type: 'guide'
@@ -21,8 +21,6 @@ import psqlImport from '@site/static/images/managed-postgres/pgpg/psqlimport.png
 import serviceCard from '@site/static/images/managed-postgres/pgpg/servicecard.png';
 import startImport from '@site/static/images/managed-postgres/pgpg/startimport.png';
 import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.png';
-
-# Migrate to Managed Postgres using ClickHouse Cloud {#migrate-managed-postgres}
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-clickhouse-cloud" />
 

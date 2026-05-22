@@ -3,14 +3,12 @@ sidebar_label: 'Kafka Connect JDBC Connector'
 sidebar_position: 4
 slug: /integrations/kafka/kafka-connect-jdbc
 description: 'Using JDBC Connector Sink with Kafka Connect and ClickHouse'
-title: 'JDBC Connector'
+title: 'JDBC connector'
 doc_type: 'guide'
 keywords: ['kafka', 'kafka connect', 'jdbc', 'integration', 'data pipeline']
 ---
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
-
-# JDBC connector
 
 :::note
 This connector should only be used if your data is simple and consists of primitive data types e.g., int. ClickHouse specific types such as maps aren't supported.

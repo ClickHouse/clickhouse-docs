@@ -18,8 +18,6 @@ import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-re
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
 
-# AWS PrivateLink
-
 <ScalePlanFeatureBadge feature="AWS PrivateLink"/>
 
 You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to establish secure connectivity between VPCs, AWS services, your on-premises systems, and ClickHouse Cloud without exposing traffic to the public Internet. This document outlines the steps to connect to ClickHouse Cloud using AWS PrivateLink.

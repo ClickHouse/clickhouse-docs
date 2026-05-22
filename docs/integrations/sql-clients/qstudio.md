@@ -16,8 +16,6 @@ import qstudio_running_query from '@site/static/images/integrations/sql-clients/
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connect QStudio to ClickHouse
-
 <CommunityMaintainedBadge/>
 
 QStudio is a free SQL GUI, it allows running SQL scripts, easy browsing of tables, charting and exporting of results. It works on every operating system, with every database.

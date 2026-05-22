@@ -13,8 +13,6 @@ integration:
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_native.md';
 
-# ClickHouse Go
-
 ## Quickstart {#quick-start}
 
 Let's Go with a simple example.  This will connect to ClickHouse and select from the system database.  To get started you will need your connection details.
