@@ -14,7 +14,7 @@ Your integration documentation lives in the official ClickHouse docs alongside C
 
 Start with [Building integrations](/integrations/partners/building-integrations) and [Testing your integration](/integrations/partners/testing-your-integration) if you have not already.
 
-## Where docs live
+## Where docs live {#where-docs-live}
 
 - **Repository:** [`ClickHouse/clickhouse-docs`](https://github.com/ClickHouse/clickhouse-docs)
 - **Format:** Markdown, built with Docusaurus
@@ -23,7 +23,7 @@ Start with [Building integrations](/integrations/partners/building-integrations)
 
 Good exemplars: [Tableau](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/integrations/data-visualization/tableau/tableau-and-clickhouse.md) and [Metabase](/integrations/metabase).
 
-## Required sections
+## Required sections {#required-sections}
 
 Every partner integration page should cover the following, ideally in this order:
 
@@ -35,14 +35,14 @@ Every partner integration page should cover the following, ideally in this order
 - **Known limits and performance characteristics.** Type-system gaps, result-set thresholds, throughput notes, unsupported features. Honesty here saves support cycles
 - **Troubleshooting.** Common errors and resolutions. Two or three frequent cases are enough for a first version
 
-## Style notes
+## Style notes {#style-notes}
 
 - **Show both Cloud and self-hosted.** Cloud typically uses HTTPS on port `8443` and native TCP on `9440`. Self-hosted defaults to `8123` and `9000`
 - **Use Docusaurus admonitions** (`:::note`, `:::warning`, `:::tip`) for callouts instead of bold paragraphs
 - **Link out for depth.** Link to existing docs for data types, formats, JDBC, ClickPipes, and similar topics instead of re-explaining them
 - **No marketing.** Partner pages here are technical reference. Promotional content belongs on your site; we can link to it from the partner directory
 
-## Copy-paste skeleton
+## Copy-paste skeleton {#copy-paste-skeleton}
 
 Fill in the bracketed sections, save as `/docs/integrations/<category>/<your-integration>/index.md`, and open a PR.
 
@@ -103,6 +103,6 @@ to configure each.]
 [Cause and resolution.]
 ```
 
-## Review
+## Review {#review}
 
 The ClickHouse integrations team reviews PRs for technical accuracy, Cloud and self-hosted coverage, and docs style. Iterate in the PR until reviewers approve. That approval is the merge gate.

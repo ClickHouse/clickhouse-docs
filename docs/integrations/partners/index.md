@@ -16,7 +16,7 @@ These guides orient partners who build products that connect to ClickHouse. They
 A dedicated partner portal is launching soon. Until then, use these pages and register your integration through the partner portal when it is available.
 :::
 
-## Guides
+## Guides {#guides}
 
 Read them in this order:
 

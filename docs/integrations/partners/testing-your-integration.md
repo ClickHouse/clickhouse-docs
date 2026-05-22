@@ -14,7 +14,7 @@ Validate your integration against both ClickHouse deployment modes and datasets 
 
 See [Building integrations](/integrations/partners/building-integrations) for ingestion and consumption paths, and [Documenting your integration](/integrations/partners/documenting-your-integration) for how to publish your results.
 
-## Test matrix
+## Test matrix {#test-matrix}
 
 Cover both deployment modes. Most customers run one or the other, and behavior differs in places (auth, networking, available features).
 
@@ -23,7 +23,7 @@ Cover both deployment modes. Most customers run one or the other, and behavior d
 
 Test against both, and document any feature gaps in your integration page.
 
-## What to test
+## What to test {#what-to-test}
 
 **Functional correctness.** Exercise every code path your integration exposes: ingestion, querying, schema discovery, error handling, and reconnection. If your product surfaces SQL to end users, confirm that the queries your UI generates round-trip cleanly.
 
@@ -35,7 +35,7 @@ Test against both, and document any feature gaps in your integration page.
 
 **Connection lifecycle.** Confirm sane behavior on dropped connections, server restarts, and slow queries. Many escalations trace back to connection handling rather than query semantics.
 
-## Recommended example datasets
+## Recommended example datasets {#recommended-example-datasets}
 
 The full set is at [Example datasets](/getting-started/example-datasets). These four cover most partner testing needs:
 
@@ -46,7 +46,7 @@ The full set is at [Example datasets](/getting-started/example-datasets). These 
 
 For extreme-scale validation, use **[WikiStat](/getting-started/example-datasets/wikistat)** (~0.5 trillion records).
 
-## What to capture from your testing
+## What to capture from your testing {#what-to-capture-from-your-testing}
 
 When you submit your integration for review, share:
 
