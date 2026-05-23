@@ -2,7 +2,7 @@
 sidebar_label: 'Quickstart'
 sidebar_position: 1
 slug: /cloud/features/ai-ml/agents/quickstart
-title: 'ClickHouse Agents quickstart'
+title: 'ClickHouse Agents Quickstart'
 description: 'Build and run your first ClickHouse Agent against a ClickHouse Cloud service'
 keywords: ['AI', 'ClickHouse Cloud', 'agents', 'quickstart', 'agent builder']
 doc_type: 'guide'
@@ -17,7 +17,7 @@ Build a custom agent in the Cloud console and run a natural-language query again
 ## Prerequisites
 
 - A ClickHouse Cloud service you can query.
-- The **Create agent** option in the Agent Builder. If it's missing, ask an org admin to grant agent creation in [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access).
+- The **Create agent** option in the Agent Builder. If it's missing, ask an org admin to grant agent creation via Admin Settings as detailed in [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access).
 
 ## Create the agent
 
@@ -36,7 +36,7 @@ Decide which capabilities the agent needs. From the Builder, you can add:
 - [Web search](/cloud/features/ai-ml/agents/builder/web-search) — public-web lookups.
 - [Image generation](/cloud/features/ai-ml/agents/builder/image-generation) and [vision](/cloud/features/ai-ml/agents/builder/vision) — visual outputs and inputs.
 - [MCP servers](/cloud/features/ai-ml/agents/builder/mcp-servers) — third-party tools over Model Context Protocol.
-- [Skills](/cloud/features/ai-ml/agents/builder/skills) and [subagents](/cloud/features/ai-ml/agents/builder/subagents) — reusable instruction packs and task delegation.
+- [Skills](/cloud/features/ai-ml/agents/builder/skills) and [Subagents](/cloud/features/ai-ml/agents/builder/subagents) — reusable instruction packs and task delegation.
 
 You can change attached tools any time.
 
