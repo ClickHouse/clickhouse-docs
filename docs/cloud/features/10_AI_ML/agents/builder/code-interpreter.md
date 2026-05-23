@@ -20,7 +20,15 @@ Toggle **Code interpreter** in the Agent Builder's capabilities section, then sa
 
 ## Supported languages
 
-Python, Node.js, Go, C/C++, Java, PHP, Rust, and Fortran are available. Python is the default and is what most agents pick by default for data tasks.
+The sandbox is a Unix environment with two general-purpose runtimes and a few shell utilities:
+
+- **Python 3** — the default for data tasks.
+- **Node.js (JavaScript)** — when an agent prefers JS for the job.
+- **Bash** and **sh** — shell scripting for chaining commands and quick I/O.
+- **AWK** and **sed** — line-oriented text processing.
+- **bc** — arbitrary-precision math.
+
+Agents reach for Python first for anything involving data parsing, transformation, or computation. Reserve the shell tools for tasks that genuinely benefit from a one-liner.
 
 ## Files
 
