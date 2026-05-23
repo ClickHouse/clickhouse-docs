@@ -44,4 +44,4 @@ When memory is off, the agent neither reads from nor writes to your memory store
 
 ## When memory doesn't help
 
-Memory isn't a database. It's not a place to dump large reference material — use a [skill](/cloud/features/ai-ml/agents/builder/skills) or an [AGENTS.md](/cloud/features/ai-ml/agents/semantic-layer) entry for that. It's also not retrieval over past chats; the conversation history itself plays that role.
+Memory isn't a database. It's not a place to dump large reference material — use a [skill](/cloud/features/ai-ml/agents/builder/skills) or bake the material into the agent's instructions for that. It's also not retrieval over past chats; the conversation history itself plays that role.

@@ -23,7 +23,7 @@ Save from the footer button. Edits take effect on the next conversation; in-flig
 
 ## Identity
 
-The instructions field is the agent's system prompt. Describe the role, the kinds of questions it should answer, and any rules it must follow. For ClickHouse-data agents, add an [AGENTS.md](/cloud/features/ai-ml/agents/semantic-layer) file to the service for shared business rules and schema conventions — those are injected on every conversation in addition to the per-agent instructions.
+The instructions field is the agent's system prompt. Describe the role, the kinds of questions it should answer, and any rules it must follow. Be specific about schema conventions, calculated metrics, and terminology if the agent will query your ClickHouse service — the model can't infer your business definitions on its own.
 
 ## Core configuration
 

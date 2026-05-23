@@ -46,6 +46,5 @@ Save the agent, open a new conversation, and select your agent from the agent pi
 
 ## Next steps
 
-- Add [AGENTS.md](/cloud/features/ai-ml/agents/semantic-layer) to inject business rules and schema conventions into every conversation against this service.
 - [Share the agent](/cloud/features/ai-ml/agents/sharing-and-access) with teammates.
 - Publish to the [marketplace](/cloud/features/ai-ml/agents/marketplace) once the agent is stable.

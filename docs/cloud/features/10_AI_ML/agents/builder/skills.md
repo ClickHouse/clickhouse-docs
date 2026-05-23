@@ -28,7 +28,12 @@ user-invocable: true
 
 When asked to generate a revenue report:
 1. Filter to the requested period.
-2. Apply the standard MRR formula (see business rules in AGENTS.md).
+2. Apply the standard MRR formula:
+     SUM(CASE
+       WHEN billing_cycle = 'monthly' THEN amount
+       WHEN billing_cycle = 'yearly'  THEN amount / 12
+       ELSE 0
+     END)
 3. Break down by segment: Enterprise, Mid-Market, SMB.
 4. Render the result as a Markdown table.
 ```
@@ -56,10 +61,9 @@ The Skills panel in the Cloud console lets you create skills inline, upload `.md
 
 Skills can be shared with other users (see [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access)).
 
-## Skills vs. instructions vs. AGENTS.md
+## Skills vs. instructions
 
 - **Agent instructions** define what the agent is and how it behaves overall. Always on for that agent.
-- **AGENTS.md** is service-wide context: schema conventions and business rules injected into every agent that touches your data.
 - **Skills** are situational — applied when relevant, scoped to specific workflows.
 
-Reach for a skill when the same set of step-by-step instructions keeps showing up across multiple agents.
+Reach for a skill when the same set of step-by-step instructions keeps showing up across multiple agents, or when you want it triggered only for specific user requests rather than every turn.

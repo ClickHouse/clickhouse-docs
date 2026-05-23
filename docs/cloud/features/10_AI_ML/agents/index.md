@@ -3,7 +3,7 @@ sidebar_label: 'Overview'
 slug: /cloud/features/ai-ml/agents
 title: 'ClickHouse Agents'
 description: 'Overview of ClickHouse Agents in ClickHouse Cloud'
-keywords: ['AI', 'ClickHouse Cloud', 'agents', 'agent builder', 'AGENTS.md']
+keywords: ['AI', 'ClickHouse Cloud', 'agents', 'agent builder']
 doc_type: 'reference'
 ---
 
@@ -20,7 +20,6 @@ This feature is in beta. Behavior and the set of surfaced capabilities may chang
 - Build custom agents with no code — set instructions, pick a model, attach tools.
 - Run conversations against your ClickHouse service; the agent invokes tools as it needs them.
 - Share agents with teammates or publish them to the marketplace.
-- Inject business rules and schema conventions into every conversation with [AGENTS.md](/cloud/features/ai-ml/agents/semantic-layer).
 
 ## In this section
 
@@ -30,5 +29,4 @@ This feature is in beta. Behavior and the set of surfaced capabilities may chang
 - [Prompts](/cloud/features/ai-ml/agents/prompts) — Saved prompt library.
 - [Memory](/cloud/features/ai-ml/agents/memory) — Persistent context across conversations.
 - [Marketplace](/cloud/features/ai-ml/agents/marketplace) — Share and discover agents within your organization.
-- [Semantic layer](/cloud/features/ai-ml/agents/semantic-layer) — Customize agent behavior with AGENTS.md.
 - [Sharing and access](/cloud/features/ai-ml/agents/sharing-and-access) — Permission model for agents.
