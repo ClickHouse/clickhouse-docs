@@ -4,7 +4,7 @@ sidebar_position: 1
 slug: /cloud/features/ai-ml/agents/builder/model-parameters
 title: 'Model parameters'
 description: 'Configure model selection and generation parameters for ClickHouse Agents'
-keywords: ['AI', 'ClickHouse Cloud', 'agents', 'model parameters', 'temperature', 'top-p', 'presets']
+keywords: ['AI', 'ClickHouse Cloud', 'agents', 'model parameters', 'temperature', 'top-p', 'top-k', 'thinking', 'prompt caching']
 doc_type: 'reference'
 ---
 
@@ -12,29 +12,44 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-Model parameters control which model an agent uses and how that model generates responses. Configure them in the Agent Builder under the model section.
+Model parameters control which model an agent uses and how that model generates responses. Configure them in the Agent Builder's **Model Parameters** panel.
 
-## Model selection
+## Provider and Model
 
-Pick a provider and model from the dropdown. Available models depend on the providers your organization has enabled. Different models have different strengths — large reasoning models for planning-heavy tasks, faster small models for routine queries.
+- **Provider** — the upstream LLM provider.
+- **Model** — the specific model from that provider. Different models have different strengths: large reasoning models for planning-heavy tasks, faster small models for routine queries.
 
-## Generation parameters
+Provider and model are required. The rest of the panel adapts based on what the selected model supports.
 
-The most common knobs:
+## Context and Output Limits
 
-- **Temperature** — randomness. Lower values (0.0–0.3) produce focused, deterministic output suited to SQL generation and structured analysis. Higher values (0.7–1.2) produce more varied text for ideation or copywriting.
-- **Top-p** — nucleus sampling. Restricts token sampling to the smallest set whose cumulative probability is at least `p`. Leave at the model's default unless you have a reason.
-- **Max output tokens** — caps the size of the agent's response. Set lower if responses are too long; raise if they're being cut off.
-- **Context window** — total tokens the agent can hold in working memory. Bounded by the model's limit.
+- **Max Context Tokens** — caps total context the agent sends to the model. Leave as **System** to use the model's default. Lower it to reduce cost; raise it for agents that need to reason over large inputs.
+- **Max Output Tokens** — caps the size of the agent's response. **System** uses the model's default. Set lower if responses are too long, higher if they're being cut off.
+- **File Token Limit** — caps how many tokens a single uploaded file contributes to context. Useful when users attach large files and you don't want them to crowd out the rest of the conversation.
 
-Provider-specific knobs (Anthropic, OpenAI, Bedrock, etc.) appear below the common ones when relevant.
+## Sampling
 
-## Presets
+- **Temperature** — randomness. Higher values (0.7–1.0) = more random, while lower values (0.0–0.3) = more focused and deterministic. We recommend altering this or Top P but not both.
+- **Top P** — nucleus sampling. Changes how the model selects tokens for output.
+- **Top K** — restricts sampling to the top K most likely tokens at each step. Supported by some providers; controls determinism along a different axis than temperature.
 
-A preset bundles a model selection and its parameter values under a name so you can reapply the configuration to a new conversation in one click.
+If you're not tuning for a specific behavior, leave the sliders near their defaults — small changes here rarely move the needle and large ones can degrade output quality.
 
-To create one, configure the model and parameters as you want them and click **Save as preset**. Name it descriptively — for example, *"Claude Sonnet, tight SQL"* or *"GPT-4, creative copy"*.
+## Reasoning Controls
 
-Apply a saved preset from the preset selector in the chat header. Mark one as the default to load it automatically on new conversations.
+Available on models that expose extended reasoning. The exact set varies by provider.
 
-Presets are per-user. To share a configuration across a team, build it into an agent's saved configuration instead.
+- **Thinking** — toggles the model's extended reasoning mode. When on, the model produces internal thinking tokens before its final answer; this usually improves accuracy on hard tasks at the cost of latency and tokens.
+- **Thinking Budget** — token budget for the thinking phase. The model stops thinking and answers once it has spent this many tokens.
+- **Effort** — high-level reasoning effort dial (**Auto**, low, medium, high). Used by reasoning models that don't expose a thinking-token budget directly.
+- **Thought Visibility** — controls whether the model's thinking is shown to the user inline, hidden behind a collapsed view, or omitted entirely.
+
+## Conversation Behavior
+
+- **Resend Files** — when on, files attached in earlier turns are re-sent on every subsequent turn so the model doesn't lose track of them. Turn off to save tokens if the conversation is short or the model is summarizing files as it goes.
+- **Use Prompt Caching** — caches the reusable parts of the prompt at the provider, when supported, to reduce cost and latency on conversations where instructions and tool descriptions repeat across turns.
+- **Web Search** — toggles provider-native web search on supported models. This is distinct from the [Web search tool](/cloud/features/ai-ml/agents/builder/web-search), which runs as one of the agent's tools rather than as a provider capability.
+
+## Reset
+
+**Reset Model Parameters** at the bottom of the panel restores every field to system defaults. Use it when you've experimented enough to want a clean starting point.
