@@ -1,16 +1,16 @@
 ---
-slug: /integrations/partners/building-integrations
+slug: /integrations/integration-development/building-integrations
 title: 'Building integrations with ClickHouse'
 sidebar_label: 'Building integrations'
 sidebar_position: 2
-description: 'Orientation for partners on ingestion, consumption, wire protocols, and client conventions.'
-keywords: ['partner', 'ingestion', 'consumption', 'ClickPipes', 'language clients', 'user-agent']
+description: 'Orientation on ingestion, consumption, wire protocols, and client conventions for ClickHouse integrations.'
+keywords: ['partner', 'integration', 'ingestion', 'consumption', 'ClickPipes', 'language clients', 'user-agent']
 doc_type: 'guide'
 ---
 
 # Building integrations with ClickHouse
 
-This page orients you to the integration surface so you can scope ingestion and consumption work. For validation and publishing, continue with [Testing your integration](/integrations/partners/testing-your-integration) and [Documenting your integration](/integrations/partners/documenting-your-integration).
+This page orients you to the integration surface so you can scope ingestion and consumption work. For validation and publishing, continue with [Testing your integration](/integrations/integration-development/testing-your-integration) and [Documenting your integration](/integrations/integration-development/documenting-your-integration).
 
 ## Ingestion {#ingestion}
 
@@ -54,11 +54,11 @@ ClickHouse has a rich type system: arrays, tuples, maps, JSON, nested, LowCardin
 
 ## Next steps {#next-steps}
 
-Pick a path, prototype against a [ClickHouse Cloud trial](https://clickhouse.com/cloud), and register your integration through the partner portal when it is available.
+Pick a path and prototype against a [ClickHouse Cloud trial](https://clickhouse.com/cloud). When the `partner portal` is available, register your integration there.
 
 ## User-agent string convention {#user-agent-string-convention}
 
-Partner clients that connect over HTTP should set a `User-Agent` string that identifies the integration. ClickHouse parses this server-side to track adoption, surface usage telemetry to partners, and inform the roadmap.
+HTTP clients should set a `User-Agent` string that identifies your integration. ClickHouse parses this server-side to track adoption, surface usage telemetry, and inform the roadmap.
 
 Format:
 
@@ -78,6 +78,8 @@ Rules:
 - Standard metadata keys: `lv` (language or framework version), `os`, `arch`
 - TCP and native protocol clients report client name and version via protocol fields, not `User-Agent`
 
+If you use JDBC, see [client identification](/integrations/language-clients/java/jdbc#client-identification) for how the driver sets `User-Agent` and related fields.
+
 ## Sandbox and trial access {#sandbox-and-trial-access}
 
-[ClickHouse Cloud](https://clickhouse.com/cloud) offers a free trial for development and integration validation. Partners enrolled in the formal program receive additional development credits; details will be available in the partner portal.
+[ClickHouse Cloud](https://clickhouse.com/cloud) offers a free trial for development and integration validation. If you are a House Mate partner, you can request additional development credits through the [partner portal](https://clickhouse.com/partners).

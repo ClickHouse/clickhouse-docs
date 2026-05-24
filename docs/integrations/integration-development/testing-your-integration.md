@@ -1,10 +1,10 @@
 ---
-slug: /integrations/partners/testing-your-integration
+slug: /integrations/integration-development/testing-your-integration
 sidebar_label: 'Testing your integration'
 sidebar_position: 3
 title: 'Testing your ClickHouse integration'
-description: 'Entry-level validation matrix for partner integrations on ClickHouse Cloud and self-hosted OSS.'
-keywords: ['partner', 'testing', 'validation', 'example datasets', 'ClickHouse Cloud', 'OSS']
+description: 'Entry-level validation matrix for integrations on ClickHouse Cloud and self-hosted open source.'
+keywords: ['partner', 'integration', 'testing', 'validation', 'example datasets', 'ClickHouse Cloud', 'open source']
 doc_type: 'guide'
 ---
 
@@ -12,14 +12,14 @@ doc_type: 'guide'
 
 Validate your integration against both ClickHouse deployment modes and datasets that exercise ClickHouse's type system at meaningful scale before you submit it for review. This page defines what "tested" means at the entry level. Formal validation is a separate process for partners progressing to higher partnership tiers.
 
-See [Building integrations](/integrations/partners/building-integrations) for ingestion and consumption paths, and [Documenting your integration](/integrations/partners/documenting-your-integration) for how to publish your results.
+See [Building integrations](/integrations/integration-development/building-integrations) for ingestion and consumption paths, and [Documenting your integration](/integrations/integration-development/documenting-your-integration) for how to publish your results.
 
 ## Test matrix {#test-matrix}
 
 Cover both deployment modes. Most customers run one or the other, and behavior differs in places (auth, networking, available features).
 
 - **ClickHouse Cloud:** sign up for a [free trial](https://clickhouse.com/cloud). No credit card is required for the development tier
-- **Self-hosted (OSS):** use the latest stable release from [GitHub releases](https://github.com/ClickHouse/ClickHouse/releases). The [install guide](/install) is the fastest path to a local instance with Docker
+- **Self-hosted (open source):** use the latest stable release from [GitHub releases](https://github.com/ClickHouse/ClickHouse/releases). The [install guide](/install) is the fastest path to a local instance with Docker
 
 Test against both, and document any feature gaps in your integration page.
 
@@ -27,7 +27,7 @@ Test against both, and document any feature gaps in your integration page.
 
 **Functional correctness.** Exercise every code path your integration exposes: ingestion, querying, schema discovery, error handling, and reconnection. If your product surfaces SQL to end users, confirm that the queries your UI generates round-trip cleanly.
 
-**Type-system coverage.** ClickHouse supports arrays, tuples, maps, JSON, nested, LowCardinality, Decimal, Date and DateTime variants, UUID, IPv4 and IPv6, enums, and aggregate-function types. Partners often hit issues with nested arrays, deeply nested tuples, and JSON columns. Your client library and UI should handle these gracefully. At minimum, fail with a readable error instead of silently truncating or misrendering.
+**Type-system coverage.** ClickHouse supports arrays, tuples, maps, JSON, nested, LowCardinality, Decimal, Date and DateTime variants, UUID, IPv4 and IPv6, enums, and aggregate-function types. Integrations often hit issues with nested arrays, deeply nested tuples, and JSON columns. Your client library and UI should handle these gracefully. At minimum, fail with a readable error instead of silently truncating or misrendering.
 
 **Scale.** Test at result-set sizes and row counts your customers will run. For user-facing BI, that often means tables with hundreds of millions to billions of rows, and result sets from single aggregates to tens of thousands of rows. Unbounded reads (`SELECT *`) should fail predictably or paginate, not hang.
 
@@ -37,7 +37,7 @@ Test against both, and document any feature gaps in your integration page.
 
 ## Recommended example datasets {#recommended-example-datasets}
 
-The full set is at [Example datasets](/getting-started/example-datasets). These four cover most partner testing needs:
+The full set is at [Example datasets](/getting-started/example-datasets). These four cover most integration testing needs:
 
 - **[GitHub events](/getting-started/example-datasets/github-events):** 3.1B rows with nested event payloads. Best for arrays, tuples, and nested types
 - **[NYC taxi data](/getting-started/example-datasets/nyc-taxi):** billions of rows with a well-known schema. Good for throughput and read-path testing
@@ -50,7 +50,7 @@ For extreme-scale validation, use **[WikiStat](/getting-started/example-datasets
 
 When you submit your integration for review, share:
 
-- ClickHouse versions tested (Cloud and OSS)
+- ClickHouse versions tested (Cloud and open source)
 - Datasets and approximate scale (rows, on-disk size)
 - Types your integration handles and types it does not (this becomes the **Known limits** section of your docs)
 - Performance characteristics worth flagging, such as result-set thresholds where behavior changes

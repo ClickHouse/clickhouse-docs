@@ -1,18 +1,18 @@
 ---
-slug: /integrations/partners/documenting-your-integration
+slug: /integrations/integration-development/documenting-your-integration
 sidebar_label: 'Documenting your integration'
 sidebar_position: 4
 title: 'Documenting your ClickHouse integration'
-description: 'How partners contribute integration pages to clickhouse-docs, including required sections and a copy-paste skeleton.'
-keywords: ['partner', 'documentation', 'contributing', 'pull request', 'integration docs']
+description: 'How to contribute integration pages to clickhouse-docs, including required sections and a copy-paste skeleton.'
+keywords: ['partner', 'integration', 'documentation', 'contributing', 'pull request', 'integration docs']
 doc_type: 'guide'
 ---
 
 # Documenting your ClickHouse integration
 
-Your integration documentation lives in the official ClickHouse docs alongside ClickHouse pages. End users get one place to scope and troubleshoot setups. This page describes what to include, where files go, and how to open a pull request.
+Integration documentation on this site gives end users one place to scope and troubleshoot setups. This page describes what to include, where files go, and how to open a pull request.
 
-Start with [Building integrations](/integrations/partners/building-integrations) and [Testing your integration](/integrations/partners/testing-your-integration) if you have not already.
+Start with [Building integrations](/integrations/integration-development/building-integrations) and [Testing your integration](/integrations/integration-development/testing-your-integration) if you have not already.
 
 ## Where docs live {#where-docs-live}
 
@@ -21,14 +21,20 @@ Start with [Building integrations](/integrations/partners/building-integrations)
 - **Location:** `/docs/integrations/<category>/<your-integration>/`, where `<category>` reflects what your product does (`data-visualization`, `data-ingestion`, `language-clients`, and so on)
 - **Process:** open a pull request against `main`. The ClickHouse integrations team reviews. First-time contributors sign the Contributor License Agreement when the bot prompts on the PR
 
+Integration pages in this repository are the primary reference for end users. You can link to supplementary documentation on your site from your integration page for product-specific details.
+
 Good exemplars: [Tableau](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/integrations/data-visualization/tableau/tableau-and-clickhouse.md) and [Metabase](/integrations/metabase).
+
+## Choosing a category {#choosing-a-category}
+
+Pick the category that best matches what your product does. Browse existing categories under [Integrations](/integrations) before you open a PR. If you are unsure, note your proposed category in the PR description and the integrations team will help place the page.
 
 ## Required sections {#required-sections}
 
-Every partner integration page should cover the following, ideally in this order:
+Every integration page should cover the following, ideally in this order:
 
 - **Purpose.** What problem the integration solves, in two or three sentences. Avoid marketing copy. Readers are usually engineers scoping a setup
-- **Prerequisites and supported version matrix.** What the user needs installed and which versions you support for **both ClickHouse Cloud and self-hosted (OSS)**. A small table works well
+- **Prerequisites and supported version matrix.** What the user needs installed and which versions you support for **both ClickHouse Cloud and self-hosted (open source)**. A small table works well
 - **Setup walkthrough.** Step-by-step instructions to a working connection, with **side-by-side coverage of Cloud and self-hosted** where they differ (host, port, TLS)
 - **Authentication.** Which auth modes you support (username and password over TLS at minimum, plus mTLS, SSL client cert, IP allow-list notes if relevant)
 - **End-to-end example.** At least one realistic example from connection through a meaningful result. Use a [ClickHouse example dataset](/getting-started/example-datasets) so readers can reproduce it
@@ -40,7 +46,7 @@ Every partner integration page should cover the following, ideally in this order
 - **Show both Cloud and self-hosted.** Cloud typically uses HTTPS on port `8443` and native TCP on `9440`. Self-hosted defaults to `8123` and `9000`
 - **Use Docusaurus admonitions** (`:::note`, `:::warning`, `:::tip`) for callouts instead of bold paragraphs
 - **Link out for depth.** Link to existing docs for data types, formats, JDBC, ClickPipes, and similar topics instead of re-explaining them
-- **No marketing.** Partner pages here are technical reference. Promotional content belongs on your site; we can link to it from the partner directory
+- **No marketing.** Integration pages here are technical reference. Promotional content belongs on your site; we can link to it from the partner directory
 
 ## Copy-paste skeleton {#copy-paste-skeleton}
 
@@ -60,9 +66,9 @@ ClickHouse user would want it.]
 
 ### Version matrix
 
-| [Your product] | ClickHouse Cloud | ClickHouse OSS | Notes      |
-| -------------- | ---------------- | -------------- | ---------- |
-| X.Y            | ✅               | ✅ 24.x+       | [if any]   |
+| [Your product] | ClickHouse Cloud | ClickHouse open source | Notes    |
+| -------------- | ---------------- | ---------------------- | -------- |
+| X.Y            | ✅               | ✅ 24.x+               | [if any] |
 
 ## Setup
 
