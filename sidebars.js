@@ -331,7 +331,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Managed Postgres (Preview)',
+      label: 'Managed Postgres (Beta)',
       collapsed: true,
       collapsible: true,
       className: 'top-nav-item',
