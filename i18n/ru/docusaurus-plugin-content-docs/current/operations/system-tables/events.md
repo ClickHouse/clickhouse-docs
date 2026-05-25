@@ -4746,6 +4746,50 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Количество случаев, когда заголовок отсутствовал в кэше.
 
+### TextIndexLazyAdvanceCount \{#textindexlazyadvancecount\}
+
+Количество операций перехода вперёд, выполненных в режиме ленивого списка постингов.
+
+### TextIndexLazyAndBlocksSkippedZero \{#textindexlazyandblocksskippedzero\}
+
+Количество упакованных блоков, пропущенных из-за того, что результирующая область в режиме lazy AND состояла только из нулей.
+
+### TextIndexLazyAndSegmentsSkippedDense \{#textindexlazyandsegmentsskippeddense\}
+
+Количество сегментов, пропущенных с использованием оптимизации dense-increment в режиме lazy AND.
+
+### TextIndexLazyAndSegmentsSkippedZero \{#textindexlazyandsegmentsskippedzero\}
+
+Количество сегментов, пропущенных из-за того, что результирующая область в режиме lazy AND состояла только из нулей.
+
+### TextIndexLazyBlocksSkippedCovered \{#textindexlazyblocksskippedcovered\}
+
+Количество упакованных блоков, пропущенных из-за того, что выходная область в режиме lazy posting list уже целиком состояла из единиц.
+
+### TextIndexLazyBruteForceIntersections \{#textindexlazybruteforceintersections\}
+
+Количество пересечений полным перебором, выполненных в ленивом режиме списка постингов.
+
+### TextIndexLazyLeapfrogIntersections \{#textindexlazyleapfrogintersections\}
+
+Количество пересечений методом leapfrog, выполненных в режиме ленивой обработки списка вхождений.
+
+### TextIndexLazyPackedBlocksDecoded \{#textindexlazypackedblocksdecoded\}
+
+Количество декодированных упакованных блоков в режиме lazy posting list.
+
+### TextIndexLazySegmentsPrepared \{#textindexlazysegmentsprepared\}
+
+Количество подготовленных сегментов (загружен раздел индекса) в режиме отложенной загрузки списка постингов.
+
+### TextIndexLazySegmentsSkippedCovered \{#textindexlazysegmentsskippedcovered\}
+
+Количество сегментов, пропущенных из-за того, что в режиме lazy posting list выходная область уже была полностью заполнена единицами.
+
+### TextIndexLazySegmentsSkippedDense \{#textindexlazysegmentsskippeddense\}
+
+Количество сегментов, пропущенных благодаря оптимизации dense-memset в режиме ленивого списка вхождений.
+
 ### TextIndexPostingsCacheHits \{#textindexpostingscachehits\}
 
 Количество случаев, когда список вхождений текстового индекса был найден в кэше.

@@ -684,6 +684,16 @@ Cloud 默认值：`1`。
 
 基于 part UUID 的 SELECT 查询实验性去重功能
 
+## allow_experimental_text_index_lazy_apply \{#allow_experimental_text_index_lazy_apply\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "用于控制实验性延迟倒排列表应用模式的新设置"}]}]} />
+
+如果设置为 true，则允许文本索引查询使用延迟倒排列表应用模式。
+
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
 <ExperimentalBadge/>
@@ -846,6 +856,14 @@ Cloud 默认值：`1`。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于在索引分析前将形如 `coalesce(a_1, ..., a_N) <op> const` 的谓词（以及等价的 `ifNull` 形式，或常量在左侧的形式）重写为析取表达式，以便使用每个 `a_i` 对应列上的主键和跳过索引。还支持部分常量形式，例如 `coalesce(a, 42, b)` 和 `coalesce(a, b, 42)`。"}]}]} />
 
 在索引分析前，将形如 `coalesce(a_1, ..., a_N) <op> const` 的谓词 (以及等价的 `ifNull` 形式，或常量在左侧的形式) 重写为析取表达式 `(a_1 <op> const) OR (a_1 IS NULL AND a_2 <op> const) OR ... OR (a_1 IS NULL AND ... AND a_{N-1} IS NULL AND a_N <op> const)`，以便使用每个 `a_i` 对应列上的主键和跳过索引。还支持部分常量形式，例如 `coalesce(a, 42, b)` 和 `coalesce(a, b, 42)`：参数列表会像 `coalesce` 自身那样被规范化 (丢弃 `NULL` 字面量，并丢弃第一个非 `Nullable` 参数之后的所有参数) ，如果末尾存在非 `NULL` 常量，则会将其作为最后一个分支生成。该重写仅用于增强索引剪枝；运行时过滤仍使用原始谓词。
+
+## allow_limit_by_partitions_independently \{#allow_limit_by_partitions_independently\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "当分区表达式是 `LIMIT BY` 列的确定性函数时，用于启用按分区独立执行 `LIMIT BY` 计算的新设置。"}]}]} />
+
+当分区表达式是 `LIMIT BY` 列的确定性函数时，启用在独立线程中按分区分别执行 `LIMIT BY` 计算。
 
 ## allow_materialized_view_with_bad_select \{#allow_materialized_view_with_bad_select\}
 
@@ -1316,9 +1334,9 @@ Cloud 默认值：`0`。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认启用 apply_row_policy_after_final，就像在 25.8（#87303 之前）中的行为一样"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE 的新设置（尤其适用于 ReplacingMergeTree）"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "1"},{"label": "该设置是为修复 #87303 之后出现的回归问题而添加的，该回归导致 ROW POLICY 和 PREWHERE 在 FINAL 之前应用。PR #91065 引入了该设置，PR #97279 则将保证正确性的 true 设为默认值。记录为 {true, true}，因此兼容性永远不会回退到修复前的 false 行为。"}]}]} />
 
-启用时，会在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE（尤其适用于 ReplacingMergeTree）。
+启用时，会在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE (尤其适用于 ReplacingMergeTree) 。
 禁用时，会在 FINAL 之前应用 ROW POLICY，这在策略过滤掉本应在 ReplacingMergeTree 或类似引擎中用于去重的行时，可能导致结果不同。
 
 如果 ROW POLICY 表达式只依赖于 ORDER BY 中的列，则仍会在 FINAL 之前应用，作为一种优化措施，
@@ -1326,8 +1344,8 @@ Cloud 默认值：`0`。
 
 可能的取值：
 
-- 0 — 在 FINAL 之前应用 ROW POLICY 和 PREWHERE（默认）。
-- 1 — 在 FINAL 之后应用 ROW POLICY 和 PREWHERE。
+* 0 — 在 FINAL 之前应用 ROW POLICY 和 PREWHERE (默认) 。
+* 1 — 在 FINAL 之后应用 ROW POLICY 和 PREWHERE。
 
 ## apply_settings_from_server \{#apply_settings_from_server\}
 
@@ -12133,6 +12151,15 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - LZ4 — 应用 [LZ4](https://en.wikipedia.org/wiki/LZ4_(compression_algorithm)) 压缩。
 - NONE — 不应用任何压缩。
 
+## text_index_density_threshold \{#text_index_density_threshold\}
+
+<SettingsInfoBlock type="Float" default_value="0.2" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0.2"},{"label": "为 lazy 倒排列表 密度阈值新增的设置"}]}]} />
+
+用于在 lazy 倒排列表 模式下选择算法的密度阈值。
+低于该阈值：leapfrog intersection。达到或超过该阈值：暴力 bitmap 算法。
+
 ## text_index_hint_max_selectivity \{#text_index_hint_max_selectivity\}
 
 <SettingsInfoBlock type="Float" default_value="0.2" />
@@ -12161,6 +12188,16 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 短于此阈值的模式会匹配过多的字典标记，因此会被跳过，以避免高开销的扫描。
 
 需要同时启用 `use_text_index_like_evaluation_by_dictionary_scan`。
+
+## text_index_posting_list_apply_mode \{#text_index_posting_list_apply_mode\}
+
+<SettingsInfoBlock type="TextIndexPostingListApplyMode" default_value="materialize" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "materialize"},{"label": "新增用于延迟应用倒排列表模式的设置"}]}]} />
+
+控制在文本索引查询时如何应用倒排列表。
+`materialize` (默认) 会立即将倒排列表解码为 Roaring Bitmaps。
+`lazy` 使用基于游标的按需解码 (需要 V2 索引格式和 allow&#95;experimental&#95;text&#95;index&#95;lazy&#95;apply) 。
 
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 

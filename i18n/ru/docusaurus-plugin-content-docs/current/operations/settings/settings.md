@@ -686,6 +686,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Экспериментальное удаление дубликатов данных для SELECT-запросов на основе UUID частей таблицы
 
+## allow_experimental_text_index_lazy_apply \{#allow_experimental_text_index_lazy_apply\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "Новая настройка для управления экспериментальным режимом ленивого применения posting list"}]}]} />
+
+Если установлено значение true, разрешает использовать режим ленивого применения posting list в запросах к текстовому индексу.
+
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
 <ExperimentalBadge/>
@@ -847,6 +857,14 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка для переписывания предикатов вида `coalesce(a_1, ..., a_N) <op> const` (а также эквивалентных выражений с `ifNull` или с константой слева) в дизъюнкцию перед анализом индексов, чтобы можно было использовать первичный ключ и индексы пропуска данных для каждого `a_i`. Также обрабатываются варианты с частичными константами, такие как `coalesce(a, 42, b)` и `coalesce(a, b, 42)`."}]}]} />
 
 Переписывает предикаты вида `coalesce(a_1, ..., a_N) <op> const` (а также эквивалентные выражения с `ifNull` или с константой слева) в дизъюнкцию `(a_1 <op> const) OR (a_1 IS NULL AND a_2 <op> const) OR ... OR (a_1 IS NULL AND ... AND a_{N-1} IS NULL AND a_N <op> const)` перед анализом индексов, чтобы можно было использовать первичный ключ и индексы пропуска данных для каждого `a_i`. Также обрабатываются варианты с частичными константами, такие как `coalesce(a, 42, b)` и `coalesce(a, b, 42)`: список аргументов нормализуется так же, как в самом `coalesce` (`NULL`-литералы отбрасываются, аргументы после первого не-`Nullable` отбрасываются), а замыкающая не-`NULL` константа, если она есть, добавляется как последняя ветвь. Это переписывание используется только как дополнительный механизм для отсечения по индексу; фильтрация во время выполнения по-прежнему использует исходный предикат.
+
+## allow_limit_by_partitions_independently \{#allow_limit_by_partitions_independently\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "Новая настройка, которая включает независимое вычисление `LIMIT BY` для каждой партиции, когда выражение партиции является детерминированной функцией от столбцов `LIMIT BY`."}]}]} />
+
+Включает независимое вычисление `LIMIT BY` по каждой партиции в отдельных потоках, когда выражение партиции является детерминированной функцией от столбцов `LIMIT BY`.
 
 ## allow_materialized_view_with_bad_select \{#allow_materialized_view_with_bad_select\}
 
@@ -1320,19 +1338,19 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "Включение apply_row_policy_after_final по умолчанию, как это было в 25.8 до #87303"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "Новая настройка, позволяющая управлять тем, будут ли политики строк (ROW POLICY) и PREWHERE применяться после обработки FINAL для таблиц семейства *MergeTree"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "1"},{"label": "Настройка была добавлена как исправление регрессии после #87303, из-за которой ROW POLICY и PREWHERE применялись до FINAL. В PR #91065 была добавлена эта настройка, а в PR #97279 значение true, безопасное с точки зрения корректности, было сделано значением по умолчанию. Зафиксировано как {true, true}, чтобы совместимость никогда не возвращалась к поведению false, существовавшему до исправления."}]}]} />
 
-Если параметр включён, политики строк (ROW POLICY) и PREWHERE применяются после обработки FINAL для таблиц семейства *MergeTree (особенно актуально для ReplacingMergeTree).
-Если параметр выключен, политики строк применяются до FINAL, что может приводить к отличающимся результатам, когда политика
+Если параметр включён, ROW POLICY и PREWHERE применяются после обработки FINAL для таблиц семейства *MergeTree (особенно актуально для ReplacingMergeTree).
+Если параметр выключен, ROW POLICY применяются до FINAL, что может приводить к отличающимся результатам, когда политика
 отфильтровывает строки, которые должны использоваться для дедупликации в ReplacingMergeTree или аналогичных движках.
 
-Если выражение политики строк зависит только от столбцов в ORDER BY, оно по-прежнему будет применяться до FINAL в целях оптимизации,
+Если выражение ROW POLICY зависит только от столбцов в ORDER BY, оно по-прежнему будет применяться до FINAL в целях оптимизации,
 так как такое фильтрование не может повлиять на результат дедупликации.
 
 Возможные значения:
 
-- 0 — политика строк и PREWHERE применяются до FINAL (по умолчанию).
-- 1 — политика строк и PREWHERE применяются после FINAL.
+* 0 — ROW POLICY и PREWHERE применяются до FINAL (по умолчанию).
+* 1 — ROW POLICY и PREWHERE применяются после FINAL.
 
 ## apply_settings_from_server \{#apply_settings_from_server\}
 
@@ -12183,6 +12201,15 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - LZ4 — применяется сжатие [LZ4](https://en.wikipedia.org/wiki/LZ4_(compression_algorithm)).
 - NONE — сжатие не применяется.
 
+## text_index_density_threshold \{#text_index_density_threshold\}
+
+<SettingsInfoBlock type="Float" default_value="0.2" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0.2"},{"label": "Новая настройка порога плотности для lazy списка постинга"}]}]} />
+
+Порог плотности для выбора алгоритма в режиме lazy списка постинга.
+Ниже порога — leapfrog intersection. На пороге и выше — brute-force битмап.
+
 ## text_index_hint_max_selectivity \{#text_index_hint_max_selectivity\}
 
 <SettingsInfoBlock type="Float" default_value="0.2" />
@@ -12211,6 +12238,16 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 Шаблоны короче этого порога соответствуют слишком большому числу токенов словаря и пропускаются во избежание ресурсоемкого сканирования.
 
 Требуется включить `use_text_index_like_evaluation_by_dictionary_scan`.
+
+## text_index_posting_list_apply_mode \{#text_index_posting_list_apply_mode\}
+
+<SettingsInfoBlock type="TextIndexPostingListApplyMode" default_value="materialize" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "materialize"},{"label": "Новая настройка для ленивого применения списков постинга"}]}]} />
+
+Определяет, как применяются списки постинга при запросах к текстовому индексу.
+&#39;materialize&#39; (по умолчанию) заранее декодирует списки постинга в битмапы Roaring.
+&#39;lazy&#39; использует декодирование по требованию с помощью курсоров (требует формат индекса V2 и allow&#95;experimental&#95;text&#95;index&#95;lazy&#95;apply).
 
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 
