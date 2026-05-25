@@ -10702,6 +10702,21 @@ lazy materialization을 최적화하기 위해 쿼리 플랜을 사용합니다.
 - 0 - 비활성화
 - 1 - 활성화
 
+## query_plan_push_limit_by_into_sort \{#query_plan_push_limit_by_into_sort\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "LIMIT BY의 컬럼이 ORDER BY의 prefix일 때, 스트림별 LIMIT BY를 정렬 파이프라인으로 푸시하여 최종 머지를 통과하는 행 수를 줄이는 새로운 설정입니다."}]}]} />
+
+`ORDER BY ... LIMIT BY` 쿼리에 대한 쿼리 플랜 수준 최적화를 전환합니다. `LIMIT BY` 컬럼이 `ORDER BY` 절의 prefix인 경우, 병렬로 정렬된 각 스트림은 스트림들이 하나로 머지되기 전에 `LIMIT BY`를 적용하므로 최종 머지와 이후 파이프라인 단계에서 처리되는 행 수가 줄어듭니다. `LIMIT BY`로 많은 비율의 행이 제외되는 쿼리의 속도를 높입니다.
+
+이 설정은 [query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) 값이 1인 경우에만 적용됩니다.
+
+가능한 값:
+
+* 0 - 비활성화
+* 1 - 활성화
+
 ## query_plan_read_in_order \{#query_plan_read_in_order\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

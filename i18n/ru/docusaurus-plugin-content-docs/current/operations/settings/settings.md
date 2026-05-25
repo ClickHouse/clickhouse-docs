@@ -10731,6 +10731,21 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
+## query_plan_push_limit_by_into_sort \{#query_plan_push_limit_by_into_sort\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "Новая настройка, которая помещает LIMIT BY для каждого потока в конвейер сортировки, когда столбцы LIMIT BY являются префиксом ORDER BY, уменьшая количество строк, проходящих через финальное слияние."}]}]} />
+
+Включает или отключает оптимизацию на уровне плана запроса для запросов `ORDER BY ... LIMIT BY`. Когда столбцы `LIMIT BY` являются префиксом выражения `ORDER BY`, каждый параллельный отсортированный поток применяет `LIMIT BY` до объединения потоков в один, что уменьшает количество строк, обрабатываемых на этапе финального слияния и последующих этапах конвейера. Ускоряет запросы, в которых `LIMIT BY` отбрасывает значительную часть строк.
+
+Действует только в том случае, если значение настройки [query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) равно 1.
+
+Возможные значения:
+
+* 0 - Отключить
+* 1 - Включить
+
 ## query_plan_read_in_order \{#query_plan_read_in_order\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

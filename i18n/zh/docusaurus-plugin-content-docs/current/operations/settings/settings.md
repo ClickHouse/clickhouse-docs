@@ -10683,6 +10683,21 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
+## query_plan_push_limit_by_into_sort \{#query_plan_push_limit_by_into_sort\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "新增设置：当 LIMIT BY 的列是 ORDER BY 的前缀时，将每个流的 LIMIT BY 下推到排序管道中，从而减少流经最终合并的行数。"}]}]} />
+
+控制是否对 `ORDER BY ... LIMIT BY` 查询启用查询计划级别的优化。当 `LIMIT BY` 的列是 `ORDER BY` 子句的前缀时，每个并行排序流都会在各个流合并为一个之前先应用 `LIMIT BY`，从而减少最终合并及后续管道阶段需要处理的行数。对于 `LIMIT BY` 会丢弃大量行的查询，可提升执行速度。
+
+仅当设置 [query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) 为 1 时，此设置才会生效。
+
+可能的值：
+
+* 0 - 禁用
+* 1 - 启用
+
 ## query_plan_read_in_order \{#query_plan_read_in_order\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

@@ -10709,6 +10709,21 @@ EXPLAIN PLAN におけるステップの説明の最大の長さ。
 - 0 - 無効
 - 1 - 有効
 
+## query_plan_push_limit_by_into_sort \{#query_plan_push_limit_by_into_sort\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "LIMIT BY のカラムが ORDER BY のプレフィックスである場合に、ストリームごとの LIMIT BY をソートパイプラインに組み込み、最終マージを通過する行数を削減する新しい設定。"}]}]} />
+
+`ORDER BY ... LIMIT BY` クエリに対するクエリプランレベルの最適化を切り替えます。`LIMIT BY` のカラムが `ORDER BY` 句のプレフィックスである場合、並列にソートされた各ストリームで、ストリームを 1 つにマージする前に `LIMIT BY` が適用されます。これにより、最終マージおよび後続のパイプライン段階で処理される行数が削減されます。`LIMIT BY` によって大量の行が除外されるクエリを高速化します。
+
+設定 [query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) が 1 の場合にのみ有効です。
+
+設定可能な値:
+
+* 0 - 無効
+* 1 - 有効
+
 ## query_plan_read_in_order \{#query_plan_read_in_order\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
