@@ -376,6 +376,7 @@ const sidebars = {
             'cloud/managed-postgres/migrations/pg_dump-pg_restore',
             'cloud/managed-postgres/migrations/logical-replication',
             'cloud/managed-postgres/migrations/data-validation',
+            'cloud/managed-postgres/migrations/faq',
           ],
         },
       ],
