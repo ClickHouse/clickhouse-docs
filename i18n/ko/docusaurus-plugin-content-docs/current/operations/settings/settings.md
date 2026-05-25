@@ -4121,6 +4121,21 @@ S3 요청에 대한 매우 상세한 로깅을 활성화합니다. 디버깅 목
 
 이는 analyzer에 대한 호환성 설정으로, 이전 analyzer가 실행할 수 있었던 일부 잘못된 쿼리를 계속 실행할 수 있도록 허용합니다.
 
+## enable_sharding_aggregator \{#enable_sharding_aggregator\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "그룹화 키를 해시하여 행을 스레드에 분산하고, 각 스레드가 머지 단계 없이 서로 겹치지 않는 키 하위 집합을 집계하도록 하는 세그먼트 분할 `GROUP BY` 최적화를 활성화하는 새로운 설정입니다. 이 방식은 데이터가 고르게 분포된 높은 카디널리티 키에서 효율적입니다."}]}]} />
+
+그룹화 키를 해시하여 행을 스레드에 분산하고, 각 스레드가 머지 단계 없이 서로 겹치지 않는 키 하위 집합을 집계하도록 하는 세그먼트 분할 `GROUP BY` 최적화를 활성화합니다.
+
+이 방식은 데이터가 고르게 분포된 높은 카디널리티 키에서 효율적이지만, 키 분포가 심하게 치우쳐 있거나 고유 키가 매우 적은 쿼리에서는 성능이 저하될 수 있습니다.
+
+가능한 값:
+
+* 0 — 세그먼트 분할 집계 최적화가 비활성화됩니다.
+* 1 — 세그먼트 분할 집계 최적화가 활성화됩니다.
+
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

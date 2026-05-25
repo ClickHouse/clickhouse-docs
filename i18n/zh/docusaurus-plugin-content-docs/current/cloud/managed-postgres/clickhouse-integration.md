@@ -11,6 +11,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
+import integrationReplicationSettings from '@site/static/images/managed-postgres/integration-replication-settings.png';
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
@@ -18,12 +19,12 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
 
 每个托管 Postgres 实例都内置支持向任意 ClickHouse 服务进行 CDC。这使您可以将 Postgres 实例中的部分或全部数据迁移到 ClickHouse，并让 Postgres 上的数据变更在 ClickHouse 中持续且近乎实时地得到反映。其底层由 [ClickPipes](/integrations/clickpipes) 提供支持。
 
-要使用此功能，在 Postgres 实例的侧边栏中点击 **ClickHouse Integration**。
+要使用此功能，在 Postgres 实例的侧边栏中点击 **ClickHouse 集成**。
 
 <Image img={chIntegrationIntro} alt="ClickHouse 集成入口页面，展示了侧边栏中的集成选项" size="md" border />
 
 :::note
-继续之前，请确保您的 Postgres 服务对 ClickPipes 服务是可访问的。默认情况下应满足该条件，但如果您限制了 IP 访问，则可能需要根据 **ClickHouse service** 所在区域，从[此](/integrations/clickpipes#list-of-static-ips)列表中为部分源 IP 授权访问。
+继续之前，请确保您的 Postgres 服务对 ClickPipes 服务是可访问的。默认情况下应满足该条件，但如果您限制了 IP 访问，则可能需要根据 **ClickHouse 服务** 所在区域，从[此](/integrations/clickpipes#list-of-static-ips)列表中为部分源 IP 授权访问。
 :::
 
 点击 **Replicate data in ClickHouse** 开始配置您的 ClickPipe。
@@ -42,6 +43,20 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
     * **CDC only**：跳过初始快照，仅从现在开始捕获新的变更
 
   <Image img={replicationServiceStep} alt="复制服务配置界面，展示了集成名称、目标服务以及复制方法选项" size="md" border />
+
+  点击 **Next** 继续。
+
+  ## 配置复制设置 \{#replication-settings\}
+
+  微调数据复制设置：
+
+  * **Sync interval (seconds)**：从 Postgres 拉取变更的频率 (默认值：60)
+  * **Parallel threads for initial load**：初始快照期间使用的线程数 (默认值：4)
+  * **Pull batch size**：复制期间每批拉取的行数 (默认值：100000)
+  * **Snapshot number of rows per partition**：初始快照期间每个分区的行数 (默认值：100000)
+  * **Snapshot number of tables in parallel**：并发执行快照的表数量 (默认值：1)
+
+  <Image img={integrationReplicationSettings} alt="复制设置步骤界面，展示了同步间隔、并行线程、拉取批次大小和快照配置选项" size="md" border />
 
   点击 **Next** 继续。
 

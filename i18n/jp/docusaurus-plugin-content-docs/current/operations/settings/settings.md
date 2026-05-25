@@ -4117,6 +4117,21 @@ true に設定すると、スカラーサブクエリによる大きなスカラ
 
 これは、アナライザーにおいて、古いアナライザーで実行可能だった一部の不正なクエリを実行できるようにするための互換性設定であることに注意してください。
 
+## enable_sharding_aggregator \{#enable_sharding_aggregator\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "グループ化キーをハッシュ化して行をスレッド間に分散し、各スレッドがマージフェーズなしで重複しないキーの部分集合を集約できるようにする、分片化 `GROUP BY` 最適化を有効にする新しい設定です。これは、データが均等に分散した高カーディナリティのキーに対して効率的です。"}]}]} />
+
+グループ化キーをハッシュ化して行をスレッド間に分散し、各スレッドがマージフェーズなしで重複しないキーの部分集合を集約できるようにする、分片化 `GROUP BY` 最適化を有効にします。
+
+これは、データが均等に分散した高カーディナリティのキーに対しては効率的ですが、キー分布に大きな偏りがある場合や、異なるキーがごく少ないクエリでは性能が低下することがあります。
+
+設定可能な値:
+
+* 0 — 分片化集約最適化は無効です。
+* 1 — 分片化集約最適化は有効です。
+
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

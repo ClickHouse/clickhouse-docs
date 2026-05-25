@@ -4107,6 +4107,21 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 请注意，这是为分析器提供的兼容性设置，用于允许运行一些在语义上无效但旧分析器仍能执行的查询。
 
+## enable_sharding_aggregator \{#enable_sharding_aggregator\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "用于启用分片式 `GROUP BY` 优化的新设置。该优化通过对分组键进行哈希，将行分配到各个线程，因此每个线程都会聚合一组互不重叠的键，无需经过合并阶段；对于数据分布均匀的高基数键，这种方式效率很高。"}]}]} />
+
+启用分片式 `GROUP BY` 优化。该优化通过对分组键进行哈希，将行分配到各个线程，因此每个线程都会聚合一组互不重叠的键，无需经过合并阶段。
+
+对于数据分布均匀的高基数键，这种方式效率很高；但如果键分布严重倾斜，或者查询中不同键的数量很少，性能可能会受到影响。
+
+可能的值：
+
+* 0 — 分片聚合优化已禁用。
+* 1 — 分片聚合优化已启用。
+
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

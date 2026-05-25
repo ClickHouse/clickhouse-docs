@@ -11,6 +11,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
+import integrationReplicationSettings from '@site/static/images/managed-postgres/integration-replication-settings.png';
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
@@ -37,11 +38,25 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
   * **ClickHouse service**: выберите существующий сервис ClickHouse Cloud или создайте новый
   * **Postgres database**: исходная база данных, из которой выполняется репликация
   * **Replication method**: выберите один из вариантов:
-    * **Initial load + CDC**: импортировать существующие данные и поддерживать таблицы в актуальном состоянии при появлении новых изменений (рекомендуется)
+    * **Initial load + CDC (фиксация изменений данных)**: импортировать существующие данные и поддерживать таблицы в актуальном состоянии при появлении новых изменений (рекомендуется)
     * **Initial load only**: одноразовый снимок существующих данных без последующих обновлений
-    * **CDC only**: пропустить начальный снимок и фиксировать только новые изменения в дальнейшем
+    * **CDC (фиксация изменений данных) only**: пропустить начальный снимок и фиксировать только новые изменения в дальнейшем
 
   <Image img={replicationServiceStep} alt="Конфигурация сервиса репликации, показывающая имя интеграции, целевой сервис и параметры метода репликации" size="md" border />
+
+  Нажмите **Next**, чтобы продолжить.
+
+  ## Настройка параметров репликации \{#replication-settings\}
+
+  Тонко настройте параметры репликации данных:
+
+  * **Sync interval (seconds)**: как часто изменения извлекаются из Postgres (по умолчанию: 60)
+  * **Parallel threads for initial load**: количество потоков, используемых при начальном снимке (по умолчанию: 4)
+  * **Pull batch size**: количество строк, извлекаемых за один батч во время репликации (по умолчанию: 100000)
+  * **Snapshot number of rows per partition**: количество строк на партицию при начальном снимке (по умолчанию: 100000)
+  * **Snapshot number of tables in parallel**: сколько таблиц одновременно обрабатываются при создании снимка (по умолчанию: 1)
+
+  <Image img={integrationReplicationSettings} alt="Шаг настройки параметров репликации, показывающий интервал синхронизации, параллельные потоки, размер батча извлечения и параметры создания снимка" size="md" border />
 
   Нажмите **Next**, чтобы продолжить.
 
