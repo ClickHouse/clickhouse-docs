@@ -30,7 +30,16 @@ ClickHouse Cloud now offers ClickPipes to migrate your external PostgreSQL datab
 
 ## Prerequisites {#prerequisites}
 
-- Access to your source PostgreSQL database with a user that has replication privileges.
+- Access to your source PostgreSQL database with a user that has replication privileges. Follow the setup guide for your source:
+  - [Amazon RDS Postgres](/integrations/clickpipes/postgres/source/rds)
+  - [Amazon Aurora Postgres](/integrations/clickpipes/postgres/source/aurora)
+  - [Supabase Postgres](/integrations/clickpipes/postgres/source/supabase)
+  - [Google Cloud SQL Postgres](/integrations/clickpipes/postgres/source/google-cloudsql)
+  - [Azure Flexible Server for Postgres](/integrations/clickpipes/postgres/source/azure-flexible-server-postgres)
+  - [Neon Postgres](/integrations/clickpipes/postgres/source/neon-postgres)
+  - [Crunchy Bridge Postgres](/integrations/clickpipes/postgres/source/crunchy-postgres)
+  - [TimescaleDB](/integrations/clickpipes/postgres/source/timescale)
+  - [Generic Postgres Source](/integrations/clickpipes/postgres/source/generic) for any other provider or self-hosted instance
 - A ClickHouse Managed Postgres service as the migration target. If you don't have one yet, see the [quickstart](../quickstart).
 - `pg_dump` and `psql` installed on your local machine. Both ship with the standard PostgreSQL client tools.
 
