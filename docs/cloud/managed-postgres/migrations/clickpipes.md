@@ -1,8 +1,8 @@
 ---
 slug: /cloud/managed-postgres/migrations/clickhouse-cloud
-sidebar_label: 'ClickHouse Cloud'
-title: 'Migrate PostgreSQL data using Data sources in ClickHouse Cloud'
-description: 'Learn how to migrate your PostgreSQL database to ClickHouse Managed Postgres using the built-in Data sources import wizard in ClickHouse Cloud.'
+sidebar_label: 'ClickPipes'
+title: 'Migrate PostgreSQL data using Data sources in ClickPipes'
+description: 'Learn how to migrate your PostgreSQL database to ClickHouse Managed Postgres using the built-in Data sources import wizard in ClickPipes.'
 keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres', 'data sources', 'import']
 doc_type: 'guide'
 ---
@@ -22,11 +22,11 @@ import serviceCard from '@site/static/images/managed-postgres/pgpg/servicecard.p
 import startImport from '@site/static/images/managed-postgres/pgpg/startimport.png';
 import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.png';
 
-# Migrate to Managed Postgres using ClickHouse Cloud {#migrate-managed-postgres}
+# Migrate to Managed Postgres using ClickPipes {#migrate-managed-postgres}
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-clickhouse-cloud" />
 
-ClickHouse Cloud includes a built-in import wizard that migrates your external PostgreSQL database into a Managed Postgres service. The wizard handles the source connection, schema export and import, replication settings, and table selection in five guided steps.
+ClickHouse Cloud now offers ClickPipes to migrate your external PostgreSQL database into a Managed Postgres service. This built-in integration provides a streamlined experience to connect to your source database, export the schema, import it into Managed Postgres, and set up continuous replication.
 
 ## Prerequisites {#prerequisites}
 
