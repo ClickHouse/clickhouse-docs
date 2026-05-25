@@ -372,11 +372,12 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
-            'cloud/managed-postgres/migrations/clickhouse-cloud',
+            'cloud/managed-postgres/migrations/clickpipes',
             'cloud/managed-postgres/migrations/peerdb',
             'cloud/managed-postgres/migrations/pg_dump-pg_restore',
             'cloud/managed-postgres/migrations/logical-replication',
             'cloud/managed-postgres/migrations/data-validation',
+            'cloud/managed-postgres/migrations/faq',
           ],
         },
       ],
