@@ -67,7 +67,7 @@ Any usage where backups are being exported to a
 different region in the same cloud provider will incur [data transfer](/cloud/manage/network-data-transfer)
 charges.
 
-Currently, we don't support cross-cloud backups, nor backup / restore for services utilizing [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) or for regulated services.
+Currently, we don't support backup / restore for services utilizing [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) or for regulated services.
 :::
 
 See ["Export backups to your own Cloud account"](/cloud/manage/backups/export-backups-to-own-cloud-account) for examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.

@@ -338,6 +338,7 @@ const sidebars = {
       link: { type: 'doc', id: 'cloud/managed-postgres/overview' },
       items: [
         'cloud/managed-postgres/overview',
+        'cloud/managed-postgres/pricing',
         'cloud/managed-postgres/quickstart',
         'cloud/managed-postgres/connection',
         'cloud/managed-postgres/clickhouse-integration',
@@ -2061,6 +2062,7 @@ const sidebars = {
           ],
         },
         'use-cases/observability/clickstack/api-reference',
+        'use-cases/observability/clickstack/mcp',
         'use-cases/observability/clickstack/faq',
         {
           type: 'category',
