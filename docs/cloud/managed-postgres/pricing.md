@@ -3,7 +3,7 @@ slug: /cloud/managed-postgres/pricing
 sidebar_label: 'Pricing'
 title: 'Pricing'
 description: 'Pricing model, tiers, instance types, and Beta pricing details for Postgres managed by ClickHouse'
-keywords: ['postgres pricing', 'managed postgres cost', 'beta pricing', 'pricing calculator', 'nvme pricing', 'tier pricing']
+keywords: ['postgres pricing', 'managed postgres cost', 'postgres beta pricing', 'postgres pricing calculator', 'nvme pricing', 'postgres tier pricing']
 doc_type: 'reference'
 ---
 
@@ -11,14 +11,14 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-Postgres managed by ClickHouse is designed to be cost-effective, so developers never have to compromise on a fast, reliable data foundation powered by Postgres and ClickHouse.
+Postgres managed by ClickHouse is built on local NVMe storage, which allows it to offer production-grade performance and native ClickHouse integration without the pricing overhead of traditional network-attached storage architectures. This page covers the pricing model, available instance types, and tier comparison for the service.
 
 Postgres managed by ClickHouse is now available in Beta. The service remains free until metering begins on June 15, 2026, giving teams time to size instances appropriately before billing starts.
 
-During Beta, all plans include a 50% discount, reflecting our commitment to our early customers. Pricing starts at approximately **$30/month** for 1 vCPU, 8 GB RAM, 59 GB NVMe storage configuration.
+During the beta period, all plans include a 50% discount, reflecting our commitment to our early customers. Pricing starts at approximately **$30/month** for 1 vCPU, 8 GB RAM, 59 GB NVMe storage configuration.
 
-:::tip Pricing Calculator
-For exact pricing, visit the [Pricing Calculator](https://clickhouse.com/pricing?service=postgres#pricing-calculator) to find the best configuration and pricing for your workload.
+:::tip[Pricing calculator]
+For exact pricing, use the [pricing calculator](https://clickhouse.com/pricing?service=postgres#pricing-calculator) to find the best configuration and pricing for your workload.
 :::
 
 ## Price performance {#price-performance}
@@ -35,7 +35,7 @@ Over 50 configurations are available, ranging from 1 vCPU / 8 GB RAM / 59 GB NVM
 
 ### Tier-based pricing {#tier-based-pricing}
 
-Pricing, features, and resource limits vary by organization tier — Basic, Scale, or Enterprise. However, every tier includes the core capabilities of the service, including production-grade Postgres on local NVMe storage, native CDC to ClickHouse, and the `pg_clickhouse` extension.
+Pricing, features, and resource limits vary by organization tier — [Basic, Scale, or Enterprise](/cloud/manage/cloud-tiers), however, every tier includes the core capabilities of the service, including production-grade Postgres on local NVMe storage, native CDC to ClickHouse, and the `pg_clickhouse` extension.
 
 The table below summarizes the features, capabilities, and limits included in each tier. To compare pricing across tiers, refer to the [pricing calculator](https://clickhouse.com/pricing?service=postgres#pricing-calculator).
 
@@ -99,7 +99,7 @@ Instance configurations are grouped into three categories to simplify infrastruc
 
 ## Pricing calculator {#pricing-calculator}
 
-Use the [Pricing Calculator](https://clickhouse.com/pricing?service=postgres#pricing-calculator) to estimate deployment costs across different workload profiles and configurations. You can customize:
+Use the [pricing calculator](https://clickhouse.com/pricing?service=postgres#pricing-calculator) to estimate deployment costs across different workload profiles and configurations. You can customize:
 
 - Organization tier (Basic, Scale, Enterprise)
 - Region
