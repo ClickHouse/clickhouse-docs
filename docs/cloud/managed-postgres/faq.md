@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.faq-beta" />
 
 ## Monitoring and metrics {#monitoring-and-metrics}
 

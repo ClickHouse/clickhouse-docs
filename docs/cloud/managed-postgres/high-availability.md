@@ -10,7 +10,7 @@ doc_type: 'guide'
 import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.high-availability-beta" />
 
 Managed Postgres offers different levels of high availability to match your durability and performance requirements. You can add one or two standby replicas when provisioning your database, or adjust this configuration later from the **Settings** page as needed.
 

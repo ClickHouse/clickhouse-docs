@@ -15,7 +15,7 @@ import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/gr
 
 # Prometheus Integration
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-prometheus-beta" />
 
 Managed Postgres exposes two Prometheus-compatible metrics endpoints
 on the [ClickHouse Cloud API][cloud-api]:

@@ -11,7 +11,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 # Managed Postgres OpenAPI
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.openapi-beta" />
 
 Use the [ClickHouse OpenAPI](/cloud/manage/cloud-api) to programmatically
 control your Managed Postgres services just like ClickHouse services. The

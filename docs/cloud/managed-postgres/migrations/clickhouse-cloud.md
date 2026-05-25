@@ -24,7 +24,7 @@ import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.p
 
 # Migrate to Managed Postgres using ClickHouse Cloud {#migrate-managed-postgres}
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-clickhouse-cloud-beta" />
 
 ClickHouse Cloud includes a built-in import wizard that migrates your external PostgreSQL database into a Managed Postgres service. The wizard handles the source connection, schema export and import, replication settings, and table selection in five guided steps.
 

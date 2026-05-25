@@ -13,7 +13,7 @@ import dashboard from '@site/static/images/managed-postgres/monitoring/dashboard
 
 # Monitoring dashboard
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-dashboard-beta" />
 
 The **Monitoring** tab in the left sidebar of an instance shows
 real-time charts of resource usage and database activity for the

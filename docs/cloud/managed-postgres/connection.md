@@ -13,7 +13,7 @@ import connectButton from '@site/static/images/managed-postgres/connect-button.p
 import connectModal from '@site/static/images/managed-postgres/connect-modal.png';
 import tlsCaBundle from '@site/static/images/managed-postgres/tls-ca-bundle.png';
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.connection-beta" />
 
 ## Accessing connection details {#accessing-connection-details}
 

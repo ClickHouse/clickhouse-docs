@@ -11,7 +11,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 # Managed Postgres monitoring
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-overview-beta" />
 
 You can monitor your Managed Postgres services with the following
 methods:

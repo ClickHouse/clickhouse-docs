@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.data-validation-beta" />
 
 ## Comparing counts of all tables {#data-validation-counts}
 A simple way to validate the correctness of your data after migration is to compare the counts of all tables in the source and target databases. You can do this by running the following query on both databases:

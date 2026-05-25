@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.extensions-beta" />
 
 Managed Postgres includes a curated set of extensions to extend the functionality of your database. Below is the list of available extensions.
 

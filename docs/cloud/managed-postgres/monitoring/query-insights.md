@@ -17,7 +17,7 @@ import queryInsightsDetailRecent from '@site/static/images/managed-postgres/moni
 
 # Postgres query insights
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.query-insights-beta" />
 
 Query Insights captures per-statement telemetry from your
 [Managed Postgres](/cloud/managed-postgres) instance and ranks every query

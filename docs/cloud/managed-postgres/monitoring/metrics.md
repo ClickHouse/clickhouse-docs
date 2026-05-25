@@ -11,7 +11,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 # Metrics reference
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-metrics-beta" />
 
 This page lists every metric exposed by the
 [Managed Postgres Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus).
