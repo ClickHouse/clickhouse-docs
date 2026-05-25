@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/migrations/faq
 sidebar_label: 'FAQ'
-title: 'Managed Postgres Migrations FAQ'
+title: 'Managed Postgres migrations FAQ'
 description: 'Frequently asked questions about migrating data to ClickHouse Managed Postgres.'
 keywords: ['postgres', 'migration', 'faq', 'managed postgres', 'logical replication', 'enum', 'unique constraint']
 doc_type: 'reference'
@@ -11,9 +11,9 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migrations-faq" />
 
-# Managed Postgres Migrations FAQ
+# Managed Postgres migrations FAQ
 
-Many questions about how Postgres replication works — including TOAST columns, replication slots, publications, schema changes, and data type mappings — are covered in the [ClickPipes for Postgres FAQ](/integrations/clickpipes/postgres/faq). The information there applies to Managed Postgres migrations as well.
+Many questions about how Postgres replication works — including `TOAST` columns, replication slots, publications, schema changes, and data type mappings — are covered in the [ClickPipes for Postgres FAQ](/integrations/clickpipes/postgres/faq). The information there applies to Managed Postgres migrations as well.
 
 ### I'm seeing an "invalid input value for enum" error during replication {#invalid-enum-value}
 
