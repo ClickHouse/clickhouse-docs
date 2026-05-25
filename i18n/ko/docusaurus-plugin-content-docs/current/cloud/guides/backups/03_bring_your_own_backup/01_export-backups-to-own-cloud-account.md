@@ -12,7 +12,9 @@ ClickHouse Cloud는 자체 클라우드 서비스 제공자(CSP) 계정(AWS S3, 
 이 가이드에서는 AWS, GCP, Azure 객체 스토리지로 전체 백업 및 증분 백업을 수행하는 방법과 해당 백업으로부터 복원하는 방법의 예시를 보여줍니다.
 
 :::note
-백업을 동일한 클라우드 제공자 내의 다른 리전으로 내보내는 경우에는 [data transfer](/cloud/manage/network-data-transfer) 요금이 발생합니다. 현재 클라우드 간(cross cloud) 백업은 지원하지 않습니다.
+백업을 동일한 클라우드 제공자 내의 다른 리전으로 내보내는 경우에는 [data transfer](/cloud/manage/network-data-transfer) 요금이 발생합니다.
+
+클라우드 간(Cross-Cloud) 백업은 이 페이지에 설명된 backup/restore 명령을 통해서만 지원되며, UI를 통해서는 지원되지 않습니다.
 :::
 
 ## Requirements \{#requirements\}
