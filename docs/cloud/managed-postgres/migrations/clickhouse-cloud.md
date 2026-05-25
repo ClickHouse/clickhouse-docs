@@ -38,6 +38,10 @@ ClickHouse Cloud includes a built-in import wizard that migrates your external P
 
 - **DDL propagation**: continuous replication (CDC) captures DML operations and `ADD COLUMN`. Other DDL changes such as `DROP COLUMN` and `ALTER COLUMN` aren't propagated and must be applied manually on the target.
 
+:::note
+If you run into issues during migration, check the [Managed Postgres Migrations FAQ](/cloud/managed-postgres/migrations/faq) for common errors and solutions.
+:::
+
 ## Step 1: Connect to your source database {#step-1-connect}
 
 Open the [ClickHouse Cloud console](https://clickhouse.cloud) and select your Managed Postgres service.
