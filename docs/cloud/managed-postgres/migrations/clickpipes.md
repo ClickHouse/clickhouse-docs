@@ -1,9 +1,9 @@
 ---
-slug: /cloud/managed-postgres/migrations/clickhouse-cloud
+slug: /cloud/managed-postgres/migrations/clickpipes
 sidebar_label: 'ClickPipes'
 title: 'Migrate PostgreSQL data using Data sources in ClickPipes'
-description: 'Learn how to migrate your PostgreSQL database to ClickHouse Managed Postgres using the built-in Data sources import wizard in ClickPipes.'
-keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres', 'data sources', 'import']
+description: 'Learn how to migrate your PostgreSQL database to ClickHouse Managed Postgres using ClickPipes.'
+keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'clickpipes', 'managed postgres', 'data sources', 'import']
 doc_type: 'guide'
 ---
 
