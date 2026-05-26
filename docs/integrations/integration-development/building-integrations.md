@@ -54,7 +54,7 @@ ClickHouse has a rich type system: arrays, tuples, maps, JSON, nested, LowCardin
 
 ## Next steps {#next-steps}
 
-Pick a path and prototype against a [ClickHouse Cloud trial](https://clickhouse.com/cloud). When the `partner portal` is available, register your integration there.
+Pick a path and prototype against a [ClickHouse Cloud trial](https://clickhouse.com/cloud). When the [partner portal](https://clickhouse.com/partners) is available, register your integration there.
 
 ## User-agent string convention {#user-agent-string-convention}
 
