@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Tutorial'
 description: 'Learn how to connect pg_clickhouse to ClickHouse and query a New York City taxi example dataset.'
-slug: '/integrations/pg_clickhouse/tutorial'
+slug: '/cloud/managed-postgres/extensions/pg_clickhouse/tutorial'
 title: 'pg_clickhouse tutorial'
 doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'tutorial', 'taxi']

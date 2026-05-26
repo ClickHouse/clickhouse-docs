@@ -3857,6 +3857,21 @@
       "source": "/docs/cloud/managed-postgres/migrations/clickhouse-cloud",
       "destination": "/docs/cloud/managed-postgres/migrations/clickpipes",
       "permanent": true
+    },
+    {
+      "source": "/docs/integrations/pg_clickhouse",
+      "destination": "/docs/cloud/managed-postgres/extensions/pg_clickhouse",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/pg_clickhouse/tutorial",
+      "destination": "/docs/cloud/managed-postgres/extensions/pg_clickhouse/tutorial",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/pg_clickhouse/reference",
+      "destination": "/docs/cloud/managed-postgres/extensions/pg_clickhouse/reference",
+      "permanent": true
     }
   ]
 }

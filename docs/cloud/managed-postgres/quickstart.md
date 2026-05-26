@@ -259,7 +259,7 @@ The replication process will start, and you will be taken to the integration ove
 
 ### Query ClickHouse from Postgres {#pg-clickhouse-extension}
 
-The `pg_clickhouse` extension lets you query ClickHouse data directly from Postgres using standard SQL. This means your application can use Postgres as a unified query layer for both transactional and analytical data. See the [full documentation](/integrations/pg_clickhouse) for details.
+The `pg_clickhouse` extension lets you query ClickHouse data directly from Postgres using standard SQL. This means your application can use Postgres as a unified query layer for both transactional and analytical data. See the [full documentation](/cloud/managed-postgres/extensions/pg_clickhouse) for details.
 
 Enable the extension:
 

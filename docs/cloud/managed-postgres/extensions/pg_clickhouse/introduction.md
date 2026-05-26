@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Introduction'
 description: 'Run analytics queries on ClickHouse right from PostgreSQL without rewriting any SQL'
-slug: '/integrations/pg_clickhouse'
+slug: '/cloud/managed-postgres/extensions/pg_clickhouse'
 title: 'pg_clickhouse reference documentation'
 doc_type: 'landing-page'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
@@ -281,10 +281,10 @@ adding DML features. Our road map:
 
   [pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse
     "pg_clickhouse on GitHub"
-  [import foreign tables]: /integrations/pg_clickhouse/reference#import-foreign-schema
+  [import foreign tables]: /cloud/managed-postgres/extensions/pg_clickhouse/reference#import-foreign-schema
   [Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
     "Latest Docker release"
-  [tutorial]: /integrations/pg_clickhouse/tutorial "pg_clickhouse Tutorial"
+  [tutorial]: /cloud/managed-postgres/extensions/pg_clickhouse/tutorial "pg_clickhouse Tutorial"
   [PostgreSQL Apt]: https://wiki.postgresql.org/wiki/Apt
   [PostgreSQL Yum]: https://yum.postgresql.org
   [PGXN client]: https://pgxn.github.io/pgxnclient/ "PGXN Client’s documentation"
