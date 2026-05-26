@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.pricing-beta" />
 
 由 ClickHouse 托管的 Postgres 基于本地 NVMe 存储构建，因此无需承担传统网络附加存储架构带来的额外成本，也能提供生产级性能以及与 ClickHouse 的原生集成。本页介绍该服务的定价模型、可用实例类型和层级对比。
 
@@ -132,5 +132,4 @@ import BetaBadge from '@theme/badges/BetaBadge';
 * 对于超过某个上限 (该上限目前仍在制定中) 的保留时长，GA 时可能会收取额外的备份费用。
 * 我们预计，通过 ClickPipes 提供的原生 CDC 在 GA 时，当 Postgres 和 ClickHouse 部署在同一区域时，将继续保持免费或仅收取极低费用，这也符合统一 OLTP + OLAP 平台的愿景。
 * 在扩缩容、故障转移和待机实例预配期间，系统会短暂并行运行两个实例以保持数据库在线——在切换完成之前，您可能会看到两个实例同时产生费用。该时间窗口的耗时会因实例类型和存储容量而异。
-* 当您所选的实例类型在所选区域暂时不可用时，我们可能会预配一个可比的实例类型以保持数据库在线。系统将按照实际预配实例的费率向您计费。
 * 随着我们在 Beta 期间进一步了解真实客户的使用模式、工作负载特征和基础设施需求，现有定价可能会在临近 GA 时进一步调整和变化。
