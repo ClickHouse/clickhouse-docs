@@ -1,7 +1,8 @@
 ---
-sidebar_label: 'ClickHouse Assistant 에이전트'
+sidebar_label: 'ClickHouse Assistant'
+sidebar_position: 2
 slug: /cloud/features/ai-ml/ask-ai
-title: 'Cloud에서 ClickHouse Assistant 에이전트 사용하기'
+title: 'Cloud에서 ClickHouse Assistant 사용하기'
 description: 'ClickHouse Cloud의 ClickHouse Assistant chat 기능 설명'
 doc_type: '참고'
 ---

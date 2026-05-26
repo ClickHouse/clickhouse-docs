@@ -1,7 +1,8 @@
 ---
-sidebar_label: 'ClickHouse Assistant agent'
+sidebar_label: 'ClickHouse Assistant'
+sidebar_position: 2
 slug: /cloud/features/ai-ml/ask-ai
-title: 'Cloud 中的 ClickHouse Assistant agent'
+title: 'Cloud 中的 ClickHouse Assistant'
 description: 'ClickHouse Cloud 中 ClickHouse Assistant 聊天功能的说明'
 doc_type: 'reference'
 ---
