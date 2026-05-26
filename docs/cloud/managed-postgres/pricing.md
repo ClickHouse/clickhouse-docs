@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-<BetaBadge/>
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.pricing-beta" />
 
 Postgres managed by ClickHouse is built on local NVMe storage, which allows it to offer production-grade performance and native ClickHouse integration without the pricing overhead of traditional network-attached storage architectures. This page covers the pricing model, available instance types, and tier comparison for the service.
 
@@ -127,5 +127,4 @@ As the product evolves during Beta, pricing and packaging may be refined ahead o
 - Additional backup charges may apply at GA for retention periods beyond a limit that is still being defined.
 - We expect Native CDC via ClickPipes to remain free or minimally priced at GA when Postgres and ClickHouse are colocated in the same region, aligning with the vision of a unified OLTP + OLAP platform.
 - Scaling, failover, and standby provisioning briefly run two instances in parallel to keep your database online — you may see overlapping charges for both instances while the transition completes. The duration of this window varies based on instance type and storage volume.
-- When your selected instance type is temporarily unavailable in the chosen region, we may provision a comparable instance type to keep your database online. You will be billed at the rate of the provisioned instance.
 - Existing pricing may evolve and be subject to change closer to GA as we learn more about real-world customer usage patterns, workload characteristics, and infrastructure requirements during the Beta period.
