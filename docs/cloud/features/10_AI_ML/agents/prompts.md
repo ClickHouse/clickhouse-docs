@@ -9,6 +9,11 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import prompts from '@site/static/images/cloud/agent-builder/prompts/prompts.png';
+import createPrompt from '@site/static/images/cloud/agent-builder/prompts/create-prompt.png';
+import preview from '@site/static/images/cloud/agent-builder/prompts/preview.png';
+import usePromptModal from '@site/static/images/cloud/agent-builder/prompts/use-prompt-modal.png';
 
 <BetaBadge/>
 
@@ -16,17 +21,26 @@ The Prompts library is a place to save and reuse natural-language prompts you fi
 
 ## Create a prompt {#create-a-prompt}
 
-Open the Prompts panel and click **New prompt**. Give it:
+Open the Prompts panel from the **Prompts** icon in the left navigation and click the **+** button to open the **Create Prompt** form. Fill in the fields:
 
-- **A title** — what shows up in the picker. Be descriptive: *"Weekly active users by region"* beats *"WAU"*.
-- **The body** — the actual text that will be inserted into the composer.
-- **Optional variables** — placeholders in the body that you fill in at insertion time. Use `{{name}}` style markers; the picker prompts you for values before inserting.
+- **Prompt Name** (required) — what shows up in the picker. Be descriptive: *"Weekly active users by region"* beats *"WAU"*.
+- **Text** (required) — the actual text that will be inserted into the composer.
+- **Special variables** — click the **Special variables** button to insert placeholders, or type `{{name}}` style markers directly. The picker prompts you for values before inserting.
+- **Category**, **Description**, **Command** (optional) — for organizing the library, picker preview text, and a quick-invoke shortcut.
 
-Group related prompts under categories or tags to keep the library navigable as it grows.
+Then click **Create Prompt** at the bottom right.
+
+<Image img={createPrompt} alt="Prompts panel with the + button highlighted on the left and the Create Prompt form open on the right showing Prompt Name, Text, Category, Special variables, Description, and Command fields, with a Create Prompt button" size="lg"/>
 
 ## Use a prompt {#use-a-prompt}
 
-In a conversation, open the prompts picker from the composer and search or browse to the prompt you want. If the prompt has variables, fill them in. The body is inserted into the composer, where you can edit it before sending.
+In the Prompts panel, open the **...** menu on a prompt card and choose **Preview**:
+
+<Image img={preview} alt="Prompts panel with a prompt selected, its details visible on the right, and a context menu showing Preview and Edit options" size="lg"/>
+
+The preview shows the prompt's text along with its author and date. Click **Use Prompt** to insert the body into the composer. If the prompt has variables, fill them in first.
+
+<Image img={usePromptModal} alt="Prompt preview modal showing the prompt title, author, date, body text, and a Use Prompt button" size="md"/>
 
 ## Share prompts {#share-prompts}
 

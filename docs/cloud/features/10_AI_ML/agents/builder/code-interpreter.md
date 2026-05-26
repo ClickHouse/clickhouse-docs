@@ -9,6 +9,8 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import runCode from '@site/static/images/cloud/agent-builder/run-code/run-code.png';
 
 <BetaBadge/>
 
@@ -16,7 +18,9 @@ The code interpreter lets an agent execute code in a managed sandbox. Use it for
 
 ## Enable it {#enable-it}
 
-Toggle **Code interpreter** in the Agent Builder's capabilities section, then save. The agent decides when to run code based on the user's request and the agent's instructions.
+In the Agent Builder, enable **Run Code** in the **Capabilities** section, then save. The agent decides when to run code based on the user's request and the agent's instructions.
+
+<Image img={runCode} alt="Run Code section of the Capabilities panel with the Run Code checkbox enabled and an Upload to Code Environment button" size="sm"/>
 
 ## Supported languages {#supported-languages}
 

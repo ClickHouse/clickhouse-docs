@@ -9,6 +9,8 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import vision from '@site/static/images/cloud/agent-builder/vision/vision.png';
 
 <BetaBadge/>
 
@@ -16,11 +18,13 @@ Vision lets users upload images for an agent to analyze. The agent passes the im
 
 ## Enable it {#enable-it}
 
-Toggle the vision capability in the Agent Builder. Vision only works with models that support image inputs; if the selected model can't, the upload control is disabled. Switch to a vision-capable model in [model parameters](/cloud/features/ai-ml/agents/builder/model-parameters) to re-enable it.
+Vision only works with models that support image inputs. If the selected model can't, the upload control on the message composer is disabled. Switch to a vision-capable model in [model parameters](/cloud/features/ai-ml/agents/builder/model-parameters) to re-enable it.
 
 ## Use it {#use-it}
 
-Users attach an image to a message — a screenshot, a photo, a chart, a diagram. They can ask any question that requires reading the image: *"What's wrong with this query plan?"*, *"Transcribe the text in this screenshot,"* or *"Compare this dashboard to last week's."*
+Click the paperclip icon at the bottom-left of the message composer and choose **Upload to Provider** to attach an image — a screenshot, a photo, a chart, a diagram. Then ask any question that requires reading the image: *"What's wrong with this query plan?"*, *"Transcribe the text in this screenshot,"* or *"Compare this dashboard to last week's."*
+
+<Image img={vision} alt="Message composer with the paperclip menu open showing Upload to Provider, Upload as Text, and Upload to Code Environment options" size="lg"/>
 
 The agent treats the image as part of the message context, so follow-up questions in the same turn can reference what it saw without re-uploading.
 

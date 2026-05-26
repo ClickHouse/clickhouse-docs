@@ -9,6 +9,9 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import sharing from '@site/static/images/cloud/agent-builder/sharing/sharing.png';
+import shareAgentModal from '@site/static/images/cloud/agent-builder/sharing/share-agent-modal.png';
 
 <BetaBadge/>
 
@@ -45,9 +48,15 @@ The org-wide visibility is what makes a resource discoverable in the [marketplac
 
 ## Share an agent {#share-an-agent}
 
-In the Agent Builder, open the **Sharing** section and click **Add access**. Pick the principal (a user, a group, or organization-wide), choose the access level, and save. The recipient sees the agent in their available-agents list the next time they refresh.
+Click the **share** icon at the bottom of the Agent Builder. A badge on the icon shows how many users or groups currently have access.
 
-Revoke access from the same panel by removing the row. The recipient loses access immediately; their in-flight conversations finish but new ones won't open.
+<Image img={sharing} alt="Bottom of the Agent Builder panel with the share icon highlighted and a badge showing one shared principal" size="sm"/>
+
+The **Share** modal opens. Search for a user or group by name or email, choose the access level (**Viewer**, **Editor**, or **Owner**), and click **Save Changes**. To share organization-wide, enable the **Share with everyone in ClickHouse** toggle.
+
+<Image img={shareAgentModal} alt="Share modal with User and Group Permissions section, a search input, an existing user with an Owner role, a Share with everyone in ClickHouse toggle, and Cancel and Save Changes buttons" size="md"/>
+
+The recipient sees the agent in their available-agents list the next time they refresh. To revoke access, remove the row in the same modal. The recipient loses access immediately; their in-flight conversations finish but new ones won't open.
 
 ## Default agent {#default-agent}
 

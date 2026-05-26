@@ -9,6 +9,8 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import toolsModal from '@site/static/images/cloud/agent-builder/tools-modal.png';
 
 <BetaBadge/>
 
@@ -16,7 +18,9 @@ Image generation lets an agent produce new images from a text prompt or edit ima
 
 ## Enable it {#enable-it}
 
-Toggle the image-generation tool in the Agent Builder's capabilities section. Some agents have access to multiple image providers (for example DALL-E and Flux); the agent picks the appropriate one or you can restrict it in instructions.
+Image generation is added through the **Add Tools** modal in the Agent Builder (not the Capabilities section). Click **Add Tools** at the bottom of the Agent Builder panel, then add one of the image-model tools — for example **OpenAI Image Tools**, **DALL-E-3**, or **Stable Diffusion**. The agent picks the appropriate one based on the request, or you can restrict it in instructions.
+
+<Image img={toolsModal} alt="Agent Tools modal showing image-model integrations including OpenAI Image Tools, DALL-E-3, and Stable Diffusion alongside other third-party tools" size="md"/>
 
 ## Generation {#generation}
 
