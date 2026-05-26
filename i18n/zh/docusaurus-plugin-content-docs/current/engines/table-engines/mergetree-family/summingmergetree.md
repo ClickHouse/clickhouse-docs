@@ -1,5 +1,6 @@
 ---
-description: 'SummingMergeTree 继承自 MergeTree 引擎。其关键特性是在数据部分合并时可以自动对数值数据进行求和。'
+description: 'SummingMergeTree 继承自 MergeTree 引擎。其关键特性
+  是能够在数据 parts 合并期间自动对数值数据求和。'
 sidebar_label: 'SummingMergeTree'
 sidebar_position: 50
 slug: /engines/table-engines/mergetree-family/summingmergetree
@@ -7,9 +8,7 @@ title: 'SummingMergeTree 表引擎'
 doc_type: 'reference'
 ---
 
-# SummingMergeTree 表引擎 \{#summingmergetree-table-engine\}
-
-该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)。不同之处在于，当对 `SummingMergeTree` 表的数据分区片段进行合并时，ClickHouse 会将所有具有相同主键（更准确地说，是具有相同[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的多行，替换为一行，其中数值数据类型列的值为这些行的求和结果。如果排序键的设计使得单个键值对应大量行，这种方式可以显著减少存储体积并加速数据查询。
+该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)。不同之处在于，当对 `SummingMergeTree` 表的数据 parts 进行合并时，ClickHouse 会将所有具有相同主键 (更准确地说，是具有相同[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)) 的多行，替换为一行，其中数值数据类型列的值为这些行的求和结果。如果排序键的设计使得单个键值对应大量行，这种方式可以显著减少存储体积并加速数据查询。
 
 我们建议将此引擎与 `MergeTree` 结合使用。在 `MergeTree` 表中存储完整数据，并使用 `SummingMergeTree` 存储聚合后的数据，例如在生成报表时使用。这样的做法可以避免由于主键设计不当而导致有价值数据的丢失。
 

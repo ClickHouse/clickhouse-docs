@@ -2,11 +2,9 @@
 slug: /integrations/tools/data-integrations
 keywords: ['Retool', 'Easypanel', 'Splunk']
 title: '数据集成'
-description: '数据集成部分的概览页'
+description: '数据集成部分的落地页'
 doc_type: 'landing-page'
 ---
-
-# 数据集成 \{#data-integrations\}
 
 | Page                                   | Description                                           |
 | -------------------------------------- | ----------------------------------------------------- |

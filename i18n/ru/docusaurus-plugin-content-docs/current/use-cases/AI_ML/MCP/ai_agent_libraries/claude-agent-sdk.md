@@ -1,18 +1,16 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/claude-agent-sdk
-sidebar_label: 'Интеграция с Claude Agent SDK'
+sidebar_label: 'Интеграция Claude Agent SDK'
 title: 'Как создать ИИ-агента с помощью Claude Agent SDK и MCP-сервера ClickHouse'
 pagination_prev: null
 pagination_next: null
-description: 'Узнайте, как создать ИИ-агента с помощью Claude Agent SDK и MCP-сервера ClickHouse'
+description: 'Узнайте, как создать ИИ-агента с помощью Claude Agent SDK и MCP-сервером ClickHouse'
 keywords: ['ClickHouse', 'MCP', 'Claude']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать ИИ-агента с помощью Claude Agent SDK и MCP-сервера ClickHouse \{#how-to-build-an-ai-agent-with-claude-agent-sdk-and-the-clickhouse-mcp-server\}
-
-В этом руководстве вы узнаете, как создать AI-агента на базе [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview), который может взаимодействовать с
+В этом руководстве вы узнаете, как создать ИИ-агента на базе [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview), который может взаимодействовать с
 [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).
 
 :::note Пример блокнота

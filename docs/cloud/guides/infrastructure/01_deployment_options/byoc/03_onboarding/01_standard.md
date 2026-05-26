@@ -23,6 +23,10 @@ Customers are strongly recommended to prepare a **dedicated** AWS account or GCP
 
 If you need a more customized setup (for example, deploying into an existing VPC), refer to the [Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws) documentation.
 
+:::note
+A standard BYOC onboarding takes approximately 45–90 minutes end-to-end, measured from the time the CloudFormation or Terraform steps are launched to the time the first ClickHouse service is reachable.
+:::
+
 ## Request access {#request-access}
 
 To start the onboarding process, please [contact us](https://clickhouse.com/cloud/bring-your-own-cloud). Our team will guide you through the BYOC requirements, help you select the most suitable deployment options, and add your account to the allowlist.

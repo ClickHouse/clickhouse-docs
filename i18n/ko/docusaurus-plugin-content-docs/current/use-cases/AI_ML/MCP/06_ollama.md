@@ -10,12 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
-import Image from '@theme/IdealImage';
-
-# Ollama와 함께 ClickHouse MCP 서버를 사용하는 방법 \{#using-clickhouse-mcp-server-with-ollama\}
-
 > 이 가이드는 Ollama와 함께 ClickHouse MCP 서버를 사용하는 방법을 설명합니다.
 
 <VerticalStepper headerLevel="h2">

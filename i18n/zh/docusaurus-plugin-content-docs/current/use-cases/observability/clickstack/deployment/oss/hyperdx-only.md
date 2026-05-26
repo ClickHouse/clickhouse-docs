@@ -73,14 +73,8 @@ docker run -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.i
 
 ## ClickStack OpenTelemetry collector \{#otel-collector\}
 
-即使您在该栈之外自行管理 OpenTelemetry collector，我们仍然建议使用 ClickStack 提供的 collector 发行版。这样可以确保使用默认的 schema，并采用推荐的摄取最佳实践。
+即使您在该堆栈之外自行管理 OpenTelemetry collector，我们仍然建议使用 ClickStack 提供的 collector 发行版。这样可以确保使用默认的 schema，并采用推荐的摄取最佳实践。
 
 有关部署和配置独立 collector 的详细信息，请参阅 [&quot;Ingesting with OpenTelemetry&quot;](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration)。
 
 <JSONSupport />
-
-对于仅用于 HyperDX 的镜像，用户只需要设置参数 `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`，例如：
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
-```

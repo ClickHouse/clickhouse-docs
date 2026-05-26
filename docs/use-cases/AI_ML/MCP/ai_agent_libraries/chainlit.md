@@ -10,7 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build an AI agent with Chainlit and the ClickHouse MCP server
 
 This guide explores how to combine Chainlit's powerful chat interface framework 
 with the ClickHouse Model Context Protocol (MCP) Server to create interactive data

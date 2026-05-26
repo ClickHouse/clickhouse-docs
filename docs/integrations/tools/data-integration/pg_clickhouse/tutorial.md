@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'tutorial', 'taxi']
 ---
 
-# pg_clickhouse tutorial
 
 ## Overview {#overview}
 
@@ -640,7 +639,7 @@ Generally, we avoid using `SELECT *` in PostgreSQL and ClickHouse. You
 should only retrieve the columns you actually need.
 :::
 
-  [tutorial]: /tutorial "ClickHouse Advanced Tutorial"
+  [ClickHouse tutorial]: /tutorial "ClickHouse Advanced Tutorial"
   [psql]: https://www.postgresql.org/docs/current/app-psql.html
     "PostgreSQL Client Applications: psql"
   [EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html

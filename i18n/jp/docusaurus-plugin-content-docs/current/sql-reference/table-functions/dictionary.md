@@ -7,9 +7,7 @@ title: 'dictionary'
 doc_type: 'reference'
 ---
 
-# dictionary テーブル関数 \{#dictionary-table-function\}
-
-[dictionary](../statements/create/dictionary/overview.md) のデータを ClickHouse のテーブルとして扱います。[Dictionary](../../engines/table-engines/special/dictionary.md) エンジンと同様に動作します。
+[Dictionary](../statements/create/dictionary/overview.md) のデータを ClickHouse のテーブルとして表示します。[Dictionary](../../engines/table-engines/special/dictionary.md) エンジンと同様に動作します。
 
 ## 構文 \{#syntax\}
 
@@ -37,28 +35,23 @@ ClickHouse テーブルです。
 └────┴───────┘
 ```
 
-辞書を作成する：
+Dictionaryを作成する：
 
-```sql
+```sql title="Query"
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() USER 'default' TABLE 'dictionary_source_table')) LAYOUT(DIRECT());
 ```
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT * FROM dictionary('new_dictionary');
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─id─┬─value─┐
 │  0 │     0 │
 │  1 │     1 │
 └────┴───────┘
 ```
-
 
 ## 関連 \{#related\}
 

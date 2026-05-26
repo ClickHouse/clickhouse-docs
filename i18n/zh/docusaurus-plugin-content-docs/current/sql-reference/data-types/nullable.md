@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse 中 Nullable 数据类型修饰符文档'
+description: 'ClickHouse 中 Nullable 数据类型修饰符的文档'
 sidebar_label: 'Nullable(T)'
 sidebar_position: 44
 slug: /sql-reference/data-types/nullable
@@ -7,22 +7,20 @@ title: 'Nullable(T)'
 doc_type: 'reference'
 ---
 
-# Nullable(T) \{#nullablet\}
-
-允许在 `T` 类型的正常值之外，额外存储表示“缺失值”的特殊标记（[NULL](../../sql-reference/syntax.md)）。例如，类型为 `Nullable(Int8)` 的列既可以存储 `Int8` 类型的值，而没有值的行则会存储 `NULL`。
+允许在 `T` 类型的正常值之外，额外存储表示“缺失值”的特殊标记 ([NULL](../../sql-reference/syntax.md)) 。例如，类型为 `Nullable(Int8)` 的列既可以存储 `Int8` 类型的值，而没有值的行则会存储 `NULL`。
 
 `T` 不能是以下复合数据类型之一：
 
-- [Array](../../sql-reference/data-types/array.md) — 不支持
-- [Map](../../sql-reference/data-types/map.md) — 不支持
-- [Tuple](../../sql-reference/data-types/tuple.md) — 提供实验性支持*
+* [Array](../../sql-reference/data-types/array.md) — 不支持
+* [Map](../../sql-reference/data-types/map.md) — 不支持
+* [Tuple](../../sql-reference/data-types/tuple.md) — 提供实验性支持*
 
 不过，复合数据类型**可以包含** `Nullable` 类型的值，例如 `Array(Nullable(Int8))` 或 `Tuple(Nullable(String), Nullable(Int64))`。
 
 :::note Experimental: Nullable Tuples
 
 * 当启用 `allow_experimental_nullable_tuple_type = 1` 时，支持 [Nullable(Tuple(...))](../../sql-reference/data-types/tuple.md#nullable-tuple)。
-:::
+  :::
 
 `Nullable` 类型的字段不能用于表索引中。
 
@@ -42,9 +40,7 @@ doc_type: 'reference'
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE nullable (`n` Nullable(UInt32)) ENGINE = MergeTree ORDER BY tuple();
 
 INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
@@ -52,9 +48,7 @@ INSERT INTO nullable VALUES (1) (NULL) (2) (NULL);
 SELECT n.null FROM nullable;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─n.null─┐
 │      0 │
 │      1 │
@@ -62,7 +56,6 @@ SELECT n.null FROM nullable;
 │      1 │
 └────────┘
 ```
-
 
 ## 使用示例 \{#usage-example\}
 

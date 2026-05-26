@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 CrewAI 和 ClickHouse MCP 服务器构建 AI 代理 \{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\}
-
 在本指南中，你将学习如何构建一个基于 [CrewAI](https://docs.crewai.com/) 的 AI 代理，使其能够通过 [ClickHouse 的 MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse) 与
 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 

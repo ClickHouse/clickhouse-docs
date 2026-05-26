@@ -7,8 +7,6 @@ sidebar_label: 'uniqArray'
 doc_type: 'reference'
 ---
 
-# uniqArray \{#uniqarray\}
-
 ## 説明 \{#description\}
 
 [`Array`](/sql-reference/aggregate-functions/combinators#-array) コンビネータは、
@@ -43,7 +41,7 @@ FROM user_interests;
 `uniqArray` 関数は、`uniq(arrayJoin())` と同様に、すべての配列をまとめて一意な要素の数を数えます。
 この例では:
 
-* `uniqArray` は 5 を返します。これは、すべてのユーザーにわたって一意な興味（&#39;reading&#39;, &#39;gaming&#39;, &#39;music&#39;, &#39;sports&#39;, &#39;cooking&#39;）が 5 つあるためです
+* `uniqArray` は 5 を返します。これは、すべてのユーザーにわたって一意な興味 (&#39;reading&#39;, &#39;gaming&#39;, &#39;music&#39;, &#39;sports&#39;, &#39;cooking&#39;) が 5 つあるためです
 * `uniq(arrayJoin())` も 5 を返し、どちらの関数もすべての配列にわたる一意な要素数を数えることを示しています
 
 ```response title="Response"
@@ -53,7 +51,8 @@ FROM user_interests;
 ```
 
 ## 関連項目 \{#see-also\}
-- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`arrayJoin`](/sql-reference/functions/array-join)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)
+
+* [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+* [`arrayJoin`](/sql-reference/functions/array-join)
+* [`Array コンビネータ`](/sql-reference/aggregate-functions/combinators#-array)
+* [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)

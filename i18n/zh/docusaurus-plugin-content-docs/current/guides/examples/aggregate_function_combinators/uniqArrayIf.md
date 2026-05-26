@@ -7,8 +7,6 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-# uniqArrayIf \{#uniqarrayif\}
-
 ## 描述 \{#description\}
 
 可以将 [`Array`](/sql-reference/aggregate-functions/combinators#-array) 和 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
@@ -75,6 +73,7 @@ total_unique_products:       7
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+* [`Array 组合器`](/sql-reference/aggregate-functions/combinators#-array)
+* [`If 组合器`](/sql-reference/aggregate-functions/combinators#-if)

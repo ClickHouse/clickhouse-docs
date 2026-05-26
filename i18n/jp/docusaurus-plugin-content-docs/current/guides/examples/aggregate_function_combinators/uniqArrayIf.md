@@ -7,13 +7,11 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-# uniqArrayIf \{#uniqarrayif\}
-
 ## 説明 \{#description\}
 
-[`Array`](/sql-reference/aggregate-functions/combinators#-array) と [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、[`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+[`Array`](/sql-reference/aggregate-functions/combinators#-array) と [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`uniq`](/sql-reference/aggregate-functions/reference/uniq)
 関数に適用して、条件が真である行について配列内の一意な値の数をカウントするための
-集約コンビネーター関数 `uniqArrayIf` を使用できます。
+集約コンビネータ関数 `uniqArrayIf` を使用できます。
 
 :::note
 -`If` と -`Array` は組み合わせて使用できますが、`Array` を先に、その後に `If` を指定する必要があります。
@@ -78,6 +76,7 @@ total_unique_products:       7
 ```
 
 ## 関連項目 \{#see-also\}
-- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+* [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
+* [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)

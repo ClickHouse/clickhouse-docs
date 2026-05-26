@@ -1,13 +1,11 @@
 ---
-description: 'Документация по команде EXCHANGE'
+description: 'Документация по оператору EXCHANGE'
 sidebar_label: 'EXCHANGE'
 sidebar_position: 49
 slug: /sql-reference/statements/exchange
-title: 'Команда EXCHANGE'
+title: 'Оператор EXCHANGE'
 doc_type: 'reference'
 ---
-
-# Оператор EXCHANGE \{#exchange-statement\}
 
 Атомарно меняет местами имена двух таблиц или двух словарей.
 Эту задачу можно также выполнить с помощью запроса [`RENAME`](./rename.md) с использованием временного имени, но в этом случае операция не является атомарной.

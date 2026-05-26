@@ -10,20 +10,16 @@ doc_type: 'reference'
 ---
 
 | 입력 | 출력 | 별칭 |
-|-------|--------|-------|
-| ✗     | ✔      |       |
-
-
+| -- | -- | -- |
+| ✗  | ✔  |    |
 
 ## 설명 \{#description\}
 
 `LineAsStringWithNames` 형식은 [`LineAsString`](./LineAsString.md) 형식과 유사하지만, 두 개의 헤더 행을 출력합니다. 하나는 컬럼 이름을, 다른 하나는 타입을 나타냅니다.
 
-
-
 ## 사용 예제 \{#example-usage\}
 
-```sql
+```sql title="Query"
 CREATE TABLE example (
     name String,
     value Int32
@@ -42,6 +38,5 @@ John    30
 Jane    25
 Peter    35
 ```
-
 
 ## 형식 설정 \{#format-settings\}

@@ -136,9 +136,9 @@ docker run -d \
 
 ## 配置 \{#configuration\}
 
-该容器暴露 8123 端口用于 [HTTP 接口](https://clickhouse.com/docs/interfaces/http_interface/)，以及 9000 端口用于 [原生客户端](https://clickhouse.com/docs/interfaces/tcp/)。
+该容器暴露 8123 端口用于 [HTTP 接口](/interfaces/http)，以及 9000 端口用于 [原生客户端](/interfaces/tcp)。
 
-ClickHouse 的配置由名为 `config.xml` 的文件表示（[文档](https://clickhouse.com/docs/operations/configuration_files/)）
+ClickHouse 的配置由名为 `config.xml` 的文件表示 ([文档](/operations/configuration-files))
 
 ### 使用自定义配置启动服务器实例 \{#start-server-instance-with-custom-config\}
 

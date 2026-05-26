@@ -7,19 +7,16 @@ keywords: ['ネイティブプロトコル', 'TCPプロトコル', 'プロトコ
 doc_type: 'guide'
 ---
 
-# 基本 \{#basics\}
-
 :::note
 クライアントプロトコルのリファレンスは現在作成中です。
 
-ほとんどのサンプルコードは Go のみで提供されています。
+例の大半は Go のみです。
 :::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-このドキュメントでは、ClickHouse の TCP クライアント向けバイナリプロトコルについて説明します。
-
+このドキュメントでは、ClickHouse TCPクライアントのバイナリプロトコルについて説明します。
 
 ## Varint \{#varint\}
 

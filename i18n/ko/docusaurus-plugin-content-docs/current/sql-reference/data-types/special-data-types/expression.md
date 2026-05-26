@@ -7,6 +7,4 @@ title: 'Expression'
 doc_type: 'reference'
 ---
 
-# Expression \{#expression\}
-
-Expression은 고차 함수에서 람다식을 나타내는 데 사용됩니다.
+표현식은 고차 함수에서 람다를 표현하는 데 사용됩니다.

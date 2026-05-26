@@ -1,13 +1,11 @@
 ---
-description: 'Справочник по агрегатным функциям'
+description: 'Документация по агрегатным функциям'
 sidebar_label: 'Агрегатные функции'
 sidebar_position: 33
 slug: /sql-reference/aggregate-functions/
 title: 'Агрегатные функции'
 doc_type: 'reference'
 ---
-
-# Агрегатные функции \{#aggregate-functions\}
 
 Агрегатные функции работают [стандартным](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial) образом, привычным для специалистов по базам данных.
 

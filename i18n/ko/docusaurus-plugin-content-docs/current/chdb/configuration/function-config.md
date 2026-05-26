@@ -1,15 +1,13 @@
 ---
-title: '함수 수준 구성'
-sidebar_label: '함수 구성'
+title: 'FUNCTION 수준 구성'
+sidebar_label: 'FUNCTION 구성'
 slug: /chdb/configuration/function-config
-description: '함수 수준에서 실행 엔진과 Dtype 교정을 구성합니다'
-keywords: ['chdb', 'DataStore', '함수', '구성', 'Dtype', '교정']
+description: 'FUNCTION 수준에서 실행 엔진과 Dtype 교정을 구성합니다'
+keywords: ['chdb', 'DataStore', 'FUNCTION', '구성', 'Dtype', '교정']
 doc_type: 'reference'
 ---
 
-# FUNCTION 수준 구성 \{#function-level-configuration\}
-
-DataStore는 FUNCTION 수준에서 실행을 세밀하게 제어할 수 있도록 엔진 선택 및 Dtype 보정 기능을 제공합니다.
+DataStore는 엔진 선택과 Dtype 교정을 포함해 FUNCTION 수준에서 실행을 세밀하게 제어할 수 있습니다.
 
 ## FUNCTION 엔진 구성 \{#function-engine\}
 

@@ -1,13 +1,11 @@
 ---
-description: '这是 deltaLake 表函数的扩展。'
+description: '这是对 deltaLake 表函数的扩展。'
 sidebar_label: 'deltaLakeCluster'
 sidebar_position: 46
 slug: /sql-reference/table-functions/deltalakeCluster
 title: 'deltaLakeCluster'
 doc_type: 'reference'
 ---
-
-# deltaLakeCluster 表函数 \{#deltalakecluster-table-function\}
 
 这是对 [deltaLake](sql-reference/table-functions/deltalake.md) 表函数的扩展。
 

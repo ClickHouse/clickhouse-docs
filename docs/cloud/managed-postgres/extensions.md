@@ -7,9 +7,9 @@ keywords: ['postgres extensions', 'postgis', 'pgvector', 'pg_cron', 'postgresql 
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="extensions" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.extensions-beta" />
 
 Managed Postgres includes a curated set of extensions to extend the functionality of your database. Below is the list of available extensions.
 
@@ -37,11 +37,10 @@ SELECT * FROM pg_available_extensions;
 
 | Extension | Version | Description |
 |-----------|---------|-------------|
-| `address_standardizer` | 3.6.1 | Used to parse an address into constituent elements |
-| `address_standardizer-3` | 3.6.1 | Alias for address_standardizer |
-| `address_standardizer_data_us` | 3.6.1 | Address Standardizer US dataset example |
-| `address_standardizer_data_us-3` | 3.6.1 | Alias for address_standardizer_data_us |
+| `address_standardizer` | 3.6.3 | Used to parse an address into constituent elements |
+| `address_standardizer_data_us` | 3.6.3 | Address Standardizer US dataset example |
 | `adminpack` | 2.1 | Administrative functions for PostgreSQL *(PG16 only)* |
+| `age` | 1.7.0 | Apache AGE graph database extension |
 | `amcheck` | | Functions for verifying relation integrity |
 | `autoinc` | 1.0 | Functions for auto-incrementing fields |
 | `bloom` | 1.0 | Bloom access method - signature file based index |
@@ -79,18 +78,21 @@ SELECT * FROM pg_available_extensions;
 | `orafce` | 4.16 | Functions and operators that emulate a subset of functions and packages from the Oracle RDBMS |
 | `pageinspect` | 1.13 | Inspect the contents of database pages at a low level |
 | `pg_buffercache` | | Examine the shared buffer cache |
-| `pg_clickhouse` | 0.1 | Interfaces to query ClickHouse databases from PostgreSQL |
+| `pg_clickhouse` | 0.3 | Interfaces to query ClickHouse databases from PostgreSQL |
 | `pg_cron` | 1.6 | Job scheduler for PostgreSQL |
 | `pg_freespacemap` | 1.3 | Examine the free space map (FSM) |
 | `pg_hint_plan` | | Optimizer hints for PostgreSQL |
 | `pg_ivm` | 1.13 | Incremental view maintenance on PostgreSQL |
 | `pg_logicalinspect` | 1.0 | Functions to inspect logical decoding components *(PG18+)* |
-| `pg_partman` | 5.4.0 | Extension to manage partitioned tables by time or ID |
+| `pg_partman` | 5.4.3 | Extension to manage partitioned tables by time or ID |
 | `pg_prewarm` | 1.2 | Prewarm relation data |
+| `pg_re2` | 0.1 | ClickHouse-compatible regular expression functions backed by Google's RE2 |
 | `pg_repack` | 1.5.3 | Reorganize tables in PostgreSQL databases with minimal locks |
 | `pg_similarity` | 1.0 | Support similarity queries |
+| `pg_stat_ch` | 0.3 | Streams per-query execution telemetry to ClickHouse in real time |
 | `pg_stat_statements` | | Track planning and execution statistics of all SQL statements executed |
 | `pg_surgery` | 1.0 | Extension to perform surgery on a damaged relation |
+| `pg_tokenizer` | 0.1.1 | Text tokenizer used with `vchord_bm25` |
 | `pg_trgm` | 1.6 | Text similarity measurement and index searching based on trigrams |
 | `pg_visibility` | 1.2 | Examine the visibility map (VM) and page-level visibility info |
 | `pg_walinspect` | 1.1 | Functions to inspect contents of PostgreSQL Write-Ahead Log |
@@ -98,7 +100,7 @@ SELECT * FROM pg_available_extensions;
 | `pgcrypto` | 1.4 | Cryptographic functions |
 | `pglogical` | 2.4.6 | PostgreSQL Logical Replication |
 | `pglogical_origin` | 1.0.0 | Dummy extension for compatibility when upgrading from Postgres 9.4 |
-| `pgrouting` | 4.0.0 | pgRouting Extension |
+| `pgrouting` | 4.0.1 | pgRouting Extension |
 | `pgrowlocks` | 1.2 | Show row-level locking information |
 | `pgstattuple` | 1.5 | Show tuple-level statistics |
 | `pgtap` | 1.3.4 | Unit testing for PostgreSQL |
@@ -106,16 +108,11 @@ SELECT * FROM pg_available_extensions;
 | `plperlu` | 1.0 | PL/PerlU untrusted procedural language |
 | `plpgsql` | 1.0 | PL/pgSQL procedural language |
 | `plpgsql_check` | 2.8 | Extended check for plpgsql functions |
-| `postgis` | 3.6.1 | PostGIS geometry and geography spatial types and functions |
-| `postgis-3` | 3.6.1 | Alias for postgis |
-| `postgis_raster` | 3.6.1 | PostGIS raster types and functions |
-| `postgis_raster-3` | 3.6.1 | Alias for postgis_raster |
-| `postgis_sfcgal` | 3.6.1 | PostGIS SFCGAL functions |
-| `postgis_sfcgal-3` | 3.6.1 | Alias for postgis_sfcgal |
-| `postgis_tiger_geocoder` | 3.6.1 | PostGIS tiger geocoder and reverse geocoder |
-| `postgis_tiger_geocoder-3` | 3.6.1 | Alias for postgis_tiger_geocoder |
-| `postgis_topology` | 3.6.1 | PostGIS topology spatial types and functions |
-| `postgis_topology-3` | 3.6.1 | Alias for postgis_topology |
+| `postgis` | 3.6.3 | PostGIS geometry and geography spatial types and functions |
+| `postgis_raster` | 3.6.3 | PostGIS raster types and functions |
+| `postgis_sfcgal` | 3.6.3 | PostGIS SFCGAL functions |
+| `postgis_tiger_geocoder` | 3.6.3 | PostGIS tiger geocoder and reverse geocoder |
+| `postgis_topology` | 3.6.3 | PostGIS topology spatial types and functions |
 | `postgres_fdw` | 1.2 | Foreign-data wrapper for remote PostgreSQL servers |
 | `prefix` | 1.2.0 | Prefix Range module for PostgreSQL |
 | `refint` | 1.0 | Functions for implementing referential integrity (obsolete) |
@@ -124,12 +121,16 @@ SELECT * FROM pg_available_extensions;
 | `sslinfo` | 1.2 | Information about SSL certificates |
 | `tablefunc` | 1.0 | Functions that manipulate whole tables, including crosstab |
 | `tcn` | 1.0 | Triggered change notifications |
+| `tds_fdw` | 2.0.5 | Foreign data wrapper for querying a TDS database (Sybase or Microsoft SQL Server) |
 | `tsm_system_rows` | 1.0 | TABLESAMPLE method which accepts number of rows as a limit |
 | `tsm_system_time` | 1.0 | TABLESAMPLE method which accepts time in milliseconds as a limit |
+| `uint` | | Unsigned integer types |
 | `unaccent` | 1.1 | Text search dictionary that removes accents |
 | `unit` | 7 | SI units extension |
 | `uuid-ossp` | 1.1 | Generate universally unique identifiers (UUIDs) |
-| `vector` | 0.8.1 | Vector data type and ivfflat and hnsw access methods |
+| `vchord` | 1.1.1 | Vector indexing access methods for Postgres |
+| `vchord_bm25` | 0.3.0 | BM25 ranking access method for full-text search |
+| `vector` | 0.8.2 | Vector data type and ivfflat and hnsw access methods |
 | `xml2` | 1.2 | XPath querying and XSLT |
 
 ## pg_clickhouse extension {#pg-clickhouse}
@@ -137,3 +138,11 @@ SELECT * FROM pg_available_extensions;
 The `pg_clickhouse` extension is pre-installed on every Managed Postgres instance. It allows you to query ClickHouse databases directly from PostgreSQL, enabling a unified query layer for both transactions and analytics.
 
 See the [pg_clickhouse documentation](/integrations/pg_clickhouse) for setup instructions and usage details.
+
+## pg_stat_ch extension {#pg-stat-ch}
+
+The `pg_stat_ch` extension powers query-level observability for your Managed Postgres instance. It captures per-query telemetry (timings, rows, buffers, WAL, errors) and ships it into the ClickHouse Cloud UI, where it surfaces as the slow-query, error, and workload views. No setup required.
+
+## pg_re2 extension {#pg-re2}
+
+The `pg_re2` extension adds ClickHouse-compatible regex functions to Managed Postgres, backed by Google's RE2 engine. Useful when porting queries between the two or running hybrid workloads that need identical pattern-matching semantics on both sides.

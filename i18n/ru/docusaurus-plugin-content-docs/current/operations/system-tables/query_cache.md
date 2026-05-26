@@ -20,6 +20,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 * `query` ([String](../../sql-reference/data-types/)) — Строка запроса.
 * `query_id` ([String](../../sql-reference/data-types/)) — Идентификатор запроса.
+* `is_subquery` ([UInt8](../../sql-reference/data-types/)) — Указывает, является ли запись кэша запросов результатом подзапроса.
 * `result_size` ([UInt64](../../sql-reference/data-types/)) — Размер записи кэша запросов.
 * `tag` ([LowCardinality(String)](../../sql-reference/data-types/)) — Тег записи кэша запросов.
 * `stale` ([UInt8](../../sql-reference/data-types/)) — Указывает, устарела ли запись кэша запросов.

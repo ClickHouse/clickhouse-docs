@@ -65,13 +65,13 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 }
 ```
 
-设置所需的扩缩容级别。支持的配置包括 1–24 个 CPU 核心，内存 (GB) 为核心数的 4×：
+设置所需的扩缩容级别。支持的配置包括 1–32 个 CPU 核心，内存 (GB) 为核心数的 4×：
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
 {
-  "replicaCpuMillicores": 24000,
-  "replicaMemoryGb": 96
+  "replicaCpuMillicores": 32000,
+  "replicaMemoryGb": 128
 }
 EOF
 
@@ -91,8 +91,8 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 # example result:
 {
   "result": {
-    "replicaCpuMillicores": 24000,
-    "replicaMemoryGb": 96
+    "replicaCpuMillicores": 32000,
+    "replicaMemoryGb": 128
   },
   "requestId": "5a76d642-d29f-45af-a857-8c4d4b947bf0",
   "status": 200

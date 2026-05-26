@@ -1,13 +1,11 @@
 ---
-description: '`Executable` 및 `ExecutablePool` 테이블 엔진은 사용자가 작성한 스크립트가 **stdout**으로 출력하는 행을 기반으로 하는 테이블을 정의할 수 있도록 합니다.'
+description: '`Executable` 및 `ExecutablePool` 테이블 엔진을 사용하면, 사용자가 정의한 스크립트(행을 **stdout**으로 쓰는 방식)를 통해 행이 생성되는 테이블을 정의할 수 있습니다.'
 sidebar_label: 'Executable/ExecutablePool'
 sidebar_position: 40
 slug: /engines/table-engines/special/executable
 title: 'Executable 및 ExecutablePool 테이블 엔진'
 doc_type: 'reference'
 ---
-
-# Executable 및 ExecutablePool 테이블 엔진 \{#executable-and-executablepool-table-engines\}
 
 `Executable` 및 `ExecutablePool` 테이블 엔진을 사용하면, 사용자가 정의한 스크립트(행을 **stdout**으로 쓰는 방식)를 통해 행이 생성되는 테이블을 정의할 수 있습니다. 실행 스크립트는 `users_scripts` 디렉터리에 저장되며, 임의의 소스에서 데이터를 읽을 수 있습니다.
 

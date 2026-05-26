@@ -59,9 +59,3 @@ import JSONSupport from '@site/i18n/ru/docusaurus-plugin-content-docs/current/us
 </VerticalStepper>
 
 <JSONSupport />
-
-Для образа, предназначенного только для локального режима, пользователям нужно задать только параметр `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`, например,
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest
-```

@@ -53,7 +53,7 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 
 请注意，你可以直接停止使用 ClickHouse Cloud 并删除所有现有的 ClickHouse Cloud 服务。即使订阅仍然处于激活状态，由于 ClickHouse Cloud 没有任何固定的周期性费用，你也不会产生任何费用。
 
-如果你希望取消订阅，请前往云服务商控制台，在其中取消订阅续费。一旦订阅结束，所有现有服务将被停止，并会提示你添加信用卡。如果未添加信用卡，两周后所有现有服务将被删除。
+如果你希望取消订阅，请前往云服务商控制台，在其中取消订阅续费。
 
 ### 我作为 Marketplace 用户订阅了 ClickHouse Cloud，然后又取消了订阅。现在我想重新订阅，该如何操作？​ \{#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-and-then-unsubscribed-now-i-want-to-subscribe-back-what-is-the-process\}
 

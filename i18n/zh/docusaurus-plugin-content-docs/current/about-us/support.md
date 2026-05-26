@@ -3,12 +3,10 @@ slug: /about-us/support
 sidebar_label: '支持'
 title: 'ClickHouse Cloud 支持服务'
 sidebar_position: 30
-description: 'ClickHouse Cloud 支持服务相关信息'
+description: '有关 ClickHouse Cloud 支持服务的信息'
 doc_type: 'reference'
-keywords: ['支持', '帮助', '客户支持', '技术支持', '服务级别协议']
+keywords: ['支持', '帮助', '客户服务', '技术支持', '服务级别协议']
 ---
-
-# ClickHouse Cloud 支持服务 \{#clickhouse-cloud-support-services\}
 
 ClickHouse 为 ClickHouse Cloud 用户和客户提供支持服务。我们的目标是打造一支能够充分体现 ClickHouse 产品特性的支持服务团队——无与伦比的性能、易用性，以及极其快速且高质量的响应结果。详情请[访问我们的 ClickHouse Support Program](https://clickhouse.com/support/program/) 页面。
 

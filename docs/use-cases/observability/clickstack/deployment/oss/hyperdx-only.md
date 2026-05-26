@@ -76,9 +76,3 @@ Even if you're managing your own OpenTelemetry collector, independent of the oth
 For details on deploying and configuring a standalone collector see ["Ingesting with OpenTelemetry"](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration).
 
 <JSONSupport/>
-
-For the HyperDX-only image, users only need to set the `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` parameter e.g.
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
-```

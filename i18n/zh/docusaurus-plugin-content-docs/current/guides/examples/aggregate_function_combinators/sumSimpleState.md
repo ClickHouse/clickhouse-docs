@@ -7,8 +7,6 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-# sumSimpleState \{#sumsimplestate\}
-
 ## 描述 \{#description\}
 
 可以将 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum)

@@ -7,7 +7,6 @@ title: 'Arrow Flight interface'
 doc_type: 'reference'
 ---
 
-# Apache Arrow Flight Interface
 
 ## Overview {#overview}
 
@@ -20,6 +19,7 @@ Key capabilities:
 - Execute SQL queries and retrieve results in Apache Arrow format.
 - Insert data into tables using the Arrow format.
 - Query metadata (catalogs, schemas, tables, primary keys) via Flight SQL commands.
+- Create, bind, execute, and close server-side prepared statements via Flight SQL.
 - Manage sessions and settings via Flight SQL actions.
 - TLS encryption and username/password authentication.
 - Incremental result retrieval via `PollFlightInfo`.
@@ -128,6 +128,8 @@ Sessions allow setting persistent ClickHouse settings via the `SetSessionOptions
 | `arrowflight.cancel_ticket_after_do_get` | `false` | If `true`, tickets are cancelled immediately after being consumed by `DoGet`, freeing memory. |
 | `arrowflight.poll_descriptors_lifetime_seconds` | `600` | Time in seconds before poll descriptors expire. Set to `0` to disable automatic expiration. |
 | `arrowflight.cancel_flight_descriptor_after_poll_flight_info` | `false` | If `true`, poll descriptors are cancelled after being consumed by `PollFlightInfo`. |
+| `arrowflight.max_prepared_statements_per_user` | `100` | Maximum number of open prepared statements per user. Set to `0` to disable the limit. |
+| `arrowflight.prepared_statements_lifetime_seconds` | `-1` | Prepared statement lifetime mode. `> 0`: use this value as lifetime and refresh expiration on each request for both session-bound and session-less statements. `0`: disable automatic expiration. `-1`: for session-bound statements, use session timeout as lifetime and refresh it on each request; session-less statements do not expire automatically. |
 | `enable_arrow_close_session` | `true` | Allow clients to close sessions via the `x-clickhouse-session-close` header. |
 | `default_session_timeout` | `60` | Default session timeout in seconds. Also controls Bearer token expiration. |
 | `max_session_timeout` | `3600` | Maximum allowed session timeout in seconds. |
@@ -246,6 +248,8 @@ Flight SQL clients use `CommandStatementUpdate` to execute DDL/DML statements (C
 
 Only appending to existing tables is supported (`TABLE_NOT_EXIST_OPTION_FAIL` + `TABLE_EXISTS_OPTION_APPEND`). Catalogs and temporary tables are not supported for this command.
 
+`transaction_id` is not supported for `CommandStatementUpdate` or `CommandStatementIngest`. If provided, ClickHouse returns a `NotImplemented` error.
+
 :::note
 Only the `Arrow` format is accepted for data transfer. Specifying other formats in SQL (e.g., `FORMAT JSON`) results in an error.
 :::
@@ -277,6 +281,42 @@ If a setting name is unknown, the error `INVALID_NAME` is returned. If a value c
 
 Returns all current ClickHouse settings and their values for the session. Returns a map of setting names to string values (queries `system.settings` internally).
 
+#### CreatePreparedStatement {#createpreparedstatement}
+
+Creates a server-side prepared statement and returns a statement handle. The request contains the SQL query text with `?` placeholders.
+
+`transaction_id` is not supported for this action. If it is provided, ClickHouse returns a `NotImplemented` error.
+
+For query statements, the response may include:
+
+- `dataset_schema`: schema of the result set.
+- `parameter_schema`: schema of statement parameters.
+
+If schema inference fails for a valid query (for example, when replacing placeholders with `NULL` is not valid for that query), ClickHouse still creates the prepared statement and returns the handle without `dataset_schema`.
+
+Prepared statements are owned by the authenticated user, not by a single session. If you open multiple sessions as the same user, you can execute, re-bind, and close the same statement handle from any of those sessions.
+
+Other users cannot execute, bind, or close a statement handle they did not create.
+
+`arrowflight.prepared_statements_lifetime_seconds` controls expiration behavior:
+
+- `> 0`: use the configured value as statement lifetime. Expiration is refreshed on each request for both session-bound and session-less statements.
+- `0`: prepared statements do not expire automatically.
+- `-1` (default): if the statement is created in a session, its lifetime follows that session timeout and is refreshed on each request in that session. If the statement is created without a session, it does not expire automatically.
+
+Expired statements are removed and no longer count toward `arrowflight.max_prepared_statements_per_user`.
+
+#### ClosePreparedStatement {#closepreparedstatement}
+
+Closes a prepared statement and releases the associated server-side resources when the request contains a non-empty statement handle.
+
+ClickHouse also supports bulk close with `ClosePreparedStatement` when the handle is empty:
+
+- If `x-clickhouse-session-id` is present, it closes all prepared statements for the authenticated user in that session.
+- If no session ID is present, it closes only session-less prepared statements for the authenticated user.
+
+If a prepared statement is created in a session (via `x-clickhouse-session-id`), it is also closed automatically when that session is closed.
+
 ## Flight SQL Commands {#flight-sql-commands}
 
 When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arrow.apache.org/docs/format/FlightSql.html) message, ClickHouse handles the following commands:
@@ -285,35 +325,38 @@ When a `CMD` descriptor contains a serialized [Flight SQL protobuf](https://arro
 
 | Command | Description |
 |---|---|
-| `CommandStatementQuery` | Execute an arbitrary SQL query. |
+| `CommandStatementQuery` | Execute an arbitrary SQL query. `transaction_id` is not supported. |
 | `CommandGetSqlInfo` | Retrieve server metadata (name, version, Arrow version, capabilities). |
 | `CommandGetCatalogs` | List catalogs. Returns an empty result (ClickHouse does not use catalogs). |
 | `CommandGetDbSchemas` | List databases. Supports optional `db_schema_filter_pattern` (SQL `LIKE` pattern). |
 | `CommandGetTables` | List tables. Supports filters for schema, table name, table types, and optional schema inclusion. |
 | `CommandGetTableTypes` | List table engine types (from `system.table_engines`). |
 | `CommandGetPrimaryKeys` | Retrieve primary key columns for a specified table. |
+| `CommandPreparedStatementQuery` | Execute a prepared `SELECT`-style statement by handle. |
 
 ### Supported via DoPut {#flightsql-doput}
 
 | Command | Description |
 |---|---|
-| `CommandStatementUpdate` | Execute a DDL/DML statement (CREATE, INSERT, ALTER, etc.). Returns affected row count. |
-| `CommandStatementIngest` | Bulk insert Arrow data into an existing table. Only append mode is supported. |
+| `CommandStatementUpdate` | Execute a DDL/DML statement (CREATE, INSERT, ALTER, etc.). Returns affected row count. `transaction_id` is not supported. |
+| `CommandStatementIngest` | Bulk insert Arrow data into an existing table. Only append mode is supported. `transaction_id` is not supported. |
+| `CommandPreparedStatementQuery` | Bind parameter values for a prepared statement when sent via `DoPut`, then return `DoPutPreparedStatementResult` with the statement handle. Only one parameter set (one row) is accepted, and the number of bound values must exactly match the number of `?` placeholders. |
+| `CommandPreparedStatementUpdate` | Execute a prepared DDL/DML statement by handle and return affected row count. |
 
-### Not Yet Implemented {#flightsql-not-implemented}
+### Unsupported in ClickHouse {#flightsql-not-implemented}
 
-| Command | Status |
+These commands map to features that ClickHouse does not provide, so they are not supported by the Arrow Flight SQL interface.
+
+| Command | Reason |
 |---|---|
-| `CommandGetCrossReference` | Not implemented |
-| `CommandGetExportedKeys` | Not implemented |
-| `CommandGetImportedKeys` | Not implemented |
-| `CommandStatementSubstraitPlan` | Not supported (Substrait is not supported) |
-| `CommandPreparedStatementQuery` | Not implemented |
-| `CommandPreparedStatementUpdate` | Not implemented |
+| `CommandGetCrossReference` | ClickHouse is not a relational database and does not implement foreign key constraints, so cross-reference metadata is not available. |
+| `CommandGetExportedKeys` | ClickHouse is not a relational database and does not implement foreign key constraints, so exported-key metadata is not available. |
+| `CommandGetImportedKeys` | ClickHouse is not a relational database and does not implement foreign key constraints, so imported-key metadata is not available. |
+| `CommandStatementSubstraitPlan` | ClickHouse does not support Substrait plans. |
 
 ## Complete Example {#complete-example}
 
-```python
+```python title="Query"
 import pyarrow as pa
 import pyarrow.flight as flight
 
@@ -344,9 +387,7 @@ for endpoint in info.endpoints:
     print(table.to_pandas())
 ```
 
-Output:
-
-```text
+```text title="Response"
    id value
 0   1     a
 1   2     b

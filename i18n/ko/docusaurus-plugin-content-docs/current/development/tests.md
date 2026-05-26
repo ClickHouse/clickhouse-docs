@@ -7,8 +7,6 @@ title: 'ClickHouse 테스트'
 doc_type: 'guide'
 ---
 
-# ClickHouse 테스트 \{#testing-clickhouse\}
-
 ## 테스트 유형 \{#test-types\}
 
 ClickHouse에는 다음과 같은 테스트가 있습니다:

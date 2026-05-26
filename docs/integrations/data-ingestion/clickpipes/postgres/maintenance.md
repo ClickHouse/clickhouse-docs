@@ -10,7 +10,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Maintenance windows for ClickPipes for Postgres
 
 There is an upcoming maintenance window for Postgres ClickPipes scheduled on:
 - **Date:** 17 April 2025

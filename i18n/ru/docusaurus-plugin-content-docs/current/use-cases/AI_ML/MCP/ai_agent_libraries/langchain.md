@@ -10,13 +10,11 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать ИИ-агента LangChain/LangGraph с использованием MCP-сервера ClickHouse \{#how-to-build-a-langchainlanggraph-ai-agent-using-clickhouse-mcp-server\}
+В этом руководстве вы узнаете, как создать [ИИ-агента LangChain/LangGraph](https://github.com/langchain-ai/langgraph), который
+может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [MCP-сервера ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).
 
-В этом руководстве вы узнаете, как создать ИИ-агента [LangChain/LangGraph](https://github.com/langchain-ai/langgraph),
-который может взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).
-
-:::note Пример ноутбука
-Этот пример доступен в виде ноутбука в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb).
+:::note Пример notebook
+Этот пример доступен в [репозитории examples](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb) в формате notebook.
 :::
 
 ## Предварительные требования \{#prerequisites\}

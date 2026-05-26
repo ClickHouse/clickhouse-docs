@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesGroupArray \{#timeSeriesGroupArray\}
 
-도입된 버전: v25.9.0
+도입된 버전: v25.8.0
 
 시계열 데이터를 타임스탬프 기준으로 오름차순 정렬합니다.
 

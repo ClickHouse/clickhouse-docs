@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse ODBC 驱动文档'
-sidebar_label: 'ODBC 驱动'
+description: 'ClickHouse ODBC 驱动程序文档'
+sidebar_label: 'ODBC 驱动程序'
 sidebar_position: 35
 slug: /interfaces/odbc
-title: 'ODBC 驱动'
+title: 'ODBC 驱动程序'
 doc_type: 'reference'
 ---
-
-# ODBC Driver \{#odbc-driver\}
 
 ClickHouse ODBC 驱动程序提供符合标准的接口，用于将兼容 ODBC 的应用程序连接到
 ClickHouse。它实现了 ODBC API，使应用程序、BI 工具和脚本环境能够执行 SQL

@@ -52,7 +52,7 @@ Your existing services and organizations from any prior ClickHouse Cloud signups
 
 Note that you can simply stop using ClickHouse Cloud and delete all existing ClickHouse Cloud services. Even though the subscription will still be active, you won't be paying anything as ClickHouse Cloud doesn't have any recurring fees.
 
-If you want to unsubscribe, please navigate to the Cloud Provider console and cancel the subscription renewal there. Once the subscription ends, all existing services will be stopped and you will be prompted to add a credit card. If no card was added, after two weeks all existing services will be deleted.
+If you want to unsubscribe, please navigate to the Cloud Provider console and cancel the subscription renewal there.
 
 ### I subscribed to ClickHouse Cloud as a marketplace user, and then unsubscribed. Now I want to subscribe back, what is the process?​ {#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-and-then-unsubscribed-now-i-want-to-subscribe-back-what-is-the-process}
 

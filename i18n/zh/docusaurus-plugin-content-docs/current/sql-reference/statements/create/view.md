@@ -67,9 +67,68 @@ SELECT * FROM view(column1=value1, column2=value2 ...)
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
+[REFRESH ...]
 [DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
 AS SELECT ...
 [COMMENT 'comment']
+```
+
+```sql
+CREATE OR REPLACE MATERIALIZED VIEW [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
+[REFRESH ...]
+[DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
+AS SELECT ...
+[COMMENT 'comment']
+```
+
+`OR REPLACE` 和 `IF NOT EXISTS` 互斥：不能同时使用，否则会产生语法错误。
+
+### CREATE OR REPLACE MATERIALIZED VIEW \{#create-or-replace-materialized-view\}
+
+`CREATE OR REPLACE MATERIALIZED VIEW` 会以原子方式替换现有的物化视图及其内部存储表 (如果存在) 。该操作要求使用 `Atomic` 或 `Replicated` 数据库引擎。
+
+```sql
+CREATE OR REPLACE MATERIALIZED VIEW [db.]name [ON CLUSTER cluster]
+[TO [db.]target_table]
+[ENGINE = engine]
+[POPULATE]
+[REFRESH ...]
+AS SELECT ...
+```
+
+关键行为：
+
+* **不带 `TO` 子句**：旧的内部表会被删除，并创建一个新的内部表。除非指定了 `POPULATE`，否则内部表中的现有数据将会丢失。
+* **带有 `TO` 子句**：仅替换视图定义；目标表及其中的数据不受影响。
+* 与 `REFRESH`、`ON CLUSTER` 以及所有引擎选项兼容。`POPULATE` 仅支持 `Atomic` 数据库——在 `Replicated` 数据库中会被拒绝 (请参见下方关于 `POPULATE` 的说明) 。
+* 需要 `CREATE VIEW` 和 `DROP VIEW` 权限。
+
+:::note
+`CREATE OR REPLACE MATERIALIZED VIEW` 仅支持 `Atomic` 或 `Replicated` 数据库引擎。不支持 `Ordinary` 数据库引擎。
+:::
+
+**示例：**
+
+```sql
+-- Create a materialized view with an inner table
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    AS SELECT x, sum(y) AS total FROM src GROUP BY x;
+
+-- Replace with a new definition (old inner table data is lost)
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    AS SELECT x, count() AS cnt FROM src GROUP BY x;
+
+-- Replace with POPULATE to backfill from existing source data
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    POPULATE
+    AS SELECT x FROM src;
+
+-- Replace an inner-table MV with a TO-table MV (target data is preserved)
+CREATE OR REPLACE MATERIALIZED VIEW mv TO target
+    AS SELECT x FROM src;
 ```
 
 :::tip
@@ -87,11 +146,11 @@ AS SELECT ...
 :::note
 ClickHouse 中的物化视图在向目标表插入数据时使用的是**列名**而不是列顺序。如果某些列名在 `SELECT` 查询结果中不存在，ClickHouse 会使用默认值，即使该列不是 [Nullable](../../data-types/nullable.md)。一种更安全的做法是在使用物化视图时为每一列添加别名。
 
-ClickHouse 中的物化视图在实现上更类似于插入触发器。如果视图查询中包含聚合操作，它只会应用于新近插入的这一批数据。对源表中已有数据的任何修改（例如 update、delete、drop partition 等）都不会改变物化视图。
+ClickHouse 中的物化视图在实现上更类似于插入触发器。如果视图查询中包含聚合操作，它只会应用于新近插入的这一批数据。对源表中已有数据的任何修改 (例如 update、delete、drop partition 等) 都不会改变物化视图。
 
 在出现错误的情况下，ClickHouse 中的物化视图行为不是确定性的。这意味着已经写入的块会保留在目标表中，而错误之后的所有块都不会写入。
 
-默认情况下，如果向某个视图写入失败，那么对应的 INSERT 查询也会失败，并且某些数据块可能不会写入目标表。可以通过设置 `materialized_views_ignore_errors` 来改变这一行为（需要在 `INSERT` 查询中设置）。如果将 `materialized_views_ignore_errors=true`，则在向视图写入时出现的任何错误都会被忽略，所有数据块都会写入目标表。
+默认情况下，如果向某个视图写入失败，那么对应的 INSERT 查询也会失败，并且某些数据块可能不会写入目标表。可以通过设置 `materialized_views_ignore_errors` 来改变这一行为 (需要在 `INSERT` 查询中设置) 。如果将 `materialized_views_ignore_errors=true`，则在向视图写入时出现的任何错误都会被忽略，所有数据块都会写入目标表。
 
 另请注意，对于 `system.*_log` 表，`materialized_views_ignore_errors` 默认设置为 `true`。
 :::
@@ -116,7 +175,6 @@ ClickHouse 中的物化视图在实现上更类似于插入触发器。如果视
 视图看起来与普通表相同。例如，它们会出现在 `SHOW TABLES` 查询的结果中。
 
 要删除视图，请使用 [DROP VIEW](../../../sql-reference/statements/drop.md#drop-view)。尽管 `DROP TABLE` 对 VIEW 也同样可用。
-
 
 ## SQL 安全性 \{#sql_security\}
 

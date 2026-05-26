@@ -1,11 +1,10 @@
 ---
-description: 'IN 运算符（不包括 NOT IN、GLOBAL IN 和 GLOBAL NOT IN 运算符，这些在单独文档中说明）'
+description: '关于 IN 运算符的文档，不包括单独介绍的 NOT IN、GLOBAL IN 和 GLOBAL
+  NOT IN 运算符'
 slug: /sql-reference/operators/in
 title: 'IN 运算符'
 doc_type: 'reference'
 ---
-
-# IN 运算符 \{#in-operators\}
 
 `IN`、`NOT IN`、`GLOBAL IN` 和 `GLOBAL NOT IN` 运算符单独介绍，因为它们的功能较为丰富。
 
@@ -18,11 +17,48 @@ SELECT UserID IN (123, 456) FROM ...
 SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 ```
 
-如果左侧是一个被索引的单个列，而右侧是一个常量集合，系统会使用该索引来处理查询。
+如果左侧是一个被索引的单个列，而右侧是一个常量 Set，系统会使用该索引来处理查询。
 
 不要显式列出过多的值 (例如数百万个) 。如果数据集很大，请将其放入一个临时表中 (例如，参见 [External data for query processing](../../engines/table-engines/special/external-data.md) 一节) ，然后再使用子查询。
 
-运算符的右侧可以是常量表达式的集合、由常量表达式构成的元组的集合 (如上面的示例所示) ，或者是一个数据库表名，或用括号括起来的 `SELECT` 子查询。
+运算符的右侧可以是常量表达式的 Set、由常量表达式构成的元组的 Set (如上面的示例所示) ，或者是一个数据库表名，或用括号括起来的 `SELECT` 子查询。
+
+出于历史兼容性考虑，当右侧是单个 `tuple` 表达式时，根据 `IN` 运算符左侧的情况，它既可以被解释为一个值的 Set，也可以被解释为一个 Tuple 值。如果左侧是一个标量值，ClickHouse 会将这个右侧单个 `tuple` 表达式的各元素视为独立的 `IN` 值：
+
+```sql title="Query"
+SELECT
+    1 IN (tuple(1, 2)) AS one_in_tuple,
+    2 IN (tuple(1, 2)) AS two_in_tuple,
+    3 IN (tuple(1, 2)) AS three_in_tuple;
+```
+
+```text title="Response"
+┌─one_in_tuple─┬─two_in_tuple─┬─three_in_tuple─┐
+│            1 │            1 │              0 │
+└──────────────┴──────────────┴────────────────┘
+```
+
+其行为类似于 `SELECT 1 IN (1, 2)`。如果左侧也是一个元组，则右侧会被解释为元组值的 Set：
+
+```sql title="Query"
+SELECT tuple(1, 2) IN (tuple(1, 2)) AS tuple_in_tuple;
+```
+
+```text title="Response"
+┌─tuple_in_tuple─┐
+│              1 │
+└────────────────┘
+```
+
+此特殊处理仅在右侧为单个 `tuple` 表达式时适用。标量左侧无法与包含多个元组值的右侧进行匹配：
+
+```sql title="Query"
+SELECT 1 IN (tuple(1, 2), tuple(3, 4));
+```
+
+```text title="Response"
+Code: 43. DB::Exception: Unsupported types for IN. First argument type UInt8. Second argument type Tuple(Tuple(UInt8, UInt8), Tuple(UInt8, UInt8)). (ILLEGAL_TYPE_OF_ARGUMENT)
+```
 
 ClickHouse 允许 `IN` 子查询左右两侧的类型不同。
 在这种情况下，它会将右侧的值转换为左侧的类型，
@@ -32,21 +68,17 @@ ClickHouse 允许 `IN` 子查询左右两侧的类型不同。
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT '1' IN (SELECT 1);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─in('1', _subquery49)─┐
 │                    1 │
 └──────────────────────┘
 ```
 
-如果运算符右侧是表名 (例如 `UserID IN users`) ，这等价于子查询 `UserID IN (SELECT * FROM users)`。在处理随查询一同发送的外部数据时，可以使用这种方式。例如，可以将查询与一组用户 ID 一起发送，这些 ID 被加载到临时表 &#39;users&#39; 中，并需要对其进行过滤。
+如果运算符右侧是表名 (例如 `UserID IN users`) ，这等价于子查询 `UserID IN (SELECT * FROM users)`。在处理随查询一同发送的外部数据时，可以使用这种方式。例如，可以将查询与一组被加载到临时表 &#39;users&#39; 中并需要对其进行过滤的用户 ID Set 一起发送。
 
 如果运算符右侧是使用 Set 引擎 (始终驻留在 RAM 中的预先准备的数据集) 的表名，则不会在每次查询时重复创建该数据集。
 
@@ -54,7 +86,7 @@ SELECT '1' IN (SELECT 1);
 
 示例：
 
-```sql
+```sql title="Query"
 SELECT (CounterID, UserID) IN (SELECT CounterID, UserID FROM ...) FROM ...
 ```
 
@@ -63,7 +95,7 @@ SELECT (CounterID, UserID) IN (SELECT CounterID, UserID FROM ...) FROM ...
 `IN` 运算符和子查询可以出现在查询语句的任何部分，包括聚合函数和 lambda 函数中。
 示例：
 
-```sql
+```sql title="Query"
 SELECT
     EventDate,
     avg(UserID IN
@@ -77,7 +109,7 @@ GROUP BY EventDate
 ORDER BY EventDate ASC
 ```
 
-```text
+```text title="Response"
 ┌──EventDate─┬────ratio─┐
 │ 2014-03-17 │        1 │
 │ 2014-03-18 │ 0.807696 │

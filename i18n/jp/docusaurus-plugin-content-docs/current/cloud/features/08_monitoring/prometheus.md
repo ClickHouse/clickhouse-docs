@@ -23,6 +23,8 @@ import Image from '@theme/IdealImage';
 
 開始するには、[API キーを生成](/cloud/manage/openapi)してください。
 
+[Managed Postgres](/cloud/managed-postgres) サービスに対応する同等のエンドポイントをお探しの場合は、[Managed Postgres Prometheus エンドポイント](/cloud/managed-postgres/monitoring/prometheus) を参照してください。
+
 ## ClickHouse Cloud メトリクスを取得するための Prometheus エンドポイント API \{#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics\}
 
 ### API リファレンス \{#api-reference\}
@@ -331,7 +333,8 @@ instances:
 
 ## 関連ページ \{#related\}
 
-- [モニタリングの概要](/cloud/monitoring) — ClickHouse Cloud のすべてのモニタリング方法を比較します
-- [Cloud Console のモニタリング](/cloud/monitoring/cloud-console) — 外部ツールが不要な組み込みダッシュボード
-- [コミュニティおよびパートナーの統合](/cloud/monitoring/integrations) — Datadog agent の統合とコミュニティソリューション
-- [システムテーブルのクエリ](/cloud/monitoring/system-tables) — システムメトリクスへの直接的な SQL アクセス
+* [モニタリングの概要](/cloud/monitoring) — ClickHouse Cloud のすべてのモニタリング方法を比較します
+* [Cloud Console のモニタリング](/cloud/monitoring/cloud-console) — 外部ツールが不要な組み込みダッシュボード
+* [コミュニティおよびパートナーの統合](/cloud/monitoring/integrations) — Datadog agent の統合とコミュニティソリューション
+* [システムテーブルのクエリ](/cloud/monitoring/system-tables) — システムメトリクスへの直接的な SQL アクセス
+* [Managed Postgres Prometheus エンドポイント](/cloud/managed-postgres/monitoring/prometheus) — Managed Postgres サービスのメトリクスをスクレイプします

@@ -37,6 +37,7 @@ doc_type: '参考'
 * `sorting_key` ([String](../../sql-reference/data-types/)) — 表中指定的排序键表达式。
 * `primary_key` ([String](../../sql-reference/data-types/)) — 表中指定的主键表达式。
 * `sampling_key` ([String](../../sql-reference/data-types/)) — 表中指定的采样键表达式。
+* `unique_key` ([String](../../sql-reference/data-types/)) — 表中指定的唯一键表达式 (UNIQUE KEY 子句)。
 * `storage_policy` ([String](../../sql-reference/data-types/)) — 存储策略。适用于使用 MergeTree 和 Distributed 引擎的表。
 * `total_rows` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 总行数；如果可以快速确定表中的精确行数，则为该值，否则为 NULL (包括底层 Buffer 表) 。
 * `total_bytes` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 总字节数；如果能够快速确定该表在存储中的确切字节数，则返回该值，否则为 NULL (不包括任何底层存储) 。如果表将数据存储在磁盘上，则返回磁盘上已使用的空间 (即压缩后的大小) 。如果表将数据存储在内存中，则返回内存中已使用字节数的估算值。

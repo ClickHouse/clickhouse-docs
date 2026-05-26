@@ -8,8 +8,6 @@ sidebar_position: 1
 doc_type: 'guide'
 ---
 
-# ClickHouse Cloud デプロイメントのモニタリング \{#monitoring-your-clickhouse-cloud-deployment\}
-
 ## 概要 \{#overview\}
 
 このガイドでは、ClickHouse Cloud の本番デプロイメントにおけるモニタリング機能とオブザーバビリティ機能について、エンタープライズチーム向けに説明します。エンタープライズ顧客からは、標準で利用できるモニタリング機能、Datadog や AWS CloudWatch などを含む既存のオブザーバビリティスタックとの連携、さらに ClickHouse のモニタリングがセルフホスト型デプロイメントと比べてどう違うのかについて、よく質問が寄せられます。

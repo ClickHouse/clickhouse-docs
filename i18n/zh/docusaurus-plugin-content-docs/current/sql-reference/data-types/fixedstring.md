@@ -7,9 +7,7 @@ title: 'FixedString(N)'
 doc_type: 'reference'
 ---
 
-# FixedString(N) \{#fixedstringn\}
-
-一个固定长度为 `N` 字节的字符串（不是按字符数或码点数计算）。
+一个固定长度为 `N` 字节的字符串 (不是按字符数或码点数计算) 。
 
 要声明一个 `FixedString` 类型的列，请使用以下语法：
 
@@ -23,10 +21,10 @@ doc_type: 'reference'
 
 以下是一些可以高效存储在 `FixedString` 类型列中的值示例：
 
-* IP 地址的二进制表示（IPv6 使用 `FixedString(16)`）。
-* 语言代码（ru&#95;RU、en&#95;US 等）。
-* 货币代码（USD、RUB 等）。
-* 哈希的二进制表示（MD5 使用 `FixedString(16)`，SHA256 使用 `FixedString(32)`）。
+* IP 地址的二进制表示 (IPv6 使用 `FixedString(16)`) 。
+* 语言代码 (ru&#95;RU、en&#95;US 等) 。
+* 货币代码 (USD、RUB 等) 。
+* 哈希的二进制表示 (MD5 使用 `FixedString(16)`，SHA256 使用 `FixedString(32)`) 。
 
 要存储 UUID 值，请使用 [UUID](../../sql-reference/data-types/uuid.md) 数据类型。
 

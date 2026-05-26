@@ -3,13 +3,11 @@ sidebar_label: 'ClickHouse CLI'
 slug: /cloud/features/cli
 title: 'ClickHouse CLI'
 description: 'ClickHouse CLI를 사용하여 ClickHouse Cloud 서비스와 로컬 ClickHouse 인스턴스를 관리합니다'
-keywords: ['clickhousectl', 'CLI', '클라우드 관리', '로컬 개발']
+keywords: ['clickhousectl', 'CLI', 'Cloud 관리', '로컬 개발']
 doc_type: 'reference'
 ---
 
-# ClickHouse CLI \{#clickhouse-cli\}
-
-ClickHouse CLI(`clickhousectl`)는 ClickHouse Cloud 리소스 관리와 ClickHouse를 사용한 로컬 개발을 위한 통합 명령줄 도구입니다.
+ClickHouse CLI(`clickhousectl`)는 ClickHouse Cloud 리소스 관리와 ClickHouse 기반 로컬 개발을 위한 통합 명령줄 도구입니다.
 
 ## 설치 \{#installation\}
 

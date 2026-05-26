@@ -8,7 +8,6 @@ doc_type: 'guide'
 keywords: ['production', 'deployment', 'versions', 'best practices', 'upgrade strategy']
 ---
 
-# Which ClickHouse version to use in production? {#which-clickhouse-version-to-use-in-production}
 
 First of all, let's discuss why people ask this question in the first place. There are two key reasons:
 

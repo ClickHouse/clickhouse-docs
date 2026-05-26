@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'execution', 'engine', 'chdb', 'pandas', 'auto']
 doc_type: 'guide'
 ---
 
-# 実行エンジンの設定 \{#execution-engine-configuration\}
-
-DataStore は、さまざまなバックエンドを使用して処理を実行できます。本ガイドでは、エンジンの選択および設定・最適化の方法について説明します。
+DataStore は、異なるバックエンドで操作を実行できます。このガイドでは、エンジン選択を設定および最適化する方法を説明します。
 
 ## 利用可能なエンジン \{#engines\}
 

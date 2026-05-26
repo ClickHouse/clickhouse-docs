@@ -7,9 +7,7 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-# Табличная функция iceberg \{#iceberg-table-function\}
-
-Предоставляет табличный интерфейс только для чтения к таблицам Apache [Iceberg](https://iceberg.apache.org/), размещённым в Amazon S3, Azure, HDFS или в локальном хранилище.
+Предоставляет табличный интерфейс в режиме только для чтения к таблицам Apache [Iceberg](https://iceberg.apache.org/), размещённым в Amazon S3, Azure, HDFS или локально.
 
 ## Синтаксис \{#syntax\}
 
@@ -400,10 +398,6 @@ y: 993
 
 Удаление избыточных строк в формате merge-on-read также поддерживается в ClickHouse.
 Этот запрос создаст новый снимок с файлами позиционного удаления (position delete).
-
-ПРИМЕЧАНИЕ: Если вы в дальнейшем хотите читать свои таблицы с помощью других движков Iceberg (таких как Spark), вам нужно отключить настройки `output_format_parquet_use_custom_encoder` и `output_format_parquet_parallel_encoding`.
-Это связано с тем, что Spark читает эти файлы по идентификаторам полей parquet (field-ids), в то время как ClickHouse в данный момент не поддерживает запись field-ids при включённых этих флагах.
-Мы планируем исправить это поведение в будущем.
 
 ### Пример \{#example-iceberg-writes-delete\}
 

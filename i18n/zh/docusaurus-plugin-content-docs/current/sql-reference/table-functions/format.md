@@ -7,9 +7,7 @@ title: 'format'
 doc_type: 'reference'
 ---
 
-# format 表函数 \{#format-table-function\}
-
-根据指定的输入格式从参数中解析数据。如果未指定 structure 参数，则从数据中提取结构。
+根据指定的输入格式从参数中解析数据。如果未指定 structure 参数，则从数据中提取该结构。
 
 ## 语法 \{#syntax\}
 
@@ -19,9 +17,9 @@ format(format_name, [structure], data)
 
 ## 参数 \{#arguments\}
 
-- `format_name` — 数据的[格式](/sql-reference/formats)。
-- `structure` - 表结构。可选。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。
-- `data` — 字符串字面量或返回一个按指定格式组织的数据字符串的常量表达式。
+* `format_name` — 数据的[格式](/sql-reference/formats)。
+* `structure` - 表结构。可选。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。
+* `data` — 字符串字面量或返回一个按指定格式组织的数据字符串的常量表达式。
 
 ## 返回值 \{#returned_value\}
 
@@ -31,9 +29,7 @@ format(format_name, [structure], data)
 
 不带 `structure` 参数：
 
-**查询：**
-
-```sql
+```sql title="Query"
 SELECT * FROM format(JSONEachRow,
 $$
 {"a": "Hello", "b": 111}
@@ -43,9 +39,7 @@ $$
 $$)
 ```
 
-**结果：**
-
-```response
+```response title="Response"
 ┌───b─┬─a─────┐
 │ 111 │ Hello │
 │ 123 │ World │
@@ -54,9 +48,7 @@ $$)
 └─────┴───────┘
 ```
 
-**查询：**
-
-```sql
+```sql title="Query"
 DESC format(JSONEachRow,
 $$
 {"a": "Hello", "b": 111}
@@ -66,9 +58,7 @@ $$
 $$)
 ```
 
-**结果：**
-
-```response
+```response title="Response"
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ b    │ Nullable(Float64) │              │                    │         │                  │                │
 │ a    │ Nullable(String)  │              │                    │         │                  │                │
@@ -77,9 +67,7 @@ $$)
 
 使用 `structure` 参数：
 
-**查询：**
-
-```sql
+```sql title="Query"
 SELECT * FROM format(JSONEachRow, 'a String, b UInt32',
 $$
 {"a": "Hello", "b": 111}
@@ -89,9 +77,7 @@ $$
 $$)
 ```
 
-**结果：**
-
-```response
+```response title="Response"
 ┌─a─────┬───b─┐
 │ Hello │ 111 │
 │ World │ 123 │
@@ -102,4 +88,4 @@ $$)
 
 ## 相关内容 \{#related\}
 
-- [格式](../../interfaces/formats.md)
+* [格式](../../interfaces/formats.md)

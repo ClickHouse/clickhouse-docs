@@ -1,17 +1,15 @@
 ---
-description: '데이터형 이진 인코딩 규격에 대한 문서'
-sidebar_label: '데이터형 이진 인코딩 규격.'
+description: '데이터 타입 바이너리 인코딩 사양 문서'
+sidebar_label: '데이터 타입 바이너리 인코딩 사양.'
 sidebar_position: 56
 slug: /sql-reference/data-types/data-types-binary-encoding
-title: '데이터형 이진 인코딩 규격'
+title: '데이터 타입 바이너리 인코딩 사양'
 doc_type: 'reference'
 ---
 
-# 데이터 타입 바이너리 인코딩 사양 \{#data-types-binary-encoding-specification\}
-
 이 사양은 ClickHouse 데이터 타입의 바이너리 인코딩 및 디코딩에 사용할 수 있는 바이너리 형식을 설명합니다. 이 형식은 `Dynamic` 컬럼 [바이너리 직렬화](dynamic.md#binary-output-format)에 사용되며, 관련된 설정에서 입력/출력 형식인 [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) 및 [Native](/interfaces/formats/Native)에 사용할 수 있습니다.
 
-아래 표는 각 데이터 타입이 바이너리 형식으로 어떻게 표현되는지를 설명합니다. 각 데이터 타입 인코딩은 타입을 나타내는 1바이트와 선택적인 추가 정보로 구성됩니다.  
+아래 표는 각 데이터 타입이 바이너리 형식으로 어떻게 표현되는지를 설명합니다. 각 데이터 타입 인코딩은 타입을 나타내는 1바이트와 선택적인 추가 정보로 구성됩니다.
 바이너리 인코딩에서 `var_uint`는 크기가 Variable-Length Quantity 압축을 사용해 인코딩된다는 의미입니다.
 
 | ClickHouse 데이터 타입                                                                                         | 바이너리 인코딩                                                                                                                                                                                                                                                                                                                                                                   |

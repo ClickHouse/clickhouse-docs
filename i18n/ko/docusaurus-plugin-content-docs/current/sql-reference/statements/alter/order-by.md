@@ -1,13 +1,11 @@
 ---
-description: '키 표현식 변경에 대한 문서'
+description: '키 표현식 조작 문서'
 sidebar_label: 'ORDER BY'
 sidebar_position: 41
 slug: /sql-reference/statements/alter/order-by
-title: '키 표현식 변경'
+title: '키 표현식 조작하기'
 doc_type: 'reference'
 ---
-
-# 키 표현식 조작하기 \{#manipulating-key-expressions\}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY ORDER BY new_expression

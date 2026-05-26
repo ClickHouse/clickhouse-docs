@@ -35,6 +35,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 * sa-east-1 (南美)
 * ap-southeast-3 (雅加达)
 * ap-east-1 (香港)
+* mx-central-1 (墨西哥)
 
 ## Google Cloud 区域 \{#google-cloud-regions\}
 
@@ -63,6 +64,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 * Japan East (Tokyo, Saitama)
 * UAE North (Dubai)
+* Australia East (New South Wales)
 
 :::note
 需要部署到目前未列出的区域？[提交申请](https://clickhouse.com/pricing?modal=open)。
@@ -114,6 +116,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 * AWS eu-north-1 (斯德哥尔摩) **私有区域**
 * AWS eu-west-1 (爱尔兰)
 * AWS eu-west-2 (伦敦)
+* AWS mx-central-1 (墨西哥) **私有区域**
 * AWS sa-east-1 (南美) **私有区域**
 * AWS us-east-1 (弗吉尼亚北部)
 * AWS us-east-2 (俄亥俄)

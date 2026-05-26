@@ -7,13 +7,11 @@ keywords: ['chdb', 'datastore', 'pandas', 'sql', '対応', 'クエリ']
 doc_type: 'guide'
 ---
 
-# pandas ユーザー向けの SQL \{#sql-for-pandas-users\}
-
-DataStore は、pandas 風の操作を最適化された SQL にコンパイルします。本ガイドは、pandas ユーザーが自分の操作に対応する SQL を理解するのに役立ちます。
+DataStore は pandas スタイルの操作を最適化された SQL にコンパイルします。このガイドは、pandas ユーザーが各操作の背後にある SQL を理解するのに役立ちます。
 
 ## 生成された SQL の表示 \{#viewing-sql\}
 
-```python
+```python title="Query"
 from pathlib import Path
 Path("sales.csv").write_text("""\
 region,product,category,amount,quantity,price,date,order_id
@@ -40,9 +38,7 @@ query = (ds
 print(query.to_sql())
 ```
 
-出力結果:
-
-```sql
+```sql title="Response"
 SELECT region, SUM(amount) AS sum, AVG(amount) AS mean
 FROM file('sales.csv', 'CSVWithNames')
 WHERE amount > 1000
@@ -52,7 +48,6 @@ LIMIT 10
 ```
 
 ***
-
 
 ## 基本操作の対応 \{#basic\}
 

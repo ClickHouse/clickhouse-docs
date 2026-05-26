@@ -7,8 +7,6 @@ title: 'cume_dist'
 doc_type: 'reference'
 ---
 
-# cume&#95;dist \{#cume&#95;dist\}
-
 Вычисляет накопленное распределение значения в группе значений, то есть процент строк со значениями, меньшими либо равными значению текущей строки. Может использоваться для определения относительного ранга значения внутри раздела (partition).
 
 **Синтаксис**
@@ -33,9 +31,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 Следующий пример вычисляет совокупное распределение зарплат в команде:
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -55,15 +51,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        cume_dist() OVER (ORDER BY salary DESC) AS cume_dist
 FROM salaries;
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬───────────cume_dist─┐
 1. │ Robert George   │ 195000 │  0.2857142857142857 │
 2. │ Gary Chen       │ 195000 │  0.2857142857142857 │

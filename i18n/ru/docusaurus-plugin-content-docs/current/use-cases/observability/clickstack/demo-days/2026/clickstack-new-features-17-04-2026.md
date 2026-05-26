@@ -7,6 +7,7 @@ pagination_next: null
 description: 'Демо-дни ClickStack от 2026-04-17'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Демо-дни']
+sidebar_position: -20260417
 ---
 
 ## Сводка по логам и трейсам \{#summarize-logs-and-traces\}

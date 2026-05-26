@@ -3,11 +3,9 @@ title: '处理其他 JSON 格式'
 slug: /integrations/data-formats/json/other-formats
 description: '处理其他 JSON 格式'
 sidebar_label: '处理其他格式'
-keywords: ['json', 'formats', 'json formats']
+keywords: ['json', '格式', 'json 格式']
 doc_type: 'guide'
 ---
-
-# 处理其他 JSON 格式 \{#handling-other-json-formats\}
 
 此前的 JSON 数据加载示例假定使用 [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) 。这种格式会将每一行 JSON 中的键读取为列。例如：
 

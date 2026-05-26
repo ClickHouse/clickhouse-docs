@@ -1,11 +1,11 @@
 ---
-description: 'Это псевдоним для any, но он был введён для совместимости с оконными функциями (Window Functions), где иногда необходимо обрабатывать значения `NULL` (по умолчанию все агрегатные функции ClickHouse игнорируют значения `NULL`).'
+description: 'Это псевдоним для any, но он был добавлен для совместимости с
+  Window Functions, где иногда требуется обрабатывать значения `NULL` (по умолчанию
+  все агрегатные функции ClickHouse игнорируют значения NULL).'
 slug: /sql-reference/aggregate-functions/reference/first_value
 title: 'first_value'
 doc_type: 'reference'
 ---
-
-# first_value \{#first_value\}
 
 Это псевдоним для [`any`](../../../sql-reference/aggregate-functions/reference/any.md), но он был добавлен для совместимости с [оконными функциями](../../window-functions/index.md), где иногда требуется обрабатывать значения `NULL` (по умолчанию все агрегатные функции ClickHouse игнорируют значения `NULL`).
 

@@ -1,31 +1,29 @@
 ---
 sidebar_position: 1
 slug: /tips-and-tricks/materialized-views
-sidebar_label: '物化视图'
+sidebar_label: 'materialized view'
 doc_type: 'guide'
 keywords: [
-  'ClickHouse 物化视图',
-  '物化视图优化',
-  '物化视图存储问题',
-  '物化视图最佳实践',
+  'ClickHouse materialized view',
+  'materialized view优化',
+  'materialized view存储问题',
+  'materialized view最佳实践',
   '数据库聚合模式',
-  '物化视图反模式',
+  'materialized view反模式',
   '存储爆炸问题',
-  '物化视图性能',
+  'materialized view性能',
   '数据库视图优化',
   '聚合策略',
-  '物化视图故障排查',
+  'materialized view故障排查',
   '视图存储开销'
 ]
-title: '物化视图实践经验'
-description: '物化视图的真实案例、常见问题与解决方案'
+title: 'materialized view实践经验'
+description: 'materialized view的真实案例、常见问题与解决方案'
 ---
 
-# 物化视图：如何让它成为一把双刃剑 \{#materialized-views-the-double-edged-sword\}
-
-*本指南是从社区线下交流活动中总结出的经验的一部分。想获取更多真实场景的解决方案和洞察，可以[按具体问题浏览](./community-wisdom.md)。*
-*过多的数据分片正在拖慢你的数据库吗？请查看 [Too Many Parts](./too-many-parts.md) 社区洞察指南。*
-*进一步了解[物化视图](/materialized-views)。*
+*本指南是从社区 meetup 中总结出的一系列经验的一部分。若要了解更多真实场景中的解决方案和洞察，您可以[按具体问题浏览](./community-wisdom.md)。*
+*parts 过多拖慢了您的数据库？请查看 [Too Many Parts](./too-many-parts.md) 社区经验指南。*
+*进一步了解[materialized view](/materialized-views)。*
 
 ## 10 倍存储反模式 \{#storage-antipattern\}
 

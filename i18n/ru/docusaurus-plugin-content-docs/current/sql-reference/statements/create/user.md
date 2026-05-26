@@ -190,16 +190,20 @@ ClickHouse рассматривает `user_name@'address'` как имя пол
 
 ## Оператор VALID UNTIL \{#valid-until-clause\}
 
-Позволяет задать дату окончания срока действия и, при необходимости, время для метода аутентификации. В качестве параметра принимает строку. Рекомендуется использовать формат `YYYY-MM-DD [hh:mm:ss] [timezone]` для даты и времени. По умолчанию этот параметр имеет значение `'infinity'`.
+Позволяет задать дату окончания срока действия и, при необходимости, время для метода аутентификации. В качестве параметра принимает строку. Рекомендуется использовать для даты и времени формат `YYYY-MM-DD [hh:mm:ss] [timezone]`, где `[timezone]` должно быть числовым смещением, например `+09:00`, или одним из значений `UTC`, `GMT`, `Z`, `MSK`, `MSD`; именованные зоны IANA, такие как `Asia/Tokyo`, не распознаются (см. примечание ниже). По умолчанию этот параметр имеет значение `'infinity'`.
 Оператор `VALID UNTIL` может быть указан только вместе с методом аутентификации, за исключением случая, когда в запросе не задан ни один метод аутентификации. В этом случае оператор `VALID UNTIL` будет применён ко всем существующим методам аутентификации.
 
 Примеры:
 
-- `CREATE USER name1 VALID UNTIL '2025-01-01'`
-- `CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 UTC'`
-- `CREATE USER name1 VALID UNTIL 'infinity'`
-- ```CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 `Asia/Tokyo`'```
-- `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01''`
+* `CREATE USER name1 VALID UNTIL '2025-01-01'`
+* `CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 UTC'`
+* `CREATE USER name1 VALID UNTIL '2025-01-01 12:00:00 +09:00'`
+* `CREATE USER name1 VALID UNTIL 'infinity'`
+* `CREATE USER name1 IDENTIFIED WITH plaintext_password BY 'no_expiration', bcrypt_password BY 'expiration_set' VALID UNTIL '2025-01-01'`
+
+:::note
+Строка даты и времени разбирается функцией `parseDateTimeBestEffort`, которая распознаёт только токены часового пояса `UTC`, `GMT`, `Z`, `MSK`, `MSD` и числовые смещения, такие как `+09:00` или `-05:00`. Именованные часовые пояса IANA, такие как `Asia/Tokyo` или `Europe/London`, не поддерживаются, а фиксированное смещение не эквивалентно зоне IANA для регионов, где используется переход на летнее время, поэтому необходимо вычислить правильное смещение для конкретной даты, которую вы задаёте.
+:::
 
 ## GRANTEES Clause \{#grantees-clause\}
 

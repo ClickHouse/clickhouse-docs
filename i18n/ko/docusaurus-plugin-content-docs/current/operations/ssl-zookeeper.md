@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse와 ZooKeeper 간 보안 SSL/TLS 통신 구성을 위한 가이드'
+description: 'ClickHouse와 ZooKeeper 간의 보안 SSL/TLS 통신 구성 가이드'
 sidebar_label: 'ZooKeeper와의 보안 통신'
 sidebar_position: 45
 slug: /operations/ssl-zookeeper
-title: 'ClickHouse와 ZooKeeper 간 선택적 보안 통신'
+title: 'ClickHouse와 ZooKeeper 간의 선택적 보안 통신'
 doc_type: 'guide'
 ---
-
-# ClickHouse와 ZooKeeper 간의 선택적 보안 통신 \{#optional-secured-communication-between-clickhouse-and-zookeeper\}
 
 import SelfManaged from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 

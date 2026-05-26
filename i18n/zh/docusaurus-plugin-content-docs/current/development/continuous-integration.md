@@ -1,16 +1,14 @@
 ---
-description: 'ClickHouse 持续集成系统概览'
-sidebar_label: '持续集成（CI）'
+description: 'ClickHouse 持续集成系统概述'
+sidebar_label: '持续集成 (CI)'
 sidebar_position: 55
 slug: /development/continuous-integration
-title: '持续集成（CI）'
+title: '持续集成 (CI)'
 doc_type: 'reference'
 ---
 
-# 持续集成 (CI) \{#continuous-integration-ci\}
-
 当你提交一个拉取请求时，ClickHouse 的[持续集成 (CI) 系统](tests.md#test-automation)会对你的代码运行一些自动检查。
-这会在代码仓库维护者（ClickHouse 团队成员）审查了你的代码并在你的拉取请求上添加 `can be tested` 标签之后进行。
+这会在代码仓库维护者 (ClickHouse 团队成员) 审查了你的代码并在你的拉取请求上添加 `can be tested` 标签之后进行。
 检查结果会显示在 GitHub 的拉取请求页面上，如 [GitHub 检查文档](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks)所述。
 如果某项检查失败，你可能需要修复它。
 本页面概述了你可能遇到的检查，以及可以采取的修复措施。

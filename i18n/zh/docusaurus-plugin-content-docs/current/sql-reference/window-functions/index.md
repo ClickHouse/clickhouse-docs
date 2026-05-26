@@ -1,5 +1,5 @@
 ---
-description: '窗口函数概览'
+description: '窗口函数概述页面'
 sidebar_label: '窗口函数'
 sidebar_position: 1
 slug: /sql-reference/window-functions/
@@ -7,10 +7,10 @@ title: '窗口函数'
 doc_type: 'reference'
 ---
 
-# 窗口函数  \{#window-functions\}
-
 窗口函数可以在与当前行相关的一组行上执行计算。
 其中有些计算类似于使用聚合函数所能完成的计算，但窗口函数不会将多行合并为单个结果——每一行仍然会单独返回。
+
+
 
 ## 标准窗口函数 \{#standard-window-functions\}
 

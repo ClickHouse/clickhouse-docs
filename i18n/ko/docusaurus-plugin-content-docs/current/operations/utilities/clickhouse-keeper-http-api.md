@@ -7,10 +7,8 @@ title: 'Keeper HTTP API 및 대시보드'
 doc_type: 'reference'
 ---
 
-# Keeper HTTP API 및 대시보드 \{#keeper-http-api-and-dashboard\}
-
-ClickHouse Keeper는 모니터링, 상태 점검, 스토리지 관리를 위한 HTTP API와 내장 웹 대시보드를 제공합니다. 
-이 인터페이스를 사용하면 운영자가 웹 브라우저나 HTTP 클라이언트를 통해 클러스터 상태를 점검하고, 명령을 실행하며 Keeper 스토리지를 관리할 수 있습니다.
+ClickHouse Keeper는 모니터링, 상태 확인, 스토리지 관리를 위한 HTTP API와 내장 웹 대시보드를 제공합니다.
+이 인터페이스를 통해 운영자는 웹 브라우저 또는 HTTP 클라이언트로 클러스터 상태를 점검하고, 명령을 실행하며, Keeper 스토리지를 관리할 수 있습니다.
 
 ## 구성 \{#configuration\}
 

@@ -7,9 +7,7 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-# iceberg Table Function \{#iceberg-table-function\}
-
-Amazon S3, Azure, HDFS 또는 로컬에 저장된 Apache [Iceberg](https://iceberg.apache.org/) 테이블에 대해 읽기 전용 테이블형 인터페이스를 제공합니다.
+Amazon S3, Azure, HDFS 또는 로컬에 저장된 Apache [Iceberg](https://iceberg.apache.org/) 테이블에 대해 읽기 전용의 테이블형 인터페이스를 제공합니다.
 
 ## 구문 \{#syntax\}
 
@@ -404,11 +402,7 @@ y: 993
 ### DELETE \{#iceberg-writes-delete\}
 
 merge-on-read 형식에서 불필요한 행 삭제도 ClickHouse에서 지원합니다.
-이 쿼리는 position delete 파일이 포함된 새로운 스냅샷을 생성합니다.
-
-NOTE: 향후 다른 Iceberg 엔진(Spark 등)으로 테이블을 읽으려면 `output_format_parquet_use_custom_encoder` 및 `output_format_parquet_parallel_encoding` 설정을 비활성화해야 합니다.
-이는 Spark가 이러한 파일을 Parquet 필드 ID(field-id)를 기준으로 읽는 반면, ClickHouse는 해당 플래그가 활성화된 경우 현재 필드 ID 쓰기를 지원하지 않기 때문입니다.
-향후 이 동작은 수정될 예정입니다.
+이 쿼리는 포지션 삭제 파일이 포함된 새로운 스냅샷을 생성합니다.
 
 ### 예제 \{#example-iceberg-writes-delete\}
 

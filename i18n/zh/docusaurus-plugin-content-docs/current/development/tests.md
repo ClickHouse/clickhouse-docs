@@ -7,8 +7,6 @@ title: '测试 ClickHouse'
 doc_type: 'guide'
 ---
 
-# 测试 ClickHouse \{#testing-clickhouse\}
-
 ## 测试类型 \{#test-types\}
 
 ClickHouse 中有以下测试：

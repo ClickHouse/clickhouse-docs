@@ -7,8 +7,6 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap \{#maxmap\}
-
 ## 説明 \{#description\}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータを [`max`](/sql-reference/aggregate-functions/reference/max) 関数に適用すると、`maxMap` 集約コンビネータ関数を使用して、各キーごとに Map 内の最大値を計算できます。

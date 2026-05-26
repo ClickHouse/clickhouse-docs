@@ -7,8 +7,6 @@ title: 'postgresql'
 doc_type: 'reference'
 ---
 
-# postgresql 表函数 \{#postgresql-table-function\}
-
 允许对存储在远程 PostgreSQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
 ## 语法 \{#syntax\}

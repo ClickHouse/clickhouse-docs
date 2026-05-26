@@ -3,14 +3,12 @@ slug: /faq/general/olap
 title: 'Что такое OLAP?'
 toc_hidden: true
 toc_priority: 100
-description: 'Объяснение, что такое Online Analytical Processing'
+description: 'Объяснение того, что такое онлайн-аналитическая обработка'
 keywords: ['OLAP']
 doc_type: 'reference'
 ---
 
-# Что такое OLAP? \{#what-is-olap\}
-
-[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) расшифровывается как Online Analytical Processing. Это широкий термин, на который можно смотреть с двух точек зрения: технической и бизнес-ориентированной. Но на самом верхнем уровне можно просто прочитать эти слова в обратном порядке:
+[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) расшифровывается как онлайн-аналитическая обработка. Это широкий термин, на который можно смотреть с двух точек зрения: технической и бизнес-ориентированной. Но на самом верхнем уровне можно просто прочитать эти слова в обратном порядке:
 
 Processing (обработка)
 :   Некоторый исходный набор данных обрабатывается...

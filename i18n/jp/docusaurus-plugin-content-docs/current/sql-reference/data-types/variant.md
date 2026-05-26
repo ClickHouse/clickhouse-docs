@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouseのVariantデータ型に関するドキュメント'
+description: 'ClickHouse の Variant データ型に関するドキュメント'
 sidebar_label: 'Variant(T1, T2, ...)'
 sidebar_position: 40
 slug: /sql-reference/data-types/variant
 title: 'Variant(T1, T2, ...)'
 doc_type: 'reference'
 ---
-
-# Variant(T1, T2, ...) \{#variantt1-t2\}
 
 この型は、他のデータ型のユニオンを表します。型 `Variant(T1, T2, ..., TN)` は、この型の各行が
 `T1`、`T2`、...、`TN` のいずれかの型の値、またはそのどれにも該当しない値 (`NULL` 値) を持つことを意味します。

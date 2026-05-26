@@ -1,15 +1,13 @@
 ---
 sidebar_position: 1
-sidebar_label: '为什么 ClickHouse 这么快？'
-description: '它从设计之初就以速度为核心。在整个开发过程中，查询执行性能始终被放在首位，同时也兼顾了易用性、可扩展性和安全性等重要特性，从而使 ClickHouse 能够成为真正适用于生产环境的系统。'
-title: '为什么 ClickHouse 这么快？'
+sidebar_label: '为什么 ClickHouse 如此之快？'
+description: '它从设计之初就以速度为目标。在开发过程中，查询执行性能始终是重中之重，但同时也兼顾了其他重要特性，例如易用性、可扩展性和安全性，从而使 ClickHouse 成为真正可用于生产环境的系统。'
+title: '为什么 ClickHouse 如此之快？'
 slug: /concepts/why-clickhouse-is-so-fast
-keywords: ['Architecture', 'VLDB', 'Performance']
+keywords: ['架构', 'VLDB', '性能']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 为什么 ClickHouse 如此之快？ \{#why-clickhouse-is-so-fast\}
 
 除了[数据存储方式](/intro#row-oriented-vs-column-oriented-storage)之外，还有许多其他因素会影响数据库的性能。
 接下来我们将更详细地解释是什么让 ClickHouse 如此之快，尤其是与其他列式数据库相比。

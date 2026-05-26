@@ -7,11 +7,9 @@ title: 'remote, remoteSecure'
 doc_type: 'reference'
 ---
 
-# remote, remoteSecure テーブル関数 \{#remote-remotesecure-table-function\}
+テーブル関数 `remote` を使用すると、[Distributed](../../engines/table-engines/special/distributed.md) テーブルを作成せずに、リモートサーバーへその場でアクセスできます。テーブル関数 `remoteSecure` は、セキュアな接続を使用する点を除き、`remote` と同じです。
 
-テーブル関数 `remote` は、[Distributed](../../engines/table-engines/special/distributed.md) 分散テーブルを作成することなく、オンザフライでリモートサーバーにアクセスできるようにします。テーブル関数 `remoteSecure` は、セキュアな接続を使用する点を除き `remote` と同じです。
-
-どちらの関数も `SELECT` および `INSERT` クエリで使用できます。
+どちらの関数も、`SELECT` および `INSERT` クエリで使用できます。
 
 ## 構文 \{#syntax\}
 

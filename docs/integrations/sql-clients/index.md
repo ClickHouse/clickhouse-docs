@@ -6,7 +6,6 @@ title: 'SQL client integrations'
 doc_type: 'landing-page'
 ---
 
-# SQL client integrations
 
 This section describes how to integrate ClickHouse with various common database management, analysis and visualization tools.
 

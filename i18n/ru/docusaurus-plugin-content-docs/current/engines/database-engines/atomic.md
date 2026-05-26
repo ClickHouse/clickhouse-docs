@@ -1,5 +1,7 @@
 ---
-description: 'Движок `Atomic` поддерживает неблокирующее выполнение запросов `DROP TABLE` и `RENAME TABLE`, а также атомарные операции `EXCHANGE TABLES`. Движок базы данных `Atomic` используется по умолчанию.'
+description: 'Движок `Atomic` поддерживает неблокирующие запросы `DROP TABLE` и `RENAME TABLE`,
+  а также атомарные запросы `EXCHANGE TABLES`. Движок базы данных `Atomic`
+  используется по умолчанию.'
 sidebar_label: 'Atomic'
 sidebar_position: 10
 slug: /engines/database-engines/atomic
@@ -7,9 +9,7 @@ title: 'Atomic'
 doc_type: 'reference'
 ---
 
-# Atomic  \{#atomic\}
-
-Движок `Atomic` поддерживает неблокирующие запросы [`DROP TABLE`](#drop-detach-table) и [`RENAME TABLE`](#rename-table), а также атомарные запросы [`EXCHANGE TABLES`](#exchange-tables). Движок базы данных `Atomic` по умолчанию используется в open-source версии ClickHouse. 
+Движок `Atomic` поддерживает неблокирующие запросы [`DROP TABLE`](#drop-detach-table) и [`RENAME TABLE`](#rename-table), а также атомарные запросы [`EXCHANGE TABLES`](#exchange-tables). Движок базы данных `Atomic` по умолчанию используется в open-source версии ClickHouse.
 
 :::note
 В ClickHouse Cloud по умолчанию используется [движок базы данных `Shared`](/cloud/reference/shared-catalog#shared-database-engine), который также поддерживает вышеупомянутые операции.
@@ -85,4 +85,4 @@ CREATE TABLE db (n UInt64) ENGINE = Atomic SETTINGS disk=disk(type='local', path
 
 ## См. также \{#see-also\}
 
-- системная таблица [system.databases](../../operations/system-tables/databases.md)
+* системная таблица [system.databases](../../operations/system-tables/databases.md)

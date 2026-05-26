@@ -7,8 +7,6 @@ description: '시작값부터 종료값까지(종료값 포함)의 정수를 담
 doc_type: 'reference'
 ---
 
-# generate_series 테이블 함수 \{#generate_series-table-function\}
-
 별칭: `generateSeries`
 
 ## 구문 \{#syntax\}

@@ -1,12 +1,10 @@
 ---
-description: '수학 함수 문서'
-sidebar_label: '수학 함수'
+description: '수학 함수에 대한 문서'
+sidebar_label: '수학'
 slug: /sql-reference/functions/math-functions
 title: '수학 함수'
 doc_type: 'reference'
 ---
-
-# 수학 함수 \{#mathematical-functions\}
 
 {/* 
   아래 태그 안의 내용은 문서 프레임워크를 빌드할 때
@@ -716,6 +714,170 @@ SELECT intExp2(3);
 
 ```response title=Response
 8
+```
+
+## isPrime \{#isPrime\}
+
+도입 버전: v26.5.0
+
+인수가 소수이면 `1`을 반환하고, 그렇지 않으면 `0`을 반환합니다.
+
+작은 값에는 정확한 룩업 비트맵을 사용하고, 더 큰 값에는 결정론적 [Miller-Rabin test](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test)를
+사용합니다. 결과는 지원되는 모든 입력 타입에서 정확합니다.
+
+비트 폭이 더 큰 부호 없는 정수 타입(`UInt128`, `UInt256`)에는 대신 [`isProbablePrime`](/sql-reference/functions/math-functions#isProbablePrime)을 사용하십시오.
+
+**구문**
+
+```sql
+isPrime(n)
+```
+
+**인수**
+
+* `n` — 소수 여부를 검사할 부호 없는 정수입니다. [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`UInt64`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+`n`이 소수이면 `1`, 그렇지 않으면 `0`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**소수**
+
+```sql title=Query
+SELECT isPrime(17)
+```
+
+```response title=Response
+1
+```
+
+**합성수**
+
+```sql title=Query
+SELECT isPrime(18)
+```
+
+```response title=Response
+0
+```
+
+**큰 `UInt64` 소수**
+
+```sql title=Query
+SELECT isPrime(18446744073709551557)
+```
+
+```response title=Response
+1
+```
+
+**최대 `UInt64` 값**
+
+```sql title=Query
+SELECT isPrime(18446744073709551615)
+```
+
+```response title=Response
+0
+```
+
+## isProbablePrime \{#isProbablePrime\}
+
+도입 버전: v26.5.0
+
+인수가 소수일 가능성이 높으면 `1`을, 확실한 합성수이면 `0`을 반환합니다.
+
+`UInt8`, `UInt16`, `UInt32`, `UInt64`의 경우 결과는 정확하며
+[`isPrime`](/sql-reference/functions/math-functions#isPrime)과 일치합니다. `rounds` 인수는 무시됩니다.
+
+`UInt128` 및 `UInt256`의 경우 반환값 `1`은 확률적입니다. 선택적 `rounds` 인수는
+사용할 [Miller-Rabin](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test) 라운드 수를 제어합니다.
+라운드 수가 많을수록 거짓 양성 가능성은 줄어들고 실행 시간은 늘어납니다. 균일한 무작위
+증인을 사용할 때, 고정된 합성수에 대한 거짓 양성 비율은 `4^(-rounds)` 이하로 제한됩니다. 기본값 `25`는
+이 상한을 `10^-15`보다 작게 유지하며, 최대값 `256`은 이를 `10^-154`보다 작게 유지합니다.
+
+이 함수는 결정론적입니다. 즉, 증인은 `n`에서 시드가 생성되므로 동일한 `(n, rounds)` 쌍은 항상
+동일한 결과를 반환합니다. `4^(-rounds)` 상한은 균일한 무작위 증인을 사용할 때 입력별 확률을 의미합니다.
+하지만 여기서 사용하는 결정론적 시딩에서는 대신 입력 전반에 대한 비율을 설명합니다. 즉, 자신의
+증인 시퀀스를 속이는 합성수는 일관되게 `1`을 반환합니다.
+
+**구문**
+
+```sql
+isProbablePrime(n[, rounds])
+```
+
+**인수**
+
+* `n` — 소수 판별을 수행할 부호 없는 정수입니다. [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`UInt128`](/sql-reference/data-types/int-uint) 또는 [`UInt256`](/sql-reference/data-types/int-uint)
+* `rounds` — `[1, 256]` 범위의 선택적 양의 정수 상수입니다. `UInt128`/`UInt256`에 대한 Miller-Rabin 반복 횟수이며, 더 좁은 타입에서는 무시됩니다. 기본값은 `25`입니다. [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`UInt64`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+`n`이 소수일 가능성이 있으면 `1`을, 확실한 합성수이면 `0`을 반환합니다. [`UInt8`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**작은 소수**
+
+```sql title=Query
+SELECT isProbablePrime(17)
+```
+
+```response title=Response
+1
+```
+
+**작은 합성수**
+
+```sql title=Query
+SELECT isProbablePrime(18)
+```
+
+```response title=Response
+0
+```
+
+**가장 큰 `UInt64` 소수 (정확한 결과)**
+
+```sql title=Query
+SELECT isProbablePrime(18446744073709551557)
+```
+
+```response title=Response
+1
+```
+
+**메르센 소수 `M_127` (`UInt128`)**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt128('170141183460469231731687303715884105727'))
+```
+
+```response title=Response
+1
+```
+
+**Curve25519 기저 필드의 소수 `2^255 - 19` (`UInt256`)**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt256('57896044618658097711785492504343953926634992332820282019728792003956564819949'))
+```
+
+```response title=Response
+1
+```
+
+**더 빠르지만 신뢰도는 낮은 검사: 5회**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt256('57896044618658097711785492504343953926634992332820282019728792003956564819949'), 5)
+```
+
+```response title=Response
+1
 ```
 
 ## lgamma \{#lgamma\}

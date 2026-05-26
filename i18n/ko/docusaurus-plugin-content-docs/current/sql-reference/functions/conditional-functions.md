@@ -6,8 +6,6 @@ title: '조건부 함수'
 doc_type: 'reference'
 ---
 
-# 조건부 함수 \{#conditional-functions\}
-
 ## 개요 \{#overview\}
 
 ### 조건식 결과의 직접 사용 \{#using-conditional-results-directly\}

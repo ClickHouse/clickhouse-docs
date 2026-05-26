@@ -2,7 +2,7 @@
 sidebar_label: '通用 Postgres'
 description: '将任意 Postgres 实例配置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/generic
-title: '通用 Postgres 源配置指南'
+title: '通用 Postgres 数据源配置指南'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 integration:
@@ -10,11 +10,9 @@ integration:
    - category: 'clickpipes'
 ---
 
-# 通用 Postgres 源配置指南 \{#generic-postgres-source-setup-guide\}
-
 :::info
 
-如果您使用的是侧边栏中列出的受支持提供商之一，请参考该提供商的专用指南。
+如果你使用的是受支持的提供商之一 (见侧边栏) ，请参阅该提供商的专用指南。
 
 :::
 

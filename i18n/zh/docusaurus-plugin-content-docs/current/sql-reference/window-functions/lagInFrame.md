@@ -1,13 +1,11 @@
 ---
-description: 'lagInFrame 窗口函数文档'
+description: 'lagInFrame 窗口函数的文档'
 sidebar_label: 'lagInFrame'
 sidebar_position: 9
 slug: /sql-reference/window-functions/lagInFrame
 title: 'lagInFrame'
 doc_type: 'reference'
 ---
-
-# lagInFrame \{#laginframe\}
 
 返回在有序窗口帧内、位于当前行之前指定物理偏移量处那一行所计算得到的值。
 
@@ -32,8 +30,8 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **参数**
 
 * `x` — 列名。
-* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。（可选 — 默认值为 `1`）。
-* `default` — 当计算行超出窗口帧边界时返回的值。（可选 — 省略时使用列类型的默认值）。
+* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 (可选 — 默认值为 `1`) 。
+* `default` — 当计算行超出窗口帧边界时返回的值。 (可选 — 省略时使用列类型的默认值) 。
 
 **返回值**
 
@@ -43,9 +41,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 此示例查看某只股票的历史数据，并使用 `lagInFrame` 函数来计算该股票收盘价的逐日差值和百分比变动。
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE stock_prices
 (
     `date`   Date,
@@ -65,7 +61,7 @@ INSERT INTO stock_prices FORMAT Values
     ('2024-06-07', 119.77, 121.69, 118.02, 120.89, 412386000);
 ```
 
-```sql
+```sql title="Query"
 SELECT
     date,
     close,
@@ -78,9 +74,7 @@ FROM stock_prices
 ORDER BY date DESC
 ```
 
-结果：
-
-```response
+```response title="Response"
    ┌───────date─┬──close─┬─previous_day_close─┬─delta─┬─percent_change─┐
 1. │ 2024-06-07 │ 120.89 │                121 │ -0.11 │          -0.09 │
 2. │ 2024-06-06 │    121 │             122.44 │ -1.44 │          -1.18 │

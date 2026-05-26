@@ -22,6 +22,8 @@ import Image from '@theme/IdealImage';
 
 시작하려면 [API 키를 생성](/cloud/manage/openapi)하십시오.
 
+[Managed Postgres](/cloud/managed-postgres) 서비스에 해당하는 Prometheus 엔드포인트를 찾고 있다면 [Managed Postgres Prometheus 엔드포인트](/cloud/managed-postgres/monitoring/prometheus)를 참조하십시오.
+
 ## ClickHouse Cloud 메트릭 수집을 위한 Prometheus 엔드포인트 API \{#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics\}
 
 ### API reference \{#api-reference\}
@@ -334,3 +336,4 @@ instances:
 * [Cloud Console 모니터링](/cloud/monitoring/cloud-console) — 외부 도구 없이 사용할 수 있는 기본 제공 대시보드
 * [커뮤니티 및 파트너 통합](/cloud/monitoring/integrations) — Datadog agent 통합 및 커뮤니티 솔루션
 * [시스템 테이블 쿼리](/cloud/monitoring/system-tables) — 시스템 메트릭에 SQL로 직접 액세스
+* [Managed Postgres Prometheus 엔드포인트](/cloud/managed-postgres/monitoring/prometheus) — Managed Postgres 서비스의 메트릭을 스크레이프

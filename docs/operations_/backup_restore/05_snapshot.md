@@ -8,7 +8,6 @@ doc_type: 'guide'
 keywords: ['snapshot', 'backup', 'restore', 'SharedMergeTree', 'SharedSet', 'SharedJoin', 'lightweight backup', 'cloud backup', 'S3', 'Azure Blob Storage', 'snapshot_locks', 'snapshot_parts', 'experimental_lightweight_snapshot']
 ---
 
-# Snapshot backup and restore {#snapshot-backup-and-restore}
 
 Snapshot backup is a lightweight backup mode for cloud-native table engines. Instead of copying data, it writes per-part lock nodes into ClickHouse Keeper. These locks prevent the server from deleting the referenced object storage parts for as long as the snapshot is retained. The backup then records the object storage references rather than physically copying any data, making snapshot creation fast regardless of table size.
 
@@ -217,3 +216,15 @@ WHERE (name, table_id) NOT IN (
 ```
 
 This is useful for understanding the storage overhead of holding snapshots after the original data has changed or been removed.
+
+## Server settings {#server-settings}
+
+The following server configuration parameters control snapshot behavior. They are set in the server configuration file, not in SQL.
+
+| Setting | Type | Default | Changeable without restart | Description |
+|---|---|---|---|---|
+| [`max_held_snapshots`](/operations/server-configuration-parameters/settings#max_held_snapshots) | UInt64 | `0` | No | Maximum number of lightweight snapshots that can be held at the same time. `0` means unlimited. If the limit is reached, creating a new snapshot throws an exception. |
+| [`max_snapshot_commit_thread_pool_size`](/operations/server-configuration-parameters/settings#max_snapshot_commit_thread_pool_size) | UInt64 | `64` | Yes | Number of threads used to commit snapshot lock nodes into Keeper. Increase this if snapshot creation is slow on large tables with many parts. |
+| [`max_snapshot_commit_thread_pool_free_size`](/operations/server-configuration-parameters/settings#max_snapshot_commit_thread_pool_free_size) | UInt64 | `0` | Yes | If the number of idle threads in the snapshot commit pool exceeds this value, ClickHouse releases those threads and shrinks the pool. Threads are created again on demand. `0` means idle threads are never released. |
+| [`snapshot_cleaner_period`](/operations/server-configuration-parameters/settings#snapshot_cleaner_period) | UInt64 | `120` | No | How often (in seconds) the snapshot cleaner runs to remove parts that are no longer referenced by any snapshot lock. ClickHouse Cloud only. |
+| [`snapshot_cleaner_pool_size`](/operations/server-configuration-parameters/settings#snapshot_cleaner_pool_size) | UInt64 | `128` | No | Number of threads in the snapshot cleaner thread pool. ClickHouse Cloud only. |

@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse에서 쿼리 캐시 기능 사용 및 구성 방법 안내'
+description: 'ClickHouse에서 쿼리 캐시 기능을 사용하고 구성하는 방법에 대한 안내'
 sidebar_label: '쿼리 캐시'
 sidebar_position: 65
 slug: /operations/query-cache
 title: '쿼리 캐시'
 doc_type: 'guide'
 ---
-
-# 쿼리 캐시 \{#query-cache\}
 
 쿼리 캐시는 `SELECT` 쿼리를 한 번만 실행해 결과를 계산하고, 이후 동일한 쿼리 실행에 대해서는 캐시에 저장된 결과를 직접 반환합니다.
 쿼리의 유형에 따라 ClickHouse 서버의 지연 시간과 리소스 사용량을 크게 줄일 수 있습니다.
@@ -155,43 +153,75 @@ SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 쿼리 캐시에서 태그 `tag`가 지정된 항목만 제거하려면 `SYSTEM CLEAR QUERY CACHE TAG 'tag'` 구문을 사용하십시오.
 
 
-ClickHouse는 테이블 데이터를 [max_block_size](/operations/settings/settings#max_block_size) 행 단위의 블록으로 읽습니다. 필터링, 집계 등으로 인해
-결과 블록은 일반적으로 'max_block_size'보다 훨씬 작지만, 훨씬 더 커지는 경우도 있습니다. [query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results)
+## 서브쿼리 캐싱 \{#subquery-caching\}
+
+기본적으로 바깥쪽 쿼리의 `use_query_cache`는 서브쿼리로 전파되지 않습니다. 즉, 각 서브쿼리에서 캐싱 사용을 명시적으로 활성화해야 합니다:
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000 SETTINGS use_query_cache = true)
+WHERE number > 500;
+```
+
+이 예시에서는 내부 서브쿼리의 결과만 캐시됩니다. 외부 쿼리는 캐시되지 않습니다.
+
+모든 서브쿼리에 대한 캐싱을 한 번에 활성화하려면 `query_cache_for_subqueries` 설정을 사용합니다:
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000)
+WHERE number > 500
+SETTINGS use_query_cache = true, query_cache_for_subqueries = true;
+```
+
+일괄 전파가 활성화된 상태에서 특정 서브쿼리에 대한 캐싱을 명시적으로 비활성화하려면, 해당 서브쿼리에 `use_query_cache = false`를 설정합니다:
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000 SETTINGS use_query_cache = false)
+WHERE number > 500
+SETTINGS use_query_cache = true, query_cache_for_subqueries = true;
+```
+
+서브쿼리 캐시 엔트리는 [system.query&#95;cache](system-tables/query_cache.md)에서 `is_subquery = 1`로 확인할 수 있습니다. `query_cache_ttl` 설정은 서브쿼리 캐시 엔트리에도 적용되며, 서브쿼리별로 설정할 수 있습니다.
+
+ClickHouse는 테이블 데이터를 [max&#95;block&#95;size](/operations/settings/settings#max_block_size) 행 단위의 블록으로 읽습니다. 필터링, 집계 등으로 인해
+결과 블록은 일반적으로 &#39;max&#95;block&#95;size&#39;보다 훨씬 작지만, 훨씬 더 커지는 경우도 있습니다. [query&#95;cache&#95;squash&#95;partial&#95;results](/operations/settings/settings#query_cache_squash_partial_results)
 (기본적으로 활성화됨) 설정은 쿼리 결과 캐시에 삽입되기 전에 결과 블록이 매우 작은 경우 압축(squash)할지, 크기가 큰 경우
-'max_block_size' 크기의 블록들로 분할(split)할지를 제어합니다. 이렇게 하면 쿼리 캐시에 대한 쓰기 성능은 저하되지만, 캐시 엔트리의 압축률이 향상되고
+&#39;max&#95;block&#95;size&#39; 크기의 블록들로 분할(split)할지를 제어합니다. 이렇게 하면 쿼리 캐시에 대한 쓰기 성능은 저하되지만, 캐시 엔트리의 압축률이 향상되고
 나중에 쿼리 캐시에서 쿼리 결과를 제공할 때 더 자연스러운 블록 단위를 제공합니다.
 
 그 결과, 쿼리 캐시는 각 쿼리에 대해 여러 개의 (부분) 결과 블록을 저장합니다. 이러한 동작은 기본값으로 적절하지만,
-[query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results) 설정을 사용하여 비활성화할 수 있습니다.
+[query&#95;cache&#95;squash&#95;partial&#95;results](/operations/settings/settings#query_cache_squash_partial_results) 설정을 사용하여 비활성화할 수 있습니다.
 
 또한, 비결정적 함수가 포함된 쿼리의 결과는 기본적으로 캐시되지 않습니다. 이러한 함수에는 다음이 포함됩니다.
 
-- 사전(dictionary)에 접근하기 위한 함수: [`dictGet()`](/sql-reference/functions/ext-dict-functions) 등
-- XML 정의에 `<deterministic>true</deterministic>` 태그가 없는 [user-defined functions](../sql-reference/statements/create/function.md),
-- 현재 날짜나 시간을 반환하는 함수: [`now()`](../sql-reference/functions/date-time-functions.md#now),
+* 사전(dictionary)에 접근하기 위한 함수: [`dictGet()`](/sql-reference/functions/ext-dict-functions) 등
+* XML 정의에 `<deterministic>true</deterministic>` 태그가 없는 [user-defined functions](../sql-reference/statements/create/function.md),
+* 현재 날짜나 시간을 반환하는 함수: [`now()`](../sql-reference/functions/date-time-functions.md#now),
   [`today()`](../sql-reference/functions/date-time-functions.md#today),
   [`yesterday()`](../sql-reference/functions/date-time-functions.md#yesterday) 등,
-- 랜덤 값을 반환하는 함수: [`randomString()`](../sql-reference/functions/random-functions.md#randomString),
+* 랜덤 값을 반환하는 함수: [`randomString()`](../sql-reference/functions/random-functions.md#randomString),
   [`fuzzBits()`](../sql-reference/functions/random-functions.md#fuzzBits) 등,
-- 쿼리 처리에 사용되는 내부 청크의 크기와 순서에 따라 결과가 달라지는 함수:
+* 쿼리 처리에 사용되는 내부 청크의 크기와 순서에 따라 결과가 달라지는 함수:
   [`nowInBlock()`](../sql-reference/functions/date-time-functions.md#nowInBlock) 등,
   [`rowNumberInBlock()`](../sql-reference/functions/other-functions.md#rowNumberInBlock),
   [`runningDifference()`](../sql-reference/functions/other-functions.md#runningDifference),
   [`blockSize()`](../sql-reference/functions/other-functions.md#blockSize) 등,
-- 환경에 따라 달라지는 함수: [`currentUser()`](../sql-reference/functions/other-functions.md#currentUser),
+* 환경에 따라 달라지는 함수: [`currentUser()`](../sql-reference/functions/other-functions.md#currentUser),
   [`queryID()`](/sql-reference/functions/other-functions#queryID),
   [`getMacro()`](../sql-reference/functions/other-functions.md#getMacro) 등
 
 비결정적 함수가 포함된 쿼리의 결과라도 강제로 캐시하도록 하려면
-[query_cache_nondeterministic_function_handling](/operations/settings/settings#query_cache_nondeterministic_function_handling) 설정을 사용합니다.
+[query&#95;cache&#95;nondeterministic&#95;function&#95;handling](/operations/settings/settings#query_cache_nondeterministic_function_handling) 설정을 사용합니다.
 
-시스템 테이블이 관련된 쿼리의 결과(예: [system.processes](system-tables/processes.md) 또는
-[information_schema.tables](system-tables/information_schema.md))는 기본적으로 캐시되지 않습니다. 시스템 테이블이 포함된 쿼리 결과를
-강제로 캐시하려면 [query_cache_system_table_handling](/operations/settings/settings#query_cache_system_table_handling) 설정을 사용합니다.
+시스템 테이블이 관련된 쿼리의 결과(예: [system.processes](system-tables/processes.md)` 또는
+[information&#95;schema.tables](system-tables/information_schema.md))는 기본적으로 캐시되지 않습니다. 시스템 테이블이 포함된 쿼리 결과를
+강제로 캐시하려면 [query&#95;cache&#95;system&#95;table&#95;handling](/operations/settings/settings#query_cache_system_table_handling) 설정을 사용합니다.
 
 마지막으로, 보안상의 이유로 쿼리 캐시의 엔트리는 사용자 간에 공유되지 않습니다. 예를 들어, 사용자 A는 동일한 쿼리를
 해당 테이블에 ROW POLICY가 존재하지 않는 다른 사용자 B와 동일하게 실행함으로써 ROW POLICY를 우회할 수 없어야 합니다. 그러나 필요하다면
-[query_cache_share_between_users](/operations/settings/settings#query_cache_share_between_users) 설정을 사용하여 캐시 엔트리를 다른 사용자도
+[query&#95;cache&#95;share&#95;between&#95;users](/operations/settings/settings#query_cache_share_between_users) 설정을 사용하여 캐시 엔트리를 다른 사용자도
 접근 가능(즉, 공유)하도록 표시할 수 있습니다.
 
 ## 관련 콘텐츠 \{#related-content\}

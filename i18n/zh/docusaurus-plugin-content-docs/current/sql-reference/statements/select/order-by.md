@@ -1,28 +1,26 @@
 ---
-description: 'ORDER BY 子句参考文档'
+description: 'ORDER BY 子句文档'
 sidebar_label: 'ORDER BY'
 slug: /sql-reference/statements/select/order-by
 title: 'ORDER BY 子句'
 doc_type: 'reference'
 ---
 
-# ORDER BY 子句 \{#order-by-clause\}
-
 `ORDER BY` 子句包含：
 
-- 表达式列表，例如 `ORDER BY visits, search_phrase`，
-- 引用 `SELECT` 子句中列的数字列表，例如 `ORDER BY 2, 1`，或者
-- `ALL`，表示 `SELECT` 子句中的所有列，例如 `ORDER BY ALL`。
+* 表达式列表，例如 `ORDER BY visits, search_phrase`，
+* 引用 `SELECT` 子句中列的数字列表，例如 `ORDER BY 2, 1`，或者
+* `ALL`，表示 `SELECT` 子句中的所有列，例如 `ORDER BY ALL`。
 
-要禁用按列序号排序，将设置项 [enable_positional_arguments](/operations/settings/settings#enable_positional_arguments) 设为 0。
-要禁用按 `ALL` 排序，将设置项 [enable_order_by_all](/operations/settings/settings#enable_order_by_all) 设为 0。
+要禁用按列序号排序，将设置项 [enable&#95;positional&#95;arguments](/operations/settings/settings#enable_positional_arguments) 设为 0。
+要禁用按 `ALL` 排序，将设置项 [enable&#95;order&#95;by&#95;all](/operations/settings/settings#enable_order_by_all) 设为 0。
 
-`ORDER BY` 子句可以带有 `DESC`（降序）或 `ASC`（升序）修饰符，用于指定排序方向。
+`ORDER BY` 子句可以带有 `DESC` (降序) 或 `ASC` (升序) 修饰符，用于指定排序方向。
 如果未显式指定排序顺序，则默认使用 `ASC`。
 排序方向应用于单个表达式，而不是整个列表，例如 `ORDER BY Visits DESC, SearchPhrase`。
-另外，排序是区分大小写的。
+另外，排序区分大小写。
 
-对于在排序表达式上具有相同值的行，返回顺序是任意且非确定性的。
+对于排序表达式值相同的行，返回顺序是任意且非确定性的。
 如果在 `SELECT` 语句中省略 `ORDER BY` 子句，行的顺序同样是任意且非确定性的。
 
 ## 特殊值的排序 \{#sorting-of-special-values\}
@@ -72,7 +70,7 @@ doc_type: 'reference'
 
 ## 排序规则支持 \{#collation-support\}
 
-对于按 [String](../../../sql-reference/data-types/string.md) 值排序，可以指定排序规则（比较方式）。示例：`ORDER BY SearchPhrase COLLATE 'tr'` —— 按关键字升序排序，使用土耳其字母表、不区分大小写，并假定字符串采用 UTF-8 编码。在 ORDER BY 中的每个表达式都可以独立指定或不指定 `COLLATE`。如果指定了 `ASC` 或 `DESC`，则应在其后写上 `COLLATE`。使用 `COLLATE` 时，排序始终为不区分大小写。
+对于按 [String](../../../sql-reference/data-types/string.md) 值排序，可以指定排序规则 (比较方式) 。示例：`ORDER BY SearchPhrase COLLATE 'tr'` —— 按关键字升序排序，使用土耳其字母表、不区分大小写，并假定字符串采用 UTF-8 编码。在 ORDER BY 中的每个表达式都可以独立指定或不指定 `COLLATE`。如果指定了 `ASC` 或 `DESC`，则应在其后写上 `COLLATE`。使用 `COLLATE` 时，排序始终为不区分大小写。
 
 在 [LowCardinality](../../../sql-reference/data-types/lowcardinality.md)、[Nullable](../../../sql-reference/data-types/nullable.md)、[Array](../../../sql-reference/data-types/array.md) 和 [Tuple](../../../sql-reference/data-types/tuple.md) 中均支持 `COLLATE`。
 
@@ -94,15 +92,11 @@ doc_type: 'reference'
 └───┴──────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─x─┬─s────┐
 │ 3 │ 123a │
 │ 4 │ abc  │
@@ -128,15 +122,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴──────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─x─┬─s────┐
 │ 4 │ 123a │
 │ 5 │ abc  │
@@ -164,15 +154,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴───────────────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─x─┬─s─────────────┐
 │ 7 │ ['']          │
 │ 3 │ ['a']         │
@@ -200,15 +186,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─x─┬─s───┐
 │ 7 │     │
 │ 3 │ a   │
@@ -222,7 +204,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 使用 [Tuple](../../../sql-reference/data-types/tuple.md) 的示例：
 
-```response
+```response title="Response"
 ┌─x─┬─s───────┐
 │ 1 │ (1,'Z') │
 │ 2 │ (1,'z') │
@@ -234,15 +216,11 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 └───┴─────────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─x─┬─s───────┐
 │ 3 │ (1,'a') │
 │ 5 │ (1,'A') │
@@ -258,7 +236,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 如果在 `ORDER BY` 的基础上再指定足够小的 [LIMIT](../../../sql-reference/statements/select/limit.md)，会占用更少的 RAM。否则，内存消耗量与用于排序的数据量成正比。对于分布式查询处理，如果省略了 [GROUP BY](/sql-reference/statements/select/group-by)，排序会在远程服务器上部分完成，然后在发起请求的服务器上进行结果合并。这意味着对于分布式排序，需要排序的数据量可能会大于单个服务器上的可用内存。
 
-如果 RAM 不足，可以使用外部存储执行排序（在磁盘上创建临时文件）。为此使用设置 `max_bytes_before_external_sort`。如果其值为 0（默认值），则禁用外部排序。如果启用该设置，当待排序数据量达到指定的字节数时，已收集的数据会被排序并写出到一个临时文件。所有数据读取完成后，所有已排序文件会被合并并输出结果。文件会写入配置中的 `/var/lib/clickhouse/tmp/` 目录（默认路径，你也可以使用 `tmp_path` 参数更改该设置）。你也可以只在查询超出内存限制时才启用落盘，例如 `max_bytes_ratio_before_external_sort=0.6` 将只会在查询达到 `60%` 内存限制（用户/服务器）时才触发落盘到磁盘。
+如果 RAM 不足，可以使用外部存储执行排序 (在磁盘上创建临时文件) 。为此使用设置 `max_bytes_before_external_sort`。如果其值为 0 (默认值) ，则禁用外部排序。如果启用该设置，当待排序数据量达到指定的字节数时，已收集的数据会被排序并写出到一个临时文件。所有数据读取完成后，所有已排序文件会被合并并输出结果。文件会写入配置中的 `/var/lib/clickhouse/tmp/` 目录 (默认路径，你也可以使用 `tmp_path` 参数更改该设置) 。你也可以只在查询超出内存限制时才启用落盘，例如 `max_bytes_ratio_before_external_sort=0.6` 将只会在查询达到 `60%` 内存限制 (用户/服务器) 时才触发落盘到磁盘。
 
 执行查询时使用的内存可能会超过 `max_bytes_before_external_sort`。因此，该设置的取值必须显著小于 `max_memory_usage`。例如，如果你的服务器有 128 GB RAM，并且需要运行单个查询，可以将 `max_memory_usage` 设为 100 GB，将 `max_bytes_before_external_sort` 设为 80 GB。
 
@@ -266,7 +244,7 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 ## 数据读取优化 \{#optimization-of-data-reading\}
 
-如果 `ORDER BY` 表达式的前缀与表的排序键前缀一致，则可以通过使用 [optimize_read_in_order](../../../operations/settings/settings.md#optimize_read_in_order) 设置来优化查询。
+如果 `ORDER BY` 表达式的前缀与表的排序键前缀一致，则可以通过使用 [optimize&#95;read&#95;in&#95;order](../../../operations/settings/settings.md#optimize_read_in_order) 设置来优化查询。
 
 当启用 `optimize_read_in_order` 设置时，ClickHouse 服务器会使用表索引，并按照 `ORDER BY` 键的顺序读取数据。这样在指定了 [LIMIT](../../../sql-reference/statements/select/limit.md) 的情况下，可以避免读取全部数据。因此，对于数据量很大但 LIMIT 值较小的查询，请求处理会更快。
 
@@ -278,9 +256,9 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 该优化支持以下表引擎：
 
-- [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md)（包括[物化视图](/sql-reference/statements/create/view#materialized-view)），
-- [Merge](../../../engines/table-engines/special/merge.md)，
-- [Buffer](../../../engines/table-engines/special/buffer.md)
+* [MergeTree](../../../engines/table-engines/mergetree-family/mergetree.md) (包括[物化视图](/sql-reference/statements/create/view#materialized-view)) ，
+* [Merge](../../../engines/table-engines/special/merge.md)，
+* [Buffer](../../../engines/table-engines/special/buffer.md)
 
 在 `MaterializedView` 引擎的表中，该优化适用于类似 `SELECT ... FROM merge_tree_table ORDER BY pk` 的视图。但对于类似 `SELECT ... FROM view ORDER BY pk` 的查询，如果视图定义中的查询本身没有 `ORDER BY` 子句，则不支持该优化。
 
@@ -293,12 +271,12 @@ SELECT * FROM collate_test ORDER BY s ASC COLLATE 'en';
 
 如需对多个列进行填充，可在 `ORDER BY` 子句中每个字段名之后添加带有可选参数的 `WITH FILL` 修饰符。
 
-```sql
+```sql title="Query"
 ORDER BY expr [WITH FILL] [FROM const_expr] [TO const_expr] [STEP const_numeric_expr] [STALENESS const_numeric_expr], ... exprN [WITH FILL] [FROM expr] [TO expr] [STEP numeric_expr] [STALENESS numeric_expr]
 [INTERPOLATE [(col [AS expr], ... colN [AS exprN])]]
 ```
 
-`WITH FILL` 可用于数值类型字段（各种 float、decimal、int）或 Date/DateTime 类型字段。应用于 `String` 字段时，缺失值将被填充为空字符串。
+`WITH FILL` 可用于数值类型字段 (各种 float、decimal、int) 或 Date/DateTime 类型字段。应用于 `String` 字段时，缺失值将被填充为空字符串。
 当未指定 `FROM const_expr` 时，填充序列使用来自 `ORDER BY` 的 `expr` 字段最小值。
 当未指定 `TO const_expr` 时，填充序列使用来自 `ORDER BY` 的 `expr` 字段最大值。
 当指定了 `STEP const_numeric_expr` 时，对于数值类型，`const_numeric_expr` 按“原值”解释；对于 Date 类型，按 `days` 解释；对于 DateTime 类型，按 `seconds` 解释。它还支持表示时间和日期区间的 [INTERVAL](/sql-reference/data-types/special-data-types/interval/) 数据类型。
@@ -308,16 +286,14 @@ ORDER BY expr [WITH FILL] [FROM const_expr] [TO const_expr] [STEP const_numeric_
 
 不带 `WITH FILL` 的查询示例：
 
-```sql
+```sql title="Query"
 SELECT n, source FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─n─┬─source───┐
 │ 1 │ original │
 │ 4 │ original │
@@ -327,16 +303,14 @@ SELECT n, source FROM (
 
 使用 `WITH FILL` 修饰符后的同一查询：
 
-```sql
+```sql title="Query"
 SELECT n, source FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───n─┬─source───┐
 │   0 │          │
 │ 0.5 │          │
@@ -358,7 +332,7 @@ SELECT n, source FROM (
 
 示例：
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -370,9 +344,7 @@ ORDER BY
     d1 WITH FILL STEP 5;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-01 │ 1970-01-03 │          │
@@ -388,7 +360,7 @@ ORDER BY
 
 下面是修改了 `ORDER BY` 中字段后的查询：
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -400,9 +372,7 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───d1───────┬───d2───────┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-16 │ 1970-01-01 │          │
@@ -422,7 +392,7 @@ ORDER BY
 
 下面的查询在列 `d1` 上为每条填充的数据使用 1 天的 `INTERVAL` 类型：
 
-```sql
+```sql title="Query"
 SELECT
     toDate((number * 10) * 86400) AS d1,
     toDate(number * 86400) AS d2,
@@ -434,9 +404,7 @@ ORDER BY
     d2 WITH FILL;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─────────d1─┬─────────d2─┬─source───┐
 │ 1970-01-11 │ 1970-01-02 │ original │
 │ 1970-01-12 │ 1970-01-01 │          │
@@ -504,15 +472,13 @@ ORDER BY
 
 未使用 `STALENESS` 的查询示例：
 
-```sql
+```sql title="Query"
 SELECT number AS key, 5 * number value, 'original' AS source
 FROM numbers(16) WHERE key % 5 == 0
 ORDER BY key WITH FILL;
 ```
 
-结果：
-
-```text
+```text title="Response"
     ┌─key─┬─value─┬─source───┐
  1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
@@ -535,15 +501,13 @@ ORDER BY key WITH FILL;
 
 对同一查询应用 `STALENESS 3` 后：
 
-```sql
+```sql title="Query"
 SELECT number AS key, 5 * number value, 'original' AS source
 FROM numbers(16) WHERE key % 5 == 0
 ORDER BY key WITH FILL STALENESS 3;
 ```
 
-结果：
-
-```text
+```text title="Response"
     ┌─key─┬─value─┬─source───┐
  1. │   0 │     0 │ original │
  2. │   1 │     0 │          │
@@ -562,16 +526,14 @@ ORDER BY key WITH FILL STALENESS 3;
 
 未使用 `INTERPOLATE` 的查询示例：
 
-```sql
+```sql title="Query"
 SELECT n, source, inter FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
 │ 0.5 │          │     0 │
@@ -591,16 +553,14 @@ SELECT n, source, inter FROM (
 
 应用 `INTERPOLATE` 后的同一查询：
 
-```sql
+```sql title="Query"
 SELECT n, source, inter FROM (
    SELECT toFloat32(number % 10) AS n, 'original' AS source, number AS inter
    FROM numbers(10) WHERE number % 3 = 1
 ) ORDER BY n WITH FILL FROM 0 TO 5.51 STEP 0.5 INTERPOLATE (inter AS inter + 1);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌───n─┬─source───┬─inter─┐
 │   0 │          │     0 │
 │ 0.5 │          │     0 │
@@ -668,8 +628,8 @@ INTERPOLATE ( value AS 9999 )
 ```
 
 在这里，`value` 列被填充值为 `9999`，只是为了让填充的行更加显眼。
-此行为通过设置 `use_with_fill_by_sorting_prefix` 参数来控制（该参数默认启用）。
+此行为通过设置 `use_with_fill_by_sorting_prefix` 参数来控制 (该参数默认启用) 。
 
 ## 相关内容 \{#related-content\}
 
-- 博客文章：[在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* 博客文章：[在 ClickHouse 中处理时间序列数据](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

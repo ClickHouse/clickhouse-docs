@@ -331,7 +331,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Managed Postgres (Preview)',
+      label: 'Managed Postgres (Beta)',
       collapsed: true,
       collapsible: true,
       className: 'top-nav-item',
@@ -339,6 +339,7 @@ const sidebars = {
       items: [
         'cloud/managed-postgres/overview',
         'cloud/managed-postgres/quickstart',
+        'cloud/managed-postgres/pricing',
         'cloud/managed-postgres/connection',
         'cloud/managed-postgres/clickhouse-integration',
         'cloud/managed-postgres/high-availability',
@@ -351,6 +352,19 @@ const sidebars = {
         'cloud/managed-postgres/upgrades',
         'cloud/managed-postgres/benchmarks',
         'cloud/managed-postgres/openapi',
+        {
+          type: 'category',
+          label: 'Monitoring',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'cloud/managed-postgres/monitoring/overview',
+            'cloud/managed-postgres/monitoring/dashboard',
+            'cloud/managed-postgres/monitoring/query-insights',
+            'cloud/managed-postgres/monitoring/prometheus',
+            'cloud/managed-postgres/monitoring/metrics',
+          ],
+        },
         'cloud/managed-postgres/faq',
         {
           type: 'category',
@@ -358,10 +372,12 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
+            'cloud/managed-postgres/migrations/clickpipes',
+            'cloud/managed-postgres/migrations/peerdb',
             'cloud/managed-postgres/migrations/pg_dump-pg_restore',
             'cloud/managed-postgres/migrations/logical-replication',
-            'cloud/managed-postgres/migrations/peerdb',
             'cloud/managed-postgres/migrations/data-validation',
+            'cloud/managed-postgres/migrations/faq',
           ],
         },
       ],
@@ -565,6 +581,7 @@ const sidebars = {
           },
           items: [
             'integrations/language-clients/go/configuration',
+            'integrations/language-clients/go/config-reference',
             'integrations/language-clients/go/clickhouse-api',
             'integrations/language-clients/go/database-sql-api',
             'integrations/language-clients/go/data-types',
@@ -854,6 +871,7 @@ const sidebars = {
             'integrations/data-ingestion/clickpipes/programmatic-access/terraform',
           ],
         },
+        'integrations/data-ingestion/clickpipes/monitoring',
         'integrations/data-ingestion/clickpipes/aws-privatelink',
         'integrations/data-ingestion/dbms/dynamodb/index',
       ],
@@ -1058,6 +1076,7 @@ const sidebars = {
       },
       items: [
         'integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
+        'integrations/data-ingestion/etl-tools/apify-and-clickhouse',
         {
           type: 'category',
           label: 'Apache Spark',
@@ -1935,6 +1954,7 @@ const sidebars = {
             'use-cases/observability/clickstack/ingesting-data/vector',
             'use-cases/observability/clickstack/ingesting-data/collector',
             'use-cases/observability/clickstack/ingesting-data/schemas',
+            'use-cases/observability/clickstack/ingesting-data/schema/map-vs-json',
             'use-cases/observability/clickstack/ingesting-data/trace-sampling',
             {
               type: 'category',
@@ -2044,6 +2064,7 @@ const sidebars = {
           ],
         },
         'use-cases/observability/clickstack/api-reference',
+        'use-cases/observability/clickstack/mcp',
         'use-cases/observability/clickstack/faq',
         {
           type: 'category',

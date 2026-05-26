@@ -1,13 +1,11 @@
 ---
-description: 'EXCEPT 절에 대한 문서로, 첫 번째 쿼리 결과에서 두 번째 쿼리 결과를 제외한 행만 반환합니다.'
+description: '두 번째 쿼리에는 없는 첫 번째 쿼리의 결과 행만 반환하는 EXCEPT 절에 대한 문서입니다.'
 sidebar_label: 'EXCEPT'
 slug: /sql-reference/statements/select/except
 title: 'EXCEPT 절'
-keywords: ['EXCEPT', '절']
+keywords: ['EXCEPT', 'clause']
 doc_type: 'reference'
 ---
-
-# EXCEPT 절 \{#except-clause\}
 
 > `EXCEPT` 절은 첫 번째 쿼리의 결과 중 두 번째 쿼리에는 없는 행만 반환합니다.
 
@@ -92,23 +90,20 @@ LIMIT 5
 11. │ type        │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
 12. │ value       │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
     └─────────────┴──────────────────────────────────────────────────────────────────────────┴──────┴─────┴─────────┴───────┘
+
+   ┌─name────────────────────┬─value──────┬─changed─┬─min──┬─max──┬─type────┬─is_obsolete─┬─tier───────┐
+1. │ dialect                 │ clickhouse │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ Dialect │           0 │ Production │
+2. │ min_compress_block_size │ 65536      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+3. │ max_compress_block_size │ 1048576    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+4. │ max_block_size          │ 65409      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+5. │ max_insert_block_size   │ 1048449    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+   └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 ```
 
-┌─name────────────────────┬─value──────┬─changed─┬─min──┬─max──┬─type────┬─is&#95;obsolete─┬─tier───────┐
+### 암호화폐 데이터와 함께 `EXCEPT` 및 `INTERSECT` 사용하기 \{#using-except-and-intersect-with-cryptocurrency-data\}
 
-1. │ dialect                 │ clickhouse │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ Dialect │           0 │ 운영        │
-2. │ min&#95;compress&#95;block&#95;size │ 65536      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ 운영        │
-3. │ max&#95;compress&#95;block&#95;size │ 1048576    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ 운영        │
-4. │ max&#95;block&#95;size          │ 65409      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ 운영        │
-5. │ max&#95;insert&#95;block&#95;size   │ 1048449    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ 운영        │
-   └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
-
-````
-
-### Using `EXCEPT` and `INTERSECT` with Cryptocurrency Data {#using-except-and-intersect-with-cryptocurrency-data}
-
-`EXCEPT` and `INTERSECT` can often be used interchangeably with different Boolean logic, and they are both useful if you have two tables that share a common column (or columns).
-For example, suppose we have a few million rows of historical cryptocurrency data that contains trade prices and volume:
+`EXCEPT`와 `INTERSECT`는 Boolean 로직에 따라 서로 대체해서 사용할 수 있는 경우가 많으며, 공통 컬럼(또는 여러 컬럼)을 공유하는 두 개의 테이블이 있을 때 모두 유용합니다.
+예를 들어, 거래 가격과 거래량이 포함된 과거 암호화폐 데이터 수백만 행이 있다고 가정해 보겠습니다:
 
 ```sql title="Query"
 CREATE TABLE crypto_prices
@@ -134,7 +129,7 @@ SELECT * FROM crypto_prices
 WHERE crypto_name = 'Bitcoin'
 ORDER BY trade_date DESC
 LIMIT 10;
-````
+```
 
 ```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
@@ -153,7 +148,7 @@ LIMIT 10;
 
 이제 `holdings`라는 이름의 테이블이 있고, 이 테이블에는 보유 중인 암호화폐 목록과 각 암호화폐의 코인 수가 저장되어 있다고 가정해 보겠습니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,
@@ -189,7 +184,7 @@ WHERE price < 10;
 
 이는 보유 중인 4종의 암호화폐 가운데, 이 예제에서 사용한 제한된 데이터를 기준으로 할 때 비트코인만이 단 한 번도 $10 아래로 떨어진 적이 없다는 뜻입니다.
 
-### `EXCEPT DISTINCT` 사용하기 \{#using-except-and-intersect-with-cryptocurrency-data\}
+### `EXCEPT DISTINCT` 사용하기 \{#using-except-distinct\}
 
 이전 쿼리의 결과에서 비트코인 보유분이 여러 행으로 나타났다는 점에 유의하십시오. 결과에서 중복된 행을 제거하려면 `EXCEPT`에 `DISTINCT`를 추가하면 됩니다:
 

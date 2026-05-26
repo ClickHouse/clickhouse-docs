@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'パフォーマンス', 'モード', 'compat', 
 doc_type: 'guide'
 ---
 
-# パフォーマンスモード \{#performance-mode\}
-
-DataStore には 2 つの互換モードがあり、出力を pandas 互換の形式に整形するか、生の SQL によるパフォーマンスを最適化するかを制御します。
+DataStore には 2 つの互換モードがあり、出力を pandas 互換の形式にするか、生の SQL のパフォーマンス向けに最適化するかを制御します。
 
 ## 概要 \{#overview\}
 

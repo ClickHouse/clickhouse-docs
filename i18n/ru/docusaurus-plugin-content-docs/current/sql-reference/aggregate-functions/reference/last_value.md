@@ -1,12 +1,10 @@
 ---
-description: 'Выбирает последнее встреченное значение, аналогично `anyLast`, но может
-  принимать значение NULL.'
+description: 'Выбирает последнее встреченное значение, аналогично `anyLast`, но допускает
+  значение NULL.'
 slug: /sql-reference/aggregate-functions/reference/last_value
 title: 'last_value'
 doc_type: 'reference'
 ---
-
-# last_value \{#last_value\}
 
 Выбирает последнее встреченное значение, аналогично `anyLast`, но допускает значение NULL.
 Чаще всего используется с [оконными функциями](../../window-functions/index.md).

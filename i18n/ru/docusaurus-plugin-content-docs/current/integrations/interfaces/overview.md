@@ -1,15 +1,13 @@
 ---
-description: 'Обзор сетевых интерфейсов, драйверов и инструментов подключения к
+description: 'Обзор сетевых интерфейсов, драйверов и инструментов для подключения к
   ClickHouse'
-keywords: ['clickhouse', 'network', 'interfaces', 'http', 'tcp', 'grpc', 'command-line',
-  'client', 'jdbc', 'odbc', 'driver']
+keywords: ['clickhouse', 'сеть', 'интерфейсы', 'http', 'tcp', 'grpc', 'командная строка',
+  'клиент', 'jdbc', 'odbc', 'драйвер']
 sidebar_label: 'Обзор'
 slug: /interfaces/overview
 title: 'Драйверы и интерфейсы'
 doc_type: 'reference'
 ---
-
-# Драйверы и интерфейсы \{#drivers-and-interfaces\}
 
 ClickHouse предоставляет два сетевых интерфейса (их при необходимости можно защитить с помощью TLS для повышения безопасности):
 

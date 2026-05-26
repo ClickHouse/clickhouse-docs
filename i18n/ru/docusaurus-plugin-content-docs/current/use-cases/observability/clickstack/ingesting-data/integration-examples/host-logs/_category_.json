@@ -1,5 +1,5 @@
 {
-  "label": "Логи хоста",
   "collapsed": true,
-  "collapsible": true
+  "collapsible": true,
+  "label": "Логи хоста"
 }

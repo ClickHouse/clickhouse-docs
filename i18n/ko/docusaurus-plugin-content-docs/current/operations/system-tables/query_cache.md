@@ -20,6 +20,7 @@ import SystemTableCloud from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
 * `query` ([String](../../sql-reference/data-types/)) — 쿼리 문자열.
 * `query_id` ([String](../../sql-reference/data-types/)) — 쿼리의 ID.
+* `is_subquery` ([UInt8](../../sql-reference/data-types/)) — 쿼리 캐시 항목이 서브쿼리 결과인지 여부.
 * `result_size` ([UInt64](../../sql-reference/data-types/)) — 쿼리 캐시 항목의 크기.
 * `tag` ([LowCardinality(String)](../../sql-reference/data-types/)) — 쿼리 캐시 항목의 태그.
 * `stale` ([UInt8](../../sql-reference/data-types/)) — 쿼리 캐시 항목이 오래되었는지 여부.

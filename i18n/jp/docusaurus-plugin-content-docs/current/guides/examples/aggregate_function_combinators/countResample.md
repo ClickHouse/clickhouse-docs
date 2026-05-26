@@ -7,11 +7,9 @@ sidebar_label: 'countResample'
 doc_type: 'reference'
 ---
 
-# countResample \{#countResample\}
-
 ## 説明 \{#description\}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 コンビネータは、[`count`](/sql-reference/aggregate-functions/reference/count)
 集約関数に適用して、指定したキー列の値を固定数 (`N`) の区間に分割してカウントできます。
 
@@ -55,5 +53,6 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 ```
 
 ## 関連項目 \{#see-also\}
-- [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample コンビネータ`](/sql-reference/aggregate-functions/combinators#-resample)
+
+* [`count`](/sql-reference/aggregate-functions/reference/count)
+* [`Resample コンビネータ`](/sql-reference/aggregate-functions/combinators#-resample)

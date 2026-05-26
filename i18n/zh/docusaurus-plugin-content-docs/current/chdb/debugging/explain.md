@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'explain', 'execution', 'plan', 'sql']
 doc_type: 'reference'
 ---
 
-# explain() 方法 \{#explain-method\}
-
-`explain()` 方法会显示 DataStore 查询的执行计划，帮助你理解将执行哪些操作以及会生成哪些 SQL。
+`explain()` 方法会显示 DataStore 查询的执行计划，帮助您了解将执行哪些操作，以及会生成哪些 SQL。
 
 ## 基本用法 \{#basic\}
 

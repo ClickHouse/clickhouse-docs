@@ -7,8 +7,6 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-# quantilesTimingIf \{#quantilestimingif\}
-
 ## 描述 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)

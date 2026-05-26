@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать AI-агента с помощью Microsoft Agent framework и ClickHouse MCP server \{#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server\}
-
 В этом руководстве вы узнаете, как создать AI-агента на основе [Microsoft Agent framework](https://github.com/microsoft/agent-framework), который может взаимодействовать с
 [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) с помощью [ClickHouse MCP server](https://github.com/ClickHouse/mcp-clickhouse).
 

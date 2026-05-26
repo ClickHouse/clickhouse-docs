@@ -1,5 +1,5 @@
 ---
-description: 'Memory エンジンはデータを圧縮せずに RAM 上に保持します。データは取り込まれたときの形式そのままで保存されます。言い換えると、このテーブルからの読み取りでは追加の処理コストが一切発生しません。'
+description: 'Memory エンジンは、非圧縮形式でデータを RAM に保存します。データは、読み込まれたときに受け取ったものとまったく同じ形式で保存されます。つまり、このテーブルからの読み取りは完全に無料です。'
 sidebar_label: 'Memory'
 sidebar_position: 110
 slug: /engines/table-engines/special/memory
@@ -7,13 +7,11 @@ title: 'Memory テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Memory テーブルエンジン \{#memory-table-engine\}
-
 :::note
 ClickHouse Cloud 上で Memory テーブルエンジンを使用する場合、データは (設計上) すべてのノード間でレプリケートされません。すべてのクエリが同じノードにルーティングされ、Memory テーブルエンジンが期待どおりに動作することを保証するには、次のいずれかを行ってください:
 
 * 同一セッション内で、すべての操作を実行する
-* TCP またはネイティブインターフェース (スティッキー接続をサポート) を使用するクライアント、たとえば [clickhouse-client](/interfaces/client) を使用する
+* TCP またはネイティブインターフェイス (スティッキー接続をサポート) を使用するクライアント、たとえば [clickhouse-client](/interfaces/client) を使用する
   :::
 
 Memory エンジンは、圧縮されていない形式でデータを RAM に保存します。データは読み取り時に受け取ったものとまったく同じ形式で保存されます。言い換えると、このテーブルからの読み取りコストはほぼゼロです。

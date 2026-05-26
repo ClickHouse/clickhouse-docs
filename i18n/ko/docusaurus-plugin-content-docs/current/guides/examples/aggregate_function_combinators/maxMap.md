@@ -7,8 +7,6 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap \{#maxmap\}
-
 ## 설명 \{#description\}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 조합자는 [`max`](/sql-reference/aggregate-functions/reference/max)

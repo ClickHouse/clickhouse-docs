@@ -8,12 +8,10 @@ title: 'ClickHouse API'
 doc_type: 'reference'
 ---
 
-# ClickHouse API \{#clickhouse-api\}
+ClickHouse API 的所有代码示例均可在[此处](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/clickhouse_api)查看。
 
-ClickHouse API 的所有代码示例均可在[此处](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/clickhouse_api)找到。
-
-有关连接配置，参阅 [Configuration](/integrations/language-clients/go/configuration)。
-有关受支持的数据类型和 Go 类型映射，参阅 [Data Types](/integrations/language-clients/go/data-types)。
+有关连接配置，请参阅[配置](/integrations/language-clients/go/configuration)。
+有关支持的数据类型和 Go 类型对照，请参阅[数据类型](/integrations/language-clients/go/data-types)。
 
 ## 连接 \{#connecting\}
 

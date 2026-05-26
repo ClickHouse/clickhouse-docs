@@ -7,7 +7,6 @@ keywords: ['production readiness', 'enterprise', 'saml', 'sso', 'terraform', 'mo
 doc_type: 'guide'
 ---
 
-# ClickHouse Cloud Production Readiness Guide {#production-readiness}
 
 For organizations who have completed the quick start guide and have an active service with data flowing
 
@@ -171,7 +170,7 @@ Establishing backup validation procedures and support integration ensures your C
 
 ### Backup strategy assessment {#backup-strategy}
 
-ClickHouse Cloud provides automatic backups with configurable retention periods. Assess your current backup configuration against compliance and recovery requirements. Enterprise customers with specific compliance requirements around backup location or encryption can configure ClickHouse Cloud to store backups in their own cloud storage buckets (BYOB). Contact ClickHouse support for BYOB configuration.
+ClickHouse Cloud provides automatic backups with configurable retention periods. Assess your current backup configuration against compliance and recovery requirements. If you have specific compliance requirements around backup location or encryption, you can configure ClickHouse Cloud to store backups in your own cloud storage buckets (BYOB). Contact ClickHouse support for BYOB configuration.
 
 ### Validate and test recovery procedures {#validate-test-recovery}
 

@@ -8,7 +8,6 @@ keywords: ['ClickHouse use cases', 'time-series database', 'key-value storage', 
 doc_type: 'landing-page'
 ---
 
-# Questions about ClickHouse use cases
 
 - [Can I use ClickHouse as a time-series database?](/knowledgebase/time-series)
 - [Can I use ClickHouse as a key-value storage?](/knowledgebase/key-value)

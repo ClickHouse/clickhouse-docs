@@ -7,10 +7,8 @@ title: 'Клиентские библиотеки от сторонних раз
 doc_type: 'reference'
 ---
 
-# Клиентские библиотеки от сторонних разработчиков \{#client-libraries-from-third-party-developers\}
-
 :::note
-ClickHouse Inc **не** поддерживает перечисленные ниже библиотеки и не проводила их всестороннего тестирования для оценки их качества.
+ClickHouse Inc **не** поддерживает перечисленные ниже библиотеки и не проводила их всестороннего тестирования, чтобы подтвердить их качество.
 :::
 
 ### Python \{#python\}
@@ -35,7 +33,8 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 * [glushkovds/php-clickhouse-schema-builder](https://packagist.org/packages/glushkovds/php-clickhouse-schema-builder)
 * [PHP-расширение ClickHouse от kolya7k](https://github.com//kolya7k/clickhouse-php)
 * [hyvor/clickhouse-php](https://github.com/hyvor/clickhouse-php)
-* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client) 
+* [beeterty/clickhouse-php-client](https://github.com/beeterty-technologies/clickhouse-php-client)
+* [laravel-clickhouse/laravel-clickhouse](https://github.com/laravel-clickhouse/laravel-clickhouse)
 
 ### Go \{#go\}
 
@@ -104,7 +103,6 @@ ClickHouse Inc **не** поддерживает перечисленные ни
 
 * [Octonica.ClickHouseClient](https://github.com/Octonica/ClickHouseClient)
 * [ClickHouse.Ado](https://github.com/killwort/ClickHouse-Net)
-* [ClickHouse.Client](https://github.com/DarkWanderer/ClickHouse.Client)
 * [ClickHouse.Net](https://github.com/ilyabreev/ClickHouse.Net)
 
 ### Elixir \{#elixir\}

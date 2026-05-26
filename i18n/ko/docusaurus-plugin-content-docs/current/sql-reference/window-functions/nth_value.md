@@ -1,13 +1,11 @@
 ---
-description: 'nth_value 윈도우 함수 문서'
+description: 'nth_value 윈도우 함수에 대한 문서'
 sidebar_label: 'nth_value'
 sidebar_position: 5
 slug: /sql-reference/window-functions/nth_value
 title: 'nth_value'
 doc_type: 'reference'
 ---
-
-# nth_value \{#nth_value\}
 
 순서가 정의된 프레임에서 n번째 행(오프셋)에 대해 평가된 값들 중 첫 번째 NULL이 아닌 값을 반환합니다.
 
@@ -36,9 +34,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 다음 예시에서는 프리미어 리그 축구 선수 연봉에 대한 가상의 데이터셋에서 세 번째로 높은 연봉을 찾기 위해 `nth-value` 함수를 사용합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -59,13 +55,11 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, nth_value(player,3) OVER(ORDER BY salary DESC) AS third_highest_salary FROM salaries;
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─third_highest_salary─┐
 1. │ Gary Chen       │ 195000 │                      │
 2. │ Robert George   │ 195000 │                      │

@@ -1,21 +1,19 @@
 ---
-description: 'ClickHouse 架构及其列式存储设计的全面概览'
+description: 'ClickHouse 架构及其面向列设计的全面概述'
 sidebar_label: '架构概览'
 sidebar_position: 50
 slug: /development/architecture
 title: '架构概览'
-doc_type: 'reference'
+doc_type: '参考'
 ---
 
-# 架构概览 \{#architecture-overview\}
-
-ClickHouse 是一个真正的列式 DBMS。数据按列存储，并在执行过程中以数组（向量或列块）的形式处理。
+ClickHouse 是一个真正的列式 DBMS。数据按列存储，并在执行过程中以数组 (向量或列块) 的形式处理。
 在可能的情况下，操作会尽量在数组上执行，而不是针对单个值。
-这被称为“向量化查询执行（vectorized query execution）”，有助于降低实际数据处理的成本。
+这被称为“向量化查询执行 (vectorized query execution) ”，有助于降低实际数据处理的成本。
 
 这一理念并不新。
-它可以追溯到 `APL`（A programming language，1957 年）及其后代：`A+`（APL 方言）、`J`（1990 年）、`K`（1993 年）和 `Q`（来自 Kx Systems 的编程语言，2003 年）。
-数组编程广泛用于科学数据处理。在关系型数据库中，这一理念同样不是新鲜事。例如，它被用于 `VectorWise` 系统（也称为 Actian Corporation 的 Actian Vector Analytic Database）。
+它可以追溯到 `APL` (A programming language，1957 年) 及其后代：`A+` (APL 方言) 、`J` (1990 年) 、`K` (1993 年) 和 `Q` (来自 Kx Systems 的编程语言，2003 年) 。
+数组编程广泛用于科学数据处理。在关系型数据库中，这一理念同样不是新鲜事。例如，它被用于 `VectorWise` 系统 (也称为 Actian Corporation 的 Actian Vector Analytic Database) 。
 
 加速查询处理有两种不同的方法：向量化查询执行和运行时代码生成。后者移除了所有间接寻址和动态派发。这两种方法都没有绝对的优劣之分。当运行时代码生成将许多操作融合在一起，从而充分利用 CPU 执行单元和流水线时，它可能表现更好。向量化查询执行在实践中可能不那么理想，因为它会产生必须写入缓存再读回的临时向量。如果这些临时数据无法放入 L2 缓存，就会产生问题。但向量化查询执行更容易利用 CPU 的 SIMD 能力。一篇由我们朋友撰写的[研究论文](http://15721.courses.cs.cmu.edu/spring2016/papers/p5-sompolski.pdf)表明，最好将两种方法结合使用。ClickHouse 采用向量化查询执行，并对运行时代码生成提供了有限的初始支持。
 

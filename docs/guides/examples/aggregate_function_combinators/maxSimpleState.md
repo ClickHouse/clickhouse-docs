@@ -7,7 +7,6 @@ sidebar_label: 'maxSimpleState'
 doc_type: 'reference'
 ---
 
-# maxSimpleState {#maxsimplestate}
 
 ## Description {#description}
 

@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции nth_value'
+description: 'Документация по оконной функции nth_value'
 sidebar_label: 'nth_value'
 sidebar_position: 5
 slug: /sql-reference/window-functions/nth_value
 title: 'nth_value'
 doc_type: 'reference'
 ---
-
-# nth&#95;value \{#nth&#95;value\}
 
 Возвращает первое отличное от NULL значение, вычисленное для n-й строки (смещения) в упорядоченном фрейме окна.
 
@@ -36,9 +34,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 В этом примере функция `nth-value` используется для поиска третьей по величине зарплаты в вымышленном наборе данных о зарплатах футболистов Премьер-лиги.
 
-Запрос:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -59,13 +55,11 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, nth_value(player,3) OVER(ORDER BY salary DESC) AS third_highest_salary FROM salaries;
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─third_highest_salary─┐
 1. │ Gary Chen       │ 195000 │                      │
 2. │ Robert George   │ 195000 │                      │

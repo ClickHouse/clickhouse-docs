@@ -7,9 +7,7 @@ keywords: ['clickhousectl', 'CLI', 'управление облачными се
 doc_type: 'reference'
 ---
 
-# ClickHouse CLI \{#clickhouse-cli\}
-
-ClickHouse CLI (`clickhousectl`) — это универсальный инструмент командной строки для управления ресурсами ClickHouse Cloud и локальной разработки с ClickHouse.
+ClickHouse CLI (`clickhousectl`) — это единый инструмент командной строки для управления ресурсами ClickHouse Cloud и локальной разработки на базе ClickHouse.
 
 ## Установка \{#installation\}
 

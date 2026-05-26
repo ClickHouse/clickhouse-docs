@@ -1,17 +1,15 @@
 ---
-description: '`EXISTS` 演算子に関するドキュメント'
+description: '`EXISTS` 演算子のドキュメント'
 slug: /sql-reference/operators/exists
 title: 'EXISTS'
 doc_type: 'reference'
 ---
 
-# EXISTS \{#exists\}
-
 `EXISTS` 演算子は、サブクエリの結果にレコードが存在するかどうかを判定します。結果が空の場合、この演算子は `0` を返し、1 件以上存在する場合は `1` を返します。
 
 `EXISTS` は [WHERE](../../sql-reference/statements/select/where.md) 句でも使用できます。
 
-:::tip\
+:::tip
 メインクエリのテーブルおよびカラムへの参照は、サブクエリ内ではサポートされません。
 :::
 
@@ -25,13 +23,11 @@ EXISTS(subquery)
 
 サブクエリ内に値が存在するかどうかを確認するクエリ:
 
-```sql
+```sql title="Query"
 SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM numbers(10) WHERE number > 11)
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─in(1, _subquery1)─┬─in(1, _subquery2)─┐
 │                 1 │                 0 │
 └───────────────────┴───────────────────┘
@@ -39,13 +35,11 @@ SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM 
 
 複数行を返す副問い合わせを使用したクエリ:
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 8);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │      10 │
 └─────────┘
@@ -53,13 +47,11 @@ SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHER
 
 結果が空になるサブクエリを含むクエリ:
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 11);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │       0 │
 └─────────┘

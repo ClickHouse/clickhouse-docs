@@ -7,8 +7,6 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState \{#minsimplestate\}
-
 ## Описание \{#description\}
 
 Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применён к функции [`min`](/sql-reference/aggregate-functions/reference/min)

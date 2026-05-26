@@ -9,9 +9,7 @@ score: 15
 doc_type: 'guide'
 ---
 
-# JSON 로드하기 \{#loading-json\}
-
-다음 예제들은 구조화된 JSON 데이터와 반구조화된 JSON 데이터를 로드하는 아주 간단한 방법을 보여줍니다. 중첩 구조를 포함한 더 복잡한 JSON에 대해서는 가이드 [**JSON 스키마 설계**](/integrations/data-formats/json/schema)를 참고하십시오.
+다음 예시에서는 구조화된 JSON 데이터와 반정형 JSON 데이터를 불러오는 매우 간단한 방법을 보여줍니다. 중첩 구조를 포함한 더 복잡한 JSON에 대해서는 [**JSON 스키마 설계**](/integrations/data-formats/json/schema) 가이드를 참조하십시오.
 
 ## 구조화된 JSON 적재 \{#loading-structured-json\}
 

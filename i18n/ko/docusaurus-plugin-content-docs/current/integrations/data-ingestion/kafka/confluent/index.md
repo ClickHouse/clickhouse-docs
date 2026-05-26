@@ -8,10 +8,8 @@ doc_type: 'guide'
 keywords: ['Confluent Cloud ClickHouse', 'Confluent ClickHouse 통합', 'Kafka ClickHouse 커넥터', 'Confluent Platform ClickHouse', 'ClickHouse Connect Sink']
 ---
 
-# Confluent Cloud를 ClickHouse와 통합하기 \{#integrating-confluent-cloud-with-clickhouse\}
+Confluent Platform은 ClickHouse와 통합하기 위한 2가지 옵션을 제공합니다
 
-Confluent 플랫폼은 ClickHouse와 통합하기 위한 세 가지 옵션을 제공합니다.
-
-* [ClickHouse Connect Sink on Confluent Cloud](./confluent-cloud.md)
-* 커스텀 커넥터 기능을 사용하는 [ClickHouse Connect Sink on Confluent Platform](./custom-connector.md)
-* [HTTP Sink Connector for Confluent Platform](./kafka-connect-http.md)를 사용하면 Apache Kafka를 HTTP 또는 HTTPS 기반 API와 통합할 수 있습니다.
+* [Confluent Cloud의 ClickHouse Connect Sink](./confluent-cloud.md)
+* 사용자 지정 커넥터 기능을 사용한 [Confluent Platform의 ClickHouse Connect Sink](./custom-connector.md)
+* HTTP 또는 HTTPS를 통해 Apache Kafka를 API와 통합하는 [Confluent Platform용 HTTP Sink Connector](./kafka-connect-http.md)

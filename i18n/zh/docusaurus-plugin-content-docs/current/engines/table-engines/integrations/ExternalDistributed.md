@@ -7,9 +7,7 @@ title: 'ExternalDistributed 表引擎'
 doc_type: 'reference'
 ---
 
-# ExternalDistributed 表引擎 \{#externaldistributed-table-engine\}
-
-`ExternalDistributed` 引擎允许对存储在远程服务器上 MySQL 或 PostgreSQL 实例中的数据执行 `SELECT` 查询。它接受 [MySQL](../../../engines/table-engines/integrations/mysql.md) 或 [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) 引擎作为参数，从而支持分片。
+`ExternalDistributed` 引擎允许对存储在远程 MySQL 或 PostgreSQL 服务器上的数据执行 `SELECT` 查询。它接受 [MySQL](../../../engines/table-engines/integrations/mysql.md) 或 [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) 引擎作为参数，因此支持分片。
 
 ## 创建表 \{#creating-a-table\}
 
@@ -37,7 +35,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `table` — 远程表名称。
 * `user` — 用户名。
 * `password` — 用户密码。
-
 
 ## 实现细节 \{#implementation-details\}
 

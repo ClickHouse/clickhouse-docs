@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'execution', 'engine', 'chdb', 'pandas', 'auto']
 doc_type: 'guide'
 ---
 
-# Execution Engine Configuration
 
 DataStore can execute operations using different backends. This guide explains how to configure and optimize engine selection.
 

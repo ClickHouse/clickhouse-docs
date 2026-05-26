@@ -7,9 +7,7 @@ title: 'redis'
 doc_type: 'reference'
 ---
 
-# redis 테이블 함수 \{#redis-table-function\}
-
-이 테이블 함수는 ClickHouse를 [Redis](https://redis.io/)와 통합할 수 있게 합니다.
+이 테이블 함수를 사용하면 ClickHouse를 [Redis](https://redis.io/)와 통합할 수 있습니다.
 
 ## 구문 \{#syntax\}
 

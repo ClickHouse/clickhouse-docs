@@ -40,7 +40,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 - 你的机器上已安装 Docker
 
 <VerticalStepper level="h2">
-  ## 设置目录结构和测试环境
+  ## 搭建目录结构和测试环境
 
   <ExampleFiles />
 
@@ -65,7 +65,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   done
   ```
 
-  将以下 `docker-compose.yml` 文件添加到 `clickhouse-cluster` 目录：
+  将以下 `docker-compose.yml` 文件添加到 `cluster_2S_1R` 目录：
 
   ```yaml title="docker-compose.yml"
   version: '3.8'
@@ -295,11 +295,11 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   #### Keeper 配置
 
-  `<ZooKeeper>` 部分用于指定 ClickHouse Keeper(或 ZooKeeper)的运行位置。
-  由于使用的是 ClickHouse Keeper 集群,需要指定集群中的每个 `<node>`,
+  `<ZooKeeper>` 部分用于指定 ClickHouse Keeper (或 ZooKeeper) 的运行位置。
+  由于使用的是 ClickHouse Keeper 集群，需要指定集群中的每个 `<node>`，
   并分别通过 `<host>` 和 `<port>` 标签指定其主机名和端口号。
 
-  ClickHouse Keeper 的设置将在教程的下一步骤中进行说明。
+  ClickHouse Keeper 的搭建将在教程的下一步骤中进行说明。
 
   ```xml
   <zookeeper>
@@ -319,7 +319,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   ```
 
   :::note
-  尽管可以在与 ClickHouse Server 相同的服务器上运行 ClickHouse Keeper,但在生产环境中,我们强烈建议将 ClickHouse Keeper 部署在专用主机上。
+  尽管可以在与 ClickHouse 服务端相同的服务器上运行 ClickHouse Keeper,但在生产环境中,我们强烈建议将 ClickHouse Keeper 部署在专用主机上。
   :::
 
   #### 宏配置
@@ -483,7 +483,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   <VerifyKeeperStatus />
 
-  至此,您已成功部署了一个单分片双副本的 ClickHouse 集群。
+  至此,您已成功搭建了一个包含两个分片、每个分片一个副本的 ClickHouse 集群。
   下一步,您将在该集群中创建表。
 
   ## 创建数据库
@@ -570,7 +570,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   请注意,该查询与 [英国房产价格](/getting-started/example-datasets/uk-price-paid) 示例数据集教程中原始 `CREATE` 语句所使用的查询完全相同,唯一的区别是增加了 `ON CLUSTER` 子句。
 
-  `ON CLUSTER` 子句用于分布式执行 DDL(数据定义语言)查询,例如 `CREATE`、`DROP`、`ALTER` 和 `RENAME`,以确保这些架构变更应用于集群中的所有节点。
+  `ON CLUSTER` 子句用于分布式执行 DDL (数据定义语言) 查询，例如 `CREATE`、`DROP`、`ALTER` 和 `RENAME`，以确保这些 schema 变更应用于集群中的所有节点。
 
   您可以在各主机的客户端上运行以下查询，以确认表已在集群中创建：
 

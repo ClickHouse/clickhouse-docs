@@ -7,8 +7,6 @@ title: 'Изменение выражений ключа выборки SAMPLE B
 doc_type: 'reference'
 ---
 
-# Работа с выражением SAMPLE BY \{#manipulating-sample-by-expression\}
-
 Доступны следующие операции:
 
 ## MODIFY \{#modify\}
@@ -17,7 +15,7 @@ doc_type: 'reference'
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY SAMPLE BY new_expression
 ```
 
-Команда изменяет [sampling key](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы на `new_expression` (выражение или кортеж выражений). Первичный ключ должен включать новый sampling key.
+Команда изменяет [ключ выборки](../../../engines/table-engines/mergetree-family/mergetree.md) таблицы на `new_expression` (выражение или кортеж выражений). Первичный ключ должен включать новый ключ выборки.
 
 ## REMOVE \{#remove\}
 

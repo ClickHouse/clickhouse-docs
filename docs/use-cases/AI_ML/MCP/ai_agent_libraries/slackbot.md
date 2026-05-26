@@ -10,7 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build a SlackBot agent using ClickHouse MCP server
 
 In this guide, you'll learn how to build a [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) agent.
 This bot allows you to ask questions about your ClickHouse data directly from Slack, using natural language. It uses the

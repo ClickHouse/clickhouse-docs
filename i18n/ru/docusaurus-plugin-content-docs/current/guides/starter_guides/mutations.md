@@ -3,13 +3,11 @@ slug: /guides/developer/mutations
 sidebar_label: 'Обновление и удаление данных'
 sidebar_position: 1
 keywords: ['UPDATE', 'DELETE', 'mutations']
-title: 'Обновление и удаление данных в ClickHouse'
-description: 'Описывает выполнение операций обновления и удаления в ClickHouse'
+title: 'Обновление и удаление данных ClickHouse'
+description: 'Описывает, как выполнять операции обновления и удаления в ClickHouse'
 show_related_blogs: false
 doc_type: 'guide'
 ---
-
-# Обновление и удаление данных ClickHouse с помощью мутаций \{#updating-and-deleting-clickhouse-data-with-mutations\}
 
 Хотя ClickHouse ориентирован на аналитические нагрузки с большим объемом данных, в некоторых ситуациях можно изменять
 или удалять уже существующие данные. Эти операции называются «мутациями» и выполняются с помощью команды `ALTER TABLE`.
@@ -17,7 +15,7 @@ doc_type: 'guide'
 :::tip
 Если вам часто требуется обновлять данные, рассмотрите использование механизма [deduplication](../developer/deduplication.md) в ClickHouse, который позволяет обновлять
 и/или удалять строки без выполнения мутаций. В качестве альтернативы используйте [lightweight updates](/docs/sql-reference/statements/update)
-или [lightweight deletes](/guides/developer/lightweight-delete)
+или [легковесное удаление](/guides/developer/lightweight-delete)
 :::
 
 ## Обновление данных \{#updating-data\}
@@ -60,7 +58,6 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 Нельзя обновлять столбцы, которые входят в первичный или сортировочный ключ.
 :::
 
-
 ## Удаление данных \{#deleting-data\}
 
 Используйте команду `ALTER TABLE`, чтобы удалить строки:
@@ -88,7 +85,6 @@ ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 :::
 
 См. страницу документации по оператору [`DELETE`](/sql-reference/statements/delete.md) для получения дополнительных сведений.
-
 
 ## Легковесные удаления \{#lightweight-deletes\}
 

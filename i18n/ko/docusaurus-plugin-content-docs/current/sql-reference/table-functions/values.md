@@ -1,14 +1,12 @@
 ---
-description: '컬럼을 값으로 채운 임시 저장소를 생성합니다.'
-keywords: ['values', '테이블 함수']
+description: '컬럼을 값으로 채우는 임시 저장소를 생성합니다.'
+keywords: ['values', 'table function']
 sidebar_label: 'values'
 sidebar_position: 210
 slug: /sql-reference/table-functions/values
 title: 'values'
 doc_type: 'reference'
 ---
-
-# Values 테이블 함수 \{#values-table-function\}
 
 `Values` 테이블 함수는 컬럼을 값으로 채우는 임시 저장 공간을 생성합니다.
 빠르게 테스트를 수행하거나 샘플 데이터를 생성할 때 유용합니다.
@@ -50,7 +48,7 @@ VALUES(
 
 * 제공된 값을 포함하는 임시 테이블을 반환합니다.
 
-## 예제 \{#examples\}
+## 예시 \{#examples\}
 
 ```sql title="Query"
 SELECT *
@@ -154,7 +152,7 @@ FROM VALUES(
     └──────────┴───────────┘
 ```
 
-```sql
+```sql title="Query"
 -- single values
 SELECT *
 FROM VALUES(

@@ -7,9 +7,7 @@ title: 'MySQL テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# MySQL table engine \{#mysql-table-engine\}
-
-MySQL エンジンを使用すると、リモートの MySQL サーバー上に保存されているデータに対して `SELECT` および `INSERT` クエリを実行できます。
+MySQL エンジンでは、リモートの MySQL サーバーに保存されたデータに対して `SELECT` および `INSERT` クエリを実行できます。
 
 ## テーブルを作成する \{#creating-a-table\}
 

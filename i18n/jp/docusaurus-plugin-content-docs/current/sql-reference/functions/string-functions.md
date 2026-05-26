@@ -1193,9 +1193,9 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.10.0
 
-文字列が、指定されたサフィックスで大小文字を区別せずに終わっているかどうかを判定します。
+文字列が、指定された接尾辞で大小文字を区別せずに終わっているかどうかを判定します。
 
 **構文**
 
@@ -1208,7 +1208,7 @@ endsWithCaseInsensitive(s, suffix)
 * `s` — チェック対象の文字列。[`String`](/sql-reference/data-types/string)
 * `suffix` — 末尾がこの値かどうかを大文字小文字を区別せずにチェックするための接尾辞。[`String`](/sql-reference/data-types/string)
 
-**返り値**
+**戻り値**
 
 `s` が大文字小文字を区別せずに `suffix` で終わる場合は `1` を返し、それ以外は `0` を返します。[`UInt8`](/sql-reference/data-types/int-uint)
 
@@ -1228,7 +1228,7 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.10.0
 
 文字列 `s` が大文字・小文字を区別せずに `suffix` で終わるかどうかを返します。
 文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
@@ -1243,7 +1243,7 @@ endsWithCaseInsensitiveUTF8(s, suffix)
 **引数**
 
 * `s` — チェックする文字列。[`String`](/sql-reference/data-types/string)
-* `suffix` — 大文字小文字を区別せずに照合する末尾文字列 (サフィックス) 。[`String`](/sql-reference/data-types/string)
+* `suffix` — 大文字小文字を区別せずに照合する末尾文字列 (接尾辞) 。[`String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -1969,7 +1969,7 @@ münchen
 
 ## naturalSortKey \{#naturalSortKey\}
 
-導入バージョン: v25.11.0
+導入バージョン: v26.3.0
 
 この関数は自然順でソートするために使用されます。
 
@@ -2299,6 +2299,61 @@ SELECT
 ┌─regexpExtract('100-200', '(\\d+)-(\\d+)', 1)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 2)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 0)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)')─┐
 │ 100                                          │ 200                                          │ 100-200                                      │ 100                                       │
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
+```
+
+## regexpPosition \{#regexpPosition\}
+
+導入バージョン: v26.5.0
+
+`haystack` 内で `pattern` の `occurrence` 回目の一致が現れるバイト位置 (1始まり) を返します。検索はバイト位置 `position` から開始されます。
+
+`return_option` が 0 (デフォルト) の場合は一致の先頭バイト位置を返します。1 の場合は、一致の*直後*の先頭バイト位置を返します。
+
+`subexpression` が 0 より大きい場合は、一致全体ではなく、対応するキャプチャグループの位置を返します。
+
+一致が見つからない場合、または要求されたキャプチャグループが一致に含まれていない場合は 0 を返します。
+
+PostgreSQL の `regexp_instr` との互換性のために提供されています (この別名でも使用できます) 。位置はバイト単位で、他の ClickHouse の正規表現関数と一致しています。PostgreSQL の `regexp_instr` は文字単位です。
+
+**構文**
+
+```sql
+regexpPosition(haystack, pattern[, position[, occurrence[, return_option[, flags[, subexpression]]]]])
+```
+
+**別名**: `regexpInstr`, `regexp_instr`
+
+**引数**
+
+* `haystack` — 検索対象の文字列。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正規表現パターン。[`const String`](/sql-reference/data-types/string)
+* `position` — 任意。検索を開始する 1 始まりのバイト位置。デフォルト: 1。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `occurrence` — 任意。何番目の一致を返すか。デフォルト: 1。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `return_option` — 任意。`0` は一致開始位置を返し、`1` は一致直後の位置を返します。デフォルト: 0。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `flags` — 任意。正規表現フラグ。対応: `i` (大文字と小文字を区別しない) 、`c` (大文字と小文字を区別する) 、`m`/`n` (複数行アンカー) 、`s` (`.` が改行に一致) 。デフォルト: 空文字列。[`const String`](/sql-reference/data-types/string)
+* `subexpression` — 任意。位置を返すキャプチャグループの索引。`0` は一致全体を意味します。デフォルト: 0。[`(U)Int*`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+一致した位置のバイト位置を返します。見つからない場合は `0` を返します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**基本的な使い方**
+
+```sql title=Query
+SELECT
+    regexpPosition('hello world', 'world'),
+    regexpPosition('aXbXcXd', 'X', 1, 2),
+    regexpPosition('aXbXcXd', 'X', 1, 2, 1),
+    regexpPosition('Hello WORLD', 'world', 1, 1, 0, 'i'),
+    regexpPosition('foo123bar456', '([a-z]+)([0-9]+)', 1, 2, 0, '', 2);
+```
+
+```response title=Response
+┌─...─┬─...─┬─...─┬─...─┬─...─┐
+│   7 │   4 │   5 │   7 │  10 │
+└─────┴─────┴─────┴─────┴─────┘
 ```
 
 ## removeDiacriticsUTF8 \{#removeDiacriticsUTF8\}
@@ -2839,7 +2894,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.10.0
 
 文字列が、指定した文字列で大文字小文字を区別せずに始まるかどうかをチェックします。
 
@@ -2852,7 +2907,7 @@ startsWithCaseInsensitive(s, prefix)
 **引数**
 
 * `s` — チェック対象の文字列。[`String`](/sql-reference/data-types/string)
-* `prefix` — 大文字小文字を区別せずに先頭一致を確認するための接頭辞。[`String`](/sql-reference/data-types/string)
+* `prefix` — 大文字小文字を区別せずに先頭一致を確認するためのプレフィックス。[`String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -2874,10 +2929,10 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.10.0
 
 文字列が、指定された大文字・小文字を区別しないプレフィックスで始まっているかを判定します。
-文字列が有効な UTF-8 エンコードされたテキストであることを前提とします。
+文字列が有効な UTF-8 でエンコードされたテキストであることを前提とします。
 この前提が満たされない場合でも例外はスローされず、結果は未定義です。
 
 **構文**

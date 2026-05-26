@@ -7,8 +7,6 @@ doc_type: 'landing-page'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'обёртка внешних данных', 'pg_clickhouse', 'расширение']
 ---
 
-# pg_clickhouse \{#pg_clickhouse\}
-
 ## Введение \{#introduction\}
 
 [pg_clickhouse], расширение PostgreSQL с открытым исходным кодом, выполняет аналитические запросы
@@ -22,8 +20,8 @@ PostgreSQL 13 и новее и ClickHouse v23 и новее.
 
 ## Начало работы \{#getting-started\}
 
-Самый простой способ попробовать pg&#95;clickhouse — воспользоваться [образом Docker], который
-содержит стандартный Docker-образ PostgreSQL с расширением pg&#95;clickhouse:
+Самый простой способ попробовать pg&#95;clickhouse — воспользоваться [образом Docker], который содержит
+стандартный Docker-образ PostgreSQL с расширениями pg&#95;clickhouse и [re2]:
 
 ```sh
 docker run --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
@@ -31,8 +29,7 @@ docker run --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
 docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhouse'
 ```
 
-См. [руководство], чтобы начать импорт таблиц ClickHouse и настроить проталкивание запросов.
-
+См. [руководство], чтобы начать импорт таблиц ClickHouse и настроить pushdown запросов.
 
 ## Тестовый пример: TPC-H \{#test-case-tpc-h\}
 
@@ -269,18 +266,16 @@ make] и [CMake].
 
 ## Авторские права \{#copyright\}
 
-*   Copyright (c) 2025-2026, ClickHouse
-*   Отдельные части Copyright (c) 2023-2025, Ildus Kurbangaliev
-*   Отдельные части Copyright (c) 2019-2023, Adjust GmbH
-*   Отдельные части Copyright (c) 2012-2019, PostgreSQL Global Development Group
+* Copyright (c) 2025-2026, ClickHouse
+* Отдельные части Copyright (c) 2023-2025, Ildus Kurbangaliev
+* Отдельные части Copyright (c) 2019-2023, Adjust GmbH
+* Отдельные части Copyright (c) 2012-2019, PostgreSQL Global Development Group
 
-[pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse
-    "pg_clickhouse на GitHub"
+[pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse "pg_clickhouse на GitHub"
 
 [import foreign tables]: /integrations/pg_clickhouse/reference#import-foreign-schema
 
-[Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
-    "Последний выпуск Docker-образа"
+[Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "Последний выпуск Docker-образа"
 
 [tutorial]: /integrations/pg_clickhouse/tutorial "Учебное руководство по pg_clickhouse"
 
@@ -290,11 +285,9 @@ make] и [CMake].
 
 [PGXN client]: https://pgxn.github.io/pgxnclient/ "Документация по PGXN Client"
 
-[Homebrew]: https://formulae.brew.sh/formula/pgxnclient#default
-    "PGXN client в Homebrew"
+[Homebrew]: https://formulae.brew.sh/formula/pgxnclient#default "PGXN client в Homebrew"
 
-[Apt]: https://tracker.debian.org/pkg/pgxnclient
-    "PGXN client в Debian Apt"
+[Apt]: https://tracker.debian.org/pkg/pgxnclient "PGXN client в Debian Apt"
 
 [`postgresql.conf` parameters]: https://www.postgresql.org/docs/devel/runtime-config-client.html#RUNTIME-CONFIG-CLIENT-OTHER
 
@@ -311,6 +304,8 @@ make] и [CMake].
 [LibSSL]: https://openssl-library.org "Библиотека OpenSSL"
 
 [TPC-H]: https://www.tpc.org/tpch/
+
+[re2]: https://github.com/ClickHouse/pg_re2 "pg_re2: совместимые с ClickHouse функции регулярных выражений с использованием RE2"
 
 [Запрос 1] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/1.sql
   [Запрос 2] https://github.com/ClickHouse/pg_clickhouse/blob/main/dev/tpch/queries/2.sql

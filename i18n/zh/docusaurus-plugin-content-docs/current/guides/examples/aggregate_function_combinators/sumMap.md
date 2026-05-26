@@ -7,8 +7,6 @@ sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-# sumMap \{#summap\}
-
 ## 描述 \{#description\}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器可以应用于 [`sum`](/sql-reference/aggregate-functions/reference/sum)

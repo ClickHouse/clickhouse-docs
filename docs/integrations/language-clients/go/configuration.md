@@ -8,9 +8,12 @@ title: 'Configuration'
 doc_type: 'reference'
 ---
 
-# Configuration {#configuration}
 
 ## Connection settings {#connection-settings}
+
+:::tip
+For a complete per-option deep dive with defaults, DSN parameters, best practices, and troubleshooting, see [Configuration Reference](/integrations/language-clients/go/config-reference).
+:::
 
 When opening a connection, an Options struct can be used to control client behavior. The following settings are available:
 

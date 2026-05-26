@@ -116,11 +116,9 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 
 Обратите внимание, что пользователь `my_user` относится к `my_ldap_server`. Этот LDAP-сервер должен быть настроен в основном файле `config.xml`, как описано ранее.
 
-Когда включено основанное на SQL [управление доступом и учетными записями](/operations/access-rights#access-control-usage), пользователи, аутентифицируемые LDAP-серверами, также могут быть созданы с помощью оператора [CREATE USER](/sql-reference/statements/create/user).
+Когда включена основанная на SQL [система управления доступом и учётными записями](/operations/access-rights#access-control-usage), пользователи, аутентифицируемые LDAP-серверами, также могут быть созданы с помощью оператора [CREATE USER](/sql-reference/statements/create/user).
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 ```
 

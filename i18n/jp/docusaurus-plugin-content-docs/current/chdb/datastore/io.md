@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'io', 'read', 'write', 'csv', 'parquet', 'json',
 doc_type: 'reference'
 ---
 
-# DataStore の I/O 操作 \{#datastore-io-operations\}
-
-DataStore は、さまざまなファイル形式やデータソースからの読み書きをサポートしています。
+DataStore は、さまざまなファイル形式やデータソースからの読み込みと、それらへの書き込みに対応しています。
 
 ## データの読み込み \{#reading\}
 

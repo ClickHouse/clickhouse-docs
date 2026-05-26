@@ -1,12 +1,10 @@
 ---
 title: '部署选项'
 slug: /infrastructure/deployment-options
-description: '适用于 ClickHouse 客户的部署选项'
-keywords: ['自带云环境（BYOC，bring your own cloud）', 'byoc', '私有', '政府', '自部署']
+description: 'ClickHouse 客户可用的部署选项'
+keywords: ['自带云', 'byoc', '私有', '政府', '自部署']
 doc_type: 'reference'
 ---
-
-# ClickHouse 部署选项 \{#clickhouse-deployment-options\}
 
 ClickHouse 提供多种部署选项，以满足不同客户的需求，在控制能力、合规性以及运维开销方面提供不同程度的选择。
 本文档概述了可用的各类部署类型，帮助你选择最契合其特定架构偏好、合规要求和资源管理策略的最优解决方案。

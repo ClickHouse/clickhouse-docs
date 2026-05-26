@@ -7,9 +7,7 @@ title: '运算符'
 doc_type: 'reference'
 ---
 
-# 运算符 \{#operators\}
-
-在查询解析阶段，ClickHouse 会根据运算符的优先级、先后次序和结合性，将其转换为相应的函数。
+ClickHouse 会在查询解析阶段，根据运算符的优先级、结合性和运算顺序，将其转换为对应的函数。
 
 ## 访问运算符 \{#access-operators\}
 
@@ -128,6 +126,15 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
+## 字符串处理运算符 \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - `overlay(string, replacement, offset)` 函数。
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - `overlay(string, replacement, offset, length)` 函数。
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - `overlayUTF8(string, replacement, offset)` 函数。
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - `overlayUTF8(string, replacement, offset, length)` 函数。
+
 ## 用于处理数据集的运算符 \{#operators-for-working-with-data-sets\}
 
 请参阅 [IN 运算符](../../sql-reference/operators/in.md) 和 [EXISTS](../../sql-reference/operators/exists.md) 运算符。
@@ -168,13 +175,11 @@ SELECT
 
 带 ALL 的查询：
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-结果:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -185,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 使用 ANY 的查询：
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-结果:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │
@@ -512,3 +515,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 可以通过启用 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 设置来优化。启用 `optimize_functions_to_subcolumns = 1` 后，函数只会读取 [null](../../sql-reference/data-types/nullable.md#finding-null) 子列，而不是读取并处理整列数据。查询 `SELECT n IS NOT NULL FROM table` 会被转换为 `SELECT NOT n.null FROM TABLE`。
+
+
+## 检查布尔值 \{#checking-boolean-values\}
+
+ClickHouse 支持 `IS TRUE`、`IS FALSE`、`IS UNKNOWN`、`IS NOT TRUE`、`IS NOT FALSE` 和 `IS NOT UNKNOWN` 运算符。
+这些运算符可用于 [Bool](../../sql-reference/data-types/boolean.md) 和 `Nullable(Bool)` 表达式。
+
+* `expr IS TRUE` 仅当 `expr` 为 `true` 时返回 `1`。
+* `expr IS FALSE` 仅当 `expr` 为 `false` 时返回 `1`。
+* `expr IS UNKNOWN` 仅当 `expr` 为 `NULL` 时返回 `1`。
+* `expr IS NOT TRUE` 在 `expr` 为 `false` 或 `NULL` 时返回 `1`。
+* `expr IS NOT FALSE` 在 `expr` 为 `true` 或 `NULL` 时返回 `1`。
+* `expr IS NOT UNKNOWN` 在 `expr` 不为 `NULL` 时返回 `1`。
+
+对于布尔表达式，`IS UNKNOWN` 等同于 `IS NULL`，`IS NOT UNKNOWN` 等同于 `IS NOT NULL`。
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

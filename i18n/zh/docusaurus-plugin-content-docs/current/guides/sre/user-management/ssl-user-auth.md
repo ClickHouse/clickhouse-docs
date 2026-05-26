@@ -2,30 +2,27 @@
 sidebar_label: 'SSL 用户证书身份验证'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
-title: '配置用于身份验证的 SSL 用户证书'
+title: '身份验证用 SSL 用户证书配置'
 description: '本指南提供了通过 SSL 用户证书配置身份验证所需的简单且最小化的配置。'
 doc_type: 'guide'
 keywords: ['ssl', '身份验证', '安全', '证书', '用户管理']
 ---
 
-# 配置用于身份验证的 SSL 用户证书 \{#configuring-ssl-user-certificate-for-authentication\}
-
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-本指南提供了通过 SSL 用户证书配置认证所需的简单且最小化的配置。该教程建立在[配置 TLS 用户指南](../tls/configuring-tls.md)的基础之上。
+本指南提供了通过 SSL 用户证书配置身份验证所需的简单且最小化的配置。该教程建立在[配置 TLS 用户指南](../tls/configuring-tls.md)的基础之上。
 
 :::note
-在使用 `https`、`native`、`mysql` 和 `postgresql` 接口时支持 SSL 用户认证。
+在使用 `https`、`native`、`mysql` 和 `postgresql` 接口时支持 SSL 用户身份验证。
 
-为实现安全认证，ClickHouse 节点需要将 `<verificationMode>strict</verificationMode>` 进行严格模式配置（尽管 `relaxed` 可用于测试目的）。
+为实现安全身份验证，ClickHouse 节点需要将 `<verificationMode>strict</verificationMode>` 进行严格模式配置 (尽管 `relaxed` 可用于测试目的) 。
 
 如果你在 MySQL 接口前使用 AWS NLB，则必须联系 AWS 支持启用以下未公开的选项：
 
 > 我希望能够将我们的 NLB proxy protocol v2 配置为如下所示：`proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`。
 > :::
-
 
 ## 1. 创建 SSL 用户证书 \{#1-create-ssl-user-certificates\}
 

@@ -3,15 +3,13 @@ sidebar_label: 'MinIO'
 sidebar_position: 6
 slug: /integrations/minio
 description: 'ClickHouse와 함께 MinIO를 사용하는 방법을 설명하는 페이지'
-title: 'MinIO 사용 방법'
+title: 'MinIO 사용'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
 keywords: ['s3', 'minio', '객체 스토리지', '데이터 적재', '호환 스토리지']
 ---
-
-# MinIO 사용 \{#using-minio\}
 
 import SelfManaged from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 

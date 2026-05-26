@@ -1,14 +1,12 @@
 ---
-description: 'uniqTheta 函数说明文档'
+description: 'uniqTheta 函数文档'
 sidebar_label: 'uniqTheta'
 slug: /sql-reference/functions/uniqtheta-functions
 title: 'uniqTheta 函数'
 doc_type: 'reference'
 ---
 
-# uniqTheta 函数 \{#uniqtheta-functions\}
-
-uniqTheta 函数适用于两个 uniqThetaSketch 对象，用于执行集合运算，例如 ∪ / ∩ / ×（并集 / 交集 / 差集），并返回一个包含运算结果的新 uniqThetaSketch 对象。
+uniqTheta 函数适用于两个 uniqThetaSketch 对象，用于执行集合运算，例如 ∪ / ∩ / × (并集 / 交集 / 差集) ，并返回一个包含运算结果的新 uniqThetaSketch 对象。
 
 uniqThetaSketch 对象由带有 -State 后缀的聚合函数 uniqTheta 构造。
 
@@ -17,7 +15,7 @@ UniqThetaSketch 是一种用于存储近似集合取值的数据结构。
 
 ## uniqThetaUnion \{#uniqthetaunion\}
 
-对两个 uniqThetaSketch 对象执行并集运算（集合运算 ∪），结果会生成一个新的 uniqThetaSketch。
+对两个 uniqThetaSketch 对象执行并集运算 (集合运算 ∪) ，结果会生成一个新的 uniqThetaSketch。
 
 ```sql
 uniqThetaUnion(uniqThetaSketch,uniqThetaSketch)
@@ -41,10 +39,9 @@ FROM
 └───────────┴───────────────┴───────────────┘
 ```
 
-
 ## uniqThetaIntersect \{#uniqthetaintersect\}
 
-对两个 uniqThetaSketch 对象执行交集计算（集合运算 ∩），返回一个新的 uniqThetaSketch。
+对两个 uniqThetaSketch 对象执行交集计算 (集合运算 ∩) ，返回一个新的 uniqThetaSketch。
 
 ```sql
 uniqThetaIntersect(uniqThetaSketch,uniqThetaSketch)
@@ -68,10 +65,9 @@ FROM
 └───────────────┴───────────────┴───────────────┘
 ```
 
-
 ## uniqThetaNot \{#uniqthetanot\}
 
-对两个 uniqThetaSketch 对象执行 a&#95;not&#95;b 计算（集合运算 ×），返回一个新的 uniqThetaSketch。
+对两个 uniqThetaSketch 对象执行 a&#95;not&#95;b 计算 (集合运算 ×) ，返回一个新的 uniqThetaSketch。
 
 ```sql
 uniqThetaNot(uniqThetaSketch,uniqThetaSketch)

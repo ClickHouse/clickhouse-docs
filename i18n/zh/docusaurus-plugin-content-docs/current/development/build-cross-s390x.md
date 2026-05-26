@@ -7,9 +7,7 @@ title: '在 Linux 上针对 s390x（zLinux）构建'
 doc_type: 'guide'
 ---
 
-# 在 Linux 上为 s390x（zLinux）进行构建 \{#build-on-linux-for-s390x-zlinux\}
-
-ClickHouse 对 s390x 提供实验性支持。
+ClickHouse 对 s390x 提供 Experimental 支持。
 
 ## 为 s390x 构建 ClickHouse \{#building-clickhouse-for-s390x\}
 

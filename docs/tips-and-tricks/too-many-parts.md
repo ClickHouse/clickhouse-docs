@@ -21,7 +21,7 @@ title: 'Lessons - too many parts problem'
 description: 'Solutions and prevention of Too Many Parts'
 ---
 
-# The too many parts problem {#the-too-many-parts-problem}
+
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Need more performance optimization tips? Check out the [Performance Optimization](./performance-optimization.md) community insights guide.*
 

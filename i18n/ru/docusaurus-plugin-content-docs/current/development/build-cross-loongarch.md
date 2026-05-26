@@ -7,9 +7,7 @@ title: 'Сборка на Linux для LoongArch64'
 doc_type: 'guide'
 ---
 
-# Сборка под Linux для LoongArch64 \{#build-on-linux-for-loongarch64\}
-
-ClickHouse экспериментально поддерживает LoongArch64
+ClickHouse поддерживает LoongArch64 в экспериментальном режиме
 
 ## Сборка ClickHouse \{#build-clickhouse\}
 

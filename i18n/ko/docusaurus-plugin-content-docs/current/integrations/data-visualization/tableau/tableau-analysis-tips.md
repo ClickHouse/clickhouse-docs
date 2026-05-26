@@ -11,8 +11,6 @@ integration:
   - category: 'data_visualization'
 ---
 
-# 분석 팁 \{#analysis-tips\}
-
 ## MEDIAN() 및 PERCENTILE() 함수 \{#median-and-percentile-functions\}
 
 - Live 모드에서 MEDIAN() 및 PERCENTILE() 함수(커넥터 v0.1.3 릴리스부터)는 [ClickHouse quantile()() 함수](/sql-reference/aggregate-functions/reference/quantile/)를 사용하여 계산 속도를 크게 높이지만, 샘플링을 사용합니다. 정확한 계산 결과가 필요하면 [quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/)를 기반으로 하는 `MEDIAN_EXACT()` 및 `PERCENTILE_EXACT()` 함수를 사용하십시오.

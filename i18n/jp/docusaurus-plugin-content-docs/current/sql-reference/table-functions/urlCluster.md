@@ -1,13 +1,11 @@
 ---
-description: '指定したクラスタ内の複数ノードで、URL から取得したファイルを並列処理できるようにします。'
+description: '指定したクラスタ内の複数ノードで、URL から取得したファイルを並列処理できます。'
 sidebar_label: 'urlCluster'
 sidebar_position: 201
 slug: /sql-reference/table-functions/urlCluster
 title: 'urlCluster'
 doc_type: 'reference'
 ---
-
-# urlCluster テーブル関数 \{#urlcluster-table-function\}
 
 指定したクラスタ内の複数ノードで、URL から取得したファイルを並列処理できます。イニシエーター側では、クラスタ内のすべてのノードへの接続を確立し、URL のファイルパス中のアスタリスクを展開して、各ファイルを動的に割り当てます。ワーカーノードでは、処理すべき次のタスクをイニシエーターに問い合わせ、そのタスクを処理します。これは、すべてのタスクが完了するまで繰り返されます。
 

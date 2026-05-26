@@ -1,13 +1,11 @@
 ---
-description: 'クエリの外側のテーブル式が返す各行に対して任意の関数を呼び出せるようにする APPLY 修飾子について説明するドキュメント。'
+description: 'クエリの外側のテーブル式が返すすべての行に対して何らかの関数を呼び出せる APPLY 修飾子を説明するドキュメント。'
 sidebar_label: 'REPLACE'
 slug: /sql-reference/statements/select/replace-modifier
 title: 'REPLACE 修飾子'
 keywords: ['REPLACE', '修飾子']
 doc_type: 'reference'
 ---
-
-# REPLACE 修飾子 \{#replace\}
 
 > 1 つ以上の[式エイリアス](/sql-reference/syntax#expression-aliases)を指定できます。
 

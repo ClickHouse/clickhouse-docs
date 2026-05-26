@@ -1,13 +1,11 @@
 ---
-description: 'MergeTree 테이블에 사용자 정의 파티셔닝 키를 추가하는 방법을 알아봅니다.'
-sidebar_label: '사용자 정의 파티셔닝 키'
+description: 'MergeTree 테이블에 커스텀 파티셔닝 키를 추가하는 방법을 알아봅니다.'
+sidebar_label: '커스텀 파티셔닝 키'
 sidebar_position: 30
 slug: /engines/table-engines/mergetree-family/custom-partitioning-key
-title: '사용자 정의 파티셔닝 키'
+title: '커스텀 파티셔닝 키'
 doc_type: 'guide'
 ---
-
-# 커스텀 파티셔닝 키 \{#custom-partitioning-key\}
 
 :::note
 대부분의 경우 파티션 키는 필요하지 않으며, 그 외의 대부분의 경우에도 관측성(observability) 용도로 일(day) 단위 파티셔닝을 사용하는 상황을 제외하면 월(month) 단위보다 더 세밀한 파티션 키는 필요하지 않습니다.
@@ -74,7 +72,7 @@ WHERE table = 'visits'
 └───────────┴───────────────────┴────────┘
 ```
 
-`partition` 컬럼에는 파티션 이름이 포함되어 있습니다. 이 예에서는 두 개의 파티션이 있습니다: `201901` 및 `201902`. 이 컬럼의 값을 사용하여 [ALTER ... PARTITION](../../../sql-reference/statements/alter/partition.md) 쿼리에서 파티션 이름을 지정할 수 있습니다.
+`partition` 컬럼에는 파티션 이름이 포함됩니다. 이 예시에는 `201901`와 `201902`라는 2개의 파티션이 있습니다. 이 컬럼 값을 사용하여 [ALTER ... PARTITION](../../../sql-reference/statements/alter/partition.md) 쿼리에서 파티션 이름을 지정할 수 있습니다.
 
 `name` 컬럼에는 파티션 데이터 파트의 이름이 포함됩니다. 이 컬럼을 사용하여 [ALTER ATTACH PART](/sql-reference/statements/alter/partition#attach-partitionpart) 쿼리에서 파트의 이름을 지정할 수 있습니다.
 
@@ -129,7 +127,7 @@ drwxr-xr-x 2 clickhouse clickhouse 4096 Feb  5 12:09 201902_4_6_1
 drwxr-xr-x 2 clickhouse clickhouse 4096 Feb  1 16:48 detached
 ```
 
-&#39;201901&#95;1&#95;1&#95;0&#39;, &#39;201901&#95;1&#95;7&#95;1&#39; 등의 폴더는 각 파트에 해당하는 디렉터리입니다. 각 파트는 대응되는 파티션과 연관되며 특정 월의 데이터만 포함합니다(이 예시의 테이블은 월 단위로 파티션을 구성합니다).
+&#39;201901&#95;1&#95;1&#95;0&#39;, &#39;201901&#95;1&#95;7&#95;1&#39; 등의 폴더는 파트의 디렉터리입니다. 각 파트는 해당 파티션에 대응하며 특정 월의 데이터만 포함합니다(이 예시의 테이블은 월 단위 파티셔닝을 사용합니다).
 
 `detached` 디렉터리에는 [DETACH](/sql-reference/statements/detach) 쿼리를 사용하여 테이블에서 분리(detach)된 파트가 저장됩니다. 손상된 파트도 삭제되지 않고 이 디렉터리로 이동됩니다. 서버는 `detached` 디렉터리에 있는 파트를 사용하지 않습니다. 이 디렉터리의 데이터는 언제든지 추가, 삭제 또는 수정할 수 있으며, [ATTACH](/sql-reference/statements/alter/partition#attach-partitionpart) 쿼리를 실행하기 전에는 서버가 이를 인지하지 못합니다.
 

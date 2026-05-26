@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'query', 'select', 'filter', 'where', 'join', 'g
 doc_type: 'reference'
 ---
 
-# DataStore Query Building
 
 DataStore provides SQL-style query building methods that compile to optimized SQL queries. All operations are lazy until results are needed.
 

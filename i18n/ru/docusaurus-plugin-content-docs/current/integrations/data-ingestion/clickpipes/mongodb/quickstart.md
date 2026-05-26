@@ -2,15 +2,13 @@
 title: 'Работа с JSON в ClickHouse'
 sidebar_label: 'Работа с JSON'
 slug: /integrations/clickpipes/mongodb/quickstart
-description: 'Типовые паттерны работы с JSON-данными, реплицируемыми из MongoDB в ClickHouse через ClickPipes'
+description: 'Типовые паттерны работы с данными JSON, реплицируемыми из MongoDB в ClickHouse через ClickPipes'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
-
-# Работа с JSON в ClickHouse \{#working-with-json-in-clickhouse\}
 
 В этом руководстве рассмотрены типовые паттерны работы с данными JSON, реплицируемыми из MongoDB в ClickHouse через ClickPipes.
 

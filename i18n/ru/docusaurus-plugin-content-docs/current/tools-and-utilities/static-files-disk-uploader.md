@@ -1,12 +1,10 @@
 ---
 slug: /operations/utilities/static-files-disk-uploader
 title: 'clickhouse-static-files-disk-uploader'
-keywords: ['clickhouse-static-files-disk-uploader', 'utility', 'disk', 'uploader']
-description: 'Описание утилиты clickhouse-static-files-disk-uploader'
+keywords: ['clickhouse-static-files-disk-uploader', 'утилита', 'диск', 'загрузчик']
+description: 'Содержит описание утилиты clickhouse-static-files-disk-uploader'
 doc_type: 'guide'
 ---
-
-# clickhouse-static-files-disk-uploader \{#clickhouse-static-files-disk-uploader\}
 
 Формирует каталог данных, содержащий метаданные для указанной таблицы ClickHouse. Эти метаданные можно использовать для создания таблицы ClickHouse на другом сервере с набором данных только для чтения, размещённым на диске `web`.
 

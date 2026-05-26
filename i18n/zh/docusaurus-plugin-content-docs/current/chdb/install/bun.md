@@ -7,9 +7,7 @@ keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 
 doc_type: 'guide'
 ---
 
-# 适用于 Bun 的 chDB \{#chdb-for-bun\}
-
-chDB-bun 为 chDB 提供了实验性的 FFI (Foreign Function Interface，外部函数接口) 绑定，使你能够在你的 Bun 应用中直接运行 ClickHouse 查询，而无需任何外部依赖。
+chDB-bun 为 chDB 提供 Experimental FFI (Foreign Function Interface，外部函数接口) 绑定，使你能够在 Bun 应用程序中直接运行 ClickHouse 查询，且无需任何外部依赖。
 
 ## 安装 \{#installation\}
 

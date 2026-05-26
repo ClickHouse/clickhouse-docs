@@ -20,7 +20,7 @@ Svg(geometry,[style])
 
 **매개변수**
 
-* `geometry` — 지리 데이터. [Geo](../../data-types/geo).
+* `geometry` — Geo 데이터. [Geo](../../data-types/geo).
 * `style` — 선택적인 스타일 이름. [String](../../data-types/string).
 
 **반환 값**
@@ -34,42 +34,30 @@ Svg(geometry,[style])
 
 **원**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT SVG((0., 0.))
 ```
 
-결과:
-
-```response
+```response title="Response"
 <circle cx="0" cy="0" r="5" style=""/>
 ```
 
 **다각형(Polygon)**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT SVG([(0., 0.), (10, 0), (10, 10), (0, 10)])
 ```
 
-결과:
-
-```response
+```response title="Response"
 <polygon points="0,0 0,10 10,10 10,0 0,0" style=""/>
 ```
 
 **경로**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT SVG([[(0., 0.), (10, 0), (10, 10), (0, 10)], [(4., 4.), (5, 4), (5, 5), (4, 5)]])
 ```
 
-결과:
-
-```response
+```response title="Response"
 <g fill-rule="evenodd"><path d="M 0,0 L 0,10 L 10,10 L 10,0 L 0,0M 4,4 L 5,4 L 5,5 L 4,5 L 4,4 z " style=""/></g>
 ```

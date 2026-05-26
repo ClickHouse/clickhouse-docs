@@ -10,9 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Postgres ClickPipe のライフサイクル \{#lifecycle\}
-
-本書では、Postgres ClickPipe の各フェーズと、そのフェーズで取りうるさまざまなステータスおよびその意味について説明します。
+このドキュメントでは、Postgres ClickPipe の各フェーズ、取りうるさまざまなステータス、およびそれぞれの意味について説明します。
 
 ## プロビジョニング \{#provisioning\}
 

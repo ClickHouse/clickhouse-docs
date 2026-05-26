@@ -7,8 +7,6 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-# clickhouse-local \{#clickhouse-local\}
-
 ## Когда использовать clickhouse-local и когда ClickHouse \{#when-to-use-clickhouse-local-vs-clickhouse\}
 
 `clickhouse-local` — это простая в использовании версия ClickHouse, которая идеально подходит разработчикам, которым нужно быстро обрабатывать локальные и удалённые файлы с помощью SQL без установки полноценного сервера баз данных. С `clickhouse-local` разработчики могут выполнять SQL-команды (используя [SQL-диалект ClickHouse](../../sql-reference/index.md)) прямо из командной строки, что обеспечивает простой и эффективный способ доступа к возможностям ClickHouse без необходимости полной установки ClickHouse. Одно из основных преимуществ `clickhouse-local` заключается в том, что он уже включён при установке [clickhouse-client](/operations/utilities/clickhouse-local). Это означает, что разработчики могут быстро начать работу с `clickhouse-local` без сложного процесса установки.
@@ -249,7 +247,7 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 
 Вы можете выполнить её в интерактивном режиме так:
 
-```sql
+```sql title="Query"
 ClickHouse local version 26.3.1.1.
 
 :) ls
@@ -279,9 +277,25 @@ file2.json
 file3.xml
 ```
 
+### Команда CLEAR \{#clear-command\}
+
+Очищает экран терминала (аналогично команде `clear` в Linux или сочетанию Ctrl+L во многих терминалах). Это действие на стороне клиента: оно не отправляется в SQL-движок.
+
+В `clickhouse-local` метакоманда распознается в **интерактивном** режиме, а также при вводе через **`-q`** и **`--queries-file`** (используется тот же клиентский путь, что и для `-q`, по той же логике, что и для `ls`), поэтому простой `clear` не вызывает ошибку `UNKNOWN_IDENTIFIER`. Для удаленного **`clickhouse-client --queries-file`** ничего не меняется: содержимое файла выполняется только как SQL (без текстовых метакоманд).
+
+В `clickhouse-client` она распознается только в **интерактивном** режиме. При использовании **`-q`** или файлов с запросами `clear` по-прежнему разбирается как SQL, поэтому в автоматизации сохраняется прежнее поведение с ошибкой, а опечатки не превращаются в молчаливую пустую операцию.
+
+Поддерживаемые формы: `clear`, `CLEAR`, `/clear` (необязательный завершающий `;` игнорируется). Если стандартный вывод не является терминалом (например, при выводе в канал), метакоманда при распознавании принимается, но управляющие последовательности не выводятся.
+
+С `clickhouse-local` и `-q`:
+
+```sh
+./clickhouse-local -q clear
+```
+
 ## Примеры \{#examples\}
 
-```bash
+```bash title="Query"
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \
     --input-format "CSV" --query "SELECT * FROM table"
 Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
@@ -291,7 +305,7 @@ Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
 
 Предыдущий пример эквивалентен следующему:
 
-```bash
+```bash title="Query"
 $ echo -e "1,2\n3,4" | clickhouse-local -n --query "
     CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin);
     SELECT a, b FROM table;
@@ -303,7 +317,7 @@ Read 2 rows, 32.00 B in 0.000 sec., 4987 rows/sec., 77.93 KiB/sec.
 
 Необязательно использовать `stdin` или аргумент `--file`, вы можете открывать любое количество файлов с помощью [табличной функции `file`](../../sql-reference/table-functions/file.md):
 
-```bash
+```bash title="Query"
 $ echo 1 | tee 1.tsv
 1
 
@@ -318,18 +332,14 @@ $ clickhouse-local --query "
 
 Теперь выведем объём памяти, потребляемый каждым пользователем Unix:
 
-Запрос:
-
-```bash
+```bash title="Query"
 $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
     | clickhouse-local --structure "user String, mem Float64" \
         --query "SELECT user, round(sum(mem), 2) as memTotal
             FROM table GROUP BY user ORDER BY memTotal DESC FORMAT Pretty"
 ```
 
-Результат:
-
-```text
+```text title="Response"
 Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ┏━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ user     ┃ memTotal ┃

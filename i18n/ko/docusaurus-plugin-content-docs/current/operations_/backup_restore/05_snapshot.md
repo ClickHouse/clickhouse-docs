@@ -1,5 +1,5 @@
 ---
-description: '클라우드 객체 스토리지를 사용해 클라우드 네이티브 테이블의 경량 스냅샷을 생성하고 복원하는 방법입니다.'
+description: '클라우드 객체 스토리지를 사용하여 클라우드 네이티브 테이블의 경량 스냅샷을 생성하고 복원하는 방법입니다.'
 sidebar_label: '스냅샷 백업'
 sidebar_position: 5
 slug: /operations/backup/snapshot
@@ -7,8 +7,6 @@ title: '스냅샷 백업 및 복원'
 doc_type: 'guide'
 keywords: ['스냅샷', '백업', '복원', 'SharedMergeTree', 'SharedSet', 'SharedJoin', '경량 백업', '클라우드 백업', 'S3', 'Azure Blob Storage', 'snapshot_locks', 'snapshot_parts', 'experimental_lightweight_snapshot']
 ---
-
-# 스냅샷 백업 및 복원 \{#snapshot-backup-and-restore\}
 
 스냅샷 백업은 클라우드 네이티브 테이블 엔진을 위한 경량 백업 모드입니다. 데이터를 복사하는 대신 ClickHouse Keeper에 파트별 잠금 노드를 기록합니다. 이러한 잠금은 스냅샷이 보관되는 동안 서버가 참조된 객체 스토리지 파트를 삭제하지 못하도록 합니다. 이후 백업은 데이터를 물리적으로 복사하는 대신 객체 스토리지 참조만 기록하므로, 테이블 크기와 관계없이 스냅샷을 빠르게 생성할 수 있습니다.
 
@@ -217,3 +215,15 @@ WHERE (name, table_id) NOT IN (
 ```
 
 원본 데이터가 변경되거나 제거된 후 스냅샷을 보관할 때 발생하는 스토리지 오버헤드를 이해하는 데 유용합니다.
+
+## 서버 설정 \{#server-settings\}
+
+다음 서버 구성 매개변수는 스냅샷 동작을 제어합니다. 이 값은 SQL이 아니라 서버 설정 파일에서 지정합니다.
+
+| 설정                                                                                                                                            | 유형     | 기본값   | 재시작 없이 변경 가능 | 설명                                                                                                                       |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ----- | ------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| [`max_held_snapshots`](/operations/server-configuration-parameters/settings#max_held_snapshots)                                               | UInt64 | `0`   | No           | 동시에 유지할 수 있는 경량 스냅샷의 최대 개수입니다. `0`은 무제한을 의미합니다. 한도에 도달하면 새 스냅샷을 생성할 때 예외가 발생합니다.                                         |
+| [`max_snapshot_commit_thread_pool_size`](/operations/server-configuration-parameters/settings#max_snapshot_commit_thread_pool_size)           | UInt64 | `64`  | Yes          | 스냅샷 잠금 노드를 Keeper에 커밋하는 데 사용하는 스레드 수입니다. 파트가 많은 대규모 테이블에서 스냅샷 생성이 느리다면 이 값을 늘리십시오.                                       |
+| [`max_snapshot_commit_thread_pool_free_size`](/operations/server-configuration-parameters/settings#max_snapshot_commit_thread_pool_free_size) | UInt64 | `0`   | Yes          | 스냅샷 커밋 스레드 풀의 유휴 스레드 수가 이 값을 초과하면 ClickHouse가 해당 스레드를 해제하고 풀 크기를 줄입니다. 필요해지면 스레드는 다시 생성됩니다. `0`은 유휴 스레드를 해제하지 않음을 의미합니다. |
+| [`snapshot_cleaner_period`](/operations/server-configuration-parameters/settings#snapshot_cleaner_period)                                     | UInt64 | `120` | No           | 어떤 스냅샷 잠금에서도 더 이상 참조되지 않는 파트를 제거하기 위해 스냅샷 정리기가 실행되는 주기(초)입니다. ClickHouse Cloud 전용입니다.                                    |
+| [`snapshot_cleaner_pool_size`](/operations/server-configuration-parameters/settings#snapshot_cleaner_pool_size)                               | UInt64 | `128` | No           | 스냅샷 정리기 스레드 풀의 스레드 수입니다. ClickHouse Cloud 전용입니다.                                                                         |

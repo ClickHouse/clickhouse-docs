@@ -9,9 +9,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 様々なデータ形式から ClickHouse へインポートする \{#importing-from-various-data-formats-to-clickhouse\}
-
-本セクションでは、様々なファイル形式からデータを読み込む例を確認できます。
+このセクションでは、さまざまなファイル形式から読み込む例を確認できます。
 
 ### [**Binary**](/integrations/data-ingestion/data-formats/binary.md) \{#binary\}
 

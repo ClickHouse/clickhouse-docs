@@ -7,8 +7,6 @@ title: 'clickhouse-local'
 doc_type: 'reference'
 ---
 
-# clickhouse-local \{#clickhouse-local\}
-
 ## 何时使用 clickhouse-local 而不是 ClickHouse \{#when-to-use-clickhouse-local-vs-clickhouse\}
 
 `clickhouse-local` 是一个易于使用的 ClickHouse 版本，非常适合需要在本地和远程文件上使用 SQL 进行快速处理、且不必安装完整数据库服务器的开发人员。借助 `clickhouse-local`，开发人员可以直接在命令行中使用 SQL 命令 (使用 [ClickHouse SQL 方言](../../sql-reference/index.md)) ，以一种简单高效的方式访问 ClickHouse 功能，而无需完整安装 ClickHouse。`clickhouse-local` 的主要优势之一是，它在安装 [clickhouse-client](/operations/utilities/clickhouse-local) 时已一并包含。这意味着开发人员可以快速开始使用 `clickhouse-local`，而不需要经历复杂的安装过程。
@@ -254,7 +252,7 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 
 你可以像这样在交互 mode 下运行它：
 
-```sql
+```sql title="Query"
 ClickHouse local version 26.3.1.1.
 
 :) ls
@@ -284,10 +282,25 @@ file2.json
 file3.xml
 ```
 
+### CLEAR 命令 \{#clear-command\}
+
+清空终端屏幕 (类似于 Linux 上的 `clear` 命令，或许多终端中的 Ctrl+L) 。这是客户端侧操作：不会发送到 SQL 引擎。
+
+在 `clickhouse-local` 中，该元命令会在**交互式**模式下，以及使用 **`-q`** 和 **`--queries-file`** 输入时被识别 (与 `-q` 走同一客户端路径，原理上与 `ls` 类似) ，因此单独输入 `clear` 不会产生 `UNKNOWN_IDENTIFIER` 错误。远程 **`clickhouse-client --queries-file`** 的行为不变：文件内容仍只按 SQL 执行 (不支持文本级元命令) 。
+
+在 `clickhouse-client` 中，它仅在**交互式**模式下会被识别。使用 **`-q`** 或查询文件时，`clear` 仍会按 SQL 解析，因此自动化场景会保持此前的报错行为，而不会把拼写错误变成静默空操作。
+
+支持的形式：`clear`、`CLEAR`、`/clear` (可选的结尾 `;` 会被忽略) 。如果标准输出不是终端 (例如将输出通过管道传递时) ，那么在可识别该元命令的情况下仍会接受它，但不会输出控制序列。
+
+在 `clickhouse-local` 中配合 `-q` 使用：
+
+```sh
+./clickhouse-local -q clear
+```
 
 ## 示例 \{#examples\}
 
-```bash
+```bash title="Query"
 $ echo -e "1,2\n3,4" | clickhouse-local --structure "a Int64, b Int64" \
     --input-format "CSV" --query "SELECT * FROM table"
 Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
@@ -297,7 +310,7 @@ Read 2 rows, 32.00 B in 0.000 sec., 5182 rows/sec., 80.97 KiB/sec.
 
 前面的示例等价于：
 
-```bash
+```bash title="Query"
 $ echo -e "1,2\n3,4" | clickhouse-local -n --query "
     CREATE TABLE table (a Int64, b Int64) ENGINE = File(CSV, stdin);
     SELECT a, b FROM table;
@@ -309,7 +322,7 @@ Read 2 rows, 32.00 B in 0.000 sec., 4987 rows/sec., 77.93 KiB/sec.
 
 你不必使用 `stdin` 或 `--file` 参数，也可以通过 [`file` 表函数](../../sql-reference/table-functions/file.md) 打开任意数量的文件：
 
-```bash
+```bash title="Query"
 $ echo 1 | tee 1.tsv
 1
 
@@ -324,18 +337,14 @@ $ clickhouse-local --query "
 
 现在让我们输出每个 Unix 用户的内存使用量：
 
-查询：
-
-```bash
+```bash title="Query"
 $ ps aux | tail -n +2 | awk '{ printf("%s\t%s\n", $1, $4) }' \
     | clickhouse-local --structure "user String, mem Float64" \
         --query "SELECT user, round(sum(mem), 2) as memTotal
             FROM table GROUP BY user ORDER BY memTotal DESC FORMAT Pretty"
 ```
 
-结果：
-
-```text
+```text title="Response"
 Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ┏━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ user     ┃ memTotal ┃
@@ -346,7 +355,6 @@ Read 186 rows, 4.15 KiB in 0.035 sec., 5302 rows/sec., 118.34 KiB/sec.
 ├──────────┼──────────┤
 ...
 ```
-
 
 ## 相关内容 \{#related-content-1\}
 

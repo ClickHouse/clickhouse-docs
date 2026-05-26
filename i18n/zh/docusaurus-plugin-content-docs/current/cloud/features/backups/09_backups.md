@@ -9,12 +9,10 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
-import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import backup_chain from '@site/static/images/cloud/manage/backup-chain.png';
 
 数据库备份提供了一道安全防线，确保在因任何不可预见的原因导致数据丢失时，服务可以从最近一次成功备份中恢复到先前的状态。
 这可以最大限度地减少停机时间，并防止关键业务数据被永久丢失。
-
 
 ## 备份 \{#backups\}
 
@@ -54,11 +52,9 @@ ClickHouse Cloud 允许您为 **Scale** 和 **Enterprise** 等级的服务配置
 
 有关配置备份计划的步骤，请参阅 ["Configure backup schedules"](/cloud/manage/backups/configurable-backups)。
 
-## 自有对象存储（BYOB）备份 \{#byob\}
+## 自有对象存储 (BYOB) 备份 \{#byob\}
 
-<EnterprisePlanFeatureBadge/>
-
-ClickHouse Cloud 允许将备份导出到您自己的云服务提供商（CSP）账户存储（AWS S3、Google Cloud Storage 或 Azure Blob Storage）。
+ClickHouse Cloud 允许将备份导出到您自己的云服务提供商 (CSP) 账户存储 (AWS S3、Google Cloud Storage 或 Azure Blob Storage) 。
 即使您将备份配置到自有的 bucket，ClickHouse Cloud 仍会将每日备份保存到其自身的 bucket 中。
 这可确保在您 bucket 中的备份损坏时，我们至少有一份可用于恢复的数据副本。
 有关 ClickHouse Cloud 备份工作原理的详细信息，请参阅 [backups](/cloud/manage/backups/overview) 文档。
@@ -72,7 +68,7 @@ ClickHouse Cloud 允许将备份导出到您自己的云服务提供商（CSP）
 目前，我们不支持跨云备份，也不支持使用 [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) 的服务或受监管服务的备份/恢复。
 :::
 
-有关如何对 AWS、GCP、Azure 对象存储执行完整和增量备份以及如何从这些备份中恢复的示例，请参阅 ["Export backups to your own Cloud account"](/cloud/manage/backups/export-backups-to-own-cloud-account)。
+有关如何对 AWS、GCP、Azure 对象存储执行完整和增量备份以及如何从这些备份中恢复的示例，请参阅 [&quot;Export backups to your own Cloud account&quot;](/cloud/manage/backups/export-backups-to-own-cloud-account)。
 
 ### 备份选项 \{#backup-options\}
 

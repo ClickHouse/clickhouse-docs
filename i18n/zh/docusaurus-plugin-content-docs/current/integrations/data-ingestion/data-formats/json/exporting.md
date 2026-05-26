@@ -1,12 +1,10 @@
 ---
 title: '导出 JSON'
 slug: /integrations/data-formats/json/exporting
-description: '如何从 ClickHouse 导出 JSON 格式的数据'
-keywords: ['json', 'clickhouse', 'formats', 'exporting']
+description: '如何从 ClickHouse 导出 JSON 数据'
+keywords: ['json', 'clickhouse', '格式', '导出']
 doc_type: 'guide'
 ---
-
-# 导出 JSON \{#exporting-json\}
 
 几乎所有用于导入的 JSON 格式也都可以用于导出。最常用的是 [`JSONEachRow`](/interfaces/formats/JSONEachRow)：
 
@@ -151,7 +149,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 ```
 
-这将使用一种紧凑的 JSON 格式，并在开头附加两行包含列名和类型的表头。之后即可使用这种格式将数据摄取到另一个 ClickHouse 实例（或其他应用）中。
+这将使用一种紧凑的 JSON 格式，并在开头附加两行包含列名和类型的表头。之后即可使用这种格式将数据摄取到另一个 ClickHouse 实例 (或其他应用) 中。
 
 ## 将 JSON 导出为文件 \{#exporting-json-to-a-file\}
 

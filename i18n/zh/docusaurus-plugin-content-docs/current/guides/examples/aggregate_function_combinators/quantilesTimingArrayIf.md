@@ -7,8 +7,6 @@ sidebar_label: 'quantilesTimingArrayIf'
 doc_type: 'reference'
 ---
 
-# quantilesTimingArrayIf \{#quantilestimingarrayif\}
-
 ## 描述 \{#description\}
 
 可以将 [`Array`](/sql-reference/aggregate-functions/combinators#-array) 和 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器应用于 [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming) 函数，使用 `quantilesTimingArrayIf` 聚合组合器函数，对条件为真的行中数组里的时间值计算分位数。

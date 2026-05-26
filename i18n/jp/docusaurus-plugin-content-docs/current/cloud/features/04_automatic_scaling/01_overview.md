@@ -47,4 +47,4 @@ ClickHouse Cloud のスケーリングは、[&quot;Make Before Break&quot; (MBB)
 * [Make Before Break (MBB)](/cloud/features/mbb) — ClickHouse Cloud がシームレスにスケーリング操作を行う仕組み
 * [自動アイドル移行](/cloud/features/autoscaling/idling) — サービスの自動停止によるコスト削減
 * [スケーリング推奨事項](/cloud/features/autoscaling/scaling-recommendations) — スケーリング推奨事項の概要
-* [スケジュールスケーリング](/cloud/features/autoscaling/scaling-recommendations) — スケジュールスケーリング機能の概要。リアルタイムメトリクスとは無関係に、サービスをいつスケールアップまたはスケールダウンするかを正確に定義できます
+* [スケジュールスケーリング](/cloud/features/autoscaling/scheduled-scaling) — スケジュールスケーリング機能の概要。リアルタイムメトリクスとは無関係に、サービスをいつスケールアップまたはスケールダウンするかを正確に定義できます

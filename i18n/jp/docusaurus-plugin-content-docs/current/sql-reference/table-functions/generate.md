@@ -7,11 +7,9 @@ title: 'generateRandom'
 doc_type: 'reference'
 ---
 
-# generateRandom テーブル関数 \{#generaterandom-table-function\}
-
-指定したスキーマでランダムなデータを生成します。
-そのデータを使用してテスト用テーブルを埋めることができます。
-すべての型がサポートされているわけではありません。
+指定したスキーマに基づいてランダムなデータを生成します。
+そのデータを使ってテスト用テーブルにデータを投入できます。
+すべてのデータ型がサポートされているわけではありません。
 
 ## 構文 \{#syntax\}
 
@@ -21,13 +19,13 @@ generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_str
 
 ## 引数 \{#arguments\}
 
-| 引数                | 説明                                                                                              |
-|---------------------|---------------------------------------------------------------------------------------------------|
-| `name`              | 対応するカラム名。                                                                                |
-| `TypeName`          | 対応するカラムの型。                                                                              |
+| 引数                  | 説明                                                         |
+| ------------------- | ---------------------------------------------------------- |
+| `name`              | 対応するカラム名。                                                  |
+| `TypeName`          | 対応するカラムの型。                                                 |
 | `random_seed`       | 安定した結果を得るために使用する乱数シードを手動で指定します。`NULL` の場合、シードはランダムに生成されます。 |
-| `max_string_length` | 生成されるすべての文字列の最大文字数。デフォルトは `10`。                                        |
-| `max_array_length`  | 生成されるすべての配列またはマップの要素数の最大値。デフォルトは `10`。                          |
+| `max_string_length` | 生成されるすべての文字列の最大文字数。デフォルトは `10`。                            |
+| `max_array_length`  | 生成されるすべての配列またはマップの要素数の最大値。デフォルトは `10`。                     |
 
 ## 戻り値 \{#returned_value\}
 
@@ -74,7 +72,7 @@ SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
 └─────────────────────┴─────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────────────────────────┘
 ```
 
-`structure` 引数がない場合（この場合、構造はランダムになります）:
+`structure` 引数がない場合 (この場合、構造はランダムになります) :
 
 ```sql
 SELECT * FROM generateRandom() LIMIT 3;
@@ -103,8 +101,9 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 ```
 
 :::note
-`max_array_length` を十分に大きくして `generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` を実行すると、複合型（`Array`、`Tuple`、`Map`、`Nested`）のネストの深さが最大 16 階層まで深くなることがあるため、非常に大きな出力が生成される可能性があります。
+`max_array_length` を十分に大きくして `generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)` を実行すると、複合型 (`Array`、`Tuple`、`Map`、`Nested`) のネストの深さが最大 16 階層まで深くなることがあるため、非常に大きな出力が生成される可能性があります。
 :::
 
 ## 関連コンテンツ \{#related-content\}
-- ブログ記事: [ClickHouse でランダムなデータを生成する](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)
+
+* ブログ記事: [ClickHouse でランダムなデータを生成する](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

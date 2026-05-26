@@ -7,8 +7,6 @@ sidebar_label: 'sumMap'
 doc_type: 'reference'
 ---
 
-# sumMap \{#summap\}
-
 ## 설명 \{#description\}
 
 [`맵`](/sql-reference/aggregate-functions/combinators#-map) 조합자는 [`sum`](/sql-reference/aggregate-functions/reference/sum)

@@ -1,12 +1,10 @@
 ---
-description: 'HAVING 句に関するドキュメント'
+description: 'HAVING 句のドキュメント'
 sidebar_label: 'HAVING'
 slug: /sql-reference/statements/select/having
 title: 'HAVING 句'
 doc_type: 'reference'
 ---
-
-# HAVING 句 \{#having-clause\}
 
 [GROUP BY](/sql-reference/statements/select/group-by) によって生成された集約結果をフィルタリングするために使用します。[WHERE](../../../sql-reference/statements/select/where.md) 句と似ていますが、`WHERE` が集約の前に適用されるのに対し、`HAVING` は集約の後に適用される点が異なります。
 
@@ -14,7 +12,7 @@ doc_type: 'reference'
 
 ## 例 \{#example\}
 
-次のような `sales` テーブルがあるとします。
+次のような `sales` テーブルがあるとします：
 
 ```sql
 CREATE TABLE sales
@@ -45,4 +43,4 @@ ORDER BY total_sales DESC;
 
 ## 制限事項 \{#limitations\}
 
-集計が行われていない場合、`HAVING` は使用できません。代わりに `WHERE` を使用してください。
+集約が行われていない場合、`HAVING` は使用できません。代わりに `WHERE` を使用してください。

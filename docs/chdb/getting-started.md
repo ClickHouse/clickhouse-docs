@@ -7,7 +7,6 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-# Getting started with chDB
 
 In this guide, we're going to get up and running with the Python variant of chDB.
 We'll start by querying a JSON file on S3, before creating a table in chDB based on the JSON file, and doing some queries on the data.

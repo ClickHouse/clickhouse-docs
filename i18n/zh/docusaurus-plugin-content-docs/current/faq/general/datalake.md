@@ -3,12 +3,10 @@ title: 'ClickHouse 是否支持数据湖？'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/datalake
-description: 'ClickHouse 支持数据湖，包括 Iceberg、Delta Lake、Apache Hudi、Apache Paimon、Hive 等'
+description: 'ClickHouse 支持数据湖，包括 Iceberg、Delta Lake、Apache Hudi、Apache Paimon、Hive'
 doc_type: 'reference'
-keywords: ['数据湖', '湖仓']
+keywords: ['data lake', 'lakehouse']
 ---
-
-# ClickHouse 是否支持数据湖？ \{#does-clickhouse-support-data-lakes\}
 
 ClickHouse 支持数据湖，包括 Iceberg、Delta Lake、Apache Hudi、Apache Paimon、Hive。
 

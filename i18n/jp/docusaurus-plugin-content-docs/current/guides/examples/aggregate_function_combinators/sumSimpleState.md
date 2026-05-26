@@ -7,8 +7,6 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-# sumSimpleState \{#sumsimplestate\}
-
 ## 説明 \{#description\}
 
 [`sum`](/sql-reference/aggregate-functions/reference/sum) 関数に [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) コンビネータを適用すると、すべての入力値の合計を返します。戻り値の型は [`SimpleAggregateFunction`](/docs/sql-reference/data-types/simpleaggregatefunction) です。

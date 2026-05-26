@@ -80,6 +80,7 @@ For all services, ClickPipes traffic will originate from a default region based 
 - **eu-north-1**: For services in AWS `eu-north-1` created on or after 15 Apr 2026 (services created before this date use `eu-central-1` IPs).
 - **eu-west-2**: For services in AWS `eu-west-2` created on or after 15 Apr 2026 (services created before this date use `eu-central-1` IPs).
 - **il-central-1**: For services in AWS `il-central-1` created on or after 15 Apr 2026 (services created before this date use `us-east-2` IPs).
+- **mx-central-1**: For services in AWS `mx-central-1` created on or after 19 May 2026 (services created before this date use `us-east-2` IPs).
 - **sa-east-1**: For services in AWS `sa-east-1` created on or after 15 Apr 2026 (services created before this date use `us-east-2` IPs).
 - **us-west-2**: For services in AWS `us-west-2` created on or after 24 Jun 2025 (services created before this date use `us-east-2` IPs).
 - **us-east-2**: For all other regions not explicitly listed (including GCP and Azure regions).
@@ -103,6 +104,7 @@ For all services, ClickPipes traffic will originate from a default region based 
 | **eu-north-1** - Stockholm (from 15 Apr 2026)           | `13.63.1.65`, `16.171.127.30`, `56.228.76.44`, `13.63.101.248`, `16.170.124.188`, `13.60.109.201`                                                    |
 | **eu-west-2** - London (from 15 Apr 2026)               | `13.134.82.158`, `16.60.209.167`, `18.134.221.203`, `16.60.139.176`, `13.43.66.75`, `3.11.78.183`                                                    |
 | **il-central-1** - Tel Aviv (from 15 Apr 2026)          | `16.164.25.13`, `51.84.162.29`, `51.85.90.183`, `51.84.36.146`, `51.84.72.29`, `51.85.28.184`                                                        |
+| **mx-central-1** - Mexico (from 19 May 2026)            | `78.12.67.220`, `78.12.117.175`, `78.13.186.238`, `78.13.219.184`, `78.13.224.212`, `78.13.248.162`                                                  |
 | **sa-east-1** - São Paulo (from 15 Apr 2026)            | `18.230.164.131`, `56.126.1.234`, `18.230.39.24`, `15.229.102.116`, `18.230.174.204`, `18.229.237.116`                                               |
 | **us-west-2** - Oregon (from 24 Jun 2025)               | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
 
@@ -148,6 +150,10 @@ ClickPipes will create a table next to your destination table with the postfix `
 Errors related to the operation of the ClickPipe will be stored in the `system.clickpipes_log` table. This will store all other errors related to the operation of your ClickPipe (network, connectivity, etc.). This table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 
 If ClickPipes can't connect to a data source after 15 min or to a destination after 1 hr, the ClickPipes instance stops and stores an appropriate message in the system error table (provided the ClickHouse instance is available).
+
+## Monitoring {#monitoring}
+
+In addition to in-console monitoring, ClickPipes exposes metrics to a [Prometheus-compatible endpoint](/integrations/prometheus) for scraping. These metrics are published with other ClickHouse Cloud service metrics, and allow you to integrate ClickPipes monitoring with your existing observability stack (e.g., [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog)). See [Monitoring ClickPipes](/integrations/clickpipes/monitoring) for the full list of available metrics.
 
 ## FAQ {#faq}
 - **What is ClickPipes?**

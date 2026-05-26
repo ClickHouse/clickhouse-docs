@@ -1,13 +1,11 @@
 ---
-description: '쿼리의 외부 테이블 식에서 반환되는 각 행마다 임의의 함수를 호출할 수 있도록 해 주는 APPLY 수정자를 설명하는 문서입니다.'
+description: '쿼리의 외부 테이블 표현식이 반환한 각 행에 대해 일부 함수를 호출할 수 있게 해주는 APPLY 수정자를 설명하는 문서입니다.'
 sidebar_label: 'REPLACE'
 slug: /sql-reference/statements/select/replace-modifier
 title: 'Replace 수정자'
-keywords: ['REPLACE', '수정자']
+keywords: ['REPLACE', 'modifier']
 doc_type: 'reference'
 ---
-
-# Replace 수정자 \{#replace\}
 
 > 하나 이상의 [expression aliases](/sql-reference/syntax#expression-aliases)를 지정할 수 있습니다.
 

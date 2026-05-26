@@ -7,7 +7,6 @@ keywords: ['native protocol columns', 'column types', 'data types', 'protocol da
 doc_type: 'reference'
 ---
 
-# Native protocol column types
 
 See [Data Types](/sql-reference/data-types/) for general reference.
 

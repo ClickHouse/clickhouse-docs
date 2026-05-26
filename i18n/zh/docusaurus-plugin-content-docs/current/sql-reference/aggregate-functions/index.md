@@ -1,13 +1,11 @@
 ---
-description: '聚合函数参考文档'
+description: '聚合函数文档'
 sidebar_label: '聚合函数'
 sidebar_position: 33
 slug: /sql-reference/aggregate-functions/
 title: '聚合函数'
 doc_type: 'reference'
 ---
-
-# 聚合函数 \{#aggregate-functions\}
 
 聚合函数以[常规](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial)方式工作，符合数据库专家对其的预期。
 
@@ -20,7 +18,7 @@ ClickHouse 还支持：
 
 在聚合过程中，所有 `NULL` 参数都会被跳过。如果聚合函数有多个参数，那么对于任意一个或多个参数为 NULL 的行，都会被忽略。
 
-此规则有一个例外，即函数 [`first_value`](../../sql-reference/aggregate-functions/reference/first_value.md)、[`last_value`](../../sql-reference/aggregate-functions/reference/last_value.md) 及其别名（分别为 `any` 和 `anyLast`），当它们后面带有修饰符 `RESPECT NULLS` 时。例如，`FIRST_VALUE(b) RESPECT NULLS`。
+此规则有一个例外，即函数 [`first_value`](../../sql-reference/aggregate-functions/reference/first_value.md)、[`last_value`](../../sql-reference/aggregate-functions/reference/last_value.md) 及其别名 (分别为 `any` 和 `anyLast`) ，当它们后面带有修饰符 `RESPECT NULLS` 时。例如，`FIRST_VALUE(b) RESPECT NULLS`。
 
 **示例：**
 
@@ -90,7 +88,7 @@ FROM t_null_big;
 └───────────────┴───────────────────────────────────────┘
 ```
 
-请注意，当这些列被用作聚合函数的参数时，相应的聚合将被跳过。例如，没有参数的 [`count`](../../sql-reference/aggregate-functions/reference/count.md)（`count()`）或仅带常量参数的形式（`count(1)`）会对数据块中的所有行进行计数（与 GROUP BY 列的取值无关，因为该列不是参数），而 `count(column)` 只会返回该列值不为 NULL 的行数。
+请注意，当这些列被用作聚合函数的参数时，相应的聚合将被跳过。例如，没有参数的 [`count`](../../sql-reference/aggregate-functions/reference/count.md) (`count()`) 或仅带常量参数的形式 (`count(1)`) 会对数据块中的所有行进行计数 (与 GROUP BY 列的取值无关，因为该列不是参数) ，而 `count(column)` 只会返回该列值不为 NULL 的行数。
 
 ```sql
 SELECT
@@ -112,7 +110,7 @@ GROUP BY v
 └──────┴─────────┴──────────┘
 ```
 
-下面是一个使用 `RESPECT NULLS` 的 `first_value` 示例，可以看到 NULL 输入会被保留（不会被跳过），并且它会返回读取到的第一个值，无论该值是否为 NULL：
+下面是一个使用 `RESPECT NULLS` 的 first&#95;value 示例，可以看到会保留 NULL 输入，并返回读取到的第一个值，无论该值是否为 NULL：
 
 ```sql
 SELECT

@@ -1646,7 +1646,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-導入バージョン: v25.10.0
+導入バージョン: v25.11.0
 
 ジオメトリオブジェクトの x 座標と y 座標を入れ替えます。この操作では緯度と経度が入れ替わるため、異なる座標系間の変換や座標の順序を修正する際に有用です。
 
@@ -1690,7 +1690,7 @@ SELECT flipCoordinates([(1.0, 2.0), (3.0, 4.0)]);
 [(2.0, 1.0), (4.0, 3.0)]
 ```
 
-**多角形**
+**Polygon**
 
 ```sql title=Query
 SELECT flipCoordinates([[(1.0, 2.0), (3.0, 4.0)], [(5.0, 6.0), (7.0, 8.0)]]);
@@ -2771,7 +2771,7 @@ SELECT hasThreadFuzzer()
 
 ## highlightQuery \{#highlightQuery\}
 
-導入バージョン: v26.4.0
+導入バージョン: v26.5.0
 
 ClickHouse の SQL クエリ文字列を解析し、構文ハイライト用のハイライト範囲の配列を返します。
 各範囲は、開始位置 (バイト単位) 、終了位置、ハイライト種別を持つ名前付きタプルです。
@@ -3862,7 +3862,7 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 
 ## obfuscateQuery \{#obfuscateQuery\}
 
-導入バージョン: v26.3.0
+導入バージョン: v26.4.0
 
 識別子をランダムな単語に、リテラルをランダムな値に置き換えながら、クエリの構造を保ったまま SQL クエリを難読化します。
 
@@ -3929,7 +3929,7 @@ A B
 
 ## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
 
-導入バージョン: v26.3.0
+導入バージョン: v26.4.0
 
 指定したシードを使用して、決定論的な結果になるよう SQL クエリを難読化します。
 
@@ -5137,7 +5137,7 @@ SELECT toTypeName(123)
 
 ## tokenizeQuery \{#tokenizeQuery\}
 
-導入バージョン: v26.4.0
+導入バージョン: v26.5.0
 
 ClickHouse SQLクエリ文字列をトークン化し、トークンの配列を返します。
 各トークンは、開始位置 (バイト単位) 、終了位置、およびトークンの種類を含む名前付きタプルです。

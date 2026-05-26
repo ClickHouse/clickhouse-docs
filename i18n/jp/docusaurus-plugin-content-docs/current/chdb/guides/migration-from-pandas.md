@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'migration', 'guide']
 doc_type: 'guide'
 ---
 
-# pandas からの移行 \{#migration-from-pandas\}
-
-このガイドでは、既存の pandas コードを、互換性を保ちつつより高いパフォーマンスを得るために DataStore へ移行する方法を説明します。
+このガイドでは、互換性を維持しながらパフォーマンスを向上させるために、既存のpandasコードをDataStoreへ移行する方法を説明します。
 
 ## 1行だけの移行 \{#one-line\}
 

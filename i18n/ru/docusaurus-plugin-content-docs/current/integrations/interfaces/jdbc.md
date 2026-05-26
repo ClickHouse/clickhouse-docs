@@ -7,6 +7,4 @@ title: 'JDBC-драйвер'
 doc_type: 'guide'
 ---
 
-# JDBC-драйвер \{#jdbc-driver\}
-
-Используйте [официальный JDBC-драйвер](/docs/integrations/language-clients/java/jdbc) (и Java-клиент), чтобы обращаться к ClickHouse из ваших Java-приложений.
+Используйте [официальный JDBC-драйвер](/docs/integrations/language-clients/java/jdbc) (и Java-клиент) для доступа к ClickHouse из Java-приложений.

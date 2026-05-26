@@ -1,14 +1,12 @@
 ---
-title: 'ClickHouse는 연합(federated) 쿼리를 지원하나요?'
+title: 'ClickHouse는 연합 쿼리를 지원합니까?'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/federated
-description: 'ClickHouse는 연합(federated) 및 하이브리드 쿼리를 광범위하게 지원합니다'
+description: 'ClickHouse는 광범위한 연합 및 하이브리드 쿼리를 지원합니다'
 doc_type: 'reference'
 keywords: ['federated', 'hybrid', 'postgres', 'mysql', 'sqlite', 'odbc', 'jdbc']
 ---
-
-# ClickHouse는 연합 쿼리를 지원합니까? \{#does-clickhouse-support-federated-queries\}
 
 ClickHouse는 분석 데이터베이스 가운데 연합 쿼리와 하이브리드 쿼리 실행을 가장 포괄적으로 지원합니다.
 

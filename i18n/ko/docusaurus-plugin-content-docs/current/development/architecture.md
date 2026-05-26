@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse 아키텍처와 컬럼 지향 설계에 대한 종합적인 개요'
+description: 'ClickHouse 아키텍처와 컬럼 지향 설계에 대한 포괄적인 개요'
 sidebar_label: '아키텍처 개요'
 sidebar_position: 50
 slug: /development/architecture
 title: '아키텍처 개요'
 doc_type: 'reference'
 ---
-
-# 아키텍처 개요 \{#architecture-overview\}
 
 ClickHouse는 진정한 컬럼 지향 DBMS입니다. 데이터는 컬럼 단위로 저장되며, 쿼리 실행 시에는 배열(벡터 또는 컬럼의 청크) 단위로 처리됩니다.
 가능한 한 개별 값이 아니라 배열에 대해 연산이 수행되도록 합니다.

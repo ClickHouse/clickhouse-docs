@@ -93,7 +93,7 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
 
 ## LDAP 外部认证器 \{#ldap-external-authenticator\}
 
-可以使用远程 LDAP 服务器作为验证本地定义用户 (在 `users.xml` 或本地访问控制路径中定义的用户) 密码的一种方式。为此，在用户定义中，将原本的 `password` 或类似字段替换为之前定义的 LDAP 服务器名称。
+可以使用远程 LDAP 服务器作为验证本地定义用户 (在 `users.xml` 或本地访问控制配置中定义的用户) 密码的一种方式。为此，在用户定义中，将原本的 `password` 或类似字段替换为之前定义的 LDAP 服务器名称。
 
 在每次登录尝试时，ClickHouse 会尝试使用提供的凭证，对 [LDAP 服务器定义](#ldap-server-definition) 中由 `bind_dn` 参数指定的 DN 执行“绑定”操作，如果成功，则认为该用户已通过认证。这通常被称为“简单绑定 (simple bind) ”方法。
 
@@ -116,11 +116,9 @@ LDAP 服务器可用于对 ClickHouse 用户进行身份验证。实现这一点
 
 请注意，用户 `my_user` 关联到 `my_ldap_server`。必须在主配置文件 `config.xml` 中按前文所述配置此 LDAP 服务器。
 
-当启用基于 SQL 的[访问控制和账户管理](/operations/access-rights#access-control-usage)时，通过 LDAP 服务器进行身份验证的用户也可以使用 [CREATE USER](/sql-reference/statements/create/user) 语句创建。
+当启用基于 SQL 的[访问控制与账户管理](/operations/access-rights#access-control-usage)时，通过 LDAP 服务器进行身份验证的用户也可以使用 [CREATE USER](/sql-reference/statements/create/user) 语句创建。
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE USER my_user IDENTIFIED WITH ldap SERVER 'my_ldap_server';
 ```
 

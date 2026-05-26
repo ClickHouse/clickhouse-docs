@@ -33,6 +33,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 - sa-east-1 (South America)
 - ap-southeast-3 (Jakarta)
 - ap-east-1 (Hong Kong)
+- mx-central-1 (Mexico)
  
 ## Google Cloud regions {#google-cloud-regions}
 
@@ -61,6 +62,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 - Japan East (Tokyo, Saitama)
 - UAE North (Dubai)
+- Australia East (New South Wales)
 
 :::note 
 Need to deploy to a region not currently listed? [Submit a request](https://clickhouse.com/pricing?modal=open). 
@@ -109,6 +111,7 @@ Customers must request onboarding through Sales or Support to set up services in
 - AWS eu-north-1 (Stockholm) **Private Region**
 - AWS eu-west-1 (Ireland)
 - AWS eu-west-2 (London)
+- AWS mx-central-1 (Mexico) **Private Region**
 - AWS sa-east-1 (South America) **Private Region**
 - AWS us-east-1 (N. Virginia)
 - AWS us-east-2 (Ohio)

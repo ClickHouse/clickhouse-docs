@@ -9,12 +9,10 @@ show_related_blogs: false
 doc_type: 'guide'
 ---
 
-# 使用变更操作更新和删除 ClickHouse 数据 \{#updating-and-deleting-clickhouse-data-with-mutations\}
-
-尽管 ClickHouse 面向的是高吞吐量分析型工作负载，但在某些情况下仍然可以修改或删除已有数据。此类操作称为“变更（mutation）”，并通过 `ALTER TABLE` 命令执行。
+尽管 ClickHouse 面向的是高吞吐量分析型工作负载，但在某些情况下仍然可以修改或删除已有数据。此类操作称为“mutation”，并通过 `ALTER TABLE` 命令执行。
 
 :::tip
-如果需要频繁执行更新操作，建议在 ClickHouse 中使用[去重](../developer/deduplication.md)，这样可以在不生成变更事件的情况下更新和/或删除行。或者，使用[轻量级更新](/docs/sql-reference/statements/update)或[轻量级删除](/guides/developer/lightweight-delete)。
+如果需要频繁执行更新操作，建议在 ClickHouse 中使用[去重](../developer/deduplication.md)，这样可以在不生成mutation事件的情况下更新和/或删除行。或者，使用[轻量级更新](/docs/sql-reference/statements/update)或[轻量级删除](/guides/developer/lightweight-delete)。
 :::
 
 ## 更新数据 \{#updating-data\}
@@ -25,7 +23,7 @@ doc_type: 'guide'
 ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_expr>
 ```
 
-`<expression>` 是在满足 `<filter_expr>` 条件时该列的新值。`<expression>` 必须与该列具有相同的数据类型，或能够通过 `CAST` 运算符转换为相同的数据类型。`<filter_expr>` 应当为数据的每一行返回一个 `UInt8`（0 或非 0）值。多个 `UPDATE <column>` 语句可以在单个 `ALTER TABLE` 命令中通过逗号组合执行。
+`<expression>` 是在满足 `<filter_expr>` 条件时该列的新值。`<expression>` 必须与该列具有相同的数据类型，或能够通过 `CAST` 运算符转换为相同的数据类型。`<filter_expr>` 应当为数据的每一行返回一个 `UInt8` (0 或非 0) 值。多个 `UPDATE <column>` 语句可以在单个 `ALTER TABLE` 命令中通过逗号组合执行。
 
 **示例**：
 
@@ -57,7 +55,6 @@ ALTER TABLE [<database>.]<table> UPDATE <column> = <expression> WHERE <filter_ex
 无法更新属于主键或排序键的列。
 :::
 
-
 ## 删除数据 \{#deleting-data\}
 
 使用 `ALTER TABLE` 命令删除行：
@@ -85,7 +82,6 @@ ALTER TABLE [<database>.]<table> DELETE WHERE <filter_expr>
 :::
 
 请参阅 [`DELETE` 语句](/sql-reference/statements/delete.md) 文档页面了解更多详细信息。
-
 
 ## 轻量级删除 \{#lightweight-deletes\}
 

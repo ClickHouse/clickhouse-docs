@@ -8,7 +8,6 @@ description: 'Page describing the options available for migrating data into Clic
 doc_type: 'guide'
 ---
 
-# Migrating data into ClickHouse
 
 <div class='vimeo-container'>
   <iframe src="https://player.vimeo.com/video/753082620?h=eb566c8c08"

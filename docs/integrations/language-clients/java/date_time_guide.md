@@ -11,7 +11,6 @@ integration:
   - category: 'language_client'
 ---
 
-# Working with Date, Time and Timestamp in JDBC
 
 Date, Time and Timestamp require attention because there are several common problems related to them.
 The most common problem is how to handle time zones. Another problem is string representation and how to use it.

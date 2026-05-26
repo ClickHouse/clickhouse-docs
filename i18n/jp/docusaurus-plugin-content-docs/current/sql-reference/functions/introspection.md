@@ -1,12 +1,10 @@
 ---
-description: 'イントロスペクション関数に関するドキュメント'
+description: 'イントロスペクション関数のドキュメント'
 sidebar_label: 'イントロスペクション'
 slug: /sql-reference/functions/introspection
 title: 'イントロスペクション関数'
 doc_type: 'reference'
 ---
-
-# イントロスペクション関数 \{#introspection-functions\}
 
 この章で説明する関数を使用して、クエリプロファイリングのために [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) と [DWARF](https://en.wikipedia.org/wiki/DWARF) を調査できます。
 
@@ -59,7 +57,7 @@ addressToLine(address_of_binary_instruction)
 
 **戻り値**
 
-コロンで区切られたソースコードのファイル名と行番号を返します（例: `/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199`）。デバッグ情報が見つからない場合はバイナリ名を返し、アドレスが無効な場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
+コロンで区切られたソースコードのファイル名と行番号を返します (例: `/build/obj-x86_64-linux-gnu/../src/Common/ThreadPool.cpp:199`) 。デバッグ情報が見つからない場合はバイナリ名を返し、アドレスが無効な場合は空文字列を返します。[`String`](/sql-reference/data-types/string)
 
 **例**
 
@@ -122,7 +120,6 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
-
 ## addressToLineWithInlines \{#addressToLineWithInlines\}
 
 導入バージョン: v22.2.0
@@ -147,7 +144,7 @@ addressToLineWithInlines(address_of_binary_instruction)
 
 **返り値**
 
-最初の要素がソースコードのファイル名と行番号（コロン区切り）である配列を返します。2番目以降の要素には、インライン関数のソースコードのファイル名、行番号、および関数名が含まれます。デバッグ情報が見つからない場合は、バイナリ名と等しい単一の要素のみを含む配列が返されます。アドレスが無効な場合は空配列が返されます。[`Array(String)`](/sql-reference/data-types/array)
+最初の要素がソースコードのファイル名と行番号 (コロン区切り) である配列を返します。2番目以降の要素には、インライン関数のソースコードのファイル名、行番号、および関数名が含まれます。デバッグ情報が見つからない場合は、バイナリ名と等しい単一の要素のみを含む配列が返されます。アドレスが無効な場合は空配列が返されます。[`Array(String)`](/sql-reference/data-types/array)
 
 **例**
 
@@ -177,7 +174,6 @@ FROM system.trace_log
 WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
-
 
 ```response title=Response
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -294,7 +290,6 @@ LIMIT 1
 \G
 ```
 
-
 ```response title=Response
 Row 1:
 ──────
@@ -389,7 +384,6 @@ LIMIT 1
 \G
 ```
 
-
 ```response title=Response
 Row 1:
 ──────
@@ -450,7 +444,6 @@ SELECT isMergeTreePartCoveredBy(rhs, lhs), isMergeTreePartCoveredBy(lhs, rhs);
 └────────────────────────────────────┴────────────────────────────────────┘
 ```
 
-
 ## logTrace \{#logTrace\}
 
 導入バージョン: v20.12.0
@@ -484,7 +477,6 @@ SELECT logTrace('logTrace message');
 │                            0 │
 └──────────────────────────────┘
 ```
-
 
 ## mergeTreePartInfo \{#mergeTreePartInfo\}
 
@@ -520,7 +512,6 @@ SELECT info.partition_id, info.min_block, info.max_block, info.level, info.mutat
 │ all               │             12 │             25 │          7 │             4 │
 └───────────────────┴────────────────┴────────────────┴────────────┴───────────────┘
 ```
-
 
 ## tid \{#tid\}
 

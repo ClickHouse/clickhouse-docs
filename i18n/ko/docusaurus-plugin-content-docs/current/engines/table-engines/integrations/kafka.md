@@ -39,6 +39,7 @@ SETTINGS
     [kafka_sasl_mechanism = '',]
     [kafka_sasl_username = '',]
     [kafka_sasl_password = '',]
+    [kafka_autodetect_client_rack = '',]
     [kafka_schema = '',]
     [kafka_num_consumers = N,]
     [kafka_max_block_size = 0,]
@@ -52,6 +53,7 @@ SETTINGS
     [kafka_thread_per_consumer = 0,]
     [kafka_handle_error_mode = 'default',]
     [kafka_commit_on_select = false,]
+    [kafka_consumer_acquire_timeout_ms = 30000,]
     [kafka_max_rows_per_message = 1,]
     [kafka_compression_codec = '',]
     [kafka_compression_level = -1];
@@ -62,10 +64,9 @@ SETTINGS
 * `kafka_broker_list` — 브로커 목록을 쉼표로 구분한 문자열입니다(예: `localhost:9092`).
 * `kafka_topic_list` — Kafka 토픽 목록입니다.
 * `kafka_group_name` — Kafka 컨슈머 그룹입니다. 각 그룹에 대해 읽기 위치가 별도로 추적됩니다. 클러스터에서 메시지가 중복되지 않도록 하려면 모든 곳에서 동일한 그룹 이름을 사용하십시오.
-* `kafka_format` — 메시지 포맷입니다. `JSONEachRow`와 같이 SQL `FORMAT` 함수와 동일한 표기법을 사용합니다. 자세한 내용은 [Formats](../../../interfaces/formats.md) 섹션을 참조하십시오.
+* `kafka_format` — 메시지 형식입니다. `JSONEachRow`와 같이 SQL `FORMAT` 함수와 동일한 표기법을 사용합니다. 자세한 내용은 [Formats](../../../interfaces/formats.md) 섹션을 참조하십시오.
 
 선택적 매개변수:
-
 
 * `kafka_security_protocol` - 브로커와 통신할 때 사용하는 프로토콜입니다. 가능한 값: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`.
 * `kafka_sasl_mechanism` - 인증에 사용할 SASL 메커니즘입니다. 가능한 값: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`.
@@ -85,7 +86,18 @@ SETTINGS
 * `kafka_thread_per_consumer` — 각 consumer에 독립적인 스레드를 제공합니다. 활성화된 경우, 각 consumer는 데이터를 병렬로 독립적으로 플러시합니다(비활성화된 경우에는 여러 consumer의 행을 합쳐 하나의 블록을 형성합니다). 기본값: `0`.
 * `kafka_handle_error_mode` — Kafka 엔진의 오류 처리 방식입니다. 가능한 값: default(메시지 파싱에 실패하면 예외를 발생시킵니다), stream(예외 메시지와 원시 메시지를 가상 컬럼 `_error` 및 `_raw_message`에 저장합니다), dead&#95;letter&#95;queue(오류 관련 데이터를 system.dead&#95;letter&#95;queue에 저장합니다).
 * `kafka_commit_on_select` — `SELECT` 쿼리가 실행될 때 메시지를 커밋합니다. 기본값: `false`.
+* `kafka_consumer_acquire_timeout_ms` — `Kafka2` 테이블에서 직접 `SELECT` 쿼리(오프셋을 Keeper 기반 스토리지에 저장하는 경우)를 수행할 때 Kafka consumer를 확보하기 위한 타임아웃(밀리초)입니다. 동일한 테이블에서 여러 개의 동시 직접 `SELECT` 쿼리가 실행되면 각 쿼리는 consumer를 사용할 수 있을 때까지 대기해야 합니다. 이 타임아웃은 쿼리가 서로 다른 consumer 하위 집합을 점유하고 있을 때 발생할 수 있는 교착 상태를 방지합니다. 기본값: `30000`.
 * `kafka_max_rows_per_message` — 행 기반 포맷에서 Kafka 메시지 하나에 기록되는 최대 행 수입니다. 기본값: `1`.
+* `kafka_autodetect_client_rack` — 가장 가까운 Kafka 레플리카를 우선 사용하도록 `librdkafka`의 `client.rack` 매개변수를 자동으로 설정합니다.
+  지원되는 소스:
+  `AWS_ZONE_ID`는 AWS IMDSv2 가용 영역 ID(예: `euc1-az1`)에 사용합니다;
+  `AWS_ZONE_NAME`은 AWS IMDSv2 가용 영역 이름(예: `eu-central-1a`)에 사용합니다;
+  `GCP_ZONE`은 GCP 메타데이터 서비스 영역(예: `europe-central2-a`)에 사용합니다;
+  `CLICKHOUSE`는 클라우드 메타데이터 또는 설정에 의존할 수 있는 ClickHouse 내부 감지를 사용합니다;
+  `AWS_ZONE_NAME_THEN_GCP_ZONE`은 먼저 `AWS_ZONE_NAME`을 시도한 다음 `GCP_ZONE`을 시도합니다.
+  기본값: 빈 문자열, 비활성화됨.
+  팁: 환경마다 가용 영역 형식이 다릅니다. Amazon MSK는 일반적으로 영역 ID를 사용하므로 `AWS_ZONE_ID`를 우선 사용하는 것이 좋습니다. Confluent Cloud는 일반적으로 영역 이름을 사용하므로 `AWS_ZONE_NAME`을 우선 사용하는 것이 좋습니다. 확실하지 않다면 `AWS_ZONE_NAME_THEN_GCP_ZONE`을 사용하거나 cluster의 `broker.rack` 값을 확인하십시오.
+  참고: Kafka 브로커는 `broker.rack` 및 `replica.selector.class=org.apache.kafka.common.replica.RackAwareReplicaSelector`가 설정되어 있어야 합니다.
 * `kafka_compression_codec` — 메시지를 생성(프로듀스)하는 데 사용되는 압축 코덱입니다. 지원되는 값: 빈 문자열, `none`, `gzip`, `snappy`, `lz4`, `zstd`. 빈 문자열인 경우 테이블에서 압축 코덱을 설정하지 않으므로, 설정 파일의 값이나 `librdkafka`의 기본값이 사용됩니다. 기본값: 빈 문자열입니다.
 * `kafka_compression_level` — kafka&#95;compression&#95;codec으로 선택한 알고리즘의 압축 수준 매개변수입니다. 값이 높을수록 CPU 사용량이 늘어나는 대신 더 나은 압축률을 제공합니다. 사용 가능한 범위는 알고리즘에 따라 다릅니다: `gzip`의 경우 `[0-9]`; `lz4`의 경우 `[0-12]`; `snappy`의 경우 `0`만; `zstd`의 경우 `[0-12]`; `-1`은 코덱별 기본 압축 수준을 의미합니다. 기본값: `-1`.
 * `kafka_map_virtual_columns_on_write` — 활성화하면 테이블 schema에서 `_key`, `_timestamp`, `_headers.name`, `_headers.value`와 같은 특수한 이름의 컬럼이 `INSERT` 시 해당 Kafka 메시지 메타데이터에 대응되며, 메시지 페이로드에서는 제외됩니다. [컬럼을 Kafka 메시지 메타데이터에 대응하기](#mapping-columns-to-kafka-message-metadata)를 참조하십시오. 기본값: `false`.
@@ -341,13 +353,11 @@ SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 
 새 엔진은 실험적 단계이므로 아직 프로덕션 환경에서 사용할 준비가 되어 있지 않습니다. 구현에는 다음과 같은 알려진 제한 사항이 있습니다.
 
-- 가장 큰 제한은 엔진이 직접 읽기를 지원하지 않는다는 점입니다. materialized view를 사용해 엔진에서 읽기를 수행하는 것과 엔진으로의 쓰기는 동작하지만, 직접 읽기는 동작하지 않습니다. 그 결과, 모든 직접 `SELECT` 쿼리는 실패합니다.
-- 테이블을 빠르게 삭제했다가 다시 생성하거나, 동일한 ClickHouse Keeper 경로를 서로 다른 엔진에 지정하면 문제가 발생할 수 있습니다. 모범 사례로, 경로 충돌을 피하기 위해 `kafka_keeper_path`에 `{uuid}`를 사용하는 것이 좋습니다.
-- repeatable read를 보장하려면, 단일 스레드에서 여러 파티션의 메시지를 동시에 소비할 수 없습니다. 한편, Kafka 컨슈머는 살아 있도록 정기적으로 폴링해야 합니다. 이 두 가지 요구사항을 모두 충족하기 위해, `kafka_thread_per_consumer`가 활성화된 경우에만 여러 컨슈머를 생성할 수 있도록 했습니다. 그렇지 않으면 컨슈머를 정기적으로 폴링하는 것과 관련된 문제를 피하는 작업이 지나치게 복잡해지기 때문입니다.
-- 새 스토리지 엔진으로 생성된 컨슈머는 [`system.kafka_consumers`](../../../operations/system-tables/kafka_consumers.md) 테이블에 표시되지 않습니다.
+* 테이블을 빠르게 삭제했다가 다시 생성하거나, 동일한 ClickHouse Keeper 경로를 서로 다른 엔진에 지정하면 문제가 발생할 수 있습니다. 모범 사례로, 경로 충돌을 피하기 위해 `kafka_keeper_path`에 `{uuid}`를 사용하는 것이 좋습니다.
+* repeatable read를 보장하려면, 단일 스레드에서 여러 파티션의 메시지를 동시에 소비할 수 없습니다. 한편, Kafka 컨슈머는 살아 있도록 정기적으로 폴링해야 합니다. 이 두 가지 요구사항을 모두 충족하기 위해, `kafka_thread_per_consumer`가 활성화된 경우에만 여러 컨슈머를 생성할 수 있도록 했습니다. 그렇지 않으면 컨슈머를 정기적으로 폴링하는 것과 관련된 문제를 피하는 작업이 지나치게 복잡해지기 때문입니다.
 
 **함께 보기**
 
-- [가상 컬럼](../../../engines/table-engines/index.md#table_engines-virtual_columns)
-- [background_message_broker_schedule_pool_size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
-- [system.kafka_consumers](../../../operations/system-tables/kafka_consumers.md)
+* [가상 컬럼](../../../engines/table-engines/index.md#table_engines-virtual_columns)
+* [background&#95;message&#95;broker&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
+* [system.kafka&#95;consumers](../../../operations/system-tables/kafka_consumers.md)

@@ -8,9 +8,7 @@ title: 'SQLite'
 doc_type: 'reference'
 ---
 
-# SQLite \{#sqlite\}
-
-[SQLite](https://www.sqlite.org/index.html) データベースに接続し、`INSERT` および `SELECT` クエリを実行して、ClickHouse と SQLite 間でデータを交換できるようにします。
+[SQLite](https://www.sqlite.org/index.html) データベースに接続し、ClickHouse と SQLite 間でデータをやり取りするための `INSERT` および `SELECT` クエリを実行できます。
 
 ## データベースの作成 \{#creating-a-database\}
 

@@ -3,12 +3,10 @@ title: 'ClickHouse は分散 JOIN をサポートしていますか？'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/distributed-join
-description: 'ClickHouse では分散 JOIN をサポートしています'
+description: 'ClickHouse は分散 JOIN をサポートしています'
 doc_type: 'reference'
 keywords: ['distributed', 'join']
 ---
-
-# ClickHouse は分散 JOIN をサポートしていますか？ \{#does-clickhouse-support-distributed-joins\}
 
 はい、ClickHouse はクラスタ上で分散 JOIN をサポートしています。
 

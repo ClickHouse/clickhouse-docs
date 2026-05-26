@@ -7,6 +7,7 @@ pagination_next: null
 description: 'ClickStack demo days for 2026-04-17'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Demo days']
+sidebar_position: -20260417
 ---
 
 ## Summarize logs and traces {#summarize-logs-and-traces}

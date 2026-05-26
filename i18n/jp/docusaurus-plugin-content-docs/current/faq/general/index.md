@@ -2,13 +2,11 @@
 slug: /faq/general/
 sidebar_position: 1
 sidebar_label: 'ClickHouse に関する一般的な質問'
-keywords: ['faq', 'questions', 'what is']
+keywords: ['faq', '質問', 'とは']
 title: 'ClickHouse に関する一般的な質問'
-description: 'ClickHouse に関する一般的な質問をまとめたインデックスページ'
+description: 'ClickHouse に関する一般的な質問を一覧表示する索引ページ'
 doc_type: 'landing-page'
 ---
-
-# ClickHouse に関する一般的な質問 \{#general-questions-about-clickhouse\}
 
 * [ClickHouse とは何ですか？](../../intro.md)
 * [なぜ ClickHouse はそんなに高速なのですか？](../../concepts/why-clickhouse-is-so-fast.mdx)

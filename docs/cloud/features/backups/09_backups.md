@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
-import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import backup_chain from '@site/static/images/cloud/manage/backup-chain.png';
 
 Database backups provide a safety net by ensuring that if data is lost for any unforeseen reason, the service can be restored to a previous state from the last successful backup.
@@ -55,8 +54,6 @@ See ["Configure backup schedules"](/cloud/manage/backups/configurable-backups) f
 
 ## Bring Your Own Bucket (BYOB) Backups {#byob}
 
-<EnterprisePlanFeatureBadge/>
-
 ClickHouse Cloud allows exporting backups to your own cloud service provider (CSP) account storage (AWS S3, Google Cloud Storage, or Azure Blob Storage).
 If you configure backups to your own bucket, ClickHouse Cloud will still take daily backups to its own bucket.
 This is to ensure that we have at least one copy of the data to restore from in case the backups in your bucket get corrupted.
@@ -70,7 +67,7 @@ Any usage where backups are being exported to a
 different region in the same cloud provider will incur [data transfer](/cloud/manage/network-data-transfer)
 charges.
 
-Currently, we don't support cross-cloud backups, nor backup / restore for services utilizing [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) or for regulated services.
+Currently, we don't support backup / restore for services utilizing [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) or for regulated services.
 :::
 
 See ["Export backups to your own Cloud account"](/cloud/manage/backups/export-backups-to-own-cloud-account) for examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.

@@ -1,5 +1,5 @@
 ---
-description: '지정된 스키마에 따라 랜덤 데이터를 생성합니다. 해당 데이터를 사용해 테스트 테이블을 채울 수 있습니다. 모든 타입을 지원하는 것은 아닙니다.'
+description: '지정된 스키마에 따라 무작위 데이터를 생성합니다. 해당 데이터를 사용해 테스트 테이블을 채울 수 있습니다. 모든 타입을 지원하는 것은 아닙니다.'
 sidebar_label: 'generateRandom'
 sidebar_position: 75
 slug: /sql-reference/table-functions/generate
@@ -7,15 +7,9 @@ title: 'generateRandom'
 doc_type: 'reference'
 ---
 
-
-
-# generateRandom Table Function \{#generaterandom-table-function\}
-
-지정한 스키마에 따라 임의의 데이터를 생성합니다.
-이 데이터를 사용해 테스트용 테이블을 채울 수 있습니다.
-모든 데이터 타입을 지원하는 것은 아닙니다.
-
-
+지정된 스키마에 따라 무작위 데이터를 생성합니다.
+해당 데이터를 사용해 테스트 테이블을 채울 수 있습니다.
+모든 타입을 지원하는 것은 아닙니다.
 
 ## 구문 \{#syntax\}
 
@@ -23,24 +17,19 @@ doc_type: 'reference'
 generateRandom(['name TypeName[, name TypeName]...', [, 'random_seed'[, 'max_string_length'[, 'max_array_length']]]])
 ```
 
-
 ## Arguments \{#arguments\}
 
-| Argument            | Description                                                                                     |
-|---------------------|-------------------------------------------------------------------------------------------------|
-| `name`              | 컬럼 이름입니다.                                                                                 |
-| `TypeName`          | 컬럼 타입입니다.                                                                                 |
+| Argument            | Description                                                 |
+| ------------------- | ----------------------------------------------------------- |
+| `name`              | 컬럼 이름입니다.                                                   |
+| `TypeName`          | 컬럼 타입입니다.                                                   |
 | `random_seed`       | 일관된 결과를 얻기 위해 랜덤 시드를 수동으로 지정합니다. `NULL`인 경우 시드는 랜덤으로 생성됩니다. |
-| `max_string_length` | 생성되는 모든 문자열의 최대 길이입니다. 기본값은 `10`입니다.                                      |
-| `max_array_length`  | 생성되는 모든 배열 또는 맵의 최대 요소 수입니다. 기본값은 `10`입니다.                            |
-
-
+| `max_string_length` | 생성되는 모든 문자열의 최대 길이입니다. 기본값은 `10`입니다.                        |
+| `max_array_length`  | 생성되는 모든 배열 또는 맵의 최대 요소 수입니다. 기본값은 `10`입니다.                  |
 
 ## 반환 값 \{#returned_value\}
 
 요청한 스키마를 사용하는 테이블 객체입니다.
-
-
 
 ## 사용 예 \{#usage-example\}
 
@@ -89,7 +78,6 @@ SELECT * FROM generateRandom(generateRandomStructure(4, 101), 101) LIMIT 3;
 SELECT * FROM generateRandom() LIMIT 3;
 ```
 
-
 ```text
 ┌───c1─┬─────────c2─┬─────────────────────c3─┬──────────────────────c4─┬─c5───────┐
 │ -128 │  317300854 │ 2030-08-16 08:22:20.65 │ 1994-08-16 12:08:56.745 │ R0qgiC46 │
@@ -98,12 +86,11 @@ SELECT * FROM generateRandom() LIMIT 3;
 └──────┴────────────┴────────────────────────┴─────────────────────────┴──────────┘
 ```
 
-랜덤 구조와 랜덤 데이터 모두에 시드 값을 사용하는 경우:
+랜덤 구조와 무작위 데이터 모두에 랜덤 시드를 사용하는 경우:
 
 ```sql
 SELECT * FROM generateRandom(11) LIMIT 3;
 ```
-
 
 ```text
 ┌───────────────────────────────────────c1─┬─────────────────────────────────────────────────────────────────────────────c2─┬─────────────────────────────────────────────────────────────────────────────c3─┬─────────c4─┬─────────────────────────────────────────────────────────────────────────────c5─┬──────────────────────c6─┬─c7──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬─c8──────────────────────────────────────┬─────────c9─┐
@@ -117,6 +104,6 @@ SELECT * FROM generateRandom(11) LIMIT 3;
 `generateRandom(generateRandomStructure(), [random seed], max_string_length, max_array_length)`는 충분히 큰 `max_array_length` 값을 사용할 경우, 복합 타입(`Array`, `Tuple`, `Map`, `Nested`)의 중첩 깊이가 최대 16단계까지 가능하기 때문에 매우 큰 결과가 생성될 수 있습니다.
 :::
 
-
 ## 관련 콘텐츠 \{#related-content\}
-- 블로그: [ClickHouse에서 무작위 데이터 생성하기](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)
+
+* 블로그: [ClickHouse에서 무작위 데이터 생성하기](https://clickhouse.com/blog/generating-random-test-distribution-data-for-clickhouse)

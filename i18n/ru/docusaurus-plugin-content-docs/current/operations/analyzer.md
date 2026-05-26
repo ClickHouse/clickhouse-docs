@@ -1,13 +1,11 @@
 ---
-description: 'Страница, посвящённая анализатору запросов ClickHouse'
+description: 'Страница с описанием анализатора запросов ClickHouse'
 keywords: ['анализатор']
 sidebar_label: 'Анализатор'
 slug: /operations/analyzer
 title: 'Анализатор'
 doc_type: 'reference'
 ---
-
-# Анализатор \{#analyzer\}
 
 В версии ClickHouse `24.3` новый анализатор запросов включён по умолчанию.
 Подробнее о том, как он работает, можно прочитать [здесь](/guides/developer/understanding-query-execution-with-the-analyzer#analyzer).

@@ -7,8 +7,6 @@ title: 'Руководство по преобразованию SQL для Amaz
 doc_type: 'reference'
 ---
 
-# Руководство по преобразованию SQL-запросов Amazon Redshift \{#amazon-redshift-sql-translation-guide\}
-
 ## Типы данных \{#data-types\}
 
 Пользователи, переносящие данные между ClickHouse и Redshift, сразу заметят,

@@ -1,17 +1,15 @@
 ---
-description: '백업에서 테이블/데이터베이스를 읽기 전용 모드로 즉시 연결할 수 있도록 합니다.'
-sidebar_label: '백업'
+description: 'Backup에서 테이블/데이터베이스를 읽기 전용 모드로 즉시 연결할 수 있도록 합니다.'
+sidebar_label: 'Backup'
 sidebar_position: 60
 slug: /engines/database-engines/backup
-title: '백업'
+title: 'Backup'
 doc_type: 'reference'
 ---
 
-# 백업 \{#backup\}
+Database Backup을 사용하면 [Backup](/operations/backup/overview)에서 테이블/데이터베이스를 읽기 전용 모드로 즉시 연결할 수 있습니다.
 
-데이터베이스 백업을 사용하면 [백업](/operations/backup/overview)에서 테이블/데이터베이스를 읽기 전용 모드로 즉시 attach하여 사용할 수 있습니다.
-
-데이터베이스 백업은 증분 백업과 비증분(전체) 백업 모두를 지원합니다.
+Database Backup은 증분 Backup과 비증분 Backup 모두에서 사용할 수 있습니다.
 
 ## 데이터베이스 생성 \{#creating-a-database\}
 

@@ -1,13 +1,11 @@
 ---
-description: 'dense_rank 윈도우 FUNCTION에 대한 설명서'
+description: 'dense_rank 윈도우 함수 문서'
 sidebar_label: 'dense_rank'
 sidebar_position: 7
 slug: /sql-reference/window-functions/dense_rank
 title: 'dense_rank'
 doc_type: 'reference'
 ---
-
-# dense_rank \{#dense_rank\}
 
 현재 파티션 내에서 현재 행의 순위를 건너뛰는 값 없이 매깁니다. 다시 말해, 새로 나타나는 행의 값이 이전 행들 중 하나의 값과 같으면, 순위 값이 건너뛰지 않고 바로 다음 순위를 부여합니다.
 
@@ -35,9 +33,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 다음 예시는 동영상 강의 [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)에 사용된 예시를 기반으로 합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -57,15 +53,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        dense_rank() OVER (ORDER BY salary DESC) AS dense_rank
 FROM salaries;
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─dense_rank─┐
 1. │ Gary Chen       │ 195000 │          1 │
 2. │ Robert George   │ 195000 │          1 │

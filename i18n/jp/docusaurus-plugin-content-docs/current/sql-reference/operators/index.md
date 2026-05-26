@@ -7,9 +7,7 @@ title: '演算子'
 doc_type: 'reference'
 ---
 
-# 演算子 \{#operators\}
-
-ClickHouse は、クエリのパース段階で、演算子の優先度、優先順位、および結合性に従って、それらを対応する関数に変換します。
+ClickHouse は、クエリの解析時に、演算子をその優先度、優先順位、および結合性に従って対応する関数へ変換します。
 
 ## アクセス演算子 \{#access-operators\}
 
@@ -128,6 +126,15 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
+## 文字列を扱うオペレーター \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - `overlay(string, replacement, offset)` 関数です。
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - `overlay(string, replacement, offset, length)` 関数です。
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - `overlayUTF8(string, replacement, offset)` 関数です。
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - `overlayUTF8(string, replacement, offset, length)` 関数です。
+
 ## データセットを扱う演算子 \{#operators-for-working-with-data-sets\}
 
 [IN 演算子](../../sql-reference/operators/in.md)および[EXISTS 演算子](../../sql-reference/operators/exists.md)を参照してください。
@@ -168,13 +175,11 @@ SELECT
 
 ALL を使用したクエリ:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -185,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 ANYを使用したクエリ:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │
@@ -512,3 +515,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) SETTING を有効にすることで最適化できます。`optimize_functions_to_subcolumns = 1` の場合、関数はカラム全体のデータを読み取って処理するのではなく、[null](../../sql-reference/data-types/nullable.md#finding-null) サブカラムのみを読み込みます。クエリ `SELECT n IS NOT NULL FROM table` は `SELECT NOT n.null FROM TABLE` に変換されます。
+
+
+## 真偽値の判定 \{#checking-boolean-values\}
+
+ClickHouse は、`IS TRUE`、`IS FALSE`、`IS UNKNOWN`、`IS NOT TRUE`、`IS NOT FALSE`、および `IS NOT UNKNOWN` 演算子をサポートしています。
+これらは [Bool](../../sql-reference/data-types/boolean.md) および `Nullable(Bool)` の式で使用されます。
+
+* `expr IS TRUE` は、`expr` が `true` の場合にのみ `1` を返します。
+* `expr IS FALSE` は、`expr` が `false` の場合にのみ `1` を返します。
+* `expr IS UNKNOWN` は、`expr` が `NULL` の場合にのみ `1` を返します。
+* `expr IS NOT TRUE` は、`expr` が `false` または `NULL` の場合に `1` を返します。
+* `expr IS NOT FALSE` は、`expr` が `true` または `NULL` の場合に `1` を返します。
+* `expr IS NOT UNKNOWN` は、`expr` が `NULL` ではない場合に `1` を返します。
+
+真偽値式では、`IS UNKNOWN` は `IS NULL` と同等であり、`IS NOT UNKNOWN` は `IS NOT NULL` と同等です。
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

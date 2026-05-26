@@ -7,7 +7,7 @@ keywords: ['managed postgres', 'quickstart', 'getting started', 'create database
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPg from '@site/static/images/managed-postgres/create-service.png';
 import pgOverview from '@site/static/images/managed-postgres/overview.png';
@@ -21,7 +21,7 @@ import replicatedTables from '@site/static/images/managed-postgres/replicated-ta
 
 # Quickstart for Managed Postgres
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="quick-start" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.quick-start-beta" />
 
 ClickHouse Managed Postgres is enterprise-grade Postgres backed by NVMe storage, delivering up to 10x faster performance for disk-bound workloads compared to network-attached storage like EBS. This quickstart is divided into two parts:
 

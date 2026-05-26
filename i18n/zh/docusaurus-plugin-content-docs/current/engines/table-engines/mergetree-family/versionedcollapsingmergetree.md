@@ -1,5 +1,6 @@
 ---
-description: '允许对持续变化的对象状态进行快速写入，并在后台删除旧的对象状态。'
+description: '允许快速写入持续变化的对象状态，
+  并在后台删除旧的对象状态。'
 sidebar_label: 'VersionedCollapsingMergeTree'
 sidebar_position: 80
 slug: /engines/table-engines/mergetree-family/versionedcollapsingmergetree
@@ -7,12 +8,10 @@ title: 'VersionedCollapsingMergeTree 表引擎'
 doc_type: 'reference'
 ---
 
-# VersionedCollapsingMergeTree 表引擎 \{#versionedcollapsingmergetree-table-engine\}
-
 该引擎：
 
-- 允许快速写入持续变化的对象状态。
-- 在后台删除旧的对象状态，从而显著减少存储占用。
+* 允许快速写入持续变化的对象状态。
+* 在后台删除旧的对象状态，从而显著减少存储占用。
 
 详细信息参见 [Collapsing](#table_engines_versionedcollapsingmergetree) 部分。
 
@@ -58,13 +57,13 @@ VersionedCollapsingMergeTree(sign, version)
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
     name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
     ...
-) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
-```
+  ) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
+  ```
 
   除 `sign` 和 `version` 之外的所有参数，其含义与 `MergeTree` 中相同。
 
@@ -83,7 +82,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 考虑这样一种情况：你需要为某个对象保存不断变化的数据。为某个对象仅保留一行记录，并在有变化时更新这一行是合理的。然而，对于 DBMS 来说，执行 `UPDATE` 操作代价高且速度慢，因为这需要在存储中重写数据。如果你需要快速写入数据，则不适合使用 `UPDATE`，但可以按如下方式顺序写入对象的变更。
 
-在写入行时使用 `Sign` 列。如果 `Sign = 1`，表示该行为对象的某个状态（我们称其为“state”行）。如果 `Sign = -1`，表示对具有相同属性的对象状态进行取消（我们称其为“cancel”行）。还需要使用 `Version` 列，它应通过不同的数字标识对象的每一个状态。
+在写入行时使用 `Sign` 列。如果 `Sign = 1`，表示该行为对象的某个状态 (我们称其为“state”行) 。如果 `Sign = -1`，表示对具有相同属性的对象状态进行取消 (我们称其为“cancel”行) 。还需要使用 `Version` 列，它应通过不同的数字标识对象的每一个状态。
 
 例如，我们希望统计用户在某个网站上访问了多少页面以及停留了多长时间。在某个时间点，我们写入如下记录来表示用户活动的状态：
 
@@ -102,7 +101,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
 ```
 
-第一行会抵销对象（用户）之前的状态。它应当复制被抵销状态中除 `Sign` 字段以外的所有字段。
+第一行会抵销对象 (用户) 之前的状态。它应当复制被抵销状态中除 `Sign` 字段以外的所有字段。
 
 第二行表示当前状态。
 
@@ -115,7 +114,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 └─────────────────────┴───────────┴──────────┴──────┴─────────┘
 ```
 
-这些行可以被删除，从而折叠该对象无效（旧）的状态。`VersionedCollapsingMergeTree` 在合并数据分片时执行这一操作。
+这些行可以被删除，从而折叠该对象无效 (旧) 的状态。`VersionedCollapsingMergeTree` 在合并数据分片时执行这一操作。
 
 要了解为什么每次更改需要两行，请参阅[算法](#table_engines-versionedcollapsingmergetree-algorithm)。
 
@@ -123,7 +122,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 1. 写入数据的程序应当记住对象的状态，以便能够对其进行撤销。“Cancel” 行应包含主键字段的副本、“state” 行的版本以及相反的 `Sign`。这会增加初始存储空间占用，但可以实现快速写入。
 2. 列中持续增长的长数组会因为写入负载而降低引擎效率。数据越简单直接，引擎效率越高。
-3. `SELECT` 结果高度依赖于对象变更历史的一致性。在准备要插入的数据时要非常谨慎。对于不一致的数据，你可能会得到不可预测的结果，例如本应为非负指标（如会话深度）的负值。
+3. `SELECT` 结果高度依赖于对象变更历史的一致性。在准备要插入的数据时要非常谨慎。对于不一致的数据，你可能会得到不可预测的结果，例如本应为非负指标 (如会话深度) 的负值。
 
 ### 算法 \{#table_engines-versionedcollapsingmergetree-algorithm\}
 
@@ -135,11 +134,11 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 ClickHouse 不保证具有相同主键的所有行会位于同一个结果数据部件中，甚至不保证在同一台物理服务器上。这对于数据写入以及之后的数据部件合并都成立。此外，ClickHouse 会使用多个线程处理 `SELECT` 查询，因此无法预测结果集中各行的顺序。这意味着，如果需要从 `VersionedCollapsingMergeTree` 表中获取完全“折叠”的数据，就必须进行聚合。
 
-要完成折叠，编写带有 `GROUP BY` 子句的查询，并使用能够考虑符号（Sign）的聚合函数。例如，要计算数量，用 `sum(Sign)` 代替 `count()`。要计算某个字段的和，用 `sum(Sign * x)` 代替 `sum(x)`，并添加 `HAVING sum(Sign) > 0`。
+要完成折叠，编写带有 `GROUP BY` 子句的查询，并使用能够考虑符号 (Sign) 的聚合函数。例如，要计算数量，用 `sum(Sign)` 代替 `count()`。要计算某个字段的和，用 `sum(Sign * x)` 代替 `sum(x)`，并添加 `HAVING sum(Sign) > 0`。
 
 可以通过这种方式计算的聚合函数包括 `count`、`sum` 和 `avg`。如果对象至少有一个未折叠状态，则可以计算聚合函数 `uniq`。无法计算聚合函数 `min` 和 `max`，因为 `VersionedCollapsingMergeTree` 不保存折叠状态的值历史。
 
-如果需要在不进行聚合的情况下以“折叠”的方式提取数据（例如，检查是否存在其最新值满足某些条件的行），可以在 `FROM` 子句中使用 `FINAL` 修饰符。这种方法效率较低，不应在大表上使用。
+如果需要在不进行聚合的情况下以“折叠”的方式提取数据 (例如，检查是否存在其最新值满足某些条件的行) ，可以在 `FROM` 子句中使用 `FINAL` 修饰符。这种方法效率较低，不应在大表上使用。
 
 ## 使用示例 \{#example-of-use\}
 

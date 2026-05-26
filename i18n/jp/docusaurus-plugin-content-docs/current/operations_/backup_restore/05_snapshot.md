@@ -1,5 +1,5 @@
 ---
-description: 'クラウドのオブジェクトストレージを使用して、クラウドネイティブテーブルの軽量なスナップショットを作成・復元する方法。'
+description: 'クラウドオブジェクトストレージを使用して、クラウドネイティブテーブルの軽量なスナップショットを作成および復元する方法。'
 sidebar_label: 'スナップショットバックアップ'
 sidebar_position: 5
 slug: /operations/backup/snapshot
@@ -7,8 +7,6 @@ title: 'スナップショットバックアップと復元'
 doc_type: 'guide'
 keywords: ['スナップショット', 'バックアップ', '復元', 'SharedMergeTree', 'SharedSet', 'SharedJoin', '軽量バックアップ', 'クラウドバックアップ', 'S3', 'Azure Blob Storage', 'snapshot_locks', 'snapshot_parts', 'experimental_lightweight_snapshot']
 ---
-
-# スナップショットバックアップと復元 \{#snapshot-backup-and-restore\}
 
 スナップショットバックアップは、クラウドネイティブなテーブルエンジン向けの軽量なバックアップモードです。データをコピーする代わりに、各パーツごとのロックノードを ClickHouse Keeper に書き込みます。これらのロックにより、スナップショットが保持されている限り、参照先のオブジェクトストレージパーツがサーバーによって削除されるのを防ぎます。その後、バックアップではデータを物理的にコピーするのではなく、オブジェクトストレージへの参照を記録するため、テーブルサイズに関係なくスナップショットをすばやく作成できます。
 
@@ -217,3 +215,15 @@ WHERE (name, table_id) NOT IN (
 ```
 
 これは、元のデータが変更または削除された後もスナップショットを保持する場合のストレージオーバーヘッドを把握するのに役立ちます。
+
+## サーバー設定 \{#server-settings\}
+
+以下のサーバー設定パラメータは、スナップショットの動作を制御します。これらは SQL ではなく、サーバーの設定ファイルで指定します。
+
+| Setting                                                                                                                                       | Type   | Default | Changeable without restart | Description                                                                                                              |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| [`max_held_snapshots`](/operations/server-configuration-parameters/settings#max_held_snapshots)                                               | UInt64 | `0`     | No                         | 同時に保持できる軽量スナップショットの最大数です。`0` は無制限を意味します。上限に達すると、新しいスナップショットを作成しようとした際に例外が発生します。                                          |
+| [`max_snapshot_commit_thread_pool_size`](/operations/server-configuration-parameters/settings#max_snapshot_commit_thread_pool_size)           | UInt64 | `64`    | Yes                        | スナップショットのロックノードを Keeper にコミットするために使用するスレッド数です。多数のパーツを持つ大規模テーブルでスナップショットの作成が遅い場合は、この値を増やしてください。                           |
+| [`max_snapshot_commit_thread_pool_free_size`](/operations/server-configuration-parameters/settings#max_snapshot_commit_thread_pool_free_size) | UInt64 | `0`     | Yes                        | スナップショットコミットプール内のアイドルスレッド数がこの値を超えると、ClickHouse はそれらのスレッドを解放してプールを縮小します。スレッドは必要に応じて再度作成されます。`0` は、アイドルスレッドを解放しないことを意味します。 |
+| [`snapshot_cleaner_period`](/operations/server-configuration-parameters/settings#snapshot_cleaner_period)                                     | UInt64 | `120`   | No                         | スナップショットロックから参照されなくなったパーツを削除するために、スナップショットクリーナーを実行する間隔 (秒) です。Cloud 専用。                                                  |
+| [`snapshot_cleaner_pool_size`](/operations/server-configuration-parameters/settings#snapshot_cleaner_pool_size)                               | UInt64 | `128`   | No                         | スナップショットクリーナーのスレッドプール内のスレッド数です。Cloud 専用。                                                                                 |

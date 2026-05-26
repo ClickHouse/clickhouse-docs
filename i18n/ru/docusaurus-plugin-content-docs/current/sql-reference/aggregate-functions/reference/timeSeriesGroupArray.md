@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesGroupArray \{#timeSeriesGroupArray\}
 
-Введена в версии v25.9.0
+Введена в версии v25.8.0
 
 Сортирует данные временных рядов по метке времени в порядке возрастания.
 

@@ -168,26 +168,26 @@ users, roles, row_policies, settings_profiles, quotas와 같이 액세스 관리
 
 위의 각 명령어에 대한 자세한 설명은 아래와 같습니다.
 
-| **Command**                                                            | **Description**                                                                                                                                      |
-|------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `BACKUP`                                                               | 지정한 객체의 백업을 생성합니다                                                                                                                     |
-| `RESTORE`                                                              | 백업에서 객체를 복원합니다                                                                                                                           |
-| `[ASYNC]`                                                              | 작업을 비동기적으로 실행합니다 (즉시 ID를 반환하며, 해당 ID로 진행 상태를 모니터링할 수 있습니다)                                                   |
-| `TABLE [db.]table_name [AS [db.]table_name_in_backup]`                 | 특정 테이블을 백업/복원합니다 (이름을 변경할 수 있습니다)                                                                                            |
-| `[PARTITION[S] partition_expr [,...]]`                                 | 테이블의 특정 파티션만 백업/복원합니다                                                                                                               |
-| `DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup]`             | 딕셔너리 객체를 백업/복원합니다                                                                                                                      |
-| `DATABASE database_name [AS database_name_in_backup]`                  | 전체 데이터베이스를 백업/복원합니다 (이름을 변경할 수 있습니다)                                                                                      |
-| `TEMPORARY TABLE table_name [AS table_name_in_backup]`                 | 임시 테이블을 백업/복원합니다 (이름을 변경할 수 있습니다)                                                                                            |
-| `VIEW view_name [AS view_name_in_backup]`                              | VIEW를 백업/복원합니다 (이름을 변경할 수 있습니다)                                                                                                   |
-| `[EXCEPT TABLES ...]`                                                  | 데이터베이스를 백업할 때 특정 테이블을 제외합니다                                                                                                    |
-| `ALL`                                                                  | 모든 항목(전체 데이터베이스, 테이블 등)을 백업/복원합니다. ClickHouse 23.4 버전 이전에는 `ALL`이 `RESTORE` 명령어에만 적용되었습니다.              |
-| `[EXCEPT {TABLES\|DATABASES}...]`                                      | `ALL`을 사용할 때 특정 테이블 또는 데이터베이스를 제외합니다                                                                                         |
-| `[ON CLUSTER 'cluster_name']`                                          | ClickHouse 클러스터 전체에 걸쳐 백업/복원 작업을 실행합니다                                                                                          |
-| `TO\|FROM`                                                             | 방향 지정: 백업 대상에는 `TO`, 복원 소스에는 `FROM`을 사용합니다                                                                                    |
-| `File('<path>/<filename>')`                                            | 로컬 파일 시스템에 저장하거나 로컬 파일 시스템에서 복원합니다                                                                                        |
-| `Disk('<disk_name>', '<path>/')`                                       | 구성된 디스크에 저장하거나 해당 디스크에서 복원합니다                                                                                                |
-| `S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>')` | Amazon S3 또는 S3 호환 스토리지에 저장하거나 그로부터 복원합니다                                                                                     |
-| `[SETTINGS ...]`                                                       | 설정 전체 목록은 아래 내용을 참조하십시오                                                                                                            |                                                                                                                         |
+| **Command**                                                            | **Description**                                                                            |   |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | - |
+| `BACKUP`                                                               | 지정한 객체의 백업을 생성합니다                                                                          |   |
+| `RESTORE`                                                              | 백업에서 객체를 복원합니다                                                                             |   |
+| `TABLE [db.]table_name [AS [db.]table_name_in_backup]`                 | 특정 테이블을 백업/복원합니다 (이름을 변경할 수 있습니다)                                                          |   |
+| `[PARTITION[S] partition_expr [,...]]`                                 | 테이블의 특정 파티션만 백업/복원합니다                                                                      |   |
+| `DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup]`             | 딕셔너리 객체를 백업/복원합니다                                                                          |   |
+| `DATABASE database_name [AS database_name_in_backup]`                  | 전체 데이터베이스를 백업/복원합니다 (이름을 변경할 수 있습니다)                                                       |   |
+| `TEMPORARY TABLE table_name [AS table_name_in_backup]`                 | 임시 테이블을 백업/복원합니다 (이름을 변경할 수 있습니다)                                                          |   |
+| `VIEW view_name [AS view_name_in_backup]`                              | VIEW를 백업/복원합니다 (이름을 변경할 수 있습니다)                                                            |   |
+| `[EXCEPT TABLES ...]`                                                  | 데이터베이스를 백업할 때 특정 테이블을 제외합니다                                                                |   |
+| `ALL`                                                                  | 모든 항목(전체 데이터베이스, 테이블 등)을 백업/복원합니다. ClickHouse 23.4 버전 이전에는 `ALL`이 `RESTORE` 명령어에만 적용되었습니다. |   |
+| `[EXCEPT {TABLES\|DATABASES}...]`                                      | `ALL`을 사용할 때 특정 테이블 또는 데이터베이스를 제외합니다                                                       |   |
+| `[ON CLUSTER 'cluster_name']`                                          | ClickHouse 클러스터 전체에 걸쳐 백업/복원 작업을 실행합니다                                                     |   |
+| `TO\|FROM`                                                             | 방향 지정: 백업 대상에는 `TO`, 복원 소스에는 `FROM`을 사용합니다                                                 |   |
+| `File('<path>/<filename>')`                                            | 로컬 파일 시스템에 저장하거나 로컬 파일 시스템에서 복원합니다                                                         |   |
+| `Disk('<disk_name>', '<path>/')`                                       | 구성된 디스크에 저장하거나 해당 디스크에서 복원합니다                                                              |   |
+| `S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>')` | Amazon S3 또는 S3 호환 스토리지에 저장하거나 그로부터 복원합니다                                                  |   |
+| `[SETTINGS ...]`                                                       | 설정 전체 목록은 아래 내용을 참조하십시오                                                                    |   |
+| `[ASYNC]`                                                              | 작업을 비동기적으로 실행합니다 (즉시 ID를 반환하며, 해당 ID로 진행 상태를 모니터링할 수 있습니다)                                 |   |
 
 ### 설정 \{#settings\}
 

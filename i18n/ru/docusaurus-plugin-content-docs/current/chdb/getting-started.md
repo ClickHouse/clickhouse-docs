@@ -2,16 +2,14 @@
 title: 'Начало работы с chDB'
 sidebar_label: 'Начало работы'
 slug: /chdb/getting-started
-description: 'chDB — это внутрипроцессный SQL OLAP-движок на базе ClickHouse'
+description: 'chDB — это SQL OLAP-движок, работающий в процессе и построенный на ClickHouse'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-# Начало работы с chDB \{#getting-started-with-chdb\}
-
 В этом руководстве мы разберёмся, как быстро начать работу с вариантом chDB для Python.
 Мы начнём с выполнения запроса к JSON‑файлу в S3, затем создадим таблицу в chDB на основе этого JSON‑файла и выполним несколько запросов к данным.
-Мы также посмотрим, как возвращать результаты запросов в различных форматах, включая Apache Arrow и Pandas, и, наконец, узнаем, как выполнять запросы к DataFrame библиотеки Pandas. 
+Мы также посмотрим, как возвращать результаты запросов в различных форматах, включая Apache Arrow и Pandas, и, наконец, узнаем, как выполнять запросы к DataFrame библиотеки Pandas.
 
 ## Настройка \{#setup\}
 
@@ -196,7 +194,7 @@ is_live_content: [[false,true]]
 count(): [[315746,20686]]
 ```
 
-## Создание таблицы из JSON-файла \{#creating-a-table-from-json-file\}
+## Создание таблицы из JSON‑файла \{#creating-a-table-from-json-file\}
 
 Теперь рассмотрим, как создать таблицу в chDB.
 Для этого нам нужно использовать другой API, поэтому сначала импортируем его:
@@ -219,7 +217,7 @@ sess = chs.Session("gettingStarted.chdb")
 sess.query("CREATE DATABASE IF NOT EXISTS youtube")
 ```
 
-Теперь мы можем создать таблицу `dislikes` на основе схемы из файла JSON, используя приём `CREATE...EMPTY AS`.
+Теперь мы можем создать таблицу `dislikes` на основе схемы из JSON‑файла, используя приём `CREATE...EMPTY AS`.
 Мы будем использовать настройку [`schema_inference_make_columns_nullable`](/operations/settings/formats/#schema_inference_make_columns_nullable), чтобы типы столбцов не были автоматически сделаны `Nullable`.
 
 ```python
@@ -368,11 +366,11 @@ chdb.query(
 9                    RC Cars OFF Road          2.051021
 ```
 
-Также вы можете подробнее узнать о выполнении запросов к DataFrame в Pandas в [руководстве для разработчиков по запросам в Pandas](guides/querying-pandas.md).
+Также вы можете подробнее узнать о выполнении запросов к DataFrame в Pandas в [руководстве для разработчиков «Выполнение запросов к DataFrame в Pandas»](guides/querying-pandas.md).
 
 ## Дальнейшие шаги \{#next-steps\}
 
-Надеемся, это руководство дало вам хорошее общее представление о chDB. 
+Надеемся, это руководство дало вам хорошее общее представление о chDB.
 Чтобы узнать больше о том, как его использовать, см. следующие руководства для разработчиков:
 
 * [Выполнение запросов к DataFrame в Pandas](guides/querying-pandas.md)

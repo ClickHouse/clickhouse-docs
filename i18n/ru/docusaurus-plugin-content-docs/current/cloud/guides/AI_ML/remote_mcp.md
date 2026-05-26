@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/remote_mcp
-sidebar_label: 'Включить удалённый MCP-сервер'
+sidebar_label: 'включение удалённого MCP-сервера'
 title: 'Включение и подключение удалённого MCP-сервера ClickHouse Cloud'
 pagination_prev: null
 pagination_next: null
@@ -11,16 +11,9 @@ sidebar_position: 1
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import img1 from '@site/static/images/use-cases/AI_ML/MCP/1connectmcpmodal.png';
 import img2 from '@site/static/images/use-cases/AI_ML/MCP/2enable_mcp.png';
-import img3 from '@site/static/images/use-cases/AI_ML/MCP/3oauth.png';
-import img4 from '@site/static/images/use-cases/AI_ML/MCP/4oauth_success.png';
-import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.png';
-import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
-import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 В этом руководстве описано, как включить удалённый MCP-сервер ClickHouse Cloud и настроить его для использования с распространёнными инструментами разработки.
 
@@ -28,7 +21,6 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 * Работающий [сервис ClickHouse Cloud](/getting-started/quick-start/cloud)
 * IDE или выбранный вами инструмент для agentic-разработки
-
 
 ## Включение удалённого MCP-сервера для Cloud \{#enable-remote-mcp-server\}
 

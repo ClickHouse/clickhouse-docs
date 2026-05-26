@@ -1,13 +1,11 @@
 ---
-description: '정확 및 근사 벡터 검색에 대한 문서'
+description: '정확 벡터 검색과 근사 벡터 검색 문서'
 keywords: ['벡터 유사도 검색', 'ann', 'knn', 'hnsw', '인덱스', '인덱스', '최근접 이웃', '벡터 검색']
-sidebar_label: '정확 및 근사 벡터 검색'
+sidebar_label: '정확 벡터 검색과 근사 벡터 검색'
 slug: /engines/table-engines/mergetree-family/annindexes
-title: '정확 및 근사 벡터 검색'
+title: '정확 벡터 검색과 근사 벡터 검색'
 doc_type: 'guide'
 ---
-
-# 정확 벡터 검색과 근사 벡터 검색 \{#exact-and-approximate-vector-search\}
 
 주어진 점에 대해 다차원(벡터) 공간에서 가장 가까운 N개의 점을 찾는 문제는 [최근접 이웃 검색](https://en.wikipedia.org/wiki/Nearest_neighbor_search)이라고 하며, 줄여서 벡터 검색이라고 합니다.
 벡터 검색을 수행하는 일반적인 접근 방식은 두 가지가 있습니다.
@@ -31,7 +29,6 @@ LIMIT <N>
 `<DistanceFunction>`은 참조 점과 저장된 모든 점 사이의 거리를 계산합니다.
 사용 가능한 [distance function](/sql-reference/functions/distance-functions) 중 아무 것이나 사용할 수 있습니다.
 `<N>`은 반환할 이웃(neighbor)의 수를 지정합니다.
-
 
 ## 정확한 벡터 검색 \{#exact-nearest-neighbor-search\}
 
@@ -604,7 +601,7 @@ WHERE type = 'vector_similarity';
 
 쿼리:
 
-```sql
+```sql title="Query"
 CREATE TABLE tab(id Int32, vec Array(Float32), INDEX idx vec TYPE vector_similarity('hnsw', 'L2Distance', 2)) ENGINE = MergeTree ORDER BY id;
 
 INSERT INTO tab VALUES (0, [1.0, 0.0]), (1, [1.1, 0.0]), (2, [1.2, 0.0]), (3, [1.3, 0.0]), (4, [1.4, 0.0]), (5, [1.5, 0.0]), (6, [0.0, 2.0]), (7, [0.0, 2.1]), (8, [0.0, 2.2]), (9, [0.0, 2.3]), (10, [0.0, 2.4]), (11, [0.0, 2.5]);
@@ -616,9 +613,7 @@ ORDER BY L2Distance(vec, reference_vec) ASC
 LIMIT 3;
 ```
 
-결과:
-
-```result
+```result title="Response"
    ┌─id─┬─vec─────┐
 1. │  6 │ [0,2]   │
 2. │  7 │ [0,2.1] │

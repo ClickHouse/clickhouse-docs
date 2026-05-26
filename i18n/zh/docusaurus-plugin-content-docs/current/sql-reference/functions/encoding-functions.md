@@ -7,8 +7,6 @@ keywords: ['编码', '常规函数', '编码', '解码']
 doc_type: 'reference'
 ---
 
-# 编码函数 \{#encoding-functions\}
-
 {/* 
   下方标签中的内容会在文档框架构建期间替换为 
   从 system.functions 生成的文档。请不要修改或删除这些标签。
@@ -24,18 +22,19 @@ doc_type: 'reference'
 解码由 bech32 或 bech32m 算法生成的 Bech32 地址字符串。
 
 :::note
-与编码函数不同，`Bech32Decode` 会自动处理带填充的 FixedString。
+与编码函数不同，`bech32Decode` 会自动处理带填充的 FixedStrings。
 :::
 
 **语法**
 
 ```sql
-bech32Decode(address)
+bech32Decode(address[, 'raw'])
 ```
 
 **参数**
 
 * `address` — 要解码的 Bech32 字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
+* `mode` — 可选。传入 `'raw'` 可在解码时不将第一个字节剥离为见证版本。将其用于非 SegWit 地址 (例如 Cosmos SDK) 。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -78,14 +77,14 @@ tb   751E76E8199196D454941C45D1B3A323F1433BD6
 **语法**
 
 ```sql
-bech32Encode(hrp, data[, witver])
+bech32Encode(hrp, data[, witver | 'bech32' | 'bech32m'])
 ```
 
 **参数**
 
 * `hrp` — 一个由 `1 - 83` 个小写字符组成的字符串，用于指定代码的“human-readable part” (人类可读部分) 。通常为 &#39;bc&#39; 或 &#39;tb&#39;。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `data` — 要编码的二进制数据字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
-* `witver` — 可选。witness 版本号 (默认 = 1) 。一个 `UInt*`，用于指定要运行的算法版本。Bech32 使用 `0`，Bech32m 使用 `1` 或更大值。[`UInt*`](/sql-reference/data-types/int-uint)
+* `witver_or_variant` — 可选。可以是 `UInt*` 类型的 witness 版本号 (默认 = 1，Bech32 使用 `0`，Bech32m 使用 `1` 或更大值) ，也可以是 `String` 类型的编码变体：`'bech32'` (BIP173) 或 `'bech32m'` (BIP350) 。使用字符串变体时，不会在前面附加 witness 版本字节——这对于 Cosmos SDK 等非 SegWit 地址是必需的。[`UInt*`](/sql-reference/data-types/int-uint) 或 [`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -125,6 +124,18 @@ SELECT bech32Encode('abcdefg', unhex('751e76e8199196d454941c45d1b3a323f1433bd6')
 
 ```response title=Response
 abcdefg1w508d6qejxtdg4y5r3zarvary0c5xw7k9rp8r4
+```
+
+**Cosmos SDK 地址 (BIP173，无 witness 版本)&#x20;**
+
+```sql title=Query
+-- Using 'bech32' variant encodes raw data without a witness version byte,
+-- compatible with Cosmos SDK, Injective, Osmosis, and other non-SegWit chains.
+SELECT bech32Encode('inj', unhex('751e76e8199196d454941c45d1b3a323f1433bd6'), 'bech32')
+```
+
+```response title=Response
+inj1w508d6qejxtdg4y5r3zarvary0c5xw7kgj5aqs
 ```
 
 ## bin \{#bin\}

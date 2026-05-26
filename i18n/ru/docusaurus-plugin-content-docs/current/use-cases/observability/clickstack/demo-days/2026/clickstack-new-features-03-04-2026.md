@@ -7,6 +7,7 @@ pagination_next: null
 description: 'Демо-дни ClickStack за 2026-04-03'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Демо-дни']
+sidebar_position: -20260403
 ---
 
 ## Новые страницы со списками дашбордов и сохранённых поисковых запросов \{#new-dashboard-and-saved-search-listing-pages\}

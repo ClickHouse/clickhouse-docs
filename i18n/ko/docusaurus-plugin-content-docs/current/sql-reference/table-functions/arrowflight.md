@@ -1,13 +1,11 @@
 ---
-description: 'Apache Arrow Flight 서버에서 제공되는 데이터에 대해 쿼리를 수행할 수 있습니다.'
+description: 'Apache Arrow Flight 서버를 통해 노출된 데이터에 대해 쿼리를 실행할 수 있습니다.'
 sidebar_label: 'arrowFlight'
 sidebar_position: 186
 slug: /sql-reference/table-functions/arrowflight
 title: 'arrowFlight'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-# arrowFlight 테이블 함수 \{#arrowflight-table-function\}
 
 [Apache Arrow Flight](/interfaces/arrowflight) 서버를 통해 노출된 데이터에 대해 쿼리를 실행할 수 있습니다.
 
@@ -32,15 +30,11 @@ arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT * FROM arrowFlight('127.0.0.1:9005', 'sample_dataset') ORDER BY id;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─id─┬─name────┬─value─┐
 │  1 │ foo     │ 42.1  │
 │  2 │ bar     │ 13.3  │

@@ -1,5 +1,5 @@
 ---
-description: 'Interval 特殊数据类型文档'
+description: 'Interval 特殊数据类型的文档'
 sidebar_label: 'Interval'
 sidebar_position: 61
 slug: /sql-reference/data-types/special-data-types/interval
@@ -7,16 +7,14 @@ title: 'Interval'
 doc_type: 'reference'
 ---
 
-# Interval \{#interval\}
-
-表示时间和日期间隔的一类数据类型。[INTERVAL](/sql-reference/operators#interval) 运算符所产生的结果类型。
+表示时间和日期时间间隔的一类数据类型。[INTERVAL](/sql-reference/operators#interval) 运算符所产生的结果类型。
 
 结构：
 
 * 以无符号整数值表示的时间间隔。
-* 间隔的类型。
+* 时间间隔的类型。
 
-支持的间隔类型：
+支持的时间间隔类型：
 
 * `NANOSECOND`
 * `MICROSECOND`
@@ -30,7 +28,7 @@ doc_type: 'reference'
 * `QUARTER`
 * `YEAR`
 
-对于每种间隔类型，都有一个对应的数据类型。例如，`DAY` 间隔对应 `IntervalDay` 数据类型：
+对于每种时间间隔类型，都有一个对应的数据类型。例如，`DAY` 时间间隔对应 `IntervalDay` 数据类型：
 
 ```sql
 SELECT toTypeName(INTERVAL 4 DAY)
@@ -41,7 +39,6 @@ SELECT toTypeName(INTERVAL 4 DAY)
 │ IntervalDay                  │
 └──────────────────────────────┘
 ```
-
 
 ## 使用注意事项 \{#usage-remarks\}
 

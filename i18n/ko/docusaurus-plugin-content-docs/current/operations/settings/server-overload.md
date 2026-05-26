@@ -6,12 +6,6 @@ title: '서버 과부하'
 doc_type: 'reference'
 ---
 
-
-
-# 서버 과부하 \{#server-overload\}
-
-
-
 ## 개요 \{#overview\}
 
 서버는 다양한 이유로 과부하 상태가 될 수 있습니다. 현재 CPU 과부하를 판단하기 위해
@@ -23,8 +17,6 @@ ClickHouse 서버는 CPU 대기 시간(`OSCPUWaitMicroseconds` 메트릭)과 사
 현재 `OSCPUVirtualTimeMicroseconds` 메트릭 값이 이 값보다 낮으면
 CPU 과부하는 0으로 간주됩니다.
 
-
-
 ## 쿼리 거부 \{#rejecting-queries\}
 
 쿼리 거부 동작은 쿼리 수준 설정인 `min_os_cpu_wait_time_ratio_to_throw` 및
@@ -34,15 +26,11 @@ CPU 과부하는 0으로 간주됩니다.
 결정됩니다. 예를 들어, `min_os_cpu_wait_time_ratio_to_throw = 2`,
 `max_os_cpu_wait_time_ratio_to_throw = 6`, 그리고 `cpu_overload = 4`인 경우, 해당 쿼리는 `0.5`의 확률로 거부됩니다.
 
-
-
 ## 연결 끊기 \{#dropping-connections\}
 
 연결 끊기 동작은 서버 수준 설정인 `min_os_cpu_wait_time_ratio_to_drop_connection` 및
 `max_os_cpu_wait_time_ratio_to_drop_connection`으로 제어됩니다. 이러한 설정은 서버를 재시작하지 않고도 변경할 수 있습니다. 이러한 설정의 개념은 쿼리 거부 동작과 유사합니다. 이 경우의 유일한 차이점은 서버에 과부하가 걸리면
 서버 측에서 연결 시도 자체가 거부된다는 점입니다.
-
-
 
 ## 리소스 과부하 경고 \{#resource-overload-warnings\}
 

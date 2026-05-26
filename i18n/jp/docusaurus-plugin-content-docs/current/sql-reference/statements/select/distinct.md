@@ -1,12 +1,10 @@
 ---
-description: 'DISTINCT 句に関するドキュメント'
+description: 'DISTINCT 句のドキュメント'
 sidebar_label: 'DISTINCT'
 slug: /sql-reference/statements/select/distinct
 title: 'DISTINCT 句'
 doc_type: 'reference'
 ---
-
-# DISTINCT 句 \{#distinct-clause\}
 
 `SELECT DISTINCT` が指定されている場合、クエリ結果には一意の行だけが残ります。つまり、結果内で完全に一致する行の集合ごとに、1 行だけが残ります。
 
@@ -109,6 +107,6 @@ SELECT DISTINCT a FROM t1 ORDER BY b DESC;
 
 集約関数を一切使用せずに、`SELECT` 句で指定されたものと同じ値の集合に対して [GROUP BY](/sql-reference/statements/select/group-by) を適用することで、同じ結果を得ることも可能です。ただし、この場合は `GROUP BY` を用いる方法とはいくつかの違いがあります。
 
-- `DISTINCT` は `GROUP BY` と一緒に適用できます。
-- [ORDER BY](../../../sql-reference/statements/select/order-by.md) が省略され、かつ [LIMIT](../../../sql-reference/statements/select/limit.md) が指定されている場合、クエリは必要な数の異なる行を読み取った時点で直ちに実行を停止します。
-- データブロックはクエリ全体の実行完了を待たずに、処理され次第順次出力されます。
+* `DISTINCT` は `GROUP BY` と一緒に適用できます。
+* [ORDER BY](../../../sql-reference/statements/select/order-by.md) が省略され、かつ [LIMIT](../../../sql-reference/statements/select/limit.md) が指定されている場合、クエリは必要な数の異なる行を読み取った時点で直ちに実行を停止します。
+* データブロックはクエリ全体の実行完了を待たずに、処理され次第順次出力されます。

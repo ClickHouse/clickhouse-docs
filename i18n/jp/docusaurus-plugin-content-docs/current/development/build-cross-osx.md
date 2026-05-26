@@ -1,16 +1,14 @@
 ---
-description: 'Linux 上で macOS システム向けの ClickHouse をクロスコンパイルするためのガイド'
-sidebar_label: 'Linux で macOS 向けにビルド'
+description: 'Linux から macOS システム向けに ClickHouse をクロスコンパイルするためのガイド'
+sidebar_label: 'Linux 上で macOS 向けにビルド'
 sidebar_position: 20
 slug: /development/build-cross-osx
-title: 'Linux で macOS 向けにビルド'
+title: 'Linux 上で macOS 向けにビルド'
 doc_type: 'guide'
 ---
 
-# Linux 上で macOS 向けの ClickHouse をビルドする方法 \{#how-to-build-clickhouse-on-linux-for-macos\}
-
 このドキュメントは、Linux マシンを使って OS X 上で実行する `clickhouse` バイナリをビルドしたい場合の手順です。
-主なユースケースは、Linux マシン上で実行される継続的インテグレーション（CI）チェックです。
+主なユースケースは、Linux マシン上で実行される継続的インテグレーション (CI) チェックです。
 ClickHouse を直接 macOS 上でビルドしたい場合は、[ネイティブビルド手順](../development/build-osx.md)を参照してください。
 
 macOS 向けのクロスビルドは [ビルド手順](../development/build.md) に基づいているため、まずそちらに従ってください。
@@ -48,7 +46,6 @@ make install
 cd ClickHouse/cmake/toolchain/darwin-x86_64
 curl -L 'https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz' | tar xJ --strip-components=1
 ```
-
 
 ## ClickHouse をビルドする \{#build-clickhouse\}
 

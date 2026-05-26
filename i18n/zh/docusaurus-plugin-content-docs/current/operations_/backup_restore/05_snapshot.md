@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['快照', '备份', '恢复', 'SharedMergeTree', 'SharedSet', 'SharedJoin', '轻量级备份', '云备份', 'S3', 'Azure Blob Storage', 'snapshot_locks', 'snapshot_parts', 'experimental_lightweight_snapshot']
 ---
 
-# 快照备份与恢复 \{#snapshot-backup-and-restore\}
-
 快照备份是云原生表引擎的一种轻量级备份模式。它不会复制数据，而是将每个 part 对应的锁节点写入 ClickHouse Keeper。只要快照仍被保留，这些锁就会阻止服务器删除被引用的对象存储 parts。随后，备份记录的是对象存储引用，而不是实际复制任何数据，因此无论表的大小如何，创建快照都很快。
 
 这种轻量级方案适用于 [SharedMergeTree](/cloud/reference/shared-merge-tree)、SharedSet 和 SharedJoin 表。对于所有其他引擎类型 (例如 Log 或 Memory) ，备份会自动回退到标准的复制型备份。
@@ -217,3 +215,15 @@ WHERE (name, table_id) NOT IN (
 ```
 
 这有助于了解在原始数据已被修改或删除后保留快照所产生的存储开销。
+
+## 服务器设置 \{#server-settings\}
+
+以下服务器配置参数用于控制快照行为。它们在服务器设置文件中配置，而不是在 SQL 中配置。
+
+| 设置                                                                                                                                            | 类型     | 默认值   | 无需重启即可修改 | 说明                                                                      |
+| --------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ----- | -------- | ----------------------------------------------------------------------- |
+| [`max_held_snapshots`](/operations/server-configuration-parameters/settings#max_held_snapshots)                                               | UInt64 | `0`   | No       | 可同时保留的轻量级快照最大数量。`0` 表示不受限制。如果达到上限，创建新快照将抛出异常。                           |
+| [`max_snapshot_commit_thread_pool_size`](/operations/server-configuration-parameters/settings#max_snapshot_commit_thread_pool_size)           | UInt64 | `64`  | 是        | 用于将快照锁节点提交到 Keeper 的线程数。如果在包含大量 parts 的大表上创建快照较慢，请增大此值。                 |
+| [`max_snapshot_commit_thread_pool_free_size`](/operations/server-configuration-parameters/settings#max_snapshot_commit_thread_pool_free_size) | UInt64 | `0`   | 是        | 如果快照提交池中的空闲线程数超过此值，ClickHouse 会释放这些线程并缩减线程池。线程会在需要时重新创建。`0` 表示空闲线程永不释放。 |
+| [`snapshot_cleaner_period`](/operations/server-configuration-parameters/settings#snapshot_cleaner_period)                                     | UInt64 | `120` | No       | 快照清理器运行的频率 (以秒为单位) ，用于移除不再被任何快照锁引用的 parts。仅 ClickHouse Cloud。           |
+| [`snapshot_cleaner_pool_size`](/operations/server-configuration-parameters/settings#snapshot_cleaner_pool_size)                               | UInt64 | `128` | No       | 快照清理器线程池中的线程数。仅 ClickHouse Cloud。                                       |

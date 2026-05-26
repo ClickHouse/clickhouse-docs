@@ -5,21 +5,14 @@ title: 'GROUPING'
 doc_type: 'reference'
 ---
 
-
-
-# 그룹화 \{#grouping\}
-
-
-
 ## GROUPING \{#grouping\}
 
 [ROLLUP](../statements/select/group-by.md/#rollup-modifier)과 [CUBE](../statements/select/group-by.md/#cube-modifier)는 GROUP BY에 대한 수정자입니다. 두 수정자 모두 소계를 계산합니다. ROLLUP은 `(day, month, year)`와 같은 순서가 있는 컬럼 목록을 받아 집계의 각 단계에서 소계를 계산한 뒤 최종 합계를 계산합니다. CUBE는 지정된 컬럼의 가능한 모든 조합에 대한 소계를 계산합니다. GROUPING은 ROLLUP 또는 CUBE에 의해 반환된 행 중 어떤 것이 상위 집계(superaggregate) 행이고, 어떤 것이 수정되지 않은 GROUP BY에 의해 반환되었을 행인지 식별합니다.
 
-GROUPING 함수는 여러 컬럼을 인수로 받고, 비트마스크를 반환합니다. 
-- `1`은 `GROUP BY`에 대한 `ROLLUP` 또는 `CUBE` 수정자에 의해 반환된 행이 소계 행임을 나타냅니다.
-- `0`은 `ROLLUP` 또는 `CUBE`에 의해 반환된 행이 소계가 아닌 행임을 나타냅니다.
+GROUPING 함수는 여러 컬럼을 인수로 받고, 비트마스크를 반환합니다.
 
-
+* `1`은 `GROUP BY`에 대한 `ROLLUP` 또는 `CUBE` 수정자에 의해 반환된 행이 소계 행임을 나타냅니다.
+* `0`은 `ROLLUP` 또는 `CUBE`에 의해 반환된 행이 소계가 아닌 행임을 나타냅니다.
 
 ## GROUPING SETS \{#grouping-sets\}
 
@@ -78,7 +71,7 @@ FROM
 
 ### 간단한 쿼리 \{#simple-queries\}
 
-각 데이터 센터에서 `distribution`별 서버 수를 조회합니다:
+각 데이터 센터에서 `배포판`별 서버 수를 조회합니다:
 
 ```sql
 SELECT
@@ -141,7 +134,6 @@ GROUP BY
 
 2 rows in set. Elapsed: 0.352 sec. 
 ```
-
 
 ```sql
 SELECT
@@ -263,8 +255,7 @@ GROUP BY
 
 ### CUBE와 GROUPING SETS 비교 \{#comparing-cube-with-grouping-sets\}
 
-다음 쿼리의 `CUBE(datacenter,distro,version)`은 직관적이지 않은 계층 조합을 생성합니다. Arch와 RHEL은 동일한 릴리스 주기나 버전 명명 표준을 사용하지 않기 때문에, 두 배포판 전체에 걸쳐 버전을 살펴보는 것은 적절하지 않습니다. 이어지는 GROUPING SETS 예제는 `distro`와 `version`을 동일한 그룹으로 묶기 때문에 더 적절합니다.
-
+다음 쿼리의 CUBE인 `CUBE(datacenter,distro,version)`는 적절하지 않을 수 있는 계층 구조를 만듭니다. 두 배포판을 아울러 Version 값을 살펴보는 것은 타당하지 않습니다(Arch와 RHEL은 동일한 릴리스 주기나 버전 명명 기준을 사용하지 않기 때문입니다). 바로 다음의 GROUPING SETS 예시는 `distro`와 `version`을 같은 Set으로 그룹화하므로 더 적절합니다.
 
 ```sql
 SELECT
@@ -330,7 +321,6 @@ ORDER BY
 :::note
 위 예시에서 Version 값은 특정 배포판과 연결되어 있지 않다면 의미가 없을 수 있습니다. 커널 버전을 추적하는 경우에는 커널 버전이 어느 쪽 배포판과도 연결될 수 있으므로 의미가 있을 수 있습니다. 다음 예시와 같이 GROUPING SETS를 사용하는 것이 더 나은 선택일 수 있습니다.
 :::
-
 
 ```sql
 SELECT

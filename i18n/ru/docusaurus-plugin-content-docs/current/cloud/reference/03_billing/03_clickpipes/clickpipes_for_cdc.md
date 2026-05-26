@@ -1,22 +1,18 @@
 ---
-sidebar_label: 'CDC PostgreSQL'
+sidebar_label: 'PostgreSQL CDC'
 slug: /cloud/reference/billing/clickpipes/postgres-cdc
-title: 'ClickPipes для CDC PostgreSQL'
-description: 'Обзор биллинга ClickPipes для CDC PostgreSQL'
+title: 'ClickPipes для PostgreSQL CDC'
+description: 'Обзор тарификации ClickPipes для PostgreSQL CDC'
 doc_type: 'reference'
-keywords: ['billing', 'clickpipes', 'цены cdc', 'затраты', 'тарифы']
+keywords: ['тарификация', 'clickpipes', 'ценообразование cdc', 'затраты', 'цены']
 ---
-
-
-
-# ClickPipes для PostgreSQL CDC \{#clickpipes-for-postgresql-cdc\}
 
 В этом разделе описана модель ценообразования для коннектора Postgres Change Data Capture (CDC)
 в ClickPipes. При проектировании этой модели наша цель заключалась в том, чтобы сохранить цены
 высококонкурентными и при этом оставаться верными нашему ключевому видению:
 
 > Сделать перенос данных из Postgres в ClickHouse для аналитики в режиме реального времени
-максимально простым и доступным по стоимости.
+> максимально простым и доступным по стоимости.
 
 Этот коннектор более чем в **5 раз экономичнее** внешних
 ETL-инструментов и аналогичных возможностей в других платформах баз данных.

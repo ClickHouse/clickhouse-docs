@@ -6,8 +6,6 @@ title: 'LIMIT 子句'
 doc_type: 'reference'
 ---
 
-# LIMIT 子句 \{#limit-clause\}
-
 `LIMIT` 子句用于控制查询结果返回的行数。
 
 ## 基本语法 \{#basic-syntax\}

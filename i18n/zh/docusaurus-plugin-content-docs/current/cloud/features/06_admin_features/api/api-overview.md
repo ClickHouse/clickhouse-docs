@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'API 概览', '云 API', 'REST API', '编程式访问']
 ---
 
-# ClickHouse Cloud API \{#clickhouse-cloud-api\}
-
 ## 概览 \{#overview\}
 
 ClickHouse Cloud API 是为开发者设计的 REST API，便于在 ClickHouse Cloud 上轻松管理组织和服务。通过我们的 Cloud API，您可以创建和管理服务、创建和管理 API 密钥、在组织中添加或移除成员等。

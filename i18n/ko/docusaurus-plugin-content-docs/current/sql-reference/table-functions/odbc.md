@@ -7,9 +7,7 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-# odbc Table Function \{#odbc-table-function\}
-
-[ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity)를 통해 연결된 테이블을 반환합니다.
+[ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity)로 연결된 테이블을 반환합니다.
 
 ## 구문 \{#syntax\}
 

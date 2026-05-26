@@ -3,11 +3,9 @@ description: '문자열 치환 함수 문서'
 sidebar_label: '문자열 치환'
 slug: /sql-reference/functions/string-replace-functions
 title: '문자열 치환 함수'
-doc_type: 'reference'
+doc_type: '참고'
 keywords: ['문자열 치환']
 ---
-
-# 문자열 치환 함수 \{#functions-for-string-replacement\}
 
 [일반 문자열 함수](string-functions.md) 및 [문자열 검색 함수](string-search-functions.md)는 별도의 문서에서 설명합니다.
 

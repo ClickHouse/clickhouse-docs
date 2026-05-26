@@ -12,5 +12,6 @@ This section of the documentation covers topics related to billing, and contains
 |---------------------------------------|----------------------------------------------------------------------|
 | [Overview](/cloud/manage/billing/overview)                       | Pricing examples and FAQs for billing.                      | 
 | [Payment Thresholds](/cloud/billing/payment-thresholds)             | Learn more about how payment thresholds work and how to adjust them. |
+| [Spend Alerts](/cloud/manage/billing/spend-alerts)                  | Configure spend alerts to monitor usage against thresholds within a billing period. |
 | [Troubleshooting Billing Issues](/manage/clickhouse-cloud-billing-compliance) | Troubleshoot common billing issues.                                  |
 | [Marketplace](/cloud/manage/marketplace/)                    | Landing page for further marketplace related topics.                 |
