@@ -39,9 +39,10 @@ SELECT * FROM pg_available_extensions;
 
 | 扩展                             | 版本     | 说明                                                    |
 | ------------------------------ | ------ | ----------------------------------------------------- |
-| `address_standardizer`         | 3.6.1  | 用于将地址解析为各个组成部分                                        |
-| `address_standardizer_data_us` | 3.6.1  | Address Standardizer 美国地址数据集示例                        |
-| `adminpack`                    | 2.1    | 用于 PostgreSQL 的管理函数 (*仅限 PG16*)                       |
+| `address_standardizer`         | 3.6.3  | 用于将地址解析为各个组成部分                                        |
+| `address_standardizer_data_us` | 3.6.3  | Address Standardizer 美国地址数据集示例                        |
+| `adminpack`                    | 2.1    | 用于 PostgreSQL 的管理函数 *(仅限 PG16)*                       |
+| `age`                          | 1.7.0  | Apache AGE 图数据库扩展                                     |
 | `amcheck`                      |        | 用于校验关系完整性的函数                                          |
 | `autoinc`                      | 1.0    | 用于字段自增的函数                                             |
 | `bloom`                        | 1.0    | Bloom 访问方法——基于签名文件的索引                                 |
@@ -49,7 +50,7 @@ SELECT * FROM pg_available_extensions;
 | `bool_plperlu`                 | 1.0    | 实现 bool 与 plperlu 之间的转换                               |
 | `btree_gin`                    | 1.3    | 支持在 GIN 中为常见数据类型建立索引                                  |
 | `btree_gist`                   | 1.8    | 支持在 GiST 中为常见数据类型建立索引                                 |
-| `citext`                       | 1.8    | 用于大小写不敏感字符串的数据类型                                      |
+| `citext`                       | 1.8    | 用于不区分大小写字符串的数据类型                                      |
 | `cube`                         | 1.5    | 多维立方体数据类型                                             |
 | `dblink`                       | 1.2    | 从当前数据库连接到其他 PostgreSQL 数据库                            |
 | `dict_int`                     | 1.0    | 整数型文本搜索字典模板                                           |
@@ -79,18 +80,18 @@ SELECT * FROM pg_available_extensions;
 | `orafce`                       | 4.16   | 用于仿真 Oracle RDBMS 中部分函数和包的函数和运算符                      |
 | `pageinspect`                  | 1.13   | 在底层检查数据库页面内容                                          |
 | `pg_buffercache`               |        | 检查共享缓冲区缓存内容                                           |
-| `pg_clickhouse`                | 0.1    | 用于从 PostgreSQL 查询 ClickHouse 数据库的接口                   |
+| `pg_clickhouse`                | 0.3    | 用于从 PostgreSQL 查询 ClickHouse 数据库的接口                   |
 | `pg_cron`                      | 1.6    | PostgreSQL 的任务调度器                                     |
 | `pg_freespacemap`              | 1.3    | 查看空闲空间映射 (FSM)                                        |
 | `pg_hint_plan`                 |        | 为 PostgreSQL 提供优化器提示                                  |
 | `pg_ivm`                       | 1.13   | 在 PostgreSQL 上实现增量 VIEW 维护                            |
 | `pg_logicalinspect`            | 1.0    | 检查逻辑解码组件的函数 *(PG18+)*                                 |
-| `pg_partman`                   | 5.4.0  | 用于基于时间或 ID 管理分区表的扩展                                   |
+| `pg_partman`                   | 5.4.3  | 用于基于时间或 ID 管理分区表的扩展                                   |
 | `pg_prewarm`                   | 1.2    | 预热表和索引数据                                              |
-| `pg_re2`                       |        | 由 Google 的 RE2 提供支持的 ClickHouse 兼容正则表达式函数             |
+| `pg_re2`                       | 0.1    | 由 Google 的 RE2 提供支持的 ClickHouse 兼容正则表达式函数             |
 | `pg_repack`                    | 1.5.3  | 在 PostgreSQL 数据库中以尽量少的锁重组表                            |
 | `pg_similarity`                | 1.0    | 支持相似性查询                                               |
-| `pg_stat_ch`                   |        | 将每个查询的执行遥测数据实时流式传输到 ClickHouse                        |
+| `pg_stat_ch`                   | 0.3    | 将每个查询的执行遥测数据实时流式传输到 ClickHouse                        |
 | `pg_stat_statements`           |        | 跟踪所有已执行 SQL 语句的计划和执行统计信息                              |
 | `pg_surgery`                   | 1.0    | 用于修复损坏关系的扩展                                           |
 | `pg_tokenizer`                 | 0.1.1  | 与 `vchord_bm25` 配合使用的文本分词器                            |
@@ -101,7 +102,7 @@ SELECT * FROM pg_available_extensions;
 | `pgcrypto`                     | 1.4    | 密码学函数                                                 |
 | `pglogical`                    | 2.4.6  | PostgreSQL 逻辑复制功能                                     |
 | `pglogical_origin`             | 1.0.0  | 用于从 Postgres 9.4 升级时保持兼容性的占位扩展                        |
-| `pgrouting`                    | 4.0.0  | pgRouting 扩展                                          |
+| `pgrouting`                    | 4.0.1  | pgRouting 扩展                                          |
 | `pgrowlocks`                   | 1.2    | 显示行级锁信息                                               |
 | `pgstattuple`                  | 1.5    | 显示元组级统计信息                                             |
 | `pgtap`                        | 1.3.4  | PostgreSQL 的单元测试框架                                    |
@@ -109,11 +110,11 @@ SELECT * FROM pg_available_extensions;
 | `plperlu`                      | 1.0    | PL/PerlU 不受信任的过程式语言                                   |
 | `plpgsql`                      | 1.0    | PL/pgSQL 过程语言                                         |
 | `plpgsql_check`                | 2.8    | 用于对 plpgsql 函数进行增强检查                                  |
-| `postgis`                      | 3.6.1  | PostGIS geometry 与 geography 空间类型和函数                  |
-| `postgis_raster`               | 3.6.1  | PostGIS 栅格类型和函数                                       |
-| `postgis_sfcgal`               | 3.6.1  | PostGIS SFCGAL 函数                                     |
-| `postgis_tiger_geocoder`       | 3.6.1  | PostGIS Tiger 正向和反向地理编码器                              |
-| `postgis_topology`             | 3.6.1  | PostGIS 拓扑空间类型及函数                                     |
+| `postgis`                      | 3.6.3  | PostGIS geometry 与 geography 空间类型和函数                  |
+| `postgis_raster`               | 3.6.3  | PostGIS 栅格类型和函数                                       |
+| `postgis_sfcgal`               | 3.6.3  | PostGIS SFCGAL 函数                                     |
+| `postgis_tiger_geocoder`       | 3.6.3  | PostGIS Tiger 正向和反向地理编码器                              |
+| `postgis_topology`             | 3.6.3  | PostGIS 拓扑空间类型及函数                                     |
 | `postgres_fdw`                 | 1.2    | 用于访问远程 PostgreSQL 服务器的外部数据封装器                         |
 | `prefix`                       | 1.2.0  | PostgreSQL 的前缀范围 (Prefix Range) 模块                    |
 | `refint`                       | 1.0    | 用于实现参照完整性的函数 (已弃用)                                    |
@@ -131,7 +132,7 @@ SELECT * FROM pg_available_extensions;
 | `uuid-ossp`                    | 1.1    | 生成通用唯一标识符 (UUID)                                      |
 | `vchord`                       | 1.1.1  | Postgres 的向量索引访问方法                                    |
 | `vchord_bm25`                  | 0.3.0  | 用于全文检索的 BM25 排名访问方法                                   |
-| `vector`                       | 0.8.1  | 向量数据类型以及 ivfflat 和 hnsw 访问方法                          |
+| `vector`                       | 0.8.2  | 向量数据类型以及 ivfflat 和 hnsw 访问方法                          |
 | `xml2`                         | 1.2    | XPath 查询和 XSLT                                        |
 
 ## pg_clickhouse extension \{#pg-clickhouse\}

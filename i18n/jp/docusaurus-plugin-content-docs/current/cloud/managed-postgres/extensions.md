@@ -39,9 +39,10 @@ SELECT * FROM pg_available_extensions;
 
 | 拡張機能                           | バージョン  | 概要                                                              |
 | ------------------------------ | ------ | --------------------------------------------------------------- |
-| `address_standardizer`         | 3.6.1  | 住所を構成要素に分解して解析するために使用されます                                       |
-| `address_standardizer_data_us` | 3.6.1  | Address Standardizer US データセットのサンプル                             |
+| `address_standardizer`         | 3.6.3  | 住所を構成要素に分解して解析するために使用されます                                       |
+| `address_standardizer_data_us` | 3.6.3  | Address Standardizer US データセットのサンプル                             |
 | `adminpack`                    | 2.1    | PostgreSQL の管理用関数 *(PG16 のみ)*                                   |
+| `age`                          | 1.7.0  | Apache AGE グラフデータベース拡張機能                                        |
 | `amcheck`                      |        | リレーションの整合性を検証する関数                                               |
 | `autoinc`                      | 1.0    | オートインクリメントフィールド用の関数                                             |
 | `bloom`                        | 1.0    | Bloom アクセスメソッド - シグネチャファイルベースの索引                                |
@@ -79,18 +80,18 @@ SELECT * FROM pg_available_extensions;
 | `orafce`                       | 4.16   | Oracle RDBMS の関数およびパッケージの一部をエミュレートする関数と演算子                      |
 | `pageinspect`                  | 1.13   | データベースページの内容を低レベルで調査する                                          |
 | `pg_buffercache`               |        | 共有バッファキャッシュを検査する                                                |
-| `pg_clickhouse`                | 0.1    | PostgreSQL から ClickHouse データベースをクエリするためのインターフェース                |
+| `pg_clickhouse`                | 0.3    | PostgreSQL から ClickHouse データベースをクエリするためのインターフェース                |
 | `pg_cron`                      | 1.6    | PostgreSQL 用のジョブスケジューラ                                          |
 | `pg_freespacemap`              | 1.3    | 空き領域マップ (FSM) を確認する                                             |
 | `pg_hint_plan`                 |        | PostgreSQL 向けのオプティマイザーヒント                                       |
 | `pg_ivm`                       | 1.13   | PostgreSQL 向けインクリメンタルビューのメンテナンス機能                               |
 | `pg_logicalinspect`            | 1.0    | 論理デコーディングコンポーネントを検査する関数 *(PG18+)*                               |
-| `pg_partman`                   | 5.4.0  | 時間またはIDでパーティション分割されたテーブルを管理する拡張機能                               |
+| `pg_partman`                   | 5.4.3  | 時間またはIDでパーティション分割されたテーブルを管理する拡張機能                               |
 | `pg_prewarm`                   | 1.2    | リレーションデータを事前に読み込みキャッシュ                                          |
-| `pg_re2`                       |        | Google の RE2 をバックエンドとする ClickHouse 互換の正規表現関数                    |
+| `pg_re2`                       | 0.1    | Google の RE2 をバックエンドとする ClickHouse 互換の正規表現関数                    |
 | `pg_repack`                    | 1.5.3  | PostgreSQL データベース内のテーブルを最小限のロックで再編成                             |
 | `pg_similarity`                | 1.0    | 類似度検索をサポート                                                      |
-| `pg_stat_ch`                   |        | クエリごとの実行テレメトリをリアルタイムで ClickHouse にストリーミングする                     |
+| `pg_stat_ch`                   | 0.3    | クエリごとの実行テレメトリをリアルタイムで ClickHouse にストリーミングする                     |
 | `pg_stat_statements`           |        | 実行されたすべての SQL 文のプランニングおよび実行に関する統計情報を追跡します                       |
 | `pg_surgery`                   | 1.0    | 破損したリレーションに対して外科的な修復操作を行うための拡張機能                                |
 | `pg_tokenizer`                 | 0.1.1  | `vchord_bm25` で使用されるテキストトークナイザー                                 |
@@ -101,7 +102,7 @@ SELECT * FROM pg_available_extensions;
 | `pgcrypto`                     | 1.4    | 暗号化関数                                                           |
 | `pglogical`                    | 2.4.6  | PostgreSQL の論理レプリケーション                                          |
 | `pglogical_origin`             | 1.0.0  | Postgres 9.4 からのアップグレード時の互換性を確保するためのダミー拡張機能                     |
-| `pgrouting`                    | 4.0.0  | pgRouting 拡張機能                                                  |
+| `pgrouting`                    | 4.0.1  | pgRouting 拡張機能                                                  |
 | `pgrowlocks`                   | 1.2    | 行レベルロック情報を表示                                                    |
 | `pgstattuple`                  | 1.5    | タプルレベルの統計情報を表示                                                  |
 | `pgtap`                        | 1.3.4  | PostgreSQL 用ユニットテスト                                             |
@@ -109,11 +110,11 @@ SELECT * FROM pg_available_extensions;
 | `plperlu`                      | 1.0    | PL/PerlU 非信頼手続き言語                                               |
 | `plpgsql`                      | 1.0    | PL/pgSQL 手続き言語                                                  |
 | `plpgsql_check`                | 2.8    | PL/pgSQL 関数向け拡張チェック                                             |
-| `postgis`                      | 3.6.1  | PostGIS の geometry / geography 空間データ型および関数                      |
-| `postgis_raster`               | 3.6.1  | PostGIS のラスターデータ型および関数                                          |
-| `postgis_sfcgal`               | 3.6.1  | PostGIS SFCGAL の関数                                              |
-| `postgis_tiger_geocoder`       | 3.6.1  | PostGIS Tiger のジオコーダーおよびリバースジオコーダー                              |
-| `postgis_topology`             | 3.6.1  | トポロジ用の空間型および関数                                                  |
+| `postgis`                      | 3.6.3  | PostGIS の geometry / geography 空間データ型および関数                      |
+| `postgis_raster`               | 3.6.3  | PostGIS のラスターデータ型および関数                                          |
+| `postgis_sfcgal`               | 3.6.3  | PostGIS SFCGAL の関数                                              |
+| `postgis_tiger_geocoder`       | 3.6.3  | PostGIS Tiger のジオコーダーおよびリバースジオコーダー                              |
+| `postgis_topology`             | 3.6.3  | トポロジ用の空間型および関数                                                  |
 | `postgres_fdw`                 | 1.2    | リモート PostgreSQL サーバー用の外部データラッパー                                 |
 | `prefix`                       | 1.2.0  | PostgreSQL 用 Prefix Range モジュール                                 |
 | `refint`                       | 1.0    | 参照整合性を実装する関数群 (非推奨)                                             |
@@ -131,7 +132,7 @@ SELECT * FROM pg_available_extensions;
 | `uuid-ossp`                    | 1.1    | UUID (Universally Unique Identifier) を生成します                     |
 | `vchord`                       | 1.1.1  | Postgres 向けベクトルインデックス用アクセスメソッド                                  |
 | `vchord_bm25`                  | 0.3.0  | 全文検索用の BM25 ランキングアクセスメソッド                                       |
-| `vector`                       | 0.8.1  | ベクトルデータ型および ivfflat、hnsw アクセスメソッド                               |
+| `vector`                       | 0.8.2  | ベクトルデータ型および ivfflat、hnsw アクセスメソッド                               |
 | `xml2`                         | 1.2    | XPath クエリ処理と XSLT                                               |
 
 ## pg_clickhouse extension \{#pg-clickhouse\}

@@ -39,9 +39,10 @@ SELECT * FROM pg_available_extensions;
 
 | 확장 기능                          | 버전     | 설명                                                            |
 | ------------------------------ | ------ | ------------------------------------------------------------- |
-| `address_standardizer`         | 3.6.1  | 주소를 구성 요소별로 파싱하는 데 사용                                         |
-| `address_standardizer_data_us` | 3.6.1  | Address Standardizer 미국 데이터 세트 예시                             |
+| `address_standardizer`         | 3.6.3  | 주소를 구성 요소별로 파싱하는 데 사용                                         |
+| `address_standardizer_data_us` | 3.6.3  | Address Standardizer 미국 데이터 세트 예시                             |
 | `adminpack`                    | 2.1    | PostgreSQL 관리를 위한 FUNCTION *(PG16 전용)*                        |
+| `age`                          | 1.7.0  | Apache AGE 그래프 데이터베이스 확장 기능                                   |
 | `amcheck`                      |        | 관계 무결성을 검증하는 함수                                               |
 | `autoinc`                      | 1.0    | 자동 증가 필드를 위한 함수                                               |
 | `bloom`                        | 1.0    | Bloom 접근 방식 — 시그니처 파일 기반 인덱스                                  |
@@ -79,18 +80,18 @@ SELECT * FROM pg_available_extensions;
 | `orafce`                       | 4.16   | Oracle RDBMS의 일부 함수와 패키지를 에뮬레이션하는 함수와 연산자                     |
 | `pageinspect`                  | 1.13   | 데이터베이스 페이지의 내용을 저수준에서 검사합니다                                   |
 | `pg_buffercache`               |        | 공유 버퍼 캐시를 검사합니다                                               |
-| `pg_clickhouse`                | 0.1    | PostgreSQL에서 ClickHouse 데이터베이스로 쿼리를 보내기 위한 인터페이스를 제공합니다       |
+| `pg_clickhouse`                | 0.3    | PostgreSQL에서 ClickHouse 데이터베이스로 쿼리를 보내기 위한 인터페이스를 제공합니다       |
 | `pg_cron`                      | 1.6    | PostgreSQL용 작업 스케줄러입니다                                        |
 | `pg_freespacemap`              | 1.3    | 여유 공간 맵(FSM)을 검사합니다                                           |
 | `pg_hint_plan`                 |        | PostgreSQL 최적화기를 위한 힌트를 제공합니다                                 |
 | `pg_ivm`                       | 1.13   | PostgreSQL에서 증분 뷰 유지 관리를 수행합니다                                |
 | `pg_logicalinspect`            | 1.0    | 논리 디코딩 구성 요소를 검사하는 함수 *(PG18+)*                               |
-| `pg_partman`                   | 5.4.0  | 시간 또는 ID를 기준으로 파티셔닝된 테이블을 관리하기 위한 확장 기능입니다                    |
+| `pg_partman`                   | 5.4.3  | 시간 또는 ID를 기준으로 파티셔닝된 테이블을 관리하기 위한 확장 기능입니다                    |
 | `pg_prewarm`                   | 1.2    | 릴레이션 데이터를 미리 적재(prewarm)합니다                                   |
-| `pg_re2`                       |        | Google의 RE2를 기반으로 하는 ClickHouse 호환 정규 표현식 함수                  |
+| `pg_re2`                       | 0.1    | Google의 RE2를 기반으로 하는 ClickHouse 호환 정규 표현식 함수                  |
 | `pg_repack`                    | 1.5.3  | 최소한의 잠금으로 PostgreSQL 데이터베이스의 테이블을 재구성합니다                      |
 | `pg_similarity`                | 1.0    | 유사도 쿼리를 지원합니다                                                 |
-| `pg_stat_ch`                   |        | 쿼리별 실행 텔레메트리를 실시간으로 ClickHouse로 스트리밍합니다                       |
+| `pg_stat_ch`                   | 0.3    | 쿼리별 실행 텔레메트리를 실시간으로 ClickHouse로 스트리밍합니다                       |
 | `pg_stat_statements`           |        | 실행된 모든 SQL 문에 대한 계획 수립 및 실행 통계를 수집합니다                         |
 | `pg_surgery`                   | 1.0    | 손상된 릴레이션을 복구하기 위한 확장 기능입니다                                    |
 | `pg_tokenizer`                 | 0.1.1  | `vchord_bm25`와 함께 사용하는 텍스트 토크나이저                              |
@@ -101,7 +102,7 @@ SELECT * FROM pg_available_extensions;
 | `pgcrypto`                     | 1.4    | 암호화 함수입니다                                                     |
 | `pglogical`                    | 2.4.6  | PostgreSQL 논리 복제(Logical Replication) 기능입니다                   |
 | `pglogical_origin`             | 1.0.0  | Postgres 9.4에서 업그레이드할 때 호환성을 위해 제공되는 더미 확장입니다                 |
-| `pgrouting`                    | 4.0.0  | pgRouting 확장 기능입니다                                            |
+| `pgrouting`                    | 4.0.1  | pgRouting 확장 기능입니다                                            |
 | `pgrowlocks`                   | 1.2    | 행 수준 잠금 정보를 표시합니다                                             |
 | `pgstattuple`                  | 1.5    | 튜플 수준 통계를 표시합니다                                               |
 | `pgtap`                        | 1.3.4  | PostgreSQL용 단위 테스트                                            |
@@ -109,11 +110,11 @@ SELECT * FROM pg_available_extensions;
 | `plperlu`                      | 1.0    | PL/PerlU 신뢰할 수 없는 절차적 언어                                      |
 | `plpgsql`                      | 1.0    | PL/pgSQL 절차적 언어                                               |
 | `plpgsql_check`                | 2.8    | PL/pgSQL 함수에 대한 확장 검사                                         |
-| `postgis`                      | 3.6.1  | PostGIS geometry 및 geography 공간 타입과 함수                        |
-| `postgis_raster`               | 3.6.1  | PostGIS raster 타입과 함수                                         |
-| `postgis_sfcgal`               | 3.6.1  | PostGIS SFCGAL 함수                                             |
-| `postgis_tiger_geocoder`       | 3.6.1  | PostGIS tiger 지오코더 및 역지오코더                                    |
-| `postgis_topology`             | 3.6.1  | PostGIS topology 공간 타입과 함수                                    |
+| `postgis`                      | 3.6.3  | PostGIS geometry 및 geography 공간 타입과 함수                        |
+| `postgis_raster`               | 3.6.3  | PostGIS raster 타입과 함수                                         |
+| `postgis_sfcgal`               | 3.6.3  | PostGIS SFCGAL 함수                                             |
+| `postgis_tiger_geocoder`       | 3.6.3  | PostGIS tiger 지오코더 및 역지오코더                                    |
+| `postgis_topology`             | 3.6.3  | PostGIS topology 공간 타입과 함수                                    |
 | `postgres_fdw`                 | 1.2    | 원격 PostgreSQL 서버용 Foreign Data Wrapper                        |
 | `prefix`                       | 1.2.0  | PostgreSQL용 Prefix Range 모듈                                   |
 | `refint`                       | 1.0    | 참조 무결성을 구현하기 위한 함수 (사용 중단됨)                                   |
@@ -131,7 +132,7 @@ SELECT * FROM pg_available_extensions;
 | `uuid-ossp`                    | 1.1    | 범용 고유 식별자(UUID)를 생성                                           |
 | `vchord`                       | 1.1.1  | Postgres용 Vector 인덱싱 접근 메서드                                   |
 | `vchord_bm25`                  | 0.3.0  | 전문 검색용 BM25 랭킹 접근 메서드                                         |
-| `vector`                       | 0.8.1  | Vector 데이터 타입과 ivfflat, hnsw 접근 메서드                           |
+| `vector`                       | 0.8.2  | Vector 데이터 타입과 ivfflat, hnsw 접근 메서드                           |
 | `xml2`                         | 1.2    | XPath 쿼리와 XSLT                                                |
 
 ## pg_clickhouse extension \{#pg-clickhouse\}
