@@ -14,11 +14,11 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 The code interpreter lets an agent execute code in a managed sandbox. Use it for computation, data transformation, format conversion, plotting, and anything else better done in code than in natural language.
 
-## Enable it
+## Enable it {#enable-it}
 
 Toggle **Code interpreter** in the Agent Builder's capabilities section, then save. The agent decides when to run code based on the user's request and the agent's instructions.
 
-## Supported languages
+## Supported languages {#supported-languages}
 
 The sandbox is a Unix environment with two general-purpose runtimes and a few shell utilities:
 
@@ -30,17 +30,17 @@ The sandbox is a Unix environment with two general-purpose runtimes and a few sh
 
 Agents reach for Python first for anything involving data parsing, transformation, or computation. Reserve the shell tools for tasks that genuinely benefit from a one-liner.
 
-## Files
+## Files {#files}
 
 Users can upload files into a conversation; the code interpreter has access to them in the sandbox working directory. Code can also write output files (CSVs, plots, archives) which appear in the conversation as downloadable attachments.
 
-## Sandbox isolation
+## Sandbox isolation {#sandbox-isolation}
 
 Each execution runs in an ephemeral sandbox with no network access and no persistent storage. Sessions don't share state — variables and files from one run don't carry into the next unless the agent explicitly re-loads them.
 
 Plan-specific resource limits (memory, files per run, monthly request quotas) apply. Errors and stderr are surfaced in the conversation alongside stdout.
 
-## When to use it
+## When to use it {#when-to-use-it}
 
 - Parse a CSV or JSON the user uploaded.
 - Compute summary statistics or run a quick simulation.

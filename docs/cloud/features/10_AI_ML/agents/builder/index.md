@@ -21,22 +21,22 @@ The panel has three sections:
 
 Save from the footer button. Edits take effect on the next conversation; in-flight runs aren't interrupted.
 
-## Identity
+## Identity {#identity}
 
 The instructions field is the agent's system prompt. Describe the role, the kinds of questions it should answer, and any rules it must follow. Be specific about schema conventions, calculated metrics, and terminology if the agent will query your ClickHouse service — the model can't infer your business definitions on its own.
 
-## Core configuration
+## Core configuration {#core-configuration}
 
 - [Model parameters](/cloud/features/ai-ml/agents/builder/model-parameters) — Pick a model and tune generation parameters. Save a configuration as a named preset to reuse it.
 
-## Built-in tools
+## Built-in tools {#built-in-tools}
 
 - [Code interpreter](/cloud/features/ai-ml/agents/builder/code-interpreter) — Sandboxed code execution.
 - [Web search](/cloud/features/ai-ml/agents/builder/web-search) — Public-web lookups.
 - [Image generation](/cloud/features/ai-ml/agents/builder/image-generation) — Generate images from text.
 - [Vision](/cloud/features/ai-ml/agents/builder/vision) — Accept image inputs.
 
-## Extensibility
+## Extensibility {#extensibility}
 
 - [MCP servers](/cloud/features/ai-ml/agents/builder/mcp-servers) — Attach third-party MCP servers to an agent.
 - [Skills](/cloud/features/ai-ml/agents/builder/skills) — Reusable instruction packs.

@@ -16,7 +16,7 @@ A subagent is a child agent that a parent agent invokes to handle a self-contain
 
 Use subagents to keep a parent agent focused. Long research passes, tool-heavy exploration, and specialized review steps work better when their token-heavy intermediate state stays out of the parent's context.
 
-## Enable subagents
+## Enable subagents {#enable-subagents}
 
 In the Agent Builder, open **Advanced settings** and toggle **Subagents**. Two more controls appear:
 
@@ -25,7 +25,7 @@ In the Agent Builder, open **Advanced settings** and toggle **Subagents**. Two m
 
 Save. When the agent runs, it has a new tool available for invoking subagents.
 
-## When a subagent helps
+## When a subagent helps {#when-a-subagent-helps}
 
 - **Research subtasks** — the parent decomposes a complex question, hands a slice to a subagent specialized for that slice, and synthesizes the responses.
 - **Tool-heavy passes** — code interpreter sessions, multi-step web search loops, or anything that would consume the parent's context with intermediate tool output.
@@ -33,11 +33,11 @@ Save. When the agent runs, it has a new tool available for invoking subagents.
 
 Avoid subagents for trivial calls. The handoff adds latency and tokens.
 
-## Subagents vs. agent chain
+## Subagents vs. agent chain {#subagents-vs-agent-chain}
 
 Subagents are a runtime delegation mechanism — the parent decides on the fly. An agent chain is a pre-defined graph of agents that run in a fixed order. Reach for subagents when the routing is dynamic; reach for a chain when the routing is fixed.
 
-## Limits
+## Limits {#limits}
 
 - Max **10** subagents listed per parent.
 - Max depth of **5** hops from the root agent.

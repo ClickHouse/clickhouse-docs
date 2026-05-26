@@ -15,13 +15,13 @@ ClickHouse Agents is a managed agentic capability in ClickHouse Cloud. You descr
 
 This feature is in beta. Behavior and the set of surfaced capabilities may change before general availability.
 
-## What you can do
+## What you can do {#what-you-can-do}
 
 - Build custom agents with no code — set instructions, pick a model, attach tools.
 - Run conversations against your ClickHouse service; the agent invokes tools as it needs them.
 - Share agents with teammates or publish them to the marketplace.
 
-## In this section
+## In this section {#in-this-section}
 
 - [Quickstart](/cloud/features/ai-ml/agents/quickstart) — Build your first agent and run a query.
 - [Chat](/cloud/features/ai-ml/agents/chat) — Conversations, bookmarks, forking, multi-conversation, and sharing.

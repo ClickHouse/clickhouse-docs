@@ -14,17 +14,17 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 Model Context Protocol (MCP) is the open standard for exposing tools and data sources to an AI model. Attaching an MCP server to a ClickHouse Agent gives the agent access to whatever capabilities that server exposes — issue trackers, observability backends, internal APIs, third-party SaaS, or anything else with an MCP endpoint.
 
-## Attach an MCP server
+## Attach an MCP server {#attach-an-mcp-server}
 
 In the Agent Builder, open the **MCP servers** section and click **Add server**. Enter the server's URL and authentication settings, then pick which of the server's tools you want this specific agent to use. Save the agent.
 
 You can attach multiple servers to one agent. Each tool the agent calls is logged in the conversation so users can see what the agent did.
 
-## Transport
+## Transport {#transport}
 
 ClickHouse Agents speaks Streamable HTTP — the production-grade MCP transport. The server you attach must be reachable over HTTP(S) from ClickHouse Cloud.
 
-## Authentication
+## Authentication {#authentication}
 
 MCP servers can require credentials. ClickHouse Agents supports:
 
@@ -34,6 +34,6 @@ MCP servers can require credentials. ClickHouse Agents supports:
 
 User-provided credentials are stored encrypted and scoped to the user who entered them. One user's credentials are never visible to another user's agent runs.
 
-## Limits
+## Limits {#limits}
 
 A single agent run can reference at most 50 distinct MCP server targets and at most 100 expanded tool configurations per request. Agents that need more should be decomposed using [subagents](/cloud/features/ai-ml/agents/builder/subagents).

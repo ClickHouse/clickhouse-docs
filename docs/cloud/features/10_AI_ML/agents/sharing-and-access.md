@@ -14,7 +14,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 ClickHouse Agents uses a layered permission model: roles control which features users can use at all, resource-level access lists control who can use a specific agent or other resource, and admin permissions control who manages everything.
 
-## Roles
+## Roles {#roles}
 
 A role is a bundle of feature permissions assigned to one or more users. The defaults:
 
@@ -23,7 +23,7 @@ A role is a bundle of feature permissions assigned to one or more users. The def
 
 Admins can create custom roles with their own toggles for finer-grained control.
 
-## Resource sharing
+## Resource sharing {#resource-sharing}
 
 Agents, prompts, and skills each have an access list. Three access levels per principal:
 
@@ -33,7 +33,7 @@ Agents, prompts, and skills each have an access list. Three access levels per pr
 
 When you create a resource, you're its owner by default. Anything you don't explicitly share is private to you.
 
-## Principals
+## Principals {#principals}
 
 You can grant access to:
 
@@ -43,17 +43,17 @@ You can grant access to:
 
 The org-wide visibility is what makes a resource discoverable in the [marketplace](/cloud/features/ai-ml/agents/marketplace).
 
-## Share an agent
+## Share an agent {#share-an-agent}
 
 In the Agent Builder, open the **Sharing** section and click **Add access**. Pick the principal (a user, a group, or organization-wide), choose the access level, and save. The recipient sees the agent in their available-agents list the next time they refresh.
 
 Revoke access from the same panel by removing the row. The recipient loses access immediately; their in-flight conversations finish but new ones won't open.
 
-## Default agent
+## Default agent {#default-agent}
 
 You can mark one agent as your default. New conversations open against that agent unless you pick something else. Admins can also set an org-wide default for users who haven't picked their own.
 
-## Admin operations
+## Admin operations {#admin-operations}
 
 Admin-only operations include:
 
@@ -64,7 +64,7 @@ Admin-only operations include:
 
 In ClickHouse Cloud, the admin panel is available to org admins. If you can't see it, contact your org admin or ClickHouse Cloud support to request access.
 
-## Gotchas
+## Gotchas {#gotchas}
 
 - **Deleting an agent breaks all sharing.** Recipients lose access; their saved conversations with the agent remain readable but can't be continued.
 - **Editing a shared agent affects everyone using it.** Use a copy if you need to experiment without disrupting others.

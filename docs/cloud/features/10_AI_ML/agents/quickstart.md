@@ -2,7 +2,7 @@
 sidebar_label: 'Quickstart'
 sidebar_position: 1
 slug: /cloud/features/ai-ml/agents/quickstart
-title: 'ClickHouse Agents Quickstart'
+title: 'Quickstart'
 description: 'Build and run your first ClickHouse Agent against a ClickHouse Cloud service'
 keywords: ['AI', 'ClickHouse Cloud', 'agents', 'quickstart', 'agent builder']
 doc_type: 'guide'
@@ -14,12 +14,12 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 Build a custom agent in the Cloud console and run a natural-language query against your service.
 
-## Prerequisites
+## Prerequisites {#prerequisites}
 
 - A ClickHouse Cloud service you can query.
 - The **Create agent** option in the Agent Builder. If it's missing, ask an org admin to grant agent creation via Admin Settings as detailed in [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access).
 
-## Create the agent
+## Create the agent {#create-the-agent}
 
 Open Agents from the Cloud console and click **Create agent** in the Agent Builder side panel. Fill in the core fields:
 
@@ -28,7 +28,7 @@ Open Agents from the Cloud console and click **Create agent** in the Agent Build
 - **Instructions** — the system prompt. Describe the agent's role, the questions it should answer, and any business rules it must follow.
 - **Model** — pick a model from the dropdown. Tune temperature and other generation settings in [model parameters](/cloud/features/ai-ml/agents/builder/model-parameters).
 
-## Attach tools
+## Attach tools {#attach-tools}
 
 Decide which capabilities the agent needs. From the Builder, you can add:
 
@@ -40,11 +40,11 @@ Decide which capabilities the agent needs. From the Builder, you can add:
 
 You can change attached tools any time.
 
-## Run a query
+## Run a query {#run-a-query}
 
 Save the agent, open a new conversation, and select your agent from the agent picker. Type a question — for example, *"What are my top 10 tables by row count this week?"* — and the agent plans, calls tools as needed, and returns an answer.
 
-## Next steps
+## Next steps {#next-steps}
 
 - [Share the agent](/cloud/features/ai-ml/agents/sharing-and-access) with teammates.
 - Publish to the [marketplace](/cloud/features/ai-ml/agents/marketplace) once the agent is stable.

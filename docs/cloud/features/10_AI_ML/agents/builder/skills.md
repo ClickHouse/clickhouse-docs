@@ -14,7 +14,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 A skill is a reusable instruction pack an agent can apply on demand. Use skills for procedures that recur across agents — a brand-style guide, a code-review checklist, a runbook for a specific workflow — instead of duplicating the instructions into each agent's system prompt.
 
-## Anatomy of a skill
+## Anatomy of a skill {#anatomy-of-a-skill}
 
 A skill is a Markdown file with a small frontmatter header:
 
@@ -47,7 +47,7 @@ The frontmatter knobs that matter most:
 
 You can bundle supporting files alongside the skill — reference docs, sample queries, small scripts — by uploading a `.zip` containing the `SKILL.md` and its assets.
 
-## Use a skill
+## Use a skill {#use-a-skill}
 
 Three ways an agent reaches for a skill in a conversation:
 
@@ -55,13 +55,13 @@ Three ways an agent reaches for a skill in a conversation:
 - **Model auto-selection** — based on the skill's `description`, the agent decides on its own when to apply it.
 - **Always-apply** — primed on every turn for skills configured that way.
 
-## Manage skills
+## Manage skills {#manage-skills}
 
 The Skills panel in the Cloud console lets you create skills inline, upload `.md` or `.zip` files, and manage which skills are active for your user. Owned skills default to active; deactivate one to remove it from the popover and the model's catalog without deleting it.
 
 Skills can be shared with other users (see [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access)).
 
-## Skills vs. instructions
+## Skills vs. instructions {#skills-vs-instructions}
 
 - **Agent instructions** define what the agent is and how it behaves overall. Always on for that agent.
 - **Skills** are situational — applied when relevant, scoped to specific workflows.

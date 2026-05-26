@@ -14,7 +14,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 The Prompts library is a place to save and reuse natural-language prompts you find yourself typing repeatedly. Think of it as snippets for your chat composer — useful when the same analytical question or formatting instruction comes up across conversations.
 
-## Create a prompt
+## Create a prompt {#create-a-prompt}
 
 Open the Prompts panel and click **New prompt**. Give it:
 
@@ -24,15 +24,15 @@ Open the Prompts panel and click **New prompt**. Give it:
 
 Group related prompts under categories or tags to keep the library navigable as it grows.
 
-## Use a prompt
+## Use a prompt {#use-a-prompt}
 
 In a conversation, open the prompts picker from the composer and search or browse to the prompt you want. If the prompt has variables, fill them in. The body is inserted into the composer, where you can edit it before sending.
 
-## Share prompts
+## Share prompts {#share-prompts}
 
 Prompts have the same access model as agents: private by default, can be shared with specific users or groups, can be made organization-wide. See [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access).
 
-## Prompts vs. skills vs. instructions
+## Prompts vs. skills vs. instructions {#prompts-vs-skills-vs-instructions}
 
 - **Prompts** are one-shot text snippets for the user to insert and edit. The user is in the loop.
 - **[Skills](/cloud/features/ai-ml/agents/builder/skills)** are instruction packs the agent activates on its own.
