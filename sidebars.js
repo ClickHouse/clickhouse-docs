@@ -378,8 +378,8 @@ const sidebars = {
               label: 'pg_clickhouse',
               collapsed: true,
               collapsible: true,
+              link: { type: 'doc', id: 'cloud/managed-postgres/extensions/pg_clickhouse/introduction' },
               items: [
-                'cloud/managed-postgres/extensions/pg_clickhouse/introduction',
                 'cloud/managed-postgres/extensions/pg_clickhouse/tutorial',
                 'cloud/managed-postgres/extensions/pg_clickhouse/reference',
               ],
