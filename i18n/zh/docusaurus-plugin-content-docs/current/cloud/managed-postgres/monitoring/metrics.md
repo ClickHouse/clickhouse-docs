@@ -7,11 +7,11 @@ keywords: ['Managed Postgres', '指标', 'Prometheus', '参考', '可观测性']
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # 指标参考 \{#metrics-reference\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-metrics" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-metrics-beta" />
 
 本页面列出了
 [Managed Postgres Prometheus 端点](/cloud/managed-postgres/monitoring/prometheus)

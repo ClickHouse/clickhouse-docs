@@ -7,14 +7,13 @@ keywords: ['postgres security', 'ip whitelisting', 'encryption', 'tls', 'ssl', '
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="security" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.security-beta" />
 
-Managed Postgres は、エンタープライズグレードのセキュリティ機能によってお客様のデータを保護し、コンプライアンス要件を満たすために設計されています。このページでは、ネットワークセキュリティ、暗号化、およびバックアップの保持ポリシーについて説明します。
-
+Managed Postgres は、エンタープライズグレードのセキュリティ機能によってお客様のデータを保護し、コンプライアンス要件を満たすために設計されています。このページでは、ネットワークセキュリティ、暗号化、およびバックアップ保持期間ポリシーについて説明します。
 
 ## IP ホワイトリスト \{#ip-whitelisting\}
 

@@ -7,14 +7,13 @@ keywords: ['безопасность Postgres', 'ip whitelisting', 'шифров
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="security" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.security-beta" />
 
 Managed Postgres оснащен функциями безопасности корпоративного класса, которые защищают ваши данные и помогают соответствовать требованиям нормативных актов. На этой странице рассматриваются сетевая безопасность, шифрование и политики хранения резервных копий.
-
 
 ## Список разрешённых IP-адресов \{#ip-whitelisting\}
 

@@ -7,21 +7,20 @@ keywords: ['Postgres 基准测试', '性能', 'pgbench', 'Aurora', 'RDS', 'TPS',
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import computeIntensive from '@site/static/images/managed-postgres/benchmarks/compute-intensive.png';
 import ioReadOnly from '@site/static/images/managed-postgres/benchmarks/io-intensive-readonly.png';
 import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-intensive-readwrite.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="benchmarks" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.benchmarks-beta" />
 
 :::info 要点
 
-* **基准测试对象**：由 ClickHouse 托管的 Postgres，与 AWS RDS（预置 16k IOPS）和 Aurora IO Optimized 对比，使用标准的 [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) 测试
+* **基准测试对象**：由 ClickHouse 托管的 Postgres，与 AWS RDS (预置 16k IOPS) 和 Aurora IO Optimized 对比，使用标准的 [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) 测试
 * **性能**：基于 NVMe 的 ClickHouse Postgres 在 I/O 密集型负载下实现 **4.3–9 倍的性能提升**，在 CPU 受限场景下快 **12%**
 * **非常适合快速增长的 AI 驱动型工作负载**，这类负载需要高事务吞吐、低延迟数据访问，以及无 I/O 瓶颈的可预测性能
   :::
-
 
 ## 基准测试概览 \{#overview\}
 

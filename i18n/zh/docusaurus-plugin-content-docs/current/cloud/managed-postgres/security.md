@@ -3,18 +3,17 @@ slug: /cloud/managed-postgres/security
 sidebar_label: '安全性'
 title: '安全性'
 description: 'ClickHouse Managed Postgres 的安全功能，包括 IP 白名单、加密和 Private Link'
-keywords: ['Postgres 安全性', 'IP 白名单', '加密', 'TLS', 'SSL', 'Private Link', '备份保留期']
+keywords: ['Postgres 安全性', 'IP 白名单', '加密', 'TLS', 'SSL', 'Private Link', '备份保留策略']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="security" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.security-beta" />
 
 Managed Postgres 采用企业级安全功能构建，以保护您的数据并满足合规性要求。本页将介绍网络安全、加密以及备份保留策略。
-
 
 ## IP 白名单 \{#ip-whitelisting\}
 

@@ -3,16 +3,15 @@ slug: /cloud/managed-postgres/upgrades
 sidebar_label: '업그레이드'
 title: '업그레이드'
 description: 'ClickHouse Managed Postgres에서 PostgreSQL 버전 업그레이드가 어떻게 동작하는지 설명합니다'
-keywords: ['Managed Postgres 업그레이드', 'Postgres 버전', '마이너 업그레이드', '메이저 업그레이드', '유지 관리 시간대(maintenance window)']
+keywords: ['Managed Postgres 업그레이드', 'Postgres 버전', '마이너 업그레이드', '메이저 업그레이드', '유지 관리 기간(maintenance window)']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="upgrades" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.upgrades-beta" />
 
 Managed Postgres는 PostgreSQL 버전 업그레이드를 자동으로 처리하여 인스턴스를 안전하고 최신 상태로 유지합니다. 마이너 버전과 메이저 버전 업그레이드를 모두 지원하며, 서비스 중단을 최소화합니다.
-
 
 ## 마이너 버전 업그레이드 \{#minor-version-upgrades\}
 

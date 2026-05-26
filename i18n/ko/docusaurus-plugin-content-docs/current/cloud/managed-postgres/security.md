@@ -3,18 +3,17 @@ slug: /cloud/managed-postgres/security
 sidebar_label: '보안'
 title: '보안'
 description: 'IP 허용 목록, 암호화, Private Link를 포함한 ClickHouse Managed Postgres의 보안 기능'
-keywords: ['postgres 보안', 'ip 허용 목록', '암호화', 'tls', 'ssl', 'private link', '백업 보존 기간']
+keywords: ['postgres 보안', 'ip 허용 목록', '암호화', 'tls', 'ssl', 'private link', '백업 보존']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="security" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.security-beta" />
 
 Managed Postgres는 엔터프라이즈급 보안 기능을 갖추어 데이터를 보호하고 규제 준수(compliance) 요구 사항을 충족하도록 설계되었습니다. 이 페이지에서는 네트워크 보안, 암호화, 백업 보존 정책을 다룹니다.
-
 
 ## IP 허용 목록 \{#ip-whitelisting\}
 

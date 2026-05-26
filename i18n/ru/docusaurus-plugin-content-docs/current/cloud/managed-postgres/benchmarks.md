@@ -2,26 +2,25 @@
 slug: /cloud/managed-postgres/benchmarks
 sidebar_label: 'Сравнительные тесты производительности'
 title: 'Сравнительные тесты производительности'
-description: 'Сравнительные тесты производительности, в которых Postgres под управлением ClickHouse сопоставляется с AWS Aurora, RDS и другими управляемыми сервисами PostgreSQL'
+description: 'Сравнительные тесты производительности, в которых Postgres, управляемый ClickHouse, сопоставляется с AWS Aurora, RDS и другими управляемыми сервисами PostgreSQL'
 keywords: ['postgres benchmarks', 'производительность', 'pgbench', 'aurora', 'rds', 'tps', 'задержка', 'производительность NVMe']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import computeIntensive from '@site/static/images/managed-postgres/benchmarks/compute-intensive.png';
 import ioReadOnly from '@site/static/images/managed-postgres/benchmarks/io-intensive-readonly.png';
 import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-intensive-readwrite.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="benchmarks" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.benchmarks-beta" />
 
 :::info TL;DR
 
-* **Сравнивали производительность** управляемого ClickHouse сервиса Postgres с AWS RDS (16k provisioned IOPS) и Aurora IO Optimized с использованием стандартных тестов [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html)
+* **Сравнивали производительность** Postgres, управляемого ClickHouse, с AWS RDS (16k выделенных IOPS) и Aurora IO Optimized с использованием стандартных тестов [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html)
 * **Производительность**: Postgres на NVMe-хранилище в ClickHouse обеспечивает **в 4.3–9 раз более высокую производительность** для I/O-интенсивных нагрузок и **на 12% выше** для CPU-ограниченных сценариев
 * **Идеально подходит для быстро растущих AI-ориентированных рабочих нагрузок**, которым требуются высокие скорости транзакций, доступ к данным с низкой задержкой и предсказуемая производительность без узких мест по I/O
   :::
-
 
 ## Обзор тестирования производительности \{#overview\}
 

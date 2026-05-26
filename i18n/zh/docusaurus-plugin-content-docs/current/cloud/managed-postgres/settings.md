@@ -7,16 +7,15 @@ keywords: ['Postgres 配置', 'PostgreSQL 设置', 'PgBouncer', 'IP 过滤器']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import postgresParameters from '@site/static/images/managed-postgres/postgres-parameters.png';
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="settings" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.settings-beta" />
 
-您可以通过侧边栏中的 **Settings** 选项卡修改配置参数并管理托管 Postgres 实例的设置。
-
+您可以通过侧边栏中的 **Settings** 选项卡修改配置参数并管理 Managed Postgres 实例的设置。
 
 ## 更改配置参数 \{#changing-configuration\}
 

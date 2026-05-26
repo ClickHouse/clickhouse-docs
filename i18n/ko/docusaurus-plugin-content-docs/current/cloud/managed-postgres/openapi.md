@@ -7,11 +7,11 @@ keywords: ['managed postgres', 'openapi', 'api', 'curl', '튜토리얼', '명령
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # Managed Postgres OpenAPI \{#managed-postgres-openapi\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.openapi-beta" />
 
 [ClickHouse OpenAPI](/cloud/manage/cloud-api)를 사용하면 ClickHouse 서비스와 마찬가지로 Managed Postgres 서비스도 프로그래밍 방식으로 제어할 수 있습니다. 동일한 API는 서비스 메트릭을 스크레이핑하기 위한 [Prometheus 엔드포인트]도 제공합니다.
 이미 [OpenAPI]에 익숙하다면 [API 키]를 발급받아 바로

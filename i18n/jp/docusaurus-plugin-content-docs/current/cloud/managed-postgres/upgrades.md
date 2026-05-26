@@ -7,12 +7,11 @@ keywords: ['Managed Postgres アップグレード', 'Postgres バージョン',
 doc_type: 'ガイド'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="upgrades" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.upgrades-beta" />
 
 Managed Postgres では、PostgreSQL のバージョンアップグレードを実行し、インスタンスを安全かつ最新の状態に保ちます。マイナーバージョンとメジャーバージョンの両方のアップグレードが、影響を最小限に抑えて行われます。
-
 
 ## マイナーバージョンアップグレード \{#minor-version-upgrades\}
 

@@ -7,12 +7,11 @@ keywords: ['расширения postgres', 'postgis', 'pgvector', 'pg_cron', '�
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="extensions" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.extensions-beta" />
 
 Управляемый Postgres включает отобранный набор расширений, позволяющих расширить возможности вашей базы данных. Ниже приведен список доступных расширений.
-
 
 ## Установка расширений \{#installing-extensions\}
 

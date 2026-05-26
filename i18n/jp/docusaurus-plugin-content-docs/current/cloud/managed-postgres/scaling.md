@@ -7,15 +7,14 @@ keywords: ['Postgres スケーリング', '垂直スケーリング', 'VM タイ
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import instanceTypes from '@site/static/images/managed-postgres/instance-types.png';
 import scalingSettings from '@site/static/images/managed-postgres/scaling-settings.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="scaling" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.scaling-beta" />
 
 Managed Postgres は、ワークロード要件に合わせて柔軟なスケーリングオプションを提供します。50 以上の NVMe 搭載インスタンスタイプから選択でき、CPU、メモリ、ストレージをそれぞれ独立してスケールすることで、特定のユースケースに合わせてパフォーマンスとコストを最適化できます。
-
 
 ## インスタンスタイプと柔軟性 \{#instance-types\}
 

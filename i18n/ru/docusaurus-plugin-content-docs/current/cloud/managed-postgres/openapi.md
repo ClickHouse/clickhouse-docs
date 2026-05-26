@@ -7,17 +7,17 @@ keywords: ['managed postgres', 'openapi', 'api', 'curl', 'руководство
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # OpenAPI для Managed Postgres \{#managed-postgres-openapi\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.openapi-beta" />
 
 Используйте [ClickHouse OpenAPI](/cloud/manage/cloud-api), чтобы программно
 управлять сервисами Managed Postgres так же, как сервисами ClickHouse. Тот
 же API также предоставляет [конечную точку Prometheus] для сбора метрик
 сервиса. Уже
-знакомы с [OpenAPI]? Получите [API-ключи] и сразу переходите к
+знакомы с [OpenAPI]? Получите [ключи API] и сразу переходите к
 [справочнику по API Managed
 Postgres][pg-openapi]. Если нет, ниже приведён краткий обзор.
 

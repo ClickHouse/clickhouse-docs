@@ -7,16 +7,15 @@ keywords: ['PostgreSQL 구성', 'PostgreSQL 설정', 'PgBouncer', 'IP 필터']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import postgresParameters from '@site/static/images/managed-postgres/postgres-parameters.png';
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="settings" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.settings-beta" />
 
 사이드바에 있는 **Settings** 탭에서 Managed Postgres 인스턴스의 구성 매개변수를 변경하고 인스턴스 설정을 관리할 수 있습니다.
-
 
 ## 구성 매개변수 변경 \{#changing-configuration\}
 

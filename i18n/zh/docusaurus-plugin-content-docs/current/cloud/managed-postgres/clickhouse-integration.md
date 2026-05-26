@@ -7,7 +7,7 @@ keywords: ['postgres', 'clickhouse 集成', 'cdc', '复制', 'ClickPipes', '数�
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
@@ -15,7 +15,7 @@ import integrationReplicationSettings from '@site/static/images/managed-postgres
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.clickhouse-integration-beta" />
 
 每个托管 Postgres 实例都内置支持向任意 ClickHouse 服务进行 CDC。这使您可以将 Postgres 实例中的部分或全部数据迁移到 ClickHouse，并让 Postgres 上的数据变更在 ClickHouse 中持续且近乎实时地得到反映。其底层由 [ClickPipes](/integrations/clickpipes) 提供支持。
 

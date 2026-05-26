@@ -2,21 +2,20 @@
 slug: /cloud/managed-postgres/high-availability
 sidebar_label: '고가용성'
 title: '고가용성'
-description: 'ClickHouse Managed Postgres에서 고가용성을 위해 스탠바이 레플리카와 복제 모드를 구성합니다'
+description: 'ClickHouse Managed Postgres에서 고가용성을 위해 대기 인스턴스 레플리카와 복제 모드를 구성합니다'
 keywords: ['high availability', 'ha', 'standby', 'replication', 'failover', 'postgres ha']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="high-availability" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.high-availability-beta" />
 
-Managed Postgres는 내구성과 성능 요구사항에 맞출 수 있도록 다양한 수준의 고가용성을 제공합니다. 데이터베이스를 프로비저닝할 때 하나 또는 두 개의 대기 레플리카를 추가할 수 있으며, 필요에 따라 나중에 **Settings** 페이지에서 이 구성을 조정할 수도 있습니다.
+Managed Postgres는 내구성과 성능 요구사항에 맞출 수 있도록 다양한 수준의 고가용성을 제공합니다. 데이터베이스를 프로비저닝할 때 하나 또는 두 개의 대기 인스턴스 레플리카를 추가할 수 있으며, 필요에 따라 나중에 **Settings** 페이지에서 이 구성을 조정할 수도 있습니다.
 
 {/* TODO(kaushik-ubi): 고가용성 구성 화면 스크린샷
     Path: /static/images/cloud/managed-postgres/high-availability-config.png */}
-
 
 ## 고가용성 옵션 \{#high-availability-options\}
 

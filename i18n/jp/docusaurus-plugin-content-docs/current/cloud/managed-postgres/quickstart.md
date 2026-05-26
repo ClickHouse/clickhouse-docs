@@ -2,12 +2,12 @@
 slug: /cloud/managed-postgres/quickstart
 sidebar_label: 'クイックスタート'
 title: 'クイックスタート'
-description: 'NVMe によって強化された Postgres のパフォーマンスを体験し、ClickHouse とのネイティブ連携でリアルタイム分析を追加します'
+description: 'NVMe によって強化された Postgres のパフォーマンスを体験し、ClickHouse 連携でリアルタイム分析を追加します'
 keywords: ['managed postgres', 'クイックスタート', 'はじめに', 'データベースの作成', 'nvme', 'パフォーマンス']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPg from '@site/static/images/managed-postgres/create-service.png';
 import pgOverview from '@site/static/images/managed-postgres/overview.png';
@@ -19,25 +19,24 @@ import getClickHouseHost from '@site/static/images/managed-postgres/get-clickhou
 import analyticsList from '@site/static/images/managed-postgres/analytics-list.png';
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
 
-
 # マネージド Postgres クイックスタート \{#quickstart-for-managed-postgres\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="quick-start" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.quick-start-beta" />
 
 ClickHouse Managed Postgres は、NVMe ストレージを基盤としたエンタープライズグレードの Postgres であり、EBS などのネットワーク接続ストレージと比較して、ディスクボトルネックのあるワークロードに対して最大 10 倍の高いパフォーマンスを提供します。このクイックスタートは次の 2 部構成です。
 
-- **パート 1:** NVMe Postgres を使い始め、そのパフォーマンスを体感する
-- **パート 2:** ClickHouse と連携してリアルタイム分析を実現する
+* **第1部:** NVMe Postgres を使い始め、そのパフォーマンスを体感する
+* **パート 2:** ClickHouse と連携してリアルタイム分析を実現する
 
 Managed Postgres は現在、複数の AWS リージョンで利用可能で、プライベートプレビュー期間中は無料です。
 
 **このクイックスタートでは、次のことを行います。**
 
-- NVMe ベースの高性能な Managed Postgres インスタンスを作成する
-- 100 万件のサンプルイベントをロードして NVMe の速度を確認する
-- クエリを実行し、低レイテンシなパフォーマンスを体験する
-- リアルタイム分析のためにデータを ClickHouse にレプリケートする
-- `pg_clickhouse` を使用して Postgres から直接 ClickHouse にクエリを実行する
+* NVMe ベースの高性能な Managed Postgres インスタンスを作成する
+* 100 万件のサンプルイベントをロードして NVMe の速度を確認する
+* クエリを実行し、低レイテンシなパフォーマンスを体験する
+* リアルタイム分析のためにデータを ClickHouse にレプリケートする
+* `pg_clickhouse` を使用して Postgres から直接 ClickHouse にクエリを実行する
 
 ## 第1部: NVMe Postgres の始め方 \{#part-1\}
 

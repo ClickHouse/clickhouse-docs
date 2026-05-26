@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', 'pg_dump', 'pg_restore', 'migration', 'data
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPgForMigrate from '@site/static/images/managed-postgres/pg_dump_restore/create-pg-for-migration.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
@@ -15,12 +15,11 @@ import dumpCommand from '@site/static/images/managed-postgres/pg_dump_restore/du
 import restoreCommand from '@site/static/images/managed-postgres/pg_dump_restore/restore-command.png';
 import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/target-setup.png';
 
-
 # pg_dump 및 pg_restore를 사용하여 Managed Postgres로 마이그레이션하기 \{#pg-dump-pg-restore\}
 
 이 가이드는 `pg_dump` 및 `pg_restore` 유틸리티를 사용하여 PostgreSQL 데이터베이스를 ClickHouse Managed Postgres로 마이그레이션하는 단계별 안내를 제공합니다.
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="pg_dump-pg_restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.pg_dump-pg_restore-beta" />
 
 ## 선행 조건 \{#migration-pgdump-pg-restore-prerequisites\}
 

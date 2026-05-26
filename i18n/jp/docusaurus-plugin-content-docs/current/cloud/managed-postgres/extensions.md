@@ -7,12 +7,11 @@ keywords: ['postgres 拡張機能', 'postgis', 'pgvector', 'pg_cron', 'postgresq
 doc_type: 'ガイド'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="extensions" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.extensions-beta" />
 
 Managed Postgres には、データベースの機能を拡張するために選定された拡張機能が含まれています。以下に、利用可能な拡張機能の一覧を示します。
-
 
 ## 拡張機能のインストール \{#installing-extensions\}
 

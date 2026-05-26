@@ -1,6 +1,6 @@
 ---
 slug: /cloud/managed-postgres
-title: '관리형 Postgres'
+title: 'Managed Postgres'
 description: 'NVMe 스토리지 기반의 빠르고 확장 가능하며 엔터프라이즈급 Postgres로, 실시간 분석을 위한 네이티브 ClickHouse 통합을 제공합니다'
 keywords: ['관리형 Postgres', 'PostgreSQL', '클라우드 데이터베이스', 'Postgres 서비스', 'NVMe Postgres', 'ClickHouse 통합']
 doc_type: 'guide'
@@ -8,18 +8,17 @@ pagination_next: cloud/managed-postgres/quickstart
 pagination_prev: null
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.overview-beta" />
 
-ClickHouse Managed Postgres는 성능과 확장성을 위해 설계된 엔터프라이즈급 관리형 Postgres 서비스입니다. 컴퓨트와 물리적으로 동일한 위치에 있는 NVMe 스토리지를 기반으로, EBS와 같은 네트워크 연결 스토리지를 사용하는 다른 서비스에 비해 디스크 입출력에 병목이 있는 워크로드에서 최대 10배 더 빠른 성능을 제공합니다.
+ClickHouse Managed Postgres는 성능과 확장성을 위해 설계된 엔터프라이즈급 Managed Postgres 서비스입니다. 컴퓨트와 물리적으로 동일한 위치에 있는 NVMe 스토리지를 기반으로, EBS와 같은 네트워크 연결 스토리지를 사용하는 다른 서비스에 비해 디스크 입출력에 병목이 있는 워크로드에서 최대 10배 더 빠른 성능을 제공합니다.
 
 Citus Data, Heroku, Microsoft에서 세계적 수준의 Postgres를 제공해 온 이력을 가진 창업 팀이 있는 [Ubicloud](https://www.ubicloud.com/)와의 파트너십으로 구축된 Managed Postgres는 빠르게 성장하는 애플리케이션이 흔히 직면하는 성능 문제를 해결합니다. 예를 들어 느린 수집 및 업데이트, 느린 vacuum 작업, 증가하는 테일 레이턴시, 제한된 디스크 IOPS로 인해 발생하는 WAL 스파이크 등이 있습니다.
 
 {/* TODO: Postgres와 ClickHouse 통합 아키텍처 다이어그램
     Path: /static/images/cloud/managed-postgres/architecture-overview.png */}
-
 
 ## NVMe 기반 성능 \{#nvme-performance\}
 

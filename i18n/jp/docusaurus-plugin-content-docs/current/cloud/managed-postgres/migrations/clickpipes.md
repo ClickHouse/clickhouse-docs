@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', '論理レプリケーション', '移行',
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
@@ -24,7 +24,7 @@ import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.p
 
 # ClickPipes を使用して Managed Postgres に移行する \{#migrate-managed-postgres\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-clickhouse-cloud" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-clickhouse-cloud-beta" />
 
 ClickHouse Cloud では、外部 PostgreSQL データベースを Managed Postgres サービスに移行するための ClickPipes を利用できるようになりました。この統合機能により、ソースデータベースへの接続、スキーマのエクスポート、Managed Postgres へのインポート、継続的なレプリケーションの設定を、よりスムーズに行えます。
 

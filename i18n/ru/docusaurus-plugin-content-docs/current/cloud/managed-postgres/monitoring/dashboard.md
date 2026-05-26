@@ -7,13 +7,13 @@ keywords: ['Managed Postgres', 'мониторинг', 'дашборд', 'кон
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import dashboard from '@site/static/images/managed-postgres/monitoring/dashboard.png';
 
 # Дашборд мониторинга \{#monitoring-dashboard\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-dashboard" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-dashboard-beta" />
 
 Вкладка **Monitoring** на левой панели экземпляра показывает
 графики использования ресурсов и активности базы данных в реальном времени за

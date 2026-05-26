@@ -7,16 +7,15 @@ keywords: ['конфигурация postgres', 'параметры postgresql',
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import postgresParameters from '@site/static/images/managed-postgres/postgres-parameters.png';
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="settings" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.settings-beta" />
 
 Вы можете изменять параметры конфигурации и управлять настройками экземпляра Managed Postgres на вкладке **Settings** в боковой панели.
-
 
 ## Изменение параметров конфигурации \{#changing-configuration\}
 

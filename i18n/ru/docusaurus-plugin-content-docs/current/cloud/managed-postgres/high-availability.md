@@ -3,20 +3,19 @@ slug: /cloud/managed-postgres/high-availability
 sidebar_label: 'Высокая доступность'
 title: 'Высокая доступность'
 description: 'Настройте резервные реплики и режимы репликации для обеспечения высокой доступности в ClickHouse Managed Postgres'
-keywords: ['высокая доступность', 'ha', 'standby', 'репликация', 'аварийное переключение', 'postgres ha']
+keywords: ['высокая доступность', 'ha', 'standby', 'репликация', 'failover', 'postgres ha']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="high-availability" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.high-availability-beta" />
 
 В Managed Postgres доступны различные уровни высокой доступности в соответствии с вашими требованиями к надежности и производительности. Вы можете добавить одну или две резервные реплики при создании базы данных или при необходимости позже изменить эту конфигурацию на странице **Settings**.
 
 {/* TODO(kaushik-ubi): Скриншот экрана конфигурации высокой доступности
     Path: /static/images/cloud/managed-postgres/high-availability-config.png */}
-
 
 ## Варианты высокой доступности \{#high-availability-options\}
 

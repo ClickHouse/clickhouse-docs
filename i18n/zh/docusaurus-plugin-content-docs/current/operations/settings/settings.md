@@ -10539,6 +10539,14 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
+## query_plan_max_limit_for_join_lazy_indexing \{#query_plan_max_limit_for_join_lazy_indexing\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1000"},{"label": "新增设置，用于控制可使用查询计划进行 JOIN 延迟索引优化的最大限制值。为 0 表示不限制"}]}]} />
+
+控制可在 JOIN 中使用查询计划进行延迟索引优化的最大限制值。为 0 表示不限制。
+
 ## query_plan_max_limit_for_lazy_materialization \{#query_plan_max_limit_for_lazy_materialization\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -10607,6 +10615,14 @@ a   Tuple(
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。在使用分析器时，为了正确支持过滤下推，这是必需的。"}]}]}/>
 
 允许在查询计划中合并过滤条件。
+
+## query_plan_min_columns_for_join_lazy_indexing \{#query_plan_min_columns_for_join_lazy_indexing\}
+
+<SettingsInfoBlock type="UInt64" default_value="3" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "3"},{"label": "控制启用 JOIN 惰性索引优化时左侧所需的最小负载列数"}]}]} />
+
+控制启用 JOIN 惰性索引优化时左侧所需的最小负载列数。0 表示禁用此优化。
 
 ## query_plan_optimize_join_order_algorithm \{#query_plan_optimize_join_order_algorithm\}
 

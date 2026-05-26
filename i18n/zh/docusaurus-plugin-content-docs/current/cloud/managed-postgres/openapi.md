@@ -7,11 +7,11 @@ keywords: ['managed postgres', 'openapi', 'api', 'curl', '教程', '命令行']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # Managed Postgres OpenAPI \{#managed-postgres-openapi\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.openapi-beta" />
 
 使用 [ClickHouse OpenAPI](/cloud/manage/cloud-api) 以编程方式
 管理您的 Managed Postgres 服务，就像管理 ClickHouse 服务一样。该

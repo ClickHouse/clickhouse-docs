@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', '논리적 복제', '마이그레이션', '
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
@@ -24,7 +24,7 @@ import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.p
 
 # ClickPipes를 사용해 Managed Postgres로 마이그레이션하기 \{#migrate-managed-postgres\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-clickhouse-cloud" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-clickhouse-cloud-beta" />
 
 이제 ClickHouse Cloud에서는 ClickPipes를 통해 외부 PostgreSQL 데이터베이스를 Managed Postgres 서비스로 마이그레이션할 수 있습니다. 이 기본 제공 통합을 사용하면 소스 데이터베이스에 연결하고, 스키마(schema)를 내보내 Managed Postgres로 가져온 뒤, 지속적인 복제를 설정하는 작업을 더욱 간편하게 수행할 수 있습니다.
 

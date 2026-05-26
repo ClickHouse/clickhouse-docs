@@ -7,21 +7,20 @@ keywords: ['Postgres 벤치마크', '성능', 'pgbench', 'Aurora', 'RDS', 'TPS',
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import computeIntensive from '@site/static/images/managed-postgres/benchmarks/compute-intensive.png';
 import ioReadOnly from '@site/static/images/managed-postgres/benchmarks/io-intensive-readonly.png';
 import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-intensive-readwrite.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="benchmarks" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.benchmarks-beta" />
 
 :::info TL;DR
 
-* ClickHouse가 관리하는 Postgres를 AWS RDS(16k provisioned IOPS) 및 Aurora IO Optimized와 표준 [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) 테스트로 **벤치마크했습니다**
+* ClickHouse가 관리하는 Postgres를 AWS RDS(16k 프로비저닝된 IOPS) 및 Aurora IO Optimized와 표준 [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) 테스트로 **벤치마크했습니다**
 * **성능**: NVMe 스토리지를 사용하는 ClickHouse의 Postgres는 IO 집약적 워크로드에서 **4.3–9배 더 빠른 성능**을 제공하고, CPU 바운드 시나리오에서는 **12% 더 빠른 성능**을 제공합니다
 * 높은 트랜잭션 처리량, 낮은 지연 시간 데이터 액세스, IO 병목 없이 예측 가능한 성능이 필요한 **급성장하는 AI 기반 워크로드에 이상적입니다**
   :::
-
 
 ## 벤치마크 개요 \{#overview\}
 

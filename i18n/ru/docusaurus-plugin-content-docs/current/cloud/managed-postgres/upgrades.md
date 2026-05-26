@@ -7,12 +7,11 @@ keywords: ['обновления управляемого Postgres', 'верси
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="upgrades" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.upgrades-beta" />
 
 Managed Postgres автоматически выполняет обновление версий PostgreSQL, чтобы ваши экземпляры оставались защищёнными и актуальными. Поддерживаются как минорные, так и мажорные обновления с минимальными перебоями в работе.
-
 
 ## Минорные обновления версий \{#minor-version-upgrades\}
 

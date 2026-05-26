@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', '逻辑复制', '迁移', 'clickpipes', 'ma
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
@@ -24,7 +24,7 @@ import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.p
 
 # 使用 ClickPipes 迁移到 Managed Postgres \{#migrate-managed-postgres\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-clickhouse-cloud" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-clickhouse-cloud-beta" />
 
 ClickHouse Cloud 现已提供 ClickPipes，可将外部 PostgreSQL 数据库迁移到 Managed Postgres 服务。该内置集成简化了整个流程：连接源数据库、导出 schema、将其导入 Managed Postgres，并设置持续复制。
 

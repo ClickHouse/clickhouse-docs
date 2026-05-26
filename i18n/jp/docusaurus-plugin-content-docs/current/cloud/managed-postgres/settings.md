@@ -7,16 +7,15 @@ keywords: ['postgres 設定', 'postgresql 設定', 'pgbouncer', 'IP フィルタ
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import postgresParameters from '@site/static/images/managed-postgres/postgres-parameters.png';
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="settings" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.settings-beta" />
 
 サイドバーの **Settings** タブから、Managed Postgres インスタンスの構成パラメータを変更したり、インスタンス設定を管理したりできます。
-
 
 ## 構成パラメータの変更 \{#changing-configuration\}
 

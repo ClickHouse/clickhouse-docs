@@ -7,15 +7,14 @@ keywords: ['масштабирование Postgres', 'вертикальное 
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import instanceTypes from '@site/static/images/managed-postgres/instance-types.png';
 import scalingSettings from '@site/static/images/managed-postgres/scaling-settings.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="scaling" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.scaling-beta" />
 
-Управляемый Postgres предлагает гибкие варианты масштабирования под требования ваших рабочих нагрузок. Более 50 типов экземпляров на базе NVMe позволяют независимо масштабировать CPU, память и хранилище, оптимизируя производительность и стоимость под ваш конкретный сценарий использования.
-
+Managed Postgres предлагает гибкие варианты масштабирования под требования ваших рабочих нагрузок. Более 50 типов инстансов на базе NVMe позволяют независимо масштабировать CPU, память и хранилище, оптимизируя производительность и стоимость под ваш конкретный сценарий использования.
 
 ## Типы инстансов и гибкость \{#instance-types\}
 

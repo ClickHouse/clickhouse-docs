@@ -2,12 +2,12 @@
 slug: /cloud/managed-postgres/clickhouse-integration
 sidebar_label: 'Интеграция с ClickHouse'
 title: 'Интеграция с ClickHouse'
-description: 'Реплицируйте данные Postgres в ClickHouse с помощью встроенных возможностей CDC (фиксации изменений данных)'
+description: 'Реплицируйте данные Postgres в ClickHouse с помощью встроенных возможностей CDC (фиксация изменений данных)'
 keywords: ['postgres', 'интеграция с ClickHouse', 'cdc', 'репликация', 'ClickPipes', 'синхронизация данных']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
@@ -15,9 +15,9 @@ import integrationReplicationSettings from '@site/static/images/managed-postgres
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.clickhouse-integration-beta" />
 
-Каждый экземпляр Managed Postgres поставляется со встроенными возможностями CDC для любых ваших сервисов ClickHouse. Это позволяет перенести часть или все данные из вашего экземпляра Postgres в ClickHouse и обеспечить, чтобы изменения данных в Postgres практически непрерывно и почти в режиме реального времени отражались в ClickHouse. Под капотом для этого используется [ClickPipes](/integrations/clickpipes).
+Каждый экземпляр Managed Postgres поставляется со встроенными возможностями CDC (фиксации изменений данных) для любых ваших сервисов ClickHouse. Это позволяет перенести часть или все данные из вашего экземпляра Postgres в ClickHouse и обеспечить, чтобы изменения данных в Postgres практически непрерывно и почти в режиме реального времени отражались в ClickHouse. Под капотом для этого используется [ClickPipes](/integrations/clickpipes).
 
 Чтобы воспользоваться этой возможностью, нажмите **ClickHouse Integration** в боковой панели вашего экземпляра Postgres.
 

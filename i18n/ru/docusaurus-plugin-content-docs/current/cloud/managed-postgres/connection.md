@@ -2,19 +2,18 @@
 slug: /cloud/managed-postgres/connection
 sidebar_label: 'Подключение'
 title: 'Подключение к Managed Postgres'
-description: 'Строки подключения, пул подключений PgBouncer и конфигурация TLS для ClickHouse Managed Postgres'
+description: 'Строки подключения, пул подключений PgBouncer и настройка TLS для ClickHouse Managed Postgres'
 keywords: ['подключение к Postgres', 'строка подключения', 'pgbouncer', 'tls', 'ssl']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import connectButton from '@site/static/images/managed-postgres/connect-button.png';
 import connectModal from '@site/static/images/managed-postgres/connect-modal.png';
 import tlsCaBundle from '@site/static/images/managed-postgres/tls-ca-bundle.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="connection" />
-
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.connection-beta" />
 
 ## Доступ к параметрам подключения \{#accessing-connection-details\}
 

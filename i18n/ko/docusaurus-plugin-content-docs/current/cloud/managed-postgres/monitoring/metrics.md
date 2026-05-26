@@ -7,11 +7,11 @@ keywords: ['Managed Postgres', '메트릭', 'Prometheus', '참고', '관측성']
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # 메트릭 참고 \{#metrics-reference\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-metrics" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-metrics-beta" />
 
 이 페이지에는
 [Managed Postgres Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus)에서 제공하는 모든 메트릭이 나열되어 있습니다.

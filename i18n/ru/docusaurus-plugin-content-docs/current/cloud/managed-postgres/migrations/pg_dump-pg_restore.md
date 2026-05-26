@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', 'pg_dump', 'pg_restore', 'миграция'
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPgForMigrate from '@site/static/images/managed-postgres/pg_dump_restore/create-pg-for-migration.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
@@ -15,12 +15,11 @@ import dumpCommand from '@site/static/images/managed-postgres/pg_dump_restore/du
 import restoreCommand from '@site/static/images/managed-postgres/pg_dump_restore/restore-command.png';
 import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/target-setup.png';
 
-
 # Миграция в Managed Postgres с использованием pg_dump и pg_restore \{#pg-dump-pg-restore\}
 
 В этом руководстве приводятся пошаговые инструкции по переносу вашей базы данных PostgreSQL в ClickHouse Managed Postgres с использованием утилит `pg_dump` и `pg_restore`.
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="pg_dump-pg_restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.pg_dump-pg_restore-beta" />
 
 ## Предварительные требования \{#migration-pgdump-pg-restore-prerequisites\}
 

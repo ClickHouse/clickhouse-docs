@@ -7,7 +7,7 @@ keywords: ['postgres', 'clickhouse 連携', 'cdc', 'レプリケーション', '
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
@@ -15,11 +15,11 @@ import integrationReplicationSettings from '@site/static/images/managed-postgres
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.clickhouse-integration-beta" />
 
 すべての Managed Postgres インスタンスには、任意の ClickHouse サービスへの組み込みの CDC (変更データキャプチャ) 機能が付属しています。これにより、Postgres インスタンス上のデータの一部またはすべてを ClickHouse に移行し、Postgres 上のデータ変更を継続的かつほぼリアルタイムに ClickHouse に反映させることができます。これは内部的には [ClickPipes](/integrations/clickpipes) によって実現されています。
 
-この機能にアクセスするには、Postgres インスタンスのサイドバーで **ClickHouse Integration** をクリックします。
+この機能にアクセスするには、Postgres インスタンスのサイドバーで **ClickHouse 連携** をクリックします。
 
 <Image img={chIntegrationIntro} alt="サイドバーに統合オプションが表示されている ClickHouse 連携のランディングページ" size="md" border />
 

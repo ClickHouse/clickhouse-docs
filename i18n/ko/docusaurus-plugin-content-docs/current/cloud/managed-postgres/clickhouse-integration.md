@@ -7,7 +7,7 @@ keywords: ['postgres', 'clickhouse integration', 'cdc', '복제', 'ClickPipes', 
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
@@ -15,7 +15,7 @@ import integrationReplicationSettings from '@site/static/images/managed-postgres
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.clickhouse-integration-beta" />
 
 모든 Managed Postgres 인스턴스에는 ClickHouse 서비스로의 CDC 기능이 기본 제공됩니다. 이를 통해 Postgres 인스턴스의 일부 또는 전체 데이터를 ClickHouse로 이동하고, Postgres의 데이터 변경 사항이 ClickHouse에 지속적이고 거의 실시간으로 반영되도록 할 수 있습니다. 이는 내부적으로 [ClickPipes](/integrations/clickpipes)에 의해 동작합니다.
 

@@ -2,17 +2,16 @@
 slug: /cloud/managed-postgres/extensions
 sidebar_label: '확장 기능'
 title: 'PostgreSQL 확장 기능'
-description: 'ClickHouse Managed Postgres에서 사용 가능한 PostgreSQL 확장 기능'
+description: 'ClickHouse Managed Postgres에서 사용할 수 있는 PostgreSQL 확장 기능'
 keywords: ['postgres 확장 기능', 'postgis', 'pgvector', 'pg_cron', 'postgresql 확장 기능']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="extensions" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.extensions-beta" />
 
 Managed Postgres에는 데이터베이스 기능을 확장하기 위해 엄선된 확장 기능 세트가 포함되어 있습니다. 사용 가능한 확장 기능 목록은 아래와 같습니다.
-
 
 ## 확장 기능 설치 \{#installing-extensions\}
 

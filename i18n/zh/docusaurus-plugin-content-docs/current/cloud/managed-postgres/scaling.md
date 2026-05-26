@@ -1,21 +1,20 @@
 ---
 slug: /cloud/managed-postgres/scaling
-sidebar_label: '扩展'
-title: '扩展'
-description: '通过灵活的 VM 类型和独立的资源伸缩，对由 ClickHouse 管理的 Postgres 实例进行纵向扩容'
-keywords: ['postgres 扩展', '纵向扩容', 'vm 类型', 'nvme 扩展', '实例类型', '性能扩展']
+sidebar_label: '扩缩容'
+title: '扩缩容'
+description: '通过灵活的 VM 类型和独立的资源伸缩，对由 ClickHouse 管理的 Postgres 实例进行垂直扩缩容'
+keywords: ['postgres 扩缩容', '垂直扩缩容', 'vm 类型', 'nvme 扩缩容', '实例类型', '性能扩缩容']
 doc_type: '指南'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import instanceTypes from '@site/static/images/managed-postgres/instance-types.png';
 import scalingSettings from '@site/static/images/managed-postgres/scaling-settings.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="scaling" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.scaling-beta" />
 
-托管 Postgres 提供灵活的扩展选项，以满足您的工作负载需求。借助 50 多种基于 NVMe 的实例类型可供选择，您可以在 CPU、内存和存储之间独立扩展，以针对特定用例优化性能和成本。
-
+Managed Postgres 提供灵活的扩缩容选项，以满足您的工作负载需求。借助 50 多种基于 NVMe 的实例类型可供选择，您可以在 CPU、内存和存储之间独立扩缩容，以针对特定用例优化性能和成本。
 
 ## 实例类型与灵活性 \{#instance-types\}
 

@@ -2,17 +2,16 @@
 slug: /cloud/managed-postgres/upgrades
 sidebar_label: '升级'
 title: '升级'
-description: 'PostgreSQL 版本在 ClickHouse Managed Postgres 中的升级方式'
-keywords: ['managed postgres 升级', 'postgres 版本', '小版本升级', '大版本升级', '维护窗口']
+description: 'ClickHouse Managed Postgres 中 PostgreSQL 版本升级的工作方式'
+keywords: ['managed postgres 升级', 'postgres 版本', '小版本升级', '主版本升级', '维护窗口']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="upgrades" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.upgrades-beta" />
 
-Managed Postgres 会自动处理 PostgreSQL 版本升级，确保实例安全并保持最新状态。支持小版本和大版本升级，并将对服务的影响降至最低。
-
+Managed Postgres 会自动处理 PostgreSQL 版本升级，确保实例安全并保持最新状态。支持小版本和主版本升级，并将对服务的影响降至最低。
 
 ## 小版本升级 \{#minor-version-upgrades\}
 

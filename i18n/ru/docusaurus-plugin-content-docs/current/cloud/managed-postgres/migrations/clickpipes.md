@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', 'логическая репликация'
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
@@ -24,7 +24,7 @@ import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.p
 
 # Миграция в Managed Postgres с помощью ClickPipes \{#migrate-managed-postgres\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-clickhouse-cloud" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-clickhouse-cloud-beta" />
 
 Теперь в ClickHouse Cloud доступны ClickPipes для миграции внешней базы данных PostgreSQL в сервис Managed Postgres. Эта встроенная интеграция упрощает подключение к исходной базе данных, экспорт схемы, импорт в Managed Postgres и настройку непрерывной репликации.
 
