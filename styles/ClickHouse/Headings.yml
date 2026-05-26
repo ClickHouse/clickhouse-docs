@@ -59,6 +59,7 @@ exceptions:
   - DBT
   - DDL
   - DNS
+  - Debian
   - Docker
   - Docker Compose
   - DigitalOcean Spaces
@@ -143,6 +144,7 @@ exceptions:
   - SDK
   - TCP
   - TDE
+  - TPC-H
   - TTL
   - TiDB
   - Time To Live
@@ -153,6 +155,7 @@ exceptions:
   - UI
   - URLs
   - UAE
+  - Ubuntu
   - User Defined Functions
   - VLDB
   - VS
