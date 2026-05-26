@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'clickp
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import advancedSettings from '@site/static/images/managed-postgres/pgpg/advancedsettings.png';
 import initialLoad from '@site/static/images/managed-postgres/pgpg/initialload.png';
@@ -24,7 +24,7 @@ import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.p
 
 # Migrate to Managed Postgres using ClickPipes {#migrate-managed-postgres}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-clickhouse-cloud" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-clickhouse-cloud-beta" />
 
 ClickHouse Cloud now offers ClickPipes to migrate your external PostgreSQL database into a Managed Postgres service. This built-in integration provides a streamlined experience to connect to your source database, export the schema, import it into Managed Postgres, and set up continuous replication.
 
