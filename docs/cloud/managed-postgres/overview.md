@@ -34,7 +34,7 @@ For Postgres workloads that are primarily throttled by disk IOPS and latency, th
 
 For detailed benchmark results, see [Performance benchmarks](/docs/cloud/managed-postgres/benchmarks). 
 
-For <sup>\*</sup> see [AWS local NVMe limits for details](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store).
+For local NVMe limits on AWS see [Memory optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/mo.html#mo_instance-store), [Storage optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/so.html#so_instance-store), [CPU optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store).
 
 ## Native ClickHouse integration {#clickhouse-integration}
 
