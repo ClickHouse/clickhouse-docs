@@ -3852,6 +3852,11 @@
       "source": "/docs/managing-data/update_mutations",
       "destination": "/docs/sql-reference/statements/alter/update",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/managed-postgres/migrations/clickhouse-cloud",
+      "destination": "/docs/cloud/managed-postgres/migrations/clickpipes",
+      "permanent": true
     }
   ]
 }

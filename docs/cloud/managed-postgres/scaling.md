@@ -129,11 +129,9 @@ If you're replicating data to ClickHouse using [ClickPipes](/cloud/managed-postg
 
 This allows you to optimize the replication throughput separately from your Postgres instance resources.
 
-## Autoscaling (roadmap) {#autoscaling}
+## Autoscaling {#autoscaling}
 
-:::note[Coming soon]
-Automatic storage scaling is on the roadmap for Managed Postgres. This feature will automatically increase instance size as your database grows, eliminating the need for manual intervention.
-:::
+At 90% disk usage your instance type will be adjusted to a larger instance type.
 
 ## Additional resources {#resources}
 
