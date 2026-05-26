@@ -38,4 +38,4 @@ To modify a parameter, select the **Edit parameters** button. Select the paramet
 
 All changes made to the configuration parameters are typically persisted to the instance within one minute. Some parameters require a database restart to take effect. These changes will be applied after the next restart, which you can trigger manually from the **Service actions** toolbar.
 
-Refer to https://www.postgresql.org/docs/current/runtime-config.html for the official documentation on the configuration parameters. The list of parameters available to set will be extended soon. In the meantime, contact [support](https://clickhouse.com/support/program) for specific parameters support requests.
+Refer to https://www.postgresql.org/docs/current/runtime-config.html for the official documentation on the configuration parameters. The list of parameters available to set will be extended soon. In the meantime, contact [support](https://clickhouse.com/support/program) to request a parameter not currently supported.
