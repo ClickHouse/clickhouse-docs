@@ -679,7 +679,7 @@ LOAD
 ```
 
 It's not normally necessary to use [LOAD], as Postgres will automatically load
-pg_clickhouse the first time any of of its features (functions, foreign
+pg_clickhouse the first time any of its features (functions, foreign
 tables, etc.) are used.
 
 The one time it may be useful to [LOAD] pg_clickhouse is to [SET](#set)
