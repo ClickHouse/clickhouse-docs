@@ -7,9 +7,9 @@ keywords: ['managed postgres upgrades', 'postgres version', 'minor upgrade', 'ma
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="upgrades" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.upgrades-beta" />
 
 Managed Postgres handles PostgreSQL version upgrades to keep your instances secure and up to date. Both minor and major version upgrades are supported with minimal disruption.
 
