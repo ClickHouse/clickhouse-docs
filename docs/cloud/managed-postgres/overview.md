@@ -27,10 +27,14 @@ Most managed Postgres services use network-attached storage like Amazon EBS, whi
 Managed Postgres uses NVMe storage that is physically attached to the same server as your database. This architectural difference delivers:
 
 - **Microsecond-level disk latency** instead of milliseconds
-- **Unlimited local IOPS** without network bottlenecks
+- **Unlimited local IOPS**<sup>[*](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store)</sup> without network bottlenecks 
 - **Up to 10x faster performance** for disk-bound workloads at the same cost
 
 For Postgres workloads that are primarily throttled by disk IOPS and latency, this translates to faster ingestion, quicker vacuums, lower tail latency, and more predictable performance under load.
+
+For detailed benchmark results, see [Performance benchmarks](/docs/cloud/managed-postgres/benchmarks). 
+
+For see [AWS local NVMe limits for details](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store).
 
 ## Native ClickHouse integration {#clickhouse-integration}
 
