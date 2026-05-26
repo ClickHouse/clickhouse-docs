@@ -3,7 +3,7 @@ slug: /cloud/managed-postgres/settings
 sidebar_label: 'Settings'
 title: 'Settings'
 description: 'Configure PostgreSQL and PgBouncer parameters and manage instance settings for Managed Postgres'
-keywords: ['postgres configuration', 'postgresql settings', 'pgbouncer', 'ip filters']
+keywords: ['postgres configuration', 'postgresql settings', 'pgbouncer']
 doc_type: 'guide'
 ---
 
