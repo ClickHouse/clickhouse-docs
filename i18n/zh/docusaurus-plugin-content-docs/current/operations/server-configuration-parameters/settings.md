@@ -3106,6 +3106,10 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 * [max&#95;memory&#95;usage](/operations/settings/settings#max_memory_usage)
 * [merges&#95;mutations&#95;memory&#95;usage&#95;soft&#95;limit](/operations/server-configuration-parameters/settings#merges_mutations_memory_usage_soft_limit)
 
+## message_queue_disable_insertion \{#message_queue_disable_insertion\}
+
+<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="Yes" />禁用消息队列引擎 (Kafka、RabbitMQ、NATS) 向已附加的 materialized views 插入数据
+
 ## metric_log \{#metric_log\}
 
 默认情况下为禁用。

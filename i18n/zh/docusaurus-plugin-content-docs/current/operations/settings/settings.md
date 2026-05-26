@@ -6125,22 +6125,28 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
-定义当达到以下任一 join 限制时 ClickHouse 将执行的操作：
+定义当 join 达到以下任一限制时，ClickHouse 将执行的操作：
 
-- [max_bytes_in_join](/operations/settings/settings#max_bytes_in_join)
-- [max_rows_in_join](/operations/settings/settings#max_rows_in_join)
+* [max&#95;bytes&#95;in&#95;join](/operations/settings/settings#max_bytes_in_join)
+* [max&#95;rows&#95;in&#95;join](/operations/settings/settings#max_rows_in_join)
 
-可用值：
+此设置仅对 [`join_algorithm`](/operations/settings/settings#join_algorithm) 的 `hash` 和 `parallel_hash`
+值生效。其他算法 (例如 `partial_merge`、`grace_hash`、`auto`) 会以不同方式处理这些
+限制——例如通过落盘、重新分区或切换
+策略——请参见
+[`join_algorithm`](/operations/settings/settings#join_algorithm)。
 
-- `THROW` — ClickHouse 抛出异常并终止操作。
-- `BREAK` — ClickHouse 终止操作但不抛出异常。
+可能的值：
+
+* `THROW` — ClickHouse 会抛出异常并停止查询。
+* `BREAK` — ClickHouse 会停止查询，但不会抛出异常。
 
 默认值：`THROW`。
 
-**另请参阅**
+**另请参见**
 
-- [JOIN 子句](/sql-reference/statements/select/join)
-- [Join 表引擎](/engines/table-engines/special/join)
+* [JOIN 子句](/sql-reference/statements/select/join)
+* [Join 表引擎](/engines/table-engines/special/join)
 
 ## join_runtime_bloom_filter_bytes \{#join_runtime_bloom_filter_bytes\}
 
@@ -6896,20 +6902,19 @@ Cloud 默认值：每个副本可用内存的一半。
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-用于 JOIN 时所使用哈希表的最大大小（以字节为单位）。
+用于表连接时右侧数据结构 (通常为哈希表) 的最大大小 (以字节为单位) 。
 
 此设置适用于 [SELECT ... JOIN](/sql-reference/statements/select/join)
 操作以及 [Join 表引擎](/engines/table-engines/special/join)。
 
-如果查询包含 JOIN，ClickHouse 会针对每个中间结果检查此设置。
-
-当达到限制时，ClickHouse 可以执行不同的操作。使用
-[join_overflow_mode](/operations/settings/settings#join_overflow_mode) 设置来选择相应操作。
+如果查询包含多个 JOIN，ClickHouse 会针对每个中间结果检查此设置。当达到限制时，具体操作取决于所选的
+[`join_algorithm`](/operations/settings/settings#join_algorithm) —— 请参阅该设置，了解各算法的具体行为 (落盘、重新分区、切换，或根据 [`join_overflow_mode`](/operations/settings/settings#join_overflow_mode) 执行
+throw/break) 。
 
 可能的取值：
 
-- 正整数。
-- 0 — 禁用内存控制。
+* 正整数。
+* 0 — 禁用内存控制。
 
 ## max_bytes_in_set \{#max_bytes_in_set\}
 
@@ -7788,20 +7793,21 @@ Cloud 默认值：`0`。
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-限制在进行表连接时用于哈希表中的行数。
+限制在进行表连接时右侧数据结构 (通常为哈希
+表) 中的行数。
 
 此设置适用于 [SELECT ... JOIN](/sql-reference/statements/select/join)
 操作以及 [Join](/engines/table-engines/special/join) 表引擎。
 
-如果一个查询包含多个 join，ClickHouse 会针对每个中间结果检查此设置。
-
-当达到限制时，ClickHouse 可以采取不同的处理方式。使用
-[`join_overflow_mode`](/operations/settings/settings#join_overflow_mode) 设置来选择具体行为。
+如果一个查询包含多个 join，ClickHouse 会针对每个
+中间结果检查此设置。当达到限制时，具体操作取决于所选的
+[`join_algorithm`](/operations/settings/settings#join_algorithm)——有关各算法的行为 (落盘、重新分区、切换，或根据 [`join_overflow_mode`](/operations/settings/settings#join_overflow_mode) 执行
+throw/break) ，请参见该设置。
 
 可能的取值：
 
-- 正整数。
-- `0` — 行数不受限制。
+* 正整数。
+* `0` — 行数不受限制。
 
 ## max_rows_in_set \{#max_rows_in_set\}
 

@@ -35,43 +35,44 @@ curl -s --user "$KEY_ID:$KEY_SECRET" https://api.clickhouse.cloud/v1/organizatio
 
 1. 콘솔 왼쪽 하단에서 조직 이름을 선택합니다.
 2. **Organization details**를 선택합니다.
-3. **Organization ID** 오른쪽에 있는 복사 아이콘을 클릭하여
+3. **조직 ID** 오른쪽에 있는 복사 아이콘을 클릭하여
    클립보드로 직접 복사합니다.
 
-{/*
+이제 다음과 같이 요청에 사용할 수 있습니다:
 
-  TODO: API가 출시되면 주석 처리를 해제하고 올바른 예시 출력을 삽입하십시오.
+```bash
+ORG_ID=myorgid
 
-  이제 다음과 같이 요청에 사용할 수 있습니다:
-
-  ```bash
-  ORG_ID=myorgid
-
-  curl -s --user "$KEY_ID:$KEY_SECRET" \
+curl -s --user "$KEY_ID:$KEY_SECRET" \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres" | jq
-  ```
+```
 
-  이제 첫 번째 Postgres API 요청을 만들었습니다. 위의 [list API]는 조직에 있는 모든
-  Postgres 서버를 나열합니다. 출력은 다음과
-  비슷해야 합니다:
+이제 첫 번째 Postgres API 요청을 만들었습니다. 위의 [list API]는 조직에 있는 모든
+Postgres 서버를 나열합니다. 출력은 다음과
+비슷해야 합니다:
 
-  ```json
-  {
+```json
+{
   "result": [
     {
-      "id": "c0d0b15d-5e8b-431d-8943-51b6e233e0b1",
-      "name": "고객 조직",
-      "createdAt": "2026-03-24T14:21:31Z",
-      "privateEndpoints": [],
-      "enableCoreDumps": true
+      "id": "ee2fef9f-b443-8ad0-8c9b-724390cdb826",
+      "name": "oltp",
+      "provider": "aws",
+      "region": "eu-west-2",
+      "postgresVersion": "18",
+      "size": "r6gd.medium",
+      "storageSize": 59,
+      "haType": "none",
+      "tags": [],
+      "isPrimary": true,
+      "state": "running",
+      "createdAt": "2026-05-25T16:42:16+00:00"
     }
   ],
   "requestId": "c128d830-5769-4c82-8235-f79aa69d1ebf",
   "status": 200
-  }
-  ```
-
-  */ }
+}
+```
 
 ## CRUD \{#crud\}
 
@@ -86,7 +87,6 @@ Postgres 서비스의 생명주기를 살펴보겠습니다.
 * `provider`: 클라우드 제공자의 이름
 * `region`: 서비스를 배포할 클라우드 제공자 네트워크 내의 영역
 * `size`: VM 크기
-* `storageSize`: VM의 스토리지 크기
 
 이러한 속성에 사용할 수 있는 값은 [create API] 문서를 참조하십시오. 또한
 기본값인 17 대신 Postgres 18을 지정하겠습니다:
@@ -97,8 +97,7 @@ create_data='{
   "provider": "aws",
   "region": "us-west-2",
   "postgresVersion": "18",
-  "size": "r8gd.large",
-  "storageSize": 118
+  "size": "r8gd.large"
 }'
 ```
 
@@ -116,7 +115,7 @@ curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
 ```json
 {
   "result": {
-    "id": "pg7myrd1j06p3gx4zrm2ze8qz6",
+    "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
     "name": "my postgres",
     "provider": "aws",
     "region": "us-west-2",
@@ -142,7 +141,7 @@ curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
 응답의 `id`를 사용해 서비스를 다시 조회하십시오:
 
 ```bash
-PG_ID=pg7myrd1j06p3gx4zrm2ze8qz6
+PG_ID=67b4bc12-8582-45d0-8806-fe9b2e5a54e6
 curl -s --user "$KEY_ID:$KEY_SECRET" \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID" \
     | jq
@@ -175,7 +174,7 @@ psql (18.3)
 SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off, ALPN: postgresql)
 Type "help" for help.
 
-postgres=# 
+postgres=#
 ```
 
 [psql]을 종료하려면 `\q`를 입력하세요.
@@ -197,7 +196,7 @@ curl -sX PATCH --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' 
 
 ```json
 {
-  "id": "$PG_ID",
+  "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
   "name": "my postgres",
   "provider": "aws",
   "region": "us-west-2",
@@ -220,25 +219,35 @@ curl -sX PATCH --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' 
 }
 ```
 
+OpenAPI는 [patch API]에서 지원하지 않는 속성을 업데이트할 수 있는 추가 엔드포인트를 제공합니다.
+예를 들어 [Postgres configuration]을 업데이트하려면
+[config API]를 사용하세요:
+
+```bash
+curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/config" \
+    -d '{"pgConfig": {"max_connections": "42"}, "pgBouncerConfig": {}}' | jq
+```
+
+출력에는 업데이트된 구성과 변경에 따른 영향을 설명하는 메시지가 함께 표시됩니다:
+
+```json
+{
+  "result":{
+    "pgConfig": {
+      "max_connections": "42"
+    },
+    "pgBouncerConfig": {},
+    "message": "The changes in the following parameters require a database restart to take effect: max_connections. You can restart the database by using the restart endpoint."
+  },
+  "requestId":"fdec06f2-66f7-45b4-9f82-0c051aba20aa",
+  "status": 200
+}
+```
+
 {/*
 
-  TODO: 구현되면 내용을 보완합니다.
-
-  OpenAPI는 [patch API]에서 지원하지 않는 속성을 업데이트할 수 있는 추가 엔드포인트를 제공합니다.
-  예를 들어 [Postgres configuration]을 업데이트하려면
-  [config API]를 사용하세요:
-
-  ```bash
-  curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
-    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/config" \
-    -d '{"max_connections": "42"}'
-  ```
-
-  출력에는 업데이트된 구성이 표시됩니다:
-
-  ```json
-  {"max_connections": "42"}
-  ```
+  TODO: API가 제공되면 주석 처리를 해제하고 올바른 예시 출력을 추가합니다.
 
   추가 업데이트 API는 다음과 같습니다:
 
@@ -278,7 +287,7 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 Prometheus와 호환되는 2개의 엔드포인트가 Managed Postgres 서비스의 CPU, 메모리, I/O, 연결,
 및 트랜잭션 메트릭을 노출합니다. 하나는 조직의 모든 서비스에 대한
 메트릭을 반환하고, 다른 하나는 단일 서비스에 대한 메트릭을 반환합니다.
-설정 방법은 [Prometheus 엔드포인트] 페이지를, 전체 메트릭 목록은
+설정 방법은 [Prometheus endpoint] 페이지를, 전체 메트릭 목록은
 [metrics reference]를 참조하십시오.
 
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
@@ -286,10 +295,6 @@ Prometheus와 호환되는 2개의 엔드포인트가 Managed Postgres 서비스
 [OpenAPI]: https://www.openapis.org "OpenAPI Initiative"
 
 [API keys]: /cloud/manage/openapi "API 키 관리"
-
-[Prometheus 엔드포인트]: /cloud/managed-postgres/monitoring/prometheus "Managed Postgres Prometheus 엔드포인트"
-
-[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Managed Postgres 메트릭 참고"
 
 [pg-openapi]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres "ClickHouse Cloud용 Postgres OpenAPI 사양"
 
@@ -308,3 +313,7 @@ Prometheus와 호환되는 2개의 엔드포인트가 Managed Postgres 서비스
 [config API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceSetConfig "Postgres 서비스 구성 업데이트"
 
 [delete API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceDelete "PostgreSQL 서비스 삭제"
+
+[Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus "Managed Postgres Prometheus 엔드포인트"
+
+[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Managed Postgres 메트릭 참고"

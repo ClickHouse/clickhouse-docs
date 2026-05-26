@@ -6142,22 +6142,29 @@ ClickHouse всегда пытается использовать соедине
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
-Определяет, какое действие ClickHouse выполняет при достижении любого из следующих лимитов для JOIN:
+Определяет, какое действие ClickHouse выполняет, когда JOIN достигает любого из следующих ограничений:
 
-- [max_bytes_in_join](/operations/settings/settings#max_bytes_in_join)
-- [max_rows_in_join](/operations/settings/settings#max_rows_in_join)
+* [max&#95;bytes&#95;in&#95;join](/operations/settings/settings#max_bytes_in_join)
+* [max&#95;rows&#95;in&#95;join](/operations/settings/settings#max_rows_in_join)
+
+Этот параметр применяется только для значений `hash` и `parallel_hash`
+[`join_algorithm`](/operations/settings/settings#join_algorithm). Другие
+алгоритмы (например, `partial_merge`, `grace_hash`, `auto`) обрабатывают
+ограничения иначе — за счет выгрузки на диск, повторного разбиения на партиции или смены
+стратегии — см.
+[`join_algorithm`](/operations/settings/settings#join_algorithm).
 
 Возможные значения:
 
-- `THROW` — ClickHouse выбрасывает исключение и прерывает выполнение операции.
-- `BREAK` — ClickHouse прерывает выполнение операции и не выбрасывает исключение.
+* `THROW` — ClickHouse генерирует исключение и останавливает запрос.
+* `BREAK` — ClickHouse останавливает запрос и не генерирует исключение.
 
 Значение по умолчанию: `THROW`.
 
 **См. также**
 
-- [Оператор JOIN](/sql-reference/statements/select/join)
-- [Табличный движок Join](/engines/table-engines/special/join)
+* [оператор JOIN](/sql-reference/statements/select/join)
+* [движок таблицы Join](/engines/table-engines/special/join)
 
 ## join_runtime_bloom_filter_bytes \{#join_runtime_bloom_filter_bytes\}
 
@@ -6915,20 +6922,22 @@ log_query_views=1
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-Максимальный размер в байтах хеш-таблицы, используемой при объединении таблиц.
+Максимальный размер в байтах структуры данных с правой стороны (обычно хеш-таблицы),
+используемой при объединении таблиц.
 
 Этот параметр применяется к операциям [SELECT ... JOIN](/sql-reference/statements/select/join)
 и к [движку таблицы Join](/engines/table-engines/special/join).
 
-Если запрос содержит JOIN, ClickHouse проверяет этот параметр для каждого промежуточного результата.
-
-При достижении лимита ClickHouse может выполнить различные действия. Используйте
-настройку [join_overflow_mode](/operations/settings/settings#join_overflow_mode), чтобы выбрать требуемое действие.
+Если запрос содержит несколько JOIN, ClickHouse проверяет этот параметр для каждого
+промежуточного результата. При достижении лимита действие зависит от выбранного
+[`join_algorithm`](/operations/settings/settings#join_algorithm) — описание поведения
+для каждого алгоритма см. в этом параметре (spill, повторное разбиение на партиции, переключение или
+сгенерировать исключение/прервать в соответствии с [`join_overflow_mode`](/operations/settings/settings#join_overflow_mode)).
 
 Возможные значения:
 
-- Положительное целое число.
-- 0 — контроль памяти отключен.
+* Положительное целое число.
+* 0 — контроль памяти отключен.
 
 ## max_bytes_in_set \{#max_bytes_in_set\}
 
@@ -7827,20 +7836,22 @@ SELECT getSetting('max_memory_usage_for_user');
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-Ограничивает количество строк в хеш-таблице, которая используется при выполнении операций JOIN.
+Ограничивает количество строк в правосторонней структуре данных (обычно в хеш-таблице), используемой при выполнении операций JOIN.
 
 Этот параметр применяется к операциям [SELECT ... JOIN](/sql-reference/statements/select/join)
 и табличному движку [Join](/engines/table-engines/special/join).
 
-Если запрос содержит несколько JOIN, ClickHouse проверяет этот параметр для каждого промежуточного результата.
-
-При достижении лимита ClickHouse может выполнять различные действия. Используйте параметр
-[`join_overflow_mode`](/operations/settings/settings#join_overflow_mode), чтобы выбрать нужное действие.
+Если запрос содержит несколько JOIN, ClickHouse проверяет этот параметр для каждого
+промежуточного результата. При достижении лимита действие зависит от выбранного
+[`join_algorithm`](/operations/settings/settings#join_algorithm) — сведения о
+поведении каждого алгоритма (spill, переразбиение, переключение или
+сгенерировать исключение/прервать согласно [`join_overflow_mode`](/operations/settings/settings#join_overflow_mode)) см. в
+описании этого параметра.
 
 Возможные значения:
 
-- Положительное целое число.
-- `0` — Неограниченное количество строк.
+* Положительное целое число.
+* `0` — Неограниченное количество строк.
 
 ## max_rows_in_set \{#max_rows_in_set\}
 
