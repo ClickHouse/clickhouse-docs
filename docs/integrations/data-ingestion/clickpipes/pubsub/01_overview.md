@@ -15,7 +15,6 @@ import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes
 import cp_step1_pubsub from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step1_pubsub.png';
 import cp_step2_pubsub from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step2_pubsub.png';
 import cp_step3_pubsub from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step3_pubsub.png';
-import cp_step3_pubsub_schema from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step3_pubsub_schema.png';
 import cp_step4a from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a.png';
 import cp_step4a3 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4a3.png';
 import cp_step4b from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step4b.png';
@@ -58,15 +57,11 @@ You have familiarized yourself with the [ClickPipes intro](../index.md), have ac
 5. Select the **Pub/Sub topic** to ingest from. The dropdown is auto-populated from the topics in your GCP project (sorted alphabetically) once your credentials validate.
 
    - **Data format.** ClickPipes queries the Pub/Sub schema registry when you select a topic. If the topic has a native Avro or Protobuf schema attached, the Data format and Schema are auto-detected and the selectors are locked to the latest schema on the topic. Topics without a native schema default to JSONEachRow.
-   - **Starting offset.** Choose where to begin consuming. The available options are **Latest** (new messages only), **Earliest** (oldest retained messages), **Seek to Timestamp** (with a UTC datetime picker), and **Seek to Snapshot** (with a snapshot name input).
+   - **Starting offset.** Choose where to begin consuming. The available options are **Latest** (new messages only), **Earliest** (oldest retained messages), and **Seek to Timestamp** (with a UTC datetime picker).
    - **Filter expression (optional).** A Pub/Sub [subscription filter](https://cloud.google.com/pubsub/docs/subscription-message-filter) on message attributes — for example, `attributes.type = "telemetry"`. Filters apply to message attributes only, not the payload, and cannot be changed after the pipe is created (changing the filter requires recreating the pipe).
    - The UI will show a sample message from the selected topic, with a **Flatten object** toggle that lets you preview how nested JSON would be flattened on the destination side.
 
 <Image img={cp_step3_pubsub} alt="Set Pub/Sub topic, format, and starting offset" size="lg" border/>
-
-   When you choose `Seek to Snapshot` as the starting offset, an additional **Snapshot ID** field is shown. Provide the fully qualified snapshot resource name (for example, `projects/my-project/snapshots/my-snapshot`).
-
-<Image img={cp_step3_pubsub_schema} alt="Seek to Snapshot starting offset" size="lg" border/>
 
 6. In the next step, you can select whether you want to ingest data into a new ClickHouse table or reuse an existing one. Follow the instructions in the screen to modify your table name, schema, and settings. You can see a real-time preview of your changes in the sample table at the top.
 

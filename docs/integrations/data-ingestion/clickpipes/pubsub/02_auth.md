@@ -26,7 +26,7 @@ ClickPipes for Pub/Sub authenticates with GCP using a [service account JSON key]
 - list and read topics in your project,
 - create and delete the [managed subscription](/integrations/clickpipes/pubsub#managed-subscriptions) ClickPipes uses to consume messages,
 - consume messages from that subscription, and
-- (optionally) read native Pub/Sub schemas from the schema registry, and seek to a snapshot.
+- (optionally) read native Pub/Sub schemas from the schema registry.
 
 There is no workload identity or inline credential paste option — the service account JSON key is the only supported authentication method today.
 
@@ -51,12 +51,6 @@ ClickPipes requires the following IAM permissions on the GCP project that owns t
 | `pubsub.subscriptions.delete`    | Clean up ephemeral discovery subscriptions and delete the managed subscription on pipe deletion    |
 | `pubsub.subscriptions.consume`   | `Receive()`, `Ack()`, `Nack()`, and seek-to-timestamp operations                                    |
 
-### Snapshot access (optional — only for seek-to-snapshot) {#snapshot-access}
-
-| Permission              | Purpose                                                                  |
-|-------------------------|--------------------------------------------------------------------------|
-| `pubsub.snapshots.seek` | Seek a subscription to a saved snapshot. Not needed for timestamp seeks. |
-
 ### Schema access (optional — only for native Avro/Protobuf topics) {#schema-access}
 
 | Permission           | Purpose                                                          |
@@ -70,7 +64,7 @@ ClickPipes requires the following IAM permissions on the GCP project that owns t
 | [`roles/pubsub.editor`](https://cloud.google.com/iam/docs/understanding-roles#pubsub.editor)        | Yes         | Covers all required permissions. Broadest option.                                                                                           |
 | [`roles/pubsub.subscriber`](https://cloud.google.com/iam/docs/understanding-roles#pubsub.subscriber)| **No**      | Missing `topics.list`, `topics.attachSubscription`, `subscriptions.create`, `subscriptions.delete`, and `schemas.get`.                       |
 | [`roles/pubsub.viewer`](https://cloud.google.com/iam/docs/understanding-roles#pubsub.viewer)        | **No**      | Read-only — no subscription management or consumption.                                                                                       |
-| Custom role *(recommended)*                                                                         | Yes         | Use the seven core permissions above (plus optional `snapshots.seek` and `schemas.get`) for least-privilege access.                         |
+| Custom role *(recommended)*                                                                         | Yes         | Use the seven core permissions above (plus optional `schemas.get`) for least-privilege access.                                              |
 
 ## Setup {#setup}
 
@@ -94,7 +88,7 @@ gcloud iam roles create clickpipes.pubsub.ingestion \
 Or, in the GCP Console, go to **IAM & Admin → Roles → Create role** and add the permissions listed in [Required permissions](#required-permissions).
 
 :::note Optional permissions
-Append `pubsub.snapshots.seek` to the `--permissions` list if you plan to use the **Seek to Snapshot** starting offset, and `pubsub.schemas.get` if you ingest from topics that use native Pub/Sub Avro or Protobuf schemas. Leave them out otherwise to keep the role minimal.
+Append `pubsub.schemas.get` to the `--permissions` list if you ingest from topics that use native Pub/Sub Avro or Protobuf schemas. Leave it out otherwise to keep the role minimal.
 :::
 
 If you prefer to skip the custom role, you can grant `roles/pubsub.editor` instead.
