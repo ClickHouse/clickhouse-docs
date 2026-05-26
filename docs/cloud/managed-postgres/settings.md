@@ -11,7 +11,6 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import postgresParameters from '@site/static/images/managed-postgres/postgres-parameters.png';
 import serviceActions from '@site/static/images/managed-postgres/service-actions.png';
-import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.settings-beta" />
 
