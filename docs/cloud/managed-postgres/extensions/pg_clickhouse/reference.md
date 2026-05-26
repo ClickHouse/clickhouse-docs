@@ -13,7 +13,7 @@ pg_clickhouse is a PostgreSQL extension that enables remote query execution
 on ClickHouse databases, including a [foreign data wrapper]. It supports
 PostgreSQL 13 and higher and ClickHouse 23 and higher.
 
-## Getting Started {#getting-started}
+## Getting started {#getting-started}
 
 The simplest way to try pg_clickhouse is the [Docker image], which contains
 the standard PostgreSQL Docker image with the pg_clickhouse and [re2][re2
@@ -40,7 +40,7 @@ CREATE SCHEMA taxi;
 IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```
 
-## Versioning Policy {#versioning-policy}
+## Versioning policy {#versioning-policy}
 
 pg_clickhouse adheres to [Semantic Versioning] for its public releases.
 
@@ -68,7 +68,7 @@ be accompanied by SQL upgrade scripts, and all existing database that contain
 the extension must run `ALTER EXTENSION pg_clickhouse UPDATE` to benefit from
 the upgrade.
 
-## DDL SQL Reference {#ddl-sql-reference}
+## DDL SQL reference {#ddl-sql-reference}
 
 The following SQL [DDL] expressions use pg_clickhouse.
 
@@ -370,7 +370,7 @@ Use the `CASCADE` clause to drop them, too:
 DROP FOREIGN TABLE acts CASCADE;
 ```
 
-## DML SQL Reference {#dml-sql-reference}
+## DML SQL reference {#dml-sql-reference}
 
 The SQL [DML] expressions below may use pg_clickhouse. Examples depend on
 these ClickHouse tables:
@@ -561,7 +561,7 @@ try=# EXPLAIN (ANALYZE, VERBOSE)
  the number of rows that must be pulled back into Postgres from 1000 (all of
  them) to just 8, one for each node.
 
-### PREPARE, EXECUTE, DEALLOCATE {#prepare-execute-deallocate}
+### Prepared statements {#prepare-execute-deallocate}
 
  As of v0.1.2, pg_clickhouse supports parameterized queries, mainly created
  by the [PREPARE] command:
@@ -821,7 +821,7 @@ shared_preload_libraries = pg_clickhouse
 Useful to save memory and load overhead for every session, but requires the
 cluster to be restart when the library is updated.
 
-## Data Types {#data-types}
+## Data types {#data-types}
 
 pg_clickhouse maps the following ClickHouse data types to PostgreSQL data
 types. [IMPORT FOREIGN SCHEMA](#import-foreign-schema) uses the first type in
@@ -972,7 +972,7 @@ As a rule, only use [TEXT] columns for encoded strings and use [BYTEA] columns
 only for binary data, and never switch between them.
 :::
 
-## Function and Operator Reference {#function-and-operator-reference}
+## Function and operator reference {#function-and-operator-reference}
 
 ### Functions {#functions}
 

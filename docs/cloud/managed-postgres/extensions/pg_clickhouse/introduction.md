@@ -20,7 +20,7 @@ PostgreSQL schema. Then run your existing PostgreSQL queries to against those
 tables, preserving your existing code base while pushing execution down to
 ClickHouse.
 
-## Getting Started {#getting-started}
+## Getting started {#getting-started}
 
 The simplest way to try pg_clickhouse is the [Docker image], which contains
 the standard PostgreSQL Docker image with the pg_clickhouse and [re2]
@@ -35,7 +35,7 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 See the [tutorial] to get started importing ClickHouse tables and pushing down
 queries.
 
-## Test Case: TPC-H {#test-case-tpc-h}
+## `TPC-H` benchmark {#test-case-tpc-h}
 
 This table compares [TPC-H] query performance between regular PostgreSQL
 tables and pg_clickhouse connected to ClickHouse, both loaded at scaling
@@ -68,16 +68,16 @@ memory.
 | [Query 21] |    1349 ms |       4434 ms |          |
 | [Query 22] |     258 ms |       1415 ms |          |
 
-### Compile From Source {#compile-from-source}
+### Compile from source {#compile-from-source}
 
-#### General Unix {#general-unix}
+#### Generic build {#general-unix}
 
 The PostgreSQL and curl development packages include `pg_config` and
 `curl-config` in the path, so you should be able to just run `make` (or
 `gmake`), then `make install`, then in your database
 `CREATE EXTENSION pg_clickhouse`.
 
-#### Debian / Ubuntu / APT {#debian--ubuntu--apt}
+#### Debian/Ubuntu/APT {#debian--ubuntu--apt}
 
 See [PostgreSQL Apt] for details on pulling from the PostgreSQL Apt repository.
 
@@ -92,7 +92,7 @@ sudo apt install \
   g++
 ```
 
-#### RedHat / CentOS / Yum {#redhat--centos--yum}
+#### RPM distros {#redhat--centos--yum}
 
 ```sh
 sudo yum install \
@@ -107,7 +107,7 @@ sudo yum install \
 
 See [PostgreSQL Yum] for details on pulling from the PostgreSQL Yum repository.
 
-#### Install From PGXN {#install-from-pgxn}
+#### Install from PGXN {#install-from-pgxn}
 
 With the above dependencies satisfied use the [PGXN client] (available as
 [Homebrew], [Apt] and Yum packages named `pgxnclient`) to download, compile,
