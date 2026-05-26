@@ -1649,6 +1649,7 @@ const sidebars = {
             },
             'operations/external-authenticators/http',
             'operations/external-authenticators/kerberos',
+            'operations/external-authenticators/jwt',
           ],
         },
       ],
