@@ -156,6 +156,7 @@ exceptions:
   - URLs
   - UAE
   - Ubuntu
+  - Unix
   - User Defined Functions
   - VLDB
   - VS
@@ -164,6 +165,7 @@ exceptions:
   - Visual
   - Windows
   - Yandex.Metrica
+  - Yum
   - ZSTD
   - MergeTree
   - MySQL
@@ -212,6 +214,7 @@ exceptions:
   - Avg state
   - Count resample
   - PREWHERE
+  - "PREPARE, EXECUTE, DEALLOCATE"
   - Splunk
   - Retool
   - Airbyte

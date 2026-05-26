@@ -35,7 +35,7 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 See the [tutorial] to get started importing ClickHouse tables and pushing down
 queries.
 
-## TPC-H benchmark {#test-case-tpc-h}
+## Test case: TPC-H {#test-case-tpc-h}
 
 This table compares [TPC-H] query performance between regular PostgreSQL
 tables and pg_clickhouse connected to ClickHouse, both loaded at scaling
@@ -70,7 +70,7 @@ memory.
 
 ### Compile from source {#compile-from-source}
 
-#### Unix {#general-unix}
+#### General Unix {#general-unix}
 
 The PostgreSQL and curl development packages include `pg_config` and
 `curl-config` in the path, so you should be able to just run `make` (or
@@ -92,7 +92,7 @@ sudo apt install \
   g++
 ```
 
-#### RedHat / CentOS / yum {#redhat--centos--yum}
+#### RedHat / CentOS / Yum {#redhat--centos--yum}
 
 ```sh
 sudo yum install \

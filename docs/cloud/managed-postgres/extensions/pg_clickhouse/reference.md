@@ -561,7 +561,7 @@ try=# EXPLAIN (ANALYZE, VERBOSE)
  the number of rows that must be pulled back into Postgres from 1000 (all of
  them) to just 8, one for each node.
 
-### PREPARE EXECUTE DEALLOCATE {#prepare-execute-deallocate}
+### PREPARE, EXECUTE, DEALLOCATE {#prepare-execute-deallocate}
 
  As of v0.1.2, pg_clickhouse supports parameterized queries, mainly created
  by the [PREPARE] command:
