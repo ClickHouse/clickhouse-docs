@@ -30,6 +30,8 @@ exceptions:
   - Amazon Web Services
   - "AI Notebooks"
   - "ClickHouse Assistant"
+  - "ClickHouse Agents"
+  - "Agent Builder"
   - Azure
   - Azure Blob Storage
   - Azure Data Factory
