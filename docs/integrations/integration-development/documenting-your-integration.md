@@ -23,7 +23,7 @@ Start with [Building integrations](/integrations/integration-development/buildin
 
 Integration pages in this repository are the primary reference for end users. You can link to supplementary documentation on your site from your integration page for product-specific details.
 
-Good exemplars: [Tableau](https://github.com/ClickHouse/clickhouse-docs/blob/main/docs/integrations/data-visualization/tableau/tableau-and-clickhouse.md) and [Metabase](/integrations/metabase).
+Good exemplars: [Tableau](/integrations/tableau) and [Metabase](/integrations/metabase).
 
 ## Choosing a category {#choosing-a-category}
 
@@ -33,13 +33,13 @@ Pick the category that best matches what your product does. Browse existing cate
 
 Every integration page should cover the following, ideally in this order:
 
-- **Purpose.** What problem the integration solves, in two or three sentences. Avoid marketing copy. Readers are usually engineers scoping a setup
-- **Prerequisites and supported version matrix.** What the user needs installed and which versions you support for **both ClickHouse Cloud and self-hosted (open source)**. A small table works well
-- **Setup walkthrough.** Step-by-step instructions to a working connection, with **side-by-side coverage of Cloud and self-hosted** where they differ (host, port, TLS)
-- **Authentication.** Which auth modes you support (username and password over TLS at minimum, plus mTLS, SSL client cert, IP allow-list notes if relevant)
-- **End-to-end example.** At least one realistic example from connection through a meaningful result. Use a [ClickHouse example dataset](/getting-started/example-datasets) so readers can reproduce it
-- **Known limits and performance characteristics.** Type-system gaps, result-set thresholds, throughput notes, unsupported features. Honesty here saves support cycles
-- **Troubleshooting.** Common errors and resolutions. Two or three frequent cases are enough for a first version
+1. **Purpose.** What problem the integration solves, in two or three sentences. Avoid marketing copy. Readers are usually engineers scoping a setup
+2. **Prerequisites and supported version matrix.** What the user needs installed and which versions you support for **both ClickHouse Cloud and self-hosted (open source)**. A small table works well
+3. **Setup walkthrough.** Step-by-step instructions to a working connection, with **side-by-side coverage of Cloud and self-hosted** where they differ (host, port, TLS)
+4. **Authentication.** Which auth modes you support (username and password over TLS at minimum, plus mTLS, SSL client cert, IP allow-list notes if relevant)
+5. **End-to-end example.** At least one realistic example from connection through a meaningful result. Use a [ClickHouse example dataset](/getting-started/example-datasets) so readers can reproduce it
+6. **Known limits and performance characteristics.** Type-system gaps, result-set thresholds, throughput notes, unsupported features. Honesty here saves support cycles
+7. **Troubleshooting.** Common errors and resolutions. Two or three frequent cases are enough for a first version
 
 ## Style notes {#style-notes}
 

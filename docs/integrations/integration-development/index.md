@@ -12,7 +12,7 @@ doc_type: 'landing-page'
 
 These guides orient you if you build a product that connects to ClickHouse. They cover the integration surface, how to validate your connector, and how to publish documentation on this site.
 
-:::note Partner portal
+:::note[Partner portal]
 A dedicated [partner portal](https://clickhouse.com/partners) is launching soon. Until then, use these pages to get started. [Sign up](https://clickhouse.com/partners) when the [partner portal](https://clickhouse.com/partners) is available to register your integration.
 :::
 
