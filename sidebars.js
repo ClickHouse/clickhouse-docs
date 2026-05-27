@@ -1126,6 +1126,7 @@ const sidebars = {
               collapsible: true,
               items: [
                 'integrations/data-ingestion/google-dataflow/templates/bigquery-to-clickhouse',
+                'integrations/data-ingestion/google-dataflow/templates/pubsub-to-clickhouse',
               ],
             },
           ],

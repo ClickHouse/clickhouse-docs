@@ -31,7 +31,7 @@ However, this option requires knowledge of Java programming and familiarity with
 - Requires coding and understanding of the Beam API.
 
 ## Predefined templates {#2-predefined-templates}
-ClickHouse offers [predefined templates](./templates) designed for specific use cases, such as importing data from BigQuery into ClickHouse. These templates are ready-to-use and simplify the integration process, making them an excellent choice if you prefer a no-code solution.
+ClickHouse offers [predefined templates](./templates) designed for specific use cases, such as batch imports from BigQuery or streaming ingestion from Pub/Sub into ClickHouse. These templates are ready-to-use and simplify the integration process, making them an excellent choice if you prefer a no-code solution.
 
 ### Key features {#key-features-1}
 - No Beam coding required.
