@@ -32,7 +32,7 @@ Managed Postgres uses NVMe storage that is physically attached to the same serve
 
 For Postgres workloads that are primarily throttled by disk IOPS and latency, this translates to faster ingestion, quicker vacuums, lower tail latency, and more predictable performance under load.
 
-For detailed benchmark results, see [Performance benchmarks](/docs/cloud/managed-postgres/benchmarks). 
+For detailed benchmark results, see [Performance benchmarks](/cloud/managed-postgres/benchmarks). 
 
 For local NVMe limits on AWS see [Memory optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/mo.html#mo_instance-store), [Storage optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/so.html#so_instance-store), [CPU optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store).
 
