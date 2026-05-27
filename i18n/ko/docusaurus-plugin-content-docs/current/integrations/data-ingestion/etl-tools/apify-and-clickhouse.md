@@ -14,13 +14,11 @@ integration:
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# Apify를 ClickHouse에 연결 \{#connect-apify-to-clickhouse\}
-
 <CommunityMaintainedBadge />
 
-[Apify](https://apify.com/)는 웹 스크래핑 및 자동화 플랫폼입니다. [**Actors**](https://docs.apify.com/platform/actors)라고 하는 서버리스 클라우드 프로그램을 구축하고 실행하며 확장할 수 있습니다. Actors는 웹사이트를 스크래핑하거나 웹을 크롤링하고, 데이터를 처리하거나 워크플로를 자동화합니다. 각 Actor 실행은 [**Datasets**](https://docs.apify.com/platform/storage/dataset)에 저장되는 구조화된 출력(JSON 객체의 모음)을 생성합니다.
+[Apify](https://apify.com/)는 웹 스크래핑 및 자동화 플랫폼입니다. [**Actor**](https://docs.apify.com/platform/actors)라고 하는 서버리스 클라우드 프로그램을 구축, 실행, 확장할 수 있습니다. Actor는 웹사이트를 스크레이프하고, 웹을 크롤링하고, 데이터를 처리하거나, 워크플로를 자동화합니다. 각 Actor 실행은 [**데이터셋**](https://docs.apify.com/platform/storage/dataset)에 저장되는 구조화된 출력(JSON 객체 모음)을 생성합니다.
 
-스크래핑하거나 처리한 데이터를 분석, 모니터링 또는 데이터 보강 파이프라인에 활용할 수 있도록 ClickHouse에 적재하십시오.
+스크레이프하거나 처리한 데이터를 분석, 모니터링 또는 데이터 보강 파이프라인용으로 ClickHouse에 로드합니다.
 
 ## 핵심 개념 \{#key-concepts\}
 

@@ -1,5 +1,5 @@
 ---
-title: 'Проектирование схем JSON'
+title: 'Проектирование вашей схемы'
 slug: /integrations/data-formats/json/schema
 description: 'Как оптимально проектировать JSON-схемы'
 keywords: ['json', 'clickhouse', 'вставка', 'загрузка', 'форматы', 'схема', 'структурированные', 'полуструктурированные']
@@ -12,10 +12,7 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
-
-# Проектирование схемы \{#designing-your-schema\}
-
-Хотя [вывод схемы](/integrations/data-formats/json/inference) можно использовать для создания первоначальной схемы для данных в формате JSON и выполнения запросов непосредственно к JSON‑файлам данных, например в S3, вам следует стремиться определить оптимизированную версионируемую схему для ваших данных. Ниже мы рассматриваем рекомендованный подход к моделированию структур JSON.
+Хотя [schema inference](/integrations/data-formats/json/inference) можно использовать для определения начальной схемы JSON-данных и выполнения запросов непосредственно к JSON-файлам, например в S3, вам следует стремиться к созданию оптимизированной версионируемой схемы для ваших данных. Ниже мы рассматриваем рекомендуемый подход к моделированию JSON-структур.
 
 ## Статический и динамический JSON \{#static-vs-dynamic-json\}
 

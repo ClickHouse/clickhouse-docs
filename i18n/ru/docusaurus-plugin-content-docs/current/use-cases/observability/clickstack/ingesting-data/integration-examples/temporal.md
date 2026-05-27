@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
-title: 'Мониторинг Temporal Cloud с помощью ClickStack'
+title: 'Мониторинг метрик Temporal Cloud с помощью ClickStack'
 sidebar_label: 'Метрики Temporal Cloud'
 pagination_prev: null
 pagination_next: null
@@ -23,11 +23,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 Temporal предоставляет абстракцию для создания простых, сложных и отказоустойчивых приложений.
 
-
-# Мониторинг метрик Temporal Cloud с помощью ClickStack \{#temporal-metrics-clickstack\}
-
-:::note[Кратко]
-Отслеживайте метрики Temporal Cloud в ClickStack с помощью приёмника Prometheus в OTel. В комплект входит преднастроенная панель мониторинга.
+:::note[TL;DR]
+Отслеживайте метрики Temporal Cloud в ClickStack с помощью приёмника Prometheus в OTel. Включает предварительно созданную панель мониторинга.
 :::
 
 ## Интеграция с существующим Temporal Cloud \{#existing-temporal\}

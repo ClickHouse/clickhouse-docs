@@ -24,12 +24,10 @@ import finish_import from '@site/static/images/clickstack/cloudflare/finish-impo
 import example_dashboard from '@site/static/images/clickstack/cloudflare/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack으로 Cloudflare 로그 모니터링 \{#cloudflare-clickstack\}
+:::note[TL;DR]
+이 가이드는 ClickPipes를 사용하여 Cloudflare 로그를 ClickStack으로 수집하는 방법을 설명합니다. Cloudflare Logpush는 로그를 S3에 기록하고, ClickPipes는 새 파일을 ClickHouse로 지속적으로 수집합니다. OpenTelemetry Collector를 사용하는 대부분의 ClickStack 통합 가이드와 달리, 이 가이드에서는 [ClickPipes](/integrations/clickpipes)를 사용하여 S3에서 직접 데이터를 가져옵니다.
 
-:::note[요약]
-이 가이드에서는 ClickPipes를 사용해 Cloudflare 로그를 ClickStack으로 수집하는 방법을 설명합니다. Cloudflare Logpush는 로그를 S3에 기록하며, ClickPipes는 새 파일을 ClickHouse로 지속적으로 수집합니다. OpenTelemetry Collector를 사용하는 대부분의 ClickStack 통합 가이드와 달리, 이 가이드에서는 [ClickPipes](/integrations/clickpipes)를 사용해 S3에서 데이터를 직접 가져옵니다.
-
-프로덕션 수집을 구성하기 전에 대시보드를 미리 살펴보고 싶다면 데모 데이터세트를 사용할 수 있습니다.
+프로덕션 수집을 구성하기 전에 대시보드를 미리 살펴보려면 데모 데이터셋을 사용할 수 있습니다.
 :::
 
 ## 개요 \{#overview\}

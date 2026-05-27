@@ -1,5 +1,5 @@
 ---
-title: 'はじめに'
+title: 'オブザーバビリティに ClickHouse を使用する'
 description: 'ClickHouse をオブザーバビリティソリューションとして利用する'
 slug: /use-cases/observability/introduction
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
@@ -10,8 +10,6 @@ doc_type: 'guide'
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
-
-# オブザーバビリティのための ClickHouse 活用 \{#using-clickhouse-for-observability\}
 
 ## はじめに \{#introduction\}
 

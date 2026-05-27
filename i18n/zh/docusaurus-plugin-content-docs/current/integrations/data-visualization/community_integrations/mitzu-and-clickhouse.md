@@ -2,7 +2,7 @@
 sidebar_label: 'Mitzu'
 slug: /integrations/mitzu
 keywords: ['clickhouse', 'Mitzu', 'connect', 'integrate', 'ui']
-description: 'Mitzu 是一款无需编码、原生支持数据仓库的产品分析应用。'
+description: 'Mitzu 是一款无需编码、数据仓库原生的产品分析应用。'
 title: '将 Mitzu 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
@@ -25,14 +25,11 @@ import mitzu_10 from '@site/static/images/integrations/data-visualization/mitzu_
 import mitzu_11 from '@site/static/images/integrations/data-visualization/mitzu_11.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# 将 Mitzu 连接到 ClickHouse \{#connecting-mitzu-to-clickhouse\}
+Mitzu 是一款无需编码、数据仓库原生的产品分析应用。与 Amplitude、Mixpanel 和 PostHog 等工具类似，Mitzu 让用户无需具备 SQL 或 Python 专业知识，也能分析产品使用数据。
 
-<CommunityMaintainedBadge/>
-
-Mitzu 是一款零代码、仓库原生的产品分析应用程序。与 Amplitude、Mixpanel 和 PostHog 等工具类似，Mitzu 让用户在无需掌握 SQL 或 Python 方面专业知识的情况下即可分析产品使用数据。
-
-然而，与这些平台不同的是，Mitzu 不会复制公司的产品使用数据。相反，它会直接针对公司现有的数据仓库或数据湖生成原生 SQL 查询。
+但是，与这些平台不同，Mitzu 不会复制公司的产品使用数据。相反，它会直接在公司现有的数据仓库或数据湖上生成原生 SQL 查询。
 
 ## 目标 \{#goal\}
 

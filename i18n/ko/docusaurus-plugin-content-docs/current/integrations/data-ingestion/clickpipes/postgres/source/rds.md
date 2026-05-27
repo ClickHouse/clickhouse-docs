@@ -18,8 +18,6 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# RDS Postgres 소스 구성 가이드 \{#rds-postgres-source-setup-guide\}
-
 ## 지원되는 Postgres 버전 \{#supported-postgres-versions\}
 
 ClickPipes는 Postgres 버전 12 이상을 지원합니다.

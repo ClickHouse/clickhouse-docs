@@ -3,7 +3,7 @@ slug: /guides/sre/tls/configuring-tls
 sidebar_label: '配置 TLS'
 sidebar_position: 20
 title: '配置 TLS'
-description: '本指南提供一些简单且精简的配置，用于将 ClickHouse 配置为使用 OpenSSL 证书来验证连接。'
+description: '本指南提供了一些简单且最基本的设置，用于配置 ClickHouse 使用 OpenSSL 证书来验证连接。'
 keywords: ['SSL 配置', 'TLS 设置', 'OpenSSL 证书', '安全连接', 'SRE 指南']
 doc_type: 'guide'
 ---
@@ -12,12 +12,9 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-
-# 配置 TLS \{#configuring-tls\}
-
 <SelfManaged />
 
-本指南提供了一些简单且最基本的设置，用于配置 ClickHouse 使用 OpenSSL 证书来验证连接。出于演示目的，我们将创建自签名的证书颁发机构（CA）证书和密钥，并为各节点生成证书，以便在适当的配置下建立连接。
+本指南提供了一些简单且最基本的设置，用于配置 ClickHouse 使用 OpenSSL 证书来验证连接。出于演示目的，我们将创建自签名的证书颁发机构 (CA) 证书和密钥，并为各节点生成证书，以便在适当的配置下建立连接。
 
 :::note
 TLS 的实现较为复杂，要确保部署的安全性和健壮性，需要综合权衡多种选项。本文仅为基础教程，展示基本的 TLS 配置示例。请咨询您的 PKI/安全团队，为贵组织生成合适的证书。

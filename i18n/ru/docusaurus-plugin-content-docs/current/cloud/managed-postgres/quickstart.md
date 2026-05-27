@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/quickstart
 sidebar_label: 'Быстрый старт'
-title: 'Быстрый старт'
+title: 'Быстрый старт для Managed Postgres'
 description: 'Испытайте производительность Postgres на основе NVMe и добавьте аналитику в реальном времени благодаря нативной интеграции с ClickHouse'
 keywords: ['managed postgres', 'быстрый старт', 'начало работы', 'создание базы данных', 'nvme', 'производительность']
 doc_type: 'guide'
@@ -19,23 +19,21 @@ import getClickHouseHost from '@site/static/images/managed-postgres/get-clickhou
 import analyticsList from '@site/static/images/managed-postgres/analytics-list.png';
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
 
-# Быстрый старт с Managed Postgres \{#quickstart-for-managed-postgres\}
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.quick-start-beta" />
 
-ClickHouse Managed Postgres — это Postgres корпоративного уровня на базе NVMe-хранилища, обеспечивающий до 10 раз более высокую производительность для нагрузок, зависящих от диска, по сравнению с сетевыми хранилищами, такими как EBS. Этот Быстрый старт разделён на две части:
+ClickHouse Managed Postgres — это Postgres корпоративного уровня на базе NVMe-хранилища, обеспечивающий до 10 раз более высокую производительность для рабочих нагрузок, ограниченных дисковой подсистемой, по сравнению с сетевыми хранилищами, такими как EBS. Этот быстрый старт разделен на две части:
 
-* **Часть 1:** Начало работы с NVMe Postgres и оценка его производительности
-* **Часть 2:** Использование аналитики в реальном времени за счёт интеграции с ClickHouse
+* **Часть 1:** Начните работу с NVMe Postgres и оцените его производительность
+* **Часть 2:** Откройте возможности Real-time аналитики, интегрировав ClickHouse
 
-В настоящее время Managed Postgres доступен на AWS в нескольких регионах и является бесплатным на этапе закрытого предварительного просмотра.
+Managed Postgres в настоящее время доступен в нескольких регионах AWS и бесплатен в течение периода закрытой предварительной версии.
 
-**В этом Быстром старте вы:**
+**В этом руководстве по быстрому старту вы:**
 
 * Создадите экземпляр Managed Postgres с производительностью на базе NVMe
-* Загрузите 1 миллион примерных событий и увидите скорость NVMe на практике
-* Запустите запросы и оцените низкую задержку выполнения
-* Реплицируете данные в ClickHouse для аналитики в реальном времени
+* Загрузите 1 миллион тестовых событий и увидите скорость NVMe в действии
+* Выполните запросы и оцените производительность с низкой задержкой
+* Реплицируете данные в ClickHouse для Real-time аналитики
 * Будете выполнять запросы к ClickHouse напрямую из Postgres с помощью `pg_clickhouse`
 
 ## Часть 1: Начало работы с NVMe Postgres \{#part-1\}

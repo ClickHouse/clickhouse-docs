@@ -30,8 +30,6 @@ import cp_custom_role from '@site/static/images/integrations/data-ingestion/clic
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-# 与 ClickHouse Cloud 集成 \{#integrating-with-clickhouse-cloud\}
-
 ## 介绍 \{#introduction\}
 
 [ClickPipes](/integrations/clickpipes) 是一个托管集成平台，可将来自多种来源的数据摄取过程简化为只需点击几下。ClickPipes 的强大且可扩展架构专为最严苛的工作负载设计，确保性能和可靠性的一致性。ClickPipes 既可用于长期的流式数据场景，也可用于一次性的数据加载作业。

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/claude-desktop
 sidebar_label: 'Claude Desktop 통합'
-title: 'Claude Desktop과 함께 ClickHouse MCP 서버 설정하기'
+title: 'Claude Desktop과 함께 ClickHouse MCP 서버 사용하기'
 pagination_prev: null
 pagination_next: null
 description: '이 가이드는 ClickHouse MCP 서버와 함께 Claude Desktop을 설정하는 방법을 설명합니다.'
@@ -16,12 +16,10 @@ import FindMCPServers from '@site/static/images/use-cases/AI_ML/MCP/find-mcp-ser
 import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permission.png';
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
-# Claude Desktop와 함께 ClickHouse MCP 서버 사용하기 \{#using-clickhouse-mcp-server-with-claude-desktop\}
-
-> 이 가이드는 uv를 사용하여 Claude Desktop을 ClickHouse MCP 서버와 함께 설정하고
+> 이 가이드는 `uv`를 사용하여 ClickHouse MCP 서버와 함께 Claude Desktop을 설정하고
 > ClickHouse 예시 데이터셋에 연결하는 방법을 설명합니다.
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="768" height="432" src="https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q" title="YouTube 비디오 플레이어" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 <VerticalStepper headerLevel="h2">
   ## uv 설치하기 \{#install-uv\}
@@ -35,7 +33,7 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
 
   ## ClickHouse MCP 서버 구성하기 \{#configure-clickhouse-mcp-server\}
 
-  Claude Desktop를 설치한 후에는 이제 [ClickHouse MCP server](https://github.com/ClickHouse/mcp-clickhouse)를 구성해야 합니다.
+  Claude Desktop를 설치한 후에는 이제 [ClickHouse MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 구성해야 합니다.
   이는 [Claude Desktop 설정 파일](https://claude.ai/docs/configuration)을 통해 수행할 수 있습니다.
 
   이 파일을 찾으려면 먼저 설정 페이지로 이동합니다(Mac에서는 `Cmd+,` 사용), 그런 다음 왼쪽 메뉴에서 `Developer` 탭을 클릭합니다.

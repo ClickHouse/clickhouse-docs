@@ -1,15 +1,13 @@
 ---
-title: 'オブジェクトストレージの利用'
+title: 'クラウドオブジェクトストレージから ClickHouse Cloud へデータを移行する'
 description: 'オブジェクトストレージから ClickHouse Cloud へのデータ移行'
-keywords: ['object storage', 's3', 'azure blob', 'gcs', '移行']
+keywords: ['オブジェクトストレージ', 's3', 'azure blob', 'gcs', '移行']
 slug: /integrations/migration/object-storage-to-clickhouse
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import object_storage_01 from '@site/static/images/integrations/migration/object-storage-01.png';
-
-# クラウドオブジェクトストレージから ClickHouse Cloud へデータを移行する \{#move-data-from-cloud-object-storage-to-clickhouse-cloud\}
 
 <Image img={object_storage_01} size="md" alt="セルフマネージド ClickHouse の移行" />
 

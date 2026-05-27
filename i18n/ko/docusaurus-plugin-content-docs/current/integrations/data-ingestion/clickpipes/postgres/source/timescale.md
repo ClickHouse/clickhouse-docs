@@ -12,10 +12,7 @@ integration:
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-
-# TimescaleDB를 사용하는 Postgres 소스 설정 가이드 \{#postgres-with-timescaledb-source-setup-guide\}
-
-<BetaBadge/>
+<BetaBadge />
 
 ## 배경 \{#background\}
 

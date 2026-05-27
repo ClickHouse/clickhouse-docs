@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# 将 dlt 连接到 ClickHouse \{#connect-dlt-to-clickhouse\}
-
-<PartnerBadge/>
-
-<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> 是一个开源库，你可以将其添加到 Python 脚本中，将来自各种（且往往杂乱的）数据源的数据加载到结构良好、实时更新的数据集中。
+<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> 是一个开源库，你可以将其添加到 Python 脚本中，将来自各种且往往较为杂乱的数据源的数据加载到结构清晰的实时数据集中。
 
 ## 安装适用于 ClickHouse 的 dlt \{#install-dlt-with-clickhouse\}
 

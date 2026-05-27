@@ -10,13 +10,11 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Moose OLAP を使った ClickHouse 上での開発 \{#developing-on-clickhouse-with-moose-olap\}
-
 <CommunityMaintainedBadge />
 
-[Moose OLAP](https://docs.fiveonefour.com/moosestack/olap) は、TypeScript と Python でリアルタイム分析バックエンドを構築するためのオープンソースの開発者向けツールキットである [Moose Stack](https://docs.fiveonefour.com/moosestack) の中核モジュールです。
+[Moose OLAP](https://docs.fiveonefour.com/moosestack/olap) は [Moose Stack](https://docs.fiveonefour.com/moosestack) の中核モジュールであり、TypeScript と Python でリアルタイム分析バックエンドを構築するためのオープンソースの開発者向けツールキットです。
 
-Moose OLAP は、ClickHouse にネイティブ対応した、開発者フレンドリーな抽象化と ORM ライクな機能を提供します。
+Moose OLAP は、ClickHouse 向けにネイティブに構築されており、開発者にとって使いやすい抽象化と ORM ライクな機能を提供します。
 
 ## Moose OLAP の主な機能 \{#key-features\}
 

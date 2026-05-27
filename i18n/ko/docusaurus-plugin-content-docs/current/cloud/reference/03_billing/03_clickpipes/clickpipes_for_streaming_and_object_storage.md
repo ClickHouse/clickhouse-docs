@@ -9,10 +9,7 @@ keywords: ['billing', 'clickpipes', 'streaming pricing', 'costs', 'pricing']
 
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
-
-# 스트리밍 및 객체 스토리지를 위한 ClickPipes \{#clickpipes-for-streaming-object-storage\}
-
-이 섹션에서는 스트리밍 및 객체 스토리지를 위한 ClickPipes의 요금 구조를 설명합니다.
+이 섹션에서는 스트리밍 및 객체 스토리지용 ClickPipes의 과금 모델을 설명합니다.
 
 ## ClickPipes 요금 구조는 어떻게 구성되어 있습니까? \{#what-does-the-clickpipes-pricing-structure-look-like\}
 

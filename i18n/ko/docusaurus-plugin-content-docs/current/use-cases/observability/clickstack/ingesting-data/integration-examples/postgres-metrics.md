@@ -16,11 +16,8 @@ import finish_import from '@site/static/images/clickstack/postgres/import-dashbo
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack를 사용한 PostgreSQL 메트릭 모니터링 \{#postgres-metrics-clickstack\}
-
-:::note[TL;DR]
-OTel PostgreSQL receiver를 사용해 ClickStack에서 PostgreSQL 성능 메트릭을 모니터링합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함됩니다.
+:::note[요약]
+OTel PostgreSQL receiver를 사용해 ClickStack에서 PostgreSQL 성능 메트릭을 모니터링합니다. 데모용 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 PostgreSQL과의 통합 \{#existing-postgres\}

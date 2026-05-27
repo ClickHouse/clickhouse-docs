@@ -19,10 +19,7 @@ import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# DataGrip を ClickHouse に接続する \{#connecting-datagrip-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## DataGrip を起動するかダウンロードする \{#start-or-download-datagrip\}
 

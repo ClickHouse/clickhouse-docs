@@ -2,7 +2,7 @@
 sidebar_label: 'Просмотр и восстановление резервных копий'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: 'Обзор'
+title: 'Просмотр и восстановление резервных копий'
 keywords: ['резервные копии', 'облачные резервные копии', 'восстановление']
 description: 'Обзор резервных копий в ClickHouse Cloud'
 doc_type: 'guide'
@@ -17,14 +17,11 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
-
-# Просмотр и восстановление резервных копий \{#review-and-restore-backups\}
-
-В этом руководстве рассматривается, как работают резервные копии в ClickHouse Cloud, какие параметры резервного копирования вы можете настроить для своего сервиса и как выполнить восстановление из резервной копии.
+Это руководство описывает, как работают резервные копии в ClickHouse Cloud, какие варианты доступны для настройки резервного копирования вашего сервиса и как восстановиться из резервной копии.
 
 **Предварительные требования**
 
-- Вы прочитали раздел ["Как работают резервные копии в ClickHouse Cloud"](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) (страница с обзором функции)
+* Вы прочитали [&quot;Как работают резервные копии в ClickHouse Cloud&quot;](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) (страница обзора возможностей)
 
 ## Список статусов резервных копий \{#backup-status-list\}
 

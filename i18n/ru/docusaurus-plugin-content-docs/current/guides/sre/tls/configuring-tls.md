@@ -3,7 +3,7 @@ slug: /guides/sre/tls/configuring-tls
 sidebar_label: 'Настройка TLS'
 sidebar_position: 20
 title: 'Настройка TLS'
-description: 'В этом руководстве приведены простые и минимально необходимые настройки, чтобы настроить ClickHouse на использование сертификатов OpenSSL для проверки соединений.'
+description: 'В этом руководстве приводятся простые и минимальные настройки для конфигурирования ClickHouse на использование сертификатов OpenSSL при проверке соединений.'
 keywords: ['конфигурация SSL', 'настройка TLS', 'сертификаты OpenSSL', 'защищённые соединения', 'руководство для SRE']
 doc_type: 'guide'
 ---
@@ -11,9 +11,6 @@ doc_type: 'guide'
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
-
-
-# Настройка TLS \{#configuring-tls\}
 
 <SelfManaged />
 

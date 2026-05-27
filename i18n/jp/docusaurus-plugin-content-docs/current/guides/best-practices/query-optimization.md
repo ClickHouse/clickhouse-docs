@@ -1,7 +1,7 @@
 ---
 slug: /optimize/query-optimization
 sidebar_label: 'クエリ最適化'
-title: 'クエリ最適化ガイド'
+title: 'クエリ最適化のためのシンプルなガイド'
 description: 'クエリパフォーマンス向上の一般的な手順を説明するシンプルなガイド'
 doc_type: 'guide'
 keywords: ['クエリ最適化', 'パフォーマンス', 'ベストプラクティス', 'クエリチューニング', '効率化']
@@ -10,10 +10,7 @@ keywords: ['クエリ最適化', 'パフォーマンス', 'ベストプラクテ
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
 
-
-# クエリ最適化のシンプルガイド \{#a-simple-guide-for-query-optimization\}
-
-このセクションでは、[アナライザー](/operations/analyzer)、[クエリプロファイリング](/operations/optimizing-performance/sampling-query-profiler)、[Nullable列の回避](/optimize/avoid-nullable-columns)などの様々なパフォーマンスと最適化テクニックを使用して、ClickHouseのクエリパフォーマンスを向上させる方法を一般的なシナリオを通じて説明します。
+このセクションでは、一般的なシナリオを通じて、[アナライザ](/operations/analyzer)、[クエリプロファイリング](/operations/optimizing-performance/sampling-query-profiler)、[Nullableカラムを避ける](/optimize/avoid-nullable-columns) などのさまざまなパフォーマンス改善および最適化手法の使い方を示し、ClickHouseのクエリパフォーマンス向上を図ります。
 
 ## クエリパフォーマンスの理解 \{#understand-query-performance\}
 

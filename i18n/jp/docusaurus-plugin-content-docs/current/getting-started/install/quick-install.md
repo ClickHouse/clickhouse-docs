@@ -12,8 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import QuickInstall from './_snippets/_quick_install.md'
 
-# クイックインストール \{#quick-install\}
-
 ClickHouse を本番環境向けにインストールする必要がない場合は、ClickHouse CLI を使うか、curl でインストールスクリプトを実行するのが、最も手早く
 セットアップする方法です。
 

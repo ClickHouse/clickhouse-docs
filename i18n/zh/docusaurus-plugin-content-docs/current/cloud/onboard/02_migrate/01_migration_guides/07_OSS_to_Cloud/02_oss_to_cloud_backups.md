@@ -1,7 +1,7 @@
 ---
 sidebar_label: '使用 BACKUP 和 RESTORE'
 slug: /cloud/migration/oss-to-cloud-backup-restore
-title: '使用 BACKUP/RESTORE 在自管理 ClickHouse 与 ClickHouse Cloud 之间迁移'
+title: '使用备份命令从自管理 ClickHouse 迁移到 ClickHouse Cloud'
 description: '本页介绍如何使用 BACKUP 和 RESTORE 命令在自管理 ClickHouse 与 ClickHouse Cloud 之间进行迁移'
 doc_type: 'guide'
 keywords: ['迁移', 'ClickHouse Cloud', 'OSS', '自管理迁移到 Cloud', 'BACKUP', 'RESTORE']
@@ -17,9 +17,6 @@ import open_console from '@site/static/images/cloud/onboard/migrate/oss_to_cloud
 import service_role_id from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/service_role_id.png';
 import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/create_new_role.png';
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
-
-
-# 使用备份命令将自管理 ClickHouse 迁移到 ClickHouse Cloud \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands\}
 
 ## 概述 \{#overview-migration-approaches\}
 

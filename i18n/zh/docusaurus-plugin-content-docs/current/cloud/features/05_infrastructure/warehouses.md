@@ -16,9 +16,6 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
-
-# 仓库 \{#warehouses\}
-
 <ScalePlanFeatureBadge feature="计算-计算分离" />
 
 ## 什么是计算-计算分离？ \{#what-is-compute-compute-separation\}

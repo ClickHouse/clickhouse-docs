@@ -2,10 +2,10 @@
 sidebar_label: 'Google Cloud Storage (GCS)'
 sidebar_position: 4
 slug: /integrations/gcs
-description: '以 Google Cloud Storage (GCS) 为后端的 MergeTree'
+description: '基于 GCS 的 MergeTree'
 title: '将 Google Cloud Storage 与 ClickHouse 集成'
 doc_type: 'guide'
-keywords: ['Google Cloud Storage ClickHouse', 'GCS ClickHouse 集成', 'GCS 后端 MergeTree', 'ClickHouse GCS 存储', 'Google Cloud ClickHouse']
+keywords: ['Google Cloud Storage ClickHouse', 'GCS ClickHouse 集成', '基于 GCS 的 MergeTree', 'ClickHouse GCS 存储', 'Google Cloud ClickHouse']
 ---
 
 import BucketDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_GCS_authentication_and_bucket.md';
@@ -13,14 +13,11 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-
-# 将 Google Cloud Storage 与 ClickHouse 集成 \{#integrate-google-cloud-storage-with-clickhouse\}
-
 :::note
-如果您在 [Google Cloud](https://cloud.google.com) 上使用 ClickHouse Cloud，则本页内容不适用，因为您的服务已经在使用 [Google Cloud Storage](https://cloud.google.com/storage)。如果您希望从 GCS 中执行 `SELECT` 或向 GCS 中执行 `INSERT` 操作，请参阅 [`gcs` 表函数](/sql-reference/table-functions/gcs)。
+如果你在 [Google Cloud](https://cloud.google.com) 上使用 ClickHouse Cloud，则本页不适用，因为你的服务已经在使用 [Google Cloud Storage](https://cloud.google.com/storage)。如果你想从 GCS 中 `SELECT` 数据或向其中 `INSERT` 数据，请参阅 [`gcs` 表函数](/sql-reference/table-functions/gcs)。
 :::
 
-我们认识到，如果您希望实现存储与计算分离，GCS 是一个颇具吸引力的存储解决方案。为此，ClickHouse 支持在 MergeTree 引擎中使用 GCS 作为底层存储。这使您能够同时利用 GCS 的可扩展性和成本优势，以及 MergeTree 引擎的写入和查询性能。
+ClickHouse 意识到，对于希望将存储与计算分离的用户来说，GCS 是一种颇具吸引力的存储解决方案。为此，ClickHouse 支持将 GCS 用作 MergeTree 引擎的存储后端。这使你能够利用 GCS 在可扩展性和成本方面的优势，同时保留 MergeTree 引擎的插入和查询性能。
 
 ## 基于 GCS 的 MergeTree \{#gcs-backed-mergetree\}
 

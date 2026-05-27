@@ -2,15 +2,13 @@
 sidebar_position: 1
 sidebar_label: '概要'
 slug: /manage/scaling
-description: 'ClickHouse Cloud の自動スケーリングの概要'
-keywords: ['オートスケーリング', 'オートスケーリング', 'スケーリング', '水平', '垂直', 'バースト']
+description: 'ClickHouse Cloud における自動スケーリングの概要'
+keywords: ['オートスケーリング', '自動スケーリング', 'スケーリング', '水平', '垂直', 'バースト']
 title: '自動スケーリング'
 doc_type: 'guide'
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
-
-# 自動スケーリング \{#automatic-scaling\}
 
 スケーリングとは、クライアントの需要に応じて利用可能なリソースを調整する機能です。Scale ティアおよび Enterprise ティア (標準の 1:4 プロファイル) のサービスでは、API をプログラムから呼び出すか、UI で設定を変更することでシステムリソースを調整し、水平スケーリングできます。これらのサービスは、アプリケーションの需要に応じて垂直方向に**自動スケーリング**することもできます。
 

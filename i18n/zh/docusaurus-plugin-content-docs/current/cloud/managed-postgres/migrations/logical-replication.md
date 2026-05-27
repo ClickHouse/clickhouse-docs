@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/migrations/logical-replication
 sidebar_label: '逻辑复制'
-title: '使用逻辑复制迁移 PostgreSQL 数据'
+title: '使用逻辑复制迁移到 Managed Postgres'
 description: '了解如何使用逻辑复制将 PostgreSQL 数据迁移到 ClickHouse Managed Postgres'
 keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres']
 doc_type: 'guide'
@@ -15,9 +15,7 @@ import targetInitialSetup from '@site/static/images/managed-postgres/logical_rep
 import migrationResult from '@site/static/images/managed-postgres/logical_replication/migration-result.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
 
-# 使用逻辑复制迁移到 Managed Postgres \{#logical-replication-migration\}
-
-本指南通过分步讲解说明如何使用 PostgreSQL 原生逻辑复制，将您的 PostgreSQL 数据库迁移到 ClickHouse Managed Postgres。
+本指南将逐步说明如何使用 Postgres 原生逻辑复制，将 PostgreSQL 数据库迁移到 ClickHouse Managed Postgres。
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.logical-replication-beta" />
 

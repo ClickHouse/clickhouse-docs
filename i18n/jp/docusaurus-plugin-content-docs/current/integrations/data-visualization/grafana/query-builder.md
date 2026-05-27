@@ -23,23 +23,20 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# クエリビルダー \{#query-builder\}
-
 <ClickHouseSupportedBadge />
 
-任意のクエリは ClickHouse プラグインで実行できます。
-クエリビルダーはシンプルなクエリに便利なオプションですが、複雑なクエリについては [SQL エディタ](#sql-editor) を使用する必要があります。
+ClickHouse プラグインでは、あらゆるクエリを実行できます。
+クエリビルダーはシンプルなクエリには便利ですが、複雑なクエリでは [SQL エディタ](#sql-editor) を使用する必要があります。
 
 クエリビルダー内のすべてのクエリには [クエリタイプ](#query-types) があり、少なくとも 1 つのカラムを選択する必要があります。
 
-利用可能なクエリタイプは次のとおりです:
+利用可能なクエリタイプは次のとおりです。
 
-* [Table](#table): データをテーブル形式で表示するための最も単純なクエリタイプです。集約関数を含むシンプルおよび複雑なクエリの両方に対する汎用的な選択肢として適しています。
-* [ログ](#logs): ログ用のクエリを構築するために最適化されています。[デフォルトが設定された](./config.md#logs) Explore ビューで最も効果的に機能します。
-* [Time Series](#time-series): 時系列クエリを構築する際に最適です。専用の時間カラムの選択と集約関数の追加が可能です。
-* [トレース](#traces): トレースの検索・閲覧向けに最適化されています。[デフォルトが設定された](./config.md#traces) Explore ビューで最も効果的に機能します。
-* [SQL エディタ](#sql-editor): クエリを完全に制御したい場合に使用できます。このモードでは、任意の SQL クエリを実行できます。
+* [Table](#table): データをテーブル形式で表示するための最もシンプルなクエリタイプです。集約関数を含む単純なクエリにも複雑なクエリにも幅広く対応できます。
+* [Logs](#logs): ログ用のクエリ作成に最適化されています。[既定値を設定した](./config.md#logs) Explore ビューで最も効果的に機能します。
+* [Time Series](#time-series): 時系列クエリの作成に最適です。専用の時間カラムを選択し、集約関数を追加できます。
+* [Traces](#traces): トレースの検索や表示に最適化されています。[既定値を設定した](./config.md#traces) Explore ビューで最も効果的に機能します。
+* [SQL エディタ](#sql-editor): クエリを完全に制御したい場合は SQL エディタ を使用できます。このモードでは、任意の SQL クエリを実行できます。
 
 ## クエリタイプ \{#query-types\}
 

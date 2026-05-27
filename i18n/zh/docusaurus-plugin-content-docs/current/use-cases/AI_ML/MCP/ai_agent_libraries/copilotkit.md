@@ -77,13 +77,13 @@ Copilotkit 运行时以使用不同的 LLM 适配器。
 - `CLICKHOUSE_PASSWORD`
 - `CLICKHOUSE_SECURE`
 
-# 运行应用 \{#run-the-application\}
+## 运行应用 \{#run-the-application\}
 
 运行 `npm run dev` 来启动开发服务器。
 
-你可以使用如下提示词来测试 Agent： 
+你可以使用如下提示词来测试 Agent：
 
-> "Show me the price evolution in 
-Manchester for the last 10 years."
+> &quot;Show me the price evolution in
+> Manchester for the last 10 years.&quot;
 
 在浏览器中打开 [http://localhost:3000](http://localhost:3000) 查看结果。

@@ -1,5 +1,5 @@
 ---
-title: 'BigQuery と ClickHouse Cloud の比較'
+title: 'ClickHouse Cloud と BigQuery の比較'
 slug: /migrations/bigquery/biquery-vs-clickhouse-cloud
 description: 'BigQuery と ClickHouse Cloud の違い'
 keywords: ['BigQuery']
@@ -10,9 +10,6 @@ doc_type: 'guide'
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
-
-
-# ClickHouse Cloud と BigQuery の比較  \{#comparing-clickhouse-cloud-and-bigquery\}
 
 ## リソースの構成 \{#resource-organization\}
 

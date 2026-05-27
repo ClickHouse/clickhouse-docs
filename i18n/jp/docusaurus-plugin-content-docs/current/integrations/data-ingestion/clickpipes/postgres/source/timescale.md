@@ -12,10 +12,7 @@ integration:
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-
-# TimescaleDB を利用した Postgres ソースセットアップガイド \{#postgres-with-timescaledb-source-setup-guide\}
-
-<BetaBadge/>
+<BetaBadge />
 
 ## 背景 \{#background\}
 

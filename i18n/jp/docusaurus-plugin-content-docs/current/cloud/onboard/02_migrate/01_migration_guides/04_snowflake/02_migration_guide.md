@@ -1,18 +1,15 @@
 ---
 sidebar_label: '移行ガイド'
 slug: /migrations/snowflake
-description: 'Snowflake から ClickHouse への移行'
+description: 'SnowflakeからClickHouseへの移行'
 keywords: ['Snowflake']
-title: 'Snowflake から ClickHouse への移行'
+title: 'SnowflakeからClickHouseへの移行'
 show_related_blogs: false
 doc_type: 'guide'
 ---
 
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
-
-
-# SnowflakeからClickHouseへの移行 \{#migrate-from-snowflake-to-clickhouse\}
 
 > 本ガイドでは、SnowflakeからClickHouseへデータを移行する方法について説明します。
 

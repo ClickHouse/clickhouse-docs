@@ -1,5 +1,5 @@
 ---
-title: 'Начало работы с открытыми табличными форматами'
+title: 'Начало работы с озерами данных'
 sidebar_label: 'Начало работы'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
@@ -16,13 +16,11 @@ import iceberg_query_engine from '@site/static/images/datalake/iceberg-query-eng
 import iceberg_query from '@site/static/images/datalake/iceberg-query.png';
 import clickhouse_query from '@site/static/images/datalake/clickhouse-query.png';
 
-# Начало работы с озерами данных \{#data-lake-getting-started\}
-
-:::note[Вкратце]
-Практическое руководство по выполнению запросов к таблицам озера данных, ускорению их с помощью MergeTree и записи результатов обратно в Iceberg. Во всех шагах используются общедоступные наборы данных; они работают как в Cloud, так и в OSS.
+:::note[Кратко]
+Практическое руководство по выполнению запросов к таблицам озера данных, их ускорению с помощью MergeTree и записи результатов обратно в Iceberg. Во всех шагах используются общедоступные наборы данных; всё работает как в Cloud, так и в OSS.
 :::
 
-Скриншоты в этом руководстве взяты из SQL-консоли [ClickHouse Cloud](https://console.clickhouse.cloud). Все запросы работают как в Cloud, так и в самоуправляемых развертываниях.
+Скриншоты в этом руководстве взяты из [SQL-консоли ClickHouse Cloud](https://console.clickhouse.cloud). Все запросы работают как в Cloud, так и в самоуправляемых развертываниях.
 
 <VerticalStepper headerLevel="h2">
   ## Прямые запросы к данным Iceberg \{#query-directly\}

@@ -22,10 +22,7 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-
-# Aurora MySQL 소스 설정 가이드 \{#aurora-mysql-source-setup-guide\}
-
-이 단계별 가이드는 Amazon Aurora MySQL을 구성하여 [MySQL ClickPipe](../index.md)를 사용해 데이터를 ClickHouse Cloud로 복제하는 방법을 안내합니다. MySQL CDC와 관련된 자주 묻는 질문은 [MySQL FAQ 페이지](/integrations/data-ingestion/clickpipes/mysql/faq.md)를 참고하십시오.
+이 단계별 가이드는 [MySQL ClickPipe](../index.md)를 사용하여 Amazon Aurora MySQL의 데이터를 ClickHouse Cloud로 복제하도록 구성하는 방법을 안내합니다. MySQL CDC와 관련된 일반적인 질문은 [MySQL FAQ 페이지](/integrations/data-ingestion/clickpipes/mysql/faq.md)를 참조하십시오.
 
 ## 바이너리 로그 보존 활성화 \{#enable-binlog-retention-aurora\}
 

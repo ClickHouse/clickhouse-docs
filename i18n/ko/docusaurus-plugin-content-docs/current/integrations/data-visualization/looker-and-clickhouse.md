@@ -18,12 +18,9 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Looker \{#looker\}
-
-<PartnerBadge/>
-
-Looker는 공식 ClickHouse 데이터 소스를 통해 ClickHouse Cloud 또는 온프레미스 배포 환경에 연결할 수 있습니다.
+Looker는 공식 ClickHouse 데이터 소스를 통해 ClickHouse Cloud 또는 온프레미스 배포에 연결할 수 있습니다.
 
 ## 1. 연결 정보 확인 \{#1-gather-your-connection-details\}
 

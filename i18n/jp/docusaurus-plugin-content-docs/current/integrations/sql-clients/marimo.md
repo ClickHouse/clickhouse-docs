@@ -21,12 +21,9 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# ClickHouse で marimo を使う \{#using-marimo-with-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-[marimo](https://marimo.io/) は、SQL が組み込まれた Python 向けのオープンソースのリアクティブノートブックです。セルを実行したり UI 要素を操作したりすると、marimo は影響を受けるセルを自動的に再実行（または古い状態としてマーク）し、コードと出力の整合性を保つことで、不具合の発生を未然に防ぎます。すべての marimo ノートブックはプレーンな Python コードとして保存されており、スクリプトとして実行でき、アプリとしてデプロイすることもできます。
+[marimo](https://marimo.io/) は、SQL を標準で備えた、Python 向けのオープンソースのリアクティブなノートブックです。セルを実行したり UI 要素を操作したりすると、marimo は影響を受けるセルを自動的に実行し (または古い状態としてマークし) 、コードと出力の一貫性を保ちながら、不具合を未然に防ぎます。すべての marimo ノートブックは純粋な Python として保存され、スクリプトとして実行でき、アプリとしてデプロイすることもできます。
 
 <Image img={marimo_connect} size="md" border alt="ClickHouse に接続" />
 

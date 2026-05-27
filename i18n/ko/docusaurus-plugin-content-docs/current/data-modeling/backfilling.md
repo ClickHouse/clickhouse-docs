@@ -1,16 +1,13 @@
 ---
 slug: /data-modeling/backfilling
-title: '데이터 백필링'
-description: 'ClickHouse에서 대규모 데이터 세트를 백필링하는 방법'
-keywords: ['materialized view', '백필링', '데이터 삽입', '탄력적인 데이터 적재']
-doc_type: 'guide'
+title: '데이터 백필(Backfill)'
+description: 'ClickHouse에서 대규모 데이터셋을 백필하는 방법'
+keywords: ['materialized views', '백필', '데이터 삽입', '안정적인 데이터 로드']
+doc_type: '가이드'
 ---
 
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
-
-
-# 데이터 백필(Backfill) \{#backfilling-data\}
 
 ClickHouse를 처음 사용하는 경우든 기존 배포를 운영하는 경우든, 과거 데이터로 테이블을 백필해야 하는 상황이 필연적으로 발생합니다. 어떤 경우에는 비교적 간단하지만, materialized view를 채워야 하는 경우에는 더 복잡해질 수 있습니다. 이 가이드는 이러한 작업을 위한 몇 가지 절차를 설명하며, 각자의 사용 사례에 맞게 적용할 수 있습니다.
 

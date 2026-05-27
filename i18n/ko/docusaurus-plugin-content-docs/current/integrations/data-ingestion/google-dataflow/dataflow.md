@@ -10,18 +10,15 @@ keywords: ['Google Dataflow ClickHouse 통합', 'Dataflow ClickHouse 통합', 'A
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# ClickHouse와 Google Dataflow 통합 \{#integrating-google-dataflow-with-clickhouse\}
+[Google Dataflow](https://cloud.google.com/dataflow)는 완전 관리형 스트림 및 배치 데이터 처리 서비스입니다. Java 또는 Python으로 작성된 파이프라인을 지원하며, Apache Beam SDK를 기반으로 합니다.
 
-<ClickHouseSupportedBadge/>
+Google Dataflow를 ClickHouse와 함께 사용하는 주요 방법은 두 가지이며, 둘 다 [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam)를 활용합니다.
+다음과 같습니다:
 
-[Google Dataflow](https://cloud.google.com/dataflow)는 완전 관리형 스트리밍 및 배치 데이터 처리 서비스입니다. Java 또는 Python으로 작성된 파이프라인을 지원하며 Apache Beam SDK 위에 구축되어 있습니다.
-
-Google Dataflow를 ClickHouse와 함께 사용하는 주요 방법은 두 가지이며, 이들 모두 [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam)를 활용합니다.
-방법은 다음과 같습니다.
-
-- [Java runner](#1-java-runner)
-- [사전 정의된 템플릿(Predefined templates)](#2-predefined-templates)
+* [Java runner](#1-java-runner)
+* [미리 정의된 템플릿](#2-predefined-templates)
 
 ## Java runner \{#1-java-runner\}
 

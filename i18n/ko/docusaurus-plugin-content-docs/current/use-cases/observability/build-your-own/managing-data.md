@@ -10,10 +10,7 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-
-# 데이터 관리 \{#managing-data\}
-
-관측성을 위해 ClickHouse를 배포하면 관리가 필요한 대용량 데이터셋이 필연적으로 수반됩니다. ClickHouse는 이러한 데이터 관리를 지원하는 다양한 기능을 제공합니다.
+관측성을 위한 ClickHouse 배포에서는 관리가 필요한 대규모 데이터셋을 다루는 경우가 많습니다. ClickHouse는 데이터 관리를 지원하는 여러 기능을 제공합니다.
 
 ## 파티션 \{#partitions\}
 

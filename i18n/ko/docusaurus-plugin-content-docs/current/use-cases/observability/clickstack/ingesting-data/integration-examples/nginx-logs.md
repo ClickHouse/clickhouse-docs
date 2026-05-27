@@ -17,11 +17,8 @@ import log_view from '@site/static/images/clickstack/log-view.png';
 import search_view from '@site/static/images/clickstack/nginx-logs-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack를 사용한 Nginx 로그 모니터링 \{#nginx-clickstack\}
-
 :::note[TL;DR]
-OTel `filelog` receiver를 사용해 ClickStack에서 Nginx 액세스 로그(JSON 형식)를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
+OTel `filelog` 수신기를 사용해 ClickStack에서 Nginx 액세스 로그(JSON 포맷)를 수집하고 시각화합니다. 데모 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 Nginx와의 통합 \{#existing-nginx\}

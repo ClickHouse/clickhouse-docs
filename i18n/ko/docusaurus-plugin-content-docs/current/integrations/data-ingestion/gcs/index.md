@@ -13,14 +13,11 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-
-# Google Cloud Storage를 ClickHouse와 통합하기 \{#integrate-google-cloud-storage-with-clickhouse\}
-
 :::note
-[Google Cloud](https://cloud.google.com)에서 ClickHouse Cloud를 사용하는 경우, 해당 서비스는 이미 [Google Cloud Storage](https://cloud.google.com/storage)를 사용하고 있으므로 이 페이지는 해당되지 않습니다. GCS에서 데이터를 `SELECT` 하거나 GCS로 데이터를 `INSERT` 하려는 경우, [`gcs` table function](/sql-reference/table-functions/gcs)을 참조하십시오.
+[Google Cloud](https://cloud.google.com)에서 ClickHouse Cloud를 사용 중인 경우, 서비스가 이미 [Google Cloud Storage](https://cloud.google.com/storage)를 사용하므로 이 페이지는 해당되지 않습니다. GCS에서 데이터를 `SELECT` 또는 `INSERT`하려면 [`gcs` 테이블 함수](/sql-reference/table-functions/gcs)를 참조하십시오.
 :::
 
-ClickHouse에서는 스토리지와 컴퓨트를 분리하려는 경우 GCS가 매력적인 스토리지 솔루션이 될 수 있다고 보고 있습니다. 이를 위해 MergeTree 엔진의 스토리지로 GCS를 사용할 수 있도록 지원합니다. 이를 통해 GCS의 확장성과 비용 효율성을 활용하는 동시에 MergeTree 엔진의 데이터 삽입 및 쿼리 성능을 그대로 사용할 수 있습니다.
+ClickHouse는 스토리지와 컴퓨트를 분리하려는 경우 GCS가 매력적인 스토리지 솔루션이 될 수 있음을 인식하고 있습니다. 이를 위해 MergeTree 엔진의 스토리지로 GCS를 사용할 수 있도록 지원합니다. 따라서 GCS의 확장성과 비용상 이점을 활용하는 동시에 MergeTree 엔진의 삽입 및 쿼리 성능도 누릴 수 있습니다.
 
 ## GCS 기반 MergeTree \{#gcs-backed-mergetree\}
 

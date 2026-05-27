@@ -1,19 +1,16 @@
 ---
 slug: /cloud/data-resiliency
-sidebar_label: 'データレジリエンス'
-title: '災害復旧'
+sidebar_label: 'データのレジリエンス'
+title: 'データのレジリエンス'
 description: 'このガイドでは、災害復旧の概要を説明します。'
 doc_type: 'reference'
-keywords: ['ClickHouse Cloud', 'データレジリエンス', '災害復旧']
+keywords: ['ClickHouse Cloud', 'データのレジリエンス', '災害復旧']
 ---
 
 import Image from '@theme/IdealImage';
 import restore_backup from '@site/static/images/cloud/guides/restore_backup.png';
 
-
-# データのレジリエンス \{#clickhouse-cloud-data-resiliency\}
-
-このページでは、ClickHouse Cloud におけるディザスタリカバリの推奨事項と、障害発生時にお客様が復旧するための指針を説明します。
+このページでは、ClickHouse Cloud における災害復旧の推奨事項と、障害発生時にお客様が復旧するための指針を説明します。
 現在、ClickHouse Cloud は自動フェイルオーバーや、複数の地理的リージョン間での自動同期をサポートしていません。
 
 :::tip

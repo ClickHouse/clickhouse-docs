@@ -11,14 +11,11 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 物化 \{#materializations\}
+本节介绍 dbt-clickhouse 中所有可用的物化类型，包括实验性功能。
 
-<ClickHouseSupportedBadge/>
-
-本节介绍 dbt-clickhouse 中所有可用的物化类型，包括实验性特性。
-
-<TOCInline toc={toc}  maxHeadingLevel={3} />
+<TOCInline toc={toc} maxHeadingLevel={3} />
 
 ## 通用物化配置 \{#general-materialization-configurations\}
 

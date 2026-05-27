@@ -12,13 +12,11 @@ integration:
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Middleware を ClickHouse に接続する \{#connecting-middleware-to-clickhouse\}
-
 <PartnerBadge />
 
-[Middleware](https://middleware.io/) は、インフラストラクチャ、ログ、アプリケーションのパフォーマンスをモニタリングするためのクラウドオブザーバビリティプラットフォームです。
+[Middleware](https://middleware.io/) は、インフラストラクチャ、ログ、アプリケーションのパフォーマンスを監視するためのクラウド オブザーバビリティプラットフォームです。
 
-ClickHouse を Middleware に接続すると、より広範なモニタリングワークフローの一部として、データベーステレメトリを収集・可視化できます。
+ClickHouse を Middleware に接続すると、より広範な監視ワークフローの一環として、データベースのテレメトリーを収集・可視化できます。
 
 ## 前提条件 \{#prerequisites\}
 

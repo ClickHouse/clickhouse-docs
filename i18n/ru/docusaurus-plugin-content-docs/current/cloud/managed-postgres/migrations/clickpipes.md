@@ -22,11 +22,9 @@ import serviceCard from '@site/static/images/managed-postgres/pgpg/servicecard.p
 import startImport from '@site/static/images/managed-postgres/pgpg/startimport.png';
 import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.png';
 
-# Миграция в Managed Postgres с помощью ClickPipes \{#migrate-managed-postgres\}
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-clickhouse-cloud-beta" />
 
-Теперь в ClickHouse Cloud доступны ClickPipes для миграции внешней базы данных PostgreSQL в сервис Managed Postgres. Эта встроенная интеграция упрощает подключение к исходной базе данных, экспорт схемы, импорт в Managed Postgres и настройку непрерывной репликации.
+Теперь ClickHouse Cloud предлагает ClickPipes для миграции внешней базы данных PostgreSQL в сервис Managed Postgres. Эта встроенная интеграция упрощает подключение к исходной базе данных, экспорт схемы, импорт в Managed Postgres и настройку непрерывной репликации.
 
 ## Предварительные требования \{#prerequisites\}
 

@@ -3,8 +3,8 @@ sidebar_label: 'Confluent Platform에서 Kafka Connector Sink 사용하기'
 sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/custom-connector
 description: 'Kafka Connect 및 ClickHouse와 함께 ClickHouse Connector Sink를 사용하는 방법'
-title: 'Confluent Cloud를 ClickHouse와 연동하기'
-keywords: ['Confluent ClickHouse 연동', 'ClickHouse Kafka 커넥터', 'Kafka Connect ClickHouse Sink', 'Confluent Platform ClickHouse', 'Confluent 맞춤형 커넥터']
+title: 'Confluent Platform을 ClickHouse와 연동하기'
+keywords: ['Confluent ClickHouse 연동', 'ClickHouse Kafka 커넥터', 'Kafka Connect ClickHouse Sink', 'Confluent Platform ClickHouse', 'Confluent Custom Connector']
 doc_type: 'guide'
 ---
 
@@ -12,19 +12,17 @@ import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-
-# Confluent Platform을 ClickHouse와 통합하기 \{#integrating-confluent-platform-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/SQAiPVbd3gg"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 사전 준비 사항 \{#prerequisites\}

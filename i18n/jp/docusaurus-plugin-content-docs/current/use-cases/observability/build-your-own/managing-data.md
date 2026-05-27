@@ -10,9 +10,7 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-# データ管理 \{#managing-data\}
-
-Observability 用の ClickHouse デプロイメントでは、必然的に大規模なデータセットを扱うことになり、それらを適切に管理する必要があります。ClickHouse には、データ管理を支援するためのさまざまな機能が用意されています。
+オブザーバビリティ向けの ClickHouse の導入では、必然的に大規模なデータセットを扱うことになり、その管理が必要になります。ClickHouse には、データ管理を支援するためのさまざまな機能が用意されています。
 
 ## パーティション \{#partitions\}
 

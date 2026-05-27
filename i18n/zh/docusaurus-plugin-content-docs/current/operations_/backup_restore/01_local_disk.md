@@ -2,7 +2,7 @@
 description: '详细介绍到本地磁盘或从本地磁盘执行备份和恢复'
 sidebar_label: '本地磁盘 / S3 磁盘'
 slug: /operations/backup/disk
-title: 'ClickHouse 中的备份与恢复'
+title: 'BACKUP / RESTORE 到磁盘'
 doc_type: 'guide'
 ---
 
@@ -10,9 +10,6 @@ import GenericSettings from '@site/i18n/zh/docusaurus-plugin-content-docs/curren
 import S3Settings from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 import ExampleSetup from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
-
-
-# 备份/恢复到磁盘 \{#backup-to-a-local-disk\}
 
 ## 语法 \{#syntax\}
 

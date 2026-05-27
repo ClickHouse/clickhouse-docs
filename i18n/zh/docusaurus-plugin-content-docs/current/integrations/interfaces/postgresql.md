@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse 中 PostgreSQL wire 协议接口的文档'
+description: 'ClickHouse 中 PostgreSQL 线协议接口文档'
 sidebar_label: 'PostgreSQL 接口'
 sidebar_position: 20
 slug: /interfaces/postgresql
@@ -8,8 +8,6 @@ doc_type: 'reference'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
-# PostgreSQL 接口 \{#postgresql-interface\}
 
 <CloudNotSupportedBadge />
 

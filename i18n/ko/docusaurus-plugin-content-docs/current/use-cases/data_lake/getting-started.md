@@ -1,5 +1,5 @@
 ---
-title: '오픈 테이블 포맷 시작하기'
+title: '데이터 레이크 시작하기'
 sidebar_label: '시작하기'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
@@ -16,13 +16,11 @@ import iceberg_query_engine from '@site/static/images/datalake/iceberg-query-eng
 import iceberg_query from '@site/static/images/datalake/iceberg-query.png';
 import clickhouse_query from '@site/static/images/datalake/clickhouse-query.png';
 
-# 데이터 레이크 시작하기 \{#data-lake-getting-started\}
-
 :::note[TL;DR]
-데이터 레이크 테이블을 쿼리하고, MergeTree로 가속화하며, 결과를 다시 Iceberg에 쓰는 과정을 실습으로 안내합니다. 모든 단계는 공개 데이터세트를 사용하며 Cloud와 OSS 모두에서 작동합니다.
+데이터 레이크 테이블을 쿼리하고, MergeTree로 가속화한 뒤, 결과를 Iceberg에 다시 쓰는 과정을 실습으로 안내합니다. 모든 단계는 공개 데이터셋을 사용하며 Cloud와 OSS 모두에서 동작합니다.
 :::
 
-이 가이드의 스크린샷은 [ClickHouse Cloud](https://console.clickhouse.cloud) SQL 콘솔에서 가져왔습니다. 모든 쿼리는 Cloud와 자가 관리형 배포 환경 모두에서 작동합니다.
+이 가이드의 스크린샷은 [ClickHouse Cloud](https://console.clickhouse.cloud) SQL 콘솔에서 캡처했습니다. 모든 쿼리는 Cloud와 자가 관리형 배포 모두에서 작동합니다.
 
 <VerticalStepper headerLevel="h2">
   ## Iceberg 데이터 직접 쿼리하기 \{#query-directly\}

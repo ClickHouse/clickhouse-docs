@@ -2,9 +2,9 @@
 sidebar_label: 'Apache Flink'
 sidebar_position: 1
 slug: /integrations/apache-flink
-description: 'ClickHouse와 함께하는 Apache Flink 소개'
-keywords: ['clickhouse', 'Apache Flink', '마이그레이션', '데이터', '스트림 처리']
-title: 'Flink 커넥터'
+description: 'ClickHouse와 함께 사용하는 Apache Flink 소개'
+keywords: ['ClickHouse', 'Apache Flink', '마이그레이션', '데이터', '스트림 처리']
+title: 'Flink Connector'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -16,16 +16,13 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Flink Connector \{#flink-connector\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 이것은 ClickHouse에서 지원하는 공식 [Apache Flink 싱크 커넥터](https://github.com/ClickHouse/flink-connector-clickhouse)입니다. 이 커넥터는 Flink의 [AsyncSinkBase](https://cwiki.apache.org/confluence/display/FLINK/FLIP-171%3A+Async+Sink)와 공식 ClickHouse [java client](https://github.com/ClickHouse/clickhouse-java)를 사용하여 구축되었습니다.
 
 이 커넥터는 Apache Flink의 DataStream API를 지원합니다. Table API 지원은 [향후 릴리스에서 제공될 예정입니다](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
 
-<TOCInline toc={toc}></TOCInline>
+<TOCInline toc={toc} />
 
 ## 요구 사항 \{#requirements\}
 

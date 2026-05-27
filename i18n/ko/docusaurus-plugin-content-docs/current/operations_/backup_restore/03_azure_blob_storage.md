@@ -2,22 +2,15 @@
 description: 'Azure Blob Storage 엔드포인트로의/로부터 백업 및 복원에 대한 상세 정보'
 sidebar_label: 'AzureBlobStorage'
 slug: /operations/backup/azure
-title: 'Azure Blob Storage로의/로부터 백업 및 복원'
+title: 'Azure Blob Storage로의/로부터 BACKUP/RESTORE'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/i18n/ko/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
-# Azure Blob Storage로/에서 백업/복원 \{#backup-to-azure-blob-storage\}
-
-
-
 ## 구문 \{#syntax\}
 
-<Syntax/>
-
-
+<Syntax />
 
 ## AzureBlobStorage 엔드포인트를 사용하도록 BACKUP / RESTORE 구성하기 \{#configuring-backuprestore-to-use-an-azureblobstorage-endpoint\}
 

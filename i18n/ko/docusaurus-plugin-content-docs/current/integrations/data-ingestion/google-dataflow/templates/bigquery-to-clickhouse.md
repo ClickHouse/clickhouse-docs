@@ -3,7 +3,7 @@ sidebar_label: 'BigQuery to ClickHouse'
 sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
 description: 'Google Dataflow Template을 사용하여 BigQuery 데이터를 ClickHouse로 수집할 수 있습니다'
-title: 'Dataflow BigQuery to ClickHouse 템플릿'
+title: 'Dataflow BigQuery to ClickHouse Template'
 doc_type: 'guide'
 keywords: ['Dataflow', 'BigQuery']
 ---
@@ -18,13 +18,10 @@ import dataflow_extended_template_form from '@site/static/images/integrations/da
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+BigQuery to ClickHouse Template은 BigQuery 테이블의 데이터를 ClickHouse 테이블로 수집하는 배치 파이프라인입니다.
+이 Template은 전체 테이블을 읽거나, 제공된 SQL 쿼리를 사용해 특정 레코드만 필터링할 수 있습니다.
 
-# Dataflow BigQuery to ClickHouse 템플릿 \{#dataflow-bigquery-to-clickhouse-template\}
-
-BigQuery to ClickHouse 템플릿은 BigQuery 테이블에서 ClickHouse 테이블로 데이터를 수집하는 배치 파이프라인입니다.
-이 템플릿은 전체 테이블을 읽거나 제공된 SQL 쿼리를 사용하여 특정 레코드만 필터링할 수 있습니다.
-
-<TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## 파이프라인 요구 사항 \{#pipeline-requirements\}
 

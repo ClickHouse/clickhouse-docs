@@ -1,19 +1,16 @@
 ---
 slug: /guides/sre/tls/configuring-tls
-sidebar_label: 'TLS の構成'
+sidebar_label: 'TLS の設定'
 sidebar_position: 20
-title: 'TLS の構成'
-description: 'このガイドでは、ClickHouse が接続を検証するために OpenSSL 証明書を使用するための、シンプルで最小限の設定方法を説明します。'
-keywords: ['SSL 構成', 'TLS 設定', 'OpenSSL 証明書', 'セキュアな接続', 'SRE 向けガイド']
+title: 'TLS の設定'
+description: 'このガイドでは、ClickHouse が接続を検証するために OpenSSL 証明書を使用するよう構成するための、シンプルで最小限の設定方法を説明します。'
+keywords: ['SSL 設定', 'TLS セットアップ', 'OpenSSL 証明書', 'セキュアな接続', 'SRE ガイド']
 doc_type: 'guide'
 ---
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
-
-
-# TLS の設定 \{#configuring-tls\}
 
 <SelfManaged />
 

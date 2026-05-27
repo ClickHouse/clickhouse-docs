@@ -11,12 +11,9 @@ keywords: ['backups', 'disaster recovery', 'data protection', 'restore', 'Cloud 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# 명령을 사용해 백업 생성 또는 복원하기 \{#commands-experience\}
-
-`BACKUP` 및 `RESTORE` 명령어를 사용해 백업을 스토리지 버킷으로 내보낼 수 있으며,
-[사용자 인터페이스를 통해 백업하거나 복원](/cloud/manage/backups/backup-restore-via-ui)할 수도 있습니다.
-이 가이드에서는 3개 주요 CSP 모두에 대한 명령을 제공합니다.
+`BACKUP` 및 `RESTORE` 명령을 사용하면 백업을 스토리지 버킷으로 내보낼 수 있으며,
+[사용자 인터페이스를 통해](/cloud/manage/backups/backup-restore-via-ui) 백업하거나 복원하는 방법도 사용할 수 있습니다.
+이 가이드에서는 3개의 CSP 모두에 대한 명령을 제공합니다.
 
 ## 요구 사항 \{#requirements\}
 

@@ -22,16 +22,13 @@ import splunk_011 from '@site/static/images/integrations/tools/data-integration/
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Хранение журналов аудита ClickHouse Cloud в Splunk \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
-
 <PartnerBadge />
 
-[Splunk](https://www.splunk.com/) — это платформа для аналитики данных и мониторинга.
+[Splunk](https://www.splunk.com/) — это платформа для анализа данных и мониторинга.
 
-Это дополнение позволяет пользователям сохранять [журналы аудита ClickHouse Cloud](/cloud/security/audit-logging) в Splunk. Оно использует [ClickHouse Cloud API](/cloud/manage/api/api-overview) для выгрузки журналов аудита.
+Это дополнение позволяет хранить [журналы аудита ClickHouse Cloud](/cloud/security/audit-logging) в Splunk. Для загрузки журналов аудита используется [ClickHouse Cloud API](/cloud/manage/api/api-overview).
 
-Это дополнение содержит только модульный ввод (modular input); никаких дополнительных пользовательских интерфейсов оно не предоставляет.
+Это дополнение включает только модульный ввод; дополнительный пользовательский интерфейс не предусмотрен.
 
 # Установка \{#installation\}
 

@@ -9,8 +9,6 @@ doc_type: 'reference'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# Справочник по метрикам \{#metrics-reference\}
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-metrics-beta" />
 
 На этой странице перечислены все метрики, доступные через

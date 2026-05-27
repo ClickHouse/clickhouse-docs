@@ -12,13 +12,11 @@ integration:
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Подключение Middleware к ClickHouse \{#connecting-middleware-to-clickhouse\}
-
 <PartnerBadge />
 
-[Middleware](https://middleware.io/) — это облачная платформа обсервабилити для мониторинга инфраструктуры, логов и производительности приложений.
+[Middleware](https://middleware.io/) — это облачная платформа обсервабилити для мониторинга инфраструктуры, журналов и производительности приложений.
 
-Вы можете подключить ClickHouse к Middleware, чтобы собирать и визуализировать телеметрию базы данных в рамках более широких сценариев мониторинга.
+Вы можете подключить ClickHouse к Middleware, чтобы собирать и визуализировать телеметрию базы данных в рамках более широких задач мониторинга.
 
 ## Предварительные требования \{#prerequisites\}
 

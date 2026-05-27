@@ -13,8 +13,6 @@ import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse のデータスキッピングインデックスを理解する \{#understanding-clickhouse-data-skipping-indexes\}
-
 ## はじめに \{#introduction\}
 
 ClickHouse のクエリパフォーマンスには多くの要因が影響します。ほとんどのシナリオにおいて重要となる要素は、クエリの `WHERE` 句条件を評価する際に、ClickHouse がプライマリキーを使用できるかどうかです。したがって、最も一般的なクエリパターンに適用できるプライマリキーを選択することは、効果的なテーブル設計において不可欠です。

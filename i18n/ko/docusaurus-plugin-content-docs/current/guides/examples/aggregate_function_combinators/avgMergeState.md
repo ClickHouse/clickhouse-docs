@@ -10,11 +10,6 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# avgMergeState \{#avgMergeState\}
-
-
-
 ## 설명 \{#description\}
 
 [`MergeState`](/sql-reference/aggregate-functions/combinators#-state) 조합자는
@@ -22,11 +17,9 @@ import TabItem from '@theme/TabItem';
 함수에 적용해 `AverageFunction(avg, T)` 타입의 부분 집계 상태를 병합하고
 새로운 중간 집계 상태를 반환합니다.
 
-
-
 ## 사용 예시 \{#example-usage\}
 
-`MergeState` 조합기는 다단계 집계 시나리오에서 특히 유용합니다. 사전 집계된 상태를 결합하고, 이후 처리를 위해 이를 (최종 결과로 확정하지 않고) 상태로 유지해야 할 때 적합합니다. 이를 설명하기 위해, 개별 서버 성능 메트릭을 여러 수준에 걸친 계층적 집계로 변환하는 예시를 살펴보겠습니다: 서버 수준 → 리전 수준 → 데이터센터 수준.
+`MergeState` 조합자는 다단계 집계 시나리오에서 특히 유용합니다. 사전 집계된 상태를 결합하고, 이후 처리를 위해 이를 (최종 결과로 확정하지 않고) 상태로 유지해야 할 때 적합합니다. 이를 설명하기 위해, 개별 서버 성능 메트릭을 여러 수준에 걸친 계층적 집계로 변환하는 예시를 살펴보겠습니다: 서버 수준 → 리전 수준 → 데이터센터 수준.
 
 먼저 원시 데이터를 저장할 테이블을 생성합니다:
 
@@ -107,7 +100,7 @@ FROM region_performance
 GROUP BY datacenter;
 ```
 
-이제 소스 테이블에 샘플 원시 데이터를 삽입합니다.
+이제 소스 테이블에 샘플 원시 데이터를 삽입합니다:
 
 ```sql
 INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, response_time_ms) VALUES
@@ -121,7 +114,6 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 ```
 
 각 레벨에 대해 세 개의 쿼리를 작성합니다.
-
 
 <Tabs>
   <TabItem value="Service level" label="서비스 수준" default>
@@ -196,7 +188,7 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
 ```
 
 데이터센터 수준의 성능을 다시 한 번 확인해 보겠습니다. 전체
-집계 체인이 자동으로 업데이트된 점에 주목하십시오.
+집계 체인이 자동으로 업데이트된 점에 주목하십시오:
 
 ```sql
 SELECT
@@ -214,9 +206,9 @@ ORDER BY datacenter;
 └────────────┴────────────────────┘
 ```
 
-
 ## 참고 \{#see-also\}
-- [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
-- [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
-- [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)
+
+* [`avg`](/sql-reference/aggregate-functions/reference/avg)
+* [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+* [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
+* [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)

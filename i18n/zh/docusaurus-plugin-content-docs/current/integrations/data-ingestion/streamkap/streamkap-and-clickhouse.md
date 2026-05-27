@@ -1,9 +1,9 @@
 ---
 sidebar_label: '将 Streamkap 连接到 ClickHouse'
 sidebar_position: 11
-keywords: ['clickhouse', 'Streamkap', 'CDC', '连接', '集成', 'ETL', '数据集成']
+keywords: ['ClickHouse', 'Streamkap', 'CDC', '连接', '集成', 'etl', '数据集成', '变更数据捕获']
 slug: /integrations/sttreamkap
-description: '使用 Airbyte 数据管道将流数据摄取到 ClickHouse'
+description: '使用 Airbyte 数据管道将数据流入 ClickHouse'
 
 title: '将 Streamkap 连接到 ClickHouse'
 doc_type: 'guide'
@@ -16,14 +16,11 @@ integration:
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# 将 Streamkap 连接到 ClickHouse \{#connect-streamkap-to-clickhouse\}
+<a href="https://www.streamkap.com/" target="_blank">Streamkap</a> 是一个实时数据集成平台，专注于 CDC（变更数据捕获） 流式传输和流处理。它构建在使用 Apache Kafka、Apache Flink 和 Debezium 的高吞吐量、可扩展技术栈之上，并以 SaaS 或 BYOC (Bring Your Own Cloud，自带 Cloud) 部署形式提供全托管服务。
 
-<PartnerBadge/>
-
-<a href="https://www.streamkap.com/" target="_blank">Streamkap</a> 是一个实时数据集成平台，专注于 CDC（变更数据捕获）流式传输和流处理。它构建在使用 Apache Kafka、Apache Flink 和 Debezium 的高吞吐量、可扩展技术栈之上，并以 SaaS 或 BYOC（Bring Your Own Cloud，自带 Cloud）部署形式提供全托管服务。 
-
-Streamkap 允许将来自 PostgreSQL、MySQL、SQL Server、MongoDB 等源数据库以及<a href="https://streamkap.com/connectors" target="_blank">更多</a>数据源的每一次插入、更新和删除，以毫秒级延迟直接流式传输到 ClickHouse 中。 
+Streamkap 允许将来自 PostgreSQL、MySQL、SQL Server、MongoDB 等源数据库以及<a href="https://streamkap.com/connectors" target="_blank">更多</a>数据源的每一次插入、更新和删除，以毫秒级延迟直接流式传输到 ClickHouse 中。
 
 因此，它非常适合支撑实时分析型仪表盘、运营分析，以及为机器学习模型持续提供实时数据。
 

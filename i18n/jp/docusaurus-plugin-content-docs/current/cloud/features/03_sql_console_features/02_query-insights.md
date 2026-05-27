@@ -14,10 +14,7 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-
-# クエリインサイト \{#query-insights\}
-
-**クエリインサイト** 機能は、可視化やテーブルを通じて、ClickHouse の組み込みクエリログをより簡単に利用できるようにします。ClickHouse の `system.query_log` テーブルは、クエリの最適化、デバッグ、クラスタ全体の健全性とパフォーマンスの監視にとって重要な情報源です。
+The **クエリインサイト** 機能により、ClickHouse に組み込まれているクエリログを、可視化とテーブルを通じてより簡単に活用できます。ClickHouse の `system.query_log` テーブルは、クエリの最適化、デバッグ、そしてクラスター全体の健全性とパフォーマンスの監視において重要な情報源です。
 
 ## クエリ概要 \{#query-overview\}
 

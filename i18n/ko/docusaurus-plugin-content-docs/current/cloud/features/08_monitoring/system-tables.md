@@ -1,5 +1,5 @@
 ---
-title: '시스템 테이블 쿼리하기'
+title: 'ClickHouse의 system 데이터베이스 쿼리하기'
 slug: /cloud/monitoring/system-tables
 description: '시스템 테이블을 직접 쿼리해 ClickHouse Cloud 모니터링하기'
 keywords: ['클라우드', '모니터링', '시스템 테이블', 'query_log', 'clusterAllReplicas', '관측성 대시보드']
@@ -11,16 +11,13 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 
+모든 ClickHouse 인스턴스에는 `system` 데이터베이스에 포함된 [시스템 테이블](/operations/system-tables/overview) 집합이 기본으로 제공되며, 여기에는 다음 정보가 포함됩니다.
 
-# ClickHouse의 system 데이터베이스 쿼리 \{#querying-clickhouses-system-database\}
+* 서버 상태, 프로세스 및 환경
+* 서버의 내부 프로세스
+* ClickHouse 바이너리를 빌드할 때 사용된 옵션
 
-모든 ClickHouse 인스턴스에는 다음에 대한 정보를 담고 있는 `system` 데이터베이스의 [시스템 테이블](/operations/system-tables/overview) 집합이 함께 제공됩니다.
-
-- 서버 상태, 프로세스 및 환경.
-- 서버의 내부 프로세스.
-- ClickHouse 바이너리가 빌드될 때 사용된 옵션.
-
-이러한 테이블을 직접 쿼리하는 것은 ClickHouse 배포를 모니터링하는 데 유용하며, 특히 심층적인 내부 분석과 디버깅에 도움이 됩니다.
+이 테이블을 직접 쿼리하면 ClickHouse 배포를 모니터링하는 데 유용하며, 특히 심층적인 내부 검사와 디버깅에 도움이 됩니다.
 
 ## ClickHouse Cloud 콘솔 사용하기 \{#using-cloud-console\}
 

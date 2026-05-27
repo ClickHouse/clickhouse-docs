@@ -20,8 +20,6 @@ import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 
-# 참고 \{#reference\}
-
 ## 지원되는 데이터 소스 \{#supported-data-sources\}
 
 | 이름                 |Logo|유형| 상태           | 설명                                                                                                   |

@@ -1,5 +1,5 @@
 ---
-title: 'Интеграция OpenTelemetry'
+title: 'Интеграция OpenTelemetry для сбора данных'
 description: 'Интеграция OpenTelemetry и ClickHouse для обсервабилити'
 slug: /observability/integrating-opentelemetry
 keywords: ['Обсервабилити', 'OpenTelemetry']
@@ -16,14 +16,11 @@ import observability_8 from '@site/static/images/use-cases/observability/observa
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
 
+Любое решение для обсервабилити требует средства для сбора и экспорта журналов и трейсов. Для этой цели ClickHouse рекомендует [проект OpenTelemetry (OTel)](https://opentelemetry.io/).
 
-# Интеграция OpenTelemetry для сбора данных \{#integrating-opentelemetry-for-data-collection\}
+&quot;OpenTelemetry — это фреймворк и набор инструментов для обсервабилити, предназначенный для создания и управления данными телеметрии, такими как трейсы, метрики и журналы.&quot;
 
-Любому решению для обсервабилити требуется средство для сбора и экспорта логов и трейсов. Для этой цели ClickHouse рекомендует [проект OpenTelemetry (OTel)](https://opentelemetry.io/).
-
-«OpenTelemetry — это фреймворк и набор инструментов для обсервабилити, предназначенный для создания и управления телеметрическими данными, такими как трейсы, метрики и логи».
-
-В отличие от ClickHouse или Prometheus, OpenTelemetry не является backend-системой для обсервабилити, а фокусируется на генерации, сборе, управлении и экспорте телеметрических данных. Хотя изначальной целью OpenTelemetry было обеспечить простую инструментацию ваших приложений или систем с использованием языковых SDKs, его возможности были расширены и теперь включают сбор логов с помощью OpenTelemetry collector — агента или прокси, который принимает, обрабатывает и экспортирует телеметрические данные.
+В отличие от ClickHouse или Prometheus, OpenTelemetry не является backend-решением для обсервабилити, а вместо этого фокусируется на генерации, сборе, управлении и экспорте данных телеметрии. Хотя изначальной целью OpenTelemetry было упростить инструментацию приложений или систем с помощью SDK для конкретных языков, со временем он также стал включать сбор журналов через OpenTelemetry Collector — агент или прокси, который получает, обрабатывает и экспортирует данные телеметрии.
 
 ## Компоненты, относящиеся к ClickHouse \{#clickhouse-relevant-components\}
 

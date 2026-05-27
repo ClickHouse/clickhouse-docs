@@ -13,14 +13,11 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-
-# Интеграция Google Cloud Storage с ClickHouse \{#integrate-google-cloud-storage-with-clickhouse\}
-
 :::note
-Если вы используете ClickHouse Cloud в [Google Cloud](https://cloud.google.com), эта страница к вам не относится, так как ваши сервисы уже используют [Google Cloud Storage](https://cloud.google.com/storage). Если вы хотите выполнять `SELECT` или `INSERT` данных из GCS, обратитесь к табличной функции [`gcs`](/sql-reference/table-functions/gcs).
+Если вы используете ClickHouse Cloud в [Google Cloud](https://cloud.google.com), эта страница к вам не относится, поскольку ваши сервисы уже используют [Google Cloud Storage](https://cloud.google.com/storage). Если вы хотите выполнить `SELECT` или `INSERT` данных из GCS, см. [табличную функцию `gcs`](/sql-reference/table-functions/gcs).
 :::
 
-В ClickHouse GCS рассматривается как привлекательное решение для хранения данных для пользователей, стремящихся разделить хранение и вычисления. Для этого реализована поддержка использования GCS в качестве хранилища для движка MergeTree. Это позволит пользователям использовать масштабируемость и экономические преимущества GCS, а также производительность вставки и выполнения запросов движка MergeTree.
+ClickHouse рассматривает GCS как привлекательное решение для хранения данных, если вам нужно разделить хранилище и compute. Для этого предусмотрена поддержка использования GCS в качестве хранилища для движка MergeTree. Это позволяет использовать преимущества GCS с точки зрения масштабируемости и стоимости, сохраняя при этом производительность движка MergeTree при вставке данных и выполнении запросов.
 
 ## MergeTree с хранилищем в GCS \{#gcs-backed-mergetree\}
 

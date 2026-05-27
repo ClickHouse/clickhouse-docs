@@ -22,23 +22,22 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 用于 Grafana 的 ClickHouse 数据源插件 \{#clickhouse-data-source-plugin-for-grafana\}
+<ClickHouseSupportedBadge />
 
-<ClickHouseSupportedBadge/>
+借助 Grafana，您可以通过仪表盘探索和共享所有数据。
+Grafana 需要使用插件连接到 ClickHouse，并且可以在其 UI 中轻松安装该插件。
 
-使用 Grafana，您可以通过仪表盘探索和共享所有数据。
-Grafana 需要安装一个插件才能连接到 ClickHouse，并且可以在其 UI 中轻松完成安装。
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/bRce9xWiqQM"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/bRce9xWiqQM"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 1. 收集连接详细信息 \{#1-gather-your-connection-details\}

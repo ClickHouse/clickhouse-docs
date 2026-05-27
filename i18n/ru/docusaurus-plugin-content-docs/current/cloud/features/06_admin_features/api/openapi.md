@@ -2,9 +2,9 @@
 sidebar_label: 'Управление ключами API'
 slug: /cloud/manage/openapi
 title: 'Управление ключами API'
-description: 'ClickHouse Cloud предоставляет API, использующее OpenAPI и позволяющее программно управлять вашей учетной записью и различными параметрами ваших сервисов.'
+description: 'ClickHouse Cloud предоставляет API на основе OpenAPI, который позволяет программно управлять вашей учетной записью и различными параметрами ваших сервисов.'
 doc_type: 'guide'
-keywords: ['api', 'openapi', 'rest api', 'документация', 'управление облаком']
+keywords: ['api', 'openapi', 'rest api', 'документация', 'управление Cloud']
 ---
 
 import image_01 from '@site/static/images/cloud/manage/openapi1.png';
@@ -14,13 +14,10 @@ import image_04 from '@site/static/images/cloud/manage/openapi4.png';
 import image_05 from '@site/static/images/cloud/manage/openapi5.png';
 import Image from '@theme/IdealImage';
 
-
-# Управление ключами API \{#managing-api-keys\}
-
 ClickHouse Cloud предоставляет API на основе OpenAPI, который позволяет программно управлять вашей учетной записью и различными параметрами ваших сервисов.
 
 :::note
-В этом документе рассматривается ClickHouse Cloud API. Об API-эндпойнтах базы данных см. [Cloud Endpoints API](/cloud/get-started/query-endpoints)
+В этом документе рассматривается ClickHouse Cloud API. О конечных точках API базы данных см. [Cloud Endpoints API](/cloud/get-started/query-endpoints)
 :::
 
 1. Вы можете использовать вкладку **API Keys** в левом меню для создания и управления своими ключами API.
@@ -67,7 +64,6 @@ $ curl --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations
 :::
 
 <Image img={image_05} size="md" alt="Страница управления API-ключами" border />
-
 
 ## Конечные точки \{#endpoints\}
 

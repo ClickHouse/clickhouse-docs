@@ -1,5 +1,5 @@
 ---
-title: 'DataStore - Pandas 兼容 API'
+title: 'DataStore：Pandas 兼容 API，支持 SQL 优化'
 sidebar_label: '概览'
 slug: /chdb/datastore
 description: 'DataStore 提供兼容 Pandas 的 API，并利用 SQL 优化实现高性能数据分析'
@@ -10,9 +10,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import data_store from '@site/static/images/chdb/datastore_architecture.png'
 
-# DataStore：Pandas 兼容 API 与 SQL 优化 \{#datastore-pandas-compatible-api-with-sql-optimization\}
-
-DataStore 是 chDB 提供的、与 pandas 兼容的 API，它将熟悉的 pandas DataFrame 接口与 SQL 查询优化的强大能力相结合，并允许你使用 pandas 风格的代码，同时获得 ClickHouse 级别的性能。
+DataStore 是 chDB 的 pandas 兼容 API，它将熟悉的 pandas DataFrame 接口与 SQL 查询优化能力相结合，让您能够编写 pandas 风格的代码，同时获得 ClickHouse 级别的性能。
 
 ## 关键特性 \{#key-features\}
 

@@ -1,7 +1,7 @@
 ---
-title: '设计 JSON 模式'
+title: '设计你的 schema'
 slug: /integrations/data-formats/json/schema
-description: '如何优化设计 JSON 模式'
+description: '如何优化设计 JSON schema'
 keywords: ['json', 'ClickHouse', '插入', '加载', '格式', '模式', '结构化', '半结构化']
 score: 20
 doc_type: 'guide'
@@ -12,10 +12,7 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
-
-# 设计你的 schema \{#designing-your-schema\}
-
-虽然可以使用 [schema inference](/integrations/data-formats/json/inference) 为 JSON 数据建立初始 schema，并直接对存储在 S3 等位置的 JSON 数据文件进行查询，但你应当为数据建立一个经过优化并具备版本管理的 schema。下面我们将讨论对 JSON 结构建模的推荐方法。
+虽然可以使用[schema 推断](/integrations/data-formats/json/inference)为 JSON 数据建立初始 schema，并直接查询原地存储的 JSON 数据文件 (例如 S3 中的文件) ，但你应当尽力为数据建立经过优化且带版本的 schema。下面我们将讨论对 JSON 结构进行建模的推荐方法。
 
 ## 静态 JSON 与动态 JSON \{#static-vs-dynamic-json\}
 

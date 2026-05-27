@@ -24,20 +24,17 @@ import splunk_9 from '@site/static/images/integrations/splunk/splunk-9.png';
 import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# 将 Splunk 连接到 ClickHouse \{#connecting-splunk-to-clickhouse\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 :::tip
-想要将 ClickHouse 审计日志存储到 Splunk 吗？请参阅 ["Storing ClickHouse Cloud Audit logs into Splunk"](/integrations/audit-splunk) 指南。
+想将 ClickHouse 审计日志存储到 Splunk 中？请按照[“将 ClickHouse Cloud 审计日志存入 Splunk”](/integrations/audit-splunk)指南操作。
 :::
 
-Splunk 是一款广泛使用的安全与可观测性技术平台，同时也是一个强大的搜索与仪表盘引擎。Splunk 生态中有数百款应用，可用于满足不同的使用场景。
+Splunk 是一种广受欢迎的安全与可观测性技术。它也是一个强大的搜索和仪表板引擎。Splunk 提供了数百个应用，可满足不同的使用场景。
 
-对于 ClickHouse，我们使用 [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686)，它可以与高性能的 ClickHouse JDBC 驱动实现简单集成，从而直接查询 ClickHouse 中的表。
+对于 ClickHouse，我们使用的是 [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686)，它可与高性能的 ClickHouse JDBC 驱动程序轻松集成，从而直接查询 ClickHouse 中的表。
 
-此集成的理想用例是：当您使用 ClickHouse 存储大规模数据源时，例如 NetFlow、Avro 或 Protobuf 二进制数据、DNS、VPC 流日志，以及其他可以在 Splunk 中与团队共享、用于搜索和构建仪表盘的 OTel 日志。通过这种方式，数据不会被摄取到 Splunk 的索引层中，而是类似于 [Metabase](https://www.metabase.com/) 或 [Superset](https://superset.apache.org/) 等其他可视化集成一样，直接从 ClickHouse 中进行查询。
+此集成的理想使用场景是：当你使用 ClickHouse 处理大型数据源时，例如 NetFlow、Avro 或 Protobuf 二进制数据、DNS、VPC 流日志以及其他 OTel 日志，并希望在 Splunk 中与团队共享这些数据以进行搜索和创建仪表板。采用这种方式后，数据不会被摄取到 Splunk 的索引层，而是像 [Metabase](https://www.metabase.com/) 或 [Superset](https://superset.apache.org/) 等其他可视化集成一样，直接从 ClickHouse 查询。
 
 ## 目标​ \{#goal\}
 

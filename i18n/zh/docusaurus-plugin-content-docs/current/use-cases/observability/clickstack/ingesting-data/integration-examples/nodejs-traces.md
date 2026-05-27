@@ -19,11 +19,8 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 Node.js Trace \{#nodejs-traces-clickstack\}
-
-:::note[TL;DR]
-使用 OpenTelemetry 自动埋点，在 ClickStack 中采集来自 Node.js 应用的分布式链路追踪。包含演示数据集和预置仪表板。
+:::note[简而言之]
+使用 OpenTelemetry 自动埋点将 Node.js 应用的分布式链路追踪采集到 ClickStack 中。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 Node.js 应用集成 \{#existing-nodejs\}

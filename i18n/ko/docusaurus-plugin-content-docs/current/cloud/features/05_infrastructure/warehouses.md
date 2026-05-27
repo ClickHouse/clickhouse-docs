@@ -16,9 +16,6 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
-
-# 웨어하우스 \{#warehouses\}
-
 <ScalePlanFeatureBadge feature="컴퓨트-컴퓨트 분리" />
 
 ## 컴퓨트-컴퓨트 분리란 무엇인가요? \{#what-is-compute-compute-separation\}

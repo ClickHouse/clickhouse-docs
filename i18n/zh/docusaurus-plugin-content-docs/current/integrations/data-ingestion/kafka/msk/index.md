@@ -2,7 +2,7 @@
 sidebar_label: 'Amazon MSK 与 Kafka Connector Sink'
 sidebar_position: 1
 slug: /integrations/kafka/cloud/amazon-msk/
-description: 'ClickHouse 官方推出的、适用于 Amazon MSK 的 Kafka 连接器'
+description: 'ClickHouse 官方 Kafka 连接器（适用于 Amazon MSK）'
 keywords: ['integration', 'kafka', 'amazon msk', 'sink', 'connector']
 title: '将 Amazon MSK 与 ClickHouse 集成'
 doc_type: 'guide'
@@ -13,21 +13,20 @@ integration:
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# 将 Amazon MSK 与 ClickHouse 集成 \{#integrating-amazon-msk-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/6lKI_WlQ3-s"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
-> 注意：视频中展示的策略权限较为宽松，仅用于快速入门。请参阅下文基于最小权限原则的 IAM 指南。
+> 注意：视频中显示的策略较为宽松，仅适用于快速入门。请参阅下方关于最小权限原则的 IAM 指南。
 
 ## 前提条件 \{#prerequisites\}
 

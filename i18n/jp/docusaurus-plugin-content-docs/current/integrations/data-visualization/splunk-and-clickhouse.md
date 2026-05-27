@@ -24,20 +24,17 @@ import splunk_9 from '@site/static/images/integrations/splunk/splunk-9.png';
 import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Splunk と ClickHouse の接続 \{#connecting-splunk-to-clickhouse\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 :::tip
-ClickHouse Cloud の監査ログを Splunk に保存したい場合は、["Storing ClickHouse Cloud Audit logs into Splunk"](/integrations/audit-splunk) ガイドに従ってください。
+ClickHouse の監査ログを Splunk に保存したい場合は、[&quot;Storing ClickHouse Cloud Audit logs into Splunk&quot;](/integrations/audit-splunk) ガイドを参照してください。
 :::
 
-Splunk は、セキュリティおよびオブザーバビリティ向けに広く利用されているプラットフォームです。また、強力な検索およびダッシュボードエンジンでもあります。さまざまなユースケースに対応する数百もの Splunk アプリが提供されています。
+Splunk は、セキュリティとオブザーバビリティの分野で広く使われているテクノロジーです。また、強力な検索およびダッシュボード作成エンジンでもあります。さまざまなユースケースに対応する数百もの Splunk アプリが提供されています。
 
-ClickHouse 向けには、[Splunk DB Connect App](https://splunkbase.splunk.com/app/2686) を活用します。これは高性能な ClickHouse JDBC ドライバーと容易に統合でき、ClickHouse のテーブルを直接クエリできます。
+ClickHouse との連携では、[Splunk DB Connect App](https://splunkbase.splunk.com/app/2686) を使用します。このアプリは、高性能な ClickHouse JDBC ドライバーとシンプルに統合でき、ClickHouse 内のテーブルに対して直接クエリを実行できます。
 
-この統合の理想的なユースケースは、NetFlow、Avro や Protobuf バイナリデータ、DNS、VPC フローログ、その他の OTel ログといった大規模なデータソースに ClickHouse を使用している場合です。これらを Splunk 上でチームと共有して検索やダッシュボード作成を行えます。このアプローチでは、データは Splunk のインデックス層には取り込まれず、[Metabase](https://www.metabase.com/) や [Superset](https://superset.apache.org/) などの他の可視化ツールとの連携と同様に、単に ClickHouse から直接クエリされます。
+この連携が特に適しているのは、NetFlow、Avro または Protobuf のバイナリデータ、DNS、VPC フローログ、その他の OTel ログといった大規模なログソースに ClickHouse を使用し、それらを Splunk 上でチームと共有して検索やダッシュボード作成を行う場合です。この方法では、データは Splunk の索引レイヤーに取り込まれず、[Metabase](https://www.metabase.com/) や [Superset](https://superset.apache.org/) のような他の可視化連携と同様に、ClickHouse に対して直接クエリするだけで済みます。
 
 ## 目標​ \{#goal\}
 

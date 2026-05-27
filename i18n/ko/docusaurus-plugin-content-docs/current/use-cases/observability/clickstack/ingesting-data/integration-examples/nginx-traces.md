@@ -17,11 +17,8 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack를 사용한 Nginx 트레이스 모니터링 \{#nginx-traces-clickstack\}
-
-:::note[TL;DR]
-OpenTelemetry Nginx 모듈을 사용하여 ClickStack에서 Nginx의 분산 트레이스를 수집합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
+:::note[요약]
+OpenTelemetry Nginx 모듈을 사용해 ClickStack에서 Nginx 분산 트레이스를 수집합니다. 데모용 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 Nginx와의 통합 \{#existing-nginx\}

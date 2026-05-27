@@ -34,8 +34,6 @@ import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse 프라이머리 인덱스에 대한 실용적인 소개 \{#a-practical-introduction-to-primary-indexes-in-clickhouse\}
-
 ## 소개 \{#introduction\}
 
 이 가이드에서는 ClickHouse 인덱싱을 심층적으로 살펴봅니다. 다음 주제를 예시와 함께 자세히 설명합니다:

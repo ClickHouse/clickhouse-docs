@@ -13,12 +13,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Интеграция ClickHouse с Databricks \{#integrating-clickhouse-with-databricks\}
-
-<ClickHouseSupportedBadge/>
-
-Коннектор ClickHouse Spark полностью совместим с Databricks. В этом руководстве рассматриваются настройка, установка и сценарии использования коннектора в Databricks с учетом особенностей платформы.
+Коннектор ClickHouse Spark без проблем работает с Databricks. В этом руководстве рассматриваются настройка, установка и сценарии использования для платформы Databricks.
 
 ## Выбор API для Databricks \{#api-selection\}
 

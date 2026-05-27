@@ -34,8 +34,6 @@ import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse 主键索引实用入门指南 \{#a-practical-introduction-to-primary-indexes-in-clickhouse\}
-
 ## 引言 \{#introduction\}
 
 在本指南中，我们将深入探讨 ClickHouse 的索引机制。我们将详细说明并讨论：

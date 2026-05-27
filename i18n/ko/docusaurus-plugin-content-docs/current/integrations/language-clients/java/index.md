@@ -1,5 +1,5 @@
 ---
-title: 'Java'
+title: 'Java 클라이언트 개요'
 sidebar_position: 1
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: 'Java에서 ClickHouse에 연결하는 다양한 옵션'
@@ -13,11 +13,9 @@ integration:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Java 클라이언트 개요 \{#java-clients-overview\}
-
-- [Client 0.8+](./client/client.mdx)
-- [JDBC 0.8+](./jdbc/jdbc.mdx)
-- [R2DBC Driver](./r2dbc.md)
+* [Client 0.8+](./client/client.mdx)
+* [JDBC 0.8+](./jdbc/jdbc.mdx)
+* [R2DBC 드라이버](./r2dbc.md)
 
 ## ClickHouse client \{#clickhouse-client\}
 

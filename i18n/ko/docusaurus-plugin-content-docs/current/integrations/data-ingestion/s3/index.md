@@ -17,10 +17,7 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse와 S3 통합 \{#integrating-s3-with-clickhouse\}
-
-S3에서 ClickHouse로 데이터를 삽입할 수 있으며, S3를 내보내기 대상(export destination)으로도 사용할 수 있어 「데이터 레이크(data lake)」 아키텍처와 상호 작용할 수 있습니다. 또한 S3는 「콜드(cold)」 스토리지 계층을 제공하고 스토리지와 컴퓨팅을 분리하는 데 도움을 줄 수 있습니다. 아래 섹션에서는 뉴욕시 택시 데이터 세트를 사용하여 S3와 ClickHouse 간에 데이터를 이동하는 과정을 보여 주고, 주요 설정 파라미터를 제시하며 성능 최적화에 대한 팁을 제공합니다.
+S3의 데이터를 ClickHouse에 삽입할 수 있으며, S3를 내보내기 대상으로도 사용할 수 있으므로 &quot;데이터 레이크&quot; 아키텍처와 연동할 수 있습니다. 또한 S3는 &quot;콜드&quot; 스토리지 계층을 제공하고 스토리지와 컴퓨트를 분리하는 데 도움을 줄 수 있습니다. 아래 섹션에서는 New York City 택시 데이터셋을 사용하여 S3와 ClickHouse 간에 데이터를 이동하는 과정을 보여주고, 주요 구성 매개변수를 식별하며, 성능 최적화에 관한 힌트를 제공합니다.
 
 ## S3 테이블 함수 \{#s3-table-functions\}
 

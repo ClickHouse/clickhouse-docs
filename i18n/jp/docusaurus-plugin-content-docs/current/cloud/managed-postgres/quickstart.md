@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/quickstart
 sidebar_label: 'クイックスタート'
-title: 'クイックスタート'
+title: 'Managed Postgres のクイックスタート'
 description: 'NVMe によって強化された Postgres のパフォーマンスを体験し、ClickHouse 連携でリアルタイム分析を追加します'
 keywords: ['managed postgres', 'クイックスタート', 'はじめに', 'データベースの作成', 'nvme', 'パフォーマンス']
 doc_type: 'guide'
@@ -19,24 +19,22 @@ import getClickHouseHost from '@site/static/images/managed-postgres/get-clickhou
 import analyticsList from '@site/static/images/managed-postgres/analytics-list.png';
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
 
-# マネージド Postgres クイックスタート \{#quickstart-for-managed-postgres\}
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.quick-start-beta" />
 
-ClickHouse Managed Postgres は、NVMe ストレージを基盤としたエンタープライズグレードの Postgres であり、EBS などのネットワーク接続ストレージと比較して、ディスクボトルネックのあるワークロードに対して最大 10 倍の高いパフォーマンスを提供します。このクイックスタートは次の 2 部構成です。
+ClickHouse Managed Postgres は、NVMe ストレージを基盤とするエンタープライズ向けの Postgres であり、EBS のようなネットワーク接続型ストレージと比べて、ディスクI/Oがボトルネックとなるワークロードで最大 10 倍高速なパフォーマンスを実現します。このクイックスタートは 2 つの部に分かれています。
 
-* **第1部:** NVMe Postgres を使い始め、そのパフォーマンスを体感する
-* **パート 2:** ClickHouse と連携してリアルタイム分析を実現する
+* **第1部:** NVMe Postgres を使い始め、その性能を体験する
+* **第2部:** ClickHouse と統合してリアルタイム分析を実現する
 
-Managed Postgres は現在、複数の AWS リージョンで利用可能で、プライベートプレビュー期間中は無料です。
+Managed Postgres は現在、AWS の複数のリージョンで利用でき、プライベートプレビュー期間中は無料です。
 
-**このクイックスタートでは、次のことを行います。**
+**このクイックスタートで行うこと:**
 
-* NVMe ベースの高性能な Managed Postgres インスタンスを作成する
-* 100 万件のサンプルイベントをロードして NVMe の速度を確認する
-* クエリを実行し、低レイテンシなパフォーマンスを体験する
-* リアルタイム分析のためにデータを ClickHouse にレプリケートする
-* `pg_clickhouse` を使用して Postgres から直接 ClickHouse にクエリを実行する
+* NVMe による高性能を備えた Managed Postgres インスタンスを作成する
+* 100 万件のサンプルイベントを読み込み、NVMe の速度を確認する
+* クエリを実行し、低レイテンシのパフォーマンスを体験する
+* リアルタイム分析のために ClickHouse にデータをレプリケートする
+* `pg_clickhouse` を使用して Postgres から ClickHouse に直接クエリする
 
 ## 第1部: NVMe Postgres の始め方 \{#part-1\}
 

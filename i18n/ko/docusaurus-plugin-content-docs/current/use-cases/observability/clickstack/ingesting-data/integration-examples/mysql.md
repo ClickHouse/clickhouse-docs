@@ -18,11 +18,8 @@ import finish_import from '@site/static/images/clickstack/mysql/finish-import.pn
 import example_dashboard from '@site/static/images/clickstack/mysql/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack를 사용한 MySQL 로그 모니터링 \{#mysql-logs-clickstack\}
-
-:::note[TL;DR]
-OTel `filelog` receiver를 사용해 ClickStack에서 MySQL 에러 로그와 슬로우 쿼리 로그를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
+:::note[요약]
+OTel `filelog` 수신기를 사용해 ClickStack에서 MySQL 오류 및 느린 쿼리 로그를 수집하고 시각화합니다. 데모 데이터셋과 사전 구축된 대시보드도 제공됩니다.
 :::
 
 ## 기존 MySQL과의 연동 \{#existing-mysql\}

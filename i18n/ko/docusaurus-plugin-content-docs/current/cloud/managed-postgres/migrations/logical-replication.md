@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/migrations/logical-replication
 sidebar_label: '논리적 복제'
-title: '논리적 복제를 사용하여 PostgreSQL 데이터 마이그레이션'
+title: '논리적 복제를 사용하여 Managed Postgres로 마이그레이션'
 description: '논리적 복제를 사용하여 PostgreSQL 데이터를 ClickHouse Managed Postgres로 마이그레이션하는 방법을 알아봅니다'
 keywords: ['postgres', 'postgresql', '논리적 복제', '마이그레이션', '데이터 전송', 'Managed Postgres']
 doc_type: 'guide'
@@ -15,9 +15,7 @@ import targetInitialSetup from '@site/static/images/managed-postgres/logical_rep
 import migrationResult from '@site/static/images/managed-postgres/logical_replication/migration-result.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
 
-# 논리적 복제를 사용하여 Managed Postgres로 마이그레이션하기 \{#logical-replication-migration\}
-
-이 가이드는 PostgreSQL 데이터베이스를 Postgres 네이티브 논리적 복제(logical replication)를 사용하여 ClickHouse Managed Postgres로 마이그레이션하는 방법을 단계별로 안내합니다.
+이 가이드에서는 Postgres의 네이티브 논리적 복제를 사용해 PostgreSQL 데이터베이스를 ClickHouse Managed Postgres로 마이그레이션하는 방법을 단계별로 안내합니다.
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.logical-replication-beta" />
 

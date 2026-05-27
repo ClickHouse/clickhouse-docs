@@ -15,15 +15,15 @@ import TabItem from '@theme/TabItem';
 
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# 소개 \{#introduction\}
+## 소개 \{#introduction\}
 
 ClickHouse Connect는 다양한 Python 애플리케이션과의 상호 운용성을 제공하는 핵심 데이터베이스 드라이버입니다.
 
-- 기본 인터페이스는 `clickhouse_connect.driver` 패키지의 `Client` 객체입니다. 해당 코어 패키지에는 ClickHouse 서버와 통신하는 데 사용되는 여러 보조 클래스와 유틸리티 함수, 그리고 insert 및 select 쿼리를 고급 수준에서 관리하기 위한 "context" 구현도 포함되어 있습니다.
-- `clickhouse_connect.datatypes` 패키지는 실험적이 아닌 모든 ClickHouse 데이터 타입에 대한 기본 구현과 서브클래스를 제공합니다. 주요 기능은 ClickHouse 데이터를 ClickHouse "Native" 바이너리 컬럼형 포맷으로 직렬화(Serialization) 및 역직렬화(Deserialization)하는 것으로, 이를 통해 ClickHouse와 클라이언트 애플리케이션 간에 가장 효율적인 전송을 달성합니다.
-- `clickhouse_connect.cdriver` 패키지의 Cython/C 클래스는 가장 일반적인 직렬화 및 역직렬화 작업 일부를 최적화하여 순수 Python 대비 성능을 크게 향상시킵니다.
-- `clickhouse_connect.cc_sqlalchemy` 패키지에는 `datatypes` 및 `dbi` 패키지를 기반으로 구축된 [SQLAlchemy](https://www.sqlalchemy.org/) dialect가 있습니다. 이 구현은 `JOIN`(`INNER`, `LEFT OUTER`, `FULL OUTER`, `CROSS`), `WHERE` 절, `ORDER BY`, `LIMIT`/`OFFSET`, `DISTINCT` 연산, `WHERE` 조건이 있는 경량 `DELETE` SQL 문, 테이블 리플렉션, 기본 DDL 작업(`CREATE TABLE`, `CREATE`/`DROP DATABASE`) 등을 포함한 SQLAlchemy Core 기능을 지원합니다. 고급 ORM 기능이나 고급 DDL 기능은 지원하지 않지만, ClickHouse의 OLAP 지향 데이터베이스에서 수행되는 대부분의 분석 워크로드에 적합한 강력한 쿼리 기능을 제공합니다.
-- 코어 드라이버와 [ClickHouse Connect SQLAlchemy](sqlalchemy.md) 구현은 ClickHouse를 Apache Superset에 연결하는 권장 방법입니다. `ClickHouse Connect` 데이터베이스 연결 또는 SQLAlchemy dialect용 `clickhousedb` 연결 문자열을 사용하십시오.
+* 기본 인터페이스는 `clickhouse_connect.driver` 패키지의 `Client` 객체입니다. 해당 코어 패키지에는 ClickHouse 서버와 통신하는 데 사용되는 여러 보조 클래스와 유틸리티 함수, 그리고 insert 및 select 쿼리를 고급 수준에서 관리하기 위한 &quot;context&quot; 구현도 포함되어 있습니다.
+* `clickhouse_connect.datatypes` 패키지는 실험적이 아닌 모든 ClickHouse 데이터 타입에 대한 기본 구현과 서브클래스를 제공합니다. 주요 기능은 ClickHouse 데이터를 ClickHouse &quot;Native&quot; 바이너리 컬럼형 포맷으로 직렬화(Serialization) 및 역직렬화(Deserialization)하는 것으로, 이를 통해 ClickHouse와 클라이언트 애플리케이션 간에 가장 효율적인 전송을 달성합니다.
+* `clickhouse_connect.cdriver` 패키지의 Cython/C 클래스는 가장 일반적인 직렬화 및 역직렬화 작업 일부를 최적화하여 순수 Python 대비 성능을 크게 향상시킵니다.
+* `clickhouse_connect.cc_sqlalchemy` 패키지에는 `datatypes` 및 `dbi` 패키지를 기반으로 구축된 [SQLAlchemy](https://www.sqlalchemy.org/) dialect가 있습니다. 이 구현은 `JOIN`(`INNER`, `LEFT OUTER`, `FULL OUTER`, `CROSS`), `WHERE` 절, `ORDER BY`, `LIMIT`/`OFFSET`, `DISTINCT` 연산, `WHERE` 조건이 있는 경량 `DELETE` SQL 문, 테이블 리플렉션, 기본 DDL 작업(`CREATE TABLE`, `CREATE`/`DROP DATABASE`) 등을 포함한 SQLAlchemy Core 기능을 지원합니다. 고급 ORM 기능이나 고급 DDL 기능은 지원하지 않지만, ClickHouse의 OLAP 지향 데이터베이스에서 수행되는 대부분의 분석 워크로드에 적합한 강력한 쿼리 기능을 제공합니다.
+* 코어 드라이버와 [ClickHouse Connect SQLAlchemy](sqlalchemy.md) 구현은 ClickHouse를 Apache Superset에 연결하는 권장 방법입니다. `ClickHouse Connect` 데이터베이스 연결 또는 SQLAlchemy dialect용 `clickhousedb` 연결 문자열을 사용하십시오.
 
 이 문서는 clickhouse-connect 0.9.2 릴리스를 기준으로 작성되었습니다.
 

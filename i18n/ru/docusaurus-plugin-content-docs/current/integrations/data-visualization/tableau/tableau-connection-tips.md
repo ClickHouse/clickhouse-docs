@@ -14,9 +14,7 @@ integration:
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Рекомендации по подключению \{#connection-tips\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 ## Вкладка Initial SQL \{#initial-sql-tab\}
 

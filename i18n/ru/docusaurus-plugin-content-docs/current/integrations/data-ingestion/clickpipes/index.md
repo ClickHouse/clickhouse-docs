@@ -30,8 +30,6 @@ import cp_custom_role from '@site/static/images/integrations/data-ingestion/clic
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-# Интеграция с ClickHouse Cloud \{#integrating-with-clickhouse-cloud\}
-
 ## Введение \{#introduction\}
 
 [ClickPipes](/integrations/clickpipes) — это управляемая интеграционная платформа данных, которая делает приём данных из широкого спектра источников таким же простым, как несколько щелчков мышью. Разработанная для самых требовательных нагрузок, надёжная и масштабируемая архитектура ClickPipes обеспечивает стабильную производительность и отказоустойчивость. ClickPipes можно использовать как для долгосрочных сценариев потоковой передачи данных, так и для разовых задач по загрузке данных.

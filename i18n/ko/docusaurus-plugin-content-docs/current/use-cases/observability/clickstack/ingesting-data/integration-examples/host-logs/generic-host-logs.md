@@ -20,11 +20,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# ClickStack를 사용한 호스트 로그 모니터링 \{#host-logs-clickstack\}
-
-:::note[TL;DR]
-OTel `filelog` receiver를 사용해 ClickStack에서 호스트 시스템 로그(syslog, auth, kernel)를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
+:::note[요약]
+OTel `filelog` 수신기를 사용해 ClickStack에서 호스트 시스템 로그(syslog, auth, kernel)를 수집하고 시각화합니다. 데모용 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 호스트와의 통합 \{#existing-hosts\}

@@ -10,12 +10,9 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# Настройка ClickHouse для использования LDAP при аутентификации и сопоставлении ролей \{#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping\}
-
 <SelfManaged />
 
-ClickHouse можно настроить на использование LDAP для аутентификации пользователей базы данных. В этом руководстве приведён простой пример интеграции ClickHouse с системой LDAP, которая аутентифицирует пользователей по общедоступному каталогу.
+ClickHouse можно настроить для использования LDAP для аутентификации пользователей базы данных ClickHouse. В этом руководстве приведен простой пример интеграции ClickHouse с системой LDAP, выполняющей аутентификацию по общедоступному каталогу.
 
 <VerticalStepper headerLevel="h2">
 

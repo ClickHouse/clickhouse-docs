@@ -15,10 +15,7 @@ import cp_step4 from '@site/static/images/integrations/data-ingestion/clickpipes
 import cp_step5 from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_step5.png';
 import Image from '@theme/IdealImage';
 
-
-# 最初の BigQuery ClickPipe の作成 \{#creating-your-first-bigquery-clickpipe\}
-
-<IntroClickPipe/>
+<IntroClickPipe />
 
 ## 前提条件 \{#pre-requisites\}
 
@@ -27,7 +24,7 @@ import Image from '@theme/IdealImage';
 * 初期ロード処理には、ステージング用としてユーザーが用意した Google Cloud Storage (GCS) バケットが必要です。[公式ドキュメント](https://docs.cloud.google.com/storage/docs/creating-buckets) に従い、ClickPipe 専用のバケットを作成することを推奨します。将来的には、中間バケットは ClickPipes によって提供および管理される予定です。
 
 <VerticalStepper type="numbered" headerLevel="h2">
-  ## データソースの選択
+  ## データソースの選択 \{#1-select-the-data-source\}
 
   **1.** ClickHouse Cloud のメインナビゲーションメニューから **Data sources** を選択し、**Create ClickPipe** をクリックします。
 
@@ -37,7 +34,7 @@ import Image from '@theme/IdealImage';
 
   <Image img={cp_step1} alt="BigQuery タイルの選択" size="lg" border />
 
-  ## ClickPipe 接続のセットアップ
+  ## ClickPipe 接続のセットアップ \{#2-setup-your-clickpipe-connection\}
 
   新しい ClickPipe をセットアップするには、BigQuery データウェアハウスへの接続方法と認証情報、さらにステージング用 GCS バケットの詳細を指定する必要があります。
 
@@ -51,11 +48,11 @@ import Image from '@theme/IdealImage';
 
   **4.** **Next** をクリックして検証します。
 
-  ## ClickPipe の設定
+  ## ClickPipe の設定 \{#3-configure-your-clickpipe\}
 
   BigQuery データセットのサイズや、同期したいテーブルの合計サイズによっては、ClickPipe のデフォルトのインジェスト設定を調整する必要がある場合があります。
 
-  ## テーブルの設定
+  ## テーブルの設定 \{#4-configure-tables\}
 
   **1.** BigQuery のテーブルをレプリケーションする ClickHouse データベースを選択します。既存のデータベースを選択することも、新規に作成することもできます。
 
@@ -71,7 +68,7 @@ import Image from '@theme/IdealImage';
 
   <Image img={cp_step4} alt="権限" size="lg" border />
 
-  ## 権限の設定
+  ## 権限の設定 \{#6-configure-permissions\}
 
   最後に、内部 ClickPipes ユーザーの権限を設定します。
 
@@ -80,7 +77,7 @@ import Image from '@theme/IdealImage';
   * `Full access`: クラスタへのフルアクセスを許可します。宛先テーブルで materialized views や Dictionary を使用する場合に必要です。
   * `Only destination`: 宛先テーブルへの挿入権限のみを許可します。
 
-  ## セットアップの完了
+  ## セットアップの完了 \{#7-complete-setup\}
 
   **Create ClickPipe** をクリックしてセットアップを完了します。Overview ページにリダイレクトされ、初期ロードの進行状況を確認し、BigQuery ClickPipes の詳細を参照できます。
 

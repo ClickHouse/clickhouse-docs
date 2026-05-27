@@ -10,10 +10,7 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-
-# データの非正規化 \{#denormalizing-data\}
-
-データの非正規化は、フラット化されたテーブルを使用して `JOIN` を回避し、クエリのレイテンシーを最小限に抑えるために ClickHouse で用いられる手法です。
+データの非正規化は、フラットなテーブルを使用して結合を回避し、クエリのレイテンシを最小限に抑える ClickHouse の手法です。
 
 ## 正規化スキーマと非正規化スキーマの比較 \{#comparing-normalized-vs-denormalized-schemas\}
 

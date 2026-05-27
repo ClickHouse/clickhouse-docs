@@ -21,15 +21,12 @@ import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbe
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Подключение DBeaver к ClickHouse \{#connect-dbeaver-to-clickhouse\}
-
-<PartnerBadge/>
-
-DBeaver доступен в нескольких редакциях. В этом руководстве используется [DBeaver Community](https://dbeaver.io/). С различными редакциями и их возможностями можно ознакомиться [здесь](https://dbeaver.com/edition/). DBeaver подключается к ClickHouse с помощью JDBC.
+DBeaver доступен в нескольких редакциях. В этом руководстве используется [DBeaver Community](https://dbeaver.io/). Сведения о различных редакциях и возможностях см. [здесь](https://dbeaver.com/edition/). DBeaver подключается к ClickHouse с помощью JDBC.
 
 :::note
-Используйте DBeaver версии 23.1.0 или новее для улучшенной поддержки столбцов типа `Nullable` в ClickHouse.
+Для более качественной поддержки столбцов с типом `Nullable` в ClickHouse используйте DBeaver версии 23.1.0 или выше.
 :::
 
 ## 1. Соберите информацию о вашем экземпляре ClickHouse \{#1-gather-your-clickhouse-details\}

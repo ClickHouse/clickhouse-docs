@@ -1,18 +1,16 @@
 ---
-description: 'Azure Blob Storage エンドポイントへのバックアップおよびそこからの復元の詳細'
+description: 'Azure Blob Storage エンドポイントへの BACKUP およびそこからの RESTORE の詳細'
 sidebar_label: 'AzureBlobStorage'
 slug: /operations/backup/azure
-title: 'Azure Blob Storage へのバックアップおよびそこからの復元'
+title: 'Azure Blob Storage への/からの BACKUP/RESTORE'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-# Azure Blob Storage への/からのバックアップ/リストア \{#backup-to-azure-blob-storage\}
-
 ## 構文 \{#syntax\}
 
-<Syntax/>
+<Syntax />
 
 ## Azure Blob Storage エンドポイントを使用するように BACKUP / RESTORE を構成する \{#configuring-backuprestore-to-use-an-azureblobstorage-endpoint\}
 
@@ -21,8 +19,8 @@ import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operati
 * Azure Blob Storage エンドポイント接続文字列 / URL
 * コンテナ
 * パス
-* アカウント名（URL を指定する場合）
-* アカウントキー（URL を指定する場合）
+* アカウント名 (URL を指定する場合)
+* アカウントキー (URL を指定する場合)
 
 バックアップの保存先は次のように指定します。
 

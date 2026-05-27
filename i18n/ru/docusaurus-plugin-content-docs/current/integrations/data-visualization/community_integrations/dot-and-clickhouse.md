@@ -15,12 +15,10 @@ import dot_01 from '@site/static/images/integrations/data-visualization/dot_01.p
 import dot_02 from '@site/static/images/integrations/data-visualization/dot_02.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Dot \{#dot\}
-
 <CommunityMaintainedBadge />
 
 [Dot](https://www.getdot.ai/) — это ваш **ИИ-аналитик данных**.
-Он напрямую подключается к ClickHouse, поэтому вы можете задавать вопросы о данных на естественном языке, исследовать данные, проверять гипотезы и получать ответы на вопросы о причинах — прямо в Slack, Microsoft Teams, ChatGPT или в собственном веб-интерфейсе.
+Он подключается напрямую к ClickHouse, чтобы вы могли задавать вопросы о данных на естественном языке, находить нужные данные, проверять гипотезы и получать ответы на вопросы о причинах — прямо в Slack, Microsoft Teams, ChatGPT или в собственном веб-интерфейсе.
 
 ## Предварительные требования \{#pre-requisites\}
 

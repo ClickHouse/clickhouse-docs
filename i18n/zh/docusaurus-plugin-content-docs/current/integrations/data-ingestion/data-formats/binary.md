@@ -1,19 +1,17 @@
 ---
 sidebar_label: '二进制和原生'
 slug: /integrations/data-formats/binary-native
-title: '在 ClickHouse 中使用 Native 和二进制格式'
-description: '介绍如何在 ClickHouse 中使用 Native 和二进制格式的页面'
-keywords: ['二进制格式', 'Native 格式', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', '数据格式', '性能', '压缩']
+title: '在 ClickHouse 中使用原生和二进制格式'
+description: '介绍如何在 ClickHouse 中使用原生和二进制格式的页面'
+keywords: ['二进制格式', '原生格式', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', '数据格式', '性能', '压缩']
 doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# 在 ClickHouse 中使用 Native 和二进制格式 \{#using-native-and-binary-formats-in-clickhouse\}
+ClickHouse 支持多种二进制格式，这些格式可带来更好的性能和空间利用率。二进制格式在字符编码方面也很安全，因为数据以二进制形式保存。
 
-ClickHouse 支持多种二进制格式，可以带来更好的性能和空间利用率。二进制格式在字符编码处理方面也更安全，因为数据是以二进制形式保存的。
-
-我们将使用 some_data [表](assets/some_data.sql) 和 [数据](assets/some_data.tsv) 进行演示，可在自己的 ClickHouse 实例上进行复现。
+我们将使用 some&#95;data [表](assets/some_data.sql) 和 [数据](assets/some_data.tsv) 进行演示，欢迎在你的 ClickHouse 实例上复现。
 
 ## 以 ClickHouse 原生格式导出 \{#exporting-in-a-native-clickhouse-format\}
 

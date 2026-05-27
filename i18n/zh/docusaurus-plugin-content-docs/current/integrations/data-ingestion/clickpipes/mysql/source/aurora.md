@@ -22,10 +22,7 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-
-# Aurora MySQL 源端设置指南 \{#aurora-mysql-source-setup-guide\}
-
-本分步指南说明如何配置 Amazon Aurora MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。关于 MySQL CDC（变更数据捕获）的常见问题，请参阅 [MySQL 常见问题解答页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
+本分步指南将向您展示如何配置 Amazon Aurora MySQL，以便使用 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。有关 MySQL CDC (变更数据捕获) 的常见问题，请参见 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
 
 ## 启用二进制日志保留 \{#enable-binlog-retention-aurora\}
 

@@ -10,14 +10,11 @@ doc_type: 'reference'
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
 import Image from '@theme/IdealImage';
 
-
-# 압축 모드 \{#compression-modes\}
-
 ClickHouse 프로토콜은 체크섬을 포함한 **데이터 블록** 압축을 지원합니다.
-어떤 모드를 선택해야 할지 잘 모르겠다면 `LZ4`를 사용하십시오.
+어떤 모드를 선택해야 할지 확실하지 않다면 `LZ4`를 사용하세요.
 ``
 :::tip
-사용 가능한 [컬럼 압축 코덱](/sql-reference/statements/create/table#column_compression_codec)에 대해 자세히 확인한 후, 테이블을 생성할 때 또는 생성한 이후에 지정하십시오.
+사용 가능한 [컬럼 압축 코덱](/sql-reference/statements/create/table#column_compression_codec)을 자세히 살펴보고, 테이블을 생성할 때 또는 그 이후에 지정하세요.
 :::
 
 ## 모드 \{#modes\}

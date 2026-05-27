@@ -2,7 +2,7 @@
 title: 'Хранилища'
 slug: /cloud/reference/warehouses
 keywords: ['разделение вычислений', 'cloud', 'архитектура', 'compute-compute', 'хранилище', 'хранилища', 'hydra']
-description: 'Разделение вычислений (compute-compute) в ClickHouse Cloud'
+description: 'compute-compute separation в ClickHouse Cloud'
 doc_type: 'reference'
 ---
 
@@ -16,9 +16,7 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
-# Хранилища \{#warehouses\}
-
-<ScalePlanFeatureBadge feature="Разделение вычислительных ресурсов (compute-compute)"/>
+<ScalePlanFeatureBadge feature="compute-compute separation" />
 
 ## Что такое compute-compute separation? \{#what-is-compute-compute-separation\}
 

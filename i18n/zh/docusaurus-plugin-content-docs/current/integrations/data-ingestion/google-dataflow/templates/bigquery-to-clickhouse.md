@@ -18,13 +18,10 @@ import dataflow_extended_template_form from '@site/static/images/integrations/da
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表中的数据摄取到 ClickHouse 表。
+该模板既可以读取整个表，也可以使用提供的 SQL 查询来过滤特定记录。
 
-# Dataflow BigQuery 到 ClickHouse 模板 \{#dataflow-bigquery-to-clickhouse-template\}
-
-BigQuery 到 ClickHouse 模板是一个批处理管道，用于将 BigQuery 表中的数据摄取到 ClickHouse 表中。
-该模板可以读取整个表，或使用提供的 SQL 查询筛选特定记录。
-
-<TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## 管道要求 \{#pipeline-requirements\}
 

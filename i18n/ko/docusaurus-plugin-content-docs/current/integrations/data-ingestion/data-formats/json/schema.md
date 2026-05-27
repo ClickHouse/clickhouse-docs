@@ -1,5 +1,5 @@
 ---
-title: 'JSON 스키마 설계하기'
+title: '스키마 설계하기'
 slug: /integrations/data-formats/json/schema
 description: 'JSON 스키마를 최적으로 설계하는 방법'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 'structured', 'semi-structured']
@@ -12,10 +12,7 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
-
-# 스키마 설계하기 \{#designing-your-schema\}
-
-[스키마 추론](/integrations/data-formats/json/inference)을 사용하면 JSON 데이터에 대한 초기 스키마를 정의하고, 예를 들어 S3에 있는 JSON 데이터 파일에 그대로 쿼리를 실행할 수 있습니다. 그러나 데이터에는 최적화된 버전 관리 스키마를 마련하는 것이 좋습니다. 아래에서 JSON 구조를 모델링하기 위한 권장 접근 방식을 설명합니다.
+[스키마 추론](/integrations/data-formats/json/inference)을 사용하면 JSON 데이터의 초기 스키마를 설정하고, 예를 들어 S3에 있는 JSON 데이터 파일을 있는 그대로 쿼리할 수 있지만, 데이터에는 최적화된 버전 관리 스키마를 구축하는 것을 목표로 해야 합니다. 아래에서는 JSON 구조를 모델링하기 위한 권장 접근 방식을 설명합니다.
 
 ## 정적 JSON과 동적 JSON \{#static-vs-dynamic-json\}
 

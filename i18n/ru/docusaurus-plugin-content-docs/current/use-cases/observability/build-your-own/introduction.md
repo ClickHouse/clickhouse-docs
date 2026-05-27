@@ -1,8 +1,8 @@
 ---
-title: 'Введение'
-description: 'Использование ClickHouse как решения для наблюдаемости'
+title: 'Использование ClickHouse для обсервабилити'
+description: 'Использование ClickHouse как решения для обсервабилити'
 slug: /use-cases/observability/introduction
-keywords: ['наблюдаемость', 'логи', 'трейсы', 'метрики', 'OpenTelemetry', 'Grafana', 'OTel']
+keywords: ['обсервабилити', 'логи', 'трейсы', 'метрики', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -10,8 +10,6 @@ doc_type: 'guide'
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
-
-# Использование ClickHouse для обеспечения наблюдаемости \{#using-clickhouse-for-observability\}
 
 ## Введение \{#introduction\}
 

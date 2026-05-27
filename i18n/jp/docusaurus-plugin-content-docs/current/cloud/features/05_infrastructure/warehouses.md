@@ -2,7 +2,7 @@
 title: 'ウェアハウス'
 slug: /cloud/reference/warehouses
 keywords: ['compute separation', 'cloud', 'architecture', 'compute-compute', 'warehouse', 'warehouses', 'hydra']
-description: 'ClickHouse Cloud におけるコンピュート間の分離'
+description: 'ClickHouse Cloud におけるコンピュート-コンピュート分離'
 doc_type: 'reference'
 ---
 
@@ -16,10 +16,7 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
-
-# ウェアハウス \{#warehouses\}
-
-<ScalePlanFeatureBadge feature="Compute-compute separation" />
+<ScalePlanFeatureBadge feature="コンピュート-コンピュート分離" />
 
 ## コンピュート-コンピュート分離とは何ですか？ \{#what-is-compute-compute-separation\}
 

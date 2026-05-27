@@ -30,8 +30,6 @@ import cp_custom_role from '@site/static/images/integrations/data-ingestion/clic
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse Cloud との連携 \{#integrating-with-clickhouse-cloud\}
-
 ## はじめに \{#introduction\}
 
 [ClickPipes](/integrations/clickpipes) は、さまざまなデータソースからのデータを、数回クリックするだけで簡単に取り込むことができるマネージド型インテグレーションプラットフォームです。最も厳しいワークロード向けに設計された ClickPipes の堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと高い信頼性を実現します。ClickPipes は、長期的なストリーミング用途にも、単発のデータロード・ジョブにも利用できます。

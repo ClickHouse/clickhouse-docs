@@ -15,8 +15,6 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# AlloyDB Postgres 数据源配置指南 \{#alloydb-postgres-source-setup-guide\}
-
 ## 支持的版本 \{#supported-versions\}
 
 要使用 ClickPipes 将数据从 AlloyDB 实例传输到 ClickHouse Cloud，必须将该实例配置为使用 **逻辑复制（logical replication）**。该功能自 **AlloyDB 14 版本** 起受到支持。

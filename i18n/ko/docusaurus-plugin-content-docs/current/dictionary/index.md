@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
-title: '개요'
+title: '딕셔너리'
 keywords: ['dictionary', 'dictionaries']
-description: '딕셔너리는 빠른 조회를 위해 데이터를 키-값 형태로 제공합니다.'
+description: '딕셔너리는 빠른 조회를 위해 데이터를 키-값 형태로 표현합니다.'
 doc_type: 'guide'
 ---
 
@@ -10,17 +10,14 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
-# 딕셔너리 \{#dictionary\}
-
-ClickHouse의 딕셔너리는 다양한 [내부 및 외부 소스](/sql-reference/statements/create/dictionary/sources#dictionary-sources)의 데이터를 메모리 내 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 형태로 표현하여, 초저지연 조회 쿼리에 최적화합니다.
+ClickHouse의 딕셔너리는 다양한 [내부 및 외부 소스](/sql-reference/statements/create/dictionary/sources#dictionary-sources)의 데이터를 메모리 내 [키-값](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 형태로 표현하여, 초저지연 조회 쿼리에 최적화합니다.
 
 딕셔너리는 다음과 같은 용도로 유용합니다:
 
-- 특히 `JOIN`을 사용할 때 쿼리 성능을 향상시키는 경우
-- 수집 처리를 지연시키지 않고, 실시간으로 수집된 데이터를 보강하는 경우
+* 특히 `JOIN`을 사용할 때 쿼리 성능을 향상시키는 경우
+* 수집 처리를 지연시키지 않고, 실시간으로 수집된 데이터를 보강하는 경우
 
-<Image img={dictionaryUseCases} size="lg" alt="ClickHouse 딕셔너리의 사용 사례"/>
+<Image img={dictionaryUseCases} size="lg" alt="ClickHouse 딕셔너리의 사용 사례" />
 
 ## 딕셔너리를 사용하여 조인 속도 높이기 \{#speeding-up-joins-using-a-dictionary\}
 

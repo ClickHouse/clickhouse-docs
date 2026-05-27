@@ -16,14 +16,11 @@ import holistics_04 from '@site/static/images/integrations/data-visualization/ho
 import holistics_05 from '@site/static/images/integrations/data-visualization/holistics_05.png';
 import holistics_06 from '@site/static/images/integrations/data-visualization/holistics_06.png';
 
+<CommunityMaintainedBadge />
 
-# 将 ClickHouse 连接到 Holistics \{#connecting-clickhouse-to-holistics\}
+[Holistics](https://www.holistics.io/) 是一个 AI 原生的自助式 BI 平台，具备可编程的语义层，可提供一致且可信的指标。
 
-<CommunityMaintainedBadge/>
-
-[Holistics](https://www.holistics.io/) 是一款 AI 原生的自助式 BI 平台，提供可编程语义层，以实现一致且可信的指标体系。
-
-通过将 ClickHouse 连接到 Holistics，您的团队可以基于代码化语义层，获得快速、可靠的 AI 驱动自助分析体验。业务用户可以借助拖放操作和 AI 自信地探索数据，而您则可以在 Git 中保持指标定义的可复用性、可组合性和版本可控性。
+将 ClickHouse 连接到 Holistics 后，您的团队将获得快速、可靠、由 AI 驱动的自助式体验，并以代码化语义层为基础。业务用户可以借助拖放功能和 AI 自信地探索数据，而您则可以让指标定义在 Git 中保持可复用、可组合并受版本控制。
 
 ## 前提条件 \{#prerequisites\}
 

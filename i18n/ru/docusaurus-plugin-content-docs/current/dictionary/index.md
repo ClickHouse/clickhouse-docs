@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
-title: 'Обзор'
+title: 'Словарь'
 keywords: ['словарь', 'словари']
-description: 'Словарь представляет данные в формате ключ-значение для быстрого поиска.'
+description: 'Словарь предоставляет представление данных в формате ключ-значение для быстрых операций поиска.'
 doc_type: 'guide'
 ---
 
@@ -10,17 +10,14 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
-# Словарь \{#dictionary\}
-
-Словарь в ClickHouse предоставляет хранящееся в памяти представление данных в формате [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) из различных [внутренних и внешних источников](/sql-reference/statements/create/dictionary/sources#dictionary-sources), оптимизированное для операций поиска с крайне низкой задержкой.
+Словарь в ClickHouse предоставляет хранящееся в памяти представление данных в формате [ключ-значение](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) из различных [внутренних и внешних источников](/sql-reference/statements/create/dictionary/sources#dictionary-sources), оптимизированное для операций поиска с крайне низкой задержкой.
 
 Словари полезны для:
 
-- Повышения производительности запросов, особенно при использовании с операциями `JOIN`
-- Обогащения поступающих данных «на лету» без замедления процесса ингестии
+* Повышения производительности запросов, особенно при использовании с операциями `JOIN`
+* Обогащения поступающих данных «на лету» без замедления процесса ингестии
 
-<Image img={dictionaryUseCases} size="lg" alt="Сценарии использования словаря в ClickHouse"/>
+<Image img={dictionaryUseCases} size="lg" alt="Сценарии использования словаря в ClickHouse" />
 
 ## Ускорение соединений с использованием словаря \{#speeding-up-joins-using-a-dictionary\}
 

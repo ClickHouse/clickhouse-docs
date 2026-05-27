@@ -12,8 +12,6 @@ import simple_skip from '@site/static/images/guides/best-practices/simple_skip.p
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
-# Что такое индексы пропуска данных в ClickHouse \{#understanding-clickhouse-data-skipping-indexes\}
-
 ## Введение \{#introduction\}
 
 На производительность запросов в ClickHouse влияет множество факторов. Критическим элементом в большинстве сценариев является то, может ли ClickHouse использовать первичный ключ при вычислении условия WHERE запроса. Соответственно, выбор первичного ключа, который соответствует наиболее распространённым паттернам запросов, жизненно важен для эффективного проектирования таблиц.

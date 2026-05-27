@@ -1,6 +1,6 @@
 ---
-description: 'Быстро установите ClickHouse через CLI или curl'
-keywords: ['ClickHouse', 'установка', 'быстро', 'curl', 'clickhousectl', 'CLI']
+description: 'Быстрая установка ClickHouse с помощью CLI или curl'
+keywords: ['ClickHouse', 'install', 'quick', 'curl', 'clickhousectl', 'CLI']
 sidebar_label: 'Быстрая установка'
 slug: /install/quick-install
 title: 'Быстрая установка'
@@ -11,8 +11,6 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import QuickInstall from './_snippets/_quick_install.md'
-
-# Быстрая установка \{#quick-install\}
 
 Если вам не нужно устанавливать ClickHouse для продакшена, быстрее всего начать работу с помощью ClickHouse CLI или установочного скрипта, запускаемого через curl.
 

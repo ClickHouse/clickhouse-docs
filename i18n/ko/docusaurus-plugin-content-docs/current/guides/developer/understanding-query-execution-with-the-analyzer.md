@@ -1,10 +1,10 @@
 ---
 slug: /guides/developer/understanding-query-execution-with-the-analyzer
-sidebar_label: '분석기로 쿼리 실행 이해하기'
-title: '분석기로 쿼리 실행 이해하기'
-description: '분석기를 사용하여 ClickHouse가 쿼리를 어떻게 실행하는지 이해하는 방법을 설명합니다'
+sidebar_label: '분석기를 통한 쿼리 실행 이해하기'
+title: '분석기를 통한 쿼리 실행 이해하기'
+description: '분석기를 사용해 ClickHouse가 쿼리를 실행하는 방식을 이해하는 방법을 설명합니다'
 doc_type: 'guide'
-keywords: ['쿼리 실행', '분석기', '쿼리 최적화', 'EXPLAIN', '성능']
+keywords: ['쿼리 실행', '분석기', '쿼리 최적화', 'explain', '성능']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -13,8 +13,6 @@ import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';
 import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
-
-# 분석기를 통한 쿼리 실행 이해하기 \{#understanding-query-execution-with-the-analyzer\}
 
 ClickHouse는 쿼리를 매우 빠르게 처리하지만, 쿼리 실행 과정은 그리 단순하지 않습니다. `SELECT` 쿼리가 어떻게 실행되는지 이해해 보겠습니다. 이를 설명하기 위해 ClickHouse의 한 테이블에 데이터를 몇 개 추가해 보겠습니다:
 
@@ -39,7 +37,6 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 <Image img={analyzer1} alt="Explain query steps" size="md" />
 
 이제 쿼리 실행 중에 각 구성 요소가 실제로 어떻게 동작하는지 살펴보겠습니다. 몇 가지 쿼리를 실행한 뒤 `EXPLAIN` 구문을 사용해 이를 분석해 보겠습니다.
-
 
 ## 파서(Parser) \{#parser\}
 

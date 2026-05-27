@@ -1,5 +1,5 @@
 ---
-title: 'JSON スキーマの設計'
+title: 'スキーマの設計'
 slug: /integrations/data-formats/json/schema
 description: 'JSON スキーマを最適に設計する方法'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 'structured', 'semi-structured']
@@ -12,10 +12,7 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
-
-# スキーマ設計 \{#designing-your-schema\}
-
-JSON データの初期スキーマを確立したり、たとえば S3 上の JSON データファイルに対してそのままクエリを実行するために [schema inference](/integrations/data-formats/json/inference) を利用することはできますが、最終的にはデータに対して最適化されたバージョン付きスキーマを確立することを目指すべきです。以下では、JSON 構造をモデリングするための推奨アプローチについて説明します。
+[スキーマ推論](/integrations/data-formats/json/inference) は、JSON データの初期スキーマの確立や、たとえば S3 上の JSON データファイルをその場でクエリする際に使用できますが、データに対しては最適化されたバージョン管理されたスキーマを確立することを目指すべきです。以下では、JSON 構造をモデリングするための推奨アプローチについて説明します。
 
 ## 静的 JSON と動的 JSON \{#static-vs-dynamic-json\}
 

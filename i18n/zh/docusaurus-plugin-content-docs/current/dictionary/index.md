@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
-title: '概述'
+title: '字典'
 keywords: ['dictionary', 'dictionaries']
-description: '字典以键值对形式表示数据，以支持快速查找。'
+description: '字典以键值形式表示数据，以便快速查找。'
 doc_type: 'guide'
 ---
 
@@ -10,17 +10,14 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
-# 字典 \{#dictionary\}
-
-ClickHouse 中的字典以内存中的 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式表示来自各种[内部和外部数据源](/sql-reference/statements/create/dictionary/sources#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
+ClickHouse 中的字典以内存中的 [键值](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 形式表示来自各种[内部和外部数据源](/sql-reference/statements/create/dictionary/sources#dictionary-sources)的数据，并针对超低延迟的查找查询进行了优化。
 
 字典可用于：
 
-- 提高查询性能，尤其是在与 `JOIN` 一起使用时
-- 在不减慢摄取过程的情况下，实时丰富已摄取的数据
+* 提高查询性能，尤其是在与 `JOIN` 一起使用时
+* 在不减慢摄取过程的情况下，实时丰富已摄取的数据
 
-<Image img={dictionaryUseCases} size="lg" alt="ClickHouse 中字典的使用场景"/>
+<Image img={dictionaryUseCases} size="lg" alt="ClickHouse 中字典的使用场景" />
 
 ## 使用字典加速 JOIN \{#speeding-up-joins-using-a-dictionary\}
 

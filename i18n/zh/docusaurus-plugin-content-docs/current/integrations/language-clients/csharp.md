@@ -4,7 +4,7 @@ sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
 description: '用于连接 ClickHouse 的官方 C# 客户端。'
-title: 'ClickHouse C# 驱动'
+title: 'ClickHouse C# 客户端'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -16,18 +16,15 @@ import Image from '@theme/IdealImage';
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
 
-
-# ClickHouse C# 客户端 \{#clickhouse-c-client\}
-
 用于连接 ClickHouse 的官方 C# 客户端。
 客户端源代码托管在 [GitHub 仓库](https://github.com/ClickHouse/clickhouse-cs) 中。
 最初由 [Oleg V. Kozlyuk](https://github.com/DarkWanderer) 开发。
 
 该库提供两个主要 API：
 
-- **`ClickHouseClient`**（推荐）：一个为单例使用设计的高级、线程安全客户端。提供用于查询和批量插入的简单异步 API。适用于大多数应用程序。
+* **`ClickHouseClient`** (推荐) ：一个为单例使用设计的高级、线程安全客户端。提供用于查询和批量插入的简单异步 API。适用于大多数应用程序。
 
-- **ADO.NET**（`ClickHouseDataSource`、`ClickHouseConnection`、`ClickHouseCommand`）：标准 .NET 数据库抽象。用于 ORM 集成（Dapper、Linq2db）以及在需要与 ADO.NET 兼容的场景中。`ClickHouseBulkCopy` 是一个辅助类，用于通过 ADO.NET 连接高效插入数据。`ClickHouseBulkCopy` 已被弃用，并将在未来版本中移除；请改用 `ClickHouseClient.InsertBinaryAsync`。
+* **ADO.NET** (`ClickHouseDataSource`、`ClickHouseConnection`、`ClickHouseCommand`) ：标准 .NET 数据库抽象。用于 ORM 集成 (Dapper、Linq2db) 以及在需要与 ADO.NET 兼容的场景中。`ClickHouseBulkCopy` 是一个辅助类，用于通过 ADO.NET 连接高效插入数据。`ClickHouseBulkCopy` 已被弃用，并将在未来版本中移除；请改用 `ClickHouseClient.InsertBinaryAsync`。
 
 这两种 API 共享相同的底层 HTTP 连接池，并且可以在同一个应用程序中同时使用。
 

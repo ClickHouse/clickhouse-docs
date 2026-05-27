@@ -1,20 +1,18 @@
 ---
-sidebar_label: 'Templates'
+sidebar_label: 'Template'
 slug: /integrations/google-dataflow/templates
 sidebar_position: 3
-description: 'Google Dataflow 템플릿를 사용하여 데이터를 ClickHouse로 수집할 수 있습니다'
-title: 'Google Dataflow templates'
+description: 'Google Dataflow Template을 사용하여 데이터를 ClickHouse로 수집할 수 있습니다'
+title: 'Google Dataflow Template'
 doc_type: 'guide'
-keywords: ['google dataflow', 'gcp', 'data pipeline', 'templates', 'batch processing']
+keywords: ['google dataflow', 'gcp', '데이터 파이프라인', 'Template', '일괄 처리']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Google Dataflow 템플릿 \{#google-dataflow-templates\}
+<ClickHouseSupportedBadge />
 
-<ClickHouseSupportedBadge/>
-
-Google Dataflow 템플릿은 미리 구축된 즉시 사용 가능한 데이터 파이프라인을 별도의 사용자 정의 코드를 작성하지 않고도 실행할 수 있게 해 주는 편리한 방법입니다. 이러한 템플릿은 일반적인 데이터 처리 작업을 단순화하도록 설계되었으며, [Apache Beam](https://beam.apache.org/)을 사용해 구축되고 `ClickHouseIO`와 같은 커넥터를 활용하여 ClickHouse 데이터베이스와 원활하게 통합되도록 합니다. 이러한 템플릿을 Google Dataflow에서 실행하면 최소한의 노력으로 고도로 확장 가능한 분산 데이터 처리를 구현할 수 있습니다.
+Google Dataflow Template은 미리 구축된 즉시 사용 가능한 데이터 파이프라인을 별도의 사용자 정의 코드를 작성하지 않고도 실행할 수 있게 해 주는 편리한 방법입니다. 이러한 Template은 일반적인 데이터 처리 작업을 단순화하도록 설계되었으며, [Apache Beam](https://beam.apache.org/)을 사용해 구축되고 `ClickHouseIO`와 같은 커넥터를 활용하여 ClickHouse 데이터베이스와 원활하게 통합되도록 합니다. 이러한 Template을 Google Dataflow에서 실행하면 최소한의 노력으로 고도로 확장 가능한 분산 데이터 처리를 구현할 수 있습니다.
 
 ## Dataflow 템플릿을 사용하는 이유 \{#why-use-dataflow-templates\}
 

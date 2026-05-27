@@ -12,8 +12,6 @@ import snowflake_architecture from '@site/static/images/cloud/onboard/discover/u
 import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_cases/cloud_architecture.png';
 import Image from '@theme/IdealImage';
 
-# Миграция с Snowflake на ClickHouse \{#snowflake-to-clickhouse-migration\}
-
 > Этот документ содержит введение в миграцию данных из Snowflake в ClickHouse.
 
 Snowflake — это облачное хранилище данных, основное назначение которого — перенос легаси-нагрузок локальных (on‑premise) хранилищ данных в облако. Оно хорошо оптимизировано для выполнения долгих отчётных запросов в масштабах крупных нагрузок. По мере того как наборы данных мигрируют в облако, владельцы данных начинают задумываться о том, как ещё можно извлечь из них ценность, в том числе использовать эти датасеты для построения приложений реального времени для внутренних и внешних сценариев. В этот момент они часто понимают, что им нужна база данных, оптимизированная для аналитики в реальном времени, такая как ClickHouse.

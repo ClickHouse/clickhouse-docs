@@ -25,12 +25,9 @@ import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/curr
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
+<CommunityMaintainedBadge />
 
-# Chartbrew를 ClickHouse에 연결하기 \{#connecting-chartbrew-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-[Chartbrew](https://chartbrew.com)는 대시보드를 생성하고 데이터를 실시간으로 모니터링할 수 있는 데이터 시각화 플랫폼입니다. 여러 데이터 소스(ClickHouse 포함)를 지원하며, 차트와 보고서를 생성할 수 있는 노코드 인터페이스를 제공합니다.
+[Chartbrew](https://chartbrew.com)는 실시간으로 대시보드를 생성하고 데이터를 모니터링할 수 있는 데이터 시각화 플랫폼입니다. ClickHouse를 포함한 여러 데이터 소스를 지원하며, 차트와 보고서를 만들 수 있는 노코드 인터페이스를 제공합니다.
 
 ## 목표 \{#goal\}
 

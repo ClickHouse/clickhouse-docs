@@ -5,15 +5,12 @@ sidebar_position: 3
 description: 'Google Dataflow テンプレートを使用して ClickHouse にデータを取り込めます'
 title: 'Google Dataflow テンプレート'
 doc_type: 'guide'
-keywords: ['google dataflow', 'gcp', 'データパイプライン', 'テンプレート', 'バッチ処理']
+keywords: ['google dataflow', 'gcp', 'data pipeline', 'templates', 'batch processing']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Google Dataflow テンプレート \{#google-dataflow-templates\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 Google Dataflow テンプレートは、カスタムコードを記述することなく、事前構築済みのすぐに利用できるデータパイプラインを実行するための便利な手段を提供します。これらのテンプレートは、一般的なデータ処理タスクを簡素化するよう設計されており、`ClickHouseIO` などのコネクタを活用して ClickHouse データベースとシームレスに統合できる [Apache Beam](https://beam.apache.org/) を用いて構築されています。Google Dataflow 上でこれらのテンプレートを実行することで、最小限の労力で高いスケーラビリティを備えた分散データ処理を実現できます。
 

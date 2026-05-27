@@ -64,7 +64,7 @@ Where:
 
 <hr/>
 
-# バックアップ / 復元 \{#backup-restore\}
+## バックアップ / 復元 \{#backup-restore\}
 
 ## AWS S3 バケットへのバックアップ / 復元 \{#backup--restore-to-aws-s3-bucket\}
 

@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Azure Flexible Server for MySQL'
-description: 'Настройка Azure Flexible Server for MySQL в качестве источника для ClickPipes'
+description: 'Настройте Azure Flexible Server for MySQL как источник для ClickPipes'
 slug: /integrations/clickpipes/mysql/source/azure-flexible-server-mysql
-title: 'Руководство по настройке Azure Flexible Server for MySQL в качестве источника'
+title: 'Руководство по настройке источника Azure Flexible Server for MySQL'
 keywords: ['azure', 'flexible server', 'mysql', 'clickpipes', 'binlog']
 doc_type: 'guide'
 ---
@@ -11,9 +11,6 @@ import configure_network_security from '@site/static/images/integrations/data-in
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-
-# Руководство по настройке источника Azure Flexible Server for MySQL \{#azure-flexible-server-for-mysql-source-setup-guide\}
 
 В этом пошаговом руководстве показано, как настроить Azure Flexible Server for MySQL для репликации данных в ClickHouse Cloud с использованием [MySQL ClickPipe](../index.md). Для этого сервиса поддерживается только **однократная ингестия**. Ответы на распространённые вопросы по MySQL CDC смотрите на странице [MySQL FAQs](/integrations/data-ingestion/clickpipes/mysql/faq.md).
 

@@ -1,8 +1,8 @@
 ---
 slug: /optimize/query-parallelism
-sidebar_label: '쿼리 병렬 처리'
+sidebar_label: '쿼리 병렬성'
 sidebar_position: 20
-description: 'ClickHouse는 processing lane과 max_threads 설정을 사용하여 쿼리 실행을 병렬 처리합니다.'
+description: 'ClickHouse는 처리 레인과 max_threads 설정을 사용하여 쿼리 실행을 병렬 처리합니다.'
 title: 'ClickHouse에서 쿼리를 병렬로 실행하는 방법'
 doc_type: 'guide'
 keywords: ['병렬 처리', '쿼리 최적화', '성능', '스레딩', '모범 사례']
@@ -16,14 +16,11 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 
 import Image from '@theme/IdealImage';
 
+ClickHouse는 [속도를 위해 설계되었습니다](/concepts/why-clickhouse-is-so-fast). 사용 가능한 모든 CPU 코어를 활용하고, 데이터를 처리 레인에 분산하며, 하드웨어 성능을 한계에 가깝게 끌어올리면서 쿼리를 고도로 병렬 실행합니다.
 
-# ClickHouse가 쿼리를 병렬로 실행하는 방법 \{#how-clickhouse-executes-a-query-in-parallel\}
+이 가이드에서는 ClickHouse에서 쿼리 병렬성이 작동하는 방식과, 대규모 워크로드에서 성능을 개선하기 위해 이를 조정하거나 모니터링하는 방법을 설명합니다.
 
-ClickHouse는 [속도를 위해 설계되었습니다](/concepts/why-clickhouse-is-so-fast). 사용 가능한 모든 CPU 코어를 활용하고, 데이터를 여러 처리 레인으로 분산하며, 종종 하드웨어의 한계에 가까운 수준까지 밀어붙이면서 쿼리를 고도로 병렬화된 방식으로 실행합니다.
-
-이 가이드는 ClickHouse에서 쿼리 병렬성이 어떻게 동작하는지, 그리고 대규모 워크로드에서 성능을 향상시키기 위해 이를 어떻게 조정하거나 모니터링할 수 있는지에 대해 설명합니다.
-
-주요 개념을 설명하기 위해 [uk_price_paid_simple](/parts) 데이터셋에 대한 집계 쿼리를 사용합니다.
+주요 개념을 설명하기 위해 [uk&#95;price&#95;paid&#95;simple](/parts) 데이터셋에 대한 집계 쿼리를 사용합니다.
 
 ## 단계별 설명: ClickHouse가 집계 쿼리를 병렬 처리하는 방식 \{#step-by-step-how-clickHouse-parallelizes-an-aggregation-query\}
 

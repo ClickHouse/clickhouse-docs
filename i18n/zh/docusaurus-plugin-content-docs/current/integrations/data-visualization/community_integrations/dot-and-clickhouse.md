@@ -15,12 +15,10 @@ import dot_01 from '@site/static/images/integrations/data-visualization/dot_01.p
 import dot_02 from '@site/static/images/integrations/data-visualization/dot_02.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Dot \{#dot\}
-
 <CommunityMaintainedBadge />
 
-[Dot](https://www.getdot.ai/) 是您的 **AI 数据分析师**。
-它可直接连接到 ClickHouse，因此您可以用自然语言提出数据问题、探索数据、验证假设，并回答“为什么”类问题——这些都可直接在 Slack、Microsoft Teams、ChatGPT 或原生 Web 界面中完成。
+[Dot](https://www.getdot.ai/) 是你的 **AI 数据分析师**。
+它可直接连接到 ClickHouse，因此你可以使用自然语言提出数据问题、探索数据、验证假设，并回答“为什么”类问题——这一切都可以直接在 Slack、Microsoft Teams、ChatGPT 或原生 Web UI 中完成。
 
 ## 前提条件 \{#pre-requisites\}
 

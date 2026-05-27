@@ -2,14 +2,12 @@
 slug: /cloud/managed-postgres/monitoring/overview
 sidebar_label: 'Обзор'
 title: 'Мониторинг Managed Postgres'
-description: 'Обзор возможностей мониторинга и обсервабилити в ClickHouse Managed Postgres'
-keywords: ['Managed Postgres', 'мониторинг', 'обсервабилити', 'метрики', 'дашборд', 'prometheus', 'аналитика запросов', 'pg_stat_ch']
+description: 'Обзор вариантов мониторинга и обсервабилити для ClickHouse Managed Postgres'
+keywords: ['managed postgres', 'мониторинг', 'обсервабилити', 'метрики', 'панель мониторинга', 'prometheus', 'query insights', 'pg_stat_ch']
 doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
-
-# Мониторинг Managed Postgres \{#managed-postgres-monitoring\}
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-overview-beta" />
 

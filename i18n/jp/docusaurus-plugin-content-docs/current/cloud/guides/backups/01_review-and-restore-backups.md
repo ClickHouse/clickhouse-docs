@@ -2,7 +2,7 @@
 sidebar_label: 'バックアップの確認と復元'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: '概要'
+title: 'バックアップの確認と復元'
 keywords: ['バックアップ', 'クラウドバックアップ', '復元']
 description: 'ClickHouse Cloud におけるバックアップの概要です'
 doc_type: 'guide'
@@ -17,14 +17,11 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
-
-# バックアップの確認と復元 \{#review-and-restore-backups\}
-
-このガイドでは、ClickHouse Cloud におけるバックアップの動作、サービスのバックアップ構成に利用できるオプション、およびバックアップからの復元方法について説明します。
+このガイドでは、ClickHouse Cloud におけるバックアップの仕組み、サービスのバックアップを設定するために利用できるオプション、およびバックアップから復元する方法について説明します。
 
 **前提条件**
 
-- 「[ClickHouse Cloud におけるバックアップの仕組み](/cloud/features/backups#how-backups-work-in-clickhouse-cloud)」（機能概要ページ）を読んでいること
+* [&quot;ClickHouse Cloud におけるバックアップの仕組み&quot;](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) を読了していること (機能概要ページ)
 
 ## バックアップステータス一覧 \{#backup-status-list\}
 

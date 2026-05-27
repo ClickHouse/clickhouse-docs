@@ -19,11 +19,9 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-# Google Cloud SQL Postgres 소스 설정 가이드 \{#google-cloud-sql-postgres-source-setup-guide\}
-
 :::info
 
-사이드바에 나열된 지원 프로바이더를 사용하는 경우 해당 프로바이더 전용 가이드를 참고하십시오.
+지원되는 제공업체(사이드바 참조) 중 하나를 사용하는 경우, 해당 제공업체별 가이드를 참조하십시오.
 
 :::
 

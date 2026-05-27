@@ -1,7 +1,7 @@
 ---
-title: 'Schema 设计'
-description: '面向可观测性的 schema 设计'
-keywords: ['可观测性', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
+title: '为可观测性设计schema'
+description: '为可观测性设计 schema'
+keywords: ['可观测性', '日志', '链路追踪', '指标', 'OpenTelemetry', 'Grafana', 'OTel']
 slug: /use-cases/observability/schema-design
 show_related_blogs: true
 doc_type: 'guide'
@@ -13,21 +13,18 @@ import observability_12 from '@site/static/images/use-cases/observability/observ
 import observability_13 from '@site/static/images/use-cases/observability/observability-13.png';
 import Image from '@theme/IdealImage';
 
+我们建议用户始终为日志和链路追踪创建自己的schema，原因如下：
 
-# 为可观测性设计模式 \{#designing-a-schema-for-observability\}
+* **选择主键** - 默认schema使用的 `ORDER BY` 针对特定访问模式进行了优化，而您的访问模式很可能与此不一致。
+* **提取结构** - 您可能希望从已有列中提取出新的列，例如从 `Body` 列中提取。可以使用物化列 (以及在更复杂的情况下使用 materialized views) 来实现。这需要对schema进行更改。
+* **优化 Maps** - 默认schema使用 Map 类型来存储属性。这些列允许存储任意元数据。这一能力至关重要，因为事件中的元数据通常并非预先定义，否则就无法存储在像 ClickHouse 这样强类型的数据库中。不过，与访问普通列相比，访问 Map 键及其值的效率要低一些。我们通过修改schema，并确保最常访问的 Map 键提升为顶层列来解决此问题——参见 [&quot;Extracting structure with SQL&quot;](#extracting-structure-with-sql)。这需要进行schema更改。
+* **简化 Map 键访问** - 访问 Map 中的键需要更冗长的语法。您可以通过别名来缓解这一问题。参见 [&quot;Using Aliases&quot;](#using-aliases) 以简化查询。
+* **二级索引** - 默认schema使用二级索引来加速对 Maps 的访问以及文本查询。这些通常不是必需的，并会额外占用磁盘空间。可以使用，但应经过测试以确认确有必要。参见 [&quot;Secondary / Data Skipping indices&quot;](#secondarydata-skipping-indices)。
+* **使用 Codecs** - 如果您了解预期数据，并有证据表明这可以改进压缩效果，您可能希望为列自定义编解码器。
 
-我们建议用户始终为日志和追踪创建自己的模式，原因如下：
+*我们将在下文详细介绍上述每个用例。*
 
-- **选择主键** - 默认模式使用的 `ORDER BY` 针对特定访问模式进行了优化，而您的访问模式很可能与此不一致。
-- **提取结构** - 您可能希望从已有列中提取出新的列，例如从 `Body` 列中提取。可以使用物化列（以及在更复杂的情况下使用 materialized views）来实现。这需要对模式进行更改。
-- **优化 Maps** - 默认模式使用 Map 类型来存储属性。这些列允许存储任意元数据。这一能力至关重要，因为事件中的元数据通常并非预先定义，否则就无法存储在像 ClickHouse 这样强类型的数据库中。不过，与访问普通列相比，访问 Map 键及其值的效率要低一些。我们通过修改模式，并确保最常访问的 Map 键提升为顶层列来解决此问题——参见 ["Extracting structure with SQL"](#extracting-structure-with-sql)。这需要进行模式更改。
-- **简化 Map 键访问** - 访问 Map 中的键需要更冗长的语法。您可以通过别名来缓解这一问题。参见 ["Using Aliases"](#using-aliases) 以简化查询。
-- **二级索引** - 默认模式使用二级索引来加速对 Maps 的访问以及文本查询。这些通常不是必需的，并会额外占用磁盘空间。可以使用，但应经过测试以确认确有必要。参见 ["Secondary / Data Skipping indices"](#secondarydata-skipping-indices)。
-- **使用 Codecs** - 如果您了解预期数据，并有证据表明这可以改进压缩效果，您可能希望为列自定义编解码器。
-
-_我们将在下文详细介绍上述每个用例。_
-
-**重要说明：** 虽然鼓励用户扩展和修改其模式以获得最佳压缩和查询性能，但在可能的情况下，应遵循 OTel 对核心列的命名约定。ClickHouse Grafana 插件假定存在一些基础的 OTel 列以辅助构建查询，例如 Timestamp 和 SeverityText。日志和追踪的必需列分别记录在此处 [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) 和[此处](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure)。您可以选择更改这些列名，并在插件配置中覆盖默认值。
+**重要说明：** 虽然鼓励用户扩展和修改其schema以获得最佳压缩和查询性能，但在可能的情况下，应遵循 OTel 对核心列的命名约定。ClickHouse Grafana 插件假定存在一些基础的 OTel 列以辅助构建查询，例如 Timestamp 和 SeverityText。日志和链路追踪的必需列分别记录在此处 [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) 和[此处](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure)。您可以选择更改这些列名，并在插件配置中覆盖默认值。
 
 ## 使用 SQL 提取结构 \{#extracting-structure-with-sql\}
 

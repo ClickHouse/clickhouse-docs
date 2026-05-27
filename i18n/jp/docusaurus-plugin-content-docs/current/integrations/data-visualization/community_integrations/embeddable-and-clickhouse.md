@@ -2,8 +2,8 @@
 sidebar_label: 'Embeddable'
 slug: /integrations/embeddable
 keywords: ['clickhouse', 'Embeddable', 'connect', 'integrate', 'ui']
-description: 'Embeddableは、アプリに直接組み込める、高速でインタラクティブかつ完全にカスタマイズ可能な分析体験を構築するための開発者向けツールキットです。'
-title: 'EmbeddableをClickHouseに接続する'
+description: 'Embeddable は、高速でインタラクティブかつ完全にカスタマイズ可能な分析体験をアプリに直接組み込むための、開発者向けツールキットです。'
+title: 'Embeddable を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -12,8 +12,6 @@ integration:
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
-# Embeddable を ClickHouse に接続する \{#connecting-embeddable-to-clickhouse\}
 
 <CommunityMaintainedBadge />
 

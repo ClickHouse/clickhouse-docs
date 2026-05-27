@@ -18,12 +18,10 @@ import dataflow_extended_template_form from '@site/static/images/integrations/da
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Шаблон Dataflow BigQuery to ClickHouse \{#dataflow-bigquery-to-clickhouse-template\}
+Шаблон BigQuery to ClickHouse — это батч-конвейер, который выполняет приём данных из таблицы BigQuery в таблицу ClickHouse.
+Шаблон может считывать всю таблицу целиком или фильтровать отдельные записи с помощью указанного SQL-запроса.
 
-Шаблон BigQuery to ClickHouse представляет собой пакетный конвейер обработки данных, который выполняет приём данных из таблицы BigQuery в таблицу ClickHouse.
-Шаблон может считывать всю таблицу или фильтровать определённые записи с помощью заданного SQL-запроса.
-
-<TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## Требования к конвейеру \{#pipeline-requirements\}
 

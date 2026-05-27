@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/migrations/pg_dump-pg_restore
 sidebar_label: 'pg_dump и pg_restore'
-title: 'Миграция данных PostgreSQL с помощью pg_dump и pg_restore'
+title: 'Миграция в Managed Postgres с помощью pg_dump и pg_restore'
 description: 'Узнайте, как перенести данные PostgreSQL в ClickHouse Managed Postgres с помощью pg_dump и pg_restore'
 keywords: ['postgres', 'postgresql', 'pg_dump', 'pg_restore', 'миграция', 'передача данных', 'Managed Postgres']
 doc_type: 'guide'
@@ -15,9 +15,7 @@ import dumpCommand from '@site/static/images/managed-postgres/pg_dump_restore/du
 import restoreCommand from '@site/static/images/managed-postgres/pg_dump_restore/restore-command.png';
 import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/target-setup.png';
 
-# Миграция в Managed Postgres с использованием pg_dump и pg_restore \{#pg-dump-pg-restore\}
-
-В этом руководстве приводятся пошаговые инструкции по переносу вашей базы данных PostgreSQL в ClickHouse Managed Postgres с использованием утилит `pg_dump` и `pg_restore`.
+Это руководство содержит пошаговые инструкции по миграции вашей базы данных PostgreSQL в ClickHouse Managed Postgres с помощью утилит `pg_dump` и `pg_restore`.
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.pg_dump-pg_restore-beta" />
 

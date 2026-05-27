@@ -3,13 +3,11 @@ slug: /cloud/managed-postgres/monitoring/overview
 sidebar_label: '概要'
 title: 'Managed Postgres の監視'
 description: 'ClickHouse Managed Postgres の監視とオブザーバビリティのオプションの概要'
-keywords: ['managed postgres', '監視', 'オブザーバビリティ', 'メトリクス', 'ダッシュボード', 'prometheus', 'クエリインサイト', 'pg_stat_ch']
+keywords: ['managed postgres', '監視', 'オブザーバビリティ', 'メトリクス', 'ダッシュボード', 'prometheus', 'query insights', 'pg_stat_ch']
 doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
-
-# Managed Postgres の監視 \{#managed-postgres-monitoring\}
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-overview-beta" />
 

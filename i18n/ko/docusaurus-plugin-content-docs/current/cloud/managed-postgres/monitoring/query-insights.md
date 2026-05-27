@@ -15,22 +15,15 @@ import queryInsightsRecentQueries from '@site/static/images/managed-postgres/mon
 import queryInsightsDetailAggregate from '@site/static/images/managed-postgres/monitoring/query-insights-detail-aggregate.png';
 import queryInsightsDetailRecent from '@site/static/images/managed-postgres/monitoring/query-insights-detail-recent.png';
 
-# Postgres 쿼리 인사이트 \{#postgres-query-insights\}
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.query-insights-beta" />
 
-쿼리 인사이트는 [Managed Postgres](/cloud/managed-postgres) 인스턴스에서
-SQL 문별 텔레메트리를 수집하고, 영향도를 기준으로 모든 쿼리
-패턴의 우선순위를 매깁니다. 따라서 Cloud Console을 벗어나지 않고도
-&quot;p99가 점점 증가하고 있습니다&quot;에서 &quot;이 패턴은 디스크로 스필되고 있습니다&quot;까지
-바로 파악할 수 있습니다.
+쿼리 인사이트는 [Managed Postgres](/cloud/managed-postgres) 인스턴스의 SQL 문별 텔레메트리를 수집하고 모든 쿼리
+패턴을 영향도 기준으로 순위를 매기므로, Cloud Console을 벗어나지 않고도 &quot;p99가 점점 높아지고 있다&quot;에서 &quot;이 패턴은 디스크로 스필되고 있다&quot;까지 파악할 수 있습니다.
 
-데이터는 오픈소스 Postgres 확장 기능인
-[`pg_stat_ch`](https://github.com/clickhouse/pg_stat_ch)에서 가져오며,
-이 확장 기능은 SQL 문별 카운터를 ClickHouse Cloud로 스트리밍합니다.
-텔레메트리는 데이터베이스를 벗어나기 전에 Postgres 내부에서 정규화되며,
-리터럴은 제거되고 플레이스홀더로 대체되므로 실제로 쿼리한 값이
-텔레메트리 스트림에 그대로 들어가지는 않습니다.
+데이터는 [`pg_stat_ch`](https://github.com/clickhouse/pg_stat_ch)에서 제공되며,
+이는 SQL 문별 카운터를 ClickHouse Cloud로 스트리밍하는 오픈소스 Postgres 확장 기능입니다.
+텔레메트리는 데이터베이스를 벗어나기 전에 Postgres 내부에서 정규화되며 —
+리터럴은 제거되고 플레이스홀더로 대체되므로, 쿼리한 정확한 값이 텔레메트리 스트림으로 들어가지는 않습니다.
 
 ## 쿼리 인사이트 열기 \{#open\}
 

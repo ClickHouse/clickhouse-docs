@@ -2,7 +2,7 @@
 slug: /integrations/prometheus
 sidebar_label: 'Prometheus 端点'
 sidebar_position: 4
-title: '兼容 Prometheus 的指标端点'
+title: 'Prometheus 集成'
 description: '将 ClickHouse 指标导出到 Prometheus'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
 doc_type: 'reference'
@@ -16,11 +16,9 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-# Prometheus 集成 \{#prometheus-integration\}
+该功能支持集成 [Prometheus](https://prometheus.io/) 来监控 ClickHouse Cloud 服务。Prometheus 指标可通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 端点访问，您可以借此安全地连接并将指标导出到您的 Prometheus collector 中。这些指标还可以集成到仪表盘中，例如 Grafana、Datadog，以便进行可视化。
 
-此功能支持集成 [Prometheus](https://prometheus.io/) 以监控 ClickHouse Cloud 服务。通过 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 提供的 Prometheus 指标端点，您可以安全地连接并将指标导出到 Prometheus 指标采集器。这些指标可以集成到 Grafana、Datadog 等可视化仪表板中。
-
-要开始使用，请先[生成一个 API 密钥](/cloud/manage/openapi)。
+要开始使用，请[生成 API 密钥](/cloud/manage/openapi)。
 
 如果您要查找 [Managed Postgres](/cloud/managed-postgres) 服务的对应端点，请参阅 [Managed Postgres Prometheus 端点](/cloud/managed-postgres/monitoring/prometheus)。
 

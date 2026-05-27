@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/migrations/logical-replication
 sidebar_label: 'ロジカルレプリケーション'
-title: 'ロジカルレプリケーションを使用して PostgreSQL データを移行する'
+title: 'ロジカルレプリケーションを使用して Managed Postgres に移行する'
 description: 'ロジカルレプリケーションを使用して、PostgreSQL データを ClickHouse Managed Postgres に移行する方法を説明します'
 keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres']
 doc_type: 'ガイド'
@@ -15,9 +15,7 @@ import targetInitialSetup from '@site/static/images/managed-postgres/logical_rep
 import migrationResult from '@site/static/images/managed-postgres/logical_replication/migration-result.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
 
-# ロジカルレプリケーションを使用して ClickHouse Managed Postgres へ移行する \{#logical-replication-migration\}
-
-このガイドでは、Postgres ネイティブのロジカルレプリケーションを使用して、PostgreSQL データベースを ClickHouse Managed Postgres に移行する手順を、順を追って説明します。
+このガイドでは、Postgres ネイティブのロジカルレプリケーションを使用して PostgreSQL データベースを ClickHouse Managed Postgres に移行する方法を、手順を追って説明します。
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.logical-replication-beta" />
 

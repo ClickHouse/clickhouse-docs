@@ -1,17 +1,14 @@
 ---
-sidebar_label: 'JDBC-коннектор Kafka Connect'
+sidebar_label: 'Коннектор JDBC для Kafka Connect'
 sidebar_position: 4
 slug: /integrations/kafka/kafka-connect-jdbc
-description: 'Использование синк-коннектора JDBC с Kafka Connect и ClickHouse'
-title: 'JDBC-коннектор'
+description: 'Использование sink-коннектора JDBC с Kafka Connect и ClickHouse'
+title: 'коннектор JDBC'
 doc_type: 'guide'
 keywords: ['kafka', 'kafka connect', 'jdbc', 'интеграция', 'конвейер данных']
 ---
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
-
-
-# JDBC connector \{#jdbc-connector\}
 
 :::note
 Этот коннектор следует использовать только в том случае, если ваши данные простые и состоят из примитивных типов данных, например `int`. Специфичные для ClickHouse типы, такие как `map`, не поддерживаются.

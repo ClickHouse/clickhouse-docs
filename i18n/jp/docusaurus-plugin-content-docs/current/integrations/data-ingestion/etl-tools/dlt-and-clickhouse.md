@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# dlt を ClickHouse に接続する \{#connect-dlt-to-clickhouse\}
-
-<PartnerBadge/>
-
-<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> は、Python スクリプトに組み込むことで、さまざまな（しばしば扱いづらい）データソースから、よく構造化されたライブデータセットへデータをロードできるオープンソースライブラリです。
+<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> はオープンソースのライブラリで、Python スクリプトに追加することで、さまざまな、しばしば扱いにくいデータソースから、適切に構造化されたライブデータセットにデータをロードできます。
 
 ## ClickHouse と併せて dlt をインストールする \{#install-dlt-with-clickhouse\}
 

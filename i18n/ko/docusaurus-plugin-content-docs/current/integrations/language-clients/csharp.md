@@ -4,7 +4,7 @@ sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
 description: 'ClickHouse에 연결하기 위한 공식 C# 클라이언트입니다.'
-title: 'ClickHouse C# 드라이버'
+title: 'ClickHouse C# client'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -16,17 +16,15 @@ import Image from '@theme/IdealImage';
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
 
-# ClickHouse C# client \{#clickhouse-c-client\}
-
 ClickHouse에 연결하기 위한 공식 C# 클라이언트입니다.
 클라이언트 소스 코드는 [GitHub 저장소](https://github.com/ClickHouse/clickhouse-cs)에서 확인할 수 있습니다.
 원래는 [Oleg V. Kozlyuk](https://github.com/DarkWanderer)이 개발했습니다.
 
 이 라이브러리는 두 가지 주요 API를 제공합니다:
 
-- **`ClickHouseClient`** (권장): 싱글톤 사용을 위해 설계된 고수준 스레드 안전 클라이언트입니다. 쿼리 및 대량 삽입을 위한 간단한 비동기 API를 제공합니다. 대부분의 애플리케이션에 가장 적합합니다.
+* **`ClickHouseClient`** (권장): 싱글톤 사용을 위해 설계된 고수준 스레드 안전 클라이언트입니다. 쿼리 및 대량 삽입을 위한 간단한 비동기 API를 제공합니다. 대부분의 애플리케이션에 가장 적합합니다.
 
-- **ADO.NET** (`ClickHouseDataSource`, `ClickHouseConnection`, `ClickHouseCommand`): 표준 .NET 데이터베이스 추상화입니다. ORM 통합(Dapper, Linq2db)과 ADO.NET 호환성이 필요할 때 사용합니다. `ClickHouseBulkCopy`는 ADO.NET 연결을 사용하여 데이터를 효율적으로 삽입하기 위한 도우미 클래스입니다. `ClickHouseBulkCopy`는 더 이상 사용되지 않으며, 향후 릴리스에서 제거될 예정입니다. 대신 `ClickHouseClient.InsertBinaryAsync`를 사용하십시오.
+* **ADO.NET** (`ClickHouseDataSource`, `ClickHouseConnection`, `ClickHouseCommand`): 표준 .NET 데이터베이스 추상화입니다. ORM 통합(Dapper, Linq2db)과 ADO.NET 호환성이 필요할 때 사용합니다. `ClickHouseBulkCopy`는 ADO.NET 연결을 사용하여 데이터를 효율적으로 삽입하기 위한 도우미 클래스입니다. `ClickHouseBulkCopy`는 더 이상 사용되지 않으며, 향후 릴리스에서 제거될 예정입니다. 대신 `ClickHouseClient.InsertBinaryAsync`를 사용하십시오.
 
 두 API는 동일한 기반 HTTP 연결 풀을 공유하며, 하나의 애플리케이션 내에서 함께 사용할 수 있습니다.
 

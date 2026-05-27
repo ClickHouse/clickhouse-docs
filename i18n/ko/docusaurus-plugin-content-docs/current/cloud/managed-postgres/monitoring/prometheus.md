@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/monitoring/prometheus
 sidebar_label: 'Prometheus 엔드포인트'
-title: 'Managed Postgres Prometheus 엔드포인트'
+title: 'Managed Postgres Prometheus 연동'
 description: 'Managed Postgres 메트릭을 Prometheus, Grafana, Datadog 또는 OpenMetrics 호환 collector로 스크레이프합니다'
 keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', '메트릭', 'openmetrics', '관측성']
 doc_type: 'guide'
@@ -12,8 +12,6 @@ import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
-
-# Prometheus 연동 \{#prometheus-integration\}
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-prometheus-beta" />
 

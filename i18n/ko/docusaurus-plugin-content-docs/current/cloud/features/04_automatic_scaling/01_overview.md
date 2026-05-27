@@ -3,14 +3,12 @@ sidebar_position: 1
 sidebar_label: '개요'
 slug: /manage/scaling
 description: 'ClickHouse Cloud의 자동 스케일링 개요'
-keywords: ['자동 스케일링', '오토 스케일링', '스케일링', '수평', '수직', '버스트']
+keywords: ['자동 스케일링', '자동 스케일링', '스케일링', '수평', '수직', '버스트']
 title: '자동 스케일링'
 doc_type: 'guide'
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
-
-# 자동 스케일링 \{#automatic-scaling\}
 
 스케일링은 클라이언트 요구에 맞춰 사용 가능한 리소스를 조정하는 기능입니다. Scale 및 Enterprise(표준 1:4 프로필) 티어 서비스는 API를 프로그래밍 방식으로 호출하거나 UI에서 설정을 변경해 시스템 리소스를 조정함으로써 수평 스케일링할 수 있습니다. 또한 이러한 서비스는 애플리케이션 요구를 충족하도록 수직 **자동 스케일링**도 지원합니다.
 

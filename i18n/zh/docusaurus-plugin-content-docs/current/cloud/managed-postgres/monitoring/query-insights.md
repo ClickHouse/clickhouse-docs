@@ -15,20 +15,18 @@ import queryInsightsRecentQueries from '@site/static/images/managed-postgres/mon
 import queryInsightsDetailAggregate from '@site/static/images/managed-postgres/monitoring/query-insights-detail-aggregate.png';
 import queryInsightsDetailRecent from '@site/static/images/managed-postgres/monitoring/query-insights-detail-recent.png';
 
-# Postgres 查询洞察 \{#postgres-query-insights\}
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.query-insights-beta" />
 
 查询洞察会从你的
-[Managed Postgres](/cloud/managed-postgres) 实例中采集每条 语句 的遥测数据，并按影响程度对各类查询
-模式进行排序，让你无需离开 Cloud Console，就能从“p99 正在逐步升高”快速定位到“这种模式
-正在落盘”。
+[Managed Postgres](/cloud/managed-postgres) 实例采集按语句划分的遥测数据，并按影响程度对各类查询
+模式进行排序，因此你可以从“p99 正在逐渐升高”一路定位到“这种模式
+正在落盘”，而无需离开 Cloud Console。
 
 这些数据来自 [`pg_stat_ch`](https://github.com/clickhouse/pg_stat_ch)，
-这是一个开源的 Postgres 扩展，可将每条 语句 的计数器流式传输到
-ClickHouse Cloud。遥测数据在离开数据库之前，会先在 Postgres 内部完成规范化处理
-—— 字面量会被移除并替换为占位符，因此你查询的具体值
-不会进入遥测流。
+这是一个开源的 Postgres 扩展，可将按语句划分的计数器流式传输到
+ClickHouse Cloud。遥测数据在离开数据库之前会先在 Postgres 内部完成规范化处理
+—— 字面量会被剥离并替换为占位符，因此你查询的
+具体值永远不会进入遥测流。
 
 ## 打开查询洞察 \{#open\}
 

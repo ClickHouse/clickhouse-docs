@@ -16,14 +16,11 @@ import qstudio_running_query from '@site/static/images/integrations/sql-clients/
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# QStudio를 ClickHouse에 연결하기 \{#connect-qstudio-to-clickhouse\}
+QStudio는 무료 SQL GUI로, SQL 스크립트를 실행하고 테이블을 쉽게 탐색하며, 결과를 차트로 표시하고 내보낼 수 있습니다. 모든 운영 체제와 데이터베이스에서 사용할 수 있습니다.
 
-<CommunityMaintainedBadge/>
-
-QStudio는 무료 SQL GUI 도구로서 SQL 스크립트를 실행하고, 테이블을 쉽게 탐색하며, 결과를 차트로 시각화하고 내보낼 수 있습니다. 모든 운영 체제와 모든 데이터베이스에서 사용할 수 있습니다.
-
-QStudio는 JDBC를 사용하여 ClickHouse에 연결합니다.
+QStudio는 JDBC를 사용해 ClickHouse에 연결합니다.
 
 ## 1. ClickHouse 세부 정보 준비하기 \{#1-gather-your-clickhouse-details\}
 

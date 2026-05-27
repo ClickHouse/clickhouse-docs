@@ -2,8 +2,8 @@
 sidebar_label: 'Embeddable'
 slug: /integrations/embeddable
 keywords: ['clickhouse', 'Embeddable', 'connect', 'integrate', 'ui']
-description: 'Embeddable는 애플리케이션에 직접 빠르고 인터랙티브하며 완전히 커스터마이징 가능한 분석 경험을 구축하기 위한 개발자 툴킷입니다.'
-title: 'Embeddable을 ClickHouse에 연결하기'
+description: 'Embeddable는 빠르고 인터랙티브하며 완전히 맞춤화된 분석 경험을 앱에 직접 구축할 수 있도록 지원하는 개발자용 툴킷입니다.'
+title: 'Embeddable를 ClickHouse에 연결하기'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -13,10 +13,7 @@ integration:
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Embeddable를 ClickHouse에 연결하기 \{#connecting-embeddable-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 [Embeddable](https://embeddable.com/)에서는 [Data Models](https://docs.embeddable.com/data-modeling/introduction)과 [Components](https://docs.embeddable.com/development/introduction)를 코드로 정의하고(해당 코드는 사용자의 코드 저장소에 저장됨), **SDK**를 사용하여 이를 Embeddable의 강력한 **no-code builder**에서 팀이 사용할 수 있도록 합니다.
 

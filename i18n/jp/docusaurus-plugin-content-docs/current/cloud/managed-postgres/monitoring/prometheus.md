@@ -1,9 +1,9 @@
 ---
 slug: /cloud/managed-postgres/monitoring/prometheus
 sidebar_label: 'Prometheus エンドポイント'
-title: 'Managed Postgres Prometheus エンドポイント'
-description: 'Managed Postgres のメトリクスを Prometheus、Grafana、Datadog、または OpenMetrics 対応の任意の collector でスクレイプします'
-keywords: ['Managed Postgres', 'Prometheus', 'Grafana', 'Datadog', 'メトリクス', 'OpenMetrics', 'オブザーバビリティ']
+title: 'Managed Postgres Prometheus 連携'
+description: 'Managed Postgres のメトリクスを Prometheus、Grafana、Datadog、または OpenMetrics 互換の collector にスクレイプ'
+keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', 'メトリクス', 'openmetrics', 'オブザーバビリティ']
 doc_type: 'guide'
 ---
 
@@ -12,8 +12,6 @@ import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
-
-# Prometheus 連携 \{#prometheus-integration\}
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-prometheus-beta" />
 

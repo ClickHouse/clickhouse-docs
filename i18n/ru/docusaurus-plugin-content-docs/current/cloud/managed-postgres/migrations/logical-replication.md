@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/migrations/logical-replication
 sidebar_label: 'Логическая репликация'
-title: 'Миграция данных PostgreSQL с использованием логической репликации'
+title: 'Миграция в Managed Postgres с использованием логической репликации'
 description: 'Узнайте, как выполнить миграцию данных PostgreSQL в ClickHouse Managed Postgres с помощью логической репликации'
 keywords: ['postgres', 'postgresql', 'логическая репликация', 'миграция', 'передача данных', 'managed postgres']
 doc_type: 'guide'
@@ -15,9 +15,7 @@ import targetInitialSetup from '@site/static/images/managed-postgres/logical_rep
 import migrationResult from '@site/static/images/managed-postgres/logical_replication/migration-result.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
 
-# Переход на Managed Postgres с использованием логической репликации \{#logical-replication-migration\}
-
-В этом руководстве приведены пошаговые инструкции по переносу вашей базы данных PostgreSQL на ClickHouse Managed Postgres с использованием встроенной в Postgres логической репликации.
+Это руководство содержит пошаговые инструкции по миграции вашей базы данных PostgreSQL в ClickHouse Managed Postgres с помощью встроенной логической репликации Postgres.
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.logical-replication-beta" />
 

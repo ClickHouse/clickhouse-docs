@@ -24,29 +24,16 @@ import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# 将 Airbyte 连接到 ClickHouse \{#connect-airbyte-to-clickhouse\}
-
 <PartnerBadge />
 
 :::note
-请注意,ClickHouse 的 Airbyte 源连接器和目标连接器目前处于 Alpha 状态,不适用于迁移大型数据集(超过 1000 万行)
+请注意，Airbyte 的 ClickHouse 源端和目标端目前处于 Alpha 状态，不适合移动大型数据集 (&gt; 1000 万行) 。
 :::
 
-<a href='https://www.airbyte.com/' target='_blank'>
-  Airbyte
-</a>
-是一个开源数据集成平台。它支持创建
-<a
-  href='https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el'
-  target='_blank'
->
-  ELT
-</a>
-数据管道,并内置超过 140 个开箱即用的连接器。本分步教程将演示如何将 Airbyte 连接到 ClickHouse 作为目标端,并加载示例数据集。
+<a href="https://www.airbyte.com/" target="_blank">Airbyte</a> 是一个开源数据集成平台，支持创建 <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> 数据管道，并开箱即用地提供 140 多个连接器。本分步教程将介绍如何将 Airbyte 连接到 ClickHouse 作为目标端，并加载一个示例数据集。
 
 <VerticalStepper headerLevel="h2">
-  ## 下载并运行 Airbyte
+  ## 下载并运行 Airbyte \{#1-download-and-run-airbyte\}
 
   1. Airbyte 基于 Docker 运行，并使用 `docker-compose`。请确保已下载并安装最新版 Docker。
 
@@ -66,11 +53,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
      另外，你也可以注册并使用 <a href="https://docs.airbyte.com/deploying-airbyte/on-cloud" target="_blank">Airbyte Cloud</a>
      :::
 
-  ## 将 ClickHouse 添加为目标
+  ## 将 ClickHouse 添加为目标 \{#2-add-clickhouse-as-a-destination\}
 
   在本节中,我们将展示如何将 ClickHouse 实例添加为目标。
 
-  1. 启动 ClickHouse 服务器（Airbyte 支持的 ClickHouse 版本为 `21.8.10.19` 或更高版本），或者登录您的 ClickHouse Cloud 账户：
+  1. 启动 ClickHouse 服务器 (Airbyte 支持的 ClickHouse 版本为 `21.8.10.19` 或更高版本) ，或者登录您的 ClickHouse Cloud 账户：
 
      ```bash
      clickhouse-server start
@@ -80,7 +67,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
      <Image img={airbyte02} size="lg" border alt="在 Airbyte 中添加目标端" />
 
-  3. 从 “Destination type” 下拉列表中选择 ClickHouse，然后填写 “Set up the destination” 表单，输入你的 ClickHouse 主机名和端口、数据库名、用户名和密码，并选择是否使用 SSL 连接（等同于在 `clickhouse-client` 中使用 `--secure` 标志）：
+  3. 从 “Destination type” 下拉列表中选择 ClickHouse，然后填写 “Set up the destination” 表单，输入你的 ClickHouse 主机名和端口、数据库名、用户名和密码，并选择是否使用 SSL 连接 (等同于在 `clickhouse-client` 中使用 `--secure` 标志) ：
 
      <Image img={airbyte03} size="lg" border alt="在 Airbyte 中创建 ClickHouse 目标端" />
 
@@ -97,7 +84,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
   :::
 
-  ## 添加数据集作为源
+  ## 添加数据集作为源 \{#3-add-a-dataset-as-a-source\}
 
   我们将使用的示例数据集是 <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a>(位于 <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>)。在本教程中,我们将使用该数据集的一个子集,对应于 2022 年 1 月的数据。
 
@@ -105,7 +92,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
      <Image img={airbyte04} size="lg" border alt="在 Airbyte 中添加数据源" />
 
-  2. 填写 “Set up the source” 表单，为 source 指定名称，并提供 NYC Taxi Jan 2022 文件的 URL（见下文）。请确保将文件格式设置为 `parquet`，Storage Provider 选择 `HTTPS Public Web`，Dataset Name 选择 `nyc_taxi_2022`。
+  2. 填写 “Set up the source” 表单，为 source 指定名称，并提供 NYC Taxi Jan 2022 文件的 URL (见下文) 。请确保将文件格式设置为 `parquet`，Storage Provider 选择 `HTTPS Public Web`，Dataset Name 选择 `nyc_taxi_2022`。
 
      ```text
      https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2022-01.parquet
@@ -115,7 +102,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
   3. 恭喜！您已在 Airbyte 中添加了一个数据源。
 
-  ## 创建连接并将数据集加载到 ClickHouse 中
+  ## 创建连接并将数据集加载到 ClickHouse 中 \{#4-create-a-connection-and-load-the-dataset-into-clickhouse\}
 
   1. 在 Airbyte 中，打开 “Connections” 页面并添加一个新连接
 
@@ -123,11 +110,11 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
   2. 选择 &quot;Use existing source&quot;，然后选择 New York City Taxi Data；再选择 &quot;Use existing destination&quot;，并选择你的 ClickHouse 实例。
 
-  3. 填写 “Set up the connection” 表单，选择 Replication Frequency（复制频率，本教程中我们使用 `manual`），并选择 `nyc_taxi_2022` 作为你希望同步的数据流（stream）。请确保在 Normalization（标准化）中选择 `Normalized Tabular Data`。
+  3. 填写 “Set up the connection” 表单，选择 Replication Frequency (复制频率，本教程中我们使用 `manual`) ，并选择 `nyc_taxi_2022` 作为你希望同步的数据流 (stream) 。请确保在 Normalization (标准化) 中选择 `Normalized Tabular Data`。
 
   <Image img={airbyte07} size="lg" border alt="在 Airbyte 中创建连接" />
 
-  4. 连接创建完成后，点击 “Sync now” 以触发数据加载（因为我们将 Replication Frequency 设置为 `Manual`）。
+  4. 连接创建完成后，点击 “Sync now” 以触发数据加载 (因为我们将 Replication Frequency 设置为 `Manual`) 。
 
   <Image img={airbyte08} size="lg" border alt="在 Airbyte 中点击 “Sync now”" />
 
@@ -186,7 +173,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
          `_airbyte_nyc_taxi_072021_hashid` String
      ```
 
-     现在数据集已经加载到你的 ClickHouse 实例中后，你可以创建一个新表，并使用更合适的 ClickHouse 数据类型（<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">更多详情</a>）。
+     现在数据集已经加载到你的 ClickHouse 实例中后，你可以创建一个新表，并使用更合适的 ClickHouse 数据类型 (<a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">更多详情</a>) 。
 
   8. 恭喜你！你已经使用 Airbyte 成功将纽约市出租车数据加载到 ClickHouse 中！
 </VerticalStepper>

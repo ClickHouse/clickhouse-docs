@@ -21,11 +21,9 @@ import quicksight_06 from '@site/static/images/integrations/data-visualization/q
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# QuickSight \{#quicksight\}
+<ClickHouseSupportedBadge />
 
-<ClickHouseSupportedBadge/>
-
-QuickSight は、公式の MySQL データソースと Direct Query モードを使用することで、MySQL インターフェイス経由でオンプレミス環境の ClickHouse（23.11 以降）に接続できます。
+QuickSight は、公式の MySQL データソースと Direct Query モードを使用して、MySQL インターフェイス経由でオンプレミスの ClickHouse 環境 (23.11+) に接続できます。
 
 ## オンプレミス ClickHouse サーバーのセットアップ \{#on-premise-clickhouse-server-setup\}
 
@@ -91,7 +89,7 @@ QuickSight では、MySQL ユーザーのプロファイルにいくつかの追
 
 ただし、デフォルトのプロファイルではなく、その MySQL ユーザーが使用できる別のプロファイルを割り当てることを推奨します。
 
-最後に、ClickHouse Server が目的の IP アドレスで待ち受けるように設定します。
+最後に、ClickHouse サーバー が目的の IP アドレスで待ち受けるように設定します。
 `config.xml` で、すべてのアドレスで待ち受けるようにするには、次の設定のコメントを解除します：
 
 ```bash
@@ -99,7 +97,7 @@ QuickSight では、MySQL ユーザーのプロファイルにいくつかの追
 ```
 
 `mysql` バイナリが利用可能な場合は、コマンドラインから接続をテストできます。
-上記のサンプルのユーザー名（`mysql_user`）とパスワード（`LZOQYnqQN4L/T6L0`）を使用した場合、実行するコマンドは次のとおりです。
+上記のサンプルのユーザー名 (`mysql_user`) とパスワード (`LZOQYnqQN4L/T6L0`) を使用した場合、実行するコマンドは次のとおりです。
 
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
@@ -124,41 +122,48 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 まず [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com) にアクセスし、Datasets セクションに移動して「New dataset」をクリックします。
 
 <Image size="md" img={quicksight_01} alt="Datasets セクションで New dataset ボタンが表示されている Amazon QuickSight ダッシュボード" border />
-<br/>
 
-QuickSight にバンドルされている公式の MySQL コネクタ（名前は **MySQL** のみ）を検索します。
+<br />
+
+QuickSight にバンドルされている公式の MySQL コネクタ (名前は **MySQL** のみ) を検索します。
 
 <Image size="md" img={quicksight_02} alt="検索結果で MySQL がハイライトされている QuickSight のデータソース選択画面" border />
-<br/>
+
+<br />
 
 接続情報を入力します。MySQL インターフェイスのポートはデフォルトで 9004 ですが、
 サーバー構成によっては異なる場合がある点に注意してください。
 
 <Image size="md" img={quicksight_03} alt="ホスト名、ポート、データベース、認証情報のフィールドがある QuickSight の MySQL 接続設定フォーム" border />
-<br/>
+
+<br />
 
 ここで、ClickHouse からデータを取得する方法として 2 つの選択肢があります。1 つ目は、リストからテーブルを選択する方法です。
 
 <Image size="md" img={quicksight_04} alt="ClickHouse から利用可能なデータベーステーブルが表示されている QuickSight のテーブル選択インターフェイス" border />
-<br/>
+
+<br />
 
 もう 1 つの方法は、カスタム SQL を指定してデータを取得することです。
 
 <Image size="md" img={quicksight_05} alt="ClickHouse からデータを取得するための QuickSight のカスタム SQL クエリエディタ" border />
-<br/>
+
+<br />
 
 「Edit/Preview data」をクリックすると、自動検出されたテーブル構造を確認したり、データへのアクセス方法としてカスタム SQL を選択した場合はその内容を調整したりできます。
 
 <Image size="md" img={quicksight_06} alt="カラムとサンプルデータを含むテーブル構造が表示されている QuickSight のデータプレビュー" border />
-<br/>
+
+<br />
 
 UI の左下隅で「Direct Query」モードが選択されていることを確認してください。
 
 <Image size="md" img={quicksight_07} alt="左下隅で Direct Query モードのオプションがハイライトされている QuickSight インターフェイス" border />
-<br/>
+
+<br />
 
 これで、データセットを公開して新しいビジュアライゼーションを作成できます。
 
 ## 既知の制限事項 \{#known-limitations\}
 
-- SPICE インポートは期待どおりに動作しません。代わりに Direct Query モードを使用してください。[#58553](https://github.com/ClickHouse/ClickHouse/issues/58553) を参照してください。
+* SPICE インポートは期待どおりに動作しません。代わりに Direct Query モードを使用してください。[#58553](https://github.com/ClickHouse/ClickHouse/issues/58553) を参照してください。

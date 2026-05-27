@@ -10,10 +10,7 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-
-# 数据反规范化 \{#denormalizing-data\}
-
-在 ClickHouse 中，数据反规范化是一种通过使用扁平表并避免 `JOIN` 来最大限度降低查询延迟的技术。
+数据反规范化是 ClickHouse 中一种通过使用扁平化表并避免 JOIN 操作来尽量降低查询延迟的技术。
 
 ## 比较规范化与反规范化模式 \{#comparing-normalized-vs-denormalized-schemas\}
 

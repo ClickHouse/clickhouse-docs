@@ -1,5 +1,5 @@
 ---
-title: 'オープンテーブル形式の利用開始'
+title: 'データレイクの利用開始'
 sidebar_label: '利用開始'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
@@ -16,13 +16,11 @@ import iceberg_query_engine from '@site/static/images/datalake/iceberg-query-eng
 import iceberg_query from '@site/static/images/datalake/iceberg-query.png';
 import clickhouse_query from '@site/static/images/datalake/clickhouse-query.png';
 
-# データレイクの利用開始 \{#data-lake-getting-started\}
-
 :::note[TL;DR]
-データレイクテーブルへのクエリ、MergeTree による高速化、結果の Iceberg への書き戻しを、実践的なガイドです。すべての手順で公開データセットを使用し、Cloud と OSS の両方で動作します。
+データレイクのテーブルをクエリし、MergeTree で高速化し、結果を Iceberg に書き戻すための実践的な手順を紹介します。すべての手順で公開データセットを使用し、Cloud と OSS の両方で利用できます。
 :::
 
-このガイドのスクリーンショットは、[ClickHouse Cloud](https://console.clickhouse.cloud) の SQL コンソールから取得したものです。すべてのクエリは、Cloud とセルフマネージド環境の両方で動作します。
+このガイドのスクリーンショットは [ClickHouse Cloud](https://console.clickhouse.cloud) の SQL コンソールから取得したものです。すべてのクエリは Cloud とセルフマネージド環境の両方で動作します。
 
 <VerticalStepper headerLevel="h2">
   ## Icebergデータを直接クエリする \{#query-directly\}

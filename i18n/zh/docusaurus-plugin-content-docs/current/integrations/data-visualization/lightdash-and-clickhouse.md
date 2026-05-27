@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/lightdash
 keywords: ['clickhouse', 'lightdash', 'data visualization', 'BI', 'semantic layer', 'dbt', 'self-serve analytics', 'connect']
 description: 'Lightdash 是一个构建在 dbt 之上的现代开源 BI 工具，使团队能够通过语义层使用 ClickHouse 探索和可视化数据。了解如何将 Lightdash 连接到 ClickHouse，以实现由 dbt 驱动的快速、可治理分析。'
-title: '将 Lightdash 连接到 ClickHouse'
+title: 'Lightdash'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -21,16 +21,13 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Lightdash \{#lightdash\}
+Lightdash 是专为现代数据团队打造的**AI 优先 BI 平台**，融合了 dbt 的开放性与 ClickHouse 的高性能。将 ClickHouse 连接到 Lightdash 后，团队即可获得**AI 驱动的自助式分析体验**，并基于其 dbt 语义层，确保每个问题都能通过经过治理且一致的指标得到解答。
 
-<PartnerBadge/>
+开发者喜爱 Lightdash，是因为它具备开放架构、可进行版本控制的 YAML 模型，以及可直接融入工作流的集成能力——从 GitHub 到 IDE。
 
-Lightdash 是一个为现代数据团队构建的 **AI 优先 BI 平台**，将 dbt 的开放性与 ClickHouse 的高性能相结合。通过将 ClickHouse 连接到 Lightdash，团队可以基于其 dbt 语义层获得 **由 AI 驱动的自助式分析体验**，从而确保每个问题都由经过治理且一致的指标来回答。
-
-开发者喜欢 Lightdash 的开放架构、支持版本控制的 YAML 模型，以及能够无缝融入其工作流程的集成功能——从 GitHub 到 IDE。
-
-此次合作将 **ClickHouse 的极速性能** 与 **Lightdash 的开发者体验**相结合，使得借助 AI 进行数据探索、可视化和洞察自动化变得前所未有地轻松。
+此次合作将 **ClickHouse 的速度**与 **Lightdash 的开发者体验**结合起来，让借助 AI 进行洞察探索、可视化和自动化变得前所未有地轻松。
 
 ## 使用 Lightdash 和 ClickHouse 构建交互式仪表板 \{#build-an-interactive-dashboard\}
 

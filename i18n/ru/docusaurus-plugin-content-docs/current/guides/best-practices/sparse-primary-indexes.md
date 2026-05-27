@@ -34,8 +34,6 @@ import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
 
-# Практическое введение в первичные индексы ClickHouse \{#a-practical-introduction-to-primary-indexes-in-clickhouse\}
-
 ## Введение \{#introduction\}
 
 В этом руководстве мы подробно рассмотрим индексацию в ClickHouse. Мы наглядно покажем и детально обсудим:

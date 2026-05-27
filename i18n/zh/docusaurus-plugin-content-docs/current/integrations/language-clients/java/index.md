@@ -1,5 +1,5 @@
 ---
-title: 'Java'
+title: 'Java 客户端概览'
 sidebar_position: 1
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: '从 Java 连接到 ClickHouse 的可选方案'
@@ -13,11 +13,9 @@ integration:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Java 客户端概览 \{#java-clients-overview\}
-
-- [Client 0.8+](./client/client.mdx)
-- [JDBC 0.8+](./jdbc/jdbc.mdx)
-- [R2DBC 驱动](./r2dbc.md)
+* [客户端 0.8+](./client/client.mdx)
+* [JDBC 0.8+](./jdbc/jdbc.mdx)
+* [R2DBC 驱动](./r2dbc.md)
 
 ## ClickHouse 客户端 \{#clickhouse-client\}
 

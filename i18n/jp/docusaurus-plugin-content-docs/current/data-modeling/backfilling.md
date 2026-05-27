@@ -1,21 +1,18 @@
 ---
 slug: /data-modeling/backfilling
 title: 'データのバックフィル'
-description: 'ClickHouse で大規模データセットをバックフィルする方法'
-keywords: ['マテリアライズドビュー', 'バックフィル', 'データ挿入', 'レジリエントなデータロード']
+description: 'ClickHouse で大規模なデータセットをバックフィルする方法'
+keywords: ['materialized view', 'バックフィル', 'データの挿入', '耐障害性のあるデータ読み込み']
 doc_type: 'guide'
 ---
 
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
-
-# データのバックフィル \{#backfilling-data\}
-
 ClickHouse を新規に利用している場合でも、既存のデプロイメントを担当している場合でも、履歴データでテーブルをバックフィルする必要が生じることがあります。状況によっては比較的単純ですが、マテリアライズドビューをバックフィルする必要がある場合は、より複雑になることがあります。本ガイドでは、そのようなタスクに対してユーザーが自身のユースケースに適用できるいくつかの手順を説明します。
 
 :::note
-本ガイドでは、ユーザーがすでに [インクリメンタルマテリアライズドビュー](/materialized-view/incremental-materialized-view) の概念と、[S3 や GCS などのテーブル関数を用いたデータ読み込み](/integrations/s3) に精通していることを前提としています。また、[オブジェクトストレージからの挿入パフォーマンス最適化](/integrations/s3/performance) に関するガイドも併せて読むことを推奨します。そこでの推奨事項は、このガイド全体で行う挿入処理に適用できます。
+本ガイドでは、ユーザーがすでに [インクリメンタルmaterialized view](/materialized-view/incremental-materialized-view) の概念と、[S3 や GCS などのテーブル関数を用いたデータ読み込み](/integrations/s3) に精通していることを前提としています。また、[オブジェクトストレージからの挿入パフォーマンス最適化](/integrations/s3/performance) に関するガイドも併せて読むことを推奨します。そこでの推奨事項は、このガイド全体で行う挿入処理に適用できます。
 :::
 
 ## サンプルデータセット \{#example-dataset\}

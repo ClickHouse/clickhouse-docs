@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/anythingllm
 sidebar_label: '集成 AnythingLLM'
-title: '使用 AnythingLLM 和 ClickHouse Cloud 设置 ClickHouse MCP 服务器'
+title: '将 ClickHouse MCP 服务器 与 AnythingLLM 配合使用'
 pagination_prev: null
 pagination_next: null
-description: '本指南介绍如何使用 Docker 设置 AnythingLLM 与 ClickHouse MCP 服务器。'
+description: '本指南介绍如何使用 Docker 搭建 AnythingLLM，并将其与 ClickHouse MCP 服务器集成。'
 keywords: ['AI', 'AnythingLLM', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -15,8 +15,6 @@ import Image from '@theme/IdealImage';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/allm_conversation.png';
 import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers.png';
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
-
-# 将 ClickHouse MCP 服务器 与 AnythingLLM 配合使用 \{#using-clickhouse-mcp-server-with-anythingllm\}
 
 > 本指南介绍如何使用 Docker 设置 [AnythingLLM](https://anythingllm.com/) 和 ClickHouse MCP 服务器，
 > 并将其连接到 ClickHouse 示例数据集。

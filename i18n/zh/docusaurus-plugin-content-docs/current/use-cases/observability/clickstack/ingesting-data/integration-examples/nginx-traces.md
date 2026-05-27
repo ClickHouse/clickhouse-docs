@@ -17,10 +17,8 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Nginx 链路追踪 \{#nginx-traces-clickstack\}
-
-:::note[TL;DR]
-使用 OpenTelemetry Nginx 模块在 ClickStack 中捕获 Nginx 的分布式链路追踪。包含演示数据集和预置仪表板。
+:::note[摘要]
+使用 OpenTelemetry Nginx 模块，在 ClickStack 中采集 Nginx 的分布式链路追踪。附带演示数据集和预置仪表板。
 :::
 
 ## 与现有 Nginx 集成 \{#existing-nginx\}

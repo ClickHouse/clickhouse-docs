@@ -64,7 +64,7 @@ ClickHouse Cloud는 자체 클라우드 서비스 제공자(CSP) 계정(AWS S3, 
 
 <hr/>
 
-# 백업 / 복구 \{#backup-restore\}
+## 백업 / 복원 \{#backup-restore\}
 
 ## AWS S3 버킷을 통한 백업/복원 \{#backup--restore-to-aws-s3-bucket\}
 

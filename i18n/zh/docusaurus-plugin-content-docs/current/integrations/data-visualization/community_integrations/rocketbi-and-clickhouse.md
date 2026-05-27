@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/rocketbi
 keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
 description: 'RocketBI 是一个自助式商业智能平台，可帮助您快速分析数据、通过拖放方式创建可视化，并直接在 Web 浏览器中与同事协作。'
-title: '目标：构建您的第一个仪表板'
+title: '目标：使用 Rocket.BI 构建您的第一个仪表板'
 doc_type: '指南'
 integration:
   - support_level: 'community'
@@ -33,18 +33,16 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 目标：使用 Rocket.BI 构建您的第一个仪表板 \{#goal-build-your-first-dashboard-with-rocketbi\}
-
 <CommunityMaintainedBadge />
 
 在本指南中，您将安装 Rocket.BI 并构建一个简单的仪表板。
-这就是该仪表板：
+该仪表板如下所示：
 
-<Image size="md" img={rocketbi_01} alt="Rocket BI 仪表板，显示销售指标、图表和 KPI" border />
+<Image size="md" img={rocketbi_01} alt="显示销售指标、图表和 KPI 的 Rocket BI 仪表板" border />
 
 <br />
 
-您可以通过[此链接查看该仪表板](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)。
+您可以通过[此链接查看该仪表板。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
 ## 安装 \{#install\}
 

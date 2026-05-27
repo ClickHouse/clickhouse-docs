@@ -17,10 +17,8 @@ import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashb
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг трейсов Nginx с помощью ClickStack \{#nginx-traces-clickstack\}
-
 :::note[TL;DR]
-Собирайте распределённые трейсы из Nginx в ClickStack с помощью модуля OpenTelemetry для Nginx. Включает демонстрационный набор данных и готовую панель мониторинга.
+Собирайте распределенные трейсы из Nginx в ClickStack с помощью модуля OpenTelemetry для Nginx. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим Nginx \{#existing-nginx\}

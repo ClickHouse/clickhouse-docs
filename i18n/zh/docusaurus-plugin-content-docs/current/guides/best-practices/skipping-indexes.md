@@ -12,8 +12,6 @@ import simple_skip from '@site/static/images/guides/best-practices/simple_skip.p
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
-# 深入了解 ClickHouse 数据跳过索引 \{#understanding-clickhouse-data-skipping-indexes\}
-
 ## 简介 \{#introduction\}
 
 影响 ClickHouse 查询性能的因素有很多。在大多数场景中，关键因素是 ClickHouse 在评估查询的 WHERE 子句条件时，能否利用主键。因此，为最常见的查询模式选择合适的主键，对实现高效的表设计至关重要。

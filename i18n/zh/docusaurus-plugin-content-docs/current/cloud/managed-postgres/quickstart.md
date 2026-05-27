@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/quickstart
 sidebar_label: '快速入门'
-title: '快速入门'
+title: 'Managed Postgres 快速入门'
 description: '体验基于 NVMe 的 Postgres 高性能，并通过原生 ClickHouse 集成引入实时分析'
 keywords: ['托管 Postgres', '快速入门', '入门指南', '创建数据库', 'NVMe', '性能']
 doc_type: 'guide'
@@ -19,24 +19,22 @@ import getClickHouseHost from '@site/static/images/managed-postgres/get-clickhou
 import analyticsList from '@site/static/images/managed-postgres/analytics-list.png';
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
 
-# Managed Postgres 快速入门 \{#quickstart-for-managed-postgres\}
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.quick-start-beta" />
 
-ClickHouse Managed Postgres 是企业级 Postgres，基于 NVMe 存储构建，与 EBS 等网络附加存储相比，可为磁盘受限的工作负载提供最高 10 倍的性能提升。本快速入门分为两个部分：
+ClickHouse Managed Postgres 是采用 NVMe 存储的企业级 Postgres，与 EBS 等网络附加存储相比，可将磁盘 I/O 受限工作负载的性能最高提升 10 倍。本快速入门分为两个部分：
 
-* **第 1 部分：** 开始使用 NVMe Postgres 并体验其性能
-* **第 2 部分：** 通过与 ClickHouse 集成实现实时分析
+* **Part 1:** 开始使用 NVMe Postgres 并体验其性能
+* **Part 2:** 通过与 ClickHouse 集成解锁实时分析
 
-Managed Postgres 目前在 AWS 的多个区域可用，并在私有预览期间免费。
+Managed Postgres 目前已在 AWS 的多个区域提供，并且在私有预览期间免费。
 
-**在本快速入门中，您将完成以下内容：**
+**在本快速入门中，您将：**
 
-* 创建一个具备 NVMe 加速性能的 Managed Postgres 实例
-* 加载 100 万条示例事件，直观体验 NVMe 的速度
+* 创建一个采用 NVMe 存储、具备高性能的 Managed Postgres 实例
+* 加载 100 万条样本事件，并亲身体验 NVMe 速度
 * 运行查询并体验低延迟性能
-* 将数据复制到 ClickHouse 以实现实时分析
-* 使用 `pg_clickhouse` 从 Postgres 直接查询 ClickHouse
+* 将数据复制到 ClickHouse 以进行实时分析
+* 使用 `pg_clickhouse` 直接从 Postgres 查询 ClickHouse
 
 ## 第一部分：NVMe Postgres 入门 \{#part-1\}
 

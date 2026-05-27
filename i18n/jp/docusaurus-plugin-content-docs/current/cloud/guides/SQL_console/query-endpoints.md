@@ -3,7 +3,7 @@ sidebar_title: 'クエリ API エンドポイント'
 slug: /cloud/get-started/query-endpoints
 description: '保存したクエリから REST API エンドポイントを簡単に作成する'
 keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
-title: 'クエリ API エンドポイント'
+title: 'クエリ API エンドポイントの設定'
 doc_type: 'guide'
 ---
 
@@ -17,10 +17,7 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# クエリ API エンドポイントのセットアップ \{#setting-up-query-api-endpoints\}
-
-**Query API Endpoints** 機能を使用すると、ClickHouse Cloud コンソールで任意の保存済み SQL クエリから、直接 API エンドポイントを作成できます。ClickHouse Cloud サービスにネイティブ ドライバーで接続する必要なく、HTTP 経由で API エンドポイントにアクセスして保存済みクエリを実行できるようになります。
+**クエリ API エンドポイント**機能を使用すると、ClickHouse Cloud コンソールで保存した任意の SQL 保存クエリから直接 API エンドポイントを作成できます。HTTP 経由で API エンドポイントにアクセスし、ネイティブ ドライバーを使って ClickHouse Cloud サービスに接続しなくても、保存クエリを実行できます。
 
 ## 事前準備 \{#quick-start-guide\}
 

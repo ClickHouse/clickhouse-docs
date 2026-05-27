@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/migrations/peerdb
 sidebar_label: 'PeerDB'
-title: 'PeerDB를 사용하여 PostgreSQL 데이터 마이그레이션하기'
+title: 'PeerDB를 사용하여 Managed Postgres로 마이그레이션하기'
 description: 'PeerDB를 사용하여 PostgreSQL 데이터를 ClickHouse Managed Postgres로 마이그레이션하는 방법을 알아봅니다'
 keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres', 'peerdb']
 doc_type: 'guide'
@@ -18,9 +18,7 @@ import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-loa
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
-# PeerDB를 사용해 Managed Postgres로 마이그레이션하기 \{#peerdb-migration\}
-
-이 가이드는 PeerDB를 사용해 PostgreSQL 데이터베이스를 ClickHouse Managed Postgres로 마이그레이션하는 방법을 단계별로 설명합니다.
+이 가이드는 PeerDB를 사용하여 PostgreSQL 데이터베이스를 ClickHouse Managed Postgres로 마이그레이션하는 방법을 단계별로 안내합니다.
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-peerdb-beta" />
 

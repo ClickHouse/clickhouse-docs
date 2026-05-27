@@ -1,5 +1,5 @@
 ---
-title: 'Cloud console 모니터링'
+title: 'ClickHouse Cloud Console의 모니터링'
 slug: /cloud/monitoring/cloud-console
 description: 'ClickHouse Cloud Console에 내장된 모니터링 대시보드'
 keywords: ['클라우드', '모니터링', '대시보드', '서비스 상태', '리소스 사용률', '고급 대시보드']
@@ -16,10 +16,7 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-
-# ClickHouse Cloud Console 모니터링 \{#monitoring-in-the-clickhouse-cloud-console\}
-
-ClickHouse Cloud의 서비스에는 대시보드와 알림을 제공하는 기본 제공 모니터링 구성 요소가 포함되어 있습니다. 기본적으로 Cloud Console의 모든 사용자는 이러한 대시보드에 액세스할 수 있습니다.
+ClickHouse Cloud의 서비스에는 대시보드와 알림을 제공하는 기본 제공 모니터링 기능이 포함되어 있습니다. 기본적으로 Cloud Console의 모든 사용자가 이러한 대시보드에 액세스할 수 있습니다.
 
 ## 대시보드 \{#dashboards\}
 

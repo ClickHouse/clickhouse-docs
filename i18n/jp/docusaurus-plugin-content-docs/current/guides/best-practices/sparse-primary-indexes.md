@@ -34,8 +34,6 @@ import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse におけるプライマリインデックス実践入門 \{#a-practical-introduction-to-primary-indexes-in-clickhouse\}
-
 ## はじめに \{#introduction\}
 
 このガイドでは、ClickHouse におけるインデックスについて詳しく解説します。以下の点を例示し、詳細に説明します。

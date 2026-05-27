@@ -18,16 +18,13 @@ import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png'
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
+<EnterprisePlanFeatureBadge feature="SAML 单点登录" />
 
-# 配置 SAML SSO \{#saml-sso-setup\}
+ClickHouse Cloud 支持通过安全断言标记语言 (SAML) 实现单点登录 (SSO) 。这样，您便可以通过身份提供商 (IdP) 进行身份验证，从而安全地登录您的 ClickHouse Cloud 组织。
 
-<EnterprisePlanFeatureBadge feature="SAML SSO"/>
+我们目前支持服务提供商发起的单点登录 (SSO) 、通过独立连接接入多个组织，以及即时预配。暂不支持跨域身份管理系统 (SCIM) 或属性映射。
 
-ClickHouse Cloud 通过安全断言标记语言（SAML）支持单点登录（SSO）。这使您能够通过身份提供商（IdP）进行身份验证，从而安全地登录到您的 ClickHouse Cloud 组织。
-
-我们目前支持由服务提供者发起的 SSO、通过独立连接接入的多个组织，以及即时（Just-in-time，JIT）预配。我们尚不支持跨域身份管理系统（SCIM）或属性映射功能。
-
-启用 SAML 集成的客户还可以指定新用户的默认角色，并调整会话超时设置。
+启用 SAML 集成的客户还可以指定分配给新用户的默认角色，并调整会话超时设置。
 
 ## 开始之前 \{#before-you-begin\}
 

@@ -13,8 +13,6 @@ import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
 
-# ストレージとコンピュートの分離 \{#separation-of-storage-and-compute\}
-
 ## 概要 \{#overview\}
 
 このガイドでは、ClickHouse と S3 を使用して、ストレージとコンピュートを分離したアーキテクチャを実装する方法を説明します。

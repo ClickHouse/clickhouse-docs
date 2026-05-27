@@ -9,11 +9,11 @@ doc_type: 'reference'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# メトリクス リファレンス \{#metrics-reference\}
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-metrics-beta" />
 
-このページでは、[Managed Postgres Prometheus エンドポイント](/cloud/managed-postgres/monitoring/prometheus) で公開されているすべてのメトリクスを一覧で確認できます。
+このページでは、
+[Managed Postgres Prometheus エンドポイント](/cloud/managed-postgres/monitoring/prometheus)
+で公開されるすべてのメトリクスを一覧表示します。
 セットアップと認証については、[Prometheus エンドポイント] ページを参照してください。
 
 ## 共通ラベル \{#common-labels\}

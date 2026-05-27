@@ -1,7 +1,7 @@
 ---
 slug: /optimize/query-optimization
 sidebar_label: '查询优化'
-title: '查询优化指南'
+title: '查询优化简明指南'
 description: '一份简明的查询优化指南，介绍提升查询性能的常用方法'
 doc_type: 'guide'
 keywords: ['query optimization', 'performance', 'best practices', 'query tuning', 'efficiency']
@@ -10,10 +10,7 @@ keywords: ['query optimization', 'performance', 'best practices', 'query tuning'
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
 
-
-# 查询优化简明指南 \{#a-simple-guide-for-query-optimization\}
-
-本节通过常见场景示例说明如何使用不同的性能优化技术，例如 [analyzer](/operations/analyzer)、[query profiling](/operations/optimizing-performance/sampling-query-profiler) 或 [avoid nullable Columns](/optimize/avoid-nullable-columns)，从而提升 ClickHouse 查询性能。
+本节旨在通过常见场景说明如何使用不同的性能优化技术，例如 [analyzer](/operations/analyzer)、[查询性能分析](/operations/optimizing-performance/sampling-query-profiler) 或 [避免 Nullable 列](/optimize/avoid-nullable-columns)，以提升 ClickHouse 查询性能。
 
 ## 理解查询性能 \{#understand-query-performance\}
 

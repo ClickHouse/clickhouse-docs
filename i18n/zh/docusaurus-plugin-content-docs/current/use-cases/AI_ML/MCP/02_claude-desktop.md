@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/claude-desktop
 sidebar_label: '集成 Claude Desktop'
-title: '为 Claude Desktop 设置 ClickHouse MCP 服务器'
+title: '在 Claude Desktop 中使用 ClickHouse MCP 服务器'
 pagination_prev: null
 pagination_next: null
 description: '本指南说明如何为 Claude Desktop 设置 ClickHouse MCP 服务器。'
@@ -16,12 +16,10 @@ import FindMCPServers from '@site/static/images/use-cases/AI_ML/MCP/find-mcp-ser
 import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permission.png';
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
-# 在 Claude Desktop 中使用 ClickHouse MCP 服务器 \{#using-clickhouse-mcp-server-with-claude-desktop\}
-
 > 本指南说明如何使用 uv 为 Claude Desktop 设置 ClickHouse MCP 服务器，
 > 并将其连接到 ClickHouse 示例数据集。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="768" height="432" src="https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q" title="YouTube 视频播放器" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 <VerticalStepper headerLevel="h2">
   ## 安装 uv \{#install-uv\}

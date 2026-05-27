@@ -76,11 +76,11 @@ Anthropic 以外の LLM プロバイダーを使用したい場合は、Copilotk
 - `CLICKHOUSE_PASSWORD`
 - `CLICKHOUSE_SECURE`
 
-# アプリケーションを実行する \{#run-the-application\}
+## アプリケーションを実行する \{#run-the-application\}
 
 `npm run dev` を実行して、開発サーバーを起動します。
 
-次のようなプロンプトで Agent をテストできます:
+次のようなプロンプトで エージェント をテストできます:
 
 > 「過去10年間のマンチェスターの価格推移を表示して。」
 

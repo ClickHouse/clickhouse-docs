@@ -2,8 +2,8 @@
 sidebar_label: 'Apache Flink'
 sidebar_position: 1
 slug: /integrations/apache-flink
-description: 'Введение в Apache Flink с ClickHouse'
-keywords: ['clickhouse', 'Apache Flink', 'migrating', 'data', 'stream processing']
+description: 'Введение в Apache Flink и ClickHouse'
+keywords: ['clickhouse', 'Apache Flink', 'перенос', 'данные', 'потоковая обработка']
 title: 'Коннектор Flink'
 doc_type: 'guide'
 integration:
@@ -16,11 +16,9 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Коннектор Flink \{#flink-connector\}
-
 <ClickHouseSupportedBadge />
 
-Это официальный [Apache Flink Sink Connector](https://github.com/ClickHouse/flink-connector-clickhouse) с поддержкой от ClickHouse. Он построен на основе [AsyncSinkBase](https://cwiki.apache.org/confluence/display/FLINK/FLIP-171%3A+Async+Sink) Flink и официального [java client](https://github.com/ClickHouse/clickhouse-java) ClickHouse.
+Это официальный [Apache Flink Sink Connector](https://github.com/ClickHouse/flink-connector-clickhouse) с поддержкой от ClickHouse. Он построен на основе [AsyncSinkBase](https://cwiki.apache.org/confluence/display/FLINK/FLIP-171%3A+Async+Sink) Flink и официального [Java-клиента](https://github.com/ClickHouse/clickhouse-java) ClickHouse.
 
 Коннектор поддерживает DataStream API Apache Flink. Поддержка Table API [запланирована в одном из будущих релизов](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42).
 

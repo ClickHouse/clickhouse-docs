@@ -2,7 +2,7 @@
 slug: /integrations/prometheus
 sidebar_label: 'Prometheus 엔드포인트'
 sidebar_position: 4
-title: 'Prometheus 호환 메트릭 엔드포인트'
+title: 'Prometheus 통합'
 description: 'ClickHouse 메트릭을 Prometheus로 내보내기'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
 doc_type: 'reference'
@@ -16,13 +16,11 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-# Prometheus 통합 \{#prometheus-integration\}
+이 기능은 [Prometheus](https://prometheus.io/)를 통합하여 ClickHouse Cloud 서비스를 모니터링할 수 있도록 지원합니다. Prometheus 메트릭에 대한 액세스는 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 엔드포인트를 통해 제공되며, 이 엔드포인트를 사용하면 Prometheus 메트릭 collector에 안전하게 연결하여 메트릭을 내보낼 수 있습니다. 이러한 메트릭은 시각화를 위해 Grafana, Datadog 등의 대시보드와 통합할 수 있습니다.
 
-이 기능은 [Prometheus](https://prometheus.io/)와 통합하여 ClickHouse Cloud 서비스를 모니터링할 수 있도록 지원합니다. Prometheus 메트릭에 대한 접근은 [ClickHouse Cloud API](/cloud/manage/api/api-overview) 엔드포인트를 통해 제공되며, 이를 사용하여 Prometheus 메트릭 수집기로 메트릭을 안전하게 전송할 수 있습니다. 이러한 메트릭은 Grafana, Datadog 등의 대시보드와 통합하여 시각화할 수 있습니다.
+시작하려면 [API 키를 생성하세요](/cloud/manage/openapi).
 
-시작하려면 [API 키를 생성](/cloud/manage/openapi)하십시오.
-
-[Managed Postgres](/cloud/managed-postgres) 서비스에 해당하는 Prometheus 엔드포인트를 찾고 있다면 [Managed Postgres Prometheus 엔드포인트](/cloud/managed-postgres/monitoring/prometheus)를 참조하십시오.
+[Managed Postgres](/cloud/managed-postgres) 서비스에 해당하는 엔드포인트를 찾고 있다면 [Managed Postgres Prometheus 엔드포인트](/cloud/managed-postgres/monitoring/prometheus)를 참조하십시오.
 
 ## ClickHouse Cloud 메트릭 수집을 위한 Prometheus 엔드포인트 API \{#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics\}
 

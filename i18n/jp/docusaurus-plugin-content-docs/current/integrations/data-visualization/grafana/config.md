@@ -22,15 +22,13 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Grafana での ClickHouse データソースの設定 \{#configuring-clickhouse-data-source-in-grafana\}
+<ClickHouseSupportedBadge />
 
-<ClickHouseSupportedBadge/>
+設定を変更する最も簡単な方法は、Grafana UI のプラグイン設定ページで行うことですが、データソースは [YAML ファイルでプロビジョニングする](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources) こともできます。
 
-設定を変更する最も簡単な方法は、Grafana の UI にあるプラグイン設定ページから行うことですが、データソースは[YAML ファイルでプロビジョニングする](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)こともできます。
+このページでは、ClickHouse プラグインで設定できるオプションの一覧に加え、YAML でデータソースをプロビジョニングする場合の設定スニペットも紹介します。
 
-このページでは、ClickHouse プラグインで設定可能なオプションの一覧と、YAML ファイルでデータソースをプロビジョニングする場合の設定スニペットを示します。
-
-すべてのオプションの概要を素早く確認したい場合は、設定オプションの完全な一覧を[こちら](#all-yaml-options)で参照できます。
+すべてのオプションの概要を手早く確認したい場合は、設定オプションの完全な一覧を [こちら](#all-yaml-options) で確認できます。
 
 ## 共通設定 \{#common-settings\}
 

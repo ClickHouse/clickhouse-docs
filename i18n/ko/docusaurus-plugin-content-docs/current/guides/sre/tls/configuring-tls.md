@@ -3,7 +3,7 @@ slug: /guides/sre/tls/configuring-tls
 sidebar_label: 'TLS 구성'
 sidebar_position: 20
 title: 'TLS 구성'
-description: '이 가이드는 ClickHouse가 연결을 검증하기 위해 OpenSSL 인증서를 사용하도록 구성하는 간단하고 최소한의 설정 방법을 제공합니다.'
+description: '이 가이드는 ClickHouse에서 OpenSSL 인증서를 사용해 연결을 검증하도록 구성하기 위한 간단한 최소 설정을 제공합니다.'
 keywords: ['SSL 구성', 'TLS 설정', 'OpenSSL 인증서', '보안 연결', 'SRE 가이드']
 doc_type: 'guide'
 ---
@@ -11,9 +11,6 @@ doc_type: 'guide'
 import SelfManaged from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
-
-
-# TLS 구성 \{#configuring-tls\}
 
 <SelfManaged />
 

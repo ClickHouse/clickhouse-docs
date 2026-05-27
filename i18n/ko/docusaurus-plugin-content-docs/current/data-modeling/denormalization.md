@@ -10,10 +10,7 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-
-# 데이터 비정규화 \{#denormalizing-data\}
-
-데이터 비정규화는 ClickHouse에서 조인을 수행하지 않고도 쿼리 지연 시간을 줄이기 위해 평탄화된(플랫) 테이블을 사용하는 기법입니다.
+데이터 비정규화는 ClickHouse에서 조인을 피하고 쿼리 지연 시간을 줄이기 위해 평탄화된 테이블을 사용하는 기법입니다.
 
 ## 정규화된 스키마와 비정규화된 스키마 비교 \{#comparing-normalized-vs-denormalized-schemas\}
 
