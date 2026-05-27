@@ -10,6 +10,10 @@ integration:
   - category: 'clickpipes'
 ---
 
+:::note
+You can sign up for the Private Preview waitlist [here](https://clickhouse.com/cloud/clickpipes#pubsub-private-preview).
+:::
+
 This article describes the GCP IAM permissions ClickPipes requires to authenticate with Google Cloud Pub/Sub and consume data from your topics, and how to set up a service account that grants exactly those permissions.
 
 ## Prerequisites {#prerequisite}
