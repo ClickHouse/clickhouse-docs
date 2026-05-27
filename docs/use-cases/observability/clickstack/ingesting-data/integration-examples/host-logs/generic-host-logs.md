@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs
-title: 'Monitoring Host Logs with ClickStack'
+title: 'Monitoring host logs with ClickStack'
 sidebar_label: 'Generic host logs'
 pagination_prev: null
 pagination_next: null

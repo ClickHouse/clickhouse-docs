@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/mongodb-logs
-title: 'Monitoring MongoDB Logs with ClickStack'
+title: 'Monitoring MongoDB logs with ClickStack'
 sidebar_label: 'MongoDB logs'
 pagination_prev: null
 pagination_next: null

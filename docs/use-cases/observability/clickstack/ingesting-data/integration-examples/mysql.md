@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/mysql-logs
-title: 'Monitoring MySQL Logs with ClickStack'
+title: 'Monitoring MySQL logs with ClickStack'
 sidebar_label: 'MySQL logs'
 pagination_prev: null
 pagination_next: null

@@ -1,5 +1,5 @@
 ---
-title: 'Using Grafana and ClickHouse for Observability'
+title: 'Using Grafana and ClickHouse for observability'
 description: 'Using Grafana and ClickHouse for observability'
 slug: /observability/grafana
 keywords: ['Observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']

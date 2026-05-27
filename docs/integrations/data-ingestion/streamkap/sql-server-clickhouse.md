@@ -4,7 +4,7 @@ sidebar_position: 13
 keywords: ['clickhouse', 'Streamkap', 'CDC', 'sql server', 'connect', 'integrate', 'etl', 'data integration', 'change data capture']
 slug: /integrations/data-ingestion/etl-tools/sql-server-clickhouse
 description: 'Streaming Data from SQL Server to ClickHouse for fast analytics'
-title: 'Streaming Data from SQL Server to ClickHouse for fast analytics: Step-by-Step Guide'
+title: 'Streaming data from SQL Server to ClickHouse for fast analytics: step-by-step guide'
 doc_type: 'guide'
 ---
 

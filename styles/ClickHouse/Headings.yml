@@ -589,6 +589,7 @@ exceptions:
   - TimescaleDB
   - Upsonic
   - WebUI
+  - Rocket.BI
   # Acronyms
   - AI
   - BI

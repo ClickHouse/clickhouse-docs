@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/kafka-logs
-title: 'Monitoring Kafka Logs with ClickStack'
+title: 'Monitoring Kafka logs with ClickStack'
 sidebar_label: 'Kafka logs'
 pagination_prev: null
 pagination_next: null

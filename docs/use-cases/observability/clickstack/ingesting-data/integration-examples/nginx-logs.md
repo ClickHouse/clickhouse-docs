@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx
-title: 'Monitoring Nginx Logs with ClickStack'
+title: 'Monitoring Nginx logs with ClickStack'
 sidebar_label: 'Nginx logs'
 pagination_prev: null
 pagination_next: null

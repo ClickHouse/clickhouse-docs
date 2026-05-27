@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/cloudflare-logs
-title: 'Monitoring Cloudflare Logs with ClickStack'
+title: 'Monitoring Cloudflare logs with ClickStack'
 sidebar_label: 'Cloudflare logs'
 pagination_prev: null
 pagination_next: null

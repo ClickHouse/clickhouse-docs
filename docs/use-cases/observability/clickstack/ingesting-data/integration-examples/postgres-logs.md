@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-logs
-title: 'Monitoring PostgreSQL Logs with ClickStack'
+title: 'Monitoring PostgreSQL logs with ClickStack'
 sidebar_label: 'PostgreSQL logs'
 pagination_prev: null
 pagination_next: null

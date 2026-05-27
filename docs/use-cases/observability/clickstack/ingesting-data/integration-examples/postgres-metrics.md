@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-metrics
-title: 'Monitoring PostgreSQL Metrics with ClickStack'
+title: 'Monitoring PostgreSQL metrics with ClickStack'
 sidebar_label: 'PostgreSQL metrics'
 pagination_prev: null
 pagination_next: null

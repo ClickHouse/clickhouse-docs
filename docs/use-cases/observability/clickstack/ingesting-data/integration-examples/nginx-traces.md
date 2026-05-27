@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: 'Monitoring Nginx Traces with ClickStack'
+title: 'Monitoring Nginx traces with ClickStack'
 sidebar_label: 'Nginx traces'
 pagination_prev: null
 pagination_next: null

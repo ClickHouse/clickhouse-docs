@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/kafka-metrics
-title: 'Monitoring Kafka Metrics with ClickStack'
+title: 'Monitoring Kafka metrics with ClickStack'
 sidebar_label: 'Kafka metrics'
 pagination_prev: null
 pagination_next: null

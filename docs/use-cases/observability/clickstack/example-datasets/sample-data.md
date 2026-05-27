@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/sample-data
-title: 'ClickStack - Sample logs, traces and metrics'
+title: 'ClickStack - sample logs, traces and metrics'
 sidebar_position: 0
 pagination_prev: null
 pagination_next: null

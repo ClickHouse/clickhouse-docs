@@ -3,7 +3,7 @@ sidebar_title: 'Query insights'
 slug: /cloud/get-started/query-insights
 description: 'Visualize system.query_log data to simplify query debugging and performance optimization'
 keywords: ['query insights', 'query log', 'query log ui', 'system.query_log insights']
-title: 'Query Insights'
+title: 'Query insights'
 doc_type: 'guide'
 ---
 

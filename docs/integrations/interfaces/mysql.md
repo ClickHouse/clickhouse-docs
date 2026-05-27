@@ -4,7 +4,7 @@ description: 'Documentation for the MySQL protocol interface in ClickHouse, allo
 sidebar_label: 'MySQL interface'
 sidebar_position: 25
 slug: /interfaces/mysql
-title: 'MySQL Interface'
+title: 'MySQL interface'
 doc_type: 'guide'
 ---
 

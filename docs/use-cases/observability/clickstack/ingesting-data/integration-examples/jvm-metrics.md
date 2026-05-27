@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/jvm-metrics
-title: 'Monitoring JVM Metrics with ClickStack'
+title: 'Monitoring JVM metrics with ClickStack'
 sidebar_label: 'JVM metrics'
 pagination_prev: null
 pagination_next: null

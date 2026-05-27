@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: 'Monitoring AWS Lambda Logs with ClickStack using Rotel'
+title: 'Monitoring AWS Lambda logs with ClickStack using Rotel'
 sidebar_label: 'AWS Lambda logs'
 pagination_prev: null
 pagination_next: null
