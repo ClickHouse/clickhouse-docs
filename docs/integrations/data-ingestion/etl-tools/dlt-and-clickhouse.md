@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Connect dlt to ClickHouse
-
 <PartnerBadge/>
 
 <a href="https://dlthub.com/docs/intro" target="_blank">dlt</a>  is an open-source library that you can add to your Python scripts to load data from various and often messy data sources into well-structured, live datasets.

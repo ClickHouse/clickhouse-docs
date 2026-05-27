@@ -28,8 +28,6 @@ import superset_11 from '@site/static/images/integrations/data-visualization/sup
 import superset_12 from '@site/static/images/integrations/data-visualization/superset_12.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Connect Superset to ClickHouse
-
 <ClickHouseSupportedBadge/>
 
 <a href="https://superset.apache.org/" target="_blank">Apache Superset</a> is an open-source data exploration and visualization platform written in Python. Superset connects to ClickHouse using a Python driver provided by ClickHouse. Let's see how it works...

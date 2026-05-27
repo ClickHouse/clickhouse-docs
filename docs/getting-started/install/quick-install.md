@@ -12,8 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import QuickInstall from './_snippets/_quick_install.md'
 
-# Quick install
-
 If you don't need to install ClickHouse for production, the quickest way to get
 set up is using the ClickHouse CLI or running an install script using curl.
 

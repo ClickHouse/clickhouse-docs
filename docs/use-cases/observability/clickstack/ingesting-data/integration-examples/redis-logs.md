@@ -17,8 +17,6 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Redis Logs with ClickStack {#redis-clickstack}
-
 :::note[TL;DR]
 Collect and visualize Redis server logs in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::

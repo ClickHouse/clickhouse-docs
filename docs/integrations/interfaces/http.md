@@ -11,8 +11,6 @@ doc_type: 'reference'
 import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
-# HTTP Interface
-
 ## Prerequisites {#prerequisites}
 
 For the examples in this article you will need:

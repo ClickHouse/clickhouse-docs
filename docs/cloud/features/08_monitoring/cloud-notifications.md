@@ -14,8 +14,6 @@ import notifications_2 from '@site/static/images/cloud/manage/notifications-2.pn
 import notifications_3 from '@site/static/images/cloud/manage/notifications-3.png';
 import notifications_4 from '@site/static/images/cloud/manage/notifications-4.png';
 
-# Notifications
-
 ClickHouse Cloud sends notifications about critical events related to your service or organization. There are a few concepts to keep in mind to understand how notifications are sent and configured:
 
 1. **Notification category**: Refers to groups of notifications such as billing notifications, service related notifications etc. Within each category, there are multiple notifications for which the delivery mode can be configured.

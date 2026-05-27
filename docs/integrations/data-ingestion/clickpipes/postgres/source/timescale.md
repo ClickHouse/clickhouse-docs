@@ -12,8 +12,6 @@ integration:
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# Postgres with TimescaleDB source setup guide
-
 <BetaBadge/>
 
 ## Background {#background}

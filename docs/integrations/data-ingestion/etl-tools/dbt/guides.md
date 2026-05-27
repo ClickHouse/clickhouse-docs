@@ -19,8 +19,6 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Guides
-
 <ClickHouseSupportedBadge/>
 
 This section provides guides on setting up dbt and the ClickHouse adapter, as well as an example of using dbt with ClickHouse using a publicly available IMDB dataset. The example covers the following steps:

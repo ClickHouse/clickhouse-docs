@@ -11,8 +11,6 @@ import Image from '@theme/IdealImage';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
-# Data encryption
-
 ## Storage level encryption {#storage-encryption}
 
 ClickHouse Cloud is configured with encryption at rest by default utilizing cloud provider-managed AES 256 keys. For more information review:
