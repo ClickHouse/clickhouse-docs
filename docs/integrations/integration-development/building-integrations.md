@@ -31,7 +31,7 @@ Supported sources today include:
 If you own the pipeline, use one of the [official language clients](/integrations/language-clients). They handle serialization, batching, TLS, compression, and connection pooling. You pass runtime primitives; the client handles the wire format.
 
 - Official clients: Python, Go, Java, JavaScript, Rust, C#, C++
-- Both wire protocols: HTTP and native TCP (Go and C++)
+- Both wire protocols: HTTP (all clients) and native TCP (Go and C++ clients only)
 - Auth: username and password over TLS by default; mTLS and SSL client-certificate auth are supported by all major clients
 - Data format is usually an implementation detail. Clients convert runtime types to ClickHouse Native or RowBinary format. If you already produce Arrow, Parquet, JSONEachRow, or another format, most clients expose a raw-bytes API for pre-serialized data
 - For throughput, batch **10K–100K rows** and aim for roughly **one insert per second** as an upper bound for synchronous inserts. If client-side batching is impractical, use [asynchronous inserts](/optimize/asynchronous-inserts) to shift batching to the server
