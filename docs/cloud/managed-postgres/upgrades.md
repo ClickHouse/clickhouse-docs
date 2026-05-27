@@ -35,4 +35,4 @@ For Enterprise Tier organizations, Managed Postgres supports maintenance windows
 ## Major version upgrades {#major-version-upgrades}
 
 Major version upgrades (e.g., 17.x to 18.x) via UI and API are coming soon.
-In the meantime, contact [support](https://clickhouse.com/support/program) to set up a maintenance window for your instance.
+In the meantime, contact [support](https://clickhouse.com/support/program) to upgrade your Managed Postgres instance.
