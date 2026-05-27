@@ -191,4 +191,7 @@ This error occurs when ClickHouse runs out of memory while processing large batc
 
 ## Template source code {#template-source-code}
 
-The template's source code is available in ClickHouse's [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) fork.
+The template's source code is available in:
+
+- [`GoogleCloudPlatform/DataflowTemplates`](https://github.com/GoogleCloudPlatform/DataflowTemplates/tree/main/v2/googlecloud-to-clickhouse) — the upstream Google Cloud Platform repository.
+- [`ClickHouse/DataflowTemplates`](https://github.com/ClickHouse/DataflowTemplates) — ClickHouse's fork.
