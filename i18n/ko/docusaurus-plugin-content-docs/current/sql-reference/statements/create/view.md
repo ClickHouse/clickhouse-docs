@@ -232,11 +232,11 @@ AS SELECT ...
 
 편의를 위해 이전 문서는 [여기](https://pastila.nl/?00f32652/fdf07272a7b54bda7e13b919264e449f.md)에서 확인할 수 있습니다.
 
-## 갱신 가능 materialized view \{#refreshable-materialized-view\}
+## 갱신 가능 구체화 뷰 \{#refreshable-materialized-view\}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-REFRESH EVERY|AFTER interval [OFFSET interval]
+REFRESH [EVERY|AFTER interval [OFFSET interval]]
 [RANDOMIZE FOR interval]
 [DEPENDS ON [db.]name [, [db.]name [, ...]]]
 [SETTINGS name = value [, name = value [, ...]]]
@@ -254,6 +254,8 @@ AS SELECT ...
 number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 ```
 
+`REFRESH` 절에는 `EVERY`, `AFTER`, `DEPENDS ON` 중 적어도 하나를 지정해야 합니다. 이들 중 어느 것도 없는 단독 `REFRESH`는 거부됩니다. `EVERY`/`AFTER` 없이 사용하는 `REFRESH DEPENDS ON ...`는 `REFRESH AFTER 0 SECOND DEPENDS ON ...`의 축약형입니다. 자세한 내용은 아래의 [갱신 종속성](#refresh-dependencies)을 참조하십시오.
+
 해당 쿼리를 주기적으로 실행하여 결과를 테이블에 저장합니다.
 
 * `APPEND`가 지정되어 있으면, 각 갱신 시 기존 행을 삭제하지 않고 테이블에 행을 삽입합니다. 이 삽입은 일반적인 `INSERT INTO ... SELECT` 쿼리와 마찬가지로 원자적이지 않습니다.
@@ -261,16 +263,16 @@ number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 
 일반적인 갱신 불가능 materialized view와의 차이점:
 
-* 삽입 트리거가 없습니다. `SELECT`에 지정된 테이블에 새 데이터가 삽입되어도 갱신 가능 materialized view로 자동으로 전달되지 *않습니다*. 대신 데이터 삽입은 주기적 또는 수동 갱신 실행 중에만 발생합니다.
+* 삽입 트리거가 없습니다. `SELECT`에 지정된 테이블에 새 데이터가 삽입되어도 갱신 가능 구체화 뷰로 자동으로 전달되지 *않습니다*. 대신 데이터 삽입은 주기적 또는 수동 갱신 실행 중에만 발생합니다.
 * `SELECT` 쿼리에 제한이 없습니다. 테이블 함수(예: `url()`), 뷰, UNION, JOIN이 모두 허용됩니다.
 
 :::note
 쿼리의 `REFRESH ... SETTINGS` 부분에 있는 설정(예: `refresh_retries`)은 갱신 설정이며, 일반 설정(예: `max_threads`)과는 다릅니다. 일반 설정은 쿼리 끝에 `SETTINGS`를 사용하여 지정할 수 있습니다.
 :::
 
-### 새로 고침 일정 \{#refresh-schedule\}
+### 갱신 일정 \{#refresh-schedule\}
 
-다음은 새로 고침 일정의 예시입니다:
+다음은 갱신 일정의 예시입니다:
 
 ```sql
 REFRESH EVERY 1 DAY -- every day, at midnight (UTC)
@@ -286,16 +288,15 @@ REFRESH EVERY 5 MONTHS -- every 5 months, different months each year (as 12 is n
                        -- specifically, when month number (since 1970-01) is divisible by 5
 ```
 
-`RANDOMIZE FOR`는 각 새로 고침 시점을 무작위로 조정합니다. 예:
+`RANDOMIZE FOR`는 각 갱신 시점을 무작위로 조정합니다. 예:
 
 ```sql
 REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random time between 01:30 and 02:30
 ```
 
-특정 view에 대해서는 한 시점에 최대 하나의 refresh만 실행됩니다. 예를 들어 `REFRESH EVERY 1 MINUTE`가 설정된 view의 refresh에 2분이 걸리는 경우, 실제로는 2분마다 refresh가 수행됩니다. 이후 refresh 속도가 빨라져 10초 만에 완료되기 시작하면, 다시 1분마다 refresh를 수행합니다. (특히 누락된 refresh를 따라잡기 위해 10초마다 refresh를 수행하지는 않으며, 그런 backlog 개념은 존재하지 않습니다.)
+특정 view에 대해서는 한 시점에 최대 하나의 갱신만 실행됩니다. 예를 들어 `REFRESH EVERY 1 MINUTE`가 설정된 view의 갱신에 2분이 걸리는 경우, 실제로는 2분마다 갱신가 수행됩니다. 이후 갱신 속도가 빨라져 10초 만에 완료되기 시작하면, 다시 1분마다 갱신를 수행합니다. (특히 누락된 갱신를 따라잡기 위해 10초마다 갱신를 수행하지는 않으며, 그런 backlog 개념은 존재하지 않습니다.)
 
-또한 materialized view가 생성된 직후에는 `CREATE` 쿼리에서 `EMPTY`가 지정되지 않은 한 refresh가 즉시 시작됩니다. `EMPTY`가 지정된 경우, 최초 refresh는 설정된 스케줄에 따라 수행됩니다.
-
+일반적으로 첫 번째 갱신는 materialized view가 생성된 직후 즉시 시작됩니다. 마지막 갱신 이후 경과 시간은 무한대로 간주되므로, 어떤 스케줄이든 지금 갱신할 시점이라고 판단합니다. `EMPTY`가 지정된 경우 이 초기 갱신는 건너뛰고, 첫 번째 갱신는 다음 예약 시각에 수행됩니다. 예를 들어 `EVERY 1 HOUR`의 경우 첫 번째 갱신는 현재 시간의 끝 시점에 수행됩니다.
 
 ### 복제 DB에서 \{#in-replicated-db\}
 
@@ -307,59 +308,110 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 조율은 Keeper를 통해 이루어집니다. znode 경로는 [default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) 서버 설정으로 결정됩니다.
 
-### 갱신 의존성 \{#refresh-dependencies\}
+### 갱신 종속성 \{#refresh-dependencies\}
 
-`DEPENDS ON`은 서로 다른 테이블의 갱신을 동기화합니다. 예를 들어, 두 개의 갱신 가능 materialized view가 연쇄를 이루고 있다고 가정해 보겠습니다.
-
-```sql
-CREATE MATERIALIZED VIEW source REFRESH EVERY 1 DAY AS SELECT * FROM url(...)
-CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY AS SELECT ... FROM source
-```
-
-`DEPENDS ON`이 없으면 두 VIEW 모두 자정에 새로 고침을 시작하며, 일반적으로 `destination`에서는 `source`에 있는 어제의 데이터를 보게 됩니다. 의존성을 추가해 보면 다음과 같습니다:
+`DEPENDS ON`은 서로 다른 테이블의 갱신 시점을 동기화합니다:
 
 ```sql
-CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY DEPENDS ON source AS SELECT ... FROM source
+CREATE MATERIALIZED VIEW dependent REFRESH EVERY 1 HOUR DEPENDS ON dependency [...]
 ```
 
-그러면 해당 날짜에 대해 `source`의 리프레시가 완료된 이후에만 `destination`의 리프레시가 시작되므로, `destination`은 최신 데이터에 기반하게 됩니다.
+종속 뷰의 갱신은 의존하는 모든 뷰의 갱신이 완료된 후에만 시작됩니다.
 
-또는 동일한 결과를 다음과 같은 방식으로도 얻을 수 있습니다:
+다른 뷰가 갱신된 직후 바로 갱신하려면:
 
 ```sql
-CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS SELECT ... FROM source
+CREATE MATERIALIZED VIEW dependent REFRESH AFTER 0 SECOND DEPENDS ON dependency [...]
 ```
 
-여기서 `1 HOUR`는 `source`의 갱신 주기보다 짧은 임의의 기간이 될 수 있습니다. 종속 테이블은 어떤 종속 대상보다도 더 자주 갱신되지 않습니다. 이는 실제 갱신 주기를 한 번만 명시하면서 갱신 가능 뷰의 체인을 설정하는 올바른 방법입니다.
+또는 다음과 같이 표현할 수도 있습니다:
 
-몇 가지 예시는 다음과 같습니다:
-
-* `REFRESH EVERY 1 DAY OFFSET 10 MINUTE` (`destination`)은 `REFRESH EVERY 1 DAY` (`source`)에 의존합니다.<br />
-  `source`의 갱신에 10분 이상 걸리면 `destination`은 그것이 끝날 때까지 기다립니다.
-* `REFRESH EVERY 1 DAY OFFSET 1 HOUR`는 `REFRESH EVERY 1 DAY OFFSET 23 HOUR`에 의존합니다.<br />
-  위 예시와 비슷하지만, 해당 갱신이 서로 다른 날짜에 발생하더라도 동작 방식은 동일합니다.
-  날짜 X+1의 `destination` 갱신은 날짜 X의 `source` 갱신(2시간 이상 걸리는 경우)을 기다립니다.
-* `REFRESH EVERY 2 HOUR`는 `REFRESH EVERY 1 HOUR`에 의존합니다.<br />
-  2 HOUR 갱신은 매 두 시간마다 1 HOUR 갱신 이후에 발생합니다. 예를 들어 자정 갱신 이후, 그 다음에는 오전 2시 갱신 이후 등으로 진행됩니다.
-* `REFRESH EVERY 1 MINUTE`는 `REFRESH EVERY 2 HOUR`에 의존합니다.<br />
-  `destination`은 `source`의 각 갱신마다 한 번씩, 즉 2시간마다 한 번 갱신됩니다. 이때 `1 MINUTE`는 사실상 무시됩니다.
-* `REFRESH AFTER 1 HOUR`는 `REFRESH AFTER 1 HOUR`에 의존합니다.<br />
-  현재로서는 권장되지 않습니다.
+```sql
+CREATE MATERIALIZED VIEW dependent REFRESH DEPENDS ON dependency [...]
+```
 
 :::note
-`DEPENDS ON`은 갱신 가능 materialized view(refreshable materialized view) 사이에서만 동작합니다. `DEPENDS ON` 목록에 일반 테이블을 명시하면, 해당 뷰는 절대 갱신되지 않습니다(종속성은 `ALTER`로 제거할 수 있으며, [갱신 매개변수 변경](#changing-refresh-parameters) 내용을 참고하십시오).
+`DEPENDS ON`은 갱신 가능 구체화 뷰 사이에서만 작동합니다. 특히 의존 대상 뷰가 `TO <table>`을 사용하는 경우에는 테이블 이름이 아니라 뷰 이름을 사용해야 합니다. `DEPENDS ON` 목록에 일반 테이블이나 갱신 가능 구체화 뷰가 아닌 뷰가 포함되어 있거나 오타가 있으면 해당 뷰는 갱신되지 않으며, `system.view_refreshes`에 상태가 `MissingDependencies`로 표시됩니다. 의존성은 `ALTER`를 사용하여 변경하거나 제거할 수 있습니다. 자세한 내용은 [갱신 매개변수 변경](#changing-refresh-parameters)을 참조하십시오.
 :::
+
+#### 일관된 전파 지연 시간을 위해 DEPENDS ON 사용하기 \{#using-depends-on-for-consistent-propagation-latency\}
+
+두 뷰가 모두 같은 주기로 `REFRESH EVERY`를 사용하면 종속성은 각 시간 슬롯마다 적용됩니다.
+
+예를 들어 뷰 X와 Y가 모두 `REFRESH EVERY 1 HOUR`를 사용하고, Y가 X의 출력 테이블을 읽는다고 가정합니다. 종속성이 없으면 Y는 일반적으로 X의 이전 시간 갱신 데이터만 보게 됩니다. `DEPENDS ON X`를 사용하면 Y의 11:00 갱신은 X의 11:00 갱신이 완료된 후에만 시작됩니다.
+
+```text
+           10:00            11:00            12:00
+           │                │                │
+  X:        [run]┐           [run]┐           [run]┐
+                 │                │                │
+  Y:             └►[run]          └►[run]          └►[run]
+```
+
+dependency와 dependent는 모두 갱신이 갱신 주기보다 오래 걸리면 각각 독립적으로 타임슬롯을 건너뛸 수 있습니다. dependency가 갱신될 때마다 dependent가 정확히 한 번씩 갱신된다는 보장은 없습니다.
+
+```text
+           10:00          11:00          12:00          13:00
+           │              │              │              |
+  X:        [run]┐         [run]┐         [run]┐         [run]┐
+                 │              └────┐    (Y skips 12:00)     └───┐
+  Y:             └►[10:00 ru------un]└►[11:00 ru---------------un]└►[13:00 run]
+```
+
+#### 배치 스트림 처리에 `DEPENDS ON` 사용하기 \{#using-depends-on-for-batched-stream-processing\}
+
+`REFRESH EVERY`를 사용하지 않으면, 종속된 뷰 X는 X가 마지막으로 갱신된 이후 의존하는 모든 뷰가 최소 한 번씩 갱신되었을 때 갱신됩니다. `REFRESH AFTER T`는 지연 시간을 추가합니다. 즉, 의존 대상의 갱신이 완료된 후 T 시간이 지나면 종속된 뷰의 갱신이 시작됩니다.
+
+순환 종속성은 허용되며, 유용하게 활용할 수 있습니다. 다음과 같은 갱신 가능 구체화 뷰 그래프를 생각해 보십시오.
+
+1. X는 어떤 스트림에서 행 배치를 가져와 테이블에 저장합니다.
+2. 그런 다음 Y와 Z는 모두 해당 테이블을 읽어 서로 다른 집계를 수행하고, 결과를 다른 테이블에 추가합니다.
+3. 배치가 완전히 처리되면 X는 다음 배치를 가져오고, 이 주기가 반복됩니다.
+
+```text
+            source
+               │
+               ▼
+          ┌─────────┐
+     ┌───►│    X    │◄───┐
+     │    └──┬───┬──┘    │
+  DEPENDS    │   │    DEPENDS
+    ON       ▼   ▼      ON
+     │      ┌─┐ ┌─┐      │
+     └──────┤Y│ │Z├──────┘
+            └─┘ └─┘
+```
+
+전체 예시는 다음과 같습니다:
+
+```sql
+CREATE TABLE current_batch (t UInt64, v Int64) ENGINE ReplicatedMergeTree ORDER BY t;
+CREATE TABLE batch_log (max_t UInt64, n Int64, v_sum Int64, processed_at DateTime64) ENGINE ReplicatedMergeTree ORDER BY max_t;
+CREATE TABLE stats (h UInt64, n UInt64) ENGINE ReplicatedSummingMergeTree ORDER BY h;
+
+-- (system.numbers stands in for a data source with monotonically increasing timestamps or sequence numbers)
+CREATE MATERIALIZED VIEW current_batch_v REFRESH EVERY 10 SECOND DEPENDS ON batch_log_v, stats_v TO current_batch AS SELECT number as t, number * 10 as v FROM system.numbers WHERE number > (SELECT max(max_t) FROM batch_log) LIMIT 100;
+
+CREATE MATERIALIZED VIEW batch_log_v REFRESH DEPENDS ON current_batch_v APPEND TO batch_log AS SELECT max(t) as max_t, count() as n, sum(v) as v_sum, now64() as processed_at FROM current_batch;
+
+CREATE MATERIALIZED VIEW stats_v REFRESH DEPENDS ON current_batch_v APPEND TO stats AS SELECT cityHash64(v) % 20 as h, count() as n FROM current_batch GROUP BY h;
+
+-- Must trigger initial refresh manually.
+SYSTEM REFRESH VIEW current_batch_v;
+```
+
+더 긴 체인도 문제없이 작동합니다.
+
+이는 갱신 조정이 사용 설정된 경우에만 제대로 작동합니다. 즉, 뷰가 Replicated 또는 Shared 데이터베이스에 있어야 합니다. 조정이 없으면 서버를 재시작할 때 순환이 끊어지므로, 뷰를 생성한 후 한 번만 `SYSTEM REFRESH VIEW`를 실행하는 것이 아니라 재시작할 때마다 수동으로 `SYSTEM REFRESH VIEW`를 실행해야 합니다.
 
 ### 갱신 설정 \{#refresh-settings\}
 
 사용 가능한 갱신 설정은 다음과 같습니다.
 
-* `refresh_retries` - 새로고침 쿼리가 예외로 실패했을 때 재시도할 횟수입니다. 모든 재시도가 실패하면 다음에 예약된 새로고침 시각까지 건너뜁니다. 0은 재시도 안 함을, -1은 무한 재시도를 의미합니다. 기본값: 2.
+* `refresh_retries` - 갱신 쿼리가 예외로 실패했을 때 재시도할 횟수입니다. 모든 재시도가 실패하면 다음에 예약된 갱신 시각까지 건너뜁니다. 0은 재시도 안 함을, -1은 무한 재시도를 의미합니다. 기본값: 2.
 * `refresh_retry_initial_backoff_ms` - `refresh_retries`가 0이 아닐 때 첫 번째 재시도 전에 대기하는 시간입니다. 이후 각 재시도마다 대기 시간이 두 배로 증가하며, `refresh_retry_max_backoff_ms`까지 증가합니다. 기본값: 100 ms.
-* `refresh_retry_max_backoff_ms` - 새로고침 재시도 간 지연 시간이 지수적으로 증가할 때 적용되는 최대 한도입니다. 기본값: 60000 ms (1분).
-* `all_replicas` - `APPEND`가 있는 [복제된 데이터베이스](../../../engines/database-engines/replicated.md)에서 모든 레플리카가 독립적으로 새로고침할지, 아니면 예약된 각 시각마다 하나의 레플리카만 새로고침할지를 제어합니다. 뷰가 생성된 후에는 변경할 수 없습니다. 기본값: `false`.
-* `prefer_dependency_replica` - 뷰에 `DEPENDS ON`이 있을 때 상위 새로고침을 실행한 레플리카가 종속 새로고침을 실행할 우선권을 가지며, 다른 레플리카는 `prefer_dependency_replica_delay_ms`만큼 시도를 지연합니다. `SharedMergeTree`와 함께 사용하면 복제 지연으로 인해 종속 새로고침 체인에서 데이터가 누락되는 문제를 방지하는 데 유용합니다. 기본값: `false`.
-* `prefer_dependency_replica_delay_ms` - `prefer_dependency_replica`가 활성화되어 있을 때 우선권이 없는 레플리카가 종속 새로고침 실행을 시도하기 전에 대기하는 시간입니다. 기본값: 2000 ms.
+* `refresh_retry_max_backoff_ms` - 갱신 재시도 간 지연 시간이 지수적으로 증가할 때 적용되는 최대 한도입니다. 기본값: 60000 ms (1분).
+* `all_replicas` - `APPEND`가 있는 [복제된 데이터베이스](../../../engines/database-engines/replicated.md)에서 모든 레플리카가 독립적으로 갱신할지, 아니면 예약된 각 시각마다 하나의 레플리카만 갱신할지를 제어합니다. 뷰가 생성된 후에는 변경할 수 없습니다. 기본값: `false`.
 
 ### 갱신 매개변수 수정 \{#changing-refresh-parameters\}
 

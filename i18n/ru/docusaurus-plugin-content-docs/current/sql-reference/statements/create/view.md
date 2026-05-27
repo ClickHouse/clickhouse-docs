@@ -236,7 +236,7 @@ AS SELECT ...
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-REFRESH EVERY|AFTER interval [OFFSET interval]
+REFRESH [EVERY|AFTER interval [OFFSET interval]]
 [RANDOMIZE FOR interval]
 [DEPENDS ON [db.]name [, [db.]name [, ...]]]
 [SETTINGS name = value [, name = value [, ...]]]
@@ -253,6 +253,8 @@ AS SELECT ...
 ```sql
 number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 ```
+
+В предложении `REFRESH` должно быть указано хотя бы одно из `EVERY`, `AFTER` или `DEPENDS ON`. Использование `REFRESH` без них не допускается. `REFRESH DEPENDS ON ...` без `EVERY`/`AFTER` — это сокращение для `REFRESH AFTER 0 SECOND DEPENDS ON ...`; см. [Зависимости обновления](#refresh-dependencies) ниже.
 
 Периодически выполняет соответствующий запрос и сохраняет его результат в таблице.
 
@@ -294,8 +296,7 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 В каждый момент времени для заданного представления может выполняться не более одного обновления. Например, если представление с `REFRESH EVERY 1 MINUTE` обновляется за 2 минуты, фактически оно будет обновляться каждые 2 минуты. Если затем обновление станет быстрее и начнёт выполняться за 10 секунд, период обновления снова вернётся к одной минуте. (В частности, обновление не будет выполняться каждые 10 секунд, чтобы «наверстать» пропущенные обновления — никакого подобного «долга» нет.)
 
-Кроме того, обновление запускается сразу после создания материализованного представления, если только в запросе `CREATE` не указано `EMPTY`. Если указано `EMPTY`, первое обновление происходит по расписанию.
-
+Обычно первое обновление запускается сразу после создания materialized view: время с момента последнего обновления бесконечно, поэтому по любому расписанию обновление нужно выполнить немедленно. Если указано `EMPTY`, это начальное обновление пропускается, и первое обновление происходит в следующий запланированный момент времени; например, для `EVERY 1 HOUR` первое обновление произойдёт в конце текущего часа.
 
 ### В реплицируемой БД \{#in-replicated-db\}
 
@@ -307,49 +308,101 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 Координация выполняется через Keeper. Путь znode задаётся настройкой сервера [default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path).
 
-### Зависимости обновления \{#refresh-dependencies\}
+### Зависимости при обновлении \{#refresh-dependencies\}
 
-`DEPENDS ON` синхронизирует обновления разных таблиц. Например, предположим, что существует цепочка из двух обновляемых материализованных представлений:
-
-```sql
-CREATE MATERIALIZED VIEW source REFRESH EVERY 1 DAY AS SELECT * FROM url(...)
-CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY AS SELECT ... FROM source
-```
-
-Без `DEPENDS ON` оба представления начнут обновляться в полночь, и `destination`, как правило, будет получать вчерашние данные из `source`. Если мы добавим зависимость:
+`DEPENDS ON` синхронизирует обновление разных таблиц:
 
 ```sql
-CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY DEPENDS ON source AS SELECT ... FROM source
+CREATE MATERIALIZED VIEW dependent REFRESH EVERY 1 HOUR DEPENDS ON dependency [...]
 ```
 
-при этом обновление `destination` начнётся только после того, как обновление `source` за этот день завершится, так что `destination` будет основан на свежих данных.
+Обновление зависимого представления начнется только после того, как завершатся обновления всех представлений, от которых оно зависит.
 
-В качестве альтернативы тот же результат можно получить с помощью:
+Чтобы запускать обновление сразу после обновления другого представления:
 
 ```sql
-CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS SELECT ... FROM source
+CREATE MATERIALIZED VIEW dependent REFRESH AFTER 0 SECOND DEPENDS ON dependency [...]
 ```
 
-где `1 HOUR` может быть любой продолжительностью, меньшей, чем период обновления `source`. Зависимая таблица не будет обновляться чаще, чем любая из её зависимостей. Это корректный способ настроить цепочку обновляемых представлений, не указывая фактический период обновления более одного раза.
+Или, эквивалентно:
 
-Ещё несколько примеров:
-
-* `REFRESH EVERY 1 DAY OFFSET 10 MINUTE` (`destination`) зависит от `REFRESH EVERY 1 DAY` (`source`)<br />
-  Если обновление `source` занимает больше 10 минут, `destination` будет ждать его завершения.
-* `REFRESH EVERY 1 DAY OFFSET 1 HOUR` зависит от `REFRESH EVERY 1 DAY OFFSET 23 HOUR`<br />
-  Аналогично вышеописанному, даже несмотря на то, что соответствующие обновления происходят в разные календарные дни.
-  Обновление `destination` в день `X+1` будет ждать обновления `source` в день `X` (если оно занимает больше 2 часов).
-* `REFRESH EVERY 2 HOUR` зависит от `REFRESH EVERY 1 HOUR`<br />
-  Обновление каждые 2 часа выполняется после обновления каждый час для каждого второго часа, например после полуночного
-  обновления, затем после обновления в 2 часа ночи и т.д.
-* `REFRESH EVERY 1 MINUTE` зависит от `REFRESH EVERY 2 HOUR`<br />
-  `destination` обновляется один раз после каждого обновления `source`, то есть каждые 2 часа. Значение `1 MINUTE` фактически игнорируется.
-* `REFRESH AFTER 1 HOUR` зависит от `REFRESH AFTER 1 HOUR`<br />
-  В настоящее время это не рекомендуется.
+```sql
+CREATE MATERIALIZED VIEW dependent REFRESH DEPENDS ON dependency [...]
+```
 
 :::note
-`DEPENDS ON` работает только между refreshable materialized view. Указание обычной таблицы в списке `DEPENDS ON` приведёт к тому, что представление никогда не будет обновляться (зависимости можно удалить с помощью `ALTER`, см. [Изменение параметров обновления](#changing-refresh-parameters)).
+`DEPENDS ON` работает только между refreshable materialized view. В частности, если зависимое представление использует `TO <table>`, обязательно указывайте имя представления, а не таблицы. Если список `DEPENDS ON` содержит обычную таблицу, непериодически обновляемое представление или опечатку, представление никогда не будет обновляться и будет иметь состояние `MissingDependencies` в `system.view_refreshes`. Зависимости можно изменить или удалить с помощью `ALTER`, см. [Изменение параметров обновления](#changing-refresh-parameters).
 :::
+
+#### Использование DEPENDS ON для согласованной задержки распространения \{#using-depends-on-for-consistent-propagation-latency\}
+
+Если в обоих представлениях используется `REFRESH EVERY` с одинаковым периодом, зависимость применяется в каждом временном слоте.
+
+Например, предположим, что представления X и Y оба используют `REFRESH EVERY 1 HOUR`, а Y читает из выходной таблицы X. Без зависимостей Y обычно будет видеть данные X из обновления за предыдущий час. С `DEPENDS ON X` обновление Y в 11:00 начнется только после завершения обновления X в 11:00.
+
+```text
+           10:00            11:00            12:00
+           │                │                │
+  X:        [run]┐           [run]┐           [run]┐
+                 │                │                │
+  Y:             └►[run]          └►[run]          └►[run]
+```
+
+И зависимость, и зависимый объект могут независимо пропускать временные слоты, если обновления выполняются дольше, чем период обновления. Нет гарантии, что зависимый объект будет обновляться ровно один раз на каждое обновление зависимости.
+
+```text
+           10:00          11:00          12:00          13:00
+           │              │              │              |
+  X:        [run]┐         [run]┐         [run]┐         [run]┐
+                 │              └────┐    (Y skips 12:00)     └───┐
+  Y:             └►[10:00 ru------un]└►[11:00 ru---------------un]└►[13:00 run]
+```
+
+#### Использование DEPENDS ON для пакетной обработки потока \{#using-depends-on-for-batched-stream-processing\}
+
+Если `REFRESH EVERY` не используется, зависимое представление X обновляется, когда все его зависимости обновились как минимум один раз с момента последнего обновления X. `REFRESH AFTER T` добавляет задержку: обновление зависимого представления начнется через T после завершения обновления зависимости.
+
+Циклические зависимости допустимы и полезны. Рассмотрим следующий граф refreshable materialized views:
+
+1. X берет батч строк из некоторого потока и помещает их в таблицу.
+2. Затем Y и Z читают из этой таблицы, выполняют разную агрегацию и добавляют результаты в другие таблицы.
+3. После полной обработки батча X берет следующий батч, и цикл повторяется.
+
+```text
+            source
+               │
+               ▼
+          ┌─────────┐
+     ┌───►│    X    │◄───┐
+     │    └──┬───┬──┘    │
+  DEPENDS    │   │    DEPENDS
+    ON       ▼   ▼      ON
+     │      ┌─┐ ┌─┐      │
+     └──────┤Y│ │Z├──────┘
+            └─┘ └─┘
+```
+
+Полный пример:
+
+```sql
+CREATE TABLE current_batch (t UInt64, v Int64) ENGINE ReplicatedMergeTree ORDER BY t;
+CREATE TABLE batch_log (max_t UInt64, n Int64, v_sum Int64, processed_at DateTime64) ENGINE ReplicatedMergeTree ORDER BY max_t;
+CREATE TABLE stats (h UInt64, n UInt64) ENGINE ReplicatedSummingMergeTree ORDER BY h;
+
+-- (system.numbers stands in for a data source with monotonically increasing timestamps or sequence numbers)
+CREATE MATERIALIZED VIEW current_batch_v REFRESH EVERY 10 SECOND DEPENDS ON batch_log_v, stats_v TO current_batch AS SELECT number as t, number * 10 as v FROM system.numbers WHERE number > (SELECT max(max_t) FROM batch_log) LIMIT 100;
+
+CREATE MATERIALIZED VIEW batch_log_v REFRESH DEPENDS ON current_batch_v APPEND TO batch_log AS SELECT max(t) as max_t, count() as n, sum(v) as v_sum, now64() as processed_at FROM current_batch;
+
+CREATE MATERIALIZED VIEW stats_v REFRESH DEPENDS ON current_batch_v APPEND TO stats AS SELECT cityHash64(v) % 20 as h, count() as n FROM current_batch GROUP BY h;
+
+-- Must trigger initial refresh manually.
+SYSTEM REFRESH VIEW current_batch_v;
+```
+
+Более длинные цепочки тоже работают.
+
+Однако это хорошо работает только при включенной координации обновления, то есть когда представления находятся в базе данных Replicated или Shared. Без координации перезапуск сервера разрывает цикл, поэтому после каждого перезапуска приходится вручную выполнять `SYSTEM REFRESH VIEW`, а не только один раз после создания представлений.
 
 ### Настройки обновления \{#refresh-settings\}
 
@@ -359,8 +412,6 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 * `refresh_retry_initial_backoff_ms` - Задержка перед первой повторной попыткой, если `refresh_retries` не равно нулю. Каждая последующая попытка удваивает задержку, вплоть до `refresh_retry_max_backoff_ms`. По умолчанию: 100 мс.
 * `refresh_retry_max_backoff_ms` - Ограничение на экспоненциальный рост задержки между попытками обновления. По умолчанию: 60000 мс (1 минута).
 * `all_replicas` - В [реплицируемой базе данных](../../../engines/database-engines/replicated.md) с `APPEND` определяет, будут ли все реплики обновляться независимо или в каждый запланированный момент обновление будет выполнять только одна реплика. Не может быть изменён после создания представления. По умолчанию: `false`.
-* `prefer_dependency_replica` - Когда у представления есть `DEPENDS ON`, реплика, выполнившая родительское обновление, получает приоритет при выполнении зависимого обновления; другие реплики откладывают свою попытку на `prefer_dependency_replica_delay_ms`. Полезно при использовании `SharedMergeTree`, чтобы избежать отсутствия данных в цепочках зависимых обновлений из-за задержки репликации. По умолчанию: `false`.
-* `prefer_dependency_replica_delay_ms` - Сколько ждут неприоритетные реплики перед попыткой выполнить зависимое обновление, когда включён `prefer_dependency_replica`. По умолчанию: 2000 мс.
 
 ### Изменение параметров обновления \{#changing-refresh-parameters\}
 
