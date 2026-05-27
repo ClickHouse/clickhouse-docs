@@ -23,7 +23,12 @@ IP filters control which source IP addresses are permitted to connect to your Ma
 
 ### Configuring IP filters {#configuring-ip-filters}
 
-For detailed information on configuring IP filters, see the [Settings](/cloud/managed-postgres/settings#ip-filters) page.
+To configure IP filters:
+
+1. Navigate to the **Settings** tab
+2. Under **IP Filters**, click **Edit**
+3. Add IP addresses or CIDR ranges that should be allowed to connect
+4. Click **Save** to apply the changes
 
 You can specify:
 - Individual IP addresses (e.g., `203.0.113.5`)

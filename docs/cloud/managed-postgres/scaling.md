@@ -36,6 +36,10 @@ Different workloads benefit from different resource configurations:
 | **Memory optimized** (large working set)          | Medium | High   | Medium  | Memory-optimized (high memory-to-CPU ratio) |
 | **Storage optimized** (large datasets, heavy I/O) | Medium | Medium | High    | Storage-optimized (high NVMe capacity)      |
 
+:::tip
+For safety reasons, you may not be able to switch to instance types whose storage is close to your current used storage capacity. Always opt for instance types with headroom over your current used capacity to avoid any issues.
+:::
+
 ## How scaling works {#how-scaling-works}
 
 When you change instance types, Managed Postgres performs a vertical scaling operation that provisions new infrastructure and migrates your database with minimal downtime.
