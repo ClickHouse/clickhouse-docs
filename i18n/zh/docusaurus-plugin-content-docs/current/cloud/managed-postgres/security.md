@@ -23,23 +23,28 @@ IP 过滤器用于控制哪些源 IP 地址可以连接到你的 Managed Postgre
 
 ### 配置 IP 过滤器 \{#configuring-ip-filters\}
 
-有关配置 IP 过滤器的详细信息，请参阅 [Settings](/cloud/managed-postgres/settings#ip-filters) 页面。
+要配置 IP 过滤器：
+
+1. 转到 **Settings** 选项卡
+2. 在 **IP Filters** 下，点击 **Edit**
+3. 添加应允许连接的 IP 地址或 CIDR 网段
+4. 点击 **Save** 以应用更改
 
 可以指定：
 
-- 单个 IP 地址（例如 `203.0.113.5`）
-- 网络的 CIDR 网段（例如 `192.168.1.0/24`）
-- **Anywhere（任意地址）**：允许所有 IP 地址（不建议在生产环境中使用）
-- **Nowhere（全部禁止）**：阻止所有连接
+* 单个 IP 地址 (例如 `203.0.113.5`) 
+* 网络的 CIDR 网段 (例如 `192.168.1.0/24`) 
+* **Anywhere (任意地址)&#x20;**：允许所有 IP 地址 (不建议在生产环境中使用) 
+* **Nowhere (全部禁止)&#x20;**：阻止所有连接
 
 :::warning 生产环境最佳实践
 如果未配置 IP 过滤器，则默认允许来自所有 IP 地址的连接。对于生产环境工作负载，请将访问限制在已知的 IP 地址或 CIDR 网段内。建议仅允许来自以下来源的访问：
 
-- 应用服务器
-- VPN 网关的 IP 地址
-- 用于管理访问的跳板机（bastion host）
-- 用于自动化部署的 CI/CD 流水线的 IP 地址
-:::
+* 应用服务器
+* VPN 网关的 IP 地址
+* 用于管理访问的跳板机 (bastion host) 
+* 用于自动化部署的 CI/CD 流水线的 IP 地址
+  :::
 
 ## 加密 \{#encryption\}
 
