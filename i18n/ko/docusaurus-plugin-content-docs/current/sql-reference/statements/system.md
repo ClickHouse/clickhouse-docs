@@ -257,14 +257,13 @@ LLVM의 XRay 기능을 활용하여 계측 지점을 관리합니다. 이 기능
 
 FUNCTION에 추가할 수 있는 핸들러에는 세 가지 유형이 있습니다:
 
-**Syntax**
+**구문**
 
 ```sql
-SYSTEM INSTRUMENT ADD FUNCTION HANDLER [PARAMETERS]
+SYSTEM INSTRUMENT ADD FUNCTION HANDLER [ARGUMENTS]
 ```
 
 여기서 `FUNCTION`은 `QueryMetricLog::startQuery`와 같은 임의의 함수 또는 해당 함수의 부분 문자열을 의미하며, 핸들러는 다음 중 하나입니다.
-
 
 #### LOG \{#instrument-add-log\}
 
@@ -310,7 +309,7 @@ SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' PROFILE
 SYSTEM INSTRUMENT REMOVE ID
 ```
 
-이들 모두에서 `ALL` 파라미터를 사용합니다:
+이들 모두에서 `ALL` 키워드를 사용합니다:
 
 ```sql
 SYSTEM INSTRUMENT REMOVE ALL
@@ -329,7 +328,6 @@ SYSTEM INSTRUMENT REMOVE 'QueryMetricLog::startQuery'
 ```
 
 계측 지점 정보는 [`system.instrumentation`](../../operations/system-tables/instrumentation.md) 시스템 테이블에서 수집할 수 있습니다.
-
 
 ## 분산 테이블 관리 \{#managing-distributed-tables\}
 

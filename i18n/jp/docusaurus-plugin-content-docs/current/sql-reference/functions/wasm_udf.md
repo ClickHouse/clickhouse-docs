@@ -223,7 +223,8 @@ RETURNS return_type
 * `DETERMINISTIC`: 関数が決定論的であることを宣言します。つまり、同じ入力に対して常に同じ出力を返します。指定すると、すべての引数が定数である呼び出しについて、ClickHouse は定数畳み込みを行う場合があります。関数はクエリ解析時に一度だけ評価され、その結果はすべての行で再利用されます。
 * `SHA256_HASH`: 検証用の期待されるモジュールハッシュ (省略時は自動設定) 。異なるレプリカ間で正しい WASM モジュールが読み込まれていることを保証するために使用できます。
 * `SETTINGS`: 関数ごとの設定
-  * `serialization_format` String — ABI がシリアライゼーション形式を必要とする場合に使用される形式。既定値: `MsgPack`。
+  * `serialization_format` String — ABI で必要となるシリアライゼーション形式。サポートされる値: `MsgPack`、`JSONEachRow`、`CSV`、`TSV`、`TSVRaw`、`RowBinary`、`Buffers`。既定値: `MsgPack`。`Buffers` などのブロックベースのフォーマットでは、宣言された関数シグネチャに一致する型の単一カラムを返す必要があります。
+  * `webassembly_udf_enable_fuel` Bool — 関数に対する有限の fuel 予算を有効にします。既定値: `true`。`false` の場合、この関数ではクエリレベル設定 `webassembly_udf_max_fuel` は無視されます。fuel 制限を無効にすると、`wasmtime` エンジン使用時のパフォーマンスが向上する場合があります。ただし、信頼できない、または不具合のあるゲストコードでは、実行が暴走するリスクが高まる可能性があります。
 
 ## ABI バージョン \{#abis-versions\}
 
@@ -390,7 +391,7 @@ pub fn some_udf(data: String) -> HashMap<String, String> {
 
 クエリレベルの以下の設定値により、WebAssembly UDF の実行を制御します：
 
-* `webassembly_udf_max_fuel` — WebAssembly UDF インスタンス 1 回の実行ごとの fuel 上限。各 WebAssembly 命令は一定量の fuel を消費します。無制限にするには 0 に設定します。
+* `webassembly_udf_max_fuel` — WebAssembly UDF インスタンス 1 回の実行ごとの fuel 上限。各 WebAssembly 命令は一定量の fuel を消費します。この値はランタイムに渡される前に 1024 倍されるため、`webassembly_udf_max_fuel = 1` はおよそ 1024 fuel 単位に相当します。有限の上限を設けないには 0 に設定します。適用されるのは、関数ごとの設定 `webassembly_udf_enable_fuel` が true の関数のみで、これが既定値です。
 
 * `webassembly_udf_max_memory` — WebAssembly UDF インスタンス 1 つあたりのメモリ上限 (バイト単位) 。
 

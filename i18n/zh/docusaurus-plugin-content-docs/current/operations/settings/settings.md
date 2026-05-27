@@ -13192,8 +13192,7 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "100000"},{"label": "用于限制 WebAssembly UDF 实例每次执行可消耗 CPU 指令（fuel）数量的新设置。"}]}]} />
 
-每个 WebAssembly UDF 实例单次执行的 fuel 上限。每条 WebAssembly 指令都会消耗一定数量的 fuel。
-设置为 0 表示不设上限。
+每个 WebAssembly UDF 实例单次执行的 fuel 上限。每条 WebAssembly 指令都会消耗一定数量的 fuel。该值在传递给运行时之前会先乘以 1024，因此 `webassembly_udf_max_fuel = 1` 大致对应 1024 个 fuel 单位。设置为 0 表示没有有限上限。仅适用于每个函数的设置 `webassembly_udf_enable_fuel` 为 true 的函数，而这也是默认值。
 
 ## webassembly_udf_max_input_block_size \{#webassembly_udf_max_input_block_size\}
 

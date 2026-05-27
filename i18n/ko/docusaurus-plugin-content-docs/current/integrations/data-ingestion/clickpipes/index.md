@@ -2,7 +2,7 @@
 sidebar_label: '소개'
 description: '외부 데이터 소스를 ClickHouse Cloud에 원활하게 연결할 수 있습니다.'
 slug: /integrations/clickpipes
-title: 'ClickHouse Cloud와의 통합'
+title: 'ClickHouse Cloud 통합'
 doc_type: 'guide'
 keywords: ['ClickPipes', '데이터 수집 플랫폼', '스트리밍 데이터', '통합 플랫폼', 'ClickHouse Cloud']
 integration:
@@ -17,6 +17,7 @@ import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_even
 import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import Amazonkinesis from '@site/static/images/integrations/logos/amazon_kinesis_logo.svg';
+import GoogleCloudPubSub from '@site/static/images/integrations/logos/google_pubsub.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
 import ABSsvg from '@site/static/images/integrations/logos/azureblobstorage.svg';
@@ -28,7 +29,6 @@ import clickpipes_stack from '@site/static/images/integrations/data-ingestion/cl
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
-
 
 # ClickHouse Cloud 통합 \{#integrating-with-clickhouse-cloud\}
 
@@ -42,22 +42,23 @@ ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수
 
 ## 지원되는 데이터 소스 \{#supported-data-sources\}
 
-| 이름                                               | 로고                                                                                             |유형| 상태           | 설명                                                                                          |
-|----------------------------------------------------|--------------------------------------------------------------------------------------------------|----|------------------|------------------------------------------------------------------------------------------------------|
-| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka 로고" style={{width: '3rem', 'height': '3rem'}}/>      |스트리밍| 안정 버전           | ClickPipes를 구성하여 Apache Kafka에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.     |
-| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud 로고" style={{width: '3rem'}}/>                 |스트리밍| 안정 버전           | 직접 연동을 통해 Confluent와 ClickHouse Cloud의 결합된 기능을 활용하십시오.          |
-| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda 로고"/>                                     |스트리밍| 안정 버전           | ClickPipes를 구성하여 Redpanda에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.         |
-| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK 로고" style={{width: '3rem', 'height': '3rem'}}/>             |스트리밍| 안정 버전           | ClickPipes를 구성하여 AWS MSK에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.          |
-| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs 로고" style={{width: '3rem'}}/>           |스트리밍| 안정 버전           | ClickPipes를 구성하여 Azure Event Hubs에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다. 자세한 내용은 [Azure Event Hubs FAQ](/integrations/clickpipes/kafka/faq/#azure-eventhubs)를 참조하십시오. |
-| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream 로고" style={{width: '3rem'}}/>                     |스트리밍| 안정 버전           | ClickPipes를 구성하여 WarpStream에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.       |
-| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 로고" style={{width: '3rem', height: 'auto'}}/>              |객체 스토리지| 안정 버전           | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                            |
-| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage 로고" style={{width: '3rem', height: 'auto'}}/>  |객체 스토리지| 안정 버전           | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                            |
-| DigitalOcean Spaces                                | <DOsvg class="image" alt="DigitalOcean 로고" style={{width: '3rem', height: 'auto'}}/> | 객체 스토리지 | 안정 버전 | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.
-| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage 로고" style={{width: '3rem', height: 'auto'}}/> | 객체 스토리지 | 안정 버전 | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.
-| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <Amazonkinesis class="image" alt="Amazon Kinesis 로고" style={{width: '3rem', height: 'auto'}}/> |스트리밍| 안정 버전           | ClickPipes를 구성하여 Amazon Kinesis에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.   |
-| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres 로고" style={{width: '3rem', height: 'auto'}}/>         |DBMS| 안정 버전      | ClickPipes를 구성하여 Postgres에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                   |
-| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL 로고" style={{width: '3rem', height: '3rem'}}/>               |DBMS| 퍼블릭 베타 | ClickPipes를 구성하여 MySQL에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                      |
-| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB 로고" style={{width: '3rem', height: '3rem'}}/>           |DBMS| 프라이빗 프리뷰 | ClickPipes를 구성하여 MongoDB에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                   |
+| 이름                                                 | 로고                                                                                                        | 유형      | 상태       | 설명                                                                                                                                                                       |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka 로고" style={{width: '3rem', 'height': '3rem'}} />                | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 Apache Kafka에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                  |
+| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud 로고" style={{width: '3rem'}} />                           | 스트리밍    | 안정 버전    | 직접 연동을 통해 Confluent와 ClickHouse Cloud의 결합된 기능을 활용하십시오.                                                                                                                   |
+| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda 로고" />                                               | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 Redpanda에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                      |
+| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK 로고" style={{width: '3rem', 'height': '3rem'}} />                       | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 AWS MSK에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                       |
+| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs 로고" style={{width: '3rem'}} />                     | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 Azure Event Hubs에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다. 자세한 내용은 [Azure Event Hubs FAQ](/integrations/clickpipes/kafka/faq/#azure-eventhubs)를 참조하십시오. |
+| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream 로고" style={{width: '3rem'}} />                               | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 WarpStream에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                    |
+| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 로고" style={{width: '3rem', height: 'auto'}} />                        | 객체 스토리지 | 안정 버전    | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                                                                                                                              |
+| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage 로고" style={{width: '3rem', height: 'auto'}} />            | 객체 스토리지 | 안정 버전    | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                                                                                                                              |
+| DigitalOcean Spaces                                | <DOsvg class="image" alt="DigitalOcean 로고" style={{width: '3rem', height: 'auto'}} />                     | 객체 스토리지 | 안정 버전    | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                                                                                                                              |
+| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage 로고" style={{width: '3rem', height: 'auto'}} />              | 객체 스토리지 | 안정 버전    | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                                                                                                                              |
+| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <Amazonkinesis class="image" alt="Amazon Kinesis 로고" style={{width: '3rem', height: 'auto'}} />           | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 Amazon Kinesis에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                |
+| [GCP Pub/Sub](/integrations/clickpipes/pubsub)     | <GoogleCloudPubSub class="image" alt="Google Cloud Pub/Sub 로고" style={{width: '3rem', height: 'auto'}} /> | 스트리밍    | 퍼블릭 베타   | ClickPipes를 구성하여 Google Cloud Pub/Sub에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                          |
+| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres 로고" style={{width: '3rem', height: 'auto'}} />                   | DBMS    | 안정 버전    | ClickPipes를 구성하여 Postgres에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                                                                                                           |
+| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL 로고" style={{width: '3rem', height: '3rem'}} />                         | DBMS    | 퍼블릭 베타   | ClickPipes를 구성하여 MySQL에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                                                                                                              |
+| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB 로고" style={{width: '3rem', height: '3rem'}} />                     | DBMS    | 프라이빗 프리뷰 | ClickPipes를 구성하여 MongoDB에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                                                                                                            |
 
 더 많은 커넥터가 ClickPipes에 추가될 예정입니다. 자세한 내용은 [문의](https://clickhouse.com/company/contact?loc=clickpipes) 페이지를 참조하시기 바랍니다.
 

@@ -13214,8 +13214,7 @@ ClickHouse가 벡터 유사도 인덱스를 사용하는 쿼리에 대해 재점
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "100000"},{"label": "WebAssembly UDF 인스턴스 실행마다 CPU 명령어(fuel)를 제한하기 위한 새로운 설정입니다."}]}]} />
 
-WebAssembly UDF 인스턴스가 한 번 실행될 때의 fuel 한도입니다. 각 WebAssembly 명령어는 일정량의 fuel을 소모합니다.
-제한을 두지 않으려면 0으로 설정하십시오.
+WebAssembly UDF 인스턴스가 한 번 실행될 때의 fuel 한도입니다. 각 WebAssembly 명령어는 일정량의 fuel을 소모합니다. 이 값은 런타임에 전달되기 전에 1024배로 스케일되므로, `webassembly_udf_max_fuel = 1`은 대략 1024 fuel 단위에 해당합니다. 유한한 제한을 두지 않으려면 0으로 설정하십시오. 기본값이 true인 함수별 설정 `webassembly_udf_enable_fuel`이 적용된 함수에만 적용됩니다.
 
 ## webassembly_udf_max_input_block_size \{#webassembly_udf_max_input_block_size\}
 

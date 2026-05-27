@@ -13222,8 +13222,7 @@ true の場合、非同期挿入の処理が完了するまで待機します。
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.3"},{"label": "100000"},{"label": "WebAssembly UDF インスタンスの 1 回の実行ごとに CPU 命令（fuel）を制限する新しい設定です。"}]}]} />
 
-WebAssembly UDF インスタンスの 1 回の実行ごとにおける fuel の上限です。各 WebAssembly 命令は一定量の fuel を消費します。
-制限を設けない場合は 0 を指定します。
+WebAssembly UDF インスタンスの 1 回の実行ごとにおける fuel の上限です。各 WebAssembly 命令は一定量の fuel を消費します。値はランタイムに渡される前に 1024 倍されるため、`webassembly_udf_max_fuel = 1` はおよそ 1024 fuel 単位に相当します。有限の上限を設けない場合は 0 を指定します。適用されるのは、関数ごとの設定 `webassembly_udf_enable_fuel` が true の関数のみで、これが既定値です。
 
 ## webassembly_udf_max_input_block_size \{#webassembly_udf_max_input_block_size\}
 

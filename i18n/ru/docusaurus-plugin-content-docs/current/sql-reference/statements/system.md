@@ -257,7 +257,7 @@ SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 **Синтаксис**
 
 ```sql
-SYSTEM INSTRUMENT ADD FUNCTION HANDLER [PARAMETERS]
+SYSTEM INSTRUMENT ADD FUNCTION HANDLER [ARGUMENTS]
 ```
 
 где `FUNCTION` — любая функция или подстрока имени функции, например `QueryMetricLog::startQuery`, а обработчик — один из следующих вариантов
@@ -306,7 +306,7 @@ SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' PROFILE
 SYSTEM INSTRUMENT REMOVE ID
 ```
 
-для удаления всех используйте параметр `ALL`:
+для удаления всех используйте ключевое слово `ALL`:
 
 ```sql
 SYSTEM INSTRUMENT REMOVE ALL
@@ -318,14 +318,13 @@ SYSTEM INSTRUMENT REMOVE ALL
 SYSTEM INSTRUMENT REMOVE (SELECT id FROM system.instrumentation WHERE handler = 'log')
 ```
 
-или все точки инструментирования, соответствующие заданному параметру `function_name`:
+или все точки инструментирования, соответствующие заданному параметру `function&#95;name`:
 
 ```sql
 SYSTEM INSTRUMENT REMOVE 'QueryMetricLog::startQuery'
 ```
 
 Информацию о точке инструментирования можно получить из системной таблицы [`system.instrumentation`](../../operations/system-tables/instrumentation.md).
-
 
 ## Управление distributed таблицами \{#managing-distributed-tables\}
 
