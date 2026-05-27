@@ -1,15 +1,13 @@
 ---
 slug: /cloud/managed-postgres/openapi
 sidebar_label: 'OpenAPI'
-title: 'OpenAPI'
+title: 'Managed Postgres OpenAPI'
 description: 'Control your Managed Postgres services with our OpenAPI'
 keywords: ['managed postgres', 'openapi', 'api', 'curl', 'tutorial', 'command line']
 doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
-
-# Managed Postgres OpenAPI
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.openapi-beta" />
 

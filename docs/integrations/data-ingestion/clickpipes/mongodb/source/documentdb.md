@@ -13,8 +13,6 @@ import docdb_apply_parameter_group from '@site/static/images/integrations/data-i
 import docdb_parameter_group_status from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/docdb-parameter-group-status.png'
 import Image from '@theme/IdealImage';
 
-# Amazon DocumentDB source setup guide
-
 ## Supported DocumentDB versions {#supported-documentdb-versions}
 
 ClickPipes supports DocumentDB version 5.0.

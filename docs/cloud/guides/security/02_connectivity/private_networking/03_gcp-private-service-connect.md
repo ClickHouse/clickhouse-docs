@@ -1,5 +1,5 @@
 ---
-title: 'GCP private service connect'
+title: 'Private Service Connect'
 description: 'This document describes how to connect to ClickHouse Cloud using Google Cloud Platform (GCP) Private Service Connect (PSC), and how to disable access to your ClickHouse Cloud services from addresses other than GCP PSC addresses using ClickHouse Cloud IP access lists.'
 sidebar_label: 'GCP private service connect'
 slug: /manage/security/gcp-private-service-connect
@@ -20,8 +20,6 @@ import gcp_psc_dns_record from '@site/static/images/cloud/security/gcp-psc-dns-r
 import gcp_pe_remove_private_endpoint from '@site/static/images/cloud/security/gcp-pe-remove-private-endpoint.png';
 import gcp_privatelink_pe_filters from '@site/static/images/cloud/security/gcp-privatelink-pe-filters.png';
 import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-privatelink-pe-dns.png';
-
-# Private Service Connect {#private-service-connect}
 
 <ScalePlanFeatureBadge feature="GCP PSC"/>
 

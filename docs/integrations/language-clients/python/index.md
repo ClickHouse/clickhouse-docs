@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# Introduction {#introduction}
+## Introduction {#introduction}
 
 ClickHouse Connect is a core database driver providing interoperability with a wide range of Python applications.
 

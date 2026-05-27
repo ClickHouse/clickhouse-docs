@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/quickstart
 sidebar_label: 'Quickstart'
-title: 'Quickstart'
+title: 'Quickstart for Managed Postgres'
 description: 'Experience NVMe-powered Postgres performance and add real-time analytics with native ClickHouse integration'
 keywords: ['managed postgres', 'quickstart', 'getting started', 'create database', 'nvme', 'performance']
 doc_type: 'guide'
@@ -18,8 +18,6 @@ import tablePicker from '@site/static/images/managed-postgres/table-picker.png';
 import getClickHouseHost from '@site/static/images/managed-postgres/get-clickhouse-host.png';
 import analyticsList from '@site/static/images/managed-postgres/analytics-list.png';
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
-
-# Quickstart for Managed Postgres
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.quick-start-beta" />
 

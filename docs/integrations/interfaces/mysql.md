@@ -14,8 +14,6 @@ import mysql1 from '@site/static/images/interfaces/mysql1.png';
 import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
-# MySQL Interface
-
 ClickHouse supports the MySQL wire protocol. This allows certain clients that don't have native ClickHouse connectors leverage the MySQL protocol instead, and it has been validated with the following BI tools:
 
 - [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)

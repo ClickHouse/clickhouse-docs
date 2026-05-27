@@ -9,8 +9,6 @@ doc_type: 'reference'
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# Supported cloud regions
-
 ## AWS regions {#aws-regions}
 
 - ap-northeast-1 (Tokyo)

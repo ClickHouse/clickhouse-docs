@@ -18,8 +18,6 @@ import finish_import from '@site/static/images/clickstack/mysql/finish-import.pn
 import example_dashboard from '@site/static/images/clickstack/mysql/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring MySQL Logs with ClickStack {#mysql-logs-clickstack}
-
 :::note[TL;DR]
 Collect and visualize MySQL error and slow query logs in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::

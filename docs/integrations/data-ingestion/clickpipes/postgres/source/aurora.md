@@ -18,8 +18,6 @@ import security_group_in_rds_postgres from '@site/static/images/integrations/dat
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
-# Aurora Postgres source setup guide
-
 ## Supported Postgres versions {#supported-postgres-versions}
 
 ClickPipes supports Aurora PostgreSQL-Compatible Edition version 12 and later.

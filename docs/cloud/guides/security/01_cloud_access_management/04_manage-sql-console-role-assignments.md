@@ -1,7 +1,7 @@
 ---
 slug: /cloud/guides/sql-console/manage-sql-console-role-assignments
 sidebar_label: 'Manage SQL console role assignments'
-title: 'Manage SQL console role assignments'
+title: 'Configuring SQL console role assignments'
 description: 'Guide showing how to manage SQL console role assignments'
 doc_type: 'guide'
 keywords: ['sql console', 'role assignments', 'access management', 'permissions', 'security']
@@ -19,8 +19,6 @@ import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_a
 :::warning
 This setting is deprecated and has been replaced with a new setting on the role creation screen in organizations that have migrated to custom roles. For more information, see [Manage cloud users](/cloud/security/manage-cloud-users).
 :::
-
-# Configuring SQL console role assignments
 
 > This guide shows you how to configure SQL console role assignments, which
 determine console-wide access permissions and the features that a user can

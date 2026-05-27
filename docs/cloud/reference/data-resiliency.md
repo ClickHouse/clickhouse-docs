@@ -1,7 +1,7 @@
 ---
 slug: /cloud/data-resiliency
 sidebar_label: 'Data resiliency'
-title: 'Disaster recovery'
+title: 'Data resiliency'
 description: 'This guide provides an overview of disaster recovery.'
 doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'data resiliency', 'disaster recovery']
@@ -9,8 +9,6 @@ keywords: ['ClickHouse Cloud', 'data resiliency', 'disaster recovery']
 
 import Image from '@theme/IdealImage';
 import restore_backup from '@site/static/images/cloud/guides/restore_backup.png';
-
-# Data resiliency {#clickhouse-cloud-data-resiliency}
 
 This page covers the disaster recovery recommendations for ClickHouse Cloud, and guidance for customers to recover from an outage.
 ClickHouse Cloud doesn't currently support automatic failover, or automatic syncing across multiple geographical regions.

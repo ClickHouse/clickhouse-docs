@@ -11,8 +11,6 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Materializations
-
 <ClickHouseSupportedBadge/>
 
 This section covers all the materializations available in dbt-clickhouse, including experimental features.

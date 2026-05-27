@@ -3,7 +3,7 @@ sidebar_label: 'Using the HTTP interface'
 slug: /integrations/azure-data-factory/http-interface
 description: 'Using ClickHouse''s HTTP interface to bring data from Azure Data Factory into ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
-title: 'Using ClickHouse HTTP interface to bring Azure data into ClickHouse'
+title: 'Using ClickHouse HTTP interface in Azure data factory'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -37,8 +37,6 @@ import adfNewCopyDataItem                       from '@site/static/images/integr
 import adfCopyDataSource                        from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-source.png';
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
-
-# Using ClickHouse HTTP interface in Azure data factory {#using-clickhouse-http-interface-in-azure-data-factory}
 
 The [`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
 is a fast and convenient way to ingest data from Azure Blob Storage into

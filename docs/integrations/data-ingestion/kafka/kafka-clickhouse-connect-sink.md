@@ -10,8 +10,6 @@ keywords: ['ClickHouse Kafka Connect Sink', 'Kafka connector ClickHouse', 'offic
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# ClickHouse Kafka Connect Sink
-
 :::note
 If you need any help, please [file an issue in the repository](https://github.com/ClickHouse/clickhouse-kafka-connect/issues) or raise a question in [ClickHouse public Slack](https://clickhouse.com/slack).
 :::

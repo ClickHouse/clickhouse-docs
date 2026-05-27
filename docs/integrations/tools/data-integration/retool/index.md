@@ -19,8 +19,6 @@ import retool_04 from '@site/static/images/integrations/tools/data-integration/r
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Connecting Retool to ClickHouse
-
 <PartnerBadge/>
 
 ## 1. Gather your connection details {#1-gather-your-connection-details}

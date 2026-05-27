@@ -10,8 +10,6 @@ doc_type: 'reference'
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
 import Image from '@theme/IdealImage';
 
-# Compression modes
-
 ClickHouse protocol supports **data blocks** compression with checksums.
 Use `LZ4` if not sure what mode to pick.
 ``

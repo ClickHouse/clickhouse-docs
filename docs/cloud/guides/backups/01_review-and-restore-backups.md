@@ -2,7 +2,7 @@
 sidebar_label: 'Review and restore backups'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: 'Overview'
+title: 'Review and restore backups'
 keywords: ['backups', 'cloud backups', 'restore']
 description: 'Provides an overview of backups in ClickHouse Cloud'
 doc_type: 'guide'
@@ -16,8 +16,6 @@ import backup_status_list from '@site/static/images/cloud/manage/backup-status-l
 import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
-
-# Review and restore backups
 
 This guide covers how backups work in ClickHouse Cloud, what options you have to configure backups for your service, and how to restore from a backup.
 

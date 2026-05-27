@@ -14,8 +14,6 @@ integration:
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 
-# Adding specific tables to a ClickPipe
-
 There are scenarios where it would be useful to add specific tables to a pipe. This becomes a common necessity as your transactional or analytical workload scales.
 
 ## Steps to add specific tables to a ClickPipe {#add-tables-steps}

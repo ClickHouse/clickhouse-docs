@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Using native and binary formats in ClickHouse
-
 ClickHouse supports multiple binary formats, which result in better performance and space efficiency. Binary formats are also safe in character encoding since data is saved in a binary form.
 
 We're going to use some_data [table](assets/some_data.sql) and [data](assets/some_data.tsv) for demonstration, feel free to reproduce that on your ClickHouse instance.

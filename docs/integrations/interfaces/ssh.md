@@ -4,14 +4,12 @@ keywords: ['client', 'ssh', 'putty']
 sidebar_label: 'SSH interface'
 sidebar_position: 60
 slug: /interfaces/ssh
-title: 'SSH interface'
+title: 'SSH interface with PTY'
 doc_type: 'reference'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
-# SSH interface with PTY
 
 <ExperimentalBadge/>
 <CloudNotSupportedBadge/>

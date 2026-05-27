@@ -13,8 +13,6 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-# Integrate Google Cloud Storage with ClickHouse
-
 :::note
 If you're using ClickHouse Cloud on [Google Cloud](https://cloud.google.com), this page doesn't apply as your services will already be using [Google Cloud Storage](https://cloud.google.com/storage). If you're looking to `SELECT` or `INSERT` data from GCS, please see the [`gcs` table function](/sql-reference/table-functions/gcs).
 :::
