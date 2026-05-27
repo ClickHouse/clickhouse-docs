@@ -16,7 +16,7 @@ import toolsModal from '@site/static/images/cloud/agent-builder/tools-modal.png'
 
 Image generation lets an agent produce new images from a text prompt or edit images the user has uploaded. The agent picks between generation and editing based on what was asked and the available context.
 
-## Enable it {#enable-it}
+## Enable image generation {#enable-it}
 
 Image generation is added through the **Add Tools** modal in the Agent Builder (not the Capabilities section). Click **Add Tools** at the bottom of the Agent Builder panel, then add one of the image-model tools — for example **OpenAI Image Tools**, **DALL-E-3**, or **Stable Diffusion**. The agent picks the appropriate one based on the request, or you can restrict it in instructions.
 

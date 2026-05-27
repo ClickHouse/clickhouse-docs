@@ -32,9 +32,9 @@ Use the search bar to find an agent by name or keyword across all categories.
 
 Click any agent card to open its detail view. From here you can:
 
-- **Start Chat** — open a new chat with the agent.
-- **Pin** — add the agent to your favorites for quick access.
-- **Copy link** — share a direct link to the agent.
+- **Start Chat** - open a new chat with the agent.
+- **Pin** - add the agent to your favorites for quick access.
+- **Copy link** - share a direct link to the agent.
 
 <Image img={useAgent} alt="Agent detail modal showing the agent name, an icon, and Pin, Copy link, and Start Chat actions" size="md"/>
 
@@ -42,9 +42,9 @@ Click any agent card to open its detail view. From here you can:
 
 To make an agent discoverable in the marketplace, share it with the right scope from the [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access) panel. The visibility levels:
 
-- **Private** — only you can see it. Not in the marketplace.
-- **Shared with users or groups** — visible to those principals. Shows up in their marketplace.
-- **Organization-wide** — visible to everyone in the org. Subject to your admin's marketplace permissions.
+- **Private** - only you can see it. Not in the marketplace.
+- **Shared with users or groups** - visible to those principals. Shows up in their marketplace.
+- **Organization-wide** - visible to everyone in the org. Subject to your admin's marketplace permissions.
 
 Categorize your agent and write a clear description before publishing — those fields drive both search and the categorized browse experience.
 

@@ -23,10 +23,10 @@ The Prompts library is a place to save and reuse natural-language prompts you fi
 
 Open the Prompts panel from the **Prompts** icon in the left navigation and click the **+** button to open the **Create Prompt** form. Fill in the fields:
 
-- **Prompt Name** (required) — what shows up in the picker. Be descriptive: *"Weekly active users by region"* beats *"WAU"*.
-- **Text** (required) — the actual text that will be inserted into the composer.
-- **Special variables** — click the **Special variables** button to insert placeholders, or type `{{name}}` style markers directly. The picker prompts you for values before inserting.
-- **Category**, **Description**, **Command** (optional) — for organizing the library, picker preview text, and a quick-invoke shortcut.
+- **Prompt Name** (required) - what shows up in the picker. Be descriptive: *"Weekly active users by region"* beats *"WAU"*.
+- **Text** (required) - the actual text that will be inserted into the composer.
+- **Special variables** - click the **Special variables** button to insert placeholders, or type `{{name}}` style markers directly. The picker prompts you for values before inserting.
+- **Category**, **Description**, **Command** (optional) - for organizing the library, picker preview text, and a quick-invoke shortcut.
 
 Then click **Create Prompt** at the bottom right.
 
@@ -44,12 +44,22 @@ The preview shows the prompt's text along with its author and date. Click **Use 
 
 ## Share prompts {#share-prompts}
 
-Prompts have the same access model as agents: private by default, can be shared with specific users or groups, can be made organization-wide. See [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access).
+By default, a prompt is private to the person who created it. The owner can change a prompt's visibility to:
+
+- **Specific users or groups** - anyone you nominate can find and use the prompt.
+- **Organization-wide** - everyone in your ClickHouse Cloud organization can find and use it.
+
+Prompts use the same permission model as agents. For the full matrix of roles and what each can do, see [Sharing and
+access](/cloud/features/ai-ml/agents/sharing-and-access).
 
 ## Prompts vs. skills vs. instructions {#prompts-vs-skills-vs-instructions}
 
-- **Prompts** are one-shot text snippets for the user to insert and edit. The user is in the loop.
-- **[Skills](/cloud/features/ai-ml/agents/builder/skills)** are instruction packs the agent activates on its own.
-- **Agent instructions** are the agent's persistent system prompt.
+Prompts, skills, and agent instructions all add text to the model, but they differ in who triggers them and how persistent they are.
 
-Use a prompt when you want to reuse phrasing but stay in control of the wording each time.
+- **Prompts** - text you insert into the composer yourself, edited per turn.
+- **[Skills](/cloud/features/ai-ml/agents/builder/skills)** - instruction sets the agent loads on its own when it judges them relevant to the task.
+- **Agent instructions** - the agent's persistent system prompt, applied to every conversation.
+
+Reach for a prompt when you want to reuse phrasing but stay in control of the wording each time. Reach for a skill when you want the agent to apply
+the same guidance consistently across a task type without having to type it. Reach for agent instructions when the behavior should hold for the
+lifetime of the agent.

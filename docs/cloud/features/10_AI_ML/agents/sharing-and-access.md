@@ -21,8 +21,8 @@ ClickHouse Agents uses a layered permission model: roles control which features 
 
 A role is a bundle of feature permissions assigned to one or more users. The defaults:
 
-- **User** — can run agents and chat. Whether they can build agents, create skills, share resources, etc. depends on the per-feature toggles in their role.
-- **Admin** — everything in User, plus org-level controls: managing users, configuring the marketplace, granting permissions.
+- **User** - can run agents and chat. Whether they can build agents, create skills, share resources, etc. depends on the per-feature toggles in their role.
+- **Admin** - everything in User, plus org-level controls: managing users, configuring the marketplace, granting permissions.
 
 Admins can create custom roles with their own toggles for finer-grained control.
 
@@ -30,9 +30,9 @@ Admins can create custom roles with their own toggles for finer-grained control.
 
 Agents, prompts, and skills each have an access list. Three access levels per principal:
 
-- **Viewer** — can use the resource but can't modify it.
-- **Editor** — can change the resource's configuration (instructions, attached tools, model, etc.).
-- **Owner** — Editor plus the ability to delete the resource or change its sharing.
+- **Viewer** - can use the resource but can't modify it.
+- **Editor** - can change the resource's configuration (instructions, attached tools, model, etc.).
+- **Owner** - Editor plus the ability to delete the resource or change its sharing.
 
 When you create a resource, you're its owner by default. Anything you don't explicitly share is private to you.
 
@@ -40,9 +40,9 @@ When you create a resource, you're its owner by default. Anything you don't expl
 
 You can grant access to:
 
-- **Individual users** — one user at a time.
-- **Groups** — teams or org units. If a user joins or leaves the group later, their access updates automatically.
-- **Organization-wide** — everyone in the org sees the resource. Subject to the role-level toggle that allows this.
+- **Individual users** - one user at a time.
+- **Groups** - teams or org units. If a user joins or leaves the group later, their access updates automatically.
+- **Organization-wide** - everyone in the org sees the resource. Subject to the role-level toggle that allows this.
 
 The org-wide visibility is what makes a resource discoverable in the [marketplace](/cloud/features/ai-ml/agents/marketplace).
 

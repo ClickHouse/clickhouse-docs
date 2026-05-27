@@ -40,11 +40,11 @@ From your Cloud service, click **ClickHouse agents** in the left sidebar to open
 
 In the Agent Builder, click **Create New Agent** at the top of the left panel. Fill in the core fields:
 
-- **Name** — a short identifier.
-- **Description** — one line so teammates know what the agent is for.
-- **Category** — leave as `General` unless your org has custom categories.
-- **Instructions** — the system prompt. Describe the agent's role, the questions it should answer, and any business rules it must follow.
-- **Model** — pick a model from the dropdown. Tune temperature and other generation settings in [model parameters](/cloud/features/ai-ml/agents/builder/model-parameters).
+- **Name** - a short identifier for your agent.
+- **Description** - a description of what the agent is for, which will be visible to teammates.
+- **Category** - a category for your agent. You can leave this as `General` unless your org has custom categories.
+- **Instructions** - the system prompt, which describe the agent's role, the questions it should answer, and any business rules it must follow.
+- **Model** - pick a model from the dropdown. Tune temperature and other generation settings in [model parameters](/cloud/features/ai-ml/agents/builder/model-parameters).
 
 <Image img={agentBuilder} alt="Agent Builder panel showing the Create New Agent dropdown, the form fields (Name, Description, Category, Instructions, Model), and the Capabilities section" size="lg" />
 

@@ -27,11 +27,14 @@ The chat surface in ClickHouse Agents handles conversations, branching, side-by-
 
 ## Conversations {#conversations}
 
-Start a new conversation by clicking the compose icon in the left navigation, typing in the message composer, and pressing send. Each conversation is saved to your sidebar history and can be reopened, renamed, or deleted later.
+Start a new conversation by clicking the compose icon in the left navigation. 
+Select the agent you wish to use from the Agent selector dialogue at the top left of the conversation window - by default the **ClickHouse Agent** is selected.
+You can now type your message in the composer, and press send. Each conversation is saved to your sidebar history and can be reopened, renamed, or deleted later.
 
 <Image img={conversation} alt="Chat surface with the compose icon highlighted in the left navigation, the sidebar showing the Chats history with a saved Top 10 Tables Ranked conversation, and the composer with a sample question typed" size="lg"/>
 
-You can edit any of your messages in place; the agent regenerates its response from that point. You can also regenerate just the agent's last response without re-sending your message.
+You can edit any of your messages in place, and the agent will regenerate its response from that point in the conversation history.
+You can also regenerate the agent's last response only, without re-sending your message.
 
 ## Bookmarks {#bookmarks}
 
@@ -41,13 +44,14 @@ Bookmark a message or a whole conversation to flag it for quick retrieval. Bookm
 
 ## Forking {#forking}
 
-Forking creates a new conversation branched from a specific message. Use it to explore an alternative path without disrupting the original thread. Three fork modes are available:
+Forking creates a new conversation branched from a specific message. You can use it to explore an alternative path without disrupting the original thread.
+There are three fork modes available:
 
-- **Visible messages only** — copy the direct path to the forked message.
-- **Include related branches** — copy the main path plus any existing branches.
-- **Include all to here** — copy everything up to the forked message.
+- **Visible messages only** - lets you copy the direct path to the forked message.
+- **Include related branches** - lets you copy the main path plus any existing branches.
+- **Include all to here** - lets you copy everything up to the forked message.
 
-Forked conversations are independent — changes don't sync back to the original.
+Forked conversations are independent, so changes don't sync back to the original.
 
 <Image img={fork} alt="Select a fork option dialog showing three fork mode icons, Start fork here and Remember checkboxes, and the message action toolbar below" size="lg"/>
 
