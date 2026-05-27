@@ -11,8 +11,8 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
-import readReplicasFlow from '@site/static/images/cloud/managed-postgres/read-replicas-flow.png';
-import readReplicasTable from '@site/static/images/cloud/managed-postgres/read-replicas-table.png';
+import readReplicasFlow from '@site/static/images/managed-postgres/read-replicas-flow.png';
+import readReplicasTable from '@site/static/images/managed-postgres/read-replicas-table.png';
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.read-replicas-beta" />
 
