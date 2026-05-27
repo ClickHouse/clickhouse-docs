@@ -137,7 +137,7 @@ SELECT * FROM pg_available_extensions;
 
 The `pg_clickhouse` extension is pre-installed on every Managed Postgres instance. It allows you to query ClickHouse databases directly from PostgreSQL, enabling a unified query layer for both transactions and analytics.
 
-See the [pg_clickhouse documentation](/integrations/pg_clickhouse) for setup instructions and usage details.
+See the [pg_clickhouse documentation](/cloud/managed-postgres/extensions/pg_clickhouse) for setup instructions and usage details.
 
 ## pg_stat_ch extension {#pg-stat-ch}
 
