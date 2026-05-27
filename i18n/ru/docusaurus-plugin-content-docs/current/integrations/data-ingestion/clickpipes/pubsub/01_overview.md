@@ -27,8 +27,8 @@ import Image from '@theme/IdealImage';
 
 # Интеграция Google Pub/Sub с ClickHouse Cloud \{#integrating-google-pubsub-with-clickhouse-cloud\}
 
-:::note Публичная бета-версия
-ClickPipes для GCP Pub/Sub находится на стадии публичной бета-версии.
+:::note
+Вы можете записаться в лист ожидания закрытой предварительной версии [здесь](https://clickhouse.com/cloud/clickpipes#pubsub-private-preview).
 :::
 
 Пайпы ClickPipes для Pub/Sub можно вручную развертывать и настраивать через интерфейс ClickPipes, а также создавать и управлять ими программно с помощью [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).

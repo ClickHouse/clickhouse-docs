@@ -27,8 +27,8 @@ import Image from '@theme/IdealImage';
 
 # Google Pub/Sub를 ClickHouse Cloud에 통합하기 \{#integrating-google-pubsub-with-clickhouse-cloud\}
 
-:::note 공개 베타
-GCP Pub/Sub용 ClickPipes는 공개 베타 상태입니다.
+:::note
+[여기](https://clickhouse.com/cloud/clickpipes#pubsub-private-preview)에서 비공개 프리뷰 대기자 명단에 등록할 수 있습니다.
 :::
 
 Pub/Sub용 ClickPipes는 ClickPipes UI를 사용해 수동으로 배포 및 관리할 수 있으며, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi)와 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 사용해 프로그래밍 방식으로도 배포 및 관리할 수 있습니다.

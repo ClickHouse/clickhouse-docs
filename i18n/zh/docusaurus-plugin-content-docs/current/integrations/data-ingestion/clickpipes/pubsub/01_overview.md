@@ -27,8 +27,8 @@ import Image from '@theme/IdealImage';
 
 # 将 Google Pub/Sub 与 ClickHouse Cloud 集成 \{#integrating-google-pubsub-with-clickhouse-cloud\}
 
-:::note Public Beta
-适用于 GCP Pub/Sub 的 ClickPipes 当前处于 Public Beta 阶段。
+:::note
+您可以在[此处](https://clickhouse.com/cloud/clickpipes#pubsub-private-preview)注册加入私有预览等候名单。
 :::
 
 Pub/Sub ClickPipes 可通过 ClickPipes UI 手动部署和管理，也可通过 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
