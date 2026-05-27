@@ -8,10 +8,6 @@ title: 'Внешние аутентификаторы пользователей
 doc_type: 'reference'
 ---
 
-import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
-
-<SelfManaged />
-
 ClickHouse поддерживает аутентификацию и управление пользователями с использованием внешних сервисов.
 
 Поддерживаются следующие внешние аутентификаторы и каталоги пользователей:
@@ -20,3 +16,4 @@ ClickHouse поддерживает аутентификацию и управл
 * Kerberos [аутентификатор](/operations/external-authenticators/kerberos#kerberos-as-an-external-authenticator-for-existing-users)
 * [Аутентификация по SSL X.509](/operations/external-authenticators/ssl-x509)
 * HTTP [аутентификатор](./http.md)
+* [Аутентификация JWT](/operations/external-authenticators/jwt)

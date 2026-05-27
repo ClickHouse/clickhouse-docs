@@ -61,22 +61,43 @@ ClickHouse 서버와 Keeper Docker 이미지를 빌드하여 정상적으로 빌
 
 ## 스타일 검사 \{#style-check\}
 
-코드베이스에 대해 다양한 스타일 검사를 수행합니다.
-
-Style Check 작업에서 수행되는 기본 검사 항목:
+코드베이스에 대해 다양한 스타일 검사를 수행합니다. 아래의 각 하위 검사는 [`ci/jobs/check_style.py`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/check_style.py)의 `testname`에 해당하며, `--test <name>` 옵션으로 각각 실행할 수 있습니다(아래 참조).
 
 ##### cpp \{#cpp\}
 
-[`ci/jobs/scripts/check_style/check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh) 스크립트를 사용하여(로컬에서도 실행 가능) 간단한 정규식 기반 코드 스타일 검사를 수행합니다.  
-검사가 실패하면 [코드 스타일 가이드](style.md)에 따라 스타일 관련 문제를 수정하십시오.
+[`check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh)를 사용하여 정규식 기반 C++ 스타일 검사를 수행합니다. 검사가 실패하면 [코드 스타일 가이드](style.md)에 따라 스타일 관련 문제를 수정하십시오.
 
-##### codespell, aspell \{#codespell\}
+##### whitespace_check \{#whitespace-check\}
 
-문법 오류 및 오탈자를 검사합니다.
+컬럼 정렬의 일부가 아닌 C++ 코드에서 쉼표 뒤의 이중 공백을 표시합니다.
 
-##### mypy \{#mypy\}
+##### catch_all \{#catch-all\}
 
-Python 코드에 대해 정적 타입 검사를 수행합니다.
+알 수 없는 예외를 삼키는 것이 안전하지 않은 소멸자, `main`, 퍼저 진입점을 제외한 위치에서는 `catch (...)``를 금지합니다.
+
+##### yamllint \{#yamllint\}
+
+`.yamllint`를 사용해 `.github/` 아래의 YAML 워크플로 파일의 문법을 검사합니다.
+
+##### xmllint \{#xmllint\}
+
+`tests/` 및 `programs/` 디렉터리 아래의 XML 파일을 검증합니다.
+
+##### functional_tests_check \{#functional-tests-check\}
+
+stateless 기능 테스트를 확인합니다: `event_date`로 필터링하는 쿼리는 `today()`가 아니라 `>= yesterday()`를 사용해야 하며(자정 전후의 불안정성을 방지하기 위해), 테스트 파일 이름에는 `fail`이 포함되면 안 됩니다.
+
+##### test_numbers_check \{#test-numbers-check\}
+
+stateless 기능 테스트 번호(`tests/queries/0_stateless/<NNNNN>_*`) 사이에 큰 공백이 있으면 표시합니다.
+
+##### 심볼릭 링크 \{#symlinks\}
+
+리포지토리에서 깨진 심볼릭 링크를 감지합니다.
+
+##### 기타 \{#various\}
+
+[`various_checks.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/various_checks.sh)를 통한 각종 리포지토리 검사: `system.query_log` / `system.parts` / 기타에 대한 쿼리는 `currentDatabase`로 필터링해야 하고, `Replicated*MergeTree` ZooKeeper 경로에는 테스트별 접두사가 포함되어야 하며, 통합 테스트 디렉터리에는 `__init__.py`가 있어야 하고, UTF BOM이 없어야 하며, 소스/데이터 파일에는 실행 권한 비트가 없어야 하고, 서드파티 docker-compose 이미지에는 `:latest` 태그를 사용해서는 안 되는 등 다양한 항목을 검사합니다.
 
 ### 스타일 검사 작업을 로컬에서 실행하기 \{#running-style-check-locally\}
 

@@ -7,11 +7,11 @@ keywords: ['managed postgres', 'метрики', 'prometheus', 'справочн
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # Справочник по метрикам \{#metrics-reference\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-metrics" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-metrics-beta" />
 
 На этой странице перечислены все метрики, доступные через
 [конечную точку Prometheus для Managed Postgres](/cloud/managed-postgres/monitoring/prometheus).

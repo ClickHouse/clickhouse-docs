@@ -7,12 +7,12 @@ keywords: ['읽기 레플리카', '확장성', '읽기 확장', 'Postgres 레플
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.read-replicas-beta" />
 
 읽기 레플리카를 사용하면 기본 Managed Postgres 데이터베이스의 하나 이상의 복사본을 생성할 수 있습니다. 이러한 레플리카는 PostgreSQL의 네이티브 복제 기능을 사용하여 기본 데이터베이스를 지속적으로 따라가며 변경 사항과 동기화됩니다.
 
@@ -23,7 +23,6 @@ import readReplicaDialog from '@site/static/images/managed-postgres/read-replica
 그러면 웨어하우스 대화 상자가 열리며, 여기에서 기존 서비스를 확인하고 새로운 읽기 레플리카를 생성할 수 있습니다.
 
 <Image img={readReplicaDialog} alt="읽기 레플리카 관리 대화 상자" size="md" border />
-
 
 ## 읽기 전용 레플리카를 사용하는 이유 \{#why-use-read-replicas\}
 

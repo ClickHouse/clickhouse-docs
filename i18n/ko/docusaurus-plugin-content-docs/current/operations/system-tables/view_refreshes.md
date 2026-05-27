@@ -26,7 +26,7 @@ import SystemTableCloud from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 * `last_success_duration_ms` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 마지막 새로 고침에 소요된 시간입니다.
 * `last_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 마지막 새로 고침 시도가 완료된 시각(알려진 경우) 또는 시작된 시각(알려지지 않았거나 아직 실행 중인 경우)입니다. 서버 시작 이후 또는 테이블 생성 이후에 새로 고침 시도가 없는 경우 NULL입니다.
 * `last_refresh_replica` ([String](../../sql-reference/data-types/)) — 조정이 활성화된 경우, 현재(실행 중인 경우) 또는 직전(실행 중이 아닌 경우) 새로 고침 시도를 수행한 레플리카의 이름입니다.
-* `next_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 다음 새로 고침이 시작되도록 예약된 시각입니다. status가 `Scheduled`인 경우에만 설정됩니다.
+* `next_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 다음 새로 고침이 시작되도록 예약된 시각입니다. 현재 다음 새로 고침 시각을 알 수 없는 경우(예: 종속성을 기다리는 중이며 status가 `WaitingForDependencies` 또는 `MissingDependencies`인 경우) NULL입니다.
 * `exception` ([String](../../sql-reference/data-types/)) — 이전 시도가 실패한 경우의 오류 메시지입니다.
 * `retry` ([UInt64](../../sql-reference/data-types/)) — 현재 새로 고침에 대해 지금까지 실패한 시도 횟수입니다. status가 `RunningOnAnotherReplica`인 경우에는 제공되지 않습니다.
 * `progress` ([Nullable(Float64)](../../sql-reference/data-types/)) — 지정된 레플리카에서 현재 실행 중인 새로 고침 또는 가장 최근에 완료된 새로 고침의 진행률입니다(0과 1 사이의 값). status가 `RunningOnAnotherReplica`이거나 새로 고침이 실행 중이 아닌 경우 NULL입니다.
@@ -45,12 +45,11 @@ SELECT
     database,
     view,
     status,
-    last_refresh_result,
     last_refresh_time,
     next_refresh_time
 FROM system.view_refreshes
 
-┌─database─┬─view───────────────────────┬─status────┬─last_refresh_result─┬───last_refresh_time─┬───next_refresh_time─┐
-│ default  │ hello_documentation_reader │ Scheduled │ Finished            │ 2023-12-01 01:24:00 │ 2023-12-01 01:25:00 │
-└──────────┴────────────────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┘
+┌─database─┬─view───────────────────────┬─status────┬───last_refresh_time─┬───next_refresh_time─┐
+│ default  │ hello_documentation_reader │ Scheduled │ 2023-12-01 01:24:00 │ 2023-12-01 01:25:00 │
+└──────────┴────────────────────────────┴───────────┴─────────────────────┴─────────────────────┘
 ```

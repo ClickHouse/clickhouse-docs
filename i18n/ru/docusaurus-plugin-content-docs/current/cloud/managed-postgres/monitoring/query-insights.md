@@ -7,7 +7,7 @@ keywords: ['Managed Postgres', 'Query Insights', 'pg_stat_ch', 'медленны
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import queryInsightsOverview from '@site/static/images/managed-postgres/monitoring/query-insights-overview.png';
 import queryInsightsPatterns from '@site/static/images/managed-postgres/monitoring/query-insights-patterns.png';
@@ -17,7 +17,7 @@ import queryInsightsDetailRecent from '@site/static/images/managed-postgres/moni
 
 # Postgres Query Insights \{#postgres-query-insights\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="query-insights" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.query-insights-beta" />
 
 Query Insights собирает телеметрию по каждому оператору из вашего
 [Managed Postgres](/cloud/managed-postgres) и ранжирует каждый шаблон

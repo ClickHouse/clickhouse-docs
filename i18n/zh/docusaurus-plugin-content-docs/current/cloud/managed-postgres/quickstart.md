@@ -7,7 +7,7 @@ keywords: ['托管 Postgres', '快速入门', '入门指南', '创建数据库',
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPg from '@site/static/images/managed-postgres/create-service.png';
 import pgOverview from '@site/static/images/managed-postgres/overview.png';
@@ -19,25 +19,24 @@ import getClickHouseHost from '@site/static/images/managed-postgres/get-clickhou
 import analyticsList from '@site/static/images/managed-postgres/analytics-list.png';
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
 
+# Managed Postgres 快速入门 \{#quickstart-for-managed-postgres\}
 
-# 托管 Postgres 快速入门 \{#quickstart-for-managed-postgres\}
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.quick-start-beta" />
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="quick-start" />
+ClickHouse Managed Postgres 是企业级 Postgres，基于 NVMe 存储构建，与 EBS 等网络附加存储相比，可为磁盘受限的工作负载提供最高 10 倍的性能提升。本快速入门分为两个部分：
 
-ClickHouse 托管 Postgres 是企业级 Postgres，基于 NVMe 存储构建，与 EBS 等网络附加存储相比，可为磁盘受限的工作负载提供最高 10 倍的性能提升。本快速入门分为两个部分：
+* **第 1 部分：** 开始使用 NVMe Postgres 并体验其性能
+* **第 2 部分：** 通过与 ClickHouse 集成实现实时分析
 
-- **第 1 部分：** 开始使用 NVMe Postgres 并体验其性能
-- **第 2 部分：** 通过与 ClickHouse 集成实现实时分析
-
-托管 Postgres 目前在 AWS 的多个区域可用，并在私有预览期间免费。
+Managed Postgres 目前在 AWS 的多个区域可用，并在私有预览期间免费。
 
 **在本快速入门中，您将完成以下内容：**
 
-- 创建一个具备 NVMe 加速性能的托管 Postgres 实例
-- 加载 100 万条示例事件，直观体验 NVMe 的速度
-- 运行查询并体验低延迟性能
-- 将数据复制到 ClickHouse 以实现实时分析
-- 使用 `pg_clickhouse` 从 Postgres 直接查询 ClickHouse
+* 创建一个具备 NVMe 加速性能的 Managed Postgres 实例
+* 加载 100 万条示例事件，直观体验 NVMe 的速度
+* 运行查询并体验低延迟性能
+* 将数据复制到 ClickHouse 以实现实时分析
+* 使用 `pg_clickhouse` 从 Postgres 直接查询 ClickHouse
 
 ## 第一部分：NVMe Postgres 入门 \{#part-1\}
 
@@ -269,7 +268,7 @@ Time: 224.670 ms
 
 ### 从 Postgres 查询 ClickHouse \{#pg-clickhouse-extension\}
 
-`pg_clickhouse` 扩展允许你在 Postgres 中使用标准 SQL 直接查询 ClickHouse 中的数据。这意味着你的应用可以将 Postgres 用作覆盖事务型和分析型数据的统一查询层。详见[完整文档](/integrations/pg_clickhouse)。
+`pg_clickhouse` 扩展允许你在 Postgres 中使用标准 SQL 直接查询 ClickHouse 中的数据。这意味着你的应用可以将 Postgres 用作覆盖事务型和分析型数据的统一查询层。详见[完整文档](/cloud/managed-postgres/extensions/pg_clickhouse)。
 
 启用该扩展：
 
@@ -277,7 +276,7 @@ Time: 224.670 ms
 CREATE EXTENSION pg_clickhouse;
 ```
 
-然后，创建到 ClickHouse 的外部服务器（foreign server）连接。使用 `http` 驱动并将端口设置为 `8443`，以建立安全连接：
+然后，创建到 ClickHouse 的外部服务器 (foreign server) 连接。使用 `http` 驱动并将端口设置为 `8443`，以建立安全连接：
 
 ```sql
 CREATE SERVER ch FOREIGN DATA WRAPPER clickhouse_fdw
@@ -309,7 +308,6 @@ IMPORT FOREIGN SCHEMA "<database_name>" FROM SERVER ch INTO organization;
 ```sql
 \det+ organization.*
 ```
-
 
 ### 查看分析数据的实际效果 \{#analytics-after-integration\}
 

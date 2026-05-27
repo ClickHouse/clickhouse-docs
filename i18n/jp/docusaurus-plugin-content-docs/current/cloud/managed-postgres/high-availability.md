@@ -7,16 +7,15 @@ keywords: ['高可用性', 'ha', 'スタンバイ', 'レプリケーション', 
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="high-availability" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.high-availability-beta" />
 
 Managed Postgres は、耐久性およびパフォーマンス要件に応じた複数レベルの高可用性を提供します。データベースのプロビジョニング時に 1 つまたは 2 つのスタンバイレプリカを追加できるほか、必要に応じて後から **Settings** ページでこの設定を調整できます。
 
 {/* TODO(kaushik-ubi): 高可用性構成画面のスクリーンショット
     Path: /static/images/cloud/managed-postgres/high-availability-config.png */}
-
 
 ## 高可用性構成オプション \{#high-availability-options\}
 

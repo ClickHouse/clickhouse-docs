@@ -7,7 +7,7 @@ keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', '메트릭', 
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
@@ -15,7 +15,7 @@ import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/gr
 
 # Prometheus 연동 \{#prometheus-integration\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-prometheus" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-prometheus-beta" />
 
 Managed Postgres는 [ClickHouse Cloud API][cloud-api]를 통해
 Prometheus와 호환되는 2개의 메트릭 엔드포인트를 노출합니다

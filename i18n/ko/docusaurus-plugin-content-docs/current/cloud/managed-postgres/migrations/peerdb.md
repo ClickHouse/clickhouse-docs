@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data t
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import sourcePeer from '@site/static/images/managed-postgres/peerdb/source-peer.png';
 import targetPeer from '@site/static/images/managed-postgres/peerdb/target-peer.png';
@@ -18,12 +18,11 @@ import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-loa
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
-
 # PeerDB를 사용해 Managed Postgres로 마이그레이션하기 \{#peerdb-migration\}
 
 이 가이드는 PeerDB를 사용해 PostgreSQL 데이터베이스를 ClickHouse Managed Postgres로 마이그레이션하는 방법을 단계별로 설명합니다.
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-peerdb" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-peerdb-beta" />
 
 ## 사전 준비 사항 \{#migration-peerdb-prerequisites\}
 

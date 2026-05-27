@@ -12,7 +12,7 @@ keywords: ['사용 가능한 스레드']
 
 ## ClickHouse에서 스레드 수 늘리기 \{#increasing-the-number-of-threads-in-clickhouse\}
 
-ClickHouse는 쿼리를 처리하고 머지 및 뮤테이션과 같은 백그라운드 작업을 수행하기 위해 **Global Thread pool**의 스레드를 사용합니다. 쿼리를 처리할 유휴 스레드가 없으면 풀에 새 스레드가 생성됩니다.
+ClickHouse는 쿼리를 처리하고 머지 및 뮤테이션과 같은 백그라운드 작업을 수행하기 위해 **Global Thread 풀**의 스레드를 사용합니다. 쿼리를 처리할 유휴 스레드가 없으면 풀에 새 스레드가 생성됩니다.
 
 글로벌 스레드 풀의 최대 크기는 `max_thread_pool_size` 설정으로 결정되며, 기본값은 10,000입니다. 이 값은 설정 파일에서 변경할 수 있으며, 여기서는 20,000으로 설정합니다:
 
@@ -32,4 +32,4 @@ ClickHouse는 쿼리를 처리하고 머지 및 뮤테이션과 같은 백그라
 <max_thread_pool_free_size>2000</max_thread_pool_free_size>
 ```
 
-위의 설정과 글로벌 스레드 풀(Global Thread Pool)에 영향을 미치는 기타 설정에 대한 자세한 내용은 [문서](https://clickhouse.com/docs/operations/server-configuration-parameters/settings#max-thread-pool-size)를 참고하십시오.
+위의 설정과 글로벌 스레드 풀(Global Thread Pool)에 영향을 미치는 기타 설정에 대한 자세한 내용은 [문서](/operations/server-configuration-parameters/settings#max_thread_pool_size)를 참고하십시오.

@@ -3106,6 +3106,10 @@ ClickHouse がこの上限値に達すると、新しいバックグラウンド
 * [max&#95;memory&#95;usage](/operations/settings/settings#max_memory_usage)
 * [merges&#95;mutations&#95;memory&#95;usage&#95;soft&#95;limit](/operations/server-configuration-parameters/settings#merges_mutations_memory_usage_soft_limit)
 
+## message_queue_disable_insertion \{#message_queue_disable_insertion\}
+
+<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="Yes" />メッセージキューエンジン (Kafka、RabbitMQ、NATS) からアタッチ済みのmaterialized viewへの挿入を無効にします
+
 ## metric_log \{#metric_log\}
 
 デフォルトでは無効になっています。

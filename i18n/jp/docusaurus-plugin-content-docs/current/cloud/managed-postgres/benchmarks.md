@@ -2,26 +2,25 @@
 slug: /cloud/managed-postgres/benchmarks
 sidebar_label: 'ベンチマーク'
 title: 'パフォーマンスベンチマーク'
-description: 'ClickHouse によるマネージド Postgres と AWS Aurora、RDS、その他のマネージド PostgreSQL サービスを比較したパフォーマンスベンチマーク'
+description: 'ClickHouse が管理する Postgres と AWS Aurora、RDS、その他のマネージド PostgreSQL サービスを比較したパフォーマンスベンチマーク'
 keywords: ['Postgres ベンチマーク', 'パフォーマンス', 'pgbench', 'aurora', 'rds', 'tps', 'レイテンシ', 'NVMe パフォーマンス']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import computeIntensive from '@site/static/images/managed-postgres/benchmarks/compute-intensive.png';
 import ioReadOnly from '@site/static/images/managed-postgres/benchmarks/io-intensive-readonly.png';
 import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-intensive-readwrite.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="benchmarks" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.benchmarks-beta" />
 
 :::info 要約
 
-* ClickHouse が提供するマネージド Postgres と AWS RDS（16k プロビジョンド IOPS）、Aurora IO Optimized を、標準的な [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) テストで比較ベンチマーク
+* ClickHouse が管理する Postgres と AWS RDS (16k プロビジョンド IOPS) 、Aurora IO Optimized を、標準的な [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) テストで比較ベンチマーク
 * **パフォーマンス**: NVMe ストレージをバックエンドとする ClickHouse の Postgres は、IO 負荷の高いワークロードで **4.3〜9 倍高速**、CPU がボトルネックとなるシナリオで **12% 高速**
 * 高トランザクションレート、低レイテンシなデータアクセス、IO ボトルネックのない予測可能なパフォーマンスを要求する、**急成長する AI 駆動型ワークロードに最適**
   :::
-
 
 ## ベンチマークの概要 \{#overview\}
 

@@ -7,11 +7,11 @@ keywords: ['Managed Postgres', 'мониторинг', 'обсервабилит
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # Мониторинг Managed Postgres \{#managed-postgres-monitoring\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-overview" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-overview-beta" />
 
 Вы можете отслеживать сервисы Managed Postgres следующими
 способами:

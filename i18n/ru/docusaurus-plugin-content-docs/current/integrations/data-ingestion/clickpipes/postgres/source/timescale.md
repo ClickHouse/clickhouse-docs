@@ -60,43 +60,40 @@ Postgres ClickPipe.
 
 1. Создайте отдельного пользователя для ClickPipes:
 
-    ```sql
-    CREATE USER clickpipes_user PASSWORD 'some-password';
-    ```
+   ```sql
+   CREATE USER clickpipes_user PASSWORD 'some-password';
+   ```
 
 2. Предоставьте на уровне схемы доступ только для чтения пользователю, созданному на предыдущем шаге. В следующем примере показаны права для схемы `public`. Повторите эти команды для каждой схемы, содержащей таблицы, которые вы хотите реплицировать:
 
-    ```sql
-    GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
-    GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
-    ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
-    ```
+   ```sql
+   GRANT USAGE ON SCHEMA "public" TO clickpipes_user;
+   GRANT SELECT ON ALL TABLES IN SCHEMA "public" TO clickpipes_user;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA "public" GRANT SELECT ON TABLES TO clickpipes_user;
+   ```
 
 3. Предоставьте пользователю права на репликацию:
 
-    ```sql
-    ALTER USER clickpipes_user WITH REPLICATION;
-    ```
+   ```sql
+   ALTER USER clickpipes_user WITH REPLICATION;
+   ```
 
-4. Создайте [публикацию](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Мы настоятельно рекомендуем включать в публикацию только те таблицы, которые вам нужны, чтобы избежать излишних накладных расходов на производительность.
+4. От имени суперпользователя/администратора Postgres создайте [публикацию](https://www.postgresql.org/docs/current/logical-replication-publication.html) с гипертаблицами, которые вы хотите реплицировать. Публикация **также должна включать всю схему `_timescaledb_internal`**, чтобы пайп мог получать изменения из базовых фрагментов. Мы настоятельно рекомендуем включать в публикацию только те таблицы, которые вам нужны, чтобы избежать излишних накладных расходов на производительность.
 
    :::warning
-   Любая таблица, включённая в публикацию, должна либо иметь определённый **primary key**, _либо_ иметь настроенную **replica identity** со значением `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для получения рекомендаций по выбору области действия публикаций.
+   Любая таблица, включённая в публикацию, должна либо иметь определённый **primary key**, *либо* иметь настроенную **replica identity** со значением `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для получения рекомендаций по выбору области действия публикаций.
    :::
 
-   - Чтобы создать публикацию для конкретных таблиц:
-
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
-      ```
-
-   - Чтобы создать публикацию для всех таблиц в конкретной схеме:
-
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
-      ```
+   ```sql
+   -- При добавлении новых таблиц в ClickPipe вам также потребуется вручную добавить их в публикацию.
+   CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2, TABLES IN SCHEMA _timescaledb_internal;
+   ```
 
    Публикация `clickpipes` будет содержать набор событий изменений, сгенерированных из указанных таблиц, и позже будет использоваться для приёма потока репликации.
+
+   :::info
+   Некоторые управляемые сервисы не предоставляют своим пользователям с правами администратора необходимые разрешения для создания публикации для всей схемы. Если это так, создайте обращение в службу поддержки вашего провайдера. Либо вы можете пропустить этот шаг (и последующие шаги) и вместо этого выполнить однократную загрузку данных.
+   :::
 
 После выполнения этих шагов вы можете перейти к [созданию ClickPipe](../index.md).
 

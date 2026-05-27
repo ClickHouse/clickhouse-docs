@@ -7,12 +7,12 @@ keywords: ['読み取りレプリカ', 'スケーラビリティ', '読み取り
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.read-replicas-beta" />
 
 読み取りレプリカを使用すると、プライマリ Managed Postgres データベースのコピーを 1 つ以上作成できます。これらのレプリカは、PostgreSQL のネイティブなレプリケーション機能を使用してプライマリデータベースを継続的に追随し、変更を常に最新の状態に保ちます。
 
@@ -23,7 +23,6 @@ import readReplicaDialog from '@site/static/images/managed-postgres/read-replica
 これによりウェアハウスダイアログが開き、既存のサービスを表示したり、新しい読み取りレプリカを作成したりできます：
 
 <Image img={readReplicaDialog} alt="読み取りレプリカ管理ダイアログ" size="md" border />
-
 
 ## 読み取りレプリカを使用する理由 \{#why-use-read-replicas\}
 

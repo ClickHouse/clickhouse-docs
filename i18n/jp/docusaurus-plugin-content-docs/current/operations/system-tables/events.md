@@ -2291,11 +2291,19 @@ Kafka テーブルへの書き込み (insert) 回数
 
 ### KeeperBatchMaxCount \{#keeperbatchmaxcount\}
 
-バッチサイズが件数によって制限された回数
+`max_requests_batch_size` の上限に達したバッチ数
+
+### KeeperBatchMaxReadCount \{#keeperbatchmaxreadcount\}
+
+`max_read_batch_size` の上限に達したバッチ数
+
+### KeeperBatchMaxReadTotalSize \{#keeperbatchmaxreadtotalsize\}
+
+`max_read_batch_bytes_size` の上限に達したバッチ数
 
 ### KeeperBatchMaxTotalSize \{#keeperbatchmaxtotalsize\}
 
-バッチサイズが合計バイト数によって制限された回数
+max&#95;requests&#95;batch&#95;bytes&#95;size の上限に達したバッチ数
 
 ### KeeperChangelogFileSyncMicroseconds \{#keeperchangelogfilesyncmicroseconds\}
 
@@ -2524,6 +2532,14 @@ Keeperストレージ共有ロックの取得待機時間
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 単一リクエストのKeeperの総レイテンシ
+
+### KeeperWriteBatchCount \{#keeperwritebatchcount\}
+
+Keeper が処理した書き込みリクエストのバッチ数
+
+### KeeperWriteBatchTotalRequests \{#keeperwritebatchtotalrequests\}
+
+Keeper がバッチ単位で処理した書き込みリクエストの総数
 
 ### LoadedDataParts \{#loadeddataparts\}
 
@@ -4728,6 +4744,50 @@ OS のカーネルモードで CPU 命令を実行している処理スレッド
 ### TextIndexHeaderCacheMisses \{#textindexheadercachemisses\}
 
 ヘッダーがキャッシュ内で見つからなかった回数。
+
+### TextIndexLazyAdvanceCount \{#textindexlazyadvancecount\}
+
+lazy posting listモードで実行されたadvance操作の回数。
+
+### TextIndexLazyAndBlocksSkippedZero \{#textindexlazyandblocksskippedzero\}
+
+遅延 AND モードで、出力領域がすべてゼロだったためにスキップされた、パック済みブロックの数。
+
+### TextIndexLazyAndSegmentsSkippedDense \{#textindexlazyandsegmentsskippeddense\}
+
+遅延 AND モードで、高密度インクリメント最適化によりスキップされたセグメント数。
+
+### 遅延 AND モードで出力範囲がすべてゼロだったためにスキップされたセグメント数 \{#textindexlazyandsegmentsskippedzero\}
+
+遅延 AND モードで、出力範囲がすべてゼロだったためにスキップされたセグメント数。
+
+### TextIndexLazyBlocksSkippedCovered \{#textindexlazyblocksskippedcovered\}
+
+lazy posting list モードで、出力領域がすでに全ビット1だったためにスキップされた パック済みブロック の数。
+
+### TextIndexLazyBruteForceIntersections \{#textindexlazybruteforceintersections\}
+
+lazy posting list モードで実行された総当たりによる積集合の回数。
+
+### TextIndexLazyLeapfrogIntersections \{#textindexlazyleapfrogintersections\}
+
+lazy posting list モードで実行された leapfrog 積集合の実行回数。
+
+### TextIndexLazyPackedBlocksDecoded \{#textindexlazypackedblocksdecoded\}
+
+lazy posting list モードでデコードされた、パック済みブロックの数。
+
+### TextIndexLazySegmentsPrepared \{#textindexlazysegmentsprepared\}
+
+lazy posting listモードで準備されたセグメント数 (索引セクションの読み込み数) 。
+
+### TextIndexLazySegmentsSkippedCovered \{#textindexlazysegmentsskippedcovered\}
+
+lazy posting list モードで、出力領域がすでに全ビット1だったためにスキップされたセグメント数。
+
+### TextIndexLazySegmentsSkippedDense \{#textindexlazysegmentsskippeddense\}
+
+lazy posting list モードで、dense-memset 最適化によりスキップされたセグメント数。
 
 ### TextIndexPostingsCacheHits \{#textindexpostingscachehits\}
 

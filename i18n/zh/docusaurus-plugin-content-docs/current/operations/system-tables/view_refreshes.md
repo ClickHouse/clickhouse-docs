@@ -26,7 +26,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 * `last_success_duration_ms` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 最近一次刷新的耗时。
 * `last_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 最近一次刷新尝试结束的时间 (如果已知) ，或开始的时间 (如果未知或仍在运行) 。如果自服务器启动或表创建以来从未进行过刷新尝试，则为 NULL。
 * `last_refresh_replica` ([String](../../sql-reference/data-types/)) — 如果启用了 coordination，则为发起当前 (如果正在运行) 或上一次 (如果未运行) 刷新尝试的副本名称。
-* `next_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 下一次计划开始刷新的时间，仅当 status = Scheduled 时适用。
+* `next_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 下一次计划开始刷新的时间。如果当前尚未确定下一次刷新时间，则为 NULL，例如在等待依赖项时 (状态为 `WaitingForDependencies` 或 `MissingDependencies`)。
 * `exception` ([String](../../sql-reference/data-types/)) — 如果上一次尝试失败，则为对应的错误消息。
 * `retry` ([UInt64](../../sql-reference/data-types/)) — 当前刷新截至目前的失败尝试次数。如果状态为 `RunningOnAnotherReplica`，则不可用。
 * `progress` ([Nullable(Float64)](../../sql-reference/data-types/)) — 给定副本上当前正在运行或最近一次完成的刷新的进度，取值范围为 0 到 1。如果状态为 `RunningOnAnotherReplica` 或刷新未在运行，则为 NULL。
@@ -45,12 +45,11 @@ SELECT
     database,
     view,
     status,
-    last_refresh_result,
     last_refresh_time,
     next_refresh_time
 FROM system.view_refreshes
 
-┌─database─┬─view───────────────────────┬─status────┬─last_refresh_result─┬───last_refresh_time─┬───next_refresh_time─┐
-│ default  │ hello_documentation_reader │ Scheduled │ Finished            │ 2023-12-01 01:24:00 │ 2023-12-01 01:25:00 │
-└──────────┴────────────────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┘
+┌─database─┬─view───────────────────────┬─status────┬───last_refresh_time─┬───next_refresh_time─┐
+│ default  │ hello_documentation_reader │ Scheduled │ 2023-12-01 01:24:00 │ 2023-12-01 01:25:00 │
+└──────────┴────────────────────────────┴───────────┴─────────────────────┴─────────────────────┘
 ```

@@ -11,5 +11,6 @@ doc_type: '참고'
 ClickHouse Cloud는 다음과 같은 에이전트형 기능을 제공하여 전체 소요 시간을 몇 초 또는 몇 분 수준으로 단축합니다.
 이를 통해 제품 관리자가 「지난주 이탈 급증을 유발한 원인은 무엇인가?」라고 질문하는 즉시, 답변뿐만 아니라 해당 쿼리, 시각화, 그리고 추가로 탐색해 볼 수 있는 잠재적 후속 질문까지 함께 받을 수 있습니다.
 
-* [ClickHouse Assistant agent](/cloud/features/ai-ml/ask-ai)
+* [ClickHouse Agents](/cloud/features/ai-ml/agents) (베타)
+* [ClickHouse Assistant](/cloud/features/ai-ml/ask-ai)
 * [Remote MCP server](/cloud/features/ai-ml/remote-mcp)

@@ -1,6 +1,6 @@
 ---
 slug: /cloud/managed-postgres
-title: 'Управляемый Postgres'
+title: 'Managed Postgres'
 description: 'Быстрый, масштабируемый, корпоративного уровня Postgres на базе NVMe-хранилища с нативной интеграцией с ClickHouse для аналитики в режиме реального времени'
 keywords: ['управляемый Postgres', 'PostgreSQL', 'облачная база данных', 'сервис Postgres', 'NVMe Postgres', 'интеграция с ClickHouse']
 doc_type: 'guide'
@@ -8,10 +8,10 @@ pagination_next: cloud/managed-postgres/quickstart
 pagination_prev: null
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.overview-beta" />
 
 ClickHouse Managed Postgres — это управляемый сервис Postgres корпоративного уровня, созданный для высокой производительности и масштабируемости. Благодаря NVMe-хранилищу, которое физически размещено рядом с вычислительными ресурсами, он обеспечивает до 10 раз более высокую производительность для нагрузок, упирающихся в диск, по сравнению с альтернативами, использующими сетевые дисковые хранилища вроде EBS.
 
@@ -19,7 +19,6 @@ ClickHouse Managed Postgres — это управляемый сервис Postg
 
 {/* TODO: Схема архитектуры, иллюстрирующая интеграцию Postgres с ClickHouse
     Path: /static/images/cloud/managed-postgres/architecture-overview.png */}
-
 
 ## Производительность на базе NVMe \{#nvme-performance\}
 

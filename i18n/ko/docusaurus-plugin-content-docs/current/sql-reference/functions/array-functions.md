@@ -2182,15 +2182,15 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 **구문**
 
 ```sql
-arrayPartialReverseSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialReverseSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **인수**
 
 * `f(arr[, arr1, ... ,arrN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — 정렬이 수행되는 상한을 나타내는 인덱스 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — `f`가 여러 인수를 받는 경우의 추가 배열 N개입니다. [`Array(T)`](/sql-reference/data-types/array)
-* `limit` — 정렬이 수행되는 상한을 나타내는 인덱스 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -2247,7 +2247,6 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [0, 1, 2]
 ```
-
 
 ## arrayPartialShuffle \{#arrayPartialShuffle\}
 
@@ -2356,15 +2355,15 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 **구문**
 
 ```sql
-arrayPartialSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **인수**
 
 * `f(arr[, arr1, ... ,arrN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — 정렬이 수행되는 인덱스의 상한값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — `f`가 여러 인수를 받는 경우의 추가 배열 N개입니다. [`Array(T)`](/sql-reference/data-types/array)
-* `limit` — 정렬이 수행되는 인덱스의 상한값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -2422,7 +2421,6 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [2, 1, 0]
 ```
-
 
 ## arrayPopBack \{#arrayPopBack\}
 
@@ -3026,12 +3024,12 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 **구문**
 
 ```sql
-arrayReverseSort([f,] arr [, arr1, ... ,arrN)
+arrayReverseSort([f,] arr [, arr1, ... ,arrN])
 ```
 
 **인수**
 
-* `f(y1[, y2 ... yN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. - `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — 선택 사항입니다. `f`가 여러 인수를 받는 경우 사용하는 N개의 추가 배열입니다.
+* `f(y1[, y2 ... yN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. - `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., arrN` — 선택 사항입니다. `f`가 여러 인수를 받는 경우 사용하는 N개의 추가 배열입니다.
 
 **반환 값**
 
@@ -3049,7 +3047,7 @@ SELECT arrayReverseSort((x, y) -> y, [4, 3, 5], ['a', 'b', 'c']) AS res;
 [5,3,4]
 ```
 
-**예제 2**
+**예시 2**
 
 ```sql title=Query
 SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
@@ -3058,7 +3056,6 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 ```response title=Response
 [4,3,5]
 ```
-
 
 ## arrayReverseSplit \{#arrayReverseSplit\}
 
@@ -3473,7 +3470,7 @@ arraySort([f,] arr [, arr1, ... ,arrN])
 
 **인수**
 
-* `f(y1[, y2 ... yN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. - `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — 선택 사항입니다. `f`가 여러 인수를 받는 경우 사용할 N개의 추가 배열입니다.
+* `f(y1[, y2 ... yN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. - `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., arrN` — 선택 사항입니다. `f`가 여러 인수를 받는 경우 사용할 N개의 추가 배열입니다.
 
 **반환 값**
 
@@ -3491,7 +3488,7 @@ SELECT arraySort([1, 3, 3, 0]);
 [0,1,3,3]
 ```
 
-**예제 2**
+**예시 2**
 
 ```sql title=Query
 SELECT arraySort(['hello', 'world', '!']);
@@ -3501,7 +3498,7 @@ SELECT arraySort(['hello', 'world', '!']);
 ['!','hello','world']
 ```
 
-**예제 3**
+**예시 3**
 
 ```sql title=Query
 SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
@@ -3510,7 +3507,6 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 ```response title=Response
 [-inf,-4,1,2,3,inf,nan,nan,NULL,NULL]
 ```
-
 
 ## arraySplit \{#arraySplit\}
 

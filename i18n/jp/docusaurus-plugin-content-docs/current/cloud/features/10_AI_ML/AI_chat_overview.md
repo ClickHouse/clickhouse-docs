@@ -1,7 +1,8 @@
 ---
-sidebar_label: 'ClickHouse Assistant エージェント'
+sidebar_label: 'ClickHouse Assistant'
+sidebar_position: 2
 slug: /cloud/features/ai-ml/ask-ai
-title: 'Cloud の ClickHouse Assistant エージェント'
+title: 'Cloud の ClickHouse Assistant'
 description: 'ClickHouse Cloud における ClickHouse Assistant chat 機能の説明'
 doc_type: 'reference'
 ---

@@ -7,7 +7,7 @@ keywords: ['Managed Postgres', 'クエリインサイト', 'pg_stat_ch', '遅い
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import queryInsightsOverview from '@site/static/images/managed-postgres/monitoring/query-insights-overview.png';
 import queryInsightsPatterns from '@site/static/images/managed-postgres/monitoring/query-insights-patterns.png';
@@ -17,7 +17,7 @@ import queryInsightsDetailRecent from '@site/static/images/managed-postgres/moni
 
 # Postgres クエリインサイト \{#postgres-query-insights\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="query-insights" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.query-insights-beta" />
 
 クエリインサイト は、[Managed Postgres](/cloud/managed-postgres) インスタンスから
 ステートメント単位のテレメトリーを収集し、各クエリパターンを

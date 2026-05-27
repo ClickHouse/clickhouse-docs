@@ -7,11 +7,11 @@ keywords: ['Managed Postgres', '监控', '可观测性', '指标', '仪表板', 
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # Managed Postgres 监控 \{#managed-postgres-monitoring\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-overview" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-overview-beta" />
 
 您可以通过以下
 方法监控 Managed Postgres 服务：
@@ -19,7 +19,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 | 部分                                                             | 说明                                                       | 所需配置            |
 | -------------------------------------------------------------- | -------------------------------------------------------- | --------------- |
 | [仪表板](/cloud/managed-postgres/monitoring/dashboard)            | Cloud Console 中用于查看资源使用情况和数据库活动的内置图表                     | 无               |
-| [查询洞察](/cloud/managed-postgres/monitoring/query-insights)      | 按 statement 提供遥测数据：按影响程度对每种查询模式进行排序，并附带诊断计数器             | 无               |
+| [Query Insights](/cloud/managed-postgres/monitoring/query-insights)      | 按 statement 提供遥测数据：按影响程度对每种查询模式进行排序，并附带诊断计数器             | 无               |
 | [Prometheus 端点](/cloud/managed-postgres/monitoring/prometheus) | 将指标抓取到 Prometheus、Grafana、Datadog 或任何兼容 OpenMetrics 的收集器 | API key + 抓取器配置 |
 | [指标参考](/cloud/managed-postgres/monitoring/metrics)             | Prometheus 端点公开的完整指标列表，包括类型、标签和含义                        | 不适用             |
 

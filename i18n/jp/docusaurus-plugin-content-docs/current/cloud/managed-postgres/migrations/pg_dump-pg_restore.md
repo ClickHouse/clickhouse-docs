@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', 'pg_dump', 'pg_restore', 'migration', 'data
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPgForMigrate from '@site/static/images/managed-postgres/pg_dump_restore/create-pg-for-migration.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
@@ -15,12 +15,11 @@ import dumpCommand from '@site/static/images/managed-postgres/pg_dump_restore/du
 import restoreCommand from '@site/static/images/managed-postgres/pg_dump_restore/restore-command.png';
 import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/target-setup.png';
 
-
 # pg_dump と pg_restore を使用して Managed Postgres に移行する \{#pg-dump-pg-restore\}
 
 このガイドでは、`pg_dump` と `pg_restore` ユーティリティを使用して、PostgreSQL データベースを ClickHouse Managed Postgres へ移行する手順をステップバイステップで説明します。
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="pg_dump-pg_restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.pg_dump-pg_restore-beta" />
 
 ## 前提条件 \{#migration-pgdump-pg-restore-prerequisites\}
 

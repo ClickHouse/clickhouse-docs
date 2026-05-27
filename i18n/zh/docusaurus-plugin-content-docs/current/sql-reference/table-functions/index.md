@@ -50,8 +50,8 @@ doc_type: 'reference'
 | [primes](/sql-reference/table-functions/primes)                                        | 返回仅包含一个名为 `prime` 的列的表，该列中存储素数。                                                                                         |
 | [prometheusQuery](/sql-reference/table-functions/prometheusQuery)                      | 基于 TimeSeries 表中的数据评估 Prometheus 查询。                                                                                    |
 | [prometheusQueryRange](/sql-reference/table-functions/prometheusQueryRange)            | 基于 TimeSeries 表中的数据评估 Prometheus 查询。                                                                                    |
-| [timeSeriesData](/sql-reference/table-functions/timeSeriesData)                        | timeSeriesData 返回表 `db_name.time_series_table` 所使用的数据表，该表的表引擎为 TimeSeries。                                              |
 | [timeSeriesMetrics](/sql-reference/table-functions/timeSeriesMetrics)                  | timeSeriesMetrics 返回表 `db_name.time_series_table` 所使用的指标表，其表引擎为 TimeSeries 引擎。                                          |
+| [timeSeriesSamples](/sql-reference/table-functions/timeSeriesSamples)                  | timeSeriesSamples 返回表 `db_name.time_series_table` 所使用的样本表，该表的表引擎为 TimeSeries。                                           |
 | [timeSeriesSelector](/sql-reference/table-functions/timeSeriesSelector)                | 从 TimeSeries 表中读取时间序列数据，根据选择器进行过滤，并限定时间戳在指定时间区间内。                                                                       |
 | [timeSeriesTags](/sql-reference/table-functions/timeSeriesTags)                        | timeSeriesTags 表函数返回表 `db_name.time_series_table` 所使用的标签表，该表的表引擎为 TimeSeries。                                           |
 | [zeros](/sql-reference/table-functions/zeros)                                          | 用于测试场景，是生成大量行的最快方式。类似于 `system.zeros` 和 `system.zeros_mt` 系统表。                                                          |

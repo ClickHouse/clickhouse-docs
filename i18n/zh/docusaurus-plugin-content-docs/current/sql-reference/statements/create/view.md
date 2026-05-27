@@ -236,7 +236,7 @@ AS SELECT ...
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-REFRESH EVERY|AFTER interval [OFFSET interval]
+REFRESH [EVERY|AFTER interval [OFFSET interval]]
 [RANDOMIZE FOR interval]
 [DEPENDS ON [db.]name [, [db.]name [, ...]]]
 [SETTINGS name = value [, name = value [, ...]]]
@@ -254,6 +254,8 @@ AS SELECT ...
 number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 ```
 
+`REFRESH` 子句必须至少指定 `EVERY`、`AFTER` 或 `DEPENDS ON` 其中之一。单独使用 `REFRESH` (不包含这些选项中的任何一个) 会被拒绝。不带 `EVERY`/`AFTER` 的 `REFRESH DEPENDS ON ...` 是 `REFRESH AFTER 0 SECOND DEPENDS ON ...` 的简写；请参见下文的 [Refresh Dependencies](#refresh-dependencies)。
+
 定期运行相应的查询，并将其结果存储在一个表中。
 
 * 如果指定了 `APPEND`，每次刷新都会向表中插入新行，而不会删除现有行。该插入操作不是原子的，与常规的 `INSERT INTO ... SELECT` 查询一样。
@@ -267,7 +269,6 @@ number SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|YEAR
 :::note
 查询中 `REFRESH ... SETTINGS` 部分中的设置是刷新设置 (例如 `refresh_retries`) ，与常规设置 (例如 `max_threads`) 不同。常规设置可以在查询末尾使用 `SETTINGS` 指定。
 :::
-
 
 ### 刷新计划 \{#refresh-schedule\}
 
@@ -293,10 +294,9 @@ REFRESH EVERY 5 MONTHS -- every 5 months, different months each year (as 12 is n
 REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random time between 01:30 and 02:30
 ```
 
-对于给定的视图，同一时间最多只能运行一个刷新任务。比如，如果一个带有 `REFRESH EVERY 1 MINUTE` 的视图需要 2 分钟才能刷新完成，那么它实际上就会每 2 分钟刷新一次。如果之后刷新变快，开始在 10 秒内完成刷新，它就会恢复为每分钟刷新一次。（特别地，它不会为了“追赶”错过的刷新而每 10 秒刷新一次——系统中并不存在这样的积压队列。）
+对于给定的视图，同一时间最多只能运行一个刷新任务。比如，如果一个带有 `REFRESH EVERY 1 MINUTE` 的视图需要 2 分钟才能刷新完成，那么它实际上就会每 2 分钟刷新一次。如果之后刷新变快，开始在 10 秒内完成刷新，它就会恢复为每分钟刷新一次。 (特别地，它不会为了“追赶”错过的刷新而每 10 秒刷新一次——系统中并不存在这样的积压队列。) 
 
-此外，在创建物化视图之后，会立即启动一次刷新，除非在 `CREATE` 查询中指定了 `EMPTY`。如果指定了 `EMPTY`，则第一次刷新会按照预定的计划执行。
-
+通常，在创建物化视图之后会立即启动第一次刷新：由于距上次刷新的时间可视为无穷大，因此任何计划都会认为现在应该刷新。如果指定了 `EMPTY`，则会跳过这次初始刷新，第一次刷新会在下一个计划时间发生；例如，对于 `EVERY 1 HOUR`，第一次刷新将在当前小时结束时发生。
 
 ### 在 Replicated 数据库中 \{#in-replicated-db\}
 
@@ -308,49 +308,101 @@ REFRESH EVERY 1 DAY OFFSET 2 HOUR RANDOMIZE FOR 1 HOUR -- every day at random ti
 
 这种协调通过 Keeper 实现。znode 路径由 [default_replica_path](../../../operations/server-configuration-parameters/settings.md#default_replica_path) 服务器设置决定。
 
-### 刷新依赖关系 \{#refresh-dependencies\}
+### 刷新依赖 \{#refresh-dependencies\}
 
-`DEPENDS ON` 用于同步不同表的刷新。举例来说，假设存在一条由两个可刷新materialized view组成的依赖链：
-
-```sql
-CREATE MATERIALIZED VIEW source REFRESH EVERY 1 DAY AS SELECT * FROM url(...)
-CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY AS SELECT ... FROM source
-```
-
-如果不使用 `DEPENDS ON`，两个视图都会在午夜开始刷新，这时 `destination` 通常只能在 `source` 中看到昨天的数据。若我们添加依赖关系：
+`DEPENDS ON` 用于同步不同表的刷新：
 
 ```sql
-CREATE MATERIALIZED VIEW destination REFRESH EVERY 1 DAY DEPENDS ON source AS SELECT ... FROM source
+CREATE MATERIALIZED VIEW dependent REFRESH EVERY 1 HOUR DEPENDS ON dependency [...]
 ```
 
-这样一来，只有在当日 `source` 的刷新完成后，`destination` 的刷新才会开始，因此 `destination` 将基于最新的数据。
+依赖视图的刷新仅会在所有被依赖视图完成刷新后才开始。
 
-或者，可以通过以下方式达到相同的效果：
+若要在另一个视图完成刷新后立即刷新：
 
 ```sql
-CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS SELECT ... FROM source
+CREATE MATERIALIZED VIEW dependent REFRESH AFTER 0 SECOND DEPENDS ON dependency [...]
 ```
 
-其中 `1 HOUR` 可以是任何小于 `source` 刷新周期的持续时间。依赖表的刷新频率不会高于其任何一个依赖项。这是一种有效的方式，可以在不重复多次指定实际刷新周期的情况下，构建可刷新的视图链。
+或者可写为：
 
-更多示例：
-
-* `REFRESH EVERY 1 DAY OFFSET 10 MINUTE` (`destination`) 依赖于 `REFRESH EVERY 1 DAY` (`source`) <br />
-  如果 `source` 的刷新耗时超过 10 分钟，则 `destination` 会等待它完成。
-* `REFRESH EVERY 1 DAY OFFSET 1 HOUR` 依赖于 `REFRESH EVERY 1 DAY OFFSET 23 HOUR`<br />
-  与上面类似，即使对应的刷新发生在不同的日历日。
-  `destination` 在第 `X+1` 天的刷新会等待 `source` 在第 `X` 天的刷新 (如果耗时超过 2 小时) 。
-* `REFRESH EVERY 2 HOUR` 依赖于 `REFRESH EVERY 1 HOUR`<br />
-  `2 HOUR` 的刷新会在每隔一小时的 `1 HOUR` 刷新之后执行，例如在午夜刷新之后、然后在凌晨 2 点刷新之后，依此类推。
-* `REFRESH EVERY 1 MINUTE` 依赖于 `REFRESH EVERY 2 HOUR`<br />
-  `destination` 会在每次 `source` 刷新后被刷新一次，即每 2 小时刷新一次。`1 MINUTE` 实际上会被忽略。
-* `REFRESH AFTER 1 HOUR` 依赖于 `REFRESH AFTER 1 HOUR`<br />
-  目前不推荐这样配置。
+```sql
+CREATE MATERIALIZED VIEW dependent REFRESH DEPENDS ON dependency [...]
+```
 
 :::note
-`DEPENDS ON` 仅在可刷新的materialized view之间生效。将普通表列入 `DEPENDS ON` 列表会导致该视图永远不会刷新 (可以使用 `ALTER` 移除依赖关系，参见[更改刷新参数](#changing-refresh-parameters)) 。
+`DEPENDS ON` 仅适用于可刷新materialized view 之间。特别是，如果依赖视图使用了 `TO <table>`，请确保使用视图名称而不是表名。如果 `DEPENDS ON` 列表中包含普通表、不可刷新的视图，或者存在拼写错误，则该视图将永远不会刷新，并会在 `system.view_refreshes` 中显示 `MissingDependencies` 状态。可以使用 `ALTER` 更改或移除依赖关系，参见[更改刷新参数](#changing-refresh-parameters)。
 :::
 
+#### 使用 DEPENDS ON 保持一致的传播延迟 \{#using-depends-on-for-consistent-propagation-latency\}
+
+如果两个视图都以相同周期使用 `REFRESH EVERY`，则这种依赖关系会在每个时间窗口内生效。
+
+例如，假设视图 X 和 Y 都使用 `REFRESH EVERY 1 HOUR`，且 Y 从 X 的输出表中读取数据。如果没有依赖关系，Y 通常会看到 X 在前一小时刷新产生的数据。使用 `DEPENDS ON X` 后，Y 在 11:00 的刷新只有在 X 于 11:00 的刷新完成后才会开始。
+
+```text
+           10:00            11:00            12:00
+           │                │                │
+  X:        [run]┐           [run]┐           [run]┐
+                 │                │                │
+  Y:             └►[run]          └►[run]          └►[run]
+```
+
+如果刷新耗时长于刷新周期，依赖项和依赖于它的对象都可能各自跳过某些时间段。无法保证依赖对象会针对依赖项的每次刷新都恰好刷新一次。
+
+```text
+           10:00          11:00          12:00          13:00
+           │              │              │              |
+  X:        [run]┐         [run]┐         [run]┐         [run]┐
+                 │              └────┐    (Y skips 12:00)     └───┐
+  Y:             └►[10:00 ru------un]└►[11:00 ru---------------un]└►[13:00 run]
+```
+
+#### 使用 DEPENDS ON 进行分批 stream 处理 \{#using-depends-on-for-batched-stream-processing\}
+
+如果未使用 `REFRESH EVERY`，则依赖视图 X 会在其所有依赖项自 X 上次刷新以来都至少刷新过一次后刷新。`REFRESH AFTER T` 会增加一个延迟：依赖对象会在其依赖项完成刷新后的 T 时间开始刷新。
+
+允许循环依赖，而且这很有用。请看下面这个由可刷新materialized view 组成的关系图：
+
+1. X 从某个 stream 中取出一批行，并将其写入一个表。
+2. 然后，Y 和 Z 都从该表中读取数据，执行不同的聚合，并将结果追加到其他表中。
+3. 在该批次被完全处理后，X 会取出下一批，循环往复。
+
+```text
+            source
+               │
+               ▼
+          ┌─────────┐
+     ┌───►│    X    │◄───┐
+     │    └──┬───┬──┘    │
+  DEPENDS    │   │    DEPENDS
+    ON       ▼   ▼      ON
+     │      ┌─┐ ┌─┐      │
+     └──────┤Y│ │Z├──────┘
+            └─┘ └─┘
+```
+
+完整示例：
+
+```sql
+CREATE TABLE current_batch (t UInt64, v Int64) ENGINE ReplicatedMergeTree ORDER BY t;
+CREATE TABLE batch_log (max_t UInt64, n Int64, v_sum Int64, processed_at DateTime64) ENGINE ReplicatedMergeTree ORDER BY max_t;
+CREATE TABLE stats (h UInt64, n UInt64) ENGINE ReplicatedSummingMergeTree ORDER BY h;
+
+-- (system.numbers stands in for a data source with monotonically increasing timestamps or sequence numbers)
+CREATE MATERIALIZED VIEW current_batch_v REFRESH EVERY 10 SECOND DEPENDS ON batch_log_v, stats_v TO current_batch AS SELECT number as t, number * 10 as v FROM system.numbers WHERE number > (SELECT max(max_t) FROM batch_log) LIMIT 100;
+
+CREATE MATERIALIZED VIEW batch_log_v REFRESH DEPENDS ON current_batch_v APPEND TO batch_log AS SELECT max(t) as max_t, count() as n, sum(v) as v_sum, now64() as processed_at FROM current_batch;
+
+CREATE MATERIALIZED VIEW stats_v REFRESH DEPENDS ON current_batch_v APPEND TO stats AS SELECT cityHash64(v) % 20 as h, count() as n FROM current_batch GROUP BY h;
+
+-- Must trigger initial refresh manually.
+SYSTEM REFRESH VIEW current_batch_v;
+```
+
+更长的事件链同样适用。
+
+只有在启用 refresh 协调时，这种方式才能正常工作，也就是说，这些视图位于 Replicated 或 Shared 数据库中。如果没有协调机制，服务器重启会打破这一循环，因此每次重启后都需要手动执行 `SYSTEM REFRESH VIEW`，而不是只在创建这些视图后执行一次。
 
 ### 刷新设置 \{#refresh-settings\}
 
@@ -360,8 +412,6 @@ CREATE MATERIALIZED VIEW destination REFRESH AFTER 1 HOUR DEPENDS ON source AS S
 * `refresh_retry_initial_backoff_ms` - 如果 `refresh_retries` 不为零，第一次重试前的延迟。之后每次重试会将延迟翻倍，直到达到 `refresh_retry_max_backoff_ms`。默认值：100 ms。
 * `refresh_retry_max_backoff_ms` - 刷新重试之间延迟的指数增长上限。默认值：60000 ms (1 分钟) 。
 * `all_replicas` - 在使用 `APPEND` 的[Replicated 数据库](../../../engines/database-engines/replicated.md)中，控制是由所有副本分别独立刷新，还是在每个计划刷新时间点仅由一个副本执行刷新。创建视图后不能修改。默认值：`false`。
-* `prefer_dependency_replica` - 当视图带有 `DEPENDS ON` 时，执行父级刷新的副本会优先执行依赖刷新；其他副本会将其尝试延后 `prefer_dependency_replica_delay_ms`。与 `SharedMergeTree` 搭配使用时，这一设置很有用，可避免因复制延迟而导致依赖刷新链中出现数据缺失。默认值：`false`。
-* `prefer_dependency_replica_delay_ms` - 启用 `prefer_dependency_replica` 时，非优先副本在尝试执行依赖刷新前的等待时长。默认值：2000 ms。
 
 ### 更改刷新参数 \{#changing-refresh-parameters\}
 

@@ -684,6 +684,16 @@ Cloud 默认值：`1`。
 
 基于 part UUID 的 SELECT 查询实验性去重功能
 
+## allow_experimental_text_index_lazy_apply \{#allow_experimental_text_index_lazy_apply\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "用于控制实验性延迟倒排列表应用模式的新设置"}]}]} />
+
+如果设置为 true，则允许文本索引查询使用延迟倒排列表应用模式。
+
 ## allow_experimental_time_series_aggregate_functions \{#allow_experimental_time_series_aggregate_functions\}
 
 <ExperimentalBadge/>
@@ -846,6 +856,14 @@ Cloud 默认值：`1`。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于在索引分析前将形如 `coalesce(a_1, ..., a_N) <op> const` 的谓词（以及等价的 `ifNull` 形式，或常量在左侧的形式）重写为析取表达式，以便使用每个 `a_i` 对应列上的主键和跳过索引。还支持部分常量形式，例如 `coalesce(a, 42, b)` 和 `coalesce(a, b, 42)`。"}]}]} />
 
 在索引分析前，将形如 `coalesce(a_1, ..., a_N) <op> const` 的谓词 (以及等价的 `ifNull` 形式，或常量在左侧的形式) 重写为析取表达式 `(a_1 <op> const) OR (a_1 IS NULL AND a_2 <op> const) OR ... OR (a_1 IS NULL AND ... AND a_{N-1} IS NULL AND a_N <op> const)`，以便使用每个 `a_i` 对应列上的主键和跳过索引。还支持部分常量形式，例如 `coalesce(a, 42, b)` 和 `coalesce(a, b, 42)`：参数列表会像 `coalesce` 自身那样被规范化 (丢弃 `NULL` 字面量，并丢弃第一个非 `Nullable` 参数之后的所有参数) ，如果末尾存在非 `NULL` 常量，则会将其作为最后一个分支生成。该重写仅用于增强索引剪枝；运行时过滤仍使用原始谓词。
+
+## allow_limit_by_partitions_independently \{#allow_limit_by_partitions_independently\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "当分区表达式是 `LIMIT BY` 列的确定性函数时，用于启用按分区独立执行 `LIMIT BY` 计算的新设置。"}]}]} />
+
+当分区表达式是 `LIMIT BY` 列的确定性函数时，启用在独立线程中按分区分别执行 `LIMIT BY` 计算。
 
 ## allow_materialized_view_with_bad_select \{#allow_materialized_view_with_bad_select\}
 
@@ -1316,9 +1334,9 @@ Cloud 默认值：`0`。
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.2"},{"label": "1"},{"label": "默认启用 apply_row_policy_after_final，就像在 25.8（#87303 之前）中的行为一样"}]}, {"id": "row-2","items": [{"label": "25.12"},{"label": "0"},{"label": "用于控制是否在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE 的新设置（尤其适用于 ReplacingMergeTree）"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.10"},{"label": "1"},{"label": "该设置是为修复 #87303 之后出现的回归问题而添加的，该回归导致 ROW POLICY 和 PREWHERE 在 FINAL 之前应用。PR #91065 引入了该设置，PR #97279 则将保证正确性的 true 设为默认值。记录为 {true, true}，因此兼容性永远不会回退到修复前的 false 行为。"}]}]} />
 
-启用时，会在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE（尤其适用于 ReplacingMergeTree）。
+启用时，会在对 *MergeTree 表执行 FINAL 处理之后再应用 ROW POLICY 和 PREWHERE (尤其适用于 ReplacingMergeTree) 。
 禁用时，会在 FINAL 之前应用 ROW POLICY，这在策略过滤掉本应在 ReplacingMergeTree 或类似引擎中用于去重的行时，可能导致结果不同。
 
 如果 ROW POLICY 表达式只依赖于 ORDER BY 中的列，则仍会在 FINAL 之前应用，作为一种优化措施，
@@ -1326,8 +1344,8 @@ Cloud 默认值：`0`。
 
 可能的取值：
 
-- 0 — 在 FINAL 之前应用 ROW POLICY 和 PREWHERE（默认）。
-- 1 — 在 FINAL 之后应用 ROW POLICY 和 PREWHERE。
+* 0 — 在 FINAL 之前应用 ROW POLICY 和 PREWHERE (默认) 。
+* 1 — 在 FINAL 之后应用 ROW POLICY 和 PREWHERE。
 
 ## apply_settings_from_server \{#apply_settings_from_server\}
 
@@ -4089,6 +4107,21 @@ SELECT * FROM positional_arguments ORDER BY 2,3;
 
 请注意，这是为分析器提供的兼容性设置，用于允许运行一些在语义上无效但旧分析器仍能执行的查询。
 
+## enable_sharding_aggregator \{#enable_sharding_aggregator\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "用于启用分片式 `GROUP BY` 优化的新设置。该优化通过对分组键进行哈希，将行分配到各个线程，因此每个线程都会聚合一组互不重叠的键，无需经过合并阶段；对于数据分布均匀的高基数键，这种方式效率很高。"}]}]} />
+
+启用分片式 `GROUP BY` 优化。该优化通过对分组键进行哈希，将行分配到各个线程，因此每个线程都会聚合一组互不重叠的键，无需经过合并阶段。
+
+对于数据分布均匀的高基数键，这种方式效率很高；但如果键分布严重倾斜，或者查询中不同键的数量很少，性能可能会受到影响。
+
+可能的值：
+
+* 0 — 分片聚合优化已禁用。
+* 1 — 分片聚合优化已启用。
+
 ## enable_shared_storage_snapshot_in_query \{#enable_shared_storage_snapshot_in_query\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -4145,6 +4178,18 @@ WHERE (_part, _part_offset) IN (
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "启用在哈希连接探测阶段使用软件预取。"}]}]} />
 
 启用在哈希连接的探测阶段使用软件预取，以掩盖大型哈希表的内存访问延迟。
+
+## enable_streaming_queries \{#enable_streaming_queries\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "新增设置"}]}]} />
+
+允许使用 `SELECT ... FROM t STREAM [CURSOR '{...}']` 持续查询。
+关闭时，任何使用 `STREAM` 修饰符的表表达式都会在构建执行计划时被拒绝。
+这是流式查询功能的总开关；其他功能可能还受各自设置的单独控制。
 
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
@@ -6092,22 +6137,28 @@ ClickHouse 会在可能的情况下始终尝试使用 `partial_merge` join，否
 
 <SettingsInfoBlock type="OverflowMode" default_value="throw" />
 
-定义当达到以下任一 join 限制时 ClickHouse 将执行的操作：
+定义当 join 达到以下任一限制时，ClickHouse 将执行的操作：
 
-- [max_bytes_in_join](/operations/settings/settings#max_bytes_in_join)
-- [max_rows_in_join](/operations/settings/settings#max_rows_in_join)
+* [max&#95;bytes&#95;in&#95;join](/operations/settings/settings#max_bytes_in_join)
+* [max&#95;rows&#95;in&#95;join](/operations/settings/settings#max_rows_in_join)
 
-可用值：
+此设置仅对 [`join_algorithm`](/operations/settings/settings#join_algorithm) 的 `hash` 和 `parallel_hash`
+值生效。其他算法 (例如 `partial_merge`、`grace_hash`、`auto`) 会以不同方式处理这些
+限制——例如通过落盘、重新分区或切换
+策略——请参见
+[`join_algorithm`](/operations/settings/settings#join_algorithm)。
 
-- `THROW` — ClickHouse 抛出异常并终止操作。
-- `BREAK` — ClickHouse 终止操作但不抛出异常。
+可能的值：
+
+* `THROW` — ClickHouse 会抛出异常并停止查询。
+* `BREAK` — ClickHouse 会停止查询，但不会抛出异常。
 
 默认值：`THROW`。
 
-**另请参阅**
+**另请参见**
 
-- [JOIN 子句](/sql-reference/statements/select/join)
-- [Join 表引擎](/engines/table-engines/special/join)
+* [JOIN 子句](/sql-reference/statements/select/join)
+* [Join 表引擎](/engines/table-engines/special/join)
 
 ## join_runtime_bloom_filter_bytes \{#join_runtime_bloom_filter_bytes\}
 
@@ -6863,20 +6914,19 @@ Cloud 默认值：每个副本可用内存的一半。
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-用于 JOIN 时所使用哈希表的最大大小（以字节为单位）。
+用于表连接时右侧数据结构 (通常为哈希表) 的最大大小 (以字节为单位) 。
 
 此设置适用于 [SELECT ... JOIN](/sql-reference/statements/select/join)
 操作以及 [Join 表引擎](/engines/table-engines/special/join)。
 
-如果查询包含 JOIN，ClickHouse 会针对每个中间结果检查此设置。
-
-当达到限制时，ClickHouse 可以执行不同的操作。使用
-[join_overflow_mode](/operations/settings/settings#join_overflow_mode) 设置来选择相应操作。
+如果查询包含多个 JOIN，ClickHouse 会针对每个中间结果检查此设置。当达到限制时，具体操作取决于所选的
+[`join_algorithm`](/operations/settings/settings#join_algorithm) —— 请参阅该设置，了解各算法的具体行为 (落盘、重新分区、切换，或根据 [`join_overflow_mode`](/operations/settings/settings#join_overflow_mode) 执行
+throw/break) 。
 
 可能的取值：
 
-- 正整数。
-- 0 — 禁用内存控制。
+* 正整数。
+* 0 — 禁用内存控制。
 
 ## max_bytes_in_set \{#max_bytes_in_set\}
 
@@ -7755,20 +7805,21 @@ Cloud 默认值：`0`。
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
 
-限制在进行表连接时用于哈希表中的行数。
+限制在进行表连接时右侧数据结构 (通常为哈希
+表) 中的行数。
 
 此设置适用于 [SELECT ... JOIN](/sql-reference/statements/select/join)
 操作以及 [Join](/engines/table-engines/special/join) 表引擎。
 
-如果一个查询包含多个 join，ClickHouse 会针对每个中间结果检查此设置。
-
-当达到限制时，ClickHouse 可以采取不同的处理方式。使用
-[`join_overflow_mode`](/operations/settings/settings#join_overflow_mode) 设置来选择具体行为。
+如果一个查询包含多个 join，ClickHouse 会针对每个
+中间结果检查此设置。当达到限制时，具体操作取决于所选的
+[`join_algorithm`](/operations/settings/settings#join_algorithm)——有关各算法的行为 (落盘、重新分区、切换，或根据 [`join_overflow_mode`](/operations/settings/settings#join_overflow_mode) 执行
+throw/break) ，请参见该设置。
 
 可能的取值：
 
-- 正整数。
-- `0` — 行数不受限制。
+* 正整数。
+* `0` — 行数不受限制。
 
 ## max_rows_in_set \{#max_rows_in_set\}
 
@@ -9210,6 +9261,18 @@ SELECT * FROM test2;
 
 将多个 OR LIKE 表达式优化为 multiMatchAny。此优化默认不应启用，因为在某些情况下会干扰索引分析。
 
+## optimize_prewhere_after_pushdown \{#optimize_prewhere_after_pushdown\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "新增设置，用于启用第二次 `PREWHERE` 提升处理，将后续优化（如通过 `JOIN` 的谓词下推、投影重写）放置在 `MergeTree` 读取步骤上方的过滤器合并到现有的 `PREWHERE` 链中。"}]}]} />
+
+在后续查询计划优化可能已在 `MergeTree` 读取步骤上方
+放置额外过滤器 (例如通过
+`JOIN` 的谓词下推、投影重写) 之后，再执行一次 `PREWHERE` 提升处理。当已存在
+`PREWHERE` 时，新的
+过滤器会通过 `AND` 合并到其中，而不是保留为单独的过滤步骤。
+
 ## optimize_qbit_distance_function_reads \{#optimize_qbit_distance_function_reads\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -10494,6 +10557,14 @@ a   Tuple(
 - 0 - 禁用
 - 1 - 启用
 
+## query_plan_max_limit_for_join_lazy_indexing \{#query_plan_max_limit_for_join_lazy_indexing\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1000"},{"label": "新增设置，用于控制可使用查询计划进行 JOIN 延迟索引优化的最大限制值。为 0 表示不限制"}]}]} />
+
+控制可在 JOIN 中使用查询计划进行延迟索引优化的最大限制值。为 0 表示不限制。
+
 ## query_plan_max_limit_for_lazy_materialization \{#query_plan_max_limit_for_lazy_materialization\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -10562,6 +10633,14 @@ a   Tuple(
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "允许在查询计划中合并过滤条件"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "允许在查询计划中合并过滤条件。在使用分析器时，为了正确支持过滤下推，这是必需的。"}]}]}/>
 
 允许在查询计划中合并过滤条件。
+
+## query_plan_min_columns_for_join_lazy_indexing \{#query_plan_min_columns_for_join_lazy_indexing\}
+
+<SettingsInfoBlock type="UInt64" default_value="3" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "3"},{"label": "控制启用 JOIN 惰性索引优化时左侧所需的最小负载列数"}]}]} />
+
+控制启用 JOIN 惰性索引优化时左侧所需的最小负载列数。0 表示禁用此优化。
 
 ## query_plan_optimize_join_order_algorithm \{#query_plan_optimize_join_order_algorithm\}
 
@@ -10637,6 +10716,21 @@ a   Tuple(
 
 - 0 - 禁用
 - 1 - 启用
+
+## query_plan_push_limit_by_into_sort \{#query_plan_push_limit_by_into_sort\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "新增设置：当 LIMIT BY 的列是 ORDER BY 的前缀时，将每个流的 LIMIT BY 下推到排序管道中，从而减少流经最终合并的行数。"}]}]} />
+
+控制是否对 `ORDER BY ... LIMIT BY` 查询启用查询计划级别的优化。当 `LIMIT BY` 的列是 `ORDER BY` 子句的前缀时，每个并行排序流都会在各个流合并为一个之前先应用 `LIMIT BY`，从而减少最终合并及后续管道阶段需要处理的行数。对于 `LIMIT BY` 会丢弃大量行的查询，可提升执行速度。
+
+仅当设置 [query&#95;plan&#95;enable&#95;optimizations](#query_plan_enable_optimizations) 为 1 时，此设置才会生效。
+
+可能的值：
+
+* 0 - 禁用
+* 1 - 启用
 
 ## query_plan_read_in_order \{#query_plan_read_in_order\}
 
@@ -12121,6 +12215,15 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 - LZ4 — 应用 [LZ4](https://en.wikipedia.org/wiki/LZ4_(compression_algorithm)) 压缩。
 - NONE — 不应用任何压缩。
 
+## text_index_density_threshold \{#text_index_density_threshold\}
+
+<SettingsInfoBlock type="Float" default_value="0.2" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0.2"},{"label": "为 lazy 倒排列表 密度阈值新增的设置"}]}]} />
+
+用于在 lazy 倒排列表 模式下选择算法的密度阈值。
+低于该阈值：leapfrog intersection。达到或超过该阈值：暴力 bitmap 算法。
+
 ## text_index_hint_max_selectivity \{#text_index_hint_max_selectivity\}
 
 <SettingsInfoBlock type="Float" default_value="0.2" />
@@ -12149,6 +12252,16 @@ SELECT * FROM system.events WHERE event='QueryMemoryLimitExceeded';
 短于此阈值的模式会匹配过多的字典标记，因此会被跳过，以避免高开销的扫描。
 
 需要同时启用 `use_text_index_like_evaluation_by_dictionary_scan`。
+
+## text_index_posting_list_apply_mode \{#text_index_posting_list_apply_mode\}
+
+<SettingsInfoBlock type="TextIndexPostingListApplyMode" default_value="materialize" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "materialize"},{"label": "新增用于延迟应用倒排列表模式的设置"}]}]} />
+
+控制在文本索引查询时如何应用倒排列表。
+`materialize` (默认) 会立即将倒排列表解码为 Roaring Bitmaps。
+`lazy` 使用基于游标的按需解码 (需要 V2 索引格式和 allow&#95;experimental&#95;text&#95;index&#95;lazy&#95;apply) 。
 
 ## throw_if_no_data_to_insert \{#throw_if_no_data_to_insert\}
 

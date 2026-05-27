@@ -7,12 +7,12 @@ keywords: ['реплики для чтения', 'масштабируемост
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.read-replicas-beta" />
 
 Реплики для чтения позволяют создать одну или несколько копий вашей основной базы данных Managed Postgres. Эти реплики непрерывно синхронизируются с основной базой данных, используя встроенную репликацию PostgreSQL, чтобы своевременно получать все изменения.
 
@@ -23,7 +23,6 @@ import readReplicaDialog from '@site/static/images/managed-postgres/read-replica
 Откроется диалоговое окно хранилища, где вы можете просмотреть существующие сервисы и создать новые реплики для чтения:
 
 <Image img={readReplicaDialog} alt="Диалоговое окно управления репликами для чтения" size="md" border />
-
 
 ## Зачем нужны реплики для чтения \{#why-use-read-replicas\}
 

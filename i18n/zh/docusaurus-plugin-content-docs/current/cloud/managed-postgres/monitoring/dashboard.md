@@ -7,13 +7,13 @@ keywords: ['Managed Postgres', '监控', '仪表板', 'Cloud Console', 'cpu', '�
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import dashboard from '@site/static/images/managed-postgres/monitoring/dashboard.png';
 
 # 监控仪表板 \{#monitoring-dashboard\}
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-dashboard" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-dashboard-beta" />
 
 实例左侧边栏中的 **Monitoring** 标签页会显示
 所选时间范围内资源使用情况和数据库活动的
