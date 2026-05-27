@@ -13,8 +13,6 @@ keywords: ['estuary', 'data ingestion', 'etl', 'pipeline', 'data integration']
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Connect Estuary with ClickHouse
-
 <PartnerBadge/>
 
 [Estuary](https://estuary.dev/) is a right-time data platform that flexibly combines real-time and batch data in simple-to-setup ETL pipelines. With enterprise-grade security and deployment options, Estuary unlocks durable data flows from SaaS, database, and streaming sources to a variety of destinations, including ClickHouse.
@@ -36,9 +34,6 @@ Opt for the [ClickPipe integration](/integrations/estuary/clickpipes) instead if
 For more on setting up an integration with Estuary, see Estuary's documentation:
 
 * [Explore Estuary's capabilities](https://docs.estuary.dev/).
-
 * See reference documentation for Estuary's [direct ClickHouse materialization connector](https://docs.estuary.dev/reference/Connectors/materialization-connectors/ClickHouse/).
-
 * See reference documentation for Estuary's [Kafka ClickPipe integration](https://docs.estuary.dev/reference/Connectors/materialization-connectors/Dekaf/clickhouse/).
-
 * To see a list of sources that you can stream into ClickHouse with Estuary, check out [Estuary's capture connectors](https://docs.estuary.dev/reference/Connectors/capture-connectors/).

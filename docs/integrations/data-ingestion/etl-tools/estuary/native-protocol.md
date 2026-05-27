@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Direct Materialization Connector'
+sidebar_label: 'Direct materialization connector'
 slug: /integrations/estuary/native
 description: 'Integrate between Estuary and ClickHouse with a connector using the native protocol'
-title: 'Direct Materialization from Estuary to ClickHouse'
+title: 'Direct materialization from Estuary to ClickHouse'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -12,8 +12,6 @@ keywords: ['estuary', 'data ingestion', 'etl', 'pipeline', 'data integration']
 ---
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
-
-# Estuary to ClickHouse Direct Materialization
 
 <PartnerBadge/>
 
@@ -26,11 +24,13 @@ This allows Estuary to:
 * Use `ReplacingMergeTree` for standard merge updates or `MergeTree` for delta updates
 * Provide exactly-once delivery
 
-See also [Estuary's Kafka ClickPipe integration](/integrations/estuary/clickpipes) for a ClickPipe workflow.
+See [Estuary's Kafka ClickPipe integration](/integrations/estuary/clickpipes) for a ClickPipes workflow.
 
 ## Setup guide {#setup-guide}
 
 **Prerequisites**
+
+You will need:
 
 * An [Estuary account](https://dashboard.estuary.dev/register)
 * One or more [**captures**](https://docs.estuary.dev/concepts/captures/) in Estuary that pull data from your desired sources
@@ -101,7 +101,7 @@ You can then move to Estuary to finish setup.
 
 ### Configure source collections {#3-configure-source-collections}
 
-Choose which source(s) you'd like to materialize into ClickHouse in the **Source Collections** section.
+Choose which sources you'd like to materialize into ClickHouse in the **Source Collections** section.
 
 1. Link an existing **capture** or add individual data collections to materialize to ClickHouse.
 
@@ -122,5 +122,4 @@ Estuary will start backfilling data from the selected collections to ClickHouse 
 For more on setting up a ClickHouse connector with Estuary, see Estuary's documentation:
 
 * Reference Estuary's [ClickHouse materialization docs](https://docs.estuary.dev/reference/Connectors/materialization-connectors/ClickHouse/).
-
 * Besides the UI-based workflow provided in these instructions, you can also manage pipeline setup with Estuary via CLI. See Estuary's [guides on `flowctl`](https://docs.estuary.dev/guides/flowctl/ci-cd/) for more on working with Estuary programmatically.

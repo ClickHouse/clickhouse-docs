@@ -2,7 +2,7 @@
 sidebar_label: 'Connect with ClickPipes'
 slug: /integrations/estuary/clickpipes
 description: 'Set up an integration between Estuary and ClickHouse via ClickPipes'
-title: 'Ingest Estuary Data via ClickPipes'
+title: 'Ingest Estuary data using ClickPipes'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -13,19 +13,19 @@ keywords: ['estuary', 'data ingestion', 'etl', 'pipeline', 'data integration', '
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Ingest Data from Estuary with ClickPipes
-
 <PartnerBadge/>
 
 Estuary can connect with ClickHouse via the Kafka ClickPipe.
 
 You don't need to maintain your own Kafka ecosystem with this integration. Instead, Estuary emits new data like Kafka messages. You can configure a Kafka ClickPipe to use Estuary's broker and schema registry information to consume these messages.
 
-See also [Estuary's direct ClickHouse integration](/integrations/estuary/native).
+See [Estuary's direct ClickHouse integration](/integrations/estuary/native) for an alternative.
 
 ## Setup guide {#setup-guide}
 
 **Prerequisites**
+
+You will need:
 
 * An [Estuary account](https://dashboard.estuary.dev/register)
 * One or more [**captures**](https://docs.estuary.dev/concepts/captures/) in Estuary that pull data from your desired sources
