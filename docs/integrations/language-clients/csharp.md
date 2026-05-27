@@ -4,7 +4,7 @@ sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
 description: 'The official C# client for connecting to ClickHouse.'
-title: 'ClickHouse C# driver'
+title: 'ClickHouse C# client'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -15,8 +15,6 @@ integration:
 import Image from '@theme/IdealImage';
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
-
-# ClickHouse C# client
 
 The official C# client for connecting to ClickHouse.
 The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-cs).

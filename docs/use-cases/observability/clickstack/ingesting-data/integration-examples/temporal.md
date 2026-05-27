@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
-title: 'Monitoring Temporal Cloud with ClickStack'
+title: 'Monitoring Temporal Cloud metrics with ClickStack'
 sidebar_label: 'Temporal Cloud metrics'
 pagination_prev: null
 pagination_next: null
@@ -22,8 +22,6 @@ OpenMetrics support in the Temporal platform is available in [Public Preview](ht
 :::
 
 Temporal offers an abstraction for building simple, sophisticated, resilient applications.
-
-# Monitoring Temporal Cloud metrics with ClickStack {#temporal-metrics-clickstack}
 
 :::note[TL;DR]
 Monitor Temporal Cloud metrics in ClickStack using the OTel Prometheus receiver. Includes a pre-built dashboard.

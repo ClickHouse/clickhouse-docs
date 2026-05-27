@@ -323,6 +323,7 @@ exceptions:
   - Backward Incompatible Changes
   - Backward Incompatible Change
   - Build Improvements
+  - "Build/Testing/Packaging Improvement"
   - Main Changes
   - New Feature
   - Experimental Feature
@@ -589,6 +590,7 @@ exceptions:
   - TimescaleDB
   - Upsonic
   - WebUI
+  - Rocket.BI
   # Acronyms
   - AI
   - BI

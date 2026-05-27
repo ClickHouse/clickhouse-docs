@@ -9,8 +9,6 @@ doc_type: 'reference'
 
 <!-- no-glossary -->
 
-# Glossary
-
 ## Atomicity {#atomicity}
 
 Atomicity ensures that a transaction (a series of database operations) is treated as a single, indivisible unit. This means that either all operations within the transaction occur, or none do. An example of an atomic transaction is transferring money from one bank account to another. If either step of the transfer fails, the transaction fails, and the money stays in the first account. Atomicity ensures no money is lost or created.

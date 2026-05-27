@@ -16,8 +16,6 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Spark JDBC
-
 <ClickHouseSupportedBadge/>
 
 JDBC is one of the most commonly used data sources in Spark.

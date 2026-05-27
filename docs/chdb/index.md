@@ -10,8 +10,6 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import dfBench from '@site/static/images/chdb/df_bench.png';
 
-# chDB
-
 chDB is a fast in-process SQL OLAP Engine powered by [ClickHouse](https://github.com/clickhouse/clickhouse) v25.8.2.1.
 You can use it when you want to get the power of ClickHouse in a programming language without needing to connect to a ClickHouse server.
 

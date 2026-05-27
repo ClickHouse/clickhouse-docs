@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/jupyter-notebook
 sidebar_label: 'Exploring data with Jupyter notebooks and chDB'
-title: 'Exploring data in Jupyter notebooks with chDB'
+title: 'Exploring data with Jupyter notebooks and chDB'
 description: 'This guide explains how to setup and use chDB to explore data from ClickHouse Cloud or local files in Jupyer notebooks'
 keywords: ['ML', 'Jupyer', 'chDB', 'pandas']
 doc_type: 'guide'
@@ -17,8 +17,6 @@ import image_6 from '@site/static/images/use-cases/AI_ML/jupyter/6.png';
 import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
-
-# Exploring data with Jupyter notebooks and chDB
 
 In this guide, you will learn how you can explore a dataset on ClickHouse Cloud data in Jupyter notebook with the help of [chDB](/chdb) - a fast in-process SQL OLAP Engine powered by ClickHouse.
 

@@ -18,8 +18,6 @@ import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png'
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# SAML SSO setup
-
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
 ClickHouse Cloud supports single-sign on (SSO) via security assertion markup language (SAML). This enables you to sign in securely to your ClickHouse Cloud organization by authenticating with your identity provider (IdP).

@@ -19,8 +19,6 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring Node.js Traces with ClickStack {#nodejs-traces-clickstack}
-
 :::note[TL;DR]
 Capture distributed traces from Node.js applications in ClickStack using OpenTelemetry automatic instrumentation. Includes a demo dataset and pre-built dashboard.
 :::

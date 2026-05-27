@@ -30,8 +30,6 @@ import cp_custom_role from '@site/static/images/integrations/data-ingestion/clic
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-# Integrating with ClickHouse Cloud
-
 ## Introduction {#introduction}
 
 [ClickPipes](/integrations/clickpipes) is a managed integration platform that makes ingesting data from a diverse set of sources as simple as clicking a few buttons. Designed for the most demanding workloads, ClickPipes's robust and scalable architecture ensures consistent performance and reliability. ClickPipes can be used for long-term streaming needs or one-time data loading job.

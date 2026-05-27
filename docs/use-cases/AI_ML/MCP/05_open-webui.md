@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/open-webui
 sidebar_label: 'Integrate Open WebUI'
-title: 'Set up ClickHouse MCP server with Open WebUI and ClickHouse Cloud'
+title: 'Using ClickHouse MCP server with Open WebUI'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up Open WebUI with a ClickHouse MCP server using Docker.'
@@ -22,8 +22,6 @@ import Connections from '@site/static/images/use-cases/AI_ML/MCP/6_connections.p
 import AddConnection from '@site/static/images/use-cases/AI_ML/MCP/7_add_connection.png';
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/8_openai_models_more.png';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation.png';
-
-# Using ClickHouse MCP server with Open WebUI
 
 > This guide explains how to set up [Open WebUI](https://github.com/open-webui/open-webui) with a ClickHouse MCP server
 > and connect it to the ClickHouse example datasets.

@@ -9,8 +9,6 @@ doc_type: 'guide'
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
-# Backfilling Data
-
 Whether new to ClickHouse or responsible for an existing deployment, you will invariably need to backfill tables with historical data. In some cases, this is relatively simple but can become more complex when materialized views need to be populated. This guide documents some processes for this task that you can apply to your use case.
 
 :::note

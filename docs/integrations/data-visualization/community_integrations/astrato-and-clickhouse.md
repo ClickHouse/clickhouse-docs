@@ -25,8 +25,6 @@ import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.md
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Astrato to ClickHouse
-
 <CommunityMaintainedBadge/>
 
 Astrato uses Pushdown SQL to query ClickHouse Cloud or on-premise deployments directly. This means you can access all of the data you need, powered by the industry-leading performance of ClickHouse.

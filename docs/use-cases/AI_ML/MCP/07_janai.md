@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/janai
 sidebar_label: 'Integrate Jan.ai'
-title: 'Set up ClickHouse MCP server with Jan.ai'
+title: 'Using ClickHouse MCP server with Jan.ai'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up Jan.ai with a ClickHouse MCP server.'
@@ -23,8 +23,6 @@ import MCPToolConfirm from '@site/static/images/use-cases/AI_ML/MCP/7_janai_tool
 import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_called.png';  
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
 import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';  
-
-# Using ClickHouse MCP server with Jan.ai
 
 > This guide explains how to use the ClickHouse MCP server with [Jan.ai](https://jan.ai/docs).
 

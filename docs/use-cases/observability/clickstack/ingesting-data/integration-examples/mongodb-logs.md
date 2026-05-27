@@ -20,8 +20,6 @@ import finish_import from '@site/static/images/clickstack/mongodb/finish-import.
 import example_dashboard from '@site/static/images/clickstack/mongodb/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring MongoDB Logs with ClickStack {#mongodb-logs-clickstack}
-
 :::note[TL;DR]
 Collect and visualize MongoDB server logs (4.4+ JSON format) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::

@@ -3,7 +3,7 @@ sidebar_label: 'HTTP Sink Connector for Confluent Platform'
 sidebar_position: 4
 slug: /integrations/kafka/cloud/confluent/http
 description: 'Using HTTP Connector Sink with Kafka Connect and ClickHouse'
-title: 'Confluent HTTP Sink Connector'
+title: 'Confluent HTTP sink connector'
 doc_type: 'guide'
 keywords: ['Confluent HTTP Sink Connector', 'HTTP Sink ClickHouse', 'Kafka HTTP connector
 ', 'ClickHouse HTTP integration', 'Confluent Cloud HTTP Sink']
@@ -16,7 +16,6 @@ import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/conf
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
-# Confluent HTTP sink connector
 The HTTP Sink Connector is data type agnostic and thus doesn't need a Kafka schema as well as supporting ClickHouse specific data types such as Maps and Arrays. This additional flexibility comes at a slight increase in configuration complexity.
 
 Below we describe a simple installation, pulling messages from a single Kafka topic and inserting rows into a ClickHouse table.

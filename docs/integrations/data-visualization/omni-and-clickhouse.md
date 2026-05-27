@@ -16,8 +16,6 @@ import omni_01 from '@site/static/images/integrations/data-visualization/omni_01
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Omni
-
 <PartnerBadge/>
 
 Omni can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.
