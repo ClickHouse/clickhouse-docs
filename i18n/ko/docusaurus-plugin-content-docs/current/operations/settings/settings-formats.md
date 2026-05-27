@@ -418,8 +418,11 @@ TSV 형식에서 NULL을 나타낼 사용자 정의 표현입니다.
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-ORC/Parquet/Arrow 입력 형식을 읽을 때 seek를 허용합니다.
-
+ORC, Parquet 및 Arrow 입력 형식을 읽는 동안 seek(또는 범위 읽기)를 허용합니다.
+이 옵션이 활성화되어 있고 소스가 이를 지원하는 경우(예: 로컬 파일, S3, 범위 읽기를 지원하고 크기를 알 수 있는 HTTP),
+ClickHouse는 필요한 바이트 범위만 읽어 메모리 사용량을 줄일 수 있습니다.
+이 옵션이 비활성화되어 있거나 소스가 seek를 지원하지 않는 경우(예: 파일 크기를 알 수 없거나 stream이 seek할 수 없는 경우),
+일부 리더는 전체 파일을 메모리로 로드하는 방식으로 대체될 수 있습니다.
 기본적으로 사용하도록 설정되어 있습니다.
 
 ## input_format_arrow_allow_missing_columns \{#input_format_arrow_allow_missing_columns\}

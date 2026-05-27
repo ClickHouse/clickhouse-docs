@@ -28,7 +28,7 @@ flameGraph(traces[, size[, ptr]])
 
 **参数**
 
-* `traces` — 堆栈回溯。[`Array(UInt64)`](/sql-reference/data-types/array)
+* `traces` — 堆栈回溯，可以是原始地址，也可以是已符号化的字符串 (例如 `arrayMap(addressToSymbol, trace)`) 。[`Array(UInt64)`](/sql-reference/data-types/array) 或 [`Array(String)`](/sql-reference/data-types/array)
 * `size` — 可选。用于内存分析的分配大小 (默认值为 1) 。[`UInt64`](/sql-reference/data-types/int-uint)
 * `ptr` — 可选。分配地址 (默认值为 0) 。[`UInt64`](/sql-reference/data-types/int-uint)
 

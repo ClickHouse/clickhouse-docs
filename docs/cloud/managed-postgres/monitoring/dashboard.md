@@ -7,13 +7,13 @@ keywords: ['managed postgres', 'monitoring', 'dashboard', 'cloud console', 'cpu'
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import dashboard from '@site/static/images/managed-postgres/monitoring/dashboard.png';
 
 # Monitoring dashboard
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-dashboard" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-dashboard-beta" />
 
 The **Monitoring** tab in the left sidebar of an instance shows
 real-time charts of resource usage and database activity for the

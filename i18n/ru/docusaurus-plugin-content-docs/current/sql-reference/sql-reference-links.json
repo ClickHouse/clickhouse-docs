@@ -1,12 +1,12 @@
 [
   {
-    "title": "Команды",
     "description": "Список доступных SQL-команд ClickHouse",
+    "title": "Команды",
     "url": "/docs/sql-reference/statements/"
   },
   {
-    "title": "Движки баз данных и таблиц",
     "description": "Движки определяют, где и как хранятся ваши данные",
+    "title": "Движки баз данных и таблиц",
     "url": "/docs/engines/table-engines"
   }
 ]

@@ -688,6 +688,10 @@ SELECT * FROM system.metrics LIMIT 10
 
 Количество ключей в файловом кэше
 
+### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
+
+Количество пользователей, отслеживаемых политикой вытеснения файлового кэша при overcommit
+
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 
 Количество активных буферов кэша
@@ -855,6 +859,22 @@ SELECT * FROM system.metrics LIMIT 10
 ### IcebergCatalogThreadsScheduled \{#icebergcatalogthreadsscheduled\}
 
 Количество задач в очереди или выполняющихся задач в пуле потоков IcebergCatalog.
+
+### IcebergCompactionSnapshots \{#icebergcompactionsnapshots\}
+
+Количество операций компакции Iceberg.
+
+### IcebergCompactionThreads \{#icebergcompactionthreads\}
+
+Число потоков в пуле потоков IcebergCompaction.
+
+### IcebergCompactionThreadsActive \{#icebergcompactionthreadsactive\}
+
+Количество потоков пула потоков IcebergCompaction, выполняющих задачу.
+
+### IcebergCompactionThreadsScheduled \{#icebergcompactionthreadsscheduled\}
+
+Количество задач, находящихся в очереди или выполняющихся, в пуле потоков IcebergCompaction.
 
 ### IcebergMetadataFilesCacheBytes \{#icebergmetadatafilescachebytes\}
 

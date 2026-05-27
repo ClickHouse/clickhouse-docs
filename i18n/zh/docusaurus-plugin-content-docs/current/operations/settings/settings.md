@@ -387,16 +387,6 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 
 启用实验性的 AI 函数 (例如 `aiGenerateContent`) 。这些函数会向 AI 提供商发起外部 HTTP 调用。
 
-## allow_experimental_alias_table_engine \{#allow_experimental_alias_table_engine\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-允许创建使用 Alias 引擎的表。
-
 ## allow_experimental_analyzer \{#allow_experimental_analyzer\}
 
 **别名**: `enable_analyzer`
@@ -406,6 +396,16 @@ File/S3 引擎/表函数在归档文件具有正确扩展名时，会将包含 `
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "默认启用分析器和计划器。"}]}]}/>
 
 允许使用新的查询分析器。
+
+## allow_experimental_cleanup_old_data_files_compaction \{#allow_experimental_cleanup_old_data_files_compaction\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新增设置"}]}]} />
+
+允许在 Iceberg 合并整理过程中清理旧数据文件。
 
 ## allow_experimental_codecs \{#allow_experimental_codecs\}
 
@@ -956,6 +956,22 @@ ClickHouse 使用在服务器启动时加载的该设置值。
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 允许在子查询包含 WITH 子句时进行谓词下推
+
+## allow_rank_dense_rank_arguments \{#allow_rank_dense_rank_arguments\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "新设置。在 26.5 之前，`RANK` 和 `DENSE_RANK` 窗口函数会静默忽略传入的任何参数（等同于 `allow_rank_dense_rank_arguments = 1`）。从 26.5 开始，默认情况下它们会因 `NUMBER_OF_ARGUMENTS_DOESNT_MATCH` 而拒绝参数，因为按照 SQL 标准，这些函数不接受任何参数。将此项设为 `1` 可恢复旧版行为。"}]}]} />
+
+允许向 `RANK` 和 `DENSE_RANK` 窗口函数传递参数，以保持向后兼容。
+
+按照 SQL 标准，`RANK` 和 `DENSE_RANK` 不接受任何参数——它们仅根据
+`OVER (ORDER BY ...)` 窗口对行进行排名。在 26.5 之前的 ClickHouse 版本中，诸如
+`RANK(x) OVER (...)` 这样的查询会静默接受并忽略该参数，这容易让用户产生困惑
+ (显式传入的参数看起来会影响排名，但实际上并不会) 。
+
+当此设置为 `false` (默认值) 时，`RANK` 和 `DENSE_RANK` 会拒绝任何参数，并
+抛出 `NUMBER_OF_ARGUMENTS_DOESNT_MATCH`。当设置为 `true` 时，将恢复旧版的宽松行为——参数会被静默忽略，与 26.5 之前的行为一致。
 
 ## allow_reorder_prewhere_conditions \{#allow_reorder_prewhere_conditions\}
 
@@ -5268,6 +5284,38 @@ HTTP 发送超时时间（以秒为单位）。
 
 可选值：1 到 9 的整数。
 
+## iceberg_compaction_data_cleanup \{#iceberg_compaction_data_cleanup\}
+
+<SettingsInfoBlock type="Seconds" default_value="10800" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10800"},{"label": "新增设置"}]}]} />
+
+数据将在此时间后删除。
+
+## iceberg_compaction_delay_bias \{#iceberg_compaction_delay_bias\}
+
+<SettingsInfoBlock type="Seconds" default_value="10800" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10800"},{"label": "新增设置"}]}]} />
+
+两次后台合并整理操作之间的最短延迟时间。
+
+## iceberg_data_file_size_lower_threshold_compaction \{#iceberg_data_file_size_lower_threshold_compaction\}
+
+<SettingsInfoBlock type="UInt64" default_value="10485760" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10485760"},{"label": "新增设置"}]}]} />
+
+Iceberg 中用于合并整理数据文件的阈值。
+
+## iceberg_data_file_size_upper_threshold_compaction \{#iceberg_data_file_size_upper_threshold_compaction\}
+
+<SettingsInfoBlock type="UInt64" default_value="10737418240" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10737418240"},{"label": "新增设置"}]}]} />
+
+Iceberg 中数据文件合并整理的阈值。
+
 ## iceberg_delete_data_on_drop \{#iceberg_delete_data_on_drop\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5323,6 +5371,14 @@ Iceberg 表引擎中每次 INSERT 操作允许的最大分区数量。
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1000000"},{"label": "新设置。"}]}]}/>
 
 在插入操作期间，Iceberg Parquet 数据文件中允许的最大行数。
+
+## iceberg_max_number_datafiles_to_compact \{#iceberg_max_number_datafiles_to_compact\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1000"},{"label": "新设置"}]}]} />
+
+Iceberg 中数据文件合并整理的阈值。
 
 ## iceberg_metadata_compression_method \{#iceberg_metadata_compression_method\}
 
@@ -9547,19 +9603,22 @@ FROM default.fuse_tbl AS __table1
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "2"},{"label": "默认启用并行分布式 insert select"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "2"},{"label": "默认启用并行分布式 insert select"}]}]} />
 
 启用并行分布式 `INSERT ... SELECT` 查询。
 
-如果执行 `INSERT INTO distributed_table_a SELECT ... FROM distributed_table_b` 查询，并且两个表都使用相同的集群，且两个表要么都是[复制](../../engines/table-engines/mergetree-family/replication.md)表，要么都不是复制表，则该查询会在每个分片上本地处理。
+如果执行 `INSERT INTO distributed_table_a SELECT ... FROM distributed_table_b` 查询，并且两个表都使用相同的集群，且两个表要么都是[复制](../../engines/table-engines/mergetree-family/replication.md)表，要么都是非复制表，则该查询会在每个分片上本地处理。
 
 可能的取值：
 
-- `0` — 禁用。
-- `1` — `SELECT` 将在每个分片上针对分布式引擎的底层表执行。
-- `2` — `SELECT` 和 `INSERT` 都将在每个分片上、从/到分布式引擎的底层表执行。
+* `0` — 禁用。
+* `1` — `SELECT` 将在每个分片上针对分布式引擎的底层表执行。
+* `2` — `SELECT` 和 `INSERT` 都将在每个分片上、从/到分布式引擎的底层表执行。
 
-使用该设置时，需要将 `enable_parallel_replicas` 设置为 `1`。
+自 v25.4 起，源自 `ReplicatedMergeTree` 或 `SharedMergeTree` 的 `INSERT ... SELECT` 也可以在各副本间并行化。要启用此功能：
+
+* `parallel_distributed_insert_select = 2`
+* `enable_parallel_replicas = 1`
 
 ## parallel_hash_join_threshold \{#parallel_hash_join_threshold\}
 
@@ -10134,6 +10193,19 @@ a   Tuple(
 
 - 0 - 禁用
 - 1 - 启用
+
+## query_cache_for_subqueries \{#query_cache_for_subqueries\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "用于启用将 `use_query_cache` 传递到所有子查询的新设置。若不启用，则只有在显式为每个子查询设置 `SETTINGS use_query_cache = true` 时，子查询才会被缓存。"}]}]} />
+
+启用后，子查询结果可写入[查询缓存](../query-cache.md)，也可从中读取。这会将 `use_query_cache` 传递到所有子查询。
+
+可能的值：
+
+* 0 - 禁用
+* 1 - 启用
 
 ## query_cache_max_entries \{#query_cache_max_entries\}
 
@@ -10719,17 +10791,6 @@ a   Tuple(
 
 - 0 - 禁用
 - 1 - 启用
-
-## query_plan_use_new_logical_join_step \{#query_plan_use_new_logical_join_step\}
-
-**别名**: `query_plan_use_logical_join_step`
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "启用新的步骤"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "新的 JOIN 步骤，内部变更"}]}]}/>
-
-在查询计划中使用逻辑 JOIN 步骤。
-注意：`query_plan_use_new_logical_join_step` 已被弃用，请改用 `query_plan_use_logical_join_step`。
 
 ## query_profiler_cpu_time_period_ns \{#query_profiler_cpu_time_period_ns\}
 

@@ -25,7 +25,7 @@ doc_type: 'reference'
 stddevSamp(x)
 ```
 
-**별칭(Aliases)**: `STDDEV_SAMP`
+**별칭(Aliases)**: `STDDEV_SAMP`, `STDDEV`
 
 **인수(Arguments)**
 

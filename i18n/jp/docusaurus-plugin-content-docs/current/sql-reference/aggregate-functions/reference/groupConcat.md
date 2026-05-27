@@ -26,7 +26,7 @@ doc_type: 'reference'
 groupConcat[(delimiter [, limit])](expression)
 ```
 
-**別名**: `group_concat`
+**別名**: `group_concat`, `string_agg`
 
 **パラメーター**
 

@@ -23,6 +23,43 @@ SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 
 运算符的右侧可以是常量表达式的 Set、由常量表达式构成的元组的 Set (如上面的示例所示) ，或者是一个数据库表名，或用括号括起来的 `SELECT` 子查询。
 
+出于历史兼容性考虑，当右侧是单个 `tuple` 表达式时，根据 `IN` 运算符左侧的情况，它既可以被解释为一个值的 Set，也可以被解释为一个 Tuple 值。如果左侧是一个标量值，ClickHouse 会将这个右侧单个 `tuple` 表达式的各元素视为独立的 `IN` 值：
+
+```sql title="Query"
+SELECT
+    1 IN (tuple(1, 2)) AS one_in_tuple,
+    2 IN (tuple(1, 2)) AS two_in_tuple,
+    3 IN (tuple(1, 2)) AS three_in_tuple;
+```
+
+```text title="Response"
+┌─one_in_tuple─┬─two_in_tuple─┬─three_in_tuple─┐
+│            1 │            1 │              0 │
+└──────────────┴──────────────┴────────────────┘
+```
+
+其行为类似于 `SELECT 1 IN (1, 2)`。如果左侧也是一个元组，则右侧会被解释为元组值的 Set：
+
+```sql title="Query"
+SELECT tuple(1, 2) IN (tuple(1, 2)) AS tuple_in_tuple;
+```
+
+```text title="Response"
+┌─tuple_in_tuple─┐
+│              1 │
+└────────────────┘
+```
+
+此特殊处理仅在右侧为单个 `tuple` 表达式时适用。标量左侧无法与包含多个元组值的右侧进行匹配：
+
+```sql title="Query"
+SELECT 1 IN (tuple(1, 2), tuple(3, 4));
+```
+
+```text title="Response"
+Code: 43. DB::Exception: Unsupported types for IN. First argument type UInt8. Second argument type Tuple(Tuple(UInt8, UInt8), Tuple(UInt8, UInt8)). (ILLEGAL_TYPE_OF_ARGUMENT)
+```
+
 ClickHouse 允许 `IN` 子查询左右两侧的类型不同。
 在这种情况下，它会将右侧的值转换为左侧的类型，
 就像在右侧应用了 [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accurateCastOrNull) 函数一样。

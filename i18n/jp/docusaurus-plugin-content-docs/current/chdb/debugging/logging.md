@@ -63,35 +63,29 @@ config.enable_debug()  # Sets DEBUG level + verbose format
 
 ## ログフォーマット \{#format\}
 
-### 簡易形式（デフォルト） \{#simple\}
+### 簡易フォーマット (デフォルト)  \{#simple\}
 
-```python
+```python title="Query"
 config.set_log_format("simple")
 ```
 
-出力結果:
-
-```text
+```text title="Response"
 DEBUG - Executing SQL query
 DEBUG - Cache miss for key abc123
 ```
 
-
 ### 詳細フォーマット \{#verbose\}
 
-```python
+```python title="Query"
 config.set_log_format("verbose")
 ```
 
-出力:
-
-```text
+```text title="Response"
 2024-01-15 10:30:45.123 DEBUG datastore.core - Executing SQL query
 2024-01-15 10:30:45.456 DEBUG datastore.cache - Cache miss for key abc123
 ```
 
 ***
-
 
 ## ログ対象 \{#what-logged\}
 

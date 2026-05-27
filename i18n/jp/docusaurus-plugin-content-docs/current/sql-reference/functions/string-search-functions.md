@@ -444,12 +444,18 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 * `input` 引数 (常に) および
 * `needle` 引数 ([String](../../sql-reference/data-types/string.md) として与えられた場合)
-  に対して、テキスト索引に指定されたトークナイザを使用します。
-  カラムにテキスト索引が定義されていない場合は、代わりに `splitByNonAlpha` トークナイザが使用されます。
+  に対して、テキスト索引に指定されたトークナイザーを使用します。
+  カラムにテキスト索引が定義されていない場合は、代わりに `splitByNonAlpha` トークナイザーが使用されます。
   `needle` 引数が [Array(String)](../../sql-reference/data-types/array.md) 型の場合、各配列要素は 1 つのトークンとして扱われ、追加のトークン化は行われません。
 
 重複するトークンは無視されます。
 例えば、needles = [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] は [&#39;ClickHouse&#39;] と同様に扱われます。
+
+:::note
+テキスト索引で [プリプロセッサ](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index) (たとえば `lowerUTF8`) が定義されている場合、`hasAllTokens` はそれを `input` に適用し、`needles` が [String](../../sql-reference/data-types/string.md) のときはトークン化の前に `needles` にも適用します。`needles` が [Array(String)](../../sql-reference/data-types/array.md) の場合、その要素はそのまま渡され、プリプロセッサは適用されません。
+プリプロセッサが適用されるのはテキスト索引経由の場合に限られるため、テキスト索引を使用するクエリと使用しないクエリ (例: `SETTINGS use_skip_indexes = 0`) では結果が異なる場合があります。
+この不整合は、全文検索の使いやすさを向上させるために許容されています。
+:::
 
 **構文**
 
@@ -463,7 +469,7 @@ hasAllTokens(input, needles)
 
 * `input` — 入力カラム。[`String`](/sql-reference/data-types/string) または [`FixedString`](/sql-reference/data-types/fixedstring) または [`Array(String)`](/sql-reference/data-types/array) または [`Array(FixedString)`](/sql-reference/data-types/array)
 * `needles` — 検索するトークン。[`String`](/sql-reference/data-types/string) または [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 使用するトークナイザ。有効な引数は `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams`、`array` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルトです。[`const String`](/sql-reference/data-types/string)
+* `tokenizer` — 使用するトークナイザー。有効な引数は `splitByNonAlpha`、`splitByString`、`asciiCJK`、`ngrams`、`sparseGrams`、`array` です。省略可能で、明示的に指定しない場合は `splitByNonAlpha` がデフォルトです。[`const String`](/sql-reference/data-types/string)
 
 **戻り値**
 
@@ -517,7 +523,7 @@ SELECT count() FROM table WHERE hasAllTokens(msg, tokens('a()d', 'splitByString'
 └─────────┘
 ```
 
-**第3引数でカスタムトークナイザを使用する**
+**第3引数でカスタムトークナイザーを使用する**
 
 ```sql title=Query
 SELECT hasAllTokens('abcdef', 'abc', 'ngrams(3)');
@@ -551,7 +557,7 @@ INSERT INTO log VALUES
 ```response title=Response
 ```
 
-**配列カラムの例**
+**配列カラムを使った例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
@@ -563,7 +569,7 @@ SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**mapKeys の例**
+**mapKeys を使用した例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -575,7 +581,7 @@ SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**mapValues の例**
+**mapValues を使った例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -609,6 +615,12 @@ text index が定義されていない場合、この関数はブルートフォ
 重複するトークンは無視されます。
 たとえば、[&#39;ClickHouse&#39;, &#39;ClickHouse&#39;] は [&#39;ClickHouse&#39;] と同じように扱われます。
 
+:::note
+text index に [プリプロセッサ](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index) (例: `lowerUTF8`) が定義されている場合、`hasAnyTokens` はトークン化の前に `input` に対してプリプロセッサを適用し、`needles` が [String](../../sql-reference/data-types/string.md) の場合は `needles` に対しても適用します。`needles` が [Array(String)](../../sql-reference/data-types/array.md) の場合、各要素はそのまま渡され、プリプロセッサは適用されません。
+プリプロセッサは text index のパスにのみ適用されるため、text index を使用するクエリと使用しないクエリ (例: `SETTINGS use_skip_indexes = 0`) では結果が異なる場合があります。
+この不整合は、全文検索の使いやすさを向上させるために許容されています。
+:::
+
 **構文**
 
 ```sql
@@ -629,7 +641,7 @@ hasAnyTokens(input, needles)
 
 **例**
 
-**文字列 needle の基本的な使用方法**
+**文字列 needle の基本的な使い方**
 
 ```sql title=Query
 CREATE TABLE table (
@@ -709,7 +721,7 @@ SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**mapKeys の使用例**
+**mapKeys の例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -721,7 +733,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**mapValues の使用例**
+**`mapValues` の例**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -737,11 +749,22 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 
 導入バージョン: v26.4.0
 
-haystack に、phrase 内のすべてのトークンが連続した順序で含まれているかを確認します。
+`input` に、`phrase` 内のすべてのトークンが連続した順序で含まれているかを確認します。
 
-検索の前に、この関数は省略可能な第3引数として指定されたトークナイザーを使用して、`input` 引数と `phrase` 引数の両方をトークン化します。
+:::note
+最適なパフォーマンスを得るには、カラム `input` に [テキスト索引](../../engines/table-engines/mergetree-family/textindexes) を定義する必要があります。
+テキスト索引が定義されていない場合、この関数はカラム全体を総当たりで走査するため、索引ルックアップに比べて桁違いに低速です。
+:::
+
+検索の前に、この関数はテキスト索引に指定されたトークナイザーを使用して、`input` 引数と `phrase` 引数の両方をトークン化します。
+カラムにテキスト索引が定義されていない場合は、省略可能な第3引数としてトークナイザーが指定されていない限り、代わりに `splitByNonAlpha` トークナイザーが使用されます。
 `tokenizer` 引数には、`splitByNonAlpha`、`splitByString`、`ngrams`、`asciiCJK` のいずれかを指定する必要があります。
-トークナイザーが指定されていない場合は、デフォルトで `splitByNonAlpha` トークナイザーが使用されます。
+
+:::note
+テキスト索引で [プリプロセッサ](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index) (たとえば `lowerUTF8`) が定義されている場合、`hasPhrase` はトークン化の前にそれを `input` と `phrase` の両方に適用します。
+プリプロセッサはテキスト索引のパスでのみ適用されるため、テキスト索引を使用するクエリと使用しないクエリ (たとえば `SETTINGS use_skip_indexes = 0`) では結果が異なる場合があります。
+この不整合は、全文検索の使いやすさを向上させるために許容されています。
+:::
 
 [`hasToken`](#hasToken)、[`hasAnyTokens`](#hasAnyTokens)、[`hasAllTokens`](#hasAllTokens) とは異なり、`hasPhrase` ではトークンが同じ順序で現れ、
 その間に別のトークンが挟まらないことが必要です。たとえば、`hasPhrase('the quick brown fox', 'quick fox')` は 0 を返します。

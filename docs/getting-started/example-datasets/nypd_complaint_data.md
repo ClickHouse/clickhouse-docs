@@ -41,7 +41,7 @@ Before starting to work with the ClickHouse database familiarize yourself with t
 ### Look at the fields in the source TSV file {#look-at-the-fields-in-the-source-tsv-file}
 
 This is an example of a command to query a TSV file, but don't run it yet.
-```sh
+```sh title="Query"
 clickhouse-local --query \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
@@ -63,14 +63,13 @@ Note: as of version 22.5 the default is now 25,000 rows for inferring the schema
 :::
 
 Run this command at your command prompt.  You will be using `clickhouse-local` to query the data in the TSV file you downloaded.
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
 
-Result:
-```response
+```response title="Response"
 CMPLNT_NUM        Nullable(String)
 ADDR_PCT_CD       Nullable(Float64)
 BORO_NM           Nullable(String)
@@ -115,7 +114,7 @@ At this point you should check that the columns in the TSV file match the names 
 
 In order to figure out what types should be used for the fields it is necessary to know what the data looks like. For example, the field `JURISDICTION_CODE` is a numeric: should it be a `UInt8`, or an `Enum`, or is `Float64` appropriate?
 
-```sql
+```sql title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select JURISDICTION_CODE, count() FROM
@@ -125,8 +124,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─JURISDICTION_CODE─┬─count()─┐
 │                 0 │  188875 │
 │                 1 │    4799 │
@@ -154,7 +152,7 @@ Similarly, look at some of the `String` fields and see if they're well suited to
 
 For example, the field `PARKS_NM` is described as "Name of NYC park, playground or greenspace of occurrence, if applicable (state parks aren't included)".  The names of parks in New York City may be a good candidate for a `LowCardinality(String)`:
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select count(distinct PARKS_NM) FROM
@@ -162,15 +160,14 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─uniqExact(PARKS_NM)─┐
 │                 319 │
 └─────────────────────┘
 ```
 
 Have a look at some of the park names:
-```sql
+```sql title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select distinct PARKS_NM FROM
@@ -179,8 +176,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─PARKS_NM───────────────────┐
 │ (null)                     │
 │ ASSER LEVY PARK            │
@@ -200,7 +196,7 @@ The dataset in use at the time of writing has only a few hundred distinct parks 
 ### DateTime fields {#datetime-fields}
 Based on the **Columns in this Dataset** section of the [dataset web page](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) there are date and time fields for the start and end of the reported event.  Looking at the min and max of the `CMPLNT_FR_DT` and `CMPLT_TO_DT` gives an idea of whether or not the fields are always populated:
 
-```sh title="CMPLNT_FR_DT"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_FR_DT), max(CMPLNT_FR_DT) FROM
@@ -208,14 +204,13 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─min(CMPLNT_FR_DT)─┬─max(CMPLNT_FR_DT)─┐
 │ 01/01/1973        │ 12/31/2021        │
 └───────────────────┴───────────────────┘
 ```
 
-```sh title="CMPLNT_TO_DT"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_TO_DT), max(CMPLNT_TO_DT) FROM
@@ -223,14 +218,13 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─min(CMPLNT_TO_DT)─┬─max(CMPLNT_TO_DT)─┐
 │                   │ 12/31/2021        │
 └───────────────────┴───────────────────┘
 ```
 
-```sh title="CMPLNT_FR_TM"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_FR_TM), max(CMPLNT_FR_TM) FROM
@@ -238,14 +232,13 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─min(CMPLNT_FR_TM)─┬─max(CMPLNT_FR_TM)─┐
 │ 00:00:00          │ 23:59:00          │
 └───────────────────┴───────────────────┘
 ```
 
-```sh title="CMPLNT_TO_TM"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_TO_TM), max(CMPLNT_TO_TM) FROM
@@ -253,8 +246,7 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─min(CMPLNT_TO_TM)─┬─max(CMPLNT_TO_TM)─┐
 │ (null)            │ 23:59:00          │
 └───────────────────┴───────────────────┘
@@ -281,7 +273,7 @@ There are many more changes to be made to the types, they all can be determined 
 
 To concatenate the date and time fields `CMPLNT_FR_DT` and `CMPLNT_FR_TM` into a single `String` that can be cast to a `DateTime`, select the two fields joined by the concatenation operator: `CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM`.  The `CMPLNT_TO_DT` and `CMPLNT_TO_TM` fields are handled similarly.
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM AS complaint_begin FROM
@@ -290,8 +282,7 @@ LIMIT 10
 FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─complaint_begin─────┐
 │ 07/29/2010 00:01:00 │
 │ 12/01/2011 12:00:00 │
@@ -310,7 +301,7 @@ Result:
 
 Earlier in the guide we discovered that there are dates in the TSV file before January 1st 1970, which means that we need a 64 bit DateTime type for the dates.  The dates also need to be converted from `MM/DD/YYYY` to `YYYY/MM/DD` format.  Both of these can be done with [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort).
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS CMPLNT_START,
@@ -325,8 +316,7 @@ FORMAT PrettyCompact"
 
 Lines 2 and 3 above contain the concatenation from the previous step, and lines 4 and 5 above parse the strings into `DateTime64`.  As the complaint end time isn't guaranteed to exist `parseDateTime64BestEffortOrNull` is used.
 
-Result:
-```response
+```response title="Response"
 ┌─────────complaint_begin─┬───────────complaint_end─┐
 │ 1925-01-01 10:00:00.000 │ 2021-02-12 09:30:00.000 │
 │ 1925-01-01 11:37:00.000 │ 2022-01-16 11:49:00.000 │
@@ -388,7 +378,7 @@ New York City.  These fields might be then included in the `ORDER BY`:
 
 Querying the TSV file for the cardinality of the three candidate columns:
 
-```bash
+```bash title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select formatReadableQuantity(uniq(OFNS_DESC)) as cardinality_OFNS_DESC,
@@ -399,8 +389,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
   FORMAT PrettyCompact"
 ```
 
-Result:
-```response
+```response title="Response"
 ┌─cardinality_OFNS_DESC─┬─cardinality_RPT_DT─┬─cardinality_BORO_NM─┐
 │ 60.00                 │ 306.00             │ 6.00                │
 └───────────────────────┴────────────────────┴─────────────────────┘
@@ -546,16 +535,12 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
 The dataset changes once or more per year, your counts may not match what is in this document.
 :::
 
-Query:
-
-```sql
+```sql title="Query"
 SELECT count()
 FROM NYPD_Complaint
 ```
 
-Result:
-
-```text
+```text title="Response"
 ┌─count()─┐
 │  208993 │
 └─────────┘
@@ -565,16 +550,13 @@ Result:
 
 The size of the dataset in ClickHouse is just 12% of the original TSV file, compare the size of the original TSV file with the size of the table:
 
-Query:
-
-```sql
+```sql title="Query"
 SELECT formatReadableSize(total_bytes)
 FROM system.tables
 WHERE name = 'NYPD_Complaint'
 ```
 
-Result:
-```text
+```text title="Response"
 ┌─formatReadableSize(total_bytes)─┐
 │ 8.63 MiB                        │
 └─────────────────────────────────┘
@@ -584,9 +566,7 @@ Result:
 
 ### Query 1. Compare the number of complaints by month {#query-1-compare-the-number-of-complaints-by-month}
 
-Query:
-
-```sql
+```sql title="Query"
 SELECT
     dateName('month', date_reported) AS month,
     count() AS complaints,
@@ -596,8 +576,7 @@ GROUP BY month
 ORDER BY complaints DESC
 ```
 
-Result:
-```response
+```response title="Response"
 Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
 ┌─month─────┬─complaints─┬─bar(count(), 0, 50000, 80)───────────────────────────────┐
@@ -620,9 +599,7 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
 ### Query 2. Compare total number of complaints by borough {#query-2-compare-total-number-of-complaints-by-borough}
 
-Query:
-
-```sql
+```sql title="Query"
 SELECT
     borough,
     count() AS complaints,
@@ -632,8 +609,7 @@ GROUP BY borough
 ORDER BY complaints DESC
 ```
 
-Result:
-```response
+```response title="Response"
 Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
 ┌─borough───────┬─complaints─┬─bar(count(), 0, 125000, 60)──┐

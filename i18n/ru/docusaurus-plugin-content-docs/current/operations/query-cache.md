@@ -168,48 +168,80 @@ SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 Чтобы удалить из кэша запросов только записи с тегом `tag`, можно использовать оператор `SYSTEM CLEAR QUERY CACHE TAG 'tag'`.
 
 
-ClickHouse читает данные таблиц блоками по [max_block_size](/operations/settings/settings#max_block_size) строк. Из‑за фильтрации, агрегации
+## Кэширование подзапросов \{#subquery-caching\}
+
+По умолчанию параметр `use_query_cache` во внешнем запросе не распространяется на подзапросы. Это означает, что для каждого подзапроса кэширование нужно включать явно:
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000 SETTINGS use_query_cache = true)
+WHERE number > 500;
+```
+
+В этом примере кэшируется только результат внутреннего подзапроса. Внешний запрос не кэшируется.
+
+Чтобы включить кэширование для всех подзапросов сразу, используйте настройку `query_cache_for_subqueries`:
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000)
+WHERE number > 500
+SETTINGS use_query_cache = true, query_cache_for_subqueries = true;
+```
+
+Чтобы явно отключить кэширование для конкретного подзапроса при включённом массовом распространении, установите `use_query_cache = false` для этого подзапроса:
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000 SETTINGS use_query_cache = false)
+WHERE number > 500
+SETTINGS use_query_cache = true, query_cache_for_subqueries = true;
+```
+
+Записи кэша подзапросов видны в [system.query&#95;cache](system-tables/query_cache.md) с `is_subquery = 1`. Настройка `query_cache_ttl` также применяется к записям кэша подзапросов и может задаваться для каждого подзапроса отдельно.
+
+ClickHouse читает данные таблиц блоками по [max&#95;block&#95;size](/operations/settings/settings#max_block_size) строк. Из‑за фильтрации, агрегации
 и т. д. результирующие блоки обычно значительно меньше, чем `max_block_size`, но встречаются и случаи, когда они существенно больше. Настройка
-[query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results) (включена по умолчанию) управляет тем,
+[query&#95;cache&#95;squash&#95;partial&#95;results](/operations/settings/settings#query_cache_squash_partial_results) (включена по умолчанию) управляет тем,
 будут ли результирующие блоки схлопываться (если они очень маленькие) или разбиваться (если они большие) на блоки размера `max_block_size`
-перед вставкой в кэш результатов запросов. Это снижает скорость записи в кэш запросов, но повышает степень сжатия элементов кэша
+перед вставкой в кэш результатов запросов. Это снижает скорость записи в кэш запросов, но повышает степень сжатия записей кэша
 и обеспечивает более естественную гранулярность блоков, когда результаты запросов затем отдаются из кэша.
 
 В результате кэш запросов хранит для каждого запроса несколько (частичных)
 блоков результата. Хотя такое поведение является разумным вариантом по умолчанию, его можно отключить с помощью настройки
-[query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results).
+[query&#95;cache&#95;squash&#95;partial&#95;results](/operations/settings/settings#query_cache_squash_partial_results).
 
 Кроме того, результаты запросов с недетерминированными функциями по умолчанию не кэшируются. К таким функциям относятся:
 
-- функции доступа к словарям: [`dictGet()`](/sql-reference/functions/ext-dict-functions) и т. д.;
-- [пользовательские функции](../sql-reference/statements/create/function.md) без тега `<deterministic>true</deterministic>` в их XML‑
+* функции доступа к словарям: [`dictGet()`](/sql-reference/functions/ext-dict-functions) и т. д.;
+* [пользовательские функции](../sql-reference/statements/create/function.md) без тега `<deterministic>true</deterministic>` в их XML‑
   определении;
-- функции, которые возвращают текущие дату или время: [`now()`](../sql-reference/functions/date-time-functions.md#now),
+* функции, которые возвращают текущие дату или время: [`now()`](../sql-reference/functions/date-time-functions.md#now),
   [`today()`](../sql-reference/functions/date-time-functions.md#today),
   [`yesterday()`](../sql-reference/functions/date-time-functions.md#yesterday) и т. д.;
-- функции, которые возвращают случайные значения: [`randomString()`](../sql-reference/functions/random-functions.md#randomString),
+* функции, которые возвращают случайные значения: [`randomString()`](../sql-reference/functions/random-functions.md#randomString),
   [`fuzzBits()`](../sql-reference/functions/random-functions.md#fuzzBits) и т. д.;
-- функции, результат которых зависит от размера и порядка внутренних фрагментов, используемых при обработке запроса:
+* функции, результат которых зависит от размера и порядка внутренних фрагментов, используемых при обработке запроса:
   [`nowInBlock()`](../sql-reference/functions/date-time-functions.md#nowInBlock) и т. д.,
   [`rowNumberInBlock()`](../sql-reference/functions/other-functions.md#rowNumberInBlock),
   [`runningDifference()`](../sql-reference/functions/other-functions.md#runningDifference),
   [`blockSize()`](../sql-reference/functions/other-functions.md#blockSize) и т. д.;
-- функции, которые зависят от окружения: [`currentUser()`](../sql-reference/functions/other-functions.md#currentUser),
+* функции, которые зависят от окружения: [`currentUser()`](../sql-reference/functions/other-functions.md#currentUser),
   [`queryID()`](/sql-reference/functions/other-functions#queryID),
   [`getMacro()`](../sql-reference/functions/other-functions.md#getMacro) и т. д.
 
 Чтобы принудительно кэшировать результаты запросов с недетерминированными функциями, используйте настройку
-[query_cache_nondeterministic_function_handling](/operations/settings/settings#query_cache_nondeterministic_function_handling).
+[query&#95;cache&#95;nondeterministic&#95;function&#95;handling](/operations/settings/settings#query_cache_nondeterministic_function_handling).
 
 Результаты запросов, которые обращаются к системным таблицам (например, [system.processes](system-tables/processes.md) или
-[information_schema.tables](system-tables/information_schema.md)), по умолчанию не кэшируются. Чтобы принудительно кэшировать результаты
+[information&#95;schema.tables](system-tables/information_schema.md)), по умолчанию не кэшируются. Чтобы принудительно кэшировать результаты
 запросов с системными таблицами, используйте настройку
-[query_cache_system_table_handling](/operations/settings/settings#query_cache_system_table_handling).
+[query&#95;cache&#95;system&#95;table&#95;handling](/operations/settings/settings#query_cache_system_table_handling).
 
-Наконец, элементы кэша запросов не разделяются между пользователями по соображениям безопасности. Например, пользователь A не должен иметь
+Наконец, записи кэша запросов не разделяются между пользователями по соображениям безопасности. Например, пользователь A не должен иметь
 возможности обойти политику по строкам для таблицы, выполняя тот же запрос, что и другой пользователь B, для которого такая политика не
-задана. Однако при необходимости элементы кэша могут быть помечены как доступные для других пользователей (то есть общие) с помощью
-настройки [query_cache_share_between_users](/operations/settings/settings#query_cache_share_between_users).
+задана. Однако при необходимости записи кэша могут быть помечены как доступные для других пользователей (то есть общие) с помощью
+настройки [query&#95;cache&#95;share&#95;between&#95;users](/operations/settings/settings#query_cache_share_between_users).
 
 ## Связанные материалы \{#related-content\}
 

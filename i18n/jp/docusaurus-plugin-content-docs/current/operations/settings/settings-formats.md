@@ -418,8 +418,11 @@ TSV 形式での NULL のカスタム表現
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-ORC/Parquet/Arrow 形式の入力フォーマットで読み取り時にシークを許可します。
-
+ORC、Parquet、Arrow の入力フォーマットの読み取り時に、シーク (または範囲読み取り) を許可します。
+有効な場合で、かつ読み取り元がそれをサポートしているとき (例: ローカルファイル、S3、範囲指定をサポートしサイズが判明している HTTP) 、
+ClickHouse は必要なバイト範囲のみを読み取り、使用メモリを抑えることができます。
+無効な場合、または読み取り元がシークをサポートしていない場合 (例: ファイルサイズが不明、またはストリームがシーク不可) 、
+一部のリーダーはファイル全体をメモリに読み込む動作にフォールバックすることがあります。
 デフォルトで有効です。
 
 ## input_format_arrow_allow_missing_columns \{#input_format_arrow_allow_missing_columns\}

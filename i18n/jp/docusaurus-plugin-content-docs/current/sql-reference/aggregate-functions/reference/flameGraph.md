@@ -11,8 +11,8 @@ doc_type: 'reference'
 
 導入バージョン: v23.8.0
 
-スタックトレースの一覧から [flamegraph](https://www.brendangregg.com/flamegraphs.html) を生成します。
-[flamegraph.pl](https://github.com/brendangregg/FlameGraph) ユーティリティで flamegraph の SVG をレンダリングするために使用できる文字列配列を出力します。
+スタックトレースの一覧から [フレームグラフ](https://www.brendangregg.com/flamegraphs.html) を生成します。
+[flamegraph.pl](https://github.com/brendangregg/FlameGraph) ユーティリティで フレームグラフ の SVG をレンダリングするために使用できる文字列配列を出力します。
 
 :::note
 `ptr != 0` の場合、flameGraph は同じ size と ptr を持つメモリ割り当て (size &gt; 0) および解放 (size &lt; 0) を対応付けます。
@@ -28,7 +28,7 @@ flameGraph(traces[, size[, ptr]])
 
 **引数**
 
-* `traces` — スタックトレース。[`Array(UInt64)`](/sql-reference/data-types/array)
+* `traces` — スタックトレース。生のアドレス、またはすでにシンボル化された文字列 (例: `arrayMap(addressToSymbol, trace)`) のいずれか。[`Array(UInt64)`](/sql-reference/data-types/array) または [`Array(String)`](/sql-reference/data-types/array)
 * `size` — 省略可能。メモリプロファイリング用の割り当てサイズ (デフォルトは 1) 。[`UInt64`](/sql-reference/data-types/int-uint)
 * `ptr` — 省略可能。割り当てアドレス (デフォルトは 0) 。[`UInt64`](/sql-reference/data-types/int-uint)
 
@@ -38,7 +38,7 @@ flameGraph(traces[, size[, ptr]])
 
 **使用例**
 
-**CPU クエリプロファイラに基づいて flamegraph を生成する**
+**CPU クエリプロファイラに基づいて フレームグラフ を生成する**
 
 ```sql title=Query
 SET query_profiler_cpu_time_period_ns=10000000;
@@ -49,7 +49,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(arrayReverse(trace))) from system.trace_log where trace_type = 'CPU' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl  > flame_cpu.svg
 ```
 
-**メモリクエリプロファイラに基づいて、すべてのアロケーションを表示する flamegraph を生成する**
+**メモリクエリプロファイラに基づいて、すべてのアロケーションを表示する フレームグラフ を生成する**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

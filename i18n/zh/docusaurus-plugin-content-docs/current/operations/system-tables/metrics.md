@@ -687,6 +687,10 @@ ZooKeeper 中持有的临时节点数。
 
 文件系统缓存中的键数
 
+### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
+
+被 overcommit 文件系统缓存淘汰策略跟踪的用户数
+
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 
 当前活跃的缓存缓冲区数量
@@ -854,6 +858,22 @@ IcebergCatalog 线程池中正在执行任务的线程数量。
 ### IcebergCatalogThreadsScheduled \{#icebergcatalogthreadsscheduled\}
 
 IcebergCatalog 线程池中已排队或正在运行的作业数量。
+
+### IcebergCompactionSnapshots \{#icebergcompactionsnapshots\}
+
+Iceberg 合并整理次数。
+
+### IcebergCompactionThreads \{#icebergcompactionthreads\}
+
+IcebergCompaction 线程池中的线程数量。
+
+### IcebergCompactionThreadsActive \{#icebergcompactionthreadsactive\}
+
+IcebergCompaction 线程池中正在执行任务的线程数。
+
+### IcebergCompactionThreadsScheduled \{#icebergcompactionthreadsscheduled\}
+
+IcebergCompaction 线程池中排队中或正在运行的作业数量。
 
 ### IcebergMetadataFilesCacheBytes \{#icebergmetadatafilescachebytes\}
 

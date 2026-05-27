@@ -390,7 +390,7 @@ In total the index has 1083 entries for our table with 8.87 million rows and 108
 
 On a self-managed ClickHouse cluster we can use the <a href="https://clickhouse.com/docs/sql-reference/table-functions/file/" target="_blank">file table function</a> for inspecting the content of the primary index of our example table.
 
-For that we first need to copy the primary index file into the <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-user_files_path" target="_blank">user_files_path</a> of a node from the running cluster:
+For that we first need to copy the primary index file into the <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#user_files_path" target="_blank">user_files_path</a> of a node from the running cluster:
 <ul>
 <li>Step 1: Get part-path that contains the primary index file</li>
 `
@@ -504,7 +504,7 @@ Processed 8.19 thousand rows,
 
 The output for the ClickHouse client is now showing that instead of doing a full table scan, only 8.19 thousand rows were streamed into ClickHouse.
 
-If <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse was running a <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the 1083 UserID index marks, in order to identify granules that possibly can contain rows with a UserID column value of `749927693`. This requires 19 steps with an average time complexity of `O(log2 n)`:
+If <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#logger" target="_blank">trace logging</a> is enabled then the ClickHouse server log file shows that ClickHouse was running a <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">binary search</a> over the 1083 UserID index marks, in order to identify granules that possibly can contain rows with a UserID column value of `749927693`. This requires 19 steps with an average time complexity of `O(log2 n)`:
 ```response
 ...Executor): Key condition: (column 0 in [749927693, 749927693])
 # highlight-next-line

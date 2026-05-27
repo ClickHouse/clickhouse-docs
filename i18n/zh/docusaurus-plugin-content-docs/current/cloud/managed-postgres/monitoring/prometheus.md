@@ -2,12 +2,16 @@
 slug: /cloud/managed-postgres/monitoring/prometheus
 sidebar_label: 'Prometheus 端点'
 title: 'Managed Postgres Prometheus 端点'
-description: '将 Managed Postgres 指标采集到 Prometheus、Grafana、Datadog 或任何兼容 OpenMetrics 的采集器中'
+description: '将 Managed Postgres 指标抓取到 Prometheus、Grafana、Datadog 或任何兼容 OpenMetrics 的采集器中'
 keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', '指标', 'openmetrics', '可观测性']
 doc_type: 'guide'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import Image from '@theme/IdealImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
 
 # Prometheus 集成 \{#prometheus-integration\}
 
@@ -76,7 +80,7 @@ PostgresServer_CacheHitRatio{clickhouse_org="ca04a310-730d-4ce0-93dd-39f2cd2d5e6
 
 ## 配置 Prometheus \{#configuring-prometheus\}
 
-此配置每 30 秒抓取一次组织级端点：
+此配置每 60 秒抓取一次组织级端点：
 
 ```yaml
 scrape_configs:
@@ -89,14 +93,62 @@ scrape_configs:
       username: <KEY_ID>
       password: <KEY_SECRET>
     honor_labels: true
-    scrape_interval: 30s
+    scrape_interval: 60s
 ```
+
+该端点每分钟刷新一次指标。抓取频率快于
+`60s` 会导致样本重复，并在 Gauge
+面板上产生阶梯状模式。
 
 将 `honor_labels: true` 设为启用，这样来自端点的 `postgres_service` 和
 `postgres_service_name` 标签将被保留，而不会
 被 Prometheus 覆盖。
 
 要抓取单个服务，请在 `metrics_path` 后追加 `/<PG_ID>`。
+
+## 预置 Grafana 仪表板 \{#grafana-dashboard\}
+
+一个现成的 Grafana 仪表板可将该端点暴露的所有指标可视化——包括可排序的服务列表、CPU 和内存利用率、带阈值告警的磁盘使用情况、按状态划分的连接、事务和回滚比率、Tuple 活动、I/O、各数据库的存储使用情况以及死锁。
+
+<Image img={grafanaDashboard} alt="Managed Postgres 服务的 Grafana 仪表板" size="md" border />
+
+### 导入仪表板 \{#import-dashboard\}
+
+<VerticalStepper headerLevel="h4">
+  #### 下载仪表板 JSON \{#download\}
+
+  <TrackedLink href={useBaseUrl('/examples/managed-postgres-grafana-dashboard.json')} download="managed-postgres-grafana-dashboard.json" eventName="docs.managed_postgres_grafana_dashboard.download">下载仪表板 JSON</TrackedLink>。
+
+  #### 在 Grafana 中打开导入界面 \{#open-import\}
+
+  前往 **Dashboards → New → Import**。上传 JSON 文件或粘贴其内容。
+
+  #### 选择 Prometheus 数据源 \{#pick-datasource\}
+
+  系统提示输入 `DS_PROMETHEUS` 时，选择抓取了[上一节](#configuring-prometheus)中所配置端点的 Prometheus 数据源。
+</VerticalStepper>
+
+对于通过预配方式管理的 Grafana 部署，将该 JSON 放入你的
+仪表板预配路径中。Grafana 会将 `${DS_PROMETHEUS}`
+引用匹配到实例中可用的 Prometheus 数据源。
+
+### 模板变量 \{#template-variables\}
+
+该仪表板提供了三个变量：
+
+* **数据源** — 为该仪表板提供数据支持的 Prometheus 数据源。
+* **服务** — 基于 `postgres_service_name` 的多选过滤器。
+  默认为 *全部*；选择一个或多个服务，将每个面板限定到所选服务。
+* **抓取间隔** — 隐藏常量，默认为 `60s`。它会影响
+  Grafana 的 `$__rate_interval` 计算。如果你的抓取间隔不同，
+  请在 JSON 中修改此值。
+
+### 筛选到单个服务后进行下钻分析 \{#drill-in\}
+
+通过 **Service** 变量将范围筛选到单个
+服务后，多个面板都可用于下钻分析。例如，“按模式划分的 CPU”面板会堆叠显示 `user`、`system`、`iowait`、`steal` 以及其他 CPU
+模式，这样你就可以判断某次峰值究竟是由应用程序代码、内核
+工作、磁盘等待，还是虚拟机管理程序争用引起的。
 
 ## 与 Grafana 和 Datadog 集成 \{#third-party-integrations\}
 
