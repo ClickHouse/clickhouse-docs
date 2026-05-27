@@ -63,7 +63,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Managing AWS service limits and quotas](/cloud/reference/byoc/aws-service-limits) | AWS service quotas to verify before BYOC onboarding, how to request increases, and what to monitor as services scale |
 | [Migrating from CMEK v1 to v2](/cloud/security/cmek-migration) | Migration instructions to move from legacy CMEK to version 2 |
 | [Multi tenancy](/cloud/bestpractices/multi-tenancy) | Best practices to implement multi tenancy |
-| [Optimizing ClickHouse Assistant agent conversations with a semantic layer](/use-cases/AI_ML/AIChat/semantic-layer) | Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the ClickHouse Assistant chat agent |
+| [Optimizing ClickHouse Assistant conversations with a semantic layer](/use-cases/AI_ML/AIChat/semantic-layer) | Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the ClickHouse Assistant chat agent |
 | [Overview](/cloud/reference/byoc/overview) | Deploy ClickHouse on your own cloud infrastructure |
 | [PCI onboarding](/cloud/security/compliance/pci-onboarding) | Learn more about how to onboard to PCI compliant services |
 | [Query API endpoints](/cloud/get-started/query-endpoints) | Easily spin up REST API endpoints from your saved queries |
