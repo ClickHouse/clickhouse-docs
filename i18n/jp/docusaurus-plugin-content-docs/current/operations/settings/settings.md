@@ -4189,6 +4189,20 @@ WHERE (_part, _part_offset) IN (
 
 大規模なハッシュテーブルでのメモリアクセスのレイテンシを隠蔽するため、ハッシュ結合のプローブフェーズでソフトウェアプリフェッチを使用するようにします。
 
+## enable_streaming_queries \{#enable_streaming_queries\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "新しい設定"}]}]} />
+
+`SELECT ... FROM t STREAM [CURSOR '{...}']` の継続的クエリを有効にします。
+オフの場合、`STREAM` modifier を使用するテーブル式は
+プラン構築時に拒否されます。これは streaming-queries
+feature 全体を制御する大元のゲートです。追加の機能は、それぞれ個別の設定で
+制御される場合があります。
+
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
 **別名**: `allow_experimental_time_time64_type`

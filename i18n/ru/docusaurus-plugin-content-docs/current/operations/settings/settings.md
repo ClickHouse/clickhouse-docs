@@ -4195,6 +4195,20 @@ WHERE (_part, _part_offset) IN (
 
 Включает использование программной предварительной выборки на этапе probe в hash join, чтобы скрыть задержки доступа к памяти при работе с большими хеш-таблицами.
 
+## enable_streaming_queries \{#enable_streaming_queries\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "новая настройка"}]}]} />
+
+Разрешает непрерывно выполняющиеся запросы `SELECT ... FROM t STREAM [CURSOR '{...}']`.
+Если параметр отключён, любое табличное выражение, использующее модификатор `STREAM`, отклоняется
+на этапе построения плана. Это основной флаг для
+возможности streaming-queries; дополнительные возможности могут
+контролироваться собственными настройками.
+
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
 **Псевдонимы**: `allow_experimental_time_time64_type`

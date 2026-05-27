@@ -4193,6 +4193,19 @@ WHERE (_part, _part_offset) IN (
 
 큰 해시 테이블에서 메모리 접근 지연 시간을 숨기기 위해 해시 조인 프로브 단계에서 소프트웨어 프리페치를 사용하도록 설정합니다.
 
+## enable_streaming_queries \{#enable_streaming_queries\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "새로운 설정"}]}]} />
+
+`SELECT ... FROM t STREAM [CURSOR '{...}']` 지속 쿼리를 허용합니다.
+비활성화되면 `STREAM` 수정자를 사용하는 모든 테이블 표현식은
+실행 계획 생성 시점에 거부됩니다. 이는 streaming-queries
+기능 전체를 제어하는 상위 설정이며, 추가 기능은 각각의 설정에 따라 제한될 수 있습니다.
+
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
 **별칭**: `allow_experimental_time_time64_type`

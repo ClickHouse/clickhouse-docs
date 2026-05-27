@@ -4179,6 +4179,18 @@ WHERE (_part, _part_offset) IN (
 
 启用在哈希连接的探测阶段使用软件预取，以掩盖大型哈希表的内存访问延迟。
 
+## enable_streaming_queries \{#enable_streaming_queries\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "新增设置"}]}]} />
+
+允许使用 `SELECT ... FROM t STREAM [CURSOR '{...}']` 持续查询。
+关闭时，任何使用 `STREAM` 修饰符的表表达式都会在构建执行计划时被拒绝。
+这是流式查询功能的总开关；其他功能可能还受各自设置的单独控制。
+
 ## enable_time_time64_type \{#enable_time_time64_type\}
 
 **别名**: `allow_experimental_time_time64_type`
