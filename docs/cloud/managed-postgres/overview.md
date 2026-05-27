@@ -27,7 +27,7 @@ Most managed Postgres services use network-attached storage like Amazon EBS, whi
 Managed Postgres uses NVMe storage that is physically attached to the same server as your database. This architectural difference delivers:
 
 - **Microsecond-level disk latency** instead of milliseconds
-- **Unlimited local IOPS**<sup>\*</sup> without network bottlenecks
+- **10x sustained IOPS limits**<sup>\*</sup> without network bottlenecks
 - **Up to 10x faster performance** for disk-bound workloads at the same cost
 
 For Postgres workloads that are primarily throttled by disk IOPS and latency, this translates to faster ingestion, quicker vacuums, lower tail latency, and more predictable performance under load.
