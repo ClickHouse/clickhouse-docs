@@ -12,7 +12,7 @@ doc_type: 'reference'
 
 도입 버전: v24.8.0
 
-문자열 그룹을 하나의 문자열로 이어 붙여 계산하며, 필요에 따라 구분자를 사용할 수 있고, 최대 요소 개수를 제한할 수도 있습니다.
+문자열 그룹을 하나의 문자열로 이어 붙여 계산하며, 필요에 따라 구분 기호를 사용할 수 있고, 최대 요소 개수를 제한할 수도 있습니다.
 
 :::note
 `limit` 없이 `delimiter`만 지정하는 경우, `delimiter`는 첫 번째 매개변수여야 합니다. `delimiter`와 `limit`을 모두 지정하는 경우, `delimiter`가 `limit`보다 먼저 와야 합니다.
@@ -26,7 +26,7 @@ doc_type: 'reference'
 groupConcat[(delimiter [, limit])](expression)
 ```
 
-**별칭**: `group_concat`
+**별칭**: `group_concat`, `string_agg`
 
 **매개변수**
 
@@ -36,7 +36,7 @@ groupConcat[(delimiter [, limit])](expression)
 **인수**
 
 * `expression` — 연결할 문자열을 출력하는 표현식 또는 컬럼 이름입니다. [`String`](/sql-reference/data-types/string)
-* `delimiter` — 연결된 값들을 구분하는 데 사용되는 문자열입니다. 이 매개변수는 선택 사항이며, 지정하지 않으면 기본값은 빈 문자열이거나 매개변수로 지정된 delimiter입니다. [`String`](/sql-reference/data-types/string)
+* `delimiter` — 연결된 값들을 구분하는 데 사용되는 문자열입니다. 이 매개변수는 선택 사항이며, 지정하지 않으면 기본값은 빈 문자열이거나 매개변수로 지정된 구분 기호입니다. [`String`](/sql-reference/data-types/string)
 
 **반환 값**
 
@@ -54,7 +54,7 @@ SELECT groupConcat(Name) FROM Employees;
 JohnJaneBob
 ```
 
-**쉼표를 구분자로 사용하는 방법(매개변수 구문)**
+**쉼표를 구분 기호로 사용하는 방법(매개변수 구문)**
 
 ```sql title=Query
 SELECT groupConcat(', ')(Name) FROM Employees;
@@ -64,7 +64,7 @@ SELECT groupConcat(', ')(Name) FROM Employees;
 John, Jane, Bob
 ```
 
-**쉼표를 구분자로 사용하는 방법(인자 구문)**
+**쉼표를 구분 기호로 사용하는 방법(인자 구문)**
 
 ```sql title=Query
 SELECT groupConcat(Name, ', ') FROM Employees;

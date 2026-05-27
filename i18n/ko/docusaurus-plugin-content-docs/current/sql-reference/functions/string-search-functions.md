@@ -438,7 +438,7 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 
 :::note
 최적의 성능을 위해 `input` 컬럼에 [텍스트 인덱스](../../engines/table-engines/mergetree-family/textindexes)가 정의되어 있어야 합니다.
-텍스트 인덱스가 정의되지 않은 경우, 함수는 무차별 대입 방식으로 컬럼을 스캔하게 되며 이는 인덱스 조회보다 수 배에서 수십 배 이상 느립니다.
+텍스트 인덱스가 정의되지 않은 경우, 함수는 브루트 포스(전체 스캔) 방식으로 컬럼을 스캔하게 되며 이는 인덱스 조회보다 수 배에서 수십 배 이상 느립니다.
 :::
 
 검색 전에 함수가 토큰화를 수행합니다
@@ -452,6 +452,12 @@ SELECT extractGroups(s, '< ([\\w\\-]+): ([^\\r\\n]+)');
 중복된 토큰은 무시됩니다.
 예를 들어, needles = [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;]는 [&#39;ClickHouse&#39;]와 동일하게 처리됩니다.
 
+:::note
+텍스트 인덱스에 [전처리기](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index)(예: `lowerUTF8`)가 정의되어 있으면, `hasAllTokens`는 이를 `input`에 적용하고, `needles`가 [String](../../sql-reference/data-types/string.md)인 경우에는 토큰화 전에 `needles`에도 적용합니다. `needles`가 [Array(String)](../../sql-reference/data-types/array.md)인 경우에는 해당 요소가 그대로 전달되며 전처리기는 적용되지 않습니다.
+전처리기는 텍스트 인덱스 경로에서만 적용되므로, 텍스트 인덱스를 사용하는 쿼리와 사용하지 않는 쿼리(예: `SETTINGS use_skip_indexes = 0`) 사이에서 결과가 달라질 수 있습니다.
+이러한 불일치는 전문 검색의 사용성을 높이기 위해 허용됩니다.
+:::
+
 **구문**
 
 ```sql
@@ -464,7 +470,7 @@ hasAllTokens(input, needles)
 
 * `input` — 입력 컬럼입니다. 데이터 타입은 [`String`](/sql-reference/data-types/string), [`FixedString`](/sql-reference/data-types/fixedstring), [`Array(String)`](/sql-reference/data-types/array), [`Array(FixedString)`](/sql-reference/data-types/array) 중 하나일 수 있습니다.
 * `needles` — 검색할 토큰입니다. [`String`](/sql-reference/data-types/string) 또는 [`Array(String)`](/sql-reference/data-types/array)
-* `tokenizer` — 사용할 tokenizer를 지정합니다. 사용할 수 있는 인수는 `splitByNonAlpha`, `splitByString`, `asciiCJK`, `ngrams`, `sparseGrams`, `array`입니다. 선택 사항으로, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. 형식은 [`const String`](/sql-reference/data-types/string)입니다.
+* `tokenizer` — 사용할 토크나이저를 지정합니다. 사용할 수 있는 인수는 `splitByNonAlpha`, `splitByString`, `asciiCJK`, `ngrams`, `sparseGrams`, `array`입니다. 선택 사항으로, 명시적으로 설정하지 않으면 기본값은 `splitByNonAlpha`입니다. 형식은 [`const String`](/sql-reference/data-types/string)입니다.
 
 **반환 값**
 
@@ -552,7 +558,7 @@ INSERT INTO log VALUES
 ```response title=Response
 ```
 
-**배열 컬럼이 있는 예시**
+**배열 컬럼을 사용한 예시**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
@@ -564,7 +570,7 @@ SELECT count() FROM log WHERE hasAllTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**mapKeys 사용 예시**
+**mapKeys를 사용한 예시**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAllTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -602,13 +608,19 @@ SELECT count() FROM log WHERE hasAllTokens(mapValues(attributes), ['192.0.0.1', 
 검색 전에 함수가 토큰화를 수행합니다
 
 * `input` 인자(항상 필요), 그리고
-* `needle` 인자가 [String](../../sql-reference/data-types/string.md) 타입으로 주어지면,
-  텍스트 인덱스에 대해 지정된 토크나이저(tokenizer)를 사용합니다.
-  컬럼에 텍스트 인덱스가 정의되어 있지 않으면 `splitByNonAlpha` 토크나이저가 대신 사용됩니다.
-  `needle` 인자가 [Array(String)](../../sql-reference/data-types/array.md) 타입이면, 배열의 각 요소는 토큰으로 취급되며 추가적인 토크나이징은 수행되지 않습니다.
+* `needle` 인수([String](../../sql-reference/data-types/string.md)로 지정된 경우)는
+  텍스트 인덱스에 지정된 토크나이저를 사용합니다.
+  컬럼에 텍스트 인덱스가 정의되어 있지 않으면 대신 `splitByNonAlpha` 토크나이저를 사용합니다.
+  `needle` 인수의 타입이 [Array(String)](../../sql-reference/data-types/array.md)인 경우, 배열의 각 요소는 토큰으로 처리되며 추가 토큰화는 수행되지 않습니다.
 
 중복된 토큰은 무시됩니다.
 예를 들어, [&#39;ClickHouse&#39;, &#39;ClickHouse&#39;]는 [&#39;ClickHouse&#39;]와 동일하게 처리됩니다.
+
+:::note
+텍스트 인덱스에 [전처리기](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index)(예: `lowerUTF8`)가 정의된 경우, `hasAnyTokens`는 토큰화 전에 `input`에 전처리기를 적용하며, `needles`가 [String](../../sql-reference/data-types/string.md) 타입인 경우 `needles`에도 적용합니다. `needles`가 [Array(String)](../../sql-reference/data-types/array.md) 타입인 경우, 배열의 각 요소는 그대로 전달되며 전처리기가 적용되지 않습니다.
+전처리기는 텍스트 인덱스 경로에서만 적용되므로, 텍스트 인덱스를 사용하는 쿼리와 사용하지 않는 쿼리(예: `SETTINGS use_skip_indexes = 0`) 간에 결과가 다를 수 있습니다.
+이러한 불일치는 전문 검색의 사용성을 향상시키기 위해 허용됩니다.
+:::
 
 **구문**
 
@@ -676,7 +688,7 @@ SELECT count() FROM table WHERE hasAnyTokens(msg, tokens('a()d', 'splitByString'
 └─────────┘
 ```
 
-**배열 및 맵 컬럼의 사용 예제**
+**배열 및 맵 컬럼의 사용 예시**
 
 ```sql title=Query
 CREATE TABLE log (
@@ -698,7 +710,7 @@ INSERT INTO log VALUES
 ```response title=Response
 ```
 
-**배열 컬럼을 사용한 예제**
+**배열 컬럼을 사용한 예시**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
@@ -710,7 +722,7 @@ SELECT count() FROM log WHERE hasAnyTokens(tags, 'clickhouse');
 └─────────┘
 ```
 
-**mapKeys 사용 예제**
+**mapKeys를 사용한 예시**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log_level']);
@@ -722,7 +734,7 @@ SELECT count() FROM log WHERE hasAnyTokens(mapKeys(attributes), ['address', 'log
 └─────────┘
 ```
 
-**mapValues 사용 예제**
+**mapValues를 사용한 예시**
 
 ```sql title=Query
 SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 'DEBUG']);
@@ -738,11 +750,22 @@ SELECT count() FROM log WHERE hasAnyTokens(mapValues(attributes), ['192.0.0.1', 
 
 도입 버전: v26.4.0
 
-haystack에 phrase의 모든 토큰이 연속된 순서로 포함되어 있는지 확인합니다.
+`input`에 `phrase`의 모든 토큰이 연속된 순서로 포함되어 있는지 확인합니다.
 
-검색에 앞서 함수는 선택적 세 번째 인수로 지정한 토크나이저를 사용해 `input` 인수와 `phrase` 인수를 모두 토큰화합니다.
+:::note
+최적의 성능을 위해 컬럼 `input`에는 [텍스트 인덱스(text index)](../../engines/table-engines/mergetree-family/textindexes)가 정의되어 있어야 합니다.
+텍스트 인덱스가 정의되어 있지 않으면 함수는 브루트 포스(전체 스캔) 방식으로 컬럼을 스캔하며, 이는 인덱스 조회보다 훨씬 느립니다.
+:::
+
+검색에 앞서 함수는 텍스트 인덱스에 지정된 토크나이저를 사용해 `input` 인수와 `phrase` 인수를 모두 토큰화합니다.
+컬럼에 텍스트 인덱스가 정의되어 있지 않으면 선택적 세 번째 인수로 토크나이저를 제공한 경우를 제외하고 `splitByNonAlpha` 토크나이저를 대신 사용합니다.
 토크나이저 인수는 `splitByNonAlpha`, `splitByString`, `ngrams`, `asciiCJK` 중 하나여야 합니다.
-토크나이저를 지정하지 않으면 기본적으로 `splitByNonAlpha` 토크나이저를 사용합니다.
+
+:::note
+텍스트 인덱스에 [전처리기](../../engines/table-engines/mergetree-family/textindexes#creating-a-text-index)(예: `lowerUTF8`)가 정의되어 있으면 `hasPhrase`는 토큰화 전에 이를 `input`과 `phrase` 모두에 적용합니다.
+전처리기는 텍스트 인덱스 경로에서만 적용되므로 텍스트 인덱스를 사용하는 쿼리와 사용하지 않는 쿼리(예: `SETTINGS use_skip_indexes = 0`) 사이에서 결과가 달라질 수 있습니다.
+이러한 불일치는 전문 검색의 사용성을 높이기 위해 허용됩니다.
+:::
 
 [`hasToken`](#hasToken), [`hasAnyTokens`](#hasAnyTokens), [`hasAllTokens`](#hasAllTokens)과 달리 `hasPhrase`는 토큰이 동일한 순서로 나타나야 하며
 그 사이에 다른 토큰이 끼어들어서는 안 됩니다. 예를 들어 `hasPhrase('the quick brown fox', 'quick fox')`는 0을 반환합니다.

@@ -133,6 +133,45 @@ SELECT 'my_module', base64Decode('...'), reinterpretAsUInt256(unhex('369f...c57d
 
 제공된 해시가 모듈 코드의 SHA256 값과 일치하지 않으면 삽입 작업이 실패합니다. 이는 S3나 HTTP와 같은 외부 소스에서 모듈을 로드할 때 유용합니다.
 
+### 클러스터 전체에 모듈 배포하기 \{#distribute-a-module-across-a-cluster\}
+
+`system.webassembly_modules`는 인스턴스별 테이블이므로, `INSERT`는 connection을 처리하는 레플리카에만 반영됩니다. `INSERT` statement에는 `ON CLUSTER` 구문이 없으므로, 이후 `CREATE FUNCTION ... ON CLUSTER`를 실행하면 모듈이 없는 레플리카에서는 실패합니다:
+
+```text
+Code: 674. DB::Exception: WebAssembly module 'collatz' not found:
+while adding user defined function `collatz_steps`. (RESOURCE_NOT_FOUND)
+```
+
+삽입을 모든 노드로 전파하려면, 로컬 `system.webassembly_modules` 테이블 대신 `cluster` 테이블 함수에 기록하십시오:
+
+```bash
+cat collatz.wasm | clickhouse client -q "
+  INSERT INTO FUNCTION cluster('default', 'system', 'webassembly_modules') (name, code)
+  SELECT 'collatz', code FROM input('code String') FORMAT RawBlob"
+```
+
+:::note
+이 패턴은 기본 분산 쓰기 경로가 각 세그먼트의 모든 레플리카를 거치는 것을 전제로 하며, 이는 클러스터가 `internal_replication=false`로 구성된 경우에만 일어납니다. `internal_replication=true`인 경우(`ReplicatedMergeTree`를 사용해 자체적으로 복제를 수행하는 클러스터의 기본값), 삽입은 세그먼트마다 정상 상태인 레플리카 하나에만 전달됩니다. 또한 `system.webassembly_modules`는 이 경로로 복제되지 않으므로 일부 레플리카에는 여전히 모듈이 없습니다. 이 구성에서는 각 레플리카에 개별적으로 삽입해야 합니다. 예를 들어 `system.clusters`를 순회하며 호스트별로 `remote(...)`를 통해 쓰거나, 모든 호스트의 `user_scripts/wasm/`에 바이너리를 복사하십시오.
+
+클러스터의 `internal_replication` 값은 `SELECT cluster, shard_num, internal_replication FROM system.clusters`로 확인할 수 있습니다.
+:::
+
+이처럼 분산 삽입을 수행한 후에는 모든 레플리카에 모듈이 존재하게 되며, `CREATE FUNCTION ... ON CLUSTER`가 성공합니다:
+
+```sql
+CREATE FUNCTION collatz_steps ON CLUSTER 'default'
+LANGUAGE WASM FROM 'collatz' :: 'steps'
+ARGUMENTS (n UInt32) RETURNS UInt32;
+```
+
+`clusterAllReplicas`를 사용하여 모듈이 모든 레플리카에 로드되었는지 확인할 수 있습니다:
+
+```sql
+SELECT hostName(), name FROM clusterAllReplicas('default', system.webassembly_modules) WHERE name = 'collatz';
+```
+
+`system.webassembly_modules`에 대한 삽입은 동일한 `(name, hash)` 쌍에 대해 멱등적이므로, fan-out 삽입을 다시 실행해도 안전하며 레플리카가 대체된 후 상태를 복구하는 합리적인 방법입니다. 새로 추가된 서버는 기존 모듈을 소급 적용받지 않는다는 점에 유의하십시오. 업데이트된 클러스터를 대상으로 삽입을 다시 실행하거나, 새 호스트의 `user_scripts/wasm/` 디렉터리에 바이너리를 배치해야 합니다.
+
 ### 모듈 목록 조회 \{#list-modules\}
 
 ```sql
@@ -167,7 +206,7 @@ LANGUAGE WASM
 FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
-[ABI ROW_DIRECT | ABI BUFFERED_V1]
+[ABI ROW_DIRECT | ABI BUFFERED_V1 | ABI ASSEMBLYSCRIPT]
 [DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
@@ -181,6 +220,7 @@ RETURNS return_type
 * `ABI`: Application Binary Interface 버전입니다.
   * `ROW_DIRECT`: 직접 타입 매핑, 행 단위 처리
   * `BUFFERED_V1`: 직렬화를 사용하는 블록 기반 처리
+  * `ASSEMBLYSCRIPT`: [AssemblyScript](https://www.assemblyscript.org) 컴파일러로 생성된 모듈을 위한 행 단위 처리입니다. 숫자 타입은 AssemblyScript 기본 타입에 매핑되며, ClickHouse `String`은 AssemblyScript `string`에 매핑됩니다.
 * `DETERMINISTIC`: 함수를 결정론적으로 선언합니다. 즉, 동일한 입력에 대해 항상 동일한 출력을 반환합니다. 지정하면 ClickHouse는 모든 인수가 상수인 호출을 상수 폴딩할 수 있습니다. 이 경우 함수는 쿼리 분석 시점에 한 번 평가되며, 그 결과가 모든 행에 재사용됩니다.
 * `SHA256_HASH`: 검증을 위한 예상 모듈 해시입니다(생략 시 자동으로 채워지며), 서로 다른 레플리카에서 올바른 WASM 모듈이 로드되었는지 보장하는 데 사용할 수 있습니다.
 * `SETTINGS`: 함수별 설정입니다.
@@ -192,6 +232,7 @@ ClickHouse와 상호 작용하려면 WebAssembly 모듈이 지원되는 ABI(Appl
 
 * `ROW_DIRECT`: 타입을 직접 매핑(기본 타입 `Int32`, `UInt32`, `Int64`, `UInt64`, `Float32`, `Float64`만 해당)
 * `BUFFERED_V1`: 직렬화를 사용하는 복합 타입
+* `ASSEMBLYSCRIPT`: [AssemblyScript](https://www.assemblyscript.org) 모듈과 행 단위로 상호 운용되며 숫자 타입과 `String`을 지원합니다.
 
 ### ABI ROW_DIRECT \{#abi-row_direct\}
 
@@ -267,6 +308,55 @@ ClickhouseBuffer * user_defined_function1(ClickhouseBuffer * span, uint32_t n) {
 ClickhouseBuffer * user_defined_function2(ClickhouseBuffer * span, uint32_t n) { /* ... */ }
 ```
 
+### ABI ASSEMBLYSCRIPT \{#abi-assemblyscript\}
+
+[AssemblyScript](https://www.assemblyscript.org) 컴파일러로 생성된 모듈을 대상으로 합니다. 각 행마다 내보낸 함수가 한 번 호출되며, ClickHouse 값은 AssemblyScript 원시 타입과 문자열 객체로 매핑됩니다.
+
+**지원되는 타입**:
+
+* 숫자형: `Int8`/`UInt8`, `Int16`/`UInt16` (경계에서 `i32`로 확장됨), `Int32`/`UInt32`, `Int64`/`UInt64`, `Float32`, `Float64`
+
+* `String` — AssemblyScript `string`에 매핑됩니다(WASM 메모리에서는 UTF-16). ClickHouse가 UTF-8 ↔ UTF-16 변환을 자동으로 처리합니다.
+
+* 사용자 정의 AssemblyScript 클래스는 인수 또는 반환 타입으로 지원되지 않습니다. 런타임 클래스 ID가 컴파일마다 안정적이지 않기 때문입니다([AssemblyScript#2982](https://github.com/AssemblyScript/assemblyscript/issues/2982) 참조).
+
+**모듈 요구 사항**:
+
+모듈은 `__new`, `__pin`, `__unpin`이 export되도록 AssemblyScript 관리 런타임으로 컴파일해야 합니다. 표준 문자열 입출력 처리는 이를 필요로 합니다. 권장 호출 방식은 다음과 같습니다.
+
+```bash
+asc src.ts --runtime incremental --exportRuntime -o src.wasm
+```
+
+AssemblyScript는 런타임 트랩(메모리 부족, 경계 검사 등)을 위해 `env.abort`도 가져옵니다. ClickHouse는 이 import를 자동으로 제공합니다. `abort`가 발생하면 현재 실행 중인 쿼리는 디코딩된 AssemblyScript 메시지와 소스 위치가 포함된 `WASM_ERROR` 예외와 함께 실패합니다.
+
+**예시**:
+
+```typescript
+// src.ts
+export function add(a: u32, b: u32): u32 {
+  return a + b;
+}
+
+export function greet(name: string): string {
+  return "Hello, " + name + "!";
+}
+```
+
+`asc`로 컴파일한 뒤, 생성된 `.wasm`을 `system.webassembly_modules`에 로드한 후 UDF를 다음과 같이 선언합니다:
+
+```sql
+CREATE FUNCTION as_add
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'add'
+    ARGUMENTS (a UInt32, b UInt32) RETURNS UInt32;
+
+CREATE FUNCTION as_greet
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'greet'
+    ARGUMENTS (name String) RETURNS String;
+```
+
 ### Rust에서 UDF를 개발할 때 참고 사항 \{#note-for-developing-udfs-in-rust\}
 
 Rust 프로그램의 경우 ClickHouse용 WebAssembly UDF 개발을 단순화하기 위해 도우미 크레이트 [clickhouse-wasm-udf](https://crates.io/crates/clickhouse-wasm-udf)를 제공합니다. 이 크레이트는 메모리 관리를 위한 함수를 제공하므로 `clickhouse_create_buffer` 및 `clickhouse_destroy_buffer` 함수를 직접 구현할 필요 없이 크레이트를 의존성으로 추가하기만 하면 됩니다. 또한 일반적인 Rust 함수들을 요구되는 ABI 형식으로 래핑하기 위한 매크로 `#[clickhouse_wasm_udf]`도 제공합니다.
@@ -294,6 +384,7 @@ pub fn some_udf(data: String) -> HashMap<String, String> {
 * `clickhouse_throw(ptr: i32, size: i32)` — 제공된 메시지로 오류를 발생시킵니다. 오류 메시지 문자열이 저장된 메모리 위치에 대한 포인터와 문자열 크기를 인수로 받습니다.
 * `clickhouse_log(ptr: i32, size: i32)` — 메시지를 ClickHouse 서버 텍스트 로그에 기록합니다.
 * `clickhouse_random(ptr: i32, size: i32)` — 메모리를 임의의 바이트로 채웁니다.
+* `env.abort(message: i32, fileName: i32, line: i32, column: i32)` — AssemblyScript 호환 모듈을 위해 제공됩니다. 이를 호출하면(또는 이를 호출하는 AssemblyScript 런타임 트랩이 발생하면) 디코딩된 메시지와 소스 위치를 포함하는 `WASM_ERROR` 예외와 함께 UDF가 종료됩니다. `env.abort`를 가져오지 않는 모듈은 영향을 받지 않습니다.
 
 ## 설정 \{#settings\}
 

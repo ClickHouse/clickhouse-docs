@@ -7,11 +7,11 @@ keywords: ['managed postgres', 'openapi', 'api', 'curl', 'tutorial', 'command li
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 # Managed Postgres OpenAPI
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.openapi-beta" />
 
 Use the [ClickHouse OpenAPI](/cloud/manage/cloud-api) to programmatically
 control your Managed Postgres services just like ClickHouse services. The
@@ -34,16 +34,12 @@ curl -s --user "$KEY_ID:$KEY_SECRET" https://api.clickhouse.cloud/v1/organizatio
 
 ## Organization ID {#organization-id}
 
-Next you'll need your organization ID. 
+Next you'll need your organization ID.
 
 1. Select your organization name in the lower left corner of the console.
 2. Select **Organization details**.
 3. Hit the copy icon to the right of **Organization ID** to copy it directly
    to your clipboard.
-
-<!--
-
-TODO: Uncomment and insert correct example output when the API ships.
 
 Now can use it in your requests, like so:
 
@@ -62,19 +58,24 @@ like:
 {
   "result": [
     {
-      "id": "c0d0b15d-5e8b-431d-8943-51b6e233e0b1",
-      "name": "Customer's Organization",
-      "createdAt": "2026-03-24T14:21:31Z",
-      "privateEndpoints": [],
-      "enableCoreDumps": true
+      "id": "ee2fef9f-b443-8ad0-8c9b-724390cdb826",
+      "name": "oltp",
+      "provider": "aws",
+      "region": "eu-west-2",
+      "postgresVersion": "18",
+      "size": "r6gd.medium",
+      "storageSize": 59,
+      "haType": "none",
+      "tags": [],
+      "isPrimary": true,
+      "state": "running",
+      "createdAt": "2026-05-25T16:42:16+00:00"
     }
   ],
   "requestId": "c128d830-5769-4c82-8235-f79aa69d1ebf",
   "status": 200
 }
 ```
-
--->
 
 ## CRUD {#crud}
 
@@ -91,7 +92,6 @@ of the request:
 *   `region`: Region within the provider's network in which to deploy the
     service
 *   `size`: The VM size
-*   `storageSize`: The storage size for the VM
 
 See the [create API] docs for the possible values for these properties. In
 addition, let's specify Postgres 18 rather than the default, 17:
@@ -102,8 +102,7 @@ create_data='{
   "provider": "aws",
   "region": "us-west-2",
   "postgresVersion": "18",
-  "size": "r8gd.large",
-  "storageSize": 118
+  "size": "r8gd.large"
 }'
 ```
 
@@ -122,7 +121,7 @@ including connection data:
 ```json
 {
   "result": {
-    "id": "pg7myrd1j06p3gx4zrm2ze8qz6",
+    "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
     "name": "my postgres",
     "provider": "aws",
     "region": "us-west-2",
@@ -148,7 +147,7 @@ including connection data:
 Use the `id` from the response to fetch the service again:
 
 ```bash
-PG_ID=pg7myrd1j06p3gx4zrm2ze8qz6
+PG_ID=67b4bc12-8582-45d0-8806-fe9b2e5a54e6
 curl -s --user "$KEY_ID:$KEY_SECRET" \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID" \
     | jq
@@ -181,7 +180,7 @@ psql (18.3)
 SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off, ALPN: postgresql)
 Type "help" for help.
 
-postgres=# 
+postgres=#
 ```
 
 Type `\q` to exit [psql].
@@ -203,7 +202,7 @@ The returned data should include the new tags:
 
 ```json
 {
-  "id": "$PG_ID",
+  "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
   "name": "my postgres",
   "provider": "aws",
   "region": "us-west-2",
@@ -226,10 +225,6 @@ The returned data should include the new tags:
 }
 ```
 
-<!--
-
-TODO: Expand once implemented.
-
 The OpenAPI provides additional endpoints to update properties not supported
 by the [patch API]. For example, to update the [Postgres configuration],
 use the [config API]:
@@ -237,14 +232,29 @@ use the [config API]:
 ```bash
 curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/config" \
-    -d '{"max_connections": "42"}'
+    -d '{"pgConfig": {"max_connections": "42"}, "pgBouncerConfig": {}}' | jq
 ```
 
-The output will show the updated configuration:
+The output will show the updated configuration as well as a message describing
+the consequences of the change:
 
 ```json
-{"max_connections": "42"}
+{
+  "result":{
+    "pgConfig": {
+      "max_connections": "42"
+    },
+    "pgBouncerConfig": {},
+    "message": "The changes in the following parameters require a database restart to take effect: max_connections. You can restart the database by using the restart endpoint."
+  },
+  "requestId":"fdec06f2-66f7-45b4-9f82-0c051aba20aa",
+  "status": 200
+}
 ```
+
+<!--
+
+TODO: Uncomment and insert correct example output when the API ships.
 
 Additional update APIs include:
 
@@ -281,19 +291,15 @@ On success, the response will report status code 200, e.g.:
 
 ## Monitoring {#monitoring}
 
-Two Prometheus-compatible endpoints expose CPU, memory, I/O, connection,
-and transaction metrics for Managed Postgres services: one returns
-metrics for every service in the organization, the other for a single
-service. See the [Prometheus endpoint] page for setup and the
-[metrics reference] for the full list of metrics.
+Two Prometheus-compatible endpoints expose CPU, memory, I/O, connection, and
+transaction metrics for Managed Postgres services: one returns metrics for
+every service in the organization, the other for a single service. See the
+[Prometheus endpoint] page for setup and the [metrics reference] for the full
+list of metrics.
 
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 [OpenAPI]: https://www.openapis.org "OpenAPI Initiative"
 [API keys]: /cloud/manage/openapi "Managing API Keys"
-[Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus
-  "Managed Postgres Prometheus endpoint"
-[metrics reference]: /cloud/managed-postgres/monitoring/metrics
-  "Managed Postgres metrics reference"
 [pg-openapi]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres
   "OpenAPI spec for ClickHouse Cloud: Postgres"
 [list API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceGetList
@@ -311,3 +317,7 @@ service. See the [Prometheus endpoint] page for setup and the
   "Update a Postgres Service configuration"
 [delete API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceDelete
   "Delete a PostgreSQL service"
+[Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus
+  "Managed Postgres Prometheus endpoint"
+[metrics reference]: /cloud/managed-postgres/monitoring/metrics
+  "Managed Postgres metrics reference"

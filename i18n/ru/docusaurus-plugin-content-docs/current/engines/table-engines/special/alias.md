@@ -1,26 +1,15 @@
 ---
-description: 'Табличный движок Alias создает прозрачный прокси к другой таблице. Все операции перенаправляются в целевую таблицу, при этом сам алиас не хранит данные.'
+description: 'Движок таблицы Alias создает прозрачный прокси к другой таблице. Все операции перенаправляются в целевую таблицу, при этом сам алиас не хранит данные.'
 sidebar_label: 'Alias'
 sidebar_position: 5
 slug: /engines/table-engines/special/alias
-title: 'Табличный движок Alias'
+title: 'Движок таблицы Alias'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
 # Движок таблицы Alias \{#alias-table-engine\}
 
-<ExperimentalBadge/>
-
 Движок `Alias` создаёт прокси для другой таблицы. Все операции чтения и записи перенаправляются в целевую таблицу, при этом сама таблица-алиас не хранит данных и только поддерживает ссылку на целевую таблицу.
-
-:::info
-Это экспериментальная функция, которая может измениться в будущих релизах с нарушением обратной совместимости.
-Включите использование движка таблицы Alias
-с помощью настройки [allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine).
-Введите команду `set allow_experimental_alias_table_engine = 1`.
-:::
 
 ## Создание таблицы \{#creating-a-table\}
 

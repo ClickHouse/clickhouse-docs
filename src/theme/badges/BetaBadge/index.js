@@ -1,5 +1,6 @@
 import React from "react"
 import styles from "./styles.module.css"
+import { galaxyOnClick } from '../../../lib/galaxy/galaxy'
 
 const Icon = () => {
     return (
@@ -11,7 +12,21 @@ const Icon = () => {
     )
 }
 
-const BetaBadge = () => {
+const BetaBadge = ({ link, galaxyTrack, galaxyEvent }) => {
+    if (link) {
+        return (
+            <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.betaBadge}
+                onClick={galaxyTrack && galaxyEvent ? galaxyOnClick(galaxyEvent) : undefined}
+            >
+                <Icon />Beta
+            </a>
+        )
+    }
+
     return (
         <div className={styles.betaBadge}>
             <Icon />Beta feature.&nbsp;<u><a href='/docs/beta-and-experimental-features#beta-features'>Learn more.</a></u>

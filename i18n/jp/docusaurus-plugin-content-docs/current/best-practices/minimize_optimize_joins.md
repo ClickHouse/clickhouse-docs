@@ -3,7 +3,7 @@ slug: /best-practices/minimize-optimize-joins
 sidebar_position: 10
 sidebar_label: 'JOIN を最小化して最適化する'
 title: 'JOIN を最小化して最適化する'
-description: 'JOIN に関するベストプラクティスを説明するページ'
+description: 'ClickHouse での JOIN の使用に関するベストプラクティスを説明するドキュメント'
 keywords: ['JOIN', 'Parallel Hash JOIN']
 show_related_blogs: true
 doc_type: 'guide'
@@ -24,7 +24,6 @@ ClickHouse は多様な JOIN の種類とアルゴリズムをサポートして
 すべてのデータを非正規化する必要はありません。頻繁にクエリされる属性に重点を置いてください。また、サブテーブル全体を重複させる代わりに、集計をインクリメンタルに計算する [マテリアライズドビュー](/best-practices/use-materialized-views) の利用も検討してください。スキーマ更新がまれでレイテンシが重要な場合、非正規化は最良のパフォーマンス上のトレードオフを実現できます。
 
 ClickHouse におけるデータ非正規化の詳細なガイドは [こちら](/data-modeling/denormalization) を参照してください。
-
 
 ## JOIN が必要な場合 \{#when-joins-are-required\}
 

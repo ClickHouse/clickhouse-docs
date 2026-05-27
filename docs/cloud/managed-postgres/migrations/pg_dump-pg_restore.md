@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', 'pg_dump', 'pg_restore', 'migration', 'data
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPgForMigrate from '@site/static/images/managed-postgres/pg_dump_restore/create-pg-for-migration.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
@@ -18,7 +18,7 @@ import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/ta
 # Migrate to Managed Postgres using pg_dump and pg_restore {#pg-dump-pg-restore}
 This guide provides step-by-step instructions on how to migrate your PostgreSQL database to ClickHouse Managed Postgres using the `pg_dump` and `pg_restore` utilities.
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="pg_dump-pg_restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.pg_dump-pg_restore-beta" />
 
 ## Prerequisites {#migration-pgdump-pg-restore-prerequisites}
 - Access to your source PostgreSQL database.

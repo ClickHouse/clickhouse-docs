@@ -8,10 +8,10 @@ pagination_next: cloud/managed-postgres/quickstart
 pagination_prev: null
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.overview-beta" />
 
 ClickHouse Managed Postgres is an enterprise-grade managed Postgres service built for performance and scale. Backed by NVMe storage that is physically collocated with compute, it delivers up to 10x faster performance for workloads that are disk-bound compared to alternatives using network-attached storage like EBS.
 
@@ -27,10 +27,14 @@ Most managed Postgres services use network-attached storage like Amazon EBS, whi
 Managed Postgres uses NVMe storage that is physically attached to the same server as your database. This architectural difference delivers:
 
 - **Microsecond-level disk latency** instead of milliseconds
-- **Unlimited local IOPS** without network bottlenecks
+- **10x sustained IOPS limits**<sup>\*</sup> without network bottlenecks
 - **Up to 10x faster performance** for disk-bound workloads at the same cost
 
 For Postgres workloads that are primarily throttled by disk IOPS and latency, this translates to faster ingestion, quicker vacuums, lower tail latency, and more predictable performance under load.
+
+For detailed benchmark results, see [Performance benchmarks](/cloud/managed-postgres/benchmarks). 
+
+For local NVMe limits on AWS see [Memory optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/mo.html#mo_instance-store), [Storage optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/so.html#so_instance-store), [CPU optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store).
 
 ## Native ClickHouse integration {#clickhouse-integration}
 

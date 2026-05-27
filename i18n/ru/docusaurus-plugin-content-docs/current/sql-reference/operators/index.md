@@ -515,3 +515,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 Оптимизацию можно выполнить, включив настройку [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns). При `optimize_functions_to_subcolumns = 1` функция читает только подстолбец [null](../../sql-reference/data-types/nullable.md#finding-null) вместо чтения и обработки данных всего столбца. Запрос `SELECT n IS NOT NULL FROM table` преобразуется в `SELECT NOT n.null FROM table`.
+
+
+## Проверка логических значений \{#checking-boolean-values\}
+
+ClickHouse поддерживает операторы `IS TRUE`, `IS FALSE`, `IS UNKNOWN`, `IS NOT TRUE`, `IS NOT FALSE` и `IS NOT UNKNOWN`.
+Они используются с выражениями [Bool](../../sql-reference/data-types/boolean.md) и `Nullable(Bool)`.
+
+* `expr IS TRUE` возвращает `1`, только если `expr` равно `true`.
+* `expr IS FALSE` возвращает `1`, только если `expr` равно `false`.
+* `expr IS UNKNOWN` возвращает `1`, только если `expr` равно `NULL`.
+* `expr IS NOT TRUE` возвращает `1`, если `expr` равно `false` или `NULL`.
+* `expr IS NOT FALSE` возвращает `1`, если `expr` равно `true` или `NULL`.
+* `expr IS NOT UNKNOWN` возвращает `1`, если `expr` не равно `NULL`.
+
+Для логических выражений `IS UNKNOWN` эквивалентен `IS NULL`, а `IS NOT UNKNOWN` — `IS NOT NULL`.
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

@@ -4991,7 +4991,7 @@ Unicode «code points» и не совпадает с количеством Uni
 length(x)
 ```
 
-**Псевдонимы**: `OCTET_LENGTH`
+**Псевдонимы**: `CARDINALITY`, `OCTET_LENGTH`
 
 **Аргументы**
 
@@ -5064,7 +5064,6 @@ SELECT 'ábc' AS str, length(str), lengthUTF8(str)
 │ ábc │            4 │               3 │
 └─────┴──────────────┴─────────────────┘
 ```
-
 
 ## notEmpty \{#notEmpty\}
 

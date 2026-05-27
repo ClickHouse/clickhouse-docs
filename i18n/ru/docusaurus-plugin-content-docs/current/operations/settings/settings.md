@@ -389,16 +389,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает экспериментальные функции ИИ (например, `aiGenerateContent`). Эти функции выполняют внешние HTTP-запросы к провайдерам ИИ.
 
-## allow_experimental_alias_table_engine \{#allow_experimental_alias_table_engine\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-Позволяет создавать таблицы с движком Alias.
-
 ## allow_experimental_analyzer \{#allow_experimental_analyzer\}
 
 **Псевдонимы**: `enable_analyzer`
@@ -967,6 +957,23 @@ ClickHouse использует значение этой настройки, з
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает проталкивание предикатов, если подзапрос содержит предложение WITH
+
+## allow_rank_dense_rank_arguments \{#allow_rank_dense_rank_arguments\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка. До версии 26.5 оконные функции `RANK` и `DENSE_RANK` молча игнорировали любые переданные аргументы (эквивалентно `allow_rank_dense_rank_arguments = 1`). Начиная с 26.5, по умолчанию они отклоняют аргументы с ошибкой `NUMBER_OF_ARGUMENTS_DOESNT_MATCH`, поскольку согласно стандарту SQL эти функции не принимают аргументов. Установите значение `1`, чтобы восстановить прежнее поведение."}]}]} />
+
+Разрешает передавать аргументы оконным функциям `RANK` и `DENSE_RANK` для обратной совместимости.
+
+Согласно стандарту SQL, `RANK` и `DENSE_RANK` не принимают аргументов — они ранжируют строки только в окне
+`OVER (ORDER BY ...)`. В версиях ClickHouse до 26.5 запросы вида
+`RANK(x) OVER (...)` молча принимались, а аргумент игнорировался, что вызывало путаницу
+(наличие аргумента создавало впечатление, что он влияет на ранжирование, хотя это не так).
+
+Если эта настройка имеет значение `false` (по умолчанию), `RANK` и `DENSE_RANK` отклоняют любые аргументы и
+генерируют исключение `NUMBER_OF_ARGUMENTS_DOESNT_MATCH`. Если установлено значение `true`, восстанавливается
+прежнее мягкое поведение — аргументы молча игнорируются, как и до версии 26.5.
 
 ## allow_reorder_prewhere_conditions \{#allow_reorder_prewhere_conditions\}
 
@@ -10234,6 +10241,19 @@ a   Tuple(
 
 - 0 - Отключено
 - 1 - Включено
+
+## query_cache_for_subqueries \{#query_cache_for_subqueries\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, включающая распространение `use_query_cache` на все подзапросы. Без нее подзапросы кэшируются только при явном включении для каждого подзапроса через `SETTINGS use_query_cache = true`."}]}]} />
+
+Если параметр включен, результаты подзапросов могут записываться в [кэш запросов](../query-cache.md) и считываться из него. Это обеспечивает распространение `use_query_cache` на все подзапросы.
+
+Возможные значения:
+
+* 0 — Отключено
+* 1 — Включено
 
 ## query_cache_max_entries \{#query_cache_max_entries\}
 

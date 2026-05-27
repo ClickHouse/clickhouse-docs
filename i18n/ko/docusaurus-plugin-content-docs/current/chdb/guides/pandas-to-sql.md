@@ -11,7 +11,7 @@ DataStore는 pandas 스타일 연산을 최적화된 SQL로 컴파일합니다. 
 
 ## 생성된 SQL 확인하기 \{#viewing-sql\}
 
-```python
+```python title="Query"
 from pathlib import Path
 Path("sales.csv").write_text("""\
 region,product,category,amount,quantity,price,date,order_id
@@ -38,9 +38,7 @@ query = (ds
 print(query.to_sql())
 ```
 
-결과:
-
-```sql
+```sql title="Response"
 SELECT region, SUM(amount) AS sum, AVG(amount) AS mean
 FROM file('sales.csv', 'CSVWithNames')
 WHERE amount > 1000
@@ -50,7 +48,6 @@ LIMIT 10
 ```
 
 ***
-
 
 ## 기본 연산 대응 \{#basic\}
 

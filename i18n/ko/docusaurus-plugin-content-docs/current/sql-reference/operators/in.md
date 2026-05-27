@@ -22,6 +22,43 @@ SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 
 연산자의 오른쪽에는 상수 표현식의 집합, 상수 표현식을 포함한 튜플의 집합(위 예시와 같이), 또는 데이터베이스 테이블 이름이나 괄호로 감싼 `SELECT` 서브쿼리가 올 수 있습니다.
 
+하위 호환성을 위해, 오른쪽이 단일 `tuple` 표현식인 경우 `IN` 연산자의 왼쪽에 따라 값의 집합 또는 하나의 튜플 값으로 해석될 수 있습니다. 왼쪽이 스칼라 값인 경우, ClickHouse는 이 단일 오른쪽 `tuple` 표현식의 요소들을 별개의 `IN` 값으로 처리합니다:
+
+```sql title="Query"
+SELECT
+    1 IN (tuple(1, 2)) AS one_in_tuple,
+    2 IN (tuple(1, 2)) AS two_in_tuple,
+    3 IN (tuple(1, 2)) AS three_in_tuple;
+```
+
+```text title="Response"
+┌─one_in_tuple─┬─two_in_tuple─┬─three_in_tuple─┐
+│            1 │            1 │              0 │
+└──────────────┴──────────────┴────────────────┘
+```
+
+이는 `SELECT 1 IN (1, 2)`와 동일하게 동작합니다. 왼쪽도 튜플인 경우, 오른쪽은 튜플 값의 집합으로 해석됩니다.
+
+```sql title="Query"
+SELECT tuple(1, 2) IN (tuple(1, 2)) AS tuple_in_tuple;
+```
+
+```text title="Response"
+┌─tuple_in_tuple─┐
+│              1 │
+└────────────────┘
+```
+
+이 특수 처리는 오른쪽이 단일 `tuple` 표현식인 경우에만 적용됩니다. 스칼라 왼쪽은 여러 튜플 값을 포함하는 오른쪽과 매칭될 수 없습니다:
+
+```sql title="Query"
+SELECT 1 IN (tuple(1, 2), tuple(3, 4));
+```
+
+```text title="Response"
+Code: 43. DB::Exception: Unsupported types for IN. First argument type UInt8. Second argument type Tuple(Tuple(UInt8, UInt8), Tuple(UInt8, UInt8)). (ILLEGAL_TYPE_OF_ARGUMENT)
+```
+
 ClickHouse는 `IN` 서브쿼리의 왼쪽과 오른쪽 부분의 데이터 타입이 서로 달라도 허용합니다.
 이 경우 오른쪽 값은 왼쪽의 데이터 타입으로 변환되며, 이는 오른쪽에 [accurateCastOrNull](/sql-reference/functions/type-conversion-functions#accurateCastOrNull) 함수가 적용된 것과 같습니다.
 
@@ -45,7 +82,7 @@ SELECT '1' IN (SELECT 1);
 
 서브쿼리는 튜플을 필터링하기 위해 둘 이상의 컬럼을 지정할 수 있습니다.
 
-예:
+예시:
 
 ```sql title="Query"
 SELECT (CounterID, UserID) IN (SELECT CounterID, UserID FROM ...) FROM ...
