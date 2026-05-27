@@ -304,7 +304,7 @@ The settings below are configured in the ClickHouse server `config.xml`
     </openSSL>
     ```
 
-    For more information, visit https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
+    For more information, visit [this page](/operations/server-configuration-parameters/settings/#openssl)
 
 7. Configure TLS for gRPC on every node:
     ```xml
