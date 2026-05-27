@@ -30,9 +30,9 @@ For instances with [standbys](/cloud/managed-postgres/high-availability) enabled
 Default maintenance window is 14:00 to 16:00 UTC on Sunday.
 Expected downtime is less than 1 minute within the window.
 
-For the Enterprise Tier organizations, Managed Postgres supports maintenance windows so that upgrades and other maintenance operations can be scheduled at a time that's least disruptive to your workload. UI and API support for configuring maintenance windows are coming soon. In the meantime, contact [support](https://clickhouse.com/support/program) to set up a maintenance window for your instance.
+For Enterprise Tier organizations, Managed Postgres supports maintenance windows so that upgrades and other maintenance operations can be scheduled at a time that's least disruptive to your workload. UI and API support for configuring maintenance windows is coming soon. In the meantime, contact [support](https://clickhouse.com/support/program) to set up a maintenance window for your instance.
 
 ## Major version upgrades {#major-version-upgrades}
 
-Major version upgrades (e.g., 17.x to 18.x) via UI and API is coming soon.
+Major version upgrades (e.g., 17.x to 18.x) via UI and API are coming soon.
 In the meantime, contact [support](https://clickhouse.com/support/program) to set up a maintenance window for your instance.
