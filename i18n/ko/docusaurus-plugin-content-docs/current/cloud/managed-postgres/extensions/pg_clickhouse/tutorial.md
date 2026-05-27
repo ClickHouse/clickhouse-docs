@@ -1,30 +1,31 @@
 ---
 sidebar_label: '튜토리얼'
 description: 'pg_clickhouse를 ClickHouse에 연결하고 뉴욕시 택시 예시 데이터셋을 쿼리하는 방법을 알아봅니다.'
-slug: '/integrations/pg_clickhouse/tutorial'
+slug: '/cloud/managed-postgres/extensions/pg_clickhouse/tutorial'
 title: 'pg_clickhouse 튜토리얼'
 doc_type: 'guide'
-keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'tutorial', 'taxi']
+keywords: ['PostgreSQL', 'Postgres', 'FDW', '외부 데이터 래퍼', 'pg_clickhouse', '확장 기능', '튜토리얼', '택시']
 ---
 
 ## 개요 \{#overview\}
 
-이 튜토리얼은 [ClickHouse 튜토리얼]을 기반으로 하되, 모든 쿼리는 pg_clickhouse를 통해 실행합니다.
+이 튜토리얼은 [ClickHouse 튜토리얼]을 따르되, 모든 쿼리를
+pg&#95;clickhouse를 통해 실행합니다.
 
 ## ClickHouse 시작하기 \{#start-clickhouse\}
 
-먼저 ClickHouse 데이터베이스가 없다면 생성합니다. 빠르게 시작하려면
-Docker 이미지를 사용하는 것이 좋습니다:
+먼저, 아직 ClickHouse 데이터베이스가 없다면 생성하십시오. Docker 이미지로
+빠르게 시작할 수 있습니다:
 
 ```sh
 docker run -d --network host --name clickhouse -p 8123:8123 -p9000:9000 --ulimit nofile=262144:262144 clickhouse
 docker exec -it clickhouse clickhouse-client
 ```
 
+## 테이블 만들기 \{#create-a-table\}
 
-## 테이블 생성하기 \{#create-a-table\}
-
-[ClickHouse tutorial]을 참고하여 뉴욕시 택시 데이터셋으로 간단한 데이터베이스를 만들어 보겠습니다:
+간단한 데이터베이스를 만들기 위해 [ClickHouse 튜토리얼]의 예시를 참고하여 The New York
+City 택시 데이터셋을 사용하겠습니다:
 
 ```sql
 CREATE DATABASE taxi;
@@ -86,10 +87,9 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime;
 ```
 
+## 데이터 세트 추가 \{#add-the-data-set\}
 
-## 데이터 Set 추가 \{#add-the-data-set\}
-
-그다음 데이터를 가져옵니다:
+그런 다음 데이터를 가져오십시오:
 
 ```sql
 INSERT INTO taxi.trips
@@ -149,23 +149,23 @@ SELECT * FROM s3(
 ") SETTINGS input_format_try_infer_datetimes = 0
 ```
 
-쿼리를 실행할 수 있는지 확인한 다음 클라이언트를 종료하십시오:
+쿼리할 수 있는지 확인한 후 클라이언트를 종료하십시오:
 
 ```sql
 SELECT count() FROM taxi.trips;
 quit
 ```
 
-
 ### pg_clickhouse 설치 \{#install-pg_clickhouse\}
 
-[PGXN] 또는 [GitHub]에서 pg&#95;clickhouse를 빌드하고 설치합니다. 또는 [pg&#95;clickhouse image]를 사용하여 Docker 컨테이너를 실행할 수 있습니다. 이 이미지는 Docker [Postgres image]에 pg&#95;clickhouse만 단순히 추가한 것입니다.
+[PGXN] 또는 [GitHub]에서 pg&#95;clickhouse를 빌드해 설치합니다. 또는
+[pg&#95;clickhouse image]를 사용해 Docker 컨테이너를 실행할 수 있으며, 이는
+Docker [Postgres image]에 pg&#95;clickhouse만 추가한 이미지입니다:
 
 ```sh
 docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
        -d ghcr.io/clickhouse/pg_clickhouse:18
 ```
-
 
 ### pg_clickhouse 연결 \{#connect-pg_clickhouse\}
 
@@ -175,22 +175,26 @@ docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
 docker exec -it pg_clickhouse psql -U postgres
 ```
 
-그리고 pg&#95;clickhouse를 생성합니다:
+다음으로 pg&#95;clickhouse를 생성합니다:
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
 ```
 
-ClickHouse 데이터베이스의 호스트 이름, 포트, 데이터베이스 이름을 사용하여 foreign server를 생성합니다.
+ClickHouse 데이터베이스의 호스트 이름, 포트, 데이터베이스 이름을 사용하여
+외부 서버를 생성합니다.
 
 ```sql
 CREATE SERVER taxi_srv FOREIGN DATA WRAPPER clickhouse_fdw
        OPTIONS(driver 'binary', host 'localhost', dbname 'taxi');
 ```
 
-여기서는 ClickHouse 바이너리 프로토콜을 사용하는 binary 드라이버를 선택했습니다. HTTP 인터페이스를 사용하는 &quot;http&quot; 드라이버를 사용할 수도 있습니다.
+여기서는 ClickHouse 바이너리
+프로토콜을 사용하는 바이너리 드라이버를 선택했습니다. HTTP 인터페이스를 사용하는 &quot;http&quot; 드라이버를 사용할 수도 있습니다.
 
-다음으로 PostgreSQL 사용자와 ClickHouse 사용자를 매핑합니다. 가장 간단한 방법은 현재 PostgreSQL 사용자를 외부 서버의 원격 사용자에 그대로 매핑하는 것입니다:
+다음으로, PostgreSQL 사용자를 ClickHouse 사용자에 매핑합니다. 가장 간단한 방법은
+현재 PostgreSQL 사용자를 foreign
+server의 원격 사용자에 매핑하는 것입니다:
 
 ```sql
 CREATE USER MAPPING FOR CURRENT_USER SERVER taxi_srv
@@ -199,14 +203,15 @@ CREATE USER MAPPING FOR CURRENT_USER SERVER taxi_srv
 
 `password` 옵션도 지정할 수 있습니다.
 
-이제 taxi 테이블을 추가합니다. 이를 위해 원격 ClickHouse 데이터베이스에 있는 모든 테이블을 Postgres 스키마로 가져오십시오.
+이제 taxi 테이블을 추가합니다. 원격
+ClickHouse 데이터베이스의 모든 테이블을 Postgres 스키마로 가져오십시오:
 
 ```sql
 CREATE SCHEMA taxi;
 IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```
 
-이제 테이블이 가져와졌을 것입니다. [psql]에서 `\det+`를 사용하여 확인하십시오:
+이제 테이블이 임포트된 상태여야 합니다: [psql]에서 `\det+`를 사용하여 확인하십시오:
 
 ```pgsql
 taxi=# \det+ taxi.*
@@ -217,8 +222,7 @@ taxi=# \det+ taxi.*
 (1 row)
 ```
 
-성공했습니다! 모든 컬럼을 보려면 `\d`를 사용하십시오:
-
+성공했습니다! `\d`를 사용해 모든 컬럼을 확인하세요:
 
 ```pgsql
 taxi=# \d taxi.trips
@@ -274,7 +278,7 @@ Server: taxi_srv
 FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 ```
 
-이제 테이블에 쿼리를 실행하십시오:
+이제 테이블을 쿼리하십시오:
 
 ```pgsql
  SELECT count(*) FROM taxi.trips;
@@ -284,9 +288,9 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
  (1 row)
 ```
 
-쿼리가 얼마나 빠르게 실행되었는지에 주목하십시오. pg&#95;clickhouse는 `COUNT()` 집계를 포함한 전체
-쿼리를 ClickHouse로 푸시다운하여 ClickHouse에서 실행한 뒤 단일 행만 Postgres로
-반환합니다. [EXPLAIN]을 사용하여 이를 확인하십시오.
+쿼리가 매우 빠르게 실행된 점에 주목하십시오. pg&#95;clickhouse는 `COUNT()` 집계를 포함한
+전체 쿼리를 푸시다운하므로, ClickHouse에서 실행되고 Postgres에는
+단일 행만 반환됩니다. 이를 확인하려면 [EXPLAIN]을 사용하십시오:
 
 ```pgsql
  EXPLAIN select count(*) from taxi.trips;
@@ -297,16 +301,15 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
  (2 rows)
 ```
 
-실행 계획의 루트에 「Foreign Scan」이 나타난 것은
+&quot;Foreign Scan&quot;이 실행 계획의 최상위에 표시된다는 점에 유의하십시오. 이는
 전체 쿼리가 ClickHouse로 푸시다운되었음을 의미합니다.
-
 
 ## 데이터 분석 \{#analyze-the-data\}
 
-데이터를 분석하기 위해 몇 가지 쿼리를 실행하십시오. 다음 예시를 살펴보거나
-직접 SQL 쿼리를 실행해 보십시오.
+몇 가지 쿼리를 실행해 데이터를 분석합니다. 다음 예시를 살펴보거나 직접
+SQL 쿼리를 실행해 보십시오.
 
-* 평균 팁 금액을 계산하십시오:
+* 평균 팁 금액을 계산합니다:
 
   ```sql
   taxi=# \timing
@@ -320,7 +323,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 9.438 ms
   ```
 
-* 승객 수를 기준으로 평균 요금을 계산합니다:
+* 승객 수를 기준으로 평균 비용을 계산하세요:
 
   ```pgsql
   taxi=# SELECT
@@ -345,7 +348,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 27.266 ms
   ```
 
-* 지역별 일별 픽업 건수를 계산합니다:
+* 동네별 일일 픽업 수를 계산합니다:
 
   ```pgsql
   taxi=# SELECT
@@ -372,7 +375,8 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 30.978 ms
   ```
 
-* 각 운행의 소요 시간을 분 단위로 계산한 다음, 소요 시간별로 결과를 그룹화합니다:
+* 각 이동의 소요 시간을 분 단위로 계산한 다음, 결과를 소요 시간별로
+  그룹화합니다:
 
   ```pgsql
   taxi=# SELECT
@@ -398,7 +402,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 45.477 ms
   ```
 
-* 각 동네별로 시간대별 픽업 건수를 표시합니다:
+* 하루 중 시간대별로 동네별 승차 건수를 표시합니다:
 
   ```pgsql
   taxi=# SELECT
@@ -422,8 +426,8 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 36.895 ms
   ```
 
-* 뉴욕 시간대로 표시 시간대를 설정하고 LaGuardia 또는 JFK
-  공항행 택시 운행을 조회합니다:
+* 표시 시간대를 뉴욕으로 설정하고 라과디아 또는 JFK
+  공항으로 가는 승차 기록을 조회합니다:
 
   ```pgsql
   taxi=# SET timezone = 'America/New_York';
@@ -457,15 +461,18 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 17.450 ms
   ```
 
-## 딕셔너리(Dictionary) 생성 \{#create-a-dictionary\}
+## 딕셔너리 생성 \{#create-a-dictionary\}
 
-ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
-이 테이블과 딕셔너리는 뉴욕시 각 동네별로 한 행씩을 포함하는 CSV 파일을 기반으로 합니다.
+ClickHouse 서비스의 테이블과 연결된 딕셔너리를 생성합니다. 이
+테이블과 딕셔너리는 New York City의 각 동네마다 하나의 행을 포함하는
+CSV 파일을 기반으로 합니다.
 
-각 동네는 뉴욕시 5개 자치구(Bronx, Brooklyn, Manhattan, Queens, Staten Island)와 Newark Airport(EWR)에 매핑됩니다.
+이 동네들은 New York City의 5개 자치구
+(Bronx, Brooklyn, Manhattan, Queens, Staten Island)와
+Newark Airport(EWR) 이름에 매핑됩니다.
 
-아래는 사용하는 CSV 파일의 일부를 테이블 형식으로 나타낸 것입니다.
-파일의 `LocationID` 컬럼은 trips 테이블의 `pickup_nyct2010_gid` 및
+다음은 사용할 CSV 파일의 일부를 테이블 형식으로 나타낸 것입니다. 파일의
+`LocationID` 컬럼은 trips 테이블의 `pickup_nyct2010_gid` 및
 `dropoff_nyct2010_gid` 컬럼에 매핑됩니다:
 
 | LocationID | Borough       | Zone                    | service&#95;zone |
@@ -476,9 +483,9 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
 |          4 | Manhattan     | Alphabet City           | Yellow Zone      |
 |          5 | Staten Island | Arden Heights           | Boro Zone        |
 
-1. Postgres에서 계속해서 `clickhouse_raw_query` 함수를 사용하여
-   ClickHouse [dictionary] `taxi_zone_dictionary`를 생성하고,
-   S3에 있는 CSV 파일에서 딕셔너리를 채웁니다:
+1. 계속해서 Postgres에서 `clickhouse_raw_query` 함수를 사용해
+   ClickHouse [dictionary] `taxi_zone_dictionary`를 생성하고
+   S3의 CSV 파일에서 딕셔너리를 채우십시오:
 
    ```sql
    SELECT clickhouse_raw_query($$
@@ -496,14 +503,14 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
    ```
 
    :::note
-   `LIFETIME`을 0으로 설정하면 자동 업데이트가 비활성화되어
-   S3 버킷으로의 불필요한 트래픽을 방지합니다.
-   다른 상황에서는 이 값을 다르게 구성할 수 있습니다. 자세한 내용은
-   [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](/sql-reference/statements/create/dictionary/lifetime)을
-   참고하십시오.
+   `LIFETIME`을 0으로 설정하면 S3 버킷에 대한 불필요한 트래픽을 피하기 위해
+   자동 업데이트가 비활성화됩니다. 다른 경우에는 다르게 구성할 수도
+   있습니다. 자세한 내용은 [LIFETIME을 사용한 딕셔너리 데이터
+   갱신](/sql-reference/statements/create/dictionary/lifetime)을
+   참조하십시오.
    :::
 
-   2. 이제 이를 가져옵니다:
+   2. 이제 이를 가져오십시오:
 
    ```sql
    IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
@@ -522,9 +529,9 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
    (3 rows)
    ```
 
-   4. 이제 `dictGet` 함수를 사용하여 쿼리에서 자치구 이름을
-      가져옵니다. 이 쿼리는 LaGuardia 또는 JFK 공항에서 끝나는
-      택시 탑승 건수를 자치구별로 합산합니다:
+   4. 좋습니다. 이제 쿼리에서 `dictGet` 함수를 사용해
+      자치구 이름을 조회합니다. 이 쿼리는 LaGuardia 또는 JFK 공항에서
+      끝나는 자치구별 택시 탑승 횟수를 합산합니다:
 
    ```pgsql
    taxi=# SELECT
@@ -551,15 +558,14 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
    Time: 66.245 ms
    ```
 
-   이 쿼리는 LaGuardia 또는 JFK 공항에서 끝나는 택시 탑승 건수를
-   자치구별로 합산합니다. 픽업 지역이 알 수 없는 경우가 상당히
-   많다는 점에 주목하십시오.
+   이 쿼리는 LaGuardia 또는 JFK 공항에서 끝나는 자치구별 택시 탑승 횟수를 합산합니다.
+   승차 동네를 알 수 없는 이동이 꽤 많다는 점에 유의하십시오.
 
 ## 조인 수행하기 \{#perform-a-join\}
 
-`taxi_zone_dictionary`를 `trips` 테이블과 조인하는 몇 가지 쿼리를 작성합니다.
+`taxi_zone_dictionary`를 `trips` 테이블과 조인하는 몇 가지 쿼리를 작성해 보겠습니다.
 
-1. 앞에서 본 공항 관련 쿼리와 유사하게 동작하는 간단한 `JOIN`부터 시작합니다:
+1. 먼저 위의 공항 쿼리와 비슷하게 동작하는 간단한 `JOIN`부터 살펴보겠습니다.
 
    ```pgsql
    taxi=# SELECT
@@ -586,7 +592,7 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
    ```
 
    :::note
-   위 `JOIN` 쿼리의 출력은 `Unknown` 값이 포함되지 않은 점을 제외하면 앞의 `dictGet` 쿼리와 동일합니다. 내부적으로 ClickHouse는 `taxi_zone_dictionary` 딕셔너리에 대해 `dictGet` 함수를 호출하지만, `JOIN` 구문이 SQL 개발자에게 더 익숙합니다.
+   위 `JOIN` 쿼리의 출력은 위의 `dictGet` 쿼리와 동일합니다. 단, `Unknown` 값은 포함되지 않습니다. 내부적으로 ClickHouse는 실제로 `taxi_zone_dictionary` 딕셔너리에 대해 `dictGet` 함수를 호출하지만, `JOIN` 구문이 SQL 개발자에게는 더 익숙합니다.
    :::
 
    ```pgsql
@@ -608,7 +614,7 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
    Time: 2.012 ms
    ```
 
-2. 이 쿼리는 팁 금액이 가장 높은 1,000개의 운행에 대한 행을 반환한 다음, 각 행을 딕셔너리와 내부 조인합니다:
+2. 이 쿼리는 팁 금액이 가장 큰 1000건의 이동에 대한 행을 반환한 다음, 각 행을 딕셔너리와 inner join합니다.
 
    ```sql
    taxi=# SELECT *
@@ -624,11 +630,11 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
 일반적으로 PostgreSQL과 ClickHouse에서는 `SELECT *` 사용을 피합니다. 실제로 필요한 컬럼만 조회해야 합니다.
 :::
 
-[ClickHouse tutorial]: /tutorial "ClickHouse 고급 튜토리얼"
+[ClickHouse tutorial]: /tutorial "ClickHouse 튜토리얼"
 
 [psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL 클라이언트 애플리케이션: psql"
 
-[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html "SQL 명령어: EXPLAIN"
+[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html "SQL 문: EXPLAIN"
 
 [dictionary]: /sql-reference/statements/create/dictionary
 
@@ -640,4 +646,4 @@ ClickHouse 서비스의 테이블과 연관된 딕셔너리를 생성합니다.
 
 [Postgres image]: https://hub.docker.com/_/postgres "Docker Hub의 Postgres OCI 이미지"
 
-[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime "ClickHouse 문서: LIFETIME을 사용한 딕셔너리 데이터 새로 고침"
+[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime "ClickHouse 문서: LIFETIME을 사용한 딕셔너리 데이터 갱신"

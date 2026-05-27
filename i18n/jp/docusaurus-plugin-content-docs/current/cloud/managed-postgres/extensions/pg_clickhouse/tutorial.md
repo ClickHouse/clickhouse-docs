@@ -1,31 +1,31 @@
 ---
-sidebar_label: 'Руководство'
-description: 'Узнайте, как подключить pg_clickhouse к ClickHouse и выполнять запросы к набору данных о такси Нью-Йорка.'
-slug: '/integrations/pg_clickhouse/tutorial'
-title: 'Руководство по pg_clickhouse'
+sidebar_label: 'チュートリアル'
+description: 'pg_clickhouse を ClickHouse に接続し、ニューヨーク市のタクシーのサンプルデータセットをクエリする方法を学びます。'
+slug: '/cloud/managed-postgres/extensions/pg_clickhouse/tutorial'
+title: 'pg_clickhouse チュートリアル'
 doc_type: 'guide'
-keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'руководство', 'такси']
+keywords: ['PostgreSQL', 'Postgres', 'FDW', '外部データラッパー', 'pg_clickhouse', '拡張機能', 'チュートリアル', 'タクシー']
 ---
 
-## Обзор \{#overview\}
+## 概要 \{#overview\}
 
-В этом руководстве мы повторим шаги из [руководства по ClickHouse], но все запросы будут выполняться через
-pg_clickhouse.
+このチュートリアルは [ClickHouse チュートリアル] をベースにしていますが、すべてのクエリは
+pg&#95;clickhouse 経由で実行します。
 
-## Запуск ClickHouse \{#start-clickhouse\}
+## ClickHouse を起動する \{#start-clickhouse\}
 
-Сначала создайте базу данных ClickHouse, если у вас её ещё нет. Быстрый способ
-начать — использовать Docker-образ:
+まず、まだ ClickHouse データベースを作成していない場合は、作成します。手早く
+始めるには、Docker イメージを使用する方法があります。
 
 ```sh
 docker run -d --network host --name clickhouse -p 8123:8123 -p9000:9000 --ulimit nofile=262144:262144 clickhouse
 docker exec -it clickhouse clickhouse-client
 ```
 
+## テーブルを作成する \{#create-a-table\}
 
-## Создание таблицы \{#create-a-table\}
-
-Давайте возьмём пример из [ClickHouse tutorial] и создадим простую базу данных с набором данных такси Нью-Йорка:
+シンプルなデータベースを作成するために、[ClickHouse チュートリアル]を参考にして、The New York
+City taxi datasetを使用します。
 
 ```sql
 CREATE DATABASE taxi;
@@ -87,10 +87,9 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime;
 ```
 
+## データセットを追加する \{#add-the-data-set\}
 
-## Добавление набора данных \{#add-the-data-set\}
-
-Теперь импортируйте данные:
+続いて、データをインポートします。
 
 ```sql
 INSERT INTO taxi.trips
@@ -150,67 +149,66 @@ SELECT * FROM s3(
 ") SETTINGS input_format_try_infer_datetimes = 0
 ```
 
-Убедитесь, что мы можем выполнить к нему запрос, а затем выйдите из клиента:
+クエリを実行できることを確認してから、クライアントを終了します。
 
 ```sql
 SELECT count() FROM taxi.trips;
 quit
 ```
 
+### pg_clickhouse をインストールする \{#install-pg_clickhouse\}
 
-### Установите pg_clickhouse \{#install-pg_clickhouse\}
-
-Соберите и установите pg&#95;clickhouse из [PGXN] или [GitHub], или разверните
-контейнер Docker, используя [образ pg&#95;clickhouse], который просто добавляет
-pg&#95;clickhouse к Docker-образу [Postgres]:
+[PGXN] または [GitHub] から pg&#95;clickhouse をビルドしてインストールします。あるいは、[pg&#95;clickhouse image] を使って Docker コンテナを起動することもできます。これは、Docker の [Postgres image] に
+pg&#95;clickhouse を追加しただけのイメージです。
 
 ```sh
 docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
        -d ghcr.io/clickhouse/pg_clickhouse:18
 ```
 
+### pg_clickhouse を接続 \{#connect-pg_clickhouse\}
 
-### Подключите pg_clickhouse \{#connect-pg_clickhouse\}
-
-Теперь подключитесь к Postgres:
+次に、Postgres に接続します。
 
 ```sh
 docker exec -it pg_clickhouse psql -U postgres
 ```
 
-И создайте pg&#95;clickhouse:
+pg&#95;clickhouse を作成します:
 
 ```sql
 CREATE EXTENSION pg_clickhouse;
 ```
 
-Создайте внешний сервер, указав имя хоста, порт и имя базы данных ClickHouse.
+ClickHouse データベースのホスト名、ポート、およびデータベース名を使用して、外部サーバー を作成します。
 
 ```sql
 CREATE SERVER taxi_srv FOREIGN DATA WRAPPER clickhouse_fdw
        OPTIONS(driver 'binary', host 'localhost', dbname 'taxi');
 ```
 
-Здесь мы решили использовать двоичный драйвер, который работает по двоичному протоколу ClickHouse. Можно также использовать драйвер «http», работающий через HTTP‑интерфейс.
+ここでは、ClickHouse のバイナリプロトコルを使用するバイナリドライバを選択しています。HTTPインターフェイスを使用する &quot;http&quot; ドライバを使うこともできます。
 
-Затем сопоставьте пользователя PostgreSQL с пользователем ClickHouse. Проще всего сделать это, сопоставив текущего пользователя PostgreSQL с удалённым пользователем для внешнего сервера:
+次に、PostgreSQL ユーザーを ClickHouse ユーザーにマッピングします。これを行う最も簡単な方法は、外部
+サーバー用のリモートユーザーに現在の PostgreSQL ユーザーをそのまま
+マッピングすることです。
 
 ```sql
 CREATE USER MAPPING FOR CURRENT_USER SERVER taxi_srv
        OPTIONS (user 'default');
 ```
 
-Вы также можете указать опцию `password`.
+`password` オプションを指定することもできます。
 
-Теперь добавьте таблицу taxi, просто импортировав все таблицы из удалённой
-базы данных ClickHouse в схему Postgres:
+次に、taxi テーブルを追加します。リモートの
+ClickHouse データベースにあるすべてのテーブルを Postgres のスキーマにインポートします。
 
 ```sql
 CREATE SCHEMA taxi;
 IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```
 
-Теперь таблица должна быть уже импортирована. В [psql] используйте `\det+`, чтобы просмотреть её:
+これでテーブルはインポートされているはずです。[psql] で `\det+` を使って確認します。
 
 ```pgsql
 taxi=# \det+ taxi.*
@@ -221,8 +219,7 @@ taxi=# \det+ taxi.*
 (1 row)
 ```
 
-Готово! Используйте `\d`, чтобы вывести все столбцы:
-
+成功しました！すべてのカラムを表示するには、`\d` を使用します:
 
 ```pgsql
 taxi=# \d taxi.trips
@@ -278,7 +275,7 @@ Server: taxi_srv
 FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 ```
 
-Теперь выполните запрос к таблице:
+次に、テーブルに対してクエリを実行します。
 
 ```pgsql
  SELECT count(*) FROM taxi.trips;
@@ -288,7 +285,9 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
  (1 row)
 ```
 
-Обратите внимание, как быстро выполнился этот запрос. pg&#95;clickhouse передаёт выполнение всего запроса, включая агрегатную функцию `COUNT()`, в ClickHouse, поэтому он выполняется там и возвращает в Postgres только одну строку. Используйте [EXPLAIN], чтобы посмотреть план выполнения:
+クエリがどれほど高速に実行されたかに注目してください。pg&#95;clickhouse は `COUNT()` 集約を含むクエリ全体を
+プッシュダウンするため、ClickHouse 上で実行され、Postgres には 1 行だけが
+返されます。これを確認するには [EXPLAIN] を使用します:
 
 ```pgsql
  EXPLAIN select count(*) from taxi.trips;
@@ -299,15 +298,15 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
  (2 rows)
 ```
 
-Обратите внимание, что &quot;Foreign Scan&quot; отображается в корне плана, что означает, что
-весь запрос был полностью передан на исполнение в ClickHouse.
+&quot;Foreign Scan&quot; がプランのルートに表示されている点に注目してください。これは、
+クエリ全体が ClickHouse にプッシュダウンされていることを意味します。
 
+## データを分析する \{#analyze-the-data\}
 
-## Анализ данных \{#analyze-the-data\}
+いくつかのクエリを実行してデータを分析します。以下の例を確認するか、
+独自のSQLクエリを試してください。
 
-Выполните несколько запросов, чтобы проанализировать данные. Ознакомьтесь со следующими примерами или попробуйте свой собственный SQL-запрос.
-
-* Рассчитайте средний размер чаевых:
+* チップの平均額を計算します:
 
   ```sql
   taxi=# \timing
@@ -321,7 +320,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 9.438 ms
   ```
 
-* Рассчитайте среднюю стоимость на основе количества пассажиров:
+* 乗客数に基づいて、平均コストを計算します：
 
   ```pgsql
   taxi=# SELECT
@@ -346,7 +345,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 27.266 ms
   ```
 
-* Рассчитайте ежедневное количество поездок в каждом районе:
+* 各地区の1日あたりの乗車数を計算します:
 
   ```pgsql
   taxi=# SELECT
@@ -373,7 +372,8 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 30.978 ms
   ```
 
-* Рассчитайте продолжительность каждой поездки в минутах, затем сгруппируйте результаты по продолжительности поездки:
+* 各トリップの所要時間を分単位で計算し、その結果を所要時間別に
+  グループ化します:
 
   ```pgsql
   taxi=# SELECT
@@ -399,7 +399,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 45.477 ms
   ```
 
-* Покажите количество посадок в каждом районе, разбитое по часам суток:
+* 各地区のピックアップ件数を時間帯別に表示します:
 
   ```pgsql
   taxi=# SELECT
@@ -423,7 +423,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 36.895 ms
   ```
 
-* Установите часовой пояс отображения на Нью‑Йорк и выберите поездки до аэропортов LaGuardia или JFK:
+* 表示用タイムゾーンをニューヨークに設定し、ラガーディア空港またはJFK空港行きの乗車データを取得します:
 
   ```pgsql
   taxi=# SET timezone = 'America/New_York';
@@ -457,18 +457,18 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 17.450 ms
   ```
 
-## Создание словаря \{#create-a-dictionary\}
+## Dictionary を作成する \{#create-a-dictionary\}
 
-Создайте словарь, связанный с таблицей в вашем сервисе ClickHouse. Таблица и
-словарь основаны на CSV‑файле, который содержит строку для каждого района
-Нью‑Йорка.
+ClickHouse service のテーブルに関連付けられた Dictionary を作成します。この
+テーブルと Dictionary は、ニューヨーク市の各地区について 1 行を含む CSV ファイルに基づいています。
 
-Районы сопоставлены с названиями пяти нью‑йоркских боро (Bronx, Brooklyn,
-Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
+これらの地区は、ニューヨーク市の 5 つの区
+(Bronx、Brooklyn、Manhattan、Queens、Staten Island)
+および Newark Airport (EWR) の名前に対応付けられています。
 
-Ниже приведён фрагмент используемого CSV‑файла в табличном формате. Столбец
-`LocationID` в файле сопоставлен со столбцами `pickup_nyct2010_gid` и
-`dropoff_nyct2010_gid` в вашей таблице `trips`:
+以下は、使用する CSV ファイルの一部を表形式で示したものです。この
+ファイル内の `LocationID` カラムは、trips テーブル内の `pickup_nyct2010_gid` と
+`dropoff_nyct2010_gid` カラムに対応しています。
 
 | LocationID | Borough       | Zone                    | service&#95;zone |
 | ---------: | ------------- | ----------------------- | ---------------- |
@@ -478,9 +478,9 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
 |          4 | Manhattan     | Alphabet City           | Yellow Zone      |
 |          5 | Staten Island | Arden Heights           | Boro Zone        |
 
-1. Всё ещё в Postgres, используйте функцию `clickhouse_raw_query`, чтобы
-   создать [словарь] ClickHouse с именем `taxi_zone_dictionary` и заполнить
-   словарь данными из CSV‑файла в S3:
+1. 引き続き Postgres で、`clickhouse_raw_query` 関数を使用して
+   `taxi_zone_dictionary` という名前の ClickHouse [dictionary] を作成し、
+   S3 上の CSV ファイルから Dictionary にデータを読み込みます。
 
    ```sql
    SELECT clickhouse_raw_query($$
@@ -498,20 +498,20 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
    ```
 
    :::note
-   Установка `LIFETIME` в 0 отключает автоматическое обновление, чтобы
-   избежать лишнего трафика к нашему бакету S3. В других случаях вы можете
-   настроить это по‑другому. Подробности см. в разделе [Refreshing dictionary
-   data using LIFETIME](/sql-reference/statements/create/dictionary/lifetime).
+   `LIFETIME` を 0 に設定すると、自動更新が無効になり、S3 バケットへの不要な
+   トラフィックを回避できます。ほかのケースでは、別の設定にすることもあります。
+   詳細については、[LIFETIME を使用した Dictionary データの更新](/sql-reference/statements/create/dictionary/lifetime)
+   を参照してください。
    :::
 
-   2. Теперь импортируйте его:
+   2. 次に、これをインポートします。
 
    ```sql
    IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
    FROM SERVER taxi_srv INTO taxi;
    ```
 
-   3. Убедитесь, что к нему можно выполнять запросы:
+   3. クエリできることを確認します。
 
    ```pgsql
    taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
@@ -523,9 +523,9 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
    (3 rows)
    ```
 
-   4. Отлично. Теперь используйте функцию `dictGet`, чтобы получить название
-      боро в запросе. Этот запрос суммирует количество поездок на такси по
-      боро, которые заканчиваются либо в аэропорту LaGuardia, либо в JFK:
+   4. では、クエリ内で `dictGet` 関数を使用して
+      区の名前を取得します。このクエリは、LaGuardia または JFK 空港で終了する
+      タクシー乗車数を区ごとに集計します。
 
    ```pgsql
    taxi=# SELECT
@@ -552,16 +552,16 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
    Time: 66.245 ms
    ```
 
-   Этот запрос суммирует количество поездок на такси по боро, которые
-   заканчиваются либо в аэропорту LaGuardia, либо в JFK. Обратите внимание,
-   что имеется довольно много поездок, для которых район отправления
-   неизвестен.
+   このクエリは、LaGuardia または JFK 空港で終了するタクシー乗車数を区ごとに
+   集計します。乗車地区が不明な移動がかなり多いことがわかります。
 
-## Выполните JOIN \{#perform-a-join\}
+## `JOIN` を実行する \{#perform-a-join\}
 
-Напишите несколько запросов, которые объединяют `taxi_zone_dictionary` с вашей таблицей `trips`.
+`taxi_zone_dictionary` と `trips`
+テーブルを結合するクエリをいくつか作成します。
 
-1. Начните с простого `JOIN`, который работает аналогично предыдущему запросу с аэропортом выше:
+1. まずは、前述の空港に関する
+   クエリとほぼ同じように動作する、シンプルな `JOIN` から始めます。
 
    ```pgsql
    taxi=# SELECT
@@ -588,11 +588,11 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
    ```
 
    :::note
-   Обратите внимание, что результат вышеуказанного запроса с `JOIN`
-   совпадает с результатом запроса с `dictGet` выше (за исключением того,
-   что значения `Unknown` не включены). Внутренне ClickHouse фактически
-   вызывает функцию `dictGet` для словаря `taxi_zone_dictionary`, но
-   синтаксис `JOIN` более привычен для SQL‑разработчиков.
+   上記の `JOIN` クエリの出力は、前述の `dictGet`
+   クエリと同じです (`Unknown` の値が含まれない点を除きます) 。
+   内部的には、ClickHouse は実際には
+   `taxi_zone_dictionary` Dictionary に対して `dictGet` 関数を呼び出していますが、`JOIN` 構文のほうが
+   SQL 開発者にはなじみがあります。
    :::
 
    ```pgsql
@@ -614,9 +614,8 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
    Time: 2.012 ms
    ```
 
-2. Этот запрос возвращает строки для 1000 поездок с самой высокой суммой
-   чаевых, а затем выполняет внутреннее соединение каждой строки с
-   соответствующей записью словаря:
+2. このクエリは、チップ額が最も高い 1000 件の trip の行を返し、
+   その後、各行を Dictionary と内部結合します。
 
    ```sql
    taxi=# SELECT *
@@ -629,24 +628,24 @@ Manhattan, Queens и Staten Island), а также с Newark Airport (EWR).
    ```
 
 :::note
-Обычно мы избегаем использования `SELECT *` в PostgreSQL и ClickHouse.
-Следует выбирать только те столбцы, которые вам действительно нужны.
+一般に、PostgreSQL と ClickHouse では `SELECT *` の使用は避けます。
+実際に必要なカラムだけを取得してください。
 :::
 
-[ClickHouse tutorial]: /tutorial "руководство по ClickHouse"
+[ClickHouse tutorial]: /tutorial "ClickHouse 上級チュートリアル"
 
-[psql]: https://www.postgresql.org/docs/current/app-psql.html "Клиентские приложения PostgreSQL: psql"
+[psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL クライアントアプリケーション: psql"
 
-[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html "SQL-команды: EXPLAIN"
+[EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html "SQL コマンド: EXPLAIN"
 
 [dictionary]: /sql-reference/statements/create/dictionary
 
-[PGXN]: https://pgxn.org/dist/pg_clickhouse "pg_clickhouse на PGXN"
+[PGXN]: https://pgxn.org/dist/pg_clickhouse "PGXN 上の pg_clickhouse"
 
-[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases "pg_clickhouse: релизы на GitHub"
+[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases "GitHub 上の pg_clickhouse リリース"
 
-[pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "pg_clickhouse OCI‑образ на GitHub"
+[pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "GitHub 上の pg_clickhouse OCI イメージ"
 
-[Postgres image]: https://hub.docker.com/_/postgres "Postgres OCI‑образ на Docker Hub"
+[Postgres image]: https://hub.docker.com/_/postgres "Docker Hub 上の Postgres OCI イメージ"
 
-[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime "Документация ClickHouse: обновление данных словаря с помощью LIFETIME"
+[Refreshing dictionary data using LIFETIME]: /sql-reference/statements/create/dictionary/lifetime "ClickHouse ドキュメント: LIFETIME を使用した Dictionary データの更新"

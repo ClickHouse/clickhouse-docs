@@ -134,11 +134,11 @@ SELECT * FROM pg_available_extensions;
 | `vector`                       | 0.8.2  | ベクトルデータ型および ivfflat、hnsw アクセスメソッド                               |
 | `xml2`                         | 1.2    | XPath クエリ処理と XSLT                                               |
 
-## pg_clickhouse extension \{#pg-clickhouse\}
+## pg_clickhouse 拡張機能 \{#pg-clickhouse\}
 
 `pg_clickhouse` 拡張機能は、すべての Managed Postgres インスタンスにあらかじめインストールされています。これにより、PostgreSQL から直接 ClickHouse データベースにクエリを実行でき、トランザクション処理と分析の両方に対するクエリレイヤーを統一できます。
 
-セットアップ手順および使用方法の詳細については、[pg_clickhouse のドキュメント](/integrations/pg_clickhouse) を参照してください。
+セットアップ手順および使用方法の詳細については、[pg&#95;clickhouse のドキュメント](/cloud/managed-postgres/extensions/pg_clickhouse) を参照してください。
 
 ## pg_stat_ch 拡張機能 \{#pg-stat-ch\}
 

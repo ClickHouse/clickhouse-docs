@@ -1,29 +1,30 @@
 ---
 sidebar_label: '教程'
-description: '了解如何将 pg_clickhouse 连接到 ClickHouse，并对纽约市出租车示例数据集进行查询。'
-slug: '/integrations/pg_clickhouse/tutorial'
+description: '了解如何将 pg_clickhouse 连接到 ClickHouse，并查询纽约市出租车示例数据集。'
+slug: '/cloud/managed-postgres/extensions/pg_clickhouse/tutorial'
 title: 'pg_clickhouse 教程'
 doc_type: 'guide'
-keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension', 'tutorial', 'taxi']
+keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', '扩展', '教程', '出租车']
 ---
 
-## 概览 \{#overview\}
+## 概述 \{#overview\}
 
-本教程基于 [ClickHouse 教程]，但通过 pg_clickhouse 来执行其中的所有查询。
+本教程基于 [ClickHouse 教程]，但其中所有查询均通过
+pg&#95;clickhouse 运行。
 
 ## 启动 ClickHouse \{#start-clickhouse\}
 
-首先，如果你还没有 ClickHouse 数据库，请先创建一个。一个快速入门的方式是使用 Docker 镜像：
+首先，如果你还没有 ClickHouse 数据库，请先创建一个。快速开始的一种方式
+是使用 Docker 镜像：
 
 ```sh
 docker run -d --network host --name clickhouse -p 8123:8123 -p9000:9000 --ulimit nofile=262144:262144 clickhouse
 docker exec -it clickhouse clickhouse-client
 ```
 
-
 ## 创建表 \{#create-a-table\}
 
-让我们参考 [ClickHouse tutorial]，使用纽约市出租车数据集创建一个简单的数据库：
+这里借用[ClickHouse 教程]中的示例，使用纽约市出租车数据集创建一个简单的数据库：
 
 ```sql
 CREATE DATABASE taxi;
@@ -85,10 +86,9 @@ PARTITION BY toYYYYMM(pickup_date)
 ORDER BY pickup_datetime;
 ```
 
-
 ## 添加数据集 \{#add-the-data-set\}
 
-然后导入数据：
+接着导入数据：
 
 ```sql
 INSERT INTO taxi.trips
@@ -148,24 +148,23 @@ SELECT * FROM s3(
 ") SETTINGS input_format_try_infer_datetimes = 0
 ```
 
-先确认我们可以查询它，然后退出客户端：
+确认可以查询后，退出客户端：
 
 ```sql
 SELECT count() FROM taxi.trips;
 quit
 ```
 
-
 ### 安装 pg_clickhouse \{#install-pg_clickhouse\}
 
 从 [PGXN] 或 [GitHub] 构建并安装 pg&#95;clickhouse。或者使用 [pg&#95;clickhouse image] 启动一个
-Docker 容器，该镜像只是将 pg&#95;clickhouse 添加到基于 Docker 的 [Postgres image] 中：
+Docker 容器；该镜像只是基于 Docker [Postgres image] 添加了
+pg&#95;clickhouse：
 
 ```sh
 docker run -d --network host --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
        -d ghcr.io/clickhouse/pg_clickhouse:18
 ```
-
 
 ### 连接 pg_clickhouse \{#connect-pg_clickhouse\}
 
@@ -181,32 +180,37 @@ docker exec -it pg_clickhouse psql -U postgres
 CREATE EXTENSION pg_clickhouse;
 ```
 
-使用主机名、端口和数据库，为你的 ClickHouse 数据库创建一个外部服务器（foreign server）。
+使用主机名、端口和数据库，为您的
+ClickHouse 数据库创建 foreign server。
 
 ```sql
 CREATE SERVER taxi_srv FOREIGN DATA WRAPPER clickhouse_fdw
        OPTIONS(driver 'binary', host 'localhost', dbname 'taxi');
 ```
 
-这里我们选择使用二进制驱动，它使用 ClickHouse 二进制协议。也可以使用 &quot;http&quot; 驱动，它通过 HTTP 接口进行通信。
+这里我们选择使用二进制驱动，它采用 ClickHouse 二进制
+协议。你也可以使用 &quot;http&quot; 驱动，它使用 HTTP 接口。
 
-接下来，将一个 PostgreSQL 用户映射到一个 ClickHouse 用户。最简单的方式就是将当前 PostgreSQL 用户映射到该外部服务器上的远程用户：
+接下来，将 PostgreSQL 用户映射到 ClickHouse 用户。最简单的做法
+就是将当前 PostgreSQL 用户映射为该外部
+服务器的远程用户：
 
 ```sql
 CREATE USER MAPPING FOR CURRENT_USER SERVER taxi_srv
        OPTIONS (user 'default');
 ```
 
-你还可以指定一个 `password` 选项。
+您还可以指定 `password` 选项。
 
-现在，添加 taxi 表：将远程 ClickHouse 数据库中的所有表导入到一个 Postgres schema 中：
+现在，添加 taxi 表时，只需将远程
+ClickHouse 数据库中的所有表导入到 Postgres schema 中：
 
 ```sql
 CREATE SCHEMA taxi;
 IMPORT FOREIGN SCHEMA taxi FROM SERVER taxi_srv INTO taxi;
 ```
 
-现在表应该已经导入完成了：在 [psql] 中使用 `\det+` 来查看：
+现在，表应该已经导入完成：在 [psql] 中，使用 `\det+` 查看：
 
 ```pgsql
 taxi=# \det+ taxi.*
@@ -217,8 +221,7 @@ taxi=# \det+ taxi.*
 (1 row)
 ```
 
-成功！使用 `\d` 来查看所有列：
-
+成功！使用 `\d` 查看所有列：
 
 ```pgsql
 taxi=# \d taxi.trips
@@ -284,9 +287,9 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
  (1 row)
 ```
 
-注意该查询执行得有多快。pg&#95;clickhouse 会下推整个
-查询，包括 `COUNT()` 聚合函数，因此它在 ClickHouse 上运行，只需
-向 Postgres 返回一行数据。使用 [EXPLAIN] 来查看它：
+请注意这个查询执行得非常快。pg&#95;clickhouse 将整个
+查询 (包括 `COUNT()` 聚合) 下推，因此它会在 ClickHouse 上运行，并且只
+向 Postgres 返回一行结果。使用 [EXPLAIN] 查看：
 
 ```pgsql
  EXPLAIN select count(*) from taxi.trips;
@@ -297,14 +300,15 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
  (2 rows)
 ```
 
-请注意，在执行计划的根节点可以看到 &quot;Foreign Scan&quot;，这意味着整个查询都被下推到了 ClickHouse。
-
+请注意，&quot;Foreign Scan&quot; 出现在执行计划的根节点，这意味着
+整个查询都已下推到 ClickHouse。
 
 ## 分析数据 \{#analyze-the-data\}
 
-运行一些查询来分析数据。可以参考以下示例，或尝试编写自己的 SQL 查询。
+运行一些查询来分析数据。查看以下示例，或尝试
+自行编写 SQL 查询。
 
-* 计算平均小费金额：
+* 计算小费的平均金额：
 
   ```sql
   taxi=# \timing
@@ -318,7 +322,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 9.438 ms
   ```
 
-* 根据乘客数量计算人均费用：
+* 按乘客人数计算平均成本：
 
   ```pgsql
   taxi=# SELECT
@@ -343,7 +347,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 27.266 ms
   ```
 
-* 计算各街区每天的上车次数：
+* 计算每个街区每天的接载数量：
 
   ```pgsql
   taxi=# SELECT
@@ -370,7 +374,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 30.978 ms
   ```
 
-* 计算每次行程的时长（分钟），然后按
+* 计算每次行程的分钟数，然后按
   行程时长对结果进行分组：
 
   ```pgsql
@@ -397,7 +401,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 45.477 ms
   ```
 
-* 按一天中的小时统计各街区的上车次数：
+* 按一天中的各个小时细分，显示每个街区的上车次数：
 
   ```pgsql
   taxi=# SELECT
@@ -421,7 +425,8 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
   Time: 36.895 ms
   ```
 
-* 将显示时区设置为纽约，并查询前往拉瓜迪亚或 JFK 机场的行程：
+* 将显示时区设为纽约时区，并检索前往拉瓜迪亚机场或 JFK
+  机场的行程：
 
   ```pgsql
   taxi=# SET timezone = 'America/New_York';
@@ -457,11 +462,13 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 
 ## 创建字典 \{#create-a-dictionary\}
 
-在你的 ClickHouse 服务中创建一个与表关联的字典。该表和字典基于一个 CSV 文件，其中每一行对应纽约市的一个社区。
+在您的 ClickHouse 服务中创建一个与表关联的字典。该表和字典基于一个 CSV 文件，其中包含纽约市每个街区的一行数据。
 
-这些社区被映射到纽约市五个行政区的名称 (Bronx、Brooklyn、Manhattan、Queens 和 Staten Island) ，以及 Newark Airport (EWR) 。
+这些街区会映射到纽约市五个行政区的名称
+(Bronx、Brooklyn、Manhattan、Queens 和 Staten Island) ，以及 Newark Airport (EWR)。
 
-下面是你正在使用的 CSV 文件的一部分，并以表格形式展示。文件中的 `LocationID` 列映射到行程表中的 `pickup_nyct2010_gid` 和
+下面是您所用 CSV 文件的一个摘录，以表格形式展示。文件中的
+`LocationID` 列映射到 trips 表中的 `pickup_nyct2010_gid` 和
 `dropoff_nyct2010_gid` 列：
 
 | LocationID | Borough       | Zone                    | service&#95;zone |
@@ -472,9 +479,9 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 |          4 | Manhattan     | Alphabet City           | Yellow Zone      |
 |          5 | Staten Island | Arden Heights           | Boro Zone        |
 
-1. 仍然在 Postgres 中，使用 `clickhouse_raw_query` 函数创建一个名为
-   `taxi_zone_dictionary` 的 ClickHouse [dictionary]，并从 S3 中的 CSV
-   文件填充该字典：
+1. 仍在 Postgres 中时，使用 `clickhouse_raw_query` 函数创建一个名为
+   `taxi_zone_dictionary` 的 ClickHouse [字典]，并从 S3 中的 CSV 文件填充该
+   字典：
 
    ```sql
    SELECT clickhouse_raw_query($$
@@ -492,19 +499,19 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
    ```
 
    :::note
-   将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 存储桶产生不必要的流量。在其他情况下，你可能会进行不同的配置。有关详细信息，请参阅
-   [Refreshing dictionary data using
-   LIFETIME](/sql-reference/statements/create/dictionary/lifetime)。
+   将 `LIFETIME` 设置为 0 会禁用自动更新，以避免对我们的 S3 bucket 产生不必要的
+   流量。在其他情况下，您可能需要采用不同的配置。详情请参见[使用
+   LIFETIME 刷新字典数据](/sql-reference/statements/create/dictionary/lifetime)。
    :::
 
-   2. 现在将其导入：
+   2. 现在导入它：
 
    ```sql
    IMPORT FOREIGN SCHEMA taxi LIMIT TO (taxi_zone_dictionary)
    FROM SERVER taxi_srv INTO taxi;
    ```
 
-   3. 确认我们可以对其进行查询：
+   3. 确认可以查询它：
 
    ```pgsql
    taxi=# SELECT * FROM taxi.taxi_zone_dictionary limit 3;
@@ -516,8 +523,9 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
    (3 rows)
    ```
 
-   4. 很好。现在使用 `dictGet` 函数在查询中获取行政区名称。此查询会汇总在
-      LaGuardia 或 JFK 机场结束的每个行政区的出租车行程数量：
+   4. 很好。现在在查询中使用 `dictGet` 函数获取
+      borough 名称。下面这个查询会汇总终点为 LaGuardia 或 JFK 机场的各个
+      borough 的出租车乘车次数：
 
    ```pgsql
    taxi=# SELECT
@@ -544,14 +552,15 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
    Time: 66.245 ms
    ```
 
-   此查询汇总了在 LaGuardia 或 JFK 机场结束的每个行政区的出租车行程数量。注意，有相当多的行程其上车社区是未知的。
+   此查询会汇总终点为 LaGuardia 或 JFK 机场的各个 borough 的出租车乘车次数。请注意，其中有不少行程的上车街区是未知的。
 
-## 执行一次 JOIN \{#perform-a-join\}
+## 执行 JOIN \{#perform-a-join\}
 
 编写一些查询，将 `taxi_zone_dictionary` 与你的 `trips`
-表进行关联。
+表进行 join。
 
-1. 先从一个与前面机场查询类似的简单 `JOIN` 开始：
+1. 先从一个简单的 `JOIN` 开始，它的行为与前面的机场
+   查询类似：
 
    ```pgsql
    taxi=# SELECT
@@ -578,9 +587,11 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
    ```
 
    :::note
-   注意，上述 `JOIN` 查询的输出与上面的 `dictGet`
-   查询相同 (只是未包含 `Unknown` 值) 。在幕后，ClickHouse 实际上是为
-   `taxi_zone_dictionary` 字典调用 `dictGet` 函数，但 `JOIN` 语法对 SQL 开发人员来说更加熟悉。
+   请注意，上面的 `JOIN` 查询输出与前面的 `dictGet`
+   查询相同 (只是没有包含 `Unknown` 值) 。在底层，
+   ClickHouse 实际上会对 `taxi_zone_dictionary` 字典调用
+   `dictGet` 函数，但 `JOIN` 语法对 SQL 开发者来说
+   更熟悉。
    :::
 
    ```pgsql
@@ -602,8 +613,8 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
    Time: 2.012 ms
    ```
 
-2. 此查询返回小费金额最高的 1000 次行程对应的行，
-   然后对每一行与字典执行一次内连接：
+2. 此查询会返回小费金额最高的 1000 次行程对应的行，
+   然后将每一行与该字典执行一次内 join：
 
    ```sql
    taxi=# SELECT *
@@ -616,13 +627,13 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
    ```
 
 :::note
-通常，我们会在 PostgreSQL 和 ClickHouse 中避免使用 `SELECT *`。
-你只应检索真正需要的列。
+通常，我们会避免在 PostgreSQL 和 ClickHouse 中使用 `SELECT *`。你
+应当只检索实际需要的列。
 :::
 
 [ClickHouse tutorial]: /tutorial "ClickHouse 教程"
 
-[psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL 客户端应用：psql"
+[psql]: https://www.postgresql.org/docs/current/app-psql.html "PostgreSQL 客户端应用程序：psql"
 
 [EXPLAIN]: https://www.postgresql.org/docs/current/sql-explain.html "SQL 命令：EXPLAIN"
 
@@ -630,7 +641,7 @@ FDW options: (database 'taxi', table_name 'trips', engine 'MergeTree')
 
 [PGXN]: https://pgxn.org/dist/pg_clickhouse "PGXN 上的 pg_clickhouse"
 
-[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases "GitHub 上的 pg_clickhouse 发布版本"
+[GitHub]: https://github.com/ClickHouse/pg_clickhouse/releases "GitHub 上的 pg_clickhouse 发行版"
 
 [pg_clickhouse image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse "GitHub 上的 pg_clickhouse OCI 镜像"
 

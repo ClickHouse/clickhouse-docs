@@ -268,7 +268,7 @@ Time: 224.670 ms
 
 ### 从 Postgres 查询 ClickHouse \{#pg-clickhouse-extension\}
 
-`pg_clickhouse` 扩展允许你在 Postgres 中使用标准 SQL 直接查询 ClickHouse 中的数据。这意味着你的应用可以将 Postgres 用作覆盖事务型和分析型数据的统一查询层。详见[完整文档](/integrations/pg_clickhouse)。
+`pg_clickhouse` 扩展允许你在 Postgres 中使用标准 SQL 直接查询 ClickHouse 中的数据。这意味着你的应用可以将 Postgres 用作覆盖事务型和分析型数据的统一查询层。详见[完整文档](/cloud/managed-postgres/extensions/pg_clickhouse)。
 
 启用该扩展：
 
@@ -276,7 +276,7 @@ Time: 224.670 ms
 CREATE EXTENSION pg_clickhouse;
 ```
 
-然后，创建到 ClickHouse 的外部服务器（foreign server）连接。使用 `http` 驱动并将端口设置为 `8443`，以建立安全连接：
+然后，创建到 ClickHouse 的外部服务器 (foreign server) 连接。使用 `http` 驱动并将端口设置为 `8443`，以建立安全连接：
 
 ```sql
 CREATE SERVER ch FOREIGN DATA WRAPPER clickhouse_fdw
@@ -308,7 +308,6 @@ IMPORT FOREIGN SCHEMA "<database_name>" FROM SERVER ch INTO organization;
 ```sql
 \det+ organization.*
 ```
-
 
 ### 查看分析数据的实际效果 \{#analytics-after-integration\}
 

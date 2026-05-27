@@ -134,11 +134,11 @@ SELECT * FROM pg_available_extensions;
 | `vector`                       | 0.8.2  | 向量数据类型以及 ivfflat 和 hnsw 访问方法                          |
 | `xml2`                         | 1.2    | XPath 查询和 XSLT                                        |
 
-## pg_clickhouse extension \{#pg-clickhouse\}
+## pg_clickhouse 扩展 \{#pg-clickhouse\}
 
-在每个托管的 Postgres 实例中都预装了 `pg_clickhouse` 扩展。它允许在 PostgreSQL 中直接查询 ClickHouse 数据库，从而为事务和分析提供统一的查询层。
+在每个 Managed Postgres 实例中都预装了 `pg_clickhouse` 扩展。它允许在 PostgreSQL 中直接查询 ClickHouse 数据库，从而为事务和分析提供统一的查询层。
 
-有关安装配置和使用方法的详细信息，请参阅 [pg_clickhouse 文档](/integrations/pg_clickhouse)。
+有关安装配置和使用方法的详细信息，请参阅 [pg&#95;clickhouse 文档](/cloud/managed-postgres/extensions/pg_clickhouse)。
 
 ## pg_stat_ch 扩展 \{#pg-stat-ch\}
 

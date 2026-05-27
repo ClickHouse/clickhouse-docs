@@ -134,11 +134,11 @@ SELECT * FROM pg_available_extensions;
 | `vector`                       | 0.8.2  | Vector 데이터 타입과 ivfflat, hnsw 접근 메서드                           |
 | `xml2`                         | 1.2    | XPath 쿼리와 XSLT                                                |
 
-## pg_clickhouse extension \{#pg-clickhouse\}
+## pg_clickhouse 확장 기능 \{#pg-clickhouse\}
 
-`pg_clickhouse` 확장은 모든 Managed Postgres 인스턴스에 미리 설치되어 있습니다. 이를 사용하면 PostgreSQL에서 ClickHouse 데이터베이스에 직접 쿼리를 실행할 수 있어, 트랜잭션과 분석 작업을 위한 통합 쿼리 계층을 구성할 수 있습니다.
+`pg_clickhouse` 확장 기능은 모든 Managed Postgres 인스턴스에 미리 설치되어 있습니다. 이를 사용하면 PostgreSQL에서 ClickHouse 데이터베이스에 직접 쿼리를 실행할 수 있어, 트랜잭션과 분석 작업을 위한 통합 쿼리 계층을 구성할 수 있습니다.
 
-설치 및 사용 방법은 [pg_clickhouse 문서](/integrations/pg_clickhouse)를 참조하십시오.
+설치 및 사용 방법은 [pg&#95;clickhouse 문서](/cloud/managed-postgres/extensions/pg_clickhouse)를 참조하십시오.
 
 ## pg_stat_ch 확장 기능 \{#pg-stat-ch\}
 

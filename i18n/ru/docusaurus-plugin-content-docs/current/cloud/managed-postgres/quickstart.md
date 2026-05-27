@@ -268,7 +268,7 @@ Time: 224.670 ms
 
 ### Выполнение запросов к ClickHouse из Postgres \{#pg-clickhouse-extension\}
 
-Расширение `pg_clickhouse` позволяет выполнять запросы к данным ClickHouse напрямую из Postgres, используя стандартный SQL. Это означает, что ваше приложение может использовать Postgres как единый слой для выполнения запросов как к транзакционным, так и к аналитическим данным. Подробности см. в [полной документации](/integrations/pg_clickhouse).
+Расширение `pg_clickhouse` позволяет выполнять запросы к данным ClickHouse напрямую из Postgres, используя стандартный SQL. Это означает, что ваше приложение может использовать Postgres как единый слой для выполнения запросов как к транзакционным, так и к аналитическим данным. Подробности см. в [полной документации](/cloud/managed-postgres/extensions/pg_clickhouse).
 
 Активируйте расширение:
 
@@ -308,7 +308,6 @@ IMPORT FOREIGN SCHEMA "<database_name>" FROM SERVER ch INTO organization;
 ```sql
 \det+ organization.*
 ```
-
 
 ### Посмотрите аналитику в действии \{#analytics-after-integration\}
 
