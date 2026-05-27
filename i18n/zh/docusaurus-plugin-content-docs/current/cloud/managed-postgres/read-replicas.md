@@ -11,6 +11,8 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
+import readReplicasFlow from '@site/static/images/managed-postgres/read-replicas-flow.png';
+import readReplicasTable from '@site/static/images/managed-postgres/read-replicas-table.png';
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.read-replicas-beta" />
 
@@ -23,6 +25,20 @@ import readReplicaDialog from '@site/static/images/managed-postgres/read-replica
 这会打开 warehouse 对话框，你可以在其中查看现有服务并创建新的只读副本：
 
 <Image img={readReplicaDialog} alt="只读副本管理对话框" size="md" border />
+
+## 管理只读副本 \{#managing-read-replicas\}
+
+**只读副本**页面提供两种视图，可通过右上角的 **流程图** 和 **表格** 控件切换。
+
+**流程图**视图显示复制拓扑——顶部是主节点实例，箭头向下指向每个已附加的副本，让您一目了然地查看层级、区域和状态：
+
+<Image img={readReplicasFlow} alt="显示主节点和副本拓扑的只读副本流程图视图" size="lg" border />
+
+**表格**视图会列出每个副本的服务名称、云提供商和区域、服务状态、创建时间，以及 **分离服务** 操作：
+
+<Image img={readReplicasTable} alt="只读副本表格视图" size="lg" border />
+
+要创建新的副本，请在任一视图的右上角点击 **创建只读副本**。
 
 ## 为什么要使用只读副本 \{#why-use-read-replicas\}
 

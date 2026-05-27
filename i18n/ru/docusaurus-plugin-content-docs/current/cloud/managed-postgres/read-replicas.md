@@ -11,6 +11,8 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
+import readReplicasFlow from '@site/static/images/managed-postgres/read-replicas-flow.png';
+import readReplicasTable from '@site/static/images/managed-postgres/read-replicas-table.png';
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.read-replicas-beta" />
 
@@ -23,6 +25,20 @@ import readReplicaDialog from '@site/static/images/managed-postgres/read-replica
 Откроется диалоговое окно хранилища, где вы можете просмотреть существующие сервисы и создать новые реплики для чтения:
 
 <Image img={readReplicaDialog} alt="Диалоговое окно управления репликами для чтения" size="md" border />
+
+## Управление репликами для чтения \{#managing-read-replicas\}
+
+Страница **Read replicas** предлагает два представления, между которыми можно переключаться с помощью элементов управления **Flow** и **Table** в правом верхнем углу.
+
+Представление **Flow** показывает топологию репликации: вверху расположен основной экземпляр, от которого вниз к каждой подключенной реплике идут стрелки, что позволяет сразу увидеть уровень, регион и статус:
+
+<Image img={readReplicasFlow} alt="Представление Flow для реплик для чтения с основным экземпляром и топологией реплик" size="lg" border />
+
+В представлении **Table** перечислены все реплики с именем сервиса, облачным провайдером и регионом, статусом сервиса, временем создания и действием **Detach service**:
+
+<Image img={readReplicasTable} alt="Представление Table для реплик для чтения" size="lg" border />
+
+Чтобы создать новую реплику, нажмите **Create read replica** в правом верхнем углу любого из представлений.
 
 ## Зачем нужны реплики для чтения \{#why-use-read-replicas\}
 
