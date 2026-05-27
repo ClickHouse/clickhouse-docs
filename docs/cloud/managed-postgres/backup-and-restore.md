@@ -7,11 +7,11 @@ keywords: ['backup', 'restore', 'point-in-time recovery', 'pitr', 'disaster reco
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import backupAndRestore from '@site/static/images/managed-postgres/backup-and-restore.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="backup-and-restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.backup-and-restore-beta" />
 
 Managed Postgres ensures the safety and availability of your data through automated backups and point-in-time recovery. You can view your backup history and initiate restores from the **Backups** view of your instance.
 

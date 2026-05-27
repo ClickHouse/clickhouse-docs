@@ -60,10 +60,12 @@ More connectors will get added to ClickPipes, you can find out more by [contacti
 
 ## List of Static IPs {#list-of-static-ips}
 
-The following are the static NAT IPs (separated by region) that ClickPipes uses to connect to your external services. Add your related instance region IPs to your IP allow list to allow traffic. In the case of object storage pipes you should also add the [ClickHouse cluster IPs](/manage/data-sources/cloud-endpoints-api) to your IP allow list.
+The following tables list the static NAT IPs that ClickPipes uses to connect to your external services. Add the IPs for the ClickPipes region that serves your ClickHouse Cloud service to your IP allow list. In the case of object storage pipes you should also add the [ClickHouse cluster IPs](/manage/data-sources/cloud-endpoints-api) to your IP allow list.
 
-For all services, ClickPipes traffic will originate from a default region based on your service's location:
-- **eu-central-1**: For all EU regions not explicitly listed (including GCP and Azure EU regions).
+Services in the Google Cloud regions listed in the Google Cloud table below use those Google Cloud IPs only if the service was created on or after 27 May 2026. Services in those regions created before 27 May 2026 continue to use the default region IPs listed below.
+
+For other services, ClickPipes traffic will originate from a default region based on your service's location:
+- **eu-central-1**: For all EU regions not explicitly listed, plus Azure EU regions and Google Cloud EU services created before 27 May 2026.
 - **eu-west-1**: For all services in AWS `eu-west-1` created on or after 20 Jan 2026 (services created before this date use `eu-central-1` IPs).
 - **us-east-1**: For all services in AWS `us-east-1`.
 - **ap-south-1**: For services in AWS `ap-south-1` created on or after 25 Jun 2025 (services created before this date use `us-east-2` IPs).
@@ -81,7 +83,9 @@ For all services, ClickPipes traffic will originate from a default region based 
 - **mx-central-1**: For services in AWS `mx-central-1` created on or after 19 May 2026 (services created before this date use `us-east-2` IPs).
 - **sa-east-1**: For services in AWS `sa-east-1` created on or after 15 Apr 2026 (services created before this date use `us-east-2` IPs).
 - **us-west-2**: For services in AWS `us-west-2` created on or after 24 Jun 2025 (services created before this date use `us-east-2` IPs).
-- **us-east-2**: For all other regions not explicitly listed (including GCP and Azure regions).
+- **us-east-2**: For all other regions that do not match a rule above, including Azure regions and Google Cloud services created before 27 May 2026.
+
+### AWS static NAT IPs {#aws-static-nat-ips}
 
 | AWS region                                              | IP Addresses                                                                                                                                     |
 |---------------------------------------------------------| ------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -105,6 +109,17 @@ For all services, ClickPipes traffic will originate from a default region based 
 | **mx-central-1** - Mexico (from 19 May 2026)            | `78.12.67.220`, `78.12.117.175`, `78.13.186.238`, `78.13.219.184`, `78.13.224.212`, `78.13.248.162`                                                  |
 | **sa-east-1** - São Paulo (from 15 Apr 2026)            | `18.230.164.131`, `56.126.1.234`, `18.230.39.24`, `15.229.102.116`, `18.230.174.204`, `18.229.237.116`                                               |
 | **us-west-2** - Oregon (from 24 Jun 2025)               | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                                     |
+
+### Google Cloud static NAT IPs {#google-cloud-static-nat-ips}
+
+| Google Cloud region                              | IP Addresses                                                                                               |
+|--------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| **asia-northeast1** - Tokyo (from 27 May 2026)   | `104.198.114.210`, `35.221.66.81`, `35.243.126.127`, `136.110.107.86`, `34.85.18.112`                     |
+| **asia-southeast1** - Singapore (from 27 May 2026) | `34.21.197.28`, `35.197.141.23`, `35.197.157.90`, `136.110.17.200`, `35.185.179.231`                    |
+| **europe-west2** - London (from 27 May 2026)     | `35.242.131.178`, `34.39.77.101`, `34.39.47.179`, `34.89.53.234`, `8.228.63.151`                         |
+| **europe-west4** - Netherlands (from 27 May 2026) | `34.34.86.3`, `34.6.175.56`, `34.178.6.187`, `34.91.204.220`, `34.12.85.206`                            |
+| **us-central1** - Iowa (from 27 May 2026)        | `34.28.24.54`, `34.42.56.195`, `34.63.141.9`, `35.238.146.37`, `34.10.251.49`                            |
+| **us-east1** - South Carolina (from 27 May 2026) | `34.24.134.232`, `34.24.214.165`, `34.24.20.1`, `35.243.193.248`, `34.23.98.76`                          |
 
 ## Adjusting ClickHouse settings {#adjusting-clickhouse-settings}
 ClickHouse Cloud provides sensible defaults for most of the use cases. However, if you need to adjust some ClickHouse settings for the ClickPipes destination tables, a dedicated role for ClickPipes is the most flexible solution.

@@ -7,7 +7,7 @@ keywords: ['managed postgres', 'query insights', 'pg_stat_ch', 'slow queries', '
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import queryInsightsOverview from '@site/static/images/managed-postgres/monitoring/query-insights-overview.png';
 import queryInsightsPatterns from '@site/static/images/managed-postgres/monitoring/query-insights-patterns.png';
@@ -15,7 +15,7 @@ import queryInsightsRecentQueries from '@site/static/images/managed-postgres/mon
 import queryInsightsDetailAggregate from '@site/static/images/managed-postgres/monitoring/query-insights-detail-aggregate.png';
 import queryInsightsDetailRecent from '@site/static/images/managed-postgres/monitoring/query-insights-detail-recent.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="query-insights" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.query-insights-beta" />
 
 Query Insights captures per-statement telemetry from your
 [Managed Postgres](/cloud/managed-postgres) instance and ranks every query

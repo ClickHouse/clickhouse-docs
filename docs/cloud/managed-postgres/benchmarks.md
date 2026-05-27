@@ -7,13 +7,13 @@ keywords: ['postgres benchmarks', 'performance', 'pgbench', 'aurora', 'rds', 'tp
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import computeIntensive from '@site/static/images/managed-postgres/benchmarks/compute-intensive.png';
 import ioReadOnly from '@site/static/images/managed-postgres/benchmarks/io-intensive-readonly.png';
 import ioReadWrite from '@site/static/images/managed-postgres/benchmarks/io-intensive-readwrite.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="benchmarks" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.benchmarks-beta" />
 
 :::info TL;DR
 - **Benchmarked** Postgres managed by ClickHouse against AWS RDS (16k provisioned IOPS) and Aurora IO Optimized using standard [`pgbench`](https://www.postgresql.org/docs/current/pgbench.html) tests

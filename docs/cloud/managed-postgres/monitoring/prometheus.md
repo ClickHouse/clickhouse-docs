@@ -1,19 +1,19 @@
 ---
 slug: /cloud/managed-postgres/monitoring/prometheus
 sidebar_label: 'Prometheus endpoint'
-title: 'Prometheus Integration'
+title: 'Managed Postgres Prometheus integration'
 description: 'Scrape Managed Postgres metrics into Prometheus, Grafana, Datadog, or any OpenMetrics-compatible collector'
 keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', 'metrics', 'openmetrics', 'observability']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-prometheus" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-prometheus-beta" />
 
 Managed Postgres exposes two Prometheus-compatible metrics endpoints
 on the [ClickHouse Cloud API][cloud-api]:

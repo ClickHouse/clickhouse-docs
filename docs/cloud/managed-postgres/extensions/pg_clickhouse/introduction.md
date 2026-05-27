@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Introduction'
 description: 'Run analytics queries on ClickHouse right from PostgreSQL without rewriting any SQL'
-slug: '/integrations/pg_clickhouse'
+slug: '/cloud/managed-postgres/extensions/pg_clickhouse'
 title: 'pg_clickhouse reference documentation'
 doc_type: 'landing-page'
 keywords: ['PostgreSQL', 'Postgres', 'FDW', 'foreign data wrapper', 'pg_clickhouse', 'extension']
@@ -20,7 +20,7 @@ PostgreSQL schema. Then run your existing PostgreSQL queries to against those
 tables, preserving your existing code base while pushing execution down to
 ClickHouse.
 
-## Getting Started {#getting-started}
+## Getting started {#getting-started}
 
 The simplest way to try pg_clickhouse is the [Docker image], which contains
 the standard PostgreSQL Docker image with the pg_clickhouse and [re2]
@@ -35,7 +35,7 @@ docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhous
 See the [tutorial] to get started importing ClickHouse tables and pushing down
 queries.
 
-## Test Case: TPC-H {#test-case-tpc-h}
+## Test case: TPC-H {#test-case-tpc-h}
 
 This table compares [TPC-H] query performance between regular PostgreSQL
 tables and pg_clickhouse connected to ClickHouse, both loaded at scaling
@@ -68,7 +68,7 @@ memory.
 | [Query 21] |    1349 ms |       4434 ms |          |
 | [Query 22] |     258 ms |       1415 ms |          |
 
-### Compile From Source {#compile-from-source}
+### Compile from source {#compile-from-source}
 
 #### General Unix {#general-unix}
 
@@ -107,7 +107,7 @@ sudo yum install \
 
 See [PostgreSQL Yum] for details on pulling from the PostgreSQL Yum repository.
 
-#### Install From PGXN {#install-from-pgxn}
+#### Install from PGXN {#install-from-pgxn}
 
 With the above dependencies satisfied use the [PGXN client] (available as
 [Homebrew], [Apt] and Yum packages named `pgxnclient`) to download, compile,
@@ -281,10 +281,10 @@ adding DML features. Our road map:
 
   [pg_clickhouse]: https://github.com/clickHouse/pg_clickhouse
     "pg_clickhouse on GitHub"
-  [import foreign tables]: /integrations/pg_clickhouse/reference#import-foreign-schema
+  [import foreign tables]: /cloud/managed-postgres/extensions/pg_clickhouse/reference#import-foreign-schema
   [Docker image]: https://github.com/ClickHouse/pg_clickhouse/pkgs/container/pg_clickhouse
     "Latest Docker release"
-  [tutorial]: /integrations/pg_clickhouse/tutorial "pg_clickhouse Tutorial"
+  [tutorial]: /cloud/managed-postgres/extensions/pg_clickhouse/tutorial "pg_clickhouse Tutorial"
   [PostgreSQL Apt]: https://wiki.postgresql.org/wiki/Apt
   [PostgreSQL Yum]: https://yum.postgresql.org
   [PGXN client]: https://pgxn.github.io/pgxnclient/ "PGXN Client’s documentation"

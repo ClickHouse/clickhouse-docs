@@ -1,15 +1,15 @@
 ---
 slug: /cloud/managed-postgres/monitoring/metrics
 sidebar_label: 'Metrics reference'
-title: 'Metrics reference'
+title: 'Managed Postgres metrics reference'
 description: 'Full list of metrics exposed by the Managed Postgres Prometheus endpoint'
 keywords: ['managed postgres', 'metrics', 'prometheus', 'reference', 'observability']
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-metrics" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-metrics-beta" />
 
 This page lists every metric exposed by the
 [Managed Postgres Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus).

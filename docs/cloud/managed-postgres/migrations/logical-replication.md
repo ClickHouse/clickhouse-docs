@@ -7,7 +7,7 @@ keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data t
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPgForMigrate from '@site/static/images/managed-postgres/pg_dump_restore/create-pg-for-migration.png';
 import sourceReplicationSetup from '@site/static/images/managed-postgres/logical_replication/source-setup.png';
@@ -17,7 +17,7 @@ import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/so
 
 This guide provides step-by-step instructions on how to migrate your PostgreSQL database to ClickHouse Managed Postgres using Postgres native logical replication.
 
-<PrivatePreviewBadge />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.logical-replication-beta" />
 
 ## Prerequisites {#migration-logical-replication-prerequisites}
 - Access to your source PostgreSQL database.

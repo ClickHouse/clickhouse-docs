@@ -10,7 +10,7 @@ keywords: ['clickstack', 'AI notebooks', 'investigation', 'observability', 'Hype
 ---
 
 import Image from '@theme/IdealImage';
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import notebook_hero from '@site/static/images/use-cases/observability/hyperdx-notebook-hero.png';
 import notebook_list from '@site/static/images/use-cases/observability/hyperdx-notebook-list.png';
 import notebook_tiles from '@site/static/images/use-cases/observability/hyperdx-notebook-tiles.png';
@@ -20,7 +20,7 @@ import notebook_manual_tiles from '@site/static/images/use-cases/observability/h
 import notebook_agent_context from '@site/static/images/use-cases/observability/hyperdx-notebook-agent-context.png';
 import notebook_ai_consent from '@site/static/images/use-cases/observability/hyperdx-notebook-ai-consent.png';
 
-<PrivatePreviewBadge/>
+<BetaBadge/>
 
 AI Notebooks are an interactive investigation tool in ClickStack that combines an AI agent with manual analysis. You can describe an issue in plain language, and the AI agent will query logs, traces, and metrics on your behalf — surfacing relevant data, charts, and summaries as a series of tiles. You can also add your own tiles (charts, tables, searches, and markdown notes) alongside the AI-generated output, building a complete record of an investigation.
 
@@ -32,7 +32,7 @@ AI Notebooks are only available in Managed ClickStack deployments.
 
 ## Setup {#setup}
 
-AI Notebooks are currently in private preview in ClickHouse Cloud. AI models and providers are managed automatically by the platform.
+AI Notebooks are currently in beta in ClickHouse Cloud. AI models and providers are managed automatically by the platform.
 
 Before using AI Notebooks:
 

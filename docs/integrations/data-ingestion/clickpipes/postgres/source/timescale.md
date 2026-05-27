@@ -85,25 +85,22 @@ If you'd like to only perform a one-time load of your data (`Initial Load Only`)
     ALTER USER clickpipes_user WITH REPLICATION;
     ```
 
-4. Create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the tables you want to replicate. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
+4. As a Postgres superuser/admin, create a [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) with the hypertables you want to replicate. The publication **must also include the entire `_timescaledb_internal` schema** so the pipe can receive changes from the underlying chunks. We strongly recommend only including the tables you need in the publication to avoid performance overhead.
 
    :::warning
    Any table included in the publication must either have a **primary key** defined _or_ have its **replica identity** configured to `FULL`. See the [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) for guidance on scoping.
    :::
 
-   - To create a publication for specific tables:
-
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
-      ```
-
-   - To create a publication for all tables in a specific schema:
-
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
-      ```
+   ```sql
+   -- When adding new tables to the ClickPipe, you'll need to add them to the publication manually as well.
+   CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2, TABLES IN SCHEMA _timescaledb_internal;
+   ```
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
+
+   :::info
+   Some managed services don't give their admin users the required permissions to create a publication for an entire schema. If this is the case, raise a support ticket with your provider. Alternatively, you can skip this step (and the following steps) and perform a one-time load of your data instead.
+   :::
 
 After these steps, you should be able to proceed with [creating a ClickPipe](../index.md).
 
