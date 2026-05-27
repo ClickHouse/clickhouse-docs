@@ -401,7 +401,6 @@ const sidebars = {
             'cloud/managed-postgres/monitoring/metrics',
           ],
         },
-        'cloud/managed-postgres/benchmarks',
         'cloud/managed-postgres/openapi',
         'cloud/managed-postgres/faq',
       ],
