@@ -42,34 +42,35 @@ clickhouse-benchmark [keys] < queries_file;
 
 ## コマンドラインオプション \{#clickhouse-benchmark-command-line-options\}
 
-- `--query=QUERY` — 実行するクエリ。このパラメータが渡されない場合、`clickhouse-benchmark` は標準入力からクエリを読み込みます。
-- `--query_id=ID` — クエリ ID。
-- `--query_id_prefix=ID_PREFIX` — クエリ ID のプレフィックス。
-- `-c N`, `--concurrency=N` — `clickhouse-benchmark` が同時に送信するクエリ数。デフォルト値: 1。
-- `-C N`, `--max_concurrency=N` — 並列クエリ数を指定した値まで段階的に増やし、各並列度ごとにレポートを 1 つ作成します。
-- `--precise` — 重み付きメトリクスを用いた、インターバルごとの精密なレポートを有効にします。
-- `-d N`, `--delay=N` — 中間レポート間の間隔（秒）（レポートを無効にするには 0 を指定）。デフォルト値: 1。
-- `-h HOST`, `--host=HOST` — サーバーホスト。デフォルト値: `localhost`。[比較モード](#clickhouse-benchmark-comparison-mode) では複数の `-h` オプションを使用できます。
-- `-i N`, `--iterations=N` — クエリの総数。デフォルト値: 0（無限に繰り返す）。
-- `-r`, `--randomize` — 複数の入力クエリがある場合、クエリ実行順序をランダムにします。
-- `-s`, `--secure` — `TLS` 接続を使用します。
-- `-t N`, `--timelimit=N` — 時間制限（秒）。指定した時間制限に達すると、`clickhouse-benchmark` はクエリ送信を停止します。デフォルト値: 0（時間制限なし）。
-- `--port=N` — サーバーポート。デフォルト値: 9000。[比較モード](#clickhouse-benchmark-comparison-mode) では複数の `--port` オプションを使用できます。
-- `--confidence=N` — t 検定の信頼水準。指定可能な値: 0 (80%), 1 (90%), 2 (95%), 3 (98%), 4 (99%), 5 (99.5%)。デフォルト値: 5。[比較モード](#clickhouse-benchmark-comparison-mode) では、`clickhouse-benchmark` は選択された信頼水準で 2 つの分布に差がないかを判定するために [独立 2 標本スチューデントの t 検定](https://en.wikipedia.org/wiki/Student%27s_t-test#Independent_two-sample_t-test) を実行します。
-- `--cumulative` — インターバルごとのデータではなく累積データを出力します。
-- `--database=DATABASE_NAME` — ClickHouse データベース名。デフォルト値: `default`。
-- `--user=USERNAME` — ClickHouse ユーザー名。デフォルト値: `default`。
-- `--password=PSWD` — ClickHouse ユーザーパスワード。デフォルト値: 空文字列。
-- `--stacktrace` — スタックトレースを出力します。このオプションが指定されている場合、`clickhouse-benchmark` は例外のスタックトレースを出力します。
-- `--stage=WORD` — サーバー側でのクエリ処理ステージ。ClickHouse は指定されたステージでクエリ処理を停止し、その時点の結果を `clickhouse-benchmark` に返します。指定可能な値: `complete`, `fetch_columns`, `with_mergeable_state`。デフォルト値: `complete`。
-- `--roundrobin` — 複数の `--host`/`--port` を比較する代わりに、クエリごとにランダムに 1 つの `--host`/`--port` を選択して、そのホストにクエリを送信します。
-- `--reconnect=N` — 再接続の動作を制御します。指定可能な値: 0（再接続しない）、1（クエリごとに再接続）、N（N クエリごとに再接続）。デフォルト値: 0。
-- `--max-consecutive-errors=N` — 許容される連続エラー数。デフォルト値: 0。
-- `--ignore-error`,`--continue_on_errors` — クエリが失敗してもテストを継続します。
-- `--client-side-time` — サーバー側の時間ではなく、ネットワーク通信を含むクライアント側の時間を表示します。サーバーバージョン 22.8 より前では、常にクライアント側の時間が表示される点に注意してください。
-- `--proto-caps` — データ転送時のチャンク化を有効/無効にします。指定可能な値（カンマ区切りで複数指定可）: `chunked_optional`, `notchunked`, `notchunked_optional`, `send_chunked`, `send_chunked_optional`, `send_notchunked`, `send_notchunked_optional`, `recv_chunked`, `recv_chunked_optional`, `recv_notchunked`, `recv_notchunked_optional`。デフォルト値: `notchunked`。
-- `--help` — ヘルプメッセージを表示します。
-- `--verbose` — ヘルプメッセージの詳細度を上げます。
+* `--query=QUERY` — 実行するクエリ。このパラメータが渡されない場合、`clickhouse-benchmark` は標準入力からクエリを読み込みます。
+* `--query_id=ID` — クエリ ID。
+* `--query_id_prefix=ID_PREFIX` — クエリ ID のプレフィックス。
+* `--queries-format=FORMAT` — 標準入力から読み込むクエリのフォーマット。設定可能な値: `tsv` (デフォルト。1 行につき 1 つのタブエスケープされたクエリ) および `script` (入力を、セミコロンで区切られた複数のクエリからなるスクリプトとして parse) 。`script` の制限: `INSERT ... FORMAT` クエリは 1 行で記述する必要があります。
+* `-c N`, `--concurrency=N` — `clickhouse-benchmark` が同時に送信するクエリ数。デフォルト値: 1。
+* `-C N`, `--max_concurrency=N` — 並列クエリ数を指定した値まで段階的に増やし、各並列度ごとにレポートを 1 つ作成します。
+* `--precise` — 重み付きメトリクスを用いた、インターバルごとの精密なレポートを有効にします。
+* `-d N`, `--delay=N` — 中間レポート間の間隔 (秒)  (レポートを無効にするには 0 を指定) 。デフォルト値: 1。
+* `-h HOST`, `--host=HOST` — サーバーホスト。デフォルト値: `localhost`。[比較モード](#clickhouse-benchmark-comparison-mode) では複数の `-h` オプションを使用できます。
+* `-i N`, `--iterations=N` — クエリの総数。デフォルト値: 0 (無限に繰り返す) 。
+* `-r`, `--randomize` — 複数の入力クエリがある場合、クエリ実行順序をランダムにします。
+* `-s`, `--secure` — `TLS` 接続を使用します。
+* `-t N`, `--timelimit=N` — 時間制限 (秒) 。指定した時間制限に達すると、`clickhouse-benchmark` はクエリ送信を停止します。デフォルト値: 0 (時間制限なし) 。
+* `--port=N` — サーバーポート。デフォルト値: 9000。[比較モード](#clickhouse-benchmark-comparison-mode) では複数の `--port` オプションを使用できます。
+* `--confidence=N` — t 検定の信頼水準。設定可能な値: 0 (80%), 1 (90%), 2 (95%), 3 (98%), 4 (99%), 5 (99.5%)。デフォルト値: 5。[比較モード](#clickhouse-benchmark-comparison-mode) では、`clickhouse-benchmark` は選択された信頼水準で 2 つの分布に差がないかを判定するために [独立 2 標本スチューデントの t 検定](https://en.wikipedia.org/wiki/Student%27s_t-test#Independent_two-sample_t-test) を実行します。
+* `--cumulative` — インターバルごとのデータではなく累積データを出力します。
+* `--database=DATABASE_NAME` — ClickHouse データベース名。デフォルト値: `default`。
+* `--user=USERNAME` — ClickHouse ユーザー名。デフォルト値: `default`。
+* `--password=PSWD` — ClickHouse ユーザーパスワード。デフォルト値: 空文字列。
+* `--stacktrace` — スタックトレースを出力します。このオプションが指定されている場合、`clickhouse-benchmark` は例外のスタックトレースを出力します。
+* `--stage=WORD` — サーバー側でのクエリ処理ステージ。ClickHouse は指定されたステージでクエリ処理を停止し、その時点の結果を `clickhouse-benchmark` に返します。設定可能な値: `complete`, `fetch_columns`, `with_mergeable_state`。デフォルト値: `complete`。
+* `--roundrobin` — 複数の `--host`/`--port` を比較する代わりに、クエリごとにランダムに 1 つの `--host`/`--port` を選択して、そのホストにクエリを送信します。
+* `--reconnect=N` — 再接続の動作を制御します。設定可能な値: 0 (再接続しない) 、1 (クエリごとに再接続) 、N (N クエリごとに再接続) 。デフォルト値: 0。
+* `--max-consecutive-errors=N` — 許容される連続エラー数。デフォルト値: 0。
+* `--ignore-error`,`--continue_on_errors` — クエリが失敗してもテストを継続します。
+* `--client-side-time` — サーバー側の時間ではなく、ネットワーク通信を含むクライアント側の時間を表示します。サーバーバージョン 22.8 より前では、常にクライアント側の時間が表示される点に注意してください。
+* `--proto-caps` — データ転送時のチャンク化を有効/無効にします。設定可能な値 (カンマ区切りで複数指定可) : `chunked_optional`, `notchunked`, `notchunked_optional`, `send_chunked`, `send_chunked_optional`, `send_notchunked`, `send_notchunked_optional`, `recv_chunked`, `recv_chunked_optional`, `recv_notchunked`, `recv_notchunked_optional`。デフォルト値: `notchunked`。
+* `--help` — ヘルプメッセージを表示します。
+* `--verbose` — ヘルプメッセージの詳細度を上げます。
 
 クエリに対していくつかの[設定](/operations/settings/overview)を適用したい場合は、`--<session setting name>= SETTING_VALUE` というオプションとして渡します。たとえば、`--max_memory_usage=1048576` のようになります。
 

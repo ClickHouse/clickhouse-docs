@@ -174,7 +174,7 @@ result = (ds
 
 使用 `explain()` 来查看实际将要执行的操作：
 
-```python
+```python title="Query"
 ds = pd.read_csv("sales.csv")
 
 query = (ds
@@ -187,9 +187,7 @@ query = (ds
 query.explain()
 ```
 
-输出结果：
-
-```text
+```text title="Response"
 Pipeline:
   1. Source: file('sales.csv', 'CSVWithNames')
   2. Filter: amount > 1000
@@ -212,7 +210,6 @@ query.explain(verbose=True)
 有关完整文档，请参见 [Debugging: explain()](../debugging/explain.md)。
 
 ***
-
 
 ## 缓存 \{#caching\}
 

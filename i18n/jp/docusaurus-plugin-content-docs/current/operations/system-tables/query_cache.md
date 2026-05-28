@@ -20,6 +20,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 
 * `query` ([String](../../sql-reference/data-types/)) — クエリ文字列。
 * `query_id` ([String](../../sql-reference/data-types/)) — クエリの ID。
+* `is_subquery` ([UInt8](../../sql-reference/data-types/)) — クエリキャッシュエントリがサブクエリの結果かどうか。
 * `result_size` ([UInt64](../../sql-reference/data-types/)) — クエリキャッシュエントリのサイズ。
 * `tag` ([LowCardinality(String)](../../sql-reference/data-types/)) — クエリキャッシュエントリのタグ。
 * `stale` ([UInt8](../../sql-reference/data-types/)) — クエリキャッシュエントリが古くなっているかどうか。

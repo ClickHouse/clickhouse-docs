@@ -2,12 +2,16 @@
 slug: /cloud/managed-postgres/monitoring/prometheus
 sidebar_label: 'Prometheus 엔드포인트'
 title: 'Managed Postgres Prometheus 엔드포인트'
-description: 'Managed Postgres 메트릭을 Prometheus, Grafana, Datadog 또는 OpenMetrics 호환 collector로 수집합니다'
+description: 'Managed Postgres 메트릭을 Prometheus, Grafana, Datadog 또는 OpenMetrics 호환 collector로 스크레이프합니다'
 keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', '메트릭', 'openmetrics', '관측성']
 doc_type: 'guide'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import Image from '@theme/IdealImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
 
 # Prometheus 연동 \{#prometheus-integration\}
 
@@ -76,7 +80,7 @@ PostgresServer_CacheHitRatio{clickhouse_org="ca04a310-730d-4ce0-93dd-39f2cd2d5e6
 
 ## Prometheus 설정 \{#configuring-prometheus\}
 
-이 구성은 30초마다 조직 수준 엔드포인트를 스크레이프하도록 설정되어 있습니다:
+이 구성은 60초마다 조직 수준 엔드포인트를 스크레이프하도록 설정되어 있습니다:
 
 ```yaml
 scrape_configs:
@@ -89,14 +93,67 @@ scrape_configs:
       username: <KEY_ID>
       password: <KEY_SECRET>
     honor_labels: true
-    scrape_interval: 30s
+    scrape_interval: 60s
 ```
+
+엔드포인트는 메트릭을 1분에 한 번 갱신합니다. `60s`보다 더 빠르게
+스크레이프하면 샘플이 중복되고 gauge
+패널에 계단형 패턴이 나타납니다.
 
 `honor_labels: true`를 설정하여 엔드포인트의 `postgres_service` 및
 `postgres_service_name` 레이블이 Prometheus에 의해 덮어써지지 않고 유지되도록
 하십시오.
 
 단일 서비스를 스크레이프하려면 `metrics_path`에 `/<PG_ID>`를 추가하십시오.
+
+## 사전 구축된 Grafana 대시보드 \{#grafana-dashboard\}
+
+바로 사용할 수 있는 Grafana 대시보드는 엔드포인트에서 노출하는 모든 메트릭을 시각화합니다.
+정렬 가능한 서비스 테이블, CPU 및 메모리 사용률, 임계값 알림이 포함된 디스크
+사용량, 상태별 연결, 트랜잭션 및
+롤백 비율, Tuple 활동, I/O, 데이터베이스별 스토리지, 그리고
+교착 상태를 확인할 수 있습니다.
+
+<Image img={grafanaDashboard} alt="Managed Postgres Services용 Grafana 대시보드" size="md" border />
+
+### 대시보드 가져오기 \{#import-dashboard\}
+
+<VerticalStepper headerLevel="h4">
+  #### 대시보드 JSON 다운로드 \{#download\}
+
+  <TrackedLink href={useBaseUrl('/examples/managed-postgres-grafana-dashboard.json')} download="managed-postgres-grafana-dashboard.json" eventName="docs.managed_postgres_grafana_dashboard.download">대시보드 JSON 다운로드</TrackedLink>.
+
+  #### Grafana에서 가져오기 화면 열기 \{#open-import\}
+
+  **Dashboards → New → Import**로 이동하세요. JSON 파일을 업로드하거나 내용을 붙여넣으십시오.
+
+  #### Prometheus 데이터 소스 선택 \{#pick-datasource\}
+
+  `DS_PROMETHEUS` 입력값을 요청받으면, [이전 섹션](#configuring-prometheus)에서 구성한 엔드포인트를 스크레이프하는 Prometheus 데이터 소스를 선택하십시오.
+</VerticalStepper>
+
+Grafana를 프로비저닝 방식으로 배포한 경우, JSON 파일을
+대시보드 프로비저닝 경로에 넣으십시오. Grafana는 `${DS_PROMETHEUS}`
+참조를 해당 인스턴스에서 사용할 수 있는 Prometheus 데이터 소스에 자동으로 매칭합니다.
+
+### 템플릿 변수 \{#template-variables\}
+
+이 대시보드에는 세 가지 변수가 있습니다:
+
+* **데이터 소스** — 대시보드의 기반이 되는 Prometheus 데이터 소스입니다.
+* **서비스** — `postgres_service_name`에 대한 다중 선택 필터입니다.
+  기본값은 *All*이며, 하나 이상의 서비스를 선택하면 모든 패널이 해당 서비스 범위로 제한됩니다.
+* **스크레이프 인터벌** — 숨겨진 상수이며 기본값은 `60s`입니다. 이 값은
+  Grafana의 `$__rate_interval` 계산에 사용됩니다. 스크레이프 인터벌이 다르면
+  JSON에서 이 값을 변경하십시오.
+
+### 드릴인을 위해 단일 서비스로 필터링 \{#drill-in\}
+
+여러 패널은 **Service** 변수를 사용해 단일
+서비스로 필터링한 후 드릴인할 수 있도록 설계되어 있습니다. 예를 들어 CPU by mode 패널은
+`user`, `system`, `iowait`, `steal` 및 기타 CPU
+모드를 누적해서 표시하므로, 급증의 원인이 애플리케이션 코드, 커널
+작업, 디스크 대기 또는 하이퍼바이저 경합인지 파악할 수 있습니다.
 
 ## Grafana 및 Datadog와 통합하기 \{#third-party-integrations\}
 

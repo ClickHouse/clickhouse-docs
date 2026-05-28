@@ -214,7 +214,8 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 非決定的関数の使用は許可されていません。
 
-関数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) は、トークン化する前に検索語句を変換するために プリプロセッサ を使用します。
+関数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)、[hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) は、トークン化する前に検索語句を変換するために プリプロセッサ を使用します。
+プリプロセッサ はテキスト索引のパスでのみ適用されるため、これらの関数の結果は、テキスト索引を使用するクエリと使用しないクエリ (`SETTINGS use_skip_indexes = 0` など) で異なる場合があることに注意してください。
 
 例えば、
 
@@ -263,10 +264,10 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-[`Map`](/sql-reference/data-types/map.md) 型カラム上のテキスト索引用プリプロセッサを定義するには、索引を
-Map のキーに対して作成するか、値に対して作成するかを決める必要があります。
+[Map](/sql-reference/data-types/map.md) 型カラム上のテキスト索引でプリプロセッサを定義するには、索引を
+map のキーと値のどちらに対して構築するかを決める必要があります。
 
-例：
+例:
 
 ```sql title="Query"
 CREATE TABLE table

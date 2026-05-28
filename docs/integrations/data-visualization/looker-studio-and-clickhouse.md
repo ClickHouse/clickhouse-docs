@@ -23,8 +23,6 @@ import looker_studio_enable_mysql from '@site/static/images/integrations/data-vi
 import looker_studio_mysql_cloud from '@site/static/images/integrations/data-visualization/looker_studio_mysql_cloud.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Looker Studio
-
 <PartnerBadge/>
 
 Looker Studio can connect to ClickHouse via the MySQL interface using the official Google MySQL data source.

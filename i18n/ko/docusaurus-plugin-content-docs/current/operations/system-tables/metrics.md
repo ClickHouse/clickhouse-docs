@@ -687,6 +687,10 @@ ZooKeeper에서 유지되는 임시 노드의 수입니다.
 
 파일 시스템 캐시의 키 수
 
+### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
+
+오버커밋 파일 시스템 캐시 eviction 정책이 추적하는 사용자 수
+
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 
 활성 캐시 버퍼 수
@@ -854,6 +858,22 @@ IcebergCatalog 스레드 풀에서 작업을 실행 중인 스레드 수입니�
 ### IcebergCatalogThreadsScheduled \{#icebergcatalogthreadsscheduled\}
 
 IcebergCatalog 스레드 풀에서 대기 중이거나 실행 중인 작업 수입니다.
+
+### IcebergCompactionSnapshots \{#icebergcompactionsnapshots\}
+
+Iceberg compaction 횟수입니다.
+
+### IcebergCompactionThreads \{#icebergcompactionthreads\}
+
+IcebergCompaction 스레드 풀에 있는 스레드 수입니다.
+
+### IcebergCompactionThreadsActive \{#icebergcompactionthreadsactive\}
+
+작업을 수행 중인 IcebergCompaction 스레드 풀의 스레드 수입니다.
+
+### IcebergCompactionThreadsScheduled \{#icebergcompactionthreadsscheduled\}
+
+IcebergCompaction 스레드 풀에서 큐에 있거나 실행 중인 작업 수입니다.
 
 ### IcebergMetadataFilesCacheBytes \{#icebergmetadatafilescachebytes\}
 

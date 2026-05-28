@@ -57,7 +57,7 @@ profiler.report()
 
 View the execution plan before running a query.
 
-```python
+```python title="Query"
 ds = pd.read_csv("data.csv")
 
 query = (ds
@@ -70,8 +70,7 @@ query = (ds
 query.explain()
 ```
 
-Output:
-```text
+```text title="Response"
 Pipeline:
   Source: file('data.csv', 'CSVWithNames')
   Filter: amount > 1000
@@ -93,7 +92,7 @@ See [explain() Documentation](explain.md) for details.
 
 Measure execution time for each operation.
 
-```python
+```python title="Query"
 from chdb.datastore.config import config, get_profiler
 
 # Enable profiling
@@ -115,8 +114,7 @@ profiler = get_profiler()
 profiler.report(min_duration_ms=0.1)
 ```
 
-Output:
-```text
+```text title="Response"
 Performance Report
 ==================
 Step                          Duration    Calls

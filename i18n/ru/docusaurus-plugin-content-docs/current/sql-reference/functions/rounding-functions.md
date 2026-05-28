@@ -4,6 +4,7 @@ sidebar_label: 'Округление'
 slug: /sql-reference/functions/rounding-functions
 title: 'Функции округления'
 doc_type: 'reference'
+keywords: ['функции округления']
 ---
 
 :::note

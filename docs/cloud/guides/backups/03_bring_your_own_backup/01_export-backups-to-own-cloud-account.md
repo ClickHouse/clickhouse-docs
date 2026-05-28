@@ -12,7 +12,9 @@ For details of how ClickHouse Cloud backups work, including "full" vs. "incremen
 In this guide, we show examples of how to take full and incremental backups to AWS, GCP, Azure object storage as well as how to restore from the backups.
 
 :::note
-Any usage where backups are being exported to a different region in the same cloud provider will incur [data transfer](/cloud/manage/network-data-transfer) charges.  Currently we don't support cross cloud backups.
+Any usage where backups are being exported to a different region in the same cloud provider will incur [data transfer](/cloud/manage/network-data-transfer) charges.  
+
+Cross-Cloud backups are only supported via the backup/restore commands outlined on this page, and not via the UI.
 :::
 
 ## Requirements {#requirements}
@@ -57,7 +59,7 @@ In order to use role based authentication, please follow the Secure s3 [setup](h
 2. Access HMAC key and HMAC secret.
 
 <hr/>
-# Backup / Restore
+## Backup / Restore
 
 ## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
 

@@ -4964,7 +4964,7 @@ SELECT kql_array_sort_desc([3, 1, 2])
 * 对于 Array 参数：计算数组中的元素个数。
 * 如果应用于 FixedString 参数，该函数是一个常量表达式。
 
-请注意，字符串中的字节数不等同于 Unicode “code points” 的数量，也不等同于 Unicode “grapheme clusters”（通常称为“字符”）的数量，也不等同于可见字符串宽度。
+请注意，字符串中的字节数不等同于 Unicode “code points” 的数量，也不等同于 Unicode “grapheme clusters” (通常称为“字符”) 的数量，也不等同于可见字符串宽度。
 
 字符串中允许包含 ASCII 的 NULL 字节，这些字节同样会被计数。
 
@@ -4974,11 +4974,11 @@ SELECT kql_array_sort_desc([3, 1, 2])
 length(x)
 ```
 
-**别名**: `OCTET_LENGTH`
+**别名**: `CARDINALITY`, `OCTET_LENGTH`
 
 **参数**
 
-* `x` — 要计算其字节数（对于 String/FixedString）或元素数量（对于 Array）的值。类型为 [`String`](/sql-reference/data-types/string)、[`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(T)`](/sql-reference/data-types/array)。
+* `x` — 要计算其字节数 (对于 String/FixedString) 或元素数量 (对于 Array) 的值。类型为 [`String`](/sql-reference/data-types/string)、[`FixedString`](/sql-reference/data-types/fixedstring) 或 [`Array(T)`](/sql-reference/data-types/array)。
 
 **返回值**
 
@@ -5047,7 +5047,6 @@ SELECT 'ábc' AS str, length(str), lengthUTF8(str)
 │ ábc │            4 │               3 │
 └─────┴──────────────┴─────────────────┘
 ```
-
 
 ## notEmpty \{#notEmpty\}
 

@@ -11,11 +11,11 @@ doc_type: 'reference'
 
 導入バージョン: v21.7.0
 
-[bfloat16](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format) 数値からなる標本の近似的な[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
+[bfloat16](https://en.wikipedia.org/wiki/Bfloat16_floating-point_format) 数値からなるサンプルの近似的な[分位数](https://en.wikipedia.org/wiki/Quantile)を計算します。
 
 `bfloat16` は、1 ビットの符号ビット、8 ビットの指数部、7 ビットの仮数部を持つ浮動小数点データ型です。
 この関数は入力値を 32 ビット float に変換し、上位 16 ビットを取得します。その後、`bfloat16` の分位数を計算し、結果にゼロビットを付加して 64 ビット float に変換します。
-この関数は、相対誤差が最大でも 0.390625% に収まる高速な分位数推定器です。
+この関数は、`bfloat16` の 7 ビット仮数精度に対応する高速な分位数推定器で、最大相対誤差は `0.78125%` (平均相対誤差は約 `0.27%`) です。
 
 **構文**
 

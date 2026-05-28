@@ -18,8 +18,6 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Integrating Vector with ClickHouse
-
 <PartnerBadge/>
 
 Being able to analyze your logs in real time is critical for production applications.

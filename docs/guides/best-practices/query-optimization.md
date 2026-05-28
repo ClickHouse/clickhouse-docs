@@ -1,7 +1,7 @@
 ---
 slug: /optimize/query-optimization
 sidebar_label: 'Query optimization'
-title: 'Guide for query optimization'
+title: 'A simple guide for query optimization'
 description: 'A simple guide for query optimization that describe common path to improve query performance'
 doc_type: 'guide'
 keywords: ['query optimization', 'performance', 'best practices', 'query tuning', 'efficiency']
@@ -9,8 +9,6 @@ keywords: ['query optimization', 'performance', 'best practices', 'query tuning'
 
 import queryOptimizationDiagram1 from '@site/static/images/guides/best-practices/query_optimization_diagram_1.png';
 import Image from '@theme/IdealImage';
-
-# A simple guide for query optimization
 
 This section aims to illustrate through common scenarios how to use different performance and optimization techniques, such as [analyzer](/operations/analyzer), [query profiling](/operations/optimizing-performance/sampling-query-profiler) or [avoid nullable Columns](/optimize/avoid-nullable-columns), in order to improve your ClickHouse query performances.
 

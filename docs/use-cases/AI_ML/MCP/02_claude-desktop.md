@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/claude-desktop
 sidebar_label: 'Integrate Claude Desktop'
-title: 'Set up ClickHouse MCP server with Claude Desktop'
+title: 'Using ClickHouse MCP server with Claude Desktop'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up Claude Desktop with a ClickHouse MCP server.'
@@ -15,8 +15,6 @@ import ClaudeDesktopConfig from '@site/static/images/use-cases/AI_ML/MCP/claude-
 import FindMCPServers from '@site/static/images/use-cases/AI_ML/MCP/find-mcp-servers.gif';
 import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permission.png';
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
-
-# Using ClickHouse MCP server with Claude Desktop
 
 > This guide explains how to set up Claude Desktop with a ClickHouse MCP server using uv
 > and connect it to the ClickHouse example datasets.

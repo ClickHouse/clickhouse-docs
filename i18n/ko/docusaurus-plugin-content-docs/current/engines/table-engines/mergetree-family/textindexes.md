@@ -214,7 +214,8 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 비결정적 함수 사용은 허용되지 않습니다.
 
-[hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens), [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 함수는 검색어를 토큰화하기 전에 먼저 전처리기를 사용하여 검색어를 변환합니다.
+[hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens), [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens), [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) 함수는 검색어를 토큰화하기 전에 먼저 전처리기를 사용하여 검색어를 변환합니다.
+전처리기는 텍스트 인덱스 경로에만 적용되므로, 이러한 함수의 결과는 텍스트 인덱스를 사용하는 쿼리와 사용하지 않는 쿼리 간에 다를 수 있습니다(예: `SETTINGS use_skip_indexes = 0`).
 
 예를 들어,
 
@@ -263,8 +264,8 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-빌드 시 [Map](/sql-reference/data-types/map.md) 타입 컬럼에 대한 텍스트 인덱스에서 전처리기를 정의하려면, 인덱스를
-맵의 키 기준으로 생성할지 값 기준으로 생성할지 결정해야 합니다.
+텍스트 인덱스에서 [맵](/sql-reference/data-types/map.md) 타입 컬럼에 전처리기를 정의하려면, 인덱스를
+맵 키를 대상으로 생성할지 값를 대상으로 생성할지 결정해야 합니다.
 
 예시:
 

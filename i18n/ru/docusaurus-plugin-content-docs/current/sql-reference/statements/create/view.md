@@ -63,33 +63,92 @@ SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
 
 
-## Материализованное представление \{#materialized-view\}
+## materialized view \{#materialized-view\}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
+[REFRESH ...]
 [DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
 AS SELECT ...
 [COMMENT 'comment']
 ```
 
-:::tip
-Здесь приведено пошаговое руководство по использованию [материализованных представлений](/guides/developer/cascading-materialized-views.md).
-:::
+```sql
+CREATE OR REPLACE MATERIALIZED VIEW [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
+[REFRESH ...]
+[DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
+AS SELECT ...
+[COMMENT 'comment']
+```
 
-Материализованные представления хранят данные, преобразованные соответствующим запросом [SELECT](../../../sql-reference/statements/select/index.md).
+`OR REPLACE` и `IF NOT EXISTS` взаимоисключают друг друга: их совместное использование приводит к синтаксической ошибке.
 
-При создании материализованного представления без `TO [db].[table]` необходимо указать `ENGINE` – движок таблицы для хранения данных.
+### CREATE OR REPLACE MATERIALIZED VIEW \{#create-or-replace-materialized-view\}
 
-При создании материализованного представления с `TO [db].[table]` нельзя дополнительно использовать `POPULATE`.
+`CREATE OR REPLACE MATERIALIZED VIEW` атомарно заменяет существующее materialized view и его внутреннюю таблицу хранения (если она есть). Для этой операции требуется движок базы данных `Atomic` или `Replicated`.
 
-Материализованное представление реализовано следующим образом: при вставке данных в таблицу, указанную в `SELECT`, часть вставляемых данных преобразуется этим запросом `SELECT`, и результат вставляется в представление.
+```sql
+CREATE OR REPLACE MATERIALIZED VIEW [db.]name [ON CLUSTER cluster]
+[TO [db.]target_table]
+[ENGINE = engine]
+[POPULATE]
+[REFRESH ...]
+AS SELECT ...
+```
+
+Ключевые особенности:
+
+* **Без предложения `TO`**: старая внутренняя таблица удаляется, и создается новая. Существующие данные во внутренней таблице теряются, если не указан `POPULATE`.
+* **С предложением `TO`**: заменяется только определение представления; целевая таблица и ее данные не затрагиваются.
+* Совместимо с `REFRESH`, `ON CLUSTER` и всеми параметрами движка. `POPULATE` поддерживается только в базах данных `Atomic` — в базах данных `Replicated` он не поддерживается (см. примечание о `POPULATE` ниже).
+* Требуются привилегии `CREATE VIEW` и `DROP VIEW`.
 
 :::note
-Материализованные представления в ClickHouse при вставке в целевую таблицу используют **имена столбцов**, а не порядок столбцов. Если некоторые имена столбцов отсутствуют в результате запроса `SELECT`, ClickHouse использует значение по умолчанию, даже если столбец не является [Nullable](../../data-types/nullable.md). Безопасной практикой будет добавлять псевдонимы для каждого столбца при использовании материализованных представлений.
+`CREATE OR REPLACE MATERIALIZED VIEW` поддерживается только для движков баз данных `Atomic` и `Replicated`. Он не поддерживается с движком базы данных `Ordinary`.
+:::
 
-Материализованные представления в ClickHouse больше напоминают триггеры на вставку. Если в запросе представления есть некоторая агрегация, она применяется только к пакету вновь вставленных данных. Любые изменения существующих данных исходной таблицы (такие как update, delete, drop partition и т.п.) не изменяют материализованное представление.
+**Примеры:**
 
-Материализованные представления в ClickHouse не имеют детерминированного поведения в случае ошибок. Это означает, что блоки, которые уже были записаны, будут сохранены в целевой таблице, но все блоки после ошибки записаны не будут.
+```sql
+-- Create a materialized view with an inner table
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    AS SELECT x, sum(y) AS total FROM src GROUP BY x;
+
+-- Replace with a new definition (old inner table data is lost)
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    AS SELECT x, count() AS cnt FROM src GROUP BY x;
+
+-- Replace with POPULATE to backfill from existing source data
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    POPULATE
+    AS SELECT x FROM src;
+
+-- Replace an inner-table MV with a TO-table MV (target data is preserved)
+CREATE OR REPLACE MATERIALIZED VIEW mv TO target
+    AS SELECT x FROM src;
+```
+
+:::tip
+Здесь приведено пошаговое руководство по использованию [materialized views](/guides/developer/cascading-materialized-views.md).
+:::
+
+Materialized views хранят данные, преобразованные соответствующим запросом [SELECT](../../../sql-reference/statements/select/index.md).
+
+При создании materialized view без `TO [db].[table]` необходимо указать `ENGINE` – движок таблицы для хранения данных.
+
+При создании materialized view с `TO [db].[table]` нельзя дополнительно использовать `POPULATE`.
+
+Materialized view реализовано следующим образом: при вставке данных в таблицу, указанную в `SELECT`, часть вставляемых данных преобразуется этим запросом `SELECT`, и результат вставляется в представление.
+
+:::note
+Materialized views в ClickHouse при вставке в целевую таблицу используют **имена столбцов**, а не порядок столбцов. Если некоторые имена столбцов отсутствуют в результате запроса `SELECT`, ClickHouse использует значение по умолчанию, даже если столбец не является [Nullable](../../data-types/nullable.md). Безопасной практикой будет добавлять псевдонимы для каждого столбца при использовании materialized views.
+
+Materialized views в ClickHouse больше напоминают триггеры на вставку. Если в запросе представления есть некоторая агрегация, она применяется только к пакету вновь вставленных данных. Любые изменения существующих данных исходной таблицы (такие как update, delete, drop partition и т.п.) не изменяют materialized view.
+
+Materialized views в ClickHouse не имеют детерминированного поведения в случае ошибок. Это означает, что блоки, которые уже были записаны, будут сохранены в целевой таблице, но все блоки после ошибки записаны не будут.
 
 По умолчанию, если вставка в одно из представлений завершается с ошибкой, то запрос INSERT также завершится с ошибкой, и некоторые блоки могут не быть записаны в целевую таблицу. Это можно изменить с помощью настройки `materialized_views_ignore_errors` (ее следует задать для запроса `INSERT`). Если вы установите `materialized_views_ignore_errors=true`, то любые ошибки при вставке в представления будут игнорироваться, и все блоки будут записаны в целевую таблицу.
 
@@ -116,7 +175,6 @@ AS SELECT ...
 Представления выглядят так же, как обычные таблицы. Например, они перечислены в результате запроса `SHOW TABLES`.
 
 Чтобы удалить представление, используйте [DROP VIEW](../../../sql-reference/statements/drop.md#drop-view). Хотя `DROP TABLE` также работает для представлений (VIEW).
-
 
 ## SQL-безопасность \{#sql_security\}
 

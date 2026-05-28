@@ -1,7 +1,7 @@
 ---
 slug: /integrations/mysql
 sidebar_label: 'MySQL'
-title: 'MySQL'
+title: 'Integrating MySQL with ClickHouse'
 hide_title: true
 description: 'Page describing MySQL integration'
 doc_type: 'reference'
@@ -14,8 +14,6 @@ keywords: ['mysql', 'database integration', 'external table', 'data source', 'sq
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
-# Integrating MySQL with ClickHouse
 
 This page covers using the `MySQL` table engine, for reading from a MySQL table.
 

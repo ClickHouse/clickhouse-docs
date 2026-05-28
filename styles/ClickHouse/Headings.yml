@@ -30,6 +30,8 @@ exceptions:
   - Amazon Web Services
   - "AI Notebooks"
   - "ClickHouse Assistant"
+  - "ClickHouse Agents"
+  - "Agent Builder"
   - Azure
   - Azure Blob Storage
   - Azure Data Factory
@@ -59,6 +61,7 @@ exceptions:
   - DBT
   - DDL
   - DNS
+  - Debian
   - Docker
   - Docker Compose
   - DigitalOcean Spaces
@@ -143,6 +146,7 @@ exceptions:
   - SDK
   - TCP
   - TDE
+  - TPC-H
   - TTL
   - TiDB
   - Time To Live
@@ -153,6 +157,8 @@ exceptions:
   - UI
   - URLs
   - UAE
+  - Ubuntu
+  - Unix
   - User Defined Functions
   - VLDB
   - VS
@@ -161,6 +167,7 @@ exceptions:
   - Visual
   - Windows
   - Yandex.Metrica
+  - Yum
   - ZSTD
   - MergeTree
   - MySQL
@@ -209,6 +216,7 @@ exceptions:
   - Avg state
   - Count resample
   - PREWHERE
+  - "PREPARE, EXECUTE, DEALLOCATE"
   - Splunk
   - Retool
   - Airbyte
@@ -315,6 +323,7 @@ exceptions:
   - Backward Incompatible Changes
   - Backward Incompatible Change
   - Build Improvements
+  - "Build/Testing/Packaging Improvement"
   - Main Changes
   - New Feature
   - Experimental Feature
@@ -581,6 +590,7 @@ exceptions:
   - TimescaleDB
   - Upsonic
   - WebUI
+  - Rocket.BI
   # Acronyms
   - AI
   - BI

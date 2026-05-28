@@ -31,8 +31,6 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Explo to ClickHouse
-
 <CommunityMaintainedBadge/>
 
 Customer-facing analytics for any platform. Designed for beautiful visualization. Engineered for simplicity.

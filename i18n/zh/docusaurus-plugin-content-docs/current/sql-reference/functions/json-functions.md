@@ -1676,6 +1676,54 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 ```
 
 
+## prettyPrintJSON \{#prettyPrintJSON\}
+
+引入版本：v26.4.0
+
+返回 JSON 字符串经过格式化后的版本，包含换行和空格缩进。
+
+**语法**
+
+```sql
+prettyPrintJSON(json [, indent])
+```
+
+**参数**
+
+* `json` — 要进行格式化的有效 JSON 字符串。[`String`](/sql-reference/data-types/string)
+* `indent` — 每一级缩进的空格数。默认值：4。最大值：32 [`UInt*`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+格式化后的 JSON 字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**简单对象**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1,"b":"hello"}');
+```
+
+```response title=Response
+{
+    "a": 1,
+    "b": "hello"
+}
+```
+
+**自定义缩进**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1}', 8);
+```
+
+```response title=Response
+{
+        "a": 1
+}
+```
+
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 
 引入版本：v21.4.0

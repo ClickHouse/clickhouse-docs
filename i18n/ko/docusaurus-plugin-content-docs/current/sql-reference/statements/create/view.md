@@ -63,13 +63,72 @@ SELECT * FROM view(column1=value1, column2=value2 ...)
 ```
 
 
-## Materialized View \{#materialized-view\}
+## materialized view \{#materialized-view\}
 
 ```sql
 CREATE MATERIALIZED VIEW [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
+[REFRESH ...]
 [DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
 AS SELECT ...
 [COMMENT 'comment']
+```
+
+```sql
+CREATE OR REPLACE MATERIALIZED VIEW [db.]table_name [ON CLUSTER cluster_name] [TO[db.]name [(columns)]] [ENGINE = engine] [POPULATE]
+[REFRESH ...]
+[DEFINER = { user | CURRENT_USER }] [SQL SECURITY { DEFINER | NONE }]
+AS SELECT ...
+[COMMENT 'comment']
+```
+
+`OR REPLACE`와 `IF NOT EXISTS`는 함께 사용할 수 없습니다. 둘을 조합하면 구문 오류가 발생합니다.
+
+### CREATE OR REPLACE MATERIALIZED VIEW \{#create-or-replace-materialized-view\}
+
+`CREATE OR REPLACE MATERIALIZED VIEW`는 기존 materialized view와 해당 내부 저장 테이블(있는 경우)을 원자적으로 교체합니다. 이 작업을 수행하려면 `Atomic` 또는 `Replicated` 데이터베이스 엔진이 필요합니다.
+
+```sql
+CREATE OR REPLACE MATERIALIZED VIEW [db.]name [ON CLUSTER cluster]
+[TO [db.]target_table]
+[ENGINE = engine]
+[POPULATE]
+[REFRESH ...]
+AS SELECT ...
+```
+
+주요 동작:
+
+* **`TO` 절 없이**: 기존 내부 테이블이 삭제되고 새 테이블이 생성됩니다. `POPULATE`를 지정하지 않으면 내부 테이블의 기존 데이터는 손실됩니다.
+* **`TO` 절 사용 시**: 뷰 정의만 대체되며, 대상 테이블과 그 데이터는 영향을 받지 않습니다.
+* `REFRESH`, `ON CLUSTER`, 그리고 모든 엔진 옵션과 호환됩니다. `POPULATE`는 `Atomic` 데이터베이스에서만 지원되며, `Replicated` 데이터베이스에서는 허용되지 않습니다(`POPULATE`에 대한 아래 참고 사항 참조).
+* `CREATE VIEW` 및 `DROP VIEW` 권한이 필요합니다.
+
+:::note
+`CREATE OR REPLACE MATERIALIZED VIEW`는 `Atomic` 또는 `Replicated` 데이터베이스 엔진에서만 지원됩니다. `Ordinary` 데이터베이스 엔진에서는 지원되지 않습니다.
+:::
+
+**예시:**
+
+```sql
+-- Create a materialized view with an inner table
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    AS SELECT x, sum(y) AS total FROM src GROUP BY x;
+
+-- Replace with a new definition (old inner table data is lost)
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    AS SELECT x, count() AS cnt FROM src GROUP BY x;
+
+-- Replace with POPULATE to backfill from existing source data
+CREATE OR REPLACE MATERIALIZED VIEW mv
+    ENGINE = MergeTree ORDER BY x
+    POPULATE
+    AS SELECT x FROM src;
+
+-- Replace an inner-table MV with a TO-table MV (target data is preserved)
+CREATE OR REPLACE MATERIALIZED VIEW mv TO target
+    AS SELECT x FROM src;
 ```
 
 :::tip
@@ -116,7 +175,6 @@ materialized view는 [optimize&#95;on&#95;insert](/operations/settings/settings#
 뷰는 일반 테이블과 동일하게 보입니다. 예를 들어, `SHOW TABLES` 쿼리 결과에 함께 나열됩니다.
 
 뷰를 삭제하려면 [DROP VIEW](../../../sql-reference/statements/drop.md#drop-view)를 사용하십시오. `DROP TABLE`도 VIEW에 사용할 수 있습니다.
-
 
 ## SQL security \{#sql_security\}
 

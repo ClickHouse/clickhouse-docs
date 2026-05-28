@@ -39,7 +39,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 1. モデル名で **ターゲットテーブル** を作成する
 2. `<model_name>_mv` という名前の ClickHouse の **materialized view** を作成する
 
-ターゲットテーブルのスキーマは、MV の `SELECT` ステートメント内のカラムから推論されます。すべてのリソース（ターゲットテーブルと MV）は同じモデル設定を共有します。
+ターゲットテーブルのスキーマは、MV の `SELECT` ステートメント内のカラムから推論されます。すべてのリソース (ターゲットテーブルと MV) は同じモデル設定を共有します。
 
 ```sql
 -- models/events_mv.sql
@@ -61,6 +61,9 @@ GROUP BY event_date, event_type
 
 ほかの例については、[テストファイル](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/materialized_view/test_materialized_view.py)を参照してください。
 
+:::tip
+モデルコントラクトを適用することで、ターゲットテーブルにカラムレベルの `codec` と `ttl` を定義することもできます。詳細は[カラム設定](/integrations/dbt/materializations#column-configuration)を参照してください。
+:::
 
 ### 複数の materialized view \{#multiple-materialized-views\}
 
@@ -219,20 +222,20 @@ GROUP BY event_date, event_type
 
 ### 設定オプション \{#explicit-target-configuration\}
 
-明示的なターゲットテーブルを使用する場合、次の設定が適用されます。
+明示的なターゲットテーブルを使用する場合、[一般的なマテリアライズ設定](/integrations/dbt/materializations#general-materialization-configurations)および[テーブル固有の設定](/integrations/dbt/materializations#materialization-table)に加えて、次の設定が適用されます。
 
-**ターゲットテーブル（`materialized='table'`）側:**
+**ターゲットテーブル (`materialized='table'`) 側:**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `mv_on_schema_change` | テーブルが dbt 管理の materialized view によって使用されている場合のスキーマ変更の扱い方。インクリメンタルモデルにおける `on_schema_change` 設定と同じ動作に従います。[インクリメンタルモデル](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change)を参照。| **注意**: `materialized='table'` のモデルに対して、それを参照する materialized view が存在しない場合は通常どおり動作するため、この設定が定義されていても無視されます。テーブルが materialized view のターゲットになっている場合、この設定はテーブル内のデータを保護するためにデフォルトで `mv_on_schema_change='fail'` となります。 |
-| `repopulate_from_mvs_on_full_refresh` | `--full-refresh` 時にテーブルの SQL を実行する代わりに、そのテーブルを参照するすべての materialized view の SQL を用いた INSERT-SELECT 文を実行してテーブルを再構築します。 | `False` |
+| Option                                | Description                                                                                                                                                                                                                          | Default                                                                                                                                                                                                            |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `mv_on_schema_change`                 | テーブルが dbt 管理の materialized view によって使用されている場合のスキーマ変更の扱い方。インクリメンタルモデルにおける `on_schema_change` 設定と同じ動作に従います。[インクリメンタルモデル](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change)を参照。 | **注意**: `materialized='table'` のモデルに対して、それを参照する materialized view が存在しない場合は通常どおり動作するため、この設定が定義されていても無視されます。テーブルが materialized view のターゲットになっている場合、この設定はテーブル内のデータを保護するためにデフォルトで `mv_on_schema_change='fail'` となります。 |
+| `repopulate_from_mvs_on_full_refresh` | `--full-refresh` 時にテーブルの SQL を実行する代わりに、そのテーブルを参照するすべての materialized view の SQL を用いた INSERT-SELECT 文を実行してテーブルを再構築します。                                                                                                                 | `False`                                                                                                                                                                                                            |
 
-**materialized view（`materialized='materialized_view'`）側:**
+**materialized view (`materialized='materialized_view'`) 側:**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `catchup` | materialized view 作成時に過去データをバックフィルするかどうか。 | `True` |
+| Option    | Description                               | Default |
+| --------- | ----------------------------------------- | ------- |
+| `catchup` | materialized view 作成時に過去データをバックフィルするかどうか。 | `True`  |
 
 :::note
 通常は、materialized view 側の `catchup` を `True` にするか、ターゲットテーブル側の `repopulate_from_mvs_on_full_refresh` を `True` にするかのいずれか一方のみを設定します。両方を `True` に設定すると、データが重複する可能性があります。

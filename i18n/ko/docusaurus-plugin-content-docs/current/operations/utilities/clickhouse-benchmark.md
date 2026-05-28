@@ -42,34 +42,35 @@ clickhouse-benchmark [keys] < queries_file;
 
 ## Command-line options \{#clickhouse-benchmark-command-line-options\}
 
-- `--query=QUERY` — 실행할 쿼리입니다. 이 매개변수를 전달하지 않으면 `clickhouse-benchmark`는 표준 입력에서 쿼리를 읽습니다.
-- `--query_id=ID` — 쿼리 ID입니다.
-- `--query_id_prefix=ID_PREFIX` — 쿼리 ID 접두사입니다.
-- `-c N`, `--concurrency=N` — `clickhouse-benchmark`가 동시에 전송하는 쿼리 개수입니다. 기본값: 1.
-- `-C N`, `--max_concurrency=N` — 지정한 값까지 병렬 쿼리 개수를 점진적으로 증가시키며, 각 동시성 수준마다 하나의 보고서를 생성합니다.
-- `--precise` — 가중치가 적용된 메트릭을 사용하는 정밀한 구간별 보고를 활성화합니다.
-- `-d N`, `--delay=N` — 중간 보고 사이의 간격(초)입니다(보고를 비활성화하려면 0으로 설정). 기본값: 1.
-- `-h HOST`, `--host=HOST` — 서버 호스트입니다. 기본값: `localhost`. [비교 모드](#clickhouse-benchmark-comparison-mode)에서는 여러 개의 `-h` 키를 사용할 수 있습니다.
-- `-i N`, `--iterations=N` — 전체 쿼리 수입니다. 기본값: 0 (무한 반복).
-- `-r`, `--randomize` — 하나 이상의 입력 쿼리가 있을 때 쿼리 실행 순서를 무작위로 섞습니다.
-- `-s`, `--secure` — `TLS` 연결을 사용합니다.
-- `-t N`, `--timelimit=N` — 시간 제한(초)입니다. 지정된 시간 제한에 도달하면 `clickhouse-benchmark`는 쿼리 전송을 중지합니다. 기본값: 0 (시간 제한 없음).
-- `--port=N` — 서버 포트입니다. 기본값: 9000. [비교 모드](#clickhouse-benchmark-comparison-mode)에서는 여러 개의 `--port` 키를 사용할 수 있습니다.
-- `--confidence=N` — t-검정에 사용할 신뢰 수준입니다. 가능한 값: 0 (80%), 1 (90%), 2 (95%), 3 (98%), 4 (99%), 5 (99.5%). 기본값: 5. [비교 모드](#clickhouse-benchmark-comparison-mode)에서 `clickhouse-benchmark`는 선택한 신뢰 수준에서 두 분포가 서로 다르지 않은지를 판단하기 위해 [Independent two-sample Student's t-test](https://en.wikipedia.org/wiki/Student%27s_t-test#Independent_two-sample_t-test)를 수행합니다.
-- `--cumulative` — 구간별 데이터 대신 누적 데이터를 출력합니다.
-- `--database=DATABASE_NAME` — ClickHouse 데이터베이스 이름입니다. 기본값: `default`.
-- `--user=USERNAME` — ClickHouse 사용자 이름입니다. 기본값: `default`.
-- `--password=PSWD` — ClickHouse 사용자 비밀번호입니다. 기본값: 빈 문자열.
-- `--stacktrace` — 스택 트레이스를 출력합니다. 이 키가 설정되면 `clickhouse-benchmark`는 예외의 스택 트레이스를 출력합니다.
-- `--stage=WORD` — 서버에서의 쿼리 처리 단계입니다. ClickHouse는 지정된 단계에서 쿼리 처리를 중지하고 `clickhouse-benchmark`에 응답을 반환합니다. 가능한 값: `complete`, `fetch_columns`, `with_mergeable_state`. 기본값: `complete`.
-- `--roundrobin` — 서로 다른 `--host`/`--port`에 대해 쿼리를 비교하는 대신, 각 쿼리마다 임의의 `--host`/`--port`를 하나 선택하여 해당 대상으로 쿼리를 전송합니다.
-- `--reconnect=N` — 재연결 동작을 제어합니다. 가능한 값: 0 (재연결 안 함), 1 (쿼리마다 재연결), 또는 N (매 N개의 쿼리마다 재연결). 기본값: 0.
-- `--max-consecutive-errors=N` — 허용되는 연속 오류 개수입니다. 기본값: 0.
-- `--ignore-error`,`--continue_on_errors` — 쿼리가 실패하더라도 테스트를 계속합니다.
-- `--client-side-time` — 서버 측 시간 대신 네트워크 통신을 포함한 시간을 표시합니다. 22.8 이전 서버 버전에서는 항상 클라이언트 측 시간을 표시한다는 점에 유의해야 합니다.
-- `--proto-caps` — 데이터 전송에서 청크 처리(청크 분할)를 활성화/비활성화합니다. 선택 가능한 값(쉼표로 구분 가능): `chunked_optional`, `notchunked`, `notchunked_optional`, `send_chunked`, `send_chunked_optional`, `send_notchunked`, `send_notchunked_optional`, `recv_chunked`, `recv_chunked_optional`, `recv_notchunked`, `recv_notchunked_optional`. 기본값: `notchunked`.
-- `--help` — 도움말 메시지를 표시합니다.
-- `--verbose` — 도움말 메시지의 상세 수준을 높입니다.
+* `--query=QUERY` — 실행할 쿼리입니다. 이 매개변수를 전달하지 않으면 `clickhouse-benchmark`는 표준 입력에서 쿼리를 읽습니다.
+* `--query_id=ID` — 쿼리 ID입니다.
+* `--query_id_prefix=ID_PREFIX` — 쿼리 ID 접두사입니다.
+* `--queries-format=FORMAT` — 표준 입력에서 읽는 쿼리의 포맷입니다. 가능한 값: `tsv`(기본값, 각 줄에 탭 이스케이프된 쿼리 1개) 및 `script`(세미콜론으로 구분된 여러 쿼리 스크립트로 입력을 파싱). `script`의 제한 사항: `INSERT ... FORMAT` 쿼리는 반드시 한 줄에 있어야 합니다.
+* `-c N`, `--concurrency=N` — `clickhouse-benchmark`가 동시에 전송하는 쿼리 개수입니다. 기본값: 1.
+* `-C N`, `--max_concurrency=N` — 지정한 값까지 병렬 쿼리 개수를 점진적으로 증가시키며, 각 동시성 수준마다 하나의 보고서를 생성합니다.
+* `--precise` — 가중치가 적용된 메트릭을 사용하는 정밀한 구간별 보고를 활성화합니다.
+* `-d N`, `--delay=N` — 중간 보고 사이의 간격(초)입니다(보고를 비활성화하려면 0으로 설정). 기본값: 1.
+* `-h HOST`, `--host=HOST` — 서버 호스트입니다. 기본값: `localhost`. [비교 모드](#clickhouse-benchmark-comparison-mode)에서는 여러 개의 `-h` 키를 사용할 수 있습니다.
+* `-i N`, `--iterations=N` — 전체 쿼리 수입니다. 기본값: 0 (무한 반복).
+* `-r`, `--randomize` — 하나 이상의 입력 쿼리가 있을 때 쿼리 실행 순서를 무작위로 섞습니다.
+* `-s`, `--secure` — `TLS` 연결을 사용합니다.
+* `-t N`, `--timelimit=N` — 시간 제한(초)입니다. 지정된 시간 제한에 도달하면 `clickhouse-benchmark`는 쿼리 전송을 중지합니다. 기본값: 0 (시간 제한 없음).
+* `--port=N` — 서버 포트입니다. 기본값: 9000. [비교 모드](#clickhouse-benchmark-comparison-mode)에서는 여러 개의 `--port` 키를 사용할 수 있습니다.
+* `--confidence=N` — t-검정에 사용할 신뢰 수준입니다. 가능한 값: 0 (80%), 1 (90%), 2 (95%), 3 (98%), 4 (99%), 5 (99.5%). 기본값: 5. [비교 모드](#clickhouse-benchmark-comparison-mode)에서 `clickhouse-benchmark`는 선택한 신뢰 수준에서 두 분포가 서로 다르지 않은지를 판단하기 위해 [Independent two-sample Student&#39;s t-test](https://en.wikipedia.org/wiki/Student%27s_t-test#Independent_two-sample_t-test)를 수행합니다.
+* `--cumulative` — 구간별 데이터 대신 누적 데이터를 출력합니다.
+* `--database=DATABASE_NAME` — ClickHouse 데이터베이스 이름입니다. 기본값: `default`.
+* `--user=USERNAME` — ClickHouse 사용자 이름입니다. 기본값: `default`.
+* `--password=PSWD` — ClickHouse 사용자 비밀번호입니다. 기본값: 빈 문자열.
+* `--stacktrace` — 스택 트레이스를 출력합니다. 이 키가 설정되면 `clickhouse-benchmark`는 예외의 스택 트레이스를 출력합니다.
+* `--stage=WORD` — 서버에서의 쿼리 처리 단계입니다. ClickHouse는 지정된 단계에서 쿼리 처리를 중지하고 `clickhouse-benchmark`에 응답을 반환합니다. 가능한 값: `complete`, `fetch_columns`, `with_mergeable_state`. 기본값: `complete`.
+* `--roundrobin` — 서로 다른 `--host`/`--port`에 대해 쿼리를 비교하는 대신, 각 쿼리마다 임의의 `--host`/`--port`를 하나 선택하여 해당 대상으로 쿼리를 전송합니다.
+* `--reconnect=N` — 재연결 동작을 제어합니다. 가능한 값: 0 (재연결 안 함), 1 (쿼리마다 재연결), 또는 N (매 N개의 쿼리마다 재연결). 기본값: 0.
+* `--max-consecutive-errors=N` — 허용되는 연속 오류 개수입니다. 기본값: 0.
+* `--ignore-error`,`--continue_on_errors` — 쿼리가 실패하더라도 테스트를 계속합니다.
+* `--client-side-time` — 서버 측 시간 대신 네트워크 통신을 포함한 시간을 표시합니다. 22.8 이전 서버 버전에서는 항상 클라이언트 측 시간을 표시한다는 점에 유의해야 합니다.
+* `--proto-caps` — 데이터 전송에서 청크 처리(청크 분할)를 활성화/비활성화합니다. 선택 가능한 값(쉼표로 구분 가능): `chunked_optional`, `notchunked`, `notchunked_optional`, `send_chunked`, `send_chunked_optional`, `send_notchunked`, `send_notchunked_optional`, `recv_chunked`, `recv_chunked_optional`, `recv_notchunked`, `recv_notchunked_optional`. 기본값: `notchunked`.
+* `--help` — 도움말 메시지를 표시합니다.
+* `--verbose` — 도움말 메시지의 상세 수준을 높입니다.
 
 쿼리에 일부 [settings](/operations/settings/overview)를 적용하려면 `--<session setting name>= SETTING_VALUE` 형식의 키로 전달합니다. 예: `--max_memory_usage=1048576`.
 

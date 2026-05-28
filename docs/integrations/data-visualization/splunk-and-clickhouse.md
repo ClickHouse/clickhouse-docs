@@ -24,8 +24,6 @@ import splunk_9 from '@site/static/images/integrations/splunk/splunk-9.png';
 import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Connecting Splunk to ClickHouse
-
 <ClickHouseSupportedBadge/>
 
 :::tip

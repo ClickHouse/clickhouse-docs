@@ -356,7 +356,7 @@ ClickHouse также поддерживает массовое закрытие
 
 ## Полный пример \{#complete-example\}
 
-```python
+```python title="Query"
 import pyarrow as pa
 import pyarrow.flight as flight
 
@@ -387,9 +387,7 @@ for endpoint in info.endpoints:
     print(table.to_pandas())
 ```
 
-Вывод:
-
-```text
+```text title="Response"
    id value
 0   1     a
 1   2     b

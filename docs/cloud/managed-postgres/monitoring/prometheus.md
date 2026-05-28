@@ -1,17 +1,19 @@
 ---
 slug: /cloud/managed-postgres/monitoring/prometheus
 sidebar_label: 'Prometheus endpoint'
-title: 'Managed Postgres Prometheus endpoint'
+title: 'Managed Postgres Prometheus integration'
 description: 'Scrape Managed Postgres metrics into Prometheus, Grafana, Datadog, or any OpenMetrics-compatible collector'
 keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', 'metrics', 'openmetrics', 'observability']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
+import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
 
-# Prometheus Integration
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-prometheus" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-prometheus-beta" />
 
 Managed Postgres exposes two Prometheus-compatible metrics endpoints
 on the [ClickHouse Cloud API][cloud-api]:
@@ -76,7 +78,7 @@ For the full list of metrics and their meanings, see the
 
 ## Configuring Prometheus {#configuring-prometheus}
 
-This config scrapes the org-level endpoint every 30 seconds:
+This config scrapes the org-level endpoint every 60 seconds:
 
 ```yaml
 scrape_configs:
@@ -89,14 +91,69 @@ scrape_configs:
       username: <KEY_ID>
       password: <KEY_SECRET>
     honor_labels: true
-    scrape_interval: 30s
+    scrape_interval: 60s
 ```
+
+The endpoint refreshes metrics once per minute. Scraping faster than
+`60s` duplicates samples and produces a stair-step pattern on gauge
+panels.
 
 Set `honor_labels: true` so the `postgres_service` and
 `postgres_service_name` labels from the endpoint are preserved instead
 of being overwritten by Prometheus.
 
 To scrape a single service, append `/<PG_ID>` to the `metrics_path`.
+
+## Pre-built Grafana dashboard {#grafana-dashboard}
+
+A ready-made Grafana dashboard visualizes every metric the endpoint
+exposes — a sortable services table, CPU and memory utilization, disk
+usage with threshold alerts, connections by state, transactions and
+rollback ratio, tuple activity, I/O, per-database storage, and
+deadlocks.
+
+<Image img={grafanaDashboard} alt="Grafana dashboard of Managed Postgres Services" size="md" border/>
+
+### Importing the dashboard {#import-dashboard}
+
+<VerticalStepper headerLevel="h4">
+
+#### Download the dashboard JSON {#download}
+
+<TrackedLink href={useBaseUrl('/examples/managed-postgres-grafana-dashboard.json')} download="managed-postgres-grafana-dashboard.json" eventName="docs.managed_postgres_grafana_dashboard.download">Download the dashboard JSON</TrackedLink>.
+
+#### Open the import flow in Grafana {#open-import}
+
+Go to **Dashboards → New → Import**. Upload the JSON file or paste its contents.
+
+#### Pick your Prometheus datasource {#pick-datasource}
+
+When prompted for the `DS_PROMETHEUS` input, select the Prometheus datasource scraping the endpoint configured in the [previous section](#configuring-prometheus).
+
+</VerticalStepper>
+
+For provisioned Grafana deployments, drop the JSON into your
+dashboards provisioning path. Grafana matches the `${DS_PROMETHEUS}`
+reference to a Prometheus datasource available in the instance.
+
+### Template variables {#template-variables}
+
+The dashboard exposes three variables:
+
+- **Data source** — the Prometheus datasource backing the dashboard.
+- **Service** — multi-select filter over `postgres_service_name`.
+  Defaults to *All*; pick one or more services to scope every panel.
+- **Scrape interval** — hidden constant, defaults to `60s`. Drives
+  Grafana's `$__rate_interval` calculation. Change this value in the
+  JSON if your scrape interval differs.
+
+### Filter to a single service for drill-in {#drill-in}
+
+Several panels are designed for drill-in once you filter to a single
+service via the **Service** variable. The CPU by mode panel, for
+example, stacks `user`, `system`, `iowait`, `steal`, and other CPU
+modes so you can tell whether a spike is application code, kernel
+work, disk waits, or hypervisor contention.
 
 ## Integrating with Grafana and Datadog {#third-party-integrations}
 

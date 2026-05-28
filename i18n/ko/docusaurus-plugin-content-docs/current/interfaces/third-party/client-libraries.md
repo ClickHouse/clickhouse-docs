@@ -101,10 +101,9 @@ ClickHouse Inc는 아래에 나열된 라이브러리를 유지 관리하지 않
 
 ### C# \{#c\}
 
-- [Octonica.ClickHouseClient](https://github.com/Octonica/ClickHouseClient)
-- [ClickHouse.Ado](https://github.com/killwort/ClickHouse-Net)
-- [ClickHouse.Client](https://github.com/DarkWanderer/ClickHouse.Client)
-- [ClickHouse.Net](https://github.com/ilyabreev/ClickHouse.Net)
+* [Octonica.ClickHouseClient](https://github.com/Octonica/ClickHouseClient)
+* [ClickHouse.Ado](https://github.com/killwort/ClickHouse-Net)
+* [ClickHouse.Net](https://github.com/ilyabreev/ClickHouse.Net)
 
 ### Elixir \{#elixir\}
 

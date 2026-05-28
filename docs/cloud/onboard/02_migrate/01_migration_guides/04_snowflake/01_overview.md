@@ -3,7 +3,7 @@ sidebar_label: 'Overview'
 slug: /migrations/snowflake-overview
 description: 'Migrating from Snowflake to ClickHouse'
 keywords: ['Snowflake']
-title: 'Migrate from Snowflake to ClickHouse'
+title: 'Snowflake to ClickHouse migration'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -11,8 +11,6 @@ doc_type: 'guide'
 import snowflake_architecture from '@site/static/images/cloud/onboard/discover/use_cases/snowflake_architecture.png';
 import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_cases/cloud_architecture.png';
 import Image from '@theme/IdealImage';
-
-# Snowflake to ClickHouse migration
 
 > This document provides an introduction to migrating data from Snowflake to ClickHouse.
 

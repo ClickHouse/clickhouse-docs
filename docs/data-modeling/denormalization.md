@@ -10,8 +10,6 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-# Denormalizing Data
-
 Data denormalization is a technique in ClickHouse to use flattened tables to help minimize query latency by avoiding joins.
 
 ## Comparing Normalized vs. Denormalized Schemas {#comparing-normalized-vs-denormalized-schemas}

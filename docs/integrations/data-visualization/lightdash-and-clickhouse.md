@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/lightdash
 keywords: ['clickhouse', 'lightdash', 'data visualization', 'BI', 'semantic layer', 'dbt', 'self-serve analytics', 'connect']
 description: 'Lightdash is a modern open-source BI tool built on top of dbt, enabling teams to explore and visualize data from ClickHouse through a semantic layer. Learn how to connect Lightdash to ClickHouse for fast, governed analytics powered by dbt.'
-title: 'Connecting Lightdash to ClickHouse'
+title: 'Lightdash'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -20,8 +20,6 @@ import lightdash_06 from '@site/static/images/integrations/data-visualization/li
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
-
-# Lightdash
 
 <PartnerBadge/>
 

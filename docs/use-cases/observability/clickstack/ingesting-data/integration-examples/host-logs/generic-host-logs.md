@@ -20,8 +20,6 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Monitoring Host Logs with ClickStack {#host-logs-clickstack}
-
 :::note[TL;DR]
 Collect and visualize host system logs (syslog, auth, kernel) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
 :::

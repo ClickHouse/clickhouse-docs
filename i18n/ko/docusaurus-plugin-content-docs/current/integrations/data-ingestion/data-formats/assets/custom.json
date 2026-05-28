@@ -1,13 +1,13 @@
 [
   {
-    "name": "Joe",
     "age": 99,
+    "name": "Joe",
     "type": "사용자"
   },
   {
-    "url": "/my.post.MD",
     "hits": 1263,
-    "type": "게시물"
+    "type": "게시물",
+    "url": "/my.post.MD"
   },
   {
     "message": "디스크 사용량 경고",

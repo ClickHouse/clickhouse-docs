@@ -389,16 +389,6 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 Включает экспериментальные функции ИИ (например, `aiGenerateContent`). Эти функции выполняют внешние HTTP-запросы к провайдерам ИИ.
 
-## allow_experimental_alias_table_engine \{#allow_experimental_alias_table_engine\}
-
-<ExperimentalBadge/>
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.11"},{"label": "0"},{"label": "New setting"}]}]}/>
-
-Позволяет создавать таблицы с движком Alias.
-
 ## allow_experimental_analyzer \{#allow_experimental_analyzer\}
 
 **Псевдонимы**: `enable_analyzer`
@@ -408,6 +398,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.3"},{"label": "1"},{"label": "Анализатор и планировщик по умолчанию включены."}]}]}/>
 
 Разрешает использование нового анализатора запросов.
+
+## allow_experimental_cleanup_old_data_files_compaction \{#allow_experimental_cleanup_old_data_files_compaction\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "новая настройка"}]}]} />
+
+Разрешает удалять старые файлы данных во время компакции Iceberg.
 
 ## allow_experimental_codecs \{#allow_experimental_codecs\}
 
@@ -957,6 +957,23 @@ ClickHouse использует значение этой настройки, з
 <SettingsInfoBlock type="Bool" default_value="1" />
 
 Разрешает проталкивание предикатов, если подзапрос содержит предложение WITH
+
+## allow_rank_dense_rank_arguments \{#allow_rank_dense_rank_arguments\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка. До версии 26.5 оконные функции `RANK` и `DENSE_RANK` молча игнорировали любые переданные аргументы (эквивалентно `allow_rank_dense_rank_arguments = 1`). Начиная с 26.5, по умолчанию они отклоняют аргументы с ошибкой `NUMBER_OF_ARGUMENTS_DOESNT_MATCH`, поскольку согласно стандарту SQL эти функции не принимают аргументов. Установите значение `1`, чтобы восстановить прежнее поведение."}]}]} />
+
+Разрешает передавать аргументы оконным функциям `RANK` и `DENSE_RANK` для обратной совместимости.
+
+Согласно стандарту SQL, `RANK` и `DENSE_RANK` не принимают аргументов — они ранжируют строки только в окне
+`OVER (ORDER BY ...)`. В версиях ClickHouse до 26.5 запросы вида
+`RANK(x) OVER (...)` молча принимались, а аргумент игнорировался, что вызывало путаницу
+(наличие аргумента создавало впечатление, что он влияет на ранжирование, хотя это не так).
+
+Если эта настройка имеет значение `false` (по умолчанию), `RANK` и `DENSE_RANK` отклоняют любые аргументы и
+генерируют исключение `NUMBER_OF_ARGUMENTS_DOESNT_MATCH`. Если установлено значение `true`, восстанавливается
+прежнее мягкое поведение — аргументы молча игнорируются, как и до версии 26.5.
 
 ## allow_reorder_prewhere_conditions \{#allow_reorder_prewhere_conditions\}
 
@@ -5284,6 +5301,38 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 Возможные значения: числа от 1 до 9.
 
+## iceberg_compaction_data_cleanup \{#iceberg_compaction_data_cleanup\}
+
+<SettingsInfoBlock type="Seconds" default_value="10800" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10800"},{"label": "новая настройка"}]}]} />
+
+Время, по истечении которого данные будут удалены.
+
+## iceberg_compaction_delay_bias \{#iceberg_compaction_delay_bias\}
+
+<SettingsInfoBlock type="Seconds" default_value="10800" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10800"},{"label": "новая настройка"}]}]} />
+
+Минимальная задержка между двумя фоновыми операциями компактизации.
+
+## iceberg_data_file_size_lower_threshold_compaction \{#iceberg_data_file_size_lower_threshold_compaction\}
+
+<SettingsInfoBlock type="UInt64" default_value="10485760" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10485760"},{"label": "Новая настройка"}]}]} />
+
+Порог для файлов данных в Iceberg при компактизации.
+
+## iceberg_data_file_size_upper_threshold_compaction \{#iceberg_data_file_size_upper_threshold_compaction\}
+
+<SettingsInfoBlock type="UInt64" default_value="10737418240" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "10737418240"},{"label": "Новая настройка"}]}]} />
+
+Верхний порог размера файлов данных для компактизации в Iceberg.
+
 ## iceberg_delete_data_on_drop \{#iceberg_delete_data_on_drop\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
@@ -5339,6 +5388,14 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "25.9"},{"label": "1000000"},{"label": "Новая настройка."}]}]}/>
 
 Максимальное число строк в файле данных Iceberg в формате Parquet при выполнении операции INSERT.
+
+## iceberg_max_number_datafiles_to_compact \{#iceberg_max_number_datafiles_to_compact\}
+
+<SettingsInfoBlock type="UInt64" default_value="1000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1000"},{"label": "новая настройка"}]}]} />
+
+Порог для компактизации файлов данных в Iceberg.
 
 ## iceberg_metadata_compression_method \{#iceberg_metadata_compression_method\}
 
@@ -9594,19 +9651,22 @@ FROM default.fuse_tbl AS __table1
 
 <SettingsInfoBlock type="UInt64" default_value="2" />
 
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "2"},{"label": "Enable parallel distributed insert select by default"}]}]}/>
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.7"},{"label": "2"},{"label": "Enable parallel distributed insert select by default"}]}]} />
 
 Включает параллельное выполнение распределённого запроса `INSERT ... SELECT`.
 
-Если выполняются запросы `INSERT INTO distributed_table_a SELECT ... FROM distributed_table_b`, и обе таблицы используют один и тот же кластер, а также обе таблицы либо [реплицируемые](../../engines/table-engines/mergetree-family/replication.md), либо нереплицируемые, то такой запрос обрабатывается локально на каждом сегменте.
+Если выполняются запросы `INSERT INTO distributed_table_a SELECT ... FROM distributed_table_b`, и обе таблицы используют один и тот же кластер, а также обе таблицы либо [реплицируемые](../../engines/table-engines/mergetree-family/replication.md), либо нереплицированные, то такой запрос обрабатывается локально на каждом сегменте.
 
 Возможные значения:
 
-- `0` — Отключено.
-- `1` — `SELECT` будет выполняться на каждом сегменте из базовой таблицы распределённого движка.
-- `2` — `SELECT` и `INSERT` будут выполняться на каждом сегменте из/в базовую таблицу распределённого движка.
+* `0` — Отключено.
+* `1` — `SELECT` будет выполняться на каждом сегменте из базовой таблицы распределённого движка.
+* `2` — `SELECT` и `INSERT` будут выполняться на каждом сегменте из/в базовую таблицу распределённого движка.
 
-При использовании этого параметра необходимо включить настройку `enable_parallel_replicas = 1`.
+Начиная с v25.4, `INSERT ... SELECT` из источника `ReplicatedMergeTree` или `SharedMergeTree` также может выполняться параллельно на разных репликах. Чтобы включить это:
+
+* `parallel_distributed_insert_select = 2`
+* `enable_parallel_replicas = 1`
 
 ## parallel_hash_join_threshold \{#parallel_hash_join_threshold\}
 
@@ -10181,6 +10241,19 @@ a   Tuple(
 
 - 0 - Отключено
 - 1 - Включено
+
+## query_cache_for_subqueries \{#query_cache_for_subqueries\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "0"},{"label": "Новая настройка, включающая распространение `use_query_cache` на все подзапросы. Без нее подзапросы кэшируются только при явном включении для каждого подзапроса через `SETTINGS use_query_cache = true`."}]}]} />
+
+Если параметр включен, результаты подзапросов могут записываться в [кэш запросов](../query-cache.md) и считываться из него. Это обеспечивает распространение `use_query_cache` на все подзапросы.
+
+Возможные значения:
+
+* 0 — Отключено
+* 1 — Включено
 
 ## query_cache_max_entries \{#query_cache_max_entries\}
 
@@ -10767,17 +10840,6 @@ a   Tuple(
 
 - 0 — Отключить
 - 1 — Включить
-
-## query_plan_use_new_logical_join_step \{#query_plan_use_new_logical_join_step\}
-
-**Псевдонимы**: `query_plan_use_logical_join_step`
-
-<SettingsInfoBlock type="Bool" default_value="1" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.2"},{"label": "1"},{"label": "Включить новый шаг"}]}, {"id": "row-2","items": [{"label": "25.1"},{"label": "0"},{"label": "Новый шаг JOIN, внутреннее изменение"}]}]}/>
-
-Использовать логический шаг JOIN в плане запроса.
-Примечание: настройка `query_plan_use_new_logical_join_step` устарела, вместо неё используйте `query_plan_use_logical_join_step`.
 
 ## query_profiler_cpu_time_period_ns \{#query_profiler_cpu_time_period_ns\}
 

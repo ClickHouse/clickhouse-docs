@@ -11,8 +11,8 @@ doc_type: 'reference'
 
 Добавлена в: v23.8.0
 
-Строит [flamegraph](https://www.brendangregg.com/flamegraphs.html) на основе списка стеков вызовов.
-Возвращает массив строк, который может быть использован утилитой [flamegraph.pl](https://github.com/brendangregg/FlameGraph) для построения SVG-графика flamegraph.
+Строит [флеймграф](https://www.brendangregg.com/flamegraphs.html) на основе списка трассировок стека.
+Возвращает массив строк, который может быть использован утилитой [flamegraph.pl](https://github.com/brendangregg/FlameGraph) для построения SVG-графика флеймграфа.
 
 :::note
 В случае, если `ptr != 0`, flameGraph сопоставляет аллокации (size &gt; 0) и деаллокации (size &lt; 0) с одинаковыми значениями size и ptr.
@@ -28,7 +28,7 @@ flameGraph(traces[, size[, ptr]])
 
 **Аргументы**
 
-* `traces` — стек-трейс. [`Array(UInt64)`](/sql-reference/data-types/array)
+* `traces` — стек-трейс, либо в виде необработанных адресов, либо в виде уже символизированных строк (например, `arrayMap(addressToSymbol, trace)`). [`Array(UInt64)`](/sql-reference/data-types/array) or [`Array(String)`](/sql-reference/data-types/array)
 * `size` — Необязательный параметр. Размер выделения памяти для профилирования (по умолчанию 1). [`UInt64`](/sql-reference/data-types/int-uint)
 * `ptr` — Необязательный параметр. Адрес выделения памяти (по умолчанию 0). [`UInt64`](/sql-reference/data-types/int-uint)
 
@@ -71,7 +71,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGraph(trace, size, ptr)) FROM system.trace_log WHERE trace_type = 'MemorySample' AND query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem_untracked.svg
 ```
 
-**Построить flamegraph на основе профилировщика запросов по памяти, отображающий активные выделения памяти в фиксированный момент времени**
+**Построить флеймграф на основе профилировщика запросов по памяти, отображающий активные выделения памяти в фиксированный момент времени**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

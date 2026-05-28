@@ -1,29 +1,29 @@
 [
   {
-    "page": {
-      "path": "Akiba_Hebrew_Academy",
-      "title": "Еврейская академия Акибы",
-      "owner_id": 12
-    },
+    "hits": 241,
     "month": "2017-08-01",
-    "hits": 241
+    "page": {
+      "owner_id": 12,
+      "path": "Akiba_Hebrew_Academy",
+      "title": "Еврейская академия Акибы"
+    }
   },
   {
-    "page": {
-      "path": "Aegithina_tiphia",
-      "title": "Aegithina tiphia",
-      "owner_id": 3
-    },
+    "hits": 34,
     "month": "2018-02-01",
-    "hits": 34
+    "page": {
+      "owner_id": 3,
+      "path": "Aegithina_tiphia",
+      "title": "Aegithina tiphia"
+    }
   },
   {
-    "page": {
-      "path": "1971-72_Utah_Stars_season",
-      "title": "Utah Stars: сезон 1971–72",
-      "owner_id": 432
-    },
+    "hits": 1,
     "month": "2016-10-01",
-    "hits": 1
+    "page": {
+      "owner_id": 432,
+      "path": "1971-72_Utah_Stars_season",
+      "title": "Utah Stars: сезон 1971–72"
+    }
   }
 ]

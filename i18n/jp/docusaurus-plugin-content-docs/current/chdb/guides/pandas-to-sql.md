@@ -11,7 +11,7 @@ DataStore は pandas スタイルの操作を最適化された SQL にコンパ
 
 ## 生成された SQL の表示 \{#viewing-sql\}
 
-```python
+```python title="Query"
 from pathlib import Path
 Path("sales.csv").write_text("""\
 region,product,category,amount,quantity,price,date,order_id
@@ -38,9 +38,7 @@ query = (ds
 print(query.to_sql())
 ```
 
-出力結果:
-
-```sql
+```sql title="Response"
 SELECT region, SUM(amount) AS sum, AVG(amount) AS mean
 FROM file('sales.csv', 'CSVWithNames')
 WHERE amount > 1000
@@ -50,7 +48,6 @@ LIMIT 10
 ```
 
 ***
-
 
 ## 基本操作の対応 \{#basic\}
 

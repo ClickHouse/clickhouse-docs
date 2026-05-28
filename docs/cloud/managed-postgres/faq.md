@@ -7,9 +7,9 @@ keywords: ['managed postgres faq', 'postgres questions', 'metrics', 'extensions'
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="faq" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.faq-beta" />
 
 ## Monitoring and metrics {#monitoring-and-metrics}
 
@@ -17,9 +17,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 You can monitor CPU, memory, IOPS, and storage usage directly from the ClickHouse Cloud console in the **Monitoring** tab of your Managed Postgres instance.
 
-:::note
-Query Performance Insights for detailed query analysis is coming soon.
-:::
+In addition, you can explore [Query Performance Insights](https://clickhouse.com/blog/postgres-query-insights-clickhouse-cloud) for detailed analysis of your queries in the **Query Insights** tab.
 
 ## Backup and recovery {#backup-and-recovery}
 
@@ -33,13 +31,13 @@ For complete details on backup frequency, retention, and how to perform point-in
 
 ### Is Terraform support available for Managed Postgres? {#terraform-support}
 
-Terraform support for Managed Postgres isn't currently available. We recommend using the ClickHouse Cloud console to create and manage your instances.
+Terraform support for Managed Postgres isn't currently available. We recommend using the ClickHouse Cloud console or [OpenAPI](openapi.md) to create and manage your instances.
 
 ## Extensions and configuration {#extensions-and-configuration}
 
 ### What extensions are supported? {#extensions-supported}
 
-Managed Postgres includes 100+ PostgreSQL extensions, including popular ones like PostGIS, pgvector, pg_cron, and many more. For the complete list of available extensions and installation instructions, see the [Extensions](/cloud/managed-postgres/extensions) documentation.
+Managed Postgres includes over 90 PostgreSQL extensions, including popular ones like PostGIS, pgvector, pg_cron, and many more. For the complete list of available extensions and installation instructions, see the [Extensions](/cloud/managed-postgres/extensions) documentation.
 
 ### Can I customize PostgreSQL configuration parameters? {#config-customization}
 
@@ -55,7 +53,7 @@ If you need a parameter that isn't currently available, contact [support](https:
 
 Managed Postgres runs PgBouncer in **transaction pooling** mode. In this mode, a backend Postgres connection is only assigned to your client for the duration of a single transaction, then returned to the pool — the next transaction from the same client may land on a different backend.
 
-That breaks **server-side prepared statements**, which are tied to the specific backend that ran the `PREPARE` (or the extended-query `Parse`). When the matching `Execute` lands on a different backend, you get errors like:
+That breaks **server-side prepared statements**, which are tied to the specific backend that ran the `PREPARE` (or the extended-query `Parse`). When the matching `EXECUTE` lands on a different backend, you get errors like:
 
 ```text
 ERROR:  prepared statement "..." does not exist
@@ -78,14 +76,14 @@ Symptoms that often trace back to this same root cause:
 | **JDBC** (Java) | `prepareThreshold=0` |
 | **node-postgres / pg** (Node.js) | Don't pass a `name` to `query()` (named queries become server-prepared) |
 
-If your workload depends on prepared statements, connect **directly to PostgreSQL** (port 5432) instead of going through the PgBouncer pooler — direct connections support prepared statements normally. See [Connection](/cloud/managed-postgres/connection) for details on choosing between the pooled and direct endpoints.
+If your workload depends on prepared statements, connect **directly to PostgreSQL** (port 5432) rather than the PgBouncer pooler — direct connections support prepared statements normally. See [Connection](/cloud/managed-postgres/connection) for details on choosing between the pooled and direct endpoints.
 
-### What does the "max_client_conn" setting in PgBouncer mean, and how does it relate to `max_connections` in Postgres? {#pgbouncer-vs-pg-connections}
+### What does the `max_client_conn` setting in PgBouncer mean, and how does it relate to `max_connections` in Postgres? {#pgbouncer-vs-pg-connections}
 
 They control different things:
 
 - **Postgres `max_connections`** caps the number of **backend** connections to PostgreSQL itself. This is the expensive number — each backend uses memory and a process slot.
-- **PgBouncer `max_client_conn`** caps the number of **client** connections that can be open to the pooler at once. PgBouncer multiplexes these many client connections onto a much smaller set of backend connections.
+- **PgBouncer `max_client_conn`** caps the number of **client** connections that can be open in the pooler at once. PgBouncer multiplexes these many client connections onto a much smaller set of backend connections.
 
 A typical Managed Postgres instance is configured so PgBouncer accepts roughly **10× more client connections than there are Postgres backends** (e.g. 5000 client / 500 backend). If you see connection errors at the pooler, you're far more likely to be hitting a per-pool backend limit (`default_pool_size`) than the headline client limit.
 

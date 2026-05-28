@@ -64,24 +64,22 @@ config.enable_debug()  # Sets DEBUG level + verbose format
 
 ### Simple Format (Default) {#simple}
 
-```python
+```python title="Query"
 config.set_log_format("simple")
 ```
 
-Output:
-```text
+```text title="Response"
 DEBUG - Executing SQL query
 DEBUG - Cache miss for key abc123
 ```
 
 ### Verbose Format {#verbose}
 
-```python
+```python title="Query"
 config.set_log_format("verbose")
 ```
 
-Output:
-```text
+```text title="Response"
 2024-01-15 10:30:45.123 DEBUG datastore.core - Executing SQL query
 2024-01-15 10:30:45.456 DEBUG datastore.cache - Cache miss for key abc123
 ```

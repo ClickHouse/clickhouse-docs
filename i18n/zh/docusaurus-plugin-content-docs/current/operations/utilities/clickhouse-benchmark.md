@@ -42,34 +42,35 @@ clickhouse-benchmark [keys] < queries_file;
 
 ## 命令行选项 \{#clickhouse-benchmark-command-line-options\}
 
-- `--query=QUERY` — 要执行的查询。如果未传递此参数，`clickhouse-benchmark` 将从标准输入读取查询。
-- `--query_id=ID` — 查询 ID。
-- `--query_id_prefix=ID_PREFIX` — 查询 ID 前缀。
-- `-c N`, `--concurrency=N` — `clickhouse-benchmark` 同时发送的查询数量。默认值：1。
-- `-C N`, `--max_concurrency=N` — 逐步增加并行查询数量直至指定值，并为每个并发级别生成一份报告。
-- `--precise` — 启用带加权指标的精确分段报告。
-- `-d N`, `--delay=N` — 中间报告之间的时间间隔（秒）（要禁用报告请设为 0）。默认值：1。
-- `-h HOST`, `--host=HOST` — 服务器主机名。默认值：`localhost`。在[对比模式](#clickhouse-benchmark-comparison-mode)下可以使用多个 `-h` 选项。
-- `-i N`, `--iterations=N` — 查询总数。默认值：0（无限重复）。
-- `-r`, `--randomize` — 当输入中有多个查询时，以随机顺序执行查询。
-- `-s`, `--secure` — 使用 `TLS` 连接。
-- `-t N`, `--timelimit=N` — 时间限制（秒）。达到指定时间限制后，`clickhouse-benchmark` 停止发送查询。默认值：0（禁用时间限制）。
-- `--port=N` — 服务器端口。默认值：9000。在[对比模式](#clickhouse-benchmark-comparison-mode)下可以使用多个 `--port` 选项。
-- `--confidence=N` — t 检验的置信水平。可选值：0 (80%)、1 (90%)、2 (95%)、3 (98%)、4 (99%)、5 (99.5%)。默认值：5。在[对比模式](#clickhouse-benchmark-comparison-mode)下，`clickhouse-benchmark` 会执行[双样本独立 Student t 检验](https://en.wikipedia.org/wiki/Student%27s_t-test#Independent_two-sample_t-test)，以在选定置信水平下判断两个分布是否可以视为无显著差异。
-- `--cumulative` — 输出累积数据，而不是分段数据。
-- `--database=DATABASE_NAME` — ClickHouse 数据库名。默认值：`default`。
-- `--user=USERNAME` — ClickHouse 用户名。默认值：`default`。
-- `--password=PSWD` — ClickHouse 用户密码。默认值：空字符串。
-- `--stacktrace` — 输出堆栈跟踪。设置此选项后，`clickhouse-benchmark` 会输出异常的堆栈跟踪。
-- `--stage=WORD` — 服务器端的查询处理阶段。ClickHouse 会在指定阶段停止处理查询并向 `clickhouse-benchmark` 返回结果。可选值：`complete`、`fetch_columns`、`with_mergeable_state`。默认值：`complete`。
-- `--roundrobin` — 不对不同 `--host`/`--port` 的查询进行比较，而是为每个查询随机选择一个 `--host`/`--port` 并将查询发送到该地址。
-- `--reconnect=N` — 控制重连行为。可选值：0（从不重连）、1（每个查询都重连），或 N（每 N 个查询重连一次）。默认值：0。
-- `--max-consecutive-errors=N` — 允许的连续错误数量。默认值：0。
-- `--ignore-error`, `--continue_on_errors` — 即使查询失败也继续测试。
-- `--client-side-time` — 显示包含网络通信时间的耗时，而不是服务器端时间；注意，在 22.8 之前的服务器版本中，总是显示客户端时间。
-- `--proto-caps` — 启用/禁用数据传输中的分块。可选值（可用逗号分隔）：`chunked_optional`、`notchunked`、`notchunked_optional`、`send_chunked`、`send_chunked_optional`、`send_notchunked`、`send_notchunked_optional`、`recv_chunked`、`recv_chunked_optional`、`recv_notchunked`、`recv_notchunked_optional`。默认值：`notchunked`。
-- `--help` — 显示帮助信息。
-- `--verbose` — 增加帮助信息的详细程度。
+* `--query=QUERY` — 要执行的查询。如果未传递此参数，`clickhouse-benchmark` 将从标准输入读取查询。
+* `--query_id=ID` — 查询 ID。
+* `--query_id_prefix=ID_PREFIX` — 查询 ID 前缀。
+* `--queries-format=FORMAT` — 从标准输入读取的查询格式。可选值：`tsv` (默认值，每行一个经过制表符转义的查询) 和 `script` (将输入解析为由分号分隔的多查询脚本) 。`script` 的限制：`INSERT ... FORMAT` 查询必须位于单行中。
+* `-c N`, `--concurrency=N` — `clickhouse-benchmark` 同时发送的查询数量。默认值：1。
+* `-C N`, `--max_concurrency=N` — 逐步增加并行查询数量直至指定值，并为每个并发级别生成一份报告。
+* `--precise` — 启用带加权指标的精确分段报告。
+* `-d N`, `--delay=N` — 中间报告之间的时间间隔 (秒)  (要禁用报告请设为 0) 。默认值：1。
+* `-h HOST`, `--host=HOST` — 服务器主机名。默认值：`localhost`。在[比较模式](#clickhouse-benchmark-comparison-mode)下可以使用多个 `-h` 选项。
+* `-i N`, `--iterations=N` — 查询总数。默认值：0 (无限重复) 。
+* `-r`, `--randomize` — 当输入中有多个查询时，以随机顺序执行查询。
+* `-s`, `--secure` — 使用 `TLS` 连接。
+* `-t N`, `--timelimit=N` — 时间限制 (秒) 。达到指定时间限制后，`clickhouse-benchmark` 停止发送查询。默认值：0 (禁用时间限制) 。
+* `--port=N` — 服务器端口。默认值：9000。在[比较模式](#clickhouse-benchmark-comparison-mode)下可以使用多个 `--port` 选项。
+* `--confidence=N` — t 检验的置信水平。可选值：0 (80%)、1 (90%)、2 (95%)、3 (98%)、4 (99%)、5 (99.5%)。默认值：5。在[比较模式](#clickhouse-benchmark-comparison-mode)下，`clickhouse-benchmark` 会执行[双样本独立 Student t 检验](https://en.wikipedia.org/wiki/Student%27s_t-test#Independent_two-sample_t-test)，以在选定置信水平下判断两个分布是否可以视为无显著差异。
+* `--cumulative` — 输出累积数据，而不是分段数据。
+* `--database=DATABASE_NAME` — ClickHouse 数据库名。默认值：`default`。
+* `--user=USERNAME` — ClickHouse 用户名。默认值：`default`。
+* `--password=PSWD` — ClickHouse 用户密码。默认值：空字符串。
+* `--stacktrace` — 输出堆栈跟踪。设置此选项后，`clickhouse-benchmark` 会输出异常的堆栈跟踪。
+* `--stage=WORD` — 服务器端的查询处理阶段。ClickHouse 会在指定阶段停止处理查询并向 `clickhouse-benchmark` 返回结果。可选值：`complete`、`fetch_columns`、`with_mergeable_state`。默认值：`complete`。
+* `--roundrobin` — 不对不同 `--host`/`--port` 的查询进行比较，而是为每个查询随机选择一个 `--host`/`--port` 并将查询发送到该地址。
+* `--reconnect=N` — 控制重连行为。可选值：0 (从不重连) 、1 (每个查询都重连) ，或 N (每 N 个查询重连一次) 。默认值：0。
+* `--max-consecutive-errors=N` — 允许的连续错误数量。默认值：0。
+* `--ignore-error`, `--continue_on_errors` — 即使查询失败也继续测试。
+* `--client-side-time` — 显示包含网络通信时间的耗时，而不是服务器端时间；注意，在 22.8 之前的服务器版本中，总是显示客户端时间。
+* `--proto-caps` — 启用/禁用数据传输中的分块。可选值 (可用逗号分隔) ：`chunked_optional`、`notchunked`、`notchunked_optional`、`send_chunked`、`send_chunked_optional`、`send_notchunked`、`send_notchunked_optional`、`recv_chunked`、`recv_chunked_optional`、`recv_notchunked`、`recv_notchunked_optional`。默认值：`notchunked`。
+* `--help` — 显示帮助信息。
+* `--verbose` — 增加帮助信息的详细程度。
 
 如果希望为查询应用一些[设置](/operations/settings/overview)，可以以 `--<session setting name>= SETTING_VALUE` 的形式传递它们。例如：`--max_memory_usage=1048576`。
 
