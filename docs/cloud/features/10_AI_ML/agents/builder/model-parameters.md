@@ -6,6 +6,7 @@ title: 'Model parameters'
 description: 'Configure model selection and generation parameters for ClickHouse Agents'
 keywords: ['AI', 'ClickHouse Cloud', 'agents', 'model parameters', 'temperature', 'top-p', 'top-k', 'thinking', 'prompt caching']
 doc_type: 'reference'
+draft: true
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';

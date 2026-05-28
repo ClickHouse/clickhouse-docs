@@ -18,8 +18,7 @@ Vision lets users upload images for an agent to analyze. The agent passes the im
 
 ## Enable vision capabilities {#enable-it}
 
-Vision only works with models that support image inputs. If the selected model can't handle image inputs, the upload control on the message composer is disabled.
-Switch to a vision-capable model in [model parameters](/cloud/features/ai-ml/agents/builder/model-parameters) to re-enable it.
+Vision only works with models that support image inputs. If the selected model can't handle image inputs, the upload control on the message composer is disabled. Switch to a vision-capable model to re-enable it.
 
 ## Use vision capabilities {#use-it}
 

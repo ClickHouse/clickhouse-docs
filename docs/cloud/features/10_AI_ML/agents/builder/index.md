@@ -23,7 +23,6 @@ This section covers each part of the Agent Builder and contains the following pa
 
 | Page | Description |
 |------|-------------|
-| [Model parameters](/cloud/features/ai-ml/agents/builder/model-parameters) | Pick a model and tune generation parameters. |
 | [Code interpreter](/cloud/features/ai-ml/agents/builder/code-interpreter) | Sandboxed code execution. |
 | [Web search](/cloud/features/ai-ml/agents/builder/web-search) | Public-web lookups. |
 | [Image generation](/cloud/features/ai-ml/agents/builder/image-generation) | Generate images from text. |

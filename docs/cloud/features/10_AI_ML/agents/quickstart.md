@@ -44,7 +44,7 @@ In the Agent Builder, click **Create New Agent** at the top of the left panel. F
 - **Description** - a description of what the agent is for, which will be visible to teammates.
 - **Category** - a category for your agent. You can leave this as `General` unless your org has custom categories.
 - **Instructions** - the system prompt, which describe the agent's role, the questions it should answer, and any business rules it must follow.
-- **Model** - pick a model from the dropdown. Tune temperature and other generation settings in [model parameters](/cloud/features/ai-ml/agents/builder/model-parameters).
+- **Model** - pick a model from the dropdown.
 
 <Image img={agentBuilder} alt="Agent Builder panel showing the Create New Agent dropdown, the form fields (Name, Description, Category, Instructions, Model), and the Capabilities section" size="lg" />
 
