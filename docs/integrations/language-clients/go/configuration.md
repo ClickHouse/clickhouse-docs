@@ -24,7 +24,7 @@ When opening a connection, an Options struct can be used to control client behav
 | `Auth` | `Auth` | — | Authentication credentials (`Database`, `Username`, `Password`). See [Authentication](#authentication). |
 | `TLS` | `*tls.Config` | `nil` | TLS configuration. A non-nil value enables TLS. See [TLS](#using-tls). |
 | `DialContext` | `func(ctx, addr) (net.Conn, error)` | — | Custom dial function to control how TCP connections are established. |
-| `DialTimeout` | `time.Duration` | `30s` | Maximum time to wait when opening a new connection. |
+| `DialTimeout` | `time.Duration` | `30s` | Maximum time to wait when opening a new connection. Raise to `1m`–`2m` when connecting to a ClickHouse Cloud service that may be idle — see [Timeouts](/integrations/language-clients/go/config-reference#timeouts). |
 | `MaxOpenConns` | `int` | `MaxIdleConns + 5` | Maximum number of connections open at any time. |
 | `MaxIdleConns` | `int` | `5` | Number of idle connections to keep in the pool. |
 | `ConnMaxLifetime` | `time.Duration` | `1h` | Maximum lifetime of a pooled connection. See [Connection pooling](#connection-pooling). |
