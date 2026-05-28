@@ -9,6 +9,10 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import createPrompt from '@site/static/images/cloud/agent-builder/prompts/create-prompt.png';
+import preview from '@site/static/images/cloud/agent-builder/prompts/preview.png';
+import usePromptModal from '@site/static/images/cloud/agent-builder/prompts/use-prompt-modal.png';
 
 <BetaBadge/>
 
@@ -16,26 +20,45 @@ The Prompts library is a place to save and reuse natural-language prompts you fi
 
 ## Create a prompt {#create-a-prompt}
 
-Open the Prompts panel and click **New prompt**. Give it:
+Open the Prompts panel from the **Prompts** icon in the left navigation and click the **+** button to open the **Create Prompt** form. Fill in the fields:
 
-- **A title** — what shows up in the picker. Be descriptive: *"Weekly active users by region"* beats *"WAU"*.
-- **The body** — the actual text that will be inserted into the composer.
-- **Optional variables** — placeholders in the body that you fill in at insertion time. Use `{{name}}` style markers; the picker prompts you for values before inserting.
+- **Prompt Name** (required) - what shows up in the picker. Be descriptive: *"Weekly active users by region"* beats *"WAU"*.
+- **Text** (required) - the actual text that will be inserted into the composer.
+- **Special variables** - click the **Special variables** button to insert placeholders, or type `{{name}}` style markers directly. The picker prompts you for values before inserting.
+- **Category**, **Description**, **Command** (optional) - for organizing the library, picker preview text, and a quick-invoke shortcut.
 
-Group related prompts under categories or tags to keep the library navigable as it grows.
+Then click **Create Prompt** at the bottom right.
+
+<Image img={createPrompt} alt="Prompts panel with the + button highlighted on the left and the Create Prompt form open on the right showing Prompt Name, Text, Category, Special variables, Description, and Command fields, with a Create Prompt button" size="lg"/>
 
 ## Use a prompt {#use-a-prompt}
 
-In a conversation, open the prompts picker from the composer and search or browse to the prompt you want. If the prompt has variables, fill them in. The body is inserted into the composer, where you can edit it before sending.
+In the Prompts panel, open the **...** menu on a prompt card and choose **Preview**:
+
+<Image img={preview} alt="Prompts panel with a prompt selected, its details visible on the right, and a context menu showing Preview and Edit options" size="lg"/>
+
+The preview shows the prompt's text along with its author and date. Click **Use Prompt** to insert the body into the composer. If the prompt has variables, fill them in first.
+
+<Image img={usePromptModal} alt="Prompt preview modal showing the prompt title, author, date, body text, and a Use Prompt button" size="md"/>
 
 ## Share prompts {#share-prompts}
 
-Prompts have the same access model as agents: private by default, can be shared with specific users or groups, can be made organization-wide. See [sharing and access](/cloud/features/ai-ml/agents/sharing-and-access).
+By default, a prompt is private to the person who created it. The owner can change a prompt's visibility to:
+
+- **Specific users or groups** - anyone you nominate can find and use the prompt.
+- **Organization-wide** - everyone in your ClickHouse Cloud organization can find and use it.
+
+Prompts use the same permission model as agents. For the full matrix of roles and what each can do, see [Sharing and
+access](/cloud/features/ai-ml/agents/sharing-and-access).
 
 ## Prompts vs. skills vs. instructions {#prompts-vs-skills-vs-instructions}
 
-- **Prompts** are one-shot text snippets for the user to insert and edit. The user is in the loop.
-- **[Skills](/cloud/features/ai-ml/agents/builder/skills)** are instruction packs the agent activates on its own.
-- **Agent instructions** are the agent's persistent system prompt.
+Prompts, skills, and agent instructions all add text to the model, but they differ in who triggers them and how persistent they are.
 
-Use a prompt when you want to reuse phrasing but stay in control of the wording each time.
+- **Prompts** - text you insert into the composer yourself, edited per turn.
+- **[Skills](/cloud/features/ai-ml/agents/builder/skills)** - instruction sets the agent loads on its own when it judges them relevant to the task.
+- **Agent instructions** - the agent's persistent system prompt, applied to every conversation.
+
+Reach for a prompt when you want to reuse phrasing but stay in control of the wording each time. Reach for a skill when you want the agent to apply
+the same guidance consistently across a task type without having to type it. Reach for agent instructions when the behavior should hold for the
+lifetime of the agent.

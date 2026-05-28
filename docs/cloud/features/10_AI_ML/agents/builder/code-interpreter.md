@@ -9,26 +9,34 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import runCode from '@site/static/images/cloud/agent-builder/run-code/run-code.png';
 
 <BetaBadge/>
 
 The code interpreter lets an agent execute code in a managed sandbox. Use it for computation, data transformation, format conversion, plotting, and anything else better done in code than in natural language.
 
-## Enable it {#enable-it}
+## Enable the code interpreter {#enable-it}
 
-Toggle **Code interpreter** in the Agent Builder's capabilities section, then save. The agent decides when to run code based on the user's request and the agent's instructions.
+In the Agent Builder, enable **Run Code** in the **Capabilities** section, then save. The agent decides when to run code based on the user's request and the agent's instructions.
+
+<Image img={runCode} alt="Run Code section of the Capabilities panel with the Run Code checkbox enabled and an Upload to Code Environment button" size="sm"/>
 
 ## Supported languages {#supported-languages}
 
 The sandbox is a Unix environment with two general-purpose runtimes and a few shell utilities:
 
-- **Python 3** — the default for data tasks.
-- **Node.js (JavaScript)** — when an agent prefers JS for the job.
-- **Bash** and **sh** — shell scripting for chaining commands and quick I/O.
-- **AWK** and **sed** — line-oriented text processing.
-- **bc** — arbitrary-precision math.
+- **Python 3** - the default for data tasks.
+- **Node.js (JavaScript)** - when an agent prefers JS for the job.
+- **Bash** and **sh** - shell scripting for chaining commands and quick I/O.
+- **AWK** and **sed** - line-oriented text processing.
+- **bc** - arbitrary-precision math.
 
-Agents reach for Python first for anything involving data parsing, transformation, or computation. Reserve the shell tools for tasks that genuinely benefit from a one-liner.
+Agents reach for Python first for anything involving data parsing, transformation, or computation.
+
+:::tip
+Reserve the shell tools for tasks that genuinely benefit from a one-liner.
+:::
 
 ## Files {#files}
 
@@ -42,10 +50,15 @@ Plan-specific resource limits (memory, files per run, monthly request quotas) ap
 
 ## When to use it {#when-to-use-it}
 
-- Parse a CSV or JSON the user uploaded.
-- Compute summary statistics or run a quick simulation.
-- Convert between formats (Parquet, JSON, CSV).
-- Generate a plot from query results.
-- Anything where deterministic computation beats LLM reasoning.
+Reach for the code interpreter when the answer requires deterministic computation that a language model can't produce reliably by reasoning alone.
+Typical cases include:
 
-Avoid it for tasks the model can answer directly. Code execution adds latency and consumes quota.
+- Parsing a CSV or JSON file the user uploaded.
+- Computing summary statistics or running a quick simulation.
+- Converting between formats (Parquet, JSON, CSV).
+- Generating a plot from query results.
+
+:::tip
+Avoid it for tasks the model can already answer from context.
+Code execution adds latency and consumes quota.
+:::

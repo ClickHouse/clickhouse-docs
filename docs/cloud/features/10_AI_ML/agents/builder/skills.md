@@ -40,10 +40,10 @@ When asked to generate a revenue report:
 
 The frontmatter knobs that matter most:
 
-- **`name`** — kebab-case identifier.
-- **`description`** — short summary used by the model to decide when this skill is relevant. Treat this as the most important field. Write it specifically; vague descriptions lead to wrong-skill invocations.
-- **`always-apply`** — when `true`, the skill is primed into every turn instead of being selected. Use sparingly; always-apply skills consume context on every message.
-- **`user-invocable`** — when `true` (the default), the skill appears in the `$` popover for manual selection.
+- **`name`** - kebab-case identifier.
+- **`description`** - short summary used by the model to decide when this skill is relevant. Treat this as the most important field. Write it specifically; vague descriptions lead to wrong-skill invocations.
+- **`always-apply`** - when `true`, the skill is primed into every turn instead of being selected. Use sparingly; always-apply skills consume context on every message.
+- **`user-invocable`** - when `true` (the default), the skill appears in the `$` popover for manual selection.
 
 You can bundle supporting files alongside the skill — reference docs, sample queries, small scripts — by uploading a `.zip` containing the `SKILL.md` and its assets.
 
@@ -51,9 +51,9 @@ You can bundle supporting files alongside the skill — reference docs, sample q
 
 Three ways an agent reaches for a skill in a conversation:
 
-- **User invocation** — press `$` in the composer and pick the skill from the popover. The skill's content is primed for the next turn.
-- **Model auto-selection** — based on the skill's `description`, the agent decides on its own when to apply it.
-- **Always-apply** — primed on every turn for skills configured that way.
+- **User invocation** - press `$` in the composer and pick the skill from the popover. The skill's content is primed for the next turn.
+- **Model auto-selection** - based on the skill's `description`, the agent decides on its own when to apply it.
+- **Always-apply** - primed on every turn for skills configured that way.
 
 ## Manage skills {#manage-skills}
 
