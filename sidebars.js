@@ -1279,6 +1279,18 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'Integration development',
+      collapsed: true,
+      collapsible: true,
+      link: { type: 'doc', id: 'integrations/integration-development/index' },
+      items: [
+        'integrations/integration-development/building-integrations',
+        'integrations/integration-development/testing-your-integration',
+        'integrations/integration-development/documenting-your-integration',
+      ],
+    },
   ],
 
   managingData: [
