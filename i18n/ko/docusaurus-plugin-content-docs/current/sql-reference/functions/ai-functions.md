@@ -155,6 +155,66 @@ SELECT body, aiClassify('ai_credentials', body, ['bug', 'question', 'feature']) 
 ```response title=Response
 ```
 
+## aiEmbed \{#aiEmbed\}
+
+도입 버전: v26.6.0
+
+구성된 AI 프로바이더를 사용하여 지정된 텍스트의 임베딩 벡터를 생성합니다.
+
+이 함수는 텍스트를 구성된 임베딩 엔드포인트로 전송하고, 결과 벡터를 `Array(Float32)`로 반환합니다.
+호출당 오버헤드를 줄이기 위해 단일 행 블록 내에서는 입력이 HTTP 요청당 최대
+[`ai_function_embedding_max_batch_size`](/operations/settings/settings#ai_function_embedding_max_batch_size)
+개까지 배치로 묶여 처리됩니다.
+
+첫 번째 인수는 제공자, model, 엔드포인트, API Key를 지정하는 명명된 컬렉션입니다.
+선택적 `dimensions` 인수는 model이 이를 지원하는 경우(예: OpenAI&#39;s `text-embedding-3-*`)
+지정한 크기의 벡터를 요청하며, 그렇지 않으면 model의 네이티브 크기가 반환됩니다.
+
+**구문**
+
+```sql
+aiEmbed(collection, text[, dimensions])
+```
+
+**인수**
+
+* `collection` — provider 자격 증명과 구성이 포함된 명명된 컬렉션의 이름입니다. [`String`](/sql-reference/data-types/string)
+* `text` — 임베딩할 텍스트입니다. [`String`](/sql-reference/data-types/string)
+* `dimensions` — 출력 벡터의 선택적 목표 차원 수입니다. `0`이거나 생략하면 모델의 네이티브 크기를 의미합니다. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+임베딩 벡터 또는 입력이 NULL이거나 비어 있거나, 요청이 실패했지만 `ai_function_throw_on_error`가 비활성화되어 있거나, `ai_function_throw_on_quota_exceeded`가 비활성화된 상태에서 할당량을 초과한 경우 빈 배열을 반환합니다. [`Array(Float32)`](/sql-reference/data-types/array)
+
+**예시**
+
+**단일 문자열 임베딩**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world')
+```
+
+```response title=Response
+```
+
+**차원을 명시적으로 지정**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world', 256)
+```
+
+```response title=Response
+```
+
+**텍스트 컬럼 임베딩하기**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', title, 256) FROM articles LIMIT 10
+```
+
+```response title=Response
+```
+
 ## aiExtract \{#aiExtract\}
 
 도입 버전: v26.4.0

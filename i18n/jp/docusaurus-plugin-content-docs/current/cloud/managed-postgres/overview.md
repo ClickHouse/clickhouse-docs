@@ -32,7 +32,9 @@ Managed Postgres は、データベースと同じサーバーに物理的に接
 
 主にディスク IOPS とレイテンシによって制限されている Postgres ワークロードでは、これによりインジェスト処理の高速化、VACUUM の短縮、テイルレイテンシの低減、および負荷時のパフォーマンスの予測可能性向上が実現します。
 
-詳細なベンチマーク結果については、[Performance benchmarks](/cloud/managed-postgres/benchmarks) を参照してください。
+:::note
+NVMe ディスク上での Postgres の速度については、[パフォーマンスベンチマーク](https://clickhouse.com/blog/postgresbench) を参照してください。
+:::
 
 AWS におけるローカル NVMe の上限については、[Memory optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/mo.html#mo_instance-store)、[Storage optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/so.html#so_instance-store)、[CPU optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store) を参照してください。
 

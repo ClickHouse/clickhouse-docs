@@ -155,6 +155,66 @@ SELECT body, aiClassify('ai_credentials', body, ['bug', 'question', 'feature']) 
 ```response title=Response
 ```
 
+## aiEmbed \{#aiEmbed\}
+
+Добавленный в: v26.6.0
+
+Генерирует вектор эмбеддинга для заданного текста с помощью настроенного AI-провайдера.
+
+Функция отправляет текст на настроенную конечную точку эмбеддингов и возвращает полученный вектор как `Array(Float32)`.
+В пределах одного блока строк входные данные группируются в батчи размером до
+[`ai_function_embedding_max_batch_size`](/operations/settings/settings#ai_function_embedding_max_batch_size)
+элементов на один HTTP-запрос, чтобы уменьшить накладные расходы на каждый вызов.
+
+Первый аргумент — именованная коллекция, которая задаёт провайдера, модель, конечную точку и API-ключ.
+Необязательный аргумент `dimensions`, если он поддерживается моделью (например, `text-embedding-3-*` у OpenAI),
+запрашивает вектор заданного размера; в противном случае возвращается вектор стандартного для модели размера.
+
+**Синтаксис**
+
+```sql
+aiEmbed(collection, text[, dimensions])
+```
+
+**Аргументы**
+
+* `collection` — Имя именованной коллекции, содержащей учетные данные провайдера и конфигурацию. [`String`](/sql-reference/data-types/string)
+* `text` — Текст для получения эмбеддинга. [`String`](/sql-reference/data-types/string)
+* `dimensions` — Необязательная целевая размерность выходного вектора. `0` или отсутствие значения означает исходную размерность модели. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Вектор эмбеддинга или пустой массив, если входное значение равно NULL или пусто, запрос завершился ошибкой и `ai_function_throw_on_error` отключён, либо квота была превышена при отключённом `ai_function_throw_on_quota_exceeded`. [`Array(Float32)`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Векторизация одной строки**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world')
+```
+
+```response title=Response
+```
+
+**С явно заданными измерениями**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world', 256)
+```
+
+```response title=Response
+```
+
+**Создание эмбеддингов для столбца с текстами**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', title, 256) FROM articles LIMIT 10
+```
+
+```response title=Response
+```
+
 ## aiExtract \{#aiExtract\}
 
 Добавлено в: v26.4.0

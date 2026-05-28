@@ -32,7 +32,9 @@ Managed Postgres 使用直接物理连接到与数据库同一台服务器上的
 
 对于主要受磁盘 IOPS 和延迟限制的 Postgres 工作负载，这将转化为更快的摄取、更快速的 VACUUM 操作、更低的尾延迟，以及在高负载下更加可预测的性能表现。
 
-有关详细的基准测试结果，请参阅[性能基准测试](/cloud/managed-postgres/benchmarks)。
+:::note
+通过[性能基准测试](https://clickhouse.com/blog/postgresbench)了解 Postgres 在 NVMe 磁盘上的性能表现。
+:::
 
 有关 AWS 上本地 NVMe 限制的信息，请参阅 [Memory optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/mo.html#mo_instance-store)、[Storage optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/so.html#so_instance-store)、[CPU optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store)。
 

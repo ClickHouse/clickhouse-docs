@@ -188,6 +188,16 @@ SELECT SUM(-1), MAX(0) FROM system.one WHERE 0;
 
 메모리 효율 모드에서 중간 집계 결과를 병합할 때 사용할 스레드 수입니다. 값이 클수록 더 많은 메모리가 사용됩니다. 0으로 설정하면 'max_threads'와 동일합니다.
 
+## ai_function_embedding_max_batch_size \{#ai_function_embedding_max_batch_size\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="NonZeroUInt64" default_value="100" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "100"},{"label": "새로운 설정"}]}]} />
+
+`aiEmbed`가 수행하는 단일 HTTP 요청에 포함할 수 있는 텍스트의 최대 수입니다. API 호출 오버헤드를 줄이기 위해 텍스트를 이 크기만큼의 batch로 묶습니다. 예를 들어 고유한 텍스트가 500개이고 batch 크기가 100이면 HTTP 요청이 5회 발생합니다.
+
 ## ai_function_max_api_calls_per_query \{#ai_function_max_api_calls_per_query\}
 
 <ExperimentalBadge />
@@ -204,9 +214,11 @@ AI 함수가 쿼리당 보낼 수 있는 HTTP 요청의 최대 개수입니다. 
 
 <SettingsInfoBlock type="UInt64" default_value="1000000" />
 
-<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "1000000" }, { label: "새 설정" }] }]} />
+<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "1000000" }, { label: "새로운 설정" }] }]} />
 
 단일 쿼리에서 모든 AI 함수 API 호출에 걸쳐 허용되는 전체 입력(프롬프트) 토큰의 최대값입니다. provider 응답을 기준으로 누적 추적됩니다. 각 호출의 입력 토큰 수는 사전에 알 수 없으므로, 이 제한은 한 번의 호출에 해당하는 입력 토큰 수만큼 초과될 수 있습니다. 비활성화하려면 0으로 설정하십시오.
+
+이 제한은 응답에 `usage` 객체를 포함해 보고하는 provider(OpenAI, Anthropic, vLLM)에만 적용됩니다. 토큰 사용량 정보를 생략하는 provider(특히 HuggingFace TEI)의 경우 카운터가 계속 0으로 유지되므로, 이러한 호출 수를 제한하려면 대신 `ai_function_max_api_calls_per_query`를 사용하십시오.
 
 ## ai_function_max_output_tokens_per_query \{#ai_function_max_output_tokens_per_query\}
 
@@ -214,9 +226,11 @@ AI 함수가 쿼리당 보낼 수 있는 HTTP 요청의 최대 개수입니다. 
 
 <SettingsInfoBlock type="UInt64" default_value="500000" />
 
-<VersionHistory rows={[{ id: "row-1", items: [{ label: "26.4" }, { label: "500000" }, { label: "새 설정" }] }]} />
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "500000"},{"label": "새로운 설정"}]}]} />
 
 단일 쿼리에서 모든 AI 함수 API 호출 전반에 걸쳐 생성될 수 있는 총 출력(completion) 토큰의 최대값입니다. provider 응답을 기준으로 누적 추적됩니다. 각 호출의 출력 토큰 수는 미리 알 수 없으므로, 이 제한은 한 번의 호출에서 생성된 출력 토큰 수만큼 초과될 수 있습니다. 비활성화하려면 0으로 설정하십시오.
+
+이 제한은 응답에 `usage` 객체를 포함해 보고하는 provider(OpenAI, Anthropic, vLLM)에 대해서만 적용됩니다. 임베딩 함수(특히 aiEmbed)에는 적용되지 않으며, 이러한 함수는 출력 토큰을 생성하지 않습니다.
 
 ## ai_function_max_retries \{#ai_function_max_retries\}
 
