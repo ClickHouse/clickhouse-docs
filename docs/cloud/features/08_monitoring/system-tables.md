@@ -1,5 +1,5 @@
 ---
-title: 'Querying system tables'
+title: 'Querying ClickHouse''s system database'
 slug: /cloud/monitoring/system-tables
 description: 'Monitor ClickHouse Cloud by querying system tables directly'
 keywords: ['cloud', 'monitoring', 'system tables', 'query_log', 'clusterAllReplicas', 'observability dashboard']
@@ -10,8 +10,6 @@ doc_type: 'guide'
 
 import Image from '@theme/IdealImage';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
-
-# Querying ClickHouse's system database
 
 All ClickHouse instances come with a set of [system tables](/operations/system-tables/overview) contained in the `system` database that contain information about:
 

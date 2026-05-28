@@ -14,8 +14,6 @@ import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
-# Crunchy Bridge Postgres source setup guide
-
 ClickPipes supports Postgres version 12 and later.
 
 ## Enable logical replication {#enable-logical-replication}

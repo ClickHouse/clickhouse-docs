@@ -24,8 +24,6 @@ import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Connect Airbyte to ClickHouse
-
 <PartnerBadge/>
 
 :::note

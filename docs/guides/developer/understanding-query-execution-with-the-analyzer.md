@@ -14,8 +14,6 @@ import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
 
-# Understanding query execution with the analyzer
-
 ClickHouse processes queries extremely quickly, but the execution of a query isn't a simple story. Let's try to understand how a `SELECT` query gets executed. To illustrate it, let's add some data in a table in ClickHouse:
 
 ```sql

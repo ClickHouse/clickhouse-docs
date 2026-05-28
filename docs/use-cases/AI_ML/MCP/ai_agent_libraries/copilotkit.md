@@ -81,7 +81,7 @@ own ClickHouse cluster by setting the following environment variables:
 - `CLICKHOUSE_PASSWORD`
 - `CLICKHOUSE_SECURE`
 
-# Run the application {#run-the-application}
+## Run the application {#run-the-application}
 
 Run `npm run dev` to start the development server.
 

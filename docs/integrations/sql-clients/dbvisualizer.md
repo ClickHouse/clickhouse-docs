@@ -15,8 +15,6 @@ import Image from '@theme/IdealImage';
 import dbvisualizer_driver_manager from '@site/static/images/integrations/sql-clients/dbvisualizer-driver-manager.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting DbVisualizer to ClickHouse
-
 <CommunityMaintainedBadge/>
 
 ## Start or download DbVisualizer {#start-or-download-dbvisualizer}

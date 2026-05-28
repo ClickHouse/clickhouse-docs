@@ -12,8 +12,6 @@ import SelfManaged from '@site/docs/_snippets/_self_managed_only_automated.md';
 import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.png';
 import Image from '@theme/IdealImage';
 
-# Configuring TLS
-
 <SelfManaged />
 
 This guide provides simple and minimal settings to configure ClickHouse to use OpenSSL certificates to validate connections. For this demonstration, a self-signed Certificate Authority (CA) certificate and key are created with node certificates to make the connections with appropriate settings.
@@ -304,7 +302,7 @@ The settings below are configured in the ClickHouse server `config.xml`
     </openSSL>
     ```
 
-    For more information, visit https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-openssl
+    For more information, visit [this page](/operations/server-configuration-parameters/settings/#openssl)
 
 7. Configure TLS for gRPC on every node:
     ```xml

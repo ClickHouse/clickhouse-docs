@@ -10,8 +10,6 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Developing on ClickHouse with Moose OLAP
-
 <CommunityMaintainedBadge/>
 
 [Moose OLAP](https://docs.fiveonefour.com/moosestack/olap) is a core module of the [Moose Stack](https://docs.fiveonefour.com/moosestack), an open source developer toolkit for building real-time analytical backends in Typescript and Python. 

@@ -1,0 +1,7 @@
+{
+  "label": "Agent Builder",
+  "collapsible": true,
+  "collapsed": true,
+  "position": 3,
+  "link": { "type": "doc", "id": "cloud/features/AI_ML/agents/builder/index" }
+}

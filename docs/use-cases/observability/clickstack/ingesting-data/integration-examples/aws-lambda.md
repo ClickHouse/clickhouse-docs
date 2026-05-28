@@ -15,8 +15,6 @@ import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png'
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Monitoring AWS Lambda Logs with ClickStack using Rotel {#lambda-clickstack}
-
 <CommunityMaintainedBadge/>
 
 :::note[TL;DR]

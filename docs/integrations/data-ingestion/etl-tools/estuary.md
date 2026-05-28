@@ -13,8 +13,6 @@ keywords: ['estuary', 'data ingestion', 'etl', 'pipeline', 'data integration', '
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Connect Estuary with ClickHouse
-
 <PartnerBadge/>
 
 [Estuary](https://estuary.dev/) is a right-time data platform that flexibly combines real-time and batch data in simple-to-setup ETL pipelines. With enterprise-grade security and deployment options, Estuary unlocks durable data flows from SaaS, database, and streaming sources to a variety of destinations, including ClickHouse.

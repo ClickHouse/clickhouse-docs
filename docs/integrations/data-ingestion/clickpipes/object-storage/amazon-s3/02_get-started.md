@@ -17,8 +17,6 @@ import cp_table_settings from '@site/static/images/integrations/data-ingestion/c
 import CreateClickPipe from '@site/docs/_snippets/clickpipes/object-storage/_create_clickpipe.md';
 import Image from '@theme/IdealImage';
 
-# Creating your first Amazon S3 ClickPipe {#creating-your-first-amazon-s3-clickpipe}
-
 The S3 ClickPipe provides a fully-managed and resilient way to ingest data from Amazon S3 and S3-compatible object stores into ClickHouse Cloud. It supports both **one-time** and **continuous ingestion** with exactly-once semantics.
 
 <CreateClickPipe provider="s3"/>
