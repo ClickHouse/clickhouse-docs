@@ -9363,6 +9363,14 @@ analyzer(`enable_analyzer = 1`)가 활성화된 경우에만 지원됩니다.
 
 논리적으로 동일한 경우 `arrayExists()` 함수를 `has()`로 재작성합니다. 예를 들어 `arrayExists(x -> x = 1, arr)`는 `has(arr, 1)`로 재작성할 수 있습니다.
 
+## optimize_rewrite_has_to_in \{#optimize_rewrite_has_to_in\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "새로운 설정"}]}]} />
+
+첫 번째 인수가 상수 배열일 때 `has` 함수를 `IN`으로 재작성합니다. 예를 들어, `has([1, 2, 3], x)`는 상수 배열에서 더 나은 성능을 위해 `x IN [1, 2, 3]`로 재작성할 수 있습니다.
+
 ## optimize_rewrite_like_perfect_affix \{#optimize_rewrite_like_perfect_affix\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

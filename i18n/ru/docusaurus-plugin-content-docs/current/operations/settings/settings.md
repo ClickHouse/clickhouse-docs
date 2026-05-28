@@ -9393,6 +9393,14 @@ SELECT * FROM test2;
 
 Переписывает вызовы функции arrayExists() на has(), когда это логически эквивалентно. Например, arrayExists(x -&gt; x = 1, arr) может быть переписана как has(arr, 1).
 
+## optimize_rewrite_has_to_in \{#optimize_rewrite_has_to_in\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "новая настройка"}]}]} />
+
+Преобразует функции `has` в `IN`, когда первый аргумент — константный массив. Например, `has([1, 2, 3], x)` можно преобразовать в `x IN [1, 2, 3]` для повышения производительности при работе с константными массивами
+
 ## optimize_rewrite_like_perfect_affix \{#optimize_rewrite_like_perfect_affix\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

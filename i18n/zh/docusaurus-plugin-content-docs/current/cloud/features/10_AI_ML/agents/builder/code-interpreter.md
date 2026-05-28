@@ -9,14 +9,18 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import runCode from '@site/static/images/cloud/agent-builder/run-code/run-code.png';
 
 <BetaBadge />
 
 代码解释器允许agent在托管沙箱中执行代码。可用于计算、数据转换、格式转换、绘图，以及其他任何更适合通过代码而非自然语言完成的任务。
 
-## 启用此功能 \{#enable-it\}
+## 启用代码解释器 \{#enable-it\}
 
-在 Agent Builder 的“能力”部分启用 **代码解释器**，然后保存。agent会根据用户的请求和自身指令决定何时运行代码。
+在智能体构建器的 **Capabilities** 部分启用 **Run Code**，然后保存。agent会根据用户的请求和自身指令决定何时运行代码。
+
+<Image img={runCode} alt="Capabilities 面板中的 Run Code 部分，其中已启用 Run Code 复选框，并带有一个 Upload to Code Environment 按钮" size="sm" />
 
 ## 支持的语言 \{#supported-languages\}
 
@@ -28,7 +32,11 @@ import BetaBadge from '@theme/badges/BetaBadge';
 * **AWK** 和 **sed** — 按行处理文本的工具。
 * **bc** — 任意精度数学运算工具。
 
-凡是涉及数据解析、转换或计算的任务，agent都应优先使用 Python。只有在确实适合用单行命令解决时，才使用 shell 工具。
+凡是涉及数据解析、转换或计算的任务，agent都应优先使用 Python。
+
+:::tip
+只有在确实适合用单行命令解决时，才使用 shell 工具。
+:::
 
 ## 文件 \{#files\}
 
@@ -40,12 +48,17 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 还会受到套餐对应的资源限制 (内存、每次运行的文件数、每月请求配额) 。错误和 stderr 会与 stdout 一并显示在对话中。
 
-## 何时使用此功能 \{#when-to-use-it\}
+## 何时使用它 \{#when-to-use-it\}
+
+当答案需要依靠确定性计算，而语言模型仅凭推理无法稳定给出结果时，请使用代码解释器。
+典型场景包括：
 
 * 解析用户上传的 CSV 或 JSON 文件。
-* 计算汇总统计数据或运行快速模拟。
-* 在不同格式之间转换 (Parquet、JSON、CSV) 。
+* 计算汇总统计信息或运行快速模拟。
+* 在不同格式之间进行转换 (Parquet、JSON、CSV) 。
 * 根据查询结果生成图表。
-* 任何确定性计算比 LLM 推理更合适的场景。
 
-对于模型可以直接回答的任务，请避免使用此功能。代码执行会增加延迟并消耗配额。
+:::tip
+对于模型已经可以根据上下文作答的任务，请避免使用它。
+代码执行会增加延迟并消耗配额。
+:::

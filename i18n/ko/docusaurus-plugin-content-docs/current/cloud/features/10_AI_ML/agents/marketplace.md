@@ -9,23 +9,34 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import marketplace from '@site/static/images/cloud/agent-builder/marketplace/marketplace.png';
+import browse from '@site/static/images/cloud/agent-builder/marketplace/browse.png';
+import useAgent from '@site/static/images/cloud/agent-builder/marketplace/use-agent.png';
 
 <BetaBadge />
 
-Agent Marketplace는 조직 내 다른 사용자가 공유한 에이전트를 찾아보거나 검색하고 실행할 수 있는 곳입니다. 또한 관리자가 조직 전체에 게시한 에이전트도 포함됩니다.
+Agent Marketplace는 조직 내 다른 사용자가 공유한 에이전트를 찾아보거나 검색하고 실행할 수 있는 곳입니다. 또한 관리자가 조직 전체에 게시한 에이전트도 포함됩니다. 왼쪽 사이드바의 **Agent Marketplace** 옵션에서 엽니다.
 
-## 둘러보기 \{#browse\}
+<Image img={marketplace} alt="왼쪽 사이드바에서 Agent Marketplace 옵션이 강조 표시된 채팅 화면" size="lg" />
 
-에이전트는 카테고리별로 분류되어 있습니다. 예를 들어 *Analytics*, *Operations*, *Engineering*이 있습니다. 마켓플레이스 상단의 탭을 사용해 카테고리 간에 전환하세요. 각 에이전트 카드에는 이름, 설명, 아바타와 대화를 바로 시작할 수 있는 빠른 실행 항목이 표시됩니다.
+## 찾아보기 \{#browse\}
 
-검색창을 사용해 모든 카테고리에서 이름, 설명 또는 키워드로 에이전트를 찾으세요.
+에이전트는 카테고리별로 나뉘어 있습니다. 예를 들어 *일반*, *인사*, *연구개발*, *재무*, *IT*, *영업*이 있습니다. 마켓플레이스 상단의 탭에서 카테고리를 전환하세요. 각 에이전트 카드에는 이름, 아이콘, 소속 카테고리가 표시됩니다.
+
+검색창을 사용하여 모든 카테고리에서 이름이나 키워드로 에이전트를 찾으세요.
+
+<Image img={browse} alt="제목, 검색창, 카테고리 탭(일반, 인사, 연구개발, 재무, IT, 영업, 애프터 세일즈, 전체)과 에이전트 카드가 보이는 Agent Marketplace 화면" size="lg" />
 
 ## 에이전트 열기 \{#open-an-agent\}
 
-에이전트 카드를 클릭하면 지침, 사용 중인 모델, 연결된 도구, 공유한 사용자 등 자세한 정보를 모두 확인할 수 있습니다. 상세 보기에서 다음 작업을 수행할 수 있습니다:
+에이전트 카드를 클릭하면 상세 보기가 열립니다. 여기에서 다음 작업을 할 수 있습니다:
 
-* **대화 시작** — 에이전트와 새 채팅을 엽니다.
-* **사본 저장** — 편집 권한이 있으면 에이전트를 내 목록으로 복제해 수정할 수 있습니다.
+* **Start Chat** - 에이전트와 새 채팅을 시작합니다.
+* **Pin** - 빠르게 액세스할 수 있도록 에이전트를 즐겨찾기에 추가합니다.
+* **Copy link** - 에이전트의 direct link를 공유합니다.
+
+<Image img={useAgent} alt="에이전트 이름, 아이콘, 그리고 Pin, Copy link, Start Chat 작업이 표시된 에이전트 상세 모달" size="md" />
 
 ## 직접 게시 \{#publish-your-own\}
 

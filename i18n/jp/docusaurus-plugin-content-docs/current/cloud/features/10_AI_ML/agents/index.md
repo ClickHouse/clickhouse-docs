@@ -11,22 +11,28 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse Agents は、ClickHouse Cloud のマネージド型エージェント機能です。自然言語で分析作業の内容を記述すると、エージェントが手順を計画し、エージェントビルダーで追加したツールを呼び出して、お使いの ClickHouseサービス に対して実行します。
+ClickHouse Agents を使用すると、SQL やオーケストレーションロジックを自分で記述しなくても、対話を通じて ClickHouse データをクエリし、探索できます。
+エージェントが意図を解釈し、手順を計画し、設定したツールを呼び出して、結果を返します。
+この機能は現在ベータ版です。挙動や機能は、一般提供前に変更される場合があります。
 
-この機能はベータです。挙動や提供される機能の範囲は、一般提供前に変更される場合があります。
+## これでできること \{#what-you-can-do\}
 
-## できること \{#what-you-can-do\}
+ClickHouse Agents では、次のことができます。
 
-* コードを書かずにカスタムエージェントを作成できます。指示を設定し、モデルを選び、ツールを追加します。
-* ClickHouseサービスと対話できます。必要に応じて、エージェントがツールを呼び出します。
-* エージェントをチームメンバーと共有したり、マーケットプレイスに公開したりできます。
+* コードを書かずにカスタムエージェントを作成できます。指示を記述し、モデルを選択して、ツールを追加できます。
+* ClickHouse service を相手に会話を実行でき、エージェントは必要に応じてツールを呼び出します。
+* エージェントをチームメイトと共有したり、マーケットプレイスに公開したりできます。
 
-## このセクションの内容 \{#in-this-section\}
+## このセクションでは \{#in-this-section\}
 
-* [クイックスタート](/cloud/features/ai-ml/agents/quickstart) — 最初のエージェントを作成し、クエリを実行します。
-* [チャット](/cloud/features/ai-ml/agents/chat) — 会話、ブックマーク、フォーク、複数の会話、共有。
-* [エージェントビルダー](/cloud/features/ai-ml/agents/builder) — エージェントを作成して設定し、モデルパラメータを指定して、ツール、MCPサーバー、スキル、サブエージェントを追加します。
-* [プロンプト](/cloud/features/ai-ml/agents/prompts) — 保存済みプロンプトのライブラリ。
-* [メモリ](/cloud/features/ai-ml/agents/memory) — 会話をまたいで保持されるコンテキスト。
-* [マーケットプレイス](/cloud/features/ai-ml/agents/marketplace) — 組織内でエージェントを共有し、見つけることができます。
-* [共有とアクセス](/cloud/features/ai-ml/agents/sharing-and-access) — エージェントの権限モデル。
+以下のページでは、ClickHouse Agents の機能について詳しく学べます。
+
+| ページ                                                        | 内容                                            |
+| ---------------------------------------------------------- | --------------------------------------------- |
+| [クイックスタート](/cloud/features/ai-ml/agents/quickstart)        | 最初のエージェントを作成し、例のクエリを実行する方法                    |
+| [チャット](/cloud/features/ai-ml/agents/chat)                  | 会話、ブックマーク、フォーク、複数会話、共有                        |
+| [エージェントビルダー](/cloud/features/ai-ml/agents/builder)         | エージェント、モデルパラメータ、連携ツール、MCPサーバー、スキル、サブエージェントの設定 |
+| [プロンプト](/cloud/features/ai-ml/agents/prompts)              | 保存済みプロンプトのライブラリ                               |
+| [Memory](/cloud/features/ai-ml/agents/memory)              | 会話をまたいで保持されるコンテキスト                            |
+| [マーケットプレイス](/cloud/features/ai-ml/agents/marketplace)      | 組織内でのエージェントの共有と検索                             |
+| [共有とアクセス](/cloud/features/ai-ml/agents/sharing-and-access) | エージェントの権限モデル                                  |

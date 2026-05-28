@@ -9,14 +9,18 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import toolsModal from '@site/static/images/cloud/agent-builder/tools-modal.png';
 
 <BetaBadge />
 
 이미지 생성 기능을 사용하면 에이전트가 텍스트 프롬프트를 바탕으로 새 이미지를 생성하거나 사용자가 업로드한 이미지를 편집할 수 있습니다. 에이전트는 요청된 내용과 사용 가능한 Context에 따라 생성과 편집 중 하나를 선택합니다.
 
-## 활성화하기 \{#enable-it\}
+## 이미지 생성 활성화 \{#enable-it\}
 
-Agent Builder의 기능 섹션에서 이미지 생성 도구를 활성화하십시오. 일부 에이전트는 여러 이미지 제공업체(예: DALL-E 및 Flux)를 사용할 수 있으며, 에이전트가 적절한 제공업체를 선택합니다. 필요하면 지침에서 이를 제한할 수도 있습니다.
+이미지 생성은 Agent Builder의 **Add Tools** 모달에서 추가합니다(**Capabilities** 섹션이 아님). Agent Builder 패널 하단의 **Add Tools**를 클릭한 다음 이미지 모델 도구 중 하나를 추가하십시오. 예를 들어 **OpenAI Image Tools**, **DALL-E-3**, **Stable Diffusion**이 있습니다. 요청에 따라 에이전트가 적절한 도구를 선택하며, 지침에서 특정 도구로 제한할 수도 있습니다.
+
+<Image img={toolsModal} alt="OpenAI Image Tools, DALL-E-3, Stable Diffusion을 포함한 이미지 모델 통합과 기타 서드파티 도구를 보여주는 Agent Tools 모달" size="md" />
 
 ## 생성 \{#generation\}
 

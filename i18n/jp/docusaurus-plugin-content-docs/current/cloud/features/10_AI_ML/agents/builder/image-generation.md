@@ -9,14 +9,18 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import toolsModal from '@site/static/images/cloud/agent-builder/tools-modal.png';
 
 <BetaBadge />
 
 画像生成では、エージェントはテキストのプロンプトから新しい画像を生成したり、ユーザーがアップロードした画像を編集したりできます。エージェントは、要求内容と利用可能なコンテキストに応じて、生成と編集のどちらを行うかを選択します。
 
-## 有効にする \{#enable-it\}
+## 画像生成を有効にする \{#enable-it\}
 
-Agent Builder の capabilities セクションで、画像生成ツールを有効にします。一部のエージェントは複数の画像プロバイダー (たとえば DALL-E や Flux) を利用できます。この場合、適切なプロバイダーはエージェントが選択しますが、指示で制限することもできます。
+画像生成は、エージェントビルダーの **Add Tools** モーダルから追加します (Capabilities セクションではありません) 。エージェントビルダーのパネル下部にある **Add Tools** をクリックし、画像モデル用ツールを 1 つ追加します。たとえば、**OpenAI Image Tools**、**DALL-E-3**、**Stable Diffusion** などです。エージェントはリクエストに応じて適切なものを選択しますが、指示で使用するツールを制限することもできます。
+
+<Image img={toolsModal} alt="OpenAI Image Tools、DALL-E-3、Stable Diffusion などの画像モデル連携が、ほかのサードパーティーツールとともに表示された Agent Tools モーダル" size="md" />
 
 ## 生成 \{#generation\}
 

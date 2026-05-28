@@ -9,14 +9,18 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import toolsModal from '@site/static/images/cloud/agent-builder/tools-modal.png';
 
 <BetaBadge />
 
 图像生成功能允许agent根据文本提示词生成新图像，或编辑用户上传的图像。agent会根据用户的请求以及可用的上下文，在生成和编辑之间进行选择。
 
-## 启用该功能 \{#enable-it\}
+## 启用图像生成 \{#enable-it\}
 
-在 Agent Builder 的功能部分启用图像生成功能。某些智能体可使用多个图像提供商 (例如 DALL-E 和 Flux) ；智能体会自动选择合适的提供商，你也可以在说明中加以限制。
+图像生成功能需通过 agent 构建器中的 **Add Tools** 弹窗添加 (而不是在 **Capabilities** 部分) 。点击 agent 构建器面板底部的 **Add Tools**，然后添加一个图像模型工具，例如 **OpenAI Image Tools**、**DALL-E-3** 或 **Stable Diffusion**。agent 会根据请求自动选择合适的工具，你也可以在指令中限制它使用特定工具。
+
+<Image img={toolsModal} alt="显示图像模型集成的agent工具弹窗，包括 OpenAI Image Tools、DALL-E-3、Stable Diffusion 以及其他第三方工具" size="md" />
 
 ## 生成 \{#generation\}
 

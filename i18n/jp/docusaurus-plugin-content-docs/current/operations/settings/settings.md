@@ -9372,6 +9372,14 @@ analyzer（`enable_analyzer = 1`）が有効な場合にのみサポートされ
 
 論理的に等価な場合、arrayExists() 関数を has() に書き換えます。たとえば、arrayExists(x -&gt; x = 1, arr) は has(arr, 1) に書き換えることができます。
 
+## optimize_rewrite_has_to_in \{#optimize_rewrite_has_to_in\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "新しい設定"}]}]} />
+
+最初の引数が定数配列の場合、`has` 関数を `IN` に書き換えます。たとえば、`has([1, 2, 3], x)` は、定数配列に対するパフォーマンス向上のため、`x IN [1, 2, 3]` に書き換えることができます
+
 ## optimize_rewrite_like_perfect_affix \{#optimize_rewrite_like_perfect_affix\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

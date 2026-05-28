@@ -9341,6 +9341,14 @@ SELECT * FROM test2;
 
 在逻辑上等价的情况下，将 arrayExists() 函数重写为 has()。例如，arrayExists(x -&gt; x = 1, arr) 可以重写为 has(arr, 1)。
 
+## optimize_rewrite_has_to_in \{#optimize_rewrite_has_to_in\}
+
+<SettingsInfoBlock type="Bool" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1"},{"label": "新增设置"}]}]} />
+
+当第一个参数是常量数组时，将 `has` 函数重写为 `IN`。例如，`has([1, 2, 3], x)` 可重写为 `x IN [1, 2, 3]`，从而在处理常量数组时获得更好的性能。
+
 ## optimize_rewrite_like_perfect_affix \{#optimize_rewrite_like_perfect_affix\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

@@ -11,22 +11,28 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse Agents 是 ClickHouse Cloud 中一项托管式智能体能力。你可以用自然语言描述分析任务；智能体会规划步骤、调用你在智能体构建器中添加的工具，并在你的 ClickHouse 服务上执行。
+ClickHouse 智能体让你无需自己编写 SQL 或编排逻辑，即可通过对话查询和探索 ClickHouse 数据。
+智能体会理解你的意图、规划步骤、调用你已配置的工具，并将结果返回给你。
+此功能目前处于 Beta 阶段；在正式可用之前，其行为和能力可能会发生变化。
 
-此功能目前处于 Beta 阶段。在正式可用之前，其行为以及当前提供的能力集都可能发生变化。
+## 你可以用它做什么 \{#what-you-can-do\}
 
-## 你可以做什么 \{#what-you-can-do\}
+使用 ClickHouse 智能体，你可以：
 
-* 无需编写代码即可构建自定义智能体——设置指令、选择模型并添加工具。
-* 针对你的 ClickHouse 服务运行对话；智能体会在需要时调用工具。
-* 与团队成员共享智能体，或将其发布到市场。
+* 无需编写代码即可构建自定义智能体。你可以编写指令、选择模型并接入工具。
+* 围绕你的 ClickHouse 服务发起对话，并由智能体在需要时调用工具。
+* 与团队成员共享你的智能体，或将其发布到市场。
 
 ## 本节内容 \{#in-this-section\}
 
-* [快速入门](/cloud/features/ai-ml/agents/quickstart) — 构建您的第一个智能体并运行查询。
-* [聊天](/cloud/features/ai-ml/agents/chat) — 对话、书签、分支、多会话和共享。
-* [智能体构建器](/cloud/features/ai-ml/agents/builder) — 创建并配置智能体；设置模型参数，并添加工具、MCP 服务器、技能和子智能体。
-* [提示词](/cloud/features/ai-ml/agents/prompts) — 已保存的提示词库。
-* [记忆](/cloud/features/ai-ml/agents/memory) — 在不同对话间持久保留上下文。
-* [市场](/cloud/features/ai-ml/agents/marketplace) — 在您的组织内共享和发现智能体。
-* [共享与访问](/cloud/features/ai-ml/agents/sharing-and-access) — 智能体的权限模型。
+通过以下页面进一步了解 ClickHouse 智能体的功能：
+
+| 页面                                                       | 涵盖内容                              |
+| -------------------------------------------------------- | --------------------------------- |
+| [快速入门](/cloud/features/ai-ml/agents/quickstart)          | 构建你的第一个智能体并运行示例查询                 |
+| [聊天](/cloud/features/ai-ml/agents/chat)                  | 对话、书签、分支、多对话和共享                   |
+| [智能体构建器](/cloud/features/ai-ml/agents/builder)           | 配置智能体、模型参数，以及附加工具、MCP 服务器、技能和子智能体 |
+| [提示词](/cloud/features/ai-ml/agents/prompts)              | 已保存的提示词库                          |
+| [Memory](/cloud/features/ai-ml/agents/memory)            | 在不同对话间持久保留上下文                     |
+| [市场](/cloud/features/ai-ml/agents/marketplace)           | 在组织内共享和发现智能体                      |
+| [共享和访问](/cloud/features/ai-ml/agents/sharing-and-access) | 智能体的权限模型                          |

@@ -9,6 +9,13 @@ doc_type: 'guide'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import agentBuilder from '@site/static/images/cloud/agent-builder/agent-builder.png';
+import capabilities from '@site/static/images/cloud/agent-builder/capabilities.png';
+import toolsButton from '@site/static/images/cloud/agent-builder/tools-button.png';
+import toolsModal from '@site/static/images/cloud/agent-builder/tools-modal.png';
+import chatQuery from '@site/static/images/cloud/agent-builder/chat-query.png';
+import launchAgents from '@site/static/images/cloud/agent-builder/launch-ch-agents.png';
 
 <BetaBadge />
 
@@ -19,30 +26,53 @@ import BetaBadge from '@theme/badges/BetaBadge';
 * Сервис ClickHouse Cloud, к которому можно выполнять запросы.
 * Опция **Create agent** в Agent Builder. Если она отсутствует, попросите администратора организации выдать право на создание агентов через Admin Settings, как описано в разделе [совместное использование и доступ](/cloud/features/ai-ml/agents/sharing-and-access).
 
-## Создайте агента \{#create-the-agent\}
+## Создайте агента \{#build-the-agent\}
 
-В консоли Cloud откройте раздел Agents и на боковой панели Agent Builder нажмите **Create agent**. Заполните основные поля:
+<VerticalStepper headerLevel="h3">
+  ### Запустите ClickHouse agents \{#launch-agents\}
 
-* **Name** — короткий идентификатор.
-* **Description** — одна строка, чтобы коллеги понимали, для чего нужен агент.
-* **Instructions** — системный промпт. Опишите роль агента, вопросы, на которые он должен отвечать, и бизнес-правила, которым он должен следовать.
-* **Model** — выберите модель из раскрывающегося списка. Настройте temperature и другие параметры генерации в разделе [параметры модели](/cloud/features/ai-ml/agents/builder/model-parameters).
+  В сервисе ClickHouse Cloud нажмите **ClickHouse agents** на левой боковой панели, чтобы открыть страницу запуска агентов. Затем нажмите **Launch ClickHouse agents**, чтобы открыть Конструктор агентов.
 
-## Подключите инструменты \{#attach-tools\}
+  <Image img={launchAgents} alt="Навигация сервиса ClickHouse Cloud с выбранным пунктом ClickHouse agents (бета), показывающая страницу запуска с кнопкой Launch ClickHouse agents" size="lg" />
 
-Определите, какие возможности нужны агенту. В Builder можно добавить:
+  ### Создайте агента \{#create-the-agent\}
 
-* [Интерпретатор кода](/cloud/features/ai-ml/agents/builder/code-interpreter) — изолированное выполнение кода для вычислений и преобразования данных.
-* [Веб-поиск](/cloud/features/ai-ml/agents/builder/web-search) — поиск в общедоступном интернете.
-* [Генерация изображений](/cloud/features/ai-ml/agents/builder/image-generation) и [компьютерное зрение](/cloud/features/ai-ml/agents/builder/vision) — визуальный вывод и ввод.
-* [MCP-серверы](/cloud/features/ai-ml/agents/builder/mcp-servers) — сторонние инструменты по протоколу Model Context Protocol.
-* [Навыки](/cloud/features/ai-ml/agents/builder/skills) и [субагенты](/cloud/features/ai-ml/agents/builder/subagents) — повторно используемые наборы инструкций и делегирование задач.
+  В Конструкторе агентов нажмите **Create New Agent** в верхней части левой панели. Заполните основные поля:
 
-Подключенные инструменты можно изменить в любое время.
+  * **Name** - короткий идентификатор агента.
+  * **Description** - описание назначения агента, которое будет видно коллегам.
+  * **Category** - категория агента. Можно оставить `General`, если в вашей организации не используются пользовательские категории.
+  * **Instructions** - системный промпт, который описывает роль агента, вопросы, на которые он должен отвечать, и бизнес-правила, которым он должен следовать.
+  * **Model** - выберите модель из выпадающего списка.
 
-## Выполните запрос \{#run-a-query\}
+  <Image img={agentBuilder} alt="Панель Конструктора агентов с раскрывающимся списком Create New Agent, полями формы (Name, Description, Category, Instructions, Model) и разделом Capabilities" size="lg" />
 
-Сохраните агента, откройте новый диалог и выберите своего агента в списке агентов. Введите вопрос — например, *&quot;Какие 10 моих таблиц имеют наибольшее число строк на этой неделе?&quot;* — и агент составит план, при необходимости вызовет инструменты и вернет ответ.
+  ### Подключите возможности и инструменты \{#attach-tools\}
+
+  Возможности и инструменты агента находятся в двух местах.
+
+  **Capabilities** на основной панели — встроенные возможности, такие как [Run Code](/cloud/features/ai-ml/agents/builder/code-interpreter), [Веб-поиск](/cloud/features/ai-ml/agents/builder/web-search), File Context, Artifacts, [MCP-серверы](/cloud/features/ai-ml/agents/builder/mcp-servers) и [навыки](/cloud/features/ai-ml/agents/builder/skills). Включите те, которые нужны агенту.
+
+  <Image img={capabilities} alt="Раздел Capabilities в панели Конструктора агентов с переключателями Run Code, Web Search, File Context, Artifacts, MCP Servers и навыки" size="sm" />
+
+  **Tools** за кнопкой **Add Tools** внизу панели — сторонние интеграции, такие как [генерация изображений](/cloud/features/ai-ml/agents/builder/image-generation), [Vision](/cloud/features/ai-ml/agents/builder/vision), поисковые API и внешние сервисы.
+
+  <Image img={toolsButton} alt="Нижняя часть панели Конструктора агентов с выделенной кнопкой Add Tools" size="sm" />
+
+  Нажмите **Add Tools**, чтобы открыть каталог:
+
+  <Image img={toolsModal} alt="Модальное окно Agent Tools, показывающее сетку сторонних интеграций, включая Google, OpenAI Image Tools, Wolfram, DALL-E-3, Tavily Search, Calculator и Stable Diffusion" size="lg" />
+
+  [Subagents](/cloud/features/ai-ml/agents/builder/subagents) настраиваются в разделе **Advanced settings** — подробности см. на странице о субагентах.
+
+  Подключенные возможности и инструменты можно изменить в любое время.
+
+  ### Выполните запрос \{#run-a-query\}
+
+  Сохраните агента, откройте новый диалог и выберите его в списке агентов. Введите вопрос — например, *&quot;Какие 10 таблиц имеют наибольшее число строк за эту неделю?&quot;* — и агент составит план, при необходимости вызовет инструменты и вернет ответ.
+
+  <Image img={chatQuery} alt="Диалог в чате с вопросом 'Какие 10 таблиц имеют наибольшее число строк за эту неделю?' и ответом агента — таблицей Markdown с рейтингом 10 лучших таблиц по сервисам по числу строк, а ниже разделом Key Observations" size="lg" />
+</VerticalStepper>
 
 ## Следующие шаги \{#next-steps\}
 
