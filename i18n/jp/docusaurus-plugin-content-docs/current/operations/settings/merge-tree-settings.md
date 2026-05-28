@@ -2979,6 +2979,14 @@ ClickHouse Cloud でのみ利用可能です。
 
 有効にすると、すべてのレプリカは、すでにそのデータが存在している他のレプリカから、メモリ上に保持されるパーツ関連データ（プライマリキーやパーティション情報など）を取得しようとします。
 
+## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas_on_startup \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas_on_startup\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "起動時に、SMT が S3 ではなくレプリカからパーツデータをダウンロードできるようにする新しい設定"}]}]} />
+
+有効にすると、すべてのレプリカは起動時に、他のレプリカにすでに存在するパーツのインメモリデータ (プライマリキー、パーティション情報など) をそのレプリカから取得しようとします。
+
 ## shared_merge_tree_update_replica_flags_delay_ms \{#shared_merge_tree_update_replica_flags_delay_ms\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="30000" />

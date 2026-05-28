@@ -11963,14 +11963,6 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 Порог доли значений NULL, при котором функции с аргументами типа Nullable выполняются только для строк, в которых все аргументы не содержат NULL. Применяется, когда включена настройка short_circuit_function_evaluation_for_nulls.
 Когда отношение количества строк, содержащих значения NULL, к общему количеству строк превышает этот порог, строки с такими значениями NULL не вычисляются.
 
-## show_data_lake_catalogs_in_system_tables \{#show_data_lake_catalogs_in_system_tables\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "Новая настройка"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "Отключить каталоги озер данных в системных таблицах по умолчанию"}]}]}/>
-
-Включает отображение каталогов озер данных в системных таблицах.
-
 ## show_processlist_include_internal \{#show_processlist_include_internal\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11980,6 +11972,16 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 Показывать внутренние вспомогательные процессы в выводе запроса `SHOW PROCESSLIST`.
 
 К внутренним процессам относятся перезагрузки словарей, перезагрузки refreshable materialized view, служебные запросы `SELECT`, выполняемые в запросах `SHOW ...`, служебные запросы `CREATE DATABASE ...`, выполняемые внутри сервера для устранения проблем с повреждёнными таблицами, и другие подобные операции.
+
+## show_remote_databases_in_system_tables \{#show_remote_databases_in_system_tables\}
+
+**Псевдонимы**: `show_data_lake_catalogs_in_system_tables`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "Параметр был переименован из `show_data_lake_catalogs_in_system_tables` и расширен: теперь по умолчанию он также скрывает базы данных `MySQL` и `PostgreSQL` из `system.tables`, `system.columns` и `system.completions`, поскольку перечисление их таблиц требует дорогостоящих удалённых вызовов. Пользователи, которым было важно прежнее поведение, должны установить для этого параметра значение `true`. Старое имя сохранено как псевдоним."}]}]} />
+
+Включает отображение удалённых баз данных (каталогов озёр данных, MySQL, PostgreSQL) в системных таблицах.
 
 ## show_table_uuid_in_table_create_query_if_not_nil \{#show_table_uuid_in_table_create_query_if_not_nil\}
 

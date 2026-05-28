@@ -2950,6 +2950,14 @@ partitions for mutations>` 的比值高于该设置值时，会在 merge/mutate 
 
 启用后，所有副本都会尝试从已存在该数据的其他副本中获取分区片段的内存数据（例如主键、分区信息等）。
 
+## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas_on_startup \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas_on_startup\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "新增设置，允许 SMT 在启动时从副本而非 S3 下载 parts 的内存数据"}]}]} />
+
+如果启用，所有副本都会在启动时尝试从其他已存在这些数据的副本拉取 part 的内存数据 (如主键、分区信息等) 。
+
 ## shared_merge_tree_update_replica_flags_delay_ms \{#shared_merge_tree_update_replica_flags_delay_ms\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="30000" />

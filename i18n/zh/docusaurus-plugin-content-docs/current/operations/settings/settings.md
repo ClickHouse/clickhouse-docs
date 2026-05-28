@@ -11906,14 +11906,6 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 对具有 Nullable 参数的函数，仅在所有参数均为非 NULL 值的行上执行时所使用的 NULL 值占比阈值。当设置 `short_circuit_function_evaluation_for_nulls` 启用时生效。
 当包含 NULL 值的行数与总行数的比值超过该阈值时，将不会对这些包含 NULL 值的行执行函数计算。
 
-## show_data_lake_catalogs_in_system_tables \{#show_data_lake_catalogs_in_system_tables\}
-
-<SettingsInfoBlock type="Bool" default_value="0" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "25.8"},{"label": "1"},{"label": "新设置"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": "0"},{"label": "默认在 system 表中禁用数据湖目录"}]}]}/>
-
-启用在 system 表中显示数据湖目录。
-
 ## show_processlist_include_internal \{#show_processlist_include_internal\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
@@ -11923,6 +11915,16 @@ SELECT *, timeZone() FROM test_tz WHERE d = '2000-01-01 00:00:00' SETTINGS sessi
 在 `SHOW PROCESSLIST` 查询的输出中显示内部辅助进程。
 
 内部进程包括字典重载、可刷新 materialized view 的重载、在 `SHOW ...` 查询中执行的辅助 `SELECT` 语句、为处理损坏表而在内部执行的辅助 `CREATE DATABASE ...` 查询等。
+
+## show_remote_databases_in_system_tables \{#show_remote_databases_in_system_tables\}
+
+**别名**: `show_data_lake_catalogs_in_system_tables`
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "由 `show_data_lake_catalogs_in_system_tables` 重命名而来，并扩展为默认还会在 `system.tables`、`system.columns` 和 `system.completions` 中隐藏 `MySQL` 和 `PostgreSQL` 数据库，因为枚举这些数据库中的表需要开销高昂的远程调用。依赖先前行为的用户必须将此设置为 `true`。旧名称保留为别名。"}]}]} />
+
+启用在系统表中显示远程数据库 (数据湖目录、MySQL、PostgreSQL) 。
 
 ## show_table_uuid_in_table_create_query_if_not_nil \{#show_table_uuid_in_table_create_query_if_not_nil\}
 
