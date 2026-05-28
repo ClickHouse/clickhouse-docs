@@ -10,7 +10,6 @@ doc_type: 'reference'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
-import prompts from '@site/static/images/cloud/agent-builder/prompts/prompts.png';
 import createPrompt from '@site/static/images/cloud/agent-builder/prompts/create-prompt.png';
 import preview from '@site/static/images/cloud/agent-builder/prompts/preview.png';
 import usePromptModal from '@site/static/images/cloud/agent-builder/prompts/use-prompt-modal.png';

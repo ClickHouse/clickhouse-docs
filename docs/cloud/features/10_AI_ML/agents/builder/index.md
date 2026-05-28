@@ -8,8 +8,6 @@ doc_type: 'landing-page'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
-import Image from '@theme/IdealImage';
-import agentBuilder from '@site/static/images/cloud/agent-builder/agent-builder.png';
 
 <BetaBadge/>
 
