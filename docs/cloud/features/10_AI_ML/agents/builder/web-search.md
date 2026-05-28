@@ -9,6 +9,8 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import webSearch from '@site/static/images/cloud/agent-builder/web-search/web-search.png';
 
 <BetaBadge/>
 
@@ -16,15 +18,17 @@ Web search lets an agent fetch information from the public web during a conversa
 
 ## Enable it {#enable-it}
 
-Toggle **Web search** in the Agent Builder's capabilities section. Once enabled, the agent decides when to issue a search based on the user's question and the agent's instructions. The search runs, results are scraped, and the most relevant content is passed back into the model context.
+In the Agent Builder, enable **Web Search** in the **Capabilities** section. Once enabled, the agent decides when to issue a search based on the user's question and the agent's instructions. The search runs, results are scraped, and the most relevant content is passed back into the model context.
+
+<Image img={webSearch} alt="Capabilities panel with the Web Search section highlighted, showing the Web Search checkbox" size="sm"/>
 
 ## How a search round works {#how-a-search-round-works}
 
 Each search runs in three stages, managed for you in Cloud:
 
-1. **Search** — the agent's query goes to a search provider that returns candidate URLs.
-2. **Scrape** — relevant pages are fetched and the meaningful text is extracted.
-3. **Rerank** — a reranker scores results so the model sees the most useful ones first.
+1. **Search** - the agent's query goes to a search provider that returns candidate URLs.
+2. **Scrape** - relevant pages are fetched and the meaningful text is extracted.
+3. **Rerank** - a reranker scores results so the model sees the most useful ones first.
 
 The agent's response cites the URLs it actually used.
 

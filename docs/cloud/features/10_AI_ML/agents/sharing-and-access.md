@@ -9,6 +9,9 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import sharing from '@site/static/images/cloud/agent-builder/sharing/sharing.png';
+import shareAgentModal from '@site/static/images/cloud/agent-builder/sharing/share-agent-modal.png';
 
 <BetaBadge/>
 
@@ -18,8 +21,8 @@ ClickHouse Agents uses a layered permission model: roles control which features 
 
 A role is a bundle of feature permissions assigned to one or more users. The defaults:
 
-- **User** — can run agents and chat. Whether they can build agents, create skills, share resources, etc. depends on the per-feature toggles in their role.
-- **Admin** — everything in User, plus org-level controls: managing users, configuring the marketplace, granting permissions.
+- **User** - can run agents and chat. Whether they can build agents, create skills, share resources, etc. depends on the per-feature toggles in their role.
+- **Admin** - everything in User, plus org-level controls: managing users, configuring the marketplace, granting permissions.
 
 Admins can create custom roles with their own toggles for finer-grained control.
 
@@ -27,9 +30,9 @@ Admins can create custom roles with their own toggles for finer-grained control.
 
 Agents, prompts, and skills each have an access list. Three access levels per principal:
 
-- **Viewer** — can use the resource but can't modify it.
-- **Editor** — can change the resource's configuration (instructions, attached tools, model, etc.).
-- **Owner** — Editor plus the ability to delete the resource or change its sharing.
+- **Viewer** - can use the resource but can't modify it.
+- **Editor** - can change the resource's configuration (instructions, attached tools, model, etc.).
+- **Owner** - Editor plus the ability to delete the resource or change its sharing.
 
 When you create a resource, you're its owner by default. Anything you don't explicitly share is private to you.
 
@@ -37,17 +40,23 @@ When you create a resource, you're its owner by default. Anything you don't expl
 
 You can grant access to:
 
-- **Individual users** — one user at a time.
-- **Groups** — teams or org units. If a user joins or leaves the group later, their access updates automatically.
-- **Organization-wide** — everyone in the org sees the resource. Subject to the role-level toggle that allows this.
+- **Individual users** - one user at a time.
+- **Groups** - teams or org units. If a user joins or leaves the group later, their access updates automatically.
+- **Organization-wide** - everyone in the org sees the resource. Subject to the role-level toggle that allows this.
 
 The org-wide visibility is what makes a resource discoverable in the [marketplace](/cloud/features/ai-ml/agents/marketplace).
 
 ## Share an agent {#share-an-agent}
 
-In the Agent Builder, open the **Sharing** section and click **Add access**. Pick the principal (a user, a group, or organization-wide), choose the access level, and save. The recipient sees the agent in their available-agents list the next time they refresh.
+Click the **share** icon at the bottom of the Agent Builder. A badge on the icon shows how many users or groups currently have access.
 
-Revoke access from the same panel by removing the row. The recipient loses access immediately; their in-flight conversations finish but new ones won't open.
+<Image img={sharing} alt="Bottom of the Agent Builder panel with the share icon highlighted and a badge showing one shared principal" size="sm"/>
+
+The **Share** modal opens. Search for a user or group by name or email, choose the access level (**Viewer**, **Editor**, or **Owner**), and click **Save Changes**. To share organization-wide, enable the **Share with everyone in ClickHouse** toggle.
+
+<Image img={shareAgentModal} alt="Share modal with User and Group Permissions section, a search input, an existing user with an Owner role, a Share with everyone in ClickHouse toggle, and Cancel and Save Changes buttons" size="md"/>
+
+The recipient sees the agent in their available-agents list the next time they refresh. To revoke access, remove the row in the same modal. The recipient loses access immediately; their in-flight conversations finish but new ones won't open.
 
 ## Default agent {#default-agent}
 

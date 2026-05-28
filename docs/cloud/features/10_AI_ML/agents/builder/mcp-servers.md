@@ -28,9 +28,9 @@ ClickHouse Agents speaks Streamable HTTP — the production-grade MCP transport.
 
 MCP servers can require credentials. ClickHouse Agents supports:
 
-- **Bearer tokens** and other static headers — fixed values you provide when configuring the server.
-- **OAuth 2.0** — interactive flow. The first time you (or any user with access) calls a tool on the server, the browser opens a sign-in window; tokens are managed and refreshed automatically.
-- **Per-user credentials** — variables in the server config substituted from the calling user's profile, so each user authenticates with their own identity rather than a shared service account.
+- **Bearer tokens** and other static headers - fixed values you provide when configuring the server.
+- **OAuth 2.0** - interactive flow. The first time you (or any user with access) calls a tool on the server, the browser opens a sign-in window; tokens are managed and refreshed automatically.
+- **Per-user credentials** - variables in the server config substituted from the calling user's profile, so each user authenticates with their own identity rather than a shared service account.
 
 User-provided credentials are stored encrypted and scoped to the user who entered them. One user's credentials are never visible to another user's agent runs.
 
