@@ -27,5 +27,5 @@ For detailed step-by-step instructions, refer to the [Google Dataflow Run Pipeli
 
 ## List of ClickHouse Templates {#list-of-clickhouse-templates}
 * [BigQuery To ClickHouse](./templates/bigquery-to-clickhouse)
+* [Pub/Sub To ClickHouse](./templates/pubsub-to-clickhouse)
 * [GCS To ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/3) (coming soon!)
-* [Pub Sub To ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/4) (coming soon!)
