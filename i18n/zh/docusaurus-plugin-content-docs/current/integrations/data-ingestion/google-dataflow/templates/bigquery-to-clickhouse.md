@@ -186,6 +186,9 @@ job:
 * 增加实例资源：将 ClickHouse 服务器升级为具有更多内存的更大实例，以应对数据处理负载。
 * 减小批大小：在 Dataflow 作业配置中调整批大小，以较小的数据块发送到 ClickHouse，从而降低每个批次的内存消耗。这些更改有助于在数据摄取过程中平衡资源使用。
 
-## 模板源代码 {#template-source-code}
+## 模板源代码
 
-该模板的源代码可在 ClickHouse 的 [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) 派生仓库（fork）中获取。
+该模板的源代码可在以下位置获取：
+
+* [`GoogleCloudPlatform/DataflowTemplates`](https://github.com/GoogleCloudPlatform/DataflowTemplates/tree/main/v2/googlecloud-to-clickhouse) — 上游 Google Cloud Platform 仓库。
+* [`ClickHouse/DataflowTemplates`](https://github.com/ClickHouse/DataflowTemplates) — ClickHouse 的派生仓库 (fork) 。

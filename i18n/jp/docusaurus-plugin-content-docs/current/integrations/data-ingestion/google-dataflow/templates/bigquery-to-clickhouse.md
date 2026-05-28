@@ -186,4 +186,7 @@ Google Cloud Console の [Dataflow Jobs タブ](https://console.cloud.google.com
 
 ## テンプレートのソースコード \{#template-source-code\}
 
-このテンプレートのソースコードは、ClickHouse の [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) フォークで公開されています。
+このテンプレートのソースコードは、以下で公開されています。
+
+* [`GoogleCloudPlatform/DataflowTemplates`](https://github.com/GoogleCloudPlatform/DataflowTemplates/tree/main/v2/googlecloud-to-clickhouse) — アップストリームの Google Cloud Platform リポジトリ。
+* [`ClickHouse/DataflowTemplates`](https://github.com/ClickHouse/DataflowTemplates) — ClickHouse のフォーク。

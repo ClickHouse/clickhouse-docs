@@ -28,5 +28,5 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 ## Список шаблонов ClickHouse \{#list-of-clickhouse-templates\}
 
 * [BigQuery в ClickHouse](./templates/bigquery-to-clickhouse)
-* [GCS в ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/3) (скоро)
-* [Pub/Sub в ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/4) (скоро)
+* [Pub/Sub в ClickHouse](./templates/pubsub-to-clickhouse)
+* [GCS в ClickHouse](https://github.com/ClickHouse/DataflowTemplates/issues/3) (скоро!)

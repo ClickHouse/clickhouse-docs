@@ -186,4 +186,7 @@ job:
 
 ## Исходный код шаблона \{#template-source-code\}
 
-Исходный код шаблона доступен в форке репозитория [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) от ClickHouse.
+Исходный код шаблона доступен в следующих репозиториях:
+
+* [`GoogleCloudPlatform/DataflowTemplates`](https://github.com/GoogleCloudPlatform/DataflowTemplates/tree/main/v2/googlecloud-to-clickhouse) — основной репозиторий Google Cloud Platform.
+* [`ClickHouse/DataflowTemplates`](https://github.com/ClickHouse/DataflowTemplates) — форк ClickHouse.

@@ -184,4 +184,7 @@ Google Cloud Console에서 [Dataflow Jobs 탭](https://console.cloud.google.com/
 
 ## Template 소스 코드 \{#template-source-code\}
 
-Template의 소스 코드는 ClickHouse에서 포크한 [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) 저장소에서 확인할 수 있습니다.
+Template의 소스 코드는 다음에서 확인할 수 있습니다:
+
+* [`GoogleCloudPlatform/DataflowTemplates`](https://github.com/GoogleCloudPlatform/DataflowTemplates/tree/main/v2/googlecloud-to-clickhouse) — Google Cloud Platform의 업스트림 리포지토리입니다.
+* [`ClickHouse/DataflowTemplates`](https://github.com/ClickHouse/DataflowTemplates) — ClickHouse에서 포크한 리포지토리입니다.

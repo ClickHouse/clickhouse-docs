@@ -33,7 +33,7 @@ Google Dataflow를 ClickHouse와 함께 사용하는 주요 방법은 두 가지
 
 ## 미리 정의된 템플릿 \{#2-predefined-templates\}
 
-ClickHouse는 BigQuery에서 ClickHouse로 데이터를 가져오는 것과 같이 특정 사용 사례를 위해 설계된 [미리 정의된 템플릿](./templates)을 제공합니다. 이러한 템플릿은 바로 사용할 수 있으며 통합 과정을 단순화하므로, 코드 없이(no-code) 사용하는 솔루션을 선호하는 경우 특히 적합합니다.
+ClickHouse는 BigQuery에서의 일괄 가져오기 또는 Pub/Sub에서 ClickHouse로의 스트리밍 수집과 같이 특정 사용 사례를 위해 설계된 [미리 정의된 템플릿](./templates)을 제공합니다. 이러한 템플릿은 바로 사용할 수 있으며 통합 과정을 단순화하므로, 코드 없이(no-code) 사용하는 솔루션을 선호하는 경우 특히 적합합니다.
 
 ### 주요 기능 \{#key-features-1\}
 

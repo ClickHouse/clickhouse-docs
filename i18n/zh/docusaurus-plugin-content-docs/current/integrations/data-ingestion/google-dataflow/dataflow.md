@@ -33,7 +33,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ## 预定义模板 \{#2-predefined-templates\}
 
-ClickHouse 提供了针对特定使用场景设计的[预定义模板](./templates)，例如将数据从 BigQuery 导入到 ClickHouse。这些模板开箱即用，可简化集成过程，如果您偏好无代码解决方案，这是一个绝佳选择。
+ClickHouse 提供了针对特定使用场景设计的[预定义模板](./templates)，例如从 BigQuery 批量导入数据，或将来自 Pub/Sub 的数据以流式方式摄取到 ClickHouse。这些模板开箱即用，可简化集成过程，如果您偏好无代码解决方案，这是一个绝佳选择。
 
 ### 关键特性 \{#key-features-1\}
 
