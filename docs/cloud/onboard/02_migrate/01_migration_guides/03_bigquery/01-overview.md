@@ -11,6 +11,20 @@ doc_type: 'guide'
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
 
+
+## Why use ClickHouse Cloud over BigQuery? {#why-use-clickhouse-cloud-over-bigquery}
+
+TLDR: Because ClickHouse is faster, cheaper, and more powerful than BigQuery for modern data analytics:
+
+|                              | ClickHouse                                                                                                                                                                              | BigQuery                                                                                                |
+|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| **Fast and efficient**       | Up to 95% faster querying speeds and 60% less storage space required.                                                                                                                   | Slower querying speeds and requires more storage.                                                       |
+| **Cost-effective**           | Up to 100x more cost-effective.                                                                                                                                                         | More costly for BigQuery for analytics workloads.                                                       |
+| **Modern SQL**               | Advanced SQL extended with numerous extensions and improvements (e.g. lambda functions and higher-order functions), that make analytical tasks very user-friendly.                      | Support for only standard SQL. Can make analytics more complex.                                         |
+| **Easy data analytics**      | 150+ pre-built aggregation functions plus powerful aggregation combinators, fully vectorized and parallelized.                                                                          | Requires writing more complex SQL due to its limited set of aggregate and higher-order functions.       |
+| **Rich data type support**   | 1300+ data processing functions for domains like mathematics, geo, machine learning, time series, and more. Advanced data types like JSON, maps, and arrays plus over 80 array functions for modeling and solving a wide range of problems. | Support for limited number of data types including only 8 array functions.                              |
+| **World class interoperability** | Native support for reading data in over 90 file formats from most data sources which makes it easy to analyze data regardless of its shape and location.                            | Limited interoperability. Supports only 5 file formats and 19 data sources.                             |
+
 ## Resource organization {#resource-organization}
 
 The way resources are organized in ClickHouse Cloud is similar to [BigQuery's resource hierarchy](https://cloud.google.com/bigquery/docs/resource-hierarchy). We describe specific differences below based on the following diagram showing the ClickHouse Cloud resource hierarchy:
@@ -476,3 +490,12 @@ FROM Sequences;
 3. │ [5,10]       │   15 │
    └──────────────┴──────┘
 ```
+
+## Loading data from BigQuery to ClickHouse Cloud {#loading-data-from-bigquery-to-clickhouse-cloud}
+
+### Migrating data {#migrating-data}
+
+Migrating data between BigQuery and ClickHouse Cloud falls into two primary workload types:
+
+- **Initial bulk load with periodic updates** - An initial dataset must be migrated along with periodic updates at set intervals e.g. daily. Updates here are handled by resending rows that have changed - identified by either a column that can be used for comparisons (e.g., a date). Deletes are handled with a complete periodic reload of the dataset.
+- **Real time replication or CDC** - An initial dataset must be migrated. Changes to this dataset must be reflected in ClickHouse in near-real time with only a delay of several seconds acceptable. This is effectively a [Change Data Capture (CDC) process](https://en.wikipedia.org/wiki/Change_data_capture) where tables in BigQuery must be synchronized with ClickHouse i.e. inserts, updates and deletes in the BigQuery table must be applied to an equivalent table in ClickHouse.
