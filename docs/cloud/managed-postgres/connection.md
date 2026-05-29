@@ -16,7 +16,7 @@ import tlsCaBundle from '@site/static/images/managed-postgres/tls-ca-bundle.png'
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.connection-beta" />
 
 :::tip[SQL Console]
-This page explains how to connect your production systems to Postgres. If you want a quick way to run a query, you can connect through the [SQL Console](https://clickhouse.com/docs/integrations/sql-clients/sql-console), as with ClickHouse instances.
+This page explains how to connect your production systems to Postgres. If you want a quick way to run a query, you can connect through the [SQL Console](/integrations/sql-clients/sql-console), in the same way you can with ClickHouse instances.
 :::
 
 ## Accessing connection details {#accessing-connection-details}
