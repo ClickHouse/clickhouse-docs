@@ -12,6 +12,18 @@
   curl https://clickhouse.com/ | sh
   ```
 
+  В Linux и macOS при этом также устанавливается [`clickhousectl`](https://github.com/ClickHouse/clickhousectl)
+  в `~/.local/bin` (с символической ссылкой `chctl`), чтобы вы могли управлять локальными версиями
+  и серверами ClickHouse. Если `~/.local/bin` ещё не добавлен в ваш `PATH`, установщик
+  выведет строку, которую нужно добавить в профиль вашей оболочки.
+
+  Чтобы установить только бинарный файл `clickhouse` без `clickhousectl`, задайте
+  `CLICKHOUSE_ONLY=1`:
+
+  ```bash
+  curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+  ```
+
   :::note
   Для пользователей Mac: если вы получаете ошибку о том, что разработчик бинарного файла не может быть проверен, см. [эту статью](/knowledgebase/fix-developer-verification-error-in-macos).
   :::

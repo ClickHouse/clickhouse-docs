@@ -29,6 +29,23 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   편의를 위해 `chctl` 별칭도 자동으로 생성됩니다.
 
+  <details>
+    <summary>고급: `clickhousectl` 없이 ClickHouse 설치</summary>
+
+    `clickhouse` 바이너리만 필요하고 `clickhousectl`은 필요하지 않다면,
+    `CLICKHOUSE_ONLY=1`과 함께 범용 설치 프로그램을 사용하십시오:
+
+    ```bash
+    curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+    ```
+
+    이렇게 하면 현재 디렉터리에 단일 `clickhouse` 바이너리가 다운로드됩니다. 이후
+    해당 바이너리로 `clickhouse-server`, `clickhouse-client`, `clickhouse-local`을
+    직접 실행할 수 있으며, 이 가이드의 나머지 `clickhousectl` 기반 단계는
+    더 이상 적용되지 않습니다. 일반 바이너리 워크플로는 [빠른 설치](/install/quick-install) 페이지를
+    참조하십시오.
+  </details>
+
   ## ClickHouse 설치 \{#install-clickhouse\}
 
   ClickHouse는 Linux 및 macOS에서 네이티브로 실행되며, Windows에서는
@@ -357,5 +374,5 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   * 삽입 방법 안내와 함께 [예시 데이터세트](/getting-started/example-datasets/) 목록을 제공합니다.
   * 데이터가 외부 소스에서 들어오는 경우 메시지 큐, 데이터베이스, 파이프라인 등에 연결하는 방법은 [통합 가이드 모음](/integrations/)을 참조하십시오.
   * UI/BI 시각화 도구를 사용하는 경우, [UI를 ClickHouse에 연결하는 가이드](/integrations/data-visualization/)를 참조하십시오.
-  * [기본 키](/guides/best-practices/sparse-primary-indexes.md) 사용자 가이드에는 기본 키에 대해 알아야 할 모든 내용과 이를 정의하는 방법이 담겨 있습니다.
+  * 기본 키([primary keys](/guides/best-practices/sparse-primary-indexes.md)) 사용자 가이드에는 기본 키에 대해 알아야 할 모든 내용과 이를 정의하는 방법이 담겨 있습니다.
 </VerticalStepper>

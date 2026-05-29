@@ -29,6 +29,21 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   便宜上、`chctl` エイリアスも自動的に作成されます。
 
+  <details>
+    <summary>上級: `clickhousectl` を使わずに ClickHouse をインストールする</summary>
+
+    `clickhouse` バイナリのみが必要で、`clickhousectl` が不要な場合は、
+    `CLICKHOUSE_ONLY=1` を指定してユニバーサルインストーラーを使用してください:
+
+    ```bash
+    curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+    ```
+
+    これにより、単一の `clickhouse` バイナリが現在のディレクトリにダウンロードされます。以降は、そのバイナリから `clickhouse-server`、`clickhouse-client`、`clickhouse-local` を
+    直接実行できます。そのため、このガイドの残りの `clickhousectl` ベースの
+    手順は該当しません。プレーンバイナリのワークフローについては、[Quick install](/install/quick-install) ページを参照してください。
+  </details>
+
   ## ClickHouseのインストール \{#install-clickhouse\}
 
   ClickHouseはLinuxおよびmacOS上でネイティブに動作し、Windowsでは
