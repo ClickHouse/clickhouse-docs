@@ -9,6 +9,7 @@ doc_type: 'guide'
 
 import IntroClickPipe from '@site/docs/_snippets/clickpipes/bigquery/_intro.md';
 import Permissions from '@site/docs/_snippets/clickpipes/bigquery/_permissions.md';
+import ServiceAccountKey from '@site/docs/_snippets/clickpipes/bigquery/_service-account-key.md';
 
 <IntroClickPipe/>
 

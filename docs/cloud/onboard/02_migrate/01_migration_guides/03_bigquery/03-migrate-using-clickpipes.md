@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 This guide walks you through how you can migrate your BigQuery projects to ClickHouse Cloud with ClickPipes, a managed CDC solution available in ClickHouse Cloud.
 It uses the Stack Overflow dataset as a practical example.
 
-## Pre-requisites
+## Pre-requisites {#pre-requisites}
 
 Before proceeding with this migration guide, make sure you have the following:
 
@@ -117,7 +117,3 @@ shows you progress on the amount of data ingested, the overall status of the pip
 <Image img={dashboard} alt="BigQuery ClickPipe monitoring dashboard" size="lg"/>
 
 </VerticalStepper>
-
-
-
-

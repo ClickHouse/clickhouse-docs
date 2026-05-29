@@ -23,12 +23,12 @@ The BigQuery schema for this data is shown below:
 
 <Image img={stackoverflow} size="md" alt="Stack Overflow schema"/>
 
-## Pre-requisites
+## Pre-requisites {#pre-requisites}
 
 Before proceeding, make sure you have the following:
 - A Google Cloud account
 
-## Create a new project
+## Create a new project {#create-a-new-project}
 
 1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
 2. Click on the project picker at the top of the page next to the Google Cloud logo.
@@ -37,7 +37,7 @@ Before proceeding, make sure you have the following:
 5. Optionally, select a parent resource, or leave it as **No organisation**.
 6. Click on **Create**.
 
-## Create table DDL and insert data
+## Create table DDL and insert data {#create-table-ddl-and-insert-data}
 
 1. From the console landing page, select the project you just created.
 2. You should see "You are working in" along with the name of the project you just created.
@@ -282,11 +282,8 @@ They are listed in a table under the header **Overview**.
 
 <ServiceAccountKey/>
 
-## Next steps
+## Next steps {#next-steps}
 
 After completing the steps in this setup guide, you can now proceed with one of the following migration guides depending on which approach you would like to take:
 - [**Migrate from BigQuery to ClickHouse Cloud using ClickPipes**](/migrations/bigquery/migrate-using-clickpipes)
 - [**Migrate from BigQuery to ClickHouse Cloud with object-storage**](/migrations/bigquery/migrating-to-clickhouse-cloud)
-
-
-

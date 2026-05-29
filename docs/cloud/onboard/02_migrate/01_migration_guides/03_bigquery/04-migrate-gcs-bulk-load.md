@@ -14,7 +14,7 @@ import Image from '@theme/IdealImage';
 This guide walks you through how you can migrate your BigQuery projects to ClickHouse Cloud by bulk-loading exported BigQuery data into ClickHouse.
 It uses the Stack Overflow dataset as a practical example.
 
-## Pre-requisites
+## Pre-requisites {#pre-requisites}
 
 Before proceeding with this migration guide, make sure you have the following:
 
@@ -273,7 +273,7 @@ We recommend focusing on migrating the primary table first.
 This may not necessarily be the largest table but rather the one on which you expect to run the most analytical queries.
 This approach allows you to familiarize yourself with the main ClickHouse concepts.
 This table may require remodeling as additional tables are added to fully exploit ClickHouse features and obtain optimal performance.
-This modeling process is explored further in [**Schema design**](/schema-design) and the recommended next steps guides of that article.
+This modeling process is explored further in [**Schema design**](/data-modeling/schema-design) and the recommended next steps guides of that article.
 
 As an illustrative example, for this dataset, you would begin with the `posts` table, which is the table likely to receive the most analytical queries.
 
@@ -358,4 +358,3 @@ You can also use the `gcs` function (an alias for the `s3` table function) if yo
 
 The `ACCESS_ID` and `SECRET` used in the above query is your [HMAC key](https://docs.cloud.google.com/storage/docs/authentication/hmackeys) associated with your GCS bucket.
 </VerticalStepper>
-

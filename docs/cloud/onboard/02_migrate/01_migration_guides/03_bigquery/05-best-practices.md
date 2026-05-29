@@ -17,13 +17,12 @@ import TabItem from '@theme/TabItem';
 
 This document describes best practices for migrating from BigQuery to ClickHouse.
 
-## Pre-requisites
+## Pre-requisites {#pre-requisites}
 You should already be familiar with the ClickHouse core and data modeling concepts explored in:
 - [**Table parts**](/parts)
 - [**Table partitions**](/partitions)
 - [**Primary indexes**](/primary-indexes)
 - [**Schema design**](/data-modeling/schema-design)
-
 
 ## Choosing a primary key {#how-are-clickhouse-primary-keys-different}
 
