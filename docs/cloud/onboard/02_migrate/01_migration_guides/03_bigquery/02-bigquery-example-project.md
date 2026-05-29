@@ -9,7 +9,7 @@ doc_type: 'guide'
 
 import Permissions from '@site/docs/_snippets/clickpipes/bigquery/_permissions.md';
 import ServiceAccountKey from '@site/docs/_snippets/clickpipes/bigquery/_service-account-key.md';
-import bigquery_3 from '@site/static/images/migrations/bigquery-3.png';
+import stackoverflow from '@site/static/images/getting-started/example-datasets/stackoverflow.png';
 import Image from '@theme/IdealImage';
 
 There are two recommended ways to migrate your project from BigQuery to ClickHouse:
@@ -21,7 +21,7 @@ The dataset contains every `post`, `vote`, `user`, `comment`, and `badge` that h
 
 The BigQuery schema for this data is shown below:
 
-<Image img={bigquery_3} size="md" alt="Schema"/>
+<Image img={stackoverflow} size="md" alt="Stack Overflow schema"/>
 
 ## Pre-requisites
 

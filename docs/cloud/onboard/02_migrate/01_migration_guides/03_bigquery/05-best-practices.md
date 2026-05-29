@@ -11,12 +11,9 @@ doc_type: 'guide'
 import bigquery_5 from '@site/static/images/migrations/bigquery-5.png';
 import bigquery_6 from '@site/static/images/migrations/bigquery-6.png';
 import bigquery_7 from '@site/static/images/migrations/bigquery-7.png';
-import bigquery_8 from '@site/static/images/migrations/bigquery-8.png';
-import bigquery_9 from '@site/static/images/migrations/bigquery-9.png';
-import bigquery_10 from '@site/static/images/migrations/bigquery-10.png';
-import bigquery_11 from '@site/static/images/migrations/bigquery-11.png';
-import bigquery_12 from '@site/static/images/migrations/bigquery-12.png';
 import Image from '@theme/IdealImage';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 This document describes best practices for migrating from BigQuery to ClickHouse.
 
@@ -211,13 +208,13 @@ CREATE TABLE comments
     `CreationDate` DateTime64(3, 'UTC'),
     `UserId` Int32,
     `UserDisplayName` LowCardinality(String),
-    --highlight-begin
+    -- highlight-start
     PROJECTION comments_user_id
     (
     SELECT *
     ORDER BY UserId
     )
-    --highlight-end
+    -- highlight-end
 )
 ENGINE = MergeTree
 ORDER BY PostId
@@ -312,11 +309,29 @@ The following provides example queries comparing BigQuery to ClickHouse. This li
 
 **Users (with more than 10 questions) which receive the most views:**
 
-_BigQuery_
+<Tabs groupId="dialect">
+<TabItem value="bigquery" label="BigQuery">
 
-<Image img={bigquery_8} size="sm" alt="Rewriting BigQuery queries" border/>
+```sql
+SELECT OwnerDisplayName, sum(ViewCount) AS total_views
+FROM stackoverflow.posts
+WHERE (PostTypeId = 1) AND (OwnerDisplayName != '')
+GROUP BY OwnerDisplayName
+HAVING count(*) > 10
+ORDER BY total_views DESC
+LIMIT 5
+```
 
-_ClickHouse_
+| Row | OwnerDisplayName | total_views |
+|-----|------------------|-------------|
+| 1   | Joan Venge       | 25520387    |
+| 2   | Ray Vega         | 21576470    |
+| 3   | anon             | 19814224    |
+| 4   | Tim              | 19028260    |
+| 5   | John             | 17638812    |
+
+</TabItem>
+<TabItem value="clickhouse" label="ClickHouse">
 
 ```sql
 SELECT
@@ -341,18 +356,46 @@ LIMIT 5
 Peak memory usage: 323.37 MiB.
 ```
 
+</TabItem>
+</Tabs>
+
+<br/>
+
 **Which tags receive the most views:**
 
-_BigQuery_
-
-<br />
-
-<Image img={bigquery_9} size="sm" alt="BigQuery 1" border/>
-
-_ClickHouse_
+<Tabs groupId="dialect">
+<TabItem value="bigquery" label="BigQuery">
 
 ```sql
--- ClickHouse
+SELECT
+  tag AS tags,
+  SUM(ViewCount) AS views
+FROM (
+  SELECT
+    ViewCount,
+    tag
+  FROM
+    stackoverflow.posts,
+    UNNEST(SPLIT(Tags, '|')) AS tag
+  WHERE tag != ''
+)
+GROUP BY tags
+ORDER BY views DESC
+LIMIT 5
+```
+
+| Row | tags       | views      |
+|-----|------------|------------|
+| 1   | javascript | 8190916894 |
+| 2   | python     | 8175132834 |
+| 3   | java       | 7258379211 |
+| 4   | c#         | 5476932513 |
+| 5   | android    | 4258320338 |
+
+</TabItem>
+<TabItem value="clickhouse" label="ClickHouse">
+
+```sql
 SELECT
     arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tags,
     sum(ViewCount) AS views
@@ -373,20 +416,44 @@ LIMIT 5
 Peak memory usage: 567.41 MiB.
 ```
 
+</TabItem>
+</Tabs>
+
 ## Aggregate functions {#aggregate-functions}
 
 Where possible, you should exploit ClickHouse aggregate functions. Below, we show the use of the [`argMax` function](/sql-reference/aggregate-functions/reference/argmax) to compute the most viewed question of each year.
 
-_BigQuery_
-
-<Image img={bigquery_10} border size="sm" alt="Aggregate functions 1"/>
-
-<Image img={bigquery_11} border size="sm" alt="Aggregate functions 2"/>
-
-_ClickHouse_
+<Tabs groupId="dialect">
+<TabItem value="bigquery" label="BigQuery">
 
 ```sql
--- ClickHouse
+SELECT
+  EXTRACT(YEAR FROM CreationDate) AS Year,
+  ARRAY_AGG(Title ORDER BY ViewCount DESC LIMIT 1)[OFFSET(0)]
+    AS MostViewedQuestionTitle,
+  MAX(ViewCount) AS MaxViewCount
+FROM
+  `stackoverflow.posts`
+WHERE
+  PostTypeId = 1
+GROUP BY
+  Year
+ORDER BY
+  Year ASC
+```
+
+| Row | Year | MostViewedQuestionTitle                                                              | MaxViewCount |
+|-----|------|--------------------------------------------------------------------------------------|--------------|
+| 1   | 2008 | How to find the index for a given item in a list?                                    | 6316987      |
+| 2   | 2009 | How do I undo the most recent local commits in Git?                                  | 13962748     |
+| ... | ...  | ...                                                                                  | ...          |
+| 16  | 2023 | How do I solve "error: externally-managed-environment" every time I use pip 3?       | 506822       |
+| 17  | 2024 | Warning "Third-party cookie will be blocked. Learn more in the Issues tab"           | 66975        |
+
+</TabItem>
+<TabItem value="clickhouse" label="ClickHouse">
+
+```sql
 SELECT
     toYear(CreationDate) AS Year,
     argMax(Title, ViewCount) AS MostViewedQuestionTitle,
@@ -427,15 +494,60 @@ MaxViewCount:            66975
 Peak memory usage: 377.26 MiB.
 ```
 
+</TabItem>
+</Tabs>
+
 ## Conditionals and arrays {#conditionals-and-arrays}
 
 Conditional and array functions make queries significantly simpler. The following query computes the tags (with more than 10000 occurrences) with the largest percentage increase from 2022 to 2023. Note how the following ClickHouse query is succinct thanks to conditionals, array functions, and the ability to reuse aliases in the `HAVING` and `SELECT` clauses.
 
-_BigQuery_
+<Tabs groupId="dialect">
+<TabItem value="bigquery" label="BigQuery">
 
-<Image img={bigquery_12} size="sm" border alt="Conditionals and Arrays"/>
+```sql
+WITH posts_expanded AS (
+  SELECT
+    tag,
+    EXTRACT(YEAR FROM CreationDate) AS year
+  FROM
+    stackoverflow.posts,
+    UNNEST(SPLIT(Tags, '|')) AS tag
+  WHERE
+    tag != '' AND EXTRACT(YEAR FROM CreationDate) IN (2022, 2023)
+),
+tag_counts AS (
+  SELECT
+    tag,
+    COUNTIF(year = 2023) AS count_2023,
+    COUNTIF(year = 2022) AS count_2022
+  FROM
+    posts_expanded
+  GROUP BY tag
+)
+SELECT
+  tag,
+  count_2023,
+  count_2022,
+  ((count_2023 - count_2022) / count_2022) * 100 AS percent_change
+FROM
+  tag_counts
+WHERE
+  count_2022 > 10000
+  AND count_2023 > 10000
+ORDER BY percent_change DESC
+LIMIT 5
+```
 
-_ClickHouse_
+| Row | tag         | count_2023 | count_2022 | percent_change      |
+|-----|-------------|------------|------------|---------------------|
+| 1   | next.js     | 13788      | 10520      | 31.06463878326996   |
+| 2   | spring-boot | 16573      | 17721      | -6.478189718413183  |
+| 3   | .net        | 11458      | 12968      | -11.644046884639112 |
+| 4   | azure       | 11996      | 14049      | -14.613139725247349 |
+| 5   | docker      | 13885      | 16877      | -17.72826924216389  |
+
+</TabItem>
+<TabItem value="clickhouse" label="ClickHouse">
 
 ```sql
 SELECT
@@ -461,3 +573,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.096 sec. Processed 5.08 million rows, 155.73 MB (53.10 million rows/s., 1.63 GB/s.)
 Peak memory usage: 410.37 MiB.
 ```
+
+</TabItem>
+</Tabs>
