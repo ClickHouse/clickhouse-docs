@@ -14,13 +14,11 @@ integration:
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# Подключите Apify к ClickHouse \{#connect-apify-to-clickhouse\}
-
 <CommunityMaintainedBadge />
 
-[Apify](https://apify.com/) — платформа для веб-скрапинга и автоматизации. В ней можно создавать, запускать и масштабировать бессерверные облачные программы — [**Actors**](https://docs.apify.com/platform/actors). Actors собирают данные с сайтов, сканируют веб, обрабатывают данные и автоматизируют рабочие процессы. Каждый запуск Actor создает структурированный результат, который сохраняется в [**Datasets**](https://docs.apify.com/platform/storage/dataset) (коллекциях JSON-объектов).
+[Apify](https://apify.com/) — это платформа для веб-скрейпинга и автоматизации. На ней можно создавать, запускать и масштабировать бессерверные облачные программы, называемые [**Actors**](https://docs.apify.com/platform/actors). Actors собирают данные с сайтов, обходят веб-ресурсы, обрабатывают данные или автоматизируют рабочие процессы. Каждый запуск Actor создает структурированный вывод, который сохраняется в [**Datasets**](https://docs.apify.com/platform/storage/dataset) (коллекциях JSON-объектов).
 
-Загружайте собранные или обработанные данные в ClickHouse для анализа, мониторинга или обогащения данных.
+Загружайте собранные или обработанные данные в ClickHouse для аналитики, мониторинга или конвейеров обогащения.
 
 ## Ключевые понятия \{#key-concepts\}
 

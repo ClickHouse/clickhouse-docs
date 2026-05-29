@@ -17,10 +17,7 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
-
-# 将 S3 集成到 ClickHouse 中 \{#integrating-s3-with-clickhouse\}
-
-你可以将 S3 中的数据写入 ClickHouse，也可以将 S3 用作导出目标，从而与“数据湖”（Data Lake）架构进行集成。此外，S3 还可以作为“冷”存储层，并有助于实现存储与计算的分离。在下文中，我们使用纽约市出租车数据集演示在 S3 与 ClickHouse 之间迁移数据的过程，说明关键配置参数，并给出性能优化建议。
+您可以将数据从 S3 插入到 ClickHouse 中，也可以将 S3 用作导出目标端，从而能够与“数据湖”架构集成。此外，S3 还可提供“冷”存储层级，并有助于实现存储与计算分离。在下面的各个部分中，我们将使用纽约市出租车数据集来演示在 S3 与 ClickHouse 之间移动数据的过程，同时介绍关键配置参数，并提供性能优化建议。
 
 ## S3 表函数 \{#s3-table-functions\}
 

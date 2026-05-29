@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
 sidebar_label: 'セマンティックレイヤーで ClickHouse Assistant チャットをカスタマイズする'
-title: 'セマンティックレイヤーを用いた ClickHouse Assistant エージェントとの会話の最適化'
+title: 'セマンティックレイヤーを用いた ClickHouse Assistant との会話の最適化'
 pagination_prev: null
 pagination_next: null
 description: 'AGENTS.md を使用して、ClickHouse Assistant チャットエージェントにカスタムビジネスロジックとデータ特有の指示を与えるためのガイド'

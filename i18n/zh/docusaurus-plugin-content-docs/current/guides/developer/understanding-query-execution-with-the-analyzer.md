@@ -2,9 +2,9 @@
 slug: /guides/developer/understanding-query-execution-with-the-analyzer
 sidebar_label: '使用analyzer理解查询执行'
 title: '使用analyzer理解查询执行'
-description: '介绍如何使用analyzer来理解 ClickHouse 如何执行你的查询'
+description: '介绍如何使用 analyzer 来了解 ClickHouse 如何执行查询'
 doc_type: 'guide'
-keywords: ['查询执行', 'analyzer', '查询优化', 'EXPLAIN', '性能']
+keywords: ['query execution', 'analyzer', 'query optimization', 'explain', 'performance']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -13,8 +13,6 @@ import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';
 import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
-
-# 使用分析器理解查询执行 \{#understanding-query-execution-with-the-analyzer\}
 
 ClickHouse 可以以极高的速度处理查询，但查询的执行过程并不那么简单。下面我们来看看一个 `SELECT` 查询是如何执行的。为便于说明，我们先在 ClickHouse 的一张表中插入一些数据：
 
@@ -39,7 +37,6 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 <Image img={analyzer1} alt="Explain query steps" size="md" />
 
 现在让我们看看在查询执行过程中，各个实体是如何协同工作的。我们将选取几个查询，然后使用 `EXPLAIN` 语句对它们进行分析。
-
 
 ## 解析器 \{#parser\}
 

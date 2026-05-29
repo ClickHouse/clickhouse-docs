@@ -18,10 +18,7 @@ import gcp_mysql_cert from '@site/static/images/integrations/data-ingestion/clic
 import rootca from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/rootca.png';
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника Cloud SQL for MySQL \{#cloud-sql-for-mysql-source-setup-guide\}
-
-Это пошаговое руководство по настройке экземпляра Cloud SQL for MySQL для репликации данных с помощью ClickPipe для MySQL.
+Это пошаговое руководство по настройке экземпляра Cloud SQL for MySQL для репликации данных через MySQL ClickPipe.
 
 ## Включение хранения двоичного журнала \{#enable-binlog-retention-gcp\}
 

@@ -1,5 +1,5 @@
 ---
-title: 'DataStore - pandas 互換 API'
+title: 'DataStore: SQL 最適化を備えた pandas 互換 API'
 sidebar_label: '概要'
 slug: /chdb/datastore
 description: 'DataStore は高性能なデータ分析のために SQL 最適化を備えた pandas 互換 API を提供します'
@@ -10,10 +10,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import data_store from '@site/static/images/chdb/datastore_architecture.png'
 
-
-# DataStore: SQL 最適化を備えた pandas 互換 API \{#datastore-pandas-compatible-api-with-sql-optimization\}
-
-DataStore は、chDB の pandas 互換 API であり、なじみのある pandas DataFrame インターフェイスに SQL クエリ最適化の強力な機能を組み合わせたものです。pandas スタイルのコードを書いて、ClickHouse レベルのパフォーマンスを得ることができます。
+DataStore は chDB の pandas 互換 API であり、使い慣れた pandas の DataFrame インターフェイスと SQL クエリ最適化の強力さを組み合わせることで、pandas スタイルのコードを書きながら ClickHouse のパフォーマンスを得られます。
 
 ## 主な機能 \{#key-features\}
 

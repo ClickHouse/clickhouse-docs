@@ -1,5 +1,5 @@
 ---
-title: 'Java'
+title: 'Обзор Java-клиентов'
 sidebar_position: 1
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: 'Варианты подключения к ClickHouse из Java'
@@ -13,11 +13,9 @@ integration:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Обзор Java‑клиентов \{#java-clients-overview\}
-
-- [Клиент 0.8+](./client/client.mdx)
-- [JDBC 0.8+](./jdbc/jdbc.mdx)
-- [Драйвер R2DBC](./r2dbc.md)
+* [Клиент 0.8+](./client/client.mdx)
+* [JDBC 0.8+](./jdbc/jdbc.mdx)
+* [Драйвер R2DBC](./r2dbc.md)
 
 ## ClickHouse client \{#clickhouse-client\}
 

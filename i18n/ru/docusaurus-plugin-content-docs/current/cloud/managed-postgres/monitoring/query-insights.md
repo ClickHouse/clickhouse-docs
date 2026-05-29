@@ -7,7 +7,7 @@ keywords: ['Managed Postgres', 'Query Insights', 'pg_stat_ch', 'медленны
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import queryInsightsOverview from '@site/static/images/managed-postgres/monitoring/query-insights-overview.png';
 import queryInsightsPatterns from '@site/static/images/managed-postgres/monitoring/query-insights-patterns.png';
@@ -15,20 +15,18 @@ import queryInsightsRecentQueries from '@site/static/images/managed-postgres/mon
 import queryInsightsDetailAggregate from '@site/static/images/managed-postgres/monitoring/query-insights-detail-aggregate.png';
 import queryInsightsDetailRecent from '@site/static/images/managed-postgres/monitoring/query-insights-detail-recent.png';
 
-# Postgres Query Insights \{#postgres-query-insights\}
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="query-insights" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.query-insights-beta" />
 
 Query Insights собирает телеметрию по каждому оператору из вашего
-[Managed Postgres](/cloud/managed-postgres) и ранжирует каждый шаблон
-запроса по степени влияния, чтобы вы могли перейти от «p99 постепенно растёт» к
-«этот шаблон сбрасывает данные на диск», не покидая облачную консоль.
+экземпляра [Managed Postgres](/cloud/managed-postgres) и ранжирует каждый шаблон
+запроса по степени влияния, чтобы вы могли перейти от &quot;растёт p99&quot; к &quot;этот шаблон
+выгружает данные на диск&quot;, не выходя из облачной консоли.
 
 Данные поступают из [`pg_stat_ch`](https://github.com/clickhouse/pg_stat_ch),
-расширения Postgres с открытым исходным кодом, которое передаёт в
-ClickHouse Cloud счётчики по каждому оператору. Телеметрия нормализуется внутри
-Postgres до того, как покинет базу данных: литералы удаляются и заменяются
-плейсхолдерами, поэтому точные значения из ваших запросов никогда не попадают в поток телеметрии.
+расширения Postgres с открытым исходным кодом, которое передаёт счётчики по каждому оператору в
+ClickHouse Cloud. Телеметрия нормализуется внутри Postgres ещё до того, как покинуть
+базу данных — литералы удаляются и заменяются плейсхолдерами, поэтому
+точные значения из ваших запросов никогда не попадают в поток телеметрии.
 
 ## Откройте Query insights \{#open\}
 

@@ -21,15 +21,12 @@ import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbe
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# 将 DBeaver 连接到 ClickHouse \{#connect-dbeaver-to-clickhouse\}
-
-<PartnerBadge/>
-
-DBeaver 提供多个发行版。本指南中使用的是 [DBeaver Community](https://dbeaver.io/)。可在[此处](https://dbeaver.com/edition/)查看不同发行版及其功能。DBeaver 通过 JDBC 连接到 ClickHouse。
+DBeaver 有多个版本可供选择。本指南使用的是 [DBeaver Community](https://dbeaver.io/)。请在[此处](https://dbeaver.com/edition/)查看不同版本及其功能。DBeaver 使用 JDBC 连接到 ClickHouse。
 
 :::note
-请使用 23.1.0 或更高版本的 DBeaver，以便更好地支持 ClickHouse 中的 `Nullable` 列。
+为更好地支持 ClickHouse 中的 `Nullable` 列，请使用 DBeaver 23.1.0 或更高版本。
 :::
 
 ## 1. 收集您的 ClickHouse 连接信息 \{#1-gather-your-clickhouse-details\}

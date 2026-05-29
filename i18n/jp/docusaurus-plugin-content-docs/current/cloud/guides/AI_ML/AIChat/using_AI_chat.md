@@ -20,14 +20,12 @@ import img_history from '@site/static/images/use-cases/AI_ML/AIChat/5_history.pn
 import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_result_actions.png';
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
-# ClickHouse Cloud で ClickHouse Assistant チャットを使用する \{#use-clickhouse-assistant-chat-in-clickhouse-cloud\}
-
-> このガイドでは、ClickHouse Cloud コンソールで AI Chat 機能を有効にして利用する方法を説明します。
+> このガイドでは、ClickHouse Cloud コンソールで AI Chat 機能を有効化して利用する方法を説明します。
 
 <VerticalStepper headerLevel="h2">
   ## 前提条件 \{#prerequisites\}
 
-  1. AI 機能が有効になっている ClickHouse Cloud の組織へのアクセス権が必要です (利用できない場合は組織管理者またはサポートに連絡してください) 。
+  1. AI 機能が有効になっている ClickHouse Cloud の組織へのアクセス権が必要です (利用できない場合は組織管理者またはサポートに連絡してください)。
 
   ## AI Chat パネルを開く \{#open-panel\}
 
@@ -48,7 +46,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
   AI Chat では現在、次のモードをサポートしています:
 
-  * **Agent**: スキーマおよびメタデータに対するマルチステップの推論 (サービスが稼働している必要があります) 。
+  * **Agent**: スキーマおよびメタデータに対するマルチステップの推論 (サービスが稼働している必要があります)。
   * **Docs AI (Ask)**: 公式 ClickHouse ドキュメントおよびベストプラクティスに基づいた Q&amp;A に特化したモード。
 
   フライアウト左下のモードセレクタを使用して切り替えます。
@@ -57,8 +55,8 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
   ## メッセージを作成して送信する \{#compose\}
 
-  1. 質問を入力します (例: 「ユーザーごとに日次イベントを集計する materialized view を作成して」) 。
-  2. <kbd>Enter</kbd> を押して送信します (<kbd>Shift</kbd> + <kbd>Enter</kbd> で改行) 。
+  1. 質問を入力します (例: 「ユーザーごとに日次イベントを集計する materialized view を作成して」)。
+  2. <kbd>Enter</kbd> を押して送信します (<kbd>Shift</kbd> + <kbd>Enter</kbd> で改行)。
   3. モデルが処理中の間、「Stop」をクリックして中断できます。
 
   ## 「Agent」による思考ステップの理解 \{#thinking-steps\}
@@ -95,7 +93,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
   レスポンスに時間がかかりすぎる、または意図から外れている場合:
 
-  1. 「Stop」ボタンをクリックします (処理中に表示されます) 。
+  1. 「Stop」ボタンをクリックします (処理中に表示されます)。
   2. メッセージには中断されたことがマークされるため、プロンプトを調整して再送信できます。
 
   ## キーボードショートカット \{#shortcuts\}

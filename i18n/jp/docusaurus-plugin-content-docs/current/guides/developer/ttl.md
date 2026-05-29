@@ -11,8 +11,6 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# TTL（time-to-live）でデータを管理する \{#manage-data-with-ttl-time-to-live\}
-
 ## TTLの概要 \{#overview-of-ttl\}
 
 TTL（有効期限, time-to-live）は、一定の時間が経過した後に行またはカラムを移動、削除、またはロールアップする機能を指します。「time-to-live」という表現は古いデータの削除にのみ適用されるように聞こえますが、TTLにはいくつかのユースケースがあります：

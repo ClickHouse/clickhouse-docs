@@ -12,8 +12,6 @@ import Image from '@theme/IdealImage';
 import BucketDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
-# Разделение хранилища и вычислений \{#separation-of-storage-and-compute\}
-
 ## Обзор \{#overview\}
 
 В этом руководстве рассматривается, как использовать ClickHouse и S3 для реализации архитектуры с раздельными хранением и вычислительными ресурсами.

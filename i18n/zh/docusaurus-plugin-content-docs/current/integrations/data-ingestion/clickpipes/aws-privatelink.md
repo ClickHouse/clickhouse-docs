@@ -21,12 +21,12 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
+您可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在 VPC、
+AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接，
+且无需将流量暴露到公共互联网。
 
-# 适用于 ClickPipes 的 AWS PrivateLink \{#aws-privatelink-for-clickpipes\}
-
-您可以使用 [AWS PrivateLink](https://aws.amazon.com/privatelink/) 在 VPC、AWS 服务、本地系统与 ClickHouse Cloud 之间建立安全连接，而无需将流量暴露到公有互联网。
-
-本文档介绍了 ClickPipes 的反向私有终端节点功能，该功能允许您设置 AWS PrivateLink VPC 终端节点。
+本文档概述了 ClickPipes 反向私有端点功能，
+该功能支持设置 AWS PrivateLink VPC 端点。
 
 ## 支持的 ClickPipes 数据源 \{#supported-sources\}
 

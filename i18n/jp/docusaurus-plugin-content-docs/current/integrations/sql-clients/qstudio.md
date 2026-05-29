@@ -16,12 +16,9 @@ import qstudio_running_query from '@site/static/images/integrations/sql-clients/
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# QStudio を ClickHouse に接続する \{#connect-qstudio-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-QStudio は無償の SQL 向け GUI ツールであり、SQL スクリプトの実行、テーブルの簡単な参照、チャートの作成、結果のエクスポートが可能です。すべてのオペレーティングシステム上で動作し、あらゆるデータベースと連携できます。
+QStudio は無料の SQL GUI で、SQL スクリプトの実行、テーブルの簡単な参照、グラフ化、結果のエクスポートを行えます。あらゆるオペレーティング システムと、あらゆるデータベースで動作します。
 
 QStudio は JDBC を使用して ClickHouse に接続します。
 

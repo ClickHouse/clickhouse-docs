@@ -1142,19 +1142,20 @@ SELECT highlight('Hello World', ['hello'], '<b>', '</b>')
 
 自 v20.6.0 引入
 
-类似于 [`like`](#like)，但进行大小写不敏感的匹配。
+类似于 [`like`](#like)，但进行不区分大小写的匹配。支持可选的 `ESCAPE` 子句 (参见 `like`) 。
 
 **语法**
 
 ```sql
-ilike(haystack, pattern)
--- haystack ILIKE pattern
+ilike(haystack, pattern[, escape_character])
+-- haystack ILIKE pattern [ESCAPE 'escape_character']
 ```
 
 **参数**
 
 * `haystack` — 要在其中执行查找的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `pattern` — 要匹配的 LIKE 模式。[`String`](/sql-reference/data-types/string)
+* `escape_character` — 可选的单字符字符串，用作转义字符，而不是 `\`。默认值：`\`。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -1202,17 +1203,25 @@ ClickHouse 要求字符串中的反斜杠[同样需要转义](../syntax.md#strin
 对于形式为 `%needle%` 的 `LIKE` 表达式，该函数的速度与 `position` 函数一样快。
 所有其他 LIKE 表达式在内部会被转换为正则表达式，并以类似于函数 `match` 的性能执行。
 
+## ESCAPE 子句 \{#escape-clause\}
+
+可选的 `ESCAPE` 子句用于指定自定义转义字符 (必须为单个 ASCII 字符) 。
+指定后，自定义转义字符会替代默认的反斜杠，用于转义元字符 `%` 和 `_`。
+该转义字符可以转义三类内容：`%` (字面量百分号) 、`_` (字面量下划线) 以及它自身 (字面量转义字符) 。
+使用自定义转义字符时，反斜杠不再具有特殊含义，而是按字面量字符处理。
+
 **语法**
 
 ```sql
-like(haystack, pattern)
--- haystack LIKE pattern
+like(haystack, pattern[, escape_character])
+-- haystack LIKE pattern [ESCAPE 'escape_character']
 ```
 
 **参数**
 
 * `haystack` — 要在其中执行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `pattern` — 用于匹配的 `LIKE` 模式。可以包含 `%` (匹配任意数量的字符) 、`_` (匹配单个字符) 以及用于转义的反斜杠 `\`。[`String`](/sql-reference/data-types/string)
+* `escape_character` — 可选的单字符字符串，用作转义字符，以替代 `\`。默认值：`\`。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -1254,6 +1263,18 @@ SELECT like('ClickHouse', '%SQL%');
 ┌─like('ClickHouse', '%SQL%')─┐
 │                           0 │
 └─────────────────────────────┘
+```
+
+**ESCAPE 子句**
+
+```sql title=Query
+SELECT '50%off' LIKE '50#%off' ESCAPE '#';
+```
+
+```response title=Response
+┌─like('50%off', '50#%off', '#')─┐
+│                              1 │
+└────────────────────────────────┘
 ```
 
 ## locate \{#locate\}
@@ -2528,18 +2549,20 @@ SELECT ngramSearchUTF8('абвгдеёжз', 'гдеёзд')
 
 引入版本：v20.6.0
 
-在不区分大小写的情况下检查字符串是否不匹配某个模式。该模式可以包含用于 SQL LIKE 匹配的特殊字符 `%` 和 `_`。
+在不区分大小写的情况下检查字符串是否不匹配某个模式。该模式可以包含用于 SQL LIKE 匹配的特殊字符 `%` 和 `_`。支持可选的 `ESCAPE` 子句 (参见 `like`) 。
 
 **语法**
 
 ```sql
-notILike(haystack, pattern)
+notILike(haystack, pattern[, escape_character])
+-- haystack NOT ILIKE pattern [ESCAPE 'escape_character']
 ```
 
 **参数**
 
 * `haystack` — 要搜索的输入字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `pattern` — 要匹配的 SQL LIKE 模式字符串。`%` 匹配任意数量的字符 (包括零个) ，`_` 匹配恰好一个字符。[`String`](/sql-reference/data-types/string)
+* `escape_character` — 可选的单字符字符串，用作转义字符，以替代 `\`。默认值：`\`。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -2563,19 +2586,20 @@ SELECT notILike('ClickHouse', '%house%');
 
 自 v1.1.0 版本引入
 
-类似于 [`like`](#like)，但会对结果取反。
+类似于 [`like`](#like)，但会对结果取反。支持可选的 `ESCAPE` 子句 (参见 `like`) 。
 
 **语法**
 
 ```sql
-notLike(haystack, pattern)
--- haystack NOT LIKE pattern
+notLike(haystack, pattern[, escape_character])
+-- haystack NOT LIKE pattern [ESCAPE 'escape_character']
 ```
 
 **参数**
 
 * `haystack` — 执行搜索的字符串。[`String`](/sql-reference/data-types/string) 或 [`FixedString`](/sql-reference/data-types/fixedstring)
 * `pattern` — 用于匹配的 LIKE 模式。[`String`](/sql-reference/data-types/string)
+* `escape_character` — 可选的单字符字符串，用作转义字符，而不是使用 `\`。默认值：`\`。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 

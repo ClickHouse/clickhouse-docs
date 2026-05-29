@@ -3,7 +3,7 @@ sidebar_title: '查询 API 端点'
 slug: /cloud/get-started/query-endpoints
 description: '可基于已保存查询轻松创建 REST API 端点'
 keywords: ['api', '查询 API 端点', '查询端点', '查询 REST API']
-title: '查询 API 端点'
+title: '设置查询 API 端点'
 doc_type: 'guide'
 ---
 
@@ -17,10 +17,7 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# 设置查询 API 端点 \{#setting-up-query-api-endpoints\}
-
-**Query API Endpoints** 功能允许您在 ClickHouse Cloud 控制台中直接基于任意已保存的 SQL 查询创建一个 API 端点。之后，您可以通过 HTTP 调用这些 API 端点来执行已保存的查询，而无需通过原生驱动连接到 ClickHouse Cloud 服务。
+**查询 API 端点**功能允许您直接根据 ClickHouse Cloud 控制台中任意已保存的 SQL 查询创建 API 端点。您可以通过 HTTP 访问这些 API 端点来执行已保存的查询，而无需通过原生驱动连接到您的 ClickHouse Cloud 服务。
 
 ## 先决条件 \{#quick-start-guide\}
 

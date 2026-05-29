@@ -14,13 +14,11 @@ integration:
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# 将 Apify 连接到 ClickHouse \{#connect-apify-to-clickhouse\}
-
 <CommunityMaintainedBadge />
 
-[Apify](https://apify.com/) 是一个网页抓取与自动化平台。您可以构建、运行和扩展名为 [**Actors**](https://docs.apify.com/platform/actors) 的无服务器云程序。Actors 可用于抓取网站、爬取网络内容、处理数据或自动化工作流。每次 Actor 运行都会生成结构化输出，并将其存储在 [**Datasets**](https://docs.apify.com/platform/storage/dataset) (JSON 对象集合) 中。
+[Apify](https://apify.com/) 是一个网页抓取与自动化平台。你可以构建、运行并扩展称为 [**Actors**](https://docs.apify.com/platform/actors) 的无服务器云程序。Actors 可以抓取网站、爬取网络内容、处理数据或自动化工作流。每次 Actor 运行都会生成结构化输出，并将其存储在 [**Datasets**](https://docs.apify.com/platform/storage/dataset) (JSON 对象集合) 中。
 
-将抓取或处理后的数据加载到 ClickHouse 中，用于分析、监控或数据富化管道。
+将抓取或处理后的数据导入 ClickHouse，用于分析、监控或数据富化管道。
 
 ## 关键概念 \{#key-concepts\}
 

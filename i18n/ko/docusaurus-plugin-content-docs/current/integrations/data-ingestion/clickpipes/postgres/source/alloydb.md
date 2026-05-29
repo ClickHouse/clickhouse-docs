@@ -16,8 +16,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# AlloyDB Postgres 소스 설정 가이드 \{#alloydb-postgres-source-setup-guide\}
-
 ## 지원되는 버전 \{#supported-versions\}
 
 ClickPipes를 사용하여 AlloyDB 인스턴스에서 ClickHouse Cloud로 데이터를 전송하려면, 인스턴스를 **논리 복제(logical replication)**를 위해 구성해야 합니다. 이는 **AlloyDB 14 버전부터** 지원됩니다.

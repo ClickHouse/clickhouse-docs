@@ -1,8 +1,8 @@
 ---
 slug: /integrations/postgresql/connecting-to-postgresql
-title: 'PostgreSQL에 연결하기'
-keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
-description: 'PostgreSQL을 ClickHouse와 연결하는 다양한 방법을 설명하는 페이지'
+title: 'ClickHouse를 PostgreSQL에 연결하기'
+keywords: ['clickhouse', 'postgres', 'postgresql', '연결', '통합', '테이블', '엔진']
+description: 'PostgreSQL을 ClickHouse에 연결하는 다양한 방법을 설명하는 페이지'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -10,13 +10,10 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# ClickHouse를 PostgreSQL에 연결하기 \{#connecting-clickhouse-to-postgresql\}
-
 이 페이지에서는 PostgreSQL을 ClickHouse와 통합하는 다음 옵션을 설명합니다:
 
-- PostgreSQL 테이블에서 읽기 위한 `PostgreSQL` 테이블 엔진 사용
-- PostgreSQL의 데이터베이스를 ClickHouse의 데이터베이스와 동기화하기 위한 실험적 `MaterializedPostgreSQL` 데이터베이스 엔진 사용
+* PostgreSQL 테이블에서 읽기 위한 `PostgreSQL` 테이블 엔진 사용
+* PostgreSQL의 데이터베이스를 ClickHouse의 데이터베이스와 동기화하기 위한 실험적 `MaterializedPostgreSQL` 데이터베이스 엔진 사용
 
 :::tip
 [Managed Postgres](/docs/cloud/managed-postgres) 서비스를 살펴보십시오. NVMe 스토리지와 컴퓨트가 물리적으로 함께 배치되어 있어, EBS와 같은 네트워크 연결 스토리지를 사용하는 대안에 비해 디스크 입출력이 병목인 워크로드에서 최대 10배 빠른 성능을 제공하며, ClickPipes의 Postgres CDC 커넥터를 사용하여 Postgres 데이터를 ClickHouse로 복제할 수 있습니다.

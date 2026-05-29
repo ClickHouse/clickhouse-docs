@@ -7,14 +7,13 @@ keywords: ['безопасность Postgres', 'ip whitelisting', 'шифров
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import ipFilters from '@site/static/images/managed-postgres/ip-filters.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="security" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.security-beta" />
 
 Managed Postgres оснащен функциями безопасности корпоративного класса, которые защищают ваши данные и помогают соответствовать требованиям нормативных актов. На этой странице рассматриваются сетевая безопасность, шифрование и политики хранения резервных копий.
-
 
 ## Список разрешённых IP-адресов \{#ip-whitelisting\}
 
@@ -24,23 +23,28 @@ IP-фильтры определяют, с каких исходных IP-адр
 
 ### Настройка IP-фильтров \{#configuring-ip-filters\}
 
-Для получения подробной информации о настройке IP-фильтров см. раздел [Settings](/cloud/managed-postgres/settings#ip-filters).
+Чтобы настроить IP-фильтры:
+
+1. Перейдите на вкладку **Settings**
+2. В разделе **IP Filters** нажмите **Edit**
+3. Добавьте IP-адреса или CIDR-диапазоны, которым нужно разрешить подключение
+4. Нажмите **Save**, чтобы применить изменения
 
 Вы можете указать:
 
-- Отдельные IP-адреса (например, `203.0.113.5`)
-- CIDR-диапазоны для сетей (например, `192.168.1.0/24`)
-- **Anywhere**, чтобы разрешить все IP-адреса (не рекомендуется для production-сред)
-- **Nowhere**, чтобы заблокировать все подключения
+* Отдельные IP-адреса (например, `203.0.113.5`)
+* CIDR-диапазоны для сетей (например, `192.168.1.0/24`)
+* **Anywhere**, чтобы разрешить все IP-адреса (не рекомендуется для production-сред)
+* **Nowhere**, чтобы заблокировать все подключения
 
 :::warning Рекомендации для production-сред
 Если IP-фильтры не настроены, разрешены подключения с любых IP-адресов. Для production-нагрузок ограничьте доступ известными IP-адресами или CIDR-диапазонами. Рассмотрите возможность ограничить доступ для:
 
-- Ваших серверов приложений
-- IP-адресов VPN-шлюза
-- Бастионных хостов для административного доступа
-- IP-адресов конвейера CI/CD для автоматических развертываний
-:::
+* Ваших серверов приложений
+* IP-адресов VPN-шлюза
+* Бастионных хостов для административного доступа
+* IP-адресов конвейера CI/CD для автоматических развертываний
+  :::
 
 ## Шифрование \{#encryption\}
 

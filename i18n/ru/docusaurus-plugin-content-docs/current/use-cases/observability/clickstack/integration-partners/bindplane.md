@@ -15,20 +15,17 @@ import bindplane_hyperdx from '@site/static/images/clickstack/bindplane/bindplan
 import bindplane_configuration from '@site/static/images/clickstack/bindplane/bindplane-configuration.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Отправка OpenTelemetry в ClickStack с помощью Bindplane \{#bindplane-clickstack\}
-
-<PartnerBadge/>
+<PartnerBadge />
 
 :::note[Кратко]
-В этом руководстве показано, как направлять телеметрию в ClickStack с использованием встроенного назначения (destination) ClickStack в Bindplane. Вы узнаете, как:
+В этом руководстве показано, как направлять телеметрию в ClickStack с помощью нативного пункта назначения ClickStack в Bindplane. Вы узнаете, как:
 
-- Настроить ClickStack как destination в Bindplane
-- Создать конфигурацию для обработки и маршрутизации телеметрии
-- Удалённо развернуть конфигурации на OTel collectors и начать сбор данных
-- Просматривать телеметрию в ClickStack
+* Настроить ClickStack как пункт назначения в Bindplane
+* Создать конфигурацию для обработки и маршрутизации телеметрии
+* Удалённо развернуть конфигурации на OTel collector&#39;ы и начать сбор данных
+* Просматривать телеметрию в ClickStack
 
-Эта интеграция сочетает высокопроизводительную ингестию ClickStack с централизованным управлением OTel collectors в Bindplane, упрощая масштабирование обсервабилити без операционных накладных расходов.
+Эта интеграция сочетает высокопроизводительную ингестию ClickStack с централизованным управлением коллекторами в Bindplane, что упрощает масштабирование обсервабилити без дополнительной операционной нагрузки.
 
 Требуемое время: 10–15 минут
 :::

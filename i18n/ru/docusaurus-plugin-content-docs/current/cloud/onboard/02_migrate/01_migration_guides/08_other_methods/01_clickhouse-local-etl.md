@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Использование clickhouse-local'
-keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
+keywords: ['clickhouse', 'миграция', 'миграция', 'миграция', 'данные', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/clickhouse-local
 title: 'Миграция в ClickHouse с использованием clickhouse-local'
 description: 'Руководство по миграции в ClickHouse с использованием clickhouse-local'
@@ -16,9 +16,7 @@ import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-# Миграция в ClickHouse с использованием clickhouse-local \{#migrating-to-clickhouse-using-clickhouse-local\}
-
-<Image img={ch_local_01} size='lg' alt='Миграция самоуправляемого ClickHouse'/>
+<Image img={ch_local_01} size="lg" alt="Миграция самоуправляемого ClickHouse" />
 
 Вы можете использовать ClickHouse, а точнее [`clickhouse-local`](/operations/utilities/clickhouse-local.md),
 как инструмент ETL для миграции данных из вашей текущей системы управления базами данных в ClickHouse Cloud, при условии, что для неё доступен либо предоставленный ClickHouse [интеграционный движок](/engines/table-engines/#integration-engines) или, соответственно, [табличная функция](/sql-reference/table-functions/),

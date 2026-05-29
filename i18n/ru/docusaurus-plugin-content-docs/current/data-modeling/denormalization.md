@@ -10,10 +10,7 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-
-# Денормализация данных \{#denormalizing-data\}
-
-Денормализация данных — это подход в ClickHouse, при котором используются «плоские» таблицы для минимизации задержки выполнения запросов за счёт избегания соединений (`JOIN`).
+Денормализация данных — это метод, используемый в ClickHouse: он предполагает использование плоских таблиц, чтобы уменьшить задержки при выполнении запросов за счет отказа от JOIN.
 
 ## Сравнение нормализованных и денормализованных схем \{#comparing-normalized-vs-denormalized-schemas\}
 

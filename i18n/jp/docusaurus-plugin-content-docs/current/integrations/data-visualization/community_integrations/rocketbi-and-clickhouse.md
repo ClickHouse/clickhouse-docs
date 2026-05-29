@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/rocketbi
 keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
 description: 'RocketBI はセルフサービス型のビジネスインテリジェンスプラットフォームで、Web ブラウザー上でデータをすばやく分析し、ドラッグ＆ドロップでビジュアライゼーションを作成し、同僚と共同で作業できます。'
-title: '目標: はじめてのダッシュボードを作成'
+title: '目標: Rocket.BI ではじめてのダッシュボードを作成'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -33,18 +33,16 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 目標：Rocket.BI ではじめてのダッシュボードを作成する \{#goal-build-your-first-dashboard-with-rocketbi\}
-
 <CommunityMaintainedBadge />
 
-このガイドでは、Rocket.BI をインストールして、シンプルなダッシュボードを作成します。
-以下がそのダッシュボードです。
+このガイドでは、Rocket.BI をインストールし、シンプルなダッシュボードを作成します。
+これがそのダッシュボードです:
 
-<Image size="md" img={rocketbi_01} alt="売上メトリクス、チャート、KPI を表示する Rocket BI ダッシュボード" border />
+<Image size="md" img={rocketbi_01} alt="グラフと KPI を含む売上指標を表示した Rocket BI ダッシュボード" border />
 
 <br />
 
-[こちらのリンクからダッシュボードを確認できます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
+[このリンクからダッシュボードを確認できます。](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
 ## インストール \{#install\}
 

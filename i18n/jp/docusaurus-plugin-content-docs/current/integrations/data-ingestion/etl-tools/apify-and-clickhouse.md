@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Apify'
-keywords: ['apify', 'ウェブスクレイピング', 'データ取り込み', 'アクター', 'データセット', '自動化', 'ウェブフック']
+keywords: ['apify', 'ウェブスクレイピング', 'データ取り込み', 'Actor', 'Dataset', '自動化', 'Webhook']
 slug: /integrations/apify
 description: 'Apify のウェブスクレイピングおよび自動化データを ClickHouse に読み込む'
 title: 'Apify を ClickHouse に接続'
@@ -14,13 +14,11 @@ integration:
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# Apify を ClickHouse に接続する \{#connect-apify-to-clickhouse\}
-
 <CommunityMaintainedBadge />
 
-[Apify](https://apify.com/) は、Web スクレイピングと自動化のためのプラットフォームです。[**Actors**](https://docs.apify.com/platform/actors) と呼ばれるサーバーレスのクラウドプログラムを構築、実行し、スケールできます。Actors は、Web サイトのスクレイピング、Web のクロール、データ処理、ワークフローの自動化を行います。Actor を実行するたびに、構造化された出力データが [**Datasets**](https://docs.apify.com/platform/storage/dataset) (JSON オブジェクトのコレクション) に保存されます。
+[Apify](https://apify.com/) は、ウェブスクレイピングと自動化のためのプラットフォームです。[**Actors**](https://docs.apify.com/platform/actors) と呼ばれるサーバーレスのクラウドプログラムを構築、実行、スケールできます。Actors は、ウェブサイトをスクレイピングし、ウェブをクロールし、データを処理し、ワークフローを自動化します。Actor を実行するたびに、構造化された出力が [**Datasets**](https://docs.apify.com/platform/storage/dataset) (JSON オブジェクトのコレクション) に保存されます。
 
-スクレイピングまたは処理したデータを ClickHouse に取り込み、分析、監視、またはエンリッチメント パイプラインに活用します。
+スクレイピングまたは処理済みのデータを ClickHouse に読み込み、分析、監視、またはデータ拡充パイプラインに活用します。
 
 ## 主要な概念 \{#key-concepts\}
 

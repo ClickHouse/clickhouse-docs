@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Embeddable'
 slug: /integrations/embeddable
-keywords: ['ClickHouse', 'Embeddable', '连接', '集成', 'UI']
-description: 'Embeddable 是一套面向开发者的工具包，可直接在应用中构建快速、交互性强且完全可定制的分析体验。'
+keywords: ['clickhouse', 'Embeddable', '连接', '集成', '界面']
+description: 'Embeddable 是一款开发者工具包，可将快速、交互式且完全可定制的分析体验直接构建到你的应用中。'
 title: '将 Embeddable 连接到 ClickHouse'
 doc_type: 'guide'
 integration:
@@ -12,8 +12,6 @@ integration:
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
-# 将 Embeddable 连接到 ClickHouse \{#connecting-embeddable-to-clickhouse\}
 
 <CommunityMaintainedBadge />
 

@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'BACKUP 및 RESTORE 사용하기'
 slug: /cloud/migration/oss-to-cloud-backup-restore
-title: 'BACKUP/RESTORE를 사용한 자가 관리형 ClickHouse와 ClickHouse Cloud 간 마이그레이션'
+title: '백업 명령을 사용해 자가 관리형 ClickHouse에서 ClickHouse Cloud로 마이그레이션하기'
 description: 'BACKUP 및 RESTORE 명령을 사용하여 자가 관리형 ClickHouse와 ClickHouse Cloud 간에 마이그레이션하는 방법을 설명하는 페이지'
 doc_type: 'guide'
 keywords: ['마이그레이션', 'ClickHouse Cloud', 'OSS', '자가 관리형에서 Cloud로 마이그레이션', 'BACKUP', 'RESTORE']
@@ -17,9 +17,6 @@ import open_console from '@site/static/images/cloud/onboard/migrate/oss_to_cloud
 import service_role_id from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/service_role_id.png';
 import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/create_new_role.png';
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
-
-
-# 백업 명령을 사용하여 자가 관리형 ClickHouse를 ClickHouse Cloud로 마이그레이션하기 \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands\}
 
 ## 개요 \{#overview-migration-approaches\}
 

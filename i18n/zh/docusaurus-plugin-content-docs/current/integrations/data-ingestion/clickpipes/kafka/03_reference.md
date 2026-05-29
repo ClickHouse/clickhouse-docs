@@ -20,8 +20,6 @@ import redpanda_logo from '@site/static/images/integrations/logos/logo_redpanda.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@site/src/theme/badges/ExperimentalBadge';
 
-# 参考 \{#reference\}
-
 ## 支持的数据源 \{#supported-data-sources\}
 
 | 名称                 |Logo|类型| 状态           | 描述                                                                                                  |

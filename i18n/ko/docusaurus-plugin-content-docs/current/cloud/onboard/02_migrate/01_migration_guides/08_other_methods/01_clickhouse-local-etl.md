@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'clickhouse-local 사용'
-keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
+sidebar_label: 'clickhouse-local 사용하기'
+keywords: ['clickhouse', '마이그레이션', '마이그레이션', '마이그레이션', '데이터', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/clickhouse-local
-title: 'clickhouse-local을 사용해 ClickHouse로 마이그레이션하기'
+title: 'clickhouse-local을 사용한 ClickHouse로의 마이그레이션'
 description: 'clickhouse-local을 사용해 ClickHouse로 마이그레이션하는 방법을 설명하는 가이드'
 doc_type: 'guide'
 ---
@@ -16,9 +16,7 @@ import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-# clickhouse-local을 사용한 ClickHouse로의 마이그레이션 \{#migrating-to-clickhouse-using-clickhouse-local\}
-
-<Image img={ch_local_01} size='lg' alt='자가 관리형 ClickHouse로 마이그레이션'/>
+<Image img={ch_local_01} size="lg" alt="자가 관리형 ClickHouse로 마이그레이션" />
 
 ClickHouse, 더 구체적으로는 [`clickhouse-local`](/operations/utilities/clickhouse-local.md)을 ETL 도구로 사용하여 현재 데이터베이스 시스템에서 ClickHouse Cloud로 데이터를 마이그레이션할 수 있습니다. 이때 현재 데이터베이스 시스템에 대해 ClickHouse에서 제공하는 [integration engine](/engines/table-engines/#integration-engines) 또는 [table function](/sql-reference/table-functions/)이 있거나, 벤더에서 제공하는 JDBC 드라이버 또는 ODBC 드라이버를 사용할 수 있어야 합니다.
 

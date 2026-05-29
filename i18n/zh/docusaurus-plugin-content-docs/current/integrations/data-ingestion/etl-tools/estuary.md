@@ -1,22 +1,19 @@
 ---
 sidebar_label: 'Estuary'
 slug: /integrations/estuary
-description: '通过 Estuary 集成将多种数据源以流式方式导入 ClickHouse'
-title: '连接 Estuary 与 ClickHouse'
-doc_type: '指南'
+description: '通过 Estuary 集成将多种数据源流式传输至 ClickHouse'
+title: '将 Estuary 连接到 ClickHouse'
+doc_type: 'guide'
 integration:
   - support_level: 'partner'
   - category: 'data_ingestion'
   - website: 'https://estuary.dev'
-keywords: ['estuary', '数据摄取', 'ETL', '数据管道', '数据集成', 'clickpipes']
+keywords: ['estuary', '数据摄取', 'etl', '管道', '数据集成', 'clickpipes']
 ---
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# 将 Estuary 连接到 ClickHouse \{#connect-estuary-with-clickhouse\}
-
-<PartnerBadge/>
+<PartnerBadge />
 
 [Estuary](https://estuary.dev/) 是一款 right-time 数据平台，可通过易于配置的 ETL 管道灵活地将实时与批处理数据结合起来。借助企业级安全性和多种部署选项，Estuary 能够从 SaaS、数据库和流式数据源构建持久稳定的数据流，并将其传输到包括 ClickHouse 在内的多种目标端。
 

@@ -155,6 +155,66 @@ SELECT body, aiClassify('ai_credentials', body, ['bug', 'question', 'feature']) 
 ```response title=Response
 ```
 
+## aiEmbed \{#aiEmbed\}
+
+導入バージョン: v26.6.0
+
+設定された AI プロバイダーを使用して、指定したテキストの埋め込みベクトルを生成します。
+
+この関数は、テキストを設定済みの埋め込みエンドポイントに送信し、結果のベクトルを `Array(Float32)` として返します。
+1 つの行ブロック内では、呼び出しごとのオーバーヘッドを減らすため、入力は 1 回の HTTP リクエストあたり最大
+[`ai_function_embedding_max_batch_size`](/operations/settings/settings#ai_function_embedding_max_batch_size)
+エントリのバッチにグループ化されます。
+
+最初の引数は、プロバイダー、モデル、エンドポイント、API キーを指定する名前付きコレクションです。
+オプションの `dimensions` 引数は、モデルが対応している場合 (例: OpenAI&#39;s `text-embedding-3-*`) 、
+指定したサイズのベクトルを要求します。対応していない場合は、モデルのネイティブなサイズが返されます。
+
+**構文**
+
+```sql
+aiEmbed(collection, text[, dimensions])
+```
+
+**引数**
+
+* `collection` — プロバイダー の認証情報と構成を含む 名前付きコレクション の名前。[`String`](/sql-reference/data-types/string)
+* `text` — 埋め込むテキスト。[`String`](/sql-reference/data-types/string)
+* `dimensions` — 出力ベクトルの目標次元数 (省略可能) 。`0` または省略した場合は、モデル本来のサイズを使用します。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+埋め込みベクトル。入力が NULL または空の場合、リクエストが失敗して `ai_function_throw_on_error` が無効になっている場合、または `ai_function_throw_on_quota_exceeded` が無効な状態でクォータを超過した場合は、空の配列を返します。[`Array(Float32)`](/sql-reference/data-types/array)
+
+**例**
+
+**単一の文字列を埋め込む**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world')
+```
+
+```response title=Response
+```
+
+**明示的なディメンションを使う場合**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world', 256)
+```
+
+```response title=Response
+```
+
+**テキストのカラムの埋め込みを作成する**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', title, 256) FROM articles LIMIT 10
+```
+
+```response title=Response
+```
+
 ## aiExtract \{#aiExtract\}
 
 導入バージョン: v26.4.0

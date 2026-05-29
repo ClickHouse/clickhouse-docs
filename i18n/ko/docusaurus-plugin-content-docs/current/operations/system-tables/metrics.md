@@ -325,11 +325,11 @@ ColumnsDescriptions 캐시의 크기(테이블별 캐시)
 
 ### CompiledExpressionCacheBytes \{#compiledexpressioncachebytes\}
 
-JIT 컴파일된 코드 캐시에 사용된 총 바이트 수
+캐시된 JIT 컴파일 함수의 실행형/데이터 섹션에 대해 `JITModuleMemoryManager`가 보유하는 예약된 페이지 블록 용량입니다(2배 초과 할당 계수를 적용하고 페이지 전체 단위로 올림). 실제 사용 중인 기계어 코드의 바이트 수를 의미하지는 않습니다(실제 값은 이보다 더 작습니다). `posix_memalign`을 통해 할당되며, 이 호출은 jemalloc으로 후킹되므로 전용 JIT Arena 내에 հաշվ됩니다. 따라서 이는 `jemalloc.jit_arena.active_bytes`의 부분집합입니다.
 
 ### CompiledExpressionCacheCount \{#compiledexpressioncachecount\}
 
-JIT 컴파일된 코드 캐시에 있는 총 엔트리 수
+JIT 컴파일된 머신 코드 캐시에 있는 총 엔트리 수
 
 ### 압축 \{#compressing\}
 

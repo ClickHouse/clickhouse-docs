@@ -9,13 +9,11 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Easypanel への ClickHouse のデプロイ \{#deploying-clickhouse-on-easypanel\}
+<CommunityMaintainedBadge />
 
-<CommunityMaintainedBadge/>
+[Easypanel](https://easypanel.io) はモダンなサーバーコントロールパネルです。これを使用して自前のサーバー上に ClickHouse をデプロイできます。
 
-[Easypanel](https://easypanel.io) はモダンなサーバーコントロールパネルです。これを利用して自身のサーバー上に ClickHouse をデプロイできます。
-
-[![Deploy to Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
+[![Easypanel にデプロイ](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
 
 ## 手順 \{#instructions\}
 

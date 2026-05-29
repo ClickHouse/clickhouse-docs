@@ -19,8 +19,6 @@ import mongo_atlas_restrict_access from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника данных MongoDB Atlas \{#mongodb-atlas-source-setup-guide\}
-
 ## Настройка времени хранения oplog \{#enable-oplog-retention\}
 
 Для репликации требуется минимальное время хранения oplog в 24 часа. Рекомендуется установить время хранения oplog на 72 часа или дольше, чтобы гарантировать, что oplog не будет усечён до завершения первоначального снимка данных. Чтобы задать время хранения oplog через UI:

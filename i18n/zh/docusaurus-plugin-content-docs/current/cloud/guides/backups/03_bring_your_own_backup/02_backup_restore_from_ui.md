@@ -1,7 +1,7 @@
 ---
 sidebar_label: '使用 UI 备份或恢复'
 slug: /cloud/manage/backups/backup-restore-via-ui
-title: '在 UI 中创建或恢复备份'
+title: '通过用户界面进行备份/恢复'
 description: '介绍如何在 UI 中使用您自己的存储桶创建或恢复备份的页面'
 sidebar_position: 2
 doc_type: 'guide'
@@ -21,11 +21,8 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
-
-# 通过用户界面备份和恢复 \{#ui-experience\}
-
 :::note
-系统已配置为每 24 小时自动向您的外部存储桶执行一次“完整”备份，且该频率无法配置。
+系统会每 24 小时向您的外部存储桶自动执行一次“完整”备份，且该频率无法配置。
 :::
 
 ## AWS \{#AWS\}

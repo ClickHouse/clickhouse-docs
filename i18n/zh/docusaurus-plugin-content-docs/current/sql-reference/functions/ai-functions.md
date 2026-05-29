@@ -155,6 +155,66 @@ SELECT body, aiClassify('ai_credentials', body, ['bug', 'question', 'feature']) 
 ```response title=Response
 ```
 
+## aiEmbed \{#aiEmbed\}
+
+引入版本：v26.6.0
+
+使用已配置的 AI 提供商为给定文本生成嵌入向量。
+
+该函数会将文本发送到已配置的嵌入端点，并以 `Array(Float32)` 形式返回结果向量。
+在单个块中的行内，输入会按批次分组，每个 HTTP 请求最多包含
+[`ai_function_embedding_max_batch_size`](/operations/settings/settings#ai_function_embedding_max_batch_size)
+个条目，以减少单次调用的开销。
+
+第一个参数是一个命名集合，用于指定提供商、模型、端点和 API 密钥。
+可选参数 `dimensions` 在模型支持时 (例如 OpenAI 的 `text-embedding-3-*`)
+会请求返回指定大小的向量；否则返回模型的原生大小。
+
+**语法**
+
+```sql
+aiEmbed(collection, text[, dimensions])
+```
+
+**参数**
+
+* `collection` — 包含提供商凭据和配置的命名集合名称。[`String`](/sql-reference/data-types/string)
+* `text` — 要嵌入的文本。[`String`](/sql-reference/data-types/string)
+* `dimensions` — 输出向量的可选目标维数。`0` 或省略表示使用模型的原生维数。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+嵌入向量；如果输入为 NULL 或空值、请求失败且禁用了 `ai_function_throw_on_error`，或者超出配额且禁用了 `ai_function_throw_on_quota_exceeded`，则返回空数组。[`Array(Float32)`](/sql-reference/data-types/array)
+
+**示例**
+
+**嵌入单个字符串**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world')
+```
+
+```response title=Response
+```
+
+**显式指定维度**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world', 256)
+```
+
+```response title=Response
+```
+
+**对一列文本进行嵌入**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', title, 256) FROM articles LIMIT 10
+```
+
+```response title=Response
+```
+
 ## aiExtract \{#aiExtract\}
 
 引入版本：v26.4.0

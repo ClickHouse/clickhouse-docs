@@ -3,7 +3,7 @@ sidebar_label: 'Использование HTTP-интерфейса'
 slug: /integrations/azure-data-factory/http-interface
 description: 'Использование HTTP-интерфейса ClickHouse для загрузки данных из Azure Data Factory в ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'данные', 'http interface']
-title: 'Использование HTTP-интерфейса ClickHouse для загрузки данных Azure в ClickHouse'
+title: 'Использование HTTP-интерфейса ClickHouse в Azure Data Factory'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -38,15 +38,12 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
+[Табличная функция `azureBlobStorage`](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
+— это быстрый и удобный способ загружать данные из Azure Blob Storage в
+ClickHouse. Однако её использование не всегда подходит по следующим причинам:
 
-# Использование HTTP-интерфейса ClickHouse в Azure Data Factory \{#using-clickhouse-http-interface-in-azure-data-factory\}
-
-Табличная функция [`azureBlobStorage`](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
-— это быстрый и удобный способ приёма данных из Azure Blob Storage в
-ClickHouse. Однако её использование может подходить не всегда по следующим причинам:
-
-- Ваши данные могут не храниться в Azure Blob Storage — например, они могут находиться в Azure SQL Database, Microsoft SQL Server или Cosmos DB.
-- Политики безопасности могут полностью запрещать внешний доступ к Blob Storage — например, если учётная запись хранения заблокирована и не имеет общедоступной конечной точки.
+* Ваши данные могут не храниться в Azure Blob Storage — например, они могут находиться в Azure SQL Database, Microsoft SQL Server или Cosmos DB.
+* Политики безопасности могут полностью запрещать внешний доступ к Blob Storage — например, если учётная запись хранения заблокирована и не имеет общедоступной конечной точки.
 
 В таких случаях вы можете использовать Azure Data Factory вместе с
 [HTTP-интерфейсом ClickHouse](https://clickhouse.com/docs/interfaces/http),

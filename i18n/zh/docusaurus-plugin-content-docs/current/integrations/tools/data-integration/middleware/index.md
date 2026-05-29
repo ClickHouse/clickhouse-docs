@@ -12,13 +12,11 @@ integration:
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# 将 Middleware 连接到 ClickHouse \{#connecting-middleware-to-clickhouse\}
-
 <PartnerBadge />
 
-[Middleware](https://middleware.io/) 是一个云可观测性平台，用于监控基础设施、日志和应用性能。
+[Middleware](https://middleware.io/) 是一个云端可观测性平台，用于监控基础设施、日志和应用性能。
 
-您可以将 ClickHouse 连接到 Middleware，以收集并可视化数据库遥测数据，并将其纳入更广泛的监控工作流中。
+您可以将 ClickHouse 连接到 Middleware，将数据库遥测数据纳入更广泛的监控工作流中进行收集和可视化。
 
 ## 前提条件 \{#prerequisites\}
 

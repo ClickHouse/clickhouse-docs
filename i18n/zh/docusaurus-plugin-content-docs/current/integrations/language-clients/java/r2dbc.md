@@ -14,8 +14,6 @@ integration:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# R2DBC 驱动 \{#r2dbc-driver\}
-
 ## R2DBC 驱动 \{#r2dbc-driver\}
 
 ClickHouse 异步 Java 客户端的 [R2DBC](https://r2dbc.io/) 封装。

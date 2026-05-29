@@ -80,12 +80,12 @@ Copilotkit 런타임을 수정하여 다른 LLM 어댑터를 사용하도록 설
 - `CLICKHOUSE_PASSWORD`
 - `CLICKHOUSE_SECURE`
 
-# 애플리케이션 실행 \{#run-the-application\}
+## 애플리케이션 실행 \{#run-the-application\}
 
 개발 서버를 시작하려면 `npm run dev`를 실행합니다.
 
-다음과 같은 프롬프트로 Agent를 테스트할 수 있습니다.
+다음과 같은 프롬프트로 에이전트를 테스트할 수 있습니다.
 
-> "지난 10년 동안 맨체스터의 가격 추이를 보여줘."
+> &quot;지난 10년 동안 맨체스터의 가격 추이를 보여줘.&quot;
 
 브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 결과를 확인합니다.

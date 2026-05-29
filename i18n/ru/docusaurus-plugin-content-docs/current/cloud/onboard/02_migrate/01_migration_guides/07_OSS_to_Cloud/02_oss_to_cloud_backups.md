@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Использование BACKUP и RESTORE'
 slug: /cloud/migration/oss-to-cloud-backup-restore
-title: 'Миграция между самоуправляемым ClickHouse и ClickHouse Cloud с помощью BACKUP/RESTORE'
+title: 'Миграция из самоуправляемого ClickHouse в ClickHouse Cloud с помощью команд BACKUP'
 description: 'Страница, на которой описано, как выполнять миграцию между самоуправляемым ClickHouse и ClickHouse Cloud с помощью команд BACKUP и RESTORE'
 doc_type: 'guide'
 keywords: ['миграция', 'ClickHouse Cloud', 'OSS', 'Миграция самоуправляемого ClickHouse в Cloud', 'BACKUP', 'RESTORE']
@@ -17,9 +17,6 @@ import open_console from '@site/static/images/cloud/onboard/migrate/oss_to_cloud
 import service_role_id from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/service_role_id.png';
 import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/create_new_role.png';
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
-
-
-# Миграция с самоуправляемого ClickHouse на ClickHouse Cloud с использованием команд резервного копирования \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands\}
 
 ## Обзор \{#overview-migration-approaches\}
 

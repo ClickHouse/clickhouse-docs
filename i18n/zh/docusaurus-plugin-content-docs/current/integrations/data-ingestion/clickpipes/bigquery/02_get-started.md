@@ -15,10 +15,7 @@ import cp_step4 from '@site/static/images/integrations/data-ingestion/clickpipes
 import cp_step5 from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_step5.png';
 import Image from '@theme/IdealImage';
 
-
-# 创建您的第一个 BigQuery ClickPipe \{#creating-your-first-bigquery-clickpipe\}
-
-<IntroClickPipe/>
+<IntroClickPipe />
 
 ## 前置条件 \{#pre-requisites\}
 
@@ -27,7 +24,7 @@ import Image from '@theme/IdealImage';
 * 初始加载过程需要由用户提供的 Google Cloud Storage (GCS) bucket 作为中间暂存区域。我们建议按照[官方文档](https://docs.cloud.google.com/storage/docs/creating-buckets)为你的 ClickPipe 创建一个专用 bucket。未来，中间 bucket 将由 ClickPipes 提供并进行管理。
 
 <VerticalStepper type="numbered" headerLevel="h2">
-  ## 选择数据源
+  ## 选择数据源 \{#1-select-the-data-source\}
 
   **1.** 在 ClickHouse Cloud 中，在主导航菜单中选择 **Data sources** 并点击 **Create ClickPipe**。
 
@@ -37,7 +34,7 @@ import Image from '@theme/IdealImage';
 
   <Image img={cp_step1} alt="选择 BigQuery 卡片" size="lg" border />
 
-  ## 设置 ClickPipe 连接
+  ## 设置 ClickPipe 连接 \{#2-setup-your-clickpipe-connection\}
 
   要设置一个新的 ClickPipe，你必须提供如何连接到 BigQuery 数仓并进行身份验证的信息，以及一个用于暂存的 GCS bucket。
 
@@ -51,11 +48,11 @@ import Image from '@theme/IdealImage';
 
   **4.** 点击 **Next** 进行验证。
 
-  ## 配置 ClickPipe
+  ## 配置 ClickPipe \{#3-configure-your-clickpipe\}
 
   根据 BigQuery 数据集的大小或你想要同步的表的总大小，你可能需要调整该 ClickPipe 的默认摄取设置。
 
-  ## 配置表
+  ## 配置表 \{#4-configure-tables\}
 
   **1.** 选择要将 BigQuery 表复制到的 ClickHouse 数据库。你可以选择一个已有数据库或创建一个新的数据库。
 
@@ -71,7 +68,7 @@ import Image from '@theme/IdealImage';
 
   <Image img={cp_step4} alt="权限" size="lg" border />
 
-  ## 配置权限
+  ## 配置权限 \{#6-configure-permissions\}
 
   最后，你可以为内部的 ClickPipes 用户配置权限。
 
@@ -80,7 +77,7 @@ import Image from '@theme/IdealImage';
   * `Full access`：对集群具有完全访问权限。如果你在目标表上使用 materialized views 或字典，则需要此角色。
   * `Only destination`：仅对目标表具有插入权限。
 
-  ## 完成设置
+  ## 完成设置 \{#7-complete-setup\}
 
   点击 **Create ClickPipe** 完成设置。你将被重定向到概览页面，在那里可以查看初始加载的进度，并点击进入查看 BigQuery ClickPipes 的详细信息。
 

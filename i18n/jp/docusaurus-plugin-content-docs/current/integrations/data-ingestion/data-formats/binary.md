@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+ClickHouse は複数のバイナリ形式をサポートしており、より高いパフォーマンスと優れた容量効率を実現します。バイナリ形式はデータがバイナリ形式で保存されるため、文字エンコーディングの面でも安全です。
 
-# ClickHouse におけるネイティブ形式とバイナリ形式の利用 \{#using-native-and-binary-formats-in-clickhouse\}
-
-ClickHouse は複数のバイナリ形式をサポートしており、高いパフォーマンスと優れたスペース効率を実現します。バイナリ形式では、データがバイナリのまま保存されるため、文字エンコーディングの点でも安全です。
-
-このガイドでは、デモ用に some_data [テーブル](assets/some_data.sql) と [データ](assets/some_data.tsv) を使用します。お使いの ClickHouse インスタンスでも自由に再現して試してみてください。
+デモでは some&#95;data の [テーブル](assets/some_data.sql) と [データ](assets/some_data.tsv) を使用します。必要に応じて、お使いの ClickHouse インスタンスで再現してください。
 
 ## ネイティブ ClickHouse 形式でのエクスポート \{#exporting-in-a-native-clickhouse-format\}
 

@@ -20,9 +20,6 @@ import example_dashboard from '@site/static/images/clickstack/kafka/logs/example
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг логов Kafka с помощью ClickStack \{#kafka-logs-clickstack\}
-
 :::note[Кратко]
 Собирайте и визуализируйте логи брокера Kafka (в формате Log4j) в ClickStack с помощью приёмника OTel `filelog`. Включает демо-набор данных и готовую панель мониторинга.
 :::

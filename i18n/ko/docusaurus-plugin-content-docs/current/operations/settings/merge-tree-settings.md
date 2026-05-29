@@ -3046,6 +3046,15 @@ Cloud에서만 사용할 수 있습니다.
 
 이 설정을 활성화하면 모든 레플리카가 해당 데이터가 이미 존재하는 다른 레플리카로부터 메모리 상의 파트 데이터(기본 키, 파티션 정보 등)를 가져오도록 시도합니다.
 
+## shared_merge_tree_try_fetch_part_in_memory_data_from_replicas_on_startup \{#shared_merge_tree_try_fetch_part_in_memory_data_from_replicas_on_startup\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "시작 시 SMT가 S3 대신 레플리카에서 파트 데이터를 다운로드할 수 있도록 하는 새로운 설정"}]}]} />
+
+활성화하면 모든 레플리카가 시작 시 파트의 인메모리 데이터(예: 프라이머리
+키, 파티션 정보 등)를, 이미 해당 데이터를 보유한 다른 레플리카에서 가져오려고 시도합니다.
+
 ## shared_merge_tree_update_replica_flags_delay_ms \{#shared_merge_tree_update_replica_flags_delay_ms\}
 
 <SettingsInfoBlock type="Milliseconds" default_value="30000" />

@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/postgresql-logs
-title: 'Мониторинг лог PostgreSQL с помощью ClickStack'
-sidebar_label: 'Лог PostgreSQL'
+title: 'Мониторинг журналов PostgreSQL с помощью ClickStack'
+sidebar_label: 'Журналы PostgreSQL'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг лог PostgreSQL с помощью ClickStack'
+description: 'Мониторинг журналов PostgreSQL с помощью ClickStack'
 doc_type: 'guide'
-keywords: ['PostgreSQL', 'Postgres', 'лог', 'OTel', 'ClickStack', 'мониторинг баз данных']
+keywords: ['PostgreSQL', 'Postgres', 'журнал', 'OTel', 'ClickStack', 'мониторинг баз данных']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,10 +18,8 @@ import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-log
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг логов PostgreSQL с помощью ClickStack \{#postgres-logs-clickstack\}
-
 :::note[Кратко]
-Собирайте и визуализируйте серверные логи PostgreSQL (в формате CSV) в ClickStack с помощью приёмника OTel `filelog`. Включает демо-набор данных и готовую панель мониторинга.
+Собирайте и визуализируйте журналы сервера PostgreSQL (в формате CSV) в ClickStack с помощью приёмника OTel `filelog`. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим PostgreSQL \{#existing-postgres\}

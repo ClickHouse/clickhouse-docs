@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/rocketbi
 keywords: ['ClickHouse', 'RocketBI', '연결', '통합', 'UI']
 description: 'RocketBI는 웹 브라우저에서 바로 데이터를 빠르게 분석하고, 드래그 앤 드롭으로 시각화를 만들고, 동료와 협업할 수 있게 해주는 셀프 서비스 비즈니스 인텔리전스 플랫폼입니다.'
-title: '목표: 첫 대시보드 만들기'
+title: '목표: Rocket.BI로 첫 대시보드 만들기'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -33,18 +33,16 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 목표: Rocket.BI로 첫 대시보드 만들기 \{#goal-build-your-first-dashboard-with-rocketbi\}
+<CommunityMaintainedBadge />
 
-<CommunityMaintainedBadge/>
+이 가이드에서는 Rocket.BI를 사용해 간단한 대시보드를 설치하고 만들어 봅니다.
+다음은 해당 대시보드입니다:
 
-이 가이드에서는 Rocket.BI를 설치하고 간단한 대시보드를 만듭니다.
-다음은 해당 대시보드입니다.
+<Image size="md" img={rocketbi_01} alt="차트와 KPI가 포함된 판매 메트릭을 보여주는 Rocket BI 대시보드" border />
 
-<Image size="md" img={rocketbi_01} alt="차트와 KPI로 판매 지표를 보여주는 Rocket BI 대시보드" border />
+<br />
 
-<br/>
-
-[이 링크를 통해 대시보드를 확인할 수 있습니다.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
+[다음 링크에서 대시보드를 확인할 수 있습니다.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
 ## 설치 \{#install\}
 

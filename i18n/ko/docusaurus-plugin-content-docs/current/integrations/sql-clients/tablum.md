@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'TABLUM.IO'
 slug: /integrations/tablumio
-description: 'TABLUM.IO는 ClickHouse를 기본적으로 지원하는 데이터 관리 SaaS입니다.'
+description: 'TABLUM.IO는 ClickHouse를 기본으로 지원하는 데이터 관리 SaaS입니다.'
 title: 'TABLUM.IO를 ClickHouse에 연결하기'
 doc_type: 'guide'
 keywords: ['tablum', 'SQL 클라이언트', '데이터베이스 도구', '쿼리 도구', '데스크톱 앱']
@@ -17,10 +17,7 @@ import tablum_ch_2 from '@site/static/images/integrations/sql-clients/tablum-ch-
 import tablum_ch_3 from '@site/static/images/integrations/sql-clients/tablum-ch-3.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# TABLUM.IO를 ClickHouse와 연동하기 \{#connecting-tablumio-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## TABLUM.IO 시작 페이지 열기 \{#open-the-tablumio-startup-page\}
 

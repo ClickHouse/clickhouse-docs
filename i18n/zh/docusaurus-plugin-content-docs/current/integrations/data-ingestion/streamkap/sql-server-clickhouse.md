@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'SQL Server CDC 到 ClickHouse'
+sidebar_label: '用于 ClickHouse 的 SQL Server CDC（变更数据捕获）'
 sidebar_position: 13
 keywords: ['clickhouse', 'Streamkap', 'CDC', 'sql server', '连接', '集成', 'etl', '数据集成', '变更数据捕获']
 slug: /integrations/data-ingestion/etl-tools/sql-server-clickhouse
-description: '将 SQL Server 的数据流式传输到 ClickHouse，用于快速分析'
-title: '将 SQL Server 的数据流式传输到 ClickHouse，用于快速分析'
+description: '将数据从 SQL Server 流式传输到 ClickHouse，以实现快速分析'
+title: '将数据从 SQL Server 流式传输到 ClickHouse 实现快速分析：分步指南'
 doc_type: 'guide'
 ---
 
@@ -14,10 +14,7 @@ import image1 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 import image2 from '@site/static/images/integrations/data-ingestion/etl-tools/image2.png';
 import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/image3.png';
 
-
-# 将数据从 SQL Server 流式传输到 ClickHouse 实现快速分析：分步指南 \{#streaming-data-from-sql-server-to-clickhouse-for-fast-analytics-step-by-step-guide\}
-
-在本文中，我们将通过一个教程，演示如何将数据从 SQL Server 流式传输到 ClickHouse。对于需要为内部或面向客户的仪表板提供超高速分析的场景，ClickHouse 是理想选择。我们会一步一步讲解如何设置这两个数据库、如何将它们连接起来，以及最后如何使用 [Streamkap](https://streamkap.com) 来流式传输数据。如果 SQL Server 负责你的日常业务处理，而你又需要借助 ClickHouse 的高性能来进行分析，那么你来对地方了。
+在本文中，我们将通过一个教程，演示如何将数据从 SQL Server 流式传输到 ClickHouse。对于需要为内部或面向客户的仪表盘提供超高速分析的场景，ClickHouse 是理想选择。我们会一步一步讲解如何设置这两个数据库、如何将它们连接起来，以及最后如何使用 [Streamkap](https://streamkap.com) 来流式传输数据。如果 SQL Server 负责你的日常业务处理，而你又需要借助 ClickHouse 的高性能来进行分析，那么你来对地方了。
 
 ## 为什么要将数据从 SQL Server 流式传输到 ClickHouse？ \{#why-stream-data-from-sql-server-to-clickhouse\}
 

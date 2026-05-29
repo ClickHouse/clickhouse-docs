@@ -1870,12 +1870,13 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 **语法**
 
 ```sql
-formatReadableDecimalSize(x)
+formatReadableDecimalSize(value[, precision])
 ```
 
 **参数**
 
-* `x` — 以字节为单位的大小。[`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — 以字节为单位的大小。[`Int8`](/sql-reference/data-types/int-uint) 或 [`Int16`](/sql-reference/data-types/int-uint) 或 [`Int32`](/sql-reference/data-types/int-uint) 或 [`Int64`](/sql-reference/data-types/int-uint) 或 [`UInt8`](/sql-reference/data-types/int-uint) 或 [`UInt16`](/sql-reference/data-types/int-uint) 或 [`UInt32`](/sql-reference/data-types/int-uint) 或 [`UInt64`](/sql-reference/data-types/int-uint) 或 [`Float32`](/sql-reference/data-types/float) 或 [`Float64`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 可选。小数点后的位数。默认为 2。[`const UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -1900,6 +1901,20 @@ SELECT
 └────────────────┴────────────┘
 ```
 
+**显式指定精度**
+
+```sql title=Query
+SELECT
+    formatReadableDecimalSize(192851925, 0) AS no_decimals,
+    formatReadableDecimalSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals─┐
+│ 193 MB      │ 192.8519 MB   │
+└─────────────┴───────────────┘
+```
+
 ## formatReadableQuantity \{#formatReadableQuantity\}
 
 引入版本：v20.10.0
@@ -1912,12 +1927,13 @@ SELECT
 **语法**
 
 ```sql
-formatReadableQuantity(x)
+formatReadableQuantity(value[, precision])
 ```
 
 **参数**
 
-* `x` — 要格式化的数字。[`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — 要格式化的数字。[`Int8`](/sql-reference/data-types/int-uint) 或 [`Int16`](/sql-reference/data-types/int-uint) 或 [`Int32`](/sql-reference/data-types/int-uint) 或 [`Int64`](/sql-reference/data-types/int-uint) 或 [`UInt8`](/sql-reference/data-types/int-uint) 或 [`UInt16`](/sql-reference/data-types/int-uint) 或 [`UInt32`](/sql-reference/data-types/int-uint) 或 [`UInt64`](/sql-reference/data-types/int-uint) 或 [`Float32`](/sql-reference/data-types/float) 或 [`Float64`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 可选。小数点后的位数。默认为 2。[`const UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -1942,6 +1958,20 @@ SELECT
 └────────────────┴───────────────────┘
 ```
 
+**使用显式指定的精度**
+
+```sql title=Query
+SELECT
+    formatReadableQuantity(98765432101234, 0) AS no_decimals,
+    formatReadableQuantity(98765432101234, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals──┬─four_decimals─────┐
+│ 99 trillion  │ 98.7654 trillion  │
+└──────────────┴───────────────────┘
+```
+
 ## formatReadableSize \{#formatReadableSize\}
 
 引入于：v1.1.0
@@ -1954,14 +1984,15 @@ SELECT
 **语法**
 
 ```sql
-formatReadableSize(x)
+formatReadableSize(value[, precision])
 ```
 
 **别名**: `FORMAT_BYTES`
 
 **参数**
 
-* `x` — 以字节为单位的大小。[`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — 以字节为单位的大小。[`Int8`](/sql-reference/data-types/int-uint) 或 [`Int16`](/sql-reference/data-types/int-uint) 或 [`Int32`](/sql-reference/data-types/int-uint) 或 [`Int64`](/sql-reference/data-types/int-uint) 或 [`UInt8`](/sql-reference/data-types/int-uint) 或 [`UInt16`](/sql-reference/data-types/int-uint) 或 [`UInt32`](/sql-reference/data-types/int-uint) 或 [`UInt64`](/sql-reference/data-types/int-uint) 或 [`Float32`](/sql-reference/data-types/float) 或 [`Float64`](/sql-reference/data-types/float) 或 [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 可选。小数点后的位数。默认为 2。[`const UInt8`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -1984,6 +2015,20 @@ SELECT
 │        1048576 │ 1.00 MiB   │
 │      192851925 │ 183.92 MiB │
 └────────────────┴────────────┘
+```
+
+**使用显式指定的精度**
+
+```sql title=Query
+SELECT
+    formatReadableSize(192851925, 0) AS no_decimals,
+    formatReadableSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals──┐
+│ 184 MiB     │ 183.9179 MiB   │
+└─────────────┴────────────────┘
 ```
 
 ## formatReadableTimeDelta \{#formatReadableTimeDelta\}

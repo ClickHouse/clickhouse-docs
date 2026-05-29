@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/cloudflare-logs
-title: 'ClickStackでCloudflareログを監視する'
-sidebar_label: 'Cloudflareログ'
+title: 'ClickStackでCloudflare ログを監視する'
+sidebar_label: 'Cloudflare ログ'
 pagination_prev: null
 pagination_next: null
 description: 'S3 から継続的にログをインジェストするため、ClickPipes を使用して Cloudflare Logpush データを ClickStack に取り込む'
@@ -24,12 +24,10 @@ import finish_import from '@site/static/images/clickstack/cloudflare/finish-impo
 import example_dashboard from '@site/static/images/clickstack/cloudflare/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStackでCloudflareログを監視する \{#cloudflare-clickstack\}
+:::note[TL;DR]
+このガイドでは、ClickPipes を使用して Cloudflare ログを ClickStack に取り込む方法を説明します。Cloudflare Logpush はログを S3 に書き込み、ClickPipes は新しいファイルを継続的に ClickHouse に取り込みます。OpenTelemetry Collector を使用するほとんどの ClickStack 統合ガイドとは異なり、このガイドでは [ClickPipes](/integrations/clickpipes) を使用して S3 からデータを直接取り込みます。
 
-:::note[要点]
-このガイドでは、ClickPipesを使用してCloudflareログをClickStackに取り込む方法を説明します。Cloudflare LogpushはログをS3に書き込み、ClickPipesは新しいファイルを継続的にClickHouseに取り込みます。OpenTelemetry Collectorを使用する多くのClickStack統合ガイドとは異なり、このガイドでは、[ClickPipes](/integrations/clickpipes)を使用してS3からデータを直接取得します。
-
-本番環境向けのインジェストを設定する前にダッシュボードを確認したい場合は、デモデータセットを利用できます。
+本番向けのインジェストを設定する前にダッシュボードを確認したい場合は、デモ用データセットを利用できます。
 :::
 
 ## 概要 \{#overview\}

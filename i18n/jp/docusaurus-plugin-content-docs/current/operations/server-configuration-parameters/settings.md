@@ -3106,6 +3106,10 @@ ClickHouse がこの上限値に達すると、新しいバックグラウンド
 * [max&#95;memory&#95;usage](/operations/settings/settings#max_memory_usage)
 * [merges&#95;mutations&#95;memory&#95;usage&#95;soft&#95;limit](/operations/server-configuration-parameters/settings#merges_mutations_memory_usage_soft_limit)
 
+## message_queue_disable_insertion \{#message_queue_disable_insertion\}
+
+<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="Yes" />メッセージキューエンジン (Kafka、RabbitMQ、NATS) からアタッチ済みのmaterialized viewへの挿入を無効にします
+
 ## metric_log \{#metric_log\}
 
 デフォルトでは無効になっています。
@@ -3141,6 +3145,18 @@ ClickHouse がこの上限値に達すると、新しいバックグラウンド
 
 <SystemLogParameters />
 
+
+## min_allocation_size_to_throw_on_memory_limit \{#min_allocation_size_to_throw_on_memory_limit\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="Yes" />
+
+`max_server_memory_usage` に達した際に `MEMORY_LIMIT_EXCEEDED` の発生を許可する、汎用的な C++ メモリ割り当て (標準コンテナ、文字列、`std::vector` の拡張、スマートポインタなどによる割り当て) の最小サイズをバイト単位で指定します。これより小さい汎用割り当ても引き続きメモリトラッカーに計上されますが、制限超過後でも成功が許可されるため、OOM 近傍でのクリーンアップ処理や例外処理経路における不要な失敗を減らせます。
+
+ClickHouse 自身の大きなバッファ (カラムデータ、ハッシュテーブル、アリーナ、クエリパイプライン、IO バッファ) による割り当ては、常にメモリ制限に従い、この値に関係なく `MEMORY_LIMIT_EXCEEDED` を発生させる場合があります。この設定が影響するのは、`operator new` を通る暗黙的な割り当てだけです。
+
+値を `0` (デフォルト) にすると、従来の動作が維持されます。つまり、暗黙的な `operator new` による割り当てはメモリトラッカーによって拒否されず、`MEMORY_LIMIT_EXCEEDED` を発生させるのは明示的な ClickHouse の割り当てだけです。
+
+なお、副作用を避けるため、値は `max_untracked_memory` より大きく設定することを推奨します。
 
 ## min_os_cpu_wait_time_ratio_to_drop_connection \{#min_os_cpu_wait_time_ratio_to_drop_connection\}
 

@@ -248,7 +248,7 @@ SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 
 ### SYSTEM INSTRUMENT ADD \{#instrument-add\}
 
-添加一个新的检测点。已插桩的函数可以在 [`system.instrumentation`](../../operations/system-tables/instrumentation.md) 系统表中查看。可以为同一个函数添加多个处理器（handler），它们会按照添加检测点的顺序依次执行。
+添加一个新的插桩点。已插桩的函数可以在 [`system.instrumentation`](../../operations/system-tables/instrumentation.md) 系统表中查看。可以为同一个函数添加多个处理器 (handler) ，它们会按照添加插桩点的顺序依次执行。
 要插桩的函数可以从 [`system.symbols`](../../operations/system-tables/symbols.md) 系统表中收集。
 
 可以为函数添加三种不同类型的处理器：
@@ -256,7 +256,7 @@ SYSTEM RELOAD USERS [ON CLUSTER cluster_name]
 **语法**
 
 ```sql
-SYSTEM INSTRUMENT ADD FUNCTION HANDLER [PARAMETERS]
+SYSTEM INSTRUMENT ADD FUNCTION HANDLER [ARGUMENTS]
 ```
 
 其中 `FUNCTION` 可以是任意函数或其子字符串，例如 `QueryMetricLog::startQuery`，而处理器则是下列选项之一
@@ -299,13 +299,13 @@ SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' PROFILE
 
 ### SYSTEM INSTRUMENT REMOVE \{#instrument-remove\}
 
-用于移除单个检测点：
+用于移除单个插桩点：
 
 ```sql
 SYSTEM INSTRUMENT REMOVE ID
 ```
 
-使用 `ALL` 参数移除所有检测点：
+使用 `ALL` 关键字移除所有插桩点：
 
 ```sql
 SYSTEM INSTRUMENT REMOVE ALL
@@ -324,7 +324,6 @@ SYSTEM INSTRUMENT REMOVE 'QueryMetricLog::startQuery'
 ```
 
 插桩点信息可以从 [`system.instrumentation`](../../operations/system-tables/instrumentation.md) 系统表中获取。
-
 
 ## 管理分布式表 \{#managing-distributed-tables\}
 

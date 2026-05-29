@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Подключение dlt к ClickHouse \{#connect-dlt-to-clickhouse\}
-
-<PartnerBadge/>
-
-<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> — это библиотека с открытым исходным кодом, которую можно добавить в Python-скрипты, чтобы загружать данные из различных, часто «грязных» источников в хорошо структурированные, постоянно обновляемые наборы данных.
+<a href="https://dlthub.com/docs/intro" target="_blank">dlt</a> — это библиотека с открытым исходным кодом, которую можно добавить в скрипты Python, чтобы загружать данные из различных, часто неупорядоченных источников в хорошо структурированные, актуальные наборы данных.
 
 ## Установка dlt с ClickHouse \{#install-dlt-with-clickhouse\}
 

@@ -1,6 +1,6 @@
 ---
 slug: /cloud/managed-postgres
-title: '관리형 Postgres'
+title: 'Managed Postgres'
 description: 'NVMe 스토리지 기반의 빠르고 확장 가능하며 엔터프라이즈급 Postgres로, 실시간 분석을 위한 네이티브 ClickHouse 통합을 제공합니다'
 keywords: ['관리형 Postgres', 'PostgreSQL', '클라우드 데이터베이스', 'Postgres 서비스', 'NVMe Postgres', 'ClickHouse 통합']
 doc_type: 'guide'
@@ -8,30 +8,35 @@ pagination_next: cloud/managed-postgres/quickstart
 pagination_prev: null
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.overview-beta" />
 
-ClickHouse Managed Postgres는 성능과 확장성을 위해 설계된 엔터프라이즈급 관리형 Postgres 서비스입니다. 컴퓨트와 물리적으로 동일한 위치에 있는 NVMe 스토리지를 기반으로, EBS와 같은 네트워크 연결 스토리지를 사용하는 다른 서비스에 비해 디스크 입출력에 병목이 있는 워크로드에서 최대 10배 더 빠른 성능을 제공합니다.
+ClickHouse Managed Postgres는 성능과 확장성을 위해 설계된 엔터프라이즈급 Managed Postgres 서비스입니다. 컴퓨트와 물리적으로 동일한 위치에 있는 NVMe 스토리지를 기반으로, EBS와 같은 네트워크 연결 스토리지를 사용하는 다른 서비스에 비해 디스크 입출력에 병목이 있는 워크로드에서 최대 10배 더 빠른 성능을 제공합니다.
 
 Citus Data, Heroku, Microsoft에서 세계적 수준의 Postgres를 제공해 온 이력을 가진 창업 팀이 있는 [Ubicloud](https://www.ubicloud.com/)와의 파트너십으로 구축된 Managed Postgres는 빠르게 성장하는 애플리케이션이 흔히 직면하는 성능 문제를 해결합니다. 예를 들어 느린 수집 및 업데이트, 느린 vacuum 작업, 증가하는 테일 레이턴시, 제한된 디스크 IOPS로 인해 발생하는 WAL 스파이크 등이 있습니다.
 
 {/* TODO: Postgres와 ClickHouse 통합 아키텍처 다이어그램
     Path: /static/images/cloud/managed-postgres/architecture-overview.png */}
 
-
 ## NVMe 기반 성능 \{#nvme-performance\}
 
 대부분의 관리형 Postgres 서비스는 Amazon EBS와 같은 네트워크 연결 스토리지를 사용하며, 디스크에 접근할 때마다 네트워크 왕복이 발생합니다. 이는 밀리초(ms) 단위의 지연 시간을 유발하고 IOPS를 제한하여, 쓰기 집약적이거나 I/O 집약적인 워크로드에서 병목 현상을 초래합니다.
 
-관리형 Postgres는 데이터베이스와 동일한 서버에 물리적으로 연결된 NVMe 스토리지를 사용합니다. 이러한 아키텍처 차이는 다음과 같은 이점을 제공합니다.
+Managed Postgres는 데이터베이스와 동일한 서버에 물리적으로 연결된 NVMe 스토리지를 사용합니다. 이러한 아키텍처 차이는 다음과 같은 이점을 제공합니다.
 
-- 밀리초가 아닌 **마이크로초(µs) 수준의 디스크 지연 시간**
-- 네트워크 병목이 없는 **무제한 로컬 IOPS**
-- 동일한 비용으로 디스크 성능에 제약을 받는 워크로드에서 **최대 10배 빠른 성능**
+* **마이크로초(µs) 수준의 디스크 지연 시간**(밀리초 대신)
+* 네트워크 병목 없는 **10배의 지속 IOPS 한도**<sup>*</sup>
+* 동일한 비용으로 디스크 입출력에 병목이 있는 워크로드에서 **최대 10배 빠른 성능**
 
 Postgres 워크로드가 주로 디스크 IOPS와 지연 시간에 의해 제한되는 경우, 이는 더 빠른 데이터 수집, 더 신속한 VACUUM 작업, 더 낮은 테일 레이턴시(tail latency), 부하 상태에서도 더 예측 가능한 성능으로 이어집니다.
+
+:::note
+NVMe 디스크에서 Postgres가 얼마나 빠른지 [성능 벤치마크](https://clickhouse.com/blog/postgresbench)에서 확인하십시오.
+:::
+
+AWS의 로컬 NVMe 한도는 [메모리 최적화](https://docs.aws.amazon.com/ec2/latest/instancetypes/mo.html#mo_instance-store), [스토리지 최적화](https://docs.aws.amazon.com/ec2/latest/instancetypes/so.html#so_instance-store), [CPU 최적화](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store)를 참조하십시오.
 
 ## 네이티브 ClickHouse 통합 \{#clickhouse-integration\}
 

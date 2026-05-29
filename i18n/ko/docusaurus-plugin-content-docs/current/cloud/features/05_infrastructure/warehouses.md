@@ -16,9 +16,6 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
-
-# 웨어하우스 \{#warehouses\}
-
 <ScalePlanFeatureBadge feature="컴퓨트-컴퓨트 분리" />
 
 ## 컴퓨트-컴퓨트 분리란 무엇인가요? \{#what-is-compute-compute-separation\}
@@ -193,7 +190,7 @@ SETTINGS distributed_ddl_task_timeout=0
 
 * **레플리카 1개 기본 서비스** 현재 기본 동작에서는 보조 서비스는 레플리카를 1개로 구성할 수 있지만, 기본 서비스는 최소 2개의 레플리카가 있어야 합니다.
   레플리카 1개 기본 서비스를 활성화하려면 지원 팀에 문의하십시오. 이 동작은 2026년 2분기에 기본적으로 활성화될 예정입니다.
-* **기본 서비스 유휴 상태 전환**: 이전에는 기본 서비스의 자동 유휴 상태 전환이 기본적으로 지원되지 않았습니다. 2026년 5월부터는 기본 서비스 자동 유휴 상태 전환이 기본적으로 활성화됩니다. 롤아웃의 일환으로 기존 서비스도 이 기능을 사용할 수 있으며, 롤아웃 이후 생성된 새 서비스에서는 이 기능이 기본적으로 활성화됩니다. 
+* **기본 서비스 유휴 상태 전환**: 기본 서비스 자동 유휴 상태 전환이 기본적으로 활성화됩니다.
 
 ## 요금제 \{#pricing\}
 

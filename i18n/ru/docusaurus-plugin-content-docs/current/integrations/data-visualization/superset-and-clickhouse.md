@@ -28,10 +28,7 @@ import superset_11 from '@site/static/images/integrations/data-visualization/sup
 import superset_12 from '@site/static/images/integrations/data-visualization/superset_12.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Подключение Superset к ClickHouse \{#connect-superset-to-clickhouse\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 <a href="https://superset.apache.org/" target="_blank">Apache Superset</a> — это платформа с открытым исходным кодом для исследования и визуализации данных, написанная на Python. Superset подключается к ClickHouse с помощью Python-драйвера от ClickHouse. Давайте посмотрим, как это работает...
 

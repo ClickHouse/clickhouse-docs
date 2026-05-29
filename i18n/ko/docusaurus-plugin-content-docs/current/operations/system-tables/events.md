@@ -2291,11 +2291,19 @@ watch 추가 요청 수
 
 ### KeeperBatchMaxCount \{#keeperbatchmaxcount\}
 
-배치 크기가 개수 제한으로 인해 제한된 횟수
+max&#95;requests&#95;batch&#95;size 제한에 걸린 배치 수
+
+### KeeperBatchMaxReadCount \{#keeperbatchmaxreadcount\}
+
+max&#95;read&#95;batch&#95;size 제한에 걸린 배치 수
+
+### KeeperBatchMaxReadTotalSize \{#keeperbatchmaxreadtotalsize\}
+
+`max_read_batch_bytes_size` 제한에 걸린 배치 수
 
 ### KeeperBatchMaxTotalSize \{#keeperbatchmaxtotalsize\}
 
-총 바이트 크기 제한으로 인해 배치 크기가 제한된 횟수
+`max_requests_batch_bytes_size` 제한값에 도달한 배치 수
 
 ### KeeperChangelogFileSyncMicroseconds \{#keeperchangelogfilesyncmicroseconds\}
 
@@ -2524,6 +2532,14 @@ Keeper storage 공유 잠금을 획득할 때까지 대기한 시간
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 단일 요청의 Keeper 총 지연 시간
+
+### KeeperWriteBatchCount \{#keeperwritebatchcount\}
+
+Keeper가 처리한 쓰기 요청 배치 수
+
+### KeeperWriteBatchTotalRequests \{#keeperwritebatchtotalrequests\}
+
+Keeper가 배치 단위로 처리한 쓰기 요청의 총수
 
 ### 로드된 데이터 파트 수 \{#loadeddataparts\}
 
@@ -4728,6 +4744,50 @@ sleep 함수(`sleep`, `sleepEachRow`)에 설정된 대기 시간입니다.
 ### TextIndexHeaderCacheMisses \{#textindexheadercachemisses\}
 
 캐시에서 헤더를 찾지 못한 횟수입니다.
+
+### TextIndexLazyAdvanceCount \{#textindexlazyadvancecount\}
+
+지연 posting list 모드에서 수행된 advance 연산 수입니다.
+
+### TextIndexLazyAndBlocksSkippedZero \{#textindexlazyandblocksskippedzero\}
+
+지연 AND 모드에서 출력 영역이 모두 0이어서 건너뛴 패킹된 블록 수입니다.
+
+### TextIndexLazyAndSegmentsSkippedDense \{#textindexlazyandsegmentsskippeddense\}
+
+lazy AND 모드에서 dense-increment 최적화로 건너뛴 세그먼트 수입니다.
+
+### TextIndexLazyAndSegmentsSkippedZero \{#textindexlazyandsegmentsskippedzero\}
+
+lazy AND 모드에서 출력 영역이 전부 0이어서 건너뛴 세그먼트 수입니다.
+
+### 지연 게시 목록 모드에서 출력 영역이 이미 모두 1이어서 건너뛴 패킹된 블록 수 \{#textindexlazyblocksskippedcovered\}
+
+지연 게시 목록 모드에서 출력 영역이 이미 모두 1이어서 건너뛴 패킹된 블록 수입니다.
+
+### TextIndexLazyBruteForceIntersections \{#textindexlazybruteforceintersections\}
+
+지연 포스팅 리스트 모드에서 수행된 브루트포스 방식의 교집합 연산 횟수입니다.
+
+### TextIndexLazyLeapfrogIntersections \{#textindexlazyleapfrogintersections\}
+
+지연 포스팅 리스트 모드에서 수행된 leapfrog 교집합 연산 횟수입니다.
+
+### TextIndexLazyPackedBlocksDecoded \{#textindexlazypackedblocksdecoded\}
+
+lazy posting list 모드에서 디코딩된 packed block의 개수입니다.
+
+### TextIndexLazySegmentsPrepared \{#textindexlazysegmentsprepared\}
+
+지연 포스팅 리스트 모드에서 준비된 세그먼트 수(인덱스 섹션이 로드됨).
+
+### TextIndexLazySegmentsSkippedCovered \{#textindexlazysegmentsskippedcovered\}
+
+lazy posting list 모드에서 출력 영역이 이미 전부 1로 채워져 있어 건너뛴 세그먼트 수입니다.
+
+### TextIndexLazySegmentsSkippedDense \{#textindexlazysegmentsskippeddense\}
+
+lazy posting list 모드에서 dense-memset 최적화로 건너뛴 세그먼트 수입니다.
 
 ### TextIndexPostingsCacheHits \{#textindexpostingscachehits\}
 

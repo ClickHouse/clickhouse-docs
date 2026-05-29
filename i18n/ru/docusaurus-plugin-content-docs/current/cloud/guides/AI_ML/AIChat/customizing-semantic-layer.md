@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
 sidebar_label: 'Настройка чата ClickHouse Assistant с помощью семантического слоя'
-title: 'Оптимизация диалогов агента ClickHouse Assistant с помощью семантического слоя'
+title: 'Оптимизация диалогов ClickHouse Assistant с помощью семантического слоя'
 pagination_prev: null
 pagination_next: null
 description: 'Руководство по использованию AGENTS.md для задания пользовательской бизнес-логики и зависящих от данных инструкций для чат-агента ClickHouse Assistant'

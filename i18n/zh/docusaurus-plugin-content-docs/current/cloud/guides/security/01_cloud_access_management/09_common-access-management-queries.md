@@ -9,14 +9,11 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
-
-# 常见访问管理查询 \{#common-access-management-queries\}
-
-:::tip 自托管
-如果你在使用自托管的 ClickHouse，请参阅 [SQL 用户和角色](/guides/sre/user-management/index.md)。
+:::tip 自管理
+如果您使用的是自管理 ClickHouse，请参阅 [SQL users and roles](/guides/sre/user-management/index.md)。
 :::
 
-本文介绍了定义 SQL 用户和角色的基础方法，以及如何将相应的权限应用到数据库、表、行和列上。
+本文介绍定义 SQL 用户和角色的基础方法，并说明如何将相应的权限和许可应用到数据库、表、行和列。
 
 ## 管理员用户 \{#admin-user\}
 

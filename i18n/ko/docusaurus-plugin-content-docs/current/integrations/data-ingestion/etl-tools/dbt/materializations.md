@@ -1,24 +1,21 @@
 ---
-sidebar_label: '머티리얼라이제이션'
+sidebar_label: '머티리얼라이즈'
 slug: /integrations/dbt/materializations
 sidebar_position: 3
-description: '사용 가능한 머티리얼라이제이션과 해당 구성'
+description: '사용 가능한 머티리얼라이즈과 해당 구성'
 keywords: ['clickhouse', 'dbt', 'materializations', 'materialized view', 'incremental']
-title: '머티리얼라이제이션'
+title: '머티리얼라이즈'
 doc_type: 'guide'
 ---
 
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 머티리얼라이제이션(Materializations) \{#materializations\}
+이 섹션에서는 실험적 기능을 포함해 dbt-clickhouse에서 사용할 수 있는 모든 머티리얼라이즈을 다룹니다.
 
-<ClickHouseSupportedBadge/>
-
-이 섹션에서는 실험적 기능을 포함해 dbt-clickhouse에서 사용 가능한 모든 머티리얼라이제이션을 다룹니다.
-
-<TOCInline toc={toc}  maxHeadingLevel={3} />
+<TOCInline toc={toc} maxHeadingLevel={3} />
 
 ## 일반 머티리얼라이제이션 구성 \{#general-materialization-configurations\}
 

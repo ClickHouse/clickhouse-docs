@@ -10,8 +10,6 @@ doc_type: 'guide'
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse Cloud の請求コンプライアンス \{#clickhouse-cloud-billing-compliance\}
-
 ## 請求コンプライアンス \{#billing-compliance\}
 
 ClickHouse Cloud を利用するには、組織に有効な請求方法が設定されている必要があります。30 日間のトライアルが終了するか、トライアルクレジットを使い切った時点の、いずれか早い方に達した後も ClickHouse Cloud の利用を継続するには、次のいずれかの請求オプションを選択してください。

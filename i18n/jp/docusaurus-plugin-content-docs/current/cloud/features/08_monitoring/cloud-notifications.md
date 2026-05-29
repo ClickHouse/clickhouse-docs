@@ -14,8 +14,6 @@ import notifications_2 from '@site/static/images/cloud/manage/notifications-2.pn
 import notifications_3 from '@site/static/images/cloud/manage/notifications-3.png';
 import notifications_4 from '@site/static/images/cloud/manage/notifications-4.png';
 
-# 通知 \{#notifications\}
-
 ClickHouse Cloud は、サービスまたは組織に関連する重大なイベントについて通知を送信します。通知がどのように送信され、設定されるかを理解するうえで、押さえておくべき概念がいくつかあります。
 
 1. **通知カテゴリ**: 請求通知、サービス関連の通知などの通知グループを指します。各カテゴリには、配信モードを設定できる複数の通知があります。

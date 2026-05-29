@@ -13,11 +13,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-# Быстрый старт ClickHouse OSS \{#clickhouse-oss-quick-start\}
-
-> В этом кратком руководстве по быстрому старту вы за несколько
-> простых шагов настроите ClickHouse OSS. Вы будете использовать ClickHouse CLI `clickhousectl`, чтобы установить ClickHouse,
-> запустить сервер ClickHouse, подключиться к своему серверу, создать таблицу,
+> В этом руководстве по быстрому старту мы поможем вам настроить OSS ClickHouse за
+> несколько простых шагов. Вы будете использовать CLI ClickHouse `clickhousectl`,
+> чтобы установить ClickHouse, запустить сервер ClickHouse, подключиться к нему и создать таблицу,
 > вставить в неё данные и выполнить запрос SELECT.
 
 <VerticalStepper>
@@ -30,6 +28,23 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   ```
 
   Псевдоним `chctl` также создаётся автоматически для удобства использования.
+
+  <details>
+    <summary>Дополнительно: установка ClickHouse без `clickhousectl`</summary>
+
+    Если вам нужен только бинарный файл `clickhouse`, а `clickhousectl` не нужен, используйте
+    универсальный установщик с `CLICKHOUSE_ONLY=1`:
+
+    ```bash
+    curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+    ```
+
+    Это скачивает один бинарный файл `clickhouse` в текущий каталог. Затем вы можете
+    запускать `clickhouse-server`, `clickhouse-client` и `clickhouse-local`
+    напрямую из этого бинарного файла, и остальные шаги этого руководства, основанные на `clickhousectl`,
+    к вам не относятся. См. страницу [Quick install](/install/quick-install) для
+    сценария установки с использованием обычного бинарного файла.
+  </details>
 
   ## Установка ClickHouse \{#install-clickhouse\}
 
@@ -335,7 +350,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       <br />
     </TabItem>
 
-    <TabItem value="озеро данных" label="Озера данных">
+    <TabItem value="datalake" label="Озера данных">
       ClickHouse предоставляет табличные функции для чтения данных из следующих источников:
 
       * **Hadoop**: интеграция с Apache Hadoop с помощью [табличной функции `hdfs`](/sql-reference/table-functions/hdfs)
@@ -353,7 +368,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
   </Tabs>
 
-  ## Просмотр данных \{#explore\}
+  ## Explore \{#explore\}
 
   * Ознакомьтесь с нашим разделом [Core Concepts](/managing-data/core-concepts), чтобы узнать основные принципы работы ClickHouse изнутри.
   * Ознакомьтесь с [руководством продвинутого уровня](tutorial.md), в котором более подробно рассматриваются ключевые концепции и возможности ClickHouse.

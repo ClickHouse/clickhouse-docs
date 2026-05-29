@@ -1,6 +1,6 @@
 ---
-description: 'CLI 또는 curl로 ClickHouse를 빠르게 설치합니다'
-keywords: ['ClickHouse', 'install', 'quick', 'curl', 'clickhousectl', 'CLI']
+description: 'CLI 또는 curl을 사용하여 ClickHouse를 빠르게 설치합니다'
+keywords: ['ClickHouse', '설치', '빠른', 'curl', 'clickhousectl', 'CLI']
 sidebar_label: '빠른 설치'
 slug: /install/quick-install
 title: '빠른 설치'
@@ -11,8 +11,6 @@ doc_type: 'guide'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import QuickInstall from './_snippets/_quick_install.md'
-
-# 빠른 설치 \{#quick-install\}
 
 프로덕션 환경용으로 ClickHouse를 설치할 필요가 없다면, ClickHouse CLI를 사용하거나 `curl`로 설치 스크립트를 실행하는 것이 가장 빠른 설정 방법입니다.
 

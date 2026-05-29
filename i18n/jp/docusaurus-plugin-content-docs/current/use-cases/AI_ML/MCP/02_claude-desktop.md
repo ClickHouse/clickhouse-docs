@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/claude-desktop
 sidebar_label: 'Claude Desktop と統合する'
-title: 'Claude Desktop を使って ClickHouse MCP サーバーをセットアップする'
+title: 'Claude Desktop で ClickHouse MCP サーバーを使う'
 pagination_prev: null
 pagination_next: null
 description: 'このガイドでは、Claude Desktop を使用して ClickHouse MCP サーバーをセットアップし、連携させる方法を説明します。'
@@ -16,12 +16,10 @@ import FindMCPServers from '@site/static/images/use-cases/AI_ML/MCP/find-mcp-ser
 import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permission.png';
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
-# Claude Desktop で ClickHouse MCP サーバーを使う \{#using-clickhouse-mcp-server-with-claude-desktop\}
-
-> このガイドでは、uv を使って Claude Desktop で ClickHouse MCP サーバーをセットアップし、
+> このガイドでは、uv を使用して Claude Desktop で ClickHouse MCP サーバーをセットアップし、
 > ClickHouse のサンプルデータセットに接続する方法を説明します。
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q" title="YouTube 動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+<iframe width="768" height="432" src="https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q" title="YouTube動画プレーヤー" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
 <VerticalStepper headerLevel="h2">
   ## uv のインストール \{#install-uv\}

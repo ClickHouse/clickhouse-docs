@@ -10,8 +10,6 @@ doc_type: 'guide'
 
 import CommunityMonitoring from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# コミュニティおよびパートナーとの統合 \{#community-and-partner-integrations\}
-
 ## Datadog との直接統合 \{#direct-datadog\}
 
 Datadog は、システムテーブルを直接クエリする Agent 向けの ClickHouse Monitoring プラグインを提供しています。この統合では、`clusterAllReplicas` 機能によるクラスタ認識を通じて、データベースを包括的に監視できます。

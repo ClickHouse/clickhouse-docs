@@ -17,11 +17,8 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 Kafka 指标 \{#kafka-metrics-clickstack\}
-
-:::note[TL;DR]
-借助 OTel JMX Metric Gatherer 在 ClickStack 中监控 Apache Kafka 性能指标。包括演示数据集和预置仪表板。
+:::note[摘要]
+使用 OTel JMX Metric Gatherer 在 ClickStack 中监控 Apache Kafka 性能指标。包含演示数据集和预置仪表盘。
 :::
 
 ## 集成现有 Kafka 部署 \{#existing-kafka\}

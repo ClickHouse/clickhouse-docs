@@ -1,9 +1,9 @@
 ---
 sidebar_label: '개요'
 slug: /migrations/snowflake-overview
-description: 'Snowflake에서 ClickHouse로 마이그레이션하기'
+description: 'Snowflake에서 ClickHouse로 마이그레이션'
 keywords: ['Snowflake']
-title: 'Snowflake에서 ClickHouse로 마이그레이션하기'
+title: 'Snowflake에서 ClickHouse로 마이그레이션'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -11,9 +11,6 @@ doc_type: 'guide'
 import snowflake_architecture from '@site/static/images/cloud/onboard/discover/use_cases/snowflake_architecture.png';
 import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_cases/cloud_architecture.png';
 import Image from '@theme/IdealImage';
-
-
-# Snowflake에서 ClickHouse로 마이그레이션 \{#snowflake-to-clickhouse-migration\}
 
 > 이 문서는 Snowflake에서 ClickHouse로 데이터를 마이그레이션하는 방법을 소개합니다.
 

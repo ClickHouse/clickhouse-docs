@@ -1,5 +1,5 @@
 ---
-title: 'システムテーブルをクエリする'
+title: 'ClickHouse のシステムデータベースをクエリする'
 slug: /cloud/monitoring/system-tables
 description: 'システムテーブルを直接クエリして ClickHouse Cloud をモニタリング'
 keywords: ['cloud', 'モニタリング', 'システムテーブル', 'query_log', 'clusterAllReplicas', 'オブザーバビリティダッシュボード']
@@ -11,15 +11,13 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 
-# ClickHouse の system データベースをクエリする \{#querying-clickhouses-system-database\}
+すべての ClickHouse インスタンスには、`system` データベース内に [システムテーブル](/operations/system-tables/overview) のセットが含まれており、次の情報を確認できます。
 
-すべての ClickHouse インスタンスには、次の情報を含む一連の[システムテーブル](/operations/system-tables/overview)が `system` データベースに用意されています。
-
-* サーバーの状態、プロセス、および環境。
-* サーバーの内部プロセス。
+* サーバーの状態、プロセス、環境。
+* サーバー内部のプロセス。
 * ClickHouse バイナリのビルド時に使用されたオプション。
 
-これらのテーブルを直接クエリすると、特に詳細な内部調査やデバッグを行う際に、ClickHouse デプロイメントのモニタリングに役立ちます。
+これらのテーブルを直接クエリすると、特に詳細な内部診断やデバッグを行う際に、ClickHouse デプロイメントの監視に役立ちます。
 
 ## ClickHouse Cloud コンソールを使用する \{#using-cloud-console\}
 

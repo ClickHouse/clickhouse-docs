@@ -2,9 +2,9 @@
 sidebar_label: 'Draxlr'
 sidebar_position: 131
 slug: /integrations/draxlr
-keywords: ['clickhouse', 'Draxlr', 'connect', 'integrate', 'ui']
-description: 'Draxlr는 데이터 시각화와 분석을 위한 비즈니스 인텔리전스 도구입니다.'
-title: 'ClickHouse에 Draxlr를 연결하기'
+keywords: ['clickhouse', 'Draxlr', '연결', '통합', 'UI']
+description: 'Draxlr는 데이터 시각화 및 분석을 위한 비즈니스 인텔리전스 도구입니다.'
+title: 'Draxlr를 ClickHouse에 연결하기'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -21,12 +21,9 @@ import draxlr_06 from '@site/static/images/integrations/data-visualization/draxl
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Draxlr를 ClickHouse에 연결하기 \{#connecting-draxlr-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-Draxlr는 ClickHouse 데이터베이스에 연결하기 위한 직관적인 인터페이스를 제공하여 팀이 몇 분 안에 데이터를 탐색하고 시각화하며 인사이트를 게시할 수 있도록 합니다. 이 가이드는 연결을 성공적으로 설정하는 방법을 단계별로 안내합니다.
+Draxlr는 ClickHouse DB에 연결할 수 있는 직관적인 인터페이스를 제공하므로, 팀에서 몇 분 안에 인사이트를 탐색하고 시각화하며 공유할 수 있습니다. 이 가이드에서는 연결을 정상적으로 설정하는 단계를 안내합니다.
 
 ## 1. ClickHouse 자격 증명 정보 확인하기 \{#1-get-your-clickhouse-credentials\}
 

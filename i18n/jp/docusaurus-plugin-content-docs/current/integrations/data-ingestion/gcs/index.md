@@ -2,10 +2,10 @@
 sidebar_label: 'Google Cloud Storage (GCS)'
 sidebar_position: 4
 slug: /integrations/gcs
-description: 'Google Cloud Storage (GCS) をバックエンドにした MergeTree'
+description: 'Google Cloud Storage (GCS) をバックエンドの MergeTree'
 title: 'ClickHouse と Google Cloud Storage を統合する'
 doc_type: 'guide'
-keywords: ['Google Cloud Storage ClickHouse', 'GCS ClickHouse 統合', 'GCS バックエンド MergeTree', 'ClickHouse GCS ストレージ', 'Google Cloud ClickHouse']
+keywords: ['Google Cloud Storage ClickHouse', 'GCS ClickHouse 統合', 'GCS バックエンドの MergeTree', 'ClickHouse GCS ストレージ', 'Google Cloud ClickHouse']
 ---
 
 import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_GCS_authentication_and_bucket.md';
@@ -13,14 +13,11 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-
-# Google Cloud Storage を ClickHouse と統合する \{#integrate-google-cloud-storage-with-clickhouse\}
-
 :::note
-[Google Cloud](https://cloud.google.com) 上の ClickHouse Cloud を利用している場合、このページは対象外です。サービスはすでに [Google Cloud Storage](https://cloud.google.com/storage) を使用しているためです。GCS から `SELECT` または `INSERT` でデータを扱いたい場合は、[`gcs` テーブル関数](/sql-reference/table-functions/gcs) を参照してください。
+[Google Cloud](https://cloud.google.com) 上で ClickHouse Cloud を使用している場合、このページは適用されません。サービスはすでに [Google Cloud Storage](https://cloud.google.com/storage) を使用しているためです。GCS からデータを `SELECT` または `INSERT` する場合は、[`gcs` テーブル関数](/sql-reference/table-functions/gcs) を参照してください。
 :::
 
-ClickHouse は、ストレージとコンピュートを分離したいユーザーにとって、GCS が魅力的なストレージソリューションであると認識しています。この要件を満たすために、MergeTree エンジンのストレージとして GCS を使用することをサポートしています。これにより、ユーザーは GCS のスケーラビリティとコスト面での利点に加え、MergeTree エンジンのデータ挿入およびクエリのパフォーマンスを活用できるようになります。
+ClickHouse では、ストレージとコンピュートを分離したい場合、GCS が魅力的なストレージソリューションになると考えています。これを実現するため、MergeTree エンジンのストレージとして GCS を使用する機能がサポートされています。これにより、GCS のスケーラビリティとコスト面での利点を享受しつつ、MergeTree エンジンの insert およびクエリのパフォーマンスを活用できます。
 
 ## GCS バックエンドの MergeTree \{#gcs-backed-mergetree\}
 

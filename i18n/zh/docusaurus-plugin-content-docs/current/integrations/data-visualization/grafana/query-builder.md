@@ -23,23 +23,20 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# 查询构建器 \{#query-builder\}
-
 <ClickHouseSupportedBadge />
 
-可以使用 ClickHouse 插件运行任意查询。
-查询构建器是处理较简单查询的便捷选项，但对于复杂查询，则需要使用 [SQL 编辑器](#sql-editor)。
+任何查询都可以通过 ClickHouse 插件执行。
+对于较简单的查询，查询构建器是一个方便的选项；但对于复杂查询，则需要使用 [SQL 编辑器](#sql-editor)。
 
-查询构建器中的所有查询都有一个[查询类型](#query-types)，并且至少需要选择一列。
+查询构建器中的所有查询都具有一种[查询类型](#query-types)，并且至少需要选择一列。
 
 可用的查询类型包括：
 
-* [表](#table)：用于以表格形式展示数据的最简单查询类型。适合作为包含聚合函数的简单和复杂查询的通用选项。
+* [表](#table)：最简单的查询类型，用于以表格格式显示数据。对于包含聚合函数的简单查询和复杂查询，都适合作为通用类型使用。
 * [日志](#logs)：针对构建日志查询进行了优化。在已[配置默认值](./config.md#logs)的 Explore 视图中效果最佳。
-* [时间序列](#time-series)：最适合用于构建时间序列查询。允许选择专用时间列并添加聚合函数。
-* [链路追踪](#traces)：针对搜索和查看链路追踪数据进行了优化。在已[配置默认值](./config.md#traces)的 Explore 视图中效果最佳。
-* [SQL 编辑器](#sql-editor)：当需要对查询进行完全控制时可以使用 SQL 编辑器。在此模式下，可以执行任意 SQL 查询。
+* [时间序列](#time-series)：最适合用于构建时间序列查询。支持选择专用时间列并添加聚合函数。
+* [trace](#traces)：针对搜索和查看 trace 进行了优化。在已[配置默认值](./config.md#traces)的 Explore 视图中效果最佳。
+* [SQL 编辑器](#sql-editor)：当您希望完全控制查询时，可以使用 SQL 编辑器。在此模式下，可以执行任何 SQL 查询。
 
 ## 查询类型 \{#query-types\}
 

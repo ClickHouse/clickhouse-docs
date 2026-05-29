@@ -26,7 +26,7 @@ import SystemTableCloud from '@site/i18n/jp/docusaurus-plugin-content-docs/curre
 * `last_success_duration_ms` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 直近のリフレッシュにかかった時間。
 * `last_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 直近のリフレッシュ試行が終了した時刻 (判明している場合) 、または開始した時刻 (不明な場合、またはまだ実行中の場合) 。サーバーの起動後またはテーブルの作成後にリフレッシュの試行が一度もない場合は NULL。
 * `last_refresh_replica` ([String](../../sql-reference/data-types/)) — 調整が有効な場合、現在の (実行中の場合) または前回の (実行中でない場合) リフレッシュ試行を実行したレプリカの名前。
-* `next_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — status = Scheduled の場合に、次のリフレッシュが開始される予定時刻。
+* `next_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 次のリフレッシュが開始される予定時刻。その時点で次回のリフレッシュ時刻が不明な場合 (たとえば依存関係を待機している場合。status が `WaitingForDependencies` または `MissingDependencies`) は NULL。
 * `exception` ([String](../../sql-reference/data-types/)) — 前回の試行が失敗した場合のエラーメッセージ。
 * `retry` ([UInt64](../../sql-reference/data-types/)) — 現在のリフレッシュについて、これまでに失敗した試行の回数。status が `RunningOnAnotherReplica` の場合は利用できません。
 * `progress` ([Nullable(Float64)](../../sql-reference/data-types/)) — 指定したレプリカにおける、現在実行中または直近に完了したリフレッシュの進行状況。値は 0 から 1 の範囲です。status が `RunningOnAnotherReplica` の場合、またはリフレッシュが実行中でない場合は NULL。
@@ -45,12 +45,11 @@ SELECT
     database,
     view,
     status,
-    last_refresh_result,
     last_refresh_time,
     next_refresh_time
 FROM system.view_refreshes
 
-┌─database─┬─view───────────────────────┬─status────┬─last_refresh_result─┬───last_refresh_time─┬───next_refresh_time─┐
-│ default  │ hello_documentation_reader │ Scheduled │ Finished            │ 2023-12-01 01:24:00 │ 2023-12-01 01:25:00 │
-└──────────┴────────────────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┘
+┌─database─┬─view───────────────────────┬─status────┬───last_refresh_time─┬───next_refresh_time─┐
+│ default  │ hello_documentation_reader │ Scheduled │ 2023-12-01 01:24:00 │ 2023-12-01 01:25:00 │
+└──────────┴────────────────────────────┴───────────┴─────────────────────┴─────────────────────┘
 ```

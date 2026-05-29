@@ -4,14 +4,12 @@ keywords: ['client', 'ssh', 'putty']
 sidebar_label: 'SSH 인터페이스'
 sidebar_position: 60
 slug: /interfaces/ssh
-title: 'SSH 인터페이스'
+title: 'PTY를 사용하는 SSH 인터페이스'
 doc_type: 'reference'
 ---
 
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
-
-# PTY를 지원하는 SSH 인터페이스 \{#ssh-interface-with-pty\}
 
 <ExperimentalBadge />
 

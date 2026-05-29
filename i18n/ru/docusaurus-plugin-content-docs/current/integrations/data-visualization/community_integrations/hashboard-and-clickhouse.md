@@ -2,8 +2,8 @@
 sidebar_label: 'Hashboard'
 sidebar_position: 132
 slug: /integrations/hashboard
-keywords: ['clickhouse', 'Hashboard', 'connect', 'integrate', 'ui', 'analytics']
-description: 'Hashboard — это надёжная аналитическая платформа, которую можно легко интегрировать с ClickHouse для анализа данных в режиме реального времени.'
+keywords: ['ClickHouse', 'Hashboard', 'подключить', 'интегрировать', 'ui', 'аналитика']
+description: 'Hashboard — мощная аналитическая платформа, которую легко интегрировать с ClickHouse для анализа данных в реальном времени.'
 title: 'Подключение ClickHouse к Hashboard'
 doc_type: 'guide'
 integration:
@@ -16,41 +16,39 @@ import hashboard_01 from '@site/static/images/integrations/data-visualization/ha
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение ClickHouse к Hashboard \{#connecting-clickhouse-to-hashboard\}
+<CommunityMaintainedBadge />
 
-<CommunityMaintainedBadge/>
+[Hashboard](https://hashboard.com) — это интерактивный инструмент для исследования данных, который позволяет любому сотруднику вашей организации отслеживать метрики и получать полезные инсайты. Hashboard выполняет SQL-запросы к вашей базе данных ClickHouse в реальном времени и особенно удобен для самостоятельного, нерегламентированного исследования данных.
 
-[Hashboard](https://hashboard.com) — это интерактивный инструмент для исследования данных, который позволяет любому сотруднику вашей организации отслеживать метрики и находить практические выводы. Hashboard выполняет SQL‑запросы к вашей базе данных ClickHouse в режиме реального времени и особенно полезен для самостоятельного ad hoc‑исследования данных.
+<Image size="md" img={hashboard_01} alt="Интерфейс обозревателя данных Hashboard с интерактивным конструктором запросов и визуализацией" border />
 
-<Image size="md" img={hashboard_01} alt="Интерфейс исследователя данных Hashboard с интерактивным конструктором запросов и визуализацией" border />
+<br />
 
-<br/>
-
-В этом руководстве описаны шаги по подключению Hashboard к вашему экземпляру ClickHouse. Эта информация также доступна в документации Hashboard по интеграции с [ClickHouse](https://docs.hashboard.com/docs/database-connections/clickhouse).
+В этом руководстве описаны шаги по подключению Hashboard к вашему экземпляру ClickHouse. Эта информация также доступна в [документации Hashboard по интеграции с ClickHouse](https://docs.hashboard.com/docs/database-connections/clickhouse).
 
 ## Предварительные требования \{#pre-requisites\}
 
-- База данных ClickHouse, развернутая в вашей собственной инфраструктуре или в [ClickHouse Cloud](https://clickhouse.com/).
-- [Учётная запись Hashboard](https://hashboard.com/getAccess) и проект.
+* База данных ClickHouse, размещённая либо в вашей инфраструктуре, либо в [ClickHouse Cloud](https://clickhouse.com/).
+* Учётная запись в [Hashboard](https://hashboard.com/getAccess) и проект.
 
-## Порядок подключения Hashboard к ClickHouse \{#steps-to-connect-hashboard-to-clickhouse\}
+## Подключение Hashboard к ClickHouse \{#steps-to-connect-hashboard-to-clickhouse\}
 
-### 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}
+### 1. Подготовьте параметры подключения \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
 ### 2. Добавьте новое подключение к базе данных в Hashboard \{#2-add-a-new-database-connection-in-hashboard\}
 
 1. Перейдите в свой [проект Hashboard](https://hashboard.com/app).
-2. Откройте страницу `Settings`, нажав на значок шестерёнки в боковой панели навигации.
+2. Откройте страницу «Настройки», нажав значок шестерёнки на боковой панели навигации.
 3. Нажмите `+ New Database Connection`.
-4. В модальном окне выберите `ClickHouse`.
-5. Заполните поля **Connection Name**, **Host**, **Port**, **Username**, **Password** и **Database** сведениями, собранными ранее.
-6. Нажмите `Test`, чтобы проверить, что подключение успешно настроено.
-7. Нажмите `Add`.
+4. В модальном окне выберите &quot;ClickHouse.&quot;
+5. Заполните поля **Connection Name**, **Host**, **Port**, **Username**, **Password** и **Database** информацией, собранной ранее.
+6. Нажмите &quot;Test&quot;, чтобы убедиться, что подключение настроено правильно.
+7. Нажмите &quot;Add&quot;
 
-Теперь ваша база данных ClickHouse будет подключена к Hashboard, и вы можете приступить к созданию [Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations), [Metrics](https://docs.hashboard.com/docs/metrics) и [Dashboards](https://docs.hashboard.com/docs/dashboards). Подробную информацию об этих возможностях см. в соответствующей документации Hashboard.
+Теперь ваша база данных ClickHouse подключена к Hashboard, и вы можете перейти к созданию [Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations), [Metrics](https://docs.hashboard.com/docs/metrics) и [Dashboards](https://docs.hashboard.com/docs/dashboards). Подробнее об этих возможностях см. в соответствующей документации Hashboard.
 
 ## Узнать больше \{#learn-more\}
 
-Для получения информации о более продвинутых возможностях и устранении неполадок обратитесь к [документации Hashboard](https://docs.hashboard.com/).
+Более подробную информацию о расширенных возможностях и устранении неполадок см. в [документации Hashboard](https://docs.hashboard.com/).

@@ -9,16 +9,11 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Easypanel에 ClickHouse 배포하기 \{#deploying-clickhouse-on-easypanel\}
+[Easypanel](https://easypanel.io)는 최신 서버 제어 패널입니다. 자체 서버에 ClickHouse를 배포하는 데 사용할 수 있습니다.
 
-<CommunityMaintainedBadge/>
-
-[Easypanel](https://easypanel.io)은 최신 서버 제어 패널입니다. 이를 사용해 사용자 서버에 ClickHouse를 배포할 수 있습니다.
-
-[![Deploy to Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
-
-
+[![Easypanel에 배포](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
 
 ## 지침 \{#instructions\}
 

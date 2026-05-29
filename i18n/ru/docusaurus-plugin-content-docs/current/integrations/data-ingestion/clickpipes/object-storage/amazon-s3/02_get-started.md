@@ -17,8 +17,6 @@ import cp_table_settings from '@site/static/images/integrations/data-ingestion/c
 import CreateClickPipe from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/_create_clickpipe.md';
 import Image from '@theme/IdealImage';
 
-# Создание первого Amazon S3 ClickPipe \{#creating-your-first-amazon-s3-clickpipe\}
-
-S3 ClickPipe предоставляет полностью управляемый и отказоустойчивый способ приёма данных из Amazon S3 и S3-совместимых объектных хранилищ в ClickHouse Cloud. Он поддерживает как **однократную**, так и **непрерывную ингестию** с семантикой exactly-once.
+S3 ClickPipe предоставляет полностью управляемый и отказоустойчивый способ приёма данных из Amazon S3 и S3-совместимых объектных хранилищ в ClickHouse Cloud. Он поддерживает как **однократную ингестию**, так и **непрерывную ингестию** с семантикой «ровно один раз».
 
 <CreateClickPipe provider="s3" />

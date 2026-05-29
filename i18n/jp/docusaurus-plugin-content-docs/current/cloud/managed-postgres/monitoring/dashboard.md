@@ -7,19 +7,17 @@ keywords: ['Managed Postgres', '監視', 'ダッシュボード', 'Cloud Console
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import dashboard from '@site/static/images/managed-postgres/monitoring/dashboard.png';
 
-# 監視ダッシュボード \{#monitoring-dashboard\}
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-dashboard-beta" />
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-dashboard" />
+インスタンスの左側のサイドバーにある **監視** タブには、
+選択した期間におけるリソース使用状況とデータベースアクティビティの
+リアルタイムチャートが表示されます。
 
-インスタンスの左側のサイドバーにある **監視** タブには、選択した期間の
-リソース使用状況とデータベースアクティビティをリアルタイムで示すチャートが
-表示されます。
-
-<Image img={dashboard} alt="IOPS、CPU 使用率、メモリ、ディスク、ネットワークトラフィック、データベースサイズ、接続、処理量、トランザクション、キャッシュヒット率、デッドロックを表示する監視ダッシュボード" size="lg" border />
+<Image img={dashboard} alt="IOPS、CPU 使用率、メモリ、ディスク、ネットワークトラフィック、データベースサイズ、接続数、スループット、トランザクション、キャッシュヒット率、およびデッドロックを表示する監視ダッシュボード" size="lg" border />
 
 ## パネル \{#panels\}
 

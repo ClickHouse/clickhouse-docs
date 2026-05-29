@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'Artie'
 sidebar_position: 12
-keywords: ['clickhouse', 'Artie', '接続', '連携', 'cdc', 'etl', 'データ連携', 'リアルタイム', 'ストリーミング']
+keywords: ['clickhouse', 'Artie', '接続', '統合', 'CDC', 'etl', 'データ統合', 'リアルタイム', 'ストリーミング']
 slug: /integrations/artie
-description: 'Artie の CDC ストリーミングプラットフォームを使用して、ClickHouse にデータをストリーミングで取り込む'
-title: 'Artie を ClickHouse に接続する'
+description: 'Artie CDCストリーミングプラットフォームを使用して、データをClickHouseにストリーミング'
+title: 'Artie を ClickHouse に接続'
 doc_type: 'guide'
 ---
 
@@ -16,60 +16,56 @@ import monitor from '@site/static/images/integrations/data-ingestion/etl-tools/a
 import schema_notification from '@site/static/images/integrations/data-ingestion/etl-tools/artie/schema_notification.png';
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# Artie を ClickHouse に接続する \{#connect-artie-to-clickhouse\}
-
-<a href="https://www.artie.com/" target="_blank">Artie</a> は、本番環境のデータを ClickHouse にレプリケーションし、顧客向け分析、運用ワークフロー、そして本番環境での Agentic AI を実現する、完全マネージド型のリアルタイムデータストリーミングプラットフォームです。
+<a href="https://www.artie.com/" target="_blank">Artie</a>は、本番データをClickHouseに複製し、顧客向けアナリティクス、運用ワークフロー、本番環境でのAgentic AIを実現する完全マネージド型のリアルタイムデータストリーミングプラットフォームです。
 
 ## 概要 \{#overview\}
 
-Artie は AI 時代のための最新のデータ基盤レイヤーであり、本番データをデータウェアハウスと継続的に同期し続ける、フルマネージドなリアルタイムデータストリーミングプラットフォームです。
+Artie は AI 時代に向けた最新のデータインフラストラクチャレイヤーです。完全マネージド型のリアルタイムデータストリーミングプラットフォームとして、本番データをデータウェアハウスと継続的に同期します。
 
-企業がリアルタイム AI ワークロード、オペレーショナルアナリティクス、顧客向けデータプロダクトのためにウェアハウスを活用する中で、高速で信頼性が高く、スケールするインフラストラクチャへの標準化が進んでいます。
+企業がリアルタイム AI ワークロード、運用分析、顧客向けデータプロダクトに向けてデータウェアハウスを活用するなか、高速で信頼性が高く、スケールを前提に設計されたインフラストラクチャの標準化が進んでいます。
 
-私たちは、Netflix、DoorDash、Instacart が社内で構築したようなストリーミングパイプラインと高いオブザーバビリティを、10 名以上のエンジニアを採用して 1～2 年かけてプラットフォーム開発を行うことなく提供します。Artie は、変更キャプチャ、マージ、バックフィル、オブザーバビリティといったインジェストライフサイクル全体を自動化し、エンジニアによる保守は不要で、数分でデプロイできます。
+Artie は、Netflix、DoorDash、Instacart が社内構築してきたようなストリーミングパイプラインと高度なオブザーバビリティを、10 人以上のエンジニア採用や 1～2 年にわたるプラットフォーム構築なしで提供します。Artie は、変更データの取得、マージ、バックフィル、オブザーバビリティを含むインジェストライフサイクル全体を自動化し、エンジニアリングによる保守を不要にしたうえで、数分でデプロイできます。
 
-ClickUp、Substack、Alloy のようなリーダー企業は、今日のパイプラインの課題を解決するだけでなく、AI 戦略の加速に合わせてデータスタックを将来にわたって通用するものにするために Artie を利用しています。
+ClickUp、Substack、Alloy などの先進企業は、現在のパイプラインの課題を解決するだけでなく、AI 戦略の加速に合わせてデータスタックの将来性を確保するためにも Artie を活用しています。
 
 <VerticalStepper headerLevel="h2">
+  ## Artie アカウントを作成する \{#1-create-an-artie-account\}
 
-## Artie アカウントを作成する \{#1-create-an-artie-account\}
+  <a href="https://www.artie.com/contact" target="_blank">artie.com/contact</a> にアクセスし、フォームに入力してアクセスを申請してください。
 
-<a href="https://www.artie.com/contact" target="_blank">artie.com/contact</a> にアクセスし、フォームに入力してアクセスをリクエストしてください。
+  <Image img={artie_signup} size="md" border alt="Artie のサインアップページ" />
 
-<Image img={artie_signup} size="md" border alt="Artie のサインアップページ" />
+  ## ClickHouse の認証情報を確認する \{#2-find-your-clickhouse-credentials\}
 
-## ClickHouse の認証情報を確認する \{#2-find-your-clickhouse-credentials\}
+  ClickHouse Cloud でサービスを作成したら、次の必須設定を確認してください。
 
-ClickHouse Cloud でサービスを作成した後、次の必須設定を確認します。
+  <ConnectionDetails />
 
-<ConnectionDetails />
+  ## Artie で新しいパイプラインを作成する \{#3-create-a-new-pipeline-in-artie\}
 
-## Artie で新しいパイプラインを作成する \{#3-create-a-new-pipeline-in-artie\}
+  前の手順で収集した情報を使って Artie で新しいパイプラインを作成します。手順は次の 3 ステップです。
 
-前の手順で収集した情報をもとに Artie にアクセスし、次の 3 ステップで新しいパイプラインを作成します。
+  1. **ソースを接続する** - ソースデータベース (Postgres、MySQL、Events API など) を設定します
+  2. **複製するテーブルを選択する** - ClickHouse に同期するテーブルを選択します
+  3. **宛先を接続する** - ClickHouse の認証情報を入力します
 
-1. **ソースに接続する** - ソースデータベース（Postgres、MySQL、Events API など）を設定します
-2. **レプリケートしたいテーブルを選択する** - ClickHouse に同期するテーブルを選択します
-3. **宛先に接続する** - ClickHouse の認証情報を入力します
-
-<Image img={artie_edit_pipeline} size="lg" border alt="Artie の Edit Pipeline インターフェース" />
-
+  <Image img={artie_edit_pipeline} size="lg" border alt="Artie のパイプライン編集インターフェイス" />
 </VerticalStepper>
 
 ## お問い合わせ \{#contact-us\}
 
-ご不明な点がある場合は、<a href="https://www.artie.com/docs/destinations/clickhouse" target="_blank">ClickHouse ドキュメント</a>を参照するか、<a href="mailto:hi@artie.com">hi@artie.com</a> までお問い合わせください。
+ご不明な点がある場合は、<a href="https://www.artie.com/docs/destinations/clickhouse" target="_blank">ClickHouse docs</a>をご参照いただくか、<a href="mailto:hi@artie.com">hi@artie.com</a>までお問い合わせください。
 
 ## 製品スクリーンショット \{#product-screenshots\}
 
-Analytics ポータル
+アナリティクス ポータル
 
-<Image img={analytics} size="md" border alt="Analytics ポータル"/>
+<Image img={analytics} size="md" border alt="アナリティクス ポータル" />
 
-パイプラインおよびテーブルごとのモニター
+パイプラインおよびテーブルごとの監視
 
-<Image img={monitor} size="md" border alt="組み込みのモニタリング"/>
+<Image img={monitor} size="md" border alt="内蔵の監視" />
 
-日次のスキーマ変更通知
+毎日のスキーマ変更通知
 
-<Image img={schema_notification} size="md" border alt="スキーマ通知"/>
+<Image img={schema_notification} size="md" border alt="スキーマ変更通知" />

@@ -1,5 +1,5 @@
 ---
-title: 'OpenTelemetry 통합'
+title: '데이터 수집을 위한 OpenTelemetry 통합'
 description: '관측성을 위한 OpenTelemetry와 ClickHouse 통합'
 slug: /observability/integrating-opentelemetry
 keywords: ['관측성', 'OpenTelemetry']
@@ -16,14 +16,11 @@ import observability_8 from '@site/static/images/use-cases/observability/observa
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
 
+모든 관측성 솔루션에는 로그와 트레이스를 수집하고 내보낼 수단이 필요합니다. 이를 위해 ClickHouse는 [OpenTelemetry (OTel) 프로젝트](https://opentelemetry.io/)를 권장합니다.
 
-# 데이터 수집을 위한 OpenTelemetry 통합 \{#integrating-opentelemetry-for-data-collection\}
+&quot;OpenTelemetry는 트레이스, 메트릭, 로그와 같은 텔레메트리 데이터를 생성하고 관리하도록 설계된 관측성 프레임워크이자 툴킷입니다.&quot;
 
-모든 관측성(Observability) 솔루션에는 로그와 트레이스를 수집하고 내보내는 수단이 필요합니다. 이러한 목적을 위해 ClickHouse는 [OpenTelemetry (OTel) 프로젝트](https://opentelemetry.io/)를 권장합니다.
-
-「OpenTelemetry는 트레이스, 메트릭, 로그와 같은 텔레메트리 데이터를 생성하고 관리하도록 설계된 관측성(Observability) 프레임워크이자 툴킷입니다.」
-
-ClickHouse나 Prometheus와 달리 OpenTelemetry는 관측성 백엔드가 아니며, 텔레메트리 데이터의 생성, 수집, 관리, 내보내기에 중점을 둡니다. OpenTelemetry의 초기 목표는 언어별 SDKs를 사용하여 애플리케이션이나 시스템을 손쉽게 계측할 수 있도록 하는 것이었으나, 이후 텔레메트리 데이터를 수신·처리·내보내는 에이전트이자 프록시인 OpenTelemetry collector를 통해 로그 수집까지 포함하도록 확장되었습니다.
+ClickHouse나 Prometheus와 달리 OpenTelemetry는 관측성 backend가 아니며, 텔레메트리 데이터의 생성, 수집, 관리, 내보내기에 중점을 둡니다. OpenTelemetry의 초기 목표는 언어별 SDK를 사용해 애플리케이션이나 시스템을 쉽게 계측할 수 있도록 하는 것이었지만, 이후 OpenTelemetry collector를 통한 로그 수집까지 포함하도록 확장되었습니다. OpenTelemetry collector는 텔레메트리 데이터를 수신, 처리, 내보내는 agent 또는 프록시입니다.
 
 ## ClickHouse relevant components \{#clickhouse-relevant-components\}
 

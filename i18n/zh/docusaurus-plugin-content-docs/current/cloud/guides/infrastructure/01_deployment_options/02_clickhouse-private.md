@@ -9,7 +9,6 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 import private_gov_architecture from '@site/static/images/cloud/reference/private-gov-architecture.png';
 
-
 ## 概览 \{#overview\}
 
 ClickHouse Private 是一个自托管的软件包，由与 ClickHouse Cloud 上运行的相同 ClickHouse 专有版本以及我们的 ClickHouse Operator 组成，并配置为实现计算与存储分离。
@@ -45,8 +44,7 @@ ClickHouse Private 当前支持以下配置：
 | :-- | :------------------------------- | :-------------------------- | :- |
 | AWS | Elastic Kubernetes Service (EKS) | Simple Storage Service (S3) | 可用 |
 | GCP | Google Kubernetes Service (GKS)  | Google Cloud Storage (GCS)  | 预览 |
-| 裸金属 | Kubernetes                       | AIStor (需要 NVMe)            | 预览 | 
 
-## 接入流程 \{#onboarding-process\}
+## 开通流程 \{#onboarding-process\}
 
-客户可[联系我们](https://clickhouse.com/company/contact?loc=nav)申请沟通，以评估 ClickHouse Private 是否适用于其使用场景。满足最低规模要求且部署在支持的配置上的使用场景将被纳入评估。接入名额有限。安装过程需要按照 ClickHouse 将使用从 AWS ECR 下载的镜像和 Helm 图表进行部署的特定环境对应的安装指南进行。
+有意使用 ClickHouse Private 的客户可以[联系我们](https://clickhouse.com/company/contact)，预约一次针对其使用场景的评估沟通。符合最低规模要求且目标配置在支持范围内的申请将予以考虑——请注意，开通支持能力有限。设置过程需要根据具体环境遵循相应的安装指南，并使用从 AWS ECR 拉取的镜像和 Helm 图表。

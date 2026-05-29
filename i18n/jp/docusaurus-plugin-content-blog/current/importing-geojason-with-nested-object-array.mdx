@@ -153,8 +153,8 @@ ARRAY JOIN features
 ここでは次のようなエラーが発生します。
 
 ```
-コード: 53. DB::Exception: localhost:9000 から受信。DB::Exception: ARRAY JOIN には配列またはマップ型の引数が必要です。(TYPE_MISMATCH)
-サーバー (バージョン 24.1.2) から例外を受信:
+Code: 53. DB::Exception: Received from localhost:9000. DB::Exception: ARRAY JOIN requires array or map argument. (TYPE_MISMATCH)
+Received exception from server (version 24.1.2):
 ```
 
 これは `features.geometry.coordinates` のパース処理が原因です。
@@ -174,7 +174,7 @@ ARRAY JOIN features
 ```
 
 これは、`multipolygon.properties.coordinates` を `Array(Array(Array(Tuple(Float64,Float64))))` にキャストすることで解決できます。
-これを行うには、関数 [arrayMap(func,arr1,...)](https://clickhouse.com/docs/sql-reference/functions/array-functions#arraymapfunc-arr1-) を使用します。
+これを行うには、関数 [arrayMap(func,arr1,...)](/sql-reference/functions/array-functions#arrayMap) を使用します。
 
 ```sql
 SELECT distinct

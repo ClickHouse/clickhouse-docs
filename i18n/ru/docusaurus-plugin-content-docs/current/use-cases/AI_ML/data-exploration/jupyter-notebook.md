@@ -1,8 +1,8 @@
 ---
 slug: /use-cases/AI/jupyter-notebook
-sidebar_label: 'Исследование данных с помощью блокнотов Jupyter и chDB'
-title: 'Исследование данных в блокнотах Jupyter с помощью chDB'
-description: 'В этом руководстве рассказывается, как настроить и использовать chDB для исследования в блокнотах Jupyter данных из ClickHouse Cloud или локальных файлов'
+sidebar_label: 'Исследование данных с помощью Jupyter Notebook и chDB'
+title: 'Исследование данных с помощью Jupyter Notebook и chDB'
+description: 'В этом руководстве объясняется, как настроить chDB и использовать его для исследования данных из ClickHouse Cloud или локальных файлов в Jupyter Notebook'
 keywords: ['ML', 'Jupyer', 'chDB', 'pandas']
 doc_type: 'guide'
 ---
@@ -18,14 +18,12 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-# Исследование данных с помощью Jupyter Notebook и chDB \{#exploring-data-with-jupyter-notebooks-and-chdb\}
-
 В этом руководстве вы узнаете, как исследовать данные в ClickHouse Cloud в Jupyter Notebook с помощью [chDB](/chdb) — быстрого встроенного SQL OLAP-движка на базе ClickHouse.
 
 **Предварительные требования**:
 
-- виртуальное окружение
-- работающий сервис ClickHouse Cloud и ваши [параметры подключения](/cloud/guides/sql-console/gather-connection-details)
+* виртуальное окружение
+* работающий сервис ClickHouse Cloud и ваши [параметры подключения](/cloud/guides/sql-console/gather-connection-details)
 
 :::tip
 Если у вас ещё нет учётной записи ClickHouse Cloud, вы можете [зарегистрироваться](https://console.clickhouse.cloud/signUp?loc=docs-juypter-chdb)
@@ -34,10 +32,10 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 **Чему вы научитесь:**
 
-- Подключаться к ClickHouse Cloud из Jupyter Notebook с использованием chDB
-- Выполнять запросы к удалённым наборам данных и преобразовывать результаты в объекты Pandas DataFrame
-- Объединять данные из облака с локальными CSV-файлами для анализа
-- Визуализировать данные с помощью matplotlib
+* Подключаться к ClickHouse Cloud из Jupyter Notebook с использованием chDB
+* Выполнять запросы к удалённым наборам данных и преобразовывать результаты в объекты Pandas DataFrame
+* Объединять данные из облака с локальными CSV-файлами для анализа
+* Визуализировать данные с помощью matplotlib
 
 Мы будем использовать набор данных UK Property Price, который доступен в ClickHouse Cloud как один из стартовых наборов данных.
 Он содержит данные о ценах, по которым продавались дома в Великобритании с 1995 по 2024 год.

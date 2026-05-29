@@ -10,14 +10,11 @@ doc_type: 'reference'
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
 import Image from '@theme/IdealImage';
 
-
-# Режимы сжатия \{#compression-modes\}
-
 Протокол ClickHouse поддерживает сжатие **блоков данных** с контрольными суммами.
-Используйте `LZ4`, если не уверены, какой режим выбрать.
-
+Если не уверены, какой режим выбрать, используйте `LZ4`.
+``
 :::tip
-Узнайте больше о [кодеках сжатия столбцов](/sql-reference/statements/create/table#column_compression_codec) и задавайте их при создании таблиц или позже.
+Узнайте больше о доступных [кодеках сжатия столбцов](/sql-reference/statements/create/table#column_compression_codec) и указывайте их при создании таблиц или позднее.
 :::
 
 ## Режимы \{#modes\}

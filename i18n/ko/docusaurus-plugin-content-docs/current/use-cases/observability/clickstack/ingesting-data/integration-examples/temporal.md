@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
-title: 'ClickStack를 이용한 Temporal Cloud 모니터링'
+title: 'ClickStack를 이용한 Temporal Cloud 메트릭 모니터링'
 sidebar_label: 'Temporal Cloud 메트릭'
 pagination_prev: null
 pagination_next: null
@@ -23,11 +23,8 @@ Temporal 플랫폼의 OpenMetrics 지원은 [Public Preview](https://docs.tempor
 
 Temporal은 단순하면서도 정교하고 복원력이 높은 애플리케이션을 구축하기 위한 추상화 계층을 제공합니다.
 
-
-# ClickStack로 Temporal Cloud 메트릭 모니터링하기 \{#temporal-metrics-clickstack\}
-
-:::note[요약]
-OTel Prometheus receiver를 사용하여 ClickStack에서 Temporal Cloud 메트릭을 모니터링합니다. 미리 구성된 대시보드가 포함되어 있습니다.
+:::note[TL;DR]
+OTel Prometheus receiver를 사용하여 ClickStack에서 Temporal Cloud 메트릭을 모니터링합니다. 사전 구축된 대시보드도 포함되어 있습니다.
 :::
 
 ## 기존 Temporal Cloud와의 통합 \{#existing-temporal\}

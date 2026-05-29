@@ -24,10 +24,7 @@ import tableau_desktop_03 from '@site/static/images/integrations/data-visualizat
 import tableau_desktop_04 from '@site/static/images/integrations/data-visualization/tableau_desktop_04.png';
 import tableau_desktop_05 from '@site/static/images/integrations/data-visualization/tableau_desktop_05.png';
 
-
-# Tableau Online \{#tableau-online\}
-
-Tableau Online 可以使用官方 MySQL 数据源，通过 MySQL 接口连接到 ClickHouse Cloud 或本地部署的 ClickHouse 集群。
+Tableau Online 可以通过官方 MySQL 数据源，使用 MySQL 接口连接到 ClickHouse Cloud 或本地部署的 ClickHouse。
 
 ## ClickHouse Cloud 配置 \{#clickhouse-cloud-setup\}
 

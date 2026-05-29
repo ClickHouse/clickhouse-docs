@@ -1146,19 +1146,20 @@ SELECT highlight('Hello World', ['hello'], '<b>', '</b>')
 
 Добавлено в: v20.6.0
 
-Аналог [`like`](#like), но выполняет регистронезависимый поиск.
+Аналог [`like`](#like), но выполняет регистронезависимый поиск. Поддерживает необязательную клаузу `ESCAPE` (см. `like`).
 
 **Синтаксис**
 
 ```sql
-ilike(haystack, pattern)
--- haystack ILIKE pattern
+ilike(haystack, pattern[, escape_character])
+-- haystack ILIKE pattern [ESCAPE 'escape_character']
 ```
 
 **Аргументы**
 
 * `haystack` — Строка, в которой выполняется поиск. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 * `pattern` — шаблон LIKE для поиска совпадений. [`String`](/sql-reference/data-types/string)
+* `escape_character` — Необязательная односимвольная строка, используемая в качестве экранирующего символа вместо `\`. По умолчанию: `\`. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -1206,17 +1207,25 @@ ClickHouse требует [также экранировать обратные 
 Для `LIKE`‑выражений вида `%needle%` функция работает так же быстро, как функция `position`.
 Все остальные выражения `LIKE` внутренне преобразуются в регулярное выражение и выполняются с производительностью, аналогичной функции `match`.
 
+## Клауза ESCAPE \{#escape-clause\}
+
+Необязательная клауза `ESCAPE` задаёт пользовательский символ экранирования (это должен быть один ASCII-символ).
+Если он указан, пользовательский символ экранирования заменяет обратную косую черту по умолчанию для экранирования метасимволов `%` и `_`.
+Символ экранирования может экранировать три вещи: `%` (буквальный знак процента), `_` (буквальный символ подчёркивания) и самого себя (буквальный символ экранирования).
+При использовании пользовательского символа экранирования обратная косая черта не имеет специального значения и трактуется как буквальный символ.
+
 **Синтаксис**
 
 ```sql
-like(haystack, pattern)
--- haystack LIKE pattern
+like(haystack, pattern[, escape_character])
+-- haystack LIKE pattern [ESCAPE 'escape_character']
 ```
 
 **Аргументы**
 
 * `haystack` — строка, в которой выполняется поиск. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 * `pattern` — шаблон `LIKE` для сравнения. Может содержать `%` (соответствует любому количеству символов), `_` (соответствует одному символу) и `\` для экранирования. [`String`](/sql-reference/data-types/string)
+* `escape_character` — необязательная односимвольная строка, используемая в качестве символа экранирования вместо `\`. По умолчанию: `\`. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -1258,6 +1267,18 @@ SELECT like('ClickHouse', '%SQL%');
 ┌─like('ClickHouse', '%SQL%')─┐
 │                           0 │
 └─────────────────────────────┘
+```
+
+**Клауза ESCAPE**
+
+```sql title=Query
+SELECT '50%off' LIKE '50#%off' ESCAPE '#';
+```
+
+```response title=Response
+┌─like('50%off', '50#%off', '#')─┐
+│                              1 │
+└────────────────────────────────┘
 ```
 
 ## locate \{#locate\}
@@ -2532,22 +2553,24 @@ SELECT ngramSearchUTF8('абвгдеёжз', 'гдеёзд')
 
 Появилась в версии: v20.6.0
 
-Проверяет, что строка не соответствует шаблону без учета регистра. Шаблон может содержать специальные символы `%` и `_` для сопоставления в стиле SQL LIKE.
+Проверяет, что строка не соответствует шаблону регистронезависимо. Шаблон может содержать специальные символы `%` и `_` для сопоставления в стиле SQL LIKE. Поддерживает необязательное предложение `ESCAPE` (см. `like`).
 
 **Синтаксис**
 
 ```sql
-notILike(haystack, pattern)
+notILike(haystack, pattern[, escape_character])
+-- haystack NOT ILIKE pattern [ESCAPE 'escape_character']
 ```
 
 **Аргументы**
 
 * `haystack` — входная строка, в которой выполняется поиск. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 * `pattern` — шаблон SQL `LIKE` для сравнения. `%` соответствует любому количеству символов (включая ноль), `_` соответствует ровно одному символу. [`String`](/sql-reference/data-types/string)
+* `escape_character` — необязательная строка из одного символа, используемая как escape-символ вместо `\`. По умолчанию: `\`. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
-Возвращает `1`, если строка не соответствует шаблону (сравнение без учета регистра), иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
+Возвращает `1`, если строка не соответствует шаблону (регистронезависимое сравнение), иначе `0`. [`UInt8`](/sql-reference/data-types/int-uint)
 
 **Примеры**
 
@@ -2567,19 +2590,20 @@ SELECT notILike('ClickHouse', '%house%');
 
 Введён в: v1.1.0
 
-Похож на [`like`](#like), но возвращает противоположный результат.
+Похож на [`like`](#like), но возвращает противоположный результат. Поддерживает необязательное предложение `ESCAPE` (см. `like`).
 
 **Синтаксис**
 
 ```sql
-notLike(haystack, pattern)
--- haystack NOT LIKE pattern
+notLike(haystack, pattern[, escape_character])
+-- haystack NOT LIKE pattern [ESCAPE 'escape_character']
 ```
 
 **Аргументы**
 
 * `haystack` — строка, в которой выполняется поиск. [`String`](/sql-reference/data-types/string) или [`FixedString`](/sql-reference/data-types/fixedstring)
 * `pattern` — шаблон `LIKE` для проверки соответствия. [`String`](/sql-reference/data-types/string)
+* `escape_character` — необязательная строка из одного символа, используемая в качестве escape-символа вместо `\`. По умолчанию: `\`. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 

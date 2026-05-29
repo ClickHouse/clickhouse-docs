@@ -15,20 +15,18 @@ import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png'
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Rotel を使って ClickStack で AWS Lambda のログを監視する \{#lambda-clickstack\}
+<CommunityMaintainedBadge />
 
-<CommunityMaintainedBadge/>
+:::note[要点]
+このガイドでは、Rotel Lambda Extension を使用して関数ログ、拡張機能ログ、OpenTelemetry データを収集し、直接 ClickHouse に転送することで、ClickStack で AWS Lambda 関数を監視する方法を説明します。学習内容は次のとおりです。
 
-:::note[TL;DR]
-このガイドでは、Rotel Lambda Extension を使用して関数ログ、拡張機能ログ、OpenTelemetry データを収集し、ClickHouse に直接転送することで、ClickStack を使って AWS Lambda 関数を監視する方法を説明します。次のことを行います:
+* Lambda 関数に Rotel Lambda Extension レイヤーをデプロイする
+* ログとトレースを ClickStack にエクスポートするよう拡張機能を設定する
+* 必要に応じて CloudWatch Logs を無効にしてコストを削減する
 
-- Rotel Lambda Extension レイヤーを Lambda 関数にデプロイする
-- 拡張機能を構成して、ログとトレースを ClickStack にエクスポートする
-- コスト削減のために、必要に応じて CloudWatch Logs を無効にする
+この方法では、CloudWatch Logs を完全にバイパスできるため、Lambda のオブザーバビリティコストを大幅に削減できます。
 
-このアプローチにより、CloudWatch Logs を完全にバイパスすることで、Lambda のオブザーバビリティコストを大幅に削減できます。
-
-所要時間: 約 5〜10 分
+所要時間: 5～10 分
 :::
 
 ## 既存の Lambda 関数との統合 \{#existing-lambda\}

@@ -28,12 +28,9 @@ import superset_11 from '@site/static/images/integrations/data-visualization/sup
 import superset_12 from '@site/static/images/integrations/data-visualization/superset_12.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 将 Superset 连接到 ClickHouse \{#connect-superset-to-clickhouse\}
-
-<ClickHouseSupportedBadge/>
-
-<a href="https://superset.apache.org/" target="_blank">Apache Superset</a> 是一个由 Python 编写的开源数据探索与可视化平台。Superset 使用由 ClickHouse 提供的 Python 驱动连接到 ClickHouse。下面我们来看它是如何工作的……
+<a href="https://superset.apache.org/" target="_blank">Apache Superset</a> 是一个使用 Python 编写的开源数据探索和可视化平台。Superset 使用 ClickHouse 提供的 Python 驱动程序连接到 ClickHouse。让我们来看看它是如何工作的……
 
 ## 目标 \{#goal\}
 

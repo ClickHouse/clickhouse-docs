@@ -1,7 +1,7 @@
 ---
-title: '合规性概览'
+title: '安全与合规报告'
 slug: /cloud/security/compliance-overview
-description: 'ClickHouse Cloud 安全和合规认证概览，包括 SOC 2、ISO 27001、U.S. DPF 和 HIPAA'
+description: 'ClickHouse Cloud 安全和合规认证概览，包括 SOC 2、ISO 27001、美国 DPF 和 HIPAA'
 doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF', 'PCI']
 ---
@@ -9,9 +9,7 @@ keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF'
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
-
-# 安全与合规报告 \{#security-and-compliance-reports\}
-ClickHouse 会评估客户在安全与合规方面的需求，并会根据额外报告请求持续扩展相关项目。有关更多信息或下载报告，请访问我们的[信任中心（Trust Center）](https://trust.clickhouse.com)。
+ClickHouse 会评估客户的安全与合规需求，并根据新增的报告请求持续扩展相关计划。如需了解更多信息或下载相关报告，请访问我们的 [Trust Center](https://trust.clickhouse.com)。
 
 ## SOC 2 Type II（自 2022 年起） \{#soc-2-type-ii-since-2022\}
 

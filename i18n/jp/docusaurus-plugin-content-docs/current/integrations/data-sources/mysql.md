@@ -1,7 +1,7 @@
 ---
 slug: /integrations/mysql
 sidebar_label: 'MySQL'
-title: 'MySQL'
+title: 'MySQL と ClickHouse の統合'
 hide_title: true
 description: 'MySQL 連携について説明するページ'
 doc_type: 'reference'
@@ -15,13 +15,10 @@ keywords: ['mysql', 'データベース連携', '外部テーブル', 'データ
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# ClickHouse への MySQL の統合 \{#integrating-mysql-with-clickhouse\}
-
-このページでは、MySQL テーブルからデータを読み取るために `MySQL` テーブルエンジンを使用する方法について説明します。
+このページでは、MySQL テーブルから読み取るために `MySQL` テーブルエンジンを使用する方法を説明します。
 
 :::note
-ClickHouse Cloud では、[MySQL ClickPipe](/integrations/clickpipes/mysql)（現在パブリックベータ）を使用して、MySQL テーブルから ClickHouse にデータを簡単に移行することもできます。
+ClickHouse Cloud では、[MySQL ClickPipe](/integrations/clickpipes/mysql) (現在パブリックベータ版) を使用して、MySQL テーブルから ClickHouse へデータを簡単に移行することもできます。
 :::
 
 ## MySQL テーブルエンジンを使用して ClickHouse を MySQL に接続する \{#connecting-clickhouse-to-mysql-using-the-mysql-table-engine\}

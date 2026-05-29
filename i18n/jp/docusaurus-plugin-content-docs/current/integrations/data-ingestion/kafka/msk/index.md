@@ -13,21 +13,20 @@ integration:
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-# Amazon MSK と ClickHouse の連携 \{#integrating-amazon-msk-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/6lKI_WlQ3-s"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
-> 注意: 動画で示されているポリシーは、クイックスタート用の許可範囲が広い設定であり、短時間での導入のみを意図したものです。以下の最小権限の IAM ガイダンスを参照してください。
+> 注: ビデオで示しているポリシーは権限が広く、クイックスタート専用です。以下の最小権限の IAM ガイダンスを参照してください。
 
 ## 前提条件 \{#prerequisites\}
 

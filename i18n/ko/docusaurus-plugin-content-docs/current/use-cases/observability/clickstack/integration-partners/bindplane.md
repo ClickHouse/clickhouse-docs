@@ -15,22 +15,19 @@ import bindplane_hyperdx from '@site/static/images/clickstack/bindplane/bindplan
 import bindplane_configuration from '@site/static/images/clickstack/bindplane/bindplane-configuration.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Bindplane으로 OpenTelemetry를 ClickStack에 전송하기 \{#bindplane-clickstack\}
+:::note[핵심 요약]
+이 가이드에서는 Bindplane의 네이티브 ClickStack 대상을 사용하여 텔레메트리를 ClickStack으로 라우팅하는 방법을 설명합니다. 다음 내용을 알아봅니다:
 
-<PartnerBadge/>
+* Bindplane에서 ClickStack을 대상으로 구성하기
+* 텔레메트리를 처리하고 라우팅하는 구성 생성하기
+* 구성을 OTel collector에 원격으로 배포하고 데이터 수집을 시작하기
+* ClickStack에서 텔레메트리 확인하기
 
-:::note[요약]
-이 가이드는 Bindplane의 네이티브 ClickStack 대상(native ClickStack destination)을 사용하여 텔레메트리 데이터를 ClickStack으로 라우팅하는 방법을 설명합니다. 다음을 수행하는 방법을 안내합니다:
+이 통합은 ClickStack의 고성능 수집과 Bindplane의 중앙 집중식 collector 관리를 결합하여 운영 오버헤드 없이 관측성을 더 쉽게 확장할 수 있게 해줍니다.
 
-- Bindplane에서 ClickStack을 대상으로 구성하는 방법
-- 텔레메트리 데이터를 처리하고 라우팅하기 위한 구성을 생성하는 방법
-- OTel collector에 구성을 원격으로 배포하고 데이터 수집을 시작하는 방법
-- ClickStack에서 텔레메트리 데이터를 확인하는 방법
-
-이 통합은 ClickStack의 고성능 수집 기능과 Bindplane의 중앙 집중식 collector 관리 기능을 결합하여, 운영 부담 없이 관측성을 확장하기 쉽게 해줍니다.
-
-소요 시간: 10-15분
+소요 시간: 10~15분
 :::
 
 ## Bindplane이란 무엇입니까? \{#what-is-bindplane\}

@@ -1,23 +1,20 @@
 ---
 sidebar_label: 'Apache Beam'
 slug: /integrations/apache-beam
-description: 'Вы можете выполнять приём данных в ClickHouse с помощью Apache Beam'
+description: 'Вы можете загружать данные в ClickHouse с помощью Apache Beam'
 title: 'Интеграция Apache Beam и ClickHouse'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
-keywords: ['apache beam', 'потоковая обработка', 'пакетная обработка', 'коннектор JDBC', 'конвейер данных']
+keywords: ['apache beam', 'потоковая обработка', 'пакетная обработка', 'jdbc-коннектор', 'конвейер данных']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Интеграция Apache Beam и ClickHouse \{#integrating-apache-beam-and-clickhouse\}
-
-<ClickHouseSupportedBadge/>
-
-**Apache Beam** — это открытая унифицированная модель программирования, которая позволяет разработчикам определять и выполнять как пакетные, так и потоковые (непрерывные) конвейеры обработки данных. Гибкость Apache Beam заключается в его способности поддерживать широкий спектр сценариев обработки данных — от ETL (Extract, Transform, Load — извлечение, преобразование и загрузка) операций до сложной обработки событий и аналитики в режиме реального времени.  
+**Apache Beam** — это открытая унифицированная модель программирования, которая позволяет разработчикам определять и выполнять как пакетные, так и потоковые (непрерывные) конвейеры обработки данных. Гибкость Apache Beam заключается в его способности поддерживать широкий спектр сценариев обработки данных — от ETL (Extract, Transform, Load — извлечение, преобразование и загрузка) операций до сложной обработки событий и аналитики в режиме реального времени.
 Эта интеграция использует официальный [JDBC-коннектор](https://github.com/ClickHouse/clickhouse-java) ClickHouse в качестве базового слоя записи данных.
 
 ## Пакет интеграции \{#integration-package\}

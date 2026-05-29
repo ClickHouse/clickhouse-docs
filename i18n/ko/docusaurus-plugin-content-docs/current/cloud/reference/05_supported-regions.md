@@ -10,8 +10,6 @@ doc_type: 'reference'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# 지원 Cloud 리전 \{#supported-cloud-regions\}
-
 ## AWS 리전 \{#aws-regions\}
 
 * ap-northeast-1 (도쿄)

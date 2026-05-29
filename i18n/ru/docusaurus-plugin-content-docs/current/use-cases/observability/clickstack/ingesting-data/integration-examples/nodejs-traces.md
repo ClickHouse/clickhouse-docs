@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'Мониторинг трейсов Node.js-приложений с помощью ClickStack'
 doc_type: 'guide'
-keywords: ['Node.js', 'трейсы', 'OTEL', 'ClickStack', 'распределённый трейсинг']
+keywords: ['Node.js', 'трейсы', 'OTEL', 'ClickStack', 'распределённая трассировка']
 ---
 
 import Image from '@theme/IdealImage';
@@ -19,11 +19,8 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг трейсов Node.js с помощью ClickStack \{#nodejs-traces-clickstack\}
-
-:::note[TL;DR]
-Собирайте распределённые трейсы из приложений Node.js в ClickStack с помощью автоматической инструментации OpenTelemetry. Включает демо-набор данных и готовую панель мониторинга.
+:::note[Кратко]
+Собирайте распределённые трейсы из приложений Node.js в ClickStack с помощью автоматического инструментирования OpenTelemetry. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим приложением Node.js \{#existing-nodejs\}

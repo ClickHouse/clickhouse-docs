@@ -2,21 +2,19 @@
 slug: /cloud/managed-postgres/monitoring/metrics
 sidebar_label: '指标参考'
 title: 'Managed Postgres 指标参考'
-description: 'Managed Postgres Prometheus 端点暴露的完整指标列表'
+description: 'Managed Postgres Prometheus endpoint 暴露的完整指标列表'
 keywords: ['Managed Postgres', '指标', 'Prometheus', '参考', '可观测性']
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-# 指标参考 \{#metrics-reference\}
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-metrics-beta" />
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-metrics" />
-
-本页面列出了
-[Managed Postgres Prometheus 端点](/cloud/managed-postgres/monitoring/prometheus)
-暴露的所有指标。
-有关设置和身份验证，请参阅 [Prometheus 端点] 页面。
+本页列出
+[Managed Postgres Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus)
+公开的所有指标。
+有关设置和身份验证，请参阅 [Prometheus endpoint] 页面。
 
 ## 常用标签 \{#common-labels\}
 

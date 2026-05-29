@@ -13,11 +13,10 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-# ClickHouse 开源版快速开始 \{#clickhouse-oss-quick-start\}
-
-> 在本快速入门教程中，我们将通过几个简单步骤帮助你完成开源版 ClickHouse 的设置。你将使用 ClickHouse CLI `clickhousectl` 安装 ClickHouse，
-> 启动 ClickHouse 服务端，连接到服务器来创建一张表，
-> 向其中插入数据，并执行一条 SELECT 查询。
+> 在本快速入门教程中，我们将通过几个简单步骤帮你完成开源版 ClickHouse 的设置。
+> 你将使用 ClickHouse CLI `clickhousectl` 安装 ClickHouse，
+> 启动 ClickHouse server，连接到服务器以创建表，
+> 向表中插入数据，并运行 SELECT 查询。
 
 <VerticalStepper>
   ## 安装 ClickHouse CLI \ \{#install-the-cli\}
@@ -29,6 +28,21 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   ```
 
   系统还会自动创建 `chctl` 别名以方便使用。
+
+  <details>
+    <summary>高级：无需 `clickhousectl` 安装 ClickHouse</summary>
+
+    如果您只需要 `clickhouse` 二进制文件，且不需要 `clickhousectl`，请使用通用安装程序并设置 `CLICKHOUSE_ONLY=1`：
+
+    ```bash
+    curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+    ```
+
+    这会将单个 `clickhouse` 二进制文件下载到当前目录。然后，您可以
+    直接通过该二进制文件运行 `clickhouse-server`、`clickhouse-client` 和 `clickhouse-local`，
+    而本指南其余基于 `clickhousectl` 的步骤将不适用。有关
+    纯二进制文件工作流，请参阅[快速安装](/install/quick-install)页面。
+  </details>
 
   ## 安装 ClickHouse \{#install-clickhouse\}
 
@@ -251,7 +265,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       )
       ```
 
-      更多详情，请参阅[`file` 表函数](/sql-reference/table-functions/file)文档页面。
+      更多详情，请参阅[`file` 表函数](/sql-reference/table-functions/file)
+      文档页面。
 
       <br />
     </TabItem>
@@ -279,7 +294,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="MySQL" label="MySQL">
-      使用 [`mysql` 테이블 함수](/sql-reference/table-functions/mysql)
+      使用 [`mysql` 表函数](/sql-reference/table-functions/mysql)
       读取 MySQL 表中的数据：
 
       ```sql
@@ -321,7 +336,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="messagequeue" label="消息队列">
-      消息队列可以通过相应的表引擎将数据流式写入 ClickHouse，包括：
+      消息队列可以通过相应的表
+      引擎将数据流式写入 ClickHouse，包括：
 
       * **Kafka**：使用 [`Kafka` 表引擎](/engines/table-engines/integrations/kafka) 集成 Kafka
       * **Amazon MSK**：集成 [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/)

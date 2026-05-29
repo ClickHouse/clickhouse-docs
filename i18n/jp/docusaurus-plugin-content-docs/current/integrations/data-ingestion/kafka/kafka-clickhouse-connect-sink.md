@@ -10,13 +10,10 @@ keywords: ['ClickHouse Kafka Connect Sink', 'ClickHouse 用 Kafka コネクタ',
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# ClickHouse Kafka Connect Sink \{#clickhouse-kafka-connect-sink\}
-
 :::note
-サポートが必要な場合は、[リポジトリで issue を作成](https://github.com/ClickHouse/clickhouse-kafka-connect/issues)するか、[ClickHouse public Slack](https://clickhouse.com/slack) で質問してください。
+サポートが必要な場合は、[リポジトリで issue を報告する](https://github.com/ClickHouse/clickhouse-kafka-connect/issues)か、[ClickHouse public Slack](https://clickhouse.com/slack) で質問してください。
 :::
-**ClickHouse Kafka Connect Sink** は、Kafka トピックから ClickHouse テーブルへデータを配信する Kafka コネクタです。
+**ClickHouse Kafka Connect Sink** は、Kafka トピックから ClickHouse テーブルにデータを取り込む Kafka コネクタです。
 
 ### ライセンス \{#license\}
 

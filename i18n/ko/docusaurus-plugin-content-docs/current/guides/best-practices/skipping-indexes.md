@@ -13,8 +13,6 @@ import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse 데이터 스키핑 인덱스 이해하기 \{#understanding-clickhouse-data-skipping-indexes\}
-
 ## 소개 \{#introduction\}
 
 ClickHouse 쿼리 성능에는 여러 요소가 영향을 줍니다. 대부분의 시나리오에서 핵심 요소는 ClickHouse가 쿼리의 `WHERE` 절 조건을 평가할 때 기본 키(primary key)를 사용할 수 있는지 여부입니다. 따라서 가장 일반적인 쿼리 패턴에 적용할 수 있는 기본 키를 선택하는 것은 효과적인 테이블 설계를 위해 필수적입니다.

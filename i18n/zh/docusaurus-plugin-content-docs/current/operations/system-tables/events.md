@@ -2291,11 +2291,19 @@ Kafka 表的写入 (插入) 次数
 
 ### KeeperBatchMaxCount \{#keeperbatchmaxcount\}
 
-批次大小因数量限制而受限的次数
+达到 max&#95;requests&#95;batch&#95;size 限制的批次数
+
+### KeeperBatchMaxReadCount \{#keeperbatchmaxreadcount\}
+
+批次达到 `max_read_batch_size` 限制的次数
+
+### KeeperBatchMaxReadTotalSize \{#keeperbatchmaxreadtotalsize\}
+
+达到 `max_read_batch_bytes_size` 限制的批次数量
 
 ### KeeperBatchMaxTotalSize \{#keeperbatchmaxtotalsize\}
 
-批次大小因总字节数限制而受限的次数
+达到 `max_requests_batch_bytes_size` 限制的批次数
 
 ### KeeperChangelogFileSyncMicroseconds \{#keeperchangelogfilesyncmicroseconds\}
 
@@ -2524,6 +2532,14 @@ Keeper 快照文件在执行 fsync 时花费的时间
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 单次请求的 Keeper 总延迟
+
+### KeeperWriteBatchCount \{#keeperwritebatchcount\}
+
+由 Keeper 处理的写请求批次数
+
+### KeeperWriteBatchTotalRequests \{#keeperwritebatchtotalrequests\}
+
+Keeper 按批次处理的写入请求总数
 
 ### LoadedDataParts \{#loadeddataparts\}
 
@@ -4728,6 +4744,50 @@ sleep 函数 (sleep、sleepEachRow) 的调用次数。
 ### TextIndexHeaderCacheMisses \{#textindexheadercachemisses\}
 
 头部未在缓存中命中的次数。
+
+### TextIndexLazyAdvanceCount \{#textindexlazyadvancecount\}
+
+在惰性倒排列表模式下执行 advance 操作的次数。
+
+### TextIndexLazyAndBlocksSkippedZero \{#textindexlazyandblocksskippedzero\}
+
+在惰性 AND 模式下，因输出区域全为 0 而跳过的打包块数量。
+
+### TextIndexLazyAndSegmentsSkippedDense \{#textindexlazyandsegmentsskippeddense\}
+
+惰性 AND 模式下通过密集递增优化跳过的分段数。
+
+### TextIndexLazyAndSegmentsSkippedZero \{#textindexlazyandsegmentsskippedzero\}
+
+在 lazy AND 模式下，因输出区域全为零而被跳过的分段数。
+
+### TextIndexLazyBlocksSkippedCovered \{#textindexlazyblocksskippedcovered\}
+
+在惰性倒排列表模式下，因输出区域已全为 1 而跳过的已打包块数量。
+
+### TextIndexLazyBruteForceIntersections \{#textindexlazybruteforceintersections\}
+
+在惰性倒排列表模式下执行的暴力求交次数。
+
+### TextIndexLazyLeapfrogIntersections \{#textindexlazyleapfrogintersections\}
+
+在惰性倒排列表模式下执行的 leapfrog 交集操作次数。
+
+### TextIndexLazyPackedBlocksDecoded \{#textindexlazypackedblocksdecoded\}
+
+惰性倒排列表模式下已解码的打包块数量。
+
+### TextIndexLazySegmentsPrepared \{#textindexlazysegmentsprepared\}
+
+惰性倒排列表模式下已准备的分段数量 (已加载索引区段) 。
+
+### TextIndexLazySegmentsSkippedCovered \{#textindexlazysegmentsskippedcovered\}
+
+在惰性倒排列表模式下，由于输出区域已全为 1 而跳过的分段数。
+
+### TextIndexLazySegmentsSkippedDense \{#textindexlazysegmentsskippeddense\}
+
+在惰性倒排列表模式下，通过 dense-memset 优化而跳过的分段数。
 
 ### TextIndexPostingsCacheHits \{#textindexpostingscachehits\}
 

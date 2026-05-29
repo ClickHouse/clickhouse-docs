@@ -1,5 +1,5 @@
 ---
-title: 'Grafana 사용하기'
+title: '관측성을 위해 Grafana와 ClickHouse를 사용하기'
 description: '관측성을 위해 Grafana와 ClickHouse를 사용하기'
 slug: /observability/grafana
 keywords: ['관측성', '로그', '트레이스', '메트릭', 'OpenTelemetry', 'Grafana', 'OTel']
@@ -19,13 +19,10 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
+Grafana는 ClickHouse의 관측성 데이터에 권장되는 시각화 도구입니다. 이는 Grafana용 공식 ClickHouse 플러그인을 통해 구현됩니다. 설치 지침은 [여기](/integrations/grafana)에서 확인할 수 있습니다.
 
-# Grafana와 ClickHouse를 사용한 관측성(Observability) \{#using-grafana-and-clickhouse-for-observability\}
-
-Grafana는 ClickHouse에서 관측성 데이터를 시각화하기 위해 가장 선호되는 도구입니다. 이는 Grafana용 공식 ClickHouse 플러그인을 사용하여 구현됩니다. 설치 방법은 [여기](/integrations/grafana)에 있는 안내를 따르면 됩니다.
-
-플러그인 v4 버전에서는 새로운 쿼리 빌더 환경에서 로그와 트레이스를 일급 시민으로 다룹니다. 이를 통해 SRE가 SQL 쿼리를 직접 작성해야 할 필요성이 줄어들며, SQL 기반 관측성을 단순화하여 새롭게 부상하는 이러한 패러다임을 한 단계 진전시킵니다.
-이 과정의 일부로 OpenTelemetry(OTel)를 플러그인의 핵심에 두었습니다. 향후 수년간 OpenTelemetry가 SQL 기반 관측성과 데이터 수집 방식의 기반이 될 것이라고 믿기 때문입니다.
+플러그인 V4는 새로운 쿼리 빌더 환경에서 로그와 트레이스를 핵심적으로 지원합니다. 이를 통해 SRE가 SQL 쿼리를 직접 작성해야 할 필요를 줄이고, SQL 기반 관측성을 단순화하여 이 새로운 패러다임을 한 단계 발전시킵니다.
+이의 일환으로 OpenTelemetry (OTel)를 플러그인의 핵심에 두었습니다. 향후 수년간 이것이 SQL 기반 관측성과 데이터 수집 방식의 토대가 될 것이라고 보기 때문입니다.
 
 ## OpenTelemetry 통합 \{#open-telemetry-integration\}
 

@@ -12,8 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import QuickInstall from './_snippets/_quick_install.md'
 
-# 快速安装 \{#quick-install\}
-
 如果你不需要为生产环境安装 ClickHouse，最快的搭建方法是使用 ClickHouse CLI，或通过 `curl` 运行安装脚本。
 
 <Tabs>

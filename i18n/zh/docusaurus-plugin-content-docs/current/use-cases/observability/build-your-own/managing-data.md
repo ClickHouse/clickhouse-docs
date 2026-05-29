@@ -10,9 +10,7 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-# 管理数据 \{#managing-data\}
-
-为可观测性部署 ClickHouse 通常会涉及大规模数据集，而这些数据集需要妥善管理。ClickHouse 提供了多种功能来协助进行数据管理。
+面向可观测性的 ClickHouse 部署必然会涉及大型数据集，因此需要对其进行管理。ClickHouse 提供了多项功能来帮助管理数据。
 
 ## 分区 \{#partitions\}
 

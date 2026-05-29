@@ -16,10 +16,7 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Apache Spark와 ClickHouse 통합 \{#integrating-apache-spark-with-clickhouse\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 [Apache Spark](https://spark.apache.org/)는 단일 노드 또는 클러스터 환경에서 데이터 엔지니어링, 데이터
 사이언스, 머신 러닝 작업을 실행하기 위한 멀티 언어 엔진입니다.
@@ -31,7 +28,7 @@ Apache Spark와 ClickHouse를 연결하는 주요 방법은 두 가지입니다:
 2. [Spark JDBC](./apache-spark/spark-jdbc) - [JDBC 데이터 소스](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html)를 사용하여
    Spark와 ClickHouse를 통합합니다.
 
-<br/>
+<br />
 
 이 두 가지 방식은 모두 성공적으로 테스트되었으며 Java, Scala, PySpark, Spark SQL을 포함한 다양한 API와 완전히 호환됩니다.
 

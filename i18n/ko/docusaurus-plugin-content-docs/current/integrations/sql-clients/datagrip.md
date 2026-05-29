@@ -19,10 +19,7 @@ import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# DataGrip을 ClickHouse에 연결하기 \{#connecting-datagrip-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## DataGrip 시작 또는 다운로드 \{#start-or-download-datagrip\}
 

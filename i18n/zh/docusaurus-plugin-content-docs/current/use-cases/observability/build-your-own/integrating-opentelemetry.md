@@ -1,5 +1,5 @@
 ---
-title: '集成 OpenTelemetry'
+title: '集成 OpenTelemetry 进行数据采集'
 description: '将 OpenTelemetry 与 ClickHouse 集成以实现可观测性'
 slug: /observability/integrating-opentelemetry
 keywords: ['可观测性', 'OpenTelemetry']
@@ -16,14 +16,11 @@ import observability_8 from '@site/static/images/use-cases/observability/observa
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
 
+任何可观测性解决方案都需要一种收集并导出日志和链路追踪的手段。为此，ClickHouse 推荐使用 [OpenTelemetry (OTel) 项目](https://opentelemetry.io/)。
 
-# 集成 OpenTelemetry 进行数据采集 \{#integrating-opentelemetry-for-data-collection\}
+“OpenTelemetry 是一个可观测性框架和工具包，旨在创建和管理链路追踪、指标和日志等遥测数据。”
 
-任何可观测性解决方案都需要具备采集并导出日志和追踪数据的能力。为此，ClickHouse 推荐使用 [OpenTelemetry (OTel) 项目](https://opentelemetry.io/)。
-
-“OpenTelemetry 是一个可观测性框架和工具集，旨在创建和管理追踪、指标和日志等遥测数据。”
-
-与 ClickHouse 或 Prometheus 不同，OpenTelemetry 并不是一个可观测性后端，而是专注于遥测数据的生成、采集、管理和导出。虽然 OpenTelemetry 的初衷是通过特定语言的 SDKs 让你可以轻松为应用或系统进行埋点/插桩，但它已经扩展为通过 OpenTelemetry Collector 来采集日志——这是一个接收、处理并导出遥测数据的代理或中间层组件。
+与 ClickHouse 或 Prometheus 不同，OpenTelemetry 并不是可观测性后端，而是专注于遥测数据的生成、收集、管理和导出。尽管 OpenTelemetry 最初的目标是让你能够轻松使用特定语言的 SDK 为应用程序或系统添加埋点，但现在它的能力已扩展到通过 OpenTelemetry collector 收集日志——它是一个用于接收、处理和导出遥测数据的 agent 或代理。
 
 ## 与 ClickHouse 相关的组件 \{#clickhouse-relevant-components\}
 

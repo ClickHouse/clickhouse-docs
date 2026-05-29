@@ -1,8 +1,8 @@
 ---
-title: '简介'
+title: '使用 ClickHouse 实现可观测性'
 description: '将 ClickHouse 用作可观测性解决方案'
 slug: /use-cases/observability/introduction
-keywords: ['可观测性', '日志', '跟踪', '指标', 'OpenTelemetry', 'Grafana', 'OTel']
+keywords: ['可观测性', '日志', '链路追踪', '指标', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -10,8 +10,6 @@ doc_type: 'guide'
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
-
-# 使用 ClickHouse 实现可观测性 \{#using-clickhouse-for-observability\}
 
 ## 引言 \{#introduction\}
 

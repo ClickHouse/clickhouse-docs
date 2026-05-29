@@ -9,14 +9,11 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
-
-# 일반적인 액세스 관리 쿼리 \{#common-access-management-queries\}
-
 :::tip 자가 관리형
 자가 관리형 ClickHouse를 사용하는 경우 [SQL users and roles](/guides/sre/user-management/index.md)를 참조하십시오.
 :::
 
-이 문서에서는 SQL 사용자와 역할을 정의하고, 해당 권한을 데이터베이스, 테이블, 행, 컬럼에 적용하는 기본 사항을 다룹니다.
+이 문서에서는 SQL 사용자와 역할을 정의하는 기본 개념과 이러한 권한을 데이터베이스, 테이블, 행, 컬럼에 부여하고 적용하는 방법을 다룹니다.
 
 ## Admin 사용자 \{#admin-user\}
 

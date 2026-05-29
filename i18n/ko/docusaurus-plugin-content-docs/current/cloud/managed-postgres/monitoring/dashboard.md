@@ -7,19 +7,17 @@ keywords: ['managed postgres', '모니터링', '대시보드', 'Cloud Console', 
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import dashboard from '@site/static/images/managed-postgres/monitoring/dashboard.png';
 
-# 모니터링 대시보드 \{#monitoring-dashboard\}
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-dashboard" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-dashboard-beta" />
 
 인스턴스의 왼쪽 사이드바에 있는 **모니터링** 탭에는
-선택한 기간 동안의 리소스 사용량과 데이터베이스 활동을 보여주는
+선택한 시간 범위의 리소스 사용량과 데이터베이스 활동을 보여주는
 실시간 차트가 표시됩니다.
 
-<Image img={dashboard} alt="IOPS, CPU 사용량, 메모리, 디스크, 네트워크 트래픽, 데이터베이스 크기, 연결, 처리량, 트랜잭션, 캐시 적중률, 교착 상태를 보여주는 모니터링 대시보드" size="lg" border />
+<Image img={dashboard} alt="IOPS, CPU 사용량, 메모리, 디스크, 네트워크 트래픽, 데이터베이스 크기, 연결, 처리량, 트랜잭션, 캐시 적중률 및 데드락을 보여주는 모니터링 대시보드" size="lg" border />
 
 ## 패널 \{#panels\}
 

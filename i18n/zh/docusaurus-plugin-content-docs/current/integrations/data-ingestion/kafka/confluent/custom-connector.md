@@ -3,7 +3,7 @@ sidebar_label: '在 Confluent Platform 上使用 Kafka Sink 连接器'
 sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/custom-connector
 description: '将 ClickHouse Sink 连接器与 Kafka Connect 和 ClickHouse 配合使用'
-title: '将 Confluent Cloud 与 ClickHouse 集成'
+title: '将 Confluent Platform 与 ClickHouse 集成'
 keywords: ['Confluent ClickHouse 集成', 'ClickHouse Kafka 连接器', 'Kafka Connect ClickHouse sink', 'Confluent Platform ClickHouse', 'Confluent 自定义连接器']
 doc_type: 'guide'
 ---
@@ -12,19 +12,17 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-
-# 将 Confluent 平台与 ClickHouse 集成 \{#integrating-confluent-platform-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/SQAiPVbd3gg"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 前提条件 \{#prerequisites\}

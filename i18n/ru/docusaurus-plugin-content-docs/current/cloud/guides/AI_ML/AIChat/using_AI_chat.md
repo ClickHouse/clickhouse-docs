@@ -20,9 +20,7 @@ import img_history from '@site/static/images/use-cases/AI_ML/AIChat/5_history.pn
 import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_result_actions.png';
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
-# Использование чата ClickHouse Assistant в ClickHouse Cloud \{#use-clickhouse-assistant-chat-in-clickhouse-cloud\}
-
-> В этом руководстве объясняется, как включить и использовать функцию AI Chat в консоли ClickHouse Cloud.
+> В этом руководстве объясняется, как включить и использовать функцию чата AI Chat в консоли ClickHouse Cloud.
 
 <VerticalStepper headerLevel="h2">
   ## Предварительные требования \{#prerequisites\}
@@ -35,7 +33,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
   2. В левой боковой панели нажмите значок со звездой с подписью «ClickHouse Assistant».
   3. (Горячая клавиша) Нажмите <kbd>⌘</kbd> + <kbd>&#39;</kbd> (macOS) или <kbd>Ctrl</kbd> + <kbd>&#39;</kbd> (Linux/Windows), чтобы открыть или закрыть панель.
 
-  <Image img={img_open} alt="Открыть выезжающую панель AI Chat" size="md" />
+  <Image img={img_open} alt="Открыть выдвижную панель AI Chat" size="md" />
 
   ## Примите условия использования данных (при первом запуске) \{#consent\}
 
@@ -51,7 +49,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
   * **Agent**: Многошаговое рассуждение по схеме и метаданным (сервис должен быть активен).
   * **Docs AI (Ask)**: Режим вопросов и ответов, основанный на официальной документации ClickHouse и рекомендациях по наилучшей практике.
 
-  Используйте переключатель режима в левом нижнем углу панели, чтобы сменить режим.
+  Используйте переключатель режима в левом нижнем углу выдвижной панели, чтобы сменить режим.
 
   <Image img={img_modes} alt="Выбор режима" size="sm" />
 

@@ -13,12 +13,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# ClickHouse と Databricks の統合 \{#integrating-clickhouse-with-databricks\}
-
-<ClickHouseSupportedBadge/>
-
-ClickHouse Spark コネクタは Databricks とシームレスに連携します。このガイドでは、Databricks 向けのプラットフォーム固有のセットアップ、インストール手順、および利用方法のパターンについて説明します。
+ClickHouse Spark コネクタは Databricks とシームレスに連携します。このガイドでは、Databricks 向けのプラットフォーム固有のセットアップ、インストール、使用方法について説明します。
 
 ## Databricks 向けの API 選択 \{#api-selection\}
 

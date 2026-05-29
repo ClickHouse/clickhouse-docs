@@ -17,8 +17,6 @@ import cp_table_settings from '@site/static/images/integrations/data-ingestion/c
 import CreateClickPipe from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/_create_clickpipe.md';
 import Image from '@theme/IdealImage';
 
-# 첫 번째 Amazon S3 ClickPipe 생성하기 \{#creating-your-first-amazon-s3-clickpipe\}
-
-S3 ClickPipe는 Amazon S3 및 S3 호환 오브젝트 스토리지에서 ClickHouse Cloud로 데이터를 수집하기 위한 완전 관리형이면서 내결함성을 갖춘 방식을 제공합니다. **1회성 수집**과 **지속적인 수집**을 모두 지원하며, 정확히 한 번만 처리되는(exactly-once) 의미 체계를 보장합니다.
+S3 ClickPipe는 Amazon S3 및 S3 호환 객체 스토어의 데이터를 ClickHouse Cloud로 수집할 수 있는 완전 관리형의 복원력 높은 방법을 제공합니다. 정확히 한 번 처리 의미 체계를 통해 **일회성** 수집과 **지속적인 수집**을 모두 지원합니다.
 
 <CreateClickPipe provider="s3" />

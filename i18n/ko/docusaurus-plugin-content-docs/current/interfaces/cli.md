@@ -7,10 +7,6 @@ title: 'clickhousectl'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-<BetaBadge />
-
 `clickhousectl`은 로컬 및 클라우드용 ClickHouse CLI입니다.
 
 `clickhousectl`로 다음 작업을 수행할 수 있습니다:

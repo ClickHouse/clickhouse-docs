@@ -40,8 +40,6 @@ import clickhouse_result from '@site/static/images/integrations/data-ingestion/e
 import Image from '@theme/IdealImage';
 
 
-# EMQX と ClickHouse の統合 \{#integrating-emqx-with-clickhouse\}
-
 ## EMQX への接続 \{#connecting-emqx\}
 
 [EMQX](https://www.emqx.com/en/try?product=enterprise) は、オープンソースの MQTT ブローカーであり、高性能なリアルタイムメッセージ処理エンジンを備え、大規模に IoT デバイス向けのイベントストリーミングを実現します。最もスケーラブルな MQTT ブローカーとして、EMQX はあらゆるデバイスを、あらゆるスケールで接続するのに役立ちます。IoT データをどこへでも移動させ、処理できます。

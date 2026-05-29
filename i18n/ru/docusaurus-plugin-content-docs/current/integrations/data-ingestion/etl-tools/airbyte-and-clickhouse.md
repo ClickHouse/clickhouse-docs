@@ -24,31 +24,16 @@ import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Подключение Airbyte к ClickHouse \{#connect-airbyte-to-clickhouse\}
-
 <PartnerBadge />
 
 :::note
-Обратите внимание, что источник и назначение Airbyte для ClickHouse в настоящее время находятся в статусе Alpha и не подходят для перемещения больших наборов данных (> 10 млн строк)
+Обратите внимание: исходный и целевой коннекторы Airbyte для ClickHouse сейчас имеют статус альфа и не подходят для переноса больших наборов данных (&gt; 10 миллионов строк)
 :::
 
-<a href='https://www.airbyte.com/' target='_blank'>
-  Airbyte
-</a>
-— это платформа интеграции данных с открытым исходным кодом. Она позволяет создавать
-<a
-  href='https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el'
-  target='_blank'
->
-  ELT
-</a>
--конвейеры данных и поставляется с более чем 140 готовыми коннекторами. Это
-пошаговое руководство показывает, как подключить Airbyte к ClickHouse в качестве
-целевой системы и загрузить тестовый набор данных.
+<a href="https://www.airbyte.com/" target="_blank">Airbyte</a> — это платформа интеграции данных с открытым исходным кодом. Она позволяет создавать <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a>-конвейеры данных и включает более 140 готовых коннекторов. В этом пошаговом руководстве показано, как подключить Airbyte к ClickHouse в качестве целевого хранилища и загрузить пример набора данных.
 
 <VerticalStepper headerLevel="h2">
-  ## Загрузите и запустите Airbyte
+  ## Загрузите и запустите Airbyte \{#1-download-and-run-airbyte\}
 
   1. Airbyte работает на Docker и использует `docker-compose`. Убедитесь, что вы загрузили и установили последнюю версию Docker.
 
@@ -68,7 +53,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
      В качестве альтернативы вы можете зарегистрироваться и использовать <a href="https://docs.airbyte.com/deploying-airbyte/on-cloud" target="_blank">Airbyte Cloud</a>.
      :::
 
-  ## Добавьте ClickHouse в качестве назначения
+  ## Добавьте ClickHouse в качестве назначения \{#2-add-clickhouse-as-a-destination\}
 
   В этом разделе мы покажем, как добавить экземпляр ClickHouse в качестве назначения.
 
@@ -99,7 +84,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
   :::
 
-  ## Добавьте набор данных в качестве источника
+  ## Добавьте набор данных в качестве источника \{#3-add-a-dataset-as-a-source\}
 
   В качестве примера набора данных мы будем использовать <a href="https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi/" target="_blank">New York City Taxi Data</a> (на <a href="https://github.com/toddwschneider/nyc-taxi-data" target="_blank">Github</a>). В этом руководстве мы будем использовать подмножество этого набора данных, соответствующее январю 2022 года.
 
@@ -117,7 +102,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
   3. Поздравляем! Вы добавили файл-источник в Airbyte.
 
-  ## Создайте подключение и загрузите набор данных в ClickHouse
+  ## Создайте подключение и загрузите набор данных в ClickHouse \{#4-create-a-connection-and-load-the-dataset-into-clickhouse\}
 
   1. В Airbyte перейдите на страницу &quot;Connections&quot; и добавьте новое подключение.
 

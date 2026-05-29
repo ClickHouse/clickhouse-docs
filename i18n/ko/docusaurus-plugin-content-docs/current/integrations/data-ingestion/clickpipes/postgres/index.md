@@ -21,10 +21,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
-# Postgres에서 ClickHouse로 데이터 수집 (CDC 사용) \{#ingesting-data-from-postgres-to-clickhouse-using-cdc\}
-
-ClickPipes를 사용하여 소스 Postgres 데이터베이스의 데이터를 ClickHouse Cloud로 수집할 수 있습니다. 소스 Postgres 데이터베이스는 온프레미스 또는 Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase 등을 포함한 클라우드 서비스에서 호스팅될 수 있습니다.
+ClickPipes를 사용하여 소스 Postgres 데이터베이스의 데이터를 ClickHouse Cloud로 수집할 수 있습니다. 소스 Postgres 데이터베이스는 온프레미스 또는 Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase 등을 포함한 클라우드 환경에서 호스팅될 수 있습니다.
 
 Postgres ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수 있으며, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 및 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 사용해 프로그래밍 방식으로도 배포하고 관리할 수 있습니다.
 

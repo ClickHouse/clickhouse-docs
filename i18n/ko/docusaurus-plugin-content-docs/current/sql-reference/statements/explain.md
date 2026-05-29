@@ -609,10 +609,18 @@ Join (JOIN FillRightFirst)
 * `header` — 각 출력 포트에 대한 헤더를 출력합니다. 기본값: 0.
 * `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 그래프 설명 언어 형식으로 그래프를 출력합니다. 기본값: 0.
 * `compact` — `graph` 설정이 활성화된 경우 그래프를 compact 모드로 출력합니다. 기본값: 1.
+* `compact_repeated_processor_chains` — 텍스트 출력에서 인접하게 반복되는 프로세서 체인을 반복 횟수와 함께 체인 하나만 표시하도록 압축합니다. 예를 들어 조인처럼 동일한 체인이 여러 번 나타나는 경우 병렬 파이프라인을 더 쉽게 읽을 수 있습니다. 그래프 출력에는 영향을 주지 않습니다. 기본값: 0.
+
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
 
 `compact=0`이고 `graph=1`인 경우 프로세서 이름에 고유한 프로세서 식별자가 접미사로 추가됩니다.
 
-예:
+예시:
 
 ```sql
 EXPLAIN PIPELINE SELECT sum(number) FROM numbers_mt(100000) GROUP BY number % 4;
@@ -633,7 +641,6 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
-
 
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 

@@ -1,21 +1,20 @@
 ---
 slug: /cloud/managed-postgres/scaling
-sidebar_label: '扩展'
-title: '扩展'
-description: '通过灵活的 VM 类型和独立的资源伸缩，对由 ClickHouse 管理的 Postgres 实例进行纵向扩容'
-keywords: ['postgres 扩展', '纵向扩容', 'vm 类型', 'nvme 扩展', '实例类型', '性能扩展']
+sidebar_label: '扩缩容'
+title: '扩缩容'
+description: '通过灵活的 VM 类型和独立的资源伸缩，对由 ClickHouse 管理的 Postgres 实例进行垂直扩缩容'
+keywords: ['postgres 扩缩容', '垂直扩缩容', 'vm 类型', 'nvme 扩缩容', '实例类型', '性能扩缩容']
 doc_type: '指南'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import instanceTypes from '@site/static/images/managed-postgres/instance-types.png';
 import scalingSettings from '@site/static/images/managed-postgres/scaling-settings.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="scaling" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.scaling-beta" />
 
-托管 Postgres 提供灵活的扩展选项，以满足您的工作负载需求。借助 50 多种基于 NVMe 的实例类型可供选择，您可以在 CPU、内存和存储之间独立扩展，以针对特定用例优化性能和成本。
-
+Managed Postgres 提供灵活的扩缩容选项，以满足您的工作负载需求。借助 50 多种基于 NVMe 的实例类型可供选择，您可以在 CPU、内存和存储之间独立扩缩容，以针对特定用例优化性能和成本。
 
 ## 实例类型与灵活性 \{#instance-types\}
 
@@ -31,11 +30,15 @@ import scalingSettings from '@site/static/images/managed-postgres/scaling-settin
 
 不同的工作负载适合不同的资源配置：
 
-| 工作负载类型                                      | CPU   | 内存  | 存储   | 推荐实例                                   |
-|---------------------------------------------------|--------|--------|---------|---------------------------------------------|
-| **计算优化型**                                    | 高    | 中    | 中     | 计算优化型（高 vCPU 数量）                 |
-| **内存优化型**（大型工作集）                      | 中    | 高    | 中     | 内存优化型（高内存与 CPU 比例）            |
-| **存储优化型**（大型数据集、高 I/O 负载）        | 中    | 中    | 高     | 存储优化型（高 NVMe 容量）                 |
+| 工作负载类型                      | CPU | 内存 | 存储 | 推荐实例                 |
+| --------------------------- | --- | -- | -- | -------------------- |
+| **计算优化型**                   | 高   | 中  | 中  | 计算优化型 (高 vCPU 数量)    |
+| **内存优化型** (大型工作集)           | 中   | 高  | 中  | 内存优化型 (高内存与 CPU 比例)  |
+| **存储优化型** (大型数据集、高 I/O 负载)  | 中   | 中  | 高  | 存储优化型 (高 NVMe 容量)    |
+
+:::tip
+出于安全考虑，您可能无法切换到存储容量接近当前已用存储容量的实例类型。为避免出现问题，请始终选择存储容量高于当前已用容量、留有余量的实例类型。
+:::
 
 ## 扩展的工作原理 \{#how-scaling-works\}
 
@@ -130,11 +133,9 @@ WAL-G 提供：
 
 这样可以将复制吞吐量与 Postgres 实例资源解耦并单独优化。
 
-## 自动扩缩容（路线图） \{#autoscaling\}
+## 自动扩缩容 \{#autoscaling\}
 
-:::note[敬请期待]
-Managed Postgres 的自动存储扩缩容功能已在规划中。该功能会在数据库数据量增长时自动提升实例规格，从而无需手动干预。
-:::
+当磁盘使用率达到 90% 时，实例类型将自动调整为更大的实例类型。
 
 ## 其他资源 \{#resources\}
 

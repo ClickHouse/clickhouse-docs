@@ -2,24 +2,21 @@
 sidebar_label: 'Materialization: materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
-description: 'materialized_view materialization에 대한 상세 문서입니다'
+description: 'materialized_view 머티리얼라이즈에 대한 상세 문서'
 keywords: ['clickhouse', 'dbt', 'materialized_view', 'refreshable', 'Materialized Views', 'catchup']
-title: 'Materialization: materialized_view'
+title: 'Materialized views'
 doc_type: 'guide'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Materialized Views \{#materialized-views\}
-
-<ClickHouseSupportedBadge/>
-
-`materialized_view` materialization은 기존 `소스 테이블`에 대한 `SELECT`여야 합니다. PostgreSQL과 달리 ClickHouse의 materialized view는 "정적"이 아니며(해당하는 REFRESH 작업도 없음), 대신 **insert 트리거**로 동작하여 소스 테이블에 삽입된 행에 정의된 `SELECT` 변환을 적용해 대상 테이블에 새 행을 삽입합니다. ClickHouse에서 materialized view가 어떻게 동작하는지에 대한 자세한 내용은 [ClickHouse materialized view documentation](/docs/materialized-views)을 참고하세요.
+`materialized_view` 머티리얼라이즈는 기존 `소스 테이블`에 대한 `SELECT`여야 합니다. PostgreSQL과 달리 ClickHouse의 materialized view는 &quot;정적&quot;이 아니며(해당하는 REFRESH 작업도 없음), 대신 **insert 트리거**로 동작하여 소스 테이블에 삽입된 행에 정의된 `SELECT` 변환을 적용해 대상 테이블에 새 행을 삽입합니다. ClickHouse에서 materialized view가 어떻게 동작하는지에 대한 자세한 내용은 [ClickHouse materialized view documentation](/docs/materialized-views)을 참고하세요.
 
 :::note
-일반적인 materialization 개념과 공통 구성(engine, order_by, partition_by 등)에 대해서는 [Materializations](/integrations/dbt/materializations) 페이지를 참고하세요.
-:::”
+일반적인 머티리얼라이즈 개념과 공통 구성(engine, order&#95;by, partition&#95;by 등)에 대해서는 [Materializations](/integrations/dbt/materializations) 페이지를 참고하세요.
+:::
 
 ## 대상 테이블 관리 방식 \{#target-table-management\}
 

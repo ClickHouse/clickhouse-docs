@@ -9,13 +9,11 @@ doc_type: 'guide'
 
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Развертывание ClickHouse на Easypanel \{#deploying-clickhouse-on-easypanel\}
+<CommunityMaintainedBadge />
 
-<CommunityMaintainedBadge/>
+[Easypanel](https://easypanel.io) — это современная панель управления сервером. Вы можете использовать Easypanel для развертывания ClickHouse на своём сервере.
 
-[Easypanel](https://easypanel.io) — это современная панель управления серверами. Вы можете использовать её для развертывания ClickHouse на вашем сервере.
-
-[![Deploy to Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
+[![Развернуть в Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/docs/templates/clickhouse)
 
 ## Инструкции \{#instructions\}
 

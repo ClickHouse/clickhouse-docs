@@ -10,7 +10,7 @@ keywords: ['clickstack', 'AI 노트북', '조사', '관측성', 'HyperDX']
 ---
 
 import Image from '@theme/IdealImage';
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import notebook_hero from '@site/static/images/use-cases/observability/hyperdx-notebook-hero.png';
 import notebook_list from '@site/static/images/use-cases/observability/hyperdx-notebook-list.png';
 import notebook_tiles from '@site/static/images/use-cases/observability/hyperdx-notebook-tiles.png';
@@ -20,7 +20,7 @@ import notebook_manual_tiles from '@site/static/images/use-cases/observability/h
 import notebook_agent_context from '@site/static/images/use-cases/observability/hyperdx-notebook-agent-context.png';
 import notebook_ai_consent from '@site/static/images/use-cases/observability/hyperdx-notebook-ai-consent.png';
 
-<PrivatePreviewBadge />
+<BetaBadge />
 
 AI 노트북은 ClickStack에서 AI 에이전트와 수동 분석을 결합한 대화형 조사 도구입니다. 자연어로 문제를 설명하면 AI 에이전트가 대신 로그, 트레이스, 메트릭을 쿼리하여 관련 데이터, 차트, 요약을 일련의 타일 형태로 표시합니다. 또한 AI가 생성한 결과와 함께 직접 타일(차트, 테이블, 검색, Markdown 메모)을 추가하여 조사 내용을 완전한 기록으로 남길 수도 있습니다.
 
@@ -32,12 +32,12 @@ AI 노트북은 Managed ClickStack 배포에서만 사용할 수 있습니다.
 
 ## 설정 \{#setup\}
 
-AI 노트북은 현재 ClickHouse Cloud에서 비공개 프리뷰로 제공됩니다. AI 모델과 제공업체는 플랫폼에서 자동으로 관리됩니다.
+AI 노트북은 현재 ClickHouse Cloud에서 베타로 제공됩니다. AI 모델과 제공업체는 플랫폼에서 자동으로 관리됩니다.
 
 AI 노트북을 사용하기 전에 다음 사항을 확인하십시오:
 
 1. **생성형 AI 활성화** — 팀 관리자가 생성형 AI 동의 토글을 활성화해야 합니다. [생성형 AI 활성화](#enabling-generative-ai)를 참조하십시오.
-2. **Notebook 접근 권한** — 역할에 Notebooks에 대한 읽기/쓰기 권한이 있어야 합니다.
+2. **노트북 접근 권한** — 역할에 Notebooks에 대한 읽기/쓰기 권한이 있어야 합니다.
 
 활성화되면 적절한 역할이 있는 모든 사용자에게 왼쪽 사이드바에 **Notebooks** 항목이 표시됩니다.
 

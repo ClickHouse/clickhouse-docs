@@ -1,5 +1,5 @@
 ---
-title: 'BigQuery와 ClickHouse Cloud 비교'
+title: 'ClickHouse Cloud와 BigQuery 비교'
 slug: /migrations/bigquery/biquery-vs-clickhouse-cloud
 description: 'BigQuery와 ClickHouse Cloud의 차이점'
 keywords: ['BigQuery']
@@ -10,9 +10,6 @@ doc_type: 'guide'
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
-
-
-# ClickHouse Cloud와 BigQuery 비교  \{#comparing-clickhouse-cloud-and-bigquery\}
 
 ## 리소스 구성 \{#resource-organization\}
 

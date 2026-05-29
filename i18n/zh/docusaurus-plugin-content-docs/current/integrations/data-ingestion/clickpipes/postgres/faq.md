@@ -15,8 +15,6 @@ import failover_slot from '@site/static/images/integrations/data-ingestion/click
 import Image from '@theme/IdealImage';
 
 
-# Postgres 版 ClickPipes 常见问题解答（FAQ） \{#clickpipes-for-postgres-faq\}
-
 ### 事务回滚会同步到 ClickHouse 吗？ \{#are-transaction-rollbacks-replicated\}
 
 不会。CDC 只会同步已提交的事务。已回滚的事务不会被发送到 ClickHouse。

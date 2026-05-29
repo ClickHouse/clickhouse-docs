@@ -1,22 +1,19 @@
 ---
 sidebar_label: 'Estuary'
 slug: /integrations/estuary
-description: 'Estuary 連携により多様なデータソースを ClickHouse にストリーミングする'
-title: 'Estuary を ClickHouse に接続する'
-doc_type: 'guide'
+description: 'Estuary 連携でさまざまなデータソースを ClickHouse にストリーミングする'
+title: 'Estuary と ClickHouse を接続する'
+doc_type: 'ガイド'
 integration:
   - support_level: 'partner'
   - category: 'data_ingestion'
   - website: 'https://estuary.dev'
-keywords: ['estuary', 'データインジェスト', 'ETL', 'パイプライン', 'データ統合', 'ClickPipes']
+keywords: ['estuary', 'データインジェスト', 'etl', 'パイプライン', 'データ統合', 'clickpipes']
 ---
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Estuary と ClickHouse を接続する \{#connect-estuary-with-clickhouse\}
-
-<PartnerBadge/>
+<PartnerBadge />
 
 [Estuary](https://estuary.dev/) は、簡単にセットアップできる ETL パイプラインでリアルタイムデータとバッチデータを柔軟に統合する right-time データプラットフォームです。エンタープライズグレードのセキュリティとデプロイメントオプションにより、Estuary は SaaS、データベース、ストリーミングソースから、ClickHouse を含むさまざまな送信先への永続的なデータフローを実現します。
 

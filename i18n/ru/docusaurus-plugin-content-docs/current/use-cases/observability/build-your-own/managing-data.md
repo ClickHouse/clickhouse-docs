@@ -10,9 +10,7 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-# Управление данными \{#managing-data\}
-
-Развертывания ClickHouse для задач наблюдаемости неизбежно связаны с большими объемами данных, которыми необходимо управлять. ClickHouse предлагает ряд возможностей для управления такими данными.
+Развертывания ClickHouse для задач обсервабилити неизбежно связаны с большими объемами данных, которыми необходимо управлять. ClickHouse предлагает ряд возможностей для управления данными.
 
 ## Разделы \{#partitions\}
 

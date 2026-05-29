@@ -1,9 +1,9 @@
 ---
 slug: /integrations/jupysql
 sidebar_label: 'Jupyter 笔记本'
-description: 'JupySQL 是一个用于 Jupyter 的多平台数据库工具。'
-title: '将 JupySQL 与 ClickHouse 配合使用'
-keywords: ['JupySQL', 'Jupyter notebook', 'Python', '数据分析', '交互式 SQL']
+description: 'JupySQL 是适用于 Jupyter 的跨平台数据库工具。'
+title: '在 ClickHouse 中使用 JupySQL'
+keywords: ['JupySQL', 'Jupyter 笔记本', 'Python', '数据分析', '交互式 SQL']
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -15,8 +15,6 @@ import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 在 ClickHouse 中使用 JupySQL \{#using-jupysql-with-clickhouse\}
-
 <CommunityMaintainedBadge />
 
 在本指南中，我们将演示如何与 ClickHouse 集成。
@@ -24,7 +22,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 我们将使用 JupySQL 对 ClickHouse 中的数据执行查询。
 数据加载完成后，我们将通过 SQL 作图对其进行可视化。
 
-JupySQL 与 ClickHouse 之间的集成是通过使用 `clickhouse_sqlalchemy` 库实现的。该库简化了这两个系统之间的通信，使你能够连接到 ClickHouse 并指定 SQL 方言。连接成功后，你可以直接在 ClickHouse 原生界面中运行 SQL 查询，或直接在 Jupyter notebook 中执行查询。
+JupySQL 与 ClickHouse 之间的集成是通过使用 `clickhouse_sqlalchemy` 库实现的。该库简化了这两个系统之间的通信，使你能够连接到 ClickHouse 并指定 SQL 方言。连接成功后，你可以直接在 ClickHouse 原生界面中运行 SQL 查询，或直接在 Jupyter 笔记本中执行查询。
 
 ```python
 # Install required packages
@@ -239,6 +237,7 @@ SELECT * FROM s3(
     <td>1.68</td>
   </tr>
 </table>
+
 
 ```sql
 %%sql

@@ -16,10 +16,8 @@ import neon_ip_allow from '@site/static/images/integrations/data-ingestion/click
 import neon_conn_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-conn-details.png'
 import Image from '@theme/IdealImage';
 
-# Neon Postgres 源端配置指南 \{#neon-postgres-source-setup-guide\}
-
-本指南介绍如何配置 Neon Postgres，以便在 ClickPipes 中用于复制。
-在进行此配置前，请确保已登录到 [Neon 控制台](https://console.neon.tech/app/projects)。
+本指南介绍如何设置 Neon Postgres，以便将其用作 ClickPipes 中复制的数据源。
+请确保您已登录 [Neon 控制台](https://console.neon.tech/app/projects) 以完成此设置。
 
 ## 创建具备权限的用户 \{#creating-a-user-with-permissions\}
 

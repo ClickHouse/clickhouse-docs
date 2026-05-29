@@ -2,9 +2,9 @@
 slug: /guides/developer/understanding-query-execution-with-the-analyzer
 sidebar_label: 'Понимание выполнения запросов с помощью анализатора'
 title: 'Понимание выполнения запросов с помощью анализатора'
-description: 'В этом руководстве показано, как использовать анализатор, чтобы понять, как ClickHouse выполняет ваши запросы'
+description: 'Описывает, как можно использовать анализатор, чтобы понять, как ClickHouse выполняет ваши запросы'
 doc_type: 'guide'
-keywords: ['выполнение запросов', 'анализатор', 'оптимизация запросов', 'EXPLAIN', 'производительность']
+keywords: ['выполнение запросов', 'анализатор', 'оптимизация запросов', 'explain', 'производительность']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -13,9 +13,6 @@ import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';
 import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
-
-
-# Понимание выполнения запросов с помощью анализатора \{#understanding-query-execution-with-the-analyzer\}
 
 ClickHouse обрабатывает запросы чрезвычайно быстро, но процесс их выполнения довольно сложен. Попробуем разобраться, как выполняется запрос `SELECT`. Чтобы проиллюстрировать это, добавим немного данных в таблицу ClickHouse:
 
@@ -40,7 +37,6 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 <Image img={analyzer1} alt="Этапы выполнения запроса EXPLAIN" size="md" />
 
 Давайте посмотрим на каждый объект в действии во время выполнения запроса. Мы возьмём несколько запросов и затем рассмотрим их с помощью оператора `EXPLAIN`.
-
 
 ## Парсер \{#parser\}
 

@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
-title: '概要'
+title: 'Dictionary'
 keywords: ['dictionary', 'dictionaries']
-description: 'Dictionary は、高速なルックアップのためのキー・バリュー型データ表現を提供します。'
+description: 'Dictionary は、高速なルックアップ向けにデータをキー・バリュー形式で表現します。'
 doc_type: 'guide'
 ---
 
@@ -10,17 +10,14 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
-# Dictionary \{#dictionary\}
-
 ClickHouse における Dictionary は、さまざまな[内部および外部ソース](/sql-reference/statements/create/dictionary/sources#dictionary-sources)からのデータをインメモリの[キー・バリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーなルックアップクエリのために最適化されたものです。
 
 Dictionary は次の用途に有用です:
 
-- 特に `JOIN` を使用する場合に、クエリのパフォーマンスを向上させる
-- インジェスト処理を低速化することなく、取り込むデータをオンザフライで拡充する
+* 特に `JOIN` を使用する場合に、クエリのパフォーマンスを向上させる
+* インジェスト処理を低速化することなく、取り込むデータをオンザフライで拡充する
 
-<Image img={dictionaryUseCases} size="lg" alt="ClickHouse における Dictionary のユースケース"/>
+<Image img={dictionaryUseCases} size="lg" alt="ClickHouse における Dictionary のユースケース" />
 
 ## Dictionary を使用した結合の高速化 \{#speeding-up-joins-using-a-dictionary\}
 

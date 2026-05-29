@@ -21,11 +21,8 @@ import error_log_overview from '@site/static/images/clickstack/cloudwatch/error-
 import error_log_column_values from '@site/static/images/clickstack/cloudwatch/error-log-column-values.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 AWS CloudWatch 日志 \{#cloudwatch-clickstack\}
-
-:::note[摘要]
-使用 OpenTelemetry Collector 的 CloudWatch receiver 将 AWS CloudWatch 日志转发到 ClickStack。支持命名日志组和自动发现。包含演示数据集和预置仪表板。
+:::note[TL;DR]
+使用 OpenTelemetry Collector 的 CloudWatch receiver，将 AWS CloudWatch 日志转发到 ClickStack。支持指定日志组和自动发现。包含演示数据集和预构建仪表板。
 :::
 
 ## 概览 \{#overview\}

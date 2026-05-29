@@ -21,11 +21,8 @@ import error_log_overview from '@site/static/images/clickstack/cloudwatch/error-
 import error_log_column_values from '@site/static/images/clickstack/cloudwatch/error-log-column-values.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг логов AWS CloudWatch с ClickStack \{#cloudwatch-clickstack\}
-
-:::note[TL;DR]
-Пересылайте логи AWS CloudWatch в ClickStack с помощью приёмника CloudWatch в OpenTelemetry Collector. Поддерживаются именованные группы логов и автообнаружение. Включает демонстрационный набор данных и готовую панель мониторинга.
+:::note[Кратко]
+Пересылайте логи AWS CloudWatch в ClickStack с помощью приемника CloudWatch в OpenTelemetry Collector. Поддерживаются именованные группы логов и автообнаружение. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Обзор \{#overview\}

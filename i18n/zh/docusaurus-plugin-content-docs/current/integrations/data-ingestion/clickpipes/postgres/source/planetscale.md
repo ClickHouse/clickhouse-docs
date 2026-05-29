@@ -14,10 +14,8 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
-# PlanetScale for Postgres 源端设置指南 \{#planetscale-for-postgres-source-setup-guide\}
-
 :::info
-PlanetScale for Postgres 当前处于 [早期体验](https://planetscale.com/postgres) 阶段。
+PlanetScale for Postgres 目前处于[早期访问阶段](https://planetscale.com/postgres)。
 :::
 
 ## 支持的 Postgres 版本 \{#supported-postgres-versions\}

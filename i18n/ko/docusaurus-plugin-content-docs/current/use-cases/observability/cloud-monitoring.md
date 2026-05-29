@@ -14,10 +14,7 @@ import ObservabilityIntegrations from '@site/i18n/ko/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-
-# ClickHouse Cloud 모니터링 \{#cloud-monitoring\}
-
-이 가이드는 ClickHouse Cloud를 평가하는 엔터프라이즈 팀을 대상으로, 프로덕션 배포 환경에서의 모니터링 및 관측성 기능에 대한 종합적인 정보를 제공합니다. 엔터프라이즈 고객은 기본 제공 모니터링 기능, Datadog 및 AWS CloudWatch와 같은 도구를 포함한 기존 관측성 스택과의 통합, 그리고 ClickHouse의 모니터링 기능이 셀프 호스팅 배포와 어떻게 비교되는지에 대해 자주 문의합니다.
+이 가이드는 운영 환경 배포를 위해 ClickHouse Cloud를 평가하는 엔터프라이즈 팀에 모니터링 및 관측성 기능에 대한 포괄적인 정보를 제공합니다. 엔터프라이즈 고객은 기본 제공 모니터링 기능, Datadog 및 AWS CloudWatch와 같은 도구를 포함한 기존 관측성 스택과의 통합, 그리고 ClickHouse의 모니터링이 자체 호스팅 배포와 비교해 어떤 차이가 있는지에 대해 자주 문의합니다.
 
 ## 고급 관측성 대시보드 \{#advanced-observability\}
 

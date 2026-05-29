@@ -22,11 +22,9 @@ import cp_table_settings from '@site/static/images/integrations/data-ingestion/c
 import cp_ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/cp_ssh_tunnel.png';
 import Image from '@theme/IdealImage';
 
-# Создание первого Kafka ClickPipe \{#creating-your-first-kafka-clickpipe\}
+> В этом руководстве мы пошагово покажем, как создать ваш первый Kafka ClickPipe.
 
-> В этом руководстве мы пошагово покажем, как создать свой первый Kafka ClickPipe.
-
-Kafka ClickPipes можно развёртывать и администрировать вручную через UI ClickPipes, а также программно с помощью [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
+Kafka ClickPipes можно развертывать и вручную настраивать через интерфейс ClickPipes, а также программно с помощью [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 <VerticalStepper type="numbered" headerLevel="h2">
   ## Перейдите к источникам данных \{#1-load-sql-console\}

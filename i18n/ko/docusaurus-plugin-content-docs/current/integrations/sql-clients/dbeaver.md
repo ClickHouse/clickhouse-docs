@@ -21,15 +21,12 @@ import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbe
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# DBeaver를 ClickHouse에 연결하기 \{#connect-dbeaver-to-clickhouse\}
-
-<PartnerBadge/>
-
-DBeaver는 여러 에디션으로 제공됩니다. 이 가이드에서는 [DBeaver Community](https://dbeaver.io/)를 사용합니다. 다양한 에디션과 기능은 [여기](https://dbeaver.com/edition/)에서 확인할 수 있습니다. DBeaver는 JDBC를 사용하여 ClickHouse에 연결합니다.
+DBeaver는 여러 에디션으로 제공됩니다. 이 가이드에서는 [DBeaver Community](https://dbeaver.io/)를 사용합니다. 다양한 에디션과 기능은 [여기](https://dbeaver.com/edition/)에서 확인하십시오. DBeaver는 JDBC를 사용하여 ClickHouse에 연결합니다.
 
 :::note
-ClickHouse에서 `Nullable`(널 허용) 컬럼에 대한 지원이 개선된 DBeaver 23.1.0 이상 버전을 사용하십시오.
+ClickHouse의 `Nullable` 컬럼 지원이 개선된 DBeaver 23.1.0 이상을 사용하십시오.
 :::
 
 ## 1. ClickHouse 정보 준비하기 \{#1-gather-your-clickhouse-details\}

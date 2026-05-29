@@ -1,7 +1,7 @@
 ---
 slug: /integrations/jupysql
 sidebar_label: 'Jupyter 노트북'
-description: 'JupySQL은 Jupyter용 멀티 플랫폼 데이터베이스 도구입니다.'
+description: 'JupySQL은 Jupyter용 멀티플랫폼 데이터베이스 도구입니다.'
 title: 'ClickHouse에서 JupySQL 사용하기'
 keywords: ['JupySQL', 'Jupyter 노트북', 'Python', '데이터 분석', '대화형 SQL']
 doc_type: 'guide'
@@ -14,8 +14,6 @@ import Image from '@theme/IdealImage';
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
-# ClickHouse에서 JupySQL 사용하기 \{#using-jupysql-with-clickhouse\}
 
 <CommunityMaintainedBadge />
 
@@ -239,6 +237,7 @@ SELECT * FROM s3(
     <td>1.68</td>
   </tr>
 </table>
+
 
 ```sql
 %%sql

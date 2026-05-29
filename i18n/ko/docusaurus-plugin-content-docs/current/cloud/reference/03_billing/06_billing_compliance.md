@@ -10,8 +10,6 @@ doc_type: 'guide'
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse Cloud 청구 규정 준수 \{#clickhouse-cloud-billing-compliance\}
-
 ## 청구 규정 준수 \{#billing-compliance\}
 
 ClickHouse Cloud를 사용하려면 조직에 활성 상태의 유효한 결제 수단이 구성되어 있어야 합니다.

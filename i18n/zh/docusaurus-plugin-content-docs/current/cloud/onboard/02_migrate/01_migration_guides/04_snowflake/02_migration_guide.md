@@ -1,9 +1,9 @@
 ---
 sidebar_label: '迁移指南'
 slug: /migrations/snowflake
-description: '从 Snowflake 迁移至 ClickHouse'
+description: '从 Snowflake 迁移到 ClickHouse'
 keywords: ['Snowflake']
-title: '从 Snowflake 迁移至 ClickHouse'
+title: '从 Snowflake 迁移到 ClickHouse'
 show_related_blogs: false
 doc_type: 'guide'
 ---
@@ -11,14 +11,9 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-
-# 从 Snowflake 迁移到 ClickHouse \{#migrate-from-snowflake-to-clickhouse\}
-
 > 本指南介绍如何将数据从 Snowflake 迁移到 ClickHouse。
 
 在 Snowflake 和 ClickHouse 之间迁移数据需要使用对象存储(如 S3)作为传输的中间存储。迁移过程还依赖于使用 Snowflake 的 `COPY INTO` 命令和 ClickHouse 的 `INSERT INTO SELECT` 命令。
-
-<VerticalStepper headerLevel="h2" />
 
 <VerticalStepper headerLevel="h2">
 

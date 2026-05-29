@@ -2,7 +2,7 @@
 title: 'ウェアハウス'
 slug: /cloud/reference/warehouses
 keywords: ['compute separation', 'cloud', 'architecture', 'compute-compute', 'warehouse', 'warehouses', 'hydra']
-description: 'ClickHouse Cloud におけるコンピュート間の分離'
+description: 'ClickHouse Cloud におけるコンピュート-コンピュート分離'
 doc_type: 'reference'
 ---
 
@@ -16,10 +16,7 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
-
-# ウェアハウス \{#warehouses\}
-
-<ScalePlanFeatureBadge feature="Compute-compute separation" />
+<ScalePlanFeatureBadge feature="コンピュート-コンピュート分離" />
 
 ## コンピュート-コンピュート分離とは何ですか？ \{#what-is-compute-compute-separation\}
 
@@ -191,7 +188,7 @@ SETTINGS distributed_ddl_task_timeout=0
 
 * **1レプリカのプライマリサービス** 現在、デフォルトの動作では、セカンダリサービスは1レプリカでも構いませんが、プライマリサービスは少なくとも2レプリカ必要です。
   単一レプリカのプライマリサービスを有効にするには、サポートにお問い合わせください。この動作は2026年第2四半期にデフォルトで有効になる予定です。
-* **プライマリサービスのアイドル化**: 以前は、デフォルトではプライマリサービスを自動アイドル化できませんでした。2026年5月時点では、プライマリサービスの自動アイドル化はデフォルトで有効になっています。リリースの一環として、既存のサービスでもこの機能を利用でき、リリース後に作成された新しいサービスではデフォルトで有効になります。 
+* **プライマリサービスのアイドル化**: プライマリサービスの自動アイドル化はデフォルトで有効になっています。
 
 ## 料金 \{#pricing\}
 

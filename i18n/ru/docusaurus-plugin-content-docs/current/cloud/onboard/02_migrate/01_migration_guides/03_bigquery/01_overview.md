@@ -1,5 +1,5 @@
 ---
-title: 'BigQuery против ClickHouse Cloud'
+title: 'Сравнение ClickHouse Cloud и BigQuery'
 slug: /migrations/bigquery/biquery-vs-clickhouse-cloud
 description: 'Чем BigQuery отличается от ClickHouse Cloud'
 keywords: ['BigQuery']
@@ -10,9 +10,6 @@ doc_type: 'guide'
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
-
-
-# Сравнение ClickHouse Cloud и BigQuery  \{#comparing-clickhouse-cloud-and-bigquery\}
 
 ## Организация ресурсов \{#resource-organization\}
 

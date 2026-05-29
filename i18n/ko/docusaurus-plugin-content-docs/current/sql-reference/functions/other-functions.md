@@ -1871,12 +1871,13 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 **구문**
 
 ```sql
-formatReadableDecimalSize(x)
+formatReadableDecimalSize(value[, precision])
 ```
 
 **인수**
 
-* `x` — 바이트 단위 크기. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — 바이트 단위 크기. [`Int8`](/sql-reference/data-types/int-uint) or [`Int16`](/sql-reference/data-types/int-uint) or [`Int32`](/sql-reference/data-types/int-uint) or [`Int64`](/sql-reference/data-types/int-uint) or [`UInt8`](/sql-reference/data-types/int-uint) or [`UInt16`](/sql-reference/data-types/int-uint) or [`UInt32`](/sql-reference/data-types/int-uint) or [`UInt64`](/sql-reference/data-types/int-uint) or [`Float32`](/sql-reference/data-types/float) or [`Float64`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 선택 사항입니다. 소수점 이하 자릿수입니다. 기본값은 2입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -1901,24 +1902,39 @@ SELECT
 └────────────────┴────────────┘
 ```
 
+**정밀도를 명시적으로 지정**
+
+```sql title=Query
+SELECT
+    formatReadableDecimalSize(192851925, 0) AS no_decimals,
+    formatReadableDecimalSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals─┐
+│ 193 MB      │ 192.8519 MB   │
+└─────────────┴───────────────┘
+```
+
 ## formatReadableQuantity \{#formatReadableQuantity\}
 
 도입 버전: v20.10.0
 
-숫자를 입력하면 이 함수는 반올림된 숫자에 접미사(천, 백만, 십억 등)를 붙인 문자열을 반환합니다.
+숫자를 입력하면 이 FUNCTION은 반올림된 숫자에 접미사(천, 백만, 십억 등)를 붙인 문자열을 반환합니다.
 
-이 함수는 모든 숫자형 타입을 입력으로 받지만, 내부적으로는 `Float64`로 캐스팅합니다.
+이 FUNCTION은 모든 숫자형 타입을 입력으로 받지만, 내부적으로는 `Float64`로 캐스팅합니다.
 값이 매우 큰 경우 결과가 최적이 아닐 수 있습니다.
 
 **구문**
 
 ```sql
-formatReadableQuantity(x)
+formatReadableQuantity(value[, precision])
 ```
 
 **인수**
 
-* `x` — 형식을 지정할 숫자. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — 형식을 지정할 숫자. [`Int8`](/sql-reference/data-types/int-uint) 또는 [`Int16`](/sql-reference/data-types/int-uint) 또는 [`Int32`](/sql-reference/data-types/int-uint) 또는 [`Int64`](/sql-reference/data-types/int-uint) 또는 [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`Float32`](/sql-reference/data-types/float) 또는 [`Float64`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 선택 사항입니다. 소수점 이하 자릿수입니다. 기본값은 2입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -1943,26 +1959,41 @@ SELECT
 └────────────────┴───────────────────┘
 ```
 
+**정밀도를 명시적으로 지정하기**
+
+```sql title=Query
+SELECT
+    formatReadableQuantity(98765432101234, 0) AS no_decimals,
+    formatReadableQuantity(98765432101234, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals──┬─four_decimals─────┐
+│ 99 trillion  │ 98.7654 trillion  │
+└──────────────┴───────────────────┘
+```
+
 ## formatReadableSize \{#formatReadableSize\}
 
 도입 버전: v1.1.0
 
-바이트 단위 크기를 입력하면, 이 함수는 접미사(KiB, MiB 등)가 포함된 사람이 읽기 쉬운 반올림된 크기를 문자열로 반환합니다.
+바이트 단위 크기를 입력하면, 이 FUNCTION은 접미사(KiB, MiB 등)가 포함된 사람이 읽기 쉬운 반올림된 크기를 문자열로 반환합니다.
 
-이 함수의 역 연산은 [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero), [`parseReadableSizeOrNull`](#parseReadableSizeOrNull)입니다.
-이 함수는 입력으로 임의의 숫자형 데이터 타입을 허용하지만, 내부적으로는 이를 `Float64`로 캐스팅합니다. 값이 매우 큰 경우 결과가 최적이 아닐 수 있습니다.
+이 FUNCTION의 역 연산은 [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero), [`parseReadableSizeOrNull`](#parseReadableSizeOrNull)입니다.
+이 FUNCTION은 입력으로 임의의 숫자형 데이터 타입을 허용하지만, 내부적으로는 이를 `Float64`로 캐스팅합니다. 값이 매우 큰 경우 결과가 최적이 아닐 수 있습니다.
 
-**Syntax**
+**구문**
 
 ```sql
-formatReadableSize(x)
+formatReadableSize(value[, precision])
 ```
 
 **별칭**: `FORMAT_BYTES`
 
 **인수**
 
-* `x` — 바이트 단위의 크기. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — 바이트 단위의 크기. [`Int8`](/sql-reference/data-types/int-uint) or [`Int16`](/sql-reference/data-types/int-uint) or [`Int32`](/sql-reference/data-types/int-uint) or [`Int64`](/sql-reference/data-types/int-uint) or [`UInt8`](/sql-reference/data-types/int-uint) or [`UInt16`](/sql-reference/data-types/int-uint) or [`UInt32`](/sql-reference/data-types/int-uint) or [`UInt64`](/sql-reference/data-types/int-uint) or [`Float32`](/sql-reference/data-types/float) or [`Float64`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 선택 사항입니다. 소수점 이하 자릿수입니다. 기본값은 2입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -1985,6 +2016,20 @@ SELECT
 │        1048576 │ 1.00 MiB   │
 │      192851925 │ 183.92 MiB │
 └────────────────┴────────────┘
+```
+
+**정밀도를 명시적으로 지정**
+
+```sql title=Query
+SELECT
+    formatReadableSize(192851925, 0) AS no_decimals,
+    formatReadableSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals──┐
+│ 184 MiB     │ 183.9179 MiB   │
+└─────────────┴────────────────┘
 ```
 
 ## formatReadableTimeDelta \{#formatReadableTimeDelta\}

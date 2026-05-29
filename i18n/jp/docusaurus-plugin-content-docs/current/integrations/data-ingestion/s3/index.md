@@ -17,10 +17,7 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse と S3 の統合 \{#integrating-s3-with-clickhouse\}
-
-S3 から ClickHouse にデータを挿入できるほか、S3 をエクスポート先としても利用できるため、「データレイク」アーキテクチャとの連携が可能になります。さらに、S3 は「コールド」ストレージ階層を提供し、ストレージとコンピュートの分離にも役立ちます。以下のセクションでは、New York City taxi データセットを用いて、S3 と ClickHouse 間でデータを移動する手順を示すとともに、主要な構成パラメータを明らかにし、パフォーマンスを最適化するためのヒントを紹介します。
+S3 から ClickHouse にデータを挿入でき、また S3 をエクスポート先として使用することで、&quot;データレイク&quot; アーキテクチャと連携できます。さらに、S3 は &quot;コールド&quot; ストレージ tier を提供し、ストレージとコンピュートの分離にも役立ちます。以下のセクションでは、New York City taxi dataset を使用して、S3 と ClickHouse の間でデータを移動するプロセスを示すとともに、重要な構成パラメータを特定し、パフォーマンスを最適化するためのヒントを紹介します。
 
 ## S3 テーブル関数 \{#s3-table-functions\}
 

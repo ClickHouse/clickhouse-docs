@@ -24,12 +24,10 @@ import finish_import from '@site/static/images/clickstack/cloudflare/finish-impo
 import example_dashboard from '@site/static/images/clickstack/cloudflare/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Cloudflare 日志 \{#cloudflare-clickstack\}
-
 :::note[简而言之]
-本指南说明如何使用 ClickPipes 将 Cloudflare 日志摄取到 ClickStack 中。Cloudflare Logpush 会将日志写入 S3，ClickPipes 则会持续将新文件摄取到 ClickHouse。与大多数使用 OpenTelemetry Collector 的 ClickStack 集成指南不同，本指南使用 [ClickPipes](/integrations/clickpipes) 直接从 S3 拉取数据。
+本指南介绍如何使用 ClickPipes 将 Cloudflare 日志摄取到 ClickStack。Cloudflare Logpush 会将日志写入 S3，而 ClickPipes 会持续将新文件摄取到 ClickHouse。与大多数使用 OpenTelemetry Collector 的 ClickStack 集成指南不同，本指南使用 [ClickPipes](/integrations/clickpipes) 直接从 S3 拉取数据。
 
-如果您想先查看这些仪表板，再配置生产环境摄取，可以使用演示数据集。
+如果您想在配置生产环境摄取之前先浏览仪表盘，可使用演示数据集。
 :::
 
 ## 概述 \{#overview\}

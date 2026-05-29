@@ -12,8 +12,6 @@ import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
 
-# HTTP-интерфейс \{#http-interface\}
-
 ## Предварительные требования \{#prerequisites\}
 
 Для примеров в этой статье вам потребуется:

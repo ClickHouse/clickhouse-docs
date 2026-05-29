@@ -22,16 +22,13 @@ import splunk_011 from '@site/static/images/integrations/tools/data-integration/
 import splunk_012 from '@site/static/images/integrations/tools/data-integration/splunk/splunk_012.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# ClickHouse Cloud 감사 로그를 Splunk에 저장하기 \{#storing-clickhouse-cloud-audit-logs-into-splunk\}
-
 <PartnerBadge />
 
 [Splunk](https://www.splunk.com/)은 데이터 분석 및 모니터링 플랫폼입니다.
 
-이 애드온을 사용하면 [ClickHouse Cloud 감사 로그](/cloud/security/audit-logging)를 Splunk에 저장할 수 있습니다. 감사 로그를 다운로드하기 위해 [ClickHouse Cloud API](/cloud/manage/api/api-overview)를 사용합니다.
+이 추가 기능을 사용하면 [ClickHouse Cloud 감사 로그](/cloud/security/audit-logging)를 Splunk에 저장할 수 있습니다. 이 추가 기능은 [ClickHouse Cloud API](/cloud/manage/api/api-overview)를 사용하여 감사 로그를 다운로드합니다.
 
-이 애드온에는 모듈형 입력(modular input)만 포함되어 있으며, 추가 UI는 제공되지 않습니다.
+이 추가 기능에는 모듈형 입력만 포함되어 있으며, 이 추가 기능과 함께 제공되는 추가 UI는 없습니다.
 
 # 설치 \{#installation\}
 

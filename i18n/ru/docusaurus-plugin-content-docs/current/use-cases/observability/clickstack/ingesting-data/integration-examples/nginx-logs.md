@@ -17,11 +17,8 @@ import log_view from '@site/static/images/clickstack/log-view.png';
 import search_view from '@site/static/images/clickstack/nginx-logs-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг логов Nginx с помощью ClickStack \{#nginx-clickstack\}
-
 :::note[Кратко]
-Собирайте и визуализируйте логи доступа Nginx (в формате JSON) в ClickStack с помощью OTel-приёмника `filelog`. Включает демо-набор данных и готовую панель мониторинга.
+Собирайте и визуализируйте логи доступа Nginx (в формате JSON) в ClickStack с помощью приёмника OTel `filelog`. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим Nginx \{#existing-nginx\}

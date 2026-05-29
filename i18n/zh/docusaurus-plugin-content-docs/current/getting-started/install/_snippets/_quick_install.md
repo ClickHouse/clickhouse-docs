@@ -11,6 +11,14 @@
   curl https://clickhouse.com/ | sh
   ```
 
+  在 Linux 和 macOS 上，这还会将 [`clickhousectl`](https://github.com/ClickHouse/clickhousectl) 安装到 `~/.local/bin` 中 (并创建一个 `chctl` 符号链接) ，这样您就可以管理本地 ClickHouse 版本和服务器。如果 `~/.local/bin` 尚未包含在您的 `PATH` 中，安装程序会输出需要添加到 shell profile 中的那一行。
+
+  若只安装 `clickhouse` 二进制文件而不安装 `clickhousectl`，请设置 `CLICKHOUSE_ONLY=1`：
+
+  ```bash
+  curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+  ```
+
   :::note
   对于 Mac 用户：如果您收到“无法验证二进制文件开发者”的错误，请参阅[此处](/knowledgebase/fix-developer-verification-error-in-macos)。
   :::

@@ -19,10 +19,7 @@ import retool_04 from '@site/static/images/integrations/tools/data-integration/r
 import retool_05 from '@site/static/images/integrations/tools/data-integration/retool/retool_05.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Подключение Retool к ClickHouse \{#connecting-retool-to-clickhouse\}
-
-<PartnerBadge/>
+<PartnerBadge />
 
 ## 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}
 

@@ -1,21 +1,18 @@
 ---
 slug: /data-modeling/backfilling
-title: '数据回填'
-description: '如何在 ClickHouse 中对大型数据集进行回填'
-keywords: ['物化视图', '数据回填', '插入数据', '健壮的数据加载']
-doc_type: '指南'
+title: '回填数据'
+description: '如何在 ClickHouse 中回填大型数据集'
+keywords: ['materialized view', '数据回填', '插入数据', '弹性数据加载']
+doc_type: 'guide'
 ---
 
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
-
-# 回填数据 \{#backfilling-data\}
-
-无论是刚接触 ClickHouse，还是负责维护现有部署，用户往往需要将历史数据回填到表中。在某些情况下，这相对简单，但当需要填充物化视图时，就可能变得更加复杂。本指南介绍了一些可用于执行此任务的流程，用户可以根据自己的用例进行应用。
+无论是刚接触 ClickHouse，还是负责维护现有部署，用户往往需要将历史数据回填到表中。在某些情况下，这相对简单，但当需要填充materialized view时，就可能变得更加复杂。本指南介绍了一些可用于执行此任务的流程，用户可以根据自己的用例进行应用。
 
 :::note
-本指南假定用户已经熟悉 [增量物化视图](/materialized-view/incremental-materialized-view) 的概念，以及 [使用诸如 S3 和 GCS 等表函数进行数据加载](/integrations/s3)。我们还建议用户阅读我们的[从对象存储优化插入性能](/integrations/s3/performance)指南，其中的建议适用于本指南中涉及的所有插入操作。
+本指南假定用户已经熟悉 [增量materialized view](/materialized-view/incremental-materialized-view) 的概念，以及 [使用诸如 S3 和 GCS 等表函数进行数据加载](/integrations/s3)。我们还建议用户阅读我们的[从对象存储优化插入性能](/integrations/s3/performance)指南，其中的建议适用于本指南中涉及的所有插入操作。
 :::
 
 ## 示例数据集 \{#example-dataset\}

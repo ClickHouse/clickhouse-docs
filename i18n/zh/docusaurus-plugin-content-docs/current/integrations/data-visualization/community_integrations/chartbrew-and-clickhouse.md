@@ -25,12 +25,9 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
+<CommunityMaintainedBadge />
 
-# 将 Chartbrew 连接到 ClickHouse \{#connecting-chartbrew-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-[Chartbrew](https://chartbrew.com) 是一个数据可视化平台，用于创建仪表板并实时监控数据。它支持包括 ClickHouse 在内的多种数据源，并提供一个无需编写代码的界面来构建图表和报表。
+[Chartbrew](https://chartbrew.com) 是一个数据可视化平台，可让您创建仪表盘并实时监控数据。它支持多种数据源 (包括 ClickHouse) ，并提供无需编写代码即可构建图表和报表的界面。
 
 ## 目标 \{#goal\}
 

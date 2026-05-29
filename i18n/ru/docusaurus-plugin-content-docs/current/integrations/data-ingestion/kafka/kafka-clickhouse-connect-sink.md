@@ -10,13 +10,10 @@ keywords: ['Приёмник ClickHouse Kafka Connect', 'коннектор Kafk
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# ClickHouse Kafka Connect Sink \{#clickhouse-kafka-connect-sink\}
-
 :::note
 Если вам нужна помощь, пожалуйста, [создайте issue в репозитории](https://github.com/ClickHouse/clickhouse-kafka-connect/issues) или задайте вопрос в [публичном Slack ClickHouse](https://clickhouse.com/slack).
 :::
-**ClickHouse Kafka Connect Sink** — это коннектор Kafka, который доставляет данные из топика Kafka в таблицу ClickHouse.
+**Приёмник ClickHouse Kafka Connect** — это коннектор Kafka, который передаёт данные из топика Kafka в таблицу ClickHouse.
 
 ### Лицензия \{#license\}
 

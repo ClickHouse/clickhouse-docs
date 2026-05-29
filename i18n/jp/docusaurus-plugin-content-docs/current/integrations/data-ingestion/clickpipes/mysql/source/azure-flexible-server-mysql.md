@@ -12,9 +12,6 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# Azure Flexible Server for MySQL ソース設定ガイド \{#azure-flexible-server-for-mysql-source-setup-guide\}
-
 このステップバイステップガイドでは、[MySQL ClickPipe](../index.md) を使用して、Azure Flexible Server for MySQL を ClickHouse Cloud にデータをレプリケートするように構成する方法を説明します。このサービスでは **一度限りのインジェスト** のみがサポートされています。MySQL CDC に関する一般的な質問については、[MySQL FAQ ページ](/integrations/data-ingestion/clickpipes/mysql/faq.md) を参照してください。
 
 :::warning

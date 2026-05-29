@@ -17,8 +17,6 @@ import cp_table_settings from '@site/static/images/integrations/data-ingestion/c
 import CreateClickPipe from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/clickpipes/object-storage/_create_clickpipe.md';
 import Image from '@theme/IdealImage';
 
-# 创建第一个 Amazon S3 ClickPipe \{#creating-your-first-amazon-s3-clickpipe\}
-
-S3 ClickPipe 提供了一种完全托管且具备高可用性的方式，将来自 Amazon S3 和兼容 S3 的对象存储中的数据摄取到 ClickHouse Cloud 中。它支持具有恰好一次 (exactly-once) 语义的**一次性摄取**和**持续摄取**。
+S3 ClickPipe 提供了一种全托管且具备弹性的方式，可将 Amazon S3 和兼容 S3 的对象存储中的数据摄取到 ClickHouse Cloud。它支持 **一次性** 和 **持续摄取** 两种模式，并具备精确一次语义。
 
 <CreateClickPipe provider="s3" />

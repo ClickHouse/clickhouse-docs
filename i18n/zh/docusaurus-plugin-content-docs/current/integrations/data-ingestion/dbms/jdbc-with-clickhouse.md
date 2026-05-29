@@ -3,7 +3,7 @@ sidebar_label: 'JDBC'
 sidebar_position: 2
 keywords: ['clickhouse', 'jdbc', 'connect', 'integrate']
 slug: /integrations/jdbc/jdbc-with-clickhouse
-description: 'ClickHouse JDBC Bridge 使 ClickHouse 能够访问任何提供 JDBC 驱动程序的外部数据源的数据'
+description: 'ClickHouse JDBC Bridge 可以让 ClickHouse 访问任何提供 JDBC 驱动 的外部数据源中的数据'
 title: '使用 JDBC 将 ClickHouse 连接到外部数据源'
 doc_type: 'guide'
 ---
@@ -15,9 +15,6 @@ import Jdbc01 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-01
 import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02.png';
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
 
-
-# 使用 JDBC 将 ClickHouse 连接到外部数据源 \{#connecting-clickhouse-to-external-data-sources-with-jdbc\}
-
 :::warning
 clickhouse-jdbc-bridge 包含实验性代码且不再受支持。它可能存在可靠性和安全性漏洞。使用该组件需自行承担风险。
 :::
@@ -26,10 +23,11 @@ clickhouse-jdbc-bridge 包含实验性代码且不再受支持。它可能存在
 使用 JDBC 需要 ClickHouse JDBC Bridge，因此您需要在本地机器上使用 `clickhouse-local`，将数据库中的数据以流式方式传输到 ClickHouse Cloud。请访问文档 **Migrate** 部分中的 [**Using clickhouse-local**](/cloud/migration/clickhouse-local) 页面了解详细信息。
 :::
 
-**概述：** <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> 与 [jdbc 表函数（jdbc table function）](/sql-reference/table-functions/jdbc.md) 或 [JDBC 表引擎（JDBC table engine）](/engines/table-engines/integrations/jdbc.md) 结合使用，可以让 ClickHouse 访问任何提供 <a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC driver</a> 的外部数据源中的数据：
+**概述：** <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> 与 [jdbc 表函数 (jdbc table function) ](/sql-reference/table-functions/jdbc.md) 或 [JDBC 表引擎 (JDBC table engine) ](/engines/table-engines/integrations/jdbc.md) 结合使用，可以让 ClickHouse 访问任何提供 <a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC 驱动</a> 的外部数据源中的数据：
 
-<Image img={Jdbc01} size="lg" alt="ClickHouse JDBC Bridge 架构图" background='white'/>
-当某个外部数据源没有原生内置的[集成引擎](/engines/table-engines/integrations)、表函数或外部字典可用，但存在该数据源的 JDBC driver 时，这种方式就非常实用。
+<Image img={Jdbc01} size="lg" alt="ClickHouse JDBC Bridge 架构图" background="white" />
+
+当某个外部数据源没有原生内置的[集成引擎](/engines/table-engines/integrations)、表函数或外部字典可用，但存在该数据源的 JDBC 驱动 时，这种方式就非常实用。
 
 您可以使用 ClickHouse JDBC Bridge 进行读写操作，也可以并行连接多个外部数据源。例如，您可以在 ClickHouse 上实时对多个外部和内部数据源运行分布式查询。
 
@@ -39,12 +37,13 @@ clickhouse-jdbc-bridge 包含实验性代码且不再受支持。它可能存在
 
 :::note 先决条件
 您可以访问一台满足以下条件的机器：
+
 1. 可以使用 Unix shell，并能够访问互联网
 2. 已安装 <a href="https://www.gnu.org/software/wget/" target="_blank">wget</a>
-3. 已安装较新的 **Java** 版本（例如 <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> 版本 >= 17）
-4. 已安装并运行较新的 **MySQL** 版本（例如 <a href="https://www.mysql.com" target="_blank">MySQL</a> 版本 >= 8）
-5. 已安装并运行较新的 **ClickHouse** 版本（参见[安装指南](/getting-started/install/install.mdx)）
-:::
+3. 已安装较新的 **Java** 版本 (例如 <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> 版本 &gt;= 17) 
+4. 已安装并运行较新的 **MySQL** 版本 (例如 <a href="https://www.mysql.com" target="_blank">MySQL</a> 版本 &gt;= 8) 
+5. 已安装并运行较新的 **ClickHouse** 版本 (参见[安装指南](/getting-started/install/install.mdx)) 
+   :::
 
 ## 在本地安装 ClickHouse JDBC Bridge \{#install-the-clickhouse-jdbc-bridge-locally\}
 

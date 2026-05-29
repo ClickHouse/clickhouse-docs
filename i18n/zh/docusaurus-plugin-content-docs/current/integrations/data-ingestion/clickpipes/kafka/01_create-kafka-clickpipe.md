@@ -22,11 +22,9 @@ import cp_table_settings from '@site/static/images/integrations/data-ingestion/c
 import cp_ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/cp_ssh_tunnel.png';
 import Image from '@theme/IdealImage';
 
-# 创建你的第一个 Kafka ClickPipe \{#creating-your-first-kafka-clickpipe\}
+> 在本指南中，我们将逐步介绍如何创建你的第一个 Kafka ClickPipe。
 
-> 本指南将带您逐步完成创建第一个 Kafka ClickPipe 的过程。
-
-Kafka ClickPipes 可以使用 ClickPipes UI 手动部署和管理，也可以通过 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
+Kafka ClickPipes 可通过 ClickPipes UI 手动部署和管理，也可使用 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
 
 <VerticalStepper type="numbered" headerLevel="h2">
   ## 前往数据源 \{#1-load-sql-console\}

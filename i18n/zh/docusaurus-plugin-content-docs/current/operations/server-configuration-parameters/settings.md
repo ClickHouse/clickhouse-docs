@@ -3106,6 +3106,10 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 * [max&#95;memory&#95;usage](/operations/settings/settings#max_memory_usage)
 * [merges&#95;mutations&#95;memory&#95;usage&#95;soft&#95;limit](/operations/server-configuration-parameters/settings#merges_mutations_memory_usage_soft_limit)
 
+## message_queue_disable_insertion \{#message_queue_disable_insertion\}
+
+<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="Yes" />禁用消息队列引擎 (Kafka、RabbitMQ、NATS) 向已附加的 materialized views 插入数据
+
 ## metric_log \{#metric_log\}
 
 默认情况下为禁用。
@@ -3141,6 +3145,18 @@ ClickHouse 使用全局线程池中的线程来处理查询。如果没有空闲
 
 <SystemLogParameters />
 
+
+## min_allocation_size_to_throw_on_memory_limit \{#min_allocation_size_to_throw_on_memory_limit\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" changeable_without_restart="Yes" />
+
+达到 `max_server_memory_usage` 后，仍允许触发 `MEMORY_LIMIT_EXCEEDED` 的通用 C++ 内存分配的最小大小 (以字节为单位) 。这里的通用分配包括标准容器、字符串、`std::vector` 扩容、智能指针等产生的分配。更小的通用分配仍会计入 内存跟踪器，但即使超过限制也允许成功，从而减少在接近 OOM 时的清理和异常处理路径中出现的误触发失败。
+
+由 ClickHouse 自身的大型缓冲区执行的分配——列数据、哈希表、Arena、查询管道、IO 缓冲区——始终遵守内存限制，无论此值为何都可能抛出异常。此设置仅影响通过 `operator new` 进行的隐式分配。
+
+值为 `0` (默认值) 时，将保留 legacy behaviour：内存跟踪器永不拒绝隐式 `operator new` 分配，只有显式的 ClickHouse 分配才会触发 `MEMORY_LIMIT_EXCEEDED`。
+
+注意：为避免副作用，建议将该值设置为大于 `max_untracked_memory`。
 
 ## min_os_cpu_wait_time_ratio_to_drop_connection \{#min_os_cpu_wait_time_ratio_to_drop_connection\}
 

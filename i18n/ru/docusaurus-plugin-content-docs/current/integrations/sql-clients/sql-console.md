@@ -50,15 +50,12 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
+SQL-консоль — это самый быстрый и простой способ изучать ваши базы данных в ClickHouse Cloud и выполнять запросы. С помощью SQL-консоли вы можете:
 
-# SQL Console \{#sql-console\}
-
-SQL Console — это самый быстрый и простой способ изучать базы данных и выполнять к ним запросы в ClickHouse Cloud. Вы можете использовать SQL Console, чтобы:
-
-- Подключаться к своим сервисам ClickHouse Cloud
-- Просматривать, фильтровать и сортировать данные таблиц
-- Выполнять запросы и визуализировать результаты всего за несколько кликов
-- Делиться запросами с членами команды и эффективнее совместно работать
+* Подключаться к вашим сервисам ClickHouse Cloud
+* Просматривать, фильтровать и сортировать данные таблиц
+* Выполнять запросы и визуализировать результаты всего в несколько кликов
+* Делиться запросами с участниками команды и эффективнее сотрудничать.
 
 ## Работа с таблицами \{#exploring-tables\}
 

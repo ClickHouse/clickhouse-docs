@@ -1,5 +1,5 @@
 ---
-title: '스키마 설계'
+title: '관측성을 위한 스키마 설계'
 description: '관측성을 위한 스키마 설계'
 keywords: ['관측성', '로그', '트레이스', '메트릭', 'OpenTelemetry', 'Grafana', 'OTel']
 slug: /use-cases/observability/schema-design
@@ -13,19 +13,16 @@ import observability_12 from '@site/static/images/use-cases/observability/observ
 import observability_13 from '@site/static/images/use-cases/observability/observability-13.png';
 import Image from '@theme/IdealImage';
 
-
-# 관측성을 위한 스키마 설계 \{#designing-a-schema-for-observability\}
-
 다음과 같은 이유로, 로그와 트레이스를 위한 별도의 스키마를 항상 정의할 것을 권장합니다:
 
-- **프라이머리 키(primary key) 선택** - 기본 스키마는 특정 액세스 패턴에 최적화된 `ORDER BY`를 사용합니다. 액세스 패턴이 이에 일치할 가능성은 낮습니다.
-- **구조 추출** - 기존 컬럼(예: `Body` 컬럼)에서 새로운 컬럼을 추출하고자 할 수 있습니다. 이는 materialized 컬럼(그리고 더 복잡한 경우에는 materialized view)을 사용하여 수행할 수 있습니다. 이를 위해서는 스키마 변경이 필요합니다.
-- **맵(Map) 최적화** - 기본 스키마는 속성(attributes)을 저장하기 위해 Map 타입을 사용합니다. 이러한 컬럼은 임의의 메타데이터를 저장할 수 있습니다. 이벤트의 메타데이터가 사전에 정의되지 않는 경우가 많아 ClickHouse와 같은 강한 타입의 데이터베이스에는 다른 방식으로는 저장할 수 없기 때문에 필수적인 기능입니다. 그러나 맵 키와 해당 값을 조회하는 것은 일반 컬럼에 접근하는 것만큼 효율적이지 않습니다. 이 문제는 스키마를 수정하고, 가장 자주 접근하는 맵 키를 최상위 컬럼으로 노출함으로써 해결합니다. 자세한 내용은 「[SQL로 구조 추출하기](#extracting-structure-with-sql)」를 참조하십시오. 이 작업에는 스키마 변경이 필요합니다.
-- **맵 키 접근 단순화** - 맵의 키에 접근하려면 더 장황한 문법을 사용해야 합니다. 별칭(alias)을 사용하여 이를 완화할 수 있습니다. 쿼리를 단순화하는 방법은 「[별칭 사용하기](#using-aliases)」를 참조하십시오.
-- **세컨더리 인덱스** - 기본 스키마는 맵 접근 속도 및 텍스트 쿼리 성능 향상을 위해 세컨더리 인덱스를 사용합니다. 이는 일반적으로 필수는 아니며 추가 디스크 사용량을 발생시킵니다. 사용할 수는 있지만, 실제로 필요한지 테스트해야 합니다. 자세한 내용은 「[세컨더리 / Data Skipping 인덱스](#secondarydata-skipping-indices)」를 참조하십시오.
-- **코덱 사용** - 예상되는 데이터를 파악하고, 압축이 향상된다는 근거가 있는 경우 컬럼별로 코덱을 사용자 정의하고자 할 수 있습니다.
+* **프라이머리 키(primary key) 선택** - 기본 스키마는 특정 액세스 패턴에 최적화된 `ORDER BY`를 사용합니다. 액세스 패턴이 이에 일치할 가능성은 낮습니다.
+* **구조 추출** - 기존 컬럼(예: `Body` 컬럼)에서 새로운 컬럼을 추출하고자 할 수 있습니다. 이는 materialized 컬럼(그리고 더 복잡한 경우에는 materialized view)을 사용하여 수행할 수 있습니다. 이를 위해서는 스키마 변경이 필요합니다.
+* **맵(Map) 최적화** - 기본 스키마는 속성(attributes)을 저장하기 위해 Map 타입을 사용합니다. 이러한 컬럼은 임의의 메타데이터를 저장할 수 있습니다. 이벤트의 메타데이터가 사전에 정의되지 않는 경우가 많아 ClickHouse와 같은 강한 타입의 데이터베이스에는 다른 방식으로는 저장할 수 없기 때문에 필수적인 기능입니다. 그러나 맵 키와 해당 값을 조회하는 것은 일반 컬럼에 접근하는 것만큼 효율적이지 않습니다. 이 문제는 스키마를 수정하고, 가장 자주 접근하는 맵 키를 최상위 컬럼으로 노출함으로써 해결합니다. 자세한 내용은 「[SQL로 구조 추출하기](#extracting-structure-with-sql)」를 참조하십시오. 이 작업에는 스키마 변경이 필요합니다.
+* **맵 키 접근 단순화** - 맵의 키에 접근하려면 더 장황한 문법을 사용해야 합니다. 별칭(alias)을 사용하여 이를 완화할 수 있습니다. 쿼리를 단순화하는 방법은 「[별칭 사용하기](#using-aliases)」를 참조하십시오.
+* **세컨더리 인덱스** - 기본 스키마는 맵 접근 속도 및 텍스트 쿼리 성능 향상을 위해 세컨더리 인덱스를 사용합니다. 이는 일반적으로 필수는 아니며 추가 디스크 사용량을 발생시킵니다. 사용할 수는 있지만, 실제로 필요한지 테스트해야 합니다. 자세한 내용은 「[세컨더리 / Data Skipping 인덱스](#secondarydata-skipping-indices)」를 참조하십시오.
+* **코덱 사용** - 예상되는 데이터를 파악하고, 압축이 향상된다는 근거가 있는 경우 컬럼별로 코덱을 사용자 정의하고자 할 수 있습니다.
 
-_위 사용 사례 각각을 아래에서 자세히 설명합니다._
+*위 사용 사례 각각을 아래에서 자세히 설명합니다.*
 
 **중요:** 최적의 압축률과 쿼리 성능을 달성하기 위해 스키마를 확장·수정하는 것은 권장되지만, 가능하면 핵심 컬럼에 대해서는 OTel 스키마 네이밍을 따르는 것이 좋습니다. ClickHouse Grafana 플러그인은 `Timestamp`, `SeverityText`와 같은 일부 기본 OTel 컬럼이 존재한다고 가정하고 쿼리 빌딩을 도와줍니다. 로그와 트레이스를 위한 필수 컬럼은 각각 여기 [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) 및 [여기](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure)에 문서화되어 있습니다. 플러그인 설정에서 기본값을 오버라이드하여 이 컬럼 이름을 변경할 수 있습니다.
 
