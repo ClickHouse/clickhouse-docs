@@ -325,11 +325,11 @@ ColumnsDescriptions 缓存的大小 (每个表的缓存)
 
 ### CompiledExpressionCacheBytes \{#compiledexpressioncachebytes\}
 
-JIT 编译代码缓存占用的总字节数
+`JITModuleMemoryManager` 为已缓存的 JIT 编译函数的可执行段/数据段预留的页块容量 (按整页向上取整，并采用 2 倍超额预留系数) 。这**不是**实际正在使用的机器代码字节数 (实际值更小) 。该容量通过 `posix_memalign` 分配，而这类分配会被 jemalloc 拦截，因此会计入专用的 JIT Arena，并且是 `jemalloc.jit_arena.active_bytes` 的子集。
 
 ### CompiledExpressionCacheCount \{#compiledexpressioncachecount\}
 
-JIT 编译代码缓存中的条目总数
+JIT 编译机器代码缓存中的条目总数。
 
 ### 压缩 \{#compressing\}
 

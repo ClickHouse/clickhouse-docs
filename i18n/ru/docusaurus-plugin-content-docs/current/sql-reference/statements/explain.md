@@ -607,6 +607,14 @@ Join (JOIN FillRightFirst)
 * `header` — Выводит заголовок для каждого выходного порта. По умолчанию: 0.
 * `graph` — Выводит граф, описанный на языке описания графов [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)). По умолчанию: 0.
 * `compact` — Выводит граф в компактном режиме, если настройка `graph` включена. По умолчанию: 1.
+* `compact_repeated_processor_chains` — Объединяет соседние повторяющиеся цепочки процессоров в текстовом выводе, показывая одну копию цепочки с числом повторений. Это может упростить чтение параллельных конвейеров, когда одна и та же цепочка встречается много раз, например в JOIN. Не влияет на вывод графа. По умолчанию: 0.
+
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
 
 Когда `compact=0` и `graph=1`, имена процессоров будут содержать дополнительный суффикс с уникальным идентификатором процессора.
 
@@ -631,7 +639,6 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
-
 
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 

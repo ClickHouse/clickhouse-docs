@@ -6809,7 +6809,9 @@ ALTER MODIFY TTL クエリの実行後に、既存データに有効期限 (TTL)
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-MATERIALIZED VIEW で発生したエラーを無視し、materialized view の有無にかかわらず元のブロックをテーブルに挿入できるようにします
+有効な場合、依存する materialized view へのデータ送信中 (その `SELECT` 内、または内部テーブルのシンク内) に発生した例外は警告として記録され、`INSERT` ステートメントは成功します。無効 (デフォルト) の場合、そのような例外は伝播し、`INSERT` ステートメントは失敗します。
+
+この設定が制御するのは、エラー報告のみです。ソーステーブルへの書き込みはロールバックされず、また、依存 view の pipeline でエラーが発生した時点で、元の block がすでにソーステーブルにコミットされているかどうかも保証しません。無効 (デフォルト) の場合、view のエラーによって `INSERT` は失敗します。ソーステーブルとすべての依存 view に対して exactly-once 配信を実現するには、挿入の重複排除 (`insert_deduplicate`、`deduplicate_blocks_in_dependent_materialized_views`) を指定して再試行してください。有効な場合、失敗している view とその下流 chain への配信が部分的であっても、`INSERT` は成功として報告されます。これは、ソーステーブルへの書き込みを view 側の問題で妨げてはならない場合にのみ使用してください (たとえば、`system.*_log` テーブル) 。完全なセマンティクスについては、`CREATE VIEW` のドキュメントを参照してください。
 
 ## materialized_views_squash_parallel_inserts \{#materialized_views_squash_parallel_inserts\}
 

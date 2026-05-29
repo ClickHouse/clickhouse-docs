@@ -6795,7 +6795,9 @@ log_query_views=1
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-允许忽略 MATERIALIZED VIEW 的错误，并且无论 MVs 是否处理成功，都将原始数据块写入目标表
+如果启用，则在将数据推送到依赖的 materialized view 时 (无论是在其 `SELECT` 中还是在内部表 sink 中) 抛出的异常都会记录为警告，且 `INSERT` 语句会成功。如果禁用 (默认值) ，此类异常会继续向上传播，导致 `INSERT` 语句失败。
+
+此设置仅控制错误报告。它不会回滚对源表的写入，也不保证当依赖视图的管道中发生错误时，原始块是否已经提交到源表。禁用时 (默认值) ，`INSERT` 会因视图错误而失败——请结合插入去重 (`insert_deduplicate`、`deduplicate_blocks_in_dependent_materialized_views`) 进行重试，以实现源表及所有依赖视图的 exactly-once 交付。启用时，即使故障视图及其下游事件链只接收到部分数据，`INSERT` 仍会报告成功；仅当源表写入绝不能被视图侧问题阻塞时才应使用此设置 (例如 `system.*_log` 表) 。完整语义请参见 `CREATE VIEW` 文档。
 
 ## materialized_views_squash_parallel_inserts \{#materialized_views_squash_parallel_inserts\}
 

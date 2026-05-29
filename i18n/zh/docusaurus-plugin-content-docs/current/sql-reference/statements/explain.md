@@ -623,11 +623,19 @@ Join (JOIN FillRightFirst)
 
 设置：
 
-* `header` — 为每个输出端口输出表头。默认值：0。
+* `header` — 为每个输出端口输出请求头。默认值：0。
 * `graph` — 使用 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 图描述语言输出图形。默认值：0。
 * `compact` — 当启用 `graph` 设置时，以紧凑模式输出图形。默认值：1。
+* `compact_repeated_processor_chains` — 在文本输出中，将相邻重复的处理器链压缩显示为一份副本并标注重复次数。例如，当相同的处理器链多次出现时 (如在 joins 中) ，这可以让并行管道更易于阅读。它不会影响图形输出。默认值：0。
 
-当 `compact=0` 且 `graph=1` 时，processor 名称会包含一个带有唯一 processor 标识符的额外后缀。
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
+
+当 `compact=0` 且 `graph=1` 时，处理器名称会包含一个带有唯一处理器标识符的额外后缀。
 
 示例：
 
@@ -650,7 +658,6 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
-
 
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 

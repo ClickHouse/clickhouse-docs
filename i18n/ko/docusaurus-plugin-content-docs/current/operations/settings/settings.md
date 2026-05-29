@@ -6809,7 +6809,9 @@ ALTER MODIFY TTL 쿼리 이후 기존 데이터에 대해 TTL을 적용합니다
 
 <SettingsInfoBlock type="Bool" default_value="0" />
 
-MATERIALIZED VIEW에서 발생하는 오류를 무시하고, MATERIALIZED VIEW와 상관없이 원본 블록을 테이블에 전달하도록 합니다.
+활성화되면 종속 materialized view로 데이터를 푸시하는 동안(`SELECT` 또는 내부 테이블 싱크에서) 발생한 예외는 경고로 기록되며 `INSERT` 문은 성공합니다. 비활성화되면(기본값) 이러한 예외가 전파되어 `INSERT` 문이 실패합니다.
+
+이 설정은 오류 보고만 제어합니다. 소스 테이블에 대한 쓰기를 롤백하지 않으며, 종속 뷰의 파이프라인에서 오류가 발생했을 때 원래 블록이 이미 소스 테이블에 커밋되었는지도 보장하지 않습니다. 비활성화되면(기본값) 뷰 오류 시 `INSERT`가 실패합니다. 소스 테이블과 모든 종속 뷰에 대해 exactly-once 전달을 보장하려면 insert deduplication (`insert_deduplicate`, `deduplicate_blocks_in_dependent_materialized_views`)과 함께 재시도하십시오. 활성화되면 실패한 뷰와 그 다운스트림 체인에 부분적으로만 전달되었더라도 `INSERT`는 성공으로 보고됩니다. 이는 소스 테이블 쓰기가 뷰 측 문제로 인해 차단되면 안 되는 경우(예: `system.*_log` 테이블)에만 사용하십시오. 전체 의미 체계는 `CREATE VIEW` 문서를 참조하십시오.
 
 ## materialized_views_squash_parallel_inserts \{#materialized_views_squash_parallel_inserts\}
 

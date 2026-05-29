@@ -606,6 +606,14 @@ Join (JOIN FillRightFirst)
 * `header` — 各出力ポートのヘッダーを出力します。デフォルト: 0。
 * `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) グラフ記述言語で記述されたグラフを出力します。デフォルト: 0。
 * `compact` — `graph` 設定が有効な場合、グラフをコンパクトモードで出力します。デフォルト: 1。
+* `compact_repeated_processor_chains` — テキスト出力では、隣接する繰り返しのプロセッサチェーンを、チェーンの 1 つのコピーと繰り返し回数を表示することでコンパクト化します。これにより、たとえば join で同じチェーンが何度も現れる場合に、並列パイプラインを読みやすくできます。これはグラフ出力には影響しません。デフォルト: 0。
+
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
 
 `compact=0` かつ `graph=1` の場合、プロセッサ名には一意のプロセッサ識別子を含む追加のサフィックスが付与されます。
 
@@ -630,7 +638,6 @@ ExpressionTransform
             (ReadFromStorage)
             NumbersRange × 2 0 → 1
 ```
-
 
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 

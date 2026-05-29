@@ -85,7 +85,7 @@ AS SELECT ...
 
 ### CREATE OR REPLACE MATERIALIZED VIEW \{#create-or-replace-materialized-view\}
 
-`CREATE OR REPLACE MATERIALIZED VIEW` 会以原子方式替换现有的物化视图及其内部存储表 (如果存在) 。该操作要求使用 `Atomic` 或 `Replicated` 数据库引擎。
+`CREATE OR REPLACE MATERIALIZED VIEW` 会以原子方式替换现有的materialized view及其内部存储表 (如果存在) 。该操作要求使用 `Atomic` 或 `Replicated` 数据库引擎。
 
 ```sql
 CREATE OR REPLACE MATERIALIZED VIEW [db.]name [ON CLUSTER cluster]
@@ -132,33 +132,35 @@ CREATE OR REPLACE MATERIALIZED VIEW mv TO target
 ```
 
 :::tip
-以下是一份关于如何使用[物化视图](/guides/developer/cascading-materialized-views.md)的分步指南。
+以下是一份关于如何使用[materialized view](/guides/developer/cascading-materialized-views.md)的分步指南。
 :::
 
-物化视图会存储由对应的 [SELECT](../../../sql-reference/statements/select/index.md) 查询转换后的数据。
+materialized view会存储由对应的 [SELECT](../../../sql-reference/statements/select/index.md) 查询转换后的数据。
 
-在创建未指定 `TO [db].[table]` 的物化视图时，必须指定用于存储数据的表引擎 `ENGINE`。
+在创建未指定 `TO [db].[table]` 的materialized view时，必须指定用于存储数据的表引擎 `ENGINE`。
 
-在创建带有 `TO [db].[table]` 的物化视图时，不能同时使用 `POPULATE`。
+在创建带有 `TO [db].[table]` 的materialized view时，不能同时使用 `POPULATE`。
 
-物化视图的实现方式如下：当向 `SELECT` 中指定的表插入数据时，插入数据的一部分会通过该 `SELECT` 查询进行转换，并将结果插入到视图中。
+materialized view的实现方式如下：当向 `SELECT` 中指定的表插入数据时，插入数据的一部分会通过该 `SELECT` 查询进行转换，并将结果插入到视图中。
 
 :::note
-ClickHouse 中的物化视图在向目标表插入数据时使用的是**列名**而不是列顺序。如果某些列名在 `SELECT` 查询结果中不存在，ClickHouse 会使用默认值，即使该列不是 [Nullable](../../data-types/nullable.md)。一种更安全的做法是在使用物化视图时为每一列添加别名。
+ClickHouse 中的materialized view在向目标表插入数据时使用的是**列名**而不是列顺序。如果某些列名在 `SELECT` 查询结果中不存在，ClickHouse 会使用默认值，即使该列不是 [Nullable](../../data-types/nullable.md)。一种更安全的做法是在使用materialized view时为每一列添加别名。
 
-ClickHouse 中的物化视图在实现上更类似于插入触发器。如果视图查询中包含聚合操作，它只会应用于新近插入的这一批数据。对源表中已有数据的任何修改 (例如 update、delete、drop partition 等) 都不会改变物化视图。
+ClickHouse 中的materialized view在实现上更类似于插入触发器。如果视图查询中包含聚合操作，它只会应用于新近插入的这一批数据。对源表中已有数据的任何修改 (例如 update、delete、drop partition 等) 都不会改变materialized view。
 
-在出现错误的情况下，ClickHouse 中的物化视图行为不是确定性的。这意味着已经写入的块会保留在目标表中，而错误之后的所有块都不会写入。
+在出现错误的情况下，ClickHouse 中的materialized view行为不是确定性的。这意味着已经写入的块会保留在目标表中，而错误之后的所有块都不会写入。
 
-默认情况下，如果向某个视图写入失败，那么对应的 INSERT 查询也会失败，并且某些数据块可能不会写入目标表。可以通过设置 `materialized_views_ignore_errors` 来改变这一行为 (需要在 `INSERT` 查询中设置) 。如果将 `materialized_views_ignore_errors=true`，则在向视图写入时出现的任何错误都会被忽略，所有数据块都会写入目标表。
+默认情况下，如果向某个视图推送数据时抛出错误，`INSERT` 查询就会失败。到那时该块是否已经到达源表并不保证——这取决于插入管道的时序，而不是视图错误。请使用插入去重 (`insert_deduplicate`, `deduplicate_blocks_in_dependent_materialized_views`) 重试失败的 `INSERT`，以便为源表及所有依赖视图实现 exactly-once 传递。
 
-另请注意，对于 `system.*_log` 表，`materialized_views_ignore_errors` 默认设置为 `true`。
+在 `INSERT` 查询中设置 `materialized_views_ignore_errors=true` 只会改变错误报告方式：每个视图错误都会记录为警告，而 `INSERT` 查询仍会成功。写入发生故障视图的目标端时只会部分完成——异常发生前已处理的块会被保留，出错的块以及其后的所有块都会从该视图中丢弃。该目标端下游的视图只能看到实际到达的那些块，因此它们的写入也同样只是部分完成。未抛出异常的同级视图 (以及它们的下游链) 会被完整写入，源表也会照常写入。由于 `INSERT` 会报告成功，客户端不会收到失败信号，也不会触发自动重试；仅当源表写入绝不能因视图侧问题而被阻塞时，才应使用此设置 (例如 `system.*_log` 表) 。
+
+对于 `system.*_log` 表，`materialized_views_ignore_errors` 默认值为 `true`。
 :::
 
-如果指定了 `POPULATE`，在创建视图时会将已有表数据插入到视图中，其行为类似于执行 `CREATE TABLE ... AS SELECT ...`。否则，视图中只包含在创建视图之后插入到表中的数据。我们**不推荐**使用 `POPULATE`，因为在视图创建过程中插入到表中的数据不会被插入到视图中。
+如果指定了 `POPULATE`，则在创建视图时，现有表数据会被插入到该视图中，就像执行 `CREATE TABLE ... AS SELECT ...` 一样。否则，查询只会包含创建视图之后插入到表中的数据。我们**不建议**使用 `POPULATE`，因为在创建视图期间插入到表中的数据不会被插入到该视图中。
 
 :::note
-鉴于 `POPULATE` 的行为类似于 `CREATE TABLE ... AS SELECT ...`，它存在以下限制：
+鉴于 `POPULATE` 的工作方式类似于 `CREATE TABLE ... AS SELECT ...`，它存在以下限制：
 
 * 不支持在 Replicated 数据库中使用
 * 不支持在 ClickHouse Cloud 中使用
@@ -168,9 +170,9 @@ ClickHouse 中的物化视图在实现上更类似于插入触发器。如果视
 
 `SELECT` 查询可以包含 `DISTINCT`、`GROUP BY`、`ORDER BY`、`LIMIT`。请注意，相应的转换会在每个插入数据块上独立执行。例如，如果设置了 `GROUP BY`，则数据会在插入时聚合，但仅限于单个插入数据包内。数据之后不会再进行进一步聚合。例外情况是使用会独立执行数据聚合的 `ENGINE`，例如 `SummingMergeTree`。
 
-如果物化视图使用 `TO [db.]name` 这种写法，可以先 `DETACH` 视图，对目标表执行 `ALTER`，然后再 `ATTACH` 之前被 `DETACH` 的视图。
+如果materialized view使用 `TO [db.]name` 这种写法，可以先 `DETACH` 视图，对目标表执行 `ALTER`，然后再 `ATTACH` 之前被 `DETACH` 的视图。
 
-请注意，物化视图会受到 [optimize&#95;on&#95;insert](/operations/settings/settings#optimize_on_insert) 设置的影响。数据会在插入到视图之前进行合并。
+请注意，materialized view会受到 [optimize&#95;on&#95;insert](/operations/settings/settings#optimize_on_insert) 设置的影响。数据会在插入到视图之前进行合并。
 
 视图看起来与普通表相同。例如，它们会出现在 `SHOW TABLES` 查询的结果中。
 
