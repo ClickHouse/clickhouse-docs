@@ -15,6 +15,10 @@ import tlsCaBundle from '@site/static/images/managed-postgres/tls-ca-bundle.png'
 
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.connection-beta" />
 
+:::tip[SQL Console]
+This page explains how to connect your production systems to Postgres. If you want a quick way to run a query, you can connect through the [SQL Console](https://clickhouse.com/docs/integrations/sql-clients/sql-console), as with ClickHouse instances.
+:::
+
 ## Accessing connection details {#accessing-connection-details}
 
 To connect your applications to Managed Postgres, navigate to the **Connect** view in the left sidebar of your instance.
@@ -38,11 +42,11 @@ Managed Postgres provides superuser access to your database. Use these credentia
 
 The **Connect via** tabs provide your connection string in multiple formats to match your application's requirements:
 
-| Format | Description |
-|--------|-------------|
-| **url** | Standard connection URL in the format `postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>` |
+| Format   | Description |
+|----------|-------------|
+| **url**  | Standard connection URL in the format `postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>` |
 | **psql** | Ready-to-use command for connecting via the psql command line tool |
-| **env** | Environment variables for libpq-based clients |
+| **env**  | Environment variables for libpq-based clients |
 | **yaml** | YAML formatted configuration |
 | **jdbc** | JDBC connection string for Java applications |
 
