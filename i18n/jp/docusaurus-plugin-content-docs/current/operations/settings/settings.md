@@ -4458,6 +4458,14 @@ ClickHouse は、そのテーブルの古い状態のレプリカの中から最
 
 デフォルトは 1（有効）です。
 
+## file_like_engine_default_partition_strategy \{#file_like_engine_default_partition_strategy\}
+
+<SettingsInfoBlock type="FileLikeEngineDefaultPartitionStrategy" default_value="hive" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "hive"},{"label": "`partition_strategy` が指定されていない場合、ファイルライクなテーブルエンジン（S3、AzureBlobStorage など）のデフォルトのパーティション方式を `wildcard` から `hive` に変更しました。"}]}]} />
+
+ファイルライクエンジンのデフォルトのパーティション方式。
+
 ## filesystem_cache_allow_background_download \{#filesystem_cache_allow_background_download\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

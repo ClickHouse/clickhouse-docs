@@ -4446,6 +4446,14 @@ ClickHouse 会从该表所有滞后的副本中选择一个最合适的副本。
 
 默认值为 1（启用）。
 
+## file_like_engine_default_partition_strategy \{#file_like_engine_default_partition_strategy\}
+
+<SettingsInfoBlock type="FileLikeEngineDefaultPartitionStrategy" default_value="hive" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "hive"},{"label": "未提供 `partition_strategy` 时，将类文件表引擎（S3、AzureBlobStorage 等）的默认分区策略从 `wildcard` 更改为 `hive`。"}]}]} />
+
+类文件表引擎的默认分区策略。
+
 ## filesystem_cache_allow_background_download \{#filesystem_cache_allow_background_download\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />
