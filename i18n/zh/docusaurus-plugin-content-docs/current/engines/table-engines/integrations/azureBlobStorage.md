@@ -29,8 +29,8 @@ CREATE TABLE azure_blob_storage_table (name String, value UInt32)
 * `account_key` - 如果使用 `storage&#95;account&#95;url`，则可在此处指定账户密钥。
 * `format` — 文件的[格式](/interfaces/formats.md)。
 * `compression` — 支持的值：`none`、`gzip/gz`、`brotli/br`、`xz/LZMA`、`zstd/zst`。默认会通过文件扩展名自动检测压缩类型 (等同于设置为 `auto`) 。
-* `partition_strategy` – 选项：`WILDCARD` 或 `HIVE`。`WILDCARD` 要求在路径中包含 `{_partition_id}`，该占位符会被分区键替换。`HIVE` 不允许使用通配符，假定路径为表的根路径，并生成 Hive 风格的分区目录，文件名为 Snowflake ID，扩展名为文件格式。默认值为 `WILDCARD`。
-* `partition_columns_in_data_file` - 仅在使用 `HIVE` 分区策略时有效。告知 ClickHouse 是否应在数据文件中写入分区列。默认值为 `false`。
+* `partition_strategy` – 选项：`wildcard` 或 `hive`。`wildcard` 要求在路径中包含 `{_partition_id}`，该占位符会被分区键替换。`hive` 不允许使用通配符，假定路径为表的根路径，并生成 Hive 风格的分区目录，文件名为 Snowflake ID，扩展名为文件格式。默认值取决于 `file_like_engine_default_partition_strategy` 设置 (在 `compatibility` 设置早于 `26.6` 时为 `wildcard`，否则为 `hive`) 。
+* `partition_columns_in_data_file` - 仅在使用 `hive` 分区策略时有效。告知 ClickHouse 是否应在数据文件中写入分区列。默认值为 `false`。
 * `extra_credentials` - 使用 `client_id` 和 `tenant_id` 进行认证。如果提供了 `extra&#95;credentials`，则其优先级高于 `account_name` 和 `account_key`。
 
 **示例**
@@ -106,13 +106,13 @@ SETTINGS filesystem_cache_name = 'cache_for_azure', enable_filesystem_cache = 1;
 
 #### 分区策略 \{#partition-strategy\}
 
-`WILDCARD` (默认) ：将文件路径中的 `{_partition_id}` 通配符替换为实际的分区键。不支持读取。
+`wildcard`：将文件路径中的 `{_partition_id}` 通配符替换为实际的分区键。不支持读取。仅在早于 `26.6` 的 `compatibility` 设置下才会默认选用；否则默认值为 `hive` (参见 `file_like_engine_default_partition_strategy` 设置) 。
 
-`HIVE` 为读写实现 Hive 风格的分区。读取通过递归 glob 模式完成。写入生成的文件采用以下格式：`<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`。
+`hive` 为读写实现 Hive 风格的分区。读取通过递归 glob 模式完成。写入生成的文件采用以下格式：`<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`。
 
-注意：使用 `HIVE` 分区策略时，`use_hive_partitioning` 设置不起任何作用。
+注意：使用 `hive` 分区策略时，`use_hive_partitioning` 设置不起任何作用。
 
-`HIVE` 分区策略示例：
+`hive` 分区策略示例：
 
 ```sql
 arthur :) create table azure_table (year UInt16, country String, counter UInt8) ENGINE=AzureBlobStorage(account_name='devstoreaccount1', account_key='Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==', storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='hive_partitioned', format='Parquet', compression='auto', partition_strategy='hive') PARTITION BY (year, country);
