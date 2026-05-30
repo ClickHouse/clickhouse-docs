@@ -494,8 +494,6 @@ FROM Sequences;
 
 ### Migrating data {#migrating-data}
 
-
-
 Migrating data between BigQuery and ClickHouse Cloud falls into two primary workload types:
 
 - **Initial bulk load with periodic updates** - An initial dataset must be migrated along with periodic updates at set intervals e.g. daily. Updates here are handled by resending rows that have changed - identified by either a column that can be used for comparisons (e.g., a date). Deletes are handled with a complete periodic reload of the dataset.
