@@ -122,7 +122,7 @@ FROM test.visits
 GROUP BY StartDate, CounterID;
 ```
 
-`test.visits` テーブルにデータを挿入します。`
+`test.visits` テーブルにデータを挿入します。&#96;
 
 ```sql
 INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)

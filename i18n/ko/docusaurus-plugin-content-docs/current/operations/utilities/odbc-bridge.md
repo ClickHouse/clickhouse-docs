@@ -22,7 +22,7 @@ ODBC 구현에서 발생할 수 있는 세그멘테이션 폴트(segmentation fa
 명령줄에서 독립 실행형 도구로도 사용할 수 있습니다:
 
 * `connection_string` -- ODBC 연결 문자열.
-* `sample_block` -- ClickHouse NamesAndTypesList 형식의 컬럼 설명으로, 이름은 백틱(`)으로 감싸고
+* `sample_block` -- ClickHouse NamesAndTypesList 형식의 컬럼 설명으로, 이름은 백틱(&#96;)으로 감싸고
   타입은 문자열로 작성합니다. 이름과 타입은 공백으로 구분하고, 행은
   줄바꿈으로 구분합니다.
 * `max_block_size` -- 선택적인 매개변수로, 단일 블록의 최대 크기를 설정합니다.
