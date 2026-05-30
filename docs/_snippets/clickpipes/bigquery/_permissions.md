@@ -17,26 +17,26 @@ The following service account permissions are required:
 
 #### BigQuery {#bigquery}
 
-The service account must have the following BigQuery roles: 
+The service account must have the following BigQuery roles:
 
 * [`roles/bigquery.dataViewer`](https://docs.cloud.google.com/bigquery/docs/access-control#bigquery.dataViewer)
 * [`roles/bigquery.jobUser`](https://docs.cloud.google.com/bigquery/docs/access-control#bigquery.jobUser)
 
 To further scope access, we recommend using [IAM conditions](https://docs.cloud.google.com/bigquery/docs/conditions) to restrict the resources the role has access to. For example, you can restrict the `dataViewer` role to the specific dataset containing the tables you want to sync:
 
-```bash
+```plaintext
 resource.name.startsWith("projects/<PROJECT_ID>/datasets/<DATASET_NAME>")
 ```
 
 #### Cloud Storage {#cloud-storage}
 
-The service account must have the following Cloud Storage roles: 
+The service account must have the following Cloud Storage roles:
 
 * [`roles/storage.objectAdmin`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectAdmin)
 * [`roles/storage.bucketViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.bucketViewer)
 
 To further scope access, we recommend using [IAM conditions](https://docs.cloud.google.com/bigquery/docs/conditions) to restrict the resources the role has access to. For example, you can restrict the `objectAdmin` and `bucketViewer` roles to the dedicated bucket created for ClickPipes syncs.
 
-```bash
+```plaintext
 resource.name.startsWith("projects/_/buckets/<BUCKET_NAME>")
 ```

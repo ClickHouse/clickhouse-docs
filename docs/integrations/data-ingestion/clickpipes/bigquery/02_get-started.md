@@ -56,7 +56,7 @@ Depending on the size of your BigQuery dataset, or the total size of the tables 
 
 Finally, you can configure permissions for the internal ClickPipes user.
 
-**Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined roles:
+**Permissions:** to write data into a destination table, ClickPipes creates a dedicated user. You can select a role for this internal user using a custom role or one of the predefined roles:
 - `Full access`: full access to the cluster. Required if you use materialized views or dictionary with the destination table.
 - `Only destination`: insert permissions to the destination table only.
 

@@ -33,7 +33,7 @@ Before proceeding, make sure you have the following:
 1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
 2. Click on the project picker at the top of the page next to the Google Cloud logo.
 3. Click on **New project**.
-4. Fill in the project name, for example "BigQueryClickHouse".
+4. Fill in the project name, for example "BigQueryClickHouse."
 5. Optionally, select a parent resource, or leave it as **No organisation**.
 6. Click on **Create**.
 
@@ -44,7 +44,7 @@ Before proceeding, make sure you have the following:
 3. Make note of the **Project-ID**. You will need this in a later step.
 4. Select the **Run a query in BigQuery** button to open the studio.
 5. Now select the **SQL query** button.
-6. It's the following DDL commands in the query editor, replacing **project-ID below** with the project ID that you took note of in step 3 above: 
+6. Enter the following DDL commands in the query editor, replacing **project-ID below** with the project ID that you took note of in step 3 above:
 
 Data for these tables is made available in Parquet format in a GCS bucket for convenience.
 
@@ -272,7 +272,7 @@ You will need the bucket's gsutil URI if you intend to use ClickPipes (e.g. **gs
 or the bucket's Cloud Console URL (e.g. **https://console.cloud.google.com/storage/browser/bigquery-clickhouse**) if you intend to import the data directly.
 
 You can find these by clicking the name of your bucket, and then selecting the **Configuration** tab.
-They are listed in a table under the header **Overview**.
+They're listed in a table under the header **Overview**.
 
 ## Create a service account file and key {#create-service-account}
 

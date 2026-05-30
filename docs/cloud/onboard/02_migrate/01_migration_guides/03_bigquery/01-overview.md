@@ -13,7 +13,7 @@ import Image from '@theme/IdealImage';
 
 ## Why use ClickHouse Cloud over BigQuery? {#why-use-clickhouse-cloud-over-bigquery}
 
-TLDR: Because ClickHouse is faster, cheaper, and more powerful than BigQuery for modern data analytics:
+In short, ClickHouse is faster, cheaper, and more powerful than BigQuery for modern data analytics:
 
 |                              | ClickHouse                                                                                                                                                                              | BigQuery                                                                                                |
 |------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -21,7 +21,7 @@ TLDR: Because ClickHouse is faster, cheaper, and more powerful than BigQuery for
 | **Cost-effective**           | Up to 100x more cost-effective.                                                                                                                                                         | More costly for BigQuery for analytics workloads.                                                       |
 | **Modern SQL**               | Advanced SQL extended with numerous extensions and improvements (e.g. lambda functions and higher-order functions), that make analytical tasks very user-friendly.                      | Support for only standard SQL. Can make analytics more complex.                                         |
 | **Easy data analytics**      | 150+ pre-built aggregation functions plus powerful aggregation combinators, fully vectorized and parallelized.                                                                          | Requires writing more complex SQL due to its limited set of aggregate and higher-order functions.       |
-| **Rich data type support**   | 1300+ data processing functions for domains like mathematics, geo, machine learning, time series, and more. Advanced data types like JSON, maps, and arrays plus over 80 array functions for modeling and solving a wide range of problems. | Support for limited number of data types including only 8 array functions.                              |
+| **Rich data type support**   | 1300+ data processing functions for domains like mathematics, geo, machine learning, time series, and more. Advanced data types like JSON, maps, and arrays, with over 80 array functions for solving a wide range of analytical problems. | Support for limited number of data types including only 8 array functions.                              |
 | **World class interoperability** | Native support for reading data in over 90 file formats from most data sources which makes it easy to analyze data regardless of its shape and location.                            | Limited interoperability. Supports only 5 file formats and 19 data sources.                             |
 
 ## Resource organization {#resource-organization}
@@ -34,27 +34,27 @@ The way resources are organized in ClickHouse Cloud is similar to [BigQuery's re
 
 Similar to BigQuery, organizations are the root nodes in the ClickHouse cloud resource hierarchy. The first user you set up in your ClickHouse Cloud account is automatically assigned to an organization owned by the user. The user may invite additional users to the organization.
 
-### BigQuery Projects vs ClickHouse Cloud Services {#bigquery-projects-vs-clickhouse-cloud-services}
+### BigQuery projects vs ClickHouse Cloud services {#bigquery-projects-vs-clickhouse-cloud-services}
 
 Within organizations, you can create services loosely equivalent to BigQuery projects because stored data in ClickHouse Cloud is associated with a service. There are [several service types available](/cloud/manage/cloud-tiers) in ClickHouse Cloud. Each ClickHouse Cloud service is deployed in a specific region and includes:
 
-1. A group of compute nodes (currently, 2 nodes for a Development tier service and 3 for a Production tier service). For these nodes, ClickHouse Cloud [supports vertical and horizontal scaling](/manage/scaling#how-scaling-works-in-clickhouse-cloud), both manually and automatically.
+1. A group of compute nodes (2 nodes for a Development tier service and 3 for a Production tier service). For these nodes, ClickHouse Cloud [supports vertical and horizontal scaling](/manage/scaling#how-scaling-works-in-clickhouse-cloud), both manually and automatically.
 2. An object storage folder where the service stores all the data.
 3. An endpoint (or multiple endpoints created via ClickHouse Cloud UI console)  - a service URL that you use to connect to the service (for example, `https://dv2fzne24g.us-east-1.aws.clickhouse.cloud:8443`)
 
-### BigQuery Datasets vs ClickHouse Cloud Databases {#bigquery-datasets-vs-clickhouse-cloud-databases}
+### BigQuery datasets vs ClickHouse Cloud databases {#bigquery-datasets-vs-clickhouse-cloud-databases}
 
 ClickHouse logically groups tables into databases. Like BigQuery datasets, ClickHouse databases are logical containers that organize and control access to table data.
 
-### BigQuery Folders {#bigquery-folders}
+### BigQuery folders {#bigquery-folders}
 
-ClickHouse Cloud currently has no concept equivalent to BigQuery folders.
+ClickHouse Cloud has no concept equivalent to BigQuery folders.
 
-### BigQuery Slot reservations and Quotas {#bigquery-slot-reservations-and-quotas}
+### BigQuery slot reservations and quotas {#bigquery-slot-reservations-and-quotas}
 
 Like BigQuery slot reservations, you can [configure vertical and horizontal autoscaling](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling) in ClickHouse Cloud. For vertical autoscaling, you can set the minimum and maximum size for the memory and CPU cores of the compute nodes for a service. The service will then scale as needed within those bounds. These settings are also available during the initial service creation flow. Each compute node in the service has the same size. You can change the number of compute nodes within a service with [horizontal scaling](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling).
 
-Furthermore, similar to BigQuery quotas, ClickHouse Cloud offers concurrency control, memory usage limits, and I/O scheduling, enabling you to isolate queries into workload classes. By setting limits on shared resources (CPU cores, DRAM, disk and network I/O) for specific workload classes, it ensures these queries don't affect other critical business queries. Concurrency control prevents thread oversubscription in scenarios with a high number of concurrent queries.
+Furthermore, similar to BigQuery quotas, ClickHouse Cloud offers concurrency control, memory usage limits, and I/O scheduling, enabling you to isolate queries into workload classes. By setting limits on shared resources (CPU cores, memory, disk, and network I/O) for specific workload classes, it ensures these queries don't affect other critical business queries. Concurrency control prevents thread oversubscription in scenarios with a high number of concurrent queries.
 
 ClickHouse tracks byte sizes of memory allocations at the server, user, and query level, allowing flexible memory usage limits. Memory overcommit enables queries to use additional free memory beyond the guaranteed memory, while assuring memory limits for other queries. Additionally, memory usage for aggregation, sort, and join clauses can be limited, allowing fallback to external algorithms when the memory limit is exceeded.
 
@@ -66,36 +66,36 @@ ClickHouse Cloud controls user access in two places, via the [cloud console](/cl
 
 ## Data types {#data-types}
 
-ClickHouse offers more granular precision with respect to numerics. For example, BigQuery offers the numeric types [`INT64`, `NUMERIC`, `BIGNUMERIC` and `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types). Contrast these with ClickHouse, which offers multiple precision types for decimals, floats, and integers. With these data types, you can optimize storage and memory overhead, resulting in faster queries and lower resource consumption. Below we map the equivalent ClickHouse type for each BigQuery type:
+ClickHouse offers more granular precision with respect to numerics. For example, BigQuery offers the numeric types [`INT64`, `NUMERIC`, `BIGNUMERIC`, and `FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#numeric_types). Contrast these with ClickHouse, which offers multiple precision types for decimals, floats, and integers. With these data types you can optimize storage and memory overhead, resulting in faster queries and lower resource consumption. Below we map the equivalent ClickHouse type for each BigQuery type:
 
-| BigQuery | ClickHouse                                                                                                                                                                        |
-|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#array_type)    | [Array(t)](/sql-reference/data-types/array)                                                                                                                                       |
-| [NUMERIC](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types)  | [Decimal(P, S), Decimal32(S), Decimal64(S), Decimal128(S)](/sql-reference/data-types/decimal)                                                                                     |
-| [BIG NUMERIC](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types) | [Decimal256(S)](/sql-reference/data-types/decimal)                                                                                                                                |
-| [BOOL](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#boolean_type)     | [Bool](/sql-reference/data-types/boolean)                                                                                                                                         |
-| [BYTES](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#bytes_type)    | [FixedString](/sql-reference/data-types/fixedstring)                                                                                                                              |
-| [DATE](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type)     | [Date32](/sql-reference/data-types/date32) (with narrower range)                                                                                                                  |
-| [DATETIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type) | [DateTime](/sql-reference/data-types/datetime), [DateTime64](/sql-reference/data-types/datetime64) (narrow range, higher precision)                                               |
-| [FLOAT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#floating_point_types)  | [Float64](/sql-reference/data-types/float)                                                                                                                                        |
-| [GEOGRAPHY](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type) | [Geo Data Types](/sql-reference/data-types/float)                                                                                                                                 |
-| [INT64](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types)    | [UInt8, UInt16, UInt32, UInt64, UInt128, UInt256, Int8, Int16, Int32, Int64, Int128, Int256](/sql-reference/data-types/int-uint)                                                  |
-| [INTERVAL](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types) | NA - [supported as expression](/sql-reference/data-types/special-data-types/interval#usage-remarks) or [through functions](/sql-reference/functions/date-time-functions#addYears) |
-| [JSON](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#json_type)     | [JSON](/integrations/data-formats/json/inference)                                                                                                                                 |
-| [STRING](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type)   | [String (bytes)](/sql-reference/data-types/string)                                                                                                                                |
-| [STRUCT](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#constructing_a_struct)   | [Tuple](/sql-reference/data-types/tuple), [Nested](/sql-reference/data-types/nested-data-structures/nested)                                                                       |
-| [TIME](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type)     | [DateTime64](/sql-reference/data-types/datetime64)                                                                                                                                |
-| [TIMESTAMP](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type) | [DateTime64](/sql-reference/data-types/datetime64)                                                                                                                                |
+| BigQuery | ClickHouse |
+|----------|------------|
+| [`ARRAY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#array_type) | [`Array(t)`](/sql-reference/data-types/array) |
+| [`NUMERIC`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types) | [`Decimal(P, S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)`](/sql-reference/data-types/decimal) |
+| [`BIGNUMERIC`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types) | [`Decimal256(S)`](/sql-reference/data-types/decimal) |
+| [`BOOL`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#boolean_type) | [`Bool`](/sql-reference/data-types/boolean) |
+| [`BYTES`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#bytes_type) | [`FixedString`](/sql-reference/data-types/fixedstring) |
+| [`DATE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type) | [`Date32`](/sql-reference/data-types/date32) (with narrower range) |
+| [`DATETIME`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type) | [`DateTime`](/sql-reference/data-types/datetime), [`DateTime64`](/sql-reference/data-types/datetime64) (narrow range, higher precision) |
+| [`FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#floating_point_types) | [`Float64`](/sql-reference/data-types/float) |
+| [`GEOGRAPHY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type) | [Geo data types](/sql-reference/data-types/float) |
+| [`INT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types) | [`UInt8`, `UInt16`, `UInt32`, `UInt64`, `UInt128`, `UInt256`, `Int8`, `Int16`, `Int32`, `Int64`, `Int128`, `Int256`](/sql-reference/data-types/int-uint) |
+| [`INTERVAL`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types) | NA - [supported as expression](/sql-reference/data-types/special-data-types/interval#usage-remarks) or [through functions](/sql-reference/functions/date-time-functions#addYears) |
+| [`JSON`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#json_type) | [`JSON`](/integrations/data-formats/json/inference) |
+| [`STRING`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type) | [`String` (bytes)](/sql-reference/data-types/string) |
+| [`STRUCT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#constructing_a_struct) | [`Tuple`](/sql-reference/data-types/tuple), [`Nested`](/sql-reference/data-types/nested-data-structures/nested) |
+| [`TIME`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type) | [`DateTime64`](/sql-reference/data-types/datetime64) |
+| [`TIMESTAMP`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type) | [`DateTime64`](/sql-reference/data-types/datetime64) |
 
 When presented with multiple options for ClickHouse types, consider the actual range of the data and pick the lowest required. Also, consider utilizing [appropriate codecs](https://clickhouse.com/blog/optimize-clickhouse-codecs-compression-schema) for further compression.
 
 ## Query acceleration techniques {#query-acceleration-techniques}
 
-### Primary and Foreign keys and Primary index {#primary-and-foreign-keys-and-primary-index}
+### Primary and foreign keys and primary index {#primary-and-foreign-keys-and-primary-index}
 
 In BigQuery, a table can have [primary key and foreign key constraints](https://cloud.google.com/bigquery/docs/information-schema-table-constraints). Typically, primary and foreign keys are used in relational databases to ensure data integrity. A primary key value is normally unique for each row and isn't `NULL`. Each foreign key value in a row must be present in the primary key column of the primary key table or be `NULL`. In BigQuery, these constraints aren't enforced, but the query optimizer may use this information to optimize queries better.
 
-In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse doesn't enforce uniqueness for a table's primary key column values. Unlike BigQuery, a table's data is stored on disk [ordered](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) by the primary key columns. The query optimizer utilizes this sort order to prevent resorting, to minimize memory usage for joins, and to enable short-circuiting for limit clauses. Unlike BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. ClickHouse currently doesn't support foreign key constraints.
+In ClickHouse, a table can also have a primary key. Like BigQuery, ClickHouse doesn't enforce uniqueness for a table's primary key column values. Unlike BigQuery, a table's data is stored on disk [ordered](/guides/best-practices/sparse-primary-indexes#optimal-compression-ratio-of-data-files) by the primary key columns. The query optimizer utilizes this sort order to prevent resorting, to minimize memory usage for joins, and to enable short-circuiting for limit clauses. Unlike BigQuery, ClickHouse automatically creates [a (sparse) primary index](/guides/best-practices/sparse-primary-indexes#an-index-design-for-massive-data-scales) based on the primary key column values. This index is used to speed up all queries that contain filters on the primary key columns. ClickHouse doesn't support foreign key constraints.
 
 ## Secondary indexes (Only available in ClickHouse) {#secondary-indexes-only-available-in-clickhouse}
 
@@ -146,7 +146,7 @@ In ClickHouse, materialized views are incrementally updated. This incremental up
 
 ## Transactions {#transactions}
 
-In contrast to ClickHouse, BigQuery supports multi-statement transactions inside a single query, or across multiple queries when using sessions. A multi-statement transaction lets you perform mutating operations, such as inserting or deleting rows on one or more tables, and either commit or rollback the changes atomically.  Multi-statement transactions are on [ClickHouse's roadmap for 2024](https://github.com/ClickHouse/ClickHouse/issues/58392).
+In contrast to ClickHouse, BigQuery supports multi-statement transactions inside a single query, or across multiple queries when using sessions. A multi-statement transaction lets you perform mutating operations such as inserting or deleting rows on one or more tables, and either commit or rollback the changes atomically. Multi-statement transactions are on [ClickHouse's roadmap for 2024](https://github.com/ClickHouse/ClickHouse/issues/58392).
 
 ## Aggregate functions {#aggregate-functions}
 
@@ -172,7 +172,7 @@ Compared to BigQuery's 8 array functions, ClickHouse has over 80 [built-in array
 
 A typical design pattern in ClickHouse is to use the [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) aggregate function to (temporarily) transform specific row values of a table into an array. This then can be conveniently processed via array functions, and the result can be converted back into individual table rows via [`arrayJoin`](/sql-reference/functions/array-join) aggregate function.
 
-Because ClickHouse SQL supports [higher order lambda functions](/sql-reference/functions/overview#arrow-operator-and-lambda), many advanced array operations can be achieved by simply calling one of the higher order built-in array functions, instead of temporarily converting arrays back to tables, as it is often [required](https://cloud.google.com/bigquery/docs/arrays) in BigQuery, e.g. for [filtering](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays) or [zipping](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays) arrays. In ClickHouse these operations are just a simple function call of the higher order functions [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter), and [`arrayZip`](/sql-reference/functions/array-functions#arrayZip), respectively.
+Because ClickHouse SQL supports [higher order lambda functions](/sql-reference/functions/overview#arrow-operator-and-lambda), many advanced array operations can be achieved by simply calling one of the higher order built-in array functions, instead of temporarily converting arrays back to tables, as it's often [required](https://cloud.google.com/bigquery/docs/arrays) in BigQuery, e.g. for [filtering](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays) or [zipping](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays) arrays. In ClickHouse these operations are just a simple function call of the higher order functions [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) for filtering and [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) for zipping.
 
 In the following, we provide a mapping of array operations from BigQuery to ClickHouse:
 
@@ -188,7 +188,7 @@ In the following, we provide a mapping of array operations from BigQuery to Clic
 
 _BigQuery_
 
-[ARRAY function](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array)
+[`ARRAY` function](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array)
 
 ```sql
 SELECT ARRAY
@@ -251,7 +251,7 @@ ORDER BY offset;
 
 _ClickHouse_
 
-[ARRAY JOIN](/sql-reference/statements/select/array-join) clause
+[`ARRAY JOIN`](/sql-reference/statements/select/array-join) clause
 
 ```sql
 WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values

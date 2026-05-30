@@ -18,7 +18,7 @@ It uses the Stack Overflow dataset as a practical example.
 
 Before proceeding with this migration guide, make sure you have the following:
 
-- A ClickHouse Cloud account, with an empty 3x16GB service that you will be using for the migration
+- A ClickHouse Cloud account, with an empty 3x16 GB service that you will be using for the migration
 - You have completed the [**BigQuery to ClickHouse migration guide setup**](/migrations/bigquery/dataset-setup), which walks you through how to set up the example dataset used in this guide. You will need:
   - A BigQuery project with the Stack Overflow dataset
   - A GCS bucket
@@ -36,13 +36,13 @@ The approach is illustrated below:
 
 <Image img={bigquery_4} size="md" alt="Bulk loading"/>
 
-This approach has a number of advantages:
+This approach has several advantages:
 
 - BigQuery export functionality supports a filter for exporting a subset of data.
 - BigQuery supports exporting to [Parquet, Avro, JSON, and CSV](https://cloud.google.com/bigquery/docs/exporting-data) formats and several [compression types](https://cloud.google.com/bigquery/docs/exporting-data) - all supported by ClickHouse.
 - GCS supports [object life cycle management](https://cloud.google.com/storage/docs/lifecycle), allowing data that has been exported and imported into ClickHouse to be deleted after a specified period.
-- [Google allows up to 50TB per day to be exported to GCS for free](https://cloud.google.com/bigquery/quotas#export_jobs). Users only pay for GCS storage.
-- Exports produce multiple files automatically, limiting each to a maximum of 1GB of table data. This is beneficial to ClickHouse since it allows imports to be parallelized.
+- [Google allows up to 50 TB per day to be exported to GCS for free](https://cloud.google.com/bigquery/quotas#export_jobs). Users only pay for GCS storage.
+- Exports produce multiple files automatically, limiting each to a maximum of 1 GB of table data. This is beneficial to ClickHouse since it allows imports to be parallelized.
 
 Before trying the following examples, we recommend users review the [permissions required for export](https://cloud.google.com/bigquery/docs/exporting-data#required_permissions) and [locality recommendations](https://cloud.google.com/bigquery/docs/exporting-data#data-locations) to maximize export and import performance.
 
@@ -356,5 +356,5 @@ INSERT INTO stackoverflow.posthistory SELECT * FROM s3Cluster(default, 'gs://big
 The `s3Cluster` function above is used when your service contains multiple replicas, which allows processing files from both Amazon S3 and Google Cloud Storage in parallel with multiple replicas in a specified Cloud service.
 You can also use the `gcs` function (an alias for the `s3` table function) if your service has only a single replica.
 
-The `ACCESS_ID` and `SECRET` used in the above query is your [HMAC key](https://docs.cloud.google.com/storage/docs/authentication/hmackeys) associated with your GCS bucket.
+The `ACCESS_ID` and `SECRET` used in the above query is your [`HMAC` key](https://docs.cloud.google.com/storage/docs/authentication/hmackeys) associated with your GCS bucket.
 </VerticalStepper>

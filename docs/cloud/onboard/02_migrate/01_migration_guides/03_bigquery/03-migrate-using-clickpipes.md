@@ -44,14 +44,14 @@ Follow the steps below to set up the BigQuery ClickPipe:
 
 ### Select the data source {#1-select-the-data-source}
 
-1. Open the [ClickHouse Cloud console](https://console.clickhouse.cloud/) 
+1. Open the [ClickHouse Cloud console](https://console.clickhouse.cloud/)
 2. Select the service you wish to use, or create a new empty service
 2. Select **Data sources** in the main navigation menu and click **Create ClickPipe**.
 3. Click the **BigQuery** tile.
 
 ### Set up your ClickPipe connection {#2-setup-your-clickpipe-connection}
 
-To set up a new ClickPipe, you must provide details on how to connect to and authenticate with your BigQuery data warehouse, as well as a staging GCS bucket.
+To set up a new ClickPipe, you must provide details on how to connect to and authenticate with your BigQuery data warehouse, and a staging GCS bucket.
 
 1. Give your ClickPipe a name, for example **bigquery-stackoverflow-clickpipe**
 2. Upload the `.json` key for the service account you created and downloaded in the [**BigQuery to ClickHouse migration guide setup**](/migrations/bigquery/dataset-setup) guide.
@@ -68,18 +68,18 @@ Click **Next**
 ### Configure tables {#4-configure-tables}
 
 You will be asked if you want to use an existing database or create a new database.
-Select **New database** and give it a name like "stackoverflow".
+Select **New database** and give it a name like "stackoverflow."
 
-For the purposes of this guide, you can deselect the "Prefix default destination table names with schema name",
+For the purposes of this guide, you can deselect the "Prefix default destination table names with schema name,"
 and leave the "Preserve NULL values from source" toggle unselected.
 
 Expand the dropdown named **stackoverflow** to view the tables available to ClickPipes from your BigQuery project.
 Turn the **Select all tables** toggle switch on.
 
-At this stage it is necessary to give thought to how to order the data, as choosing an effective primary key (sorting key) in ClickHouse is crucial for query performance and storage efficiency.
+At this stage it's necessary to give thought to how to order the data, as choosing an effective primary key (sorting key) in ClickHouse is crucial for query performance and storage efficiency.
 Sorting keys must also be defined on table creation and can't be added after.
 
-You must define a sorting key for the replicated tables in order to optimize query performance in ClickHouse. Otherwise, the sorting key will be set as `tuple()`, which means no primary index will be created and ClickHouse will perform full table scans for all queries on the table.
+You must define a sorting key for the replicated tables to optimize query performance in ClickHouse. Otherwise, the sorting key will be set as `tuple()`, which means no primary index will be created and ClickHouse will perform full table scans for all queries on the table.
 
 For each of the selected tables, click the **Advanced settings** toggle, and set the following settings per table:
 
@@ -111,7 +111,7 @@ We recommend using a free trial account with \$300 in credits.
 
 Click **Create ClickPipe** to complete the setup. You'll be redirected to the overview page, where you can the progress of the initial load and click through to see the details for your BigQuery ClickPipes.
 
-You should see a new ClickPipe listed with type **BigQuery**. You can click it to open a monitoring dashboard that 
+You should see a new ClickPipe listed with type **BigQuery**. You can click it to open a monitoring dashboard that
 shows you progress on the amount of data ingested, the overall status of the pipe, and per table statuses.
 
 <Image img={dashboard} alt="BigQuery ClickPipe monitoring dashboard" size="lg"/>

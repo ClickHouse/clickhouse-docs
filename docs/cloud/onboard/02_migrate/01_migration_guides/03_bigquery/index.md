@@ -9,8 +9,8 @@ doc_type: 'landing-page'
 ---
 
 This section covers everything you need to migrate from BigQuery to ClickHouse Cloud.
-Start with the overview to see how the two systems compare, then pick a migration path:
-ClickPipes for managed change data capture, or GCS bulk-load for a one-shot export and import.
+Start with the overview to see how the two systems compare, then pick a migration path —
+either ClickPipes for managed change data capture, or GCS bulk-load for a one-shot export and import.
 Both walk-throughs use the Stack Overflow dataset as a worked example, and the best practices guide covers schema design and performance tuning.
 
 | Page                                                                                          | Description                                                                                                                                            |
