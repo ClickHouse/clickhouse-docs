@@ -127,7 +127,7 @@ Now compress the file into a ZIP archive:
 zip is_business_hours.zip main.py
 ```
 
-:::warning Symlinks are not allowed
+:::warning[Symlinks are not allowed]
 ClickHouse Cloud rejects UDF archives that contain symbolic links. Make sure your ZIP bundle contains only regular files and directories — uploads with symlinks will fail validation.
 :::
 
