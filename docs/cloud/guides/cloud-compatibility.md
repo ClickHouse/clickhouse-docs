@@ -80,7 +80,7 @@ Federated queries with some external database and table engines, such as SQLite,
 
 ### User defined functions {#user-defined-functions}
 
-User-defined functions in ClickHouse Cloud are in [private preview](https://clickhouse.com/docs/sql-reference/functions/udf).
+User-defined functions in ClickHouse Cloud are in [public beta](https://clickhouse.com/docs/sql-reference/functions/udf).
 
 #### Settings behavior {#udf-settings-behavior}
 
