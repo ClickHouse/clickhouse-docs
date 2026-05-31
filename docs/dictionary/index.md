@@ -70,17 +70,12 @@ LIMIT 1
 ```response
 Row 1:
 ──────
-```
-
-```sql
 Id:                     25372161
 Title:                  How to add exception handling to SqlDataSource.UpdateCommand
 UpVotes:                13
 DownVotes:              13
 Controversial_ratio: 0
-```
 
-```response
 1 rows in set. Elapsed: 1.283 sec. Processed 418.44 million rows, 7.23 GB (326.07 million rows/s., 5.63 GB/s.)
 Peak memory usage: 3.18 GiB.
 ```
@@ -170,9 +165,9 @@ SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
 └────────────┘
 ```
 
-```sql
 Exploiting this in our earlier query, we can remove the JOIN:
 
+```sql
 WITH PostIds AS
 (
         SELECT Id

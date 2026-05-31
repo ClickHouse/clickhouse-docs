@@ -96,9 +96,6 @@ Query id: db6b4bda-cc58-4ca1-8891-e0d14f02c890
 
 Row 1:
 ──────
-```
-
-```sql
 VendorID:              2
 lpep_pickup_datetime:  2017-05-18 16:55:43.000000
 lpep_dropoff_datetime: 2017-05-18 18:04:11.000000

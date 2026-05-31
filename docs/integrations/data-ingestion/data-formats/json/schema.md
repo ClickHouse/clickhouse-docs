@@ -549,22 +549,12 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street":"Maple Avenue","suite":"Apt. 402","zipcode":"11223-4567"}],"company":{"catchPhrase":"Streamlined analytics at scale","labels":{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]},"name":"FastData Inc."},"dob":"1992-07-15","id":"2","name":"Analytica Rowe","phone_numbers":["123-456-7890","555-867-5309"],"tags":{"car":{"model":"Audi e-tron","year":"2022"},"hobby":"Running simulations","holidays":[{"location":"Kyoto, Japan","year":"2023"}]},"username":"Analytica","website":"fastdata.io"}
-```
 
-```response
 Row 2:
 ──────
-```
-
-```sql
 json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"street":"Victor Plains","suite":"Suite 879","zipcode":"90566-7771"}],"company":{"catchPhrase":"The real-time data warehouse for analytics","labels":{"employees":"250","founded":"2021","type":"database systems"},"name":"ClickHouse"},"dob":"2007-03-31","email":"clicky@clickhouse.com","id":"1","name":"Clicky McCliickHouse","phone_numbers":["010-692-6593","020-192-3333"],"tags":{"car":{"model":"Tesla","year":"2023"},"hobby":"Databases","holidays":[{"location":"Azores, Portugal","year":"2024"}]},"username":"Clicky","website":"clickhouse.com"}
-```
 
-```response
 2 rows in set. Elapsed: 0.005 sec.
 ```
 
@@ -755,9 +745,6 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 id:            2
 name:          Analytica Rowe
 username:      Analytica
@@ -768,14 +755,9 @@ website:       fastdata.io
 company:       ('Streamlined analytics at scale','FastData Inc.','{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]}')
 dob:           1992-07-15
 tags:          {"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}
-```
 
-```response
 Row 2:
 ──────
-```
-
-```sql
 id:            1
 name:          Clicky McCliickHouse
 username:      Clicky
@@ -786,9 +768,7 @@ website:       clickhouse.com
 company:       ('The real-time data warehouse for analytics','ClickHouse','{"employees":"250","founded":"2021","type":"database systems"}')
 dob:           2007-03-31
 tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}
-```
 
-```response
 2 rows in set. Elapsed: 0.005 sec.
 ```
 

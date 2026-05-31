@@ -658,14 +658,9 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 keys:   ['@timestamp','clientip','request','status','size']
 values: ['893964617','40.135.0.0','{"method":"GET","path":"/images/hm_bg.jpg","version":"HTTP/1.0"}','200','24736']
-```
 
-```response
 1 row in set. Elapsed: 0.416 sec.
 ```
 

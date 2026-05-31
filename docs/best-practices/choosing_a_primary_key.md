@@ -77,13 +77,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 ┌─count()─┐
 │  192611 │
 └─────────┘
-```
 
-```sql
---highlight-next-line
-```
-
-```response
 1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (1.09 billion rows/s., 6.61 GB/s.)
 ```
 
@@ -142,13 +136,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 ┌─count()─┐
 │  192611 │
 └─────────┘
-```
 
-```sql
---highlight-next-line
-```
-
-```response
 1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 

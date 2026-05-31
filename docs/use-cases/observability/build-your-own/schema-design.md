@@ -47,9 +47,6 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
 LogAttributes: {'status':'200','log.file.name':'access-structured.log','request_protocol':'HTTP/1.1','run_time':'0','time_local':'2019-01-22 00:26:14.000','size':'30577','user_agent':'Mozilla/5.0 (compatible; AhrefsBot/6.1; +http://ahrefs.com/robot/)','referer':'-','remote_user':'-','request_type':'GET','request_path':'/filter/27|13 ,27|  5 ,p53','remote_addr':'54.36.149.41'}
 ```
@@ -120,9 +117,6 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105/brand HTTP/1.1" 200 2653 "https://www.zanbil.ir/filter/b43,p56" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" "-"
 LogAttributes: {'log.file.name':'access-unstructured.log'}
 ```
@@ -307,9 +301,6 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
 Timestamp:      2019-01-22 00:26:14
 ServiceName:
@@ -327,9 +318,7 @@ RefererDomain:
 RequestPage:    /filter/27|13 ,27|  5 ,p53
 SeverityText:   INFO
 SeverityNumber:  9
-```
 
-```response
 1 row in set. Elapsed: 0.027 sec.
 ```
 
@@ -413,9 +402,6 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
 Timestamp:      2019-01-22 00:26:14
 ServiceName:
@@ -433,9 +419,7 @@ RefererDomain:
 RequestPage:    /filter/27|13 ,27|  5 ,p53
 SeverityText:   INFO
 SeverityNumber:  9
-```
 
-```response
 1 row in set. Elapsed: 0.010 sec.
 ```
 
@@ -509,13 +493,8 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','request_type','log.file.name','referer','request_path','status','user_agent','remote_addr','time_local','size','request_protocol']
-```
 
-```response
 1 row in set. Elapsed: 1.139 sec. Processed 5.63 million rows, 2.53 GB (4.94 million rows/s., 2.22 GB/s.)
 Peak memory usage: 71.90 MiB.
 ```
@@ -665,9 +644,6 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 ip_range_start: 1.0.0.0
 ip_range_end:   1.0.0.255
 country_code:   AU
@@ -1061,9 +1037,6 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 Device:  ('Spider','Spider','Desktop')
 Browser: ('AhrefsBot','6','1')
 Os:     ('Other','0','0','0')

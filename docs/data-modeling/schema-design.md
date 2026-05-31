@@ -322,9 +322,9 @@ INSERT INTO posts_v3 SELECT * FROM posts_v2
 Peak memory usage: 6.41 GiB.
 ```
 
-```sql
 Our previous query improves the query response time by over 3x:
 
+```sql
 SELECT
     Id,
     Title,

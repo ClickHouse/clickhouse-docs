@@ -151,50 +151,30 @@ FORMAT Vertical
 ```response
 Row 1:
 ──────
-```
-
-```sql
 Year:                   2008
 MostViewedQuestionTitle: How to find the index for a given item in a list?
 MaxViewCount:           6316987
-```
 
-```response
 Row 2:
 ──────
-```
-
-```sql
 Year:                   2009
 MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
 MaxViewCount:           13962748
 
 ...
-```
 
-```response
 Row 16:
 ───────
-```
-
-```sql
 Year:                   2023
 MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
 MaxViewCount:           506822
-```
 
-```response
 Row 17:
 ───────
-```
-
-```sql
 Year:                   2024
 MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
 MaxViewCount:           66975
-```
 
-```response
 17 rows in set. Elapsed: 0.677 sec. Processed 24.37 million rows, 1.86 GB (36.01 million rows/s., 2.75 GB/s.)
 Peak memory usage: 554.31 MiB.
 ```

@@ -139,9 +139,6 @@ Query id: e3d48c9f-32bb-49a4-8303-080f59ed1835
 
 Row 1:
 ──────
-```
-
-```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:12:36
 query_duration_ms: 2967
@@ -157,14 +154,9 @@ WHERE
 FORMAT JSON
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
-```
 
-```response
 Row 2:
 ──────
-```
-
-```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:11:33
 query_duration_ms: 2026
@@ -185,14 +177,9 @@ ORDER BY
 
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
-```
 
-```response
 Row 3:
 ──────
-```
-
-```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:12:17
 query_duration_ms: 1860
@@ -203,14 +190,9 @@ WHERE passenger_count = 1 or passenger_count = 2
 FORMAT JSON
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
-```
 
-```response
 Row 4:
 ──────
-```
-
-```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:12:31
 query_duration_ms: 690
@@ -218,14 +200,9 @@ query:             SELECT avg(total_amount) FROM nyc_taxi.trips_small_inferred W
 FORMAT JSON
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
-```
 
-```response
 Row 5:
 ──────
-```
-
-```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:12:44
 query_duration_ms: 634
@@ -498,9 +475,6 @@ Query id: 4a70fc5b-2501-41c8-813c-45ce241d85ae
 
 Row 1:
 ──────
-```
-
-```sql
 vendor_id_nulls:           0
 pickup_datetime_nulls:     0
 dropoff_datetime_nulls:    0
@@ -542,9 +516,6 @@ Query id: d502c6a1-c9bc-4415-9d86-5de74dd6d932
 
 Row 1:
 ──────
-```
-
-```sql
 uniq(ratecode_id):         6
 uniq(pickup_location_id):  260
 uniq(dropoff_location_id): 260
