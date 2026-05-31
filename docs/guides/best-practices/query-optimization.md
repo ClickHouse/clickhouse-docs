@@ -82,9 +82,7 @@ SHOW CREATE TABLE trips_small_inferred
 
 ```response
 Query id: d97361fd-c050-478e-b831-369469f0784d
-```
 
-```sql
 CREATE TABLE nyc_taxi.trips_small_inferred
 (
     `vendor_id` Nullable(String),
