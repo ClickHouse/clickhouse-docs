@@ -426,9 +426,14 @@ SELECT *
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
+```
+
+```sql
 Timestamp:              2019-01-22 06:46:14.000000000
 TraceId:
 SpanId:
@@ -444,19 +449,28 @@ ScopeName:
 ScopeVersion:
 ScopeAttributes:        {}
 LogAttributes:          {'referer':'https://www.zanbil.ir/filter/p3%2Cb2','log.file.name':'access-structured.log','run_time':'0','remote_user':'-','request_protocol':'HTTP/1.1','size':'1684','user_agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0','remote_addr':'109.230.70.66','request_path':'/image/61884/productModel/150x150','status':'200','time_local':'2019-01-22 06:46:14.000','request_type':'GET'}
+```
 
+```response
 1 row in set. Elapsed: 0.012 sec. Processed 5.04 thousand rows, 4.62 MB (414.14 thousand rows/s., 379.48 MB/s.)
 Peak memory usage: 5.41 MiB.
+```
 
+```sql
 Likewise, for trace events, you can check the `otel_traces` table:
 
 SELECT *
 FROM otel_traces
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
+```
+
+```sql
 Timestamp:              2024-06-20 11:36:41.181398000
 TraceId:                00bba81fbd38a242ebb0c81a8ab85d8f
 SpanId:                 beef91a2c8685ace

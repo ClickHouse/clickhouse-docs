@@ -67,7 +67,9 @@ Now that the connection is in place, you can start querying OneLake:
 
 ```sql
 SHOW TABLES FROM onelake_catalog
+```
 
+```response
 Query id: 8f6124c4-45c2-4351-b49a-89dc13e548a7
 
    ┌─name──────────────────────────┐
@@ -87,11 +89,16 @@ To query a table:
 SELECT *
 FROM onelake_catalog.`year_2017.green_tripdata_2017`
 LIMIT 1
+```
 
+```response
 Query id: db6b4bda-cc58-4ca1-8891-e0d14f02c890
 
 Row 1:
 ──────
+```
+
+```sql
 VendorID:              2
 lpep_pickup_datetime:  2017-05-18 16:55:43.000000
 lpep_dropoff_datetime: 2017-05-18 18:04:11.000000
@@ -123,7 +130,9 @@ To inspect the table DDL:
 
 ```sql
 SHOW CREATE TABLE onelake_catalog.`year_2017.green_tripdata_2017`
+```
 
+```response
 Query id: 8bd5bd8e-83be-453e-9a88-32de12ba7f24
 
    ┌─statement───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -165,7 +174,9 @@ ENGINE = MergeTree
 ORDER BY coalesce(VendorID, 0)
 AS SELECT *
 FROM onelake_catalog.`year_2017.green_tripdata_2017`
+```
 
+```response
 Query id: d15983a6-ef6a-40fe-80d5-19274b9fe328
 
 Ok.

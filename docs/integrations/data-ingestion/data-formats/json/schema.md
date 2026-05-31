@@ -160,7 +160,9 @@ SELECT
  address.street,
  company.name
 FROM people
+```
 
+```response
 ┌─address.street────┬─company.name─┐
 │ ['Victor Plains'] │ ClickHouse   │
 └───────────────────┴──────────────┘
@@ -171,7 +173,9 @@ Note how the `address.street` column is returned as an `Array`. To query a speci
 ```sql
 SELECT address.street[1] AS street
 FROM people
+```
 
+```response
 ┌─street────────┐
 │ Victor Plains │
 └───────────────┘
@@ -230,7 +234,9 @@ We can see below this row can be successfully inserted:
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","city":"Wisokyburgh","zipcode":"90566-7771"}],"website":"clickhouse.com","company":{"name":"ClickHouse"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -268,7 +274,9 @@ FORMAT PrettyJSONEachRow
   },
   "dob": "2007-03-31"
 }
+```
 
+```response
 1 row in set. Elapsed: 0.001 sec.
 ```
 
@@ -319,7 +327,9 @@ This JSON can be successfully inserted with the `nickname` key ignored:
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -344,7 +354,9 @@ INSERT INTO people FORMAT JSONEachRow
 
 -- select 2 rows
 SELECT id, nickname FROM people
+```
 
+```response
 ┌─id─┬─nickname────┐
 │  2 │ Clicky      │
 │  1 │ no_nickname │
@@ -513,12 +525,18 @@ Inserting rows into the above table can be achieved using the `JSONAsObject` for
 ```sql
 INSERT INTO people FORMAT JSONAsObject 
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 1 row in set. Elapsed: 0.028 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
+```
 
+```response
 1 row in set. Elapsed: 0.004 sec.
 ```
 
@@ -526,15 +544,27 @@ INSERT INTO people FORMAT JSONAsObject
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
-json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street":"Maple Avenue","suite":"Apt. 402","zipcode":"11223-4567"}],"company":{"catchPhrase":"Streamlined analytics at scale","labels":{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]},"name":"FastData Inc."},"dob":"1992-07-15","id":"2","name":"Analytica Rowe","phone_numbers":["123-456-7890","555-867-5309"],"tags":{"car":{"model":"Audi e-tron","year":"2022"},"hobby":"Running simulations","holidays":[{"location":"Kyoto, Japan","year":"2023"}]},"username":"Analytica","website":"fastdata.io"}
+```
 
+```sql
+json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street":"Maple Avenue","suite":"Apt. 402","zipcode":"11223-4567"}],"company":{"catchPhrase":"Streamlined analytics at scale","labels":{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]},"name":"FastData Inc."},"dob":"1992-07-15","id":"2","name":"Analytica Rowe","phone_numbers":["123-456-7890","555-867-5309"],"tags":{"car":{"model":"Audi e-tron","year":"2022"},"hobby":"Running simulations","holidays":[{"location":"Kyoto, Japan","year":"2023"}]},"username":"Analytica","website":"fastdata.io"}
+```
+
+```response
 Row 2:
 ──────
-json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"street":"Victor Plains","suite":"Suite 879","zipcode":"90566-7771"}],"company":{"catchPhrase":"The real-time data warehouse for analytics","labels":{"employees":"250","founded":"2021","type":"database systems"},"name":"ClickHouse"},"dob":"2007-03-31","email":"clicky@clickhouse.com","id":"1","name":"Clicky McCliickHouse","phone_numbers":["010-692-6593","020-192-3333"],"tags":{"car":{"model":"Tesla","year":"2023"},"hobby":"Databases","holidays":[{"location":"Azores, Portugal","year":"2024"}]},"username":"Clicky","website":"clickhouse.com"}
+```
 
+```sql
+json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"street":"Victor Plains","suite":"Suite 879","zipcode":"90566-7771"}],"company":{"catchPhrase":"The real-time data warehouse for analytics","labels":{"employees":"250","founded":"2021","type":"database systems"},"name":"ClickHouse"},"dob":"2007-03-31","email":"clicky@clickhouse.com","id":"1","name":"Clicky McCliickHouse","phone_numbers":["010-692-6593","020-192-3333"],"tags":{"car":{"model":"Tesla","year":"2023"},"hobby":"Databases","holidays":[{"location":"Azores, Portugal","year":"2024"}]},"username":"Clicky","website":"clickhouse.com"}
+```
+
+```response
 2 rows in set. Elapsed: 0.005 sec.
 ```
 
@@ -585,7 +615,9 @@ FORMAT PrettyJsonEachRow
         "website": "String"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.009 sec.
 ```
 
@@ -595,7 +627,9 @@ For a complete list of introspection functions, see the ["Introspection function
 
 ```sql
 SELECT json.name, json.email FROM people
+```
 
+```response
 ┌─json.name────────────┬─json.email────────────┐
 │ Analytica Rowe       │ ᴺᵁᴸᴸ                  │
 │ Clicky McCliickHouse │ clicky@clickhouse.com │
@@ -611,17 +645,23 @@ Additionally, a separate sub column is created for paths with the same type. For
 ```sql
 SELECT json.company.labels.type
 FROM people
+```
 
+```response
 ┌─json.company.labels.type─┐
 │ database systems         │
 │ ['real-time processing'] │
 └──────────────────────────┘
 
 2 rows in set. Elapsed: 0.007 sec.
+```
 
+```sql
 SELECT json.company.labels.type.:String
 FROM people
+```
 
+```response
 ┌─json.company⋯e.:`String`─┐
 │ ᴺᵁᴸᴸ                     │
 │ database systems         │
@@ -636,18 +676,24 @@ In order to return nested sub-objects, the `^` is required. This is a design cho
 -- sub objects will not be returned by default
 SELECT json.company.labels
 FROM people
+```
 
+```response
 ┌─json.company.labels─┐
 │ ᴺᵁᴸᴸ                │
 │ ᴺᵁᴸᴸ                │
 └─────────────────────┘
 
 2 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 -- return sub objects using ^ notation
 SELECT json.^company.labels
 FROM people
+```
 
+```response
 ┌─json.^`company`.labels─────────────────────────────────────────────────────────────────┐
 │ {"employees":"250","founded":"2021","type":"database systems"}                         │
 │ {"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]} │
@@ -685,12 +731,18 @@ We can insert into this table using the `JSONEachRow` format:
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
+```
 
+```response
 1 row in set. Elapsed: 0.440 sec.
 ```
 
@@ -698,9 +750,14 @@ INSERT INTO people FORMAT JSONEachRow
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
+```
+
+```sql
 id:            2
 name:          Analytica Rowe
 username:      Analytica
@@ -711,9 +768,14 @@ website:       fastdata.io
 company:       ('Streamlined analytics at scale','FastData Inc.','{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]}')
 dob:           1992-07-15
 tags:          {"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}
+```
 
+```response
 Row 2:
 ──────
+```
+
+```sql
 id:            1
 name:          Clicky McCliickHouse
 username:      Clicky
@@ -724,7 +786,9 @@ website:       clickhouse.com
 company:       ('The real-time data warehouse for analytics','ClickHouse','{"employees":"250","founded":"2021","type":"database systems"}')
 dob:           2007-03-31
 tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}
+```
 
+```response
 2 rows in set. Elapsed: 0.005 sec.
 ```
 
@@ -750,7 +814,9 @@ FORMAT PrettyJsonEachRow
         "type": "String"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
@@ -789,12 +855,18 @@ ORDER BY username
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
+```
 
+```response
 1 row in set. Elapsed: 0.440 sec.
 ```
 
@@ -821,7 +893,9 @@ FORMAT PrettyJsonEachRow
         "type": "Array(Nullable(String))"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
@@ -837,19 +911,24 @@ ORDER BY json.username
 
 INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
+```
 
+```response
 1 row in set. Elapsed: 0.440 sec.
 ```
 
 Note how our columns have been excluded from our data:
 
 ```sql
-
 SELECT *
 FROM people
 FORMAT PrettyJSONEachRow
@@ -907,7 +986,9 @@ FORMAT PrettyJSONEachRow
         "website" : "clickhouse.com"
     }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.004 sec.
 ```
 

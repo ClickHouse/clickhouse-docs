@@ -78,9 +78,13 @@ Let's have a look to the table schema automatically inferred from the data.
 ```sql
 --- Display inferred table schema
 SHOW CREATE TABLE trips_small_inferred
+```
 
+```response
 Query id: d97361fd-c050-478e-b831-369469f0784d
+```
 
+```sql
 CREATE TABLE nyc_taxi.trips_small_inferred
 (
     `vendor_id` Nullable(String),
@@ -128,11 +132,16 @@ WHERE has(databases, 'nyc_taxi') AND (event_time >= (now() - toIntervalMinute(60
 ORDER BY query_duration_ms DESC
 LIMIT 5
 FORMAT VERTICAL
+```
 
+```response
 Query id: e3d48c9f-32bb-49a4-8303-080f59ed1835
 
 Row 1:
 ──────
+```
+
+```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:12:36
 query_duration_ms: 2967
@@ -148,9 +157,14 @@ WHERE
 FORMAT JSON
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
+```
 
+```response
 Row 2:
 ──────
+```
+
+```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:11:33
 query_duration_ms: 2026
@@ -171,9 +185,14 @@ ORDER BY
 
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
+```
 
+```response
 Row 3:
 ──────
+```
+
+```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:12:17
 query_duration_ms: 1860
@@ -184,9 +203,14 @@ WHERE passenger_count = 1 or passenger_count = 2
 FORMAT JSON
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
+```
 
+```response
 Row 4:
 ──────
+```
+
+```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:12:31
 query_duration_ms: 690
@@ -194,9 +218,14 @@ query:             SELECT avg(total_amount) FROM nyc_taxi.trips_small_inferred W
 FORMAT JSON
 read_rows:         329044175
 tables:            ['nyc_taxi.trips_small_inferred']
+```
 
+```response
 Row 5:
 ──────
+```
+
+```sql
 type:              QueryFinish
 event_time:        2024-11-27 11:12:44
 query_duration_ms: 634
@@ -256,9 +285,14 @@ WHERE
 FORMAT JSON
 
 ----
+```
+
+```response
 1 row in set. Elapsed: 1.699 sec. Processed 329.04 million rows, 8.88 GB (193.72 million rows/s., 5.23 GB/s.)
 Peak memory usage: 440.24 MiB.
+```
 
+```sql
 -- Run query 2
 SELECT
     payment_type,
@@ -276,9 +310,14 @@ ORDER BY
     trip_count DESC;
 
 ---
+```
+
+```response
 4 rows in set. Elapsed: 1.419 sec. Processed 329.04 million rows, 5.72 GB (231.86 million rows/s., 4.03 GB/s.)
 Peak memory usage: 546.75 MiB.
+```
 
+```sql
 -- Run query 3
 SELECT
   avg(dateDiff('s', pickup_datetime, dropoff_datetime))
@@ -287,6 +326,9 @@ WHERE passenger_count = 1 or passenger_count = 2
 FORMAT JSON
 
 ---
+```
+
+```response
 1 row in set. Elapsed: 1.414 sec. Processed 329.04 million rows, 8.88 GB (232.63 million rows/s., 6.28 GB/s.)
 Peak memory usage: 451.53 MiB.
 ```
@@ -311,7 +353,9 @@ None of these queries are doing very complex processing, except the first query 
 -- Count number of rows in table
 SELECT count()
 FROM nyc_taxi.trips_small_inferred
+```
 
+```response
 Query id: 733372c5-deaf-4719-94e3-261540933b23
 
    ┌───count()─┐
@@ -341,7 +385,9 @@ WITH
 SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
+```
 
+```response
 Query id: f35c412a-edda-4089-914b-fa1622d69868
 
    ┌─explain─────────────────────────────────────────────┐
@@ -369,7 +415,9 @@ WITH
 SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
+```
 
+```response
 Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────┐
@@ -443,11 +491,16 @@ SELECT
     countIf(dropoff_location_id IS NULL) AS dropoff_location_id_nulls
 FROM trips_small_inferred
 FORMAT VERTICAL
+```
 
+```response
 Query id: 4a70fc5b-2501-41c8-813c-45ce241d85ae
 
 Row 1:
 ──────
+```
+
+```sql
 vendor_id_nulls:           0
 pickup_datetime_nulls:     0
 dropoff_datetime_nulls:    0
@@ -482,11 +535,16 @@ SELECT
     uniq(vendor_id)
 FROM trips_small_inferred
 FORMAT VERTICAL
+```
 
+```response
 Query id: d502c6a1-c9bc-4415-9d86-5de74dd6d932
 
 Row 1:
 ──────
+```
+
+```sql
 uniq(ratecode_id):         6
 uniq(pickup_location_id):  260
 uniq(dropoff_location_id): 260
@@ -507,7 +565,9 @@ SELECT
     min(payment_type),max(payment_type),
     min(passenger_count), max(passenger_count)
 FROM trips_small_inferred
+```
 
+```response
 Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 
    ┌─min(payment_type)─┬─max(payment_type)─┐
@@ -571,7 +631,9 @@ GROUP BY
     database,
     `table`
 ORDER BY size DESC
+```
 
+```response
 Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
 
    ┌─table────────────────┬─compressed─┬─uncompressed─┬──────rows─┐
@@ -755,7 +817,9 @@ FROM nyc_taxi.trips_small_pk
 WHERE (pickup_datetime >= '2009-01-01') AND (pickup_datetime < '2009-04-01')
 GROUP BY payment_type
 ORDER BY trip_count DESC
+```
 
+```response
 Query id: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
 
     ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────────┐

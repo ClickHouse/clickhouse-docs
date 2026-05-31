@@ -91,7 +91,9 @@ This table is optimized for queries which filter and aggregate by post type and 
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─count()─┐
 │     5   │
 └─────────┘
@@ -107,7 +109,9 @@ SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 LIMIT 1
+```
 
+```response
 ┌─explain──────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                        │
 │   Limit (preliminary LIMIT (without OFFSET))                     │
@@ -198,7 +202,9 @@ Repeating our earlier query shows significant performance improvements. Notice t
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─count()─┐
 │     5   │
 └─────────┘
@@ -213,7 +219,9 @@ EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                          │
 │   Aggregating                                                      │

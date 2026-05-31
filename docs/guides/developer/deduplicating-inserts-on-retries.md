@@ -119,7 +119,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
 │   2 │ B     │ all_1_1_0 │
@@ -134,7 +136,9 @@ SELECT
     _part
 FROM mv_dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
 │   0 │ B     │ all_1_1_0 │
@@ -154,18 +158,24 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
 │   2 │ B     │ all_1_1_0 │
 └─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
 │   0 │ B     │ all_1_1_0 │
@@ -205,7 +215,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
@@ -245,7 +257,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -269,7 +283,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -293,7 +309,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -339,22 +357,30 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 └───────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 select 'second attempt';
 
 INSERT INTO dst VALUES (2, 'A');
@@ -365,19 +391,25 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 │ from dst   │   2 │ A     │ all_1_1_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
@@ -433,18 +465,24 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
@@ -464,18 +502,24 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │

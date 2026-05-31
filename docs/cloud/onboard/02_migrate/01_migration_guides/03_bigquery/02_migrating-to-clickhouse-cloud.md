@@ -205,7 +205,9 @@ Partitioning in ClickHouse has similar applications as in BigQuery but with some
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'posts'
+```
 
+```response
 ┌─partition─┐
 │ 2008      │
 │ 2009      │
@@ -227,10 +229,14 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 ALTER TABLE posts
 (DROP PARTITION '2008')
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 0.103 sec.
@@ -262,11 +268,19 @@ For example, consider the following query:
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
    ┌──────────avg(Score)─┐
    │ 0.18181818181818182 │
    └─────────────────────┘
+```
+
+```sql
 --highlight-next-line
+```
+
+```response
 1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (2.25 billion rows/s., 9.01 GB/s.)
 Peak memory usage: 201.93 MiB.
 ```
@@ -322,7 +336,9 @@ SELECT
     latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
+```
 
+```response
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
 1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
@@ -337,11 +353,19 @@ at the expense of additional storage.
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
    ┌──────────avg(Score)─┐
 1. │ 0.18181818181818182 │
    └─────────────────────┘
+```
+
+```sql
 --highlight-next-line
+```
+
+```response
 1 row in set. Elapsed: 0.008 sec. Processed 16.36 thousand rows, 98.17 KB (2.15 million rows/s., 12.92 MB/s.)
 Peak memory usage: 4.06 MiB.
 ```
@@ -353,7 +377,9 @@ EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
     ┌─explain─────────────────────────────────────────────┐
  1. │ Expression ((Projection + Before ORDER BY))         │
  2. │   Aggregating                                       │
@@ -416,7 +442,9 @@ GROUP BY OwnerDisplayName
 HAVING count() > 10
 ORDER BY total_views DESC
 LIMIT 5
+```
 
+```response
    ┌─OwnerDisplayName─┬─total_views─┐
 1. │ Joan Venge       │    25520387 │
 2. │ Ray Vega         │    21576470 │
@@ -448,7 +476,9 @@ FROM stackoverflow.posts
 GROUP BY tags
 ORDER BY views DESC
 LIMIT 5
+```
 
+```response
    ┌─tags───────┬──────views─┐
 1. │ javascript │ 8190916894 │
 2. │ python     │ 8175132834 │
@@ -484,33 +514,55 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
+```
+
+```sql
 Year:                    2008
 MostViewedQuestionTitle: How to find the index for a given item in a list?
 MaxViewCount:            6316987
+```
 
+```response
 Row 2:
 ──────
+```
+
+```sql
 Year:                    2009
 MostViewedQuestionTitle: How do I undo the most recent local commits in Git?
 MaxViewCount:            13962748
 
 ...
+```
 
+```response
 Row 16:
 ───────
+```
+
+```sql
 Year:                    2023
 MostViewedQuestionTitle: How do I solve "error: externally-managed-environment" every time I use pip 3?
 MaxViewCount:            506822
+```
 
+```response
 Row 17:
 ───────
+```
+
+```sql
 Year:                    2024
 MostViewedQuestionTitle: Warning "Third-party cookie will be blocked. Learn more in the Issues tab"
 MaxViewCount:            66975
+```
 
+```response
 17 rows in set. Elapsed: 0.225 sec. Processed 24.35 million rows, 1.86 GB (107.99 million rows/s., 8.26 GB/s.)
 Peak memory usage: 377.26 MiB.
 ```
@@ -537,7 +589,9 @@ GROUP BY tag
 HAVING (count_2022 > 10000) AND (count_2023 > 10000)
 ORDER BY percent_change DESC
 LIMIT 5
+```
 
+```response
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
 │ next.js     │      13788 │      10520 │   31.06463878326996 │
 │ spring-boot │      16573 │      17721 │  -6.478189718413183 │
