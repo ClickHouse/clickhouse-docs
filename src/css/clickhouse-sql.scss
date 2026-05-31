@@ -1,0 +1,74 @@
+/**
+ * Color palette for ClickHouse-native SQL syntax highlighting.
+ *
+ * These are the exact colors used by ClickHouse's `programs/server/play.html`,
+ * which are themselves modelled after `clickhouse-client`. The token classes
+ * (`q-kw`, `q-id`, ...) are produced by the WASM lexer in
+ * `src/components/CodeViewer/clickhouse-sql/highlighter.ts` and rendered by the
+ * swizzled `src/theme/CodeBlock/Content/String.js`.
+ */
+
+:root,
+[data-theme='light'] {
+  --syntax-default: var(--prism-color); /* normal code text color */
+  --syntax-keyword: var(--prism-color); /* bold default fg */
+  --syntax-identifier: #00838f; /* CYAN */
+  --syntax-function: #875f00; /* BROWN */
+  --syntax-number: #008700; /* bright green */
+  --syntax-string: #006400; /* GREEN */
+  --syntax-qident: #008b8b; /* alias / teal */
+  --syntax-comment: #757575;
+  --syntax-operator: var(--prism-color);
+  --syntax-error: #b71c1c;
+}
+
+/* Dark-theme palette uses the actual xterm 16-color values that
+   `clickhouse-client` renders to in a dark terminal. */
+[data-theme='dark'] {
+  --syntax-default: var(--prism-color);
+  --syntax-keyword: var(--prism-color);
+  --syntax-identifier: #00cdcd; /* CYAN */
+  --syntax-function: #cdcd00; /* yellow */
+  --syntax-number: #00d700;
+  --syntax-string: #00cd00; /* GREEN */
+  --syntax-qident: #00d7d7;
+  --syntax-comment: #9e9e9e;
+  --syntax-operator: var(--prism-color);
+  --syntax-error: #ff6e40;
+}
+
+/* Per-token syntax-highlighting classes, scoped to ClickHouse SQL blocks. */
+.ch-sql {
+  color: var(--syntax-default);
+
+  .q-kw {
+    color: var(--syntax-keyword);
+    font-weight: bold;
+  }
+  .q-id {
+    color: var(--syntax-identifier);
+  }
+  .q-fn {
+    color: var(--syntax-function);
+  }
+  .q-num {
+    color: var(--syntax-number);
+  }
+  .q-str {
+    color: var(--syntax-string);
+  }
+  .q-qid {
+    color: var(--syntax-qident);
+  }
+  .q-com {
+    color: var(--syntax-comment);
+    font-style: italic;
+  }
+  .q-op {
+    color: var(--syntax-operator);
+  }
+  .q-err {
+    color: var(--syntax-error);
+    text-decoration: underline wavy;
+  }
+}
