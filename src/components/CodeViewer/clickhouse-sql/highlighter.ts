@@ -276,10 +276,12 @@ export async function buildHighlightedLines(code: string): Promise<Segment[][]> 
     pushSegment(lines, text, tokenClass(tokens, i));
   }
 
-  // Any tail not covered by tokens (the lexer hit an error or the size limit)
-  // is shown with the error style, matching play.html.
+  // Any tail not covered by tokens — the lexer hit an error or the size limit.
+  // Unlike play.html (an editor, where errors matter), docs code blocks often
+  // show a SQL statement followed by its textual output, which is not valid
+  // SQL. So we render the tail unstyled (plain) rather than as an error.
   if (consumed < code.length) {
-    pushSegment(lines, code.slice(consumed), 'q-err');
+    pushSegment(lines, code.slice(consumed), '');
   }
 
   return lines;

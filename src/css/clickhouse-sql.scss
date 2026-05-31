@@ -24,9 +24,6 @@
   .q-com {
     font-style: italic !important;
   }
-  .q-err {
-    text-decoration: underline wavy !important;
-  }
 }
 
 /* Light-theme palette, modelled after `clickhouse-client` in a light terminal. */
@@ -48,9 +45,6 @@ html[data-theme='light'] .ch-sql {
   }
   .q-com {
     color: #757575 !important; /* comment */
-  }
-  .q-err {
-    color: #b71c1c !important; /* error */
   }
 }
 
@@ -74,8 +68,5 @@ html[data-theme='dark'] .ch-sql {
   }
   .q-com {
     color: #9e9e9e !important; /* comment */
-  }
-  .q-err {
-    color: #ff6e40 !important; /* error */
   }
 }
