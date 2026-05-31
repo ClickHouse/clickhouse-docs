@@ -6,69 +6,76 @@
  * (`q-kw`, `q-id`, ...) are produced by the WASM lexer in
  * `src/components/CodeViewer/clickhouse-sql/highlighter.ts` and rendered by the
  * swizzled `src/theme/CodeBlock/Content/String.js`.
+ *
+ * The rules are keyed on `html[data-theme='light' | 'dark']` and use
+ * `!important` so they reliably win over the legacy `code`/`code .token.*`
+ * overrides in `custom.scss` (which themselves use `!important`).
+ *
+ * Keywords and operators intentionally have no explicit color: like in
+ * play.html they use the default code text color (keywords just bold), which is
+ * black on the light theme and the prism foreground color on the dark theme.
  */
 
-:root,
-[data-theme='light'] {
-  --syntax-default: var(--prism-color); /* normal code text color */
-  --syntax-keyword: var(--prism-color); /* bold default fg */
-  --syntax-identifier: #00838f; /* CYAN */
-  --syntax-function: #875f00; /* BROWN */
-  --syntax-number: #008700; /* bright green */
-  --syntax-string: #006400; /* GREEN */
-  --syntax-qident: #008b8b; /* alias / teal */
-  --syntax-comment: #757575;
-  --syntax-operator: var(--prism-color);
-  --syntax-error: #b71c1c;
+/* Structural styles (theme-independent). */
+.ch-sql {
+  .q-kw {
+    font-weight: bold !important;
+  }
+  .q-com {
+    font-style: italic !important;
+  }
+  .q-err {
+    text-decoration: underline wavy !important;
+  }
+}
+
+/* Light-theme palette, modelled after `clickhouse-client` in a light terminal. */
+html[data-theme='light'] .ch-sql {
+  .q-id {
+    color: #00838f !important; /* identifier — CYAN */
+  }
+  .q-fn {
+    color: #875f00 !important; /* function — BROWN */
+  }
+  .q-num {
+    color: #008700 !important; /* number */
+  }
+  .q-str {
+    color: #006400 !important; /* string — GREEN */
+  }
+  .q-qid {
+    color: #008b8b !important; /* quoted identifier / alias — teal */
+  }
+  .q-com {
+    color: #757575 !important; /* comment */
+  }
+  .q-err {
+    color: #b71c1c !important; /* error */
+  }
 }
 
 /* Dark-theme palette uses the actual xterm 16-color values that
    `clickhouse-client` renders to in a dark terminal. */
-[data-theme='dark'] {
-  --syntax-default: var(--prism-color);
-  --syntax-keyword: var(--prism-color);
-  --syntax-identifier: #00cdcd; /* CYAN */
-  --syntax-function: #cdcd00; /* yellow */
-  --syntax-number: #00d700;
-  --syntax-string: #00cd00; /* GREEN */
-  --syntax-qident: #00d7d7;
-  --syntax-comment: #9e9e9e;
-  --syntax-operator: var(--prism-color);
-  --syntax-error: #ff6e40;
-}
-
-/* Per-token syntax-highlighting classes, scoped to ClickHouse SQL blocks. */
-.ch-sql {
-  color: var(--syntax-default);
-
-  .q-kw {
-    color: var(--syntax-keyword);
-    font-weight: bold;
-  }
+html[data-theme='dark'] .ch-sql {
   .q-id {
-    color: var(--syntax-identifier);
+    color: #00cdcd !important; /* identifier — CYAN */
   }
   .q-fn {
-    color: var(--syntax-function);
+    color: #cdcd00 !important; /* function — yellow */
   }
   .q-num {
-    color: var(--syntax-number);
+    color: #00d700 !important; /* number */
   }
   .q-str {
-    color: var(--syntax-string);
+    color: #00cd00 !important; /* string — GREEN */
   }
   .q-qid {
-    color: var(--syntax-qident);
+    color: #00d7d7 !important; /* quoted identifier / alias */
   }
   .q-com {
-    color: var(--syntax-comment);
-    font-style: italic;
-  }
-  .q-op {
-    color: var(--syntax-operator);
+    color: #9e9e9e !important; /* comment */
   }
   .q-err {
-    color: var(--syntax-error);
-    text-decoration: underline wavy;
+    color: #ff6e40 !important; /* error */
   }
 }

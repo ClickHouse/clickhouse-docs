@@ -22,7 +22,6 @@
 
 .codeBlock {
   --ifm-pre-background: var(--prism-background-color);
-  color: var(--syntax-default);
   margin: 0;
   padding: 0;
 }
