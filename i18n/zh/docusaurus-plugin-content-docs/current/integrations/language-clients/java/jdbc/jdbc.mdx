@@ -67,7 +67,7 @@ import TabItem from '@theme/TabItem';
       </TabItem>
     </Tabs>
 
-    如果您在需要显式将 JAR 添加到 classpath 的应用程序中使用 JDBC 驱动程序，则需要从以下地址下载该 JAR 文件：
+    如果您在需要显式将 JAR 添加到 classpath 的应用程序中使用 JDBC 驱动，则需要从以下地址下载该 JAR 文件：
 
     * [Maven Central](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)，并将其添加到 classpath 中
       * 从版本 `0.9.4` 开始，提供了一个构件：https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc-all
@@ -96,7 +96,7 @@ import TabItem from '@theme/TabItem';
 
     关于 URL 语法，需要注意以下几点：
 
-    * **只有** URL 中允许一个 endpoint
+    * URL 中**只能**有一个端点
     * 当所使用的协议不是默认的 &#39;HTTP&#39; 时，必须显式指定协议。
     * 当端口不是默认值 &#39;8123&#39; 时，应显式指定端口。
     * 驱动程序不会根据端口来猜测协议，必须显式指定协议
@@ -216,15 +216,15 @@ import TabItem from '@theme/TabItem';
     | Int16         | SMALLINT | java.lang.Short      |
     | Int32         | INTEGER  | java.lang.Integer    |
     | Int64         | BIGINT   | java.lang.Long       |
-    | Int128        | OTHER    | java.math.BigInteger |
-    | Int256        | OTHER    | java.math.BigInteger |
-    | UInt8         | OTHER    | java.lang.Short      |
-    | UInt16        | OTHER    | java.lang.Integer    |
-    | UInt32        | OTHER    | java.lang.Long       |
-    | UInt64        | OTHER    | java.math.BigInteger |
-    | UInt128       | OTHER    | java.math.BigInteger |
-    | UInt256       | OTHER    | java.math.BigInteger |
-    | Float32       | REAL     | java.lang.Float      |
+    | Int128        | NUMERIC  | java.math.BigInteger |
+    | Int256        | NUMERIC  | java.math.BigInteger |
+    | UInt8         | SMALLINT | java.lang.Short      |
+    | UInt16        | INTEGER  | java.lang.Integer    |
+    | UInt32        | BIGINT   | java.lang.Long       |
+    | UInt64        | NUMERIC  | java.math.BigInteger |
+    | UInt128       | NUMERIC  | java.math.BigInteger |
+    | UInt256       | NUMERIC  | java.math.BigInteger |
+    | Float32       | FLOAT    | java.lang.Float      |
     | Float64       | DOUBLE   | java.lang.Double     |
     | Decimal32     | DECIMAL  | java.math.BigDecimal |
     | Decimal64     | DECIMAL  | java.math.BigDecimal |
@@ -238,7 +238,7 @@ import TabItem from '@theme/TabItem';
       * `rs.getByte(1)` 如果值落在 `Byte` 可表示的范围内，可以返回 `Int16` 列的 `Byte` 值。
     * 由于存在数据损坏风险，不建议将较宽范围的类型转换为较窄范围的类型。
     * `Bool` 类型也可以当作数值类型处理。
-    * 所有数值类型都可以作为 `java.lang.String` 读取。
+    * 所有数值类型都可以读取为 `java.lang.String`。
     * 将 Java `Float.MAX_VALUE` 作为 `Float` 存储时会出现问题 (https://github.com/ClickHouse/clickhouse-java/issues/809) 。将相同的值以 `Double` 类型存储即可解决该问题。
 
     **字符串类型**
@@ -255,8 +255,8 @@ import TabItem from '@theme/TabItem';
 
     | ClickHouse 类型 | JDBC 类型 | Java 类           |
     | ------------- | ------- | ---------------- |
-    | Enum8         | OTHER   | java.lang.String |
-    | Enum16        | OTHER   | java.lang.String |
+    | Enum8         | VARCHAR | java.lang.String |
+    | Enum16        | VARCHAR | java.lang.String |
 
     * `Enum8` 和 `Enum16` 默认映射为 `java.lang.String` 类型。
     * 可以使用指定的 getter 方法，或 `getObject(columnIndex, Integer.class)` 方法，将枚举值读取为数值。
@@ -284,20 +284,77 @@ import TabItem from '@theme/TabItem';
 
     **嵌套类型**
 
-    | ClickHouse 类型 | JDBC 类型         | Java 类                    |
-    | ------------- | --------------- | ------------------------- |
-    | 数组            | ARRAY           | java.sql.Array            |
-    | Tuple         | OTHER           | com.clickhouse.data.Tuple |
-    | Map           | JAVA&#95;OBJECT | java.util.Map             |
-    | Nested        | ARRAY           | java.sql.Array            |
+    | ClickHouse 类型 | JDBC 类型 | Java 类                    |
+    | ------------- | ------- | ------------------------- |
+    | Array         | ARRAY   | java.sql.Array            |
+    | Tuple         | OTHER   | com.clickhouse.data.Tuple |
+    | Map           | OTHER   | java.util.Map             |
+    | Nested        | ARRAY   | java.sql.Array            |
 
     * `Array` 默认映射为 `java.sql.Array`，以兼容 JDBC。这也是为了提供有关返回数组值的更多信息，有助于类型推断。
     * `Array` 实现了 `getResultSet()` 方法，用于返回一个与原始数组内容相同的 `java.sql.ResultSet` 对象。
     * 集合类型不应按 `java.lang.String` 读取，因为那并不能正确表示数据 (例如，数组中的字符串值不会被加上引号) 。
-    * `Map` 映射为 `JAVA_OBJECT`，因为该值只能通过 `getObject(columnIndex, Class<T>)` 方法读取。
+    * `Map` 映射为 `OTHER`，因为其值只能通过 `getObject(columnIndex, Class<T>)` 方法读取。
       * `Map` 不是 `java.sql.Struct`，因为它不包含具名列。
     * `Tuple` 映射为 `Object[]`，因为它可以包含不同类型的元素，因此不能使用 `List` 表示。
     * `Tuple` 可以通过 `getObject(columnIndex, Array.class)` 方法读取为 `Array` 类型。此时，`Array#baseTypeName` 将返回该 `Tuple` 列的定义。
+
+    **数组元素类型元数据**
+
+    `Array.getBaseTypeName()` 返回 ClickHouse 元素类型名称；`Array.getBaseType()` 返回 JDBC 类型代码。
+    JDBC V2 保留了 V1 会丢弃的完整类型签名 (包括包装类型和类型参数) 。
+
+    数组的通用映射规则如下：
+
+    | ClickHouse 类型                              | `getBaseTypeName()`                 | `getBaseType()`       |
+    | ------------------------------------------ | ----------------------------------- | --------------------- |
+    | `Array(<基本类型>)`                            | `<基本类型>`                            | `<JDBC 基本类型>`         |
+    | `Array(<Parameterized Type>(<N>))`         | `<参数化类型>(<N>)`                      | `<基础类型的 JDBC 类型>`     |
+    | `Array(Nullable(<Type>))`                  | `Nullable(<Type>)`                  | `<内部 Type 的 JDBC 类型>` |
+    | `Array(LowCardinality(<Type>))`            | `LowCardinality(<Type>)`            | `<内部 Type 的 JDBC 类型>` |
+    | `Array(Array(...(<Type>)))`                | `<Type>` (最内层的元素)                   | `<最内层的 JDBC 类型>`      |
+    | `Array(Tuple(...))`                        | `Tuple(...)` (完整定义)                 | `OTHER`               |
+    | `Array(Enum8(...))` / `Array(Enum16(...))` | `Enum8(...)` / `Enum16(...)` (完整定义) | `VARCHAR`             |
+
+    Notes on the rules above:
+
+    * 包装类型 (`Nullable`, `LowCardinality`) 会在 `getBaseTypeName()` 中保留，但 `getBaseType()` 返回的是其内部类型的 JDBC 代码。
+    * 嵌套数组在元数据中会被展平：`getBaseTypeName()` 返回的是最内层的非数组元素类型，而不是直接子元素类型。
+    * 参数化类型 (`FixedString(N)`、完整的 `Enum`/`Tuple` 定义) 的参数会保留在 `getBaseTypeName()` 中。
+
+    **示例：**
+
+    | ClickHouse 类型 (示例)                                                         | `getBaseTypeName()`                                                 | `getBaseType()` |
+    | -------------------------------------------------------------------------- | ------------------------------------------------------------------- | --------------- |
+    | Array(Int8)                                                                | Int8                                                                | TINYINT         |
+    | Array(Int16)                                                               | Int16                                                               | SMALLINT        |
+    | Array(Int32)                                                               | Int32                                                               | INTEGER         |
+    | Array(Int64)                                                               | Int64                                                               | BIGINT          |
+    | Array(UInt8)                                                               | UInt8                                                               | SMALLINT        |
+    | Array(UInt16)                                                              | UInt16                                                              | INTEGER         |
+    | Array(UInt32)                                                              | UInt32                                                              | BIGINT          |
+    | Array(UInt64)                                                              | UInt64                                                              | NUMERIC         |
+    | Array(Float32)                                                             | Float32                                                             | FLOAT           |
+    | Array(Float64)                                                             | Float64                                                             | DOUBLE          |
+    | Array(String)                                                              | String                                                              | VARCHAR         |
+    | Array(FixedString(8))                                                      | FixedString(8)                                                      | VARCHAR         |
+    | Array(Bool)                                                                | Bool                                                                | BOOLEAN         |
+    | Array(Date)                                                                | Date                                                                | DATE            |
+    | Array(DateTime)                                                            | DateTime                                                            | TIMESTAMP       |
+    | Array(UUID)                                                                | UUID                                                                | OTHER           |
+    | Array(Nullable(Int32))                                                     | Nullable(Int32)                                                     | INTEGER         |
+    | Array(Nullable(String))                                                    | Nullable(String)                                                    | VARCHAR         |
+    | Array(LowCardinality(String))                                              | LowCardinality(String)                                              | VARCHAR         |
+    | Array(LowCardinality(Nullable(String)))                                    | LowCardinality(Nullable(String))                                    | VARCHAR         |
+    | Array(Array(Int32))                                                        | Int32                                                               | INTEGER         |
+    | Array(Array(Array(String)))                                                | String                                                              | VARCHAR         |
+    | Array(Tuple(name String, val Int32))                                       | Tuple(name String, val Int32)                                       | OTHER           |
+    | Array(Enum8(&#39;alpha&#39; = 1, &#39;beta&#39; = 2, &#39;gamma&#39; = 3)) | Enum8(&#39;alpha&#39; = 1, &#39;beta&#39; = 2, &#39;gamma&#39; = 3) | VARCHAR         |
+
+    * 在 V2 中，`getBaseTypeName()` 会保留完整的类型签名，包括包装类型 (`Nullable`、`LowCardinality`) 和类型参数 (`FixedString(8)` 以及完整的 `Enum` 和 `Tuple` 定义)。V1 则会剥离这些内容，只返回基本类型名称。
+    * `Tuple` 数组在 V2 中使用 `OTHER (1111)`，而不是 `STRUCT (2002)`，因为 ClickHouse 的元组带有命名字段，而 `java.sql.Struct` 不支持这一点。
+    * `UUID` 数组在 V2 中使用 `OTHER (1111)`，与标量 `UUID` 的映射保持一致。
+    * `Enum` 值映射到 `VARCHAR`——无论底层数值编码如何，枚举成员都按字符串名称标识。
 
     **写入数组**
 
@@ -500,7 +557,7 @@ import TabItem from '@theme/TabItem';
     **Nullable 和 LowCardinality 类型**
 
     * `Nullable` 和 `LowCardinality` 是用于包装其他类型的特殊类型。
-    * `Nullable` 会影响 `ResultSetMetaData` 返回的类型名称
+    * `Nullable` 会影响 `ResultSetMetaData` 中返回的类型名称
 
     **特殊类型**
 
@@ -666,15 +723,15 @@ import TabItem from '@theme/TabItem';
 
     | 功能                              | V1 (旧版) | V2 (新版)           |
     | ------------------------------- | ------- | ----------------- |
-    | 事务支持                            | 部分支持    | 尚不支持              |
-    | 响应结果列重命名                        | 部分支持    | 尚不支持              |
+    | 事务支持                            | 部分支持    | 不支持               |
+    | 响应结果列重命名                        | 部分支持    | 不支持               |
     | 多语句 SQL                         | 不支持     | 不允许               |
     | 命名参数                            | 支持      | 不支持 (不在 JDBC 规范中) |
     | 使用 `PreparedStatement` 进行数据流式写入 | 支持      | 不支持               |
 
     * JDBC V2 的实现更加轻量化，因此删除了一些功能。
       * JDBC V2 不支持流式数据写入，因为该功能既不属于 JDBC 规范，也不属于 Java 标准。
-    * JDBC V2 需要显式配置，不提供任何故障切换的默认值。
+    * JDBC V2 需要显式配置。不提供默认的故障转移设置。
       * 协议必须在 URL 中明确指定，不进行基于端口号的隐式协议检测。
 
     ### 配置变更 \{#configuration-changes\}
@@ -716,15 +773,15 @@ import TabItem from '@theme/TabItem';
     | Int16         | ✅       | SMALLINT     | java.lang.Short      | SMALLINT     | java.lang.Short                           |
     | Int32         | ✅       | INTEGER      | java.lang.Integer    | INTEGER      | java.lang.Integer                         |
     | Int64         | ✅       | BIGINT       | java.lang.Long       | BIGINT       | java.lang.Long                            |
-    | Int128        | ✅       | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
-    | Int256        | ✅       | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
-    | UInt8         | ❌       | OTHER        | java.lang.Short      | OTHER        | com.clickhouse.data.value.UnsignedByte    |
-    | UInt16        | ❌       | OTHER        | java.lang.Integer    | OTHER        | com.clickhouse.data.value.UnsignedShort   |
-    | UInt32        | ❌       | OTHER        | java.lang.Long       | OTHER        | com.clickhouse.data.value.UnsignedInteger |
-    | UInt64        | ❌       | OTHER        | java.math.BigInteger | OTHER        | com.clickhouse.data.value.UnsignedLong    |
-    | UInt128       | ✅       | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
-    | UInt256       | ✅       | OTHER        | java.math.BigInteger | OTHER        | java.math.BigInteger                      |
-    | Float32       | ✅       | REAL         | java.lang.Float      | REAL         | java.lang.Float                           |
+    | Int128        | ✅       | NUMERIC      | java.math.BigInteger | NUMERIC      | java.math.BigInteger                      |
+    | Int256        | ✅       | NUMERIC      | java.math.BigInteger | NUMERIC      | java.math.BigInteger                      |
+    | UInt8         | ❌       | SMALLINT     | java.lang.Short      | SMALLINT     | com.clickhouse.data.value.UnsignedByte    |
+    | UInt16        | ❌       | INTEGER      | java.lang.Integer    | INTEGER      | com.clickhouse.data.value.UnsignedShort   |
+    | UInt32        | ❌       | BIGINT       | java.lang.Long       | BIGINT       | com.clickhouse.data.value.UnsignedInteger |
+    | UInt64        | ❌       | NUMERIC      | java.math.BigInteger | NUMERIC      | com.clickhouse.data.value.UnsignedLong    |
+    | UInt128       | ✅       | NUMERIC      | java.math.BigInteger | NUMERIC      | java.math.BigInteger                      |
+    | UInt256       | ✅       | NUMERIC      | java.math.BigInteger | NUMERIC      | java.math.BigInteger                      |
+    | Float32       | ✅       | FLOAT        | java.lang.Float      | FLOAT        | java.lang.Float                           |
     | Float64       | ✅       | DOUBLE       | java.lang.Double     | DOUBLE       | java.lang.Double                          |
     | Decimal32     | ✅       | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
     | Decimal64     | ✅       | DECIMAL      | java.math.BigDecimal | DECIMAL      | java.math.BigDecimal                      |
@@ -747,14 +804,14 @@ import TabItem from '@theme/TabItem';
 
     **日期/时间类型**
 
-    | ClickHouse 类型 | 与 V1 兼容 | JDBC 类型 (V2) | Java 类 (V2)        | JDBC 类型 (V1) | Java 类 (V1)              |
-    | ------------- | ------- | ------------ | ------------------ | ------------ | ------------------------ |
-    | Date          | ❌       | DATE         | java.sql.Date      | DATE         | java.time.LocalDate      |
-    | Date32        | ❌       | DATE         | java.sql.Date      | DATE         | java.time.LocalDate      |
-    | DateTime      | ❌       | TIMESTAMP    | java.sql.Timestamp | TIMESTAMP    | java.time.OffsetDateTime |
-    | DateTime64    | ❌       | TIMESTAMP    | java.sql.Timestamp | TIMESTAMP    | java.time.OffsetDateTime |
-    | Time          | ✅       | TIME         | java.sql.Time      | 新类型/尚不支持     | 新类型/尚不支持                 |
-    | Time64        | ✅       | TIME         | java.sql.Time      | 新类型/尚不支持     | 新类型/尚不支持                 |
+    | ClickHouse 类型 | 与 V1 兼容 | JDBC 类型 (V2) | Java 类 (V2)        | JDBC 类型 (V1)                    | Java 类 (V1)              |
+    | ------------- | ------- | ------------ | ------------------ | ------------------------------- | ------------------------ |
+    | Date          | ❌       | DATE         | java.sql.Date      | DATE                            | java.time.LocalDate      |
+    | Date32        | ❌       | DATE         | java.sql.Date      | DATE                            | java.time.LocalDate      |
+    | DateTime      | ❌       | TIMESTAMP    | java.sql.Timestamp | TIMESTAMP&#95;WITH&#95;TIMEZONE | java.time.OffsetDateTime |
+    | DateTime64    | ❌       | TIMESTAMP    | java.sql.Timestamp | TIMESTAMP&#95;WITH&#95;TIMEZONE | java.time.OffsetDateTime |
+    | Time          | ✅       | TIME         | java.sql.Time      | 新类型/尚不支持                        | 新类型/尚不支持                 |
+    | Time64        | ✅       | TIME         | java.sql.Time      | 新类型/尚不支持                        | 新类型/尚不支持                 |
 
     * `Time` 和 `Time64` 仅在 V2 中作为新类型受支持。
     * `DateTime` 和 `DateTime64` 会映射为 `java.sql.Timestamp`，以提高与 JDBC 的兼容性。
@@ -769,12 +826,12 @@ import TabItem from '@theme/TabItem';
 
     **嵌套类型**
 
-    | ClickHouse 类型 | 与 V1 兼容 | JDBC 类型 (V2)    | Java 类 (V2)    | JDBC 类型 (V1) | Java 类 (V1)      |
-    | ------------- | ------- | --------------- | -------------- | ------------ | ---------------- |
-    | 数组            | ❌       | ARRAY           | java.sql.Array | ARRAY        | Object[] 或原始类型数组 |
-    | Tuple         | ❌       | OTHER           | Object[]       | STRUCT       | java.sql.Struct  |
-    | Map           | ❌       | JAVA&#95;OBJECT | java.util.Map  | STRUCT       | java.util.Map    |
-    | Nested        | ❌       | ARRAY           | java.sql.Array | STRUCT       | java.sql.Struct  |
+    | ClickHouse 类型 | 兼容 V1 | JDBC 类型 (V2)    | Java 类 (V2)    | JDBC 类型 (V1) | Java 类 (V1)      |
+    | ------------- | ----- | --------------- | -------------- | ------------ | ---------------- |
+    | 数组            | ❌     | ARRAY           | java.sql.Array | ARRAY        | Object[] 或原始类型数组 |
+    | Tuple         | ❌     | OTHER           | Object[]       | STRUCT       | java.sql.Struct  |
+    | Map           | ❌     | JAVA&#95;OBJECT | java.util.Map  | STRUCT       | java.util.Map    |
+    | Nested        | ❌     | ARRAY           | java.sql.Array | STRUCT       | java.sql.Struct  |
 
     * 在 V2 中，`Array` 默认会映射为 `java.sql.Array`，以确保与 JDBC 的兼容性。这也能够提供关于返回数组值的更多信息，有助于进行类型推断。
     * 在 V2 中，`Array` 实现了 `getResultSet()` 方法，用于返回一个与原始数组内容相同的 `java.sql.ResultSet` 对象。
@@ -913,7 +970,7 @@ import TabItem from '@theme/TabItem';
 
     **连接属性**:
 
-    | 属性                         | 默认值     | 说明                                                                                                                                                                                                                                                                                                                                                                 |
+    | 属性                         | 默认值     | 描述                                                                                                                                                                                                                                                                                                                                                                 |
     | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
     | `continueBatchOnError`     | `false` | 发生错误时是否继续执行批次处理                                                                                                                                                                                                                                                                                                                                                    |
     | `createDatabaseIfNotExist` | `false` | 数据库不存在时是否创建数据库                                                                                                                                                                                                                                                                                                                                                     |
@@ -968,7 +1025,7 @@ import TabItem from '@theme/TabItem';
 
     :::note
 
-    * 请使用 `PreparedStatement`，不要使用 `Statement`
+    * 请使用 `PreparedStatement`，而不是 `Statement`
       :::
 
     它更易于使用，但性能比 input 函数慢 (参阅下文) ：
@@ -1110,14 +1167,14 @@ import TabItem from '@theme/TabItem';
 
     ## SSL 属性 \{#ssl-properties\}
 
-    | 名称                   | 默认值    | 可选值          | 描述                                      |
+    | 名称                   | 默认值    | 可选值          | 说明                                      |
     | -------------------- | ------ | ------------ | --------------------------------------- |
     | `ssl`                | false  | true, false  | 是否为该连接启用 SSL/TLS                        |
     | `sslmode`            | strict | strict, none | 是否验证 SSL/TLS 证书                         |
     | `sslrootcert`        |        |              | SSL/TLS 根证书的路径                          |
     | `sslcert`            |        |              | SSL/TLS 证书的路径                           |
     | `sslkey`             |        |              | PKCS#8 格式的 RSA 密钥                       |
-    | `key_store_type`     |        | JKS、PKCS12   | 指定 `KeyStore`/`TrustStore` 文件的类型或格式     |
+    | `key_store_type`     |        | JKS, PKCS12  | 指定 `KeyStore`/`TrustStore` 文件的类型或格式     |
     | `trust_store`        |        |              | `TrustStore` 文件的路径                      |
     | `key_store_password` |        |              | 用于访问 `KeyStore` 配置中指定的 `KeyStore` 文件的密码 |
 
