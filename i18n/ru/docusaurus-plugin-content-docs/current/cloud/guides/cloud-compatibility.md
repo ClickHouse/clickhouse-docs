@@ -86,7 +86,7 @@ ClickHouse Cloud поддерживает HTTPS, нативные интерфе
 
 ### Пользовательские функции \{#user-defined-functions\}
 
-Пользовательские функции в ClickHouse Cloud доступны в рамках программы [закрытого предварительного просмотра](https://clickhouse.com/docs/sql-reference/functions/udf).
+Пользовательские функции в ClickHouse Cloud доступны в рамках [публичной бета-версии](https://clickhouse.com/docs/sql-reference/functions/udf).
 
 #### Поведение настроек \{#udf-settings-behavior\}
 

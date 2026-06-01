@@ -16,63 +16,70 @@ ClickHouse, Inc. **не** поддерживает перечисленные н
 ## Инфраструктурные продукты \{#infrastructure-products\}
 
 <details>
-<summary>Системы управления реляционными базами данных</summary>
-  
-- [MySQL](https://www.mysql.com)
-  - [mysql2ch](https://github.com/long2ice/mysql2ch)
-  - [ProxySQL](https://github.com/sysown/proxysql/wiki/ClickHouse-Support)
-  - [clickhouse-mysql-data-reader](https://github.com/Altinity/clickhouse-mysql-data-reader)
-  - [horgh-replicator](https://github.com/larsnovikov/horgh-replicator)
-- [PostgreSQL](https://www.postgresql.org)
-  - [clickhousedb_fdw](https://github.com/Percona-Lab/clickhousedb_fdw)
-  - [infi.clickhouse_fdw](https://github.com/Infinidat/infi.clickhouse_fdw) (использует [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm))
-  - [pg2ch](https://github.com/mkabilov/pg2ch)
-  - [clickhouse_fdw](https://github.com/adjust/clickhouse_fdw)
-- [MSSQL](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
-  - [ClickHouseMigrator](https://github.com/zlzforever/ClickHouseMigrator)
+  <summary>Системы управления реляционными базами данных</summary>
+
+  * [MySQL](https://www.mysql.com)
+    * [mysql2ch](https://github.com/long2ice/mysql2ch)
+    * [ProxySQL](https://github.com/sysown/proxysql/wiki/ClickHouse-Support)
+    * [clickhouse-mysql-data-reader](https://github.com/Altinity/clickhouse-mysql-data-reader)
+    * [horgh-replicator](https://github.com/larsnovikov/horgh-replicator)
+  * [PostgreSQL](https://www.postgresql.org)
+    * [clickhousedb&#95;fdw](https://github.com/Percona-Lab/clickhousedb_fdw)
+    * [infi.clickhouse&#95;fdw](https://github.com/Infinidat/infi.clickhouse_fdw) (использует [infi.clickhouse&#95;orm](https://github.com/Infinidat/infi.clickhouse_orm))
+    * [pg2ch](https://github.com/mkabilov/pg2ch)
+    * [clickhouse&#95;fdw](https://github.com/adjust/clickhouse_fdw)
+  * [MSSQL](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
+    * [ClickHouseMigrator](https://github.com/zlzforever/ClickHouseMigrator)
 </details>
 
 <details>
-<summary>Очереди сообщений</summary>
-  
-- [Kafka](https://kafka.apache.org)
-  - [clickhouse_sinker](https://github.com/housepower/clickhouse_sinker) (использует клиент [Go](https://github.com/ClickHouse/clickhouse-go/))
-  - [stream-loader-clickhouse](https://github.com/adform/stream-loader)
+  <summary>Инструменты миграции схемы</summary>
+
+  * [clicko](https://github.com/arsura/clicko) - С поддержкой кластеров и интеграцией с Go.
 </details>
 
 <details>
-<summary>Пакетная обработка</summary>
+  <summary>Очереди сообщений</summary>
 
-- [Spark](https://spark.apache.org)
-  - [spark-clickhouse-connector](https://github.com/housepower/spark-clickhouse-connector)
+  * [Kafka](https://kafka.apache.org)
+    * [clickhouse&#95;sinker](https://github.com/housepower/clickhouse_sinker) (использует клиент [Go](https://github.com/ClickHouse/clickhouse-go/))
+    * [stream-loader-clickhouse](https://github.com/adform/stream-loader)
 </details>
 
 <details>
-<summary>Потоковая обработка</summary>
-  
-- [Flink](https://flink.apache.org)
-  - [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
+  <summary>Пакетная обработка</summary>
+
+  * [Spark](https://spark.apache.org)
+    * [spark-clickhouse-connector](https://github.com/housepower/spark-clickhouse-connector)
 </details>
 
 <details>
-<summary>Объектные хранилища</summary>
-  
-- [S3](https://en.wikipedia.org/wiki/Amazon_S3)
-  - [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)
+  <summary>Потоковая обработка</summary>
+
+  * [Flink](https://flink.apache.org)
+    * [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
 </details>
 
 <details>
-<summary>Оркестрация контейнеров</summary>
-  
-- [Kubernetes](https://kubernetes.io)
-  - [clickhouse-operator](https://github.com/Altinity/clickhouse-operator)
+  <summary>Объектные хранилища</summary>
+
+  * [S3](https://en.wikipedia.org/wiki/Amazon_S3)
+    * [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)
 </details>
 
 <details>
-<summary>Управление конфигурациями</summary>
-- [puppet](https://puppet.com)
-  - [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
-  - [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
+  <summary>Оркестрация контейнеров</summary>
+
+  * [Kubernetes](https://kubernetes.io)
+    * [clickhouse-operator](https://github.com/Altinity/clickhouse-operator)
+</details>
+
+<details>
+  <summary>Управление конфигурациями</summary>
+
+  * [puppet](https://puppet.com)
+    * [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
+    * [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
 </details>
 
 <details>

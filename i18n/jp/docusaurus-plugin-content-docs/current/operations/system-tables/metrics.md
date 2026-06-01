@@ -527,6 +527,18 @@ DeltaLake スナップショットキャッシュ内の要素数。
 
 廃止されたメトリクスのため、何も表示されません。
 
+### DiskObjectStorageCopyObjectThreads \{#diskobjectstoragecopyobjectthreads\}
+
+オブジェクトストレージディスクのトランザクション内で `copyObjectToAnotherObjectStorage` 呼び出しを並列化するために使用されるスレッドプール内のスレッド数
+
+### DiskObjectStorageCopyObjectThreadsActive \{#diskobjectstoragecopyobjectthreadsactive\}
+
+タスクを実行しているディスクオブジェクトストレージのコピースレッドプール内のスレッド数
+
+### DiskObjectStorageCopyObjectThreadsScheduled \{#diskobjectstoragecopyobjectthreadsscheduled\}
+
+ディスクオブジェクトストレージのコピースレッドプールで、キューに入っている、または実行中のタスク数
+
 ### DiskPlainRewritableAzureDirectoryMapSize \{#diskplainrewritableazuredirectorymapsize\}
 
 AzureObjectStorage の `plain_rewritable` インメモリマップ内にある、ローカルからリモートへのパスエントリ数。

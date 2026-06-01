@@ -224,7 +224,7 @@ SETTINGS
 `_shard_num` — テーブル `system.clusters` の `shard_num` の値を保持します。型: [UInt32](../../../sql-reference/data-types/int-uint.md)。
 
 :::note
-[`remote`](../../../sql-reference/table-functions/remote.md) および [`cluster](../../../sql-reference/table-functions/cluster.md) テーブル関数は内部的に一時的な Distributed テーブルを作成するため、`&#95;shard&#95;num` はそれらでも利用可能です。
+[`remote`](../../../sql-reference/table-functions/remote.md) および [`cluster](../../../sql-reference/table-functions/cluster.md) テーブル関数は内部的に一時的な Distributed テーブルを作成するため、`&#95;shard&#95;num&#96; はそれらでも利用可能です。
 :::
 
 **関連項目**

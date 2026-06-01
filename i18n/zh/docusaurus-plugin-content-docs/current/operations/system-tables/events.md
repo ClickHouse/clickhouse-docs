@@ -1793,6 +1793,10 @@ FileCache::assertCacheCorrectness 所耗费的时间
 
 动态文件系统缓存淘汰过程中意外未能被逐出的文件段数量
 
+### FilesystemCacheFailedReserveAttempts \{#filesystemcachefailedreserveattempts\}
+
+文件缓存空间预留失败次数。
+
 ### FilesystemCacheFreeSpaceKeepingThreadRun \{#filesystemcachefreespacekeepingthreadrun\}
 
 后台线程执行空闲空间维护作业的次数

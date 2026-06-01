@@ -20,18 +20,18 @@ CREATE TABLE azure_blob_storage_table (name String, value UInt32)
 
 ### Параметры движка \{#engine-parameters\}
 
-* `endpoint` — URL конечной точки AzureBlobStorage с контейнером и префиксом. Дополнительно может содержать `account_name`, если это требуется используемому методу аутентификации (`http://azurite1:{port}/[account_name]{container_name}/{data_prefix}`), либо эти параметры могут быть переданы отдельно с помощью `storage_account_url`, `account_name` и `container`. Для указания префикса должен использоваться `endpoint`.
-* `endpoint_contains_account_name` — флаг, указывающий, содержит ли `endpoint` `account_name`, так как это требуется только для некоторых методов аутентификации. (По умолчанию: `true`)
-* `connection_string|storage_account_url` — `connection_string` включает имя учетной записи и ключ ([Create connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json\&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)), либо здесь также можно указать URL учетной записи хранилища, а имя учетной записи и ключ учетной записи передать отдельными параметрами (см. параметры `account_name` и `account_key`).
-* `container_name` — имя контейнера.
-* `blobpath` — путь к файлу. Поддерживает следующие шаблоны (wildcards) в режиме только для чтения: `*`, `**`, `?`, `{abc,def}` и `{N..M}`, где `N`, `M` — числа, `'abc'`, `'def'` — строки.
-* `account_name` — если используется `storage_account_url`, то имя учетной записи можно указать здесь.
-* `account_key` — если используется `storage_account_url`, то ключ учетной записи можно указать здесь.
+* `endpoint` — URL конечной точки AzureBlobStorage с контейнером и префиксом. Дополнительно может содержать account&#95;name, если это требуется используемому методу аутентификации. (`http://azurite1:{port}/[account_name]{container_name}/{data_prefix}`), либо эти параметры могут быть переданы отдельно с помощью storage&#95;account&#95;url, account&#95;name и `container`. Для указания префикса должен использоваться `endpoint`.
+* `endpoint_contains_account_name` - флаг, указывающий, содержит ли `endpoint` account&#95;name, так как это требуется только для некоторых методов аутентификации. (По умолчанию: `true`)
+* `connection_string|storage_account_url` — `connection&#95;string` включает имя учетной записи и ключ ([Create connection string](https://learn.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json\&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json#configure-a-connection-string-for-an-azure-storage-account)), либо здесь также можно указать URL учетной записи хранилища, а имя учетной записи и ключ учетной записи передать отдельными параметрами (см. параметры `account&#95;name` и `account&#95;key`)
+* `container_name` - имя контейнера
+* `blobpath` - путь к файлу. Поддерживает следующие шаблоны (wildcards) в режиме только для чтения: `*`, `**`, `?`, `{abc,def}` и `{N..M}`, где `N`, `M` — числа, `'abc'`, `'def'` — строки.
+* `account_name` - если используется storage&#95;account&#95;url, то имя учетной записи можно указать здесь
+* `account_key` - если используется storage&#95;account&#95;url, то ключ учетной записи можно указать здесь
 * `format` — [формат](/interfaces/formats.md) файла.
-* `compression` — поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию тип сжатия определяется автоматически по расширению файла (то же, что и установка `auto`).
-* `partition_strategy` – варианты: `WILDCARD` или `HIVE`. `WILDCARD` требует наличия `{_partition_id}` в пути, который будет заменён на ключ партиции. `HIVE` не допускает шаблоны, предполагает, что путь — это корень таблицы, и генерирует каталоги партиций в стиле Hive с идентификаторами Snowflake в качестве имён файлов и форматом файла в качестве расширения. По умолчанию используется `WILDCARD`.
-* `partition_columns_in_data_file` — используется только со стратегией партиционирования `HIVE`. Сообщает ClickHouse, следует ли ожидать, что столбцы партиционирования будут записаны в файл данных. По умолчанию `false`.
-* `extra_credentials` — используйте `client_id` и `tenant_id` для аутентификации. Если заданы `extra_credentials`, они имеют приоритет над `account_name` и `account_key`.
+* `compression` — поддерживаемые значения: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`. По умолчанию тип сжатия определяется автоматически по расширению файла. (то же, что и установка `auto`).
+* `partition_strategy` – варианты: `wildcard` или `hive`. `wildcard` требует наличия `{_partition_id}` в пути, который заменяется ключом партиции. `hive` не допускает шаблоны, предполагает, что путь — это корень таблицы, и генерирует каталоги партиций в стиле Hive с идентификаторами Snowflake ID в качестве имён файлов и форматом файла в качестве расширения. По умолчанию используется настройка `file_like_engine_default_partition_strategy` (`wildcard` при настройках `compatibility` старее `26.6`, в противном случае `hive`).
+* `partition_columns_in_data_file` - используется только со стратегией партиционирования `hive`. Сообщает ClickHouse, следует ли ожидать, что столбцы партиционирования будут записаны в файл данных. По умолчанию `false`.
+* `extra_credentials` - используйте `client_id` и `tenant_id` для аутентификации. Если заданы extra&#95;credentials, они имеют приоритет над `account_name` и `account_key`.
 
 **Пример**
 
@@ -106,13 +106,13 @@ SETTINGS filesystem_cache_name = 'cache_for_azure', enable_filesystem_cache = 1;
 
 #### Стратегия партиционирования \{#partition-strategy\}
 
-`WILDCARD` (по умолчанию): заменяет подстановочный шаблон `{_partition_id}` в пути к файлу фактическим ключом партиционирования. Чтение не поддерживается.
+`wildcard`: заменяет подстановочный шаблон `{_partition_id}` в пути к файлу фактическим ключом партиционирования. Чтение не поддерживается. Выбирается по умолчанию только при значении настройки `compatibility` ниже `26.6`; в противном случае по умолчанию используется `hive` (см. настройку `file_like_engine_default_partition_strategy`).
 
-`HIVE` реализует партиционирование в стиле Hive для операций чтения и записи. Чтение реализовано с использованием рекурсивного glob-шаблона. Запись генерирует файлы в следующем формате: `<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`.
+`hive` реализует партиционирование в стиле Hive для операций чтения и записи. Чтение реализовано с использованием рекурсивного glob-шаблона. Запись генерирует файлы в следующем формате: `<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`.
 
-Примечание: при использовании стратегии партиционирования `HIVE` настройка `use_hive_partitioning` не влияет на поведение.
+Примечание: при использовании стратегии партиционирования `hive` настройка `use_hive_partitioning` не влияет на поведение.
 
-Пример стратегии партиционирования `HIVE`:
+Пример стратегии партиционирования `hive`:
 
 ```sql
 arthur :) create table azure_table (year UInt16, country String, counter UInt8) ENGINE=AzureBlobStorage(account_name='devstoreaccount1', account_key='Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==', storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='hive_partitioned', format='Parquet', compression='auto', partition_strategy='hive') PARTITION BY (year, country);

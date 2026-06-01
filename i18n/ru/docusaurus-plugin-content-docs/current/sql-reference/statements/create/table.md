@@ -320,6 +320,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Добавление большого количества ограничений может негативно повлиять на производительность больших запросов `INSERT`.
 
+Существующие ограничения во всех таблицах можно посмотреть в таблице [`system.constraints`](/operations/system-tables/constraints).
 
 ### ASSUME \{#assume\}
 

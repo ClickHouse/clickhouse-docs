@@ -4461,6 +4461,14 @@ ClickHouse는 테이블의 오래된 레플리카들 가운데 가장 적절한 
 
 기본값은 1(활성화)입니다.
 
+## file_like_engine_default_partition_strategy \{#file_like_engine_default_partition_strategy\}
+
+<SettingsInfoBlock type="FileLikeEngineDefaultPartitionStrategy" default_value="hive" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "hive"},{"label": "`partition_strategy`가 지정되지 않으면 파일형 테이블 엔진(S3, AzureBlobStorage 등)의 기본 파티션 전략이 `wildcard`에서 `hive`로 변경됩니다."}]}]} />
+
+파일형 엔진의 기본 파티션 전략입니다.
+
 ## filesystem_cache_allow_background_download \{#filesystem_cache_allow_background_download\}
 
 <SettingsInfoBlock type="Bool" default_value="1" />

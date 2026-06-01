@@ -1793,6 +1793,10 @@ FileCache::assertCacheCorrectness에 소요되는 시간
 
 동적 파일 시스템 캐시 축출 중 예기치 않게 축출에 실패한 파일 세그먼트 수
 
+### FilesystemCacheFailedReserveAttempts \{#filesystemcachefailedreserveattempts\}
+
+파일 캐시 공간 예약 시도가 실패한 횟수입니다.
+
 ### FilesystemCacheFreeSpaceKeepingThreadRun \{#filesystemcachefreespacekeepingthreadrun\}
 
 백그라운드 스레드가 여유 공간 유지 작업을 수행한 횟수

@@ -1794,6 +1794,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество файловых сегментов, которые неожиданно не удалось вытеснить при динамическом вытеснении файлового кэша
 
+### FilesystemCacheFailedReserveAttempts \{#filesystemcachefailedreserveattempts\}
+
+Количество неудачных попыток резервирования места в файловом кеше.
+
 ### FilesystemCacheFreeSpaceKeepingThreadRun \{#filesystemcachefreespacekeepingthreadrun\}
 
 Количество выполнений фоновой задачи по поддержанию свободного пространства

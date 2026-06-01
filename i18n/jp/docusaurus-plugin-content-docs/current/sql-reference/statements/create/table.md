@@ -311,6 +311,8 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 大量の制約を追加すると、大規模な `INSERT` クエリのパフォーマンスに悪影響を与える可能性があります。
 
+すべてのテーブルに存在する制約は、[`system.constraints`](/operations/system-tables/constraints) テーブルで確認できます。
+
 ### ASSUME \{#assume\}
 
 `ASSUME` 句は、常に真であると仮定されるテーブル上の `CONSTRAINT` を定義するために使用されます。この制約は、その後オプティマイザによって SQL クエリのパフォーマンスを向上させるために利用できます。

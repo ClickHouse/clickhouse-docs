@@ -55,7 +55,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.338 sec.
 ```
 
-`JSONAsObject` は、単一の JSON オブジェクト型カラムを使ってテーブルに行を挿入する場合に便利です。例:`
+`JSONAsObject` は、単一の JSON オブジェクト型カラムを使ってテーブルに行を挿入する場合に便利です。例:&#96;
 
 ```sql
 CREATE TABLE pypi

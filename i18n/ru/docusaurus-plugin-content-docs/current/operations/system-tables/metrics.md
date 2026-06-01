@@ -528,6 +528,18 @@ SELECT * FROM system.metrics LIMIT 10
 
 Устаревшая метрика; не показывает никаких данных.
 
+### DiskObjectStorageCopyObjectThreads \{#diskobjectstoragecopyobjectthreads\}
+
+Количество потоков в пуле потоков, используемом для распараллеливания вызовов copyObjectToAnotherObjectStorage в рамках транзакций диска объектного хранилища
+
+### DiskObjectStorageCopyObjectThreadsActive \{#diskobjectstoragecopyobjectthreadsactive\}
+
+Количество потоков в пуле потоков копирования для дискового объектного хранилища, выполняющих задачу
+
+### DiskObjectStorageCopyObjectThreadsScheduled \{#diskobjectstoragecopyobjectthreadsscheduled\}
+
+Количество задач в очереди или выполняющихся задач в пуле потоков копирования объектов для дискового объектного хранилища
+
 ### DiskPlainRewritableAzureDirectoryMapSize \{#diskplainrewritableazuredirectorymapsize\}
 
 Количество записей соответствий локальных и удалённых путей в хранимом в памяти map `plain_rewritable` для AzureObjectStorage.
