@@ -46,7 +46,7 @@ The query is now generated as `hasAllTokens(lower(Body), ...)`, which matches th
 
 **Related PRs:** [#2326](https://github.com/hyperdxio/hyperdx/pull/2326) feat: support text index on lower(Body) with no preprocessor
 
-## Simpler Event Deltas experience {#simpler-event-deltas-experience}
+## Simpler event deltas experience {#simpler-event-deltas-experience}
 
 *Demo by [@alex-fedotyev](https://github.com/alex-fedotyev)*
 
