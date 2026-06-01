@@ -320,6 +320,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 많은 수의 제약 조건을 추가하면 대규모 `INSERT` 쿼리의 성능에 부정적인 영향을 줄 수 있습니다.
 
+모든 테이블에 존재하는 제약 조건은 [`system.constraints`](/operations/system-tables/constraints) 테이블에서 확인할 수 있습니다.
 
 ### ASSUME \{#assume\}
 
