@@ -222,6 +222,10 @@ ORDER BY memory_usage DESC
 LIMIT 10
 ```
 
+:::note
+A single query can be logged as multiple rows with different `query_id` values — distributed secondary queries and internal view steps have `is_initial_query = 0`. Filter on `is_initial_query = 1` (or `query_id = initial_query_id`) to see queries as they were submitted, and note that the internal `query_id` values ClickHouse assigns may include a label such as `queryView...`. See the [`query_log` reference](/operations/system-tables/query_log) for details.
+:::
+
 ## How much disk space are my projection using \{#how-much-disk-space-are-my-projection-using\}
 
 ```sql
