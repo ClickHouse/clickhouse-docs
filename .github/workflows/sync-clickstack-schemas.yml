@@ -27,7 +27,7 @@ jobs:
         run: python3 scripts/sync-clickstack-schemas.py
 
       - name: Create pull request if upstream schemas changed
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: auto/sync-clickstack-schemas
           base: main
