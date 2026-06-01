@@ -212,27 +212,27 @@ There are few ways to change the mapping:
 
 **Numeric Types**
 
-| ClickHouse Type             | JDBC Type                    | Java Class                  |
-|-----------------------------|------------------------------|-----------------------------|
-| Int8                        | TINYINT (-6)                 | java.lang.Byte              |
-| Int16                       | SMALLINT (5)                 | java.lang.Short             |
-| Int32                       | INTEGER (4)                  | java.lang.Integer           |
-| Int64                       | BIGINT (-5)                  | java.lang.Long              |
-| Int128                      | NUMERIC (2)                  | java.math.BigInteger        |
-| Int256                      | NUMERIC (2)                  | java.math.BigInteger        |
-| UInt8                       | SMALLINT (5)                 | java.lang.Short             |
-| UInt16                      | INTEGER (4)                  | java.lang.Integer           |
-| UInt32                      | BIGINT (-5)                  | java.lang.Long              |
-| UInt64                      | NUMERIC (2)                  | java.math.BigInteger        |
-| UInt128                     | NUMERIC (2)                  | java.math.BigInteger        |
-| UInt256                     | NUMERIC (2)                  | java.math.BigInteger        |
-| Float32                     | FLOAT (6)                    | java.lang.Float             |
-| Float64                     | DOUBLE (8)                   | java.lang.Double            |
-| Decimal32                   | DECIMAL (3)                  | java.math.BigDecimal        |
-| Decimal64                   | DECIMAL (3)                  | java.math.BigDecimal        |
-| Decimal128                  | DECIMAL (3)                  | java.math.BigDecimal        |
-| Decimal256                  | DECIMAL (3)                  | java.math.BigDecimal        |
-| Bool                        | BOOLEAN (16)                 | java.lang.Boolean           |
+| ClickHouse Type             | JDBC Type   | Java Class                  |
+|-----------------------------|-------------|-----------------------------|
+| Int8                        | TINYINT     | java.lang.Byte              |
+| Int16                       | SMALLINT    | java.lang.Short             |
+| Int32                       | INTEGER     | java.lang.Integer           |
+| Int64                       | BIGINT      | java.lang.Long              |
+| Int128                      | NUMERIC     | java.math.BigInteger        |
+| Int256                      | NUMERIC     | java.math.BigInteger        |
+| UInt8                       | SMALLINT    | java.lang.Short             |
+| UInt16                      | INTEGER     | java.lang.Integer           |
+| UInt32                      | BIGINT      | java.lang.Long              |
+| UInt64                      | NUMERIC     | java.math.BigInteger        |
+| UInt128                     | NUMERIC     | java.math.BigInteger        |
+| UInt256                     | NUMERIC     | java.math.BigInteger        |
+| Float32                     | FLOAT       | java.lang.Float             |
+| Float64                     | DOUBLE      | java.lang.Double            |
+| Decimal32                   | DECIMAL     | java.math.BigDecimal        |
+| Decimal64                   | DECIMAL     | java.math.BigDecimal        |
+| Decimal128                  | DECIMAL     | java.math.BigDecimal        |
+| Decimal256                  | DECIMAL     | java.math.BigDecimal        |
+| Bool                        | BOOLEAN     | java.lang.Boolean           |
 
 - numeric types are interconvertible. So `Int8` can be get as `Float64` and vice versa.:
     - `rs.getObject(1, Float64.class)` will return `Float64` value of `Int8` column.
@@ -245,10 +245,10 @@ There are few ways to change the mapping:
 
 **String Types**
 
-| ClickHouse Type             | JDBC Type                    | Java Class                  |
-|-----------------------------|------------------------------|-----------------------------|
-| String                      | VARCHAR (12)                 | java.lang.String            |
-| FixedString                 | VARCHAR (12)                 | java.lang.String            |
+| ClickHouse Type             | JDBC Type   | Java Class                  |
+|-----------------------------|-------------|-----------------------------|
+| String                      | VARCHAR     | java.lang.String            |
+| FixedString                 | VARCHAR     | java.lang.String            |
 
 - `String` can be read only as `java.lang.String` or `byte[]`.
 - `FixedString` is read as is and will be padded with zeros to the length of the column. (For example `FixedString(10)` for `'John'` will be read as `'John\0\0\0\0\0\0\0\0\0'`.)
@@ -256,10 +256,10 @@ There are few ways to change the mapping:
 
 **Enum Types**
 
-| ClickHouse Type             | JDBC Type                    | Java Class                  |
-|-----------------------------|------------------------------|-----------------------------|
-| Enum8                       | VARCHAR (12)                 | java.lang.String            |
-| Enum16                      | VARCHAR (12)                 | java.lang.String            |
+| ClickHouse Type             | JDBC Type   | Java Class                  |
+|-----------------------------|-------------|-----------------------------|
+| Enum8                       | VARCHAR     | java.lang.String            |
+| Enum16                      | VARCHAR     | java.lang.String            |
 
 - `Enum8` and `Enum16` are mapped to `java.lang.String` by default.
 - Enum values can be read as numeric values using designtated getter method or `getObject(columnIndex, Integer.class)` method.
@@ -269,14 +269,14 @@ There are few ways to change the mapping:
 
 **Date/Time Types**
 
-| ClickHouse Type             | JDBC Type                    | Java Class                  |
-|-----------------------------|------------------------------|-----------------------------|
-| Date                        | DATE (91)                    | java.sql.Date               |
-| Date32                      | DATE (91)                    | java.sql.Date               |
-| DateTime                    | TIMESTAMP (93)               | java.sql.Timestamp          |
-| DateTime64                  | TIMESTAMP (93)               | java.sql.Timestamp          |
-| Time                        | TIME (92)                    | java.sql.Time               |
-| Time64                      | TIME (92)                    | java.sql.Time               |
+| ClickHouse Type             | JDBC Type   | Java Class                  |
+|-----------------------------|-------------|-----------------------------|
+| Date                        | DATE        | java.sql.Date               |
+| Date32                      | DATE        | java.sql.Date               |
+| DateTime                    | TIMESTAMP   | java.sql.Timestamp          |
+| DateTime64                  | TIMESTAMP   | java.sql.Timestamp          |
+| Time                        | TIME        | java.sql.Time               |
+| Time64                      | TIME        | java.sql.Time               |
 
 - Date / Time types are mapped to `java.sql` types for better compatibility with JDBC. However getting `java.time.LocalDate`, `java.time.LocalDateTime`, `java.time.LocalTime` is possible by using `ResultSet#getObject(columnIndex, Class<T>)` with the corresponding class as the second argument.
     - `rs.getObject(1, java.time.LocalDate.class)` will return `java.time.LocalDate` value of `Date` column.
@@ -289,17 +289,17 @@ There are few ways to change the mapping:
 
 **Nested Types**
 
-| ClickHouse Type             | JDBC Type                    | Java Class                          |
-|-----------------------------|------------------------------|-------------------------------------|
-| Array                       | ARRAY (2003)                 | java.sql.Array                      |
-| Tuple                       | OTHER (1111)                 | com.clickhouse.data.Tuple           |
-| Map                         | JAVA_OBJECT (2000)           | java.util.Map                       |
-| Nested                      | ARRAY (2003)                 | java.sql.Array                      |
+| ClickHouse Type             | JDBC Type   | Java Class                          |
+|-----------------------------|-------------|-------------------------------------|
+| Array                       | ARRAY       | java.sql.Array                      |
+| Tuple                       | OTHER       | com.clickhouse.data.Tuple           |
+| Map                         | OTHER       | java.util.Map                       |
+| Nested                      | ARRAY       | java.sql.Array                      |
 
 - `Array` is mapped to `java.sql.Array` by default to be compatible with JDBC. This is also done to give more information about returned array value. Useful for type inference.
 - `Array` implements `getResultSet()` method to return `java.sql.ResultSet` with the same content as the original array.
 - Collection types shouldn't be read as `java.lang.String` because it isn't a valid way to represent the data (Ex. there is no quoting for string values in array). 
-- `Map` is mapped to `JAVA_OBJECT` because value can be read only with `getObject(columnIndex, Class<T>)` method. 
+- `Map` is mapped to `OTHER` because value can be read only with `getObject(columnIndex, Class<T>)` method. 
     - `Map` isn't a `java.sql.Struct` because it doesn't have named columns.
 - `Tuple` is mapped to `Object[]` because it can contain different types and using `List` isn't valid. 
 - `Tuple` can be read as `Array` by using `getObject(columnIndex, Array.class)` method. In this case `Array#baseTypeName` will return `Tuple` column definition. 
@@ -309,34 +309,51 @@ There are few ways to change the mapping:
 `Array.getBaseTypeName()` returns the ClickHouse element type name; `Array.getBaseType()` returns the JDBC type code.
 JDBC V2 preserves full type signatures (wrapper types, type parameters) that V1 strips.
 
-**JDBC V2**
+The general mapping rules for arrays are:
 
-| ClickHouse Type (Example)                           | `getBaseTypeName()`                          | `getBaseType()`  |
-|-----------------------------------------------------|----------------------------------------------|------------------|
-| Array(Int8)                                         | Int8                                         | TINYINT (-6)     |
-| Array(Int16)                                        | Int16                                        | SMALLINT (5)     |
-| Array(Int32)                                        | Int32                                        | INTEGER (4)      |
-| Array(Int64)                                        | Int64                                        | BIGINT (-5)      |
-| Array(UInt8)                                        | UInt8                                        | SMALLINT (5)     |
-| Array(UInt16)                                       | UInt16                                       | INTEGER (4)      |
-| Array(UInt32)                                       | UInt32                                       | BIGINT (-5)      |
-| Array(UInt64)                                       | UInt64                                       | NUMERIC (2)      |
-| Array(Float32)                                      | Float32                                      | FLOAT (6)        |
-| Array(Float64)                                      | Float64                                      | DOUBLE (8)       |
-| Array(String)                                       | String                                       | VARCHAR (12)     |
-| Array(FixedString(8))                               | FixedString(8)                               | VARCHAR (12)     |
-| Array(Bool)                                         | Bool                                         | BOOLEAN (16)     |
-| Array(Date)                                         | Date                                         | DATE (91)        |
-| Array(DateTime)                                     | DateTime                                     | TIMESTAMP (93)   |
-| Array(UUID)                                         | UUID                                         | OTHER (1111)     |
-| Array(Nullable(Int32))                              | Nullable(Int32)                              | INTEGER (4)      |
-| Array(Nullable(String))                             | Nullable(String)                             | VARCHAR (12)     |
-| Array(LowCardinality(String))                       | LowCardinality(String)                       | VARCHAR (12)     |
-| Array(LowCardinality(Nullable(String)))             | LowCardinality(Nullable(String))             | VARCHAR (12)     |
-| Array(Array(Int32))                                 | Int32                                        | INTEGER (4)      |
-| Array(Array(Array(String)))                         | String                                       | VARCHAR (12)     |
-| Array(Tuple(name String, val Int32))                | Tuple(name String, val Int32)                | OTHER (1111)     |
-| Array(Enum8('alpha' = 1, 'beta' = 2, 'gamma' = 3)) | Enum8('alpha' = 1, 'beta' = 2, 'gamma' = 3) | VARCHAR (12)     |
+| ClickHouse Type                            | `getBaseTypeName()`                            | `getBaseType()`             |
+|--------------------------------------------|------------------------------------------------|-----------------------------|
+| `Array(<Primitive Type>)`                  | `<Primitive Type>`                             | `<JDBC Primitive Type>`     |
+| `Array(<Parameterized Type>(<N>))`         | `<Parameterized Type>(<N>)`                    | `<JDBC type of base type>`  |
+| `Array(Nullable(<Type>))`                  | `Nullable(<Type>)`                             | `<JDBC type of inner Type>` |
+| `Array(LowCardinality(<Type>))`            | `LowCardinality(<Type>)`                       | `<JDBC type of inner Type>` |
+| `Array(Array(...(<Type>)))`                | `<Type>` (innermost element)                   | `<JDBC type of innermost>`  |
+| `Array(Tuple(...))`                        | `Tuple(...)` (full definition)                 | `OTHER`                     |
+| `Array(Enum8(...))` / `Array(Enum16(...))` | `Enum8(...)` / `Enum16(...)` (full definition) | `VARCHAR`                   |
+
+Notes on the rules above:
+- Wrapper types (`Nullable`, `LowCardinality`) are preserved in `getBaseTypeName()` but `getBaseType()` resolves to the inner type's JDBC code.
+- Nested arrays are flattened in the metadata: `getBaseTypeName()` returns the innermost non-array element type, not the immediate child.
+- Parameterized types (`FixedString(N)`, full `Enum`/`Tuple` definitions) keep their parameters in `getBaseTypeName()`.
+
+
+**Examples:**
+| ClickHouse Type (Example)                          | `getBaseTypeName()`                         | `getBaseType()` |
+|----------------------------------------------------|---------------------------------------------|-----------------|
+| Array(Int8)                                        | Int8                                        | TINYINT         |
+| Array(Int16)                                       | Int16                                       | SMALLINT        |
+| Array(Int32)                                       | Int32                                       | INTEGER         |
+| Array(Int64)                                       | Int64                                       | BIGINT          |
+| Array(UInt8)                                       | UInt8                                       | SMALLINT        |
+| Array(UInt16)                                      | UInt16                                      | INTEGER         |
+| Array(UInt32)                                      | UInt32                                      | BIGINT          |
+| Array(UInt64)                                      | UInt64                                      | NUMERIC         |
+| Array(Float32)                                     | Float32                                     | FLOAT           |
+| Array(Float64)                                     | Float64                                     | DOUBLE          |
+| Array(String)                                      | String                                      | VARCHAR         |
+| Array(FixedString(8))                              | FixedString(8)                              | VARCHAR         |
+| Array(Bool)                                        | Bool                                        | BOOLEAN         |
+| Array(Date)                                        | Date                                        | DATE            |
+| Array(DateTime)                                    | DateTime                                    | TIMESTAMP       |
+| Array(UUID)                                        | UUID                                        | OTHER           |
+| Array(Nullable(Int32))                             | Nullable(Int32)                             | INTEGER         |
+| Array(Nullable(String))                            | Nullable(String)                            | VARCHAR         |
+| Array(LowCardinality(String))                      | LowCardinality(String)                      | VARCHAR         |
+| Array(LowCardinality(Nullable(String)))            | LowCardinality(Nullable(String))            | VARCHAR         |
+| Array(Array(Int32))                                | Int32                                       | INTEGER         |
+| Array(Array(Array(String)))                        | String                                      | VARCHAR         |
+| Array(Tuple(name String, val Int32))               | Tuple(name String, val Int32)               | OTHER           |
+| Array(Enum8('alpha' = 1, 'beta' = 2, 'gamma' = 3)) | Enum8('alpha' = 1, 'beta' = 2, 'gamma' = 3) | VARCHAR         |
 
 - In V2, `getBaseTypeName()` preserves the full type signature including wrapper types (`Nullable`, `LowCardinality`) and type parameters (`FixedString(8)`, full `Enum` and `Tuple` definitions). V1 strips these and returns only the base type name.
 - `Tuple` arrays use `OTHER (1111)` in V2 instead of `STRUCT (2002)` because ClickHouse tuples have named fields, which `java.sql.Struct` does not support.
