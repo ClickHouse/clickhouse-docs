@@ -26,26 +26,34 @@ for further compression.
 | BigQuery | ClickHouse | Notes |
 |----------|------------|-------|
 | [`ARRAY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#array_type) | [`Array(t)`](/sql-reference/data-types/array) | |
-| [`BIGNUMERIC`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types) | [`Decimal256(S)`](/sql-reference/data-types/decimal) | |
+| [`BIGNUMERIC`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types) | [`Decimal256(S)`](/sql-reference/data-types/decimal) | Precision up to 76, scale up to 38 |
 | [`BOOL`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#boolean_type) | [`Bool`](/sql-reference/data-types/boolean) | |
 | [`BYTES`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#bytes_type) | [`String`](/sql-reference/data-types/string) &nbsp;or&nbsp; [`FixedString(N)`](/sql-reference/data-types/fixedstring) | |
 | [`DATE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#date_type) | [`Date`](/sql-reference/data-types/date) &nbsp;or&nbsp; [`Date32`](/sql-reference/data-types/date32) | `Date` (2-byte, 1970-2149) for typical analytical data; `Date32` (4-byte, 1900-2299) to match BigQuery's full range |
-| [`DATETIME`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type) | [`DateTime`](/sql-reference/data-types/datetime) &nbsp;or&nbsp; [`DateTime64(p)`](/sql-reference/data-types/datetime64) | Use `DateTime64(p)` for sub-second precision |
+| [`DATETIME`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#datetime_type) | [`DateTime`](/sql-reference/data-types/datetime) &nbsp;or&nbsp; [`DateTime64(p)`](/sql-reference/data-types/datetime64) | BigQuery `DATETIME` is microsecond-precision civil time with no time zone; plain `DateTime` is second-precision and always carries a time zone, so use `DateTime64(6)` for precision parity |
 | [`FLOAT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#floating_point_types) | [`Float64`](/sql-reference/data-types/float) | |
-| [`GEOGRAPHY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type) | [Geo data types](/sql-reference/data-types/geo) | |
+| [`GEOGRAPHY`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#geography_type) | [`Geometry`](/sql-reference/data-types/geo#geometry) &nbsp;or&nbsp; [`String`](/sql-reference/data-types/string) | BigQuery `GEOGRAPHY` holds any shape in a single geodesic column. ClickHouse [`Geometry`](/sql-reference/data-types/geo#geometry) is the closest match &mdash; a `Variant` over `Point`, `LineString`, `Polygon`, etc. that holds any shape in one column (load WKT with `readWKT*`). Alternatively keep the raw WKT/GeoJSON as `String`. ClickHouse geo functions are mostly planar (Cartesian); use the spherical variants where geodesic parity matters |
 | [`INT64`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#integer_types) | [`UInt8` … `UInt256` / `Int8` … `Int256`](/sql-reference/data-types/int-uint) | Pick the smallest signed or unsigned variant that fits the value range |
 | [`INTERVAL`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#interval_type) | No equivalent | Use the [`INTERVAL` expression](/sql-reference/data-types/special-data-types/interval#usage-remarks) or [date/time arithmetic functions](/sql-reference/functions/date-time-functions#addYears) |
 | [`JSON`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#json_type) | [`JSON`](/sql-reference/data-types/newjson) &nbsp;or&nbsp; [`String`](/sql-reference/data-types/string) | `JSON` is preferred; `String` with [`JSONExtract*`](/sql-reference/functions/json-functions) accessors works as a fallback |
-| [`NUMERIC`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types) | [`Decimal(P, S)`](/sql-reference/data-types/decimal) | Sized variants `Decimal32(S)` / `Decimal64(S)` / `Decimal128(S)` are also available |
+| [`NUMERIC`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types) | [`Decimal(P, S)`](/sql-reference/data-types/decimal) | BigQuery `NUMERIC` is precision 38 / scale 9 &mdash; [`Decimal128(9)`](/sql-reference/data-types/decimal) is the exact-parity choice; smaller `Decimal32(S)` / `Decimal64(S)` variants are also available |
 | [`RANGE`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#range_type) | No equivalent | Store `(start, end)` columns or a `Tuple(start, end)` |
-| [`STRING`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type) | [`String`](/sql-reference/data-types/string) | Optionally wrap in [`LowCardinality(String)`](/sql-reference/data-types/lowcardinality) for columns with few distinct values (enums, status codes, country codes). String functions are byte-based; the [String family](/sql-reference/functions/string-functions) has `UTF8` variants where relevant |
-| [`STRUCT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#constructing_a_struct) | [`Tuple`](/sql-reference/data-types/tuple) &nbsp;or&nbsp; [`Nested`](/sql-reference/data-types/nested-data-structures/nested) | Flattened sibling columns are often more performant in ClickHouse; use `Tuple` / `Nested` for named fields when the nested shape is load-bearing |
-| [`TIME`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type) | No equivalent | Carry a [`DateTime64`](/sql-reference/data-types/datetime64) and extract via [`formatDateTime`](/sql-reference/functions/date-time-functions#formatDateTime) |
+| [`STRING`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type) | [`String`](/sql-reference/data-types/string) | As a performance optimization, wrap in [`LowCardinality(String)`](/sql-reference/data-types/lowcardinality) for columns with few distinct values (enums, status codes, country codes). String functions are byte-based; the [String family](/sql-reference/functions/string-functions) has `UTF8` variants where relevant |
+| [`STRUCT`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#constructing_a_struct) / `RECORD` | [`Tuple`](/sql-reference/data-types/tuple) &nbsp;or&nbsp; [`Nested`](/sql-reference/data-types/nested-data-structures/nested) | `RECORD` is BigQuery's legacy name for `STRUCT`. A repeated record (`ARRAY<STRUCT<…>>`) maps to [`Nested`](/sql-reference/data-types/nested-data-structures/nested) or `Array(Tuple(…))`. Flattened sibling columns are often more performant in ClickHouse; use `Tuple` / `Nested` for named fields when the nested shape is load-bearing |
+| [`TIME`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#time_type) | No equivalent | Carry a [`DateTime64`](/sql-reference/data-types/datetime64) and extract via [`formatDateTime`](/sql-reference/functions/date-time-functions#formatDateTime), or store as a [`String`](/sql-reference/data-types/string) |
 | [`TIMESTAMP`](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type) | [`DateTime64(6, 'UTC')`](/sql-reference/data-types/datetime64) | Use for microsecond-precision UTC parity |
+
+BigQuery's legacy SQL type names map through to the same ClickHouse types: `INTEGER` &rarr; `INT64`, `FLOAT` &rarr; `FLOAT64`, `BOOLEAN` &rarr; `BOOL`, and `RECORD` &rarr; `STRUCT`.
+
+BigQuery column modes have direct analogues too: a `REPEATED` field is an [`Array(T)`](/sql-reference/data-types/array), and a `NULLABLE` field is a [`Nullable(T)`](/sql-reference/data-types/nullable) &mdash; though ClickHouse columns are non-nullable by default, and a non-nullable column with a sensible default is usually preferable for performance.
 
 ## DDL statements {#ddl-statements}
 
 ### Schemas and databases {#ddl-schemas}
+
+:::note Three-part vs two-part names
+BigQuery references objects with a three-part name (`project.dataset.table`). ClickHouse uses a two-part `database.table` name &mdash; there is no project layer, so drop the project qualifier when translating identifiers.
+:::
 
 <table className="sql-translation-table">
 <colgroup>
@@ -104,7 +112,7 @@ CREATE DATABASE IF NOT EXISTS mydb
 <tr>
 <td colSpan={2}>
 
-Location is a service-level decision in ClickHouse Cloud.
+Location is a service-level configuration in ClickHouse Cloud.
 
 </td>
 </tr>
@@ -219,7 +227,7 @@ ORDER BY id
 <tr>
 <td colSpan={2}>
 
-An engine and an `ORDER BY` are required for `MergeTree`-family tables; pick the columns that match the query access pattern. See [Sparse primary indexes](/guides/best-practices/sparse-primary-indexes).
+[`MergeTree`](/engines/table-engines/mergetree-family/mergetree)-family tables require both an engine and an `ORDER BY`. The `ORDER BY` key determines how rows are sorted and indexed on disk &mdash; it acts as a [sparse primary index](/guides/best-practices/sparse-primary-indexes) and is the primary lever for query performance, so pick columns that match your most common query access patterns.
 
 </td>
 </tr>
@@ -288,7 +296,7 @@ ORDER BY id
 <tr>
 <td colSpan={2}>
 
-BigQuery partitioning expects a single date/timestamp column; ClickHouse accepts an arbitrary expression. ClickHouse partitions are a storage-organization feature, not a substitute for `ORDER BY`.
+BigQuery partitioning expects a single date/timestamp column; ClickHouse accepts an arbitrary expression. ClickHouse partitions are a storage-organization feature &mdash; not a substitute for `ORDER BY`.
 
 </td>
 </tr>
@@ -1172,74 +1180,8 @@ REVOKE SELECT ON mydb.t FROM alice
 
 ### Roles {#dcl-roles}
 
-<table className="sql-translation-table">
-<colgroup>
-<col />
-<col />
-</colgroup>
-<thead>
-<tr>
-<th>BigQuery</th>
-<th>ClickHouse</th>
-</tr>
-</thead>
-<tbody>
+BigQuery has no SQL-level roles &mdash; access is managed entirely through IAM. ClickHouse manages users and roles in SQL with [`CREATE USER`](/sql-reference/statements/create/user) and [`CREATE ROLE`](/sql-reference/statements/create/role); see [Access control and roles](/operations/access-rights).
 
-<tr>
-<td>
-
-IAM-managed via console / `gcloud`
-
-</td>
-<td>
-
-```sql
-CREATE USER alice
-IDENTIFIED WITH plaintext_password BY 'pw'
-```
-
-</td>
-</tr>
-<tr>
-<td colSpan={2}>
-
-See [Access control and roles](/operations/access-rights).
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-IAM-managed via console / `gcloud`
-
-</td>
-<td>
-
-```sql
-CREATE ROLE analyst
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-IAM-managed via console / `gcloud`
-
-</td>
-<td>
-
-```sql
-DROP USER alice
-```
-
-</td>
-</tr>
-
-</tbody>
-</table>
 
 ## Syntax {#syntax}
 
@@ -1973,245 +1915,8 @@ ClickHouse has no `UNPIVOT`; emit `(name, value)` tuples and `ARRAY JOIN`.
 
 ### Pipe syntax {#pipe-syntax}
 
-BigQuery's [pipe syntax](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/pipe-syntax)
-chains transformations with the `|>` operator. ClickHouse has no equivalent;
-each pipe operator desugars to a clause in standard SQL. Subqueries or CTEs
-are the readable way to chain stages.
+BigQuery's [pipe syntax](https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/pipe-syntax) chains transformations with the `|>` operator. ClickHouse doesn't support pipe syntax; write standard SQL, using subqueries or CTEs to chain stages.
 
-<table className="sql-translation-table">
-<colgroup>
-<col />
-<col />
-</colgroup>
-<thead>
-<tr>
-<th>BigQuery</th>
-<th>ClickHouse</th>
-</tr>
-</thead>
-<tbody>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> SELECT id, name
-```
-
-</td>
-<td>
-
-```sql
-SELECT id, name FROM mydb.t
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> WHERE amount > 100
-```
-
-</td>
-<td>
-
-```sql
-SELECT * FROM mydb.t WHERE amount > 100
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> EXTEND amount * 0.1 AS tax
-```
-
-</td>
-<td>
-
-```sql
-SELECT *, amount * 0.1 AS tax FROM mydb.t
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> SET amount = amount * 2
-```
-
-</td>
-<td>
-
-```sql
-SELECT * REPLACE (amount * 2 AS amount) FROM mydb.t
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> DROP password
-```
-
-</td>
-<td>
-
-```sql
-SELECT * EXCEPT password FROM mydb.t
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> RENAME amount AS price
-```
-
-</td>
-<td>
-
-```sql
-SELECT * EXCEPT amount, amount AS price FROM mydb.t
-```
-
-</td>
-</tr>
-<tr>
-<td colSpan={2}>
-
-ClickHouse `* REPLACE` substitutes the value of an existing column but cannot rename it; use `* EXCEPT` plus an aliased column to drop the original name and reintroduce it under the new one.
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> AGGREGATE sum(amount) AS total
-   GROUP BY status
-```
-
-</td>
-<td>
-
-```sql
-SELECT status, sum(amount) AS total
-FROM mydb.t
-GROUP BY status
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> ORDER BY created_at DESC
-```
-
-</td>
-<td>
-
-```sql
-SELECT * FROM mydb.t ORDER BY created_at DESC
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> LIMIT 100
-```
-
-</td>
-<td>
-
-```sql
-SELECT * FROM mydb.t LIMIT 100
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> JOIN mydataset.u USING (id)
-```
-
-</td>
-<td>
-
-```sql
-SELECT * FROM mydb.t JOIN mydb.u USING (id)
-```
-
-</td>
-</tr>
-
-<tr>
-<td>
-
-```sql
-FROM mydataset.t
-|> WHERE amount > 100
-|> AGGREGATE count(*) GROUP BY status
-```
-
-</td>
-<td>
-
-```sql
-SELECT status, count()
-FROM mydb.t
-WHERE amount > 100
-GROUP BY status
-```
-
-</td>
-</tr>
-<tr>
-<td colSpan={2}>
-
-Pipes compose left-to-right; in ClickHouse, layer clauses or use a CTE for readability.
-
-</td>
-</tr>
-
-</tbody>
-</table>
 
 ### Procedural language {#procedural-language}
 
@@ -3090,7 +2795,7 @@ ClickHouse [`range`](/sql-reference/functions/array-functions#range) excludes th
 
 ### Aggregate functions {#aggregate-functions}
 
-BigQuery exposes roughly 18 aggregate functions plus a handful of approximate aggregates. ClickHouse ships [more than 150 aggregate functions](/sql-reference/aggregate-functions/reference) and adds [combinators](/sql-reference/aggregate-functions/combinators) (suffixes such as `-If`, `-Array`, `-Map`, `-ForEach`, `-Merge`, and `-State`) that compose with any aggregate to extend its behavior across data shapes or to use it inside materialized views.
+BigQuery exposes roughly 18 aggregate functions plus a handful of approximate aggregates. ClickHouse ships [more than 150 aggregate functions](/sql-reference/aggregate-functions/reference) and adds [combinators](/sql-reference/aggregate-functions/combinators) — suffixes such as `-If`, `-Array`, `-Map`, `-ForEach`, `-Merge`, and `-State` — that compose with any aggregate to extend its behavior across data shapes or to use it inside materialized views.
 
 <table className="sql-translation-table">
 <colgroup>
