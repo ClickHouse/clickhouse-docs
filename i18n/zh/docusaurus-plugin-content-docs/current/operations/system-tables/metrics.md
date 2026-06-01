@@ -527,6 +527,18 @@ DeltaLake snapshot 缓存中的元素数量。
 
 该指标已废弃，不会显示任何内容。
 
+### DiskObjectStorageCopyObjectThreads \{#diskobjectstoragecopyobjectthreads\}
+
+对象存储磁盘事务中，用于并行执行 copyObjectToAnotherObjectStorage 调用的线程池线程数
+
+### DiskObjectStorageCopyObjectThreadsActive \{#diskobjectstoragecopyobjectthreadsactive\}
+
+磁盘对象存储复制线程池中正在执行任务的线程数
+
+### DiskObjectStorageCopyObjectThreadsScheduled \{#diskobjectstoragecopyobjectthreadsscheduled\}
+
+磁盘对象存储复制线程池中已排队或正在执行的任务数量
+
 ### DiskPlainRewritableAzureDirectoryMapSize \{#diskplainrewritableazuredirectorymapsize\}
 
 AzureObjectStorage 的 `plain_rewritable` 内存映射中，本地到远程路径映射条目的数量。

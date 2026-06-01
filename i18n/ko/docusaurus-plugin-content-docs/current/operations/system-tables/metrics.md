@@ -527,6 +527,18 @@ DeltaLake 스냅샷 캐시의 크기(요소 수)입니다.
 
 사용 중단된 메트릭으로, 아무것도 표시하지 않습니다.
 
+### DiskObjectStorageCopyObjectThreads \{#diskobjectstoragecopyobjectthreads\}
+
+객체 스토리지 디스크 트랜잭션 내에서 copyObjectToAnotherObjectStorage 호출을 병렬 처리하는 데 사용하는 스레드 풀의 스레드 수
+
+### DiskObjectStorageCopyObjectThreadsActive \{#diskobjectstoragecopyobjectthreadsactive\}
+
+디스크 객체 스토리지 복사 스레드 풀에서 작업을 수행 중인 스레드 수
+
+### DiskObjectStorageCopyObjectThreadsScheduled \{#diskobjectstoragecopyobjectthreadsscheduled\}
+
+디스크 객체 스토리지 복사 스레드 풀의 큐에서 대기 중이거나 현재 활성 상태인 작업 수
+
 ### DiskPlainRewritableAzureDirectoryMapSize \{#diskplainrewritableazuredirectorymapsize\}
 
 AzureObjectStorage용 `plain_rewritable` 인메모리 맵의 로컬-원격 경로 엔트리 수입니다.
