@@ -74,10 +74,6 @@ Select `clickhouse-cloud` and authenticate via OAuth using your credentials for 
 4. Click the newly added `clickhouse-cloud` connector and click **Connect**
 5. Authenticate using your ClickHouse Cloud credentials via OAuth
 
-### Notion {#notion}
-
-See the dedicated [Connecting Notion to ClickHouse](/integrations/notion) integration guide for connecting the ClickHouse Cloud Remote MCP server to a Notion Custom Agent.
-
 ### Cursor {#cursor}
 
 1. Browse and install MCP servers from the [Cursor Marketplace](https://cursor.com/marketplace).
