@@ -84,3 +84,7 @@ The table below describes the ClickHouse console and SQL console permissions. Mo
 | control-plane:service:manage-clickstack-api | Manage ClickStack API access and related integrations. |
 | **SQL console role mapping** ([more info](/cloud/guides/sql-console/manage-sql-console-role-assignments)) | Manage SQL console role assignments |
 | sql-console:database:access | Passwordless access to the database via SQL console (may only be used with sql-console-admin or sql-console-readonly) |
+
+:::note Data Sources tab visibility
+Granting `control-plane:service:manage-clickpipes` alone doesn't make the **Data Sources** tab visible in the console. The Data Sources tab is gated on `control-plane:service:manage` (the "Manage and Delete Selected Services" permission), so custom roles intended to manage ClickPipes must include both permissions.
+:::

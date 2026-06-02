@@ -57,6 +57,10 @@ Click the `Allow` button and select from Organization, Service, and/or Database 
 Ensure users who will log into the console have a minimum of Organization > Access organization permissions.
 :::
 
+:::note ClickPipes / Data Sources access
+To grant access to the **Data Sources** tab (used for ClickPipes, data lake integrations, and file uploads), the role must include `Manage and Delete Selected Services` in addition to any ClickPipes-specific permissions.
+:::
+
 <Image img={step_5} size="md"/>
 
 ### Review your new role {#review-role}
