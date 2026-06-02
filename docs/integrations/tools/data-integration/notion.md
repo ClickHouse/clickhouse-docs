@@ -30,8 +30,8 @@ You can connect ClickHouse Cloud to a Notion [Custom Agent](https://www.notion.c
 
 ClickHouse ships as a preconfigured connection in Notion (currently in beta). No custom MCP server setup or URL pasting is required.
 
-1. In Notion, open the Custom Agent you want to extend and click **Settings**.
-2. Click **Add connection** and select **ClickHouse** from the list of available connections.
+1. In Notion, create a new Custom Agent from the **Agents** section in the sidebar.
+2. In your Agent's **Settings**, under **Tools and Access**, select **Add connection** and add **ClickHouse** from the list of available connections.
 
 <Image img={addClickHouseConnection} size="md" alt="Selecting ClickHouse in the Notion Add connection picker"/>
 
