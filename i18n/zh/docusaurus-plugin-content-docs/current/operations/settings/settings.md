@@ -10626,6 +10626,16 @@ a   Tuple(
 这是一个仅供开发人员在调试时使用的高级设置。该设置将来可能以不向后兼容的方式更改或被移除。
 :::
 
+## query_plan_max_set_size_for_projection_match \{#query_plan_max_set_size_for_projection_match\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "10000"},{"label": "新增设置，用于限制投影匹配器中对 `IN` 子句集合进行内容哈希时的开销（当前用于聚合投影）。超过该限制的集合会被视为不匹配。值为 0 时将完全禁用内容哈希比较（兼容性取值：对于包含 `IN` 集合的节点，投影匹配永远不会成功）。"}]}]} />
+
+当投影匹配器判断两个集合是否相等时，会对 `IN` 子句集合计算并比较内容哈希；此设置用于限制执行该操作时集合的最大行数。超过该大小的集合会被视为不匹配，并跳过该投影。值为 0 时将完全禁用内容哈希比较：对于包含 `IN` 子句集合的节点，投影匹配永远不会成功。
+
+该设置由聚合投影匹配器使用 (以及未来任何需要比较 `IN` 子句集合的投影匹配器) 。内容哈希的计算复杂度相对于集合元素数量为 `O(N log N)`；当查询或投影中出现大量 `IN` 子句时，此设置可限制规划阶段的开销。
+
 ## query_plan_max_step_description_length \{#query_plan_max_step_description_length\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />

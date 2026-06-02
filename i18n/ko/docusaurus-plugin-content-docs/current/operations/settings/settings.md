@@ -10647,6 +10647,16 @@ EXPLAIN PLAN 쿼리에서는 이 값에 도달하면 그 이후로는 더 이상
 이 설정은 개발자가 디버깅 목적으로만 사용해야 하는 고급 설정입니다. 이 설정은 향후 하위 호환성을 보장하지 않는 방식으로 변경되거나 제거될 수 있습니다.
 :::
 
+## query_plan_max_set_size_for_projection_match \{#query_plan_max_set_size_for_projection_match\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "10000"},{"label": "프로젝션 매처(현재는 집계 프로젝션)에서 content-hashing `IN`-절 Set의 비용을 제한하는 새로운 설정이 추가되었습니다. 이 한도를 초과하는 Set은 일치하지 않는 것으로 처리됩니다. 0으로 설정하면 content-hash 비교가 완전히 비활성화됩니다(호환성 값: `IN`-set이 있는 노드에서는 프로젝션 일치가 절대 성공하지 않음)."}]}]} />
+
+프로젝션 매처가 두 Set이 동일한지 판단할 때 content hash를 계산하고 비교하는 `IN`-절 Set의 최대 행 수입니다. 이 값을 초과하는 Set은 일치하지 않는 것으로 처리되며, 프로젝션은 건너뜁니다. 0으로 설정하면 content-hash 비교가 완전히 비활성화됩니다. 즉, `IN`-절 Set을 포함하는 노드에서는 프로젝션 일치가 절대 성공하지 않습니다.
+
+집계 프로젝션 매처(및 `IN`-절 Set을 비교해야 하는 향후 모든 프로젝션 매처)에서 사용됩니다. content hash 계산 비용은 Set 요소 수에 대해 `O(N log N)`이며, 이 설정은 쿼리나 프로젝션에 `IN`-절이 많이 나타날 때 계획 수립 중 발생하는 비용을 제한합니다.
+
 ## query_plan_max_step_description_length \{#query_plan_max_step_description_length\}
 
 <SettingsInfoBlock type="UInt64" default_value="500" />
