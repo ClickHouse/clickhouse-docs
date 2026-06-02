@@ -37,7 +37,7 @@ Looker Studio 可通过 MySQL 接口，使用官方的 Google MySQL 数据源连
 
 ## 将 Looker Studio 连接到 ClickHouse \{#connecting-looker-studio-to-clickhouse\}
 
-首先，使用您的 Google 账户登录 https://lookerstudio.google.com，并创建一个新的数据源：
+首先，使用您的 Google 账户登录 https://lookerstudio.google.com, 并创建一个新的数据源：
 
 <Image size="md" img={looker_studio_01} alt="在 Looker Studio 界面中创建新的数据源" border />
 

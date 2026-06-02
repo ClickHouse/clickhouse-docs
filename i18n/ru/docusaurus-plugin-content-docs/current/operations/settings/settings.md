@@ -10643,14 +10643,6 @@ a   Tuple(
 - 0 - Отключить
 - 1 - Включить
 
-## query_plan_max_limit_for_join_lazy_indexing \{#query_plan_max_limit_for_join_lazy_indexing\}
-
-<SettingsInfoBlock type="UInt64" default_value="1000" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "1000"},{"label": "Добавлена новая настройка для управления максимальным значением, при котором можно использовать план запроса для оптимизации ленивой индексации в JOIN. Если равно нулю, ограничение отсутствует"}]}]} />
-
-Управляет максимальным значением, при котором можно использовать план запроса для оптимизации ленивой индексации в JOIN. Если равно нулю, ограничение отсутствует.
-
 ## query_plan_max_limit_for_lazy_materialization \{#query_plan_max_limit_for_lazy_materialization\}
 
 <SettingsInfoBlock type="UInt64" default_value="10000" />
@@ -10729,14 +10721,6 @@ a   Tuple(
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "24.7"},{"label": "0"},{"label": "Разрешает объединение фильтров в плане запроса"}]}, {"id": "row-2","items": [{"label": "24.11"},{"label": "1"},{"label": "Разрешает объединение фильтров в плане запроса. Это необходимо для корректной поддержки проталкивания фильтров (filter push-down) анализатором."}]}]}/>
 
 Разрешает объединение фильтров в плане запроса.
-
-## query_plan_min_columns_for_join_lazy_indexing \{#query_plan_min_columns_for_join_lazy_indexing\}
-
-<SettingsInfoBlock type="UInt64" default_value="3" />
-
-<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "3"},{"label": "Управляет минимальным количеством столбцов данных с левой стороны, необходимым для включения оптимизации ленивой индексации в JOIN"}]}]} />
-
-Управляет минимальным количеством столбцов данных с левой стороны, необходимым для включения оптимизации ленивой индексации в JOIN. Значение 0 отключает эту оптимизацию.
 
 ## query_plan_optimize_join_order_algorithm \{#query_plan_optimize_join_order_algorithm\}
 
