@@ -33,13 +33,13 @@ ClickHouse ships as a preconfigured connection in Notion (currently in beta). No
 1. In Notion, open the Custom Agent you want to extend and click **Settings**.
 2. Click **Add connection** and select **ClickHouse** from the list of available connections.
 
-<Image img={addClickHouseConnection} size="lg" alt="Selecting ClickHouse in the Notion Add connection picker"/>
+<Image img={addClickHouseConnection} size="md" alt="Selecting ClickHouse in the Notion Add connection picker"/>
 
 3. Click **Connect** and complete the OAuth flow using your ClickHouse Cloud credentials. Access is scoped to the organizations and services your account can already reach.
 
 4. Expand the new ClickHouse connection in the agent's settings and toggle on the tools you want this agent to use. For each tool you can also choose whether the agent should run it automatically or always ask for approval. All tools exposed by the ClickHouse Remote MCP server are read-only. See the [available tools](/cloud/features/ai-ml/remote-mcp#available-tools) reference for the full, up-to-date list.
 
-<Image img={clickhouseToolsToggles} size="lg" alt="The expanded ClickHouse connection in Notion showing the per-tool toggles"/>
+<Image img={clickhouseToolsToggles} size="md" alt="The expanded ClickHouse connection in Notion showing the per-tool toggles"/>
 
 :::note
 Each Custom Agent requires its own ClickHouse connection, and only the person who authenticated a connection can change its tool settings. See Notion's [security best practices for Agent connections](https://www.notion.com/help/security-best-practices-for-agent-connections) for more details.
