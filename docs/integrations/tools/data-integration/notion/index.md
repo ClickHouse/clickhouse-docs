@@ -28,7 +28,7 @@ You can connect ClickHouse Cloud to a Notion [Custom Agent](https://www.notion.c
 
 ## Connect ClickHouse to a Notion custom agent {#connect-clickhouse-to-notion}
 
-ClickHouse ships as a preconfigured connection in Notion (currently in beta) — no custom MCP server setup or URL pasting required.
+ClickHouse ships as a preconfigured connection in Notion (currently in beta). No custom MCP server setup or URL pasting is required.
 
 1. In Notion, open the Custom Agent you want to extend and click **Settings**.
 2. Click **Add connection** and select **ClickHouse** from the list of available connections.
@@ -37,7 +37,7 @@ ClickHouse ships as a preconfigured connection in Notion (currently in beta) —
 
 3. Click **Connect** and complete the OAuth flow using your ClickHouse Cloud credentials. Access is scoped to the organizations and services your account can already reach.
 
-4. Expand the new ClickHouse connection in the agent's settings and toggle on the tools you want this agent to use. For each tool you can also choose whether the agent should run it automatically or always ask for approval. All tools exposed by the ClickHouse Remote MCP server are read-only — see the [available tools](/cloud/features/ai-ml/remote-mcp#available-tools) reference for the full, up-to-date list.
+4. Expand the new ClickHouse connection in the agent's settings and toggle on the tools you want this agent to use. For each tool you can also choose whether the agent should run it automatically or always ask for approval. All tools exposed by the ClickHouse Remote MCP server are read-only. See the [available tools](/cloud/features/ai-ml/remote-mcp#available-tools) reference for the full, up-to-date list.
 
 <Image img={clickhouseToolsToggles} size="lg" border alt="The expanded ClickHouse connection in Notion showing the per-tool toggles"/>
 
@@ -48,6 +48,6 @@ Each Custom Agent requires its own ClickHouse connection, and only the person wh
 ## Related content {#related-content}
 
 - [Enable and connect ClickHouse Cloud remote MCP server](/use-cases/AI/MCP/remote_mcp)
-- [Remote MCP in Cloud — tool reference](/cloud/features/ai-ml/remote-mcp)
+- [Remote MCP in Cloud: tool reference](/cloud/features/ai-ml/remote-mcp)
 - Notion: [MCP connections for Custom Agents](https://www.notion.com/help/mcp-connections-for-custom-agents)
 - Notion: [Connect Custom Agents to your tool stack with MCP integrations](https://www.notion.com/help/guides/connect-custom-agents-to-mcp-integrations)
