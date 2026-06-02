@@ -565,6 +565,7 @@ exceptions:
   - Neon
   - NiFi
   - NixOS
+  - Notion
   - Ollama
   - OneLake
   - OpenAI
