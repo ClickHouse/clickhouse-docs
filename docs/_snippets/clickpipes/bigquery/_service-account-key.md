@@ -1,0 +1,6 @@
+Depending on the migration approach you plan to use, you will need to create one of the following credentials:
+
+| Migration approach     | Credential type | Documentation                                                                                                                                                              | Notes                                                                          |
+|------------------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| ClickPipes for CDC     | Service key     | [Create a service key](https://docs.cloud.google.com/iam/docs/keys-create-delete#iam-service-account-keys-create-console)                                                  | Make sure to select **JSON** rather than **P12** as the **Key type**.          |
+| GCS bulk-load          | `HMAC` key        | [Create an `HMAC` key](https://docs.cloud.google.com/storage/docs/authentication/managing-hmackeys)                                                                          | -                                                                              |

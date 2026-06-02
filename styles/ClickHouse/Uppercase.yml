@@ -158,6 +158,7 @@ exceptions:
   - NOTE
   - NPM
   - NTP
+  - NULL
   - OCI
   - ODBC
   - OIDC

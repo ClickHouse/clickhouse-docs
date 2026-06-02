@@ -15,15 +15,15 @@ We first export a table to [Google's object store (GCS)](https://cloud.google.co
 
 ## How long will exporting data to ClickHouse take? {#how-long-will-exporting-data-to-clickhouse-take}
 
-Exporting data from BigQuery to ClickHouse is dependent on the size of your dataset. As a comparison, it takes about an hour to export the [4TB public Ethereum dataset](https://cloud.google.com/blog/products/data-analytics/ethereum-bigquery-public-dataset-smart-contract-analytics) from BigQuery to ClickHouse using this guide.
+Exporting data from BigQuery to ClickHouse is dependent on the size of your dataset. As a comparison, it takes about an hour to export the [4 TB public Ethereum dataset](https://cloud.google.com/blog/products/data-analytics/ethereum-bigquery-public-dataset-smart-contract-analytics) from BigQuery to ClickHouse using this guide.
 
 | Table                                                                                             | Rows          | Files Exported | Data Size | BigQuery Export | Slot Time       | ClickHouse Import |
 | ------------------------------------------------------------------------------------------------- | ------------- | -------------- | --------- | --------------- | --------------- | ----------------- |
-| [blocks](https://github.com/ClickHouse/examples/blob/main/ethereum/schemas/blocks.md)             | 16,569,489    | 73             | 14.53GB   | 23 secs         | 37 min          | 15.4 secs         |
-| [transactions](https://github.com/ClickHouse/examples/blob/main/ethereum/schemas/transactions.md) | 1,864,514,414 | 5169           | 957GB     | 1 min 38 sec    | 1 day 8hrs      | 18 mins 5 secs    |
-| [traces](https://github.com/ClickHouse/examples/blob/main/ethereum/schemas/traces.md)             | 6,325,819,306 | 17,985         | 2.896TB   | 5 min 46 sec    | 5 days 19 hr    | 34 mins 55 secs   |
-| [contracts](https://github.com/ClickHouse/examples/blob/main/ethereum/schemas/contracts.md)       | 57,225,837    | 350            | 45.35GB   | 16 sec          | 1 hr 51 min     | 39.4 secs         |
-| Total                                                                                             | 8.26 billion  | 23,577         | 3.982TB   | 8 min 3 sec     | \> 6 days 5 hrs | 53 mins 45 secs   |
+| [blocks](https://github.com/ClickHouse/examples/blob/main/ethereum/schemas/blocks.md)             | 16,569,489    | 73             | 14.53 GB   | 23 secs         | 37 min          | 15.4 secs         |
+| [transactions](https://github.com/ClickHouse/examples/blob/main/ethereum/schemas/transactions.md) | 1,864,514,414 | 5169           | 957 GB     | 1 min 38 sec    | 1 day 8hrs      | 18 mins 5 secs    |
+| [traces](https://github.com/ClickHouse/examples/blob/main/ethereum/schemas/traces.md)             | 6,325,819,306 | 17,985         | 2.896 TB   | 5 min 46 sec    | 5 days 19 hr    | 34 mins 55 secs   |
+| [contracts](https://github.com/ClickHouse/examples/blob/main/ethereum/schemas/contracts.md)       | 57,225,837    | 350            | 45.35 GB   | 16 sec          | 1 hr 51 min     | 39.4 secs         |
+| Total                                                                                             | 8.26 billion  | 23,577         | 3.982 TB   | 8 min 3 sec     | \> 6 days 5 hrs | 53 mins 45 secs   |
 
 <VerticalStepper headerLevel="h2">
 
@@ -55,13 +55,13 @@ WHILE i < n DO
 END WHILE;
 ```
 
-In the above query, we export our BigQuery table to the [Parquet data format](https://parquet.apache.org/). We also have a `*` character in our `uri` parameter. This ensures the output is sharded into multiple files, with a numerically increasing suffix, should the export exceed 1GB of data.
+In the above query, we export our BigQuery table to the [Parquet data format](https://parquet.apache.org/). We also have a `*` character in our `uri` parameter. This ensures the output is sharded into multiple files, with a numerically increasing suffix, should the export exceed 1 GB of data.
 
-This approach has a number of advantages:
+This approach has several advantages:
 
-- Google allows up to 50TB per day to be exported to GCS for free. Users only pay for GCS storage.
-- Exports produce multiple files automatically, limiting each to a maximum of 1GB of table data. This is beneficial to ClickHouse since it allows imports to be parallelized.
-- Parquet, as a column-oriented format, represents a better interchange format since it is inherently compressed and faster for BigQuery to export and ClickHouse to query
+- Google allows up to 50 TB per day to be exported to GCS for free. Users only pay for GCS storage.
+- Exports produce multiple files automatically, limiting each to a maximum of 1 GB of table data. This is beneficial to ClickHouse since it allows imports to be parallelized.
+- Parquet, as a column-oriented format, represents a better interchange format since it's inherently compressed and faster for BigQuery to export and ClickHouse to query
 
 ## Importing data into ClickHouse from GCS {#2-importing-data-into-clickhouse-from-gcs}
 
@@ -106,7 +106,7 @@ FROM s3Cluster(
 );
 ```
 
-The `ACCESS_ID` and `SECRET` used in the above query is your [HMAC key](https://cloud.google.com/storage/docs/authentication/hmackeys) associated with your GCS bucket.
+The `ACCESS_ID` and `SECRET` used in the above query is your [`HMAC` key](https://cloud.google.com/storage/docs/authentication/hmackeys) associated with your GCS bucket.
 
 :::note Use `ifNull` when exporting nullable columns
 In the above query, we use the [`ifNull` function](/sql-reference/functions/functions-for-nulls#ifNull) with the `some_text` column to insert data into our ClickHouse table with a default value. You can also make your columns in ClickHouse [`Nullable`](/sql-reference/data-types/nullable), but this isn't recommended as it may affect negatively performance.
@@ -130,4 +130,4 @@ To export more BigQuery tables, simply redo the steps above for each additional 
 
 In addition to this guide, we also recommend reading our blog post that shows [how to use ClickHouse to speed up BigQuery and how to handle incremental imports](https://clickhouse.com/blog/clickhouse-bigquery-migrating-data-for-realtime-queries).
 
-If you're having issues transferring data from BigQuery to ClickHouse, please feel free to contact us at support@clickhouse.com.
+If you're having issues transferring data from BigQuery to ClickHouse, feel free to contact us at support@clickhouse.com.

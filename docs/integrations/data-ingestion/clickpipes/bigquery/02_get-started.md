@@ -7,9 +7,8 @@ doc_type: 'guide'
 ---
 
 import IntroClickPipe from '@site/docs/_snippets/clickpipes/bigquery/_intro.md';
-import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
-import cp_step1 from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_step1.png';
-import cp_step2 from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_step2.png';
+import SelectDataSource from '@site/docs/_snippets/clickpipes/bigquery/_select-data-source.md';
+import SetupConnection from '@site/docs/_snippets/clickpipes/bigquery/_setup-connection.md';
 import cp_step3 from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_step3.png';
 import cp_step4 from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_step4.png';
 import cp_step5 from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_step5.png';
@@ -27,27 +26,11 @@ import Image from '@theme/IdealImage';
 
 ## Select the data source {#1-select-the-data-source}
 
-**1.** In ClickHouse Cloud, select **Data sources** in the main navigation menu and click **Create ClickPipe**.
-
-    <Image img={cp_step0} alt="Select imports" size="lg" border/>
-
-**2.** Click the **BigQuery** tile.
-
-    <Image img={cp_step1} alt="Select BigQuery tile" size="lg" border/>
+<SelectDataSource/>
 
 ## Set up your ClickPipe connection {#2-setup-your-clickpipe-connection}
 
-To set up a new ClickPipe, you must provide details on how to connect to and authenticate with your BigQuery data warehouse, as well as a staging GCS bucket.
-
-**1.** Upload the `.json` key for the service account you created for ClickPipes. Ensure the service account has the minimum required set of [permissions](./01_overview.md#permissions).
-
-    <Image img={cp_step2} alt="Upload service account key" size="lg" border/>    
-
-**2.** Select the **Replication method**. In Private Preview, the only supported option is [**Initial load only**](./01_overview.md#initial-load).
-
-**3.** Provide the path to the GCS bucket for staging data during the initial load.
-
-**4.** Click **Next** to validate.
+<SetupConnection/>
 
 ## Configure your ClickPipe {#3-configure-your-clickpipe}
 
@@ -73,7 +56,7 @@ Depending on the size of your BigQuery dataset, or the total size of the tables 
 
 Finally, you can configure permissions for the internal ClickPipes user.
 
-**Permissions:** ClickPipes will create a dedicated user for writing data into a destination table. You can select a role for this internal user using a custom role or one of the predefined roles:
+**Permissions:** to write data into a destination table, ClickPipes creates a dedicated user. You can select a role for this internal user using a custom role or one of the predefined roles:
 - `Full access`: full access to the cluster. Required if you use materialized views or dictionary with the destination table.
 - `Only destination`: insert permissions to the destination table only.
 

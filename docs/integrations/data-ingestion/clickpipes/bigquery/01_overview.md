@@ -8,8 +8,8 @@ doc_type: 'guide'
 ---
 
 import IntroClickPipe from '@site/docs/_snippets/clickpipes/bigquery/_intro.md';
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_iam.png';
-import Image from '@theme/IdealImage';
+import Permissions from '@site/docs/_snippets/clickpipes/bigquery/_permissions.md';
+import ServiceAccountKey from '@site/docs/_snippets/clickpipes/bigquery/_service-account-key.md';
 
 <IntroClickPipe/>
 
@@ -25,7 +25,7 @@ ClickPipes relies on batch extract jobs to fetch data from BigQuery into the sta
 
 ### CDC (Change Data Capture) {#cdc}
 
-CDC is **not supported** in Private Preview, but will be supported in the future. In the meantime, we recommend using the [Google Cloud Storage ClickPipe](/integrations/clickpipes/object-storage/gcs/overview) to continuously sync BigQuery data exports into ClickHouse Cloud once the initial load is completed.
+CDC **isn't supported** in Private Preview, but will be supported in the future. In the meantime, we recommend using the [Google Cloud Storage ClickPipe](/integrations/clickpipes/object-storage/gcs/overview) to continuously sync BigQuery data exports into ClickHouse Cloud once the initial load is completed.
 
 ## Data type mapping {#data-type-mapping}
 
@@ -58,34 +58,6 @@ CDC is **not supported** in Private Preview, but will be supported in the future
 
 #### Service account credentials {#service-account-credentials}
 
-ClickPipes authenticates to your Google Cloud project using a [service account key](https://docs.cloud.google.com/iam/docs/keys-create-delete). We recommend creating a dedicated service account with the minimum required set of [permissions](#permissions) to allow ClickPipes to export data from BigQuery, load it into the staging GCS bucket, and read it into ClickHouse.
+<Permissions/>
 
-<Image img={cp_iam} alt="Creating a service account key with BigQuery and Cloud Storage permissions" size="lg" border/>
-
-### Permissions {#permissions}
-
-#### BigQuery {#bigquery}
-
-The service account must have the following BigQuery roles: 
-
-* [`roles/bigquery.dataViewer`](https://docs.cloud.google.com/bigquery/docs/access-control#bigquery.dataViewer)
-* [`roles/bigquery.jobUser`](https://docs.cloud.google.com/bigquery/docs/access-control#bigquery.jobUser)
-
-To further scope access, we recommend using [IAM conditions](https://docs.cloud.google.com/bigquery/docs/conditions) to restrict the resources the role has access to. For example, you can restrict the `dataViewer` role to the specific dataset containing the tables you want to sync:
-
-```bash
-resource.name.startsWith("projects/<PROJECT_ID>/datasets/<DATASET_NAME>")
-```
-
-#### Cloud Storage {#cloud-storage}
-
-The service account must have the following Cloud Storage roles: 
-
-* [`roles/storage.objectAdmin`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.objectAdmin)
-* [`roles/storage.bucketViewer`](https://docs.cloud.google.com/storage/docs/access-control/iam-roles#storage.bucketViewer)
-
-To further scope access, we recommend using [IAM conditions](https://docs.cloud.google.com/bigquery/docs/conditions) to restrict the resources the role has access to. For example, you can restrict the `objectAdmin` and `bucketViewer` roles to the dedicated bucket created for ClickPipes syncs.
-
-```bash
-resource.name.startsWith("projects/_/buckets/<BUCKET_NAME>")
-```
+<ServiceAccountKey/>
