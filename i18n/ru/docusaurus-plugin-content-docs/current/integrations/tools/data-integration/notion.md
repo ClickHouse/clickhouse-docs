@@ -30,8 +30,8 @@ import clickhouseToolsToggles from '@site/static/images/integrations/tools/data-
 
 В Notion ClickHouse доступен как предварительно настроенное подключение (пока в бета-версии). Настраивать собственный MCP-сервер или вставлять URL не требуется.
 
-1. В Notion откройте Custom Agent, который хотите расширить, и нажмите **Settings**.
-2. Нажмите **Add connection** и выберите **ClickHouse** из списка доступных подключений.
+1. В Notion создайте новый Custom Agent из раздела **Agents** на боковой панели.
+2. В разделе **Settings** вашего агента, в подразделе **Tools and Access**, выберите **Add connection** и добавьте **ClickHouse** из списка доступных подключений.
 
 <Image img={addClickHouseConnection} size="md" alt="Выбор ClickHouse в окне Add connection в Notion" />
 

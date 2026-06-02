@@ -30,8 +30,8 @@ import clickhouseToolsToggles from '@site/static/images/integrations/tools/data-
 
 ClickHouse 在 Notion 中已作为预配置连接提供 (当前处于 Beta 阶段) 。无需设置自定义 MCP 服务器，也不需要粘贴 URL。
 
-1. 在 Notion 中，打开你要扩展的 自定义智能体，然后点击 **Settings**。
-2. 点击 **Add connection**，然后从可用连接列表中选择 **ClickHouse**。
+1. 在 Notion 中，从侧边栏的 **Agents** 部分创建一个新的 自定义智能体。
+2. 在你的 Agent 的 **Settings** 中，在 **Tools and Access** 下选择 **Add connection**，然后从可用连接列表中添加 **ClickHouse**。
 
 <Image img={addClickHouseConnection} size="md" alt="在 Notion 的“Add connection”选择器中选择 ClickHouse" />
 

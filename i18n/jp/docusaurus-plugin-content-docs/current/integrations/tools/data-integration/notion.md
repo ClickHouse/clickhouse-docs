@@ -30,8 +30,8 @@ ClickHouse Cloud は Notion の [カスタムエージェント](https://www.not
 
 ClickHouse は Notion で事前設定済みの接続として提供されています (現在はベータ) 。カスタム MCPサーバーの設定や URL の貼り付けは不要です。
 
-1. Notion で拡張したい カスタムエージェント を開き、**Settings** をクリックします。
-2. **Add connection** をクリックし、利用可能な接続の一覧から **ClickHouse** を選択します。
+1. Notion で、サイドバーの **Agents** セクションから新しい カスタムエージェント を作成します。
+2. Agent の **Settings** で、**Tools and Access** の下にある **Add connection** を選択し、利用可能な接続の一覧から **ClickHouse** を追加します。
 
 <Image img={addClickHouseConnection} size="md" alt="Notion の Add connection ピッカーで ClickHouse を選択している画面" />
 

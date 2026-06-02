@@ -28,10 +28,10 @@ ClickHouse Cloud를 Notion [사용자 지정 에이전트](https://www.notion.co
 
 ## ClickHouse를 Notion 사용자 지정 에이전트에 연결하기 \{#connect-clickhouse-to-notion\}
 
-ClickHouse는 Notion에서 사전 구성된 연결로 제공됩니다(현재 베타). 별도의 사용자 지정 MCP Server 설정이나 URL을 붙여 넣을 필요가 없습니다.
+ClickHouse는 Notion에서 사전 구성된 연결로 제공됩니다(현재 베타). 별도의 사용자 지정 MCP 서버 설정이나 URL을 붙여 넣을 필요가 없습니다.
 
-1. Notion에서 확장할 사용자 지정 에이전트를 열고 **Settings**를 클릭합니다.
-2. **Add connection**을 클릭한 다음, 사용 가능한 연결 목록에서 **ClickHouse**를 선택합니다.
+1. Notion의 사이드바에서 **Agents** 섹션으로 이동한 다음, 새 사용자 지정 에이전트를 생성합니다.
+2. 에이전트의 **Settings**에서 **Tools and Access** 아래에 있는 **Add connection**을 선택하고, 사용 가능한 연결 목록에서 **ClickHouse**를 추가합니다.
 
 <Image img={addClickHouseConnection} size="md" alt="Notion의 Add connection 선택기에서 ClickHouse를 선택하는 모습" />
 
