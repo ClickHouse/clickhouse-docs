@@ -24,7 +24,7 @@ The following features differentiate ClickHouse Private from self-managed open s
 - Native separation of compute and storage
 - Proprietary cloud features such as [shared merge tree](/cloud/reference/shared-merge-tree) and [warehouse](/cloud/reference/warehouses) functionality
 - ClickHouse database and operator versions fully tested and validated in ClickHouse Cloud
-- API for prgrammatic operations, including backups and scaling operations
+- API for programmatic operations, including backups and scaling operations
 
 ## Architecture {#architecture}
 
