@@ -57,6 +57,10 @@ Click the `Allow` button and select from Organization, Service, and/or Database 
 Ensure users who will log into the console have a minimum of Organization > Access organization permissions.
 :::
 
+:::note Data Sources tab access
+To access the **Data Sources** tab, the role currently requires the `Manage and Delete Selected Services` permission.
+:::
+
 <Image img={step_5} size="md"/>
 
 ### Review your new role {#review-role}
