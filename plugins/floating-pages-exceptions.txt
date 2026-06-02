@@ -13,3 +13,4 @@ operations/utilities/clickhouse-keeper-http-api.md
 cloud/features/backups/faq.md
 interfaces/web-terminal
 operations/query-rules
+integrations/tools/data-integration/notion/index.md
