@@ -24,7 +24,7 @@ You can connect ClickHouse Cloud to a Notion [Custom Agent](https://www.notion.c
 - A Notion workspace on the **Business** or **Enterprise** plan
 - A workspace admin has enabled **Custom MCP servers** under **Settings** > **Notion AI** > **AI connectors**
 
-## Connect ClickHouse to a Notion Custom Agent {#connect-clickhouse-to-notion}
+## Connect ClickHouse to a Notion custom agent {#connect-clickhouse-to-notion}
 
 1. In Notion, open the Custom Agent you want to extend and click **Settings**.
 2. Under **Tools & Access**, click **Add connection** and choose **Custom MCP server**.
