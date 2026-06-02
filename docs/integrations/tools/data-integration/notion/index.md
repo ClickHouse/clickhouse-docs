@@ -22,30 +22,21 @@ You can connect ClickHouse Cloud to a Notion [Custom Agent](https://www.notion.c
 
 - A running [ClickHouse Cloud service](/getting-started/quick-start/cloud) with the [Remote MCP server enabled](/use-cases/AI/MCP/remote_mcp#enable-remote-mcp-server)
 - A Notion workspace on the **Business** or **Enterprise** plan
-- A workspace admin has enabled **Custom MCP servers** under **Settings** > **Notion AI** > **AI connectors**
 
 ## Connect ClickHouse to a Notion custom agent {#connect-clickhouse-to-notion}
 
+ClickHouse is available as a preconfigured connection in Notion — no custom MCP server setup or URL pasting required.
+
 1. In Notion, open the Custom Agent you want to extend and click **Settings**.
-2. Under **Tools & Access**, click **Add connection** and choose **Custom MCP server**.
+2. Under **Tools & Access**, click **Add connection** and choose **ClickHouse** from the list of preconfigured connections.
 
-{/* TODO(screenshot): the "Add connection" menu inside the agent's Tools & Access, showing the "Custom MCP server" option */}
+{/* TODO(screenshot): the Add connection picker inside the agent's Tools & Access, with the ClickHouse tile visible among the preconfigured connections */}
 
-3. Enter the ClickHouse Cloud Remote MCP server URL and give the connection a display name like `ClickHouse`:
+3. Click **Connect** and complete the OAuth flow using your ClickHouse Cloud credentials. Access is scoped to the organizations and services your account can already reach.
 
-   ```text
-   https://mcp.clickhouse.cloud/mcp
-   ```
+4. Expand the new connection to review the [available ClickHouse tools](/cloud/features/ai-ml/remote-mcp#available-tools) and toggle on the ones you want this agent to use. All ClickHouse Remote MCP tools are read-only.
 
-{/* TODO(screenshot): the Custom MCP server modal with the server URL and display name filled in */}
-
-4. Click **Save**, then complete the OAuth flow to authenticate with your ClickHouse Cloud credentials. Access is scoped to the organizations and services your account can already reach.
-
-{/* TODO(screenshot): the OAuth consent / "Connected" confirmation state */}
-
-5. Expand the new connection to review the [available ClickHouse tools](/cloud/features/ai-ml/remote-mcp#available-tools) and toggle on the ones you want this agent to use. All ClickHouse Remote MCP tools are read-only.
-
-{/* TODO(screenshot): the expanded ClickHouse connection showing the list of tool toggles */}
+{/* TODO(screenshot): the expanded ClickHouse connection showing each tool with its enable toggle */}
 
 :::note
 Each Custom Agent requires its own ClickHouse connection, and only the person who authenticated a connection can change its tool settings. See Notion's [security best practices for Agent connections](https://www.notion.com/help/security-best-practices-for-agent-connections) for more details.
