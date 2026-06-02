@@ -10,13 +10,16 @@ integration:
   - category: 'data_integration'
 ---
 
+import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
+import addClickHouseConnection from '@site/static/images/integrations/tools/data-integration/notion/add-clickhouse-connection.png';
+import clickhouseToolsToggles from '@site/static/images/integrations/tools/data-integration/notion/clickhouse-tools-toggles.png';
 
 <PartnerBadge/>
 
 [Notion](https://www.notion.com/) is a connected workspace for notes, docs, projects, and AI-powered Custom Agents.
 
-You can connect ClickHouse Cloud to a Notion [Custom Agent](https://www.notion.com/help/mcp-connections-for-custom-agents) as a custom MCP server. Once connected, the agent can explore your data, run read-only analytical queries, and surface service and cost information from ClickHouse Cloud without leaving Notion.
+You can connect ClickHouse Cloud to a Notion [Custom Agent](https://www.notion.com/help/mcp-connections-for-custom-agents). Once connected, the agent can explore your data, run read-only analytical queries, and surface service and cost information from ClickHouse Cloud without leaving Notion.
 
 ## Prerequisites {#prerequisites}
 
@@ -25,37 +28,22 @@ You can connect ClickHouse Cloud to a Notion [Custom Agent](https://www.notion.c
 
 ## Connect ClickHouse to a Notion custom agent {#connect-clickhouse-to-notion}
 
-ClickHouse is available as a preconfigured connection in Notion — no custom MCP server setup or URL pasting required.
+ClickHouse ships as a preconfigured connection in Notion (currently in beta) — no custom MCP server setup or URL pasting required.
 
 1. In Notion, open the Custom Agent you want to extend and click **Settings**.
-2. Under **Tools & Access**, click **Add connection** and choose **ClickHouse** from the list of preconfigured connections.
+2. Click **Add connection** and select **ClickHouse** from the list of available connections.
 
-{/* TODO(screenshot): the Add connection picker inside the agent's Tools & Access, with the ClickHouse tile visible among the preconfigured connections */}
+<Image img={addClickHouseConnection} size="lg" border alt="Selecting ClickHouse in the Notion Add connection picker"/>
 
 3. Click **Connect** and complete the OAuth flow using your ClickHouse Cloud credentials. Access is scoped to the organizations and services your account can already reach.
 
-4. Expand the new connection to review the [available ClickHouse tools](/cloud/features/ai-ml/remote-mcp#available-tools) and toggle on the ones you want this agent to use. All ClickHouse Remote MCP tools are read-only.
+4. Expand the new ClickHouse connection in the agent's settings and toggle on the tools you want this agent to use. For each tool you can also choose whether the agent should run it automatically or always ask for approval. All tools exposed by the ClickHouse Remote MCP server are read-only — see the [available tools](/cloud/features/ai-ml/remote-mcp#available-tools) reference for the full, up-to-date list.
 
-{/* TODO(screenshot): the expanded ClickHouse connection showing each tool with its enable toggle */}
+<Image img={clickhouseToolsToggles} size="lg" border alt="The expanded ClickHouse connection in Notion showing the per-tool toggles"/>
 
 :::note
 Each Custom Agent requires its own ClickHouse connection, and only the person who authenticated a connection can change its tool settings. See Notion's [security best practices for Agent connections](https://www.notion.com/help/security-best-practices-for-agent-connections) for more details.
 :::
-
-## Example prompts {#example-prompts}
-
-Once connected, you can ask the Custom Agent questions in natural language. Some examples:
-
-| Prompt | Tool invoked |
-|--------|--------------|
-| "What databases are available on my ClickHouse service?" | `list_databases` |
-| "Show me the top 10 rows from the `hits` table" | `run_select_query` |
-| "What was my organization's ClickHouse cost last week?" | `get_organization_cost` |
-| "List recent backups for this service" | `list_service_backups` |
-
-For the full set of natural-language patterns and tools, see the [Remote MCP example usage](/use-cases/AI/MCP/remote_mcp#example-usage) section.
-
-{/* TODO(screenshot): a Notion Custom Agent conversation showing a ClickHouse query result rendered in the Notion UI */}
 
 ## Related content {#related-content}
 
