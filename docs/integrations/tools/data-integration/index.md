@@ -1,6 +1,6 @@
 ---
 slug: /integrations/tools/data-integrations
-keywords: ['Retool', 'Easypanel', 'Splunk']
+keywords: ['Retool', 'Easypanel', 'Splunk', 'Notion']
 title: 'Data integrations'
 description: 'Landing page for the data integrations section'
 doc_type: 'landing-page'
@@ -11,5 +11,6 @@ doc_type: 'landing-page'
 |-----------|---------------------------------------------------------------------------------------------------------------------------------|
 | [Easypanel](/integrations/easypanel) | Easypanel allows you to deploy ClickHouse on your own server                                                                    |
 | [Middleware](/integrations/middleware) | Connect ClickHouse with Middleware for observability and monitoring workflows. |
+| [Notion](/integrations/notion) | Connect ClickHouse Cloud to a Notion Custom Agent via the ClickHouse Remote MCP server. |
 | [Retool](/integrations/retool)    | Quickly build web and mobile apps with rich user interfaces, automate complex tasks, and integrate AI—all powered by your data. |
 | [Splunk](/integrations/audit-splunk)     | Store ClickHouse Cloud audit logs into Splunk.                                                                                  |
