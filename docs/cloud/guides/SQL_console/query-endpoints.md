@@ -538,7 +538,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
+### Request and parse the response as a stream {#request-and-parse-the-response-as-a-stream}
 
 **Query API Endpoint SQL:**
 
