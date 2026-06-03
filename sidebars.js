@@ -364,6 +364,7 @@ const sidebars = {
         'cloud/managed-postgres/scaling',
         'cloud/managed-postgres/backup-and-restore',
         'cloud/managed-postgres/security',
+        'cloud/managed-postgres/rbac',
         // Configure
         'cloud/managed-postgres/settings',
         {
