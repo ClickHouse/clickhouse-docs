@@ -1,0 +1,93 @@
+---
+title: Keeper dynamic reconfiguration — adding and removing nodes
+description: How to use the reconfig command and enable_reconfiguration setting to safely add or remove ClickHouse Keeper nodes at runtime.
+date: 2024-09-30
+tags: ['Deployments and Scaling']
+keywords: ['keeper reconfiguration', 'reconfig', 'enable_reconfiguration', 'keeper cluster']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Overview \{#overview\}
+
+ClickHouse Keeper supports dynamic cluster reconfiguration — adding or removing nodes without restarting the cluster — through the `reconfig` command. The relevant server setting is `enable_reconfiguration`. Only one node should be added or removed at a time, because the underlying NuRaft reconfiguration protocol does not support joint-consensus changes in a single step.
+
+## Enabling reconfiguration \{#enabling-reconfiguration\}
+
+Set `enable_reconfiguration` to `true` in the Keeper server configuration:
+
+```xml
+<keeper_server>
+    <enable_reconfiguration>true</enable_reconfiguration>
+    ...
+</keeper_server>
+```
+
+When `enable_reconfiguration` is enabled, config-file-based membership changes are disabled. You manage the cluster topology exclusively through `reconfig` commands; you do not need to update `keeper_config.xml` on each node after issuing a `reconfig`.
+
+## Issuing reconfig commands \{#issuing-reconfig-commands\}
+
+Use `clickhouse-keeper-client` to issue `reconfig` commands. The command returns a result synchronously if the connection to the leader is healthy.
+
+**Add a node:**
+
+```bash
+reconfig add "server.id=4;host=keeper4;port=9234;learner=false"
+```
+
+**Remove a node:**
+
+```bash
+reconfig remove "4"
+```
+
+After issuing a `reconfig`, poll `/keeper/config` to confirm the change is committed before proceeding:
+
+```bash
+get /keeper/config
+```
+
+The data returned from `/keeper/config` is always the committed configuration. If the result does not yet reflect the expected membership, wait and retry the `reconfig` — operations are deduplicated by ID and are idempotent, so retrying is safe.
+
+## Interpreting success and failure responses \{#interpreting-success-and-failure\}
+
+The semantics of the response depend on the `async_replication` setting (see [internal coordination settings](https://clickhouse.com/docs/en/guides/sre/keeper/clickhouse-keeper#internal-coordination-settings)):
+
+- **`async_replication` disabled (default):** `success` means the configuration change was committed to the Raft log by a majority of nodes.
+- **`async_replication` enabled (recommended):** `success` means the leader accepted the request, but commit is not yet guaranteed.
+
+Enabling `async_replication` is recommended for performance; account for the weaker `success` guarantee by polling `/keeper/config` to confirm commit.
+
+A `failure` response is ambiguous. For example, a request forwarding timeout can produce a failure even if the leader already accepted the change. Always verify the actual committed config via `/keeper/config` rather than relying solely on the response code.
+
+## Waiting for a new node to catch up \{#waiting-for-catch-up\}
+
+When adding a node to a cluster that holds significant data, the new node must receive a snapshot and any log entries not yet included in the snapshot before it can participate in the quorum. Adding a second node before the first has fully caught up increases the quorum size while replicas are still stale, which can affect liveness.
+
+Wait for a newly added node to sync before adding another. Use the `lgif` four-letter-word command to check replication state:
+
+```bash
+lgif
+```
+
+`lgif` reports the last committed log index and how many entries have been applied to the state machine on each server. You can also monitor replication continuously via the Prometheus metrics endpoint.
+
+Relevant coordination settings that affect snapshot and replication behavior:
+
+- `coordination_settings.snapshot_distance` — number of log entries between snapshots (default: `100000`).
+- `coordination_settings.max_requests_append_size` — max batch size for a single append request (default: `100`).
+
+## NuRaft vs. the Raft thesis \{#nuraft-vs-raft-thesis\}
+
+NuRaft's reconfiguration differs from the description in Diego Ongaro's Raft thesis in one notable way: in the thesis, a new configuration takes effect as soon as it is stored in the log. In NuRaft, the configuration takes effect only after it is committed (accepted by a majority). This makes reconfiguration slightly more conservative but also means a `success` on commit is a stronger signal when `async_replication` is off.
+
+## Recommended approach \{#recommended-approach\}
+
+1. Enable `enable_reconfiguration` in `keeper_server` config.
+2. Make one membership change at a time (add or remove a single node).
+3. After each `reconfig`, poll `/keeper/config` in a loop until it reflects the expected membership, then proceed.
+4. Use `lgif` to verify a newly added node has caught up before adding the next node.
+5. Retry on failure — `reconfig` is idempotent, so retrying will not create duplicate entries or remove an unintended node.
+
+*Based on [ClickHouse/ClickHouse#69355](https://github.com/ClickHouse/ClickHouse/issues/69355)*

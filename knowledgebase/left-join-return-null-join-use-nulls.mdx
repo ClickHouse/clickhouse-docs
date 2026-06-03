@@ -1,0 +1,49 @@
+---
+title: Why LEFT JOIN returns 0 instead of NULL for non-matching rows
+description: ClickHouse uses type default values instead of NULL for outer joins by default; the join_use_nulls setting changes this behavior.
+date: 2024-05-16
+tags: ['Settings', 'Troubleshooting']
+keywords: ['LEFT JOIN', 'NULL', 'join_use_nulls', 'default values']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Why outer joins return default values instead of NULL \{#why-outer-joins-return-default-values\}
+
+By default, ClickHouse does not make non-matched columns for `LEFT`, `RIGHT`, or `FULL JOIN` nullable. Instead of `NULL`, it fills those columns with the default value for their data type — `0` for integers, an empty string for strings, and so on.
+
+Consider the following query, where the left-side row (`'a'`) has no match on the right:
+
+```sql
+SELECT l.*, r.*
+FROM
+    ( SELECT 'a' AS a ) l
+LEFT JOIN
+    ( SELECT '1' AS a, 1 AS b ) r
+ON l.a = r.a;
+```
+
+The column `b` comes back as `0`, not `NULL`, because `b` is typed as an integer and ClickHouse fills non-matched rows with the integer default.
+
+## How to get NULL for non-matching rows \{#how-to-get-null\}
+
+Enable the [`join_use_nulls`](https://clickhouse.com/docs/operations/settings/settings#join_use_nulls) setting. When set to `1`, ClickHouse treats non-matched columns as `Nullable` and returns `NULL` for those positions:
+
+```sql
+SELECT l.*, r.*
+FROM
+    ( SELECT 'a' AS a ) l
+LEFT JOIN
+    ( SELECT '1' AS a, 1 AS b ) r
+ON l.a = r.a
+SETTINGS join_use_nulls = 1;
+
+   ┌─a─┬─r.a──┬────b─┐
+1. │ a │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │
+   └───┴──────┴──────┘
+```
+
+The setting can also be applied at the session or user level rather than per query.
+
+*Based on [ClickHouse/ClickHouse#63929](https://github.com/ClickHouse/ClickHouse/issues/63929)*

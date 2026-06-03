@@ -1,0 +1,35 @@
+---
+title: What is a granule in ClickHouse?
+description: A granule is a fixed block of rows used as the unit of data skipping in MergeTree tables, with a default size of 8192 rows.
+date: 2019-11-01
+tags: ['Concepts', 'Core Data Concepts']
+keywords: ['granule', 'index_granularity', 'data skipping index', 'mrk file', 'marks', 'primary key index', 'MergeTree']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## What is a granule \{#what-is-a-granule\}
+
+A granule is a block of rows — the smallest unit of data that ClickHouse reads or skips when executing a query. By default, [`index_granularity`](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree#index_granularity) is `8192`, so each granule contains up to 8192 rows.
+
+The [primary key index](https://clickhouse.com/docs/en/guides/best-practices/sparse-primary-indexes) stores one entry per granule, not one entry per row. When a query includes a condition on the primary key, ClickHouse uses the index to identify which granules might satisfy the condition and skips the rest entirely.
+
+## How marks and data files relate to granules \{#marks-and-data-files\}
+
+Every column in a MergeTree table has two files on disk:
+
+- `.bin` — the compressed column data.
+- `.mrk` — a marks file storing byte offsets into the `.bin` file, one mark per granule.
+
+Marks let ClickHouse seek directly to the start of a granule in the data file without scanning what came before. Skipping a granule means skipping a seek, not reading and discarding rows.
+
+## How data skipping indexes use granules \{#data-skipping-indexes\}
+
+[Data skipping indexes](https://clickhouse.com/docs/en/optimize/skipping-indexes) aggregate information about an expression over a number of consecutive granules, controlled by the `GRANULARITY` parameter in the index definition. For example, with `index_granularity=8192` and `GRANULARITY=1`, the skipping index stores one aggregate (such as a min/max range or a Bloom filter) per granule of 8192 rows.
+
+At query time, ClickHouse checks those aggregates and skips entire groups of granules where the condition provably cannot match. This is coarser than a row-level secondary index: the index can answer "this block of rows definitely does not contain the value" but not "here is the exact row that contains the value."
+
+The granularity of marks is intentionally tied to `index_granularity`. If secondary indexes used an independent granularity, ClickHouse would either need to read and discard data rather than seek past it, or store a separate `.mrk` file for each column at each secondary granularity — both are worse than aligning to a single granule size.
+
+*Based on [ClickHouse/ClickHouse#4414](https://github.com/ClickHouse/ClickHouse/issues/4414)*

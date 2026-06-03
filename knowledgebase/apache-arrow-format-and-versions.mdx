@@ -1,0 +1,35 @@
+---
+title: Apache Arrow format support in ClickHouse
+description: ClickHouse supports both Arrow and ArrowStream formats, but the streaming variant was added in a later release than many users expect.
+date: 2020-10-03
+tags: ['Data Formats']
+keywords: ['Apache Arrow', 'ArrowStream', 'Arrow format', 'columnar format', 'input format', 'output format']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Apache Arrow format support in ClickHouse \{#apache-arrow-format-support\}
+
+ClickHouse supports two [Apache Arrow](https://clickhouse.com/docs/en/interfaces/formats#data-format-arrow) formats for both input and output:
+
+- **`Arrow`** — Apache Arrow's IPC file format, designed for on-disk storage and random access.
+- **`ArrowStream`** — Apache Arrow's IPC streaming format, designed for sequential streaming over a network or pipe.
+
+If you get `Unknown format Arrow` when running a query like:
+
+```sql
+SELECT rowno, c_quantity FROM DAT_242_1 FORMAT Arrow
+```
+
+the most likely cause is that your ClickHouse version is too old. Both formats were added well after the 19.x release line, so version 19.15.3 does not include them.
+
+Upgrade to a recent ClickHouse release to use either format.
+
+## Which format to use \{#which-format-to-use\}
+
+For most data exchange scenarios — piping data between processes, sending Arrow data over HTTP, or streaming results from `clickhouse-client` — use `ArrowStream`. It does not require random access and works naturally with sequential readers.
+
+Use `Arrow` (the file format) when you need a self-contained file that supports random access, for example when writing to disk and later reading specific record batches by offset.
+
+*Based on [ClickHouse/ClickHouse#12284](https://github.com/ClickHouse/ClickHouse/issues/12284)*

@@ -1,0 +1,58 @@
+---
+title: Can you create a materialized view over a remote table?
+description: Explains why materialized views cannot use a remote table as their source and shows the correct pattern for routing output to a remote destination.
+date: 2020-09-26
+tags: ['Data Modelling', 'Engines']
+keywords: ['materialized view', 'remote table', 'insert trigger', 'remote function']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## How materialized views work \{#how-materialized-views-work\}
+
+A materialized view is an **insert trigger**, not a read-time query. When rows are inserted into the source table, ClickHouse runs the view's `SELECT` against only those new rows and writes the result to the target table. The view never issues a `SELECT` against the source table on its own.
+
+Because the trigger fires on inserts, the materialized view must be created on the server where those inserts happen. It cannot watch a `remote(...)` call for incoming data — there is no insert event to trigger on.
+
+## Why the remote-source pattern fails \{#why-the-remote-source-pattern-fails\}
+
+Creating a materialized view whose `SELECT` clause reads from a `remote(...)` table function will fail:
+
+```sql
+-- This does NOT work
+CREATE MATERIALIZED VIEW view TO destination
+AS SELECT id, count(name) AS cnt
+   FROM remote('cluster_1', default.test, 'default', '')
+   GROUP BY id;
+```
+
+ClickHouse cannot derive a local source table from that query, so it raises a logical error like:
+
+```
+DB::Exception: Logical error while creating StorageMaterializedView.
+Could not retrieve table name from select query.
+```
+
+Similarly, using `remote(...)` as the `TO` target in a `CREATE MATERIALIZED VIEW` statement is a syntax error — the `TO` clause only accepts a table identifier, not a table function.
+
+## The correct pattern \{#the-correct-pattern\}
+
+Create the materialized view on the server where inserts happen (the source cluster). To send results to a remote server, create a local table that uses the `remote(...)` table function, then point the view's `TO` clause at that local table:
+
+```sql
+-- On cluster_1, where inserts into `base` happen:
+
+-- 1. Create a local proxy table that writes to the remote destination
+CREATE TABLE remote_destination AS remote('cluster_2', default.destination, 'default', '');
+
+-- 2. Create the materialized view targeting that proxy table
+CREATE MATERIALIZED VIEW mv TO remote_destination
+AS SELECT id, count(name) AS cnt
+   FROM base
+   GROUP BY id;
+```
+
+Inserts into `base` on `cluster_1` fire the trigger, the aggregation runs locally, and the results are forwarded to `destination` on `cluster_2`.
+
+*Based on [ClickHouse/ClickHouse#15295](https://github.com/ClickHouse/ClickHouse/issues/15295)*

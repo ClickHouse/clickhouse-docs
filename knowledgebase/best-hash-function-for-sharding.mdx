@@ -1,0 +1,41 @@
+---
+title: Best hash function for sharding by UUID or key
+description: Use cityHash64 directly on a UUID column — no toString conversion needed — for the fastest sharding key expression in Distributed tables.
+date: 2020-01-04
+tags: ['Deployments and Scaling', 'Best Practices']
+keywords: ['sharding key', 'hash function', 'UUID', 'cityHash64', 'Distributed table']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Recommendation \{#recommendation\}
+
+Use `cityHash64` applied directly to the UUID column — do not wrap it in `toString` first. Passing a UUID to a hash function directly is both correct and faster.
+
+```sql
+-- Sharding key expression for a Distributed table
+cityHash64(uuid_column)
+```
+
+`xxHash64` is sometimes described as the fastest hash function, but in ClickHouse's implementation `cityHash64` is faster for UUIDs. Using `toString` before either function adds unnecessary overhead and negates any speed advantage.
+
+## Why not toString \{#why-not-tostring\}
+
+Earlier versions of ClickHouse required converting a UUID to a string before passing it to a hash function. That is no longer necessary — hash functions such as `cityHash64` accept the `UUID` type directly.
+
+Calling `toString` on a UUID before hashing is wasteful: it allocates a string, copies data, and then hashes a 36-character string instead of the raw 128-bit value.
+
+## Benchmark context \{#benchmark-context\}
+
+The maintainer's reference benchmark, run on an Xeon E5-2650 v2:
+
+```sql
+SELECT count()
+FROM system.numbers
+WHERE NOT ignore(cityHash64(generateUUIDv4()))
+```
+
+Even at ~124 million rows/s this is considered suboptimal, because hash functions designed for variable-length strings are not ideal for the fixed 128-bit UUID layout. For most production sharding workloads `cityHash64(uuid_column)` is the practical recommendation.
+
+*Based on [ClickHouse/ClickHouse#7892](https://github.com/ClickHouse/ClickHouse/issues/7892)*

@@ -1,0 +1,104 @@
+---
+title: Why ClickHouse deduplicates identical inserted blocks
+description: ClickHouse silently discards repeated identical inserts by design, as a fault-tolerance mechanism for retrying failed writes.
+date: 2021-01-18
+tags: ['Core Data Concepts', 'Data Ingestion']
+keywords: ['insert deduplication', 'insert_deduplicate', 'replicated insert', 'idempotent insert']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Why identical inserts produce only one copy of the data \{#why-deduplication-happens\}
+
+ClickHouse deduplicates identical inserted data blocks by default. If you execute the same `INSERT` statement multiple times with identical data, ClickHouse stores that data only once.
+
+This is intentional, not a bug. The reason is network fault tolerance: when a client sends an `INSERT` and does not receive an acknowledgement — due to a timeout, a dropped connection, or a server restart — the client cannot know whether the write succeeded. The safe recovery strategy is to retry the insert. Without deduplication, every retry would add a duplicate copy of the data. With deduplication, retrying an already-successful insert is a no-op.
+
+This is the behavior described in the [`insert_deduplicate`](https://clickhouse.com/docs/en/operations/settings/settings#insert_deduplicate) setting documentation:
+
+> Data blocks are deduplicated. For multiple writes of the same data block (data blocks of the same size containing the same rows in the same order), the block is only written once. The reason for this is in case of network failures when the client application doesn't know if the data was written to the DB, so the INSERT query can simply be repeated. It doesn't matter which replica INSERTs were sent to with identical data. INSERTs are idempotent. Deduplication parameters are controlled by merge_tree server settings.
+
+## How block hashing works \{#how-block-hashing-works\}
+
+ClickHouse computes a hash over each inserted block — covering its size, row order, and content — and stores that hash in ZooKeeper (for Replicated engines) or on disk. When a new block arrives, its hash is compared against recently seen hashes. If a match is found, the block is dropped silently.
+
+Two inserts are treated as duplicates only when:
+
+- The block contains exactly the same rows
+- In exactly the same order
+- With exactly the same block size (number of rows per block)
+
+If any of these differ, the blocks are treated as distinct and both are written.
+
+## Reproducing the behavior \{#reproducing\}
+
+The following example, using `ReplicatedSummingMergeTree`, demonstrates the behavior. Three identical inserts produce a single stored row instead of three.
+
+```sql
+CREATE TABLE IF NOT EXISTS default.test_table ON CLUSTER analytics
+(
+    date    Date,
+    hour    UInt8,
+    value   Float64,
+    device  String,
+    country String
+) ENGINE = ReplicatedSummingMergeTree(
+           '/clickhouse_test_table_cluster/tables/{shard}/hits',
+           '{replica}',
+           value
+    )
+      ORDER BY (date, hour, device, country)
+      PARTITION BY toYYYYMM(date);
+
+INSERT INTO default.test_table (date, hour, value, device, country)
+VALUES ('2021-01-18', 1, 5, 'android', 'EG');
+
+INSERT INTO default.test_table (date, hour, value, device, country)
+VALUES ('2021-01-18', 1, 5, 'android', 'EG');
+
+INSERT INTO default.test_table (date, hour, value, device, country)
+VALUES ('2021-01-18', 1, 5, 'android', 'EG');
+
+SELECT * FROM test_table;
+```
+
+Result:
+
+```
+┌───────date─┬─hour─┬─value─┬─device──┬─country─┐
+│ 2021-01-18 │    1 │     5 │ android │ EG      │
+└────────────┴──────┴───────┴─────────┴─────────┘
+```
+
+Only one row is stored even though the same data was inserted three times.
+
+## How to control deduplication \{#controlling-deduplication\}
+
+**Disable deduplication for a session or query:**
+
+```sql
+SET insert_deduplicate = 0;
+```
+
+With `insert_deduplicate = 0`, every insert is written regardless of whether identical data was inserted before.
+
+**Tune the deduplication window:**
+
+For Replicated engines, the number of recent block hashes retained is controlled by two `merge_tree` server settings in `config.xml`:
+
+```xml
+<merge_tree>
+    <replicated_deduplication_window>100</replicated_deduplication_window>
+    <replicated_deduplication_window_seconds>604800</replicated_deduplication_window_seconds>
+</merge_tree>
+```
+
+- `replicated_deduplication_window` — how many recent block hashes to keep (default: 100).
+- `replicated_deduplication_window_seconds` — how long to keep them (default: 7 days).
+
+A block hash older than both thresholds is evicted, so a retry of a very old insert will not be deduplicated.
+
+For non-replicated MergeTree engines, the equivalent setting is `non_replicated_deduplication_window` (default: 0, meaning deduplication is off for non-replicated tables unless enabled explicitly).
+
+*Based on [ClickHouse/ClickHouse#19249](https://github.com/ClickHouse/ClickHouse/issues/19249)*

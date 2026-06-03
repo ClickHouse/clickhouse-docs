@@ -1,0 +1,106 @@
+---
+title: Computing per-second rates from raw monotonic counter values
+description: How to use runningDifference, neighbor, or window functions to derive per-second rates from raw counter data in ClickHouse.
+date: 2022-02-08
+tags: ['Functions', 'Use Cases']
+keywords: ['per-second rate', 'runningDifference', 'counter', 'time series']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Problem \{#problem\}
+
+Given a time-series table of ever-increasing counter values (network interface counters, sensor readings, etc.), you want to compute per-second rates — the derivative of the counter — directly inside ClickHouse rather than calculating deltas in the collection agent before insert.
+
+## Approach with `runningDifference` \{#approach-with-runningdifference\}
+
+[`runningDifference`](https://clickhouse.com/docs/en/sql-reference/functions/other-functions#runningdifference) computes the difference between consecutive rows. Dividing the value difference by the time difference gives a per-second rate:
+
+```sql
+SELECT
+    ts,
+    val,
+    runningDifference(val) / runningDifference(ts) AS rate
+FROM counters
+ORDER BY ts
+LIMIT 100
+SETTINGS max_block_size = 4
+```
+
+Example output:
+
+| ts | val | rate |
+| :--- | :--- | :--- |
+| 2022-02-07 15:38:00 | 86 | NaN |
+| 2022-02-07 15:38:05 | 401 | 63 |
+| 2022-02-07 15:38:10 | 1317 | 183.2 |
+| 2022-02-07 15:38:15 | 1399 | 16.4 |
+| 2022-02-07 15:38:20 | 2372 | NaN |
+| 2022-02-07 15:38:25 | 3121 | 149.8 |
+| 2022-02-07 15:38:30 | 3931 | 162 |
+| 2022-02-07 15:38:35 | 4745 | 162.8 |
+| 2022-02-07 15:38:40 | 5293 | NaN |
+| 2022-02-07 15:38:45 | 6085 | 158.4 |
+
+The `NaN` values occur at block boundaries. `runningDifference` resets to zero at the start of each new block, so when rows span multiple blocks the first row of each block produces `NaN` instead of a valid delta. Setting `max_block_size` to a small value in the example above makes this visible.
+
+## Workaround with `arrayDifference` \{#workaround-with-arraydifference\}
+
+To avoid the block-boundary reset, collect all rows for a given series into arrays with `groupArray`, sort by timestamp, and apply `arrayDifference` across the whole series in one pass. `ARRAY JOIN` then unnests the result back to rows.
+
+```sql
+SELECT
+    device_id,
+    measurement_id,
+    sorted_time,
+    time_sorted_vals,
+    running_diffs,
+    running_time_diffs,
+    if(
+        running_time_diffs > 0 AND running_time_diffs < 900,
+        intDiv(running_diffs, running_time_diffs),
+        -1
+    ) AS val_per_second
+FROM (
+    WITH
+        groupArray(tuple(value, timestamp))          AS val_time_tuples,
+        arraySort(x -> x.2, val_time_tuples)        AS val_time_tuples_sorted,
+        arrayMap(t -> t.1, val_time_tuples_sorted)  AS time_sorted_vals,
+        arrayMap(t -> t.2, val_time_tuples_sorted)  AS sorted_time,
+        arrayMap(t -> toUInt64(t.2), val_time_tuples_sorted) AS sorted_unix_time,
+        arrayDifference(time_sorted_vals)            AS running_diffs,
+        arrayDifference(sorted_unix_time)            AS running_time_diffs
+    SELECT
+        device_id,
+        measurement_id,
+        sorted_time,
+        time_sorted_vals,
+        running_diffs,
+        running_time_diffs
+    FROM counters_instat_ch_prod
+    WHERE
+        device_id = 24745
+        AND measurement_id = 8
+    GROUP BY device_id, measurement_id
+)
+ARRAY JOIN sorted_time, time_sorted_vals, running_diffs, running_time_diffs
+ORDER BY device_id, measurement_id, sorted_time DESC
+```
+
+Key points:
+
+- `groupArray` + `arraySort` guarantees chronological order regardless of storage order.
+- `arrayDifference` operates on the entire in-memory array, so there are no block boundaries to cause resets.
+- The outer `if` condition marks a row as `-1` (invalid) when the time gap between consecutive samples exceeds 900 seconds or when there is no previous sample (first row of the series).
+- Because the aggregation groups all rows for a `(device_id, measurement_id)` pair into memory at once, running this across millions of series simultaneously will exhaust memory. Filter to a small subset with `WHERE` clauses, or pre-aggregate in batches.
+
+## Considerations for materialized views \{#considerations-for-materialized-views\}
+
+Materialized views fire on each inserted block, not on the full ordered history. A counter delta requires knowing the previous row's value, which may have been inserted in an earlier block. Materialized views therefore cannot reliably compute inter-block deltas. The practical alternatives are:
+
+- Compute deltas in the collection agent before insert (keep the last raw value and timestamp in memory).
+- Query on demand using the `arrayDifference` approach above and write results to a summary table with a scheduled query or external job.
+- Use the experimental Window View feature, though it has its own limitations for high-cardinality series.
+
+*Based on [ClickHouse/ClickHouse#34257](https://github.com/ClickHouse/ClickHouse/issues/34257)*

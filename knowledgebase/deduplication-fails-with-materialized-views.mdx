@@ -1,0 +1,28 @@
+---
+title: Deduplication fails with materialized views
+description: Why insert deduplication can produce duplicates when a materialized view is attached, and how to fix it.
+date: 2020-10-14
+tags: ['Data Modelling', 'Troubleshooting']
+keywords: ['deduplication', 'materialized view', 'deduplicate_blocks_in_dependent_materialized_views', 'insert retry']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Problem \{#problem\}
+
+When a materialized view (MV) is attached to a table, a batch insert can succeed on the main table but then fail partway through processing the MV. Because the insert returned an exception, the client retries. On retry, the main table's built-in block deduplication recognizes the block as a duplicate and skips it — but the MV does not, so the MV receives the data a second time. This leaves the MV out of sync with the main table.
+
+## Solution \{#solution\}
+
+This is intended behavior. Enable the setting `deduplicate_blocks_in_dependent_materialized_views` to extend deduplication to materialized views:
+
+```sql
+SET deduplicate_blocks_in_dependent_materialized_views = 1;
+```
+
+With this setting enabled, ClickHouse tracks the deduplication token for blocks written to dependent materialized views as well, so a retried insert is correctly skipped in both the main table and its MVs.
+
+See the [ClickHouse documentation](https://clickhouse.com/docs/en/operations/settings/settings#deduplicate-blocks-in-dependent-materialized-views) for full details on this setting.
+
+*Based on [ClickHouse/ClickHouse#2765](https://github.com/ClickHouse/ClickHouse/issues/2765)*

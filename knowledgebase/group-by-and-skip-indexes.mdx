@@ -1,0 +1,57 @@
+---
+title: Why does GROUP BY read all rows even with a skip index?
+description: A GROUP BY query reads all matching rows because skip indexes prune granules for filtering, not aggregation — and a fast plain SELECT may just be hitting a row limit.
+date: 2025-04-10
+tags: ['Performance and Optimizations']
+keywords: ['group by', 'skip index', 'bloom filter', 'max_result_rows']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## What is happening \{#what-is-happening\}
+
+Consider a table with a Bloom filter skip index on an `Array` column and a query like this:
+
+```sql
+-- Fast: 0.205 sec, 740 thousand rows read
+WITH data AS (
+    SELECT date
+    FROM test.transactions
+    PREWHERE has(route_map_mints, 'So11111111111111111111111111111111111111112')
+)
+SELECT date FROM data;
+```
+
+```sql
+-- Slow: 6.840 sec, 172 million rows read
+WITH data AS (
+    SELECT date
+    FROM test.transactions
+    PREWHERE has(route_map_mints, 'So11111111111111111111111111111111111111112')
+)
+SELECT date FROM data GROUP BY date;
+```
+
+The `EXPLAIN` for the slow query shows the skip index does prune granules (105,752 of 109,647 remain after filtering). The index works. Yet the query still reads 172 million rows.
+
+## Why the plain SELECT looked fast \{#why-the-plain-select-looked-fast\}
+
+The plain `SELECT` was not fast because of the skip index — it was fast because it returned an **incomplete result**. The settings `max_result_rows = 1000` and `result_overflow_mode = break` cause ClickHouse to silently stop reading once the output row limit is reached. The query read only 740 thousand rows and returned the first chunk of results without finishing the scan.
+
+The `GROUP BY` query must read **every matching row** before it can produce any output, so it cannot stop early. The row limit does not apply in the same way, and the full 172 million rows are scanned.
+
+## What skip indexes actually do \{#what-skip-indexes-actually-do\}
+
+[Data skipping indexes](https://clickhouse.com/docs/en/optimize/skipping-indexes) prune **granules** before rows are read into memory. They help when a `WHERE` or `PREWHERE` condition can be evaluated against index metadata — for example, a Bloom filter can skip a granule if it is certain the target value does not appear there.
+
+Skip indexes do not reduce the work required for aggregation. Once the surviving granules are identified, all rows within those granules must be read and processed by `GROUP BY`.
+
+## What actually helps \{#what-actually-helps\}
+
+- **Primary key ordering**: If `date` (or the column you are grouping by) is part of the `ORDER BY` key, ClickHouse can read granules in order and prune efficiently.
+- **Projections**: A [projection](https://clickhouse.com/docs/en/sql-reference/statements/alter/projection) that pre-aggregates by `date` stores a sorted, pre-grouped copy of the data and can satisfy the `GROUP BY` directly.
+- **Materialized views**: Pre-aggregate into a summary table on ingest so the `GROUP BY` query hits a much smaller dataset.
+- **Check `max_result_rows`**: If a query appears fast but returns suspiciously few rows, check whether `result_overflow_mode = 'break'` is silently truncating results.
+
+*Based on [ClickHouse/ClickHouse#78929](https://github.com/ClickHouse/ClickHouse/issues/78929)*

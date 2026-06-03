@@ -1,0 +1,50 @@
+---
+title: Configure ClickHouse for low-memory machines
+description: Key settings to reduce ClickHouse memory usage on machines with limited RAM.
+date: 2024-06-21
+tags: ['Server Admin', 'Settings']
+keywords: ['low memory', 'memory limit', 'max_server_memory_usage', 'mark cache', 'background pool', 'jemalloc', 'small RAM']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Recommended settings \{#recommended-settings\}
+
+ClickHouse's defaults are tuned for servers with plenty of RAM. On memory-constrained machines — especially when ClickHouse runs alongside other services — memory use can grow until queries hit the `Memory limit (total) exceeded` exception. The following settings bring consumption down to a manageable level.
+
+**Mark cache.** In `config.xml`, lower `<mark_cache_size>` to `500000000` (500 MB). This is the minimum practical value; it cannot be set to zero.
+
+**Query processing threads.** Lower the number of query processing threads to 1.
+
+**Block size.** Set [`max_block_size`](https://clickhouse.com/docs/en/operations/settings/settings#max_block_size) to `8192`. Values as low as `1024` are still practical.
+
+**Download threads.** Set [`max_download_threads`](https://clickhouse.com/docs/en/operations/settings/settings#max_download_threads) to `1`.
+
+**Parallel parsing and formatting.** Disable both:
+
+```xml
+<input_format_parallel_parsing>0</input_format_parallel_parsing>
+<output_format_parallel_formatting>0</output_format_parallel_formatting>
+```
+
+Or as session/user-level settings:
+
+```sql
+SET input_format_parallel_parsing = 0;
+SET output_format_parallel_formatting = 0;
+```
+
+## Flushing cached memory \{#flushing-cached-memory\}
+
+The memory allocator (jemalloc) retains freed memory in its own cache, which can make RSS look high even after queries finish. To release it manually, run:
+
+```sql
+SYSTEM JEMALLOC PURGE;
+```
+
+## Integrations to avoid \{#integrations-to-avoid\}
+
+S3 and Kafka integrations are not recommended on low-memory machines. Both require substantial memory for their internal buffers, and that overhead is difficult to bound on constrained hardware.
+
+*Based on [ClickHouse/ClickHouse#65476](https://github.com/ClickHouse/ClickHouse/issues/65476)*

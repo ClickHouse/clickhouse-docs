@@ -1,0 +1,85 @@
+---
+title: Connecting to ClickHouse via the PostgreSQL wire-protocol interface
+description: How to enable the PostgreSQL interface port in ClickHouse and which password authentication methods are compatible with PostgreSQL clients.
+date: 2022-09-23
+tags: ['Native Clients and Interfaces']
+keywords: ['postgresql interface', 'psql', 'pg wire protocol', 'password authentication']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Overview \{#overview\}
+
+ClickHouse exposes a PostgreSQL wire-protocol interface that lets tools such as `psql` connect on a dedicated port (default `9005`). Not all ClickHouse password authentication methods are compatible with the methods a PostgreSQL client supports, so picking the right method when creating a user is essential.
+
+## Enabling the PostgreSQL interface port \{#enabling-the-port\}
+
+Add the following to your `config.xml` (or the equivalent `config.d` override file) and restart ClickHouse:
+
+```xml
+<postgresql_port>9005</postgresql_port>
+```
+
+After the server restarts, it listens for PostgreSQL-protocol connections on port `9005`.
+
+## Authentication compatibility \{#authentication-compatibility\}
+
+The mismatch between the two sides causes the `Authentication method is not supported` error. The tables below summarise what each side actually supports.
+
+**PostgreSQL client (`psql`) methods**
+
+- `scram-sha-256`
+- `md5`
+- plain-text password
+
+**ClickHouse PostgreSQL interface methods**
+
+- plain-text password (`plaintext_password`)
+- SHA-256 password (`sha256_password`)
+- double SHA-1 password (`double_sha1_password`)
+- LDAP
+- Kerberos
+
+The only method that both sides share is **plain-text password**. Any other ClickHouse password storage method (`sha256_password`, `double_sha1_password`, etc.) is not compatible with what a standard PostgreSQL client sends, and the connection fails.
+
+## Creating a compatible user \{#creating-a-compatible-user\}
+
+Connect via the native interface and create the user with `plaintext_password`:
+
+```sql
+CREATE USER pg_user HOST ANY IDENTIFIED WITH plaintext_password BY 'your_password';
+GRANT SELECT ON mydb.* TO pg_user;
+```
+
+Users created with `sha256_password` or `double_sha1_password` will fail to authenticate over the PostgreSQL interface:
+
+```sql
+-- This will NOT work with psql
+CREATE USER bad_user HOST ANY IDENTIFIED WITH sha256_password BY 'your_password';
+```
+
+## Connecting with psql \{#connecting-with-psql\}
+
+```bash
+psql -h <clickhouse-host> -p 9005 -U pg_user -d default --password
+```
+
+A successful connection produces output similar to:
+
+```
+psql (13.5, server 21.12.3.32)
+WARNING: psql major version 13, server major version 21.
+         Some psql features might not work.
+Type "help" for help.
+
+default=>
+```
+
+The version mismatch warning is harmless; basic SQL queries work normally.
+
+## Security note \{#security-note\}
+
+Plain-text passwords sent over an unencrypted connection can be intercepted. Where possible, enable TLS on the PostgreSQL port or tunnel the connection (e.g., over SSH) rather than passing credentials in cleartext over an untrusted network. Remove `sslmode=disable` once TLS is configured on the ClickHouse side.
+
+*Based on [ClickHouse/ClickHouse#28159](https://github.com/ClickHouse/ClickHouse/issues/28159)*

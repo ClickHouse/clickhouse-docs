@@ -1,0 +1,81 @@
+---
+title: When to use LowCardinality
+description: How LowCardinality's dictionary encoding works, when it helps string columns, and why it rarely benefits numeric types.
+date: 2019-11-01
+tags: ['Data Modelling', 'Performance and Optimizations']
+keywords: ['LowCardinality', 'dictionary encoding', 'low cardinality strings', 'column compression', 'cardinality', 'data types', 'ENUM']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## How LowCardinality works \{#how-lowcardinality-works\}
+
+ClickHouse processes data in blocks — fixed-size slices of each column (typically 8,192 values). A plain column stores those values as a raw array. A `LowCardinality` column stores them as a pair: a dictionary of distinct values, and a keys array that indexes into it. The original data is `dictionary[keys]`.
+
+The key optimization is that functions applied to a `LowCardinality` column operate on the dictionary, not on every row. The rule is: `f(dictionary[keys]) = f(dictionary)[keys]`. A `LIKE` pattern match against a column with ten distinct string values runs against ten dictionary entries, not ten million rows. The result is then broadcast back through the keys array.
+
+Dictionaries are generally block-scoped, but ClickHouse can share a single dictionary across multiple blocks when the number of distinct values is small enough. If cardinality is high, it falls back to local per-block dictionaries automatically — so the implementation degrades gracefully rather than breaking.
+
+## When to use it \{#when-to-use-it\}
+
+**The rule of thumb: use `LowCardinality` when a column has fewer than a few million distinct values.**
+
+The primary use case is `String` columns. `LowCardinality(String)` avoids the need to manually define an `Enum`, which requires enumerating values ahead of time and schema changes when values are added. `LowCardinality` builds dictionaries automatically and adapts as data arrives.
+
+For string columns, the benefits compound:
+
+- Compressed storage footprint is smaller because the dictionary is stored once per block, not per row.
+- Functions such as `LIKE`, `=`, and aggregations run against the dictionary, which fits in CPU cache.
+- `GROUP BY` on a single `LowCardinality` column benefits from a special optimization that processes keys directly.
+
+A benchmark on 10 million rows with 10 distinct string values illustrates the effect:
+
+```sql
+-- Plain String table
+SELECT str, count(str) AS cnt FROM Dict GROUP BY str;
+-- 10 rows. Elapsed: 0.235 sec. Processed 10.00 million rows, 129.00 MB
+
+-- LowCardinality(String) table
+SELECT strlc, count(strlc) AS cnt FROM LCDict GROUP BY strlc;
+-- 10 rows. Elapsed: 0.093 sec. Processed 10.00 million rows, 10.03 MB
+```
+
+The same query ran 2.5× faster and read 13× less data. String pattern matching showed an even larger gap (0.734 s vs. 0.162 s for a `LIKE '%en'` filter).
+
+## Why numeric types rarely benefit \{#why-numeric-types-rarely-benefit\}
+
+For numeric columns, the picture is different. The keys array that indexes into the dictionary can consume as much memory as the original values array — for `UInt8`, it always does. There is no storage saving, and the double-indirection adds overhead for operations that scan or sort.
+
+Range queries and `ORDER BY` on `LowCardinality(UInt64)` were measurably slower in benchmarks than on plain `UInt64`, because sorting requires resolving keys through the dictionary rather than comparing values directly:
+
+```sql
+-- Plain UInt64
+SELECT d2, d1, uint FROM Dict WHERE uint BETWEEN 2000000 AND 7000000 ORDER BY uint;
+-- Elapsed: 0.382 sec.
+
+-- LowCardinality(UInt64)
+SELECT d2, d1, uintlc FROM LCDict WHERE uintlc BETWEEN 2000000 AND 7000000 ORDER BY uintlc;
+-- Elapsed: 0.656 sec.
+```
+
+Point queries and group-by on numeric types showed smaller or negligible differences. The general guidance: don't wrap numeric types in `LowCardinality` unless you have a specific, measured reason to.
+
+## Differences from Enum \{#differences-from-enum\}
+
+`LowCardinality` and [`Enum`](https://clickhouse.com/docs/en/sql-reference/data-types/enum) both encode columns as integer keys over a dictionary, but they differ in how that dictionary is managed:
+
+- `Enum` requires declaring all values at schema definition time. Adding a new value requires an `ALTER TABLE`.
+- `LowCardinality` builds and updates the dictionary automatically from the data. No schema changes needed.
+
+For columns where the value set is known and fixed (e.g., status codes, severity levels), `Enum` is slightly more efficient because the dictionary is embedded in the schema. For columns where values evolve or aren't known in advance, `LowCardinality(String)` is more practical.
+
+## Restrictions \{#restrictions\}
+
+`LowCardinality` is supported across all table engines and all query types. All functions and aggregate functions work with it automatically — the dictionary-level execution is transparent. There are no known restrictions on `INSERT` patterns or engine compatibility.
+
+## Using LowCardinality with skip indexes \{#lowcardinality-and-skip-indexes\}
+
+[Skip indexes](https://clickhouse.com/docs/en/optimize/skipping-indexes) and `LowCardinality` are independent features and can be combined. For numeric columns where `LowCardinality` doesn't help, a `set` skip index is a better tool for filtering. For low-cardinality string columns, both can be applied together — test against your dataset to confirm the combination improves your specific query patterns.
+
+*Based on [ClickHouse/ClickHouse#4074](https://github.com/ClickHouse/ClickHouse/issues/4074) and [ClickHouse/ClickHouse#4796](https://github.com/ClickHouse/ClickHouse/issues/4796)*

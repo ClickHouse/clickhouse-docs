@@ -1,0 +1,88 @@
+---
+title: Silent data loss when inserting into a Nested structure from a materialized view
+description: Learn why Nested column arrays arrive empty when written through a materialized view and how to fix it with column aliases.
+date: 2021-08-27
+tags: ['Data Modelling', 'Troubleshooting']
+keywords: ['Nested', 'materialized view', 'silent data loss', 'array columns']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Problem \{#problem\}
+
+When a materialized view selects columns named with double-underscores (e.g. `items__id`, `items__title`) and writes them into a table that has a `Nested` column (`items`), ClickHouse inserts the rows successfully but the Nested sub-columns arrive as empty arrays. No error is raised and no warning appears in the logs.
+
+For example, given a queue table with flat array columns:
+
+```sql
+CREATE TABLE default.test_orders_queue
+(
+    order_id UInt32,
+    date Date,
+    items__id Array(UInt32),
+    items__title Array(String)
+) ENGINE = MergeTree() PARTITION BY toYYYYMM(date) ORDER BY (date, order_id);
+```
+
+And a target table with a `Nested` column:
+
+```sql
+CREATE TABLE default.test_orders
+(
+    order_id UInt32,
+    date Date,
+    items Nested(
+        id UInt32,
+        title String
+    )
+) ENGINE = MergeTree() PARTITION BY toYYYYMM(date) ORDER BY (date, order_id);
+```
+
+The following materialized view definition causes silent data loss:
+
+```sql
+-- Broken: Nested columns arrive as empty arrays
+CREATE MATERIALIZED VIEW default.test_orders_queue_mv TO default.test_orders
+AS
+    SELECT order_id,
+           date,
+           items__id,
+           items__title
+    FROM default.test_orders_queue;
+```
+
+After inserting rows into `test_orders_queue`, `test_orders` will contain the correct number of rows but `items.id` and `items.title` will both be `[]`.
+
+## Solution \{#solution\}
+
+Alias the flat array columns to the dotted `Nested` column names (`items.id`, `items.title`) in the materialized view `SELECT`. ClickHouse uses the dotted name to map values into the correct sub-column of the `Nested` structure.
+
+```sql
+CREATE MATERIALIZED VIEW default.test_orders_queue_mv TO default.test_orders
+AS
+    SELECT order_id,
+           date,
+           items__id AS `items.id`,
+           items__title AS `items.title`
+    FROM default.test_orders_queue;
+```
+
+With this definition, inserting into the queue table correctly populates the Nested sub-columns:
+
+```sql
+INSERT INTO default.test_orders_queue
+VALUES (1, '2021-01-01', [1, 2], ['product1', 'product2']),
+       (2, '2021-01-02', [2, 3], ['product2', 'product3']);
+
+SELECT * FROM default.test_orders;
+
+┌─order_id─┬───────date─┬─items.id─┬─items.title─────────────┐
+│        1 │ 2021-01-01 │ [1,2]    │ ['product1','product2'] │
+│        2 │ 2021-01-02 │ [2,3]    │ ['product2','product3'] │
+└──────────┴────────────┴──────────┴─────────────────────────┘
+```
+
+Note that a direct `INSERT INTO ... SELECT` works correctly without aliases because ClickHouse can resolve column names by position. The mismatch only appears when a materialized view is involved, making it easy to miss in testing.
+
+*Based on [ClickHouse/ClickHouse#28267](https://github.com/ClickHouse/ClickHouse/issues/28267)*

@@ -1,0 +1,71 @@
+---
+title: TTL optimization by dropping whole parts when all rows have expired
+description: How aligning the partition key with the TTL expression lets ClickHouse drop entire parts without a merge, and how `ttl_only_drop_parts` helps when alignment isn't possible.
+date: 2025-04-20
+tags: ['Managing Data', 'Performance and Optimizations']
+keywords: ['TTL', 'ttl_only_drop_parts', 'partition', 'data expiry']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## How ClickHouse handles TTL expiry \{#how-clickhouse-handles-ttl-expiry\}
+
+When a TTL expression fires, ClickHouse normally rewrites (re-merges) affected parts to physically remove the expired rows. This rewrite is an I/O-intensive background operation. There are two ways to avoid it.
+
+### Align the partition key with the TTL expression \{#align-partition-key-with-ttl\}
+
+If all rows in a part expire at the same time, ClickHouse can drop the entire part without re-merging. This happens automatically when the partition key is chosen so that every row in a partition shares the same TTL value.
+
+For example, the table below partitions by both `region` and `ttl`, so every part contains rows that all expire on the same date:
+
+```sql
+CREATE TABLE my_table (
+    region String,
+    date DateTime64(3),
+    msg String,
+    ttl Int8
+)
+ENGINE = MergeTree
+PARTITION BY (region, ttl)
+TTL toDate(date) + toIntervalDay(ttl)
+```
+
+Because `ttl` is part of the partition key, no two rows with different TTL values can end up in the same part. When the expiry date passes, ClickHouse drops the part wholesale — no merge, no row-level filtering.
+
+### Use `ttl_only_drop_parts` when partition alignment isn't feasible \{#ttl-only-drop-parts\}
+
+If you cannot align the partition key with the TTL rule, enable the [`ttl_only_drop_parts`](https://clickhouse.com/docs/operations/settings/merge-tree-settings#ttl_only_drop_parts) MergeTree setting. With this setting enabled, ClickHouse defers TTL removal: it does not rewrite a part to remove partially expired rows. Instead, it waits until every row in a part has expired, then drops the whole part at once.
+
+The trade-off is that some rows may live slightly longer than their TTL value — until the last row in their part also expires. If strict per-row TTL enforcement is required, this setting is not appropriate.
+
+Set it at the table level:
+
+```sql
+ALTER TABLE my_table MODIFY SETTING ttl_only_drop_parts = 1;
+```
+
+Or at create time:
+
+```sql
+CREATE TABLE my_table (
+    region String,
+    date DateTime64(3),
+    msg String,
+    ttl Int8
+)
+ENGINE = MergeTree
+PARTITION BY region
+TTL toDate(date) + toIntervalDay(ttl)
+SETTINGS ttl_only_drop_parts = 1;
+```
+
+## Summary \{#summary\}
+
+| Approach | When to use | Overhead |
+|---|---|---|
+| Partition key aligned with TTL | Partition key can include the TTL column | Lowest — parts are dropped immediately on expiry |
+| `ttl_only_drop_parts = 1` | Partition key cannot be aligned | Low — no per-row rewrites, but expiry may be slightly delayed |
+| Default (no alignment, no setting) | Any schema | Higher — parts are rewritten to filter expired rows |
+
+*Based on [ClickHouse/ClickHouse#79355](https://github.com/ClickHouse/ClickHouse/issues/79355)*

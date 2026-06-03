@@ -1,0 +1,56 @@
+---
+title: How to copy a whole database from one ClickHouse server to another
+description: Three approaches for duplicating schema and data from one ClickHouse server to another.
+date: 2022-07-24
+tags: ['Managing Data', 'Tools and Utilities']
+keywords: ['copy database', 'migrate data', 'remote table function', 'clickhouse-copier']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Approaches \{#approaches\}
+
+There are three main approaches for duplicating a database (schema + data) from server A to server B.
+
+### 1. Copy the data directory \{#copy-data-directory\}
+
+If the dataset is small and the disk layout is straightforward (no multi-disk or complex storage configurations), stop ClickHouse on server B, copy the entire `/var/lib/clickhouse/` directory from server A to server B, then restart ClickHouse. Make sure the ownership of all copied files is set to the `clickhouse` user and group:
+
+```bash
+# On server B, after copying the directory:
+chown -R clickhouse:clickhouse /var/lib/clickhouse/
+```
+
+This approach will not work correctly if the source server uses a non-default multi-disk storage configuration.
+
+### 2. INSERT INTO ... SELECT with the remote table function \{#insert-select-remote\}
+
+Create the same database and tables on server B first, then pull data from server A table by table using an `INSERT INTO ... SELECT` query with the [`remote`](https://clickhouse.com/docs/en/sql-reference/table-functions/remote) table function:
+
+```sql
+-- Run this on server B for each table
+INSERT INTO my_database.my_table
+SELECT *
+FROM remote('server-a-host', my_database.my_table, 'user', 'password');
+```
+
+Use `remoteSecure` instead of `remote` to encrypt the connection:
+
+```sql
+INSERT INTO my_database.my_table
+SELECT *
+FROM remoteSecure('server-a-host', my_database.my_table, 'user', 'password');
+```
+
+Repeat for each table. You can retrieve the `CREATE TABLE` statements from server A with `SHOW CREATE TABLE` to recreate the schema on server B before inserting.
+
+### 3. clickhouse-copier for large datasets \{#clickhouse-copier\}
+
+For large amounts of data with big partitions, `clickhouse-copier` was historically used to copy and reshard data across servers in parallel with fault tolerance.
+
+:::note
+`clickhouse-copier` is deprecated and was removed in recent ClickHouse versions. On current versions, prefer [`BACKUP`/`RESTORE`](https://clickhouse.com/docs/operations/backup) to an object store shared between the servers, or partition-by-partition `INSERT … SELECT` over `remoteSecure` as in approach 2.
+:::
+
+*Based on [ClickHouse/ClickHouse#23735](https://github.com/ClickHouse/ClickHouse/issues/23735)*

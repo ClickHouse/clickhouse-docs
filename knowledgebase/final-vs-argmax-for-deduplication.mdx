@@ -1,0 +1,59 @@
+---
+title: FINAL vs. argMax for reading the latest version of rows
+description: When to use FINAL vs. argMax with ReplacingMergeTree, and the key performance trade-off between them.
+date: 2025-01-24
+tags: ['Performance and Optimizations', 'Data Modelling']
+keywords: ['FINAL', 'argMax', 'ReplacingMergeTree', 'deduplication', 'latest row', 'ORDER BY', 'max_final_threads']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## The core trade-off \{#the-core-trade-off\}
+
+Both `FINAL` and `argMax` can return the latest version of each row in a [`ReplacingMergeTree`](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/replacingmergetree) table, but they read different amounts of data to get there.
+
+`FINAL` must read every column listed in the table's `ORDER BY` key to identify which row wins for each key group. If your table is defined as:
+
+```sql
+ORDER BY (a, b, c, d, e, f, g, h)
+```
+
+then `FINAL` reads and processes all eight of those columns in memory, even when your query only cares about two of them.
+
+`argMax` reads only the columns you explicitly group by and aggregate. A query like:
+
+```sql
+SELECT a, argMax(e, version)
+FROM my_table
+GROUP BY a
+```
+
+reads only `a` and `e` (plus the version column), so it avoids loading the other `ORDER BY` columns entirely. When the `ORDER BY` key is wide, this can make `argMax` significantly faster.
+
+## When FINAL wins \{#when-final-wins\}
+
+`FINAL` has received multiple performance optimizations since version 23.3. When those optimizations apply, `FINAL` can have near-zero overhead and outperform an equivalent `argMax/GROUP BY` query by a large margin.
+
+The optimizations don't always apply — whether they do depends on your query shape, the data distribution, and the merge state of your parts. When `FINAL` can skip the merge step entirely (because a part is already fully merged), it adds no cost at all.
+
+## When argMax wins \{#when-argmax-wins\}
+
+If most of the `FINAL` optimizations are not applicable for your workload, the dominant cost becomes reading the full `ORDER BY` key. In that case, `argMax` with a narrow `GROUP BY` wins because it reads fewer columns.
+
+The wider your `ORDER BY` key relative to what your query actually needs, the stronger the case for `argMax`.
+
+## Practical guidance \{#practical-guidance\}
+
+There is no universal winner. The right choice depends on:
+
+- **Width of the `ORDER BY` key.** A short key (one or two columns) narrows the gap. A wide key (six or more columns) favors `argMax` when `FINAL` optimizations don't apply.
+- **Which columns your query needs.** If you need all `ORDER BY` columns anyway, `FINAL` reads nothing extra.
+- **Merge state.** `FINAL` is cheaper when parts are already fully merged, because it has less work to do.
+- **ClickHouse version.** Optimizations added after 23.3 make `FINAL` more competitive. Run benchmarks on your actual version and data.
+
+The [`max_final_threads`](https://clickhouse.com/docs/en/operations/settings/settings#max-final-threads) setting controls how many threads `FINAL` uses during the merge step. Raising it can improve `FINAL` throughput on wide tables.
+
+Benchmark both approaches on your real data and query patterns — the performance gap in either direction can be significant, and the winner depends on specifics that only your workload can reveal.
+
+*Based on [ClickHouse/ClickHouse#74963](https://github.com/ClickHouse/ClickHouse/issues/74963)*

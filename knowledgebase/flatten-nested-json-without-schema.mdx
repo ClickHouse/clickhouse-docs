@@ -1,0 +1,85 @@
+---
+title: Flatten nested JSON without defining an explicit schema
+description: Use the JSON data type with arrayJoin and untuple to expand nested arrays into rows with inferred columns.
+date: 2025-02-15
+tags: ['Data Formats', 'Functions']
+keywords: ['nested JSON', 'flatten JSON', 'arrayJoin', 'untuple']
+---
+
+{frontMatter.description}
+{/* truncate */}
+
+## Question \{#question\}
+
+Is there a way to flatten nested JSON into a tabular result without specifying an explicit schema? For example, given a payload like:
+
+```json
+{
+  "Records": [
+    { "a": 1, "b": 2, "c": 3 },
+    { "a": 1, "b": 2 },
+    { "c": 3, "d": 4 }
+  ]
+}
+```
+
+The goal is to produce a flat table with columns `a`, `b`, `c`, `d` (and `NULL` where a key is absent), similar to `json_normalize` in pandas or `unnest` in DuckDB.
+
+## Answer \{#answer\}
+
+ClickHouse can handle this without a predefined schema using schema inference together with [`arrayJoin`](https://clickhouse.com/docs/en/sql-reference/functions/array-join) and [`untuple`](https://clickhouse.com/docs/en/sql-reference/functions/tuple-functions#untuple).
+
+The `format()` table function reads the JSON and infers the type of `Records` as an array of named tuples. `arrayJoin` expands each element of that array into a separate row, and `untuple` spreads the tuple fields into individual columns.
+
+**Interactive query using `format()`:**
+
+```sql
+SELECT untuple(arrayJoin(Records))
+FROM format(JSON, '{
+  "Records": [
+    { "a": 1, "b": 2, "c": 3 },
+    { "a": 1, "b": 2 },
+    { "c": 3, "d": 4 }
+  ]
+}')
+```
+
+Result:
+
+```
+   ┌─tupleElement⋯ords), 'a')─┬─tupleElement⋯ords), 'b')─┬─tupleElement⋯ords), 'c')─┬─tupleElement⋯ords), 'd')─┐
+1. │                        1 │                        2 │                        3 │                     ᴺᵁᴸᴸ │
+2. │                        1 │                        2 │                     ᴺᵁᴸᴸ │                     ᴺᵁᴸᴸ │
+3. │                     ᴺᵁᴸᴸ │                     ᴺᵁᴸᴸ │                        3 │                        4 │
+   └──────────────────────────┴──────────────────────────┴──────────────────────────┴──────────────────────────┘
+```
+
+**Batch mode using `clickhouse-local` (`ch`):**
+
+```bash
+echo '{
+  "Records": [
+    { "a": 1, "b": 2, "c": 3 },
+    { "a": 1, "b": 2 },
+    { "c": 3, "d": 4 }
+  ]
+}' | ch --input-format JSON --output-format Pretty --query "SELECT untuple(arrayJoin(Records)) FROM table"
+```
+
+Result:
+
+```
+   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+   ┃ tupleElement⋯ords), 'a') ┃ tupleElement⋯ords), 'b') ┃ tupleElement⋯ords), 'c') ┃ tupleElement⋯ords), 'd') ┃
+   ┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+1. │                        1 │                        2 │                        3 │                     ᴺᵁᴸᴸ │
+   ├──────────────────────────┼──────────────────────────┼──────────────────────────┼──────────────────────────┤
+2. │                        1 │                        2 │                     ᴺᵁᴸᴸ │                     ᴺᵁᴸᴸ │
+   ├──────────────────────────┼──────────────────────────┼──────────────────────────┼──────────────────────────┤
+3. │                     ᴺᵁᴸᴸ │                     ᴺᵁᴸᴸ │                        3 │                        4 │
+   └──────────────────────────┴──────────────────────────┴──────────────────────────┴──────────────────────────┘
+```
+
+This approach works for any JSON payload where the array elements share a common superset of keys, such as CloudTrail `Records` or HAR files. ClickHouse infers the union of all keys across array elements and fills missing ones with `NULL`.
+
+*Based on [ClickHouse/ClickHouse#76176](https://github.com/ClickHouse/ClickHouse/issues/76176)*
