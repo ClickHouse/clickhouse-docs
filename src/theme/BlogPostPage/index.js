@@ -24,6 +24,7 @@ import BlogPostPageStructuredData from '@theme/BlogPostPage/StructuredData';
 import TOC from '@theme/TOC';
 import ContentVisibility from '@theme/ContentVisibility';
 import {useGalaxyOnPage} from '../../lib/galaxy/galaxy';
+import styles from './styles.module.scss';
 function BlogPostPageContent({sidebar, children}) {
   const {metadata, toc} = useBlogPost();
   const {nextItem, prevItem, frontMatter} = metadata;
@@ -44,11 +45,13 @@ function BlogPostPageContent({sidebar, children}) {
       sidebar={sidebar}
       toc={
         !hideTableOfContents && toc.length > 0 ? (
-          <TOC
-            toc={toc}
-            minHeadingLevel={tocMinHeadingLevel}
-            maxHeadingLevel={tocMaxHeadingLevel}
-          />
+          <div className={styles.tocWrapper}>
+            <TOC
+              toc={toc}
+              minHeadingLevel={tocMinHeadingLevel}
+              maxHeadingLevel={tocMaxHeadingLevel}
+            />
+          </div>
         ) : undefined
       }>
       <ContentVisibility metadata={metadata} />
