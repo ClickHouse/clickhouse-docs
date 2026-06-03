@@ -1,6 +1,7 @@
 @use "colors";
 @use "default";
 @use "home";
+@use "clickhouse-sql";
 @use "./breakpoints.scss" as breakpoints;
 
 @tailwind base;

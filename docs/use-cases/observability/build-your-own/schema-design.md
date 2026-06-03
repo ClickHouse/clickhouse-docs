@@ -42,7 +42,9 @@ SELECT LogAttributes
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
@@ -58,7 +60,9 @@ WHERE ((LogAttributes['request_type']) = 'POST')
 GROUP BY path
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─path─────────────────────┬─────c─┐
 │ /m/updateVariation       │ 12182 │
 │ /site/productCard        │ 11080 │
@@ -86,7 +90,9 @@ WHERE JSONExtractString(Body, 'request_type') = 'POST'
 GROUP BY path
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─path─────────────────────┬─────c─┐
 │ /m/updateVariation       │ 12182 │
 │ /site/productCard        │ 11080 │
@@ -106,7 +112,9 @@ SELECT Body, LogAttributes
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105/brand HTTP/1.1" 200 2653 "https://www.zanbil.ir/filter/b43,p56" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" "-"
@@ -128,7 +136,9 @@ FROM
 GROUP BY path
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─path─────────────────────┬─────c─┐
 │ /m/updateVariation       │ 12182 │
 │ /site/productCard        │ 11080 │
@@ -202,7 +212,9 @@ WHERE RequestType = 'POST'
 GROUP BY path
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─path─────────────────────┬─────c─┐
 │ /m/updateVariation       │ 12182 │
 │ /site/productCard        │ 11080 │
@@ -284,7 +296,9 @@ SELECT
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
@@ -383,7 +397,9 @@ SELECT *
 FROM otel_logs_v2
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
@@ -472,7 +488,9 @@ For example, the following query identifies all of the unique keys available in 
 SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
 FROM otel_logs
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','request_type','log.file.name','referer','request_path','status','user_agent','remote_addr','time_local','size','request_protocol']
@@ -525,7 +543,9 @@ We have several materialized columns and an `ALIAS` column, `RemoteAddr`, that a
 SELECT RemoteAddr
 FROM default.otel_logs
 LIMIT 5
+```
 
+```response
 ┌─RemoteAddr────┐
 │ 54.36.149.41  │
 │ 31.56.96.51   │
@@ -546,7 +566,9 @@ ALTER TABLE default.otel_logs
 SELECT Size
 FROM default.otel_logs_v3
 LIMIT 5
+```
 
+```response
 ┌─Size──┐
 │ 30577 │
 │ 5667  │
@@ -617,6 +639,9 @@ SELECT *
 FROM url('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV', '\n           \tip_range_start IPv4, \n       \tip_range_end IPv4, \n         \tcountry_code Nullable(String), \n     \tstate1 Nullable(String), \n           \tstate2 Nullable(String), \n           \tcity Nullable(String), \n     \tpostcode Nullable(String), \n         \tlatitude Float64, \n          \tlongitude Float64, \n         \ttimezone Nullable(String)\n   \t')
 LIMIT 1
 FORMAT Vertical
+```
+
+```response
 Row 1:
 ──────
 ip_range_start: 1.0.0.0
@@ -648,7 +673,9 @@ CREATE TABLE geoip_url(
 ) ENGINE=URL('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV')
 
 select count() from geoip_url;
+```
 
+```response
 ┌─count()─┐
 │ 3261621 │ -- 3.26 million
 └─────────┘
@@ -671,7 +698,9 @@ SELECT
 FROM
         geoip_url
 LIMIT 4;
+```
 
+```response
 ┌─ip_range_start─┬─ip_range_end─┬─cidr───────┐
 │ 1.0.0.0        │ 1.0.0.255    │ 1.0.0.0/24 │
 │ 1.0.1.0        │ 1.0.3.255    │ 1.0.0.0/22 │
@@ -732,7 +761,9 @@ We can select rows from the dictionary and confirm this dataset is available for
 
 ```sql
 SELECT * FROM ip_trie LIMIT 3
+```
 
+```response
 ┌─cidr───────┬─latitude─┬─longitude─┬─country_code─┐
 │ 1.0.0.0/22 │  26.0998 │   119.297 │ CN           │
 │ 1.0.0.0/24 │ -27.4767 │   153.017 │ AU           │
@@ -750,7 +781,9 @@ Now that we have Geo IP data loaded into our `ip_trie` dictionary (conveniently 
 
 ```sql
 SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.242.48.167', 'IPv4')) AS ip_details
+```
 
+```response
 ┌─ip_details──────────────┐
 │ ('PT',38.7944,-9.34284) │
 └─────────────────────────┘
@@ -770,7 +803,9 @@ WHERE country != ''
 GROUP BY country
 ORDER BY count() DESC
 LIMIT 5
+```
 
+```response
 ┌─country─┬─num_requests────┐
 │ IR      │ 7.36 million    │
 │ US      │ 1.67 million    │
@@ -920,7 +955,9 @@ SELECT
         dictGet('regexp_device_dict', ('device_replacement', 'brand_replacement', 'model_replacement'), user_agent) AS device,
         dictGet('regexp_browser_dict', ('family_replacement', 'v1_replacement', 'v2_replacement'), user_agent) AS browser,
         dictGet('regexp_os_dict', ('os_replacement', 'os_v1_replacement', 'os_v2_replacement', 'os_v3_replacement'), user_agent) AS os
+```
 
+```response
 ┌─device────────────────┬─browser───────────────┬─os─────────────────────────┐
 │ ('Mac','Apple','Mac') │ ('Firefox','127','0') │ ('Mac OS X','10','15','0') │
 └───────────────────────┴───────────────────────┴────────────────────────────┘
@@ -995,7 +1032,9 @@ SELECT Device, Browser, Os
 FROM otel_logs_v2
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Device:  ('Spider','Spider','Desktop')
@@ -1034,7 +1073,9 @@ FROM otel_logs
 GROUP BY Hour
 ORDER BY Hour DESC
 LIMIT 5
+```
 
+```response
 ┌────────────────Hour─┬─TotalBytes─┐
 │ 2019-01-26 16:00:00 │ 1661716343 │
 │ 2019-01-26 15:00:00 │ 1824015281 │
@@ -1085,7 +1126,9 @@ If we restart our OTel Collector and resend the logs, the `bytes_per_hour` table
 SELECT count()
 FROM bytes_per_hour
 FINAL
+```
 
+```response
 ┌─count()─┐
 │     113 │
 └─────────┘
@@ -1110,7 +1153,9 @@ FROM bytes_per_hour
 GROUP BY Hour
 ORDER BY Hour DESC
 LIMIT 5
+```
 
+```response
 ┌────────────────Hour─┬─TotalBytes─┐
 │ 2019-01-26 16:00:00 │ 1661716343 │
 │ 2019-01-26 15:00:00 │ 1824015281 │
@@ -1120,7 +1165,9 @@ LIMIT 5
 └─────────────────────┴────────────┘
 
 5 rows in set. Elapsed: 0.008 sec.
+```
 
+```sql
 SELECT
         Hour,
         TotalBytes
@@ -1128,7 +1175,9 @@ FROM bytes_per_hour
 FINAL
 ORDER BY Hour DESC
 LIMIT 5
+```
 
+```response
 ┌────────────────Hour─┬─TotalBytes─┐
 │ 2019-01-26 16:00:00 │ 1661716343 │
 │ 2019-01-26 15:00:00 │ 1824015281 │
@@ -1157,7 +1206,9 @@ SELECT toStartOfHour(Timestamp) AS Hour, uniq(LogAttributes['remote_addr']) AS U
 FROM otel_logs
 GROUP BY Hour
 ORDER BY Hour DESC
+```
 
+```response
 ┌────────────────Hour─┬─UniqueUsers─┐
 │ 2019-01-26 16:00:00 │     4763    │
 │ 2019-01-22 00:00:00 │     536     │
@@ -1199,6 +1250,9 @@ Once the data has been reloaded, through a Collector restart, we can confirm 113
 SELECT count()
 FROM unique_visitors_per_hour
 FINAL
+```
+
+```response
 ┌─count()─┐
 │   113   │
 └─────────┘
@@ -1213,7 +1267,9 @@ SELECT Hour, uniqMerge(UniqueUsers) AS UniqueUsers
 FROM unique_visitors_per_hour
 GROUP BY Hour
 ORDER BY Hour DESC
+```
 
+```response
 ┌────────────────Hour─┬─UniqueUsers─┐
 │ 2019-01-26 16:00:00 │      4763   │
 │ 2019-01-22 00:00:00 │      536    │
@@ -1353,7 +1409,9 @@ SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
 FROM otel_logs_v2
 WHERE Status = 500
 FORMAT `Null`
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 685.32 MB (58.66 million rows/s., 3.88 GB/s.)
@@ -1415,7 +1473,9 @@ Importantly, if the projection is created via an `ALTER`, its creation is asynch
 SELECT parts_to_do, is_done, latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
+```
 
+```response
 ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
 │           0 │     1   │                    │
 └─────────────┴─────────┴────────────────────┘
@@ -1430,7 +1490,9 @@ SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
 FROM otel_logs_v2
 WHERE Status = 500
 FORMAT `Null`
+```
 
+```response
 0 rows in set. Elapsed: 0.031 sec. Processed 51.42 thousand rows, 22.85 MB (1.65 million rows/s., 734.63 MB/s.)
 Peak memory usage: 27.85 MiB.
 ```
@@ -1496,7 +1558,9 @@ We can use `hasAnyTokens` also without text index but the query will perform a s
 SELECT count()
 FROM otel_logs
 WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+```
 
+```response
 Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 
    ┌─count()─┐
@@ -1551,7 +1615,9 @@ The amount of accessed data reduces from gigabytes to megabytes and performance 
 SELECT count()
 FROM otel_logs_index_body
 WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+```
 
+```response
 Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
 
    ┌─count()─┐
@@ -1587,7 +1653,9 @@ In this example the preprocessor:
 SELECT count()
 FROM otel_logs_text_body_preprocessed
 WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+```
 
+```response
 Query id: f6a5cd9c-665f-4e4f-82f2-d6a4408a68a8
 
    ┌─count()─┐
@@ -1609,7 +1677,9 @@ SELECT
     formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
 FROM system.data_skipping_indices
 WHERE startsWith(`table`, 'otel_logs')
+```
 
+```response
 Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
    ┌─table───────────────────────────────────┬─compressed_size─┬─uncompressed_size─┐
@@ -1636,7 +1706,9 @@ To evaluate the tokens that will be produced and therefore, matched, the `tokens
 
 ```sql
 SELECT tokens('https://www.zanbil.ir/m/filter/b113')
+```
 
+```response
 ┌─tokens────────────────────────────────────────────┐
 │ ['https','www','zanbil','ir','m','filter','b113'] │
 └───────────────────────────────────────────────────┘
@@ -1648,7 +1720,9 @@ The `ngram` function provides similar capabilities, where an `ngram` size can be
 
 ```sql
 SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
+```
 
+```response
 ┌─ngrams('https://www.zanbil.ir/m/filter/b113', 3)────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ ['htt','ttp','tps','ps:','s:/','://','//w','/ww','www','ww.','w.z','.za','zan','anb','nbi','bil','il.','l.i','.ir','ir/','r/m','/m/','m/f','/fi','fil','ilt','lte','ter','er/','r/b','/b1','b11','113'] │
 └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -1662,7 +1736,9 @@ For the purposes of this example we use the structured logs dataset. Suppose we 
 SELECT count()
 FROM otel_logs_v2
 WHERE Referer LIKE '%ultra%'
+```
 
+```response
 ┌─count()─┐
 │  114514 │
 └─────────┘
@@ -1706,6 +1782,9 @@ If tuned correctly, the speedup here can be significant:
 SELECT count()
 FROM otel_logs_bloom
 WHERE Referer LIKE '%ultra%'
+```
+
+```response
 ┌─count()─┐
 │   182   │
 └─────────┘
@@ -1727,7 +1806,9 @@ EXPLAIN indexes = 1
 SELECT count()
 FROM otel_logs_v2
 WHERE Referer LIKE '%ultra%'
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                          │
 │   Aggregating                                                      │
@@ -1742,12 +1823,16 @@ WHERE Referer LIKE '%ultra%'
 └────────────────────────────────────────────────────────────────────┘
 
 10 rows in set. Elapsed: 0.016 sec.
+```
 
+```sql
 EXPLAIN indexes = 1
 SELECT count()
 FROM otel_logs_bloom
 WHERE Referer LIKE '%ultra%'
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                          │
 │   Aggregating                                                      │
@@ -1779,20 +1864,26 @@ FROM system.columns
 WHERE (`table` = 'otel_logs_bloom') AND (name = 'Referer')
 GROUP BY name
 ORDER BY sum(data_compressed_bytes) DESC
+```
 
+```response
 ┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
 └─────────┴─────────────────┴───────────────────┴───────┘
 
 1 row in set. Elapsed: 0.018 sec.
+```
 
+```sql
 SELECT
         `table`,
         formatReadableSize(data_compressed_bytes) AS compressed_size,
         formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
 FROM system.data_skipping_indices
 WHERE `table` = 'otel_logs_bloom'
+```
 
+```response
 ┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
 │ otel_logs_bloom │ 12.03 MiB       │ 12.17 MiB         │
 └─────────────────┴─────────────────┴───────────────────┘

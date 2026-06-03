@@ -189,7 +189,9 @@ Insert the data using `INSERT INTO SELECT` and the [s3 function](/sql-reference/
 ```sql
 INSERT INTO git.commits SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/commits.tsv.xz', 'TSV', 'hash String,author LowCardinality(String), time DateTime, message String, files_added UInt32, files_deleted UInt32, files_renamed UInt32, files_modified UInt32, lines_added UInt32, lines_deleted UInt32, hunks_added UInt32, hunks_removed UInt32, hunks_changed UInt32')
+```
 
+```response
 0 rows in set. Elapsed: 1.826 sec. Processed 62.78 thousand rows, 8.50 MB (34.39 thousand rows/s., 4.66 MB/s.)
 ```
 
@@ -198,7 +200,9 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 ```sql
 INSERT INTO git.file_changes SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/file_changes.tsv.xz', 'TSV', 'change_type Enum(\'Add\' = 1, \'Delete\' = 2, \'Modify\' = 3, \'Rename\' = 4, \'Copy\' = 5, \'Type\' = 6), path LowCardinality(String), old_path LowCardinality(String), file_extension LowCardinality(String), lines_added UInt32, lines_deleted UInt32, hunks_added UInt32, hunks_removed UInt32, hunks_changed UInt32, commit_hash String, author LowCardinality(String), time DateTime, commit_message String, commit_files_added UInt32, commit_files_deleted UInt32, commit_files_renamed UInt32, commit_files_modified UInt32, commit_lines_added UInt32, commit_lines_deleted UInt32, commit_hunks_added UInt32, commit_hunks_removed UInt32, commit_hunks_changed UInt32')
+```
 
+```response
 0 rows in set. Elapsed: 2.688 sec. Processed 266.05 thousand rows, 48.30 MB (98.97 thousand rows/s., 17.97 MB/s.)
 ```
 
@@ -207,7 +211,9 @@ FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhou
 ```sql
 INSERT INTO git.line_changes SELECT *
 FROM s3('https://datasets-documentation.s3.amazonaws.com/github/commits/clickhouse/line_changes.tsv.xz', 'TSV', '    sign Int8, line_number_old UInt32, line_number_new UInt32, hunk_num UInt32, hunk_start_line_number_old UInt32, hunk_start_line_number_new UInt32, hunk_lines_added UInt32,\n    hunk_lines_deleted UInt32, hunk_context LowCardinality(String), line LowCardinality(String), indent UInt8, line_type Enum(\'Empty\' = 0, \'Comment\' = 1, \'Punct\' = 2, \'Code\' = 3), prev_commit_hash String, prev_author LowCardinality(String), prev_time DateTime, file_change_type Enum(\'Add\' = 1, \'Delete\' = 2, \'Modify\' = 3, \'Rename\' = 4, \'Copy\' = 5, \'Type\' = 6),\n    path LowCardinality(String), old_path LowCardinality(String), file_extension LowCardinality(String), file_lines_added UInt32, file_lines_deleted UInt32, file_hunks_added UInt32, file_hunks_removed UInt32, file_hunks_changed UInt32, commit_hash String,\n    author LowCardinality(String), time DateTime, commit_message String, commit_files_added UInt32, commit_files_deleted UInt32, commit_files_renamed UInt32, commit_files_modified UInt32, commit_lines_added UInt32, commit_lines_deleted UInt32, commit_hunks_added UInt32, commit_hunks_removed UInt32, commit_hunks_changed UInt32')
+```
 
+```response
 0 rows in set. Elapsed: 50.535 sec. Processed 7.54 million rows, 2.09 GB (149.11 thousand rows/s., 41.40 MB/s.)
 ```
 
@@ -238,7 +244,9 @@ FROM git.file_changes
 WHERE path = 'src/Storages/StorageReplicatedMergeTree.cpp'
 ORDER BY time DESC
 LIMIT 10
+```
 
+```response
 ┌────────────────time─┬─commit──────┬─change_type─┬─author─────────────┬─path────────────────────────────────────────┬─old_path─┬─lines_added─┬─lines_deleted─┬─commit_message───────────────────────────────────┐
 │ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp │          │          13 │            10 │ fix accessing part in Deleting state             │
 │ 2022-10-23 16:24:20 │ b40d9200d20 │ Modify      │ Anton Popov        │ src/Storages/StorageReplicatedMergeTree.cpp │          │          28 │            30 │ better semantic of constsness of DataPartStorage │
@@ -272,7 +280,9 @@ FROM git.line_changes
 WHERE path = 'src/Storages/StorageReplicatedMergeTree.cpp'
 ORDER BY line_number_new ASC
 LIMIT 10
+```
 
+```response
 ┌────────────────time─┬─commit──────┬─sign─┬─line_number_old─┬─line_number_new─┬─author───────────┬─line──────────────────────────────────────────────────┐
 │ 2020-04-16 02:06:10 │ cdeda4ab915 │   -1 │               1 │               1 │ Alexey Milovidov │ #include <Disks/DiskSpaceMonitor.h>                   │
 │ 2020-04-16 02:06:10 │ cdeda4ab915 │    1 │               2 │               1 │ Alexey Milovidov │ #include <Core/Defines.h>                             │
@@ -320,7 +330,9 @@ FROM
 GROUP BY path
 HAVING (argMax(change_type, last_time) != 2) AND NOT match(path, '(^dbms/)|(^libs/)|(^tests/testflows/)|(^programs/server/store/)') ORDER BY path
 LIMIT 10
+```
 
+```response
 ┌─path────────────────────────────────────────────────────────────┐
 │ tests/queries/0_stateless/01054_random_printable_ascii_ubsan.sh │
 │ tests/queries/0_stateless/02247_read_bools_as_numbers_json.sh   │
@@ -365,7 +377,9 @@ FROM
     GROUP BY path
     HAVING (argMax(change_type, last_time) != 2) AND NOT match(path, '(^dbms/)|(^libs/)|(^tests/testflows/)|(^programs/server/store/)') ORDER BY path
 )
+```
 
+```response
 ┌─uniq(path)─┐
 │      18559 │
 └────────────┘
@@ -400,7 +414,9 @@ The difference here is caused by a few factors:
       commit_hash
   FROM git.file_changes
   WHERE (path = 'src/Functions/geometryFromColumn.h') OR (old_path = 'src/Functions/geometryFromColumn.h')
+```
 
+```response
   ┌─change_type─┬─path───────────────────────────────┬─old_path───────────────────────────┬────────────────time─┬─commit_hash──────────────────────────────┐
   │ Add         │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 9376b676e9a9bb8911b872e1887da85a45f7479d │
   │ Modify      │ src/Functions/geometryFromColumn.h │                                    │ 2021-03-11 12:08:16 │ 6d59be5ea4768034f6526f7f9813062e0c369f7b │
@@ -458,7 +474,9 @@ WHERE (path IN (current_files)) AND (file_extension IN ('h', 'cpp', 'sql'))
 GROUP BY path
 ORDER BY modifications DESC
 LIMIT 10
+```
 
+```response
 ┌─path───────────────────────────────────────────────────┬─modifications─┐
 │ src/Storages/StorageReplicatedMergeTree.cpp            │         21871 │
 │ src/Storages/MergeTree/MergeTreeData.cpp               │         17709 │
@@ -485,7 +503,9 @@ SELECT
     count() AS c
 FROM git.commits
 GROUP BY dayOfWeek(time) AS day_of_week
+```
 
+```response
 ┌─day_of_week─┬─────c─┐
 │           1 │ 10575 │
 │           2 │ 10645 │
@@ -518,7 +538,9 @@ WHERE path LIKE 'src/Storages%'
 GROUP BY toStartOfWeek(time) AS week
 ORDER BY week ASC
 LIMIT 10
+```
 
+```response
 ┌───────week─┬─lines_added─┬─lines_deleted─┬─num_commits─┬─authors─┐
 │ 2020-03-29 │          49 │            35 │           4 │       3 │
 │ 2020-04-05 │         940 │           601 │          55 │      14 │
@@ -582,7 +604,9 @@ WHERE path IN (current_files)
 GROUP BY path
 ORDER BY num_authors DESC
 LIMIT 10
+```
 
+```response
 ┌─path────────────────────────────────────────┬─num_authors─┐
 │ src/Core/Settings.h                         │         127 │
 │ CMakeLists.txt                              │          96 │
@@ -639,7 +663,9 @@ WHERE path IN (current_files)
 GROUP BY line
 ORDER BY latest_change ASC
 LIMIT 10
+```
 
+```response
 ┌─file_path───────────────────────────────────┬─line────────────────────────────────────────────────────────┬───────latest_change─┬─any(file_change_type)─┐
 │ utils/compressor/test.sh                    │ ./compressor -d < compressor.snp > compressor2              │ 2011-06-17 22:19:39 │ Modify                │
 │ utils/compressor/test.sh                    │ ./compressor < compressor > compressor.snp                  │ 2011-06-17 22:19:39 │ Modify                │
@@ -695,7 +721,9 @@ WHERE path IN (current_files)
 GROUP BY path
 ORDER BY c DESC
 LIMIT 10
+```
 
+```response
 ┌───c─┬─path────────────────────────────────────────┬───────latest_change─┐
 │ 790 │ src/Storages/StorageReplicatedMergeTree.cpp │ 2022-10-30 16:30:51 │
 │ 788 │ src/Storages/MergeTree/MergeTreeData.cpp    │ 2022-11-04 09:26:44 │
@@ -737,7 +765,9 @@ FROM
     WHERE (sign = 1) AND (file_extension IN ('h', 'cpp', 'sql', 'md'))
     GROUP BY dayOfMonth(time) AS day
 )
+```
 
+```response
 ┌─day─┬─bar─────────────────────────────────────────────────────────────┐
 │   1 │ ███████████████████████████████████▍                            │
 │   2 │ ███████████████████████▋                                        │
@@ -792,7 +822,9 @@ WHERE (change_type IN ('Add', 'Modify')) AND (file_extension IN ('h', 'cpp', 'sq
 GROUP BY author
 ORDER BY num_files DESC
 LIMIT 10
+```
 
+```response
 ┌─author─────────────┬─num_files─┐
 │ Alexey Milovidov   │      8433 │
 │ Nikolai Kochetov   │      3257 │
@@ -837,7 +869,9 @@ FROM
 GROUP BY author
 ORDER BY num_files DESC
 LIMIT 10
+```
 
+```response
 ┌─author───────────────┬─num_files─┐
 │ Mikhail              │       782 │
 │ Li Yin               │       553 │
@@ -892,7 +926,9 @@ WHERE (author = 'Alexey Milovidov') AND (path IN (current_files))
 GROUP BY path
 ORDER BY c DESC
 LIMIT 10
+```
 
+```response
 ┌─path────────────────────────────────────────┬───c─┐
 │ CMakeLists.txt                              │ 165 │
 │ CHANGELOG.md                                │ 126 │
@@ -922,7 +958,9 @@ WHERE (author = 'Alexey Milovidov') AND (file_extension IN ('h', 'cpp', 'sql'))
 GROUP BY basename(path) AS base
 ORDER BY c DESC
 LIMIT 10
+```
 
+```response
 ┌─base───────────────────────────┬───c─┐
 │ StorageReplicatedMergeTree.cpp │ 393 │
 │ InterpreterSelectQuery.cpp     │ 299 │
@@ -982,7 +1020,9 @@ WHERE path IN (current_files)
 GROUP BY path
 ORDER BY lines_author_ratio DESC
 LIMIT 10
+```
 
+```response
 ┌─path──────────────────────────────────────────────────────────────────┬─num_lines─┬─num_authors─┬─lines_author_ratio─┐
 │ src/Common/ClassificationDictionaries/emotional_dictionary_rus.txt    │    148590 │           1 │             148590 │
 │ src/Functions/ClassificationDictionaries/emotional_dictionary_rus.txt │     55533 │           1 │              55533 │
@@ -1037,7 +1077,9 @@ WHERE (path IN (current_files)) AND (file_extension IN ('h', 'cpp', 'sql'))
 GROUP BY path
 ORDER BY lines_author_ratio DESC
 LIMIT 10
+```
 
+```response
 ┌─path──────────────────────────────────┬─num_lines─┬─num_authors─┬─lines_author_ratio─┐
 │ src/Analyzer/QueryAnalysisPass.cpp    │      5686 │           1 │               5686 │
 │ src/Analyzer/QueryTreeBuilder.cpp     │       880 │           1 │                880 │
@@ -1093,7 +1135,9 @@ GROUP BY path
 HAVING min_date <= (now() - toIntervalYear(1))
 ORDER BY lines_author_ratio DESC
 LIMIT 10
+```
 
+```response
 ┌────────────min_date─┬─path───────────────────────────────────────────────────────────┬─num_lines─┬─num_authors─┬─lines_author_ratio─┐
 │ 2021-03-08 07:00:54 │ utils/memcpy-bench/FastMemcpy.h                                │       770 │           1 │                770 │
 │ 2021-05-04 13:47:34 │ src/Functions/sphinxstemen.cpp                                 │       728 │           1 │                728 │
@@ -1125,7 +1169,9 @@ SELECT
 FROM git.file_changes
 WHERE path LIKE 'src/Functions%'
 GROUP BY toDayOfWeek(time) AS dayOfWeek
+```
 
+```response
 ┌─dayOfWeek─┬─commits─┬─lines_added─┬─lines_deleted─┐
 │         1 │     476 │       24619 │         15782 │
 │         2 │     434 │       18098 │          9938 │
@@ -1152,7 +1198,9 @@ SELECT
 FROM git.file_changes
 WHERE path LIKE 'src/Functions%'
 GROUP BY toHour(time) AS hourOfDay
+```
 
+```response
 ┌─hourOfDay─┬─commits─┬─lines_added─┬─lines_deleted─┐
 │         0 │      71 │        4169 │          3404 │
 │         1 │      90 │        2174 │          1927 │
@@ -1204,7 +1252,9 @@ FROM
     WHERE path LIKE 'src/Functions%'
     GROUP BY toHour(time) AS hourOfDay
 )
+```
 
+```response
 ┌─hourOfDay─┬─commits───────────────────────┬─lines_added────────────────────────────────────────┬─lines_deleted──────────────────────────────────────┐
 │         0 │ ████████▊                     │ ██████▊                                            │ ███████████▎                                       │
 │         1 │ ███████████▎                  │ ███▌                                               │ ██████▍                                            │
@@ -1254,7 +1304,9 @@ GROUP BY
 ORDER BY c DESC
 LIMIT 1 BY prev_author
 LIMIT 100
+```
 
+```response
 ┌─prev_author──────────┬─author───────────┬─────c─┐
 │ Ivan                 │ Alexey Milovidov │ 18554 │
 │ Alexey Arno          │ Alexey Milovidov │ 18475 │
@@ -1308,7 +1360,9 @@ ORDER BY
     day_of_week ASC,
     c DESC
 LIMIT 1 BY day_of_week
+```
 
+```response
 ┌─day_of_week─┬─author───────────┬────c─┐
 │           1 │ Alexey Milovidov │ 2204 │
 │           2 │ Alexey Milovidov │ 1588 │
@@ -1340,7 +1394,9 @@ ORDER BY
     day_of_week ASC,
     c DESC
 LIMIT 1 BY day_of_week
+```
 
+```response
 ┌─day_of_week─┬─author───────────┬───c─┐
 │           1 │ Alexey Milovidov │ 198 │
 │           2 │ alesapin         │ 162 │
@@ -1390,7 +1446,9 @@ INNER JOIN
     WHERE time > (now() - toIntervalYear(1))
     GROUP BY dayOfWeek(time) AS day_of_week
 ) AS all_work USING (day_of_week)
+```
 
+```response
 ┌─day_of_week─┬─author──────────────┬──top_author_percent─┐
 │           1 │ Alexey Milovidov    │  0.3168282877768332 │
 │           2 │ Mikhail f. Shiryaev │  0.3523434231193969 │
@@ -1456,7 +1514,9 @@ ORDER BY
     root ASC,
     c DESC
 LIMIT 5 BY root
+```
 
+```response
 ┌─folder───────────────────────────┬─avg_age_of_files─┬─min_age_files─┬─max_age_files─┬────c─┐
 │ base/base                        │              387 │           201 │           397 │   84 │
 │ base/glibc-compatibility         │              887 │            59 │           993 │   19 │
@@ -1520,7 +1580,9 @@ INNER JOIN
 WHERE written_code.c > 1000
 ORDER BY remove_ratio DESC
 LIMIT 10
+```
 
+```response
 ┌─k──────────────────┬─────c─┬─removed_code.c─┬───────remove_ratio─┐
 │ Marek Vavruša      │  1458 │           1318 │ 0.9039780521262003 │
 │ Ivan               │ 32715 │          27500 │ 0.8405930001528351 │
@@ -1573,7 +1635,9 @@ WHERE (file_extension IN ('h', 'cpp', 'sql')) AND (path IN (current_files))
 GROUP BY path
 ORDER BY c DESC
 LIMIT 10
+```
 
+```response
 ┌─path───────────────────────────────────────────────────┬─────c─┐
 │ src/Storages/StorageReplicatedMergeTree.cpp            │ 21871 │
 │ src/Storages/MergeTree/MergeTreeData.cpp               │ 17709 │
@@ -1661,7 +1725,9 @@ WHERE (type = 'Modify') AND (percent_add >= 0.5) AND (percent_delete >= 0.5) AND
 GROUP BY path
 ORDER BY num_rewrites DESC
 LIMIT 10
+```
 
+```response
 ┌─path──────────────────────────────────────────────────┬─num_rewrites─┐
 │ src/Storages/WindowView/StorageWindowView.cpp         │            8 │
 │ src/Functions/array/arrayIndex.h                      │            7 │
@@ -1726,7 +1792,9 @@ FROM
     WHERE removed_code.time > added_code.time
 )
 GROUP BY dayOfWeek(added_day) AS day_of_week_added
+```
 
+```response
 ┌─day_of_week_added─┬────num─┬───avg_days_present─┐
 │                 1 │ 171879 │ 193.81759260875384 │
 │                 2 │ 141448 │  153.0931013517335 │
@@ -1813,7 +1881,9 @@ FROM lines_removed
 GROUP BY path
 ORDER BY avg_code_age DESC
 LIMIT 10
+```
 
+```response
 ┌─path────────────────────────────────────────────────────────────┬──────avg_code_age─┐
 │ utils/corrector_utf8/corrector_utf8.cpp                         │ 1353.888888888889 │
 │ tests/queries/0_stateless/01288_shard_max_network_bandwidth.sql │               881 │
@@ -1849,7 +1919,9 @@ GROUP BY author
 HAVING code > 20
 ORDER BY code DESC
 LIMIT 20
+```
 
+```response
 ┌─author───────────────┬─test─┬──code─┬─────────ratio_code─┐
 │ Alexey Milovidov     │ 6617 │ 41799 │ 0.8633303040317251 │
 │ Nikolai Kochetov     │  916 │ 13361 │ 0.9358408629263851 │
@@ -1901,7 +1973,9 @@ SELECT
     arrayJoin(hist).1 AS lower,
     arrayJoin(hist).2 AS upper,
     bar(arrayJoin(hist).3, 0, 100, 500) AS bar
+```
 
+```response
 ┌──────────────lower─┬──────────────upper─┬─bar───────────────────────────┐
 │ 0.6187853312074214 │ 0.6410053888179964 │ █████                         │
 │ 0.6410053888179964 │ 0.6764177968945693 │ █████                         │
@@ -1944,6 +2018,9 @@ FROM
 GROUP BY author
 ORDER BY code DESC
 LIMIT 10
+```
+
+```response
 ┌─author─────────────┬──avg_ratio_comments─┬────code─┐
 │ Alexey Milovidov   │  0.1034915408309902 │ 1147196 │
 │ s-kat              │  0.1361718900215362 │  614224 │
@@ -1980,7 +2057,9 @@ ORDER BY
     author ASC,
     time ASC
 LIMIT 10
+```
 
+```response
 ┌─author──────────────────────┬─code_lines─┬─comments─┬─────────ratio_code─┬───────week─┐
 │ 1lann                       │          8 │        0 │                  1 │ 2022-03-06 │
 │ 20018712                    │          2 │        0 │                  1 │ 2020-09-13 │
@@ -2048,7 +2127,9 @@ GROUP BY week_offset
 HAVING (week_offset % 10) = 0
 ORDER BY week_offset ASC
 LIMIT 20
+```
 
+```response
 ┌─week_offset─┬──────avg_code_ratio─┐
 │           0 │ 0.21626798253005078 │
 │          10 │ 0.18299433892099454 │
@@ -2129,7 +2210,9 @@ SELECT
     avgIf(rewrite_days, rewrite_days > 0) AS avg_rewrite_time,
     quantilesTimingIf(0.5)(rewrite_days, rewrite_days > 0) AS half_life
 FROM rewrites
+```
 
+```response
 ┌─avg_rewrite_time─┬─half_life─┐
 │      122.2890625 │ [23]      │
 └──────────────────┴───────────┘
@@ -2187,7 +2270,9 @@ SELECT
     count() AS num_re_writes
 FROM rewrites
 GROUP BY dayOfWeek
+```
 
+```response
 ┌─dayOfWeek─┬─num_re_writes─┐
 │         1 │           111 │
 │         2 │           121 │
@@ -2261,7 +2346,9 @@ GROUP BY prev_author
 HAVING num_files > 2
 ORDER BY c DESC
 LIMIT 10
+```
 
+```response
 ┌─prev_author─────────┬──────────────────c─┬─num_files─┐
 │ Michael Kolupaev    │              304.6 │         4 │
 │ alexey-milovidov    │  81.83333333333333 │         4 │
@@ -2316,7 +2403,9 @@ FROM commit_days
 GROUP BY author
 ORDER BY max_consecutive_days DESC
 LIMIT 10
+```
 
+```response
 ┌─author───────────┬─max_consecutive_days─┐
 │ kssenii          │                   32 │
 │ Alexey Milovidov │                   30 │
@@ -2348,7 +2437,9 @@ SELECT
     commit_message
 FROM git.file_changes
 WHERE (path = 'src/Storages/StorageReplicatedMergeTree.cpp') AND (change_type = 'Rename')
+```
 
+```response
 ┌────────────────time─┬─path────────────────────────────────────────┬─old_path─────────────────────────────────────┬─commit_hash──────────────────────────────┬─commit_message─┐
 │ 2020-04-03 16:14:31 │ src/Storages/StorageReplicatedMergeTree.cpp │ dbms/Storages/StorageReplicatedMergeTree.cpp │ 06446b4f08a142d6f1bc30664c47ded88ab51782 │ dbms/ → src/   │
 └─────────────────────┴─────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────┴────────────────┘
@@ -2377,7 +2468,9 @@ For example,
 
 ```sql
 SELECT file_path_history('src/Storages/StorageReplicatedMergeTree.cpp') AS paths
+```
 
+```response
 ┌─paths─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ ['src/Storages/StorageReplicatedMergeTree.cpp','dbms/Storages/StorageReplicatedMergeTree.cpp','dbms/src/Storages/StorageReplicatedMergeTree.cpp'] │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -2400,7 +2493,9 @@ WHERE path IN file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')
 ORDER BY time DESC
 LIMIT 1 BY path
 FORMAT PrettyCompactMonoBlock
+```
 
+```response
 ┌────────────────time─┬─commit──────┬─change_type─┬─author─────────────┬─path─────────────────────────────────────────────┬─commit_message──────────────────────────────────────────────────────────────────┐
 │ 2022-10-30 16:30:51 │ c68ab231f91 │ Modify      │ Alexander Tokmakov │ src/Storages/StorageReplicatedMergeTree.cpp      │ fix accessing part in Deleting state                                            │
 │ 2020-04-03 15:21:24 │ 38a50f44d34 │ Modify      │ alesapin           │ dbms/Storages/StorageReplicatedMergeTree.cpp     │ Remove empty line                                                               │
@@ -2428,7 +2523,9 @@ WHERE path IN file_path_history('src/Storages/StorageReplicatedMergeTree.cpp')
 GROUP BY line_number_new
 ORDER BY line_number_new ASC
 LIMIT 20
+```
 
+```response
 ┌─line_number_new─┬─argMax(author, time)─┬─argMax(line, time)────────────────────────────────────────────┐
 │               1 │ Alexey Milovidov     │ #include <Disks/DiskSpaceMonitor.h>                           │
 │               2 │ s-kat                │ #include <Common/FieldVisitors.h>                             │
