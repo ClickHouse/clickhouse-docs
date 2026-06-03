@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import InstallSelector from '@site/src/components/Install/Install'
 import CLIInstall from './_snippets/_cli_install.md'
-import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
-import QuickInstall from './_snippets/_quick_install.md'
 import DebianProd from './_snippets/_deb_install.md'
 import RPMProd from './_snippets/_rpm_install.md'
-import MacOSProd from './_snippets/_macos.md'
 import NixOS from './_snippets/_nixos_install.md'
 import Docker from './_snippets/_docker.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
@@ -35,17 +32,15 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 />
 <br/>
 
-Alternatively, select a platform, distribution and install method below to view install
-instructions for Opensource ClickHouse:
+Prefer to self-manage? Choose how you want to run open-source ClickHouse below.
+Use the ClickHouse CLI for a quick local setup, or install ClickHouse Server
+from packages or binaries for a production deployment.
 
 <InstallSelector
     cli={<CLIInstall/>}
-    windows={<Windows/>}
-    quickinstall={<QuickInstall/>}
     debian_prod={<DebianProd/>}
     rpm_prod={<RPMProd/>}
     tar_prod={<TarProd/>}
-    macos_prod={<MacOSProd/>}
     nixos={<NixOS/>}
     docker={<Docker/>}
 />
