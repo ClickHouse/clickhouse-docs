@@ -13,3 +13,4 @@ operations/utilities/clickhouse-keeper-http-api.md
 cloud/features/backups/faq.md
 interfaces/web-terminal
 operations/query-rules
+use-cases/observability/clickstack/managed-onboarding/setting-up-your-opentelemetry-collector.md
