@@ -51,7 +51,7 @@ const InstallSelector = (props) => {
                     infoUrl="https://clickhouse.com"
                     onClick={handleSelectSource}
                     size="sm"
-                    title="Source & CI builds"
+                    title="Source build"
                     isSelected={platform === 'Source'}
                 />
             </div>
