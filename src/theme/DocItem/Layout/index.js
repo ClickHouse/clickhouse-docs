@@ -17,7 +17,7 @@ import IconClose from "@theme/Icon/Close";
 import {useLocation} from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import RelatedBlogs from "../../../components/RelatedBlogs/RelatedBlogs";
-import {galaxyOnClick} from "../../../lib/galaxy/galaxy";
+import {galaxyOnClick, useGalaxyOnPage} from "../../../lib/galaxy/galaxy";
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
  */
@@ -42,6 +42,10 @@ export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
   const {metadata, frontMatter} = useDoc();
   const {editUrl} = metadata;
+
+  // Instrument every docs page with galaxy load/blur/focus events, keyed on
+  // the page's permalink so each page reports under its own prefix.
+  useGalaxyOnPage(`docs.page.${metadata.permalink}`, [metadata.permalink]);
 
   const location = useLocation();
   const context = useDocusaurusContext();

@@ -171,14 +171,23 @@ export const galaxyOnBlur = (event, depsArray) => {
 /**
  * Instrument galaxy for this page for load, blur and focus events.
  *
+ * Fires `${prefix}.window.load` once each time the page (or `depsArray`)
+ * changes, and tracks blur/focus for the lifetime of the component.
+ *
  * @param prefix used to name the events sent to galaxy (`${prefix}.window.load`, `${prefix}.window.blur` and `${prefix}.window.focus`)
  * @param depsArray used to trigger a rerender of the component that will re-run the useEffect
  *
  */
-export const galaxyOnPage = (prefix, depsArray = []) => {
-  galaxyOnLoad(`${prefix}.window.load`);
-  galaxyOnBlur(`${prefix}.window.blur`, depsArray);
-  galaxyOnFocus(`${prefix}.window.focus`, depsArray);
+export const useGalaxyOnPage = (prefix, depsArray = []) => {
+  // Fire the load event once per page change. Guarded with `?.` because
+  // galaxy is initialised in an effect of its own (see useInitGalaxy) and
+  // may not be ready on the very first paint.
+  useEffect(() => {
+    window.galaxy?.track(`${prefix}.window.load`, { interaction: "trigger" });
+  }, [prefix, ...depsArray]);
+
+  galaxyOnBlur(`${prefix}.window.blur`, [prefix, ...depsArray]);
+  galaxyOnFocus(`${prefix}.window.focus`, [prefix, ...depsArray]);
 };
 
 // Pass String with convention 'namespace.component.eventName'
