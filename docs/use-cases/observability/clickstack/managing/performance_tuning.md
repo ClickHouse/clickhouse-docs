@@ -442,7 +442,9 @@ SELECT *
 FROM otel_traces
 WHERE (ServiceName = 'accountingservice') AND (TraceId = '4512e822ca3c0c68bbf5d4a263f9943d')
 SETTINGS use_query_condition_cache = 0
+```
 
+```response
 2 rows in set. Elapsed: 0.025 sec. Processed 8.52 thousand rows, 299.78 KB (341.22 thousand rows/s., 12.00 MB/s.)
 Peak memory usage: 41.97 MiB.
 ```
@@ -455,7 +457,9 @@ FROM otel_traces
 WHERE (ServiceName = 'accountingservice') AND (TraceId = '4512e822ca3c0c68bbf5d4a263f9943d')
 FORMAT Null
 SETTINGS use_query_condition_cache = 0, use_skip_indexes = 0;
+```
 
+```response
 0 rows in set. Elapsed: 0.702 sec. Processed 1.62 million rows, 56.62 MB (2.31 million rows/s., 80.71 MB/s.)
 Peak memory usage: 198.39 MiB.
 ```

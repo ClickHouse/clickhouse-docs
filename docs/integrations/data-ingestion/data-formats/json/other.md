@@ -40,7 +40,9 @@ ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
@@ -50,7 +52,9 @@ We can select the `tags` column and see that the JSON has been inserted as a str
 ```sql
 SELECT tags
 FROM people
+```
 
+```response
 ┌─tags───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}} │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -62,7 +66,9 @@ The [`JSONExtract`](/sql-reference/functions/json-functions#jsonextract-function
 
 ```sql
 SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
+```
 
+```response
 ┌─holidays──────────────────────────────────────┐
 │ [{"year":2024,"location":"Azores, Portugal"}] │
 └───────────────────────────────────────────────┘
@@ -86,7 +92,9 @@ To insert into this schema, we need to use the `JSONAsString` format:
 ```sql
 INSERT INTO arxiv SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz', 'JSONAsString')
+```
 
+```response
 0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
 
@@ -101,7 +109,9 @@ FROM arxiv_v2
 GROUP BY published_year
 ORDER BY c ASC
 LIMIT 10
+```
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -116,7 +126,9 @@ LIMIT 10
 └────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.264 sec. Processed 2.31 million rows, 153.57 MB (8.75 million rows/s., 582.58 MB/s.)
+```
 
+```sql
 -- using unstructured String
 
 SELECT
@@ -126,7 +138,9 @@ FROM arxiv
 GROUP BY published_year
 ORDER BY published_year ASC
 LIMIT 10
+```
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -182,7 +196,9 @@ FROM arxiv
 GROUP BY published_year
 ORDER BY published_year ASC
 LIMIT 10
+```
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -245,7 +261,9 @@ We can insert our original complete JSON object:
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -255,15 +273,21 @@ Querying these fields within the request object requires a map syntax e.g.:
 
 ```sql
 SELECT company.labels FROM people
+```
 
+```response
 ┌─company.labels───────────────────────────────┐
 │ {'type':'database systems','founded':'2021'} │
 └──────────────────────────────────────────────┘
 
 1 row in set. Elapsed: 0.001 sec.
+```
 
+```sql
 SELECT company.labels['type'] AS type FROM people
+```
 
+```response
 ┌─type─────────────┐
 │ database systems │
 └──────────────────┘
@@ -314,17 +338,23 @@ ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","tags":{"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"},"car":{"name":"Tesla","time":"2024-07-11 15:18:23"}}}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
+```
 
+```sql
 SELECT tags['hobby'] AS hobby
 FROM people
 FORMAT JSONEachRow
 
 {"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"}}
+```
 
+```response
 1 row in set. Elapsed: 0.001 sec.
 ```
 
@@ -454,7 +484,9 @@ Columns can be queried using a dot notation:
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+```
 
+```response
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
@@ -528,7 +560,9 @@ Columns can again be queried using a dot notation:
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+```
 
+```response
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
@@ -556,7 +590,9 @@ FORMAT PrettyJSONEachRow
     "status": "200",
     "size": "24736"
 }
+```
 
+```response
 1 row in set. Elapsed: 0.312 sec.
 ```
 
@@ -580,7 +616,9 @@ WHERE status >= 400
   AND toDateTime(timestamp) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
 GROUP BY method, status
 ORDER BY c DESC LIMIT 5;
+```
 
+```response
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │
 │    404 │ HEAD   │   276 │
@@ -615,7 +653,9 @@ SELECT
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 keys:   ['@timestamp','clientip','request','status','size']
@@ -632,7 +672,9 @@ SELECT
     arrayMap(x -> (x.1), JSONExtractKeysAndValues(json, 'String')) AS keys,
     arrayMap(x -> (x.2), JSONExtractKeysAndValues(json, 'String')) AS values
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
+```
 
+```response
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
@@ -646,7 +688,9 @@ FROM http_with_arrays
 WHERE status >= 400
   AND toDateTime(values[indexOf(keys, '@timestamp')]) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
 GROUP BY method, status ORDER BY c DESC LIMIT 5;
+```
 
+```response
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │
 │    404 │ HEAD   │   276 │

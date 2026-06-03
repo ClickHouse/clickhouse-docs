@@ -426,7 +426,9 @@ SELECT *
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Timestamp:              2019-01-22 06:46:14.000000000
