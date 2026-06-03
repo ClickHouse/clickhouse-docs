@@ -268,13 +268,11 @@ For example, consider the following query:
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
-```
 
-```response
    ┌──────────avg(Score)─┐
    │ 0.18181818181818182 │
    └─────────────────────┘
-
+--highlight-next-line
 1 row in set. Elapsed: 0.040 sec. Processed 90.38 million rows, 361.59 MB (2.25 billion rows/s., 9.01 GB/s.)
 Peak memory usage: 201.93 MiB.
 ```
@@ -347,13 +345,11 @@ at the expense of additional storage.
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
-```
 
-```response
    ┌──────────avg(Score)─┐
 1. │ 0.18181818181818182 │
    └─────────────────────┘
-
+--highlight-next-line
 1 row in set. Elapsed: 0.008 sec. Processed 16.36 thousand rows, 98.17 KB (2.15 million rows/s., 12.92 MB/s.)
 Peak memory usage: 4.06 MiB.
 ```

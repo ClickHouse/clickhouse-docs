@@ -249,9 +249,7 @@ FORMAT PrettyJSONEachRow
     "versions": "Array(JSON(max_dynamic_types=16, max_dynamic_paths=256))"
   }
 }
-```
 
-```response
 1 row in set. Elapsed: 0.003 sec.
 ```
 

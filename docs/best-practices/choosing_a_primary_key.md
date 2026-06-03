@@ -71,13 +71,11 @@ Suppose a user wishes to compute the number of questions submitted after 2024, w
 SELECT count()
 FROM stackoverflow.posts_unordered
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
-```
 
-```response
 ┌─count()─┐
 │  192611 │
 └─────────┘
-
+--highlight-next-line
 1 row in set. Elapsed: 0.055 sec. Processed 59.82 million rows, 361.34 MB (1.09 billion rows/s., 6.61 GB/s.)
 ```
 
@@ -130,13 +128,11 @@ If the same query is repeated on a table with this ordering key:
 SELECT count()
 FROM stackoverflow.posts_ordered
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
-```
 
-```response
 ┌─count()─┐
 │  192611 │
 └─────────┘
-
+--highlight-next-line
 1 row in set. Elapsed: 0.013 sec. Processed 196.53 thousand rows, 1.77 MB (14.64 million rows/s., 131.78 MB/s.)
 ```
 

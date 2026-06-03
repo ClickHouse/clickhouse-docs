@@ -91,9 +91,7 @@ This table is optimized for queries which filter and aggregate by post type and 
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
-```
 
-```response
 ┌─count()─┐
 │     5   │
 └─────────┘

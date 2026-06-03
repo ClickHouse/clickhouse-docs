@@ -477,7 +477,7 @@ even though they aren't in the data.
 
 Run the following command to view the inferred schema:
 
-```response
+```response title="Response"
 ┌─name────────┬─type───────────────────┬
 │ id          │ Nullable(Int64)        │
 │ deleted     │ Nullable(UInt8)        │
