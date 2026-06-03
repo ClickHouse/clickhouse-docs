@@ -257,9 +257,9 @@ USE demo;
 SHOW TABLES;
 ```
 
-如果你的部署中包含示例数据（例如 taxi 数据集），应该会看到如下这些表：
+如果你的部署中包含示例数据 (例如 taxi 数据集) ，应该会看到如下这些表：
 
-```sql title="Response"
+```response
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
@@ -280,13 +280,13 @@ docker-compose logs spark
 
 :::
 
-查询表（如果存在）：
+查询表 (如果存在) ：
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
@@ -302,7 +302,7 @@ SELECT count(*) FROM `default.taxis`;
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │

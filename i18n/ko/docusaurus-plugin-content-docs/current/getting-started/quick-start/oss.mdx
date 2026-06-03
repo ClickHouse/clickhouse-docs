@@ -133,7 +133,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   ORDER BY timestamp
   ```
 
-  응답이 깔끔한 표 형식으로 반환되는 것을 확인할 수 있습니다.
+  응답이 깔끔한 표 형식으로 반환되는 것을 확인할 수 있습니다:
 
   ```text
   ┌─user_id─┬─message────────────────────────────────────────────┬───────────timestamp─┬──metric─┐
@@ -243,7 +243,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')
+      ```
 
+      ```response
       Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
 
       ┌─name──────┬─type────────────────────┐

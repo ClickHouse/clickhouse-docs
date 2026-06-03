@@ -31,7 +31,7 @@ import Image from '@theme/IdealImage';
 При приёме как структурированных, так и неструктурированных логов пользователям часто требуется возможность:
 
 * **Извлекать столбцы из строковых blob-объектов**. Запросы к ним будут выполняться быстрее, чем использование строковых операций при выполнении запроса.
-* **Извлекать ключи из Map**. Базовая схема помещает произвольные атрибуты в столбцы типа Map. Этот тип обеспечивает работу без заранее заданной схемы и имеет то преимущество, что пользователям не нужно предварительно определять столбцы для атрибутов при описании логов и трассировок — часто это невозможно при сборе логов из Kubernetes и необходимости гарантировать сохранение меток подов для последующего поиска. Доступ к ключам Map и их значениям медленнее, чем выполнение запросов по обычным столбцам ClickHouse. Поэтому извлечение ключей из Map в корневые столбцы таблицы часто бывает предпочтительным.
+* **Извлекать ключи из Map**. Базовая схема помещает произвольные атрибуты в столбцы типа Map. Этот тип обеспечивает работу без заранее заданной схемы и имеет то преимущество, что пользователям не нужно предварительно определять столбцы для атрибутов при описании логов и трейсов — часто это невозможно при сборе логов из Kubernetes и необходимости гарантировать сохранение меток подов для последующего поиска. Доступ к ключам Map и их значениям медленнее, чем выполнение запросов по обычным столбцам ClickHouse. Поэтому извлечение ключей из Map в корневые столбцы таблицы часто бывает предпочтительным.
 
 Рассмотрим следующие запросы:
 
@@ -42,7 +42,9 @@ SELECT LogAttributes
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
@@ -58,7 +60,9 @@ WHERE ((LogAttributes['request_type']) = 'POST')
 GROUP BY path
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─path─────────────────────┬─────c─┐
 │ /m/updateVariation       │ 12182 │
 │ /site/productCard        │ 11080 │
@@ -79,7 +83,6 @@ Peak memory usage: 153.71 MiB.
 В целом мы рекомендуем выполнять разбор JSON в ClickHouse для структурированных логов. Мы уверены, что ClickHouse предоставляет самую быструю реализацию разбора JSON. Однако мы понимаем, что вы можете захотеть отправлять логи в другие системы и не хотите, чтобы эта логика была реализована в SQL.
 :::
 
-
 ```sql
 SELECT path(JSONExtractString(Body, 'request_path')) AS path, count() AS c
 FROM otel_logs
@@ -87,7 +90,9 @@ WHERE JSONExtractString(Body, 'request_type') = 'POST'
 GROUP BY path
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─path─────────────────────┬─────c─┐
 │ /m/updateVariation       │ 12182 │
 │ /site/productCard        │ 11080 │
@@ -107,7 +112,9 @@ SELECT Body, LogAttributes
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Body:           151.233.185.144 - - [22/Jan/2019:19:08:54 +0330] "GET /image/105/brand HTTP/1.1" 200 2653 "https://www.zanbil.ir/filter/b43,p56" "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36" "-"
@@ -129,7 +136,9 @@ FROM
 GROUP BY path
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─path─────────────────────┬─────c─┐
 │ /m/updateVariation       │ 12182 │
 │ /site/productCard        │ 11080 │
@@ -152,7 +161,6 @@ LIMIT 5
 :::note OTel или ClickHouse для обработки?
 Вы также можете выполнять обработку, используя процессоры и операторы OTel Collector, как описано [здесь](/observability/integrating-opentelemetry#processing---filtering-transforming-and-enriching). В большинстве случаев вы увидите, что ClickHouse значительно более эффективно использует ресурсы и работает быстрее, чем процессоры коллектора. Основной недостаток выполнения всей обработки событий в SQL — это привязка вашего решения к ClickHouse. Например, вы можете захотеть направлять обработанные логи в другие системы из OTel Collector, например в S3.
 :::
-
 
 ### Материализованные столбцы \{#materialized-columns\}
 
@@ -204,7 +212,9 @@ WHERE RequestType = 'POST'
 GROUP BY path
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─path─────────────────────┬─────c─┐
 │ /m/updateVariation       │ 12182 │
 │ /site/productCard        │ 11080 │
@@ -220,7 +230,6 @@ Peak memory usage: 3.16 MiB.
 :::note
 Материализованные столбцы по умолчанию не возвращаются при выполнении `SELECT *`. Это сделано для гарантии того, что результат `SELECT *` всегда можно вставить обратно в таблицу с помощью INSERT. Это поведение можно отключить, установив `asterisk_include_materialized_columns=1`, а также его можно изменить в Grafana (см. `Additional Settings -> Custom Settings` в конфигурации источника данных).
 :::
-
 
 ## Materialized views \{#materialized-views\}
 
@@ -288,7 +297,9 @@ SELECT
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
@@ -348,9 +359,8 @@ ORDER BY (ServiceName, Timestamp)
 Выбранные здесь типы основаны на оптимизациях, рассмотренных в разделе [&quot;Optimizing types&quot;](#optimizing-types).
 
 :::note
-Обратите внимание, насколько существенно мы изменили схему. На практике у вас, вероятно, также будут столбцы трассировок, которые вам потребуется сохранить, а также столбец `ResourceAttributes` (обычно он содержит метаданные Kubernetes). Grafana может использовать столбцы трассировок для реализации связей между логами и трассировками — см. раздел [&quot;Using Grafana&quot;](/observability/grafana).
+Обратите внимание, насколько существенно мы изменили схему. На практике у вас, вероятно, также будут столбцы трейсов, которые вам потребуется сохранить, а также столбец `ResourceAttributes` (обычно он содержит метаданные Kubernetes). Grafana может использовать столбцы трейсов для реализации связей между логами и трейсами — см. раздел [&quot;Using Grafana&quot;](/observability/grafana).
 :::
-
 
 Ниже мы создаём materialized view `otel_logs_mv`, которая выполняет приведённый выше SELECT-запрос для таблицы `otel_logs` и записывает результаты в `otel_logs_v2`.
 
@@ -388,7 +398,9 @@ SELECT *
 FROM otel_logs_v2
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Body:           {"remote_addr":"54.36.149.41","remote_user":"-","run_time":"0","time_local":"2019-01-22 00:26:14.000","request_type":"GET","request_path":"\/filter\/27|13 ,27|  5 ,p53","request_protocol":"HTTP\/1.1","status":"200","size":"30577","referer":"-","user_agent":"Mozilla\/5.0 (compatible; AhrefsBot\/6.1; +http:\/\/ahrefs.com\/robot\/)"}
@@ -413,7 +425,6 @@ SeverityNumber:  9
 ```
 
 Эквивалентный materialized view, который извлекает столбцы из столбца `Body` с помощью JSON‑функций, показан ниже:
-
 
 ```sql
 CREATE MATERIALIZED VIEW otel_logs_mv TO otel_logs_v2 AS
@@ -479,7 +490,9 @@ FROM otel_logs
 SELECT groupArrayDistinctArray(mapKeys(LogAttributes))
 FROM otel_logs
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 groupArrayDistinctArray(mapKeys(LogAttributes)): ['remote_user','run_time','request_type','log.file.name','referer','request_path','status','user_agent','remote_addr','time_local','size','request_protocol']
@@ -491,7 +504,6 @@ Peak memory usage: 71.90 MiB.
 :::note Избегайте точек
 Мы не рекомендуем использовать точки в именах столбцов Map и в дальнейшем можем объявить такое использование устаревшим. Используйте символ `_`.
 :::
-
 
 ## Использование псевдонимов \{#using-aliases\}
 
@@ -527,13 +539,15 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, Timestamp)
 ```
 
-У нас есть несколько материализованных столбцов и столбец `ALIAS` — `RemoteAddr`, который обращается к карте `LogAttributes`. Теперь мы можем запрашивать значения `LogAttributes['remote_addr']` через этот столбец, тем самым упрощая наш запрос, т.е.
+У нас есть несколько материализованных столбцов и столбец `ALIAS` — `RemoteAddr`, который обращается к Map `LogAttributes`. Теперь мы можем запрашивать значения `LogAttributes['remote_addr']` через этот столбец, тем самым упрощая наш запрос, т.е.
 
 ```sql
 SELECT RemoteAddr
 FROM default.otel_logs
 LIMIT 5
+```
 
+```response
 ┌─RemoteAddr────┐
 │ 54.36.149.41  │
 │ 31.56.96.51   │
@@ -554,7 +568,9 @@ ALTER TABLE default.otel_logs
 SELECT Size
 FROM default.otel_logs_v3
 LIMIT 5
+```
 
+```response
 ┌─Size──┐
 │ 30577 │
 │ 5667  │
@@ -569,7 +585,6 @@ LIMIT 5
 :::note Столбцы ALIAS по умолчанию исключены
 По умолчанию `SELECT *` не включает столбцы ALIAS. Это поведение можно отключить, установив `asterisk_include_alias_columns=1`.
 :::
-
 
 ## Оптимизация типов \{#optimizing-types\}
 
@@ -626,6 +641,9 @@ SELECT *
 FROM url('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV', '\n           \tip_range_start IPv4, \n       \tip_range_end IPv4, \n         \tcountry_code Nullable(String), \n     \tstate1 Nullable(String), \n           \tstate2 Nullable(String), \n           \tcity Nullable(String), \n     \tpostcode Nullable(String), \n         \tlatitude Float64, \n          \tlongitude Float64, \n         \ttimezone Nullable(String)\n   \t')
 LIMIT 1
 FORMAT Vertical
+```
+
+```response
 Row 1:
 ──────
 ip_range_start: 1.0.0.0
@@ -657,7 +675,9 @@ CREATE TABLE geoip_url(
 ) ENGINE=URL('https://raw.githubusercontent.com/sapics/ip-location-db/master/dbip-city/dbip-city-ipv4.csv.gz', 'CSV')
 
 select count() from geoip_url;
+```
 
+```response
 ┌─count()─┐
 │ 3261621 │ -- 3.26 million
 └─────────┘
@@ -680,7 +700,9 @@ SELECT
 FROM
         geoip_url
 LIMIT 4;
+```
 
+```response
 ┌─ip_range_start─┬─ip_range_end─┬─cidr───────┐
 │ 1.0.0.0        │ 1.0.0.255    │ 1.0.0.0/24 │
 │ 1.0.1.0        │ 1.0.3.255    │ 1.0.0.0/22 │
@@ -690,7 +712,6 @@ LIMIT 4;
 
 4 rows in set. Elapsed: 0.259 sec.
 ```
-
 
 :::note
 В приведённом выше запросе происходит довольно много всего. Тем, кому интересно, рекомендую это отличное [объяснение](https://clickhouse.com/blog/geolocating-ips-in-clickhouse-and-grafana#using-bit-functions-to-convert-ip-ranges-to-cidr-notation). В противном случае просто примите, что выше вычисляется CIDR для диапазона IP-адресов.
@@ -742,7 +763,9 @@ lifetime(3600);
 
 ```sql
 SELECT * FROM ip_trie LIMIT 3
+```
 
+```response
 ┌─cidr───────┬─latitude─┬─longitude─┬─country_code─┐
 │ 1.0.0.0/22 │  26.0998 │   119.297 │ CN           │
 │ 1.0.0.0/24 │ -27.4767 │   153.017 │ AU           │
@@ -760,7 +783,9 @@ SELECT * FROM ip_trie LIMIT 3
 
 ```sql
 SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.242.48.167', 'IPv4')) AS ip_details
+```
 
+```response
 ┌─ip_details──────────────┐
 │ ('PT',38.7944,-9.34284) │
 └─────────────────────────┘
@@ -768,10 +793,9 @@ SELECT dictGet('ip_trie', ('country_code', 'latitude', 'longitude'), CAST('85.24
 1 row in set. Elapsed: 0.003 sec.
 ```
 
-Обратите внимание на скорость выборки. Это позволяет нам обогащать логи. В данном случае мы выбираем **выполнять обогащение на этапе выполнения запроса**.
+Обратите внимание на скорость выборки. Это позволяет нам обогащать логи. В данном случае мы выбираем **выполнять обогащение во время запроса**.
 
 Возвращаясь к нашему исходному набору логов, мы можем использовать описанное выше, чтобы агрегировать наши логи по странам. Далее предполагается, что мы используем схему, полученную на основе ранее созданного materialized view, в которой уже есть выделенный столбец `RemoteAddress`.
-
 
 ```sql
 SELECT dictGet('ip_trie', 'country_code', tuple(RemoteAddress)) AS country,
@@ -781,7 +805,9 @@ WHERE country != ''
 GROUP BY country
 ORDER BY count() DESC
 LIMIT 5
+```
 
+```response
 ┌─country─┬─num_requests────┐
 │ IR      │ 7.36 million    │
 │ US      │ 1.67 million    │
@@ -829,7 +855,6 @@ ORDER BY (ServiceName, Timestamp)
 :::
 
 Приведённые выше страны и координаты обеспечивают возможности визуализации, выходящие за рамки простого группирования и фильтрации по странам. Для вдохновения см. [&quot;Visualizing geo data&quot;](/observability/grafana#visualizing-geo-data).
-
 
 ### Использование словарей на основе регулярных выражений (разбор User-Agent) \{#using-regex-dictionaries-user-agent-parsing\}
 
@@ -933,7 +958,9 @@ SELECT
         dictGet('regexp_device_dict', ('device_replacement', 'brand_replacement', 'model_replacement'), user_agent) AS device,
         dictGet('regexp_browser_dict', ('family_replacement', 'v1_replacement', 'v2_replacement'), user_agent) AS browser,
         dictGet('regexp_os_dict', ('os_replacement', 'os_v1_replacement', 'os_v2_replacement', 'os_v3_replacement'), user_agent) AS os
+```
 
+```response
 ┌─device────────────────┬─browser───────────────┬─os─────────────────────────┐
 │ ('Mac','Apple','Mac') │ ('Firefox','127','0') │ ('Mac OS X','10','15','0') │
 └───────────────────────┴───────────────────────┴────────────────────────────┘
@@ -1003,13 +1030,14 @@ ORDER BY (ServiceName, Timestamp, Status)
 
 После перезапуска коллектора и начала приёма структурированных логов, согласно ранее описанным шагам, мы можем выполнять запросы к нашим вновь извлечённым столбцам Device, Browser и OS.
 
-
 ```sql
 SELECT Device, Browser, Os
 FROM otel_logs_v2
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Device:  ('Spider','Spider','Desktop')
@@ -1020,7 +1048,6 @@ Os:     ('Other','0','0','0')
 :::note Кортежи для сложных структур
 Обратите внимание на использование кортежей (Tuple) для этих столбцов user agent. Кортежи рекомендуются для сложных структур с заранее известной иерархией. Подстолбцы обеспечивают ту же производительность, что и обычные столбцы (в отличие от ключей Map), при этом позволяют использовать разнородные типы.
 :::
-
 
 ### Дополнительные материалы \{#further-reading\}
 
@@ -1049,7 +1076,9 @@ FROM otel_logs
 GROUP BY Hour
 ORDER BY Hour DESC
 LIMIT 5
+```
 
+```response
 ┌────────────────Hour─┬─TotalBytes─┐
 │ 2019-01-26 16:00:00 │ 1661716343 │
 │ 2019-01-26 15:00:00 │ 1824015281 │
@@ -1100,14 +1129,15 @@ GROUP BY Hour
 SELECT count()
 FROM bytes_per_hour
 FINAL
+```
 
+```response
 ┌─count()─┐
 │     113 │
 └─────────┘
 
 1 row in set. Elapsed: 0.039 sec.
 ```
-
 
 Мы фактически сократили число строк здесь с 10 млн (в `otel_logs`) до 113, сохранив результат нашего запроса. Ключевой момент заключается в том, что при вставке новых логов в таблицу `otel_logs` новые значения будут записываться в `bytes_per_hour` для соответствующего часа, где они будут автоматически асинхронно объединяться в фоновом режиме — сохраняя только одну строку в час, `bytes_per_hour` таким образом всегда будет и компактной, и актуальной.
 
@@ -1126,7 +1156,9 @@ FROM bytes_per_hour
 GROUP BY Hour
 ORDER BY Hour DESC
 LIMIT 5
+```
 
+```response
 ┌────────────────Hour─┬─TotalBytes─┐
 │ 2019-01-26 16:00:00 │ 1661716343 │
 │ 2019-01-26 15:00:00 │ 1824015281 │
@@ -1136,7 +1168,9 @@ LIMIT 5
 └─────────────────────┴────────────┘
 
 5 rows in set. Elapsed: 0.008 sec.
+```
 
+```sql
 SELECT
         Hour,
         TotalBytes
@@ -1144,7 +1178,9 @@ FROM bytes_per_hour
 FINAL
 ORDER BY Hour DESC
 LIMIT 5
+```
 
+```response
 ┌────────────────Hour─┬─TotalBytes─┐
 │ 2019-01-26 16:00:00 │ 1661716343 │
 │ 2019-01-26 15:00:00 │ 1824015281 │
@@ -1162,7 +1198,6 @@ LIMIT 5
 Этот выигрыш может быть ещё больше на больших наборах данных с более сложными запросами. См. примеры [здесь](https://github.com/ClickHouse/clickpy).
 :::
 
-
 #### Более сложный пример \{#a-more-complex-example\}
 
 Приведённый выше пример агрегирует простое почасовое количество записей, используя [SummingMergeTree](/engines/table-engines/mergetree-family/summingmergetree). Для расчёта статистик, выходящих за рамки простых сумм, требуется другой движок целевой таблицы: [AggregatingMergeTree](/engines/table-engines/mergetree-family/aggregatingmergetree).
@@ -1174,7 +1209,9 @@ SELECT toStartOfHour(Timestamp) AS Hour, uniq(LogAttributes['remote_addr']) AS U
 FROM otel_logs
 GROUP BY Hour
 ORDER BY Hour DESC
+```
 
+```response
 ┌────────────────Hour─┬─UniqueUsers─┐
 │ 2019-01-26 16:00:00 │     4763    │
 │ 2019-01-22 00:00:00 │     536     │
@@ -1216,6 +1253,9 @@ ORDER BY Hour DESC
 SELECT count()
 FROM unique_visitors_per_hour
 FINAL
+```
+
+```response
 ┌─count()─┐
 │   113   │
 └─────────┘
@@ -1230,7 +1270,9 @@ SELECT Hour, uniqMerge(UniqueUsers) AS UniqueUsers
 FROM unique_visitors_per_hour
 GROUP BY Hour
 ORDER BY Hour DESC
+```
 
+```response
 ┌────────────────Hour─┬─UniqueUsers─┐
 │ 2019-01-26 16:00:00 │      4763   │
 │ 2019-01-22 00:00:00 │      536    │
@@ -1240,7 +1282,6 @@ ORDER BY Hour DESC
 ```
 
 Обратите внимание, что здесь мы используем оператор `GROUP BY`, а не `FINAL`.
-
 
 ### Использование materialized views (инкрементальных) для быстрых выборок \{#using-materialized-views-incremental--for-fast-lookups\}
 
@@ -1352,9 +1393,9 @@ LIMIT 1000
 
 Проекции ClickHouse позволяют указать несколько конструкций `ORDER BY` для таблицы.
 
-В предыдущих разделах мы рассмотрели, как materialized views можно использовать в ClickHouse для предварительного вычисления агрегатов, преобразования строк и оптимизации запросов Observability для различных сценариев доступа.
+В предыдущих разделах мы рассмотрели, как materialized views можно использовать в ClickHouse для предварительного вычисления агрегатов, преобразования строк и оптимизации запросов обсервабилити для различных сценариев доступа.
 
-Мы привели пример, в котором материализованное представление отправляет строки в целевую таблицу с ключом упорядочивания, отличным от ключа исходной таблицы, принимающей вставки, чтобы оптимизировать поиск по идентификатору трассировки.
+Мы привели пример, в котором materialized view отправляет строки в целевую таблицу с ключом упорядочивания, отличным от ключа исходной таблицы, принимающей вставки, чтобы оптимизировать поиск по идентификатору трассировки.
 
 Проекции можно использовать для решения той же задачи, позволяя пользователю оптимизировать запросы по столбцу, который не входит в первичный ключ.
 
@@ -1373,7 +1414,9 @@ SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
 FROM otel_logs_v2
 WHERE Status = 500
 FORMAT `Null`
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 0.177 sec. Processed 10.37 million rows, 685.32 MB (58.66 million rows/s., 3.88 GB/s.)
@@ -1435,7 +1478,9 @@ ORDER BY (ServiceName, Timestamp)
 SELECT parts_to_do, is_done, latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
+```
 
+```response
 ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
 │           0 │     1   │                    │
 └─────────────┴─────────┴────────────────────┘
@@ -1443,20 +1488,21 @@ WHERE (`table` = 'otel_logs_v2') AND (command LIKE '%MATERIALIZE%')
 1 row in set. Elapsed: 0.008 sec.
 ```
 
-Если повторить приведенный выше запрос, можно увидеть, что производительность значительно улучшилась за счет дополнительного дискового пространства (см. раздел [&quot;Измерение размера таблицы и сжатия&quot;](#measuring-table-size--compression) о том, как это измерить).
+Если повторить приведённый выше запрос, можно увидеть, что производительность значительно выросла за счёт дополнительного места на диске (о том, как это измерить, см. [«Измерение размера таблицы и степени сжатия»](#measuring-table-size--compression)).
 
 ```sql
 SELECT Timestamp, RequestPath, Status, RemoteAddress, UserAgent
 FROM otel_logs_v2
 WHERE Status = 500
 FORMAT `Null`
+```
 
+```response
 0 rows in set. Elapsed: 0.031 sec. Processed 51.42 thousand rows, 22.85 MB (1.65 million rows/s., 734.63 MB/s.)
 Peak memory usage: 27.85 MiB.
 ```
 
-В приведённом выше примере мы указываем столбцы, использованные в предыдущем запросе, в проекции. Это означает, что только эти указанные столбцы будут храниться на диске как часть проекции, упорядоченной по Status. Если бы вместо этого мы использовали здесь `SELECT *`, все столбцы были бы сохранены. Хотя это позволило бы большему числу запросов (использующих любое подмножество столбцов) использовать преимущества проекции, это привело бы к дополнительным затратам на хранение. Для измерения дискового пространства и степени сжатия см. [«Измерение размера таблицы и сжатия»](#measuring-table-size--compression).
-
+В приведённом выше примере мы указываем столбцы, использованные в предыдущем запросе, в проекции. Это означает, что только эти указанные столбцы будут храниться на диске как часть проекции, упорядоченной по Status. Если бы вместо этого мы использовали здесь `SELECT *`, все столбцы были бы сохранены. Хотя это позволило бы большему числу запросов (использующих любое подмножество столбцов) использовать преимущества проекции, это привело бы к дополнительным затратам на хранение. Для измерения дискового пространства и степени сжатия см. [«Измерение размера таблицы и степени сжатия»](#measuring-table-size--compression).
 
 ### Вторичные индексы / индексы пропуска данных \{#secondarydata-skipping-indices\}
 
@@ -1517,7 +1563,9 @@ SETTINGS index_granularity = 8192
 SELECT count()
 FROM otel_logs
 WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+```
 
+```response
 Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 
    ┌─count()─┐
@@ -1526,7 +1574,6 @@ Query id: ff0b866c-6df7-47be-9e36-795ef3888169
 
 1 row in set. Elapsed: 0.584 sec. Processed 19.95 million rows, 3.08 GB (34.15 million rows/s., 5.27 GB/s.)
 ```
-
 
 #### Добавление текстового индекса \{#adding-a-text-index\}
 
@@ -1573,7 +1620,9 @@ ALTER TABLE otel_logs MATERIALIZE INDEX idx_body;
 SELECT count()
 FROM otel_logs_index_body
 WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+```
 
+```response
 Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
 
    ┌─count()─┐
@@ -1583,7 +1632,6 @@ Query id: ebc31a94-92b3-48aa-860a-939d7e788ef4
 1 row in set. Elapsed: 0.013 sec. Processed 20.41 million rows, 20.41 MB (1.59 billion rows/s., 1.59 GB/s.)
 Peak memory usage: 15.23 MiB.
 ```
-
 
 #### Использование препроцессора \{#using-a-preprocessor\}
 
@@ -1610,7 +1658,9 @@ Peak memory usage: 15.23 MiB.
 SELECT count()
 FROM otel_logs_text_body_preprocessed
 WHERE hasAllTokens(Body, ['Connection', 'accepted'])
+```
 
+```response
 Query id: f6a5cd9c-665f-4e4f-82f2-d6a4408a68a8
 
    ┌─count()─┐
@@ -1632,7 +1682,9 @@ SELECT
     formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
 FROM system.data_skipping_indices
 WHERE startsWith(`table`, 'otel_logs')
+```
 
+```response
 Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
    ┌─table───────────────────────────────────┬─compressed_size─┬─uncompressed_size─┐
@@ -1644,7 +1696,6 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 **Другие индексы для полнотекстового поиска
 
 Дополнительные сведения о вторичных пропускающих индексах можно найти [здесь](/optimize/skipping-indexes#skip-index-functions).
-
 
 <details markdown="1">
   <summary>Фильтры Блума для текстового поиска</summary>
@@ -1659,7 +1710,9 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
   ```sql
   SELECT tokens('https://www.zanbil.ir/m/filter/b113')
+  ```
 
+  ```response
   ┌─tokens────────────────────────────────────────────┐
   │ ['https','www','zanbil','ir','m','filter','b113'] │
   └───────────────────────────────────────────────────┘
@@ -1671,7 +1724,9 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
 
   ```sql
   SELECT ngrams('https://www.zanbil.ir/m/filter/b113', 3)
+  ```
 
+  ```response
   ┌─ngrams('https://www.zanbil.ir/m/filter/b113', 3)────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
   │ ['htt','ttp','tps','ps:','s:/','://','//w','/ww','www','ww.','w.z','.za','zan','anb','nbi','bil','il.','l.i','.ir','ir/','r/m','/m/','m/f','/fi','fil','ilt','lte','ter','er/','r/b','/b1','b11','113'] │
   └─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -1685,7 +1740,9 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
   SELECT count()
   FROM otel_logs_v2
   WHERE Referer LIKE '%ultra%'
+  ```
 
+  ```response
   ┌─count()─┐
   │  114514 │
   └─────────┘
@@ -1729,6 +1786,9 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
   SELECT count()
   FROM otel_logs_bloom
   WHERE Referer LIKE '%ultra%'
+  ```
+
+  ```response
   ┌─count()─┐
   │   182   │
   └─────────┘
@@ -1750,7 +1810,9 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
   SELECT count()
   FROM otel_logs_v2
   WHERE Referer LIKE '%ultra%'
+  ```
 
+  ```response
   ┌─explain────────────────────────────────────────────────────────────┐
   │ Expression ((Project names + Projection))                          │
   │   Aggregating                                                      │
@@ -1765,12 +1827,16 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
   └────────────────────────────────────────────────────────────────────┘
 
   10 rows in set. Elapsed: 0.016 sec.
+  ```
 
+  ```sql
   EXPLAIN indexes = 1
   SELECT count()
   FROM otel_logs_bloom
   WHERE Referer LIKE '%ultra%'
+  ```
 
+  ```response
   ┌─explain────────────────────────────────────────────────────────────┐
   │ Expression ((Project names + Projection))                          │
   │   Aggregating                                                      │
@@ -1802,20 +1868,26 @@ Query id: 730e4b77-e697-40b3-a24d-67219ec42075
   WHERE (`table` = 'otel_logs_bloom') AND (name = 'Referer')
   GROUP BY name
   ORDER BY sum(data_compressed_bytes) DESC
+  ```
 
+  ```response
   ┌─name────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
   │ Referer │ 56.16 MiB       │ 789.21 MiB        │ 14.05 │
   └─────────┴─────────────────┴───────────────────┴───────┘
 
   1 row in set. Elapsed: 0.018 sec.
+  ```
 
+  ```sql
   SELECT
           `table`,
           formatReadableSize(data_compressed_bytes) AS compressed_size,
           formatReadableSize(data_uncompressed_bytes) AS uncompressed_size
   FROM system.data_skipping_indices
   WHERE `table` = 'otel_logs_bloom'
+  ```
 
+  ```response
   ┌─table───────────┬─compressed_size─┬─uncompressed_size─┐
   │ otel_logs_bloom │ 12.03 MiB       │ 12.17 MiB         │
   └─────────────────┴─────────────────┴───────────────────┘

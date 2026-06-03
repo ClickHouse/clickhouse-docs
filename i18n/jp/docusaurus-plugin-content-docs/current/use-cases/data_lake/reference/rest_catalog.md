@@ -123,9 +123,9 @@ USE demo;
 SHOW TABLES;
 ```
 
-環境にサンプルデータ（タクシーのデータセットなど）が含まれている場合は、次のようなテーブルが表示されます。
+環境にサンプルデータ (タクシーのデータセットなど) が含まれている場合は、次のようなテーブルが表示されます。
 
-```sql title="Response"
+```response
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
@@ -146,13 +146,13 @@ docker-compose logs spark
 
 :::
 
-（利用可能な場合）テーブルに対してクエリを実行するには、次のようにします。
+ (利用可能な場合) テーブルに対してクエリを実行するには、次のようにします。
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
@@ -168,7 +168,7 @@ ClickHouse は複数のネームスペースをサポートしていないため
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │
@@ -195,7 +195,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://minio:9000/lakehouse/warehouse/default/taxis/', 'admin', '[HIDDEN]') │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## データレイクから ClickHouse へのデータ読み込み \{#loading-data-from-your-data-lake-into-clickhouse\}
 

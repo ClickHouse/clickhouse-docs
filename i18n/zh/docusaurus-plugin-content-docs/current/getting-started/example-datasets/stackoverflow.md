@@ -66,12 +66,13 @@ PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate), CreationDate)
 
 INSERT INTO stackoverflow.posts SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 265.466 sec. Processed 59.82 million rows, 38.07 GB (225.34 thousand rows/s., 143.42 MB/s.)
 ```
 
 帖子数据也按年份提供，例如 [https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/2020.parquet)
-
 
 ### 投票 \{#votes\}
 
@@ -89,14 +90,15 @@ ENGINE = MergeTree
 ORDER BY (VoteTypeId, CreationDate, PostId, UserId)
 
 INSERT INTO stackoverflow.votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 21.605 sec. Processed 238.98 million rows, 2.13 GB (11.06 million rows/s., 98.46 MB/s.)
 ```
 
 投票数据也可以按年份获取，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/2020.parquet)
 
-
-### 备注 \{#comments\}
+### 评论 \{#comments\}
 
 ```sql
 CREATE TABLE stackoverflow.comments
@@ -113,14 +115,15 @@ ENGINE = MergeTree
 ORDER BY CreationDate
 
 INSERT INTO stackoverflow.comments SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 56.593 sec. Processed 90.38 million rows, 11.14 GB (1.60 million rows/s., 196.78 MB/s.)
 ```
 
 评论数据也提供按年份划分的文件，例如：[https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet](https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/comments/2020.parquet)
 
-
-### 用户 \{#users\}
+### Users \{#users\}
 
 ```sql
 CREATE TABLE stackoverflow.users
@@ -142,10 +145,11 @@ ENGINE = MergeTree
 ORDER BY (Id, CreationDate)
 
 INSERT INTO stackoverflow.users SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet')
-
-0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
 ```
 
+```response
+0 rows in set. Elapsed: 10.988 sec. Processed 22.48 million rows, 1.36 GB (2.05 million rows/s., 124.10 MB/s.)
+```
 
 ### 徽章 \{#badges\}
 
@@ -163,10 +167,11 @@ ENGINE = MergeTree
 ORDER BY UserId
 
 INSERT INTO stackoverflow.badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
-
-0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
 ```
 
+```response
+0 rows in set. Elapsed: 6.635 sec. Processed 51.29 million rows, 797.05 MB (7.73 million rows/s., 120.13 MB/s.)
+```
 
 ### PostLinks \{#postlinks\}
 
@@ -183,10 +188,11 @@ ENGINE = MergeTree
 ORDER BY (PostId, RelatedPostId)
 
 INSERT INTO stackoverflow.postlinks SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/postlinks.parquet')
-
-0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
 ```
 
+```response
+0 rows in set. Elapsed: 1.534 sec. Processed 6.55 million rows, 129.70 MB (4.27 million rows/s., 84.57 MB/s.)
+```
 
 ### PostHistory \{#posthistory\}
 
@@ -208,10 +214,11 @@ ENGINE = MergeTree
 ORDER BY (CreationDate, PostId)
 
 INSERT INTO stackoverflow.posthistory SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posthistory/*.parquet')
-
-0 rows in set. Elapsed: 422.795 sec. Processed 160.79 million rows, 67.08 GB (380.30 thousand rows/s., 158.67 MB/s.)
 ```
 
+```response
+0 rows in set. Elapsed: 422.795 sec. Processed 160.79 million rows, 67.08 GB (380.30 thousand rows/s., 158.67 MB/s.)
+```
 
 ## 原始数据集 \{#original-dataset\}
 
@@ -286,7 +293,6 @@ clickhouse local --query "SELECT * FROM file('posts.json', JSONEachRow, 'Id Int3
 ### Stack Overflow 上最常用的标签 \{#most-popular-tags-on-stack-overflow\}
 
 ```sql
-
 SELECT
     arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS Tags,
     count() AS c
@@ -294,7 +300,9 @@ FROM stackoverflow.posts
 GROUP BY Tags
 ORDER BY c DESC
 LIMIT 10
+```
 
+```response
 ┌─Tags───────┬───────c─┐
 │ javascript │ 2527130 │
 │ python     │ 2189638 │
@@ -312,8 +320,7 @@ LIMIT 10
 Peak memory usage: 224.03 MiB.
 ```
 
-
-### 回答最多的用户（活跃账号） \{#user-with-the-most-answers-active-accounts\}
+### 回答最多的用户 (活跃账号)  \{#user-with-the-most-answers-active-accounts\}
 
 账号需要具有 `UserId`。
 
@@ -326,7 +333,9 @@ FROM stackoverflow.posts WHERE OwnerDisplayName != '' AND PostTypeId='Answer' AN
 GROUP BY OwnerDisplayName
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─UserId─┬─OwnerDisplayName─┬────c─┐
 │  22656 │ Jon Skeet        │ 2727 │
 │  23354 │ Marc Gravell     │ 2150 │
@@ -338,7 +347,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.154 sec. Processed 35.83 million rows, 193.39 MB (232.33 million rows/s., 1.25 GB/s.)
 Peak memory usage: 206.45 MiB.
 ```
-
 
 ### 浏览量最高的 ClickHouse 相关帖子 \{#clickhouse-related-posts-with-the-most-views\}
 
@@ -352,7 +360,9 @@ FROM stackoverflow.posts
 WHERE Title ILIKE '%ClickHouse%'
 ORDER BY ViewCount DESC
 LIMIT 10
+```
 
+```response
 ┌───────Id─┬─Title────────────────────────────────────────────────────────────────────────────┬─ViewCount─┬─AnswerCount─┐
 │ 52355143 │ Is it possible to delete old records from clickhouse table?                      │     41462 │           3 │
 │ 37954203 │ Clickhouse Data Import                                                           │     38735 │           3 │
@@ -369,7 +379,6 @@ LIMIT 10
 10 rows in set. Elapsed: 0.472 sec. Processed 59.82 million rows, 1.91 GB (126.63 million rows/s., 4.03 GB/s.)
 Peak memory usage: 240.01 MiB.
 ```
-
 
 ### 最具争议的帖子 \{#most-controversial-posts\}
 
@@ -394,7 +403,9 @@ INNER JOIN
 WHERE Title != ''
 ORDER BY Controversial_ratio ASC
 LIMIT 3
+```
 
+```response
 ┌───────Id─┬─Title─────────────────────────────────────────────┬─UpVotes─┬─DownVotes─┬─Controversial_ratio─┐
 │   583177 │ VB.NET Infinite For Loop                          │      12 │        12 │                   0 │
 │  9756797 │ Read console input as enumerable - one statement? │      16 │        16 │                   0 │
@@ -404,7 +415,6 @@ LIMIT 3
 3 rows in set. Elapsed: 4.779 sec. Processed 298.80 million rows, 3.16 GB (62.52 million rows/s., 661.05 MB/s.)
 Peak memory usage: 6.05 GiB.
 ```
-
 
 ## 致谢 \{#attribution\}
 

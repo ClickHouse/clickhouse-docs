@@ -44,7 +44,9 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 
 ```sql
 EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
+```
 
+```response
 ┌─explain────────────────────────────────────────────┐
 │ SelectWithUnionQuery (children 1)                  │
 │  ExpressionList (children 1)                       │
@@ -69,20 +71,21 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 
 각 노드는 자식 노드를 가지며, 전체 트리는 쿼리의 전체 구조를 나타냅니다. 이는 쿼리를 처리하는 데 도움이 되는 논리적 구조입니다. 엔드유저 관점에서는 (쿼리 실행에 관심이 있는 경우가 아니라면) 크게 유용하지 않으며, 이 도구는 주로 개발자가 사용하는 도구입니다.
 
+## 분석기 \{#analyzer\}
 
-## Analyzer \{#analyzer\}
-
-현재 ClickHouse에는 Analyzer를 위한 두 가지 아키텍처가 있습니다. `enable_analyzer=0` 을 설정하면 기존 아키텍처를 사용할 수 있습니다. 새로운 아키텍처는 기본적으로 활성화되어 있습니다. 새로운 analyzer가 일반적으로 사용 가능해지면 기존 아키텍처는 사용 중단(deprecated)될 예정이므로, 여기서는 새로운 아키텍처만 설명합니다.
+현재 ClickHouse에는 분석기를 위한 두 가지 아키텍처가 있습니다. `enable_analyzer=0` 을 설정하면 기존 아키텍처를 사용할 수 있습니다. 새로운 아키텍처는 기본적으로 활성화되어 있습니다. 새로운 분석기가 일반적으로 사용 가능해지면 기존 아키텍처는 사용 중단(deprecated)될 예정이므로, 여기서는 새로운 아키텍처만 설명합니다.
 
 :::note
-새로운 아키텍처는 ClickHouse의 성능을 개선하기 위한 더 나은 프레임워크를 제공합니다. 그러나 쿼리 처리 단계의 근본적인 구성 요소이기 때문에 일부 쿼리에 부정적인 영향을 줄 수도 있으며, [알려진 비호환성](/operations/analyzer#known-incompatibilities)이 존재합니다. 쿼리 또는 USER 수준에서 `enable_analyzer` SETTING을 변경하여 기존 analyzer로 되돌릴 수 있습니다.
+새로운 아키텍처는 ClickHouse의 성능을 개선하기 위한 더 나은 프레임워크를 제공합니다. 그러나 쿼리 처리 단계의 근본적인 구성 요소이기 때문에 일부 쿼리에 부정적인 영향을 줄 수도 있으며, [알려진 비호환성](/operations/analyzer#known-incompatibilities)이 존재합니다. 쿼리 또는 USER 수준에서 `enable_analyzer` SETTING을 변경하여 기존 분석기로 되돌릴 수 있습니다.
 :::
 
-Analyzer는 쿼리 실행에서 중요한 단계입니다. Analyzer는 AST를 받아 쿼리 트리로 변환합니다. 쿼리 트리가 AST보다 가지는 주요 이점은, 예를 들어 스토리지와 같이 많은 구성 요소들이 미리 해결(resolved)된다는 점입니다. 어떤 테이블에서 읽을지 알 수 있고, 별칭(alias)도 해결되며, 트리는 사용되는 서로 다른 데이터 타입도 알고 있습니다. 이러한 모든 이점을 바탕으로 analyzer는 최적화를 적용할 수 있습니다. 이러한 최적화는 「패스(pass)」를 통해 동작합니다. 각 패스는 서로 다른 최적화를 탐색합니다. 모든 패스는 [여기](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)에서 확인할 수 있으며, 이전에 사용했던 쿼리를 가지고 실제로 어떻게 동작하는지 살펴보겠습니다:
+분석기는 쿼리 실행에서 중요한 단계입니다. 분석기는 AST를 받아 쿼리 트리로 변환합니다. 쿼리 트리가 AST보다 가지는 주요 이점은, 예를 들어 스토리지와 같이 많은 구성 요소들이 미리 해결(resolved)된다는 점입니다. 어떤 테이블에서 읽을지 알 수 있고, 별칭(alias)도 해결되며, 트리는 사용되는 서로 다른 데이터 타입도 알고 있습니다. 이러한 모든 이점을 바탕으로 분석기는 최적화를 적용할 수 있습니다. 이러한 최적화는 「패스(pass)」를 통해 동작합니다. 각 패스는 서로 다른 최적화를 탐색합니다. 모든 패스는 [여기](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)에서 확인할 수 있으며, 이전에 사용했던 쿼리를 가지고 실제로 어떻게 동작하는지 살펴보겠습니다:
 
 ```sql
 EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────────────────────────┐
 │ QUERY id: 0                                                                            │
 │   PROJECTION                                                                           │
@@ -103,7 +106,9 @@ EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp
 
 ```sql
 EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
+```
 
+```response
 ┌─explain───────────────────────────────────────────────────────────────────────────────────┐
 │ QUERY id: 0                                                                               │
 │   PROJECTION COLUMNS                                                                      │
@@ -127,10 +132,9 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 
 두 번의 실행 결과를 비교하면 별칭(alias)과 프로젝션이 어떻게 해석되는지 확인할 수 있습니다.
 
+## 플래너 \{#planner\}
 
-## Planner \{#planner\}
-
-Planner는 쿼리 트리를 입력으로 받아 쿼리 플랜을 생성합니다. 쿼리 트리는 특정 쿼리로 무엇을 수행하려는지를 나타내고, 쿼리 플랜은 이를 어떻게 수행할지를 나타냅니다. 추가적인 최적화는 쿼리 플랜 단계에서 수행됩니다. `EXPLAIN PLAN` 또는 `EXPLAIN`을 사용하여 쿼리 플랜을 확인할 수 있으며, `EXPLAIN`은 내부적으로 `EXPLAIN PLAN`을 실행합니다.
+플래너는 쿼리 트리를 입력으로 받아 쿌리 플랜을 생성합니다. 쿼리 트리는 특정 쿼리로 무엇을 수행하려는지를 나타내고, 쿼리 플랜은 이를 어떻게 수행할지를 나타냅니다. 추가적인 최적화는 쿼리 플랜 단계에서 수행됩니다. `EXPLAIN PLAN` 또는 `EXPLAIN`을 사용하여 쿼리 플랜을 확인할 수 있으며, `EXPLAIN`은 내부적으로 `EXPLAIN PLAN`을 실행합니다.
 
 ```sql
 EXPLAIN PLAN WITH
@@ -139,7 +143,9 @@ EXPLAIN PLAN WITH
        FROM session_events
    ) AS total_rows
 SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, count(*) /total_rows * 100 AS percentage FROM session_events GROUP BY type
+```
 
+```response
 ┌─explain──────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))      │
 │   Aggregating                                    │
@@ -163,7 +169,9 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
+```
 
+```response
 ┌─explain──────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))      │
 │ Header: type String                              │
@@ -186,7 +194,6 @@ GROUP BY type
 
 이제 마지막 PROJECTION에서 생성해야 할 컬럼 이름인 `minimum_date`, `maximum_date`, `percentage`를 알게 되었지만, 실행해야 하는 모든 동작의 세부 내역도 확인하고 싶을 수 있습니다. 이때는 `actions=1`로 설정하면 됩니다.
 
-
 ```sql
 EXPLAIN actions = 1
 WITH (
@@ -200,7 +207,9 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))                                                                                                │
 │ Actions: INPUT :: 0 -> type String : 0                                                                                                     │
@@ -241,7 +250,6 @@ GROUP BY type
 
 이제 사용 중인 모든 입력, 함수, 별칭, 데이터 유형을 확인할 수 있습니다. 플래너가 적용할 일부 최적화는 [여기](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)에서 확인할 수 있습니다.
 
-
 ## 쿼리 파이프라인 \{#query-pipeline\}
 
 쿼리 파이프라인은 쿼리 플랜으로부터 생성됩니다. 쿼리 파이프라인은 쿼리 플랜과 매우 유사하지만 트리가 아니라 그래프라는 점이 다릅니다. 이는 ClickHouse가 쿼리를 어떻게 실행하고 어떤 리소스를 사용할 것인지 보여줍니다. 쿼리 파이프라인을 분석하면 입출력 측면에서 병목 지점이 어디인지 파악하는 데 매우 유용합니다. 이전에 사용한 쿼리를 다시 사용해 쿼리 파이프라인 실행을 살펴보겠습니다:
@@ -259,7 +267,9 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type;
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────────────┐
 │ (Expression)                                                               │
 │ ExpressionTransform × 2                                                    │
@@ -375,7 +385,6 @@ digraph
  n3 -> n5;
 }
 ```
-
 
 <Image img={analyzer4} alt="Compact graph output" size="md" />
 

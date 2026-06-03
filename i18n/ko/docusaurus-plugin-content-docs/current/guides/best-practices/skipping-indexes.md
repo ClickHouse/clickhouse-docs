@@ -56,7 +56,9 @@ INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -84,7 +86,9 @@ ALTER TABLE skip_table MATERIALIZE INDEX vix;
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -114,7 +118,6 @@ SET send_logs_level='trace';
 ```sql
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
-
 
 ## 스킵 인덱스의 종류 \{#skip-index-types\}
 

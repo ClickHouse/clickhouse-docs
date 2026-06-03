@@ -79,13 +79,15 @@ PARTITION BY toYear(CreationDate)
 
 ClickHouse におけるパーティショニングは、Postgres における用途と類似していますが、いくつか微妙な違いがあります。より具体的には次のとおりです。
 
-* **データ管理** - ClickHouse では、パーティショニングはクエリ最適化の手法ではなく、原則としてデータ管理の機能であると考えるべきです。キーに基づいてデータを論理的に分割することで、それぞれのパーティションを独立して操作できます（例: 削除）。これにより、[ストレージ階層](/integrations/s3#storage-tiers)間でパーティション、ひいてはデータのサブセットを、時間ベースの条件に従って効率的に移動したり、[データの有効期限を設定してクラスタから効率的に削除](/sql-reference/statements/alter/partition)したりできます。例えば、以下の例では 2008 年の投稿を削除しています。
+* **データ管理** - ClickHouse では、パーティショニングはクエリ最適化の手法ではなく、原則としてデータ管理の機能であると考えるべきです。キーに基づいてデータを論理的に分割することで、それぞれのパーティションを独立して操作できます (例: 削除) 。これにより、[ストレージ階層](/integrations/s3#storage-tiers)間でパーティション、ひいてはデータのサブセットを、時間ベースの条件に従って効率的に移動したり、[データの有効期限を設定してクラスタから効率的に削除](/sql-reference/statements/alter/partition)したりできます。例えば、以下の例では 2008 年の投稿を削除しています。
 
 ```sql
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'posts'
+```
 
+```response
 ┌─partition─┐
 │ 2008      │
 │ 2009      │
@@ -107,17 +109,20 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 ALTER TABLE posts
 (DROP PARTITION '2008')
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-* **クエリ最適化** - パーティションはクエリ性能の向上に役立つ場合がありますが、その効果はアクセスパターンに大きく依存します。クエリが少数のパーティション（理想的には 1 つ）だけを対象とする場合、性能を向上させられる可能性があります。これは、パーティションキーがプライマリキーに含まれておらず、そのキーでフィルタしている場合にのみ、一般的に有用です。ただし、多数のパーティションにまたがって処理する必要があるクエリでは、パーティションを使用しない場合よりも性能が低下する可能性があります（パーティショニングの結果としてパーツ数が増える場合があるため）。対象が単一パーティションであることによる利点は、パーティションキーがすでにプライマリキーの先頭付近に含まれている場合は、ほとんど、あるいはまったく得られなくなります。パーティショニングは、各パーティション内の値が一意であれば、[GROUP BY クエリの最適化](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)にも利用できます。しかし一般論としては、まずプライマリキーが最適化されていることを確認し、クエリ最適化の手法としてのパーティショニングは、アクセスパターンが特定の予測可能な日付範囲だけを対象とするような例外的なケース（例: 日単位でパーティショニングしており、ほとんどのクエリが直近 1 日を対象とする場合）にのみ検討すべきです。
-
+* **クエリ最適化** - パーティションはクエリ性能の向上に役立つ場合がありますが、その効果はアクセスパターンに大きく依存します。クエリが少数のパーティション (理想的には 1 つ) だけを対象とする場合、性能を向上させられる可能性があります。これは、パーティションキーが主キーに含まれておらず、そのキーでフィルタしている場合にのみ、一般的に有用です。ただし、多数のパーティションにまたがって処理する必要があるクエリでは、パーティションを使用しない場合よりも性能が低下する可能性があります (パーティショニングの結果としてパーツ数が増える場合があるため) 。対象が単一パーティションであることによる利点は、パーティションキーがすでに主キーの先頭付近に含まれている場合は、ほとんど、あるいはまったく得られなくなります。パーティショニングは、各パーティション内の値が一意であれば、[GROUP BY クエリの最適化](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)にも利用できます。しかし一般論としては、まず主キーが最適化されていることを確認し、クエリ最適化の手法としてのパーティショニングは、アクセスパターンが特定の予測可能な日付範囲だけを対象とするような例外的なケース (例: 日単位でパーティショニングしており、ほとんどのクエリが直近 1 日を対象とする場合) にのみ検討すべきです。
 
 ### パーティションに関する推奨事項 \{#recommendations-for-partitions\}
 
@@ -129,9 +134,9 @@ Ok.
 
 > パーツは各パーティションごとに独立して作成されるため、パーティション数を増やすとパーツ数も増加します。すなわち、パーツ数はパーティション数に比例して増えます。そのため、高カーディナリティなパーティションキーはこのエラーの原因となり得るため、避けるべきです。
 
-## マテリアライズドビューとプロジェクションの比較 \{#materialized-views-vs-projections\}
+## マテリアライズドビューとPROJECTIONの比較 \{#materialized-views-vs-projections\}
 
-Postgres では、単一のテーブルに対して複数のインデックスを作成でき、さまざまなアクセスパターンに最適化できます。この柔軟性により、管理者や開発者は特定のクエリや運用要件に合わせてデータベースのパフォーマンスを調整できます。ClickHouse におけるプロジェクションの概念はこれと完全に同じではありませんが、テーブルに対して複数の `ORDER BY` 句を指定できます。
+Postgres では、単一のテーブルに対して複数のインデックスを作成でき、さまざまなアクセスパターンに最適化できます。この柔軟性により、管理者や開発者は特定のクエリや運用要件に合わせてデータベースのパフォーマンスを調整できます。ClickHouse におけるPROJECTIONの概念はこれと完全に同じではありませんが、テーブルに対して複数の `ORDER BY` 句を指定できます。
 
 ClickHouse の [データモデリングのドキュメント](/data-modeling/schema-design) では、ClickHouse においてマテリアライズドビューを使って集計を事前計算したり、行を変換したり、異なるアクセスパターン向けにクエリを最適化したりする方法を解説しています。
 
@@ -143,7 +148,9 @@ ClickHouse の [データモデリングのドキュメント](/data-modeling/sc
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
    ┌──────────avg(Score)─┐
 1. │ 0.18181818181818182 │
    └─────────────────────┘
@@ -152,10 +159,10 @@ WHERE UserId = 8592047
 Peak memory usage: 201.93 MiB.
 ```
 
-`UserId` がソートキーではないため、このクエリでは 9,000 万行すべてをスキャンする必要があります（とはいえ高速ではあります）。
+`UserId` がオーダリングキーではないため、このクエリでは 9,000 万行すべてをスキャンする必要があります (とはいえ高速ではあります) 。
 以前は、`PostId` をルックアップするマテリアライズドビューを使ってこの問題を解決していました。同じ問題は
-[projection](/data-modeling/projections) を使っても解決できます。以下のコマンドは、
-`ORDER BY user_id` の projection を追加します。
+[PROJECTION](/data-modeling/projections) を使っても解決できます。以下のコマンドは、
+`ORDER BY user_id` の PROJECTION を追加します。
 
 ```sql
 ALTER TABLE comments ADD PROJECTION comments_user_id (
@@ -165,7 +172,7 @@ SELECT * ORDER BY UserId
 ALTER TABLE comments MATERIALIZE PROJECTION comments_user_id
 ```
 
-まずプロジェクションを作成し、その後にマテリアライズする必要がある点に注意してください。後者のコマンドにより、データはディスク上に 2 通りの異なるソート順で二重に保存されます。プロジェクションは、以下に示すようにテーブル作成時に定義することもでき、その場合はデータの挿入に応じて自動的に維持されます。
+まずPROJECTIONを作成し、その後にマテリアライズする必要がある点に注意してください。後者のコマンドにより、データはディスク上に 2 通りの異なるソート順で二重に保存されます。PROJECTIONは、以下に示すようにテーブル作成時に定義することもでき、その場合はデータの挿入に応じて自動的に維持されます。
 
 ```sql
 CREATE TABLE comments
@@ -187,7 +194,7 @@ ENGINE = MergeTree
 ORDER BY PostId
 ```
 
-`ALTER` でプロジェクションが作成された場合、`MATERIALIZE PROJECTION` コマンドを実行すると、作成処理は非同期で行われます。次のクエリを使用してこの操作の進行状況を確認し、`is_done=1` になるまで待機できます。
+`ALTER` でPROJECTIONが作成された場合、`MATERIALIZE PROJECTION` コマンドを実行すると、作成処理は非同期で行われます。次のクエリを使用してこの操作の進行状況を確認し、`is_done=1` になるまで待機できます。
 
 ```sql
 SELECT
@@ -196,7 +203,9 @@ SELECT
         latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
+```
 
+```response
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
 1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
@@ -210,7 +219,9 @@ WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
    ┌──────────avg(Score)─┐
 1. │ 0.18181818181818182 │
    └─────────────────────┘
@@ -219,15 +230,16 @@ WHERE UserId = 8592047
 Peak memory usage: 4.06 MiB.
 ```
 
-`EXPLAIN` コマンドにより、このクエリの実行にプロジェクションが使用されたことも確認できます。
-
+`EXPLAIN` コマンドにより、このクエリの実行にPROJECTIONが使用されたことも確認できます。
 
 ```sql
 EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
     ┌─explain─────────────────────────────────────────────┐
  1. │ Expression ((Projection + Before ORDER BY))         │
  2. │   Aggregating                                       │
@@ -244,7 +256,6 @@ WHERE UserId = 8592047
 
 11 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### プロジェクションを使用する場合 \{#when-to-use-projections\}
 

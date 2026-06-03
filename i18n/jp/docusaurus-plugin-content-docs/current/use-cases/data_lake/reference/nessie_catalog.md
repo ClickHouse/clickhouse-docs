@@ -175,9 +175,9 @@ USE demo;
 SHOW TABLES;
 ```
 
-セットアップにサンプルデータ（タクシーデータセットなど）が含まれている場合、次のようなテーブルが表示されるはずです：
+セットアップにサンプルデータ (タクシーデータセットなど) が含まれている場合、次のようなテーブルが表示されるはずです：
 
-```sql title="Response"
+```response
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
@@ -198,13 +198,13 @@ docker-compose logs nessie
 
 :::
 
-（利用可能な場合）テーブルにクエリを実行するには:
+ (利用可能な場合) テーブルにクエリを実行するには:
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
@@ -220,7 +220,7 @@ ClickHouse は複数のネームスペースをサポートしていないので
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │

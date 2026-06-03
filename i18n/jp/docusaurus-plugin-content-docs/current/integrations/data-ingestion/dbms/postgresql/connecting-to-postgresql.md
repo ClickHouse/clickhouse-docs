@@ -333,7 +333,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 
 ┌─id─┬─column1─┐
@@ -343,7 +345,6 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 3. 基本的なレプリケーションをテストする \{#3-test-basic-replication\}
 
@@ -364,7 +365,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 
 ┌─id─┬─column1─┐
@@ -380,7 +383,6 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 4. まとめ \{#4-summary\}
 

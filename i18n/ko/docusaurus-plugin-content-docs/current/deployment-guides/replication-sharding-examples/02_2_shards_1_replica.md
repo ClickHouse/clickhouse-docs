@@ -289,7 +289,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
 
   <ServerParameterTable />
 
-  #### Keeper 설정
+  #### Keeper 구성
 
   `<ZooKeeper>` 섹션은 ClickHouse Keeper(또는 ZooKeeper)가 실행 중인 위치를 ClickHouse에 알려줍니다.
   ClickHouse Keeper 클러스터를 사용하는 경우, 클러스터의 각 `<node>`를 지정해야 하며,
@@ -319,7 +319,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   프로덕션 환경에서는 ClickHouse Keeper를 전용 호스트에서 실행하실 것을 강력히 권장합니다.
   :::
 
-  #### 매크로 설정
+  #### 매크로 구성
 
   또한 `<macros>` 섹션은 복제된 테이블(Replicated Table)에 대한 매개변수 치환을 정의하는 데 사용됩니다. 이러한 매개변수는 `system.macros`에 나열되며, 쿼리에서 `{shard}`(세그먼트)와 `{replica}`(레플리카) 같은 치환을 사용할 수 있습니다.
 
@@ -334,7 +334,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   이러한 값들은 클러스터의 레이아웃에 따라 고유하게 정의됩니다.
   :::
 
-  ### 사용자 설정
+  ### 사용자 구성
 
   이제 `fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d`에 위치한 각 빈 설정 파일 `users.xml`을 다음과 같이 수정하세요:
 
@@ -378,16 +378,16 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | 디렉터리                                                     | 파일                                                                                                                                                                            |
+  | 디렉터리                                                     | File                                                                                                                                                                          |
   | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml) |
 
-  이 예제에서는 편의상 기본 사용자를 비밀번호 없이 구성합니다.
+  이 예시에서는 편의상 기본 사용자를 비밀번호 없이 구성합니다.
   실제 환경에서는 이 방식을 권장하지 않습니다.
 
   :::note
-  이 예제에서는 클러스터의 모든 노드에서 각 `users.xml` 파일이 동일합니다.
+  이 예시에서는 클러스터의 모든 노드에서 각 `users.xml` 파일이 동일합니다.
   :::
 
   ## ClickHouse Keeper 구성하기
@@ -570,7 +570,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   원본 `CREATE` 문에서 사용된 쿼리와 동일하며,
   `ON CLUSTER` 절을 제외하고는 같습니다.
 
-  `ON CLUSTER` 절은 `CREATE`, `DROP`, `ALTER`, `RENAME`과 같은 DDL(Data Definition Language, 데이터 정의 언어) 쿼리를 분산 실행하기 위해 설계되었으며, 클러스터의 모든 노드에 schema 변경 사항이 적용되도록 보장합니다.
+  `ON CLUSTER` 절은 `CREATE`, `DROP`, `ALTER`, `RENAME`과 같은 DDL(Data Definition Language, 데이터 정의 언어) 쿼리를 분산 실행하기 위해 설계되었으며, 클러스터의 모든 노드에 스키마(schema) 변경 사항이 적용되도록 보장합니다.
 
   각 호스트의 클라이언트에서 아래 쿼리를 실행하여 클러스터 전체에 테이블이 생성되었는지 확인하십시오:
 
@@ -645,14 +645,14 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   이 예시에서는 `rand()` 함수를 세그먼트 분할 키로 선택하여
   삽입 작업이 세그먼트 전체에 무작위로 분산됩니다.
 
-  이제 어느 호스트에서든 분산 테이블을 쿼리하면 이전 예제와 달리
+  이제 어느 호스트에서든 분산 테이블을 쿼리하면 이전 예시와 달리
   두 호스트에 삽입된 두 개의 행이 모두 반환됩니다:
 
   ```sql
   SELECT * FROM test.test_table_dist;
   ```
 
-  ```sql
+  ```response
      ┌─id─┬─name───────────────┐
   1. │  1 │ Alexey Milovidov   │
   2. │  1 │ Clicky McClickface │

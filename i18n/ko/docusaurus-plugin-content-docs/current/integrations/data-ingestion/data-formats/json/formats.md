@@ -1,19 +1,21 @@
 ---
-title: '기타 JSON 형식 처리'
+title: '기타 JSON 포맷 처리'
 slug: /integrations/data-formats/json/other-formats
-description: '기타 JSON 형식 처리'
-sidebar_label: '기타 형식 처리'
-keywords: ['json', '형식', 'json 형식']
+description: '기타 JSON 포맷 처리'
+sidebar_label: '기타 포맷 처리'
+keywords: ['json', '포맷', 'json 포맷']
 doc_type: 'guide'
 ---
 
-앞에서 JSON 데이터를 로드하는 예제에서는 [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) 사용을 가정합니다. 이 형식은 각 JSON 행의 키를 컬럼으로 읽습니다. 예를 들어:
+앞에서 JSON 데이터를 로드하는 예제에서는 [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) 사용을 가정합니다. 이 포맷은 각 JSON 행의 키를 컬럼으로 읽습니다. 예를 들어:
 
 ```sql
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONEachRow)
 LIMIT 5
+```
 
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type────────┬─installer────┬─python_minor─┬─system─┬─version─┐
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
@@ -25,9 +27,9 @@ LIMIT 5
 5 rows in set. Elapsed: 0.449 sec.
 ```
 
-일반적으로 이는 JSON에서 가장 흔히 사용되는 형식이지만, 다른 형식을 접하거나 JSON을 하나의 객체로 읽어야 하는 경우가 있습니다.
+일반적으로 이는 JSON에서 가장 흔히 사용되는 포맷이지만, 다른 포맷을 접하거나 JSON을 하나의 객체로 읽어야 하는 경우가 있습니다.
 
-아래에서는 다른 일반적인 JSON 형식을 읽고 로드하는 예제를 제공합니다.
+아래에서는 다른 일반적인 JSON 포맷을 읽고 로드하는 예제를 제공합니다.
 
 ## JSON을 객체로 읽기 \{#reading-json-as-an-object\}
 
@@ -43,7 +45,9 @@ LIMIT 5
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONAsObject)
 LIMIT 5
+```
 
+```response
 ┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
@@ -72,7 +76,9 @@ LIMIT 5;
 SELECT *
 FROM pypi
 LIMIT 2;
+```
 
+```response
 ┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
@@ -86,7 +92,9 @@ LIMIT 2;
 ```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONEachRow')
+```
 
+```response
 Elapsed: 1.198 sec.
 
 Received exception from server (version 24.12.1):
@@ -101,7 +109,9 @@ You can specify the structure manually: (in file/uri bluesky/file_0001.json.gz).
 ```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONAsObject')
+```
 
+```response
 ┌─count()─┐
 │ 1000000 │
 └─────────┘

@@ -80,7 +80,9 @@ ENGINE = MergeTree
 ORDER BY (VoteTypeId, CreationDate, PostId)
 
 INSERT INTO votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 26.272 sec. Processed 238.98 million rows, 2.13 GB (9.10 million rows/s., 80.97 MB/s.)
 ```
 
@@ -99,13 +101,15 @@ FROM
         FROM votes
         GROUP BY hr
 )
+```
 
+```response
 ┌─avg_votes_per_hr─┬─avg_posts_per_hr─┐
 │               41759 │         33322 │
 └──────────────────┴──────────────────┘
 ```
 
-遅延を許容できるのであればバッチ処理で対処することも可能ですが、それでも更新を処理する必要がありますし、すべての投稿を定期的に再読み込みするようなことは（おそらく望ましくないため）現実的ではありません。
+遅延を許容できるのであればバッチ処理で対処することも可能ですが、それでも更新を処理する必要がありますし、すべての投稿を定期的に再読み込みするようなことは (おそらく望ましくないため) 現実的ではありません。
 
 さらに厄介なのは、一部の投稿には投票が極端に多く集まっていることです。
 
@@ -115,7 +119,9 @@ FROM votes
 GROUP BY PostId
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌───PostId─┬─url──────────────────────────────────────────┬─────c─┐
 │ 11227902 │ https://stackoverflow.com/questions/11227902 │ 35123 │
 │   927386 │ https://stackoverflow.com/questions/927386   │ 29090 │
@@ -125,8 +131,7 @@ LIMIT 5
 └──────────┴──────────────────────────────────────────────┴───────┘
 ```
 
-ここでの主なポイントは、各投稿ごとの投票の集計統計があれば、ほとんどの分析には十分であり、すべての投票情報を非正規化する必要はないということです。たとえば、現在の `Score` 列はそのような統計量、すなわち賛成票の合計から反対票の合計を引いた値を表しています。理想的には、クエリ時に簡単なルックアップでこれらの統計を取得できるのが望ましいでしょう（[dictionaries](/dictionary) を参照）。
-
+ここでの主なポイントは、各投稿ごとの投票の集計統計があれば、ほとんどの分析には十分であり、すべての投票情報を非正規化する必要はないということです。たとえば、現在の `Score` 列はそのような統計量、すなわち賛成票の合計から反対票の合計を引いた値を表しています。理想的には、クエリ時に簡単なルックアップでこれらの統計を取得できるのが望ましいでしょう ([dictionaries](/dictionary) を参照) 。
 
 ### Users と Badges \{#users-and-badges\}
 
@@ -174,11 +179,17 @@ ENGINE = MergeTree
 ORDER BY UserId
 
 INSERT INTO users SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 26.229 sec. Processed 22.48 million rows, 1.36 GB (857.21 thousand rows/s., 51.99 MB/s.)
+```
 
+```sql
 INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 18.126 sec. Processed 51.29 million rows, 797.05 MB (2.83 million rows/s., 43.97 MB/s.)
 ```
 
@@ -186,7 +197,9 @@ INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3
 
 ```sql
 SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
+```
 
+```response
 ┌─UserId─┬─────c─┐
 │  22656 │ 19334 │
 │   6309 │ 10516 │
@@ -198,8 +211,7 @@ SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
 
 1行に1万9千個のオブジェクトを非正規化して載せるのは現実的ではないでしょう。この関係は、テーブルを分けたままにするか、統計情報だけを非正規化して追加する形にしておくのが最適かもしれません。
 
-> たとえば、バッジからユーザーへ統計情報（バッジ数など）を非正規化して持たせたくなるかもしれません。このデータセットでは、挿入時に辞書を使用する例として、そのようなケースを取り上げます。
-
+> たとえば、バッジからユーザーへ統計情報 (バッジ数など) を非正規化して持たせたくなるかもしれません。このデータセットでは、挿入時に辞書を使用する例として、そのようなケースを取り上げます。
 
 ### Posts と PostLinks \{#posts-and-postlinks\}
 
@@ -218,7 +230,9 @@ ENGINE = MergeTree
 ORDER BY (PostId, RelatedPostId)
 
 INSERT INTO postlinks SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/postlinks.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 4.726 sec. Processed 6.55 million rows, 129.70 MB (1.39 million rows/s., 27.44 MB/s.)
 ```
 
@@ -229,7 +243,9 @@ SELECT PostId, count() AS c
 FROM postlinks
 GROUP BY PostId
 ORDER BY c DESC LIMIT 5
+```
 
+```response
 ┌───PostId─┬───c─┐
 │ 22937618 │ 125 │
 │  9549780 │ 120 │
@@ -254,14 +270,15 @@ FROM
   FROM postlinks
   GROUP BY hr
 )
+```
 
+```response
 ┌─avg_votes_per_hr─┬─avg_posts_per_hr─┐
 │                54 │                    44     │
 └──────────────────┴──────────────────┘
 ```
 
 以下では、このケースを非正規化の例として用います。
-
 
 ### 簡単な統計の例 \{#simple-statistic-example\}
 
@@ -336,7 +353,9 @@ LEFT JOIN (
     FROM postlinks
     GROUP BY PostId
 ) AS postlinks ON posts.Id = postlinks.PostId
+```
 
+```response
 0 rows in set. Elapsed: 155.372 sec. Processed 66.37 million rows, 76.33 GB (427.18 thousand rows/s., 491.25 MB/s.)
 Peak memory usage: 6.98 GiB.
 ```
@@ -353,13 +372,14 @@ FROM posts_with_links
 WHERE (length(LinkedPosts) > 2) AND (length(DuplicatePosts) > 0)
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 LinkedPosts:    [('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
 DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',33058004)]
 ```
-
 
 ## 非正規化のオーケストレーションとスケジューリング \{#orchestrating-and-scheduling-denormalization\}
 
