@@ -36,7 +36,7 @@ For background on session replay and how it fits into ClickStack, see the [Sessi
 
 ## Running the demo {#running-the-demo}
 
-<Steps>
+<VerticalStepper headerLevel="h3">
 
 ### Clone the extension repository {#clone-extension}
 
