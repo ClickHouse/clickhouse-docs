@@ -357,6 +357,10 @@ durations reported in microseconds:
 }
 ```
 
+The `queryId` is a signed 64-bit hash of the normalized statement, so it's
+often negative. Pass it back verbatim — leading `-` and all — to fetch a
+single pattern.
+
 ### Get a slow query pattern {#get-slow-query-pattern}
 
 Pass a `queryId` from the list response to the [slow pattern API] to get that
