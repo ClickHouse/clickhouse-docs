@@ -7,6 +7,7 @@ keywords: ['clickstack', 'opentelemetry', 'collector', 'managed', 'observability
 unlisted: true
 pagination_prev: null
 pagination_next: null
+custom_edit_url: null
 hide_advert: true
 ---
 
