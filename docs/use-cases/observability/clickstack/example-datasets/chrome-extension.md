@@ -114,7 +114,7 @@ You should see your session listed with its duration and event count. Click the 
 
 Switch between **Highlighted** and **All Events** modes to adjust the level of detail on the timeline.
 
-</Steps>
+</VerticalStepper>
 
 ## URL filtering {#url-filtering}
 
