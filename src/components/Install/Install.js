@@ -7,6 +7,7 @@ const InstallSelector = (props) => {
 
     const handleSelectCLI = () => setPlatformType('CLI');
     const handleSelectDocker = () => setPlatformType('Docker');
+    const handleSelectSource = () => setPlatformType('Source');
 
     const handleSelectDebian = () => setPlatformType('Debian');
     const handleSelectRedhat = () => setPlatformType('Redhat');
@@ -26,7 +27,7 @@ const InstallSelector = (props) => {
                 <CardPrimary
                     className="install-card"
                     alignContent="center"
-                    icon="terminal"
+                    iconUrl="/docs/img/clickhouse-logo-mark.svg"
                     infoUrl="https://clickhouse.com"
                     onClick={handleSelectCLI}
                     size="sm"
@@ -42,6 +43,16 @@ const InstallSelector = (props) => {
                     size="sm"
                     title="Docker"
                     isSelected={platform === 'Docker'}
+                />
+                <CardPrimary
+                    className="install-card"
+                    alignContent="center"
+                    icon="code"
+                    infoUrl="https://clickhouse.com"
+                    onClick={handleSelectSource}
+                    size="sm"
+                    title="Source & CI builds"
+                    isSelected={platform === 'Source'}
                 />
             </div>
             <h3 className="install-group-heading">Production server</h3>
@@ -73,22 +84,22 @@ const InstallSelector = (props) => {
                 <CardPrimary
                     className="install-card"
                     alignContent="center"
-                    iconUrl="/docs/img/linux.svg"
-                    infoUrl="https://clickhouse.com"
-                    onClick={handleSelectLinuxOther}
-                    size="sm"
-                    title="Other"
-                    isSelected={platform === 'LinuxOther'}
-                />
-                <CardPrimary
-                    className="install-card"
-                    alignContent="center"
                     iconUrl="/docs/img/nixos.svg"
                     infoUrl="https://clickhouse.com"
                     onClick={handleSelectNixOS}
                     size="sm"
                     title="NixOS"
                     isSelected={platform === 'NixOS'}
+                />
+                <CardPrimary
+                    className="install-card"
+                    alignContent="center"
+                    iconUrl="/docs/img/linux.svg"
+                    infoUrl="https://clickhouse.com"
+                    onClick={handleSelectLinuxOther}
+                    size="sm"
+                    title="Other Linux"
+                    isSelected={platform === 'LinuxOther'}
                 />
             </div>
         </>
@@ -106,6 +117,8 @@ const InstallSelector = (props) => {
             return props.nixos
         } else if (platform === 'Docker') {
             return props.docker
+        } else if (platform === 'Source') {
+            return props.source
         } else {
             return null
         }

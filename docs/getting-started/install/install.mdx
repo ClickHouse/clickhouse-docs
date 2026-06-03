@@ -14,12 +14,13 @@ import DebianProd from './_snippets/_deb_install.md'
 import RPMProd from './_snippets/_rpm_install.md'
 import NixOS from './_snippets/_nixos_install.md'
 import Docker from './_snippets/_docker.md'
+import Advanced from './advanced.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 <CardPrimary
     alignContent="center"
-    description="Start building instantly without having to size and scale your cluster. We take care of sizing, scaling
+    description="Start building instantly without having to size and scale your cluster. ClickHouse Cloud takes care of sizing, scaling
     , security, reliability and upgrades."
     icon="cloud"
     infoText="Get started free"
@@ -32,7 +33,7 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 />
 <br/>
 
-Prefer to self-manage? Choose how you want to run open-source ClickHouse below.
+If you prefer to self-manage, select one of the open-source ClickHouse options below.
 Use the ClickHouse CLI for a quick local setup, or install ClickHouse Server
 from packages or binaries for a production deployment.
 
@@ -40,8 +41,9 @@ from packages or binaries for a production deployment.
     cli={<CLIInstall/>}
     debian_prod={<DebianProd/>}
     rpm_prod={<RPMProd/>}
-    tar_prod={<TarProd/>}
     nixos={<NixOS/>}
+    tar_prod={<TarProd/>}
     docker={<Docker/>}
+    source={<Advanced/>}
 />
 
