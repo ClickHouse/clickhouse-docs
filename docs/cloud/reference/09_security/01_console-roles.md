@@ -76,7 +76,7 @@ The table below describes the ClickHouse console and SQL console permissions. Mo
 | control-plane:service:view-private-endpoints | View private endpoint configuration for a service. |
 | control-plane:service:manage-private-endpoints | Create and manage private endpoints and private networking. |
 | **ClickPipes** ([more info](/integrations/clickpipes)) | ClickPipes integration |
-| control-plane:service:manage-clickpipes | Manage ClickPipes integration and related settings. |
+| control-plane:service:manage-clickpipes | Manage ClickPipes integration and related settings. Accessing the **Data Sources** tab currently requires `control-plane:service:manage` ("Manage and Delete Selected Services"). |
 | **Scaling** ([more info](/manage/scaling)) | Scaling and autoscaling configuration |
 | control-plane:service:view-scaling-config | View scaling configuration and autoscaling settings for a service. |
 | control-plane:service:manage-scaling-config | Modify scaling configuration and trigger scaling operations. |
