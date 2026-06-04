@@ -1531,31 +1531,35 @@ File/S3/URL/HDFS など、ファイルを扱うテーブルエンジンで読み
 
 ### ExecutableUserDefinedFunctionElapsedMicroseconds \{#executableuserdefinedfunctionelapsedmicroseconds\}
 
-実行可能および 実行可能プール のユーザー定義関数の実行にかかった実時間 (マイクロ秒) です。
+実行可能プール ユーザー定義関数の実行にかかった実時間 (マイクロ秒) です。
 
 ### ExecutableUserDefinedFunctionInputBytes \{#executableuserdefinedfunctioninputbytes\}
 
-実行可能 ユーザー定義関数 および 実行可能プール ユーザー定義関数 の子プロセスの stdin に書き込まれた総バイト数。
+実行可能プール ユーザー定義関数の子プロセスの stdin に書き込まれた総バイト数。
 
 ### ExecutableUserDefinedFunctionInvocations \{#executableuserdefinedfunctioninvocations\}
 
-実行可能ユーザー定義関数および実行可能プール ユーザー定義関数の呼び出し回数。
+実行可能プール ユーザー定義関数の呼び出し回数。
 
 ### ExecutableUserDefinedFunctionOutputBytes \{#executableuserdefinedfunctionoutputbytes\}
 
-実行可能 および 実行可能プール の ユーザー定義関数 の子プロセスの stdout から読み取られた総バイト数。
+実行可能プール の ユーザー定義関数 の子プロセスの stdout から読み取られた総バイト数。
 
 ### ExecutableUserDefinedFunctionPeakMemoryByteSeconds \{#executableuserdefinedfunctionpeakmemorybyteseconds\}
 
-実行可能 および 実行可能プール の ユーザー定義関数 の子プロセスが使用した、プロセスごとのピークメモリを実時間で積分した値です。単位は byte-seconds です。
+`実行可能プール` の ユーザー定義関数 の子プロセスが使用した、プロセスごとのピークメモリを実時間で積分した値です。単位は byte-seconds です。
+
+### ExecutableUserDefinedFunctionPoolWaitMicroseconds \{#executableuserdefinedfunctionpoolwaitmicroseconds\}
+
+`実行可能プール` 実行可能ユーザー定義関数プールが枯渇した場合に、`tryBorrowObject` の待機に費やされる時間 (マイクロ秒) 。
 
 ### ExecutableUserDefinedFunctionSystemTimeMicroseconds \{#executableuserdefinedfunctionsystemtimemicroseconds\}
 
-実行可能な ユーザー定義関数 およびそのプールの子プロセスによって消費された、カーネルモードの CPU 時間 (マイクロ秒) 。
+実行可能プール ユーザー定義関数の子プロセスによって消費された、カーネルモードの CPU 時間 (マイクロ秒) 。
 
 ### ExecutableUserDefinedFunctionUserTimeMicroseconds \{#executableuserdefinedfunctionusertimemicroseconds\}
 
-実行可能ファイルおよび実行可能プールの ユーザー定義関数 の子プロセスが消費したユーザーモードの CPU 時間 (マイクロ秒) 。
+実行可能プールの ユーザー定義関数 の子プロセスが消費したユーザーモードの CPU 時間 (マイクロ秒) 。
 
 ### ExecuteShellCommand \{#executeshellcommand\}
 

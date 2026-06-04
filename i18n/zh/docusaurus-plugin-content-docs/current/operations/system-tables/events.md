@@ -1531,31 +1531,35 @@ DiskS3 存储中 POST、DELETE、PUT 和 PATCH 请求的重定向次数。
 
 ### ExecutableUserDefinedFunctionElapsedMicroseconds \{#executableuserdefinedfunctionelapsedmicroseconds\}
 
-执行可执行用户自定义函数及可执行池用户自定义函数所消耗的挂钟时间，单位为微秒。
+执行 可执行池用户自定义函数所消耗的挂钟时间，单位为微秒。
 
 ### ExecutableUserDefinedFunctionInputBytes \{#executableuserdefinedfunctioninputbytes\}
 
-写入可执行用户自定义函数及可执行池用户自定义函数子进程 stdin 的总字节数。
+写入 可执行池用户自定义函数子进程 stdin 的总字节数。
 
 ### ExecutableUserDefinedFunctionInvocations \{#executableuserdefinedfunctioninvocations\}
 
-可执行用户自定义函数和可执行池用户自定义函数的调用次数。
+可执行池用户自定义函数的调用次数。
 
 ### ExecutableUserDefinedFunctionOutputBytes \{#executableuserdefinedfunctionoutputbytes\}
 
-从可执行用户自定义函数及可执行池用户自定义函数子进程的标准输出 (stdout) 读取的总字节数。
+从 可执行池用户自定义函数子进程的标准输出 (stdout) 读取的总字节数。
 
 ### ExecutableUserDefinedFunctionPeakMemoryByteSeconds \{#executableuserdefinedfunctionpeakmemorybyteseconds\}
 
-可执行用户自定义函数及可执行池用户自定义函数子进程的每进程峰值内存，按挂钟时间积分，单位为字节秒。
+可执行池用户自定义函数子进程的每进程峰值内存，按挂钟时间积分，单位为字节秒。
+
+### ExecutableUserDefinedFunctionPoolWaitMicroseconds \{#executableuserdefinedfunctionpoolwaitmicroseconds\}
+
+当 `可执行池用户自定义函数` 池耗尽时，等待 `tryBorrowObject` 的耗时，以微秒为单位。
 
 ### ExecutableUserDefinedFunctionSystemTimeMicroseconds \{#executableuserdefinedfunctionsystemtimemicroseconds\}
 
-可执行用户自定义函数及可执行池用户自定义函数的子进程所消耗的内核态 CPU 时间，单位为微秒。
+可执行池用户自定义函数的子进程所消耗的内核态 CPU 时间，单位为微秒。
 
 ### ExecutableUserDefinedFunctionUserTimeMicroseconds \{#executableuserdefinedfunctionusertimemicroseconds\}
 
-可执行用户自定义函数及可执行池用户自定义函数子进程消耗的用户态 CPU 时间，单位为微秒。
+可执行池用户自定义函数子进程消耗的用户态 CPU 时间，单位为微秒。
 
 ### 执行 Shell 命令 \{#executeshellcommand\}
 

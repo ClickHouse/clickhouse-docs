@@ -1532,31 +1532,35 @@ SELECT * FROM system.events LIMIT 5
 
 ### ExecutableUserDefinedFunctionElapsedMicroseconds \{#executableuserdefinedfunctionelapsedmicroseconds\}
 
-Астрономическое время, затраченное на выполнение пользовательских функций executable и executable pool, в микросекундах.
+Астрономическое время, затраченное на выполнение пользовательских функций executable&#95;pool, в микросекундах.
 
 ### ExecutableUserDefinedFunctionInputBytes \{#executableuserdefinedfunctioninputbytes\}
 
-Общее количество байтов, записанных в stdin дочерних процессов исполняемых пользовательских функций и executable pool пользовательских функций.
+Общее количество байтов, записанных в stdin дочерних процессов executable&#95;pool пользовательских функций.
 
 ### ExecutableUserDefinedFunctionInvocations \{#executableuserdefinedfunctioninvocations\}
 
-Количество вызовов пользовательских функций типов executable и executable pool.
+Количество вызовов пользовательских функций типа executable&#95;pool.
 
 ### ExecutableUserDefinedFunctionOutputBytes \{#executableuserdefinedfunctionoutputbytes\}
 
-Общее количество байтов, прочитанных из stdout дочерних процессов исполняемой пользовательской функции и executable pool пользовательских функций.
+Общее количество байтов, прочитанных из stdout дочерних процессов пользовательских функций executable&#95;pool.
 
 ### ExecutableUserDefinedFunctionPeakMemoryByteSeconds \{#executableuserdefinedfunctionpeakmemorybyteseconds\}
 
-Пиковый объем памяти на процесс, используемый дочерними процессами исполняемой пользовательской функции и executable pool пользовательских функций, интегрированный по астрономическому времени, в байт-секундах.
+Пиковый объем памяти на процесс, используемый дочерними процессами пользовательской функции executable&#95;pool, интегрированный по астрономическому времени, в байт-секундах.
+
+### ExecutableUserDefinedFunctionPoolWaitMicroseconds \{#executableuserdefinedfunctionpoolwaitmicroseconds\}
+
+Время ожидания в `tryBorrowObject`, когда пул пользовательских функций `executable_pool` исчерпан, в микросекундах.
 
 ### ExecutableUserDefinedFunctionSystemTimeMicroseconds \{#executableuserdefinedfunctionsystemtimemicroseconds\}
 
-Время ЦП в режиме ядра, затраченное дочерними процессами исполняемой пользовательской функции и executable pool пользовательских функций, в микросекундах.
+Время ЦП в режиме ядра, затраченное дочерними процессами executable_pool пользовательских функций, в микросекундах.
 
 ### ExecutableUserDefinedFunctionUserTimeMicroseconds \{#executableuserdefinedfunctionusertimemicroseconds\}
 
-Время ЦП в пользовательском режиме, затраченное дочерними процессами исполняемой пользовательской функции и пула исполняемых пользовательских функций, в микросекундах.
+Время ЦП в пользовательском режиме, затраченное дочерними процессами executable_pool пользовательских функций, в микросекундах.
 
 ### ExecuteShellCommand \{#executeshellcommand\}
 

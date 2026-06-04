@@ -53,7 +53,11 @@ ClickHouse Cloud 客户可以选择预定义的系统角色，也可以创建自
   点击 `Allow` 按钮，然后从组织、服务和/或数据库权限中进行选择。有关所有权限的说明，请参见 [控制台角色和权限](/cloud/security/console-roles)。
 
   :::tip
-  请确保需要登录控制台的用户至少具有“组织 &gt; 访问组织”权限。
+  请确保需要登录控制台的用户至少具有“Organization &gt; Access organization”权限。
+  :::
+
+  :::note[数据源选项卡访问]
+  要访问 **Data Sources** 选项卡，该角色当前需要具备 `Manage and Delete Selected Services` 权限。
   :::
 
   <Image img={step_5} size="md" />
