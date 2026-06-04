@@ -115,7 +115,7 @@ kubectl port-forward svc/ui -n odigos-system 3000:3000
 
 To send telemetry to ClickStack, add an **OTLP HTTP** destination in Odigos. The exact configuration depends on how ClickStack is deployed. With open source ClickStack the OpenTelemetry collector is bundled and the ingestion key is generated for you in the HyperDX UI. With Managed ClickStack you run your own standalone ClickStack collector and choose the authentication token yourself when starting the container.
 
-:::tip Alternative: write directly to ClickHouse
+:::tip[Alternative: write directly to ClickHouse]
 If ClickHouse is reachable from your Kubernetes cluster, you can skip the OTLP collector entirely and use Odigos's [native **ClickHouse** destination](#native-clickhouse-destination) instead. This works for both open source and Managed ClickStack.
 :::
 
