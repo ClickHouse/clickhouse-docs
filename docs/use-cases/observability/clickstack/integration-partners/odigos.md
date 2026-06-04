@@ -92,7 +92,6 @@ Verify Odigos pods are running:
 kubectl get pods -n odigos-system
 ```
 
-
 #### Add sources in the Odigos UI {#add-sources}
 
 1. Port-forward the Odigos UI service:
