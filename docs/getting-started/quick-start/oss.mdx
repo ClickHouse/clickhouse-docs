@@ -22,8 +22,10 @@ insert data into it, and run a SELECT query.
 
 ## Install the ClickHouse CLI \{#install-the-cli\}
 
-The ClickHouse CLI (`clickhousectl`) helps you install and manage local ClickHouse
-versions, launch servers, and run queries. Install it with:
+The ClickHouse CLI (`clickhousectl`) helps you install local ClickHouse
+versions, launch servers, run queries and manage ClickHouse Cloud.
+
+Install it with:
 
 ```bash
 curl https://clickhouse.com/cli | sh
@@ -54,11 +56,17 @@ plain-binary workflow.
 ClickHouse runs natively on Linux and macOS, and runs on Windows via
 the [WSL](https://learn.microsoft.com/en-us/windows/wsl/about).
 
-Use the CLI to install the latest stable version of ClickHouse:
+Use the CLI to install the latest stable version of ClickHouse and make it your default:
 
 ```bash
-clickhousectl local install stable
+clickhousectl local use stable
 ```
+
+`local use` installs the version if it isn't already present, sets it as your
+default, and creates a `clickhouse` symlink in `~/.local/bin` (on your `PATH`)
+so you can invoke the `clickhouse` binary directly. The later steps in this
+guide rely on that symlink. To download a version without changing your default
+or updating the symlink, use `clickhousectl local install <version>` instead.
 
 :::note
 This isn't the recommended way to install ClickHouse for production.

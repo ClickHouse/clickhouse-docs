@@ -34,15 +34,29 @@ const sidebars = {
           collapsible: false,
           link: { type: 'doc', id: 'getting-started/install/install' },
           items: [
-            'getting-started/install/debian_ubuntu',
-            'getting-started/install/redhat',
-            'getting-started/install/other_linux',
-            'getting-started/install/nixos',
-            'getting-started/install/macos',
-            'getting-started/install/windows',
-            'getting-started/install/docker',
-            'getting-started/install/quick-install',
-            'getting-started/install/advanced',
+            {
+              type: 'category',
+              label: 'Local development',
+              collapsed: false,
+              collapsible: true,
+              items: [
+                'getting-started/install/quick-install',
+                'getting-started/install/docker',
+                'getting-started/install/advanced',
+              ],
+            },
+            {
+              type: 'category',
+              label: 'Production server',
+              collapsed: false,
+              collapsible: true,
+              items: [
+                'getting-started/install/debian_ubuntu',
+                'getting-started/install/redhat',
+                'getting-started/install/nixos',
+                'getting-started/install/other_linux',
+              ],
+            },
           ],
         },
         'deployment-modes',
@@ -364,6 +378,7 @@ const sidebars = {
         'cloud/managed-postgres/scaling',
         'cloud/managed-postgres/backup-and-restore',
         'cloud/managed-postgres/security',
+        'cloud/managed-postgres/rbac',
         // Configure
         'cloud/managed-postgres/settings',
         {
