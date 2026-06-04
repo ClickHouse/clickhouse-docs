@@ -50,7 +50,7 @@ Behind the scenes, Odigos creates and manages a full OpenTelemetry pipeline for 
 
 Rolling out OpenTelemetry across many services is often time consuming and only provides surface-level visibility in applications. Odigos handles eBPF instrumentation for deeper telemetry and collector operations on Kubernetes; ClickStack provides ClickHouse-backed storage and the HyperDX UI for querying telemetry at scale.
 
-:::tip Key takeaways
+:::tip[Key takeaways]
 - **Odigos** auto-instruments any Kubernetes workload without requiring restarts and manages OpenTelemetry pipelines automatically.
 - **ClickStack** stores logs, metrics, and traces in ClickHouse and surfaces them in HyperDX.
 :::
