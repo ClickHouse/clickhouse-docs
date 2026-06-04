@@ -5,6 +5,7 @@ const InstallSelector = (props) => {
 
     const [platform, setPlatformType] = useState(null)
 
+    const handleSelectQuickInstall = () => setPlatformType('QuickInstall');
     const handleSelectCLI = () => setPlatformType('CLI');
     const handleSelectDocker = () => setPlatformType('Docker');
     const handleSelectSource = () => setPlatformType('Source');
@@ -20,8 +21,8 @@ const InstallSelector = (props) => {
             <h3 className="install-group-heading">Local development</h3>
             <p className="install-group-description">
                 Run ClickHouse on your own machine to build, test, and experiment.
-                The ClickHouse CLI is the quickest path and the one the rest of our
-                guides assume.
+                Quick install gets you a single binary fast, or use clickhousectl
+                to install and manage local versions and servers.
             </p>
             <div className="installContainer">
                 <CardPrimary
@@ -29,9 +30,19 @@ const InstallSelector = (props) => {
                     alignContent="center"
                     iconUrl="/docs/img/clickhouse-logo-mark.svg"
                     infoUrl="https://clickhouse.com"
-                    onClick={handleSelectCLI}
+                    onClick={handleSelectQuickInstall}
                     size="sm"
                     title="Quick install"
+                    isSelected={platform === 'QuickInstall'}
+                />
+                <CardPrimary
+                    className="install-card"
+                    alignContent="center"
+                    icon="console"
+                    infoUrl="https://clickhouse.com"
+                    onClick={handleSelectCLI}
+                    size="sm"
+                    title="clickhousectl (CLI)"
                     isSelected={platform === 'CLI'}
                 />
                 <CardPrimary
@@ -105,7 +116,9 @@ const InstallSelector = (props) => {
         </>
     }
     const renderInstallInstructions = (props) => {
-        if (platform === 'CLI') {
+        if (platform === 'QuickInstall') {
+            return props.quick_install
+        } else if (platform === 'CLI') {
             return props.cli
         } else if (platform === 'Debian') {
             return props.debian_prod

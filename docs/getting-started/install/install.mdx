@@ -8,6 +8,7 @@ doc_type: 'guide'
 ---
 
 import InstallSelector from '@site/src/components/Install/Install'
+import QuickInstall from './_snippets/_quick_install.md'
 import CLIInstall from './_snippets/_cli_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
 import DebianProd from './_snippets/_deb_install.md'
@@ -34,10 +35,11 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 <br/>
 
 If you prefer to self-manage, select one of the open-source ClickHouse options below.
-Use the ClickHouse CLI for a quick local setup, or install ClickHouse Server
-from packages or binaries for a production deployment.
+Use the quick install script or the `clickhousectl` CLI for a local setup, or install
+ClickHouse Server from packages or binaries for a production deployment.
 
 <InstallSelector
+    quick_install={<QuickInstall/>}
     cli={<CLIInstall/>}
     debian_prod={<DebianProd/>}
     rpm_prod={<RPMProd/>}

@@ -41,6 +41,7 @@ const sidebars = {
               collapsible: true,
               items: [
                 'getting-started/install/quick-install',
+                'getting-started/install/clickhousectl',
                 'getting-started/install/docker',
                 'getting-started/install/advanced',
               ],
