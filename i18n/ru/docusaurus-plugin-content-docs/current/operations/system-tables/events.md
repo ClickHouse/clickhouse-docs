@@ -4938,6 +4938,10 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Количество байтов, вытесненных из несжатого кэша.
 
+### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
+
+Общее реальное время, затраченное за время жизни `SSTIndexWriter`, — включает `Open` для SST, каждый Put через `addEncoded`, а также `Finish` и копирование через `writeFile` в `finalizeToStorage`. Не включает работу, которую статические вспомогательные функции выполняют до создания writer’а (кодирование + сортировка путей без префикса). Публикуется один раз для каждого writer’а.
+
 ### UserThrottlerBytes \{#userthrottlerbytes\}
 
 Байты, прошедшие через троттлер &#39;max&#95;network&#95;bandwidth&#95;for&#95;user&#39;.

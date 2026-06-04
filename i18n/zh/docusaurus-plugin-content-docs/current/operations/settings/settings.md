@@ -12481,6 +12481,16 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 示例参见 [UNION](../../sql-reference/statements/select/union.md)。
 
+## unique_key_max_encoded_size \{#unique_key_max_encoded_size\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="256" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "256"},{"label": "新增设置：单个 `UNIQUE KEY` 行的保序二进制编码的最大大小（字节）"}]}]} />
+
+单个 `UNIQUE KEY` 行的保序二进制编码的最大大小 (以字节为单位) 。
+
 ## unknown_packet_in_send_data \{#unknown_packet_in_send_data\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

@@ -4937,6 +4937,10 @@ usearch索引の検索時に訪問したノード数。
 
 非圧縮キャッシュから追い出されたバイト数。
 
+### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
+
+`SSTIndexWriter` のライフタイム全体で費やされた実時間の合計です。これには、SST の `Open`、すべての `addEncoded` Put、さらに `finalizeToStorage` における `Finish` と `writeFile` 経由のコピーが含まれます。ライターの構築前に静的ヘルパーが行う処理 (encode と非プレフィックスパスのソート) は含まれません。ライターごとに 1 回出力されます。
+
 ### UserThrottlerBytes \{#userthrottlerbytes\}
 
 `max_network_bandwidth_for_user` スロットラーを通過したバイト数。

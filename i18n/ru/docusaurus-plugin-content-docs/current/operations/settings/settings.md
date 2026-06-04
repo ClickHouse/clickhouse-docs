@@ -12542,6 +12542,16 @@ SELECT idx, i FROM null_in WHERE i IN (1, NULL) SETTINGS transform_null_in = 1;
 
 Примеры см. в разделе [UNION](../../sql-reference/statements/select/union.md).
 
+## unique_key_max_encoded_size \{#unique_key_max_encoded_size\}
+
+<ExperimentalBadge />
+
+<SettingsInfoBlock type="UInt64" default_value="256" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "256"},{"label": "новая настройка: максимальный размер (в байтах) двоичного кодирования с сохранением порядка для одной строки `UNIQUE KEY`"}]}]} />
+
+Максимальный размер (в байтах) двоичного кодирования с сохранением порядка для одной строки `UNIQUE KEY`.
+
 ## unknown_packet_in_send_data \{#unknown_packet_in_send_data\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />

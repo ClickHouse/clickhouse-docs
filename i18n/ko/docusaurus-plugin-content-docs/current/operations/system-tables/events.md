@@ -4937,6 +4937,10 @@ usearch 인덱스 검색 시 방문한 노드 수입니다.
 
 비압축 캐시에서 축출된 바이트 수입니다.
 
+### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
+
+`SSTIndexWriter`의 수명 주기 동안 내부에서 소요된 총 실제 경과 시간(벽시계 시간)입니다. 여기에는 SST `Open`, 모든 `addEncoded` Put, 그리고 `finalizeToStorage`에서의 `Finish`와 `writeFile`을 통한 복사가 포함됩니다. 작성기를 생성하기 전에 정적 헬퍼가 수행하는 작업(인코딩 + 비접두사 경로 정렬)은 제외됩니다. 작성기마다 한 번씩 기록됩니다.
+
 ### UserThrottlerBytes \{#userthrottlerbytes\}
 
 &#39;max&#95;network&#95;bandwidth&#95;for&#95;user&#39; 스로틀러를 거쳐 전달된 바이트 수입니다.

@@ -77,9 +77,9 @@ PARTITION BY toYear(CreationDate)
 
 ### 파티션의 활용 \{#applications-of-partitions\}
 
-ClickHouse에서의 파티션은 Postgres에서의 파티션과 유사하게 활용되지만, 몇 가지 미묘한 차이가 있습니다. 보다 구체적으로는 다음과 같습니다.
+ClickHouse에서의 파티셔닝은 Postgres에서의 파티션과 유사하게 활용되지만, 몇 가지 미묘한 차이가 있습니다. 보다 구체적으로는 다음과 같습니다.
 
-* **데이터 관리** - ClickHouse에서 파티션은 기본적으로 쿼리 최적화 기법이 아니라 데이터 관리 기능으로 간주해야 합니다. 키를 기준으로 데이터를 논리적으로 분리하면, 각 파티션을 예를 들어 삭제와 같이 독립적으로 조작할 수 있습니다. 이를 통해 [스토리지 계층](/integrations/s3#storage-tiers) 간에 파티션, 즉 데이터의 부분 집합을 시간 기준으로 효율적으로 이동하거나, [데이터를 만료시키거나 클러스터에서 효율적으로 삭제](/sql-reference/statements/alter/partition)할 수 있습니다. 예를 들어, 아래에서는 2008년의 게시글을 제거합니다.
+* **데이터 관리** - ClickHouse에서 파티셔닝은 기본적으로 쿌리 최적화 기법이 아니라 데이터 관리 기능으로 간주해야 합니다. 키를 기준으로 데이터를 논리적으로 분리하면, 각 파티션을 예를 들어 삭제와 같이 독립적으로 조작할 수 있습니다. 이를 통해 [스토리지 계층](/integrations/s3#storage-tiers) 간에 파티션, 즉 데이터의 부분 집합을 시간 기준으로 효율적으로 이동하거나, [데이터를 만료시키거나 클러스터에서 효율적으로 삭제](/sql-reference/statements/alter/partition)할 수 있습니다. 예를 들어, 아래에서는 2008년의 게시글을 제거합니다.
 
 ```sql
 SELECT DISTINCT partition

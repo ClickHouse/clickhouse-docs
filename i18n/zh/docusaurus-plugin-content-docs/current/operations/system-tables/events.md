@@ -4937,6 +4937,10 @@ ThreadPoolReader 中未从页缓存读取、而是移交给线程池处理的次
 
 从未压缩缓存中逐出的字节数。
 
+### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
+
+`SSTIndexWriter` 整个生命周期内消耗的挂钟时间总量——包括 SST `Open`、每次 `addEncoded` Put，以及 `finalizeToStorage` 中的 `Finish` 和通过 `writeFile` 执行的复制。不包括静态辅助函数在构造 writer 之前完成的工作 (编码 + 非前缀 path 排序) 。每个 writer 仅记录一次。
+
 ### UserThrottlerBytes \{#userthrottlerbytes\}
 
 经过 `max_network_bandwidth_for_user` 限流器的字节数。
