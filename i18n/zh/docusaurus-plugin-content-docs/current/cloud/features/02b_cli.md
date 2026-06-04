@@ -7,7 +7,7 @@ keywords: ['clickhousectl', 'CLI', 'Cloud 管理', '本地开发']
 doc_type: 'reference'
 ---
 
-ClickHouse CLI (`clickhousectl`) 是一款统一的命令行工具，用于管理 ClickHouse Cloud 资源，并支持使用 ClickHouse 进行本地开发。
+ClickHouse CLI (`clickhousectl`) 是一款统一的命令行工具，用于管理 ClickHouse Cloud 资源，并支持使用 ClickHouse 进行本地开发。它还可管理 [ClickHouse Cloud Postgres](/cloud/managed-postgres) 服务。
 
 ## 安装 \{#installation\}
 
@@ -62,6 +62,38 @@ clickhousectl cloud service stop <service-id>
 
 # Delete a service
 clickhousectl cloud service delete <service-id>
+```
+
+### Postgres 服务 (Beta) \{#postgres-services\}
+
+创建并管理 [ClickHouse Cloud Postgres](/cloud/managed-postgres) 服务。
+
+```bash
+# List Postgres services
+clickhousectl cloud postgres list
+
+# Create a Postgres service
+clickhousectl cloud postgres create \
+  --name my-pg \
+  --region us-east-1 \
+  --size c6gd.xlarge \
+  --pg-version 18
+
+# Get service details
+clickhousectl cloud postgres get <pg-id>
+
+# Update a service
+clickhousectl cloud postgres update <pg-id> --size c6gd.2xlarge --add-tag env=prod
+
+# Reset the password
+clickhousectl cloud postgres reset-password <pg-id> --generate
+
+# Read replicas and point-in-time restore
+clickhousectl cloud postgres read-replica create <pg-id> --name replica-1
+clickhousectl cloud postgres restore <pg-id> --name restored --restore-target 2026-04-16T12:00:00Z
+
+# Delete a service
+clickhousectl cloud postgres delete <pg-id>
 ```
 
 ### 组织 \{#organizations\}

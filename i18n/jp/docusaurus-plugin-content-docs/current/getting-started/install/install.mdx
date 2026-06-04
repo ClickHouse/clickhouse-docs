@@ -9,22 +9,33 @@ doc_type: 'guide'
 
 import InstallSelector from '@site/src/components/Install/Install'
 import CLIInstall from './_snippets/_cli_install.md'
-import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
-import QuickInstall from './_snippets/_quick_install.md'
 import DebianProd from './_snippets/_deb_install.md'
 import RPMProd from './_snippets/_rpm_install.md'
-import MacOSProd from './_snippets/_macos.md'
 import NixOS from './_snippets/_nixos_install.md'
 import Docker from './_snippets/_docker.md'
+import Advanced from './advanced.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
-<CardPrimary alignContent="center" description="クラスターの容量やスケーリングを気にせず、すぐに構築を開始できます。サイズ設定、スケーリング、セキュリティ、信頼性、アップグレードはすべて当社が行います。" icon="cloud" infoText="無料で始める" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="推奨" />
+<CardPrimary
+  alignContent="center"
+  description="クラスターの容量やスケーリングを気にせず、すぐに構築を開始できます。サイズ設定、スケーリング
+, セキュリティ、信頼性、アップグレードは ClickHouse Cloud が行います。"
+  icon="cloud"
+  infoText="無料で始める"
+  infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
+  isSelected
+  onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
+  size="md"
+  title="ClickHouse Cloud"
+  topBadgeText="推奨"
+/>
 
 <br />
 
-または、以下からプラットフォーム、ディストリビューション、およびインストール方法を選択して、
-オープンソース版 ClickHouse のインストール手順を表示します。
+自分で管理したい場合は、以下のオープンソース版 ClickHouse のオプションから 1 つ選択してください。
+ローカルですばやくセットアップするには ClickHouse CLI を使用し、本番環境へのデプロイには
+パッケージまたはバイナリから ClickHouse Server をインストールしてください。
 
-<InstallSelector cli={<CLIInstall/>} windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />
+<InstallSelector cli={<CLIInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} nixos={<NixOS/>} tar_prod={<TarProd/>} docker={<Docker/>} source={<Advanced/>} />

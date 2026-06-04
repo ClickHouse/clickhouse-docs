@@ -1,6 +1,6 @@
 ---
-description: 'Быстрая установка ClickHouse с помощью CLI или curl'
-keywords: ['ClickHouse', 'install', 'quick', 'curl', 'clickhousectl', 'CLI']
+description: 'Быстрая установка ClickHouse с помощью ClickHouse CLI'
+keywords: ['ClickHouse', 'install', 'quick', 'clickhousectl', 'CLI']
 sidebar_label: 'Быстрая установка'
 slug: /install/quick-install
 title: 'Быстрая установка'
@@ -8,68 +8,67 @@ hide_title: true
 doc_type: 'guide'
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import QuickInstall from './_snippets/_quick_install.md'
+Если вам не нужно устанавливать ClickHouse для продакшена, быстрее всего начать работу с помощью ClickHouse CLI (`clickhousectl`), который помогает устанавливать локальные версии ClickHouse и управлять ими, запускать серверы, выполнять запросы и управлять ClickHouse Cloud.
 
-Если вам не нужно устанавливать ClickHouse для продакшена, быстрее всего начать работу с помощью ClickHouse CLI или установочного скрипта, запускаемого через curl.
+:::note Пользователям Windows
+ClickHouse работает нативно на Linux и macOS. В Windows выполняйте эти шаги внутри [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/about).
+:::
 
-<Tabs>
-  <TabItem value="cli" label="ClickHouse CLI" default>
-    ClickHouse CLI (`clickhousectl`) помогает устанавливать локальные версии ClickHouse и управлять ими, запускать серверы и выполнять запросы.
+<VerticalStepper>
+  ## Установите ClickHouse CLI \{#install-the-cli\}
 
-    <VerticalStepper>
-      ## Установите ClickHouse CLI \{#install-the-cli\}
+  ```bash
+  curl https://clickhouse.com/cli | sh
+  ```
 
-      ```bash
-      curl https://clickhouse.com/cli | sh
-      ```
+  Для удобства также автоматически создается псевдоним `chctl`.
 
-      Для удобства также автоматически создается псевдоним `chctl`.
+  ## Установите ClickHouse \{#install-clickhouse\}
 
-      ## Установите ClickHouse \{#install-clickhouse\}
+  Установите последнюю стабильную версию ClickHouse и сделайте ее версией по умолчанию:
 
-      ```bash
-      clickhousectl local install stable
-      ```
+  ```bash
+  clickhousectl local use stable
+  ```
 
-      ## Запустите clickhouse-server \{#start-clickhouse-server\}
+  `local use` устанавливает версию, если она еще не установлена, делает ее вашей версией по умолчанию и создает символическую ссылку `clickhouse` в `~/.local/bin` (в вашем `PATH`), чтобы вы могли напрямую запускать бинарный файл `clickhouse`. После этого любой последующий шаг в этой документации, где запускается команда `clickhouse`, будет работать как есть.
 
-      ```bash
-      clickhousectl local server start
-      ```
+  :::note[Use vs install]
+  `clickhousectl local use <version>` устанавливает версию *и* делает ее вашей версией по умолчанию, обновляя символическую ссылку `clickhouse` в вашем `PATH`. Чтобы скачать версию без изменения версии по умолчанию и без обновления символической ссылки, используйте вместо этого
+  `clickhousectl local install <version>`.
+  :::
 
-      Сервер работает в фоновом режиме. Чтобы убедиться, что он запущен, выполните:
+  ## Запустите clickhouse-server \{#start-clickhouse-server\}
 
-      ```bash
-      clickhousectl local server list
-      ```
+  ```bash
+  clickhousectl local server start
+  ```
 
-      ## Запустите clickhouse-client \{#start-clickhouse-client\}
+  Сервер работает в фоновом режиме. Чтобы убедиться, что он запущен, выполните:
 
-      ```bash
-      clickhousectl local client
-      ```
+  ```bash
+  clickhousectl local server list
+  ```
 
-      Вы увидите примерно следующее:
+  ## Запустите clickhouse-client \{#start-clickhouse-client\}
 
-      ```response
-      ClickHouse client version 24.5.1.117 (official build).
-      Connecting to localhost:9000 as user default.
-      Connected to ClickHouse server version 24.5.1.
+  ```bash
+  clickhousectl local client
+  ```
 
-      local-host :)
-      ```
+  Вы увидите примерно следующее:
 
-      Теперь можно начинать отправлять SQL-команды в ClickHouse!
+  ```response
+  ClickHouse client version 24.5.1.117 (official build).
+  Connecting to localhost:9000 as user default.
+  Connected to ClickHouse server version 24.5.1.
 
-      :::tip
-      Руководство [Быстрый старт](/get-started/quick-start) пошагово покажет, как создавать таблицы и вставлять данные.
-      :::
-    </VerticalStepper>
-  </TabItem>
+  local-host :)
+  ```
 
-  <TabItem value="curl" label="Скрипт Curl">
-    <QuickInstall />
-  </TabItem>
-</Tabs>
+  Теперь можно начинать отправлять SQL-команды в ClickHouse!
+
+  :::tip
+  Руководство [Быстрый старт](/get-started/quick-start) пошагово покажет, как создавать таблицы и вставлять данные.
+  :::
+</VerticalStepper>

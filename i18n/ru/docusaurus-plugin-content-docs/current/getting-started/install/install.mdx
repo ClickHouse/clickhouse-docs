@@ -9,21 +9,33 @@ doc_type: 'guide'
 
 import InstallSelector from '@site/src/components/Install/Install'
 import CLIInstall from './_snippets/_cli_install.md'
-import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
-import QuickInstall from './_snippets/_quick_install.md'
 import DebianProd from './_snippets/_deb_install.md'
 import RPMProd from './_snippets/_rpm_install.md'
-import MacOSProd from './_snippets/_macos.md'
 import NixOS from './_snippets/_nixos_install.md'
 import Docker from './_snippets/_docker.md'
+import Advanced from './advanced.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
-<CardPrimary alignContent="center" description="Начните работу мгновенно, без необходимости выбирать размер и масштабировать кластер. Мы берём на себя выбор размера, масштабирование, безопасность, надёжность и обновления." icon="cloud" infoText="Начните бесплатно" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="Рекомендуется" />
+<CardPrimary
+  alignContent="center"
+  description="Начните работу мгновенно, без необходимости выбирать размер и масштабировать кластер. ClickHouse Cloud берёт на себя выбор размера, масштабирование
+, безопасность, надёжность и обновления."
+  icon="cloud"
+  infoText="Начните бесплатно"
+  infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
+  isSelected
+  onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
+  size="md"
+  title="ClickHouse Cloud"
+  topBadgeText="Рекомендуется"
+/>
 
 <br />
 
-Или выберите ниже платформу, дистрибутив и способ установки, чтобы просмотреть инструкции по установке ClickHouse (open source):
+Если вы предпочитаете самостоятельно управлять системой, выберите один из вариантов ClickHouse с открытым исходным кодом ниже.
+Используйте ClickHouse CLI для быстрой локальной установки или установите ClickHouse Server
+из пакетов или бинарных файлов для развертывания в рабочей среде.
 
-<InstallSelector cli={<CLIInstall/>} windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />
+<InstallSelector cli={<CLIInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} nixos={<NixOS/>} tar_prod={<TarProd/>} docker={<Docker/>} source={<Advanced/>} />

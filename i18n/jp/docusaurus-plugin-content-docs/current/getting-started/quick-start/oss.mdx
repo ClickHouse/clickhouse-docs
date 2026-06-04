@@ -21,7 +21,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 <VerticalStepper>
   ## ClickHouse CLIのインストール \ \{#install-the-cli\}
 
-  ClickHouse CLI (`clickhousectl`) は、ローカルの ClickHouse バージョンのインストールと管理、サーバーの起動、クエリの実行に使用するツールです。次のコマンドでインストールします。
+  ClickHouse CLI (`clickhousectl`) は、ローカルの ClickHouse バージョンのインストール、サーバーの起動、クエリの実行、および ClickHouse Cloud の管理に使用するツールです。
+
+  次のコマンドでインストールします。
 
   ```bash
   curl https://clickhouse.com/cli | sh
@@ -49,11 +51,13 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   ClickHouseはLinuxおよびmacOS上でネイティブに動作し、Windowsでは
   [WSL](https://learn.microsoft.com/en-us/windows/wsl/about)経由で動作します。
 
-  CLIを使用して、ClickHouseの最新安定版をインストールします：
+  CLIを使用して、ClickHouseの最新安定版をインストールし、デフォルトに設定します：
 
   ```bash
-  clickhousectl local install stable
+  clickhousectl local use stable
   ```
+
+  `local use` は、指定したバージョンがまだインストールされていない場合にインストールし、デフォルトとして設定した上で、`~/.local/bin` (`PATH` 上) に `clickhouse` シンボリックリンクを作成します。これにより、`clickhouse` バイナリを直接呼び出せるようになります。このガイドの以降の手順はそのシンボリックリンクに依存しています。デフォルトの変更やシンボリックリンクの更新を行わずにバージョンをダウンロードするには、代わりに `clickhousectl local install <version>` を使用してください。
 
   :::note
   これは本番環境向けの ClickHouse インストール方法として推奨されていません。
@@ -267,8 +271,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       )
       ```
 
-      [`file` テーブル関数](/sql-reference/table-functions/file)の
-      ドキュメントページを参照してください。
+      [`file` テーブル関数](/sql-reference/table-functions/file)
+      のドキュメントページを参照してください。
 
       <br />
     </TabItem>
@@ -348,7 +352,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       <br />
     </TabItem>
 
-    <TabItem value="データレイク" label="データレイク">
+    <TabItem value="datalake" label="データレイク">
       ClickHouseには、次のソースからデータを読み込むためのテーブル関数があります。
 
       * **Hadoop**: [`hdfs` テーブル関数](/sql-reference/table-functions/hdfs)を使用して Apache Hadoop と連携します

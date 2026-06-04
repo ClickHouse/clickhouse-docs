@@ -9,21 +9,19 @@ doc_type: 'guide'
 
 import InstallSelector from '@site/src/components/Install/Install'
 import CLIInstall from './_snippets/_cli_install.md'
-import Windows from './_snippets/_windows_install.md'
 import TarProd from './_snippets/_linux_tar_install.md'
-import QuickInstall from './_snippets/_quick_install.md'
 import DebianProd from './_snippets/_deb_install.md'
 import RPMProd from './_snippets/_rpm_install.md'
-import MacOSProd from './_snippets/_macos.md'
 import NixOS from './_snippets/_nixos_install.md'
 import Docker from './_snippets/_docker.md'
+import Advanced from './advanced.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 <CardPrimary
   alignContent="center"
-  description="无需为集群的规格和伸缩操心，立即开始构建。我们负责规格配置、伸缩、
-安全性、可靠性以及升级。"
+  description="无需为集群的规格和扩缩容操心，立即开始构建。ClickHouse Cloud 负责规格配置、扩缩容
+、安全性、可靠性以及升级。"
   icon="cloud"
   infoText="免费开始使用"
   infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
@@ -36,6 +34,8 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 <br />
 
-或者，在下方选择平台、发行版和安装方式，以查看适用于开源 ClickHouse 的安装指南：
+如果你希望自行管理，请在下方选择一种开源 ClickHouse 方案。
+你可以使用 ClickHouse 命令行客户端进行快速本地安装，或通过软件包或二进制文件安装 ClickHouse Server
+用于生产环境部署。
 
-<InstallSelector cli={<CLIInstall/>} windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />
+<InstallSelector cli={<CLIInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} nixos={<NixOS/>} tar_prod={<TarProd/>} docker={<Docker/>} source={<Advanced/>} />
