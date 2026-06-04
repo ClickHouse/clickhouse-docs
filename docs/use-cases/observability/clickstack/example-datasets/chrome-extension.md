@@ -102,7 +102,7 @@ Click the **HyperDX Browser Extension** icon in the Chrome toolbar and fill in t
 
 Click **Save Configuration**, then reload any tabs you want to instrument.
 
-<Image img={extension_config} alt="HyperDX Chrome extension configuration popup with local ClickStack settings" size="md" />
+<Image img={extension_config} alt="HyperDX Chrome extension configuration popup with local ClickStack settings" size="sm" />
 
 The screenshot above shows a typical local setup: monitoring enabled, service name set, collector pointed at `http://localhost:4318`, and trace propagation limited to API and localhost URLs.
 
