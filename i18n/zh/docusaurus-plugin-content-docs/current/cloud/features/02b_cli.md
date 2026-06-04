@@ -135,7 +135,7 @@ clickhousectl cloud --json service list
 
 ## 本地开发 \{#local-development\}
 
-CLI 还可管理本地 ClickHouse 安装和服务器。要开始进行本地开发，请参阅[快速安装](/install/quick-install)页面。
+CLI 还可管理本地 ClickHouse 安装和服务器。要开始进行本地开发，请参阅[clickhousectl (CLI)](/install/clickhousectl)页面。
 
 ## 要求 \{#requirements\}
 

@@ -135,7 +135,7 @@ clickhousectl cloud --json service list
 
 ## ローカル開発 \{#local-development\}
 
-CLI では、ローカルの ClickHouse インストールやサーバーの管理も行えます。ローカル開発を始めるには、[クイックインストール](/install/quick-install)ページを参照してください。
+CLI では、ローカルの ClickHouse インストールやサーバーの管理も行えます。ローカル開発を始めるには、[clickhousectl (CLI)](/install/clickhousectl)ページを参照してください。
 
 ## 要件 \{#requirements\}
 

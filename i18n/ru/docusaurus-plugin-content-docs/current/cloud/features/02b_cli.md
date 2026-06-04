@@ -135,7 +135,7 @@ clickhousectl cloud --json service list
 
 ## Локальная разработка \{#local-development\}
 
-CLI также управляет локальными установками ClickHouse и серверами. Чтобы начать работу с локальной разработкой, см. страницу [быстрой установки](/install/quick-install).
+CLI также управляет локальными установками ClickHouse и серверами. Чтобы начать работу с локальной разработкой, см. страницу [clickhousectl (CLI)](/install/clickhousectl).
 
 ## Требования \{#requirements\}
 

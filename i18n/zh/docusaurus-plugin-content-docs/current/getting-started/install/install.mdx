@@ -1,6 +1,6 @@
 ---
 description: '安装 ClickHouse'
-keywords: ['ClickHouse', '安装', '入门', '快速入门']
+keywords: ['clickhouse', '安装', '入门', '快速入门']
 sidebar_label: '安装'
 slug: /install
 title: '安装指南'
@@ -11,61 +11,61 @@ import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import Link from '@docusaurus/Link';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
-<CardPrimary
-  alignContent="center"
-  description="无需为集群的规格和扩缩容操心，立即开始构建。ClickHouse Cloud 负责规格配置、扩缩容
-、安全性、可靠性以及升级。"
-  icon="cloud"
-  infoText="免费开始使用"
-  infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
-  isSelected
-  onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
-  size="md"
-  title="ClickHouse Cloud"
-  topBadgeText="推荐"
-/>
+<CardPrimary alignContent="center" description="立即开始使用，无需为集群规格和扩缩容操心。ClickHouse Cloud 会处理容量规划、扩缩容、安全性、可靠性和升级。" icon="cloud" infoText="免费开始" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="推荐" />
 
 <br />
 
-如果你希望自行管理，请在下方选择一种开源 ClickHouse 方案。
-你可以使用 ClickHouse 命令行客户端进行快速本地安装，或通过软件包或二进制文件安装 ClickHouse Server
-用于生产环境部署。
+如果你希望自行管理，可以从下面的开源 ClickHouse 选项中选择一种。
+本地环境可使用快速安装脚本或 `clickhousectl` CLI；生产部署则可通过软件包或二进制文件安装
+ClickHouse Server。
 
 <h3 className="install-group-heading">本地开发</h3>
+
 <p className="install-group-description">
-    在您自己的机器上运行 ClickHouse 以进行构建、测试和实验。快速安装可让您迅速获得
-    单个二进制文件，或使用 clickhousectl 安装和管理本地版本及服务器。
+  在你自己的机器上运行 ClickHouse，用于构建、测试和实验。
+  快速安装可让你快速获取单个二进制文件，或者使用 clickhousectl
+  安装和管理本地版本及服务器。
 </p>
+
 <div className="installContainer">
-    <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="快速安装"/>
-    </Link>
-    <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)"/>
-    </Link>
-    <Link to="/install/docker" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker"/>
-    </Link>
-    <Link to="/install/advanced" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="源码构建"/>
-    </Link>
+  <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="快速安装" />
+  </Link>
+
+  <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)" />
+  </Link>
+
+  <Link to="/install/docker" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker" />
+  </Link>
+
+  <Link to="/install/advanced" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="从源码构建" />
+  </Link>
 </div>
 
 <h3 className="install-group-heading">生产服务器</h3>
+
 <p className="install-group-description">
-    从软件包或二进制文件安装 ClickHouse Server，以便在您自己的基础设施上进行长期部署。
+  通过软件包或二进制文件安装 ClickHouse Server，
+  以便在你自己的基础设施上进行长期运行的部署。
 </p>
+
 <div className="installContainer">
-    <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu"/>
-    </Link>
-    <Link to="/install/redhat" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat"/>
-    </Link>
-    <Link to="/install/nixos" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS"/>
-    </Link>
-    <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="其他 Linux"/>
-    </Link>
+  <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu" />
+  </Link>
+
+  <Link to="/install/redhat" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat" />
+  </Link>
+
+  <Link to="/install/nixos" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS" />
+  </Link>
+
+  <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="其他 Linux" />
+  </Link>
 </div>
