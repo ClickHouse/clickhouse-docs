@@ -167,7 +167,7 @@ Managed ClickStack does not ship a hosted OpenTelemetry collector or surface an 
 5. Enable **Logs**, **Metrics**, and **Traces**.
 6. Save the destination.
 
-:::note Optional: Kubernetes manifest
+:::note[Optional: Kubernetes manifest]
 You can configure the same destination with a `Destination` manifest instead of the UI. See [Configure destinations with Kubernetes manifests](#destination-manifest) in Advanced configuration.
 :::
 
