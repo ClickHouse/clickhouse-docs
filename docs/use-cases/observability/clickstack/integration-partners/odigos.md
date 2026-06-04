@@ -138,7 +138,7 @@ With open source ClickStack, for example the all-in-one image, the gateway OpenT
 
 <TabItem value="managed-clickstack" label="Managed ClickStack">
 
-Managed ClickStack does not ship a hosted OpenTelemetry collector or surface an ingestion key in the UI. Instead, you run the [ClickStack distribution of the collector in standalone mode](/use-cases/observability/clickstack/ingesting-data/collector#configuring-the-collector) yourself and set the authentication token via the `OTLP_AUTH_TOKEN` environment variable when starting the container. Odigos then sends OTLP HTTP traffic to that collector with the same token in the `Authorization` header.
+Managed ClickStack does not ship a hosted OpenTelemetry collector or surface an ingestion key in the UI. Instead, you run the [ClickStack distribution of the collector in standalone mode](/use-cases/observability/clickstack/ingesting-data/otel-collector#configuring-the-collector) yourself and set the authentication token via the `OTLP_AUTH_TOKEN` environment variable when starting the container. Odigos then sends OTLP HTTP traffic to that collector with the same token in the `Authorization` header.
 
 1. Start the ClickStack collector in standalone mode, pointing it at your ClickHouse Cloud service and securing it with an `OTLP_AUTH_TOKEN` of your choice:
 
@@ -158,7 +158,7 @@ Managed ClickStack does not ship a hosted OpenTelemetry collector or surface an 
      clickhouse/clickstack-otel-collector:latest
    ```
 
-   For TLS, dedicated ingestion users, and other production recommendations, see [Securing the collector](/use-cases/observability/clickstack/ingesting-data/collector#securing-the-collector).
+   For TLS, dedicated ingestion users, and other production recommendations, see [Securing the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector).
 2. In the Odigos UI, click **Add Destination** and select **OTLP HTTP**.
 3. Set **OTLP HTTP Endpoint** to the standalone collector you just started (for example, `http://my-collector.example.com:4318`).
 4. In **Headers**, add:
