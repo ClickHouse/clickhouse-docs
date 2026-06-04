@@ -1685,6 +1685,10 @@ Fetch executor에서 작업 완료를 기다리는 데 소요된 시간입니다
 
 열린 파일 수입니다.
 
+### FileProgressCallbackInvocations \{#fileprogresscallbackinvocations\}
+
+각 쿼리의 `FileProgressCallback`이 호출된 횟수입니다(네이티브 TCP 또는 `clickhouse-local`을 통해 클라이언트에 전달된 파일 단위 `FileProgress` 이벤트를 각각 1회로 계산합니다).
+
 ### FileSegmentCompleteMicroseconds \{#filesegmentcompletemicroseconds\}
 
 파일 시스템 캐시에서 `FileSegment::complete()`가 걸린 시간
@@ -4940,6 +4944,18 @@ usearch 인덱스 검색 시 방문한 노드 수입니다.
 ### UncompressedCacheWeightLost \{#uncompressedcacheweightlost\}
 
 비압축 캐시에서 축출된 바이트 수입니다.
+
+### UniqueKeyIndexCacheHits \{#uniquekeyindexcachehits\}
+
+UNIQUE KEY 인덱스 캐시에서 항목을 찾아 SST 블록을 로드하지 않아도 되었던 횟수입니다.
+
+### UniqueKeyIndexCacheLookupMicroseconds \{#uniquekeyindexcachelookupmicroseconds\}
+
+`UniqueKeyIndexCache::Lookup` + `UniqueKeyIndexCache::Insert` 내부에서 소요된 실제 경과 시간(ClickHouse 측 RocksDB 블록 캐시용 `CacheBase` 어댑터).
+
+### UniqueKeyIndexCacheMisses \{#uniquekeyindexcachemisses\}
+
+UNIQUE KEY 인덱스 캐시 미스가 발생해 디스크에서 SST 블록을 로드한 횟수입니다.
 
 ### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
 

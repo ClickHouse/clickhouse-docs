@@ -1685,6 +1685,10 @@ Fetch executor での完了待機に費やした時間。
 
 開かれたファイルの数。
 
+### FileProgressCallbackInvocations \{#fileprogresscallbackinvocations\}
+
+クエリごとの `FileProgressCallback` の呼び出し回数 (ネイティブ TCP 経由、または `clickhouse-local` を介してクライアントに配信されたファイルごとの `FileProgress` イベントを、それぞれ 1 回としてカウントします) 。
+
 ### FileSegmentCompleteMicroseconds \{#filesegmentcompletemicroseconds\}
 
 ファイルシステムキャッシュ内での FileSegment::complete() の実行時間
@@ -4940,6 +4944,18 @@ usearch索引の検索時に訪問したノード数。
 ### UncompressedCacheWeightLost \{#uncompressedcacheweightlost\}
 
 非圧縮キャッシュから追い出されたバイト数。
+
+### UniqueKeyIndexCacheHits \{#uniquekeyindexcachehits\}
+
+UNIQUE KEY 索引キャッシュでエントリが見つかり、SSTブロックを読み込まずに済んだ回数です。
+
+### UniqueKeyIndexCacheLookupMicroseconds \{#uniquekeyindexcachelookupmicroseconds\}
+
+`UniqueKeyIndexCache::Lookup` と `UniqueKeyIndexCache::Insert` にかかる実時間 (RocksDB の block cache 向け ClickHouse 側 `CacheBase` アダプター) 。
+
+### UniqueKeyIndexCacheMisses \{#uniquekeyindexcachemisses\}
+
+UNIQUE KEY 索引キャッシュ内にエントリが見つからず、ディスクから SST ブロックを読み込む必要があった回数。
 
 ### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
 

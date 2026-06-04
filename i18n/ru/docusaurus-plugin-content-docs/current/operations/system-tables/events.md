@@ -1686,6 +1686,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество открытых файлов.
 
+### FileProgressCallbackInvocations \{#fileprogresscallbackinvocations\}
+
+Количество вызовов `FileProgressCallback` на каждый запрос (учитывается каждое событие `FileProgress` для каждого файла, переданное клиенту по native TCP или через `clickhouse-local`).
+
 ### FileSegmentCompleteMicroseconds \{#filesegmentcompletemicroseconds\}
 
 Время выполнения FileSegment::complete() в файловом кэше
@@ -4941,6 +4945,18 @@ Number of queries to be interpreted and potentially executed. Does not include q
 ### UncompressedCacheWeightLost \{#uncompressedcacheweightlost\}
 
 Количество байтов, вытесненных из несжатого кэша.
+
+### UniqueKeyIndexCacheHits \{#uniquekeyindexcachehits\}
+
+Количество случаев, когда запись была найдена в кэше индекса UNIQUE KEY, поэтому SST-блок не требовалось загружать.
+
+### UniqueKeyIndexCacheLookupMicroseconds \{#uniquekeyindexcachelookupmicroseconds\}
+
+Реальное время внутри `UniqueKeyIndexCache::Lookup` + `UniqueKeyIndexCache::Insert` (адаптер `CacheBase` на стороне ClickHouse для кэша блоков RocksDB).
+
+### UniqueKeyIndexCacheMisses \{#uniquekeyindexcachemisses\}
+
+Количество случаев, когда запись не находилась в кэше индекса UNIQUE KEY, и поэтому приходилось загружать SST-блок с диска.
 
 ### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
 

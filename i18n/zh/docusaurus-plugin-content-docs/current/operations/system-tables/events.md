@@ -1685,6 +1685,10 @@ Fetch 执行器任务在 executeStep() 中耗费的时间。
 
 打开的 File 数。
 
+### FileProgressCallbackInvocations \{#fileprogresscallbackinvocations\}
+
+每个查询的 `FileProgressCallback` 被调用的次数 (统计通过原生 TCP 或 `clickhouse-local` 向客户端传送的每个文件 `FileProgress` 事件) 。
+
 ### FileSegmentCompleteMicroseconds \{#filesegmentcompletemicroseconds\}
 
 文件系统缓存中 FileSegment::complete() 的耗时
@@ -4940,6 +4944,18 @@ ThreadPoolReader 中未从页缓存读取、而是移交给线程池处理的次
 ### UncompressedCacheWeightLost \{#uncompressedcacheweightlost\}
 
 从未压缩缓存中逐出的字节数。
+
+### UniqueKeyIndexCacheHits \{#uniquekeyindexcachehits\}
+
+在 UNIQUE KEY 索引缓存中命中条目的次数，因此无需加载 SST 块。
+
+### UniqueKeyIndexCacheLookupMicroseconds \{#uniquekeyindexcachelookupmicroseconds\}
+
+在 `UniqueKeyIndexCache::Lookup` + `UniqueKeyIndexCache::Insert` 中消耗的挂钟时间 (ClickHouse 侧用于 RocksDB 块缓存的 `CacheBase` 适配器) 。
+
+### UniqueKeyIndexCacheMisses \{#uniquekeyindexcachemisses\}
+
+在 UNIQUE KEY 索引缓存中未命中条目的次数，因此必须从磁盘加载 SST 块。
 
 ### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
 
