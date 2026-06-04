@@ -57,7 +57,9 @@ Rolling out OpenTelemetry across many services is often time consuming and only 
 - **Helm**, **kubectl**, and cluster credentials to install into `odigos-system` namespace
 - An **Odigos Enterprise on-prem token** — contact the [Odigos team](https://odigos.io/) for access
 
+<!-- vale off -->
 ## Integrate ClickStack with Odigos {#integrate-odigos-clickstack}
+<!-- vale on -->
 
 <VerticalStepper headerLevel="h4">
 
@@ -193,13 +195,17 @@ Apply the manifest:
 kubectl apply -f destination.yaml
 ```
 
-### Odigos VM agent {#odigos-vm-agent}
+<!-- vale off -->
+### Odigos VM Agent {#odigos-vm-agent}
+<!-- vale on -->
 
 The [Odigos VM Agent](https://docs.odigos.io/vmagent/overview) instruments Linux processes, systemd services, and/or docker containers using eBPF. Telemetry exports to the same destinations as cluster-based Odigos, including ClickStack over OTLP HTTP.
 
 The VM Agent is part of Odigos Pro. See the [VM Agent overview](https://docs.odigos.io/vmagent/overview) for setup, sources, and destination configuration.
 
-### Odigos central {#odigos-central}
+<!-- vale off -->
+### Odigos Central {#odigos-central}
+<!-- vale on -->
 
 [Odigos Central](https://docs.odigos.io/central/overview) is a centralized control plane for managing instrumentation, destinations, and pipeline configuration across multiple Kubernetes clusters from one UI - instead of configuring each cluster separately.
 
