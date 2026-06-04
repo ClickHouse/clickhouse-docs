@@ -193,13 +193,13 @@ Apply the manifest:
 kubectl apply -f destination.yaml
 ```
 
-### Odigos VM Agent {#odigos-vm-agent}
+### Odigos VM agent {#odigos-vm-agent}
 
 The [Odigos VM Agent](https://docs.odigos.io/vmagent/overview) instruments Linux processes, systemd services, and/or docker containers using eBPF. Telemetry exports to the same destinations as cluster-based Odigos, including ClickStack over OTLP HTTP.
 
 The VM Agent is part of Odigos Pro. See the [VM Agent overview](https://docs.odigos.io/vmagent/overview) for setup, sources, and destination configuration.
 
-### Odigos Central {#odigos-central}
+### Odigos central {#odigos-central}
 
 [Odigos Central](https://docs.odigos.io/central/overview) is a centralized control plane for managing instrumentation, destinations, and pipeline configuration across multiple Kubernetes clusters from one UI - instead of configuring each cluster separately.
 
