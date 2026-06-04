@@ -10,6 +10,8 @@ keywords: ['Odigos', 'ClickStack', 'ClickHouse', 'OpenTelemetry', 'eBPF', 'auto-
 ---
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 <PartnerBadge/>
 
@@ -26,7 +28,9 @@ Odigos auto-instruments applications without code changes nor restarts; ClickSta
 Time required: 10–20 minutes
 :::
 
+<!-- vale off -->
 ## What is Odigos? {#what-is-odigos}
+<!-- vale on -->
 
 [Odigos](https://odigos.io/) is an instrumentation control plane for Kubernetes and VMs that instruments applications from the kernel using **eBPF**. Because collection runs in the kernel, app overhead stays low while visibility stays high. You get production-grade OpenTelemetry traces, metrics, logs, and profiles without shipping new agents in application code or waiting on library upgrades across every service.
 
@@ -40,7 +44,9 @@ That eBPF layer is what makes deep, consistent telemetry possible at scale. Odig
 
 Behind the scenes, Odigos creates and manages a full OpenTelemetry pipeline for your cluster: collectors that scale with load, routing to the backends you choose, and pipeline logic you control in the UI. Define **sampling** to manage volume, **PII masking** to keep sensitive data out of exports, and **OTTL rules** to filter, transform, or enrich telemetry before it leaves the cluster.
 
+<!-- vale off -->
 ## Why Odigos + ClickStack? {#why-odigos-clickstack}
+<!-- vale on -->
 
 Rolling out OpenTelemetry across many services is often time consuming and only provides surface-level visibility in applications. Odigos handles eBPF instrumentation for deeper telemetry and collector operations on Kubernetes; ClickStack provides ClickHouse-backed storage and the HyperDX UI for querying telemetry at scale.
 
@@ -51,8 +57,8 @@ Rolling out OpenTelemetry across many services is often time consuming and only 
 
 ## Prerequisites {#prerequisites}
 
-- **ClickStack** installed and reachable from your Kubernetes cluster — see [Getting started with open source ClickStack](/use-cases/observability/clickstack/getting-started/oss)
-- Your ClickStack **OTLP HTTP endpoint** (port `4318`) and an **API ingestion key** from **Team Settings → API Keys** in the ClickStack UI
+- **ClickStack** installed and reachable from your Kubernetes cluster. See [Getting started with open source ClickStack](/use-cases/observability/clickstack/getting-started/oss) or [Getting started with managed ClickStack](/use-cases/observability/clickstack/getting-started/managed).
+- Your ClickStack **OTLP HTTP endpoint** (port `4318`) and the authentication value Odigos will pass in the `Authorization` header. With open source ClickStack this is the **API ingestion key** from **Team Settings → API Keys** in the HyperDX UI. With Managed ClickStack this is the **`OTLP_AUTH_TOKEN`** you set when starting your own standalone ClickStack collector.
 - A **Kubernetes cluster** (Linux nodes with kernel 4.18 or later for eBPF instrumentation)
 - **Helm**, **kubectl**, and cluster credentials to install into `odigos-system` namespace
 - An **Odigos Enterprise on-prem token** — contact the [Odigos team](https://odigos.io/) for access
@@ -107,7 +113,17 @@ kubectl port-forward svc/ui -n odigos-system 3000:3000
 
 #### Add ClickStack as a destination in the Odigos UI {#add-destination-ui}
 
-To send telemetry to ClickStack, add an **OTLP HTTP** destination in Odigos.
+To send telemetry to ClickStack, add an **OTLP HTTP** destination in Odigos. The exact configuration depends on how ClickStack is deployed. With open source ClickStack the OpenTelemetry collector is bundled and the ingestion key is generated for you in the HyperDX UI. With Managed ClickStack you run your own standalone ClickStack collector and choose the authentication token yourself when starting the container.
+
+:::tip Alternative: write directly to ClickHouse
+If ClickHouse is reachable from your Kubernetes cluster, you can skip the OTLP collector entirely and use Odigos's [native **ClickHouse** destination](#native-clickhouse-destination) instead. This works for both open source and Managed ClickStack.
+:::
+
+<Tabs groupId="clickstack-deployment">
+
+<TabItem value="oss-clickstack" label="Open Source ClickStack" default>
+
+With open source ClickStack, for example the all-in-one image, the gateway OpenTelemetry collector is included and the ingestion API key is generated automatically by HyperDX.
 
 1. In the Odigos UI, click **Add Destination** and select **OTLP HTTP**.
 2. Set **OTLP HTTP Endpoint** to your ClickStack collector (for example, `http://clickstack.example.com:4318`). See [Ingesting with OpenTelemetry](/use-cases/observability/clickstack/ingesting-data/opentelemetry#sending-data-to-collector-oss) for endpoint details.
@@ -118,13 +134,52 @@ To send telemetry to ClickStack, add an **OTLP HTTP** destination in Odigos.
 5. Enable **Logs**, **Metrics**, and **Traces**.
 6. Save the destination.
 
+</TabItem>
+
+<TabItem value="managed-clickstack" label="Managed ClickStack">
+
+Managed ClickStack does not ship a hosted OpenTelemetry collector or surface an ingestion key in the UI. Instead, you run the [ClickStack distribution of the collector in standalone mode](/use-cases/observability/clickstack/ingesting-data/collector#configuring-the-collector) yourself and set the authentication token via the `OTLP_AUTH_TOKEN` environment variable when starting the container. Odigos then sends OTLP HTTP traffic to that collector with the same token in the `Authorization` header.
+
+1. Start the ClickStack collector in standalone mode, pointing it at your ClickHouse Cloud service and securing it with an `OTLP_AUTH_TOKEN` of your choice:
+
+   ```shell
+   export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
+   export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+   export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+   export OTLP_AUTH_TOKEN="a_very_secure_string"
+
+   docker run \
+     -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
+     -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+     -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+     -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+     -p 4317:4317 \
+     -p 4318:4318 \
+     clickhouse/clickstack-otel-collector:latest
+   ```
+
+   For TLS, dedicated ingestion users, and other production recommendations, see [Securing the collector](/use-cases/observability/clickstack/ingesting-data/collector#securing-the-collector).
+2. In the Odigos UI, click **Add Destination** and select **OTLP HTTP**.
+3. Set **OTLP HTTP Endpoint** to the standalone collector you just started (for example, `http://my-collector.example.com:4318`).
+4. In **Headers**, add:
+   - **Key**: `Authorization`
+   - **Value**: the `OTLP_AUTH_TOKEN` value you set on the collector
+5. Enable **Logs**, **Metrics**, and **Traces**.
+6. Save the destination.
+
 :::note Optional: Kubernetes manifest
 You can configure the same destination with a `Destination` manifest instead of the UI. See [Configure destinations with Kubernetes manifests](#destination-manifest) in Advanced configuration.
 :::
 
+</TabItem>
+
+</Tabs>
+
 #### Verify telemetry in ClickStack {#verify-telemetry}
 
-1. Open the ClickStack UI (HyperDX — for example, `http://<host>:8080` on the all-in-one image).
+1. Open the ClickStack UI (HyperDX):
+   - **Open source ClickStack**: for example, `http://<host>:8080` on the all-in-one image.
+   - **Managed ClickStack**: open your service in the [ClickHouse Cloud console](https://console.clickhouse.cloud), then click **Launch ClickStack**. See [Navigate to the ClickStack UI](/use-cases/observability/clickstack/getting-started/managed#navigate-to-clickstack-ui-cloud) for details.
 2. Check **Logs**, **Metrics**, and **Traces** for data from your instrumented services.
 3. Filter traces by `odigos.version` to validate end-to-end export.
 
@@ -164,7 +219,8 @@ spec:
     - LOGS
   data:
     OTLP_HTTP_ENDPOINT: 'http://clickstack.example.com:4318'
-    OTLP_HTTP_HEADERS: 'Authorization:<YOUR_API_INGESTION_KEY>'
+    # API ingestion key for open source ClickStack, or OTLP_AUTH_TOKEN for Managed ClickStack
+    OTLP_HTTP_HEADERS: 'Authorization:<YOUR_AUTHORIZATION_VALUE>'
 ```
 
 **ClickHouse (direct)**
