@@ -647,5 +647,6 @@ exceptions:
   - I/O
   - JOIN
   - RESTORE
+  - Supabase
   - ClickHouse Connect
   - re2
