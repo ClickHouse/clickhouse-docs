@@ -7,15 +7,8 @@ title: 'Installation instructions'
 doc_type: 'guide'
 ---
 
-import InstallSelector from '@site/src/components/Install/Install'
-import CLIInstall from './_snippets/_cli_install.md'
-import TarProd from './_snippets/_linux_tar_install.md'
-import DebianProd from './_snippets/_deb_install.md'
-import RPMProd from './_snippets/_rpm_install.md'
-import NixOS from './_snippets/_nixos_install.md'
-import Docker from './_snippets/_docker.md'
-import Advanced from './advanced.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import Link from '@docusaurus/Link';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 <CardPrimary
@@ -34,16 +27,47 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 <br/>
 
 If you prefer to self-manage, select one of the open-source ClickHouse options below.
-Use the ClickHouse CLI for a quick local setup, or install ClickHouse Server
-from packages or binaries for a production deployment.
+Use the quick install script or the `clickhousectl` CLI for a local setup, or install
+ClickHouse Server from packages or binaries for a production deployment.
 
-<InstallSelector
-    cli={<CLIInstall/>}
-    debian_prod={<DebianProd/>}
-    rpm_prod={<RPMProd/>}
-    nixos={<NixOS/>}
-    tar_prod={<TarProd/>}
-    docker={<Docker/>}
-    source={<Advanced/>}
-/>
+<h3 className="install-group-heading">Local development</h3>
+<p className="install-group-description">
+    Run ClickHouse on your own machine to build, test, and experiment.
+    Quick install gets you a single binary fast, or use clickhousectl
+    to install and manage local versions and servers.
+</p>
+<div className="installContainer">
+    <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="Quick install"/>
+    </Link>
+    <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)"/>
+    </Link>
+    <Link to="/install/docker" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker"/>
+    </Link>
+    <Link to="/install/advanced" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="Source build"/>
+    </Link>
+</div>
+
+<h3 className="install-group-heading">Production server</h3>
+<p className="install-group-description">
+    Install ClickHouse Server from packages or binaries for a
+    long-running deployment on your own infrastructure.
+</p>
+<div className="installContainer">
+    <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu"/>
+    </Link>
+    <Link to="/install/redhat" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat"/>
+    </Link>
+    <Link to="/install/nixos" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS"/>
+    </Link>
+    <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="Other Linux"/>
+    </Link>
+</div>
 

@@ -136,7 +136,7 @@ clickhousectl cloud --json service list
 
 ## Local development {#local-development}
 
-The CLI also manages local ClickHouse installations and servers. See the [quick install](/install/quick-install) page for getting started with local development.
+The CLI also manages local ClickHouse installations and servers. See the [clickhousectl (CLI)](/install/clickhousectl) page for getting started with local development.
 
 ## Requirements {#requirements}
 

@@ -7,15 +7,8 @@ title: '安装指南'
 doc_type: 'guide'
 ---
 
-import InstallSelector from '@site/src/components/Install/Install'
-import CLIInstall from './_snippets/_cli_install.md'
-import TarProd from './_snippets/_linux_tar_install.md'
-import DebianProd from './_snippets/_deb_install.md'
-import RPMProd from './_snippets/_rpm_install.md'
-import NixOS from './_snippets/_nixos_install.md'
-import Docker from './_snippets/_docker.md'
-import Advanced from './advanced.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import Link from '@docusaurus/Link';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 <CardPrimary
@@ -38,4 +31,41 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 你可以使用 ClickHouse 命令行客户端进行快速本地安装，或通过软件包或二进制文件安装 ClickHouse Server
 用于生产环境部署。
 
-<InstallSelector cli={<CLIInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} nixos={<NixOS/>} tar_prod={<TarProd/>} docker={<Docker/>} source={<Advanced/>} />
+<h3 className="install-group-heading">本地开发</h3>
+<p className="install-group-description">
+    在您自己的机器上运行 ClickHouse 以进行构建、测试和实验。快速安装可让您迅速获得
+    单个二进制文件，或使用 clickhousectl 安装和管理本地版本及服务器。
+</p>
+<div className="installContainer">
+    <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="快速安装"/>
+    </Link>
+    <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)"/>
+    </Link>
+    <Link to="/install/docker" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker"/>
+    </Link>
+    <Link to="/install/advanced" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="源码构建"/>
+    </Link>
+</div>
+
+<h3 className="install-group-heading">生产服务器</h3>
+<p className="install-group-description">
+    从软件包或二进制文件安装 ClickHouse Server，以便在您自己的基础设施上进行长期部署。
+</p>
+<div className="installContainer">
+    <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu"/>
+    </Link>
+    <Link to="/install/redhat" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat"/>
+    </Link>
+    <Link to="/install/nixos" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS"/>
+    </Link>
+    <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="其他 Linux"/>
+    </Link>
+</div>

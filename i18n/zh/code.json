@@ -8,8 +8,8 @@
   "This documentation is translated with the help of AI": {
     "message": "本页内容由 AI 翻译生成。"
   },
-  "homepage.connect.clickhouseCli": {
-    "message": "ClickHouse 命令行工具"
+  "homepage.connect.clickhouseClient": {
+    "message": "ClickHouse 客户端"
   },
   "homepage.connect.cloudSqlConsole": {
     "message": "Cloud SQL 控制台"
