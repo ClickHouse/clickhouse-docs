@@ -1686,8 +1686,8 @@
   "homepage.connect.viewAll": {
     "message": "View All Clients and Drivers"
   },
-  "homepage.connect.clickhouseCli": {
-    "message": "ClickHouse CLI"
+  "homepage.connect.clickhouseClient": {
+    "message": "ClickHouse Client"
   },
   "homepage.connect.cloudSqlConsole": {
     "message": "Cloud SQL Console"

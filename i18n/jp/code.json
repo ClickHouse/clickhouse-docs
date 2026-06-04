@@ -8,8 +8,8 @@
   "This documentation is translated with the help of AI": {
     "message": "このドキュメントは AI を活用して翻訳されています。"
   },
-  "homepage.connect.clickhouseCli": {
-    "message": "ClickHouse CLI"
+  "homepage.connect.clickhouseClient": {
+    "message": "ClickHouse Client"
   },
   "homepage.connect.cloudSqlConsole": {
     "message": "Cloud SQL コンソール"
