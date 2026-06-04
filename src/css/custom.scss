@@ -1467,18 +1467,49 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   .installContainer {
     flex-wrap: wrap;
   }
-  .install-card {
-    margin: 0;
-  }
 }
 
-.install-card {
-  margin: 0em 0.5em;
+/* Scoped under .installContainer so these rules out-specify the
+   CardPrimary styled-component classes injected at runtime. */
+.installContainer .install-card {
+  margin: 0.5em;
+  width: 150px;
+  height: 150px;
+  flex: 0 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+
+  /* Inner icon + title column */
+  > div:first-child {
+    width: 100%;
+    h3 {
+      white-space: normal;
+      overflow-wrap: break-word;
+      text-align: center;
+      font-size: 0.875rem;
+      line-height: 1.25;
+      margin-top: 0.5em;
+    }
+  }
 }
 
 .prod-or-quick-install {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   margin: 0.5em 0em;
+}
+
+.install-group-heading {
+  margin: 1em 0em 0.25em;
+}
+
+.install-group-description {
+  margin: 0em 0em 0.75em;
+  max-width: 60ch;
+  color: var(--ifm-color-emphasis-700);
 }
 
 .installInstructions {

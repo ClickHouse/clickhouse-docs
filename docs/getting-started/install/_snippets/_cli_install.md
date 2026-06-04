@@ -15,19 +15,31 @@ A `chctl` alias is also created automatically for convenience.
 
 ## Install ClickHouse {#cli-install-clickhouse}
 
-Install the latest stable version of ClickHouse:
+Install the latest stable version of ClickHouse and make it your default:
 
 ```bash
-clickhousectl local install stable
+clickhousectl local use stable
 ```
 
-You can also install a specific version:
+`local use` installs the version if it isn't already present, sets it as your
+default, and creates a `clickhouse` symlink in `~/.local/bin` (on your `PATH`)
+so you can invoke the `clickhouse` binary directly. Any later step in these docs
+that runs a `clickhouse` command then works as-is.
+
+You can also select a specific version:
 
 ```bash
-clickhousectl local install lts             # Latest LTS release
-clickhousectl local install 25.6            # Latest 25.6.x.x
-clickhousectl local install 25.6.1.1        # Exact version
+clickhousectl local use lts             # Latest LTS release
+clickhousectl local use 25.6            # Latest 25.6.x.x
+clickhousectl local use 25.6.1.1        # Exact version
 ```
+
+:::note[Use vs install]
+`clickhousectl local use <version>` installs a version *and* makes it your
+default, updating the `clickhouse` symlink on your `PATH`. To download a version
+without changing your default or updating the symlink, use
+`clickhousectl local install <version>` instead.
+:::
 
 ## Start clickhouse-server {#cli-start-clickhouse-server}
 

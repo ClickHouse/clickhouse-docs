@@ -33,6 +33,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/install/macOS",
+      "destination": "/docs/install/quick-install",
+      "permanent": true
+    },
+    {
+      "source": "/docs/install/windows",
+      "destination": "/docs/install/quick-install",
+      "permanent": true
+    },
+    {
       "source": "/docs/integrations/clickpipes/secure-kinesis",
       "destination": "/docs/integrations/clickpipes/kinesis/auth",
       "permanent": true
