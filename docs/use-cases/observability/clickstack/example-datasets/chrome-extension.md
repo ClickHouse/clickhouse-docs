@@ -149,7 +149,8 @@ If extension-origin scripts are blocked by CSP, the extension logs a fallback me
 
 ## Troubleshooting {#troubleshooting}
 
-### Sessions not appearing in HyperDX {#sessions-not-appearing}
+<details>
+<summary>Sessions not appearing in HyperDX</summary>
 
 1. Check the browser console for `[HyperDX Extension]` log messages or errors
 2. Confirm **Enable HyperDX Monitoring** is on and **Service Name** is set
@@ -157,19 +158,31 @@ If extension-origin scripts are blocked by CSP, the extension logs a fallback me
 4. Adjust the time range in the Client Sessions view (try **Last 15 minutes**)
 5. Hard refresh the browser: `Cmd+Shift+R` (Mac) or `Ctrl+Shift+R` (Windows/Linux)
 
-### `chrome-extension://invalid/` errors {#extension-invalid}
+</details>
+
+<details>
+<summary>`chrome-extension://invalid/` errors </summary>
 
 Reload the extension at `chrome://extensions`, then hard-refresh the tab. This happens when the extension was updated or reloaded while tabs were still open.
 
-### No injection on a site {#no-injection}
+</details>
+
+<details>
+<summary>No injection on a site</summary>
 
 1. Check that monitoring is enabled and a service name is configured
 2. If **Only inject on matching URLs** is on, confirm the current page URL matches one of your patterns
 3. Some sites block both extension-origin and inline script injection via CSP — injection may not be possible on those pages
+4. 
 
-### `HyperDX: Missing apiKey` in console {#missing-api-key}
+</details>
+
+<details>
+<summary>`HyperDX: Missing apiKey` in console </summary>
 
 Expected when the API key field is empty. Add an ingestion API key from HyperDX for cloud endpoints, or ignore if your self-hosted collector accepts unauthenticated local traffic.
+
+</details>
 
 ## Privacy {#privacy}
 
