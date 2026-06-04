@@ -186,7 +186,7 @@ Expected when the API key field is empty. Add an ingestion API key from HyperDX 
 
 ## Privacy {#privacy}
 
-The extension injects observability code into pages you visit. Use it only on sites you are allowed to debug. Do not share API keys or commit them to version control.
+The extension injects observability code into pages you visit. Use it only on sites you are allowed to debug. Don't share API keys or commit them to version control.
 
 ## Learn more {#learn-more}
 
