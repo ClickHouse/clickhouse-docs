@@ -139,7 +139,7 @@ Reload the tab after saving URL patterns.
 
 Open DevTools on a monitored page (**Console** tab), reload the page, and look for:
 
-```
+```text
 [HyperDX Extension] Configuration valid, injecting HyperDX
 [HyperDX Extension] Injected via extension scripts
 [HyperDX Extension] HyperDX initialized
