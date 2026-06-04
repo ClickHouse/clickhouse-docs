@@ -10,7 +10,7 @@ doc_type: 'guide'
 
 import CLIInstall from './_snippets/_cli_install.md'
 
-:::note Windows users
+:::note[Windows users]
 ClickHouse runs natively on Linux and macOS. On Windows, run these steps inside
 the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/about).
 :::
