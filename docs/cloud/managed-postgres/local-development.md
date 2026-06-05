@@ -20,7 +20,7 @@ The goal isn't to replicate production exactly. Instead, create a reproducible l
 
 Because Managed Postgres is standard PostgreSQL, existing migration frameworks, schema management tools, and data seeding approaches work without modification.
 
-## Run PostgreSQL locally with Docker
+## Run PostgreSQL locally with Docker {#run-postgresql-locally-with-docker}
 
 The simplest way to create a local development environment is to run PostgreSQL in Docker.
 
@@ -62,11 +62,11 @@ psql -h localhost -U postgres -p 15432 -d app
 
 At this point PostgreSQL is running locally but doesn't yet contain the application schema or any development data.
 
-## Apply the application schema
+## Apply the application schema {#apply-the-application-schema}
 
 There's no single required approach for creating the schema in a local environment. Most organizations already have an established schema management workflow that can be reused unchanged.
 
-### Application migrations
+### Application migrations {#application-migrations}
 
 Many teams use the same migration framework that runs in staging and production environments — tools like Flyway, Liquibase, Rails migrations, Django migrations, Prisma migrations, or Alembic.
 
@@ -80,7 +80,7 @@ npm run migrate
 rails db:migrate
 ```
 
-### Schema-only PostgreSQL dumps
+### Schema-only PostgreSQL dumps {#schema-only-postgresql-dumps}
 
 A schema-only PostgreSQL export can reproduce an existing database structure. This is useful for onboarding, investigating schema behavior, validating compatibility, or quickly bootstrapping development environments.
 
@@ -108,13 +108,13 @@ psql \
   -f schema.sql
 ```
 
-### Checked-in SQL definitions
+### Checked-in SQL definitions {#checked-in-sql-definitions}
 
 Some teams maintain schema definitions directly in source control as SQL files. These can be applied directly to a local PostgreSQL instance during environment setup.
 
 Regardless of the approach, the important outcome is that schema creation is automated, reproducible, and derived from version-controlled definitions.
 
-## Populate representative development data
+## Populate representative development data {#populate-representative-development-data}
 
 Once the schema exists, populate the database with representative development data.
 
@@ -122,7 +122,7 @@ For most development workflows, synthetic datasets generated through seed script
 
 A common approach for SaaS applications is to generate data for a small number of sample tenants and create realistic relationships between users, products, orders, and other business entities.
 
-### Example multi-tenant schema
+### Example multi-tenant schema {#example-multi-tenant-schema}
 
 The following schema represents a simplified multi-tenant SaaS application:
 
@@ -173,7 +173,7 @@ CREATE TABLE audit_logs (
 );
 ```
 
-### Generate sample data
+### Generate sample data {#generate-sample-data}
 
 Install dependencies:
 
@@ -359,11 +359,11 @@ The resulting dataset contains:
 
 This dataset is large enough to exercise common application workflows, tenant isolation logic, reporting queries, and relational integrity checks while remaining lightweight for local development and testing.
 
-## Example development flow
+## Example development flow {#example-development-flow}
 
 A typical local development workflow looks like:
 
-```
+```text
 Application migrations
 Schema-only dump
 Checked-in SQL schema
@@ -386,7 +386,7 @@ Checked-in SQL schema
 
 Managed Postgres fits into existing PostgreSQL development workflows. By developing against a local PostgreSQL instance, teams can iterate quickly, maintain reproducible environments, and gain confidence that applications behave consistently when deployed to Managed Postgres.
 
-## PostgreSQL + ClickHouse development environment
+## PostgreSQL + ClickHouse development environment {#postgresql-clickhouse-development-environment}
 
 The examples above focus on local PostgreSQL development. If you want to test the complete PostgreSQL-to-ClickHouse architecture locally, you can run the open-source PostgreSQL + ClickHouse stack.
 
