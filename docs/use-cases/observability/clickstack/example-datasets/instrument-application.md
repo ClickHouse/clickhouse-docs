@@ -146,6 +146,9 @@ Open the ClickStack UI:
 
 Logs, metrics, traces, and session replays all land in the same UI, share the same query language, and are correlated automatically.
 
-## Summary {#summary}
+## Learn more {#learn-more}
 
-Instrumenting this application took three actions: installing the OpenTelemetry packages, wrapping the launch command, and uncommenting the browser init block. No business logic changed. With an OTLP endpoint and an ingestion token, the collector and Managed ClickStack handled ingestion, scaling, storage, and schema, and logs, metrics, traces, and session replays arrived correlated in a single UI.
+- [Session Replay](/use-cases/observability/clickstack/session-replay) — feature overview, SDK options, and privacy controls
+- [Session Replay Demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) — a self-contained demo with a local ClickStack instance
+- [ClickStack Getting Started](/use-cases/observability/clickstack/getting-started) — deploy ClickStack and ingest your first data
+- [All Sample Datasets](/use-cases/observability/clickstack/sample-datasets) — other example datasets and guides
