@@ -121,7 +121,9 @@ ORDER BY
     year ASC,
  c DESC
 LIMIT 1 BY year
+```
 
+```response
 ┌─year─┬─authors────────────────────────────────────┬───c─┐
 │ 2007 │ The BABAR Collaboration, B. Aubert, et al  │  98 │
 │ 2008 │ The OPAL collaboration, G. Abbiendi, et al │  59 │
@@ -147,7 +149,6 @@ LIMIT 1 BY year
 ```
 
 スキーマ推論を利用することで、スキーマを明示的に定義しなくても JSON ファイルに対してクエリを実行できるため、アドホックなデータ分析タスクを高速化できます。
-
 
 ## テーブルの作成 \{#creating-tables\}
 
@@ -234,12 +235,14 @@ ORDER BY update_date
 ```sql
 INSERT INTO arxiv SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz')
+```
 
+```response
 0 rows in set. Elapsed: 38.498 sec. Processed 2.52 million rows, 1.39 GB (65.35 thousand rows/s., 36.03 MB/s.)
 Peak memory usage: 870.67 MiB.
 ```
 
-他のデータソース（例: ファイル）からデータをロードする例については、[こちら](/sql-reference/statements/insert-into)を参照してください。
+他のデータソース (例: ファイル) からデータをロードする例については、[こちら](/sql-reference/statements/insert-into)を参照してください。
 
 データの読み込みが完了したら、必要に応じて `PrettyJSONEachRow` フォーマットを使用して行を元の構造のまま表示しながら、データに対してクエリを実行できます。
 
@@ -275,10 +278,11 @@ FORMAT PrettyJSONEachRow
     ]
   ]
 }
-
-1 row in set. Elapsed: 0.009 sec.
 ```
 
+```response
+1 row in set. Elapsed: 0.009 sec.
+```
 
 ## エラーの処理 \{#handling-errors\}
 
@@ -317,7 +321,9 @@ JSON が非常に動的で、固有のキーが多数存在し、同じキーに
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
 
 -- result omitted for brevity
+```
 
+```response
 9 rows in set. Elapsed: 127.066 sec.
 ```
 
@@ -330,7 +336,9 @@ DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz', 'JSONAsObject')
 SETTINGS describe_compact_output = 1
+```
 
+```response
 ┌─name─┬─type─┐
 │ json │ JSON │
 └──────┴──────┘
@@ -350,7 +358,9 @@ SETTINGS describe_compact_output = 1
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/sample.json')
 SETTINGS describe_compact_output = 1
+```
 
+```response
 ┌─name─┬─type─────────────┐
 │ a    │ Nullable(String) │
 └──────┴──────────────────┘
@@ -371,30 +381,34 @@ SETTINGS describe_compact_output = 1
 
 この場合、ここで型変換を行うことは一切できません。その結果、`DESCRIBE` コマンドは次のように失敗します：
 
-
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
+```
 
+```response
 Elapsed: 0.755 sec.
+```
 
+```sql
 Received exception from server (version 24.12.1):
 Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSON format file. Error:
 Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
-この場合、`JSONAsObject` は各行を 1 つの [`JSON`](/sql-reference/data-types/newjson) 型（同じカラムに複数の型が存在することを許容する型）として扱います。これは重要です:
+この場合、`JSONAsObject` は各行を 1 つの [`JSON`](/sql-reference/data-types/newjson) 型 (同じカラムに複数の型が存在することを許容する型) として扱います。これは重要です:
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
 SETTINGS enable_json_type = 1, describe_compact_output = 1
+```
 
+```response
 ┌─name─┬─type─┐
 │ json │ JSON │
 └──────┴──────┘
 
 1 row in set. Elapsed: 0.010 sec.
 ```
-
 
 ## さらに詳しく知る \{#further-reading\}
 

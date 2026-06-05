@@ -1943,6 +1943,14 @@ OvercommitTracker 内で待機中のスレッド数
 
 非圧縮キャッシュ内のエントリ総数。各エントリは、展開済みのデータブロックを表します。非圧縮キャッシュは通常、パフォーマンス向上に寄与しないため、基本的には使用を避けるべきです
 
+### UniqueKeyIndexCacheBytes \{#uniquekeyindexcachebytes\}
+
+UNIQUE KEY 索引キャッシュの合計サイズ (バイト)
+
+### UniqueKeyIndexCacheEntries \{#uniquekeyindexcacheentries\}
+
+キャッシュされた UNIQUE KEY 索引ブロックの総数
+
 ### VectorSimilarityIndexCacheBytes \{#vectorsimilarityindexcachebytes\}
 
 ベクトル類似度索引キャッシュのサイズ (バイト単位)

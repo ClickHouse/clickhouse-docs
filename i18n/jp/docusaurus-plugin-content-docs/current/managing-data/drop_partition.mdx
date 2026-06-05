@@ -38,7 +38,7 @@ ClickHouse では、パーティションは主としてクエリ最適化のテ
 `ALTER TABLE ... DROP PARTITION` は、パーティション全体を削除するためのコスト効率の高い方法です。
 
 ```sql
-ALTER TABLE テーブル名 [ON CLUSTER クラスター] DROP PARTITION|PART パーティション式
+ALTER TABLE table_name [ON CLUSTER cluster] DROP PARTITION|PART partition_expr
 ```
 
 このクエリはパーティションを非アクティブとしてタグ付けし、約 10 分後にデータを完全に削除します。このクエリはレプリケーションされており、すべてのレプリカ上のデータを削除します。
@@ -49,7 +49,9 @@ ALTER TABLE テーブル名 [ON CLUSTER クラスター] DROP PARTITION|PART パ
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'posts'
+```
 
+```response
 ┌─partition─┐
 │ 2008      │
 │ 2009      │
@@ -71,9 +73,13 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 ALTER TABLE posts
 (DROP PARTITION '2008')
+```
 
+```response
 0 rows in set. Elapsed: 0.103 sec.
 ```

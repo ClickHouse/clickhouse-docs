@@ -1,6 +1,6 @@
 ---
-description: 'ClickHouseのインストール'
-keywords: ['clickhouse', 'インストール', 'はじめに', 'クイックスタート']
+description: 'ClickHouseをインストール'
+keywords: ['ClickHouse', 'インストール', 'はじめに', 'クイックスタート']
 sidebar_label: 'インストール'
 slug: /install
 title: 'インストール手順'
@@ -11,50 +11,73 @@ import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import Link from '@docusaurus/Link';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
-<CardPrimary alignContent="center" description="クラスターの容量やスケーリングを気にせず、すぐに構築を開始できます。サイズ設定、スケーリング、セキュリティ、信頼性、アップグレードはすべて当社が行います。" icon="cloud" infoText="無料で始める" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="推奨" />
+<CardPrimary
+  alignContent="center"
+  description="クラスターのサイジングやスケーリングを気にすることなく、すぐに使い始められます。ClickHouse Cloud がサイジング、スケーリング
+、セキュリティ、信頼性、アップグレードを担います。"
+  icon="cloud"
+  infoText="無料で始める"
+  infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
+  isSelected
+  onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
+  size="md"
+  title="ClickHouse Cloud"
+  topBadgeText="推奨"
+/>
 
 <br />
 
-または、以下からプラットフォーム、ディストリビューション、およびインストール方法を選択して、
-オープンソース版 ClickHouse のインストール手順を表示します。
+自分で管理したい場合は、以下のオープンソース版 ClickHouse のいずれかを選択してください。
+ローカル環境のセットアップにはクイックインストールスクリプトまたは `clickhousectl` CLI を使用し、
+本番環境へのデプロイにはパッケージまたはバイナリから ClickHouse Server をインストールしてください。
 
 <h3 className="install-group-heading">ローカル開発</h3>
+
 <p className="install-group-description">
-    自分のマシンで ClickHouse を実行して、ビルド、テスト、実験を行います。
-    クイックインストールで単一のバイナリを素早く入手するか、clickhousectl を使用して
-    ローカルのバージョンやサーバーをインストールおよび管理します。
+  自分のマシンで ClickHouse を実行して、構築、テスト、検証を行えます。
+  クイックインストールを使えば単一バイナリをすばやく入手でき、clickhousectl
+  を使えばローカルのバージョンやサーバーをインストールして管理できます。
 </p>
+
 <div className="installContainer">
-    <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="クイックインストール"/>
-    </Link>
-    <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)"/>
-    </Link>
-    <Link to="/install/docker" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker"/>
-    </Link>
-    <Link to="/install/advanced" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="ソースビルド"/>
-    </Link>
+  <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="クイックインストール" />
+  </Link>
+
+  <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)" />
+  </Link>
+
+  <Link to="/install/docker" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker" />
+  </Link>
+
+  <Link to="/install/advanced" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="ソースからビルド" />
+  </Link>
 </div>
 
 <h3 className="install-group-heading">本番サーバー</h3>
+
 <p className="install-group-description">
-    自社のインフラストラクチャで長期的に運用するために、パッケージまたはバイナリから
-    ClickHouse Server をインストールします。
+  パッケージまたはバイナリから ClickHouse Server をインストールして、
+  自身のインフラストラクチャ上で長期運用するデプロイメントに対応できます。
 </p>
+
 <div className="installContainer">
-    <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu"/>
-    </Link>
-    <Link to="/install/redhat" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat"/>
-    </Link>
-    <Link to="/install/nixos" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS"/>
-    </Link>
-    <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="その他の Linux"/>
-    </Link>
+  <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu" />
+  </Link>
+
+  <Link to="/install/redhat" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat" />
+  </Link>
+
+  <Link to="/install/nixos" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS" />
+  </Link>
+
+  <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="その他の Linux" />
+  </Link>
 </div>

@@ -37,7 +37,9 @@ SELECT name,
 FROM system.columns
 WHERE table = 'posts'
 GROUP BY name
+```
 
+```response
 ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio────┐
 │ Body                  │ 46.14 GiB       │ 127.31 GiB        │ 2.76       │
 │ Title                 │ 1.20 GiB        │ 2.63 GiB          │ 2.19       │
@@ -63,7 +65,6 @@ GROUP BY name
 │ CommunityOwnedDate    │ 2.21 MiB        │ 509.60 MiB        │ 230.94     │
 └───────────────────────┴─────────────────┴───────────────────┴────────────┘
 ```
-
 
 <details>
    
@@ -150,7 +151,9 @@ SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE table = 'posts'
+```
 
+```response
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ 50.16 GiB       │ 143.47 GiB        │  2.86 │
 └─────────────────┴───────────────────┴───────┘
@@ -165,14 +168,15 @@ SELECT
     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE `table` = 'posts_v3'
+```
 
+```response
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ 25.15 GiB       │ 68.87 GiB         │  2.74 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
 Подробный разбор по столбцам показывает существенную экономию для столбцов `Body`, `Title`, `Tags` и `CreationDate`, достигнутую за счёт упорядочивания данных перед сжатием и использования подходящих типов.
-
 
 ```sql
 SELECT
@@ -183,7 +187,9 @@ SELECT
 FROM system.columns
 WHERE `table` = 'posts_v3'
 GROUP BY name
+```
 
+```response
 ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
 │ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
 │ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
@@ -209,7 +215,6 @@ GROUP BY name
 │ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
 └───────────────────────┴─────────────────┴───────────────────┴─────────┘
 ```
-
 
 ## Выбор подходящего кодека сжатия столбца \{#choosing-the-right-column-compression-codec\}
 
@@ -283,7 +288,9 @@ GROUP BY
 ORDER BY
     name ASC,
     `table` ASC
+```
 
+```response
 ┌─table────┬─name────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ posts_v3 │ AnswerCount │ 9.67 MiB        │ 113.69 MiB        │ 11.76 │
 │ posts_v4 │ AnswerCount │ 10.39 MiB       │ 111.31 MiB        │ 10.71 │
@@ -295,7 +302,6 @@ ORDER BY
 
 6 rows in set. Elapsed: 0.008 sec
 ```
-
 
 ### Сжатие в ClickHouse Cloud \{#compression-in-clickhouse-cloud\}
 

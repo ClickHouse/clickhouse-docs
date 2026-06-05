@@ -89,7 +89,9 @@ Databricks поддерживает несколько форматов данн
 
 ```sql
 SHOW TABLES FROM unity
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ unity.logs                                         │
 │ unity.single_day_log                               │
@@ -141,10 +143,11 @@ ENGINE = Iceberg('s3://...')
 Поддерживаются все функции ClickHouse. И снова: пространство имен и имя таблицы должны быть заключены в обратные кавычки.
 
 ```sql
-
 SELECT count()
 FROM unity.`icebench.single_day_log`
+```
 
+```response
 ┌───count()─┐
 │ 282634391 │ -- 282.63 million
 └───────────┘

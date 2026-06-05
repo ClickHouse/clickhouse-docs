@@ -257,9 +257,9 @@ USE demo;
 SHOW TABLES;
 ```
 
-セットアップにサンプルデータ（タクシーのデータセットなど）が含まれている場合は、次のようなテーブルが表示されます。
+セットアップにサンプルデータ (タクシーのデータセットなど) が含まれている場合は、次のようなテーブルが表示されます。
 
-```sql title="Response"
+```response
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
@@ -280,13 +280,13 @@ docker-compose logs spark
 
 :::
 
-テーブル（存在する場合）をクエリするには:
+テーブル (存在する場合) をクエリするには:
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
@@ -302,7 +302,7 @@ ClickHouse は複数のネームスペースをサポートしていないため
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │

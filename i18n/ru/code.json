@@ -9,7 +9,7 @@
     "message": "Этот документ переведён с помощью ИИ."
   },
   "homepage.connect.clickhouseClient": {
-    "message": "ClickHouse Client"
+    "message": "Клиент ClickHouse"
   },
   "homepage.connect.cloudSqlConsole": {
     "message": "SQL-консоль Cloud"

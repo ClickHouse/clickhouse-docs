@@ -27,7 +27,7 @@ FROM clusterAllReplicas('default',system.crash_log)
 
 ClickHouse 使用预先创建的角色来启用系统功能。本节假设客户正在使用 AWS 和 CloudTrail，并且可以访问 CloudTrail 日志。
 
-如果某个事件可能是角色遭入侵导致的结果，请审查 CloudTrail 和 CloudWatch 中与 ClickHouse IAM 角色及操作相关的活动。有关 IAM 角色列表，请参阅作为设置一部分提供的 [CloudFormation](/cloud/reference/byoc/reference/privilege#cloudformation-iam-roles) 堆栈或 Terraform 模块。
+如果某个事件可能是角色遭入侵导致的结果，请审查 CloudTrail 和 CloudWatch 中与 ClickHouse IAM 角色及操作相关的活动。有关 IAM 角色列表，请参阅作为设置一部分提供的 [CloudFormation](/cloud/reference/byoc/reference/privilege#aws-iam-roles) 堆栈或 Terraform 模块。
 
 ## 未经授权访问 EKS 集群 \{#unauthorized-access-eks-cluster\}
 

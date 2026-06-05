@@ -95,7 +95,9 @@ MODIFY REFRESH EVERY 30 SECONDS;
 SELECT *
 FROM events
 LIMIT 10
+```
 
+```response
 Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
 
 ┌──────────────────ts─┬─uuid─┬─count─┐
@@ -122,7 +124,9 @@ FROM events
 GROUP BY ALL
 ORDER BY count DESC
 LIMIT 10
+```
 
+```response
 ┌─uuid─┬───count─┐
 │ c6f  │ 5676468 │
 │ 951  │ 5669731 │
@@ -149,7 +153,7 @@ ENGINE = MergeTree
 ORDER BY uuid;
 ```
 
-次に、このテーブルにデータを投入するためのリフレッシュ可能なマテリアライズドビューを作成します。
+次に、このテーブルにデータを投入するためのリフレッシャブルmaterialized viewを作成します。
 
 ```sql
 CREATE MATERIALIZED VIEW events_snapshot_mv
@@ -164,14 +168,15 @@ GROUP BY ALL;
 
 次に、特定の `uuid` について時間経過に伴うカウントを取得するために `events_snapshot` をクエリします：
 
-
 ```sql
 SELECT *
 FROM events_snapshot
 WHERE uuid = 'fff'
 ORDER BY ts ASC
 FORMAT PrettyCompactMonoBlock
+```
 
+```response
 ┌──────────────────ts─┬─uuid─┬───count─┐
 │ 2024-10-01 16:12:56 │ fff  │ 5424711 │
 │ 2024-10-01 16:13:00 │ fff  │ 5424711 │
@@ -183,7 +188,6 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
 ```
-
 
 ## 例 \{#examples\}
 

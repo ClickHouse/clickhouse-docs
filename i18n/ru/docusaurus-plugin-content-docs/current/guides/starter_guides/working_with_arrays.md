@@ -30,7 +30,9 @@ array(T)
 
 ```sql
 SELECT array(1, 2, 3) AS numeric_array
+```
 
+```response
 ┌─numeric_array─┐
 │ [1,2,3]       │
 └───────────────┘
@@ -40,7 +42,9 @@ SELECT array(1, 2, 3) AS numeric_array
 
 ```sql
 SELECT array('hello', 'world') AS string_array
+```
 
+```response
 ┌─string_array──────┐
 │ ['hello','world'] │
 └───────────────────┘
@@ -50,7 +54,9 @@ SELECT array('hello', 'world') AS string_array
 
 ```sql
 SELECT array(tuple(1, 2), tuple(3, 4))
+```
 
+```response
 ┌─[(1, 2), (3, 4)]─┐
 │ [(1,2),(3,4)]    │
 └──────────────────┘
@@ -75,7 +81,9 @@ Code: 386. DB::Exception: There is no supertype for types String, String, UInt8,
 
 ```sql
 SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]) AS array_type;
+```
 
+```response
 ┌─mixed_array─┬─array_type─────┐
 │ [1,2.5,3]   │ Array(Float64) │
 └─────────────┴────────────────┘
@@ -124,12 +132,14 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
 В ClickHouse важно учитывать, что индексация массивов всегда начинается с **1**.
 Это может отличаться от других языков программирования, к которым вы привыкли, где массивы индексируются с нуля.
 
-Например, имея массив, вы можете выбрать первый элемент массива следующим образом:
+Например, если дан массив, можно выбрать его первый элемент, написав:
 
 ```sql
 WITH array('hello', 'world') AS string_array
 SELECT string_array[1];
+```
 
+```response
 ┌─arrayElement⋯g_array, 1)─┐
 │ hello                    │
 └──────────────────────────┘
@@ -141,7 +151,9 @@ SELECT string_array[1];
 ```sql
 WITH array('hello', 'world') AS string_array
 SELECT string_array[-1];
+```
 
+```response
 ┌─arrayElement⋯g_array, -1)─┐
 │ world                     │
 └───────────────────────────┘
@@ -154,12 +166,13 @@ SELECT string_array[-1];
 ```sql
 WITH ['hello', 'world', 'arrays are great aren\'t they?'] AS string_array
 SELECT string_array[0]
+```
 
+```response
 ┌─arrayElement⋯g_array, 0)─┐
 │                          │
 └──────────────────────────┘
 ```
-
 
 ## Функции для работы с массивами \{#array-functions\}
 
@@ -173,7 +186,9 @@ ClickHouse предоставляет множество полезных фун
 ```sql
 WITH array('learning', 'ClickHouse', 'arrays') AS string_array
 SELECT length(string_array);
+```
 
+```response
 ┌─length(string_array)─┐
 │                    3 │
 └──────────────────────┘
@@ -184,7 +199,9 @@ SELECT length(string_array);
 ```sql
 WITH array('learning', 'ClickHouse', 'arrays') AS string_array
 SELECT arrayEnumerate(string_array);
+```
 
+```response
 ┌─arrayEnumerate(string_array)─┐
 │ [1,2,3]                      │
 └──────────────────────────────┘
@@ -194,7 +211,9 @@ SELECT arrayEnumerate(string_array);
 
 ```sql
 SELECT indexOf([4, 2, 8, 8, 9], 8);
+```
 
+```response
 ┌─indexOf([4, 2, 8, 8, 9], 8)─┐
 │                           3 │
 └─────────────────────────────┘
@@ -226,7 +245,6 @@ hasAny_false: 0
 hasAll_true:  1
 hasAll_false: 0
 ```
-
 
 ## Исследование данных о перелётах с помощью массивов \{#exploring-flight-data-with-array-functions\}
 

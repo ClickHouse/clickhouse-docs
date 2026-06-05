@@ -249,7 +249,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | 目录                                                        | 文件                                                                                                                                                                               |
+  | 目录                                                        | File 表引擎                                                                                                                                                                         |
   | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
@@ -321,8 +321,8 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   #### Keeper 配置
 
-  `<ZooKeeper>` 部分用于指定 ClickHouse Keeper(或 ZooKeeper)的运行位置。
-  由于使用的是 ClickHouse Keeper 集群,需要指定集群中的每个 `<node>`,
+  `<ZooKeeper>` 部分用于指定 ClickHouse Keeper (或 ZooKeeper) 的运行位置。
+  由于使用的是 ClickHouse Keeper 集群，需要指定集群中的每个 `<node>`，
   并分别通过 `<host>` 和 `<port>` 标签指定其主机名和端口号。
 
   ClickHouse Keeper 的设置将在教程的下一步骤中进行说明。
@@ -418,7 +418,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   <KeeperConfig />
 
-  | 目录                                                      | 文件                                                                                                                                                                                           |
+  | 目录                                                      | File 表引擎                                                                                                                                                                                     |
   | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
   | `fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
@@ -597,7 +597,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   请注意,该查询与[英国房产价格](/getting-started/example-datasets/uk-price-paid)示例数据集教程中原始 `CREATE` 语句使用的查询完全相同,区别仅在于添加了 `ON CLUSTER` 子句并使用了 `ReplicatedMergeTree` 引擎。
 
-  `ON CLUSTER` 子句用于分布式执行 DDL(数据定义语言)查询,例如 `CREATE`、`DROP`、`ALTER` 和 `RENAME`,以确保这些架构变更应用于集群中的所有节点。
+  `ON CLUSTER` 子句用于分布式执行 DDL (数据定义语言) 查询，例如 `CREATE`、`DROP`、`ALTER` 和 `RENAME`，以确保这些 schema 变更应用于集群中的所有节点。
 
   [`ReplicatedMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication#converting-from-mergetree-to-replicatedmergetree)
   引擎的工作方式与普通的 `MergeTree` 表引擎相同,但它还会对数据进行复制。
@@ -617,7 +617,8 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
   其中：
 
   * `{database}` 和 `{table}` 会被自动替换。
-  * `{shard}` 和 `{replica}` 是在每个 ClickHouse 节点的 `config.xml` 文件中[预先定义](#macros-config-explanation)的宏。
+  * `{shard}` 和 `{replica}` 是之前在每个 ClickHouse 节点的 `config.xml` 文件中[定义](#macros-config-explanation)
+    的宏。
 
   您可以在各主机的客户端上运行以下查询,以确认表已在集群中创建:
 
@@ -633,7 +634,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   ## 向分布式表插入数据
 
-  向表中插入数据时,不能使用 `ON CLUSTER`,因为它不适用于 DML(数据操作语言)查询,如 `INSERT`、`UPDATE` 和 `DELETE`。要插入数据,需要使用 [`Distributed`](/engines/table-engines/special/distributed) 表引擎。
+  向表中插入数据时,不能使用 `ON CLUSTER`,因为它不适用于 DML (数据操作语言) 查询,如 `INSERT`、`UPDATE` 和 `DELETE`。要插入数据,需要使用 [`Distributed`](/engines/table-engines/special/distributed) 表引擎。
   如[指南](/architecture/horizontal-scaling)中所述,在设置具有 2 个分片和 1 个副本的集群时,分布式表是指能够访问位于不同主机上的分片的表,使用 `Distributed` 表引擎定义。
   分布式表作为集群中所有分片的统一接口。
 
@@ -647,7 +648,7 @@ import CloudTip from '@site/i18n/zh/docusaurus-plugin-content-docs/current/deplo
 
   现在您将在每个主机的 `uk` 数据库中看到以下表:
 
-  ```sql
+  ```response
      ┌─name──────────────────────┐
   1. │ uk_price_paid_distributed │
   2. │ uk_price_paid_local       │

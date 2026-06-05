@@ -101,7 +101,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 1 row in set. Elapsed: 0.720 sec. Processed 59.55 million rows, 230.23 MB (82.66 million rows/s., 319.56 MB/s.)
 ```
 
-このクエリは、プライマリインデックスを使用して一部の行(および粒度)を除外できます。ただし、上記の応答と次の`EXPLAIN indexes = 1`が示すように、大部分の行はまだ読み取る必要があります:
+このクエリは、プライマリインデックスを使用して一部の行 (およびグラニュール) を除外できます。ただし、上記の応答と次の `EXPLAIN indexes = 1` が示すように、大部分の行はまだ読み取る必要があります。
 
 ```sql
 EXPLAIN indexes = 1
@@ -109,7 +109,9 @@ SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 LIMIT 1
+```
 
+```response
 ┌─explain──────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                        │
 │   Limit (preliminary LIMIT (without OFFSET))                     │
@@ -146,7 +148,6 @@ LIMIT 1
 ```sql
 SELECT toDate(CreationDate) AS day, avg(ViewCount) AS view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
 ```
-
 
 したがって、これはデータスキッピングインデックスの論理的な選択肢です。数値型であるため、minmaxインデックスが理にかなっています。次の`ALTER TABLE`コマンドを使用してインデックスを追加します - 最初に追加してから、「マテリアライズ」します。
 
@@ -201,7 +202,9 @@ ORDER BY (PostTypeId, toDate(CreationDate))
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─count()─┐
 │     5   │
 └─────────┘
@@ -211,13 +214,14 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 
 `EXPLAIN indexes = 1`は、インデックスの使用を確認します。
 
-
 ```sql
 EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                          │
 │   Aggregating                                                      │
@@ -256,7 +260,6 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 また、minmaxスキッピングインデックスが、サンプルクエリの`ViewCount` &gt; 10,000,000述語に一致する可能性のないすべての行ブロックをどのようにプルーニングするかを示すアニメーションも示します:
 
 <Image img={using_skipping_indices} size="lg" alt="Using skipping indices" />
-
 
 ## 関連ドキュメント \{#related-docs\}
 

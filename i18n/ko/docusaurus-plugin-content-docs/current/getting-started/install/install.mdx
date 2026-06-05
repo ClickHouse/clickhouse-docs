@@ -1,6 +1,6 @@
 ---
 description: 'ClickHouse 설치'
-keywords: ['ClickHouse', '설치', '시작하기', '빠른 시작']
+keywords: ['clickhouse', '설치', '시작하기', '빠른 시작']
 sidebar_label: '설치'
 slug: /install
 title: '설치 지침'
@@ -11,49 +11,73 @@ import {CardPrimary} from '@clickhouse/click-ui/bundled';
 import Link from '@docusaurus/Link';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
-<CardPrimary alignContent="center" description="클러스터 크기 산정과 확장 계획 없이도 바로 구축을 시작하십시오. 크기 산정, 확장, 보안, 안정성 및 업그레이드는 ClickHouse에서 처리합니다." icon="cloud" infoText="무료로 시작하기" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="권장" />
+<CardPrimary
+  alignContent="center"
+  description="클러스터 규모를 직접 산정하거나 스케일링을 고민할 필요 없이 바로 시작하세요. ClickHouse Cloud가 용량 산정, 스케일링
+, 보안, 안정성, 업그레이드까지 모두 관리합니다."
+  icon="cloud"
+  infoText="무료로 시작하기"
+  infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
+  isSelected
+  onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
+  size="md"
+  title="ClickHouse Cloud"
+  topBadgeText="권장"
+/>
 
 <br />
 
-또는 아래에서 플랫폼, 배포판 및 설치 방법을 선택하여 오픈 소스 ClickHouse용 설치 지침을 확인하십시오.
+직접 관리하려면 아래의 오픈소스 ClickHouse 옵션 중 하나를 선택하세요.
+로컬 환경은 빠른 설치 스크립트 또는 `clickhousectl` CLI로 설정할 수 있으며, 프로덕션 배포용으로는
+패키지 또는 바이너리에서 ClickHouse 서버를 설치할 수 있습니다.
 
 <h3 className="install-group-heading">로컬 개발</h3>
+
 <p className="install-group-description">
-    직접 사용하는 머신에서 ClickHouse를 실행하여 빌드, 테스트 및 실험을 수행하십시오.
-    빠른 설치로 단일 바이너리를 신속하게 받거나, clickhousectl을 사용하여 로컬 버전과
-    서버를 설치하고 관리하십시오.
+  자체 머신에서 ClickHouse를 실행하여 개발, 테스트, 실험을 진행하세요.
+  빠른 설치를 사용하면 단일 바이너리를 신속하게 설치할 수 있으며, clickhousectl을 사용하면
+  로컬 버전과 서버를 설치하고 관리할 수 있습니다.
 </p>
+
 <div className="installContainer">
-    <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="빠른 설치"/>
-    </Link>
-    <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)"/>
-    </Link>
-    <Link to="/install/docker" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker"/>
-    </Link>
-    <Link to="/install/advanced" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="소스 빌드"/>
-    </Link>
+  <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="빠른 설치" />
+  </Link>
+
+  <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)" />
+  </Link>
+
+  <Link to="/install/docker" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker" />
+  </Link>
+
+  <Link to="/install/advanced" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="소스 빌드" />
+  </Link>
 </div>
 
 <h3 className="install-group-heading">프로덕션 서버</h3>
+
 <p className="install-group-description">
-    자체 인프라에서 장기간 운영하기 위해 패키지 또는 바이너리에서 ClickHouse Server를
-    설치하십시오.
+  패키지 또는 바이너리에서 ClickHouse 서버를 설치하여
+  자체 인프라에서 장기간 실행되는 배포를 구성하세요.
 </p>
+
 <div className="installContainer">
-    <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu"/>
-    </Link>
-    <Link to="/install/redhat" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat"/>
-    </Link>
-    <Link to="/install/nixos" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS"/>
-    </Link>
-    <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
-        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="기타 Linux"/>
-    </Link>
+  <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu" />
+  </Link>
+
+  <Link to="/install/redhat" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat" />
+  </Link>
+
+  <Link to="/install/nixos" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS" />
+  </Link>
+
+  <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="기타 Linux" />
+  </Link>
 </div>
