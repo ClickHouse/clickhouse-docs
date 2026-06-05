@@ -1626,7 +1626,7 @@ ClickHouse の HTTP(s) サーバーにアクセスしたときに、デフォル
 
 ## iceberg_metadata_files_cache_size \{#iceberg_metadata_files_cache_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1073741824" changeable_without_restart="Yes" />iceberg メタデータキャッシュの最大サイズ (バイト単位) 。0 の場合はキャッシュが無効化されます。
+<SettingsInfoBlock type="UInt64" default_value="134217728" changeable_without_restart="Yes" />iceberg メタデータキャッシュの最大サイズ (バイト単位) 。0 の場合はキャッシュが無効化されます。
 
 ## iceberg_metadata_files_cache_size_ratio \{#iceberg_metadata_files_cache_size_ratio\}
 

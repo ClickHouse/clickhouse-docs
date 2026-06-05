@@ -1632,7 +1632,7 @@ ClickHouse перезагружает встроенные словари каж
 
 ## iceberg_metadata_files_cache_size \{#iceberg_metadata_files_cache_size\}
 
-<SettingsInfoBlock type="UInt64" default_value="1073741824" changeable_without_restart="Yes" />Максимальный размер кэша метаданных Iceberg в байтах. Нулевое значение означает, что кэш отключён.
+<SettingsInfoBlock type="UInt64" default_value="134217728" changeable_without_restart="Yes" />Максимальный размер кэша метаданных Iceberg в байтах. Нулевое значение означает, что кэш отключён.
 
 ## iceberg_metadata_files_cache_size_ratio \{#iceberg_metadata_files_cache_size_ratio\}
 
