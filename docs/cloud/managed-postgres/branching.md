@@ -82,7 +82,7 @@ For guidance on creating local PostgreSQL development environments using Docker,
 
 A common workflow looks like:
 
-```
+```text
 Production Database
         │
         ├─────────────► Branch
