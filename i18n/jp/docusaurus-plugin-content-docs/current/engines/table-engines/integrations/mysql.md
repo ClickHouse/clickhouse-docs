@@ -24,7 +24,8 @@ SETTINGS
     [ connection_wait_timeout=5, ]
     [ connection_auto_close=true, ]
     [ connect_timeout=10, ]
-    [ read_write_timeout=300 ]
+    [ read_write_timeout=300, ]
+    [ enable_compression=false ]
 ;
 ```
 
@@ -59,7 +60,6 @@ SETTINGS
 ```sql
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
-
 
 ## 使用例 \{#usage-example\}
 
@@ -192,6 +192,35 @@ SELECT * FROM mysql_table
 - 正の整数。
 
 デフォルト値: `300`。
+
+### `enable_compression` \{#enable-compression\}
+
+MySQL プロトコル接続で圧縮を有効にします。
+
+デフォルト値: `false`。
+
+この設定は以下に適用されます。
+
+* `MySQL` テーブルエンジン;
+* `MySQL` データベースエンジン;
+* `mysql` テーブル関数;
+* MySQL インテグレーションで使用される named collections。
+
+有効にすると、ClickHouse は接続に対して圧縮を要求します。
+
+例:
+
+```sql
+CREATE TABLE mysql_engine_compression
+(
+    id UInt32,
+    name String,
+    age UInt32,
+    money UInt32
+)
+ENGINE = MySQL('mysql80:3306', 'clickhouse', 'test_table', 'root', 'password')
+SETTINGS enable_compression = 1;
+```
 
 ## 関連項目 \{#see-also\}
 

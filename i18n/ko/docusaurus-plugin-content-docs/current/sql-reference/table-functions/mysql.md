@@ -85,7 +85,7 @@ ClickHouse에서 데이터 조회:
 SELECT * FROM mysql('localhost:3306', 'test', 'test', 'bayonet', '123');
 ```
 
-또는 [named collections](operations/named-collections.md)을 사용:
+또는 [이름이 지정된 컬렉션](operations/named-collections.md)을 사용:
 
 ```sql
 CREATE NAMED COLLECTION creds AS
@@ -101,6 +101,35 @@ SELECT * FROM mysql(creds, table='test');
 ┌─int_id─┬─float─┐
 │      1 │     2 │
 └────────┴───────┘
+```
+
+### `enable_compression` \{#enable-compression\}
+
+MySQL 프로토콜 연결에 대해 압축을 활성화합니다.
+
+기본값: `false`.
+
+이 설정은 다음에 적용됩니다:
+
+* `mysql` 테이블 함수;
+* `MySQL` 테이블 엔진;
+* `MySQL` 데이터베이스 엔진;
+* MySQL 통합에서 사용되는 이름이 지정된 컬렉션.
+
+활성화되면 ClickHouse가 해당 연결에 대해 압축을 요청합니다.
+
+예시:
+
+```sql
+SELECT *
+FROM mysql(
+    'mysql80:3306',
+    'clickhouse',
+    'test_table',
+    'root',
+    'password',
+    SETTINGS enable_compression = 1
+);
 ```
 
 대체 및 삽입:
@@ -141,7 +170,6 @@ INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
-
 
 ## 관련 항목 \{#related\}
 

@@ -24,7 +24,8 @@ SETTINGS
     [ connection_wait_timeout=5, ]
     [ connection_auto_close=true, ]
     [ connect_timeout=10, ]
-    [ read_write_timeout=300 ]
+    [ read_write_timeout=300, ]
+    [ enable_compression=false ]
 ;
 ```
 
@@ -59,7 +60,6 @@ SETTINGS
 ```sql
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
-
 
 ## Пример использования \{#usage-example\}
 
@@ -192,6 +192,35 @@ SELECT * FROM mysql_table
 - Положительное целое число.
 
 Значение по умолчанию: `300`.
+
+### `enable_compression` \{#enable-compression\}
+
+Включает сжатие для соединения по протоколу MySQL.
+
+Значение по умолчанию: `false`.
+
+Этот параметр применяется к:
+
+* движку таблицы `MySQL`;
+* движку базы данных `MySQL`;
+* табличной функции `mysql`;
+* именованным коллекциям, используемым в интеграциях MySQL.
+
+Если параметр включен, ClickHouse запрашивает сжатие для соединения.
+
+Пример:
+
+```sql
+CREATE TABLE mysql_engine_compression
+(
+    id UInt32,
+    name String,
+    age UInt32,
+    money UInt32
+)
+ENGINE = MySQL('mysql80:3306', 'clickhouse', 'test_table', 'root', 'password')
+SETTINGS enable_compression = 1;
+```
 
 ## См. также \{#see-also\}
 

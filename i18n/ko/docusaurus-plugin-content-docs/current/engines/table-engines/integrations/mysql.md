@@ -24,7 +24,8 @@ SETTINGS
     [ connection_wait_timeout=5, ]
     [ connection_auto_close=true, ]
     [ connect_timeout=10, ]
-    [ read_write_timeout=300 ]
+    [ read_write_timeout=300, ]
+    [ enable_compression=false ]
 ;
 ```
 
@@ -48,7 +49,7 @@ SETTINGS
   예: `INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1`에서 `on_duplicate_clause`는 `UPDATE c2 = c2 + 1`입니다. `ON DUPLICATE KEY` 절과 함께 사용할 수 있는 `on_duplicate_clause`에 대해서는 [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html)을 참고하십시오.
   `on_duplicate_clause`를 지정하려면 `replace_query` 파라미터에 `0`을 전달해야 합니다. `replace_query = 1`과 `on_duplicate_clause`를 동시에 전달하면 ClickHouse는 예외를 발생시킵니다.
 
-인수는 [named collections](/operations/named-collections.md)를 사용하여 전달할 수도 있습니다. 이 경우 `host`와 `port`는 별도로 지정해야 합니다. 이 접근 방식은 프로덕션 환경에서 사용하는 것을 권장합니다.
+인수는 [이름이 지정된 컬렉션](/operations/named-collections.md)를 사용하여 전달할 수도 있습니다. 이 경우 `host`와 `port`는 별도로 지정해야 합니다. 이 접근 방식은 프로덕션 환경에서 사용하는 것을 권장합니다.
 
 `=, !=, >, >=, <, <=`와 같은 단순 `WHERE` 절은 MySQL 서버에서 실행됩니다.
 
@@ -59,7 +60,6 @@ SETTINGS
 ```sql
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
-
 
 ## 사용 예제 \{#usage-example\}
 
@@ -192,6 +192,35 @@ SELECT * FROM mysql_table
 - 양의 정수.
 
 기본값: `300`.
+
+### `enable_compression` \{#enable-compression\}
+
+MySQL 프로토콜 연결에 대한 압축을 활성화합니다.
+
+기본값: `false`.
+
+이 설정은 다음에 적용됩니다:
+
+* `MySQL` 테이블 엔진;
+* `MySQL` 데이터베이스 엔진;
+* `mysql` 테이블 함수;
+* MySQL 통합에서 사용하는 이름이 지정된 컬렉션.
+
+활성화되면 ClickHouse는 해당 연결에 대해 압축을 요청합니다.
+
+예시:
+
+```sql
+CREATE TABLE mysql_engine_compression
+(
+    id UInt32,
+    name String,
+    age UInt32,
+    money UInt32
+)
+ENGINE = MySQL('mysql80:3306', 'clickhouse', 'test_table', 'root', 'password')
+SETTINGS enable_compression = 1;
+```
 
 ## 함께 보기 \{#see-also\}
 

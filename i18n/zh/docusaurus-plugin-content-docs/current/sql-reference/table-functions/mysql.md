@@ -103,6 +103,35 @@ SELECT * FROM mysql(creds, table='test');
 └────────┴───────┘
 ```
 
+### `enable_compression` \{#enable-compression\}
+
+为 MySQL 协议连接启用压缩。
+
+默认值：`false`。
+
+此设置适用于：
+
+* `mysql` 表函数；
+* `MySQL` 表引擎；
+* `MySQL` 数据库引擎；
+* 用于 MySQL 集成的命名集合。
+
+启用后，ClickHouse 会为该连接请求压缩。
+
+示例：
+
+```sql
+SELECT *
+FROM mysql(
+    'mysql80:3306',
+    'clickhouse',
+    'test_table',
+    'root',
+    'password',
+    SETTINGS enable_compression = 1
+);
+```
+
 替换和插入：
 
 ```sql
@@ -141,7 +170,6 @@ INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
-
 
 ## 相关内容 \{#related\}
 

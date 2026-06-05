@@ -27,11 +27,12 @@ import TabItem from '@theme/TabItem';
         invalidate_query 'SQL_QUERY'
         fail_on_connection_loss 'true'
         query 'SELECT id, value_1, value_2 FROM db_name.table_name'
+        enable_compression 1
     ))
     ```
   </TabItem>
 
-  <TabItem value="xml" label="構成ファイル">
+  <TabItem value="xml" label="設定ファイル">
     ```xml
     <source>
       <mysql>
@@ -52,6 +53,7 @@ import TabItem from '@theme/TabItem';
           <invalidate_query>SQL_QUERY</invalidate_query>
           <fail_on_connection_loss>true</fail_on_connection_loss>
           <query>SELECT id, value_1, value_2 FROM db_name.table_name</query>
+          <enable_compression>1</enable_compression>
       </mysql>
     </source>
     ```
@@ -62,20 +64,21 @@ import TabItem from '@theme/TabItem';
 
 設定項目:
 
-| Setting                   | Description                                                                                                                                                          |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `port`                    | MySQL サーバーのポートです。すべてのレプリカに対して指定することも、各レプリカごとに個別に（`<replica>` 内で）指定することもできます。                                                                                         |
-| `user`                    | MySQL ユーザー名です。すべてのレプリカに対して指定することも、各レプリカごとに個別に（`<replica>` 内で）指定することもできます。                                                                                            |
-| `password`                | MySQL ユーザーのパスワードです。すべてのレプリカに対して指定することも、各レプリカごとに個別に（`<replica>` 内で）指定することもできます。                                                                                       |
-| `replica`                 | レプリカ設定のセクションです。複数のセクションを定義できます。                                                                                                                                      |
-| `replica/host`            | MySQL ホストです。                                                                                                                                                         |
-| `replica/priority`        | レプリカの優先度です。接続を試行する際、ClickHouse は優先度の順にレプリカを走査します。数値が小さいほど優先度が高くなります。                                                                                                 |
-| `db`                      | データベース名です。                                                                                                                                                           |
-| `table`                   | テーブル名です。                                                                                                                                                             |
-| `where`                   | 抽出条件です。条件の構文は MySQL の `WHERE` 句と同じで、たとえば `id > 10 AND id < 20` のように記述します。省略可能です。                                                                                     |
-| `invalidate_query`        | Dictionary の状態を確認するためのクエリです。省略可能です。詳細は [Refreshing dictionary data using LIFETIME](../lifetime.md) セクションを参照してください。                                                   |
-| `fail_on_connection_loss` | 接続喪失時のサーバーの動作を制御します。`true` の場合、クライアントとサーバー間の接続が失われるとすぐに例外がスローされます。`false` の場合、ClickHouse サーバーは例外をスローする前にクエリの実行を 3 回再試行します。再試行により応答時間が増加する点に注意してください。デフォルト値: `false`。 |
-| `query`                   | カスタムクエリです。省略可能です。                                                                                                                                                    |
+| Setting                   | Description                                                                                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `port`                    | MySQL サーバーのポートです。すべてのレプリカに対して指定することも、各レプリカごとに個別に (`<replica>` 内で) 指定することもできます。                                                                                |
+| `user`                    | MySQL ユーザー名です。すべてのレプリカに対して指定することも、各レプリカごとに個別に (`<replica>` 内で) 指定することもできます。                                                                                   |
+| `password`                | MySQL ユーザーのパスワードです。すべてのレプリカに対して指定することも、各レプリカごとに個別に (`<replica>` 内で) 指定することもできます。                                                                              |
+| `replica`                 | レプリカ設定のセクションです。複数のセクションを定義できます。                                                                                                                               |
+| `replica/host`            | MySQL ホストです。                                                                                                                                                  |
+| `replica/priority`        | レプリカの優先度です。接続を試行する際、ClickHouse は優先度の順にレプリカを走査します。数値が小さいほど優先度が高くなります。                                                                                          |
+| `db`                      | データベース名です。                                                                                                                                                    |
+| `table`                   | テーブル名です。                                                                                                                                                      |
+| `where`                   | 抽出条件です。条件の構文は MySQL の `WHERE` 句と同じで、たとえば `id > 10 AND id < 20` のように記述します。省略可能です。                                                                              |
+| `invalidate_query`        | Dictionary の状態を確認するためのクエリです。省略可能です。詳細は [Refreshing dictionary data using LIFETIME](../lifetime.md) セクションを参照してください。                                            |
+| `fail_on_connection_loss` | 接続喪失時のサーバーの動作を制御します。`true` の場合、クライアントとサーバー間の接続が失われるとすぐに例外がスローされます。`false` の場合、サーバーはエラーを報告する前にデータ取得を少なくとも 3 回再試行します。再試行により応答時間が増加する点に注意してください。デフォルト値: `false`。 |
+| `query`                   | カスタムクエリです。省略可能です。                                                                                                                                             |
+| `enable_compression`      | MySQL プロトコル接続で zlib 圧縮を有効にします。`1` に設定すると、ClickHouse は MySQL サーバーにプロトコルレベルの圧縮を要求します。`<replica>` 内でレプリカごとに設定することもできます。デフォルト値: `0`。                              |
 
 :::note
 `table` フィールドまたは `where` フィールドは、`query` フィールドと同時には使用できません。また、`table` フィールドか `query` フィールドのいずれか一方は必ず指定する必要があります。
@@ -88,7 +91,6 @@ import TabItem from '@theme/TabItem';
 MySQL には、ソケットを使用してローカルホスト経由で接続できます。そのためには、`host` と `socket` を設定します。
 
 設定例:
-
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>

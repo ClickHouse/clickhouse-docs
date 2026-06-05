@@ -20,15 +20,16 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 无法执行以下查询：
 
-- `RENAME`
-- `CREATE TABLE`
-- `ALTER`
+* `RENAME`
+* `CREATE TABLE`
+* `ALTER`
 
 ## 创建数据库 \{#creating-a-database\}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
 ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
+[SETTINGS enable_compression=0]
 ```
 
 **引擎参数**
@@ -38,10 +39,26 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 * `user` — MySQL 用户。
 * `password` — 用户密码。
 
+**设置**
+
+### `enable_compression` \{#enable-compression\}
+
+为 MySQL 协议连接启用 zlib 压缩。设置为 `1` 时，ClickHouse 会向 MySQL 服务器请求协议级压缩。
+
+默认值：`0`。
+
+示例：
+
+```sql
+CREATE DATABASE mysql_db
+ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password')
+SETTINGS enable_compression = 1;
+```
+
 ## 数据类型支持 \{#data_types-support\}
 
 | MySQL                            | ClickHouse                                                   |
-|----------------------------------|--------------------------------------------------------------|
+| -------------------------------- | ------------------------------------------------------------ |
 | UNSIGNED TINYINT                 | [UInt8](../../sql-reference/data-types/int-uint.md)          |
 | TINYINT                          | [Int8](../../sql-reference/data-types/int-uint.md)           |
 | UNSIGNED SMALLINT                | [UInt16](../../sql-reference/data-types/int-uint.md)         |

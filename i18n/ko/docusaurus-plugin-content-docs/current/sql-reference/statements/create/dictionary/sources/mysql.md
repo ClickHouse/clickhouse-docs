@@ -27,6 +27,7 @@ import TabItem from '@theme/TabItem';
         invalidate_query 'SQL_QUERY'
         fail_on_connection_loss 'true'
         query 'SELECT id, value_1, value_2 FROM db_name.table_name'
+        enable_compression 1
     ))
     ```
   </TabItem>
@@ -52,6 +53,7 @@ import TabItem from '@theme/TabItem';
           <invalidate_query>SQL_QUERY</invalidate_query>
           <fail_on_connection_loss>true</fail_on_connection_loss>
           <query>SELECT id, value_1, value_2 FROM db_name.table_name</query>
+          <enable_compression>1</enable_compression>
       </mysql>
     </source>
     ```
@@ -62,20 +64,21 @@ import TabItem from '@theme/TabItem';
 
 설정 필드:
 
-| Setting                   | Description                                                                                                                                                                            |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `port`                    | MySQL 서버의 포트입니다. 모든 레플리카에 대해 공통으로 지정하거나, 각 레플리카별로(`<replica>` 내부) 개별 지정할 수 있습니다.                                                                                                       |
-| `user`                    | MySQL 사용자 이름입니다. 모든 레플리카에 대해 공통으로 지정하거나, 각 레플리카별로(`<replica>` 내부) 개별 지정할 수 있습니다.                                                                                                       |
-| `password`                | MySQL 사용자의 비밀번호입니다. 모든 레플리카에 대해 공통으로 지정하거나, 각 레플리카별로(`<replica>` 내부) 개별 지정할 수 있습니다.                                                                                                    |
-| `replica`                 | 레플리카 구성 섹션입니다. 여러 개를 정의할 수 있습니다.                                                                                                                                                       |
-| `replica/host`            | MySQL 호스트입니다.                                                                                                                                                                          |
-| `replica/priority`        | 레플리카 우선순위입니다. 연결을 시도할 때 ClickHouse는 우선순위 순서대로 레플리카에 연결을 시도합니다. 숫자가 낮을수록 우선순위가 높습니다.                                                                                                    |
-| `db`                      | 데이터베이스 이름입니다.                                                                                                                                                                          |
-| `table`                   | 테이블 이름입니다.                                                                                                                                                                             |
-| `where`                   | 선택 조건입니다. 조건의 구문은 MySQL의 `WHERE` 절과 동일하며, 예를 들어 `id > 10 AND id < 20`과 같습니다. 선택 사항입니다.                                                                                                 |
-| `invalidate_query`        | 딕셔너리 상태를 확인하기 위한 쿼리입니다. 선택 사항입니다. 자세한 내용은 [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](../lifetime.md) 섹션을 참고하십시오.                                                                                   |
-| `fail_on_connection_loss` | 연결 손실 시 서버 동작을 제어합니다. `true`이면 클라이언트와 서버 간 연결이 끊어졌을 때 즉시 예외를 발생시킵니다. `false`이면 ClickHouse 서버가 예외를 발생시키기 전에 쿼리 실행을 최대 3번까지 재시도합니다. 재시도는 응답 시간이 증가하는 원인이 된다는 점에 유의하십시오. 기본값: `false`입니다. |
-| `query`                   | 사용자 정의 쿼리입니다. 선택 사항입니다.                                                                                                                                                                |
+| Setting                   | Description                                                                                                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `port`                    | MySQL 서버의 포트입니다. 모든 레플리카에 대해 공통으로 지정하거나, 각 레플리카별로(`<replica>` 내부) 개별 지정할 수 있습니다.                                                                                                |
+| `user`                    | MySQL 사용자 이름입니다. 모든 레플리카에 대해 공통으로 지정하거나, 각 레플리카별로(`<replica>` 내부) 개별 지정할 수 있습니다.                                                                                                |
+| `password`                | MySQL 사용자의 비밀번호입니다. 모든 레플리카에 대해 공통으로 지정하거나, 각 레플리카별로(`<replica>` 내부) 개별 지정할 수 있습니다.                                                                                             |
+| `replica`                 | 레플리카 구성 섹션입니다. 여러 개를 정의할 수 있습니다.                                                                                                                                                |
+| `replica/host`            | MySQL 호스트입니다.                                                                                                                                                                   |
+| `replica/priority`        | 레플리카 우선순위입니다. 연결을 시도할 때 ClickHouse는 우선순위 순서대로 레플리카에 연결을 시도합니다. 숫자가 낮을수록 우선순위가 높습니다.                                                                                             |
+| `db`                      | 데이터베이스 이름입니다.                                                                                                                                                                   |
+| `table`                   | 테이블 이름입니다.                                                                                                                                                                      |
+| `where`                   | 선택 조건입니다. 조건의 구문은 MySQL의 `WHERE` 절과 동일하며, 예를 들어 `id > 10 AND id < 20`과 같습니다. 선택 사항입니다.                                                                                          |
+| `invalidate_query`        | 딕셔너리 상태를 확인하기 위한 쿼리입니다. 선택 사항입니다. 자세한 내용은 [LIFETIME을 사용한 딕셔너리 데이터 새로 고침](../lifetime.md) 섹션을 참고하십시오.                                                                            |
+| `fail_on_connection_loss` | 연결 손실 시 서버 동작을 제어합니다. `true`이면 클라이언트와 서버 간 연결이 끊어졌을 때 즉시 예외를 발생시킵니다. `false`이면 서버가 오류를 보고하기 전에 데이터를 가져오는 작업을 최소 3번 재시도합니다. 재시도는 응답 시간이 증가하는 원인이 된다는 점에 유의하십시오. 기본값: `false`입니다. |
+| `query`                   | 사용자 정의 쿼리입니다. 선택 사항입니다.                                                                                                                                                         |
+| `enable_compression`      | MySQL 프로토콜 연결에 대해 zlib 압축을 활성화합니다. `1`로 설정하면 ClickHouse가 MySQL 서버에 프로토콜 수준 압축을 요청합니다. `<replica>` 내부에서 레플리카별로도 설정할 수 있습니다. 기본값: `0`입니다.                                         |
 
 :::note
 `table` 또는 `where` 필드는 `query` 필드와 함께 사용할 수 없습니다. 또한 `table` 또는 `query` 필드 중 하나는 반드시 선언해야 합니다.
@@ -88,7 +91,6 @@ import TabItem from '@theme/TabItem';
 MySQL은 소켓을 통해 로컬 호스트에 연결할 수 있습니다. 이를 위해 `host`와 `socket`을 설정합니다.
 
 설정 예:
-
 
 <Tabs>
 <TabItem value="ddl" label="DDL" default>

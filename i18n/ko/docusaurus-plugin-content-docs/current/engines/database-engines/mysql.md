@@ -9,7 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
 # MySQL 데이터베이스 엔진 \{#mysql-database-engine\}
 
 <CloudNotSupportedBadge />
@@ -20,17 +19,16 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 다음 쿼리는 실행할 수 없습니다:
 
-- `RENAME`
-- `CREATE TABLE`
-- `ALTER`
-
-
+* `RENAME`
+* `CREATE TABLE`
+* `ALTER`
 
 ## 데이터베이스 생성 \{#creating-a-database\}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
 ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
+[SETTINGS enable_compression=0]
 ```
 
 **엔진 매개변수**
@@ -40,11 +38,26 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 * `user` — MySQL 사용자.
 * `password` — 사용자 비밀번호.
 
+**설정**
+
+### `enable_compression` \{#enable-compression\}
+
+MySQL 프로토콜 연결에 zlib 압축을 활성화합니다. `1`로 설정하면 ClickHouse가 MySQL 서버에 프로토콜 수준의 압축을 요청합니다.
+
+기본값: `0`.
+
+예시:
+
+```sql
+CREATE DATABASE mysql_db
+ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password')
+SETTINGS enable_compression = 1;
+```
 
 ## 데이터 타입 지원 \{#data_types-support\}
 
 | MySQL                            | ClickHouse                                                   |
-|----------------------------------|--------------------------------------------------------------|
+| -------------------------------- | ------------------------------------------------------------ |
 | UNSIGNED TINYINT                 | [UInt8](../../sql-reference/data-types/int-uint.md)          |
 | TINYINT                          | [Int8](../../sql-reference/data-types/int-uint.md)           |
 | UNSIGNED SMALLINT                | [UInt16](../../sql-reference/data-types/int-uint.md)         |
@@ -62,8 +75,6 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 그 외의 MySQL 데이터 타입은 모두 [String](../../sql-reference/data-types/string.md)으로 변환됩니다.
 
 [널 허용](../../sql-reference/data-types/nullable.md) 데이터 타입이 지원됩니다.
-
-
 
 ## 전역 변수 지원 \{#global-variables-support\}
 
@@ -83,7 +94,6 @@ ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
 ```sql
 SELECT @@version;
 ```
-
 
 ## 사용 예시 \{#examples-of-use\}
 

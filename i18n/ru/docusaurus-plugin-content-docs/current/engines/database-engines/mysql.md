@@ -20,28 +20,45 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Вы не можете выполнять следующие запросы:
 
-- `RENAME`
-- `CREATE TABLE`
-- `ALTER`
+* `RENAME`
+* `CREATE TABLE`
+* `ALTER`
 
 ## Создание базы данных \{#creating-a-database\}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
 ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
+[SETTINGS enable_compression=0]
 ```
 
-**Параметры двигателя**
+**Параметры движка**
 
 * `host:port` — адрес MySQL-сервера.
 * `database` — имя удалённой базы данных.
 * `user` — пользователь MySQL.
 * `password` — пароль пользователя.
 
+**Настройки**
+
+### `enable_compression` \{#enable-compression\}
+
+Включает zlib-сжатие для подключения по протоколу MySQL. При значении `1` ClickHouse запрашивает у сервера MySQL сжатие на уровне протокола.
+
+Значение по умолчанию: `0`.
+
+Пример:
+
+```sql
+CREATE DATABASE mysql_db
+ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password')
+SETTINGS enable_compression = 1;
+```
+
 ## Поддержка типов данных \{#data_types-support\}
 
 | MySQL                            | ClickHouse                                                   |
-|----------------------------------|--------------------------------------------------------------|
+| -------------------------------- | ------------------------------------------------------------ |
 | UNSIGNED TINYINT                 | [UInt8](../../sql-reference/data-types/int-uint.md)          |
 | TINYINT                          | [Int8](../../sql-reference/data-types/int-uint.md)           |
 | UNSIGNED SMALLINT                | [UInt16](../../sql-reference/data-types/int-uint.md)         |

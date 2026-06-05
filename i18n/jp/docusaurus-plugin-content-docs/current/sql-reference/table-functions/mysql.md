@@ -85,7 +85,7 @@ ClickHouse からデータを取得する:
 SELECT * FROM mysql('localhost:3306', 'test', 'test', 'bayonet', '123');
 ```
 
-または、[名前付きコレクション](operations/named-collections.md) を使用します：
+または、[named collections](operations/named-collections.md) を使用します：
 
 ```sql
 CREATE NAMED COLLECTION creds AS
@@ -101,6 +101,35 @@ SELECT * FROM mysql(creds, table='test');
 ┌─int_id─┬─float─┐
 │      1 │     2 │
 └────────┴───────┘
+```
+
+### `enable_compression` \{#enable-compression\}
+
+MySQL プロトコル接続で圧縮を有効にします。
+
+デフォルト値: `false`。
+
+この設定は以下に適用されます:
+
+* `mysql` テーブル関数;
+* `MySQL` テーブルエンジン;
+* `MySQL` データベースエンジン;
+* MySQL インテグレーションで使用される名前付きコレクション。
+
+有効にすると、ClickHouse はその接続に対して圧縮を要求します。
+
+例:
+
+```sql
+SELECT *
+FROM mysql(
+    'mysql80:3306',
+    'clickhouse',
+    'test_table',
+    'root',
+    'password',
+    SETTINGS enable_compression = 1
+);
 ```
 
 置換と挿入:
@@ -141,7 +170,6 @@ INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
-
 
 ## 関連項目 \{#related\}
 

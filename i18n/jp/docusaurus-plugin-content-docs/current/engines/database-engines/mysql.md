@@ -15,32 +15,49 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 リモートの MySQL サーバー上のデータベースに接続し、ClickHouse と MySQL 間でデータをやり取りするために `INSERT` および `SELECT` クエリを実行できます。
 
-`MySQL` データベースエンジンはクエリを MySQL サーバー向けに変換するため、`SHOW TABLES` や `SHOW CREATE TABLE` などの操作を実行できます。
+`MySQL` データベースエンジンはクエリを MySQL サーバーに変換するため、`SHOW TABLES` や `SHOW CREATE TABLE` などの操作を実行できます。
 
 次のクエリは実行できません。
 
-- `RENAME`
-- `CREATE TABLE`
-- `ALTER`
+* `RENAME`
+* `CREATE TABLE`
+* `ALTER`
 
 ## データベースの作成 \{#creating-a-database\}
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster]
 ENGINE = MySQL('host:port', ['database' | database], 'user', 'password')
+[SETTINGS enable_compression=0]
 ```
 
-**エンジンのパラメータ**
+**エンジンパラメータ**
 
 * `host:port` — MySQL サーバーのアドレス。
 * `database` — リモートデータベース名。
 * `user` — MySQL ユーザー。
 * `password` — ユーザーのパスワード。
 
+**設定**
+
+### `enable_compression` \{#enable-compression\}
+
+MySQL プロトコル接続で zlib 圧縮を有効にします。`1` に設定すると、ClickHouse は MySQL サーバーにプロトコルレベルの圧縮を要求します。
+
+デフォルト値: `0`。
+
+例:
+
+```sql
+CREATE DATABASE mysql_db
+ENGINE = MySQL('localhost:3306', 'test', 'my_user', 'user_password')
+SETTINGS enable_compression = 1;
+```
+
 ## データ型サポート \{#data_types-support\}
 
 | MySQL                            | ClickHouse                                                   |
-|----------------------------------|--------------------------------------------------------------|
+| -------------------------------- | ------------------------------------------------------------ |
 | UNSIGNED TINYINT                 | [UInt8](../../sql-reference/data-types/int-uint.md)          |
 | TINYINT                          | [Int8](../../sql-reference/data-types/int-uint.md)           |
 | UNSIGNED SMALLINT                | [UInt16](../../sql-reference/data-types/int-uint.md)         |

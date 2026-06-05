@@ -104,6 +104,35 @@ SELECT * FROM mysql(creds, table='test');
 └────────┴───────┘
 ```
 
+### `enable_compression` \{#enable-compression\}
+
+Включает сжатие для соединения по протоколу MySQL.
+
+Значение по умолчанию: `false`.
+
+Этот параметр применяется к:
+
+* табличной функции `mysql`;
+* движку таблицы `MySQL`;
+* движку базы данных `MySQL`;
+* именованным коллекциям, используемым в интеграциях MySQL.
+
+Когда параметр включен, ClickHouse запрашивает сжатие для соединения.
+
+Пример:
+
+```sql
+SELECT *
+FROM mysql(
+    'mysql80:3306',
+    'clickhouse',
+    'test_table',
+    'root',
+    'password',
+    SETTINGS enable_compression = 1
+);
+```
+
 Замена и вставка:
 
 ```sql
@@ -142,7 +171,6 @@ INSERT INTO mysql_copy
 SELECT * FROM mysql('host:port', 'database', 'table', 'user', 'password')
 WHERE id > (SELECT max(id) FROM mysql_copy);
 ```
-
 
 ## См. также \{#related\}
 

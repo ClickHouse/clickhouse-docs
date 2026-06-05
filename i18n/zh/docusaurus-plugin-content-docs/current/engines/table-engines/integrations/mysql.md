@@ -24,7 +24,8 @@ SETTINGS
     [ connection_wait_timeout=5, ]
     [ connection_auto_close=true, ]
     [ connect_timeout=10, ]
-    [ read_write_timeout=300 ]
+    [ read_write_timeout=300, ]
+    [ enable_compression=false ]
 ;
 ```
 
@@ -48,9 +49,9 @@ SETTINGS
   例如：`INSERT INTO t (c1,c2) VALUES ('a', 2) ON DUPLICATE KEY UPDATE c2 = c2 + 1`，其中 `on_duplicate_clause` 为 `UPDATE c2 = c2 + 1`。参阅 [MySQL 文档](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html) 了解可以与 `ON DUPLICATE KEY` 子句一起使用哪些 `on_duplicate_clause`。
   要指定 `on_duplicate_clause`，需要将 `0` 传递给 `replace_query` 参数。如果同时传递 `replace_query = 1` 和 `on_duplicate_clause`，ClickHouse 会产生异常。
 
-参数也可以通过 [named collections](/operations/named-collections.md) 进行传递。在这种情况下，必须单独指定 `host` 和 `port`。建议在生产环境中采用此方式。
+参数也可以通过 [命名集合](/operations/named-collections.md) 进行传递。在这种情况下，必须单独指定 `host` 和 `port`。建议在生产环境中采用此方式。
 
-简单的 `WHERE` 子句（如 `=, !=, >, >=, <, <=`）会在 MySQL 服务器上执行。
+简单的 `WHERE` 子句 (如 `=, !=, >, >=, <, <=`) 会在 MySQL 服务器上执行。
 
 其余条件以及 `LIMIT` 采样限制仅在对 MySQL 的查询完成后才会在 ClickHouse 中执行。
 
@@ -59,7 +60,6 @@ SETTINGS
 ```sql
 CREATE TABLE test_replicas (id UInt32, name String, age UInt32, money UInt32) ENGINE = MySQL(`mysql{2|3|4}:3306`, 'clickhouse', 'test_replicas', 'root', 'clickhouse');
 ```
-
 
 ## 使用示例 \{#usage-example\}
 
@@ -192,6 +192,35 @@ SELECT * FROM mysql_table
 - 正整数。
 
 默认值：`300`。
+
+### `enable_compression` \{#enable-compression\}
+
+为 MySQL 协议连接启用压缩。
+
+默认值：`false`。
+
+此设置适用于：
+
+* `MySQL` 表引擎；
+* `MySQL` 数据库引擎；
+* `mysql` 表函数；
+* MySQL 集成中使用的命名集合。
+
+启用后，ClickHouse 会为该连接请求启用压缩。
+
+示例：
+
+```sql
+CREATE TABLE mysql_engine_compression
+(
+    id UInt32,
+    name String,
+    age UInt32,
+    money UInt32
+)
+ENGINE = MySQL('mysql80:3306', 'clickhouse', 'test_table', 'root', 'password')
+SETTINGS enable_compression = 1;
+```
 
 ## 另请参阅 \{#see-also\}
 
