@@ -245,7 +245,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | ディレクトリ                                                    | ファイル                                                                                                                                                                             |
+  | ディレクトリ                                                    | File                                                                                                                                                                             |
   | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
@@ -313,12 +313,12 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   </remote_servers>
   ```
 
-  `<cluster_2S_2R></cluster_2S_2R>` セクションは、クラスタのレイアウトを定義し、
-  分散DDLクエリ（`ON CLUSTER` 句を使用してクラスタ全体で実行されるクエリ）のテンプレートとして機能します。
+  `<cluster_2S_2R></cluster_2S_2R>` セクションは、クラスターのレイアウトを定義し、
+  分散DDLクエリ (`ON CLUSTER` 句を使用してクラスター全体で実行されるクエリ) のテンプレートとして機能します。
 
   #### Keeper の設定
 
-  `<ZooKeeper>` セクションは、ClickHouse Keeper（または ZooKeeper）がどこで動作しているかを ClickHouse に伝えます。
+  `<ZooKeeper>` セクションは、ClickHouse Keeper (または ZooKeeper) がどこで動作しているかを ClickHouse に伝えます。
   ClickHouse Keeper クラスタを使用する場合、クラスタの各 `<node>` を指定する必要があります。
   ホスト名とポート番号はそれぞれ `<host>` タグと `<port>` タグを使用して指定します。
 
@@ -415,7 +415,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   <KeeperConfig />
 
-  | ディレクトリ                                                  | ファイル                                                                                                                                                                                         |
+  | ディレクトリ                                                  | File                                                                                                                                                                                         |
   | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
   | `fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
@@ -428,7 +428,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ## セットアップのテスト
 
   マシン上でDockerが実行されていることを確認してください。
-  `cluster_2S_2R`ディレクトリのルートから`docker-compose up`コマンドを使用してクラスタを起動します:
+  `cluster_2S_2R`ディレクトリのルートから`docker-compose up`コマンドを使用してクラスターを起動します:
 
   ```bash
   docker-compose up -d
@@ -449,7 +449,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
    ✔ Container clickhouse-03             Started
   ```
 
-  クラスタが稼働していることを確認するには、いずれかのノードに接続して以下のクエリを実行します。最初のノードへの接続コマンドは次のとおりです:
+  クラスターが稼働していることを確認するには、いずれかのノードに接続して以下のクエリを実行します。最初のノードへの接続コマンドは次のとおりです:
 
   ```bash
   # Connect to any node
@@ -462,7 +462,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   cluster_2S_2R node 1 :)
   ```
 
-  以下のクエリを実行して、各ホストに定義されているクラスタトポロジを確認します:
+  以下のクエリを実行して、各ホストに定義されているクラスタートポロジを確認します:
 
   ```sql title="Query"
   SELECT 
@@ -484,7 +484,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
      └───────────────┴───────────┴─────────────┴───────────────┴──────┘
   ```
 
-  以下のクエリを実行して、ClickHouse Keeperクラスタのステータスを確認します：
+  以下のクエリを実行して、ClickHouse Keeperクラスターのステータスを確認します：
 
   ```sql title="Query"
   SELECT *
@@ -503,7 +503,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   <VerifyKeeperStatus />
 
-  これで、2つの分片と2つのレプリカを持つClickHouseクラスタのセットアップが完了しました。
+  これで、2つのシャードと2つのレプリカを持つClickHouseクラスタのセットアップが完了しました。
   次のステップでは、クラスタにテーブルを作成します。
 
   ## データベースを作成する
@@ -542,7 +542,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ON CLUSTER cluster_2S_2R;
   ```
 
-  各ホストのクライアントから先ほどと同じクエリを再度実行し、`clickhouse-01`からのみクエリを実行したにもかかわらず、クラスタ全体でデータベースが作成されていることを確認できます:
+  各ホストのクライアントから先ほどと同じクエリを再度実行し、`clickhouse-01`からのみクエリを実行したにもかかわらず、クラスター全体でデータベースが作成されていることを確認できます:
 
   ```sql
   SHOW DATABASES;
@@ -559,7 +559,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
      └────────────────────┘
   ```
 
-  ## クラスタ上にテーブルを作成する
+  ## クラスター上にテーブルを作成する
 
   データベースが作成できたので、次にレプリケーション対応のテーブルを作成します。
 
@@ -592,12 +592,12 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   これは、[英国不動産価格](/getting-started/example-datasets/uk-price-paid)サンプルデータセットチュートリアルの元の`CREATE`文で使用されたクエリと同一です。ただし、`ON CLUSTER`句と`ReplicatedMergeTree`エンジンの使用が異なる点に注意してください。
 
-  `ON CLUSTER`句は、`CREATE`、`DROP`、`ALTER`、`RENAME`などのDDL(Data Definition Language)クエリを分散実行するために設計されており、これらのスキーマ変更をクラスタ内のすべてのノードに適用します。
+  `ON CLUSTER`句は、`CREATE`、`DROP`、`ALTER`、`RENAME`などのDDL(Data Definition Language)クエリを分散実行するために設計されており、これらのスキーマ変更をクラスター内のすべてのノードに適用します。
 
   [`ReplicatedMergeTree`](https://clickhouse.com/docs/engines/table-engines/mergetree-family/replication#converting-from-mergetree-to-replicatedmergetree)エンジンは、通常の`MergeTree`テーブルエンジンと同様に動作しますが、データのレプリケーションも実行します。
   2つのパラメータの指定が必要です:
 
-  * `zoo_path`: Keeper/ZooKeeper 上にあるテーブルメタデータへのパス。
+  * `zoo_path`: テーブルのメタデータが保存されている Keeper/ZooKeeper のパス。
   * `replica_name`: テーブルのレプリカ名。
 
   <br />
@@ -613,7 +613,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   * `{database}` と `{table}` は自動的に置換されます。
   * `{shard}` と `{replica}` は、各 ClickHouse ノードの `config.xml` ファイル内であらかじめ[定義](#macros-config-explanation)されたマクロです。
 
-  各ホストのクライアントから以下のクエリを実行し、クラスタ全体でテーブルが作成されていることを確認してください:
+  各ホストのクライアントから以下のクエリを実行し、クラスター全体でテーブルが作成されていることを確認してください:
 
   ```sql title="Query"
   SHOW TABLES IN uk;
@@ -627,9 +627,9 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   ## 分散テーブルへのデータ挿入
 
-  テーブルへのデータ挿入時には`ON CLUSTER`を使用できません。これは`INSERT`、`UPDATE`、`DELETE`などのDML（Data Manipulation Language：データ操作言語）クエリには適用されないためです。データを挿入するには、[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを利用する必要があります。
-  2分片1レプリカ構成のクラスタをセットアップする[ガイド](/architecture/horizontal-scaling)で学んだように、分散テーブルとは異なるホスト上に配置された分片にアクセス可能なテーブルであり、`Distributed`テーブルエンジンを使用して定義されます。
-  分散テーブルは、クラスタ内の全分片に対するインターフェースとして機能します。
+  テーブルへのデータ挿入時には`ON CLUSTER`を使用できません。これは`INSERT`、`UPDATE`、`DELETE`などのDML (Data Manipulation Language：データ操作言語) クエリには適用されないためです。データを挿入するには、[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを利用する必要があります。
+  2分片1レプリカ構成のクラスターをセットアップする[ガイド](/architecture/horizontal-scaling)で学んだように、分散テーブルとは異なるホスト上に配置された分片にアクセス可能なテーブルであり、`Distributed`テーブルエンジンを使用して定義されます。
+  分散テーブルは、クラスター内の全分片に対するインターフェイスとして機能します。
 
   いずれかのホストクライアントから、以下のクエリを実行して、前のステップで作成した既存のレプリケートテーブルを使用する分散テーブルを作成します:
 
@@ -641,7 +641,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   各ホストの`uk`データベースに、以下のテーブルが表示されるようになります:
 
-  ```sql
+  ```response
      ┌─name──────────────────────┐
   1. │ uk_price_paid_distributed │
   2. │ uk_price_paid_local       │

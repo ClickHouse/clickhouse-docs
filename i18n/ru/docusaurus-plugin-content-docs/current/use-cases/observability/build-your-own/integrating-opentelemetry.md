@@ -427,13 +427,14 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 
 После запуска убедитесь, что появились записи журналов, выполнив простой запрос:
 
-
 ```sql
 SELECT *
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Timestamp:              2019-01-22 06:46:14.000000000
@@ -487,7 +488,6 @@ Links.SpanId:           []
 Links.TraceState:   []
 Links.Attributes:   []
 ```
-
 
 ## Схема по умолчанию \{#out-of-the-box-schema\}
 

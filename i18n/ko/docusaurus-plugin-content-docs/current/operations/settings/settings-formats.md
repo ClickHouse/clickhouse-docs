@@ -1760,6 +1760,19 @@ Decimal 값을 출력할 때 끝의 0까지 모두 함께 출력합니다. 예: 
 
 기본적으로 비활성화되어 있습니다.
 
+## output_format_float_precision \{#output_format_float_precision\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "부동소수점 출력의 소수 자릿수를 제어하는 새로운 설정"}]}]} />
+
+0이 아닌 경우, 부동소수점 출력(`Float32`, `Float64`, `BFloat16`)은 소수점 이하 자릿수를 최대 이 값까지만 사용하여 포맷되며(뒤의 0은 제거됨),
+0(기본값)인 경우에는 가장 짧은 round-trip 표현을 사용합니다.
+
+고정 표기법으로 표현하기에 값이 너무 크거나, 값의 크기가 너무 작아 요청한 정밀도로 반올림하면 모든 유효 숫자가 사라지는 경우(가수가 `±0`이 되는 경우)에는 대신 과학적 표기법으로 출력됩니다. 이러한 폴백 상황에서는 가수에 요청된 소수 자릿수보다 더 많은 소수 자릿수가 포함될 수 있습니다.
+
+유효 범위: 0~100입니다.
+
 ## output_format_json_array_of_rows \{#output_format_json_array_of_rows\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />

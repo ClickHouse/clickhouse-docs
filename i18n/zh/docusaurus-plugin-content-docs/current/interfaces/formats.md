@@ -117,6 +117,7 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 | [RowBinaryWithNames](./formats/RowBinary/RowBinaryWithNames.md)                                            | ✔  | ✔  |
 | [RowBinaryWithNamesAndTypes](./formats/RowBinary/RowBinaryWithNamesAndTypes.md)                            | ✔  | ✔  |
 | [RowBinaryWithDefaults](./formats/RowBinary/RowBinaryWithDefaults.md)                                      | ✔  | ✗  |
+| [RowBinaryWithNamesAndTypesAndDefaults](./formats/RowBinary/RowBinaryWithNamesAndTypesAndDefaults.md)      | ✔  | ✗  |
 | [Native](./formats/Native.md)                                                                              | ✔  | ✔  |
 | [Buffers](./formats/Buffers.md)                                                                            | ✔  | ✔  |
 | [Null](./formats/Null.md)                                                                                  | ✗  | ✔  |

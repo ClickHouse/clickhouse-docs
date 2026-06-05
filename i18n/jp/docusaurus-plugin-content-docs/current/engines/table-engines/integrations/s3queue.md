@@ -172,6 +172,16 @@ Azure コンテナから別の Azure コンテナに移動するには、Blob St
 
 デフォルト値: 空文字列。
 
+### `after_processing_move_preserve_path` \{#after_processing_move_preserve_path\}
+
+`true` の場合、正常に処理されたファイルの移動時に、ソースオブジェクトのフルパスが `after_processing_move_prefix` に追加されるため、バケット 配下のソースディレクトリ構造が宛先でも保持されます。`false` の場合は、ファイル名のみが使用され、ソースディレクトリ構造はフラット化されます。
+
+設定可能な値:
+
+* `true` / `false`.
+
+デフォルト値: `false`.
+
 ### `after_processing_move_secret_access_key` \{#after_processing_move_secret_access_key\}
 
 移動先が別の S3 バケットである場合に、正常に処理されたファイルをそのバケットへ移動するための Secret Access Key。

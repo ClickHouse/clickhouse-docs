@@ -1,34 +1,36 @@
 ---
 title: "在 ClickHouse 中使用 JOIN"
-description: "如何在 ClickHouse 中进行表连接"
-keywords: ["JOIN", "表连接"]
+description: "如何在 ClickHouse 中进行表 join"
+keywords: ["JOIN", "表 join"]
 slug: /guides/joining-tables
 doc_type: "guide"
 ---
 
-import Image from "@theme/IdealImage"
-import joins_1 from "@site/static/images/guides/joins-1.png"
-import joins_2 from "@site/static/images/guides/joins-2.png"
-import joins_3 from "@site/static/images/guides/joins-3.png"
-import joins_4 from "@site/static/images/guides/joins-4.png"
-import joins_5 from "@site/static/images/guides/joins-5.png"
+import Image from '@theme/IdealImage';
+import joins_1 from '@site/static/images/guides/joins-1.png';
+import joins_2 from '@site/static/images/guides/joins-2.png';
+import joins_3 from '@site/static/images/guides/joins-3.png';
+import joins_4 from '@site/static/images/guides/joins-4.png';
+import joins_5 from '@site/static/images/guides/joins-5.png';
 
-ClickHouse 具有[完整的 `JOIN` 支持](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)，并提供多种连接算法可供选择。为最大化性能，我们建议遵循本指南中列出的连接优化建议。
+ClickHouse 具有[完整的 `JOIN` 支持](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)，并提供多种 JOIN 算法可供选择。为最大化性能，我们建议遵循本指南中列出的连接优化建议。
 
 * 为获得最佳性能，用户应尽量减少查询中的 `JOIN` 数量，特别是对于需要毫秒级性能的实时分析型工作负载。单个查询中的 `JOIN` 数量最好控制在 3 到 4 个以内。我们在[数据建模章节](/data-modeling/schema-design)中详细介绍了多种减少 `JOIN` 的方式，包括反规范化、字典以及 materialized views。
-* 从 ClickHouse 24.12 开始，查询规划器会自动重排双表连接，将较小的表放在右侧以获得最佳性能。在 25.9 版本中，这一机制被扩展，可优化包含三张或更多表的查询的 JOIN 顺序。
-* 如果查询需要直接连接（例如 `LEFT ANY JOIN`，如下所示），在可能的情况下，我们建议使用 [Dictionaries](/dictionary)。
+* 从 ClickHouse 24.12 开始，查询规划器会自动重排双表 join，将较小的表放在右侧以获得最佳性能。在 25.9 版本中，这一机制被扩展，可优化包含三张或更多表的查询的 JOIN 顺序。
+* 如果查询需要 direct join (例如 `LEFT ANY JOIN`，如下所示) ，在可能的情况下，我们建议使用 [Dictionaries](/dictionary)。
 
 <Image img={joins_1} size="sm" alt="LEFT ANY JOIN（ANY 模式的左连接）" />
 
-* 如果执行的是内连接（inner join），通常将其改写为使用 `IN` 子查询会更加高效。请考虑下面两个在功能上等价的查询。两者都用于查找这样一些 `posts`：在问题中没有提到 ClickHouse，但在 `comments` 中提到了它。
+* 如果执行的是内连接 (inner join) ，通常将其改写为使用 `IN` 子查询会更加高效。请考虑下面两个在功能上等价的查询。两者都用于查找这样一些 `posts`：在问题中没有提到 ClickHouse，但在 `comments` 中提到了它。
 
 ```sql
 SELECT count()
 FROM stackoverflow.posts AS p
 ANY INNER `JOIN` stackoverflow.comments AS c ON p.Id = c.PostId
 WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILIKE '%clickhouse%') AND (c.Text ILIKE '%clickhouse%')
+```
 
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -49,6 +51,9 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
         FROM stackoverflow.comments
         WHERE Text ILIKE '%clickhouse%'
 ))
+```
+
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -66,7 +71,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.posts AS p
 INNER JOIN stackoverflow.votes AS v ON p.Id = v.PostId
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -81,7 +88,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -96,7 +105,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01') AND (v.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -115,7 +126,9 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
         FROM stackoverflow.posts
         WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
 ))
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -123,7 +136,6 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
 1 row in set. Elapsed: 0.383 sec. Processed 99.64 million rows, 804.55 MB (259.85 million rows/s., 2.10 GB/s.)
 Peak memory usage: 250.66 MiB.
 ```
-
 
 ## 选择 JOIN 算法 \{#choosing-a-join-algorithm\}
 

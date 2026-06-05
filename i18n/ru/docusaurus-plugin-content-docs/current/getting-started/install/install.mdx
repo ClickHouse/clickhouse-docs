@@ -1,5 +1,5 @@
 ---
-description: 'Установите ClickHouse'
+description: 'Установка ClickHouse'
 keywords: ['clickhouse', 'установка', 'начало работы', 'быстрый старт']
 sidebar_label: 'Установка'
 slug: /install
@@ -7,23 +7,77 @@ title: 'Инструкции по установке'
 doc_type: 'guide'
 ---
 
-import InstallSelector from '@site/src/components/Install/Install'
-import CLIInstall from './_snippets/_cli_install.md'
-import Windows from './_snippets/_windows_install.md'
-import TarProd from './_snippets/_linux_tar_install.md'
-import QuickInstall from './_snippets/_quick_install.md'
-import DebianProd from './_snippets/_deb_install.md'
-import RPMProd from './_snippets/_rpm_install.md'
-import MacOSProd from './_snippets/_macos.md'
-import NixOS from './_snippets/_nixos_install.md'
-import Docker from './_snippets/_docker.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import Link from '@docusaurus/Link';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
-<CardPrimary alignContent="center" description="Начните работу мгновенно, без необходимости выбирать размер и масштабировать кластер. Мы берём на себя выбор размера, масштабирование, безопасность, надёжность и обновления." icon="cloud" infoText="Начните бесплатно" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="Рекомендуется" />
+<CardPrimary
+  alignContent="center"
+  description="Начните работу сразу, без необходимости подбирать размер кластера и масштабировать его вручную. ClickHouse Cloud берет на себя подбор размера, масштабирование
+, безопасность, надежность и обновления."
+  icon="cloud"
+  infoText="Начать бесплатно"
+  infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner"
+  isSelected
+  onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')}
+  size="md"
+  title="ClickHouse Cloud"
+  topBadgeText="Рекомендуется"
+/>
 
 <br />
 
-Или выберите ниже платформу, дистрибутив и способ установки, чтобы просмотреть инструкции по установке ClickHouse (open source):
+Если вы предпочитаете управлять самостоятельно, выберите один из вариантов ClickHouse с открытым исходным кодом ниже.
+Используйте скрипт быстрой установки или CLI `clickhousectl` для локальной установки либо установите
+ClickHouse Server из пакетов или бинарных файлов для продакшен-развертывания.
 
-<InstallSelector cli={<CLIInstall/>} windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />
+<h3 className="install-group-heading">Локальная разработка</h3>
+
+<p className="install-group-description">
+  Запустите ClickHouse на своей машине для разработки, тестирования и экспериментов.
+  Быстрая установка позволяет быстро получить один бинарный файл, либо используйте clickhousectl
+  для установки и управления локальными версиями и серверами.
+</p>
+
+<div className="installContainer">
+  <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="Быстрая установка" />
+  </Link>
+
+  <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)" />
+  </Link>
+
+  <Link to="/install/docker" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker" />
+  </Link>
+
+  <Link to="/install/advanced" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="Сборка из исходного кода" />
+  </Link>
+</div>
+
+<h3 className="install-group-heading">Продакшен-сервер</h3>
+
+<p className="install-group-description">
+  Установите ClickHouse Server из пакетов или бинарных файлов для
+  долгосрочного развертывания в собственной инфраструктуре.
+</p>
+
+<div className="installContainer">
+  <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu" />
+  </Link>
+
+  <Link to="/install/redhat" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat" />
+  </Link>
+
+  <Link to="/install/nixos" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS" />
+  </Link>
+
+  <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
+    <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="Другие дистрибутивы Linux" />
+  </Link>
+</div>

@@ -3,7 +3,7 @@ slug: /cloud/managed-postgres/openapi
 sidebar_label: 'OpenAPI'
 title: 'Managed Postgres OpenAPI'
 description: 'Control your Managed Postgres services with our OpenAPI'
-keywords: ['managed postgres', 'openapi', 'api', 'curl', 'tutorial', 'command line']
+keywords: ['managed postgres', 'openapi', 'api', 'curl', 'tutorial', 'command line', 'query insights', 'slow queries']
 doc_type: 'guide'
 ---
 
@@ -295,6 +295,131 @@ every service in the organization, the other for a single service. See the
 [Prometheus endpoint] page for setup and the [metrics reference] for the full
 list of metrics.
 
+## Query insights {#query-insights}
+
+The per-statement telemetry behind the [Query Insights] tab in the cloud
+console is also available programmatically. Two endpoints expose the slowest
+query patterns on a service: one lists every pattern ranked by impact, the
+other returns a single pattern with its recent executions.
+
+### List slow query patterns {#list-slow-query-patterns}
+
+The [slow patterns API] returns aggregate metrics for the slowest query
+patterns observed over a time window. The window is required — pass
+`from_date` and `to_date` as RFC 3339 timestamps:
+
+```bash
+FROM=2026-05-25T00:00:00Z
+TO=2026-05-26T00:00:00Z
+
+curl -s --user "$KEY_ID:$KEY_SECRET" \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/slowQueryPatterns?from_date=$FROM&to_date=$TO" \
+    | jq
+```
+
+Results default to the costliest patterns first, sorted by `total_duration`
+descending. Sort by a different counter with `sort_by` (for example
+`p99_duration`, `call_count`, or `total_wal_bytes`) and flip the direction
+with `sort_order`. Narrow the set with the `db_name`, `db_user`,
+`db_operation`, and `app` filters, and page through it with `limit` and
+`offset`.
+
+Each result is one normalized pattern, with literals stripped out and
+durations reported in microseconds:
+
+```json
+{
+  "result": [
+    {
+      "queryId": "-4748036479882663975",
+      "queryText": "SELECT * FROM orders WHERE customer_id = $1 ORDER BY created_at DESC LIMIT $2",
+      "dbName": "sales",
+      "dbUser": "orders_service",
+      "dbOperation": "SELECT",
+      "app": "orders-api",
+      "callCount": 84213,
+      "errorCount": 0,
+      "totalDurationUs": 1012384556,
+      "avgDurationUs": 12021,
+      "maxDurationUs": 482915,
+      "p50DurationUs": 9874,
+      "p95DurationUs": 28431,
+      "p99DurationUs": 41200,
+      "totalRows": 842130,
+      "totalSharedBlksRead": 19284,
+      "totalSharedBlksHit": 48217734,
+      "totalCpuTimeUs": 938472113,
+      "totalWalBytes": 0
+    }
+  ],
+  "requestId": "c128d830-5769-4c82-8235-f79aa69d1ebf",
+  "status": 200
+}
+```
+
+The `queryId` is a signed 64-bit hash of the normalized statement, so it's
+often negative. Pass it back verbatim — leading `-` and all — to fetch a
+single pattern.
+
+### Get a slow query pattern {#get-slow-query-pattern}
+
+Pass a `queryId` from the list response to the [slow pattern API] to get that
+pattern's aggregate metrics alongside its most recent individual executions.
+The `db_name`, `db_user`, and `db_operation` that identify the pattern are
+required:
+
+```bash
+QUERY_ID=-4748036479882663975
+
+curl -s --user "$KEY_ID:$KEY_SECRET" \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/slowQueryPatterns/$QUERY_ID?db_name=sales&db_user=orders_service&db_operation=SELECT" \
+    | jq
+```
+
+The response carries the same aggregate as the list endpoint under
+`aggregate`, plus a `recentExecutions` array. Each execution includes the
+full per-execution counters — shared and temp block I/O, CPU user and system
+time, parallel workers, JIT, and WAL — the same counters the
+[detail flyout] breaks down in the console:
+
+```json
+{
+  "result": {
+    "aggregate": {
+      "queryId": "-4748036479882663975",
+      "queryText": "SELECT * FROM orders WHERE customer_id = $1 ORDER BY created_at DESC LIMIT $2",
+      "dbName": "sales",
+      "dbUser": "orders_service",
+      "dbOperation": "SELECT",
+      "callCount": 84213,
+      "avgDurationUs": 12021,
+      "p99DurationUs": 41200
+    },
+    "recentExecutions": [
+      {
+        "timestamp": "2026-05-25T16:42:09Z",
+        "durationUs": 41200,
+        "rows": 10,
+        "sharedBlksHit": 412,
+        "sharedBlksRead": 3,
+        "tempBlksWritten": 0,
+        "cpuUserTimeUs": 38211,
+        "cpuSysTimeUs": 1044,
+        "parallelWorkersPlanned": 0,
+        "parallelWorkersLaunched": 0,
+        "walBytes": 0,
+        "serverRole": "primary"
+      }
+    ]
+  },
+  "requestId": "a5957990-dbe5-46fd-b5ce-a7f8f79e50fe",
+  "status": 200
+}
+```
+
+The example trims both objects for brevity; the API returns the complete
+counter set documented under [per-execution counters].
+
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 [OpenAPI]: https://www.openapis.org "OpenAPI Initiative"
 [API keys]: /cloud/manage/openapi "Managing API Keys"
@@ -319,3 +444,13 @@ list of metrics.
   "Managed Postgres Prometheus endpoint"
 [metrics reference]: /cloud/managed-postgres/monitoring/metrics
   "Managed Postgres metrics reference"
+[Query Insights]: /cloud/managed-postgres/monitoring/query-insights
+  "Postgres query insights"
+[detail flyout]: /cloud/managed-postgres/monitoring/query-insights#detail
+  "Query insights detail flyout"
+[per-execution counters]: /cloud/managed-postgres/monitoring/query-insights#counters
+  "Query insights per-execution counters"
+[slow patterns API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternsGetList
+  "List Postgres slow query patterns"
+[slow pattern API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternGet
+  "Get a Postgres slow query pattern with recent executions"

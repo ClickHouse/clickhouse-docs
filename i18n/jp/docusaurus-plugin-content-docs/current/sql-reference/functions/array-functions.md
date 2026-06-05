@@ -282,6 +282,97 @@ SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
 ```
 
 
+## arrayBottomK \{#arrayBottomK\}
+
+導入バージョン: v26.6.0
+
+入力配列のうち小さいほうから K 個の要素を昇順に並べた配列を返します。
+ラムダ関数 `f` を指定した場合、要素は各要素に `f` を適用した結果に基づいて比較されます。
+`f` が複数の引数を受け取る場合は、追加の配列が `arrayBottomK` に渡され、それらの要素が
+`f` の各引数に対応します。
+
+`NULL` 値はスキップされ、結果には含まれません。結果のサイズは最大で `K` です。
+入力配列に `NULL` でない要素が `K` 個未満しか含まれていない場合は、これより小さくなることがあります。
+結果の要素型は、入力要素型に対応する非 Nullable 型です。
+
+`arrayBottomK` は [高階関数](/sql-reference/functions/overview#higher-order-functions) です。
+
+関連項目:
+
+* `arrayTopK`。こちらは代わりに大きいほうから K 個の要素を返します。
+* `arrayPartialSort`。同じ K 個の要素を位置 `[1..K]` に配置しますが、
+  残りの要素も順序未指定のまま保持し、null はスキップしません。
+
+**構文**
+
+```sql
+arrayBottomK([f,] K, arr [, arr1, ... ,arrN])
+```
+
+**引数**
+
+* `f(arr[, arr1, ... ,arrN])` — 任意。各要素のソートキーを計算するためのラムダ関数。[`ラムダ関数`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `K` — 返す最小要素の数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `arr` — 配列。[`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — `f` が複数の引数を受け取る場合に使用する、追加の `N` 個の配列。[`Array(T)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+値が最も小さい `arr` の要素 (またはラムダ関数の結果が最も小さい要素) を最大 `K` 個、昇順で返します。
+NULL はスキップされます。入力の型が `Nullable(T)` であっても、返される配列の要素型は `T` です。
+
+**例**
+
+**simple&#95;int**
+
+```sql title=Query
+SELECT arrayBottomK(3, [1, 5, 2, 7, 3])
+```
+
+```response title=Response
+[1,2,3]
+```
+
+**skip&#95;nulls**
+
+```sql title=Query
+SELECT arrayBottomK(3, [1, NULL, 5, 2, NULL, 7])
+```
+
+```response title=Response
+[1,2,5]
+```
+
+**fewer&#95;than&#95;k**
+
+```sql title=Query
+SELECT arrayBottomK(5, [1, NULL, 2])
+```
+
+```response title=Response
+[1,2]
+```
+
+**lambda&#95;simple**
+
+```sql title=Query
+SELECT arrayBottomK((x) -> -x, 2, [5, 9, 1, 3])
+```
+
+```response title=Response
+[9,5]
+```
+
+**lambda&#95;multi**
+
+```sql title=Query
+SELECT arrayBottomK((x, y) -> y, 2, ['a', 'b', 'c'], [3, 1, 2])
+```
+
+```response title=Response
+['b','c']
+```
+
 ## arrayCompact \{#arrayCompact\}
 
 導入バージョン: v20.1.0
@@ -3637,6 +3728,93 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 └────────────────────────────┴────────────────────────────────┘
 ```
 
+
+## arrayTopK \{#arrayTopK\}
+
+導入バージョン: v26.6.0
+
+入力配列の中から大きい順に K 個の要素を取り出し、降順に並べた配列を返します。
+ラムダ関数 `f` を指定した場合、各要素に `f` を適用した結果に基づいて要素が比較されます。
+`f` が複数の引数を取る場合は、追加の配列が `arrayTopK` に渡され、それらの要素が
+`f` の引数に対応します。
+
+`NULL` 値はスキップされ、結果には含まれません。結果のサイズは最大で `K` ですが、
+入力配列に含まれる非 null 要素が `K` 未満の場合は、それより小さくなることがあります。
+結果の要素型は、入力要素型に対応する非 Nullable 型です。
+
+`arrayTopK` は [高階関数](/sql-reference/functions/overview#higher-order-functions) です。
+
+代わりに K 個の最小要素を返す `arrayBottomK` も参照してください。
+
+**構文**
+
+```sql
+arrayTopK([f,] K, arr [, arr1, ... ,arrN])
+```
+
+**引数**
+
+* `f(arr[, arr1, ... ,arrN])` — 任意。各要素のソートキーを計算するためのラムダ関数。[`ラムダ関数`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `K` — 返す最大要素数。[`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `arr` — Array。[`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — `f` が複数の引数を受け取る場合の、追加の `N` 個の配列。[`Array(T)`](/sql-reference/data-types/array)
+
+**戻り値**
+
+`arr` の要素のうち、値が最も大きいもの (またはラムダ関数の結果が最も大きいもの) を最大 `K` 個返します。返される要素は降順にソートされます。
+NULL はスキップされます。入力の型が `Nullable(T)` の場合でも、返される配列の要素型は `T` です。
+
+**例**
+
+**simple&#95;int**
+
+```sql title=Query
+SELECT arrayTopK(3, [1, 5, 2, 7, 3])
+```
+
+```response title=Response
+[7,5,3]
+```
+
+**skip&#95;nulls**
+
+```sql title=Query
+SELECT arrayTopK(3, [1, NULL, 5, 2, NULL, 7])
+```
+
+```response title=Response
+[7,5,2]
+```
+
+**k未満**
+
+```sql title=Query
+SELECT arrayTopK(5, [1, NULL, 2])
+```
+
+```response title=Response
+[2,1]
+```
+
+**lambda&#95;simple**
+
+```sql title=Query
+SELECT arrayTopK((x) -> -x, 2, [5, 9, 1, 3])
+```
+
+```response title=Response
+[1,3]
+```
+
+**lambda&#95;multi**
+
+```sql title=Query
+SELECT arrayTopK((x, y) -> y, 2, ['a', 'b', 'c'], [3, 1, 2])
+```
+
+```response title=Response
+['a','c']
+```
 
 ## arrayTranspose \{#arrayTranspose\}
 

@@ -176,9 +176,9 @@ USE demo;
 SHOW TABLES;
 ```
 
-如果你的环境包含示例数据（例如 taxi 数据集），应该能看到如下所示的表：
+如果你的环境包含示例数据 (例如 taxi 数据集) ，应该能看到如下所示的表：
 
-```sql title="Response"
+```response
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
@@ -199,13 +199,13 @@ docker-compose logs nessie
 
 :::
 
-要查询某个表（如果已存在）：
+要查询某个表 (如果已存在) ：
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
@@ -221,7 +221,7 @@ SELECT count(*) FROM `default.taxis`;
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │

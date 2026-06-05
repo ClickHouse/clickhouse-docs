@@ -101,7 +101,7 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 1 row in set. Elapsed: 0.720 sec. Processed 59.55 million rows, 230.23 MB (82.66 million rows/s., 319.56 MB/s.)
 ```
 
-此查询可以利用主索引排除部分行（和粒度）。然而，如上方响应以及下面的 `EXPLAIN indexes = 1` 所示，仍然需要读取大部分行：
+此查询可以利用主索引排除部分行 (和粒度) 。然而，如上方响应以及下面的 `EXPLAIN indexes = 1` 所示，仍然需要读取大部分行：
 
 ```sql
 EXPLAIN indexes = 1
@@ -109,7 +109,9 @@ SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 LIMIT 1
+```
 
+```response
 ┌─explain──────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                        │
 │   Limit (preliminary LIMIT (without OFFSET))                     │
@@ -141,12 +143,11 @@ LIMIT 1
 25 rows in set. Elapsed: 0.070 sec.
 ```
 
-一个简单的分析表明，`ViewCount` 与 `CreationDate`（主键）存在相关性，正如人们所预期的那样——帖子存在的时间越长，被查看的次数就越多。
+一个简单的分析表明，`ViewCount` 与 `CreationDate` (主键) 存在相关性，正如人们所预期的那样——帖子存在的时间越长，被查看的次数就越多。
 
 ```sql
 SELECT toDate(CreationDate) AS day, avg(ViewCount) AS view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
 ```
-
 
 因此，这使其成为数据跳过索引的合理选择。鉴于其数值类型，使用 `minmax` 索引是合适的。我们使用以下 `ALTER TABLE` 命令添加索引——先添加它，然后对其进行物化。
 
@@ -191,7 +192,7 @@ PARTITION BY toYear(CreationDate)
 ORDER BY (PostTypeId, toDate(CreationDate))
 ```
 
-下面的动画展示了在示例表中是如何构建 minmax 跳过索引的，它会跟踪表中每个行块（granule）的 `ViewCount` 最小值和最大值：
+下面的动画展示了在示例表中是如何构建 minmax 跳过索引的，它会跟踪表中每个行块 (granule) 的 `ViewCount` 最小值和最大值：
 
 <Image img={building_skipping_indices} size="lg" alt="构建跳过索引" />
 
@@ -201,7 +202,9 @@ ORDER BY (PostTypeId, toDate(CreationDate))
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─count()─┐
 │     5   │
 └─────────┘
@@ -211,13 +214,14 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 
 运行 `EXPLAIN indexes = 1` 可以确认索引已被使用。
 
-
 ```sql
 EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                          │
 │   Aggregating                                                      │
@@ -253,10 +257,9 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 29 rows in set. Elapsed: 0.211 sec.
 ```
 
-我们还通过动画演示了 minmax 跳数索引如何剪枝所有不可能包含示例查询中 `ViewCount` &gt; 10,000,000 谓词匹配项的行块:
+我们还通过动画演示了 minmax 跳过索引如何剪枝所有不可能包含示例查询中 `ViewCount` &gt; 10,000,000 谓词匹配项的行块:
 
-<Image img={using_skipping_indices} size="lg" alt="使用跳数索引" />
-
+<Image img={using_skipping_indices} size="lg" alt="使用跳过索引" />
 
 ## 相关文档 \{#related-docs\}
 

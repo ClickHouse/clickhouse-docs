@@ -22,7 +22,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 
 ClickHouse Cloud 支持通过安全断言标记语言 (SAML) 实现单点登录 (SSO) 。这样，您便可以通过身份提供商 (IdP) 进行身份验证，从而安全地登录您的 ClickHouse Cloud 组织。
 
-我们目前支持服务提供商发起的单点登录 (SSO) 、通过独立连接接入多个组织，以及即时预配。暂不支持跨域身份管理系统 (SCIM) 或属性映射。
+我们目前支持服务提供方发起的 SSO、通过独立连接接入多个组织，以及即时预配。暂不支持跨域身份管理系统 (SCIM) 或属性映射。
 
 启用 SAML 集成的客户还可以指定分配给新用户的默认角色，并调整会话超时设置。
 

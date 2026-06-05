@@ -16,3 +16,5 @@ This section provides various sample datasets and examples to help you get start
 | [Local Data](local-data.md) | Collect local system metrics and logs sending them to ClickStack for analysis |
 | [Remote Demo Data](remote-demo-data.md) | Connect to our remote demo cluster and explore an issue |
 | [Session Replay Demo](session-replay.md) | Instrument a demo web application for session replay and view your interactions in ClickStack |
+| [Chrome Extension](chrome-extension.md) | Inject the Browser SDK into any website using the HyperDX Chrome extension — no application code changes required |
+| [Synthetic data with otelgen](otelgen.md) | Use `otelgen` to send synthetic logs, traces and metrics to a running ClickStack OpenTelemetry collector |

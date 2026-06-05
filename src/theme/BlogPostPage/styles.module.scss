@@ -1,0 +1,15 @@
+/* Align the KB article TOC with the left sidebar's search bar, which is
+ * offset from the top of the row by `margin-top: 2rem`
+ * (see BlogSidebar/Desktop .sidebarSearchContainer). The TOC's sticky
+ * element has no top offset in normal flow, so without this it sits ~2rem
+ * higher than the search bar.
+ *
+ * The wrapper stretches to the full column height (height: 100% +
+ * border-box) so the sticky TOC inside still travels with the article as
+ * you scroll; padding-top (not margin) provides the 2rem offset without
+ * changing the row height. */
+.tocWrapper {
+  height: 100%;
+  padding-top: 2rem;
+  box-sizing: border-box;
+}

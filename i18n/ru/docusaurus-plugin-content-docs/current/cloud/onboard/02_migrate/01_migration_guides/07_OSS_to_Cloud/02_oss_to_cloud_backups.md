@@ -87,7 +87,7 @@ ClickHouse Cloud работает с [`SharedMergeTree`](/cloud/reference/shared
 Мы воспользуемся первыми двумя шагами из [руководства по данным такси Нью‑Йорка](/getting-started/example-datasets/nyc-taxi), чтобы создать пример таблицы и загрузить в неё данные.
 Эти шаги приведены ниже для вашего удобства.
 
-Выполните следующие команды, чтобы создать новую базу данных и вставить данные из бакета S3 в новую таблицу:
+Выполните следующие команды, чтобы создать новую базу данных и вставить данные из S3 бакета в новую таблицу:
 
 ```sql
 CREATE DATABASE nyc_taxi;
@@ -165,14 +165,16 @@ SYSTEM RESTORE REPLICA nyc_taxi.trips_small_adapted;
 SELECT engine
 FROM system.tables
 WHERE name = 'trips_small_adapted' AND database = 'nyc_taxi';
+```
 
+```response
 ┌─engine──────────────┐
 │ ReplicatedMergeTree │
 └─────────────────────┘
 ```
 
 Теперь вы готовы перейти к настройке сервиса ClickHouse Cloud в рамках подготовки к последующему
-восстановлению резервной копии из вашего S3-бакета.
+восстановлению резервной копии из вашего S3 бакета.
 
 ### Distributed таблицы с ReplicatedMergeTree \{#distributed-tables\}
 

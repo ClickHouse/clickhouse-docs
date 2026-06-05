@@ -305,6 +305,8 @@ FORMAT PrettyJSONEachRow
     "tag_1.score": "String"
   }
 }
+```
 
+```response
 1 row in set. Elapsed: 0.002 sec.
 ```

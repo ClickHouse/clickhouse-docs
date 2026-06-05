@@ -38,7 +38,9 @@ GROUP BY OwnerDisplayName
 HAVING count() > 10
 ORDER BY total_views DESC
 LIMIT 5
+```
 
+```response
 ┌─OwnerDisplayName─┬─total_views─┐
 │ Joan Venge       │    25520387 │
 │ Ray Vega         │    21576470 │
@@ -82,7 +84,9 @@ FROM posts
 GROUP BY tags
 ORDER BY views DESC
 LIMIT 5
+```
 
+```response
 ┌─tags───────┬──────views─┐
 │ javascript │ 8190916894 │
 │ python     │ 8175132834 │
@@ -142,6 +146,9 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
+```
+
+```response
 Row 1:
 ──────
 Year:                   2008
@@ -210,7 +217,6 @@ Time: 125822.015 ms (02:05.822)
 
 조건문과 배열 함수는 쿼리를 크게 단순화합니다. 다음 쿼리는 2022년 대비 2023년에 발생 횟수가 10,000번을 초과하는 태그들 가운데 발생 횟수의 백분율 증가가 가장 큰 태그를 계산합니다. 다음 ClickHouse 쿼리가 조건문과 배열 함수, 그리고 HAVING 및 SELECT 절에서 별칭을 재사용하는 기능 덕분에 얼마나 간결한지에 주목하십시오.
 
-
 ```sql
 --ClickHouse
 SELECT  arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tag,
@@ -223,7 +229,9 @@ GROUP BY tag
 HAVING (count_2022 > 10000) AND (count_2023 > 10000)
 ORDER BY percent_change DESC
 LIMIT 5
+```
 
+```response
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
 │ next.js     │      13788 │      10520 │   31.06463878326996 │
 │ spring-boot │      16573 │      17721 │  -6.478189718413183 │
