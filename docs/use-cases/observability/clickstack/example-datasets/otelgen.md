@@ -52,7 +52,7 @@ export OTLP_AUTH_TOKEN=<your_otlp_auth_token>
 
 Use the host and port of your collector. For a collector running on the same machine, this is `localhost:4317`.
 
-:::note Unsecured collector
+:::note[Unsecured collector]
 The ClickStack OpenTelemetry collector is unauthenticated by default. If you haven't followed [Securing the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector) to set an `OTLP_AUTH_TOKEN`, skip `OTLP_AUTH_TOKEN` here and drop the `--header` flag from the commands below.
 :::
 

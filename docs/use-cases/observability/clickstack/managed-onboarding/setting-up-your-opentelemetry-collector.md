@@ -46,13 +46,15 @@ CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks12
 GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
 ```
 
-**Replace the password with a strong value**. 
+:::tip
+Replace the password in the snippet above with a strong value
+:::
 
 The collector creates the schema for logs, traces, and metrics inside the `otel` database on first use. For more guidance on production user setup, see [Going to production](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed).
 
 ## Deploy the collector {#deploy-the-collector}
 
-Deploy the collector somewhere that is accessible to the applications and infrastructure sending OpenTelemetry data. In the example below, we run the collector locally and generate artificial telemetry from the same machine for simplicity.
+Deploy the collector somewhere that's accessible to the applications and infrastructure sending OpenTelemetry data. In the example below, we run the collector locally and generate artificial telemetry from the same machine for simplicity.
 
 :::note info
 In production, you would typically deploy the collector in a Kubernetes cluster, or on a virtual machine that can be reached by your OpenTelemetry SDKs, agents, and other collectors. This allows telemetry from across your environment to be centrally collected and forwarded to ClickStack.
@@ -83,7 +85,7 @@ docker run -d \
 
 The collector now exposes OTLP gRPC on `4317` and OTLP HTTP on `4318`. Applications, SDKs, and agent collectors should send to these ports with `authorization: $OTLP_AUTH_TOKEN` in the request headers.
 
-:::note Production deployments
+:::note[Production deployments]
 For production, we recommend enabling TLS on the OTLP endpoint. See [Securing the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector).
 :::
 
@@ -120,7 +122,7 @@ For the equivalent trace and metrics commands, and a walkthrough of the other `o
 
 ## Confirm in the ClickStack UI {#confirm-in-ui}
 
-Open your service in the [ClickHouse Cloud console](https://console.clickhouse.cloud) and select **ClickStack** from the left menu. 
+Open your service in the [ClickHouse Cloud console](https://console.clickhouse.cloud) and select **ClickStack** from the left menu.
 
 <Image img={clickstack_cloud} size="lg" alt="Launch ClickStack" border/>
 
