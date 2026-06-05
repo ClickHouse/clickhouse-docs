@@ -23,8 +23,8 @@ The example application is the [HackerNews Analyzer](https://github.com/ClickHou
 
 ## Prerequisites {#prerequisites}
 
-- **An OTel collector available and reachable**, ingesting into your Managed ClickStack service. You need its OTLP endpoint and an ingestion token.
-- **Node 18+ and npm.**
+- An OTel collector available and reachable, ingesting into your Managed ClickStack service. You need its OTLP endpoint and an ingestion token.
+- Node 18+ and npm.
 
 ## Step 1 — Clone and run the application {#clone-and-run-the-application}
 
