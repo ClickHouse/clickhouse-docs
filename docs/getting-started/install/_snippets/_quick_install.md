@@ -14,8 +14,7 @@ curl https://clickhouse.com/ | sh
 
 On Linux and macOS, this also installs [`clickhousectl`](https://github.com/ClickHouse/clickhousectl)
 into `~/.local/bin` (with a `chctl` symlink) so you can manage local ClickHouse
-versions and servers. If `~/.local/bin` isn't already on your `PATH`, the
-installer prints the line to add to your shell profile.
+versions and servers.
 
 To install just the `clickhouse` binary without `clickhousectl`, set
 `CLICKHOUSE_ONLY=1`:

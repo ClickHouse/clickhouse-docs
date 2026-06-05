@@ -7,17 +7,8 @@ title: 'Инструкции по установке'
 doc_type: 'guide'
 ---
 
-import InstallSelector from '@site/src/components/Install/Install'
-import CLIInstall from './_snippets/_cli_install.md'
-import Windows from './_snippets/_windows_install.md'
-import TarProd from './_snippets/_linux_tar_install.md'
-import QuickInstall from './_snippets/_quick_install.md'
-import DebianProd from './_snippets/_deb_install.md'
-import RPMProd from './_snippets/_rpm_install.md'
-import MacOSProd from './_snippets/_macos.md'
-import NixOS from './_snippets/_nixos_install.md'
-import Docker from './_snippets/_docker.md'
 import {CardPrimary} from '@clickhouse/click-ui/bundled';
+import Link from '@docusaurus/Link';
 import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 <CardPrimary alignContent="center" description="Начните работу мгновенно, без необходимости выбирать размер и масштабировать кластер. Мы берём на себя выбор размера, масштабирование, безопасность, надёжность и обновления." icon="cloud" infoText="Начните бесплатно" infoUrl="https://console.clickhouse.cloud/signUp?loc=docs-install-page-banner" isSelected onButtonClick={galaxyOnClick('docs.installCloudCallout.buttonClicked')} size="md" title="ClickHouse Cloud" topBadgeText="Рекомендуется" />
@@ -26,4 +17,44 @@ import {galaxyOnClick} from '@site/src/lib/galaxy/galaxy'
 
 Или выберите ниже платформу, дистрибутив и способ установки, чтобы просмотреть инструкции по установке ClickHouse (open source):
 
-<InstallSelector cli={<CLIInstall/>} windows={<Windows/>} quickinstall={<QuickInstall/>} debian_prod={<DebianProd/>} rpm_prod={<RPMProd/>} tar_prod={<TarProd/>} macos_prod={<MacOSProd/>} nixos={<NixOS/>} docker={<Docker/>} />
+<h3 className="install-group-heading">Локальная разработка</h3>
+<p className="install-group-description">
+    Запустите ClickHouse на собственном компьютере для сборки, тестирования и
+    экспериментов. Быстрая установка позволяет получить единый бинарный файл,
+    или используйте clickhousectl для установки и управления локальными версиями
+    и серверами.
+</p>
+<div className="installContainer">
+    <Link to="/install/quick-install" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/clickhouse-logo-mark.svg" size="sm" title="Быстрая установка"/>
+    </Link>
+    <Link to="/install/clickhousectl" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" icon="console" size="sm" title="clickhousectl (CLI)"/>
+    </Link>
+    <Link to="/install/docker" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/docker.svg" size="sm" title="Docker"/>
+    </Link>
+    <Link to="/install/advanced" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" icon="code" size="sm" title="Сборка из исходного кода"/>
+    </Link>
+</div>
+
+<h3 className="install-group-heading">Промышленный сервер</h3>
+<p className="install-group-description">
+    Установите ClickHouse Server из пакетов или бинарных файлов для
+    долговременного развёртывания на собственной инфраструктуре.
+</p>
+<div className="installContainer">
+    <Link to="/install/debian_ubuntu" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/DebianUbuntu.svg" size="sm" title="Debian/Ubuntu"/>
+    </Link>
+    <Link to="/install/redhat" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/redhat.svg" size="sm" title="Redhat"/>
+    </Link>
+    <Link to="/install/nixos" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/nixos.svg" size="sm" title="NixOS"/>
+    </Link>
+    <Link to="/install/linux_other" style={{textDecoration: 'none'}}>
+        <CardPrimary className="install-card" alignContent="center" iconUrl="/docs/img/linux.svg" size="sm" title="Другой Linux"/>
+    </Link>
+</div>
