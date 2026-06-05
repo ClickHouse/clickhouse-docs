@@ -1,7 +1,8 @@
 ---
 slug: /use-cases/observability/clickstack/example-datasets/instrument-app
 title: 'Instrument an application with Managed ClickStack'
-unlisted: true
+sidebar_label: 'HackerNews Analyzer'
+sidebar_position: 5
 pagination_prev: null
 pagination_next: null
 description: 'Guide to instrument a Node.js application with OpenTelemetry and send logs, metrics, and traces to Managed ClickStack'
