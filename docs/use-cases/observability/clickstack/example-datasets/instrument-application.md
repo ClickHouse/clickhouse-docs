@@ -24,7 +24,11 @@ The [HackerNews Analyzer](https://github.com/ClickHouse/hn-news-analyzer) is a s
 - An OTel collector available and reachable, ingesting into your Managed ClickStack service. You need its OTLP endpoint and an ingestion token.
 - Node 18+ and npm.
 
-## Step 1 — Clone and run the application {#clone-and-run-the-application}
+## Running the demo {#running-the-demo}
+
+<VerticalStepper headerLevel="h3">
+
+### Clone and run the application {#clone-and-run-the-application}
 
 Clone the repository, install dependencies, and create your `.env` file:
 
