@@ -230,7 +230,10 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 * `-f`, `--format`, `--output-format` — 输出格式，默认为 `TSV`。
 * `-d`, `--database` — 默认数据库，默认为 `_local`。
 * `--stacktrace` — 是否在出现异常时转储调试输出。
-* `--echo` — 在执行前打印查询。
+* `--echo [ <bool> ]` — 在执行前打印每个查询。接受可选的布尔值。在交互模式下默认启用，在批次模式下默认禁用。注意：由于 `--echo` 现在接受可选值，紧跟在不带值的 `--echo` 后面的定位查询会被当作它的值；请改用 `--echo --query "..."`、`--echo -q "..."`、`--echo=false` 或通过管道传入 `stdin`。
+* `--echo-formatted [ <bool> ]` — 对回显的查询进行格式化。接受可选的布尔值。在交互模式下默认启用，在批次模式下默认禁用。
+* `--echo-query-id [ <bool> ]` — 在执行前打印 `query_id`。接受可选的布尔值。在交互模式下默认启用，在批次模式下默认禁用。
+* `--highlight`, `--hilite` `<bool>` — 切换命令提示符和回显查询的语法高亮。默认启用。仅在输出到终端时才会应用高亮。
 * `--verbose` — 输出更多查询执行细节。
 * `--logger.console` — 将日志输出到控制台。
 * `--logger.log` — 日志文件名。
@@ -242,7 +245,6 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 * `-V`, `--version` — 打印版本信息并退出。
 
 此外，还为每个 ClickHouse 配置变量提供了对应的参数，这些参数通常比 `--config-file` 更常用。
-
 
 ## 命令 \{#commands\}
 

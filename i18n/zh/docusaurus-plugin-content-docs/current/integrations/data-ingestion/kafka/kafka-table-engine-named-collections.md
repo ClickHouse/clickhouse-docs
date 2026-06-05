@@ -206,7 +206,7 @@ SELECT * FROM second_replicated_table LIMIT 10;
 
 示例输出：
 
-```sql
+```response
 ┌─id─┬─first_name─┬─last_name─┐
 │  0 │ FirstName0 │ LastName0 │
 │  1 │ FirstName1 │ LastName1 │

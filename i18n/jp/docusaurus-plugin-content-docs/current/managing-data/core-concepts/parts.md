@@ -71,7 +71,9 @@ SELECT _part
 FROM uk.uk_price_paid_simple
 GROUP BY _part
 ORDER BY _part ASC;
+```
 
+```response
    ┌─_part───────┐
 1. │ all_0_5_1   │
 2. │ all_12_17_1 │
@@ -80,7 +82,7 @@ ORDER BY _part ASC;
    └─────────────┘
 ```
 
-上記のクエリは、ディスク上のディレクトリ名を取得します。各ディレクトリはテーブルのアクティブなデータパートを表します。これらのディレクトリ名を構成する要素にはそれぞれ特定の意味があり、その詳細は、さらに深く調べたい方のために [こちら](https://github.com/ClickHouse/ClickHouse/blob/f90551824bb90ade2d8a1d8edd7b0a3c0a459617/src/Storages/MergeTree/MergeTreeData.h#L130) に記載されています。
+上記のクエリは、ディスク上のディレクトリ名を取得します。各ディレクトリはテーブルのアクティブなデータパーツを表します。これらのディレクトリ名を構成する要素にはそれぞれ特定の意味があり、その詳細は、さらに深く調べたい方のために [こちら](https://github.com/ClickHouse/ClickHouse/blob/f90551824bb90ade2d8a1d8edd7b0a3c0a459617/src/Storages/MergeTree/MergeTreeData.h#L130) に記載されています。
 
 別の方法として、ClickHouse はすべてのテーブルのすべてのパーツに関する情報を [system.parts](/operations/system-tables/parts) システムテーブルで保持しており、次のクエリは、先ほどのサンプルテーブルについて、現在アクティブなすべてのパーツとそのマージレベル、および各パーツに保存されている行数の一覧を[返します](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results)。
 
@@ -92,7 +94,9 @@ SELECT
 FROM system.parts
 WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
 ORDER BY name ASC;
+```
 
+```response
    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │
 2. │ all_12_17_1 │     1 │ 6442494 │

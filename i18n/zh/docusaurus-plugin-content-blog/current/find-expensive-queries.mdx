@@ -2,7 +2,6 @@
 title: 如何在 ClickHouse 中找出开销最高的查询
 description: 了解如何使用 ClickHouse 中的 `query_log` 表来识别在分布式节点间内存和 CPU 开销最高的查询。
 date: 2023-03-26
-slug: find-expensive-queries
 tags: ['性能与优化']
 keywords: ['高开销查询']
 ---
@@ -96,6 +95,10 @@ FROM s3Cluster('default','https://clickhouse-public-datasets.s3.amazonaws.com/yo
 ## initial_query_id VS query_id \{#initial_query_id-vs-query_id\}
 
 请注意，在 ClickHouse 集群环境 (例如 ClickHouse Cloud) 中，`initial_query_id` 表示在接收请求的节点上发起的分布式查询执行的初始查询 ID；此时 `query_id` 字段则包含在其他节点上执行的子查询 ID。
+
+:::note[分布式执行并不是 `query_id` 值不同的唯一来源]
+单个查询也可能派生出内部子查询，这些子查询会以各自的 `query_id` 和 `is_initial_query = 0` 记录下来——最常见的是 ClickHouse 为求值[视图](/operations/system-tables/query_views_log)而运行的内部查询。这些内部标识符由 ClickHouse 分配，其格式可能与返回给客户端的格式不同；在与视图相关的步骤中，你可能会看到带有 `queryView...` 之类标签的 `query_id` 值。当你想要精确获取自己提交的那条查询时，请按 `is_initial_query = 1` (或 `query_id = initial_query_id`) 进行过滤。这是 `query_log` 的服务端行为，从任何客户端看到的结果都相同，包括 Cloud SQL 控制台。
+:::
 
 如果我们在上面的查询中添加 `query_id`，就会将搜索范围限定为 `initial_query_id` = `a7262fa2-bd8b-4b51-a359-621ccf282417` 和对应的 `hostname()`：
 

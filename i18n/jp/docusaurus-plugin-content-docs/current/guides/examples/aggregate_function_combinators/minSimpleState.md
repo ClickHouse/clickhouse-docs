@@ -144,7 +144,7 @@ ORDER BY location_id;
 これで期待どおりの結果が得られます。
 
 
-```sql
+```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ North         │        3 │        8 │
 │           2 │ South         │       15 │       18 │
@@ -156,7 +156,6 @@ ORDER BY location_id;
 :::note
 `SimpleState` を使用すると、部分集計状態を結合するために `Merge` コンビネータを使う必要がなくなります。
 :::
-
 
 ## 関連項目 \{#see-also\}
 

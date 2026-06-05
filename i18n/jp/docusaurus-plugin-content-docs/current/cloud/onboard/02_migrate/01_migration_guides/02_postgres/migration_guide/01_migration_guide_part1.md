@@ -114,7 +114,7 @@ ORDER BY id;
 手動アプローチを用いる場合、データセットの初回一括ロードは次の方法で実施できます。
 
 * **テーブル関数** - ClickHouse の [Postgres テーブル関数](/sql-reference/table-functions/postgresql) を使用して、Postgres からデータを `SELECT` し、ClickHouse のテーブルに `INSERT` します。数百 GB 規模までの一括ロードに適しています。
-* **エクスポート** - CSV や SQL スクリプトファイルといった中間形式へエクスポートします。これらのファイルは、クライアントから `INSERT FROM INFILE` 句を使うか、オブジェクトストレージとそれ用の関数（例: s3, gcs）を利用して ClickHouse にロードできます。
+* **エクスポート** - CSV や SQL スクリプトファイルといった中間形式へエクスポートします。これらのファイルは、クライアントから `INSERT FROM INFILE` 句を使うか、オブジェクトストレージとそれ用の関数 (例: s3, gcs) を利用して ClickHouse にロードできます。
 
 PostgreSQL から手動でデータをロードする場合は、まず ClickHouse 上にテーブルを作成する必要があります。ClickHouse におけるテーブルスキーマの最適化については、Stack Overflow データセットを用いた例も含む [データモデリングのドキュメント](/data-modeling/schema-design#establish-initial-schema) を参照してください。
 
@@ -127,7 +127,7 @@ SETTINGS describe_compact_output = 1
 
 PostgreSQL と ClickHouse 間のデータ型マッピングの概要については、[付録ドキュメント](/migrations/postgresql/appendix#data-type-mappings)を参照してください。
 
-このスキーマの型を最適化する手順は、データを他のソース（例：S3 上の Parquet）からロードした場合と同一です。[Parquet を使用する別のガイド](/data-modeling/schema-design)で説明されている手順を適用すると、次のスキーマになります。
+このスキーマの型を最適化する手順は、データを他のソース (例：S3 上の Parquet) からロードした場合と同一です。[Parquet を使用する別のガイド](/data-modeling/schema-design)で説明されている手順を適用すると、次のスキーマになります。
 
 ```sql title="Query"
 CREATE TABLE stackoverflow.posts
@@ -164,12 +164,15 @@ PostgreSQL からデータを読み取り、ClickHouse に挿入する単純な 
 
 ```sql title="Query"
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
+```
+
+```response
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
 増分ロードは、スケジュール設定することもできます。Postgres テーブルが挿入のみを受け付けており、単調増加する id またはタイムスタンプが存在する場合は、上記のテーブル関数アプローチを用いて増分をロードできます。つまり、`SELECT` に対して `WHERE` 句を適用できます。このアプローチは、同一のカラムのみが更新されることが保証されている場合には、更新のサポートにも使用できます。一方で、削除をサポートするにはテーブル全体の再ロードが必要となり、テーブルが大きくなるにつれてこれを実現するのは困難になる可能性があります。
 
-ここでは、`CreationDate` を使用した初回ロードと増分ロードを示します（行が更新されると `CreationDate` も更新されると仮定します）。
+ここでは、`CreationDate` を使用した初回ロードと増分ロードを示します (行が更新されると `CreationDate` も更新されると仮定します) 。
 
 ```sql
 -- initial load
@@ -177,7 +180,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', '
 
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT (max(CreationDate) FROM stackoverflow.posts)
 ```
-
 
 > ClickHouse は、`=`, `!=`, `>`,`>=`, `<`, `<=`, および IN といった単純な `WHERE` 句を PostgreSQL サーバー側へプッシュダウンします。これにより、変更セットの識別に使用されるカラムにインデックスを作成しておくことで、増分ロードをより効率的に実行できます。
 

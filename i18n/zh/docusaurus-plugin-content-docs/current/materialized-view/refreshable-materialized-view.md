@@ -95,7 +95,9 @@ MODIFY REFRESH EVERY 30 SECONDS;
 SELECT *
 FROM events
 LIMIT 10
+```
 
+```response
 Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
 
 ┌──────────────────ts─┬─uuid─┬─count─┐
@@ -122,7 +124,9 @@ FROM events
 GROUP BY ALL
 ORDER BY count DESC
 LIMIT 10
+```
 
+```response
 ┌─uuid─┬───count─┐
 │ c6f  │ 5676468 │
 │ 951  │ 5669731 │
@@ -164,14 +168,15 @@ GROUP BY ALL;
 
 然后我们可以查询 `events_snapshot`，以获取特定 `uuid` 随时间变化的计数：
 
-
 ```sql
 SELECT *
 FROM events_snapshot
 WHERE uuid = 'fff'
 ORDER BY ts ASC
 FORMAT PrettyCompactMonoBlock
+```
 
+```response
 ┌──────────────────ts─┬─uuid─┬───count─┐
 │ 2024-10-01 16:12:56 │ fff  │ 5424711 │
 │ 2024-10-01 16:13:00 │ fff  │ 5424711 │
@@ -183,7 +188,6 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
 ```
-
 
 ## 示例 \{#examples\}
 

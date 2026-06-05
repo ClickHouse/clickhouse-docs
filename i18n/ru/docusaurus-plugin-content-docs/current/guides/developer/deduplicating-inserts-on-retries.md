@@ -65,9 +65,9 @@ doc_type: 'guide'
 
 ## Примеры \{#examples\}
 
-### Идентичные блоки после преобразований в материализованном представлении \{#identical-blocks-after-materialized-view-transformations\}
+### Идентичные блоки после преобразований в materialized view \{#identical-blocks-after-materialized-view-transformations\}
 
-Идентичные блоки, сгенерированные в результате преобразования внутри материализованного представления, не удаляются как дубликаты, поскольку они основаны на разных вставленных данных.
+Идентичные блоки, сгенерированные в результате преобразования внутри materialized view, не дедуплицируются, поскольку они основаны на разных вставленных данных.
 
 Пример:
 
@@ -107,7 +107,7 @@ SET min_insert_block_size_bytes=0;
 SET deduplicate_blocks_in_dependent_materialized_views=1;
 ```
 
-Необходимо включить дедупликацию в материализованном представлении:
+Необходимо включить дедупликацию в materialized view:
 
 ```sql
 INSERT INTO dst SELECT
@@ -120,7 +120,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
 │   2 │ B     │ all_1_1_0 │
@@ -135,7 +137,9 @@ SELECT
     _part
 FROM mv_dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
 │   0 │ B     │ all_1_1_0 │
@@ -155,18 +159,24 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
 │   2 │ B     │ all_1_1_0 │
 └─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
 │   0 │ B     │ all_1_1_0 │
@@ -174,7 +184,6 @@ ORDER by all;
 ```
 
 Здесь мы видим, что при повторной вставке все данные дедуплицируются. Дедупликация работает как для таблицы `dst`, так и для таблицы `mv_dst`.
-
 
 ### Идентичные блоки при вставке \{#identical-blocks-on-insertion\}
 
@@ -207,14 +216,15 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
 ```
 
 При указанных выше настройках запрос select возвращает два блока — следовательно, в таблицу `dst` должны быть вставлены два блока. Однако мы видим, что в таблицу `dst` был вставлен только один блок. Это произошло из-за дедупликации второго блока. Он содержит те же данные и ключ дедупликации `block_id`, который вычисляется как хеш вставленных данных. Такое поведение не соответствует ожидаемому. Подобные случаи встречаются редко, но теоретически возможны. Для корректной обработки таких ситуаций необходимо указать `insert_deduplication_token`. Исправим это с помощью следующих примеров:
-
 
 ### Идентичные блоки при вставке с использованием `insert_deduplication_token` \{#identical-blocks-in-insertion-with-insert_deduplication_token\}
 
@@ -248,7 +258,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -272,7 +284,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -296,7 +310,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -304,7 +320,6 @@ ORDER BY all;
 ```
 
 Эта вставка также будет дедуплицирована, даже несмотря на то, что она содержит другие данные. Обратите внимание, что `insert_deduplication_token` имеет более высокий приоритет: ClickHouse не использует хеш-сумму данных, когда указан `insert_deduplication_token`.
-
 
 ### Разные операции вставки приводят к одинаковым данным после преобразования в базовой таблице materialized view \{#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view\}
 
@@ -343,22 +358,30 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 └───────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 select 'second attempt';
 
 INSERT INTO dst VALUES (2, 'A');
@@ -369,19 +392,25 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 │ from dst   │   2 │ A     │ all_1_1_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
@@ -390,8 +419,7 @@ ORDER by all;
 
 Каждый раз мы вставляем разные данные. Однако в таблицу `mv_dst` попадают одни и те же данные. Дедупликация не выполняется, так как исходные данные различались.
 
-
-### Вставки из разных материализованных представлений в одну целевую таблицу с эквивалентными данными \{#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data\}
+### Вставки из разных materialized view в одну целевую таблицу с эквивалентными данными \{#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data\}
 
 ```sql
 CREATE TABLE dst
@@ -438,18 +466,24 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
@@ -469,18 +503,24 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │

@@ -57,7 +57,9 @@ INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedd
 ```sql
 SELECT count(*)
 FROM dbpedia
+```
 
+```response
    ┌─count()─┐
 1. │ 1000000 │
    └─────────┘
@@ -65,16 +67,18 @@ FROM dbpedia
 
 ## セマンティック検索 \{#semantic-search\}
 
-参考資料: ["ベクトル埋め込み（Vector embeddings）" OpenAI ガイド](https://platform.openai.com/docs/guides/embeddings)
+参考資料: [&quot;ベクトル埋め込み
+&quot; OpenAPI ガイド](https://platform.openai.com/docs/guides/embeddings)
 
-ベクトル埋め込みを用いたセマンティック検索（_similarity search_ とも呼ばれます）は、概ね次の手順で行います。
+ベクトル埋め込みを用いたセマンティック検索 (*類似検索* とも呼ばれます) では、
+次の手順を行います。
 
-- ユーザーから自然言語による検索クエリを受け取る（例: _"Tell me about some scenic rail journeys”_、_“Suspense novels set in Europe”_ など）
-- LLM を使って検索クエリの埋め込みベクトルを生成する
-- データセット内で、その検索クエリの埋め込みベクトルに最も近いベクトル（最近傍）を探索する
+* たとえば *「景色のよい鉄道の旅について教えて」*、*「ヨーロッパを舞台にしたサスペンス小説」* など、自然言語による検索クエリをユーザーから受け取る
+* LLM モデルを使用して、その検索クエリの埋め込みベクトルを生成する
+* データセット内で、その検索埋め込みベクトルの最近傍を見つける
 
-_最近傍（nearest neighbours）_ とは、ユーザーのクエリに関連する結果となる文書、画像、その他のコンテンツを指します。
-取得された結果は、生成 AI アプリケーションにおける検索拡張生成（Retrieval Augmented Generation, RAG）の重要な入力となります。
+*最近傍* とは、ユーザーのクエリに関連する結果として返される文書、画像、またはコンテンツのことです。
+取得された結果は、Generative AI アプリケーションにおける Retrieval Augmented Generation (RAG) の重要な入力となります。
 
 ## 総当たり方式でベクトル類似度検索を実行する \{#run-a-brute-force-vector-similarity-search\}
 

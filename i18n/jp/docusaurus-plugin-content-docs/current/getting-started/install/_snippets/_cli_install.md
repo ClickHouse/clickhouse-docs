@@ -13,19 +13,25 @@ ClickHouse CLI (`clickhousectl`) を使用すると、ローカルの ClickHouse
 
   ## ClickHouse をインストールする \{#cli-install-clickhouse\}
 
-  ClickHouse の最新の安定版をインストールします。
+  ClickHouse の最新の stable バージョンをインストールし、デフォルトに設定します。
 
   ```bash
-  clickhousectl local install stable
+  clickhousectl local use stable
   ```
 
-  特定のバージョンをインストールすることもできます。
+  `local use` は、そのバージョンがまだインストールされていない場合はインストールし、デフォルトとして設定したうえで、`~/.local/bin` (`PATH` 上) に `clickhouse` のシンボリックリンクを作成します。これにより、`clickhouse` binary を直接実行できるようになります。そのため、このドキュメント内の後続の手順で `clickhouse` コマンドを実行する場合も、そのまま動作します。
+
+  特定のバージョンを選択することもできます。
 
   ```bash
-  clickhousectl local install lts             # 最新の LTS リリース
-  clickhousectl local install 25.6            # 最新の 25.6.x.x
-  clickhousectl local install 25.6.1.1        # 完全一致のバージョン
+  clickhousectl local use lts             # 最新の LTS リリース
+  clickhousectl local use 25.6            # 最新の 25.6.x.x
+  clickhousectl local use 25.6.1.1        # 完全一致のバージョン
   ```
+
+  :::note[use と install]
+  `clickhousectl local use <version>` は、バージョンをインストールし、さらにデフォルトに設定して、`PATH` 上の `clickhouse` シンボリックリンクを更新します。デフォルトを変更せず、シンボリックリンクも更新せずにバージョンだけをダウンロードするには、代わりに `clickhousectl local install <version>` を使用してください。
+  :::
 
   ## clickhouse-server を起動する \{#cli-start-clickhouse-server\}
 
@@ -58,6 +64,6 @@ ClickHouse CLI (`clickhousectl`) を使用すると、ローカルの ClickHouse
   これで、ClickHouse に SQL コマンドを送信する準備が整いました。
 
   :::tip
-  [Quick Start](/get-started/quick-start) では、テーブルの作成やデータの挿入手順を順を追って説明しています。
+  [クイックスタート](/get-started/quick-start) では、テーブルの作成やデータの挿入手順を順を追って説明しています。
   :::
 </VerticalStepper>

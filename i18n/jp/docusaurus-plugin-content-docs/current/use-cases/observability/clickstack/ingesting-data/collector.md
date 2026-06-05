@@ -43,50 +43,121 @@ OpenTelemetry コレクターは、主に 2 つのロールでデプロイでき
 <br/>
 
 <Tabs groupId="otel-collector">
-  <TabItem value="managed-clickstack" label="マネージド型 ClickStack" default>
-    可能な場合には、Managed ClickStack 環境に送信する際の gateway ロールとして、[公式の ClickStack ディストリビューション版 collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) を使用することを推奨します。独自の collector を使用する場合は、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) が含まれていることを確認してください。
+  <TabItem value="managed-clickstack" label="Managed ClickStack" default>
+    Managed ClickStack へ送信する際は、可能であればゲートウェイロールに[公式 ClickStack ディストリビューションの collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) を使用することを推奨します。独自の collector を使用する場合は、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) が含まれていることを確認してください。
 
-    ClickStack ディストリビューション版の OTel connector をスタンドアロン モードでデプロイするには、次の Docker コマンドを実行します。
+    collector は、Helm (Kubernetes での使用を推奨) または Docker を使用してデプロイできます。公式の [ClickStack Helm チャート](https://github.com/ClickHouse/ClickStack-helm-charts) は、ClickStack のディストリビューションイメージをあらかじめ設定した状態で、アップストリームの [OpenTelemetry Collector Helm チャート](https://github.com/open-telemetry/opentelemetry-helm-charts) をサブチャートとして組み込んでいます。HyperDX を含むフルスタック一式をインストールする場合は、[ClickStack Helm デプロイメントガイド](/use-cases/observability/clickstack/deployment/helm)を参照してください。スタンドアロンの collector デプロイメントの場合は、以下に示すように、アップストリームのチャートを ClickStack イメージと直接組み合わせて使用できます。
 
-    ```shell
-    docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-    ```
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        OpenTelemetry の公式 Helm リポジトリを追加します:
 
-    :::note Image Name Update
-    ClickStack のイメージは、現在は `clickhouse/clickstack-*` として公開されています（以前は `docker.hyperdx.io/hyperdx/*`）。
-    :::
+        ```shell
+        helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+        helm repo update
+        ```
 
-    `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` という環境変数を指定することで、送信先の ClickHouse インスタンスを変更できる点に注意してください。`CLICKHOUSE_ENDPOINT` には、プロトコルおよびポートを含む完全な ClickHouse Cloud の HTTP エンドポイントを指定する必要があります。たとえば、`https://99rr6dm6v3.us-central1.gcp.clickhouse.cloud:8443` のようになります。
+        ClickStack イメージと Managed ClickStack の認証情報を設定した `values.yaml` を作成します:
 
-    Managed ClickStack の認証情報の取得方法の詳細については[こちら](/cloud/guides/sql-console/gather-connection-details)を参照してください。
+        ```yaml
+        # values.yaml
+        mode: deployment
 
-    :::note Production user
-    本番環境では、[適切な権限を持つユーザー](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)を使用する必要があります。
+        image:
+          repository: docker.clickhouse.com/clickhouse/clickstack-otel-collector
+          tag: "2.19.0"
+
+        ports:
+          otlp:
+            enabled: true
+          otlp-http:
+            enabled: true
+
+        extraEnvs:
+          - name: CLICKHOUSE_ENDPOINT
+            value: "https://your-instance.clickhouse.cloud:8443"
+          - name: CLICKHOUSE_USER
+            value: "default"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<password>"
+        ```
+
+        チャートをインストールします:
+
+        ```shell
+        helm install clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+
+        本番環境でデプロイする場合は、`CLICKHOUSE_PASSWORD` を値に直接書き込むのではなく、Kubernetes シークレットに保存し、`extraEnvsFrom` 経由で参照することを推奨します。
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        スタンドアロン モードで ClickStack 版の OTel collector をデプロイするには、次の Docker コマンドを実行します:
+
+        ```shell
+        docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+        ```
+
+        :::note イメージ名の更新
+        ClickStack イメージは現在 `clickhouse/clickstack-*` として公開されています (以前は `docker.hyperdx.io/hyperdx/*`) 。
+        :::
+      </TabItem>
+    </Tabs>
+
+    対象の ClickHouse インスタンスは、環境変数 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` を使用して設定します。`CLICKHOUSE_ENDPOINT` には、プロトコルとポートを含む完全な ClickHouse Cloud HTTP エンドポイントを指定してください (例: `https://99rr6dm6v3.us-central1.gcp.clickhouse.cloud:8443`) 。
+
+    Managed ClickStack の認証情報の取得方法については、[こちら](/cloud/guides/sql-console/gather-connection-details)を参照してください。
+
+    :::note 本番環境のユーザー
+    本番環境では、[適切な認証情報](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)を持つユーザーを使用してください。
     :::
 
     ### 設定の変更
 
     #### Managed ClickStack インスタンスの設定
 
-    OpenTelemetry collector を含むすべての Docker イメージは、環境変数 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` を介して Managed ClickStack インスタンスを使用するように構成できます。
+    OpenTelemetry collectorは、環境変数`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD`を通じて、Managed ClickStackインスタンスを使用するよう設定できます。これらの設定方法は、デプロイメント方法によって異なります。
 
-    たとえば、オールインワンイメージの場合:
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        `values.yaml` の `extraEnvs` 配下にある該当エントリを上書きしてから、リリースをアップグレードします。
 
-    ```shell
-    export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
-    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
-    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-    ```
+        ```yaml
+        # values.yaml
+        extraEnvs:
+          - name: CLICKHOUSE_ENDPOINT
+            value: "<HTTPS_ENDPOINT>"
+          - name: CLICKHOUSE_USER
+            value: "<CLICKHOUSE_USER>"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<CLICKHOUSE_PASSWORD>"
+        ```
 
-    ```shell
-    docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-    ```
+        ```shell
+        helm upgrade clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        OpenTelemetry Collector を含むすべての Docker image は、環境変数で設定できます。たとえば、all-in-one イメージの場合は次のとおりです。
+
+        ```shell
+        export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
+        export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+        export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+        ```
+
+        ```shell
+        docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+        ```
+      </TabItem>
+    </Tabs>
 
     <ExtendingConfig />
 
     #### Docker Compose
 
-    Docker Compose を使用する場合は、上記と同じ環境変数を使用してコレクターの設定を変更します。
+    Docker Composeを使用する場合は、上記と同じ環境変数を使用してcollectorのconfigurationを変更します。
 
     ```yaml
       otel-collector:
@@ -111,57 +182,136 @@ OpenTelemetry コレクターは、主に 2 つのロールでデプロイでき
     ```
   </TabItem>
 
-  <TabItem value="oss-clickstack" label="オープンソース版 ClickStack" default>
-    HyperDX 専用ディストリビューションを使用していて、スタンドアロン デプロイメントとして自前の OpenTelemetry コレクターを管理している場合でも、可能であればゲートウェイ ロールには[公式の ClickStack ディストリビューション版コレクターの使用を推奨します](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector)。ただし自前のコレクターを使用する場合は、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) が含まれていることを確認してください。
+  <TabItem value="oss-clickstack" label="オープンソース版ClickStack" default>
+    スタンドアロンデプロイメントで独自の OpenTelemetry collector を管理している場合 (HyperDX のみのディストリビューションを使用している場合など) 、ゲートウェイロールには可能な限り[公式の ClickStack ディストリビューションの collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) を使用することを推奨します。独自の collector を使用する場合は、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) が含まれていることを確認してください。
 
-    ClickStack ディストリビューション版の OTel コネクターをスタンドアロン モードでデプロイするには、次の Docker コマンドを実行します。
+    collector は、Helm (Kubernetes 環境での使用を推奨) または Docker を使用してデプロイできます。公式の [ClickStack Helm チャート](https://github.com/ClickHouse/ClickStack-helm-charts) は、上流の [OpenTelemetry Collector Helm チャート](https://github.com/open-telemetry/opentelemetry-helm-charts) をサブチャートとして組み込み、共有の `clickstack-config` ConfigMap および `clickstack-secret` Secret を通じて OpAMP の endpoint、ClickStack イメージ、HyperDX の API key を自動的に設定します。HyperDX を含むフルスタックをインストールする場合は、[ClickStack Helm デプロイメントガイド](/use-cases/observability/clickstack/deployment/helm)を参照してください。既存の HyperDX に接続するスタンドアロンの collector デプロイメントには、以下に示すように ClickStack イメージを使用して上流のチャートを直接利用できます。
 
-    ```shell
-    docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-    ```
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        OpenTelemetry のアップストリーム Helm リポジトリを追加します:
 
-    :::note イメージ名の更新
-    ClickStack のイメージは、現在 `clickhouse/clickstack-*`（以前は `docker.hyperdx.io/hyperdx/*`）として公開されています。
-    :::
+        ```shell
+        helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+        helm repo update
+        ```
 
-    `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` という環境変数を使用することで、ターゲットの ClickHouse インスタンスを上書きできることに注意してください。`CLICKHOUSE_ENDPOINT` には、プロトコルおよびポートを含む、ClickHouse の完全な HTTP エンドポイントを指定する必要があります（例: `http://localhost:8123`）。
+        ClickStack イメージ、ClickHouse の認証情報、および HyperDX デプロイメントの OpAMP エンドポイントを設定する `values.yaml` を作成します:
 
-    **これらの環境変数は、コネクタを含む任意の Docker ディストリビューションで使用できます。**
+        ```yaml
+        # values.yaml
+        mode: deployment
 
-    `OPAMP_SERVER_URL` は、あなたの HyperDX デプロイメントを指す必要があります（例: `http://localhost:4320`）。HyperDX は、デフォルトでポート `4320` の `/v1/opamp` で OpAMP (Open Agent Management Protocol) サーバーを公開します。HyperDX を実行しているコンテナからこのポートが公開されていることを確認してください（例: `-p 4320:4320` を使用）。
+        image:
+          repository: docker.clickhouse.com/clickhouse/clickstack-otel-collector
+          tag: "2.19.0"
 
-    :::note OpAMP ポートの公開と接続
-    コレクターが OpAMP ポートに接続するには、そのポートが HyperDX コンテナから公開されている必要があります（例: `-p 4320:4320`）。ローカルテストでは、macOS ユーザーは `OPAMP_SERVER_URL=http://host.docker.internal:4320` を設定できます。Linux ユーザーは、`--network=host` を指定してコレクターコンテナを起動できます。
-    :::
+        ports:
+          otlp:
+            enabled: true
+          otlp-http:
+            enabled: true
 
-    :::note 本番環境ユーザー
-    本番環境では、[適切な認証情報](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) を持つユーザーを使用する必要があります。
+        extraEnvs:
+          - name: CLICKHOUSE_ENDPOINT
+            value: "tcp://clickhouse.your-namespace.svc.cluster.local:9000?dial_timeout=10s"
+          - name: CLICKHOUSE_USER
+            value: "otelcollector"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<password>"
+          - name: OPAMP_SERVER_URL
+            value: "http://hyperdx.your-namespace.svc.cluster.local:4320"
+          - name: HYPERDX_API_KEY
+            value: "<your-ingestion-api-key>"
+        ```
+
+        チャートをインストールします:
+
+        ```shell
+        helm install clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+
+        `OPAMP_SERVER_URL` は HyperDX サービスに解決できる必要があります。HyperDX と collector を同じクラスター内で実行する場合は、クラスター内サービスの DNS 名 (例: `http://hyperdx.your-namespace.svc.cluster.local:4320`) を使用してください。HyperDX はデフォルトで、ポート `4320` の `/v1/opamp` で OpAMP API を公開します。
+
+        本番環境では、`CLICKHOUSE_PASSWORD` と `HYPERDX_API_KEY` を値として直接書き込むのではなく、Kubernetes シークレットに保存し、`extraEnvsFrom` 経由で参照することを推奨します。
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        ClickStack の OTel コネクタディストリビューションをスタンドアロンモードでデプロイするには、次の docker コマンドを実行します:
+
+        ```shell
+        docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+        ```
+
+        :::note イメージ名の更新
+        ClickStack イメージは現在 `clickhouse/clickstack-*` として公開されています (以前は `docker.hyperdx.io/hyperdx/*`) 。
+        :::
+
+        `OPAMP_SERVER_URL` は HyperDX デプロイメントを指す必要があります。たとえば `http://localhost:4320` です。HyperDX はデフォルトで、ポート `4320` の `/v1/opamp` で OpAMP (Open Agent Management Protocol) サーバーを公開します。HyperDX を実行しているコンテナーからこのポートを公開してください (例: `-p 4320:4320`) 。
+
+        :::note OpAMP ポートの公開と接続
+        collector が OpAMP ポートに接続するには、そのポートを HyperDX コンテナーで公開しておく必要があります (例: `-p 4320:4320`) 。ローカルテストでは、OSX ユーザーは `OPAMP_SERVER_URL=http://host.docker.internal:4320` を設定できます。Linux ユーザーは `--network=host` を指定して collector コンテナーを起動できます。
+        :::
+      </TabItem>
+    </Tabs>
+
+    対象の ClickHouse インスタンスは、環境変数 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、および `CLICKHOUSE_PASSWORD` で設定します。`CLICKHOUSE_ENDPOINT` には、プロトコルとポートを含む完全な ClickHouse HTTP エンドポイントを指定してください (例: `http://localhost:8123`) 。
+
+    **これらの環境変数は、コネクタを含むすべてのDockerディストリビューションで使用できます。**
+
+    :::note 本番環境のユーザー
+    本番環境では、[適切なcredentials](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)を持つユーザーを使用してください。
     :::
 
     ### 設定の変更
 
-    #### ClickHouse インスタンスの設定
+    #### ClickHouseインスタンスの設定
 
-    OpenTelemetry collector を含むすべての Docker イメージは、環境変数 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` を使用して、ClickHouse インスタンスを指すように設定できます。
+    OpenTelemetry collectorは、環境変数 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME`、`CLICKHOUSE_PASSWORD` を通じて ClickHouse インスタンスを使用するよう設定できます。これらの設定方法はデプロイメント方法によって異なります。
 
-    例えば、オールインワンイメージの場合は次のようになります。
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        `values.yaml` の `extraEnvs` 配下にある該当エントリを上書きし、その後リリースをアップグレードします。
 
-    ```shell
-    export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
-    export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
-    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
-    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-    ```
+        ```yaml
+        # values.yaml
+        extraEnvs:
+          - name: OPAMP_SERVER_URL
+            value: "<OPAMP_SERVER_URL>"
+          - name: CLICKHOUSE_ENDPOINT
+            value: "<HTTPS_ENDPOINT>"
+          - name: CLICKHOUSE_USER
+            value: "<CLICKHOUSE_USER>"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<CLICKHOUSE_PASSWORD>"
+        ```
 
-    ```shell
-    docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-    ```
+        ```shell
+        helm upgrade clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        OpenTelemetry collector を含むすべての Docker イメージは、環境変数で設定できます。たとえば、オールインワンイメージでは次のようにします。
+
+        ```shell
+        export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
+        export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
+        export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+        export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+        ```
+
+        ```shell
+        docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+        ```
+      </TabItem>
+    </Tabs>
 
     <ExtendingConfig />
 
     #### Docker Compose
 
-    Docker Compose を使用する場合は、上記と同じ環境変数を使用してコレクターの設定を変更します。
+    Docker Composeを使用する場合は、上記と同じ環境変数を使用してcollectorのconfigurationを変更します。
 
     ```yaml
       otel-collector:
@@ -191,23 +341,50 @@ OpenTelemetry コレクターは、主に 2 つのロールでデプロイでき
   <TabItem value="managed-clickstack" label="マネージド ClickStack" default>
     デフォルトでは、オープンソースディストリビューション以外の形でデプロイされた場合、ClickStack OpenTelemetry Collector は保護されておらず、OTLP ポートで認証を要求しません。
 
-    インジェストを保護するには、collector をデプロイする際に環境変数 `OTLP_AUTH_TOKEN` を使用して認証トークンを指定します。例:
+    インジェストを保護するには、collector をデプロイする際に環境変数 `OTLP_AUTH_TOKEN` を使用して認証トークンを指定します。設定方法はデプロイ方法によって異なります:
 
-    ```sh
-    export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
-    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
-    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-    export OTLP_AUTH_TOKEN="a_very_secure_string"
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        `values.yaml` の `extraEnvs` に `OTLP_AUTH_TOKEN` を追加し、その後リリースをアップグレードします:
 
-    docker run \
-      -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
-      -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
-      -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
-      -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
-      -p 4317:4317 \
-      -p 4318:4318 \
-      clickhouse/clickstack-otel-collector:latest
-    ```
+        ```yaml
+        # values.yaml
+        extraEnvs:
+          - name: OTLP_AUTH_TOKEN
+            value: "a_very_secure_string"
+          - name: CLICKHOUSE_ENDPOINT
+            value: "<HTTPS_ENDPOINT>"
+          - name: CLICKHOUSE_USER
+            value: "<CLICKHOUSE_USER>"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<CLICKHOUSE_PASSWORD>"
+        ```
+
+        ```shell
+        helm upgrade clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+
+        本番デプロイメントでは、`OTLP_AUTH_TOKEN` と `CLICKHOUSE_PASSWORD` を Kubernetes Secret に保存し、`extraEnvsFrom` 経由で参照することを推奨します。
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        ```sh
+        export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
+        export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+        export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+        export OTLP_AUTH_TOKEN="a_very_secure_string"
+
+        docker run \
+          -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
+          -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+          -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+          -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+          -p 4317:4317 \
+          -p 4318:4318 \
+          clickhouse/clickstack-otel-collector:latest
+        ```
+      </TabItem>
+    </Tabs>
 
     加えて、次の設定を推奨します:
 

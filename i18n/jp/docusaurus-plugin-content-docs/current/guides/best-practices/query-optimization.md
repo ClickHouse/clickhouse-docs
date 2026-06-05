@@ -78,7 +78,9 @@ FROM s3Cluster
 ```sql
 --- Display inferred table schema
 SHOW CREATE TABLE trips_small_inferred
+```
 
+```response
 Query id: d97361fd-c050-478e-b831-369469f0784d
 
 CREATE TABLE nyc_taxi.trips_small_inferred
@@ -128,7 +130,9 @@ WHERE has(databases, 'nyc_taxi') AND (event_time >= (now() - toIntervalMinute(60
 ORDER BY query_duration_ms DESC
 LIMIT 5
 FORMAT VERTICAL
+```
 
+```response
 Query id: e3d48c9f-32bb-49a4-8303-080f59ed1835
 
 Row 1:
@@ -215,7 +219,7 @@ tables:            ['nyc_taxi.trips_small_inferred']
 
 `query_duration_ms`フィールドは、その特定のクエリの実行にかかった時間を示します。クエリログからの結果を見ると、最初のクエリの実行に2967msかかっており、これは改善できる可能性があります。
 
-また、最もメモリやCPUを消費しているクエリを調べることで、システムに負荷をかけているクエリを知りたい場合もあるでしょう。
+また、最もメモリやCPUを消費しているクエリを調べることで、システムに負荷をかけているクエリを知りたい場合もあるでしょう。 
 
 ```sql
 -- Top queries by memory usage
@@ -256,9 +260,14 @@ WHERE
 FORMAT JSON
 
 ----
+```
+
+```response
 1 row in set. Elapsed: 1.699 sec. Processed 329.04 million rows, 8.88 GB (193.72 million rows/s., 5.23 GB/s.)
 Peak memory usage: 440.24 MiB.
+```
 
+```sql
 -- Run query 2
 SELECT
     payment_type,
@@ -276,9 +285,14 @@ ORDER BY
     trip_count DESC;
 
 ---
+```
+
+```response
 4 rows in set. Elapsed: 1.419 sec. Processed 329.04 million rows, 5.72 GB (231.86 million rows/s., 4.03 GB/s.)
 Peak memory usage: 546.75 MiB.
+```
 
+```sql
 -- Run query 3
 SELECT
   avg(dateDiff('s', pickup_datetime, dropoff_datetime))
@@ -287,6 +301,9 @@ WHERE passenger_count = 1 or passenger_count = 2
 FORMAT JSON
 
 ---
+```
+
+```response
 1 row in set. Elapsed: 1.414 sec. Processed 329.04 million rows, 8.88 GB (232.63 million rows/s., 6.28 GB/s.)
 Peak memory usage: 451.53 MiB.
 ```
@@ -305,13 +322,15 @@ Peak memory usage: 451.53 MiB.
 * クエリ2は、週ごとの乗車数と平均コストを見つけます。
 * クエリ3は、データセット内の各乗車の平均時間を計算します。
 
-これらのクエリはいずれも非常に複雑な処理を行っていませんが、クエリが実行されるたびにその場で乗車時間を計算する最初のクエリを除いて、各クエリの実行には1秒以上かかります。これは、ClickHouseの世界では非常に長い時間です。また、これらのクエリのメモリ使用量にも注目できます。各クエリで約400Mbはかなり多くのメモリです。また、各クエリが同じ行数（つまり329.04 million）を読み取っているように見えます。このテーブルに何行あるか簡単に確認しましょう。
+これらのクエリはいずれも非常に複雑な処理を行っていませんが、クエリが実行されるたびにその場で乗車時間を計算する最初のクエリを除いて、各クエリの実行には1秒以上かかります。これは、ClickHouseの世界では非常に長い時間です。また、これらのクエリのメモリ使用量にも注目できます。各クエリで約400Mbはかなり多くのメモリです。また、各クエリが同じ行数 (つまり329.04 million) を読み取っているように見えます。このテーブルに何行あるか簡単に確認しましょう。
 
 ```sql
 -- Count number of rows in table
 SELECT count()
 FROM nyc_taxi.trips_small_inferred
+```
 
+```response
 Query id: 733372c5-deaf-4719-94e3-261540933b23
 
    ┌───count()─┐
@@ -341,7 +360,9 @@ WITH
 SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
+```
 
+```response
 Query id: f35c412a-edda-4089-914b-fa1622d69868
 
    ┌─explain─────────────────────────────────────────────┐
@@ -369,7 +390,9 @@ WITH
 SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
+```
 
+```response
 Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────┐
@@ -443,7 +466,9 @@ SELECT
     countIf(dropoff_location_id IS NULL) AS dropoff_location_id_nulls
 FROM trips_small_inferred
 FORMAT VERTICAL
+```
 
+```response
 Query id: 4a70fc5b-2501-41c8-813c-45ce241d85ae
 
 Row 1:
@@ -482,7 +507,9 @@ SELECT
     uniq(vendor_id)
 FROM trips_small_inferred
 FORMAT VERTICAL
+```
 
+```response
 Query id: d502c6a1-c9bc-4415-9d86-5de74dd6d932
 
 Row 1:
@@ -499,7 +526,7 @@ uniq(vendor_id):           3
 
 ClickHouse は多数のデータ型をサポートしています。パフォーマンスを最適化し、ディスク上のデータの保存容量を削減するために、ユースケースを満たす範囲で可能な限り小さいデータ型を選択してください。 
 
-数値型については、データセット内の min/max 値を確認し、現在の精度（桁数や範囲）がデータセットの実態に合っているかどうかを検証できます。 
+数値型については、データセット内の min/max 値を確認し、現在の精度 (桁数や範囲) がデータセットの実態に合っているかどうかを検証できます。 
 
 ```sql
 -- Find min/max values for the payment_type field
@@ -507,7 +534,9 @@ SELECT
     min(payment_type),max(payment_type),
     min(passenger_count), max(passenger_count)
 FROM trips_small_inferred
+```
 
+```response
 Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 
    ┌─min(payment_type)─┬─max(payment_type)─┐
@@ -571,7 +600,9 @@ GROUP BY
     database,
     `table`
 ORDER BY size DESC
+```
 
+```response
 Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
 
    ┌─table────────────────┬─compressed─┬─uncompressed─┬──────rows─┐
@@ -580,7 +611,7 @@ Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
    └──────────────────────┴────────────┴──────────────┴───────────┘
 ```
 
-新しいテーブルは以前のテーブルよりもかなり小さくなっています。テーブルのディスクスペースが約34%削減されています（7.38 GiB vs 4.89 GiB）。
+新しいテーブルは以前のテーブルよりもかなり小さくなっています。テーブルのディスクスペースが約34%削減されています (7.38 GiB vs 4.89 GiB) 。
 
 ## プライマリキーの重要性 \{#the-importance-of-primary-keys\}
 
@@ -710,13 +741,16 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     <tr>
       <th colspan="4">クエリ3</th>
     </tr>
+
     <tr>
-      <th></th>
+      <th />
+
       <th>実行1</th>
       <th>実行2</th>
       <th>実行3</th>
     </tr>
   </thead>
+
   <tbody>
     <tr>
       <td>経過時間</td>
@@ -724,12 +758,14 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.188 sec</td>
       <td>0.431 sec</td>
     </tr>
+
     <tr>
       <td>処理行数</td>
       <td>329.04 million</td>
       <td>329.04 million</td>
       <td>276.99 million</td>
     </tr>
+
     <tr>
       <td>ピークメモリ</td>
       <td>451.53 MiB</td>
@@ -755,7 +791,9 @@ FROM nyc_taxi.trips_small_pk
 WHERE (pickup_datetime >= '2009-01-01') AND (pickup_datetime < '2009-04-01')
 GROUP BY payment_type
 ORDER BY trip_count DESC
+```
 
+```response
 Query id: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
 
     ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────────┐

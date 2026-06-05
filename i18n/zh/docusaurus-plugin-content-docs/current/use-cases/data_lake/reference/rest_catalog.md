@@ -122,9 +122,9 @@ USE demo;
 SHOW TABLES;
 ```
 
-如果你的环境包含示例数据（例如 taxi 数据集），你应该会看到如下这些表：
+如果你的环境包含示例数据 (例如 taxi 数据集) ，你应该会看到如下这些表：
 
-```sql title="Response"
+```response
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
@@ -134,7 +134,7 @@ SHOW TABLES;
 如果你没有看到任何表，通常意味着：
 
 1. Spark 环境尚未创建示例表
-2. REST catalog 服务尚未完全初始化
+2. REST 目录服务尚未完全初始化
 3. 示例数据加载过程尚未完成
 
 你可以检查 Spark 日志以查看表创建进度：
@@ -145,13 +145,13 @@ docker-compose logs spark
 
 :::
 
-要查询表（如果存在）：
+要查询表 (如果存在) ：
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
@@ -167,7 +167,7 @@ SELECT count(*) FROM `default.taxis`;
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │
@@ -194,7 +194,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://minio:9000/lakehouse/warehouse/default/taxis/', 'admin', '[HIDDEN]') │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 将数据湖中的数据加载到 ClickHouse \{#loading-data-from-your-data-lake-into-clickhouse\}
 

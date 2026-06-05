@@ -232,7 +232,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | ディレクトリ                                                    | ファイル                                                                                                                                                                             |
+  | ディレクトリ                                                    | File                                                                                                                                                                             |
   | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
@@ -333,7 +333,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   ### ユーザー設定
 
-  次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` に配置されている各空の設定ファイル `users.xml` を以下の内容で変更します:
+  次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` に配置されている各空の設定ファイル `users.xml` を次の内容に変更します:
 
   ```xml title="/users.d/users.xml"
   <?xml version="1.0"?>
@@ -375,7 +375,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | ディレクトリ                                                   | ファイル                                                                                                                                                                          |
+  | ディレクトリ                                                   | File                                                                                                                                                                          |
   | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml) |
@@ -413,7 +413,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   dockerがClickHouseとKeeperのイメージをプルし、
-  その後コンテナを起動する様子が確認できます:
+  その後コンテナーを起動する様子が確認できます:
 
   ```bash
   [+] Running 6/6
@@ -477,7 +477,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   <VerifyKeeperStatus />
 
-  これで、2つの分片と各分片に1つのレプリカを持つClickHouseクラスターのセットアップが完了しました。
+  これで、2つのシャードと各シャードに1つのレプリカを持つClickHouseクラスターのセットアップが完了しました。
   次のステップでは、クラスターにテーブルを作成します。
 
   ## データベースを作成する
@@ -643,7 +643,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   SELECT * FROM test.test_table_dist;
   ```
 
-  ```sql
+  ```response
      ┌─id─┬─name───────────────┐
   1. │  1 │ Alexey Milovidov   │
   2. │  1 │ Clicky McClickface │

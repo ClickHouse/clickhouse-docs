@@ -6,18 +6,18 @@ slug: /guides/joining-tables
 doc_type: "guide"
 ---
 
-import Image from "@theme/IdealImage"
-import joins_1 from "@site/static/images/guides/joins-1.png"
-import joins_2 from "@site/static/images/guides/joins-2.png"
-import joins_3 from "@site/static/images/guides/joins-3.png"
-import joins_4 from "@site/static/images/guides/joins-4.png"
-import joins_5 from "@site/static/images/guides/joins-5.png"
+import Image from '@theme/IdealImage';
+import joins_1 from '@site/static/images/guides/joins-1.png';
+import joins_2 from '@site/static/images/guides/joins-2.png';
+import joins_3 from '@site/static/images/guides/joins-3.png';
+import joins_4 from '@site/static/images/guides/joins-4.png';
+import joins_5 from '@site/static/images/guides/joins-5.png';
 
-ClickHouse は[完全な `JOIN` サポート](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)を提供しており、幅広い結合アルゴリズムを利用できます。パフォーマンスを最大化するために、本ガイドで挙げる結合最適化の推奨事項に従うことをお勧めします。
+ClickHouse は[完全な `JOIN` サポート](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)を提供しており、幅広いJOIN アルゴリズムを利用できます。パフォーマンスを最大化するために、本ガイドで挙げる結合最適化の推奨事項に従うことをお勧めします。
 
 * 最適なパフォーマンスを得るには、特にミリ秒単位の応答が要求されるリアルタイム分析ワークロードにおいて、クエリ内の `JOIN` の数を減らすことを目標にしてください。1 つのクエリでの JOIN の数は最大 3〜4 個を目安とします。[データモデリングのセクション](/data-modeling/schema-design)では、非正規化、辞書、マテリアライズドビューなど、JOIN を最小限に抑えるためのいくつかの工夫について詳しく説明しています。
 * ClickHouse 24.12 以降では、クエリプランナーが 2 つのテーブル間の JOIN を自動的に並べ替え、小さいテーブルを右側に配置してパフォーマンスを最適化します。バージョン 25.9 では、3 つ以上のテーブルを結合するクエリに対して JOIN の順序を最適化できるように拡張されました。
-* クエリで、以下に示す `LEFT ANY JOIN` のような直接結合が必要な場合は、可能な限り [Dictionaries](/dictionary) を使用することをお勧めします。
+* クエリで、以下に示す `LEFT ANY JOIN` のようなdirect joinが必要な場合は、可能な限り [Dictionaries](/dictionary) を使用することをお勧めします。
 
 <Image img={joins_1} size="sm" alt="LEFT ANY JOIN" />
 
@@ -28,7 +28,9 @@ SELECT count()
 FROM stackoverflow.posts AS p
 ANY INNER `JOIN` stackoverflow.comments AS c ON p.Id = c.PostId
 WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILIKE '%clickhouse%') AND (c.Text ILIKE '%clickhouse%')
+```
 
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -37,7 +39,7 @@ WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILI
 Peak memory usage: 1.23 GiB.
 ```
 
-`INNER JOIN` ではなく `ANY INNER JOIN` を使用しているのは、直積（cartesian product）を避けたい、つまり各 post につき 1 件だけマッチさせたいからです。
+`INNER JOIN` ではなく `ANY INNER JOIN` を使用しているのは、直積 (cartesian product) を避けたい、つまり各 post につき 1 件だけマッチさせたいからです。
 
 この結合はサブクエリを使って書き換えることで、パフォーマンスを大幅に向上させられます。
 
@@ -49,6 +51,9 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
         FROM stackoverflow.comments
         WHERE Text ILIKE '%clickhouse%'
 ))
+```
+
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -66,7 +71,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.posts AS p
 INNER JOIN stackoverflow.votes AS v ON p.Id = v.PostId
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -81,7 +88,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -96,7 +105,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01') AND (v.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -115,7 +126,9 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
         FROM stackoverflow.posts
         WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
 ))
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -123,7 +136,6 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
 1 row in set. Elapsed: 0.383 sec. Processed 99.64 million rows, 804.55 MB (259.85 million rows/s., 2.10 GB/s.)
 Peak memory usage: 250.66 MiB.
 ```
-
 
 ## JOIN アルゴリズムの選択 \{#choosing-a-join-algorithm\}
 

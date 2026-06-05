@@ -336,14 +336,14 @@ ClickStack では、materialized view が使用されているかどうかを確
 
 #### materialized view を選択する例 \{#example-of-choosing-materialized-view\}
 
-同じ trace ソース上に作成された 2 つの materialized view を考えます:
+同じ trace ログソース上に作成された 2 つの materialized view を考えます:
 
 * 分単位、`ServiceName`、`StatusCode` でグループ化された `otel_traces_1m`
 * 分単位、`ServiceName`、`StatusCode`、`SpanName` でグループ化された `otel_traces_1m_v2`
 
 2 つ目の VIEW には追加のグルーピングキーが含まれているため、より多くの行を生成し、より多くのデータをスキャンします。
 
-可視化で **時間経過に伴うサービスごとの平均 duration** が求められる場合、両方の VIEW が技術的には有効です。ClickStack は各候補に対して [`EXPLAIN ESTIMATE`](/sql-reference/statements/explain#explain-estimate) クエリを発行し、推定 granule 数を比較します。つまり、次のようになります:
+可視化で **時間経過に伴うサービスごとの平均 duration** が求められる場合、両方の VIEW が技術的には有効です。ClickStack は各候補に対して [`EXPLAIN ESTIMATE`](/sql-reference/statements/explain#explain-estimate) クエリを発行し、推定グラニュール数を比較します。つまり、次のようになります:
 
 ```sql
 EXPLAIN ESTIMATE
@@ -356,13 +356,17 @@ GROUP BY
     hour,
     ServiceName
 ORDER BY hour DESC
+```
 
+```response
 ┌─database─┬─table──────────┬─parts─┬──rows─┬─marks─┐
 │ otel_v2  │ otel_traces_1m │     1 │ 49385 │     6 │
 └──────────┴────────────────┴───────┴───────┴───────┘
 
 1 row in set. Elapsed: 0.009 sec.
+```
 
+```sql
 EXPLAIN ESTIMATE
 SELECT
     toStartOfHour(Timestamp) AS hour,
@@ -373,7 +377,9 @@ GROUP BY
     hour,
     ServiceName
 ORDER BY hour DESC
+```
 
+```response
 ┌─database─┬─table─────────────┬─parts─┬───rows─┬─marks─┐
 │ otel_v2  │ otel_traces_1m_v2 │     1 │ 212519 │    26 │
 └──────────┴───────────────────┴───────┴────────┴───────┘
@@ -381,10 +387,9 @@ ORDER BY hour DESC
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-`otel_traces_1m` はより小さく、スキャン対象の granule 数も少ないため、自動的に選択されます。
+`otel_traces_1m` はより小さく、スキャン対象のグラニュール数も少ないため、自動的に選択されます。
 
 どちらの materialized view もベーステーブルを直接クエリするより高速ですが、最小限で十分な materialized view を選択することで、最適なパフォーマンスが得られます。
-
 
 ### アラート \{#alerts\}
 
