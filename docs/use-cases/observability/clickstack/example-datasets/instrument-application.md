@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/example-datasets/instrument-app
 title: 'Instrument an application with Managed ClickStack'
-sidebar_label: 'HackerNews Analyzer'
+sidebar_label: 'HackerNews Analyzer demo'
 sidebar_position: 5
 pagination_prev: null
 pagination_next: null
