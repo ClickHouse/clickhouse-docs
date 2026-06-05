@@ -16,18 +16,20 @@ import instrument_app_clickstack_logs from '@site/static/images/clickstack/getti
 import instrument_app_clickstack_traces from '@site/static/images/clickstack/getting-started/instrument_app_clickstack_traces.png';
 import instrument_app_clickstack_sessions from '@site/static/images/clickstack/getting-started/instrument_app_clickstack_sessions.png';
 
-# Instrument an application with Managed ClickStack
+This guide shows how to instrument a simple Node.js application using OpenTelemetry and send its logs, metrics, and traces to [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed). The backend is instrumented with no changes to the application source code.
 
-This guide shows how to instruments a simple Node.js application using OpenTelemetry and sends its logs, metrics, and traces to Managed ClickStack. The backend is instrumented with no changes to the application source code.
-
-The example application is the [HackerNews Analyzer](https://github.com/ClickHouse/hn-news-analyzer), a small Node.js app that queries the hackernews dataset hosted in the public ClickHouse demo instance. Every chart, table, and search box is backed by a real ClickHouse query, so every interaction produces a trace whose main span is the HTTPS call from the backend out to ClickHouse.
+The [HackerNews Analyzer](https://github.com/ClickHouse/hn-news-analyzer) is a small Node.js app that queries the HackerNews dataset hosted in the public ClickHouse demo instance. Every chart, table, and search box is backed by a real ClickHouse query, so every interaction produces a trace whose main span is the HTTPS call from the backend out to ClickHouse.
 
 ## Prerequisites {#prerequisites}
 
-- **An OTel collector available and reachable**, ingesting into your Managed ClickStack service. You need its OTLP endpoint and an ingestion token.
-- **Node 18+ and npm.**
+- An OTel collector available and reachable, ingesting into your Managed ClickStack service. You need its OTLP endpoint and an ingestion token.
+- Node 18+ and npm.
 
-## Step 1 — Clone and run the application {#clone-and-run-the-application}
+## Running the demo {#running-the-demo}
+
+<VerticalStepper headerLevel="h3">
+
+### Clone and run the application {#clone-and-run-the-application}
 
 Clone the repository, install dependencies, and create your `.env` file:
 
@@ -65,7 +67,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT=https://<your-collector-endpoint>:4318
 OTEL_EXPORTER_OTLP_HEADERS=authorization=<your-ingestion-token>
 ```
 
-The SDK uses `OTEL_EXPORTER_OTLP_HEADERS` to set the authorization header for all three signals: traces, metrics, and logs. If your collector runs locally and does not enforce auth, you can leave the value empty (`OTEL_EXPORTER_OTLP_HEADERS=authorization=`), but the variable must be present — the SDK skips initialization entirely if it is unset or fully empty.
+The SDK uses `OTEL_EXPORTER_OTLP_HEADERS` to set the authorization header for all three signals: traces, metrics, and logs. If your collector runs locally and doesn't enforce auth, you can leave the value empty (`OTEL_EXPORTER_OTLP_HEADERS=authorization=`), but the variable must be present — the SDK skips initialization entirely if it's unset or fully empty.
 
 ## Step 3 — Instrument the application {#instrument-the-application}
 
@@ -116,7 +118,9 @@ export function initTelemetry(): void {
 
 No extra `.env` edits are required. `__OTLP_ENDPOINT__` and `__OTLP_AUTH_TOKEN__` are compile-time constants injected by `vite.config.ts`: the endpoint is `OTEL_EXPORTER_OTLP_ENDPOINT` and the token is parsed out of `OTEL_EXPORTER_OTLP_HEADERS`, the same values the backend uses.
 
-> **Security note:** The ingestion token is baked into the public browser bundle and is readable by anyone inspecting the network tab.
+:::warning
+The ingestion token is baked into the public browser bundle and is readable by anyone inspecting the network tab.
+:::
 
 ## Step 4 — Generate traffic and view telemetry {#generate-traffic-and-view-telemetry}
 
@@ -145,6 +149,9 @@ Open the ClickStack UI:
 
 Logs, metrics, traces, and session replays all land in the same UI, share the same query language, and are correlated automatically.
 
-## Summary {#summary}
+## Learn more {#learn-more}
 
-Instrumenting this application took three actions: installing the OpenTelemetry packages, wrapping the launch command, and uncommenting the browser init block. No business logic changed. With an OTLP endpoint and an ingestion token, the collector and Managed ClickStack handled ingestion, scaling, storage, and schema, and logs, metrics, traces, and session replays arrived correlated in a single UI.
+- [Session Replay](/use-cases/observability/clickstack/session-replay) — feature overview, SDK options, and privacy controls
+- [Session Replay Demo](/use-cases/observability/clickstack/example-datasets/session-replay-demo) — a self-contained demo with a local ClickStack instance
+- [ClickStack Getting Started](/use-cases/observability/clickstack/getting-started) — deploy ClickStack and ingest your first data
+- [All Sample Datasets](/use-cases/observability/clickstack/sample-datasets) — other example datasets and guides
