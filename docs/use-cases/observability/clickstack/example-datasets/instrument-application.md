@@ -66,7 +66,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT=https://<your-collector-endpoint>:4318
 OTEL_EXPORTER_OTLP_HEADERS=authorization=<your-ingestion-token>
 ```
 
-The SDK uses `OTEL_EXPORTER_OTLP_HEADERS` to set the authorization header for all three signals: traces, metrics, and logs. If your collector runs locally and does not enforce auth, you can leave the value empty (`OTEL_EXPORTER_OTLP_HEADERS=authorization=`), but the variable must be present — the SDK skips initialization entirely if it is unset or fully empty.
+The SDK uses `OTEL_EXPORTER_OTLP_HEADERS` to set the authorization header for all three signals: traces, metrics, and logs. If your collector runs locally and doesn't enforce auth, you can leave the value empty (`OTEL_EXPORTER_OTLP_HEADERS=authorization=`), but the variable must be present — the SDK skips initialization entirely if it's unset or fully empty.
 
 ## Step 3 — Instrument the application {#instrument-the-application}
 
