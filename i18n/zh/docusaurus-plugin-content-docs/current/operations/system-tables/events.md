@@ -4781,21 +4781,9 @@ sleep 函数 (sleep、sleepEachRow) 的调用次数。
 
 在惰性倒排列表模式下执行 advance 操作的次数。
 
-### TextIndexLazyAndBlocksSkippedZero \{#textindexlazyandblocksskippedzero\}
+### TextIndexLazyBlocksSkippedResolved \{#textindexlazyblocksskippedresolved\}
 
-在惰性 AND 模式下，因输出区域全为 0 而跳过的打包块数量。
-
-### TextIndexLazyAndSegmentsSkippedDense \{#textindexlazyandsegmentsskippeddense\}
-
-惰性 AND 模式下通过密集递增优化跳过的分段数。
-
-### TextIndexLazyAndSegmentsSkippedZero \{#textindexlazyandsegmentsskippedzero\}
-
-在 lazy AND 模式下，因输出区域全为零而被跳过的分段数。
-
-### TextIndexLazyBlocksSkippedCovered \{#textindexlazyblocksskippedcovered\}
-
-在惰性倒排列表模式下，因输出区域已全为 1 而跳过的已打包块数量。
+在惰性倒排列表模式下，因输出区域已被确定 (对于 OR 为全 1，对于 AND 为全 0) 而跳过的打包块数量。
 
 ### TextIndexLazyBruteForceIntersections \{#textindexlazybruteforceintersections\}
 
@@ -4809,17 +4797,21 @@ sleep 函数 (sleep、sleepEachRow) 的调用次数。
 
 惰性倒排列表模式下已解码的打包块数量。
 
+### TextIndexLazySegmentsBuilt \{#textindexlazysegmentsbuilt\}
+
+在惰性倒排列表模式下，实际读取并解码的分段数 (缓存未命中) 。
+
 ### TextIndexLazySegmentsPrepared \{#textindexlazysegmentsprepared\}
 
-惰性倒排列表模式下已准备的分段数量 (已加载索引区段) 。
-
-### TextIndexLazySegmentsSkippedCovered \{#textindexlazysegmentsskippedcovered\}
-
-在惰性倒排列表模式下，由于输出区域已全为 1 而跳过的分段数。
+惰性倒排列表模式下已准备的分段数量 (从磁盘读取或已缓存) 。
 
 ### TextIndexLazySegmentsSkippedDense \{#textindexlazysegmentsskippeddense\}
 
-在惰性倒排列表模式下，通过 dense-memset 优化而跳过的分段数。
+在惰性倒排列表模式下，作为整体进行填充 (OR 使用 `memset`，AND 使用递增) 而非解码块的完全稠密分段数。
+
+### TextIndexLazySegmentsSkippedResolved \{#textindexlazysegmentsskippedresolved\}
+
+在惰性倒排列表模式下，由于输出区域已确定 (对于 OR 为全 1，对于 AND 为全 0) 而跳过的分段数。
 
 ### TextIndexPostingsCacheHits \{#textindexpostingscachehits\}
 

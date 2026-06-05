@@ -4782,21 +4782,9 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Количество операций перехода вперёд, выполненных в режиме ленивого списка постингов.
 
-### TextIndexLazyAndBlocksSkippedZero \{#textindexlazyandblocksskippedzero\}
+### TextIndexLazyBlocksSkippedResolved \{#textindexlazyblocksskippedresolved\}
 
-Количество упакованных блоков, пропущенных из-за того, что результирующая область в режиме lazy AND состояла только из нулей.
-
-### TextIndexLazyAndSegmentsSkippedDense \{#textindexlazyandsegmentsskippeddense\}
-
-Количество сегментов, пропущенных с использованием оптимизации dense-increment в режиме lazy AND.
-
-### TextIndexLazyAndSegmentsSkippedZero \{#textindexlazyandsegmentsskippedzero\}
-
-Количество сегментов, пропущенных из-за того, что результирующая область в режиме lazy AND состояла только из нулей.
-
-### TextIndexLazyBlocksSkippedCovered \{#textindexlazyblocksskippedcovered\}
-
-Количество упакованных блоков, пропущенных из-за того, что выходная область в режиме lazy posting list уже целиком состояла из единиц.
+Количество упакованных блоков, пропущенных из-за того, что выходная область в режиме ленивого списка вхождений уже была определена (все единицы для OR, все нули для AND).
 
 ### TextIndexLazyBruteForceIntersections \{#textindexlazybruteforceintersections\}
 
@@ -4810,17 +4798,21 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Количество декодированных упакованных блоков в режиме lazy posting list.
 
+### TextIndexLazySegmentsBuilt \{#textindexlazysegmentsbuilt\}
+
+Количество сегментов, фактически прочитанных и декодированных (промахи кэша) в режиме ленивого списка вхождений.
+
 ### TextIndexLazySegmentsPrepared \{#textindexlazysegmentsprepared\}
 
-Количество подготовленных сегментов (загружен раздел индекса) в режиме отложенной загрузки списка постингов.
-
-### TextIndexLazySegmentsSkippedCovered \{#textindexlazysegmentsskippedcovered\}
-
-Количество сегментов, пропущенных из-за того, что в режиме lazy posting list выходная область уже была полностью заполнена единицами.
+Количество подготовленных сегментов (прочитанных с диска или кэшированных) в режиме ленивого списка вхождений.
 
 ### TextIndexLazySegmentsSkippedDense \{#textindexlazysegmentsskippeddense\}
 
-Количество сегментов, пропущенных благодаря оптимизации dense-memset в режиме ленивого списка вхождений.
+Количество полностью плотных сегментов, целиком заполняемых (memset для OR, инкремент для AND) вместо декодирования блоков, в режиме ленивого списка вхождений.
+
+### TextIndexLazySegmentsSkippedResolved \{#textindexlazysegmentsskippedresolved\}
+
+Количество сегментов, пропущенных из-за того, что в режиме ленивого списка вхождений выходная область уже была определена (полностью заполнена единицами для OR, полностью заполнена нулями для AND).
 
 ### TextIndexPostingsCacheHits \{#textindexpostingscachehits\}
 

@@ -4781,21 +4781,9 @@ sleep 함수(`sleep`, `sleepEachRow`)에 설정된 대기 시간입니다.
 
 지연 posting list 모드에서 수행된 advance 연산 수입니다.
 
-### TextIndexLazyAndBlocksSkippedZero \{#textindexlazyandblocksskippedzero\}
+### 지연 포스팅 리스트 모드에서 출력 영역이 이미 결정되어(OR의 경우 모두 1, AND의 경우 모두 0) 건너뛴 패킹된 블록 수 \{#textindexlazyblocksskippedresolved\}
 
-지연 AND 모드에서 출력 영역이 모두 0이어서 건너뛴 패킹된 블록 수입니다.
-
-### TextIndexLazyAndSegmentsSkippedDense \{#textindexlazyandsegmentsskippeddense\}
-
-lazy AND 모드에서 dense-increment 최적화로 건너뛴 세그먼트 수입니다.
-
-### TextIndexLazyAndSegmentsSkippedZero \{#textindexlazyandsegmentsskippedzero\}
-
-lazy AND 모드에서 출력 영역이 전부 0이어서 건너뛴 세그먼트 수입니다.
-
-### 지연 게시 목록 모드에서 출력 영역이 이미 모두 1이어서 건너뛴 패킹된 블록 수 \{#textindexlazyblocksskippedcovered\}
-
-지연 게시 목록 모드에서 출력 영역이 이미 모두 1이어서 건너뛴 패킹된 블록 수입니다.
+지연 포스팅 리스트 모드에서 출력 영역이 이미 결정되어(OR의 경우 모두 1, AND의 경우 모두 0) 건너뛴 패킹된 블록 수입니다.
 
 ### TextIndexLazyBruteForceIntersections \{#textindexlazybruteforceintersections\}
 
@@ -4809,17 +4797,21 @@ lazy AND 모드에서 출력 영역이 전부 0이어서 건너뛴 세그먼트 
 
 lazy posting list 모드에서 디코딩된 packed block의 개수입니다.
 
+### TextIndexLazySegmentsBuilt \{#textindexlazysegmentsbuilt\}
+
+지연 포스팅 리스트 모드에서 실제로 읽어 디코딩한 세그먼트 수(캐시 미스)입니다.
+
 ### TextIndexLazySegmentsPrepared \{#textindexlazysegmentsprepared\}
 
-지연 포스팅 리스트 모드에서 준비된 세그먼트 수(인덱스 섹션이 로드됨).
-
-### TextIndexLazySegmentsSkippedCovered \{#textindexlazysegmentsskippedcovered\}
-
-lazy posting list 모드에서 출력 영역이 이미 전부 1로 채워져 있어 건너뛴 세그먼트 수입니다.
+지연 포스팅 리스트 모드에서 준비된 세그먼트 수(디스크에서 읽거나 캐시에서 가져옴).
 
 ### TextIndexLazySegmentsSkippedDense \{#textindexlazysegmentsskippeddense\}
 
-lazy posting list 모드에서 dense-memset 최적화로 건너뛴 세그먼트 수입니다.
+지연 포스팅 리스트 모드에서 블록을 디코딩하는 대신 세그먼트 전체를 패딩해 처리한 fully-dense 세그먼트 수입니다(OR의 경우 memset, AND의 경우 increment).
+
+### TextIndexLazySegmentsSkippedResolved \{#textindexlazysegmentsskippedresolved\}
+
+지연 포스팅 리스트 모드에서 출력 영역이 이미 확정된 상태(OR의 경우 전부 1, AND의 경우 전부 0)여서 건너뛴 세그먼트 수입니다.
 
 ### TextIndexPostingsCacheHits \{#textindexpostingscachehits\}
 
