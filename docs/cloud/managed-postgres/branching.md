@@ -13,39 +13,39 @@ A branch is a fully independent PostgreSQL deployment created from a specific po
 
 Unlike copy-on-write implementations that share storage with the primary database, Managed Postgres branches are restored from backups and operate as independent PostgreSQL deployments.
 
-## How branching works
+## How branching works {#branching}
 
-Branch creation is built on the same backup and recovery infrastructure used for [Point-in-Time Recovery (PITR)](/docs/cloud/managed-postgres/backup-and-restore).
+Branch creation is built on the same backup and recovery infrastructure used for [Point-in-Time Recovery (PITR)](/cloud/managed-postgres/backup-and-restore).
 
 When you create a branch, Managed Postgres restores a base backup from object storage, replays the required WAL segments to reach the requested recovery point, and provisions a new PostgreSQL deployment from the recovered state. Once recovery completes, the branch operates independently of the source database.
 
 The resulting branch is a complete copy of the source database at the selected point in time.
 
-## Common use cases
+## Common use cases {#common-use-cases}
 
-### Development and testing
+### Development and testing {#dev-and-testing}
 
 Create a branch from a production or staging database to validate application changes, migrations, or new features against realistic data.
 
-### Staging environments
+### Staging environments {#staging-environments}
 
 Maintain a staging environment that closely mirrors production without affecting production workloads.
 
-### Data validation
+### Data validation {#date-validation}
 
 Test schema changes, indexing strategies, and query optimizations before deploying them to production.
 
-### Recovery and investigation
+### Recovery and investigation {#recovery-and-investigation}
 
 Recover a database to a specific point in time for troubleshooting, auditing, or validating application behavior.
 
-## Branch sizing
+## Branch sizing {#branch-sizing}
 
 Branches are independent PostgreSQL deployments and can be sized separately from the source database.
 
 For example, a production deployment may run on a larger configuration while a development or staging branch can use a smaller compute profile to reduce costs. This lets teams create temporary environments without matching the compute resources of production.
 
-## Branch creation time
+## Branch creation time {#branch-creation-time}
 
 Because Managed Postgres uses NVMe-backed PostgreSQL storage, branches are restored from backups rather than created through storage-level copy-on-write mechanisms. As a result, branch creation isn't instantaneous.
 
@@ -61,7 +61,7 @@ For most deployments, branches are available within a few minutes. Larger databa
 
 If branch creation time becomes a bottleneck for your workflow, contact the ClickHouse team. In many cases, branch recovery performance can be optimized based on workload characteristics and recovery requirements.
 
-## Branches vs local development
+## Branches vs local development {#branches-v-local-dev}
 
 A common question is whether every developer should use a production branch as their development environment.
 
@@ -76,9 +76,9 @@ For most organizations, we recommend:
 
 This approach reduces load on production systems, improves development velocity, and helps ensure that production data remains appropriately protected.
 
-For guidance on creating local PostgreSQL development environments using Docker, see [Local development environments](/docs/cloud/managed-postgres/local-development).
+For guidance on creating local PostgreSQL development environments using Docker, see [Local development environments](/cloud/managed-postgres/local-development).
 
-## Recommended workflow
+## Recommended workflow {#recommended-workflow}
 
 A common workflow looks like:
 
