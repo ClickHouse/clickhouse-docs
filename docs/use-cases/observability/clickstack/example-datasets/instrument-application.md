@@ -15,11 +15,9 @@ import instrument_app_clickstack_logs from '@site/static/images/clickstack/getti
 import instrument_app_clickstack_traces from '@site/static/images/clickstack/getting-started/instrument_app_clickstack_traces.png';
 import instrument_app_clickstack_sessions from '@site/static/images/clickstack/getting-started/instrument_app_clickstack_sessions.png';
 
-# Instrument an application with Managed ClickStack
+This guide shows how to instrument a simple Node.js application using OpenTelemetry and send its logs, metrics, and traces to [Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed). The backend is instrumented with no changes to the application source code.
 
-This guide shows how to instruments a simple Node.js application using OpenTelemetry and sends its logs, metrics, and traces to Managed ClickStack. The backend is instrumented with no changes to the application source code.
-
-The example application is the [HackerNews Analyzer](https://github.com/ClickHouse/hn-news-analyzer), a small Node.js app that queries the hackernews dataset hosted in the public ClickHouse demo instance. Every chart, table, and search box is backed by a real ClickHouse query, so every interaction produces a trace whose main span is the HTTPS call from the backend out to ClickHouse.
+The [HackerNews Analyzer](https://github.com/ClickHouse/hn-news-analyzer) is a small Node.js app that queries the HackerNews dataset hosted in the public ClickHouse demo instance. Every chart, table, and search box is backed by a real ClickHouse query, so every interaction produces a trace whose main span is the HTTPS call from the backend out to ClickHouse.
 
 ## Prerequisites {#prerequisites}
 
