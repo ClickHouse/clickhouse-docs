@@ -61,7 +61,7 @@ export default function DocItemTOCDesktop() {
         <Feedback side={toc.length >= 7 ? 'left' : 'bottom'} />
       </div>
 
-      {!isClosed && ad && (
+      {!isClosed && ad && !frontMatter.hide_advert && (
         <div className={styles.docCloudCardAd}>
           <div className={styles.docCloudCardHeader}>
             <h6>{ad.title}</h6>
