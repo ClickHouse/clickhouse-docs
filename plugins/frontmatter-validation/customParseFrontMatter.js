@@ -266,7 +266,8 @@ async function customParseFrontMatter(params) {
                     const isExcludedField = currentFieldName === 'slug' ||
                         currentFieldName === 'id' ||
                         currentFieldName === 'pagination_next' ||
-                        currentFieldName === 'pagination_prev';
+                        currentFieldName === 'pagination_prev' ||
+                        currentFieldName === 'custom_edit_url';
 
                     if (!isExcludedField && !inMultiLineValue && (
                         line.includes(': ') &&
