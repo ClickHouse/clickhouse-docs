@@ -117,7 +117,9 @@ export function initTelemetry(): void {
 
 No extra `.env` edits are required. `__OTLP_ENDPOINT__` and `__OTLP_AUTH_TOKEN__` are compile-time constants injected by `vite.config.ts`: the endpoint is `OTEL_EXPORTER_OTLP_ENDPOINT` and the token is parsed out of `OTEL_EXPORTER_OTLP_HEADERS`, the same values the backend uses.
 
-> **Security note:** The ingestion token is baked into the public browser bundle and is readable by anyone inspecting the network tab.
+:::warning
+The ingestion token is baked into the public browser bundle and is readable by anyone inspecting the network tab.
+:::
 
 ## Step 4 — Generate traffic and view telemetry {#generate-traffic-and-view-telemetry}
 
