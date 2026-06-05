@@ -126,6 +126,45 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 
   创建一个 `otel-collector-config.yaml` 文件,配置 CloudWatch 接收器。
 
+  <details>
+    <summary>查看您账户中可用的日志组</summary>
+
+    在编辑配置之前，先列出您所在区域中已有的日志组，以便选择实际存在的名称 (并确认区域是否正确) ：
+
+    ```bash
+    aws logs describe-log-groups --region us-east-1 \
+      --query 'logGroups[].logGroupName' --output table
+    ```
+
+    示例输出：
+
+    ```text
+    -------------------------------
+    |      DescribeLogGroups      |
+    +-----------------------------+
+    |  /aws-glue/jobs/error       |
+    |  /aws-glue/jobs/logs-v2     |
+    |  /aws-glue/jobs/output      |
+    |  /aws-glue/sessions/error   |
+    |  /aws-glue/sessions/output  |
+    +-----------------------------+
+    ```
+
+    直接在下方示例 1 的 `groups.named` 块中使用此列表中的名称。对于上述账户，named-groups 部分将变为：
+
+    ```yaml
+    groups:
+      named:
+        /aws-glue/jobs/error:
+        /aws-glue/jobs/logs-v2:
+        /aws-glue/jobs/output:
+        /aws-glue/sessions/error:
+        /aws-glue/sessions/output:
+    ```
+
+    或者，如果您要收集的日志组具有相同的前缀 (此处为 `/aws-glue/`) ，请使用示例 2，并将 `prefix: /aws-glue/` 作为配置，而不是逐一列出它们。
+  </details>
+
   **示例 1:命名日志组(推荐)**
 
   此配置从特定的命名日志组中收集日志：
@@ -198,7 +237,7 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
   **配置参数：**
 
   * `region`: 日志组所在的 AWS 区域
-  * `poll_interval`: 检查新日志的时间间隔（例如，`1m`、`5m`）
+  * `poll_interval`: 检查新日志的时间间隔 (例如，`1m`、`5m`)
   * `max_events_per_request`: 每个请求最多获取的日志事件数量
   * `groups.autodiscover.limit`: 自动发现的日志组最大数量
   * `groups.autodiscover.prefix`: 通过前缀过滤日志组
@@ -209,7 +248,7 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
   **替换以下内容：**
 
   * `${CLICKSTACK_API_KEY}` → 使用您先前设置的环境变量
-  * `http://localhost:4318` → ClickStack 端点（如果是远程运行，请使用 ClickStack 主机地址）
+  * `http://localhost:4318` → ClickStack 端点 (如果是远程运行，请使用 ClickStack 主机地址)
   * `us-east-1` → 您的 AWS 区域
   * 日志组名称/前缀 → 您实际的 CloudWatch 日志组
 
@@ -257,14 +296,14 @@ AWS CloudWatch 是一项用于监控 AWS 资源和应用程序的服务。虽然
 
   1. 在浏览器中打开 http://localhost:8080 (或您的 ClickStack URL) 以访问 HyperDX
   2. 转到 **Logs** 视图
-  3. 等待 1–2 分钟，日志会开始出现（具体时间取决于您的轮询间隔设置）
+  3. 等待 1–2 分钟，日志会开始出现 (具体时间取决于您的轮询间隔设置)
   4. 在 CloudWatch 日志组中搜索日志
 
   <Image img={log_search_view} alt="日志搜索视图" />
 
   在日志中查找这些关键属性：
 
-  * `ResourceAttributes['aws.region']`：您的 AWS 区域（例如：“us-east-1”）
+  * `ResourceAttributes['aws.region']`: 您的 AWS 区域 (例如：&quot;us-east-1&quot;)
   * `ResourceAttributes['cloudwatch.log.group.name']`：CloudWatch 日志组名称
   * `ResourceAttributes['cloudwatch.log.stream']`: 日志流名称
   * `Body`: 日志消息的实际内容

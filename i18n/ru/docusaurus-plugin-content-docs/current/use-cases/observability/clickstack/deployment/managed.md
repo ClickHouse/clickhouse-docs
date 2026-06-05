@@ -11,7 +11,6 @@ keywords: ['clickstack', 'развертывание', 'настройка', 'к
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
@@ -35,13 +34,7 @@ import new_service from '@site/static/images/clickstack/getting-started/new_serv
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<BetaBadge />
-
-::::note[Бета-функция]
-Эта функция находится в бета-версии ClickHouse Cloud.
-::::
-
-Это **руководство предназначено для существующих пользователей ClickHouse Cloud**. Если вы новичок в ClickHouse Cloud, мы рекомендуем наше руководство [Getting Started](/use-cases/observability/clickstack/getting-started/managed) по Managed ClickStack.
+Это **руководство предназначено для существующих пользователей ClickHouse Cloud**. Если вы новичок в ClickHouse Cloud, мы рекомендуем наше руководство [Getting Started](/use-cases/observability/clickstack/getting-started/managed) по Управляемому ClickStack.
 
 В этом варианте развертывания и ClickHouse, и UI ClickStack (HyperDX) размещены в ClickHouse Cloud, что минимизирует количество компонентов, которые пользователю необходимо разворачивать и обслуживать самостоятельно.
 
@@ -55,8 +48,7 @@ import TabItem from '@theme/TabItem';
 * Функции безопасности и соответствия требованиям
 * Бесшовные обновления
 
-В этом режиме ингестия данных полностью остаётся на стороне пользователя. Вы можете выполнять ингестию данных в Managed ClickStack, используя собственный развернутый OpenTelemetry collector, прямую ингестию из клиентских библиотек, нативные для ClickHouse табличные движки (такие как Kafka или S3), ETL-конвейеры или ClickPipes — управляемый сервис ингестии в ClickHouse Cloud. Такой подход обеспечивает самый простой и наиболее производительный способ эксплуатации ClickStack.
-
+В этом режиме ингестия данных полностью остаётся на стороне пользователя. Вы можете выполнять ингестию данных в Управляемый ClickStack, используя собственный развернутый OpenTelemetry collector, прямую ингестию из клиентских библиотек, нативные для ClickHouse табличные движки (такие как Kafka или S3), ETL-конвейеры или ClickPipes — управляемый сервис ингестии в ClickHouse Cloud. Такой подход обеспечивает самый простой и наиболее производительный способ эксплуатации ClickStack.
 
 ### Подходит для \{#suitable-for\}
 

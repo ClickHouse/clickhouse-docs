@@ -11,7 +11,6 @@ keywords: ['clickstack', 'デプロイメント', 'セットアップ', '構成'
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
@@ -35,12 +34,6 @@ import new_service from '@site/static/images/clickstack/getting-started/new_serv
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<BetaBadge />
-
-::::note[ベータ機能]
-この機能は ClickHouse Cloud のベータ版です。
-::::
-
 この**ガイドは既存の ClickHouse Cloud ユーザー向けです**。ClickHouse Cloud を初めて利用する場合は、Managed ClickStack 向けの [入門ガイド](/use-cases/observability/clickstack/getting-started/managed) を参照してください。
 
 このデプロイメントパターンでは、ClickHouse と ClickStack UI (HyperDX) の両方が ClickHouse Cloud 上でホストされ、ユーザーがセルフホストする必要があるコンポーネント数を最小限に抑えられます。
@@ -56,7 +49,6 @@ import TabItem from '@theme/TabItem';
 * シームレスなアップグレード
 
 このモードでは、データのインジェストは完全にユーザー側で行います。Managed ClickStack へのデータのインジェストには、独自にホストした OpenTelemetry collector、クライアントライブラリからの直接インジェスト、ClickHouse ネイティブのテーブルエンジン (Kafka や S3 など)、ETL パイプライン、あるいは ClickHouse Cloud のマネージドインジェストサービスである ClickPipes を利用できます。このアプローチは、ClickStack を運用するうえで最もシンプルかつ高性能な方法です。
-
 
 ### 適しているケース \{#suitable-for\}
 

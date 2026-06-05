@@ -15,14 +15,11 @@ import select_source from '@site/static/images/clickstack/getting-started/select
 import otel_collector_start from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import advanced_otel_collector from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import clickstack_managed_ui from '@site/static/images/clickstack/getting-started/clickstack_managed_ui.png';
-import BetaBadge from '@theme/badges/BetaBadge';
 import SetupManagedIngestion from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_setup_managed_ingestion.md';
 import ProviderSelection from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_select_provider.md';
 import UseCaseSelector from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_select_usecase.md';
 import NavigateClickStackUI from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_navigate_managed.md';
 import service_connect from '@site/static/images/_snippets/service_connect.png';
-
-<BetaBadge />
 
 **Managed ClickStack** を **ClickHouse Cloud** 上にデプロイする方法が、最も簡単な始め方です。これにより、インジェスト、スキーマ、オブザーバビリティのワークフローを完全に制御しつつ、フルマネージドでセキュアなバックエンドが提供されます。これによって自前で ClickHouse を運用する必要がなくなり、次のような多くの利点が得られます。
 

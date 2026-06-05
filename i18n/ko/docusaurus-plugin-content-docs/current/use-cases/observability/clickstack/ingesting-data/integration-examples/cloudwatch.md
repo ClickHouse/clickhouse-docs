@@ -124,7 +124,46 @@ AWS CloudWatch는 AWS 리소스와 애플리케이션을 위한 모니터링 서
 
   #### CloudWatch 수신기 구성하기
 
-  CloudWatch 리시버 구성이 포함된 `otel-collector-config.yaml` 파일을 생성하세요.
+  CloudWatch 수신기 구성이 포함된 `otel-collector-config.yaml` 파일을 생성하세요.
+
+  <details>
+    <summary>계정에서 사용할 수 있는 로그 그룹 확인하기</summary>
+
+    구성을 편집하기 전에 해당 리전에 있는 로그 그룹을 나열해 실제 이름을 선택하고 리전이 올바른지도 확인하세요:
+
+    ```bash
+    aws logs describe-log-groups --region us-east-1 \
+      --query 'logGroups[].logGroupName' --output table
+    ```
+
+    예시 출력:
+
+    ```text
+    -------------------------------
+    |      DescribeLogGroups      |
+    +-----------------------------+
+    |  /aws-glue/jobs/error       |
+    |  /aws-glue/jobs/logs-v2     |
+    |  /aws-glue/jobs/output      |
+    |  /aws-glue/sessions/error   |
+    |  /aws-glue/sessions/output  |
+    +-----------------------------+
+    ```
+
+    아래의 예시 1에 있는 `groups.named` 블록에서 이 목록의 이름을 직접 사용하세요. 위 계정의 경우 `named-groups` 섹션은 다음과 같이 됩니다:
+
+    ```yaml
+    groups:
+      named:
+        /aws-glue/jobs/error:
+        /aws-glue/jobs/logs-v2:
+        /aws-glue/jobs/output:
+        /aws-glue/sessions/error:
+        /aws-glue/sessions/output:
+    ```
+
+    또는 원하는 그룹들이 공통 접두사(여기서는 `/aws-glue/`)를 사용하는 경우, 개별적으로 나열하는 대신 `prefix: /aws-glue/`를 사용해 예제 2를 적용하세요.
+  </details>
 
   **예제 1: 이름이 지정된 로그 그룹(권장)**
 
@@ -195,7 +234,7 @@ AWS CloudWatch는 AWS 리소스와 애플리케이션을 위한 모니터링 서
         exporters: [otlphttp]
   ```
 
-  **구성 파라미터:**
+  **구성 매개변수:**
 
   * `region`: 로그 그룹이 있는 AWS 리전
   * `poll_interval`: 새 로그를 확인할 간격(예: `1m`, `5m`)
@@ -239,7 +278,7 @@ AWS CloudWatch는 AWS 리소스와 애플리케이션을 위한 모니터링 서
         - "host.docker.internal:host-gateway"
   ```
 
-  그런 다음 컬렉터를 시작하세요:
+  그런 다음 수집기를 시작하세요:
 
   ```bash
   docker compose up -d

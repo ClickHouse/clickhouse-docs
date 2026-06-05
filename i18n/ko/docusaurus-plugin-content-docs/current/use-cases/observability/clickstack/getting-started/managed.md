@@ -15,14 +15,11 @@ import select_source from '@site/static/images/clickstack/getting-started/select
 import otel_collector_start from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import advanced_otel_collector from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import clickstack_managed_ui from '@site/static/images/clickstack/getting-started/clickstack_managed_ui.png';
-import BetaBadge from '@theme/badges/BetaBadge';
 import SetupManagedIngestion from '@site/i18n/ko/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_setup_managed_ingestion.md';
 import ProviderSelection from '@site/i18n/ko/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_select_provider.md';
 import UseCaseSelector from '@site/i18n/ko/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_select_usecase.md';
 import NavigateClickStackUI from '@site/i18n/ko/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_navigate_managed.md';
 import service_connect from '@site/static/images/_snippets/service_connect.png';
-
-<BetaBadge />
 
 가장 쉽게 시작하는 방법은 **ClickHouse Cloud**에서 **Managed ClickStack**을 배포하는 것입니다. 이렇게 하면 완전 관리형이고 보안이 강화된 백엔드를 제공하면서도 수집, 스키마, 관측성 워크플로우에 대한 완전한 제어를 유지할 수 있습니다. 사용자가 직접 ClickHouse를 운영할 필요가 없어지며, 다음과 같은 다양한 이점이 제공됩니다:
 

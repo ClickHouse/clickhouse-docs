@@ -11,7 +11,6 @@ keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability'
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
@@ -35,12 +34,6 @@ import new_service from '@site/static/images/clickstack/getting-started/new_serv
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<BetaBadge />
-
-::::note[베타 기능]
-이 기능은 현재 ClickHouse Cloud 베타 단계에 있습니다.
-::::
-
 이 **가이드는 기존 ClickHouse Cloud 사용자**를 위한 것입니다. ClickHouse Cloud가 처음이라면, Managed ClickStack용 [시작하기](/use-cases/observability/clickstack/getting-started/managed) 가이드를 참고하기를 권장합니다.
 
 이 배포 패턴에서는 ClickHouse와 ClickStack UI(HyperDX) 모두 ClickHouse Cloud에서 호스팅되며, 사용자가 자체적으로 호스팅해야 하는 구성 요소의 수를 최소화합니다.
@@ -56,7 +49,6 @@ import TabItem from '@theme/TabItem';
 * 중단 없는 업그레이드
 
 이 모드에서는 데이터 수집이 전적으로 사용자 책임입니다. 사용자가 호스팅하는 OpenTelemetry collector, 클라이언트 라이브러리에서의 직접 수집, Kafka 또는 S3와 같은 ClickHouse 네이티브 테이블 엔진, ETL 파이프라인, 또는 ClickHouse Cloud의 관리형 수집 서비스인 ClickPipes를 사용하여 Managed ClickStack으로 데이터를 수집할 수 있습니다. 이 방식은 ClickStack을 운영하기 위한 가장 단순하면서도 성능이 뛰어난 방법을 제공합니다.
-
 
 ### 적합한 경우 \{#suitable-for\}
 

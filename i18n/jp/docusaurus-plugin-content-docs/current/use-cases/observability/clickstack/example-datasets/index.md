@@ -10,10 +10,11 @@ keywords: ['ClickStack サンプルデータセット', 'ClickStack デモデー
 
 このセクションでは、ClickStack の利用開始に役立つ、さまざまなサンプルデータセットと例を提供します。これらの例では、ローカル開発環境から本番シナリオまで、ClickStack でオブザーバビリティデータを扱うさまざまな方法を示します。
 
-| データセット                                   | 説明                                                                           |
-| ---------------------------------------- | ---------------------------------------------------------------------------- |
-| [Sample Data](sample-data.md)            | デモ環境から取得したログ、トレース、メトリクスを含むサンプルデータセットを読み込みます                                  |
-| [Local Data](local-data.md)              | ローカルシステムのメトリクスとログを収集し、分析のために ClickStack に送信します                               |
-| [Remote Demo Data](remote-demo-data.md)  | リモートのデモクラスターに接続し、問題を調査します                                                    |
-| [Session Replay Demo](session-replay.md) | セッションリプレイ用にデモ Web アプリケーションをインストルメントし、ClickStack で操作内容を確認します                  |
-| [Chrome Extension](chrome-extension.md)  | HyperDX Chrome 拡張機能を使って任意の Web サイトに Browser SDK を挿入します — アプリケーションコードの変更は不要です |
+| データセット                                   | 説明                                                                             |
+| ---------------------------------------- | ------------------------------------------------------------------------------ |
+| [Sample Data](sample-data.md)            | デモ環境から取得したログ、トレース、メトリクスを含むサンプルデータセットを読み込みます                                    |
+| [Local Data](local-data.md)              | ローカルシステムのメトリクスとログを収集し、分析のために ClickStack に送信します                                 |
+| [Remote Demo Data](remote-demo-data.md)  | リモートのデモクラスターに接続し、問題を調査します                                                      |
+| [Session Replay Demo](session-replay.md) | セッションリプレイ用にデモ Web アプリケーションをインストルメントし、ClickStack で操作内容を確認します                    |
+| [Chrome Extension](chrome-extension.md)  | HyperDX Chrome 拡張機能を使って任意の Web サイトに Browser SDK を挿入します — アプリケーションコードの変更は不要です   |
+| [otelgen を使用した合成データ](otelgen.md)         | `otelgen` を使用して、合成ログ、トレース、メトリクスを実行中の ClickStack OpenTelemetry collector に送信します |

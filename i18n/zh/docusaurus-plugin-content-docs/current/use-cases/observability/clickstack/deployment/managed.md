@@ -5,13 +5,12 @@ pagination_prev: null
 pagination_next: null
 sidebar_position: 1
 toc_max_heading_level: 2
-description: '部署托管版 ClickStack'
+description: '部署托管 ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
@@ -35,28 +34,21 @@ import new_service from '@site/static/images/clickstack/getting-started/new_serv
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<BetaBadge />
+本**指南适用于已有 ClickHouse Cloud 账号的用户**。如果你刚接触 ClickHouse Cloud，建议先阅读托管 ClickStack 的[快速开始](/use-cases/observability/clickstack/getting-started/managed)。
 
-::::note[测试版功能]
-此功能目前在 ClickHouse Cloud 处于测试阶段（Beta）。
-::::
-
-本**指南适用于已有 ClickHouse Cloud 账号的用户**。如果你刚接触 ClickHouse Cloud，建议先阅读 ClickStack 托管部署的[入门指南](/use-cases/observability/clickstack/getting-started/managed)。
-
-在此部署模式下，ClickHouse 和 ClickStack UI（HyperDX）都托管在 ClickHouse Cloud 中，从而最大程度减少用户需要自托管的组件数量。
+在此部署模式下，ClickHouse 和 ClickStack UI (HyperDX) 都托管在 ClickHouse Cloud 中，从而最大程度减少用户需要自托管的组件数量。
 
 除了降低基础设施管理开销之外，此部署模式还确保身份验证与 ClickHouse Cloud 的 SSO/SAML 集成。与自托管部署不同，你无需再准备 MongoDB 实例来存储应用状态——例如仪表盘、已保存搜索、用户设置和告警。用户还将受益于：
 
 * 计算与存储解耦的自动扩缩容
 * 基于对象存储的低成本、几乎无限的保留期
-* 使用 Warehouse（仓库）独立隔离读写工作负载的能力
+* 使用 Warehouse (仓库) 独立隔离读写工作负载的能力
 * 集成身份认证
 * 自动化备份
 * 安全与合规特性
 * 无缝升级
 
-在此模式下，数据摄取完全由用户负责。你可以使用自托管的 OpenTelemetry collector、客户端库直接摄取、ClickHouse 原生表引擎（如 Kafka 或 S3）、ETL 管道，或 ClickPipes——ClickHouse Cloud 的托管摄取服务——将数据摄取到托管型 ClickStack 中。这种方式为运行 ClickStack 提供了最简单且性能最佳的路径。
-
+在此模式下，数据摄取完全由用户负责。你可以使用自托管的 OpenTelemetry collector、客户端库直接摄取、ClickHouse 原生表引擎 (如 Kafka 或 S3) 、ETL 管道，或 ClickPipes——ClickHouse Cloud 的托管摄取服务——将数据摄取到托管 ClickStack 中。这种方式为运行 ClickStack 提供了最简单且性能最佳的路径。
 
 ### 适用场景 \{#suitable-for\}
 

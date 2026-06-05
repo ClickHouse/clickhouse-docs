@@ -15,14 +15,11 @@ import select_source from '@site/static/images/clickstack/getting-started/select
 import otel_collector_start from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import advanced_otel_collector from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import clickstack_managed_ui from '@site/static/images/clickstack/getting-started/clickstack_managed_ui.png';
-import BetaBadge from '@theme/badges/BetaBadge';
 import SetupManagedIngestion from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_setup_managed_ingestion.md';
 import ProviderSelection from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_select_provider.md';
 import UseCaseSelector from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_select_usecase.md';
 import NavigateClickStackUI from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/deployment/_snippets/_navigate_managed.md';
 import service_connect from '@site/static/images/_snippets/service_connect.png';
-
-<BetaBadge />
 
 开始使用的最简便方式，是在 **ClickHouse Cloud** 上部署 **Managed ClickStack**。它提供一个完全托管且安全的后端，同时仍然让您对摄取、schema 和可观测性工作流保持完全控制。这样您无需自行运维 ClickHouse，并可获得一系列优势：
 
