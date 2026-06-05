@@ -16,3 +16,4 @@ operations/query-rules
 use-cases/observability/clickstack/managed-onboarding/setting-up-your-opentelemetry-collector.md
 use-cases/observability/clickstack/managed-onboarding/monitoring-kubernetes.md
 use-cases/observability/clickstack/managed-onboarding/monitoring-aws-cloudwatch-logs.md
+use-cases/observability/clickstack/managed-onboarding/instrument-application.md
