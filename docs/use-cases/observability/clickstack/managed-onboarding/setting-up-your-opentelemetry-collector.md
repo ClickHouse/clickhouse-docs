@@ -13,7 +13,7 @@ hide_advert: true
 
 import Image from '@theme/IdealImage';
 import clickhouse_cloud_connection from '@site/static/images/use-cases/observability/clickstack-cloud-connect.png';
-import clickstack_cloud from '@site/static/images/use-cases/observability/clickstack-cloud-v2.png';
+import clickstack_cloud from '@site/static/images/use-cases/observability/clickstack-cloud-first-time.png';
 import clickstack_start_ingestion from '@site/static/images/use-cases/observability/clickstack-start-ingestion.png';
 import clickstack_start_exploring from '@site/static/images/use-cases/observability/clickstack-start-exploring.png';
 import clickstack_search from '@site/static/images/use-cases/observability/clickstack-search.png';
@@ -122,15 +122,15 @@ For the equivalent trace and metrics commands, and a walkthrough of the other `o
 
 ## Confirm in the ClickStack UI {#confirm-in-ui}
 
-Open your service in the [ClickHouse Cloud console](https://console.clickhouse.cloud) and select **ClickStack** from the left menu.
+Open your service in the [ClickHouse Cloud console](https://console.clickhouse.cloud) and select **ClickStack** from the left menu and then **Start Ingestion**.
 
 <Image img={clickstack_cloud} size="lg" alt="Launch ClickStack" border/>
 
-You should be automatically directed to the **Getting Started** page. If not, select **Getting Started** from the left-hand menu, then click **Start Ingestion**.
+The next step can be skipped, as you’ve already configured your collector. Click **Launch ClickStack** to continue.
+
+ClickStack will open in a new tab and you should be automatically directed to the **Getting Started** page. If not, select **Getting Started** from the left-hand menu, then click **Start Ingestion** followed by **Next**.
 
 <Image img={clickstack_start_ingestion} size="lg" alt="ClickStack Start Ingestion" border/>
-
-The next step can be skipped, as you’ve already configured your collector. Click **Next** to continue.
 
 ClickStack should automatically detect your tables and telemetry data, allowing you to proceed. Select **Start Exploring** to begin exploring your trace data.
 
