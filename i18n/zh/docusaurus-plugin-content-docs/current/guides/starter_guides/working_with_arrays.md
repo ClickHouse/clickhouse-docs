@@ -30,7 +30,9 @@ array(T)
 
 ```sql
 SELECT array(1, 2, 3) AS numeric_array
+```
 
+```response
 ┌─numeric_array─┐
 │ [1,2,3]       │
 └───────────────┘
@@ -40,17 +42,21 @@ SELECT array(1, 2, 3) AS numeric_array
 
 ```sql
 SELECT array('hello', 'world') AS string_array
+```
 
+```response
 ┌─string_array──────┐
 │ ['hello','world'] │
 └───────────────────┘
 ```
 
-或者是嵌套类型的数组,例如 [tuple](/sql-reference/data-types/tuple):
+或者是嵌套类型的数组,例如 [tuples](/sql-reference/data-types/tuple):
 
 ```sql
 SELECT array(tuple(1, 2), tuple(3, 4))
+```
 
+```response
 ┌─[(1, 2), (3, 4)]─┐
 │ [(1,2),(3,4)]    │
 └──────────────────┘
@@ -75,7 +81,9 @@ Code: 386. DB::Exception: There is no supertype for types String, String, UInt8,
 
 ```sql
 SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]) AS array_type;
+```
 
+```response
 ┌─mixed_array─┬─array_type─────┐
 │ [1,2.5,3]   │ Array(Float64) │
 └─────────────┴────────────────┘
@@ -124,12 +132,14 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
 在 ClickHouse 中,需要注意数组索引始终从 **1** 开始。
 这可能不同于你习惯使用的其他编程语言,在那些语言中数组通常是从 0 开始编号的。
 
-例如，给定一个数组，可以通过以下方式选择数组的第一个元素：
+例如，给定一个数组，你可以通过以下写法选择数组的第一个元素：
 
 ```sql
 WITH array('hello', 'world') AS string_array
 SELECT string_array[1];
+```
 
+```response
 ┌─arrayElement⋯g_array, 1)─┐
 │ hello                    │
 └──────────────────────────┘
@@ -141,7 +151,9 @@ SELECT string_array[1];
 ```sql
 WITH array('hello', 'world') AS string_array
 SELECT string_array[-1];
+```
 
+```response
 ┌─arrayElement⋯g_array, -1)─┐
 │ world                     │
 └───────────────────────────┘
@@ -154,12 +166,13 @@ SELECT string_array[-1];
 ```sql
 WITH ['hello', 'world', 'arrays are great aren\'t they?'] AS string_array
 SELECT string_array[0]
+```
 
+```response
 ┌─arrayElement⋯g_array, 0)─┐
 │                          │
 └──────────────────────────┘
 ```
-
 
 ## 数组函数 \{#array-functions\}
 
@@ -173,7 +186,9 @@ ClickHouse 提供了大量用于数组操作的实用函数。
 ```sql
 WITH array('learning', 'ClickHouse', 'arrays') AS string_array
 SELECT length(string_array);
+```
 
+```response
 ┌─length(string_array)─┐
 │                    3 │
 └──────────────────────┘
@@ -184,7 +199,9 @@ SELECT length(string_array);
 ```sql
 WITH array('learning', 'ClickHouse', 'arrays') AS string_array
 SELECT arrayEnumerate(string_array);
+```
 
+```response
 ┌─arrayEnumerate(string_array)─┐
 │ [1,2,3]                      │
 └──────────────────────────────┘
@@ -194,7 +211,9 @@ SELECT arrayEnumerate(string_array);
 
 ```sql
 SELECT indexOf([4, 2, 8, 8, 9], 8);
+```
 
+```response
 ┌─indexOf([4, 2, 8, 8, 9], 8)─┐
 │                           3 │
 └─────────────────────────────┘
@@ -226,7 +245,6 @@ hasAny_false: 0
 hasAll_true:  1
 hasAll_false: 0
 ```
-
 
 ## 使用数组函数探索航班数据 \{#exploring-flight-data-with-array-functions\}
 

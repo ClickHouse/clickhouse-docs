@@ -38,7 +38,9 @@ GROUP BY OwnerDisplayName
 HAVING count() > 10
 ORDER BY total_views DESC
 LIMIT 5
+```
 
+```response
 ┌─OwnerDisplayName─┬─total_views─┐
 │ Joan Venge       │    25520387 │
 │ Ray Vega         │    21576470 │
@@ -82,7 +84,9 @@ FROM posts
 GROUP BY tags
 ORDER BY views DESC
 LIMIT 5
+```
 
+```response
 ┌─tags───────┬──────views─┐
 │ javascript │ 8190916894 │
 │ python     │ 8175132834 │
@@ -142,6 +146,9 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
+```
+
+```response
 Row 1:
 ──────
 Year:                   2008
@@ -172,7 +179,7 @@ MaxViewCount:           66975
 Peak memory usage: 554.31 MiB.
 ```
 
-これは、同等の Postgres クエリよりも大幅にシンプル（かつ高速）です：
+これは、同等の Postgres クエリよりも大幅にシンプル (かつ高速) です：
 
 ```sql
 --Postgres
@@ -210,7 +217,6 @@ Time: 125822.015 ms (02:05.822)
 
 条件関数と配列関数を使うと、クエリを大幅に単純化できます。次のクエリは、2022 年から 2023 年にかけて出現回数が 10,000 回を超えるタグのうち、割合の増加が最も大きいものを計算します。条件関数や配列関数、そして HAVING 句や SELECT 句内でエイリアスを再利用できるおかげで、次の ClickHouse クエリがいかに簡潔になっているかに注目してください。
 
-
 ```sql
 --ClickHouse
 SELECT  arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tag,
@@ -223,7 +229,9 @@ GROUP BY tag
 HAVING (count_2022 > 10000) AND (count_2023 > 10000)
 ORDER BY percent_change DESC
 LIMIT 5
+```
 
+```response
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
 │ next.js     │      13788 │      10520 │   31.06463878326996 │
 │ spring-boot │      16573 │      17721 │  -6.478189718413183 │

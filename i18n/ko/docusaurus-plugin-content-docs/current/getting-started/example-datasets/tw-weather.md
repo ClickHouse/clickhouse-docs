@@ -219,7 +219,9 @@ SELECT
 FROM tw_weather_data
 WHERE (year(MeasuredDate) = 2023) AND (Td IS NOT NULL)
 GROUP BY StationId
+```
 
+```response
 ┌─StationId─┬─max_td─┐
 │ 466940    │      1 │
 │ 467300    │      1 │
@@ -255,7 +257,6 @@ GROUP BY StationId
 
 30 rows in set. Elapsed: 0.045 sec. Processed 6.41 million rows, 187.33 MB (143.92 million rows/s., 4.21 GB/s.)
 ```
-
 
 ### Q2: 특정 기간(time range), 필드, 기상 관측소를 지정하여 원시 데이터 조회 \{#q2-raw-data-fetching-with-the-specific-duration-time-range-fields-and-weather-station\}
 

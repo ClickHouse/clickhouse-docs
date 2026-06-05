@@ -56,6 +56,10 @@ ClickHouse Cloud のお客様は、定義済みのシステムロールから選
   Console にログインするユーザーには、少なくとも Organization &gt; Access organization 権限が必要です。
   :::
 
+  :::note[Data Sources タブへのアクセス]
+  **Data Sources** タブにアクセスするには、現在 `Manage and Delete Selected Services` 権限が必要です。
+  :::
+
   <Image img={step_5} size="md" />
 
   ### 新しいロールを確認する \{#review-role\}

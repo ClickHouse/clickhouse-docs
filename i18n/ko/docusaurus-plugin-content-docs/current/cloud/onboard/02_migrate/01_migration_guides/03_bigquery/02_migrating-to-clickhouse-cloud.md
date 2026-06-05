@@ -209,7 +209,9 @@ ClickHouse에서의 파티셔닝은 BigQuery에서와 유사한 방식으로 활
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'posts'
+```
 
+```response
 ┌─partition─┐
 │ 2008      │
 │ 2009      │
@@ -231,17 +233,20 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 ALTER TABLE posts
 (DROP PARTITION '2008')
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
 * **Query optimization** - 파티션은 쿼리 성능 향상에 도움이 될 수 있지만, 이는 접근 패턴에 크게 좌우됩니다. 쿼리가 소수의 파티션(이상적으로는 하나)만을 대상으로 하는 경우에는 성능이 향상될 수 있습니다. 이는 일반적으로 파티셔닝 키가 기본 키에 포함되어 있지 않고, 해당 키로 필터링하는 경우에만 유용합니다. 그러나 많은 파티션을 대상으로 해야 하는 쿼리는 파티셔닝을 사용하지 않았을 때보다 성능이 더 나빠질 수 있습니다(파티셔닝으로 인해 파트 수가 더 많아질 수 있기 때문입니다). 단일 파티션만을 대상으로 하는 이점은 파티셔닝 키가 이미 기본 키의 앞부분에 포함되어 있는 경우 사실상 거의 사라집니다. 파티션 내 값이 고유하다면, 파티셔닝은 [`GROUP BY` 쿼리 최적화](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)에도 사용될 수 있습니다. 그러나 일반적으로는 기본 키가 먼저 충분히 최적화되어 있는지 확인해야 하며, 접근 패턴이 하루 단위 파티셔닝에서 최근 1일처럼 특정 예측 가능한 일(日) 단위의 일부 구간만을 일관되게 조회하는 예외적인 경우에만, 파티셔닝을 쿼리 최적화 기법으로 고려하는 것이 좋습니다.
-
 
 #### 권장 사항 \{#recommendations\}
 
@@ -278,8 +283,8 @@ Peak memory usage: 201.93 MiB.
 
 이 쿼리는 `UserId`가 정렬 키가 아니기 때문에 (아주 빠르게 처리되더라도) 전체 9천만 행을 스캔해야 합니다.
 이전에는 `PostId` 조회용 materialized view를 사용하여 이 문제를 해결했습니다.
-동일한 문제는 projection을 사용해도 해결할 수 있습니다.
-아래 명령은 `ORDER BY user_id`를 사용하는 projection을 추가합니다.
+동일한 문제는 PROJECTION을 사용해도 해결할 수 있습니다.
+아래 명령은 `ORDER BY user_id`를 사용하는 PROJECTION을 추가합니다.
 
 ```sql
 ALTER TABLE comments ADD PROJECTION comments_user_id (
@@ -325,7 +330,9 @@ SELECT
     latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
+```
 
+```response
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
 1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
@@ -351,13 +358,14 @@ Peak memory usage: 4.06 MiB.
 
 [`EXPLAIN` command](/sql-reference/statements/explain)를 사용하여 이 쿼리를 처리하는 데 이 프로젝션이 사용되었는지도 확인할 수 있습니다.
 
-
 ```sql
 EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
     ┌─explain─────────────────────────────────────────────┐
  1. │ Expression ((Projection + Before ORDER BY))         │
  2. │   Aggregating                                       │
@@ -374,7 +382,6 @@ WHERE UserId = 8592047
 
 11 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### 프로젝션을 언제 사용해야 하는가 \{#when-to-use-projections\}
 
@@ -413,7 +420,9 @@ GROUP BY OwnerDisplayName
 HAVING count() > 10
 ORDER BY total_views DESC
 LIMIT 5
+```
 
+```response
    ┌─OwnerDisplayName─┬─total_views─┐
 1. │ Joan Venge       │    25520387 │
 2. │ Ray Vega         │    21576470 │
@@ -445,7 +454,9 @@ FROM stackoverflow.posts
 GROUP BY tags
 ORDER BY views DESC
 LIMIT 5
+```
 
+```response
    ┌─tags───────┬──────views─┐
 1. │ javascript │ 8190916894 │
 2. │ python     │ 8175132834 │
@@ -457,7 +468,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
 Peak memory usage: 567.41 MiB.
 ```
-
 
 ## 집계 함수 \{#aggregate-functions\}
 
@@ -482,7 +492,9 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Year:                    2008
@@ -513,7 +525,6 @@ MaxViewCount:            66975
 Peak memory usage: 377.26 MiB.
 ```
 
-
 ## 조건문과 배열 \{#conditionals-and-arrays\}
 
 조건문과 배열 함수는 쿼리를 훨씬 더 간단하게 만들어 줍니다. 다음 쿼리는 2022년 대비 2023년에 발생 횟수가 10,000번을 초과하는 태그 중에서 백분율 증가폭이 가장 큰 태그를 계산합니다. 다음 ClickHouse 쿼리가 조건문, 배열 함수, 그리고 `HAVING` 및 `SELECT` 절에서 별칭을 재사용할 수 있는 기능 덕분에 얼마나 간결한지에 주목하십시오.
@@ -536,7 +547,9 @@ GROUP BY tag
 HAVING (count_2022 > 10000) AND (count_2023 > 10000)
 ORDER BY percent_change DESC
 LIMIT 5
+```
 
+```response
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
 │ next.js     │      13788 │      10520 │   31.06463878326996 │
 │ spring-boot │      16573 │      17721 │  -6.478189718413183 │

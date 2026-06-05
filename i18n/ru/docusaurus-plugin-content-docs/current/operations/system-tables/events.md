@@ -1532,31 +1532,35 @@ SELECT * FROM system.events LIMIT 5
 
 ### ExecutableUserDefinedFunctionElapsedMicroseconds \{#executableuserdefinedfunctionelapsedmicroseconds\}
 
-Астрономическое время, затраченное на выполнение пользовательских функций executable и executable pool, в микросекундах.
+Астрономическое время, затраченное на выполнение пользовательских функций executable&#95;pool, в микросекундах.
 
 ### ExecutableUserDefinedFunctionInputBytes \{#executableuserdefinedfunctioninputbytes\}
 
-Общее количество байтов, записанных в stdin дочерних процессов исполняемых пользовательских функций и executable pool пользовательских функций.
+Общее количество байтов, записанных в stdin дочерних процессов executable&#95;pool пользовательских функций.
 
 ### ExecutableUserDefinedFunctionInvocations \{#executableuserdefinedfunctioninvocations\}
 
-Количество вызовов пользовательских функций типов executable и executable pool.
+Количество вызовов пользовательских функций типа executable&#95;pool.
 
 ### ExecutableUserDefinedFunctionOutputBytes \{#executableuserdefinedfunctionoutputbytes\}
 
-Общее количество байтов, прочитанных из stdout дочерних процессов исполняемой пользовательской функции и executable pool пользовательских функций.
+Общее количество байтов, прочитанных из stdout дочерних процессов пользовательских функций executable&#95;pool.
 
 ### ExecutableUserDefinedFunctionPeakMemoryByteSeconds \{#executableuserdefinedfunctionpeakmemorybyteseconds\}
 
-Пиковый объем памяти на процесс, используемый дочерними процессами исполняемой пользовательской функции и executable pool пользовательских функций, интегрированный по астрономическому времени, в байт-секундах.
+Пиковый объем памяти на процесс, используемый дочерними процессами пользовательской функции executable&#95;pool, интегрированный по астрономическому времени, в байт-секундах.
+
+### ExecutableUserDefinedFunctionPoolWaitMicroseconds \{#executableuserdefinedfunctionpoolwaitmicroseconds\}
+
+Время ожидания в `tryBorrowObject`, когда пул пользовательских функций `executable_pool` исчерпан, в микросекундах.
 
 ### ExecutableUserDefinedFunctionSystemTimeMicroseconds \{#executableuserdefinedfunctionsystemtimemicroseconds\}
 
-Время ЦП в режиме ядра, затраченное дочерними процессами исполняемой пользовательской функции и executable pool пользовательских функций, в микросекундах.
+Время ЦП в режиме ядра, затраченное дочерними процессами executable_pool пользовательских функций, в микросекундах.
 
 ### ExecutableUserDefinedFunctionUserTimeMicroseconds \{#executableuserdefinedfunctionusertimemicroseconds\}
 
-Время ЦП в пользовательском режиме, затраченное дочерними процессами исполняемой пользовательской функции и пула исполняемых пользовательских функций, в микросекундах.
+Время ЦП в пользовательском режиме, затраченное дочерними процессами executable_pool пользовательских функций, в микросекундах.
 
 ### ExecuteShellCommand \{#executeshellcommand\}
 
@@ -1681,6 +1685,10 @@ SELECT * FROM system.events LIMIT 5
 ### FileOpen \{#fileopen\}
 
 Количество открытых файлов.
+
+### FileProgressCallbackInvocations \{#fileprogresscallbackinvocations\}
+
+Количество вызовов `FileProgressCallback` на каждый запрос (учитывается каждое событие `FileProgress` для каждого файла, переданное клиенту по native TCP или через `clickhouse-local`).
 
 ### FileSegmentCompleteMicroseconds \{#filesegmentcompletemicroseconds\}
 
@@ -2537,6 +2545,26 @@ SELECT * FROM system.events LIMIT 5
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 Суммарная задержка Keeper для одного запроса
+
+### KeeperWatchTriggeredNodeChildrenChanged \{#keeperwatchtriggerednodechildrenchanged\}
+
+Количество срабатываний наблюдений при операциях изменения дочерних узлов
+
+### KeeperWatchTriggeredNodeCreated \{#keeperwatchtriggerednodecreated\}
+
+Количество срабатываний наблюдения при операции `CREATE`
+
+### KeeperWatchTriggeredNodeDataChanged \{#keeperwatchtriggerednodedatachanged\}
+
+Количество срабатываний наблюдений при операциях изменения данных узла
+
+### KeeperWatchTriggeredNodeDeleted \{#keeperwatchtriggerednodedeleted\}
+
+Количество срабатываний наблюдений при операции `DELETE`
+
+### KeeperWatchesTriggered \{#keeperwatchestriggered\}
+
+Число срабатываний наблюдений
 
 ### KeeperWriteBatchCount \{#keeperwritebatchcount\}
 
@@ -4938,6 +4966,22 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Количество байтов, вытесненных из несжатого кэша.
 
+### UniqueKeyIndexCacheHits \{#uniquekeyindexcachehits\}
+
+Количество случаев, когда запись была найдена в кэше индекса UNIQUE KEY, поэтому SST-блок не требовалось загружать.
+
+### UniqueKeyIndexCacheLookupMicroseconds \{#uniquekeyindexcachelookupmicroseconds\}
+
+Реальное время внутри `UniqueKeyIndexCache::Lookup` + `UniqueKeyIndexCache::Insert` (адаптер `CacheBase` на стороне ClickHouse для кэша блоков RocksDB).
+
+### UniqueKeyIndexCacheMisses \{#uniquekeyindexcachemisses\}
+
+Количество случаев, когда запись не находилась в кэше индекса UNIQUE KEY, и поэтому приходилось загружать SST-блок с диска.
+
+### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
+
+Общее реальное время, затраченное за время жизни `SSTIndexWriter`, — включает `Open` для SST, каждый Put через `addEncoded`, а также `Finish` и копирование через `writeFile` в `finalizeToStorage`. Не включает работу, которую статические вспомогательные функции выполняют до создания writer’а (кодирование + сортировка путей без префикса). Публикуется один раз для каждого writer’а.
+
 ### UserThrottlerBytes \{#userthrottlerbytes\}
 
 Байты, прошедшие через троттлер &#39;max&#95;network&#95;bandwidth&#95;for&#95;user&#39;.
@@ -5126,8 +5170,68 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Количество микросекунд, затраченных на ожидание ответов от ZooKeeper после создания запроса, в сумме по всем потокам, отправляющим запросы.
 
+### ZooKeeperWatchCallbackDurationMicroseconds \{#zookeeperwatchcallbackdurationmicroseconds\}
+
+Общее время, затраченное на выполнение обратных вызовов наблюдения ZooKeeper (сетевой поток).
+
+### ZooKeeperWatchCallbackErrors \{#zookeeperwatchcallbackerrors\}
+
+Количество исключений, возникших в обратных вызовах наблюдения ZooKeeper.
+
 ### ZooKeeperWatchResponse \{#zookeeperwatchresponse\}
 
-Количество полученных от ZooKeeper watch-уведомлений.
+Количество полученных от ZooKeeper уведомлений наблюдения.
+
+### ZooKeeperWatchTriggeredBackupCoordination \{#zookeeperwatchtriggeredbackupcoordination\}
+
+Количество уведомлений от наблюдений, переданных механизму координации резервного копирования / восстановления.
+
+### ZooKeeperWatchTriggeredClusterDiscovery \{#zookeeperwatchtriggeredclusterdiscovery\}
+
+Количество уведомлений механизма наблюдения, отправленных в ClusterDiscovery.
+
+### ZooKeeperWatchTriggeredDistributedDDL \{#zookeeperwatchtriggereddistributedddl\}
+
+Количество уведомлений наблюдения ZooKeeper, помещённых в очередь DDLWorker.
+
+### ZooKeeperWatchTriggeredMaterializedViewRefresh \{#zookeeperwatchtriggeredmaterializedviewrefresh\}
+
+Количество уведомлений механизма наблюдения, отправленных для координации обновления MaterializedView.
+
+### ZooKeeperWatchTriggeredObjectStorageQueue \{#zookeeperwatchtriggeredobjectstoragequeue\}
+
+Количество уведомлений механизма наблюдения, отправленных в ObjectStorageQueue / S3Queue.
+
+### ZooKeeperWatchTriggeredOther \{#zookeeperwatchtriggeredother\}
+
+Количество уведомлений наблюдения, отправленных некатегоризованным обработчикам обратного вызова.
+
+### ZooKeeperWatchTriggeredReplicatedAccessControl \{#zookeeperwatchtriggeredreplicatedaccesscontrol\}
+
+Количество уведомлений от наблюдений, направленных в ReplicatedAccessStorage.
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeLeaderElection \{#zookeeperwatchtriggeredreplicatedmergetreeleaderelection\}
+
+Количество уведомлений наблюдения, отправленных для выбора лидера ReplicatedMergeTree / блокировок реплик.
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeLog \{#zookeeperwatchtriggeredreplicatedmergetreelog\}
+
+Количество уведомлений наблюдения, отправленных для записей журнала ReplicatedMergeTree.
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeMutations \{#zookeeperwatchtriggeredreplicatedmergetreemutations\}
+
+Количество уведомлений наблюдения ZooKeeper, отправленных для мутаций ReplicatedMergeTree.
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeReplicaSync \{#zookeeperwatchtriggeredreplicatedmergetreereplicasync\}
+
+Количество уведомлений о наблюдении, отправленных в ожидании обработки репликами записей журнала (SYNC REPLICA, ALTER, мутации).
+
+### ZooKeeperWatchTriggeredUserDefinedSQLObjects \{#zookeeperwatchtriggereduserdefinedsqlobjects\}
+
+Количество уведомлений наблюдения, переданных в UserDefinedSQLObjectsZooKeeperStorage.
+
+### ZooKeeperWatchTriggeredWorkloadEntity \{#zookeeperwatchtriggeredworkloadentity\}
+
+Количество уведомлений наблюдения, направленных в WorkloadEntityKeeperStorage.
 
 {/*AUTOGENERATED_DESCRIPTIONS_END*/ }

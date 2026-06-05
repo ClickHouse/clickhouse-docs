@@ -64,14 +64,16 @@ ORDER BY (town, street);
 
 ## 监控表的分片 \{#monitoring-table-parts\}
 
-你可以使用[虚拟列](/engines/table-engines#table_engines-virtual_columns) `_part`，[查询](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results)示例表当前所有处于活动状态的 parts 列表：
+你可以使用[虚拟列](/engines/table-engines#table_engines-virtual_columns) `_part`，[查询](https://sql.clickhouse.com/?query=U0VMRUNUIF9wYXJ0CkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKR1JPVVAgQlkgX3BhcnQKT1JERVIgQlkgX3BhcnQgQVNDOw\&run_query=true\&tab=results)示例表当前所有处于活动状态的 分片 列表：
 
 ```sql
 SELECT _part
 FROM uk.uk_price_paid_simple
 GROUP BY _part
 ORDER BY _part ASC;
+```
 
+```response
    ┌─_part───────┐
 1. │ all_0_5_1   │
 2. │ all_12_17_1 │
@@ -80,9 +82,9 @@ ORDER BY _part ASC;
    └─────────────┘
 ```
 
-上面的查询会检索磁盘上的目录名称，每个目录都代表该表的一个活动数据 part。目录名称中的各个组成部分具有特定含义，相关说明记录在[此处](https://github.com/ClickHouse/ClickHouse/blob/f90551824bb90ade2d8a1d8edd7b0a3c0a459617/src/Storages/MergeTree/MergeTreeData.h#L130)，供有兴趣进一步了解的读者参考。
+上面的查询会检索磁盘上的目录名称，每个目录都代表该表的一个活动数据分区片段。目录名称中的各个组成部分具有特定含义，相关说明记录在[此处](https://github.com/ClickHouse/ClickHouse/blob/f90551824bb90ade2d8a1d8edd7b0a3c0a459617/src/Storages/MergeTree/MergeTreeData.h#L130)，供有兴趣进一步了解的读者参考。
 
-另外，ClickHouse 会在 [system.parts](/operations/system-tables/parts) 系统表中跟踪所有表的全部 ^^parts^^ 信息，下面这个查询会针对上面的示例表[返回](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results)当前所有活动 ^^parts^^ 的列表，包括它们的合并层级以及这些 ^^parts^^ 中存储的行数：
+另外，ClickHouse 会在 [system.parts](/operations/system-tables/parts) 系统表中跟踪所有表的全部 ^^分片^^ 信息，下面这个查询会针对上面的示例表[返回](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICBuYW1lLAogICAgbGV2ZWwsCiAgICByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCA9ICd1a19wcmljZV9wYWlkX3NpbXBsZScpIEFORCBhY3RpdmUKT1JERVIgQlkgbmFtZSBBU0M7\&run_query=true\&tab=results)当前所有活动 ^^分片^^ 的列表，包括它们的合并层级以及这些 ^^分片^^ 中存储的行数：
 
 ```sql
 SELECT
@@ -92,7 +94,9 @@ SELECT
 FROM system.parts
 WHERE (database = 'uk') AND (`table` = 'uk_price_paid_simple') AND active
 ORDER BY name ASC;
+```
 
+```response
    ┌─name────────┬─level─┬────rows─┐
 1. │ all_0_5_1   │     1 │ 6368414 │
 2. │ all_12_17_1 │     1 │ 6442494 │
@@ -101,4 +105,4 @@ ORDER BY name ASC;
    └─────────────┴───────┴─────────┘
 ```
 
-每对该 part 额外执行一次合并操作，其合并层级就会增加 1。层级为 0 表示这是一个尚未被合并过的新 part。
+每对该 分片 额外执行一次合并操作，其合并层级就会增加 1。层级为 0 表示这是一个尚未被合并过的新 分片。

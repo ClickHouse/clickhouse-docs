@@ -89,7 +89,9 @@ ClickHouse가 Unity Catalog와 상호 작용할 수 있도록 하려면, Unity C
 
 ```sql
 SHOW TABLES FROM unity
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ unity.logs                                         │
 │ unity.single_day_log                               │
@@ -141,10 +143,11 @@ ENGINE = Iceberg('s3://...')
 모든 ClickHouse 함수가 지원됩니다. 다시 한번, 네임스페이스와 테이블 이름은 백틱(&#96;)으로 감싸야 합니다.
 
 ```sql
-
 SELECT count()
 FROM unity.`icebench.single_day_log`
+```
 
+```response
 ┌───count()─┐
 │ 282634391 │ -- 282.63 million
 └───────────┘

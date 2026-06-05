@@ -1531,31 +1531,35 @@ DiskS3 存储中 POST、DELETE、PUT 和 PATCH 请求的重定向次数。
 
 ### ExecutableUserDefinedFunctionElapsedMicroseconds \{#executableuserdefinedfunctionelapsedmicroseconds\}
 
-执行可执行用户自定义函数及可执行池用户自定义函数所消耗的挂钟时间，单位为微秒。
+执行 可执行池用户自定义函数所消耗的挂钟时间，单位为微秒。
 
 ### ExecutableUserDefinedFunctionInputBytes \{#executableuserdefinedfunctioninputbytes\}
 
-写入可执行用户自定义函数及可执行池用户自定义函数子进程 stdin 的总字节数。
+写入 可执行池用户自定义函数子进程 stdin 的总字节数。
 
 ### ExecutableUserDefinedFunctionInvocations \{#executableuserdefinedfunctioninvocations\}
 
-可执行用户自定义函数和可执行池用户自定义函数的调用次数。
+可执行池用户自定义函数的调用次数。
 
 ### ExecutableUserDefinedFunctionOutputBytes \{#executableuserdefinedfunctionoutputbytes\}
 
-从可执行用户自定义函数及可执行池用户自定义函数子进程的标准输出 (stdout) 读取的总字节数。
+从 可执行池用户自定义函数子进程的标准输出 (stdout) 读取的总字节数。
 
 ### ExecutableUserDefinedFunctionPeakMemoryByteSeconds \{#executableuserdefinedfunctionpeakmemorybyteseconds\}
 
-可执行用户自定义函数及可执行池用户自定义函数子进程的每进程峰值内存，按挂钟时间积分，单位为字节秒。
+可执行池用户自定义函数子进程的每进程峰值内存，按挂钟时间积分，单位为字节秒。
+
+### ExecutableUserDefinedFunctionPoolWaitMicroseconds \{#executableuserdefinedfunctionpoolwaitmicroseconds\}
+
+当 `可执行池用户自定义函数` 池耗尽时，等待 `tryBorrowObject` 的耗时，以微秒为单位。
 
 ### ExecutableUserDefinedFunctionSystemTimeMicroseconds \{#executableuserdefinedfunctionsystemtimemicroseconds\}
 
-可执行用户自定义函数及可执行池用户自定义函数的子进程所消耗的内核态 CPU 时间，单位为微秒。
+可执行池用户自定义函数的子进程所消耗的内核态 CPU 时间，单位为微秒。
 
 ### ExecutableUserDefinedFunctionUserTimeMicroseconds \{#executableuserdefinedfunctionusertimemicroseconds\}
 
-可执行用户自定义函数及可执行池用户自定义函数子进程消耗的用户态 CPU 时间，单位为微秒。
+可执行池用户自定义函数子进程消耗的用户态 CPU 时间，单位为微秒。
 
 ### 执行 Shell 命令 \{#executeshellcommand\}
 
@@ -1680,6 +1684,10 @@ Fetch 执行器任务在 executeStep() 中耗费的时间。
 ### FileOpen \{#fileopen\}
 
 打开的 File 数。
+
+### FileProgressCallbackInvocations \{#fileprogresscallbackinvocations\}
+
+每个查询的 `FileProgressCallback` 被调用的次数 (统计通过原生 TCP 或 `clickhouse-local` 向客户端传送的每个文件 `FileProgress` 事件) 。
 
 ### FileSegmentCompleteMicroseconds \{#filesegmentcompletemicroseconds\}
 
@@ -2536,6 +2544,26 @@ Keeper 快照文件在执行 fsync 时花费的时间
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 单次请求的 Keeper 总延迟
+
+### KeeperWatchTriggeredNodeChildrenChanged \{#keeperwatchtriggerednodechildrenchanged\}
+
+由子节点变更操作触发的 监视 数量
+
+### KeeperWatchTriggeredNodeCreated \{#keeperwatchtriggerednodecreated\}
+
+`CREATE` 操作触发 监视 的次数
+
+### KeeperWatchTriggeredNodeDataChanged \{#keeperwatchtriggerednodedatachanged\}
+
+因变更操作触发的 监视 次数
+
+### KeeperWatchTriggeredNodeDeleted \{#keeperwatchtriggerednodedeleted\}
+
+由 `DELETE` 操作触发的 监视 数量
+
+### KeeperWatchesTriggered \{#keeperwatchestriggered\}
+
+监视 触发数
 
 ### KeeperWriteBatchCount \{#keeperwritebatchcount\}
 
@@ -4937,6 +4965,22 @@ ThreadPoolReader 中未从页缓存读取、而是移交给线程池处理的次
 
 从未压缩缓存中逐出的字节数。
 
+### UniqueKeyIndexCacheHits \{#uniquekeyindexcachehits\}
+
+在 UNIQUE KEY 索引缓存中命中条目的次数，因此无需加载 SST 块。
+
+### UniqueKeyIndexCacheLookupMicroseconds \{#uniquekeyindexcachelookupmicroseconds\}
+
+在 `UniqueKeyIndexCache::Lookup` + `UniqueKeyIndexCache::Insert` 中消耗的挂钟时间 (ClickHouse 侧用于 RocksDB 块缓存的 `CacheBase` 适配器) 。
+
+### UniqueKeyIndexCacheMisses \{#uniquekeyindexcachemisses\}
+
+在 UNIQUE KEY 索引缓存中未命中条目的次数，因此必须从磁盘加载 SST 块。
+
+### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
+
+`SSTIndexWriter` 整个生命周期内消耗的挂钟时间总量——包括 SST `Open`、每次 `addEncoded` Put，以及 `finalizeToStorage` 中的 `Finish` 和通过 `writeFile` 执行的复制。不包括静态辅助函数在构造 writer 之前完成的工作 (编码 + 非前缀 path 排序) 。每个 writer 仅记录一次。
+
 ### UserThrottlerBytes \{#userthrottlerbytes\}
 
 经过 `max_network_bandwidth_for_user` 限流器的字节数。
@@ -5125,8 +5169,68 @@ ZooKeeper 操作次数，包括读操作、写操作以及多重事务。
 
 创建请求后等待 ZooKeeper 响应所耗费的微秒数，按所有发起请求的线程累计。
 
+### ZooKeeperWatchCallbackDurationMicroseconds \{#zookeeperwatchcallbackdurationmicroseconds\}
+
+ZooKeeper watch 回调内的总耗时 (网络线程) 。
+
+### ZooKeeperWatchCallbackErrors \{#zookeeperwatchcallbackerrors\}
+
+在 ZooKeeper watch 回调中抛出的异常数量。
+
 ### ZooKeeperWatchResponse \{#zookeeperwatchresponse\}
 
-从 ZooKeeper 收到监视通知的次数。
+从 ZooKeeper 收到 watch 通知的次数。
+
+### ZooKeeperWatchTriggeredBackupCoordination \{#zookeeperwatchtriggeredbackupcoordination\}
+
+分发给备份/恢复协调过程的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredClusterDiscovery \{#zookeeperwatchtriggeredclusterdiscovery\}
+
+派发给 ClusterDiscovery 的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredDistributedDDL \{#zookeeperwatchtriggereddistributedddl\}
+
+发送到 DDLWorker 队列的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredMaterializedViewRefresh \{#zookeeperwatchtriggeredmaterializedviewrefresh\}
+
+发送到 MaterializedView 刷新协调流程的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredObjectStorageQueue \{#zookeeperwatchtriggeredobjectstoragequeue\}
+
+发送到 ObjectStorageQueue / S3Queue 的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredOther \{#zookeeperwatchtriggeredother\}
+
+分发给未分类回调的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredReplicatedAccessControl \{#zookeeperwatchtriggeredreplicatedaccesscontrol\}
+
+分发到 ReplicatedAccessStorage 的 watch 通知数。
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeLeaderElection \{#zookeeperwatchtriggeredreplicatedmergetreeleaderelection\}
+
+分派给 ReplicatedMergeTree leader 选举 / 副本锁的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeLog \{#zookeeperwatchtriggeredreplicatedmergetreelog\}
+
+分发到 ReplicatedMergeTree 日志条目的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeMutations \{#zookeeperwatchtriggeredreplicatedmergetreemutations\}
+
+分发给 ReplicatedMergeTree 变更操作的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeReplicaSync \{#zookeeperwatchtriggeredreplicatedmergetreereplicasync\}
+
+在等待副本处理日志条目 (SYNC REPLICA、ALTER、变更操作) 时分发的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredUserDefinedSQLObjects \{#zookeeperwatchtriggereduserdefinedsqlobjects\}
+
+发送到 UserDefinedSQLObjectsZooKeeperStorage 的 watch 通知数量。
+
+### ZooKeeperWatchTriggeredWorkloadEntity \{#zookeeperwatchtriggeredworkloadentity\}
+
+分派给 WorkloadEntityKeeperStorage 的 watch 通知数量。
 
 {/*AUTOGENERATED_DESCRIPTIONS_END*/ }

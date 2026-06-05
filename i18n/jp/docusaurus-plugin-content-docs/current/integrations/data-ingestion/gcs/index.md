@@ -25,11 +25,10 @@ ClickHouse では、ストレージとコンピュートを分離したい場合
 
 GCS バケットをディスクとして利用するには、まず `conf.d` 配下のファイルで ClickHouse の設定にディスクを定義する必要があります。GCS ディスク定義の例を以下に示します。この設定には、GCS の「disk」、キャッシュ、およびテーブルを GCS ディスク上に作成する際に DDL クエリで指定されるポリシーを構成するための複数のセクションが含まれます。それぞれについて以下で説明します。
 
-#### Storage configuration &gt; disks &gt; gcs \{#storage_configuration--disks--gcs\}
+#### ストレージ構成 &gt; disks &gt; gcs \{#storage_configuration--disks--gcs\}
 
 この設定の該当部分はハイライトされているセクションであり、次の内容を指定します。
 
-* バッチ削除は実行しないこと。GCS は現在バッチ削除をサポートしていないため、自動検出を無効化してエラーメッセージを抑制します。
 * ディスクのタイプは、S3 API を利用しているため `s3` であること。
 * GCS が提供するエンドポイント
 * サービスアカウントの HMAC キーとシークレット
@@ -41,7 +40,7 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
         <disks>
             <gcs>
             <!--highlight-start-->
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -63,8 +62,7 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
 </clickhouse>
 ```
 
-
-#### ストレージ設定 &gt; disks &gt; cache \{#storage_configuration--disks--cache\}
+#### ストレージ構成 &gt; disks &gt; cache \{#storage_configuration--disks--cache\}
 
 次の例の構成では、ディスク `gcs` に対して 10Gi のメモリキャッシュを有効にします。
 
@@ -73,7 +71,7 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -102,17 +100,16 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
 </clickhouse>
 ```
 
+#### ストレージ構成 &gt; policies &gt; gcs_main \{#storage_configuration--policies--gcs_main\}
 
-#### Storage configuration &gt; policies &gt; gcs&#95;main \{#storage_configuration--policies--gcs_main\}
-
-ストレージ構成ポリシーを使用すると、データを保存する場所を選択できます。以下でハイライトされているポリシーでは、ポリシー `gcs_main` を指定することで、ディスク `gcs` 上にデータを保存できます。たとえば、`CREATE TABLE ... SETTINGS storage_policy='gcs_main'` のように指定します。
+ストレージ構成ポリシーを使用すると、データの保存先を選択できます。以下でハイライトされているポリシーでは、ポリシー `gcs_main` を指定することで、データをディスク `gcs` に保存できます。たとえば、`CREATE TABLE ... SETTINGS storage_policy='gcs_main'` のように指定します。
 
 ```xml
 <clickhouse>
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -136,7 +133,6 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
 ```
 
 このディスク定義に関連するすべての設定項目の一覧は[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で確認できます。
-
 
 ### テーブルの作成 \{#creating-a-table\}
 
@@ -411,7 +407,7 @@ ClickHouse のストレージ構成には `disks` と `policies` が含まれま
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/REPLICA 1 BUCKET/REPLICA 1 FOLDER/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -437,7 +433,6 @@ ClickHouse のストレージ構成には `disks` と `policies` が含まれま
     </storage_configuration>
 </clickhouse>
 ```
-
 
 ### ClickHouse Keeper を起動する \{#start-clickhouse-keeper\}
 

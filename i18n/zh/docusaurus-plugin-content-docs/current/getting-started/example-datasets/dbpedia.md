@@ -57,7 +57,9 @@ INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedd
 ```sql
 SELECT count(*)
 FROM dbpedia
+```
 
+```response
    ┌─count()─┐
 1. │ 1000000 │
    └─────────┘
@@ -65,16 +67,18 @@ FROM dbpedia
 
 ## 语义搜索 \{#semantic-search\}
 
-推荐阅读：["Vector embeddings" OpenAPI 指南](https://platform.openai.com/docs/guides/embeddings)
+推荐阅读：[“向量嵌入
+” OpenAPI 指南](https://platform.openai.com/docs/guides/embeddings)
 
-使用向量嵌入进行语义搜索（也称为 _similarity search_，相似度搜索）通常包括以下步骤：
+使用向量嵌入进行语义搜索 (也称为 *相似度搜索*) 通常包括
+以下步骤：
 
-- 接收用户用自然语言提出的搜索查询，例如 _"Tell me about some scenic rail journeys”_、_“Suspense novels set in Europe”_ 等
-- 使用 LLM 模型为该搜索查询生成嵌入向量
-- 在数据集中查找与该搜索嵌入向量最接近的最近邻
+* 接收用户以自然语言提出的搜索查询，例如 *“给我介绍一些风景优美的火车旅行路线”*、*“以欧洲为背景的悬疑小说”* 等
+* 使用 LLM 模型为搜索查询生成嵌入向量
+* 在数据集中查找与该搜索嵌入向量最接近的最近邻
 
-_最近邻_ 指的是与用户查询最相关的文档、图像或其他内容。
-检索结果是生成式 AI 应用中 RAG（检索增强生成，Retrieval Augmented Generation）的关键输入。
+这些 *最近邻* 是与用户查询相关的文档、图像或其他内容结果。
+检索到的结果是生成式 AI 应用中检索增强生成 (RAG) 的关键输入。
 
 ## 运行暴力向量相似度搜索 \{#run-a-brute-force-vector-similarity-search\}
 

@@ -90,7 +90,9 @@ EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts_unordered
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
+```
 
+```response
 ┌─explain───────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                 │
 │   Aggregating                                             │
@@ -118,7 +120,7 @@ ORDER BY (PostTypeId, toDate(CreationDate))
 
 `PostTypeId`는 카디널리티가 8이며 정렬 키의 첫 번째 항목으로 논리적인 선택입니다. 날짜 단위 필터링만으로도 충분할 것으로 판단되므로(datetime 필터에도 여전히 도움이 됩니다) `toDate(CreationDate)`를 키의 두 번째 구성 요소로 사용합니다. 날짜는 16비트로 표현할 수 있기 때문에 더 작은 인덱스가 생성되어 필터링 속도가 향상됩니다.
 
-다음 애니메이션은 Stack Overflow 게시물 테이블에 대해 최적화된 희소 기본 인덱스가 생성되는 과정을 보여줍니다. 개별 행을 인덱싱하는 대신, 인덱스는 행 블록을 대상으로 합니다:
+다음 애니메이션은 Stack Overflow 게시물 테이블에 대해 최적화된 희소 프라이머리 인덱스가 생성되는 과정을 보여줍니다. 개별 행을 인덱싱하는 대신, 인덱스는 행 블록을 대상으로 합니다:
 
 <Image img={create_primary_key} size="lg" alt="기본 키(Primary key)" />
 
@@ -145,7 +147,9 @@ EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts_ordered
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
+```
 
+```response
 ┌─explain─────────────────────────────────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                                                   │
 │   Aggregating                                                                               │
@@ -167,7 +171,7 @@ WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 
 추가로, 희소 인덱스가 예제 쿼리에 대해 일치할 가능성이 전혀 없는 모든 행 블록을 어떻게 걸러내는지 시각화합니다:
 
-<Image img={primary_key} size="lg" alt="Primary key" />
+<Image img={primary_key} size="lg" alt="기본 키" />
 
 :::note
 테이블의 모든 컬럼은 지정된 정렬 키의 값에 따라 정렬되며, 이는 해당 컬럼이 키에 포함되어 있는지 여부와 상관없습니다. 예를 들어 `CreationDate`가 키로 사용되는 경우, 다른 모든 컬럼의 값 순서는 `CreationDate` 컬럼의 값 순서와 일치하게 됩니다. 여러 개의 정렬 키를 지정할 수 있으며, 이는 `SELECT` 쿼리에서 `ORDER BY` 절을 사용하는 것과 동일한 방식으로 정렬이 수행됩니다.

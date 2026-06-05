@@ -255,7 +255,9 @@ ORDER BY
     tempMax DESC,
     date ASC
 LIMIT 5
+```
 
+```response
 ┌─maxTemp─┬─location──────────┬─name───────────────────────────────────────────┬───────date─┐
 │    56.7 │ (-116.8667,36.45) │ CA GREENLAND RCH                               │ 1913-07-10 │
 │    56.7 │ (-115.4667,32.55) │ MEXICALI (SMN)                                 │ 1949-08-20 │
@@ -271,7 +273,7 @@ LIMIT 5
 
 ### 最佳滑雪胜地 \{#best-ski-resorts\}
 
-使用这份[美国滑雪胜地列表](https://gist.githubusercontent.com/gingerwizard/dd022f754fd128fdaf270e58fa052e35/raw/622e03c37460f17ef72907afe554cb1c07f91f23/ski_resort_stats.csv)及其各自位置，将其与过去 5 年中任意单月降雪量最高的前 1000 个气象站进行关联。按 [geoDistance](/sql-reference/functions/geo/coordinates/#geodistance) 对关联结果排序，并将距离限制在 20 公里以内，从中为每个滑雪胜地选取距离最近的一条记录，然后按总降雪量排序。注意，我们还将滑雪胜地限制在海拔 1800 米以上，将其作为良好滑雪条件的一个粗略指标。
+使用这份[美国滑雪胜地列表](https://gist.githubusercontent.com/gingerwizard/dd022f754fd128fdaf270e58fa052e35/raw/622e03c37460f17ef72907afe554cb1c07f91f23/ski_resort_stats.csv)及其各自位置，将其与过去 5 年中任意单月降雪量最高的前 1000 个测站进行关联。按 [geoDistance](/sql-reference/functions/geo/coordinates/#geodistance) 对关联结果排序，并将距离限制在 20 公里以内，从中为每个滑雪胜地选取距离最近的一条记录，然后按总降雪量排序。注意，我们还将滑雪胜地限制在海拔 1800 米以上，将其作为良好滑雪条件的一个粗略指标。
 
 ```sql
 SELECT
@@ -325,7 +327,9 @@ FROM
 )
 ORDER BY total_snow DESC
 LIMIT 5
+```
 
+```response
 ┌─resort_name──────────┬─total_snow_m─┬─resort_location─┬─month_year─┐
 │ Sugar Bowl, CA       │        7.799 │ (-120.3,39.27)  │     201902 │
 │ Donner Ski Ranch, CA │        7.799 │ (-120.34,39.31) │     201902 │

@@ -39,7 +39,9 @@ ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
@@ -49,7 +51,9 @@ Ok.
 ```sql
 SELECT tags
 FROM people
+```
 
+```response
 ┌─tags───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}} │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -61,7 +65,9 @@ FROM people
 
 ```sql
 SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
+```
 
+```response
 ┌─holidays──────────────────────────────────────┐
 │ [{"year":2024,"location":"Azores, Portugal"}] │
 └───────────────────────────────────────────────┘
@@ -85,10 +91,11 @@ ENGINE = MergeTree ORDER BY ()
 ```sql
 INSERT INTO arxiv SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz', 'JSONAsString')
-
-0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
 
+```response
+0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
+```
 
 연도별로 발표된 논문의 개수를 세고자 한다고 가정합니다. 문자열만 사용하는 다음 쿼리를 스키마의 [구조화된 버전](/integrations/data-formats/json/inference#creating-tables)과 비교해 보십시오.
 
@@ -101,7 +108,9 @@ FROM arxiv_v2
 GROUP BY published_year
 ORDER BY c ASC
 LIMIT 10
+```
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -116,7 +125,9 @@ LIMIT 10
 └────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.264 sec. Processed 2.31 million rows, 153.57 MB (8.75 million rows/s., 582.58 MB/s.)
+```
 
+```sql
 -- using unstructured String
 
 SELECT
@@ -126,7 +137,9 @@ FROM arxiv
 GROUP BY published_year
 ORDER BY published_year ASC
 LIMIT 10
+```
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -149,7 +162,6 @@ Peak memory usage: 205.98 MiB.
 `String` 함수는 인덱스를 사용하는 명시적 타입 변환보다 상당히 느리며(10배 이상), 위와 같은 쿼리는 항상 전체 테이블 스캔과 모든 행 처리 작업을 필요로 합니다. 이 예제처럼 작은 데이터셋에서는 여전히 빠르게 동작하지만, 더 큰 데이터셋에서는 성능이 저하됩니다.
 
 이 접근 방식은 유연성이 높지만 성능과 구문 측면에서 분명한 비용이 발생하므로, 스키마에서 매우 동적인 객체에만 사용해야 합니다.
-
 
 ### Simple JSON functions \{#simple-json-functions\}
 
@@ -183,7 +195,9 @@ FROM arxiv
 GROUP BY published_year
 ORDER BY published_year ASC
 LIMIT 10
+````
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -199,10 +213,9 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.964 sec. Processed 2.48 million rows, 4.21 GB (2.58 million rows/s., 4.36 GB/s.)
 Peak memory usage: 211.49 MiB.
-````
+```
 
 위 쿼리는 게시 날짜에 대해서는 첫 번째 값만 필요하다는 점을 활용하여 `created` 키를 추출하기 위해 `simpleJSONExtractString`을 사용합니다. 이 경우 `simpleJSON*` 함수의 제약은 성능 향상이라는 이점을 고려할 때 수용할 만합니다.
-
 
 ## 맵(Map) 타입 사용 {#using-map}
 
@@ -247,7 +260,9 @@ ORDER BY username
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -257,15 +272,21 @@ Ok.
 
 ```sql
 SELECT company.labels FROM people
+```
 
+```response
 ┌─company.labels───────────────────────────────┐
 │ {'type':'database systems','founded':'2021'} │
 └──────────────────────────────────────────────┘
 
 1 row in set. Elapsed: 0.001 sec.
+```
 
+```sql
 SELECT company.labels['type'] AS type FROM people
+```
 
+```response
 ┌─type─────────────┐
 │ database systems │
 └──────────────────┘
@@ -275,10 +296,9 @@ SELECT company.labels['type'] AS type FROM people
 
 이 경우 쿼리에 사용할 수 있는 전체 `Map` 함수가 제공되며, 그 내용은 [여기](/sql-reference/functions/tuple-map-functions.md)에 설명되어 있습니다. 데이터의 타입이 일관되지 않은 경우, [필요한 타입 변환](/sql-reference/functions/type-conversion-functions)을 수행하기 위한 함수를 사용할 수 있습니다.
 
-
 #### 객체 값
 
-`Map` 맵 타입은 하위 객체를 가지는 객체에도 사용할 수 있으며, 이때 하위 객체들의 타입이 일관된 경우에 적합합니다.
+`Map` 맵(Map) 타입은 하위 객체를 가지는 객체에도 사용할 수 있으며, 이때 하위 객체들의 타입이 일관된 경우에 적합합니다.
 
 `persons` 객체의 `tags` 키가 각 `tag`마다 `name`과 `time` 컬럼을 가지는 하위 객체로 이루어진, 일관된 구조를 가져야 한다고 가정해 보겠습니다. 이러한 JSON 문서의 단순화된 예시는 다음과 같습니다.
 
@@ -317,17 +337,23 @@ ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","tags":{"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"},"car":{"name":"Tesla","time":"2024-07-11 15:18:23"}}}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
+```
 
+```sql
 SELECT tags['hobby'] AS hobby
 FROM people
 FORMAT JSONEachRow
 
 {"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"}}
+```
 
+```response
 1 row in set. Elapsed: 0.001 sec.
 ```
 
@@ -353,7 +379,6 @@ FORMAT JSONEachRow
   ]
 }
 ```
-
 
 ## Nested 타입 사용
 
@@ -459,7 +484,9 @@ FORMAT JSONEachRow
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+```
 
+```response
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
@@ -467,7 +494,6 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 ```
 
 서브 컬럼에 `Array`를 사용하면 전체 [Array 함수](/sql-reference/functions/array-functions)를 모두 활용할 수 있으며, 컬럼에 여러 값이 있는 경우 유용한 [`ARRAY JOIN`](/sql-reference/statements/select/array-join) 절도 사용할 수 있습니다.
-
 
 #### flatten_nested=0
 
@@ -534,13 +560,14 @@ FORMAT JSONEachRow
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+```
 
+```response
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
 1 row in set. Elapsed: 0.002 sec.
 ```
-
 
 ### 예시
 
@@ -563,7 +590,9 @@ FORMAT PrettyJSONEachRow
     "status": "200",
     "size": "24736"
 }
+```
 
+```response
 1 row in set. Elapsed: 0.312 sec.
 ```
 
@@ -587,7 +616,9 @@ WHERE status >= 400
   AND toDateTime(timestamp) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
 GROUP BY method, status
 ORDER BY c DESC LIMIT 5;
+```
 
+```response
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │
 │    404 │ HEAD   │   276 │
@@ -598,7 +629,6 @@ ORDER BY c DESC LIMIT 5;
 
 5 rows in set. Elapsed: 0.007 sec.
 ```
-
 
 ### 쌍 배열(pairwise arrays) 사용
 
@@ -623,7 +653,9 @@ SELECT
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 keys:   ['@timestamp','clientip','request','status','size']
@@ -640,11 +672,13 @@ SELECT
     arrayMap(x -> (x.1), JSONExtractKeysAndValues(json, 'String')) AS keys,
     arrayMap(x -> (x.2), JSONExtractKeysAndValues(json, 'String')) AS values
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
+```
 
+```response
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
-이 구조에 대해 쿼리를 실행하려면 필요한 키의 인덱스를 식별하기 위해 [`indexOf`](/sql-reference/functions/array-functions#indexOf) 함수를 사용해야 합니다(이 인덱스는 values의 순서와 일관되어야 합니다). 이렇게 식별한 인덱스를 사용해 values 배열 컬럼에 접근할 수 있습니다. 예: `values[indexOf(keys, 'status')]`. request 컬럼에 대해서는 여전히 JSON 파싱 방법이 필요하며, 이 경우에는 `simpleJSONExtractString`을 사용합니다.
+이 구조에 대해 쿌리를 실행하려면 필요한 키의 인덱스를 식별하기 위해 [`indexOf`](/sql-reference/functions/array-functions#indexOf) 함수를 사용해야 합니다(이 인덱스는 values의 순서와 일관되어야 합니다). 이렇게 식별한 인덱스를 사용해 values 배열 컬럼에 접근할 수 있습니다. 예: `values[indexOf(keys, 'status')]`. request 컬럼에 대해서는 여전히 JSON 파싱 방법이 필요하며, 이 경우에는 `simpleJSONExtractString`을 사용합니다.
 
 ```sql
 SELECT toUInt16(values[indexOf(keys, 'status')])                           AS status,
@@ -654,7 +688,9 @@ FROM http_with_arrays
 WHERE status >= 400
   AND toDateTime(values[indexOf(keys, '@timestamp')]) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
 GROUP BY method, status ORDER BY c DESC LIMIT 5;
+```
 
+```response
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │
 │    404 │ HEAD   │   276 │

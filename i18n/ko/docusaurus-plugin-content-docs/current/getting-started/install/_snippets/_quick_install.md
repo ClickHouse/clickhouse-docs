@@ -13,8 +13,7 @@
 
   Linux 및 macOS에서는 이 명령으로 [`clickhousectl`](https://github.com/ClickHouse/clickhousectl)도
   `~/.local/bin`에 (`chctl` 심볼릭 링크와 함께) 설치되므로 로컬 ClickHouse
-  버전과 서버를 관리할 수 있습니다. `~/.local/bin`이 아직 `PATH`에 없다면,
-  설치 프로그램이 셸 프로필에 추가할 줄을 출력합니다.
+  버전과 서버를 관리할 수 있습니다.
 
   `clickhousectl` 없이 `clickhouse` 바이너리만 설치하려면
   `CLICKHOUSE_ONLY=1`을 설정하십시오:

@@ -125,7 +125,7 @@ SHOW TABLES;
 
 Если ваша конфигурация включает демонстрационные данные (например, датасет такси), вы должны увидеть следующие таблицы:
 
-```sql title="Response"
+```response
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
@@ -152,7 +152,7 @@ docker-compose logs spark
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
@@ -168,7 +168,7 @@ SELECT count(*) FROM `default.taxis`;
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │
@@ -195,7 +195,6 @@ SHOW CREATE TABLE `default.taxis`;
 │ ENGINE = Iceberg('http://minio:9000/lakehouse/warehouse/default/taxis/', 'admin', '[HIDDEN]') │
 └───────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## Загрузка данных из вашего озера данных в ClickHouse \{#loading-data-from-your-data-lake-into-clickhouse\}
 

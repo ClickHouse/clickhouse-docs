@@ -409,11 +409,11 @@ WHERE database = 'otel'
 
 ### 스킵 인덱스 효율성 평가 \{#evaluating-skip-index-effectiveness\}
 
-스킵 인덱스를 통한 가지치기 효과를 평가하는 가장 신뢰할 수 있는 방법은 `EXPLAIN indexes = 1`을 사용하는 것입니다. 이 명령은 쿼리 계획 수립의 각 단계에서 얼마나 많은 [파트](/parts)와 [그래뉼](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)이 제거되는지를 보여 줍니다. 대부분의 경우 Skip 단계에서 그래뉼 수가 크게 감소하는 것을 확인하는 것이 좋으며, 이상적으로는 프라이머리 키가 이미 검색 범위를 줄인 이후에 발생하는 것이 바람직합니다. 스킵 인덱스는 파티션 가지치기와 프라이머리 키 가지치기 이후에 평가되므로, 그 효과는 남아 있는 파트와 그래뉼을 기준으로 측정하는 것이 가장 적절합니다.
+스킵 인덱스를 통한 프루닝 효과를 평가하는 가장 신뢰할 수 있는 방법은 `EXPLAIN indexes = 1`을 사용하는 것입니다. 이 명령은 쿼리 계획 수립의 각 단계에서 얼마나 많은 [파트](/parts)와 [그래뉼](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing)이 제거되는지를 보여 줍니다. 대부분의 경우 Skip 단계에서 그래뉼 수가 크게 감소하는 것을 확인하는 것이 좋으며, 이상적으로는 기본 키가 이미 검색 범위를 줄인 이후에 발생하는 것이 바람직합니다. 스킵 인덱스는 파티션 프루닝와 기본 키 프루닝 이후에 평가되므로, 그 효과는 남아 있는 파트와 그래뉼을 기준으로 측정하는 것이 가장 적절합니다.
 
-`EXPLAIN`은 가지치기가 발생하는지를 확인해 주지만, 전체적인 속도 향상을 보장하지는 않습니다. 스킵 인덱스는 특히 인덱스 크기가 클 경우 평가 비용이 듭니다. 실제 성능 향상을 확인하기 위해 인덱스를 추가하고 구체화하기 전과 후의 쿼리를 항상 벤치마크해야 합니다.
+`EXPLAIN`은 프루닝이 발생하는지를 확인해 주지만, 전체적인 속도 향상을 보장하지는 않습니다. 스킵 인덱스는 특히 인덱스 크기가 클 경우 평가 비용이 듭니다. 실제 성능 향상을 확인하기 위해 인덱스를 추가하고 구체화하기 전과 후의 쿼리를 항상 벤치마크해야 합니다.
 
-예를 들어, 기본 Traces 스키마에 포함된 TraceId용 기본 블룸 필터 스킵 인덱스를 살펴보겠습니다.
+예를 들어, 기본 Traces 스키마에 포함된 TraceId용 기본 블룸 필터 스킵 인덱스를 살펴보겠습니다:
 
 ```sql
 INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1
@@ -442,7 +442,7 @@ Indexes:
     Granules: 1/255
 ```
 
-이 경우 기본 키 필터가 먼저 데이터셋을 상당히 줄입니다(35,898개의 그래뉼에서 255개로 감소시키고), 이어서 블룸 필터가 이를 단일 그래뉼(1/255)까지 추가로 줄입니다. 이는 skip 인덱스에 이상적인 패턴입니다. 기본 키 프루닝으로 검색 범위를 좁힌 다음, skip 인덱스가 남은 대부분을 제거합니다.
+이 경우 기본 키 필터가 먼저 데이터셋을 상당히 줄입니다(35,898개의 그래뉼에서 255개로 감소시키고), 이어서 블룸 필터가 이를 단일 그래뉼(1/255)까지 추가로 줄입니다. 이는 스킵 인덱스에 이상적인 패턴입니다. 기본 키 프루닝으로 검색 범위를 좁힌 다음, 스킵 인덱스가 남은 대부분을 제거합니다.
 
 실제 영향을 검증하려면 설정을 일정하게 유지한 상태에서 쿼리를 벤치마크하고 실행 시간을 비교하십시오. 결과 직렬화 오버헤드를 피하기 위해 `FORMAT Null`을 사용하고, 실행을 반복 가능하게 유지하기 위해 쿼리 조건 캐시를 비활성화하십시오:
 
@@ -451,12 +451,14 @@ SELECT *
 FROM otel_traces
 WHERE (ServiceName = 'accountingservice') AND (TraceId = '4512e822ca3c0c68bbf5d4a263f9943d')
 SETTINGS use_query_condition_cache = 0
+```
 
+```response
 2 rows in set. Elapsed: 0.025 sec. Processed 8.52 thousand rows, 299.78 KB (341.22 thousand rows/s., 12.00 MB/s.)
 Peak memory usage: 41.97 MiB.
 ```
 
-이제 skip 인덱스를 비활성화한 채로 동일한 쿼리를 다시 실행합니다:
+이제 스킵 인덱스를 비활성화한 채로 동일한 쿼리를 다시 실행합니다:
 
 ```sql
 SELECT *
@@ -464,7 +466,9 @@ FROM otel_traces
 WHERE (ServiceName = 'accountingservice') AND (TraceId = '4512e822ca3c0c68bbf5d4a263f9943d')
 FORMAT Null
 SETTINGS use_query_condition_cache = 0, use_skip_indexes = 0;
+```
 
+```response
 0 rows in set. Elapsed: 0.702 sec. Processed 1.62 million rows, 56.62 MB (2.31 million rows/s., 80.71 MB/s.)
 Peak memory usage: 198.39 MiB.
 ```
@@ -472,9 +476,8 @@ Peak memory usage: 198.39 MiB.
 `use_query_condition_cache`를 비활성화하면 캐시된 필터링 결정에 의해 결과가 영향을 받지 않으며, `use_skip_indexes = 0`으로 설정하면 비교를 위한 명확한 기준선을 제공합니다. 프루닝 효과가 좋고 인덱스 평가 비용이 낮다면, 위 예시처럼 인덱스를 사용하는 쿼리가 체감될 정도로 더 빨라져야 합니다.
 
 :::tip
-`EXPLAIN` 결과에서 granule 프루닝이 거의 보이지 않거나 skip 인덱스가 매우 큰 경우, 인덱스를 평가하는 비용이 이점을 상쇄할 수 있습니다. `EXPLAIN indexes = 1`을 사용해 프루닝을 확인한 다음, 엔드 투 엔드(end-to-end) 성능 향상을 검증하기 위해 벤치마크를 수행하십시오.
+`EXPLAIN` 결과에서 그래뉼 프루닝이 거의 보이지 않거나 스킵 인덱스가 매우 큰 경우, 인덱스를 평가하는 비용이 이점을 상쇄할 수 있습니다. `EXPLAIN indexes = 1`을 사용해 프루닝을 확인한 다음, 엔드 투 엔드(end-to-end) 성능 향상을 검증하기 위해 벤치마크를 수행하십시오.
 :::
-
 
 ### 스킵 인덱스를 추가할 때 \{#when-to-add-skip-indexes\}
 

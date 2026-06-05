@@ -4918,6 +4918,18 @@ Possible values:
 
 <SettingsInfoBlock type="Double" default_value="0.5" changeable_without_restart="否" />在未压缩缓存中 (在采用 SLRU 策略时) 受保护队列的大小，相对于该缓存总大小的比例。
 
+## unique_key_index_cache_policy \{#unique_key_index_cache_policy\}
+
+<SettingsInfoBlock type="String" default_value="SLRU" changeable_without_restart="No" />UNIQUE KEY 索引缓存策略的名称 (SLRU 或 LRU) 。
+
+## unique_key_index_cache_size_bytes \{#unique_key_index_cache_size_bytes\}
+
+<SettingsInfoBlock type="UInt64" default_value="1073741824" changeable_without_restart="No" />UNIQUE KEY 索引 (SST) 块在进程内缓存中的最大大小 (字节) 。设为 0 可禁用该缓存。
+
+## unique_key_index_cache_size_ratio \{#unique_key_index_cache_size_ratio\}
+
+<SettingsInfoBlock type="Double" default_value="0.5" changeable_without_restart="否" />UNIQUE KEY 索引缓存中受保护队列 (采用 SLRU 策略时) 的大小占缓存总大小的比例。
+
 ## url_scheme_mappers \{#url_scheme_mappers\}
 
 用于将缩写或符号形式的 URL 前缀映射为完整 URL 的配置。

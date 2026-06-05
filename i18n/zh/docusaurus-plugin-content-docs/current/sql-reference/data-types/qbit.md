@@ -40,6 +40,29 @@ SELECT vec FROM test ORDER BY id;
 ```
 
 
+## 将数组转换为 QBit \{#converting-arrays-to-qbit\}
+
+当数组长度与 `QBit` 的维度一致时，数组可以转换为 `QBit`。数组的元素类型不必与 `QBit` 的元素类型一致，任何数值类型的元素都会自动转换为相应类型。这样，你就可以将现有的嵌入向量列直接迁移到 `QBit` 列中：
+
+```sql
+CREATE TABLE embeddings (id UInt32, embedding Array(Float32)) ENGINE = Memory;
+INSERT INTO embeddings VALUES (1, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]), (2, [0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]);
+
+CREATE TABLE vectors (id UInt32, vec QBit(Float32, 8)) ENGINE = Memory;
+INSERT INTO vectors SELECT id, embedding FROM embeddings;
+
+SELECT * FROM vectors ORDER BY id;
+```
+
+```text
+┌─id─┬─vec───────────────────────────────┐
+│  1 │ [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8] │
+│  2 │ [0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1] │
+└────┴───────────────────────────────────┘
+```
+
+这种转换也可以显式地通过 `CAST` 完成，例如 `CAST(embedding AS QBit(Float32, 8))`。
+
 ## QBit 子列 \{#qbit-subcolumns\}
 
 `QBit` 实现了一种子列访问模式，允许访问已存储向量的各个位平面。每一个比特位都可以使用 `.N` 语法进行访问，其中 `N` 是该比特位的位置：

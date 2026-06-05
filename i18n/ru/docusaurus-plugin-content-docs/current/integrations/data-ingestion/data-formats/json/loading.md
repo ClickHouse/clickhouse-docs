@@ -69,6 +69,9 @@ ClickHouse может загружать JSON-данные в нескольки
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
 LIMIT 1
+```
+
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type────────┬─installer────┬─python_minor─┬─system─┬─version─┐
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8 │
 └────────────┴──────────────┴────────────────────┴─────────────┴──────────────┴──────────────┴────────┴─────────┘
@@ -88,15 +91,21 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi
 
 Чтобы загрузить строки из этих файлов, мы можем использовать [`INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select):
 
-
 ```sql
 INSERT INTO pypi SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
+```
+
+```response
 Ok.
 
 0 rows in set. Elapsed: 10.445 sec. Processed 19.49 million rows, 35.71 MB (1.87 million rows/s., 3.42 MB/s.)
+```
 
+```sql
 SELECT * FROM pypi LIMIT 2
+```
 
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type──┬─installer────┬─python_minor─┬─system─┬─version─┐
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
@@ -115,14 +124,13 @@ FORMAT JSONEachRow
 
 В этих примерах предполагается использование формата `JSONEachRow`. Также поддерживаются другие распространённые форматы JSON, примеры их загрузки приведены [здесь](/integrations/data-formats/json/other-formats).
 
-
 ## Загрузка полуструктурированного JSON \{#loading-semi-structured-json\}
 
 В нашем предыдущем примере загружался JSON, который был статичным, с заранее известными именами ключей и типами. На практике так бывает не всегда — ключи могут добавляться, а их типы меняться. Это типично для сценариев, таких как данные обсервабилити.
 
 ClickHouse обрабатывает такие случаи с помощью специального типа [`JSON`](/sql-reference/data-types/newjson).
 
-Рассмотрим следующий пример из расширенной версии вышеупомянутого набора данных [Python PyPI dataset](https://clickpy.clickhouse.com/). Здесь мы добавили произвольный столбец `tags` со случайными парами ключ–значение.
+Рассмотрим следующий пример из расширенной версии вышеупомянутого набора данных [набор данных Python PyPI](https://clickpy.clickhouse.com/). Здесь мы добавили произвольный столбец `tags` со случайными парами ключ–значение.
 
 ```json
 {
@@ -172,16 +180,22 @@ INSERT INTO pypi_with_tags SELECT * FROM s3('https://datasets-documentation.s3.e
 ```sql
 INSERT INTO pypi_with_tags SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 255.679 sec. Processed 1.00 million rows, 29.00 MB (3.91 thousand rows/s., 113.43 KB/s.)
 Peak memory usage: 2.00 GiB.
+```
 
+```sql
 SELECT *
 FROM pypi_with_tags
 LIMIT 2
+```
 
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type──┬─installer────┬─python_minor─┬─system─┬─version─┬─tags─────────────────────────────────────────────────────┐
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │ {"nsBM":"5194603446944555691"}                           │
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │ {"4zD5MYQz4JkP1QqsJIS":"0","name":"8881321089124243208"} │
@@ -190,8 +204,7 @@ LIMIT 2
 2 rows in set. Elapsed: 0.149 sec.
 ```
 
-Обратите внимание на разницу в производительности при загрузке данных. Для JSON-столбца при вставке требуется определение типов, а также дополнительное место для хранения, если есть столбцы, содержащие значения более чем одного типа. Хотя тип JSON можно настроить (см. [Проектирование схемы JSON](/integrations/data-formats/json/schema)) так, чтобы его производительность была сопоставима с явным объявлением столбцов, по умолчанию он намеренно остаётся гибким. Однако эта гибкость имеет свою цену.
-
+Обратите внимание на разницу в производительности при загрузке данных. Для JSON-столбца при вставке требуется определение типов, а также дополнительное место для хранения, если есть столбцы, содержащие значения более чем одного типа. Хотя тип JSON можно настроить (см. [Проектирование схемы JSON](/integrations/data-formats/json/schema)) так, чтобы его производительность была сопоставима с явным объявлением столбцов, по умолчанию он намеренно остаётся гибким. Однако эта гибкость имеет свою цену. 
 
 ### Когда использовать тип JSON \{#when-to-use-the-json-type\}
 

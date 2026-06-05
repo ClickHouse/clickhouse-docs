@@ -30,7 +30,9 @@ array(T)
 
 ```sql
 SELECT array(1, 2, 3) AS numeric_array
+```
 
+```response
 ┌─numeric_array─┐
 │ [1,2,3]       │
 └───────────────┘
@@ -40,7 +42,9 @@ SELECT array(1, 2, 3) AS numeric_array
 
 ```sql
 SELECT array('hello', 'world') AS string_array
+```
 
+```response
 ┌─string_array──────┐
 │ ['hello','world'] │
 └───────────────────┘
@@ -50,7 +54,9 @@ SELECT array('hello', 'world') AS string_array
 
 ```sql
 SELECT array(tuple(1, 2), tuple(3, 4))
+```
 
+```response
 ┌─[(1, 2), (3, 4)]─┐
 │ [(1,2),(3,4)]    │
 └──────────────────┘
@@ -75,7 +81,9 @@ Code: 386. DB::Exception: There is no supertype for types String, String, UInt8,
 
 ```sql
 SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]) AS array_type;
+```
 
+```response
 ┌─mixed_array─┬─array_type─────┐
 │ [1,2.5,3]   │ Array(Float64) │
 └─────────────┴────────────────┘
@@ -124,42 +132,47 @@ SELECT [1::UInt8, 2.5::Float32, 3::UInt8] AS mixed_array, toTypeName([1, 2.5, 3]
 ClickHouse では、配列インデックスが常に **1** から始まることを知っておくことが重要です。
 これは、他の多くのプログラミング言語で配列が 0 始まり (ゼロインデックス) であることに慣れている場合とは異なる点です。
 
-たとえば、配列が与えられた場合、次のように記述することで配列の最初の要素を選択できます：
+たとえば、配列がある場合、次のように記述すると配列の最初の要素を選択できます。
 
 ```sql
 WITH array('hello', 'world') AS string_array
 SELECT string_array[1];
+```
 
+```response
 ┌─arrayElement⋯g_array, 1)─┐
 │ hello                    │
 └──────────────────────────┘
 ```
 
-負のインデックスを使用することもできます。
+負の索引を使用することもできます。
 このように、末尾の要素を基準に要素を選択できます。
 
 ```sql
 WITH array('hello', 'world') AS string_array
 SELECT string_array[-1];
+```
 
+```response
 ┌─arrayElement⋯g_array, -1)─┐
 │ world                     │
 └───────────────────────────┘
 ```
 
-配列は 1 始まりのインデックスを持ちますが、インデックス 0 の要素にもアクセスできます。
+配列は 1 始まりの索引を持ちますが、索引 0 の要素にもアクセスできます。
 返される値は、その配列型の *デフォルト値* になります。
 以下の例では、文字列データ型のデフォルト値である空文字列が返されます。
 
 ```sql
 WITH ['hello', 'world', 'arrays are great aren\'t they?'] AS string_array
 SELECT string_array[0]
+```
 
+```response
 ┌─arrayElement⋯g_array, 0)─┐
 │                          │
 └──────────────────────────┘
 ```
-
 
 ## 配列関数 \{#array-functions\}
 
@@ -173,7 +186,9 @@ ClickHouse には、配列に対して適用できる有用な関数が数多く
 ```sql
 WITH array('learning', 'ClickHouse', 'arrays') AS string_array
 SELECT length(string_array);
+```
 
+```response
 ┌─length(string_array)─┐
 │                    3 │
 └──────────────────────┘
@@ -184,23 +199,27 @@ SELECT length(string_array);
 ```sql
 WITH array('learning', 'ClickHouse', 'arrays') AS string_array
 SELECT arrayEnumerate(string_array);
+```
 
+```response
 ┌─arrayEnumerate(string_array)─┐
 │ [1,2,3]                      │
 └──────────────────────────────┘
 ```
 
-特定の値のインデックスを求めるには、`indexOf` 関数を使用します。
+特定の値の索引を求めるには、`indexOf` 関数を使用します。
 
 ```sql
 SELECT indexOf([4, 2, 8, 8, 9], 8);
+```
 
+```response
 ┌─indexOf([4, 2, 8, 8, 9], 8)─┐
 │                           3 │
 └─────────────────────────────┘
 ```
 
-この関数は、配列内に同一の値が複数存在する場合は、最初に見つかった要素のインデックスを返す点に注意してください。
+この関数は、配列内に同一の値が複数存在する場合は、最初に見つかった要素の索引を返す点に注意してください。
 配列要素が昇順にソートされている場合は、[`indexOfAssumeSorted`](/sql-reference/functions/array-functions#indexOfAssumeSorted) 関数を使用できます。
 
 関数 `has`、`hasAll`、`hasAny` は、配列が指定した値を含んでいるかどうかを判定するのに有用です。
@@ -226,7 +245,6 @@ hasAny_false: 0
 hasAll_true:  1
 hasAll_false: 0
 ```
-
 
 ## 配列関数を使ったフライトデータの探索 \{#exploring-flight-data-with-array-functions\}
 

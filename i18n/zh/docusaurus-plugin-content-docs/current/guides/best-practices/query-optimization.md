@@ -58,7 +58,7 @@ ClickHouse 提供了一套丰富的工具，帮助你了解查询是如何执行
 
 这里我们使用 NYC Taxi 数据集，其中包含纽约市出租车行程数据。首先，我们在未做任何优化的情况下开始摄取 NYC Taxi 数据集。
 
-下面是从一个 S3 存储桶创建表并插入数据的命令。请注意，我们是有意从数据中推断表结构，这样的做法并未进行优化。
+下面是从一个 S3 存储桶创建表并插入数据的命令。请注意，我们是有意从数据中推断 schema，这样的做法并未进行优化。
 
 ```sql
 -- Create table with inferred schema
@@ -73,12 +73,14 @@ FROM s3Cluster
 ('default','https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/clickhouse-academy/nyc_taxi_2009-2010.parquet');
 ```
 
-让我们来看一下由数据自动推断得到的表结构。
+让我们来看一下由数据自动推断得到的 schema。
 
 ```sql
 --- Display inferred table schema
 SHOW CREATE TABLE trips_small_inferred
+```
 
+```response
 Query id: d97361fd-c050-478e-b831-369469f0784d
 
 CREATE TABLE nyc_taxi.trips_small_inferred
@@ -128,7 +130,9 @@ WHERE has(databases, 'nyc_taxi') AND (event_time >= (now() - toIntervalMinute(60
 ORDER BY query_duration_ms DESC
 LIMIT 5
 FORMAT VERTICAL
+```
 
+```response
 Query id: e3d48c9f-32bb-49a4-8303-080f59ed1835
 
 Row 1:
@@ -215,7 +219,7 @@ tables:            ['nyc_taxi.trips_small_inferred']
 
 字段 `query_duration_ms` 表示该特定查询实际执行所花费的时间。查看查询日志中的结果，可以看到第一个查询运行耗时 2967ms，仍有优化空间。 
 
-你可能还希望了解哪些查询正在给系统带来压力，例如通过找出消耗内存或 CPU 最高的查询来分析。
+你可能还希望了解哪些查询正在给系统带来压力，例如通过找出消耗内存或 CPU 最高的查询来分析。 
 
 ```sql
 -- Top queries by memory usage
@@ -256,9 +260,14 @@ WHERE
 FORMAT JSON
 
 ----
+```
+
+```response
 1 row in set. Elapsed: 1.699 sec. Processed 329.04 million rows, 8.88 GB (193.72 million rows/s., 5.23 GB/s.)
 Peak memory usage: 440.24 MiB.
+```
 
+```sql
 -- Run query 2
 SELECT
     payment_type,
@@ -276,9 +285,14 @@ ORDER BY
     trip_count DESC;
 
 ---
+```
+
+```response
 4 rows in set. Elapsed: 1.419 sec. Processed 329.04 million rows, 5.72 GB (231.86 million rows/s., 4.03 GB/s.)
 Peak memory usage: 546.75 MiB.
+```
 
+```sql
 -- Run query 3
 SELECT
   avg(dateDiff('s', pickup_datetime, dropoff_datetime))
@@ -287,13 +301,16 @@ WHERE passenger_count = 1 or passenger_count = 2
 FORMAT JSON
 
 ---
+```
+
+```response
 1 row in set. Elapsed: 1.414 sec. Processed 329.04 million rows, 8.88 GB (232.63 million rows/s., 6.28 GB/s.)
 Peak memory usage: 451.53 MiB.
 ```
 
 为了便于阅读，将结果汇总在下表中。
 
-| Name    | Elapsed   | Rows processed | Peak memory |
+| Name    | Elapsed   | Rows processed | 峰值内存占用 |
 | ------- | --------- | -------------- | ----------- |
 | Query 1 | 1.699 sec | 3.2904 亿       | 440.24 MiB  |
 | Query 2 | 1.419 sec | 3.2904 亿       | 546.75 MiB  |
@@ -305,13 +322,15 @@ Peak memory usage: 451.53 MiB.
 * Query 2 统计每周行程的数量和平均费用。 
 * Query 3 计算数据集中每次行程的平均用时。
 
-这些查询本身都没有进行非常复杂的处理，唯一的例外是第一个查询，它在每次执行时都会在查询过程中动态计算行程时间。不过，这些查询中每一个都需要超过一秒钟才能执行完成，而在 ClickHouse 的世界里，这已经是非常长的时间了。我们也可以注意到这些查询的内存使用情况：每个查询大约消耗 400 MB 内存，这已经相当可观。此外，每个查询似乎都读取了相同数量的行（即 3.2904 亿）。我们先快速确认一下这个表中到底有多少行数据。
+这些查询本身都没有进行非常复杂的处理，唯一的例外是第一个查询，它在每次执行时都会在查询过程中动态计算行程时间。不过，这些查询中每一个都需要超过一秒钟才能执行完成，而在 ClickHouse 的世界里，这已经是非常长的时间了。我们也可以注意到这些查询的内存使用情况：每个查询大约消耗 400 MB 内存，这已经相当可观。此外，每个查询似乎都读取了相同数量的行 (即 3.2904 亿) 。我们先快速确认一下这个表中到底有多少行数据。
 
 ```sql
 -- Count number of rows in table
 SELECT count()
 FROM nyc_taxi.trips_small_inferred
+```
 
+```response
 Query id: 733372c5-deaf-4719-94e3-261540933b23
 
    ┌───count()─┐
@@ -325,11 +344,11 @@ Query id: 733372c5-deaf-4719-94e3-261540933b23
 
 现在我们有了一些长时间运行的查询,让我们来了解它们是如何执行的。为此,ClickHouse 支持 [EXPLAIN 语句命令](/sql-reference/statements/explain)。这是一个非常有用的工具,可以提供查询执行各个阶段的详细视图,而无需实际运行查询。虽然对于非 ClickHouse 专家来说可能会感到复杂,但它仍然是深入了解查询执行方式的必备工具。
 
-文档提供了详细的[指南](/guides/developer/understanding-query-execution-with-the-analyzer),介绍了 EXPLAIN 语句是什么以及如何使用它来分析查询执行。我们不再重复该指南中的内容,而是专注于几个有助于发现查询执行性能瓶颈的命令。 
+文档提供了详细的[指南](/guides/developer/understanding-query-execution-with-the-analyzer),介绍了 EXPLAIN 语句是什么以及如何使用它来分析查询执行。我们不再重复该指南中的内容,而是专注于几个有助于发现查询执行性能瓶颈的命令。
 
 **Explain indexes = 1**
 
-让我们从 EXPLAIN indexes = 1 开始检查查询计划。查询计划是一个树形结构,显示查询将如何执行。在其中,您可以看到查询子句的执行顺序。EXPLAIN 语句返回的查询计划可以从下往上阅读。
+让我们从 EXPLAIN indexes = 1 开始检查查询计划。查询计划是一个树形结构，显示查询将如何执行。在其中，您可以看到查询子句的执行顺序。EXPLAIN 语句返回的查询计划可以从下往上阅读。
 
 让我们尝试使用第一个长时间运行的查询。
 
@@ -341,7 +360,9 @@ WITH
 SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
+```
 
+```response
 Query id: f35c412a-edda-4089-914b-fa1622d69868
 
    ┌─explain─────────────────────────────────────────────┐
@@ -353,9 +374,9 @@ Query id: f35c412a-edda-4089-914b-fa1622d69868
    └─────────────────────────────────────────────────────┘
 ```
 
-输出结果一目了然。查询首先从 `nyc_taxi.trips_small_inferred` 表中读取数据，然后应用 WHERE 子句，基于计算值对行进行过滤。过滤后的数据被准备好用于聚合，并计算分位数。最后，对结果进行排序并输出。 
+输出结果一目了然。查询首先从 `nyc_taxi.trips_small_inferred` 表中读取数据，然后应用 WHERE 子句，基于计算值对行进行过滤。过滤后的数据被准备好用于聚合，并计算分位数。最后，对结果进行排序并输出。
 
-在这里可以注意到，没有使用主键，这很合理，因为在创建表时并未定义任何主键。因此，ClickHouse 会对该查询执行对整张表的全表扫描。 
+在这里可以注意到，没有使用主键，这很合理，因为在创建表时并未定义任何主键。因此，ClickHouse 会对该查询执行对整张表的全表扫描。
 
 **Explain Pipeline**
 
@@ -369,7 +390,9 @@ WITH
 SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
+```
 
+```response
 Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────┐
@@ -387,7 +410,7 @@ Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 12. │             MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59 0 → 1 │
 ```
 
-在这里，我们可以看到用于执行该查询的线程数量为 59 个，这表明并行度很高。这加快了查询执行速度，而在较小的机器上执行则会耗时更长。大量并行运行的线程数量也可以解释该查询为何会使用如此多的内存。 
+在这里，我们可以看到用于执行该查询的线程数量为 59 个，这表明并行度很高。这加快了查询执行速度，而在较小的机器上执行则会耗时更长。大量并行运行的线程数量也可以解释该查询为何会使用如此多的内存。
 
 理想情况下，您应以同样的方式排查所有慢查询，以识别不必要的复杂查询计划，并了解每个查询读取的行数以及其消耗的资源。
 
@@ -443,7 +466,9 @@ SELECT
     countIf(dropoff_location_id IS NULL) AS dropoff_location_id_nulls
 FROM trips_small_inferred
 FORMAT VERTICAL
+```
 
+```response
 Query id: 4a70fc5b-2501-41c8-813c-45ce241d85ae
 
 Row 1:
@@ -465,7 +490,7 @@ dropoff_location_id_nulls: 0
 
 我们只有两列存在 null 值：`mta_tax` 和 `payment_type`。其余字段不应该使用 `Nullable` 列类型。
 
-### 低基数（Low cardinality） \{#low-cardinality\}
+### 低基数 \{#low-cardinality\}
 
 对于 String 类型列，一个简单易行的优化是充分利用 LowCardinality 数据类型。正如低基数[文档](/sql-reference/data-types/lowcardinality)中所述，ClickHouse 会对 LowCardinality 列应用字典编码，从而显著提升查询性能。 
 
@@ -482,7 +507,9 @@ SELECT
     uniq(vendor_id)
 FROM trips_small_inferred
 FORMAT VERTICAL
+```
 
+```response
 Query id: d502c6a1-c9bc-4415-9d86-5de74dd6d932
 
 Row 1:
@@ -507,7 +534,9 @@ SELECT
     min(payment_type),max(payment_type),
     min(passenger_count), max(passenger_count)
 FROM trips_small_inferred
+```
 
+```response
 Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 
    ┌─min(payment_type)─┬─max(payment_type)─┐
@@ -549,7 +578,7 @@ INSERT INTO trips_small_no_pk SELECT * FROM trips_small_inferred
 
 我们使用新表再次运行这些查询，以检查是否有改进。 
 
-| Name    | Run 1 - Elapsed | Elapsed   | Rows processed | Peak memory |
+| Name    | Run 1 - Elapsed | Elapsed   | Rows processed | 峰值内存占用 |
 | ------- | --------------- | --------- | -------------- | ----------- |
 | Query 1 | 1.699 sec       | 1.353 sec | 329.04 million | 337.12 MiB  |
 | Query 2 | 1.419 sec       | 1.171 sec | 329.04 million | 531.09 MiB  |
@@ -557,7 +586,7 @@ INSERT INTO trips_small_no_pk SELECT * FROM trips_small_inferred
 
 我们注意到查询时间和内存使用都有所改善。得益于数据模式中的优化，我们减少了用于表示我们数据的总体数据量，从而降低了内存占用并缩短了处理时间。 
 
-让我们检查一下这些表的大小，以对比其中的差异。
+让我们检查一下这些表的大小，以对比其中的差异。 
 
 ```sql
 SELECT
@@ -571,7 +600,9 @@ GROUP BY
     database,
     `table`
 ORDER BY size DESC
+```
 
+```response
 Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
 
    ┌─table────────────────┬─compressed─┬─uncompressed─┬──────rows─┐
@@ -580,7 +611,7 @@ Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
    └──────────────────────┴────────────┴──────────────┴───────────┘
 ```
 
-新表相比之前的表小了很多。可以看到，该表的磁盘空间占用减少了约 34%（从 7.38 GiB 降至 4.89 GiB）。
+新表相比之前的表小了很多。可以看到，该表的磁盘空间占用减少了约 34% (从 7.38 GiB 降至 4.89 GiB) 。
 
 ## 主键的重要性 \{#the-importance-of-primary-keys\}
 
@@ -710,13 +741,16 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     <tr>
       <th colspan="4">查询 3</th>
     </tr>
+
     <tr>
-      <th></th>
+      <th />
+
       <th>运行 1</th>
       <th>运行 2</th>
       <th>运行 3</th>
     </tr>
   </thead>
+
   <tbody>
     <tr>
       <td>耗时</td>
@@ -724,14 +758,16 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.188 秒</td>
       <td>0.431 秒</td>
     </tr>
+
     <tr>
       <td>处理行数</td>
       <td>329.04 百万行</td>
       <td>329.04 百万行</td>
       <td>276.99 百万行</td>
     </tr>
+
     <tr>
-      <td>峰值内存</td>
+      <td>峰值内存占用</td>
       <td>451.53 MiB</td>
       <td>265.05 MiB</td>
       <td>197.38 MiB</td>
@@ -755,7 +791,9 @@ FROM nyc_taxi.trips_small_pk
 WHERE (pickup_datetime >= '2009-01-01') AND (pickup_datetime < '2009-04-01')
 GROUP BY payment_type
 ORDER BY trip_count DESC
+```
 
+```response
 Query id: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
 
     ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────────┐

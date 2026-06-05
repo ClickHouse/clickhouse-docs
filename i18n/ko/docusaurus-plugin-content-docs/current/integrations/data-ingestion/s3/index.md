@@ -45,11 +45,13 @@ ClickHouse에서 테이블을 생성하기 전에 먼저 S3 버킷에 있는 데
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames');
 ```
 
-`DESCRIBE TABLE` 구문의 출력 결과를 보면 S3 버킷에 있는 데이터를 기준으로 ClickHouse가 이 데이터를 어떻게 자동으로 추론하는지 알 수 있습니다. 또한 gzip 압축 형식을 자동으로 인식하여 압축을 해제한다는 점에 유의하십시오:`
+`DESCRIBE TABLE` 구문의 출력 결과를 보면 S3 버킷에 있는 데이터를 기준으로 ClickHouse가 이 데이터를 어떻게 자동으로 추론하는지 알 수 있습니다. 또한 gzip 압축 형식을 자동으로 인식하여 압축을 해제한다는 점에 유의하십시오:&#96;
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') SETTINGS describe_compact_output=1
+```
 
+```response
 ┌─name──────────────────┬─type───────────────┐
 │ trip_id               │ Nullable(Int64)    │
 │ vendor_id             │ Nullable(Int64)    │
@@ -100,7 +102,6 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 ```
 
 S3 기반 데이터셋과 상호 작용하기 위해 대상이 될 표준 `MergeTree` 테이블을 준비합니다. 아래 구문은 기본 데이터베이스에 `trips`라는 이름의 테이블을 생성합니다. 위에서 유추한 대로, 특히 [`Nullable()`](/sql-reference/data-types/nullable) 데이터 타입 수정자를 사용하지 않기 위해 일부 데이터 타입을 변경하기로 했다는 점에 유의하십시오. `Nullable()`을 사용하면 불필요한 추가 저장 공간이 사용되고 성능 오버헤드가 발생할 수 있습니다:
-
 
 ```sql
 CREATE TABLE trips
@@ -413,7 +414,9 @@ CREATE TABLE trips_raw
 SELECT DISTINCT(pickup_ntaname)
 FROM trips_raw
 LIMIT 10;
+```
 
+```response
 ┌─pickup_ntaname───────────────────────────────────┐
 │ Lenox Hill-Roosevelt Island                      │
 │ Airport                                          │
@@ -427,7 +430,6 @@ LIMIT 10;
 │ DUMBO-Vinegar Hill-Downtown Brooklyn-Boerum Hill │
 └──────────────────────────────────────────────────┘
 ```
-
 
 ### 데이터 삽입 \{#inserting-data\}
 
@@ -1353,7 +1355,9 @@ SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-nort
 
 ```sql
 BACKUP TABLE t TO Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status─────────┐
 │ c61f65ac-0d76-4390-8317-504a30ba7595 │ BACKUP_CREATED │
 └──────────────────────────────────────┴────────────────┘
@@ -1361,7 +1365,9 @@ BACKUP TABLE t TO Disk('s3_express', 't.zip')
 
 ```sql
 RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status───┐
 │ 4870e829-8d76-4171-ae59-cffaf58dea04 │ RESTORED │
 └──────────────────────────────────────┴──────────┘
