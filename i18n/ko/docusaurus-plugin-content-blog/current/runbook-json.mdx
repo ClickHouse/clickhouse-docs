@@ -1,6 +1,6 @@
 ---
 title: '런북: JSON schema'
-description: 'ClickHouse에서 JSON 데이터에 적합한 schema 접근 방식을 선택하세요 — 타입 지정 컬럼, 하이브리드, 네이티브 JSON 또는 String 저장'
+description: 'ClickHouse에서 JSON 데이터에 적합한 schema 접근 방식을 선택하세요 — 타입이 지정된 컬럼, 하이브리드, 네이티브 JSON 또는 String 저장'
 date: 2026-03-20
 tags: ['런북', '데이터 모델링']
 keywords: ['JSON', 'JSON 타입', 'schema 설계', '타입 힌트', 'max_dynamic_paths', '반정형 데이터', '동적 schema', 'JSONAsObject']
@@ -18,7 +18,7 @@ JSON 컬럼 타입은 ClickHouse 25.3+부터 프로덕션 환경에서 사용할
 
 데이터는 JSON으로 유입됩니다. ClickHouse는 완전히 타입이 지정된 컬럼부터 원시 `String`까지, 이를 저장할 수 있는 여러 가지 방법을 제공합니다. 적절한 선택은 schema를 얼마나 예측 가능하게 유지할 수 있는지, 그리고 필드 단위 쿼리가 필요한지에 따라 달라집니다.
 
-**범위:** 이 페이지에서는 JSON 데이터를 저장하기 위한 schema 설계 결정을 다룹니다. [JSON 입력/출력 형식](/interfaces/formats/JSON), [JSON 함수](/sql-reference/functions/json-functions), 또는 쿼리 구문은 다루지 않습니다. JSON 컬럼 타입 자체에 대한 배경 정보는 [적절한 경우 JSON 사용](/best-practices/use-json-where-appropriate)을 참조하십시오.
+**범위:** 이 페이지에서는 JSON 데이터를 저장하기 위한 schema 설계 결정을 다룹니다. [JSON 입력/출력 형식](/interfaces/formats/JSON), [JSON 함수](/sql-reference/functions/json-functions), 또는 쿼리 구문은 다루지 않습니다. JSON 컬럼 타입 자체에 대한 배경 정보는 [JSON을 적절히 사용하기](/best-practices/use-json-where-appropriate)을 참조하십시오.
 
 **가정:** [ClickHouse 테이블 생성](/sql-reference/statements/create/table), [MergeTree](/engines/table-engines/mergetree-family/mergetree)의 기본 개념, 그리고 컬럼 타입 구문에 익숙하다고 가정합니다.
 

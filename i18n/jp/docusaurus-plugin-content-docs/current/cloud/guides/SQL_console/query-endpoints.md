@@ -538,9 +538,9 @@ SELECT * FROM system.tables;
   </TabItem>
 </Tabs>
 
-### レスポンスをストリームとしてリクエストしてパースする` {#request-and-parse-the-response-as-a-stream}
+### レスポンスをストリームとしてリクエストしてパースする
 
-**クエリ API エンドポイントの SQL:**
+**クエリ API エンドポイント用の SQL:**
 
 ```sql
 SELECT name, database FROM system.tables;
@@ -548,7 +548,6 @@ SELECT name, database FROM system.tables;
 
 <Tabs>
   <TabItem value="TypeScript" label="TypeScript" default>
-
     ```typescript
     async function fetchAndLogChunks(
       url: string,

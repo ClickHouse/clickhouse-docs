@@ -293,7 +293,7 @@ host    db1             clickhouse_user 192.168.1.0/24          password
 
 ### 2. 在 ClickHouse 中 \{#2-in-clickhouse\}
 
-1. 登录 ClickHouse CLI
+1. 登录 ClickHouse 命令行客户端
 
 ```bash
 clickhouse-client --user default --password ClickHouse123!
@@ -334,7 +334,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 
 ┌─id─┬─column1─┐
@@ -344,7 +346,6 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 3. 测试基本复制 \{#3-test-basic-replication\}
 
@@ -365,7 +366,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 
 ┌─id─┬─column1─┐
@@ -381,7 +384,6 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 4. 总结 \{#4-summary\}
 

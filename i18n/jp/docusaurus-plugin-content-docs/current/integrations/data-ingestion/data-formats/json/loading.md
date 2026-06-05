@@ -69,6 +69,9 @@ ClickHouseは、いくつかの形式でJSONデータをロードでき、拡張
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
 LIMIT 1
+```
+
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type────────┬─installer────┬─python_minor─┬─system─┬─version─┐
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8 │
 └────────────┴──────────────┴────────────────────┴─────────────┴──────────────┴──────────────┴────────┴─────────┘
@@ -88,15 +91,21 @@ SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi
 
 これらのファイルの行をロードするには、[`INSERT INTO SELECT`](/sql-reference/statements/insert-into#inserting-the-results-of-select)を使用できます:
 
-
 ```sql
 INSERT INTO pypi SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz')
+```
+
+```response
 Ok.
 
 0 rows in set. Elapsed: 10.445 sec. Processed 19.49 million rows, 35.71 MB (1.87 million rows/s., 3.42 MB/s.)
+```
 
+```sql
 SELECT * FROM pypi LIMIT 2
+```
 
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type──┬─installer────┬─python_minor─┬─system─┬─version─┐
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │
@@ -114,7 +123,6 @@ FORMAT JSONEachRow
 ```
 
 これらの例は、`JSONEachRow`形式の使用を前提としています。他の一般的なJSON形式もサポートされており、これらのロード例は[こちら](/integrations/data-formats/json/other-formats)で提供されています。
-
 
 ## 半構造化JSONのロード \{#loading-semi-structured-json\}
 
@@ -172,16 +180,22 @@ INSERT INTO pypi_with_tags SELECT * FROM s3('https://datasets-documentation.s3.e
 ```sql
 INSERT INTO pypi_with_tags SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample.json.gz')
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 255.679 sec. Processed 1.00 million rows, 29.00 MB (3.91 thousand rows/s., 113.43 KB/s.)
 Peak memory usage: 2.00 GiB.
+```
 
+```sql
 SELECT *
 FROM pypi_with_tags
 LIMIT 2
+```
 
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type──┬─installer────┬─python_minor─┬─system─┬─version─┬─tags─────────────────────────────────────────────────────┐
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │ {"nsBM":"5194603446944555691"}                           │
 │ 2022-05-26 │ CN           │ clickhouse-connect │ sdist │ bandersnatch │              │        │ 0.0.7 │ {"4zD5MYQz4JkP1QqsJIS":"0","name":"8881321089124243208"} │
@@ -190,8 +204,7 @@ LIMIT 2
 2 rows in set. Elapsed: 0.149 sec.
 ```
 
-データのロード時のパフォーマンスの違いに注意してください。JSON列は、挿入時に型推論を必要とし、複数の型を持つ列が存在する場合は追加のストレージも必要とします。JSON型は([JSONスキーマの設計](/integrations/data-formats/json/schema)を参照)、列を明示的に宣言するのと同等のパフォーマンスに設定できますが、デフォルトでは意図的に柔軟です。ただし、この柔軟性にはいくらかのコストが伴います。
-
+データのロード時のパフォーマンスの違いに注意してください。JSONカラムは、挿入時に型推論を必要とし、複数の型を持つ列が存在する場合は追加のストレージも必要とします。JSON型は([JSONスキーマの設計](/integrations/data-formats/json/schema)を参照)、列を明示的に宣言するのと同等のパフォーマンスに設定できますが、デフォルトでは意図的に柔軟です。ただし、この柔軟性にはいくらかのコストが伴います。
 
 ### JSON型を使用するタイミング \{#when-to-use-the-json-type\}
 

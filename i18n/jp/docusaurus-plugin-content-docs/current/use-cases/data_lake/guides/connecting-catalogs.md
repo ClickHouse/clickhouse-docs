@@ -89,7 +89,9 @@ ClickHouse が Unity Catalog と連携できるようにするには、外部リ
 
 ```sql
 SHOW TABLES FROM unity
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ unity.logs                                         │
 │ unity.single_day_log                               │
@@ -141,10 +143,11 @@ ENGINE = Iceberg('s3://...')
 すべての ClickHouse 関数を使用できます。繰り返しになりますが、ネームスペース名とテーブル名はバッククォートで囲む必要があります。
 
 ```sql
-
 SELECT count()
 FROM unity.`icebench.single_day_log`
+```
 
+```response
 ┌───count()─┐
 │ 282634391 │ -- 282.63 million
 └───────────┘

@@ -26,7 +26,7 @@ ClickHouse 提供了表函数，可直接查询以开放表格式存储在对象
 以下示例使用存储在 S3 中、采用各种 lakehouse 格式的 [hits](/getting-started/example-datasets/star-schema) 数据集。对于每种 lakehouse 格式，每个对象存储提供商都有对应的专用函数。
 
 <Tabs groupId="lake-format">
-  <TabItem value="Iceberg" label="Apache Iceberg" default>
+  <TabItem value="iceberg" label="Apache Iceberg" default>
     [`iceberg`](/sql-reference/table-functions/iceberg) 表函数 (`icebergS3` 的别名) 可直接从对象存储中读取 Iceberg 表。针对每种存储后端均有对应的变体：`icebergS3`、`icebergAzure`、`icebergHDFS` 和 `icebergLocal`。
 
     **示例语法：**
@@ -40,7 +40,7 @@ ClickHouse 提供了表函数，可直接查询以开放表格式存储在对象
     ```
 
     :::note GCS 支持
-    S3 系列函数同样适用于 Google Cloud Storage (GCS)。
+    这些函数的 S3 变体可用于 Google Cloud Storage (GCS)。
     :::
 
     **示例：**
@@ -53,7 +53,9 @@ ClickHouse 提供了表函数，可直接查询以开放表格式存储在对象
     GROUP BY url
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─url────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │ -- 3.29 million
     │ http://kinopoisk.ru                                │ 1625250 │ -- 1.63 million
@@ -132,7 +134,9 @@ ClickHouse 提供了表函数，可直接查询以开放表格式存储在对象
     GROUP BY url
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─url────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │
     │ http://kinopoisk.ru                                │ 1625250 │
@@ -175,7 +179,9 @@ ClickHouse 提供了表函数，可直接查询以开放表格式存储在对象
     GROUP BY URL
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─URL────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │ -- 3.29 million
     │ http://kinopoisk.ru                                │ 1625250 │ -- 1.63 million
@@ -202,7 +208,7 @@ ClickHouse 提供了表函数，可直接查询以开放表格式存储在对象
     ```
 
     :::note GCS 支持
-    S3 系列函数同样适用于 Google Cloud Storage (GCS)。
+    这些函数的 S3 变体可用于 Google Cloud Storage (GCS)。
     :::
 
     **示例 (ClickHouse Cloud) ：**
@@ -250,7 +256,9 @@ ClickHouse 提供了表函数，可直接查询以开放表格式存储在对象
     GROUP BY URL
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─URL────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │
     │ http://kinopoisk.ru                                │ 1625250 │

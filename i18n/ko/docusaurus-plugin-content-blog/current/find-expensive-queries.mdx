@@ -2,14 +2,13 @@
 title: ClickHouse에서 가장 비용이 많이 드는 쿼리를 식별하는 방법
 description: 분산 노드 전체에서 메모리와 CPU를 가장 많이 사용하는 쿼리를 식별하기 위해 ClickHouse의 `query_log` 테이블을 사용하는 방법을 알아봅니다.
 date: 2023-03-26
-slug: find-expensive-queries
 tags: ['성능 및 최적화']
 keywords: ['비용이 많이 드는 쿼리']
 ---
 
 {frontMatter.description}
 
-{{/* 요약 */}}
+{/* 요약 */}
 
 ## 답변 \{#answer\}
 
@@ -97,6 +96,10 @@ FROM s3Cluster('default','https://clickhouse-public-datasets.s3.amazonaws.com/yo
 
 클러스터 환경의 ClickHouse(예: ClickHouse Cloud)에서는 `initial_query_id`가 요청을 수신한 노드에서 시작된 분산 쿼리 실행의 최초 쿼리 ID를 나타냅니다.
 그다음 `query_id` 필드에는 다른 노드에서 실행되는 자식 쿼리의 ID가 저장됩니다.
+
+:::note[분산 실행만이 서로 다른 `query_id` 값이 생기는 유일한 원인은 아닙니다]
+단일 쿼리도 자체 `query_id`와 `is_initial_query = 0`으로 기록되는 내부 하위 쿼리를 생성할 수 있습니다. 가장 일반적인 예는 [views](/operations/system-tables/query_views_log)를 평가하기 위해 ClickHouse가 실행하는 내부 쿼리입니다. 이러한 내부 식별자는 ClickHouse가 할당하며, 클라이언트에 보고되는 식별자와 같은 형식을 따르지 않을 수 있습니다. 뷰 관련 단계에서는 `queryView...`와 같은 레이블이 포함된 `query_id` 값을 볼 수 있습니다. 제출한 그대로의 쿼리를 확인하려면 `is_initial_query = 1`(또는 `query_id = initial_query_id`)로 필터링하십시오. 이는 `query_log`의 서버 측 동작이며 Cloud SQL 콘솔을 포함한 모든 클라이언트에서 동일합니다.
+:::
 
 위 쿼리에 `query_id`를 추가하면 `initial_query_id` = `a7262fa2-bd8b-4b51-a359-621ccf282417` 및 `hostname()`을 중심으로 검색 범위를 한정하게 됩니다:
 

@@ -109,7 +109,9 @@ SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 LIMIT 1
+```
 
+```response
 ┌─explain──────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                        │
 │   Limit (preliminary LIMIT (without OFFSET))                     │
@@ -146,7 +148,6 @@ LIMIT 1
 ```sql
 SELECT toDate(CreationDate) AS day, avg(ViewCount) AS view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
 ```
-
 
 따라서 이는 데이터 스키핑 인덱스로 활용하기에 논리적으로도 적절한 선택입니다. 숫자 타입이므로 minmax 인덱스를 사용하는 것이 합리적입니다. 다음 `ALTER TABLE` 명령으로 인덱스를 추가합니다. 먼저 인덱스를 추가한 다음, 이어서 이를 「구체화(materialize)」합니다.
 
@@ -201,7 +202,9 @@ ORDER BY (PostTypeId, toDate(CreationDate))
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─count()─┐
 │     5   │
 └─────────┘
@@ -211,13 +214,14 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 
 `EXPLAIN indexes = 1`을 실행하면 인덱스가 사용되고 있음을 확인할 수 있습니다.
 
-
 ```sql
 EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                          │
 │   Aggregating                                                      │
@@ -256,7 +260,6 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 예제 쿼리에서 `ViewCount` &gt; 10,000,000 조건에 대해 minmax 스키핑 인덱스가 일치할 수 없는 모든 행 블록을 어떻게 제거(prune)하는지를 보여주는 애니메이션도 제공합니다:
 
 <Image img={using_skipping_indices} size="lg" alt="스키핑 인덱스 사용" />
-
 
 ## 관련 문서 \{#related-docs\}
 

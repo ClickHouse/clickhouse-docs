@@ -106,12 +106,14 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
 정확한 결과를 얻으려면, 백그라운드 머지에 더해 쿼리 시점의 중복 제거와 삭제 행 제거를 보완해야 합니다. 이를 위해 `FINAL` 연산자를 사용할 수 있습니다.
 
-위의 posts 테이블을 생각해 보십시오. 일반적인 방법으로 이 데이터셋을 로드하되, 값 컬럼 외에 기본값이 0인 deleted 컬럼과 version 컬럼을 추가로 지정합니다. 예제를 위해 10000행만 로드합니다.
+위의 posts 테이블을 생각해 보십시오. 일반적인 방법으로 이 데이터셋을 로드하되, 값 컬럼 외에 기본값이 0인 deleted 컬럼과 version 컬럼을 추가로 지정합니다. 예시를 위해 10000행만 로드합니다.
 
 ```sql
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet') WHERE AnswerCount > 0 LIMIT 10000
+```
 
+```response
 0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
@@ -119,7 +121,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 ```sql
 SELECT count() FROM stackoverflow.posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
@@ -158,7 +162,9 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
+```
 
+```response
 0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
@@ -193,7 +199,9 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
+```
 
+```response
 0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
@@ -202,7 +210,9 @@ LIMIT 1000
 ```sql
 SELECT count()
 FROM posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
@@ -211,12 +221,13 @@ FROM posts_updateable
 
 여기에서 나오는 결과는 수행된 머지 작업에 따라 달라질 수 있습니다. 중복 행이 있기 때문에 여기에서의 합계가 다른 것을 확인할 수 있습니다. 테이블에 `FINAL`을 적용하면 올바른 결과를 얻을 수 있습니다.
 
-
 ```sql
 SELECT count()
 FROM posts_updateable
 FINAL
+```
 
+```response
 ┌─count()─┐
 │    9000 │
 └─────────┘
@@ -224,7 +235,6 @@ FINAL
 1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
 Peak memory usage: 8.14 MiB.
 ```
-
 
 ## FINAL 성능 \{#final-performance\}
 
@@ -238,9 +248,9 @@ Peak memory usage: 8.14 MiB.
 
 ## ReplacingMergeTree에서 파티션을 활용하는 방법 \{#exploiting-partitions-with-replacingmergetree\}
 
-ClickHouse에서 데이터 병합은 파티션 단위로 수행됩니다. ReplacingMergeTree를 사용할 때는, **해당 행에 대한 파티셔닝 키가 변경되지 않음을 보장할 수 있는 경우** 모범 사례에 따라 테이블을 파티션할 것을 권장합니다. 이렇게 하면 동일한 행에 대한 업데이트가 동일한 ClickHouse 파티션으로 전송되도록 보장할 수 있습니다. 여기에서 제시한 모범 사례를 준수한다면 Postgres와 동일한 파티션 키를 재사용해도 됩니다.
+ClickHouse에서 데이터 머지는 파티션 단위로 수행됩니다. ReplacingMergeTree를 사용할 때는, **해당 행에 대한 파티셔닝 키가 변경되지 않음을 보장할 수 있는 경우** 모범 사례에 따라 테이블을 파티션할 것을 권장합니다. 이렇게 하면 동일한 행에 대한 업데이트가 동일한 ClickHouse 파티션으로 전송되도록 보장할 수 있습니다. 여기에서 제시한 모범 사례를 준수한다면 Postgres와 동일한 파티션 키를 재사용해도 됩니다.
 
-이 조건을 만족하는 경우, `FINAL` 쿼리 성능을 향상하기 위해 `do_not_merge_across_partitions_select_final=1` SETTING을 사용할 수 있습니다. 이 SETTING은 `FINAL`을 사용할 때 파티션을 서로 독립적으로 병합하고 처리합니다.
+이 조건을 만족하는 경우, `FINAL` 쿼리 성능을 향상하기 위해 `do_not_merge_across_partitions_select_final=1` SETTING을 사용할 수 있습니다. 이 SETTING은 `FINAL`을 사용할 때 파티션을 서로 독립적으로 머지하고 처리합니다.
 
 다음은 파티셔닝을 사용하지 않은 posts 테이블 예시입니다:
 
@@ -257,7 +267,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
 INSERT INTO stackoverflow.posts_no_part SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
@@ -277,7 +289,9 @@ FROM posts_no_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │        371480 │
 ...
@@ -309,7 +323,9 @@ FROM posts_with_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │       387832  │
 │ 2009 │       1165506 │
@@ -323,7 +339,6 @@ ORDER BY year ASC
 ```
 
 위에서 보듯이, 이 사례에서는 파티션 단위에서 중복 제거를 병렬로 수행할 수 있게 함으로써 파티셔닝이 쿼리 성능을 크게 향상시켰습니다.
-
 
 ## 병합 동작 관련 고려 사항 \{#merge-behavior-considerations\}
 

@@ -1943,6 +1943,14 @@ OvercommitTracker 内部等待中的线程数量
 
 未压缩缓存中的条目总数。每个条目表示一个已解压的数据块。未压缩缓存通常无法提升性能，应尽量避免使用。
 
+### UniqueKeyIndexCacheBytes \{#uniquekeyindexcachebytes\}
+
+UNIQUE KEY 索引缓存总大小 (字节)
+
+### UniqueKeyIndexCacheEntries \{#uniquekeyindexcacheentries\}
+
+缓存中的 UNIQUE KEY 索引块总数
+
 ### VectorSimilarityIndexCacheBytes \{#vectorsimilarityindexcachebytes\}
 
 向量相似度索引缓存大小 (以字节为单位)

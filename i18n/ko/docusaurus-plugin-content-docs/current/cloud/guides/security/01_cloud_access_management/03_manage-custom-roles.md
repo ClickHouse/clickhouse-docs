@@ -44,16 +44,20 @@ ClickHouse Cloud 고객은 미리 정의된 시스템 역할 중에서 선택하
 
   ### 역할 이름을 입력합니다 \{#name-the-role\}
 
-  역할을 잘 설명하는 이름을 입력합니다. 이 이름은 사용자 및 API 키에 역할을 할당할 때 표시됩니다.
+  역할을 잘 설명하는 이름을 입력합니다. 이 이름은 사용자 및 API Key에 역할을 할당할 때 표시됩니다.
 
   <Image img={step_4} size="md" />
 
   ### `Allow`를 클릭하고 권한 범위를 선택합니다 \{#scope-permissions\}
 
-  `Allow` 버튼을 클릭한 다음 Organization, Service 및/또는 Database 권한 중에서 선택합니다. 모든 권한에 대한 설명은 [Console 역할 및 권한](/cloud/security/console-roles)을 참조하십시오.
+  `Allow` 버튼을 클릭한 다음 Organization, Service 및/또는 Database 권한 중에서 선택합니다. 모든 권한에 대한 설명은 [Console roles and permissions](/cloud/security/console-roles)을 참조하십시오.
 
   :::tip
   콘솔에 로그인할 사용자는 최소한 Organization &gt; Access organization 권한을 갖도록 하십시오.
+  :::
+
+  :::note[Data Sources 탭 액세스]
+  **Data Sources** 탭에 액세스하려면 현재 `Manage and Delete Selected Services` 권한이 필요합니다.
   :::
 
   <Image img={step_5} size="md" />

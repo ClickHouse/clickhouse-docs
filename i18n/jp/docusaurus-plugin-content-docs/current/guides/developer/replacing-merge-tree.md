@@ -111,7 +111,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 ```sql
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet') WHERE AnswerCount > 0 LIMIT 10000
+```
 
+```response
 0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
@@ -119,7 +121,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 ```sql
 SELECT count() FROM stackoverflow.posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
@@ -127,7 +131,7 @@ SELECT count() FROM stackoverflow.posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-ここで、投稿の回答に関する統計情報を更新します。これらの値を直接更新するのではなく、5000 行分のコピーを新たに挿入し、それらのバージョン番号を 1 つ増やします（つまり、テーブル内には 150 行が存在することになります）。これは、簡単な `INSERT INTO SELECT` でシミュレートできます。
+ここで、投稿の回答に関する統計情報を更新します。これらの値を直接更新するのではなく、5000 行分のコピーを新たに挿入し、それらのバージョン番号を 1 つ増やします (つまり、テーブル内には 150 行が存在することになります) 。これは、簡単な `INSERT INTO SELECT` でシミュレートできます。
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -158,11 +162,13 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
+```
 
+```response
 0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
-さらに、行を再挿入する際に `Deleted` 列の値を 1 に設定することで、ランダムな 1000 件の投稿を削除します。同様に、これは単純な `INSERT INTO SELECT` 文でシミュレートできます。
+さらに、行を再挿入する際に deleted カラムの値を 1 に設定することで、ランダムな 1000 件の投稿を削除します。同様に、これは単純な `INSERT INTO SELECT` 文でシミュレートできます。
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -193,7 +199,9 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
+```
 
+```response
 0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
@@ -202,7 +210,9 @@ LIMIT 1000
 ```sql
 SELECT count()
 FROM posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
@@ -211,12 +221,13 @@ FROM posts_updateable
 
 ここで得られる結果は、これまでに行われたマージ処理の内容によって変動します。重複した行が存在するため、ここで表示される合計値が本来と異なっていることがわかります。テーブルに `FINAL` を適用すると、正しい結果が得られます。
 
-
 ```sql
 SELECT count()
 FROM posts_updateable
 FINAL
+```
 
+```response
 ┌─count()─┐
 │    9000 │
 └─────────┘
@@ -224,7 +235,6 @@ FINAL
 1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
 Peak memory usage: 8.14 MiB.
 ```
-
 
 ## FINAL のパフォーマンス \{#final-performance\}
 
@@ -236,11 +246,11 @@ Peak memory usage: 8.14 MiB.
 
 ## ReplacingMergeTree でパーティションを活用する \{#exploiting-partitions-with-replacingmergetree\}
 
-ClickHouse におけるデータのマージ処理はパーティション単位で行われます。ReplacingMergeTree を使用する場合、**行に対してこのパーティションキーが変更されない** ことを保証できるのであれば、ベストプラクティスに従ってテーブルをパーティション分割することを推奨します。これにより、同じ行に対する更新が同じ ClickHouse パーティションに送信されるようになります。ここで説明するベストプラクティスに従う限り、Postgres と同じパーティションキーを再利用することもできます。
+ClickHouse におけるデータのマージ処理はパーティション単位で行われます。ReplacingMergeTree を使用する場合、**行に対してこのパーティションキーが変更されない** ことを保証できるのであれば、ベストプラクティスに従ってテーブルをパーティション化することを推奨します。これにより、同じ行に対する更新が同じ ClickHouse パーティションに送信されるようになります。ここで説明するベストプラクティスに従う限り、Postgres と同じパーティションキーを再利用することもできます。
 
 この前提が成り立つ場合、`do_not_merge_across_partitions_select_final=1` 設定を使用して `FINAL` クエリのパフォーマンスを向上させることができます。この設定により、FINAL を使用するときにパーティションが互いに独立してマージおよび処理されます。
 
-次のような posts テーブルを考えます。ここではパーティション分割を行っていません。
+次のような posts テーブルを考えます。ここではパーティション化を行っていません。
 
 ```sql
 CREATE TABLE stackoverflow.posts_no_part
@@ -255,7 +265,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
 INSERT INTO stackoverflow.posts_no_part SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
@@ -275,7 +287,9 @@ FROM posts_no_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │        371480 │
 ...
@@ -286,7 +300,7 @@ ORDER BY year ASC
 Peak memory usage: 2.09 GiB.
 ```
 
-年単位でパーティション分割したテーブルに対しても同じ手順を実行し、そのうえで `do_not_merge_across_partitions_select_final=1` を指定して上記のクエリを再実行します。
+年単位でパーティション化したテーブルに対しても同じ手順を実行し、そのうえで `do_not_merge_across_partitions_select_final=1` を指定して上記のクエリを再実行します。
 
 ```sql
 CREATE TABLE stackoverflow.posts_with_part
@@ -307,7 +321,9 @@ FROM posts_with_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │       387832  │
 │ 2009 │       1165506 │
@@ -320,8 +336,7 @@ ORDER BY year ASC
 17 rows in set. Elapsed: 0.994 sec. Processed 64.65 million rows, 983.64 MB (65.02 million rows/s., 989.23 MB/s.)
 ```
 
-示したように、このケースでは、パーティショニングによって重複排除処理をパーティション単位で並列に実行できるようになった結果、クエリのパフォーマンスが大幅に向上しました。
-
+示したように、このケースでは、パーティション化によって重複排除処理をパーティション単位で並列に実行できるようになった結果、クエリのパフォーマンスが大幅に向上しました。
 
 ## マージ動作に関する考慮事項 \{#merge-behavior-considerations\}
 

@@ -24,10 +24,10 @@ ClickHouse における圧縮は、主に次の 3 つの要因の影響を受け
 
 Stack Overflow のデータセットを例として使用します。`posts` テーブルに対して、次のスキーマにおける圧縮に関する統計情報を比較します。
 
-* `posts` - データ型の最適化が行われておらず、並び替えキーも定義されていないスキーマ。
-* `posts_v3` - 各カラムに対して適切なデータ型とビットサイズを持ち、並び替えキー `(PostTypeId, toDate(CreationDate), CommentCount)` が定義されている、データ型が最適化されたスキーマ。
+* `posts` - データ型の最適化が行われておらず、ソートキーも定義されていないスキーマ。
+* `posts_v3` - 各カラムに対して適切なデータ型とビットサイズを持ち、ソートキー `(PostTypeId, toDate(CreationDate), CommentCount)` が定義されている、データ型が最適化されたスキーマ。
 
-次のクエリを使用して、各カラムの現在の圧縮済みサイズと非圧縮時のサイズを測定できます。まず、並び替えキーのない最初のスキーマ `posts` のサイズを確認してみましょう。
+次のクエリを使用して、各カラムの現在の圧縮サイズと非圧縮サイズを測定できます。まず、ソートキーのない最初のスキーマ `posts` のサイズを確認してみましょう。
 
 ```sql
 SELECT name,
@@ -37,7 +37,9 @@ SELECT name,
 FROM system.columns
 WHERE table = 'posts'
 GROUP BY name
+```
 
+```response
 ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio────┐
 │ Body                  │ 46.14 GiB       │ 127.31 GiB        │ 2.76       │
 │ Title                 │ 1.20 GiB        │ 2.63 GiB          │ 2.19       │
@@ -63,7 +65,6 @@ GROUP BY name
 │ CommunityOwnedDate    │ 2.21 MiB        │ 509.60 MiB        │ 230.94     │
 └───────────────────────┴─────────────────┴───────────────────┴────────────┘
 ```
-
 
 <details>
    
@@ -146,13 +147,15 @@ SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE table = 'posts'
+```
 
+```response
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ 50.16 GiB       │ 143.47 GiB        │  2.86 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
-最適化されたデータ型とソートキーを持つテーブル `posts_v3` に対して同じクエリを実行すると、非圧縮時と圧縮時のサイズがいずれも大きく削減されていることがわかります。
+最適化されたデータ型とソートキーを持つテーブル `posts_v3` に対して同じクエリを実行すると、非圧縮サイズと圧縮サイズがいずれも大きく削減されていることがわかります。
 
 ```sql
 SELECT
@@ -161,14 +164,15 @@ SELECT
     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE `table` = 'posts_v3'
+```
 
+```response
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ 25.15 GiB       │ 68.87 GiB         │  2.74 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
 カラムごとの詳細な内訳を見ると、圧縮を行う前にデータを並べ替え、適切な型を使用することで、`Body`、`Title`、`Tags`、`CreationDate` カラムで大きな削減効果が得られていることが分かります。
-
 
 ```sql
 SELECT
@@ -179,7 +183,9 @@ SELECT
 FROM system.columns
 WHERE `table` = 'posts_v3'
 GROUP BY name
+```
 
+```response
 ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
 │ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
 │ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
@@ -205,7 +211,6 @@ GROUP BY name
 │ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
 └───────────────────────┴─────────────────┴───────────────────┴─────────┘
 ```
-
 
 ## 適切なカラム圧縮コーデックの選択 \{#choosing-the-right-column-compression-codec\}
 
@@ -279,7 +284,9 @@ GROUP BY
 ORDER BY
     name ASC,
     `table` ASC
+```
 
+```response
 ┌─table────┬─name────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ posts_v3 │ AnswerCount │ 9.67 MiB        │ 113.69 MiB        │ 11.76 │
 │ posts_v4 │ AnswerCount │ 10.39 MiB       │ 111.31 MiB        │ 10.71 │
@@ -291,7 +298,6 @@ ORDER BY
 
 6 rows in set. Elapsed: 0.008 sec
 ```
-
 
 ### Compression in ClickHouse Cloud \{#compression-in-clickhouse-cloud\}
 

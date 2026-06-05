@@ -1,9 +1,9 @@
 ---
-description: 'ClickHouse をソースコードからコンパイルする、または CI で生成されたバイナリをインストールする手順'
+description: 'ClickHouse をソースからコンパイルする、または CI で生成されたバイナリをインストールする手順'
 keywords: ['ClickHouse', 'インストール', '高度な', 'ソースからコンパイル', 'CI 生成バイナリ']
-sidebar_label: '高度なインストール'
+sidebar_label: 'ソースコード & CI ビルド'
 slug: /install/advanced
-title: '高度なインストール方法'
+title: 'ソースコード & CI ビルド'
 hide_title: false
 doc_type: 'guide'
 ---

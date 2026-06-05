@@ -145,7 +145,7 @@ ENGINE = MergeTree
 ORDER BY username
 ```
 
-Обратите внимание, что столбец `company` определён как `Tuple(catchPhrase String, name String)`. Ключ `address` использует `Array(Tuple)` с вложенным `Tuple` для представления столбца `geo`.
+Обратите внимание, что столбец `company` определён как `Tuple(catchPhrase String, name String)`. Ключ `address` использает `Array(Tuple)` с вложенным `Tuple` для представления столбца `geo`.
 
 JSON можно вставлять в эту таблицу в её текущем виде:
 
@@ -161,7 +161,9 @@ SELECT
  address.street,
  company.name
 FROM people
+```
 
+```response
 ┌─address.street────┬─company.name─┐
 │ ['Victor Plains'] │ ClickHouse   │
 └───────────────────┴──────────────┘
@@ -172,7 +174,9 @@ FROM people
 ```sql
 SELECT address.street[1] AS street
 FROM people
+```
 
+```response
 ┌─street────────┐
 │ Victor Plains │
 └───────────────┘
@@ -199,10 +203,9 @@ ENGINE = MergeTree
 ORDER BY company.name
 ```
 
-
 ### Обработка значений по умолчанию \{#handling-default-values\}
 
-Даже если объекты JSON имеют фиксированную структуру, они часто разрежённые и содержат лишь подмножество известных ключей. К счастью, тип `Tuple` не требует, чтобы в JSON‑нагрузке присутствовали все столбцы. Если какие‑то из них не указаны, будут использованы значения по умолчанию.
+Даже если объекты JSON имеют фиксированную структуру, они часто разрежённые и содержат лишь подмножество известных ключей. К счастью, тип `Tuple` не требует, чтобы в JSON‑полезной нагрузке присутствовали все столбцы. Если какие‑то из них не указаны, будут использованы значения по умолчанию.
 
 Рассмотрим нашу таблицу `people` из предыдущего примера и следующий разрежённый JSON, в котором отсутствуют ключи `suite`, `geo`, `phone_numbers` и `catchPhrase`.
 
@@ -232,7 +235,9 @@ ORDER BY company.name
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","city":"Wisokyburgh","zipcode":"90566-7771"}],"website":"clickhouse.com","company":{"name":"ClickHouse"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -270,14 +275,15 @@ FORMAT PrettyJSONEachRow
   },
   "dob": "2007-03-31"
 }
+```
 
+```response
 1 row in set. Elapsed: 0.001 sec.
 ```
 
 :::note Различие между пустым значением и null
 Если вам нужно различать ситуацию, когда значение является пустым, и когда оно вовсе не задано, можно использовать тип [Nullable](/sql-reference/data-types/nullable). Однако [следует избегать его использования](/best-practices/select-data-types#avoid-nullable-columns), если только это не абсолютно необходимо, поскольку это отрицательно влияет на хранение данных и производительность запросов по этим столбцам.
 :::
-
 
 ### Обработка новых столбцов \{#handling-new-columns\}
 
@@ -322,7 +328,9 @@ FORMAT PrettyJSONEachRow
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -347,7 +355,9 @@ INSERT INTO people FORMAT JSONEachRow
 
 -- select 2 rows
 SELECT id, nickname FROM people
+```
 
+```response
 ┌─id─┬─nickname────┐
 │  2 │ Clicky      │
 │  1 │ no_nickname │
@@ -355,7 +365,6 @@ SELECT id, nickname FROM people
 
 2 rows in set. Elapsed: 0.001 sec.
 ```
-
 
 ## Обработка полуструктурированных/динамических структур \{#handling-semi-structured-dynamic-structures\}
 
@@ -520,19 +529,22 @@ INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.028 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-
 ```sql
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street":"Maple Avenue","suite":"Apt. 402","zipcode":"11223-4567"}],"company":{"catchPhrase":"Streamlined analytics at scale","labels":{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]},"name":"FastData Inc."},"dob":"1992-07-15","id":"2","name":"Analytica Rowe","phone_numbers":["123-456-7890","555-867-5309"],"tags":{"car":{"model":"Audi e-tron","year":"2022"},"hobby":"Running simulations","holidays":[{"location":"Kyoto, Japan","year":"2023"}]},"username":"Analytica","website":"fastdata.io"}
@@ -591,7 +603,9 @@ FORMAT PrettyJsonEachRow
         "website": "String"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.009 sec.
 ```
 
@@ -601,7 +615,9 @@ FORMAT PrettyJsonEachRow
 
 ```sql
 SELECT json.name, json.email FROM people
+```
 
+```response
 ┌─json.name────────────┬─json.email────────────┐
 │ Analytica Rowe       │ ᴺᵁᴸᴸ                  │
 │ Clicky McCliickHouse │ clicky@clickhouse.com │
@@ -612,23 +628,28 @@ SELECT json.name, json.email FROM people
 
 Обратите внимание, что отсутствующие в строках столбцы возвращаются как `NULL`.
 
-
 Кроме того, для путей одного и того же типа создаётся отдельный подстолбец. Например, для `company.labels.type` есть подстолбец типа `String` и подстолбец типа `Array(Nullable(String))`. При возможности будут возвращены оба, но мы можем обращаться к конкретным подстолбцам с помощью синтаксиса `.:`:
 
 ```sql
 SELECT json.company.labels.type
 FROM people
+```
 
+```response
 ┌─json.company.labels.type─┐
 │ database systems         │
 │ ['real-time processing'] │
 └──────────────────────────┘
 
 2 rows in set. Elapsed: 0.007 sec.
+```
 
+```sql
 SELECT json.company.labels.type.:String
 FROM people
+```
 
+```response
 ┌─json.company⋯e.:`String`─┐
 │ ᴺᵁᴸᴸ                     │
 │ database systems         │
@@ -643,18 +664,24 @@ FROM people
 -- sub objects will not be returned by default
 SELECT json.company.labels
 FROM people
+```
 
+```response
 ┌─json.company.labels─┐
 │ ᴺᵁᴸᴸ                │
 │ ᴺᵁᴸᴸ                │
 └─────────────────────┘
 
 2 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 -- return sub objects using ^ notation
 SELECT json.^company.labels
 FROM people
+```
 
+```response
 ┌─json.^`company`.labels─────────────────────────────────────────────────────────────────┐
 │ {"employees":"250","founded":"2021","type":"database systems"}                         │
 │ {"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]} │
@@ -662,7 +689,6 @@ FROM people
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### Выделенный JSON-столбец \{#targeted-json-column\}
 
@@ -695,7 +721,9 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -706,7 +734,9 @@ INSERT INTO people FORMAT JSONEachRow
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 id:            2
@@ -738,7 +768,6 @@ tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores,
 
 [Функции интроспекции](/sql-reference/data-types/newjson#introspection-functions) можно использовать для определения выведенных путей и типов для столбца `company.labels`.
 
-
 ```sql
 SELECT JSONDynamicPathsWithTypes(company.labels) AS paths
 FROM people
@@ -759,14 +788,15 @@ FORMAT PrettyJsonEachRow
         "type": "String"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
-
 ### Использование подсказок типов и пропуска путей \{#using-type-hints-and-skipping-paths\}
 
-Подсказки типов позволяют указать тип для пути и его вложенного столбца, предотвращая ненужный вывод типов. Рассмотрим следующий пример, где мы задаём типы для JSON-ключей `dissolved`, `employees` и `founded` внутри JSON-столбца `company.labels`
+Подсказки типов позволяют указать тип для пути и его подстолбца, предотвращая ненужный вывод типов. Рассмотрим следующий пример, где мы задаём типы для JSON-ключей `dissolved`, `employees` и `founded` внутри JSON-столбца `company.labels`
 
 ```sql
 CREATE TABLE people
@@ -801,7 +831,9 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -831,12 +863,13 @@ FORMAT PrettyJsonEachRow
         "type": "Array(Nullable(String))"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
 Кроме того, мы можем пропускать пути внутри JSON, которые не хотим сохранять, с помощью параметров [`SKIP` и `SKIP REGEXP`](/sql-reference/data-types/newjson), чтобы минимизировать объем хранения и избежать ненужного вывода типов для ненужных путей. Например, предположим, что мы используем один JSON-столбец для приведенных выше данных. Мы можем пропустить пути `address` и `company`:
-
 
 ```sql
 CREATE TABLE people
@@ -850,7 +883,9 @@ INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -860,7 +895,6 @@ INSERT INTO people FORMAT JSONAsObject
 Обратите внимание, что эти столбцы были исключены из наших данных:
 
 ```sql
-
 SELECT *
 FROM people
 FORMAT PrettyJSONEachRow
@@ -918,10 +952,11 @@ FORMAT PrettyJSONEachRow
         "website" : "clickhouse.com"
     }
 }
-
-2 rows in set. Elapsed: 0.004 sec.
 ```
 
+```response
+2 rows in set. Elapsed: 0.004 sec.
+```
 
 #### Оптимизация производительности с помощью подсказок типов \{#optimizing-performance-with-type-hints\}
 

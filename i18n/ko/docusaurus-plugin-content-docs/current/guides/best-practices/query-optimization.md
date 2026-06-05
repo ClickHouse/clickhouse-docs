@@ -78,7 +78,9 @@ FROM s3Cluster
 ```sql
 --- Display inferred table schema
 SHOW CREATE TABLE trips_small_inferred
+```
 
+```response
 Query id: d97361fd-c050-478e-b831-369469f0784d
 
 CREATE TABLE nyc_taxi.trips_small_inferred
@@ -106,9 +108,9 @@ ORDER BY tuple()
 
 ### 쿼리 로그 \{#query-logs\}
 
-기본적으로 ClickHouse는 실행된 각 쿼리에 대한 정보를 [query logs](/operations/system-tables/query_log)에 수집하고 기록합니다. 이 데이터는 `system.query_log` 테이블에 저장됩니다. 
+기본적으로 ClickHouse는 실행된 각 쿼리에 대한 정보를 [쿼리 로그](/operations/system-tables/query_log)에 수집하고 기록합니다. 이 데이터는 `system.query_log` 테이블에 저장됩니다. 
 
-각 실행된 쿼리에 대해 ClickHouse는 쿼리 실행 시간, 읽은 행 수, CPU·메모리 사용량, 파일시스템 캐시 적중 횟수와 같은 리소스 사용량 등의 통계를 기록합니다. 
+각 실행된 쿼리에 대해 ClickHouse는 쿌리 실행 시간, 읽은 행 수, CPU·메모리 사용량, 파일 시스템 캐시 적중 횟수와 같은 리소스 사용량 등의 통계를 기록합니다. 
 
 따라서 쿼리 로그는 느린 쿼리를 조사할 때 좋은 출발점입니다. 실행에 오랜 시간이 걸리는 쿼리를 쉽게 찾아낼 수 있고, 각 쿼리에 대한 리소스 사용 정보를 확인할 수 있습니다. 
 
@@ -128,7 +130,9 @@ WHERE has(databases, 'nyc_taxi') AND (event_time >= (now() - toIntervalMinute(60
 ORDER BY query_duration_ms DESC
 LIMIT 5
 FORMAT VERTICAL
+```
 
+```response
 Query id: e3d48c9f-32bb-49a4-8303-080f59ed1835
 
 Row 1:
@@ -215,7 +219,7 @@ tables:            ['nyc_taxi.trips_small_inferred']
 
 필드 `query_duration_ms`는 해당 쿼리의 실행에 걸린 시간을 나타냅니다. 쿼리 로그 결과를 살펴보면 첫 번째 쿼리 실행에 2967ms가 소요되고 있으며, 이는 더 개선될 수 있습니다. 
 
-또한 어떤 쿼리가 가장 많은 메모리나 CPU를 사용해 시스템에 부하를 주는지 알고 싶을 수도 있습니다.
+또한 어떤 쿼리가 가장 많은 메모리나 CPU를 사용해 시스템에 부하를 주는지 알고 싶을 수도 있습니다. 
 
 ```sql
 -- Top queries by memory usage
@@ -235,7 +239,7 @@ ORDER BY memory_usage DESC
 LIMIT 30
 ```
 
-앞에서 찾은 오래 실행되는 쿼리를 따로 떼어내어, 응답 시간을 파악하기 위해 여러 번 다시 실행합니다. 
+앞에서 찾은 오래 실행되는 쿌리를 따로 떼어내어, 응답 시간을 파악하기 위해 여러 번 다시 실행합니다. 
 
 이 단계에서는 실행 결과의 재현성을 높이기 위해 `enable_filesystem_cache` SETTING을 0으로 설정하여 파일 시스템 캐시를 끄는 것이 중요합니다.
 
@@ -256,9 +260,14 @@ WHERE
 FORMAT JSON
 
 ----
+```
+
+```response
 1 row in set. Elapsed: 1.699 sec. Processed 329.04 million rows, 8.88 GB (193.72 million rows/s., 5.23 GB/s.)
 Peak memory usage: 440.24 MiB.
+```
 
+```sql
 -- Run query 2
 SELECT
     payment_type,
@@ -276,9 +285,14 @@ ORDER BY
     trip_count DESC;
 
 ---
+```
+
+```response
 4 rows in set. Elapsed: 1.419 sec. Processed 329.04 million rows, 5.72 GB (231.86 million rows/s., 4.03 GB/s.)
 Peak memory usage: 546.75 MiB.
+```
 
+```sql
 -- Run query 3
 SELECT
   avg(dateDiff('s', pickup_datetime, dropoff_datetime))
@@ -287,6 +301,9 @@ WHERE passenger_count = 1 or passenger_count = 2
 FORMAT JSON
 
 ---
+```
+
+```response
 1 row in set. Elapsed: 1.414 sec. Processed 329.04 million rows, 8.88 GB (232.63 million rows/s., 6.28 GB/s.)
 Peak memory usage: 451.53 MiB.
 ```
@@ -311,7 +328,9 @@ Peak memory usage: 451.53 MiB.
 -- Count number of rows in table
 SELECT count()
 FROM nyc_taxi.trips_small_inferred
+```
 
+```response
 Query id: 733372c5-deaf-4719-94e3-261540933b23
 
    ┌───count()─┐
@@ -325,7 +344,7 @@ Query id: 733372c5-deaf-4719-94e3-261540933b23
 
 이제 장시간 실행되는 쿼리가 생겼으니, 해당 쿼리가 어떻게 실행되는지 살펴보겠습니다. 이를 위해 ClickHouse는 [EXPLAIN statement command](/sql-reference/statements/explain)를 지원합니다. 이 도구는 쿼리를 실제로 실행하지 않고도 쿼리 실행의 모든 단계를 매우 상세하게 보여 주는 유용한 도구입니다. ClickHouse 전문가가 아니라면 한눈에 파악하기 부담스러울 수 있지만, 쿼리가 어떻게 실행되는지에 대한 통찰을 얻기 위한 필수 도구입니다.
 
-문서에는 EXPLAIN statement가 무엇인지와 이를 활용해 쿼리 실행을 분석하는 방법에 대한 자세한 [가이드](/guides/developer/understanding-query-execution-with-the-analyzer)가 제공됩니다. 이 가이드의 내용을 반복하기보다는, 여기서는 쿼리 실행 성능의 병목 지점을 찾는 데 도움이 되는 몇 가지 명령에 집중하겠습니다. 
+문서에는 EXPLAIN statement가 무엇인지와 이를 활용해 쿼리 실행을 분석하는 방법에 대한 자세한 [가이드](/guides/developer/understanding-query-execution-with-the-analyzer)가 제공됩니다. 이 가이드의 내용을 반복하기보다는, 여기서는 쿼리 실행 성능의 병목 지점을 찾는 데 도움이 되는 몇 가지 명령에 집중하겠습니다.
 
 **Explain indexes = 1**
 
@@ -341,7 +360,9 @@ WITH
 SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
+```
 
+```response
 Query id: f35c412a-edda-4089-914b-fa1622d69868
 
    ┌─explain─────────────────────────────────────────────┐
@@ -353,9 +374,9 @@ Query id: f35c412a-edda-4089-914b-fa1622d69868
    └─────────────────────────────────────────────────────┘
 ```
 
-출력 결과는 직관적입니다. 쿼리는 먼저 `nyc_taxi.trips_small_inferred` 테이블에서 데이터를 읽는 것으로 시작합니다. 그런 다음 WHERE 절이 적용되어 계산된 값을 기준으로 행을 필터링합니다. 필터링된 데이터는 집계를 위해 준비되고, 분위수(quantiles)가 계산됩니다. 마지막으로 결과가 정렬되어 출력됩니다. 
+출력 결과는 직관적입니다. 쿼리는 먼저 `nyc_taxi.trips_small_inferred` 테이블에서 데이터를 읽는 것으로 시작합니다. 그런 다음 WHERE 절이 적용되어 계산된 값을 기준으로 행을 필터링합니다. 필터링된 데이터는 집계를 위해 준비되고, 분위수(quantiles)가 계산됩니다. 마지막으로 결과가 정렬되어 출력됩니다.
 
-여기서는 기본 키(primary key)가 사용되지 않았음을 알 수 있는데, 이는 테이블을 생성할 때 어떤 기본 키도 정의하지 않았기 때문에 자연스러운 결과입니다. 그 결과, ClickHouse는 이 쿼리에 대해 테이블 전체 스캔(full scan)을 수행합니다. 
+여기서는 기본 키(primary key)가 사용되지 않았음을 알 수 있는데, 이는 테이블을 생성할 때 어떤 기본 키도 정의하지 않았기 때문에 자연스러운 결과입니다. 그 결과, ClickHouse는 이 쿼리에 대해 테이블 전체 스캔(full scan)을 수행합니다.
 
 **Explain Pipeline**
 
@@ -369,7 +390,9 @@ WITH
 SELECT quantiles(0.5, 0.75, 0.9, 0.99)(trip_distance)
 FROM nyc_taxi.trips_small_inferred
 WHERE speed_mph > 30
+```
 
+```response
 Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 
     ┌─explain─────────────────────────────────────────────────────────────────────────────┐
@@ -387,7 +410,7 @@ Query id: c7e11e7b-d970-4e35-936c-ecfc24e3b879
 12. │             MergeTreeSelect(pool: PrefetchedReadPool, algorithm: Thread) × 59 0 → 1 │
 ```
 
-여기에서 쿼리를 실행하는 데 사용된 스레드 개수는 59개이며, 이는 높은 수준의 병렬화를 나타냅니다. 이러한 병렬화는 쿼리 실행 속도를 높여 주며, 더 작은 규모의 머신에서 실행할 때보다 실행 시간이 더 짧아집니다. 동시에 실행되는 스레드 수가 많기 때문에 쿼리가 많은 메모리를 사용하는 이유를 설명할 수 있습니다. 
+여기에서 쿼리를 실행하는 데 사용된 스레드 개수는 59개이며, 이는 높은 수준의 병렬화를 나타냅니다. 이러한 병렬화는 쿼리 실행 속도를 높여 주며, 더 작은 규모의 머신에서 실행할 때보다 실행 시간이 더 짧아집니다. 동시에 실행되는 스레드 수가 많기 때문에 쿼리가 많은 메모리를 사용하는 이유를 설명할 수 있습니다.
 
 이상적으로는 모든 느린 쿼리를 이와 같은 방식으로 분석하여 불필요하게 복잡한 쿼리 플랜을 식별하고, 각 쿼리가 읽는 행의 개수와 소비되는 리소스를 파악하는 것이 좋습니다.
 
@@ -443,7 +466,9 @@ SELECT
     countIf(dropoff_location_id IS NULL) AS dropoff_location_id_nulls
 FROM trips_small_inferred
 FORMAT VERTICAL
+```
 
+```response
 Query id: 4a70fc5b-2501-41c8-813c-45ce241d85ae
 
 Row 1:
@@ -482,7 +507,9 @@ SELECT
     uniq(vendor_id)
 FROM trips_small_inferred
 FORMAT VERTICAL
+```
 
+```response
 Query id: d502c6a1-c9bc-4415-9d86-5de74dd6d932
 
 Row 1:
@@ -507,7 +534,9 @@ SELECT
     min(payment_type),max(payment_type),
     min(passenger_count), max(passenger_count)
 FROM trips_small_inferred
+```
 
+```response
 Query id: 4306a8e1-2a9c-4b06-97b4-4d902d2233eb
 
    ┌─min(payment_type)─┬─max(payment_type)─┐
@@ -571,7 +600,9 @@ GROUP BY
     database,
     `table`
 ORDER BY size DESC
+```
 
+```response
 Query id: 72b5eb1c-ff33-4fdb-9d29-dd076ac6f532
 
    ┌─table────────────────┬─compressed─┬─uncompressed─┬──────rows─┐
@@ -710,13 +741,16 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
     <tr>
       <th colspan="4">Query 3</th>
     </tr>
+
     <tr>
-      <th></th>
+      <th />
+
       <th>1회 실행</th>
       <th>2회 실행</th>
       <th>3회 실행</th>
     </tr>
   </thead>
+
   <tbody>
     <tr>
       <td>경과 시간</td>
@@ -724,12 +758,14 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
       <td>1.188초</td>
       <td>0.431초</td>
     </tr>
+
     <tr>
       <td>처리된 행 수</td>
       <td>3.2904억</td>
       <td>3.2904억</td>
       <td>2.7699억</td>
     </tr>
+
     <tr>
       <td>최대 메모리 사용량</td>
       <td>451.53 MiB</td>
@@ -741,7 +777,7 @@ INSERT INTO trips_small_pk SELECT * FROM trips_small_inferred
 
 실행 시간과 메모리 사용량 전반에서 상당한 개선이 있음을 확인할 수 있습니다. 
 
-Query 2는 기본 키(primary key)로부터 가장 큰 이점을 얻습니다. 생성된 쿼리 플랜이 이전과 어떻게 달라졌는지 살펴보겠습니다.
+Query 2는 기본 키(primary key)로부터 가장 큰 이점을 얻습니다. 생성된 쿼리 계획이 이전과 어떻게 달라졌는지 살펴보겠습니다.
 
 ```sql
 EXPLAIN indexes = 1
@@ -755,7 +791,9 @@ FROM nyc_taxi.trips_small_pk
 WHERE (pickup_datetime >= '2009-01-01') AND (pickup_datetime < '2009-04-01')
 GROUP BY payment_type
 ORDER BY trip_count DESC
+```
 
+```response
 Query id: 30116a77-ba86-4e9f-a9a2-a01670ad2e15
 
     ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────────┐

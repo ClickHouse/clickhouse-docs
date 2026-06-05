@@ -155,7 +155,9 @@ FROM uk.uk_price_paid_simple_partitioned
 WHERE date >= '2020-12-01'
   AND date <= '2020-12-31'
   AND town = 'LONDON';
+```
 
+```response
     ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))                                                                    │
  2. │   Aggregating                                                                                                │
@@ -188,22 +190,22 @@ WHERE date >= '2020-12-01'
 
 ① パーティションプルーニング: 上記の EXPLAIN 出力の 7 行目から 18 行目から、ClickHouse がまず `date` フィールドの [MinMax index](/partitions#what-are-table-partitions-in-clickhouse) を使用して、既存の 3257 個の[グラニュール](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (行のブロック) のうち 11 個を特定していることがわかります。これらは、存在する 436 個のアクティブなデータパーツのうち 1 個に保存されており、クエリの `date` フィルタに一致する行を含んでいます。
 
-② グラニュールプルーニング: 上記の EXPLAIN 出力の 19 行目から 24 行目からは、ClickHouse がステップ ① で特定されたデータパーツの [primary index](/guides/best-practices/sparse-primary-indexes) (`town` フィールドに対して作成されたもの) を使用し、 (クエリの `town` フィルタにも一致する可能性のある行を含む) グラニュールの数をさらに 11 個から 1 個へと絞り込んでいることが示されています。これは、先ほどクエリ実行時に表示した clickhouse-client の出力にも反映されています。
+② グラニュールプルーニング: 上記の EXPLAIN 出力の 19 行目から 24 行目からは、ClickHouse がステップ ① で特定されたデータパーツの [プライマリインデックス](/guides/best-practices/sparse-primary-indexes) (`town` フィールドに対して作成されたもの) を使用し、 (クエリの `town` フィルタにも一致する可能性のある行を含む) グラニュールの数をさらに 11 個から 1 個へと絞り込んでいることが示されています。これは、先ほどクエリ実行時に表示した clickhouse-client の出力にも反映されています。
 
 ```response
-... 経過時間: 0.006秒。処理済み: 8.19千行、57.34 KB (136万行/秒、9.49 MB/秒)
-ピークメモリ使用量: 2.73 MiB。
+... Elapsed: 0.006 sec. Processed 8.19 thousand rows, 57.34 KB (1.36 million rows/s., 9.49 MB/s.)
+Peak memory usage: 2.73 MiB.
 ```
 
 つまり、これは ClickHouse がクエリ結果を算出するために、1つのグラニュール ([8192](/operations/settings/merge-tree-settings#index_granularity) 行のブロック) を 6ミリ秒でスキャンして処理したことを意味します。
 
-### パーティション分割は主にデータ管理のための機能です \{#partitioning-is-primarily-a-data-management-feature\}
+### パーティション化は主にデータ管理のための機能です \{#partitioning-is-primarily-a-data-management-feature\}
 
 すべてのパーティションをまたいでクエリを実行する場合、通常、同じクエリを非パーティションテーブルで実行するよりも遅くなることに注意してください。
 
-パーティション分割を行うと、データは通常、より多くのデータパーツ (data part) に分割・配置されるため、ClickHouse がスキャンおよび処理するデータ量が増える傾向があります。
+パーティション化を行うと、データは通常、より多くのデータパーツ (data part) に分割・配置されるため、ClickHouse がスキャンおよび処理するデータ量が増える傾向があります。
 
-これを示すために、[What are table parts](/parts) の例のテーブル (パーティション分割を有効にしていないもの) と、上で使用した現在の例のテーブル (パーティション分割を有効にしているもの) の両方に対して、同じクエリを実行してみます。どちらのテーブルも同じデータおよび行数を[含んでいます](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIHN1bShyb3dzKSBBUyByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCBJTiBbJ3VrX3ByaWNlX3BhaWRfc2ltcGxlJywgJ3VrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkJ10pIEFORCBhY3RpdmUKR1JPVVAgQlkgdGFibGU7\&run_query=true\&tab=results)。
+これを示すために、[What are table parts](/parts) の例のテーブル (パーティション化を有効にしていないもの) と、上で使用した現在の例のテーブル (パーティション化を有効にしているもの) の両方に対して、同じクエリを実行してみます。どちらのテーブルも同じデータおよび行数を[含んでいます](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIHN1bShyb3dzKSBBUyByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCBJTiBbJ3VrX3ByaWNlX3BhaWRfc2ltcGxlJywgJ3VrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkJ10pIEFORCBhY3RpdmUKR1JPVVAgQlkgdGFibGU7\&run_query=true\&tab=results)。
 
 ```sql runnable
 SELECT
@@ -214,7 +216,7 @@ WHERE (database = 'uk') AND (table IN ['uk_price_paid_simple', 'uk_price_paid_si
 GROUP BY table;
 ```
 
-しかし、パーティションが有効になっているテーブルは、[このように](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIGNvdW50KCkgQVMgcGFydHMKRlJPTSBzeXN0ZW0ucGFydHMKV0hFUkUgKGRhdGFiYXNlID0gJ3VrJykgQU5EIChgdGFibGVgIElOIFsndWtfcHJpY2VfcGFpZF9zaW1wbGUnLCAndWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQnXSkgQU5EIGFjdGl2ZQpHUk9VUCBCWSB0YWJsZTs\&run_query=true\&tab=results) より多くのアクティブな [data parts](/parts) を含みます。というのも、上で述べたとおり、ClickHouse はパーティション内の data parts だけを[マージします](/parts) が、パーティションをまたいではマージしないためです。
+しかし、パーティションが有効になっているテーブルは、[このように](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIGNvdW50KCkgQVMgcGFydHMKRlJPTSBzeXN0ZW0ucGFydHMKV0hFUkUgKGRhdGFiYXNlID0gJ3VrJykgQU5EIChgdGFibGVgIElOIFsndWtfcHJpY2VfcGFpZF9zaW1wbGUnLCAndWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQnXSkgQU5EIGFjdGl2ZQpHUk9VUCBCWSB0YWJsZTs\&run_query=true\&tab=results) より多くのアクティブな [データパーツ](/parts) を含みます。というのも、上で述べたとおり、ClickHouse はパーティション内の データパーツ だけを[マージします](/parts) が、パーティションをまたいではマージしないためです。
 
 ```sql runnable
 SELECT
@@ -226,16 +228,18 @@ GROUP BY table;
 
 ```
 
-上でも示したように、パーティション分割されたテーブル `uk_price_paid_simple_partitioned` には 600 を超えるパーティションがあり、その結果、600,306 個のアクティブなデータパーツが存在します。一方、パーティション分割されていないテーブル `uk_price_paid_simple` では、すべての[初期](/parts)データパーツがバックグラウンドマージによって 1 つのアクティブなパーツにマージされました。
+上でも示したように、パーティション化されたテーブル `uk_price_paid_simple_partitioned` には 600 を超えるパーティションがあり、その結果、600,306 個のアクティブなデータパーツが存在します。一方、パーティション化されていないテーブル `uk_price_paid_simple` では、すべての[初期](/parts)データパーツがバックグラウンドマージによって 1 つのアクティブなパーツにマージされました。
 
-上で使用した例のクエリについて、パーティション分割されたテーブルに対してパーティションフィルタなしで実行した場合の物理クエリ実行計画を、[EXPLAIN](/sql-reference/statements/explain) 句を用いて[確認](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)すると、下記出力の 19 行目と 20 行目から、ClickHouse が既存の 3257 個の[グラニュール](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (行ブロック) のうち 671 個、および既存の 436 個のアクティブなデータパーツのうち 431 個を、クエリのフィルタ条件に一致する行を含む可能性があるものとして特定しており、そのためクエリエンジンによってスキャンおよび処理されることが分かります。
+上で使用した例のクエリについて、パーティション化されたテーブルに対してパーティションフィルタなしで実行した場合の物理クエリ実行計画を、[EXPLAIN](/sql-reference/statements/explain) 句を用いて[確認](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)すると、下記出力の 19 行目と 20 行目から、ClickHouse が既存の 3257 個の[グラニュール](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (行ブロック) のうち 671 個、および既存の 436 個のアクティブなデータパーツのうち 431 個を、クエリのフィルタ条件に一致する行を含む可能性があるものとして特定しており、そのためクエリエンジンによってスキャンおよび処理されることが分かります。
 
 ```sql
 EXPLAIN indexes = 1
 SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple_partitioned
 WHERE town = 'LONDON';
+```
 
+```response
     ┌─explain─────────────────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))                       │
  2. │   Aggregating                                                   │
@@ -267,7 +271,9 @@ EXPLAIN indexes = 1
 SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple
 WHERE town = 'LONDON';
+```
 
+```response
     ┌─explain───────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))             │
  2. │   Aggregating                                         │
@@ -290,13 +296,15 @@ WHERE town = 'LONDON';
 SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple_partitioned
 WHERE town = 'LONDON';
+```
 
+```response
 ┌─highest_price─┐
-│     594300000 │ -- 5億9430万
+│     594300000 │ -- 594.30 million
 └───────────────┘
 
-1行のセット。経過時間: 0.090秒。処理: 548万行、27.95 MB (6066万行/秒、309.51 MB/秒)
-ピークメモリ使用量: 163.44 MiB。
+1 row in set. Elapsed: 0.090 sec. Processed 5.48 million rows, 27.95 MB (60.66 million rows/s., 309.51 MB/s.)
+Peak memory usage: 163.44 MiB.
 ```
 
 一方、パーティション分割されていないテーブルで同じクエリを[実行](https://sql.clickhouse.com/?query=U0VMRUNUIE1BWChwcmljZSkgQVMgaGlnaGVzdF9wcmljZQpGUk9NIHVrLnVrX3ByaWNlX3BhaWRfc2ltcGxlCldIRVJFIHRvd24gPSAnTE9ORE9OJzs\&run_query=true\&tab=results)すると、ClickHouse は 241 ブロック (約 200 万行) をスキャンして処理し、その所要時間は 12 ミリ秒です。
@@ -305,11 +313,13 @@ WHERE town = 'LONDON';
 SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple
 WHERE town = 'LONDON';
+```
 
+```response
 ┌─highest_price─┐
-│     594300000 │ -- 5億9430万
+│     594300000 │ -- 594.30 million
 └───────────────┘
 
-1行を取得。経過時間: 0.012秒。処理行数: 197万行、9.87 MB (162.23百万行/秒、811.17 MB/秒)
-ピークメモリ使用量: 62.02 MiB。
+1 row in set. Elapsed: 0.012 sec. Processed 1.97 million rows, 9.87 MB (162.23 million rows/s., 811.17 MB/s.)
+Peak memory usage: 62.02 MiB.
 ```

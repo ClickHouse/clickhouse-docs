@@ -207,7 +207,7 @@ $ clickhouse-local --copy < data.json > data.csv
 $ clickhouse-local --structure "table_structure" --input-format "format_of_incoming_data" --query "query"
 ```
 
-기본 사용(Mac):
+기본 사용법(Mac):
 
 ```bash
 $ ./clickhouse local --structure "table_structure" --input-format "format_of_incoming_data" --query "query"
@@ -220,7 +220,7 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 Arguments:
 
 * `-S`, `--structure` — 입력 데이터의 테이블 구조입니다.
-* `--input-format` — 입력 포맷이며, 기본값은 `TSV`입니다.
+* `--input-format` — 입력 형식이며, 기본값은 `TSV`입니다.
 * `-F`, `--file` — 데이터 경로이며, 기본값은 `stdin`입니다.
 * `-q`, `--query` — `;`를 구분자로 사용하는 실행할 쿼리입니다. `--query`는 여러 번 지정할 수 있으며, 예를 들면 `--query "SELECT 1" --query "SELECT 2"`와 같이 사용할 수 있습니다. `--queries-file`과 동시에 사용할 수 없습니다.
 * `--queries-file` - 실행할 쿼리가 들어 있는 파일 경로입니다. `--queries-file`은 여러 번 지정할 수 있으며, 예를 들면 `--query queries1.sql --query queries2.sql`와 같이 사용할 수 있습니다. `--query`와 동시에 사용할 수 없습니다.
@@ -229,7 +229,10 @@ Arguments:
 * `-f`, `--format`, `--output-format` — 출력 포맷이며, 기본값은 `TSV`입니다.
 * `-d`, `--database` — 기본 데이터베이스이며, 기본값은 `_local`입니다.
 * `--stacktrace` — 예외 발생 시 디버그 출력을 덤프할지 여부입니다.
-* `--echo` — 실행 전에 쿼리를 출력합니다.
+* `--echo [ <bool> ]` — 실행 전에 각 쿼리를 출력합니다. 선택적 불리언 값을 받습니다. interactive mode에서는 기본적으로 활성화되고 batch mode에서는 비활성화됩니다. 참고: 이제 `--echo`는 선택적 값을 받으므로, 값 없이 사용한 `--echo` 바로 뒤에 오는 위치 쿼리 인수는 해당 값으로 처리됩니다. 대신 `--echo --query "..."`, `--echo -q "..."`, `--echo=false` 또는 파이프로 전달된 `stdin`을 사용하십시오.
+* `--echo-formatted [ <bool> ]` — 출력되는 쿼리를 포맷합니다. 선택적 불리언 값을 받습니다. interactive mode에서는 기본적으로 활성화되고 batch mode에서는 비활성화됩니다.
+* `--echo-query-id [ <bool> ]` — 실행 전에 `query_id`를 출력합니다. 선택적 불리언 값을 받습니다. interactive mode에서는 기본적으로 활성화되고 batch mode에서는 비활성화됩니다.
+* `--highlight`, `--hilite` `<bool>` — 명령 프롬프트와 출력되는 쿼리의 구문 강조를 켜거나 끕니다. 기본적으로 활성화되어 있습니다. 구문 강조는 터미널에 출력할 때만 적용됩니다.
 * `--verbose` — 쿼리 실행에 대한 더 많은 세부 정보를 출력합니다.
 * `--logger.console` — 콘솔로 로그를 출력합니다.
 * `--logger.log` — 로그 파일 이름입니다.
@@ -241,7 +244,6 @@ Arguments:
 * `-V`, `--version` — 버전 정보를 출력하고 종료합니다.
 
 또한 각 ClickHouse 설정 변수마다 `--config-file` 대신 더 일반적으로 사용되는 인자를 제공합니다.
-
 
 ## 명령어 \{#commands\}
 

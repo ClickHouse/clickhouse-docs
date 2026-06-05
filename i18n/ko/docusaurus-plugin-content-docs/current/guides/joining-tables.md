@@ -6,18 +6,18 @@ slug: /ko/guides/joining-tables
 doc_type: "guide"
 ---
 
-import Image from "@theme/IdealImage"
-import joins_1 from "@site/static/images/guides/joins-1.png"
-import joins_2 from "@site/static/images/guides/joins-2.png"
-import joins_3 from "@site/static/images/guides/joins-3.png"
-import joins_4 from "@site/static/images/guides/joins-4.png"
-import joins_5 from "@site/static/images/guides/joins-5.png"
+import Image from '@theme/IdealImage';
+import joins_1 from '@site/static/images/guides/joins-1.png';
+import joins_2 from '@site/static/images/guides/joins-2.png';
+import joins_3 from '@site/static/images/guides/joins-3.png';
+import joins_4 from '@site/static/images/guides/joins-4.png';
+import joins_5 from '@site/static/images/guides/joins-5.png';
 
 ClickHouse는 [완전한 `JOIN` 지원](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1)을 제공하며, 다양한 조인 알고리즘을 선택할 수 있습니다. 성능을 최대화하려면 이 가이드에 나열된 조인 최적화 권장 사항을 따르시기 바랍니다.
 
 * 최적의 성능을 위해서는, 특히 밀리초 단위의 응답 성능이 요구되는 실시간 분석 워크로드에서 쿼리 내 `JOIN` 수를 줄이는 것을 목표로 해야 합니다. 하나의 쿼리에서 조인은 최대 3~4개 정도로 제한할 것을 권장합니다. [데이터 모델링 섹션](/data-modeling/schema-design)에서는 비정규화, 딕셔너리, materialized view 등을 활용해 조인을 최소화하는 다양한 방법을 자세히 설명합니다.
 * ClickHouse 24.12 기준으로, 쿼리 플래너는 성능 최적화를 위해 두 테이블 간 조인에서 더 작은 테이블이 오른쪽에 오도록 자동으로 조인 순서를 재조정합니다. ClickHouse 25.9 버전에서는 세 개 이상의 테이블을 조인하는 쿼리 전반에 걸쳐 조인 순서를 최적화하도록 이 기능이 확장되었습니다.
-* 쿼리에서 아래 예시와 같이 `LEFT ANY JOIN`과 같은 직접 조인이 필요한 경우에는, 가능하다면 [딕셔너리](/dictionary)를 사용하는 것을 권장합니다.
+* 쿼리에서 아래 예시와 같이 `LEFT ANY JOIN`과 같은 Direct JOIN이 필요한 경우에는, 가능하다면 [딕셔너리](/dictionary)를 사용하는 것을 권장합니다.
 
 <Image img={joins_1} size="sm" alt="LEFT ANY JOIN" />
 
@@ -28,7 +28,9 @@ SELECT count()
 FROM stackoverflow.posts AS p
 ANY INNER `JOIN` stackoverflow.comments AS c ON p.Id = c.PostId
 WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILIKE '%clickhouse%') AND (c.Text ILIKE '%clickhouse%')
+```
 
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -49,6 +51,9 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
         FROM stackoverflow.comments
         WHERE Text ILIKE '%clickhouse%'
 ))
+```
+
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -57,7 +62,7 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
 Peak memory usage: 323.52 MiB.
 ```
 
-ClickHouse는 모든 조인 절과 하위 쿼리에 조건을 푸시다운하려고 시도하지만, 가능한 모든 하위 절에 조건을 수동으로 적용하여 `JOIN`할 데이터의 크기를 최소화할 것을 권장합니다. 아래 예시는 2020년 이후 Java 관련 게시물의 추천 수를 계산합니다.
+ClickHouse는 모든 조인 절과 서브쿼리에 조건을 푸시다운하려고 시도하지만, 가능한 모든 하위 절에 조건을 수동으로 적용하여 `JOIN`할 데이터의 크기를 최소화할 것을 권장합니다. 아래 예시는 2020년 이후 Java 관련 게시물의 추천 수를 계산합니다.
 
 큰 테이블을 왼쪽에 배치한 단순한 쿼리는 56초 만에 완료됩니다:
 
@@ -66,7 +71,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.posts AS p
 INNER JOIN stackoverflow.votes AS v ON p.Id = v.PostId
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -81,7 +88,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -96,7 +105,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01') AND (v.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -115,7 +126,9 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
         FROM stackoverflow.posts
         WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
 ))
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -123,7 +136,6 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
 1 row in set. Elapsed: 0.383 sec. Processed 99.64 million rows, 804.55 MB (259.85 million rows/s., 2.10 GB/s.)
 Peak memory usage: 250.66 MiB.
 ```
-
 
 ## JOIN 알고리즘 선택 \{#choosing-a-join-algorithm\}
 

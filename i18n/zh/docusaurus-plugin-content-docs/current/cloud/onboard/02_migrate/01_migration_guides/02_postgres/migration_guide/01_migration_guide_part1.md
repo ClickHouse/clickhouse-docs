@@ -113,10 +113,10 @@ ORDER BY id;
 
 采用手动方式时，可以通过以下方法完成数据集的初始批量加载：
 
-* **表函数（Table functions）** - 在 ClickHouse 中使用 [Postgres 表函数](/sql-reference/table-functions/postgresql)，从 Postgres 中执行 `SELECT` 并将结果 `INSERT` 到 ClickHouse 表中。适用于数百 GB 级别数据集的批量加载。
-* **导出（Exports）** - 导出为诸如 CSV 或 SQL 脚本文件等中间格式。然后可以通过客户端使用 `INSERT FROM INFILE` 子句，或借助对象存储及其相关函数（例如 s3、gcs）将这些文件加载到 ClickHouse 中。
+* **表函数 (Table functions)&#x20;**&#x20;- 在 ClickHouse 中使用 [Postgres 表函数](/sql-reference/table-functions/postgresql)，从 Postgres 中执行 `SELECT` 并将结果 `INSERT` 到 ClickHouse 表中。适用于数百 GB 级别数据集的批量加载。
+* **导出 (Exports)&#x20;**&#x20;- 导出为诸如 CSV 或 SQL 脚本文件等中间格式。然后可以通过客户端使用 `INSERT FROM INFILE` 子句，或借助对象存储及其相关函数 (例如 s3、gcs) 将这些文件加载到 ClickHouse 中。
 
-当从 PostgreSQL 手动加载数据时，需要先在 ClickHouse 中创建表。请参考这份同样使用 Stack Overflow 数据集、用于在 ClickHouse 中优化表结构的 [数据建模文档](/data-modeling/schema-design#establish-initial-schema)。
+当从 PostgreSQL 手动加载数据时，需要先在 ClickHouse 中创建表。请参考这份同样使用 Stack Overflow 数据集、用于在 ClickHouse 中优化 schema 的 [数据建模文档](/data-modeling/schema-design#establish-initial-schema)。
 
 PostgreSQL 与 ClickHouse 之间的数据类型可能不同。要为每个表列确定对应的数据类型，可以将 `DESCRIBE` 命令与 [Postgres 表函数](/sql-reference/table-functions/postgresql) 结合使用。以下命令用于查看 PostgreSQL 中 `posts` 表的结构，请根据你的环境进行修改：
 
@@ -127,7 +127,7 @@ SETTINGS describe_compact_output = 1
 
 关于 PostgreSQL 与 ClickHouse 之间数据类型映射的概览，请参阅[附录文档](/migrations/postgresql/appendix#data-type-mappings)。
 
-针对该 schema 优化数据类型的步骤，与从其他数据源（例如 S3 上的 Parquet）加载数据时完全相同。按照[使用 Parquet 的替代指南](/data-modeling/schema-design)中描述的流程操作，将得到如下 schema：
+针对该 schema 优化数据类型的步骤，与从其他数据源 (例如 S3 上的 Parquet) 加载数据时完全相同。按照[使用 Parquet 的替代指南](/data-modeling/schema-design)中描述的流程操作，将得到如下 schema：
 
 ```sql title="Query"
 CREATE TABLE stackoverflow.posts
@@ -164,12 +164,15 @@ COMMENT 'Optimized types'
 
 ```sql title="Query"
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
+```
+
+```response
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
 增量加载反过来也可以进行调度。如果 Postgres 表只接收插入操作，并且存在递增的 id 或时间戳，则可以使用上述表函数方式来加载增量数据，即在 `SELECT` 中应用 `WHERE` 子句。若更新操作可以保证只更新同一列，此方法也可以用于支持更新。然而，要支持删除操作则需要进行完整重新加载，而随着表规模增长，这可能会变得难以实现。
 
-我们使用 `CreationDate` 来演示一次初始加载和后续的增量加载（我们假设当行被更新时，该字段也会更新）。
+我们使用 `CreationDate` 来演示一次初始加载和后续的增量加载 (我们假设当行被更新时，该字段也会更新) 。
 
 ```sql
 -- initial load
@@ -177,7 +180,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', '
 
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT (max(CreationDate) FROM stackoverflow.posts)
 ```
-
 
 > ClickHouse 会将简单的 `WHERE` 子句（例如 `=`, `!=`, `>`, `>=`, `<`, `<=` 和 IN）下推至 PostgreSQL 服务器。通过确保在用于标识变更集的列上建立索引，可以让增量加载更加高效。
 

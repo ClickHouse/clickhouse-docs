@@ -11,7 +11,6 @@ keywords: ['clickstack', 'deployment', 'setup', 'configuration', 'observability'
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import hyperdx_cloud_datasource from '@site/static/images/use-cases/observability/hyperdx_cloud_datasource.png';
 import hyperdx_create_new_source from '@site/static/images/use-cases/observability/hyperdx_create_new_source.png';
 import hyperdx_create_trace_datasource from '@site/static/images/use-cases/observability/hyperdx_create_trace_datasource.png';
@@ -34,12 +33,6 @@ import UseCaseSelector from '@site/docs/use-cases/observability/clickstack/deplo
 import new_service from '@site/static/images/clickstack/getting-started/new_service.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-<BetaBadge/>
-
-::::note[Beta feature]
-This feature is in ClickHouse Cloud beta.
-::::
 
 This **guide is for existing users of ClickHouse Cloud**. If you're new to ClickHouse Cloud, we recommend our [Getting Started](/use-cases/observability/clickstack/getting-started/managed) guide for Managed ClickStack.
 

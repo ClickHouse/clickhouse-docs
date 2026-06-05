@@ -163,13 +163,15 @@ SYSTEM RESTORE REPLICA nyc_taxi.trips_small_adapted;
 SELECT engine
 FROM system.tables
 WHERE name = 'trips_small_adapted' AND database = 'nyc_taxi';
+```
 
+```response
 ┌─engine──────────────┐
 │ ReplicatedMergeTree │
 └─────────────────────┘
 ```
 
-これで、後で S3 バケットからバックアップをリストアできるよう、Cloud サービスのセットアップに進む準備が整いました。
+これで、後で S3 バケットからバックアップを復元できるよう、Cloud サービスのセットアップに進む準備が整いました。
 
 ### ReplicatedMergeTree を使用した分散テーブル \{#distributed-tables\}
 

@@ -21,7 +21,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 <VerticalStepper>
   ## 安装 ClickHouse CLI \ \{#install-the-cli\}
 
-  ClickHouse CLI (`clickhousectl`) 用于安装和管理本地 ClickHouse 版本、启动服务器及执行查询。使用以下命令安装：
+  ClickHouse CLI (`clickhousectl`) 用于安装本地 ClickHouse 版本、启动服务器、执行查询以及管理 ClickHouse Cloud。
+
+  使用以下命令安装：
 
   ```bash
   curl https://clickhouse.com/cli | sh
@@ -48,11 +50,13 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   ClickHouse 原生支持在 Linux 和 macOS 上运行，并可通过 [WSL](https://learn.microsoft.com/en-us/windows/wsl/about) 在 Windows 上运行。
 
-  使用 CLI 安装最新稳定版 ClickHouse：
+  使用 CLI 安装最新稳定版 ClickHouse 并将其设为默认版本：
 
   ```bash
-  clickhousectl local install stable
+  clickhousectl local use stable
   ```
+
+  `local use` 会在该版本尚未安装的情况下自动安装，将其设为默认版本，并在 `~/.local/bin` (位于您的 `PATH` 中) 创建一个 `clickhouse` 符号链接，以便您可以直接调用 `clickhouse` 二进制文件。本指南后续步骤均依赖该符号链接。如需下载某个版本而不更改默认版本或更新符号链接，请改用 `clickhousectl local install <version>`。
 
   :::note
   这不是在生产环境中安装 ClickHouse 的推荐方式。
@@ -240,7 +244,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')
+      ```
 
+      ```response
       Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
 
       ┌─name──────┬─type────────────────────┐
@@ -337,7 +343,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
     <TabItem value="messagequeue" label="消息队列">
       消息队列可以通过相应的表
-      引擎将数据流式写入 ClickHouse，包括：
+      引擎将数据流式导入 ClickHouse，包括：
 
       * **Kafka**：使用 [`Kafka` 表引擎](/engines/table-engines/integrations/kafka) 集成 Kafka
       * **Amazon MSK**：集成 [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/)

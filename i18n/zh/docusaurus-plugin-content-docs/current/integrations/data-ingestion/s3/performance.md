@@ -155,7 +155,7 @@ ClickHouse 可以使用 `s3` 函数和 `S3` 引擎，以[受支持的格式](/in
 
 请注意，我们出于性能考虑使用 Parquet，遵循 [上文关于格式的推荐](#formats)，并在与存储桶位于同一地区的 ClickHouse 集群上执行所有查询。该集群包含 3 个节点，每个节点具有 32GiB 内存和 8 个 vCPU。
 
-在未进行任何调优的情况下，我们展示了将该数据集写入一个使用 MergeTree 引擎的表时的性能，以及执行一个查询以统计提出问题最多的用户时的性能。这两个查询都被有意设计为需要对全部数据进行完整扫描。
+在未进行任何调优的情况下，我们展示了将该数据集写入一个使用 MergeTree 表引擎的表时的性能，以及执行一个查询以统计提出问题最多的用户时的性能。这两个查询都被有意设计为需要对全部数据进行完整扫描。
 
 ```sql
 -- Top usernames
@@ -167,7 +167,9 @@ WHERE OwnerDisplayName NOT IN ('', 'anon')
 GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
+```
 
+```response
 ┌─OwnerDisplayName─┬─num_posts─┐
 │ user330315       │     10344 │
 │ user4039065      │      5316 │
@@ -178,11 +180,15 @@ LIMIT 5
 
 5 rows in set. Elapsed: 3.013 sec. Processed 59.82 million rows, 24.03 GB (19.86 million rows/s., 7.98 GB/s.)
 Peak memory usage: 603.64 MiB.
+```
 
+```sql
 -- Load into posts table
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 191.692 sec. Processed 59.82 million rows, 24.03 GB (312.06 thousand rows/s., 125.37 MB/s.)
 ```
 
@@ -190,21 +196,20 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 :::info
 在读取查询结果时，初次执行的查询往往看起来比重复执行同一查询更慢。这通常是由于 S3 自身的缓存机制以及 [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache) 所致。后者会存储针对文件推断出的 schema，从而在后续访问中跳过推断步骤，缩短查询时间。
-:::
-
+:::”
 
 ## 在读取中使用线程 \{#using-threads-for-reads\}
 
 在不受网络带宽或本地 I/O 限制的前提下，S3 上的读取性能会随核心数量线性扩展。增加线程数量也会带来额外的内存开销，用户需要了解这一点。可以通过修改以下设置来潜在地提升读取吞吐性能：
 
-* 通常，`max_threads` 的默认值（即核心数）已经足够。如果单个查询使用的内存过高且需要降低，或者结果上的 `LIMIT` 很小，可以将该值设置得更低。拥有充足内存的用户可以尝试增大该值，以期从 S3 获得更高的读取吞吐量。一般来说，这只在核心数较低（即 &lt; 10） 的机器上有益。随着其他资源（例如网络和 CPU 争用）成为瓶颈，进一步并行化的收益通常会降低。
+* 通常，`max_threads` 的默认值 (即核心数) 已经足够。如果单个查询使用的内存过高且需要降低，或者结果上的 `LIMIT` 很小，可以将该值设置得更低。拥有充足内存的用户可以尝试增大该值，以期从 S3 获得更高的读取吞吐量。一般来说，这只在核心数较低 (即 &lt; 10)  的机器上有益。随着其他资源 (例如网络和 CPU 争用) 成为瓶颈，进一步并行化的收益通常会降低。
 * 22.3.1 之前版本的 ClickHouse 在使用 `s3` 函数或 `S3` 表引擎时，只会在多个文件之间并行读取。这要求用户确保文件在 S3 上被拆分为多个分块，并通过通配符模式读取，才能获得最佳读取性能。后续版本现在已经支持在单个文件内部并行下载。
 * 在线程数较低的场景下，用户可以考虑将 `remote_filesystem_read_method` 设置为 &quot;read&quot;，以改为从 S3 同步读取文件。
-* 对于 s3 函数和表，单个文件的并行下载由 [`max_download_threads`](/operations/settings/settings#max_download_threads) 和 [`max_download_buffer_size`](/operations/settings/settings#max_download_buffer_size) 的取值决定。虽然 [`max_download_threads`](/operations/settings/settings#max_download_threads) 控制使用的线程数，但只有当文件大小大于 2 * `max_download_buffer_size` 时才会并行下载。默认情况下，`max_download_buffer_size` 被设置为 10MiB。在某些情况下，可以安全地将该缓冲区大小增加到 50 MB（`max_download_buffer_size=52428800`），以确保较小文件仅由单个线程下载。这可以减少每个线程发起 S3 调用所花费的时间，从而降低 S3 等待时间。相关示例可参考 [这篇博文](https://clickhouse.com/blog/clickhouse-1-trillion-row-challenge)。
+* 对于 s3 函数和表，单个文件的并行下载由 [`max_download_threads`](/operations/settings/settings#max_download_threads) 和 [`max_download_buffer_size`](/operations/settings/settings#max_download_buffer_size) 的取值决定。虽然 [`max_download_threads`](/operations/settings/settings#max_download_threads) 控制使用的线程数，但只有当文件大小大于 2 * `max_download_buffer_size` 时才会并行下载。默认情况下，`max_download_buffer_size` 被设置为 10MiB。在某些情况下，可以安全地将该缓冲区大小增加到 50 MB (`max_download_buffer_size=52428800`) ，以确保较小文件仅由单个线程下载。这可以减少每个线程发起 S3 调用所花费的时间，从而降低 S3 等待时间。相关示例可参考 [这篇博文](https://clickhouse.com/blog/clickhouse-1-trillion-row-challenge)。
 
-在进行任何性能优化调整之前，请确保进行恰当的度量。由于 S3 API 调用对延迟较为敏感，可能会影响客户端的耗时，请使用查询日志（`system.query_log`）来获取性能指标。
+在进行任何性能优化调整之前，请确保进行恰当的度量。由于 S3 API 调用对延迟较为敏感，可能会影响客户端的耗时，请使用查询日志 (`system.query_log`) 来获取性能指标。
 
-考虑前面提到的查询，将 `max_threads` 加倍到 `16`（默认 `max_thread` 为节点上的核心数）可以在占用更多内存的代价下，将读取查询性能提升 2 倍。进一步增加 `max_threads` 的收益会逐渐减少，如图所示。
+考虑前面提到的查询，将 `max_threads` 加倍到 `16` (默认 `max_thread` 为节点上的核心数) 可以在占用更多内存的代价下，将读取查询性能提升 2 倍。进一步增加 `max_threads` 的收益会逐渐减少，如图所示。
 
 ```sql
 SELECT
@@ -216,7 +221,9 @@ GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
 SETTINGS max_threads = 16
+```
 
+```response
 ┌─OwnerDisplayName─┬─num_posts─┐
 │ user330315       │     10344 │
 │ user4039065      │      5316 │
@@ -227,27 +234,34 @@ SETTINGS max_threads = 16
 
 5 rows in set. Elapsed: 1.505 sec. Processed 59.82 million rows, 24.03 GB (39.76 million rows/s., 15.97 GB/s.)
 Peak memory usage: 178.58 MiB.
+```
 
+```sql
 SETTINGS max_threads = 32
+```
 
+```response
 5 rows in set. Elapsed: 0.779 sec. Processed 59.82 million rows, 24.03 GB (76.81 million rows/s., 30.86 GB/s.)
 Peak memory usage: 369.20 MiB.
+```
 
+```sql
 SETTINGS max_threads = 64
+```
 
+```response
 5 rows in set. Elapsed: 0.674 sec. Processed 59.82 million rows, 24.03 GB (88.81 million rows/s., 35.68 GB/s.)
 Peak memory usage: 639.99 MiB.
 ```
-
 
 ## 为插入操作调优线程数与块大小 \{#tuning-threads-and-block-size-for-inserts\}
 
 为了获得最大的摄取性能，你必须基于以下三点进行选择：(1) 插入块大小；(2) 合适的插入并行度；(3) 可用 CPU 内核数和 RAM 容量。总结如下：
 
-* [插入块大小](#insert-block-size)配置得越大，ClickHouse 需要创建的分区片段就越少，所需的[磁盘文件 I/O](https://en.wikipedia.org/wiki/Category:Disk_file_systems) 和[后台合并](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)也就越少。
+* [插入块大小](#insert-block-size)配置得越大，ClickHouse 需要创建的 parts 就越少，所需的[磁盘文件 I/O](https://en.wikipedia.org/wiki/Category:Disk_file_systems) 和[后台合并](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges)也就越少。
 * [并行插入线程数](#insert-parallelism)配置得越高，数据处理速度就越快。
 
-这两个性能因素之间（以及与后台分区片段合并之间）存在此消彼长的权衡。ClickHouse 服务器可用的主内存是有限的。更大的块会占用更多主内存，从而限制可使用的并行插入线程数。反过来，更高的并行插入线程数又需要更多主内存，因为插入线程数决定了同时在内存中创建的插入块数量，这会限制插入块的可选大小。此外，插入线程与后台合并线程之间也可能出现资源竞争。配置较多的插入线程会 (1) 产生更多需要合并的分区片段，并且 (2) 占用本可用于后台合并线程的 CPU 内核和内存空间。
+这两个性能因素之间 (以及与后台分区片段合并之间) 存在此消彼长的权衡。ClickHouse 服务器可用的主内存是有限的。更大的块会占用更多主内存，从而限制可使用的并行插入线程数。反过来，更高的并行插入线程数又需要更多主内存，因为插入线程数决定了同时在内存中创建的插入块数量，这会限制插入块的可选大小。此外，插入线程与后台合并线程之间也可能出现资源竞争。配置较多的插入线程会 (1) 产生更多需要合并的 parts，并且 (2) 占用本可用于后台合并线程的 CPU 内核和内存空间。
 
 关于这些参数的行为如何影响性能和资源的详细说明，我们建议[阅读这篇博客文章](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part2)。正如文中所述，调优可能需要在这两个参数之间进行精细平衡。这种穷举式测试往往不切实际，因此，总结来说，我们建议：
 
@@ -260,23 +274,24 @@ Then:
 min_insert_block_size_bytes = peak_memory_usage_in_bytes / (~3 * max_insert_threads)
 ```
 
-使用该公式时，您可以将 `min_insert_block_size_rows` 设置为 0（禁用基于行数的阈值），同时将 `max_insert_threads` 设置为选定的值，并将 `min_insert_block_size_bytes` 设置为上述公式计算得到的结果。
+使用该公式时，您可以将 `min_insert_block_size_rows` 设置为 0 (禁用基于行数的阈值) ，同时将 `max_insert_threads` 设置为选定的值，并将 `min_insert_block_size_bytes` 设置为上述公式计算得到的结果。
 
 将此公式应用到前面的 Stack Overflow 示例中：
 
-* `max_insert_threads=4`（每个节点 8 核）
-* `peak_memory_usage_in_bytes` = 32 GiB（节点资源的 100%），即 `34359738368` 字节。
+* `max_insert_threads=4` (每个节点 8 核) 
+* `peak_memory_usage_in_bytes` = 32 GiB (节点资源的 100%) ，即 `34359738368` 字节。
 * `min_insert_block_size_bytes` = `34359738368/(3*4) = 2863311530`
 
 ```sql
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 128.566 sec. Processed 59.82 million rows, 24.03 GB (465.28 thousand rows/s., 186.92 MB/s.)
 ```
 
 如上所示，通过调整这些设置，插入性能提升了 `33%` 以上。我们将其留给读者自行尝试，看看能否进一步提升单节点性能。
-
 
 ## 基于资源和节点的扩展 \{#scaling-with-resources-and-nodes\}
 
@@ -284,14 +299,18 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 ### 垂直扩展 \{#vertical-scaling\}
 
-之前所有的调优和查询都只使用了我们 ClickHouse Cloud 集群中的单个节点。用户通常也会有多个 ClickHouse 节点可用。我们建议用户优先进行垂直扩展，通过增加核心数线性提升 S3 吞吐量。如果我们在资源加倍（64GiB、16 vCPU）且配置合适的更大 ClickHouse Cloud 节点上重复之前的插入和读取查询，两者的执行速度大约都会提升一倍。
+之前所有的调优和查询都只使用了我们 ClickHouse Cloud 集群中的单个节点。用户通常也会有多个 ClickHouse 节点可用。我们建议用户优先进行垂直扩展，通过增加核心数线性提升 S3 吞吐量。如果我们在资源加倍 (64GiB、16 vCPU) 且配置合适的更大 ClickHouse Cloud 节点上重复之前的插入和读取查询，两者的执行速度大约都会提升一倍。
 
 ```sql
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=8, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 67.294 sec. Processed 59.82 million rows, 24.03 GB (888.93 thousand rows/s., 357.12 MB/s.)
+```
 
+```sql
 SELECT
     OwnerDisplayName,
     count() AS num_posts
@@ -301,14 +320,15 @@ GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
 SETTINGS max_threads = 92
+```
 
+```response
 5 rows in set. Elapsed: 0.421 sec. Processed 59.82 million rows, 24.03 GB (142.08 million rows/s., 57.08 GB/s.)
 ```
 
 :::note
 单个节点也可能受限于网络性能和 S3 GET 请求，从而无法通过垂直扩展线性提升性能。
 :::
-
 
 ### 水平扩展 \{#horizontal-scaling\}
 
@@ -334,7 +354,9 @@ GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
 SETTINGS max_threads = 16
+```
 
+```response
 ┌─OwnerDisplayName─┬─num_posts─┐
 │ user330315       │     10344 │
 │ user4039065      │      5316 │
@@ -352,7 +374,9 @@ Peak memory usage: 176.74 MiB.
 ```sql
 INSERT INTO posts SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 171.202 sec. Processed 59.82 million rows, 24.03 GB (349.41 thousand rows/s., 140.37 MB/s.)
 ```
 
@@ -365,13 +389,14 @@ INSERT INTO posts
 SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 54.571 sec. Processed 59.82 million rows, 24.03 GB (1.10 million rows/s., 440.38 MB/s.)
 Peak memory usage: 11.75 GiB.
 ```
 
 如预期，这会使插入性能降低到原来的三分之一。
-
 
 ## 进一步调优 \{#further-tuning\}
 
@@ -387,26 +412,28 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0, max_insert_threads = 4, min_insert_block_size_bytes = 2863311530, insert_deduplicate = 0
+```
 
+```response
 0 rows in set. Elapsed: 52.992 sec. Processed 59.82 million rows, 24.03 GB (1.13 million rows/s., 453.50 MB/s.)
 Peak memory usage: 26.57 GiB.
 ```
 
-
 ### 插入时优化 \{#optimize-on-insert\}
 
-在 ClickHouse 中，`optimize_on_insert` 设置用于控制是否在插入过程中合并数据分区片段。启用该设置时（默认 `optimize_on_insert = 1`），小分区片段在插入时会被合并为更大的分区片段，通过减少需要读取的分区片段数量来提升查询性能。不过，这种合并会给插入过程增加开销，可能会减慢高吞吐量插入。
+在 ClickHouse 中，`optimize_on_insert` 设置用于控制是否在插入过程中合并数据 parts。启用该设置时 (默认 `optimize_on_insert = 1`) ，小 parts 在插入时会被合并为更大的 parts，通过减少需要读取的 parts 数量来提升查询性能。不过，这种合并会给插入过程增加开销，可能会减慢高吞吐量插入。
 
-禁用该设置（`optimize_on_insert = 0`）会跳过插入时的合并，使数据能够更快写入，尤其是在处理频繁的小批量插入时。合并过程将被推迟到后台执行，从而提升插入性能，但会在一段时间内增加小分区片段的数量，在后台合并完成之前可能会降低查询速度。当插入性能优先、且后台合并过程可以在之后高效完成优化时，该设置尤为适用。如下所示，禁用该设置后可以提升插入吞吐量：
+禁用该设置 (`optimize_on_insert = 0`) 会跳过插入时的合并，使数据能够更快写入，尤其是在处理频繁的小批量插入时。合并过程将被推迟到后台执行，从而提升插入性能，但会在一段时间内增加小 parts 的数量，在后台合并完成之前可能会降低查询速度。当插入性能优先、且后台合并过程可以在之后高效完成优化时，该设置尤为适用。如下所示，禁用该设置后可以提升插入吞吐量：
 
 ```sql
 SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0, max_insert_threads = 4, min_insert_block_size_bytes = 2863311530, insert_deduplicate = 0, optimize_on_insert = 0
-
-0 rows in set. Elapsed: 49.688 sec. Processed 59.82 million rows, 24.03 GB (1.20 million rows/s., 483.66 MB/s.)
 ```
 
+```response
+0 rows in set. Elapsed: 49.688 sec. Processed 59.82 million rows, 24.03 GB (1.20 million rows/s., 483.66 MB/s.)
+```
 
 ## 其他注意事项 \{#misc-notes\}
 

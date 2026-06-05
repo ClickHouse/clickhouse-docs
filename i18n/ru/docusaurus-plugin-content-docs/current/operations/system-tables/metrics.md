@@ -1944,6 +1944,14 @@ SELECT * FROM system.metrics LIMIT 10
 
 Общее количество записей в несжатом кэше. Каждая запись представляет собой распакованный блок данных. Несжатый кэш обычно не повышает производительность, поэтому по возможности его следует избегать
 
+### UniqueKeyIndexCacheBytes \{#uniquekeyindexcachebytes\}
+
+Суммарный размер кэша индекса UNIQUE KEY в байтах
+
+### UniqueKeyIndexCacheEntries \{#uniquekeyindexcacheentries\}
+
+Общее количество блоков индекса UNIQUE KEY, хранящихся в кэше
+
 ### VectorSimilarityIndexCacheBytes \{#vectorsimilarityindexcachebytes\}
 
 Размер кэша индекса векторного сходства в байтах

@@ -232,6 +232,9 @@ ORDER BY memory_usage DESC
 LIMIT 10
 ```
 
+:::note
+단일 쿼리는 서로 다른 `query_id` 값을 가진 여러 행으로 기록될 수 있습니다. 분산 보조 쿼리와 내부 뷰 단계에는 `is_initial_query = 0`이 설정됩니다. 제출된 형태 그대로 쿼리를 보려면 `is_initial_query = 1`(또는 `query_id = initial_query_id`)로 필터링하십시오. 또한 ClickHouse가 할당하는 내부 `query_id` 값에는 `queryView...`와 같은 레이블이 포함될 수 있다는 점에 유의하십시오. 자세한 내용은 [`query_log` 참고](/operations/system-tables/query_log)를 참조하십시오.
+:::
 
 ## PROJECTION이 사용 중인 디스크 공간은 얼마나 되나요 \{#how-much-disk-space-are-my-projection-using\}
 

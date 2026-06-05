@@ -176,6 +176,17 @@ the time went:
 Everything you need to diagnose a slow pattern is in one place, on one
 screen.
 
+## Query insights API {#api}
+
+The same telemetry is available programmatically through the
+[ClickHouse Cloud OpenAPI](/cloud/managed-postgres/openapi#query-insights).
+The [Slow patterns](#slow-patterns) table maps to the
+[list slow query patterns](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternsGetList)
+endpoint, and the [detail flyout](#detail) maps to the
+[get slow query pattern](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternGet)
+endpoint, which returns one pattern's aggregate metrics together with its
+recent executions.
+
 ## How it works {#how-it-works}
 
 ### Normalized in Postgres, before the wire {#how-normalized}
@@ -217,5 +228,6 @@ ClickHouse. Source and issues live at
 
 - [Monitoring dashboard](/cloud/managed-postgres/monitoring/dashboard) — built-in resource and activity charts
 - [Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus) — scrape host-level metrics into your own observability stack
+- [Managed Postgres OpenAPI](/cloud/managed-postgres/openapi#query-insights) — query slow patterns and recent executions programmatically
 - [Extensions](/cloud/managed-postgres/extensions) — the extensions available on Managed Postgres instances
 - [`pg_stat_ch` on GitHub](https://github.com/clickhouse/pg_stat_ch) — the open-source extension that powers Query Insights

@@ -294,7 +294,7 @@ done
 正好去喝杯咖啡休息一下！
 :::
 
-或者，你也可以按照下面的示例，分别运行 SQL 语句来加载这 25 个 Parquet 文件（每个文件一条语句）：
+或者，你也可以按照下面的示例，分别运行 SQL 语句来加载这 25 个 Parquet 文件 (每个文件一条语句) ：
 
 ```sql
 INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedding" FROM url('https://huggingface.co/api/datasets/Qdrant/dbpedia-entities-openai3-text-embedding-3-large-1536-1M/parquet/default/train/0.parquet') SETTINGS max_http_get_redirects=5,enable_url_encoding=0;
@@ -308,7 +308,9 @@ INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedd
 ```sql
 SELECT count(*)
 FROM dbpedia
+```
 
+```response
 ┌─count()─┐
 │ 1000000 │
 └─────────┘
@@ -323,7 +325,6 @@ SET allow_experimental_qbit_type = 1;
 ALTER TABLE dbpedia ADD COLUMN qbit QBit(Float32, 1536);
 ALTER TABLE dbpedia UPDATE qbit = vector WHERE 1;
 ```
-
 
 ### 搜索查询 \{#search-query\}
 

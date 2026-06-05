@@ -8,7 +8,7 @@ doc_type: 'reference'
 ---
 
 
-The ClickHouse CLI (`clickhousectl`) is a unified command-line tool for managing ClickHouse Cloud resources and local development with ClickHouse.
+The ClickHouse CLI (`clickhousectl`) is a unified command-line tool for managing ClickHouse Cloud resources and local development with ClickHouse. It also manages [ClickHouse Cloud Postgres](/cloud/managed-postgres) services.
 
 ## Installation {#installation}
 
@@ -65,6 +65,38 @@ clickhousectl cloud service stop <service-id>
 clickhousectl cloud service delete <service-id>
 ```
 
+### Postgres services (beta) {#postgres-services}
+
+Create and manage [ClickHouse Cloud Postgres](/cloud/managed-postgres) services.
+
+```bash
+# List Postgres services
+clickhousectl cloud postgres list
+
+# Create a Postgres service
+clickhousectl cloud postgres create \
+  --name my-pg \
+  --region us-east-1 \
+  --size c6gd.xlarge \
+  --pg-version 18
+
+# Get service details
+clickhousectl cloud postgres get <pg-id>
+
+# Update a service
+clickhousectl cloud postgres update <pg-id> --size c6gd.2xlarge --add-tag env=prod
+
+# Reset the password
+clickhousectl cloud postgres reset-password <pg-id> --generate
+
+# Read replicas and point-in-time restore
+clickhousectl cloud postgres read-replica create <pg-id> --name replica-1
+clickhousectl cloud postgres restore <pg-id> --name restored --restore-target 2026-04-16T12:00:00Z
+
+# Delete a service
+clickhousectl cloud postgres delete <pg-id>
+```
+
 ### Organizations {#organizations}
 
 ```bash
@@ -104,7 +136,7 @@ clickhousectl cloud --json service list
 
 ## Local development {#local-development}
 
-The CLI also manages local ClickHouse installations and servers. See the [quick install](/install/quick-install) page for getting started with local development.
+The CLI also manages local ClickHouse installations and servers. See the [clickhousectl (CLI)](/install/clickhousectl) page for getting started with local development.
 
 ## Requirements {#requirements}
 

@@ -308,13 +308,15 @@ dbpedia テーブルに 100 万行が存在することを確認します：
 ```sql
 SELECT count(*)
 FROM dbpedia
+```
 
+```response
 ┌─count()─┐
 │ 1000000 │
 └─────────┘
 ```
 
-次に QBit カラムを追加します。
+次に QBit カラムを追加します：
 
 ```sql
 SET allow_experimental_qbit_type = 1;
@@ -323,7 +325,6 @@ SET allow_experimental_qbit_type = 1;
 ALTER TABLE dbpedia ADD COLUMN qbit QBit(Float32, 1536);
 ALTER TABLE dbpedia UPDATE qbit = vector WHERE 1;
 ```
-
 
 ### 検索クエリ \{#search-query\}
 
