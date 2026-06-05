@@ -3,7 +3,7 @@ slug: /cloud/managed-postgres/openapi
 sidebar_label: 'OpenAPI'
 title: 'Managed Postgres OpenAPI'
 description: '使用我们的 OpenAPI 管理您的 Managed Postgres 服务'
-keywords: ['managed postgres', 'openapi', 'api', 'curl', '教程', '命令行']
+keywords: ['managed postgres', 'openapi', 'api', 'curl', '教程', '命令行', 'query insights', '慢查询']
 doc_type: 'guide'
 ---
 
@@ -277,7 +277,120 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 
 ## 监控 \{#monitoring\}
 
-两个与 Prometheus 兼容的端点会公开 Managed Postgres 服务的 CPU、内存、I/O、连接和事务指标：一个返回组织中所有服务的指标，另一个返回单个服务的指标。有关设置，请参阅 [Prometheus endpoint] 页面；有关完整指标列表，请参阅 [metrics reference]。
+两个与 Prometheus 兼容的端点会公开 Managed Postgres 服务的 CPU、内存、I/O、连接和事务指标：一个返回组织中所有服务的指标，另一个返回单个服务的指标。有关设置，请参阅 [Prometheus 端点] 页面；有关完整指标列表，请参阅 [指标参考]。
+
+## Query insights \{#query-insights\}
+
+Cloud
+控制台中 [查询洞察] 选项卡背后的每条语句遥测数据也可通过编程方式获取。两个端点提供了某个服务上最慢的
+查询模式：一个按影响程度列出所有模式，另一个返回单个模式及其最近的执行记录。
+
+### 列出慢查询模式 \{#list-slow-query-patterns\}
+
+[慢查询模式 API] 返回指定时间窗口内观测到的最慢查询模式的聚合指标。必须提供该时间窗口——请将 `from_date` 和 `to_date` 作为 RFC 3339 时间戳传入：
+
+```bash
+FROM=2026-05-25T00:00:00Z
+TO=2026-05-26T00:00:00Z
+
+curl -s --user "$KEY_ID:$KEY_SECRET" \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/slowQueryPatterns?from_date=$FROM&to_date=$TO" \
+    | jq
+```
+
+结果默认先显示开销最高的模式，并按 `total_duration`
+降序排序。可使用 `sort_by` 按其他计数指标排序 (例如
+`p99_duration`、`call_count` 或 `total_wal_bytes`) ，并通过
+`sort_order` 切换排序方向。可使用 `db_name`、`db_user`、
+`db_operation` 和 `app` 这些过滤器缩小结果范围，并通过 `limit` 和
+`offset` 分页查看。
+
+每条结果都对应一个归一化后的模式，其中字面量已被去除，且
+耗时以微秒为单位显示：
+
+```json
+{
+  "result": [
+    {
+      "queryId": "-4748036479882663975",
+      "queryText": "SELECT * FROM orders WHERE customer_id = $1 ORDER BY created_at DESC LIMIT $2",
+      "dbName": "sales",
+      "dbUser": "orders_service",
+      "dbOperation": "SELECT",
+      "app": "orders-api",
+      "callCount": 84213,
+      "errorCount": 0,
+      "totalDurationUs": 1012384556,
+      "avgDurationUs": 12021,
+      "maxDurationUs": 482915,
+      "p50DurationUs": 9874,
+      "p95DurationUs": 28431,
+      "p99DurationUs": 41200,
+      "totalRows": 842130,
+      "totalSharedBlksRead": 19284,
+      "totalSharedBlksHit": 48217734,
+      "totalCpuTimeUs": 938472113,
+      "totalWalBytes": 0
+    }
+  ],
+  "requestId": "c128d830-5769-4c82-8235-f79aa69d1ebf",
+  "status": 200
+}
+```
+
+`queryId` 是规范化后语句的有符号 64 位哈希值，因此它通常
+为负数。将其完整原样传回——包括前面的 `-`——即可拉取单个模式。
+
+### 获取慢查询模式 \{#get-slow-query-pattern\}
+
+将列表响应中的 `queryId` 传递给 [slow pattern API]，即可获取该模式的聚合指标以及最近的各次单次执行记录。用于标识该模式的 `db_name`、`db_user` 和 `db_operation` 是必填项：
+
+```bash
+QUERY_ID=-4748036479882663975
+
+curl -s --user "$KEY_ID:$KEY_SECRET" \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/slowQueryPatterns/$QUERY_ID?db_name=sales&db_user=orders_service&db_operation=SELECT" \
+    | jq
+```
+
+响应在 `aggregate` 下包含与列表端点相同的聚合信息，并额外提供一个 `recentExecutions` 数组。每次执行都包含完整的单次执行计数器——共享块和临时块 I/O、CPU 用户态与系统态时间、并行工作线程、JIT 以及 WAL——也就是控制台中 [详情弹出面板] 细分展示的那些计数器：
+
+```json
+{
+  "result": {
+    "aggregate": {
+      "queryId": "-4748036479882663975",
+      "queryText": "SELECT * FROM orders WHERE customer_id = $1 ORDER BY created_at DESC LIMIT $2",
+      "dbName": "sales",
+      "dbUser": "orders_service",
+      "dbOperation": "SELECT",
+      "callCount": 84213,
+      "avgDurationUs": 12021,
+      "p99DurationUs": 41200
+    },
+    "recentExecutions": [
+      {
+        "timestamp": "2026-05-25T16:42:09Z",
+        "durationUs": 41200,
+        "rows": 10,
+        "sharedBlksHit": 412,
+        "sharedBlksRead": 3,
+        "tempBlksWritten": 0,
+        "cpuUserTimeUs": 38211,
+        "cpuSysTimeUs": 1044,
+        "parallelWorkersPlanned": 0,
+        "parallelWorkersLaunched": 0,
+        "walBytes": 0,
+        "serverRole": "primary"
+      }
+    ]
+  },
+  "requestId": "a5957990-dbe5-46fd-b5ce-a7f8f79e50fe",
+  "status": 200
+}
+```
+
+该示例为简洁起见对两个对象都做了裁剪；API 返回 [per-execution counters] 中记录的完整计数器集。
 
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 
@@ -306,3 +419,13 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 [Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus "Managed Postgres Prometheus 端点"
 
 [metrics reference]: /cloud/managed-postgres/monitoring/metrics "Managed Postgres 指标参考"
+
+[Query Insights]: /cloud/managed-postgres/monitoring/query-insights "Postgres 查询洞察"
+
+[detail flyout]: /cloud/managed-postgres/monitoring/query-insights#detail "查询洞察详情弹出面板"
+
+[per-execution counters]: /cloud/managed-postgres/monitoring/query-insights#counters "查询洞察中的单次执行计数器"
+
+[slow patterns API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternsGetList "列出 Postgres 慢查询模式列表"
+
+[slow pattern API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternGet "获取包含最近执行记录的 Postgres 慢查询模式"

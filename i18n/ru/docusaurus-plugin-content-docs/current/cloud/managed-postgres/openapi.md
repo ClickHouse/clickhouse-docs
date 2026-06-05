@@ -3,7 +3,7 @@ slug: /cloud/managed-postgres/openapi
 sidebar_label: 'OpenAPI'
 title: 'OpenAPI для Managed Postgres'
 description: 'Управляйте сервисами Managed Postgres с помощью нашего OpenAPI'
-keywords: ['managed postgres', 'openapi', 'api', 'curl', 'руководство', 'командная строка']
+keywords: ['managed postgres', 'openapi', 'api', 'curl', 'руководство', 'командная строка', 'Query Insights', 'медленные запросы']
 doc_type: 'guide'
 ---
 
@@ -297,6 +297,132 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 странице [конечная точка Prometheus], а полный
 список метрик — в [metrics reference].
 
+## Query insights \{#query-insights\}
+
+Телеметрия на уровне отдельных операторов, лежащая в основе вкладки [Query Insights] в облачной
+консоли, также доступна программно. Две конечные точки предоставляют доступ к самым медленным
+шаблонам запросов в сервисе: одна перечисляет все шаблоны, ранжированные по влиянию,
+другая возвращает один шаблон вместе с его недавними выполнениями.
+
+### Получить список шаблонов медленного запроса \{#list-slow-query-patterns\}
+
+[API шаблонов медленного запроса] возвращает агрегированные метрики для самых медленных
+шаблонов медленного запроса, обнаруженных в заданном временном окне. Указать окно
+обязательно — передайте `from_date` и `to_date` как временные метки RFC 3339:
+
+```bash
+FROM=2026-05-25T00:00:00Z
+TO=2026-05-26T00:00:00Z
+
+curl -s --user "$KEY_ID:$KEY_SECRET" \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/slowQueryPatterns?from_date=$FROM&to_date=$TO" \
+    | jq
+```
+
+По умолчанию результаты выводятся с наиболее ресурсоёмкими шаблонами первыми, отсортированными по `total_duration`
+по убыванию. Чтобы сортировать по другому показателю, используйте `sort_by` (например,
+`p99_duration`, `call_count` или `total_wal_bytes`), а направление меняйте
+с помощью `sort_order`. Сузьте выборку фильтрами `db_name`, `db_user`,
+`db_operation` и `app`, а для постраничного просмотра используйте `limit` и
+`offset`.
+
+Каждый результат представляет собой один нормализованный шаблон, из которого удалены
+литералы, а длительности указаны в микросекундах:
+
+```json
+{
+  "result": [
+    {
+      "queryId": "-4748036479882663975",
+      "queryText": "SELECT * FROM orders WHERE customer_id = $1 ORDER BY created_at DESC LIMIT $2",
+      "dbName": "sales",
+      "dbUser": "orders_service",
+      "dbOperation": "SELECT",
+      "app": "orders-api",
+      "callCount": 84213,
+      "errorCount": 0,
+      "totalDurationUs": 1012384556,
+      "avgDurationUs": 12021,
+      "maxDurationUs": 482915,
+      "p50DurationUs": 9874,
+      "p95DurationUs": 28431,
+      "p99DurationUs": 41200,
+      "totalRows": 842130,
+      "totalSharedBlksRead": 19284,
+      "totalSharedBlksHit": 48217734,
+      "totalCpuTimeUs": 938472113,
+      "totalWalBytes": 0
+    }
+  ],
+  "requestId": "c128d830-5769-4c82-8235-f79aa69d1ebf",
+  "status": 200
+}
+```
+
+The `queryId` — это знаковый 64-битный хеш нормализованного оператора, поэтому он
+часто бывает отрицательным. Передайте его обратно без изменений — включая
+начальный `-` — чтобы получить конкретный шаблон.
+
+### Получить шаблон медленного запроса \{#get-slow-query-pattern\}
+
+Передайте `queryId` из ответа списка в [slow pattern API], чтобы получить
+агрегированные метрики этого шаблона вместе с его последними отдельными запусками.
+Поля `db_name`, `db_user` и `db_operation`, которые идентифицируют шаблон,
+обязательны:
+
+```bash
+QUERY_ID=-4748036479882663975
+
+curl -s --user "$KEY_ID:$KEY_SECRET" \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/slowQueryPatterns/$QUERY_ID?db_name=sales&db_user=orders_service&db_operation=SELECT" \
+    | jq
+```
+
+Ответ содержит ту же агрегированную информацию, что и конечная точка списка, в
+`aggregate`, а также массив `recentExecutions`. Каждое выполнение включает
+полные счётчики для каждого выполнения — I/O общих и временных
+блоков, пользовательское и системное время CPU, параллельные воркеры,
+JIT и WAL — те же счётчики, которые
+[выдвижная панель сведений] показывает в консоли:
+
+```json
+{
+  "result": {
+    "aggregate": {
+      "queryId": "-4748036479882663975",
+      "queryText": "SELECT * FROM orders WHERE customer_id = $1 ORDER BY created_at DESC LIMIT $2",
+      "dbName": "sales",
+      "dbUser": "orders_service",
+      "dbOperation": "SELECT",
+      "callCount": 84213,
+      "avgDurationUs": 12021,
+      "p99DurationUs": 41200
+    },
+    "recentExecutions": [
+      {
+        "timestamp": "2026-05-25T16:42:09Z",
+        "durationUs": 41200,
+        "rows": 10,
+        "sharedBlksHit": 412,
+        "sharedBlksRead": 3,
+        "tempBlksWritten": 0,
+        "cpuUserTimeUs": 38211,
+        "cpuSysTimeUs": 1044,
+        "parallelWorkersPlanned": 0,
+        "parallelWorkersLaunched": 0,
+        "walBytes": 0,
+        "serverRole": "primary"
+      }
+    ]
+  },
+  "requestId": "a5957990-dbe5-46fd-b5ce-a7f8f79e50fe",
+  "status": 200
+}
+```
+
+В примере оба объекта сокращены для краткости; API возвращает полный
+набор счётчиков, описанный в разделе [per-execution counters].
+
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 
 [OpenAPI]: https://www.openapis.org "Инициатива OpenAPI"
@@ -324,3 +450,13 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 [конечная точка Prometheus]: /cloud/managed-postgres/monitoring/prometheus "Конечная точка Prometheus для Managed Postgres"
 
 [metrics reference]: /cloud/managed-postgres/monitoring/metrics "Справочник метрик Managed Postgres"
+
+[Query Insights]: /cloud/managed-postgres/monitoring/query-insights "Query Insights для запросов Postgres"
+
+[detail flyout]: /cloud/managed-postgres/monitoring/query-insights#detail "Выдвижная панель сведений Query Insights"
+
+[per-execution counters]: /cloud/managed-postgres/monitoring/query-insights#counters "Счётчики Query Insights для каждого выполнения"
+
+[slow patterns API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternsGetList "Список шаблонов медленных запросов Postgres"
+
+[slow pattern API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternGet "Получить шаблон медленного запроса Postgres с последними выполнениями"

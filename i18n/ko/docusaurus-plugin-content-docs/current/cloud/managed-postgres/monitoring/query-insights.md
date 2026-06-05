@@ -170,6 +170,18 @@ Application, Blks hit, CPU user, CPU sys, PID를 추가할 수 있습니다. 이
 느린 패턴을 진단하는 데 필요한 모든 정보를 한곳, 한 화면에서
 확인할 수 있습니다.
 
+## 쿼리 인사이트 API \{#api\}
+
+동일한 텔레메트리 데이터는
+[ClickHouse Cloud OpenAPI](/cloud/managed-postgres/openapi#query-insights)를 통해
+프로그래밍 방식으로도 사용할 수 있습니다.
+[느린 패턴](#slow-patterns) 테이블은
+[list slow query patterns](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternsGetList)
+엔드포인트에 해당하며, [세부 정보 플라이아웃](#detail)은
+[get slow query pattern](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternGet)
+엔드포인트에 해당합니다. 이 엔드포인트는 단일 패턴의 집계 메트릭과
+최근 실행 내역을 함께 반환합니다.
+
 ## 작동 원리 \{#how-it-works\}
 
 ### 전송 전에 Postgres에서 정규화됩니다 \{#how-normalized\}
@@ -211,5 +223,6 @@ ClickHouse로 전송할 수 있습니다. 소스 코드와 이슈는
 
 * [모니터링 대시보드](/cloud/managed-postgres/monitoring/dashboard) — 기본 제공되는 리소스 및 활동 차트
 * [Prometheus 엔드포인트](/cloud/managed-postgres/monitoring/prometheus) — 호스트 수준 메트릭을 자체 관측성 스택으로 스크레이프
+* [Managed Postgres OpenAPI](/cloud/managed-postgres/openapi#query-insights) — 느린 패턴과 최근 실행 내역을 프로그래밍 방식으로 조회
 * [확장 기능](/cloud/managed-postgres/extensions) — Managed Postgres 인스턴스에서 사용할 수 있는 확장 기능
 * [`pg_stat_ch` on GitHub](https://github.com/clickhouse/pg_stat_ch) — 쿼리 인사이트를 구동하는 오픈소스 확장 기능

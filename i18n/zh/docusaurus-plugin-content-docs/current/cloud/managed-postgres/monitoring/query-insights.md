@@ -162,6 +162,18 @@ CPU time 排序。
 诊断慢查询模式所需的全部信息都集中在一个地方，一个
 屏幕内即可查看。
 
+## 查询洞察 API \{#api\}
+
+相同的遥测信息也可通过
+[ClickHouse Cloud OpenAPI](/cloud/managed-postgres/openapi#query-insights)
+以编程方式访问。
+[慢查询模式](#slow-patterns)表对应于
+[list slow query patterns](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternsGetList)
+端点，而[详情弹出面板](#detail)对应于
+[get slow query pattern](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/slowQueryPatternGet)
+端点；该端点会返回某个模式的聚合指标及其
+最近的执行情况。
+
 ## 工作原理 \{#how-it-works\}
 
 ### 在 Postgres 中、在线路传输之前完成规范化 \{#how-normalized\}
@@ -202,5 +214,6 @@ ClickHouse。源码和问题反馈见
 
 * [监控仪表板](/cloud/managed-postgres/monitoring/dashboard) — 内置的资源与活动图表
 * [Prometheus 端点](/cloud/managed-postgres/monitoring/prometheus) — 将主机级指标抓取到您自己的可观测性栈中
+* [Managed Postgres OpenAPI](/cloud/managed-postgres/openapi#query-insights) — 以编程方式查询慢查询模式和最近的执行记录
 * [扩展](/cloud/managed-postgres/extensions) — Managed Postgres 实例上可用的扩展
-* [GitHub 上的 `pg_stat_ch`](https://github.com/clickhouse/pg_stat_ch) — 为 Query Insights 提供支持的开源扩展
+* [GitHub 上的 `pg_stat_ch`](https://github.com/clickhouse/pg_stat_ch) — 为 查询洞察 提供支持的开源扩展
