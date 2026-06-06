@@ -610,6 +610,7 @@ const sidebars = {
       collapsible: false,
       link: { type: 'doc', id: 'integrations/language-clients/index' },
       items: [
+        'integrations/language-clients/c',
         'integrations/language-clients/cpp',
         {
           type: 'category',
