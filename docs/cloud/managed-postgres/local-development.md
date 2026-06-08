@@ -20,6 +20,22 @@ The goal isn't to replicate production exactly. Instead, create a reproducible l
 
 Because Managed Postgres is standard PostgreSQL, existing migration frameworks, schema management tools, and data seeding approaches work without modification.
 
+## Example development flow {#example-development-flow}
+
+A typical local development workflow looks like:
+
+```mermaid
+graph LR
+    A[Apply the application<br/>schema] --> B[Local PostgreSQL in Docker] --> C[Apply schema]
+```
+
+```mermaid
+graph LR
+    A[Restore sanitized tenant<br/>dataset] -.-> B[Generate seed data] -.-> C[Develop and test locally]
+```
+
+Managed Postgres fits into existing PostgreSQL development workflows. By developing against a local PostgreSQL instance, teams can iterate quickly, maintain reproducible environments, and gain confidence that applications behave consistently when deployed to Managed Postgres.
+
 ## Run PostgreSQL locally with Docker {#run-postgresql-locally-with-docker}
 
 The simplest way to create a local development environment is to run PostgreSQL in Docker.
@@ -358,33 +374,6 @@ The resulting dataset contains:
 | audit_logs | 150+ |
 
 This dataset is large enough to exercise common application workflows, tenant isolation logic, reporting queries, and relational integrity checks while remaining lightweight for local development and testing.
-
-## Example development flow {#example-development-flow}
-
-A typical local development workflow looks like:
-
-```text
-Application migrations
-Schema-only dump
-Checked-in SQL schema
-          │
-          ▼
- Local PostgreSQL in Docker
-          │
-          ▼
-      Apply schema
-          │
-          ▼
- Restore sanitized tenant dataset
-          │
-          ▼
-    Or generate seed data
-          │
-          ▼
- Develop and test locally
-```
-
-Managed Postgres fits into existing PostgreSQL development workflows. By developing against a local PostgreSQL instance, teams can iterate quickly, maintain reproducible environments, and gain confidence that applications behave consistently when deployed to Managed Postgres.
 
 ## PostgreSQL + ClickHouse development environment {#postgresql-clickhouse-development-environment}
 
