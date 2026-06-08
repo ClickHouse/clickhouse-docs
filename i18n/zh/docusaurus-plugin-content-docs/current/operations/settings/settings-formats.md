@@ -148,6 +148,14 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 对于 AvroConfluent 格式：Confluent Schema Registry HTTP 客户端的连接超时时间 (以秒为单位) 。同时用于 schema 拉取和 schema 注册。该值必须大于 0 且小于 600 (10 分钟) 。
 
+## format_avro_schema_registry_max_retries \{#format_avro_schema_registry_max_retries\}
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "5"},{"label": "新增设置：用于控制与 Confluent Schema Registry 通信时发生暂时性故障（传输超时、连接被拒绝、DNS 错误、HTTP 5xx/408/429）时的最大重试次数。设为 0 可禁用重试。通过 `compatibility = '26.5'` 可保留之前的行为（不重试）。"}]}]} />
+
+对于 AvroConfluent 格式：与 Confluent Schema Registry 通信时发生暂时性故障 (传输超时、连接被拒绝、DNS 错误、HTTP 5xx/408/429) 时的最大重试次数。设为 0 可禁用重试。允许的最大值为 20。schema 校验错误 (HTTP 409、格式错误的 Avro JSON) 不会重试。
+
 ## format_avro_schema_registry_receive_timeout \{#format_avro_schema_registry_receive_timeout\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -155,6 +163,14 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于控制 AvroConfluent 格式所使用的 Confluent Schema Registry HTTP 客户端的接收超时时间（以秒为单位）。"}]}]} />
 
 对于 AvroConfluent 格式：Confluent Schema Registry HTTP 客户端的接收超时时间，单位为秒。该设置同时用于 schema 拉取和 schema 注册。必须大于 0 且小于 600 (10 分钟) 。
+
+## format_avro_schema_registry_retry_initial_backoff_ms \{#format_avro_schema_registry_retry_initial_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="100" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "100"},{"label": "新增设置，用于控制失败的 Confluent Schema Registry 请求在重试前的初始退避时间（以毫秒为单位）。每次重试时，退避时间都会加倍，上限为 10 秒。当 `format_avro_schema_registry_max_retries = 0` 时无效（可通过 `compatibility = '26.5'` 恢复 26.6 之前的行为）。"}]}]} />
+
+对于 AvroConfluent 格式：重试失败的 Confluent Schema Registry 请求前的初始退避时间 (以毫秒为单位) 。后续每次重试时，退避时间都会加倍，上限为 10 秒。必须大于 0 且小于或等于 60000。
 
 ## format_avro_schema_registry_send_timeout \{#format_avro_schema_registry_send_timeout\}
 
@@ -2388,7 +2404,9 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 
 <SettingsInfoBlock type="String" default_value="UTF-8" />
 
-用于输出网格边框的字符集。可用字符集：ASCII、UTF-8（默认）。
+用于输出网格边框的字符集。可用字符集：ASCII、UTF-8 (默认) 。
+
+在交互模式下，如果未显式指定此设置，当终端不支持 UTF-8 时 (由 `LC_ALL`、`LC_CTYPE` 和 `LANG` 环境变量决定) ，`clickhouse-client` 会自动切换到 `ASCII`。
 
 ## output_format_pretty_highlight_digit_groups \{#output_format_pretty_highlight_digit_groups\}
 

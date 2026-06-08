@@ -1282,11 +1282,11 @@ ALTER TABLE tab DROP STATISTICS a;
 这些轻量级列统计汇总了列中值分布的信息。列统计存储在每个分区片段中，并会在每次插入时更新。
 只有在启用 `set use_statistics = 1` 时，它们才能用于 `prewhere` 优化。
 
-#### 基于统计信息的 parts 剪枝 \{#part-pruning-with-statistics\}
+#### 基于统计信息的分片剪枝 \{#part-pruning-with-statistics\}
 
-启用 `use_statistics_for_part_pruning` 后，统计信息可用于 parts 剪枝。
-目前，只有 `MinMax` 统计信息支持 parts 剪枝。当对某一列定义了 MinMax 统计信息时，ClickHouse 会跟踪每个 parts 中该列的最小值和最大值。
-借助 parts 剪枝，如果查询过滤条件不可能匹配某个 parts 中的任何行，就可以跳过读取整个 parts。
+启用 `use_statistics_for_part_pruning` 后，统计信息可用于分片剪枝。
+目前，只有 `MinMax` 和 `Basic` 统计信息支持分片剪枝。当对某一列定义了此类统计信息时，ClickHouse 会跟踪每个分片中该列的最小值和最大值。
+借助分片剪枝，如果查询过滤条件不可能匹配某个分片中的任何行，就可以跳过读取整个分片。
 
 **示例：**
 
@@ -1318,47 +1318,67 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 
 ### 可用的列统计类型 \{#available-types-of-column-statistics\}
 
-- `MinMax`
+* `Basic`
 
-    列的最小值和最大值，用于估计数值列上范围过滤条件的选择性。
+  从列中派生出的一组紧凑的单值摘要。根据列类型，会填充以下信息：
 
-    语法：`minmax`
+  * 对于任何值可表示为数值的列 (整数、浮点数、`Decimal*`、`Date*`、`DateTime*`、`Enum*`、`IPv4` 等) ：最小值和最大值，可用于估计范围过滤条件的选择性并启用分片裁剪；
+  * 对于 `String` 和 `FixedString` 列：非 `NULL` 值的总字节长度 (可据此推导出平均字符串长度) ；
+  * 对于 `Nullable` 和 `LowCardinality(Nullable)` 列：`NULL` 值的数量，优化器会用它在选择性估计中扣除 `NULL` 行。
 
-- `TDigest`
+    单个 `Basic` 统计信息可以同时填充其中多项——例如在 `Nullable(UInt32)` 列上，它会同时跟踪数值最小/最大值和 `NULL` 计数。与 `MinMax` 相比，`Basic` 还适用于 `String` / `FixedString` 列，并且还可以仅为跟踪 `NULL` 计数而声明在 `UUID` 或 `IPv6` 等类型的 `Nullable` 包装器上。
 
-    基于 [TDigest](https://github.com/tdunning/t-digest) 的 sketch 数据结构，用于计算数值列的近似分位数（例如第 90 百分位）。
+    语法：`basic`
 
-    语法：`tdigest`
+* `MinMax`
 
-- `Uniq`
+  列的最小值和最大值，用于估计数值列上范围过滤条件的选择性。
 
-    基于 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 的 sketch 数据结构，用于估算某列中包含多少个不同的取值。
+  语法：`minmax`
 
-    语法：`uniq`
+* `TDigest`
 
-- `CountMin`
+  基于 [TDigest](https://github.com/tdunning/t-digest) 的 sketch 数据结构，用于计算数值列的近似分位数 (例如第 90 百分位) 。
 
-    基于 [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) 的 sketch 数据结构，用于近似统计某列中每个值出现的频率。
+  语法：`tdigest`
 
-    语法：`countmin`
+* `Uniq`
+
+  基于 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 的 sketch 数据结构，用于估算某列中包含多少个不同的取值。
+
+  语法：`uniq`
+
+* `CountMin`
+
+  基于 [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) 的 sketch 数据结构，用于近似统计某列中每个值出现的频率。
+
+  语法：`countmin`
 
 ### 支持的数据类型 \{#supported-data-types\}
 
-|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String 或 FixedString |
-|-----------|----------------------------------------------------|-----------------------|
-| CountMin  | ✔                                                  | ✔                     |
-| MinMax    | ✔                                                  | ✗                     |
-| TDigest   | ✔                                                  | ✗                     |
-| Uniq      | ✔                                                  | ✔                     |
+|          | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | IPv4 | String 或 FixedString |
+| -------- | -------------------------------------------------- | ---- | -------------------- |
+| Basic    | ✔                                                  | ✔    | ✔                    |
+| CountMin | ✔                                                  | ✔    | ✔                    |
+| MinMax   | ✔                                                  | ✔    | ✗                    |
+| TDigest  | ✔                                                  | ✗    | ✗                    |
+| Uniq     | ✔                                                  | ✔    | ✔                    |
+
+以上所有项也都接受所列类型的 `Nullable` 和 `LowCardinality(Nullable)` 包装类型。`Basic` 还可额外声明在 `UUID` 或 `IPv6` 等类型的 `Nullable` 包装类型上，且仅用于跟踪 NULL 计数。
 
 ### 支持的操作 \{#supported-operations\}
 
-|           | 等值过滤 (==) | 范围过滤 (`>, >=, <, <=`) |
-|-----------|----------------|---------------------------|
-| CountMin  | ✔              | ✗                         |
-| MinMax    | ✗              | ✔                         |
-| TDigest   | ✗              | ✔                         |
-| Uniq      | ✔              | ✗                         |
+|          | 等值过滤器 (==) | 范围过滤器 (`>, >=, <, <=`) |
+| -------- | ---------- | ---------------------- |
+| Basic    | ✗          | ✔ (仅限数值列)              |
+| CountMin | ✔          | ✗                      |
+| MinMax   | ✗          | ✔ (仅限数值列)              |
+| TDigest  | ✗          | ✔ (仅限数值列)              |
+| Uniq     | ✔          | ✗                      |
+
+对于 `String` / `FixedString` 列上的 `Basic`，该统计信息只记录
+非 NULL 字节总长度 (用于估算字符串的平均长度) 和 NULL 计数；
+它不会用于范围过滤器或分片裁剪。
 
 ## 列级别设置 \{#column-level-settings\}
 

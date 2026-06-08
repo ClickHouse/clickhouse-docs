@@ -7,25 +7,23 @@ title: '웹 터미널'
 doc_type: '참고'
 ---
 
-웹 터미널은 WebSocket을 통해 대화형 `clickhouse-client` 세션을 제공하는 실험적인 브라우저 내 인터페이스입니다. 임의의 ClickHouse HTTP 포트의 `/webterminal` 경로에서 제공됩니다.
+웹 터미널은 WebSocket을 통해 대화형 `clickhouse-client` 세션을 제공하는 브라우저 내 인터페이스입니다. 임의의 ClickHouse HTTP 포트의 `/webterminal` 경로에서 제공됩니다.
 
-:::note
-웹 터미널은 실험적 기능이며 기본적으로 비활성화되어 있습니다. 아래의 [기능 활성화](#enabling-the-feature)를 참조하십시오.
-:::
+터미널을 열려면 임의의 ClickHouse HTTP 포트에서 `/webterminal`로 이동하십시오(예: `http://localhost:8123/webterminal`).
 
-## 기능 활성화 \{#enabling-the-feature\}
+## 기능 활성화 및 비활성화 \{#enabling-the-feature\}
 
-`/webterminal` 엔드포인트는 `allow_experimental_webterminal` 서버 설정에 의해 제어됩니다. 이 설정이 `false`(기본값)로 되어 있으면 `/webterminal` 요청에 대해 HTTP 상태 코드 `403 Forbidden`이 반환됩니다.
-
-활성화하려면 서버 구성에 다음 내용을 추가하십시오:
+`/webterminal` 엔드포인트는 기본적으로 활성화되어 있으며 `enable_webterminal` 서버 설정(server setting)으로 제어됩니다. 비활성화하려면 이 설정을 `false`로 지정하십시오. 그러면 `/webterminal`에 대한 요청에 HTTP 상태 코드 `403 Forbidden`이 반환됩니다.
 
 ```xml
 <clickhouse>
-    <allow_experimental_webterminal>true</allow_experimental_webterminal>
+    <enable_webterminal>false</enable_webterminal>
 </clickhouse>
 ```
 
-활성화한 후 터미널을 열려면 아무 ClickHouse HTTP 포트에서나 `/webterminal`로 이동하십시오(예: `http://localhost:8123/webterminal`).
+:::note
+`enable_webterminal`은 기존의 `allow_experimental_webterminal` 설정을 대체합니다. `enable_webterminal`이 설정되지 않은 경우 하위 호환성을 위해 기존 이름도 계속 지원됩니다.
+:::
 
 ## 인증 \{#authentication\}
 
@@ -52,7 +50,7 @@ doc_type: '참고'
 
 ## `/play`와의 통합 \{#play-integration\}
 
-[`/play`](/interfaces/http) Web SQL UI는 웹 터미널을 도킹 가능한 패널로 내장합니다. 사이드바의 터미널 아이콘으로 표시를 전환하거나, 쿼리 편집기가 비어 있을 때 `~` 키를 누르십시오. `/play` 페이지는 로드 시점에 `/webterminal`의 사용 가능 여부를 감지하며, 엔드포인트를 사용할 수 없으면(예를 들어 실험적 설정이 활성화되지 않은 경우) 터미널 컨트롤을 숨깁니다.
+[`/play`](/interfaces/http) Web SQL UI는 웹 터미널을 도킹 가능한 패널로 내장합니다. 사이드바의 터미널 아이콘으로 표시를 전환하거나, 쿼리 편집기가 비어 있을 때 `~` 키를 누르십시오. `/play` 페이지는 로드 시점에 `/webterminal`의 사용 가능 여부를 감지하며, 엔드포인트를 사용할 수 없으면(예를 들어 `enable_webterminal`이 `false`로 설정된 경우) 터미널 컨트롤을 숨깁니다.
 
 ## 보안 고려 사항 \{#security\}
 
@@ -67,4 +65,4 @@ doc_type: '참고'
 
 ## 플랫폼 가용성 \{#platform\}
 
-이 핸들러는 ClickHouse가 지원하는 모든 플랫폼에서 컴파일됩니다. 내장 `clickhouse-client` 실행기에 사용되는 의사 터미널 계층은 이식 가능한 POSIX 기본 함수(`posix_openpt`/`grantpt`/`unlockpt`)를 기반으로 구현되어 있으며, Linux 전용 경로에서는 스레드 안전한 `ptsname_r`를 사용합니다. 엔드포인트를 사용할 수 없으면(예: `allow_experimental_webterminal`이 활성화되어 있지 않은 경우) ClickHouse 시작 페이지와 `/play`의 `/webterminal` 링크는 자동으로 숨겨집니다.
+이 핸들러는 ClickHouse가 지원하는 모든 플랫폼에서 컴파일됩니다. 내장 `clickhouse-client` 실행기에 사용되는 의사 터미널 계층은 이식 가능한 POSIX 기본 함수(`posix_openpt`/`grantpt`/`unlockpt`)를 기반으로 구현되어 있으며, Linux 전용 경로에서는 스레드 안전한 `ptsname_r`를 사용합니다. 엔드포인트를 사용할 수 없으면(예: `enable_webterminal`이 `false`로 설정된 경우) ClickHouse 시작 페이지와 `/play`의 `/webterminal` 링크는 자동으로 숨겨집니다.

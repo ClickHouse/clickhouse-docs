@@ -127,6 +127,17 @@ doc_type: 'guide'
 
         You can also write <keyed_by_ip />, so the IP address is used as the quota key.
         (But keep in mind that users can change the IPv6 address fairly easily.)
+
+        Instead of <keyed_by_ip /> you can use <keyed_by_forwarded_ip />, so the address
+        from the X-Forwarded-For header is used as the quota key.
+
+        For both <keyed_by_ip /> and <keyed_by_forwarded_ip /> you can additionally specify
+        <ipv4_prefix_bits> and <ipv6_prefix_bits> to group clients by subnet instead of by a
+        single address: the IP address is masked to the given prefix length before being used
+        as the quota key. For example, <ipv4_prefix_bits>24</ipv4_prefix_bits> shares one bucket
+        across a /24 IPv4 subnet, and <ipv6_prefix_bits>64</ipv6_prefix_bits> across a /64 IPv6
+        subnet. These elements can only be used together with <keyed_by_ip /> or
+        <keyed_by_forwarded_ip />.
     -->
     <keyed />
 ```
@@ -139,7 +150,7 @@ CREATE QUOTA my_quota KEYED BY normalized_query_hash FOR INTERVAL 1 hour MAX que
 
 この例では、ユーザーは 1 時間あたり、異なる正規化済みクエリごとにそれぞれ最大 100 回まで実行できます。`SELECT number FROM numbers(1)` と `SELECT number FROM numbers(2)` は同じバケットを共有します (正規化後の形式が同じであるため) が、`SELECT number, number FROM numbers(1)` は別のバケットを使用します。
 
-クォータは設定ファイルの&#39;users&#39;セクションでユーザーに割り当てられます。&quot;Access rights&quot; のセクションを参照してください。
+クォータは設定ファイルの&#39;users&#39;セクションでユーザーに割り当てられます。&quot;アクセス権&quot; のセクションを参照してください。
 
 分散クエリ処理では、累積値はリクエスト元サーバーに保存されます。そのため、ユーザーが別のサーバーへ移動した場合、そのサーバーでのクォータはゼロからカウントし直しになります。
 

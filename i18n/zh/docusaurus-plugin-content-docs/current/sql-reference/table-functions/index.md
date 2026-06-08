@@ -20,7 +20,7 @@ doc_type: 'reference'
 | [deltaLakeCluster](/sql-reference/table-functions/deltalakeCluster)                    | 是 deltaLake 表函数的扩展。                                                                                                     |
 | [dictionary](/sql-reference/table-functions/dictionary)                                | 以 ClickHouse 表的形式展示字典数据。其工作方式与 Dictionary 引擎相同。                                                                         |
 | [executable](/engines/table-functions/executable)                                      | `executable` 表函数基于您在脚本中定义的、将行输出到 **stdout** 的用户定义函数 (UDF) 的输出创建一张表。                                                     |
-| [file](/sql-reference/table-functions/file)                                            | 一种表引擎，它提供类似表的接口，可对文件执行 SELECT 和 INSERT 操作，类似于 s3 表函数。处理本地文件时使用 `file()`，处理对象存储 (如 S3、GCS 或 MinIO) 中的 bucket 时使用 `s3()`。 |
+| [file](/sql-reference/table-functions/file)                                            | 一种表引擎，它提供类似表的接口，可对文件执行 SELECT 和 INSERT 操作，类似于 s3 表函数。处理本地文件时使用 `file`，处理对象存储 (如 S3、GCS 或 MinIO) 中的 bucket 时使用 `s3`。     |
 | [fileCluster](/sql-reference/table-functions/fileCluster)                              | 在集群中的多个节点上并行处理匹配指定路径的文件。发起节点会与工作节点建立连接，展开文件路径中的通配符，并将文件读取任务委派给工作节点。每个工作节点都会向发起节点请求下一个要处理的文件，如此反复，直到所有任务完成 (即所有文件都被读取) 。 |
 | [filesystem](/sql-reference/table-functions/filesystem)                                | 提供对文件系统的访问，用于列出文件并返回其元数据和内容。                                                                                            |
 | [format](/sql-reference/table-functions/format)                                        | 按照指定的输入格式从参数中解析数据。若未指定 structure 参数，则会从数据中自动提取结构。                                                                       |

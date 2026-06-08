@@ -1286,8 +1286,8 @@ ALTER TABLE tab DROP STATISTICS a;
 #### STATISTICSを用いたパーツ剪枝 \{#part-pruning-with-statistics\}
 
 `use_statistics_for_part_pruning` を有効にすると、STATISTICSを使ってパーツ剪枝を行えます。
-現在、パーツ剪枝に対応しているのは `MinMax` STATISTICSのみです。カラムに MinMax STATISTICSが定義されている場合、ClickHouse は各パーツ内のそのカラムの最小値と最大値を追跡します。
-パーツ剪枝を使用すると、クエリのフィルター条件にそのパーツ内のどの行も一致しない場合、データパーツ全体の読み込みをスキップできます。
+現在、パーツ剪枝に対応しているのは `MinMax` と `Basic` のSTATISTICSのみです。このようなSTATISTICSがカラムに定義されている場合、ClickHouse は各パーツ内のそのカラムの最小値と最大値を追跡します。
+パーツ剪枝を使用すると、クエリのフィルタ条件にそのパーツ内のどの行も一致しない場合、データパーツ全体の読み込みをスキップできます。
 
 **例:**
 
@@ -1317,50 +1317,69 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 -- The output will show "Parts: 1/2" indicating one part was pruned
 ```
 
+### 利用可能なカラム STATISTICSの種類 \{#available-types-of-column-statistics\}
 
-### 利用可能なカラム統計の種類 \{#available-types-of-column-statistics\}
+* `Basic`
 
-- `MinMax`
+  カラムから導出される単一値のサマリーをまとめた compact なバンドルです。カラム型に応じて、次の情報が格納されます。
 
-    数値カラムに対する範囲フィルターの選択性を推定するために、カラムの最小値と最大値を保持します。
+  * 値が数値として表現される任意のカラム (整数、浮動小数点数、`Decimal*`、`Date*`、`DateTime*`、`Enum*`、`IPv4`、...) : 最小値と最大値。これにより、範囲フィルターの選択性を推定でき、パーツ剪枝 が有効になります。
+  * `String` および `FixedString` カラム: 非 `NULL` 値の合計バイト長 (ここから平均文字列長を導出できます) 。
+  * `Nullable` および `LowCardinality(Nullable)` カラム: `NULL` 値の個数。オプティマイザはこれを使用して、選択性の推定から `NULL` 行を差し引きます。
 
-    構文: `minmax`
+    単一の `Basic` statistic で、これらの複数を同時に格納できます。たとえば `Nullable(UInt32)` カラムでは、数値の最小値/最大値と `NULL` 値の個数の両方を追跡します。`MinMax` と比べると、`Basic` は `String` / `FixedString` カラムでも追加で機能し、`NULL` 値の個数だけを追跡する目的で `UUID` や `IPv6` のような型の `Nullable` ラッパーに対しても宣言できます。
 
-- `TDigest`
+    構文: `basic`
 
-    数値カラムに対して近似パーセンタイル（例: 第 90 パーセンタイル）を計算するための [TDigest](https://github.com/tdunning/t-digest) スケッチです。
+* `MinMax`
 
-    構文: `tdigest`
+  数値カラムに対する範囲フィルターの選択性を推定するために、カラムの最小値と最大値を保持します。
 
-- `Uniq`
+  構文: `minmax`
 
-    カラムに含まれる異なる値の個数を推定するための [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) スケッチです。
+* `TDigest`
 
-    構文: `uniq`
+  数値カラムに対して近似パーセンタイル (例: 第 90 パーセンタイル) を計算するための [TDigest](https://github.com/tdunning/t-digest) スケッチです。
 
-- `CountMin`
+  構文: `tdigest`
 
-    カラム内の各値の出現頻度を近似的にカウントするための [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) スケッチです。
+* `Uniq`
 
-    構文: `countmin`
+  カラムに含まれる異なる値の個数を推定するための [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) スケッチです。
+
+  構文: `uniq`
+
+* `CountMin`
+
+  カラム内の各値の出現頻度を近似的にカウントするための [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) スケッチです。
+
+  構文: `countmin`
 
 ### サポートされているデータ型 \{#supported-data-types\}
 
-|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String または FixedString |
-|-----------|----------------------------------------------------|---------------------------|
-| CountMin  | ✔                                                  | ✔                         |
-| MinMax    | ✔                                                  | ✗                         |
-| TDigest   | ✔                                                  | ✗                         |
-| Uniq      | ✔                                                  | ✔                         |
+|          | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | IPv4 | String or FixedString |
+| -------- | -------------------------------------------------- | ---- | --------------------- |
+| Basic    | ✔                                                  | ✔    | ✔                     |
+| CountMin | ✔                                                  | ✔    | ✔                     |
+| MinMax   | ✔                                                  | ✔    | ✗                     |
+| TDigest  | ✔                                                  | ✗    | ✗                     |
+| Uniq     | ✔                                                  | ✔    | ✔                     |
 
-### サポートされる操作 \{#supported-operations\}
+上記はすべて、記載されている型の `Nullable` および `LowCardinality(Nullable)` ラッパーにも対応しています。`Basic` はさらに、NULL の数だけを追跡する目的で、`UUID` や `IPv6` などの型の `Nullable` ラッパーに対して宣言することもできます。
 
-|           | 等値フィルター (==) | 範囲フィルター (`>, >=, <, <=`) |
-|-----------|---------------------|------------------------------|
-| CountMin  | ✔                   | ✗                            |
-| MinMax    | ✗                   | ✔                            |
-| TDigest   | ✗                   | ✔                            |
-| Uniq      | ✔                   | ✗                            |
+### サポートされている操作 \{#supported-operations\}
+
+|          | 等価フィルタ (==) | 範囲フィルタ (`>, >=, <, <=`) |
+| -------- | ----------- | ----------------------- |
+| Basic    | ✗           | ✔ (数値カラムのみ)             |
+| CountMin | ✔           | ✗                       |
+| MinMax   | ✗           | ✔ (数値カラムのみ)             |
+| TDigest  | ✗           | ✔ (数値カラムのみ)             |
+| Uniq     | ✔           | ✗                       |
+
+`String` / `FixedString` カラムの `Basic` では、統計には NULL でないバイト長の合計
+ (平均文字列長の推定に使用) と NULL の件数のみが記録されます。
+したがって、範囲フィルタやパーツ剪枝には使用されません。
 
 ## 列レベルの設定 \{#column-level-settings\}
 

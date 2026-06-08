@@ -14,18 +14,22 @@ doc_type: 'reference'
 ```sql
 ALTER QUOTA [IF EXISTS] name [ON CLUSTER cluster_name]
     [RENAME TO new_name]
-    [KEYED BY {user_name | ip_address | client_key | client_key,user_name | client_key,ip_address | normalized_query_hash} | NOT KEYED]
+    [KEYED BY {user_name | ip_address | forwarded_ip_address | client_key | client_key,user_name | client_key,ip_address | normalized_query_hash} | NOT KEYED]
+    [IPV4_PREFIX_BITS number]
+    [IPV6_PREFIX_BITS number]
     [FOR [RANDOMIZED] INTERVAL number {second | minute | hour | day | week | month | quarter | year}
         {MAX { {queries | query_selects | query_inserts | errors | result_rows | result_bytes | read_rows | read_bytes | execution_time | queries_per_normalized_hash} = number } [,...] |
         NO LIMITS | TRACKING ONLY} [,...]]
     [TO {role [,...] | ALL | ALL EXCEPT role [,...]}]
 ```
 
-Ключи `user_name`, `ip_address`, `client_key`, `client_key, user_name`, `client_key, ip_address` и `normalized_query_hash` соответствуют столбцам таблицы [system.quotas](../../../operations/system-tables/quotas.md).
+Ключи `user_name`, `ip_address`, `forwarded_ip_address`, `client_key`, `client_key, user_name`, `client_key, ip_address` и `normalized_query_hash` соответствуют столбцам таблицы [system.quotas](../../../operations/system-tables/quotas.md).
+
+Параметры `IPV4_PREFIX_BITS` и `IPV6_PREFIX_BITS` можно использовать только тогда, когда `KEYED BY` имеет значение `ip_address` или `forwarded_ip_address`. Они соответствуют столбцу таблицы [system.quotas](../../../operations/system-tables/quotas.md).
 
 Параметры `queries`, `query_selects`, `query_inserts`, `errors`, `result_rows`, `result_bytes`, `read_rows`, `read_bytes`, `execution_time`, `queries_per_normalized_hash` соответствуют столбцам таблицы [system.quotas&#95;usage](../../../operations/system-tables/quotas_usage.md).
 
-Секция `ON CLUSTER` позволяет создавать квоты на кластере, см. [Distributed DDL](../../../sql-reference/distributed-ddl.md).
+Предложение `ON CLUSTER` позволяет создавать квоты на кластере, см. [Distributed DDL](../../../sql-reference/distributed-ddl.md).
 
 **Примеры**
 

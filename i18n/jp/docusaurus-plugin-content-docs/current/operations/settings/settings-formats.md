@@ -148,6 +148,14 @@ datetime64 の値の末尾のゼロを動的に削除し、出力の小数桁数
 
 AvroConfluent フォーマット向け: Confluentスキーマレジストリ HTTPクライアントの接続タイムアウト (秒単位) 。スキーマの取得とスキーマ登録の両方で使用されます。0より大きく、600 (10分) 未満である必要があります。
 
+## format_avro_schema_registry_max_retries \{#format_avro_schema_registry_max_retries\}
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "5"},{"label": "Confluent スキーマレジストリとの通信時に一時的な障害（トランスポートタイムアウト、接続拒否、DNS エラー、HTTP 5xx/408/429）が発生した場合の最大再試行回数を制御する新しい設定。再試行を無効にするには 0 に設定します。従来の動作（再試行なし）は `compatibility = '26.5'` で維持されます。"}]}]} />
+
+AvroConfluent フォーマット: Confluent スキーマレジストリとの通信時に一時的な障害 (トランスポートタイムアウト、接続拒否、DNS エラー、HTTP 5xx/408/429) が発生した場合の最大再試行回数です。再試行を無効にするには 0 に設定します。設定可能な最大値は 20 です。スキーマ検証エラー (HTTP 409、不正な Avro JSON) では再試行されません。
+
 ## format_avro_schema_registry_receive_timeout \{#format_avro_schema_registry_receive_timeout\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -155,6 +163,14 @@ AvroConfluent フォーマット向け: Confluentスキーマレジストリ HTT
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "AvroConfluent フォーマット で使用される Confluent スキーマレジストリ HTTP クライアントの受信タイムアウト（秒）を制御するための新しい設定。"}]}]} />
 
 AvroConfluent フォーマット: Confluent スキーマレジストリ HTTP クライアントの受信タイムアウト (秒) 。スキーマのフェッチとスキーマ登録の両方で使用されます。0 より大きく、600 (10 分) 未満である必要があります。
+
+## format_avro_schema_registry_retry_initial_backoff_ms \{#format_avro_schema_registry_retry_initial_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="100" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "100"},{"label": "失敗した Confluent スキーマレジストリへのリクエストを再試行する前の初期バックオフ（ミリ秒単位）を制御する新しい設定です。バックオフは再試行のたびに 2 倍になり、上限は 10 秒です。`format_avro_schema_registry_max_retries = 0` の場合は効果がありません（`compatibility = '26.5'` によって 26.6 より前の動作が復元されます）。"}]}]} />
+
+AvroConfluent フォーマットの場合、失敗した Confluent スキーマレジストリへのリクエストを再試行する前の初期バックオフ (ミリ秒単位) を指定します。バックオフは以降の再試行のたびに 2 倍になり、上限は 10 秒です。0 より大きく、60000 以下である必要があります。
 
 ## format_avro_schema_registry_send_timeout \{#format_avro_schema_registry_send_timeout\}
 
@@ -2389,7 +2405,9 @@ Pretty フォーマットでレンダリングされるデータが、複数の 
 
 <SettingsInfoBlock type="String" default_value="UTF-8" />
 
-グリッド境界線を出力する際に使用する文字セットです。使用可能な文字セット: ASCII、UTF-8（デフォルト）。
+グリッド境界線を出力する際に使用する文字セットです。使用可能な文字セット: ASCII、UTF-8 (デフォルト) 。
+
+対話型モードでは、この設定が明示的に指定されていない限り、端末が UTF-8 をサポートしていない場合 (`LC_ALL`、`LC_CTYPE`、`LANG` 環境変数によって判定) 、`clickhouse-client` は自動的に `ASCII` に切り替えます。
 
 ## output_format_pretty_highlight_digit_groups \{#output_format_pretty_highlight_digit_groups\}
 

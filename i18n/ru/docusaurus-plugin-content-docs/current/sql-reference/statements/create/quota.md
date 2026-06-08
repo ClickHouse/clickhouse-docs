@@ -14,14 +14,18 @@ doc_type: 'reference'
 ```sql
 CREATE QUOTA [IF NOT EXISTS | OR REPLACE] name [ON CLUSTER cluster_name]
     [IN access_storage_type]
-    [KEYED BY {user_name | ip_address | client_key | client_key,user_name | client_key,ip_address | normalized_query_hash} | NOT KEYED]
+    [KEYED BY {user_name | ip_address | forwarded_ip_address | client_key | client_key,user_name | client_key,ip_address | normalized_query_hash} | NOT KEYED]
+    [IPV4_PREFIX_BITS number]
+    [IPV6_PREFIX_BITS number]
     [FOR [RANDOMIZED] INTERVAL number {second | minute | hour | day | week | month | quarter | year}
         {MAX { {queries | query_selects | query_inserts | errors | result_rows | result_bytes | read_rows | read_bytes | written_bytes | execution_time | failed_sequential_authentications | queries_per_normalized_hash} = number } [,...] |
          NO LIMITS | TRACKING ONLY} [,...]]
     [TO {role [,...] | ALL | ALL EXCEPT role [,...]}]
 ```
 
-Ключи `user_name`, `ip_address`, `client_key`, `client_key, user_name`, `client_key, ip_address` и `normalized_query_hash` соответствуют полям в таблице [system.quotas](../../../operations/system-tables/quotas.md).
+Ключи `user_name`, `ip_address`, `forwarded_ip_address`, `client_key`, `client_key, user_name`, `client_key, ip_address` и `normalized_query_hash` соответствуют полям в таблице [system.quotas](../../../operations/system-tables/quotas.md).
+
+Параметры `IPV4_PREFIX_BITS` и `IPV6_PREFIX_BITS` можно использовать только тогда, когда `KEYED BY` имеет значение `ip_address` или `forwarded_ip_address`. Они соответствуют полю в таблице [system.quotas](../../../operations/system-tables/quotas.md).
 
 Параметры `queries`, `query_selects`, `query_inserts`, `errors`, `result_rows`, `result_bytes`, `read_rows`, `read_bytes`, `written_bytes`, `execution_time`, `failed_sequential_authentications`, `queries_per_normalized_hash` соответствуют полям в таблице [system.quotas&#95;usage](../../../operations/system-tables/quotas_usage.md).
 

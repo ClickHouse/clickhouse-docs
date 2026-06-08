@@ -1265,6 +1265,14 @@ Cloud 默认值：`0`。
 
 强制在 JOIN USING 中从 PROJECTION 解析标识符（例如，在 `SELECT a + 1 AS b FROM t1 JOIN t2 USING (b)` 中，连接将按 `t1.a + 1 = t2.b` 来执行，而不是按 `t1.b = t2.b`）。
 
+## analyzer_compatibility_prefer_alias_over_subcolumn \{#analyzer_compatibility_prefer_alias_over_subcolumn\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "新增兼容性设置"}]}]} />
+
+当像 `b.id` 这样的多段标识符既可能表示别名为 `b` 的表中的列 `id`，也可能表示其他某个列的 Tuple 子列 `b.id` 时，优先按别名前缀来解析 (即 `b` 的列 `id`) 。默认情况下，新的 analyzer 会优先解析为子列。启用此设置可与旧版 analyzer 的解析方式保持一致。
+
 ## analyzer_inline_views \{#analyzer_inline_views\}
 
 <ExperimentalBadge />

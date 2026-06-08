@@ -1,5 +1,5 @@
 ---
-description: '파일에서 SELECT 및 INSERT를 수행할 수 있는 테이블 형태의 인터페이스를 제공하는 테이블 엔진으로, s3 테이블 함수와 유사합니다. 로컬 파일을 사용할 때는 `file()`을, S3, GCS, MinIO와 같은 객체 스토리지의 버킷을 사용할 때는 `s3()`를 사용합니다.'
+description: '파일에서 SELECT 및 INSERT를 수행할 수 있는 테이블 형태의 인터페이스를 제공하는 테이블 엔진으로, s3 테이블 함수와 유사합니다. 로컬 파일을 사용할 때는 `file`을, S3, GCS, MinIO와 같은 객체 스토리지의 버킷을 사용할 때는 `s3`를 사용합니다.'
 sidebar_label: 'file'
 sidebar_position: 60
 slug: /sql-reference/table-functions/file
@@ -12,7 +12,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # file Table Function \{#file-table-function\}
 
-[s3](/sql-reference/table-functions/url.md) 테이블 함수와 유사하게, 파일에 대해 `SELECT` 및 `INSERT`를 수행하기 위한 테이블과 같은 인터페이스를 제공하는 테이블 엔진입니다. 로컬 파일을 사용할 때는 `file()`을 사용하고, S3, GCS, MinIO와 같은 객체 스토리지의 버킷을 사용할 때는 `s3()`를 사용합니다.
+[s3](/sql-reference/table-functions/s3.md) 테이블 함수와 유사하게, 파일에 대해 `SELECT` 및 `INSERT`를 수행하기 위한 테이블과 같은 인터페이스를 제공하는 테이블 엔진입니다. 로컬 파일을 사용할 때는 `file`을 사용하고, S3, GCS, MinIO와 같은 객체 스토리지의 버킷을 사용할 때는 `s3`를 사용합니다.
 
 `file` 테이블 함수는 `SELECT` 및 `INSERT` 쿼리에서 파일을 읽거나 쓸 때 사용할 수 있습니다.
 
@@ -82,7 +82,7 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 ### 여러 TSV 파일로 파티션 단위 쓰기 \{#partitioned-write-to-multiple-tsv-files\}
 
-`file()` 유형의 테이블 함수에 데이터를 삽입할 때 `PARTITION BY` 표현식을 지정하면 파티션별로 개별 파일이 생성됩니다. 데이터를 별도 파일로 분할하면 읽기 작업 성능이 향상됩니다.
+`file` 유형의 테이블 함수에 데이터를 삽입할 때 `PARTITION BY` 표현식을 지정하면 파티션별로 개별 파일이 생성됩니다. 데이터를 별도 파일로 분할하면 읽기 작업 성능이 향상됩니다.
 
 ```sql
 INSERT INTO TABLE FUNCTION

@@ -1,5 +1,5 @@
 ---
-description: 'ファイルに対して `SELECT` や `INSERT` を実行するためのテーブル状のインターフェイスを提供するテーブルエンジンで、s3 テーブル関数と同様に動作します。ローカルファイルを扱う場合は `file()` を使用し、S3、GCS、MinIO などのオブジェクトストレージ内のバケットを扱う場合は `s3()` を使用します。'
+description: 'ファイルに対して `SELECT` や `INSERT` を実行するためのテーブル形式インターフェイスを提供するテーブルエンジンで、s3 テーブル関数と同様に動作します。ローカルファイルを扱う場合は `file` を使用し、S3、GCS、MinIO などのオブジェクトストレージ内のバケットを扱う場合は `s3` を使用します。'
 sidebar_label: 'file'
 sidebar_position: 60
 slug: /sql-reference/table-functions/file
@@ -12,7 +12,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # file テーブル関数 \{#file-table-function\}
 
-`s3` テーブル関数と同様に、ファイルに対する `SELECT` や `INSERT` をテーブルと同じように扱えるインターフェイスを提供するテーブルエンジンです。ローカルファイルを扱う場合は `file()` を使用し、S3、GCS、MinIO などのオブジェクトストレージ内のバケットを扱う場合は [s3](/sql-reference/table-functions/url.md) のテーブル関数 `s3()` を使用します。
+`s3` テーブル関数と同様に、ファイルに対する `SELECT` や `INSERT` をテーブル形式インターフェイスを提供するテーブルエンジンです。ローカルファイルを扱う場合は `file` を使用し、S3、GCS、MinIO などのオブジェクトストレージ内のバケットを扱う場合は [s3](/sql-reference/table-functions/s3.md) のテーブル関数 `s3` を使用します。
 
 `file` 関数は、`SELECT` および `INSERT` クエリで使用して、ファイルからの読み取りやファイルへの書き込みを行うことができます。
 
@@ -82,7 +82,7 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 ### 複数の TSV ファイルへのパーティション分割書き込み \{#partitioned-write-to-multiple-tsv-files\}
 
-`file()` 型のテーブル関数にデータを挿入する際に `PARTITION BY` 式を指定すると、パーティションごとに別々のファイルが作成されます。データを複数のファイルに分割することで、読み取り処理のパフォーマンスを向上できます。
+`file` 型のテーブル関数にデータを挿入する際に `PARTITION BY` 式を指定すると、パーティションごとに別々のファイルが作成されます。データを複数のファイルに分割することで、読み取り処理のパフォーマンスを向上できます。
 
 ```sql
 INSERT INTO TABLE FUNCTION

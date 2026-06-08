@@ -114,7 +114,7 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 
 如果在至少一个时间间隔内超出限制，将抛出一个异常，异常文本会说明超出了哪个限制、对应的是哪个时间间隔，以及新的时间间隔何时开始 (即何时可以再次发送查询) 。
 
-配额可以使用“quota key”功能，对多个键的资源进行相互独立的统计和报告。下面是一个示例：
+配额可以使用 &quot;quota key&quot; 功能，对多个键的资源进行相互独立的统计和报告。下面是一个示例：
 
 ```xml
 <!-- For the global reports designer. -->
@@ -127,6 +127,17 @@ ClickHouse Cloud 支持配额，但必须使用 [DDL 语法](/sql-reference/stat
 
         You can also write <keyed_by_ip />, so the IP address is used as the quota key.
         (But keep in mind that users can change the IPv6 address fairly easily.)
+
+        Instead of <keyed_by_ip /> you can use <keyed_by_forwarded_ip />, so the address
+        from the X-Forwarded-For header is used as the quota key.
+
+        For both <keyed_by_ip /> and <keyed_by_forwarded_ip /> you can additionally specify
+        <ipv4_prefix_bits> and <ipv6_prefix_bits> to group clients by subnet instead of by a
+        single address: the IP address is masked to the given prefix length before being used
+        as the quota key. For example, <ipv4_prefix_bits>24</ipv4_prefix_bits> shares one bucket
+        across a /24 IPv4 subnet, and <ipv6_prefix_bits>64</ipv6_prefix_bits> across a /64 IPv6
+        subnet. These elements can only be used together with <keyed_by_ip /> or
+        <keyed_by_forwarded_ip />.
     -->
     <keyed />
 ```

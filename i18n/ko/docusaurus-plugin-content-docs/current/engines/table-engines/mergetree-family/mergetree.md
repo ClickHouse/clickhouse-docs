@@ -1293,7 +1293,7 @@ ALTER TABLE tab DROP STATISTICS a;
 #### 통계를 활용한 파트 프루닝 \{#part-pruning-with-statistics\}
 
 `use_statistics_for_part_pruning`이 활성화되면 통계를 파트 프루닝에 사용할 수 있습니다.
-현재는 `MinMax` 통계만 파트 프루닝을 지원합니다. 컬럼에 MinMax 통계가 정의되면 ClickHouse는 각 파트에서 해당 컬럼의 최솟값과 최댓값을 추적합니다.
+현재는 `MinMax` 및 `Basic` 통계만 파트 프루닝을 지원합니다. 이러한 통계가 컬럼에 정의되면 ClickHouse는 각 파트에서 해당 컬럼의 최솟값과 최댓값을 추적합니다.
 파트 프루닝을 사용하면 쿼리 필터 조건과 일치할 수 있는 행이 해당 파트에 전혀 없는 경우 전체 데이터 파트를 읽지 않고 건너뛸 수 있습니다.
 
 **예시:**
@@ -1324,50 +1324,69 @@ EXPLAIN indexes = 1 SELECT count() FROM test_stats WHERE value > 5000;
 -- The output will show "Parts: 1/2" indicating one part was pruned
 ```
 
-
 ### 사용 가능한 컬럼 통계 유형 \{#available-types-of-column-statistics\}
 
-- `MinMax`
+* `Basic`
 
-    숫자 컬럼에 대한 범위 필터의 선택도를 추정할 수 있도록 컬럼 값의 최소값과 최대값을 저장합니다.
+  컬럼에서 파생된 단일 값 요약을 간결하게 묶은 통계입니다. 컬럼 타입에 따라 다음 항목이 채워집니다:
 
-    구문: `minmax`
+  * 값이 숫자로 표현되는 모든 컬럼(정수, 부동소수점, `Decimal*`, `Date*`, `DateTime*`, `Enum*`, `IPv4`, ...)의 경우: 최소값과 최대값으로, 범위 필터의 선택도를 추정하고 파트 프루닝을 가능하게 합니다;
+  * `String` 및 `FixedString` 컬럼의 경우: `NULL`이 아닌 값의 총 바이트 길이(여기서 평균 문자열 길이를 도출할 수 있습니다);
+  * `Nullable` 및 `LowCardinality(Nullable)` 컬럼의 경우: `NULL` 값의 개수로, 옵티마이저가 선택도 추정에서 `NULL` 행을 제외하는 데 사용합니다.
 
-- `TDigest`
+    단일 `Basic` 통계는 이러한 항목 여러 개를 한 번에 채울 수 있습니다. 예를 들어 `Nullable(UInt32)` 컬럼에서는 숫자 최소/최대값과 `NULL` 개수를 모두 추적합니다. `MinMax`와 비교하면, `Basic`은 추가로 `String` / `FixedString` 컬럼에서도 동작하며, `NULL` 개수만 추적하기 위해 `UUID`나 `IPv6` 같은 타입의 `Nullable` 래퍼에도 선언할 수 있습니다.
 
-    숫자 컬럼에 대해 근사 백분위수(예: 90번째 백분위수)를 계산할 수 있도록 하는 [TDigest](https://github.com/tdunning/t-digest) 스케치입니다.
+    구문: `basic`
 
-    구문: `tdigest`
+* `MinMax`
 
-- `Uniq`
+  숫자 컬럼에 대한 범위 필터의 선택도를 추정할 수 있도록 컬럼 값의 최소값과 최대값을 저장합니다.
 
-    컬럼에 포함된 서로 다른 값의 개수를 추정할 수 있도록 하는 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 스케치입니다.
+  구문: `minmax`
 
-    구문: `uniq`
+* `TDigest`
 
-- `CountMin`
+  숫자 컬럼에 대해 근사 백분위수(예: 90번째 백분위수)를 계산할 수 있도록 하는 [TDigest](https://github.com/tdunning/t-digest) 스케치입니다.
 
-    컬럼의 각 값이 나타나는 빈도를 근사적으로 계산해 주는 [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) 스케치입니다.
+  구문: `tdigest`
 
-    구문 `countmin`
+* `Uniq`
+
+  컬럼에 포함된 서로 다른 값의 개수를 추정할 수 있도록 하는 [HyperLogLog](https://en.wikipedia.org/wiki/HyperLogLog) 스케치입니다.
+
+  구문: `uniq`
+
+* `CountMin`
+
+  컬럼의 각 값이 나타나는 빈도를 근사적으로 계산해 주는 [CountMin](https://en.wikipedia.org/wiki/Count%E2%80%93min_sketch) 스케치입니다.
+
+  구문 `countmin`
 
 ### 지원되는 데이터 타입 \{#supported-data-types\}
 
-|           | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | String 또는 FixedString |
-|-----------|----------------------------------------------------|-------------------------|
-| CountMin  | ✔                                                  | ✔                       |
-| MinMax    | ✔                                                  | ✗                       |
-| TDigest   | ✔                                                  | ✗                       |
-| Uniq      | ✔                                                  | ✔                       |
+|          | (U)Int*, Float*, Decimal(*), Date*, Boolean, Enum* | IPv4 | String 또는 FixedString |
+| -------- | -------------------------------------------------- | ---- | --------------------- |
+| Basic    | ✔                                                  | ✔    | ✔                     |
+| CountMin | ✔                                                  | ✔    | ✔                     |
+| MinMax   | ✔                                                  | ✔    | ✗                     |
+| TDigest  | ✔                                                  | ✗    | ✗                     |
+| Uniq     | ✔                                                  | ✔    | ✔                     |
 
-### 지원되는 연산 \{#supported-operations\}
+위 항목은 모두 나열된 타입의 `Nullable` 및 `LowCardinality(Nullable)` 래퍼도 허용합니다. `Basic`은 추가로 `UUID` 또는 `IPv6`와 같은 타입의 `Nullable` 래퍼에 선언할 수 있으며, 이 경우에는 NULL 개수만 추적합니다.
 
-|           | 동등 필터 (==) | 범위 필터 (`>, >=, <, <=`) |
-|-----------|----------------|----------------------------|
-| CountMin  | ✔              | ✗                          |
-| MinMax    | ✗              | ✔                          |
-| TDigest   | ✗              | ✔                          |
-| Uniq      | ✔              | ✗                          |
+### 지원되는 작업 \{#supported-operations\}
+
+|          | 동등 필터 (==) | 범위 필터 (`>, >=, <, <=`) |
+| -------- | ---------- | ---------------------- |
+| Basic    | ✗          | ✔ (숫자형 컬럼만)            |
+| CountMin | ✔          | ✗                      |
+| MinMax   | ✗          | ✔ (숫자형 컬럼만)            |
+| TDigest  | ✗          | ✔ (숫자형 컬럼만)            |
+| Uniq     | ✔          | ✗                      |
+
+`String` / `FixedString` 컬럼에서 `Basic`은 NULL이 아닌 값의 전체
+바이트 길이(평균 문자열 길이 추정에 사용됨)와 NULL 개수만 기록합니다;
+범위 필터와 파트 프루닝은 이를 기준으로 동작하지 않습니다.
 
 ## 컬럼 수준 설정 \{#column-level-settings\}
 

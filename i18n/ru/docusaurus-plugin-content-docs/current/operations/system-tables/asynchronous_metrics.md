@@ -1041,6 +1041,14 @@ SELECT * FROM system.asynchronous_metrics LIMIT 10
 
 Общее количество строк (записей), хранящихся в таблицах семейства MergeTree в системной базе данных.
 
+### TotalUncompressedBytesOfMergeTreeTables \{#totaluncompressedbytesofmergetreetables\}
+
+Общий объём несжатых байтов, хранящихся во всех таблицах семейства MergeTree, согласно контрольным суммам частей. Используется тот же источник данных, что и для столбца `total_bytes_uncompressed` в `system.tables`; не включаются файлы, хранящиеся в несжатом виде, такие как marks и индексы первичного ключа.
+
+### TotalUncompressedBytesOfMergeTreeTablesSystem \{#totaluncompressedbytesofmergetreetablessystem\}
+
+Общий объём несжатых байтов, по данным контрольных сумм частей, хранящихся в таблицах семейства MergeTree в системной базе данных. Это тот же источник, что и столбец `total_bytes_uncompressed` таблицы `system.tables`, и он не включает файлы, хранящиеся в несжатом виде, такие как marks и индексы первичного ключа.
+
 ### TrackedMemory \{#trackedmemory\}
 
 Объём памяти, отслеживаемый ClickHouse (должен быть равен метрике MemoryTracking), в байтах.

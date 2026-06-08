@@ -1,5 +1,5 @@
 ---
-description: '一种表引擎，提供类似表的接口，用于对文件执行 SELECT 和 INSERT 操作，类似于 s3 表函数。处理本地文件时使用 `file()`，处理对象存储（如 S3、GCS 或 MinIO）中的存储桶时使用 `s3()`。'
+description: '一种表引擎，提供类似表的接口，用于对文件执行 SELECT 和 INSERT 操作，类似于 s3 表函数。处理本地文件时使用 `file`，处理对象存储（如 S3、GCS 或 MinIO）中的桶时使用 `s3`。'
 sidebar_label: 'file'
 sidebar_position: 60
 slug: /sql-reference/table-functions/file
@@ -12,7 +12,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 # file 表函数 \{#file-table-function\}
 
-这是一种表引擎，提供类似表的接口，可对文件执行 SELECT 和 INSERT 操作，类似于 [s3](/sql-reference/table-functions/url.md) 表函数。处理本地文件时使用 `file()`，访问对象存储 (例如 S3、GCS 或 MinIO) 中的 bucket 时使用 `s3()`。
+这是一种表引擎，提供类似表的接口，可对文件执行 SELECT 和 INSERT 操作，类似于 [s3](/sql-reference/table-functions/s3.md) 表函数。处理本地文件时使用 `file`，访问对象存储 (例如 S3、GCS 或 MinIO) 中的桶时使用 `s3`。
 
 `file` 函数可以在 `SELECT` 和 `INSERT` 查询中使用，用于从文件读取或向文件写入数据。
 
@@ -82,7 +82,7 @@ VALUES (1, 2, 3), (3, 2, 1), (1, 3, 2)
 
 ### 分区写入多个 TSV 文件 \{#partitioned-write-to-multiple-tsv-files\}
 
-如果在向类型为 `file()` 的表函数中插入数据时指定了 `PARTITION BY` 表达式，则会为每个分区创建一个单独的文件。将数据拆分到多个独立文件有助于提升读取操作的性能。
+如果在向类型为 `file` 的表函数中插入数据时指定了 `PARTITION BY` 表达式，则会为每个分区创建一个单独的文件。将数据拆分到多个独立文件有助于提升读取操作的性能。
 
 ```sql
 INSERT INTO TABLE FUNCTION

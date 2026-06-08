@@ -83,7 +83,7 @@ Example:
 
 ## allow_experimental_webterminal \{#allow_experimental_webterminal\}
 
-<SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="No" />Включает экспериментальный интерфейс веб-терминала на HTTP-конечной точке `/webterminal`. Предоставляет интерактивный сеанс `clickhouse-client` в браузере через WebSocket.
+<SettingsInfoBlock type="Bool" default_value="1" changeable_without_restart="No" />Прежнее (экспериментальное) название `enable_webterminal`. По-прежнему учитывается для обратной совместимости, если `enable_webterminal` не задан. Настройка устарела.
 
 ## allow_feature_tier \{#allow_feature_tier\}
 
@@ -1196,6 +1196,10 @@ ClickHouse перезагружает встроенные словари каж
 ## enable_azure_sdk_logging \{#enable_azure_sdk_logging\}
 
 <SettingsInfoBlock type="Bool" default_value="0" changeable_without_restart="No" />Включает логирование Azure SDK
+
+## enable_webterminal \{#enable_webterminal\}
+
+<SettingsInfoBlock type="Bool" default_value="1" changeable_without_restart="No" />Включает интерфейс веб-терминала на HTTP-конечной точке `/webterminal`. Предоставляет интерактивный сеанс `clickhouse-client` в браузере через WebSocket. Если `false`, запросы к `/webterminal` возвращают статус HTTP `403 Forbidden`.
 
 ## encryption \{#encryption\}
 

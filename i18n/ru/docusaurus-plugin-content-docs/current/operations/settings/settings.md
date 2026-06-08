@@ -1267,6 +1267,14 @@ ALTER TABLE test FREEZE SETTINGS alter_partition_verbose_result = 1;
 
 Принудительно разрешает идентификатор в JOIN USING по проекции (например, в `SELECT a + 1 AS b FROM t1 JOIN t2 USING (b)` соединение будет выполняться по условию `t1.a + 1 = t2.b`, а не `t1.b = t2.b`).
 
+## analyzer_compatibility_prefer_alias_over_subcolumn \{#analyzer_compatibility_prefer_alias_over_subcolumn\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "Новая настройка совместимости"}]}]} />
+
+Если составной идентификатор, такой как `b.id`, может означать либо столбец `id` таблицы с псевдонимом `b`, либо подстолбец `b.id` типа Tuple у какого-либо другого столбца, будет предпочтена интерпретация с префиксом-псевдонимом (столбец `id` таблицы `b`). По умолчанию новый анализатор предпочитает подстолбец. Включите эту настройку, чтобы поведение соответствовало разрешению имен в старом анализаторе.
+
 ## analyzer_inline_views \{#analyzer_inline_views\}
 
 <ExperimentalBadge />

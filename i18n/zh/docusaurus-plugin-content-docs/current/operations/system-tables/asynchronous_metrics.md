@@ -1041,6 +1041,14 @@ Projection 主键值占用的内存总量 (以字节为单位，仅计算活动 
 
 存储在 system 数据库中 MergeTree 家族各表内的总行数 (记录数) 。
 
+### TotalUncompressedBytesOfMergeTreeTables \{#totaluncompressedbytesofmergetreetables\}
+
+所有 MergeTree 家族表中存储的未压缩字节总量，按分片校验和统计。其数据来源与 `system.tables` 中的 `total_bytes_uncompressed` 列相同，但不包括以未压缩形式存储的文件，例如标记和主键索引。
+
+### TotalUncompressedBytesOfMergeTreeTablesSystem \{#totaluncompressedbytesofmergetreetablessystem\}
+
+system 数据库 中 MergeTree 家族各表存储的未压缩字节总量，由分片校验和统计得出。它与 `system.tables` 中 `total_bytes_uncompressed` 列的数据来源相同，但不包括以未压缩形式存储的文件，例如标记和主键索引。
+
 ### TrackedMemory \{#trackedmemory\}
 
 ClickHouse 跟踪的内存 (应与 MemoryTracking 指标相等) ，单位为字节。

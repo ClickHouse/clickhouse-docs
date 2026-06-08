@@ -148,6 +148,14 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 Для формата AvroConfluent: тайм-аут подключения в секундах для HTTP-клиента Confluent Schema Registry. Используется как при получении схемы, так и при её регистрации. Должен быть больше 0 и меньше 600 (10 минут).
 
+## format_avro_schema_registry_max_retries \{#format_avro_schema_registry_max_retries\}
+
+<SettingsInfoBlock type="UInt64" default_value="5" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "5"},{"label": "Новая настройка, задающая максимальное количество повторных попыток при временных сбоях (транспортные тайм-ауты, отказ в подключении, ошибки DNS, HTTP 5xx/408/429) при обращении к Confluent Schema Registry. Установите 0, чтобы отключить повторные попытки. Прежнее поведение (без повторных попыток) сохраняется при `compatibility = '26.5'`."}]}]} />
+
+Для формата AvroConfluent: максимальное количество повторных попыток при временных сбоях при обращении к Confluent Schema Registry (транспортные тайм-ауты, отказ в подключении, ошибки DNS, HTTP 5xx/408/429). Установите 0, чтобы отключить повторные попытки. Максимально допустимое значение — 20. Для ошибок валидации схемы (HTTP 409, некорректный Avro JSON) повторные попытки не выполняются.
+
 ## format_avro_schema_registry_receive_timeout \{#format_avro_schema_registry_receive_timeout\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -155,6 +163,14 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка для управления тайм-аутом получения (в секундах) для HTTP-клиента Confluent Schema Registry, используемого форматом AvroConfluent."}]}]} />
 
 Для формата AvroConfluent: тайм-аут получения в секундах для HTTP-клиента Confluent Schema Registry. Используется как при получении схемы, так и при её регистрации. Должен быть больше 0 и меньше 600 (10 минут).
+
+## format_avro_schema_registry_retry_initial_backoff_ms \{#format_avro_schema_registry_retry_initial_backoff_ms\}
+
+<SettingsInfoBlock type="UInt64" default_value="100" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "100"},{"label": "Новая настройка, задающая начальную задержку (в миллисекундах) перед повторной попыткой после неуспешного запроса к Confluent Schema Registry. Задержка удваивается при каждой повторной попытке, но не превышает 10 секунд. Не влияет, если `format_avro_schema_registry_max_retries = 0` (поведение до 26.6, восстановленное с помощью `compatibility = '26.5'`)."}]}]} />
+
+Для формата AvroConfluent: начальная задержка в миллисекундах перед повторной попыткой после неуспешного запроса к Confluent Schema Registry. Задержка удваивается при каждой последующей повторной попытке, но не превышает 10 секунд. Должна быть больше 0 и меньше или равна 60000.
 
 ## format_avro_schema_registry_send_timeout \{#format_avro_schema_registry_send_timeout\}
 
@@ -2390,6 +2406,8 @@ SELECT *, toTypeName(*) FROM (SELECT * FROM system.numbers LIMIT 1000);
 <SettingsInfoBlock type="String" default_value="UTF-8" />
 
 Набор символов для отображения границ таблицы. Доступные наборы символов: ASCII, UTF-8 (по умолчанию).
+
+В интерактивном режиме `clickhouse-client` автоматически переключается на `ASCII`, если терминал не поддерживает UTF-8 (это определяется переменными окружения `LC_ALL`, `LC_CTYPE` и `LANG`), если только этот параметр не задан явно.
 
 ## output_format_pretty_highlight_digit_groups \{#output_format_pretty_highlight_digit_groups\}
 

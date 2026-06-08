@@ -302,9 +302,9 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 {
 id: "row-1",
 items: [
-  { label: "26.4" },
-  { label: "minmax, uniq" },
-  { label: "默认启用自动统计信息" }
+{ label: "26.4" },
+{ label: "minmax, uniq" },
+{ label: "默认启用自动统计信息" }
 ]
 },
 {
@@ -315,7 +315,7 @@ items: [{ label: "25.10" }, { label: "" }, { label: "新设置" }]
 />
 
 在所有适用列上自动计算的统计类型的逗号分隔列表。
-支持的统计类型：tdigest、countmin、minmax、uniq。
+支持的统计类型：basic、tdigest、countmin、minmax、uniq。
 
 ## background_task_preferred_step_execution_time_ms \{#background_task_preferred_step_execution_time_ms\}
 

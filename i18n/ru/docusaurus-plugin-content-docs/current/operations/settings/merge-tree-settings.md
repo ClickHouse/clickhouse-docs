@@ -314,7 +314,7 @@ SELECT * FROM example WHERE key = 'xxx' ORDER BY time DESC LIMIT 10;
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "minmax, uniq"},{"label": "Автоматическое включение статистики по умолчанию"}]}, {"id": "row-2","items": [{"label": "25.10"},{"label": ""},{"label": "новая настройка"}]}]} />
 
 Список типов статистики, разделённых запятыми, которые автоматически вычисляются для всех подходящих столбцов.
-Поддерживаемые типы статистики: tdigest, countmin, minmax, uniq.
+Поддерживаемые типы статистики: basic, tdigest, countmin, minmax, uniq.
 
 ## background_task_preferred_step_execution_time_ms \{#background_task_preferred_step_execution_time_ms\}
 

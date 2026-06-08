@@ -2261,7 +2261,7 @@ SELECT punycodeEncode('München')
 
 ## regexpExtract \{#regexpExtract\}
 
-導入されたバージョン: v23.2.0
+導入バージョン: v23.2.0
 
 `haystack` 内で正規表現パターンにマッチし、指定した正規表現グループ番号に対応する最初の文字列を抽出します。
 
@@ -2271,7 +2271,7 @@ SELECT punycodeEncode('München')
 regexpExtract(haystack, pattern[, index])
 ```
 
-**別名**: `REGEXP_EXTRACT`
+**別名**: `REGEXP_EXTRACT`, `REGEXP_SUBSTR`
 
 **引数**
 

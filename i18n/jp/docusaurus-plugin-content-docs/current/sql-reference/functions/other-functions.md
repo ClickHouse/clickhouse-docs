@@ -1081,13 +1081,13 @@ SELECT currentSchemas(true)
 currentUser()
 ```
 
-**別名**: `current_user`, `user`
+**別名**: `user`, `current_user`
 
 **引数**
 
 * なし
 
-**返される値**
+**戻り値**
 
 現在のユーザー名を返します。そうでない場合は、クエリを開始したユーザーのログイン名を返します。[`String`](/sql-reference/data-types/string)
 
@@ -1105,7 +1105,7 @@ SELECT currentUser()
 └───────────────┘
 ```
 
-**括弧なしの SQL 標準構文**
+**SQL 標準構文**
 
 ```sql title=Query
 SELECT CURRENT_USER

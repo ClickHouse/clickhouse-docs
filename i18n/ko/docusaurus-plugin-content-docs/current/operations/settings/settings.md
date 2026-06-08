@@ -1267,6 +1267,14 @@ Nested에 복합 식별자를 추가하도록 허용합니다. 이 설정은 쿼
 
 projection에서 JOIN USING에 사용되는 식별자를 강제로 해석합니다(예를 들어 `SELECT a + 1 AS b FROM t1 JOIN t2 USING (b)`의 경우 조인은 `t1.b = t2.b`가 아니라 `t1.a + 1 = t2.b` 조건으로 수행됩니다).
 
+## analyzer_compatibility_prefer_alias_over_subcolumn \{#analyzer_compatibility_prefer_alias_over_subcolumn\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "새 호환성 설정"}]}]} />
+
+`b.id`와 같이 점으로 구분된 식별자가 별칭이 `b`인 테이블의 컬럼 `id`를 가리킬 수도 있고, 다른 컬럼의 Tuple 서브컬럼 `b.id`를 가리킬 수도 있는 경우, 별칭 접두사 해석(`b`의 컬럼 `id`)을 우선합니다. 기본적으로 새 분석기는 서브컬럼을 우선합니다. 이전 분석기의 해상도와 일치시키려면 이 설정을 활성화하십시오.
+
 ## analyzer_inline_views \{#analyzer_inline_views\}
 
 <ExperimentalBadge />

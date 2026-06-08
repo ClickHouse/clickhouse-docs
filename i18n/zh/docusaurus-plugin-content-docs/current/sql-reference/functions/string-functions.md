@@ -2346,7 +2346,7 @@ SELECT punycodeEncode('München')
 regexpExtract(haystack, pattern[, index])
 ```
 
-**别名**: `REGEXP_EXTRACT`
+**别名**: `REGEXP_EXTRACT`, `REGEXP_SUBSTR`
 
 **参数**
 
@@ -2375,7 +2375,6 @@ SELECT
 │ 100                                          │ 200                                          │ 100-200                                      │ 100                                       │
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
-
 
 ## regexpPosition \{#regexpPosition\}
 

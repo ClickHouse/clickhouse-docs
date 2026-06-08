@@ -1075,13 +1075,13 @@ SELECT currentSchemas(true)
 현재 사용자의 이름을 반환합니다.
 분산 쿼리인 경우 쿼리를 시작한 사용자의 이름을 반환합니다.
 
-**Syntax**
+**구문**
 
 ```sql
 currentUser()
 ```
 
-**별칭**: `current_user`, `user`
+**별칭**: `user`, `current_user`
 
 **인수**
 
@@ -1105,7 +1105,7 @@ SELECT currentUser()
 └───────────────┘
 ```
 
-**괄호 없이 사용하는 SQL 표준 구문**
+**괄호 없는 SQL 표준 구문**
 
 ```sql title=Query
 SELECT CURRENT_USER
