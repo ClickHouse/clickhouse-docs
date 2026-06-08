@@ -18,7 +18,7 @@ keywords: ['ClickStack', 'Demo days']
 
 ClickStack now applies the direct_read optimization only on ClickHouse versions 26.2 and above, where the full-text search index properly supports the alias columns added to open-source schemas. Previously the optimization could be attempted on older versions where it wouldn't work correctly. The version check happens at query time by inspecting the schema, and the alias columns themselves are now included in the open-source schemas by default. 
 
-Also shown: work in progress on replacing the autocomplete materialized view with direct queries against the text index. Right now both do overlapping work, adding ingest pressure. If benchmarks confirm the text index queries hold up performance-wise, the materialized view can be simplified or removed. Aarron also fielded questions from the team about how positional encoding in future ClickHouse text index versions might make key-value filter lookups even more accurate.
+Also shown: work in progress on replacing the autocomplete materialized view with direct queries against the text index. Right now both do overlapping work, adding ingest pressure. If benchmarks confirm the text index queries hold up performance-wise, the materialized view can be simplified or removed. Aaron also fielded questions from the team about how positional encoding in future ClickHouse text index versions might make key-value filter lookups even more accurate.
 
 **Related PRs:** [#2341](https://github.com/hyperdxio/hyperdx/pull/2341) feat: adds direct_read optimization by default for logs and traces, [#2405](https://github.com/hyperdxio/hyperdx/pull/2405) feat(common-utils): apply direct_read KV items optimization to SQL filters, [#2376](https://github.com/hyperdxio/hyperdx/pull/2376) feat: use text index to power filters and autocomplete
 
@@ -38,11 +38,9 @@ The fix adds a guard condition: if the body parses as JSON and already contains 
 
 *Demo by [@brandon-pereira](https://github.com/brandon-pereira)*
 
-<iframe width="768" height="432" src="https://www.youtube.com/embed/uQt2rUF-o1A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="768" height="432" src="https://www.youtube.com/embed/aIy1zfmlz3Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Several MCP improvements shipped this week: better event pattern bucketing and scoring, improved error hints, and shared helper cleanup. Tool prefixes were also renamed from `hyperdx_` to `clickstack_` to match the product name.
-
-Brandon also caught a regression where a function used internally in the EE repo was accidentally imported in the open-source version after a merge, breaking MCP. The short-term fix adds an ESLint error on that import so it can't slip through again while the proper abstraction is being worked out.
 
 **Related PRs:** [#2337](https://github.com/hyperdxio/hyperdx/pull/2337) feat(mcp): improve MCP tool quality — error hints, shared helpers, better messages, [#2396](https://github.com/hyperdxio/hyperdx/pull/2396) refactor(mcp): rename tool prefixes from hyperdx_ to clickstack_, [#2343](https://github.com/hyperdxio/hyperdx/pull/2343) feat(mcp): add patch_dashboard, get_dashboard_tile, search_dashboards tools, [#2418](https://github.com/hyperdxio/hyperdx/pull/2418) fix(mcp): improve alias descriptions and examples for readable chart legends, [#2412](https://github.com/hyperdxio/hyperdx/pull/2412) refactor: simplify MCP ObjectId validation with shared helpers and schema-level checks
 
