@@ -67,3 +67,7 @@ Postgres의 네이티브 publication과 subscription을 사용해
 애플리케이션 트래픽을 전환하기 전에 소스와 대상의 행 수와 데이터 내용이 일치하는지
 확인하십시오. [마이그레이션 FAQ](/cloud/managed-postgres/migrations/faq)에서는
 자주 발생하는 오류와 복구 절차를 다룹니다.
+
+## Supabase에서 마이그레이션하기 \{#supabase\}
+
+Supabase에서 마이그레이션하는 경우, 단계별 절차는 [Supabase to Managed Postgres migration guide](https://github.com/iskakaushik/supa-auth-migrate/blob/main/MIGRATION.md)를 참조하십시오.
