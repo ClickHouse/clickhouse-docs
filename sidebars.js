@@ -380,6 +380,7 @@ const sidebars = {
         'cloud/managed-postgres/backup-and-restore',
         'cloud/managed-postgres/security',
         'cloud/managed-postgres/rbac',
+        'cloud/managed-postgres/local-development',
         // Configure
         'cloud/managed-postgres/settings',
         {
