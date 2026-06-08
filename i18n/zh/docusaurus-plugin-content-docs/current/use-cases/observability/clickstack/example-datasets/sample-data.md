@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/sample-data
-title: 'ClickStack - 示例日志、链路追踪和指标'
+title: '示例日志、链路追踪和指标'
 sidebar_position: 0
 pagination_prev: null
 pagination_next: null
