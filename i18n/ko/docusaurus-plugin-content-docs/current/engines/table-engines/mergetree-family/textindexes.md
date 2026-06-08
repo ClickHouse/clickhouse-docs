@@ -417,6 +417,34 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 자세한 내용은 [LIKE/ILIKE 성능 튜닝 섹션](#like-ilike-queries-perf)을 참조하십시오.
 
 
+#### `multiSearchAny` and `multiMatchAny` \{#functions-example-multisearchany-multimatchany\}
+
+[multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny) 및 UTF-8 변형인 [multiSearchAnyUTF8](/sql-reference/functions/string-search-functions.md/#multiSearchAnyUTF8)는 여러 리터럴 부분 문자열 중 하나라도 검색 대상 문자열에 포함되어 있는지 확인하며, [multiMatchAny](/sql-reference/functions/string-search-functions.md/#multiMatchAny)는 여러 정규식 중 하나라도 일치하는지 확인합니다.
+이 함수들은 `LIKE` 및 `match`와 동일한 조건에서 텍스트 인덱스를 사용합니다(위 참조). 즉, ClickHouse가 각 검색어에서 완전한 토큰을 추출할 수 있어야 하며, 검색어 목록은 상수여야 합니다.
+어느 검색어든 포함될 가능성이 있으면 해당 그래뉼을 읽습니다.
+
+`multiMatchAny`의 경우, 단일 패턴을 토큰 요구 사항으로 축약할 수 없으면(예: 모든 문서와 일치하는 `.*`) 텍스트 인덱스를 사용할 수 없으며, 쿼리는 전체 스캔으로 전환됩니다.
+
+`LIKE` 및 `match`와 마찬가지로, 부분 문자열 및 정규식 검색은 `ngrams` 및 `sparseGrams` 토크나이저와 함께 사용할 때 가장 잘 작동합니다.
+이 토크나이저는 서로 겹치는 문자 n-그램을 인덱싱하므로, 검색어가 부분 문자열로 나타나는 위치라면 단어 중간에서 시작하거나 끝나는 경우와 관계없이 인덱스에 존재하는 n-그램으로 검색어가 분해됩니다.
+따라서 검색어 길이가 n-그램 크기 이상이면 그대로 사용할 수 있습니다.
+
+`ngrams` 토크나이저를 사용하는 텍스트 인덱스 예시:
+
+```sql
+SELECT count() FROM table WHERE multiSearchAny(comment, ['clickhouse', 'support']);
+```
+
+반면 `splitByNonAlpha` 토크나이저는 완전한 토큰(전체 단어)만 인덱싱합니다.
+검색 문자열은 단어의 중간에서 시작하거나 끝날 수 있으므로, ClickHouse는 각 검색 문자열의 앞뒤 토큰을 제거합니다. 따라서 인덱스는 완전한 토큰만 사용해 그래뉼을 가지치기할 수 있습니다.
+부분 문자열 검색과 정규 표현식 검색에서 `splitByNonAlpha` 인덱스를 사용하려면, 각 검색 문자열이 하나 이상의 완전한 토큰을 이루도록 구분자 문자(예: 공백)로 감싸십시오.
+
+`splitByNonAlpha` 토크나이저를 사용하는 텍스트 인덱스 예시:
+
+```sql
+SELECT count() FROM table WHERE multiSearchAny(comment, [' clickhouse ', ' support ']);
+```
+
 #### `startsWith` 및 `endsWith` \{#functions-example-startswith-endswith\}
 
 `LIKE`와 유사하게, [startsWith](/sql-reference/functions/string-functions.md/#startsWith) 및 [endsWith](/sql-reference/functions/string-functions.md/#endsWith) 함수는 검색어에서 완전한 토큰을 추출할 수 있는 경우에만 텍스트 인덱스를 사용할 수 있습니다.

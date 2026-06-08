@@ -417,6 +417,34 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 詳しくは、[LIKE/ILIKE パフォーマンスチューニングのセクション](#like-ilike-queries-perf)を参照してください。
 
+#### `multiSearchAny` と `multiMatchAny` \{#functions-example-multisearchany-multimatchany\}
+
+[multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny) とその UTF-8 版である [multiSearchAnyUTF8](/sql-reference/functions/string-search-functions.md/#multiSearchAnyUTF8) は、複数の固定部分文字列のいずれかが haystack に含まれているかどうかを判定し、[multiMatchAny](/sql-reference/functions/string-search-functions.md/#multiMatchAny) は複数の正規表現のいずれかに一致するかどうかを判定します。
+これらの関数は、`LIKE` および `match` と同じ条件でテキスト索引を使用します (前述を参照) 。つまり、ClickHouse が各 needle から完全なトークンを抽出でき、needle のリストが定数である必要があります。
+いずれかの needle が含まれている可能性があるグラニュールは読み取られます。
+
+`multiMatchAny` では、1 つの pattern をトークン要件に還元できない場合 (たとえば任意のドキュメントに一致する `.*`) は、テキスト索引を使用できず、クエリ はフルスキャンにフォールバックします。
+
+`LIKE` や `match` と同様に、部分文字列検索と正規表現検索は `ngrams` および `sparseGrams` トークナイザーで最も効果的に機能します。
+これらのトークナイザーは、重なり合う文字 N-gram を索引化します。そのため needle は、単語の途中で始まるか終わるかに関係なく、部分文字列として出現する位置であればどこでも、索引内に存在する N-gram に分解されます。
+したがって、needle は N-gram サイズ以上の長さがあれば、そのまま使用できます。
+
+`ngrams` トークナイザーを使用したテキスト索引の例:
+
+```sql
+SELECT count() FROM table WHERE multiSearchAny(comment, ['clickhouse', 'support']);
+```
+
+これに対して、`splitByNonAlpha` トークナイザーは完全なトークン (単語全体) だけを索引化します。
+needle は単語の途中で始まったり終わったりすることがあるため、ClickHouse は各 needle の先頭と末尾のトークンを取り除きます。したがって、索引がグラニュールの絞り込みに使えるのは完全なトークンだけです。
+部分文字列検索や正規表現検索で `splitByNonAlpha` の索引を使えるようにするには、各 needle を区切り文字 (空白など) で囲み、1 つ以上の完全なトークンになるようにしてください。
+
+`splitByNonAlpha` トークナイザーを使用したテキスト索引の例:
+
+```sql
+SELECT count() FROM table WHERE multiSearchAny(comment, [' clickhouse ', ' support ']);
+```
+
 #### `startsWith` と `endsWith` \{#functions-example-startswith-endswith\}
 
 `LIKE` と同様に、関数 [startsWith](/sql-reference/functions/string-functions.md/#startsWith) と [endsWith](/sql-reference/functions/string-functions.md/#endsWith) は、検索語から完全なトークンを抽出できる場合にのみテキストインデックスを使用できます。

@@ -417,6 +417,34 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 详见 [LIKE/ILIKE 性能调优部分](#like-ilike-queries-perf)。
 
+#### `multiSearchAny` 和 `multiMatchAny` \{#functions-example-multisearchany-multimatchany\}
+
+[multiSearchAny](/sql-reference/functions/string-search-functions.md/#multiSearchAny) 及其 UTF-8 变体 [multiSearchAnyUTF8](/sql-reference/functions/string-search-functions.md/#multiSearchAnyUTF8) 用于测试多个字面量子字符串中是否有任意一个出现在 haystack 中，而 [multiMatchAny](/sql-reference/functions/string-search-functions.md/#multiMatchAny) 则用于测试多个正则表达式中是否有任意一个匹配。
+这些函数在与 `LIKE` 和 `match` 相同的条件下使用文本索引 (见上文) ：ClickHouse 必须能够从每个 needle 中提取出完整的标记，并且 needle 列表必须为常量。
+如果某个粒度中可能包含任意一个 needle，就会读取该粒度。
+
+对于 `multiMatchAny`，如果某个 pattern 无法归约为对标记的要求 (例如 `.*`，它可以匹配任意文档) ，则无法使用文本索引，查询会退回到全扫描。
+
+与 `LIKE` 和 `match` 一样，子串搜索和正则表达式搜索在使用 `ngrams` 和 `sparseGrams` 分词器时效果最佳。
+这些分词器会为相互重叠的字符 n-grams 建立索引，因此 needle 会被分解为 n-grams；只要 needle 作为子串出现，这些 n-grams 就会出现在索引中，无论它是否从单词中间开始，或在单词中间结束。
+因此，只要 needle 的长度不小于 n-gram 的大小，就可以直接按原样使用。
+
+使用 `ngrams` 分词器的文本索引示例：
+
+```sql
+SELECT count() FROM table WHERE multiSearchAny(comment, ['clickhouse', 'support']);
+```
+
+相比之下，`splitByNonAlpha` 分词器只为完整的标记 (整个单词) 建立索引。
+由于 needle 可能从单词中间开始或结束于单词中间，ClickHouse 会丢弃每个 needle 首尾的标记，因此索引只能利用完整标记来裁剪粒度。
+要让子串和正则表达式搜索在使用 `splitByNonAlpha` 时也能利用索引，请在每个 needle 两侧加上分隔符字符 (例如空格) ，使其形成一个或多个完整标记。
+
+使用 `splitByNonAlpha` 分词器的文本索引示例：
+
+```sql
+SELECT count() FROM table WHERE multiSearchAny(comment, [' clickhouse ', ' support ']);
+```
+
 #### `startsWith` 和 `endsWith` \{#functions-example-startswith-endswith\}
 
 与 `LIKE` 类似，当且仅当能够从搜索词中提取出完整的 token 时，函数 [startsWith](/sql-reference/functions/string-functions.md/#startsWith) 和 [endsWith](/sql-reference/functions/string-functions.md/#endsWith) 才能使用文本索引。
