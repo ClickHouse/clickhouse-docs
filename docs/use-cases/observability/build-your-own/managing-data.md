@@ -12,6 +12,13 @@ import Image from '@theme/IdealImage';
 
 Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management.
 
+:::tip ClickStack ships an optimized default schema
+**ClickStack provides out-of-the-box schemas for logs, traces, and metrics** that incorporate the latest ClickHouse features (text indexes for full-text and map-key search, materialized columns and ALIAS arrays for direct-read filtering, block-number row lookups) and have been benchmarked to deliver strong out-of-the-box performance for logging and trace workloads. Use them as a reference point for your own design.
+
+- Canonical DDL: [Tables and schemas used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas).
+- Optimization recipes: [ClickStack performance tuning](/use-cases/observability/clickstack/performance_tuning). Many of the recommendations on that page (materialized columns, skip indexes, primary key choice, projections, materialized views) apply directly to a build-your-own setup.
+:::
+
 ## Partitions {#partitions}
 
 Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted. This allows you to move partitions, and thus subsets, between storage tiers efficiently on time or [expire data/efficiently delete from a cluster](/sql-reference/statements/alter/partition).

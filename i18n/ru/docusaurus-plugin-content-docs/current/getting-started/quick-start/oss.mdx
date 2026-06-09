@@ -21,7 +21,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 <VerticalStepper>
   ## Установка ClickHouse CLI \ \{#install-the-cli\}
 
-  ClickHouse CLI (`clickhousectl`) позволяет устанавливать локальные версии ClickHouse и управлять ими, запускать серверы и выполнять запросы. Для установки выполните:
+  ClickHouse CLI (`clickhousectl`) позволяет устанавливать локальные версии ClickHouse, запускать серверы, выполнять запросы и управлять ClickHouse Cloud.
+
+  Для установки выполните:
 
   ```bash
   curl https://clickhouse.com/cli | sh
@@ -51,11 +53,13 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
   ClickHouse работает нативно на Linux и macOS, а на Windows — через
   [WSL](https://learn.microsoft.com/en-us/windows/wsl/about).
 
-  Используйте CLI для установки последней стабильной версии ClickHouse:
+  Используйте CLI для установки последней стабильной версии ClickHouse и установки её в качестве версии по умолчанию:
 
   ```bash
-  clickhousectl local install stable
+  clickhousectl local use stable
   ```
+
+  `local use` устанавливает версию, если она ещё не установлена, задаёт её в качестве версии по умолчанию и создаёт символическую ссылку `clickhouse` в `~/.local/bin` (в вашем `PATH`), чтобы вы могли вызывать бинарный файл `clickhouse` напрямую. Последующие шаги этого руководства зависят от этой символической ссылки. Чтобы загрузить версию без изменения версии по умолчанию и без обновления символической ссылки, используйте вместо этого `clickhousectl local install <version>`.
 
   :::note
   Это не рекомендуемый способ установки ClickHouse для продакшена.
@@ -249,7 +253,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')
+      ```
 
+      ```response
       Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
 
       ┌─name──────┬─type────────────────────┐

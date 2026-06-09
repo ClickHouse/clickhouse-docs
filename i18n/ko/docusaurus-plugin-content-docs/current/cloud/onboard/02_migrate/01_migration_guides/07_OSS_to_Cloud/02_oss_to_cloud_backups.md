@@ -163,7 +163,9 @@ SYSTEM RESTORE REPLICA nyc_taxi.trips_small_adapted;
 SELECT engine
 FROM system.tables
 WHERE name = 'trips_small_adapted' AND database = 'nyc_taxi';
+```
 
+```response
 ┌─engine──────────────┐
 │ ReplicatedMergeTree │
 └─────────────────────┘

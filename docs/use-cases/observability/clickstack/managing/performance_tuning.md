@@ -12,6 +12,8 @@ import materializedViewDiagram from '@site/static/images/materialized-view/mater
 import trace_filtering from '@site/static/images/clickstack/performance_guide/trace_filtering.png';
 import trace_filtering_v2 from '@site/static/images/clickstack/performance_guide/trace_filtering_v2.png';
 import select_merge_table from '@site/static/images/clickstack/performance_guide/select_merge_table.png';
+import OtelLogsSchema from '@site/docs/use-cases/observability/clickstack/ingesting-data/_snippets/_schema_otel_logs.md';
+import OtelTracesSchema from '@site/docs/use-cases/observability/clickstack/ingesting-data/_snippets/_schema_otel_traces.md';
 
 import Image from '@theme/IdealImage';
 
@@ -100,47 +102,7 @@ ClickStack automatically detects materialized columns extracted from maps and tr
 
 Consider the default ClickStack schema for traces, where Kubernetes metadata is stored in `ResourceAttributes`:
 
-```sql
-CREATE TABLE IF NOT EXISTS otel_traces
-(
-    `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-    `TraceId` String CODEC(ZSTD(1)),
-    `SpanId` String CODEC(ZSTD(1)),
-    `ParentSpanId` String CODEC(ZSTD(1)),
-    `TraceState` String CODEC(ZSTD(1)),
-    `SpanName` LowCardinality(String) CODEC(ZSTD(1)),
-    `SpanKind` LowCardinality(String) CODEC(ZSTD(1)),
-    `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-    `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `ScopeName` String CODEC(ZSTD(1)),
-    `ScopeVersion` String CODEC(ZSTD(1)),
-    `SpanAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `Duration` UInt64 CODEC(ZSTD(1)),
-    `StatusCode` LowCardinality(String) CODEC(ZSTD(1)),
-    `StatusMessage` String CODEC(ZSTD(1)),
-    `Events.Timestamp` Array(DateTime64(9)) CODEC(ZSTD(1)),
-    `Events.Name` Array(LowCardinality(String)) CODEC(ZSTD(1)),
-    `Events.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-    `Links.TraceId` Array(String) CODEC(ZSTD(1)),
-    `Links.SpanId` Array(String) CODEC(ZSTD(1)),
-    `Links.TraceState` Array(String) CODEC(ZSTD(1)),
-    `Links.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-    `__hdx_materialized_rum.sessionId` String MATERIALIZED ResourceAttributes['rum.sessionId'] CODEC(ZSTD(1)),
-    INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
-    INDEX idx_rum_session_id __hdx_materialized_rum.sessionId TYPE bloom_filter(0.001) GRANULARITY 1,
-    INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_span_attr_key mapKeys(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_span_attr_value mapValues(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_duration Duration TYPE minmax GRANULARITY 1,
-    INDEX idx_lower_span_name lower(SpanName) TYPE tokenbf_v1(32768, 3, 0) GRANULARITY 8
-)
-ENGINE = MergeTree
-PARTITION BY toDate(Timestamp)
-ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
-TTL toDate(Timestamp) + toIntervalDay(30)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1;
-```
+<OtelTracesSchema />
 
 A user may filter traces using Lucene syntax e.g. `ResourceAttributes.k8s.pod.name:"checkout-675775c4cc-f2p9c"`:
 
@@ -219,60 +181,23 @@ Wait until `is_done = 1` for the corresponding mutation.
 Mutations incur additional IO and CPU overhead and should be used sparingly. In many cases, it's sufficient to allow older data to age out naturally and rely on the performance improvements for newly ingested data.
 :::
 
-## Optimization 2. Adding skip indices {#adding-skip-indices}
+## Optimization 2. Adding skip indexes {#adding-skip-indexes}
 
 After materializing frequently queried attributes, the next optimization is to add data skipping indexes to further reduce the amount of data ClickHouse needs to read during query execution.
 
 Skip indexes allow ClickHouse to avoid scanning entire blocks of data when it can determine that no matching values exist. Unlike traditional secondary indexes, skip indexes operate at the granule level and are most effective when query filters exclude large portions of the dataset. When used correctly, they can significantly accelerate filtering on high-cardinality attributes without changing query semantics.
 
-Consider the default traces schema for ClickStack, which includes skip indices:
+Consider the default traces schema for ClickStack, which includes skip indexes:
 
-```sql
-CREATE TABLE IF NOT EXISTS otel_traces
-(
-    `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-    `TraceId` String CODEC(ZSTD(1)),
-    `SpanId` String CODEC(ZSTD(1)),
-    `ParentSpanId` String CODEC(ZSTD(1)),
-    `TraceState` String CODEC(ZSTD(1)),
-    `SpanName` LowCardinality(String) CODEC(ZSTD(1)),
-    `SpanKind` LowCardinality(String) CODEC(ZSTD(1)),
-    `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-    `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `ScopeName` String CODEC(ZSTD(1)),
-    `ScopeVersion` String CODEC(ZSTD(1)),
-    `SpanAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `Duration` UInt64 CODEC(ZSTD(1)),
-    `StatusCode` LowCardinality(String) CODEC(ZSTD(1)),
-    `StatusMessage` String CODEC(ZSTD(1)),
-    `Events.Timestamp` Array(DateTime64(9)) CODEC(ZSTD(1)),
-    `Events.Name` Array(LowCardinality(String)) CODEC(ZSTD(1)),
-    `Events.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-    `Links.TraceId` Array(String) CODEC(ZSTD(1)),
-    `Links.SpanId` Array(String) CODEC(ZSTD(1)),
-    `Links.TraceState` Array(String) CODEC(ZSTD(1)),
-    `Links.Attributes` Array(Map(LowCardinality(String), String)) CODEC(ZSTD(1)),
-    `__hdx_materialized_rum.sessionId` String MATERIALIZED ResourceAttributes['rum.sessionId'] CODEC(ZSTD(1)),
-    INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
-    INDEX idx_rum_session_id __hdx_materialized_rum.sessionId TYPE bloom_filter(0.001) GRANULARITY 1,
-    INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_span_attr_key mapKeys(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_span_attr_value mapValues(SpanAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_duration Duration TYPE minmax GRANULARITY 1,
-    INDEX idx_lower_span_name lower(SpanName) TYPE tokenbf_v1(32768, 3, 0) GRANULARITY 8
-)
-ENGINE = MergeTree
-PARTITION BY toDate(Timestamp)
-ORDER BY (ServiceName, SpanName, toDateTime(Timestamp))
-TTL toDate(Timestamp) + toIntervalDay(30)
-SETTINGS index_granularity = 8192, ttl_only_drop_parts = 1;
-```
+<OtelTracesSchema />
 
-These indexes focus on two common patterns:
+These indexes focus on three common patterns:
 
 - High-cardinality string filtering, such as TraceId, session identifiers, attribute keys, or values
+- Map subkey filtering accelerated by [text indexes](#text-indexes) on the [`*AttributeItems`](#map-direct-read-optimization) columns
 - Numeric range filtering, such as span duration
+
+The logs table uses `text(tokenizer = 'array')` indexes throughout instead of Bloom filters, and adds a `text(tokenizer = 'splitByNonAlpha')` index on `lower(Body)` for full-text search. See ["Tables and schemas used by ClickStack"](/use-cases/observability/clickstack/ingesting-data/schemas#logs) for the full DDL.
 
 ### Bloom filters {#bloom-filters}
 
@@ -303,7 +228,66 @@ Bloom filters are most effective when the distribution of values is such that a 
 
 As with all skip indexes, Bloom filters should be added selectively and validated against real query patterns to ensure they provide measurable benefit - see ["Evaluating skip index effectiveness."](#evaluating-skip-index-effectiveness)
 
-### Min-max indices {#min-max-indices}
+### Text indexes {#text-indexes}
+
+[Text indexes](/engines/table-engines/mergetree-family/textindexes) offer an alternative to Bloom filters. A Bloom filter is a probabilistic structure that can definitively rule out granules, but it has a false-positive rate, so the granules it doesn't exclude must still be loaded and evaluated against the `WHERE` condition. Text indexes are inverted indexes that map tokens to exact offsets within a part. Because they evaluate offsets rather than granules and produce no false positives, they can usually answer the `WHERE` condition without loading the underlying column. This is an optimization known as [direct read](https://github.com/ClickHouse/clickhouse-docs/pull/6356/%E2%80%A6). Since loading data is often the largest contributor to query time, direct read can meaningfully reduce query latency.
+
+Additionally, text indexes are themselves queryable, powering autocomplete and other introspection in ClickStack.
+
+Two tokenizers cover most ClickStack patterns:
+
+| Tokenizer | Used for | Typical column |
+|---|---|---|
+| `array` | Indexing `Array(String)` elements as whole tokens | `mapKeys(...)`, `*AttributeItems` |
+| `splitByNonAlpha` | Word-level full-text search on prose strings | `Body`, `lower(Body)`, `SpanName` |
+
+#### Array tokenizer for Map and array columns {#array-tokenizer}
+
+The default logs schema indexes `mapKeys` and the materialized item arrays with
+the `array` tokenizer:
+
+```sql
+INDEX idx_log_attr_key mapKeys(LogAttributes) TYPE text(tokenizer = 'array'),
+INDEX idx_log_attr_items LogAttributeItems TYPE text(tokenizer = 'array')
+```
+
+Each Map key (or array element) becomes a single token. Filtering on a known
+attribute key then prunes any row that does not contain it, without scanning the
+surrounding Map column. This is the mechanism that makes the [Map direct read optimization](#map-direct-read-optimization)
+profitable.
+
+#### `splitByNonAlpha` for log bodies {#text-index-body}
+
+Full-text search on the `Body` column benefits from a `splitByNonAlpha` text
+index. ClickStack defines this index on `lower(Body)` so case-insensitive
+Lucene searches can use it:
+
+```sql
+INDEX idx_lower_body lower(Body) TYPE text(tokenizer = 'splitByNonAlpha')
+```
+
+When ClickStack detects a `text(tokenizer = 'splitByNonAlpha')` index on
+`lower(Body)`, it rewrites implicit-column Lucene queries like `error` or
+`"connection refused"` into `hasAllTokens(lower(Body), lower(...))`, which the
+index can satisfy without reading the full `Body` column. For most
+observability log workloads this is the single largest filtering speedup
+available.
+
+:::note Text indexes vs `tokenbf_v1`
+The older `tokenbf_v1` index type (still used in the default traces schema for
+`lower(SpanName)`) is functionally similar but deprecated in ClickHouse 26.2
+and above. New text-search indexes should use `text(tokenizer = ...)`.
+:::
+
+For a deeper reference on tokenizer options, preprocessors, and verification, see the [full-text search documentation](/engines/table-engines/mergetree-family/textindexes).
+
+#### Text indexes in the default logs schema {#text-indexes-in-default-logs-schema}
+
+The default `otel_logs` schema synced from upstream ships every text index discussed above: `text(tokenizer = 'array')` on `TraceId`, on each `mapKeys(...)` and `*AttributeItems` array, and `text(tokenizer = 'splitByNonAlpha')` on `lower(Body)` for full-text search. For the canonical DDL, see ["Tables and schemas used by ClickStack"](/use-cases/observability/clickstack/ingesting-data/schemas#logs); the same schema is reproduced below.
+
+<OtelLogsSchema />
+
+### Min-max indexes {#min-max-indexes}
 
 Minmax indexes store the minimum and maximum value per granule and are extremely lightweight. They're particularly effective for numeric columns and range queries. While they may not accelerate every query, they're low-cost and almost always worth adding for numeric fields.
 
@@ -396,7 +380,7 @@ Bloom filter size can be reduced by increasing the allowed false-positive rate. 
 
 Tuning Bloom filter parameters is therefore a workload-dependent optimization and should be validated using real query patterns and production-like data volumes.
 
-For further details on skip indices, see the guide ["Understanding ClickHouse data skipping indexes."](/optimize/skipping-indexes/examples)
+For further details on skip indexes, see the guide ["Understanding ClickHouse data skipping indexes."](/optimize/skipping-indexes/examples)
 
 ### Evaluating skip index effectiveness {#evaluating-skip-index-effectiveness}
 
@@ -476,11 +460,119 @@ Skip indexes should be added selectively, based on the types of filters users ru
 
 **For numeric columns that are used in filters, a minmax skip index is almost always a good choice.** It's lightweight, cheap to evaluate, and can be effective for range predicates - especially when values are loosely ordered, or confined to narrow ranges inside parts. Even when minmax doesn't help a specific query pattern, its overhead is typically low enough that it's still reasonable to keep.
 
-**String columns. Use Bloom filters when cardinality is high and values are sparse.**
+**For string columns, prefer text indexes where supported; fall back to Bloom filters otherwise.** Text indexes accelerate the same equality and `IN` filters that Bloom filters do, and additionally enable token-based predicates (`hasToken`, `hasAllTokens`, `has`) used by full-text search and the [Map direct read optimization](#map-direct-read-optimization). On older clusters that don't yet support text indexes, Bloom filters remain a solid choice.
 
 Bloom filters are most effective for high-cardinality string columns where each value has relatively low frequency, meaning most parts and granules don't contain the searched value. As a rule of thumb, Bloom filters are most promising when the column has at least 10,000 distinct values, and often perform best with 100,000+ distinct values. They're also more effective when matching values are clustered into a small number of sequential parts, which typically happens when the column is correlated with the ordering key. Again, your mileage here may vary - nothing replaces real world-testing.
 
-## Optimization 3. Modifying the primary key {#modifying-the-primary-key}
+## Optimization 3. Map direct read {#map-direct-read-optimization}
+
+When you filter on a Map subkey such as `LogAttributes['k8s.pod.name'] =
+'checkout'`, ClickHouse must read the entire `LogAttributes` Map column from
+disk and unpack every row to evaluate the predicate. [Materializing frequently queried attributes](#materialize-frequently-queried-attributes)
+solves this for keys you know about ahead of time, but it doesn't scale to
+arbitrary attributes that users filter on ad hoc.
+
+Even if a schema has indexes on `mapKeys` and `mapValues`, those indexes can tell you whether a row has a given key, and whether it has a given value, but not whether the key and value belong to the same entry. In other words, `mapKeys` answers `mapContainsKey(ResourceAttributes, 'foo')` and `mapValues` answers `mapContainsValue(ResourceAttributes, 'bar')`, but neither answers `ResourceAttributes['foo'] = 'bar'`.
+
+By concatenating the keys and values into a single `Array(String)` column, the
+Map direct read optimization enables `ResourceAttributes['foo'] = 'bar'` to be
+answered without loading the underlying map. Maps are often large, and increase
+in size with an increase in volume. Combined with an application-level query
+rewrite, equality filters on any Map subkey become a single `has(...)` call
+backed by that index, with no Map deserialization at query time. Additionally,
+the only storage cost paid is for the text index, as the underlying column is
+an `ALIAS` column and is not stored.
+
+This optimization is automatic. ClickStack ships the necessary columns and
+indexes in the default logs and trace tables, and rewrites Map subscript
+filters at runtime when the connected ClickHouse server supports the underlying
+primitive. If your schema does not contain these columns, or you have
+additional Map columns you want to accelerate beyond the defaults, read on to
+enable them.
+
+### Schema {#map-direct-read-schema}
+
+For each Map column you want to accelerate, ClickStack defines an
+`Array(String)` `ALIAS` column that joins each key and value with `=`:
+
+```sql
+ALTER TABLE otel_logs
+ADD COLUMN LogAttributeItems Array(String)
+ALIAS arrayMap(
+  (arr) -> concat(arr.1, '=', arr.2),
+  LogAttributes::Array(Tuple(String, String))
+)
+```
+
+The ALIAS form means the array adds no bytes on disk. ClickHouse computes it at
+query time and at index-build time. A `text(tokenizer = 'array')` skip index on
+the `ALIAS` column stores one token per `key=value` pair, which ClickHouse uses
+to prune granules without touching the source Map:
+
+```sql
+ALTER TABLE otel_logs
+ADD INDEX idx_log_attr_items LogAttributeItems
+TYPE text(tokenizer = 'array')
+```
+
+After creating the index on an existing table, materialize it so historical
+data can use it (see ["Materialize skip index"](#materialize-skip-index)).
+
+The default ClickStack schemas ship these columns and indexes:
+
+| Table | ALIAS columns | Text indexes |
+|---|---|---|
+| `otel_logs` | `ResourceAttributeItems`, `ScopeAttributeItems`, `LogAttributeItems` | `idx_res_attr_items`, `idx_scope_attr_items`, `idx_log_attr_items` |
+| `otel_traces` | `ResourceAttributeItems`, `SpanAttributeItems` | `idx_res_attr_items`, `idx_span_attr_items` |
+
+### Query rewrite {#map-direct-read-rewrite}
+
+When a user filters on a Map subkey through the ClickStack UI or the SDK, ClickStack
+rewrites:
+
+```sql
+LogAttributes['k8s.pod.name'] = 'checkout'
+```
+
+into:
+
+```sql
+has(LogAttributeItems, concat('k8s.pod.name', '=', 'checkout'))
+```
+
+The rewritten form hits the text index on `LogAttributeItems`, prunes entire
+rows that don't contain the `key=value` token, and never deserializes the
+source `LogAttributes` Map for non-matching rows. For high-cardinality
+observability workloads this typically delivers an order-of-magnitude reduction
+in I/O over Map subscript access.
+
+The rewrite happens automatically — saved queries, dashboards, and alerts that
+reference `LogAttributes['key']` see the speedup without any change.
+
+### ClickHouse version requirements {#map-direct-read-version}
+
+The query rewrite requires a ClickHouse version that supports direct
+token-level pruning on text-indexed array columns. ClickStack detects the
+connected server version (`SELECT version()`, cached per connection) and only
+emits the rewritten form when the server is at or above the threshold. Older
+servers fall back to the original Map subscript form automatically.
+
+| ClickHouse branch | Minimum version |
+|---|---|
+| 26.2 | 26.2.19.43 |
+| 26.3 | 26.3.12.3 |
+| 26.4 | 26.4.3.37 |
+| 26.5+ | All versions |
+
+:::note Why ALIAS, not MATERIALIZED
+The items array is a window onto data that already lives in the Map column.
+Storing it twice — once in the Map, once in the array — would double write I/O
+without unlocking new query patterns. The text index on the `ALIAS` column is
+built at insert time from the same source data, so the optimization adds only
+the index footprint to disk.
+:::
+
+## Optimization 4. Modifying the primary key {#modifying-the-primary-key}
 
 The primary key is one of the most important components of ClickHouse performance tuning for most workloads. To tune it effectively, you must understand how it works and how it interacts with your query patterns. Ultimately, the primary key should align with how users access the data, particularly which columns are most commonly filtered on.
 
@@ -498,12 +590,12 @@ Primary key tuning is table and data-type-specific. A change that benefits one t
 
 **You will typically optimize the tables for logs and traces. It's rare that primary key changes need to be made to the other data types.**
 
-Below are the default primary keys for the ClickStack tables for logs and metrics.
+Below are the default primary keys for the ClickStack tables for logs and traces.
 
-- Logs ([`otel_logs`](/use-cases/observability/clickstack/ingesting-data/schemas#logs)) - `(ServiceName, TimestampTime, Timestamp)`
-- Traces (['otel_traces](/use-cases/observability/clickstack/ingesting-data/schemas#traces)) - `(ServiceName, SpanName, toDateTime(Timestamp))`
+- Logs ([`otel_logs`](/use-cases/observability/clickstack/ingesting-data/schemas#logs)) - `(toStartOfFiveMinutes(Timestamp), ServiceName, Timestamp)`
+- Traces ([`otel_traces`](/use-cases/observability/clickstack/ingesting-data/schemas#traces)) - `(ServiceName, SpanName, toDateTime(Timestamp))`
 
-See ["Tables and schemas used by ClickStack"](/use-cases/observability/clickstack/ingesting-data/schemas) for the primary keys used by the tables for other data types. For example, trace tables are optimized for filtering by service name and span name, followed by timestamp and, trace ID. Log tables, conversely, are optimized for filtering by service name, then by date, and then by timestamp. Although the optimal order would be for the user to apply the filters in the order of the primary key, queries will still heavily benefit if filtering by any of these columns in any order, with ClickHouse [pruning data prior to reading](/optimize/skipping-indexes).
+See ["Tables and schemas used by ClickStack"](/use-cases/observability/clickstack/ingesting-data/schemas) for the primary keys used by the tables for other data types. Trace tables are optimized for filtering by service name and span name, followed by timestamp. Log tables lead with a five-minute time bucket so time-range scans hit the primary index first, then narrow by service name within each bucket — a layout that suits the common "what happened in the last N minutes for service X" workflow. Although the optimal order is for you to apply filters in the order of the primary key, queries still benefit heavily from filtering on any of these columns in any order, with ClickHouse [pruning data prior to reading](/optimize/skipping-indexes).
 
 When choosing a primary key, there are also other considerations for choosing an optimal ordering of the columns. See ["Choosing a primary key."](#choosing-a-primary-key)
 
@@ -540,8 +632,8 @@ The example below shows a simple way to create a new logs table with the existin
 
 ```sql
 CREATE TABLE otel_logs_temp AS otel_logs
-PRIMARY KEY (SeverityText, ServiceName, TimestampTime)
-ORDER BY (SeverityText, ServiceName, TimestampTime)
+PRIMARY KEY (SeverityText, ServiceName, Timestamp)
+ORDER BY (SeverityText, ServiceName, Timestamp)
 ```
 
 :::note Ordering key vs primary key
@@ -564,7 +656,7 @@ DROP TABLE otel_logs_temp
 
 However, **the primary key can't be modified on an existing table**. Changing it requires creating a new table.
 
-The following process can be used to ensure the old data can be retained and still queried transparently (using its existing key in HyperDX, if required, while new data is exposed through a new table optimized for the users' access patterns. This approach ensures ingest pipelines don't need to be modified, with data still sent to the default table names, and all changes are transparent to users.
+The following process can be used to ensure the old data can be retained and still queried transparently (using its existing key in the ClickStack UI, if required, while new data is exposed through a new table optimized for the users' access patterns. This approach ensures ingest pipelines don't need to be modified, with data still sent to the default table names, and all changes are transparent to users.
 
 :::note
 Backfilling existing data into a new table is rarely worthwhile at scale. The compute and IO cost is usually high, and doesn't justify the performance benefits. Instead, allow older data to expire [via TTL](/use-cases/observability/clickstack/ttl) while newer data benefits from the improved key.
@@ -580,8 +672,8 @@ Create the new table with the desired primary key. Note the `_23_01_2025` suffix
 
 ```sql
 CREATE TABLE otel_logs_23_01_2025 AS otel_logs
-PRIMARY KEY (SeverityText, ServiceName, TimestampTime)
-ORDER BY (SeverityText, ServiceName, TimestampTime)
+PRIMARY KEY (SeverityText, ServiceName, Timestamp)
+ORDER BY (SeverityText, ServiceName, Timestamp)
 ```
 
 #### Create a Merge table {#create-merge-table}
@@ -600,9 +692,9 @@ ENGINE = Merge(currentDatabase(), 'otel_logs*')
 
 You can now query this table to confirm it returns data from `otel_logs`.
 
-#### Update HyperDX to read from the merge table {#update-hyperdx-to-read-from-merge-tree}
+#### Update the ClickStack UI to read from the merge table {#update-clickstack-ui-to-read-from-merge-tree}
 
-Configure HyperDX to use `otel_logs_merge` as the table for the logs data source.
+Configure the ClickStack UI to use `otel_logs_merge` as the table for the logs data source.
 
 <Image img={select_merge_table} size="lg" alt="Select Merge Table"/>
 
@@ -653,7 +745,40 @@ Writes now go to the new `otel_logs` table with the updated primary key. The old
 If TTL policies are in place, which is recommended, tables with older primary keys that are no longer receiving writes will gradually empty as data expires. They should be monitored and periodically cleaned up once they contain no data. At present, this cleanup process is manual.
 :::
 
-## Optimization 4. Exploiting Materialized Views {#exploting-materialied-views}
+### Row lookup acceleration with block columns {#row-lookup-block-columns}
+
+The default ClickStack logs schema enables two MergeTree settings that don't
+affect query performance directly, but materially speed up row-detail lookups
+in the ClickStack UI:
+
+```sql
+SETTINGS enable_block_number_column = 1, enable_block_offset_column = 1
+```
+
+With these settings, every row in the table carries an implicit
+`(_block_number, _block_offset)` pair that uniquely identifies it inside a
+part. When you click a log row in the ClickStack UI to open the detail panel, ClickStack
+issues a follow-up query to fetch that single row. Without block columns, the
+row's `WHERE` clause must include enough columns — typically the primary key
+plus `Body` and `SeverityText` — to disambiguate the row. With block columns,
+the primary key plus `_block_number` plus `_block_offset` is sufficient. Large
+columns like `Body` are never read for the lookup, effectively speeding up the query.
+
+ClickStack detects the setting from the table's `CREATE` statement and emits
+the leaner WHERE clause automatically when both columns are enabled. No
+application config change is required.
+
+To opt into the optimization on an existing logs or traces table:
+
+```sql
+ALTER TABLE otel_logs
+MODIFY SETTING enable_block_number_column = 1, enable_block_offset_column = 1
+```
+
+The settings apply to data written after the `ALTER`. Existing parts continue
+to use the old per-row lookup until they're rewritten by a merge.
+
+## Optimization 5. Exploiting materialized views {#exploiting-materialized-views}
 
 <BetaBadge/>
 
@@ -661,7 +786,7 @@ ClickStack can exploit [Incremental Materialized Views](/materialized-view/incre
 
 For details on using this feature in ClickStack, see our dedicated guide ["ClickStack - Materialized Views."](/use-cases/observability/clickstack/materialized_views)
 
-## Optimization 5. Exploiting Projections {#exploting-projections}
+## Optimization 6. Exploiting Projections {#exploting-projections}
 
 Projections represent a final, advanced optimization that can be considered once materialized columns, skip indexes, primary keys, and materialized views have been evaluated. While projections and materialized views may appear similar, in ClickStack, they serve different purposes, and are best used in different scenarios.
 

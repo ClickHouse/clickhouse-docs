@@ -541,18 +541,17 @@ SELECT * FROM system.tables;
 </TabItem>
 </Tabs>
 
-### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
+### Request and parse the response as a stream
 
-**Query API Endpoint SQL:**
+**查询 API 端点 SQL:**
 
 ```sql
 SELECT name, database FROM system.tables;
 ```
 
 <Tabs>
-<TabItem value="TypeScript" label="TypeScript" default>
-
-```typescript
+  <TabItem value="TypeScript" label="TypeScript" default>
+    ```typescript
     async function fetchAndLogChunks(
       url: string,
       openApiKeyId: string,
@@ -602,15 +601,14 @@ SELECT name, database FROM system.tables;
     );
     ```
 
-```shell title="输出"
-    > npx tsx index.ts
-    > {"name":"COLUMNS","database":"INFORMATION_SCHEMA"}
-    > {"name":"KEY_COLUMN_USAGE","database":"INFORMATION_SCHEMA"}
-    ...
-    > Stream ended.
+    ```shell title="输出"
+        > npx tsx index.ts
+        > {"name":"COLUMNS","database":"INFORMATION_SCHEMA"}
+        > {"name":"KEY_COLUMN_USAGE","database":"INFORMATION_SCHEMA"}
+        ...
+        > Stream ended.
     ```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ### Insert a stream from a file into a table \{#insert-a-stream-from-a-file-into-a-table\}

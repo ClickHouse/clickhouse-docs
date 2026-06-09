@@ -534,7 +534,7 @@ SELECT * FROM system.tables;
 </Tabs>
 
 
-### 요청을 보내고 응답을 스트림으로 파싱하기`
+### 요청을 보내고 응답을 스트림으로 파싱하기
 
 **Query API 엔드포인트용 SQL:**
 
@@ -603,7 +603,6 @@ SELECT name, database FROM system.tables;
     ```
   </TabItem>
 </Tabs>
-
 
 ### 파일의 스트림을 테이블에 삽입 \{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\}
 

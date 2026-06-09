@@ -43,50 +43,121 @@ OpenTelemetry collector 可以以两种主要角色进行部署：
 <br/>
 
 <Tabs groupId="otel-collector">
-  <TabItem value="managed-clickstack" label="托管型 ClickStack" default>
-    在可能的情况下，当向托管型 ClickStack 发送数据时，我们[推荐使用 ClickStack 提供的官方 collector 发行版](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector)来承担网关角色。若你选择自建 collector，请确保其中包含 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)。
+  <TabItem value="managed-clickstack" label="托管 ClickStack" default>
+    在向托管 ClickStack 发送数据时，我们[建议尽可能使用官方 ClickStack 发行版的 collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) 充当 gateway 角色。如果您选择自行提供，请确保其中包含 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)。
 
-    要以独立模式部署 ClickStack 发行版的 OTel connector，运行以下 Docker 命令：
+    采集器可通过 Helm (推荐用于 Kubernetes 环境) 或 Docker 部署。官方 [ClickStack Helm 图表](https://github.com/ClickHouse/ClickStack-helm-charts) 将上游 [OpenTelemetry collector Helm 图表](https://github.com/open-telemetry/opentelemetry-helm-charts) 作为子图表嵌入，并预配置了 ClickStack 发行版镜像——如需安装包含 HyperDX 的完整技术栈，请参阅 [ClickStack Helm 部署指南](/use-cases/observability/clickstack/deployment/helm)。如需单独部署采集器，可直接使用上游图表配合 ClickStack 镜像，具体操作如下所示。
 
-    ```shell
-    docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-    ```
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        添加上游 OpenTelemetry Helm 仓库：
 
-    :::note 镜像名称更新
-    ClickStack 镜像现在发布为 `clickhouse/clickstack-*`（之前是 `docker.hyperdx.io/hyperdx/*`）。
-    :::
+        ```shell
+        helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+        helm repo update
+        ```
 
-    请注意，可以通过环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 覆盖目标 ClickHouse 实例。`CLICKHOUSE_ENDPOINT` 应该是完整的 ClickHouse Cloud HTTP 端点，包括协议和端口，例如：`https://99rr6dm6v3.us-central1.gcp.clickhouse.cloud:8443`。
+        创建一个 `values.yaml`，用于配置 ClickStack 镜像和托管 ClickStack 凭据：
 
-    有关获取托管版 ClickStack 凭证的详细信息，请参见[此处](/cloud/guides/sql-console/gather-connection-details)。
+        ```yaml
+        # values.yaml
+        mode: deployment
+
+        image:
+          repository: docker.clickhouse.com/clickhouse/clickstack-otel-collector
+          tag: "2.19.0"
+
+        ports:
+          otlp:
+            enabled: true
+          otlp-http:
+            enabled: true
+
+        extraEnvs:
+          - name: CLICKHOUSE_ENDPOINT
+            value: "https://your-instance.clickhouse.cloud:8443"
+          - name: CLICKHOUSE_USER
+            value: "default"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<password>"
+        ```
+
+        安装该 chart：
+
+        ```shell
+        helm install clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+
+        对于生产环境部署，建议将 `CLICKHOUSE_PASSWORD` 存储在 Kubernetes secret 中，并通过 `extraEnvsFrom` 引用，而不要将该值直接写在配置里。
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        要以独立模式部署 ClickStack 版 OTel 收集器，请运行以下 docker 命令：
+
+        ```shell
+        docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+        ```
+
+        :::note 镜像名称更新
+        ClickStack 镜像现已发布为 `clickhouse/clickstack-*` (此前为 `docker.hyperdx.io/hyperdx/*`) 。
+        :::
+      </TabItem>
+    </Tabs>
+
+    目标 ClickHouse 实例通过环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 进行配置。`CLICKHOUSE_ENDPOINT` 应为完整的 ClickHouse Cloud HTTP 端点，包含协议和端口，例如 `https://99rr6dm6v3.us-central1.gcp.clickhouse.cloud:8443`。
+
+    有关如何获取托管 ClickStack 凭据的详细信息，请参阅[此处](/cloud/guides/sql-console/gather-connection-details)。
 
     :::note 生产环境用户
-    在生产环境中，应当使用具有[适当凭证](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的用户。
+    在生产环境中，请使用具有[适当凭据](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的用户。
     :::
 
     ### 修改配置
 
-    #### 配置托管版 ClickStack 实例
+    #### 配置托管 ClickStack 实例
 
-    所有包含 OpenTelemetry collector 的 Docker 镜像，都可以通过环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 配置为使用托管版 ClickStack 实例：
+    可以通过环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 将 OpenTelemetry collector 配置为使用托管 ClickStack 实例。这些变量的设置方式取决于您所采用的部署方式：
 
-    例如，一体化（all-in-one）镜像：
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        在你的 `values.yaml` 中覆盖 `extraEnvs` 下的相关条目，然后升级该 release：
 
-    ```shell
-    export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
-    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
-    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-    ```
+        ```yaml
+        # values.yaml
+        extraEnvs:
+          - name: CLICKHOUSE_ENDPOINT
+            value: "<HTTPS_ENDPOINT>"
+          - name: CLICKHOUSE_USER
+            value: "<CLICKHOUSE_USER>"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<CLICKHOUSE_PASSWORD>"
+        ```
 
-    ```shell
-    docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-    ```
+        ```shell
+        helm upgrade clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        所有包含 OpenTelemetry collector 的 Docker image 都可以通过环境变量进行配置。例如，all-in-one image：
+
+        ```shell
+        export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
+        export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+        export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+        ```
+
+        ```shell
+        docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+        ```
+      </TabItem>
+    </Tabs>
 
     <ExtendingConfig />
 
     #### Docker Compose
 
-    使用 Docker Compose 时，通过与上面相同的环境变量来修改收集器配置：
+    使用 Docker Compose 时，可通过与上述相同的环境变量修改采集器配置：
 
     ```yaml
       otel-collector:
@@ -111,57 +182,136 @@ OpenTelemetry collector 可以以两种主要角色进行部署：
     ```
   </TabItem>
 
-  <TabItem value="oss-clickstack" label="开源版 ClickStack" default>
-    如果你以独立部署的方式自行管理 OpenTelemetry collector（例如仅使用 HyperDX 发行版的场景下），我们[仍建议在可行的情况下使用官方 ClickStack 发行版的 collector 来承担网关角色](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector)，但如果你选择自带 collector，请确保其中包含 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)。
+  <TabItem value="oss-clickstack" label="开源 ClickStack" default>
+    如果您在独立部署中自行管理 OpenTelemetry collector (例如使用仅含 HyperDX 的发行版) ，我们[建议尽可能使用官方 ClickStack 发行版的 collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) 承担 gateway 角色。但如果您选择自带 collector，请确保其中包含 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter)。
 
-    要以独立模式部署 ClickStack 发行版的 OTel connector，请运行以下 Docker 命令：
+    Collector 可通过 Helm (推荐用于 Kubernetes) 或 Docker 进行部署。官方 [ClickStack Helm 图表](https://github.com/ClickHouse/ClickStack-helm-charts) 将上游 [OpenTelemetry Collector Helm 图表](https://github.com/open-telemetry/opentelemetry-helm-charts) 作为子图表嵌入，并通过共享的 `clickstack-config` ConfigMap 和 `clickstack-secret` Secret 自动配置 OpAMP 端点、ClickStack 镜像及 HyperDX API key——如需安装包含 HyperDX 的完整技术栈，请参阅 [ClickStack Helm 部署指南](/use-cases/observability/clickstack/deployment/helm)。如需独立部署 collector 并连接至现有的 HyperDX 实例，可直接使用上游图表配合 ClickStack 镜像，如下所示。
 
-    ```shell
-    docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-    ```
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        添加上游 OpenTelemetry Helm 仓库：
 
-    :::note 镜像名称更新
-    ClickStack 镜像现在发布为 `clickhouse/clickstack-*`（此前为 `docker.hyperdx.io/hyperdx/*`）。
-    :::
+        ```shell
+        helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+        helm repo update
+        ```
 
-    请注意，我们可以通过环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 来覆盖目标 ClickHouse 实例的配置。`CLICKHOUSE_ENDPOINT` 应为完整的 ClickHouse HTTP endpoint，包括协议和端口，例如：`http://localhost:8123`。
+        创建一个 `values.yaml`，用于配置 ClickStack 镜像、ClickHouse 凭据，以及你的 HyperDX 部署的 OpAMP 端点：
 
-    **这些环境变量可用于任何包含连接器的 Docker 发行版。**
+        ```yaml
+        # values.yaml
+        mode: deployment
 
-    `OPAMP_SERVER_URL` 应指向您的 HyperDX 部署，例如：`http://localhost:4320`。HyperDX 默认在端口 `4320` 的 `/v1/opamp` 路径上暴露一个 OpAMP（Open Agent Management Protocol）服务器。请确保从运行 HyperDX 的容器中暴露此端口（例如使用 `-p 4320:4320`）。
+        image:
+          repository: docker.clickhouse.com/clickhouse/clickstack-otel-collector
+          tag: "2.19.0"
 
-    :::note Exposing and connecting to the OpAMP port
-    为了让收集器连接到 OpAMP 端口，该端口必须由 HyperDX 容器暴露，例如 `-p 4320:4320`。对于本地测试，OSX 用户可以设置 `OPAMP_SERVER_URL=http://host.docker.internal:4320`。Linux 用户可以使用 `--network=host` 启动收集器容器。
-    :::
+        ports:
+          otlp:
+            enabled: true
+          otlp-http:
+            enabled: true
+
+        extraEnvs:
+          - name: CLICKHOUSE_ENDPOINT
+            value: "tcp://clickhouse.your-namespace.svc.cluster.local:9000?dial_timeout=10s"
+          - name: CLICKHOUSE_USER
+            value: "otelcollector"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<password>"
+          - name: OPAMP_SERVER_URL
+            value: "http://hyperdx.your-namespace.svc.cluster.local:4320"
+          - name: HYPERDX_API_KEY
+            value: "<your-ingestion-api-key>"
+        ```
+
+        安装该 Helm chart：
+
+        ```shell
+        helm install clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+
+        `OPAMP_SERVER_URL` 应解析到你的 HyperDX 服务。当 HyperDX 和收集器在同一集群中运行时，请使用集群内服务的 DNS 名称 (例如 `http://hyperdx.your-namespace.svc.cluster.local:4320`) 。默认情况下，HyperDX 会在端口 `4320` 的 `/v1/opamp` 路径上提供 OpAMP API。
+
+        对于生产部署，我们建议将 `CLICKHOUSE_PASSWORD` 和 `HYPERDX_API_KEY` 存储在 Kubernetes Secret 中，并通过 `extraEnvsFrom` 引用它们，而不是将这些值直接内联写入配置中。
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        要以独立模式部署 ClickStack 发行版的 OTel 收集器，请运行以下 docker 命令：
+
+        ```shell
+        docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+        ```
+
+        :::note 镜像名称更新
+        ClickStack 镜像现已发布为 `clickhouse/clickstack-*` (此前为 `docker.hyperdx.io/hyperdx/*`) 。
+        :::
+
+        `OPAMP_SERVER_URL` 应指向你的 HyperDX 部署，例如 `http://localhost:4320`。默认情况下，HyperDX 会在端口 `4320` 的 `/v1/opamp` 路径上提供 OpAMP (Open Agent Management Protocol) 服务器。请确保暴露运行 HyperDX 的容器上的此端口 (例如使用 `-p 4320:4320`) 。
+
+        :::note 暴露并连接到 OpAMP 端口
+        要让收集器连接到 OpAMP 端口，HyperDX 容器必须暴露该端口，例如 `-p 4320:4320`。对于本地测试，OSX 用户随后可以设置 `OPAMP_SERVER_URL=http://host.docker.internal:4320`。Linux 用户可以使用 `--network=host` 启动收集器容器。
+        :::
+      </TabItem>
+    </Tabs>
+
+    目标 ClickHouse 实例通过环境变量 `CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 进行配置。`CLICKHOUSE_ENDPOINT` 应为完整的 ClickHouse HTTP 端点，包含协议和端口，例如 `http://localhost:8123`。
+
+    **这些环境变量可用于任何包含该连接器的 Docker 发行版。**
 
     :::note 生产环境用户
-    在生产环境中，您应当使用具有[适当凭证](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的用户。
+    在生产环境中，您应使用具有[适当凭据](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user)的用户。
     :::
 
     ### 修改配置
 
     #### 配置 ClickHouse 实例
 
-    所有包含 OpenTelemetry collector 的 Docker 镜像，都可以通过环境变量 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 配置为连接到某个 ClickHouse 实例：
+    OpenTelemetry collector 可通过环境变量 `OPAMP_SERVER_URL`、`CLICKHOUSE_ENDPOINT`、`CLICKHOUSE_USERNAME` 和 `CLICKHOUSE_PASSWORD` 配置为使用 ClickHouse 实例。这些变量的具体设置方式取决于您的部署方式：
 
-    例如 all-in-one 镜像：
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        在 `values.yaml` 中覆盖 `extraEnvs` 下的相关条目，然后升级该 release：
 
-    ```shell
-    export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
-    export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
-    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
-    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-    ```
+        ```yaml
+        # values.yaml
+        extraEnvs:
+          - name: OPAMP_SERVER_URL
+            value: "<OPAMP_SERVER_URL>"
+          - name: CLICKHOUSE_ENDPOINT
+            value: "<HTTPS_ENDPOINT>"
+          - name: CLICKHOUSE_USER
+            value: "<CLICKHOUSE_USER>"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<CLICKHOUSE_PASSWORD>"
+        ```
 
-    ```shell
-    docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-    ```
+        ```shell
+        helm upgrade clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        所有包含 OpenTelemetry collector 的 Docker image 都可以通过环境变量进行配置。例如，all-in-one 镜像：
+
+        ```shell
+        export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
+        export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
+        export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+        export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+        ```
+
+        ```shell
+        docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
+        ```
+      </TabItem>
+    </Tabs>
 
     <ExtendingConfig />
 
     #### Docker Compose
 
-    使用 Docker Compose 时，通过与上面相同的环境变量来修改收集器配置：
+    使用 Docker Compose 时，通过与上述相同的环境变量修改 collector 配置：
 
     ```yaml
       otel-collector:
@@ -191,23 +341,50 @@ OpenTelemetry collector 可以以两种主要角色进行部署：
   <TabItem value="managed-clickstack" label="托管 ClickStack" default>
     默认情况下，当 ClickStack OpenTelemetry collector 在开源发行版之外部署时是未加固的，并且其 OTLP 端口不需要身份验证。
 
-    要保护摄取过程，请在部署 collector 时通过 `OTLP_AUTH_TOKEN` 环境变量指定一个认证 token。例如：
+    要保护摄取过程，请在部署 collector 时通过 `OTLP_AUTH_TOKEN` 环境变量指定一个认证 token。具体设置方式取决于您的部署方法：
 
-    ```sh
-    export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
-    export CLICKHOUSE_USER=<CLICKHOUSE_USER>
-    export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
-    export OTLP_AUTH_TOKEN="a_very_secure_string"
+    <Tabs groupId="install-method">
+      <TabItem value="helm" label="Helm" default>
+        将 `OTLP_AUTH_TOKEN` 添加到 `values.yaml` 的 `extraEnvs` 中，然后升级该 release：
 
-    docker run \
-      -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
-      -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
-      -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
-      -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
-      -p 4317:4317 \
-      -p 4318:4318 \
-      clickhouse/clickstack-otel-collector:latest
-    ```
+        ```yaml
+        # values.yaml
+        extraEnvs:
+          - name: OTLP_AUTH_TOKEN
+            value: "a_very_secure_string"
+          - name: CLICKHOUSE_ENDPOINT
+            value: "<HTTPS_ENDPOINT>"
+          - name: CLICKHOUSE_USER
+            value: "<CLICKHOUSE_USER>"
+          - name: CLICKHOUSE_PASSWORD
+            value: "<CLICKHOUSE_PASSWORD>"
+        ```
+
+        ```shell
+        helm upgrade clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+        ```
+
+        对于生产部署，我们建议将 `OTLP_AUTH_TOKEN` 和 `CLICKHOUSE_PASSWORD` 存储在 Kubernetes secret 中，并通过 `extraEnvsFrom` 引用它们。
+      </TabItem>
+
+      <TabItem value="docker" label="Docker">
+        ```sh
+        export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
+        export CLICKHOUSE_USER=<CLICKHOUSE_USER>
+        export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
+        export OTLP_AUTH_TOKEN="a_very_secure_string"
+
+        docker run \
+          -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
+          -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+          -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+          -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+          -p 4317:4317 \
+          -p 4318:4318 \
+          clickhouse/clickstack-otel-collector:latest
+        ```
+      </TabItem>
+    </Tabs>
 
     此外，我们还建议：
 

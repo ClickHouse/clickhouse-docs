@@ -108,6 +108,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_nlp_functions](/operations/settings/settings#allow_experimental_nlp_functions) | `0` |
 | [allow_experimental_hash_functions](/operations/settings/settings#allow_experimental_hash_functions) | `0` |
 | [allow_experimental_time_series_table](/operations/settings/settings#allow_experimental_time_series_table) | `0` |
+| [unique_key_max_encoded_size](/operations/settings/settings#unique_key_max_encoded_size) | `256` |
 | [allow_experimental_unique_key](/operations/settings/settings#allow_experimental_unique_key) | `0` |
 | [allow_experimental_codecs](/operations/settings/settings#allow_experimental_codecs) | `0` |
 | [throw_on_unsupported_query_inside_transaction](/operations/settings/settings#throw_on_unsupported_query_inside_transaction) | `1` |

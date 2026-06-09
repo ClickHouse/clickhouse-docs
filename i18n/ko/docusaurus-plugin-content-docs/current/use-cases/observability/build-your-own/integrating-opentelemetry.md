@@ -419,7 +419,7 @@ service:
 ./otelcol-contrib --config clickhouse-config.yaml
 ```
 
-이 수집기로 트레이스 데이터를 전송하려면 `telemetrygen` 도구를 사용하여 다음 명령을 실행하십시오:
+이 collector로 트레이스 데이터를 전송하려면 `telemetrygen` 도구를 사용하여 다음 명령을 실행하십시오:
 
 ```bash
 $GOBIN/telemetrygen traces --otlp-insecure --traces 300
@@ -427,13 +427,14 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 
 실행이 시작되면 간단한 쿼리로 로그 이벤트가 수집되었는지 확인합니다:
 
-
 ```sql
 SELECT *
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Timestamp:              2019-01-22 06:46:14.000000000
@@ -487,7 +488,6 @@ Links.SpanId:           []
 Links.TraceState:   []
 Links.Attributes:   []
 ```
-
 
 ## 기본 제공 스키마 \{#out-of-the-box-schema\}
 

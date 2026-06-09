@@ -29,7 +29,6 @@ ClickHouse рассматривает GCS как привлекательное 
 
 Эта часть конфигурации показана на выделенном фрагменте и задаёт следующее:
 
-* Пакетные удаления не выполняются. GCS в настоящее время не поддерживает пакетные удаления, поэтому автоопределение отключено, чтобы подавить сообщения об ошибках.
 * Тип диска — `s3`, поскольку используется API S3.
 * Endpoint, предоставленный GCS
 * HMAC‑ключ и секрет сервисного аккаунта
@@ -41,7 +40,7 @@ ClickHouse рассматривает GCS как привлекательное 
         <disks>
             <gcs>
             <!--highlight-start-->
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -63,7 +62,6 @@ ClickHouse рассматривает GCS как привлекательное 
 </clickhouse>
 ```
 
-
 #### Конфигурация хранилища &gt; disks &gt; cache \{#storage_configuration--disks--cache\}
 
 Пример конфигурации, показанный ниже, включает кэш в памяти объёмом 10Gi для диска `gcs`.
@@ -73,7 +71,7 @@ ClickHouse рассматривает GCS как привлекательное 
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -102,8 +100,7 @@ ClickHouse рассматривает GCS как привлекательное 
 </clickhouse>
 ```
 
-
-#### Конфигурация хранилища &gt; policies &gt; gcs&#95;main \{#storage_configuration--policies--gcs_main\}
+#### Конфигурация хранилища &gt; policies &gt; gcs_main \{#storage_configuration--policies--gcs_main\}
 
 Политики хранения в конфигурации позволяют выбирать, где размещаются данные. Политика, показанная ниже, позволяет хранить данные на диске `gcs` при указании политики `gcs_main`. Например, `CREATE TABLE ... SETTINGS storage_policy='gcs_main'`.
 
@@ -112,7 +109,7 @@ ClickHouse рассматривает GCS как привлекательное 
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -136,7 +133,6 @@ ClickHouse рассматривает GCS как привлекательное 
 ```
 
 Полный список настроек, относящихся к этому описанию диска, можно найти [здесь](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3).
-
 
 ### Создание таблицы \{#creating-a-table\}
 
@@ -411,7 +407,7 @@ ClickHouse Keeper для работы требует двух узлов, поэ
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/REPLICA 1 BUCKET/REPLICA 1 FOLDER/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -437,7 +433,6 @@ ClickHouse Keeper для работы требует двух узлов, поэ
     </storage_configuration>
 </clickhouse>
 ```
-
 
 ### Запустите ClickHouse Keeper \{#start-clickhouse-keeper\}
 

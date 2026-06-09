@@ -44,7 +44,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   ClickHouse 클러스터를 설정합니다. 이 설정은 별도의 로컬 머신, 가상 머신 또는 Cloud 인스턴스에서도
   작동하도록 수정할 수 있습니다.
 
-  다음 명령을 실행하여 이 예제의 디렉터리 구조를 설정하세요:
+  다음 명령을 실행하여 이 예시의 디렉터리 구조를 설정하세요:
 
   ```bash
   mkdir cluster_2S_2R
@@ -248,14 +248,14 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | 디렉터리                                                      | 파일                                                                                                                                                                               |
+  | 디렉터리                                                      | File                                                                                                                                                                             |
   | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-03/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-03/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-04/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-04/etc/clickhouse-server/config.d/config.xml) |
 
-  위 구성 파일의 각 섹션에 대한 자세한 설명은 다음과 같습니다.
+  위 설정 파일의 각 섹션에 대한 자세한 설명은 다음과 같습니다.
 
   #### 네트워킹 및 로깅
 
@@ -273,7 +273,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   </logger>
   ```
 
-  로깅 구성에 대한 자세한 내용은 기본 ClickHouse [구성 파일](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)에 포함된 주석을 참조하세요.
+  로깅 구성에 대한 자세한 내용은 기본 ClickHouse [설정 파일](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)에 포함된 주석을 참조하세요.
 
   #### 클러스터 구성
 
@@ -323,7 +323,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
 
   `<ZooKeeper>` 섹션은 ClickHouse Keeper(또는 ZooKeeper)가 실행 중인 위치를 ClickHouse에 알려줍니다.
   ClickHouse Keeper 클러스터를 사용하는 경우, 클러스터의 각 `<node>`를 지정해야 하며,
-  `<host>` 및 `<port>` 태그를 사용하여 각각의 호스트명과 포트 번호를 지정하십시오.
+  `<host>` 및 `<port>` 태그를 사용하여 각각의 호스트명과 포트 번호를 지정합니다.
 
   ClickHouse Keeper 설정은 튜토리얼의 다음 단계에서 설명합니다.
 
@@ -349,7 +349,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   프로덕션 환경에서는 ClickHouse Keeper를 전용 호스트에서 실행하실 것을 강력히 권장합니다.
   :::
 
-  #### 매크로 설정
+  #### 매크로 구성
 
   또한 `<macros>` 섹션은 복제된 테이블(Replicated Table)에 대한 매개변수 치환을 정의하는 데 사용됩니다. 이러한 매개변수는 `system.macros`에 나열되며, 쿼리에서 `{shard}`(세그먼트)와 `{replica}`(레플리카) 같은 치환을 사용할 수 있습니다.
 
@@ -508,7 +508,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   <VerifyKeeperStatus />
 
   이로써 2개의 세그먼트와 2개의 레플리카를 가진 ClickHouse 클러스터 설정이 완료되었습니다.
-  다음 단계에서는 클러스터에 테이블을 생성하세요.
+  다음 단계에서는 클러스터에 테이블을 생성합니다.
 
   ## 데이터베이스 생성하기
 
@@ -605,7 +605,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   엔진은 일반 `MergeTree` 테이블 엔진과 동일하게 작동하며, 데이터를 복제합니다.
   두 개의 매개변수 지정이 필요합니다:
 
-  * `zoo_path`: 테이블 메타데이터가 저장된 Keeper/ZooKeeper 경로입니다.
+  * `zoo_path`: 테이블 메타데이터의 Keeper/ZooKeeper 경로입니다.
   * `replica_name`: 테이블 레플리카의 이름입니다.
 
   <br />
@@ -619,7 +619,8 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   여기서:
 
   * `{database}`와 `{table}`는 자동으로 치환됩니다.
-  * `{shard}`와 `{replica}`는 각 ClickHouse 노드의 `config.xml` 파일에서 앞서 [정의](#macros-config-explanation)된 매크로입니다.
+  * `{shard}`와 `{replica}`는 각 ClickHouse 노드의 `config.xml` 파일에서 앞서 [정의](#macros-config-explanation)된
+    매크로입니다.
 
   각 호스트의 클라이언트에서 아래 쿼리를 실행하여 클러스터 전체에 테이블이 생성되었는지 확인하세요:
 
@@ -649,7 +650,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
 
   이제 각 호스트에서 `uk` 데이터베이스의 다음 테이블을 확인할 수 있습니다:
 
-  ```sql
+  ```response
      ┌─name──────────────────────┐
   1. │ uk_price_paid_distributed │
   2. │ uk_price_paid_local       │

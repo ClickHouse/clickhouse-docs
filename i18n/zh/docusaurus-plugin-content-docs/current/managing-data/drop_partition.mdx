@@ -38,7 +38,7 @@ PARTITION BY toYear(CreationDate)
 `ALTER TABLE ... DROP PARTITION` 提供了一种低成本的方式来删除整个分区。
 
 ```sql
-ALTER TABLE 表名 [ON CLUSTER 集群名] DROP PARTITION|PART 分区表达式
+ALTER TABLE table_name [ON CLUSTER cluster] DROP PARTITION|PART partition_expr
 ```
 
 此查询会将该分区标记为非活动，并在大约 10 分钟内彻底删除数据。该查询会在所有副本间复制执行，从而删除所有副本上的数据。
@@ -49,7 +49,9 @@ ALTER TABLE 表名 [ON CLUSTER 集群名] DROP PARTITION|PART 分区表达式
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'posts'
+```
 
+```response
 ┌─partition─┐
 │ 2008      │
 │ 2009      │
@@ -71,9 +73,13 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 ALTER TABLE posts
 (DROP PARTITION '2008')
+```
 
+```response
 0 rows in set. Elapsed: 0.103 sec.
 ```

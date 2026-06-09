@@ -356,13 +356,17 @@ GROUP BY
     hour,
     ServiceName
 ORDER BY hour DESC
+```
 
+```response
 ┌─database─┬─table──────────┬─parts─┬──rows─┬─marks─┐
 │ otel_v2  │ otel_traces_1m │     1 │ 49385 │     6 │
 └──────────┴────────────────┴───────┴───────┴───────┘
 
 1 row in set. Elapsed: 0.009 sec.
+```
 
+```sql
 EXPLAIN ESTIMATE
 SELECT
     toStartOfHour(Timestamp) AS hour,
@@ -373,7 +377,9 @@ GROUP BY
     hour,
     ServiceName
 ORDER BY hour DESC
+```
 
+```response
 ┌─database─┬─table─────────────┬─parts─┬───rows─┬─marks─┐
 │ otel_v2  │ otel_traces_1m_v2 │     1 │ 212519 │    26 │
 └──────────┴───────────────────┴───────┴────────┴───────┘
@@ -384,7 +390,6 @@ ORDER BY hour DESC
 Поскольку `otel_traces_1m` меньше и просматривает меньше гранул, он выбирается автоматически.
 
 Оба materialized view по-прежнему работают быстрее, чем запросы напрямую к базовой таблице, но выбор наименьшего подходящего materialized view обеспечивает наилучшую производительность.
-
 
 ### Оповещения \{#alerts\}
 

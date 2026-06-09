@@ -378,8 +378,10 @@ const sidebars = {
         'cloud/managed-postgres/read-replicas',
         'cloud/managed-postgres/scaling',
         'cloud/managed-postgres/backup-and-restore',
+        'cloud/managed-postgres/branching',
         'cloud/managed-postgres/security',
         'cloud/managed-postgres/rbac',
+        'cloud/managed-postgres/local-development',
         // Configure
         'cloud/managed-postgres/settings',
         {

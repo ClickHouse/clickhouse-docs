@@ -110,7 +110,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 ```sql
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet') WHERE AnswerCount > 0 LIMIT 10000
+```
 
+```response
 0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
@@ -118,7 +120,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 ```sql
 SELECT count() FROM stackoverflow.posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
@@ -126,7 +130,7 @@ SELECT count() FROM stackoverflow.posts_updateable
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-现在我们来更新回答后的统计信息。我们不直接更新这些值，而是插入 5000 行新的副本，并将它们的版本号加一（这意味着表中将存在 150 行）。我们可以通过一个简单的 `INSERT INTO … SELECT` 语句来模拟这一点：
+现在我们来更新回答后的统计信息。我们不直接更新这些值，而是插入 5000 行新的副本，并将它们的版本号加一 (这意味着表中将存在 150 行) 。我们可以通过一个简单的 `INSERT INTO SELECT` 语句来模拟这一点：
 
 ```sql
 INSERT INTO posts_updateable SELECT
@@ -157,7 +161,9 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
+```
 
+```response
 0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
@@ -192,7 +198,9 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
+```
 
+```response
 0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
@@ -201,7 +209,9 @@ LIMIT 1000
 ```sql
 SELECT count()
 FROM posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
@@ -210,12 +220,13 @@ FROM posts_updateable
 
 这里的结果会因已发生的合并而有所不同。我们可以看到，由于存在重复行，这里的总数不同。对该表使用 `FINAL` 运算符可以得到正确的结果。
 
-
 ```sql
 SELECT count()
 FROM posts_updateable
 FINAL
+```
 
+```response
 ┌─count()─┐
 │    9000 │
 └─────────┘
@@ -223,7 +234,6 @@ FINAL
 1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
 Peak memory usage: 8.14 MiB.
 ```
-
 
 ## FINAL 性能 \{#final-performance\}
 
@@ -256,7 +266,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
 INSERT INTO stackoverflow.posts_no_part SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
@@ -276,7 +288,9 @@ FROM posts_no_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │        371480 │
 ...
@@ -308,7 +322,9 @@ FROM posts_with_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │       387832  │
 │ 2009 │       1165506 │
@@ -322,7 +338,6 @@ ORDER BY year ASC
 ```
 
 如上所示，在本例中，分区通过允许在分区级别并行执行去重过程，显著提升了查询性能。
-
 
 ## 合并行为注意事项 \{#merge-behavior-considerations\}
 

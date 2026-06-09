@@ -6,18 +6,18 @@ slug: /guides/joining-tables
 doc_type: "guide"
 ---
 
-import Image from "@theme/IdealImage"
-import joins_1 from "@site/static/images/guides/joins-1.png"
-import joins_2 from "@site/static/images/guides/joins-2.png"
-import joins_3 from "@site/static/images/guides/joins-3.png"
-import joins_4 from "@site/static/images/guides/joins-4.png"
-import joins_5 from "@site/static/images/guides/joins-5.png"
+import Image from '@theme/IdealImage';
+import joins_1 from '@site/static/images/guides/joins-1.png';
+import joins_2 from '@site/static/images/guides/joins-2.png';
+import joins_3 from '@site/static/images/guides/joins-3.png';
+import joins_4 from '@site/static/images/guides/joins-4.png';
+import joins_5 from '@site/static/images/guides/joins-5.png';
 
-ClickHouse имеет [полную поддержку `JOIN`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1) с широким выбором алгоритмов соединения. Для максимальной производительности рекомендуется следовать рекомендациям по оптимизации соединений, перечисленным в этом руководстве.
+ClickHouse имеет [полную поддержку `JOIN`](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1) с широким выбором алгоритмов JOIN. Для максимальной производительности рекомендуется следовать рекомендациям по оптимизации соединений, перечисленным в этом руководстве.
 
 * Для оптимальной производительности пользователям следует стремиться сократить количество `JOIN` в запросах, особенно для аналитических нагрузок в реальном времени, где требуется время отклика на уровне миллисекунд. Старайтесь ограничиваться максимум 3–4 `JOIN` в запросе. Мы подробно рассматриваем ряд подходов, позволяющих минимизировать количество `JOIN`, в [разделе моделирования данных](/data-modeling/schema-design), включая денормализацию, словари и материализованные представления.
 * Начиная с ClickHouse 24.12, планировщик запросов автоматически перестраивает порядок соединения двух таблиц, помещая меньшую таблицу справа для оптимальной производительности. В версии 25.9 этот механизм был расширен: теперь оптимизируется порядок соединений в запросах с тремя и более таблицами.
-* Если в вашем запросе требуется прямое соединение, т. е. `LEFT ANY JOIN`, как показано ниже, мы рекомендуем по возможности использовать [Dictionaries](/dictionary).
+* Если в вашем запросе требуется direct join, т. е. `LEFT ANY JOIN`, как показано ниже, мы рекомендуем по возможности использовать [Dictionaries](/dictionary).
 
 <Image img={joins_1} size="sm" alt="LEFT ANY JOIN" />
 
@@ -28,7 +28,9 @@ SELECT count()
 FROM stackoverflow.posts AS p
 ANY INNER `JOIN` stackoverflow.comments AS c ON p.Id = c.PostId
 WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILIKE '%clickhouse%') AND (c.Text ILIKE '%clickhouse%')
+```
 
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -49,6 +51,9 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
         FROM stackoverflow.comments
         WHERE Text ILIKE '%clickhouse%'
 ))
+```
+
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -66,7 +71,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.posts AS p
 INNER JOIN stackoverflow.votes AS v ON p.Id = v.PostId
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -81,7 +88,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -96,7 +105,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01') AND (v.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -115,7 +126,9 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
         FROM stackoverflow.posts
         WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
 ))
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -123,7 +136,6 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
 1 row in set. Elapsed: 0.383 sec. Processed 99.64 million rows, 804.55 MB (259.85 million rows/s., 2.10 GB/s.)
 Peak memory usage: 250.66 MiB.
 ```
-
 
 ## Выбор алгоритма JOIN \{#choosing-a-join-algorithm\}
 

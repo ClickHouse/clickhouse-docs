@@ -223,6 +223,10 @@ ORDER BY memory_usage DESC
 LIMIT 10
 ```
 
+:::note
+1 つのクエリが、異なる `query_id` 値を持つ複数の行として記録されることがあります。分散セカンダリクエリと内部ビューのステップでは `is_initial_query = 0` になります。クエリを送信時の形で確認するには、`is_initial_query = 1` (または `query_id = initial_query_id`) で絞り込んでください。また、ClickHouse が割り当てる内部 `query_id` 値には、`queryView...` のようなラベルが含まれる場合がある点に注意してください。詳しくは [`query_log` リファレンス](/operations/system-tables/query_log) を参照してください。
+:::
+
 ## プロジェクションはどれくらいのディスク容量を使用しているか \{#how-much-disk-space-are-my-projection-using\}
 
 ```sql

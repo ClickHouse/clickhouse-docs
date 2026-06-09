@@ -174,6 +174,16 @@ SETTINGS
 
 기본값: 빈 문자열.
 
+### `after_processing_move_preserve_path` \{#after_processing_move_preserve_path\}
+
+`true`이면 성공적으로 처리된 파일을 이동할 때 전체 원본 객체 경로가 `after_processing_move_prefix`에 추가되므로, 버킷 아래의 원본 디렉터리 구조가 대상에 그대로 유지됩니다. `false`이면 파일 이름만 사용되며 원본 디렉터리 구조는 평탄화됩니다.
+
+가능한 값:
+
+* `true` / `false`.
+
+기본값: `false`.
+
 ### `after_processing_move_secret_access_key` \{#after_processing_move_secret_access_key\}
 
 대상 위치가 다른 S3 버킷인 경우, 성공적으로 처리된 파일을 이동할 대상 S3 버킷의 Secret Access Key입니다.

@@ -1943,6 +1943,14 @@ OvercommitTracker 내에서 대기 중인 스레드 수
 
 비압축 캐시에 있는 전체 엔트리 수입니다. 각 엔트리는 압축 해제된 데이터 블록 1개를 나타냅니다. 비압축 캐시는 일반적으로 성능 향상에 도움이 되지 않으므로 가능한 한 사용을 피해야 합니다
 
+### UniqueKeyIndexCacheBytes \{#uniquekeyindexcachebytes\}
+
+UNIQUE KEY 인덱스 캐시의 총 크기(바이트)
+
+### UniqueKeyIndexCacheEntries \{#uniquekeyindexcacheentries\}
+
+캐시된 UNIQUE KEY 인덱스 블록의 총 개수
+
 ### VectorSimilarityIndexCacheBytes \{#vectorsimilarityindexcachebytes\}
 
 벡터 유사성 인덱스 캐시 크기(바이트)

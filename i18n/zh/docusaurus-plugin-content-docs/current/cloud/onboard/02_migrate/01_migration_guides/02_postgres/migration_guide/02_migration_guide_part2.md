@@ -38,7 +38,9 @@ GROUP BY OwnerDisplayName
 HAVING count() > 10
 ORDER BY total_views DESC
 LIMIT 5
+```
 
+```response
 ┌─OwnerDisplayName─┬─total_views─┐
 │ Joan Venge       │    25520387 │
 │ Ray Vega         │    21576470 │
@@ -82,7 +84,9 @@ FROM posts
 GROUP BY tags
 ORDER BY views DESC
 LIMIT 5
+```
 
+```response
 ┌─tags───────┬──────views─┐
 │ javascript │ 8190916894 │
 │ python     │ 8175132834 │
@@ -142,6 +146,9 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
+```
+
+```response
 Row 1:
 ──────
 Year:                   2008
@@ -210,7 +217,6 @@ Time: 125822.015 ms (02:05.822)
 
 条件函数和数组函数可以显著简化查询。下面的查询用于计算从 2022 年到 2023 年，出现次数超过 10000 次且百分比增幅最大的标签。请注意，下面的 ClickHouse 查询之所以简洁，是因为使用了条件函数、数组函数，以及能够在 HAVING 和 SELECT 子句中重复使用别名。
 
-
 ```sql
 --ClickHouse
 SELECT  arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tag,
@@ -223,7 +229,9 @@ GROUP BY tag
 HAVING (count_2022 > 10000) AND (count_2023 > 10000)
 ORDER BY percent_change DESC
 LIMIT 5
+```
 
+```response
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
 │ next.js     │      13788 │      10520 │   31.06463878326996 │
 │ spring-boot │      16573 │      17721 │  -6.478189718413183 │

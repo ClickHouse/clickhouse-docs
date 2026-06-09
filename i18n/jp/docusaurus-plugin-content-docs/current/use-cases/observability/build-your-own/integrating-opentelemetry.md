@@ -419,7 +419,7 @@ service:
 ./otelcol-contrib --config clickhouse-config.yaml
 ```
 
-このコレクターにトレースデータを送信するには、`telemetrygen` ツールを使用して次のコマンドを実行してください。
+このcollectorにトレースデータを送信するには、`telemetrygen` ツールを使用して次のコマンドを実行してください。
 
 ```bash
 $GOBIN/telemetrygen traces --otlp-insecure --traces 300
@@ -427,13 +427,14 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 
 起動後、簡単なクエリを実行してログイベントが取り込まれていることを確認します。
 
-
 ```sql
 SELECT *
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Timestamp:              2019-01-22 06:46:14.000000000
@@ -487,7 +488,6 @@ Links.SpanId:           []
 Links.TraceState:   []
 Links.Attributes:   []
 ```
-
 
 ## すぐに利用できるスキーマ \{#out-of-the-box-schema\}
 

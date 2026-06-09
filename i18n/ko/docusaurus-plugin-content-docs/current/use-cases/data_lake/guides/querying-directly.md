@@ -26,7 +26,7 @@ ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이
 다음 예제에서는 각 레이크하우스 형식으로 S3에 저장된 [hits](/getting-started/example-datasets/star-schema) 데이터세트를 사용합니다. 각 레이크 형식마다 각 객체 스토리지 제공자에 대응하는 전용 함수가 제공됩니다.
 
 <Tabs groupId="lake-format">
-  <TabItem value="Iceberg" label="Apache Iceberg" default>
+  <TabItem value="iceberg" label="Apache Iceberg" default>
     [`iceberg`](/sql-reference/table-functions/iceberg) 테이블 함수(`icebergS3`의 별칭)는 객체 스토리지에서 직접 Iceberg 테이블을 읽어옵니다. 각 스토리지 백엔드에 대한 변형으로 `icebergS3`, `icebergAzure`, `icebergHDFS`, `icebergLocal`이 있습니다.
 
     **예시 구문:**
@@ -53,7 +53,9 @@ ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이
     GROUP BY url
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─url────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │ -- 3.29 million
     │ http://kinopoisk.ru                                │ 1625250 │ -- 1.63 million
@@ -70,7 +72,7 @@ ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이
 
     [`icebergS3Cluster`](/sql-reference/table-functions/icebergCluster) 함수는 ClickHouse 클러스터의 여러 노드에 읽기를 분산합니다. 이니시에이터 노드는 모든 노드에 연결을 설정하고 데이터 파일을 동적으로 배분합니다. 각 워커 노드는 모든 파일이 읽힐 때까지 작업을 요청하고 처리합니다. `icebergCluster`는 `icebergS3Cluster`의 별칭입니다. Azure([`icebergAzureCluster`](/sql-reference/table-functions/icebergCluster)) 및 HDFS([`icebergHDFSCluster`](/sql-reference/table-functions/icebergCluster))용 변형도 제공됩니다.
 
-    **예제 구문:**
+    **예시 구문:**
 
     ```sql
     icebergS3Cluster(cluster_name, url [, NOSIGN | access_key_id, secret_access_key, [session_token]] [,format] [,compression_method])
@@ -98,7 +100,7 @@ ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이
 
     모든 쿼리마다 테이블 함수를 사용하는 대신, [`Iceberg` 테이블 엔진](/engines/table-engines/integrations/iceberg)을 사용하여 영구 테이블을 생성할 수 있습니다. 데이터는 여전히 객체 스토리지에 저장되며 필요할 때 읽어오므로 ClickHouse로 데이터가 복사되지 않습니다. 테이블 정의가 ClickHouse에 저장되어 각 사용자가 스토리지 경로와 자격 증명을 별도로 지정하지 않아도 사용자 및 세션 간에 공유할 수 있다는 장점이 있습니다. 각 스토리지 백엔드별로 엔진 변형이 제공됩니다: `IcebergS3`(또는 `Iceberg` 별칭), `IcebergAzure`, `IcebergHDFS`, `IcebergLocal`.
 
-    테이블 엔진과 테이블 함수 모두 S3, AzureBlobStorage, HDFS 스토리지 엔진과 동일한 캐싱 메커니즘을 사용하는 [데이터 캐싱](/engines/table-engines/integrations/iceberg#data-cache)을 지원합니다. 또한 [메타데이터 캐시](/engines/table-engines/integrations/iceberg#metadata-cache)는 매니페스트 파일 정보를 메모리에 저장하여 Iceberg 메타데이터를 반복적으로 읽기(reads)하는 횟수를 줄입니다. 이 캐시는 `use_iceberg_metadata_files_cache` 설정을 통해 기본적으로 활성화됩니다.
+    테이블 엔진과 테이블 함수 모두 S3, AzureBlobStorage, HDFS 스토리지 엔진과 동일한 캐싱 메커니즘을 사용하는 [데이터 캐싱](/engines/table-engines/integrations/iceberg#data-cache)을 지원합니다. 또한 [메타데이터 캐시](/engines/table-engines/integrations/iceberg#metadata-cache)는 manifest 파일 정보를 메모리에 저장하여 Iceberg 메타데이터를 반복적으로 읽는 횟수를 줄입니다. 이 캐시는 `use_iceberg_metadata_files_cache` 설정을 통해 기본적으로 활성화됩니다.
 
     **예시 구문:**
 
@@ -132,7 +134,9 @@ ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이
     GROUP BY url
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─url────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │
     │ http://kinopoisk.ru                                │ 1625250 │
@@ -162,7 +166,7 @@ ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이
     ```
 
     :::note GCS 지원
-    S3 변형 함수는 Google Cloud Storage(GCS)에도 사용할 수 있습니다.
+    S3 변형 함수는 Google Cloud Storage (GCS)에도 사용할 수 있습니다.
     :::
 
     **예시:**
@@ -175,7 +179,9 @@ ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이
     GROUP BY URL
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─URL────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │ -- 3.29 million
     │ http://kinopoisk.ru                                │ 1625250 │ -- 1.63 million
@@ -202,7 +208,7 @@ ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이
     ```
 
     :::note GCS 지원
-    S3 변형 함수는 Google Cloud Storage(GCS)에도 사용할 수 있습니다.
+    S3 변형 함수는 Google Cloud Storage (GCS)에도 사용할 수 있습니다.
     :::
 
     **예시 (ClickHouse Cloud):**
@@ -250,7 +256,9 @@ ClickHouse는 객체 스토리지에 저장된 오픈 테이블 형식의 데이
     GROUP BY URL
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─URL────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │
     │ http://kinopoisk.ru                                │ 1625250 │

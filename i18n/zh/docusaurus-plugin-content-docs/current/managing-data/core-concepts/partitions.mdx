@@ -147,9 +147,9 @@ ClickHouse 通过应用一系列剪枝技术来处理该查询，从而避免对
 
 ① **分区剪枝 (Partition pruning)&#x20;**：使用 [MinMax 索引](/partitions#what-are-table-partitions-in-clickhouse) 来忽略整个在逻辑上不可能满足针对表分区键列的查询过滤条件的分区 (由若干 part 组成的集合) 。
 
-② **粒度剪枝 (Granule pruning)&#x20;**：对于步骤 ① 后剩余的数据 part，使用其[主索引](/guides/best-practices/sparse-primary-indexes) 来忽略所有在逻辑上不可能满足针对表主键列的查询过滤条件的[粒度](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (成块的行) 。
+② **粒度剪枝 (Granule pruning)&#x20;**：对于步骤 ① 后剩余的数据分区片段，使用其[主索引](/guides/best-practices/sparse-primary-indexes) 来忽略所有在逻辑上不可能满足针对表主键列的查询过滤条件的[粒度](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (成块的行) 。
 
-我们可以通过在上文示例查询中添加 [EXPLAIN](/sql-reference/statements/explain) 子句，并[检查](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgZGF0ZSA-PSAnMjAyMC0xMi0wMScKICBBTkQgZGF0ZSA8PSAnMjAyMC0xMi0zMScKICBBTkQgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)其物理查询执行计划，来观察这些数据剪枝步骤：
+我们可以通过在上文示例查询中添加 [EXPLAIN](/sql-reference/statements/explain) 子句，并[检查](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdGF0ZSA-PSAnMjAyMC0xMi0wMScKICBBTkQgZGF0ZSA8PSAnMjAyMC0xMi0zMScKICBBTkQgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results) 其物理查询执行计划，来观察这些数据剪枝步骤：
 
 ```sql style="fontSize:13px"
 EXPLAIN indexes = 1
@@ -158,11 +158,13 @@ FROM uk.uk_price_paid_simple_partitioned
 WHERE date >= '2020-12-01'
   AND date <= '2020-12-31'
   AND town = 'LONDON';
+```
 
+```response
     ┌─explain──────────────────────────────────────────────────────────────────────────────────────────────────────┐
- 1. │ Expression ((投影名称 + 投影))                                                                                │
+ 1. │ Expression ((Project names + Projection))                                                                    │
  2. │   Aggregating                                                                                                │
- 3. │     Expression (GROUP BY 之前)                                                                               │
+ 3. │     Expression (Before GROUP BY)                                                                             │
  4. │       Expression                                                                                             │
  5. │         ReadFromMergeTree (uk.uk_price_paid_simple_partitioned)                                              │
  6. │         Indexes:                                                                                             │
@@ -189,13 +191,13 @@ WHERE date >= '2020-12-01'
 
 上述输出显示：
 
-① 分区裁剪 (Partition pruning) ：上面 EXPLAIN 输出的第 7 到 18 行显示，ClickHouse 首先使用 `date` 字段的 [MinMax 索引](/partitions#what-are-table-partitions-in-clickhouse)，在 3257 个现有[粒度](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (行块) 中识别出 11 个粒度，这些粒度存储在 436 个现有活动数据分片中的 1 个分片内，并且其中包含与查询的 `date` 过滤条件匹配的行。
+① 分区剪枝 (Partition pruning) ：上面 EXPLAIN 输出的第 7 到 18 行显示，ClickHouse 首先使用 `date` 字段的 [MinMax 索引](/partitions#what-are-table-partitions-in-clickhouse)，在 3257 个现有[粒度](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (行块) 中识别出 11 个粒度，这些粒度存储在 436 个现有活动数据分区片段中的 1 个分片内，并且其中包含与查询的 `date` 过滤条件匹配的行。
 
-② 粒度裁剪 (Granule pruning) ：上面 EXPLAIN 输出的第 19 到 24 行表明，ClickHouse 随后使用在步骤 ① 中识别出的该数据分片上的[主索引](/guides/best-practices/sparse-primary-indexes) (在 `town` 字段上创建) ，将粒度数量 (其中包含可能也匹配查询 `town` 过滤条件的行) 从 11 个进一步减少到 1 个。这一点也反映在我们稍早为该查询运行所打印的 ClickHouse-client 输出中：
+② 粒度剪枝 (Granule pruning) ：上面 EXPLAIN 输出的第 19 到 24 行表明，ClickHouse 随后使用在步骤 ① 中识别出的该数据分区片段上的[主索引](/guides/best-practices/sparse-primary-indexes) (在 `town` 字段上创建) ，将粒度数量 (其中包含可能也匹配查询 `town` 过滤条件的行) 从 11 个进一步减少到 1 个。这一点也反映在我们稍早为该查询运行所打印的 ClickHouse-client 输出中：
 
 ```response
-... 耗时:0.006 秒。已处理 8.19 千行,57.34 KB(1.36 百万行/秒,9.49 MB/秒)
-峰值内存使用:2.73 MiB。
+... Elapsed: 0.006 sec. Processed 8.19 thousand rows, 57.34 KB (1.36 million rows/s., 9.49 MB/s.)
+Peak memory usage: 2.73 MiB.
 ```
 
 这意味着 ClickHouse 为计算查询结果，在 6 毫秒内扫描并处理了 1 个 granule (包含 [8192](/operations/settings/merge-tree-settings#index_granularity) 行的块) 。
@@ -204,7 +206,7 @@ WHERE date >= '2020-12-01'
 
 请注意，跨所有分区执行查询通常要比在非分区表上运行相同查询更慢。
 
-启用分区后，数据通常会被拆分为更多的数据 part，这往往会导致 ClickHouse 扫描和处理更大数量的数据。
+启用分区后，数据通常会被拆分为更多的数据分区片段，这往往会导致 ClickHouse 扫描和处理更大数量的数据。
 
 我们可以通过在两个表上运行相同的查询来演示这一点：一个是 [What are table parts](/parts) 示例表 (未启用分区) ，另一个是上文使用的示例表 (已启用分区) 。这两个表[包含](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIHN1bShyb3dzKSBBUyByb3dzCkZST00gc3lzdGVtLnBhcnRzCldIRVJFIChkYXRhYmFzZSA9ICd1aycpIEFORCAoYHRhYmxlYCBJTiBbJ3VrX3ByaWNlX3BhaWRfc2ltcGxlJywgJ3VrX3ByaWNlX3BhaWRfc2ltcGxlX3BhcnRpdGlvbmVkJ10pIEFORCBhY3RpdmUKR1JPVVAgQlkgdGFibGU7\&run_query=true\&tab=results) 相同的数据和行数：
 
@@ -217,7 +219,7 @@ WHERE (database = 'uk') AND (table IN ['uk_price_paid_simple', 'uk_price_paid_si
 GROUP BY table;
 ```
 
-然而，启用了分区的表，[会有](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIGNvdW50KCkgQVMgcGFydHMKRlJPTSBzeXN0ZW0ucGFydHMKV0hFUkUgKGRhdGFiYXNlID0gJ3VrJykgQU5EIChgdGFibGVgIElOIFsndWtfcHJpY2VfcGFpZF9zaW1wbGUnLCAndWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQnXSkgQU5EIGFjdGl2ZQpHUk9VUCBCWSB0YWJsZTs\&run_query=true\&tab=results) 更多处于活动状态的[数据 part](/parts)，因为正如前文所述，ClickHouse 只会在同一分区内[合并](/parts)数据 part，而不会跨分区合并：
+然而，启用了分区的表，[会有](https://sql.clickhouse.com/?query=U0VMRUNUCiAgICB0YWJsZSwKICAgIGNvdW50KCkgQVMgcGFydHMKRlJPTSBzeXN0ZW0ucGFydHMKV0hFUkUgKGRhdGFiYXNlID0gJ3VrJykgQU5EIChgdGFibGVgIElOIFsndWtfcHJpY2VfcGFpZF9zaW1wbGUnLCAndWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQnXSkgQU5EIGFjdGl2ZQpHUk9VUCBCWSB0YWJsZTs\&run_query=true\&tab=results) 更多处于活动状态的[数据分区片段](/parts)，因为正如前文所述，ClickHouse 只会在同一分区内[合并](/parts)数据分区片段，而不会跨分区合并：
 
 ```sql runnable
 SELECT
@@ -229,16 +231,18 @@ GROUP BY table;
 
 ```
 
-如上文所示，分区表 `uk_price_paid_simple_partitioned` 拥有 600 多个分区，因此有 600 306 个活动数据片 (active data parts) 。而对于我们的非分区表 `uk_price_paid_simple`，所有 [初始](/parts) 数据片都可以通过后台合并 (background merges) 合并为单个活动数据片。
+如上文所示，分区表 `uk_price_paid_simple_partitioned` 拥有 600 多个分区，因此有 600 306 个活动数据分区片段 (active data parts) 。而对于我们的非分区表 `uk_price_paid_simple`，所有 [初始](/parts) 数据分区片段都可以通过后台合并 (background merges) 合并为单个活动数据分区片段。
 
-当我们对上面的示例查询 (针对分区表运行，且不带分区过滤条件) 使用 [EXPLAIN](/sql-reference/statements/explain) 子句来[检查](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)其物理查询执行计划时，可以在下方输出结果的第 19 行和第 20 行看到，ClickHouse 在 3257 个现有[粒度](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (行块) 中识别出 671 个粒度，这些粒度分布于 436 个现有活动数据片中的 431 个上，这些数据片中可能包含与查询过滤条件匹配的行，因此将会被查询引擎扫描并处理：
+当我们对上面的示例查询 (针对分区表运行，且不带分区过滤条件) 使用 [EXPLAIN](/sql-reference/statements/explain) 子句来[检查](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGVfcGFydGl0aW9uZWQKV0hFUkUgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)其物理查询执行计划时，可以在下方输出结果的第 19 行和第 20 行看到，ClickHouse 在 3257 个现有[粒度](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) (行块) 中识别出 671 个粒度，这些粒度分布于 436 个现有活动数据分区片段中的 431 个上，这些数据分区片段中可能包含与查询过滤条件匹配的行，因此将会被查询引擎扫描并处理：
 
 ```sql
 EXPLAIN indexes = 1
 SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple_partitioned
 WHERE town = 'LONDON';
+```
 
+```response
     ┌─explain─────────────────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))                       │
  2. │   Aggregating                                                   │
@@ -263,14 +267,16 @@ WHERE town = 'LONDON';
     └─────────────────────────────────────────────────────────────────┘
 ```
 
-对于相同示例查询在无分区表上运行时，其物理查询执行计划在下方输出结果的第 11 行和第 12 行[显示](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKV0hFUkUgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)，ClickHouse 在该表单个活动数据 part 中现有的 3083 个行块中，识别出了其中 241 个可能包含与查询过滤条件匹配的行的行块：
+对于相同示例查询在无分区表上运行时，其物理查询执行计划在下方输出结果的第 11 行和第 12 行[显示](https://sql.clickhouse.com/?query=RVhQTEFJTiBpbmRleGVzID0gMQpTRUxFQ1QgTUFYKHByaWNlKSBBUyBoaWdoZXN0X3ByaWNlCkZST00gdWsudWtfcHJpY2VfcGFpZF9zaW1wbGUKV0hFUkUgdG93biA9ICdMT05ET04nOw\&run_query=true\&tab=results)，ClickHouse 在该表单个活动数据分区片段中现有的 3083 个行块中，识别出了其中 241 个可能包含与查询过滤条件匹配的行的行块：
 
 ```sql
 EXPLAIN indexes = 1
 SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple
 WHERE town = 'LONDON';
+```
 
+```response
     ┌─explain───────────────────────────────────────────────┐
  1. │ Expression ((Project names + Projection))             │
  2. │   Aggregating                                         │
@@ -293,13 +299,15 @@ WHERE town = 'LONDON';
 SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple_partitioned
 WHERE town = 'LONDON';
+```
 
+```response
 ┌─highest_price─┐
-│     594300000 │ -- 5.943 亿
+│     594300000 │ -- 594.30 million
 └───────────────┘
 
-返回 1 行。用时:0.090 秒。已处理 548 万行,27.95 MB(6066 万行/秒,309.51 MB/秒)。
-内存峰值:163.44 MiB。
+1 row in set. Elapsed: 0.090 sec. Processed 5.48 million rows, 27.95 MB (60.66 million rows/s., 309.51 MB/s.)
+Peak memory usage: 163.44 MiB.
 ```
 
 而在未分区表上[运行](https://sql.clickhouse.com/?query=U0VMRUNUIE1BWChwcmljZSkgQVMgaGlnaGVzdF9wcmljZQpGUk9NIHVrLnVrX3ByaWNlX3BhaWRfc2ltcGxlCldIRVJFIHRvd24gPSAnTE9ORE9OJzs\&run_query=true\&tab=results)该查询时，ClickHouse 会在 12 毫秒内扫描并处理 241 个数据块 (约 200 万行) ：
@@ -308,11 +316,13 @@ WHERE town = 'LONDON';
 SELECT MAX(price) AS highest_price
 FROM uk.uk_price_paid_simple
 WHERE town = 'LONDON';
+```
 
+```response
 ┌─highest_price─┐
-│     594300000 │ -- 5.943 亿
+│     594300000 │ -- 594.30 million
 └───────────────┘
 
-返回 1 行。用时:0.012 秒。已处理 197 万行,9.87 MB(162.23 百万行/秒,811.17 MB/秒)。
-峰值内存使用量:62.02 MiB。
+1 row in set. Elapsed: 0.012 sec. Processed 1.97 million rows, 9.87 MB (162.23 million rows/s., 811.17 MB/s.)
+Peak memory usage: 62.02 MiB.
 ```

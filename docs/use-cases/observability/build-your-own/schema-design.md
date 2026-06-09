@@ -26,6 +26,13 @@ _We describe each of the above use cases in detail below._
 
 **Important:** While users are encouraged to extend and modify their schema to achieve optimal compression and query performance, they should adhere to the OTel schema naming for core columns where possible. The ClickHouse Grafana plugin assumes the existence of some basic OTel columns to assist with query building e.g. Timestamp and SeverityText. The required columns for logs and traces are documented here [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) and [here](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure), respectively. You can choose to change these column names, overriding the defaults in the plugin configuration.
 
+:::tip ClickStack ships an optimized default schema
+**ClickStack provides out-of-the-box schemas for logs, traces, and metrics** that incorporate the latest ClickHouse features (text indexes for full-text and map-key search, materialized columns and ALIAS arrays for direct-read filtering, block-number row lookups) and have been benchmarked to deliver strong out-of-the-box performance for logging and trace workloads. Use them as a reference point for your own design.
+
+- Canonical DDL: [Tables and schemas used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas).
+- Optimization recipes: [ClickStack performance tuning](/use-cases/observability/clickstack/performance_tuning). Many of the recommendations on that page (materialized columns, skip indexes, primary key choice, projections, materialized views) apply directly to a build-your-own setup.
+:::
+
 ## Extracting structure with SQL {#extracting-structure-with-sql}
 
 Whether ingesting structured or unstructured logs, users often need the ability to:

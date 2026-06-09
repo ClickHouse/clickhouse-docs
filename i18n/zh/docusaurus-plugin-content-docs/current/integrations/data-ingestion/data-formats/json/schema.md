@@ -91,7 +91,7 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 
 ## 处理静态结构 \{#handling-static-structures\}
 
-我们建议对静态结构使用命名元组（即 `Tuple`）来表示。对象数组可以使用元组数组来表示，即 `Array(Tuple)`。在元组内部，列及其对应的类型也应按照相同的规则进行定义。这样一来，为了表示嵌套对象，就可能会出现嵌套的 Tuple，如下所示。
+我们建议对静态结构使用命名元组 (即 `Tuple`) 来表示。对象数组可以使用元组数组来表示，即 `Array(Tuple)`。在元组内部，列及其对应的类型也应按照相同的规则进行定义。这样一来，为了表示嵌套对象，就可能会出现嵌套的 Tuple，如下所示。
 
 为便于说明，我们沿用前文的 JSON person 示例，但省略其中的动态对象：
 
@@ -126,7 +126,7 @@ import shared_json_column from '@site/static/images/integrations/data-ingestion/
 }
 ```
 
-该表的表结构如下：
+该表的 schema 如下：
 
 ```sql
 CREATE TABLE people
@@ -161,18 +161,22 @@ SELECT
  address.street,
  company.name
 FROM people
+```
 
+```response
 ┌─address.street────┬─company.name─┐
 │ ['Victor Plains'] │ ClickHouse   │
 └───────────────────┴──────────────┘
 ```
 
-请注意，`address.street` 列是以 `Array` 形式返回的。要按位置查询数组中的特定对象，需要在列名后指定数组的偏移量。例如，要访问第一个地址中的街道名称：
+请注意，`address.street` 列是以 `Array` 形式返回的。要按位置查询数组中的特定对象，需要在列名后指定数组偏移量。例如，要访问第一个地址中的街道名称：
 
 ```sql
 SELECT address.street[1] AS street
 FROM people
+```
 
+```response
 ┌─street────────┐
 │ Victor Plains │
 └───────────────┘
@@ -198,7 +202,6 @@ CREATE TABLE people
 ENGINE = MergeTree
 ORDER BY company.name
 ```
-
 
 ### 处理默认值 \{#handling-default-values\}
 
@@ -232,13 +235,15 @@ ORDER BY company.name
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","city":"Wisokyburgh","zipcode":"90566-7771"}],"website":"clickhouse.com","company":{"name":"ClickHouse"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-查询这一行时，我们可以看到，省略的列（包括子对象）都使用了默认值：
+查询这一行时，我们可以看到，省略的列 (包括子对象) 都使用了默认值：
 
 ```sql
 SELECT *
@@ -270,7 +275,9 @@ FORMAT PrettyJSONEachRow
   },
   "dob": "2007-03-31"
 }
+```
 
+```response
 1 row in set. Elapsed: 0.001 sec.
 ```
 
@@ -278,12 +285,11 @@ FORMAT PrettyJSONEachRow
 如果需要区分“值为空”和“值未提供”这两种情况，可以使用 [Nullable](/sql-reference/data-types/nullable) 类型。除非确有必要，否则[应尽量避免使用](/best-practices/select-data-types#avoid-nullable-columns) Nullable 类型，因为这会对这些列的存储和查询性能产生负面影响。
 :::
 
-
 ### 处理新增列 \{#handling-new-columns\}
 
-当 JSON 键是固定不变时，采用结构化方式是最简单的。但即使如此，只要可以事先规划模式的变更（即预先知道会新增哪些键，并可以相应修改模式），仍然可以使用这种方法。
+当 JSON 键是固定不变时，采用结构化方式是最简单的。但即使如此，只要可以事先规划 schema 的变更 (即预先知道会新增哪些键，并可以相应修改 schema) ，仍然可以使用这种方法。
 
-请注意，ClickHouse 默认会忽略那些在负载中提供但在模式中不存在的 JSON 键。请看下面这个经过修改的 JSON 负载，其中新增了一个 `nickname` 键：
+请注意，ClickHouse 默认会忽略那些在载荷中提供但在 schema 中不存在的 JSON 键。请看下面这个经过修改的 JSON 载荷，其中新增了一个 `nickname` 键：
 
 ```json
 {
@@ -322,7 +328,9 @@ FORMAT PrettyJSONEachRow
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -347,7 +355,9 @@ INSERT INTO people FORMAT JSONEachRow
 
 -- select 2 rows
 SELECT id, nickname FROM people
+```
 
+```response
 ┌─id─┬─nickname────┐
 │  2 │ Clicky      │
 │  1 │ no_nickname │
@@ -355,7 +365,6 @@ SELECT id, nickname FROM people
 
 2 rows in set. Elapsed: 0.001 sec.
 ```
-
 
 ## 处理半结构化/动态结构 \{#handling-semi-structured-dynamic-structures\}
 
@@ -493,7 +502,7 @@ SELECT id, nickname FROM people
 这种方法对原型设计和数据工程任务很有用。在生产环境中，仅在必要时将 `JSON` 用于动态子结构。
 
 :::note 性能注意事项
-可以通过跳过（不存储）不需要的 JSON 路径，并使用[类型提示](#using-type-hints-and-skipping-paths)来优化单个 JSON 列。类型提示允许用户为子列显式定义类型，从而在查询时跳过类型推断和间接访问处理。这样可以实现与使用显式 schema 相同的性能。有关更多详细信息，请参阅[“Using type hints and skipping paths”](#using-type-hints-and-skipping-paths)。
+可以通过跳过 (不存储) 不需要的 JSON 路径，并使用[类型提示](#using-type-hints-and-skipping-paths)来优化单个 JSON 列。类型提示允许用户为子列显式定义类型，从而在查询时跳过类型推断和间接访问处理。这样可以实现与使用显式 schema 相同的性能。有关更多详细信息，请参阅[“Using type hints and skipping paths”](#using-type-hints-and-skipping-paths)。
 :::
 
 此处单个 JSON 列的 schema 很简单：
@@ -510,7 +519,7 @@ ORDER BY json.username;
 ```
 
 :::note
-我们在 JSON 定义中为 `username` 列提供了一个[类型提示](#using-type-hints-and-skipping-paths)，因为我们在排序/主键中使用它。这样可以帮助 ClickHouse 确认该列一定不会为 null，并确保它能确定应使用哪个 `username` 子列（对于每种类型可能存在多个子列，否则就会产生歧义）。
+我们在 JSON 定义中为 `username` 列提供了一个[类型提示](#using-type-hints-and-skipping-paths)，因为我们在排序/主键中使用它。这样可以帮助 ClickHouse 确认该列一定不会为 null，并确保它能确定应使用哪个 `username` 子列 (对于每种类型可能存在多个子列，否则就会产生歧义) 。
 :::
 
 可以使用 `JSONAsObject` 格式向上述表中插入行：
@@ -520,19 +529,22 @@ INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.028 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-
 ```sql
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street":"Maple Avenue","suite":"Apt. 402","zipcode":"11223-4567"}],"company":{"catchPhrase":"Streamlined analytics at scale","labels":{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]},"name":"FastData Inc."},"dob":"1992-07-15","id":"2","name":"Analytica Rowe","phone_numbers":["123-456-7890","555-867-5309"],"tags":{"car":{"model":"Audi e-tron","year":"2022"},"hobby":"Running simulations","holidays":[{"location":"Kyoto, Japan","year":"2023"}]},"username":"Analytica","website":"fastdata.io"}
@@ -591,7 +603,9 @@ FORMAT PrettyJsonEachRow
         "website": "String"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.009 sec.
 ```
 
@@ -601,7 +615,9 @@ FORMAT PrettyJsonEachRow
 
 ```sql
 SELECT json.name, json.email FROM people
+```
 
+```response
 ┌─json.name────────────┬─json.email────────────┐
 │ Analytica Rowe       │ ᴺᵁᴸᴸ                  │
 │ Clicky McCliickHouse │ clicky@clickhouse.com │
@@ -612,23 +628,28 @@ SELECT json.name, json.email FROM people
 
 请注意，在某些行中缺失的列会以 `NULL` 返回。
 
-
 另外，对于具有相同类型的路径，会为其分别创建独立的子列。例如，`company.labels.type` 会分别对应类型为 `String` 和 `Array(Nullable(String))` 的子列。在可能的情况下，这两种子列都会被返回，但我们可以使用 `.:` 语法来仅针对特定的子列进行查询：
 
 ```sql
 SELECT json.company.labels.type
 FROM people
+```
 
+```response
 ┌─json.company.labels.type─┐
 │ database systems         │
 │ ['real-time processing'] │
 └──────────────────────────┘
 
 2 rows in set. Elapsed: 0.007 sec.
+```
 
+```sql
 SELECT json.company.labels.type.:String
 FROM people
+```
 
+```response
 ┌─json.company⋯e.:`String`─┐
 │ ᴺᵁᴸᴸ                     │
 │ database systems         │
@@ -643,18 +664,24 @@ FROM people
 -- sub objects will not be returned by default
 SELECT json.company.labels
 FROM people
+```
 
+```response
 ┌─json.company.labels─┐
 │ ᴺᵁᴸᴸ                │
 │ ᴺᵁᴸᴸ                │
 └─────────────────────┘
 
 2 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 -- return sub objects using ^ notation
 SELECT json.^company.labels
 FROM people
+```
 
+```response
 ┌─json.^`company`.labels─────────────────────────────────────────────────────────────────┐
 │ {"employees":"250","founded":"2021","type":"database systems"}                         │
 │ {"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]} │
@@ -662,7 +689,6 @@ FROM people
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### 针对性 JSON 列 \{#targeted-json-column\}
 
@@ -695,7 +721,9 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -706,7 +734,9 @@ INSERT INTO people FORMAT JSONEachRow
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 id:            2
@@ -738,7 +768,6 @@ tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores,
 
 [自省函数](/sql-reference/data-types/newjson#introspection-functions) 可用于确定为 `company.labels` 列推断出的路径和类型。
 
-
 ```sql
 SELECT JSONDynamicPathsWithTypes(company.labels) AS paths
 FROM people
@@ -759,10 +788,11 @@ FORMAT PrettyJsonEachRow
         "type": "String"
  }
 }
-
-2 rows in set. Elapsed: 0.003 sec.
 ```
 
+```response
+2 rows in set. Elapsed: 0.003 sec.
+```
 
 ### 使用类型提示和跳过路径 \{#using-type-hints-and-skipping-paths\}
 
@@ -801,7 +831,9 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -831,12 +863,13 @@ FORMAT PrettyJsonEachRow
         "type": "Array(Nullable(String))"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
 此外，我们可以使用 [`SKIP` 和 `SKIP REGEXP`](/sql-reference/data-types/newjson) 参数跳过 JSON 中不想存储的路径，以尽量减少存储占用，并避免对不需要的路径进行不必要的自动推断。例如，假设我们对上述数据使用单个 JSON 列，则可以跳过 `address` 和 `company` 这两个路径：
-
 
 ```sql
 CREATE TABLE people
@@ -850,7 +883,9 @@ INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -860,7 +895,6 @@ INSERT INTO people FORMAT JSONAsObject
 请注意，这些列已经从数据中被排除：
 
 ```sql
-
 SELECT *
 FROM people
 FORMAT PrettyJSONEachRow
@@ -918,10 +952,11 @@ FORMAT PrettyJSONEachRow
         "website" : "clickhouse.com"
     }
 }
-
-2 rows in set. Elapsed: 0.004 sec.
 ```
 
+```response
+2 rows in set. Elapsed: 0.004 sec.
+```
 
 #### 通过类型提示优化性能 \{#optimizing-performance-with-type-hints\}
 

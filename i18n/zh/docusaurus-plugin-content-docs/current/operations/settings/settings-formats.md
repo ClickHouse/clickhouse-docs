@@ -1759,6 +1759,19 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 
 默认禁用。
 
+## output_format_float_precision \{#output_format_float_precision\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "用于控制浮点数输出中小数位数的新设置"}]}]} />
+
+当该值非 0 时，浮点数输出 (`Float32`、`Float64`、`BFloat16`) 将按小数点后最多保留这么多位进行格式化 (末尾的零会被去掉) 。
+当该值为 0 (默认值) 时，使用最短的往返表示。
+
+对于不适合使用定点表示法的大数值，以及量级非常小、按所请求精度舍入后会丢失所有有效数字的值 (即尾数会变为 `±0`) ，则会改用科学计数法输出。在这些回退情况下，尾数的小数位数可能会超过所请求的位数。
+
+有效范围：0 到 100。
+
 ## output_format_json_array_of_rows \{#output_format_json_array_of_rows\}
 
 <SettingsInfoBlock type="Bool" default_value="0" />
