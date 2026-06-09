@@ -12,6 +12,7 @@ import materializedViewDiagram from '@site/static/images/materialized-view/mater
 import trace_filtering from '@site/static/images/clickstack/performance_guide/trace_filtering.png';
 import trace_filtering_v2 from '@site/static/images/clickstack/performance_guide/trace_filtering_v2.png';
 import select_merge_table from '@site/static/images/clickstack/performance_guide/select_merge_table.png';
+import OtelLogsSchema from '@site/docs/use-cases/observability/clickstack/ingesting-data/_snippets/_schema_otel_logs.md';
 
 import Image from '@theme/IdealImage';
 
@@ -222,13 +223,13 @@ Wait until `is_done = 1` for the corresponding mutation.
 Mutations incur additional IO and CPU overhead and should be used sparingly. In many cases, it's sufficient to allow older data to age out naturally and rely on the performance improvements for newly ingested data.
 :::
 
-## Optimization 2. Adding skip indices {#adding-skip-indices}
+## Optimization 2. Adding skip indexes {#adding-skip-indexes}
 
 After materializing frequently queried attributes, the next optimization is to add data skipping indexes to further reduce the amount of data ClickHouse needs to read during query execution.
 
 Skip indexes allow ClickHouse to avoid scanning entire blocks of data when it can determine that no matching values exist. Unlike traditional secondary indexes, skip indexes operate at the granule level and are most effective when query filters exclude large portions of the dataset. When used correctly, they can significantly accelerate filtering on high-cardinality attributes without changing query semantics.
 
-Consider the default traces schema for ClickStack, which includes skip indices:
+Consider the default traces schema for ClickStack, which includes skip indexes:
 
 ```sql
 CREATE TABLE IF NOT EXISTS otel_traces
@@ -363,11 +364,15 @@ The older `tokenbf_v1` index type (still used in the default traces schema for
 and above. New text-search indexes should use `text(tokenizer = ...)`.
 :::
 
-For a deeper reference on tokenizer options, preprocessors, and verification,
-see ["Data skipping indexes — examples"](/optimize/skipping-indexes/examples#textindex-for-full-text-search)
-and the ["Schema design"](/use-cases/observability/schema-design) guide.
+For a deeper reference on tokenizer options, preprocessors, and verification, see the [full-text search documentation](/engines/table-engines/mergetree-family/textindexes).
 
-### Min-max indices {#min-max-indices}
+#### Text indexes in the default logs schema {#text-indexes-in-default-logs-schema}
+
+The default `otel_logs` schema synced from upstream ships every text index discussed above: `text(tokenizer = 'array')` on `TraceId`, on each `mapKeys(...)` and `*AttributeItems` array, and `text(tokenizer = 'splitByNonAlpha')` on `lower(Body)` for full-text search. For the canonical DDL, see ["Tables and schemas used by ClickStack"](/use-cases/observability/clickstack/ingesting-data/schemas#logs); the same schema is reproduced below.
+
+<OtelLogsSchema />
+
+### Min-max indexes {#min-max-indexes}
 
 Minmax indexes store the minimum and maximum value per granule and are extremely lightweight. They're particularly effective for numeric columns and range queries. While they may not accelerate every query, they're low-cost and almost always worth adding for numeric fields.
 
@@ -460,7 +465,7 @@ Bloom filter size can be reduced by increasing the allowed false-positive rate. 
 
 Tuning Bloom filter parameters is therefore a workload-dependent optimization and should be validated using real query patterns and production-like data volumes.
 
-For further details on skip indices, see the guide ["Understanding ClickHouse data skipping indexes."](/optimize/skipping-indexes/examples)
+For further details on skip indexes, see the guide ["Understanding ClickHouse data skipping indexes."](/optimize/skipping-indexes/examples)
 
 ### Evaluating skip index effectiveness {#evaluating-skip-index-effectiveness}
 
@@ -566,7 +571,9 @@ an `ALIAS` column and is not stored.
 This optimization is automatic. ClickStack ships the necessary columns and
 indexes in the default logs and trace tables, and rewrites Map subscript
 filters at runtime when the connected ClickHouse server supports the underlying
-primitive. If your schema does not contain these columns, read on to enable them.
+primitive. If your schema does not contain these columns, or you have
+additional Map columns you want to accelerate beyond the defaults, read on to
+enable them.
 
 ### Schema {#map-direct-read-schema}
 
@@ -605,7 +612,7 @@ The default ClickStack schemas ship these columns and indexes:
 
 ### Query rewrite {#map-direct-read-rewrite}
 
-When a user filters on a Map subkey through HyperDX or the SDK, ClickStack
+When a user filters on a Map subkey through the ClickStack UI or the SDK, ClickStack
 rewrites:
 
 ```sql
@@ -734,7 +741,7 @@ DROP TABLE otel_logs_temp
 
 However, **the primary key can't be modified on an existing table**. Changing it requires creating a new table.
 
-The following process can be used to ensure the old data can be retained and still queried transparently (using its existing key in HyperDX, if required, while new data is exposed through a new table optimized for the users' access patterns. This approach ensures ingest pipelines don't need to be modified, with data still sent to the default table names, and all changes are transparent to users.
+The following process can be used to ensure the old data can be retained and still queried transparently (using its existing key in the ClickStack UI, if required, while new data is exposed through a new table optimized for the users' access patterns. This approach ensures ingest pipelines don't need to be modified, with data still sent to the default table names, and all changes are transparent to users.
 
 :::note
 Backfilling existing data into a new table is rarely worthwhile at scale. The compute and IO cost is usually high, and doesn't justify the performance benefits. Instead, allow older data to expire [via TTL](/use-cases/observability/clickstack/ttl) while newer data benefits from the improved key.
@@ -770,9 +777,9 @@ ENGINE = Merge(currentDatabase(), 'otel_logs*')
 
 You can now query this table to confirm it returns data from `otel_logs`.
 
-#### Update HyperDX to read from the merge table {#update-hyperdx-to-read-from-merge-tree}
+#### Update the ClickStack UI to read from the merge table {#update-clickstack-ui-to-read-from-merge-tree}
 
-Configure HyperDX to use `otel_logs_merge` as the table for the logs data source.
+Configure the ClickStack UI to use `otel_logs_merge` as the table for the logs data source.
 
 <Image img={select_merge_table} size="lg" alt="Select Merge Table"/>
 
@@ -827,7 +834,7 @@ If TTL policies are in place, which is recommended, tables with older primary ke
 
 The default ClickStack logs schema enables two MergeTree settings that don't
 affect query performance directly, but materially speed up row-detail lookups
-in HyperDX:
+in the ClickStack UI:
 
 ```sql
 SETTINGS enable_block_number_column = 1, enable_block_offset_column = 1
@@ -835,7 +842,7 @@ SETTINGS enable_block_number_column = 1, enable_block_offset_column = 1
 
 With these settings, every row in the table carries an implicit
 `(_block_number, _block_offset)` pair that uniquely identifies it inside a
-part. When you click a log row in HyperDX to open the detail panel, ClickStack
+part. When you click a log row in the ClickStack UI to open the detail panel, ClickStack
 issues a follow-up query to fetch that single row. Without block columns, the
 row's `WHERE` clause must include enough columns — typically the primary key
 plus `Body` and `SeverityText` — to disambiguate the row. With block columns,
