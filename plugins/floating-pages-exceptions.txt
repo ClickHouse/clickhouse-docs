@@ -17,3 +17,4 @@ use-cases/observability/clickstack/managed-onboarding/setting-up-your-openteleme
 use-cases/observability/clickstack/managed-onboarding/monitoring-kubernetes.md
 use-cases/observability/clickstack/managed-onboarding/monitoring-aws-cloudwatch-logs.md
 use-cases/observability/clickstack/managed-onboarding/instrument-application.md
+use-cases/observability/clickstack/managed-onboarding/tuning-clickstack-schema.md
