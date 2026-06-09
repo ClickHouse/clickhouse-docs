@@ -10,6 +10,8 @@ keywords: ['clickstack', 'dashboards', 'drilldown', 'table', 'row click', 'obser
 ---
 
 import Image from '@theme/IdealImage';
+import row_click_drawer from '@site/static/images/clickstack/dashboards/row-click-drawer.png';
+import row_click_drilldown from '@site/static/images/clickstack/dashboards/row-click-drilldown.png';
 
 A table tile can be configured with a row-click action. When a viewer clicks a row, ClickStack opens either the [Search](/use-cases/observability/clickstack/search) page or another dashboard, carrying the values from the clicked row through as filters.
 
@@ -43,7 +45,7 @@ Click **Row Click Action** to open the drawer. A segmented control at the top se
 - **Default** keeps the built-in behavior: clicking a row opens the Search page, filtered by the row's group-by column values and the selected time range. This is the action used when no custom action is set.
 - **Search** and **Dashboard** configure a custom drilldown, described below.
 
-{/* SCREENSHOT: row-click-drawer - Row Click Action drawer in Dashboard mode, populated with the Service Detail target and a ServiceName filter */}
+<Image img={row_click_drawer} alt="Row Click Action drawer in Dashboard mode, with a Service Detail template target and a ServiceName filter templated from the clicked row" size="lg"/>
 
 ### Choose the destination {#choose-destination}
 
@@ -118,9 +120,9 @@ Click **Apply** and save. The expression `ServiceName` matches the custom filter
 
 ### Click a row {#example-click}
 
-Hovering a row reveals a link affordance on the right edge of the table, with a hint describing the action (`Open dashboard "Service Detail"`). Clicking the row opens the `Service Detail` dashboard scoped to that service, with the `ServiceName` filter set to the clicked value.
+Hovering a row reveals a link affordance on the right edge of the table, with a hint describing the action (`Open dashboard`). Clicking the row opens the `Service Detail` dashboard scoped to that service, with the `ServiceName` filter set to the clicked value.
 
-{/* SCREENSHOT: row-click-drilldown - Service Detail dashboard opened after a row click, with the ServiceName filter populated to the clicked service */}
+<Image img={row_click_drilldown} alt="Service Detail dashboard opened after a row click, with the Service Name filter populated to the clicked service" size="lg"/>
 
 </VerticalStepper>
 
