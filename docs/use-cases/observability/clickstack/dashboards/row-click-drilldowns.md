@@ -4,77 +4,110 @@ title: 'Table row-click drilldowns'
 sidebar_label: 'Row-click drilldowns'
 pagination_prev: null
 pagination_next: null
-description: 'Configure table tile row clicks to drill into Search or another dashboard, carrying the clicked row values through as filters'
+description: 'Turn a table tile into an inspection workflow: click a row to drill into a focused dashboard or the underlying logs and traces, scoped to the clicked row'
 doc_type: 'guide'
-keywords: ['clickstack', 'dashboards', 'drilldown', 'table', 'row click', 'observability']
+keywords: ['clickstack', 'dashboards', 'drilldown', 'table', 'row click', 'inspection', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
 import row_click_drawer from '@site/static/images/clickstack/dashboards/row-click-drawer.png';
 import row_click_drilldown from '@site/static/images/clickstack/dashboards/row-click-drilldown.png';
+import row_click_search_drilldown from '@site/static/images/clickstack/dashboards/row-click-search-drilldown.png';
 
-A table tile can be configured with a row-click action. When a viewer clicks a row, ClickStack opens either the [Search](/use-cases/observability/clickstack/search) page or another dashboard, carrying the values from the clicked row through as filters.
+A table tile is often a catalog: one row per service, host, endpoint, or error group. A row-click action turns that catalog into an inspection workflow. You click a row to investigate that one item, and ClickStack carries the row's values through as filters, so you land already scoped to it instead of rebuilding the query by hand.
 
-This is how you build sequenced workflows across dashboards. An overview table with one row per service answers "which service is unhealthy?", and a row click opens a focused search or a per-service dashboard that answers "what is happening inside it?". The viewer moves from the aggregate to the detail in one click, without rebuilding the query by hand.
+A click can land in one of two places:
 
-Row-click actions apply to table tiles only. They are distinct from the chart [drilldown to search](/use-cases/observability/clickstack/dashboards#drilldown-to-search), which opens a context menu when you click a point on a line or bar chart.
+- **another dashboard**, for a focused view of the one item, such as a per-service detail dashboard, or
+- **the underlying events** in [Search](/use-cases/observability/clickstack/search), for the logs or traces behind the row.
 
-## The two actions {#the-two-actions}
+The two use cases below walk through each. Row-click actions apply to table tiles only. They are distinct from the chart [drilldown to search](/use-cases/observability/clickstack/dashboards#drilldown-to-search), which opens a context menu when you click a point on a line or bar chart.
 
-A row-click action opens one of two destinations:
+## Inspect a service in its own dashboard {#inspect-in-dashboard}
 
-- **Search** opens the Search page for a log or trace source. Metric and session sources are not searchable, so they cannot be search targets.
-- **Dashboard** opens another dashboard owned by your team.
-
-For both, you template a set of filters (and, optionally, a global `WHERE` condition) from the clicked row's columns. The rendered filters are applied at the destination, scoping it to the row you clicked.
-
-## Configure a row-click action {#configure}
-
-Row-click actions are configured from the tile editor. There is no separate page for them: you set the action on the table tile itself.
+An overview table with one row per service answers "which service is unhealthy?". A row click can open a per-service dashboard that answers "what is happening inside it?", scoped to the service you clicked. The pattern below pairs a service inventory table with a `Service Detail` dashboard.
 
 <VerticalStepper headerLevel="h3">
 
-### Open a table tile for editing {#open-table-tile}
+### Build the detail dashboard {#detail-dashboard}
 
-Add a new tile or edit an existing one, and set the visualization type to **Table**. A **Row Click Action** button appears in the editor toolbar, next to **Display Settings**. The button is shown for table tiles only, and its label reflects the current action: `Row Click Action: Default`, `Row Click Action: Search`, or `Row Click Action: Dashboard`.
+Create a dashboard named `Service Detail` and add a [custom filter](/use-cases/observability/clickstack/dashboards#custom-filters) with the expression `ServiceName` on your traces source. The dashboard-level filter re-scopes every tile to a single service, so the tiles themselves do not hardcode a service in their queries. Add the per-service tiles you want, such as request and error counts, latency percentiles, a span-duration heatmap, and top error messages.
 
-### Open the row-click action drawer {#open-drawer}
+Save this dashboard first. A template target is resolved by name at click time, so the detail dashboard must exist when a viewer clicks. If you later rename it, update the row-click action to match.
 
-Click **Row Click Action** to open the drawer. A segmented control at the top selects the action:
+### Build the service inventory {#service-inventory}
 
-- **Default** keeps the built-in behavior: clicking a row opens the Search page, filtered by the row's group-by column values and the selected time range. This is the action used when no custom action is set.
-- **Search** and **Dashboard** configure a custom drilldown, described below.
+On an overview dashboard, add a **Table** tile on your traces source grouped by `ServiceName`, with the columns you want per service. For example:
+
+- `Requests`: count of spans.
+- `Errors`: count of spans where `StatusCode` is `STATUS_CODE_ERROR`.
+- `P95 Duration`: the 95th percentile of `Duration`.
+
+Order by `Requests` descending so the busiest services sort to the top.
+
+### Wire up the row click {#wire-dashboard}
+
+On the inventory table, open **Row Click Action**, select **Dashboard**, and choose **Template** with the value `Service Detail`. Add one filter:
+
+- **Expression**: `ServiceName`
+- **Template**: `{{ServiceName}}`
+
+Click **Apply** and save. The expression `ServiceName` matches the custom filter declared on the `Service Detail` dashboard, so the clicked row's service flows straight into that filter. For what each control in the drawer does, see [Set up a row-click action](#set-up).
+
+### Click a row {#click-dashboard}
+
+Hovering a row reveals a link affordance on the right edge of the table, with a hint describing the action (`Open dashboard`). Clicking the row opens the `Service Detail` dashboard scoped to that service, with the `ServiceName` filter set to the clicked value.
+
+<Image img={row_click_drilldown} alt="Service Detail dashboard opened after a row click, with the Service Name filter populated to the clicked service" size="lg"/>
+
+</VerticalStepper>
+
+## Jump from a service to its traces {#jump-to-traces}
+
+Sometimes you do not want another aggregate view, you want the raw events. A **Search** action sends the click to the [Search](/use-cases/observability/clickstack/search) page instead of a dashboard, opening the logs or traces behind the row, already filtered to it.
+
+Starting from the same service inventory table, point its row click at the traces themselves rather than the detail dashboard.
+
+<VerticalStepper headerLevel="h3">
+
+### Point the row click at Search {#wire-search}
+
+On the inventory table, open **Row Click Action** and select **Search**. Choose your traces source (only log and trace sources are listed). Add one filter:
+
+- **Expression**: `ServiceName`
+- **Template**: `{{ServiceName}}`
+
+Click **Apply** and save.
+
+### Click a row {#click-search}
+
+Clicking a service row now opens the Search page on that traces source, filtered to `ServiceName = <service>`, so you land on the spans for just that service over the same time range.
+
+<Image img={row_click_search_drilldown} alt="Search page opened on the traces source after a row click, filtered to the clicked service" size="lg"/>
+
+</VerticalStepper>
+
+The same shape works for any catalog of items. Group the table by an operation (`SpanName`) or an endpoint attribute instead of `ServiceName`, template the filter from that column, and each row click opens the events for that one operation or endpoint. For a group-by on a map attribute, see the alias note under [Validation and limitations](#validation).
+
+## Set up a row-click action {#set-up}
+
+Row-click actions are configured on the table tile itself; there is no separate page for them. Add or edit a tile and set its visualization type to **Table**. A **Row Click Action** button then appears in the editor toolbar, next to **Display Settings**. The button is shown for table tiles only, and its label reflects the current action: `Row Click Action: Default`, `Row Click Action: Search`, or `Row Click Action: Dashboard`. Click it to open the drawer.
 
 <Image img={row_click_drawer} alt="Row Click Action drawer in Dashboard mode, with a Service Detail template target and a ServiceName filter templated from the clicked row" size="lg"/>
 
-### Choose the destination {#choose-destination}
+The drawer offers three actions:
 
-Select **Search** or **Dashboard**, then choose where the click lands:
+- **Default**: the built-in behavior. Clicking a row opens the Search page, filtered by the row's group-by column values and the selected time range. This is what you get when no custom action is set.
+- **Search**: send the click to the Search page for a source you choose.
+- **Dashboard**: send the click to another dashboard owned by your team.
 
-- For **Search**, choose a **Source**. Only log and trace sources are listed; metric and session sources are filtered out because the Search page cannot render them.
-- For **Dashboard**, choose a **Dashboard** from your team's dashboards.
-- In either mode you can instead choose **Template** and enter a [Handlebars](https://handlebarsjs.com/) template that is matched by name to an available source or dashboard. Use a constant name to always resolve the same target (for example `Service Detail`), or reference a row column to pick the target per row (for example `Errors-{{ServiceName}}`).
+For **Search** and **Dashboard**, you choose where the click lands and template the filters carried into it:
 
-### Add filters {#add-filters}
+- **Destination**: pick a specific source or dashboard, or choose **Template** and enter a [Handlebars](https://handlebarsjs.com/) template that is matched by name to an available source or dashboard. Use a constant name to always resolve the same target (for example `Service Detail`), or reference a row column to pick the target per row (for example `Errors-{{ServiceName}}`).
+- **Filters**: click **Add filter** and provide an **Expression** (a column or expression on the destination, for example `ServiceName`) and a **Template** for its value (for example `{{ServiceName}}`). Templates reference the clicked row's columns with `{{columnName}}`. Each filter renders to an `expression IN (value)` condition at the destination, and filters that share an expression are merged. When the destination is a dashboard, the drawer pre-fills one empty filter for each filter that dashboard already declares, so you only fill in the templates.
+- **WHERE** (optional): a Handlebars template rendered into the destination's global filter, in addition to the per-filter conditions above. Set its query language to SQL or Lucene so the destination parses it. For example, the SQL template `ServiceName = '{{ServiceName}}'` scopes the destination to the clicked row's service.
 
-Under **Filters**, click **Add filter** and provide:
-
-- an **Expression**: a column or expression on the destination, for example `ServiceName`.
-- a **Template**: a Handlebars template for its value, for example `{{ServiceName}}`.
-
-Templates reference the clicked row's columns by name with `{{columnName}}`. When the row is clicked, each filter renders to an `expression IN (value)` condition on the destination. Filters that share an expression are merged into a single condition.
-
-When you choose a destination dashboard, ClickStack pre-fills one empty filter for each filter that dashboard already declares, so you only need to fill in the templates.
-
-### Set a global WHERE condition (optional) {#set-where}
-
-The **WHERE** field takes a Handlebars template rendered into the destination's global filter, in addition to the per-filter conditions above. Set the query language to SQL or Lucene so the destination parses it correctly. For example, an SQL template `ServiceName = '{{ServiceName}}'` scopes the destination to the clicked row's service.
-
-### Apply {#apply}
-
-Click **Apply**. ClickStack validates the templates and reports any with invalid syntax. Save the dashboard to persist the action.
-
-</VerticalStepper>
+Click **Apply** to validate the templates (ClickStack reports any with invalid syntax), then save the dashboard to persist the action.
 
 ## How the destination and filters resolve {#how-it-resolves}
 
@@ -86,47 +119,6 @@ When a viewer clicks a row, ClickStack resolves the action against that row:
 :::note Dashboard targets need a matching filter declared
 A filter carried into a dashboard only takes effect if the destination dashboard declares a top-level [custom filter](/use-cases/observability/clickstack/dashboards#custom-filters) whose expression matches the filter's **Expression**. If no declared filter matches, that value is dropped at click time and the destination opens unfiltered for that expression. This is why the dashboard mode pre-fills the destination's declared filters: match the expression, and the destination dropdown auto-populates with the clicked row's value.
 :::
-
-## Example: a service inventory that drills into a service detail dashboard {#example}
-
-A common pairing is a service inventory (one row per service) that drills into a per-service detail dashboard. Clicking a service row opens the detail dashboard scoped to that service.
-
-<VerticalStepper headerLevel="h3">
-
-### Build the detail dashboard {#example-detail}
-
-Create a dashboard named `Service Detail` and add a [custom filter](/use-cases/observability/clickstack/dashboards#custom-filters) with the expression `ServiceName` on your traces source. The dashboard-level filter re-scopes every tile to a single service, so the tiles themselves do not hardcode a service in their queries. Add the per-service tiles you want, such as request and error counts, latency percentiles, a span-duration heatmap, and top error messages.
-
-Save this dashboard first. A template target is resolved by name at click time, so the detail dashboard must exist when a viewer clicks. If you later rename it, update the row-click action to match.
-
-### Build the inventory table {#example-inventory}
-
-On an overview dashboard, add a **Table** tile on your traces source grouped by `ServiceName`, with the columns you want per service. For example:
-
-- `Requests`: count of spans.
-- `Errors`: count of spans where `StatusCode` is `STATUS_CODE_ERROR`.
-- `P95 Duration`: the 95th percentile of `Duration`.
-
-Order by `Requests` descending so the busiest services sort to the top.
-
-### Wire up the row click {#example-wire}
-
-On the table tile, open **Row Click Action**, select **Dashboard**, and choose **Template** with the value `Service Detail`. Add one filter:
-
-- **Expression**: `ServiceName`
-- **Template**: `{{ServiceName}}`
-
-Click **Apply** and save. The expression `ServiceName` matches the custom filter declared on the `Service Detail` dashboard, so the clicked row's service flows straight into that filter.
-
-### Click a row {#example-click}
-
-Hovering a row reveals a link affordance on the right edge of the table, with a hint describing the action (`Open dashboard`). Clicking the row opens the `Service Detail` dashboard scoped to that service, with the `ServiceName` filter set to the clicked value.
-
-<Image img={row_click_drilldown} alt="Service Detail dashboard opened after a row click, with the Service Name filter populated to the clicked service" size="lg"/>
-
-</VerticalStepper>
-
-To drill into Search instead, set the action to **Search**, choose your traces source, and add the same `ServiceName` filter with template `{{ServiceName}}`. Clicking a row then opens the Search page scoped to that source and filtered to the row's service.
 
 ## Validation and limitations {#validation}
 
