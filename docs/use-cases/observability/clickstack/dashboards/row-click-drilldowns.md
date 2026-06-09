@@ -48,6 +48,10 @@ Order by `Requests` descending so the busiest services sort to the top. This tab
 
 <Image img={row_click_catalog} alt="Service inventory table with RED columns (Requests, Errors, P95 Duration) for each service, ordered by request volume, above a requests-over-time trend" size="lg"/>
 
+:::tip Lead with the group-by column
+By default a table renders its group-by column (here `ServiceName`) on the right, after the series. A catalog reads better with each row's identity first. Open the tile's **Display Settings** and turn on **Display Group By Columns on Left** to move the group-by column to the front.
+:::
+
 ### Wire up the row click {#wire-dashboard}
 
 On the inventory table, open **Row Click Action**, select **Dashboard**, and choose **Template** with the value `Service Detail`. Add one filter:
