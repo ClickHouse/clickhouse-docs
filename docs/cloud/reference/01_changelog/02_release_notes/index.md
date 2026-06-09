@@ -1,7 +1,7 @@
 ---
 slug: /cloud/reference/changelogs/release-notes
-title: 'Cloud Release Notes'
-description: 'Landing page for Cloud release notes'
+title: 'Cloud database release changelog'
+description: 'Landing page for the Cloud database release changelog'
 doc_type: 'changelog'
 keywords: ['changelog', 'release notes', 'updates', 'new features', 'cloud changes']
 ---
