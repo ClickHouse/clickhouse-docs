@@ -12,7 +12,7 @@ keywords:
   ]
 ---
 
-| Страница                                                   | Описание                                          |
-| ---------------------------------------------------------- | ------------------------------------------------- |
-| [Cloud Changelog](/whats-new/changelog/cloud)              | Журнал изменений ClickHouse Cloud                 |
-| [Release Notes](/cloud/reference/changelogs/release-notes) | Примечания к релизам всех версий ClickHouse Cloud |
+| Страница                                                                      | Описание                                                                |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [Cloud changelog](/whats-new/changelog/cloud)                                 | Журнал изменений ClickHouse Cloud                                       |
+| [Cloud database release changelog](/cloud/reference/changelogs/release-notes) | Журнал изменений выпусков базы данных для всех релизов ClickHouse Cloud |

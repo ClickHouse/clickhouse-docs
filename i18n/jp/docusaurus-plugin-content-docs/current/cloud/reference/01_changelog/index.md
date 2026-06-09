@@ -12,7 +12,7 @@ keywords:
   ]
 ---
 
-| ページ                                                        | 説明                              |
-| ---------------------------------------------------------- | ------------------------------- |
-| [Cloud Changelog](/whats-new/changelog/cloud)              | ClickHouse Cloud の変更履歴          |
-| [Release Notes](/cloud/reference/changelogs/release-notes) | 全 ClickHouse Cloud リリースのリリースノート |
+| ページ                                                                | 説明                                         |
+| ------------------------------------------------------------------ | ------------------------------------------ |
+| [Cloud 変更履歴](/whats-new/changelog/cloud)                           | ClickHouse Cloud の変更履歴                     |
+| [Cloud データベース リリース変更履歴](/cloud/reference/changelogs/release-notes) | すべての ClickHouse Cloud リリースのデータベース リリース変更履歴 |

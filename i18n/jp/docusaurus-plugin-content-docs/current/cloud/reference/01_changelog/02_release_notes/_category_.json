@@ -1,9 +1,9 @@
 {
   "collapsed": true,
   "collapsible": true,
-  "label": "リリースノート",
+  "label": "Cloud データベースのリリース履歴",
   "link": {
     "id": "cloud/reference/changelog/release_notes/index",
-    "type": "ドキュメント"
+    "type": "doc"
   }
 }

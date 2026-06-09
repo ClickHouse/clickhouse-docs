@@ -12,7 +12,7 @@ keywords:
   ]
 ---
 
-| 页面                                                         | 描述                          |
-| ---------------------------------------------------------- | --------------------------- |
-| [Cloud Changelog](/whats-new/changelog/cloud)              | ClickHouse Cloud 的更新日志      |
-| [Release Notes](/cloud/reference/changelogs/release-notes) | 所有 ClickHouse Cloud 版本的发行说明 |
+| 页面                                                                            | 描述                               |
+| ----------------------------------------------------------------------------- | -------------------------------- |
+| [Cloud changelog](/whats-new/changelog/cloud)                                 | ClickHouse Cloud 的更新日志           |
+| [Cloud database release changelog](/cloud/reference/changelogs/release-notes) | 所有 ClickHouse Cloud 版本的数据库发布更新日志 |

@@ -1081,7 +1081,7 @@ SELECT currentSchemas(true)
 currentUser()
 ```
 
-**別名**: `user`, `current_user`
+**別名**: `session_user`, `user`, `current_user`
 
 **引数**
 

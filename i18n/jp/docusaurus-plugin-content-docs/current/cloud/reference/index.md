@@ -15,6 +15,6 @@ doc_type: 'landing-page'
 | [SharedMergeTree](/cloud/reference/shared-merge-tree)         | ReplicatedMergeTree およびその類似エンジンに代わるクラウドネイティブな SharedMergeTree について解説します。           |
 | [Warehouses](/cloud/reference/warehouses)                     | ClickHouse Cloud における Warehouse とコンピュート分離 (compute-compute separation) とは何かを解説します。 |
 | [BYOC (Bring Your Own Cloud)](/cloud/reference/byoc/overview) | ClickHouse Cloud で利用可能な Bring Your Own Cloud (BYOC) サービスについて解説します。                 |
-| [Changelogs](/cloud/reference/changelogs)                     | Cloud の変更履歴およびリリースノートです。                                                           |
+| [Changelogs](/cloud/reference/changelogs)                     | Cloud の変更履歴および Cloud データベースのリリース変更履歴です。                                            |
 | [Cloud Compatibility](/whats-new/cloud-compatibility)         | ClickHouse Cloud で想定される機能面および運用面の内容についてのガイドです。                                     |
 | [Supported Cloud Regions](/cloud/reference/supported-regions) | AWS、Google、Azure でサポートされているクラウドリージョンの一覧です。                                         |

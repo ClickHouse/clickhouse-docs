@@ -15,6 +15,6 @@ doc_type: 'landing-page'
 | [SharedMergeTree](/cloud/reference/shared-merge-tree)         | ReplicatedMergeTree 및 유사 엔진을 대체하는 클라우드 네이티브 SharedMergeTree를 설명합니다. |
 | [Warehouses](/cloud/reference/warehouses)                     | ClickHouse Cloud에서 Warehouses와 컴퓨트 간 분리가 무엇인지 설명합니다.                |
 | [BYOC (Bring Your Own Cloud)](/cloud/reference/byoc/overview) | ClickHouse Cloud에서 제공되는 Bring Your Own Cloud (BYOC) 서비스에 대해 설명합니다.  |
-| [Changelogs](/cloud/reference/changelogs)                     | Cloud 변경 로그와 릴리스 노트를 제공합니다.                                         |
+| [Changelogs](/cloud/reference/changelogs)                     | Cloud 변경 로그와 Cloud 데이터베이스 릴리스 변경 로그를 제공합니다.                         |
 | [Cloud Compatibility](/whats-new/cloud-compatibility)         | ClickHouse Cloud에서 기능 및 운영 측면에서 기대할 수 있는 내용을 안내합니다.                 |
 | [Supported Cloud Regions](/cloud/reference/supported-regions) | AWS, Google, Azure에서 지원되는 Cloud 리전 목록입니다.                           |

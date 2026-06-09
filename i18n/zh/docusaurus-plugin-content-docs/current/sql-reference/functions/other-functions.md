@@ -1080,7 +1080,7 @@ SELECT currentSchemas(true)
 currentUser()
 ```
 
-**别名**: `user`, `current_user`
+**别名**: `session_user`, `user`, `current_user`
 
 **参数**
 

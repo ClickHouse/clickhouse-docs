@@ -1072,7 +1072,7 @@ SELECT currentSchemas(true)
 
 ## currentUser \{#currentUser\}
 
-Добавленный в версии: v20.1.0
+Добавленный в: v20.1.0
 
 Возвращает имя текущего пользователя.
 В случае распределённого запроса возвращается имя пользователя, который инициировал запрос.
@@ -1083,7 +1083,7 @@ SELECT currentSchemas(true)
 currentUser()
 ```
 
-**Псевдонимы**: `user`, `current_user`
+**Псевдонимы**: `session_user`, `user`, `current_user`
 
 **Аргументы**
 

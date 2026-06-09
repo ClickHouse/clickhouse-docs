@@ -12,7 +12,7 @@ keywords:
   ]
 ---
 
-| Page                                                       | Description                        |
-| ---------------------------------------------------------- | ---------------------------------- |
-| [Cloud Changelog](/whats-new/changelog/cloud)              | ClickHouse Cloud 변경 로그             |
-| [Release Notes](/cloud/reference/changelogs/release-notes) | 모든 ClickHouse Cloud 릴리스에 대한 릴리스 노트 |
+| Page                                                                          | Description                                  |
+| ----------------------------------------------------------------------------- | -------------------------------------------- |
+| [Cloud changelog](/whats-new/changelog/cloud)                                 | ClickHouse Cloud 변경 로그                       |
+| [Cloud database release changelog](/cloud/reference/changelogs/release-notes) | 모든 ClickHouse Cloud 릴리스에 대한 데이터베이스 릴리스 변경 로그 |

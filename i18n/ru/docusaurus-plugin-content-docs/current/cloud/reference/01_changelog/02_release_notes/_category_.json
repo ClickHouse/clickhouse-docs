@@ -1,9 +1,9 @@
 {
   "collapsed": true,
   "collapsible": true,
-  "label": "Примечания к выпуску",
+  "label": "Журнал изменений релизов базы данных Cloud",
   "link": {
     "id": "cloud/reference/changelog/release_notes/index",
-    "type": "Документ"
+    "type": "doc"
   }
 }
