@@ -561,7 +561,7 @@ in size with an increase in volume. Combined with an application-level query
 rewrite, equality filters on any Map subkey become a single `has(...)` call
 backed by that index, with no Map deserialization at query time. Additionally,
 the only storage cost paid is for the text index, as the underlying column is
-an ALIAS column and is not stored.
+an `ALIAS` column and is not stored.
 
 This optimization is automatic. ClickStack ships the necessary columns and
 indexes in the default logs and trace tables, and rewrites Map subscript
@@ -571,7 +571,7 @@ primitive. If your schema does not contain these columns, read on to enable them
 ### Schema {#map-direct-read-schema}
 
 For each Map column you want to accelerate, ClickStack defines an
-`Array(String)` ALIAS column that joins each key and value with `=`:
+`Array(String)` `ALIAS` column that joins each key and value with `=`:
 
 ```sql
 ALTER TABLE otel_logs
@@ -584,7 +584,7 @@ ALIAS arrayMap(
 
 The ALIAS form means the array adds no bytes on disk. ClickHouse computes it at
 query time and at index-build time. A `text(tokenizer = 'array')` skip index on
-the ALIAS column stores one token per `key=value` pair, which ClickHouse uses
+the `ALIAS` column stores one token per `key=value` pair, which ClickHouse uses
 to prune granules without touching the source Map:
 
 ```sql
@@ -645,7 +645,7 @@ servers fall back to the original Map subscript form automatically.
 :::note Why ALIAS, not MATERIALIZED
 The items array is a window onto data that already lives in the Map column.
 Storing it twice — once in the Map, once in the array — would double write I/O
-without unlocking new query patterns. The text index on the ALIAS column is
+without unlocking new query patterns. The text index on the `ALIAS` column is
 built at insert time from the same source data, so the optimization adds only
 the index footprint to disk.
 :::
@@ -856,7 +856,7 @@ MODIFY SETTING enable_block_number_column = 1, enable_block_offset_column = 1
 The settings apply to data written after the `ALTER`. Existing parts continue
 to use the old per-row lookup until they're rewritten by a merge.
 
-## Optimization 5. Exploiting Materialized Views {#exploting-materialied-views}
+## Optimization 5. Exploiting materialized views {#exploiting-materialized-views}
 
 <BetaBadge/>
 
