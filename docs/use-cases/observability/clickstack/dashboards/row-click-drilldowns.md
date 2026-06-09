@@ -34,7 +34,7 @@ An overview table with one row per service answers "which service is unhealthy?"
 
 Create a dashboard named `Service Detail` and add a [custom filter](/use-cases/observability/clickstack/dashboards#custom-filters) with the expression `ServiceName` on your traces source. The dashboard-level filter re-scopes every tile to a single service, so the tiles themselves do not hardcode a service in their queries. Add the per-service views you want: RED key figures (requests, errors, P95 duration), a latency-percentile chart (P50, P95, P99), request rate over time, and a per-endpoint breakdown grouped by `SpanName`.
 
-Save this dashboard first. A template target is resolved by name at click time, so the detail dashboard must exist when a viewer clicks. If you later rename it, update the row-click action to match.
+Save this dashboard first so you can select it as the target in the next step.
 
 ### Build the service inventory {#service-inventory}
 
@@ -54,16 +54,18 @@ By default a table renders its group-by column (here `ServiceName`) on the right
 
 ### Wire up the row click {#wire-dashboard}
 
-On the inventory table, open **Row Click Action**, select **Dashboard**, and choose **Template** with the value `Service Detail`. Add one filter:
+On the inventory table, open **Row Click Action**, select **Dashboard**, and choose `Service Detail` from the dashboard list. Picking the dashboard directly pins it by ID, so the link keeps working if the dashboard is renamed later, and it survives dashboard export and import. (Reserve the **Template** option for choosing a different dashboard per row; see [Set up a row-click action](#set-up).)
 
-- **Expression**: `ServiceName`
+Because `Service Detail` declares a `ServiceName` custom filter, the drawer pre-fills an empty filter for that expression. Fill in its template:
+
+- **Expression**: `ServiceName` (already filled in)
 - **Template**: `{{ServiceName}}`
 
-Click **Apply** and save. The expression `ServiceName` matches the custom filter declared on the `Service Detail` dashboard, so the clicked row's service flows straight into that filter. For what each control in the drawer does, see [Set up a row-click action](#set-up).
+Click **Apply** and save. The clicked row's service now flows into the dashboard's `ServiceName` filter.
 
 ### Click a row {#click-dashboard}
 
-Hovering a row reveals a link affordance on the right edge of the table, with a hint describing the action (`Open dashboard`). Clicking the row opens the `Service Detail` dashboard with its `Service` filter set to the clicked value, so every tile (the RED key figures, the latency percentiles, the per-endpoint breakdown) re-scopes to that one service in a single click.
+Hovering a row reveals a link affordance on the right edge of the table, with a hint describing the action (`Open dashboard "Service Detail"`). Clicking the row opens the `Service Detail` dashboard with its `Service` filter set to the clicked value, so every tile (the RED key figures, the latency percentiles, the per-endpoint breakdown) re-scopes to that one service in a single click.
 
 <Image img={row_click_drilldown} alt="Service Detail dashboard after a row click, with the Service filter set to the clicked service and the RED key figures, latency percentiles, and per-endpoint breakdown all scoped to it" size="lg"/>
 
@@ -100,7 +102,7 @@ The same shape works for any catalog of items. Group the table by an operation (
 
 Row-click actions are configured on the table tile itself; there is no separate page for them. Add or edit a tile and set its visualization type to **Table**. A **Row Click Action** button then appears in the editor toolbar, next to **Display Settings**. The button is shown for table tiles only, and its label reflects the current action: `Row Click Action: Default`, `Row Click Action: Search`, or `Row Click Action: Dashboard`. Click it to open the drawer.
 
-<Image img={row_click_drawer} alt="Row Click Action drawer in Dashboard mode, with a Service Detail template target and a ServiceName filter templated from the clicked row" size="lg"/>
+<Image img={row_click_drawer} alt="Row Click Action drawer in Dashboard mode, with the Service Detail dashboard selected as the target and a ServiceName filter templated from the clicked row" size="lg"/>
 
 The drawer offers three actions:
 
@@ -110,9 +112,13 @@ The drawer offers three actions:
 
 For **Search** and **Dashboard**, you choose where the click lands and template the filters carried into it:
 
-- **Destination**: pick a specific source or dashboard, or choose **Template** and enter a [Handlebars](https://handlebarsjs.com/) template that is matched by name to an available source or dashboard. Use a constant name to always resolve the same target (for example `Service Detail`), or reference a row column to pick the target per row (for example `Errors-{{ServiceName}}`).
-- **Filters**: click **Add filter** and provide an **Expression** (a column or expression on the destination, for example `ServiceName`) and a **Template** for its value (for example `{{ServiceName}}`). Templates reference the clicked row's columns with `{{columnName}}`. Each filter renders to an `expression IN (value)` condition at the destination, and filters that share an expression are merged. When the destination is a dashboard, the drawer pre-fills one empty filter for each filter that dashboard already declares, so you only fill in the templates.
+- **Destination**: pick a specific source or dashboard, or choose **Template** and enter a [Handlebars](https://handlebarsjs.com/) template that is matched by name to an available source or dashboard. Picking a specific target pins it by ID; prefer this for a single fixed destination, since it survives renames and dashboard export and import, and for a dashboard it pre-fills the destination's declared filters. Use **Template** when the target should vary per row, referencing a row column to choose it (for example `Errors-{{ServiceName}}`).
+- **Filters**: click **Add filter** and provide an **Expression** (a column or expression on the destination, for example `ServiceName`) and a **Template** for its value (for example `{{ServiceName}}`). Templates reference the clicked row's columns with `{{columnName}}` (see the note below on which columns are available). Each filter renders to an `expression IN (value)` condition at the destination, and filters that share an expression are merged. When the destination is a dashboard, the drawer pre-fills one empty filter for each filter that dashboard already declares, so you only fill in the templates.
 - **WHERE** (optional): a Handlebars template rendered into the destination's global filter, in addition to the per-filter conditions above. Set its query language to SQL or Lucene so the destination parses it. For example, the SQL template `ServiceName = '{{ServiceName}}'` scopes the destination to the clicked row's service.
+
+:::note Templates reference the table's columns
+A `{{...}}` template resolves against the table tile's own columns: the group-by columns and each series by its name or alias, exactly as they appear in the table. It does not see columns of the underlying source that the table does not select. A value has to be a column in the table to be carried through a click, so `{{ServiceName}}` works because `ServiceName` is the table's group-by column, and an aliased column is referenced by its alias. Referencing a name the table does not have fails the click with `Row has no column '<name>'`.
+:::
 
 Click **Apply** to validate the templates (ClickStack reports any with invalid syntax), then save the dashboard to persist the action.
 
@@ -130,7 +136,7 @@ A filter carried into a dashboard only takes effect if the destination dashboard
 ## Validation and limitations {#validation}
 
 - **Table tiles only.** The **Row Click Action** button appears for table tiles, both the chart-builder table and a [SQL-based](/use-cases/observability/clickstack/dashboards/sql-visualizations) table. Other tile types do not have a row-click action.
-- **Search targets must be log or trace sources.** Metric and session sources are not offered, and are rejected if set through the API.
+- **Search targets must be log or trace sources.** Metric and session sources are not offered, since they cannot be viewed on the search page.
 - **Template names must be unique.** A template target resolves by name, so two sources or two dashboards with the same name cannot be used as a template target.
 - **Dashboard targets need a matching declared filter** for a carried value to take effect (see the note above).
-- **Map-attribute group-by needs a SQL alias.** A chart-builder group-by on a map attribute such as `SpanAttributes['http.route']` produces a result column whose name is the raw expression, which cannot be referenced as `{{...}}` in a template. To drill down from such a column, author the tile as a [SQL-based](/use-cases/observability/clickstack/dashboards/sql-visualizations) table and give the column an explicit `AS` alias, then reference that alias in the template. A group-by on a plain column such as `ServiceName` needs no alias.
+- **Expression group-by columns need an alias.** A group-by on an expression, such as a map attribute `SpanAttributes['http.route']`, produces a result column whose name is the raw expression, which is awkward to reference in a template. Give the column an alias in the chart builder: add `AS <alias>` after the expression in the **Group By** input (for example `SpanAttributes['http.route'] AS Route`), then reference `{{Route}}` in the template. Aggregated series take an alias from their **Alias** field the same way. A group-by on a plain column such as `ServiceName` already has a clean name and needs no alias.
