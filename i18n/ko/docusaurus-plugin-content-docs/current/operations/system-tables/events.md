@@ -1753,6 +1753,10 @@ FileCache::assertCacheCorrectness에 소요되는 시간
 
 생성된 키 디렉터리 개수
 
+### FilesystemCacheDowngradedFileSegments \{#filesystemcachedowngradedfilesegments\}
+
+SLRU 캐시 정책에서 보호 큐에서 probationary 큐로 하향 이동된 파일 세그먼트 수입니다. 이는 캐시 내부에서 이루어지는 이동이며, 축출(eviction)은 아닙니다.
+
 ### FilesystemCacheEvictMicroseconds \{#filesystemcacheevictmicroseconds\}
 
 파일 시스템 캐시 축출 소요 시간
@@ -1764,10 +1768,6 @@ FileCache::assertCacheCorrectness에 소요되는 시간
 ### FilesystemCacheEvictedFileSegments \{#filesystemcacheevictedfilesegments\}
 
 파일 시스템 캐시에서 축출된 파일 세그먼트 수
-
-### FilesystemCacheEvictedFileSegmentsDuringPriorityIncrease \{#filesystemcacheevictedfilesegmentsduringpriorityincrease\}
-
-파일 세그먼트의 우선순위를 높일 때 파일 시스템 캐시에서 축출된 파일 세그먼트 수입니다 (SLRU 캐시 정책에 적용됨)
 
 ### FilesystemCacheEvictionReusedIterator \{#filesystemcacheevictionreusediterator\}
 

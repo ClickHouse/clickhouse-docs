@@ -3753,6 +3753,42 @@ toLastDayOfWeek(toDate('2023-04-23')):                   2023-04-23
 toLastDayOfWeek(toDate('2023-04-23'), 1):                2023-04-23
 ```
 
+## toMicrosecond \{#toMicrosecond\}
+
+도입 버전: v25.7.0
+
+`DateTime64` 값의 마이크로초 구성 요소(0-999999)를 반환합니다.
+
+**구문**
+
+```sql
+toMicrosecond(datetime)
+```
+
+**별칭**: `MICROSECOND`
+
+**인수**
+
+* `datetime` — 마이크로초를 추출할 날짜 및 시간 값입니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+
+**반환 값**
+
+`datetime`의 초에서 마이크로초 값(0 - 999999)을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**사용 예시**
+
+```sql title=Query
+SELECT toMicrosecond(toDateTime64('2023-04-21 10:20:30.456789', 6));
+```
+
+```response title=Response
+┌─toMicrosecond(toDateTime64('2023-04-21 10:20:30.456789', 6))─┐
+│                                                       456789 │
+└──────────────────────────────────────────────────────────────┘
+```
+
 ## toMillisecond \{#toMillisecond\}
 
 도입: v24.2.0
@@ -4003,6 +4039,42 @@ SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
 
 ```response title=Response
 657
+```
+
+## toNanosecond \{#toNanosecond\}
+
+도입 버전: v25.7.0
+
+`DateTime64` 값의 나노초 부분(0-999999999)을 반환합니다.
+
+**구문**
+
+```sql
+toNanosecond(datetime)
+```
+
+**별칭**: `NANOSECOND`
+
+**인수**
+
+* `datetime` — 나노초를 추출할 날짜 및 시간 값입니다. [`DateTime64`](/sql-reference/data-types/datetime64)
+
+**반환 값**
+
+`datetime`의 초 단위 내 나노초 값(0 - 999999999)을 반환합니다. [`UInt32`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**사용 예시**
+
+```sql title=Query
+SELECT toNanosecond(toDateTime64('2023-04-21 10:20:30.123456789', 9));
+```
+
+```response title=Response
+┌─toNanosecond(toDateTime64('2023-04-21 10:20:30.123456789', 9))─┐
+│                                                      123456789 │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 ## toQuarter \{#toQuarter\}

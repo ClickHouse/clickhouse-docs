@@ -1754,6 +1754,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество созданных каталогов ключей
 
+### FilesystemCacheDowngradedFileSegments \{#filesystemcachedowngradedfilesegments\}
+
+Количество сегментов файла, переведённых (перемещённых) из защищённой очереди в очередь probationary при политике кэширования SLRU. Это внутреннее перемещение внутри кэша, а не вытеснение.
+
 ### FilesystemCacheEvictMicroseconds \{#filesystemcacheevictmicroseconds\}
 
 Время вытеснения из файлового кэша
@@ -1765,10 +1769,6 @@ SELECT * FROM system.events LIMIT 5
 ### FilesystemCacheEvictedFileSegments \{#filesystemcacheevictedfilesegments\}
 
 Количество файловых сегментов, вытесненных из файлового кэша
-
-### FilesystemCacheEvictedFileSegmentsDuringPriorityIncrease \{#filesystemcacheevictedfilesegmentsduringpriorityincrease\}
-
-Количество сегментов файлов, вытесненных из файлового кэша при повышении их приоритета (применяется к политике кэширования SLRU)
 
 ### FilesystemCacheEvictionReusedIterator \{#filesystemcacheevictionreusediterator\}
 

@@ -11,147 +11,263 @@ custom_edit_url: null
 hide_advert: true
 ---
 
-import Image from '@theme/IdealImage';
-import clickhouse_cloud_connection from '@site/static/images/use-cases/observability/clickstack-cloud-connect.png';
-import clickstack_cloud from '@site/static/images/use-cases/observability/clickstack-cloud-first-time.png';
-import clickstack_start_ingestion from '@site/static/images/use-cases/observability/clickstack-start-ingestion.png';
-import clickstack_start_exploring from '@site/static/images/use-cases/observability/clickstack-start-exploring.png';
-import clickstack_search from '@site/static/images/use-cases/observability/clickstack-search.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import GatherCredentials from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/managed-onboarding/_snippets/_gather_credentials.md';
+import CreateIngestionUser from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/managed-onboarding/_snippets/_create_ingestion_user.md';
+import ConfirmInUI from '@site/i18n/jp/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/managed-onboarding/_snippets/_confirm_in_ui.md';
 
-このガイドでは、既存の Managed ClickStack サービスに対して OpenTelemetry (OTel) Collector をデプロイし、その後データが実際にその collector を通って流れていることを確認する手順を説明します。
+このガイドでは、既存の Managed ClickStack サービスに対して OpenTelemetry collector をデプロイするか、既存の collector を流用したうえで、データが実際にその collector を通って流れていることを確認する手順を説明します。
 
 collector は **ゲートウェイ** として動作します。つまり、アプリケーション、SDK、エージェント collector が送信先とする単一の OTLP エンドポイントです。ゲートウェイはイベントをバッチ化し、設定した処理を適用して、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) を介して ClickHouse に書き込みます。この構成により、収集ロジックをアプリケーションコードから切り離し、データを生成するワークロードとは独立してインジェストをスケールできます。ゲートウェイ ロールとエージェント ロールの違いについては、[Collector roles](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles) を参照してください。
 
-このガイドは、[Getting started with Managed ClickStack](/use-cases/observability/clickstack/getting-started/managed) ガイドを完了しており、接続に必要な認証情報を手元に用意していることを前提としています。
+:::note 既存の collector
+既存の OpenTelemetry collector を使用している場合は、すでに **ゲートウェイ** ロールとして設定されていることを前提としています。**agent** ロールの collector を再設定するためにこの手順を使用することは推奨しません。
+:::
 
-<VerticalStepper headerLevel="h2">
-  ## 認証情報を確認する \{#gather-credentials\}
+自分の状況に合ったタブを選択してください。
 
-  以下が必要です：
+<Tabs groupId="otel-collector-setup">
+  <TabItem value="new-collector" label="collectorがありません" default>
+    <VerticalStepper headerLevel="h2">
+      ## 認証情報を確認する \{#gather-credentials\}
 
-  * お使いの ClickHouse Cloud サービスの HTTPS エンドポイント (プロトコルとポートを含む) 。たとえば `https://abc123xyz.us-central1.gcp.clickhouse.cloud:8443`。
-  * ClickHouseのインジェスト用ユーザー名とパスワード。
+      <GatherCredentials />
 
-  これらの情報を控えていない場合は、[ClickHouse Cloud console](https://console.clickhouse.cloud) でサービスを開き、**Connect** を選択してください。表示されるダイアログからURLを控えておいてください。以降の手順で、インジェスト専用のユーザーを作成します。
+      ## インジェストユーザーの作成 \{#create-ingestion-user\}
 
-  <Image img={clickhouse_cloud_connection} size="lg" alt="HTTPSエンドポイントとパスワードが表示されたサービス接続パネル" border />
+      <CreateIngestionUser />
 
-  ## インジェストユーザーの作成 \{#create-ingestion-user\}
+      ## collectorのデプロイ \{#deploy-the-collector\}
 
-  `default` を再利用するのではなく、collector 専用のユーザーを作成することをお勧めします。SQL コンソールからサービスに接続し、次のコマンドを実行してください。
+      **OpenTelemetry collector の ClickStack ディストリビューション**をデプロイします。これは Managed ClickStack 向けに事前設定されています。以下の例では、説明を簡単にするため、collectorをローカルで実行し、同じマシンからダミーのテレメトリーを生成します。
 
-  ```sql
-  CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
-  GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
-  ```
+      :::note
+      本番環境では、通常、OpenTelemetry SDK、エージェント、およびその他のcollectorからアクセス可能なKubernetesクラスターまたは仮想マシン上にcollectorをデプロイします。これにより、環境全体のテレメトリーを一元的に収集してClickStackに転送できます。
+      :::
 
-  :::tip
-  上記のスニペット内のパスワードを強力なものに置き換えてください
-  :::
+      collectorにデータを送信するクライアントを認証するための共有シークレットを決め、接続情報および`hyperdx_ingest`ユーザー用のパスワードとともに環境変数としてエクスポートします。
 
-  collectorは初回使用時に、`otel`データベース内にログ、トレース、メトリクスのスキーマを作成します。本番環境でのユーザー設定の詳細については、[本番環境への移行](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)を参照してください。
+      ```shell
+      export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
+      export CLICKHOUSE_USER=hyperdx_ingest
+      export CLICKHOUSE_PASSWORD=ClickH0u3eRocks123!
+      export OTLP_AUTH_TOKEN="a-strong-shared-secret"
+      ```
 
-  ## collectorのデプロイ \{#deploy-the-collector\}
+      ClickStack OTel collectorを実行します：
 
-  OpenTelemetryデータを送信するアプリケーションおよびインフラストラクチャからアクセスできる場所にcollectorをデプロイしてください。以下の例では、説明を簡単にするため、collectorをローカルで実行し、同じマシンからダミーのテレメトリーを生成します。
+      ```shell
+      docker run -d \
+        -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
+        -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+        -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+        -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+        -e HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=otel \
+        -p 4317:4317 \
+        -p 4318:4318 \
+        clickhouse/clickstack-otel-collector:latest
+      ```
 
-  :::note info
-  本番環境では、通常、OpenTelemetry SDK、エージェント、およびその他のcollectorからアクセス可能なKubernetesクラスターまたは仮想マシン上にcollectorをデプロイします。これにより、環境全体のテレメトリーを一元的に収集してClickStackに転送できます。
-  :::
+      collectorは、`4317`でOTLP gRPC、`4318`でOTLP HTTPを公開するようになりました。アプリケーション、SDK、およびagent collectorは、リクエストのheadersに`authorization: $OTLP_AUTH_TOKEN`を含め、これらのポートへ送信してください。
 
-  collectorにデータを送信するクライアントを認証するための共有シークレットを決め、接続情報および`hyperdx_ingest`ユーザー用のパスワードとともに環境変数としてエクスポートします。
+      :::note[本番環境へのデプロイメント]
+      本番環境では、OTLPエンドポイントでTLSを有効にすることを推奨します。[collectorのセキュリティ保護](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector)を参照してください。
+      :::
 
-  ```shell
-  export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
-  export CLICKHOUSE_USER=hyperdx_ingest
-  export CLICKHOUSE_PASSWORD=ClickH0u3eRocks123!
-  export OTLP_AUTH_TOKEN="a-strong-shared-secret"
-  ```
+      ## エンドポイントの確認 \{#verify-the-endpoint\}
 
-  ClickStack OTel collectorを実行します：
+      collectorに対して合成トラフィックを生成し、パイプライン全体が正常に動作することを確認します。ここでは、OTLPのlogs、traces、およびメトリクスを送信する小さなCLIツール[`otelgen`](https://github.com/krzko/otelgen)を使用します。
 
-  ```shell
-  docker run -d \
-    -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
-    -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
-    -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
-    -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
-    -e HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=otel \
-    -p 4317:4317 \
-    -p 4318:4318 \
-    clickhouse/clickstack-otel-collector:latest
-  ```
+      Homebrewで`otelgen`をインストールします：
 
-  collectorは、`4317`でOTLP gRPC、`4318`でOTLP HTTPを公開するようになりました。アプリケーション、SDK、およびagent collectorは、リクエストのheadersに`authorization: $OTLP_AUTH_TOKEN`を含め、これらのポートへ送信してください。
+      ```shell
+      brew install krzko/tap/otelgen
+      ```
 
-  :::note[本番環境へのデプロイメント]
-  本番環境では、OTLPエンドポイントでTLSを有効にすることを推奨します。[collectorのセキュリティ保護](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector)を参照してください。
-  :::
+      またはGoの場合：
 
-  ## エンドポイントの確認 \{#verify-the-endpoint\}
+      ```shell
+      go install github.com/krzko/otelgen@latest
+      ```
 
-  collectorに対して合成トラフィックを生成し、パイプライン全体が正常に動作することを確認します。ここでは、OTLPのlogs、traces、およびメトリクスを送信する小さなCLIツール[`otelgen`](https://github.com/krzko/otelgen)を使用します。
+      少量のログをまとめてcollectorに送信します：
 
-  Homebrewで`otelgen`をインストールします：
+      ```shell
+       otelgen \
+        --otel-exporter-otlp-endpoint localhost:4317 \
+        --insecure \
+        --protocol grpc \
+        --header "authorization=${OTLP_AUTH_TOKEN}" \
+        --rate 5 \
+        --duration 60 \
+        logs multi
+      ```
 
-  ```shell
-  brew install krzko/tap/otelgen
-  ```
+      同等のトレースおよびメトリクスコマンド、またその他の `otelgen` サブコマンドの使い方については、[otelgenを使った合成データ](/use-cases/observability/clickstack/getting-started/otelgen)を参照してください。
 
-  またはGoの場合：
+      ## ClickStack UIで確認する \{#confirm-in-ui\}
 
-  ```shell
-  go install github.com/krzko/otelgen@latest
-  ```
+      <ConfirmInUI />
+    </VerticalStepper>
+  </TabItem>
 
-  少量のログをまとめてcollectorに送信します：
+  <TabItem value="existing-collector" label="collector をすでに用意しています">
+    <VerticalStepper headerLevel="h2">
+      ## 認証情報を確認する \{#gather-credentials-existing\}
 
-  ```shell
-   otelgen \
-    --otel-exporter-otlp-endpoint localhost:4317 \
-    --insecure \
-    --protocol grpc \
-    --header "authorization=${OTLP_AUTH_TOKEN}" \
-    --rate 5 \
-    --duration 60 \
-    logs multi
-  ```
+      <GatherCredentials />
 
-  同等のトレースおよびメトリクスコマンド、またその他の `otelgen` サブコマンドの使い方については、[otelgenを使った合成データ](/use-cases/observability/clickstack/getting-started/otelgen)を参照してください。
+      ## インジェストユーザーの作成 \{#create-ingestion-user-existing\}
 
-  ## ClickStack UIで確認する \{#confirm-in-ui\}
+      <CreateIngestionUser />
 
-  [ClickHouse Cloud コンソール](https://console.clickhouse.cloud)でサービスを開き、左メニューから **ClickStack** を選択し、**Start Ingestion** をクリックします。
+      ## collector の設定を調整する \{#adapt-collector\}
 
-  <Image img={clickstack_cloud} size="lg" alt="ClickStackを起動する" border />
+      既存の collector の設定を拡張し、[ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) を使用して Managed ClickStack にデータを書き込みます。
 
-  collectorの設定はすでに完了しているため、次のステップはスキップできます。**Launch ClickStack** をクリックして続行してください。
+      :::note ClickHouse エクスポーターが必要です
+      独自のディストリビューションを使用している場合は、ClickHouse エクスポーターが含まれていることを確認してください。アップストリームの [contrib image](https://github.com/open-telemetry/opentelemetry-collector-contrib) にはすでに含まれています。
+      :::
 
-  ClickStack が新しいタブで開き、自動的に **Getting Started** ページに遷移します。遷移しない場合は、左側のメニューから **Getting Started** を選択し、**Start Ingestion** をクリックした後、**Next** をクリックしてください。
+      以下は、ClickStack UI が必要とする receiver、プロセッサ、パイプラインとともに ClickHouse エクスポーターを使用したサンプル設定です。Session Replay (`rrweb`) のルーティングパスを含む、ClickStack ディストリビューションの動作に準拠しています。`<clickhouse_cloud_endpoint>` および `<your_password_here>` を、上記で作成した `hyperdx_ingest` ユーザーの認証情報に置き換えてください。
 
-  <Image img={clickstack_start_ingestion} size="lg" alt="ClickStack でインジェストを開始" border />
+      ```yaml
+      receivers:
+        otlp/hyperdx:
+          protocols:
+            grpc:
+              include_metadata: true
+              endpoint: "0.0.0.0:4317"
+            http:
+              cors:
+                allowed_origins: ["*"]
+                allowed_headers: ["*"]
+              include_metadata: true
+              endpoint: "0.0.0.0:4318"
 
-  ClickStack はテーブルとテレメトリーデータを自動的に検出し、次の手順に進むことができます。**Start Exploring** を選択して、トレースデータの探索を開始してください。
+      processors:
+        batch:
+        memory_limiter:
+          # 80% of maximum memory up to 2G, adjust for low memory environments
+          limit_mib: 1500
+          # 25% of limit up to 2G, adjust for low memory environments
+          spike_limit_mib: 512
+          check_interval: 5s
 
-  <Image img={clickstack_start_exploring} size="lg" alt="ClickStack を使い始める" border />
+      connectors:
+        routing/logs:
+          default_pipelines: [logs/out-default]
+          error_mode: ignore
+          table:
+            - context: log
+              statement: route() where IsMatch(attributes["rr-web.event"], ".*")
+              pipelines: [logs/out-rrweb]
 
-  ログソースを `Logs` に切り替え、時間範囲を **Last 15 minutes** に設定してください。`otelgen` からの合成ログが数秒以内に表示されるはずです。
+      exporters:
+        clickhouse:
+          database: otel
+          endpoint: <clickhouse_cloud_endpoint>
+          username: hyperdx_ingest
+          password: <your_password_here>
+          ttl: 720h
+          timeout: 5s
+          retry_on_failure:
+            enabled: true
+            initial_interval: 5s
+            max_interval: 30s
+            max_elapsed_time: 300s
+        clickhouse/rrweb:
+          database: otel
+          endpoint: <clickhouse_cloud_endpoint>
+          username: hyperdx_ingest
+          password: <your_password_here>
+          ttl: 720h
+          logs_table_name: hyperdx_sessions
+          timeout: 5s
+          retry_on_failure:
+            enabled: true
+            initial_interval: 5s
+            max_interval: 30s
+            max_elapsed_time: 300s
 
-  <Image img={clickstack_search} size="lg" alt="ログが表示されているClickStackの検索ビュー" />
+      service:
+        pipelines:
+          traces:
+            receivers: [otlp/hyperdx]
+            processors: [memory_limiter, batch]
+            exporters: [clickhouse]
+          metrics:
+            receivers: [otlp/hyperdx]
+            processors: [memory_limiter, batch]
+            exporters: [clickhouse]
+          logs/in:
+            receivers: [otlp/hyperdx]
+            exporters: [routing/logs]
+          logs/out-default:
+            receivers: [routing/logs]
+            processors: [memory_limiter, batch]
+            exporters: [clickhouse]
+          logs/out-rrweb:
+            receivers: [routing/logs]
+            processors: [memory_limiter, batch]
+            exporters: [clickhouse/rrweb]
+      ```
 
-  何も表示されない場合：
+      注意事項：
 
-  * `otelgen` に渡す `OTLP_AUTH_TOKEN` の値が、collector に設定したものと一致していることを確認してください。
-  * `docker logs -f <container-id>` で collector のログを追い、エクスポートエラーがないか確認します。
-  * `CLICKHOUSE_ENDPOINT` に、プロトコルとポート番号 (`https://...:8443`) の両方が含まれていることを確認してください。
+      * `otlp/hyperdx` receiverは、gRPC (`4317`) と HTTP (`4318`) の両方のポートで待ち受けます。アプリケーションおよびエージェントは、collectorホスト上のこれらのポートを送信先として指定してください。
+      * `clickhouse` exporter は、ClickStack UI が想定するレイアウトに合わせて、ログ、トレース、およびメトリクスを `otel` データベースに書き込みます。`clickhouse/rrweb` exporter は、`routing/logs` コネクタによって `otel.hyperdx_sessions` にルーティングされた Session Replay イベントを処理します。
+      * OTLP receiver の認証は、既存の構成に委ねられます。インジェストトークンを必須にする場合は、collector の[拡張機能](https://opentelemetry.io/docs/collector/configuration/#extensions) (たとえば `bearertokenauth`) または TLS を前段に置くリバースプロキシで設定してください。
 
-  ## 参考資料 \{#further-reading\}
+      新しい設定でcollectorをリロードしてください。アプリケーション、SDK、およびagent collectorは、お使いの環境で想定される認証headerを付与した上で、collectorが公開するOTLPエンドポイントへデータを送信してください。
 
-  このガイドでは、最もシンプルな形式の単一 collector インスタンスについて説明します。次のステップについては、[OpenTelemetry collector リファレンス](/use-cases/observability/clickstack/ingesting-data/otel-collector)をご覧ください。
+      Managed ClickStack に対して OpenTelemetry Collector を設定する方法の詳細については、[OpenTelemetry を使ったデータの取り込み](/use-cases/observability/clickstack/ingesting-data/opentelemetry)を参照してください。
 
-  * [collector の保護](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector) (OTLP エンドポイントで TLS を使用し、最小権限のインジェストユーザーを利用)
-  * ゲートウェイでイベントを[処理、フィルタリング、エンリッチ](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching)。
-  * カスタム receiver、プロセッサ、パイプラインによる[collector 設定の拡張](/use-cases/observability/clickstack/ingesting-data/otel-collector#extending-collector-config)。
-  * [リソースの見積もり](/use-cases/observability/clickstack/ingesting-data/otel-collector#estimating-resources) で、想定スループットにおけるゲートウェイおよびエージェントのデプロイメントに必要なリソースを見積もります。
-  * 本番環境へ移行する際の推奨事項については、[本番環境への移行](/use-cases/observability/clickstack/production)を参照してください。
-</VerticalStepper>
+      ## エンドポイントの確認 \{#verify-the-endpoint-existing\}
+
+      collectorに対して合成トラフィックを生成し、パイプライン全体が正常に動作することを確認します。ここでは、OTLPのlogs、traces、およびメトリクスを送信する小さなCLIツール[`otelgen`](https://github.com/krzko/otelgen)を使用します。
+
+      Homebrewで`otelgen`をインストールします：
+
+      ```shell
+      brew install krzko/tap/otelgen
+      ```
+
+      またはGoの場合：
+
+      ```shell
+      go install github.com/krzko/otelgen@latest
+      ```
+
+      少量のログをまとめて collector に送信します。`<your-collector-host>` を collector がリッスンしているホストに置き換え、`authorization` header (または代替の認証方法) を collector が期待する値に設定してください：
+
+      ```shell
+       otelgen \
+        --otel-exporter-otlp-endpoint <your-collector-host>:4317 \
+        --insecure \
+        --protocol grpc \
+        --header "authorization=<your-auth-token>" \
+        --rate 5 \
+        --duration 60 \
+        logs multi
+      ```
+
+      同等のトレースおよびメトリクスコマンド、またその他の `otelgen` サブコマンドの使い方については、[otelgenを使った合成データ](/use-cases/observability/clickstack/getting-started/otelgen)を参照してください。
+
+      ## ClickStack UIで確認する \{#confirm-in-ui-existing\}
+
+      <ConfirmInUI />
+    </VerticalStepper>
+  </TabItem>
+</Tabs>
+
+## 関連情報 \{#further-reading\}
+
+このガイドでは、最もシンプルな構成として単一の collector インスタンスを扱っています。[OpenTelemetry collector リファレンス](/use-cases/observability/clickstack/ingesting-data/otel-collector) では、次に行うべき内容を紹介しています。
+
+* OTLP エンドポイント での TLS の利用と、最小権限のインジェストユーザーによる [collector の保護](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector)
+* ゲートウェイでのイベントの[処理、フィルタリング、エンリッチ](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching)
+* カスタム receiver、プロセッサ、パイプラインによる [collector 設定の拡張](/use-cases/observability/clickstack/ingesting-data/otel-collector#extending-collector-config)
+* 想定スループットに応じた、ゲートウェイおよび エージェント のデプロイメント向けの[リソース見積もり](/use-cases/observability/clickstack/ingesting-data/otel-collector#estimating-resources)
+* [本番環境への移行](/use-cases/observability/clickstack/production)

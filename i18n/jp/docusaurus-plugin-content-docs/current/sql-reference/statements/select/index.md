@@ -123,6 +123,40 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 `COLUMNS`式に一致したカラムは、異なるデータ型を持つことができます。`COLUMNS`がどのカラムにも一致せず、`SELECT`内の唯一の式である場合、ClickHouseは例外をスローします。
 
+#### `LIKE` または `ILIKE` を使ってカラムを選択する \{#select-columns-with-like-or-ilike\}
+
+`*` の後に、大文字と小文字を区別する `LIKE` または区別しない `ILIKE` を使ってカラム名をパターンに照合し、カラムを選択することもできます。
+
+```sql
+SELECT * ILIKE 'a%' FROM col_names
+```
+
+```text
+┌─aa─┬─ab─┐
+│  1 │  1 │
+└────┴────┘
+```
+
+`LIKE` と `ILIKE` のパターンは、正規表現ではなく `LIKE` の構文に従います。`%` は任意の文字列、`_` は任意の 1 文字に一致し、`\` は `%`、`_`、`\` をエスケープします。両者の違いは、`LIKE` はカラム名を大文字と小文字を区別して照合するのに対し、`ILIKE` は大文字と小文字を区別しない点だけです。たとえば:
+
+```sql
+SELECT * ILIKE 'a_' FROM col_names
+```
+
+このクエリは、`aa` や `ab` など、`a` で始まる2文字のカラム名のカラムを選択します。
+
+`* LIKE` と `* ILIKE` は、修飾付きアスタリスクやカラム変換子にも対応しています。
+
+```sql
+SELECT t.* ILIKE 'a%' EXCEPT (ab) FROM col_names AS t
+```
+
+```text
+┌─aa─┐
+│  1 │
+└────┘
+```
+
 ### アスタリスク \{#asterisk\}
 
 式の代わりに、クエリの任意の部分にアスタリスクを配置できます。クエリが解析されると、アスタリスクはすべてのテーブルカラムのリストに展開されます(`MATERIALIZED`カラムと`ALIAS`カラムを除く)。アスタリスクの使用が正当化されるケースはわずかです:

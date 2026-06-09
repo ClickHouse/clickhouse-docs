@@ -217,6 +217,9 @@ EXTRACT(part FROM date);
 
 `part` 参数指定要从日期中提取的部分。可用值如下：
 
+* `NANOSECOND` — 纳秒。可能的取值范围：0–999999999。
+* `MICROSECOND` — 微秒。可能的取值范围：0–999999。
+* `MILLISECOND` — 毫秒。可能的取值范围：0–999。
 * `SECOND` — 秒。可能的取值范围：0–59。
 * `MINUTE` — 分钟。可能的取值范围：0–59。
 * `HOUR` — 小时。可能的取值范围：0–23。
@@ -233,10 +236,12 @@ EXTRACT(part FROM date);
 * `CENTURY` — 世纪。例如，2024 年属于 21 世纪。
 * `DECADE` — 十年期 (年份除以 10) 。例如，2024 年的十年期值为 202。
 * `MILLENNIUM` — 千年。例如，2024 年属于第 3 个千年。
+* `TIMEZONE_HOUR` — 操作数时区的 UTC 偏移中带符号的小时部分。例如，`+5:30` 返回 `5`，`-3:30` 返回 `-3`。
+* `TIMEZONE_MINUTE` — 操作数时区的 UTC 偏移中带符号的分钟部分。例如，`+5:30` 返回 `30`，`-3:30` 返回 `-30`。
 
 `part` 参数不区分大小写。
 
-`date` 参数指定要处理的日期或时间。支持 [Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md) 和 [DateTime64](../../sql-reference/data-types/datetime64.md) 类型。
+`date` 参数指定要处理的值。支持 [Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md)、[DateTime64](../../sql-reference/data-types/datetime64.md) 和 [Interval](../../sql-reference/data-types/special-data-types/interval.md) 类型。当 `date` 为 `Interval` 时，请求的 `part` 必须与该 Interval 存储的类型一致 (例如，允许使用 `EXTRACT(DAY FROM INTERVAL 5 DAY)`；`EXTRACT(HOUR FROM INTERVAL 5 DAY)` 会被拒绝，因为 ClickHouse 的 Interval 只能存储单一类型) 。`Interval` 操作数的结果为 `Int64`。
 
 示例:
 
@@ -247,6 +252,10 @@ SELECT EXTRACT(YEAR FROM toDate('2017-06-15'));
 SELECT EXTRACT(EPOCH FROM toDateTime('2024-01-15 12:30:45', 'UTC'));
 SELECT EXTRACT(DOW FROM toDate('2024-01-15'));
 SELECT EXTRACT(CENTURY FROM toDate('2024-01-01'));
+SELECT EXTRACT(TIMEZONE_HOUR   FROM toDateTime('2024-01-15 12:00:00', 'Asia/Kolkata'));    -- 5
+SELECT EXTRACT(TIMEZONE_MINUTE FROM toDateTime('2024-01-15 12:00:00', 'Asia/Kolkata'));    -- 30
+SELECT EXTRACT(DAY   FROM INTERVAL 40 DAY);                                                -- 40
+SELECT EXTRACT(MONTH FROM INTERVAL 7 MONTH);                                               -- 7
 ```
 
 在以下示例中，我们创建一个表并向其中插入一个 `DateTime` 类型的值。
@@ -283,7 +292,6 @@ FROM test.Orders;
 ```
 
 更多示例请参见[测试用例](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql)。
-
 
 ### INTERVAL \{#interval\}
 

@@ -695,6 +695,10 @@ ZooKeeper에서 유지되는 임시 노드의 수입니다.
 
 현재 해제 불가능한 상태로 유지되는 파일 시스템 캐시 파일 세그먼트
 
+### FilesystemCacheInvalidatedElements \{#filesystemcacheinvalidatedelements\}
+
+파일 시스템 캐시 우선순위 큐에 있는 무효화된 엔트리(크기가 0이며 제거 대기 상태)의 수
+
 ### FilesystemCacheKeys \{#filesystemcachekeys\}
 
 파일 시스템 캐시의 키 수
@@ -702,6 +706,10 @@ ZooKeeper에서 유지되는 임시 노드의 수입니다.
 ### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
 
 오버커밋 파일 시스템 캐시 eviction 정책이 추적하는 사용자 수
+
+### FilesystemCachePriorityQueueElements \{#filesystemcachepriorityqueueelements\}
+
+제거를 기다리는 무효화된 엔트리를 포함한 파일 시스템 캐시 우선순위 큐의 총 엔트리 수
 
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 

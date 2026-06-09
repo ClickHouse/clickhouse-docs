@@ -123,6 +123,40 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 `COLUMNS` 표현식과 일치하는 컬럼들은 서로 다른 데이터 타입을 가질 수 있습니다. `COLUMNS`가 어떤 컬럼과도 일치하지 않고 `SELECT`에서 유일한 표현식인 경우 ClickHouse는 예외를 발생시킵니다.
 
+#### `LIKE` 또는 `ILIKE`로 컬럼 선택 \{#select-columns-with-like-or-ilike\}
+
+`*` 뒤에 대소문자를 구분하는 `LIKE` 또는 대소문자를 구분하지 않는 `ILIKE`를 사용해 이름이 패턴과 일치하는 컬럼을 선택할 수도 있습니다:
+
+```sql
+SELECT * ILIKE 'a%' FROM col_names
+```
+
+```text
+┌─aa─┬─ab─┐
+│  1 │  1 │
+└────┴────┘
+```
+
+`LIKE` 및 `ILIKE` 패턴은 정규식 시맨틱이 아니라 `LIKE` 시맨틱을 따릅니다. `%` 문자는 임의의 문자 시퀀스와 일치하고, `_` 문자는 임의의 단일 문자와 일치하며, `\`는 `%`, `_`, `\`를 이스케이프합니다. 두 패턴의 유일한 차이점은 `LIKE`는 컬럼 이름을 대소문자를 구분하여 일치시키는 반면 `ILIKE`는 대소문자를 구분하지 않는다는 점입니다. 예시:
+
+```sql
+SELECT * ILIKE 'a_' FROM col_names
+```
+
+이 쿼리는 `aa`, `ab`처럼 `a`로 시작하는 2글자 이름의 컬럼을 선택합니다.
+
+`* LIKE`와 `* ILIKE`는 한정된 와일드카드와 컬럼 변환자도 지원합니다:
+
+```sql
+SELECT t.* ILIKE 'a%' EXCEPT (ab) FROM col_names AS t
+```
+
+```text
+┌─aa─┐
+│  1 │
+└────┘
+```
+
 ### 별표 \{#asterisk\}
 
 쿼리의 어느 부분에서든 표현식 대신 별표를 사용할 수 있습니다. 쿼리가 분석될 때 별표는 모든 테이블 컬럼 목록으로 확장됩니다 (`MATERIALIZED` 및 `ALIAS` 컬럼은 제외). 별표 사용이 적절한 경우는 다음과 같이 몇 가지뿐입니다:

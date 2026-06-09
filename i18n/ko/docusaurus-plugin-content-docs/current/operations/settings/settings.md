@@ -4866,6 +4866,14 @@ DROP 쿼리에서 데이터를 재귀적으로 삭제합니다. 「Directory not
 
 서버에 매우 작은 테이블이 수백만 개에 달하고 이들이 지속적으로 생성 및 삭제되는 경우, 이 설정을 비활성화하는 것이 좋습니다.
 
+## function_base58_max_input_size \{#function_base58_max_input_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "10000"},{"label": "입력 길이에 대해 이차 시간 복잡도를 갖는 `base58Encode`, `base58Decode`, `tryBase58Decode`의 입력 크기를 기본적으로 10 KB로 제한하는 새로운 설정입니다. 호환성 값 `0`은 이 제한을 비활성화하여 임의로 큰 입력을 허용하던 이전 동작을 복원합니다."}]}]} />
+
+`base58Encode`, `base58Decode`, `tryBase58Decode` 함수에서 단일 입력 값의 최대 크기(바이트)입니다. 일반적인 `base58` 변환은 입력 길이에 대해 이차 시간 복잡도를 가지므로, 큰 값 하나만으로도 실행 시간이 매우 길어질 수 있습니다. `base58`은 짧은 데이터(키, 해시, 주소)를 위한 것이므로 기본값인 10 KB는 여유 있는 안전 임계값입니다. `base58Encode`와 `base58Decode`는 이보다 큰 입력에 대해 `TOO_LARGE_STRING_SIZE` 예외를 발생시키고, `tryBase58Decode`는 빈 문자열을 반환합니다. 값이 `0`이면 제한이 비활성화됩니다(이 설정이 도입되기 전의 동작). 선형 시간 복잡도의 `base32` 및 `base64` 함수는 영향을 받지 않습니다.
+
 ## function_date_trunc_return_type_behavior \{#function_date_trunc_return_type_behavior\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -5212,13 +5220,13 @@ HTTP 연결 타임아웃(초 단위)입니다.
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4096"},{"label": "HTTP 연결의 인증 전 메모리 사용량을 제한하기 위해 기본값을 낮췄습니다."}]}]} />
 
-HTTP 헤더 필드 이름의 최대 허용 길이입니다.
+HTTP 요청 헤더, 쿼리 매개변수, 폼 데이터에서 필드 이름의 최대 허용 길이입니다.
 
 ## http_max_field_value_size \{#http_max_field_value_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
-HTTP 헤더 필드 값의 최대 길이입니다.
+HTTP 요청 헤더, 쿼리 매개변수 및 폼 데이터에서 필드 값의 최대 길이입니다.
 
 ## http_max_fields \{#http_max_fields\}
 
@@ -5226,7 +5234,7 @@ HTTP 헤더 필드 값의 최대 길이입니다.
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000"},{"label": "HTTP 연결의 인증 전 메모리 사용량을 제한하기 위해 기본값을 낮췄습니다."}]}]} />
 
-HTTP 헤더 내 필드의 최대 개수
+HTTP 요청 헤더, 쿼리 매개변수 및 폼 데이터에 포함된 필드의 최대 개수.
 
 ## http_max_multipart_form_data_size \{#http_max_multipart_form_data_size\}
 
@@ -13243,6 +13251,18 @@ ClickHouse가 벡터 유사도 인덱스를 사용하는 쿼리에 대해 재점
 <SettingsInfoBlock type="Seconds" default_value="120" />
 
 비동기 `INSERT` 처리가 완료될 때까지 대기하는 시간 제한입니다.
+
+## wait_for_part_commit_in_dependent_materialized_views \{#wait_for_part_commit_in_dependent_materialized_views\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "새로운 설정"}]}]} />
+
+각 싱크가 자체적으로 종속된 materialized view 캐스케이드가 실행되기 전에, 방금 기록한 파트를 먼저 커밋할지 여부를 제어합니다. 이렇게 하면 `JOIN`을 통해 source를 다시 읽는 캐스케이드가 해당 싱크가 기록한 파트를 확인할 수 있습니다.
+
+이 보장은 싱크 인스턴스별로 적용됩니다 — 동일한 `INSERT`의 다른 싱크 스레드가 기록한 파트는 아직 표시되지 않을 수 있습니다. 이 설정은 스레드 간 커밋 순서를 보장하지 않습니다.
+
+종속된 materialized view가 없는 테이블에 대한 삽입에는 영향을 주지 않습니다.
 
 ## wait_for_window_view_fire_signal_timeout \{#wait_for_window_view_fire_signal_timeout\}
 

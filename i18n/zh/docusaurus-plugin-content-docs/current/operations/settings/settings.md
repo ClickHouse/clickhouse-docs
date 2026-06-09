@@ -4851,6 +4851,14 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 如果服务器上有数以百万计、不断被创建和销毁的小表，那么禁用该设置是有意义的。
 
+## function_base58_max_input_size \{#function_base58_max_input_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "10000"},{"label": "新增设置：默认将 `base58Encode`、`base58Decode` 和 `tryBase58Decode` 的输入大小限制为 10 KB，因为这些转换相对于输入长度具有二次复杂度。兼容值 `0` 可禁用此限制，恢复此前接受任意大小输入的行为。"}]}]} />
+
+函数 `base58Encode`、`base58Decode` 和 `tryBase58Decode` 的单个输入值最大大小 (以字节为单位) 。通用 `base58` 转换相对于输入长度具有二次复杂度，因此单个较大的值可能会运行很长时间。`base58` 适用于短数据 (密钥、哈希、地址) ，因此默认的 10 KB 是一个较为宽松的安全阈值。对于更大的输入，`base58Encode` 和 `base58Decode` 会抛出 `TOO_LARGE_STRING_SIZE`，而 `tryBase58Decode` 会返回空字符串。值为 `0` 时会禁用此限制 (即引入此设置之前的行为) 。线性的 `base32` 和 `base64` 函数不受影响。
+
 ## function_date_trunc_return_type_behavior \{#function_date_trunc_return_type_behavior\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -5197,13 +5205,13 @@ HTTP 连接超时时间（秒）。
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4096"},{"label": "降低默认值，以限制 HTTP 连接在身份验证前的内存使用量。"}]}]} />
 
-HTTP 请求头中字段名的最大长度
+HTTP 请求头、查询参数和表单数据中字段名的最大长度。
 
 ## http_max_field_value_size \{#http_max_field_value_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
-HTTP 头部中字段值的最大长度
+HTTP 请求头、查询参数和表单数据中字段值的最大长度
 
 ## http_max_fields \{#http_max_fields\}
 
@@ -5211,7 +5219,7 @@ HTTP 头部中字段值的最大长度
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000"},{"label": "降低默认值，以限制 HTTP 连接在身份验证前的内存使用量。"}]}]} />
 
-HTTP 请求头中的最大字段数
+HTTP 请求头、查询参数和表单数据中的最大字段数。
 
 ## http_max_multipart_form_data_size \{#http_max_multipart_form_data_size\}
 
@@ -13221,6 +13229,18 @@ ORDER BY 子句中位于 WITH FILL 列之前的列构成排序前缀。具有不
 <SettingsInfoBlock type="Seconds" default_value="120" />
 
 等待异步插入处理完成的超时时间
+
+## wait_for_part_commit_in_dependent_materialized_views \{#wait_for_part_commit_in_dependent_materialized_views\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "新设置"}]}]} />
+
+控制每个 sink 是否要在其自身依赖的 materialized view 级联运行前，先提交刚写入的 part，这样通过 `JOIN` 从 source 回读的级联就能看到该 sink 写入的 part。
+
+此保证仅适用于单个 sink 实例——同一 `INSERT` 的其他 sink 线程写入的 part 此时可能仍不可见。该设置不保证跨线程的提交顺序。
+
+对于插入到没有依赖 materialized view 的表的操作，此设置不起作用。
 
 ## wait_for_window_view_fire_signal_timeout \{#wait_for_window_view_fire_signal_timeout\}
 

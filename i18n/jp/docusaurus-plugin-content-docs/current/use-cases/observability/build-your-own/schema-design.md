@@ -15,7 +15,7 @@ import Image from '@theme/IdealImage';
 
 以下の理由から、ログおよびトレース用の独自スキーマを常に作成することを推奨します。
 
-* **プライマリキーの選択** - デフォルトスキーマは、特定のアクセスパターン向けに最適化された `ORDER BY` を使用しています。あなたのアクセスパターンがこれと一致する可能性は低いでしょう。
+* **主キーの選択** - デフォルトスキーマは、特定のアクセスパターン向けに最適化された `ORDER BY` を使用しています。あなたのアクセスパターンがこれと一致する可能性は低いでしょう。
 * **構造の抽出** - 既存のカラム、たとえば `Body` カラムから新しいカラムを抽出したくなる場合があります。これは マテリアライズドカラム (および、より複雑なケースでは materialized views) を使用することで実現できます。このためにはスキーマ変更が必要です。
 * **マップの最適化** - デフォルトスキーマでは、属性の保存に マップ 型を使用しています。これらのカラムは任意のメタデータを保存できます。イベントからのメタデータは事前に定義されないことが多く、そのため ClickHouse のような強い型付けのデータベースでは他の方法で保存できないため、これは重要な機能です。一方で、マップ のキーおよびその値へのアクセスは、通常のカラムへのアクセスほど効率的ではありません。この問題には、スキーマを変更し、もっとも頻繁にアクセスされる マップ のキーをトップレベルのカラムとして定義することで対処します。詳しくは [&quot;Extracting structure with SQL&quot;](#extracting-structure-with-sql) を参照してください。これにはスキーマ変更が必要です。
 * **マップ キーアクセスの簡素化** - マップ 内のキーにアクセスするには、より冗長な構文が必要です。これはエイリアスを使用することで軽減できます。クエリを簡略化するには [&quot;Using Aliases&quot;](#using-aliases) を参照してください。
@@ -25,6 +25,13 @@ import Image from '@theme/IdealImage';
 *上記の各ユースケースについて、以下で詳細に説明します。*
 
 **重要:** ユーザーは最適な圧縮率とクエリ性能を得るためにスキーマを拡張および変更することが推奨されますが、可能な限りコアカラムについては OTel のスキーマ命名に従うべきです。ClickHouse Grafana プラグインは、クエリ作成を支援するために、Timestamp や SeverityText など、いくつかの基本的な OTel カラムが存在することを前提としています。ログおよびトレースに必要なカラムは、それぞれ [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) および [こちら](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure) に記載されています。これらのカラム名は、プラグイン設定でデフォルト値を上書きすることで変更することもできます。
+
+:::tip ClickStack は最適化済みのデフォルトスキーマを提供します
+**ClickStack は、ログ、トレース、メトリクス向けの最適化済みデフォルトスキーマをそのまま利用できる形で提供しています。** これらには ClickHouse の最新機能 (全文検索および map-key 検索用のテキスト索引、直接読み取りフィルタリングのためのマテリアライズドカラムと ALIAS Array、block-number による行ルックアップ) が取り入れられており、ログおよびトレースのワークロードで、すぐに高い性能を発揮できるようベンチマークされています。独自設計を行う際の参照点として活用してください。
+
+* 標準的な DDL: [ClickStack で使用されるテーブルとスキーマ](/use-cases/observability/clickstack/ingesting-data/schemas)。
+* 最適化レシピ: [ClickStack のパフォーマンスチューニング](/use-cases/observability/clickstack/performance_tuning)。このページの推奨事項の多く (マテリアライズドカラム、スキップ索引、主キーの選択、projections、materialized views) は、自前で構築する構成にもそのまま適用できます。
+  :::
 
 ## SQL を使った構造の抽出 \{#extracting-structure-with-sql\}
 

@@ -3774,6 +3774,42 @@ toLastDayOfWeek(toDate('2023-04-23')):                   2023-04-23
 toLastDayOfWeek(toDate('2023-04-23'), 1):                2023-04-23
 ```
 
+## toMicrosecond \{#toMicrosecond\}
+
+引入版本：v25.7.0
+
+返回 `DateTime64` 值的微秒部分 (0-999999) 。
+
+**语法**
+
+```sql
+toMicrosecond(datetime)
+```
+
+**别名**: `MICROSECOND`
+
+**参数**
+
+* `datetime` — 要提取微秒的日期时间。[`DateTime64`](/sql-reference/data-types/datetime64)
+
+**返回值**
+
+返回 `datetime` 这一秒中的微秒值 (0 - 999999) 。[`UInt32`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**用法示例**
+
+```sql title=Query
+SELECT toMicrosecond(toDateTime64('2023-04-21 10:20:30.456789', 6));
+```
+
+```response title=Response
+┌─toMicrosecond(toDateTime64('2023-04-21 10:20:30.456789', 6))─┐
+│                                                       456789 │
+└──────────────────────────────────────────────────────────────┘
+```
+
 ## toMillisecond \{#toMillisecond\}
 
 引入版本：v24.2.0
@@ -4024,6 +4060,42 @@ SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
 
 ```response title=Response
 657
+```
+
+## toNanosecond \{#toNanosecond\}
+
+引入版本：v25.7.0
+
+返回 `DateTime64` 值的纳秒部分 (0-999999999) 。
+
+**语法**
+
+```sql
+toNanosecond(datetime)
+```
+
+**别名**: `NANOSECOND`
+
+**参数**
+
+* `datetime` — 要提取纳秒的日期时间。[`DateTime64`](/sql-reference/data-types/datetime64)
+
+**返回值**
+
+返回 `datetime` 所在秒中的纳秒值 (0 - 999999999) 。[`UInt32`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+SELECT toNanosecond(toDateTime64('2023-04-21 10:20:30.123456789', 9));
+```
+
+```response title=Response
+┌─toNanosecond(toDateTime64('2023-04-21 10:20:30.123456789', 9))─┐
+│                                                      123456789 │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 ## toQuarter \{#toQuarter\}

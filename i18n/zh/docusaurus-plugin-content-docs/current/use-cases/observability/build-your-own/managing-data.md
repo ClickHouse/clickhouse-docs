@@ -12,6 +12,13 @@ import Image from '@theme/IdealImage';
 
 面向可观测性的 ClickHouse 部署必然会涉及大型数据集，因此需要对其进行管理。ClickHouse 提供了多项功能来帮助管理数据。
 
+:::tip ClickStack 提供经过优化的默认 schema
+**ClickStack 为日志、链路追踪和指标提供开箱即用的 schema**，其中集成了 ClickHouse 的最新特性 (用于全文搜索和 map 键搜索的文本索引、用于直接读取过滤的物化列和 ALIAS 数组、基于块编号的行查找) ，并且已经过基准测试，可为日志和链路追踪工作负载提供出色的开箱即用性能。可将其作为你自行设计时的参考起点。
+
+* 规范 DDL：[ClickStack 使用的表和 schema](/use-cases/observability/clickstack/ingesting-data/schemas)。
+* 优化方案：[ClickStack 性能调优](/use-cases/observability/clickstack/performance_tuning)。该页面中的许多建议 (物化列、跳过索引、主键选择、投影、materialized view) 都可直接应用于自行构建的部署。
+  :::
+
 ## 分区 \{#partitions\}
 
 在 ClickHouse 中，分区允许根据某一列或 SQL 表达式在磁盘上对数据进行逻辑划分。通过对数据进行逻辑分离，可以对每个分区独立执行操作，例如删除。这样用户就可以按时间在不同存储层之间高效移动分区 (以及其数据子集) ，或者[在集群中过期数据 / 高效删除数据](/sql-reference/statements/alter/partition)。

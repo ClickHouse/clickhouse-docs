@@ -695,6 +695,10 @@ ZooKeeper 中持有的临时节点数。
 
 当前被标记为不可释放的文件系统缓存文件段
 
+### FilesystemCacheInvalidatedElements \{#filesystemcacheinvalidatedelements\}
+
+文件系统缓存优先队列中已失效 (大小为 0、待移除) 的条目数
+
 ### FilesystemCacheKeys \{#filesystemcachekeys\}
 
 文件系统缓存中的键数
@@ -702,6 +706,10 @@ ZooKeeper 中持有的临时节点数。
 ### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
 
 被 overcommit 文件系统缓存淘汰策略跟踪的用户数
+
+### FilesystemCachePriorityQueueElements \{#filesystemcachepriorityqueueelements\}
+
+文件系统缓存优先队列中的条目总数，包括已失效但尚未移除的条目
 
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 

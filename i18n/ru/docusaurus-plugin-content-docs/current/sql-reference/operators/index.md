@@ -217,6 +217,9 @@ EXTRACT(part FROM date);
 
 Параметр `part` указывает, какую часть даты нужно извлечь. Доступны следующие значения:
 
+* `NANOSECOND` — наносекунда. Возможные значения: 0–999999999.
+* `MICROSECOND` — микросекунда. Возможные значения: 0–999999.
+* `MILLISECOND` — миллисекунда. Возможные значения: 0–999.
 * `SECOND` — секунда. Возможные значения: 0–59.
 * `MINUTE` — минута. Возможные значения: 0–59.
 * `HOUR` — час. Возможные значения: 0–23.
@@ -225,7 +228,7 @@ EXTRACT(part FROM date);
 * `MONTH` — номер месяца. Возможные значения: 1–12.
 * `QUARTER` — квартал. Возможные значения: 1–4.
 * `YEAR` — год.
-* `EPOCH` — временная метка Unix (секунды с 1970-01-01 00:00:00 UTC). Примечание: для `DateTime64` дробная часть секунды отбрасывается.
+* `EPOCH` — Unix-временная метка (секунды с 1970-01-01 00:00:00 UTC). Примечание: для `DateTime64` дробная часть секунды отбрасывается.
 * `DOW` — день недели (совместимо с PostgreSQL). 0 = воскресенье, 6 = суббота.
 * `DOY` — день года. Возможные значения: 1–366.
 * `ISODOW` — день недели по ISO. 1 = понедельник, 7 = воскресенье.
@@ -233,10 +236,12 @@ EXTRACT(part FROM date);
 * `CENTURY` — век. Например, 2024 год относится к 21-му веку.
 * `DECADE` — десятилетие (год, делённый на 10). Например, для 2024 года десятилетие равно 202.
 * `MILLENNIUM` — тысячелетие. Например, 2024 год относится к 3-му тысячелетию.
+* `TIMEZONE_HOUR` — знаковая составляющая в часах смещения от UTC для часового пояса операнда. Например, `+5:30` возвращает `5`, `-3:30` возвращает `-3`.
+* `TIMEZONE_MINUTE` — знаковая составляющая в минутах смещения от UTC для часового пояса операнда. Например, `+5:30` возвращает `30`, `-3:30` возвращает `-30`.
 
 Параметр `part` не зависит от регистра.
 
-Параметр `date` задает дату или время, которое нужно обработать. Поддерживаются типы [Date](../../sql-reference/data-types/date.md), [Date32](../../sql-reference/data-types/date32.md), [DateTime](../../sql-reference/data-types/datetime.md) и [DateTime64](../../sql-reference/data-types/datetime64.md).
+Параметр `date` задает значение, которое нужно обработать. Поддерживаются типы [Date](../../sql-reference/data-types/date.md), [Date32](../../sql-reference/data-types/date32.md), [DateTime](../../sql-reference/data-types/datetime.md), [DateTime64](../../sql-reference/data-types/datetime64.md) и [Interval](../../sql-reference/data-types/special-data-types/interval.md). Если `date` имеет тип `Interval`, запрошенная часть `part` должна соответствовать виду, хранящемуся в интервале (например, `EXTRACT(DAY FROM INTERVAL 5 DAY)` допустимо; `EXTRACT(HOUR FROM INTERVAL 5 DAY)` отклоняется, поскольку интервалы ClickHouse поддерживают только один вид). Результат для операнда `Interval` имеет тип `Int64`.
 
 Примеры:
 
@@ -247,6 +252,10 @@ SELECT EXTRACT(YEAR FROM toDate('2017-06-15'));
 SELECT EXTRACT(EPOCH FROM toDateTime('2024-01-15 12:30:45', 'UTC'));
 SELECT EXTRACT(DOW FROM toDate('2024-01-15'));
 SELECT EXTRACT(CENTURY FROM toDate('2024-01-01'));
+SELECT EXTRACT(TIMEZONE_HOUR   FROM toDateTime('2024-01-15 12:00:00', 'Asia/Kolkata'));    -- 5
+SELECT EXTRACT(TIMEZONE_MINUTE FROM toDateTime('2024-01-15 12:00:00', 'Asia/Kolkata'));    -- 30
+SELECT EXTRACT(DAY   FROM INTERVAL 40 DAY);                                                -- 40
+SELECT EXTRACT(MONTH FROM INTERVAL 7 MONTH);                                               -- 7
 ```
 
 В следующем примере создается таблица, и в неё вставляется значение типа `DateTime`.
@@ -283,7 +292,6 @@ FROM test.Orders;
 ```
 
 Дополнительные примеры можно найти в [tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql).
-
 
 ### INTERVAL \{#interval\}
 

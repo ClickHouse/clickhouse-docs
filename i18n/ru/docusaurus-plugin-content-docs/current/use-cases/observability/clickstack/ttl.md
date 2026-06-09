@@ -11,58 +11,25 @@ keywords: ['clickstack', 'ttl', 'data retention', 'lifecycle', 'storage manageme
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
+import OtelLogsSchema from '@site/i18n/ru/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/ingesting-data/_snippets/_schema_otel_logs.md';
 
 ## TTL в ClickStack \{#ttl-clickstack\}
 
-Time-to-Live (TTL) — это ключевая функция в ClickStack для эффективного управления хранением и жизненным циклом данных, особенно с учётом того, что постоянно генерируются огромные объёмы данных. TTL обеспечивает автоматическое истечение срока хранения и удаление более старых данных, гарантируя оптимальное использование хранилища и поддержание производительности без ручного вмешательства. Эта возможность критически важна для того, чтобы база данных оставалась компактной, снижала затраты на хранение и обеспечивала высокую скорость и эффективность запросов за счёт работы преимущественно с наиболее актуальными и свежими данными. Кроме того, она помогает соблюдать политики хранения данных за счёт систематического управления жизненным циклом данных, тем самым повышая общую устойчивость и масштабируемость решения для обсервабилити.
+Time-to-Live (TTL) — это важная возможность ClickStack для эффективного хранения данных и управления ими, особенно с учётом того, что постоянно генерируются огромные объёмы данных. TTL позволяет автоматически удалять устаревшие данные, обеспечивая оптимальное использование хранилища и поддержание производительности без ручного вмешательства. Эта возможность необходима для того, чтобы база данных оставалась компактной, снижались затраты на хранение, а запросы оставались быстрыми и эффективными, поскольку они работают с наиболее релевантными и свежими данными. Кроме того, она помогает соблюдать политики хранения данных за счёт систематического управления жизненным циклом данных, тем самым повышая общую устойчивость и масштабируемость решения для обсервабилити.
 
-**По умолчанию ClickStack хранит данные в течение 3 дней. Чтобы изменить это, см. раздел [«Modifying TTL»](#modifying-ttl).**
+**По умолчанию ClickStack хранит данные 3 дня. Чтобы изменить это, см. [&quot;Изменение TTL&quot;](#modifying-ttl).**
 
-TTL управляется на уровне таблицы в ClickHouse. Например, ниже показана схема таблицы логов:
+В ClickHouse TTL управляется на уровне таблицы. Например, ниже показана схема логов по умолчанию; `${TABLES_TTL}` заменяется на настроенный срок хранения (3 дня, если он не изменён) при создании таблицы коллектором:
 
-```sql
-CREATE TABLE default.otel_logs
-(
-    `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-    `TimestampTime` DateTime DEFAULT toDateTime(Timestamp),
-    `TraceId` String CODEC(ZSTD(1)),
-    `SpanId` String CODEC(ZSTD(1)),
-    `TraceFlags` UInt8,
-    `SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
-    `SeverityNumber` UInt8,
-    `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-    `Body` String CODEC(ZSTD(1)),
-    `ResourceSchemaUrl` LowCardinality(String) CODEC(ZSTD(1)),
-    `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `ScopeSchemaUrl` LowCardinality(String) CODEC(ZSTD(1)),
-    `ScopeName` String CODEC(ZSTD(1)),
-    `ScopeVersion` LowCardinality(String) CODEC(ZSTD(1)),
-    `ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
-    INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_scope_attr_key mapKeys(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_scope_attr_value mapValues(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_log_attr_key mapKeys(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_log_attr_value mapValues(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_body Body TYPE tokenbf_v1(32768, 3, 0) GRANULARITY 8
-)
-ENGINE = MergeTree
-PARTITION BY toDate(TimestampTime)
-PRIMARY KEY (ServiceName, TimestampTime)
-ORDER BY (ServiceName, TimestampTime, Timestamp)
-TTL TimestampTime + toIntervalDay(3)
-SETTINGS ttl_only_drop_parts = 1
-```
+<OtelLogsSchema />
 
-Разбиение на секции (partitioning) в ClickHouse позволяет логически разделять данные на диске в соответствии со столбцом или SQL-выражением. Благодаря логическому разделению данных каждая секция может обрабатываться независимо, например удаляться при истечении срока жизни согласно политике TTL.
+Партиционирование в ClickHouse позволяет логически разделять данные на диске по столбцу или SQL-выражению. Благодаря такому логическому разделению с каждой партицией можно работать независимо, например удалять её, когда срок хранения истекает в соответствии с политикой TTL.
 
-Как показано в приведённом выше примере, разбиение задаётся для таблицы при её создании с помощью выражения `PARTITION BY`. В нём может использоваться любое SQL-выражение над одним или несколькими столбцами, результат которого определяет, в какую секцию будет помещена строка. В результате данные логически связываются (через общий префикс имени каталога) с каждой секцией на диске, после чего могут запрашиваться отдельно. В приведённом выше примере схема `otel_logs` по умолчанию разбивает данные по дням, используя выражение `toDate(Timestamp).` При вставке строк в ClickHouse это выражение вычисляется для каждой строки и направляет её в соответствующую секцию, если она уже существует (если строка первая за день, секция будет создана). Для получения дополнительных сведений о разбиении и других вариантах его применения см. [&quot;Части таблицы (Table Partitions)&quot;](/partitions).
+Как показано в приведённом выше примере, партиционирование задаётся для таблицы при её первоначальном определении с помощью выражения `PARTITION BY`. Это выражение может содержать SQL-выражение для любого столбца или набора столбцов; его результат определяет, в какую партицию будет отправлена строка. В результате данные логически связываются (через общий префикс имени папки) с каждой партицией на диске, после чего их можно запрашивать изолированно. В приведённом выше примере схема `otel_logs` по умолчанию партиционируется по дням с использованием выражения `toDate(Timestamp)`. По мере вставки строк в ClickHouse это выражение будет вычисляться для каждой строки, и строка будет направляться в соответствующую партицию, если она существует (если строка для данного дня первая, партиция будет создана). Дополнительные сведения о партиционировании и других вариантах его применения см. в разделе [&quot;Партиции таблицы&quot;](/partitions).
 
-<Image img={observability_14} alt="Секции (Partitions)" size="lg" />
+<Image img={observability_14} alt="Partitions" size="lg" />
 
-Схема таблицы также включает `TTL TimestampTime + toIntervalDay(3)` и установку `ttl_only_drop_parts = 1`. Первое выражение гарантирует, что данные будут удалены, как только их возраст превысит 3 дня. Настройка `ttl_only_drop_parts = 1` обеспечивает удаление только тех частей данных, в которых все данные уже просрочены (в отличие от попытки частичного удаления строк). Поскольку секционирование гарантирует, что данные за разные дни никогда не «сливаются», данные можно эффективно удалять.
+Схема таблицы также включает `TTL toDateTime(Timestamp) + ${TABLES_TTL}` и установку `ttl_only_drop_parts = 1`. Первое выражение гарантирует, что данные будут удалены, как только их возраст превысит настроенный TTL (по умолчанию 3 дня). Настройка `ttl_only_drop_parts = 1` обеспечивает удаление только тех частей данных, в которых все данные уже просрочены (в отличие от попытки частичного удаления строк). Поскольку секционирование гарантирует, что данные за разные дни никогда не «сливаются», данные можно эффективно удалять.
 
 :::important `ttl_only_drop_parts`
 Мы рекомендуем всегда использовать настройку [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts). Когда эта настройка включена, ClickHouse удаляет целую часть, когда все строки в ней просрочены. Удаление целых частей вместо частичной очистки строк с истекшим TTL (достигаемой через ресурсоёмкие мутации при `ttl_only_drop_parts=0`) позволяет использовать меньшее значение `merge_with_ttl_timeout` и снижает влияние на производительность системы. Если данные секционируются по той же единице, по которой вы выполняете истечение TTL, например по дню, то части естественным образом будут содержать данные только из заданного интервала. Это обеспечит эффективное применение `ttl_only_drop_parts=1`.

@@ -4865,6 +4865,14 @@ DROP クエリ時にデータを再帰的に削除します。'Directory not emp
 
 サーバー上でごく小さなテーブルが数百万単位で継続的に作成および削除されている場合には、これを無効にするのが妥当です。
 
+## function_base58_max_input_size \{#function_base58_max_input_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "10000"},{"label": "既定で `base58Encode`、`base58Decode`、`tryBase58Decode` の入力サイズを 10 KB に制限する新しい設定です（これらの変換は入力長に対して二次時間で増加します）。互換性のために値 `0` を指定すると制限が無効になり、任意の大きさの入力を受け付けていた以前の動作に戻ります。"}]}]} />
+
+関数 `base58Encode`、`base58Decode`、`tryBase58Decode` に対する単一の入力値の最大サイズを、バイト単位で指定します。汎用の `base58` 変換は入力長に対して二次時間で増加するため、大きな値が 1 つあるだけでも非常に長時間実行されることがあります。`base58` は短いデータ (キー、ハッシュ、アドレス) 向けであるため、既定値の 10 KB は余裕を持たせた安全しきい値です。`base58Encode` と `base58Decode` はこれを超える入力に対して `TOO_LARGE_STRING_SIZE` 例外をスローし、`tryBase58Decode` は空文字列を返します。値 `0` を指定すると制限は無効になります (この設定が導入される前の動作です) 。線形の `base32` 関数および `base64` 関数には影響しません。
+
 ## function_date_trunc_return_type_behavior \{#function_date_trunc_return_type_behavior\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -5211,13 +5219,13 @@ HTTP 接続タイムアウト（秒単位）。
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4096"},{"label": "HTTP 接続における認証前のメモリ使用量を制限するため、デフォルト値を引き下げました。"}]}]} />
 
-HTTP ヘッダーのフィールド名の最大長
+HTTP リクエストヘッダー、クエリパラメータ、およびフォームデータ内のフィールド名の最大長。
 
 ## http_max_field_value_size \{#http_max_field_value_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
-HTTP ヘッダーのフィールド値の最大長
+HTTP リクエストヘッダー、クエリパラメータ、およびフォームデータのフィールド値の最大長。
 
 ## http_max_fields \{#http_max_fields\}
 
@@ -5225,7 +5233,7 @@ HTTP ヘッダーのフィールド値の最大長
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000"},{"label": "HTTP 接続による認証前のメモリ使用量を制限するため、デフォルト値を引き下げました。"}]}]} />
 
-HTTP ヘッダー内のフィールド数の上限
+HTTP リクエストヘッダー、クエリパラメータ、およびフォームデータに含まれるフィールド数の上限。
 
 ## http_max_multipart_form_data_size \{#http_max_multipart_form_data_size\}
 
@@ -13251,6 +13259,18 @@ true の場合、非同期挿入の処理が完了するまで待機します。
 <SettingsInfoBlock type="Seconds" default_value="120" />
 
 非同期挿入の処理完了を待機するタイムアウト
+
+## wait_for_part_commit_in_dependent_materialized_views \{#wait_for_part_commit_in_dependent_materialized_views\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "新しい設定"}]}]} />
+
+各 sink が、自身に依存する materialized view の cascade が実行される前に、その sink 自身が書き込んだ直後のパーツをコミットするかどうかを制御します。これにより、`JOIN` 経由でソースを読み戻す cascade は、その sink が書き込んだパーツを参照できます。
+
+この保証は sink の各インスタンス単位で適用されます。同じ `INSERT` の別の sink スレッドが書き込んだパーツは、まだ可視になっていない場合があります。この設定では、スレッド間のコミット順序は保証されません。
+
+依存する materialized view がないテーブルへの挿入には影響しません。
 
 ## wait_for_window_view_fire_signal_timeout \{#wait_for_window_view_fire_signal_timeout\}
 

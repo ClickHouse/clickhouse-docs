@@ -3776,6 +3776,42 @@ toLastDayOfWeek(toDate('2023-04-23')):                   2023-04-23
 toLastDayOfWeek(toDate('2023-04-23'), 1):                2023-04-23
 ```
 
+## toMicrosecond \{#toMicrosecond\}
+
+Добавленный в: v25.7.0
+
+Возвращает компонент микросекунд (0–999999) значения `DateTime64`.
+
+**Синтаксис**
+
+```sql
+toMicrosecond(datetime)
+```
+
+**Псевдонимы**: `MICROSECOND`
+
+**Аргументы**
+
+* `datetime` — дата и время, из которых нужно получить микросекунды. [`DateTime64`](/sql-reference/data-types/datetime64)
+
+**Возвращаемое значение**
+
+Возвращает количество микросекунд в секунде (0 - 999999) для `datetime`. [`UInt32`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT toMicrosecond(toDateTime64('2023-04-21 10:20:30.456789', 6));
+```
+
+```response title=Response
+┌─toMicrosecond(toDateTime64('2023-04-21 10:20:30.456789', 6))─┐
+│                                                       456789 │
+└──────────────────────────────────────────────────────────────┘
+```
+
 ## toMillisecond \{#toMillisecond\}
 
 Появилась в версии: v24.2.0
@@ -4026,6 +4062,42 @@ SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
 
 ```response title=Response
 657
+```
+
+## toNanosecond \{#toNanosecond\}
+
+Добавленный в: v25.7.0
+
+Возвращает компонент наносекунд (0–999999999) значения `DateTime64`.
+
+**Синтаксис**
+
+```sql
+toNanosecond(datetime)
+```
+
+**Псевдонимы**: `NANOSECOND`
+
+**Аргументы**
+
+* `datetime` — дата и время, из которых извлекается наносекунда. [`DateTime64`](/sql-reference/data-types/datetime64)
+
+**Возвращаемое значение**
+
+Возвращает наносекунду в пределах секунды (0 - 999999999) для `datetime`. [`UInt32`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+SELECT toNanosecond(toDateTime64('2023-04-21 10:20:30.123456789', 9));
+```
+
+```response title=Response
+┌─toNanosecond(toDateTime64('2023-04-21 10:20:30.123456789', 9))─┐
+│                                                      123456789 │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 ## toQuarter \{#toQuarter\}

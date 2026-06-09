@@ -491,13 +491,20 @@ Links.Attributes:   []
 
 ## すぐに利用できるスキーマ \{#out-of-the-box-schema\}
 
+:::tip ClickStack には最適化済みのデフォルトスキーマが付属しています
+**ClickStack は、ログ、トレース、メトリクス向けに、そのまま使えるスキーマを提供しています**。これらのスキーマには、ClickHouse の最新機能 (全文検索および map-key 検索用のテキスト索引、直接読み取りフィルタリング用のマテリアライズドカラムと ALIAS Array、block-number 行ルックアップ) が組み込まれており、ログおよびトレースのワークロードで、追加設定なしでも高い性能を発揮することがベンチマークで確認されています。独自設計を行う際の出発点として活用してください。
+
+* 標準的な DDL: [ClickStack が使用するテーブルとスキーマ](/use-cases/observability/clickstack/ingesting-data/schemas)。
+* 最適化レシピ: [ClickStack のパフォーマンスチューニング](/use-cases/observability/clickstack/performance_tuning)。このページの推奨事項の多く (マテリアライズドカラム、スキップ索引、主キーの選択、projections、materialized view) は、自前で構築する構成にもそのまま適用できます。
+  :::
+
 デフォルトでは、ClickHouse exporter はログとトレースの両方に対して、出力先のログテーブルを作成します。これは `create_schema` 設定で無効化できます。さらに、ログおよびトレーステーブルの名前は、前述の設定によりデフォルトである `otel_logs` と `otel_traces` から変更できます。
 
 :::note
 以下のスキーマでは、有効期限 (TTL) を 72時間に設定しているものと仮定しています。
 :::
 
-ログのデフォルトスキーマは以下のとおりです（`otelcol-contrib v0.102.1`）:
+ログのデフォルトスキーマは以下のとおりです (`otelcol-contrib v0.102.1`) :
 
 ```sql
 CREATE TABLE default.otel_logs
@@ -536,7 +543,6 @@ SETTINGS ttl_only_drop_parts = 1
 ここで示すカラムは、ログに関するOTelの公式仕様として[こちら](https://opentelemetry.io/docs/specs/otel/logs/data-model/)に文書化されている内容と対応しています。
 
 このスキーマに関する重要な注意点をいくつか示します：
-
 
 - デフォルトでは、テーブルは `PARTITION BY toDate(Timestamp)` によって日付でパーティション分割されます。これにより、有効期限切れのデータを効率的に削除できます。
 - 有効期限 (TTL) は `TTL toDateTime(Timestamp) + toIntervalDay(3)` によって設定されており、これはコレクターの設定で指定した値に対応します。[`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) は、含まれているすべての行が期限切れになったときに、テーブルのパーツ全体のみを削除することを意味します。これは、パーツ内の行だけを削除する場合と比べて、コストの高い削除処理を避けられるため、より効率的です。常にこの設定にすることを推奨します。詳細については、[Data management with TTL](/observability/managing-data#data-management-with-ttl-time-to-live) を参照してください。

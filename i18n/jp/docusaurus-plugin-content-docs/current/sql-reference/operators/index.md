@@ -217,6 +217,9 @@ EXTRACT(part FROM date);
 
 `part`パラメータは、どの部分を取得するかを指定します。指定可能な値は次のとおりです:
 
+* `NANOSECOND` — ナノ秒。指定可能な値: 0–999999999。
+* `MICROSECOND` — マイクロ秒。指定可能な値: 0–999999。
+* `MILLISECOND` — ミリ秒。指定可能な値: 0–999。
 * `SECOND` — 秒。指定可能な値: 0–59。
 * `MINUTE` — 分。指定可能な値: 0–59。
 * `HOUR` — 時。指定可能な値: 0–23。
@@ -233,10 +236,12 @@ EXTRACT(part FROM date);
 * `CENTURY` — 世紀。たとえば、2024年は21世紀です。
 * `DECADE` — 十年単位 (年を 10 で割った値) 。たとえば、2024年の decade は 202 です。
 * `MILLENNIUM` — 千年紀。たとえば、2024年は第3千年紀です。
+* `TIMEZONE_HOUR` — オペランドの timezone の UTC オフセットにおける符号付き時部分。たとえば、`+5:30` は `5` を返し、`-3:30` は `-3` を返します。
+* `TIMEZONE_MINUTE` — オペランドの timezone の UTC オフセットにおける符号付き分部分。たとえば、`+5:30` は `30` を返し、`-3:30` は `-30` を返します。
 
 `part`パラメータは大文字小文字を区別しません。
 
-`date` パラメータは処理する日付または時刻を指定します。[Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md)、および [DateTime64](../../sql-reference/data-types/datetime64.md) 型を使用できます。
+`date` パラメータは処理する値を指定します。[Date](../../sql-reference/data-types/date.md)、[Date32](../../sql-reference/data-types/date32.md)、[DateTime](../../sql-reference/data-types/datetime.md)、[DateTime64](../../sql-reference/data-types/datetime64.md)、および [Interval](../../sql-reference/data-types/special-data-types/interval.md) 型を使用できます。`date` が `Interval` の場合、要求する `part` はその interval に格納されている種類と一致している必要があります (たとえば `EXTRACT(DAY FROM INTERVAL 5 DAY)` は許可されますが、`EXTRACT(HOUR FROM INTERVAL 5 DAY)` は拒否されます。これは ClickHouse の interval が単一の種類のみを持つためです) 。`Interval` オペランドの結果は `Int64` です。
 
 例:
 
@@ -247,6 +252,10 @@ SELECT EXTRACT(YEAR FROM toDate('2017-06-15'));
 SELECT EXTRACT(EPOCH FROM toDateTime('2024-01-15 12:30:45', 'UTC'));
 SELECT EXTRACT(DOW FROM toDate('2024-01-15'));
 SELECT EXTRACT(CENTURY FROM toDate('2024-01-01'));
+SELECT EXTRACT(TIMEZONE_HOUR   FROM toDateTime('2024-01-15 12:00:00', 'Asia/Kolkata'));    -- 5
+SELECT EXTRACT(TIMEZONE_MINUTE FROM toDateTime('2024-01-15 12:00:00', 'Asia/Kolkata'));    -- 30
+SELECT EXTRACT(DAY   FROM INTERVAL 40 DAY);                                                -- 40
+SELECT EXTRACT(MONTH FROM INTERVAL 7 MONTH);                                               -- 7
 ```
 
 以下の例では、テーブルを作成し、`DateTime` 型の値を挿入します。
@@ -283,7 +292,6 @@ FROM test.Orders;
 ```
 
 さらに多くの例については、[tests](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/00619_extract.sql) を参照してください。
-
 
 ### INTERVAL \{#interval\}
 

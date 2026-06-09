@@ -12,6 +12,13 @@ import Image from '@theme/IdealImage';
 
 관측성을 위한 ClickHouse 배포에서는 관리가 필요한 대규모 데이터셋을 다루는 경우가 많습니다. ClickHouse는 데이터 관리를 지원하는 여러 기능을 제공합니다.
 
+:::tip ClickStack는 최적화된 기본 스키마를 제공합니다
+**ClickStack는 로그, 트레이스, metrics를 위한 즉시 사용 가능한 스키마(schema)를 제공하며** 최신 ClickHouse 기능(전문 검색 및 맵 키 검색을 위한 text index, 직접 읽기 필터링을 위한 materialized 컬럼과 ALIAS 배열, block-number 행 조회)을 반영하고, 로깅 및 트레이스 워크로드에서 별도 튜닝 없이도 우수한 기본 성능을 제공하도록 벤치마크되었습니다. 자체 설계의 기준점으로 활용하십시오.
+
+* 표준 DDL: [ClickStack에서 사용하는 테이블 및 스키마](/use-cases/observability/clickstack/ingesting-data/schemas).
+* 최적화 레시피: [ClickStack 성능 튜닝](/use-cases/observability/clickstack/performance_tuning). 해당 페이지의 많은 권장 사항(materialized 컬럼, 스킵 인덱스, 기본 키 선택, 프로젝션, materialized view)은 직접 구축하는 환경에도 그대로 적용됩니다.
+  :::
+
 ## 파티션 \{#partitions\}
 
 ClickHouse에서 파티션을 사용하면 데이터를 특정 컬럼이나 SQL 표현식에 따라 디스크 상에서 논리적으로 분리할 수 있습니다. 데이터를 논리적으로 분리하면 각 파티션을 예를 들어 삭제와 같은 작업을 독립적으로 수행할 수 있습니다. 이를 통해 파티션, 즉 데이터의 하위 집합을 스토리지 계층 간에 효율적으로 이동하거나, 시간 기준으로 [데이터를 만료/클러스터에서 효율적으로 삭제](/sql-reference/statements/alter/partition)할 수 있습니다.

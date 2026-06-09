@@ -4869,6 +4869,14 @@ SELECT * FROM data_01515 WHERE d1 = 0 AND assumeNotNull(d1_null) = 0 SETTINGS fo
 
 Имеет смысл отключить эту настройку, если на сервере есть миллионы очень маленьких таблиц, которые постоянно создаются и удаляются.
 
+## function_base58_max_input_size \{#function_base58_max_input_size\}
+
+<SettingsInfoBlock type="UInt64" default_value="10000" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "10000"},{"label": "Новая настройка, которая по умолчанию ограничивает размер входных данных для `base58Encode`, `base58Decode` и `tryBase58Decode` (их преобразование имеет квадратичную сложность по длине входных данных) до 10 КБ. Значение совместимости `0` отключает это ограничение и восстанавливает прежнее поведение, при котором допускались входные данные произвольного размера."}]}]} />
+
+Максимальный размер в байтах одного входного значения для функций `base58Encode`, `base58Decode` и `tryBase58Decode`. Преобразование `base58` в общем случае имеет квадратичную сложность по длине входных данных, поэтому обработка одного большого значения может занимать очень много времени. `base58` рассчитан на короткие данные (ключи, хеши, адреса), поэтому значение по умолчанию 10 КБ — это достаточно большой безопасный порог. `base58Encode` и `base58Decode` генерируют `TOO_LARGE_STRING_SIZE` при более крупных входных данных, а `tryBase58Decode` возвращает пустую строку. Значение `0` отключает ограничение (такое поведение было до появления этой настройки). Линейные функции `base32` и `base64` это не затрагивает.
+
 ## function_date_trunc_return_type_behavior \{#function_date_trunc_return_type_behavior\}
 
 <SettingsInfoBlock type="UInt64" default_value="0" />
@@ -5216,13 +5224,13 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "4096"},{"label": "Значение по умолчанию уменьшено, чтобы ограничить использование памяти HTTP-соединениями до аутентификации."}]}]} />
 
-Максимальная длина имени поля в HTTP-заголовке
+Максимальная длина имени поля в заголовках HTTP-запроса, параметрах запроса и данных формы.
 
 ## http_max_field_value_size \{#http_max_field_value_size\}
 
 <SettingsInfoBlock type="UInt64" default_value="131072" />
 
-Максимальная длина значения поля заголовка HTTP
+Максимальная длина значения поля в заголовках HTTP-запроса, параметрах запроса и данных формы.
 
 ## http_max_fields \{#http_max_fields\}
 
@@ -5230,7 +5238,7 @@ SELECT JSON_VALUE('{"hello":"world"}', '$.b') settings function_json_value_retur
 
 <VersionHistory rows={[{"id": "row-1","items": [{"label": "26.4"},{"label": "1000"},{"label": "Значение по умолчанию уменьшено, чтобы ограничить использование памяти HTTP-соединениями до аутентификации."}]}]} />
 
-Максимальное количество полей в HTTP-заголовке
+Максимальное количество полей в заголовках HTTP-запроса, параметрах запроса и данных формы.
 
 ## http_max_multipart_form_data_size \{#http_max_multipart_form_data_size\}
 
@@ -13282,6 +13290,18 @@ SELECT map('a', range(number), 'b', number, 'c', 'str_' || toString(number)) as 
 <SettingsInfoBlock type="Seconds" default_value="120" />
 
 Таймаут ожидания обработки асинхронной вставки данных
+
+## wait_for_part_commit_in_dependent_materialized_views \{#wait_for_part_commit_in_dependent_materialized_views\}
+
+<SettingsInfoBlock type="Bool" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "новая настройка"}]}]} />
+
+Управляет тем, фиксирует ли каждый sink только что записанную им часть до запуска собственного каскада зависимых materialized view, чтобы каскад, который читает данные обратно из исходной таблицы через `JOIN`, видел часть, записанную этим sink.
+
+Гарантия действует на уровне отдельного экземпляра sink — части, записанные другими потоками sink в рамках того же `INSERT`, могут быть еще не видны. Эта настройка не обеспечивает порядок фиксации между потоками.
+
+Не влияет на вставку в таблицы без зависимых materialized view.
 
 ## wait_for_window_view_fire_signal_timeout \{#wait_for_window_view_fire_signal_timeout\}
 

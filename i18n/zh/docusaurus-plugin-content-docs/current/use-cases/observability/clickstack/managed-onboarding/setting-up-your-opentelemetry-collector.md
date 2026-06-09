@@ -11,147 +11,263 @@ custom_edit_url: null
 hide_advert: true
 ---
 
-import Image from '@theme/IdealImage';
-import clickhouse_cloud_connection from '@site/static/images/use-cases/observability/clickstack-cloud-connect.png';
-import clickstack_cloud from '@site/static/images/use-cases/observability/clickstack-cloud-first-time.png';
-import clickstack_start_ingestion from '@site/static/images/use-cases/observability/clickstack-start-ingestion.png';
-import clickstack_start_exploring from '@site/static/images/use-cases/observability/clickstack-start-exploring.png';
-import clickstack_search from '@site/static/images/use-cases/observability/clickstack-search.png';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import GatherCredentials from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/managed-onboarding/_snippets/_gather_credentials.md';
+import CreateIngestionUser from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/managed-onboarding/_snippets/_create_ingestion_user.md';
+import ConfirmInUI from '@site/i18n/zh/docusaurus-plugin-content-docs/current/use-cases/observability/clickstack/managed-onboarding/_snippets/_confirm_in_ui.md';
 
-本指南将引导你针对现有的托管 ClickStack 服务部署 OpenTelemetry (OTel) Collector，然后验证数据是否正在通过它流动。
+本指南将引导你针对现有的托管 ClickStack 服务部署 OpenTelemetry collector，或调整你现有的 collector，然后验证数据是否正在通过它流动。
 
 Collector 以 **gateway** 角色运行：提供一个统一的 OTLP 端点，供你的应用程序、SDK 和 agent collectors 将数据发送到这里。gateway 会将事件按批次处理，应用你已配置的处理逻辑，然后通过 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) 将其写入 ClickHouse。这种模式可将采集逻辑从应用程序代码中剥离出来，并让你能够独立于生成数据的工作负载扩展摄取能力。有关 gateway 与 agent 角色的背景信息，请参见 [Collector roles](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles)。
 
-本指南假设你已完成 [托管 ClickStack 入门](/use-cases/observability/clickstack/getting-started/managed) 指南，并已准备好连接凭据。
+:::note 现有 collector
+如果你正在使用现有的 OpenTelemetry collector，我们假设它已经配置为 **gateway** 角色。我们不建议使用此流程来重新配置 **agent** 角色的 collectors。
+:::
 
-<VerticalStepper headerLevel="h2">
-  ## 收集您的凭据 \{#gather-credentials\}
+选择与你当前情况相符的标签页：
 
-  您需要：
+<Tabs groupId="otel-collector-setup">
+  <TabItem value="new-collector" label="我还没有 collector" default>
+    <VerticalStepper headerLevel="h2">
+      ## 收集您的凭据 \{#gather-credentials\}
 
-  * 您的 ClickHouse Cloud 服务的 HTTPS 端点 (包括协议和端口) ，例如 `https://abc123xyz.us-central1.gcp.clickhouse.cloud:8443`。
-  * 用于摄取的 ClickHouse 用户名和密码。
+      <GatherCredentials />
 
-  如果您尚未记录这些信息，请在 [ClickHouse Cloud 控制台](https://console.clickhouse.cloud) 中打开您的服务并选择 **Connect**。从弹出的对话框中复制 URL。我们将在下方为数据摄取创建一个专用用户。
+      ## 创建摄取用户 \{#create-ingestion-user\}
 
-  <Image img={clickhouse_cloud_connection} size="lg" alt="服务连接面板，显示 HTTPS 端点和密码" border />
+      <CreateIngestionUser />
 
-  ## 创建摄取用户 \{#create-ingestion-user\}
+      ## 部署 collector \{#deploy-the-collector\}
 
-  我们建议为 collector 创建专用用户，而非复用 `default`。请通过 SQL 控制台连接到您的服务并执行：
+      部署**用于托管 ClickStack 的 ClickStack 版 OpenTelemetry collector**。在下面的示例中，为简便起见，我们在本地运行 collector，并从同一台机器生成模拟遥测数据。
 
-  ```sql
-  CREATE USER hyperdx_ingest IDENTIFIED WITH sha256_password BY 'ClickH0u3eRocks123!';
-  GRANT SELECT, INSERT, CREATE DATABASE, CREATE TABLE, CREATE VIEW ON otel.* TO hyperdx_ingest;
-  ```
+      :::note
+      在生产环境中，您通常需要将 collector 部署在 Kubernetes 集群中，或部署在可供 OpenTelemetry SDK、agent 及其他 collector 访问的虚拟机上。这样即可将整个环境中的遥测数据集中采集并转发至 ClickStack。
+      :::
 
-  :::tip
-  请将上方代码片段中的密码替换为强密码
-  :::
+      选择一个共享密钥，用于验证向 collector 发送数据的客户端，然后将其连同连接详情和为 `hyperdx_ingest` 用户设置的密码一并导出：
 
-  collector 在首次使用时会在 `otel` 数据库中为日志、链路追踪和指标创建 schema。有关生产环境用户配置的更多指导，请参阅[生产环境部署](/use-cases/observability/clickstack/production#create-a-database-ingestion-user-managed)。
+      ```shell
+      export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
+      export CLICKHOUSE_USER=hyperdx_ingest
+      export CLICKHOUSE_PASSWORD=ClickH0u3eRocks123!
+      export OTLP_AUTH_TOKEN="a-strong-shared-secret"
+      ```
 
-  ## 部署 collector \{#deploy-the-collector\}
+      运行 ClickStack OTel collector：
 
-  将 collector 部署在应用程序和基础设施能够访问的位置，以便发送 OpenTelemetry 数据。在下面的示例中，为简便起见，我们在本地运行 collector，并从同一台机器生成模拟遥测数据。
+      ```shell
+      docker run -d \
+        -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
+        -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
+        -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
+        -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
+        -e HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=otel \
+        -p 4317:4317 \
+        -p 4318:4318 \
+        clickhouse/clickstack-otel-collector:latest
+      ```
 
-  :::note info
-  在生产环境中，您通常需要将 collector 部署在 Kubernetes 集群中，或部署在可供 OpenTelemetry SDK、agent 及其他 collector 访问的虚拟机上。这样即可将整个环境中的遥测数据集中采集并转发至 ClickStack。
-  :::
+      collector 现已在 `4317` 端口暴露 OTLP gRPC，在 `4318` 端口暴露 OTLP HTTP。应用程序、SDK 及 agent collector 在向这些端口发送数据时，需在请求头中携带 `authorization: $OTLP_AUTH_TOKEN`。
 
-  选择一个共享密钥，用于验证向 collector 发送数据的客户端，然后将其连同连接详情和为 `hyperdx_ingest` 用户设置的密码一并导出：
+      :::note[生产环境部署]
+      对于生产环境，我们建议在 OTLP 端点上启用 TLS。请参阅[保护 collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector)。
+      :::
 
-  ```shell
-  export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
-  export CLICKHOUSE_USER=hyperdx_ingest
-  export CLICKHOUSE_PASSWORD=ClickH0u3eRocks123!
-  export OTLP_AUTH_TOKEN="a-strong-shared-secret"
-  ```
+      ## 验证端点 \{#verify-the-endpoint\}
 
-  运行 ClickStack OTel collector：
+      向 collector 发送一些合成流量，以验证完整管道是否正常工作。我们使用 [`otelgen`](https://github.com/krzko/otelgen)，这是一个小型 CLI 工具，用于发送 OTLP 日志、链路追踪和指标。
 
-  ```shell
-  docker run -d \
-    -e OTLP_AUTH_TOKEN=${OTLP_AUTH_TOKEN} \
-    -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} \
-    -e CLICKHOUSE_USER=${CLICKHOUSE_USER} \
-    -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} \
-    -e HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=otel \
-    -p 4317:4317 \
-    -p 4318:4318 \
-    clickhouse/clickstack-otel-collector:latest
-  ```
+      使用 Homebrew 安装 `otelgen`：
 
-  collector 现已在 `4317` 端口暴露 OTLP gRPC，在 `4318` 端口暴露 OTLP HTTP。应用程序、SDK 及 agent collector 在向这些端口发送数据时，需在请求头中携带 `authorization: $OTLP_AUTH_TOKEN`。
+      ```shell
+      brew install krzko/tap/otelgen
+      ```
 
-  :::note[生产环境部署]
-  对于生产环境，我们建议在 OTLP 端点上启用 TLS。请参阅[保护 collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector)。
-  :::
+      或使用 Go：
 
-  ## 验证端点 \{#verify-the-endpoint\}
+      ```shell
+      go install github.com/krzko/otelgen@latest
+      ```
 
-  向 collector 发送一些合成流量，以验证完整管道是否正常工作。我们使用 [`otelgen`](https://github.com/krzko/otelgen)，这是一个小型 CLI 工具，用于发送 OTLP 日志、链路追踪和指标。
+      向 collector 发送一小批日志：
 
-  使用 Homebrew 安装 `otelgen`：
+      ```shell
+       otelgen \
+        --otel-exporter-otlp-endpoint localhost:4317 \
+        --insecure \
+        --protocol grpc \
+        --header "authorization=${OTLP_AUTH_TOKEN}" \
+        --rate 5 \
+        --duration 60 \
+        logs multi
+      ```
 
-  ```shell
-  brew install krzko/tap/otelgen
-  ```
+      有关等效的 trace 和指标命令，以及其他 `otelgen` 子命令的详细介绍，请参阅[使用 otelgen 生成合成数据](/use-cases/observability/clickstack/getting-started/otelgen)。
 
-  或使用 Go：
+      ## 在 ClickStack UI 中确认 \{#confirm-in-ui\}
 
-  ```shell
-  go install github.com/krzko/otelgen@latest
-  ```
+      <ConfirmInUI />
+    </VerticalStepper>
+  </TabItem>
 
-  向采集器发送一批日志：
+  <TabItem value="existing-collector" label="我有一个 collector">
+    <VerticalStepper headerLevel="h2">
+      ## 收集您的凭据 \{#gather-credentials-existing\}
 
-  ```shell
-   otelgen \
-    --otel-exporter-otlp-endpoint localhost:4317 \
-    --insecure \
-    --protocol grpc \
-    --header "authorization=${OTLP_AUTH_TOKEN}" \
-    --rate 5 \
-    --duration 60 \
-    logs multi
-  ```
+      <GatherCredentials />
 
-  有关等效的 trace 和指标命令，以及其他 `otelgen` 子命令的详细介绍，请参阅[使用 otelgen 生成合成数据](/use-cases/observability/clickstack/getting-started/otelgen)。
+      ## 创建摄取用户 \{#create-ingestion-user-existing\}
 
-  ## 在 ClickStack 界面中确认 \{#confirm-in-ui\}
+      <CreateIngestionUser />
 
-  在 [ClickHouse Cloud 控制台](https://console.clickhouse.cloud) 中打开您的服务，从左侧菜单中选择 **ClickStack**，然后点击 **Start Ingestion**。
+      ## 调整您的 collector 配置 \{#adapt-collector\}
 
-  <Image img={clickstack_cloud} size="lg" alt="启动 ClickStack" border />
+      通过 [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter) 扩展您现有的 collector 配置，以将数据写入托管 ClickStack。
 
-  由于您已完成采集器的配置，下一步可以跳过。点击 **Launch ClickStack** 继续。
+      :::note 需要 ClickHouse exporter
+      如果您使用自己的发行版，请确保其中包含 ClickHouse exporter。上游 [contrib 镜像](https://github.com/open-telemetry/opentelemetry-collector-contrib) 已默认包含。
+      :::
 
-  ClickStack 将在新标签页中打开，并自动跳转至 **Getting Started** 页面。如未自动跳转，请从左侧菜单中选择 **Getting Started**，然后依次点击 **Start Ingestion** 和 **Next**。
+      以下是一个示例配置，使用 ClickHouse exporter，并包含 ClickStack 界面所需的接收器、处理器和管道。该配置与 ClickStack 发行版的行为一致，包括 Session Replay (`rrweb`) 路由路径。请将 `<clickhouse_cloud_endpoint>` 和 `<your_password_here>` 替换为上方创建的 `hyperdx_ingest` 用户的凭据：
 
-  <Image img={clickstack_start_ingestion} size="lg" alt="开始向 ClickStack 摄取数据" border />
+      ```yaml
+      receivers:
+        otlp/hyperdx:
+          protocols:
+            grpc:
+              include_metadata: true
+              endpoint: "0.0.0.0:4317"
+            http:
+              cors:
+                allowed_origins: ["*"]
+                allowed_headers: ["*"]
+              include_metadata: true
+              endpoint: "0.0.0.0:4318"
 
-  ClickStack 将自动检测您的表和遥测数据，您可直接继续操作。选择 **Start Exploring** 开始探索您的 trace 数据。
+      processors:
+        batch:
+        memory_limiter:
+          # 80% of maximum memory up to 2G, adjust for low memory environments
+          limit_mib: 1500
+          # 25% of limit up to 2G, adjust for low memory environments
+          spike_limit_mib: 512
+          check_interval: 5s
 
-  <Image img={clickstack_start_exploring} size="lg" alt="开始探索 ClickStack" border />
+      connectors:
+        routing/logs:
+          default_pipelines: [logs/out-default]
+          error_mode: ignore
+          table:
+            - context: log
+              statement: route() where IsMatch(attributes["rr-web.event"], ".*")
+              pipelines: [logs/out-rrweb]
 
-  将数据源切换至 `Logs`，并将时间范围设置为 **Last 15 minutes**。来自 `otelgen` 的合成日志应在几秒内出现。
+      exporters:
+        clickhouse:
+          database: otel
+          endpoint: <clickhouse_cloud_endpoint>
+          username: hyperdx_ingest
+          password: <your_password_here>
+          ttl: 720h
+          timeout: 5s
+          retry_on_failure:
+            enabled: true
+            initial_interval: 5s
+            max_interval: 30s
+            max_elapsed_time: 300s
+        clickhouse/rrweb:
+          database: otel
+          endpoint: <clickhouse_cloud_endpoint>
+          username: hyperdx_ingest
+          password: <your_password_here>
+          ttl: 720h
+          logs_table_name: hyperdx_sessions
+          timeout: 5s
+          retry_on_failure:
+            enabled: true
+            initial_interval: 5s
+            max_interval: 30s
+            max_elapsed_time: 300s
 
-  <Image img={clickstack_search} size="lg" alt="ClickStack 搜索视图中显示日志" />
+      service:
+        pipelines:
+          traces:
+            receivers: [otlp/hyperdx]
+            processors: [memory_limiter, batch]
+            exporters: [clickhouse]
+          metrics:
+            receivers: [otlp/hyperdx]
+            processors: [memory_limiter, batch]
+            exporters: [clickhouse]
+          logs/in:
+            receivers: [otlp/hyperdx]
+            exporters: [routing/logs]
+          logs/out-default:
+            receivers: [routing/logs]
+            processors: [memory_limiter, batch]
+            exporters: [clickhouse]
+          logs/out-rrweb:
+            receivers: [routing/logs]
+            processors: [memory_limiter, batch]
+            exporters: [clickhouse/rrweb]
+      ```
 
-  如果没有任何内容显示：
+      注意事项：
 
-  * 确认传给 `otelgen` 的 `OTLP_AUTH_TOKEN` 值与收集器上设置的值一致。
-  * 使用 `docker logs -f <container-id>` 持续查看 collector 日志，并留意导出错误。
-  * 请确认 `CLICKHOUSE_ENDPOINT` 包含协议和端口 (`https://...:8443`) 。
+      * `otlp/hyperdx` receiver 同时监听 gRPC (`4317`) 和 HTTP (`4318`)；应用程序和 agent 应将 collector 主机上的这些端口作为目标。
+      * `clickhouse` exporter 会将日志、链路追踪和指标写入 `otel` 数据库，其布局与 ClickStack UI 的预期一致。`clickhouse/rrweb` exporter 则负责处理由 `routing/logs` connector 路由到 `otel.hyperdx_sessions` 的 Session Replay 事件。
+      * OTLP 接收器的身份验证沿用您现有的设置。如需强制要求使用摄取令牌，可通过 collector 的 [extensions](https://opentelemetry.io/docs/collector/configuration/#extensions) (例如 `bearertokenauth`) 或由 TLS 保护的反向代理进行配置。
 
-  ## 延伸阅读 \{#further-reading\}
+      使用新配置重新加载您的 collector。应用程序、SDK 及 agent collector 随后应向您的 collector 暴露的 OTLP 端点发送数据，并携带您的配置所要求的认证请求头。
 
-  本指南以最简单的形式介绍单个 collector 实例。如需了解后续步骤，请参阅 [OpenTelemetry collector 参考文档](/use-cases/observability/clickstack/ingesting-data/otel-collector)：
+      有关针对托管 ClickStack 配置 OpenTelemetry collector 的更多详情，请参阅[使用 OpenTelemetry 摄取数据](/use-cases/observability/clickstack/ingesting-data/opentelemetry)。
 
-  * [保护采集器](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector)，通过在 OTLP 端点启用 TLS，并使用最小权限的摄取用户。
-  * 在网关处对事件进行[处理、过滤和增强](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching)。
-  * [使用自定义接收器、处理器和管道来扩展 collector 配置](/use-cases/observability/clickstack/ingesting-data/otel-collector#extending-collector-config)。
-  * 根据预期吞吐量，为 gateway 和 agent 部署[估算资源](/use-cases/observability/clickstack/ingesting-data/otel-collector#estimating-resources)。
-  * [投入生产环境](/use-cases/observability/clickstack/production) 中关于正式投入生产环境的建议。
-</VerticalStepper>
+      ## 验证端点 \{#verify-the-endpoint-existing\}
+
+      向您的 collector 发送一些合成流量，以验证完整管道是否正常工作。我们使用 [`otelgen`](https://github.com/krzko/otelgen)，这是一个小型 CLI 工具，用于发送 OTLP 日志、链路追踪和指标。
+
+      使用 Homebrew 安装 `otelgen`：
+
+      ```shell
+      brew install krzko/tap/otelgen
+      ```
+
+      或使用 Go：
+
+      ```shell
+      go install github.com/krzko/otelgen@latest
+      ```
+
+      向您的 collector 发送一批日志。将 `<your-collector-host>` 替换为您的 collector 所监听的主机地址，并将 `authorization` 请求头 (或其他认证方式) 设置为您的 collector 所要求的值：
+
+      ```shell
+       otelgen \
+        --otel-exporter-otlp-endpoint <your-collector-host>:4317 \
+        --insecure \
+        --protocol grpc \
+        --header "authorization=<your-auth-token>" \
+        --rate 5 \
+        --duration 60 \
+        logs multi
+      ```
+
+      有关等效的 trace 和指标命令，以及其他 `otelgen` 子命令的详细介绍，请参阅[使用 otelgen 生成合成数据](/use-cases/observability/clickstack/getting-started/otelgen)。
+
+      ## 在 ClickStack 界面中确认 \{#confirm-in-ui-existing\}
+
+      <ConfirmInUI />
+    </VerticalStepper>
+  </TabItem>
+</Tabs>
+
+## 延伸阅读 \{#further-reading\}
+
+本指南介绍的是最简单的单实例 collector 形式。[OpenTelemetry collector 参考文档](/use-cases/observability/clickstack/ingesting-data/otel-collector)说明了接下来可以做什么：
+
+* 在 OTLP 端点上启用 TLS，并使用遵循最小权限原则的摄取用户，以[保护 collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector)。
+* 在 gateway 处对事件进行[处理、过滤和增强](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching)。
+* 使用自定义 receiver、处理器和管道来[扩展 collector 配置](/use-cases/observability/clickstack/ingesting-data/otel-collector#extending-collector-config)。
+* 根据预期吞吐量，为 gateway 和 agent 部署[估算资源](/use-cases/observability/clickstack/ingesting-data/otel-collector#estimating-resources)。
+* [投入生产环境](/use-cases/observability/clickstack/production)

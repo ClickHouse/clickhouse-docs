@@ -3752,6 +3752,42 @@ toLastDayOfWeek(toDate('2023-04-23')):                   2023-04-23
 toLastDayOfWeek(toDate('2023-04-23'), 1):                2023-04-23
 ```
 
+## toMicrosecond \{#toMicrosecond\}
+
+導入バージョン: v25.7.0
+
+`DateTime64` 値のマイクロ秒部分 (0-999999) を返します。
+
+**構文**
+
+```sql
+toMicrosecond(datetime)
+```
+
+**別名**: `MICROSECOND`
+
+**引数**
+
+* `datetime` — マイクロ秒を取得する対象の日時。[`DateTime64`](/sql-reference/data-types/datetime64)
+
+**戻り値**
+
+`datetime` の秒部分に含まれるマイクロ秒 (0 - 999999) を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT toMicrosecond(toDateTime64('2023-04-21 10:20:30.456789', 6));
+```
+
+```response title=Response
+┌─toMicrosecond(toDateTime64('2023-04-21 10:20:30.456789', 6))─┐
+│                                                       456789 │
+└──────────────────────────────────────────────────────────────┘
+```
+
 ## toMillisecond \{#toMillisecond\}
 
 導入: v24.2.0
@@ -4002,6 +4038,42 @@ SELECT toMonthNumSinceEpoch(toDate('2024-10-01'))
 
 ```response title=Response
 657
+```
+
+## toNanosecond \{#toNanosecond\}
+
+導入バージョン: v25.7.0
+
+`DateTime64` 値のナノ秒部分 (0〜999999999) を返します。
+
+**構文**
+
+```sql
+toNanosecond(datetime)
+```
+
+**別名**: `NANOSECOND`
+
+**引数**
+
+* `datetime` — ナノ秒を取得する対象の日時。[`DateTime64`](/sql-reference/data-types/datetime64)
+
+**戻り値**
+
+`datetime` の秒部分に含まれるナノ秒 (0 - 999999999) を返します。[`UInt32`](/sql-reference/data-types/int-uint)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+SELECT toNanosecond(toDateTime64('2023-04-21 10:20:30.123456789', 9));
+```
+
+```response title=Response
+┌─toNanosecond(toDateTime64('2023-04-21 10:20:30.123456789', 9))─┐
+│                                                      123456789 │
+└────────────────────────────────────────────────────────────────┘
 ```
 
 ## toQuarter \{#toQuarter\}

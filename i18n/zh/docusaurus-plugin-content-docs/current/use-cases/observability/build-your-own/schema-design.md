@@ -26,6 +26,13 @@ import Image from '@theme/IdealImage';
 
 **重要说明：** 虽然鼓励用户扩展和修改其schema以获得最佳压缩和查询性能，但在可能的情况下，应遵循 OTel 对核心列的命名约定。ClickHouse Grafana 插件假定存在一些基础的 OTel 列以辅助构建查询，例如 Timestamp 和 SeverityText。日志和链路追踪的必需列分别记录在此处 [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) 和[此处](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure)。您可以选择更改这些列名，并在插件配置中覆盖默认值。
 
+:::tip ClickStack 提供经过优化的默认 schema
+**ClickStack 为日志、链路追踪和指标提供开箱即用的 schema**，融合了最新的 ClickHouse 特性 (用于全文和 map 键搜索的文本索引、用于直接读取过滤的物化列和 ALIAS 数组、基于块号的行查找) ，并经过基准测试，可为日志和 trace 工作负载提供强劲的开箱即用性能。您可以将它们作为自己设计时的参考起点。
+
+* 规范 DDL：[ClickStack 使用的表和 schema](/use-cases/observability/clickstack/ingesting-data/schemas)。
+* 优化方案：[ClickStack 性能调优](/use-cases/observability/clickstack/performance_tuning)。该页面中的许多建议 (物化列、跳过索引、主键选择、projections、materialized views) 都可直接应用于自行构建的部署。
+  :::
+
 ## 使用 SQL 提取结构 \{#extracting-structure-with-sql\}
 
 无论是摄取结构化还是非结构化日志，用户通常都需要能够：

@@ -491,13 +491,20 @@ Links.Attributes:   []
 
 ## 开箱即用的 schema \{#out-of-the-box-schema\}
 
-默认情况下，ClickHouse 导出器会为 logs 和 traces 都创建一个目标表。可以通过 `create_schema` 设置来禁用此行为。此外，logs 和 traces 表的名称也可以通过上述设置从默认的 `otel_logs` 和 `otel_traces` 修改为其他名称。
+:::tip ClickStack 提供经过优化的默认 schema
+**ClickStack 为 logs、链路追踪 和 metrics 提供开箱即用的 schema**，其中整合了最新的 ClickHouse 特性 (用于全文和 map 键搜索的文本索引、用于直接读取过滤的 materialized columns 和 ALIAS arrays、基于块编号的行查找) ，并经过基准测试，可为日志和 trace 工作负载提供出色的开箱即用性能。你可以将其作为自己设计时的参考起点。
+
+* 规范 DDL：[ClickStack 使用的表和 schema](/use-cases/observability/clickstack/ingesting-data/schemas)。
+* 优化方案：[ClickStack 性能调优](/use-cases/observability/clickstack/performance_tuning)。该页面中的许多建议 (materialized columns、跳过索引、主键选择、projections、materialized views) 都可直接应用于自行构建的部署方案。
+  :::
+
+默认情况下，ClickHouse 导出器会为 logs 和 链路追踪 都创建一个目标表。可以通过 `create_schema` 设置来禁用此行为。此外，logs 和 链路追踪 表的名称也可以通过上述设置从默认的 `otel_logs` 和 `otel_traces` 修改为其他名称。
 
 :::note
 在下面的 schema 中，我们假设已将生存时间 (TTL) 设置为 72 小时。
 :::
 
-logs 的默认 schema 如下所示（`otelcol-contrib v0.102.1`）：
+logs 的默认 schema 如下所示 (`otelcol-contrib v0.102.1`) ：
 
 ```sql
 CREATE TABLE default.otel_logs
@@ -533,10 +540,9 @@ TTL toDateTime(Timestamp) + toIntervalDay(3)
 SETTINGS ttl_only_drop_parts = 1
 ```
 
-此处的列与 OTel 官方日志规范（见[此处](https://opentelemetry.io/docs/specs/otel/logs/data-model/)）中的列相对应。
+此处的列与 OTel 官方日志规范 (见[此处](https://opentelemetry.io/docs/specs/otel/logs/data-model/)) 中的列相对应。
 
 关于此 schema，有几条重要说明：
-
 
 - 默认情况下，表通过 `PARTITION BY toDate(Timestamp)` 按日期进行分区。这样可以高效地删除已过期的数据。
 - 生存时间（TTL）通过 `TTL toDateTime(Timestamp) + toIntervalDay(3)` 设置，并与在 collector 配置中设置的值相对应。[`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 表示仅在其中所有行都已过期时才删除整个分区片段。这比在分区片段内部删除行（会触发一次昂贵的删除操作）更高效。我们建议始终启用该设置。更多细节参见 [Data management with TTL](/observability/managing-data#data-management-with-ttl-time-to-live)。

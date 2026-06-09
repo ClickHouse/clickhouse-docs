@@ -695,6 +695,10 @@ ZooKeeper で保持されているエフェメラルノードの数。
 
 現在、解放不可として保持されているファイルシステムキャッシュのファイルセグメント
 
+### FilesystemCacheInvalidatedElements \{#filesystemcacheinvalidatedelements\}
+
+ファイルシステムキャッシュの優先度キュー内にある、無効化された (サイズが 0 で削除待ちの) エントリ数
+
 ### FilesystemCacheKeys \{#filesystemcachekeys\}
 
 ファイルシステムキャッシュ内のキー数
@@ -702,6 +706,10 @@ ZooKeeper で保持されているエフェメラルノードの数。
 ### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
 
 オーバーコミット時のファイルシステムキャッシュのエビクションポリシーによって追跡されるユーザー数
+
+### FilesystemCachePriorityQueueElements \{#filesystemcachepriorityqueueelements\}
+
+削除待ちの無効化されたエントリも含めた、ファイルシステムキャッシュの優先度キュー内のエントリ総数
 
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 

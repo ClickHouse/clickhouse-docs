@@ -2351,8 +2351,8 @@ regexpExtract(haystack, pattern[, index])
 **参数**
 
 * `haystack` — 在其中进行正则表达式模式匹配的字符串。[`String`](/sql-reference/data-types/string)
-* `pattern` — 正则表达式字符串。`pattern` 可以包含多个正则表达式分组，`index` 指示要提取哪个分组。索引为 0 表示匹配整个正则表达式。[`const String`](/sql-reference/data-types/string)
-* `index` — 可选。一个大于等于 0 的整数，默认值为 1。表示要提取的正则表达式分组编号。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `pattern` — 正则表达式字符串。`pattern` 可以包含多个正则表达式分组，`index` 指示要提取哪个分组。索引为 `0` 表示匹配整个正则表达式。[`const String`](/sql-reference/data-types/string)
+* `index` — 可选。一个非负整数，指示要提取哪个正则表达式分组。如果 `pattern` 至少包含一个捕获组，则默认值为 `1`；如果 `pattern` 不包含捕获组，则默认值为 `0` (整个匹配) 。[`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
@@ -2367,13 +2367,14 @@ SELECT
     regexpExtract('100-200', '(\\d+)-(\\d+)', 1),
     regexpExtract('100-200', '(\\d+)-(\\d+)', 2),
     regexpExtract('100-200', '(\\d+)-(\\d+)', 0),
-    regexpExtract('100-200', '(\\d+)-(\\d+)');
+    regexpExtract('100-200', '(\\d+)-(\\d+)'),
+    regexpExtract('100-200', '\\d+');
 ```
 
 ```response title=Response
-┌─regexpExtract('100-200', '(\\d+)-(\\d+)', 1)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 2)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 0)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)')─┐
-│ 100                                          │ 200                                          │ 100-200                                      │ 100                                       │
-└──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
+┌─regexpExtract('100-200', '(\\d+)-(\\d+)', 1)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 2)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)', 0)─┬─regexpExtract('100-200', '(\\d+)-(\\d+)')─┬─regexpExtract('100-200', '\\d+')─┐
+│ 100                                          │ 200                                          │ 100-200                                      │ 100                                       │ 100                              │
+└──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┴──────────────────────────────────┘
 ```
 
 ## regexpPosition \{#regexpPosition\}

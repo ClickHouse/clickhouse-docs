@@ -12,6 +12,13 @@ import Image from '@theme/IdealImage';
 
 オブザーバビリティ向けの ClickHouse の導入では、必然的に大規模なデータセットを扱うことになり、その管理が必要になります。ClickHouse には、データ管理を支援するためのさまざまな機能が用意されています。
 
+:::tip ClickStack には最適化済みのデフォルトスキーマが付属しています
+**ClickStack には、ログ、トレース、メトリクス向けのスキーマが標準で用意されており**、最新の ClickHouse 機能 (全文検索および map-key 検索向けのテキスト索引、直接読み取りフィルタリングのための materialized columns と ALIAS arrays、ブロック番号による行ルックアップ) を取り入れています。さらに、ログおよびトレースのワークロードで、追加設定なしでも高い性能を発揮できることがベンチマークで確認されています。独自設計を行う際の基準点として活用してください。
+
+* 正式な DDL: [ClickStack が使用するテーブルとスキーマ](/use-cases/observability/clickstack/ingesting-data/schemas)。
+* 最適化レシピ: [ClickStack のパフォーマンスチューニング](/use-cases/observability/clickstack/performance_tuning)。そのページにある推奨事項の多く (materialized columns、スキップ索引、主キーの選択、プロジェクション、materialized views) は、独自構成のセットアップにもそのまま適用できます。
+  :::
+
 ## パーティション \{#partitions\}
 
 ClickHouse におけるパーティションは、特定のカラムや SQL 式に従ってデータをディスク上で論理的に分割する仕組みです。データを論理的に分割することで、それぞれのパーティションを独立して操作 (例: 削除) できます。これにより、パーティション、ひいてはその部分集合を、時間に応じてストレージ階層間で効率的に移動したり、[データの有効期限を設定したり/クラスターから効率的に削除したり](/sql-reference/statements/alter/partition)できます。

@@ -1753,6 +1753,10 @@ FileCache::assertCacheCorrectness に要する時間
 
 作成されたキーディレクトリ数
 
+### FilesystemCacheDowngradedFileSegments \{#filesystemcachedowngradedfilesegments\}
+
+SLRU キャッシュポリシーでは、protected キューから probationary キューに降格 (移動) されたファイルセグメントの数です。これはキャッシュ内部での移動であり、エビクションではありません。
+
 ### FilesystemCacheEvictMicroseconds \{#filesystemcacheevictmicroseconds\}
 
 ファイルシステムキャッシュの排出時間
@@ -1764,10 +1768,6 @@ FileCache::assertCacheCorrectness に要する時間
 ### FilesystemCacheEvictedFileSegments \{#filesystemcacheevictedfilesegments\}
 
 ファイルシステムキャッシュから排出されたファイルセグメント数
-
-### FilesystemCacheEvictedFileSegmentsDuringPriorityIncrease \{#filesystemcacheevictedfilesegmentsduringpriorityincrease\}
-
-ファイルセグメントの優先度を上げる際に、ファイルシステムキャッシュから追い出されたファイルセグメント数 (SLRU キャッシュポリシーに適用)
 
 ### FilesystemCacheEvictionReusedIterator \{#filesystemcacheevictionreusediterator\}
 

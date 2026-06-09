@@ -24,7 +24,14 @@ import Image from '@theme/IdealImage';
 
 *위 사용 사례 각각을 아래에서 자세히 설명합니다.*
 
-**중요:** 최적의 압축률과 쿼리 성능을 달성하기 위해 스키마를 확장·수정하는 것은 권장되지만, 가능하면 핵심 컬럼에 대해서는 OTel 스키마 네이밍을 따르는 것이 좋습니다. ClickHouse Grafana 플러그인은 `Timestamp`, `SeverityText`와 같은 일부 기본 OTel 컬럼이 존재한다고 가정하고 쿼리 빌딩을 도와줍니다. 로그와 트레이스를 위한 필수 컬럼은 각각 여기 [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) 및 [여기](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure)에 문서화되어 있습니다. 플러그인 설정에서 기본값을 오버라이드하여 이 컬럼 이름을 변경할 수 있습니다.
+**중요:** 최적의 압축률과 쿼리 성능을 달성하기 위해 스키마를 확장·수정하는 것은 권장되지만, 가능하면 핵심 컬럼에 대해서는 OTel 스키마 네이밍을 따르는 것이 좋습니다. ClickHouse Grafana 플러그인은 `Timestamp`, `SeverityText`와 같은 일부 기본 OTel 컬럼이 존재한다고 가정하고 쿼리 빌딩을 도와줍니다. 로그와 트레이스를 위한 필수 컬럼은 각각 여기 [[1]](https://grafana.com/developers/plugin-tools/tutorials/build-a-logs-data-source-plugin#logs-data-frame-format)[[2]](https://grafana.com/docs/grafana/latest/explore/logs-integration/) 및 [여기](https://grafana.com/docs/grafana/latest/explore/trace-integration/#data-frame-structure)에 문서화되어 있습니다. 플러그인 구성에서 기본값을 재정의하여 이 컬럼 이름을 변경할 수 있습니다.
+
+:::tip ClickStack는 최적화된 기본 스키마를 제공합니다
+**ClickStack는 로그, 트레이스, 메트릭을 위해 최신 ClickHouse 기능(전문 검색 및 맵 키 검색용 텍스트 인덱스, 직접 읽기 필터링용 materialized 컬럼과 ALIAS 배열, 블록 번호 기반 행 조회)을 반영한 즉시 사용 가능한 스키마를 제공합니다**. 또한 로깅 및 트레이스 워크로드에서 기본 상태로도 우수한 성능을 제공하도록 벤치마크되었습니다. 자체 설계를 위한 기준점으로 활용하십시오.
+
+* 정식 DDL: [ClickStack에서 사용하는 테이블 및 스키마](/use-cases/observability/clickstack/ingesting-data/schemas).
+* 최적화 레시피: [ClickStack 성능 튜닝](/use-cases/observability/clickstack/performance_tuning). 해당 페이지의 많은 권장 사항(materialized 컬럼, 스킵 인덱스, 프라이머리 키 선택, 프로젝션, materialized view)은 자체 구축 환경에도 직접 적용됩니다.
+  :::
 
 ## SQL로 구조 추출하기 \{#extracting-structure-with-sql\}
 

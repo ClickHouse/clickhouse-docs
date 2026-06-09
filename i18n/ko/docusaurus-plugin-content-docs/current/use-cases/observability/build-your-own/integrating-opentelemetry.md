@@ -491,6 +491,13 @@ Links.Attributes:   []
 
 ## 기본 제공 스키마 \{#out-of-the-box-schema\}
 
+:::tip ClickStack는 최적화된 기본 스키마를 제공합니다
+**ClickStack는 로그, 트레이스, 메트릭을 위한 기본 제공 스키마를 제공합니다.** 이 스키마에는 최신 ClickHouse 기능(전문 검색 및 맵 키 검색을 위한 text index, 직접 읽기 필터링을 위한 materialized 컬럼과 ALIAS 배열, block-number 행 조회)이 반영되어 있으며, 로깅 및 트레이스 워크로드에서 기본 상태만으로도 우수한 성능을 제공하도록 벤치마크되었습니다. 자체 설계 시 참고 기준으로 활용하십시오.
+
+* 정식 DDL: [ClickStack에서 사용하는 테이블 및 스키마](/use-cases/observability/clickstack/ingesting-data/schemas).
+* 최적화 레시피: [ClickStack 성능 튜닝](/use-cases/observability/clickstack/performance_tuning). 해당 페이지의 많은 권장 사항(materialized 컬럼, 스킵 인덱스, 기본 키 선택, 프로젝션, materialized view)은 자체 구축 환경에도 직접 적용할 수 있습니다.
+  :::
+
 기본적으로 ClickHouse exporter는 로그와 트레이스를 위해 각각 대상 테이블을 생성합니다. 이는 `create_schema` 설정을 통해 비활성화할 수 있습니다. 또한 위에서 언급한 설정을 통해 로그 및 트레이스 테이블 이름을 기본값인 `otel_logs` 및 `otel_traces`에서 다른 이름으로 변경할 수 있습니다.
 
 :::note
@@ -536,7 +543,6 @@ SETTINGS ttl_only_drop_parts = 1
 여기의 컬럼들은 [여기](https://opentelemetry.io/docs/specs/otel/logs/data-model/)에 문서화된 로그용 OTel 공식 스펙과 연관됩니다.
 
 이 스키마에 대한 몇 가지 중요한 참고 사항은 다음과 같습니다.
-
 
 - 기본적으로 테이블은 `PARTITION BY toDate(Timestamp)`를 통해 날짜별로 파티션됩니다. 이는 만료된 데이터를 삭제하는 작업을 효율적으로 수행할 수 있게 해 줍니다.
 - TTL은 `TTL toDateTime(Timestamp) + toIntervalDay(3)`로 설정되며, 수집기 설정에 지정된 값과 대응합니다. [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts)은(는) 포함된 모든 행이 만료되었을 때에만 전체 파트를 삭제함을 의미합니다. 이는 파트 내의 개별 행을 삭제하는 것(비용이 큰 delete를 발생시킴)보다 더 효율적입니다. 이 값을 항상 설정해 둘 것을 권장합니다. 자세한 내용은 [Data management with TTL](/observability/managing-data#data-management-with-ttl-time-to-live)을 참조하십시오.

@@ -1753,6 +1753,10 @@ FileCache::assertCacheCorrectness 所耗费的时间
 
 已创建的键目录数
 
+### FilesystemCacheDowngradedFileSegments \{#filesystemcachedowngradedfilesegments\}
+
+在 SLRU 缓存策略中，从受保护队列降级 (移动) 到观察队列的 File 段数量。这是缓存内部的移动，不属于淘汰。
+
 ### FilesystemCacheEvictMicroseconds \{#filesystemcacheevictmicroseconds\}
 
 文件系统缓存淘汰时间
@@ -1764,10 +1768,6 @@ FileCache::assertCacheCorrectness 所耗费的时间
 ### FilesystemCacheEvictedFileSegments \{#filesystemcacheevictedfilesegments\}
 
 从文件系统缓存中被逐出的 File 段数量
-
-### FilesystemCacheEvictedFileSegmentsDuringPriorityIncrease \{#filesystemcacheevictedfilesegmentsduringpriorityincrease\}
-
-提高 File 段优先级时，从文件系统缓存中被逐出的 File 段数量（适用于 SLRU 缓存策略）
 
 ### FilesystemCacheEvictionReusedIterator \{#filesystemcacheevictionreusediterator\}
 

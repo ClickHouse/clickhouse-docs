@@ -696,6 +696,10 @@ SELECT * FROM system.metrics LIMIT 10
 
 Сегменты файлов файлового кэша, которые в настоящее время удерживаются и не подлежат освобождению
 
+### FilesystemCacheInvalidatedElements \{#filesystemcacheinvalidatedelements\}
+
+Количество недействительных записей (нулевой размер, ожидающих удаления) в очереди приоритетов файлового кэша
+
 ### FilesystemCacheKeys \{#filesystemcachekeys\}
 
 Количество ключей в файловом кэше
@@ -703,6 +707,10 @@ SELECT * FROM system.metrics LIMIT 10
 ### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
 
 Количество пользователей, отслеживаемых политикой вытеснения файлового кэша при overcommit
+
+### FilesystemCachePriorityQueueElements \{#filesystemcachepriorityqueueelements\}
+
+Общее число записей в приоритетной очереди файлового кэша, включая недействительные записи, ожидающие удаления
 
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 

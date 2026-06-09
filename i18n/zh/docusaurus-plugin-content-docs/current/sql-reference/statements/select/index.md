@@ -123,6 +123,40 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 与 `COLUMNS` 表达式匹配的列可以具有不同的数据类型。如果 `COLUMNS` 不匹配任何列且是 `SELECT` 中的唯一表达式,ClickHouse 会抛出异常。
 
+#### 使用 `LIKE` 或 `ILIKE` 选择列 \{#select-columns-with-like-or-ilike\}
+
+你还可以在 `*` 之后使用区分大小写的 `LIKE` 或不区分大小写的 `ILIKE`，通过让列名匹配某个模式来选择列：
+
+```sql
+SELECT * ILIKE 'a%' FROM col_names
+```
+
+```text
+┌─aa─┬─ab─┐
+│  1 │  1 │
+└────┴────┘
+```
+
+`LIKE` 和 `ILIKE` 的模式遵循 `LIKE` 语义，而不是正则表达式语义。`%` 字符匹配任意字符序列，`_` 字符匹配任意单个字符，`\` 用于转义 `%`、`_` 和 `\`。两者唯一的区别在于，`LIKE` 会区分大小写地匹配列名，而 `ILIKE` 不区分大小写。例如：
+
+```sql
+SELECT * ILIKE 'a_' FROM col_names
+```
+
+该查询会选择名称为两个字符且以 `a` 开头的列，例如 `aa` 和 `ab`。
+
+`* LIKE` 和 `* ILIKE` 也支持限定星号和列转换器：
+
+```sql
+SELECT t.* ILIKE 'a%' EXCEPT (ab) FROM col_names AS t
+```
+
+```text
+┌─aa─┐
+│  1 │
+└────┘
+```
+
 ### 星号 \{#asterisk\}
 
 您可以在查询的任何部分使用星号来代替表达式。当分析查询时,星号会扩展为所有表列的列表(不包括 `MATERIALIZED` 和 `ALIAS` 列)。只有少数情况下使用星号是合理的:
