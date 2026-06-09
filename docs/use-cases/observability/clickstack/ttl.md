@@ -11,6 +11,7 @@ keywords: ['clickstack', 'ttl', 'data retention', 'lifecycle', 'storage manageme
 
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
+import OtelLogsSchema from '@site/docs/use-cases/observability/clickstack/ingesting-data/_snippets/_schema_otel_logs.md';
 
 ## TTL in ClickStack {#ttl-clickstack}
 
@@ -18,51 +19,17 @@ Time-to-Live (TTL) is a crucial feature in ClickStack for efficient data retenti
 
 **By default, ClickStack retains data for 3 days. To modify this, see ["Modifying TTL"](#modifying-ttl).**
 
-TTL is controlled at a table level in ClickHouse. For example, the schema for logs is shown below:
+TTL is controlled at a table level in ClickHouse. For example, the default schema for logs is shown below; `${TABLES_TTL}` is substituted with the configured retention (3 days unless changed) when the collector creates the table:
 
-```sql
-CREATE TABLE default.otel_logs
-(
-    `Timestamp` DateTime64(9) CODEC(Delta(8), ZSTD(1)),
-    `TimestampTime` DateTime DEFAULT toDateTime(Timestamp),
-    `TraceId` String CODEC(ZSTD(1)),
-    `SpanId` String CODEC(ZSTD(1)),
-    `TraceFlags` UInt8,
-    `SeverityText` LowCardinality(String) CODEC(ZSTD(1)),
-    `SeverityNumber` UInt8,
-    `ServiceName` LowCardinality(String) CODEC(ZSTD(1)),
-    `Body` String CODEC(ZSTD(1)),
-    `ResourceSchemaUrl` LowCardinality(String) CODEC(ZSTD(1)),
-    `ResourceAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `ScopeSchemaUrl` LowCardinality(String) CODEC(ZSTD(1)),
-    `ScopeName` String CODEC(ZSTD(1)),
-    `ScopeVersion` LowCardinality(String) CODEC(ZSTD(1)),
-    `ScopeAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    `LogAttributes` Map(LowCardinality(String), String) CODEC(ZSTD(1)),
-    INDEX idx_trace_id TraceId TYPE bloom_filter(0.001) GRANULARITY 1,
-    INDEX idx_res_attr_key mapKeys(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_res_attr_value mapValues(ResourceAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_scope_attr_key mapKeys(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_scope_attr_value mapValues(ScopeAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_log_attr_key mapKeys(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_log_attr_value mapValues(LogAttributes) TYPE bloom_filter(0.01) GRANULARITY 1,
-    INDEX idx_body Body TYPE tokenbf_v1(32768, 3, 0) GRANULARITY 8
-)
-ENGINE = MergeTree
-PARTITION BY toDate(TimestampTime)
-PRIMARY KEY (ServiceName, TimestampTime)
-ORDER BY (ServiceName, TimestampTime, Timestamp)
-TTL TimestampTime + toIntervalDay(3)
-SETTINGS ttl_only_drop_parts = 1
-```
+<OtelLogsSchema />
 
-Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted when it expires according to a TTL policy. 
+Partitioning in ClickHouse allows data to be logically separated on disk according to a column or SQL expression. By separating data logically, each partition can be operated on independently e.g. deleted when it expires according to a TTL policy.
 
-As shown in the above example, partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain an SQL expression on any column/s, the results of which will define which partition a row is sent to. This causes data to be logically associated (via a common folder name prefix) with each partition on the disk, which can then be queried in isolation. For the example above, the default `otel_logs` schema partitions by day using the expression `toDate(Timestamp).` As rows are inserted into ClickHouse, this expression will be evaluated against each row and routed to the resulting partition if it exists (if the row is the first for a day, the partition will be created). For further details on partitioning and its other applications, see ["Table Partitions"](/partitions).
+As shown in the above example, partitioning is specified on a table when it is initially defined via the `PARTITION BY` clause. This clause can contain an SQL expression on any column/s, the results of which will define which partition a row is sent to. This causes data to be logically associated (via a common folder name prefix) with each partition on the disk, which can then be queried in isolation. For the example above, the default `otel_logs` schema partitions by day using the expression `toDate(Timestamp)`. As rows are inserted into ClickHouse, this expression will be evaluated against each row and routed to the resulting partition if it exists (if the row is the first for a day, the partition will be created). For further details on partitioning and its other applications, see ["Table Partitions"](/partitions).
 
 <Image img={observability_14} alt="Partitions" size="lg"/>
 
-The table schema also includes a `TTL TimestampTime + toIntervalDay(3)` and setting `ttl_only_drop_parts = 1`. The former clause ensures data will be dropped once it is older than 3 days. The setting `ttl_only_drop_parts = 1` enforces only expiring data parts where all of the data has expired (vs. attempting to partially delete rows). With partitioning ensuring data from separate days is never "merged," data can thus be efficiently dropped. 
+The table schema also includes `TTL toDateTime(Timestamp) + ${TABLES_TTL}` and setting `ttl_only_drop_parts = 1`. The former clause ensures data will be dropped once it is older than the configured TTL (3 days by default). The setting `ttl_only_drop_parts = 1` enforces only expiring data parts where all of the data has expired (vs. attempting to partially delete rows). With partitioning ensuring data from separate days is never "merged," data can thus be efficiently dropped.
 
 :::important `ttl_only_drop_parts`
 We recommend always using the setting [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts). When this setting is enabled, ClickHouse drops a whole part when all rows in it are expired. Dropping whole parts instead of partial cleaning TTL-d rows (achieved through resource-intensive mutations when `ttl_only_drop_parts=0`) allows having shorter `merge_with_ttl_timeout` times and lower impact on system performance. If data is partitioned by the same unit at which you perform TTL expiration e.g. day, parts will naturally only contain data from the defined interval. This will ensure `ttl_only_drop_parts=1` can be efficiently applied.
