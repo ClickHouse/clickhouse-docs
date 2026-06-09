@@ -552,12 +552,7 @@ disk and unpack every row to evaluate the predicate. [Materializing frequently q
 solves this for keys you know about ahead of time, but it doesn't scale to
 arbitrary attributes that users filter on ad hoc.
 
-Even if a schema has a defined index on `mapKeys` and `mapValues`, the text
-index can answer whether an Array row has a key, whether it has that value, but
-not whether for that array index, that the key and value match up. In other
-words, `mapKeys` answers `mapContainsKey(ResourceAttributes, 'foo')`,
-`mapValues` answers `mapContainsValue(ResourceAttributes, 'bar')`, but not
-`ResourceAttributes['foo'] = 'bar'`.
+Even if a schema has indexes on `mapKeys` and `mapValues`, those indexes can tell you whether a row has a given key, and whether it has a given value, but not whether the key and value belong to the same entry. In other words, `mapKeys` answers `mapContainsKey(ResourceAttributes, 'foo')` and `mapValues` answers `mapContainsValue(ResourceAttributes, 'bar')`, but neither answers `ResourceAttributes['foo'] = 'bar'`.
 
 By concatenating the keys and values into a single `Array(String)` column, the
 Map direct read optimization enables `ResourceAttributes['foo'] = 'bar'` to be
