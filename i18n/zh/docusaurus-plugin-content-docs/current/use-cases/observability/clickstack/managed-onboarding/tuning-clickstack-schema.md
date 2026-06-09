@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/tuning-clickstack-schema
-title: '调优 ClickStack：优化 schema'
+title: '调优托管 ClickStack - 优化 schema'
 description: '优化 ClickStack schema，在托管 ClickStack 中提升查询性能和存储效率'
 doc_type: 'guide'
 keywords: ['clickstack', '调优', 'schema', '托管', '可观测性', '性能', '优化', '存储']

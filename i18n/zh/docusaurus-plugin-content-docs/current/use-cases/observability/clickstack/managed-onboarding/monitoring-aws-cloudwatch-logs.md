@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/monitoring-aws-cloudwatch-logs
-title: '监控 AWS CloudWatch 日志'
+title: '使用托管 ClickStack 监控 AWS CloudWatch 日志'
 description: '通过 OpenTelemetry CloudWatch 接收器将 AWS CloudWatch 日志转发到托管 ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'aws', 'cloudwatch', '日志', '托管', '可观测性', 'otel']

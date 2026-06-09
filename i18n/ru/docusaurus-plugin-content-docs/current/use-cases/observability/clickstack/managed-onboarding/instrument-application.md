@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/instrument-application
-title: 'Инструментирование приложения'
+title: 'Инструментирование приложения за 5 минут с Управляемым ClickStack'
 description: 'Настройте инструментацию приложения Node.js с помощью OpenTelemetry и отправляйте его журналы, метрики и трейсы в Управляемый ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'инструментирование', 'opentelemetry', 'управляемый', 'обсервабилити', 'sdk', 'nodejs']

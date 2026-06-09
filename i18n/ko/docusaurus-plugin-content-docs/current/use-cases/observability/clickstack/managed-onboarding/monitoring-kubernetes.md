@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/monitoring-kubernetes
-title: 'Kubernetes 모니터링'
+title: 'Managed ClickStack을 사용한 Kubernetes 모니터링'
 description: 'Kubernetes 클러스터의 로그, 인프라 메트릭, 이벤트를 Managed ClickStack으로 수집합니다'
 doc_type: 'guide'
 keywords: ['clickstack', 'kubernetes', 'k8s', 'managed', '관측성', '로그', '메트릭', '이벤트', '데몬셋', 'helm']

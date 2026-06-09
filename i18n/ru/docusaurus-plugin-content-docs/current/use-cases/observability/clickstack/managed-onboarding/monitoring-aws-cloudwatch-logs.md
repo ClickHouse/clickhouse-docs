@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/monitoring-aws-cloudwatch-logs
-title: 'Мониторинг журналов AWS CloudWatch'
+title: 'Мониторинг журналов AWS CloudWatch с помощью Управляемого ClickStack'
 description: 'Пересылайте журналы AWS CloudWatch в Управляемый ClickStack с помощью приёмника CloudWatch OpenTelemetry'
 doc_type: 'guide'
 keywords: ['clickstack', 'aws', 'cloudwatch', 'журналы', 'управляемый', 'обсервабилити', 'otel']

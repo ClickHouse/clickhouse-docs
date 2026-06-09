@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/monitoring-aws-cloudwatch-logs
-title: 'AWS CloudWatch 로그 모니터링'
+title: 'Managed ClickStack으로 AWS CloudWatch 로그 모니터링'
 description: 'OpenTelemetry CloudWatch 수신기를 통해 AWS CloudWatch 로그를 Managed ClickStack으로 전달'
 doc_type: 'guide'
 keywords: ['clickstack', 'aws', 'cloudwatch', 'logs', 'managed', 'observability', 'otel']

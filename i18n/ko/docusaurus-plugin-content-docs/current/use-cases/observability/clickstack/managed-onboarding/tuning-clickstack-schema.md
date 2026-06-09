@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/tuning-clickstack-schema
-title: 'ClickStack 튜닝: 스키마 다듬기'
+title: 'Managed ClickStack 튜닝 - 스키마 다듬기'
 description: 'Managed ClickStack에서 더 나은 쿼리 성능과 스토리지 효율을 위해 ClickStack 스키마를 다듬습니다'
 doc_type: 'guide'
 keywords: ['clickstack', '튜닝', '스키마', 'managed', '관측성', '성능', '최적화', '스토리지']
@@ -13,7 +13,7 @@ hide_advert: true
 
 ClickStack를 한동안 운영했다면, 기본 스키마가 대부분의 관측성 워크로드를 별다른 변경 없이 처리한다는 점을 이미 느끼셨을 것입니다. 이 페이지는 그것만으로 더 이상 충분하지 않을 때를 위한 것입니다. 예를 들어 쿼리 지연 시간이 늘어나기 시작하거나, 액세스 패턴이 기본 설정에서 벗어난 경우입니다.
 
-실제 운영에서는 대부분 4가지 최적화로 충분한 효과를 볼 수 있습니다. 아래에는 대략적인 작업 난이도 순으로 정리되어 있습니다. 처음 두 가지는 점진적으로 적용할 수 있는 `ALTER TABLE` 변경입니다. 세 번째는 같은 집계가 대시보드에서 반복해서 실행될 때 효과적입니다. 네 번째는 테이블 마이그레이션이 필요하므로 가장 손이 많이 갑니다.
+실제 운영에서는 대부분 4가지 최적화로 충분한 효과를 볼 수 있습니다. 아래에는 대략적인 작업 난이도 순으로 정리되어 있습니다. 처음 두 가지는 점진적으로 적용할 수 있는 `ALTER TABLE` 변경입니다. 세 번째는 같은 집계가 대시보드에서 반복해서 실행될 때 효과적입니다. 네 번째는 migration이 필요하므로 가장 손이 많이 갑니다.
 
 아래 요약은 의도적으로 짧게 작성했습니다. 각 변경의 배경, 벤치마크, 그리고 기존 데이터에 적용하는 방법은 [성능 튜닝](/use-cases/observability/clickstack/performance_tuning)을 참조하십시오.
 

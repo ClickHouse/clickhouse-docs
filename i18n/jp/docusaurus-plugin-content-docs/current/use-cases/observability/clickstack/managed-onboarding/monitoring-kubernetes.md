@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/monitoring-kubernetes
-title: 'Kubernetesの監視'
+title: 'Managed ClickStack による Kubernetes の監視'
 description: 'Kubernetes クラスターからログ、インフラストラクチャ メトリクス、イベントを Managed ClickStack に収集します'
 doc_type: 'guide'
 keywords: ['clickstack', 'kubernetes', 'k8s', 'マネージド', 'オブザーバビリティ', 'ログ', 'メトリクス', 'イベント', 'デーモンセット', 'helm']

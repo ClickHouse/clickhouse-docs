@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/monitoring-aws-cloudwatch-logs
-title: 'AWS CloudWatch ログの監視'
+title: 'Managed ClickStack での AWS CloudWatch ログの監視'
 description: 'OpenTelemetry CloudWatch receiver を使用して AWS CloudWatch ログを Managed ClickStack に転送する'
 doc_type: 'guide'
 keywords: ['clickstack', 'aws', 'cloudwatch', 'ログ', 'managed', 'オブザーバビリティ', 'otel']

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/instrument-application
-title: '애플리케이션 계측하기'
+title: 'Managed ClickStack으로 5분 만에 애플리케이션 계측하기'
 description: 'OpenTelemetry를 사용해 Node.js 애플리케이션을 계측하고 로그, 메트릭, 트레이스를 Managed ClickStack으로 전송합니다'
 doc_type: 'guide'
 keywords: ['clickstack', '계측', 'opentelemetry', '관리형', '관측성', 'sdk', 'nodejs']

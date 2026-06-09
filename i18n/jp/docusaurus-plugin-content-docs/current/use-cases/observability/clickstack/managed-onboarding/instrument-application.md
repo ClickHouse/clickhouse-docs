@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/instrument-application
-title: 'アプリケーションにインストルメンテーションを追加する'
-description: 'OpenTelemetry を使用して Node.js アプリケーションにインストルメンテーションを追加し、その logs、メトリクス、traces を Managed ClickStack に送信します'
+title: 'Managed ClickStack を使って 5 分でアプリケーションにインストルメンテーションを追加する'
+description: 'OpenTelemetry を使用して Node.js アプリケーションにインストルメンテーションを追加し、その ログ、メトリクス、トレース を Managed ClickStack に送信します'
 doc_type: 'guide'
 keywords: ['clickstack', 'instrumentation', 'opentelemetry', 'managed', 'observability', 'sdk', 'nodejs']
 unlisted: true

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/monitoring-kubernetes
-title: '监控 Kubernetes'
+title: '使用托管 ClickStack 监控 Kubernetes'
 description: '将 Kubernetes 集群中的日志、基础设施指标和事件采集到托管 ClickStack 中'
 doc_type: 'guide'
 keywords: ['clickstack', 'kubernetes', 'k8s', '托管', '可观测性', '日志', '指标', '事件', 'daemonset', 'helm']

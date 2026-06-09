@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/tuning-clickstack-schema
-title: 'Настройка ClickStack: доработка схемы'
+title: 'Настройка Управляемого ClickStack: доработка схемы'
 description: 'Доработайте схему ClickStack, чтобы повысить производительность запросов и эффективность хранения в Управляемом ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'настройка', 'схема', 'управляемый', 'обсервабилити', 'производительность', 'оптимизация', 'хранение']

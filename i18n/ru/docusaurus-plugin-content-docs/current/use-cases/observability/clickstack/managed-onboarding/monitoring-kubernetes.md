@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/monitoring-kubernetes
-title: 'Мониторинг Kubernetes'
+title: 'Мониторинг Kubernetes с Управляемым ClickStack'
 description: 'Сбор журналов, метрик инфраструктуры и событий из кластера Kubernetes в Управляемый ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'kubernetes', 'k8s', 'управляемый', 'обсервабилити', 'журналы', 'метрики', 'события', 'демонсет', 'helm']

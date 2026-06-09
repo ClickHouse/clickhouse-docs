@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/instrument-application
-title: '为应用程序添加插桩'
+title: '使用托管 ClickStack 在 5 分钟内完成应用插桩'
 description: '使用 OpenTelemetry 为 Node.js 应用程序添加插桩，并将其日志、指标和链路追踪发送到托管 ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'instrumentation', 'opentelemetry', 'managed', 'observability', 'sdk', 'nodejs']
