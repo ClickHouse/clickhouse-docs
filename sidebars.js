@@ -2065,6 +2065,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'use-cases/observability/clickstack/dashboards/sql-visualizations',
+            'use-cases/observability/clickstack/dashboards/row-click-drilldowns',
             'use-cases/observability/clickstack/dashboards/dashboard-templates',
           ],
         },
