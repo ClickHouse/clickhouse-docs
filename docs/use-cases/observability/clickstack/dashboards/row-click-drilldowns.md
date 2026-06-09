@@ -13,15 +13,16 @@ import Image from '@theme/IdealImage';
 import row_click_drawer from '@site/static/images/clickstack/dashboards/row-click-drawer.png';
 import row_click_drilldown from '@site/static/images/clickstack/dashboards/row-click-drilldown.png';
 import row_click_search_drilldown from '@site/static/images/clickstack/dashboards/row-click-search-drilldown.png';
+import row_click_catalog from '@site/static/images/clickstack/dashboards/row-click-catalog.png';
 
-A table tile is often a catalog: one row per service, host, endpoint, or error group. A row-click action turns that catalog into an inspection workflow. You click a row to investigate that one item, and ClickStack carries the row's values through as filters, so you land already scoped to it instead of rebuilding the query by hand.
+A table tile is often a **catalog**: one row per service, host, endpoint, or error group, with a few columns that score each one. Row-click actions turn that catalog into an inspection workflow. You scan the catalog to find the row that matters, click it, and ClickStack carries the clicked row's values through as filters, so the destination opens already scoped to that one item with no query to rebuild by hand.
 
 A click can land in one of two places:
 
 - **another dashboard**, for a focused view of the one item, such as a per-service detail dashboard, or
 - **the underlying events** in [Search](/use-cases/observability/clickstack/search), for the logs or traces behind the row.
 
-The two use cases below walk through each. Row-click actions apply to table tiles only. They are distinct from the chart [drilldown to search](/use-cases/observability/clickstack/dashboards#drilldown-to-search), which opens a context menu when you click a point on a line or bar chart.
+Both use cases below start from the same catalog, a service inventory, and drill from it into each destination. Row-click actions apply to table tiles only. They are distinct from the chart [drilldown to search](/use-cases/observability/clickstack/dashboards#drilldown-to-search), which opens a context menu when you click a point on a line or bar chart.
 
 ## Inspect a service in its own dashboard {#inspect-in-dashboard}
 
@@ -31,19 +32,21 @@ An overview table with one row per service answers "which service is unhealthy?"
 
 ### Build the detail dashboard {#detail-dashboard}
 
-Create a dashboard named `Service Detail` and add a [custom filter](/use-cases/observability/clickstack/dashboards#custom-filters) with the expression `ServiceName` on your traces source. The dashboard-level filter re-scopes every tile to a single service, so the tiles themselves do not hardcode a service in their queries. Add the per-service tiles you want, such as request and error counts, latency percentiles, a span-duration heatmap, and top error messages.
+Create a dashboard named `Service Detail` and add a [custom filter](/use-cases/observability/clickstack/dashboards#custom-filters) with the expression `ServiceName` on your traces source. The dashboard-level filter re-scopes every tile to a single service, so the tiles themselves do not hardcode a service in their queries. Add the per-service views you want: RED key figures (requests, errors, P95 duration), a latency-percentile chart (P50, P95, P99), request rate over time, and a per-endpoint breakdown grouped by `SpanName`.
 
 Save this dashboard first. A template target is resolved by name at click time, so the detail dashboard must exist when a viewer clicks. If you later rename it, update the row-click action to match.
 
 ### Build the service inventory {#service-inventory}
 
-On an overview dashboard, add a **Table** tile on your traces source grouped by `ServiceName`, with the columns you want per service. For example:
+On an overview dashboard, add a **Table** tile on your traces source grouped by `ServiceName`. Give it the RED columns that score each service, each one an aliased series:
 
-- `Requests`: count of spans.
-- `Errors`: count of spans where `StatusCode` is `STATUS_CODE_ERROR`.
-- `P95 Duration`: the 95th percentile of `Duration`.
+- `Requests`: count of spans (rate).
+- `Errors`: count of spans with an error status.
+- `P95 Duration`: the 95th percentile of `Duration`. Set the column's number format to a duration so it reads as `288ms`, not raw nanoseconds.
 
-Order by `Requests` descending so the busiest services sort to the top.
+Order by `Requests` descending so the busiest services sort to the top. This table is the catalog: one row per service, scored by RED.
+
+<Image img={row_click_catalog} alt="Service inventory table with RED columns (Requests, Errors, P95 Duration) for each service, ordered by request volume, above a requests-over-time trend" size="lg"/>
 
 ### Wire up the row click {#wire-dashboard}
 
@@ -56,9 +59,9 @@ Click **Apply** and save. The expression `ServiceName` matches the custom filter
 
 ### Click a row {#click-dashboard}
 
-Hovering a row reveals a link affordance on the right edge of the table, with a hint describing the action (`Open dashboard`). Clicking the row opens the `Service Detail` dashboard scoped to that service, with the `ServiceName` filter set to the clicked value.
+Hovering a row reveals a link affordance on the right edge of the table, with a hint describing the action (`Open dashboard`). Clicking the row opens the `Service Detail` dashboard with its `Service` filter set to the clicked value, so every tile (the RED key figures, the latency percentiles, the per-endpoint breakdown) re-scopes to that one service in a single click.
 
-<Image img={row_click_drilldown} alt="Service Detail dashboard opened after a row click, with the Service Name filter populated to the clicked service" size="lg"/>
+<Image img={row_click_drilldown} alt="Service Detail dashboard after a row click, with the Service filter set to the clicked service and the RED key figures, latency percentiles, and per-endpoint breakdown all scoped to it" size="lg"/>
 
 </VerticalStepper>
 
