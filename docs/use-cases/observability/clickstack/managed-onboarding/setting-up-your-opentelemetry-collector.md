@@ -137,7 +137,7 @@ Extend your existing collector configuration to write to Managed ClickStack via 
 If you're using your own distribution, ensure it includes the ClickHouse exporter. The upstream [contrib image](https://github.com/open-telemetry/opentelemetry-collector-contrib) already does.
 :::
 
-Below is an example configuration that uses the ClickHouse exporter with the receivers, processors, and pipelines expected by the ClickStack UI. It matches the behaviour of the ClickStack distribution, including the Session Replay (`rrweb`) routing path. Substitute `<clickhouse_cloud_endpoint>` and `<your_password_here>` with the credentials for the `hyperdx_ingest` user created above:
+Below is an example configuration that uses the ClickHouse exporter with the receivers, processors, and pipelines expected by the ClickStack UI. It matches the behavior of the ClickStack distribution, including the Session Replay (`rrweb`) routing path. Substitute `<clickhouse_cloud_endpoint>` and `<your_password_here>` with the credentials for the `hyperdx_ingest` user created above:
 
 ```yaml
 receivers:
