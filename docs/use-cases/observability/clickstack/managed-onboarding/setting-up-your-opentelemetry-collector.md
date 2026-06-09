@@ -45,7 +45,7 @@ Pick the tab that matches your situation:
 
 Deploy the **ClickStack distribution of the OpenTelemetry collector**, which is preconfigured for Managed ClickStack. In the example below, we run the collector locally and generate artificial telemetry from the same machine for simplicity.
 
-:::note info
+:::note
 In production, you would typically deploy the collector in a Kubernetes cluster, or on a virtual machine that can be reached by your OpenTelemetry SDKs, agents, and other collectors. This allows telemetry from across your environment to be centrally collected and forwarded to ClickStack.
 :::
 
@@ -280,4 +280,4 @@ This guide covers a single collector instance in its simplest form. The [OpenTel
 - [Processing, filtering, and enriching](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) events at the gateway.
 - [Extending the collector configuration](/use-cases/observability/clickstack/ingesting-data/otel-collector#extending-collector-config) with custom receivers, processors, and pipelines.
 - [Estimating resources](/use-cases/observability/clickstack/ingesting-data/otel-collector#estimating-resources) for gateway and agent deployments at your expected throughput.
-- [Going to production](/use-cases/observability/clickstack/production) for recommendations when going to production.
+- [Going to production](/use-cases/observability/clickstack/production)
