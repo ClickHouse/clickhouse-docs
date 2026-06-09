@@ -314,21 +314,9 @@ As with all skip indexes, Bloom filters should be added selectively and validate
 
 ### Text indexes {#text-indexes}
 
-[Text indexes](/engines/table-engines/mergetree-family/textindexes) offers an
-alternative to bloom filters. While bloom filters are a probabilistic structure
-that can definitively rule out granules, it has a false positivity, requiring
-loading the remaining granules and evaluating the WHERE condition. Text indices
-are inverted indices, mapping tokens to exact offsets in a part. Because text
-indices evaluate part offsets and not granules, and they have no false
-positivity, the index itself can usually answer the WHERE condition without
-loading the underlying column. This is known as the [direct
-read](/engines/table-engines/mergetree-family/textindexes#direct-read)
-optimization. Loading data is often the largest contributor to query time,
-underscoring the impact of direct read.
+[Text indexes](/engines/table-engines/mergetree-family/textindexes) offer an alternative to Bloom filters. A Bloom filter is a probabilistic structure that can definitively rule out granules, but it has a false-positive rate, so the granules it doesn't exclude must still be loaded and evaluated against the `WHERE` condition. Text indexes are inverted indexes that map tokens to exact offsets within a part. Because they evaluate offsets rather than granules and produce no false positives, they can usually answer the `WHERE` condition without loading the underlying column. This is an optimization known as [direct read](https://github.com/ClickHouse/clickhouse-docs/pull/6356/%E2%80%A6). Since loading data is often the largest contributor to query time, direct read can meaningfully reduce query latency.
 
-Additionally, text indices themselves are queryable. Text indexes are used to
-power autocomplete and other introspection for ClickStack. Not only are these
-indices performance, but also enable entire application functionality.
+Additionally, text indexes are themselves queryable, powering autocomplete and other introspection in ClickStack.
 
 Two tokenizers cover most ClickStack patterns:
 
