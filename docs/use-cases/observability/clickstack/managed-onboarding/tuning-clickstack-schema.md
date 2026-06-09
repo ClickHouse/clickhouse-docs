@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/tuning-clickstack-schema
-title: 'Tuning ClickStack: refining your schema'
+title: 'Tuning Managed ClickStack - refining your schema'
 description: 'Refine your ClickStack schema for improved query performance and storage efficiency in Managed ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'tuning', 'schema', 'managed', 'observability', 'performance', 'optimization', 'storage']
