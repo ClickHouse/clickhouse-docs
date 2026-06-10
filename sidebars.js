@@ -420,6 +420,7 @@ const sidebars = {
           ],
         },
         'cloud/managed-postgres/openapi',
+        'cloud/managed-postgres/terraform',
         'cloud/managed-postgres/faq',
       ],
     },
