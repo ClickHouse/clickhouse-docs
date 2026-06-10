@@ -1482,12 +1482,14 @@ Alternatively, set them in `spark-defaults.conf` or when creating the Spark sess
 
 | Key                                                | Default                                                | Description                                                                                                                                                                                                                                                                                                                                                                                                     | Since |
 |----------------------------------------------------|--------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------|
+| spark.clickhouse.client.queryTimeout               | 60s                                                    | The maximum time the ClickHouse client will wait for a single query or ping operation to complete on a `NodeClient`. Applied as a future-handle timeout on every `client.query(...)` and `client.ping(...)` call. Used on both read and write paths (the write path issues metadata queries before each batch). Inserts themselves are unaffected — they have no connector-level timeout. | 0.10.1 |
 | spark.clickhouse.ignoreUnsupportedTransform        | true                                                   | ClickHouse supports using complex expressions as sharding keys or partition values, e.g. `cityHash64(col_1, col_2)`, and those can not be supported by Spark now. If `true`, ignore the unsupported expressions and log a warning, otherwise fail fast w/ an exception. **Warning**: When `spark.clickhouse.write.distributed.convertLocal=true`, ignoring unsupported sharding keys may corrupt the data. The connector validates this and throws an error by default. To allow it, explicitly set `spark.clickhouse.write.distributed.convertLocal.allowUnsupportedSharding=true`. | 0.4.0 |
 | spark.clickhouse.read.compression.codec            | lz4                                                    | The codec used to decompress data for reading. Supported codecs: none, lz4.                                                                                                                                                                                                                                                                                                                                     | 0.5.0 |
 | spark.clickhouse.read.distributed.convertLocal     | true                                                   | When reading Distributed table, read local table instead of itself. If `true`, ignore `spark.clickhouse.read.distributed.useClusterNodes`.                                                                                                                                                                                                                                                                      | 0.1.0 |
 | spark.clickhouse.read.fixedStringAs                | binary                                                 | Read ClickHouse FixedString type as the specified Spark data type. Supported types: binary, string                                                                                                                                                                                                                                                                                                              | 0.8.0 |
 | spark.clickhouse.read.format                       | json                                                   | Serialize format for reading. Supported formats: json, binary                                                                                                                                                                                                                                                                                                                                                   | 0.6.0 |
 | spark.clickhouse.read.runtimeFilter.enabled        | false                                                  | Enable runtime filter for reading.                                                                                                                                                                                                                                                                                                                                                                              | 0.8.0 |
+| spark.clickhouse.read.settings                     |                                                        | ClickHouse settings appended as a `SETTINGS` clause to every generated read query, e.g. `final=1, max_execution_time=300`. The value is lowercased and inserted verbatim after `SETTINGS`, so it must be valid SQL. Must be set via `spark.conf.set(...)` at the session level — passing via DataFrame `.option()` has no effect.                                                                                                                                          | 0.9.0 |
 | spark.clickhouse.read.splitByPartitionId           | true                                                   | If `true`, construct input partition filter by virtual column `_partition_id`, instead of partition value. There are known issues with assembling SQL predicates by partition value. This feature requires ClickHouse Server v21.6+                                                                                                                                                                             | 0.4.0 |
 | spark.clickhouse.useNullableQuerySchema            | false                                                  | If `true`, mark all the fields of the query schema as nullable when executing `CREATE/REPLACE TABLE ... AS SELECT ...` on creating the table. Note, this configuration requires SPARK-43390(available in Spark 3.5), w/o this patch, it always acts as `true`.                                                                                                                                                  | 0.8.0 |
 | spark.clickhouse.write.batchSize                   | 10000                                                  | The number of records per batch on writing to ClickHouse.                                                                                                                                                                                                                                                                                                                                                       | 0.1.0 |
@@ -1500,7 +1502,7 @@ Alternatively, set them in `spark-defaults.conf` or when creating the Spark sess
 | spark.clickhouse.write.localSortByPartition        | value of spark.clickhouse.write.repartitionByPartition | If `true`, do local sort by partition before writing. If not set, it equals to `spark.clickhouse.write.repartitionByPartition`.                                                                                                                                                                                                                                                                                 | 0.3.0 |
 | spark.clickhouse.write.maxRetry                    | 3                                                      | The maximum number of write we will retry for a single batch write failed with retryable codes.                                                                                                                                                                                                                                                                                                                 | 0.1.0 |
 | spark.clickhouse.write.repartitionByPartition      | true                                                   | Whether to repartition data by ClickHouse partition keys to meet the distributions of ClickHouse table before writing.                                                                                                                                                                                                                                                                                          | 0.3.0 |
-| spark.clickhouse.write.repartitionNum              | 0                                                      | Repartition data to meet the distributions of ClickHouse table is required before writing, use this conf to specific the repartition number, value less than 1 mean no requirement.                                                                                                                                                                                                                             | 0.1.0 |
+| spark.clickhouse.write.repartitionNum              | 0                                                      | Repartition count before writing. When set to a value greater than 0, Spark will repartition data to exactly this many partitions before the write pipeline begins. A value of `0` (default) means no specific partition count is required — Spark chooses based on the data and other distribution settings.                                                                                                       | 0.1.0 |
 | spark.clickhouse.write.repartitionStrictly         | false                                                  | If `true`, Spark will strictly distribute incoming records across partitions to satisfy the required distribution before passing the records to the data source table on write. Otherwise, Spark may apply certain optimizations to speed up the query but break the distribution requirement. Note, this configuration requires SPARK-37523(available in Spark 3.4), w/o this patch, it always acts as `true`. | 0.3.0 |
 | spark.clickhouse.write.retryInterval               | 10s                                                    | The interval in seconds between write retry.                                                                                                                                                                                                                                                                                                                                                                    | 0.1.0 |
 | spark.clickhouse.write.retryableErrorCodes         | 241                                                    | The retryable error codes returned by ClickHouse server when write failing.                                                                                                                                                                                                                                                                                                                                     | 0.1.0 |
@@ -1573,6 +1575,385 @@ for converting data types when reading from ClickHouse into Spark and when inser
 | `VariantType`                       | `JSON` or `Variant`  | ✅         | No           | Requires Spark 4.0+ and ClickHouse 25.3+. Defaults to `JSON` type. Use `clickhouse.column.<name>.variant_types` property to specify `Variant` with multiple types. |
 | `Object`                            |                      | ❌         |              |                                        |
 | `Nested`                            |                      | ❌         |              |                                        |
+
+## Supported ClickHouse server versions {#supported-clickhouse-server-versions}
+
+The connector communicates with ClickHouse exclusively over HTTP. There is no minimum version enforced at runtime, but the following version requirements apply for specific features:
+
+| Feature | Minimum ClickHouse Version |
+|---------|---------------------------|
+| `spark.clickhouse.read.splitByPartitionId` (partition-id-based filtering) | 21.6+ |
+| `VariantType` / `JSON` type support | 25.3+ |
+
+For production deployments, we recommend running the latest stable ClickHouse release — see the
+[releases page](https://github.com/ClickHouse/spark-clickhouse-connector/releases)
+for tested versions.
+
+## Push-down operations {#push-down-operations}
+
+The connector implements the Spark DataSource V2 push-down interfaces, meaning the following operations are translated into SQL and executed on the ClickHouse server rather than in Spark memory. This significantly reduces data transfer and improves query performance.
+
+| Push-down Type | Spark Interface | What gets pushed |
+|---|---|---|
+| **Column pruning** | `SupportsPushDownRequiredColumns` | Only the columns selected by the query are fetched from ClickHouse. `SELECT col1, col2` avoids transferring all columns. |
+| **Filter predicates** | `SupportsPushDownFilters` | `WHERE` conditions using standard comparison operators, `IN`, `IS NULL`, `LIKE`, etc. Unsupported expressions fall back to Spark-side evaluation. |
+| **Limit** | `SupportsPushDownLimit` | `LIMIT N` is sent to ClickHouse, preventing full table scans for small result sets. |
+| **Aggregations** | `SupportsPushDownAggregates` | `GROUP BY` + aggregate functions (`SUM`, `COUNT`, `MIN`, `MAX`, `AVG`) are executed in ClickHouse. |
+| **Runtime filters** | `SupportsRuntimeFiltering` | Dynamic filters produced during query execution (e.g. from broadcast joins) are applied at scan time. Must be enabled explicitly. |
+
+To enable runtime filtering:
+
+```python
+spark.conf.set("spark.clickhouse.read.runtimeFilter.enabled", "true")
+```
+
+:::note
+Complex filter expressions that Spark cannot compile to SQL (e.g., user-defined functions, unsupported predicates) are **not** pushed down. They are returned to Spark and evaluated in memory after the data is fetched. Use `EXPLAIN` in Spark to see which filters were actually pushed down.
+:::
+
+## Connector parallelism {#connector-parallelism}
+
+Understanding how the connector maps Spark tasks to ClickHouse shards and partitions is important for tuning performance.
+
+### Read parallelism {#read-parallelism}
+
+The connector creates one Spark input partition per ClickHouse partition. The number of Spark read tasks equals the number of distinct partition values in the ClickHouse table. Please visit [Table Partitions](https://clickhouse.com/docs/partitions) for more information on partitioning.
+
+| Scenario | Spark tasks created |
+|---|---|
+| `MergeTree` table with N distinct partitions | N tasks, one per partition, all targeting the same ClickHouse node |
+| `Distributed` table with `spark.clickhouse.read.distributed.convertLocal=true` (default) | (number of shards) × (partitions per shard) tasks, each targeting a specific shard node directly |
+| `Distributed` table with `spark.clickhouse.read.distributed.convertLocal=false` | 1 task, reading through the `Distributed` coordinator node |
+
+For a table with no `PARTITION BY` clause, the connector reads the table with a single unpartitioned scan, producing minimal read parallelism. Use `PARTITION BY` in your ClickHouse table to increase read parallelism.
+
+### Write parallelism {#write-parallelism}
+
+Before writing, Spark reshuffles the DataFrame to match ClickHouse's distribution requirements:
+
+1. **Repartition by partition key** (`spark.clickhouse.write.repartitionByPartition=true`, default): Spark groups rows by ClickHouse partition key values so that all rows for the same partition land in the same Spark task.
+2. **Sort within partition**: Rows are locally sorted by `[sharding_key, partition_key, order_by_key]` to produce optimally-ordered inserts.
+3. **Write tasks**: Each Spark task writes its rows to ClickHouse in batches of `spark.clickhouse.write.batchSize` (default 10,000).
+
+For **Distributed tables**, when `spark.clickhouse.write.distributed.useClusterNodes=true` (default), the connector distributes write tasks across all cluster nodes so the total write load is spread across shards rather than funneled through a single coordinator. When `spark.clickhouse.write.distributed.convertLocal=true`, Spark computes the sharding key and routes each row directly to the correct shard's local table, bypassing the Distributed engine entirely.
+
+To control the number of write tasks, set `spark.clickhouse.write.repartitionNum` to the desired partition count:
+
+```python
+spark.conf.set("spark.clickhouse.write.repartitionNum", "16")
+```
+
+Alternatively, repartition the DataFrame explicitly before writing:
+
+```python
+df.repartition(16).write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "my_table") \
+    .mode("append") \
+    .save()
+```
+
+## Working with Distributed tables {#working-with-distributed-tables}
+
+When using ClickHouse `Distributed` tables with the connector, there is an important networking and architecture consideration:
+
+**By default, the connector connects directly to each shard node rather than routing all traffic through the Distributed coordinator.**
+
+This means:
+
+1. **All shard hostnames must be reachable** from Spark executors. The connector reads cluster topology from `system.clusters` on the coordinator node, then opens direct connections to each shard. If the shard hostnames returned by `system.clusters` are internal cluster names not resolvable from outside, reads and writes will fail.
+2. **Writes target the Distributed table on each shard node**: With the default settings (`write.distributed.useClusterNodes=true`, `write.distributed.convertLocal=false`), the connector writes to the Distributed table engine on each cluster node directly (bypassing the single coordinator), and ClickHouse handles the internal routing to local tables. To instead write directly to the underlying local `MergeTree` tables and bypass the Distributed engine entirely, set `spark.clickhouse.write.distributed.convertLocal=true`. This follows the [recommended pattern for distributed writes](https://clickhouse.com/docs/engines/table-engines/special/distributed#distributed-writing-data) and requires that the local table exists on every shard and that Spark can resolve each shard's hostname.
+3. **Schema must be consistent across all shards**: Since Spark reads schema from one node, the table structure must be identical on all shards.
+
+To use coordinator-only routing (simpler networking, less parallelism):
+
+```text
+spark.clickhouse.read.distributed.convertLocal   false
+spark.clickhouse.write.distributed.useClusterNodes  false
+```
+
+With these settings, all reads and writes go through the single coordinator node using the `Distributed` engine, and only the coordinator needs to be accessible from Spark.
+
+## Passing query settings and Java client options {#passing-query-settings}
+
+The connector uses ClickHouse's HTTP interface via the [ClickHouse Java client](https://github.com/ClickHouse/clickhouse-java). There are two independent ways to pass settings:
+
+- **`option.clickhouse_setting_<name>`** — the first-class mechanism for passing ClickHouse server settings through the Java client. Applied to every client operation (reads and writes) for the lifetime of the catalog.
+- **`option.http_header_<name>`** — adds a custom HTTP header to every request the Java client sends to ClickHouse. Useful for setting ClickHouse-recognised headers (e.g. `X-ClickHouse-Quota`) or for passing headers expected by a proxy or gateway in front of the server. Applied to every operation for the lifetime of the catalog.
+
+### Via Catalog API {#query-settings-catalog-api}
+
+Add `option.clickhouse_setting_<name>` entries to `spark-defaults.conf` or your Spark session configuration:
+
+```text
+spark.sql.catalog.clickhouse.option.clickhouse_setting_async_insert            1
+spark.sql.catalog.clickhouse.option.clickhouse_setting_wait_for_async_insert   1
+spark.sql.catalog.clickhouse.option.clickhouse_setting_max_execution_time      300
+```
+
+To add custom HTTP headers to every request, use `option.http_header_<name>`. Headers recognised by ClickHouse itself (e.g. `X-ClickHouse-Quota`) will be honoured by the server; any other header is only useful if a proxy or gateway in front of ClickHouse is configured to read it.
+
+```text
+spark.sql.catalog.clickhouse.option.http_header_x_clickhouse_quota   spark_etl_quota
+```
+
+To enable TLS, set `option.ssl=true` and point `http_port` at the HTTPS endpoint:
+
+```text
+spark.sql.catalog.clickhouse.option.ssl   true
+spark.sql.catalog.clickhouse.http_port    8443
+```
+
+For the full list of available Java client option keys, see the [Java client configuration documentation](https://clickhouse.com/docs/integrations/language-clients/java/client#configuration). For available ClickHouse server session settings, see the [settings documentation](https://clickhouse.com/docs/operations/settings/settings).
+
+### Via TableProvider API {#query-settings-tableprovider-api}
+
+Use `spark.clickhouse.read.settings` to apply ClickHouse settings to reads. The value is appended as a `SETTINGS` clause to every generated read query, so it must be valid SQL (e.g. `final=1, max_execution_time=300`). This setting is read from the Spark session config — passing it as a DataFrame `.option()` has no effect. It applies to all reads in the session until unset.
+
+To scope the settings to a single read, set the config, force the action, then unset:
+
+<Tabs groupId="language">
+<TabItem value="python" label="Python" default>
+
+```python
+spark.conf.set("spark.clickhouse.read.settings", "max_execution_time=300,max_memory_usage=10000000000")
+
+# Force the action before unsetting — Spark reads are lazy
+result = spark.read \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "my_table") \
+    .load() \
+    .collect()
+
+spark.conf.unset("spark.clickhouse.read.settings")
+```
+
+</TabItem>
+<TabItem value="scala" label="Scala">
+
+```scala
+spark.conf.set("spark.clickhouse.read.settings", "max_execution_time=300,max_memory_usage=10000000000")
+
+// Force the action before unsetting — Spark reads are lazy
+val result = spark.read
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "my_table")
+  .load()
+  .collect()
+
+spark.conf.unset("spark.clickhouse.read.settings")
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+spark.conf().set("spark.clickhouse.read.settings", "max_execution_time=300,max_memory_usage=10000000000");
+
+// Force the action before unsetting — Spark reads are lazy
+Row[] result = spark.read()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "my_table")
+    .load()
+    .collect();
+
+spark.conf().unset("spark.clickhouse.read.settings");
+```
+
+</TabItem>
+</Tabs>
+
+For write-side settings (e.g. per-write batch size), pass `spark.clickhouse.write.*` options directly on the writer:
+
+<Tabs groupId="language">
+<TabItem value="python" label="Python" default>
+
+```python
+df.write \
+    .format("clickhouse") \
+    .option("host", "your-host") \
+    .option("database", "default") \
+    .option("table", "my_table") \
+    .option("spark.clickhouse.write.batchSize", "50000") \
+    .option("spark.clickhouse.write.format", "arrow") \
+    .mode("append") \
+    .save()
+```
+
+</TabItem>
+<TabItem value="scala" label="Scala">
+
+```scala
+df.write
+  .format("clickhouse")
+  .option("host", "your-host")
+  .option("database", "default")
+  .option("table", "my_table")
+  .option("spark.clickhouse.write.batchSize", "50000")
+  .option("spark.clickhouse.write.format", "arrow")
+  .mode("append")
+  .save()
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+df.write()
+    .format("clickhouse")
+    .option("host", "your-host")
+    .option("database", "default")
+    .option("table", "my_table")
+    .option("spark.clickhouse.write.batchSize", "50000")
+    .option("spark.clickhouse.write.format", "arrow")
+    .mode("append")
+    .save();
+```
+
+</TabItem>
+</Tabs>
+
+### Common settings {#query-settings-common}
+
+| Option key | Example value | Purpose |
+|---|---|---|
+| `option.clickhouse_setting_async_insert` | `1` | Enable ClickHouse async inserts; reduces memory pressure during high-frequency writes |
+| `option.clickhouse_setting_wait_for_async_insert` | `1` | Wait for async insert acknowledgement before returning |
+| `option.clickhouse_setting_insert_deduplicate` | `0` | Disable deduplication for idempotent write pipelines |
+| `option.clickhouse_setting_max_insert_block_size` | `1048576` | Control max block size for inserts |
+| `option.clickhouse_setting_max_execution_time` | `300` | Extend server-side query timeout (seconds) for large reads. To actually allow reads longer than the connector default, also raise `spark.clickhouse.client.queryTimeout` (default `60s`). |
+| `option.clickhouse_setting_session_timeout` | `60` | Extend HTTP session timeout (seconds) |
+
+:::note
+To apply ClickHouse server settings only to read requests (not writes), use `spark.clickhouse.read.settings` set via `spark.conf.set(...)` instead of catalog-level `option.clickhouse_setting_*` entries. Catalog properties apply to all operations for the lifetime of the catalog and cannot be scoped to reads only.
+:::
+
+## Timeout configuration {#timeout-configuration}
+
+Timeouts in the Spark connector operate at three independent layers. Misdiagnosing which layer is responsible for a timeout is the most common source of confusion.
+
+### Connector-internal timeouts {#timeout-connector}
+
+The connector enforces its own timeouts on each Java client `query` and `ping` operation, independent of any ClickHouse server setting:
+
+| Behavior | Default | Configurable via |
+|---|---|---|
+| Query / ping timeout | **60 seconds** | `spark.clickhouse.client.queryTimeout` (since 0.10.1) |
+| Insert timeout | **None** | Not configurable — inserts run until the network drops the connection |
+
+The query timeout applies to every `client.query(...)` and `client.ping(...)` call made by the connector — this covers all reads, all DDL/metadata operations, and the metadata queries issued by the write path before each batch. If a query takes longer than the configured value end-to-end, the connector aborts it, regardless of `max_execution_time` or any other server setting.
+
+Before 0.10.1 this value was hard-coded at 60 seconds. From 0.10.1 onwards, override it via the Spark session config (e.g. `spark.conf.set("spark.clickhouse.client.queryTimeout", "300s")`). The value uses Spark's `TimeUnit` syntax (`ms`, `s`, `m`, …) and must be positive.
+
+Inserts have no connector-level timeout. This means a stalled or very slow insert will hang until a network device terminates the connection — which can produce a **"Broken pipe"** error.
+
+### Java client connection timeouts {#timeout-java-client}
+
+These are passed through to the underlying ClickHouse Java client using the `option.<key>` prefix on catalog properties. They control the TCP/HTTP connection lifecycle.
+
+| Catalog property | Default | Unit | What it controls |
+|---|---|---|---|
+| `option.socket_timeout` | `0` (unlimited) | ms | Deadline for each TCP read/write operation. `0` means no deadline — the call blocks indefinitely if the server stops responding. |
+| `option.connection_timeout` | not set (Java client default) | ms | Time allowed to establish a new TCP connection to ClickHouse. |
+| `option.connection_ttl` | `-1` (unlimited) | ms | Maximum lifetime of a pooled connection. After this time, the connection is retired and not reused. **Set this below the idle timeout of any network appliance between Spark and ClickHouse** (e.g., `300000` for AWS NLB). |
+| `option.http_keep_alive_timeout` | server default | ms | Overrides the HTTP keep-alive timeout. Set to `0` to disable keep-alive on network paths with aggressive idle-connection cutoffs. |
+
+### ClickHouse server-side timeouts {#timeout-server}
+
+These are ClickHouse query settings sent with each request. They instruct the ClickHouse server to enforce a limit, independent of what the connector or TCP layer does.
+
+| Catalog property | Default | Unit | What it controls |
+|---|---|---|---|
+| `option.clickhouse_setting_max_execution_time` | `0` (unlimited) | seconds | Server-side hard cap on query execution time. Useful for preventing runaway reads from consuming server resources. **Does not override the connector's client query timeout** — if you raise this for long reads, also raise `spark.clickhouse.client.queryTimeout` (default `60s`). |
+| `option.clickhouse_setting_session_timeout` | `60` | seconds | HTTP session lifetime on the server. |
+
+## Performance tuning {#performance-tuning}
+
+### Read performance {#read-performance}
+
+| Tuning | Configuration | Notes |
+|---|---|---|
+| **Use binary read format** | `spark.clickhouse.read.format=binary` | Binary (`RowBinaryWithNamesAndTypes`) format is faster than JSON for large reads. Default is `json` for wider compatibility. |
+| **Column pruning** | Use explicit `SELECT col1, col2` | Avoid `SELECT *`; the connector pushes column selection to ClickHouse. |
+| **Filter push-down** | Keep `WHERE` clauses on native ClickHouse types | String, numeric, and DateTime filters are pushed down. Complex expressions are evaluated in Spark. |
+| **Parallel reads across shards** | `spark.clickhouse.read.distributed.convertLocal=true` (default) | Enables one Spark task per shard partition. Ensure all shard hosts are accessible. |
+| **Runtime filtering** | `spark.clickhouse.read.runtimeFilter.enabled=true` | Allows dynamic filters from broadcast joins to reduce data fetched. |
+| **Compression** | `spark.clickhouse.read.compression.codec=lz4` (default) | LZ4 reduces network transfer; disable only if CPU is the bottleneck. |
+
+### Write performance {#write-performance}
+
+| Tuning | Configuration | Notes |
+|---|---|---|
+| **Increase batch size** | `spark.clickhouse.write.batchSize=50000` | Default is 10,000. Larger batches reduce round-trips. |
+| **Arrow write format** | `spark.clickhouse.write.format=arrow` (default) | Arrow is faster than JSON for most data types. On Spark 4.0 the Arrow writer handles `VariantType` columns via an internal JSON-string conversion; on Spark 3.x, fall back to `json` if your table has Variant or JSON columns. |
+| **Compression** | `spark.clickhouse.write.compression.codec=lz4` (default) | Reduces network transfer during writes. |
+| **Repartition by partition** | `spark.clickhouse.write.repartitionByPartition=true` (default) | Groups rows by partition before writing, reducing the number of parts created. |
+
+### Recommended starting configuration for bulk loads {#bulk-load-config}
+
+```python
+spark.conf.set("spark.clickhouse.write.batchSize", "50000")
+spark.conf.set("spark.clickhouse.write.format", "arrow")
+spark.conf.set("spark.clickhouse.write.compression.codec", "lz4")
+spark.conf.set("spark.clickhouse.write.repartitionByPartition", "true")
+```
+
+## Troubleshooting {#troubleshooting}
+
+### Cannot connect to shard hostname {#troubleshooting-shard-hostname}
+
+**Symptom**: Reads or writes fail with connection errors referencing shard hostnames that are not the coordinator node.
+
+**Cause**: The connector reads cluster topology from `system.clusters` and tries to connect directly to each shard. If shard hostnames are internal cluster DNS names not resolvable from Spark executors, the connections will fail.
+
+**Fix**:
+- Configure DNS so all shard hostnames are resolvable from Spark executors.
+- Alternatively, use coordinator-only routing (less parallelism):
+  ```text
+  spark.clickhouse.read.distributed.convertLocal   false
+  spark.clickhouse.write.distributed.useClusterNodes  false
+  ```
+
+---
+
+### Write fails with unsupported partition expression {#troubleshooting-partition-expression}
+
+**Symptom**: `AnalysisException` referencing an unsupported transform (e.g. `months(key)`) when writing to a table with `PARTITION BY toYYYYMM(key)`.
+
+**Cause**: Spark cannot evaluate complex ClickHouse partition expressions as partitioning transforms.
+
+**Fix**: Set `spark.clickhouse.ignoreUnsupportedTransform=true` (the default). The connector will log a warning and skip the partition-level clustering requirement. ClickHouse will still handle routing correctly when writing to the `Distributed` table.
+
+:::warning
+If you also have `spark.clickhouse.write.distributed.convertLocal=true`, ignoring unsupported sharding keys can cause incorrect data distribution. In that case, either use a supported sharding key or set `spark.clickhouse.write.distributed.convertLocal.allowUnsupportedSharding=true` only if you have verified your data distribution — rows may be written to the wrong shard, causing data skew or incorrect query results when querying shards directly.
+:::
+
+---
+
+### Variant integers come back as quoted strings {#troubleshooting-variant-integer-roundtrip}
+
+**Symptom**: Integer values inside a `VariantType` column written with `spark.clickhouse.write.format=arrow` come back as **string-typed** Variant entries — Spark reads the value as a string, not a number. Writing `parse_json('{"v": 1}')` returns a Variant whose `v` path is the string `"1"` (JSON form: `{"v":"1"}`) instead of the number `1`. Floats, strings, and booleans are unaffected.
+
+**Cause**: The Arrow write path currently ships Variants as JSON strings and lets ClickHouse cast `String → JSON` on insert. The cast widens every JSON integer to `Int64`, and `output_format_json_quote_64bit_integers=1` then quotes those values on read. The rebuilt Variant stores them as strings.
+
+**Fix**: Pick one:
+- Use JSON write format — sidesteps the `String → JSON` cast entirely. Note that JSON writes can be slower than Arrow for large volumes, so benchmark if write throughput matters:
+  ```text
+  spark.clickhouse.write.format=json
+  ```
+- Disable integer quoting on reads (keeps Arrow writes):
+  ```text
+  spark.clickhouse.read.settings=output_format_json_quote_64bit_integers=0
+  ```
+- Declare typed JSON paths in ClickHouse out-of-band, e.g. `data JSON(v Int8)`. Typed paths bypass the quoting setting entirely.
 
 ## Contributing and support {#contributing-and-support}
 
