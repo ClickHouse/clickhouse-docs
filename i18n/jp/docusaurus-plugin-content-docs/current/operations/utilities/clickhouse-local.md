@@ -201,7 +201,7 @@ $ clickhouse-local --copy < data.json > data.csv
 
 デフォルトでは、`clickhouse-local` は同一ホスト上の ClickHouse サーバーのデータにアクセスでき、サーバーの設定には依存しません。`--config-file` 引数を使用してサーバーの設定を読み込むこともできます。一時データ用には、デフォルトで一意の一時データディレクトリが作成されます。
 
-基本的な使用方法 (Linux) :
+基本的な使い方 (Linux) :
 
 ```bash
 $ clickhouse-local --structure "table_structure" --input-format "format_of_incoming_data" --query "query"
@@ -229,7 +229,10 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 * `-f`, `--format`, `--output-format` — 出力フォーマット。デフォルトは `TSV`。
 * `-d`, `--database` — デフォルトデータベース。デフォルトは `_local`。
 * `--stacktrace` — 例外発生時にデバッグ出力をダンプするかどうか。
-* `--echo` — 実行前にクエリを表示します。
+* `--echo [ <bool> ]` — 実行前に各クエリを表示します。省略可能な真偽値を取ります。対話型モードではデフォルトで有効、バッチモードではデフォルトで無効です。注: `--echo` は省略可能な値を取るようになったため、値を指定しない `--echo` の直後に置かれた位置引数のクエリは、その値として解釈されます。代わりに、`--echo --query "..."`、`--echo -q "..."`、`--echo=false`、またはパイプされた `stdin` を使用してください。
+* `--echo-formatted [ <bool> ]` — 表示するクエリをフォーマットします。省略可能な真偽値を取ります。対話型モードではデフォルトで有効、バッチモードではデフォルトで無効です。
+* `--echo-query-id [ <bool> ]` — 実行前に `query_id` を表示します。省略可能な真偽値を取ります。対話型モードではデフォルトで有効、バッチモードではデフォルトで無効です。
+* `--highlight`, `--hilite` `<bool>` — コマンドプロンプトと表示されるクエリの構文ハイライトを切り替えます。デフォルトで有効です。ハイライトはターミナルに出力するときにのみ適用されます。
 * `--verbose` — クエリ実行の詳細をより多く出力します。
 * `--logger.console` — コンソールにログを出力します。
 * `--logger.log` — ログファイル名。
@@ -241,7 +244,6 @@ $ ./clickhouse local --structure "table_structure" --input-format "format_of_inc
 * `-V`, `--version` — バージョン情報を表示して終了します。
 
 また、`--config-file` の代わりによく用いられる、各 ClickHouse 設定変数に対応する引数も用意されています。
-
 
 ## コマンド \{#commands\}
 

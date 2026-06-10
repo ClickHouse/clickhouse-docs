@@ -29,8 +29,6 @@ import tableau_workbook6 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Connecting Tableau to ClickHouse
-
 <ClickHouseSupportedBadge/>
 
 ClickHouse offers an official Tableau Connector, featured on

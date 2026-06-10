@@ -10,19 +10,17 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-# データ管理 \{#managing-data\}
-
-Observability 用の ClickHouse デプロイメントでは、必然的に大規模なデータセットを扱うことになり、それらを適切に管理する必要があります。ClickHouse には、データ管理を支援するためのさまざまな機能が用意されています。
+オブザーバビリティ向けの ClickHouse の導入では、必然的に大規模なデータセットを扱うことになり、その管理が必要になります。ClickHouse には、データ管理を支援するためのさまざまな機能が用意されています。
 
 ## パーティション \{#partitions\}
 
-ClickHouse におけるパーティションは、特定のカラムや SQL 式に従ってデータをディスク上で論理的に分割する仕組みです。データを論理的に分割することで、それぞれのパーティションを独立して操作（例: 削除）できます。これにより、パーティション、ひいてはその部分集合を、時間に応じてストレージ階層間で効率的に移動したり、[データの有効期限を設定したり/クラスターから効率的に削除したり](/sql-reference/statements/alter/partition)できます。
+ClickHouse におけるパーティションは、特定のカラムや SQL 式に従ってデータをディスク上で論理的に分割する仕組みです。データを論理的に分割することで、それぞれのパーティションを独立して操作 (例: 削除) できます。これにより、パーティション、ひいてはその部分集合を、時間に応じてストレージ階層間で効率的に移動したり、[データの有効期限を設定したり/クラスターから効率的に削除したり](/sql-reference/statements/alter/partition)できます。
 
 パーティションは、テーブルを初期定義する際に `PARTITION BY` 句によって指定します。この句には任意のカラムに対する SQL 式を含めることができ、その結果によって各行がどのパーティションに送られるかが決定されます。
 
 <Image img={observability_14} alt="パーティション" size="md" />
 
-データパーツは（共通のフォルダ名プレフィックスを通じて）ディスク上の各パーティションと論理的に関連付けられ、個別にクエリを実行できます。以下の例では、デフォルトの `otel_logs` スキーマは `toDate(Timestamp)` という式を使って日単位でパーティション分割します。行が ClickHouse に挿入されると、この式が各行に対して評価され、対応するパーティションが存在する場合はそこにルーティングされます（その日の最初の行であれば、その時点でパーティションが作成されます）。
+データパーツは (共通のフォルダ名プレフィックスを通じて) ディスク上の各パーティションと論理的に関連付けられ、個別にクエリを実行できます。以下の例では、デフォルトの `otel_logs` スキーマは `toDate(Timestamp)` という式を使って日単位でパーティション分割します。行が ClickHouse に挿入されると、この式が各行に対して評価され、対応するパーティションが存在する場合はそこにルーティングされます (その日の最初の行であれば、その時点でパーティションが作成されます) 。
 
 ```sql
 CREATE TABLE default.otel_logs
@@ -34,7 +32,7 @@ PARTITION BY toDate(Timestamp)
 ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)
 ```
 
-パーティションに対しては、[バックアップ](/sql-reference/statements/alter/partition#freeze-partition)、[カラム操作](/sql-reference/statements/alter/partition#clear-column-in-partition)、行単位でデータを[変更](/sql-reference/statements/alter/partition#update-in-partition)/[削除](/sql-reference/statements/alter/partition#delete-in-partition)するミューテーション、[インデックスのクリア（例: セカンダリインデックス）](/sql-reference/statements/alter/partition#clear-index-in-partition) など、[さまざまな操作](/sql-reference/statements/alter/partition)を実行できます。
+パーティションに対しては、[バックアップ](/sql-reference/statements/alter/partition#freeze-partition)、[カラム操作](/sql-reference/statements/alter/partition#clear-column-in-partition)、行単位でデータを[変更](/sql-reference/statements/alter/partition#update-in-partition)/[削除](/sql-reference/statements/alter/partition#delete-in-partition)するミューテーション、[インデックスのクリア (例: セカンダリ索引) ](/sql-reference/statements/alter/partition#clear-index-in-partition) など、[さまざまな操作](/sql-reference/statements/alter/partition)を実行できます。
 
 例として、`otel_logs` テーブルが日単位でパーティション分割されているとします。構造化ログのデータセットでテーブルが埋められている場合、このテーブルには複数日分のデータが格納されます。
 
@@ -44,7 +42,9 @@ SELECT Timestamp::Date AS day,
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 2333977 │
 │ 2019-01-23 │ 2326694 │
@@ -63,7 +63,9 @@ Peak memory usage: 4.41 MiB.
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'otel_logs'
+```
 
+```response
 ┌─partition──┐
 │ 2019-01-22 │
 │ 2019-01-23 │
@@ -75,22 +77,23 @@ WHERE `table` = 'otel_logs'
 5 rows in set. Elapsed: 0.005 sec.
 ```
 
-古いデータの保存用に、`otel_logs_archive` という別のテーブルを用意しておくこともできます。データはパーティション単位で効率的にこのテーブルへ移動でき（メタデータの変更だけで完了します）。
-
+古いデータの保存用に、`otel_logs_archive` という別のテーブルを用意しておくこともできます。データはパーティション単位で効率的にこのテーブルへ移動でき (メタデータの変更だけで完了します) 。
 
 ```sql
 CREATE TABLE otel_logs_archive AS otel_logs
---アーカイブテーブルにデータを移動
+--move data to archive table
 ALTER TABLE otel_logs
         (MOVE PARTITION tuple('2019-01-26') TO TABLE otel_logs_archive
---データが移動されたことを確認
+--confirm data has been moved
 SELECT
         Timestamp::Date AS day,
         count() AS c
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 2333977 │
 │ 2019-01-23 │ 2326694 │
@@ -98,30 +101,34 @@ ORDER BY c DESC
 │ 2019-01-25 │ 1821770 │
 └────────────┴─────────┘
 
-4行を取得。経過時間: 0.051秒。処理済み: 838万行、67.03 MB (1億6352万行/秒、1.31 GB/秒)
-ピークメモリ使用量: 4.40 MiB。
+4 rows in set. Elapsed: 0.051 sec. Processed 8.38 million rows, 67.03 MB (163.52 million rows/s., 1.31 GB/s.)
+Peak memory usage: 4.40 MiB.
+```
 
+```sql
 SELECT Timestamp::Date AS day,
         count() AS c
 FROM otel_logs_archive
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-26 │ 1986456 │
 └────────────┴─────────┘
 
-1行を取得。経過時間: 0.024秒。処理済み: 199万行、15.89 MB (8386万行/秒、670.87 MB/秒)
-ピークメモリ使用量: 4.99 MiB。
+1 row in set. Elapsed: 0.024 sec. Processed 1.99 million rows, 15.89 MB (83.86 million rows/s., 670.87 MB/s.)
+Peak memory usage: 4.99 MiB.
 ```
 
-これは、`INSERT INTO SELECT` を使用してデータを新しい対象テーブルに書き換える必要がある他の手法とは対照的です。
+これは、`INSERT INTO SELECT` を使用してデータを新しいターゲットテーブルに書き換える必要がある他の手法とは対照的です。
 
 :::note パーティションの移動
-[テーブル間でのパーティション移動](/sql-reference/statements/alter/partition#move-partition-to-table) には、いくつかの条件を満たす必要があります。特に、テーブルは同一の構造、パーティションキー、PRIMARY KEY、およびインデックス/プロジェクションを持っていなければなりません。`ALTER` DDL でパーティションを指定する方法に関する詳細な説明は[こちら](/sql-reference/statements/alter/partition#how-to-set-partition-expression)にあります。
+[テーブル間でのパーティション移動](/sql-reference/statements/alter/partition#move-partition-to-table) には、いくつかの条件を満たす必要があります。特に、テーブルは同一の構造、パーティションキー、主キー、およびインデックス/プロジェクションを持っていなければなりません。`ALTER` DDL でパーティションを指定する方法に関する詳細な説明は[こちら](/sql-reference/statements/alter/partition#how-to-set-partition-expression)にあります。
 :::
 
-さらに、データはパーティション単位で効率的に削除できます。これは、他の手法（ミューテーションや軽量削除）と比べてはるかにリソース効率に優れており、優先して使用すべき方法です。
+さらに、データはパーティション単位で効率的に削除できます。これは、他の手法 (ミューテーションや軽量削除) と比べてはるかにリソース効率に優れており、優先して使用すべき方法です。
 
 ```sql
 ALTER TABLE otel_logs
@@ -133,6 +140,9 @@ SELECT
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
+
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 4667954 │
 │ 2019-01-23 │ 4653388 │
@@ -141,7 +151,7 @@ ORDER BY c DESC
 ```
 
 :::note
-この機能は、設定 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) を有効にした場合に TTL によって活用されます。詳細については [TTL（Time to Live）によるデータ管理](#data-management-with-ttl-time-to-live) を参照してください。
+この機能は、設定 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) を有効にした場合に TTL によって活用されます。詳細については [TTL (Time to Live) によるデータ管理](#data-management-with-ttl-time-to-live) を参照してください。
 :::
 
 ### アプリケーション \{#applications\}
@@ -277,7 +287,7 @@ ClickHouse Cloud では、S3 上に保存された単一のデータコピーと
 
 スキーマの変更は、これらの新しいカラムが送信されるきっかけとなるマテリアライズドビューの変換ロジックや OTel collector の設定を変更する前に行うことができます。
 
-スキーマを変更したら、ユーザーは OTel collector を再設定できます。ユーザーが [&quot;Extracting structure with SQL&quot;](/docs/use-cases/observability/schema-design#extracting-structure-with-sql) で示した推奨プロセス、すなわち OTel collector がデータを Null テーブルエンジンに送信し、マテリアライズドビューが対象スキーマを抽出して結果を保存用のターゲットテーブルに送信する、という流れを使用していると仮定すると、ビューは [`ALTER TABLE ... MODIFY QUERY` 構文](/sql-reference/statements/alter/view) を使用して変更できます。以下のようなターゲットテーブルと、それに対応するマテリアライズドビュー（&quot;Extracting structure with SQL&quot; で使用したものと同様）を用いて、OTel の構造化ログから対象スキーマを抽出するものとします。
+スキーマを変更したら、ユーザーは OTel collector を再設定できます。ユーザーが [&quot;Extracting structure with SQL&quot;](/docs/use-cases/observability/schema-design#extracting-structure-with-sql) で示した推奨プロセス、すなわち OTel collector がデータを Null テーブルエンジンに送信し、マテリアライズドビューが対象スキーマを抽出して結果を保存用のターゲットテーブルに送信する、という流れを使用していると仮定すると、ビューは [`ALTER TABLE ... MODIFY QUERY` 構文](/sql-reference/statements/alter/view) を使用して変更できます。以下のようなターゲットテーブルと、それに対応するマテリアライズドビュー (&quot;Extracting structure with SQL&quot; で使用したものと同様) を用いて、OTel の構造化ログから対象スキーマを抽出するものとします。
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -330,12 +340,15 @@ ALTER TABLE otel_logs_v2
         (ADD COLUMN `Size` UInt64 DEFAULT JSONExtractUInt(Body, 'size'))
 ```
 
-上記の例では、`LogAttributes` の `size` キーをデフォルトとして指定しています（存在しない場合は 0 になります）。そのため、この列にアクセスするクエリは、値が挿入されていない行については Map にアクセスする必要があり、その分だけ遅くなります。代わりに 0 などの定数をデフォルトとして指定することも容易であり、その場合、値を持たない行に対する後続クエリのコストを削減できます。このテーブルをクエリすると、Map から期待どおりに値が設定されていることが確認できます。
+上記の例では、`LogAttributes` の `size` キーをデフォルトとして指定しています (存在しない場合は 0 になります) 。そのため、このカラムにアクセスするクエリは、値が挿入されていない行については Map にアクセスする必要があり、その分だけ遅くなります。代わりに 0 などの定数をデフォルトとして指定することも容易であり、その場合、値を持たない行に対する後続クエリのコストを削減できます。このテーブルをクエリすると、Map から期待どおりに値が設定されていることが確認できます。
 
 ```sql
 SELECT Size
 FROM otel_logs_v2
 LIMIT 5
+```
+
+```response
 ┌──Size─┐
 │ 30577 │
 │  5667 │
@@ -348,7 +361,6 @@ LIMIT 5
 ```
 
 今後のすべてのデータにこの値が挿入されるようにするには、以下のように `ALTER TABLE` 構文を使用してマテリアライズドビューを変更できます。
-
 
 ```sql
 ALTER TABLE otel_logs_mv
@@ -388,7 +400,9 @@ FROM merge('otel_logs_v[2|3]')
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 38319300 │
 │   304  │  1360912 │
@@ -411,7 +425,9 @@ FROM otel_logs_merged
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 38319300 │
 │   304  │  1360912 │
@@ -436,7 +452,9 @@ FROM otel_logs_merged
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 39259996 │
 │   304  │  1378564 │

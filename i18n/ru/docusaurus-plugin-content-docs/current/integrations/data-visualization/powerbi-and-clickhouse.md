@@ -29,26 +29,23 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Power BI \{#power-bi\}
+Microsoft Power BI может запрашивать данные из [ClickHouse Cloud](https://clickhouse.com/cloud) или самоуправляемого развертывания, а также загружать их в память.
 
-<ClickHouseSupportedBadge/>
+Существует несколько вариантов Power BI, которые можно использовать для визуализации данных:
 
-Microsoft Power BI может выполнять запросы к данным в [ClickHouse Cloud](https://clickhouse.com/cloud) или в самостоятельно управляемом развертывании, а также загружать эти данные в память.
+* Power BI Desktop: настольное приложение для Windows для создания панелей мониторинга и визуализаций
+* Power BI Service: доступен в Azure как SaaS для размещения панелей мониторинга, созданных в Power BI Desktop
 
-Существует несколько вариантов Power BI, которые вы можете использовать для визуализации данных:
+Для Power BI требуется создавать панели мониторинга в версии Desktop, а затем публиковать их в Power BI Service.
 
-* Power BI Desktop: настольное приложение для Windows для создания дашбордов и визуализаций
-* Power BI Service: доступен в Azure как SaaS-сервис для размещения дашбордов, созданных в Power BI Desktop
+Это руководство поможет вам выполнить следующие действия:
 
-В Power BI дашборды необходимо создавать в версии Desktop и публиковать в Power BI Service.
-
-В этом руководстве вы выполните следующие шаги:
-
-* [Установка драйвера ClickHouse ODBC](#install-the-odbc-driver)
-* [Установка коннектора ClickHouse Power BI в Power BI Desktop](#power-bi-installation)
-* [Выполнение запросов к данным из ClickHouse для визуализации в Power BI Desktop](#query-and-visualise-data)
-* [Настройка локального шлюза данных для Power BI Service](#power-bi-service)
+* [Установить драйвер ClickHouse ODBC](#install-the-odbc-driver)
+* [Установить ClickHouse Power BI Connector в Power BI Desktop](#power-bi-installation)
+* [Выполнять запросы к данным в ClickHouse для визуализации в Power BI Desktop](#query-and-visualise-data)
+* [Настроить локальный шлюз данных для Power BI Service](#power-bi-service)
 
 ## Предварительные требования \{#prerequisites\}
 

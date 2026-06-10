@@ -13,17 +13,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-# Быстрый старт ClickHouse OSS \{#clickhouse-oss-quick-start\}
-
-> В этом кратком руководстве по быстрому старту вы за несколько
-> простых шагов настроите ClickHouse OSS. Вы будете использовать ClickHouse CLI `clickhousectl`, чтобы установить ClickHouse,
-> запустить сервер ClickHouse, подключиться к своему серверу, создать таблицу,
+> В этом руководстве по быстрому старту мы поможем вам настроить OSS ClickHouse за
+> несколько простых шагов. Вы будете использовать CLI ClickHouse `clickhousectl`,
+> чтобы установить ClickHouse, запустить сервер ClickHouse, подключиться к нему и создать таблицу,
 > вставить в неё данные и выполнить запрос SELECT.
 
 <VerticalStepper>
   ## Установка ClickHouse CLI \ \{#install-the-cli\}
 
-  ClickHouse CLI (`clickhousectl`) позволяет устанавливать локальные версии ClickHouse и управлять ими, запускать серверы и выполнять запросы. Для установки выполните:
+  ClickHouse CLI (`clickhousectl`) позволяет устанавливать локальные версии ClickHouse, запускать серверы, выполнять запросы и управлять ClickHouse Cloud.
+
+  Для установки выполните:
 
   ```bash
   curl https://clickhouse.com/cli | sh
@@ -31,16 +31,35 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   Псевдоним `chctl` также создаётся автоматически для удобства использования.
 
+  <details>
+    <summary>Дополнительно: установка ClickHouse без `clickhousectl`</summary>
+
+    Если вам нужен только бинарный файл `clickhouse`, а `clickhousectl` не нужен, используйте
+    универсальный установщик с `CLICKHOUSE_ONLY=1`:
+
+    ```bash
+    curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+    ```
+
+    Это скачивает один бинарный файл `clickhouse` в текущий каталог. Затем вы можете
+    запускать `clickhouse-server`, `clickhouse-client` и `clickhouse-local`
+    напрямую из этого бинарного файла, и остальные шаги этого руководства, основанные на `clickhousectl`,
+    к вам не относятся. См. страницу [Quick install](/install/quick-install) для
+    сценария установки с использованием обычного бинарного файла.
+  </details>
+
   ## Установка ClickHouse \{#install-clickhouse\}
 
   ClickHouse работает нативно на Linux и macOS, а на Windows — через
   [WSL](https://learn.microsoft.com/en-us/windows/wsl/about).
 
-  Используйте CLI для установки последней стабильной версии ClickHouse:
+  Используйте CLI для установки последней стабильной версии ClickHouse и установки её в качестве версии по умолчанию:
 
   ```bash
-  clickhousectl local install stable
+  clickhousectl local use stable
   ```
+
+  `local use` устанавливает версию, если она ещё не установлена, задаёт её в качестве версии по умолчанию и создаёт символическую ссылку `clickhouse` в `~/.local/bin` (в вашем `PATH`), чтобы вы могли вызывать бинарный файл `clickhouse` напрямую. Последующие шаги этого руководства зависят от этой символической ссылки. Чтобы загрузить версию без изменения версии по умолчанию и без обновления символической ссылки, используйте вместо этого `clickhousectl local install <version>`.
 
   :::note
   Это не рекомендуемый способ установки ClickHouse для продакшена.
@@ -234,7 +253,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')
+      ```
 
+      ```response
       Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
 
       ┌─name──────┬─type────────────────────┐
@@ -335,7 +356,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       <br />
     </TabItem>
 
-    <TabItem value="озеро данных" label="Озера данных">
+    <TabItem value="datalake" label="Озера данных">
       ClickHouse предоставляет табличные функции для чтения данных из следующих источников:
 
       * **Hadoop**: интеграция с Apache Hadoop с помощью [табличной функции `hdfs`](/sql-reference/table-functions/hdfs)
@@ -353,7 +374,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
   </Tabs>
 
-  ## Просмотр данных \{#explore\}
+  ## Explore \{#explore\}
 
   * Ознакомьтесь с нашим разделом [Core Concepts](/managing-data/core-concepts), чтобы узнать основные принципы работы ClickHouse изнутри.
   * Ознакомьтесь с [руководством продвинутого уровня](tutorial.md), в котором более подробно рассматриваются ключевые концепции и возможности ClickHouse.

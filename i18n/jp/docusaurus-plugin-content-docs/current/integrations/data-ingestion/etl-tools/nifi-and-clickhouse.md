@@ -30,11 +30,9 @@ import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Apache NiFiをClickHouseに接続する \{#connect-apache-nifi-to-clickhouse\}
-
 <CommunityMaintainedBadge />
 
-<a href="https://nifi.apache.org/" target="_blank">Apache NiFi</a> は、ソフトウェアシステム間のデータフローを自動化するために設計されたオープンソースのワークフロー管理ソフトウェアです。ETLデータパイプラインの作成が可能で、300以上のデータプロセッサが同梱されています。このステップバイステップのチュートリアルでは、Apache NiFiをソースと宛先の両方としてClickHouseに接続し、サンプルデータセットをロードする方法を説明します。
+<a href="https://nifi.apache.org/" target="_blank">Apache NiFi</a> は、ソフトウェアシステム間のデータフローを自動化するために設計されたオープンソースのワークフロー管理ソフトウェアです。ETL データパイプラインを作成でき、300 を超えるデータプロセッサが付属しています。このステップバイステップのチュートリアルでは、Apache NiFi をソースおよび宛先の両方として ClickHouse に接続し、サンプルデータセットをロードする方法を説明します。
 
 <VerticalStepper headerLevel="h2">
   ## 接続情報を収集する \{#1-gather-your-connection-details\}

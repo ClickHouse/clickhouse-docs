@@ -22,10 +22,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Мониторинг логов хостов EC2 с помощью ClickStack \{#ec2-host-logs-clickstack\}
-
-:::note[TL;DR]
-Собирайте и визуализируйте системные логи EC2 в ClickStack с помощью OpenTelemetry Collector с автоматическим обогащением метаданными EC2 (ID экземпляра, регион, AZ, тип экземпляра). Включает Демонстрационный датасет и готовую панель мониторинга.
+:::note[Кратко]
+Собирайте и визуализируйте системные логи EC2 в ClickStack с помощью OpenTelemetry Collector с автоматическим обогащением метаданными EC2 (ID экземпляра, регион, AZ, тип инстанса). Включает демонстрационный датасет и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим экземпляром EC2 \{#existing-ec2\}

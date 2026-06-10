@@ -13,8 +13,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-# ClickHouse OSS quick start
-
 > In this quick start tutorial, we'll get you set up with OSS ClickHouse in a few
 easy steps. You'll use the ClickHouse CLI `clickhousectl` to install ClickHouse, 
 start a ClickHouse server, connect to your server to create a table, 
@@ -24,8 +22,10 @@ insert data into it, and run a SELECT query.
 
 ## Install the ClickHouse CLI \{#install-the-cli\}
 
-The ClickHouse CLI (`clickhousectl`) helps you install and manage local ClickHouse
-versions, launch servers, and run queries. Install it with:
+The ClickHouse CLI (`clickhousectl`) helps you install local ClickHouse
+versions, launch servers, run queries and manage ClickHouse Cloud.
+
+Install it with:
 
 ```bash
 curl https://clickhouse.com/cli | sh
@@ -33,16 +33,40 @@ curl https://clickhouse.com/cli | sh
 
 A `chctl` alias is also created automatically for convenience.
 
+<details>
+<summary>Advanced: install ClickHouse without `clickhousectl`</summary>
+
+If you only need the `clickhouse` binary and don't want `clickhousectl`, use the
+universal installer with `CLICKHOUSE_ONLY=1`:
+
+```bash
+curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+```
+
+This downloads a single `clickhouse` binary into the current directory. You can
+then run `clickhouse-server`, `clickhouse-client`, and `clickhouse-local`
+directly from that binary, and the rest of this guide's `clickhousectl`-based
+steps won't apply. See the [Quick install](/install/quick-install) page for the
+plain-binary workflow.
+
+</details>
+
 ## Install ClickHouse {#install-clickhouse}
 
 ClickHouse runs natively on Linux and macOS, and runs on Windows via
 the [WSL](https://learn.microsoft.com/en-us/windows/wsl/about).
 
-Use the CLI to install the latest stable version of ClickHouse:
+Use the CLI to install the latest stable version of ClickHouse and make it your default:
 
 ```bash
-clickhousectl local install stable
+clickhousectl local use stable
 ```
+
+`local use` installs the version if it isn't already present, sets it as your
+default, and creates a `clickhouse` symlink in `~/.local/bin` (on your `PATH`)
+so you can invoke the `clickhouse` binary directly. The later steps in this
+guide rely on that symlink. To download a version without changing your default
+or updating the symlink, use `clickhousectl local install <version>` instead.
 
 :::note
 This isn't the recommended way to install ClickHouse for production.
@@ -238,7 +262,9 @@ technologies that integrate with ClickHouse.
 
         ```sql
         DESCRIBE TABLE file('comments.tsv')
+        ```
 
+        ```response
         Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
 
         ┌─name──────┬─type────────────────────┐

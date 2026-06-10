@@ -4,7 +4,7 @@ sidebar_label: 'Chartbrew'
 sidebar_position: 131
 slug: /integrations/chartbrew-and-clickhouse
 keywords: ['ClickHouse', 'Chartbrew', 'подключить', 'интеграция', 'визуализация']
-description: 'Подключите Chartbrew к ClickHouse, чтобы создавать дашборды и клиентские отчёты в реальном времени.'
+description: 'Подключите Chartbrew к ClickHouse, чтобы создавать панели мониторинга и клиентские отчёты в реальном времени.'
 doc_type: 'guide'
 integration:
    - support_level: 'community'
@@ -25,12 +25,9 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import Image from '@theme/IdealImage';
 
+<CommunityMaintainedBadge />
 
-# Подключение Chartbrew к ClickHouse \{#connecting-chartbrew-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-[Chartbrew](https://chartbrew.com) — это платформа для визуализации данных, которая позволяет создавать дашборды и отслеживать данные в режиме реального времени. Она поддерживает различные источники данных, включая ClickHouse, и предоставляет no-code интерфейс для создания графиков и отчетов.
+[Chartbrew](https://chartbrew.com) — это платформа для визуализации данных, которая позволяет создавать панели мониторинга и отслеживать данные в реальном времени. Она поддерживает несколько источников данных, включая ClickHouse, и предоставляет интерфейс без написания кода для создания диаграмм и отчётов.
 
 ## Цель \{#goal\}
 

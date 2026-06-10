@@ -22,8 +22,6 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Monitoring EC2 Host Logs with ClickStack {#ec2-host-logs-clickstack}
-
 :::note[TL;DR]
 Collect and visualize EC2 system logs in ClickStack using the OpenTelemetry Collector with automatic EC2 metadata enrichment (instance ID, region, AZ, instance type). Includes a demo dataset and pre-built dashboard.
 :::

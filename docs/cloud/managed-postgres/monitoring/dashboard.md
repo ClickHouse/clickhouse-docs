@@ -11,8 +11,6 @@ import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import dashboard from '@site/static/images/managed-postgres/monitoring/dashboard.png';
 
-# Monitoring dashboard
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-dashboard-beta" />
 
 The **Monitoring** tab in the left sidebar of an instance shows

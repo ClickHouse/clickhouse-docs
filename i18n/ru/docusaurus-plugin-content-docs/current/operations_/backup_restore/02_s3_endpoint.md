@@ -1,17 +1,15 @@
 ---
 description: 'Обзор резервного копирования и восстановления в ClickHouse'
-sidebar_label: 'S3-эндпоинт'
+sidebar_label: 'конечная точка S3'
 slug: /operations/backup/s3_endpoint
-title: 'Резервное копирование и восстановление с/на S3-эндпоинт'
+title: 'РЕЗЕРВНОЕ КОПИРОВАНИЕ / ВОССТАНОВЛЕНИЕ с/на конечную точку S3'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
-# РЕЗЕРВНОЕ КОПИРОВАНИЕ / ВОССТАНОВЛЕНИЕ на или с S3-эндпоинта \{#backup-to-a-local-disk\}
-
-В этой статье рассматривается создание и восстановление резервных копий в/из бакета S3 через S3-эндпоинт.
+В этой статье рассматриваются резервное копирование в S3 бакет
+и восстановление из него через конечную точку S3.
 
 ## Синтаксис \{#syntax\}
 

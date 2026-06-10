@@ -86,7 +86,7 @@ ClickHouse Cloud 支持 HTTPS、原生接口，以及 [MySQL 线协议](/interfa
 
 ### 用户自定义函数 \{#user-defined-functions\}
 
-ClickHouse Cloud 中的用户自定义函数目前处于[私有预览](https://clickhouse.com/docs/sql-reference/functions/udf)阶段。
+ClickHouse Cloud 中的用户自定义函数目前处于[Public Beta](https://clickhouse.com/docs/sql-reference/functions/udf)阶段。
 
 #### 设置行为 \{#udf-settings-behavior\}
 

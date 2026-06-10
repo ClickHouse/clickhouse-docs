@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Omni'
 slug: /integrations/omni
-keywords: ['clickhouse', 'Omni', 'connect', 'integrate', 'ui']
-description: 'Omni 是一个企业级 BI、数据应用和嵌入式分析平台，可帮助你实时探索和分享洞察。'
+keywords: ['clickhouse', 'Omni', '连接', '集成', '用户界面']
+description: 'Omni 是一个面向企业的 BI、数据应用和嵌入式分析平台，可帮助您实时探索并分享洞察。'
 title: 'Omni'
 doc_type: 'guide'
 integration:
@@ -16,28 +16,26 @@ import omni_01 from '@site/static/images/integrations/data-visualization/omni_01
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Omni \{#omni\}
+<PartnerBadge />
 
-<PartnerBadge/>
+Omni 可通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地部署的 ClickHouse。
 
-Omni 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地自建部署的 ClickHouse。
-
-## 1. 收集连接信息 \{#1-gather-your-connection-details\}
+## 1. 收集您的连接信息 \{#1-gather-your-connection-details\}
 
 <ConnectionDetails />
 
 ## 2. 创建 ClickHouse 数据源 \{#2-create-a-clickhouse-data-source\}
 
-进入 Admin -> Connections，然后点击右上角的“Add Connection”按钮。
+前往 Admin -&gt; Connections，然后点击右上角的“Add Connection”按钮。
 
-<Image size="lg" img={omni_01} alt="Omni 管理界面在 Connections 部分中显示 Add Connection 按钮" border />
+<Image size="lg" img={omni_01} alt="显示 Connections 部分中 Add Connection 按钮的 Omni 管理界面" border />
 
-<br/>
+<br />
 
-选择 `ClickHouse`，并在表单中输入你的认证信息。
+选择 `ClickHouse`，然后在表单中输入您的凭据。
 
-<Image size="lg" img={omni_02} alt="Omni 中用于 ClickHouse 的连接配置界面，显示认证信息表单字段" border />
+<Image size="lg" img={omni_02} alt="用于 ClickHouse 的 Omni 连接配置界面，显示凭据表单字段" border />
 
-<br/>
+<br />
 
-现在你就可以在 Omni 中查询和可视化 ClickHouse 中的数据了。
+现在，您就可以在 Omni 中查询并可视化 ClickHouse 中的数据了。

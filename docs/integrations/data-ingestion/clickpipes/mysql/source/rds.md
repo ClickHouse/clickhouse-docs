@@ -22,8 +22,6 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-# RDS MySQL source setup guide
-
 This step-by-step guide shows you how to configure Amazon RDS MySQL to replicate data into ClickHouse Cloud using the [MySQL ClickPipe](../index.md). For common questions around MySQL CDC, see the [MySQL FAQs page](/integrations/data-ingestion/clickpipes/mysql/faq.md).
 
 ## Enable binary log retention {#enable-binlog-retention-rds}

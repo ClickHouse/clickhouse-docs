@@ -14,11 +14,8 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
-
-# PlanetScale for Postgres ソース設定ガイド \{#planetscale-for-postgres-source-setup-guide\}
-
 :::info
-PlanetScale for Postgres は現在[早期アクセス](https://planetscale.com/postgres)段階にあります。
+PlanetScale for Postgres は現在、[アーリーアクセス](https://planetscale.com/postgres)として提供されています。
 :::
 
 ## サポートされている Postgres バージョン \{#supported-postgres-versions\}

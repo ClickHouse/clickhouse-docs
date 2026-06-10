@@ -325,11 +325,11 @@ ColumnsDescriptions 캐시의 크기(테이블별 캐시)
 
 ### CompiledExpressionCacheBytes \{#compiledexpressioncachebytes\}
 
-JIT 컴파일된 코드 캐시에 사용된 총 바이트 수
+캐시된 JIT 컴파일 함수의 실행형/데이터 섹션에 대해 `JITModuleMemoryManager`가 보유하는 예약된 페이지 블록 용량입니다(2배 초과 할당 계수를 적용하고 페이지 전체 단위로 올림). 실제 사용 중인 기계어 코드의 바이트 수를 의미하지는 않습니다(실제 값은 이보다 더 작습니다). `posix_memalign`을 통해 할당되며, 이 호출은 jemalloc으로 후킹되므로 전용 JIT Arena 내에 հաշվ됩니다. 따라서 이는 `jemalloc.jit_arena.active_bytes`의 부분집합입니다.
 
 ### CompiledExpressionCacheCount \{#compiledexpressioncachecount\}
 
-JIT 컴파일된 코드 캐시에 있는 총 엔트리 수
+JIT 컴파일된 머신 코드 캐시에 있는 총 엔트리 수
 
 ### 압축 \{#compressing\}
 
@@ -526,6 +526,18 @@ DeltaLake 스냅샷 캐시의 크기(요소 수)입니다.
 ### DiskObjectStorageAsyncThreadsActive \{#diskobjectstorageasyncthreadsactive\}
 
 사용 중단된 메트릭으로, 아무것도 표시하지 않습니다.
+
+### DiskObjectStorageCopyObjectThreads \{#diskobjectstoragecopyobjectthreads\}
+
+객체 스토리지 디스크 트랜잭션 내에서 copyObjectToAnotherObjectStorage 호출을 병렬 처리하는 데 사용하는 스레드 풀의 스레드 수
+
+### DiskObjectStorageCopyObjectThreadsActive \{#diskobjectstoragecopyobjectthreadsactive\}
+
+디스크 객체 스토리지 복사 스레드 풀에서 작업을 수행 중인 스레드 수
+
+### DiskObjectStorageCopyObjectThreadsScheduled \{#diskobjectstoragecopyobjectthreadsscheduled\}
+
+디스크 객체 스토리지 복사 스레드 풀의 큐에서 대기 중이거나 현재 활성 상태인 작업 수
 
 ### DiskPlainRewritableAzureDirectoryMapSize \{#diskplainrewritableazuredirectorymapsize\}
 
@@ -1930,6 +1942,14 @@ OvercommitTracker 내에서 대기 중인 스레드 수
 ### UncompressedCacheCells \{#uncompressedcachecells\}
 
 비압축 캐시에 있는 전체 엔트리 수입니다. 각 엔트리는 압축 해제된 데이터 블록 1개를 나타냅니다. 비압축 캐시는 일반적으로 성능 향상에 도움이 되지 않으므로 가능한 한 사용을 피해야 합니다
+
+### UniqueKeyIndexCacheBytes \{#uniquekeyindexcachebytes\}
+
+UNIQUE KEY 인덱스 캐시의 총 크기(바이트)
+
+### UniqueKeyIndexCacheEntries \{#uniquekeyindexcacheentries\}
+
+캐시된 UNIQUE KEY 인덱스 블록의 총 개수
 
 ### VectorSimilarityIndexCacheBytes \{#vectorsimilarityindexcachebytes\}
 

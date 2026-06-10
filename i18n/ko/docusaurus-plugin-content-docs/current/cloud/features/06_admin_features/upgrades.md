@@ -2,7 +2,7 @@
 sidebar_label: '업그레이드'
 slug: /manage/updates
 title: '업그레이드'
-description: 'ClickHouse Cloud를 사용하면 패치와 업그레이드를 신경 쓸 필요가 없습니다. 수정 사항, 신규 기능, 성능 향상이 포함된 업그레이드를 주기적으로 적용합니다.'
+description: 'ClickHouse Cloud를 사용하면 패치와 업그레이드를 직접 관리할 필요가 없습니다. 수정 사항, 신규 기능, 성능 향상이 포함된 업그레이드를 주기적으로 적용합니다.'
 doc_type: 'guide'
 keywords: ['업그레이드', '버전 관리', 'Cloud 기능', '유지 관리', '업데이트']
 ---
@@ -13,9 +13,6 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
-
-
-# 업그레이드 \{#upgrades\}
 
 ClickHouse Cloud를 사용하면 패치와 업그레이드를 직접 관리할 필요가 없습니다. 수정 사항, 신규 기능, 성능 향상이 포함된 업그레이드를 주기적으로 적용합니다. ClickHouse에 어떤 새로운 기능이 추가되었는지에 대한 전체 목록은 [Cloud changelog](/whats-new/changelog/cloud)를 참고하십시오.
 

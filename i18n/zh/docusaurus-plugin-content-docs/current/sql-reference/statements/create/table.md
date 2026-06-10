@@ -319,6 +319,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 添加大量约束会对大型 `INSERT` 查询的性能产生负面影响。
 
+可以通过 [`system.constraints`](/operations/system-tables/constraints) 表查看所有表中现有的约束。
 
 ### ASSUME \{#assume\}
 

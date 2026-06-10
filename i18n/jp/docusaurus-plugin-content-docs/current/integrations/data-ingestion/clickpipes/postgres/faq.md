@@ -15,8 +15,6 @@ import failover_slot from '@site/static/images/integrations/data-ingestion/click
 import Image from '@theme/IdealImage';
 
 
-# Postgres 向け ClickPipes に関するよくある質問 \{#clickpipes-for-postgres-faq\}
-
 ### トランザクションのロールバックは ClickHouse に複製されますか？ \{#are-transaction-rollbacks-replicated\}
 
 いいえ。CDC はコミット済みトランザクションのみを複製します。ロールバックされたトランザクションが ClickHouse に送られることはありません。

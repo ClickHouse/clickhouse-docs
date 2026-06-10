@@ -2,16 +2,13 @@
 sidebar_label: 'Материализация: materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
-description: 'Специализированная документация по материализации materialized_view'
-keywords: ['clickhouse', 'dbt', 'materialized_view', 'обновляемое', 'Materialized Views', 'catchup']
-title: 'Материализация: materialized_view'
+description: 'Документация по материализации materialized_view'
+keywords: ['clickhouse', 'dbt', 'materialized_view', 'refreshable', 'Materialized Views', 'catchup']
+title: 'Materialized views'
 doc_type: 'guide'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
-
-# Materialized Views \{#materialized-views\}
 
 <ClickHouseSupportedBadge />
 

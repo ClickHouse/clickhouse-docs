@@ -12,8 +12,6 @@ import simple_skip from '@site/static/images/guides/best-practices/simple_skip.p
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
-# 深入了解 ClickHouse 数据跳过索引 \{#understanding-clickhouse-data-skipping-indexes\}
-
 ## 简介 \{#introduction\}
 
 影响 ClickHouse 查询性能的因素有很多。在大多数场景中，关键因素是 ClickHouse 在评估查询的 WHERE 子句条件时，能否利用主键。因此，为最常见的查询模式选择合适的主键，对实现高效的表设计至关重要。
@@ -26,19 +24,19 @@ import Image from '@theme/IdealImage';
 
 ## 基本操作 \{#basic-operation\}
 
-用户只能在 MergeTree 系列的表上使用数据跳过索引（Data Skipping Indexes）。每个数据跳过索引有四个主要参数：
+用户只能在 MergeTree 系列的表上使用数据跳过索引 (Data Skipping Indexes) 。每个数据跳过索引有四个主要参数：
 
 * 索引名称。索引名称用于在每个分区中创建索引文件。同时，在删除或物化该索引时，它也必须作为参数提供。
 * 索引表达式。索引表达式用于计算存储在索引中的值集合。它可以是列、简单运算符和/或由索引类型决定的一部分函数的组合。
 * TYPE。索引类型决定用于判断是否可以跳过读取和计算各索引块的计算方式。
-* GRANULARITY。每个被索引的块由 GRANULARITY 个粒度（granule）组成。例如，如果主表索引的粒度是 8192 行，而索引粒度是 4，那么每个被索引的 &quot;block&quot; 将是 32768 行。
+* GRANULARITY。每个被索引的块由 GRANULARITY 个粒度 (granule) 组成。例如，如果主表索引的粒度是 8192 行，而索引粒度是 4，那么每个被索引的 &quot;block&quot; 将是 32768 行。
 
 当用户创建一个数据跳过索引时，在该表的每个数据部分目录中会新增两个文件。
 
 * `skp_idx_{index_name}.idx`，其中包含有序的表达式值
 * `skp_idx_{index_name}.mrk2`，其中包含指向关联数据列文件的对应偏移量。
 
-如果在执行查询并读取相关列文件时，WHERE 子句中过滤条件的某一部分与跳过索引表达式匹配，ClickHouse 将使用索引文件中的数据来判断是否必须处理每个相关的数据块，或可以跳过该数据块（假定该数据块尚未因应用主键而被排除）。为了给出一个高度简化的示例，请考虑下面这个填充了可预测数据的表。
+如果在执行查询并读取相关列文件时，WHERE 子句中过滤条件的某一部分与跳过索引表达式匹配，ClickHouse 将使用索引文件中的数据来判断是否必须处理每个相关的数据块，或可以跳过该数据块 (假定该数据块尚未因应用主键而被排除) 。为了给出一个高度简化的示例，请考虑下面这个填充了可预测数据的表。
 
 ```sql
 CREATE TABLE skip_table
@@ -57,7 +55,9 @@ INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -85,7 +85,9 @@ ALTER TABLE skip_table MATERIALIZE INDEX vix;
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -115,7 +117,6 @@ SET send_logs_level='trace';
 ```sql
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
-
 
 ## 跳过索引类型 \{#skip-index-types\}
 

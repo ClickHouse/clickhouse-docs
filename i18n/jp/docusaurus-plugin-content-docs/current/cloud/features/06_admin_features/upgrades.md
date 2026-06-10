@@ -2,9 +2,9 @@
 sidebar_label: 'アップグレード'
 slug: /manage/updates
 title: 'アップグレード'
-description: 'ClickHouse Cloud を利用すれば、パッチ適用やアップグレードについて心配する必要はありません。修正、新機能、パフォーマンス向上を含むアップグレードを、定期的に順次適用しています。'
+description: 'ClickHouse Cloud を利用すると、パッチ適用やアップグレードについて心配する必要はありません。修正、新機能、パフォーマンス向上を含むアップグレードを、定期的に順次適用します。'
 doc_type: 'guide'
-keywords: ['アップグレード', 'バージョン管理', 'クラウド機能', 'メンテナンス', 'アップデート']
+keywords: ['アップグレード', 'バージョン管理', 'Cloud の機能', 'メンテナンス', '更新']
 ---
 
 import Image from '@theme/IdealImage';
@@ -13,9 +13,6 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
-
-
-# アップグレード \{#upgrades\}
 
 ClickHouse Cloud を利用すると、パッチ適用やアップグレードについて心配する必要はありません。修正、新機能、パフォーマンス向上を含むアップグレードを、定期的に順次適用します。ClickHouse における新機能の一覧については、[Cloud changelog](/whats-new/changelog/cloud) を参照してください。
 

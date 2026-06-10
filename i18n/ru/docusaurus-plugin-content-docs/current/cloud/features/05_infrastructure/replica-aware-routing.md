@@ -1,27 +1,24 @@
 ---
 title: 'Маршрутизация с учетом реплик'
 slug: /manage/replica-aware-routing
-description: 'Как использовать маршрутизацию с учетом реплик для повышения повторного использования кэша'
-keywords: ['cloud', 'sticky endpoints', 'sticky', 'endpoints', 'sticky routing', 'routing', 'replica aware routing']
+description: 'Как использовать маршрутизацию с учетом реплик, чтобы увеличить вероятность повторного использования кеша'
+keywords: ['cloud', 'sticky endpoints', 'sticky', 'конечные точки', 'sticky-маршрутизация', 'маршрутизация', 'маршрутизация с учетом реплик']
 doc_type: 'guide'
 ---
 
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-
-# Маршрутизация с учетом реплик \{#replica-aware-routing\}
-
-<PrivatePreviewBadge/>
+<PrivatePreviewBadge />
 
 Маршрутизация с учетом реплик (также известная как sticky-сессии, sticky-маршрутизация или session affinity) использует [балансировку нагрузки с кольцевым хешированием (ring hash) в прокси Envoy](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash). Основная цель маршрутизации с учетом реплик — увеличить вероятность повторного использования кеша. Она не гарантирует изоляцию.
 
 При включении маршрутизации с учетом реплик для сервиса мы разрешаем поддомен-шаблон (wildcard) для имени хоста сервиса. Для сервиса с именем хоста `abcxyz123.us-west-2.aws.clickhouse.cloud` вы можете использовать любое имя хоста, которое соответствует `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`, чтобы обращаться к сервису:
 
-|Примеры имён хостов|
-|---|
-|`aaa.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`|
-|`000.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`|
-|`clickhouse-is-the-best.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`|
+| Примеры имён хостов                                                      |
+| ------------------------------------------------------------------------ |
+| `aaa.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`                    |
+| `000.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`                    |
+| `clickhouse-is-the-best.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` |
 
 Когда Envoy получает имя хоста, которое соответствует такому шаблону, он вычисляет хеш для маршрутизации на основе этого имени хоста и находит соответствующий сервер ClickHouse на кольцевом хеше в соответствии с вычисленным хешем. При условии, что в сервисе не происходит изменений (например, перезапусков серверов, масштабирования), Envoy всегда будет выбирать один и тот же сервер ClickHouse для подключения.
 

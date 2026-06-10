@@ -1,7 +1,7 @@
 ---
 slug: /integrations/mysql
 sidebar_label: 'MySQL'
-title: 'MySQL'
+title: '将 MySQL 与 ClickHouse 集成'
 hide_title: true
 description: '介绍 MySQL 集成的页面'
 doc_type: 'reference'
@@ -15,13 +15,10 @@ keywords: ['mysql', '数据库集成', '外部表', '数据源', 'SQL 数据库'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# 在 ClickHouse 中集成 MySQL \{#integrating-mysql-with-clickhouse\}
-
 本页介绍如何使用 `MySQL` 表引擎从 MySQL 表中读取数据。
 
 :::note
-在 ClickHouse Cloud 中，也可以使用 [MySQL ClickPipe](/integrations/clickpipes/mysql)（目前处于公开测试阶段），便捷地将 MySQL 表中的数据迁移到 ClickHouse。
+对于 ClickHouse Cloud，您还可以使用 [MySQL ClickPipe](/integrations/clickpipes/mysql) (当前处于 Public Beta 阶段) ，轻松将 MySQL 表中的数据迁移到 ClickHouse。
 :::
 
 ## 使用 MySQL 表引擎将 ClickHouse 连接到 MySQL \{#connecting-clickhouse-to-mysql-using-the-mysql-table-engine\}

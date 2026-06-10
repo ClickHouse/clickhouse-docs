@@ -281,6 +281,97 @@ SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
 ```
 
 
+## arrayBottomK \{#arrayBottomK\}
+
+Добавленный в: v26.6.0
+
+Возвращает массив из K наименьших элементов входного массива, отсортированных по возрастанию.
+Если указана лямбда-функция `f`, элементы сравниваются по результату применения `f` к каждому элементу.
+Если `f` принимает несколько аргументов, в `arrayBottomK` передаются дополнительные массивы; их элементы
+соответствуют аргументам `f`.
+
+Значения `NULL` пропускаются и не попадают в результат. Размер результата не превышает `K`
+и может быть меньше, если входной массив содержит меньше `K` элементов, отличных от `NULL`.
+Тип элементов результата — соответствующий тип элементов входного массива без `Nullable`.
+
+`arrayBottomK` — это [функция высшего порядка](/sql-reference/functions/overview#higher-order-functions).
+
+См. также:
+
+* `arrayTopK`, которая возвращает K наибольших элементов.
+* `arrayPartialSort`, которая размещает те же K элементов на позициях `[1..K]`, но
+  также сохраняет остальные элементы в неопределённом порядке и не пропускает `NULL`.
+
+**Синтаксис**
+
+```sql
+arrayBottomK([f,] K, arr [, arr1, ... ,arrN])
+```
+
+**Аргументы**
+
+* `f(arr[, arr1, ... ,arrN])` — Необязательно. Лямбда-функция, вычисляющая ключ сортировки для каждого элемента. [`Лямбда-функция`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `K` — Число наименьших элементов, которые нужно вернуть. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `arr` — Массив. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — N дополнительных массивов в случае, если `f` принимает несколько аргументов. [`Array(T)`](/sql-reference/data-types/array)
+
+**Возвращаемое значение**
+
+Возвращает до `K` элементов массива `arr` с наименьшими значениями (или с наименьшими результатами лямбда-функции), отсортированных по возрастанию.
+Значения `NULL` пропускаются. Возвращаемый массив имеет тип элементов `T`, даже если входной массив имеет тип `Nullable(T)`.
+
+**Примеры**
+
+**simple&#95;int**
+
+```sql title=Query
+SELECT arrayBottomK(3, [1, 5, 2, 7, 3])
+```
+
+```response title=Response
+[1,2,3]
+```
+
+**skip&#95;nulls**
+
+```sql title=Query
+SELECT arrayBottomK(3, [1, NULL, 5, 2, NULL, 7])
+```
+
+```response title=Response
+[1,2,5]
+```
+
+**fewer&#95;than&#95;k**
+
+```sql title=Query
+SELECT arrayBottomK(5, [1, NULL, 2])
+```
+
+```response title=Response
+[1,2]
+```
+
+**lambda&#95;simple**
+
+```sql title=Query
+SELECT arrayBottomK((x) -> -x, 2, [5, 9, 1, 3])
+```
+
+```response title=Response
+[9,5]
+```
+
+**lambda&#95;multi**
+
+```sql title=Query
+SELECT arrayBottomK((x, y) -> y, 2, ['a', 'b', 'c'], [3, 1, 2])
+```
+
+```response title=Response
+['b','c']
+```
+
 ## arrayCompact \{#arrayCompact\}
 
 Впервые представлена в версии v20.1.0
@@ -2188,15 +2279,15 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 **Синтаксис**
 
 ```sql
-arrayPartialReverseSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialReverseSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **Аргументы**
 
 * `f(arr[, arr1, ... ,arrN])` — лямбда-функция, применяемая к элементам массива `x`. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — значение индекса, до которого будет выполняться сортировка. [`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — массив, который требуется упорядочить. [`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — N дополнительных массивов, когда `f` принимает несколько аргументов. [`Array(T)`](/sql-reference/data-types/array)
-* `limit` — значение индекса, до которого будет выполняться сортировка. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -2254,7 +2345,6 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [0, 1, 2]
 ```
-
 
 ## arrayPartialShuffle \{#arrayPartialShuffle\}
 
@@ -2362,15 +2452,15 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 **Синтаксис**
 
 ```sql
-arrayPartialSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **Аргументы**
 
 * `f(arr[, arr1, ... ,arrN])` — лямбда-функция, применяемая к элементам массива `x`. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — значение индекса, до которого выполняется сортировка. [`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — массив, который нужно отсортировать. [`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — N дополнительных массивов, если `f` принимает несколько аргументов. [`Array(T)`](/sql-reference/data-types/array)
-* `limit` — значение индекса, до которого выполняется сортировка. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -2428,7 +2518,6 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [2, 1, 0]
 ```
-
 
 ## arrayPopBack \{#arrayPopBack\}
 
@@ -3039,14 +3128,12 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 **Синтаксис**
 
 ```sql
-arrayReverseSort([f,] arr [, arr1, ... ,arrN)
+arrayReverseSort([f,] arr [, arr1, ... ,arrN])
 ```
 
 **Аргументы**
 
-* `f(y1[, y2 ... yN])` — лямбда-функция, применяемая к элементам массива `x`.
-* `arr` — массив, который нужно отсортировать. [`Array(T)`](/sql-reference/data-types/array)
-* `arr1, ..., yN` — необязательные аргументы. N дополнительных массивов, если `f` принимает несколько аргументов.
+* `f(y1[, y2 ... yN])` — лямбда-функция, применяемая к элементам массива `x`. - `arr` — массив, который нужно отсортировать. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., arrN` — необязательные аргументы. N дополнительных массивов, если `f` принимает несколько аргументов.
 
 **Возвращаемое значение**
 
@@ -3074,7 +3161,6 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 ```response title=Response
 [4,3,5]
 ```
-
 
 ## arrayReverseSplit \{#arrayReverseSplit\}
 
@@ -3490,7 +3576,7 @@ arraySort([f,] arr [, arr1, ... ,arrN])
 
 **Arguments**
 
-* `f(y1[, y2 ... yN])` — лямбда-функция, применяемая к элементам массива `x`. - `arr` — массив для сортировки. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — необязательные: N дополнительных массивов в случае, когда `f` принимает несколько аргументов.
+* `f(y1[, y2 ... yN])` — лямбда-функция, применяемая к элементам массива `x`. - `arr` — массив для сортировки. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., arrN` — необязательные: N дополнительных массивов в случае, когда `f` принимает несколько аргументов.
 
 **Returned value**
 
@@ -3528,7 +3614,6 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 ```response title=Response
 [-inf,-4,1,2,3,inf,nan,nan,NULL,NULL]
 ```
-
 
 ## arraySplit \{#arraySplit\}
 
@@ -3652,6 +3737,93 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 └────────────────────────────┴────────────────────────────────┘
 ```
 
+
+## arrayTopK \{#arrayTopK\}
+
+Добавленный в: v26.6.0
+
+Возвращает массив из K наибольших элементов входного массива, отсортированных по убыванию.
+Если указана лямбда-функция `f`, элементы сравниваются по результату применения `f` к каждому элементу.
+Если `f` принимает несколько аргументов, в `arrayTopK` передаются дополнительные массивы, а их элементы
+соответствуют аргументам `f`.
+
+Значения `NULL` пропускаются и не включаются в результат. Размер результата не превышает `K`
+и может быть меньше, если входной массив содержит меньше ненулевых элементов, чем `K`.
+Тип элементов результата — соответствующий тип элементов входного массива без Nullable.
+
+`arrayTopK` — это [функция высшего порядка](/sql-reference/functions/overview#higher-order-functions).
+
+См. также `arrayBottomK`, которая возвращает K наименьших элементов.
+
+**Синтаксис**
+
+```sql
+arrayTopK([f,] K, arr [, arr1, ... ,arrN])
+```
+
+**Аргументы**
+
+* `f(arr[, arr1, ... ,arrN])` — Необязательно. Лямбда-функция для вычисления ключа сортировки для каждого элемента. [`Лямбда-функция`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `K` — Число наибольших элементов, которые нужно вернуть. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `arr` — Массив. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — N дополнительных массивов, если `f` принимает несколько аргументов. [`Array(T)`](/sql-reference/data-types/array)
+
+**Возвращаемое значение**
+
+Возвращает до `K` элементов массива `arr` с наибольшими значениями (или наибольшими результатами лямбда-функции), отсортированных по убыванию.
+Значения NULL пропускаются. Возвращаемый массив имеет тип элементов `T`, даже если входной массив имеет тип `Nullable(T)`.
+
+**Примеры**
+
+**simple&#95;int**
+
+```sql title=Query
+SELECT arrayTopK(3, [1, 5, 2, 7, 3])
+```
+
+```response title=Response
+[7,5,3]
+```
+
+**skip&#95;nulls**
+
+```sql title=Query
+SELECT arrayTopK(3, [1, NULL, 5, 2, NULL, 7])
+```
+
+```response title=Response
+[7,5,2]
+```
+
+**fewer&#95;than&#95;k**
+
+```sql title=Query
+SELECT arrayTopK(5, [1, NULL, 2])
+```
+
+```response title=Response
+[2,1]
+```
+
+**lambda&#95;simple**
+
+```sql title=Query
+SELECT arrayTopK((x) -> -x, 2, [5, 9, 1, 3])
+```
+
+```response title=Response
+[1,3]
+```
+
+**lambda&#95;multi**
+
+```sql title=Query
+SELECT arrayTopK((x, y) -> y, 2, ['a', 'b', 'c'], [3, 1, 2])
+```
+
+```response title=Response
+['a','c']
+```
 
 ## arrayTranspose \{#arrayTranspose\}
 

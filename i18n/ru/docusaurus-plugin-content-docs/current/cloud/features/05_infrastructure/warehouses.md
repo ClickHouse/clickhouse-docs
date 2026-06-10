@@ -2,7 +2,7 @@
 title: 'Хранилища'
 slug: /cloud/reference/warehouses
 keywords: ['разделение вычислений', 'cloud', 'архитектура', 'compute-compute', 'хранилище', 'хранилища', 'hydra']
-description: 'Разделение вычислений (compute-compute) в ClickHouse Cloud'
+description: 'compute-compute separation в ClickHouse Cloud'
 doc_type: 'reference'
 ---
 
@@ -16,9 +16,7 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
-# Хранилища \{#warehouses\}
-
-<ScalePlanFeatureBadge feature="Разделение вычислительных ресурсов (compute-compute)"/>
+<ScalePlanFeatureBadge feature="compute-compute separation" />
 
 ## Что такое compute-compute separation? \{#what-is-compute-compute-separation\}
 
@@ -192,7 +190,7 @@ SETTINGS distributed_ddl_task_timeout=0
 
 * **Основной сервис с одной репликой** На данный момент поведение по умолчанию таково: вторичные сервисы могут иметь одну реплику, а у основного сервиса должно быть как минимум 2.
   Чтобы включить основные сервисы с одной репликой, пожалуйста, обратитесь в службу поддержки. Это поведение будет включено по умолчанию во 2 квартале 2026 года.
-* **Переход основного сервиса в простой**: Ранее основные сервисы по умолчанию не могли автоматически переходить в простой. С мая 2026 года автоматический переход основного сервиса в простой включен по умолчанию. В рамках раскатки существующие сервисы имеют доступ к этой функции, а для новых сервисов, созданных после раскатки, она включена по умолчанию. 
+* **Режим простоя основного сервиса**: автоматический переход основного сервиса в режим простоя включен по умолчанию.
 
 ## Цены \{#pricing\}
 

@@ -2,7 +2,7 @@
 sidebar_label: '查看和恢复备份'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: '概览'
+title: '查看和恢复备份'
 keywords: ['备份', 'Cloud 备份', '恢复']
 description: '提供 ClickHouse Cloud 中备份的概览'
 doc_type: 'guide'
@@ -17,14 +17,11 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
+本指南介绍 ClickHouse Cloud 中备份的工作原理、可用于为您的服务配置备份的选项，以及如何从备份中恢复。
 
-# 查看和恢复备份 \{#review-and-restore-backups\}
+**前置条件**
 
-本指南介绍 ClickHouse Cloud 中备份的工作原理、为服务配置备份时可用的选项，以及如何从备份中恢复。
-
-**前提条件**
-
-- 您已经阅读了[《ClickHouse Cloud 中的备份工作原理》](/cloud/features/backups#how-backups-work-in-clickhouse-cloud)（功能概览页）
+* 您已阅读[&quot;ClickHouse Cloud 中备份的工作原理&quot;](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) (功能概览页面)
 
 ## 备份状态列表 \{#backup-status-list\}
 

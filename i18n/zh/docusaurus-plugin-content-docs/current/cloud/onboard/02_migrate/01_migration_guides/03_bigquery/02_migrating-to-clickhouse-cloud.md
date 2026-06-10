@@ -203,13 +203,15 @@ PARTITION BY toYear(CreationDate)
 
 ClickHouse 中的分区与 BigQuery 中的分区有类似的用途，但也存在一些细微差别。更具体来说：
 
-* **数据管理** - 在 ClickHouse 中，应主要将分区视为一种数据管理功能，而不是查询优化手段。通过基于某个键在逻辑上划分数据，可以对每个分区进行独立操作，例如删除。这样，你就可以根据时间在[存储层级](/integrations/s3#storage-tiers)之间高效地移动分区（从而移动数据子集），或[让数据过期/高效地从集群中删除数据](/sql-reference/statements/alter/partition)。例如，下面我们将删除 2008 年的帖子：
+* **数据管理** - 在 ClickHouse 中，应主要将分区视为一种数据管理功能，而不是查询优化手段。通过基于某个键在逻辑上划分数据，可以对每个分区进行独立操作，例如删除。这样，你就可以根据时间在[存储层级](/integrations/s3#storage-tiers)之间高效地移动分区 (从而移动数据子集) ，或[让数据过期/高效地从集群中删除数据](/sql-reference/statements/alter/partition)。例如，下面我们将删除 2008 年的帖子：
 
 ```sql
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'posts'
+```
 
+```response
 ┌─partition─┐
 │ 2008      │
 │ 2009      │
@@ -231,17 +233,20 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 ALTER TABLE posts
 (DROP PARTITION '2008')
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-* **查询优化** - 虽然分区可以帮助提高查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区（理想情况下是一个），则性能可能会得到提升。这通常只在分区键不在主键中且你按该键进行过滤时才有用。然而，需要扫描许多分区的查询，其性能可能会比不使用分区时更差（因为分区可能会导致存在更多的分区片段）。如果分区键已经是主键中靠前的字段，那么针对单个分区的好处会明显减弱，甚至几乎不存在。如果每个分区中的值是唯一的，分区也可以用于[优化 `GROUP BY` 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但是，总体来说，你应首先确保主键已得到优化，仅在少数特殊场景下才将分区视作查询优化手段，例如访问模式稳定且只访问一天内某个可预测的时间子区间时（例如按天分区，而大多数查询只访问最近一天的数据）。
-
+* **查询优化** - 虽然分区可以帮助提高查询性能，但这在很大程度上取决于访问模式。如果查询只会命中少量分区 (理想情况下是一个) ，则性能可能会得到提升。这通常只在分区键不在主键中且你按该键进行过滤时才有用。然而，需要扫描许多分区的查询，其性能可能会比不使用分区时更差 (因为分区可能会导致存在更多的分区片段) 。如果分区键已经是主键中靠前的字段，那么针对单个分区的好处会明显减弱，甚至几乎不存在。如果每个分区中的值是唯一的，分区也可以用于[优化 `GROUP BY` 查询](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)。但是，总体来说，你应首先确保主键已得到优化，仅在少数特殊场景下才将分区视作查询优化手段，例如访问模式稳定且只访问一天内某个可预测的时间子区间时 (例如按天分区，而大多数查询只访问最近一天的数据) 。
 
 #### 建议 \{#recommendations\}
 
@@ -253,7 +258,7 @@ Ok.
 
 ## 物化视图与投影 \{#materialized-views-vs-projections\}
 
-ClickHouse 的投影（projection）概念允许用户为同一张表指定多个 `ORDER BY` 子句。
+ClickHouse 的投影 (PROJECTION) 概念允许用户为同一张表指定多个 `ORDER BY` 子句。
 
 在 [ClickHouse 数据建模](/data-modeling/schema-design) 中，我们探讨了如何在 ClickHouse 中使用物化视图
 预先计算聚合、转换行，以及针对不同访问模式优化查询。对于后者，我们[给出了一个示例](/materialized-view/incremental-materialized-view#lookup-table)，其中
@@ -274,7 +279,7 @@ WHERE UserId = 8592047
 Peak memory usage: 201.93 MiB.
 ```
 
-此查询需要扫描全部 9000 万行数据（尽管速度很快），因为 `UserId` 并不是排序键。之前，我们通过使用一个充当 `PostId` 查找索引的物化视图来解决这个问题。使用投影（projection）也可以解决同样的问题。下面的命令添加了一个使用 `ORDER BY user_id` 的投影。
+此查询需要扫描全部 9000 万行数据 (尽管速度很快) ，因为 `UserId` 并不是排序键。之前，我们通过使用一个充当 `PostId` 查找索引的物化视图来解决这个问题。使用投影 (PROJECTION) 也可以解决同样的问题。下面的命令添加了一个使用 `ORDER BY user_id` 的投影。
 
 ```sql
 ALTER TABLE comments ADD PROJECTION comments_user_id (
@@ -284,9 +289,9 @@ SELECT * ORDER BY UserId
 ALTER TABLE comments MATERIALIZE PROJECTION comments_user_id
 ```
 
-请注意，我们必须先创建该 projection，然后再对其进行物化。
+请注意，我们必须先创建该 PROJECTION，然后再对其进行物化。
 第二个命令会使数据在磁盘上以两种不同的顺序各存储一份。
-projection 也可以在创建表时定义，如下所示，并且会在插入数据时自动维护。
+PROJECTION 也可以在创建表时定义，如下所示，并且会在插入数据时自动维护。
 
 ```sql
 CREATE TABLE comments
@@ -320,7 +325,9 @@ SELECT
     latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
+```
 
+```response
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
 1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
@@ -343,15 +350,16 @@ WHERE UserId = 8592047
 Peak memory usage: 4.06 MiB.
 ```
 
-借助 [`EXPLAIN` 命令](/sql-reference/statements/explain)，我们还能确认该查询确实使用了这个 projection：
-
+借助 [`EXPLAIN` 命令](/sql-reference/statements/explain)，我们还能确认该查询确实使用了这个 PROJECTION：
 
 ```sql
 EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
     ┌─explain─────────────────────────────────────────────┐
  1. │ Expression ((Projection + Before ORDER BY))         │
  2. │   Aggregating                                       │
@@ -368,7 +376,6 @@ WHERE UserId = 8592047
 
 11 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### 何时使用投影 \{#when-to-use-projections\}
 
@@ -387,9 +394,9 @@ WHERE UserId = 8592047
 
 ## 在 ClickHouse 中重写 BigQuery 查询 \{#rewriting-bigquery-queries-in-clickhouse\}
 
-下文给出了 BigQuery 与 ClickHouse 的对比查询示例。该列表旨在演示如何利用 ClickHouse 的特性来大幅简化查询。这里的示例使用完整的 Stack Overflow 数据集（截至 2024 年 4 月）。
+下文给出了 BigQuery 与 ClickHouse 的对比查询示例。该列表旨在演示如何利用 ClickHouse 的特性来大幅简化查询。这里的示例使用完整的 Stack Overflow 数据集 (截至 2024 年 4 月) 。
 
-**收到最多浏览量的用户（提问数超过 10 个）：**
+**收到最多浏览量的用户 (提问数超过 10 个) ：**
 
 *BigQuery*
 
@@ -407,7 +414,9 @@ GROUP BY OwnerDisplayName
 HAVING count() > 10
 ORDER BY total_views DESC
 LIMIT 5
+```
 
+```response
    ┌─OwnerDisplayName─┬─total_views─┐
 1. │ Joan Venge       │    25520387 │
 2. │ Ray Vega         │    21576470 │
@@ -439,7 +448,9 @@ FROM stackoverflow.posts
 GROUP BY tags
 ORDER BY views DESC
 LIMIT 5
+```
 
+```response
    ┌─tags───────┬──────views─┐
 1. │ javascript │ 8190916894 │
 2. │ python     │ 8175132834 │
@@ -451,7 +462,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
 Peak memory usage: 567.41 MiB.
 ```
-
 
 ## 聚合函数 \{#aggregate-functions\}
 
@@ -476,7 +486,9 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Year:                    2008
@@ -507,7 +519,6 @@ MaxViewCount:            66975
 Peak memory usage: 377.26 MiB.
 ```
 
-
 ## 条件和数组 \{#conditionals-and-arrays\}
 
 条件和数组函数可以显著简化查询。下面的查询会计算在 2022 年到 2023 年间，出现次数超过 10000 次的标签中，百分比增幅最大的那些标签。请注意，得益于条件函数、数组函数以及在 `HAVING` 和 `SELECT` 子句中重复使用别名的能力，下面的 ClickHouse 查询非常简洁。
@@ -530,7 +541,9 @@ GROUP BY tag
 HAVING (count_2022 > 10000) AND (count_2023 > 10000)
 ORDER BY percent_change DESC
 LIMIT 5
+```
 
+```response
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
 │ next.js     │      13788 │      10520 │   31.06463878326996 │
 │ spring-boot │      16573 │      17721 │  -6.478189718413183 │

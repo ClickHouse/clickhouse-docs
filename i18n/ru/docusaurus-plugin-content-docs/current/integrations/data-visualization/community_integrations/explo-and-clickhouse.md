@@ -31,12 +31,9 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Подключение Explo к ClickHouse \{#connecting-explo-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-Аналитика для ваших клиентов на любой платформе. Создана для наглядной визуализации. Спроектирована с упором на простоту.
+Клиентская аналитика для любой платформы. Создано для красивой визуализации. Разработано с упором на простоту.
 
 ## Цель \{#goal\}
 

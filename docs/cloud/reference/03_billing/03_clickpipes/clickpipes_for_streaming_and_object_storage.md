@@ -9,8 +9,6 @@ keywords: ['billing', 'clickpipes', 'streaming pricing', 'costs', 'pricing']
 
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
-# ClickPipes for streaming and object storage {#clickpipes-for-streaming-object-storage}
-
 This section outlines the pricing model of ClickPipes for streaming and object storage.
 
 ## What does the ClickPipes pricing structure look like? {#what-does-the-clickpipes-pricing-structure-look-like}

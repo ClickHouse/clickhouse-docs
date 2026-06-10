@@ -16,14 +16,11 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 
 import Image from '@theme/IdealImage';
 
+ClickHouse [为速度而生](/concepts/why-clickhouse-is-so-fast)。它以高度并行的方式执行查询，利用所有可用的 CPU 核心，在各个处理通道之间分发数据，并且常常让硬件接近其性能极限。
 
-# ClickHouse 如何并行执行查询 \{#how-clickhouse-executes-a-query-in-parallel\}
+本指南将介绍 ClickHouse 中的查询并行机制，以及如何对其进行调优和监控，以提升大型工作负载下的性能。
 
-ClickHouse [为速度而生](/concepts/why-clickhouse-is-so-fast)。它以高度并行的方式执行查询，利用所有可用的 CPU 核心，将数据分布到各个处理通道，并且经常将硬件推至其性能极限。
- 
-本指南将介绍 ClickHouse 中查询并行机制的工作原理，以及如何对其进行调优或监控，以提升大规模工作负载下的性能。
-
-我们使用 [uk_price_paid_simple](/parts) 数据集上的一个聚合查询来说明关键概念。
+我们使用 [uk&#95;price&#95;paid&#95;simple](/parts) 数据集上的一个聚合查询来说明关键概念。
 
 ## 分步解析：ClickHouse 如何并行化聚合查询 \{#step-by-step-how-clickHouse-parallelizes-an-aggregation-query\}
 

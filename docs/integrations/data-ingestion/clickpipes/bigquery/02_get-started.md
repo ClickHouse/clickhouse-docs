@@ -15,8 +15,6 @@ import cp_step4 from '@site/static/images/integrations/data-ingestion/clickpipes
 import cp_step5 from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_step5.png';
 import Image from '@theme/IdealImage';
 
-# Creating your first BigQuery ClickPipe {#creating-your-first-bigquery-clickpipe}
-
 <IntroClickPipe/>
 
 ## Pre-requisites {#pre-requisites}

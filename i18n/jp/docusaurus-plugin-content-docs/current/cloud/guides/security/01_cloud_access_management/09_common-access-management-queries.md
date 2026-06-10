@@ -9,14 +9,11 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
-
-# 一般的なアクセス管理クエリ \{#common-access-management-queries\}
-
-:::tip 自前運用
-自前運用の ClickHouse を使用している場合は、[SQL ユーザーとロール](/guides/sre/user-management/index.md) を参照してください。
+:::tip セルフマネージド
+セルフマネージドの ClickHouse を使用している場合は、[SQL ユーザーとロール](/guides/sre/user-management/index.md)を参照してください。
 :::
 
-この記事では、SQL ユーザーとロールの基本的な定義方法と、それらの権限（パーミッション）をデータベース、テーブル、行、列に適用する方法を説明します。
+この記事では、SQL ユーザーとロールの定義方法の基本と、それらの権限およびパーミッションをデータベース、テーブル、行、列に適用する方法について説明します。
 
 ## 管理ユーザー \{#admin-user\}
 

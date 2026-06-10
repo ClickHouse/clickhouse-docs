@@ -9,39 +9,74 @@ doc_type: 'reference'
 ---
 
 import BetaBadge from '@theme/badges/BetaBadge';
+import Image from '@theme/IdealImage';
+import memories from '@site/static/images/cloud/agent-builder/memory/memories.png';
+import create from '@site/static/images/cloud/agent-builder/memory/create.png';
+import edit from '@site/static/images/cloud/agent-builder/memory/edit.png';
+import deleteMemory from '@site/static/images/cloud/agent-builder/memory/delete.png';
+import filter from '@site/static/images/cloud/agent-builder/memory/filter.png';
+import toggle from '@site/static/images/cloud/agent-builder/memory/toggle.png';
 
 <BetaBadge/>
 
-Memory carries user-specific context across conversations. Rather than indexing entire chat histories, it stores compact structured entries — preferences, recurring facts, project details — that the agent can pull in when relevant.
+is a per-user store the agent can recall across conversations. It is composed of several entries, each one a key-value pair - your preferred
+date format, the database you usually query, how terse you want responses. The agent pulls these into context when they apply.
 
-## How it works {#how-it-works}
+## How memory works {#how-it-works}
 
-A small memory agent runs alongside the main conversation. It reads recent messages, decides what's worth remembering, and writes entries to a per-user store. On the next conversation, those entries are available as context the main agent can reference without you having to repeat yourself.
+A small memory agent runs alongside the main conversation. It reads recent messages, decides what's worth remembering, and writes entries to a per-user store.
+On the next conversation, those entries are available as context the main agent can reference without you having to repeat yourself.
 
 You see this as continuity: tell an agent once that you prefer SQL output in lowercase and that your fiscal year ends in March, and future conversations behave accordingly.
 
 ## Manage your memories {#manage-your-memories}
 
-Open the memory panel from your account menu to:
+Open the memory panel from the **Memories** (brain) icon in the left navigation. The panel lists your stored memories with controls to create, edit, delete, and filter entries.
 
-- **View** entries the agent has stored about you.
-- **Edit** any entry to correct or refine it.
-- **Delete** entries you don't want carried forward.
+<Image img={memories} alt="Memories panel showing the brain icon highlighted in the left navigation, a filter input, an Add button, a Use memory checkbox, a memory entry with edit and delete controls, and an Admin Settings button" size="sm"/>
 
 Memory is private to your user. Other people's agents never see your entries, and your agents never see theirs.
 
+### Create a memory {#create-memory}
+
+Click the **+** button at the top of the panel to open the **Create Memory** dialog. Enter a **Key** (lowercase letters and underscores only) and a **Value**, then click **Create**.
+
+<Image img={create} alt="Memory panel with the Create Memory + button highlighted" size="sm"/>
+
+### Filter memories {#filter-memories}
+
+Use the **Filter memories** input at the top of the panel to find an entry by key.
+
+<Image img={filter} alt="Memory panel with the Filter memories input highlighted and 'demo' typed in" size="sm"/>
+
+### Edit a memory {#edit-memory}
+
+Click the pencil icon on a memory to open the **Edit Memory** dialog. Adjust the Key or Value and click **Save**.
+
+<Image img={edit} alt="Memory entry with the Edit Memory pencil icon highlighted" size="sm"/>
+
+### Delete a memory {#delete-memory}
+
+Click the trash icon on a memory to remove it.
+
+<Image img={deleteMemory} alt="Memory entry with the Delete Memory trash icon highlighted" size="sm"/>
+
 ## Toggle memory {#toggle-memory}
 
-Each conversation has a memory toggle in the chat header. Turn it off for sensitive topics you don't want stored, or for one-off conversations where personalization isn't helpful.
+Turn memory on or off with the **Use memory** checkbox at the top of the memory panel. Disable it for sensitive topics you don't want stored, or for one-off conversations where personalization isn't helpful.
 
-When memory is off, the agent neither reads from nor writes to your memory store for that conversation.
+When memory is off, the agent neither reads from nor writes to your memory store.
 
-## When memory helps {#when-memory-helps}
+<Image img={toggle} alt="Memory panel with the Use memory checkbox highlighted at the top" size="sm"/>
+
+## Memory best practices {#memory-best-practices}
+
+Memory can help when:
 
 - Recurring conventions: preferred date formats, business definitions, naming patterns.
 - Project context: which service or database you usually query, which dashboards you care about.
 - Communication style: terse versus chatty, code-heavy versus prose-heavy responses.
 
-## When memory doesn't help {#when-memory-doesnt-help}
-
-Memory isn't a database. It's not a place to dump large reference material — use a [skill](/cloud/features/ai-ml/agents/builder/skills) or bake the material into the agent's instructions for that. It's also not retrieval over past chats; the conversation history itself plays that role.
+Memory isn't intended to be used as a database. It's not a place to dump large reference material, for example.
+You should rather use a [skill](/cloud/features/ai-ml/agents/builder/skills) or bake the material into the agent's instructions for that.
+It's also not intended for retrieval over past chats; the conversation history itself plays that role.

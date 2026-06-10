@@ -2,7 +2,7 @@
 description: 'ローカルディスクへのバックアップおよびローカルディスクからのリストアの詳細'
 sidebar_label: 'ローカルディスク / S3 ディスク'
 slug: /operations/backup/disk
-title: 'ClickHouse のバックアップとリストア'
+title: 'ディスクへの BACKUP / RESTORE'
 doc_type: 'guide'
 ---
 
@@ -10,9 +10,6 @@ import GenericSettings from '@site/i18n/jp/docusaurus-plugin-content-docs/curren
 import S3Settings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 import ExampleSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
-
-
-# ローカルディスクへのバックアップ／リストア \{#backup-to-a-local-disk\}
 
 ## 構文 \{#syntax\}
 

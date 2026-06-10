@@ -153,8 +153,8 @@ ARRAY JOIN features
 В результате получаем следующую ошибку:
 
 ```
-Код: 53. DB::Exception: Получено от localhost:9000. DB::Exception: ARRAY JOIN требует аргумент типа array или map. (TYPE_MISMATCH)
-Получено исключение с сервера (версия 24.1.2):
+Code: 53. DB::Exception: Received from localhost:9000. DB::Exception: ARRAY JOIN requires array or map argument. (TYPE_MISMATCH)
+Received exception from server (version 24.1.2):
 ```
 
 Это происходит из-за разбора `features.geometry.coordinates`.
@@ -174,7 +174,7 @@ ARRAY JOIN features
 ```
 
 Это можно исправить, приведя `multipolygon.properties.coordinates` к типу данных `Array(Array(Array(Tuple(Float64,Float64))))`.
-Для этого мы можем использовать функцию [arrayMap(func,arr1,...)](https://clickhouse.com/docs/sql-reference/functions/array-functions#arraymapfunc-arr1-).
+Для этого мы можем использовать функцию [arrayMap(func,arr1,...)](/sql-reference/functions/array-functions#arrayMap).
 
 ```sql
 SELECT distinct

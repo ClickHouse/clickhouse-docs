@@ -1,5 +1,5 @@
 ---
-title: '查询系统表'
+title: '查询 ClickHouse 的系统数据库'
 slug: /cloud/monitoring/system-tables
 description: '通过直接查询系统表监控 ClickHouse Cloud'
 keywords: ['Cloud', '监控', '系统表', 'query_log', 'clusterAllReplicas', '可观测性仪表板']
@@ -11,15 +11,13 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 
-# 查询 ClickHouse 的 system 数据库 \{#querying-clickhouses-system-database\}
-
 所有 ClickHouse 实例都附带一组位于 `system` 数据库中的[系统表](/operations/system-tables/overview)，其中包含以下信息：
 
 * 服务器状态、进程和环境。
 * 服务器内部进程。
 * 构建 ClickHouse 二进制文件时使用的选项。
 
-直接查询这些表有助于监控 ClickHouse 部署，尤其适用于深度排查和调试。
+直接查询这些表有助于监控 ClickHouse 部署，尤其适用于深入了解内部信息和进行调试。
 
 ## 使用 ClickHouse Cloud 控制台 \{#using-cloud-console\}
 

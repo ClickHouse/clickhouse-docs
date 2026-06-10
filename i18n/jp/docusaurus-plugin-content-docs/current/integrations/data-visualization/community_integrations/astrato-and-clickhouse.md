@@ -3,7 +3,7 @@ sidebar_label: 'Astrato'
 sidebar_position: 131
 slug: /integrations/astrato
 keywords: ['clickhouse', 'Power BI', 'connect', 'integrate', 'ui', 'data apps', 'data viz', 'embedded analytics', 'Astrato']
-description: 'Astrato は、あらゆるユーザーの手にアナリティクスを届け、ユーザー自身がダッシュボードやレポート、データアプリを構築できるようにすることで、エンタープライズ企業およびデータビジネスに真のセルフサービス BI をもたらし、IT 部門の支援なしにデータに関する問いに答えられるようにします。Astrato は、導入を加速し、意思決定のスピードを高めるとともに、アナリティクス、組み込みアナリティクス、データ入力、データアプリを 1 つのプラットフォーム上で統合します。Astrato は、アクションとアナリティクスを一体化し、ライブ書き戻し機能を提供し、ML モデルとの対話を可能にし、AI によってアナリティクスを加速します。Astrato の pushdown SQL サポートにより、ダッシュボードの作成にとどまらない高度な活用が可能になります。'
+description: 'Astrato は、あらゆるユーザーの手にアナリティクスを届け、ユーザー自身がダッシュボードやレポート、データアプリケーションを構築できるようにすることで、エンタープライズ企業およびデータビジネスに真のセルフサービス BI をもたらし、IT 部門の支援なしにデータに関する問いに答えられるようにします。Astrato は、導入を加速し、意思決定のスピードを高めるとともに、アナリティクス、組み込みアナリティクス、データ入力、データアプリケーションを 1 つのプラットフォーム上で統合します。Astrato は、アクションとアナリティクスを一体化し、ライブ書き戻し機能を提供し、ML モデルとの対話を可能にし、AI によってアナリティクスを加速します。Astrato の pushdown SQL サポートにより、ダッシュボードの作成にとどまらない高度な活用が可能になります。'
 title: 'Astrato を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
@@ -25,12 +25,9 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Astrato を ClickHouse に接続する \{#connecting-astrato-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプレミス環境のデプロイメントに対して直接クエリを実行します。つまり、ClickHouse の業界最高クラスのパフォーマンスを活用しながら、必要なあらゆるデータにアクセスできます。
+Astrato は Pushdown SQL を使用して、ClickHouse Cloud またはオンプレミス環境のデプロイメントに直接クエリを実行します。これにより、業界をリードする ClickHouse のパフォーマンスを活かして、必要なすべてのデータにアクセスできます。
 
 ## 接続に必要な情報 \{#connection-data-required\}
 

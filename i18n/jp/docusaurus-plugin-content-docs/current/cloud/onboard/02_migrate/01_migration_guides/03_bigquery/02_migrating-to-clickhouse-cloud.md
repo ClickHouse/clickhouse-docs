@@ -203,13 +203,15 @@ PARTITION BY toYear(CreationDate)
 
 ClickHouse におけるパーティショニングは、BigQuery のパーティショニングと似た用途がありますが、いくつか微妙に異なる点があります。より具体的には次のとおりです。
 
-* **データ管理** - ClickHouse では、パーティショニングは主にクエリ最適化の手法ではなく、データ管理の機能として捉えるべきです。キーに基づいてデータを論理的に分割することで、各パーティションを独立して操作（例: 削除）できます。これにより、[ストレージ階層](/integrations/s3#storage-tiers)間でパーティション（つまりそのデータのサブセット）を時間ベースで効率的に移動したり、データの有効期限を設定して[クラスターから効率的に削除](/sql-reference/statements/alter/partition)したりできます。例えば、次の例では 2008 年の投稿を削除しています。
+* **データ管理** - ClickHouse では、パーティショニングは主にクエリ最適化の手法ではなく、データ管理の機能として捉えるべきです。キーに基づいてデータを論理的に分割することで、各パーティションを独立して操作 (例: 削除) できます。これにより、[ストレージ階層](/integrations/s3#storage-tiers)間でパーティション (つまりそのデータのサブセット) を時間ベースで効率的に移動したり、データの有効期限を設定して[クラスターから効率的に削除](/sql-reference/statements/alter/partition)したりできます。例えば、次の例では 2008 年の投稿を削除しています。
 
 ```sql
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'posts'
+```
 
+```response
 ┌─partition─┐
 │ 2008      │
 │ 2009      │
@@ -231,17 +233,20 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 ALTER TABLE posts
 (DROP PARTITION '2008')
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-* **クエリ最適化** - パーティションはクエリパフォーマンスの改善に役立つ場合がありますが、その効果はアクセスパターンに大きく依存します。クエリが少数のパーティション（理想的には 1 つ）のみを対象とする場合、パフォーマンスが向上する可能性があります。これは通常、パーティショニングキーがプライマリキーに含まれておらず、かつそのキーでフィルタリングしている場合にのみ有用です。一方で、多数のパーティションをまたいで読み取る必要があるクエリは、パーティショニングを行わない場合よりもパフォーマンスが低下する可能性があります（パーティショニングの結果として `parts` が増える可能性があるため）。対象を 1 つのパーティションに限定できることによる利点も、パーティショニングキーがすでにプライマリキーの先頭付近にある場合にはほとんど、あるいはまったくと言ってよいほど小さくなります。パーティショニングは、各パーティション内の値が一意である場合に限り、[`GROUP BY` クエリを最適化](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) するためにも利用できます。ただし、一般的には、まずプライマリキーが最適化されていることを確認し、そのうえで、アクセスパターンが 1 日の中の特定の予測可能なサブセットだけにアクセスするような例外的なケース（例: 1 日単位でパーティションを切り、ほとんどのクエリが直近 1 日のみを対象とする場合）に限って、クエリ最適化手法としてのパーティショニングを検討すべきです。
-
+* **クエリ最適化** - パーティションはクエリパフォーマンスの改善に役立つ場合がありますが、その効果はアクセスパターンに大きく依存します。クエリが少数のパーティション (理想的には 1 つ) のみを対象とする場合、パフォーマンスが向上する可能性があります。これは通常、パーティショニングキーがプライマリキーに含まれておらず、かつそのキーでフィルタリングしている場合にのみ有用です。一方で、多数のパーティションをまたいで読み取る必要があるクエリは、パーティショニングを行わない場合よりもパフォーマンスが低下する可能性があります (パーティショニングの結果として `parts` が増える可能性があるため) 。対象を 1 つのパーティションに限定できることによる利点も、パーティショニングキーがすでにプライマリキーの先頭付近にある場合にはほとんど、あるいはまったくと言ってよいほど小さくなります。パーティショニングは、各パーティション内の値が一意である場合に限り、[`GROUP BY` クエリを最適化](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key) するためにも利用できます。ただし、一般的には、まずプライマリキーが最適化されていることを確認し、そのうえで、アクセスパターンが 1 日の中の特定の予測可能なサブセットだけにアクセスするような例外的なケース (例: 1 日単位でパーティションを切り、ほとんどのクエリが直近 1 日のみを対象とする場合) に限って、クエリ最適化手法としてのパーティショニングを検討すべきです。
 
 #### 推奨事項 \{#recommendations\}
 
@@ -272,7 +277,7 @@ WHERE UserId = 8592047
 Peak memory usage: 201.93 MiB.
 ```
 
-このクエリは、`UserId` がソートキーではないため（高速ではあるものの）9,000万行すべてをスキャンする必要があります。以前は、`PostId` のルックアップとして機能するマテリアライズドビューを使って、この問題を解決していました。同じ問題はプロジェクションでも解消できます。
+このクエリは、`UserId` がソートキーではないため (高速ではあるものの) 9,000万行すべてをスキャンする必要があります。以前は、`PostId` のルックアップとして機能するマテリアライズドビューを使って、この問題を解決していました。同じ問題はプロジェクションでも解消できます。
 以下のコマンドは、`ORDER BY user_id` を持つプロジェクションを追加します。
 
 ```sql
@@ -319,7 +324,9 @@ SELECT
     latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
+```
 
+```response
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
 1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
@@ -344,13 +351,14 @@ Peak memory usage: 4.06 MiB.
 
 [`EXPLAIN` コマンド](/sql-reference/statements/explain) を使用して、このクエリの処理にプロジェクションが利用されたことも確認できます。
 
-
 ```sql
 EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
     ┌─explain─────────────────────────────────────────────┐
  1. │ Expression ((Projection + Before ORDER BY))         │
  2. │   Aggregating                                       │
@@ -367,7 +375,6 @@ WHERE UserId = 8592047
 
 11 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### プロジェクションを使用する場合 \{#when-to-use-projections\}
 
@@ -386,7 +393,7 @@ WHERE UserId = 8592047
 
 ## ClickHouse 向けの BigQuery クエリの書き換え \{#rewriting-bigquery-queries-in-clickhouse\}
 
-以下は、BigQuery と ClickHouse のクエリを比較したサンプルクエリです。このリストは、ClickHouse の機能を活用してクエリを大幅に簡素化する方法を示すことを目的としています。ここでの例では、Stack Overflow の全データセット（2024 年 4 月まで）を使用します。
+以下は、BigQuery と ClickHouse のクエリを比較したサンプルクエリです。このリストは、ClickHouse の機能を活用してクエリを大幅に簡素化する方法を示すことを目的としています。ここでの例では、Stack Overflow の全データセット (2024 年 4 月まで) を使用します。
 
 **質問を 10 件超投稿しているユーザーのうち、最も多くビューを獲得しているユーザー:**
 
@@ -406,7 +413,9 @@ GROUP BY OwnerDisplayName
 HAVING count() > 10
 ORDER BY total_views DESC
 LIMIT 5
+```
 
+```response
    ┌─OwnerDisplayName─┬─total_views─┐
 1. │ Joan Venge       │    25520387 │
 2. │ Ray Vega         │    21576470 │
@@ -438,7 +447,9 @@ FROM stackoverflow.posts
 GROUP BY tags
 ORDER BY views DESC
 LIMIT 5
+```
 
+```response
    ┌─tags───────┬──────views─┐
 1. │ javascript │ 8190916894 │
 2. │ python     │ 8175132834 │
@@ -450,7 +461,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.318 sec. Processed 59.82 million rows, 1.45 GB (188.01 million rows/s., 4.54 GB/s.)
 Peak memory usage: 567.41 MiB.
 ```
-
 
 ## 集約関数 \{#aggregate-functions\}
 
@@ -475,7 +485,9 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Year:                    2008
@@ -506,7 +518,6 @@ MaxViewCount:            66975
 Peak memory usage: 377.26 MiB.
 ```
 
-
 ## 条件式と配列 \{#conditionals-and-arrays\}
 
 条件式と配列関数を使うと、クエリを大幅に簡潔にできます。次のクエリは、2022 年から 2023 年にかけての出現回数が 10000 回を超えるタグのうち、増加率が最も大きいものを算出します。以下の ClickHouse クエリが、条件式・配列関数・`HAVING` 句および `SELECT` 句でエイリアスを再利用できる機能のおかげで簡潔になっている点に注目してください。
@@ -529,7 +540,9 @@ GROUP BY tag
 HAVING (count_2022 > 10000) AND (count_2023 > 10000)
 ORDER BY percent_change DESC
 LIMIT 5
+```
 
+```response
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
 │ next.js     │      13788 │      10520 │   31.06463878326996 │
 │ spring-boot │      16573 │      17721 │  -6.478189718413183 │

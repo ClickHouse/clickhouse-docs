@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/anythingllm
 sidebar_label: 'Интеграция AnythingLLM'
-title: 'Настройка сервера ClickHouse MCP с AnythingLLM и ClickHouse Cloud'
+title: 'Использование сервера ClickHouse MCP с AnythingLLM'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве описано, как настроить работу AnythingLLM с сервером ClickHouse MCP с использованием Docker.'
+description: 'В этом руководстве объясняется, как настроить AnythingLLM для работы с сервером ClickHouse MCP с использованием Docker.'
 keywords: ['AI', 'AnythingLLM', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -15,8 +15,6 @@ import Image from '@theme/IdealImage';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/allm_conversation.png';
 import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers.png';
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
-
-# Использование сервера ClickHouse MCP с AnythingLLM \{#using-clickhouse-mcp-server-with-anythingllm\}
 
 > В этом руководстве объясняется, как настроить [AnythingLLM](https://anythingllm.com/) для работы с сервером ClickHouse MCP с использованием Docker
 > и подключить его к примерным датасетам ClickHouse.

@@ -22,23 +22,22 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Плагин источника данных ClickHouse для Grafana \{#clickhouse-data-source-plugin-for-grafana\}
+<ClickHouseSupportedBadge />
 
-<ClickHouseSupportedBadge/>
+В Grafana вы можете анализировать все свои данные и делиться ими с помощью дашбордов.
+Для подключения Grafana к ClickHouse требуется плагин, который можно легко установить через интерфейс Grafana.
 
-С помощью Grafana вы можете анализировать и визуализировать все свои данные в дашбордах и делиться ими.
-Для подключения Grafana к ClickHouse требуется плагин, который можно легко установить в пользовательском интерфейсе Grafana.
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/bRce9xWiqQM"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/bRce9xWiqQM"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}

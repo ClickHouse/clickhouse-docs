@@ -236,7 +236,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | Каталог                                                   | Файл                                                                                                                                                                             |
+  | Каталог                                                   | File                                                                                                                                                                             |
   | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
@@ -388,7 +388,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | Каталог                                                  | Файл                                                                                                                                                                          |
+  | Каталог                                                  | File                                                                                                                                                                          |
   | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml) |
@@ -406,7 +406,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   <KeeperConfig />
 
-  | Каталог                                                 | Файл                                                                                                                                                                                         |
+  | Каталог                                                 | File                                                                                                                                                                                         |
   | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
   | `fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
@@ -669,7 +669,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   SELECT * FROM test.test_table_dist;
   ```
 
-  ```sql
+  ```response
      ┌─id─┬─name───────────────┐
   1. │  1 │ Alexey Milovidov   │
   2. │  1 │ Clicky McClickface │

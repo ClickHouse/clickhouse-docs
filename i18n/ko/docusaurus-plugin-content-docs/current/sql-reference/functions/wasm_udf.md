@@ -224,7 +224,8 @@ RETURNS return_type
 * `DETERMINISTIC`: 함수를 결정론적으로 선언합니다. 즉, 동일한 입력에 대해 항상 동일한 출력을 반환합니다. 지정하면 ClickHouse는 모든 인수가 상수인 호출을 상수 폴딩할 수 있습니다. 이 경우 함수는 쿼리 분석 시점에 한 번 평가되며, 그 결과가 모든 행에 재사용됩니다.
 * `SHA256_HASH`: 검증을 위한 예상 모듈 해시입니다(생략 시 자동으로 채워지며), 서로 다른 레플리카에서 올바른 WASM 모듈이 로드되었는지 보장하는 데 사용할 수 있습니다.
 * `SETTINGS`: 함수별 설정입니다.
-  * `serialization_format` String — ABI에서 요구하는 경우 사용할 직렬화 형식입니다. 기본값: `MsgPack`.
+  * `serialization_format` String — ABI에서 요구하는 경우 사용할 직렬화 형식입니다. 지원되는 값: `MsgPack`, `JSONEachRow`, `CSV`, `TSV`, `TSVRaw`, `RowBinary`, `Buffers`. 기본값: `MsgPack`. `Buffers`와 같은 블록 기반 포맷은 선언된 함수 시그니처와 타입이 일치하는 단일 컬럼을 반환해야 합니다.
+  * `webassembly_udf_enable_fuel` Bool — 함수에 대한 유한한 연료 예산을 활성화합니다. 기본값: `true`. `false`로 설정하면 이 함수에서는 쿼리 수준 설정 `webassembly_udf_max_fuel`이 무시됩니다. `wasmtime` 엔진을 사용할 때 연료 제한을 비활성화하면 성능이 향상될 수 있습니다. 그러나 신뢰할 수 없거나 버그가 있는 guest 코드의 경우 제어되지 않는 실행 위험이 커질 수 있습니다.
 
 ## ABI 버전 \{#abis-versions\}
 
@@ -390,7 +391,7 @@ pub fn some_udf(data: String) -> HashMap<String, String> {
 
 다음 쿼리 단위 설정으로 WebAssembly UDF 실행을 제어합니다.
 
-* `webassembly_udf_max_fuel` — WebAssembly UDF 인스턴스 1회 실행당 연료 한도입니다. 각 WebAssembly 명령은 일정량의 연료를 소비합니다. 제한을 두지 않으려면 0으로 설정합니다.
+* `webassembly_udf_max_fuel` — WebAssembly UDF 인스턴스 1회 실행당 연료 한도입니다. 각 WebAssembly 명령은 일정량의 연료를 소비합니다. 이 값은 런타임에 전달되기 전에 1024배로 스케일되므로, `webassembly_udf_max_fuel = 1`은 약 1024 연료 단위에 해당합니다. 유한한 제한을 두지 않으려면 0으로 설정합니다. 기본값인 함수별 설정 `webassembly_udf_enable_fuel`이 true인 함수에만 적용됩니다.
 
 * `webassembly_udf_max_memory` — WebAssembly UDF 인스턴스당 바이트 단위 메모리 한도입니다.
 

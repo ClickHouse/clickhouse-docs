@@ -10,8 +10,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Langfuse \{#langfuse\}
-
 ## Langfuse란 무엇입니까? \{#what-is-langfuse\}
 
 [Langfuse](https://langfuse.com)는 팀이 LLM 애플리케이션을 협업하여 디버깅하고, 분석하고, 반복 개선할 수 있도록 돕는 오픈 소스 LLM 엔지니어링 플랫폼입니다. ClickHouse 생태계의 일부이며, 핵심에 **ClickHouse**를 사용하여 확장 가능하고 고성능인 관측성 관측성 백엔드를 제공합니다.

@@ -20,15 +20,12 @@ import security_group_in_rds_mysql from '@site/static/images/integrations/data-i
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
+这是一份分步指南，说明如何配置您的 RDS MariaDB 实例，以便通过 MySQL ClickPipe 复制其中的数据。
 
-# RDS MariaDB 源端设置指南 \{#rds-mariadb-source-setup-guide\}
-
-本指南将逐步介绍如何配置 RDS MariaDB 实例，使其能够通过 MySQL ClickPipe 进行数据复制。
-
-<br/>
+<br />
 
 :::info
-我们也建议你阅读 MySQL 常见问题解答文档，可在[这里](/integrations/data-ingestion/clickpipes/mysql/faq.md)查看。该常见问题页面会持续更新。
+我们还建议查阅[此处](/integrations/data-ingestion/clickpipes/mysql/faq.md)的 MySQL FAQ。FAQ 页面仍在持续更新。
 :::
 
 ## 启用二进制日志保留 \{#enable-binlog-retention-rds\}

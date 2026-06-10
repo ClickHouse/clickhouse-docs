@@ -40,8 +40,6 @@ import clickhouse_result from '@site/static/images/integrations/data-ingestion/e
 import Image from '@theme/IdealImage';
 
 
-# Интеграция EMQX с ClickHouse \{#integrating-emqx-with-clickhouse\}
-
 ## Подключение EMQX \{#connecting-emqx\}
 
 [EMQX](https://www.emqx.com/en/try?product=enterprise) — это брокер MQTT с открытым исходным кодом и высокопроизводительным движком обработки сообщений в режиме реального времени, обеспечивающий потоковую обработку событий для IoT‑устройств в очень крупном масштабе. Будучи наиболее масштабируемым брокером MQTT, EMQX помогает подключать любые устройства при любом масштабе. Перемещайте и обрабатывайте ваши IoT‑данные где угодно.

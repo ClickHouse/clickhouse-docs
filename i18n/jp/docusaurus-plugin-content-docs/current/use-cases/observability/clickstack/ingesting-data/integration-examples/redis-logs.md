@@ -17,11 +17,8 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack による Redis ログの監視 \{#redis-clickstack\}
-
 :::note[TL;DR]
-OTel の `filelog` レシーバーを使用して Redis サーバーログを収集し、ClickStack で可視化します。デモ用データセットと事前構築済みのダッシュボードが含まれています。
+OTel `filelog` レシーバーを使用して、Redis サーバーのログを ClickStack に収集し、可視化します。デモ用データセットと事前構築済みダッシュボードが含まれています。
 :::
 
 ## 既存の Redis との統合 \{#existing-redis\}

@@ -7,7 +7,7 @@ keywords: ['clickhousectl', 'CLI', 'cloud management', 'local development']
 doc_type: 'reference'
 ---
 
-ClickHouse CLI (`clickhousectl`) は、ClickHouse Cloud リソースの管理と、ClickHouse を使ったローカル開発に対応する統合コマンドラインツールです。
+ClickHouse CLI (`clickhousectl`) は、ClickHouse Cloud リソースの管理と、ClickHouse を使ったローカル開発に対応する統合コマンドラインツールです。[ClickHouse Cloud Postgres](/cloud/managed-postgres) サービスの管理にも使用できます。
 
 ## インストール \{#installation\}
 
@@ -64,6 +64,38 @@ clickhousectl cloud service stop <service-id>
 clickhousectl cloud service delete <service-id>
 ```
 
+### Postgres サービス (ベータ) \{#postgres-services\}
+
+[ClickHouse Cloud Postgres](/cloud/managed-postgres) サービスを作成・管理します。
+
+```bash
+# List Postgres services
+clickhousectl cloud postgres list
+
+# Create a Postgres service
+clickhousectl cloud postgres create \
+  --name my-pg \
+  --region us-east-1 \
+  --size c6gd.xlarge \
+  --pg-version 18
+
+# Get service details
+clickhousectl cloud postgres get <pg-id>
+
+# Update a service
+clickhousectl cloud postgres update <pg-id> --size c6gd.2xlarge --add-tag env=prod
+
+# Reset the password
+clickhousectl cloud postgres reset-password <pg-id> --generate
+
+# Read replicas and point-in-time restore
+clickhousectl cloud postgres read-replica create <pg-id> --name replica-1
+clickhousectl cloud postgres restore <pg-id> --name restored --restore-target 2026-04-16T12:00:00Z
+
+# Delete a service
+clickhousectl cloud postgres delete <pg-id>
+```
+
 ### 組織 \{#organizations\}
 
 ```bash
@@ -103,7 +135,7 @@ clickhousectl cloud --json service list
 
 ## ローカル開発 \{#local-development\}
 
-CLI では、ローカルの ClickHouse インストールやサーバーの管理も行えます。ローカル開発を始めるには、[クイックインストール](/install/quick-install)ページを参照してください。
+CLI では、ローカルの ClickHouse インストールやサーバーの管理も行えます。ローカル開発を始めるには、[clickhousectl (CLI)](/install/clickhousectl)ページを参照してください。
 
 ## 要件 \{#requirements\}
 

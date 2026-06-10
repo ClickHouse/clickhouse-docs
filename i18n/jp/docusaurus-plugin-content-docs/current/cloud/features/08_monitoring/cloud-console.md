@@ -1,7 +1,7 @@
 ---
-title: 'Cloud コンソールでのモニタリング'
+title: 'ClickHouse Cloud の Cloud コンソールでの監視'
 slug: /cloud/monitoring/cloud-console
-description: 'ClickHouse Cloud の Cloud コンソールに組み込まれているモニタリングダッシュボード'
+description: 'ClickHouse Cloud の Cloud コンソールに組み込まれている監視ダッシュボード'
 keywords: ['cloud', 'モニタリング', 'ダッシュボード', 'サービスの健全性', 'リソース使用率', '高度なダッシュボード']
 sidebar_label: 'Cloud コンソール'
 sidebar_position: 2
@@ -16,10 +16,7 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-
-# ClickHouse Cloud コンソールでのモニタリング \{#monitoring-in-the-clickhouse-cloud-console\}
-
-ClickHouse Cloud のサービスには、ダッシュボードや通知を提供する、すぐに利用できるモニタリング機能が標準で備わっています。デフォルトでは、Cloud コンソール内のすべてのユーザーがこれらのダッシュボードにアクセスできます。
+ClickHouse Cloud のサービスには、ダッシュボードや通知を提供する、すぐに利用可能な監視機能が標準で備わっています。デフォルトでは、Cloud コンソールのすべてのユーザーがこれらのダッシュボードにアクセスできます。
 
 ## ダッシュボード \{#dashboards\}
 

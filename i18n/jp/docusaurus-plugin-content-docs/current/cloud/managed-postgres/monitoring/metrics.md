@@ -7,13 +7,13 @@ keywords: ['managed postgres', 'メトリクス', 'Prometheus', 'リファレン
 doc_type: 'reference'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-# メトリクス リファレンス \{#metrics-reference\}
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-metrics-beta" />
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-metrics" />
-
-このページでは、[Managed Postgres Prometheus エンドポイント](/cloud/managed-postgres/monitoring/prometheus) で公開されているすべてのメトリックを一覧で確認できます。
+このページでは、
+[Managed Postgres Prometheus エンドポイント](/cloud/managed-postgres/monitoring/prometheus)
+で公開されるすべてのメトリクスを一覧表示します。
 セットアップと認証については、[Prometheus エンドポイント] ページを参照してください。
 
 ## 共通ラベル \{#common-labels\}

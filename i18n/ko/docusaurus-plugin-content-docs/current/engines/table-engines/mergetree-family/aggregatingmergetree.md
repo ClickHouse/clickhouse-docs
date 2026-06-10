@@ -153,7 +153,7 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
  VALUES (1669446031000, 2, 5, 10), (1667446031000, 3, 7, 5);
 ```
 
-`SELECT` 쿼리를 다시 실행하면 다음과 같은 결과가 반환됩니다:`
+`SELECT` 쿼리를 다시 실행하면 다음과 같은 결과가 반환됩니다:&#96;
 
 ```text
 ┌───────────────StartDate─┬─Visits─┬─Users─┐

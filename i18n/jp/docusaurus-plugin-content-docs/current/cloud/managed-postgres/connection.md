@@ -7,14 +7,17 @@ keywords: ['postgres 接続', '接続文字列', 'pgbouncer', 'TLS', 'SSL']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import connectButton from '@site/static/images/managed-postgres/connect-button.png';
 import connectModal from '@site/static/images/managed-postgres/connect-modal.png';
 import tlsCaBundle from '@site/static/images/managed-postgres/tls-ca-bundle.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="connection" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.connection-beta" />
 
+:::tip[SQL Console]
+このページでは、本番システムを Postgres に接続する方法を説明します。クエリを手早く実行したい場合は、ClickHouse インスタンスと同様に、[SQL Console](/integrations/sql-clients/sql-console) 経由で接続することもできます。
+:::
 
 ## 接続情報へのアクセス \{#accessing-connection-details\}
 
@@ -39,13 +42,13 @@ Managed Postgres はデータベースへのスーパーユーザーアクセス
 
 **Connect via** タブでは、アプリケーションの要件に合わせて、複数の形式で接続文字列が提供されます。
 
-| Format | 説明 |
-|--------|-------------|
-| **url** | 標準的な接続 URL。形式は `postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>` |
-| **psql** | psql コマンドラインツールで接続するための、すぐに使用できるコマンド |
-| **env** | libpq ベースのクライアント向けの環境変数 |
-| **yaml** | YAML 形式の設定 |
-| **jdbc** | Java アプリケーション向けの JDBC 接続文字列 |
+| Format   | 説明                                                                       |
+| -------- | ------------------------------------------------------------------------ |
+| **url**  | 標準的な接続 URL。形式は `postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>` |
+| **psql** | psql コマンドラインツールで接続するための、すぐに使用できるコマンド                                     |
+| **env**  | libpq ベースのクライアント向けの環境変数                                                  |
+| **yaml** | YAML 形式の設定                                                               |
+| **jdbc** | Java アプリケーション向けの JDBC 接続文字列                                              |
 
 セキュリティ上の理由から、接続文字列内のパスワードはデフォルトでマスクされています。任意のフィールドまたは接続文字列の横にあるコピーアイコンをクリックすると、その内容をクリップボードに直接コピーできます。
 

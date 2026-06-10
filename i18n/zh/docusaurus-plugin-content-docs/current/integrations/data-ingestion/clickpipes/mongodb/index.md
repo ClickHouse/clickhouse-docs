@@ -2,7 +2,7 @@
 sidebar_label: '从 MongoDB 摄取数据到 ClickHouse'
 description: '介绍如何将 MongoDB 无缝连接到 ClickHouse Cloud。'
 slug: /integrations/clickpipes/mongodb
-title: '从 MongoDB 摄取数据到 ClickHouse（使用 CDC）'
+title: '从 MongoDB 摄取数据到 ClickHouse（使用 CDC（变更数据捕获））'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
 integration:
@@ -20,22 +20,19 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
-
-# 将 MongoDB 数据摄取到 ClickHouse (使用 CDC (变更数据捕获) )  \{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\}
-
 <BetaBadge />
 
 :::info
-通过 ClickPipes 将 MongoDB 的数据摄取到 ClickHouse Cloud 目前处于公开测试阶段。
+通过 ClickPipes 将 MongoDB 中的数据摄取到 ClickHouse Cloud 目前处于 Public Beta 阶段。
 :::
 
 :::note
-在 ClickHouse Cloud 控制台和文档中，针对 MongoDB，“table”和“collection”这两个术语可互换使用。
+在 ClickHouse Cloud 控制台和文档中，对于 MongoDB，&quot;table&quot; 和 &quot;collection&quot; 可视为同义词并交替使用。
 :::
 
-你可以使用 ClickPipes 将 MongoDB 数据库中的数据摄取到 ClickHouse Cloud。源 MongoDB 数据库可以托管在本地部署环境，或者使用 MongoDB Atlas 等服务托管在云上。
+您可以使用 ClickPipes 将 MongoDB 数据库中的数据摄取到 ClickHouse Cloud。源 MongoDB 数据库既可以部署在本地，也可以通过 MongoDB Atlas 等服务部署在云端。
 
-还可以使用 ClickPipes UI 手动部署和管理 MongoDB ClickPipes，也可以通过 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
+MongoDB ClickPipes 可以通过 ClickPipes UI 手动部署和管理，也可以使用 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式部署和管理。
 
 ## 前置条件 \{#prerequisites\}
 

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/open-webui
 sidebar_label: 'Интеграция Open WebUI'
-title: 'Настройка MCP-сервера ClickHouse для работы с Open WebUI и ClickHouse Cloud'
+title: 'Использование MCP-сервера ClickHouse с Open WebUI'
 pagination_prev: null
 pagination_next: null
 description: 'В этом руководстве объясняется, как настроить Open WebUI для работы с MCP-сервером ClickHouse с использованием Docker.'
@@ -23,10 +23,8 @@ import AddConnection from '@site/static/images/use-cases/AI_ML/MCP/7_add_connect
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/8_openai_models_more.png';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation.png';
 
-# Использование MCP-сервера ClickHouse с Open WebUI \{#using-clickhouse-mcp-server-with-open-webui\}
-
 > В этом руководстве объясняется, как настроить [Open WebUI](https://github.com/open-webui/open-webui) для работы с MCP-сервером ClickHouse
-> и подключить его к примерным датасетам ClickHouse.
+> и подключить его к демонстрационным наборам данных ClickHouse.
 
 <VerticalStepper headerLevel="h2">
   ## Установка uv \{#install-uv\}
@@ -44,9 +42,9 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
 
   Перейдите по адресу http://localhost:8080/, чтобы открыть UI.
 
-  ## Настройка сервера ClickHouse MCP \{#configure-clickhouse-mcp-server\}
+  ## Настройка MCP-сервера ClickHouse \{#configure-clickhouse-mcp-server\}
 
-  Чтобы настроить сервер ClickHouse MCP, нам нужно будет представить интерфейс сервера MCP в виде конечных точек OpenAPI.
+  Чтобы настроить MCP-сервер ClickHouse, нам нужно будет представить интерфейс MCP-сервера в виде конечных точек OpenAPI.
   Сначала зададим переменные окружения, которые позволят нам подключиться к ClickHouse SQL Playground:
 
   ```bash
@@ -100,9 +98,9 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
 
   <Image img={OpenAIModels} alt="Open WebUI - модели" size="md" />
 
-  ## Общение с сервером ClickHouse MCP через Open WebUI \{#chat-to-clickhouse-mcp-server\}
+  ## Общение с MCP-сервером ClickHouse через Open WebUI \{#chat-to-clickhouse-mcp-server\}
 
   После этого можно начать диалог, и Open WebUI будет обращаться к MCP-серверу при необходимости:
 
-  <Image img={Conversation} alt="Open WebUI - чат с сервером ClickHouse MCP" size="md" />
+  <Image img={Conversation} alt="Open WebUI - чат с MCP-сервером ClickHouse" size="md" />
 </VerticalStepper>

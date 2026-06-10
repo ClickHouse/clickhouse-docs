@@ -22,10 +22,7 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника RDS MySQL \{#rds-mysql-source-setup-guide\}
-
-В этом пошаговом руководстве показано, как настроить Amazon RDS MySQL для репликации данных в ClickHouse Cloud с помощью [MySQL ClickPipe](../index.md). С ответами на распространённые вопросы по CDC (фиксация изменений данных) в MySQL можно ознакомиться на странице [MySQL FAQs](/integrations/data-ingestion/clickpipes/mysql/faq.md).
+В этом пошаговом руководстве показано, как настроить Amazon RDS MySQL для репликации данных в ClickHouse Cloud с помощью [MySQL ClickPipe](../index.md). Ответы на распространённые вопросы о MySQL CDC см. на [странице с часто задаваемыми вопросами по MySQL](/integrations/data-ingestion/clickpipes/mysql/faq.md).
 
 ## Включение хранения бинарного лога \{#enable-binlog-retention-rds\}
 

@@ -2,7 +2,7 @@
 sidebar_label: '백업 검토 및 복원'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: '개요'
+title: '백업 검토 및 복원'
 keywords: ['백업', 'Cloud 백업', '복원']
 description: 'ClickHouse Cloud의 백업에 대한 개요를 제공합니다'
 doc_type: 'guide'
@@ -17,14 +17,11 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
+이 가이드에서는 ClickHouse Cloud에서 백업이 작동하는 방식, 서비스의 백업을 구성할 때 사용할 수 있는 옵션, 그리고 백업에서 복원하는 방법을 설명합니다.
 
-# 백업 검토 및 복원 \{#review-and-restore-backups\}
+**사전 요구 사항**
 
-이 가이드는 ClickHouse Cloud에서 백업이 동작하는 방식, 서비스에 대한 백업 구성 옵션, 그리고 백업에서 복원하는 방법을 설명합니다.
-
-**사전 준비 사항**
-
-- ["ClickHouse Cloud에서 백업이 작동하는 방식"](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) (기능 개요 페이지)를 읽었습니다.
+* [&quot;ClickHouse Cloud에서 백업이 작동하는 방식&quot;](/cloud/features/backups#how-backups-work-in-clickhouse-cloud)을 읽었습니다 (기능 개요 페이지)
 
 ## 백업 상태 목록 \{#backup-status-list\}
 

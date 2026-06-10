@@ -281,6 +281,97 @@ SELECT arrayAvg(x, y -> x*y, [2, 3], [2, 3]) AS res;
 ```
 
 
+## arrayBottomK \{#arrayBottomK\}
+
+도입 버전: v26.6.0
+
+입력 배열에서 가장 작은 K개의 요소를 오름차순으로 정렬한 배열을 반환합니다.
+람다 함수 `f`가 지정되면 각 요소에 `f`를 적용한 결과를 기준으로 요소를 비교합니다.
+`f`가 여러 인수를 받는 경우 `arrayBottomK`에 추가 배열이 전달되며, 각 배열의 요소는
+`f`의 인수에 대응합니다.
+
+`NULL` 값은 건너뛰므로 결과에 포함되지 않습니다. 결과 크기는 최대 `K`이며,
+입력 배열의 null이 아닌 요소 수가 `K`보다 적으면 더 작을 수 있습니다.
+결과 요소의 유형은 입력 요소 유형에서 null 비허용에 해당하는 유형입니다.
+
+`arrayBottomK`는 [고차 함수](/sql-reference/functions/overview#higher-order-functions)입니다.
+
+관련 항목:
+
+* `arrayTopK`: 가장 큰 K개의 요소를 반환합니다.
+* `arrayPartialSort`: 동일한 K개의 요소를 위치 `[1..K]`에 생성하지만
+  나머지 요소도 지정되지 않은 순서로 유지하고 null은 건너뛰지 않습니다.
+
+**구문**
+
+```sql
+arrayBottomK([f,] K, arr [, arr1, ... ,arrN])
+```
+
+**인수**
+
+* `f(arr[, arr1, ... ,arrN])` — 선택 사항입니다. 각 요소의 정렬 키를 계산하는 람다 함수입니다. [`람다 함수`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `K` — 반환할 가장 작은 요소 수입니다. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `arr` — 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — `f`가 여러 인수를 받는 경우 사용하는 추가 배열 `N`개입니다. [`Array(T)`](/sql-reference/data-types/array)
+
+**반환 값**
+
+값이 가장 작은 `arr`의 요소(또는 람다 함수 결과가 가장 작은 요소)를 최대 `K`개까지 오름차순으로 정렬해 반환합니다.
+NULL 값은 제외됩니다. 입력 타입이 `Nullable(T)`이더라도 반환되는 배열의 요소 타입은 `T`입니다.
+
+**예시**
+
+**simple&#95;int**
+
+```sql title=Query
+SELECT arrayBottomK(3, [1, 5, 2, 7, 3])
+```
+
+```response title=Response
+[1,2,3]
+```
+
+**skip&#95;nulls**
+
+```sql title=Query
+SELECT arrayBottomK(3, [1, NULL, 5, 2, NULL, 7])
+```
+
+```response title=Response
+[1,2,5]
+```
+
+**fewer&#95;than&#95;k**
+
+```sql title=Query
+SELECT arrayBottomK(5, [1, NULL, 2])
+```
+
+```response title=Response
+[1,2]
+```
+
+**lambda&#95;simple**
+
+```sql title=Query
+SELECT arrayBottomK((x) -> -x, 2, [5, 9, 1, 3])
+```
+
+```response title=Response
+[9,5]
+```
+
+**lambda&#95;multi**
+
+```sql title=Query
+SELECT arrayBottomK((x, y) -> y, 2, ['a', 'b', 'c'], [3, 1, 2])
+```
+
+```response title=Response
+['b','c']
+```
+
 ## arrayCompact \{#arrayCompact\}
 
 도입된 버전: v20.1.0
@@ -2182,15 +2273,15 @@ SELECT arrayNormalizedGini([0.9, 0.3, 0.8, 0.7],[6, 1, 0, 2]);
 **구문**
 
 ```sql
-arrayPartialReverseSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialReverseSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **인수**
 
 * `f(arr[, arr1, ... ,arrN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — 정렬이 수행되는 상한을 나타내는 인덱스 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — `f`가 여러 인수를 받는 경우의 추가 배열 N개입니다. [`Array(T)`](/sql-reference/data-types/array)
-* `limit` — 정렬이 수행되는 상한을 나타내는 인덱스 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -2247,7 +2338,6 @@ SELECT arrayPartialReverseSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [0, 1, 2]
 ```
-
 
 ## arrayPartialShuffle \{#arrayPartialShuffle\}
 
@@ -2356,15 +2446,15 @@ SELECT arrayPartialShuffle(materialize([1, 2, 3, 4]), 2, 42), arrayPartialShuffl
 **구문**
 
 ```sql
-arrayPartialSort([f,] arr [, arr1, ... ,arrN], limit)
+arrayPartialSort([f,] limit, arr [, arr1, ... ,arrN])
 ```
 
 **인수**
 
 * `f(arr[, arr1, ... ,arrN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. [`Lambda function`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `limit` — 정렬이 수행되는 인덱스의 상한값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint)
 * `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
 * `arr1, ... ,arrN` — `f`가 여러 인수를 받는 경우의 추가 배열 N개입니다. [`Array(T)`](/sql-reference/data-types/array)
-* `limit` — 정렬이 수행되는 인덱스의 상한값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -2422,7 +2512,6 @@ SELECT arrayPartialSort((x, y) -> -y, 1, [0, 1, 2], [1, 2, 3]) as res
 ```response title=Response
 [2, 1, 0]
 ```
-
 
 ## arrayPopBack \{#arrayPopBack\}
 
@@ -3026,12 +3115,12 @@ SELECT arrayReverseFill(x, y, z -> x > y AND x < z, [5, 3, 6, 2], [4, 7, 1, 3], 
 **구문**
 
 ```sql
-arrayReverseSort([f,] arr [, arr1, ... ,arrN)
+arrayReverseSort([f,] arr [, arr1, ... ,arrN])
 ```
 
 **인수**
 
-* `f(y1[, y2 ... yN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. - `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — 선택 사항입니다. `f`가 여러 인수를 받는 경우 사용하는 N개의 추가 배열입니다.
+* `f(y1[, y2 ... yN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. - `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., arrN` — 선택 사항입니다. `f`가 여러 인수를 받는 경우 사용하는 N개의 추가 배열입니다.
 
 **반환 값**
 
@@ -3049,7 +3138,7 @@ SELECT arrayReverseSort((x, y) -> y, [4, 3, 5], ['a', 'b', 'c']) AS res;
 [5,3,4]
 ```
 
-**예제 2**
+**예시 2**
 
 ```sql title=Query
 SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
@@ -3058,7 +3147,6 @@ SELECT arrayReverseSort((x, y) -> -y, [4, 3, 5], [1, 2, 3]) AS res;
 ```response title=Response
 [4,3,5]
 ```
-
 
 ## arrayReverseSplit \{#arrayReverseSplit\}
 
@@ -3473,7 +3561,7 @@ arraySort([f,] arr [, arr1, ... ,arrN])
 
 **인수**
 
-* `f(y1[, y2 ... yN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. - `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., yN` — 선택 사항입니다. `f`가 여러 인수를 받는 경우 사용할 N개의 추가 배열입니다.
+* `f(y1[, y2 ... yN])` — 배열 `x`의 요소에 적용할 람다 함수입니다. - `arr` — 정렬할 배열입니다. [`Array(T)`](/sql-reference/data-types/array) - `arr1, ..., arrN` — 선택 사항입니다. `f`가 여러 인수를 받는 경우 사용할 N개의 추가 배열입니다.
 
 **반환 값**
 
@@ -3491,7 +3579,7 @@ SELECT arraySort([1, 3, 3, 0]);
 [0,1,3,3]
 ```
 
-**예제 2**
+**예시 2**
 
 ```sql title=Query
 SELECT arraySort(['hello', 'world', '!']);
@@ -3501,7 +3589,7 @@ SELECT arraySort(['hello', 'world', '!']);
 ['!','hello','world']
 ```
 
-**예제 3**
+**예시 3**
 
 ```sql title=Query
 SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
@@ -3510,7 +3598,6 @@ SELECT arraySort([1, nan, 2, NULL, 3, nan, -4, NULL, inf, -inf]);
 ```response title=Response
 [-inf,-4,1,2,3,inf,nan,nan,NULL,NULL]
 ```
-
 
 ## arraySplit \{#arraySplit\}
 
@@ -3637,6 +3724,93 @@ arraySymmetricDifference([1, 2], [1, 2], [1, 3]) AS non_empty_symmetric_differen
 └────────────────────────────┴────────────────────────────────┘
 ```
 
+
+## arrayTopK \{#arrayTopK\}
+
+도입 버전: v26.6.0
+
+입력 배열에서 가장 큰 요소 K개를 내림차순으로 정렬한 배열을 반환합니다.
+람다 함수 `f`가 지정되면 각 요소에 `f`를 적용한 결과를 기준으로 요소를 비교합니다.
+`f`가 여러 인수를 받는 경우 추가 배열이 `arrayTopK`에 전달되며, 해당 배열의 요소는
+`f`의 인수에 대응합니다.
+
+`NULL` 값은 건너뛰며 결과에 포함되지 않습니다. 결과 크기는 최대 `K`이며,
+입력 배열에 null이 아닌 요소가 `K`보다 적으면 더 작을 수 있습니다.
+결과 요소의 유형은 입력 요소 유형에서 NULL을 허용하지 않는 대응 유형입니다.
+
+`arrayTopK`는 [고차 함수](/sql-reference/functions/overview#higher-order-functions)입니다.
+
+관련 항목: 대신 가장 작은 요소 K개를 반환하는 `arrayBottomK`를 참고하십시오.
+
+**구문**
+
+```sql
+arrayTopK([f,] K, arr [, arr1, ... ,arrN])
+```
+
+**인수**
+
+* `f(arr[, arr1, ... ,arrN])` — 선택 사항입니다. 각 요소의 정렬 키를 계산하는 람다 함수입니다. [`람다 함수`](/sql-reference/functions/overview#arrow-operator-and-lambda)
+* `K` — 반환할 가장 큰 요소의 개수입니다. [`(U)Int8/16/32/64`](/sql-reference/data-types/int-uint)
+* `arr` — 배열입니다. [`Array(T)`](/sql-reference/data-types/array)
+* `arr1, ... ,arrN` — `f`가 여러 인수를 받는 경우 사용하는 추가 배열 N개입니다. [`Array(T)`](/sql-reference/data-types/array)
+
+**반환 값**
+
+값이 가장 큰 `arr`의 요소(또는 람다 함수 결과가 가장 큰 요소)를 최대 `K`개까지 내림차순으로 정렬해 반환합니다.
+NULL 값은 건너뜁니다. 입력 타입이 `Nullable(T)`이더라도 반환되는 배열의 요소 타입은 `T`입니다.
+
+**예시**
+
+**simple&#95;int**
+
+```sql title=Query
+SELECT arrayTopK(3, [1, 5, 2, 7, 3])
+```
+
+```response title=Response
+[7,5,3]
+```
+
+**skip&#95;nulls**
+
+```sql title=Query
+SELECT arrayTopK(3, [1, NULL, 5, 2, NULL, 7])
+```
+
+```response title=Response
+[7,5,2]
+```
+
+**fewer&#95;than&#95;k**
+
+```sql title=Query
+SELECT arrayTopK(5, [1, NULL, 2])
+```
+
+```response title=Response
+[2,1]
+```
+
+**lambda&#95;simple**
+
+```sql title=Query
+SELECT arrayTopK((x) -> -x, 2, [5, 9, 1, 3])
+```
+
+```response title=Response
+[1,3]
+```
+
+**lambda&#95;multi**
+
+```sql title=Query
+SELECT arrayTopK((x, y) -> y, 2, ['a', 'b', 'c'], [3, 1, 2])
+```
+
+```response title=Response
+['a','c']
+```
 
 ## arrayTranspose \{#arrayTranspose\}
 

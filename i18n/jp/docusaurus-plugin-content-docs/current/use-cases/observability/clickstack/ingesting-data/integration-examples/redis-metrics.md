@@ -16,11 +16,8 @@ import finish_import from '@site/static/images/clickstack/import-redis-metrics-d
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack による Redis メトリクス監視 \{#redis-metrics-clickstack\}
-
-:::note[TL;DR]
-OTel Redis receiver を使用して、ClickStack で Redis のパフォーマンスメトリクスを監視します。デモ用データセットと事前構築済みダッシュボードが含まれます。
+:::note[要点]
+OTel Redis receiverを使用して、ClickStack で Redis のパフォーマンスメトリクスを監視します。デモ用データセットと事前構築済みダッシュボードが含まれています。
 :::
 
 ## 既存の Redis との統合 \{#existing-redis\}

@@ -1,5 +1,5 @@
 ---
-title: '컴플라이언스 개요'
+title: '보안 및 컴플라이언스 보고서'
 slug: /cloud/security/compliance-overview
 description: 'SOC 2, ISO 27001, U.S. DPF, HIPAA 등 ClickHouse Cloud 보안 및 컴플라이언스 인증에 대한 개요'
 doc_type: 'reference'
@@ -9,10 +9,7 @@ keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF'
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
-
-# 보안 및 컴플라이언스 보고서 \{#security-and-compliance-reports\}
-
-ClickHouse는 고객의 보안 및 컴플라이언스 요구 사항을 평가하고, 요청되는 추가 보고서에 따라 관련 프로그램을 지속적으로 확대하고 있습니다. 추가 정보 확인 또는 보고서 다운로드를 위해 [Trust Center](https://trust.clickhouse.com)를 방문하십시오.
+ClickHouse는 고객의 보안 및 컴플라이언스 요구 사항을 검토하고, 추가 보고서 요청에 따라 프로그램을 지속적으로 확대하고 있습니다. 자세한 정보를 확인하거나 보고서를 다운로드하려면 [Trust Center](https://trust.clickhouse.com)를 방문하십시오.
 
 ## SOC 2 Type II (2022년부터) \{#soc-2-type-ii-since-2022\}
 

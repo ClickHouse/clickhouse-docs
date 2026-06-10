@@ -10,8 +10,6 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# avgMergeState {#avgMergeState}
-
 ## Description {#description}
 
 The [`MergeState`](/sql-reference/aggregate-functions/combinators#-state) combinator

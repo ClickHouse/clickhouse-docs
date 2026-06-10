@@ -7,10 +7,6 @@ title: 'clickhousectl'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-<BetaBadge />
-
 `clickhousectl` — это CLI для локального и облачного ClickHouse.
 
 С помощью `clickhousectl` Вы можете:

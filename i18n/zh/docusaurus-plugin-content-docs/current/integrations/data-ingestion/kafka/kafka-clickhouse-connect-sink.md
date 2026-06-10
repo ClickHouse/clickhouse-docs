@@ -10,13 +10,10 @@ keywords: ['ClickHouse Kafka Connect Sink', 'Kafka 连接器 ClickHouse', '官�
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# ClickHouse Kafka Connect Sink \{#clickhouse-kafka-connect-sink\}
-
 :::note
-如果你需要任何帮助,请[在代码仓库中提交 issue](https://github.com/ClickHouse/clickhouse-kafka-connect/issues),或在 [ClickHouse 公共 Slack](https://clickhouse.com/slack) 中提问。
+如果您需要任何帮助，请[在仓库中提交 issue](https://github.com/ClickHouse/clickhouse-kafka-connect/issues)，或在 [ClickHouse public Slack](https://clickhouse.com/slack) 中提问。
 :::
-**ClickHouse Kafka Connect Sink** 是一个 Kafka 连接器,用于将数据从 Kafka 主题投递到 ClickHouse 表中。
+**ClickHouse Kafka Connect Sink** 是一个 Kafka 连接器，用于将数据从 Kafka topic 传输到 ClickHouse 表。
 
 ### 许可证 \{#license\}
 

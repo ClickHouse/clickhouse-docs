@@ -16,8 +16,6 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
-# Warehouses
-
 <ScalePlanFeatureBadge feature="Compute-compute separation"/>
 
 ## What is compute-compute separation? {#what-is-compute-compute-separation}

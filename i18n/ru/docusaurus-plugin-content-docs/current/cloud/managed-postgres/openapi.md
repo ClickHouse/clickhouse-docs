@@ -1,23 +1,21 @@
 ---
 slug: /cloud/managed-postgres/openapi
 sidebar_label: 'OpenAPI'
-title: 'OpenAPI'
+title: 'OpenAPI для Managed Postgres'
 description: 'Управляйте сервисами Managed Postgres с помощью нашего OpenAPI'
 keywords: ['managed postgres', 'openapi', 'api', 'curl', 'руководство', 'командная строка']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-# OpenAPI для Managed Postgres \{#managed-postgres-openapi\}
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.openapi-beta" />
 
 Используйте [ClickHouse OpenAPI](/cloud/manage/cloud-api), чтобы программно
 управлять сервисами Managed Postgres так же, как сервисами ClickHouse. Тот
 же API также предоставляет [конечную точку Prometheus] для сбора метрик
 сервиса. Уже
-знакомы с [OpenAPI]? Получите [API-ключи] и сразу переходите к
+знакомы с [OpenAPI]? Получите [ключи API] и сразу переходите к
 [справочнику по API Managed
 Postgres][pg-openapi]. Если нет, ниже приведён краткий обзор.
 
@@ -42,40 +40,41 @@ curl -s --user "$KEY_ID:$KEY_SECRET" https://api.clickhouse.cloud/v1/organizatio
 3. Нажмите значок копирования справа от **Идентификатор организации**, чтобы сразу скопировать его
    в буфер обмена.
 
-{/*
+Теперь его можно использовать в запросах, например так:
 
-  TODO: Раскомментируйте и вставьте корректный пример вывода, когда API станет доступен.
+```bash
+ORG_ID=myorgid
 
-  Теперь его можно использовать в запросах, например так:
-
-  ```bash
-  ORG_ID=myorgid
-
-  curl -s --user "$KEY_ID:$KEY_SECRET" \
+curl -s --user "$KEY_ID:$KEY_SECRET" \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres" | jq
-  ```
+```
 
-  Итак, вы выполнили свой первый запрос к Postgres API: [list API] выше выводит список всех
-  серверов Postgres в вашей организации. Вывод должен выглядеть
-  примерно так:
+Итак, вы выполнили свой первый запрос к Postgres API: [list API] выше выводит список всех
+серверов Postgres в вашей организации. Вывод должен выглядеть
+примерно так:
 
-  ```json
-  {
+```json
+{
   "result": [
     {
-      "id": "c0d0b15d-5e8b-431d-8943-51b6e233e0b1",
-      "name": "Customer's Organization",
-      "createdAt": "2026-03-24T14:21:31Z",
-      "privateEndpoints": [],
-      "enableCoreDumps": true
+      "id": "ee2fef9f-b443-8ad0-8c9b-724390cdb826",
+      "name": "oltp",
+      "provider": "aws",
+      "region": "eu-west-2",
+      "postgresVersion": "18",
+      "size": "r6gd.medium",
+      "storageSize": 59,
+      "haType": "none",
+      "tags": [],
+      "isPrimary": true,
+      "state": "running",
+      "createdAt": "2026-05-25T16:42:16+00:00"
     }
   ],
   "requestId": "c128d830-5769-4c82-8235-f79aa69d1ebf",
   "status": 200
-  }
-  ```
-
-  */ }
+}
+```
 
 ## CRUD \{#crud\}
 
@@ -92,7 +91,6 @@ curl -s --user "$KEY_ID:$KEY_SECRET" https://api.clickhouse.cloud/v1/organizatio
 * `region`: Регион в инфраструктуре провайдера, где будет развернут
   сервис
 * `size`: Размер VM
-* `storageSize`: Размер хранилища для VM
 
 В документации по [create API] приведены возможные значения этих свойств. Кроме
 того, укажем Postgres 18 вместо версии по умолчанию — 17:
@@ -103,8 +101,7 @@ create_data='{
   "provider": "aws",
   "region": "us-west-2",
   "postgresVersion": "18",
-  "size": "r8gd.large",
-  "storageSize": 118
+  "size": "r8gd.large"
 }'
 ```
 
@@ -123,7 +120,7 @@ curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
 ```json
 {
   "result": {
-    "id": "pg7myrd1j06p3gx4zrm2ze8qz6",
+    "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
     "name": "my postgres",
     "provider": "aws",
     "region": "us-west-2",
@@ -149,7 +146,7 @@ curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
 Используйте `id` из ответа, чтобы повторно получить сервис:
 
 ```bash
-PG_ID=pg7myrd1j06p3gx4zrm2ze8qz6
+PG_ID=67b4bc12-8582-45d0-8806-fe9b2e5a54e6
 curl -s --user "$KEY_ID:$KEY_SECRET" \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID" \
     | jq
@@ -182,7 +179,7 @@ psql (18.3)
 SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off, ALPN: postgresql)
 Type "help" for help.
 
-postgres=# 
+postgres=#
 ```
 
 Введите `\q`, чтобы выйти из [psql].
@@ -205,7 +202,7 @@ curl -sX PATCH --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' 
 
 ```json
 {
-  "id": "$PG_ID",
+  "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
   "name": "my postgres",
   "provider": "aws",
   "region": "us-west-2",
@@ -228,25 +225,36 @@ curl -sX PATCH --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' 
 }
 ```
 
+OpenAPI предоставляет дополнительные конечные точки для обновления свойств, не поддерживаемых
+в [patch API]. Например, чтобы обновить [конфигурацию Postgres],
+используйте [config API]:
+
+```bash
+curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/config" \
+    -d '{"pgConfig": {"max_connections": "42"}, "pgBouncerConfig": {}}' | jq
+```
+
+В выводе будет показана обновлённая конфигурация, а также сообщение, описывающее
+последствия этого изменения:
+
+```json
+{
+  "result":{
+    "pgConfig": {
+      "max_connections": "42"
+    },
+    "pgBouncerConfig": {},
+    "message": "The changes in the following parameters require a database restart to take effect: max_connections. You can restart the database by using the restart endpoint."
+  },
+  "requestId":"fdec06f2-66f7-45b4-9f82-0c051aba20aa",
+  "status": 200
+}
+```
+
 {/*
 
-  TODO: Дополнить после реализации.
-
-  OpenAPI предоставляет дополнительные конечные точки для обновления свойств, не поддерживаемых
-  в [patch API]. Например, чтобы обновить [конфигурацию Postgres],
-  используйте [config API]:
-
-  ```bash
-  curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
-    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/config" \
-    -d '{"max_connections": "42"}'
-  ```
-
-  В выводе будет показана обновлённая конфигурация:
-
-  ```json
-  {"max_connections": "42"}
-  ```
+  TODO: Раскомментируйте и вставьте корректный пример вывода, когда API будет доступен.
 
   Дополнительные API для обновления включают:
 
@@ -283,21 +291,17 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 
 ## Мониторинг \{#monitoring\}
 
-Две совместимые с Prometheus конечные точки предоставляют метрики CPU, памяти, I/O, подключений
-и транзакций для сервисов Managed Postgres: одна возвращает
-метрики для всех сервисов в организации, другая — для одного
-сервиса. Сведения о настройке см. на странице [конечная точка Prometheus], а
-полный список метрик — в [metrics reference].
+Две совместимые с Prometheus конечные точки предоставляют метрики CPU, памяти, I/O, подключений и
+транзакций для сервисов Managed Postgres: одна возвращает метрики для
+всех сервисов в организации, другая — для одного сервиса. Сведения о настройке см. на
+странице [конечная точка Prometheus], а полный
+список метрик — в [metrics reference].
 
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 
 [OpenAPI]: https://www.openapis.org "Инициатива OpenAPI"
 
-[API keys]: /cloud/manage/openapi "Управление API-ключами"
-
-[конечная точка Prometheus]: /cloud/managed-postgres/monitoring/prometheus "Конечная точка Prometheus для Managed Postgres"
-
-[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Справочник метрик Managed Postgres"
+[API keys]: /cloud/manage/openapi "Управление ключами API"
 
 [pg-openapi]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres "Спецификация OpenAPI для ClickHouse Cloud: Postgres"
 
@@ -316,3 +320,7 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 [config API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceSetConfig "Обновить конфигурацию сервиса Postgres"
 
 [delete API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceDelete "Удалить сервис PostgreSQL"
+
+[конечная точка Prometheus]: /cloud/managed-postgres/monitoring/prometheus "Конечная точка Prometheus для Managed Postgres"
+
+[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Справочник метрик Managed Postgres"

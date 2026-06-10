@@ -1,8 +1,8 @@
 ---
 slug: /cloud/guides/sql-console/manage-sql-console-role-assignments
-sidebar_label: 'SQL コンソールのロール割り当てを管理'
-title: 'SQL コンソールのロール割り当てを管理'
-description: 'SQL コンソールのロール割り当てを管理する方法を説明するガイド'
+sidebar_label: 'SQL コンソールのロール割り当ての管理'
+title: 'SQL コンソールのロール割り当てを構成する'
+description: 'SQL コンソールのロール割り当ての管理方法を紹介するガイド'
 doc_type: 'guide'
 keywords: ['SQL コンソール', 'ロール割り当て', 'アクセス管理', '権限', 'セキュリティ']
 ---
@@ -17,10 +17,8 @@ import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
 :::warning
-この設定は非推奨であり、カスタムロールに移行した組織では、ロール作成画面にある新しい設定に置き換えられています。詳細については、[Cloud ユーザーの管理](/cloud/security/manage-cloud-users)を参照してください。
+この設定は非推奨であり、カスタムロールに移行済みの組織では、ロール作成画面の新しい設定に置き換えられています。詳しくは、[Cloud ユーザーを管理する](/cloud/security/manage-cloud-users) を参照してください。
 :::
-
-# SQL コンソールのロール割り当てを構成する \{#configuring-sql-console-role-assignments\}
 
 > このガイドでは、Cloud コンソール全体でのアクセス権限と、Cloud コンソール内でユーザーが利用できる機能を決定する SQL コンソールのロール割り当ての構成方法について説明します。
 

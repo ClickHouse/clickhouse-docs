@@ -1,27 +1,24 @@
 ---
-sidebar_label: 'Kafka Connect JDBC 连接器'
+sidebar_label: 'Kafka Connect JDBC Connector'
 sidebar_position: 4
 slug: /integrations/kafka/kafka-connect-jdbc
-description: '在 Kafka Connect 和 ClickHouse 中使用 JDBC Sink 连接器'
-title: 'JDBC 连接器'
+description: '使用 JDBC Connector Sink 搭配 Kafka Connect 和 ClickHouse'
+title: 'JDBC connector'
 doc_type: 'guide'
 keywords: ['kafka', 'kafka connect', 'jdbc', '集成', '数据管道']
 ---
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# JDBC connector \{#jdbc-connector\}
-
 :::note
-仅当你的数据较为简单且只包含基础数据类型（例如 `int`）时才应使用此 connector。像 ClickHouse 特有的 `map` 等类型目前不受支持。
+仅当你的数据较为简单且只包含基础数据类型 (例如 `int`) 时才应使用此 connector。像 ClickHouse 特有的 `map` 等类型目前不受支持。
 :::
 
 在下面的示例中，我们使用的是 Confluent 发行版的 Kafka Connect。
 
 下面我们介绍一个简单的部署：从单个 Kafka topic 中拉取消息，并将行插入到 ClickHouse 表中。对于尚未拥有 Kafka 环境的用户，我们推荐使用 Confluent Cloud，它的免费层额度相当可观。
 
-请注意，JDBC Connector 需要 schema（不能在 JDBC Connector 中直接使用原始 JSON 或 CSV）。虽然可以在每条消息中携带 schema，但[强烈建议使用 Confluent schema registry](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas) 以避免相关开销。我们提供的插入脚本会从消息中自动推断 schema 并将其写入 registry——因此该脚本可以复用于其他数据集。Kafka 的 key 假定为字符串（String）。关于 Kafka schema 的更多细节参见[这里](https://docs.confluent.io/platform/current/schema-registry/index.html)。
+请注意，JDBC Connector 需要 schema (不能在 JDBC Connector 中直接使用原始 JSON 或 CSV) 。虽然可以在每条消息中携带 schema，但[强烈建议使用 Confluent schema registry](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas) 以避免相关开销。我们提供的插入脚本会从消息中自动推断 schema 并将其写入 registry——因此该脚本可以复用于其他数据集。Kafka 的 key 假定为字符串 (String) 。关于 Kafka schema 的更多细节参见[这里](https://docs.confluent.io/platform/current/schema-registry/index.html)。
 
 ### License \{#license\}
 

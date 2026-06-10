@@ -19,23 +19,20 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 指南 \{#guides\}
+本节提供了有关设置 dbt 和 ClickHouse 适配器的指南，以及一个基于公开可用的 IMDB 数据集将 dbt 与 ClickHouse 结合使用的示例。该示例涵盖以下步骤：
 
-<ClickHouseSupportedBadge/>
+1. 创建 dbt 项目并设置 ClickHouse 适配器。
+2. 定义模型。
+3. 更新模型。
+4. 创建增量模型。
+5. 创建快照模型。
+6. 使用 materialized views。
 
-本节提供了关于设置 dbt 和 ClickHouse 适配器的指南，以及一个在 ClickHouse 上使用 dbt 并基于公开可用的 IMDB 数据集的示例。该示例涵盖以下步骤：
+这些指南需结合其余[文档](/integrations/dbt)、[功能与配置](/integrations/dbt/features-and-configurations)以及[物化类型参考](/integrations/dbt/materializations)一并使用。
 
-1. 创建一个 dbt 项目并设置 ClickHouse 适配器。
-2. 定义一个模型。
-3. 更新一个模型。
-4. 创建一个增量模型。
-5. 创建一个快照模型。
-6. 使用物化视图。
-
-这些指南应与其余[文档](/integrations/dbt)、[功能和配置](/integrations/dbt/features-and-configurations)以及[materializations 参考](/integrations/dbt/materializations)配合使用。
-
-<TOCInline toc={toc}  maxHeadingLevel={2} />
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## 设置 \{#setup\}
 

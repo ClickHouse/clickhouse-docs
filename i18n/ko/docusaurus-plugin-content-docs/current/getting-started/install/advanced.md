@@ -1,9 +1,9 @@
 ---
-description: 'ClickHouse를 소스 코드에서 컴파일하거나 CI에서 생성된 바이너리를 설치하는 방법 안내'
-keywords: ['ClickHouse', '설치', '고급', '소스 코드 컴파일', 'CI 생성 바이너리']
-sidebar_label: '고급 설치'
+description: 'ClickHouse를 소스 코드에서 컴파일하거나 CI가 생성한 바이너리를 설치하는 방법 안내'
+keywords: ['ClickHouse', '설치', '고급', '소스 코드 컴파일', 'CI가 생성한 바이너리']
+sidebar_label: '소스 및 CI 빌드'
 slug: /install/advanced
-title: '고급 설치 방법'
+title: '소스 및 CI 빌드'
 hide_title: false
 doc_type: 'guide'
 ---

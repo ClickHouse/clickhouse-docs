@@ -22,8 +22,6 @@ import cp_table_settings from '@site/static/images/integrations/data-ingestion/c
 import cp_ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/cp_ssh_tunnel.png';
 import Image from '@theme/IdealImage';
 
-# Creating your first Kafka ClickPipe {#creating-your-first-kafka-clickpipe}
-
 > In this guide, we will walk you through the process of creating your first Kafka ClickPipe.
 
 Kafka ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).

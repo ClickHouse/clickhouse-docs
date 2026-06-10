@@ -1,17 +1,14 @@
 ---
-sidebar_label: '物化: materialized_view'
+sidebar_label: '物化：materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
-description: '关于 materialized_view 物化方式的专用文档'
-keywords: ['ClickHouse', 'dbt', 'materialized_view', '可刷新', 'Materialized Views', '补齐']
-title: '物化: materialized_view'
+description: '关于 materialized_view 物化类型的专门说明文档'
+keywords: ['clickhouse', 'dbt', 'materialized_view', '可刷新', 'Materialized Views', '补齐']
+title: 'Materialized views'
 doc_type: 'guide'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
-
-# Materialized Views \{#materialized-views\}
 
 <ClickHouseSupportedBadge />
 

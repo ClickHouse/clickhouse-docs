@@ -1,5 +1,5 @@
 ---
-title: 'Мониторинг в Cloud console'
+title: 'Мониторинг в консоли ClickHouse Cloud'
 slug: /cloud/monitoring/cloud-console
 description: 'Встроенные панели мониторинга в консоли ClickHouse Cloud'
 keywords: ['облако', 'мониторинг', 'панель мониторинга', 'состояние сервиса', 'использование ресурсов', 'расширенная панель мониторинга']
@@ -16,10 +16,7 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-
-# Мониторинг в Cloud Console ClickHouse \{#monitoring-in-the-clickhouse-cloud-console\}
-
-Сервисы в ClickHouse Cloud включают готовые компоненты мониторинга с панелями мониторинга и уведомлениями. По умолчанию доступ к этим панелям мониторинга есть у всех пользователей в Cloud Console.
+Сервисы в ClickHouse Cloud включают встроенные средства мониторинга, которые предоставляют пользователям панели мониторинга и уведомления. По умолчанию все пользователи консоли ClickHouse Cloud имеют доступ к этим панелям мониторинга.
 
 ## Панели мониторинга \{#dashboards\}
 

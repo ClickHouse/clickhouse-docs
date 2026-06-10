@@ -2,9 +2,9 @@
 sidebar_label: 'Deepnote'
 sidebar_position: 11
 slug: /integrations/deepnote
-keywords: ['clickhouse', 'Deepnote', '연결', '통합', '노트북']
-description: '익숙한 노트북 환경에서 매우 큰 데이터 세트에 효율적으로 쿼리를 실행하고, 분석 및 모델링할 수 있습니다.'
-title: 'ClickHouse를 Deepnote에 연결하기'
+keywords: ['clickhouse', 'Deepnote', 'connect', 'integrate', 'notebook']
+description: '익숙한 노트북 환경에서 대규모 데이터셋을 효율적으로 쿼리하고 분석 및 모델링할 수 있습니다.'
+title: 'ClickHouse를 Deepnote에 연결'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -19,14 +19,11 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
+<CommunityMaintainedBadge />
 
-# ClickHouse를 Deepnote에 연결하기 \{#connect-clickhouse-to-deepnote\}
+<a href="https://www.deepnote.com/" target="_blank">Deepnote</a>는 팀이 인사이트를 발견하고 공유할 수 있도록 설계된 협업형 데이터 노트북입니다. Jupyter와 호환될 뿐 아니라 Cloud에서 실행되며, 데이터 과학 프로젝트를 효율적으로 협업하고 진행할 수 있는 중앙 작업 공간을 제공합니다.
 
-<CommunityMaintainedBadge/>
-
-<a href="https://www.deepnote.com/" target="_blank">Deepnote</a>는 팀이 인사이트를 발굴하고 공유할 수 있도록 설계된 협업 데이터 노트북입니다. Jupyter와 호환될 뿐만 아니라 클라우드 환경에서 동작하며, 데이터 사이언스 프로젝트를 효율적으로 공동 작업할 수 있는 중앙 집중형 협업 공간을 제공합니다.
-
-이 가이드는 Deepnote 계정과 실행 중인 ClickHouse 인스턴스를 이미 보유하고 있다고 가정합니다.
+이 가이드는 이미 Deepnote 계정을 보유하고 있고 실행 중인 ClickHouse 인스턴스가 있다고 가정합니다.
 
 ## 대화형 예제 \{#interactive-example\}
 

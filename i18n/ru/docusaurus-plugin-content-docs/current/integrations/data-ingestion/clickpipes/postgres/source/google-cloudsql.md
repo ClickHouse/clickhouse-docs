@@ -19,11 +19,9 @@ import firewall1 from '@site/static/images/integrations/data-ingestion/clickpipe
 import firewall2 from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql/firewall2.png';
 import Image from '@theme/IdealImage';
 
-# Руководство по настройке источника Google Cloud SQL Postgres \{#google-cloud-sql-postgres-source-setup-guide\}
-
 :::info
 
-Если вы используете одного из поддерживаемых провайдеров (в боковом меню), обратитесь к соответствующему руководству по этому провайдеру.
+Если вы используете одного из поддерживаемых провайдеров (на боковой панели), обратитесь к соответствующему руководству для этого провайдера.
 
 :::
 

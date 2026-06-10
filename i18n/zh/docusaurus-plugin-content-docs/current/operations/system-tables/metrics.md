@@ -325,11 +325,11 @@ ColumnsDescriptions 缓存的大小 (每个表的缓存)
 
 ### CompiledExpressionCacheBytes \{#compiledexpressioncachebytes\}
 
-JIT 编译代码缓存占用的总字节数
+`JITModuleMemoryManager` 为已缓存的 JIT 编译函数的可执行段/数据段预留的页块容量 (按整页向上取整，并采用 2 倍超额预留系数) 。这**不是**实际正在使用的机器代码字节数 (实际值更小) 。该容量通过 `posix_memalign` 分配，而这类分配会被 jemalloc 拦截，因此会计入专用的 JIT Arena，并且是 `jemalloc.jit_arena.active_bytes` 的子集。
 
 ### CompiledExpressionCacheCount \{#compiledexpressioncachecount\}
 
-JIT 编译代码缓存中的条目总数
+JIT 编译机器代码缓存中的条目总数。
 
 ### 压缩 \{#compressing\}
 
@@ -526,6 +526,18 @@ DeltaLake snapshot 缓存中的元素数量。
 ### DiskObjectStorageAsyncThreadsActive \{#diskobjectstorageasyncthreadsactive\}
 
 该指标已废弃，不会显示任何内容。
+
+### DiskObjectStorageCopyObjectThreads \{#diskobjectstoragecopyobjectthreads\}
+
+对象存储磁盘事务中，用于并行执行 copyObjectToAnotherObjectStorage 调用的线程池线程数
+
+### DiskObjectStorageCopyObjectThreadsActive \{#diskobjectstoragecopyobjectthreadsactive\}
+
+磁盘对象存储复制线程池中正在执行任务的线程数
+
+### DiskObjectStorageCopyObjectThreadsScheduled \{#diskobjectstoragecopyobjectthreadsscheduled\}
+
+磁盘对象存储复制线程池中已排队或正在执行的任务数量
 
 ### DiskPlainRewritableAzureDirectoryMapSize \{#diskplainrewritableazuredirectorymapsize\}
 
@@ -1930,6 +1942,14 @@ OvercommitTracker 内部等待中的线程数量
 ### UncompressedCacheCells \{#uncompressedcachecells\}
 
 未压缩缓存中的条目总数。每个条目表示一个已解压的数据块。未压缩缓存通常无法提升性能，应尽量避免使用。
+
+### UniqueKeyIndexCacheBytes \{#uniquekeyindexcachebytes\}
+
+UNIQUE KEY 索引缓存总大小 (字节)
+
+### UniqueKeyIndexCacheEntries \{#uniquekeyindexcacheentries\}
+
+缓存中的 UNIQUE KEY 索引块总数
 
 ### VectorSimilarityIndexCacheBytes \{#vectorsimilarityindexcachebytes\}
 

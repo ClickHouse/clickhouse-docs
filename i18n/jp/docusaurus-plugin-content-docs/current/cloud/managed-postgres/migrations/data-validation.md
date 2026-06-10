@@ -7,9 +7,9 @@ keywords: ['postgres', 'postgresql', '論理複製', '移行', 'データ転送'
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.data-validation-beta" />
 
 ## すべてのテーブルの件数を比較する \{#data-validation-counts\}
 

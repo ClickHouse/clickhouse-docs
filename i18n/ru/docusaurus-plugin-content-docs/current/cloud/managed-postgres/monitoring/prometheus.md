@@ -1,21 +1,19 @@
 ---
 slug: /cloud/managed-postgres/monitoring/prometheus
 sidebar_label: 'конечная точка Prometheus'
-title: 'Конечная точка Prometheus для Managed Postgres'
+title: 'Интеграция Managed Postgres с Prometheus'
 description: 'Собирайте метрики Managed Postgres в Prometheus, Grafana, Datadog или любой коллектор, совместимый с OpenMetrics'
 keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', 'метрики', 'openmetrics', 'обсервабилити']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
 
-# Интеграция с Prometheus \{#prometheus-integration\}
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-prometheus" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-prometheus-beta" />
 
 Managed Postgres предоставляет две совместимые с Prometheus конечные точки метрик
 в [ClickHouse Cloud API][cloud-api]:

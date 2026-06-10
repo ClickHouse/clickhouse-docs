@@ -12,8 +12,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
 
-# Шифрование данных \{#data-encryption\}
-
 ## Шифрование на уровне хранилища \{#storage-encryption\}
 
 ClickHouse Cloud по умолчанию использует шифрование данных в состоянии покоя с использованием управляемых облачным провайдером ключей AES‑256. Для получения дополнительной информации см.:

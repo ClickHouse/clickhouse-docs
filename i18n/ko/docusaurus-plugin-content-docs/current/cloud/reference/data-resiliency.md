@@ -1,17 +1,14 @@
 ---
 slug: /cloud/data-resiliency
 sidebar_label: '데이터 복원력'
-title: '재해 복구'
+title: '데이터 복원력'
 description: '이 가이드는 재해 복구에 대한 개요를 제공합니다.'
 doc_type: 'reference'
-keywords: ['ClickHouse Cloud', 'data resiliency', '재해 복구']
+keywords: ['ClickHouse Cloud', '데이터 복원력', '재해 복구']
 ---
 
 import Image from '@theme/IdealImage';
 import restore_backup from '@site/static/images/cloud/guides/restore_backup.png';
-
-
-# 데이터 복원력 \{#clickhouse-cloud-data-resiliency\}
 
 이 페이지에서는 ClickHouse Cloud에 대한 재해 복구 권장 사항과 장애 발생 시 고객이 복구할 수 있는 방법에 대한 가이드를 제공합니다.
 현재 ClickHouse Cloud는 자동 장애 조치(failover) 또는 여러 지리적 리전 간 자동 동기화를 지원하지 않습니다.

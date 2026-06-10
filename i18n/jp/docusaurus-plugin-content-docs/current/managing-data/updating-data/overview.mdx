@@ -106,7 +106,7 @@ ORDER BY vin;
 
 ### CollapsingMergeTree \{#collapsingmergetree\}
 
-更新はコストが高いものの、挿入を活用して更新を実現できるという考え方に基づき、`CollapsingMergeTree` は `Sign` カラムを使用して、マージ時に行をどのように扱うかを ClickHouse に指示します。`Sign` カラムに `-1` が挿入されると、その行は対応する `+1` の行とペアになった際に折りたたまれて（削除され）ます。更新対象の行は、テーブル作成時の `ORDER BY` 句で使用されたソートキーに基づいて特定されます。
+更新はコストが高いものの、挿入を活用して更新を実現できるという考え方に基づき、`CollapsingMergeTree` は `Sign` カラムを使用して、マージ時に行をどのように扱うかを ClickHouse に指示します。`Sign` カラムに `-1` が挿入されると、その行は対応する `+1` の行とペアになった際に折りたたまれて (削除され) ます。更新対象の行は、テーブル作成時の `ORDER BY` 句で使用されたソートキーに基づいて特定されます。
 
 ```sql
 CREATE TABLE user_activity
@@ -134,7 +134,9 @@ SELECT
 FROM user_activity
 GROUP BY UserID
 HAVING sum(Sign) > 0
+```
 
+```response
 ┌──────────────UserID─┬─PageViews─┬─Duration─┐
 │ 4324182021466249494 │         6 │      185 │
 └─────────────────────┴───────────┴──────────┘
@@ -147,7 +149,6 @@ HAVING sum(Sign) > 0
 :::
 
 詳しくは: [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
-
 
 ## 宣言的な更新 \{#sql-style-updates\}
 
@@ -289,23 +290,29 @@ UPDATE posts SET AnswerCount = AnswerCount + 1 WHERE Id = 404346
 
 ### オンザフライのミューテーション \{#on-the-fly-mutations\}
 
-オンザフライのミューテーションは、バックグラウンド処理を待たずに行を更新し、その後の `SELECT` クエリが自動的に変更後の値を返すようにするためのメカニズムを提供します。これにより、通常のミューテーションにおけるアトミシティに関する制約が実質的に解消されます。
+オンザフライのミューテーションは、バックグラウンド処理を待たずに行を更新し、その後の `SELECT` クエリが自動的に変更後の値を返すようにするためのメカニズムを提供します。これにより、通常のミューテーションにおけるアトミック性に関する制約が実質的に解消されます。
 
 ```sql
 SET apply_mutations_on_fly = 1;
 
 SELECT ViewCount FROM posts WHERE Id = 404346
+```
 
+```response
 ┌─ViewCount─┐
 │     26762 │
 └───────────┘
+```
 
+```sql
 -- Increment the count
 ALTER TABLE posts UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346
 
 -- The updated value is immediately visible
 SELECT ViewCount FROM posts WHERE Id = 404346
+```
 
+```response
 ┌─ViewCount─┐
 │     26763 │
 └───────────┘
@@ -320,7 +327,6 @@ SELECT ViewCount FROM posts WHERE Id = 404346
 :::
 
 詳細: [On-the-fly mutations](#on-the-fly-mutations)
-
 
 ## 比較のまとめ \{#comparison-summary\}
 

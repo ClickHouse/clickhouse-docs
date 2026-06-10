@@ -1,21 +1,19 @@
 ---
 slug: /cloud/managed-postgres/monitoring/prometheus
 sidebar_label: 'Prometheus 端点'
-title: 'Managed Postgres Prometheus 端点'
-description: '将 Managed Postgres 指标抓取到 Prometheus、Grafana、Datadog 或任何兼容 OpenMetrics 的采集器中'
-keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', '指标', 'openmetrics', '可观测性']
+title: 'Managed Postgres Prometheus 集成'
+description: '将 Managed Postgres 的指标抓取到 Prometheus、Grafana、Datadog 或任何兼容 OpenMetrics 的收集器中'
+keywords: ['managed postgres', 'prometheus', 'grafana', 'datadog', 'metrics', 'openmetrics', '可观测性']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
 
-# Prometheus 集成 \{#prometheus-integration\}
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-prometheus" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-prometheus-beta" />
 
 Managed Postgres 提供两个与 Prometheus 兼容的指标端点，
 可通过 [ClickHouse Cloud API][cloud-api] 访问：

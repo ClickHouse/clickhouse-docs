@@ -14,8 +14,6 @@ integration:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# R2DBCドライバ \{#r2dbc-driver\}
-
 ## R2DBCドライバ \{#r2dbc-driver\}
 
 ClickHouse 向け非同期 Java クライアントの [R2DBC](https://r2dbc.io/) ラッパー。

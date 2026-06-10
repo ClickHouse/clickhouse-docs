@@ -52,7 +52,11 @@ ORDER BY
 ```
 
 :::note
-もし `system.query_log` テーブルがない場合、クエリログが有効になっていない可能性があります。有効化方法については、[`query_log` 設定](https://clickhouse.com/docs/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log) を参照してください。
+もし `system.query_log` テーブルがない場合、クエリログが有効になっていない可能性があります。有効化方法については、[`query_log` 設定](/operations/server-configuration-parameters/settings#query_log) を参照してください。
+:::
+
+:::note[`query_log` には送信したクエリ以外も含まれます]
+送信した 1 つのクエリが複数の行として現れることがあります。初期クエリ (`is_initial_query = 1`) に加え、派生的な処理や内部ステップ (`is_initial_query = 0`) も含まれるためです。たとえば、分散実行のための二次クエリや、ビューの評価に使われる内部クエリなどがあります。これらの内部行にはそれぞれ独自の `query_id` 値があり、ClickHouse によって割り当てられます。また、`queryView...` のようなラベルを含むこともあるため、すべての `query_id` がクライアントで報告されたものと一致するとは限りません。実行したとおりのクエリに使用量を対応付けるには、`is_initial_query = 1` で絞り込むか、`query_id = initial_query_id` で一致させてください。詳しくは、[How to identify the most expensive queries](/knowledgebase/find-expensive-queries#initial_query_id-vs-query_id) および [`query_log` reference](/operations/system-tables/query_log) を参照してください。
 :::
 
 クラスタがない場合は、単一の `system.query_log` テーブルに対して直接クエリを実行できます。

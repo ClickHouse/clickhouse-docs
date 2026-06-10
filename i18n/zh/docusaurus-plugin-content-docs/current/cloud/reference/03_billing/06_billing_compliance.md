@@ -10,8 +10,6 @@ doc_type: 'guide'
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse Cloud 计费合规 \{#clickhouse-cloud-billing-compliance\}
-
 ## 计费合规 \{#billing-compliance\}
 
 您在使用 ClickHouse Cloud 时，必须为您的组织配置一项处于激活状态且有效的计费方式。在 30 天试用期结束或试用额度耗尽 (以先到者为准) 后，如需继续使用 ClickHouse Cloud，您可以选择以下计费方式：

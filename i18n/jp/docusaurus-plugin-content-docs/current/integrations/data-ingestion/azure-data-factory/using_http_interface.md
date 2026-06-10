@@ -3,7 +3,7 @@ sidebar_label: 'HTTP インターフェイスの使用'
 slug: /integrations/azure-data-factory/http-interface
 description: 'ClickHouse の HTTP インターフェイスを使用して Azure Data Factory から ClickHouse にデータをインジェストする'
 keywords: ['Azure Data Factory', 'Azure', 'Microsoft', 'データ', 'HTTP インターフェイス']
-title: 'ClickHouse HTTP インターフェイスを使用して Azure のデータを ClickHouse にインジェストする'
+title: 'Azure Data Factory で ClickHouse HTTP インターフェイスを使用する'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -38,18 +38,15 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
+[`azureBlobStorage` テーブル関数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
+は、Azure Blob Storage から
+ClickHouse にデータを取り込むための高速かつ便利な方法です。ただし、以下の理由から、常に適しているとは限りません。
 
-# Azure Data Factory で ClickHouse の HTTP インターフェイスを使用する \{#using-clickhouse-http-interface-in-azure-data-factory\}
-
-[`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
-は、Azure Blob Storage から ClickHouse へデータを高速かつ便利に取り込むための手段です。
-しかし、次のような理由から、常に適しているとは限りません:
-
-- データが Azure Blob Storage に保存されていない場合があります。たとえば、Azure SQL Database、Microsoft SQL Server、Cosmos DB に保存されている場合です。
-- セキュリティポリシーにより Blob Storage への外部アクセスが完全に禁止されている場合があります。たとえば、ストレージアカウントにパブリックエンドポイントがなく、ロックダウンされている場合です。
+* データが Azure Blob Storage に保存されていない場合があります。たとえば、Azure SQL Database、Microsoft SQL Server、Cosmos DB に保存されている場合です。
+* セキュリティポリシーにより Blob Storage への外部アクセスが完全に禁止されている場合があります。たとえば、ストレージアカウントにパブリックエンドポイントがなく、ロックダウンされている場合です。
 
 このようなシナリオでは、Azure Data Factory と
-[ClickHouse HTTP interface](https://clickhouse.com/docs/interfaces/http)
+[ClickHouse HTTP インターフェイス](https://clickhouse.com/docs/interfaces/http)
 を組み合わせて使用し、Azure の各種サービスから ClickHouse へデータを送信できます。
 
 この方法ではデータフローの向きが逆になります。ClickHouse が Azure からデータを取得するのではなく、

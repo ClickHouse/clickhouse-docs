@@ -174,8 +174,7 @@ insert.end().await?;
 
 * 如果未调用 `end()`，则会中止 `INSERT`。
 * 行会以流式方式逐步发送，以分摊网络负载。
-* 仅当所有行都位于同一分区且其数量小于 [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size) 时，ClickHouse 才会以原子方式插入批次。
-
+* 仅当所有行都位于同一分区且其数量小于 [`max_insert_block_size`](/operations/settings/settings/#max_insert_block_size) 时，ClickHouse 才会以原子方式插入批次。
 
 ### 异步插入（服务端批处理） \{#async-insert-server-side-batching\}
 

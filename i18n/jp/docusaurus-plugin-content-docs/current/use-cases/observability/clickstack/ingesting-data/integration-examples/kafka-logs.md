@@ -20,11 +20,8 @@ import example_dashboard from '@site/static/images/clickstack/kafka/logs/example
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStackでKafkaログを監視する \{#kafka-logs-clickstack\}
-
 :::note[要点]
-OTel `filelog` receiver を使用して、Kafkaブローカーのログ (Log4j形式) を ClickStack で収集・可視化します。デモ用データセットとあらかじめ用意されたダッシュボードが含まれています。
+OTel の `filelog` レシーバーを使用して、Kafka ブローカーのログ (Log4j フォーマット) を ClickStack で収集・可視化します。デモ用データセットと事前構築済みのダッシュボードも含まれています。
 :::
 
 ## 既存のKafkaとの統合 \{#existing-kafka\}

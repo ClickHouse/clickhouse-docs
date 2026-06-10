@@ -1,12 +1,12 @@
 ---
 sidebar_label: 'Streamkap を ClickHouse に接続する'
 sidebar_position: 11
-keywords: ['clickhouse', 'Streamkap', 'CDC', '接続', '連携', 'etl', 'データ連携', '変更データキャプチャ']
+keywords: ['clickhouse', 'Streamkap', 'CDC', '接続', '統合', 'etl', 'データ統合', '変更データキャプチャ']
 slug: /integrations/sttreamkap
-description: 'Airbyte のデータパイプラインを使用してストリーミングデータを ClickHouse にインジェストする'
+description: 'Airbyte のデータパイプラインを使用して ClickHouse にデータをストリーミングする'
 
 title: 'Streamkap を ClickHouse に接続する'
-doc_type: 'ガイド'
+doc_type: 'guide'
 integration:
   - support_level: 'community'
   - category: 'data_ingestion'
@@ -16,14 +16,11 @@ integration:
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Streamkap を ClickHouse に接続する \{#connect-streamkap-to-clickhouse\}
+<a href="https://www.streamkap.com/" target="_blank">Streamkap</a> は、ストリーミング CDC (変更データキャプチャ) およびストリーム処理を専門とするリアルタイムデータ統合プラットフォームです。Apache Kafka、Apache Flink、Debezium を用いた高スループットでスケーラブルなスタック上に構築されており、SaaS または BYOC (Bring your own Cloud) 構成のフルマネージドサービスとして提供されます。
 
-<PartnerBadge/>
-
-<a href="https://www.streamkap.com/" target="_blank">Streamkap</a> は、ストリーミング CDC（変更データキャプチャ）およびストリーム処理を専門とするリアルタイムデータ統合プラットフォームです。Apache Kafka、Apache Flink、Debezium を用いた高スループットでスケーラブルなスタック上に構築されており、SaaS または BYOC（Bring your own Cloud）構成のフルマネージドサービスとして提供されます。 
-
-Streamkap を使用すると、PostgreSQL、MySQL、SQL Server、MongoDB、および <a href="https://streamkap.com/connectors" target="_blank">その他</a> のソースデータベースからのすべての insert、update、delete を、ミリ秒単位のレイテンシで直接 ClickHouse にストリーミングできます。 
+Streamkap を使用すると、PostgreSQL、MySQL、SQL Server、MongoDB、および <a href="https://streamkap.com/connectors" target="_blank">その他</a> のソースデータベースからのすべての insert、update、delete を、ミリ秒単位のレイテンシで直接 ClickHouse にストリーミングできます。
 
 これにより、リアルタイム分析ダッシュボード、オペレーショナルアナリティクス、機械学習モデルへのライブデータ供給を実現するのに最適です。
 

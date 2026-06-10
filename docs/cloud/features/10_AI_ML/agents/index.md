@@ -11,22 +11,27 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-ClickHouse Agents is a managed agentic capability in ClickHouse Cloud. You describe analytical work in natural language; an agent plans the steps, calls the tools you've attached in the Agent Builder, and executes against your ClickHouse service.
+ClickHouse Agents lets you query and explore your ClickHouse data through conversation, without writing SQL or orchestration logic yourself.
+The agent interprets your intent, plans steps, calls the tools you've configured, and returns the results to you.
+This feature is currently in beta; behavior and capabilities may change before general availability.
 
-This feature is in beta. Behavior and the set of surfaced capabilities may change before general availability.
+## What you can do with it {#what-you-can-do}
 
-## What you can do {#what-you-can-do}
-
-- Build custom agents with no code — set instructions, pick a model, attach tools.
-- Run conversations against your ClickHouse service; the agent invokes tools as it needs them.
-- Share agents with teammates or publish them to the marketplace.
+With ClickHouse Agents, you can:
+- Build custom agents with no code. It allows you to write instructions, pick a model, and attach tools.
+- Run conversations against your ClickHouse service, with the agent invoking tools as it needs them.
+- Share your agents with teammates or publish them to the marketplace.
 
 ## In this section {#in-this-section}
 
-- [Quickstart](/cloud/features/ai-ml/agents/quickstart) — Build your first agent and run a query.
-- [Chat](/cloud/features/ai-ml/agents/chat) — Conversations, bookmarks, forking, multi-conversation, and sharing.
-- [Agent Builder](/cloud/features/ai-ml/agents/builder) — Create and configure agents; set model parameters and attach tools, MCP servers, skills, and subagents.
-- [Prompts](/cloud/features/ai-ml/agents/prompts) — Saved prompt library.
-- [Memory](/cloud/features/ai-ml/agents/memory) — Persistent context across conversations.
-- [Marketplace](/cloud/features/ai-ml/agents/marketplace) — Share and discover agents within your organization.
-- [Sharing and access](/cloud/features/ai-ml/agents/sharing-and-access) — Permission model for agents.
+Learn more about the capabilities of ClickHouse Agents in the pages below:
+
+| Page | What it covers                                                                               |
+| ---- |----------------------------------------------------------------------------------------------|
+| [Quickstart](/cloud/features/ai-ml/agents/quickstart) | Build your first agent and run an example query                                              |
+| [Chat](/cloud/features/ai-ml/agents/chat) | Conversations, bookmarks, forking, multi-conversation, and sharing                           |
+| [Agent Builder](/cloud/features/ai-ml/agents/builder) | Configuring agents, model parameters, and attached tools, MCP servers, skills, and subagents |
+| [Prompts](/cloud/features/ai-ml/agents/prompts) | Saved prompt library                                                                         |
+| [Memory](/cloud/features/ai-ml/agents/memory) | Persistent context across conversations                                                      |
+| [Marketplace](/cloud/features/ai-ml/agents/marketplace) | Sharing and discovering agents within your organization                                      |
+| [Sharing and access](/cloud/features/ai-ml/agents/sharing-and-access) | Permission model for agents                                                                  |

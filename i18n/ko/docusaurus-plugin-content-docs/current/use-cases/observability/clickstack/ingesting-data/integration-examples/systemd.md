@@ -19,11 +19,8 @@ import search_view from '@site/static/images/clickstack/systemd/systemd-search-v
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack를 사용한 Systemd 로그 모니터링 \{#systemd-logs-clickstack\}
-
-:::note[TL;DR]
-OpenTelemetry Collector의 `journald` receiver를 사용해 ClickStack에서 systemd 저널 로그를 수집하고 시각화합니다. 데모 데이터셋과 미리 구축된 대시보드가 포함되어 있습니다.
+:::note[요약]
+OpenTelemetry Collector의 journald receiver를 사용해 ClickStack에서 systemd journal 로그를 수집하고 시각화합니다. 데모 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 시스템과의 통합 \{#existing-systems\}

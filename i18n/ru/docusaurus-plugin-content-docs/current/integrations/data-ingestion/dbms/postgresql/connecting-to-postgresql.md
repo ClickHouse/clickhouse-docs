@@ -1,8 +1,8 @@
 ---
 slug: /integrations/postgresql/connecting-to-postgresql
-title: 'Подключение к PostgreSQL'
+title: 'Подключение ClickHouse к PostgreSQL'
 keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
-description: 'Страница с описанием различных способов подключения PostgreSQL к ClickHouse'
+description: 'Страница, описывающая различные способы подключения PostgreSQL к ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -10,13 +10,10 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# Подключение ClickHouse к PostgreSQL \{#connecting-clickhouse-to-postgresql\}
-
 На этой странице рассматриваются следующие варианты интеграции PostgreSQL с ClickHouse:
 
-* использование движка таблиц `PostgreSQL` для чтения данных из таблицы PostgreSQL
-* использование экспериментального движка баз данных `MaterializedPostgreSQL` для синхронизации базы данных в PostgreSQL с базой данных в ClickHouse
+* использование движка таблицы `PostgreSQL` для чтения данных из таблицы PostgreSQL
+* использование экспериментального движка базы данных `MaterializedPostgreSQL` для синхронизации базы данных в PostgreSQL с базой данных в ClickHouse
 
 :::tip
 Обратите внимание на наш сервис [Managed Postgres](/docs/cloud/managed-postgres). Благодаря NVMe‑хранилищу, физически размещённому рядом с вычислительными ресурсами, он обеспечивает до 10‑кратное ускорение нагрузок, зависящих от дисковой подсистемы, по сравнению с альтернативами на сетевом хранилище (например, EBS) и позволяет реплицировать данные Postgres в ClickHouse с помощью коннектора Postgres CDC (фиксация изменений данных) в ClickPipes.
@@ -336,7 +333,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 
 ┌─id─┬─column1─┐
@@ -346,7 +345,6 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 3. Проверьте базовую репликацию \{#3-test-basic-replication\}
 
@@ -367,7 +365,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 
 ┌─id─┬─column1─┐
@@ -383,7 +383,6 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 4. Итоги \{#3-test-basic-replication\}
 

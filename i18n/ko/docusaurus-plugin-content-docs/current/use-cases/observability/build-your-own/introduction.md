@@ -1,5 +1,5 @@
 ---
-title: '소개'
+title: '관측성을 위한 ClickHouse 사용'
 description: '관측성 솔루션으로서 ClickHouse 사용하기'
 slug: /use-cases/observability/introduction
 keywords: ['관측성', '로그', '트레이스', '메트릭', 'OpenTelemetry', 'Grafana', 'OTel']
@@ -10,9 +10,6 @@ doc_type: 'guide'
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
-
-
-# 관측성을 위한 ClickHouse 활용 \{#using-clickhouse-for-observability\}
 
 ## 소개 \{#introduction\}
 

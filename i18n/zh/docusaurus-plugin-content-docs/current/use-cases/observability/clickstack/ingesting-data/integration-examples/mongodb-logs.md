@@ -20,11 +20,8 @@ import finish_import from '@site/static/images/clickstack/mongodb/finish-import.
 import example_dashboard from '@site/static/images/clickstack/mongodb/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 通过 ClickStack 监控 MongoDB 日志 \{#mongodb-logs-clickstack\}
-
-:::note[简而言之]
-使用 OTel `filelog` 接收器在 ClickStack 中采集并可视化 MongoDB 服务器日志（4.4+ JSON 格式）。包含演示数据集和预置仪表板。
+:::note[摘要]
+使用 OTel `filelog` 接收器在 ClickStack 中收集并可视化 MongoDB 服务器日志 (4.4+ JSON 格式) 。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 MongoDB 集成 \{#existing-mongodb\}

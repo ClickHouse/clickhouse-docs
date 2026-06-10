@@ -26,18 +26,15 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
-# MySQL から ClickHouse へのデータ取り込み（CDC を使用）  \{#ingesting-data-from-mysql-to-clickhouse-using-cdc\}
-
 <BetaBadge />
 
 :::info
-ClickPipes を使用して MySQL から ClickHouse Cloud へデータを取り込む機能は、現在パブリックベータです。
+ClickPipes 経由で MySQL から ClickHouse Cloud にデータを取り込む機能は、現在パブリックベータです。
 :::
 
-MySQL ClickPipe は、MySQL および MariaDB データベースから ClickHouse Cloud へデータを取り込むための、フルマネージドで高い耐障害性を備えた手段を提供します。単発のインジェストを行うための **一括ロード** と、継続的なインジェストのための **Change Data Capture (CDC: 変更データキャプチャ)&#x20;**&#x20;の両方をサポートします。
+MySQL ClickPipe は、MySQL および MariaDB データベースから ClickHouse Cloud にデータを取り込むための、フルマネージドで耐障害性に優れた方法を提供します。一回限りのインジェスト向けの **バルクロード** と、継続的インジェスト向けの **CDC (変更データキャプチャ)&#x20;**&#x20;の両方をサポートしています。
 
-MySQL ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) および [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムからデプロイおよび管理することもできます。
+MySQL ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムから行うこともできます。
 
 ## 前提条件 \{#prerequisites\}
 

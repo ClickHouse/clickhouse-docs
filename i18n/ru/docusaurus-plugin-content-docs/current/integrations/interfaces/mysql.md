@@ -1,6 +1,6 @@
 ---
-description: 'Документация об интерфейсе протокола MySQL в ClickHouse, который позволяет
-  клиентам MySQL подключаться к ClickHouse'
+description: 'Документация по интерфейсу MySQL в ClickHouse, позволяющему клиентам
+  MySQL подключаться к ClickHouse'
 sidebar_label: 'Интерфейс MySQL'
 sidebar_position: 25
 slug: /interfaces/mysql
@@ -14,26 +14,23 @@ import mysql1 from '@site/static/images/interfaces/mysql1.png';
 import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
-
-# Интерфейс MySQL \{#mysql-interface\}
-
 ClickHouse поддерживает сетевой протокол MySQL (MySQL wire protocol). Это позволяет некоторым клиентам, у которых нет нативных коннекторов для ClickHouse, использовать вместо них протокол MySQL. Он был проверен со следующими BI‑инструментами:
 
-- [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
-- [Tableau Online](../integrations/tableau-online)
-- [QuickSight](../integrations/quicksight)
+* [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
+* [Tableau Online](../integrations/tableau-online)
+* [QuickSight](../integrations/quicksight)
 
 Если вы пробуете другие, ещё не протестированные клиенты или интеграции, имейте в виду, что возможны следующие ограничения:
 
-- Реализация SSL может быть не полностью совместима; возможны проблемы с [TLS SNI](https://www.cloudflare.com/learning/ssl/what-is-sni/).
-- Конкретный инструмент может требовать особенности диалекта (например, функции или настройки, специфичные для MySQL), которые ещё не реализованы.
+* Реализация SSL может быть не полностью совместима; возможны проблемы с [TLS SNI](https://www.cloudflare.com/learning/ssl/what-is-sni/).
+* Конкретный инструмент может требовать особенности диалекта (например, функции или настройки, специфичные для MySQL), которые ещё не реализованы.
 
 Если доступен нативный драйвер (например, [DBeaver](../integrations/dbeaver)), всегда предпочтительнее использовать его вместо интерфейса MySQL. Кроме того, хотя большинство MySQL‑клиентов должно работать корректно, интерфейс MySQL не гарантирует полной взаимозаменяемости с кодовой базой, использующей существующие MySQL‑запросы.
 
 Если ваш сценарий использования зависит от конкретного инструмента, у которого нет нативного драйвера для ClickHouse, и вы хотите использовать его через интерфейс MySQL и обнаружили определённые несовместимости — пожалуйста, [создайте issue](https://github.com/ClickHouse/ClickHouse/issues) в репозитории ClickHouse.
 
 ::::note
-Для более полной поддержки SQL‑диалекта перечисленных выше BI‑инструментов интерфейс MySQL в ClickHouse неявно выполняет SELECT‑запросы с настройкой [prefer_column_name_to_alias = 1](/operations/settings/settings#prefer_column_name_to_alias).
+Для более полной поддержки SQL‑диалекта перечисленных выше BI‑инструментов интерфейс MySQL в ClickHouse неявно выполняет SELECT‑запросы с настройкой [prefer&#95;column&#95;name&#95;to&#95;alias = 1](/operations/settings/settings#prefer_column_name_to_alias).
 Эту опцию нельзя отключить, и в редких пограничных случаях это может приводить к отличающемуся поведению между запросами, отправленными через обычный интерфейс ClickHouse и через MySQL‑интерфейс.
 ::::
 

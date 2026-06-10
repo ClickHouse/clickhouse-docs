@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/host-logs
-title: 'Мониторинг логов хоста с помощью ClickStack'
-sidebar_label: 'Общие логи хоста'
+title: 'Мониторинг журнала хоста с помощью ClickStack'
+sidebar_label: 'Общий журнал хоста'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг общих логов хоста с помощью ClickStack'
+description: 'Мониторинг общего журнала хоста с помощью ClickStack'
 doc_type: 'guide'
-keywords: ['логи хоста', 'systemd', 'syslog', 'OTEL', 'ClickStack', 'мониторинг системы', 'серверные логи']
+keywords: ['журнал хоста', 'systemd', 'syslog', 'OTEL', 'ClickStack', 'мониторинг системы', 'серверные логи']
 ---
 
 import Image from '@theme/IdealImage';
@@ -20,11 +20,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# Мониторинг логов хоста с помощью ClickStack \{#host-logs-clickstack\}
-
-:::note[Кратко]
-Собирайте и визуализируйте системные логи хоста (syslog, auth, kernel) в ClickStack с помощью приёмника OTel `filelog`. Включает демо-набор данных и готовую панель мониторинга.
+:::note[TL;DR]
+Собирайте и визуализируйте журнал хоста (syslog, auth, kernel) в ClickStack с помощью приёмника OTel `filelog`. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующими хостами \{#existing-hosts\}

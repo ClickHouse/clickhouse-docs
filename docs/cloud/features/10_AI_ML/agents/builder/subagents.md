@@ -20,16 +20,16 @@ Use subagents to keep a parent agent focused. Long research passes, tool-heavy e
 
 In the Agent Builder, open **Advanced settings** and toggle **Subagents**. Two more controls appear:
 
-- **Allow self-spawn** — when on, the agent can spawn copies of itself for parallel work. Useful for fan-out patterns (one parent, several identical workers).
-- **Additional subagents** — pick specific other agents this parent is allowed to delegate to. The parent decides at runtime which subagent (if any) to call based on the task.
+- **Allow self-spawn** - when on, the agent can spawn copies of itself for parallel work. Useful for fan-out patterns (one parent, several identical workers).
+- **Additional subagents** - pick specific other agents this parent is allowed to delegate to. The parent decides at runtime which subagent (if any) to call based on the task.
 
 Save. When the agent runs, it has a new tool available for invoking subagents.
 
 ## When a subagent helps {#when-a-subagent-helps}
 
-- **Research subtasks** — the parent decomposes a complex question, hands a slice to a subagent specialized for that slice, and synthesizes the responses.
-- **Tool-heavy passes** — code interpreter sessions, multi-step web search loops, or anything that would consume the parent's context with intermediate tool output.
-- **Specialized review** — one agent generates, another reviews, the reviewer's full reasoning stays in its own context window.
+- **Research subtasks** - the parent decomposes a complex question, hands a slice to a subagent specialized for that slice, and synthesizes the responses.
+- **Tool-heavy passes** - code interpreter sessions, multi-step web search loops, or anything that would consume the parent's context with intermediate tool output.
+- **Specialized review** - one agent generates, another reviews, the reviewer's full reasoning stays in its own context window.
 
 Avoid subagents for trivial calls. The handoff adds latency and tokens.
 

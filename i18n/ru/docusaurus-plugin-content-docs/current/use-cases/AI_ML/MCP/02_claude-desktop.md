@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/claude-desktop
 sidebar_label: 'Интеграция с Claude Desktop'
-title: 'Настройка MCP-сервера ClickHouse для работы с Claude Desktop'
+title: 'Использование MCP-сервера ClickHouse с Claude Desktop'
 pagination_prev: null
 pagination_next: null
 description: 'В этом руководстве объясняется, как настроить Claude Desktop для работы с MCP-сервером ClickHouse.'
@@ -16,10 +16,8 @@ import FindMCPServers from '@site/static/images/use-cases/AI_ML/MCP/find-mcp-ser
 import MCPPermission from '@site/static/images/use-cases/AI_ML/MCP/mcp-permission.png';
 import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-conversation.png';
 
-# Использование MCP-сервера ClickHouse с Claude Desktop \{#using-clickhouse-mcp-server-with-claude-desktop\}
-
 > В этом руководстве объясняется, как настроить Claude Desktop для работы с MCP-сервером ClickHouse с помощью uv
-> и подключить его к примерам датасетов ClickHouse.
+> и подключить его к примерам наборов данных ClickHouse.
 
 <iframe width="768" height="432" src="https://www.youtube.com/embed/y9biAm_Fkqw?si=9PP3-1Y1fvX8xy7q" title="Видеоплеер YouTube" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
@@ -92,7 +90,7 @@ import ClaudeConversation from '@site/static/images/use-cases/AI_ML/MCP/claude-c
   MCP mcp-clickhouse: spawn uv ENOENT
   ```
 
-  Если это произойдёт, вам нужно будет обновить `command`, указав полный путь к `uv`. Например, если вы установили его через Cargo, путь будет таким: `/Users/&lt;username&gt;/.cargo/bin/uv`
+  Если это произойдёт, вам нужно будет обновить `command`, указав полный путь к `uv`. Например, если вы установили его через Cargo, путь будет таким: `/Users/<username>/.cargo/bin/uv`
   :::
 
   ## Использование MCP-сервера ClickHouse \{#using-clickhouse-mcp-server\}

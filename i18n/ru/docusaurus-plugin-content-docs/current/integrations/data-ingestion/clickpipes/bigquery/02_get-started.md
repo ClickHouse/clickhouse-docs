@@ -15,10 +15,7 @@ import cp_step4 from '@site/static/images/integrations/data-ingestion/clickpipes
 import cp_step5 from '@site/static/images/integrations/data-ingestion/clickpipes/bigquery/cp_step5.png';
 import Image from '@theme/IdealImage';
 
-
-# Создание первого BigQuery ClickPipe \{#creating-your-first-bigquery-clickpipe\}
-
-<IntroClickPipe/>
+<IntroClickPipe />
 
 ## Предварительные требования \{#pre-requisites\}
 
@@ -27,7 +24,7 @@ import Image from '@theme/IdealImage';
 * Для первичной загрузки требуется Google Cloud Storage (GCS) bucket, предоставленный пользователем, для промежуточного хранения (staging). Мы рекомендуем создать отдельный bucket для вашего ClickPipe согласно [официальной документации](https://docs.cloud.google.com/storage/docs/creating-buckets). В дальнейшем промежуточный bucket будет предоставляться и управляться ClickPipes.
 
 <VerticalStepper type="numbered" headerLevel="h2">
-  ## Выбор источника данных
+  ## Выбор источника данных \{#1-select-the-data-source\}
 
   **1.** В ClickHouse Cloud выберите **Data sources** в основном навигационном меню и нажмите **Create ClickPipe**.
 
@@ -37,7 +34,7 @@ import Image from '@theme/IdealImage';
 
   <Image img={cp_step1} alt="Выбор плитки BigQuery" size="lg" border />
 
-  ## Настройка подключения ClickPipe
+  ## Настройка подключения ClickPipe \{#2-setup-your-clickpipe-connection\}
 
   Чтобы настроить новый ClickPipe, необходимо указать параметры подключения и аутентификации к вашему хранилищу данных BigQuery, а также staging GCS bucket.
 
@@ -51,11 +48,11 @@ import Image from '@theme/IdealImage';
 
   **4.** Нажмите **Next** для проверки.
 
-  ## Конфигурация ClickPipe
+  ## Конфигурация ClickPipe \{#3-configure-your-clickpipe\}
 
   В зависимости от размера вашего набора данных BigQuery или общего объёма таблиц, которые вы хотите синхронизировать, может потребоваться скорректировать настройки ингестии по умолчанию для ClickPipe.
 
-  ## Настройка таблиц
+  ## Настройка таблиц \{#4-configure-tables\}
 
   **1.** Выберите базу данных ClickHouse, в которую должны реплицироваться таблицы BigQuery. Вы можете выбрать существующую базу данных или создать новую.
 
@@ -71,7 +68,7 @@ import Image from '@theme/IdealImage';
 
   <Image img={cp_step4} alt="Права доступа" size="lg" border />
 
-  ## Настройка прав доступа
+  ## Настройка прав доступа \{#6-configure-permissions\}
 
   Наконец, вы можете настроить права доступа для внутреннего пользователя ClickPipes.
 
@@ -80,7 +77,7 @@ import Image from '@theme/IdealImage';
   * `Full access`: полный доступ к кластеру. Требуется, если вы используете materialized views или словарь с целевой таблицей.
   * `Only destination`: права на вставку только в целевую таблицу.
 
-  ## Завершение настройки
+  ## Завершение настройки \{#7-complete-setup\}
 
   Нажмите **Create ClickPipe**, чтобы завершить настройку. Вы будете перенаправлены на страницу обзора, где сможете просматривать прогресс первичной загрузки и переходить к деталям ваших BigQuery ClickPipes.
 

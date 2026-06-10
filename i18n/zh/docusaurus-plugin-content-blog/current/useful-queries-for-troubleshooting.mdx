@@ -223,6 +223,10 @@ ORDER BY memory_usage DESC
 LIMIT 10
 ```
 
+:::note
+单条查询可能会以多行形式记录下来，并带有不同的 `query_id` 值——分布式二级查询和内部视图步骤的 `is_initial_query = 0`。可按 `is_initial_query = 1` (或 `query_id = initial_query_id`) 进行过滤，以查看查询在提交时的原始样子；另请注意，ClickHouse 分配的内部 `query_id` 值可能包含类似 `queryView...` 这样的标签。详情请参见 [`query_log` 参考](/operations/system-tables/query_log)。
+:::
+
 ## 我的投影占用多少磁盘空间？ \{#how-much-disk-space-are-my-projection-using\}
 
 ```sql

@@ -116,6 +116,48 @@ SELECT 0 / 0
 `NaN` 정렬 규칙은 [ORDER BY 절](../../sql-reference/statements/select/order-by.md) 섹션을 참조하십시오.
 
 
+## 집합 의미론에서의 NaN 값 \{#nan-values-in-set-semantics\}
+
+IEEE 754 표준에서는 스칼라 비교 `NaN = NaN`이 `false`를 반환하도록 `NaN`을 정의합니다.
+ClickHouse도 `=` 연산자에 대해 이 규칙을 따릅니다.
+
+하지만 `NaN`은 단일한 값이 아닙니다. 지수부가 모두 1이고 가수가
+0이 아닌 모든 비트 패턴이 `NaN`에 해당합니다. 서로 다른 연산과 서로 다른 CPU 아키텍처에서는
+부호 비트가 다르거나 가수 페이로드가 다른 `NaN` 값을 생성할 수 있습니다.
+예시는 다음과 같습니다.
+
+* `0./0.`은 대부분의 x86 플랫폼에서 부호 비트가 1인 `NaN`을 생성합니다.
+* 리터럴 `nan`은 부호 비트가 0인 `NaN`을 생성합니다.
+* [PR #98230](https://github.com/ClickHouse/ClickHouse/pull/98230) 이후, AArch64 NEON 경로의
+  `log`는 음수 입력에 대해 glibc의 스칼라 `log`와 부호 비트가 다른 `NaN`을 반환합니다.
+
+ClickHouse의 해시 테이블은 키를 바이트 단위로 비교하므로, 서로 다른 `NaN` 비트 패턴은
+서로 다른 버킷으로 해시되며, `DISTINCT`, `GROUP BY`, `uniqExact`, `countDistinct`, 그리고
+`Float` 키에 대한 동등 `JOIN`을 포함한 집합 의미론 연산에서 서로 다른 값으로 처리됩니다:
+
+```sql
+SELECT countDistinct(arrayJoin([0./0., nan, log(-1.)]));
+-- May return 2 or 3 depending on architecture and build, even though all three inputs are NaN.
+```
+
+이는 IEEE 754와 일치합니다 (`NaN`은 자기 자신을 포함한 모든 다른 값과 같지 않음)
+하지만 다소 의외일 수 있습니다. 집합 의미론 연산에서 모든 `NaN` 값을 동일한 것으로 처리해야 한다면,
+쿼리에서 이를 표준화하십시오:
+
+```sql
+-- Replace every NaN with a single canonical NaN value
+SELECT countDistinct(if(isNaN(x), CAST('nan' AS Float64), x))
+FROM (SELECT arrayJoin([0./0., nan, log(-1.)]) AS x);
+-- Returns 1.
+
+-- Or exclude NaN values from the set entirely
+SELECT countDistinct(if(isNaN(x), NULL, x))
+FROM (SELECT arrayJoin([0./0., nan, log(-1.)]) AS x);
+-- Returns 0.
+```
+
+`DISTINCT`, `GROUP BY`, `JOIN` 키에도 동일한 접근 방식이 적용됩니다.
+
 ## BFloat16 \{#bfloat16\}
 
 `BFloat16`은 8비트 지수, 부호, 7비트 가수를 갖는 16비트 부동 소수점 데이터 형식입니다. 

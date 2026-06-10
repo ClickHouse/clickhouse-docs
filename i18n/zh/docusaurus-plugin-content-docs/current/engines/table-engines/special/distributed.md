@@ -224,7 +224,7 @@ SETTINGS
 `_shard_num` — 包含表 `system.clusters` 中的 `shard_num` 值。类型：[UInt32](../../../sql-reference/data-types/int-uint.md)。
 
 :::note
-由于 [`remote`](../../../sql-reference/table-functions/remote.md) 和 [`cluster](../../../sql-reference/table-functions/cluster.md) 表函数在内部会创建临时的 Distributed 表，`&#95;shard&#95;num` 在这些临时表中同样可用。
+由于 [`remote`](../../../sql-reference/table-functions/remote.md) 和 [`cluster](../../../sql-reference/table-functions/cluster.md) 表函数在内部会创建临时的 Distributed 表，`&#95;shard&#95;num&#96; 在这些临时表中同样可用。
 :::
 
 **另请参阅**

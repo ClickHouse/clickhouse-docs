@@ -3,7 +3,7 @@ sidebar_label: '使用 HTTP 接口'
 slug: /integrations/azure-data-factory/http-interface
 description: '使用 ClickHouse 的 HTTP 接口将 Azure Data Factory 中的数据导入 ClickHouse'
 keywords: ['Azure Data Factory', 'Azure', 'Microsoft', '数据', 'HTTP 接口']
-title: '使用 ClickHouse HTTP 接口将 Azure 数据导入 ClickHouse'
+title: '在 Azure Data Factory 中使用 ClickHouse HTTP 接口'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -38,14 +38,12 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
-# 在 Azure Data Factory 中使用 ClickHouse HTTP 接口 \{#using-clickhouse-http-interface-in-azure-data-factory\}
-
 [`azureBlobStorage` 表函数](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)
-是一种将 Azure Blob Storage 中的数据摄取到
-ClickHouse 的快速且便捷的方式。但在以下情况下，它可能并不适用：
+可快速便捷地将 Azure Blob 存储中的数据摄取到
+ClickHouse。不过，出于以下原因，使用它并不总是合适：
 
-- 数据可能并未存储在 Azure Blob Storage 中——例如，可能位于 Azure SQL Database、Microsoft SQL Server 或 Cosmos DB 中。
-- 安全策略可能完全禁止对 Blob Storage 的外部访问——例如，存储账户被锁定且没有公共终结点。
+* 数据可能并未存储在 Azure Blob Storage 中——例如，可能位于 Azure SQL Database、Microsoft SQL Server 或 Cosmos DB 中。
+* 安全策略可能完全禁止对 Blob Storage 的外部访问——例如，存储账户被锁定且没有公共终结点。
 
 在这种情况下，可以将 Azure Data Factory 与
 [ClickHouse HTTP 接口](https://clickhouse.com/docs/interfaces/http)
@@ -55,7 +53,7 @@ ClickHouse 的快速且便捷的方式。但在以下情况下，它可能并不
 而是由 Azure Data Factory 将数据推送到 ClickHouse。此方式通常要求 ClickHouse 实例能够从公网访问。
 
 :::info
-可以通过使用 Azure Data Factory 的自托管集成运行时（Self-hosted Integration Runtime），避免将 ClickHouse 实例暴露到互联网。此设置允许通过专用/私有网络发送数据。不过，这超出了本文的讨论范围。你可以在官方指南中找到更多信息：
+可以通过使用 Azure Data Factory 的自托管集成运行时 (Self-hosted Integration Runtime) ，避免将 ClickHouse 实例暴露到互联网。此设置允许通过专用/私有网络发送数据。不过，这超出了本文的讨论范围。你可以在官方指南中找到更多信息：
 [Create and configure a self-hosted integration
 runtime](https://learn.microsoft.com/en-us/azure/data-factory/create-self-hosted-integration-runtime?tabs=data-factory)
 :::

@@ -7,9 +7,9 @@ keywords: ['postgres', 'postgresql', '逻辑复制', '迁移', '数据传输', '
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.data-validation-beta" />
 
 ## 比较所有表的行数 \{#data-validation-counts\}
 

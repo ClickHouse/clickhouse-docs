@@ -1,7 +1,7 @@
 ---
-sidebar_label: 'Console 감사 로그'
+sidebar_label: '콘솔 감사 로그'
 slug: /cloud/security/audit-logging/console-audit-log
-title: 'Console 감사 로그'
+title: '콘솔 감사 로그'
 description: '이 페이지에서는 클라우드 감사 로그를 검토하는 방법을 설명합니다'
 doc_type: 'guide'
 keywords: ['감사 로그']
@@ -12,10 +12,7 @@ import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png
 import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png';
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
-
-# 콘솔 감사 로그 \{#console-audit-log\}
-
-콘솔에서 수행된 활동은 감사 로그에 기록됩니다. 조직에서 Admin 또는 Developer 역할을 가진 경우, 이 로그를 검토하고 로깅 시스템과 연동할 수 있습니다.
+Console 활동은 감사 로그에 기록됩니다. 조직 역할이 Admin 또는 Developer이면 로그를 검토하고 로깅 시스템과 연동할 수 있습니다.
 
 ## 사용자 인터페이스를 통해 콘솔 감사 로그에 액세스하기 \{#console-audit-log-ui\}
 

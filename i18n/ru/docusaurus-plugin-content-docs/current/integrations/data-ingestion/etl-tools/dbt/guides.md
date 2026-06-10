@@ -19,23 +19,20 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Руководства \{#guides\}
-
-<ClickHouseSupportedBadge/>
-
-В этом разделе приведены руководства по настройке dbt и адаптера ClickHouse, а также пример использования dbt с ClickHouse на основе общедоступного датасета IMDB. В примере рассматриваются следующие шаги:
+В этом разделе представлены руководства по настройке dbt и адаптера ClickHouse, а также пример использования dbt с ClickHouse на общедоступном наборе данных IMDB. В примере рассматриваются следующие шаги:
 
 1. Создание проекта dbt и настройка адаптера ClickHouse.
 2. Определение модели.
 3. Обновление модели.
 4. Создание инкрементальной модели.
-5. Создание snapshot-модели.
-6. Использование материализованных представлений.
+5. Создание модели-снимка.
+6. Использование materialized views.
 
-Эти руководства предназначены для использования в сочетании с остальной [документацией](/integrations/dbt), разделом [возможностей и конфигураций](/integrations/dbt/features-and-configurations) и [справочником по материализациям](/integrations/dbt/materializations).
+Эти руководства предназначены для использования вместе с остальной [документацией](/integrations/dbt), разделом [возможности и конфигурации](/integrations/dbt/features-and-configurations) и [справочником по материализациям](/integrations/dbt/materializations).
 
-<TOCInline toc={toc}  maxHeadingLevel={2} />
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## Настройка \{#setup\}
 

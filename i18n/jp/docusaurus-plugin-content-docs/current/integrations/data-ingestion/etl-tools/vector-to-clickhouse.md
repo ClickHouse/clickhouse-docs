@@ -18,15 +18,14 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Vector と ClickHouse の統合 \{#integrating-vector-with-clickhouse\}
-
 <PartnerBadge />
 
-本番環境のアプリケーションでは、ログをリアルタイムに分析できることが極めて重要です。
-ClickHouse は、優れた圧縮率 (ログでは最大 [170x](https://clickhouse.com/blog/log-compression-170x)) と、大量データを高速に集計できる性能により、ログデータの保存と分析に特に優れています。
+本番環境のアプリケーションでは、ログをリアルタイムで分析できることが極めて重要です。
+ClickHouse は、優れた圧縮性能 (ログでは最大 [170x](https://clickhouse.com/blog/log-compression-170x))
+と大量のデータを高速に集計できる能力により、ログデータの保存と分析に非常に優れています。
 
-このガイドでは、広く利用されているデータパイプラインである [Vector](https://vector.dev/docs/about/what-is-vector/) を使用して Nginx のログファイルをテールし、ClickHouse に送信する方法を説明します。
-以下の手順は、任意の種類のログファイルをテールする場合にもほぼ同様に適用できます。
+このガイドでは、広く利用されているデータパイプライン [Vector](https://vector.dev/docs/about/what-is-vector/) を使用して、Nginx のログファイルをテールし、ClickHouse に送信する方法を説明します。
+以下の手順は、あらゆる種類のログファイルをテールする場合にもほぼ同様です。
 
 **前提条件:**
 

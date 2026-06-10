@@ -1,17 +1,15 @@
 ---
 slug: /cloud/managed-postgres/openapi
 sidebar_label: 'OpenAPI'
-title: 'OpenAPI'
+title: 'Managed Postgres OpenAPI'
 description: '使用我们的 OpenAPI 管理您的 Managed Postgres 服务'
 keywords: ['managed postgres', 'openapi', 'api', 'curl', '教程', '命令行']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-# Managed Postgres OpenAPI \{#managed-postgres-openapi\}
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.openapi-beta" />
 
 使用 [ClickHouse OpenAPI](/cloud/manage/cloud-api) 以编程方式
 管理您的 Managed Postgres 服务，就像管理 ClickHouse 服务一样。该
@@ -39,39 +37,40 @@ curl -s --user "$KEY_ID:$KEY_SECRET" https://api.clickhouse.cloud/v1/organizatio
 2. 选择 **组织详细信息**。
 3. 点击 **Organization ID** 右侧的复制图标，直接将其复制到剪贴板。
 
-{/*
+现在可以像这样在请求中使用它：
 
-  TODO: 在 API 发布后取消注释并插入正确的示例输出。
+```bash
+ORG_ID=myorgid
 
-  现在可以像这样在请求中使用它：
-
-  ```bash
-  ORG_ID=myorgid
-
-  curl -s --user "$KEY_ID:$KEY_SECRET" \
+curl -s --user "$KEY_ID:$KEY_SECRET" \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres" | jq
-  ```
+```
 
-  现在，你已经发出了第一个 Postgres API 请求：[list API] 列出了你的组织中
-  的所有 Postgres 服务器。输出应类似于：
+现在，你已经发出了第一个 Postgres API 请求：[list API] 列出了你的组织中
+的所有 Postgres 服务器。输出应类似于：
 
-  ```json
-  {
+```json
+{
   "result": [
     {
-      "id": "c0d0b15d-5e8b-431d-8943-51b6e233e0b1",
-      "name": "Customer's Organization",
-      "createdAt": "2026-03-24T14:21:31Z",
-      "privateEndpoints": [],
-      "enableCoreDumps": true
+      "id": "ee2fef9f-b443-8ad0-8c9b-724390cdb826",
+      "name": "oltp",
+      "provider": "aws",
+      "region": "eu-west-2",
+      "postgresVersion": "18",
+      "size": "r6gd.medium",
+      "storageSize": 59,
+      "haType": "none",
+      "tags": [],
+      "isPrimary": true,
+      "state": "running",
+      "createdAt": "2026-05-25T16:42:16+00:00"
     }
   ],
   "requestId": "c128d830-5769-4c82-8235-f79aa69d1ebf",
   "status": 200
-  }
-  ```
-
-  */ }
+}
+```
 
 ## 增删改查 \{#crud\}
 
@@ -85,7 +84,6 @@ curl -s --user "$KEY_ID:$KEY_SECRET" https://api.clickhouse.cloud/v1/organizatio
 * `provider`：云服务商名称
 * `region`：云服务商网络中部署服务的区域
 * `size`：VM 规格
-* `storageSize`：VM 的存储大小
 
 这些属性的可选值请参阅 [create API] 文档。此外，这里指定使用 Postgres 18，而不是默认的 17：
 
@@ -95,8 +93,7 @@ create_data='{
   "provider": "aws",
   "region": "us-west-2",
   "postgresVersion": "18",
-  "size": "r8gd.large",
-  "storageSize": 118
+  "size": "r8gd.large"
 }'
 ```
 
@@ -114,7 +111,7 @@ curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
 ```json
 {
   "result": {
-    "id": "pg7myrd1j06p3gx4zrm2ze8qz6",
+    "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
     "name": "my postgres",
     "provider": "aws",
     "region": "us-west-2",
@@ -140,7 +137,7 @@ curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
 使用响应中的 `id` 再次查询该服务：
 
 ```bash
-PG_ID=pg7myrd1j06p3gx4zrm2ze8qz6
+PG_ID=67b4bc12-8582-45d0-8806-fe9b2e5a54e6
 curl -s --user "$KEY_ID:$KEY_SECRET" \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID" \
     | jq
@@ -172,7 +169,7 @@ psql (18.3)
 SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off, ALPN: postgresql)
 Type "help" for help.
 
-postgres=# 
+postgres=#
 ```
 
 输入 `\q` 退出 [psql]。
@@ -194,7 +191,7 @@ curl -sX PATCH --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' 
 
 ```json
 {
-  "id": "$PG_ID",
+  "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
   "name": "my postgres",
   "provider": "aws",
   "region": "us-west-2",
@@ -217,26 +214,37 @@ curl -sX PATCH --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' 
 }
 ```
 
+OpenAPI 提供了额外的端点，用于更新 [patch API] 不支持的属性。
+例如，要更新 [Postgres configuration]，请使用 [config API]：
+
+```bash
+curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/config" \
+    -d '{"pgConfig": {"max_connections": "42"}, "pgBouncerConfig": {}}' | jq
+```
+
+输出将显示更新后的配置，以及一条说明
+该更改后果的消息：
+
+```json
+{
+  "result":{
+    "pgConfig": {
+      "max_connections": "42"
+    },
+    "pgBouncerConfig": {},
+    "message": "The changes in the following parameters require a database restart to take effect: max_connections. You can restart the database by using the restart endpoint."
+  },
+  "requestId":"fdec06f2-66f7-45b4-9f82-0c051aba20aa",
+  "status": 200
+}
+```
+
 {/*
 
-  TODO: 待实现后补充扩展。
+  TODO: 当 API 发布后，取消注释并插入正确的示例输出。
 
-  OpenAPI 提供了额外的端点，用于更新 [patch API] 不支持的属性。
-  例如，要更新 [Postgres configuration]，请使用 [config API]：
-
-  ```bash
-  curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
-    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/config" \
-    -d '{"max_connections": "42"}'
-  ```
-
-  输出将显示更新后的配置：
-
-  ```json
-  {"max_connections": "42"}
-  ```
-
-  其他可用的更新 API 包括：
+  其他更新 API 包括：
 
   * 重置超级用户密码
   * 重命名 Postgres 服务（会更改主机名）
@@ -277,10 +285,6 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 
 [API keys]: /cloud/manage/openapi "管理 API 密钥"
 
-[Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus "Managed Postgres Prometheus 端点"
-
-[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Managed Postgres 指标参考"
-
 [pg-openapi]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres "ClickHouse Cloud 的 Postgres OpenAPI 规范"
 
 [list API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceGetList "获取组织的 Postgres 服务列表"
@@ -298,3 +302,7 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 [config API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceSetConfig "更新 Postgres 服务的配置"
 
 [delete API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceDelete "删除 PostgreSQL 服务"
+
+[Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus "Managed Postgres Prometheus 端点"
+
+[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Managed Postgres 指标参考"

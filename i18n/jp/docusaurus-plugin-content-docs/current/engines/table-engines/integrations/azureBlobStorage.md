@@ -29,8 +29,8 @@ CREATE TABLE azure_blob_storage_table (name String, value UInt32)
 * `account_key` - storage&#95;account&#95;url を使用する場合、ここでアカウントキーを指定できます。
 * `format` — ファイルの[フォーマット](/interfaces/formats.md)。
 * `compression` — サポートされる値: `none`, `gzip/gz`, `brotli/br`, `xz/LZMA`, `zstd/zst`。デフォルトでは、ファイル拡張子から圧縮形式を自動検出します (`auto` を設定した場合と同じです) 。
-* `partition_strategy` – オプション: `WILDCARD` または `HIVE`。`WILDCARD` はパス内に `{_partition_id}` を必要とし、これはパーティションキーに置き換えられます。`HIVE` はワイルドカードを許可せず、パスをテーブルルートとみなし、Snowflake ID をファイル名、ファイルフォーマットを拡張子とする Hive 形式のパーティションディレクトリを生成します。デフォルトは `WILDCARD` です。
-* `partition_columns_in_data_file` - `HIVE` パーティション戦略でのみ使用されます。ClickHouse がパーティションカラムもデータファイル内に書き込むことを想定すべきかどうかを指定します。デフォルトは `false` です。
+* `partition_strategy` – オプション: `wildcard` または `hive`。`wildcard` はパス内に `{_partition_id}` を必要とし、これはパーティションキーに置き換えられます。`hive` はワイルドカードを許可せず、パスをテーブルルートとみなし、Snowflake ID をファイル名、ファイルフォーマットを拡張子とする Hive 形式のパーティションディレクトリを生成します。デフォルトは `file_like_engine_default_partition_strategy` 設定です (`26.6` より古い `compatibility` 設定では `wildcard`、それ以外では `hive`) 。
+* `partition_columns_in_data_file` - `hive` パーティション戦略でのみ使用されます。ClickHouse がパーティションカラムもデータファイル内に書き込むことを想定すべきかどうかを指定します。デフォルトは `false` です。
 * `extra_credentials` - 認証には `client_id` および `tenant_id` を使用します。extra&#95;credentials が指定されている場合、`account_name` および `account_key` よりも優先されます。
 
 **Example**
@@ -106,13 +106,13 @@ SETTINGS filesystem_cache_name = 'cache_for_azure', enable_filesystem_cache = 1;
 
 #### パーティション戦略 \{#partition-strategy\}
 
-`WILDCARD` (デフォルト) ：ファイルパス内の `{_partition_id}` ワイルドカードを実際のパーティションキーに置き換えます。読み取りはサポートされていません。
+`wildcard`: ファイルパス内の `{_partition_id}` ワイルドカードを実際のパーティションキーに置き換えます。読み取りはサポートされていません。`26.6` より前の `compatibility` 設定でのみデフォルトで選択されます。それ以外の場合のデフォルトは `hive` です (`file_like_engine_default_partition_strategy` 設定を参照) 。
 
-`HIVE` は読み取りと書き込みのための Hive スタイルのパーティショニングを実装します。読み取りは再帰的なグロブパターンを用いて行われます。書き込みでは、次の形式でファイルを生成します: `<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`。
+`hive` は読み取りと書き込みのための Hive スタイルのパーティショニングを実装します。読み取りは再帰的なグロブパターンを用いて行われます。書き込みでは、次の形式でファイルを生成します: `<prefix>/<key1=val1/key2=val2...>/<snowflakeid>.<toLower(file_format)>`。
 
-注意: `HIVE` パーティション戦略を使用する場合、`use_hive_partitioning` 設定は影響しません。
+注意: `hive` パーティション戦略を使用する場合、`use_hive_partitioning` 設定は影響しません。
 
-`HIVE` パーティション戦略の例:
+`hive` パーティション戦略の例:
 
 ```sql
 arthur :) create table azure_table (year UInt16, country String, counter UInt8) ENGINE=AzureBlobStorage(account_name='devstoreaccount1', account_key='Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==', storage_account_url = 'http://localhost:30000/devstoreaccount1', container='cont', blob_path='hive_partitioned', format='Parquet', compression='auto', partition_strategy='hive') PARTITION BY (year, country);

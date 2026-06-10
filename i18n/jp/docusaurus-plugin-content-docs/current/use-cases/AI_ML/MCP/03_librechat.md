@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/librechat
 sidebar_label: 'LibreChat と連携する'
-title: 'LibreChat と ClickHouse Cloud 向けの ClickHouse MCPサーバーをセットアップする'
+title: 'LibreChat で ClickHouse MCPサーバーを使用する'
 pagination_prev: null
 pagination_next: null
 description: 'このガイドでは、Docker を使用して LibreChatとClickHouse MCPサーバーをセットアップする手順を説明します。'
@@ -15,10 +15,8 @@ import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
 
-# LibreChatでClickHouse MCPサーバーを使用する \{#using-clickhouse-mcp-server-with-librechat\}
-
-> 本ガイドでは、Dockerを使用してLibreChatとClickHouse MCPサーバーをセットアップし、
-> ClickHouseのサンプルデータセットに接続する方法を説明します。
+> このガイドでは、Docker を使用して LibreChatとClickHouse MCPサーバーをセットアップし、
+> ClickHouse のサンプルデータセットに接続する手順を説明します。
 
 <VerticalStepper headerLevel="h2">
   ## Docker をインストールする \{#install-docker\}

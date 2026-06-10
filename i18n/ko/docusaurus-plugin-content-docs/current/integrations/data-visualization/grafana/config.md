@@ -22,16 +22,13 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Grafana에서 ClickHouse 데이터 소스 구성 \{#configuring-clickhouse-data-source-in-grafana\}
+구성을 수정하는 가장 쉬운 방법은 플러그인 구성 페이지의 Grafana UI에서 수행하는 것이지만, 데이터 소스는 [YAML 파일을 사용해 프로비저닝할 수도 있습니다](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources).
 
-<ClickHouseSupportedBadge/>
+이 페이지에서는 ClickHouse 플러그인에서 구성할 수 있는 옵션 목록과, YAML로 데이터 소스를 프로비저닝하는 경우 사용할 수 있는 구성 스니펫을 보여줍니다.
 
-구성을 수정하는 가장 쉬운 방법은 Grafana UI에 있는 플러그인 구성 페이지에서 작업하는 것이지만, 데이터 소스는 [YAML 파일로 프로비저닝](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)할 수도 있습니다.
-
-이 페이지에서는 ClickHouse 플러그인에서 구성할 수 있는 옵션 목록과 함께, YAML로 데이터 소스를 프로비저닝하는 경우 사용할 수 있는 구성 스니펫을 제공합니다.
-
-모든 옵션에 대한 간단한 개요가 필요하다면, 전체 구성 옵션 목록을 [여기](#all-yaml-options)에서 확인할 수 있습니다.
+모든 옵션을 빠르게 살펴보려면 전체 구성 옵션 목록을 [여기](#all-yaml-options)에서 확인할 수 있습니다.
 
 ## 공통 설정 \{#common-settings\}
 

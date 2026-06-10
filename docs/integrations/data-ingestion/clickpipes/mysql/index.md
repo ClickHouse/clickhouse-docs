@@ -26,8 +26,6 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-# Ingesting data from MySQL to ClickHouse (using CDC)
-
 <BetaBadge/>
 
 :::info

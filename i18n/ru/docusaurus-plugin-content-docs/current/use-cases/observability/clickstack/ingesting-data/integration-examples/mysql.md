@@ -18,10 +18,8 @@ import finish_import from '@site/static/images/clickstack/mysql/finish-import.pn
 import example_dashboard from '@site/static/images/clickstack/mysql/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг логов MySQL с ClickStack \{#mysql-logs-clickstack\}
-
-:::note[TL;DR]
-Собирайте и визуализируйте логи ошибок MySQL и логи медленных запросов в ClickStack с помощью OTel-приёмника `filelog`. Включает демо-датасет и готовую панель мониторинга.
+:::note[Кратко]
+Собирайте и визуализируйте логи ошибок MySQL и медленных запросов в ClickStack с помощью OTel-приемника `filelog`. Включает демонстрационный датасет и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим MySQL \{#existing-mysql\}

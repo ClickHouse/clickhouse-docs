@@ -7,7 +7,7 @@ keywords: ['Managed Postgres', 'クエリインサイト', 'pg_stat_ch', '遅い
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import queryInsightsOverview from '@site/static/images/managed-postgres/monitoring/query-insights-overview.png';
 import queryInsightsPatterns from '@site/static/images/managed-postgres/monitoring/query-insights-patterns.png';
@@ -15,22 +15,16 @@ import queryInsightsRecentQueries from '@site/static/images/managed-postgres/mon
 import queryInsightsDetailAggregate from '@site/static/images/managed-postgres/monitoring/query-insights-detail-aggregate.png';
 import queryInsightsDetailRecent from '@site/static/images/managed-postgres/monitoring/query-insights-detail-recent.png';
 
-# Postgres クエリインサイト \{#postgres-query-insights\}
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.query-insights-beta" />
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="query-insights" />
+クエリインサイトは、[Managed Postgres](/cloud/managed-postgres) インスタンスからステートメント単位のテレメトリーを収集し、すべてのクエリ
+パターンを影響度順に順位付けするため、クラウドコンソールを離れることなく、&quot;p99 がじわじわ悪化している&quot; から &quot;このパターンは
+ディスクにスピルしている&quot; まで、原因をすばやく突き止められます。
 
-クエリインサイト は、[Managed Postgres](/cloud/managed-postgres) インスタンスから
-ステートメント単位のテレメトリーを収集し、各クエリパターンを
-影響度順にランク付けします。これにより、「p99 が悪化している」から「このパターン
-はディスクにスピルしている」まで、Cloud Console を離れることなく
-特定できます。
-
-このデータは、[`pg_stat_ch`](https://github.com/clickhouse/pg_stat_ch) に由来します。
-これは、ステートメントごとのカウンターを
-ClickHouse Cloud にストリーミングするオープンソースの Postgres 拡張機能です。テレメトリーは
-データベースを離れる前に Postgres 内で正規化されます。つまり、リテラルは削除されて
-プレースホルダーに置き換えられるため、クエリした実際の値が
-テレメトリーストリームに含まれることはありません。
+このデータは、[`pg_stat_ch`](https://github.com/clickhouse/pg_stat_ch) から取得されます。これは、ステートメント単位のカウンターを
+ClickHouse Cloud にストリーミングするオープンソースの Postgres 拡張機能です。テレメトリーはデータベースの外に出る前に
+Postgres 内で正規化されます。つまり、リテラルは取り除かれてプレースホルダーに置き換えられるため、
+クエリした正確な値がテレメトリーストリームに含まれることはありません。
 
 ## クエリインサイトを開く \{#open\}
 

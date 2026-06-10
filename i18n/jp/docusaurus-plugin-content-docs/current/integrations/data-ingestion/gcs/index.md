@@ -2,10 +2,10 @@
 sidebar_label: 'Google Cloud Storage (GCS)'
 sidebar_position: 4
 slug: /integrations/gcs
-description: 'Google Cloud Storage (GCS) をバックエンドにした MergeTree'
+description: 'Google Cloud Storage (GCS) をバックエンドの MergeTree'
 title: 'ClickHouse と Google Cloud Storage を統合する'
 doc_type: 'guide'
-keywords: ['Google Cloud Storage ClickHouse', 'GCS ClickHouse 統合', 'GCS バックエンド MergeTree', 'ClickHouse GCS ストレージ', 'Google Cloud ClickHouse']
+keywords: ['Google Cloud Storage ClickHouse', 'GCS ClickHouse 統合', 'GCS バックエンドの MergeTree', 'ClickHouse GCS ストレージ', 'Google Cloud ClickHouse']
 ---
 
 import BucketDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_GCS_authentication_and_bucket.md';
@@ -13,14 +13,11 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-
-# Google Cloud Storage を ClickHouse と統合する \{#integrate-google-cloud-storage-with-clickhouse\}
-
 :::note
-[Google Cloud](https://cloud.google.com) 上の ClickHouse Cloud を利用している場合、このページは対象外です。サービスはすでに [Google Cloud Storage](https://cloud.google.com/storage) を使用しているためです。GCS から `SELECT` または `INSERT` でデータを扱いたい場合は、[`gcs` テーブル関数](/sql-reference/table-functions/gcs) を参照してください。
+[Google Cloud](https://cloud.google.com) 上で ClickHouse Cloud を使用している場合、このページは適用されません。サービスはすでに [Google Cloud Storage](https://cloud.google.com/storage) を使用しているためです。GCS からデータを `SELECT` または `INSERT` する場合は、[`gcs` テーブル関数](/sql-reference/table-functions/gcs) を参照してください。
 :::
 
-ClickHouse は、ストレージとコンピュートを分離したいユーザーにとって、GCS が魅力的なストレージソリューションであると認識しています。この要件を満たすために、MergeTree エンジンのストレージとして GCS を使用することをサポートしています。これにより、ユーザーは GCS のスケーラビリティとコスト面での利点に加え、MergeTree エンジンのデータ挿入およびクエリのパフォーマンスを活用できるようになります。
+ClickHouse では、ストレージとコンピュートを分離したい場合、GCS が魅力的なストレージソリューションになると考えています。これを実現するため、MergeTree エンジンのストレージとして GCS を使用する機能がサポートされています。これにより、GCS のスケーラビリティとコスト面での利点を享受しつつ、MergeTree エンジンの insert およびクエリのパフォーマンスを活用できます。
 
 ## GCS バックエンドの MergeTree \{#gcs-backed-mergetree\}
 
@@ -28,11 +25,10 @@ ClickHouse は、ストレージとコンピュートを分離したいユーザ
 
 GCS バケットをディスクとして利用するには、まず `conf.d` 配下のファイルで ClickHouse の設定にディスクを定義する必要があります。GCS ディスク定義の例を以下に示します。この設定には、GCS の「disk」、キャッシュ、およびテーブルを GCS ディスク上に作成する際に DDL クエリで指定されるポリシーを構成するための複数のセクションが含まれます。それぞれについて以下で説明します。
 
-#### Storage configuration &gt; disks &gt; gcs \{#storage_configuration--disks--gcs\}
+#### ストレージ構成 &gt; disks &gt; gcs \{#storage_configuration--disks--gcs\}
 
 この設定の該当部分はハイライトされているセクションであり、次の内容を指定します。
 
-* バッチ削除は実行しないこと。GCS は現在バッチ削除をサポートしていないため、自動検出を無効化してエラーメッセージを抑制します。
 * ディスクのタイプは、S3 API を利用しているため `s3` であること。
 * GCS が提供するエンドポイント
 * サービスアカウントの HMAC キーとシークレット
@@ -44,7 +40,7 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
         <disks>
             <gcs>
             <!--highlight-start-->
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -66,8 +62,7 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
 </clickhouse>
 ```
 
-
-#### ストレージ設定 &gt; disks &gt; cache \{#storage_configuration--disks--cache\}
+#### ストレージ構成 &gt; disks &gt; cache \{#storage_configuration--disks--cache\}
 
 次の例の構成では、ディスク `gcs` に対して 10Gi のメモリキャッシュを有効にします。
 
@@ -76,7 +71,7 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -105,17 +100,16 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
 </clickhouse>
 ```
 
+#### ストレージ構成 &gt; policies &gt; gcs_main \{#storage_configuration--policies--gcs_main\}
 
-#### Storage configuration &gt; policies &gt; gcs&#95;main \{#storage_configuration--policies--gcs_main\}
-
-ストレージ構成ポリシーを使用すると、データを保存する場所を選択できます。以下でハイライトされているポリシーでは、ポリシー `gcs_main` を指定することで、ディスク `gcs` 上にデータを保存できます。たとえば、`CREATE TABLE ... SETTINGS storage_policy='gcs_main'` のように指定します。
+ストレージ構成ポリシーを使用すると、データの保存先を選択できます。以下でハイライトされているポリシーでは、ポリシー `gcs_main` を指定することで、データをディスク `gcs` に保存できます。たとえば、`CREATE TABLE ... SETTINGS storage_policy='gcs_main'` のように指定します。
 
 ```xml
 <clickhouse>
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -139,7 +133,6 @@ GCS バケットをディスクとして利用するには、まず `conf.d` 配
 ```
 
 このディスク定義に関連するすべての設定項目の一覧は[こちら](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3)で確認できます。
-
 
 ### テーブルの作成 \{#creating-a-table\}
 
@@ -414,7 +407,7 @@ ClickHouse のストレージ構成には `disks` と `policies` が含まれま
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/REPLICA 1 BUCKET/REPLICA 1 FOLDER/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -440,7 +433,6 @@ ClickHouse のストレージ構成には `disks` と `policies` が含まれま
     </storage_configuration>
 </clickhouse>
 ```
-
 
 ### ClickHouse Keeper を起動する \{#start-clickhouse-keeper\}
 

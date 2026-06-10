@@ -20,20 +20,17 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
-
-# MongoDB から ClickHouse へのデータのインジェスト（CDC（変更データキャプチャ）を使用）  \{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\}
-
 <BetaBadge />
 
 :::info
-ClickPipes を使用して MongoDB から ClickHouse Cloud へデータを取り込む機能は、パブリックベータ版です。
+ClickPipes を介して MongoDB から ClickHouse Cloud にデータを取り込む機能は、現在パブリックベータです。
 :::
 
 :::note
-ClickHouse Cloud のコンソールおよびドキュメントでは、MongoDB に対して「table」と「collection」を同じ意味で使用します。
+ClickHouse Cloud コンソールおよびドキュメントでは、MongoDB については &quot;table&quot; と &quot;collection&quot; を同じ意味で使用しています。
 :::
 
-ClickPipes を使用して、MongoDB データベースから ClickHouse Cloud にデータを取り込むことができます。送信元の MongoDB データベースは、オンプレミス環境にホストされていても、MongoDB Atlas などのサービスを利用してクラウド上にホストされていても構いません。
+ClickPipes を使用すると、MongoDB データベースから ClickHouse Cloud にデータを取り込むことができます。ソースとなる MongoDB データベースは、オンプレミスでホストすることも、MongoDB Atlas などのサービスを利用してクラウドでホストすることもできます。
 
 MongoDB ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムからデプロイおよび管理することもできます。
 

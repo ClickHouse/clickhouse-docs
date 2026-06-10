@@ -2,8 +2,8 @@
 sidebar_label: 'Spark JDBC'
 sidebar_position: 3
 slug: /integrations/apache-spark/spark-jdbc
-description: 'Apache Spark 与 ClickHouse 集成简介'
-keywords: ['clickhouse', 'Apache Spark', 'jdbc', '数据迁移', '数据']
+description: 'Apache Spark 与 ClickHouse 入门'
+keywords: ['ClickHouse', 'Apache Spark', 'jdbc', '迁移', '数据']
 title: 'Spark JDBC'
 doc_type: 'guide'
 integration:
@@ -16,333 +16,323 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Spark JDBC \{#spark-jdbc\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 JDBC 是 Spark 中最常用的数据源之一。
-在本节中，我们将介绍如何使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc) 与 Spark 集成。
+本节将详细介绍如何
+在 Spark 中使用 [ClickHouse 官方 JDBC 连接器](/integrations/language-clients/java/jdbc)。
 
-<TOCInline toc={toc}></TOCInline>
+<TOCInline toc={toc} />
 
 ## 读取数据 \{#read-data\}
 
 <Tabs groupId="spark_apis">
-<TabItem value="Java" label="Java" default>
+  <TabItem value="Java" label="Java" default>
+    ```java
+    public static void main(String[] args) {
+            // 初始化 Spark 会话
+            SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
 
-```java
-public static void main(String[] args) {
-        // Initialize Spark session
-        SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
+            String jdbcURL = "jdbc:ch://localhost:8123/default";
+            String query = "select * from example_table where id > 2";
 
-        String jdbcURL = "jdbc:ch://localhost:8123/default";
-        String query = "select * from example_table where id > 2";
+            //---------------------------------------------------------------------------------------------------
+            // 使用 jdbc 方法从 ClickHouse 读取表数据
+            //---------------------------------------------------------------------------------------------------
+            Properties jdbcProperties = new Properties();
+            jdbcProperties.put("user", "default");
+            jdbcProperties.put("password", "123456");
 
-        //---------------------------------------------------------------------------------------------------
-        // Load the table from ClickHouse using jdbc method
-        //---------------------------------------------------------------------------------------------------
-        Properties jdbcProperties = new Properties();
-        jdbcProperties.put("user", "default");
-        jdbcProperties.put("password", "123456");
+            Dataset<Row> df1 = spark.read().jdbc(jdbcURL, String.format("(%s)", query), jdbcProperties);
 
-        Dataset<Row> df1 = spark.read().jdbc(jdbcURL, String.format("(%s)", query), jdbcProperties);
+            df1.show();
 
-        df1.show();
+            //---------------------------------------------------------------------------------------------------
+            // 使用 load 方法从 ClickHouse 读取表数据
+            //---------------------------------------------------------------------------------------------------
+            Dataset<Row> df2 = spark.read()
+                    .format("jdbc")
+                    .option("url", jdbcURL)
+                    .option("user", "default")
+                    .option("password", "123456")
+                    .option("query", query)
+                    .load();
 
-        //---------------------------------------------------------------------------------------------------
-        // Load the table from ClickHouse using load method
-        //---------------------------------------------------------------------------------------------------
-        Dataset<Row> df2 = spark.read()
-                .format("jdbc")
-                .option("url", jdbcURL)
-                .option("user", "default")
-                .option("password", "123456")
-                .option("query", query)
-                .load();
+            df2.show();
 
-        df2.show();
+            // 停止 Spark 会话
+            spark.stop();
+        }
+    ```
+  </TabItem>
 
-        // Stop the Spark session
-        spark.stop();
+  <TabItem value="Scala" label="Scala">
+    ```java
+    object ReadData extends App {
+      // 初始化 Spark 会话
+      val spark: SparkSession = SparkSession.builder.appName("example").master("local").getOrCreate
+
+      val jdbcURL = "jdbc:ch://localhost:8123/default"
+      val query: String = "select * from example_table where id > 2"
+
+      //---------------------------------------------------------------------------------------------------
+      // 使用 jdbc 方法从 ClickHouse 读取表数据
+      //---------------------------------------------------------------------------------------------------
+      val connectionProperties = new Properties()
+      connectionProperties.put("user", "default")
+      connectionProperties.put("password", "123456")
+
+      val df1: Dataset[Row] = spark.read.
+        jdbc(jdbcURL, s"($query)", connectionProperties)
+
+      df1.show()
+      //---------------------------------------------------------------------------------------------------
+      // 使用 load 方法从 ClickHouse 读取表数据
+      //---------------------------------------------------------------------------------------------------
+      val df2: Dataset[Row] = spark.read
+        .format("jdbc")
+        .option("url", jdbcURL)
+        .option("user", "default")
+        .option("password", "123456")
+        .option("query", query)
+        .load()
+
+      df2.show()
+
+      // 停止 Spark 会话// 停止 Spark 会话
+      spark.stop()
+
     }
-```
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+  <TabItem value="Python" label="Python">
+    ```python
+    from pyspark.sql import SparkSession
 
-```java
-object ReadData extends App {
-  // Initialize Spark session
-  val spark: SparkSession = SparkSession.builder.appName("example").master("local").getOrCreate
+    jar_files = [
+        "jars/clickhouse-jdbc-X.X.X-SNAPSHOT-all.jar"
+    ]
 
-  val jdbcURL = "jdbc:ch://localhost:8123/default"
-  val query: String = "select * from example_table where id > 2"
+    # 使用 JAR 包初始化 Spark 会话
+    spark = SparkSession.builder \
+        .appName("example") \
+        .master("local") \
+        .config("spark.jars", ",".join(jar_files)) \
+        .getOrCreate()
 
-  //---------------------------------------------------------------------------------------------------
-  // Load the table from ClickHouse using jdbc method
-  //---------------------------------------------------------------------------------------------------
-  val connectionProperties = new Properties()
-  connectionProperties.put("user", "default")
-  connectionProperties.put("password", "123456")
+    url = "jdbc:ch://localhost:8123/default"
+    user = "your_user" 
+    password = "your_password"  
+    query = "select * from example_table where id > 2"
+    driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
-  val df1: Dataset[Row] = spark.read.
-    jdbc(jdbcURL, s"($query)", connectionProperties)
+    df = (spark.read
+          .format('jdbc')
+          .option('driver', driver)
+          .option('url', url)
+          .option('user', user)
+          .option('password', password).option(
+        'query', query).load())
 
-  df1.show()
-  //---------------------------------------------------------------------------------------------------
-  // Load the table from ClickHouse using load method
-  //---------------------------------------------------------------------------------------------------
-  val df2: Dataset[Row] = spark.read
-    .format("jdbc")
-    .option("url", jdbcURL)
-    .option("user", "default")
-    .option("password", "123456")
-    .option("query", query)
-    .load()
+    df.show()
 
-  df2.show()
+    ```
+  </TabItem>
 
-  // Stop the Spark session// Stop the Spark session
-  spark.stop()
-
-}
-```
-
-</TabItem>
-<TabItem value="Python" label="Python">
-
-```python
-from pyspark.sql import SparkSession
-
-jar_files = [
-    "jars/clickhouse-jdbc-X.X.X-SNAPSHOT-all.jar"
-]
-
-# Initialize Spark session with JARs
-spark = SparkSession.builder \
-    .appName("example") \
-    .master("local") \
-    .config("spark.jars", ",".join(jar_files)) \
-    .getOrCreate()
-
-url = "jdbc:ch://localhost:8123/default"
-user = "your_user" 
-password = "your_password"  
-query = "select * from example_table where id > 2"
-driver = "com.clickhouse.jdbc.ClickHouseDriver"
-
-df = (spark.read
-      .format('jdbc')
-      .option('driver', driver)
-      .option('url', url)
-      .option('user', user)
-      .option('password', password).option(
-    'query', query).load())
-
-df.show()
-
-```
-
-</TabItem>
-<TabItem value="SparkSQL" label="Spark SQL">
-
-```sql
-   CREATE TEMPORARY VIEW jdbcTable
-           USING org.apache.spark.sql.jdbc
-           OPTIONS (
-                   url "jdbc:ch://localhost:8123/default", 
-                   dbtable "schema.tablename",
-                   user "username",
-                   password "password",
-                   driver "com.clickhouse.jdbc.ClickHouseDriver" 
-           );
-           
-   SELECT * FROM jdbcTable;
-```
-
-</TabItem>
+  <TabItem value="SparkSQL" label="Spark SQL">
+    ```sql
+       CREATE TEMPORARY VIEW jdbcTable
+               USING org.apache.spark.sql.jdbc
+               OPTIONS (
+                       url "jdbc:ch://localhost:8123/default", 
+                       dbtable "schema.tablename",
+                       user "username",
+                       password "password",
+                       driver "com.clickhouse.jdbc.ClickHouseDriver" 
+               );
+               
+       SELECT * FROM jdbcTable;
+    ```
+  </TabItem>
 </Tabs>
-
 
 ## 写入数据 \{#write-data\}
 
 <Tabs groupId="spark_apis">
-<TabItem value="Java" label="Java" default>
+  <TabItem value="Java" label="Java" default>
+    ```java
+     public static void main(String[] args) {
+            // Initialize Spark session
+            SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
 
-```java
- public static void main(String[] args) {
-        // Initialize Spark session
-        SparkSession spark = SparkSession.builder().appName("example").master("local").getOrCreate();
+            // JDBC connection details
+            String jdbcUrl = "jdbc:ch://localhost:8123/default";
+            Properties jdbcProperties = new Properties();
+            jdbcProperties.put("user", "default");
+            jdbcProperties.put("password", "123456");
 
-        // JDBC connection details
-        String jdbcUrl = "jdbc:ch://localhost:8123/default";
-        Properties jdbcProperties = new Properties();
-        jdbcProperties.put("user", "default");
-        jdbcProperties.put("password", "123456");
+            // Create a sample DataFrame
+            StructType schema = new StructType(new StructField[]{
+                    DataTypes.createStructField("id", DataTypes.IntegerType, false),
+                    DataTypes.createStructField("name", DataTypes.StringType, false)
+            });
 
-        // Create a sample DataFrame
-        StructType schema = new StructType(new StructField[]{
-                DataTypes.createStructField("id", DataTypes.IntegerType, false),
-                DataTypes.createStructField("name", DataTypes.StringType, false)
-        });
+            List<Row> rows = new ArrayList<Row>();
+            rows.add(RowFactory.create(1, "John"));
+            rows.add(RowFactory.create(2, "Doe"));
 
-        List<Row> rows = new ArrayList<Row>();
-        rows.add(RowFactory.create(1, "John"));
-        rows.add(RowFactory.create(2, "Doe"));
+            Dataset<Row> df = spark.createDataFrame(rows, schema);
 
-        Dataset<Row> df = spark.createDataFrame(rows, schema);
+            //---------------------------------------------------------------------------------------------------
+            // Write the df to ClickHouse using the jdbc method
+            //---------------------------------------------------------------------------------------------------
 
-        //---------------------------------------------------------------------------------------------------
-        // Write the df to ClickHouse using the jdbc method
-        //---------------------------------------------------------------------------------------------------
+            df.write()
+                    .mode(SaveMode.Append)
+                    .jdbc(jdbcUrl, "example_table", jdbcProperties);
 
-        df.write()
-                .mode(SaveMode.Append)
-                .jdbc(jdbcUrl, "example_table", jdbcProperties);
+            //---------------------------------------------------------------------------------------------------
+            // Write the df to ClickHouse using the save method
+            //---------------------------------------------------------------------------------------------------
 
-        //---------------------------------------------------------------------------------------------------
-        // Write the df to ClickHouse using the save method
-        //---------------------------------------------------------------------------------------------------
+            df.write()
+                    .format("jdbc")
+                    .mode("append")
+                    .option("url", jdbcUrl)
+                    .option("dbtable", "example_table")
+                    .option("user", "default")
+                    .option("password", "123456")
+                    .save();
 
-        df.write()
-                .format("jdbc")
-                .mode("append")
-                .option("url", jdbcUrl)
-                .option("dbtable", "example_table")
-                .option("user", "default")
-                .option("password", "123456")
-                .save();
+            // Stop the Spark session
+            spark.stop();
+        }
+    ```
+  </TabItem>
 
-        // Stop the Spark session
-        spark.stop();
+  <TabItem value="Scala" label="Scala">
+    ```java
+    object WriteData extends App {
+
+      val spark: SparkSession = SparkSession.builder.appName("example").master("local").getOrCreate
+
+      // JDBC connection details
+      val jdbcUrl: String = "jdbc:ch://localhost:8123/default"
+      val jdbcProperties: Properties = new Properties
+      jdbcProperties.put("user", "default")
+      jdbcProperties.put("password", "123456")
+
+      // Create a sample DataFrame
+
+      val rows = Seq(Row(1, "John"), Row(2, "Doe"))
+
+      val schema = List(
+        StructField("id", DataTypes.IntegerType, nullable = false),
+        StructField("name", StringType, nullable = true)
+      )
+
+      val df: DataFrame = spark.createDataFrame(
+        spark.sparkContext.parallelize(rows),
+        StructType(schema)
+      )
+      
+      //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+      // Write the df to ClickHouse using the jdbc method
+      //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+
+      df.write
+        .mode(SaveMode.Append)
+        .jdbc(jdbcUrl, "example_table", jdbcProperties)
+
+      //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+      // Write the df to ClickHouse using the save method
+      //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
+
+      df.write
+        .format("jdbc")
+        .mode("append")
+        .option("url", jdbcUrl)
+        .option("dbtable", "example_table")
+        .option("user", "default")
+        .option("password", "123456")
+        .save()
+
+      // Stop the Spark session// Stop the Spark session
+      spark.stop()
+
     }
-```
+    ```
+  </TabItem>
 
-</TabItem>
-<TabItem value="Scala" label="Scala">
+  <TabItem value="Python" label="Python">
+    ```python
+    from pyspark.sql import SparkSession
+    from pyspark.sql import Row
 
-```java
-object WriteData extends App {
+    jar_files = [
+        "jars/clickhouse-jdbc-X.X.X-SNAPSHOT-all.jar"
+    ]
 
-  val spark: SparkSession = SparkSession.builder.appName("example").master("local").getOrCreate
+    # Initialize Spark session with JARs
+    spark = SparkSession.builder \
+        .appName("example") \
+        .master("local") \
+        .config("spark.jars", ",".join(jar_files)) \
+        .getOrCreate()
 
-  // JDBC connection details
-  val jdbcUrl: String = "jdbc:ch://localhost:8123/default"
-  val jdbcProperties: Properties = new Properties
-  jdbcProperties.put("user", "default")
-  jdbcProperties.put("password", "123456")
+    # Create DataFrame
+    data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
+    df = spark.createDataFrame(data)
 
-  // Create a sample DataFrame
+    url = "jdbc:ch://localhost:8123/default"
+    user = "your_user" 
+    password = "your_password"  
+    driver = "com.clickhouse.jdbc.ClickHouseDriver"
 
-  val rows = Seq(Row(1, "John"), Row(2, "Doe"))
+    # Write DataFrame to ClickHouse
+    df.write \
+        .format("jdbc") \
+        .option("driver", driver) \
+        .option("url", url) \
+        .option("user", user) \
+        .option("password", password) \
+        .option("dbtable", "example_table") \
+        .mode("append") \
+        .save()
 
-  val schema = List(
-    StructField("id", DataTypes.IntegerType, nullable = false),
-    StructField("name", StringType, nullable = true)
-  )
+    ```
+  </TabItem>
 
-  val df: DataFrame = spark.createDataFrame(
-    spark.sparkContext.parallelize(rows),
-    StructType(schema)
-  )
-  
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Write the df to ClickHouse using the jdbc method
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-
-  df.write
-    .mode(SaveMode.Append)
-    .jdbc(jdbcUrl, "example_table", jdbcProperties)
-
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-  // Write the df to ClickHouse using the save method
-  //---------------------------------------------------------------------------------------------------//---------------------------------------------------------------------------------------------------
-
-  df.write
-    .format("jdbc")
-    .mode("append")
-    .option("url", jdbcUrl)
-    .option("dbtable", "example_table")
-    .option("user", "default")
-    .option("password", "123456")
-    .save()
-
-  // Stop the Spark session// Stop the Spark session
-  spark.stop()
-
-}
-```
-
-</TabItem>
-<TabItem value="Python" label="Python">
-
-```python
-from pyspark.sql import SparkSession
-from pyspark.sql import Row
-
-jar_files = [
-    "jars/clickhouse-jdbc-X.X.X-SNAPSHOT-all.jar"
-]
-
-# Initialize Spark session with JARs
-spark = SparkSession.builder \
-    .appName("example") \
-    .master("local") \
-    .config("spark.jars", ",".join(jar_files)) \
-    .getOrCreate()
-
-# Create DataFrame
-data = [Row(id=11, name="John"), Row(id=12, name="Doe")]
-df = spark.createDataFrame(data)
-
-url = "jdbc:ch://localhost:8123/default"
-user = "your_user" 
-password = "your_password"  
-driver = "com.clickhouse.jdbc.ClickHouseDriver"
-
-# Write DataFrame to ClickHouse
-df.write \
-    .format("jdbc") \
-    .option("driver", driver) \
-    .option("url", url) \
-    .option("user", user) \
-    .option("password", password) \
-    .option("dbtable", "example_table") \
-    .mode("append") \
-    .save()
-
-```
-
-</TabItem>
-<TabItem value="SparkSQL" label="Spark SQL">
-
-```sql
-   CREATE TEMPORARY VIEW jdbcTable
-           USING org.apache.spark.sql.jdbc
-           OPTIONS (
-                   url "jdbc:ch://localhost:8123/default", 
-                   dbtable "schema.tablename",
-                   user "username",
-                   password "password",
-                   driver "com.clickhouse.jdbc.ClickHouseDriver" 
-           );
-   -- resultTable could be created with df.createTempView or with Spark SQL
-   INSERT INTO TABLE jdbcTable
-                SELECT * FROM resultTable;
-                
-```
-
-</TabItem>
+  <TabItem value="SparkSQL" label="Spark SQL">
+    ```sql
+       CREATE TEMPORARY VIEW jdbcTable
+               USING org.apache.spark.sql.jdbc
+               OPTIONS (
+                       url "jdbc:ch://localhost:8123/default", 
+                       dbtable "schema.tablename",
+                       user "username",
+                       password "password",
+                       driver "com.clickhouse.jdbc.ClickHouseDriver" 
+               );
+       -- resultTable could be created with df.createTempView or with Spark SQL
+       INSERT INTO TABLE jdbcTable
+                    SELECT * FROM resultTable;
+                    
+    ```
+  </TabItem>
 </Tabs>
 
 ## 并行度 \{#parallelism\}
 
-使用 Spark JDBC 时，Spark 默认只使用单个分区读取数据。要提高并发度，需要指定
-`partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，用于定义在由多个 worker 并行读取时如何对表进行分区。
-如需了解更多信息，请参阅 Apache Spark 官方文档中的
+使用 Spark JDBC 时，Spark 仅通过单个分区读取数据。要实现更高的并发度，必须指定
+`partitionColumn`、`lowerBound`、`upperBound` 和 `numPartitions`，这些参数用于定义在
+多个工作线程并行读取时如何对表进行分区。
+更多信息请参阅 Apache Spark 官方文档中的
 [JDBC 配置](https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html#data-source-option)。
 
 ## JDBC 限制 \{#jdbc-limitations\}
 
-*  由于缺少 ClickHouse 方言，Spark JDBC 不支持复杂类型（MAP、ARRAY、STRUCT）——如需完整的复杂类型支持，请使用原生的 Spark-ClickHouse 连接器。
-*  截至目前，通过 JDBC 只能将数据插入到已存在的表中（目前尚无法像 Spark 使用其他连接器那样，在插入 DataFrame 时自动创建表）。
+* 由于缺少 ClickHouse 方言，Spark JDBC 不支持复杂类型 (MAP、ARRAY、STRUCT) ；如需完整支持复杂类型，请使用原生的 Spark-ClickHouse 连接器。
+* 目前，JDBC 只能将数据 insert 到现有表中 (当前无法像 Spark 对其他 连接器 那样，在 DF insert 时自动创建
+  表) 。

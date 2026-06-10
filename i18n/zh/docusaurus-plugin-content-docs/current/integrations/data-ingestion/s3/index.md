@@ -17,10 +17,7 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
-
-# 将 S3 集成到 ClickHouse 中 \{#integrating-s3-with-clickhouse\}
-
-你可以将 S3 中的数据写入 ClickHouse，也可以将 S3 用作导出目标，从而与“数据湖”（Data Lake）架构进行集成。此外，S3 还可以作为“冷”存储层，并有助于实现存储与计算的分离。在下文中，我们使用纽约市出租车数据集演示在 S3 与 ClickHouse 之间迁移数据的过程，说明关键配置参数，并给出性能优化建议。
+您可以将数据从 S3 插入到 ClickHouse 中，也可以将 S3 用作导出目标端，从而能够与“数据湖”架构集成。此外，S3 还可提供“冷”存储层级，并有助于实现存储与计算分离。在下面的各个部分中，我们将使用纽约市出租车数据集来演示在 S3 与 ClickHouse 之间移动数据的过程，同时介绍关键配置参数，并提供性能优化建议。
 
 ## S3 表函数 \{#s3-table-functions\}
 
@@ -42,17 +39,19 @@ s3(path, [aws_access_key_id, aws_secret_access_key,] [format, [structure, [compr
 
 ### 准备工作 \{#preparation\}
 
-在 ClickHouse 中创建表之前，您可能需要先仔细查看一下 S3 存储桶中的数据。您可以直接在 ClickHouse 中使用 `DESCRIBE` 语句来完成这一操作：
+在 ClickHouse 中创建表之前，您可能需要先仔细查看一下 S3 bucket中的数据。您可以直接在 ClickHouse 中使用 `DESCRIBE` 语句来完成这一操作：
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames');
 ```
 
-`DESCRIBE TABLE` 语句的输出应当显示 ClickHouse 将如何自动推断这些数据，就如同在 S3 存储桶中看到的一样。请注意，它还会自动识别 gzip 压缩格式并进行解压：
+`DESCRIBE TABLE` 语句的输出应当显示 ClickHouse 将如何自动推断这些数据，就如同在 S3 bucket中看到的一样。请注意，它还会自动识别 gzip 压缩格式并进行解压：
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') SETTINGS describe_compact_output=1
+```
 
+```response
 ┌─name──────────────────┬─type───────────────┐
 │ trip_id               │ Nullable(Int64)    │
 │ vendor_id             │ Nullable(Int64)    │
@@ -103,7 +102,6 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 ```
 
 为了与基于 S3 的数据集进行交互，我们准备一个标准的 `MergeTree` 表作为目标表。以下语句在默认数据库中创建一个名为 `trips` 的表。请注意，我们选择对上面推断出的部分数据类型做了一些修改，特别是不使用 [`Nullable()`](/sql-reference/data-types/nullable) 数据类型修饰符，因为它可能会导致不必要的额外数据存储以及一定的性能开销：
-
 
 ```sql
 CREATE TABLE trips
@@ -357,7 +355,7 @@ CREATE TABLE s3_engine_table (name String, value UInt32)
 
 ### 读取数据 \{#reading-data\}
 
-在以下示例中，我们创建一个名为 `trips_raw` 的表，使用位于 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` 存储桶中的前十个 TSV 文件。每个文件都包含 100 万行数据：
+在以下示例中，我们创建一个名为 `trips_raw` 的表，使用位于 `https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/` bucket中的前十个 TSV 文件。每个文件都包含 100 万行数据：
 
 ```sql
 CREATE TABLE trips_raw
@@ -416,7 +414,9 @@ CREATE TABLE trips_raw
 SELECT DISTINCT(pickup_ntaname)
 FROM trips_raw
 LIMIT 10;
+```
 
+```response
 ┌─pickup_ntaname───────────────────────────────────┐
 │ Lenox Hill-Roosevelt Island                      │
 │ Airport                                          │
@@ -430,7 +430,6 @@ LIMIT 10;
 │ DUMBO-Vinegar Hill-Downtown Brooklyn-Boerum Hill │
 └──────────────────────────────────────────────────┘
 ```
-
 
 ### 插入数据 \{#inserting-data\}
 
@@ -1360,7 +1359,9 @@ SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-nort
 
 ```sql
 BACKUP TABLE t TO Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status─────────┐
 │ c61f65ac-0d76-4390-8317-504a30ba7595 │ BACKUP_CREATED │
 └──────────────────────────────────────┴────────────────┘
@@ -1368,7 +1369,9 @@ BACKUP TABLE t TO Disk('s3_express', 't.zip')
 
 ```sql
 RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status───┐
 │ 4870e829-8d76-4171-ae59-cffaf58dea04 │ RESTORED │
 └──────────────────────────────────────┴──────────┘

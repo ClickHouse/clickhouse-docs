@@ -221,10 +221,11 @@ RETURNS return_type
   * `ROW_DIRECT`: 直接类型映射，逐行处理
   * `BUFFERED_V1`: 采用基于块 (block) 的处理并进行序列化
   * `ASSEMBLYSCRIPT`: 适用于由 [AssemblyScript](https://www.assemblyscript.org) 编译器生成的模块的逐行处理。数值类型映射为 AssemblyScript 基元类型；ClickHouse `String` 映射为 AssemblyScript `string`。
-* `DETERMINISTIC`: 将该函数声明为决定论的——对于相同输入始终返回相同输出。指定后，ClickHouse 可能会对所有参数均为常量的调用进行常量折叠：函数会在查询解析阶段计算一次，结果会在每一行中复用。
+* `DETERMINISTIC`: 将该函数声明为决定论的——对于相同输入始终返回相同输出。指定后，ClickHouse 可能会对所有参数均为常量的调用进行常量折叠：函数会在查询分析阶段计算一次，结果会在每一行中复用。
 * `SHA256_HASH`: 用于校验的期望模块哈希 (如果省略则自动填充) ，可用于确保在不同副本上加载的是正确的 WASM 模块。
 * `SETTINGS`: 每个函数的设置
-  * `serialization_format` String — 当 ABI 需要时使用的序列化格式。默认值：`MsgPack`。
+  * `serialization_format` String — ABI 需要时使用的序列化格式。支持的值：`MsgPack`、`JSONEachRow`、`CSV`、`TSV`、`TSVRaw`、`RowBinary` 和 `Buffers`。默认值：`MsgPack`。`Buffers` 等基于块的格式必须返回单个列，且其类型必须与声明的函数签名匹配。
+  * `webassembly_udf_enable_fuel` Bool — 为该函数启用有限 fuel 预算。默认值：`true`。当为 `false` 时，此函数会忽略查询级设置 `webassembly_udf_max_fuel`。在使用 `wasmtime` 引擎时，禁用 fuel 限制可能会提升性能。但对于不受信任或有缺陷的 guest 代码，这可能会增加失控执行的风险。
 
 ## ABI 版本 \{#abis-versions\}
 
@@ -390,11 +391,11 @@ pub fn some_udf(data: String) -> HashMap<String, String> {
 
 以下查询级别设置用于控制 WebAssembly UDF 的执行：
 
-* `webassembly_udf_max_fuel` — 每个 WebAssembly UDF 实例执行可使用的 fuel 上限。每条 WebAssembly 指令都会消耗一定数量的 fuel。设置为 0 表示不限制。
+* `webassembly_udf_max_fuel` — 每个 WebAssembly UDF 实例执行可使用的 fuel 上限。每条 WebAssembly 指令都会消耗一定数量的 fuel。该值在传递给运行时之前会先乘以 1024，因此 `webassembly_udf_max_fuel = 1` 大致对应 1024 个 fuel 单位。设置为 0 表示没有有限上限。仅适用于每个函数的设置 `webassembly_udf_enable_fuel` 为 true 的函数，且该值默认为 true。
 
 * `webassembly_udf_max_memory` — 每个 WebAssembly UDF 实例的内存限制 (以字节为单位) 。
 
-* `webassembly_udf_max_input_block_size` — 在单个数据块中传递给 WebAssembly UDF 的最大行数。设置为 0 表示一次性处理所有行。
+* `webassembly_udf_max_input_block_size` — 在单个块中传递给 WebAssembly UDF 的最大行数。设置为 0 表示一次性处理所有行。
 
 * `webassembly_udf_max_instances` — 每个函数可并行运行的 WebAssembly UDF 实例最大数量。
 

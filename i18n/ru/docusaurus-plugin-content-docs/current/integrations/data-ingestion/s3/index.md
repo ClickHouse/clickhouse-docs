@@ -17,10 +17,7 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
-
-# Интеграция S3 с ClickHouse \{#integrating-s3-with-clickhouse\}
-
-Вы можете загружать данные из S3 в ClickHouse, а также использовать S3 как целевое хранилище для экспорта, что позволяет интегрироваться с архитектурами озёр данных (Data Lake). Кроме того, S3 может обеспечивать уровни «холодного» хранилища и помогать в разделении хранения и вычислительных ресурсов. В следующих разделах мы используем набор данных о такси Нью‑Йорка, чтобы продемонстрировать процесс переноса данных между S3 и ClickHouse, а также определить ключевые параметры конфигурации и дать рекомендации по оптимизации производительности.
+Вы можете выполнять вставку данных из S3 в ClickHouse, а также использовать S3 как целевое хранилище для экспорта, что позволяет работать с архитектурами &quot;озера данных&quot;. Кроме того, S3 может предоставлять &quot;холодные&quot; уровни хранения и помогать разделять хранилище и вычислительные ресурсы. В разделах ниже мы используем набор данных о такси Нью-Йорка, чтобы продемонстрировать процесс перемещения данных между S3 и ClickHouse, а также определить ключевые параметры конфигурации и дать рекомендации по оптимизации производительности.
 
 ## Табличные функции S3 \{#s3-table-functions\}
 
@@ -52,7 +49,9 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') SETTINGS describe_compact_output=1
+```
 
+```response
 ┌─name──────────────────┬─type───────────────┐
 │ trip_id               │ Nullable(Int64)    │
 │ vendor_id             │ Nullable(Int64)    │
@@ -103,7 +102,6 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 ```
 
 Для работы с набором данных на основе S3 подготовим стандартную таблицу `MergeTree` в качестве целевой. Приведённая ниже инструкция создаёт таблицу с именем `trips` в базе данных по умолчанию. Обратите внимание, что мы изменили некоторые типы данных, определённые выше, в частности, отказались от использования модификатора типа данных [`Nullable()`](/sql-reference/data-types/nullable), который может привести к ненужному увеличению объёма хранимых данных и снижению производительности:
-
 
 ```sql
 CREATE TABLE trips
@@ -416,7 +414,9 @@ CREATE TABLE trips_raw
 SELECT DISTINCT(pickup_ntaname)
 FROM trips_raw
 LIMIT 10;
+```
 
+```response
 ┌─pickup_ntaname───────────────────────────────────┐
 │ Lenox Hill-Roosevelt Island                      │
 │ Airport                                          │
@@ -430,7 +430,6 @@ LIMIT 10;
 │ DUMBO-Vinegar Hill-Downtown Brooklyn-Boerum Hill │
 └──────────────────────────────────────────────────┘
 ```
-
 
 ### Вставка данных \{#inserting-data\}
 
@@ -1360,7 +1359,9 @@ SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-nort
 
 ```sql
 BACKUP TABLE t TO Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status─────────┐
 │ c61f65ac-0d76-4390-8317-504a30ba7595 │ BACKUP_CREATED │
 └──────────────────────────────────────┴────────────────┘
@@ -1368,7 +1369,9 @@ BACKUP TABLE t TO Disk('s3_express', 't.zip')
 
 ```sql
 RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status───┐
 │ 4870e829-8d76-4171-ae59-cffaf58dea04 │ RESTORED │
 └──────────────────────────────────────┴──────────┘

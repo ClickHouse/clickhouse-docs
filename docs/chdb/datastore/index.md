@@ -1,5 +1,5 @@
 ---
-title: 'DataStore - Pandas-compatible API'
+title: 'DataStore: Pandas-compatible API with SQL optimization'
 sidebar_label: 'Overview'
 slug: /chdb/datastore
 description: 'DataStore provides a pandas-compatible API with SQL optimization for high-performance data analysis'
@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 import Image from '@theme/IdealImage';
 import data_store from '@site/static/images/chdb/datastore_architecture.png'
-
-# DataStore: Pandas-compatible API with SQL optimization
 
 DataStore is chDB's pandas-compatible API that combines the familiar pandas DataFrame interface with the power of SQL query optimization and allows you to write pandas-style code while getting ClickHouse performance.
 

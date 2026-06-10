@@ -1,9 +1,9 @@
 ---
 description: '从源码编译 ClickHouse 或安装 CI 生成的二进制文件的说明'
 keywords: ['ClickHouse', 'install', 'advanced', 'compile from source', 'CI generated binary']
-sidebar_label: '高级安装'
+sidebar_label: '源码与 CI 构建'
 slug: /install/advanced
-title: '高级安装方法'
+title: '源码与 CI 构建'
 hide_title: false
 doc_type: 'guide'
 ---

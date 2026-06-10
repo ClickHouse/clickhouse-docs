@@ -11,8 +11,6 @@ import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
 
-# HTTP 接口 \{#http-interface\}
-
 ## 前提条件 \{#prerequisites\}
 
 要完成本文中的示例，您需要：

@@ -1,19 +1,17 @@
 ---
 slug: /use-cases/observability/oss-monitoring
-title: '自己管理型監視'
-sidebar_label: '自己管理型監視'
-description: '自己管理型監視ガイド'
+title: 'セルフマネージド監視'
+sidebar_label: 'セルフマネージド監視'
+description: 'セルフマネージド監視ガイド'
 doc_type: 'guide'
-keywords: ['オブザーバビリティ', '監視', '自己管理型', 'メトリクス', 'システムの健全性']
+keywords: ['オブザーバビリティ', '監視', 'セルフマネージド', 'メトリクス', 'システムの健全性']
 ---
 
 import ObservabilityIntegrations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_observability_integration_options.md';
 import DirectIntegrations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# セルフマネージド環境での監視 \{#cloud-monitoring\}
-
-本ガイドでは、ClickHouse オープンソースを評価しているエンタープライズチーム向けに、本番デプロイメントにおける監視およびオブザーバビリティ機能に関する包括的な情報を提供します。エンタープライズ顧客からは、すぐに利用可能な監視機能、Datadog や AWS CloudWatch などのツールを含む既存のオブザーバビリティスタックとの統合、および ClickHouse の監視機能がセルフホスト型デプロイメントとどのように比較できるのか、といった点について頻繁に問い合わせがあります。
+このガイドでは、ClickHouseオープンソースを評価している企業チーム向けに、本番環境のデプロイにおける監視機能とオブザーバビリティ機能について、包括的な情報を提供します。企業顧客からは、標準で利用できる監視機能、Datadog や AWS CloudWatch などのツールを含む既存のオブザーバビリティスタックとの統合、そして ClickHouse の監視がセルフホスト環境のデプロイと比べてどう異なるのかについて、よく質問が寄せられます。
 
 ### Prometheus ベースのインテグレーションアーキテクチャ \{#prometheus\}
 

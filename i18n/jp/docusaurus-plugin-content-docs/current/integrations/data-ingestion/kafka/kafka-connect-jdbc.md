@@ -2,26 +2,23 @@
 sidebar_label: 'Kafka Connect JDBC コネクタ'
 sidebar_position: 4
 slug: /integrations/kafka/kafka-connect-jdbc
-description: 'Kafka Connect と ClickHouse で JDBC Sink Connector を使用する'
+description: 'Kafka Connect と ClickHouse で JDBC Sink コネクタを使用する'
 title: 'JDBC コネクタ'
 doc_type: 'guide'
-keywords: ['kafka', 'kafka connect', 'jdbc', 'integration', 'data pipeline']
+keywords: ['kafka', 'kafka connect', 'jdbc', '統合', 'データパイプライン']
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# JDBC コネクタ \{#jdbc-connector\}
-
 :::note
-このコネクタは、データが単純で、`int` などのプリミティブ型で構成されている場合にのみ使用してください。ClickHouse 固有の型（例: map）はサポートされていません。
+このコネクタは、データが単純で、`int` などのプリミティブ型で構成されている場合にのみ使用してください。ClickHouse 固有の型 (例: map) はサポートされていません。
 :::
 
 以下の例では、Kafka Connect の Confluent ディストリビューションを使用します。
 
 ここでは、単一の Kafka トピックからメッセージを取得し、ClickHouse テーブルに行を挿入するシンプルなインストール方法について説明します。Kafka 環境をお持ちでない方には、無償枠が充実している Confluent Cloud の利用を推奨します。
 
-JDBC コネクタにはスキーマが必須であることに注意してください（JDBC コネクタではプレーンな JSON や CSV は使用できません）。スキーマは各メッセージにエンコードすることもできますが、関連するオーバーヘッドを避けるために[Confluent Schema Registry を使用することが強く推奨されます](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)。ここで提供する挿入スクリプトは、メッセージからスキーマを自動的に推論してレジストリに登録するため、このスクリプトは他のデータセットにも再利用できます。Kafka のキーは String であることを前提としています。Kafka のスキーマの詳細は[こちら](https://docs.confluent.io/platform/current/schema-registry/index.html)を参照してください。
+JDBC コネクタにはスキーマが必須であることに注意してください (JDBC コネクタではプレーンな JSON や CSV は使用できません) 。スキーマは各メッセージにエンコードすることもできますが、関連するオーバーヘッドを避けるために[Confluent スキーマレジストリを使用することが強く推奨されます](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas)。ここで提供する挿入スクリプトは、メッセージからスキーマを自動的に推論してレジストリに登録するため、このスクリプトは他のデータセットにも再利用できます。Kafka のキーは String であることを前提としています。Kafka のスキーマの詳細は[こちら](https://docs.confluent.io/platform/current/schema-registry/index.html)を参照してください。
 
 ### ライセンス \{#license\}
 

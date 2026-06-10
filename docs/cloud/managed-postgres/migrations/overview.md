@@ -67,3 +67,7 @@ Once data is moving, use [data validation](/cloud/managed-postgres/migrations/da
 to confirm row counts and content match between source and target before
 cutting over application traffic. The [migrations FAQ](/cloud/managed-postgres/migrations/faq)
 covers common errors and recovery steps.
+
+## Migrating from Supabase {#supabase}
+
+If you're migrating from Supabase, see the [Supabase to Managed Postgres migration guide](https://github.com/iskakaushik/supa-auth-migrate/blob/main/MIGRATION.md) for a step-by-step walkthrough.

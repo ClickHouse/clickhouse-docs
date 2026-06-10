@@ -2,7 +2,7 @@
 description: 'Подробная информация о резервном копировании и восстановлении на локальный диск и с него'
 sidebar_label: 'Локальный диск / диск S3'
 slug: /operations/backup/disk
-title: 'Резервное копирование и восстановление в ClickHouse'
+title: 'РЕЗЕРВНОЕ КОПИРОВАНИЕ / ВОССТАНОВЛЕНИЕ НА ДИСК'
 doc_type: 'guide'
 ---
 
@@ -10,8 +10,6 @@ import GenericSettings from '@site/i18n/ru/docusaurus-plugin-content-docs/curren
 import S3Settings from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 import ExampleSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
-
-# Резервное копирование и восстановление на локальный диск \{#backup-to-a-local-disk\}
 
 ## Синтаксис \{#syntax\}
 

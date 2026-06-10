@@ -36,20 +36,20 @@ SETTINGS catalog_type = 'rest', catalog_credential = '<client-id>:<client-secret
 oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', auth_scope = 'all-apis,sql';
 ```
 
-
 ### 查看表列表 \{#list-tables\}
 
 ```sql
 SHOW TABLES FROM unity
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ unity.logs                                         │
 │ unity.single_day_log                               │
 └────────────────────────────────────────────────────┘
 ```
 
-
-### 查看模式 \{#explore-schema\}
+### 查看 schema \{#explore-schema\}
 
 ```sql
 SHOW CREATE TABLE unity.`icebench.single_day_log`
@@ -84,14 +84,15 @@ ENGINE = Iceberg('s3://...')
 ```sql
 SELECT count()
 FROM unity.`icebench.single_day_log`
+```
 
+```response
 ┌───count()─┐
 │ 282634391 │ -- 282.63 million
 └───────────┘
 
 1 row in set. Elapsed: 1.265 sec.
 ```
-
 
 ## 对数据湖表执行查询 \{#query-lakehouse\}
 
@@ -108,7 +109,9 @@ WHERE (thread_name = 'TCPHandler')
 GROUP BY logger_name
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─logger_name──────────────┬────c─┐
 │ executeQuery             │ 6907 │
 │ TCPHandler               │ 4145 │
@@ -122,7 +125,6 @@ Peak memory usage: 4.35 GiB.
 ```
 
 该查询耗时接近 **9 秒**，因为 ClickHouse 必须对对象存储中的所有 Parquet 文件执行全表扫描。虽然可以通过分区提升性能，但像 `logger_name` 这样的列基数可能过高，难以实现有效分区。我们也没有诸如 [文本索引](/engines/table-engines/mergetree-family/mergetree#text) 之类的索引来进一步缩小扫描范围。这正是 MergeTree 的优势所在。
-
 
 ## 将数据导入 MergeTree \{#load-data\}
 
@@ -165,14 +167,15 @@ ENGINE = MergeTree
 ORDER BY (instance_type, thread_name, toStartOfMinute(event_time))
 ```
 
-
 ### 从目录中插入数据 \{#insert-data\}
 
 使用 `INSERT INTO SELECT` 将数据湖表中的约 3 亿行数据导入到我们的 ClickHouse 表中：
 
 ```sql
 INSERT INTO single_day_log SELECT * FROM icebench.`icebench.single_day_log`
+```
 
+```response
 282634391 rows in set. Elapsed: 237.680 sec. Processed 282.63 million rows, 5.42 GB (1.19 million rows/s., 22.79 MB/s.)
 Peak memory usage: 18.62 GiB.
 ```
@@ -192,7 +195,9 @@ WHERE (thread_name = 'TCPHandler')
 GROUP BY logger_name
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─logger_name──────────────┬────c─┐
 │ executeQuery             │ 6907 │
 │ TCPHandler               │ 4145 │
@@ -207,7 +212,7 @@ Peak memory usage: 1.12 GiB.
 
 现在，相同的查询只需 **0.22 秒** 即可完成——**提速约 40 倍**。这一改进主要来自两个关键优化：
 
-* **稀疏主索引** - `ORDER BY (instance_type, thread_name, ...)` 键意味着 ClickHouse 可以直接跳到与 `instance_type = 'm6i.4xlarge'` 和 `thread_name = 'TCPHandler'` 匹配的粒度块，将需要处理的行数从 2.83 亿减少到仅 1400 万。
+* **稀疏主索引** - `ORDER BY (instance_type, thread_name, ...)` 键意味着 ClickHouse 可以直接跳到与 `instance_type = 'm6i.4xlarge'` 和 `thread_name = 'TCPHandler'` 匹配的粒度，将需要处理的行数从 2.83 亿减少到仅 1400 万。
 * **全文索引** - `message` 列上的 `text_idx` 索引使 `hasToken(message, 'error')` 可以通过索引完成，而不必扫描每条消息字符串，从而进一步减少 ClickHouse 需要读取的数据量。
 
 最终，这样的查询可以轻松支撑实时仪表板——其规模和延迟表现是查询对象存储中的 Parquet 文件无法比拟的。

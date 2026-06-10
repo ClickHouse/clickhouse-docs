@@ -11,14 +11,11 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Материализации \{#materializations\}
+В этом разделе рассматриваются все материализации, доступные в dbt-clickhouse, включая экспериментальные функции.
 
-<ClickHouseSupportedBadge/>
-
-В этом разделе описаны все материализации, доступные в dbt-clickhouse, включая экспериментальные возможности.
-
-<TOCInline toc={toc}  maxHeadingLevel={3} />
+<TOCInline toc={toc} maxHeadingLevel={3} />
 
 ## Общие конфигурации материализаций \{#general-materialization-configurations\}
 

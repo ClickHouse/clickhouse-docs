@@ -15,14 +15,11 @@ import select_source from '@site/static/images/clickstack/getting-started/select
 import otel_collector_start from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import advanced_otel_collector from '@site/static/images/clickstack/getting-started/otel_collector_start.png';
 import clickstack_managed_ui from '@site/static/images/clickstack/getting-started/clickstack_managed_ui.png';
-import BetaBadge from '@theme/badges/BetaBadge';
 import SetupManagedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_setup_managed_ingestion.md';
 import ProviderSelection from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_select_provider.md';
 import UseCaseSelector from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_select_usecase.md';
 import NavigateClickStackUI from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_navigate_managed.md';
 import service_connect from '@site/static/images/_snippets/service_connect.png';
-
-<BetaBadge/>
 
 The easiest way to get started is by deploying **Managed ClickStack** on **ClickHouse Cloud**, which provides a fully managed, secure backend while retaining complete control over ingestion, schema, and observability workflows. This removes the need to operate ClickHouse yourself and delivers a range of benefits: 
 

@@ -7,16 +7,15 @@ keywords: ['バックアップ', 'リストア', 'ポイントインタイムリ
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import backupAndRestore from '@site/static/images/managed-postgres/backup-and-restore.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="backup-and-restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.backup-and-restore-beta" />
 
-Managed Postgres は、自動バックアップとポイントインタイム リカバリによって、データの安全性と可用性を確保します。インスタンスの **Backups** ビューから、バックアップ履歴の確認やリストアの開始ができます。
+Managed Postgres は、自動バックアップとポイントインタイム リカバリによって、データの安全性と可用性を確保します。インスタンスの **バックアップ** ビューから、バックアップ履歴の確認やリストアの開始ができます。
 
-<Image img={backupAndRestore} alt="バックアップ履歴とポイントインタイム リカバリのオプションを表示している Backups ビュー" size="lg" border />
-
+<Image img={backupAndRestore} alt="バックアップ履歴とポイントインタイム リカバリのオプションを表示している バックアップ ビュー" size="lg" border />
 
 ## バックアップ \{#backups\}
 

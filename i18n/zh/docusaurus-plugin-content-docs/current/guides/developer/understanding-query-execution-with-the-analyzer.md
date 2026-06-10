@@ -2,9 +2,9 @@
 slug: /guides/developer/understanding-query-execution-with-the-analyzer
 sidebar_label: '使用analyzer理解查询执行'
 title: '使用analyzer理解查询执行'
-description: '介绍如何使用analyzer来理解 ClickHouse 如何执行你的查询'
+description: '介绍如何使用 analyzer 来了解 ClickHouse 如何执行查询'
 doc_type: 'guide'
-keywords: ['查询执行', 'analyzer', '查询优化', 'EXPLAIN', '性能']
+keywords: ['query execution', 'analyzer', 'query optimization', 'explain', 'performance']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -13,8 +13,6 @@ import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';
 import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
-
-# 使用分析器理解查询执行 \{#understanding-query-execution-with-the-analyzer\}
 
 ClickHouse 可以以极高的速度处理查询，但查询的执行过程并不那么简单。下面我们来看看一个 `SELECT` 查询是如何执行的。为便于说明，我们先在 ClickHouse 的一张表中插入一些数据：
 
@@ -40,14 +38,15 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 
 现在让我们看看在查询执行过程中，各个实体是如何协同工作的。我们将选取几个查询，然后使用 `EXPLAIN` 语句对它们进行分析。
 
-
 ## 解析器 \{#parser\}
 
-解析器的目标是将查询文本转换为 AST（抽象语法树）。可以通过 `EXPLAIN AST` 将此步骤可视化：
+解析器的目标是将查询文本转换为 AST (抽象语法树) 。可以通过 `EXPLAIN AST` 将此步骤可视化：
 
 ```sql
 EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
+```
 
+```response
 ┌─explain────────────────────────────────────────────┐
 │ SelectWithUnionQuery (children 1)                  │
 │  ExpressionList (children 1)                       │
@@ -66,12 +65,11 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 └────────────────────────────────────────────────────┘
 ```
 
-输出是一个抽象语法树（AST），可以按如下方式进行可视化展示：
+输出是一个抽象语法树 (AST) ，可以按如下方式进行可视化展示：
 
 <Image img={analyzer2} alt="AST output" size="md" />
 
-每个节点都有相应的子节点，整棵树表示查询的整体结构。它是一种用于辅助处理查询的逻辑结构。对于最终用户而言（除非对查询执行感兴趣），它并不是特别有用；该工具主要供开发人员使用。
-
+每个节点都有相应的子节点，整棵树表示查询的整体结构。它是一种用于辅助处理查询的逻辑结构。对于最终用户而言 (除非对查询执行感兴趣) ，它并不是特别有用；该工具主要供开发人员使用。
 
 ## Analyzer \{#analyzer\}
 
@@ -81,11 +79,13 @@ ClickHouse 当前为 Analyzer 提供了两种架构。你可以通过设置 `ena
 新架构应当提供一个更好的框架来提升 ClickHouse 的性能。不过，由于它是查询处理流程中的基础组件，也可能对某些查询产生负面影响，而且存在[已知的不兼容性](/operations/analyzer#known-incompatibilities)。你可以通过在查询或用户级别修改 `enable_analyzer` 设置，切换回旧的 analyzer。
 :::
 
-Analyzer 是查询执行中的一个重要步骤。它接受 AST 并将其转换为查询树（query tree）。查询树相对于 AST 的主要优势在于，许多组件会被解析（resolved），例如具体的存储。我们也能知道要从哪张表读取数据，别名也会被解析，树本身还知道所使用的各种数据类型。基于这些优势，analyzer 可以应用各种优化。这些优化是通过一系列“pass”来实现的。每个 pass 会寻找不同类型的优化。你可以在[这里](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)查看所有 pass，下面让我们使用之前的查询来看一下它在实践中的表现：
+Analyzer 是查询执行中的一个重要步骤。它接受 AST 并将其转换为查询树 (query tree) 。查询树相对于 AST 的主要优势在于，许多组件会被解析 (resolved) ，例如具体的存储。我们也能知道要从哪张表读取数据，别名也会被解析，树本身还知道所使用的各种数据类型。基于这些优势，analyzer 可以应用各种优化。这些优化是通过一系列“pass”来实现的。每个 pass 会寻找不同类型的优化。你可以在[这里](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249)查看所有 pass，下面让我们使用之前的查询来看一下它在实践中的表现：
 
 ```sql
 EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────────────────────────┐
 │ QUERY id: 0                                                                            │
 │   PROJECTION                                                                           │
@@ -106,7 +106,9 @@ EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp
 
 ```sql
 EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
+```
 
+```response
 ┌─explain───────────────────────────────────────────────────────────────────────────────────┐
 │ QUERY id: 0                                                                               │
 │   PROJECTION COLUMNS                                                                      │
@@ -130,10 +132,9 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 
 通过对比两次执行，你可以看到别名和投影是如何被解析的。
 
-
 ## 规划器 \{#planner\}
 
-规划器接收一个查询树，并基于它构建查询计划。查询树告诉我们针对某个特定查询“要做什么”，而查询计划则告诉我们“将如何去做”。额外的优化会作为查询计划的一部分执行。你可以使用 `EXPLAIN PLAN` 或 `EXPLAIN` 来查看查询计划（`EXPLAIN` 会执行 `EXPLAIN PLAN`）。
+规划器接收一个查询树，并基于它构建查询计划。查询树告诉我们针对某个特定查询“要做什么”，而查询计划则告诉我们“将如何去做”。额外的优化会作为查询计划的一部分执行。你可以使用 `EXPLAIN PLAN` 或 `EXPLAIN` 来查看查询计划 (`EXPLAIN` 会执行 `EXPLAIN PLAN`) 。
 
 ```sql
 EXPLAIN PLAN WITH
@@ -142,7 +143,9 @@ EXPLAIN PLAN WITH
        FROM session_events
    ) AS total_rows
 SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, count(*) /total_rows * 100 AS percentage FROM session_events GROUP BY type
+```
 
+```response
 ┌─explain──────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))      │
 │   Aggregating                                    │
@@ -166,7 +169,9 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
+```
 
+```response
 ┌─explain──────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))      │
 │ Header: type String                              │
@@ -187,8 +192,7 @@ GROUP BY type
 └──────────────────────────────────────────────────┘
 ```
 
-你已经知道需要为最后一个 Projection 创建的列名（`minimum_date`、`maximum_date` 和 `percentage`），但你可能还希望查看所有需要执行的操作的详细信息。你可以通过将 `actions` 设置为 `1` 来实现。
-
+你已经知道需要为最后一个 Projection 创建的列名 (`minimum_date`、`maximum_date` 和 `percentage`) ，但你可能还希望查看所有需要执行的操作的详细信息。你可以通过将 `actions` 设置为 `1` 来实现。
 
 ```sql
 EXPLAIN actions = 1
@@ -203,7 +207,9 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))                                                                                                │
 │ Actions: INPUT :: 0 -> type String : 0                                                                                                     │
@@ -244,7 +250,6 @@ GROUP BY type
 
 现在您可以查看所有正在使用的输入、函数、别名和数据类型。规划器将应用的部分优化可在[此处](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h)查看。
 
-
 ## 查询管道 \{#query-pipeline\}
 
 查询管道是基于查询计划生成的。查询管道与查询计划非常相似，不同之处在于它不是树形结构，而是图结构。它可以直观展示 ClickHouse 将如何执行查询以及会使用哪些资源。分析查询管道对于定位输入/输出层面的瓶颈非常有帮助。下面我们拿之前的查询来看看其查询管道的执行情况：
@@ -262,7 +267,9 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type;
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────────────┐
 │ (Expression)                                                               │
 │ ExpressionTransform × 2                                                    │
@@ -339,7 +346,7 @@ digraph
 
 接着可以复制该输出并粘贴到[这里](https://dreampuf.github.io/GraphvizOnline)，即可生成如下图：
 
-<Image img={analyzer3} alt="Graph output" size="md" />
+<Image img={analyzer3} alt="图形结果" size="md" />
 
 白色矩形表示一个 pipeline 节点，灰色矩形表示查询计划步骤，而带有数字的 `x` 表示当前使用的输入/输出数量。如果不想以紧凑格式查看它们，可以添加 `compact=0`：
 
@@ -378,7 +385,6 @@ digraph
  n3 -> n5;
 }
 ```
-
 
 <Image img={analyzer4} alt="紧凑图形输出" size="md" />
 

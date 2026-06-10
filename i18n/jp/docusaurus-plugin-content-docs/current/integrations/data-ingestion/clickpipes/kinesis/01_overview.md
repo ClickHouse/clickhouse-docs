@@ -25,10 +25,7 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-
-# Amazon Kinesis と ClickHouse Cloud の統合 \{#integrating-amazon-kinesis-with-clickhouse-cloud\}
-
-Kinesis ClickPipes は、ClickPipes UI を使って手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使ってプログラムからデプロイおよび管理することもできます。
+Kinesis ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムからデプロイおよび管理することもできます。
 
 ## 前提条件 \{#prerequisite\}
 

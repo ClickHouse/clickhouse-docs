@@ -1,5 +1,5 @@
 ---
-title: '操作手册：JSON Schema'
+title: '操作手册：JSON schema'
 description: '为 ClickHouse 中的 JSON 数据选择合适的 schema 方案——类型化列、混合方案、原生 JSON 或 String 存储'
 date: 2026-03-20
 tags: ['操作手册', '数据建模']
@@ -18,7 +18,7 @@ import Details from '@theme/Details';
 
 你的数据会以 JSON 形式到达。ClickHouse 提供了多种存储方式，从完全类型化列到原始 String。应如何选择，取决于你的 schema 是否足够稳定，以及你是否需要按字段进行查询。
 
-**范围：** 本页面介绍存储 JSON 数据时的 schema 设计取舍。不涵盖 [JSON 输入/输出格式](/interfaces/formats/JSON)、[JSON 函数](/sql-reference/functions/json-functions) 或查询语法。有关 JSON 列类型本身的背景信息，请参见 [在适当时使用 JSON](/best-practices/use-json-where-appropriate)。
+**范围：** 本页面介绍存储 JSON 数据时的 schema 设计取舍。不涵盖 [JSON 输入/输出格式](/interfaces/formats/JSON)、[JSON 函数](/sql-reference/functions/json-functions) 或查询语法。有关 JSON 列类型本身的背景信息，请参见 [在适当情况下使用 JSON](/best-practices/use-json-where-appropriate)。
 
 **前提：** 你应熟悉 [ClickHouse 表创建](/sql-reference/statements/create/table)、[MergeTree](/engines/table-engines/mergetree-family/mergetree) 的基础知识以及列类型语法。
 

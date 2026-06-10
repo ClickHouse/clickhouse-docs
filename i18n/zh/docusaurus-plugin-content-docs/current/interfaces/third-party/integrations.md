@@ -15,63 +15,70 @@ ClickHouse, Inc. **不**维护下方列出的工具和库，也未进行充分�
 ## 基础设施产品 \{#infrastructure-products\}
 
 <details>
-<summary>关系型数据库管理系统</summary>
-  
-- [MySQL](https://www.mysql.com)
-  - [mysql2ch](https://github.com/long2ice/mysql2ch)
-  - [ProxySQL](https://github.com/sysown/proxysql/wiki/ClickHouse-Support)
-  - [clickhouse-mysql-data-reader](https://github.com/Altinity/clickhouse-mysql-data-reader)
-  - [horgh-replicator](https://github.com/larsnovikov/horgh-replicator)
-- [PostgreSQL](https://www.postgresql.org)
-  - [clickhousedb_fdw](https://github.com/Percona-Lab/clickhousedb_fdw)
-  - [infi.clickhouse_fdw](https://github.com/Infinidat/infi.clickhouse_fdw)（使用 [infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm)）
-  - [pg2ch](https://github.com/mkabilov/pg2ch)
-  - [clickhouse_fdw](https://github.com/adjust/clickhouse_fdw)
-- [MSSQL](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
-  - [ClickHouseMigrator](https://github.com/zlzforever/ClickHouseMigrator)
+  <summary>关系型数据库管理系统</summary>
+
+  * [MySQL](https://www.mysql.com)
+    * [mysql2ch](https://github.com/long2ice/mysql2ch)
+    * [ProxySQL](https://github.com/sysown/proxysql/wiki/ClickHouse-Support)
+    * [clickhouse-mysql-data-reader](https://github.com/Altinity/clickhouse-mysql-data-reader)
+    * [horgh-replicator](https://github.com/larsnovikov/horgh-replicator)
+  * [PostgreSQL](https://www.postgresql.org)
+    * [clickhousedb&#95;fdw](https://github.com/Percona-Lab/clickhousedb_fdw)
+    * [infi.clickhouse&#95;fdw](https://github.com/Infinidat/infi.clickhouse_fdw) (使用 [infi.clickhouse&#95;orm](https://github.com/Infinidat/infi.clickhouse_orm)) 
+    * [pg2ch](https://github.com/mkabilov/pg2ch)
+    * [clickhouse&#95;fdw](https://github.com/adjust/clickhouse_fdw)
+  * [MSSQL](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
+    * [ClickHouseMigrator](https://github.com/zlzforever/ClickHouseMigrator)
 </details>
 
 <details>
-<summary>消息队列</summary>
-  
-- [Kafka](https://kafka.apache.org)
-  - [clickhouse_sinker](https://github.com/housepower/clickhouse_sinker)（使用 [Go 客户端](https://github.com/ClickHouse/clickhouse-go/)）
-  - [stream-loader-clickhouse](https://github.com/adform/stream-loader)
+  <summary>schema 迁移工具</summary>
+
+  * [clicko](https://github.com/arsura/clicko) - 支持集群感知，并提供 Go 集成。
 </details>
 
 <details>
-<summary>批处理</summary>
+  <summary>消息队列</summary>
 
-- [Spark](https://spark.apache.org)
-  - [spark-clickhouse-connector](https://github.com/housepower/spark-clickhouse-connector)
+  * [Kafka](https://kafka.apache.org)
+    * [clickhouse&#95;sinker](https://github.com/housepower/clickhouse_sinker) (使用 [Go 客户端](https://github.com/ClickHouse/clickhouse-go/)) 
+    * [stream-loader-clickhouse](https://github.com/adform/stream-loader)
 </details>
 
 <details>
-<summary>流处理</summary>
-  
-- [Flink](https://flink.apache.org)
-  - [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
+  <summary>批处理</summary>
+
+  * [Spark](https://spark.apache.org)
+    * [spark-clickhouse-connector](https://github.com/housepower/spark-clickhouse-connector)
 </details>
 
 <details>
-<summary>对象存储</summary>
-  
-- [S3](https://en.wikipedia.org/wiki/Amazon_S3)
-  - [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)
+  <summary>流处理</summary>
+
+  * [Flink](https://flink.apache.org)
+    * [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
 </details>
 
 <details>
-<summary>容器编排</summary>
-  
-- [Kubernetes](https://kubernetes.io)
-  - [clickhouse-operator](https://github.com/Altinity/clickhouse-operator)
+  <summary>对象存储</summary>
+
+  * [S3](https://en.wikipedia.org/wiki/Amazon_S3)
+    * [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)
 </details>
 
 <details>
-<summary>配置管理</summary>
-- [puppet](https://puppet.com)
-  - [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
-  - [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
+  <summary>容器编排</summary>
+
+  * [Kubernetes](https://kubernetes.io)
+    * [clickhouse-operator](https://github.com/Altinity/clickhouse-operator)
+</details>
+
+<details>
+  <summary>配置管理</summary>
+
+  * [puppet](https://puppet.com)
+    * [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
+    * [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
 </details>
 
 <details>

@@ -2,7 +2,7 @@
 title: 'chDB'
 sidebar_label: 'Обзор'
 slug: /chdb
-description: 'chDB — это внутрипроцессный SQL OLAP-движок на базе ClickHouse'
+description: 'chDB — это встраиваемый SQL OLAP-движок на базе ClickHouse'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
@@ -10,11 +10,8 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import dfBench from '@site/static/images/chdb/df_bench.png';
 
-
-# chDB \{#chdb\}
-
-chDB — это быстрый встраиваемый in-process SQL OLAP‑движок на базе [ClickHouse](https://github.com/clickhouse/clickhouse) версии v25.8.2.1.
-Вы можете использовать его, когда вам нужны возможности ClickHouse в языке программирования без необходимости подключаться к отдельному серверу ClickHouse.
+chDB — это быстрый встраиваемый SQL OLAP-движок на базе [ClickHouse](https://github.com/clickhouse/clickhouse) v25.8.2.1.
+Вы можете использовать его, если хотите получить возможности ClickHouse в языке программирования без необходимости подключаться к серверу ClickHouse.
 
 ## Ключевые возможности \{#key-features\}
 

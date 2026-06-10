@@ -15,15 +15,12 @@ import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/conf
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
-
-# Confluent HTTP Sink 커넥터 \{#confluent-http-sink-connector\}
-
-HTTP Sink 커넥터는 데이터 유형에 구애받지 않으므로 Kafka 스키마가 필요하지 않고, 맵(Map) 및 배열(Array)과 같은 ClickHouse 특화 데이터 타입도 지원합니다. 이와 같은 추가적인 유연성으로 인해 설정이 약간 더 복잡해집니다.
+HTTP Sink Connector는 데이터 타입에 구애받지 않으므로 Kafka 스키마가 필요 없고, 맵과 배열 같은 ClickHouse 고유의 데이터 타입도 지원합니다. 이러한 추가 유연성으로 인해 구성은 약간 더 복잡해집니다.
 
 아래에서는 단일 Kafka 토픽에서 메시지를 가져와 ClickHouse 테이블에 행을 삽입하는 간단한 설치 방법을 설명합니다.
 
 :::note
-  HTTP 커넥터는 [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license) 하에 배포됩니다.
+HTTP Connector는 [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license)에 따라 배포됩니다.
 :::
 
 ### 빠른 시작 단계 \{#quick-start-steps\}

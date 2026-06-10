@@ -1,7 +1,7 @@
 ---
 slug: /integrations/jupysql
 sidebar_label: 'Блокноты Jupyter'
-description: 'JupySQL — кроссплатформенный инструмент работы с базами данных для Jupyter.'
+description: 'JupySQL — это кроссплатформенный инструмент для работы с базами данных в Jupyter.'
 title: 'Использование JupySQL с ClickHouse'
 keywords: ['JupySQL', 'блокнот Jupyter', 'Python', 'анализ данных', 'интерактивный SQL']
 doc_type: 'guide'
@@ -14,8 +14,6 @@ import Image from '@theme/IdealImage';
 import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql-plot-1.png';
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
-# Использование JupySQL с ClickHouse \{#using-jupysql-with-clickhouse\}
 
 <CommunityMaintainedBadge />
 
@@ -239,6 +237,7 @@ SELECT * FROM s3(
     <td>1.68</td>
   </tr>
 </table>
+
 
 ```sql
 %%sql

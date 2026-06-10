@@ -1,6 +1,6 @@
 ---
-title: "Использование Grafana"
-description: "Использование Grafana и ClickHouse для обеспечения наблюдаемости"
+title: "Использование Grafana и ClickHouse для обсервабилити"
+description: "Использование Grafana и ClickHouse для обсервабилити"
 slug: /observability/grafana
 keywords: ['Observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
@@ -19,12 +19,10 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-# Использование Grafana и ClickHouse для Observability \{#using-grafana-and-clickhouse-for-observability\}
+Grafana — предпочтительный инструмент визуализации данных обсервабилити в ClickHouse. Это достигается с помощью официального плагина ClickHouse для Grafana. Вы можете следовать инструкциям по установке, приведённым [здесь](/integrations/grafana).
 
-Grafana является предпочтительным инструментом визуализации данных Observability в ClickHouse. Это достигается с помощью официального плагина ClickHouse для Grafana. Пользователи могут следовать инструкциям по установке, приведённым [здесь](/integrations/grafana).
-
-Версия 4 плагина делает логи и трейсы полноправными объектами в новом конструкторе запросов. Это снижает необходимость для SRE-инженеров писать SQL‑запросы и упрощает Observability на основе SQL, продвигая вперёд этот зарождающийся подход.
-Частью этого стало размещение OpenTelemetry (OTel) в основе плагина, поскольку мы считаем, что в ближайшие годы именно это станет фундаментом Observability на основе SQL и определит, как будут собираться данные.
+Плагин V4 выводит журналы и трассировки на первый план благодаря новому интерфейсу конструктора запросов. Это сводит к минимуму необходимость для SRE писать SQL-запросы и упрощает обсервабилити на основе SQL, способствуя развитию этой новой парадигмы.
+Частью этого стало то, что OpenTelemetry (OTel) был положен в основу плагина, поскольку мы считаем, что в ближайшие годы именно он станет фундаментом SQL-ориентированной обсервабилити и определит то, как будут собираться данные.
 
 ## Интеграция с OpenTelemetry \{#open-telemetry-integration\}
 

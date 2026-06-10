@@ -1,6 +1,6 @@
 ---
 title: 'AWS PrivateLink'
-description: '本文档介绍如何通过 AWS PrivateLink 连接 ClickHouse Cloud。'
+description: '本文档介绍了如何使用 AWS PrivateLink 连接到 ClickHouse Cloud。'
 slug: /manage/security/aws-privatelink
 keywords: ['PrivateLink']
 doc_type: 'guide'
@@ -17,9 +17,6 @@ import aws_private_link_modify_dnsname from '@site/static/images/cloud/security/
 import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-remove-private-endpoint.png';
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
-
-
-# AWS PrivateLink \{#aws-privatelink\}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink" />
 
@@ -64,9 +61,9 @@ ClickHouse Cloud 在以下区域支持 [跨区域 PrivateLink](https://aws.amazo
 **请完成以下步骤以启用 AWS PrivateLink**：
 
 1. 获取端点的 &quot;Service name&quot;。
-2. 创建 AWS 端点。
-3. 将 &quot;端点 ID&quot; 添加到 ClickHouse Cloud 组织。
-4. 将 &quot;端点 ID&quot; 添加到 ClickHouse 服务允许列表。
+2. 创建 AWS endpoint。
+3. 将 &quot;Endpoint ID&quot; 添加到 ClickHouse Cloud 组织。
+4. 将 &quot;Endpoint ID&quot; 添加到 ClickHouse 服务允许列表。
 
 您可以在[此处](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)找到 Terraform 示例。
 

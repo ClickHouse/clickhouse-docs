@@ -14,8 +14,6 @@ integration:
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
 
-# ClickHouse Go \{#clickhouse-go\}
-
 ## Быстрый старт \{#quick-start\}
 
 Рассмотрим простой пример на Go. Он подключится к ClickHouse и выполнит запрос `SELECT` к системной базе данных. Для начала вам понадобятся параметры подключения.

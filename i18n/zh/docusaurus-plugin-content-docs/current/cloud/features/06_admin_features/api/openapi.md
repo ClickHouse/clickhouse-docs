@@ -2,9 +2,9 @@
 sidebar_label: '管理 API 密钥'
 slug: /cloud/manage/openapi
 title: '管理 API 密钥'
-description: 'ClickHouse Cloud 提供基于 OpenAPI 的 API，允许您以编程方式管理您的账户及服务的各个方面。'
+description: 'ClickHouse Cloud 提供了一个基于 OpenAPI 的 API，允许你以编程方式管理你的账号以及服务的各个方面。'
 doc_type: 'guide'
-keywords: ['api', 'openapi', 'rest api', '文档', '云管理']
+keywords: ['api', 'openapi', 'rest api', 'documentation', 'Cloud 管理']
 ---
 
 import image_01 from '@site/static/images/cloud/manage/openapi1.png';
@@ -13,9 +13,6 @@ import image_03 from '@site/static/images/cloud/manage/openapi3.png';
 import image_04 from '@site/static/images/cloud/manage/openapi4.png';
 import image_05 from '@site/static/images/cloud/manage/openapi5.png';
 import Image from '@theme/IdealImage';
-
-
-# 管理 API 密钥 \{#managing-api-keys\}
 
 ClickHouse Cloud 提供了一个基于 OpenAPI 的 API，允许你以编程方式管理你的账号以及服务的各个方面。
 
@@ -67,7 +64,6 @@ $ curl --user $KEY_ID:$KEY_SECRET https://api.clickhouse.cloud/v1/organizations
 :::
 
 <Image img={image_05} size="md" alt="API Keys 管理页面" border />
-
 
 ## 端点 \{#endpoints\}
 

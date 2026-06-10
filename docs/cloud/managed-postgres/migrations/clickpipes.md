@@ -22,8 +22,6 @@ import serviceCard from '@site/static/images/managed-postgres/pgpg/servicecard.p
 import startImport from '@site/static/images/managed-postgres/pgpg/startimport.png';
 import tablePicker from '@site/static/images/managed-postgres/pgpg/tablepicker.png';
 
-# Migrate to Managed Postgres using ClickPipes {#migrate-managed-postgres}
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-clickhouse-cloud-beta" />
 
 ClickHouse Cloud now offers ClickPipes to migrate your external PostgreSQL database into a Managed Postgres service. This built-in integration provides a streamlined experience to connect to your source database, export the schema, import it into Managed Postgres, and set up continuous replication.

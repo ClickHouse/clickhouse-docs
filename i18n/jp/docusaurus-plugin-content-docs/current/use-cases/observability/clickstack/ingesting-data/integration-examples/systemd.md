@@ -19,11 +19,8 @@ import search_view from '@site/static/images/clickstack/systemd/systemd-search-v
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack による systemd ログの監視 \{#systemd-logs-clickstack\}
-
 :::note[TL;DR]
-OpenTelemetry コレクターの journald receiver を使用して、ClickStack で systemd ジャーナルログを収集・可視化します。デモ用データセットと事前構築済みダッシュボードが含まれています。
+OpenTelemetry Collector の journald receiver を使用して、ClickStack で systemd のジャーナルログを収集・可視化します。デモ用データセットと構築済みダッシュボードが含まれています。
 :::
 
 ## 既存システムとの統合 \{#existing-systems\}

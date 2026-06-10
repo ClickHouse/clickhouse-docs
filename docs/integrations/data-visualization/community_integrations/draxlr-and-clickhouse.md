@@ -21,8 +21,6 @@ import draxlr_06 from '@site/static/images/integrations/data-visualization/draxl
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Draxlr to ClickHouse
-
 <CommunityMaintainedBadge/>
 
 Draxlr offers an intuitive interface for connecting to your ClickHouse database, enabling your team to explore, visualize, and publish insights within minutes. This guide will walk you through the steps to establish a successful connection.

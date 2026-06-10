@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/anythingllm
 sidebar_label: 'Integrate AnythingLLM'
-title: 'Set up ClickHouse MCP server with AnythingLLM and ClickHouse Cloud'
+title: 'Using ClickHouse MCP server with AnythingLLM'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up AnythingLLM with a ClickHouse MCP server using Docker.'
@@ -15,8 +15,6 @@ import Image from '@theme/IdealImage';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/allm_conversation.png';
 import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers.png';
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
-
-# Using ClickHouse MCP server with AnythingLLM
 
 > This guide explains how to set up [AnythingLLM](https://anythingllm.com/) with a ClickHouse MCP server using Docker
 > and connect it to the ClickHouse example datasets.

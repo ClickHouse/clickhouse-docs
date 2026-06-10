@@ -14,8 +14,6 @@ integration:
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
 
-# ClickHouse Go \{#clickhouse-go\}
-
 ## 빠른 시작 \{#quick-start\}
 
 Go로 작성한 간단한 예제부터 살펴보겠습니다. 이 예제는 ClickHouse에 연결해 `system` 데이터베이스에서 조회합니다. 시작하려면 연결 정보가 필요합니다.

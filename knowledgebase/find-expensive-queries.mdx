@@ -1,8 +1,7 @@
 ---
-title: How to Identify the Most Expensive Queries in ClickHouse
+title: How to identify the most expensive queries in ClickHouse
 description: Learn how to use the `query_log` table in ClickHouse to identify the most memory and CPU-intensive queries across distributed nodes.
 date: 2023-03-26
-slug: find-expensive-queries
 tags: ['Performance and Optimizations']
 keywords: ['Expensive Queries']
 ---
@@ -96,6 +95,10 @@ FROM s3Cluster('default','https://clickhouse-public-datasets.s3.amazonaws.com/yo
 
 Note that in a clustered ClickHouse environment (like ClickHouse Cloud) `initial_query_id` represents the ID of the initial query for distributed query execution launched from the node receiving the request;
 then `query_id` field will contain the ID of the child query executed on a different node.
+
+:::note[Distributed execution is not the only source of differing `query_id` values]
+A single query can also spawn internal sub-queries that are logged with their own `query_id` and `is_initial_query = 0` — most commonly the internal queries ClickHouse runs to evaluate [views](/operations/system-tables/query_views_log). These internal identifiers are assigned by ClickHouse and may not follow the same format as the one reported to your client; for view-related steps you may see `query_id` values that include a label such as `queryView...`. When you want the query exactly as you submitted it, filter on `is_initial_query = 1` (or `query_id = initial_query_id`). This is server-side behaviour of `query_log` and is the same from any client, including the Cloud SQL Console.
+:::
 
 If we add `query_id` to the above query we pin our search around `initial_query_id` = `a7262fa2-bd8b-4b51-a359-621ccf282417` and `hostname()`:
 

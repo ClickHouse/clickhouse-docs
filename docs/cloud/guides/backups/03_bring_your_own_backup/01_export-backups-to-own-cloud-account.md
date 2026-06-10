@@ -59,7 +59,7 @@ In order to use role based authentication, please follow the Secure s3 [setup](h
 2. Access HMAC key and HMAC secret.
 
 <hr/>
-# Backup / Restore
+## Backup / Restore
 
 ## Backup / Restore to AWS S3 Bucket {#backup--restore-to-aws-s3-bucket}
 

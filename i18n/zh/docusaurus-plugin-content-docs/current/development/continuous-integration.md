@@ -61,22 +61,43 @@ git push
 
 ## 样式检查 \{#style-check\}
 
-对代码库执行各种样式检查。
-
-*Style Check* 作业中包含的基础检查：
+对代码库执行各种样式检查。下方每个子检查都对应 [`ci/jobs/check_style.py`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/check_style.py) 中的一个 `testname`，并可通过 `--test <name>` 单独运行 (见下文) 。
 
 ##### cpp \{#cpp\}
 
-使用 [`ci/jobs/scripts/check_style/check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh) 脚本执行基于正则表达式的简单代码样式检查（也可以在本地运行）。\
-如果检查失败，请根据[代码样式指南](style.md)修复样式问题。
+通过 [`check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh) 进行基于正则表达式的 C++ 样式检查。如果检查失败，请根据[代码样式指南](style.md)修复样式问题。
 
-##### codespell, aspell \{#codespell\}
+##### whitespace_check \{#whitespace-check\}
 
-检查语法错误和拼写错误。
+标记 C++ 中逗号后不是用于列对齐的双空格。
 
-##### mypy \{#mypy\}
+##### catch_all \{#catch-all\}
 
-对 Python 代码执行静态类型检查。
+禁止在析构函数、`main` 和 fuzzer 入口点之外使用 `catch (...)`，因为捕获后忽略未知异常并不安全。
+
+##### yamllint \{#yamllint\}
+
+使用 `.yamllint` 对 `.github/` 下的 YAML 工作流文件进行检查。
+
+##### xmllint \{#xmllint\}
+
+验证 `tests/` 和 `programs/` 目录下的 XML 文件。
+
+##### functional_tests_check \{#functional-tests-check\}
+
+检查无状态测试：对 `event_date` 进行过滤的查询必须使用 `>= yesterday()`，而不能使用 `today()` (以避免在午夜前后出现不稳定情况) ，并且测试文件名不得包含 `fail`。
+
+##### test_numbers_check \{#test-numbers-check\}
+
+标记无状态测试编号 (`tests/queries/0_stateless/<NNNNN>_*`) 中的较大间隔。
+
+##### 符号链接 \{#symlinks\}
+
+检测仓库中的失效符号链接。
+
+##### 杂项 \{#various\}
+
+通过 [`various_checks.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/various_checks.sh) 执行的各类仓库检查：对 `system.query_log` / `system.parts` / 等的查询必须按 `currentDatabase` 进行过滤，`Replicated*MergeTree` 的 ZooKeeper 路径必须包含每个测试各自的前缀，集成测试目录必须包含 `__init__.py`，不得包含 UTF BOM，源文件和数据文件不得设置可执行位，第三方 docker-compose 镜像不得使用 `:latest` 标签，等等。
 
 ### 在本地运行样式检查作业 \{#running-style-check-locally\}
 

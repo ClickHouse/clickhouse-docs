@@ -86,7 +86,7 @@ SQLite, ODBC, JDBC, Redis, HDFS 및 Hive와 같은 일부 외부 데이터베이
 
 ### User defined functions \{#user-defined-functions\}
 
-ClickHouse Cloud의 사용자 정의 함수는 현재 [비공개 프리뷰(private preview)](https://clickhouse.com/docs/sql-reference/functions/udf) 단계에 있습니다.
+ClickHouse Cloud의 사용자 정의 함수는 현재 [공개 베타(public beta)](https://clickhouse.com/docs/sql-reference/functions/udf) 단계에 있습니다.
 
 #### 설정 동작 \{#udf-settings-behavior\}
 

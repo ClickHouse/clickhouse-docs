@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/rocketbi
 keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
 description: 'RocketBI — это платформа самообслуживания для бизнес-аналитики, которая помогает быстро анализировать данные, создавать drag-n-drop-визуализации и совместно работать с коллегами прямо в браузере.'
-title: 'ЦЕЛЬ: создайте свою первую панель мониторинга'
+title: 'Цель: создайте свою первую панель мониторинга с Rocket.BI'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -33,18 +33,16 @@ import rocketbi_17 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Цель: создать свою первую панель мониторинга с Rocket.BI \{#goal-build-your-first-dashboard-with-rocketbi\}
-
 <CommunityMaintainedBadge />
 
 В этом руководстве вы установите Rocket.BI и создадите простую панель мониторинга.
-Ниже показана эта панель мониторинга:
+Вот как выглядит эта панель мониторинга:
 
-<Image size="md" img={rocketbi_01} alt="Панель мониторинга Rocket BI, показывающая метрики продаж с графиками и KPI" border />
+<Image size="md" img={rocketbi_01} alt="Панель мониторинга Rocket BI с метриками продаж, диаграммами и KPI" border />
 
 <br />
 
-Вы можете [открыть панель мониторинга по этой ссылке.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
+Вы можете посмотреть [эту панель мониторинга по ссылке.](https://demo.rocket.bi/dashboard/sales-dashboard-7?token=7eecf750-cbde-4c53-8fa8-8b905fec667e)
 
 ## Установка \{#install\}
 

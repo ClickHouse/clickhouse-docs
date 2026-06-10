@@ -33,14 +33,14 @@ CREATE NAMED COLLECTION ai_credentials AS
 
 ### 命名集合参数 \{#named-collection-parameters\}
 
-| 参数            | 类型     | 默认值    | 描述                                                     |
-| ------------- | ------ | ------ | ------------------------------------------------------ |
-| `provider`    | String | —      | 模型提供商。支持：`'openai'`、`'anthropic'`。请参见下方说明。             |
-| `endpoint`    | String | —      | API 端点 URL。                                            |
-| `model`       | String | —      | 模型名称 (例如 `'gpt-4o-mini'`、`'text-embedding-3-small'`) 。 |
-| `api_key`     | String | —      | 用于提供商身份验证的密钥。                                          |
-| `max_tokens`  | UInt64 | `1024` | 每次 API 调用可输出的最大标记数。                                    |
-| `api_version` | String | —      | API 版本字符串。Anthropic 使用此参数 (`'2023-06-01'`) 。           |
+| 参数            | 类型     | 默认值    | 描述                                                           |
+| ------------- | ------ | ------ | ------------------------------------------------------------ |
+| `provider`    | String | —      | 模型提供商。支持：`'openai'`、`'anthropic'`。请参见下方说明。                   |
+| `endpoint`    | String | —      | API 端点 URL。                                                  |
+| `model`       | String | —      | 模型名称 (例如 `'gpt-4o-mini'`、`'text-embedding-3-small'`) 。       |
+| `api_key`     | String | —      | 用于提供商身份验证的密钥。可选：省略时不会发送身份验证请求头，因此可用于指向不需要身份验证的 OpenAI 兼容服务器。 |
+| `max_tokens`  | UInt64 | `1024` | 每次 API 调用可输出的最大标记数。                                          |
+| `api_version` | String | —      | API 版本字符串。Anthropic 使用此参数 (`'2023-06-01'`) 。                 |
 
 :::note
 任何兼容 OpenAI 的 API (例如 vLLM、Ollama、LiteLLM) 都可通过将 `provider` 设为 `'openai'`，并将 `endpoint` 指向你的服务来使用。
@@ -52,7 +52,7 @@ CREATE NAMED COLLECTION ai_credentials AS
 
 ### 限制 端点 的主机 \{#restricting-endpoint-hosts\}
 
-AI 命名集合中的 `endpoint` URL 是服务器以自身身份连接的出站目标端，并会在请求头中携带该命名集合的 `api_key`。默认情况下，ClickHouse 允许连接任意主机。若要将函数限制为一组特定的提供商，请在服务器配置中设置 [`remote_url_allow_hosts`](/operations/server-configuration-parameters/settings#remote_url_allow_hosts)，例如：
+AI 命名集合中的 `endpoint` URL 是服务器以自身身份连接的出站目标端，并且可能会在请求头中携带 (如果已指定) 该命名集合的 `api_key`。默认情况下，ClickHouse 允许连接任意主机。若要将函数限制为一组特定的提供商，请在服务器配置中设置 [`remote_url_allow_hosts`](/operations/server-configuration-parameters/settings#remote_url_allow_hosts)，例如：
 
 ```xml
 <remote_url_allow_hosts>
@@ -113,7 +113,7 @@ ORDER BY event_time DESC;
 从而约束模型严格返回所提供标签中的一个。当响应以 JSON
 对象 `{"category": "..."}` 的形式返回时，会提取其中的标签并返回该标签字符串。
 
-第一个参数是一个命名集合，用于指定提供商、模型、端点和 API 密钥。
+第一个参数是一个命名集合，用于指定提供商、模型、端点，以及可选的 API 密钥。
 
 **语法**
 
@@ -125,7 +125,7 @@ aiClassify(collection, text, categories[, temperature])
 
 **参数**
 
-* `collection` — 包含提供商凭据和设置的命名集合名称。[`String`](/sql-reference/data-types/string)
+* `collection` — 包含提供商凭据和配置的命名集合名称。[`String`](/sql-reference/data-types/string)
 * `text` — 要分类的文本。[`String`](/sql-reference/data-types/string)
 * `categories` — 候选类别标签的常量列表。[`Array(String)`](/sql-reference/data-types/array)
 * `temperature` — 控制随机性的采样温度。默认值：`0.0`。[`Float64`](/sql-reference/data-types/float)
@@ -155,6 +155,66 @@ SELECT body, aiClassify('ai_credentials', body, ['bug', 'question', 'feature']) 
 ```response title=Response
 ```
 
+## aiEmbed \{#aiEmbed\}
+
+引入版本：v26.6.0
+
+使用已配置的 AI 提供商为给定文本生成嵌入向量。
+
+该函数会将文本发送到已配置的嵌入端点，并以 `Array(Float32)` 形式返回结果向量。
+在单个块中的行内，输入会按批次分组，每个 HTTP 请求最多包含
+[`ai_function_embedding_max_batch_size`](/operations/settings/settings#ai_function_embedding_max_batch_size)
+个条目，以减少单次调用的开销。
+
+第一个参数是一个命名集合，用于指定提供商、模型、端点，以及可选的 API 密钥。
+可选参数 `dimensions` 在模型支持时 (例如 OpenAI 的 `text-embedding-3-*`)
+会请求返回指定大小的向量；否则返回模型的原生大小。
+
+**语法**
+
+```sql
+aiEmbed(collection, text[, dimensions])
+```
+
+**参数**
+
+* `collection` — 包含提供商凭据和配置的命名集合名称。[`String`](/sql-reference/data-types/string)
+* `text` — 要嵌入的文本。[`String`](/sql-reference/data-types/string)
+* `dimensions` — 输出向量的可选目标维数。`0` 或省略表示使用模型的原生维数。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+嵌入向量；如果输入为 NULL 或空值、请求失败且禁用了 `ai_function_throw_on_error`，或者超出配额且禁用了 `ai_function_throw_on_quota_exceeded`，则返回空数组。[`Array(Float32)`](/sql-reference/data-types/array)
+
+**示例**
+
+**嵌入单个字符串**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world')
+```
+
+```response title=Response
+```
+
+**显式指定维度**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', 'Hello world', 256)
+```
+
+```response title=Response
+```
+
+**对一列文本进行嵌入**
+
+```sql title=Query
+SELECT aiEmbed('ai_credentials', title, 256) FROM articles LIMIT 10
+```
+
+```response title=Response
+```
+
 ## aiExtract \{#aiExtract\}
 
 引入版本：v26.4.0
@@ -167,7 +227,7 @@ JSON 编码的 schema，格式如 `'{"field_a": "description of field a", "field
 在指令模式下，函数返回提取出的值 (纯字符串) ；如果未找到任何内容，则返回空字符串。
 在 schema 模式下，函数返回一个 JSON 对象字符串，其键与所请求的 schema 一致；缺失字段为 `null`。
 
-第一个参数是一个命名集合，用于指定提供商、模型、端点和 API 密钥。
+第一个参数是一个命名集合，用于指定提供商、模型、端点以及可选的 API 密钥。
 
 **语法**
 
@@ -219,7 +279,7 @@ SELECT aiExtract('ai_credentials', review, '{"sentiment": "positive, negative or
 可以提供一个可选的系统提示来引导模型的行为 (例如语气、格式、角色) 。
 如果未提供系统提示，则默认系统提示为：`You are a helpful assistant. Provide a clear and concise response.`
 
-第一个参数是一个命名集合，用于指定提供商、模型、端点和 API 密钥。
+第一个参数是一个命名集合，用于指定提供商、模型、端点，以及可选的 API 密钥。
 
 **语法**
 
@@ -278,7 +338,7 @@ SELECT article_title, aiGenerate('ai_credentials', concat('Summarize in one sent
 
 还可以通过第四个参数传入额外的风格或方言说明 (例如 `'keep technical terms untranslated'`) 。
 
-第一个参数是一个命名集合，用于指定提供商、模型、端点和 API 密钥。
+第一个参数是一个命名集合，用于指定提供商、模型、端点，以及可选的 API 密钥。
 
 **语法**
 
@@ -290,7 +350,7 @@ aiTranslate(collection, text, target_language[, instructions[, temperature]])
 
 **参数**
 
-* `collection` — 包含提供商凭证和配置的 命名集合 名称。[`String`](/sql-reference/data-types/string)
+* `collection` — 包含凭据和配置的 命名集合 名称。[`String`](/sql-reference/data-types/string)
 * `text` — 要转换的文本。[`String`](/sql-reference/data-types/string)
 * `target_language` — 目标语言名称或 BCP-47 代码 (例如 `'French'`、`'es-MX'`) 。[`String`](/sql-reference/data-types/string)
 * `instructions` — 提供给翻译器的可选常量附加说明。[`String`](/sql-reference/data-types/string)

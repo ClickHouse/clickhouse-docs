@@ -15,19 +15,16 @@ import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png'
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# 使用 Rotel 在 ClickStack 中监控 AWS Lambda 日志 \{#lambda-clickstack\}
+:::note[简而言之]
+本指南将向您展示如何使用 Rotel Lambda Extension 收集函数日志、扩展日志以及 OpenTelemetry 数据，并将其直接转发到 ClickHouse，从而在 ClickStack 中监控 AWS Lambda 函数。您将了解如何：
 
-<CommunityMaintainedBadge/>
+* 将 Rotel Lambda Extension layer 部署到您的 Lambda 函数
+* 配置该扩展，将日志和链路追踪导出到 ClickStack
+* 可选地禁用 CloudWatch Logs 以降低成本
 
-:::note[摘要]
-本指南演示如何使用 Rotel Lambda Extension，将函数日志、扩展日志以及 OpenTelemetry 数据直接收集并转发到 ClickHouse，从而利用 ClickStack 监控 AWS Lambda 函数。您将学习如何：
-
-- 为 Lambda 函数部署 Rotel Lambda Extension 层
-- 配置扩展，将日志和追踪数据导出到 ClickStack
-- （可选）禁用 CloudWatch Logs 以降低成本
-
-通过完全绕过 CloudWatch Logs，此方案可以显著降低 Lambda 的可观测性成本。
+这种方法通过完全绕过 CloudWatch Logs，可以显著降低 Lambda 可观测性成本。
 
 所需时间：5–10 分钟
 :::

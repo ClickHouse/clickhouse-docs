@@ -2,9 +2,9 @@
 sidebar_label: 'Обновления'
 slug: /manage/updates
 title: 'Обновления'
-description: 'С ClickHouse Cloud вам никогда не придётся беспокоиться об установке патчей и обновлений. Мы регулярно развёртываем обновления, включающие исправления, новые функции и улучшения производительности.'
+description: 'С ClickHouse Cloud вам никогда не придётся беспокоиться об установке патчей и обновлений. Мы периодически развёртываем обновления, которые включают исправления, новые функции и улучшения производительности.'
 doc_type: 'guide'
-keywords: ['обновления', 'управление версиями', 'возможности облака', 'обслуживание', 'обновления']
+keywords: ['обновления', 'управление версиями', 'возможности ClickHouse Cloud', 'обслуживание', 'обновление']
 ---
 
 import Image from '@theme/IdealImage';
@@ -13,9 +13,6 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
-
-
-# Обновления \{#upgrades\}
 
 С ClickHouse Cloud вам никогда не придётся беспокоиться об установке патчей и обновлений. Мы периодически развёртываем обновления, которые включают исправления, новые функции и улучшения производительности. Полный список новых возможностей ClickHouse смотрите в нашем [Cloud changelog](/whats-new/changelog/cloud).
 

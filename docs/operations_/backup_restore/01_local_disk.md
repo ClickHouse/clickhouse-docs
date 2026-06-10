@@ -2,7 +2,7 @@
 description: 'Details backup/restore to or from a local disk'
 sidebar_label: 'Local disk / S3 disk'
 slug: /operations/backup/disk
-title: 'Backup and restore in ClickHouse'
+title: 'BACKUP / RESTORE to disk'
 doc_type: 'guide'
 ---
 
@@ -10,8 +10,6 @@ import GenericSettings from '@site/docs/operations_/backup_restore/_snippets/_ge
 import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_settings.md';
 import ExampleSetup from '@site/docs/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
-
-# BACKUP / RESTORE to disk {#backup-to-a-local-disk}
 
 ## Syntax {#syntax}
 

@@ -1,5 +1,5 @@
 ---
-title: '集成 OpenTelemetry'
+title: '集成 OpenTelemetry 进行数据采集'
 description: '将 OpenTelemetry 与 ClickHouse 集成以实现可观测性'
 slug: /observability/integrating-opentelemetry
 keywords: ['可观测性', 'OpenTelemetry']
@@ -16,14 +16,11 @@ import observability_8 from '@site/static/images/use-cases/observability/observa
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
 
+任何可观测性解决方案都需要一种收集并导出日志和链路追踪的手段。为此，ClickHouse 推荐使用 [OpenTelemetry (OTel) 项目](https://opentelemetry.io/)。
 
-# 集成 OpenTelemetry 进行数据采集 \{#integrating-opentelemetry-for-data-collection\}
+“OpenTelemetry 是一个可观测性框架和工具包，旨在创建和管理链路追踪、指标和日志等遥测数据。”
 
-任何可观测性解决方案都需要具备采集并导出日志和追踪数据的能力。为此，ClickHouse 推荐使用 [OpenTelemetry (OTel) 项目](https://opentelemetry.io/)。
-
-“OpenTelemetry 是一个可观测性框架和工具集，旨在创建和管理追踪、指标和日志等遥测数据。”
-
-与 ClickHouse 或 Prometheus 不同，OpenTelemetry 并不是一个可观测性后端，而是专注于遥测数据的生成、采集、管理和导出。虽然 OpenTelemetry 的初衷是通过特定语言的 SDKs 让你可以轻松为应用或系统进行埋点/插桩，但它已经扩展为通过 OpenTelemetry Collector 来采集日志——这是一个接收、处理并导出遥测数据的代理或中间层组件。
+与 ClickHouse 或 Prometheus 不同，OpenTelemetry 并不是可观测性后端，而是专注于遥测数据的生成、收集、管理和导出。尽管 OpenTelemetry 最初的目标是让你能够轻松使用特定语言的 SDK 为应用程序或系统添加埋点，但现在它的能力已扩展到通过 OpenTelemetry collector 收集日志——它是一个用于接收、处理和导出遥测数据的 agent 或代理。
 
 ## 与 ClickHouse 相关的组件 \{#clickhouse-relevant-components\}
 
@@ -406,14 +403,14 @@ service:
 * **pipelines** - 上述配置强调了对 [pipelines](https://opentelemetry.io/docs/collector/configuration/#pipelines) 的使用，它由一组 receivers、processors 和 exporters 组成，并分别为 logs 和 traces 配置了一个 pipeline。
 * **endpoint** - 与 ClickHouse 的通信通过 `endpoint` 参数进行配置。连接字符串 `tcp://localhost:9000?dial_timeout=10s&compress=lz4&async_insert=1` 会使通信通过 TCP 进行。如果你因为流量切换等原因更偏好使用 HTTP，请按[此处](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)所述修改该连接字符串。关于在连接字符串中指定用户名和密码等完整连接详情，请参见[此处](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/clickhouseexporter/README.md#configuration-options)。
 
-**Important:** 请注意，上述连接字符串同时启用了压缩 (lz4) 以及异步写入。我们建议始终同时启用这两项。有关异步写入的更多详情，请参见 [Batching](#batching)。压缩应始终显式指定，在较旧版本的 exporter 中默认不会启用。
+**Important:** 请注意，上述连接字符串同时启用了压缩 (lz4) 以及异步插入。我们建议始终同时启用这两项。有关异步插入的更多详情，请参见 [Batching](#batching)。压缩应始终显式指定，在较旧版本的 exporter 中默认不会启用。
 
 * **ttl** - 此处的值决定数据保留时长。更多详情见 “Managing data”。该值应以小时为单位指定，例如 72h。我们在下面的示例中禁用了生存时间 (TTL)，因为我们的数据来自 2019 年，如果插入则会被 ClickHouse 立即删除。
 * **traces&#95;table&#95;name** 和 **logs&#95;table&#95;name** - 决定 logs 和 traces 表的名称。
 * **create&#95;schema** - 决定在启动时是否使用默认 schema 创建表。默认值为 true，便于快速上手。你应将其设为 false 并自行定义 schema。
 * **database** - 目标数据库。
 * **retry&#95;on&#95;failure** - 用于确定是否重试失败批次的设置。
-* **batch** - batch processor 确保事件以批次形式发送。我们建议该值至少为 10,000，超时时间为 5s (如果内存允许，可使用最高 100,000 的值) 。两者中任一条件先被触发，都会启动将该批次 flush 到 exporter。降低这些值将带来更低延迟的 pipeline，使数据更快可用于查询，但代价是向 ClickHouse 发送更多连接和批次。如果你未使用[异步写入](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)，不建议这么做，因为这可能导致 ClickHouse 中出现[过多分区片段](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts)问题。相反，如果你在使用异步写入，数据可用于查询的时间还将取决于异步写入设置——尽管数据仍会更早从 connector 中被 flush 出来。更多详情请参见 [Batching](#batching)。
+* **batch** - batch processor 确保事件以批次形式发送。我们建议该值至少为 10,000，超时时间为 5s (如果内存允许，可使用最高 100,000 的值) 。两者中任一条件先被触发，都会启动将该批次 flush 到 exporter。降低这些值将带来更低延迟的 pipeline，使数据更快可用于查询，但代价是向 ClickHouse 发送更多连接和批次。如果你未使用[异步插入](https://clickhouse.com/blog/asynchronous-data-inserts-in-clickhouse)，不建议这么做，因为这可能导致 ClickHouse 中出现[过多分区片段](https://clickhouse.com/blog/common-getting-started-issues-with-clickhouse#1-too-many-parts)问题。相反，如果你在使用异步插入，数据可用于查询的时间还将取决于异步插入设置——尽管数据仍会更早从 connector 中被 flush 出来。更多详情请参见 [Batching](#batching)。
 * **sending&#95;queue** - 控制发送队列的大小。队列中的每一项都包含一个 batch。如果该队列被占满，例如由于 ClickHouse 不可达但事件仍在持续到达，则批次会被丢弃。
 
 假设用户已经解压了结构化日志文件并在本地运行了一个[本地 ClickHouse 实例](/install) (使用默认认证) ，可以通过以下命令运行此配置：
@@ -430,13 +427,14 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 
 运行后，使用一个简单的查询来确认已经存在日志事件：
 
-
 ```sql
 SELECT *
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Timestamp:              2019-01-22 06:46:14.000000000
@@ -490,7 +488,6 @@ Links.SpanId:           []
 Links.TraceState:   []
 Links.Attributes:   []
 ```
-
 
 ## 开箱即用的 schema \{#out-of-the-box-schema\}
 

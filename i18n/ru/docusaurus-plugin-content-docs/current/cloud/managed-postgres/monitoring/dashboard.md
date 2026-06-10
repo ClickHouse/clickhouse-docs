@@ -7,19 +7,17 @@ keywords: ['Managed Postgres', 'мониторинг', 'дашборд', 'кон
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import dashboard from '@site/static/images/managed-postgres/monitoring/dashboard.png';
 
-# Дашборд мониторинга \{#monitoring-dashboard\}
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.monitoring-dashboard-beta" />
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="monitoring-dashboard" />
+Вкладка **Мониторинг** на левой боковой панели экземпляра показывает
+диаграммы использования ресурсов и активности базы данных в реальном
+времени за выбранный временной период.
 
-Вкладка **Monitoring** на левой панели экземпляра показывает
-графики использования ресурсов и активности базы данных в реальном времени за
-выбранный период.
-
-<Image img={dashboard} alt="Дашборд мониторинга с показателями IOPS, загрузки CPU, памяти, диска, сетевого трафика, размера базы данных, подключений, пропускной способности, транзакций, коэффициента попаданий в кэш и взаимоблокировок" size="lg" border />
+<Image img={dashboard} alt="Панель мониторинга, показывающая IOPS, использование CPU, память, диск, сетевой трафик, размер базы данных, подключения, пропускную способность, транзакции, коэффициент попаданий в кэш и взаимные блокировки" size="lg" border />
 
 ## Панели \{#panels\}
 

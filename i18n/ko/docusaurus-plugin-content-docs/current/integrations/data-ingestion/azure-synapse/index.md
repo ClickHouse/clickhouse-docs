@@ -2,8 +2,8 @@
 sidebar_label: 'Azure Synapse'
 slug: /integrations/azure-synapse
 description: 'ClickHouse와 함께 사용하는 Azure Synapse 소개'
-keywords: ['clickhouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', 'data']
-title: 'Azure Synapse를 ClickHouse와 통합하기'
+keywords: ['ClickHouse', 'azure synapse', 'azure', 'synapse', 'microsoft', 'azure spark', '데이터']
+title: 'ClickHouse와 Azure Synapse 통합'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -16,17 +16,14 @@ import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingest
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Azure Synapse를 ClickHouse와 통합하기 \{#integrating-azure-synapse-with-clickhouse\}
+[Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics)는 빅데이터, 데이터 과학, 데이터 웨어하우징을 결합하여 빠르고 대규모의 데이터 분석을 가능하게 하는 통합 분석 서비스입니다.
+Synapse에서는 Spark 풀이 필요에 따라 확장 가능한 [Apache Spark](https://spark.apache.org) 클러스터를 제공하므로, 복잡한 데이터 변환, 머신 러닝, 외부 시스템과의 통합을 수행할 수 있습니다.
 
-<ClickHouseSupportedBadge/>
+이 문서에서는 Azure Synapse에서 Apache Spark를 사용할 때 [ClickHouse Spark 커넥터](/integrations/apache-spark/spark-native-connector)를 통합하는 방법을 설명합니다.
 
-[Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics)는 빅 데이터, 데이터 과학, 데이터 웨어하우스를 결합하여 빠르고 대규모 데이터 분석을 가능하게 하는 통합 분석 서비스입니다.
-Synapse 내의 Spark 풀은 온디맨드 방식으로 확장 가능한 [Apache Spark](https://spark.apache.org) 클러스터를 제공하여 복잡한 데이터 변환, 머신 러닝, 외부 시스템과의 통합을 실행할 수 있게 합니다.
-
-이 문서에서는 Azure Synapse에서 Apache Spark를 사용할 때 [ClickHouse Spark connector](/integrations/apache-spark/spark-native-connector)를 통합하는 방법을 보여줍니다.
-
-<TOCInline toc={toc}></TOCInline>
+<TOCInline toc={toc} />
 
 ## 커넥터의 종속성 추가 \{#add-connector-dependencies\}
 

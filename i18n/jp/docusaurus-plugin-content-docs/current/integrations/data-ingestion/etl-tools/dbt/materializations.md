@@ -11,14 +11,11 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# マテリアライゼーション \{#materializations\}
+このセクションでは、実験的機能を含め、dbt-clickhouse で利用可能なすべてのマテリアライゼーションを扱います。
 
-<ClickHouseSupportedBadge/>
-
-このセクションでは、dbt-clickhouse で利用可能なすべてのマテリアライゼーション（実験的な機能を含む）について説明します。
-
-<TOCInline toc={toc}  maxHeadingLevel={3} />
+<TOCInline toc={toc} maxHeadingLevel={3} />
 
 ## 一般的なマテリアライゼーション設定 \{#general-materialization-configurations\}
 

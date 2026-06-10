@@ -263,7 +263,9 @@ ORDER BY
     tempMax DESC,
     date ASC
 LIMIT 5
+```
 
+```response
 ┌─maxTemp─┬─location──────────┬─name───────────────────────────────────────────┬───────date─┐
 │    56.7 │ (-116.8667,36.45) │ CA GREENLAND RCH                               │ 1913-07-10 │
 │    56.7 │ (-115.4667,32.55) │ MEXICALI (SMN)                                 │ 1949-08-20 │
@@ -276,7 +278,6 @@ LIMIT 5
 ```
 
 2023년 기준 [Furnace Creek](https://www.google.com/maps/place/36%C2%B027'00.0%22N+116%C2%B052'00.1%22W/@36.1329666,-116.1104099,8.95z/data=!4m5!3m4!1s0x0:0xf2ed901b860f4446!8m2!3d36.45!4d-116.8667)의 [공식 기록](https://en.wikipedia.org/wiki/List_of_weather_records#Highest_temperatures_ever_recorded)과도 신뢰할 만할 정도로 잘 일치합니다.
-
 
 ### 최고의 스키 리조트 \{#best-ski-resorts\}
 
@@ -334,7 +335,9 @@ FROM
 )
 ORDER BY total_snow DESC
 LIMIT 5
+```
 
+```response
 ┌─resort_name──────────┬─total_snow_m─┬─resort_location─┬─month_year─┐
 │ Sugar Bowl, CA       │        7.799 │ (-120.3,39.27)  │     201902 │
 │ Donner Ski Ranch, CA │        7.799 │ (-120.34,39.31) │     201902 │
@@ -346,7 +349,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.750 sec. Processed 689.10 million rows, 3.20 GB (918.20 million rows/s., 4.26 GB/s.)
 Peak memory usage: 67.66 MiB.
 ```
-
 
 ## 감사의 글 \{#credits\}
 

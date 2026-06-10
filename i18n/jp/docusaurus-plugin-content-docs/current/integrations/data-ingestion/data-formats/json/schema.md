@@ -1,5 +1,5 @@
 ---
-title: 'JSON スキーマの設計'
+title: 'スキーマの設計'
 slug: /integrations/data-formats/json/schema
 description: 'JSON スキーマを最適に設計する方法'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 'structured', 'semi-structured']
@@ -12,10 +12,7 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
-
-# スキーマ設計 \{#designing-your-schema\}
-
-JSON データの初期スキーマを確立したり、たとえば S3 上の JSON データファイルに対してそのままクエリを実行するために [schema inference](/integrations/data-formats/json/inference) を利用することはできますが、最終的にはデータに対して最適化されたバージョン付きスキーマを確立することを目指すべきです。以下では、JSON 構造をモデリングするための推奨アプローチについて説明します。
+[スキーマ推論](/integrations/data-formats/json/inference) は、JSON データの初期スキーマの確立や、たとえば S3 上の JSON データファイルをその場でクエリする際に使用できますが、データに対しては最適化されたバージョン管理されたスキーマを確立することを目指すべきです。以下では、JSON 構造をモデリングするための推奨アプローチについて説明します。
 
 ## 静的 JSON と動的 JSON \{#static-vs-dynamic-json\}
 
@@ -164,7 +161,9 @@ SELECT
  address.street,
  company.name
 FROM people
+```
 
+```response
 ┌─address.street────┬─company.name─┐
 │ ['Victor Plains'] │ ClickHouse   │
 └───────────────────┴──────────────┘
@@ -175,7 +174,9 @@ FROM people
 ```sql
 SELECT address.street[1] AS street
 FROM people
+```
 
+```response
 ┌─street────────┐
 │ Victor Plains │
 └───────────────┘
@@ -201,7 +202,6 @@ CREATE TABLE people
 ENGINE = MergeTree
 ORDER BY company.name
 ```
-
 
 ### デフォルト値の扱い \{#handling-default-values\}
 
@@ -235,13 +235,15 @@ JSON オブジェクトは構造化されていても、多くの場合は既知
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","city":"Wisokyburgh","zipcode":"90566-7771"}],"website":"clickhouse.com","company":{"name":"ClickHouse"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-この1行だけをクエリしてみると、省略されたカラム（サブオブジェクトを含む）にはデフォルト値が使われていることが分かります。
+この1行だけをクエリしてみると、省略されたカラム (サブオブジェクトを含む) にはデフォルト値が使われていることが分かります。
 
 ```sql
 SELECT *
@@ -273,14 +275,15 @@ FORMAT PrettyJSONEachRow
   },
   "dob": "2007-03-31"
 }
+```
 
+```response
 1 row in set. Elapsed: 0.001 sec.
 ```
 
 :::note 空の値とnullの区別
 値が空である場合と、値が指定されていない場合を区別する必要がある場合は、[Nullable](/sql-reference/data-types/nullable) 型を使用できます。ただし、これは絶対に必要な場合を除き[避けるべきです](/best-practices/select-data-types#avoid-nullable-columns)。これらのカラムに対しては、ストレージおよびクエリのパフォーマンスに悪影響を与えるためです。
 :::
-
 
 ### 新しいカラムの扱い \{#handling-new-columns\}
 
@@ -325,13 +328,15 @@ ClickHouse はデフォルトで、ペイロード内に含まれていてもス
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-カラムは、[`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) コマンドを使用してスキーマに追加できます。デフォルト値は `DEFAULT` 句で指定でき、その後の挿入時に値が指定されなかった場合に使用されます。このカラムの値を持たない行（カラムが作成される前に挿入された行）も、このデフォルト値を返します。`DEFAULT` 値が指定されていない場合は、その型のデフォルト値が使用されます。
+カラムは、[`ALTER TABLE ADD COLUMN`](/sql-reference/statements/alter/column#add-column) コマンドを使用してスキーマに追加できます。デフォルト値は `DEFAULT` 句で指定でき、その後の挿入時に値が指定されなかった場合に使用されます。このカラムの値を持たない行 (カラムが作成される前に挿入された行) も、このデフォルト値を返します。`DEFAULT` 値が指定されていない場合は、その型のデフォルト値が使用されます。
 
 例:
 
@@ -350,7 +355,9 @@ INSERT INTO people FORMAT JSONEachRow
 
 -- select 2 rows
 SELECT id, nickname FROM people
+```
 
+```response
 ┌─id─┬─nickname────┐
 │  2 │ Clicky      │
 │  1 │ no_nickname │
@@ -358,7 +365,6 @@ SELECT id, nickname FROM people
 
 2 rows in set. Elapsed: 0.001 sec.
 ```
-
 
 ## 半構造化／動的な構造の扱い方 \{#handling-semi-structured-dynamic-structures\}
 
@@ -496,7 +502,7 @@ SELECT id, nickname FROM people
 このアプローチは、プロトタイピングやデータエンジニアリングのタスクに有用です。本番環境では、必要な場合にのみ動的なサブ構造に対して `JSON` を使用するようにしてください。
 
 :::note パフォーマンスに関する考慮事項
-単一の JSON カラムは、不要な JSON パスをスキップ（保存しない）し、[type hints](#using-type-hints-and-skipping-paths) を使用することで最適化できます。type hints を使用すると、ユーザーはサブカラムの型を明示的に定義できるため、クエリ時の推論および間接処理を省略できます。これにより、明示的なスキーマを使用した場合と同等のパフォーマンスを実現できます。詳細については [&quot;Using type hints and skipping paths&quot;](#using-type-hints-and-skipping-paths) を参照してください。
+単一の JSON カラムは、不要な JSON パスをスキップ (保存しない) し、[型ヒント](#using-type-hints-and-skipping-paths) を使用することで最適化できます。型ヒントを使用すると、ユーザーはサブカラムの型を明示的に定義できるため、クエリ時の推論および間接処理を省略できます。これにより、明示的なスキーマを使用した場合と同等のパフォーマンスを実現できます。詳細については [&quot;Using type hints and skipping paths&quot;](#using-type-hints-and-skipping-paths) を参照してください。
 :::
 
 ここで扱う単一の JSON カラム用のスキーマはシンプルです。
@@ -513,7 +519,7 @@ ORDER BY json.username;
 ```
 
 :::note
-`username` カラムをソートや主キーで使用するため、JSON 定義内で `username` カラムに対して [type hint](#using-type-hints-and-skipping-paths) を指定しています。これにより、ClickHouse はこのカラムが null にならないことを把握でき、どの `username` サブカラムを使用すべきかを判別できます（型ごとに複数存在し得るため、指定しないとあいまいになります）。
+`username` カラムをソートや主キーで使用するため、JSON 定義内で `username` カラムに対して [型ヒント](#using-type-hints-and-skipping-paths) を指定しています。これにより、ClickHouse はこのカラムが null にならないことを把握でき、どの `username` サブカラムを使用すべきかを判別できます (型ごとに複数存在し得るため、指定しないとあいまいになります) 。
 :::
 
 上記テーブルへの行の挿入は、`JSONAsObject` フォーマットを使用して行えます。
@@ -523,19 +529,22 @@ INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.028 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-
 ```sql
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street":"Maple Avenue","suite":"Apt. 402","zipcode":"11223-4567"}],"company":{"catchPhrase":"Streamlined analytics at scale","labels":{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]},"name":"FastData Inc."},"dob":"1992-07-15","id":"2","name":"Analytica Rowe","phone_numbers":["123-456-7890","555-867-5309"],"tags":{"car":{"model":"Audi e-tron","year":"2022"},"hobby":"Running simulations","holidays":[{"location":"Kyoto, Japan","year":"2023"}]},"username":"Analytica","website":"fastdata.io"}
@@ -547,7 +556,7 @@ json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"s
 2 rows in set. Elapsed: 0.005 sec.
 ```
 
-[introspection functions](/sql-reference/data-types/newjson#introspection-functions) を使用して、推論されたサブカラムとその型を特定できます。例えば次のようにします：
+[イントロスペクション関数](/sql-reference/data-types/newjson#introspection-functions) を使用して、推論されたサブカラムとその型を特定できます。例えば次のようにします：
 
 ```sql
 SELECT JSONDynamicPathsWithTypes(json) AS paths
@@ -594,17 +603,21 @@ FORMAT PrettyJsonEachRow
         "website": "String"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.009 sec.
 ```
 
-イントロスペクション関数の完全な一覧については、[「Introspection functions」](/sql-reference/data-types/newjson#introspection-functions) を参照してください。
+イントロスペクション関数の完全な一覧については、[「イントロスペクション関数」](/sql-reference/data-types/newjson#introspection-functions) を参照してください。
 
 [サブパスには](/sql-reference/data-types/newjson#reading-json-paths-as-sub-columns) `.` 記法を使ってアクセスできます。例:
 
 ```sql
 SELECT json.name, json.email FROM people
+```
 
+```response
 ┌─json.name────────────┬─json.email────────────┐
 │ Analytica Rowe       │ ᴺᵁᴸᴸ                  │
 │ Clicky McCliickHouse │ clicky@clickhouse.com │
@@ -615,23 +628,28 @@ SELECT json.name, json.email FROM people
 
 行に含まれていないカラムは `NULL` として返されることに注意してください。
 
-
 さらに、同じパスであっても型ごとに個別のサブカラムが作成されます。たとえば、`company.labels.type` に対しては、`String` と `Array(Nullable(String))` のそれぞれにサブカラムが存在します。両方とも可能な場合には返されますが、`.:` 構文を使用することで特定のサブカラムだけを対象にできます。
 
 ```sql
 SELECT json.company.labels.type
 FROM people
+```
 
+```response
 ┌─json.company.labels.type─┐
 │ database systems         │
 │ ['real-time processing'] │
 └──────────────────────────┘
 
 2 rows in set. Elapsed: 0.007 sec.
+```
 
+```sql
 SELECT json.company.labels.type.:String
 FROM people
+```
 
+```response
 ┌─json.company⋯e.:`String`─┐
 │ ᴺᵁᴸᴸ                     │
 │ database systems         │
@@ -646,18 +664,24 @@ FROM people
 -- sub objects will not be returned by default
 SELECT json.company.labels
 FROM people
+```
 
+```response
 ┌─json.company.labels─┐
 │ ᴺᵁᴸᴸ                │
 │ ᴺᵁᴸᴸ                │
 └─────────────────────┘
 
 2 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 -- return sub objects using ^ notation
 SELECT json.^company.labels
 FROM people
+```
 
+```response
 ┌─json.^`company`.labels─────────────────────────────────────────────────────────────────┐
 │ {"employees":"250","founded":"2021","type":"database systems"}                         │
 │ {"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]} │
@@ -665,7 +689,6 @@ FROM people
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### ターゲットを絞った JSON カラム \{#targeted-json-column\}
 
@@ -698,7 +721,9 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -709,7 +734,9 @@ INSERT INTO people FORMAT JSONEachRow
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 id:            2
@@ -741,7 +768,6 @@ tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores,
 
 [Introspection functions](/sql-reference/data-types/newjson#introspection-functions) を使用して、`company.labels` カラムに対して推論されたパスとデータ型を特定できます。
 
-
 ```sql
 SELECT JSONDynamicPathsWithTypes(company.labels) AS paths
 FROM people
@@ -762,10 +788,11 @@ FORMAT PrettyJsonEachRow
         "type": "String"
  }
 }
-
-2 rows in set. Elapsed: 0.003 sec.
 ```
 
+```response
+2 rows in set. Elapsed: 0.003 sec.
+```
 
 ### 型ヒントの利用とパスのスキップ \{#using-type-hints-and-skipping-paths\}
 
@@ -804,7 +831,9 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -834,12 +863,13 @@ FORMAT PrettyJsonEachRow
         "type": "Array(Nullable(String))"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
 さらに、JSON 内の保存する必要のないパスを [`SKIP` および `SKIP REGEXP`](/sql-reference/data-types/newjson) パラメータでスキップすることで、ストレージ使用量を最小限に抑え、不要なパスに対する無駄な推論を避けることができます。たとえば、上記のデータに対して単一の JSON カラムを使用する場合、`address` および `company` パスをスキップできます。
-
 
 ```sql
 CREATE TABLE people
@@ -853,7 +883,9 @@ INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -863,7 +895,6 @@ INSERT INTO people FORMAT JSONAsObject
 カラムがデータから除外されていることがわかるでしょう。
 
 ```sql
-
 SELECT *
 FROM people
 FORMAT PrettyJSONEachRow
@@ -921,10 +952,11 @@ FORMAT PrettyJSONEachRow
         "website" : "clickhouse.com"
     }
 }
-
-2 rows in set. Elapsed: 0.004 sec.
 ```
 
+```response
+2 rows in set. Elapsed: 0.004 sec.
+```
 
 #### 型ヒントによるパフォーマンス最適化 \{#optimizing-performance-with-type-hints\}
 

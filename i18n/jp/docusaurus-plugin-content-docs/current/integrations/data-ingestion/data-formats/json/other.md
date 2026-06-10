@@ -18,7 +18,7 @@ doc_type: 'reference'
 
 上記で説明したような構造化されたアプローチでデータを扱うことは、動的な JSON、すなわちスキーマが頻繁に変化する、あるいは十分に把握されていない JSON を扱うユーザーにとっては、現実的でない場合がよくあります。最大限の柔軟性を確保するには、JSON を単に `String` として保存し、その後、必要に応じてフィールドを抽出する関数を使用できます。これは、JSON を構造化オブジェクトとして扱う方法とは完全に対極にあります。この柔軟性にはコストが伴い、主な欠点はクエリ構文の複雑さの増大とパフォーマンスの低下です。
 
-前述のとおり、[元の person オブジェクト](/integrations/data-formats/json/schema#static-vs-dynamic-json)については、`tags` カラムの構造を保証できません。`company.labels`（ここでは無視します）を含む元の行を挿入する際、`Tags` カラムを `String` として宣言します。
+前述のとおり、[元の person オブジェクト](/integrations/data-formats/json/schema#static-vs-dynamic-json)については、`tags` カラムの構造を保証できません。`company.labels` (ここでは無視します) を含む元の行を挿入する際、`Tags` カラムを `String` として宣言します。
 
 ```sql
 CREATE TABLE people
@@ -39,17 +39,21 @@ ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-`tags` 列を選択すると、JSON が文字列として挿入されていることがわかります。
+`tags` カラムを選択すると、JSON が文字列として挿入されていることがわかります。
 
 ```sql
 SELECT tags
 FROM people
+```
 
+```response
 ┌─tags───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}} │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -61,7 +65,9 @@ FROM people
 
 ```sql
 SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
+```
 
+```response
 ┌─holidays──────────────────────────────────────┐
 │ [{"year":2024,"location":"Azores, Portugal"}] │
 └───────────────────────────────────────────────┘
@@ -69,7 +75,7 @@ SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-これらの関数では、`String` 型の列 `tags` への参照と、抽出したい JSON 内のパスの両方が必要になります。ネストされたパスには関数のネストが必要であり、例えば `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` のように記述すると、列 `tags.car.year` を抽出できます。ネストされたパスの抽出は、関数 [`JSON_QUERY`](/sql-reference/functions/json-functions#JSON_QUERY) および [`JSON_VALUE`](/sql-reference/functions/json-functions#JSON_VALUE) を用いることで簡略化できます。
+これらの関数では、`String` 型のカラム `tags` への参照と、抽出したい JSON 内のパスの両方が必要になります。ネストされたパスには関数のネストが必要であり、例えば `JSONExtractUInt(JSONExtractString(tags, 'car'), 'year')` のように記述すると、カラム `tags.car.year` を抽出できます。ネストされたパスの抽出は、関数 [`JSON_QUERY`](/sql-reference/functions/json-functions#JSON_QUERY) および [`JSON_VALUE`](/sql-reference/functions/json-functions#JSON_VALUE) を用いることで簡略化できます。
 
 本文全体を `String` と見なす `arxiv` データセットという極端なケースを考えてみましょう。
 
@@ -85,10 +91,11 @@ ENGINE = MergeTree ORDER BY ()
 ```sql
 INSERT INTO arxiv SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz', 'JSONAsString')
-
-0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
 
+```response
+0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
+```
 
 例えば、発行年ごとの論文数を集計したいとします。次のクエリを、単一の文字列カラムのみを使う場合と、スキーマの[構造化されたバージョン](/integrations/data-formats/json/inference#creating-tables)を使う場合で比較してみましょう。
 
@@ -101,7 +108,9 @@ FROM arxiv_v2
 GROUP BY published_year
 ORDER BY c ASC
 LIMIT 10
+```
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -116,7 +125,9 @@ LIMIT 10
 └────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.264 sec. Processed 2.31 million rows, 153.57 MB (8.75 million rows/s., 582.58 MB/s.)
+```
 
+```sql
 -- using unstructured String
 
 SELECT
@@ -126,7 +137,9 @@ FROM arxiv
 GROUP BY published_year
 ORDER BY published_year ASC
 LIMIT 10
+```
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -146,14 +159,13 @@ Peak memory usage: 205.98 MiB.
 
 ここでは、メソッドで JSON をフィルタリングするために XPath 式を使用している点に注目してください。例えば `JSON_VALUE(body, '$.versions[0].created')` のようになります。
 
-文字列関数は、インデックスを用いた明示的な型変換と比べて顕著に遅く（10倍以上）、上記クエリでは常にテーブル全体のスキャンと全行の処理が必要になります。このようなクエリは、ここで扱っているような小さなデータセットであれば依然として高速ですが、データセットが大きくなるとパフォーマンスは低下します。
+文字列関数は、インデックスを用いた明示的な型変換と比べて顕著に遅く (10倍以上) 、上記クエリでは常にテーブル全体のスキャンと全行の処理が必要になります。このようなクエリは、ここで扱っているような小さなデータセットであれば依然として高速ですが、データセットが大きくなるとパフォーマンスは低下します。
 
 このアプローチは柔軟性が高い一方で、明確なパフォーマンスおよび構文上のコストを伴うため、スキーマ内で非常に動的なオブジェクトに対してのみ使用すべきです。
 
-
 ### Simple JSON functions \{#simple-json-functions\}
 
-上記の例では JSON* 系の関数を使用しています。これらは [simdjson](https://github.com/simdjson/simdjson) に基づく完全な JSON パーサーを利用しており、厳密なパースを行い、異なる階層にネストされた同名フィールドを区別します。これらの関数は、構文的には正しいものの体裁が整っていない JSON（例: キー間に二重スペースがあるなど）も扱うことができます。
+上記の例では JSON* 系の関数を使用しています。これらは [simdjson](https://github.com/simdjson/simdjson) に基づく完全な JSON パーサーを利用しており、厳密なパースを行い、異なる階層にネストされた同名フィールドを区別します。これらの関数は、構文的には正しいものの体裁が整っていない JSON (例: キー間に二重スペースがあるなど) も扱うことができます。
 
 より高速で厳格な関数群も利用可能です。これらの `simpleJSON*` 関数は、主に JSON の構造とフォーマットに関して厳しい前提を置くことで、より優れたパフォーマンスを発揮できます。具体的には、次のとおりです。
 
@@ -183,7 +195,9 @@ FROM arxiv
 GROUP BY published_year
 ORDER BY published_year ASC
 LIMIT 10
+````
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -199,10 +213,9 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.964 sec. Processed 2.48 million rows, 4.21 GB (2.58 million rows/s., 4.36 GB/s.)
 Peak memory usage: 211.49 MiB.
-````
+```
 
 上記のクエリでは、公開日については最初の値だけを取得すればよいという前提を利用して、`created` キーを抽出するために `simpleJSONExtractString` を使用しています。このケースでは、パフォーマンス向上と引き換えになる `simpleJSON*` 関数の制約は許容できます。
-
 
 ## Map 型の使用 {#using-map}
 
@@ -247,7 +260,9 @@ ORDER BY username
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -257,15 +272,21 @@ Ok.
 
 ```sql
 SELECT company.labels FROM people
+```
 
+```response
 ┌─company.labels───────────────────────────────┐
 │ {'type':'database systems','founded':'2021'} │
 └──────────────────────────────────────────────┘
 
 1 row in set. Elapsed: 0.001 sec.
+```
 
+```sql
 SELECT company.labels['type'] AS type FROM people
+```
 
+```response
 ┌─type─────────────┐
 │ database systems │
 └──────────────────┘
@@ -274,7 +295,6 @@ SELECT company.labels['type'] AS type FROM people
 ```
 
 この型に対してクエリを実行するための `Map` 関数の完全なセットが利用可能であり、[こちら](/sql-reference/functions/tuple-map-functions.md)で説明されています。データの型が一貫していない場合は、[必要な型変換](/sql-reference/functions/type-conversion-functions)を行うための関数が用意されています。
-
 
 #### オブジェクトの値
 
@@ -317,17 +337,23 @@ ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","tags":{"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"},"car":{"name":"Tesla","time":"2024-07-11 15:18:23"}}}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
+```
 
+```sql
 SELECT tags['hobby'] AS hobby
 FROM people
 FORMAT JSONEachRow
 
 {"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"}}
+```
 
+```response
 1 row in set. Elapsed: 0.001 sec.
 ```
 
@@ -353,7 +379,6 @@ FORMAT JSONEachRow
   ]
 }
 ```
-
 
 ## Nested 型の使用
 
@@ -395,9 +420,9 @@ CREATE table http
 
 `flatten_nested` 設定は Nested の動作を制御します。
 
-#### flatten&#95;nested=1
+#### flatten_nested=1
 
-値が `1`（デフォルト）の場合、任意のレベルのネストはサポートされません。この値では、ネストされたデータ構造は、同じ長さを持つ複数の [Array](/sql-reference/data-types/array) カラムと考えると分かりやすいです。`method`、`path`、`version` フィールドは、すべて実質的には別々の `Array(Type)` カラムですが、重要な制約が 1 つあります。**`method`、`path`、`version` フィールドの長さはすべて同じでなければなりません。** `SHOW CREATE TABLE` を使用すると、これは次のように示されます。
+値が `1` (デフォルト) の場合、任意のレベルのネストはサポートされません。この値では、ネストされたデータ構造は、同じ長さを持つ複数の [Array](/sql-reference/data-types/array) カラムと考えると分かりやすいです。`method`、`path`、`version` フィールドは、すべて実質的には別々の `Array(Type)` カラムですが、重要な制約が 1 つあります。**`method`、`path`、`version` フィールドの長さはすべて同じでなければなりません。** `SHOW CREATE TABLE` を使用すると、これは次のように示されます。
 
 ```sql
 SHOW CREATE TABLE http
@@ -459,7 +484,9 @@ FORMAT JSONEachRow
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+```
 
+```response
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
@@ -468,8 +495,7 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 
 サブカラムに `Array` を使用することで、[`ARRAY JOIN`](/sql-reference/statements/select/array-join) 句を含む [Array functions](/sql-reference/functions/array-functions) の全体を幅広く活用できる可能性があります。これは、カラムに複数の値が含まれている場合に便利です。
 
-
-#### flatten&#95;nested=0
+#### flatten_nested=0
 
 これは任意のレベルのネストを許可し、ネストされたカラムは単一の `Tuple` 配列として保持されることを意味します。実質的に、それらは `Array(Tuple)` と同じになります。
 
@@ -534,13 +560,14 @@ FORMAT JSONEachRow
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+```
 
+```response
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
 1 row in set. Elapsed: 0.002 sec.
 ```
-
 
 ### 例
 
@@ -563,7 +590,9 @@ FORMAT PrettyJSONEachRow
     "status": "200",
     "size": "24736"
 }
+```
 
+```response
 1 row in set. Elapsed: 0.312 sec.
 ```
 
@@ -587,7 +616,9 @@ WHERE status >= 400
   AND toDateTime(timestamp) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
 GROUP BY method, status
 ORDER BY c DESC LIMIT 5;
+```
 
+```response
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │
 │    404 │ HEAD   │   276 │
@@ -598,7 +629,6 @@ ORDER BY c DESC LIMIT 5;
 
 5 rows in set. Elapsed: 0.007 sec.
 ```
-
 
 ### ペアワイズ配列の使用
 
@@ -623,7 +653,9 @@ SELECT
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 keys:   ['@timestamp','clientip','request','status','size']
@@ -632,7 +664,7 @@ values: ['893964617','40.135.0.0','{"method":"GET","path":"/images/hm_bg.jpg","v
 1 row in set. Elapsed: 0.416 sec.
 ```
 
-`request` 列が、文字列として表現された入れ子構造のままである点に注目してください。ルートレベルには任意の新しいキーを追加できます。また、JSON 自体の内容も自由に変更できます。ローカルテーブルに挿入するには、次を実行します。
+`request` カラムが、文字列として表現された入れ子構造のままである点に注目してください。ルートレベルには任意の新しいキーを追加できます。また、JSON 自体の内容も自由に変更できます。ローカルテーブルに挿入するには、次を実行します。
 
 ```sql
 INSERT INTO http_with_arrays
@@ -640,11 +672,13 @@ SELECT
     arrayMap(x -> (x.1), JSONExtractKeysAndValues(json, 'String')) AS keys,
     arrayMap(x -> (x.2), JSONExtractKeysAndValues(json, 'String')) AS values
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
+```
 
+```response
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
-この構造をクエリするには、必要なキーのインデックスを特定するために [`indexOf`](/sql-reference/functions/array-functions#indexOf) 関数を使用する必要があります（これは値の順序と対応している必要があります）。これを利用して values 配列列、すなわち `values[indexOf(keys, 'status')]` にアクセスできます。`request` 列については依然として JSON をパースする手段が必要であり、この例では `simpleJSONExtractString` を使用します。
+この構造をクエリするには、必要なキーのインデックスを特定するために [`indexOf`](/sql-reference/functions/array-functions#indexOf) 関数を使用する必要があります (これは値の順序と対応している必要があります) 。これを利用して values 配列カラム、すなわち `values[indexOf(keys, 'status')]` にアクセスできます。`request` カラムについては依然として JSON をパースする手段が必要であり、この例では `simpleJSONExtractString` を使用します。
 
 ```sql
 SELECT toUInt16(values[indexOf(keys, 'status')])                           AS status,
@@ -654,7 +688,9 @@ FROM http_with_arrays
 WHERE status >= 400
   AND toDateTime(values[indexOf(keys, '@timestamp')]) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
 GROUP BY method, status ORDER BY c DESC LIMIT 5;
+```
 
+```response
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │
 │    404 │ HEAD   │   276 │
