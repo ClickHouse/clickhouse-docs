@@ -19,6 +19,19 @@ import ConfirmInUI from '@site/docs/use-cases/observability/clickstack/managed-o
 
 This guide walks you through deploying an OpenTelemetry collector against an existing Managed ClickStack service, or adapting your existing collector, before verifying that data is flowing through.
 
+<AgentPrompt
+  prompt="Use curl to download, read and follow: https://clickhouse.com/docs/skills/clickstack-otel-collector/SKILL.md"
+  description="Your agent will set up the ClickStack OpenTelemetry collector for you. Works with Claude Code, Cursor, Codex, and other coding agents."
+  outline={[
+    "Install clickhousectl if missing and authenticate it (asks you for a ClickHouse Cloud API key — paste in chat or run the login command yourself).",
+    "Ask you for the target ClickHouse Cloud service ID or name, then fetch its HTTPS endpoint.",
+    "Create a hyperdx_ingest SQL user on the service (generates a strong password, or uses one you provide).",
+    "Run the ClickStack OpenTelemetry collector locally in Docker, pointed at your service.",
+    "Send a short burst of synthetic logs, traces, and metrics through the collector to prove the pipeline works.",
+    "Verify the data has landed in the otel database, and hand you the ClickStack UI URL where you can view it."
+  ]}
+/>
+
 The collector runs as a **gateway**: a single OTLP endpoint that your applications, SDKs, and agent collectors send to. The gateway batches events, applies any processing you've configured, and writes them to ClickHouse via the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter). This pattern keeps collection logic out of your application code and lets you scale ingestion independently of the workloads producing data. For background on gateway versus agent roles, see [Collector roles](/use-cases/observability/clickstack/ingesting-data/otel-collector#collector-roles).
 
 :::note Existing collector

@@ -1,0 +1,195 @@
+// AgentPrompt — ClickStack yellow agent-prompt callout.
+// Mirrors the principle of Sentry's "Agent-Assisted Setup" widget but
+// rebranded to ClickStack's brand yellow (--palette_brand_350 / 300 / 50).
+
+.wrapper {
+  --agent-accent: var(--palette_brand_350);     // #FBFF46
+  --agent-accent-soft: var(--palette_brand_300); // #FCFF74
+  --agent-accent-bg: var(--palette_brand_50);    // #FFFFE8
+  --agent-accent-bg-strong: var(--palette_brand_100); // #FEFFBA
+  --agent-text: var(--palette_slate_900);
+  --agent-text-muted: var(--palette_slate_600);
+  --agent-prompt-bg: #FFFFFF;
+  --agent-prompt-border: var(--palette_brand_300);
+  --agent-button-bg: var(--palette_brand_350);
+  --agent-button-bg-hover: var(--palette_brand_400);
+  --agent-button-text: var(--palette_slate_900);
+
+  border: 1px solid var(--agent-accent);
+  background: var(--agent-accent-bg);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 1.25rem 0 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.mainRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.left {
+  flex-shrink: 0;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--agent-text);
+  white-space: nowrap;
+}
+
+.promptArea {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: var(--agent-prompt-bg);
+  border: 1px solid var(--agent-prompt-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  overflow-x: auto;
+
+  // Hide scrollbar but keep scrollability
+  scrollbar-width: thin;
+  &::-webkit-scrollbar { height: 6px; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--palette_brand_300);
+    border-radius: 3px;
+  }
+}
+
+.promptText {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.8125rem;
+  color: var(--agent-text);
+  background: transparent;
+  border: none;
+  padding: 0;
+  white-space: nowrap;
+  display: block;
+}
+
+.copyButton {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--agent-button-bg);
+  color: var(--agent-button-text);
+  border: 1px solid var(--agent-accent);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease, transform 80ms ease;
+
+  &:hover {
+    background: var(--agent-button-bg-hover);
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--palette_info_400);
+    outline-offset: 2px;
+  }
+}
+
+.subRow {
+  padding-left: 2px;
+}
+
+.description {
+  font-size: 0.8125rem;
+  color: var(--agent-text-muted);
+  line-height: 1.4;
+}
+
+.outline {
+  border-top: 1px dashed var(--agent-prompt-border);
+  padding-top: 8px;
+  margin-top: 2px;
+}
+
+.outlineSummary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--agent-text);
+  list-style: none;
+  user-select: none;
+  padding: 2px 0;
+
+  &::-webkit-details-marker { display: none; }
+  &:hover { opacity: 0.85; }
+  &:focus-visible {
+    outline: 2px solid var(--palette_info_400);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+.outlineChevron {
+  transition: transform 150ms ease;
+  flex-shrink: 0;
+}
+
+details[open] > .outlineSummary > .outlineChevron {
+  transform: rotate(90deg);
+}
+
+.outlineList {
+  margin: 8px 0 2px 0;
+  padding-left: 1.4rem;
+  font-size: 0.8125rem;
+  color: var(--agent-text-muted);
+  line-height: 1.5;
+
+  li {
+    margin: 2px 0;
+    padding-left: 2px;
+  }
+  li::marker {
+    color: var(--agent-text);
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainRow {
+    flex-wrap: wrap;
+  }
+  .promptArea {
+    order: 3;
+    width: 100%;
+    flex-basis: 100%;
+  }
+  .copyButton {
+    margin-left: auto;
+  }
+  .promptText {
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+}
+
+[data-theme='dark'] .wrapper {
+  --agent-accent: var(--palette_brand_300);
+  --agent-accent-bg: rgba(251, 255, 70, 0.06);
+  --agent-text: var(--palette_neutral_0);
+  --agent-text-muted: var(--palette_neutral_200);
+  --agent-prompt-bg: var(--palette_neutral_800);
+  --agent-prompt-border: rgba(251, 255, 70, 0.35);
+  --agent-button-bg: var(--palette_brand_300);
+  --agent-button-bg-hover: var(--palette_brand_350);
+  --agent-button-text: var(--palette_neutral_900);
+}
+
