@@ -1,10 +1,10 @@
 ---
-title: "AWS customized setup"
+title: 'AWS customized setup'
 slug: /cloud/reference/byoc/onboarding/customization-aws
-sidebar_label: "AWS customized setup"
-keywords: ["BYOC", "cloud", "bring your own cloud", "onboarding", "AWS", "VPC"]
-description: "Deploy ClickHouse BYOC into your existing AWS VPC"
-doc_type: "reference"
+sidebar_label: 'AWS customized setup'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding', 'AWS', 'VPC']
+description: 'Deploy ClickHouse BYOC into your existing AWS VPC'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -96,7 +96,6 @@ When available, this feature will allow you to:
 - Provide pre-configured IAM roles for ClickHouse Cloud to use
 - Remove write permissions to IAM related permissions for `ClickHouseManagementRole` used for cross-account access
 - Maintain full control over role permissions and trust relationships
-  - Maintain full control over role permissions and trust relationships
 
 :::
 

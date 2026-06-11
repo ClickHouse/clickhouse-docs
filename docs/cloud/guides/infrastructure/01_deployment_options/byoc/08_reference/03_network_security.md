@@ -1,10 +1,10 @@
 ---
-title: "BYOC Network Security"
+title: 'BYOC Network Security'
 slug: /cloud/reference/byoc/reference/network_security
-sidebar_label: "Network security"
-keywords: ["BYOC", "cloud", "bring your own cloud", "network security"]
-description: "Deploy ClickHouse on your own cloud infrastructure"
-doc_type: "reference"
+sidebar_label: 'Network security'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'network security']
+description: 'Deploy ClickHouse on your own cloud infrastructure'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,7 +17,7 @@ The ClickHouse Cloud control plane maintains several types of connections to ope
 | Purpose                                      | Connection type                                 | Notes                                                                                                                                                                                           |
 | -------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Daily operations — Kubernetes API server** | Public with IP filtering (default) or Tailscale | Management services talk to the EKS API server over the public network, restricted by IP allow lists. After initial deployment, you can optionally switch this to Tailscale for private access. |
-| **Daily operations — AWS APIs**              | ClickHouse VPC → AWS                            | Management services call AWS APIs (e.g., EKS, EC2) from ClickHouse Cloud’s own VPC to AWS. This does not involve your VPC or Tailscale.                                                         |
+| **Daily operations — AWS APIs**              | ClickHouse VPC → AWS                            | Management services call AWS APIs (e.g., EKS, EC2) from ClickHouse Cloud’s own VPC to AWS. This doesn't involve your VPC or Tailscale.                                                          |
 | **Troubleshooting — ClickHouse service**     | Tailscale                                       | ClickHouse engineers access the ClickHouse service (e.g., system tables) for diagnostics via Tailscale.                                                                                         |
 | **Troubleshooting — Kubernetes API server**  | Tailscale                                       | ClickHouse engineers access the EKS API server for cluster diagnostics via Tailscale.                                                                                                           |
 
@@ -155,11 +155,6 @@ _Outbound, Public_
 
 AlertManager is configured to send alerts to ClickHouse Cloud when the customer's ClickHouse cluster is unhealthy.
 
-Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored locally in EBS. In a future update, they will be stored in LogHouse, a ClickHouse service within the BYOC VPC. Metrics use a Prometheus and Thanos stack, stored locally in the BYOC VPC.
-
-### Service state {#service-state}
-
-_Outbound, Public_
 Metrics and logs are stored within the customer's BYOC VPC. Logs are currently stored locally in EBS. In a future update, they will be stored in LogHouse, a ClickHouse service within the BYOC VPC. Metrics use a Prometheus and Thanos stack, stored locally in the BYOC VPC.
 
 ### Service state {#service-state}

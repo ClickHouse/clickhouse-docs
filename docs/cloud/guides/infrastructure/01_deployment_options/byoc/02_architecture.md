@@ -1,10 +1,10 @@
 ---
-title: "Architecture"
+title: 'Architecture'
 slug: /cloud/reference/byoc/architecture
-sidebar_label: "Architecture"
-keywords: ["BYOC", "cloud", "bring your own cloud"]
-description: "Deploy ClickHouse on your own cloud infrastructure"
-doc_type: "reference"
+sidebar_label: 'Architecture'
+keywords: ['BYOC', 'cloud', 'bring your own cloud']
+description: 'Deploy ClickHouse on your own cloud infrastructure'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -20,12 +20,12 @@ The diagram below illustrates how ClickHouse Cloud organizations, cloud accounts
 
 - **ClickHouse Cloud organization:** The top-level entity in ClickHouse Cloud that manages users, billing, and non-BYOC ClickHouse services. Users within an organization can access both standard Cloud services and BYOC services.
 - **ClickHouse BYOC organization:** A separate organization dedicated to managing BYOC deployments. It shares users with the Cloud organization but is linked to one or more cloud accounts where BYOC infrastructure is deployed.
-- **Cloud account / project:** The customer-owned AWS account, GCP project, or Azure subscription where BYOC infrastructure is provisioned. Each account or project can host BYOC deployments in one or more regions. A dedicated account or project per BYOC deployment is recommended for isolation.
-- **BYOC infrastructure:** The set of cloud resources deployed within a specific region of a cloud account, including a VPC, Kubernetes cluster (EKS/GKE), storage buckets, IAM roles, and supporting services. A single cloud account can contain multiple BYOC infrastructures across different regions.
+- **Cloud account/project/subscription:** The customer-owned AWS account, GCP project, or Azure subscription where BYOC infrastructure is provisioned. Each account/project/subscription can host BYOC deployments in one or more regions. A dedicated account/project/subscription per BYOC deployment is recommended for isolation.
+- **BYOC infrastructure:** The set of cloud resources deployed within a specific region of a cloud account, including a VPC/VNet, Kubernetes cluster (EKS/GKE/AKS), object storage buckets, IAM roles/service accounts/service principals, and supporting services. A single cloud account can contain multiple BYOC infrastructures across different regions.
 - **ClickHouse Service:** An individual ClickHouse cluster running within a BYOC infrastructure. Multiple services can run within the same BYOC infrastructure.
 
 :::note
-Mixing of AWS accounts, GCP projects and Azure subscriptions under the same organization is only possible for customers who are not set up through a [cloud service provider marketplace](/cloud/marketplace/marketplace-billing).
+Mixing of AWS accounts, GCP projects and Azure subscriptions under the same organization is only possible for customers who aren't set up through a [cloud service provider marketplace](/cloud/marketplace/marketplace-billing).
 :::
 
 ## Glossary {#glossary}
@@ -51,7 +51,7 @@ The main cloud resources ClickHouse Cloud will deploy in your account are:
 - **VPC:** A Virtual Private Cloud dedicated to your ClickHouse deployment. This can be managed either by ClickHouse or by you, the customer, and is typically peered with your application VPCs.
 - **IAM roles and policies:** Roles and permissions necessary for Kubernetes, ClickHouse services, and the monitoring stack. These can be provisioned by ClickHouse or supplied by the customer.
 - **Storage buckets:** Used for storing data parts, backups, and (optionally) long-term metrics and log archives.
-- **Kubernetes cluster:** This can be Amazon EKS, Google GKE, or Azure AKS, depending on your cloud provider, and hosts the ClickHouse servers and supporting services shown in the architecture diagram.
+- **Kubernetes cluster:** This can be Amazon EKS, Google GKE, or Azure AKS depending on your cloud provider. It hosts the ClickHouse servers and supporting services shown in the architecture diagram.
 
 By default, ClickHouse Cloud provisions a new, dedicated VPC and sets up the necessary IAM roles to ensure secure operation of Kubernetes services. For organizations with advanced networking or security needs, there is also the option to manage the VPC and IAM roles independently. This approach allows for greater customization of network configurations and more precise control over permissions. However, choosing to self-manage these resources will increase your operational responsibilities.
 
@@ -112,9 +112,7 @@ All customer data remains within your cloud account and is never accessed or tra
 
 **Additional recommendations and considerations:**
 
-**Additional recommendations and considerations:**
-
-- Ensure that network CIDR ranges for your BYOC VPC doesn't overlap with any existing VPCs you plan to peer with.
+- Ensure that network CIDR ranges for your BYOC VPC don't overlap with any existing VPCs you plan to peer with.
 - Tag your resources clearly to simplify management and support.
 - Plan for adequate subnet sizing and distribution across availability zones for high availability.
 - Consult the [security playbook](https://clickhouse.com/docs/cloud/security/audit-logging/byoc-security-playbook) to understand shared responsibility and best practices when ClickHouse Cloud operates within your environment.

@@ -1,10 +1,10 @@
 ---
-title: "Standard onboarding"
+title: 'Standard onboarding'
 slug: /cloud/reference/byoc/onboarding/standard
-sidebar_label: "Standard process"
-keywords: ["BYOC", "cloud", "bring your own cloud", "onboarding"]
-description: "Deploy ClickHouse on your own cloud infrastructure"
-doc_type: "reference"
+sidebar_label: 'Standard process'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding']
+description: 'Deploy ClickHouse on your own cloud infrastructure'
+doc_type: 'reference'
 ---
 
 import Image from '@theme/IdealImage';
@@ -15,11 +15,11 @@ import byoc_new_service_1 from '@site/static/images/cloud/reference/byoc-new-ser
 
 ## What is standard onboarding? {#what-is-standard-onboarding}
 
-**Standard onboarding** is the default, guided workflow for deploying ClickHouse in your own cloud account using BYOC. In this approach, ClickHouse Cloud provisions all of the core cloud resources required for your deployment—such as the VPC/VNet, subnets, security groups, Kubernetes (EKS/GKE/AKS) cluster, and supporting IAM roles/service accounts/managed identities—within your AWS account, GCP project, or Azure subscription. This ensures consistent, secure configuration, and minimizes the manual steps required from your team.
+**Standard onboarding** is the default, guided workflow for deploying ClickHouse in your own cloud account using BYOC. In this approach, ClickHouse Cloud provisions all of the core cloud resources required for your deployment—such as the VPC/VNet, subnets, security groups, Kubernetes (EKS/GKE/AKS) cluster, and supporting IAM roles/service accounts/service principals—within your AWS account, GCP project, or Azure subscription. This ensures consistent, secure configuration, and minimizes the manual steps required from your team.
 
 With standard onboarding, you simply provide a dedicated AWS account, GCP project, or Azure subscription, and run an initial stack (via CloudFormation or Terraform) to create the minimum permissions and trust required for ClickHouse Cloud to orchestrate further setup. All subsequent steps—including infrastructure provisioning and service launch—are managed through the ClickHouse Cloud web console.
 
-Customers are strongly recommended to prepare a **dedicated** AWS account, GCP project, or Azure subscription for hosting the ClickHouse BYOC deployment to ensure better isolation in terms of permissions and resources. ClickHouse will deploy a dedicated set of cloud resources (VPC/VNet, Kubernetes cluster, IAM roles/managed identities, object storage buckets, etc.) in your account.
+Customers are strongly recommended to prepare a **dedicated** AWS account, GCP project, or Azure subscription for hosting the ClickHouse BYOC deployment to ensure better isolation in terms of permissions and resources. ClickHouse will deploy a dedicated set of cloud resources (VPC/VNet, Kubernetes cluster, IAM roles/service accounts/service principals, object storage buckets, etc.) in your account.
 
 If you need a more customized setup (for example, deploying into an existing VPC), refer to the [Customized Onboarding](/cloud/reference/byoc/onboarding/customization-aws) documentation.
 
@@ -43,9 +43,9 @@ Prepare a fresh AWS account, GCP project, or Azure subscription under your organ
 
 <Image img={byoc_onboarding_1} size="lg" alt="BYOC choose CSP" background='black'/>
 
-### Account/Project setup {#account-setup}
+### Account/project/subscription setup {#account-setup}
 
-The initial BYOC setup can be performed using a [CloudFormation template(AWS)](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml), a [Terraform module(GCP)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/gcp) or a [Terraform module(Azure)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/azure). It creates a high privileged IAM role, enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure.
+The initial BYOC setup can be performed using a [CloudFormation template (AWS)](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml), a [Terraform module (GCP)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/gcp), or a [Terraform module (Azure)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/azure). It creates a highly privileged identity (IAM role/service account/service principal), enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure.
 
 <Image img={byoc_onboarding_2} size="lg" alt="BYOC initialize account" background='black'/>
 
@@ -68,7 +68,7 @@ module "clickhouse_onboarding" {
 
 ### Set up BYOC infrastructure {#setup-byoc-infrastructure}
 
-You will be prompted to set up the infrastructure, including S3 buckets, VPC, and the Kubernetes cluster, from the ClickHouse Cloud console. Certain configurations must be determined at this stage, as they can't be changed later. Specifically:
+You will be prompted to set up the infrastructure, including object storage buckets, VPC/VNet, and the Kubernetes cluster, from the ClickHouse Cloud console. Certain configurations must be determined at this stage, as they can't be changed later. Specifically:
 
 - **Region**: All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions aren't currently supported.
 
