@@ -76,7 +76,7 @@ You will be prompted to set up the infrastructure, including S3 buckets, VPC, an
 
 - **Availability Zones**: If you plan to use VPC peering, aligning availability zones between the source and BYOC accounts can help reduce cross-AZ traffic costs. For example, in AWS, availability zone suffixes (`a`, `b`, `c`) may represent different physical zone IDs across accounts. See the [AWS guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/use-consistent-availability-zones-in-vpcs-across-different-aws-accounts.html) for details.
 
-<Image img={byoc_onboarding_3} size="lg" alt="BYOC setup infra" background='black'/>
+<Image img={byoc_onboarding_3} size="lg" alt="BYOC set up infrastructure" background='black'/>
 
 </VerticalStepper>
 

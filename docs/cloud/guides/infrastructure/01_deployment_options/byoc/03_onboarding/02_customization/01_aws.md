@@ -70,11 +70,11 @@ module "clickhouse_onboarding" {
 
 In the ClickHouse Cloud console, configure the following when setting up new infrastructure:
 
-1. Under **VPC Configuration**, select **Use existing VPC**.
+1. Under **VPC configuration**, select **Use existing VPC**.
 2. Enter your **VPC ID** (e.g., `vpc-0bb751a5b888ad123`).
 3. Enter the **Private subnet IDs** for the 3 subnets you configured earlier.
 4. Optionally, enter **Public subnet IDs** if your setup requires public-facing load balancers.
-5. Click **Setup Infrastructure** to begin provisioning.
+5. Click **Set up Infrastructure** to begin provisioning.
 
 <Image img={byoc_aws_existing_vpc_ui} size="lg" alt="ClickHouse Cloud BYOC setup UI with Use existing VPC selected" />
 
