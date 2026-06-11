@@ -7,9 +7,7 @@ title: 'format'
 doc_type: 'reference'
 ---
 
-# Табличная функция format \{#format-table-function\}
-
-Разбирает данные из аргументов в соответствии с указанным входным форматом. Если аргумент структуры не указан, структура определяется по данным.
+Разбирает данные из аргументов в соответствии с указанным входным форматом. Если аргумент `structure` не указан, он автоматически определяется по данным.
 
 ## Синтаксис \{#syntax\}
 
@@ -19,9 +17,9 @@ format(format_name, [structure], data)
 
 ## Аргументы \{#arguments\}
 
-- `format_name` — [формат](/sql-reference/formats) данных.
-- `structure` — структура таблицы. Необязательный параметр. Формат: `column1_name column1_type, column2_name column2_type, ...`.
-- `data` — строковый литерал или константное выражение, которое возвращает строку с данными в заданном формате.
+* `format_name` — [формат](/sql-reference/formats) данных.
+* `structure` — структура таблицы. Необязательный параметр. Формат: `column1_name column1_type, column2_name column2_type, ...`.
+* `data` — строковый литерал или константное выражение, которое возвращает строку с данными в заданном формате.
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -31,9 +29,7 @@ format(format_name, [structure], data)
 
 Без аргумента `structure`:
 
-**Запрос:**
-
-```sql
+```sql title="Query"
 SELECT * FROM format(JSONEachRow,
 $$
 {"a": "Hello", "b": 111}
@@ -43,9 +39,7 @@ $$
 $$)
 ```
 
-**Результат:**
-
-```response
+```response title="Response"
 ┌───b─┬─a─────┐
 │ 111 │ Hello │
 │ 123 │ World │
@@ -54,9 +48,7 @@ $$)
 └─────┴───────┘
 ```
 
-**Запрос:**
-
-```sql
+```sql title="Query"
 DESC format(JSONEachRow,
 $$
 {"a": "Hello", "b": 111}
@@ -66,9 +58,7 @@ $$
 $$)
 ```
 
-**Результат:**
-
-```response
+```response title="Response"
 ┌─name─┬─type──────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ b    │ Nullable(Float64) │              │                    │         │                  │                │
 │ a    │ Nullable(String)  │              │                    │         │                  │                │
@@ -77,9 +67,7 @@ $$)
 
 С аргументом `structure`:
 
-**Запрос:**
-
-```sql
+```sql title="Query"
 SELECT * FROM format(JSONEachRow, 'a String, b UInt32',
 $$
 {"a": "Hello", "b": 111}
@@ -89,9 +77,7 @@ $$
 $$)
 ```
 
-**Результат:**
-
-```response
+```response title="Response"
 ┌─a─────┬───b─┐
 │ Hello │ 111 │
 │ World │ 123 │
@@ -102,4 +88,4 @@ $$)
 
 ## См. также \{#related\}
 
-- [Форматы](../../interfaces/formats.md)
+* [Форматы](../../interfaces/formats.md)

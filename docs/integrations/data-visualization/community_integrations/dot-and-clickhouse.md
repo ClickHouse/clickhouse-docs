@@ -15,8 +15,6 @@ import dot_01 from '@site/static/images/integrations/data-visualization/dot_01.p
 import dot_02 from '@site/static/images/integrations/data-visualization/dot_02.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Dot
-
 <CommunityMaintainedBadge/>
 
 [Dot](https://www.getdot.ai/) is your **AI Data Analyst**.

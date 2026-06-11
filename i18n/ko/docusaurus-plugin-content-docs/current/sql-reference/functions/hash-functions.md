@@ -3,10 +3,8 @@ description: '해시 함수 문서'
 sidebar_label: '해시'
 slug: /sql-reference/functions/hash-functions
 title: '해시 함수'
-doc_type: '참고'
+doc_type: 'reference'
 ---
-
-# 해시 함수 \{#hash-functions\}
 
 해시 함수는 요소들을 결정론적인 의사 난수 방식으로 섞는 데 사용할 수 있습니다.
 

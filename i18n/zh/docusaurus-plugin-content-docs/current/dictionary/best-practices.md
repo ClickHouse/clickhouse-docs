@@ -7,11 +7,9 @@ doc_type: 'guide'
 keywords: ['字典', '字典', '布局', 'dictGet', 'JOIN', 'hashed', 'flat', '性能']
 ---
 
-# 字典最佳实践 \{#dictionary-best-practices\}
+本页面提供以下实用指南：如何选择合适的字典布局、了解字典在何种情况下比 JOIN 性能更优 (以及何种情况下并非如此) ，以及如何监控字典的使用情况。
 
-本页面介绍了选择合适字典布局的实用建议，帮助您了解字典何时优于 JOIN (以及何时并非如此) ，以及如何监控字典的使用情况。
-
-如需了解字典的基础介绍和示例，请参阅[字典主指南](/dictionary)。
+如需了解字典的入门介绍和配套示例，请参阅[字典主指南](/dictionary)。
 
 ## 何时使用字典而不是 JOIN \{#when-to-use-dictionaries-vs-joins\}
 

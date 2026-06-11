@@ -8,7 +8,6 @@ doc_type: 'guide'
 keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache parquet']
 ---
 
-# Working with Parquet in ClickHouse
 
 Parquet is an efficient file format to store data in a column-oriented way.
 ClickHouse provides support for both reading and writing Parquet files.

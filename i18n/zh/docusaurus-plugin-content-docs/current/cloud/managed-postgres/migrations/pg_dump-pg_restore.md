@@ -1,13 +1,13 @@
 ---
 slug: /cloud/managed-postgres/migrations/pg_dump-pg_restore
 sidebar_label: 'pg_dump and pg_restore'
-title: '使用 pg_dump 和 pg_restore 迁移 PostgreSQL 数据'
+title: '使用 pg_dump 和 pg_restore 迁移到 Managed Postgres'
 description: '了解如何使用 pg_dump 和 pg_restore 将 PostgreSQL 数据迁移到 ClickHouse Managed Postgres'
-keywords: ['postgres', 'postgresql', 'pg_dump', 'pg_restore', '迁移', '数据传输', '托管 Postgres']
+keywords: ['postgres', 'postgresql', 'pg_dump', 'pg_restore', '迁移', '数据传输', 'Managed Postgres']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPgForMigrate from '@site/static/images/managed-postgres/pg_dump_restore/create-pg-for-migration.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
@@ -15,12 +15,9 @@ import dumpCommand from '@site/static/images/managed-postgres/pg_dump_restore/du
 import restoreCommand from '@site/static/images/managed-postgres/pg_dump_restore/restore-command.png';
 import targetSetup from '@site/static/images/managed-postgres/pg_dump_restore/target-setup.png';
 
+本指南提供分步说明，介绍如何使用 `pg_dump` 和 `pg_restore` 实用程序将您的 PostgreSQL 数据库迁移到 ClickHouse Managed Postgres。
 
-# 使用 pg_dump 和 pg_restore 迁移到 Managed Postgres \{#pg-dump-pg-restore\}
-
-本指南提供分步说明，介绍如何使用 `pg_dump` 和 `pg_restore` 工具将 PostgreSQL 数据库迁移到 ClickHouse Managed Postgres。
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="pg_dump-pg_restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.pg_dump-pg_restore-beta" />
 
 ## 先决条件 \{#migration-pgdump-pg-restore-prerequisites\}
 

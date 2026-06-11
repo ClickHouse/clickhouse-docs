@@ -2,7 +2,7 @@
 description: 'Details backup/restore to or from a local disk'
 sidebar_label: 'Local disk / S3 disk'
 slug: /operations/backup/disk
-title: 'Backup and restore in ClickHouse'
+title: 'BACKUP / RESTORE to disk'
 doc_type: 'guide'
 ---
 
@@ -10,8 +10,6 @@ import GenericSettings from '@site/docs/operations_/backup_restore/_snippets/_ge
 import S3Settings from '@site/docs/operations_/backup_restore/_snippets/_s3_settings.md';
 import ExampleSetup from '@site/docs/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/docs/operations_/backup_restore/_snippets/_syntax.md';
-
-# BACKUP / RESTORE to disk {#backup-to-a-local-disk}
 
 ## Syntax {#syntax}
 
@@ -141,14 +139,14 @@ This setting can therefore cause data duplication in the table, and should be us
 To restore the table with data already in it, run:
 
 ```sql
-RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
 Tables can be restored, or backed up, with new names:
 
 ```sql
-RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
 The backup archive for this backup has the following structure:

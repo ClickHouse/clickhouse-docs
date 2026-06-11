@@ -1,18 +1,15 @@
 ---
-sidebar_label: '流式数据和对象存储'
+sidebar_label: '流式和对象存储'
 slug: /cloud/reference/billing/clickpipes/streaming-and-object-storage
-title: '用于流式数据和对象存储的 ClickPipes'
-description: '流式数据和对象存储类 ClickPipes 的计费概览'
+title: '用于流式和对象存储的 ClickPipes'
+description: '流式和对象存储类 ClickPipes 的计费概览'
 doc_type: 'reference'
-keywords: ['计费', 'clickpipes', '流式数据定价', '成本', '价格']
+keywords: ['计费', 'clickpipes', '流式定价', '成本', '价格']
 ---
 
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
-
-# 用于流式传输和对象存储的 ClickPipes \{#clickpipes-for-streaming-object-storage\}
-
-本节概述 ClickPipes 在流式传输和对象存储场景下的定价模型。
+本节概述了用于流式和对象存储的 ClickPipes 定价模式。
 
 ## ClickPipes 的定价结构是什么样的？ \{#what-does-the-clickpipes-pricing-structure-look-like\}
 

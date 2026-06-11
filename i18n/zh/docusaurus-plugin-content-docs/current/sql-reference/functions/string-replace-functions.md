@@ -1,13 +1,11 @@
 ---
-description: '字符串替换函数参考文档'
+description: '字符串替换函数文档'
 sidebar_label: '字符串替换'
 slug: /sql-reference/functions/string-replace-functions
 title: '字符串替换函数'
 doc_type: 'reference'
 keywords: ['字符串替换']
 ---
-
-# 字符串替换函数 \{#functions-for-string-replacement\}
 
 [通用字符串函数](string-functions.md)和[字符串搜索函数](string-search-functions.md)在单独的文档中说明。
 

@@ -8,7 +8,6 @@ description: 'Index page listing general questions about ClickHouse'
 doc_type: 'landing-page'
 ---
 
-# General questions about ClickHouse
 
 - [What is ClickHouse?](../../intro.md)
 - [Why is ClickHouse so fast?](../../concepts/why-clickhouse-is-so-fast.mdx)

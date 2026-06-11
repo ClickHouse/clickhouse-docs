@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Использование BACKUP и RESTORE'
 slug: /cloud/migration/oss-to-cloud-backup-restore
-title: 'Миграция между самоуправляемым ClickHouse и ClickHouse Cloud с помощью BACKUP/RESTORE'
+title: 'Миграция из самоуправляемого ClickHouse в ClickHouse Cloud с помощью команд BACKUP'
 description: 'Страница, на которой описано, как выполнять миграцию между самоуправляемым ClickHouse и ClickHouse Cloud с помощью команд BACKUP и RESTORE'
 doc_type: 'guide'
 keywords: ['миграция', 'ClickHouse Cloud', 'OSS', 'Миграция самоуправляемого ClickHouse в Cloud', 'BACKUP', 'RESTORE']
@@ -17,9 +17,6 @@ import open_console from '@site/static/images/cloud/onboard/migrate/oss_to_cloud
 import service_role_id from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/service_role_id.png';
 import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/create_new_role.png';
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
-
-
-# Миграция с самоуправляемого ClickHouse на ClickHouse Cloud с использованием команд резервного копирования \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands\}
 
 ## Обзор \{#overview-migration-approaches\}
 
@@ -90,7 +87,7 @@ ClickHouse Cloud работает с [`SharedMergeTree`](/cloud/reference/shared
 Мы воспользуемся первыми двумя шагами из [руководства по данным такси Нью‑Йорка](/getting-started/example-datasets/nyc-taxi), чтобы создать пример таблицы и загрузить в неё данные.
 Эти шаги приведены ниже для вашего удобства.
 
-Выполните следующие команды, чтобы создать новую базу данных и вставить данные из бакета S3 в новую таблицу:
+Выполните следующие команды, чтобы создать новую базу данных и вставить данные из S3 бакета в новую таблицу:
 
 ```sql
 CREATE DATABASE nyc_taxi;
@@ -168,14 +165,16 @@ SYSTEM RESTORE REPLICA nyc_taxi.trips_small_adapted;
 SELECT engine
 FROM system.tables
 WHERE name = 'trips_small_adapted' AND database = 'nyc_taxi';
+```
 
+```response
 ┌─engine──────────────┐
 │ ReplicatedMergeTree │
 └─────────────────────┘
 ```
 
 Теперь вы готовы перейти к настройке сервиса ClickHouse Cloud в рамках подготовки к последующему
-восстановлению резервной копии из вашего S3-бакета.
+восстановлению резервной копии из вашего S3 бакета.
 
 ### Distributed таблицы с ReplicatedMergeTree \{#distributed-tables\}
 

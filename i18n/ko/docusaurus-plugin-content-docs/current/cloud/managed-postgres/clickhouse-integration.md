@@ -7,14 +7,15 @@ keywords: ['postgres', 'clickhouse integration', 'cdc', '복제', 'ClickPipes', 
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
+import integrationReplicationSettings from '@site/static/images/managed-postgres/integration-replication-settings.png';
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.clickhouse-integration-beta" />
 
 모든 Managed Postgres 인스턴스에는 ClickHouse 서비스로의 CDC 기능이 기본 제공됩니다. 이를 통해 Postgres 인스턴스의 일부 또는 전체 데이터를 ClickHouse로 이동하고, Postgres의 데이터 변경 사항이 ClickHouse에 지속적이고 거의 실시간으로 반영되도록 할 수 있습니다. 이는 내부적으로 [ClickPipes](/integrations/clickpipes)에 의해 동작합니다.
 
@@ -23,7 +24,7 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
 <Image img={chIntegrationIntro} alt="사이드바에 있는 통합 옵션이 표시된 ClickHouse 통합 랜딩 페이지" size="md" border />
 
 :::note
-계속 진행하기 전에 Postgres 서비스가 ClickPipes 서비스에서 접근 가능한지 확인하십시오. 기본적으로는 이렇게 설정되어 있지만, IP 접근을 제한해 둔 경우 **ClickHouse service**가 위치한 리전에 따라 [이](/integrations/clickpipes#list-of-static-ips) 목록에 있는 일부 소스 IP에 대해 접근을 허용해야 할 수 있습니다.
+계속 진행하기 전에 Postgres 서비스가 ClickPipes 서비스에서 접근 가능한지 확인하십시오. 기본적으로는 이렇게 설정되어 있지만, IP 접근을 제한해 둔 경우 **ClickHouse 서비스**가 위치한 리전에 따라 [이](/integrations/clickpipes#list-of-static-ips) 목록에 있는 일부 소스 IP에 대해 접근을 허용해야 할 수 있습니다.
 :::
 
 **Replicate data in ClickHouse**를 클릭하여 ClickPipe 설정을 시작합니다.
@@ -42,6 +43,20 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
     * **CDC only**: 초기 스냅샷을 건너뛰고 이후의 새로운 변경 사항만 캡처합니다.
 
   <Image img={replicationServiceStep} alt="통합 이름, 대상 서비스 및 복제 방법 옵션을 보여주는 복제 서비스 구성 화면" size="md" border />
+
+  계속하려면 **Next**를 클릭합니다.
+
+  ## 복제 설정 구성 \{#replication-settings\}
+
+  데이터가 복제되는 방식을 세부 조정합니다:
+
+  * **Sync interval (seconds)**: Postgres에서 변경 사항을 가져오는 주기(기본값: 60)
+  * **Parallel threads for initial load**: 초기 스냅샷 중 사용하는 스레드 수(기본값: 4)
+  * **Pull batch size**: 복제 중 배치마다 가져오는 행 수(기본값: 100000)
+  * **Snapshot number of rows per partition**: 초기 스냅샷 중 파티션당 행 수(기본값: 100000)
+  * **Snapshot number of tables in parallel**: 동시에 스냅샷을 수행하는 테이블 수(기본값: 1)
+
+  <Image img={integrationReplicationSettings} alt="동기화 주기, 병렬 스레드, 가져오기 배치 크기 및 스냅샷 구성 옵션을 보여주는 복제 설정 단계" size="md" border />
 
   계속하려면 **Next**를 클릭합니다.
 

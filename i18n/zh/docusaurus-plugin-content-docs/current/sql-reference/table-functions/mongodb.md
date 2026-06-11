@@ -7,9 +7,7 @@ title: 'mongodb'
 doc_type: 'reference'
 ---
 
-# MongoDB 表函数 \{#mongodb-table-function\}
-
-可以对存储在远程 MongoDB 服务器中的数据执行 `SELECT` 查询。
+允许对存储在远程 MongoDB 服务器上的数据执行 `SELECT` 查询。
 
 ## 语法 \{#syntax\}
 

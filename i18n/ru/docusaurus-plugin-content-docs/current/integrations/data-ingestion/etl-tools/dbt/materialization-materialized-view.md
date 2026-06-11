@@ -2,16 +2,13 @@
 sidebar_label: 'Материализация: materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
-description: 'Специализированная документация по материализации materialized_view'
-keywords: ['clickhouse', 'dbt', 'materialized_view', 'обновляемое', 'Materialized Views', 'catchup']
-title: 'Материализация: materialized_view'
+description: 'Документация по материализации materialized_view'
+keywords: ['clickhouse', 'dbt', 'materialized_view', 'refreshable', 'Materialized Views', 'catchup']
+title: 'Materialized views'
 doc_type: 'guide'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
-
-# Materialized Views \{#materialized-views\}
 
 <ClickHouseSupportedBadge />
 
@@ -61,6 +58,9 @@ GROUP BY event_date, event_type
 
 Дополнительные примеры см. в [тестовом файле](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/materialized_view/test_materialized_view.py).
 
+:::tip
+Вы также можете задать `codec` и `ttl` на уровне отдельных столбцов в целевой таблице, включив контракт модели. Подробности см. в разделе [Конфигурация столбцов](/integrations/dbt/materializations#column-configuration).
+:::
 
 ### Несколько materialized view \{#multiple-materialized-views\}
 
@@ -219,20 +219,20 @@ GROUP BY event_date, event_type
 
 ### Параметры конфигурации \{#explicit-target-configuration\}
 
-При использовании явных целевых таблиц доступны следующие параметры конфигурации:
+При использовании явных целевых таблиц, помимо [общих параметров materialization](/integrations/dbt/materializations#general-materialization-configurations) и [параметров, специфичных для таблиц](/integrations/dbt/materializations#materialization-table), доступны следующие параметры конфигурации:
 
 **Для целевой таблицы (`materialized='table'`):**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `mv_on_schema_change` | Как обрабатывать изменения схемы, когда таблица используется materialized view под управлением dbt. Поведение соответствует параметру конфигурации `on_schema_change` [в инкрементальных моделях](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change).| **Внимание**: Модель `materialized='table'` будет вести себя как обычно, если к ней не привязаны materialized view, поэтому, даже если этот параметр задан, он будет проигнорирован. Если таблица является целевой для materialized view, этот параметр по умолчанию будет иметь значение `mv_on_schema_change='fail'`, чтобы защитить данные в этих таблицах. |
-| `repopulate_from_mvs_on_full_refresh` | При `--full-refresh` вместо выполнения SQL таблицы перестраивать таблицу, выполняя INSERT-SELECT на основе SQL всех materialized view, которые на неё ссылаются. | `False` |
+| Option                                | Description                                                                                                                                                                                                                                                                                                  | Default                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mv_on_schema_change`                 | Как обрабатывать изменения схемы, когда таблица используется materialized view под управлением dbt. Поведение соответствует параметру конфигурации `on_schema_change` [в инкрементальных моделях](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change). | **Внимание**: Модель `materialized='table'` будет вести себя как обычно, если к ней не привязаны materialized view, поэтому, даже если этот параметр задан, он будет проигнорирован. Если таблица является целевой для materialized view, этот параметр по умолчанию будет иметь значение `mv_on_schema_change='fail'`, чтобы защитить данные в этих таблицах. |
+| `repopulate_from_mvs_on_full_refresh` | При `--full-refresh` вместо выполнения SQL таблицы перестраивать таблицу, выполняя INSERT-SELECT на основе SQL всех materialized view, которые на неё ссылаются.                                                                                                                                             | `False`                                                                                                                                                                                                                                                                                                                                                        |
 
 **Для materialized view (`materialized='materialized_view'`):**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `catchup` | Нужно ли заполнять исторические данные при создании materialized view. | `True` |
+| Option    | Description                                                            | Default |
+| --------- | ---------------------------------------------------------------------- | ------- |
+| `catchup` | Нужно ли заполнять исторические данные при создании materialized view. | `True`  |
 
 :::note
 Обычно имеет смысл устанавливать `catchup` в `True` только в materialized view или `repopulate_from_mvs_on_full_refresh` в `True` только в их целевых таблицах. Если установить оба параметра в `True`, это может привести к дублированию данных.

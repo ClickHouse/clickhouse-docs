@@ -7,13 +7,13 @@ doc_type: 'guide'
 keywords: ['user defined function', 'UDF']
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 User-defined functions (UDF) allow users to extend the behavior of ClickHouse beyond what is offered by over a thousand different out-of-box [functions](/sql-reference/functions/regular-functions).
 
 In ClickHouse Cloud, there are two ways to create user-defined functions:
 1. Using SQL
-2. Using the UI and your own code (private preview)
+2. Using the UI and your own code (public beta)
 
 ## SQL user-defined functions {#sql-udfs}
 
@@ -60,13 +60,9 @@ This means:
 
 ## User-defined functions created via UI {#ui-udfs}
 
-<PrivatePreviewBadge/>
+<BetaBadge/>
 
 ClickHouse Cloud offers a UI configuration experience for creating user-defined functions.
-
-:::note
-If you are interested in trying out this feature, please contact [support](https://clickhouse.com/support/program) to enroll in private preview.
-:::
 
 In this example we'll create the same simple executable user-defined function `isBusinessHours` that checks if a certain timestamp falls inside of regular business hours.
 Previously we created it using SQL, but this time we will create it using Python and configure it via the UI.
@@ -130,6 +126,10 @@ Now compress the file into a ZIP archive:
 ```bash
 zip is_business_hours.zip main.py
 ```
+
+:::warning[Symlinks are not allowed]
+ClickHouse Cloud rejects UDF archives that contain symbolic links. Make sure your ZIP bundle contains only regular files and directories — uploads with symlinks will fail validation.
+:::
 
 ### Create a UDF via the UI {#create-udf-via-ui}
 

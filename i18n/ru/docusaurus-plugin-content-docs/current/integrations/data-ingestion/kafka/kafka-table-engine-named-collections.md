@@ -6,8 +6,6 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-# Интеграция ClickHouse с Kafka с использованием именованных коллекций \{#integrating-clickhouse-with-kafka-using-named-collections\}
-
 ## Введение \{#introduction\}
 
 В этом руководстве мы рассмотрим, как подключить ClickHouse к Kafka с использованием именованных коллекций. Использование файла конфигурации для именованных коллекций дает несколько преимуществ:
@@ -208,7 +206,7 @@ SELECT * FROM second_replicated_table LIMIT 10;
 
 Пример вывода:
 
-```sql
+```response
 ┌─id─┬─first_name─┬─last_name─┐
 │  0 │ FirstName0 │ LastName0 │
 │  1 │ FirstName1 │ LastName1 │

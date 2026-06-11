@@ -5,8 +5,6 @@ title: 'loop'
 doc_type: 'reference'
 ---
 
-# `loop` 表函数 \{#loop-table-function\}
-
 ## 语法 \{#syntax\}
 
 ```sql
@@ -18,11 +16,11 @@ SELECT ... FROM loop(other_table_function(...));
 
 ## 参数 \{#arguments\}
 
-| 参数                        | 说明                                                                                                                 |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------|
-| `database`                  | 数据库名称。                                                                                                         |
-| `table`                     | 表名称。                                                                                                             |
-| `other_table_function(...)` | 其他表函数。例如：`SELECT * FROM loop(numbers(10));` 中的 `other_table_function(...)` 即为 `numbers(10)`。          |
+| 参数                          | 说明                                                                                           |
+| --------------------------- | -------------------------------------------------------------------------------------------- |
+| `database`                  | 数据库名称。                                                                                       |
+| `table`                     | 表名称。                                                                                         |
+| `other_table_function(...)` | 其他表函数。例如：`SELECT * FROM loop(numbers(10));` 中的 `other_table_function(...)` 即为 `numbers(10)`。 |
 
 ## 返回值 \{#returned_values\}
 

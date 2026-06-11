@@ -2,7 +2,7 @@
 sidebar_label: 'Confluent Cloud 上的 Kafka Sink Connector'
 sidebar_position: 2
 slug: /integrations/kafka/cloud/confluent/sink-connector
-description: '在 Confluent Cloud 上使用全托管 ClickHouse Sink Connector 的指南'
+description: '在 Confluent Cloud 上使用全托管 ClickHouse Connector Sink 的指南'
 title: '将 Confluent Cloud 与 ClickHouse 集成'
 keywords: ['Kafka', 'Confluent Cloud']
 doc_type: 'guide'
@@ -15,19 +15,17 @@ integration:
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-
-# 将 Confluent Cloud 与 ClickHouse 集成 \{#integrating-confluent-cloud-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/SQAiPVbd3gg"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 前提条件 \{#prerequisites\}

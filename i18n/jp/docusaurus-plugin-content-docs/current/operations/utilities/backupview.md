@@ -1,21 +1,19 @@
 ---
-description: 'clickhouse_backupview のリファレンスドキュメント {#clickhouse_backupview}'
+description: 'clickhouse_backupview {#clickhouse_backupview} のドキュメント'
 slug: /operations/utilities/backupview
 title: 'clickhouse_backupview'
 doc_type: 'reference'
 ---
-
-# clickhouse_backupview \{#clickhouse_backupview\}
 
 [BACKUP](/operations/backup/overview) コマンドによって作成されたバックアップを分析するための Python モジュールです。
 主な目的は、バックアップを実際にリストアすることなく、そのバックアップから情報を取得できるようにすることです。
 
 このモジュールは、次の機能を提供します。
 
-- バックアップに含まれるファイルを列挙する
-- バックアップからファイルを読み取る
-- バックアップに含まれるデータベース、テーブル、パーツに関する有用な情報を可読な形式で取得する
-- バックアップの整合性をチェックする
+* バックアップに含まれるファイルを列挙する
+* バックアップからファイルを読み取る
+* バックアップに含まれるデータベース、テーブル、パーツに関する有用な情報を可読な形式で取得する
+* バックアップの整合性をチェックする
 
 ## 例: \{#example\}
 

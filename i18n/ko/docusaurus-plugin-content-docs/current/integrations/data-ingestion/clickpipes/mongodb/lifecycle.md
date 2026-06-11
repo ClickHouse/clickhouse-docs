@@ -10,9 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# MongoDB ClickPipe의 수명 주기 \{#lifecycle\}
-
-이 문서는 MongoDB ClickPipe가 거치는 여러 단계와 가질 수 있는 다양한 상태, 그리고 각 상태의 의미를 설명합니다.
+이 문서에서는 MongoDB ClickPipe의 여러 단계와 각 단계에서 나타날 수 있는 상태, 그리고 그 의미를 설명합니다.
 
 ## Provisioning \{#provisioning\}
 

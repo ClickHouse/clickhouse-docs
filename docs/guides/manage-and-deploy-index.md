@@ -6,7 +6,6 @@ doc_type: 'landing-page'
 keywords: ['deployment', 'management', 'administration', 'operations', 'guides']
 ---
 
-# Manage and deploy
 
 This section contains the following topics:
 

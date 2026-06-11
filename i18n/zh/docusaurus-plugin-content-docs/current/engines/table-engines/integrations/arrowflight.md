@@ -1,13 +1,11 @@
 ---
-description: '此引擎允许通过 Apache Arrow Flight 查询远程数据集。'
+description: '该引擎允许通过 Apache Arrow Flight 查询远程数据集。'
 sidebar_label: 'ArrowFlight'
 sidebar_position: 186
 slug: /engines/table-engines/integrations/arrowflight
 title: 'ArrowFlight 表引擎'
 doc_type: 'reference'
 ---
-
-# ArrowFlight 表引擎 \{#arrowflight-table-engine\}
 
 ArrowFlight 表引擎使 ClickHouse 能够通过 [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) 协议查询远程数据集。
 此集成允许 ClickHouse 高效地从支持 Flight 的外部服务器获取列式 Arrow 格式的数据。
@@ -26,7 +24,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
 * `username` — 用于 HTTP 基本认证的用户名。
 * `password` — 用于 HTTP 基本认证的密码。
   如果未指定 `username` 和 `password`，则表示不使用认证
-  （仅当 Arrow Flight 服务器允许无认证访问时才可用）。
+  (仅当 Arrow Flight 服务器允许无认证访问时才可用) 。
 
 ## 使用示例 \{#usage-example\}
 

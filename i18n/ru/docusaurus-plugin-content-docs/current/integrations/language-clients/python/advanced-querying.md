@@ -8,8 +8,6 @@ title: 'Расширенные запросы'
 doc_type: 'reference'
 ---
 
-# Запрос данных с помощью ClickHouse Connect: расширенные возможности \{#querying-data-with-clickhouse-connect--advanced-usage\}
-
 ## QueryContexts \{#querycontexts\}
 
 ClickHouse Connect выполняет стандартные запросы в контексте `QueryContext`. `QueryContext` содержит ключевые структуры, которые используются для построения запросов к базе данных ClickHouse, а также конфигурацию, применяемую для обработки результата в `QueryResult` или другую структуру данных ответа. Сюда входят сам запрос, параметры, настройки, форматы чтения и прочие свойства.

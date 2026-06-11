@@ -1,19 +1,17 @@
 ---
 slug: /cloud/managed-postgres/openapi
 sidebar_label: 'OpenAPI'
-title: 'OpenAPI'
-description: 'OpenAPI を使用して Managed Postgres サービスを管理します'
+title: 'Managed Postgres OpenAPI'
+description: 'OpenAPI を使用して Managed Postgres サービスをプログラムで制御します'
 keywords: ['managed postgres', 'openapi', 'api', 'curl', 'チュートリアル', 'コマンドライン']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-# Managed Postgres OpenAPI \{#managed-postgres-openapi\}
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.openapi-beta" />
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="openapi" />
-
-[ClickHouse OpenAPI](/cloud/manage/cloud-api) を使用すると、ClickHouse サービスと同様に Managed Postgres サービスもプログラムで制御できます。[OpenAPI] にすでに慣れている場合は、[API キー] を取得して [Managed
+[ClickHouse OpenAPI](/cloud/manage/cloud-api) を使用すると、ClickHouse サービスと同様に Managed Postgres サービスもプログラムで制御できます。同じ API では、サービスメトリクスをスクレイピングするための [Prometheus エンドポイント] も公開されています。[OpenAPI] にすでに慣れている場合は、[API キー] を取得して [Managed
 Postgres API リファレンス][pg-openapi] に直接進んでください。そうでない場合は、このまま読み進めて概要をすばやく確認してください。
 
 ## API キー \{#api-keys\}
@@ -36,39 +34,40 @@ curl -s --user "$KEY_ID:$KEY_SECRET" https://api.clickhouse.cloud/v1/organizatio
 3. **Organization ID** の右側にあるコピーアイコンをクリックして、
    クリップボードに直接コピーします。
 
-{/*
+これで、次のようにリクエストで使用できます。
 
-  TODO: API の提供開始後、コメントを外して正しい出力例を挿入する。
+```bash
+ORG_ID=myorgid
 
-  これで、次のようにリクエストで使用できます。
-
-  ```bash
-  ORG_ID=myorgid
-
-  curl -s --user "$KEY_ID:$KEY_SECRET" \
+curl -s --user "$KEY_ID:$KEY_SECRET" \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres" | jq
-  ```
+```
 
-  これで、最初の Postgres API リクエストを実行できました。上記の [list API] では、
-  組織内のすべての Postgres サーバーが一覧表示されます。出力は次のようになります。
+これで、最初の Postgres API リクエストを実行できました。上記の [list API] では、
+組織内のすべての Postgres サーバーが一覧表示されます。出力は次のようになります。
 
-  ```json
-  {
+```json
+{
   "result": [
     {
-      "id": "c0d0b15d-5e8b-431d-8943-51b6e233e0b1",
-      "name": "顧客の組織",
-      "createdAt": "2026-03-24T14:21:31Z",
-      "privateEndpoints": [],
-      "enableCoreDumps": true
+      "id": "ee2fef9f-b443-8ad0-8c9b-724390cdb826",
+      "name": "oltp",
+      "provider": "aws",
+      "region": "eu-west-2",
+      "postgresVersion": "18",
+      "size": "r6gd.medium",
+      "storageSize": 59,
+      "haType": "none",
+      "tags": [],
+      "isPrimary": true,
+      "state": "running",
+      "createdAt": "2026-05-25T16:42:16+00:00"
     }
   ],
   "requestId": "c128d830-5769-4c82-8235-f79aa69d1ebf",
   "status": 200
-  }
-  ```
-
-  */ }
+}
+```
 
 ## CRUD \{#crud\}
 
@@ -84,7 +83,6 @@ JSON ボディには、次のプロパティを含める必要があります。
 * `region`: サービスをデプロイするプロバイダーのネットワーク内の
   区域
 * `size`: VM のサイズ
-* `storageSize`: VM のストレージサイズ
 
 これらのプロパティに指定可能な値については、[create API] のドキュメントを参照してください。さらに、
 デフォルトの 17 ではなく、Postgres 18 を指定しましょう:
@@ -95,8 +93,7 @@ create_data='{
   "provider": "aws",
   "region": "us-west-2",
   "postgresVersion": "18",
-  "size": "r8gd.large",
-  "storageSize": 118
+  "size": "r8gd.large"
 }'
 ```
 
@@ -114,7 +111,7 @@ curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
 ```json
 {
   "result": {
-    "id": "pg7myrd1j06p3gx4zrm2ze8qz6",
+    "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
     "name": "my postgres",
     "provider": "aws",
     "region": "us-west-2",
@@ -140,7 +137,7 @@ curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
 レスポンスの `id` を使用して、サービスを再度取得します。
 
 ```bash
-PG_ID=pg7myrd1j06p3gx4zrm2ze8qz6
+PG_ID=67b4bc12-8582-45d0-8806-fe9b2e5a54e6
 curl -s --user "$KEY_ID:$KEY_SECRET" \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID" \
     | jq
@@ -173,7 +170,7 @@ psql (18.3)
 SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off, ALPN: postgresql)
 Type "help" for help.
 
-postgres=# 
+postgres=#
 ```
 
 [psql] を終了するには、`\q` を入力します。
@@ -194,7 +191,7 @@ curl -sX PATCH --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' 
 
 ```json
 {
-  "id": "$PG_ID",
+  "id": "67b4bc12-8582-45d0-8806-fe9b2e5a54e6",
   "name": "my postgres",
   "provider": "aws",
   "region": "us-west-2",
@@ -217,23 +214,33 @@ curl -sX PATCH --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' 
 }
 ```
 
+OpenAPI には、[patch API] でサポートされていないプロパティを更新するための追加エンドポイントが用意されています。たとえば、[Postgres configuration] を更新するには、[config API] を使用します。
+
+```bash
+curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
+    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/config" \
+    -d '{"pgConfig": {"max_connections": "42"}, "pgBouncerConfig": {}}' | jq
+```
+
+出力には、更新後の設定に加えて、変更による影響を説明するメッセージも表示されます：
+
+```json
+{
+  "result":{
+    "pgConfig": {
+      "max_connections": "42"
+    },
+    "pgBouncerConfig": {},
+    "message": "The changes in the following parameters require a database restart to take effect: max_connections. You can restart the database by using the restart endpoint."
+  },
+  "requestId":"fdec06f2-66f7-45b4-9f82-0c051aba20aa",
+  "status": 200
+}
+```
+
 {/*
 
-  TODO: 実装後に追記。
-
-  OpenAPI には、[patch API] でサポートされていないプロパティを更新するための追加エンドポイントが用意されています。たとえば、[Postgres configuration] を更新するには、[config API] を使用します。
-
-  ```bash
-  curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
-    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID/config" \
-    -d '{"max_connections": "42"}'
-  ```
-
-  出力には、更新後の設定が表示されます。
-
-  ```json
-  {"max_connections": "42"}
-  ```
+  TODO: API がリリースされたらコメントを外し、正しい出力例を挿入してください。
 
   追加の更新 API には、次のものがあります。
 
@@ -268,6 +275,14 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 }
 ```
 
+## 監視 \{#monitoring\}
+
+Prometheus 互換の 2 つのエンドポイントで、Managed Postgres サービスの CPU、メモリ、I/O、接続、
+およびトランザクションのメトリクスを公開します。1 つは組織内のすべてのサービスの
+メトリクスを返し、もう 1 つは単一のサービスのメトリクスを返します。
+設定については [Prometheus endpoint] ページを、メトリクスの完全な一覧については
+[metrics reference] を参照してください。
+
 [ClickHouse OpenAPI]: /cloud/manage/cloud-api "Cloud API"
 
 [OpenAPI]: https://www.openapis.org "OpenAPI Initiative"
@@ -291,3 +306,7 @@ curl -sX DELETE --user "$KEY_ID:$KEY_SECRET" \
 [config API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceSetConfig "Postgres サービスの設定を更新"
 
 [delete API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceDelete "PostgreSQL サービスを削除"
+
+[Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus "Managed Postgres の Prometheus エンドポイント"
+
+[metrics reference]: /cloud/managed-postgres/monitoring/metrics "Managed Postgres メトリクスリファレンス"

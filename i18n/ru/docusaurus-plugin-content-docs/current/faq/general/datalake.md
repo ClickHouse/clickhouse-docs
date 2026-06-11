@@ -4,11 +4,9 @@ toc_hidden: true
 toc_priority: 10
 slug: /faq/general/datalake
 description: 'ClickHouse поддерживает озера данных, включая Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive'
-doc_type: 'reference'
-keywords: ['озеро данных', 'lakehouse']
+doc_type: 'справочник'
+keywords: ['озера данных', 'lakehouse']
 ---
-
-# Поддерживает ли ClickHouse озера данных? \{#does-clickhouse-support-data-lakes\}
 
 ClickHouse поддерживает озера данных (Data Lakes), включая Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive.
 

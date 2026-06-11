@@ -4,9 +4,9 @@ title: '使用 Bindplane 将 OpenTelemetry 发送到 ClickStack'
 sidebar_label: 'Bindplane'
 pagination_prev: null
 pagination_next: null
-description: '使用 Bindplane 将遥测数据路由到 ClickStack，实现采集器的集中管理'
+description: '使用 Bindplane 将遥测数据路由到 ClickStack，实现 collector 的集中管理'
 doc_type: 'guide'
-keywords: ['Bindplane', 'OTEL', 'ClickStack', 'OpenTelemetry', '采集器管理']
+keywords: ['Bindplane', 'OTEL', 'ClickStack', 'OpenTelemetry', 'collector 管理']
 ---
 
 import Image from '@theme/IdealImage';
@@ -15,20 +15,17 @@ import bindplane_hyperdx from '@site/static/images/clickstack/bindplane/bindplan
 import bindplane_configuration from '@site/static/images/clickstack/bindplane/bindplane-configuration.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# 使用 Bindplane 将 OpenTelemetry 发送到 ClickStack \{#bindplane-clickstack\}
+:::note[简而言之]
+本指南将向您展示如何使用 Bindplane 原生的 ClickStack 目标端将遥测数据路由到 ClickStack。您将了解如何：
 
-<PartnerBadge/>
+* 在 Bindplane 中将 ClickStack 配置为目标端
+* 创建用于处理和路由遥测数据的配置
+* 将配置远程部署到 OTel collector 并开始收集数据
+* 在 ClickStack 中查看遥测数据
 
-:::note[摘要]
-本指南介绍如何使用 Bindplane 的原生 ClickStack 目标，将遥测数据路由到 ClickStack。你将学习如何：
-
-- 在 Bindplane 中将 ClickStack 配置为目标
-- 创建用于处理和路由遥测数据的配置
-- 将配置远程部署到 OTel collector 并开始采集数据
-- 在 ClickStack 中查看遥测数据
-
-此集成将 ClickStack 的高性能摄取能力与 Bindplane 的集中式 collector 管理相结合，使你能够在不增加运维开销的情况下，更轻松地扩展可观测性。
+该集成将 ClickStack 的高性能摄取与 Bindplane 的集中式 collector 管理能力结合起来，让您无需增加运维负担，即可更轻松地扩展可观测性。
 
 所需时间：10–15 分钟
 :::

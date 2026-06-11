@@ -27,8 +27,6 @@ import azure_pe_remove_private_endpoint from '@site/static/images/cloud/security
 import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azure-privatelink-pe-filter.png';
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
-# Azure Private Link
-
 <ScalePlanFeatureBadge feature="Azure Private Link"/>
 
 This guide shows how to use Azure Private Link to provide private connectivity via a virtual network between Azure (including customer-owned and Microsoft Partner services) and ClickHouse Cloud. Azure Private Link simplifies the network architecture and secures the connection between endpoints in Azure by eliminating data exposure to the public internet.

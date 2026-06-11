@@ -11,8 +11,6 @@ import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
-# プロジェクション \{#projections\}
-
 ## はじめに \{#introduction\}
 
 ClickHouse は、リアルタイムなシナリオで大規模なデータに対する分析クエリを高速化するための、さまざまなメカニズムを提供します。その 1 つが、_Projection_ を利用してクエリを高速化する方法です。Projection は、関心のある属性でデータを並べ替えることでクエリを最適化します。これは次のような形を取ることができます。

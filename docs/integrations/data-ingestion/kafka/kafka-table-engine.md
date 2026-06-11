@@ -14,8 +14,6 @@ import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafka_03.png';
 import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
-# Using the Kafka table engine
-
 The Kafka table engine can be used to [**read** data from](#kafka-to-clickhouse) and [**write** data to](#clickhouse-to-kafka) Apache Kafka and other Kafka API-compatible brokers (e.g., Redpanda, Amazon MSK).
 
 ### Kafka to ClickHouse {#kafka-to-clickhouse}

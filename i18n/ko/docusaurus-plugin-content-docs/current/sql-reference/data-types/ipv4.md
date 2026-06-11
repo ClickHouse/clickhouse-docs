@@ -32,7 +32,7 @@ DESCRIBE TABLE hits;
 CREATE TABLE hits (url String, from IPv4) ENGINE = MergeTree() ORDER BY from;
 ```
 
-`IPv4` 도메인은 IPv4 문자열 형식의 사용자 정의 입력을 지원합니다:`
+`IPv4` 도메인은 IPv4 문자열 형식의 사용자 정의 입력을 지원합니다:&#96;
 
 ```sql
 INSERT INTO hits (url, from) VALUES ('https://wikipedia.org', '116.253.40.133')('https://clickhouse.com', '183.247.232.58')('https://clickhouse.com/docs/en/', '116.106.34.242');

@@ -43,15 +43,12 @@ import update_query_name from '@site/static/images/cloud/sqlconsole/update-query
 import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
+SQL コンソールは、ClickHouse Cloud でデータベースを探索し、クエリを実行するための最も速く簡単な方法です。SQL コンソールでは次のことができます。
 
-# SQL コンソール \{#sql-console\}
-
-SQL コンソールは、ClickHouse Cloud 上のデータベースを探索し、クエリを実行するための最速かつ最も簡単な方法です。SQL コンソールを使用すると、次のことができます。
-
-- ClickHouse Cloud のサービスに接続する
-- テーブルデータを表示、フィルタリング、およびソートする
-- クエリを実行し、数回のクリックで結果データを可視化する
-- クエリをチームメンバーと共有し、より効果的に共同作業を行う
+* ClickHouse Cloud サービスに接続する
+* テーブルデータを表示、フィルタリング、ソートする
+* わずか数クリックでクエリを実行し、結果データを可視化する
+* クエリをチームメンバーと共有し、より効果的に共同作業を進める
 
 ### テーブルの探索 \{#exploring-tables\}
 

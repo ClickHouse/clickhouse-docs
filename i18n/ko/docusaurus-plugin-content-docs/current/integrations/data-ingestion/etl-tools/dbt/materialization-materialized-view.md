@@ -2,24 +2,21 @@
 sidebar_label: 'Materialization: materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
-description: 'materialized_view materialization에 대한 상세 문서입니다'
+description: 'materialized_view 머티리얼라이즈에 대한 상세 문서'
 keywords: ['clickhouse', 'dbt', 'materialized_view', 'refreshable', 'Materialized Views', 'catchup']
-title: 'Materialization: materialized_view'
+title: 'Materialized views'
 doc_type: 'guide'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Materialized Views \{#materialized-views\}
-
-<ClickHouseSupportedBadge/>
-
-`materialized_view` materialization은 기존 `소스 테이블`에 대한 `SELECT`여야 합니다. PostgreSQL과 달리 ClickHouse의 materialized view는 "정적"이 아니며(해당하는 REFRESH 작업도 없음), 대신 **insert 트리거**로 동작하여 소스 테이블에 삽입된 행에 정의된 `SELECT` 변환을 적용해 대상 테이블에 새 행을 삽입합니다. ClickHouse에서 materialized view가 어떻게 동작하는지에 대한 자세한 내용은 [ClickHouse materialized view documentation](/docs/materialized-views)을 참고하세요.
+`materialized_view` 머티리얼라이즈는 기존 `소스 테이블`에 대한 `SELECT`여야 합니다. PostgreSQL과 달리 ClickHouse의 materialized view는 &quot;정적&quot;이 아니며(해당하는 REFRESH 작업도 없음), 대신 **insert 트리거**로 동작하여 소스 테이블에 삽입된 행에 정의된 `SELECT` 변환을 적용해 대상 테이블에 새 행을 삽입합니다. ClickHouse에서 materialized view가 어떻게 동작하는지에 대한 자세한 내용은 [ClickHouse materialized view documentation](/docs/materialized-views)을 참고하세요.
 
 :::note
-일반적인 materialization 개념과 공통 구성(engine, order_by, partition_by 등)에 대해서는 [Materializations](/integrations/dbt/materializations) 페이지를 참고하세요.
-:::”
+일반적인 머티리얼라이즈 개념과 공통 구성(engine, order&#95;by, partition&#95;by 등)에 대해서는 [Materializations](/integrations/dbt/materializations) 페이지를 참고하세요.
+:::
 
 ## 대상 테이블 관리 방식 \{#target-table-management\}
 
@@ -32,7 +29,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 어떤 방식을 선택하는지에 따라 스키마 변경 처리, 전체 새로 고침, 복수 MV 구성 방식이 달라집니다. 다음 섹션에서는 각 방식을 자세히 설명합니다.
 
-## 암시적 대상을 사용하는 머티리얼라이제이션 \{#implicit-target\}
+## 암시적 대상을 사용하는 머티리얼라이즈 \{#implicit-target\}
 
 기본 동작입니다. `materialized_view` 모델을 정의하면 어댑터는 다음을 수행합니다:
 
@@ -61,6 +58,9 @@ GROUP BY event_date, event_type
 
 추가 예제는 [테스트 파일](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/materialized_view/test_materialized_view.py)에서 확인하십시오.
 
+:::tip
+모델 계약을 적용하여 대상 테이블에 컬럼 수준의 `codec` 및 `ttl`을 정의할 수도 있습니다. 자세한 내용은 [컬럼 구성](/integrations/dbt/materializations#column-configuration)을 참조하십시오.
+:::
 
 ### 여러 개의 materialized view \{#multiple-materialized-views\}
 
@@ -219,20 +219,20 @@ GROUP BY event_date, event_type
 
 ### 구성 옵션 \{#explicit-target-configuration\}
 
-명시적 대상 테이블을 사용하는 경우, 다음과 같은 구성을 적용할 수 있습니다:
+명시적 대상 테이블을 사용하는 경우, [일반 머티리얼라이즈 구성](/integrations/dbt/materializations#general-materialization-configurations) 및 [테이블별 구성](/integrations/dbt/materializations#materialization-table) 외에 다음과 같은 구성을 적용할 수 있습니다:
 
 **대상 테이블에서 (`materialized='table'`):**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `mv_on_schema_change` | 테이블이 dbt에서 관리하는 MV에서 사용될 때 스키마 변경을 어떻게 처리할지 설정합니다. [증분 모델(incremental models)](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change)의 `on_schema_change` 설정과 동일한 동작을 따릅니다.| **주의**: 어떤 MV도 이 테이블을 가리키지 않는 경우, `materialized='table'` 모델은 평소처럼 동작하므로 이 설정이 정의되어 있더라도 무시됩니다. 테이블이 MV의 대상인 경우, 이 테이블 내부의 데이터를 보호하기 위해 이 설정의 기본값은 `mv_on_schema_change='fail'`입니다. |
-| `repopulate_from_mvs_on_full_refresh` | `--full-refresh` 시, 테이블의 SQL을 실행하는 대신, 이를 가리키는 모든 MV의 SQL을 사용해 INSERT-SELECT를 실행하여 테이블을 재구축합니다. | `False` |
+| Option                                | Description                                                                                                                                                                                                                    | Default                                                                                                                                                                            |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mv_on_schema_change`                 | 테이블이 dbt에서 관리하는 MV에서 사용될 때 스키마 변경을 어떻게 처리할지 설정합니다. [증분 모델(incremental models)](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change)의 `on_schema_change` 설정과 동일한 동작을 따릅니다. | **주의**: 어떤 MV도 이 테이블을 가리키지 않는 경우, `materialized='table'` 모델은 평소처럼 동작하므로 이 설정이 정의되어 있더라도 무시됩니다. 테이블이 MV의 대상인 경우, 이 테이블 내부의 데이터를 보호하기 위해 이 설정의 기본값은 `mv_on_schema_change='fail'`입니다. |
+| `repopulate_from_mvs_on_full_refresh` | `--full-refresh` 시, 테이블의 SQL을 실행하는 대신, 이를 가리키는 모든 MV의 SQL을 사용해 INSERT-SELECT를 실행하여 테이블을 재구축합니다.                                                                                                                                | `False`                                                                                                                                                                            |
 
 **materialized view에서 (`materialized='materialized_view'`):**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `catchup` | MV가 생성될 때 과거 데이터를 백필(backfill)할지 여부입니다. | `True` |
+| Option    | Description                             | Default |
+| --------- | --------------------------------------- | ------- |
+| `catchup` | MV가 생성될 때 과거 데이터를 백필(backfill)할지 여부입니다. | `True`  |
 
 :::note
 일반적으로 MV에서만 `catchup`을 `True`로 설정하거나, 해당 MV의 대상 테이블에서만 `repopulate_from_mvs_on_full_refresh`를 `True`로 설정하는 편이 좋습니다. 둘 다 `True`로 설정하면 데이터가 중복될 수 있습니다.

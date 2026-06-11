@@ -11,8 +11,6 @@ integration:
   - category: 'data_visualization'
 ---
 
-# 分析のポイント \{#analysis-tips\}
-
 ## MEDIAN() と PERCENTILE() 関数 \{#median-and-percentile-functions\}
 
 - Live モードでは、MEDIAN() と PERCENTILE() 関数（connector v0.1.3 のリリース以降）は、サンプリングに基づいて計算を行う [ClickHouse quantile()() 関数](/sql-reference/aggregate-functions/reference/quantile/) を利用するため、計算が大幅に高速化されます。正確な計算結果が必要な場合は、[quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/) に基づく `MEDIAN_EXACT()` と `PERCENTILE_EXACT()` 関数を使用してください。

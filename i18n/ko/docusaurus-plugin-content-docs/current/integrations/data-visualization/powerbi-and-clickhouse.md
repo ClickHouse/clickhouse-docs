@@ -29,25 +29,22 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Power BI \{#power-bi\}
+Microsoft Power BI는 [ClickHouse Cloud](https://clickhouse.com/cloud) 또는 자가 관리형 배포의 데이터를 쿼리하거나 메모리로 불러올 수 있습니다.
 
-<ClickHouseSupportedBadge/>
+데이터를 시각화하는 데 사용할 수 있는 Power BI에는 여러 가지 버전이 있습니다:
 
-Microsoft Power BI는 [ClickHouse Cloud](https://clickhouse.com/cloud) 또는 자가 관리형 배포의 데이터에 대해 쿼리를 실행하거나 메모리에 로드할 수 있습니다.
+* Power BI Desktop: 대시보드와 시각화를 생성하는 Windows 데스크톱 애플리케이션
+* Power BI Service: Azure에서 SaaS 형태로 제공되며, Power BI Desktop에서 생성한 대시보드를 호스팅합니다
 
-데이터를 시각화하는 데 사용할 수 있는 Power BI의 유형은 다음과 같습니다.
+Power BI에서는 Desktop 버전에서 대시보드를 만든 다음 Power BI Service에 게시해야 합니다.
 
-* Power BI Desktop: 대시보드와 시각화를 생성하기 위한 Windows 데스크톱 애플리케이션
-* Power BI Service: Power BI Desktop에서 생성한 대시보드를 호스팅하기 위한 Azure 내 SaaS
+이 튜토리얼에서는 다음 과정을 안내합니다:
 
-Power BI에서는 Desktop 버전에서 대시보드를 생성한 후 Power BI Service에 게시해야 합니다.
-
-이 튜토리얼에서는 다음 과정을 안내합니다.
-
-* [ClickHouse ODBC 드라이버 설치](#install-the-odbc-driver)
+* [ClickHouse ODBC Driver 설치](#install-the-odbc-driver)
 * [Power BI Desktop에 ClickHouse Power BI Connector 설치](#power-bi-installation)
-* [Power BI Desktop에서 시각화를 위해 ClickHouse에서 데이터 쿼리](#query-and-visualise-data)
+* [Power BI Desktop에서 시각화를 위해 ClickHouse 데이터 쿼리](#query-and-visualise-data)
 * [Power BI Service용 온프레미스 데이터 게이트웨이 설정](#power-bi-service)
 
 ## 사전 준비 사항 \{#prerequisites\}

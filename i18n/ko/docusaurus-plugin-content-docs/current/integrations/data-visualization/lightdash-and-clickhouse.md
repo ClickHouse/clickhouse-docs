@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/lightdash
 keywords: ['clickhouse', 'lightdash', '데이터 시각화', 'BI', '시맨틱 레이어', 'dbt', '셀프 서비스 분석', '연결']
 description: 'Lightdash는 dbt 위에 구축된 최신 오픈 소스 BI 도구로, 팀이 시맨틱 레이어를 통해 ClickHouse 데이터를 탐색하고 시각화할 수 있도록 합니다. 이 가이드에서는 dbt로 구동되는 빠르고 거버넌스가 적용된 분석을 위해 Lightdash를 ClickHouse에 연결하는 방법을 설명합니다.'
-title: 'Lightdash를 ClickHouse에 연결하기'
+title: 'Lightdash'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -21,16 +21,13 @@ import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Lightdash \{#lightdash\}
+Lightdash는 현대적인 데이터 팀을 위해 구축된 **AI 우선 BI 플랫폼**으로, dbt의 개방성과 ClickHouse의 성능을 결합합니다. ClickHouse를 Lightdash에 연결하면 팀은 dbt 시맨틱 레이어를 기반으로 하는 **AI 기반 셀프 서비스 분석 경험**을 활용할 수 있으므로, 모든 질문에 거버넌스가 적용된 일관된 메트릭으로 답할 수 있습니다.
 
-<PartnerBadge/>
+개발자는 개방형 아키텍처, 버전 관리되는 YAML 모델, 그리고 GitHub부터 IDE까지 워크플로에 자연스럽게 통합되는 기능 덕분에 Lightdash를 선호합니다.
 
-Lightdash는 현대적인 데이터 팀을 위해 구축된 **AI 중심 BI 플랫폼**으로, dbt의 개방성과 ClickHouse의 성능을 결합합니다. ClickHouse를 Lightdash에 연결하면, 팀은 dbt 시맨틱 레이어를 기반으로 한 **AI 기반 셀프 서비스 분석 환경**을 활용하여, 모든 질문에 거버넌스가 적용된 일관된 지표로 답변할 수 있습니다.
-
-개발자들은 개방형 아키텍처, 버전 관리되는 YAML 모델, GitHub부터 IDE까지 워크플로에 자연스럽게 통합되는 다양한 연동 기능 때문에 Lightdash를 선호합니다.
-
-이번 파트너십은 **ClickHouse의 속도**와 **Lightdash의 개발자 경험**을 결합하여, AI를 활용해 인사이트를 탐색하고, 시각화하며, 자동화하는 작업을 그 어느 때보다 쉽게 만들어 줍니다.
+이 파트너십은 **ClickHouse의 속도**와 **Lightdash의 개발자 경험**을 결합하여, AI를 활용한 인사이트 탐색, 시각화, 자동화를 그 어느 때보다 쉽게 만들어 줍니다.
 
 ## Lightdash와 ClickHouse로 대화형 대시보드 구축하기 \{#build-an-interactive-dashboard\}
 

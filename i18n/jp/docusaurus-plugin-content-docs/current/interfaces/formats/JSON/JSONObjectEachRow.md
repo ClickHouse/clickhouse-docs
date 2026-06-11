@@ -10,12 +10,12 @@ doc_type: 'reference'
 ---
 
 | 入力 | 出力 | エイリアス |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| -- | -- | ----- |
+| ✔  | ✔  |       |
 
 ## 説明 \{#description\}
 
-この形式では、すべてのデータは 1 つの JSON オブジェクトとして表され、そのオブジェクト内で各行が個別のフィールドとして表現されます。これは [`JSONEachRow`](./JSONEachRow.md) 形式と同様です。
+このフォーマットでは、すべてのデータは 1 つの JSON オブジェクトとして表され、そのオブジェクト内で各行が個別のフィールドとして表現されます。これは [`JSONEachRow`](./JSONEachRow.md) フォーマットと同様です。
 
 ## 使用例 \{#example-usage\}
 
@@ -46,7 +46,7 @@ doc_type: 'reference'
 └─────────────┴────────┘
 ```
 
-`JSONObjectEachRow` 形式で出力し、`format_json_object_each_row_column_for_object_name` 設定を使用します。
+`JSONObjectEachRow` フォーマットで出力し、`format_json_object_each_row_column_for_object_name` 設定を使用します。
 
 ```sql title="Query"
 SELECT * FROM test SETTINGS format_json_object_each_row_column_for_object_name='object_name'
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS example_table
 ) ENGINE = Memory;
 ```
 
-* `input_format_defaults_for_omitted_fields = 0` の場合、`x` と `a` のデフォルト値は `0`（`UInt32` データ型のデフォルト値）になります。
+* `input_format_defaults_for_omitted_fields = 0` の場合、`x` と `a` のデフォルト値は `0` (`UInt32` データ型のデフォルト値) になります。
 * `input_format_defaults_for_omitted_fields = 1` の場合、`x` のデフォルト値は `0` ですが、`a` のデフォルト値は `x * 2` になります。
 
 :::note
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS example_table
 
 ### データの選択 \{#json-selecting-data\}
 
-例として、`UserActivity` テーブルを使用します。
+例として、`UserActivity` テーブルを考えてみます。
 
 ```response
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -155,13 +155,13 @@ CREATE TABLE IF NOT EXISTS example_table
 
 たとえば、次のテーブルを考えてみます。
 
-```sql
+```sql title="Query"
 CREATE TABLE json_each_row_nested (n Nested (s String, i Int32) ) ENGINE = Memory
 ```
 
-`Nested` データ型の説明で確認できるように、ClickHouse はネストされた構造の各コンポーネントを個別のカラム（このテーブルでは `n.s` と `n.i`）として扱います。データは次のように挿入できます:
+`Nested` データ型の説明で確認できるように、ClickHouse はネストされた構造の各コンポーネントを個別のカラム (このテーブルでは `n.s` と `n.i`) として扱います。データは次のように挿入できます:
 
-```sql
+```sql title="Query"
 INSERT INTO json_each_row_nested FORMAT JSONEachRow {"n.s": ["abc", "def"], "n.i": [1, 23]}
 ```
 
@@ -212,7 +212,7 @@ SELECT * FROM json_each_row_nested
 
 | 設定                                                                                                                                                                           | 概要                                                                                                                     | デフォルト   | 注記                                                                                                                                                                |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`input_format_import_nested_json`](/operations/settings/settings-formats.md/#input_format_import_nested_json)                                                               | ネストされた JSON データをネストされたテーブルにマッピングします（JSONEachRow フォーマットで動作します）。                                                         | `false` |                                                                                                                                                                   |
+| [`input_format_import_nested_json`](/operations/settings/settings-formats.md/#input_format_import_nested_json)                                                               | ネストされた JSON データをネストされたテーブルにマッピングします (JSONEachRow フォーマットで動作します) 。                                                         | `false` |                                                                                                                                                                   |
 | [`input_format_json_read_bools_as_numbers`](/operations/settings/settings-formats.md/#input_format_json_read_bools_as_numbers)                                               | JSON 入力フォーマットでブール値を数値として解釈できるようにします。                                                                                   | `true`  |                                                                                                                                                                   |
 | [`input_format_json_read_bools_as_strings`](/operations/settings/settings-formats.md/#input_format_json_read_bools_as_strings)                                               | JSON入力フォーマットで、ブール値を文字列として解釈できるようにします。                                                                                  | `true`  |                                                                                                                                                                   |
 | [`input_format_json_read_numbers_as_strings`](/operations/settings/settings-formats.md/#input_format_json_read_numbers_as_strings)                                           | JSON入力フォーマットで数値を文字列として解析できるようにします。                                                                                     | `true`  |                                                                                                                                                                   |
@@ -227,11 +227,11 @@ SELECT * FROM json_each_row_nested
 | [`input_format_json_compact_allow_variable_number_of_columns`](/operations/settings/settings-formats.md/#input_format_json_compact_allow_variable_number_of_columns)         | JSONCompact/JSONCompactEachRow 形式で列数を可変にし、余分な列は無視して、存在しない列にはデフォルト値を使用します。                                              | `false` |                                                                                                                                                                   |
 | [`input_format_json_throw_on_bad_escape_sequence`](/operations/settings/settings-formats.md/#input_format_json_throw_on_bad_escape_sequence)                                 | JSON 文字列に不正なエスケープシーケンスが含まれている場合は例外をスローします。無効にすると、不正なエスケープシーケンスはデータ内にそのまま残ります。                                          | `true`  |                                                                                                                                                                   |
 | [`input_format_json_empty_as_default`](/operations/settings/settings-formats.md/#input_format_json_empty_as_default)                                                         | JSON 入力で空のフィールドをデフォルト値として扱います。                                                                                         | `false` | 複雑なデフォルト式を使用する場合は、[`input_format_defaults_for_omitted_fields`](/operations/settings/settings-formats.md/#input_format_defaults_for_omitted_fields) も有効にする必要があります。 |
-| [`output_format_json_quote_64bit_integers`](/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers)                                               | JSON 出力形式で 64 ビット整数をクォート（文字列として出力）するかどうかを制御します。                                                                        | `true`  |                                                                                                                                                                   |
+| [`output_format_json_quote_64bit_integers`](/operations/settings/settings-formats.md/#output_format_json_quote_64bit_integers)                                               | JSON 出力形式で 64 ビット整数をクォート (文字列として出力) するかどうかを制御します。                                                                        | `true`  |                                                                                                                                                                   |
 | [`output_format_json_quote_64bit_floats`](/operations/settings/settings-formats.md/#output_format_json_quote_64bit_floats)                                                   | JSON 出力形式における 64 ビット浮動小数点数のクォート方法を制御します。                                                                               | `false` |                                                                                                                                                                   |
 | [`output_format_json_quote_denormals`](/operations/settings/settings-formats.md/#output_format_json_quote_denormals)                                                         | JSON 出力形式において &#39;+nan&#39;, &#39;-nan&#39;, &#39;+inf&#39;, &#39;-inf&#39; の出力を有効にします。                               | `false` |                                                                                                                                                                   |
 | [`output_format_json_quote_decimals`](/operations/settings/settings-formats.md/#output_format_json_quote_decimals)                                                           | JSON 出力形式での 10 進数のクォート方法を制御します。                                                                                        | `false` |                                                                                                                                                                   |
 | [`output_format_json_escape_forward_slashes`](/operations/settings/settings-formats.md/#output_format_json_escape_forward_slashes)                                           | JSON 出力形式で、文字列中のスラッシュ (/) をエスケープするかどうかを制御します。                                                                          | `true`  |                                                                                                                                                                   |
 | [`output_format_json_named_tuples_as_objects`](/operations/settings/settings-formats.md/#output_format_json_named_tuples_as_objects)                                         | NamedTuple 型の列を JSON オブジェクトとしてシリアル化します。                                                                                | `true`  |                                                                                                                                                                   |
 | [`output_format_json_array_of_rows`](/operations/settings/settings-formats.md/#output_format_json_array_of_rows)                                                             | すべての行を JSONEachRow(Compact) 形式の JSON 配列として出力します。                                                                       | `false` |                                                                                                                                                                   |
-| [`output_format_json_validate_utf8`](/operations/settings/settings-formats.md/#output_format_json_validate_utf8)                                                             | JSON 出力フォーマットでの UTF-8 シーケンス検証を有効にします（ただし JSON/JSONCompact/JSONColumnsWithMetadata フォーマットには影響しません。これらは常に UTF-8 を検証します）。 | `false` |                                                                                                                                                                   |
+| [`output_format_json_validate_utf8`](/operations/settings/settings-formats.md/#output_format_json_validate_utf8)                                                             | JSON 出力フォーマットでの UTF-8 シーケンス検証を有効にします (ただし JSON/JSONCompact/JSONColumnsWithMetadata フォーマットには影響しません。これらは常に UTF-8 を検証します) 。 | `false` |                                                                                                                                                                   |

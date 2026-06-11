@@ -7,6 +7,4 @@ title: 'Expression'
 doc_type: 'reference'
 ---
 
-# 表达式 \{#expression\}
-
-在高阶函数中，表达式用于表示 lambda。
+Expression 用于表示高阶函数中的 lambda 表达式。

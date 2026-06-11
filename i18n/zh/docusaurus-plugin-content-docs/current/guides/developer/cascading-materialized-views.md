@@ -1,14 +1,12 @@
 ---
 slug: /guides/developer/cascading-materialized-views
 title: '级联materialized view'
-description: '如何在单个源表上使用多个materialized view。'
+description: '如何基于源表使用多个materialized view。'
 keywords: ['materialized view', '聚合']
 doc_type: 'guide'
 ---
 
-# 级联物化视图 \{#cascading-materialized-views\}
-
-本示例演示如何创建一个物化视图，然后在其基础上再级联创建第二个物化视图。在本页中，你将看到具体操作步骤、多种可能的使用方式以及相应的限制。针对不同用例，可以通过创建一个以另一个物化视图作为数据源的物化视图来实现。
+本示例演示如何创建一个materialized view，然后在其基础上再级联创建第二个materialized view。在本页中，你将看到具体操作步骤、多种可能的使用方式以及相应的限制。针对不同用例，可以通过创建一个以另一个materialized view作为数据源的materialized view来实现。
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/QDAJTKZT8y4?si=1KqPNHHfaKfxtPat" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
@@ -29,7 +27,7 @@ doc_type: 'guide'
 * 在数据摄取时将数据预处理为新格式
 * 在数据摄取时将数据预处理为特定聚合形式。
 
-使用物化视图来预处理数据可以减少 ClickHouse 需要处理的数据量和计算量，从而加快你的 `SELECT` 请求。
+使用materialized view来预处理数据可以减少 ClickHouse 需要处理的数据量和计算量，从而加快你的 `SELECT` 请求。
 
 ## 物化视图的源表 \{#source-table-for-the-materialized-views\}
 

@@ -21,7 +21,6 @@ title: 'ClickHouse community wisdom'
 description: 'Learn from the ClickHouse community with real world scenarios and lessons learned'
 ---
 
-# ClickHouse community wisdom: tips and tricks from meetups {#community-wisdom}
 
 *These interactive guides represent collective wisdom from hundreds of production deployments. Each runnable example helps you understand ClickHouse patterns using real GitHub events data - practice these concepts to avoid common mistakes and accelerate your success.*
 

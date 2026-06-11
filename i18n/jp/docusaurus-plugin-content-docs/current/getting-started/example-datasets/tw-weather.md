@@ -212,7 +212,9 @@ SELECT
 FROM tw_weather_data
 WHERE (year(MeasuredDate) = 2023) AND (Td IS NOT NULL)
 GROUP BY StationId
+```
 
+```response
 ┌─StationId─┬─max_td─┐
 │ 466940    │      1 │
 │ 467300    │      1 │

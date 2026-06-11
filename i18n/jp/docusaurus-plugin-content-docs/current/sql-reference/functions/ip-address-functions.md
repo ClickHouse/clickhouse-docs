@@ -6,8 +6,6 @@ title: 'IPv4 および IPv6 アドレスを扱う関数'
 doc_type: 'reference'
 ---
 
-# IPv4 および IPv6 アドレスを扱う関数 \{#functions-for-working-with-ipv4-and-ipv6-addresses\}
-
 {/* 
   以下のタグ内のコンテンツは、ドキュメントフレームワークのビルド時に
   system.functions から自動生成されたドキュメントで置き換えられます。タグを変更または削除しないでください。

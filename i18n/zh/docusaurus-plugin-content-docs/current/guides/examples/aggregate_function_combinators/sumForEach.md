@@ -7,8 +7,6 @@ sidebar_label: 'sumForEach'
 doc_type: 'reference'
 ---
 
-# sumForEach \{#sumforeach\}
-
 ## 描述 \{#description\}
 
 [`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach) 组合器
@@ -29,10 +27,10 @@ SELECT EventTime, IsMobile FROM metrica.hits ORDER BY rand() LIMIT 10
 ```sql runnable
 SELECT
     toHour(EventTime) AS hour_of_day,
-    -- 使用 sumForEach 一次性统计桌面端和移动端的访问量
+    -- Use sumForEach to count desktop and mobile visits in one pass
     sumForEach([
-        IsMobile = 0, -- 桌面端访问量 (IsMobile = 0)
-        IsMobile = 1  -- 移动端访问量 (IsMobile = 1)
+        IsMobile = 0, -- Desktop visits (IsMobile = 0)
+        IsMobile = 1  -- Mobile visits (IsMobile = 1)
     ]) AS device_counts
 FROM metrica.hits
 GROUP BY hour_of_day
@@ -40,5 +38,6 @@ ORDER BY hour_of_day;
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`ForEach` 组合器](/sql-reference/aggregate-functions/combinators#-foreach)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`ForEach` 组合器](/sql-reference/aggregate-functions/combinators#-foreach)

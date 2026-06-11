@@ -20,11 +20,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# 使用 ClickStack 监控主机日志 \{#host-logs-clickstack\}
-
-:::note[摘要]
-使用 OTel `filelog` 接收器在 ClickStack 中收集并可视化主机系统日志 (syslog、auth 和 kernel) 。包含演示数据集和预置仪表板。
+:::note[TL;DR]
+使用 OTel `filelog` 接收器在 ClickStack 中收集并可视化主机系统日志 (syslog、auth、kernel) 。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有主机集成 \{#existing-hosts\}

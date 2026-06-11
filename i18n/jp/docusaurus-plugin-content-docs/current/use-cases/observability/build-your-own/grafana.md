@@ -1,8 +1,8 @@
 ---
-title: 'Grafana の使用'
-description: '可観測性における Grafana と ClickHouse の活用'
+title: 'オブザーバビリティにおける Grafana と ClickHouse の活用'
+description: 'オブザーバビリティにおける Grafana と ClickHouse の活用'
 slug: /observability/grafana
-keywords: ['可観測性', 'ログ', 'トレース', 'メトリクス', 'OpenTelemetry', 'Grafana', 'OTel']
+keywords: ['オブザーバビリティ', 'ログ', 'トレース', 'メトリクス', 'OpenTelemetry', 'Grafana', 'OTel']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -19,12 +19,10 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-# 観測性のための Grafana と ClickHouse の利用 \{#using-grafana-and-clickhouse-for-observability\}
+Grafana は、ClickHouse のオブザーバビリティ データを可視化するための推奨ツールです。これは、Grafana 用の公式 ClickHouse プラグインを使用することで実現できます。インストール手順は[こちら](/integrations/grafana)を参照してください。
 
-Grafana は、ClickHouse における観測性データの推奨可視化ツールです。これは、Grafana 向け公式 ClickHouse プラグインを使用して実現します。インストール手順は[こちら](/integrations/grafana)を参照してください。
-
-プラグインのバージョン 4 では、新しいクエリビルダーにおいてログとトレースが第一級の存在として扱われます。これにより、SRE が SQL クエリを書く必要性を最小限に抑え、SQL ベースの観測性を簡素化し、この新たなパラダイムを一段と推し進めます。
-この一環として、プラグインの中核に OpenTelemetry (OTel) を据えています。これは、今後数年にわたって SQL ベースの観測性の基盤となり、データ収集のあり方を形作ると考えているためです。
+プラグインの V4 では、新しいクエリビルダーにより、ログとトレースが主要機能として扱われるようになりました。これにより、SRE が SQL クエリを記述する必要性を最小限に抑えつつ、SQL ベースのオブザーバビリティを簡素化し、この新しいパラダイムをさらに前進させます。
+その一環として、プラグインの中核に OpenTelemetry (OTel) を据えています。これは、今後数年間で、これが SQL ベースのオブザーバビリティとデータ収集の基盤になると考えているためです。
 
 ## OpenTelemetry の統合 \{#open-telemetry-integration\}
 

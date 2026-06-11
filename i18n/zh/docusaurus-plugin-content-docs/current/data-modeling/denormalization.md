@@ -10,10 +10,7 @@ import denormalizationDiagram from '@site/static/images/data-modeling/denormaliz
 import denormalizationSchema from '@site/static/images/data-modeling/denormalization-schema.png';
 import Image from '@theme/IdealImage';
 
-
-# 数据反规范化 \{#denormalizing-data\}
-
-在 ClickHouse 中，数据反规范化是一种通过使用扁平表并避免 `JOIN` 来最大限度降低查询延迟的技术。
+数据反规范化是 ClickHouse 中一种通过使用扁平化表并避免 JOIN 操作来尽量降低查询延迟的技术。
 
 ## 比较规范化与反规范化模式 \{#comparing-normalized-vs-denormalized-schemas\}
 
@@ -67,7 +64,7 @@ import Image from '@theme/IdealImage';
 
 ### Posts 与 Votes \{#posts-and-votes\}
 
-帖子上的投票使用单独的表来表示。下面展示的是针对这一场景优化后的模式，以及用于加载数据的插入命令：
+帖子上的投票使用单独的表来表示。下面展示的是针对这一场景优化后的 schema，以及用于加载数据的插入命令：
 
 ```sql
 CREATE TABLE votes
@@ -83,7 +80,9 @@ ENGINE = MergeTree
 ORDER BY (VoteTypeId, CreationDate, PostId)
 
 INSERT INTO votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 26.272 sec. Processed 238.98 million rows, 2.13 GB (9.10 million rows/s., 80.97 MB/s.)
 ```
 
@@ -102,13 +101,15 @@ FROM
         FROM votes
         GROUP BY hr
 )
+```
 
+```response
 ┌─avg_votes_per_hr─┬─avg_posts_per_hr─┐
 │               41759 │         33322 │
 └──────────────────┴──────────────────┘
 ```
 
-如果可以容忍一定的延迟，可以通过批处理来解决这个问题，但除非我们定期重新加载所有帖子（这通常并不是理想的做法），否则仍然需要处理更新。
+如果可以容忍一定的延迟，可以通过批处理来解决这个问题，但除非我们定期重新加载所有帖子 (这通常并不是理想的做法) ，否则仍然需要处理更新。
 
 更麻烦的是，有些帖子获得的投票数异常之高：
 
@@ -118,7 +119,9 @@ FROM votes
 GROUP BY PostId
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌───PostId─┬─url──────────────────────────────────────────┬─────c─┐
 │ 11227902 │ https://stackoverflow.com/questions/11227902 │ 35123 │
 │   927386 │ https://stackoverflow.com/questions/927386   │ 29090 │
@@ -128,8 +131,7 @@ LIMIT 5
 └──────────┴──────────────────────────────────────────────┴───────┘
 ```
 
-这里的关键点是：对于大多数分析场景来说，每条帖子只需要聚合后的投票统计信息就足够了——我们不需要对所有投票信息进行反规范化。比如，当前的 `Score` 列就代表了这种统计信息，即赞成票总数减去反对票总数。理想情况下，我们只需在查询时通过一次简单查找就能获取这些统计数据（参见 [dictionaries](/dictionary)）。
-
+这里的关键点是：对于大多数分析场景来说，每条帖子只需要聚合后的投票统计信息就足够了——我们不需要对所有投票信息进行反规范化。比如，当前的 `Score` 列就代表了这种统计信息，即赞成票总数减去反对票总数。理想情况下，我们只需在查询时通过一次简单查找就能获取这些统计数据 (参见 [dictionaries](/dictionary)) 。
 
 ### Users 和 Badges \{#users-and-badges\}
 
@@ -177,11 +179,17 @@ ENGINE = MergeTree
 ORDER BY UserId
 
 INSERT INTO users SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/users.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 26.229 sec. Processed 22.48 million rows, 1.36 GB (857.21 thousand rows/s., 51.99 MB/s.)
+```
 
+```sql
 INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 18.126 sec. Processed 51.29 million rows, 797.05 MB (2.83 million rows/s., 43.97 MB/s.)
 ```
 
@@ -189,7 +197,9 @@ INSERT INTO badges SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3
 
 ```sql
 SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
+```
 
+```response
 ┌─UserId─┬─────c─┐
 │  22656 │ 19334 │
 │   6309 │ 10516 │
@@ -203,10 +213,9 @@ SELECT UserId, count() AS c FROM badges GROUP BY UserId ORDER BY c DESC LIMIT 5
 
 > 我们可能希望把徽章相关的统计信息反规范化到用户上，例如徽章的数量。在该数据集的插入阶段使用字典时，我们会考虑这种情况。
 
-
 ### Posts 和 PostLinks \{#posts-and-postlinks\}
 
-`PostLinks` 用于关联用户认为相关或重复的 `Posts`。下面的查询展示了表结构和加载命令：
+`PostLinks` 用于关联用户认为相关或重复的 `Posts`。下面的查询展示了 schema 和加载命令：
 
 ```sql
 CREATE TABLE postlinks
@@ -221,7 +230,9 @@ ENGINE = MergeTree
 ORDER BY (PostId, RelatedPostId)
 
 INSERT INTO postlinks SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/postlinks.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 4.726 sec. Processed 6.55 million rows, 129.70 MB (1.39 million rows/s., 27.44 MB/s.)
 ```
 
@@ -232,7 +243,9 @@ SELECT PostId, count() AS c
 FROM postlinks
 GROUP BY PostId
 ORDER BY c DESC LIMIT 5
+```
 
+```response
 ┌───PostId─┬───c─┐
 │ 22937618 │ 125 │
 │  9549780 │ 120 │
@@ -257,14 +270,15 @@ FROM
   FROM postlinks
   GROUP BY hr
 )
+```
 
+```response
 ┌─avg_votes_per_hr─┬─avg_posts_per_hr─┐
 │                54 │                    44     │
 └──────────────────┴──────────────────┘
 ```
 
 下面，我们将以此作为反规范化的示例。
-
 
 ### 简单统计示例 \{#simple-statistic-example\}
 
@@ -303,11 +317,11 @@ LEFT JOIN
 在处理复杂对象或一对多关系的场景中，用户可以使用：
 
 * Named Tuples —— 允许将相关结构表示为一组列。
-* Array(Tuple) 或 Nested —— 由命名元组（tuple）组成的数组，也称为 Nested，其中每个条目表示一个对象。适用于一对多关系。
+* Array(Tuple) 或 Nested —— 由命名元组 (tuple) 组成的数组，也称为 Nested，其中每个条目表示一个对象。适用于一对多关系。
 
 例如，我们在下面演示如何将 `PostLinks` 反规范化到 `Posts` 上。
 
-每个帖子都可以包含若干指向其他帖子的链接，如前面 `PostLinks` 模式中所示。作为一种 Nested 类型，我们可以如下表示这些被链接的帖子以及重复的帖子：
+每个帖子都可以包含若干指向其他帖子的链接，如前面 `PostLinks` schema 中所示。作为一种 Nested 类型，我们可以如下表示这些被链接的帖子以及重复的帖子：
 
 ```sql
 SET flatten_nested=0
@@ -339,7 +353,9 @@ LEFT JOIN (
     FROM postlinks
     GROUP BY PostId
 ) AS postlinks ON posts.Id = postlinks.PostId
+```
 
+```response
 0 rows in set. Elapsed: 155.372 sec. Processed 66.37 million rows, 76.33 GB (427.18 thousand rows/s., 491.25 MB/s.)
 Peak memory usage: 6.98 GiB.
 ```
@@ -356,13 +372,14 @@ FROM posts_with_links
 WHERE (length(LinkedPosts) > 2) AND (length(DuplicatePosts) > 0)
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 LinkedPosts:    [('2017-04-11 11:53:09.583',3404508),('2017-04-11 11:49:07.680',3922739),('2017-04-11 11:48:33.353',33058004)]
 DuplicatePosts: [('2017-04-11 12:18:37.260',3922739),('2017-04-11 12:18:37.260',33058004)]
 ```
-
 
 ## 编排和调度反规范化 \{#orchestrating-and-scheduling-denormalization\}
 

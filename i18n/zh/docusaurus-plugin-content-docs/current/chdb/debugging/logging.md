@@ -1,15 +1,13 @@
 ---
-title: 'DataStore 日志配置'
-sidebar_label: '日志配置'
+title: 'DataStore 日志'
+sidebar_label: '日志'
 slug: /chdb/debugging/logging
-description: '配置 DataStore 日志配置以用于调试和监控'
-keywords: ['chdb', 'datastore', '日志配置', '调试', '日志级别']
+description: '配置 DataStore 日志以用于调试和监控'
+keywords: ['chdb', 'datastore', '日志', '调试', '日志级别']
 doc_type: 'reference'
 ---
 
-# DataStore 日志 \{#datastore-logging\}
-
-DataStore 使用 Python 标准日志模块。本文指南介绍如何配置日志以便进行调试。
+DataStore 使用 Python 的标准 logging 模块。这个指南介绍如何为调试配置日志。
 
 ## 快速入门 \{#quick-start\}
 
@@ -65,35 +63,29 @@ config.enable_debug()  # Sets DEBUG level + verbose format
 
 ## 日志格式 \{#format\}
 
-### 简洁格式（默认） \{#simple\}
+### 简洁格式 (默认)  \{#simple\}
 
-```python
+```python title="Query"
 config.set_log_format("simple")
 ```
 
-输出：
-
-```text
+```text title="Response"
 DEBUG - Executing SQL query
 DEBUG - Cache miss for key abc123
 ```
 
-
 ### 详细日志格式 \{#verbose\}
 
-```python
+```python title="Query"
 config.set_log_format("verbose")
 ```
 
-输出：
-
-```text
+```text title="Response"
 2024-01-15 10:30:45.123 DEBUG datastore.core - Executing SQL query
 2024-01-15 10:30:45.456 DEBUG datastore.cache - Cache miss for key abc123
 ```
 
 ***
-
 
 ## 会记录哪些数据 \{#what-logged\}
 

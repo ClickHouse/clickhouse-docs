@@ -7,6 +7,7 @@ pagination_next: null
 description: "ClickStack のデモデイズ（2026-04-10）"
 doc_type: "guide"
 keywords: ["ClickStack", "デモデイズ"]
+sidebar_position: -20260410
 ---
 
 ## ピン留めできるデータソースフィルター \{#pinnable-datasource-filters\}

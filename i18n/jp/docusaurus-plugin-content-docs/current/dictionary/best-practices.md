@@ -7,11 +7,9 @@ doc_type: 'guide'
 keywords: ['dictionary', 'dictionaries', 'layout', 'dictGet', 'JOIN', 'hashed', 'flat', 'performance']
 ---
 
-# Dictionaryのベストプラクティス \{#dictionary-best-practices\}
+このページでは、適切な辞書レイアウトを選ぶための実践的な指針、どのような場合に辞書がJOINより高い性能を発揮するのか (また、そうでないのはどのような場合か) 、そして辞書の使用状況の監視について説明します。
 
-このページでは、適切な辞書レイアウトを選ぶための実践的な指針、どのような場合に辞書が JOIN より高い性能を発揮するのか (また、そうでないのはどのような場合か) 、そして辞書の使用状況を監視する方法について説明します。
-
-実例を交えた辞書の概要については、[Dictionary ガイド](/dictionary)を参照してください。
+具体例を交えた辞書の入門については、[Dictionaryのメインガイド](/dictionary)を参照してください。
 
 ## 辞書とJOINを利用するタイミング \{#when-to-use-dictionaries-vs-joins\}
 

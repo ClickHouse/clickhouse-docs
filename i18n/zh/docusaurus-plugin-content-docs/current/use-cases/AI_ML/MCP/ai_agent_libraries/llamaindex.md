@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/llamaindex
 sidebar_label: '集成 LlamaIndex'
-title: '如何使用 ClickHouse MCP server 构建 LlamaIndex AI 智能体'
+title: '如何使用 ClickHouse MCP server 构建 LlamaIndex AI 智能体。'
 pagination_prev: null
 pagination_next: null
-description: '了解如何构建一个可以与 ClickHouse MCP server 交互的 LlamaIndex AI 智能体。'
+description: '了解如何构建一个可与 ClickHouse MCP server 交互的 LlamaIndex AI 智能体。'
 keywords: ['ClickHouse', 'MCP', 'LlamaIndex']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 如何使用 ClickHouse MCP server 构建 LlamaIndex AI 智能体 \{#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server\}
 
 在本指南中，你将学习如何构建一个 [LlamaIndex](https://docs.llamaindex.ai) AI 智能体，使其能够通过 [ClickHouse 的 MCP server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse 的 SQL playground](https://sql.clickhouse.com/) 进行交互。
 

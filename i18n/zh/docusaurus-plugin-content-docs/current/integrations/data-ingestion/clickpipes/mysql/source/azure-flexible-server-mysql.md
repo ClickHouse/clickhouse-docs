@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Azure Flexible Server for MySQL'
-description: '将 Azure Flexible Server for MySQL 配置为 ClickPipes 的数据源'
+description: '将 Azure Flexible Server for MySQL 设置为 ClickPipes 的源端'
 slug: /integrations/clickpipes/mysql/source/azure-flexible-server-mysql
-title: 'Azure Flexible Server for MySQL 源端配置指南'
+title: 'Azure Flexible Server for MySQL 源端设置指南'
 keywords: ['azure', 'flexible server', 'mysql', 'clickpipes', 'binlog']
 doc_type: 'guide'
 ---
@@ -11,9 +11,6 @@ import configure_network_security from '@site/static/images/integrations/data-in
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-
-# Azure Flexible Server for MySQL 源端设置指南 \{#azure-flexible-server-for-mysql-source-setup-guide\}
 
 本分步指南将演示如何配置 Azure Flexible Server for MySQL，通过 [MySQL ClickPipe](../index.md) 将数据复制到 ClickHouse Cloud。此服务仅支持**一次性摄取**。关于 MySQL CDC 的常见问题，请参阅 [MySQL 常见问题页面](/integrations/data-ingestion/clickpipes/mysql/faq.md)。
 

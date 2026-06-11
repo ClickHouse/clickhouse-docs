@@ -18,21 +18,19 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Vector를 ClickHouse와 통합하기 \{#integrating-vector-with-clickhouse\}
-
 <PartnerBadge />
 
-프로덕션 애플리케이션에서는 로그를 실시간으로 분석할 수 있어야 합니다.
+실시간으로 로그를 분석하는 것은 프로덕션 애플리케이션에서 매우 중요합니다.
 ClickHouse는 뛰어난 압축률(로그의 경우 최대 [170배](https://clickhouse.com/blog/log-compression-170x))과
-대용량 데이터를 빠르게 집계하는 능력 덕분에 로그 데이터를 저장하고 분석하는 데 탁월합니다.
+대량의 데이터를 빠르게 집계하는 기능 덕분에 로그 데이터를 저장하고 분석하는 데 탁월합니다.
 
-이 가이드에서는 인기 있는 데이터 파이프라인인 [Vector](https://vector.dev/docs/about/what-is-vector/)를 사용하여 Nginx 로그 파일을 tail 방식으로 읽고 ClickHouse로 전송하는 방법을 설명합니다.
-아래 단계는 다른 종류의 로그 파일을 tail 방식으로 처리할 때에도 유사하게 적용됩니다.
+이 가이드에서는 널리 사용되는 데이터 파이프라인 [Vector](https://vector.dev/docs/about/what-is-vector/)를 사용하여 Nginx 로그 파일을 tail한 뒤 ClickHouse로 전송하는 방법을 설명합니다.
+아래 단계는 어떤 유형의 로그 파일을 tail할 때에도 거의 동일합니다.
 
-**사전 준비 사항:**
+**사전 요구 사항:**
 
-* ClickHouse가 이미 실행 중이어야 합니다
-* Vector가 설치되어 있어야 합니다
+* ClickHouse가 이미 실행 중입니다
+* Vector가 설치되어 있습니다
 
 <VerticalStepper headerLevel="h2">
   ## 데이터베이스 및 테이블 생성하기 \{#1-create-a-database-and-table\}

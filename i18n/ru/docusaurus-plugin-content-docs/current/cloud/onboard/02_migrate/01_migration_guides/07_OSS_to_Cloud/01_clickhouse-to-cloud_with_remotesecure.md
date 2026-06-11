@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Использование remoteSecure'
 slug: /cloud/migration/clickhouse-to-cloud
-title: 'Миграция между самоуправляемым ClickHouse и ClickHouse Cloud'
+title: 'Миграция между самоуправляемым ClickHouse и ClickHouse Cloud с помощью remoteSecure'
 description: 'На этой странице описывается, как выполнять миграцию между самоуправляемым ClickHouse и ClickHouse Cloud'
 doc_type: 'guide'
 keywords: ['миграция', 'ClickHouse Cloud', 'OSS', 'Миграция самоуправляемого ClickHouse в Cloud']
@@ -17,13 +17,10 @@ import self_managed_05 from '@site/static/images/integrations/migration/self-man
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 import CompatibilityNote from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/compatibility.mdx'
 
+<Image img={self_managed_01} size="lg" alt="Миграция самоуправляемого ClickHouse" />
 
-# Миграция между самоуправляемым ClickHouse и ClickHouse Cloud с использованием remoteSecure \{#migrating-between-self-managed-clickhouse-and-clickhouse-cloud-using-remotesecure\}
-
-<Image img={self_managed_01} size='lg' alt='Миграция самоуправляемого ClickHouse'/>
-
-В этом руководстве показано, как перенести данные с самоуправляемого сервера ClickHouse в ClickHouse Cloud, а также как выполнять миграцию между сервисами ClickHouse Cloud.
-Функция [`remoteSecure`](/sql-reference/table-functions/remote) используется в запросах `SELECT` и `INSERT` для доступа к удалённым серверам ClickHouse, что делает миграцию таблиц такой же простой, как написание запроса `INSERT INTO` с вложенным `SELECT`.
+В этом руководстве показано, как выполнить миграцию с самоуправляемого сервера ClickHouse в ClickHouse Cloud, а также как выполнять миграцию между сервисами ClickHouse Cloud.
+Функция [`remoteSecure`](/sql-reference/table-functions/remote) используется в запросах `SELECT` и `INSERT`, чтобы обеспечить доступ к удалённым серверам ClickHouse, что позволяет мигрировать таблицы, просто написав запрос `INSERT INTO` со встроенным `SELECT`.
 
 ## Миграция с самоуправляемого ClickHouse в ClickHouse Cloud \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud\}
 

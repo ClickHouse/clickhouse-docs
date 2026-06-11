@@ -1,5 +1,5 @@
 ---
-description: 'MongoDB エンジンは、リモートのコレクションからデータを読み出すことを可能にする読み取り専用のテーブルエンジンです。'
+description: 'MongoDB エンジンは、リモートコレクションからデータを読み取るための、読み取り専用のテーブルエンジンです。'
 sidebar_label: 'MongoDB'
 sidebar_position: 135
 slug: /engines/table-engines/integrations/mongodb
@@ -7,12 +7,10 @@ title: 'MongoDB テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# MongoDB テーブルエンジン \{#mongodb-table-engine\}
-
 MongoDB エンジンは、リモートの [MongoDB](https://www.mongodb.com/) コレクションからデータを読み取るための、読み取り専用のテーブルエンジンです。
 
 MongoDB v3.6 以降のサーバーのみがサポートされています。
-[シードリスト（`mongodb+srv`）](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) は現在サポートされていません。
+[シードリスト (`mongodb+srv`) ](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) は現在サポートされていません。
 
 ## テーブルを作成する \{#creating-a-table\}
 
@@ -39,7 +37,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 
 :::tip
 MongoDB Atlas のクラウドサービスを使用している場合、接続 URL は「Atlas SQL」オプションから取得できます。
-シードリスト（`mongodb+srv`）はまだサポートされていませんが、今後のリリースで追加される予定です。
+シードリスト (`mongodb+srv`) はまだサポートされていませんが、今後のリリースで追加される予定です。
 :::
 
 別の方法として、URI を渡すこともできます。
@@ -128,13 +126,13 @@ SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea4
 
 ## サポートされている句 \{#supported-clauses\}
 
-単純な式を含むクエリのみがサポートされます（例: `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`）。
+単純な式を含むクエリのみがサポートされます (例: `WHERE field = <constant> ORDER BY field2 LIMIT <constant>`) 。
 このような式は MongoDB のクエリ言語に変換され、サーバー側で実行されます。
 [mongodb&#95;throw&#95;on&#95;unsupported&#95;query](../../../operations/settings/settings.md#mongodb_throw_on_unsupported_query) を使用して、これらの制限をすべて無効化できます。
-その場合、ClickHouse は可能な限り最善を尽くしてクエリを変換しようとしますが、テーブル全体のスキャンや ClickHouse 側での処理が発生する可能性があります。
+その場合、ClickHouse は可能な限りクエリの変換を試みますが、テーブル全体のスキャンや ClickHouse 側での処理が発生する可能性があります。
 
 :::note
-MongoDB では厳密な型付きフィルタが必要となるため、リテラルの型を明示的に設定することを常に推奨します。\
+MongoDB では厳密な型付きフィルタが必要となるため、リテラルの型を明示的に設定することを常に推奨します。
 例えば、`Date` 型でフィルタリングしたい場合:
 
 ```sql
@@ -157,7 +155,7 @@ MongoDB に [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sa
 
 MongoDB コレクション内のデータを読み取るための ClickHouse テーブルを作成します：
 
-```sql
+```sql title="Query"
 CREATE TABLE sample_mflix_table
 (
     _id String,
@@ -172,19 +170,17 @@ CREATE TABLE sample_mflix_table
 ) ENGINE = MongoDB('mongodb://<USERNAME>:<PASSWORD>@atlas-sql-6634be87cefd3876070caf96-98lxs.a.query.mongodb.net/sample_mflix?ssl=true&authSource=admin', 'movies');
 ```
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT count() FROM sample_mflix_table
 ```
 
-```text
+```text title="Response"
    ┌─count()─┐
 1. │   21349 │
    └─────────┘
 ```
 
-```sql
+```sql title="Query"
 -- JSONExtractString cannot be pushed down to MongoDB
 SET mongodb_throw_on_unsupported_query = 0;
 
@@ -196,7 +192,7 @@ ORDER BY year
 FORMAT Vertical;
 ```
 
-```text
+```text title="Response"
 Row 1:
 ──────
 title:     Back to the Future
@@ -214,7 +210,7 @@ directors: ['Robert Zemeckis']
 released:  1989-11-22
 ```
 
-```sql
+```sql title="Query"
 -- Find top 3 movies based on Cormac McCarthy's books
 SELECT title, toFloat32(JSONExtractString(imdb, 'rating')) AS rating
 FROM sample_mflix_table
@@ -223,7 +219,7 @@ ORDER BY rating DESC
 LIMIT 3;
 ```
 
-```text
+```text title="Response"
    ┌─title──────────────────┬─rating─┐
 1. │ No Country for Old Men │    8.1 │
 2. │ The Sunset Limited     │    7.4 │
@@ -232,6 +228,7 @@ LIMIT 3;
 ```
 
 ## トラブルシューティング \{#troubleshooting\}
+
 DEBUG レベルのログで生成された MongoDB クエリを確認できます。
 
 実装の詳細については、[mongocxx](https://github.com/mongodb/mongo-cxx-driver) および [mongoc](https://github.com/mongodb/mongo-c-driver) のドキュメントを参照してください。

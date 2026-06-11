@@ -1,9 +1,9 @@
 ---
-sidebar_title: 'Конечная точка Query API'
+sidebar_title: 'эндпоинты Query API'
 slug: /cloud/get-started/query-endpoints
 description: 'Легко разворачивайте REST-конечные точки API из сохранённых запросов'
 keywords: ['api', 'конечная точка query api', 'конечные точки запросов', 'rest api запросов']
-title: 'Конечная точка Query API'
+title: 'Настройка эндпоинтов Query API'
 doc_type: 'guide'
 ---
 
@@ -17,10 +17,7 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# Настройка конечных точек API для запросов \{#setting-up-query-api-endpoints\}
-
-Возможность **Query API Endpoints** позволяет создавать конечные точки API непосредственно из любого сохранённого SQL-запроса в консоли ClickHouse Cloud. Вы сможете обращаться к конечным точкам API по HTTP для выполнения своих сохранённых запросов без необходимости подключаться к вашему сервису ClickHouse Cloud через нативный драйвер.
+Функция **эндпоинты Query API** позволяет создавать конечные точки API напрямую из любого сохранённого SQL-запроса в консоли ClickHouse Cloud. Вы сможете обращаться к эндпоинтам Query API по HTTP и выполнять сохранённые запросы без необходимости подключаться к своему сервису ClickHouse Cloud через нативный драйвер.
 
 ## Предварительные требования \{#quick-start-guide\}
 
@@ -543,18 +540,17 @@ SELECT * FROM system.tables;
 </TabItem>
 </Tabs>
 
-### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
+### Request and parse the response as a stream
 
-**Query API Endpoint SQL:**
+**SQL эндпоинта Query API:**
 
 ```sql
 SELECT name, database FROM system.tables;
 ```
 
 <Tabs>
-<TabItem value="TypeScript" label="TypeScript" default>
-
-```typescript
+  <TabItem value="TypeScript" label="TypeScript" default>
+    ```typescript
     async function fetchAndLogChunks(
       url: string,
       openApiKeyId: string,
@@ -604,15 +600,14 @@ SELECT name, database FROM system.tables;
     );
     ```
 
-```shell title="Вывод"
+    ```shell title="Вывод"
     > npx tsx index.ts
     > {"name":"COLUMNS","database":"INFORMATION_SCHEMA"}
     > {"name":"KEY_COLUMN_USAGE","database":"INFORMATION_SCHEMA"}
     ...
     > Stream ended.
     ```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ### Insert a stream from a file into a table \{#insert-a-stream-from-a-file-into-a-table\}

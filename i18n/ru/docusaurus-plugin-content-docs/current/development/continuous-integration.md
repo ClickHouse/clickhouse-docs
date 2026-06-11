@@ -7,8 +7,6 @@ title: 'Непрерывная интеграция (CI)'
 doc_type: 'reference'
 ---
 
-# Непрерывная интеграция (CI) \{#continuous-integration-ci\}
-
 Когда вы отправляете pull request, для вашего кода выполняются автоматические проверки системой ClickHouse [непрерывной интеграции (CI)](tests.md#test-automation).
 Это происходит после того, как мейнтейнер репозитория (кто‑то из команды ClickHouse) просмотрел ваш код и добавил к вашему pull request метку `can be tested`.
 Результаты проверок перечислены на странице pull request в GitHub, как описано в [документации по проверкам GitHub](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks).
@@ -63,22 +61,43 @@ git push
 
 ## Проверка стиля \{#style-check\}
 
-Выполняет различные проверки стиля кода.
-
-В задаче Style Check выполняются следующие базовые проверки:
+Выполняет различные проверки стиля кода. Каждая из перечисленных ниже проверок соответствует `testname` в [`ci/jobs/check_style.py`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/check_style.py) и может быть запущена отдельно с помощью `--test <name>` (см. ниже).
 
 ##### cpp \{#cpp\}
 
-Выполняет простые проверки стиля кода на основе регулярных выражений с помощью скрипта [`ci/jobs/scripts/check_style/check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh) (его также можно запускать локально).\
-Если проверка завершается с ошибкой, исправьте проблемы со стилем в соответствии с [руководством по стилю кода](style.md).
+Проверки стиля C++ на основе регулярных выражений с помощью [`check_cpp.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/check_cpp.sh). Если проверка завершается с ошибкой, исправьте проблемы со стилем в соответствии с [руководством по стилю кода](style.md).
 
-##### codespell, aspell \{#codespell\}
+##### whitespace_check \{#whitespace-check\}
 
-Проверяют грамматические ошибки и опечатки.
+Помечает двойные пробелы после запятых в C++, если они не используются для выравнивания столбцов.
 
-##### mypy \{#mypy\}
+##### catch_all \{#catch-all\}
 
-Выполняет статическую проверку типов для кода на Python.
+Запрещает использовать `catch (...)` вне деструкторов, `main` и точек входа фаззера, где перехват с игнорированием неизвестного исключения небезопасен.
+
+##### yamllint \{#yamllint\}
+
+Проверяет YAML-файлы workflow в каталоге `.github/` с помощью `.yamllint`.
+
+##### xmllint \{#xmllint\}
+
+Проверяет XML-файлы в каталогах `tests/` и `programs/`.
+
+##### functional_tests_check \{#functional-tests-check\}
+
+Проверяет тесты без сохранения состояния: запросы с фильтром по `event_date` должны использовать `>= yesterday()`, а не `today()` (чтобы избежать нестабильности вблизи полуночи), а имена файлов тестов не должны содержать `fail`.
+
+##### test_numbers_check \{#test-numbers-check\}
+
+Отмечает значительные пропуски в нумерации тестов без сохранения состояния (`tests/queries/0_stateless/<NNNNN>_*`).
+
+##### символические ссылки \{#symlinks\}
+
+Находит неработающие символические ссылки в репозитории.
+
+##### various \{#various\}
+
+Различные проверки репозитория с помощью [`various_checks.sh`](https://github.com/ClickHouse/ClickHouse/blob/master/ci/jobs/scripts/check_style/various_checks.sh): запросы к `system.query_log` / `system.parts` / и т. д. должны фильтроваться по `currentDatabase`, пути ZooKeeper для `Replicated*MergeTree` должны включать отдельный префикс для каждого теста, каталоги интеграционных тестов должны содержать `__init__.py`, не допускаются UTF BOM, установленные исполняемые биты у файлов исходного кода и данных, теги `:latest` у сторонних образов в docker-compose и многое другое.
 
 ### Запуск задачи проверки стиля локально \{#running-style-check-locally\}
 

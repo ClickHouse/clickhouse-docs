@@ -8,10 +8,8 @@ title: 'ClickHouse Connect 드라이버 API'
 doc_type: 'reference'
 ---
 
-# ClickHouse Connect 드라이버 API \{#clickhouse-connect-driver-api\}
-
 :::note
-대부분의 API 메서드에서는 전달할 수 있는 인자의 종류가 많고 그중 대부분이 선택적이므로, 키워드 인자(keyword argument)를 사용하는 것을 권장합니다.
+가능한 인수가 많고 그중 대부분이 선택 사항이므로, 대부분의 API 메서드에서는 키워드 인수를 전달하는 것이 좋습니다.
 
 *여기에 문서화되지 않은 메서드는 API의 일부로 간주되지 않으며, 제거되거나 변경될 수 있습니다.*
 :::

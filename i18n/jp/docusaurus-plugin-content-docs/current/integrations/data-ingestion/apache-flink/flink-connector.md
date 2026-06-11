@@ -2,8 +2,8 @@
 sidebar_label: 'Apache Flink'
 sidebar_position: 1
 slug: /integrations/apache-flink
-description: 'ClickHouse と連携する Apache Flink の概要'
-keywords: ['clickhouse', 'Apache Flink', '移行', 'データ', 'ストリーム処理']
+description: 'ClickHouse における Apache Flink の概要'
+keywords: ['ClickHouse', 'Apache Flink', '移行', 'データ', 'ストリーム処理']
 title: 'Flink コネクタ'
 doc_type: 'guide'
 integration:
@@ -16,12 +16,9 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Flink コネクタ \{#flink-connector\}
-
 <ClickHouseSupportedBadge />
 
-これは、ClickHouse がサポートする公式の [Apache Flink Sink Connector](https://github.com/ClickHouse/flink-connector-clickhouse) です。Flink の [AsyncSinkBase](https://cwiki.apache.org/confluence/display/FLINK/FLIP-171%3A+Async+Sink) と、公式の ClickHouse [Java client](https://github.com/ClickHouse/clickhouse-java) を使用して構築されています。
+これは、ClickHouse がサポートする公式の [Apache Flink Sink Connector](https://github.com/ClickHouse/flink-connector-clickhouse) です。Flink の [AsyncSinkBase](https://cwiki.apache.org/confluence/display/FLINK/FLIP-171%3A+Async+Sink) と、公式の ClickHouse [Java クライアント](https://github.com/ClickHouse/clickhouse-java) を使用して構築されています。
 
 このコネクタは Apache Flink の DataStream API をサポートしています。Table API のサポートは、[今後のリリースで予定されています](https://github.com/ClickHouse/flink-connector-clickhouse/issues/42)。
 

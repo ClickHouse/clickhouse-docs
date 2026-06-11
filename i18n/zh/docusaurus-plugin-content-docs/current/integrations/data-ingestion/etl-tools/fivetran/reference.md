@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['fivetran', 'clickhouse destination', '技术参考']
 ---
 
-# 技术参考 \{#technical-reference\}
-
 ## 配置详情 \{#setup-details\}
 
 ### 用户和角色管理 \{#user-and-role-management\}

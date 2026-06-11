@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse의 MySQL 프로토콜 인터페이스에 대한 문서로, MySQL 클라이언트가 ClickHouse에 연결할 수 있도록 하는 방법을 설명합니다'
+description: 'MySQL 클라이언트가 ClickHouse에 연결할 수 있도록 하는 MySQL 프로토콜 인터페이스에 대한 문서'
 sidebar_label: 'MySQL 인터페이스'
 sidebar_position: 25
 slug: /interfaces/mysql
@@ -13,26 +13,23 @@ import mysql1 from '@site/static/images/interfaces/mysql1.png';
 import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
-
-# MySQL 인터페이스 \{#mysql-interface\}
-
 ClickHouse는 MySQL wire 프로토콜을 지원합니다. 이를 통해 기본 ClickHouse 커넥터가 없는 일부 클라이언트도 MySQL 프로토콜을 대신 활용할 수 있으며, 다음 BI 도구와 함께 동작하는 것으로 검증되었습니다:
 
-- [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
-- [Tableau Online](../integrations/tableau-online)
-- [QuickSight](../integrations/quicksight)
+* [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
+* [Tableau Online](../integrations/tableau-online)
+* [QuickSight](../integrations/quicksight)
 
 아직 테스트되지 않은 다른 클라이언트나 통합을 사용하려는 경우, 다음과 같은 제한 사항이 있을 수 있음을 유의해야 합니다:
 
-- SSL 구현이 완전히 호환되지 않을 수 있으며, 잠재적인 [TLS SNI](https://www.cloudflare.com/learning/ssl/what-is-sni/) 관련 문제가 발생할 수 있습니다.
-- 특정 도구에서 아직 ClickHouse에 구현되지 않은 SQL 방언 기능(예: MySQL 전용 함수나 설정)을 요구할 수 있습니다.
+* SSL 구현이 완전히 호환되지 않을 수 있으며, 잠재적인 [TLS SNI](https://www.cloudflare.com/learning/ssl/what-is-sni/) 관련 문제가 발생할 수 있습니다.
+* 특정 도구에서 아직 ClickHouse에 구현되지 않은 SQL 방언 기능(예: MySQL 전용 함수나 설정)을 요구할 수 있습니다.
 
 네이티브 드라이버가 제공되는 경우(예: [DBeaver](../integrations/dbeaver))에는 항상 MySQL 인터페이스 대신 해당 드라이버를 사용하는 것이 바람직합니다. 또한 대부분의 MySQL 클라이언트는 정상적으로 동작하지만, MySQL 인터페이스가 기존 MySQL 쿼리를 사용하는 코드베이스에 대해 완전한 대체(drop-in replacement)가 된다고 보장되지는 않습니다.
 
-특정 도구에 네이티브 ClickHouse 드라이버가 없어 MySQL 인터페이스를 통해 사용하려는 상황에서 호환성 문제가 발견된 경우, ClickHouse 저장소에 [이슈를 생성](https://github.com/ClickHouse/ClickHouse/issues)해 주십시오.
+특정 도구에 네이티브 ClickHouse 드라이버가 없어 MySQL 인터페이스를 통해 사용하려는 상황에서 호환성 문제가 발견된 경우, ClickHouse 리포지토리에 [이슈를 생성](https://github.com/ClickHouse/ClickHouse/issues)해 주십시오.
 
 ::::note
-위 BI 도구들의 SQL 방언을 더 잘 지원하기 위해, ClickHouse의 MySQL 인터페이스는 SELECT 쿼리를 설정 [prefer_column_name_to_alias = 1](/operations/settings/settings#prefer_column_name_to_alias)과 함께 암묵적으로 실행합니다.
+위 BI 도구들의 SQL 방언을 더 잘 지원하기 위해, ClickHouse의 MySQL 인터페이스는 SELECT 쿼리를 설정 [prefer&#95;column&#95;name&#95;to&#95;alias = 1](/operations/settings/settings#prefer_column_name_to_alias)과 함께 암묵적으로 실행합니다.
 이는 비활성화할 수 없으며, 드문 엣지 케이스에서는 ClickHouse의 일반 쿼리 인터페이스와 MySQL 쿼리 인터페이스로 전송된 쿼리 간에 서로 다른 동작을 초래할 수 있습니다.
 ::::
 

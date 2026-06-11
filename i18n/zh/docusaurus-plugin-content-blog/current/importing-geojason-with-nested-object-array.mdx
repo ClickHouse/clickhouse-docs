@@ -153,8 +153,8 @@ ARRAY JOIN features
 此时会出现如下错误：
 
 ```
-代码:53. DB::Exception:从 localhost:9000 接收。DB::Exception:ARRAY JOIN 需要数组或映射类型参数。(TYPE_MISMATCH)
-从服务器接收到异常(版本 24.1.2):
+Code: 53. DB::Exception: Received from localhost:9000. DB::Exception: ARRAY JOIN requires array or map argument. (TYPE_MISMATCH)
+Received exception from server (version 24.1.2):
 ```
 
 这是由于对 `features.geometry.coordinates` 的解析造成的。
@@ -174,7 +174,7 @@ ARRAY JOIN features
 ```
 
 可以通过将 `multipolygon.properties.coordinates` 强制转换为 `Array(Array(Array(Tuple(Float64,Float64))))` 来修复此问题。
-为此，我们可以使用函数 [arrayMap(func,arr1,...)](https://clickhouse.com/docs/sql-reference/functions/array-functions#arraymapfunc-arr1-)。
+为此，我们可以使用函数 [arrayMap(func,arr1,...)](/sql-reference/functions/array-functions#arrayMap)。
 
 ```sql
 SELECT distinct
@@ -194,7 +194,7 @@ ARRAY JOIN features;
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-7. 插入数据。
+7. 写入数据。
 
 <br />
 

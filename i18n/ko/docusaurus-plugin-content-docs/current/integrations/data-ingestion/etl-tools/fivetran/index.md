@@ -14,8 +14,6 @@ keywords: ['fivetran', '데이터 이동', 'etl', 'ClickHouse 대상', '자동�
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Fivetran 및 ClickHouse Cloud \{#fivetran-and-clickhouse-cloud\}
-
 <ClickHouseSupportedBadge />
 
 ## 개요 \{#overview\}

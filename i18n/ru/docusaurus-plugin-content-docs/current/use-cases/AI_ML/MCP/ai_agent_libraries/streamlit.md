@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать ИИ-агент на базе ClickHouse с помощью Streamlit \{#how-to-build-a-clickhouse-backed-ai-agent-with-streamlit\}
-
 В этом руководстве вы узнаете, как создать веб-ИИ-агента с использованием [Streamlit](https://streamlit.io/), способного взаимодействовать с [SQL-песочницей ClickHouse](https://sql.clickhouse.com/) через [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse) и [Agno](https://github.com/agno-agi/agno).
 
 :::note Пример приложения

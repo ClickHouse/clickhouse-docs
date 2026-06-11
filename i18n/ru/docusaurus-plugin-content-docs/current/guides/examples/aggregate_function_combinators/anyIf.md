@@ -7,8 +7,6 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-# anyIf \{#avgif\}
-
 ## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к агрегатной функции [`any`](/sql-reference/aggregate-functions/reference/any)
@@ -55,5 +53,6 @@ FROM sales;
 ```
 
 ## См. также \{#see-also\}
-- [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`any`](/sql-reference/aggregate-functions/reference/any)
+* [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

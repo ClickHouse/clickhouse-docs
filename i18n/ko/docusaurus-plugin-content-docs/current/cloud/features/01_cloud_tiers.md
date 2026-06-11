@@ -7,13 +7,11 @@ keywords: ['Cloud 티어', '서비스 요금제', 'Cloud 요금제 티어', 'Clo
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud 티어 \{#clickhouse-cloud-tiers\}
+ClickHouse Cloud에서는 여러 티어를 사용할 수 있습니다.
+티어는 조직 수준에서 할당됩니다. 따라서 한 조직 내의 서비스는 동일한 티어에 속합니다.
+이 페이지에서는 사용 사례에 적합한 티어를 설명합니다.
 
-ClickHouse Cloud에는 여러 티어가 있습니다. 
-티어는 조직 내 어떤 수준에든 할당될 수 있습니다. 따라서 조직 내 서비스는 모두 동일한 티어에 속합니다.
-이 페이지에서는 특정 사용 사례에 가장 적합한 티어를 설명합니다.
-
-**Cloud 티어 요약:**
+**클라우드 티어 요약:**
 
 <table>
   <thead>
@@ -113,11 +111,8 @@ ClickHouse Cloud에는 여러 티어가 있습니다.
 
     <tr>
       <td>백업을 자체 Cloud 계정으로 내보내기</td>
-
-      <td />
-
-      <td />
-
+      <td>✓</td>
+      <td>✓</td>
       <td>✓</td>
     </tr>
 
@@ -242,17 +237,16 @@ Basic 티어의 서비스는 크기가 고정되어 있으며 자동 및 수동 
 
 엄격한 보안 및 컴플라이언스 요구 사항이 있는 대규모 미션 크리티컬 배포를 위한 티어입니다.
 
-- Scale의 모든 기능, **추가로**
-- 유연한 확장: 표준 프로필(`1:4 vCPU:memory ratio`)뿐만 아니라 `HighMemory (1:8 ratio)` 커스텀 프로필도 제공합니다.
-- 최고 수준의 성능 및 복원력 보장을 제공합니다.
-- 엔터프라이즈급 보안을 지원합니다:
-  - Single Sign On (SSO)
-  - 향상된 암호화: AWS 및 GCP 서비스용입니다. 서비스는 기본적으로 당사 키로 암호화되며, 고객 관리 암호화 키(Customer Managed Encryption Keys, CMEK)를 활성화하기 위해 고객 키로 교체할 수 있습니다.
-- 예약된 업그레이드를 지원합니다. 데이터베이스와 클라우드 릴리스 모두에 대해 업그레이드할 요일과 시간대를 선택할 수 있습니다.  
-- [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) 및 PCI 컴플라이언스를 제공합니다.
-- 백업을 사용자 계정으로 내보냅니다.
+* 확장의 모든 기능, **추가로**
+* 유연한 스케일링: 표준 프로필(`1:4 vCPU:memory ratio`)뿐만 아니라 `HighMemory (1:8 ratio)` 커스텀 프로필도 제공합니다.
+* 최고 수준의 성능 및 복원력 보장을 제공합니다.
+* 엔터프라이즈급 보안을 지원합니다:
+  * Single Sign On (SSO)
+  * 향상된 암호화: AWS 및 GCP 서비스용입니다. 서비스는 기본적으로 당사 키로 암호화되며, 고객 관리 암호화 키(Customer Managed Encryption Keys, CMEK)를 활성화하기 위해 고객 키로 교체할 수 있습니다.
+* 예약된 업그레이드를 지원합니다. 데이터베이스와 클라우드 릴리스 모두에 대해 업그레이드할 요일과 시간대를 선택할 수 있습니다.
+* [HIPAA](/cloud/security/compliance-overview#hipaa-since-2024) 및 PCI 컴플라이언스를 제공합니다.
 
-:::note 
+:::note
 세 가지 티어 전체의 단일 레플리카 서비스는 크기가 고정(`8 GiB`, `12 GiB`)되도록 설계되었습니다.
 :::
 

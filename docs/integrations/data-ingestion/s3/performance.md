@@ -164,7 +164,9 @@ WHERE OwnerDisplayName NOT IN ('', 'anon')
 GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
+```
 
+```response
 ┌─OwnerDisplayName─┬─num_posts─┐
 │ user330315       │     10344 │
 │ user4039065      │      5316 │
@@ -175,11 +177,15 @@ LIMIT 5
 
 5 rows in set. Elapsed: 3.013 sec. Processed 59.82 million rows, 24.03 GB (19.86 million rows/s., 7.98 GB/s.)
 Peak memory usage: 603.64 MiB.
+```
 
+```sql
 -- Load into posts table
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 191.692 sec. Processed 59.82 million rows, 24.03 GB (312.06 thousand rows/s., 125.37 MB/s.)
 ```
 
@@ -212,7 +218,9 @@ GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
 SETTINGS max_threads = 16
+```
 
+```response
 ┌─OwnerDisplayName─┬─num_posts─┐
 │ user330315       │     10344 │
 │ user4039065      │      5316 │
@@ -223,14 +231,22 @@ SETTINGS max_threads = 16
 
 5 rows in set. Elapsed: 1.505 sec. Processed 59.82 million rows, 24.03 GB (39.76 million rows/s., 15.97 GB/s.)
 Peak memory usage: 178.58 MiB.
+```
 
+```sql
 SETTINGS max_threads = 32
+```
 
+```response
 5 rows in set. Elapsed: 0.779 sec. Processed 59.82 million rows, 24.03 GB (76.81 million rows/s., 30.86 GB/s.)
 Peak memory usage: 369.20 MiB.
+```
 
+```sql
 SETTINGS max_threads = 64
+```
 
+```response
 5 rows in set. Elapsed: 0.674 sec. Processed 59.82 million rows, 24.03 GB (88.81 million rows/s., 35.68 GB/s.)
 Peak memory usage: 639.99 MiB.
 ```
@@ -266,7 +282,9 @@ Using this formula with our earlier Stack Overflow example.
 ```sql
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 128.566 sec. Processed 59.82 million rows, 24.03 GB (465.28 thousand rows/s., 186.92 MB/s.)
 ```
 
@@ -283,9 +301,13 @@ All previous tuning and queries have only used a single node in our ClickHouse C
 ```sql
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=8, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 67.294 sec. Processed 59.82 million rows, 24.03 GB (888.93 thousand rows/s., 357.12 MB/s.)
+```
 
+```sql
 SELECT
     OwnerDisplayName,
     count() AS num_posts
@@ -295,7 +317,9 @@ GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
 SETTINGS max_threads = 92
+```
 
+```response
 5 rows in set. Elapsed: 0.421 sec. Processed 59.82 million rows, 24.03 GB (142.08 million rows/s., 57.08 GB/s.)
 ```
 
@@ -327,7 +351,9 @@ GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
 SETTINGS max_threads = 16
+```
 
+```response
 ┌─OwnerDisplayName─┬─num_posts─┐
 │ user330315       │     10344 │
 │ user4039065      │      5316 │
@@ -345,7 +371,9 @@ Likewise, our insert query can be distributed, using the improved settings ident
 ```sql
 INSERT INTO posts SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 171.202 sec. Processed 59.82 million rows, 24.03 GB (349.41 thousand rows/s., 140.37 MB/s.)
 ```
 
@@ -358,7 +386,9 @@ INSERT INTO posts
 SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 54.571 sec. Processed 59.82 million rows, 24.03 GB (1.10 million rows/s., 440.38 MB/s.)
 Peak memory usage: 11.75 GiB.
 ```
@@ -379,7 +409,9 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0, max_insert_threads = 4, min_insert_block_size_bytes = 2863311530, insert_deduplicate = 0
+```
 
+```response
 0 rows in set. Elapsed: 52.992 sec. Processed 59.82 million rows, 24.03 GB (1.13 million rows/s., 453.50 MB/s.)
 Peak memory usage: 26.57 GiB.
 ```
@@ -394,7 +426,9 @@ Disabling this setting (`optimize_on_insert = 0`) skips merging during inserts, 
 SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0, max_insert_threads = 4, min_insert_block_size_bytes = 2863311530, insert_deduplicate = 0, optimize_on_insert = 0
+```
 
+```response
 0 rows in set. Elapsed: 49.688 sec. Processed 59.82 million rows, 24.03 GB (1.20 million rows/s., 483.66 MB/s.)
 ```
 

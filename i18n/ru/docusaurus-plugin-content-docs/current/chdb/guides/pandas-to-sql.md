@@ -7,13 +7,11 @@ keywords: ['chdb', 'datastore', 'pandas', 'sql', 'соответствие', 'з
 doc_type: 'guide'
 ---
 
-# SQL для пользователей pandas \{#sql-for-pandas-users\}
-
-DataStore компилирует операции в стиле pandas в оптимизированные SQL-запросы. Это руководство помогает пользователям pandas понять SQL, лежащий в основе их операций.
+DataStore преобразует операции в стиле pandas в оптимизированный SQL. Этот гайд помогает пользователям pandas понять, какой SQL стоит за этими операциями.
 
 ## Просмотр сгенерированного SQL-кода \{#viewing-sql\}
 
-```python
+```python title="Query"
 from pathlib import Path
 Path("sales.csv").write_text("""\
 region,product,category,amount,quantity,price,date,order_id
@@ -40,9 +38,7 @@ query = (ds
 print(query.to_sql())
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 SELECT region, SUM(amount) AS sum, AVG(amount) AS mean
 FROM file('sales.csv', 'CSVWithNames')
 WHERE amount > 1000
@@ -52,7 +48,6 @@ LIMIT 10
 ```
 
 ***
-
 
 ## Соответствие базовых операций \{#basic\}
 

@@ -3,7 +3,7 @@ sidebar_label: 'Using the azureBlobStorage table function'
 slug: /integrations/azure-data-factory/table-function
 description: 'Using ClickHouse''s azureBlobStorage table function'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
-title: 'Using ClickHouse''s azureBlobStorage table function to bring Azure data into ClickHouse'
+title: 'Using ClickHouse''s azureBlobStorage table function'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -13,8 +13,6 @@ integration:
 import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
-
-# Using ClickHouse's azureBlobStorage table function {#using-azureBlobStorage-function}
 
 This is one of the most efficient and straightforward ways to copy data from
 Azure Blob Storage or Azure Data Lake Storage into ClickHouse. With this table

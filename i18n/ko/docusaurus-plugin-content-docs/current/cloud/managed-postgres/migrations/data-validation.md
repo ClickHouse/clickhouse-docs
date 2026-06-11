@@ -7,9 +7,9 @@ keywords: ['postgres', 'postgresql', '논리 복제', '마이그레이션', '데
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.data-validation-beta" />
 
 ## 모든 테이블의 개수 비교 \{#data-validation-counts\}
 

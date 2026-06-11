@@ -1,12 +1,10 @@
 ---
-description: 'UNION 句に関するドキュメント'
+description: 'UNION 句のドキュメント'
 sidebar_label: 'UNION'
 slug: /sql-reference/statements/select/union
 title: 'UNION 句'
 doc_type: 'reference'
 ---
-
-# UNION 句 \{#union-clause\}
 
 `UNION` は、`UNION ALL` または `UNION DISTINCT` を明示的に指定して使用できます。
 
@@ -14,7 +12,7 @@ doc_type: 'reference'
 
 `UNION` を使用して、結果を結合することで任意の数の `SELECT` クエリをまとめることができます。例:
 
-```sql
+```sql title="Query"
 SELECT CounterID, 1 AS table, toInt64(count()) AS c
     FROM test.hits
     GROUP BY CounterID
@@ -35,16 +33,12 @@ SELECT CounterID, 2 AS table, sum(Sign) AS c
 
 `UNION ALL` または `UNION DISTINCT` を明示的に指定せずに `UNION` を使用する場合は、[union&#95;default&#95;mode](/operations/settings/settings#union_default_mode) 設定を使用して `UNION` のモードを指定できます。設定値としては `ALL`、`DISTINCT`、または空文字列を指定できます。ただし、`union_default_mode` 設定を空文字列にした状態で `UNION` を使用すると、例外がスローされます。次の例は、設定値が異なる場合のクエリ結果を示します。
 
-クエリ:
-
-```sql
+```sql title="Query"
 SET union_default_mode = 'DISTINCT';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─1─┐
 │ 1 │
 └───┘
@@ -56,16 +50,12 @@ SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 └───┘
 ```
 
-クエリ:
-
-```sql
+```sql title="Query"
 SET union_default_mode = 'ALL';
 SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 2;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─1─┐
 │ 1 │
 └───┘

@@ -16,14 +16,11 @@ integration:
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Подключение Streamkap к ClickHouse \{#connect-streamkap-to-clickhouse\}
+<a href="https://www.streamkap.com/" target="_blank">Streamkap</a> — это платформа интеграции данных в реальном времени, специализирующаяся на потоковой CDC (фиксация изменений данных) и обработке потоков данных. Она построена на высокопроизводительном, масштабируемом стеке с использованием Apache Kafka, Apache Flink и Debezium и предлагается как полностью управляемый сервис в формате SaaS или в вариантах развертывания BYOC (Bring your own Cloud).
 
-<PartnerBadge/>
-
-<a href="https://www.streamkap.com/" target="_blank">Streamkap</a> — это платформа интеграции данных в реальном времени, специализирующаяся на потоковой CDC (фиксация изменений данных) и обработке потоков данных. Она построена на высокопроизводительном, масштабируемом стеке с использованием Apache Kafka, Apache Flink и Debezium и предлагается как полностью управляемый сервис в формате SaaS или в вариантах развертывания BYOC (Bring your own Cloud). 
-
-Streamkap позволяет в режиме потока передавать каждую операцию `INSERT`, `UPDATE` и `DELETE` из исходных баз данных, таких как PostgreSQL, MySQL, SQL Server, MongoDB и <a href="https://streamkap.com/connectors" target="_blank">других</a>, непосредственно в ClickHouse с задержкой в миллисекунды. 
+Streamkap позволяет в режиме потока передавать каждую операцию `INSERT`, `UPDATE` и `DELETE` из исходных баз данных, таких как PostgreSQL, MySQL, SQL Server, MongoDB и <a href="https://streamkap.com/connectors" target="_blank">других</a>, непосредственно в ClickHouse с задержкой в миллисекунды.
 
 Это делает её идеальным решением для построения аналитических дашбордов в реальном времени, операционной аналитики и подачи данных в реальном времени в модели машинного обучения.
 

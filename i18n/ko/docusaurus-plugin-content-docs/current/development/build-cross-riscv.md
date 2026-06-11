@@ -7,9 +7,7 @@ title: 'Linux에서 RISC-V 64용 ClickHouse를 빌드하는 방법'
 doc_type: 'guide'
 ---
 
-# RISC-V 64용 Linux에서 ClickHouse를 빌드하는 방법 \{#how-to-build-clickhouse-on-linux-for-risc-v-64\}
-
-ClickHouse는 RISC-V에 대한 실험적 지원을 제공합니다. 모든 기능을 사용할 수 있는 것은 아닙니다.
+ClickHouse는 RISC-V를 실험적으로 지원합니다. 일부 기능은 활성화할 수 없습니다.
 
 ## ClickHouse 빌드 \{#build-clickhouse\}
 

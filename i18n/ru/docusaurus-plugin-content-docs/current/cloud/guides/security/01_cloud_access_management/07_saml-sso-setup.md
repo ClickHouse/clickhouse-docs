@@ -18,16 +18,13 @@ import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png'
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
+<EnterprisePlanFeatureBadge feature="SAML SSO" />
 
-# Настройка SAML SSO \{#saml-sso-setup\}
+ClickHouse Cloud поддерживает единый вход (SSO) через Security Assertion Markup Language (SAML). Это позволяет безопасно входить в организацию ClickHouse Cloud, проходя аутентификацию через провайдера идентификации (IdP).
 
-<EnterprisePlanFeatureBadge feature="SAML SSO"/>
+В настоящее время мы поддерживаем SSO, который может инициировать поставщик услуг, несколько организаций с использованием отдельных соединений и JIT-подготовку пользователей. Мы пока не поддерживаем System for Cross-domain Identity Management (SCIM) или сопоставление атрибутов.
 
-ClickHouse Cloud поддерживает единый вход (SSO) с использованием Security Assertion Markup Language (SAML). Это позволяет вам безопасно входить в вашу организацию ClickHouse Cloud, проходя аутентификацию у вашего поставщика идентификации (IdP).
-
-В настоящее время мы поддерживаем SSO, инициируемый со стороны поставщика услуг (service provider-initiated), несколько организаций с использованием отдельных подключений и just-in-time‑подготовку учётных записей (provisioning). Мы пока не поддерживаем систему управления идентификацией между доменами (SCIM) или сопоставление атрибутов.
-
-Клиенты, настраивающие интеграцию с SAML, также могут задать роль по умолчанию, которая будет присваиваться новым пользователям, и настроить параметры тайм-аута сеанса.
+Клиенты, включившие интеграции SAML, также могут назначить роль по умолчанию, которая будет присваиваться новым пользователям, и настроить параметры тайм-аута сеанса.
 
 ## Прежде чем начать \{#before-you-begin\}
 

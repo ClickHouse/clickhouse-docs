@@ -7,8 +7,6 @@ title: 'Amazon Redshift SQL 변환 가이드'
 doc_type: 'reference'
 ---
 
-# Amazon Redshift SQL 변환 가이드 \{#amazon-redshift-sql-translation-guide\}
-
 ## Data types \{#data-types\}
 
 ClickHouse와 Redshift 간에 데이터를 이동하는 사용자는

@@ -18,13 +18,11 @@ import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png'
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# SAML SSO setup
-
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
 ClickHouse Cloud supports single-sign on (SSO) via security assertion markup language (SAML). This enables you to sign in securely to your ClickHouse Cloud organization by authenticating with your identity provider (IdP).
 
-We currently support service provider-initiated SSO SSO, multiple organizations using separate connections, and just-in-time provisioning. We also support [SCIM provisioning](/cloud/security/scim-setup) in private preview, with support for Okta. We don't yet support attribute mapping.
+We currently support service provider-initiated SSO, multiple organizations using separate connections, and just-in-time provisioning. We also support [SCIM provisioning](/cloud/security/scim-setup) in private preview, with support for Okta. We don't yet support attribute mapping.
 
 Customers enabling SAML integrations can also designate the default role that will be assigned to new users and adjust session timeout settings.
 

@@ -14,14 +14,11 @@ import supabase_commands from '@site/static/images/integrations/data-ingestion/c
 import supabase_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/supabase/supabase-connection-details.jpg'
 import Image from '@theme/IdealImage';
 
-
-# Supabase 소스 설정 가이드 \{#supabase-source-setup-guide\}
-
-이 문서는 ClickPipes에서 사용하기 위한 Supabase Postgres 설정 방법을 설명합니다.
+ClickPipes에서 사용하도록 Supabase Postgres를 설정하는 방법을 안내하는 가이드입니다.
 
 :::note
 
-ClickPipes는 원활한 복제를 위해 Supabase를 IPv6를 통해 기본적으로 지원합니다.
+ClickPipes는 원활한 복제를 위해 Supabase에 대한 IPv6 연결을 네이티브로 지원합니다.
 
 :::
 

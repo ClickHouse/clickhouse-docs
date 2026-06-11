@@ -18,10 +18,7 @@ import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-log
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 PostgreSQL 日志 \{#postgres-logs-clickstack\}
-
-:::note[要点速览]
+:::note[TL;DR]
 使用 OTel `filelog` 接收器，在 ClickStack 中收集并可视化 PostgreSQL 服务器日志 (CSV 格式) 。包含演示数据集和预置仪表板。
 :::
 

@@ -1,12 +1,10 @@
 ---
 description: 'Нативные клиенты и интерфейсы для ClickHouse'
-keywords: ['клиенты', 'интерфейсы', 'CLI', 'SQL-консоль', 'драйверы']
+keywords: ['клиенты', 'интерфейсы', 'CLI', 'SQL console', 'драйверы']
 slug: /interfaces/natives-clients-and-interfaces
 title: 'Нативные клиенты и интерфейсы'
 doc_type: 'landing-page'
 ---
-
-# Нативные клиенты и интерфейсы \{#native-clients-interfaces\}
 
 ClickHouse предоставляет несколько нативных клиентов и интерфейсов, которые позволяют подключаться к ClickHouse.
 

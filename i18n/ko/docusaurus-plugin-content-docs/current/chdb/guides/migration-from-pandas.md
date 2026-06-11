@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'migration', 'guide']
 doc_type: 'guide'
 ---
 
-# pandas에서 마이그레이션 \{#migration-from-pandas\}
-
-이 가이드는 기존 pandas 코드의 호환성을 유지하면서 성능을 향상시키기 위해 DataStore로 이전하는 방법을 설명합니다.
+이 가이드는 호환성을 유지하면서 성능을 개선할 수 있도록 기존 pandas 코드를 DataStore로 마이그레이션하는 데 도움을 제공합니다.
 
 ## 한 줄로 끝내는 마이그레이션 \{#one-line\}
 

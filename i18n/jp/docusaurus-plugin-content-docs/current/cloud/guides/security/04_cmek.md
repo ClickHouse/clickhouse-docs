@@ -12,8 +12,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
 
-# データの暗号化 \{#data-encryption\}
-
 ## ストレージレベルの暗号化 \{#storage-encryption\}
 
 ClickHouse Cloud では、クラウドプロバイダー管理の AES 256 キーを利用した保存データの暗号化 (encryption at rest) がデフォルトで構成されています。詳細については、次を参照してください。

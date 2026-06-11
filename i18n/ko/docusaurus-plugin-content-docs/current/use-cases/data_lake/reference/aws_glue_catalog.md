@@ -73,7 +73,7 @@ USE glue;
 SHOW TABLES;
 ```
 
-```sql title="Response"
+```response
    ┌─name───────────────────────────────────┐
 1. │ iceberg-benchmark.hitsiceberg          │
 2. │ iceberg-benchmark.hitsparquet          │
@@ -100,8 +100,7 @@ ClickHouse는 두 개 이상의 네임스페이스를 지원하지 않으므로 
 SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
 ```
 
-
-```sql title="Response"
+```response
   ┌─statement───────────────────────────────────────────────┐
 1.│ CREATE TABLE glue.`iceberg-benchmark.hitsiceberg`       │
   │ (                                                       │

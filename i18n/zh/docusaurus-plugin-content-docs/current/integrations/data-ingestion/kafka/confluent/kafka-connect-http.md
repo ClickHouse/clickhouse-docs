@@ -15,15 +15,12 @@ import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/conf
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
+HTTP Sink 连接器不依赖特定数据类型，因此既不需要 Kafka schema，也支持 ClickHouse 特有的数据类型，例如 Map 和 Array。这种额外的灵活性会带来配置复杂度的小幅增加。
 
-# Confluent HTTP sink connector \{#confluent-http-sink-connector\}
-
-HTTP Sink Connector 与数据类型无关，因此不需要 Kafka schema，同时也支持 ClickHouse 特定的数据类型，例如 Map 和 Array。这个额外的灵活性会带来一定的配置复杂度提升。
-
-下面我们将介绍一个简单的安装示例：从单个 Kafka 主题中拉取消息，并将行写入 ClickHouse 表中。
+下面我们介绍一种简单的安装方式：从单个 Kafka topic 拉取消息，并将行插入 ClickHouse 表。
 
 :::note
-HTTP Connector 是在 [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license) 许可下分发的。
+HTTP 连接器根据 [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license) 分发。
 :::
 
 ### 快速开始步骤 \{#quick-start-steps\}

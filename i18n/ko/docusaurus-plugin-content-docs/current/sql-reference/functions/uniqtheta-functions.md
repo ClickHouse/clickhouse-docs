@@ -6,8 +6,6 @@ title: 'uniqTheta 함수'
 doc_type: 'reference'
 ---
 
-# uniqTheta 함수 \{#uniqtheta-functions\}
-
 uniqTheta 함수는 두 개의 uniqThetaSketch 객체에 대해 ∪ / ∩ / × (합집합/교집합/부정)과 같은 집합 연산을 수행하며, 그 결과를 포함하는 새로운 uniqThetaSketch 객체를 반환합니다.
 
 uniqThetaSketch 객체는 -State가 붙은 집계 함수 uniqTheta로 생성됩니다.

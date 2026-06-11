@@ -1,5 +1,5 @@
 ---
-description: 'JOIN 子句说明文档'
+description: 'JOIN 子句文档'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
 title: 'JOIN 子句'
@@ -7,9 +7,7 @@ keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OU
 doc_type: 'reference'
 ---
 
-# JOIN 子句 \{#join-clause\}
-
-`JOIN` 子句通过使用一个或多个表中共有的值，将这些表的列组合在一起生成一个新表。它是支持 SQL 的数据库中常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接（join）。对单个表自身进行连接的特殊情况通常被称为“自连接”（self-join）。
+`JOIN` 子句通过使用一个或多个表中共有的值，将这些表的列组合在一起生成一个新表。它是支持 SQL 的数据库中常见的操作，对应于[关系代数](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators)中的连接 (join) 。对单个表自身进行连接的特殊情况通常被称为“自连接” (self-join) 。
 
 **语法**
 
@@ -20,8 +18,7 @@ FROM <left_table>
 (ON <expr_list>)|(USING <column_list>) ...
 ```
 
-`ON` 子句中的表达式和 `USING` 子句中的列称为“连接键”（join keys）。除非另有说明，`JOIN` 会从具有匹配“连接键”的行生成[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)，这可能会产生比源表多得多的结果行。
-
+`ON` 子句中的表达式和 `USING` 子句中的列称为“连接键” (join keys) 。除非另有说明，`JOIN` 会从具有匹配“连接键”的行生成[笛卡尔积](https://en.wikipedia.org/wiki/Cartesian_product)，这可能会产生比源表多得多的结果行。
 
 ## 支持的 JOIN 类型 \{#supported-types-of-join\}
 
@@ -103,14 +100,14 @@ ClickHouse 服务器在执行 `ANY JOIN` 操作时的行为取决于 [`any_join_
 
 包含一个连接键条件以及针对 `table_2` 的附加条件的查询：
 
-```sql
+```sql title="Query"
 SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
     ON table_1.Id = table_2.Id AND startsWith(table_2.text, 'Text');
 ```
 
-请注意，结果中包含名称为 `C` 且文本列为空的那一行。之所以会出现在结果中，是因为使用了 `OUTER` 类型的联接。
+请注意，结果中包含名称为 `C` 且文本列为空的那一行。之所以会出现在结果中，是因为使用了 `OUTER` 类型的连接。
 
-```response
+```response title="Response"
 ┌─name─┬─text───┐
 │ A    │ Text A │
 │ B    │ Text B │
@@ -120,14 +117,12 @@ SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
 
 使用 `INNER` 连接类型且包含多个条件的查询：
 
-```sql
+```sql title="Query"
 SELECT name, text, scores FROM table_1 INNER JOIN table_2
     ON table_1.Id = table_2.Id AND table_2.scores > 10 AND startsWith(table_2.text, 'Text');
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 ┌─name─┬─text───┬─scores─┐
 │ B    │ Text B │     15 │
 └──────┴────────┴────────┘
@@ -135,7 +130,7 @@ SELECT name, text, scores FROM table_1 INNER JOIN table_2
 
 使用 `INNER` 连接类型且条件中包含 `OR` 的查询：
 
-```sql
+```sql title="Query"
 CREATE TABLE t1 (`a` Int64, `b` Int64) ENGINE = MergeTree() ORDER BY a;
 
 CREATE TABLE t2 (`key` Int32, `val` Int64) ENGINE = MergeTree() ORDER BY key;
@@ -147,9 +142,7 @@ INSERT INTO t2 SELECT if(number % 2 == 0, toInt64(number), -number) as key, numb
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─a─┬──b─┬─val─┐
 │ 0 │  0 │   0 │
 │ 1 │ -1 │   1 │
@@ -159,30 +152,27 @@ SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 └───┴────┴─────┘
 ```
 
-使用 `INNER` 类型 JOIN,且包含 `OR` 和 `AND` 条件的查询:
+使用 `INNER` 类型连接,且包含 `OR` 和 `AND` 条件的查询:
 
 :::note
 
-By default, non-equal conditions are supported as long as they use columns from the same table.
+默认情况下，只要非等值条件使用的是同一张表中的列，就支持这类条件。
 例如,`t1.a = t2.key AND t1.b > 0 AND t2.b > t2.c`,因为 `t1.b > 0` 仅使用来自 `t1` 的列,而 `t2.b > t2.c` 仅使用来自 `t2` 的列。
-However, you can try experimental support for conditions like `t1.a = t2.key AND t1.b > t2.key`, check out the section below for more details.
+不过，你也可以尝试对诸如 `t1.a = t2.key AND t1.b > t2.key` 这类条件的实验性支持，更多详细信息请参见下文。
 
 :::
 
-```sql
+```sql title="Query"
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.val > 3;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─a─┬──b─┬─val─┐
 │ 0 │  0 │   0 │
 │ 2 │ -2 │   2 │
 │ 4 │ -4 │   4 │
 └───┴────┴─────┘
 ```
-
 
 ## 针对来自不同表的列使用非等值条件的 JOIN \{#join-with-inequality-conditions-for-columns-from-different-tables\}
 

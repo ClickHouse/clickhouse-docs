@@ -1,13 +1,11 @@
 ---
-description: 'cume_dist 窗口函数参考文档'
+description: 'cume_dist 窗口函数的文档'
 sidebar_label: 'cume_dist'
 sidebar_position: 11
 slug: /sql-reference/window-functions/cume_dist
 title: 'cume_dist'
-doc_type: '参考'
+doc_type: 'reference'
 ---
-
-# cume&#95;dist \{#cume&#95;dist\}
 
 计算某个值在一组值中的累积分布，即其值小于或等于当前行值的行数所占的百分比。可用于确定某个值在分区中的相对位置。
 
@@ -33,9 +31,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 以下示例计算团队内部薪资的累积分布：
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -55,15 +51,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        cume_dist() OVER (ORDER BY salary DESC) AS cume_dist
 FROM salaries;
 ```
 
-结果：
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬───────────cume_dist─┐
 1. │ Robert George   │ 195000 │  0.2857142857142857 │
 2. │ Gary Chen       │ 195000 │  0.2857142857142857 │
@@ -83,4 +77,4 @@ FROM salaries;
 cume_dist = (number of rows ≤ current row value) / (total number of rows in partition)
 ```
 
-具有相同值（同行）的行会获得相同的累积分布值，该值对应于该同行组中的最高位置。
+具有相同值 (同行) 的行会获得相同的累积分布值，该值对应于该同行组中的最高位置。

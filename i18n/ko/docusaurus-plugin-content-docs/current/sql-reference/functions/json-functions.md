@@ -1675,6 +1675,54 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 ```
 
 
+## prettyPrintJSON \{#prettyPrintJSON\}
+
+도입 버전: v26.4.0
+
+줄바꿈과 공백 들여쓰기가 적용된, 읽기 쉽게 포맷된 JSON 문자열을 반환합니다.
+
+**구문**
+
+```sql
+prettyPrintJSON(json [, indent])
+```
+
+**인수**
+
+* `json` — 포맷할 유효한 JSON 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `indent` — 들여쓰기 단계마다 사용할 공백 수입니다. 기본값: 4. 최대값: 32 [`UInt*`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+가독성 좋게 포맷된 JSON 문자열입니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**단순 객체**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1,"b":"hello"}');
+```
+
+```response title=Response
+{
+    "a": 1,
+    "b": "hello"
+}
+```
+
+**사용자 정의 들여쓰기**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1}', 8);
+```
+
+```response title=Response
+{
+        "a": 1
+}
+```
+
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 
 도입 버전: v21.4.0

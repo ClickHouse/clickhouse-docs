@@ -7,9 +7,7 @@ title: 'Array(T)'
 doc_type: 'reference'
 ---
 
-# Array(T) \{#arrayt\}
-
-`T` 型の要素からなる配列で、配列の先頭インデックスは 1 です。`T` は配列を含む任意のデータ型になり得ます。
+`T` 型の要素からなる配列で、配列の添字は 1 から始まります。`T` には、配列を含む任意のデータ型を指定できます。
 
 ## 配列の作成 \{#creating-an-array\}
 
@@ -76,15 +74,13 @@ Received exception from server (version 1.1.54388):
 Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: There is no supertype for types UInt8, String because some of them are String/FixedString and some of them are not.
 ```
 
-## 配列サイズ \{#array-size\}
+## Arrayサイズ \{#array-size\}
 
 `size0` サブカラムを使用すると、列全体を読み込むことなく配列のサイズを取得できます。多次元配列の場合は `sizeN-1` を使用できます。ここで `N` は取得したい次元の番号です。
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE t_arr (`arr` Array(Array(Array(UInt32)))) ENGINE = MergeTree ORDER BY tuple();
 
 INSERT INTO t_arr VALUES ([[[12, 13, 0, 1],[12]]]);
@@ -92,9 +88,7 @@ INSERT INTO t_arr VALUES ([[[12, 13, 0, 1],[12]]]);
 SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─arr.size0─┬─arr.size1─┬─arr.size2─┐
 │         1 │ [2]       │ [[4,1]]   │
 └───────────┴───────────┴───────────┘

@@ -30,11 +30,9 @@ import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# 将 Apache NiFi 连接到 ClickHouse \{#connect-apache-nifi-to-clickhouse\}
-
 <CommunityMaintainedBadge />
 
-<a href="https://nifi.apache.org/" target="_blank">Apache NiFi</a> 是一款开源工作流管理软件,旨在实现软件系统间的数据流自动化。它支持创建 ETL 数据管道,并内置超过 300 个数据处理器。本分步教程将演示如何将 Apache NiFi 同时作为数据源和目标连接到 ClickHouse,并加载示例数据集。
+<a href="https://nifi.apache.org/" target="_blank">Apache NiFi</a> 是一款开源工作流管理软件，旨在自动化软件系统之间的数据流。它支持创建 ETL 数据管道，并内置了 300 多个数据处理器。本分步教程将演示如何将 Apache NiFi 作为数据源和目标端连接到 ClickHouse，并加载一个样本数据集。
 
 <VerticalStepper headerLevel="h2">
   ## 收集连接详细信息 \{#1-gather-your-connection-details\}

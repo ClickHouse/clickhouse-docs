@@ -31,12 +31,9 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# 将 Explo 连接到 ClickHouse \{#connecting-explo-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-适用于任何平台的客户可见分析功能。为精美可视化而设计，为简单易用而打造。
+适用于任何平台的客户分析。专为精美可视化而设计。以简洁易用为宗旨。
 
 ## 目标 \{#goal\}
 

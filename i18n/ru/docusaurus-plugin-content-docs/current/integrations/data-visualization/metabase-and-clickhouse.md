@@ -24,12 +24,9 @@ import metabase_07 from '@site/static/images/integrations/data-visualization/met
 import metabase_08 from '@site/static/images/integrations/data-visualization/metabase_08.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Подключение Metabase к ClickHouse \{#connecting-metabase-to-clickhouse\}
-
-<PartnerBadge/>
-
-Metabase — это простой в использовании UI‑инструмент с открытым исходным кодом для формирования запросов к вашим данным. Metabase — это Java‑приложение, которое можно запустить, просто <a href="https://www.metabase.com/start/oss/jar" target="_blank">скачав JAR‑файл</a> и выполнив его командой `java -jar metabase.jar`. Metabase подключается к ClickHouse с помощью JDBC‑драйвера, который нужно скачать и поместить в папку `plugins`:
+Metabase — это простой в использовании UI-инструмент с открытым исходным кодом для анализа ваших данных. Metabase — это Java-приложение, которое можно запустить, просто <a href="https://www.metabase.com/start/oss/jar" target="_blank">скачав JAR-файл</a> и выполнив его с помощью `java -jar metabase.jar`. Metabase подключается к ClickHouse с помощью JDBC-драйвера, который нужно скачать и поместить в папку `plugins`:
 
 ## Цель \{#goal\}
 

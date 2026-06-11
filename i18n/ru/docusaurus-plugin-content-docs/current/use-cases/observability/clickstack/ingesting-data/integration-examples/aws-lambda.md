@@ -15,20 +15,18 @@ import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png'
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Мониторинг логов AWS Lambda с ClickStack с использованием Rotel \{#lambda-clickstack\}
+<CommunityMaintainedBadge />
 
-<CommunityMaintainedBadge/>
+:::note[Кратко]
+В этом руководстве показано, как организовать мониторинг функций AWS Lambda с помощью ClickStack, используя Rotel Lambda Extension для сбора и прямой отправки в ClickHouse логов функций, логов расширения и данных OpenTelemetry. Вы узнаете, как:
 
-:::note[TL;DR]
-В этом руководстве показано, как отслеживать функции AWS Lambda с помощью ClickStack, используя Rotel Lambda Extension для сбора и пересылки логов функций, логов расширения и данных OpenTelemetry напрямую в ClickHouse. Вы узнаете, как:
+* Развернуть слой Rotel Lambda Extension для ваших функций Lambda
+* Настроить расширение для экспорта логов и трассировок в ClickStack
+* При необходимости отключить CloudWatch Logs, чтобы снизить затраты
 
-- Развернуть слой Rotel Lambda Extension для ваших функций Lambda
-- Настроить расширение для экспорта логов и трейсов в ClickStack
-- При необходимости отключить CloudWatch Logs для снижения затрат
+Такой подход может существенно снизить ваши затраты на обсервабилити AWS Lambda за счет полного обхода CloudWatch Logs.
 
-Этот подход может значительно снизить ваши расходы на обсервабилити Lambda за счёт полного отказа от CloudWatch Logs.
-
-Необходимое время: 5–10 минут
+Требуемое время: 5–10 минут
 :::
 
 ## Интеграция с существующими функциями Lambda \{#existing-lambda\}

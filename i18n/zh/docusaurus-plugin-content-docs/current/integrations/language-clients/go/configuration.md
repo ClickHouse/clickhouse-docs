@@ -8,30 +8,32 @@ title: '配置'
 doc_type: 'reference'
 ---
 
-# 配置 \{#configuration\}
-
 ## 连接设置 \{#connection-settings\}
+
+:::tip
+有关每个选项的完整深入说明，包括默认值、DSN 参数、最佳实践和故障排查，请参阅 [配置参考](/integrations/language-clients/go/config-reference)。
+:::
 
 打开连接时，可使用 `Options` 结构体控制客户端行为。可用设置如下：
 
 | Parameter              | Type                                               | Default            | Description                                                                                                            |
 | ---------------------- | -------------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------- |
 | `Protocol`             | `Protocol`                                         | `Native`           | 传输协议：`Native` (TCP) 或 `HTTP`。参阅 [TCP vs HTTP](#tcp-vs-http)。                                                           |
-| `Addr`                 | `[]string`                                         | —                  | `host:port` 地址切片。有关连接多个节点，请参阅 [连接到多个节点](#connecting-to-multiple-nodes)。                           |
-| `Auth`                 | `Auth`                                             | —                  | 身份验证凭据 (`Database`、`Username`、`Password`) 。参阅 [身份验证](#authentication)。                                       |
+| `Addr`                 | `[]string`                                         | —                  | `host:port` 地址切片。有关连接多个节点，请参阅 [连接到多个节点](#connecting-to-multiple-nodes)。                                                |
+| `Auth`                 | `Auth`                                             | —                  | 身份验证凭据 (`Database`、`Username`、`Password`) 。参阅 [身份验证](#authentication)。                                                 |
 | `TLS`                  | `*tls.Config`                                      | `nil`              | TLS 配置。非 `nil` 值将启用 TLS。参阅 [TLS](#using-tls)。                                                                          |
 | `DialContext`          | `func(ctx, addr) (net.Conn, error)`                | —                  | 自定义拨号函数，用于控制 TCP 连接的建立方式。                                                                                              |
 | `DialTimeout`          | `time.Duration`                                    | `30s`              | 打开新连接时的最大等待时间。                                                                                                         |
 | `MaxOpenConns`         | `int`                                              | `MaxIdleConns + 5` | 任意时刻可打开的最大连接数。                                                                                                         |
 | `MaxIdleConns`         | `int`                                              | `5`                | 连接池中保留的空闲连接数。                                                                                                          |
-| `ConnMaxLifetime`      | `time.Duration`                                    | `1h`               | 连接池中连接的最大生存时间。参阅 [连接池](#connection-pooling)。                                                            |
-| `ConnOpenStrategy`     | `ConnOpenStrategy`                                 | `ConnOpenInOrder`  | 从 `Addr` 中选择节点的策略。参阅 [连接到多个节点](#connecting-to-multiple-nodes)。                                    |
+| `ConnMaxLifetime`      | `time.Duration`                                    | `1h`               | 连接池中连接的最大生存时间。参阅 [连接池](#connection-pooling)。                                                                           |
+| `ConnOpenStrategy`     | `ConnOpenStrategy`                                 | `ConnOpenInOrder`  | 从 `Addr` 中选择节点的策略。参阅 [连接到多个节点](#connecting-to-multiple-nodes)。                                                         |
 | `BlockBufferSize`      | `uint8`                                            | `2`                | 并行解码的数据块数量。值越大，吞吐量越高，但内存开销也越大。可通过 context 按查询覆盖。                                                                       |
 | `Settings`             | `Settings`                                         | —                  | 应用于每个查询的 ClickHouse settings map。单个查询可通过 [context](/integrations/language-clients/go/clickhouse-api#using-context) 覆盖。 |
-| `Compression`          | `*Compression`                                     | `nil`              | 数据块级压缩。参阅 [压缩](#compression)。                                                                                 |
+| `Compression`          | `*Compression`                                     | `nil`              | 数据块级压缩。参阅 [压缩](#compression)。                                                                                          |
 | `ReadTimeout`          | `time.Duration`                                    | —                  | 单次调用中，从服务器读取数据时的最大等待时间。                                                                                                |
 | `FreeBufOnConnRelease` | `bool`                                             | `false`            | 如果为 true，则每次查询时都会将连接的内存缓冲区释放回池中。可减少内存占用，但会带来少量 CPU 开销。                                                                 |
-| `Logger`               | `*slog.Logger`                                     | `nil`              | 结构化日志记录器 (Go `log/slog`) 。参阅 [日志配置](#logging)。                                                                      |
+| `Logger`               | `*slog.Logger`                                     | `nil`              | 结构化日志记录器 (Go `log/slog`) 。参阅 [日志配置](#logging)。                                                                         |
 | `Debug`                | `bool`                                             | `false`            | **已弃用。** 请改用 `Logger`。启用输出到 stdout 的旧式调试信息。                                                                            |
 | `Debugf`               | `func(string, ...any)`                             | —                  | **已弃用。** 请改用 `Logger`。自定义调试日志函数。需设置 `Debug: true`。                                                                     |
 | `GetJWT`               | `GetJWTFunc`                                       | —                  | 返回用于 ClickHouse Cloud 身份验证的 JWT token 的回调函数 (仅 HTTPS) 。                                                                |

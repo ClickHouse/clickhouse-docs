@@ -6,10 +6,8 @@ title: "대안적인 백업 또는 복원 방법"
 doc_type: "reference"
 ---
 
-# 대체 백업 방법 \{#alternative-backup-methods\}
-
-ClickHouse는 디스크에 데이터를 저장하며, 디스크를 백업하는 방법에는 여러 가지가 있습니다. 
-다음은 과거에 사용되었으며, 특정 사용 사례에 적합할 수 있는 몇 가지 대안입니다.
+ClickHouse는 데이터를 디스크에 저장하며, 디스크를 백업하는 방법은 다양합니다.
+다음은 과거에 사용된 방법들로, 사용 사례에 적합할 수 있는 몇 가지 대안입니다.
 
 ### 다른 위치에 소스 데이터 복제하기 \{#duplicating-source-data-somewhere-else\}
 

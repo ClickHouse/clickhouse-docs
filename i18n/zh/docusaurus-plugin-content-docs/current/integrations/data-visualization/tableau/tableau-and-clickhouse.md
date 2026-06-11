@@ -29,19 +29,16 @@ import tableau_workbook6 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 将 Tableau 连接到 ClickHouse \{#connecting-tableau-to-clickhouse\}
+ClickHouse 提供官方的 Tableau 连接器，并已在
+[Tableau Exchange](https://exchange.tableau.com/products/1064) 上线。
+该连接器基于 ClickHouse 的高级 [JDBC 驱动](/integrations/language-clients/java/jdbc)。
 
-<ClickHouseSupportedBadge/>
-
-ClickHouse 提供了官方 Tableau 连接器，该连接器已发布在
-[Tableau Exchange](https://exchange.tableau.com/products/1064) 上。
-该连接器基于 ClickHouse 的高级 [JDBC 驱动程序](/integrations/language-clients/java/jdbc)。
-
-使用该连接器后，Tableau 可以将 ClickHouse 的数据库和表集成为数据源。要启用此功能，
+借助此连接器，Tableau 可以将 ClickHouse 数据库和数据表用作数据源。要启用此功能，
 请按照下面的设置指南进行操作。
 
-<TOCInline toc={toc}/>
+<TOCInline toc={toc} />
 
 ## 使用前的准备工作 \{#setup-required-prior-usage\}
 

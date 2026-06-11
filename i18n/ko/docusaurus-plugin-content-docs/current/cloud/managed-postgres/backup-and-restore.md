@@ -7,16 +7,15 @@ keywords: ['백업', '복원', '시점 복구', 'pitr', '재해 복구', 'Postgr
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import backupAndRestore from '@site/static/images/managed-postgres/backup-and-restore.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="backup-and-restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.backup-and-restore-beta" />
 
 Managed Postgres는 자동 백업과 시점 복구(point-in-time recovery) 기능으로 데이터의 안전성과 가용성을 보장합니다. 인스턴스의 **Backups** 화면에서 백업 이력을 확인하고 복구를 시작할 수 있습니다.
 
 <Image img={backupAndRestore} alt="백업 이력과 시점 복구 옵션을 보여주는 Backups 화면" size="lg" border />
-
 
 ## 백업 \{#backups\}
 

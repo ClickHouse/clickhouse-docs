@@ -7,8 +7,6 @@ title: 'ClickHouse 테스트'
 doc_type: 'guide'
 ---
 
-# ClickHouse 테스트 \{#testing-clickhouse\}
-
 ## 테스트 유형 \{#test-types\}
 
 ClickHouse에는 다음과 같은 테스트가 있습니다:
@@ -573,9 +571,6 @@ clang 소스 저장소에서 찾을 수 있는 `clang-format-diff` 도구를 사
 `clang-format`보다 검증이 덜 된 도구입니다.
 
 `CLion`에는 자체 코드 포매터가 있으며, 코드 스타일에 맞도록 설정을 조정해야 합니다.
-
-코드의 오탈자를 찾기 위해 `codespell`도 사용합니다.
-이 작업 역시 자동화되어 있습니다.
 
 ## 테스트 커버리지 \{#test-coverage\}
 

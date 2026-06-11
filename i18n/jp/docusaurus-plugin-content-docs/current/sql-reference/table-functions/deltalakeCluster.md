@@ -7,8 +7,6 @@ title: 'deltaLakeCluster'
 doc_type: 'reference'
 ---
 
-# deltaLakeCluster テーブル関数 \{#deltalakecluster-table-function\}
-
 これは [deltaLake](sql-reference/table-functions/deltalake.md) テーブル関数の拡張です。
 
 指定したクラスタ内の多数のノードから、Amazon S3 上の [Delta Lake](https://github.com/delta-io/delta) テーブルのファイルを並列処理できるようにします。イニシエーターはクラスタ内のすべてのノードへの接続を確立し、各ファイルを動的に割り振ります。ワーカーノードは、処理すべき次のタスクについてイニシエーターに問い合わせ、そのタスクを処理します。すべてのタスクが完了するまで、これが繰り返されます。

@@ -2,7 +2,7 @@
 sidebar_label: '소개'
 description: '외부 데이터 소스를 ClickHouse Cloud에 원활하게 연결할 수 있습니다.'
 slug: /integrations/clickpipes
-title: 'ClickHouse Cloud와의 통합'
+title: 'ClickHouse Cloud 통합'
 doc_type: 'guide'
 keywords: ['ClickPipes', '데이터 수집 플랫폼', '스트리밍 데이터', '통합 플랫폼', 'ClickHouse Cloud']
 integration:
@@ -17,6 +17,7 @@ import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_even
 import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import Amazonkinesis from '@site/static/images/integrations/logos/amazon_kinesis_logo.svg';
+import GoogleCloudPubSub from '@site/static/images/integrations/logos/google_pubsub.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
 import ABSsvg from '@site/static/images/integrations/logos/azureblobstorage.svg';
@@ -29,9 +30,6 @@ import cp_custom_role from '@site/static/images/integrations/data-ingestion/clic
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse Cloud 통합 \{#integrating-with-clickhouse-cloud\}
-
 ## 소개 \{#introduction\}
 
 [ClickPipes](/integrations/clickpipes)는 다양한 소스에서 데이터를 수집하는 작업을 몇 번의 클릭만으로 수행할 수 있게 해 주는 관리형 통합 플랫폼입니다. 가장 높은 수준의 워크로드를 위해 설계된 ClickPipes의 안정적이고 확장 가능한 아키텍처는 일관된 성능과 신뢰성을 보장합니다. ClickPipes는 장기적인 스트리밍 용도는 물론, 일회성 데이터 적재 작업에도 사용할 수 있습니다.
@@ -42,32 +40,35 @@ ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수
 
 ## 지원되는 데이터 소스 \{#supported-data-sources\}
 
-| 이름                                               | 로고                                                                                             |유형| 상태           | 설명                                                                                          |
-|----------------------------------------------------|--------------------------------------------------------------------------------------------------|----|------------------|------------------------------------------------------------------------------------------------------|
-| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka 로고" style={{width: '3rem', 'height': '3rem'}}/>      |스트리밍| 안정 버전           | ClickPipes를 구성하여 Apache Kafka에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.     |
-| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud 로고" style={{width: '3rem'}}/>                 |스트리밍| 안정 버전           | 직접 연동을 통해 Confluent와 ClickHouse Cloud의 결합된 기능을 활용하십시오.          |
-| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda 로고"/>                                     |스트리밍| 안정 버전           | ClickPipes를 구성하여 Redpanda에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.         |
-| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK 로고" style={{width: '3rem', 'height': '3rem'}}/>             |스트리밍| 안정 버전           | ClickPipes를 구성하여 AWS MSK에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.          |
-| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs 로고" style={{width: '3rem'}}/>           |스트리밍| 안정 버전           | ClickPipes를 구성하여 Azure Event Hubs에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다. 자세한 내용은 [Azure Event Hubs FAQ](/integrations/clickpipes/kafka/faq/#azure-eventhubs)를 참조하십시오. |
-| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream 로고" style={{width: '3rem'}}/>                     |스트리밍| 안정 버전           | ClickPipes를 구성하여 WarpStream에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.       |
-| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 로고" style={{width: '3rem', height: 'auto'}}/>              |객체 스토리지| 안정 버전           | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                            |
-| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage 로고" style={{width: '3rem', height: 'auto'}}/>  |객체 스토리지| 안정 버전           | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                            |
-| DigitalOcean Spaces                                | <DOsvg class="image" alt="DigitalOcean 로고" style={{width: '3rem', height: 'auto'}}/> | 객체 스토리지 | 안정 버전 | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.
-| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage 로고" style={{width: '3rem', height: 'auto'}}/> | 객체 스토리지 | 안정 버전 | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.
-| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <Amazonkinesis class="image" alt="Amazon Kinesis 로고" style={{width: '3rem', height: 'auto'}}/> |스트리밍| 안정 버전           | ClickPipes를 구성하여 Amazon Kinesis에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.   |
-| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres 로고" style={{width: '3rem', height: 'auto'}}/>         |DBMS| 안정 버전      | ClickPipes를 구성하여 Postgres에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                   |
-| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL 로고" style={{width: '3rem', height: '3rem'}}/>               |DBMS| 퍼블릭 베타 | ClickPipes를 구성하여 MySQL에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                      |
-| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB 로고" style={{width: '3rem', height: '3rem'}}/>           |DBMS| 프라이빗 프리뷰 | ClickPipes를 구성하여 MongoDB에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                   |
+| 이름                                                 | 로고                                                                                                        | 유형      | 상태       | 설명                                                                                                                                                                       |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka 로고" style={{width: '3rem', 'height': '3rem'}} />                | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 Apache Kafka에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                  |
+| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud 로고" style={{width: '3rem'}} />                           | 스트리밍    | 안정 버전    | 직접 연동을 통해 Confluent와 ClickHouse Cloud의 결합된 기능을 활용하십시오.                                                                                                                   |
+| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda 로고" />                                               | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 Redpanda에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                      |
+| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK 로고" style={{width: '3rem', 'height': '3rem'}} />                       | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 AWS MSK에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                       |
+| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs 로고" style={{width: '3rem'}} />                     | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 Azure Event Hubs에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다. 자세한 내용은 [Azure Event Hubs FAQ](/integrations/clickpipes/kafka/faq/#azure-eventhubs)를 참조하십시오. |
+| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream 로고" style={{width: '3rem'}} />                               | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 WarpStream에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                    |
+| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 로고" style={{width: '3rem', height: 'auto'}} />                        | 객체 스토리지 | 안정 버전    | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                                                                                                                              |
+| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage 로고" style={{width: '3rem', height: 'auto'}} />            | 객체 스토리지 | 안정 버전    | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                                                                                                                              |
+| DigitalOcean Spaces                                | <DOsvg class="image" alt="DigitalOcean 로고" style={{width: '3rem', height: 'auto'}} />                     | 객체 스토리지 | 안정 버전    | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                                                                                                                              |
+| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage 로고" style={{width: '3rem', height: 'auto'}} />              | 객체 스토리지 | 안정 버전    | 객체 스토리지에서 대용량 데이터를 수집하도록 ClickPipes를 구성합니다.                                                                                                                              |
+| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <Amazonkinesis class="image" alt="Amazon Kinesis 로고" style={{width: '3rem', height: 'auto'}} />           | 스트리밍    | 안정 버전    | ClickPipes를 구성하여 Amazon Kinesis에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                                |
+| [GCP Pub/Sub](/integrations/clickpipes/pubsub)     | <GoogleCloudPubSub class="image" alt="Google Cloud Pub/Sub 로고" style={{width: '3rem', height: 'auto'}} /> | 스트리밍    | 퍼블릭 베타   | ClickPipes를 구성하여 Google Cloud Pub/Sub에서 ClickHouse Cloud로 스트리밍 데이터를 수집하기 시작합니다.                                                                                          |
+| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres 로고" style={{width: '3rem', height: 'auto'}} />                   | DBMS    | 안정 버전    | ClickPipes를 구성하여 Postgres에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                                                                                                           |
+| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL 로고" style={{width: '3rem', height: '3rem'}} />                         | DBMS    | 퍼블릭 베타   | ClickPipes를 구성하여 MySQL에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                                                                                                              |
+| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB 로고" style={{width: '3rem', height: '3rem'}} />                     | DBMS    | 프라이빗 프리뷰 | ClickPipes를 구성하여 MongoDB에서 ClickHouse Cloud로 데이터를 수집하기 시작합니다.                                                                                                            |
 
 더 많은 커넥터가 ClickPipes에 추가될 예정입니다. 자세한 내용은 [문의](https://clickhouse.com/company/contact?loc=clickpipes) 페이지를 참조하시기 바랍니다.
 
 ## List of Static IPs \{#list-of-static-ips\}
 
-다음은 ClickPipes가 외부 서비스에 연결할 때 사용하는 정적 NAT IP 주소(리전별 구분)입니다. 트래픽을 허용하려면 관련 인스턴스 리전의 IP를 IP 허용 목록에 추가하십시오. 객체 스토리지 파이프의 경우 [ClickHouse 클러스터 IP](/manage/data-sources/cloud-endpoints-api)도 IP 허용 목록에 추가해야 합니다.
+다음 표에는 ClickPipes가 외부 서비스에 연결할 때 사용하는 정적 NAT IP 주소가 나열되어 있습니다. ClickHouse Cloud 서비스를 제공하는 ClickPipes 리전의 IP를 IP 허용 목록에 추가하십시오. 객체 스토리지 파이프의 경우 [ClickHouse 클러스터 IP](/manage/data-sources/cloud-endpoints-api)도 IP 허용 목록에 추가해야 합니다.
 
-모든 서비스에 대해 ClickPipes 트래픽은 서비스 위치를 기준으로 기본 리전에서 발생합니다:
+아래 Google Cloud 표에 나열된 Google Cloud 리전의 서비스는 2026년 5월 27일 이후에 생성된 경우에만 해당 Google Cloud IP를 사용합니다. 해당 리전에서 2026년 5월 27일 이전에 생성된 서비스는 아래 나열된 기본 리전 IP를 계속 사용합니다.
 
-* **eu-central-1**: 별도로 명시되지 않은 모든 EU 리전(GCP 및 Azure EU 리전을 포함합니다).
+기타 서비스의 경우 ClickPipes 트래픽은 서비스 위치를 기준으로 기본 리전에서 발생합니다:
+
+* **eu-central-1**: 별도로 명시되지 않은 모든 EU 리전과 Azure EU 리전, 그리고 2026년 5월 27일 이전에 생성된 Google Cloud EU 서비스.
 * **eu-west-1**: 2026년 1월 20일 이후에 생성된 AWS `eu-west-1`의 모든 서비스(해당 날짜 이전에 생성된 서비스는 `eu-central-1` IP를 사용합니다).
 * **us-east-1**: AWS `us-east-1`의 모든 서비스.
 * **ap-south-1**: 2025년 6월 25일 이후에 생성된 AWS `ap-south-1`의 서비스(해당 날짜 이전에 생성된 서비스는 `us-east-2` IP를 사용합니다).
@@ -82,9 +83,12 @@ ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수
 * **eu-north-1**: 2026년 4월 15일 이후에 생성된 AWS `eu-north-1`의 서비스(해당 날짜 이전에 생성된 서비스는 `eu-central-1` IP를 사용합니다).
 * **eu-west-2**: 2026년 4월 15일 이후에 생성된 AWS `eu-west-2`의 서비스(해당 날짜 이전에 생성된 서비스는 `eu-central-1` IP를 사용합니다).
 * **il-central-1**: 2026년 4월 15일 이후에 생성된 AWS `il-central-1`의 서비스(해당 날짜 이전에 생성된 서비스는 `us-east-2` IP를 사용합니다).
+* **mx-central-1**: 2026년 5월 19일 이후에 생성된 AWS `mx-central-1`의 서비스(해당 날짜 이전에 생성된 서비스는 `us-east-2` IP를 사용합니다).
 * **sa-east-1**: 2026년 4월 15일 이후에 생성된 AWS `sa-east-1`의 서비스(해당 날짜 이전에 생성된 서비스는 `us-east-2` IP를 사용합니다).
 * **us-west-2**: 2025년 6월 24일 이후에 생성된 AWS `us-west-2`의 서비스(해당 날짜 이전에 생성된 서비스는 `us-east-2` IP를 사용합니다).
-* **us-east-2**: 위에서 별도로 명시되지 않은 기타 모든 리전(GCP 및 Azure 리전을 포함합니다).
+* **us-east-2**: 위 규칙에 해당하지 않는 기타 모든 리전(2026년 5월 27일 이전에 생성된 Azure 리전 및 Google Cloud 서비스를 포함합니다).
+
+### AWS 정적 NAT IP 주소 \{#aws-static-nat-ips\}
 
 | AWS 리전                                     | IP 주소                                                                                                                                       |
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -105,8 +109,20 @@ ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수
 | **eu-north-1** - 스톡홀름 (2026년 4월 15일부터)     | `13.63.1.65`, `16.171.127.30`, `56.228.76.44`, `13.63.101.248`, `16.170.124.188`, `13.60.109.201`                                           |
 | **eu-west-2** - 런던 (2026년 4월 15일부터)        | `13.134.82.158`, `16.60.209.167`, `18.134.221.203`, `16.60.139.176`, `13.43.66.75`, `3.11.78.183`                                           |
 | **il-central-1** - 텔아비브 (2026년 4월 15일부터)   | `16.164.25.13`, `51.84.162.29`, `51.85.90.183`, `51.84.36.146`, `51.84.72.29`, `51.85.28.184`                                               |
+| **mx-central-1** - 멕시코 (2026년 5월 19일부터)    | `78.12.67.220`, `78.12.117.175`, `78.13.186.238`, `78.13.219.184`, `78.13.224.212`, `78.13.248.162`                                         |
 | **sa-east-1** - 상파울루 (2026년 4월 15일부터)      | `18.230.164.131`, `56.126.1.234`, `18.230.39.24`, `15.229.102.116`, `18.230.174.204`, `18.229.237.116`                                      |
 | **us-west-2** - 오리건 (2025년 6월 24일부터)       | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                            |
+
+### Google Cloud 정적 NAT IP 주소 \{#google-cloud-static-nat-ips\}
+
+| Google Cloud 리전                             | IP 주소                                                                                 |
+| ------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **asia-northeast1** - 도쿄 (2026년 5월 27일부터)   | `104.198.114.210`, `35.221.66.81`, `35.243.126.127`, `136.110.107.86`, `34.85.18.112` |
+| **asia-southeast1** - 싱가포르 (2026년 5월 27일부터) | `34.21.197.28`, `35.197.141.23`, `35.197.157.90`, `136.110.17.200`, `35.185.179.231`  |
+| **europe-west2** - 런던 (2026년 5월 27일부터)      | `35.242.131.178`, `34.39.77.101`, `34.39.47.179`, `34.89.53.234`, `8.228.63.151`      |
+| **europe-west4** - 네덜란드 (2026년 5월 27일부터)    | `34.34.86.3`, `34.6.175.56`, `34.178.6.187`, `34.91.204.220`, `34.12.85.206`          |
+| **us-central1** - 아이오와 (2026년 5월 27일부터)     | `34.28.24.54`, `34.42.56.195`, `34.63.141.9`, `35.238.146.37`, `34.10.251.49`         |
+| **us-east1** - 사우스캐롤라이나 (2026년 5월 27일부터)    | `34.24.134.232`, `34.24.214.165`, `34.24.20.1`, `35.243.193.248`, `34.23.98.76`       |
 
 ## ClickHouse 설정 조정 \{#adjusting-clickhouse-settings\}
 
@@ -158,6 +174,10 @@ ClickPipes는 대상 테이블과 동일한 데이터베이스에 `<destination_
 ClickPipe 동작과 관련된 오류는 `system.clickpipes_log` 테이블에 저장됩니다. 이 테이블은 ClickPipe 동작과 관련된 기타 모든 오류(네트워크, 연결 문제 등)를 모두 저장하며, [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl)은 7일로 설정되어 있습니다.
 
 ClickPipes가 데이터 소스에는 15분 동안, 대상에는 1시간 동안 연결하지 못하면, ClickHouse 인스턴스를 사용할 수 있는 경우에 한해 ClickPipes 인스턴스가 중지되고 시스템 오류 테이블에 적절한 메시지를 저장합니다.
+
+## 모니터링 \{#monitoring\}
+
+콘솔 내 모니터링 외에도 ClickPipes는 스크레이핑을 위해 [Prometheus 호환 엔드포인트](/integrations/prometheus)로 메트릭을 노출합니다. 이러한 메트릭은 다른 ClickHouse Cloud 서비스 메트릭과 함께 게시되며, 기존 관측성 스택(예: [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog))에 ClickPipes 모니터링을 통합할 수 있도록 합니다. 사용 가능한 전체 메트릭 목록은 [Monitoring ClickPipes](/integrations/clickpipes/monitoring)를 참조하십시오.
 
 ## FAQ \{#faq\}
 

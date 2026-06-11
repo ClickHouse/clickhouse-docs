@@ -73,13 +73,11 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 
 `ONLY` 옵션 사용 방법:
 
-```sql
+```sql title="Query"
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a─┬─b─┐
 │ 2 │ 1 │
 │ 3 │ 4 │
@@ -89,13 +87,11 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 
 `WITH TIES` 옵션 사용 예시:
 
-```sql
+```sql title="Query"
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS WITH TIES;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a─┬─b─┐
 │ 2 │ 1 │
 │ 3 │ 4 │

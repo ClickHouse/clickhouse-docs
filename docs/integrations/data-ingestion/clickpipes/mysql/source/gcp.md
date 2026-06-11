@@ -18,8 +18,6 @@ import gcp_mysql_cert from '@site/static/images/integrations/data-ingestion/clic
 import rootca from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/rootca.png';
 import Image from '@theme/IdealImage';
 
-# Cloud SQL for MySQL source setup guide
-
 This is a step-by-step guide on how to configure your Cloud SQL for MySQL instance for replicating its data via the MySQL ClickPipe.
 
 ## Enable binary log retention {#enable-binlog-retention-gcp}

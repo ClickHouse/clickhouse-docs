@@ -10,7 +10,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Resyncing specific tables {#resync-tables}
 
 There are scenarios where it would be useful to have specific tables of a pipe be re-synced. Some sample use-cases could be major schema changes on MongoDB, or maybe some data re-modelling on the ClickHouse.
 

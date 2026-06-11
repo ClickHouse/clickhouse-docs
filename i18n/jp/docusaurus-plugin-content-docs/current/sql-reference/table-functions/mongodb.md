@@ -7,9 +7,7 @@ title: 'mongodb'
 doc_type: 'reference'
 ---
 
-# mongodb テーブル関数 \{#mongodb-table-function\}
-
-リモートの MongoDB サーバーに保存されているデータに対して `SELECT` クエリを実行できるようにします。
+リモート MongoDB サーバー上に保存されたデータに対して `SELECT` クエリを実行できるようにします。
 
 ## 構文 \{#syntax\}
 

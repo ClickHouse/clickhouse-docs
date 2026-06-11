@@ -1,13 +1,11 @@
 ---
-description: '在 ClickHouse 与 ZooKeeper 之间配置安全 SSL/TLS 通信的指南'
-sidebar_label: '与 ZooKeeper 的安全通信'
+description: '配置 ClickHouse 与 ZooKeeper 之间安全 SSL/TLS 通信的指南'
+sidebar_label: '与 Zookeeper 的安全通信'
 sidebar_position: 45
 slug: /operations/ssl-zookeeper
-title: 'ClickHouse 与 ZooKeeper 之间可选的安全通信'
+title: '可选的 ClickHouse 与 Zookeeper 之间的安全通信'
 doc_type: 'guide'
 ---
-
-# 可选的 ClickHouse 与 Zookeeper 之间的安全通信 \{#optional-secured-communication-between-clickhouse-and-zookeeper\}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 

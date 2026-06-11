@@ -7,6 +7,7 @@ pagination_next: null
 description: "Демо-дни ClickStack от 2026-04-10"
 doc_type: "guide"
 keywords: ["ClickStack", "Демо-дни"]
+sidebar_position: -20260410
 ---
 
 ## Закрепляемые фильтры источников данных \{#pinnable-datasource-filters\}

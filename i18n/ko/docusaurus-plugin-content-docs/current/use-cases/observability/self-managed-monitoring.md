@@ -11,10 +11,7 @@ import ObservabilityIntegrations from '@site/i18n/ko/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-
-# 자가 관리형 모니터링 \{#cloud-monitoring\}
-
-이 가이드는 ClickHouse 오픈 소스 버전을 평가하는 엔터프라이즈 팀을 대상으로, 프로덕션 배포 환경에서 필요한 모니터링 및 관측성(observability) 기능에 대한 포괄적인 정보를 제공합니다. 엔터프라이즈 고객은 기본 제공 모니터링 기능, Datadog 및 AWS CloudWatch와 같은 도구를 포함한 기존 관측성(observability) 스택과의 통합 방법, 그리고 ClickHouse의 모니터링이 자가 관리형 배포와 어떻게 비교되는지에 대해 자주 문의합니다.
+이 가이드는 프로덕션 배포를 위해 ClickHouse 오픈소스를 평가하는 엔터프라이즈 팀에 모니터링 및 관측성 기능에 대한 포괄적인 정보를 제공합니다. 엔터프라이즈 고객은 기본 제공 모니터링 기능, Datadog 및 AWS CloudWatch와 같은 도구를 포함한 기존 관측성 스택과의 통합, 그리고 ClickHouse의 모니터링이 자가 관리형 배포와 비교해 어떠한지에 대해 자주 문의합니다.
 
 ### Prometheus 기반 통합 아키텍처 \{#prometheus\}
 

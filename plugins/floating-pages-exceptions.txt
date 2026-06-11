@@ -9,7 +9,18 @@
 /docs/index.md
 integrations/language-clients/java/client-v1
 integrations/language-clients/java/jdbc-v1
-integrations/data-ingestion/clickpipes/postgres/maintenance.md
 operations/utilities/clickhouse-keeper-http-api.md
 cloud/features/backups/faq.md
 interfaces/web-terminal
+operations/query-rules
+use-cases/observability/clickstack/managed-onboarding/setting-up-your-opentelemetry-collector.md
+use-cases/observability/clickstack/managed-onboarding/monitoring-kubernetes.md
+use-cases/observability/clickstack/managed-onboarding/monitoring-aws-cloudwatch-logs.md
+use-cases/observability/clickstack/managed-onboarding/instrument-application.md
+use-cases/observability/clickstack/managed-onboarding/tuning-clickstack-schema.md
+
+# NOTE(kavi): To be removed after core PRs are merged
+# https://github.com/ClickHouse/ClickHouse/pull/106723
+
+interfaces/specs/NativeProtocol.md
+interfaces/specs/NativeFormat.md

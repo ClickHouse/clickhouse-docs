@@ -114,7 +114,7 @@ OPTIMIZE TABLE table DEDUPLICATE BY COLUMNS('column-matched-by-regex') EXCEPT (c
 
 다음 테이블을 살펴보십시오:
 
-```sql
+```sql title="Query"
 CREATE TABLE example (
     primary_key Int32,
     secondary_key Int32,
@@ -128,18 +128,16 @@ PARTITION BY partition_key
 ORDER BY (primary_key, secondary_key);
 ```
 
-```sql
+```sql title="Query"
 INSERT INTO example (primary_key, secondary_key, value, partition_key)
 VALUES (0, 0, 0, 0), (0, 0, 0, 0), (1, 1, 2, 2), (1, 1, 2, 3), (1, 1, 3, 3);
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-결과:
-
-```sql
+```sql title="Response"
 
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           0 │             0 │     0 │             0 │
@@ -160,17 +158,15 @@ SELECT * FROM example;
 
 중복 제거 기준 컬럼이 지정되지 않으면 모든 컬럼이 사용됩니다. 모든 컬럼의 값이 바로 이전 행의 해당 컬럼 값과 모두 동일한 경우에만 해당 행이 제거됩니다:
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -187,17 +183,15 @@ SELECT * FROM example;
 
 컬럼을 암시적으로 지정하는 경우, `ALIAS` 또는 `MATERIALIZED`가 아닌 모든 컬럼을 기준으로 테이블의 중복이 제거됩니다. 위의 테이블을 기준으로 하면, 해당 컬럼은 `primary_key`, `secondary_key`, `value`, `partition_key` 컬럼입니다:
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY *;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -214,17 +208,15 @@ SELECT * FROM example;
 
 `ALIAS` 또는 `MATERIALIZED`가 아니면서, 명시적으로 `value`가 아닌 모든 컬럼(예: `primary_key`, `secondary_key`, `partition_key` 컬럼)을 기준으로 중복 행을 제거합니다.
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY * EXCEPT value;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -240,17 +232,15 @@ SELECT * FROM example;
 
 `primary_key`, `secondary_key`, `partition_key` 컬럼을 기준으로 명시적으로 중복을 제거합니다:
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY primary_key, secondary_key, partition_key;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -266,17 +256,15 @@ SELECT * FROM example;
 
 정규식과 일치하는 모든 컬럼(예: `primary_key`, `secondary_key`, `partition_key` 컬럼)을 기준으로 중복을 제거합니다.
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY COLUMNS('.*_key');
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           0 │             0 │     0 │             0 │
 └─────────────┴───────────────┴───────┴───────────────┘

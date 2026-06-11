@@ -8,10 +8,8 @@ keywords: ['ClickHouse Cloud', '클라우드 데이터베이스', '관리형 Cli
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud \{#clickhouse-cloud\}
-
-ClickHouse Cloud는 인기 있는 오픈 소스 OLAP 데이터베이스인 ClickHouse를 최초로 개발한 팀이 만든 Cloud 서비스입니다. 
-[무료 체험을 시작](https://console.clickhouse.cloud/signUp)하여 ClickHouse Cloud를 직접 경험해 보십시오.
+ClickHouse Cloud는 널리 사용되는 오픈소스 OLAP 데이터베이스 ClickHouse를 개발한 원저자들이 제공하는 클라우드 서비스입니다.
+[무료 체험을 시작하여](https://console.clickhouse.cloud/signUp) ClickHouse Cloud를 이용해 보실 수 있습니다.
 
 ## ClickHouse Cloud의 이점 \{#clickhouse-cloud-benefits\}
 

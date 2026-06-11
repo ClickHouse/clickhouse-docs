@@ -11,6 +11,17 @@
   curl https://clickhouse.com/ | sh
   ```
 
+  Linux および macOS では、これにより [`clickhousectl`](https://github.com/ClickHouse/clickhousectl) も
+  `~/.local/bin` にインストールされ (`chctl` シンボリックリンク付き) 、ローカルの ClickHouse の
+  バージョンとサーバーを管理できるようになります。
+
+  `clickhousectl` なしで `clickhouse` バイナリのみをインストールするには、
+  `CLICKHOUSE_ONLY=1` を設定します:
+
+  ```bash
+  curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+  ```
+
   :::note
   Mac ユーザー向け: バイナリの開発元を検証できないというエラーが発生する場合は、[こちら](/knowledgebase/fix-developer-verification-error-in-macos)を参照してください。
   :::

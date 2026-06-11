@@ -63,7 +63,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   done
   ```
 
-  以下の `docker-compose.yml` ファイルを `clickhouse-cluster` ディレクトリに追加します：
+  以下の `docker-compose.yml` ファイルを `cluster_2S_1R` ディレクトリに追加します：
 
   ```yaml title="docker-compose.yml"
   version: '3.8'
@@ -232,7 +232,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | ディレクトリ                                                    | ファイル                                                                                                                                                                             |
+  | ディレクトリ                                                    | File                                                                                                                                                                             |
   | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
@@ -289,8 +289,8 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   #### Keeper の設定
 
-  `<ZooKeeper>` セクションは、ClickHouse Keeper（または ZooKeeper）の実行場所を ClickHouse に指定します。
-  ClickHouse Keeper クラスタを使用する場合、クラスタの各 `<node>` を指定する必要があります。
+  `<ZooKeeper>` セクションは、ClickHouse Keeper (または ZooKeeper) の実行場所を ClickHouse に指定します。
+  ClickHouse Keeper クラスターを使用する場合、クラスターの各 `<node>` を指定する必要があります。
   ホスト名とポート番号はそれぞれ `<host>` タグと `<port>` タグを使用して指定します。
 
   ClickHouse Keeperのセットアップは、チュートリアルの次のステップで説明されています。
@@ -318,7 +318,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   #### マクロの設定
 
-  また、`<macros>` セクションは、レプリケーテッドテーブルのパラメータ置換を定義するために使用されます。これらは `system.macros` に記載され、クエリ内で `{shard}` や `{replica}` などの置換を使用できます。
+  また、`<macros>` セクションは、レプリケートテーブルのパラメータ置換を定義するために使用されます。これらは `system.macros` に記載され、クエリ内で `{shard}` や `{replica}` などの置換を使用できます。
 
   ```xml
   <macros>
@@ -328,12 +328,12 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ```
 
   :::note
-  これらはクラスタの構成に応じて個別に定義する必要があります。
+  これらはクラスターの構成に応じて個別に定義する必要があります。
   :::
 
   ### ユーザー設定
 
-  次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` に配置されている各空の設定ファイル `users.xml` を以下の内容で変更します:
+  次に、`fs/volumes/clickhouse-{}/etc/clickhouse-server/users.d` に配置されている各空の設定ファイル `users.xml` を次の内容に変更します:
 
   ```xml title="/users.d/users.xml"
   <?xml version="1.0"?>
@@ -375,7 +375,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | ディレクトリ                                                   | ファイル                                                                                                                                                                          |
+  | ディレクトリ                                                   | File                                                                                                                                                                          |
   | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml) |
@@ -406,14 +406,14 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ## セットアップのテスト
 
   マシン上でDockerが実行されていることを確認してください。
-  `cluster_2S_1R`ディレクトリのルートから`docker-compose up`コマンドを使用してクラスタを起動します:
+  `cluster_2S_1R`ディレクトリのルートから`docker-compose up`コマンドを使用してクラスターを起動します:
 
   ```bash
   docker-compose up -d
   ```
 
   dockerがClickHouseとKeeperのイメージをプルし、
-  その後コンテナを起動する様子が確認できます:
+  その後コンテナーを起動する様子が確認できます:
 
   ```bash
   [+] Running 6/6
@@ -438,7 +438,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   cluster_2S_1R node 1 :)
   ```
 
-  以下のクエリを実行して、各ホストに定義されているクラスタトポロジを確認します:
+  以下のクエリを実行して、各ホストに定義されているクラスタートポロジを確認します:
 
   ```sql title="Query"
   SELECT 
@@ -477,8 +477,8 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   <VerifyKeeperStatus />
 
-  これで、1つの分片と2つのレプリカを持つClickHouseクラスタのセットアップが完了しました。
-  次のステップでは、クラスタにテーブルを作成します。
+  これで、2つのシャードと各シャードに1つのレプリカを持つClickHouseクラスターのセットアップが完了しました。
+  次のステップでは、クラスターにテーブルを作成します。
 
   ## データベースを作成する
 
@@ -514,7 +514,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   ON CLUSTER cluster_2S_1R;
   ```
 
-  各ホストのクライアントから先ほどと同じクエリを再度実行し、`clickhouse-01`でのみクエリを実行したにもかかわらず、クラスタ全体でデータベースが作成されていることを確認できます:
+  各ホストのクライアントから先ほどと同じクエリを再度実行し、`clickhouse-01`でのみクエリを実行したにもかかわらず、クラスター全体でデータベースが作成されていることを確認できます:
 
   ```sql
   SHOW DATABASES;
@@ -531,7 +531,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
      └────────────────────┘
   ```
 
-  ## クラスタ上にテーブルを作成する
+  ## クラスター上にテーブルを作成する
 
   データベースが作成されたので、次にテーブルを作成します。
   任意のホストクライアントから以下のクエリを実行してください:
@@ -562,9 +562,9 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   これは[UK property prices](/getting-started/example-datasets/uk-price-paid)サンプルデータセットチュートリアルの元の`CREATE`文で使用されたクエリと同一です。ただし、`ON CLUSTER`句は除きます。
 
-  `ON CLUSTER`句は、`CREATE`、`DROP`、`ALTER`、`RENAME`などのDDL(Data Definition Language)クエリを分散実行するために設計されており、これらのスキーマ変更をクラスタ内のすべてのノードに適用します。
+  `ON CLUSTER`句は、`CREATE`、`DROP`、`ALTER`、`RENAME`などのDDL(Data Definition Language)クエリを分散実行するために設計されており、これらのスキーマ変更をクラスター内のすべてのノードに適用します。
 
-  各ホストのクライアントから以下のクエリを実行し、クラスタ全体でテーブルが作成されていることを確認してください:
+  各ホストのクライアントから以下のクエリを実行し、クラスター全体でテーブルが作成されていることを確認してください:
 
   ```sql title="Query"
   SHOW TABLES IN uk;
@@ -621,9 +621,9 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
 
   `ReplicatedMergeTree`テーブルとは異なり、その特定のホストのテーブルに挿入された行のみが返され、両方の行が返されることはありません。
 
-  2つの分片にまたがるデータを読み取るには、全分片に対するクエリを処理できるインターフェースが必要です。このインターフェースは、SELECTクエリ実行時に両分片のデータを結合し、INSERTクエリ実行時には両分片へデータを挿入します。
+  2つの分片にまたがるデータを読み取るには、全分片に対するクエリを処理できるインターフェイスが必要です。このインターフェイスは、SELECTクエリ実行時に両分片のデータを結合し、INSERTクエリ実行時には両分片へデータを挿入します。
 
-  ClickHouseでは、このインターフェースは**分散テーブル**と呼ばれ、[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを使用して作成します。その仕組みを見ていきましょう。
+  ClickHouseでは、このインターフェイスは**分散テーブル**と呼ばれ、[`Distributed`](/engines/table-engines/special/distributed)テーブルエンジンを使用して作成します。その仕組みを見ていきましょう。
 
   ## 分散テーブルの作成
 
@@ -643,7 +643,7 @@ import CloudTip from '@site/i18n/jp/docusaurus-plugin-content-docs/current/deplo
   SELECT * FROM test.test_table_dist;
   ```
 
-  ```sql
+  ```response
      ┌─id─┬─name───────────────┐
   1. │  1 │ Alexey Milovidov   │
   2. │  1 │ Clicky McClickface │

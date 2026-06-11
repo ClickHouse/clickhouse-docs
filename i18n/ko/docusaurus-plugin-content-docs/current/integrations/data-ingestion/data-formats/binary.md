@@ -9,12 +9,9 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+ClickHouse는 더 나은 성능과 공간 효율성을 제공하는 여러 바이너리 형식을 지원합니다. 바이너리 형식은 데이터가 바이너리 형태로 저장되므로 문자 인코딩과 관련해서도 안전합니다.
 
-# ClickHouse에서 네이티브(Native) 및 바이너리 포맷 사용하기 \{#using-native-and-binary-formats-in-clickhouse\}
-
-ClickHouse는 여러 가지 바이너리 포맷을 지원하며, 이는 성능과 저장 공간 효율성을 높이는 데 도움이 됩니다. 바이너리 포맷은 데이터가 바이너리 형태로 저장되기 때문에 문자 인코딩 측면에서도 안전합니다.
-
-데모를 위해 some_data [테이블](assets/some_data.sql)과 [데이터](assets/some_data.tsv)를 사용합니다. 동일한 예제를 사용 중인 ClickHouse 인스턴스에서 그대로 재현해 보십시오.
+예시를 위해 some&#95;data [테이블](assets/some_data.sql)과 [데이터](assets/some_data.tsv)를 사용하겠습니다. ClickHouse 인스턴스에서 직접 재현해 보셔도 됩니다.
 
 ## Native ClickHouse 형식으로 내보내기 \{#exporting-in-a-native-clickhouse-format\}
 

@@ -1,13 +1,11 @@
 ---
-description: 'Документация по модификатору REPLACE, который позволяет вызывать функцию для каждой строки, возвращаемой внешним табличным выражением запроса.'
+description: 'Документация, описывающая модификатор APPLY, который позволяет вызывать некоторую функцию для каждой строки, возвращаемой внешним табличным выражением запроса.'
 sidebar_label: 'REPLACE'
 slug: /sql-reference/statements/select/replace-modifier
 title: 'Модификатор REPLACE'
-keywords: ['REPLACE', 'modifier']
+keywords: ['REPLACE', 'модификатор']
 doc_type: 'reference'
 ---
-
-# Модификатор REPLACE \{#replace\}
 
 > Позволяет указать один или несколько [псевдонимов выражений](/sql-reference/syntax#expression-aliases).
 

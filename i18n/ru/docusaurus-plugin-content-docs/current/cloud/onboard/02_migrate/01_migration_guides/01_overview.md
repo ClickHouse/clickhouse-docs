@@ -2,13 +2,11 @@
 sidebar_label: 'Обзор'
 sidebar_position: 1
 slug: /integrations/migration/overview
-keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data']
+keywords: ['clickhouse', 'перенос', 'миграция', 'перенос данных', 'данные']
 title: 'Миграция данных в ClickHouse'
-description: 'Страница, описывающая доступные варианты миграции данных в ClickHouse'
+description: 'Страница с описанием доступных вариантов миграции данных в ClickHouse'
 doc_type: 'guide'
 ---
-
-# Миграция данных в ClickHouse \{#migrating-data-into-clickhouse\}
 
 <div class="vimeo-container">
   <iframe

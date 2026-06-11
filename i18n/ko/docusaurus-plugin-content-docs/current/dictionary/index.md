@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
-title: '개요'
+title: '딕셔너리'
 keywords: ['dictionary', 'dictionaries']
-description: '딕셔너리는 빠른 조회를 위해 데이터를 키-값 형태로 제공합니다.'
+description: '딕셔너리는 빠른 조회를 위해 데이터를 키-값 형태로 표현합니다.'
 doc_type: 'guide'
 ---
 
@@ -10,17 +10,14 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
-# 딕셔너리 \{#dictionary\}
-
-ClickHouse의 딕셔너리는 다양한 [내부 및 외부 소스](/sql-reference/statements/create/dictionary/sources#dictionary-sources)의 데이터를 메모리 내 [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 형태로 표현하여, 초저지연 조회 쿼리에 최적화합니다.
+ClickHouse의 딕셔너리는 다양한 [내부 및 외부 소스](/sql-reference/statements/create/dictionary/sources#dictionary-sources)의 데이터를 메모리 내 [키-값](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) 형태로 표현하여, 초저지연 조회 쿼리에 최적화합니다.
 
 딕셔너리는 다음과 같은 용도로 유용합니다:
 
-- 특히 `JOIN`을 사용할 때 쿼리 성능을 향상시키는 경우
-- 수집 처리를 지연시키지 않고, 실시간으로 수집된 데이터를 보강하는 경우
+* 특히 `JOIN`을 사용할 때 쿼리 성능을 향상시키는 경우
+* 수집 처리를 지연시키지 않고, 실시간으로 수집된 데이터를 보강하는 경우
 
-<Image img={dictionaryUseCases} size="lg" alt="ClickHouse 딕셔너리의 사용 사례"/>
+<Image img={dictionaryUseCases} size="lg" alt="ClickHouse 딕셔너리의 사용 사례" />
 
 ## 딕셔너리를 사용하여 조인 속도 높이기 \{#speeding-up-joins-using-a-dictionary\}
 
@@ -69,7 +66,9 @@ INNER JOIN
 WHERE Id IN (PostIds)
 ORDER BY Controversial_ratio ASC
 LIMIT 1
+```
 
+```response
 Row 1:
 ──────
 Id:                     25372161
@@ -86,7 +85,6 @@ Peak memory usage: 3.18 GiB.
 
 이 쿼리는 빠르지만, 좋은 성능을 얻기 위해 `JOIN`을 신중하게 작성해야 한다는 전제에 의존합니다. 이상적으로는 메트릭을 계산하기 위해, 먼저 게시물을 「SQL」을 포함하는 것들로만 필터링한 다음, 해당 블로그 하위 집합에 대한 `UpVote` 및 `DownVote` 개수를 확인하면 됩니다.
 
-
 #### 딕셔너리 적용하기 \{#applying-a-dictionary\}
 
 이 개념들을 보여 주기 위해 투표 데이터에 딕셔너리를 사용합니다. 딕셔너리는 일반적으로 메모리에 상주하므로([ssd&#95;cache](/sql-reference/statements/create/dictionary/layouts/ssd-cache)는 예외), 데이터 크기에 유의해야 합니다. 먼저 `votes` 테이블의 크기를 확인합니다:
@@ -99,7 +97,9 @@ SELECT table,
 FROM system.columns
 WHERE table IN ('votes')
 GROUP BY table
+```
 
+```response
 ┌─table───────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ votes           │ 1.25 GiB        │ 3.79 GiB          │  3.04 │
 └─────────────────┴─────────────────┴───────────────────┴───────┘
@@ -107,7 +107,7 @@ GROUP BY table
 
 데이터는 딕셔너리에 압축되지 않은 상태로 저장되므로, 모든 컬럼을 (실제로는 그렇게 하지 않지만) 딕셔너리에 저장한다고 가정하면 최소 4GB의 메모리가 필요합니다. 딕셔너리는 클러스터 전체에 걸쳐 복제되므로, 이 메모리는 *노드별로* 예약되어야 합니다.
 
-> 아래 예제에서는 딕셔너리 데이터가 ClickHouse 테이블에서 생성됩니다. 이는 딕셔너리의 가장 흔한 소스이지만, 파일, http, 그리고 [Postgres](/sql-reference/statements/create/dictionary/sources/postgresql)를 포함한 데이터베이스 등 [여러 가지 소스](/sql-reference/statements/create/dictionary/sources#dictionary-sources)를 지원합니다. 아래에서 설명하듯이, 딕셔너리는 자동으로 갱신될 수 있어, 자주 변경되는 소규모 데이터셋을 직접 조인에 사용할 수 있도록 보장하는 데 이상적인 방법을 제공합니다.
+> 아래 예제에서는 딕셔너리 데이터가 ClickHouse 테이블에서 생성됩니다. 이는 딕셔너리의 가장 흔한 소스이지만, 파일, http, 그리고 [Postgres](/sql-reference/statements/create/dictionary/sources/postgresql)를 포함한 데이터베이스 등 [여러 가지 소스](/sql-reference/statements/create/dictionary/sources#dictionary-sources)를 지원합니다. 아래에서 설명하듯이, 딕셔너리는 자동으로 갱신될 수 있어, 자주 변경되는 소규모 데이터셋을 Direct JOIN에 사용할 수 있도록 보장하는 데 이상적인 방법을 제공합니다.
 
 딕셔너리에는 조회가 수행될 기본 키(primary key)가 필요합니다. 이는 개념적으로 트랜잭션 데이터베이스의 기본 키와 동일하며 고유해야 합니다. 위의 쿼리에서는 조인 키 `PostId`에 대한 조회가 필요합니다. 딕셔너리는 `votes` 테이블에서 `PostId`별로 찬성 및 반대 투표 수를 합산한 값으로 채워져야 합니다. 이 딕셔너리 데이터를 얻기 위한 쿼리는 다음과 같습니다:
 
@@ -132,7 +132,9 @@ PRIMARY KEY PostId
 SOURCE(CLICKHOUSE(QUERY 'SELECT PostId, countIf(VoteTypeId = 2) AS UpVotes, countIf(VoteTypeId = 3) AS DownVotes FROM votes GROUP BY PostId'))
 LIFETIME(MIN 600 MAX 900)
 LAYOUT(HASHED())
+```
 
+```response
 0 rows in set. Elapsed: 36.063 sec.
 ```
 
@@ -144,7 +146,9 @@ LAYOUT(HASHED())
 SELECT formatReadableSize(bytes_allocated) AS size
 FROM system.dictionaries
 WHERE name = 'votes_dict'
+```
 
+```response
 ┌─size─────┐
 │ 4.00 GiB │
 └──────────┘
@@ -152,16 +156,19 @@ WHERE name = 'votes_dict'
 
 이제 간단한 `dictGet` FUNCTION으로 특정 `PostId`에 대한 찬반 투표 수를 조회할 수 있습니다. 아래에서는 게시물 `11227902`에 대한 값을 조회합니다.
 
-
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
+```
 
+```response
 ┌─votes──────┐
 │ (34999,32) │
 └────────────┘
+```
 
-Exploiting this in our earlier query, we can remove the JOIN:
+앞서 살펴본 쿼리에서 이를 활용하면 JOIN을 제거할 수 있습니다:
 
+```sql
 WITH PostIds AS
 (
         SELECT Id
@@ -176,13 +183,14 @@ FROM posts
 WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
+```
 
+```response
 3 rows in set. Elapsed: 0.551 sec. Processed 119.64 million rows, 3.29 GB (216.96 million rows/s., 5.97 GB/s.)
 Peak memory usage: 552.26 MiB.
 ```
 
 이 쿼리는 훨씬 더 단순할 뿐만 아니라, 속도도 두 배 이상 빠릅니다! 이를 추가로 최적화하려면 찬성/반대 표가 10개를 초과하는 게시글만 딕셔너리에 로드하고, 미리 계산된 논쟁성 지표 값만 저장하도록 할 수 있습니다.
-
 
 ## 쿼리 시점 보강 \{#query-time-enrichment\}
 
@@ -200,7 +208,7 @@ LIFETIME(MIN 600 MAX 900)
 LAYOUT(HASHED())
 ```
 
-이 딕셔너리를 사용하여 포스트 결과를 풍부하게 만들 수 있습니다:
+이 딕셔너리를 사용하여 포스트 결과를 보강할 수 있습니다:
 
 ```sql
 SELECT
@@ -211,7 +219,9 @@ FROM posts
 WHERE Title ILIKE '%clickhouse%'
 LIMIT 5
 FORMAT PrettyCompactMonoBlock
+```
 
+```response
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
 │ 52296928 │ Comparison between two Strings in ClickHouse                  │ Spain                 │
 │ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi   │
@@ -235,7 +245,9 @@ WHERE location != ''
 GROUP BY location
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─location───────────────┬──────c─┐
 │ India                  │ 787814 │
 │ Germany                │ 685347 │
@@ -247,7 +259,6 @@ LIMIT 5
 5 rows in set. Elapsed: 0.763 sec. Processed 59.82 million rows, 239.28 MB (78.40 million rows/s., 313.60 MB/s.)
 Peak memory usage: 248.84 MiB.
 ```
-
 
 ## 인덱싱 시점 보강 \{#index-time-enrichment\}
 
@@ -293,7 +304,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
@@ -306,7 +319,9 @@ WHERE Location != ''
 GROUP BY Location
 ORDER BY c DESC
 LIMIT 4
+```
 
+```response
 ┌─Location───────────────┬──────c─┐
 │ India                  │ 787814 │
 │ Germany                │ 685347 │
@@ -317,7 +332,6 @@ LIMIT 4
 4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
 Peak memory usage: 666.82 MiB.
 ```
-
 
 ## 딕셔너리 고급 주제 \{#advanced-dictionary-topics\}
 

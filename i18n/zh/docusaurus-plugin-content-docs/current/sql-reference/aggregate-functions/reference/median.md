@@ -5,8 +5,6 @@ title: 'median'
 doc_type: 'reference'
 ---
 
-# median \{#median\}
-
 `median*` 函数是对应 `quantile*` 函数的别名。它们用于计算数值型数据样本的中位数。
 
 函数：
@@ -35,15 +33,11 @@ doc_type: 'reference'
 └─────┘
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT medianDeterministic(val, 1) FROM t;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─medianDeterministic(val, 1)─┐
 │                         1.5 │
 └─────────────────────────────┘

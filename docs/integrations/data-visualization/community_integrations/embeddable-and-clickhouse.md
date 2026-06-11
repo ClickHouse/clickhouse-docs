@@ -13,8 +13,6 @@ integration:
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Embeddable to ClickHouse
-
 <CommunityMaintainedBadge/>
 
 In [Embeddable](https://embeddable.com/) you define [Data Models](https://docs.embeddable.com/data-modeling/introduction) and [Components](https://docs.embeddable.com/development/introduction) in code (stored in your own code repository) and use our **SDK** to make these available for your team in the powerful Embeddable **no-code builder.**
@@ -30,7 +28,7 @@ Built-in row-level security means that every user only ever sees exactly the dat
 
 You add a database connection using Embeddable API. This connection is used to connect to your ClickHouse service. You can add a connection using the following API call:
 
-```javascript
+```javascript title="Query"
 // for security reasons, this must *never* be called from your client-side
 fetch('https://api.embeddable.com/api/v1/connections', {
   method: 'POST',
@@ -50,8 +48,9 @@ fetch('https://api.embeddable.com/api/v1/connections', {
     },
   }),
 });
+```
 
-Response:
+```text title="Response"
 Status 201 { errorMessage: null }
 ```
 

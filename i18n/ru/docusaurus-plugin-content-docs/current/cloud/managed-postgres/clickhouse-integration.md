@@ -2,21 +2,22 @@
 slug: /cloud/managed-postgres/clickhouse-integration
 sidebar_label: 'Интеграция с ClickHouse'
 title: 'Интеграция с ClickHouse'
-description: 'Реплицируйте данные Postgres в ClickHouse с помощью встроенных возможностей CDC (фиксации изменений данных)'
+description: 'Реплицируйте данные Postgres в ClickHouse с помощью встроенных возможностей CDC (фиксация изменений данных)'
 keywords: ['postgres', 'интеграция с ClickHouse', 'cdc', 'репликация', 'ClickPipes', 'синхронизация данных']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
+import integrationReplicationSettings from '@site/static/images/managed-postgres/integration-replication-settings.png';
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.clickhouse-integration-beta" />
 
-Каждый экземпляр Managed Postgres поставляется со встроенными возможностями CDC для любых ваших сервисов ClickHouse. Это позволяет перенести часть или все данные из вашего экземпляра Postgres в ClickHouse и обеспечить, чтобы изменения данных в Postgres практически непрерывно и почти в режиме реального времени отражались в ClickHouse. Под капотом для этого используется [ClickPipes](/integrations/clickpipes).
+Каждый экземпляр Managed Postgres поставляется со встроенными возможностями CDC (фиксации изменений данных) для любых ваших сервисов ClickHouse. Это позволяет перенести часть или все данные из вашего экземпляра Postgres в ClickHouse и обеспечить, чтобы изменения данных в Postgres практически непрерывно и почти в режиме реального времени отражались в ClickHouse. Под капотом для этого используется [ClickPipes](/integrations/clickpipes).
 
 Чтобы воспользоваться этой возможностью, нажмите **ClickHouse Integration** в боковой панели вашего экземпляра Postgres.
 
@@ -37,11 +38,25 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
   * **ClickHouse service**: выберите существующий сервис ClickHouse Cloud или создайте новый
   * **Postgres database**: исходная база данных, из которой выполняется репликация
   * **Replication method**: выберите один из вариантов:
-    * **Initial load + CDC**: импортировать существующие данные и поддерживать таблицы в актуальном состоянии при появлении новых изменений (рекомендуется)
+    * **Initial load + CDC (фиксация изменений данных)**: импортировать существующие данные и поддерживать таблицы в актуальном состоянии при появлении новых изменений (рекомендуется)
     * **Initial load only**: одноразовый снимок существующих данных без последующих обновлений
-    * **CDC only**: пропустить начальный снимок и фиксировать только новые изменения в дальнейшем
+    * **CDC (фиксация изменений данных) only**: пропустить начальный снимок и фиксировать только новые изменения в дальнейшем
 
   <Image img={replicationServiceStep} alt="Конфигурация сервиса репликации, показывающая имя интеграции, целевой сервис и параметры метода репликации" size="md" border />
+
+  Нажмите **Next**, чтобы продолжить.
+
+  ## Настройка параметров репликации \{#replication-settings\}
+
+  Тонко настройте параметры репликации данных:
+
+  * **Sync interval (seconds)**: как часто изменения извлекаются из Postgres (по умолчанию: 60)
+  * **Parallel threads for initial load**: количество потоков, используемых при начальном снимке (по умолчанию: 4)
+  * **Pull batch size**: количество строк, извлекаемых за один батч во время репликации (по умолчанию: 100000)
+  * **Snapshot number of rows per partition**: количество строк на партицию при начальном снимке (по умолчанию: 100000)
+  * **Snapshot number of tables in parallel**: сколько таблиц одновременно обрабатываются при создании снимка (по умолчанию: 1)
+
+  <Image img={integrationReplicationSettings} alt="Шаг настройки параметров репликации, показывающий интервал синхронизации, параллельные потоки, размер батча извлечения и параметры создания снимка" size="md" border />
 
   Нажмите **Next**, чтобы продолжить.
 

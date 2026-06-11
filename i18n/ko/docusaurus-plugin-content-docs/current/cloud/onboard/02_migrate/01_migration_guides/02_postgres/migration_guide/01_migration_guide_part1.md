@@ -164,6 +164,9 @@ PostgresSQL의 데이터를 읽어 ClickHouse에 삽입하는 간단한 `INSERT 
 
 ```sql title="Query"
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>:<port>', 'postgres', 'posts', '<username>', '<password>')
+```
+
+```response
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
@@ -177,7 +180,6 @@ INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', '
 
 INSERT INTO stackoverflow.posts SELECT * FROM postgresql('<host>', 'postgres', 'posts', 'postgres', '<password') WHERE CreationDate > ( SELECT (max(CreationDate) FROM stackoverflow.posts)
 ```
-
 
 > ClickHouse는 `=`, `!=`, `>`, `>=`, `<`, `<=`, `IN`과 같은 단순 `WHERE` 절을 PostgreSQL 서버로 푸시다운합니다. 따라서 변경 집합을 식별하는 데 사용되는 컬럼에 인덱스를 만들어 두면 증분 적재를 더욱 효율적으로 수행할 수 있습니다.
 >

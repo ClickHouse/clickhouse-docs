@@ -1,9 +1,9 @@
 ---
 slug: /integrations/jupysql
-sidebar_label: 'Jupyter Notebook'
-description: 'JupySQL は Jupyter 向けのマルチプラットフォーム対応データベースツールです。'
-title: 'ClickHouse で JupySQL を使用する'
-keywords: ['JupySQL', 'Jupyter Notebook', 'Python', 'データ分析', 'インタラクティブな SQL']
+sidebar_label: 'Jupyter ノートブック'
+description: 'JupySQL は Jupyter 向けのクロスプラットフォーム対応データベースツールです。'
+title: 'ClickHouse での JupySQL の利用'
+keywords: ['JupySQL', 'Jupyter ノートブック', 'Python', 'データ分析', '対話型 SQL']
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -15,8 +15,6 @@ import jupysql_plot_1 from '@site/static/images/integrations/sql-clients/jupysql
 import jupysql_plot_2 from '@site/static/images/integrations/sql-clients/jupysql-plot-2.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# ClickHouse での JupySQL の利用 \{#using-jupysql-with-clickhouse\}
-
 <CommunityMaintainedBadge />
 
 このガイドでは、ClickHouse との統合方法を説明します。
@@ -24,7 +22,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 JupySQL を使って ClickHouse 上でクエリを実行します。
 データがロードされたら、SQL によるプロット機能を用いて可視化します。
 
-JupySQL と ClickHouse の統合は、clickhouse&#95;sqlalchemy ライブラリの利用によって実現されています。このライブラリにより、両システム間の通信が容易になり、ClickHouse への接続と SQL 方言の指定が可能になります。一度接続すれば、ClickHouse のネイティブ UI から、または Jupyter Notebook から直接 SQL クエリを実行できます。
+JupySQL と ClickHouse の統合は、clickhouse&#95;sqlalchemy ライブラリの利用によって実現されています。このライブラリにより、両システム間の通信が容易になり、ClickHouse への接続と SQL 方言の指定が可能になります。一度接続すれば、ClickHouse のネイティブ UI から、または Jupyter ノートブックから直接 SQL クエリを実行できます。
 
 ```python
 # Install required packages
@@ -239,6 +237,7 @@ SELECT * FROM s3(
     <td>1.68</td>
   </tr>
 </table>
+
 
 ```sql
 %%sql

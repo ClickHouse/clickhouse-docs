@@ -7,7 +7,6 @@ sidebar_label: 'avgResample'
 doc_type: 'reference'
 ---
 
-# countResample {#countResample}
 
 ## Description {#description}
 

@@ -1,24 +1,21 @@
 ---
-sidebar_label: '머티리얼라이제이션'
+sidebar_label: '머티리얼라이즈'
 slug: /integrations/dbt/materializations
 sidebar_position: 3
-description: '사용 가능한 머티리얼라이제이션과 해당 구성'
+description: '사용 가능한 머티리얼라이즈과 해당 구성'
 keywords: ['clickhouse', 'dbt', 'materializations', 'materialized view', 'incremental']
-title: '머티리얼라이제이션'
+title: '머티리얼라이즈'
 doc_type: 'guide'
 ---
 
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 머티리얼라이제이션(Materializations) \{#materializations\}
+이 섹션에서는 실험적 기능을 포함해 dbt-clickhouse에서 사용할 수 있는 모든 머티리얼라이즈을 다룹니다.
 
-<ClickHouseSupportedBadge/>
-
-이 섹션에서는 실험적 기능을 포함해 dbt-clickhouse에서 사용 가능한 모든 머티리얼라이제이션을 다룹니다.
-
-<TOCInline toc={toc}  maxHeadingLevel={3} />
+<TOCInline toc={toc} maxHeadingLevel={3} />
 
 ## 일반 머티리얼라이제이션 구성 \{#general-materialization-configurations\}
 
@@ -38,23 +35,23 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ### 지원되는 테이블 엔진 \{#supported-table-engines\}
 
-| 유형                   | 상세 정보                                                                                |
-|------------------------|-------------------------------------------------------------------------------------------|
-| MergeTree (default)    | https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/.         |
-| HDFS                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hdfs                    |
-| MaterializedPostgreSQL | https://clickhouse.com/docs/en/engines/table-engines/integrations/materialized-postgresql |
-| S3                     | https://clickhouse.com/docs/en/engines/table-engines/integrations/s3                      |
-| EmbeddedRocksDB        | https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb        |
-| Hive                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hive                    |
+| 유형                     | 상세 정보                                                             |
+| ---------------------- | ----------------------------------------------------------------- |
+| MergeTree (default)    | [문서](/engines/table-engines/mergetree-family/mergetree/).         |
+| HDFS                   | [문서](/engines/table-engines/integrations/hdfs)                    |
+| MaterializedPostgreSQL | [문서](/engines/table-engines/integrations/materialized-postgresql) |
+| S3                     | [문서](/engines/table-engines/integrations/s3)                      |
+| EmbeddedRocksDB        | [문서](/engines/table-engines/integrations/embedded-rocksdb)        |
+| Hive                   | [문서](/engines/table-engines/integrations/hive)                    |
 
 **참고**: materialized view에서는 모든 *MergeTree 엔진이 지원됩니다.
 
 #### 실험적으로 지원되는 테이블 엔진 \{#experimental-supported-table-engines\}
 
-| Type          | Details                                                                   |
-|---------------|---------------------------------------------------------------------------|
-| 분산 테이블   | https://clickhouse.com/docs/en/engines/table-engines/special/distributed. |
-| 딕셔너리      | https://clickhouse.com/docs/en/engines/table-engines/special/dictionary   |
+| Type   | Details                                           |
+| ------ | ------------------------------------------------- |
+| 분산 테이블 | [문서](/engines/table-engines/special/distributed). |
+| 딕셔너리   | [문서](/engines/table-engines/special/dictionary)   |
 
 위 엔진 중 하나를 사용해 dbt에서 ClickHouse에 연결할 때 문제가 발생하면 [여기](https://github.com/ClickHouse/dbt-clickhouse/issues)에 이슈를 등록해 주십시오.
 

@@ -10,8 +10,6 @@ doc_type: 'guide'
 
 import CommunityMonitoring from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# 社区与合作伙伴集成 \{#community-and-partner-integrations\}
-
 ## Datadog 直接集成 \{#direct-datadog\}
 
 Datadog 为其 agent 提供了一个 ClickHouse Monitoring 插件，可直接查询系统表。该集成通过 `clusterAllReplicas` 功能提供具备集群感知能力的全面数据库监控。

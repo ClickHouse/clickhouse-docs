@@ -7,7 +7,6 @@ sidebar_label: 'Overview'
 doc_type: 'guide'
 ---
 
-# Comparing ClickHouse and PostgreSQL
 
 ## Why use ClickHouse over Postgres? {#why-use-clickhouse-over-postgres}
 

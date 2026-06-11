@@ -1,13 +1,11 @@
 ---
-description: 'row_number 윈도우 함수 문서'
+description: 'row_number 윈도우 함수에 대한 문서'
 sidebar_label: 'row_number'
 sidebar_position: 2
 slug: /sql-reference/window-functions/row_number
 title: 'row_number'
 doc_type: 'reference'
 ---
-
-# row_number \{#row_number\}
 
 현재 파티션 내에서 현재 행에 1부터 번호를 매깁니다.
 
@@ -31,9 +29,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 다음 예시는 동영상 강의 [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA)에서 제공된 예시를 기반으로 합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -51,15 +47,13 @@ INSERT INTO salaries FORMAT Values
     ('Port Elizabeth Barbarians', 'Robert George', 195000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, 
        row_number() OVER (ORDER BY salary DESC) AS row_number
 FROM salaries;
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─row_number─┐
 1. │ Gary Chen       │ 195000 │          1 │
 2. │ Robert George   │ 195000 │          2 │

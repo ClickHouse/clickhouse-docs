@@ -7,9 +7,7 @@ title: 'nth_value'
 doc_type: 'reference'
 ---
 
-# nth&#95;value \{#nth&#95;value\}
-
-返回在其有序窗口帧中第 n 行（偏移量）对应的第一个非 NULL 值。
+返回在其有序窗口帧中第 n 行 (偏移量) 对应的第一个非 NULL 值。
 
 **语法**
 
@@ -30,15 +28,13 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **返回值**
 
-* 在其有序窗口帧中，相对于第 n 行（offset）得到的首个非 NULL 值。
+* 在其有序窗口帧中，相对于第 n 行 (offset) 得到的首个非 NULL 值。
 
 **示例**
 
 在此示例中，`nth-value` 函数用于从一个虚构的英超联赛足球运动员薪资数据集中找出第三高的薪资。
 
-查询：
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -59,13 +55,11 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, nth_value(player,3) OVER(ORDER BY salary DESC) AS third_highest_salary FROM salaries;
 ```
 
-结果：
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─third_highest_salary─┐
 1. │ Gary Chen       │ 195000 │                      │
 2. │ Robert George   │ 195000 │                      │

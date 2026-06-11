@@ -2,8 +2,8 @@
 sidebar_label: 'Confluent Platform 上の Kafka シンクコネクタ'
 sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/custom-connector
-description: 'Kafka Connect と ClickHouse で ClickHouse シンクコネクタを使用する'
-title: 'Confluent Cloud と ClickHouse の統合'
+description: 'Kafka Connect と ClickHouse で ClickHouse Connector Sink を使用する'
+title: 'Confluent Platform と ClickHouse の統合'
 keywords: ['Confluent ClickHouse 統合', 'ClickHouse Kafka コネクタ', 'Kafka Connect ClickHouse シンク', 'Confluent Platform ClickHouse', 'Confluent 向けカスタムコネクタ']
 doc_type: 'guide'
 ---
@@ -12,19 +12,17 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-
-# Confluent Platform と ClickHouse の連携 \{#integrating-confluent-platform-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/SQAiPVbd3gg"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 前提条件 \{#prerequisites\}

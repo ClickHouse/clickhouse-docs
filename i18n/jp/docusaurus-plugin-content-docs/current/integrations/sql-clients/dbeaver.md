@@ -21,15 +21,12 @@ import dbeaver_sql_editor from '@site/static/images/integrations/sql-clients/dbe
 import dbeaver_query_log_select from '@site/static/images/integrations/sql-clients/dbeaver-query-log-select.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# DBeaver を ClickHouse に接続する \{#connect-dbeaver-to-clickhouse\}
-
-<PartnerBadge/>
-
-DBeaver には複数のエディションがあります。このガイドでは [DBeaver Community](https://dbeaver.io/) を使用します。各エディションとその機能については[こちら](https://dbeaver.com/edition/)を参照してください。DBeaver は JDBC を使用して ClickHouse に接続します。
+DBeaver は複数の提供形態で利用できます。このガイドでは [DBeaver Community](https://dbeaver.io/) を使用します。各種エディションとその機能については [こちら](https://dbeaver.com/edition/) を参照してください。DBeaver は JDBC を使用して ClickHouse に接続します。
 
 :::note
-ClickHouse の `Nullable` カラムのサポートを改善するため、DBeaver バージョン 23.1.0 以降を使用してください。
+ClickHouse の `Nullable` カラムのサポートが強化されているため、DBeaver バージョン 23.1.0 以降を使用してください。
 :::
 
 ## 1. ClickHouse の接続情報を確認する \{#1-gather-your-clickhouse-details\}

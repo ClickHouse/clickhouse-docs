@@ -8,12 +8,10 @@ title: 'ClickHouse Connect 驱动 API'
 doc_type: 'reference'
 ---
 
-# ClickHouse Connect 驱动 API \{#clickhouse-connect-driver-api\}
-
 :::note
-鉴于大多数 API 方法可用的参数较多且多为可选，建议通过关键字参数的方式传参。
+鉴于可用参数较多，且其中大多数都是可选的，因此对于大多数 API 方法，建议使用关键字参数。
 
-*未在此文档中说明的方法不视为 API 的一部分，可能被移除或更改。*
+*此处未文档说明的方法不视为 API 的一部分，并且可能会被移除或修改。*
 :::
 
 ## 客户端初始化 \{#client-initialization\}

@@ -8,7 +8,7 @@ doc_type: 'reference'
 
 ## Geohash \{#geohash\}
 
-[Geohash](https://en.wikipedia.org/wiki/Geohash) はジオコードシステムで、地球の表面を格子状のグリッドセル（バケット）に分割し、それぞれのセルを英数字からなる短い文字列としてエンコードします。これは階層的なデータ構造であり、Geohash 文字列が長くなるほど、地理的位置をより高い精度で表現できます。
+[Geohash](https://en.wikipedia.org/wiki/Geohash) はジオコードシステムで、地球の表面を格子状のグリッドセル (バケット) に分割し、それぞれのセルを英数字からなる短い文字列としてエンコードします。これは階層的なデータ構造であり、Geohash 文字列が長くなるほど、地理的位置をより高い精度で表現できます。
 
 地理座標を Geohash 文字列に手動で変換する必要がある場合は、[geohash.org](http://geohash.co/) を利用できます。
 
@@ -34,21 +34,17 @@ geohashEncode(longitude, latitude, [precision])
 * `precision` パラメータについて、`1` 未満または `12` より大きい値は、自動的に `12` に変換されます。
   :::
 
-**返される値**
+**戻り値**
 
-* エンコードされた座標を表す英数字の文字列（改変版の base32 エンコード用アルファベットを使用）。[String](../../data-types/string.md)。
+* エンコードされた座標を表す英数字の文字列 (改変版の base32 エンコード用アルファベットを使用) 。[String](../../data-types/string.md)。
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─res──────────┐
 │ ezs42d000000 │
 └──────────────┘
@@ -117,15 +113,11 @@ geohashesInBox(longitude_min, latitude_min, longitude_max, latitude_max, precisi
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT geohashesInBox(24.48, 40.56, 24.785, 40.81, 4) AS thasos;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─thasos──────────────────────────────────────┐
 │ ['sx1q','sx1r','sx32','sx1w','sx1x','sx38'] │
 └─────────────────────────────────────────────┘

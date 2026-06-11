@@ -1871,12 +1871,13 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 **構文**
 
 ```sql
-formatReadableDecimalSize(x)
+formatReadableDecimalSize(value[, precision])
 ```
 
 **引数**
 
-* `x` — バイト単位のサイズ。[`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — バイト単位のサイズ。[`Int8`](/sql-reference/data-types/int-uint) または [`Int16`](/sql-reference/data-types/int-uint) または [`Int32`](/sql-reference/data-types/int-uint) または [`Int64`](/sql-reference/data-types/int-uint) または [`UInt8`](/sql-reference/data-types/int-uint) または [`UInt16`](/sql-reference/data-types/int-uint) または [`UInt32`](/sql-reference/data-types/int-uint) または [`UInt64`](/sql-reference/data-types/int-uint) または [`Float32`](/sql-reference/data-types/float) または [`Float64`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — オプション。小数点以下の桁数。デフォルトは 2 です。[`const UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -1901,6 +1902,20 @@ SELECT
 └────────────────┴────────────┘
 ```
 
+**精度を明示的に指定した場合**
+
+```sql title=Query
+SELECT
+    formatReadableDecimalSize(192851925, 0) AS no_decimals,
+    formatReadableDecimalSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals─┐
+│ 193 MB      │ 192.8519 MB   │
+└─────────────┴───────────────┘
+```
+
 ## formatReadableQuantity \{#formatReadableQuantity\}
 
 導入バージョン: v20.10.0
@@ -1913,12 +1928,13 @@ SELECT
 **構文**
 
 ```sql
-formatReadableQuantity(x)
+formatReadableQuantity(value[, precision])
 ```
 
 **引数**
 
-* `x` — フォーマットする数値。[`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — フォーマットする数値。[`Int8`](/sql-reference/data-types/int-uint) または [`Int16`](/sql-reference/data-types/int-uint) または [`Int32`](/sql-reference/data-types/int-uint) または [`Int64`](/sql-reference/data-types/int-uint) または [`UInt8`](/sql-reference/data-types/int-uint) または [`UInt16`](/sql-reference/data-types/int-uint) または [`UInt32`](/sql-reference/data-types/int-uint) または [`UInt64`](/sql-reference/data-types/int-uint) または [`Float32`](/sql-reference/data-types/float) または [`Float64`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 省略可能。小数点以下の桁数。デフォルト値は 2 です。[`const UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
@@ -1943,6 +1959,20 @@ SELECT
 └────────────────┴───────────────────┘
 ```
 
+**精度を明示的に指定する場合**
+
+```sql title=Query
+SELECT
+    formatReadableQuantity(98765432101234, 0) AS no_decimals,
+    formatReadableQuantity(98765432101234, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals──┬─four_decimals─────┐
+│ 99 trillion  │ 98.7654 trillion  │
+└──────────────┴───────────────────┘
+```
+
 ## formatReadableSize \{#formatReadableSize\}
 
 導入バージョン: v1.1.0
@@ -1955,18 +1985,19 @@ SELECT
 **構文**
 
 ```sql
-formatReadableSize(x)
+formatReadableSize(value[, precision])
 ```
 
 **エイリアス**: `FORMAT_BYTES`
 
 **引数**
 
-* `x` — バイト単位のサイズ。[`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — バイト単位のサイズ。[`Int8`](/sql-reference/data-types/int-uint) または [`Int16`](/sql-reference/data-types/int-uint) または [`Int32`](/sql-reference/data-types/int-uint) または [`Int64`](/sql-reference/data-types/int-uint) または [`UInt8`](/sql-reference/data-types/int-uint) または [`UInt16`](/sql-reference/data-types/int-uint) または [`UInt32`](/sql-reference/data-types/int-uint) または [`UInt64`](/sql-reference/data-types/int-uint) または [`Float32`](/sql-reference/data-types/float) または [`Float64`](/sql-reference/data-types/float) または [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 任意。小数点以下の桁数。デフォルトは 2 です。[`const UInt8`](/sql-reference/data-types/int-uint)
 
 **戻り値**
 
-丸められた読みやすいサイズを、単位 (接尾辞) 付きの文字列として返します。[`String`](/sql-reference/data-types/string)
+丸められた読みやすいサイズを、接尾辞付きの文字列として返します。[`String`](/sql-reference/data-types/string)
 
 **例**
 
@@ -1985,6 +2016,20 @@ SELECT
 │        1048576 │ 1.00 MiB   │
 │      192851925 │ 183.92 MiB │
 └────────────────┴────────────┘
+```
+
+**精度を明示的に指定する場合**
+
+```sql title=Query
+SELECT
+    formatReadableSize(192851925, 0) AS no_decimals,
+    formatReadableSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals──┐
+│ 184 MiB     │ 183.9179 MiB   │
+└─────────────┴────────────────┘
 ```
 
 ## formatReadableTimeDelta \{#formatReadableTimeDelta\}

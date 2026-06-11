@@ -44,8 +44,6 @@ helm uninstall clickstack-operators
 PersistentVolumeClaims created by the MongoDB and ClickHouse operators are **not** removed by `helm uninstall`. This is by design to prevent accidental data loss. To clean up PVCs after uninstalling, refer to:
 
 - [MongoDB Kubernetes Operator docs](https://github.com/mongodb/mongodb-kubernetes/tree/master/docs/mongodbcommunity)
-- [ClickHouse Operator cleanup docs](https://clickhouse.com/docs/clickhouse-operator/managing-clusters/cleanup)
-
 ### Storage class {#storage-class}
 
 `global.storageClassName` and `global.keepPVC` have been removed. Storage class is now configured directly in each operator's CR spec:

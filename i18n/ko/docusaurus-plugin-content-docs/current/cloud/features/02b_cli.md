@@ -3,13 +3,11 @@ sidebar_label: 'ClickHouse CLI'
 slug: /cloud/features/cli
 title: 'ClickHouse CLI'
 description: 'ClickHouse CLI를 사용하여 ClickHouse Cloud 서비스와 로컬 ClickHouse 인스턴스를 관리합니다'
-keywords: ['clickhousectl', 'CLI', '클라우드 관리', '로컬 개발']
+keywords: ['clickhousectl', 'CLI', 'Cloud 관리', '로컬 개발']
 doc_type: 'reference'
 ---
 
-# ClickHouse CLI \{#clickhouse-cli\}
-
-ClickHouse CLI(`clickhousectl`)는 ClickHouse Cloud 리소스 관리와 ClickHouse를 사용한 로컬 개발을 위한 통합 명령줄 도구입니다.
+ClickHouse CLI(`clickhousectl`)는 ClickHouse Cloud 리소스 관리와 ClickHouse 기반 로컬 개발을 위한 통합 명령줄 도구입니다. 또한 [ClickHouse Cloud Postgres](/cloud/managed-postgres) 서비스도 관리합니다.
 
 ## 설치 \{#installation\}
 
@@ -66,6 +64,38 @@ clickhousectl cloud service stop <service-id>
 clickhousectl cloud service delete <service-id>
 ```
 
+### Postgres 서비스 (베타) \{#postgres-services\}
+
+[ClickHouse Cloud Postgres](/cloud/managed-postgres) 서비스를 생성하고 관리합니다.
+
+```bash
+# List Postgres services
+clickhousectl cloud postgres list
+
+# Create a Postgres service
+clickhousectl cloud postgres create \
+  --name my-pg \
+  --region us-east-1 \
+  --size c6gd.xlarge \
+  --pg-version 18
+
+# Get service details
+clickhousectl cloud postgres get <pg-id>
+
+# Update a service
+clickhousectl cloud postgres update <pg-id> --size c6gd.2xlarge --add-tag env=prod
+
+# Reset the password
+clickhousectl cloud postgres reset-password <pg-id> --generate
+
+# Read replicas and point-in-time restore
+clickhousectl cloud postgres read-replica create <pg-id> --name replica-1
+clickhousectl cloud postgres restore <pg-id> --name restored --restore-target 2026-04-16T12:00:00Z
+
+# Delete a service
+clickhousectl cloud postgres delete <pg-id>
+```
+
 ### 조직 \{#organizations\}
 
 ```bash
@@ -105,7 +135,7 @@ clickhousectl cloud --json service list
 
 ## 로컬 개발 \{#local-development\}
 
-CLI는 로컬 ClickHouse 설치와 서버 관리도 지원합니다. 로컬 개발을 시작하려면 [빠른 설치](/install/quick-install) 페이지를 참조하십시오.
+CLI는 로컬 ClickHouse 설치와 서버 관리도 지원합니다. 로컬 개발을 시작하려면 [clickhousectl (CLI)](/install/clickhousectl) 페이지를 참조하십시오.
 
 ## 요구 사항 \{#requirements\}
 

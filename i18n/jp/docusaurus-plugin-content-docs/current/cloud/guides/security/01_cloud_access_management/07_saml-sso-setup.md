@@ -18,16 +18,13 @@ import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png'
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
+<EnterprisePlanFeatureBadge feature="SAML SSO" />
 
-# SAML SSO のセットアップ \{#saml-sso-setup\}
+ClickHouse Cloud は、Security Assertion Markup Language (SAML) によるシングルサインオン (SSO) をサポートしています。これにより、アイデンティティプロバイダー (IdP) で認証することで、ClickHouse Cloud 組織に安全にサインインできます。
 
-<EnterprisePlanFeatureBadge feature="SAML SSO"/>
+現在は、サービスプロバイダー開始型 SSO、個別の接続を使用する複数の組織、およびジャストインタイムプロビジョニングをサポートしています。System for Cross-domain Identity Management (SCIM) または属性マッピングには、まだ対応していません。
 
-ClickHouse Cloud は、Security Assertion Markup Language (SAML) を利用したシングルサインオン (SSO) をサポートしています。これにより、アイデンティティプロバイダー (IdP) で認証することで、ClickHouse Cloud 組織に安全にサインインできます。
-
-現在、サービスプロバイダー起点の SSO、個別の接続を用いた複数組織での利用、およびジャストインタイムプロビジョニングをサポートしています。現時点では、SCIM (System for Cross-domain Identity Management) や属性マッピングには対応していません。
-
-SAML 連携を有効化することで、新規ユーザーに割り当てられるデフォルトロールを指定したり、セッションタイムアウト設定を調整したりすることもできます。
+SAML Integrations を有効にしたお客様は、新規ユーザーに割り当てるデフォルトのロールを指定したり、セッションタイムアウト設定を調整したりすることもできます。
 
 ## はじめる前に \{#before-you-begin\}
 

@@ -7,8 +7,6 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'api', 'reference']
 doc_type: 'reference'
 ---
 
-# Python API 参考文档 \{#python-api-reference\}
-
 ## 核心查询函数 \{#core-query-functions\}
 
 ### `chdb.query` \{#chdb-query\}

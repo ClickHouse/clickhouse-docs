@@ -1,5 +1,8 @@
 ---
-description: 'Заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой (в пределах одной части данных), которая хранит объединённое состояние агрегатных функций.'
+description: 'Заменяет все строки с одинаковым первичным ключом (или, точнее, с
+  одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md))
+  одной строкой (в пределах одной части данных), в которой хранится комбинация
+  состояний агрегатных функций.'
 sidebar_label: 'AggregatingMergeTree'
 sidebar_position: 60
 slug: /engines/table-engines/mergetree-family/aggregatingmergetree
@@ -7,21 +10,20 @@ title: 'Движок таблицы AggregatingMergeTree'
 doc_type: 'reference'
 ---
 
-# Движок таблиц AggregatingMergeTree \{#aggregatingmergetree-table-engine\}
-
 Движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) и изменяет логику слияния частей данных. ClickHouse заменяет все строки с одинаковым первичным ключом (или, точнее, с одинаковым [ключом сортировки](../../../engines/table-engines/mergetree-family/mergetree.md)) одной строкой (в пределах одной части данных), которая хранит комбинацию состояний агрегатных функций.
 
-Вы можете использовать таблицы `AggregatingMergeTree` для инкрементальной агрегации данных, в том числе для материализованных представлений с агрегированными данными.
+Вы можете использовать таблицы `AggregatingMergeTree` для инкрементальной агрегации данных, в том числе для materialized view с агрегированными данными.
 
 Пример использования AggregatingMergeTree и агрегатных функций показан в видео ниже:
-<div class='vimeo-container'>
-<iframe width="1030" height="579" src="https://www.youtube.com/embed/pryhI4F_zqQ" title="Состояния агрегации в ClickHouse" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<div class="vimeo-container">
+  <iframe width="1030" height="579" src="https://www.youtube.com/embed/pryhI4F_zqQ" title="Состояния агрегации в ClickHouse" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 </div>
 
 Движок обрабатывает все столбцы со следующими типами:
 
-- [`AggregateFunction`](../../../sql-reference/data-types/aggregatefunction.md)
-- [`SimpleAggregateFunction`](../../../sql-reference/data-types/simpleaggregatefunction.md)
+* [`AggregateFunction`](../../../sql-reference/data-types/aggregatefunction.md)
+* [`SimpleAggregateFunction`](../../../sql-reference/data-types/simpleaggregatefunction.md)
 
 Имеет смысл использовать `AggregatingMergeTree`, если он уменьшает число строк на несколько порядков.
 
@@ -55,25 +57,25 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
-) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
-```
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
+      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+      ...
+  ) ENGINE [=] AggregatingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity)
+  ```
 
   Все параметры имеют то же значение, что и в `MergeTree`.
 </details>
 
 ## SELECT и INSERT \{#select-and-insert\}
 
-Для вставки данных используйте запрос [INSERT SELECT](../../../sql-reference/statements/insert-into.md) с агрегирующими функциями с суффиксом `-State`.
-При выборке данных из таблицы `AggregatingMergeTree` используйте предложение `GROUP BY` и те же агрегирующие функции, что и при вставке данных, но с суффиксом `-Merge`.
+Для вставки данных используйте запрос [INSERT SELECT](../../../sql-reference/statements/insert-into.md) с агрегатными функциями с суффиксом `-State`.
+При выборке данных из таблицы `AggregatingMergeTree` используйте предложение `GROUP BY` и те же агрегатные функции, что и при вставке данных, но с суффиксом `-Merge`.
 
 В результатах запроса `SELECT` значения типа `AggregateFunction` имеют двоичное представление, зависящее от реализации, для всех форматов вывода ClickHouse. Например, если вы выгружаете данные в формате `TabSeparated` с помощью запроса `SELECT`, то этот дамп можно загрузить обратно с помощью запроса `INSERT`.
 
-## Пример агрегированного материализованного представления \{#example-of-an-aggregated-materialized-view\}
+## Пример агрегированного materialized view \{#example-of-an-aggregated-materialized-view\}
 
 В этом примере предполагается, что у вас есть база данных под названием `test`. Создайте её, если она ещё не существует, с помощью приведённой ниже команды:
 
@@ -93,9 +95,9 @@ CREATE TABLE test.visits
 ) ENGINE = MergeTree ORDER BY (StartDate, CounterID);
 ```
 
-Далее необходимо создать таблицу `AggregatingMergeTree`, которая будет хранить агрегирующие функции `AggregationFunction`, отслеживающие общее количество посещений и количество уникальных пользователей.
+Далее необходимо создать таблицу `AggregatingMergeTree`, которая будет хранить агрегатные функции `AggregationFunction`, отслеживающие общее количество посещений и количество уникальных пользователей.
 
-Создайте материализованное представление с движком `AggregatingMergeTree`, которое отслеживает таблицу `test.visits` и использует тип [`AggregateFunction`](/sql-reference/data-types/aggregatefunction):
+Создайте materialized view с движком `AggregatingMergeTree`, которое отслеживает таблицу `test.visits` и использует тип [`AggregateFunction`](/sql-reference/data-types/aggregatefunction):
 
 ```sql
 CREATE TABLE test.agg_visits (
@@ -107,7 +109,7 @@ CREATE TABLE test.agg_visits (
 ENGINE = AggregatingMergeTree() ORDER BY (StartDate, CounterID);
 ```
 
-Создайте материализованное представление, которое заполняет таблицу `test.agg_visits` данными из `test.visits`:
+Создайте materialized view, которое заполняет таблицу `test.agg_visits` данными из `test.visits`:
 
 ```sql
 CREATE MATERIALIZED VIEW test.visits_mv TO test.agg_visits
@@ -129,7 +131,7 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
 
 Данные вставляются как в `test.visits`, так и в `test.agg_visits`.
 
-Чтобы получить агрегированные данные, выполните запрос вида `SELECT ... GROUP BY ...` к материализованному представлению `test.visits_mv`:
+Чтобы получить агрегированные данные, выполните запрос вида `SELECT ... GROUP BY ...` к materialized view `test.visits_mv`:
 
 ```sql
 SELECT
@@ -165,7 +167,7 @@ INSERT INTO test.visits (StartDate, CounterID, Sign, UserID)
 
 В некоторых случаях вы можете захотеть избежать предварительной агрегации строк во время вставки, чтобы перенести нагрузку агрегации с момента вставки
 на момент слияния. Обычно необходимо включать столбцы, которые не участвуют в агрегации, в оператор `GROUP BY`
-в определении материализованного представления, чтобы избежать ошибки. Однако вы можете воспользоваться функцией [`initializeAggregation`](/sql-reference/functions/other-functions#initializeAggregation)
+в определении materialized view, чтобы избежать ошибки. Однако вы можете воспользоваться функцией [`initializeAggregation`](/sql-reference/functions/other-functions#initializeAggregation)
 с настройкой `optimize_on_insert = 0` (по умолчанию она включена), чтобы добиться этого. Использование `GROUP BY`
 в этом случае больше не требуется:
 
@@ -180,11 +182,11 @@ FROM test.visits;
 ```
 
 :::note
-При использовании `initializeAggregation` агрегатное состояние создаётся для каждой отдельной строки без группировки.
-Каждая исходная строка даёт одну строку в материализованном представлении, а фактическая агрегация происходит позже, когда
-`AggregatingMergeTree` объединяет части. Это верно только в том случае, если `optimize_on_insert = 0`.
+При использовании `initializeAggregation` состояние агрегации создаётся для каждой отдельной строки без группировки.
+Каждая исходная строка создаёт одну строку в materialized view, а фактическая агрегация происходит позже, когда
+`AggregatingMergeTree` объединяет части. Это верно только при `optimize_on_insert = 0`.
 :::
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Использование комбинаторов агрегатных функций в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)
+* Блог: [Использование комбинаторов агрегатных функций в ClickHouse](https://clickhouse.com/blog/aggregate-functions-combinators-in-clickhouse-for-arrays-maps-and-states)

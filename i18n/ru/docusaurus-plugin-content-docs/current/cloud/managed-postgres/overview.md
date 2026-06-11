@@ -1,6 +1,6 @@
 ---
 slug: /cloud/managed-postgres
-title: 'Управляемый Postgres'
+title: 'Managed Postgres'
 description: 'Быстрый, масштабируемый, корпоративного уровня Postgres на базе NVMe-хранилища с нативной интеграцией с ClickHouse для аналитики в режиме реального времени'
 keywords: ['управляемый Postgres', 'PostgreSQL', 'облачная база данных', 'сервис Postgres', 'NVMe Postgres', 'интеграция с ClickHouse']
 doc_type: 'guide'
@@ -8,10 +8,10 @@ pagination_next: cloud/managed-postgres/quickstart
 pagination_prev: null
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.overview-beta" />
 
 ClickHouse Managed Postgres — это управляемый сервис Postgres корпоративного уровня, созданный для высокой производительности и масштабируемости. Благодаря NVMe-хранилищу, которое физически размещено рядом с вычислительными ресурсами, он обеспечивает до 10 раз более высокую производительность для нагрузок, упирающихся в диск, по сравнению с альтернативами, использующими сетевые дисковые хранилища вроде EBS.
 
@@ -20,18 +20,23 @@ ClickHouse Managed Postgres — это управляемый сервис Postg
 {/* TODO: Схема архитектуры, иллюстрирующая интеграцию Postgres с ClickHouse
     Path: /static/images/cloud/managed-postgres/architecture-overview.png */}
 
-
 ## Производительность на базе NVMe \{#nvme-performance\}
 
-Большинство управляемых сервисов Postgres используют сетевые хранилища, такие как Amazon EBS, для которых при каждом обращении к диску требуется сетевой обмен. Это вносит задержки, измеряемые в миллисекундах, и ограничивает IOPS, создавая узкие места для нагрузок с интенсивной записью или высоким уровнем операций ввода-вывода.
+Большинство управляемых сервисов Postgres используют сетевые хранилища, такие как Amazon EBS, для которых при каждом обращении к диску требуется сетевой обмен. Это вносит задержки, измеряемые в миллисекундах, и ограничивает IOPS, создавая узкие места для рабочей нагрузки с интенсивной записью или высоким уровнем операций ввода-вывода.
 
-Управляемый Postgres использует хранилище NVMe, физически подключённое к тому же серверу, что и ваша база данных. Это архитектурное отличие обеспечивает:
+Managed Postgres использует NVMe-хранилище, физически подключённое к тому же серверу, что и ваша база данных. Это архитектурное отличие обеспечивает:
 
-- **Задержку дисковой подсистемы на уровне микросекунд** вместо миллисекунд
-- **Неограниченный локальный IOPS** без сетевых узких мест
-- **До 10 раз более высокую производительность** для нагрузок, зависящих от диска, при той же стоимости
+* **Задержку дисковой подсистемы на уровне микросекунд** вместо миллисекунд
+* **В 10 раз более высокий предел устойчивых IOPS**<sup>*</sup> без сетевых узких мест
+* **До 10 раз более высокую производительность** для рабочей нагрузки, зависящей от диска, при той же стоимости
 
-Для рабочих нагрузок Postgres, которые в первую очередь ограничены дисковым IOPS и задержкой, это приводит к более быстрой ингестии, ускорению операций VACUUM, снижению хвостовых задержек и более предсказуемой производительности под нагрузкой.
+Для рабочей нагрузки Postgres, которая в первую очередь ограничена дисковым IOPS и задержкой, это приводит к более быстрой ингестии, ускорению операций VACUUM, снижению хвостовых задержек и более предсказуемой производительности под нагрузкой.
+
+:::note
+Узнайте, насколько быстро работает Postgres на дисках NVMe, из [performance benchmarks](https://clickhouse.com/blog/postgresbench).
+:::
+
+Сведения об ограничениях локального NVMe в AWS см. в разделах [Memory optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/mo.html#mo_instance-store), [Storage optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/so.html#so_instance-store), [CPU optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store).
 
 ## Нативная интеграция с ClickHouse \{#clickhouse-integration\}
 

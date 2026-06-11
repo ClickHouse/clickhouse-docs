@@ -78,9 +78,3 @@ ClickHouse Cloud などの外部 ClickHouse クラスターに接続します。
 スタンドアロン collector のデプロイと設定の詳細については、[「OpenTelemetry によるインジェスト」](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration) を参照してください。
 
 <JSONSupport />
-
-HyperDX 専用イメージの場合、ユーザーは `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` パラメータを設定するだけで十分です。例:
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
-```

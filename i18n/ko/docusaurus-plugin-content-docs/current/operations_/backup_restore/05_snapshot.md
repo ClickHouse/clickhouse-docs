@@ -1,5 +1,5 @@
 ---
-description: '클라우드 객체 스토리지를 사용해 클라우드 네이티브 테이블의 경량 스냅샷을 생성하고 복원하는 방법입니다.'
+description: '클라우드 객체 스토리지를 사용하여 클라우드 네이티브 테이블의 경량 스냅샷을 생성하고 복원하는 방법입니다.'
 sidebar_label: '스냅샷 백업'
 sidebar_position: 5
 slug: /operations/backup/snapshot
@@ -7,8 +7,6 @@ title: '스냅샷 백업 및 복원'
 doc_type: 'guide'
 keywords: ['스냅샷', '백업', '복원', 'SharedMergeTree', 'SharedSet', 'SharedJoin', '경량 백업', '클라우드 백업', 'S3', 'Azure Blob Storage', 'snapshot_locks', 'snapshot_parts', 'experimental_lightweight_snapshot']
 ---
-
-# 스냅샷 백업 및 복원 \{#snapshot-backup-and-restore\}
 
 스냅샷 백업은 클라우드 네이티브 테이블 엔진을 위한 경량 백업 모드입니다. 데이터를 복사하는 대신 ClickHouse Keeper에 파트별 잠금 노드를 기록합니다. 이러한 잠금은 스냅샷이 보관되는 동안 서버가 참조된 객체 스토리지 파트를 삭제하지 못하도록 합니다. 이후 백업은 데이터를 물리적으로 복사하는 대신 객체 스토리지 참조만 기록하므로, 테이블 크기와 관계없이 스냅샷을 빠르게 생성할 수 있습니다.
 

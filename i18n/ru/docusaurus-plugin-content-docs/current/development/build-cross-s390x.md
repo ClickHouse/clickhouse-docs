@@ -7,9 +7,7 @@ title: 'Сборка на Linux для s390x (zLinux)'
 doc_type: 'guide'
 ---
 
-# Сборка в Linux для s390x (zLinux) \{#build-on-linux-for-s390x-zlinux\}
-
-ClickHouse в экспериментальном режиме поддерживает архитектуру s390x.
+ClickHouse поддерживает s390x в экспериментальном режиме.
 
 ## Сборка ClickHouse для s390x \{#building-clickhouse-for-s390x\}
 

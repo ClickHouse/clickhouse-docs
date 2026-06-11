@@ -1,5 +1,5 @@
 ---
-description: '表示 MergeTree 表中某个 projection 的内容。
+description: '表示 MergeTree 表中某个 PROJECTION 的内容。
   可用于内部查看（introspection）。'
 sidebar_label: 'mergeTreeProjection'
 sidebar_position: 77
@@ -8,9 +8,7 @@ title: 'mergeTreeProjection'
 doc_type: 'reference'
 ---
 
-# mergeTreeProjection 表函数 \{#mergetreeprojection-table-function\}
-
-表示 MergeTree 表中某个投影的内容。可用于内部检查和分析。
+表示 MergeTree 表中某个 PROJECTION 的内容。可用于内部查看 (introspection) 。
 
 ## 语法 \{#syntax\}
 
@@ -20,15 +18,15 @@ mergeTreeProjection(database, table, projection)
 
 ## 参数 \{#arguments\}
 
-| 参数         | 描述                           |
-|--------------|--------------------------------|
-| `database`   | 要读取其投影的数据库名称。     |
-| `table`      | 要读取其投影的表名称。         |
-| `projection` | 要读取的投影名称。             |
+| 参数           | 描述            |
+| ------------ | ------------- |
+| `database`   | 要读取其PROJECTION的数据库名称。 |
+| `table`      | 要读取其PROJECTION的表名称。   |
+| `projection` | 要读取的PROJECTION名称。     |
 
 ## 返回值 \{#returned_value\}
 
-一个表对象，其列由给定投影提供。
+一个表对象，其列由给定PROJECTION提供。
 
 ## 使用示例 \{#usage-example\}
 

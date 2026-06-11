@@ -7,9 +7,7 @@ title: 'redis'
 doc_type: 'reference'
 ---
 
-# Табличная функция redis \{#redis-table-function\}
-
-Эта табличная функция предназначена для интеграции ClickHouse с [Redis](https://redis.io/).
+Эта табличная функция обеспечивает интеграцию ClickHouse с [Redis](https://redis.io/).
 
 ## Синтаксис \{#syntax\}
 

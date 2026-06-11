@@ -1,13 +1,11 @@
 ---
-description: '거리 함수에 대한 문서'
+description: '거리 함수 문서'
 sidebar_label: '거리'
 slug: /sql-reference/functions/distance-functions
 title: '거리 함수'
 keywords: ['거리 함수', '노름', '거리', '벡터']
 doc_type: 'reference'
 ---
-
-# 거리 함수 \{#distance-functions\}
 
 {/* 
   아래 태그 안의 내용은 문서 프레임워크를 빌드할 때 

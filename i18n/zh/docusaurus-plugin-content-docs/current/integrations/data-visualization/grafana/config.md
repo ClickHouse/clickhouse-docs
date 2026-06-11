@@ -22,16 +22,13 @@ import alias_table_config_example from '@site/static/images/integrations/data-vi
 import alias_table_select_example from '@site/static/images/integrations/data-visualization/grafana/alias_table_select_example.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 在 Grafana 中配置 ClickHouse 数据源 \{#configuring-clickhouse-data-source-in-grafana\}
+修改配置最简单的方法，是在 Grafana UI 的插件配置页面中进行，但也可以[通过 YAML 文件预配数据源](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
 
-<ClickHouseSupportedBadge/>
+本页列出了 ClickHouse 插件中可用的配置选项，并为通过 YAML 预配数据源的用户提供了配置片段。
 
-修改配置最简单的方式是在 Grafana UI 的插件配置页面中进行操作，但数据源也可以通过 [使用 YAML 文件进行预配置](https://grafana.com/docs/grafana/latest/administration/provisioning/#data-sources)。
-
-本页列出了 ClickHouse 插件中可配置的选项，以及为使用 YAML 预配置数据源的用户提供的配置示例片段。
-
-若需快速浏览所有选项，可以在[此处](#all-yaml-options)找到完整的配置选项列表。
+如需快速查看所有选项，可在[此处](#all-yaml-options)找到完整的配置选项列表。
 
 ## 常用设置 \{#common-settings\}
 

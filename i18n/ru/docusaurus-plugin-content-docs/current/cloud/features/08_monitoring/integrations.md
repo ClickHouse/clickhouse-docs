@@ -10,8 +10,6 @@ doc_type: 'guide'
 
 import CommunityMonitoring from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# Интеграции от сообщества и партнёров \{#community-and-partner-integrations\}
-
 ## Прямая интеграция с Datadog \{#direct-datadog\}
 
 Datadog предлагает плагин мониторинга ClickHouse для своего agent, который напрямую запрашивает системные таблицы. Эта интеграция обеспечивает подробный мониторинг базы данных с учетом cluster благодаря функциональности `clusterAllReplicas`.

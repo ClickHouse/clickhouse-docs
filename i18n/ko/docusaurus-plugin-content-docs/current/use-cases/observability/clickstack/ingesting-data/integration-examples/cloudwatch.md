@@ -21,11 +21,8 @@ import error_log_overview from '@site/static/images/clickstack/cloudwatch/error-
 import error_log_column_values from '@site/static/images/clickstack/cloudwatch/error-log-column-values.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack로 AWS CloudWatch 로그 모니터링하기 \{#cloudwatch-clickstack\}
-
-:::note[TL;DR]
-OpenTelemetry Collector의 CloudWatch receiver를 사용하여 AWS CloudWatch 로그를 ClickStack으로 전달합니다. 이름이 지정된 로그 그룹과 자동 검색을 지원합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
+:::note[요약]
+OpenTelemetry Collector의 CloudWatch receiver를 사용해 AWS CloudWatch 로그를 ClickStack로 전달합니다. 이름이 지정된 로그 그룹과 자동 검색을 지원합니다. 데모 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 개요 \{#overview\}

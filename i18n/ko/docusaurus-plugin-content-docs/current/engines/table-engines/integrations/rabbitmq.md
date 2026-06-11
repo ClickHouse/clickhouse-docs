@@ -7,14 +7,12 @@ title: 'RabbitMQ 테이블 엔진'
 doc_type: 'guide'
 ---
 
-# RabbitMQ table engine \{#rabbitmq-table-engine\}
+이 엔진을 사용하면 ClickHouse를 [RabbitMQ](https://www.rabbitmq.com)와 연동할 수 있습니다.
 
-이 엔진은 ClickHouse를 [RabbitMQ](https://www.rabbitmq.com)와 통합합니다.
+`RabbitMQ`를 사용하면 다음 작업을 수행할 수 있습니다:
 
-`RabbitMQ`로 다음 작업을 수행할 수 있습니다:
-
-- 데이터 스트림을 발행하거나 구독할 수 있습니다.
-- 스트림이 도착하는 대로 처리할 수 있습니다.
+* 데이터 흐름을 게시하거나 구독할 수 있습니다.
+* 스트림을 사용할 수 있게 되는 즉시 처리할 수 있습니다.
 
 ## 테이블 생성 \{#creating-a-table\}
 

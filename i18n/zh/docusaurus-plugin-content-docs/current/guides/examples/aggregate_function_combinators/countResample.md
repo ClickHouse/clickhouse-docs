@@ -2,18 +2,16 @@
 slug: '/examples/aggregate-function-combinators/countResample'
 title: 'countResample'
 description: '将 Resample 组合器与 count 一起使用的示例'
-keywords: ['count', 'Resample', 'combinator', '示例', 'countResample']
+keywords: ['count', 'Resample', '组合器', '示例', 'countResample']
 sidebar_label: 'countResample'
 doc_type: 'reference'
 ---
 
-# countResample \{#countResample\}
-
 ## 描述 \{#description\}
 
-可以将 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+可以将 [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 组合器应用到 [`count`](/sql-reference/aggregate-functions/reference/count)
-聚合函数上，以在固定数量（`N`）的区间内统计指定键列的值的数量。
+聚合函数上，以在固定数量 (`N`) 的区间内统计指定键列的值的数量。
 
 ## 示例用法 \{#example-usage\}
 
@@ -54,5 +52,6 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 ```
 
 ## 另请参阅 \{#see-also\}
-- [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+
+* [`count`](/sql-reference/aggregate-functions/reference/count)
+* [`Resample 组合器`](/sql-reference/aggregate-functions/combinators#-resample)

@@ -1,14 +1,12 @@
 ---
 slug: /guides/sre/scaling-clusters
-sidebar_label: '分片再均衡'
+sidebar_label: '分片再平衡'
 sidebar_position: 20
-description: 'ClickHouse 不支持自动分片再均衡，因此我们在此提供一些关于如何进行分片再均衡的最佳实践。'
-title: '数据再均衡'
+description: 'ClickHouse 不支持自动分片再平衡，因此我们提供了一些有关如何对分片进行再平衡的最佳实践。'
+title: '数据再平衡'
 doc_type: 'guide'
-keywords: ['扩展', '集群', '水平扩展', '容量规划', '性能']
+keywords: ['扩缩容', '集群', '水平扩缩容', '容量规划', '性能']
 ---
-
-# 数据再平衡 \{#rebalancing-data\}
 
 ClickHouse 不支持自动分片再平衡。不过，可以按以下优先级通过多种方式对分片进行再平衡：
 

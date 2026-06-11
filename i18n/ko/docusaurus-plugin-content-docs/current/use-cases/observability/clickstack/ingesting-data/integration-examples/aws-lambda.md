@@ -15,21 +15,18 @@ import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png'
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Rotel을 사용하여 ClickStack으로 AWS Lambda 로그 모니터링 \{#lambda-clickstack\}
-
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 :::note[요약]
-이 가이드는 Rotel Lambda Extension을 사용해 함수 로그, 익스텐션 로그, OpenTelemetry 데이터를 직접 ClickHouse로 수집·전송하여 ClickStack으로 AWS Lambda 함수를 모니터링하는 방법을 설명합니다. 이 가이드를 통해 다음 내용을 학습합니다:
+이 가이드에서는 Rotel Lambda Extension을 사용하여 함수 로그, 확장 로그, OpenTelemetry 데이터를 수집해 ClickHouse로 직접 전송함으로써 ClickStack으로 AWS Lambda 함수를 모니터링하는 방법을 설명합니다. 다음 내용을 알아봅니다:
 
-- Rotel Lambda Extension 레이어를 Lambda 함수에 배포합니다
-- 익스텐션을 구성하여 로그와 트레이스를 ClickStack으로 전송합니다
-- 선택적으로 CloudWatch Logs를 비활성화하여 비용을 절감합니다
+* Lambda 함수에 Rotel Lambda Extension 레이어 배포
+* 로그와 트레이스를 ClickStack으로 내보내도록 확장 구성
+* 비용 절감을 위해 선택적으로 CloudWatch Logs 비활성화
 
-이 방법을 사용하면 CloudWatch Logs를 완전히 우회함으로써 Lambda 관측성 비용을 크게 줄일 수 있습니다.
+이 방식은 CloudWatch Logs를 완전히 우회하여 Lambda 관측성 비용을 크게 줄일 수 있습니다.
 
-소요 시간: 5~10분
+소요 시간: 5-10분
 :::
 
 ## 기존 Lambda 함수와의 통합 \{#existing-lambda\}

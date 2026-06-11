@@ -24,20 +24,17 @@ import splunk_9 from '@site/static/images/integrations/splunk/splunk-9.png';
 import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Подключение Splunk к ClickHouse \{#connecting-splunk-to-clickhouse\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 :::tip
-Хотите сохранять журналы аудита ClickHouse в Splunk? Следуйте руководству ["Storing ClickHouse Cloud Audit logs into Splunk"](/integrations/audit-splunk).
+Хотите хранить журналы аудита ClickHouse в Splunk? Следуйте руководству [&quot;Хранение журналов аудита ClickHouse Cloud в Splunk&quot;](/integrations/audit-splunk).
 :::
 
-Splunk — это популярная платформа для безопасности и обсервабилити. Это также мощный движок для поиска и построения дашбордов. Существуют сотни приложений Splunk для решения различных задач.
+Splunk — популярная платформа для безопасности и обсервабилити. Это также мощный поисковый механизм и инструмент для создания панелей мониторинга. Для различных сценариев использования доступны сотни приложений Splunk.
 
-В случае ClickHouse мы используем [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686), который обеспечивает простую интеграцию с высокопроизводительным ClickHouse JDBC-драйвером для прямого выполнения запросов к таблицам в ClickHouse.
+Конкретно для ClickHouse мы используем [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686), который предоставляет простую интеграцию с высокопроизводительным JDBC-драйвером ClickHouse и позволяет выполнять запросы к таблицам в ClickHouse напрямую.
 
-Идеальный сценарий использования этой интеграции — когда вы применяете ClickHouse для крупномасштабных источников данных, таких как NetFlow, бинарные данные Avro или Protobuf, DNS, журналы VPC flow и другие OTel-журналы, которыми можно делиться с вашей командой в Splunk для поиска и создания дашбордов. При таком подходе данные не принимаются в индексный слой Splunk и просто запрашиваются напрямую из ClickHouse, аналогично другим интеграциям для визуализации, таким как [Metabase](https://www.metabase.com/) или [Superset](https://superset.apache.org/).
+Идеальный сценарий использования этой интеграции — когда вы используете ClickHouse для крупных источников данных, таких как NetFlow, бинарные данные Avro или Protobuf, DNS, журналы потоков VPC и другие журналы OTel, которыми можно делиться с командой в Splunk для поиска и создания панелей мониторинга. При таком подходе данные не проходят приём в индексный слой Splunk, а запрашиваются напрямую из ClickHouse — аналогично другим интеграциям визуализации, таким как [Metabase](https://www.metabase.com/) или [Superset](https://superset.apache.org/).
 
 ## Цель​ \{#goal\}
 

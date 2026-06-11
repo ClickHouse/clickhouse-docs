@@ -16,8 +16,6 @@ import sparkConfigViaNotebook from '@site/static/images/integrations/data-ingest
 import sparkUICHSettings from '@site/static/images/integrations/data-ingestion/azure-synapse/spark_ui_ch_settings.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Integrating Azure Synapse with ClickHouse
-
 <ClickHouseSupportedBadge/>
 
 [Azure Synapse](https://azure.microsoft.com/en-us/products/synapse-analytics) is an integrated analytics service that combines big data, data science and warehousing to enable fast, large-scale data analysis.

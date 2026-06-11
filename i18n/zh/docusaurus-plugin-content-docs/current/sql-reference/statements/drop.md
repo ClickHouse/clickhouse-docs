@@ -1,13 +1,11 @@
 ---
-description: 'DROP 语句文档'
+description: 'DROP 语句的文档'
 sidebar_label: 'DROP'
 sidebar_position: 44
 slug: /sql-reference/statements/drop
 title: 'DROP 语句'
 doc_type: 'reference'
 ---
-
-# DROP 语句 \{#drop-statements\}
 
 删除已存在的实体。如果指定了 `IF EXISTS` 子句，当实体不存在时查询不会报错。如果指定了 `SYNC` 修饰符，则会立即删除该实体，不会产生延迟。
 

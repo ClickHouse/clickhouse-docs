@@ -22,10 +22,7 @@ import edit_button from '@site/static/images/integrations/data-ingestion/clickpi
 import enable_gtid from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/enable_gtid.png';
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника Aurora MySQL \{#aurora-mysql-source-setup-guide\}
-
-В этом пошаговом руководстве описано, как настроить Amazon Aurora MySQL для репликации данных в ClickHouse Cloud с помощью [MySQL ClickPipe](../index.md). Ответы на часто задаваемые вопросы о MySQL CDC (фиксации изменений данных) см. на странице [MySQL FAQs](/integrations/data-ingestion/clickpipes/mysql/faq.md).
+Это пошаговое руководство показывает, как настроить Amazon Aurora MySQL для репликации данных в ClickHouse Cloud с помощью [MySQL ClickPipe](../index.md). Ответы на распространённые вопросы о CDC в MySQL см. на [странице FAQ по MySQL](/integrations/data-ingestion/clickpipes/mysql/faq.md).
 
 ## Включение хранения двоичных логов \{#enable-binlog-retention-aurora\}
 

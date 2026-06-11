@@ -11,7 +11,6 @@ keywords: ['ClickStack', 'OpenTelemetry collector', 'ClickHouse observability', 
 ---
 
 import Image from '@theme/IdealImage';
-import BetaBadge from '@theme/badges/BetaBadge';
 import observability_6 from '@site/static/images/use-cases/observability/observability-6.png';
 import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
 import clickstack_with_gateways from '@site/static/images/use-cases/observability/clickstack-with-gateways.png';
@@ -47,6 +46,56 @@ Users deploying OTel collectors in the agent role will typically use the [defaul
 
 We [recommend using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role when sending to Managed ClickStack, where possible. If you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
+The collector can be deployed either via Helm (recommended for Kubernetes) or via Docker. The official [ClickStack Helm chart](https://github.com/ClickHouse/ClickStack-helm-charts) embeds the upstream [OpenTelemetry collector Helm chart](https://github.com/open-telemetry/opentelemetry-helm-charts) as a subchart with the ClickStack distribution image preconfigured—see the [ClickStack Helm deployment guide](/use-cases/observability/clickstack/deployment/helm) if you want to install the full stack including HyperDX. For a standalone collector deployment, the upstream chart can be used directly with the ClickStack image, as shown below.
+
+<Tabs groupId="install-method">
+
+<TabItem value="helm" label="Helm" default>
+
+Add the upstream OpenTelemetry Helm repository:
+
+```shell
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+helm repo update
+```
+
+Create a `values.yaml` configuring the ClickStack image and Managed ClickStack credentials:
+
+```yaml
+# values.yaml
+mode: deployment
+
+image:
+  repository: docker.clickhouse.com/clickhouse/clickstack-otel-collector
+  tag: "2.19.0"
+
+ports:
+  otlp:
+    enabled: true
+  otlp-http:
+    enabled: true
+
+extraEnvs:
+  - name: CLICKHOUSE_ENDPOINT
+    value: "https://your-instance.clickhouse.cloud:8443"
+  - name: CLICKHOUSE_USER
+    value: "default"
+  - name: CLICKHOUSE_PASSWORD
+    value: "<password>"
+```
+
+Install the chart:
+
+```shell
+helm install clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+```
+
+For production deployments, we recommend storing `CLICKHOUSE_PASSWORD` in a Kubernetes secret and referencing it via `extraEnvsFrom` instead of inlining the value.
+
+</TabItem>
+
+<TabItem value="docker" label="Docker">
+
 To deploy the ClickStack distribution of the OTel connector in a standalone mode, run the following docker command:
 
 ```shell
@@ -57,7 +106,11 @@ docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=defa
 ClickStack images are now published as `clickhouse/clickstack-*` (previously `docker.hyperdx.io/hyperdx/*`).
 :::
 
-Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME`, and `CLICKHOUSE_PASSWORD`. The `CLICKHOUSE_ENDPOINT` should be the full ClickHouse Cloud HTTP endpoint, including the protocol and port—for example, `https://99rr6dm6v3.us-central1.gcp.clickhouse.cloud:8443`.
+</TabItem>
+
+</Tabs>
+
+The target ClickHouse instance is configured via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME`, and `CLICKHOUSE_PASSWORD`. The `CLICKHOUSE_ENDPOINT` should be the full ClickHouse Cloud HTTP endpoint, including the protocol and port—for example, `https://99rr6dm6v3.us-central1.gcp.clickhouse.cloud:8443`.
 
 For details on retrieving your Managed ClickStack credentials, see [here](/cloud/guides/sql-console/gather-connection-details).
 
@@ -69,9 +122,34 @@ You should use a user with the [appropriate credentials](/use-cases/observabilit
 
 #### Configuring Managed ClickStack instance {#configuring-managed-clickstack}
 
-All docker images, which include the OpenTelemetry collector, can be configured to use a Managed ClickStack instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`:
+The OpenTelemetry collector can be configured to use a Managed ClickStack instance via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`. How these are set depends on your deployment method:
 
-For example the all-in-one image:
+<Tabs groupId="install-method">
+
+<TabItem value="helm" label="Helm" default>
+
+Override the relevant entries under `extraEnvs` in your `values.yaml`, then upgrade the release:
+
+```yaml
+# values.yaml
+extraEnvs:
+  - name: CLICKHOUSE_ENDPOINT
+    value: "<HTTPS_ENDPOINT>"
+  - name: CLICKHOUSE_USER
+    value: "<CLICKHOUSE_USER>"
+  - name: CLICKHOUSE_PASSWORD
+    value: "<CLICKHOUSE_PASSWORD>"
+```
+
+```shell
+helm upgrade clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+```
+
+</TabItem>
+
+<TabItem value="docker" label="Docker">
+
+All docker images which include the OpenTelemetry collector can be configured via environment variables. For example the all-in-one image:
 
 ```shell
 export CLICKHOUSE_ENDPOINT=<HTTPS ENDPOINT>
@@ -82,6 +160,10 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```shell
 docker run -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
+
+</TabItem>
+
+</Tabs>
 
 <ExtendingConfig/>
 
@@ -116,6 +198,62 @@ With Docker Compose, modify the collector configuration using the same environme
 
 If you're managing your own OpenTelemetry collector in a standalone deployment - such as when using the HyperDX-only distribution - we [recommend still using the official ClickStack distribution of the collector](/use-cases/observability/clickstack/deployment/hyperdx-only#otel-collector) for the gateway role where possible, but if you choose to bring your own, ensure it includes the [ClickHouse exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/clickhouseexporter).
 
+The collector can be deployed either via Helm (recommended for Kubernetes) or via Docker. The official [ClickStack Helm chart](https://github.com/ClickHouse/ClickStack-helm-charts) embeds the upstream [OpenTelemetry collector Helm chart](https://github.com/open-telemetry/opentelemetry-helm-charts) as a subchart and auto-wires the OpAMP endpoint, ClickStack image, and HyperDX API key via a shared `clickstack-config` ConfigMap and `clickstack-secret` Secret—see the [ClickStack Helm deployment guide](/use-cases/observability/clickstack/deployment/helm) if you want to install the full stack including HyperDX. For a standalone collector deployment that connects to an existing HyperDX, the upstream chart can be used directly with the ClickStack image, as shown below.
+
+<Tabs groupId="install-method">
+
+<TabItem value="helm" label="Helm" default>
+
+Add the upstream OpenTelemetry Helm repository:
+
+```shell
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+helm repo update
+```
+
+Create a `values.yaml` configuring the ClickStack image, ClickHouse credentials, and the OpAMP endpoint of your HyperDX deployment:
+
+```yaml
+# values.yaml
+mode: deployment
+
+image:
+  repository: docker.clickhouse.com/clickhouse/clickstack-otel-collector
+  tag: "2.19.0"
+
+ports:
+  otlp:
+    enabled: true
+  otlp-http:
+    enabled: true
+
+extraEnvs:
+  - name: CLICKHOUSE_ENDPOINT
+    value: "tcp://clickhouse.your-namespace.svc.cluster.local:9000?dial_timeout=10s"
+  - name: CLICKHOUSE_USER
+    value: "otelcollector"
+  - name: CLICKHOUSE_PASSWORD
+    value: "<password>"
+  - name: OPAMP_SERVER_URL
+    value: "http://hyperdx.your-namespace.svc.cluster.local:4320"
+  - name: HYPERDX_API_KEY
+    value: "<your-ingestion-api-key>"
+```
+
+Install the chart:
+
+```shell
+helm install clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+```
+
+The `OPAMP_SERVER_URL` should resolve to your HyperDX service. When HyperDX and the collector run in the same cluster, use the in-cluster service DNS name (e.g. `http://hyperdx.your-namespace.svc.cluster.local:4320`). HyperDX exposes the OpAMP API at `/v1/opamp` on port `4320` by default.
+
+For production deployments, we recommend storing `CLICKHOUSE_PASSWORD` and `HYPERDX_API_KEY` in a Kubernetes secret and referencing them via `extraEnvsFrom` instead of inlining the values.
+
+</TabItem>
+
+<TabItem value="docker" label="Docker">
+
 To deploy the ClickStack distribution of the OTel connector in a standalone mode, run the following docker command:
 
 ```shell
@@ -126,15 +264,19 @@ docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLIC
 ClickStack images are now published as `clickhouse/clickstack-*` (previously `docker.hyperdx.io/hyperdx/*`).
 :::
 
-Note that we can overwrite the target ClickHouse instance with environment variables for `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME`, and `CLICKHOUSE_PASSWORD`. The `CLICKHOUSE_ENDPOINT` should be the full ClickHouse HTTP endpoint, including the protocol and port—for example, `http://localhost:8123`.
-
-**These environment variables can be used with any of the docker distributions which include the connector.** 
-
 The `OPAMP_SERVER_URL` should point to your HyperDX deployment - for example, `http://localhost:4320`. HyperDX exposes an OpAMP (Open Agent Management Protocol) server at `/v1/opamp` on port `4320` by default. Make sure to expose this port from the container running HyperDX (e.g., using `-p 4320:4320`).
 
 :::note Exposing and connecting to the OpAMP port
 For the collector to connect to the OpAMP port it must be exposed by the HyperDX container e.g. `-p 4320:4320`. For local testing, OSX users can then set `OPAMP_SERVER_URL=http://host.docker.internal:4320`. Linux users can start the collector container with `--network=host`.
 :::
+
+</TabItem>
+
+</Tabs>
+
+The target ClickHouse instance is configured via the environment variables `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME`, and `CLICKHOUSE_PASSWORD`. The `CLICKHOUSE_ENDPOINT` should be the full ClickHouse HTTP endpoint, including the protocol and port—for example, `http://localhost:8123`.
+
+**These environment variables can be used with any of the docker distributions which include the connector.**
 
 :::note Production user
 You should use a user with the [appropriate credentials](/use-cases/observability/clickstack/ingesting-data/otel-collector#creating-an-ingestion-user) in production.
@@ -144,9 +286,36 @@ You should use a user with the [appropriate credentials](/use-cases/observabilit
 
 #### Configuring ClickHouse instance {#configuring-clickhouse-instance}
 
-All docker images, which include the OpenTelemetry collector, can be configured to use a clickhouse instance via the environment variables `OPAMP_SERVER_URL` ,`CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`:
+The OpenTelemetry collector can be configured to use a ClickHouse instance via the environment variables `OPAMP_SERVER_URL`, `CLICKHOUSE_ENDPOINT`, `CLICKHOUSE_USERNAME` and `CLICKHOUSE_PASSWORD`. How these are set depends on your deployment method:
 
-For example the all-in-one image:
+<Tabs groupId="install-method">
+
+<TabItem value="helm" label="Helm" default>
+
+Override the relevant entries under `extraEnvs` in your `values.yaml`, then upgrade the release:
+
+```yaml
+# values.yaml
+extraEnvs:
+  - name: OPAMP_SERVER_URL
+    value: "<OPAMP_SERVER_URL>"
+  - name: CLICKHOUSE_ENDPOINT
+    value: "<HTTPS_ENDPOINT>"
+  - name: CLICKHOUSE_USER
+    value: "<CLICKHOUSE_USER>"
+  - name: CLICKHOUSE_PASSWORD
+    value: "<CLICKHOUSE_PASSWORD>"
+```
+
+```shell
+helm upgrade clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+```
+
+</TabItem>
+
+<TabItem value="docker" label="Docker">
+
+All docker images which include the OpenTelemetry collector can be configured via environment variables. For example the all-in-one image:
 
 ```shell
 export OPAMP_SERVER_URL=<OPAMP_SERVER_URL>
@@ -158,6 +327,10 @@ export CLICKHOUSE_PASSWORD=<CLICKHOUSE_PASSWORD>
 ```shell
 docker run -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
 ```
+
+</TabItem>
+
+</Tabs>
 
 <ExtendingConfig/>
 
@@ -197,7 +370,36 @@ With Docker Compose, modify the collector configuration using the same environme
 
 By default, the ClickStack OpenTelemetry collector isn't secured when deployed outside of the Open Source distributions and doesn't require authentication on its OTLP ports.
 
-To secure ingestion, specify an authentication token when deploying the collector using the `OTLP_AUTH_TOKEN` environment variable. For example:
+To secure ingestion, specify an authentication token when deploying the collector using the `OTLP_AUTH_TOKEN` environment variable. How this is set depends on your deployment method:
+
+<Tabs groupId="install-method">
+
+<TabItem value="helm" label="Helm" default>
+
+Add `OTLP_AUTH_TOKEN` to `extraEnvs` in your `values.yaml`, then upgrade the release:
+
+```yaml
+# values.yaml
+extraEnvs:
+  - name: OTLP_AUTH_TOKEN
+    value: "a_very_secure_string"
+  - name: CLICKHOUSE_ENDPOINT
+    value: "<HTTPS_ENDPOINT>"
+  - name: CLICKHOUSE_USER
+    value: "<CLICKHOUSE_USER>"
+  - name: CLICKHOUSE_PASSWORD
+    value: "<CLICKHOUSE_PASSWORD>"
+```
+
+```shell
+helm upgrade clickstack-otel-collector open-telemetry/opentelemetry-collector -f values.yaml
+```
+
+For production deployments, we recommend storing `OTLP_AUTH_TOKEN` and `CLICKHOUSE_PASSWORD` in a Kubernetes secret and referencing them via `extraEnvsFrom`.
+
+</TabItem>
+
+<TabItem value="docker" label="Docker">
 
 ```sh
 export CLICKHOUSE_ENDPOINT=<HTTPS_ENDPOINT>
@@ -214,6 +416,10 @@ docker run \
   -p 4318:4318 \
   clickhouse/clickstack-otel-collector:latest
 ```
+
+</TabItem>
+
+</Tabs>
 
 We additionally recommend:
 
@@ -423,111 +629,8 @@ For agent instances responsible for shipping events to a gateway, and only setti
 | 5k/second    | 0.5 CPU, 0.5GiB             |
 | 10k/second   | 1 CPU, 1GiB                 |
 
-## JSON support {#json-support}
+## Schema choice: Map vs JSON {#schema-choice}
 
-<BetaBadge/>
+The ClickStack collector creates tables that store attributes as `Map(LowCardinality(String), String)` columns by default. This is the recommended schema for observability workloads. A `JSON`-typed schema is available in beta for evaluation on workloads with a small, stable attribute key-set.
 
-ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
-
-:::warning Beta Feature
-JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs
-:::
-
-### Benefits of the JSON type {#benefits-json-type}
-
-The JSON type offers the following benefits to ClickStack users:
-
-- **Type preservation** - Numbers stay numbers, booleans stay booleans—no more flattening everything into strings. This means fewer casts, simpler queries, and more accurate aggregations.
-- **Path-level columns** - Each JSON path becomes its own sub-column, reducing I/O. Queries only read the fields they need, unlocking major performance gains over the old Map type which required the entire column to be read in order to query a specific field.
-- **Deep nesting just works** - Naturally handle complex, deeply nested structures without manual flattening (as required by the Map type) and subsequent awkward JSONExtract functions.
-- **Dynamic, evolving schemas** - Perfect for observability data where teams add new tags and attributes over time. JSON handles these changes automatically, without schema migrations. 
-- **Faster queries, lower memory** - Typical aggregations over attributes like `LogAttributes` see 5-10x less data read and dramatic speedups, cutting both query time and peak memory usage.
-- **Simple management** - No need to pre-materialize columns for performance. Each field becomes its own sub-column, delivering the same speed as native ClickHouse columns.
-
-### Enabling JSON support {#enabling-json-support}
-
-<Tabs groupId="json-support">
-
-<TabItem value="managed-clickstack" label="Managed ClickStack" default>
-
-To enable JSON support in Managed ClickStack, please contact our support team prior to configuring the collector below. **The feature must also be enabled in the ClickStack UI (HyperDX) in ClickHouse Cloud.**
-
-To enable this support for your collector, set the environment variable `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'`. This ensures the schemas are created in ClickHouse using the JSON type.
-
-For example:
-
-```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-```
-
-</TabItem>
-
-<TabItem value="oss-clickstack" label="Open Source ClickStack" default>
-
-To enable this support for the collector, set the environment variable `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` on any deployment that includes the collector. This ensures the schemas are created in ClickHouse using the JSON type.
-
-:::note HyperDX support
-In order to query the JSON type, support must also be enabled in the HyperDX application layer via the environment variable `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true`.
-:::
-
-For example:
-
-```shell
-docker run -e OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json' -e OPAMP_SERVER_URL=${OPAMP_SERVER_URL} -e CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT} -e CLICKHOUSE_USER=default -e CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD} -p 8080:8080 -p 4317:4317 -p 4318:4318 clickhouse/clickstack-otel-collector:latest
-```
-
-</TabItem>
-
-</Tabs>
-
-### Migrating from map-based schemas to the JSON type {#migrating-from-map-based-schemas-to-json}
-
-:::important Backwards compatibility
-The [JSON type](/interfaces/formats/JSON) is **not backwards compatible** with existing map-based schemas. Enabling this feature will create new tables using the `JSON` type and requires manual data migration.
-:::
-
-To migrate from the Map-based schemas, follow these steps:
-
-<VerticalStepper headerLevel="h4">
-
-#### Stop the OTel collector {#stop-the-collector}
-
-#### Rename existing tables and update sources {#rename-existing-tables-sources}
-
-Rename existing tables and update data sources in HyperDX. 
-
-For example:
-
-```sql
-RENAME TABLE otel_logs TO otel_logs_map;
-RENAME TABLE otel_metrics TO otel_metrics_map;
-```
-
-#### Deploy the collector {#deploy-the-collector}
-
-Deploy the collector with `OTEL_AGENT_FEATURE_GATE_ARG` set.
-
-#### Restart the HyperDX container with JSON schema support {#restart-the-hyperdx-container}
-
-```shell
-export BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true
-```
-
-#### Create new data sources {#create-new-data-sources}
-
-Create new data sources in HyperDX pointing to the JSON tables.
-
-</VerticalStepper>
-
-#### Migrating existing data (optional) {#migrating-existing-data}
-
-To move old data into the new JSON tables:
-
-```sql
-INSERT INTO otel_logs SELECT * FROM otel_logs_map;
-INSERT INTO otel_metrics SELECT * FROM otel_metrics_map;
-```
-
-:::warning
-Recommended only for datasets smaller than ~10 billion rows. Data previously stored with the Map type didn't preserve type precision (all values were strings). As a result, this old data will appear as strings in the new schema until it ages out, requiring some casting on the frontend. Type for new data will be preserved with the JSON type.
-:::
+For the full comparison, when each is appropriate, the env vars required to enable the JSON-typed schema, and the migration walkthrough, see [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json).

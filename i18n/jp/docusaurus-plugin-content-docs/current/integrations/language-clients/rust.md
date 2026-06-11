@@ -11,9 +11,7 @@ integration:
   - category: 'language_client'
 ---
 
-# ClickHouse Rust クライアント \{#clickhouse-rust-client\}
-
-Rust 用の ClickHouse 公式クライアントであり、元々は [Paul Loyd](https://github.com/loyd) によって開発されました。クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-rs) で公開されています。
+Rust 用の ClickHouse 公式クライアントです。元々は [Paul Loyd](https://github.com/loyd) によって開発されました。クライアントのソースコードは [GitHub リポジトリ](https://github.com/ClickHouse/clickhouse-rs) で公開されています。
 
 ## 概要 \{#overview\}
 
@@ -176,8 +174,7 @@ insert.end().await?;
 
 * `end()` が呼び出されない場合、`INSERT` は中止されます。
 * 行はネットワーク負荷を分散するため、ストリームとして順次送信されます。
-* ClickHouse は、すべての行が同じパーティションに収まり、かつ行数が [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size) 未満である場合にのみ、バッチ挿入をアトミックに行います。
-
+* ClickHouse は、すべての行が同じパーティションに収まり、かつ行数が [`max_insert_block_size`](/operations/settings/settings/#max_insert_block_size) 未満である場合にのみ、バッチ挿入をアトミックに行います。
 
 ### 非同期インサート（サーバーサイドでのバッチ処理） \{#async-insert-server-side-batching\}
 

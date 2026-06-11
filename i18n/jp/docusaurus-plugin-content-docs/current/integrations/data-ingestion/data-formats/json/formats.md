@@ -1,21 +1,21 @@
 ---
-title: 'その他のJSON形式の取り扱い'
+title: 'その他の JSON フォーマットの扱い方'
 slug: /integrations/data-formats/json/other-formats
-description: 'その他のJSON形式の取り扱い'
-sidebar_label: 'その他の形式の取り扱い'
-keywords: ['json', 'formats', 'json 形式']
+description: 'その他の JSON フォーマットの扱い方'
+sidebar_label: 'その他のフォーマットの扱い方'
+keywords: ['json', 'formats', 'json formats']
 doc_type: 'guide'
 ---
 
-# その他の JSON フォーマットの扱い方 \{#handling-other-json-formats\}
-
-これまでの JSON データの読み込み例では、[`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) の利用を想定してきました。このフォーマットでは、各 JSON 行のキーを列として解釈します。例えば次のようになります。
+これまでの JSON データの読み込み例では、[`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) の利用を想定してきました。このフォーマットでは、各 JSON 行のキーをカラムとして解釈します。例えば次のようになります。
 
 ```sql
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONEachRow)
 LIMIT 5
+```
 
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type────────┬─installer────┬─python_minor─┬─system─┬─version─┐
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
@@ -45,7 +45,9 @@ LIMIT 5
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONAsObject)
 LIMIT 5
+```
 
+```response
 ┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
@@ -57,7 +59,7 @@ LIMIT 5
 5 rows in set. Elapsed: 0.338 sec.
 ```
 
-`JSONAsObject` は、単一の JSON オブジェクト型カラムを使ってテーブルに行を挿入する場合に便利です。例:`
+`JSONAsObject` は、単一の JSON オブジェクト型カラムを使ってテーブルに行を挿入する場合に便利です。例:
 
 ```sql
 CREATE TABLE pypi
@@ -74,7 +76,9 @@ LIMIT 5;
 SELECT *
 FROM pypi
 LIMIT 2;
+```
 
+```response
 ┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
@@ -88,7 +92,9 @@ LIMIT 2;
 ```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONEachRow')
+```
 
+```response
 Elapsed: 1.198 sec.
 
 Received exception from server (version 24.12.1):
@@ -103,7 +109,9 @@ You can specify the structure manually: (in file/uri bluesky/file_0001.json.gz).
 ```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONAsObject')
+```
 
+```response
 ┌─count()─┐
 │ 1000000 │
 └─────────┘

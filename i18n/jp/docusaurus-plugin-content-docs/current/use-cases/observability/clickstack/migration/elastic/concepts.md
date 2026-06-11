@@ -144,19 +144,19 @@ Elasticsearch におけるインデックスルーティングは、特定のド
 
 両システムともデータの集約をサポートしていますが、ClickHouse は統計的、近似的、および特殊な分析関数を含む、はるかに[多くの関数](/sql-reference/aggregate-functions/reference)を提供します。
 
-オブザーバビリティ用途において、集約の最も一般的な利用方法の 1 つは、特定のログメッセージやイベントがどれくらいの頻度で発生しているかをカウントし（頻度が異常な場合にアラートを出す）、その頻度を把握することです。
+オブザーバビリティ用途において、集約の最も一般的な利用方法の 1 つは、特定のログメッセージやイベントがどれくらいの頻度で発生しているかをカウントし (頻度が異常な場合にアラートを出す) 、その頻度を把握することです。
 
 ClickHouse における `SELECT count(*) FROM ... GROUP BY ...` SQL クエリに相当する Elasticsearch の機能は、Elasticsearch の[バケット集約](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html)の一種である [terms 集約](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html)です。
 
 ClickHouse の `GROUP BY` と `count(*)`、および Elasticsearch の terms 集約は、機能面では概ね同等ですが、その実装、性能、および結果の品質は大きく異なります。
 
-Elasticsearch におけるこの集約は、クエリ対象のデータが複数シャードにまたがる場合に、「トップ N」クエリ（例: カウント順の上位 10 ホスト）で[結果を推定](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation#terms-agg-doc-count-error)します。この推定により速度は向上しますが、精度が損なわれる可能性があります。ユーザーは [`doc_count_error_upper_bound` を確認](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#terms-agg-doc-count-error)し、`shard_size` パラメータを増やすことでこの誤差を減らせますが、その代償としてメモリ使用量の増加とクエリ性能の低下が発生します。
+Elasticsearch におけるこの集約は、クエリ対象のデータが複数シャードにまたがる場合に、「トップ N」クエリ (例: カウント順の上位 10 ホスト) で[結果を推定](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation#terms-agg-doc-count-error)します。この推定により速度は向上しますが、精度が損なわれる可能性があります。ユーザーは [`doc_count_error_upper_bound` を確認](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#terms-agg-doc-count-error)し、`shard_size` パラメータを増やすことでこの誤差を減らせますが、その代償としてメモリ使用量の増加とクエリ性能の低下が発生します。
 
 Elasticsearch では、すべてのバケット集約に対して [`size` 設定](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size)が必要であり、制限値を明示的に設定しないまま、すべての一意なグループを返す方法は存在しません。カーディナリティの高い集約では、[`max_buckets` 制限](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-settings.html#search-settings-max-buckets)に達するリスクがあるか、[composite 集約](https://www.elastic.co/docs/reference/aggregations/bucket/composite-aggregation)を使ったページングが必要になりますが、これはしばしば複雑で非効率です。
 
 対照的に、ClickHouse はデフォルトで正確な集約を実行します。`count(*)` のような関数は、設定を調整しなくても正確な結果を返すため、クエリの挙動がより単純で予測しやすくなります。
 
-ClickHouse はサイズ制限を課しません。大規模なデータセットに対して、無制限の group-by クエリを実行できます。メモリ閾値を超えた場合、ClickHouse は[ディスクへのスピル](https://clickhouse.com/docs/en/sql-reference/statements/select/group-by#group-by-in-external-memory)を行うことができます。主キーのプレフィックスでグループ化する集約は特に効率的で、多くの場合、最小限のメモリ消費で実行されます。
+ClickHouse はサイズ制限を課しません。大規模なデータセットに対して、無制限の group-by クエリを実行できます。メモリ閾値を超えた場合、ClickHouse は[ディスクへのスピル](/sql-reference/statements/select/group-by#group-by-in-external-memory)を行うことができます。主キーのプレフィックスでグループ化する集約は特に効率的で、多くの場合、最小限のメモリ消費で実行されます。
 
 #### 実行モデル \{#execution-model\}
 
@@ -207,25 +207,25 @@ ClickHouse は、`MergeTree` のようなネイティブテーブルエンジン
 
 ### ロールアップ vs インクリメンタル集約 \{#rollups-vs-incremental-aggregates\}
 
-Elasticsearch では、**ロールアップ**や**集約**は [**transforms**](https://www.elastic.co/guide/en/elasticsearch/reference/current/transforms.html) と呼ばれるメカニズムを使って実現されます。これは、**スライディングウィンドウ**モデルを用いて、時系列データを一定間隔（例: 1 時間ごと、1 日ごと）で要約するために使用されます。transforms は、あるインデックスからデータを集約し、その結果を別の **ロールアップインデックス** に書き込む定期実行のバックグラウンドジョブとして構成されます。これにより、高カーディナリティな生データを繰り返しスキャンすることを避け、長期間のクエリのコストを削減できます。
+Elasticsearch では、**ロールアップ**や**集約**は [**transforms**](https://www.elastic.co/guide/en/elasticsearch/reference/current/transforms.html) と呼ばれるメカニズムを使って実現されます。これは、**スライディングウィンドウ**モデルを用いて、時系列データを一定間隔 (例: 1 時間ごと、1 日ごと) で要約するために使用されます。transforms は、あるインデックスからデータを集約し、その結果を別の **ロールアップインデックス** に書き込む定期実行のバックグラウンドジョブとして構成されます。これにより、高カーディナリティな生データを繰り返しスキャンすることを避け、長期間のクエリのコストを削減できます。
 
-次の図は、transforms がどのように動作するかを抽象的に示したものです（あらかじめ集約値を計算しておきたい同じバケットに属するすべてのドキュメントを青色で示しています）:
+次の図は、transforms がどのように動作するかを抽象的に示したものです (あらかじめ集約値を計算しておきたい同じバケットに属するすべてのドキュメントを青色で示しています) :
 
-<Image img={elasticsearch_transforms} alt="Elasticsearch transforms" size="lg"/>
+<Image img={elasticsearch_transforms} alt="Elasticsearch transforms" size="lg" />
 
-継続的な transform は、設定可能なチェック間隔時間（デフォルト値 1 分の transform の [frequency](https://www.elastic.co/guide/en/elasticsearch/reference/current/put-transform.html)）に基づいた transform の[チェックポイント](https://www.elastic.co/guide/en/elasticsearch/reference/current/transform-checkpoints.html)を使用します。上の図では、① チェック間隔が経過すると新しいチェックポイントが作成されるものと仮定します。ここで Elasticsearch は transform のソースインデックスの変更を確認し、前回のチェックポイント以降に存在する 3 つの新しい `blue` ドキュメント（11、12、13）を検出します。そこで、ソースインデックスを既存のすべての `blue` ドキュメントに対してフィルタリングし、[composite aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-composite-aggregation.html)（結果の[ページネーション](https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html)を利用するため）によって集約値を再計算します（そのうえで、前回の集約値を含むドキュメントを置き換えるドキュメントで宛先インデックスを更新します）。同様に、② と ③ でも、新しいチェックポイントが処理され、変更を確認し、同じ `blue` バケットに属するすべての既存ドキュメントから集約値を再計算します。
+継続的な transform は、設定可能なチェック間隔時間 (デフォルト値 1 分の transform の [frequency](https://www.elastic.co/guide/en/elasticsearch/reference/current/put-transform.html)) に基づいた transform の[チェックポイント](https://www.elastic.co/guide/en/elasticsearch/reference/current/transform-checkpoints.html)を使用します。上の図では、① チェック間隔が経過すると新しいチェックポイントが作成されるものと仮定します。ここで Elasticsearch は transform のソースインデックスの変更を確認し、前回のチェックポイント以降に存在する 3 つの新しい `blue` ドキュメント (11、12、13) を検出します。そこで、ソースインデックスを既存のすべての `blue` ドキュメントに対してフィルタリングし、[composite 集約](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-composite-aggregation.html) (結果の[ページネーション](https://www.elastic.co/guide/en/elasticsearch/reference/current/paginate-search-results.html)を利用するため) によって集約値を再計算します (そのうえで、前回の集約値を含むドキュメントを置き換えるドキュメントで宛先インデックスを更新します) 。同様に、② と ③ でも、新しいチェックポイントが処理され、変更を確認し、同じ `blue` バケットに属するすべての既存ドキュメントから集約値を再計算します。
 
 ClickHouse は本質的に異なるアプローチを取ります。データを定期的に再集約するのではなく、ClickHouse は **インクリメンタルなマテリアライズドビュー** をサポートしており、データを **挿入時** に変換・集約します。新しいデータがソーステーブルに書き込まれると、マテリアライズドビューは事前に定義された SQL 集約クエリを、新しく **挿入されたブロック** のみに対して実行し、集約結果をターゲットテーブルに書き込みます。
 
-このモデルは、ClickHouse が [**partial aggregate states**](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction)（格納および後でマージ可能な集約関数の中間表現）をサポートしていることで実現されています。これにより、クエリが高速かつ更新コストの低い部分集約結果を維持できます。集約はデータ到着時に行われるため、高コストな定期ジョブを実行したり、古いデータを再要約したりする必要はありません。
+このモデルは、ClickHouse が [**部分集約状態**](/sql-reference/data-types/aggregatefunction) (格納および後でマージ可能な集約関数の中間表現) をサポートしていることで実現されています。これにより、クエリが高速かつ更新コストの低い部分集約結果を維持できます。集約はデータ到着時に行われるため、高コストな定期ジョブを実行したり、古いデータを再要約したりする必要はありません。
 
-インクリメンタルなマテリアライズドビューの仕組みを抽象的に示すと次のようになります（あらかじめ集約値を計算しておきたい同じグループに属するすべての行を青色で示しています）:
+インクリメンタルなマテリアライズドビューの仕組みを抽象的に示すと次のようになります (あらかじめ集約値を計算しておきたい同じグループに属するすべての行を青色で示しています) :
 
-<Image img={clickhouse_mvs} alt="ClickHouse Materialized Views" size="lg"/>
+<Image img={clickhouse_mvs} alt="ClickHouse Materialized Views" size="lg" />
 
-上の図では、マテリアライズドビューのソーステーブルにはすでに、同じグループに属する `blue` 行（1〜10）を格納するデータパーツが含まれています。このグループに対しては、ビューのターゲットテーブル側にも、`blue` グループの [partial aggregation state](https://www.youtube.com/watch?v=QDAJTKZT8y4) を格納するデータパーツがすでに存在します。① ② ③ のように新しい行がソーステーブルに挿入されると、それぞれの挿入に対応するソーステーブルのデータパーツが作成され、並行して、新しく挿入された各行ブロックごとに partial aggregation state が計算され、データパーツの形でマテリアライズドビューのターゲットテーブルに挿入されます。④ バックグラウンドでのパーツマージ処理の際に、これらの partial aggregation state がマージされ、インクリメンタルなデータ集約が行われます。
+上の図では、マテリアライズドビューのソーステーブルにはすでに、同じグループに属する `blue` 行 (1〜10) を格納するデータパーツが含まれています。このグループに対しては、ビューのターゲットテーブル側にも、`blue` グループの [部分集約状態](https://www.youtube.com/watch?v=QDAJTKZT8y4) を格納するデータパーツがすでに存在します。① ② ③ のように新しい行がソーステーブルに挿入されると、それぞれの挿入に対応するソーステーブルのデータパーツが作成され、並行して、新しく挿入された各行ブロックごとに 部分集約状態 が計算され、データパーツの形でマテリアライズドビューのターゲットテーブルに挿入されます。④ バックグラウンドでのパーツマージ処理の際に、これらの 部分集約状態 がマージされ、インクリメンタルなデータ集約が行われます。
 
-[aggregate functions](https://clickhouse.com/docs/en/sql-reference/aggregate-functions/reference)（90 種類以上）、およびそれらを aggregate function の [combinators](https://www.youtube.com/watch?v=7ApwD0cfAFI) と組み合わせたものはすべて、[partial aggregation states](https://clickhouse.com/docs/en/sql-reference/data-types/aggregatefunction) をサポートしている点に注意してください。
+[aggregate functions](/sql-reference/aggregate-functions/reference) (90 種類以上) 、およびそれらを aggregate function の [combinators](https://www.youtube.com/watch?v=7ApwD0cfAFI) と組み合わせたものはすべて、[部分集約状態](/sql-reference/data-types/aggregatefunction) をサポートしている点に注意してください。
 
 インクリメンタル集約における Elasticsearch と ClickHouse の、より具体的な比較例については、この[サンプル](https://github.com/ClickHouse/examples/tree/main/blog-examples/clickhouse-vs-elasticsearch/continuous-data-transformation#continuous-data-transformation-example)を参照してください。
 

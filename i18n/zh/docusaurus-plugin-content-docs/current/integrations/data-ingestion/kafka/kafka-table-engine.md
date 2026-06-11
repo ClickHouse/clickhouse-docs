@@ -14,10 +14,7 @@ import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafka_03.png';
 import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
-
-# 使用 Kafka 表引擎 \{#using-the-kafka-table-engine\}
-
-Kafka 表引擎可用于从 Apache Kafka 以及其他兼容 Kafka API 的消息代理（例如 Redpanda、Amazon MSK）[**读取** 数据](#kafka-to-clickhouse)和向其[**写入** 数据](#clickhouse-to-kafka)。
+Kafka 表引擎可用于从 Apache Kafka 和其他兼容 Kafka API 的 broker (例如 Redpanda、Amazon MSK) [**读取**数据](#kafka-to-clickhouse)，以及将数据[**写入**](#clickhouse-to-kafka)这些系统。
 
 ### 从 Kafka 到 ClickHouse \{#kafka-to-clickhouse\}
 

@@ -11,7 +11,6 @@ sidebar_position: 2
 doc_type: 'guide'
 ---
 
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import img_open from '@site/static/images/use-cases/AI_ML/AIChat/1_open_chat.png';
 import img_consent from '@site/static/images/use-cases/AI_ML/AIChat/2_consent.png';
@@ -21,9 +20,7 @@ import img_history from '@site/static/images/use-cases/AI_ML/AIChat/5_history.pn
 import img_result_actions from '@site/static/images/use-cases/AI_ML/AIChat/6_result_actions.png';
 import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_editor.png';
 
-# ClickHouse Cloud에서 ClickHouse Assistant 채팅 사용하기 \{#use-clickhouse-assistant-chat-in-clickhouse-cloud\}
-
-> 이 가이드는 ClickHouse Cloud Console에서 AI Chat 기능을 활성화하고 사용하는 방법을 설명합니다.
+> 이 가이드에서는 ClickHouse Cloud Console에서 AI Chat 기능을 활성화하고 사용하는 방법을 설명합니다.
 
 <VerticalStepper headerLevel="h2">
   ## 사전 준비 사항 \{#prerequisites\}
@@ -58,7 +55,7 @@ import img_new_tab from '@site/static/images/use-cases/AI_ML/AIChat/7_open_in_ed
 
   ## 메시지 작성 및 전송 \{#compose\}
 
-  1. 질문을 입력합니다(예: &quot;사용자별 일별 이벤트를 집계하는 materialized view를 생성해 주세요&quot;).
+  1. 질문을 입력합니다(예: 「사용자별 일별 이벤트를 집계하는 materialized view를 생성해 주세요」).
   2. <kbd>Enter</kbd>를 눌러 전송합니다(<kbd>Shift</kbd> + <kbd>Enter</kbd>는 새 줄 입력).
   3. 모델이 처리 중일 때는 「Stop」을 클릭하여 중단할 수 있습니다.
 

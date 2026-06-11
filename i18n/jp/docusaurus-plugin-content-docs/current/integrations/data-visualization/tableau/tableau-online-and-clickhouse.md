@@ -24,10 +24,7 @@ import tableau_desktop_03 from '@site/static/images/integrations/data-visualizat
 import tableau_desktop_04 from '@site/static/images/integrations/data-visualization/tableau_desktop_04.png';
 import tableau_desktop_05 from '@site/static/images/integrations/data-visualization/tableau_desktop_05.png';
 
-
-# Tableau Online \{#tableau-online\}
-
-Tableau Online は、公式の MySQL データソースを使用し、MySQL インターフェイス経由で ClickHouse Cloud またはオンプレミス環境の ClickHouse 構成に接続できます。
+Tableau Online は、公式の MySQL データソースを使用して、MySQL インターフェイス経由で ClickHouse Cloud またはオンプレミスの ClickHouse 環境に接続できます。
 
 ## ClickHouse Cloud のセットアップ \{#clickhouse-cloud-setup\}
 

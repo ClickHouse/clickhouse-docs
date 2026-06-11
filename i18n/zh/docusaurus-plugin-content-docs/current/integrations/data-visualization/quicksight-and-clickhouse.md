@@ -21,11 +21,9 @@ import quicksight_06 from '@site/static/images/integrations/data-visualization/q
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# QuickSight \{#quicksight\}
+<ClickHouseSupportedBadge />
 
-<ClickHouseSupportedBadge/>
-
-QuickSight 可以通过官方 MySQL 数据源，并使用 Direct Query 模式，经由 MySQL 接口连接到本地部署的 ClickHouse 集群（23.11+）。
+QuickSight 可通过 MySQL 接口，使用官方 MySQL 数据源和 Direct Query 模式，连接到本地部署的 ClickHouse 环境 (23.11+) 。
 
 ## 本地部署 ClickHouse 服务器的设置 \{#on-premise-clickhouse-server-setup\}
 
@@ -47,7 +45,7 @@ QuickSight 可以通过官方 MySQL 数据源，并使用 Direct Query 模式，
 PASSWORD=$(base64 < /dev/urandom | head -c16); echo "$PASSWORD"; echo -n "$PASSWORD" | sha1sum | tr -d '-' | xxd -r -p | sha1sum | tr -d '-'
 ```
 
-输出结果应类似如下所示：
+输出应类似如下：
 
 ```text
 LZOQYnqQN4L/T6L0
@@ -99,7 +97,7 @@ QuickSight 需要在该 MySQL 用户的配置中添加若干额外设置。
 ```
 
 如果本机已安装 `mysql` 可执行文件，可以在命令行中测试连接。
-使用上文示例中的用户名（`mysql_user`）和密码（`LZOQYnqQN4L/T6L0`），命令行命令如下：
+使用上文示例中的用户名 (`mysql_user`) 和密码 (`LZOQYnqQN4L/T6L0`) ，命令行命令如下：
 
 ```bash
 mysql --protocol tcp -h localhost -u mysql_user -P 9004 --password=LZOQYnqQN4L/T6L0
@@ -121,44 +119,51 @@ Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 
 ## 将 QuickSight 连接到 ClickHouse \{#connecting-quicksight-to-clickhouse\}
 
-首先，访问 [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com)，进入 Datasets，然后单击 "New dataset"（新建数据集）：
+首先，访问 [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com)，进入 Datasets，然后单击 &quot;New dataset&quot; (新建数据集) ：
 
 <Image size="md" img={quicksight_01} alt="Amazon QuickSight 仪表盘，在 Datasets 区域显示 New dataset 按钮" border />
-<br/>
 
-搜索 QuickSight 自带的官方 MySQL 连接器（名称为 **MySQL**）：
+<br />
+
+搜索 QuickSight 自带的官方 MySQL 连接器 (名称为 **MySQL**) ：
 
 <Image size="md" img={quicksight_02} alt="QuickSight 数据源选择界面，搜索结果中高亮显示 MySQL" border />
-<br/>
+
+<br />
 
 填写连接参数。请注意，MySQL 接口端口默认为 9004，
 具体端口可能会因服务器配置不同而有所差异。
 
 <Image size="md" img={quicksight_03} alt="QuickSight MySQL 连接配置表单，包含主机名、端口、数据库和凭证字段" border />
-<br/>
+
+<br />
 
 现在，您有两种方式可以从 ClickHouse 获取数据。第一种方式是从列表中选择一张表：
 
 <Image size="md" img={quicksight_04} alt="QuickSight 表选择界面，显示来自 ClickHouse 的可用数据库表" border />
-<br/>
+
+<br />
 
 或者，您也可以编写自定义 SQL 来获取数据：
 
 <Image size="md" img={quicksight_05} alt="QuickSight 自定义 SQL 查询编辑器，用于从 ClickHouse 获取数据" border />
-<br/>
 
-单击 "Edit/Preview data"（编辑/预览数据）后，您应该能够看到解析出的表结构，或者根据需要调整自定义 SQL（如果您选择通过这种方式访问数据）：
+<br />
+
+单击 &quot;Edit/Preview data&quot; (编辑/预览数据) 后，您应该能够看到解析出的表结构，或者根据需要调整自定义 SQL (如果您选择通过这种方式访问数据) ：
 
 <Image size="md" img={quicksight_06} alt="QuickSight 数据预览界面，显示包含列和示例数据的表结构" border />
-<br/>
 
-请确保在 UI 左下角选中了 "Direct Query"（直接查询）模式：
+<br />
+
+请确保在 UI 左下角选中了 &quot;Direct Query 模式&quot;：
 
 <Image size="md" img={quicksight_07} alt="QuickSight 界面，在左下角高亮显示 Direct Query 模式选项" border />
-<br/>
+
+<br />
 
 现在，您可以继续发布数据集并创建新的可视化了！
 
 ## 已知限制 \{#known-limitations\}
 
-- SPICE 导入功能不能正常工作；请改用 Direct Query 模式。请参见 [#58553](https://github.com/ClickHouse/ClickHouse/issues/58553)。
+* SPICE 导入功能不能正常工作；请改用 Direct Query 模式。请参见 [#58553](https://github.com/ClickHouse/ClickHouse/issues/58553)。

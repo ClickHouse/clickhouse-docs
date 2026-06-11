@@ -7,10 +7,6 @@ title: 'clickhousectl'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-<BetaBadge />
-
 `clickhousectl` は、ローカル環境とクラウド環境に対応した ClickHouse 用 CLI です。
 
 `clickhousectl` を使用すると、次のことができます。

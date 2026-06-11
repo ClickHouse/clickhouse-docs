@@ -18,11 +18,8 @@ import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-log
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack を使用した PostgreSQL ログの監視 \{#postgres-logs-clickstack\}
-
-:::note[TL;DR]
-OTel `filelog` レシーバーを使用して、PostgreSQL サーバーログ（CSV 形式）を ClickStack で収集し、可視化します。デモ用データセットと事前構築済みダッシュボードが含まれます。
+:::note[要点]
+OTel `filelog` レシーバーを使用して、PostgreSQL サーバーログ (CSV フォーマット) を ClickStack に収集し、可視化します。デモ用データセットと構築済みのダッシュボードが含まれます。
 :::
 
 ## 既存の PostgreSQL との統合 \{#existing-postgres\}

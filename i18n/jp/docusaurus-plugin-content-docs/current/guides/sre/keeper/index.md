@@ -4,19 +4,16 @@ slug: /guides/sre/keeper/clickhouse-keeper
 sidebar_label: 'ClickHouse Keeperの設定'
 sidebar_position: 10
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
-description: 'ClickHouse Keeper（clickhouse-keeper）はZooKeeperを置き換え、レプリケーションと調整を提供します。'
+description: 'ClickHouse Keeper（clickhouse-keeper）はZooKeeperの代わりとなり、レプリケーションと調整機能を提供します。'
 title: 'ClickHouse Keeper'
 doc_type: 'guide'
 ---
-
-# ClickHouse Keeper (clickhouse-keeper) \{#clickhouse-keeper-clickhouse-keeper\}
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 
 <SelfManaged />
 
 ClickHouse Keeperは、データの[レプリケーション](/engines/table-engines/mergetree-family/replication.md)と[分散DDL](/sql-reference/distributed-ddl.md)クエリ実行のための調整システムを提供します。ClickHouse KeeperはZooKeeperと互換性があります。
-
 
 ### 実装の詳細 \{#implementation-details\}
 

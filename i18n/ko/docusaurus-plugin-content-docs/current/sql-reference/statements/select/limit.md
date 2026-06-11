@@ -6,9 +6,7 @@ title: 'LIMIT 절'
 doc_type: 'reference'
 ---
 
-# LIMIT 절 \{#limit-clause\}
-
-`LIMIT` 절은 쿼리 결과에서 반환할 행의 개수를 제한합니다.
+`LIMIT` 절은 쿼리 결과로 반환되는 행 수를 제어합니다.
 
 ## 기본 구문 \{#basic-syntax\}
 

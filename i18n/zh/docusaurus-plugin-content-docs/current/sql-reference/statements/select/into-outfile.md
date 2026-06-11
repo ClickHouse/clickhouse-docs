@@ -1,12 +1,10 @@
 ---
-description: 'INTO OUTFILE 子句说明'
+description: 'INTO OUTFILE 子句文档'
 sidebar_label: 'INTO OUTFILE'
 slug: /sql-reference/statements/select/into-outfile
 title: 'INTO OUTFILE 子句'
 doc_type: 'reference'
 ---
-
-# INTO OUTFILE 子句 \{#into-outfile-clause\}
 
 `INTO OUTFILE` 子句会将 `SELECT` 查询的结果重定向到**客户端**本地的文件中。
 
@@ -35,13 +33,11 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 使用[命令行客户端](../../../interfaces/client.md)执行以下查询：
 
-```bash
+```bash title="Query"
 clickhouse-client --query="SELECT 1,'ABC' INTO OUTFILE 'select.gz' FORMAT CSV;"
 zcat select.gz 
 ```
 
-结果：
-
-```text
+```text title="Response"
 1,"ABC"
 ```

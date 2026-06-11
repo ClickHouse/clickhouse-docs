@@ -7,6 +7,4 @@ title: 'Set'
 doc_type: 'reference'
 ---
 
-# Set \{#set\}
-
-用于 [IN](/sql-reference/operators/in) 表达式右侧的集合。
+用于 [IN](/sql-reference/operators/in) 表达式的右侧部分。

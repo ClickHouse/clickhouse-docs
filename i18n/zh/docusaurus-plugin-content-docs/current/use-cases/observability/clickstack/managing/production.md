@@ -52,6 +52,8 @@ import ResourceEstimation from '@site/i18n/zh/docusaurus-plugin-content-docs/cur
 
     <ResourceEstimation />
 
+    有关如何进一步细化适用于你环境的容量估算假设的更多详细信息，请参见[“Refining sizing assumptions for your environment”](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions)。
+
     #### 隔离可观测性工作负载 \{#isolating-workloads\}
 
     如果你在一个已经支持其他工作负载 (例如实时应用分析) 的**现有 ClickHouse Cloud 服务**中新增 ClickStack，强烈建议将可观测性流量进行隔离。

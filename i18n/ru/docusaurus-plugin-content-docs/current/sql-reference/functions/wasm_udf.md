@@ -133,6 +133,45 @@ SELECT 'my_module', base64Decode('...'), reinterpretAsUInt256(unhex('369f...c57d
 
 Если указанный хэш не совпадает с вычисленным SHA256‑хэшем кода модуля, вставка завершается с ошибкой. Это может быть полезно при загрузке модулей из внешних источников, таких как S3 или HTTP.
 
+### Распределение модуля по кластеру \{#distribute-a-module-across-a-cluster\}
+
+`system.webassembly_modules` — локальная таблица каждого экземпляра: `INSERT` выполняется только на реплике, обрабатывающей соединение. Формы `ON CLUSTER` для оператора `INSERT` не существует, поэтому последующий `CREATE FUNCTION ... ON CLUSTER` завершится ошибкой на репликах, где модуль отсутствует:
+
+```text
+Code: 674. DB::Exception: WebAssembly module 'collatz' not found:
+while adding user defined function `collatz_steps`. (RESOURCE_NOT_FOUND)
+```
+
+Чтобы выполнить вставку на всех узлах, записывайте в табличную функцию `cluster`, а не в локальную таблицу `system.webassembly_modules`:
+
+```bash
+cat collatz.wasm | clickhouse client -q "
+  INSERT INTO FUNCTION cluster('default', 'system', 'webassembly_modules') (name, code)
+  SELECT 'collatz', code FROM input('code String') FORMAT RawBlob"
+```
+
+:::note
+Этот подход опирается на то, что нижележащий механизм распределённой записи проходит через каждую реплику в каждом сегменте, а это происходит только когда кластер настроен с `internal_replication=false`. При `internal_replication=true` (значение по умолчанию для кластеров, использующих `ReplicatedMergeTree` для управления репликацией), вставка доставляется только одной работоспособной реплике в каждом сегменте, а `system.webassembly_modules` по этому пути не реплицируется — поэтому на части реплик модуль по-прежнему будет отсутствовать. В такой конфигурации нужно выполнять вставку в каждую реплику отдельно, например перебирая `system.clusters` и записывая через `remote(...)` для каждого хоста, либо копируя бинарный файл в `user_scripts/wasm/` на каждый хост.
+
+Проверить значение `internal_replication` для кластера можно с помощью `SELECT cluster, shard_num, internal_replication FROM system.clusters`.
+:::
+
+После такой распределённой вставки модуль присутствует на каждой реплике, и `CREATE FUNCTION ... ON CLUSTER` выполняется успешно:
+
+```sql
+CREATE FUNCTION collatz_steps ON CLUSTER 'default'
+LANGUAGE WASM FROM 'collatz' :: 'steps'
+ARGUMENTS (n UInt32) RETURNS UInt32;
+```
+
+Вы можете проверить, что модуль загружен на всех репликах, с помощью `clusterAllReplicas`:
+
+```sql
+SELECT hostName(), name FROM clusterAllReplicas('default', system.webassembly_modules) WHERE name = 'collatz';
+```
+
+Операции вставки в `system.webassembly_modules` идемпотентны для одной и той же пары `(name, hash)`, поэтому повторный запуск распределённой вставки безопасен и вполне подходит для восстановления состояния после замены реплики. Обратите внимание, что вновь добавленные серверы не получают существующие модули задним числом — необходимо повторно выполнить вставку для обновлённого кластера или поместить бинарный файл в каталог `user_scripts/wasm/` на новом хосте.
+
 ### Список модулей \{#list-modules\}
 
 ```sql
@@ -145,16 +184,19 @@ SELECT name, lower(hex(reinterpretAsFixedString(hash))) AS sha256 FROM system.we
 
 ### Удаление модуля \{#delete-a-module\}
 
-Удаление выполняется запросом `DELETE FROM system.webassembly_modules WHERE name = '...'`.
-Поддерживается только удаление одного модуля за один запрос по его точному имени.
+Удаление выполняется оператором `DELETE FROM system.webassembly_modules WHERE name = '...'`.
+Предикат должен иметь вид либо `name = 'literal'` для точного совпадения, либо `name LIKE 'pattern'` для удаления всех модулей, имена которых соответствуют шаблону; другие формы не допускаются.
 
 ```sql
 DELETE FROM system.webassembly_modules WHERE name = 'collatz';
+
+-- Bulk-delete every module whose name starts with `tmp_` (literal underscore is escaped as `\_`):
+DELETE FROM system.webassembly_modules WHERE name LIKE 'tmp\_%';
 ```
 
-Если какие-либо существующие UDF ссылаются на модуль, удаление завершится с ошибкой, поэтому сначала нужно удалить эти UDF.
+Если какие-либо существующие пользовательские функции (UDF) ссылаются на один из найденных модулей, удалить его не удастся, поэтому сначала необходимо удалить эти UDF.
 
-## Создайте UDF на WebAssembly \{#create-a-webassembly-udf\}
+## Создайте WebAssembly UDF \{#create-a-webassembly-udf\}
 
 **Синтаксис**:
 
@@ -164,7 +206,8 @@ LANGUAGE WASM
 FROM 'module_name' [:: 'source_function_name']
 ARGUMENTS ( [name type[, ...]] | [type[, ...]] )
 RETURNS return_type
-[ABI ROW_DIRECT | ABI BUFFERED_V1]
+[ABI ROW_DIRECT | ABI BUFFERED_V1 | ABI ASSEMBLYSCRIPT]
+[DETERMINISTIC]
 [SHA256_HASH 'hex']
 [SETTINGS key = value[, ...]];
 ```
@@ -172,14 +215,17 @@ RETURNS return_type
 **Параметры**:
 
 * `function_name`: Имя функции в ClickHouse. Может отличаться от имени экспортируемой функции в модуле.
-* `FROM 'module_name' :: 'source_function_name'`: Имя загруженного модуля WASM и имя функции в модуле WASM, которое следует использовать (по умолчанию — `function_name`).
+* `FROM 'module_name' :: 'source_function_name'`: Имя загруженного модуля WASM и имя функции в модуле WASM, которое следует использовать (по умолчанию — `function&#95;name`).
 * `ARGUMENTS`: Список имён и типов аргументов (имена необязательны и используются для форматов сериализации, которые поддерживают именованные поля).
 * `ABI`: Версия Application Binary Interface
   * `ROW_DIRECT`: Прямое сопоставление типов, построчная обработка
   * `BUFFERED_V1`: Блочная обработка с сериализацией
+  * `ASSEMBLYSCRIPT`: Построчная обработка для модулей, созданных компилятором [AssemblyScript](https://www.assemblyscript.org). Числовые типы сопоставляются с примитивами AssemblyScript; ClickHouse `String` сопоставляется со строковым типом `string` в AssemblyScript.
+* `DETERMINISTIC`: Объявляет функцию детерминированной — она всегда возвращает один и тот же результат для одних и тех же входных данных. Если указано, ClickHouse может выполнить свёртку в константу для вызовов, где все аргументы являются константами: функция вычисляется один раз на этапе анализа запроса, и результат повторно используется для каждой строки.
 * `SHA256_HASH`: Ожидаемый хэш модуля для проверки (автоматически заполняется, если опущен); может использоваться для обеспечения загрузки корректного модуля WASM на разных репликах.
 * `SETTINGS`: Настройки для отдельной функции
-  * `serialization_format` String — Формат сериализации для ABI, где это требуется. Значение по умолчанию: `MsgPack`.
+  * `serialization_format` String — Формат сериализации для ABI, где это требуется. Поддерживаемые значения: `MsgPack`, `JSONEachRow`, `CSV`, `TSV`, `TSVRaw`, `RowBinary` и `Buffers`. Значение по умолчанию: `MsgPack`. Блочные форматы, такие как `Buffers`, должны возвращать один столбец, тип которого соответствует объявленной сигнатуре функции.
+  * `webassembly_udf_enable_fuel` Bool — Включает ограничение fuel для функции. Значение по умолчанию: `true`. Если указано `false`, настройка уровня запроса `webassembly_udf_max_fuel` игнорируется для этой функции. Отключение ограничений fuel может повысить производительность при использовании движка `wasmtime`. Однако для недоверенного или содержащего ошибки гостевого кода это может увеличить риск бесконтрольного выполнения.
 
 ## Версии ABI \{#abis-versions\}
 
@@ -187,6 +233,7 @@ RETURNS return_type
 
 * `ROW_DIRECT`: Прямое отображение типов (только примитивные типы `Int32`, `UInt32`, `Int64`, `UInt64`, `Float32`, `Float64`)
 * `BUFFERED_V1`: Сложные типы с сериализацией
+* `ASSEMBLYSCRIPT`: Построчное взаимодействие с модулями [AssemblyScript](https://www.assemblyscript.org); поддерживаются числовые типы и `String`.
 
 ### ABI ROW_DIRECT \{#abi-row_direct\}
 
@@ -261,6 +308,55 @@ ClickhouseBuffer * user_defined_function1(ClickhouseBuffer * span, uint32_t n) {
 ClickhouseBuffer * user_defined_function2(ClickhouseBuffer * span, uint32_t n) { /* ... */ }
 ```
 
+### ABI ASSEMBLYSCRIPT \{#abi-assemblyscript\}
+
+Предназначен для модулей, скомпилированных компилятором [AssemblyScript](https://www.assemblyscript.org). Каждая строка инициирует один вызов экспортируемой функции, сопоставляя значения ClickHouse с примитивными типами и строковыми объектами AssemblyScript.
+
+**Поддерживаемые типы**:
+
+* Числовые: `Int8`/`UInt8`, `Int16`/`UInt16` (на границе расширяются до `i32`), `Int32`/`UInt32`, `Int64`/`UInt64`, `Float32`, `Float64`
+
+* `String` — сопоставляется со строковым типом AssemblyScript `string` (UTF-16 в памяти WASM). ClickHouse автоматически выполняет преобразование UTF-8 ↔ UTF-16.
+
+* Пользовательские классы AssemblyScript не поддерживаются в качестве типов аргументов или возвращаемых значений — их идентификаторы классов во время выполнения не являются стабильными между компиляциями (см. [AssemblyScript#2982](https://github.com/AssemblyScript/assemblyscript/issues/2982)).
+
+**Требования к модулю**:
+
+Модуль должен быть скомпилирован с управляемой средой выполнения AssemblyScript, чтобы экспортировались `__new`, `__pin` и `__unpin`. Стандартная обработка входящих и исходящих строк рассчитана именно на это. Рекомендуемая команда вызова:
+
+```bash
+asc src.ts --runtime incremental --exportRuntime -o src.wasm
+```
+
+AssemblyScript также импортирует `env.abort` для ловушек среды выполнения (нехватка памяти, проверка границ и т. д.). ClickHouse автоматически предоставляет этот импорт: при срабатывании `abort` активный запрос завершается с исключением `WASM_ERROR`, содержащим декодированное сообщение AssemblyScript и расположение в исходном коде.
+
+**Пример**:
+
+```typescript
+// src.ts
+export function add(a: u32, b: u32): u32 {
+  return a + b;
+}
+
+export function greet(name: string): string {
+  return "Hello, " + name + "!";
+}
+```
+
+После компиляции с помощью `asc` и загрузки полученного файла `.wasm` в `system.webassembly_modules` объявите пользовательские функции (UDF) следующим образом:
+
+```sql
+CREATE FUNCTION as_add
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'add'
+    ARGUMENTS (a UInt32, b UInt32) RETURNS UInt32;
+
+CREATE FUNCTION as_greet
+    LANGUAGE WASM ABI ASSEMBLYSCRIPT
+    FROM 'as_example' :: 'greet'
+    ARGUMENTS (name String) RETURNS String;
+```
+
 ### Примечание по разработке UDF на Rust \{#note-for-developing-udfs-in-rust\}
 
 Для программ на Rust мы предоставляем вспомогательный crate [clickhouse-wasm-udf](https://crates.io/crates/clickhouse-wasm-udf), который упрощает разработку UDF на WebAssembly для ClickHouse. Этот crate содержит функции для управления памятью, поэтому вам не нужно вручную реализовывать функции `clickhouse_create_buffer` и `clickhouse_destroy_buffer` — достаточно добавить crate как зависимость. Также доступны макросы `#[clickhouse_wasm_udf]`, которые оборачивают ваши обычные функции Rust в требуемый формат ABI.
@@ -288,12 +384,13 @@ pub fn some_udf(data: String) -> HashMap<String, String> {
 * `clickhouse_throw(ptr: i32, size: i32)` — вызывает ошибку с переданным сообщением. Принимает указатель на область памяти, содержащую строку сообщения об ошибке, и размер строки.
 * `clickhouse_log(ptr: i32, size: i32)` — записывает сообщение в текстовый лог сервера ClickHouse.
 * `clickhouse_random(ptr: i32, size: i32)` — заполняет память случайными байтами.
+* `env.abort(message: i32, fileName: i32, line: i32, column: i32)` — предоставляется для модулей, совместимых с AssemblyScript. Его вызов (или срабатывание ловушки среды выполнения AssemblyScript, которая его вызывает) завершает UDF исключением `WASM_ERROR`, содержащим декодированное сообщение и расположение в исходном коде. На модули, которые не импортируют `env.abort`, это не влияет.
 
 ## Настройки \{#settings\}
 
 Следующие настройки на уровне запроса управляют выполнением WebAssembly UDF:
 
-* `webassembly_udf_max_fuel` — лимит топлива на выполнение экземпляра WebAssembly UDF. Каждая инструкция WebAssembly потребляет некоторое количество топлива. Установите значение 0 для отключения ограничения.
+* `webassembly_udf_max_fuel` — лимит топлива на выполнение экземпляра WebAssembly UDF. Каждая инструкция WebAssembly потребляет некоторое количество топлива. Перед передачей в среду выполнения значение умножается на 1024, поэтому `webassembly_udf_max_fuel = 1` соответствует примерно 1024 единицам топлива. Установите значение 0, чтобы снять ограничение. Применяется только к функциям, для которых настройка на уровне функции `webassembly_udf_enable_fuel` имеет значение true, что используется по умолчанию.
 
 * `webassembly_udf_max_memory` — лимит памяти в байтах на экземпляр WebAssembly UDF.
 

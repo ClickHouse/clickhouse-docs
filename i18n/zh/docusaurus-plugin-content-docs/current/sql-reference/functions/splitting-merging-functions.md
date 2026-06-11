@@ -71,6 +71,8 @@ SELECT alphaTokens('abca1abc');
 arrayStringConcat(arr[, separator])
 ```
 
+**别名**: `array_to_string`
+
 **参数**
 
 * `arr` — 要拼接的数组。[`Array(T)`](/sql-reference/data-types/array)

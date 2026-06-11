@@ -7,6 +7,7 @@ pagination_next: null
 description: "2026-04-10 ClickStack 데모 데이"
 doc_type: "guide"
 keywords: ["ClickStack", "데모 데이"]
+sidebar_position: -20260410
 ---
 
 ## 고정할 수 있는 데이터 소스 필터 \{#pinnable-datasource-filters\}

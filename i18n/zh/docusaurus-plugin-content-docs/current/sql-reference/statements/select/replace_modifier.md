@@ -1,13 +1,11 @@
 ---
-description: '本文档介绍 REPLACE 修饰符，它允许你对查询的外层表表达式返回的每一行调用某个函数。'
+description: '介绍 APPLY 修饰符的文档，该修饰符允许您对查询的外部表表达式返回的每一行调用某个函数。'
 sidebar_label: 'REPLACE'
 slug: /sql-reference/statements/select/replace-modifier
-title: 'REPLACE 修饰符'
+title: 'Replace 修饰符'
 keywords: ['REPLACE', 'modifier']
 doc_type: 'reference'
 ---
-
-# Replace 修饰符 \{#replace\}
 
 > 允许您指定一个或多个[表达式别名](/sql-reference/syntax#expression-aliases)。
 

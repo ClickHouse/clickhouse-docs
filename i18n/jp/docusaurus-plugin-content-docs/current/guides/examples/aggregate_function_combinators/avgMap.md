@@ -7,8 +7,6 @@ sidebar_label: 'avgMap'
 doc_type: 'reference'
 ---
 
-# avgMap \{#avgmap\}
-
 ## 説明 \{#description\}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) コンビネータは、`avgMap` 集約コンビネータ関数を使用して、各キーごとに Map 内の値の算術平均を計算するために、[`avg`](/sql-reference/aggregate-functions/reference/avg) 関数に適用できます。

@@ -6,8 +6,6 @@ title: 'Ограничения на TCP-соединения'
 doc_type: 'reference'
 ---
 
-# Ограничение на TCP-соединение \{#tcp-connection-limits\}
-
 ## Обзор \{#overview\}
 
 TCP-соединение к ClickHouse (например, при использовании [клиента командной строки](https://clickhouse.com/docs/interfaces/client))

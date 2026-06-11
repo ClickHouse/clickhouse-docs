@@ -11,8 +11,6 @@ keywords: ['backups', 'disaster recovery', 'data protection', 'restore', 'cloud 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Take a backup or restore a backup using commands {#commands-experience}
-
 You can utilize `BACKUP` and `RESTORE` commands to export backups to their storage buckets,
 in addition to backing up or restoring [via user interface](/cloud/manage/backups/backup-restore-via-ui).
 Commands for all three CSPs are given in this guide.

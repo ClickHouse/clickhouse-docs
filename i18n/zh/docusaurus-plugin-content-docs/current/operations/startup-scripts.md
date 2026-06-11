@@ -1,12 +1,10 @@
 ---
-description: '在 ClickHouse 中配置和使用 SQL 启动脚本以自动创建 schema 并执行迁移操作的指南'
+description: '在 ClickHouse 中配置和使用 SQL 启动脚本以自动创建 schema 和执行迁移的指南'
 sidebar_label: '启动脚本'
 slug: /operations/startup-scripts
 title: '启动脚本'
 doc_type: 'guide'
 ---
-
-# 启动脚本 \{#startup-scripts\}
 
 ClickHouse 可以在启动时根据服务器配置执行任意 SQL 查询。这对于迁移或自动创建模式很有用。
 

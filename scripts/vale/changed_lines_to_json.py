@@ -29,7 +29,11 @@ from pathlib import Path
 def get_changed_files(base_sha, head_sha, pattern=r'^docs/.*\.(md|mdx)$'):
     """Get list of changed files matching the pattern."""
     try:
-        cmd = f"git diff --name-only {base_sha} {head_sha}"
+        # Three-dot diff (base...head) scopes the comparison to the changes
+        # the PR branch added since it diverged from base. Two-dot or
+        # endpoint form would also surface commits main has gained since
+        # the branch was created, causing Vale to run on unrelated files.
+        cmd = f"git diff --name-only {base_sha}...{head_sha}"
         result = subprocess.check_output(cmd, shell=True, text=True)
         all_files = result.splitlines()
 
@@ -45,17 +49,20 @@ def get_changed_files(base_sha, head_sha, pattern=r'^docs/.*\.(md|mdx)$'):
 def get_changed_lines(file_path, base_sha, head_sha):
     """Get line numbers that were changed in a specific file."""
     try:
-        cmd = f"git diff --unified=0 {base_sha} {head_sha} -- {file_path}"
+        cmd = f"git diff --unified=0 {base_sha}...{head_sha} -- {file_path}"
         diff_output = subprocess.check_output(cmd, shell=True, text=True)
 
         changed_lines = []
         for line in diff_output.splitlines():
             if line.startswith("@@"):
-                # Extract line number from git diff header
-                match = re.search(r"^@@ -[0-9]+(?:,[0-9]+)? \+([0-9]+)(?:,[0-9]+)? @@", line)
+                # Extract the full added range from a unified=0 hunk header.
+                # Format: @@ -A,B +C[,D] @@ — D is omitted when exactly 1 line
+                # was added; D is 0 for pure deletions.
+                match = re.search(r"^@@ -[0-9]+(?:,[0-9]+)? \+([0-9]+)(?:,([0-9]+))? @@", line)
                 if match:
-                    line_number = int(match.group(1))
-                    changed_lines.append(line_number)
+                    start = int(match.group(1))
+                    count = int(match.group(2)) if match.group(2) is not None else 1
+                    changed_lines.extend(range(start, start + count))
 
         return changed_lines
     except subprocess.CalledProcessError as e:

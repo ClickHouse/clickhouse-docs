@@ -12,20 +12,18 @@ integration:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# Introduction \{#introduction\}
+## Introduction \{#introduction\}
 
 ClickHouse Connect は、幅広い Python アプリケーションとの相互運用性を提供する中核となるデータベースドライバーです。
 
-- メインインターフェースは、パッケージ `clickhouse_connect.driver` に含まれる `Client` オブジェクトです。このコアパッケージには、ClickHouse サーバーとの通信に使用される各種ヘルパークラスおよびユーティリティ関数に加え、INSERT および SELECT クエリを高度に制御するための「コンテキスト」実装も含まれています。
-- パッケージ `clickhouse_connect.datatypes` は、すべての非実験的な ClickHouse データ型向けのベース実装とサブクラスを提供します。その主な機能は、ClickHouse データを ClickHouse の「Native」バイナリ列指向フォーマットにシリアル化および逆シリアル化することであり、これにより ClickHouse とクライアントアプリケーション間の最も効率的なデータ転送を実現します。
-- パッケージ `clickhouse_connect.cdriver` 内の Cython/C クラスは、最も一般的なシリアル化および逆シリアル化処理の一部を最適化し、純粋な Python 実装と比べて大幅に高いパフォーマンスを実現します。
-- パッケージ `clickhouse_connect.cc_sqlalchemy` には、`datatypes` および `dbi` パッケージを基盤として構築された [SQLAlchemy](https://www.sqlalchemy.org/) ダイアレクトがあります。この実装は、`JOIN`（`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`）、`WHERE` 句、`ORDER BY`、`LIMIT`/`OFFSET`、`DISTINCT` 操作、`WHERE` 条件付きの軽量な `DELETE` 文、テーブルリフレクション、基本的な DDL 操作（`CREATE TABLE`、`CREATE`/`DROP DATABASE`）を含む SQLAlchemy Core の機能をサポートします。高度な ORM 機能や高度な DDL 機能はサポートしていませんが、ClickHouse の OLAP 指向データベースに対する多くの分析ワークロードに適した堅牢なクエリ機能を提供します。
-- コアドライバーおよび [ClickHouse Connect SQLAlchemy](sqlalchemy.md) 実装は、ClickHouse を Apache Superset に接続するための推奨方法です。`ClickHouse Connect` データベース接続、または `clickhousedb` SQLAlchemy ダイアレクトの接続文字列を使用してください。
+* メインインターフェースは、パッケージ `clickhouse_connect.driver` に含まれる `Client` オブジェクトです。このコアパッケージには、ClickHouse サーバーとの通信に使用される各種ヘルパークラスおよびユーティリティ関数に加え、INSERT および SELECT クエリを高度に制御するための「コンテキスト」実装も含まれています。
+* パッケージ `clickhouse_connect.datatypes` は、すべての非実験的な ClickHouse データ型向けのベース実装とサブクラスを提供します。その主な機能は、ClickHouse データを ClickHouse の「Native」バイナリ列指向フォーマットにシリアル化および逆シリアル化することであり、これにより ClickHouse とクライアントアプリケーション間の最も効率的なデータ転送を実現します。
+* パッケージ `clickhouse_connect.cdriver` 内の Cython/C クラスは、最も一般的なシリアル化および逆シリアル化処理の一部を最適化し、純粋な Python 実装と比べて大幅に高いパフォーマンスを実現します。
+* パッケージ `clickhouse_connect.cc_sqlalchemy` には、`datatypes` および `dbi` パッケージを基盤として構築された [SQLAlchemy](https://www.sqlalchemy.org/) ダイアレクトがあります。この実装は、`JOIN` (`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`) 、`WHERE` 句、`ORDER BY`、`LIMIT`/`OFFSET`、`DISTINCT` 操作、`WHERE` 条件付きの軽量な `DELETE` 文、テーブルリフレクション、基本的な DDL 操作 (`CREATE TABLE`、`CREATE`/`DROP DATABASE`) を含む SQLAlchemy Core の機能をサポートします。高度な ORM 機能や高度な DDL 機能はサポートしていませんが、ClickHouse の OLAP 指向データベースに対する多くの分析ワークロードに適した堅牢なクエリ機能を提供します。
+* コアドライバーおよび [ClickHouse Connect SQLAlchemy](sqlalchemy.md) 実装は、ClickHouse を Apache Superset に接続するための推奨方法です。`ClickHouse Connect` データベース接続、または `clickhousedb` SQLAlchemy ダイアレクトの接続文字列を使用してください。
 
 本ドキュメントは、clickhouse-connect リリース 0.9.2 時点の内容です。
 

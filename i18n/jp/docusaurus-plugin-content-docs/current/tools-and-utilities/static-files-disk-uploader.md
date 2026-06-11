@@ -2,11 +2,9 @@
 slug: /operations/utilities/static-files-disk-uploader
 title: 'clickhouse-static-files-disk-uploader'
 keywords: ['clickhouse-static-files-disk-uploader', 'utility', 'disk', 'uploader']
-description: 'clickhouse-static-files-disk-uploader ユーティリティの概要を説明します'
+description: 'clickhouse-static-files-disk-uploader ユーティリティの説明を提供します'
 doc_type: 'guide'
 ---
-
-# clickhouse-static-files-disk-uploader \{#clickhouse-static-files-disk-uploader\}
 
 指定した ClickHouse テーブルのメタデータを含むデータディレクトリを出力します。このメタデータを使用して、`web` ディスクをバックエンドとする読み取り専用データセットに基づいた ClickHouse テーブルを別のサーバー上に作成できます。
 

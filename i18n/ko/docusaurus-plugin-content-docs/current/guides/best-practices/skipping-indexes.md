@@ -13,8 +13,6 @@ import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
 
-# ClickHouse 데이터 스키핑 인덱스 이해하기 \{#understanding-clickhouse-data-skipping-indexes\}
-
 ## 소개 \{#introduction\}
 
 ClickHouse 쿼리 성능에는 여러 요소가 영향을 줍니다. 대부분의 시나리오에서 핵심 요소는 ClickHouse가 쿼리의 `WHERE` 절 조건을 평가할 때 기본 키(primary key)를 사용할 수 있는지 여부입니다. 따라서 가장 일반적인 쿼리 패턴에 적용할 수 있는 기본 키를 선택하는 것은 효과적인 테이블 설계를 위해 필수적입니다.
@@ -58,7 +56,9 @@ INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -86,7 +86,9 @@ ALTER TABLE skip_table MATERIALIZE INDEX vix;
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -116,7 +118,6 @@ SET send_logs_level='trace';
 ```sql
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
-
 
 ## 스킵 인덱스의 종류 \{#skip-index-types\}
 

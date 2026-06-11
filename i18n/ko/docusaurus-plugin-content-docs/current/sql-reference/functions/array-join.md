@@ -1,12 +1,10 @@
 ---
-description: 'arrayJoin 함수에 대한 설명서'
+description: 'arrayJoin 함수 문서'
 sidebar_label: 'arrayJoin'
 slug: /sql-reference/functions/array-join
-title: 'arrayJoin 함수'
+title: 'arrayJoin function'
 doc_type: 'reference'
 ---
-
-# arrayJoin function \{#arrayjoin-function\}
 
 이 함수는 매우 특이한 함수입니다.
 
@@ -85,12 +83,12 @@ GROUP BY
 
 ### 모범 사례 \{#important-note\}
 
-동일한 표현식에 대해 여러 번 `arrayJoin`을 사용하는 경우, 공통 부분식 제거로 인해 기대한 결과가 나오지 않을 수 있습니다.
-이러한 경우 조인 결과에 영향을 주지 않는 추가 연산을 사용하여 반복되는 배열 표현식을 변경하는 것을 고려하십시오. 예를 들어 `arrayJoin(arraySort(arr))`, `arrayJoin(arrayConcat(arr, []))`와 같이 사용할 수 있습니다.
+동일한 표현식에 `arrayJoin`을 여러 번 사용하면 공통 부분 표현식 제거로 인해 예상한 결과가 나오지 않을 수 있습니다.
+이러한 경우에는 조인 결과에 영향을 주지 않는 추가 연산을 사용해 반복되는 배열 표현식을 수정하는 방법을 고려하십시오. 예를 들어, `arrayJoin(arraySort(arr))`, `arrayJoin(arrayConcat(arr, []))`
 
-예:
+예시:
 
-```sql
+```sql title="Query"
 SELECT
     arrayJoin(dice) AS first_throw,
     /* arrayJoin(dice) as second_throw */ -- is technically correct, but will annihilate result set
@@ -100,12 +98,12 @@ FROM (
 );
 ```
 
-SELECT 쿼리에서 [`ARRAY JOIN`](../statements/select/array-join.md) 구문을 사용하면 보다 다양한 활용이 가능합니다.
-`ARRAY JOIN`을 사용하면 동일한 개수의 요소를 가진 여러 배열을 한 번에 변환할 수 있습니다.
+SELECT 쿼리에서 [`ARRAY JOIN`](../statements/select/array-join.md) 구문에 주목하십시오. 이 구문을 사용하면 더 폭넓게 활용할 수 있습니다.
+`ARRAY JOIN`을 사용하면 요소 수가 같은 여러 배열을 한 번에 변환할 수 있습니다.
 
-예:
+예시:
 
-```sql
+```sql title="Query"
 SELECT
     sum(1) AS impressions,
     city,
@@ -124,7 +122,7 @@ GROUP BY
     3
 ```
 
-```text
+```text title="Response"
 ┌─impressions─┬─city─────┬─browser─┐
 │           1 │ Istanbul │ Firefox │
 │           1 │ Berlin   │ Chrome  │

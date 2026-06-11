@@ -6,8 +6,6 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-# 이름이 지정된 컬렉션(named collection)을 사용한 ClickHouse와 Kafka 통합 \{#integrating-clickhouse-with-kafka-using-named-collections\}
-
 ## 소개 \{#introduction\}
 
 이 가이드에서는 named collections를 사용하여 ClickHouse를 Kafka에 연결하는 방법을 설명합니다. named collections용 구성 파일을 사용하면 다음과 같은 장점이 있습니다:
@@ -208,7 +206,7 @@ SELECT * FROM second_replicated_table LIMIT 10;
 
 예시 출력:
 
-```sql
+```response
 ┌─id─┬─first_name─┬─last_name─┐
 │  0 │ FirstName0 │ LastName0 │
 │  1 │ FirstName1 │ LastName1 │
@@ -216,4 +214,4 @@ SELECT * FROM second_replicated_table LIMIT 10;
 └────┴────────────┴───────────┘
 ```
 
-이로써 named collection을 사용하여 ClickHouse와 Kafka를 통합하기 위한 설정이 완료됩니다. Kafka 설정을 ClickHouse의 `config.xml` 파일로 중앙집중화하면 설정을 더 쉽게 관리하고 조정할 수 있어, 보다 간소하고 효율적인 통합을 구현할 수 있습니다.
+이로써 명명된 컬렉션을 사용하여 ClickHouse와 Kafka를 통합하기 위한 설정이 완료됩니다. Kafka 설정을 ClickHouse의 `config.xml` 파일로 중앙집중화하면 설정을 더 쉽게 관리하고 조정할 수 있어, 보다 간소하고 효율적인 통합을 구현할 수 있습니다.

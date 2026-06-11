@@ -11,6 +11,9 @@ on:
       - synchronize
       - reopened
       - opened
+permissions:
+  contents: read
+
 jobs:
   stylecheck:
     runs-on: ubuntu-latest

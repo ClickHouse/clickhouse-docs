@@ -43,15 +43,12 @@ import update_query_name from '@site/static/images/cloud/sqlconsole/update-query
 import update_subtitle_etc from '@site/static/images/cloud/sqlconsole/update-subtitle-etc.png';
 import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-scale.png';
 
+SQL 控制台是在 ClickHouse Cloud 中浏览和查询您的数据库最快、最简单的方式。您可以使用 SQL 控制台执行以下操作：
 
-# SQL 控制台 \{#sql-console\}
-
-SQL 控制台是在 ClickHouse Cloud 中浏览和查询数据库的最快、最简便方式。您可以使用 SQL 控制台来：
-
-- 连接到 ClickHouse Cloud 服务
-- 查看、过滤和排序表数据
-- 只需点击几下即可执行查询并可视化结果数据
-- 与团队成员共享查询并更高效地协作。
+* 连接到您的 ClickHouse Cloud 服务
+* 查看、过滤和排序表数据
+* 只需点击几下，即可执行查询并可视化结果数据
+* 与团队成员共享查询，更高效地协作。
 
 ### 浏览数据表 \{#exploring-tables\}
 

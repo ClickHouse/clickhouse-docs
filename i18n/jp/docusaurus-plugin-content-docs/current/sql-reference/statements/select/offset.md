@@ -73,13 +73,11 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 
 `ONLY` オプションの使用例：
 
-```sql
+```sql title="Query"
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─a─┬─b─┐
 │ 2 │ 1 │
 │ 3 │ 4 │
@@ -89,13 +87,11 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 
 `WITH TIES` オプションの使用方法:
 
-```sql
+```sql title="Query"
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS WITH TIES;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─a─┬─b─┐
 │ 2 │ 1 │
 │ 3 │ 4 │

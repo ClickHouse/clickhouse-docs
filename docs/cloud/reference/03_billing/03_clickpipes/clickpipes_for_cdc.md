@@ -7,7 +7,6 @@ doc_type: 'reference'
 keywords: ['billing', 'clickpipes', 'cdc pricing', 'costs', 'pricing']
 ---
 
-# ClickPipes for PostgreSQL CDC {#clickpipes-for-postgresql-cdc}
 
 This section outlines the pricing model for the Postgres Change Data Capture (CDC)
 connector in ClickPipes. In designing this model, the goal was to keep pricing

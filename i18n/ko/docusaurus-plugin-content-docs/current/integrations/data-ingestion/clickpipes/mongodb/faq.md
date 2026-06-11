@@ -11,8 +11,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# MongoDB용 ClickPipes 자주 묻는 질문(FAQ) \{#clickpipes-for-mongodb-faq\}
-
 ### JSON 데이터 타입에서 개별 필드를 쿼리할 수 있습니까? \{#can-i-query-for-individual-fields-in-the-json-datatype\}
 
 `{"user_id": 123}`와 같은 JSON 객체의 개별 필드에 직접 접근하려면 **dot notation(점 표기법)**을 사용하면 됩니다:

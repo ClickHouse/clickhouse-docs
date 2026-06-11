@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'debug', 'explain', 'profiling', 'logging']
 doc_type: 'guide'
 ---
 
-# DataStore 디버깅 \{#datastore-debugging\}
-
-DataStore는 데이터 파이프라인을 이해하고 최적화할 수 있도록 종합적인 디버깅 도구를 제공합니다.
+DataStore는 데이터 파이프라인을 이해하고 최적화하는 데 도움이 되는 포괄적인 디버깅 도구를 제공합니다.
 
 ## 디버깅 도구 개요 \{#overview\}
 
@@ -59,7 +57,7 @@ profiler.report()
 
 쿼리를 실행하기 전에 실행 계획을 미리 확인합니다.
 
-```python
+```python title="Query"
 ds = pd.read_csv("data.csv")
 
 query = (ds
@@ -72,9 +70,7 @@ query = (ds
 query.explain()
 ```
 
-출력 결과:
-
-```text
+```text title="Response"
 Pipeline:
   Source: file('data.csv', 'CSVWithNames')
   Filter: amount > 1000
@@ -92,12 +88,11 @@ GROUP BY region
 
 ***
 
-
 ## 프로파일링 \{#profiling\}
 
 각 작업별 실행 시간을 측정합니다.
 
-```python
+```python title="Query"
 from chdb.datastore.config import config, get_profiler
 
 # Enable profiling
@@ -119,9 +114,7 @@ profiler = get_profiler()
 profiler.report(min_duration_ms=0.1)
 ```
 
-출력:
-
-```text
+```text title="Response"
 Performance Report
 ==================
 Step                          Duration    Calls
@@ -140,7 +133,6 @@ Total                         1.939s      7
 자세한 내용은 [프로파일링 가이드](profiling.md)를 참조하십시오.
 
 ***
-
 
 ## 로깅 \{#logging\}
 

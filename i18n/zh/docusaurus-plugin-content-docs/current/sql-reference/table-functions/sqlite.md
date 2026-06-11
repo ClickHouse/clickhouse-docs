@@ -7,9 +7,7 @@ title: 'sqlite'
 doc_type: 'reference'
 ---
 
-# sqlite 表函数 \{#sqlite-table-function\}
-
-用于对存储在 [SQLite](../../engines/database-engines/sqlite.md) 数据库中的数据执行查询。
+可对存储在 [SQLite](../../engines/database-engines/sqlite.md) 数据库中的数据执行查询。
 
 ## 语法 \{#syntax\}
 
@@ -29,22 +27,17 @@ sqlite('db_path', 'table_name')
 
 ## 示例 \{#example\}
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─col1──┬─col2─┐
 │ line1 │    1 │
 │ line2 │    2 │
 │ line3 │    3 │
 └───────┴──────┘
 ```
-
 
 ## 相关 \{#related\}
 

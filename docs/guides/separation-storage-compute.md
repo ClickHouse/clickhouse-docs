@@ -12,8 +12,6 @@ import Image from '@theme/IdealImage';
 import BucketDetails from '@site/docs/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
-# Separation of storage and compute
-
 ## Overview {#overview}
 
 This guide explores how you can use ClickHouse and S3 to implement an architecture with separated storage and compute.

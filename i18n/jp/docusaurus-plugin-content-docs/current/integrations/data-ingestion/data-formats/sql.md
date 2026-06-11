@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['SQL フォーマット', 'データエクスポート', 'データインポート', 'バックアップ', 'SQL ダンプ']
 ---
 
-# ClickHouse での SQL データの挿入とダンプ \{#inserting-and-dumping-sql-data-in-clickhouse\}
-
-ClickHouse は、さまざまな方法で OLTP データベース基盤に容易に統合できます。その 1 つの方法として、SQL ダンプを使用して他のデータベースと ClickHouse 間でデータを転送することが挙げられます。
+ClickHouse は、さまざまな方法で OLTP データベースのインフラストラクチャに容易に統合できます。その方法の 1 つとして、SQL ダンプを使用して他のデータベースと ClickHouse の間でデータを転送できます。
 
 ## SQL ダンプの作成 \{#creating-sql-dumps\}
 

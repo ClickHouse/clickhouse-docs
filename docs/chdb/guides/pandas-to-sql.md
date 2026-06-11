@@ -7,13 +7,12 @@ keywords: ['chdb', 'datastore', 'pandas', 'sql', 'mapping', 'query']
 doc_type: 'guide'
 ---
 
-# SQL for pandas Users
 
 DataStore compiles pandas-style operations into optimized SQL. This guide helps pandas users understand the SQL behind their operations.
 
 ## Viewing Generated SQL {#viewing-sql}
 
-```python
+```python title="Query"
 from pathlib import Path
 Path("sales.csv").write_text("""\
 region,product,category,amount,quantity,price,date,order_id
@@ -40,8 +39,7 @@ query = (ds
 print(query.to_sql())
 ```
 
-Output:
-```sql
+```sql title="Response"
 SELECT region, SUM(amount) AS sum, AVG(amount) AS mean
 FROM file('sales.csv', 'CSVWithNames')
 WHERE amount > 1000

@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', '兼容性', 'dataframe', '方法']
 doc_type: 'reference'
 ---
 
-# Pandas 兼容性 \{#pandas-compatibility\}
-
-DataStore 实现了 **209 个 pandas DataFrame 方法**，以实现完整的 API 兼容性。您现有的 pandas 代码几乎无需修改即可继续使用。
+DataStore 实现了 **209 个 pandas DataFrame 方法**，可提供完整的 API 兼容性。您现有的 pandas 代码只需极少变更即可直接使用。
 
 ## 兼容性策略 \{#approach\}
 

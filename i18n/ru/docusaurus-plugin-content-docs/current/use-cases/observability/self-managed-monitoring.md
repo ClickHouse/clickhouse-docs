@@ -1,19 +1,17 @@
 ---
 slug: /use-cases/observability/oss-monitoring
-title: 'Самостоятельное управление мониторингом'
-sidebar_label: 'Самостоятельное управление мониторингом'
-description: 'Руководство по самостоятельному управлению мониторингом'
+title: 'Самоуправляемый мониторинг'
+sidebar_label: 'Самоуправляемый мониторинг'
+description: 'Руководство по самоуправляемому мониторингу'
 doc_type: 'guide'
-keywords: ['наблюдаемость', 'мониторинг', 'самостоятельное управление', 'метрики', 'состояние системы']
+keywords: ['наблюдаемость', 'мониторинг', 'самоуправляемый', 'метрики', 'состояние системы']
 ---
 
 import ObservabilityIntegrations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_observability_integration_options.md';
 import DirectIntegrations from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# Самоуправляемый мониторинг \{#cloud-monitoring\}
-
-В этом руководстве корпоративным командам, оценивающим open source-версию ClickHouse, предоставляется исчерпывающая информация о возможностях мониторинга и обсервабилити для продакшн-развертываний. Корпоративных клиентов часто интересуют функции мониторинга «из коробки», интеграция с существующими стеками обсервабилити, включая такие инструменты, как Datadog и AWS CloudWatch, а также то, как возможности мониторинга ClickHouse соотносятся с мониторингом в самостоятельно развернутых инсталляциях.
+Это руководство предоставляет корпоративным командам, оценивающим ClickHouse open-source, исчерпывающую информацию о возможностях мониторинга и обсервабилити для промышленных развертываний. Корпоративные заказчики часто спрашивают о встроенных возможностях мониторинга, интеграции с существующими стеками обсервабилити, включая такие инструменты, как Datadog и AWS CloudWatch, а также о том, как мониторинг ClickHouse соотносится с развертываниями в собственной инфраструктуре.
 
 ### Архитектура интеграции на базе Prometheus \{#prometheus\}
 

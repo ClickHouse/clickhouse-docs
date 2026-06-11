@@ -17,10 +17,7 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse와 S3 통합 \{#integrating-s3-with-clickhouse\}
-
-S3에서 ClickHouse로 데이터를 삽입할 수 있으며, S3를 내보내기 대상(export destination)으로도 사용할 수 있어 「데이터 레이크(data lake)」 아키텍처와 상호 작용할 수 있습니다. 또한 S3는 「콜드(cold)」 스토리지 계층을 제공하고 스토리지와 컴퓨팅을 분리하는 데 도움을 줄 수 있습니다. 아래 섹션에서는 뉴욕시 택시 데이터 세트를 사용하여 S3와 ClickHouse 간에 데이터를 이동하는 과정을 보여 주고, 주요 설정 파라미터를 제시하며 성능 최적화에 대한 팁을 제공합니다.
+S3의 데이터를 ClickHouse에 삽입할 수 있으며, S3를 내보내기 대상으로도 사용할 수 있으므로 &quot;데이터 레이크&quot; 아키텍처와 연동할 수 있습니다. 또한 S3는 &quot;콜드&quot; 스토리지 계층을 제공하고 스토리지와 컴퓨트를 분리하는 데 도움을 줄 수 있습니다. 아래 섹션에서는 New York City 택시 데이터셋을 사용하여 S3와 ClickHouse 간에 데이터를 이동하는 과정을 보여주고, 주요 구성 매개변수를 식별하며, 성능 최적화에 관한 힌트를 제공합니다.
 
 ## S3 테이블 함수 \{#s3-table-functions\}
 
@@ -48,11 +45,13 @@ ClickHouse에서 테이블을 생성하기 전에 먼저 S3 버킷에 있는 데
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames');
 ```
 
-`DESCRIBE TABLE` 구문의 출력 결과를 보면 S3 버킷에 있는 데이터를 기준으로 ClickHouse가 이 데이터를 어떻게 자동으로 추론하는지 알 수 있습니다. 또한 gzip 압축 형식을 자동으로 인식하여 압축을 해제한다는 점에 유의하십시오:`
+`DESCRIBE TABLE` 구문의 출력 결과를 보면 S3 버킷에 있는 데이터를 기준으로 ClickHouse가 이 데이터를 어떻게 자동으로 추론하는지 알 수 있습니다. 또한 gzip 압축 형식을 자동으로 인식하여 압축을 해제한다는 점에 유의하십시오:&#96;
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') SETTINGS describe_compact_output=1
+```
 
+```response
 ┌─name──────────────────┬─type───────────────┐
 │ trip_id               │ Nullable(Int64)    │
 │ vendor_id             │ Nullable(Int64)    │
@@ -103,7 +102,6 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 ```
 
 S3 기반 데이터셋과 상호 작용하기 위해 대상이 될 표준 `MergeTree` 테이블을 준비합니다. 아래 구문은 기본 데이터베이스에 `trips`라는 이름의 테이블을 생성합니다. 위에서 유추한 대로, 특히 [`Nullable()`](/sql-reference/data-types/nullable) 데이터 타입 수정자를 사용하지 않기 위해 일부 데이터 타입을 변경하기로 했다는 점에 유의하십시오. `Nullable()`을 사용하면 불필요한 추가 저장 공간이 사용되고 성능 오버헤드가 발생할 수 있습니다:
-
 
 ```sql
 CREATE TABLE trips
@@ -416,7 +414,9 @@ CREATE TABLE trips_raw
 SELECT DISTINCT(pickup_ntaname)
 FROM trips_raw
 LIMIT 10;
+```
 
+```response
 ┌─pickup_ntaname───────────────────────────────────┐
 │ Lenox Hill-Roosevelt Island                      │
 │ Airport                                          │
@@ -430,7 +430,6 @@ LIMIT 10;
 │ DUMBO-Vinegar Hill-Downtown Brooklyn-Boerum Hill │
 └──────────────────────────────────────────────────┘
 ```
-
 
 ### 데이터 삽입 \{#inserting-data\}
 
@@ -552,7 +551,7 @@ ClickHouse는 특히 "콜드(cold)" 데이터에 대한 쿼리 성능이 크게 
 
 ### Storage Tiers \{#storage-tiers\}
 
-ClickHouse 스토리지 볼륨을 사용하면 물리 디스크를 MergeTree 테이블 엔진으로부터 추상화할 수 있습니다. 각 볼륨은 정렬된 디스크 집합으로 구성될 수 있습니다. 이는 주로 여러 블록 디바이스를 데이터 저장에 사용할 수 있게 해줄 뿐만 아니라, S3를 포함한 다른 스토리지 유형도 사용할 수 있게 하는 추상화입니다. ClickHouse 데이터 파트는 스토리지 정책에 따라 볼륨 간에 이동되고 볼륨별 사용률을 조절할 수 있으며, 이를 통해 스토리지 계층(storage tiers)이라는 개념이 만들어집니다.
+ClickHouse 스토리지 볼륨을 사용하면 물리 디스크를 MergeTree 테이블 엔진으로부터 추상화할 수 있습니다. 각 볼륨은 정렬된 디스크 집합으로 구성될 수 있습니다. 이는 주로 여러 블록 디바이스를 데이터 저장에 사용할 수 있게 해줄 뿐만 아니라, S3를 포함한 다른 스토리지 유형도 사용할 수 있게 하는 추상화입니다. ClickHouse 데이터 파트는 스토리지 정책과 공간 사용률에 따라 볼륨 간에 이동할 수 있으며, 이를 통해 스토리지 계층(storage tiers)이라는 개념이 만들어집니다.
 
 스토리지 계층은 가장 최근 데이터(일반적으로 쿼리가 가장 많이 발생하는 데이터)를 고성능 스토리지(예: NVMe SSD)에 적은 용량만 할당해 저장하는 핫-콜드(hot-cold) 아키텍처를 가능하게 합니다. 데이터가 오래될수록 쿼리 응답 시간에 대한 SLA 허용 범위가 커지고, 쿼리 빈도도 증가합니다. 이와 같은 롱테일(long tail) 데이터는 HDD와 같은 더 느리고 성능이 낮은 스토리지나 S3와 같은 객체 스토리지에 저장할 수 있습니다.
 
@@ -1356,7 +1355,9 @@ SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-nort
 
 ```sql
 BACKUP TABLE t TO Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status─────────┐
 │ c61f65ac-0d76-4390-8317-504a30ba7595 │ BACKUP_CREATED │
 └──────────────────────────────────────┴────────────────┘
@@ -1364,7 +1365,9 @@ BACKUP TABLE t TO Disk('s3_express', 't.zip')
 
 ```sql
 RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status───┐
 │ 4870e829-8d76-4171-ae59-cffaf58dea04 │ RESTORED │
 └──────────────────────────────────────┴──────────┘

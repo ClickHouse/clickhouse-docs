@@ -3,13 +3,11 @@ slug: /cloud/reference/shared-catalog
 sidebar_label: '共有カタログ'
 title: '共有カタログと共有データベースエンジン'
 keywords: ['SharedCatalog', 'SharedDatabaseEngine']
-description: 'ClickHouse Cloud における Shared Catalog コンポーネントおよび Shared Database Engine について説明します'
+description: 'ClickHouse Cloud における Shared Catalog コンポーネントと Shared データベースエンジンについて説明します'
 doc_type: 'reference'
 ---
 
-# 共有カタログと共有データベースエンジン \{#shared-catalog-and-shared-database-engine\}
-
-**ClickHouse Cloud（およびファーストパーティパートナークラウドサービス）でのみ利用可能です**
+**ClickHouse Cloud (およびファーストパーティパートナークラウドサービス) でのみ利用可能です**
 
 Shared Catalog はクラウドネイティブなコンポーネントであり、ClickHouse Cloud 内でステートレスエンジンを使用するデータベースおよびテーブルのメタデータと DDL 操作をレプリカ間で複製する役割を担います。これにより、これらのオブジェクトに対して一貫性があり集中管理された状態管理が可能になり、動的または一部がオフラインの環境でもメタデータの整合性を確保できます。
 
@@ -17,10 +15,10 @@ Shared Catalog は**テーブル本体を複製するわけではなく**、DDL 
 
 次のデータベースエンジンに対するレプリケーションをサポートします。
 
-- Shared
-- PostgreSQL
-- MySQL
-- DataLakeCatalog
+* Shared
+* PostgreSQL
+* MySQL
+* DataLakeCatalog
 
 ## アーキテクチャとメタデータストレージ \{#architecture-and-metadata-storage\}
 

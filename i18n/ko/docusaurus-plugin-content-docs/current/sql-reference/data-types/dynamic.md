@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse의 Dynamic 데이터 타입에 대한 문서로, 단일 컬럼에 서로 다른 타입의 값을 저장할 수 있습니다'
+description: '서로 다른 타입의 값을 단일 컬럼에 저장할 수 있는 ClickHouse Dynamic 데이터 타입 문서'
 sidebar_label: 'Dynamic'
 sidebar_position: 62
 slug: /sql-reference/data-types/dynamic
 title: 'Dynamic'
 doc_type: 'guide'
 ---
-
-# Dynamic \{#dynamic\}
 
 이 타입은 미리 모든 타입을 알지 못하더라도 내부에 임의의 타입 값을 저장할 수 있습니다.
 

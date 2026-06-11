@@ -1,5 +1,5 @@
 {
-  "label": "Release notes",
+  "label": "Cloud database release changelog",
   "collapsible": true,
   "collapsed": true,
   "link": { "type": "doc", "id": "cloud/reference/changelog/release_notes/index" }

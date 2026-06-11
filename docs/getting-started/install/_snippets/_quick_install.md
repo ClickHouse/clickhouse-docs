@@ -6,10 +6,21 @@ If you don't need to install ClickHouse for production, you can run an install s
 
 ## Install ClickHouse using curl {#install-clickhouse-using-curl}
 
-Run the following comand to download a single binary for your operating system.
+Run the following command to download a single binary for your operating system.
 
 ```bash
 curl https://clickhouse.com/ | sh
+```
+
+On Linux and macOS, this also installs [`clickhousectl`](https://github.com/ClickHouse/clickhousectl)
+into `~/.local/bin` (with a `chctl` symlink) so you can manage local ClickHouse
+versions and servers.
+
+To install just the `clickhouse` binary without `clickhousectl`, set
+`CLICKHOUSE_ONLY=1`:
+
+```bash
+curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
 ```
 
 :::note

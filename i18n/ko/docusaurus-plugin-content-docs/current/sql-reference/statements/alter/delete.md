@@ -1,15 +1,11 @@
 ---
-description: 'ALTER TABLE ... DELETE SQL 문 문서'
+description: 'ALTER TABLE ... DELETE 문서'
 sidebar_label: 'DELETE'
 sidebar_position: 39
 slug: /sql-reference/statements/alter/delete
-title: 'ALTER TABLE ... DELETE SQL 문'
+title: 'ALTER TABLE ... DELETE 문'
 doc_type: 'reference'
 ---
-
-
-
-# ALTER TABLE ... DELETE 문 \{#alter-table-delete-statement\}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
@@ -33,7 +29,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] DELETE WHERE filter_expr
 * [ALTER 쿼리의 동기화](/sql-reference/statements/alter/index.md#synchronicity-of-alter-queries)
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) SETTING
 
-
 ## 관련 콘텐츠 \{#related-content\}
 
-- 블로그: [ClickHouse에서 업데이트 및 삭제 처리](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)
+* 블로그: [ClickHouse에서 업데이트 및 삭제 처리](https://clickhouse.com/blog/handling-updates-and-deletes-in-clickhouse)

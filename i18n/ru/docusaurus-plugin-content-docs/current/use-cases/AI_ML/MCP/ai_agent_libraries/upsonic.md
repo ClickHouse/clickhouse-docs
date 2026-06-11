@@ -1,19 +1,17 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/upsonic
-sidebar_label: 'Интеграция с Upsonic'
-title: 'Как создать ИИ-агента с Upsonic и сервером ClickHouse MCP'
+sidebar_label: 'Интеграция Upsonic'
+title: 'Как создать ИИ‑агента с Upsonic и MCP‑сервером ClickHouse'
 pagination_prev: null
 pagination_next: null
-description: 'Узнайте, как создать ИИ-агента с Upsonic и сервером ClickHouse MCP'
+description: 'Узнайте, как создать ИИ‑агента с Upsonic и MCP‑сервером ClickHouse'
 keywords: ['ClickHouse', 'MCP', 'Upsonic']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать ИИ‑агента с Upsonic и сервером ClickHouse MCP \{#how-to-build-an-ai-agent-with-upsonic-and-the-clickhouse-mcp-server\}
-
 В этом руководстве вы узнаете, как создать ИИ‑агента [Upsonic](https://github.com/Upsonic/Upsonic/tree/master), который может взаимодействовать с
-[SQL‑песочницей ClickHouse](https://sql.clickhouse.com/), используя [сервер ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).
+[SQL‑песочницей ClickHouse](https://sql.clickhouse.com/), используя [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).
 
 :::note Пример блокнота
 Этот пример доступен в виде блокнота в [репозитории примеров](https://github.com/ClickHouse/examples/blob/main/ai/mcp/upsonic/upsonic.ipynb).

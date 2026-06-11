@@ -1,13 +1,11 @@
 ---
-description: '`Null` テーブルに書き込むと、データは無視されます。`Null` テーブルから読み出すと、結果は空になります。'
+description: '`Null` テーブルに書き込むと、そのデータは無視されます。`Null` テーブルから読み出すと、レスポンスは空になります。'
 sidebar_label: 'Null'
 sidebar_position: 50
 slug: /engines/table-engines/special/null
 title: 'Null テーブルエンジン'
 doc_type: 'reference'
 ---
-
-# Null テーブルエンジン \{#null-table-engine\}
 
 `Null` テーブルにデータを書き込むと、そのデータは無視されます。
 `Null` テーブルから読み出すと、レスポンスは空になります。

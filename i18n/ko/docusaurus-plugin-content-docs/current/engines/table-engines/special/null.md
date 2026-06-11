@@ -1,13 +1,11 @@
 ---
-description: '`Null` 테이블에 쓰기 작업을 수행하면 데이터가 무시됩니다. `Null` 테이블에서 읽기 작업을 수행하면 빈 응답이 반환됩니다.'
+description: '`Null` 테이블에 데이터를 쓸 때는 데이터가 무시됩니다. `Null` 테이블에서 데이터를 읽을 때는 응답이 비어 있습니다.'
 sidebar_label: 'Null'
 sidebar_position: 50
 slug: /engines/table-engines/special/null
 title: 'Null 테이블 엔진'
 doc_type: 'reference'
 ---
-
-# Null table engine \{#null-table-engine\}
 
 `Null` 테이블에 데이터를 쓸 때는 데이터가 무시됩니다.
 `Null` 테이블에서 데이터를 읽을 때는 아무 결과도 반환되지 않습니다.

@@ -1,18 +1,16 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/mcp-agent
 sidebar_label: 'mcp-agent の統合'
-title: 'mcp-agent と ClickHouse MCP server を使用して AI エージェントを構築する方法'
+title: 'mcp-agent と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'mcp-agent と ClickHouse MCP server を使用して AI エージェントを構築する方法を学びます'
+description: 'mcp-agent と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'mcp-agent']
 show_related_blogs: true
 doc_type: 'guide'
----'
+---
 
-# CrewAI と ClickHouse MCP server を使用して AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\}
-
-このガイドでは、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェント [mcp-agent](https://github.com/lastmile-ai/mcp-agent) を、[ClickHouse の MCP server](https://github.com/ClickHouse/mcp-clickhouse) を用いて構築する方法を説明します。
+このガイドでは、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェント [mcp-agent](https://github.com/lastmile-ai/mcp-agent) を、[ClickHouse の MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を用いて構築する方法を説明します。
 
 :::note サンプルノートブック
 このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/mcp-agent/mcp-agent.ipynb) 内のノートブックとして提供されています。

@@ -10,7 +10,7 @@ keywords: ['clickstack', 'ИИ-блокноты', 'расследование', 
 ---
 
 import Image from '@theme/IdealImage';
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import notebook_hero from '@site/static/images/use-cases/observability/hyperdx-notebook-hero.png';
 import notebook_list from '@site/static/images/use-cases/observability/hyperdx-notebook-list.png';
 import notebook_tiles from '@site/static/images/use-cases/observability/hyperdx-notebook-tiles.png';
@@ -20,7 +20,7 @@ import notebook_manual_tiles from '@site/static/images/use-cases/observability/h
 import notebook_agent_context from '@site/static/images/use-cases/observability/hyperdx-notebook-agent-context.png';
 import notebook_ai_consent from '@site/static/images/use-cases/observability/hyperdx-notebook-ai-consent.png';
 
-<PrivatePreviewBadge />
+<BetaBadge />
 
 Блокноты ИИ — это интерактивный инструмент для расследования в ClickStack, который сочетает ИИ-агента с ручным анализом. Вы можете описать проблему простым языком, и ИИ-агент выполнит запросы к логам, трейсам и метрикам от вашего имени, выводя релевантные данные, диаграммы и сводки в виде набора плиток. Вы также можете добавлять собственные плитки (диаграммы, таблицы, поисковые запросы и заметки в markdown) рядом с результатами, созданными ИИ, формируя полную запись расследования.
 
@@ -32,7 +32,7 @@ import notebook_ai_consent from '@site/static/images/use-cases/observability/hyp
 
 ## Настройка \{#setup\}
 
-ИИ-блокноты в настоящее время доступны в рамках частного предварительного просмотра в ClickHouse Cloud. Платформа автоматически управляет моделями ИИ и провайдерами.
+ИИ-блокноты в настоящее время доступны в статусе бета в ClickHouse Cloud. Платформа автоматически управляет моделями ИИ и провайдерами.
 
 Перед использованием ИИ-блокнотов:
 

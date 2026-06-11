@@ -30,11 +30,9 @@ import nifi14 from '@site/static/images/integrations/data-ingestion/etl-tools/ni
 import nifi15 from '@site/static/images/integrations/data-ingestion/etl-tools/nifi_15.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Подключение Apache NiFi к ClickHouse \{#connect-apache-nifi-to-clickhouse\}
-
 <CommunityMaintainedBadge />
 
-<a href="https://nifi.apache.org/" target="_blank">Apache NiFi</a> — это программное обеспечение с открытым исходным кодом для управления рабочими процессами, предназначенное для автоматизации потоков данных между программными системами. Оно позволяет создавать конвейеры данных ETL и поставляется с более чем 300 процессорами данных. Это пошаговое руководство показывает, как подключить Apache NiFi к ClickHouse в качестве источника и приёмника данных, а также загрузить тестовый набор данных.
+<a href="https://nifi.apache.org/" target="_blank">Apache NiFi</a> — это программное обеспечение с открытым исходным кодом для управления рабочими процессами, предназначенное для автоматизации потоков данных между программными системами. Оно позволяет создавать ETL-конвейеры и включает более 300 процессоров данных. В этом пошаговом руководстве показано, как подключить Apache NiFi к ClickHouse в качестве источника и пункта назначения, а также загрузить пример набора данных.
 
 <VerticalStepper headerLevel="h2">
   ## Соберите данные для подключения \{#1-gather-your-connection-details\}

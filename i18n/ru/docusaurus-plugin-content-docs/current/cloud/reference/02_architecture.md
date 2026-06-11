@@ -10,10 +10,7 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
-
-# Архитектура ClickHouse Cloud \{#clickhouse-cloud-architecture\}
-
-<Image img={Architecture} size='lg' alt='Архитектура ClickHouse Cloud'/>
+<Image img={Architecture} size="lg" alt="Облачная архитектура" />
 
 ## Хранилище на базе объектного хранилища \{#storage-backed-by-object-store\}
 

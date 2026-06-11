@@ -25,12 +25,9 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Подключение Astrato к ClickHouse \{#connecting-astrato-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-Astrato использует Pushdown SQL для выполнения запросов напрямую в ClickHouse Cloud или локальные развертывания ClickHouse. Это означает, что вы можете получать доступ ко всем необходимым данным, пользуясь лидирующей в отрасли производительностью ClickHouse.
+Astrato использует pushdown SQL для прямого выполнения запросов к ClickHouse Cloud или локальным развертываниям. Это означает, что вы можете получить доступ ко всем необходимым данным, используя ведущую в отрасли производительность ClickHouse.
 
 ## Необходимые данные для подключения \{#connection-data-required\}
 

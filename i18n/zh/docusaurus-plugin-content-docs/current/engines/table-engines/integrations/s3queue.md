@@ -172,6 +172,16 @@ SETTINGS
 
 默认值：空字符串。
 
+### `after_processing_move_preserve_path` \{#after_processing_move_preserve_path\}
+
+如果为 `true`，在移动已成功处理的文件时，会将完整的源对象路径追加到 `after_processing_move_prefix` 后面，从而在目标端保留 bucket 下的源目录结构。如果为 `false`，则仅使用文件名，源目录结构会被展平。
+
+可选值：
+
+* `true` / `false`。
+
+默认值：`false`。
+
 ### `after_processing_move_secret_access_key` \{#after_processing_move_secret_access_key\}
 
 当目标是另一个 S3 bucket 时，用于将成功处理的文件移动到该目标 bucket 的 Secret Access Key。

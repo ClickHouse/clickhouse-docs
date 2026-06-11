@@ -2,7 +2,7 @@
 title: '알림'
 slug: /cloud/notifications
 description: 'ClickHouse Cloud 서비스 알림'
-keywords: ['클라우드', '알림', '경고', '서비스 알림', '청구 알림']
+keywords: ['cloud', '알림', '알림', '서비스 알림', '청구 알림']
 sidebar_label: '알림'
 sidebar_position: 3
 doc_type: 'guide'
@@ -13,9 +13,6 @@ import notifications_1 from '@site/static/images/cloud/manage/notifications-1.pn
 import notifications_2 from '@site/static/images/cloud/manage/notifications-2.png';
 import notifications_3 from '@site/static/images/cloud/manage/notifications-3.png';
 import notifications_4 from '@site/static/images/cloud/manage/notifications-4.png';
-
-
-# 알림 \{#notifications\}
 
 ClickHouse Cloud는 서비스 또는 조직과 관련된 중요한 이벤트에 대해 알림을 전송합니다. 알림이 어떻게 전송되고 구성되는지 이해하려면 몇 가지 개념을 알아두어야 합니다.
 

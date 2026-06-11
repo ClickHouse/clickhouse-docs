@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse에서 FixedString(N) 데이터 타입에 대한 문서'
+description: 'ClickHouse의 FixedString 데이터 타입 문서'
 sidebar_label: 'FixedString(N)'
 sidebar_position: 10
 slug: /sql-reference/data-types/fixedstring
 title: 'FixedString(N)'
 doc_type: 'reference'
 ---
-
-# FixedString(N) \{#fixedstringn\}
 
 길이 N바이트인 고정 길이 문자열입니다(문자나 코드 포인트 단위가 아님).
 

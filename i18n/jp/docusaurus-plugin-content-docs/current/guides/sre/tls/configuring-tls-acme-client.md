@@ -1,10 +1,10 @@
 ---
 slug: /guides/sre/configuring-tls-acme-client
-sidebar_label: 'ACME を使用した自動 TLS プロビジョニングの構成'
+sidebar_label: 'ACME を利用した自動 TLS プロビジョニングの設定'
 sidebar_position: 20
-title: 'ACME クライアントの構成'
-description: 'このガイドでは、ClickHouse で接続の検証に OpenSSL 証明書を使用できるようにするための、シンプルで最小限の設定方法について説明します。'
-keywords: ['ACME の構成', 'TLS のセットアップ', 'OpenSSL 証明書', '安全な接続', 'SRE 向けガイド', "Let's Encrypt"]
+title: 'ACME を利用した自動 TLS プロビジョニングの設定'
+description: 'このガイドでは、接続の検証に OpenSSL 証明書を使用するよう ClickHouse を設定するための、シンプルで最小限の設定を紹介します。'
+keywords: ['ACME の設定', 'TLS セットアップ', 'OpenSSL 証明書', '安全な接続', 'SRE ガイド', 'Let`s Encrypt']
 doc_type: 'guide'
 ---
 
@@ -13,15 +13,12 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# ACME を利用した自動 TLS プロビジョニングの設定 \{#configuring-automatic-tls-provisioning-via-acme\}
-
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SelfManaged />
 
 このガイドでは、[RFC8555](https://www.rfc-editor.org/rfc/rfc8555) で定義されている [ACME](https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment) プロトコルを ClickHouse で利用するための設定方法を説明します。
-ACME をサポートすることで、ClickHouse は [Let's Encrypt](https://letsencrypt.org/) や [ZeroSSL](https://zerossl.com/) などのプロバイダから証明書を自動的に取得および更新できます。
+ACME をサポートすることで、ClickHouse は [Let&#39;s Encrypt](https://letsencrypt.org/) や [ZeroSSL](https://zerossl.com/) などのプロバイダから証明書を自動的に取得および更新できます。
 TLS による暗号化は、クライアントと ClickHouse サーバー間で転送されるデータを保護し、機密性の高いクエリや結果の盗聴を防ぎます。
 
 ## 概要 \{#overview\}

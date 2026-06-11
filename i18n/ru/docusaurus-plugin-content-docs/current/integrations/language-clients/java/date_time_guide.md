@@ -2,16 +2,14 @@
 sidebar_label: 'Работа со значениями Date/Time в JDBC'
 sidebar_position: 4
 keywords: ['java', 'jdbc', 'driver', 'integrate', 'guide', 'Date', 'Time']
-description: 'Руководство по работе со значениями Date/Time в JDBC'
+description: 'Руководство по использованию значений Date/Time в JDBC'
 slug: /integrations/language-clients/java/jdbc_date_time_guide
-title: 'Руководство по работе со значениями Date/Time'
+title: 'Руководство по значениям Date/Time'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'language_client'
 ---
-
-# Работа с Date, Time и Timestamp в JDBC \{#working-with-date-time-and-timestamp-in-jdbc\}
 
 Типы Date, Time и Timestamp требуют особого внимания, поскольку с ними связано несколько распространённых проблем.
 Наиболее частая проблема — это обработка часовых поясов. Другая проблема — строковое представление и особенности его использования.

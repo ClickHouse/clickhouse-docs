@@ -16,8 +16,6 @@ import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring JVM Metrics with ClickStack {#jvm-clickstack}
-
 :::note[TL;DR]
 Monitor JVM applications in ClickStack using the OpenTelemetry Java agent. Includes a demo dataset and pre-built dashboard.
 :::

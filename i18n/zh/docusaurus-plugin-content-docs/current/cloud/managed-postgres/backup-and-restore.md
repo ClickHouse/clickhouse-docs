@@ -7,16 +7,15 @@ keywords: ['备份', '恢复', '时间点恢复', 'pitr', '灾难恢复', 'Postg
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import backupAndRestore from '@site/static/images/managed-postgres/backup-and-restore.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="backup-and-restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.backup-and-restore-beta" />
 
 Managed Postgres 通过自动备份和时间点恢复功能保障数据的安全性和可用性。你可以在实例的 **Backups** 视图中查看备份历史并发起恢复操作。
 
 <Image img={backupAndRestore} alt="Backups 视图显示备份历史和时间点恢复选项" size="lg" border />
-
 
 ## 备份 \{#backups\}
 

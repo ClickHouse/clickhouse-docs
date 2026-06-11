@@ -7,9 +7,7 @@ keywords: ['chdb', 'go', 'golang', 'embedded', 'clickhouse', 'sql', 'olap']
 doc_type: 'guide'
 ---
 
-# Go용 chDB \{#chdb-for-go\}
-
-chDB-go는 chDB를 위한 Go 바인딩을 제공하여 외부 의존성 없이 Go 애플리케이션에서 ClickHouse 쿼리를 직접 실행할 수 있게 해줍니다.
+chDB-go는 chDB용 Go 바인딩을 제공하므로 외부 의존성 없이 Go 애플리케이션에서 ClickHouse 쿼리를 직접 실행할 수 있습니다.
 
 ## 설치 \{#installation\}
 

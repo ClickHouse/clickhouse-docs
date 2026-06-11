@@ -1,8 +1,8 @@
 ---
 slug: /use-cases/AI/jupyter-notebook
 sidebar_label: '使用 Jupyter Notebook 和 chDB 探索数据'
-title: '在 Jupyter Notebook 中使用 chDB 探索数据'
-description: '本指南介绍如何在 Jupyter Notebook 中配置并使用 chDB，对来自 ClickHouse Cloud 或本地文件的数据进行探索'
+title: '使用 Jupyter Notebook 和 chDB 探索数据'
+description: '本指南介绍如何设置并使用 chDB，在 Jupyter Notebook 中探索来自 ClickHouse Cloud 或本地文件的数据'
 keywords: ['ML', 'Jupyer', 'chDB', 'pandas']
 doc_type: 'guide'
 ---
@@ -18,14 +18,12 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-# 使用 Jupyter Notebook 和 chDB 探索数据 \{#exploring-data-with-jupyter-notebooks-and-chdb\}
-
-在本指南中，您将学习如何借助 [chDB](/chdb)（一个由 ClickHouse 驱动的快速进程内 SQL OLAP 引擎），在 Jupyter Notebook 中探索 ClickHouse Cloud 上的数据集。
+在本指南中，您将学习如何借助 [chDB](/chdb) (一个由 ClickHouse 驱动的快速进程内 SQL OLAP 引擎) ，在 Jupyter Notebook 中探索 ClickHouse Cloud 上的数据集。
 
 **前置条件**：
 
-- 一个虚拟环境
-- 一个可用的 ClickHouse Cloud 服务，以及您的[连接信息](/cloud/guides/sql-console/gather-connection-details)
+* 一个虚拟环境
+* 一个可用的 ClickHouse Cloud 服务，以及您的[连接信息](/cloud/guides/sql-console/gather-connection-details)
 
 :::tip
 如果您还没有 ClickHouse Cloud 账号，可以[注册](https://console.clickhouse.cloud/signUp?loc=docs-juypter-chdb)
@@ -34,10 +32,10 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 **您将学到：**
 
-- 使用 chDB 从 Jupyter Notebook 连接到 ClickHouse Cloud
-- 查询远程数据集并将结果转换为 Pandas DataFrame
-- 将云端数据与本地 CSV 文件结合进行分析
-- 使用 matplotlib 可视化数据
+* 使用 chDB 从 Jupyter Notebook 连接到 ClickHouse Cloud
+* 查询远程数据集并将结果转换为 Pandas DataFrame
+* 将云端数据与本地 CSV 文件结合进行分析
+* 使用 matplotlib 可视化数据
 
 我们将使用 UK Property Price 数据集，该数据集是 ClickHouse Cloud 提供的入门数据集之一。
 它包含 1995 年到 2024 年间英国房屋成交价格的数据。

@@ -7,20 +7,13 @@ keywords: ['EXCEPT', '수정자']
 doc_type: 'reference'
 ---
 
-
-
-# EXCEPT 수정자 \{#except\}
-
-> 결과에서 제외할 하나 이상의 컬럼 이름을 지정합니다. 지정한 이름과 일치하는 모든 컬럼은 출력에 포함되지 않습니다.
-
-
+> 결과에서 제외할 하나 이상의 컬럼 이름을 지정합니다. 일치하는 모든 컬럼 이름은 출력에서 제외됩니다.
 
 ## 구문 \{#syntax\}
 
 ```sql
 SELECT <expr> EXCEPT ( col_name1 [, col_name2, col_name3, ...] ) FROM [db.]table_name
 ```
-
 
 ## 예제 \{#examples\}
 

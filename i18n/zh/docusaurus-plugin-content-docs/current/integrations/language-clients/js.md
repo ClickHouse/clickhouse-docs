@@ -15,8 +15,6 @@ integration:
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# ClickHouse JS \{#clickhouse-js\}
-
 用于连接 ClickHouse 的官方 JavaScript 客户端。
 该客户端使用 TypeScript 编写，并为客户端公开 API 提供类型定义。
 

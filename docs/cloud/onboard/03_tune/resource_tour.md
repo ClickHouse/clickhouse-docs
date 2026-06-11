@@ -11,8 +11,6 @@ import TableOfContentsBestPractices from '@site/docs/best-practices/_snippets/_t
 import TableOfContentsOptimizationAndPerformance from '@site/docs/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
 import TableOfContentsSecurity from '@site/docs/cloud/_snippets/_security_table_of_contents.md';
 
-# Resource tour
-
 This article is intended to provide you with an overview of the resources available
 to you in the docs to learn how to get the most out of your ClickHouse Cloud deployment.
 Explore resource organised by the following topics:

@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'JavaScript'
 sidebar_position: 4
-keywords: ['clickhouse', 'js', 'JavaScript', 'NodeJS', 'web', 'browser', 'Cloudflare', 'workers', 'client', 'connect', 'integrate']
+keywords: ['clickhouse', 'js', 'JavaScript', 'NodeJS', 'web', 'browser', 'Cloudflare', 'workers', 'client', '연결', '통합']
 slug: /integrations/javascript
-description: 'ClickHouse에 연결하는 공식 JS 클라이언트입니다.'
+description: 'ClickHouse에 연결하기 위한 공식 JS 클라이언트입니다.'
 title: 'ClickHouse JS'
 doc_type: 'reference'
 integration:
@@ -14,9 +14,6 @@ integration:
 
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
-
-# ClickHouse JS \{#clickhouse-js\}
 
 ClickHouse에 연결하기 위한 공식 JS 클라이언트입니다.
 클라이언트는 TypeScript로 작성되었으며, 클라이언트 public API에 대한 타입 정보를 제공합니다.

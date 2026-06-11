@@ -37,6 +37,7 @@ doc_type: 'reference'
 * `bypass_cache_threshold` ([UInt64](../../sql-reference/data-types/)) — 文書化されていません。使用は推奨されません
 * `write_cache_per_user_id_directory` ([UInt8](../../sql-reference/data-types/)) — ClickHouse Cloud の内部設定
 * `allow_dynamic_cache_resize` ([UInt8](../../sql-reference/data-types/)) — ファイルシステムキャッシュの動的リサイズを許可します
+* `dynamic_resize_lock_wait_ms` ([UInt64](../../sql-reference/data-types/)) — リサイズの試行をスキップする前に、動的リサイズ用の排他ロック取得を待機するミリ秒単位のタイムアウト
 * `max_size_ratio_to_total_space` ([Float64](../../sql-reference/data-types/)) — 総ディスク容量に対する `max_size` の比率
 * `skip_cache_on_disk_failure` ([UInt8](../../sql-reference/data-types/)) — true の場合、ディスク IO エラー時にファイルシステムキャッシュ操作を静かにバイパスします。false (デフォルト) の場合、ディスク IO エラーは起動失敗として伝播されます。
 * `use_split_cache` ([UInt8](../../sql-reference/data-types/)) — system/data 用にファイルを分離して使用します。

@@ -1,16 +1,14 @@
 ---
 description: 'テキスト内の検索語をすばやく見つけます。'
-keywords: ['全文検索', 'テキストインデックス', '索引', '索引']
-sidebar_label: 'テキストインデックスによる全文検索'
+keywords: ['全文検索', 'テキスト索引', '索引', '索引']
+sidebar_label: 'テキスト索引による全文検索'
 slug: /engines/table-engines/mergetree-family/textindexes
-title: 'テキストインデックスによる全文検索'
+title: 'テキスト索引による全文検索'
 doc_type: 'reference'
 ---
 
-# テキストインデックスによる全文検索 \{#full-text-search-with-text-indexes\}
-
-テキストインデックス（[inverted indexes](https://en.wikipedia.org/wiki/Inverted_index) とも呼ばれます）は、テキストデータに対する高速な全文検索を可能にします。
-テキストインデックスは、トークンから、それぞれのトークンを含む行番号への対応関係を格納します。
+テキスト索引 ([inverted indexes](https://en.wikipedia.org/wiki/Inverted_index) とも呼ばれます) は、テキストデータに対する高速な全文検索を可能にします。
+テキスト索引は、トークンから、それぞれのトークンを含む行番号への対応関係を格納します。
 トークンは、トークナイゼーションと呼ばれる処理によって生成されます。
 たとえば、ClickHouse のデフォルトトークナイザーは、英語の文 &quot;The cat likes mice.&quot; をトークン [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;] に変換します。
 
@@ -46,7 +44,7 @@ doc_type: 'reference'
 3: have, two, dogs, cat
 ```
 
-（概念的には）テキスト索引には次のような情報が含まれます。
+ (概念的には) テキスト索引には次のような情報が含まれます。
 
 ```result
 afraid : [2]
@@ -60,7 +58,6 @@ two    : [3]
 
 検索トークンが与えられると、この索引構造によって一致するすべての行を高速に検索できます。
 
-
 ## テキスト索引の作成 \{#creating-a-text-index\}
 
 テキスト索引は ClickHouse バージョン 26.2 以降で一般提供 (GA) されています。
@@ -73,7 +70,7 @@ two    : [3]
 
 テキスト索引を作成するには、次の構文を使用します。
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     key UInt64,
@@ -110,7 +107,7 @@ ORDER BY key
 
 別の方法として、既存のテーブルにテキスト索引を追加するには、次のようにします：
 
-```sql
+```sql title="Query"
 ALTER TABLE table
     ADD INDEX text_idx(str) TYPE text(
                                 -- Mandatory parameters:
@@ -133,13 +130,13 @@ ALTER TABLE table
 
 既存のテーブルに索引を追加する場合、既存テーブルのパーツに対してその索引をマテリアライズすることを推奨します (そうしないと、索引のないパーツでの検索は低速な総当たりスキャンにフォールバックしてしまいます) 。
 
-```sql
+```sql title="Query"
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ```
 
 テキスト索引を削除するには、次のコマンドを実行します。
 
-```sql
+```sql title="Query"
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
@@ -176,13 +173,11 @@ ALTER TABLE table DROP INDEX text_idx;
 
 例:
 
-```sql
+```sql title="Query"
 SELECT tokens('abc def', 'ngrams', 3);
 ```
 
-結果：
-
-```result
+```result title="Response"
 ['abc','bc ','c d',' de','def']
 ```
 
@@ -195,13 +190,12 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 プリプロセッサ 引数の典型的なユースケースには次のようなものがあります。
 
-
 1. 小文字化/大文字化、またはケースフォールディングを行い、大文字小文字を区別しないマッチングを有効にします。例: [lower](/sql-reference/functions/string-functions.md/#lower)、[lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8)、[caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)。
 2. UTF-8 正規化。例: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC)、[normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD)、[normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC)、[normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD)、[normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold)、[toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)。
 3. アクセント記号などの不要な文字や部分文字列の削除または変換。例: [extractTextFromHTML](/sql-reference/functions/string-functions.md/#extractTextFromHTML)、[substring](/sql-reference/functions/string-functions.md/#substring)、[idnaEncode](/sql-reference/functions/string-functions.md/#idnaEncode)、[translate](/sql-reference/functions/string-replace-functions.md/#translate)、[removeDiacriticsUTF8](/sql-reference/functions/string-functions.md/#removeDiacriticsUTF8)。
 
-preprocessor 式は、[String](/sql-reference/data-types/string.md) 型または [FixedString](/sql-reference/data-types/fixedstring.md) 型の入力値を、同じ型の値に変換しなければなりません。
-テキストインデックスが `Nullable(T)` 型または `LowCardinality(T)` 型のカラム上に作成されている場合、preprocessor 式は Nullable または LowCardinality の値も受け付ける必要があります (つまり、例外をスローしてはなりません) 。
+プリプロセッサ 式は、[String](/sql-reference/data-types/string.md) 型または [FixedString](/sql-reference/data-types/fixedstring.md) 型の入力値を、同じ型の値に変換しなければなりません。
+テキスト索引が `Nullable(T)` 型または `LowCardinality(T)` 型のカラム上に作成されている場合、プリプロセッサ 式は Nullable または LowCardinality の値も受け付ける必要があります (つまり、例外をスローしてはなりません) 。
 
 例:
 
@@ -210,7 +204,7 @@ preprocessor 式は、[String](/sql-reference/data-types/string.md) 型または
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = lower(extractTextFromHTML(col)))`
 * `INDEX idx(col) TYPE text(tokenizer = 'splitByNonAlpha', preprocessor = removeDiacriticsUTF8(caseFoldUTF8(col)))`
 
-また、preprocessor 式は、テキストインデックスが定義されているカラムまたは式のみを参照しなければなりません。
+また、プリプロセッサ 式は、テキスト索引が定義されているカラムまたは式のみを参照しなければなりません。
 
 例:
 
@@ -220,11 +214,12 @@ preprocessor 式は、[String](/sql-reference/data-types/string.md) 型または
 
 非決定的関数の使用は許可されていません。
 
-関数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) は、トークン化する前に検索語句を変換するために preprocessor を使用します。
+関数 [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken)、[hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens)、[hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens)、[hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) は、トークン化する前に検索語句を変換するために プリプロセッサ を使用します。
+プリプロセッサ はテキスト索引のパスでのみ適用されるため、これらの関数の結果は、テキスト索引を使用するクエリと使用しないクエリ (`SETTINGS use_skip_indexes = 0` など) で異なる場合があることに注意してください。
 
 例えば、
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -238,7 +233,7 @@ SELECT count() FROM table WHERE hasToken(str, 'Foo');
 
 は以下と同等です：
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -254,7 +249,7 @@ SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 
 例：
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     arr Array(String),
@@ -269,13 +264,12 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-[`Map`](/sql-reference/data-types/map.md) 型カラム上のテキスト索引用プリプロセッサを定義するには、索引を
-Map のキーに対して作成するか、値に対して作成するかを決める必要があります。
+[Map](/sql-reference/data-types/map.md) 型カラム上のテキスト索引でプリプロセッサを定義するには、索引を
+map のキーと値のどちらに対して構築するかを決める必要があります。
 
-例：
+例:
 
-
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     map Map(String, String),
@@ -314,7 +308,7 @@ SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 
 例:
 
-```sql
+```sql title="Query"
 CREATE TABLE table(
     k UInt64,
     s String,
@@ -325,9 +319,7 @@ ORDER BY k;
 SHOW CREATE TABLE table;
 ```
 
-結果:
-
-```result
+```result title="Response"
 ┌─statement──────────────────────────────────────────────────────────────┐
 │ CREATE TABLE default.table                                            ↴│
 │↳(                                                                     ↴│
@@ -343,7 +335,6 @@ SHOW CREATE TABLE table;
 
 非常に大きな索引の粒度により、テキスト索引はパーツ全体に対して作成されます。
 明示的に指定された索引の粒度は無視されます。
-
 
 ## テキスト索引の使用 \{#using-a-text-index\}
 
@@ -696,7 +687,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 
 索引定義の例:
 
-```sql
+```sql title="Query"
 CREATE TABLE sensor_data
 (
     data JSON(sensor_id String),
@@ -713,13 +704,11 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'l
 
 クエリ例:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-結果:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -732,13 +721,11 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 
 クエリ例:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-結果:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -756,7 +743,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 
 索引定義の例:
 
-```sql
+```sql title="Query"
 CREATE TABLE events
 (
     data JSON,
@@ -774,13 +761,11 @@ INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 
 例:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-結果:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -795,11 +780,9 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 
 例:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
-
-結果:
 
 ```text title="Response"
 ...
@@ -816,13 +799,11 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 
 例:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -908,7 +889,7 @@ SELECT * FROM events WHERE data.level IN ('error', 'critical');
 
 #### 例 \{#text-index-phrase-search-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (
     id UInt32,
     text String,
@@ -923,13 +904,11 @@ INSERT INTO tab VALUES
     (3, 'weather in New Orleans');
 ```
 
-```sql
+```sql title="Query"
 SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
 ```
 
-結果:
-
-```result
+```result title="Response"
    ┌─id─┬─text────────────────┐
 1. │  1 │ weather in New York │
    └────┴─────────────────────┘

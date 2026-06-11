@@ -6,8 +6,6 @@ title: 'Функции NumericIndexedVector'
 doc_type: 'reference'
 ---
 
-# NumericIndexedVector \{#numericindexedvector\}
-
 NumericIndexedVector — это абстрактная структура данных, которая инкапсулирует вектор и реализует агрегирующие и покомпонентные операции над вектором. В качестве метода хранения используется Bit-Sliced Index. Теоретические основы и сценарии использования описаны в статье [Large-Scale Metric Computation in Online Controlled Experiment Platform](https://arxiv.org/pdf/2405.08411).
 
 ## BSI \{#bit-sliced-index\}

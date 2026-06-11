@@ -1,5 +1,5 @@
 ---
-title: 'コンプライアンスの概要'
+title: 'セキュリティとコンプライアンスのレポート'
 slug: /cloud/security/compliance-overview
 description: 'SOC 2、ISO 27001、U.S. DPF、HIPAA などを含む ClickHouse Cloud のセキュリティおよびコンプライアンス認証の概要'
 doc_type: 'reference'
@@ -9,9 +9,7 @@ keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF'
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
-
-# セキュリティおよびコンプライアンスレポート \{#security-and-compliance-reports\}
-ClickHouse はお客様のセキュリティおよびコンプライアンスに関するニーズを評価し、追加のレポートに対するご要望に応じてプログラムの拡充を継続しています。詳細やレポートのダウンロードは、[Trust Center](https://trust.clickhouse.com) をご覧ください。
+ClickHouse は、お客様のセキュリティおよびコンプライアンスに関するニーズを評価し、追加レポートの要望に応じてプログラムを継続的に拡充しています。詳細情報の確認やレポートのダウンロードについては、[Trust Center](https://trust.clickhouse.com) をご覧ください。
 
 ## SOC 2 Type II（2022年以降） \{#soc-2-type-ii-since-2022\}
 

@@ -7,9 +7,7 @@ title: 'LowCardinality(T)'
 doc_type: 'reference'
 ---
 
-# LowCardinality(T) \{#lowcardinalityt\}
-
-다른 데이터 타입의 내부 표현을 딕셔너리 인코딩된 형태로 변경합니다.
+다른 데이터 타입의 내부 표현을 딕셔너리 인코딩 방식으로 변경합니다.
 
 ## 구문 \{#syntax\}
 

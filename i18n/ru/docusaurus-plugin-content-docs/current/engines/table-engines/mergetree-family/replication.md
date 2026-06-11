@@ -1,13 +1,11 @@
 ---
-description: 'Обзор репликации данных с использованием семейства движков таблиц Replicated* в ClickHouse'
+description: 'Обзор репликации данных в семействе движков таблиц Replicated* в ClickHouse'
 sidebar_label: 'Replicated*'
 sidebar_position: 20
 slug: /engines/table-engines/mergetree-family/replication
 title: 'Движки таблиц Replicated*'
 doc_type: 'reference'
 ---
-
-# Движки таблиц Replicated* \{#replicated-table-engines\}
 
 :::note
 В ClickHouse Cloud репликацией управляет платформа. Пожалуйста, создавайте таблицы без дополнительных аргументов. Например, в тексте ниже вы бы заменили:
@@ -117,7 +115,6 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 Вы можете указать любой существующий кластер ZooKeeper, и система будет использовать на нём каталог для собственных данных (каталог задаётся при создании реплицируемой таблицы).
 
 Если ZooKeeper не указан в конфигурационном файле, вы не сможете создавать реплицируемые таблицы, а любые существующие реплицируемые таблицы будут доступны только для чтения.
-
 
 ZooKeeper не используется в запросах `SELECT`, потому что репликация не влияет на производительность `SELECT`, и запросы выполняются так же быстро, как и для нереплицируемых таблиц. При выполнении запросов к распределённым реплицируемым таблицам поведение ClickHouse управляется настройками [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) и [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries).
 

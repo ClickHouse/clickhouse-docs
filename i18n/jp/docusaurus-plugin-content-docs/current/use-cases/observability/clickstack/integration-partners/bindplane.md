@@ -4,9 +4,9 @@ title: 'Bindplane を使用して ClickStack に OpenTelemetry を送信する'
 sidebar_label: 'Bindplane'
 pagination_prev: null
 pagination_next: null
-description: 'Bindplane を使用してテレメトリを ClickStack にルーティングし、コレクターの管理を一元化します'
+description: 'Bindplane を使用してテレメトリを ClickStack にルーティングし、collector の管理を一元化します'
 doc_type: 'guide'
-keywords: ['Bindplane', 'OTEL', 'ClickStack', 'OpenTelemetry', 'コレクター管理']
+keywords: ['Bindplane', 'OTEL', 'ClickStack', 'OpenTelemetry', 'collector管理']
 ---
 
 import Image from '@theme/IdealImage';
@@ -15,22 +15,19 @@ import bindplane_hyperdx from '@site/static/images/clickstack/bindplane/bindplan
 import bindplane_configuration from '@site/static/images/clickstack/bindplane/bindplane-configuration.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Bindplane を使って OpenTelemetry を ClickStack に送信する \{#bindplane-clickstack\}
+:::note[要点]
+このガイドでは、Bindplane のネイティブ ClickStack 宛先を使用して、テレメトリーを ClickStack にルーティングする方法を説明します。以下を学びます。
 
-<PartnerBadge/>
+* Bindplane で ClickStack を宛先として設定する
+* テレメトリーを処理してルーティングする構成を作成する
+* 構成を OTel collector にリモートでデプロイし、データ収集を開始する
+* ClickStack でテレメトリーを表示する
 
-:::note[要約]
-このガイドでは、Bindplane のネイティブな ClickStack 宛先を使用して、テレメトリを ClickStack にルーティングする方法を説明します。次のことを行えるようになります。
+この統合では、ClickStack の高性能なインジェストと Bindplane の collector 一元管理を組み合わせることで、運用オーバーヘッドを増やすことなくオブザーバビリティを容易に拡張できます。
 
-- Bindplane で ClickStack を宛先として設定する
-- テレメトリを処理してルーティングするコンフィグレーションを作成する
-- コンフィグレーションをリモートで OTel collector にデプロイし、データ収集を開始する
-- ClickStack でテレメトリを確認する
-
-この連携により、ClickStack の高性能なインジェスト機能と Bindplane による collector の集中管理が組み合わさり、運用負荷を増やすことなくオブザーバビリティをスケールしやすくなります。
-
-所要時間: 10〜15 分
+所要時間: 10～15 分
 :::
 
 ## Bindplane とは \{#what-is-bindplane\}

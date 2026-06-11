@@ -1,13 +1,13 @@
 ---
 slug: /cloud/managed-postgres/migrations/logical-replication
-sidebar_label: '論理レプリケーション'
-title: '論理レプリケーションを使用して PostgreSQL データを移行する'
-description: '論理レプリケーションを使用して、PostgreSQL データを ClickHouse Managed Postgres に移行する方法を説明します'
+sidebar_label: 'ロジカルレプリケーション'
+title: 'ロジカルレプリケーションを使用して Managed Postgres に移行する'
+description: 'ロジカルレプリケーションを使用して、PostgreSQL データを ClickHouse Managed Postgres に移行する方法を説明します'
 keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres']
 doc_type: 'ガイド'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPgForMigrate from '@site/static/images/managed-postgres/pg_dump_restore/create-pg-for-migration.png';
 import sourceReplicationSetup from '@site/static/images/managed-postgres/logical_replication/source-setup.png';
@@ -15,12 +15,9 @@ import targetInitialSetup from '@site/static/images/managed-postgres/logical_rep
 import migrationResult from '@site/static/images/managed-postgres/logical_replication/migration-result.png';
 import sourceSetup from '@site/static/images/managed-postgres/pg_dump_restore/source-setup.png';
 
+このガイドでは、Postgres ネイティブのロジカルレプリケーションを使用して PostgreSQL データベースを ClickHouse Managed Postgres に移行する方法を、手順を追って説明します。
 
-# ロジカルレプリケーションを使用して ClickHouse Managed Postgres へ移行する \{#logical-replication-migration\}
-
-このガイドでは、Postgres ネイティブのロジカルレプリケーションを使用して、PostgreSQL データベースを ClickHouse Managed Postgres に移行する手順を、順を追って説明します。
-
-<PrivatePreviewBadge />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.logical-replication-beta" />
 
 ## 前提条件 \{#migration-logical-replication-prerequisites\}
 

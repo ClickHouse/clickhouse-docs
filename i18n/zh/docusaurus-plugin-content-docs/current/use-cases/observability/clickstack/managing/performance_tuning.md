@@ -409,7 +409,7 @@ WHERE database = 'otel'
 
 ### 评估跳过索引的有效性 \{#evaluating-skip-index-effectiveness\}
 
-评估跳过索引剪枝效果最可靠的方法是使用 `EXPLAIN indexes = 1`，它会显示在查询规划的每个阶段被消除的 [parts](/parts) 和 [granules](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) 数量。大多数情况下，你希望在 Skip 阶段看到 granule 数量大幅减少，并且最好是在主键已经缩小搜索空间之后。跳过索引是在分区剪枝和主键剪枝之后进行评估的，因此最适合相对于剩余的分区片段和 granule 来衡量其影响。
+评估跳过索引剪枝效果最可靠的方法是使用 `EXPLAIN indexes = 1`，它会显示在查询规划的每个阶段被消除的 [parts](/parts) 和 [颗粒](/guides/best-practices/sparse-primary-indexes#data-is-organized-into-granules-for-parallel-data-processing) 数量。大多数情况下，你希望在 Skip 阶段看到 颗粒 数量大幅减少，并且最好是在主键已经缩小搜索空间之后。跳过索引是在分区剪枝和主键剪枝之后进行评估的，因此最适合相对于剩余的 parts 和 颗粒 来衡量其影响。
 
 `EXPLAIN` 可以确认是否发生了剪枝，但它并不保证一定能带来净性能提升。跳过索引本身也有评估成本，尤其是在索引较大的情况下。在添加并物化一个索引之前和之后，一定要对查询进行基准测试，以确认实际的性能提升。
 
@@ -442,7 +442,7 @@ Indexes:
     Granules: 1/255
 ```
 
-在这种情况下，主键过滤首先大幅缩小了数据集（从 35898 个数据块减少到 255 个），然后 Bloom 过滤器进一步将其缩减到单个数据块（1/255）。这就是 skip 索引的理想模式：先通过主键剪枝来缩小搜索范围，再由 skip 索引剔除剩余数据中的大部分。
+在这种情况下，主键过滤首先大幅缩小了数据集 (从 35898 个颗粒减少到 255 个) ，然后 Bloom 过滤器进一步将其缩减到单个颗粒 (1/255) 。这就是 skip 索引的理想模式：先通过主键剪枝来缩小搜索范围，再由 skip 索引剔除剩余数据中的大部分。
 
 要验证实际影响，请在稳定的配置下对查询进行基准测试并比较执行时间。使用 `FORMAT Null` 以避免结果序列化开销，并禁用查询条件缓存，以保持多次运行结果的可重复性：
 
@@ -451,7 +451,9 @@ SELECT *
 FROM otel_traces
 WHERE (ServiceName = 'accountingservice') AND (TraceId = '4512e822ca3c0c68bbf5d4a263f9943d')
 SETTINGS use_query_condition_cache = 0
+```
 
+```response
 2 rows in set. Elapsed: 0.025 sec. Processed 8.52 thousand rows, 299.78 KB (341.22 thousand rows/s., 12.00 MB/s.)
 Peak memory usage: 41.97 MiB.
 ```
@@ -464,7 +466,9 @@ FROM otel_traces
 WHERE (ServiceName = 'accountingservice') AND (TraceId = '4512e822ca3c0c68bbf5d4a263f9943d')
 FORMAT Null
 SETTINGS use_query_condition_cache = 0, use_skip_indexes = 0;
+```
 
+```response
 0 rows in set. Elapsed: 0.702 sec. Processed 1.62 million rows, 56.62 MB (2.31 million rows/s., 80.71 MB/s.)
 Peak memory usage: 198.39 MiB.
 ```
@@ -472,9 +476,8 @@ Peak memory usage: 198.39 MiB.
 关闭 `use_query_condition_cache` 可确保查询结果不受缓存过滤决策的影响，而设置 `use_skip_indexes = 0` 则为对比提供一个干净的基线。如果剪枝有效且索引评估成本较低，那么带索引的查询应当会明显更快，就像上面的示例那样。
 
 :::tip
-如果 `EXPLAIN` 显示 granule 剪枝很少，或者 skip 索引非常庞大，那么评估索引的开销可能会抵消所有收益。使用 `EXPLAIN indexes = 1` 来确认剪枝情况，然后通过基准测试来验证端到端的性能改善。
+如果 `EXPLAIN` 显示 颗粒 剪枝很少，或者 skip 索引非常庞大，那么评估索引的开销可能会抵消所有收益。使用 `EXPLAIN indexes = 1` 来确认剪枝情况，然后通过基准测试来验证端到端的性能改善。
 :::
-
 
 ### 何时添加跳过索引 \{#when-to-add-skip-indexes\}
 

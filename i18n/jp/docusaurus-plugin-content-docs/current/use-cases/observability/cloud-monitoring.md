@@ -4,7 +4,7 @@ title: 'ClickHouse Cloud 監視'
 sidebar_label: 'ClickHouse Cloud 監視'
 description: 'ClickHouse Cloud 監視ガイド'
 doc_type: 'guide'
-keywords: ['オブザーバビリティ', '監視', 'クラウド', 'メトリクス', 'システムの健全性']
+keywords: ['オブザーバビリティ', '監視', 'クラウド', 'メトリクス', 'システムヘルス']
 ---
 
 import AdvancedDashboard from '@site/static/images/cloud/manage/monitoring/advanced_dashboard.png';
@@ -14,9 +14,7 @@ import ObservabilityIntegrations from '@site/i18n/jp/docusaurus-plugin-content-d
 import DirectIntegrations from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# ClickHouse Cloud の監視 \{#cloud-monitoring\}
-
-このガイドでは、ClickHouse Cloud を評価しているエンタープライズチーム向けに、本番環境デプロイメントにおける監視およびオブザーバビリティ機能についての包括的な情報を提供します。エンタープライズのお客様からは、すぐに利用できる監視機能、Datadog や AWS CloudWatch などのツールを含む既存のオブザーバビリティスタックとの統合、そして ClickHouse の監視機能がセルフホスト型デプロイメントとどのように比較されるのかについて、頻繁にお問い合わせをいただきます。
+このガイドでは、ClickHouse Cloud を評価しているエンタープライズチーム向けに、本番デプロイメントにおける監視機能とオブザーバビリティ機能について包括的な情報を提供します。エンタープライズのお客様からは、すぐに利用できる監視機能、Datadog や AWS CloudWatch などのツールを含む既存のオブザーバビリティスタックとの統合、そして ClickHouse の監視がセルフホスト型デプロイメントと比べてどのような違いがあるのかについて、頻繁に質問が寄せられます。
 
 ## 高度なオブザーバビリティダッシュボード \{#advanced-observability\}
 

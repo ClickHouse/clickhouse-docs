@@ -95,7 +95,9 @@ MODIFY REFRESH EVERY 30 SECONDS;
 SELECT *
 FROM events
 LIMIT 10
+```
 
+```response
 Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
 
 ┌──────────────────ts─┬─uuid─┬─count─┐
@@ -112,7 +114,7 @@ Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
 └─────────────────────┴──────┴───────┘
 ```
 
-이 데이터 세트의 `uuid` 컬럼에는 `4096`개의 값이 있습니다. 총 개수가 가장 큰 값들을 찾기 위해 다음 쿼리를 사용할 수 있습니다:
+이 데이터셋의 `uuid` 컬럼에는 `4096`개의 값이 있습니다. 총 개수가 가장 큰 값들을 찾기 위해 다음 쿼리를 사용할 수 있습니다:
 
 ```sql
 SELECT
@@ -122,7 +124,9 @@ FROM events
 GROUP BY ALL
 ORDER BY count DESC
 LIMIT 10
+```
 
+```response
 ┌─uuid─┬───count─┐
 │ c6f  │ 5676468 │
 │ 951  │ 5669731 │
@@ -162,8 +166,7 @@ FROM events
 GROUP BY ALL;
 ```
 
-그런 다음 특정 `uuid`에 대해 시간에 따른 개수를 확인하기 위해 `events_snapshot`을 쿼리할 수 있습니다.
-
+그런 다음 특정 `uuid`에 대해 시간에 따른 개수를 확인하기 위해 `events_snapshot`을 쿼리할 수 있습니다:
 
 ```sql
 SELECT *
@@ -171,7 +174,9 @@ FROM events_snapshot
 WHERE uuid = 'fff'
 ORDER BY ts ASC
 FORMAT PrettyCompactMonoBlock
+```
 
+```response
 ┌──────────────────ts─┬─uuid─┬───count─┐
 │ 2024-10-01 16:12:56 │ fff  │ 5424711 │
 │ 2024-10-01 16:13:00 │ fff  │ 5424711 │
@@ -183,7 +188,6 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
 ```
-
 
 ## 예시 \{#examples\}
 

@@ -10,8 +10,8 @@ doc_type: 'reference'
 ---
 
 | Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| ---- | ----- | --------- |
+| ✔    | ✔     |           |
 
 ## Описание \{#description\}
 
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS example_table
 
 ### Выборка данных \{#json-selecting-data\}
 
-Рассмотрим в качестве примера таблицу `UserActivity`:
+В качестве примера рассмотрим таблицу `UserActivity`:
 
 ```response
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -155,13 +155,13 @@ CREATE TABLE IF NOT EXISTS example_table
 
 Например, рассмотрим следующую таблицу:
 
-```sql
+```sql title="Query"
 CREATE TABLE json_each_row_nested (n Nested (s String, i Int32) ) ENGINE = Memory
 ```
 
 Как видно из описания типа данных `Nested`, ClickHouse обрабатывает каждый компонент вложенной структуры как отдельный столбец (`n.s` и `n.i` для нашей таблицы). Данные можно вставлять следующим образом:
 
-```sql
+```sql title="Query"
 INSERT INTO json_each_row_nested FORMAT JSONEachRow {"n.s": ["abc", "def"], "n.i": [1, 23]}
 ```
 

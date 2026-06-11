@@ -7,19 +7,16 @@ keywords: ['네이티브 프로토콜', 'TCP 프로토콜', '프로토콜 기본
 doc_type: 'guide'
 ---
 
-# 기본 사항 \{#basics\}
-
 :::note
-클라이언트 프로토콜 참조 문서는 준비 중입니다.
+클라이언트 프로토콜 참고 문서는 현재 작성 중입니다.
 
-예제는 대부분 Go로만 제공됩니다.
+대부분의 예시는 Go로만 제공됩니다.
 :::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-이 문서는 ClickHouse TCP 클라이언트에서 사용하는 이진 프로토콜을 설명합니다.
-
+이 문서에서는 ClickHouse TCP 클라이언트용 바이너리 프로토콜을 설명합니다.
 
 ## Varint \{#varint\}
 

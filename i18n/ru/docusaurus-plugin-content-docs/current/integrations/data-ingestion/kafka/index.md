@@ -4,16 +4,14 @@
 sidebar_label: 'Интеграция Kafka с ClickHouse'
 sidebar_position: 1
 slug: /integrations/kafka
-description: 'Введение в использование Kafka с ClickHouse'
+description: 'Введение в Kafka с ClickHouse'
 title: 'Интеграция Kafka с ClickHouse'
-keywords: ['Apache Kafka', 'потоковая обработка событий', 'конвейер данных', 'брокер сообщений', 'данные в реальном времени']
+keywords: ['Apache Kafka', 'потоковая передача событий', 'конвейер данных', 'брокер сообщений', 'данные в реальном времени']
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
 ---
-
-# Интеграция Kafka с ClickHouse \{#integrating-kafka-with-clickhouse\}
 
 [Apache Kafka](https://kafka.apache.org/) — это распределённая платформа потоковой передачи событий с открытым исходным кодом, используемая тысячами компаний для высокопроизводительных конвейеров данных, потоковой аналитики, интеграции данных и критически важных для бизнеса приложений. ClickHouse предоставляет несколько способов **чтения из** и **записи в** Kafka и другие брокеры, совместимые с Kafka API (например, Redpanda, Amazon MSK).
 
@@ -39,15 +37,13 @@ integration:
 
 #### Основные возможности \{#clickpipes-for-kafka-main-features\}
 
-[//]: # "TODO It isn't optimal to link to a static alpha-release of the Terraform provider. Link to a Terraform guide once that's available."
-
 * Оптимизирован для ClickHouse Cloud и обеспечивает сверхвысокую производительность
 * Горизонтальная и вертикальная масштабируемость для высоконагруженных сценариев
 * Встроенная отказоустойчивость с настраиваемыми репликами и автоматическими повторами
-* Развертывание и управление через ClickHouse Cloud UI, [Open API](/cloud/manage/api/api-overview) или [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)
+* Развертывание и управление через ClickHouse Cloud UI, [Open API](/integrations/clickpipes/programmatic-access/openapi) или [Terraform](/integrations/clickpipes/programmatic-access/terraform)
 * Защита уровня Enterprise с поддержкой облачно-нативной авторизации (IAM) и частных сетевых подключений (PrivateLink)
 * Поддержка широкого спектра [источников данных](/integrations/clickpipes/kafka/reference/), включая Confluent Cloud, Amazon MSK, Redpanda Cloud и Azure Event Hubs
-* Поддержка наиболее распространённых форматов сериализации (JSON, Avro, Protobuf — скоро!)
+* Поддержка наиболее распространённых форматов сериализации (JSON, Avro, Protobuf)
 
 #### Начало работы \{#clickpipes-for-kafka-getting-started\}
 

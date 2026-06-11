@@ -167,4 +167,4 @@ of features aimed at providing a feature-complete AI experience.
 
 ## ClickHouse.ai {#clickhouse-ai}
 
-For more information about features coming soon to ClickHouse Cloud, see [ClickHouse.ai](https://clickhouse.com/clickhouse-ai/).
+For more information about features coming soon to ClickHouse Cloud, see [ClickHouse.ai](https://clickhouse.com/ai).

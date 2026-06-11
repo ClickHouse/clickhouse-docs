@@ -11,8 +11,6 @@ import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
-# 投影 \{#projections\}
-
 ## 简介 \{#introduction\}
 
 ClickHouse 为实时场景下的大规模数据分析查询提供了多种加速机制。其中一种是使用 _Projections（投影）_ 来加速查询。Projections 通过根据关注的属性对数据进行重新排序来帮助优化查询，具体可以是：

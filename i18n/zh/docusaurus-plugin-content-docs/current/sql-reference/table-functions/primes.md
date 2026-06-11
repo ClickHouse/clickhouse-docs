@@ -3,11 +3,9 @@ slug: /sql-reference/table-functions/primes
 sidebar_position: 145
 sidebar_label: 'primes'
 title: 'primes'
-description: '返回一个仅包含一个名为 `prime` 的列且其中包含素数的表。'
+description: '返回一个仅包含 `prime` 列的表，该列包含质数。'
 doc_type: 'reference'
 ---
-
-# primes 表函数 \{#primes-table-function\}
 
 * `primes()` – 返回一个具有无限行、仅包含名为 `prime` 的单列 (UInt64) 的表，该列按升序包含从 2 开始的素数。使用 `LIMIT` (以及可选的 `OFFSET`) 来限制行数。
 

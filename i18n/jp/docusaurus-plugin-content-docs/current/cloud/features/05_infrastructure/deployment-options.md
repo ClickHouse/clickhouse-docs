@@ -1,12 +1,10 @@
 ---
 title: 'デプロイメントオプション'
 slug: /infrastructure/deployment-options
-description: 'ClickHouse のお客様が利用できるデプロイメントオプション'
-keywords: ['自前クラウド', 'byoc', 'プライベート', '政府機関向け', 'セルフホスト型']
+description: 'ClickHouse のお客様が利用できるデプロイオプション'
+keywords: ['bring yor own cloud', 'byoc', 'private', 'government', 'セルフホスト型']
 doc_type: 'reference'
 ---
-
-# ClickHouse デプロイメントオプション \{#clickhouse-deployment-options\}
 
 ClickHouse は、多様な顧客要件に対応するため、制御性、コンプライアンス、および運用負荷の観点から異なる、幅広いデプロイメントオプションを提供しています。
 本ドキュメントでは、利用可能な各種デプロイメントタイプの特徴を整理し、あなたが自らのアーキテクチャ上の要件、規制上の義務、およびリソース管理戦略に最適に合致するソリューションを選択できるようにします。

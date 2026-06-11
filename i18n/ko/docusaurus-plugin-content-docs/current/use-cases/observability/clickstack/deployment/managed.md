@@ -359,12 +359,10 @@ OTel collector를 사용하여 ClickHouse 내에서 데이터베이스와 테이
 ClickStack의 서로 다른 데이터 소스(예: 로그와 트레이스)는 서로 연관될 수 있습니다. 이를 활성화하려면 각 소스마다 추가 구성이 필요합니다. 예를 들어 로그 소스에서는 해당하는 트레이스 소스를 지정할 수 있고, 반대로 트레이스 소스에서도 로그 소스를 지정할 수 있습니다. 자세한 내용은 ["상관관계 소스"](/use-cases/observability/clickstack/config#correlated-sources)를 참조하십시오.
 :::
 
-#### 사용자 지정 스키마 사용 {#using-custom-schemas}
+#### 사용자 지정 스키마 사용
 
-기존 서비스에 이미 존재하는 데이터와 ClickStack을 연결하려는 경우, 필요에 따라 데이터베이스와 테이블 설정을 완료합니다. 테이블이 ClickHouse용 OpenTelemetry 스키마를 준수하는 경우 설정은 자동으로 감지됩니다. 
+기존 서비스에 이미 존재하는 데이터와 ClickStack을 연결하려는 경우, 필요에 따라 데이터베이스와 테이블 설정을 완료합니다. 테이블이 ClickHouse용 OpenTelemetry 스키마를 준수하는 경우 설정은 자동으로 감지됩니다.
 
-사용자 지정 스키마를 사용하는 경우, 필수 필드가 지정되도록 Logs 소스를 생성할 것을 권장합니다. 자세한 내용은 ["Log source settings"](/use-cases/observability/clickstack/config#logs)를 참조하십시오.
+사용자 지정 스키마를 사용하는 경우, 필수 필드가 지정되도록 로그 소스를 생성할 것을 권장합니다. 자세한 내용은 [&quot;Log source settings&quot;](/use-cases/observability/clickstack/config#logs)를 참조하십시오.
 
-<JSONSupport/>
-
-또한 ClickHouse Cloud 서비스에서 JSON이 활성화되어 있는지 확인하기 위해 support@clickhouse.com으로 문의해야 합니다.
+<JSONSupport />

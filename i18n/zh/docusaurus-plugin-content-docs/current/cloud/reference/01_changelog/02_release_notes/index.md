@@ -16,9 +16,9 @@ keywords: ['更新日志', '发布说明', '更新', '新功能', 'Cloud 变更'
 | 页面                                                        | 描述                                                   |
 | --------------------------------------------------------- | ---------------------------------------------------- |
 | [Cloud 变更日志 - 2026](/whats-new/changelog/cloud)           | ClickHouse Cloud 变更日志，介绍每个 ClickHouse Cloud 版本中的新增内容 |
-| [v26.2 Changelog for Cloud](/changelogs/26.2)             | v26.2 的 Cloud 版本变更日志                                 |
+| [v26.2 changelog for Cloud](/changelogs/26.2)             | v26.2 的 Cloud 版本变更日志                                 |
 | [Cloud 变更日志 - 2025](/whats-new/cloud/2025)                | 2025 年的 ClickHouse Cloud 变更日志                        |
-| [v25.12 Changelog for Cloud](/changelogs/25.12)           | v25.12 的 Cloud 版本变更日志                                |
+| [v25.12 changelog for Cloud](/changelogs/25.12)           | v25.12 的 Cloud 版本变更日志                                |
 | [Cloud 变更日志 - 2024](/whats-new/cloud/2024)                | 2024 年的 ClickHouse Cloud 变更日志                        |
 | [v25.10 Changelog for Cloud](/changelogs/25.10)           | v25.10 的 Cloud 版本变更日志                                |
 | [Cloud 变更日志 - 2023](/whats-new/cloud/2023)                | 2023 年的 ClickHouse Cloud 变更日志                        |
@@ -29,8 +29,8 @@ keywords: ['更新日志', '发布说明', '更新', '新功能', 'Cloud 变更'
 | [v24.12 Changelog for Cloud](/changelogs/24.12)           | v24.12 的快速发布版本变更日志                                   |
 | [v24.10 Changelog for Cloud](/changelogs/24.10)           | v24.10 的快速发布版本变更日志                                   |
 | [v24.8 Changelog for Cloud](/changelogs/24.8)             | v24.8 的快速发布版本变更日志                                    |
-| [v24.6 Changelog for Cloud](/changelogs/24.6)             | v24.6 的快速发布版本变更日志                                    |
-| [v24.5 Changelog for Cloud](/changelogs/24.5)             | v24.5 的快速发布版本变更日志                                    |
+| [v24.6 changelog for Cloud](/changelogs/24.6)             | v24.6 的快速发布版本变更日志                                    |
+| [v24.5 changelog for Cloud](/changelogs/24.5)             | v24.5 的快速发布版本变更日志                                    |
 | [v24.2 Changelog](/whats-new/changelog/24.2-fast-release) | v24.2 的快速发布版本变更日志                                    |
 | [Release status page](/cloud/release-status)              | 显示各发布渠道发布状态的页面                                       |
 

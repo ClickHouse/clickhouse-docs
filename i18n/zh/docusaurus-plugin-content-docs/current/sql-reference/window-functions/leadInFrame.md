@@ -7,8 +7,6 @@ title: 'leadInFrame'
 doc_type: 'reference'
 ---
 
-# leadInFrame \{#leadinframe\}
-
 返回在有序窗口框架中，相对于当前行向后偏移指定行数的那一行上计算得到的值。
 
 :::warning
@@ -32,8 +30,8 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **参数**
 
 * `x` — 列名。
-* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。（可选 — 默认值为 `1`）。
-* `default` — 当计算得到的行超出窗口帧边界时返回的值。（可选 — 省略时为该列类型的默认值）。
+* `offset` — 要应用的偏移量。[(U)Int*](../data-types/int-uint.md)。 (可选 — 默认值为 `1`) 。
+* `default` — 当计算得到的行超出窗口帧边界时返回的值。 (可选 — 省略时为该列类型的默认值) 。
 
 **返回值**
 
@@ -43,15 +41,13 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 本示例使用诺贝尔奖得主的[历史数据](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)，并通过 `leadInFrame` 函数返回物理学类别中连续获奖者的列表。
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE OR REPLACE VIEW nobel_prize_laureates
 AS SELECT *
 FROM file('nobel_laureates_data.csv');
 ```
 
-```sql
+```sql title="Query"
 SELECT
     fullName,
     leadInFrame(year, 1, year) OVER (PARTITION BY category ORDER BY year ASC
@@ -65,9 +61,7 @@ ORDER BY year DESC
 LIMIT 9
 ```
 
-结果：
-
-```response
+```response title="Response"
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 1. │ Anne L Huillier  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
 2. │ Pierre Agostini  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │

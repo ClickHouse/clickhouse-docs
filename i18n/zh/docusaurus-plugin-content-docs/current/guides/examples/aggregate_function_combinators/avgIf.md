@@ -7,8 +7,6 @@ sidebar_label: 'avgIf'
 doc_type: 'reference'
 ---
 
-# avgIf \{#avgif\}
-
 ## 描述 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 组合器可以应用于 [`avg`](/sql-reference/aggregate-functions/reference/avg)

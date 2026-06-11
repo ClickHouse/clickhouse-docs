@@ -1,13 +1,11 @@
 ---
-description: 'SELECT 쿼리 문서'
+description: 'SELECT Query 문서'
 sidebar_label: 'SELECT'
 sidebar_position: 32
 slug: /sql-reference/statements/select/
-title: 'SELECT 쿼리'
+title: 'SELECT Query'
 doc_type: 'reference'
 ---
-
-# SELECT Query \{#select-query\}
 
 `SELECT` 쿼리는 데이터를 조회합니다. 기본적으로 요청된 데이터는 클라이언트로 반환되지만, [INSERT INTO](../../../sql-reference/statements/insert-into.md)와 함께 사용하면 다른 테이블로 전달할 수도 있습니다.
 
@@ -68,7 +66,7 @@ SELECT [DISTINCT [ON (column1, column2, ...)]] expr_list
 
 ### 동적 컬럼 선택 \{#dynamic-column-selection\}
 
-동적 컬럼 선택(또는 COLUMNS 식이라고 함)을 사용하면 결과의 일부 컬럼을 [re2](https://en.wikipedia.org/wiki/RE2_\(software\)) 정규 표현식과 일치하도록 선택할 수 있습니다.
+동적 컬럼 선택(또는 COLUMNS 표현식이라고 함)을 사용하면 결과의 일부 컬럼을 [re2](https://en.wikipedia.org/wiki/RE2_\(software\)) 정규 표현식과 일치하도록 선택할 수 있습니다.
 
 ```sql
 COLUMNS('regexp')
@@ -177,10 +175,10 @@ Code: 42. DB::Exception: Received from localhost:9000. DB::Exception: Number of 
 
 `SELECT` 쿼리에서 다음 수정자를 사용할 수 있습니다.
 
-| Modifier                            | Description                                                                                                                                                                                                                                                                                                                                                                              |
-|-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`APPLY`](./apply_modifier.md)     | 쿼리의 외부 테이블 표현식에서 반환되는 각 행에 대해 임의의 함수를 호출할 수 있도록 합니다.                                                                                                                                                                                                                                                                                               |
-| [`EXCEPT`](./except_modifier.md)   | 결과에서 제외할 하나 이상의 컬럼 이름을 지정합니다. 일치하는 모든 컬럼 이름은 출력에서 제외됩니다.                                                                                                                                                                                                                                                                                        |
+| Modifier                           | Description                                                                                                                                                                                                                              |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`APPLY`](./apply_modifier.md)     | 쿼리의 외부 테이블 표현식에서 반환되는 각 행에 대해 임의의 함수를 호출할 수 있도록 합니다.                                                                                                                                                                                     |
+| [`EXCEPT`](./except_modifier.md)   | 결과에서 제외할 하나 이상의 컬럼 이름을 지정합니다. 일치하는 모든 컬럼 이름은 출력에서 제외됩니다.                                                                                                                                                                                 |
 | [`REPLACE`](./replace_modifier.md) | 하나 이상의 [expression aliases](/sql-reference/syntax#expression-aliases)을(를) 지정합니다. 각 별칭은 `SELECT *` 구문의 컬럼 이름과 일치해야 합니다. 출력 컬럼 목록에서, 해당 별칭과 일치하는 컬럼은 해당 `REPLACE`에 지정된 식으로 대체됩니다. 이 수정자는 컬럼의 이름이나 순서는 변경하지 않습니다. 그러나 값과 값의 타입은 변경될 수 있습니다. |
 
 ### 수정자 조합 \{#modifier-combinations\}

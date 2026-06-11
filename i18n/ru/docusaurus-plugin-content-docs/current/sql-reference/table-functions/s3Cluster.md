@@ -1,6 +1,6 @@
 ---
-description: 'Расширение табличной функции s3, позволяющее обрабатывать файлы
-  из Amazon S3 и Google Cloud Storage параллельно на нескольких узлах указанного
+description: 'Расширение табличной функции s3, которое позволяет обрабатывать файлы
+  из Amazon S3 и Google Cloud Storage параллельно на нескольких узлах заданного
   кластера.'
 sidebar_label: 's3Cluster'
 sidebar_position: 181
@@ -8,8 +8,6 @@ slug: /sql-reference/table-functions/s3Cluster
 title: 's3Cluster'
 doc_type: 'reference'
 ---
-
-# Табличная функция s3Cluster \{#s3cluster-table-function\}
 
 Это расширение табличной функции [s3](sql-reference/table-functions/s3.md).
 
@@ -24,27 +22,27 @@ s3Cluster(cluster_name, named_collection[, option=value [,..]])
 
 ## Аргументы \{#arguments\}
 
-| Argument                              | Description                                                                                                                                                                                             |
-|---------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cluster_name`                        | Имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.                                                                            |
-| `url`                                 | Путь к файлу или набору файлов. Поддерживает следующие шаблоны в режиме только для чтения: `*`, `**`, `?`, `{'abc','def'}` и `{N..M}`, где `N`, `M` — числа, `abc`, `def` — строки. Для получения дополнительной информации см. [Wildcards In Path](../../engines/table-engines/integrations/s3.md#wildcards-in-path). |
-| `NOSIGN`                              | Если это ключевое слово указано вместо учётных данных, все запросы будут выполняться без подписи.                                                                                                      |
-| `access_key_id` and `secret_access_key` | Ключи, задающие учётные данные для использования с указанным endpoint’ом. Необязательные.                                                                                                              |
-| `session_token`                       | Сессионный токен для использования с указанными ключами. Необязателен при передаче ключей.                                                                                                             |
-| `format`                              | [Формат](/sql-reference/formats) файла.                                                                                                                                                                |
-| `structure`                           | Структура таблицы. Формат `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                              |
-| `compression_method`                  | Необязательный параметр. Поддерживаемые значения: `none`, `gzip` или `gz`, `brotli` или `br`, `xz` или `LZMA`, `zstd` или `zst`. По умолчанию метод сжатия определяется автоматически по расширению файла. |
-| `headers`                             | Необязательный параметр. Позволяет передавать заголовки в запросе к S3. Передавайте их в формате `headers(key=value)`, например `headers('x-amz-request-payer' = 'requester')`. Пример использования см. [здесь](/sql-reference/table-functions/s3#accessing-requester-pays-buckets). |
-| `extra_credentials`                   | Необязательный параметр. `roleARN` может быть передан через этот параметр. Пример см. [здесь](/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role).                     |
+| Argument                                | Description                                                                                                                                                                                                                                                                                                            |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cluster_name`                          | Имя кластера, которое используется для построения набора адресов и параметров подключения к удалённым и локальным серверам.                                                                                                                                                                                            |
+| `url`                                   | Путь к файлу или набору файлов. Поддерживает следующие шаблоны в режиме только для чтения: `*`, `**`, `?`, `{'abc','def'}` и `{N..M}`, где `N`, `M` — числа, `abc`, `def` — строки. Для получения дополнительной информации см. [Wildcards In Path](../../engines/table-engines/integrations/s3.md#wildcards-in-path). |
+| `NOSIGN`                                | Если это ключевое слово указано вместо учётных данных, все запросы будут выполняться без подписи.                                                                                                                                                                                                                      |
+| `access_key_id` and `secret_access_key` | Ключи, задающие учётные данные для использования с указанным endpoint’ом. Необязательные.                                                                                                                                                                                                                              |
+| `session_token`                         | Сессионный токен для использования с указанными ключами. Необязателен при передаче ключей.                                                                                                                                                                                                                             |
+| `format`                                | [Формат](/sql-reference/formats) файла.                                                                                                                                                                                                                                                                                |
+| `structure`                             | Структура таблицы. Формат `'column1_name column1_type, column2_name column2_type, ...'`.                                                                                                                                                                                                                               |
+| `compression_method`                    | Необязательный параметр. Поддерживаемые значения: `none`, `gzip` или `gz`, `brotli` или `br`, `xz` или `LZMA`, `zstd` или `zst`. По умолчанию метод сжатия определяется автоматически по расширению файла.                                                                                                             |
+| `headers`                               | Необязательный параметр. Позволяет передавать заголовки в запросе к S3. Передавайте их в формате `headers(key=value)`, например `headers('x-amz-request-payer' = 'requester')`. Пример использования см. [здесь](/sql-reference/table-functions/s3#accessing-requester-pays-buckets).                                  |
+| `extra_credentials`                     | Необязательный параметр. `roleARN` может быть передан через этот параметр. Пример см. [здесь](/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role).                                                                                                                                     |
 
 Аргументы также могут быть переданы с использованием [именованных коллекций](operations/named-collections.md). В этом случае `url`, `access_key_id`, `secret_access_key`, `format`, `structure`, `compression_method` работают тем же образом, а также поддерживаются некоторые дополнительные параметры:
 
-| Argument                       | Description                                                                                                                                                                                                                       |
-|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `filename`                     | Добавляется к `url`, если указан.                                                                                                                                                                                                |
-| `use_environment_credentials`  | Включён по умолчанию, позволяет передавать дополнительные параметры с помощью переменных окружения `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI`, `AWS_CONTAINER_CREDENTIALS_FULL_URI`, `AWS_CONTAINER_AUTHORIZATION_TOKEN`, `AWS_EC2_METADATA_DISABLED`. |
-| `no_sign_request`              | По умолчанию отключён.                                                                                                                                                                                                           |
-| `expiration_window_seconds`    | Значение по умолчанию — 120.                                                                                                                                                                                                     |
+| Argument                      | Description                                                                                                                                                                                                                                          |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `filename`                    | Добавляется к `url`, если указан.                                                                                                                                                                                                                    |
+| `use_environment_credentials` | Включён по умолчанию, позволяет передавать дополнительные параметры с помощью переменных окружения `AWS_CONTAINER_CREDENTIALS_RELATIVE_URI`, `AWS_CONTAINER_CREDENTIALS_FULL_URI`, `AWS_CONTAINER_AUTHORIZATION_TOKEN`, `AWS_EC2_METADATA_DISABLED`. |
+| `no_sign_request`             | По умолчанию отключён.                                                                                                                                                                                                                               |
+| `expiration_window_seconds`   | Значение по умолчанию — 120.                                                                                                                                                                                                                         |
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -94,5 +92,5 @@ SELECT count(*) FROM s3Cluster(
 
 ## Связанные разделы \{#related\}
 
-- [Движок S3](../../engines/table-engines/integrations/s3.md)
-- [Табличная функция S3](../../sql-reference/table-functions/s3.md)
+* [Движок S3](../../engines/table-engines/integrations/s3.md)
+* [Табличная функция S3](../../sql-reference/table-functions/s3.md)

@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse 中的 MySQL 协议接口文档，允许 MySQL 客户端连接到 ClickHouse'
+description: 'ClickHouse 的 MySQL 协议接口文档，允许 MySQL 客户端连接到 ClickHouse'
 sidebar_label: 'MySQL 接口'
 sidebar_position: 25
 slug: /interfaces/mysql
@@ -13,26 +13,23 @@ import mysql1 from '@site/static/images/interfaces/mysql1.png';
 import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
+ClickHouse 支持 MySQL 线协议 (wire protocol) 。这使得某些没有原生 ClickHouse 连接器的客户端可以改用 MySQL 协议，并且已经在以下 BI 工具中完成了验证：
 
-# MySQL 接口 \{#mysql-interface\}
-
-ClickHouse 支持 MySQL 线协议（wire protocol）。这使得某些没有原生 ClickHouse 连接器的客户端可以改用 MySQL 协议，并且已经在以下 BI 工具中完成了验证：
-
-- [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
-- [Tableau Online](../integrations/tableau-online)
-- [QuickSight](../integrations/quicksight)
+* [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
+* [Tableau Online](../integrations/tableau-online)
+* [QuickSight](../integrations/quicksight)
 
 如果你正在尝试其他尚未测试的客户端或集成，请注意可能存在以下限制：
 
-- SSL 实现可能不完全兼容；可能会有 [TLS SNI](https://www.cloudflare.com/learning/ssl/what-is-sni/) 方面的潜在问题。
-- 某个工具可能依赖尚未实现的方言特性（例如特定于 MySQL 的函数或设置）。
+* SSL 实现可能不完全兼容；可能会有 [TLS SNI](https://www.cloudflare.com/learning/ssl/what-is-sni/) 方面的潜在问题。
+* 某个工具可能依赖尚未实现的方言特性 (例如特定于 MySQL 的函数或设置) 。
 
-如果有可用的原生驱动程序（例如 [DBeaver](../integrations/dbeaver)），始终建议优先使用它而不是 MySQL 接口。此外，虽然大多数基于 MySQL 的客户端通常可以正常工作，但不能保证 MySQL 接口能够作为对现有基于 MySQL 查询代码库的完全无差异替代方案。
+如果有可用的原生驱动程序 (例如 [DBeaver](../integrations/dbeaver)) ，始终建议优先使用它而不是 MySQL 接口。此外，虽然大多数 MySQL 语言客户端通常都能正常工作，但不能保证 MySQL 接口能够作为对现有 MySQL 查询代码库的完全无差异替代方案。
 
 如果你的使用场景涉及某个没有原生 ClickHouse 驱动程序的特定工具，并希望通过 MySQL 接口来使用它，但发现存在一些不兼容问题，请在 ClickHouse 仓库中[创建一个 issue](https://github.com/ClickHouse/ClickHouse/issues)。
 
 ::::note
-为了更好地支持上述 BI 工具的 SQL 方言，ClickHouse 的 MySQL 接口会隐式地在设置 [prefer_column_name_to_alias = 1](/operations/settings/settings#prefer_column_name_to_alias) 的情况下运行 SELECT 查询。
+为了更好地支持上述 BI 工具的 SQL 方言，ClickHouse 的 MySQL 接口会隐式地在设置 [prefer&#95;column&#95;name&#95;to&#95;alias = 1](/operations/settings/settings#prefer_column_name_to_alias) 的情况下运行 SELECT 查询。
 该行为无法关闭，在极少数边缘情况下，可能会导致发送到 ClickHouse 普通查询接口与 MySQL 查询接口的查询行为存在差异。
 ::::
 

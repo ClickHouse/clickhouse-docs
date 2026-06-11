@@ -2,7 +2,7 @@
 sidebar_label: 'Confluent Cloud 上の Kafka Connector Sink'
 sidebar_position: 2
 slug: /integrations/kafka/cloud/confluent/sink-connector
-description: 'Confluent Cloud 上でフルマネージドの ClickHouse Connector Sink を利用するためのガイド'
+description: 'Confluent Cloud 上で完全マネージド型の ClickHouse Connector Sink を利用するためのガイド'
 title: 'Confluent Cloud と ClickHouse の統合'
 keywords: ['Kafka', 'Confluent Cloud']
 doc_type: 'guide'
@@ -15,19 +15,17 @@ integration:
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-
-# Confluent Cloud と ClickHouse の統合 \{#integrating-confluent-cloud-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/SQAiPVbd3gg"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 前提条件 \{#prerequisites\}

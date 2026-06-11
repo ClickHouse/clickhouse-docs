@@ -1,5 +1,6 @@
 ---
-description: 'CoalescingMergeTree 继承自 MergeTree 引擎。其关键特性是在数据部分（part）合并期间，能够自动保留每列最后一个非空（non-null）值。'
+description: 'CoalescingMergeTree 继承自 MergeTree 引擎。其关键特性
+  是能够在 part 合并期间自动存储每列最后一个非 NULL 值。'
 sidebar_label: 'CoalescingMergeTree'
 sidebar_position: 50
 slug: /engines/table-engines/mergetree-family/coalescingmergetree
@@ -9,15 +10,13 @@ show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# CoalescingMergeTree 表引擎 \{#coalescingmergetree-table-engine\}
-
 :::note Available from version 25.6
 此表引擎从 25.6 及更高版本开始在 OSS 和 Cloud 中可用。
 :::
 
-该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/mergetree)。关键区别在于数据部分的合并方式：对于 `CoalescingMergeTree` 表，ClickHouse 会将所有具有相同主键（更准确地说，相同的[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)）的行合并为一行，该行在每一列上都包含最新的非 NULL 值。
+该引擎继承自 [MergeTree](/engines/table-engines/mergetree-family/mergetree)。关键区别在于数据 parts 的合并方式：对于 `CoalescingMergeTree` 表，ClickHouse 会将所有具有相同主键 (更准确地说，相同的[排序键](../../../engines/table-engines/mergetree-family/mergetree.md)) 的行合并为一行，该行在每一列上都包含最新的非 NULL 值。
 
-这实现了列级别的 upsert（插入或更新），也就是说，您可以只更新特定列，而不是整行。
+这实现了列级别的 upsert (插入或更新) ，也就是说，您可以只更新特定列，而不是整行。
 
 `CoalescingMergeTree` 旨在与非键列中的 Nullable 类型配合使用。如果这些列不是 Nullable，其行为与 [ReplacingMergeTree](/engines/table-engines/mergetree-family/replacingmergetree) 相同。
 

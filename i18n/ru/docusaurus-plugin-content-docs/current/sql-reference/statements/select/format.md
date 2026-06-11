@@ -1,12 +1,10 @@
 ---
-description: 'Документация по клаузе FORMAT'
+description: 'Документация по предложению FORMAT'
 sidebar_label: 'FORMAT'
 slug: /sql-reference/statements/select/format
-title: 'Клауза FORMAT'
+title: 'Предложение FORMAT'
 doc_type: 'reference'
 ---
-
-# Оператор FORMAT \{#format-clause\}
 
 ClickHouse поддерживает широкий спектр [форматов сериализации](../../../interfaces/formats.md), которые, среди прочего, могут использоваться для результатов запросов. Существует несколько способов выбрать формат для вывода результата `SELECT`, один из них — указать `FORMAT format` в конце запроса, чтобы получить данные в нужном формате.
 

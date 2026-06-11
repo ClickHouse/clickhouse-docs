@@ -7,9 +7,7 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-# odbc 表函数 \{#odbc-table-function\}
-
-返回一个通过 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 连接的表。
+返回通过 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 连接的表。
 
 ## 语法 \{#syntax\}
 

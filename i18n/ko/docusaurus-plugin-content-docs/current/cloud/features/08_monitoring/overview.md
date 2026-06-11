@@ -8,8 +8,6 @@ sidebar_position: 1
 doc_type: 'guide'
 ---
 
-# ClickHouse Cloud 배포 모니터링 \{#monitoring-your-clickhouse-cloud-deployment\}
-
 ## 개요 \{#overview\}
 
 이 가이드는 ClickHouse Cloud를 프로덕션 환경에 배포한 엔터프라이즈 팀을 위해 모니터링 및 관측성 기능에 관한 정보를 제공합니다. 엔터프라이즈 고객은 기본 제공 모니터링 기능, Datadog 및 AWS CloudWatch와 같은 도구를 포함한 기존 관측성 스택과의 통합, 그리고 ClickHouse의 모니터링이 자체 호스팅 배포와 어떻게 비교되는지에 대해 자주 문의합니다.

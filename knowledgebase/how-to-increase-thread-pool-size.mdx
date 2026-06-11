@@ -1,5 +1,5 @@
 ---
-title: How to Increase the Number of Threads in ClickHouse
+title: How to increase the number of threads in ClickHouse
 description: Learn how to configure the Global Thread pool in ClickHouse by adjusting settings like `max_thread_pool_size`, `thread_pool_queue_size`, and `max_thread_pool_free_size`.
 date: 2023-03-01
 tags: ['Performance and Optimizations']
@@ -31,4 +31,4 @@ You can also free up resources if your server has a lot of idle threads - using 
 <max_thread_pool_free_size>2000</max_thread_pool_free_size>
 ```
 
-Check out the [docs](https://clickhouse.com/docs/operations/server-configuration-parameters/settings#max-thread-pool-size) for more details on the settings above and other settings that affect the Global Thread pool.
+Check out the [docs](/operations/server-configuration-parameters/settings#max_thread_pool_size) for more details on the settings above and other settings that affect the Global Thread pool.

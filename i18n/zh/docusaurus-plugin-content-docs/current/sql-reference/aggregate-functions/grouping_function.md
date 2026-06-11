@@ -5,15 +5,14 @@ title: 'GROUPING'
 doc_type: 'reference'
 ---
 
-# 分组 \{#grouping\}
-
 ## GROUPING \{#grouping\}
 
-[ROLLUP](../statements/select/group-by.md/#rollup-modifier) 和 [CUBE](../statements/select/group-by.md/#cube-modifier) 是对 GROUP BY 的修饰符，它们都会计算小计。ROLLUP 接收一个有序的列列表，例如 `(day, month, year)`，并在聚合的每个层级计算小计，最后再计算总计。CUBE 则会针对所指定列的所有可能组合计算小计。GROUPING 用于识别由 ROLLUP 或 CUBE 返回的哪些行是更高层级的聚合行（superaggregate），哪些则是未使用修饰符的 GROUP BY 本应返回的普通分组结果行。
+[ROLLUP](../statements/select/group-by.md/#rollup-modifier) 和 [CUBE](../statements/select/group-by.md/#cube-modifier) 是对 GROUP BY 的修饰符，它们都会计算小计。ROLLUP 接收一个有序的列列表，例如 `(day, month, year)`，并在聚合的每个层级计算小计，最后再计算总计。CUBE 则会针对所指定列的所有可能组合计算小计。GROUPING 用于识别由 ROLLUP 或 CUBE 返回的哪些行是更高层级的聚合行 (superaggregate) ，哪些则是未使用修饰符的 GROUP BY 本应返回的普通分组结果行。
 
-GROUPING 函数接收多个列作为参数，并返回一个位掩码（bitmask）值。 
-- `1` 表示由 `ROLLUP` 或 `CUBE` 修饰的 `GROUP BY` 返回的该行是小计
-- `0` 表示由 `ROLLUP` 或 `CUBE` 返回的该行不是小计
+GROUPING 函数接收多个列作为参数，并返回一个位掩码 (bitmask) 值。
+
+* `1` 表示由 `ROLLUP` 或 `CUBE` 修饰的 `GROUP BY` 返回的该行是小计
+* `0` 表示由 `ROLLUP` 或 `CUBE` 返回的该行不是小计
 
 ## GROUPING SETS \{#grouping-sets\}
 
@@ -72,7 +71,7 @@ FROM
 
 ### 简单查询 \{#simple-queries\}
 
-按分布情况统计每个数据中心中的服务器数量：
+按发行版情况统计每个数据中心中的服务器数量：
 
 ```sql
 SELECT
@@ -254,9 +253,9 @@ GROUP BY
 9 rows in set. Elapsed: 0.427 sec.
 ```
 
-### 将 CUBE 与 GROUPING SETS 进行比较 \{#comparing-cube-with-grouping-sets\}
+### 比较 CUBE 和 GROUPING SETS \{#comparing-cube-with-grouping-sets\}
 
-下一条查询中的 CUBE，`CUBE(datacenter,distro,version)` 会生成一个可能不太合理的层次结构。跨这两个发行版比较版本并没有意义（因为 Arch 和 RHEL 的发布周期和版本命名规范并不相同）。后面的 GROUPING SETS 示例更为合适，因为它在同一个分组集合中同时包含了 `distro` 和 `version`。
+下一个查询中的 CUBE，即 `CUBE(datacenter,distro,version)`，提供了一个可能并不合理的层级结构。跨两个发行版查看 version 并没有意义 (因为 Arch 和 RHEL 的发布周期和版本命名标准并不相同) 。紧随其后的 GROUPING SETS 示例更为合适，因为它将 `distro` 和 `version` 归入同一组中。
 
 ```sql
 SELECT
@@ -320,7 +319,7 @@ ORDER BY
 ```
 
 :::note
-当版本没有与发行版关联时，上面示例中的 version 可能就不太合适；如果我们跟踪的是内核版本，则可能更合理，因为内核版本可以与任一发行版关联。在这种情况下，使用 GROUPING SETS（如下一个示例所示）可能是更好的选择。
+当版本没有与发行版关联时，上面示例中的 version 可能就不太合适；如果我们跟踪的是内核版本，则可能更合理，因为内核版本可以与任一发行版关联。在这种情况下，使用 GROUPING SETS (如下一个示例所示) 可能是更好的选择。
 :::
 
 ```sql

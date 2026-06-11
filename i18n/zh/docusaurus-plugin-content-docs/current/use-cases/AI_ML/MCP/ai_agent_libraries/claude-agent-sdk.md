@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/claude-agent-sdk
 sidebar_label: '集成 Claude Agent SDK'
-title: '如何使用 Claude Agent SDK 和 ClickHouse MCP 服务器 构建 AI Agent'
+title: '如何使用 Claude Agent SDK 和 ClickHouse MCP 服务器 构建 AI agent'
 pagination_prev: null
 pagination_next: null
-description: '了解如何使用 Claude Agent SDK 和 ClickHouse MCP 服务器 构建 AI Agent'
+description: '了解如何使用 Claude Agent SDK 和 ClickHouse MCP 服务器 构建 AI agent'
 keywords: ['ClickHouse', 'MCP', 'Claude']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 如何使用 Claude Agent SDK 和 ClickHouse MCP 服务器 构建 AI agent \{#how-to-build-an-ai-agent-with-claude-agent-sdk-and-the-clickhouse-mcp-server\}
 
 在本指南中，您将学习如何使用 [ClickHouse 的 MCP 服务器](https://github.com/ClickHouse/mcp-clickhouse)，构建一个可以与 [ClickHouse 的 SQL Playground](https://sql.clickhouse.com/) 交互的 [Claude Agent SDK](https://docs.claude.com/en/api/agent-sdk/overview) AI agent。
 

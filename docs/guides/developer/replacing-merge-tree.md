@@ -10,7 +10,7 @@ sidebar_label: 'Working with the ReplacingMergeTree engine'
 import postgres_replacingmergetree from '@site/static/images/migrations/postgres-replacingmergetree.png';
 import Image from '@theme/IdealImage';
 
-While transactional databases are optimized for transactional update and delete workloads, OLAP databases offer reduced guarantees for such operations. Instead, they optimize for immutable data inserted in batches for the benefit of significantly faster analytical queries. While ClickHouse offers update operations through mutations, as well as a lightweight means of deleting rows, its column-orientated structure means these operations should be scheduled with care, as described above. These operations are handled asynchronously, processed with a single thread, and require (in the case of updates) data to be rewritten on disk. They should thus not be used for high numbers of small changes.
+While transactional databases are optimized for transactional update and delete workloads, OLAP databases offer reduced guarantees for such operations. Instead, they optimize for immutable data inserted in batches for the benefit of significantly faster analytical queries. While ClickHouse offers update operations through mutations, as well as a lightweight means of deleting rows, its column-oriented structure means these operations should be scheduled with care, as described above. These operations are handled asynchronously, processed with a single thread, and require (in the case of updates) data to be rewritten on disk. They should thus not be used for high numbers of small changes.
 In order to process a stream of update and delete rows while avoiding the above usage patterns, we can use the ClickHouse table engine ReplacingMergeTree.
 
 ## Automatic upserts of inserted rows {#automatic-upserts-of-inserted-rows}
@@ -107,7 +107,9 @@ Consider the posts table above. We can use the normal method of loading this dat
 ```sql
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet') WHERE AnswerCount > 0 LIMIT 10000
+```
 
+```response
 0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
@@ -115,7 +117,9 @@ Let's confirm the number of rows:
 
 ```sql
 SELECT count() FROM stackoverflow.posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
@@ -154,7 +158,9 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
+```
 
+```response
 0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
@@ -189,29 +195,35 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
+```
 
+```response
 0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
-The result of the above operations will be 16,000 rows i.e. 10,000 + 5000 + 1000. The correct total here is, reality we should have only 1000 rows less than our original total i.e. 10,000 - 1000 = 9000.
+The result of the above operations will be 16,000 rows i.e. 10,000 + 5000 + 1000. In reality, we should have only 1000 fewer rows than our original total i.e. 10,000 - 1000 = 9000.
 
 ```sql
 SELECT count()
 FROM posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
 1 row in set. Elapsed: 0.002 sec.
 ```
 
-Your results will vary here depending on the merges that have occurred. We can see the total here is different as we have duplicate rows. Applying `FINAL` to the table delivers the correct result.
+Your results will vary depending on the merges that have occurred. We can see the total differs because of duplicate rows. Applying `FINAL` to the table delivers the correct result.
 
 ```sql
 SELECT count()
 FROM posts_updateable
 FINAL
+```
 
+```response
 ┌─count()─┐
 │    9000 │
 └─────────┘
@@ -251,7 +263,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
 INSERT INTO stackoverflow.posts_no_part SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
@@ -271,7 +285,9 @@ FROM posts_no_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │        371480 │
 ...
@@ -303,7 +319,9 @@ FROM posts_with_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │       387832  │
 │ 2009 │       1165506 │
@@ -328,7 +346,7 @@ While merging aims to minimize the number of parts, it also balances this goal a
 
 ### Merging behavior on large parts {#merging-behavior-on-large-parts}
 
-The ReplacingMergeTree engine in ClickHouse is optimized for managing duplicate rows by merging data parts, keeping only the latest version of each row based on a specified unique key. However, when a merged part reaches the max_bytes_to_merge_at_max_space_in_pool threshold, it will no longer be selected for further merging, even if min_age_to_force_merge_seconds is set. As a result, automatic merges can no longer be relied upon to remove duplicates that may accumulate with ongoing data insertion.
+The ReplacingMergeTree engine in ClickHouse is optimized for managing duplicate rows by merging data parts, keeping only the latest version of each row based on a specified unique key. However, when a merged part reaches the `max_bytes_to_merge_at_max_space_in_pool` threshold, it will no longer be selected for further merging, even if `min_age_to_force_merge_seconds` is set. As a result, automatic merges can no longer be relied upon to remove duplicates that may accumulate with ongoing data insertion.
 
 To address this, you can invoke `OPTIMIZE FINAL` to manually merge parts and remove duplicates. Unlike automatic merges, `OPTIMIZE FINAL` bypasses the `max_bytes_to_merge_at_max_space_in_pool` threshold, merging parts based solely on available resources, particularly disk space, until a single part remains in each partition. However, this approach can be memory-intensive on large tables and may require repeated execution as new data is added.
 
@@ -340,11 +358,11 @@ As discussed in Exploiting Partitions with ReplacingMergeTree, we recommend part
 
 ### Tuning merges for better query performance {#tuning-merges-for-better-query-performance}
 
-By default, min_age_to_force_merge_seconds and min_age_to_force_merge_on_partition_only are set to 0 and false, respectively, disabling these features. In this configuration, ClickHouse will apply standard merging behavior without forcing merges based on partition age.
+By default, `min_age_to_force_merge_seconds` and `min_age_to_force_merge_on_partition_only` are set to 0 and false, respectively, disabling these features. In this configuration, ClickHouse will apply standard merging behavior without forcing merges based on partition age.
 
-If a value for min_age_to_force_merge_seconds is specified, ClickHouse will ignore normal merging heuristics for parts older than the specified period. While this is generally only effective if the goal is to minimize the total number of parts, it can improve query performance in ReplacingMergeTree by reducing the number of parts needing merging at query time.
+If a value for `min_age_to_force_merge_seconds` is specified, ClickHouse will ignore normal merging heuristics for parts older than the specified period. While this is generally only effective if the goal is to minimize the total number of parts, it can improve query performance in ReplacingMergeTree by reducing the number of parts needing merging at query time.
 
-This behavior can be further tuned by setting min_age_to_force_merge_on_partition_only=true, requiring all parts in the partition to be older than min_age_to_force_merge_seconds for aggressive merging. This configuration allows older partitions to merge down to a single part over time, which consolidates data and maintains query performance.
+This behavior can be further tuned by setting `min_age_to_force_merge_on_partition_only=true`, requiring all parts in the partition to be older than `min_age_to_force_merge_seconds` for aggressive merging. This configuration allows older partitions to merge down to a single part over time, which consolidates data and maintains query performance.
 
 ### Recommended settings {#recommended-settings}
 
@@ -352,6 +370,6 @@ This behavior can be further tuned by setting min_age_to_force_merge_on_partitio
 Tuning merge behavior is an advanced operation. We recommend consulting with ClickHouse support before enabling these settings in production workloads.
 :::
 
-In most cases, setting min_age_to_force_merge_seconds to a low value—significantly less than the partition period—is preferred. This minimizes the number of parts and prevents unnecessary merging at query time with the FINAL operator.
+In most cases, setting `min_age_to_force_merge_seconds` to a low value—significantly less than the partition period—is preferred. This minimizes the number of parts and prevents unnecessary merging at query time with the `FINAL` operator.
 
-For example, consider a monthly partition that has already been merged into a single part. If a small, stray insert creates a new part within this partition, query performance can suffer because ClickHouse must read multiple parts until the merge completes. Setting min_age_to_force_merge_seconds can ensure these parts are merged aggressively, preventing a degradation in query performance.
+For example, consider a monthly partition that has already been merged into a single part. If a small, stray insert creates a new part within this partition, query performance can suffer because ClickHouse must read multiple parts until the merge completes. Setting `min_age_to_force_merge_seconds` can ensure these parts are merged aggressively, preventing a degradation in query performance.

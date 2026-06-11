@@ -1,5 +1,5 @@
 ---
-title: 'Java'
+title: 'Java clients overview'
 sidebar_position: 1
 keywords: ['clickhouse', 'java', 'jdbc', 'client', 'integrate', 'r2dbc']
 description: 'Options for connecting to ClickHouse from Java'
@@ -12,9 +12,6 @@ integration:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-
-# Java clients overview
 
 - [Client 0.8+](./client/client.mdx)
 - [JDBC 0.8+](./jdbc/jdbc.mdx)
@@ -76,18 +73,21 @@ Java Client was developed far back in 2015. Its codebase became very hard to mai
 |Ring                   |✔                    |✔                    |
 |Polygon                |✔                    |✔                    |
 |SimpleAggregateFunction|✔                    |✔                    |
-|AggregateFunction      |✗                    |✔                    |
+|AggregateFunction*     |✔                    |✔                    |
 |Variant                |✔                    |✗                    |
 |Dynamic                |✔                    |✗                    |
 |JSON                   |✔                    |✗                    |
 
 [ClickHouse Data Types](/sql-reference/data-types)
 
-:::note
-- AggregatedFunction - :warning: doesn't support `SELECT * FROM table ...`
-- Decimal - `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency
-- Enum - can be treated as both string and integer
-- UInt64 - mapped to `long` in client-v1
+:::note[Partial support]
+- **AggregateFunction** — Only `groupBitmap` is supported for direct binary reads. For other aggregate functions (`min`, `max`, `avg`, etc.), use `-Merge` combinators in your query (e.g., `minMerge()`, `avgMerge()`) to resolve the state server-side. `SELECT * FROM table ...` is not supported for columns with `AggregateFunction` type.
+:::
+
+:::note[Data type notes]
+- **Decimal** — `SET output_format_decimal_trailing_zeros=1` in 21.9+ for consistency.
+- **Enum** — can be treated as both string and integer.
+- **UInt64** — mapped to `long` in client-v1.
 :::
 
 ### Features {#features}

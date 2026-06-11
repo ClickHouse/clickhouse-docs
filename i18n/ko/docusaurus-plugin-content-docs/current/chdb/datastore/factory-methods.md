@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'factory', 'from_file', 'from_s3', 'uri', 'mysql
 doc_type: 'reference'
 ---
 
-# DataStore 팩토리 메서드 \{#datastore-factory-methods\}
-
-DataStore에는 로컬 파일, 데이터베이스, Cloud 스토리지, 데이터 레이크 등 다양한 데이터 소스에서 인스턴스를 생성할 수 있는 20개 이상의 팩토리 메서드가 있습니다.
+DataStore는 로컬 파일, 데이터베이스, Cloud 스토리지, 데이터 레이크 등 다양한 데이터 소스에서 인스턴스를 생성할 수 있는 20개 이상의 팩토리 메서드를 제공합니다.
 
 ## Universal URI Interface \{#uri\}
 

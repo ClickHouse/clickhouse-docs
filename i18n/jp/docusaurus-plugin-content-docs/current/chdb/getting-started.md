@@ -1,17 +1,15 @@
 ---
 title: 'chDB を使い始める'
-sidebar_label: 'はじめに'
+sidebar_label: '使い始める'
 slug: /chdb/getting-started
-description: 'chDB は ClickHouse を基盤としたインプロセスの SQL OLAP エンジンです'
+description: 'chDB は ClickHouse を基盤とするインプロセス SQL OLAP エンジンです'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'in-process', 'in process']
 doc_type: 'guide'
 ---
 
-# chDB を使い始める \{#getting-started-with-chdb\}
-
 このガイドでは、Python 版の chDB を使って、すぐに使い始めるための手順を説明します。
 まず S3 上の JSON ファイルに対してクエリを実行し、その JSON ファイルを元に chDB 内にテーブルを作成し、データに対していくつかクエリを実行します。
-また、Apache Arrow や Pandas など、複数のフォーマットでクエリ結果を取得する方法を確認し、最後に Pandas の DataFrame をクエリする方法を学びます。 
+また、Apache Arrow や Pandas など、複数のフォーマットでクエリ結果を取得する方法を確認し、最後に Pandas の DataFrame をクエリする方法を学びます。
 
 ## セットアップ \{#setup\}
 

@@ -37,7 +37,9 @@ ClickHouse provides a schema inference capability to automatically identify the 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
 SETTINGS describe_compact_output = 1
+```
 
+```response
 ┌─name──────────────────┬─type───────────────────────────┐
 │ Id                    │ Nullable(Int64)               │
 │ PostTypeId            │ Nullable(Int64)               │
@@ -120,7 +122,9 @@ With our initial schema defined, we can populate the data using an `INSERT INTO 
 
 ```sql
 INSERT INTO posts SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 148.140 sec. Processed 59.82 million rows, 38.07 GB (403.80 thousand rows/s., 257.00 MB/s.)
 ```
 
@@ -213,7 +217,9 @@ We can populate this with a simple `INSERT INTO SELECT`, reading the data from o
 
 ```sql
 INSERT INTO posts_v2 SELECT * FROM posts
+```
 
+```response
 0 rows in set. Elapsed: 146.471 sec. Processed 59.82 million rows, 83.82 GB (408.40 thousand rows/s., 572.25 MB/s.)
 ```
 
@@ -257,7 +263,9 @@ FROM posts_v2
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 ORDER BY CommentCount DESC
 LIMIT 3
+```
 
+```response
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────────┬─CommentCount─┐
 │ 78203063 │ How to avoid default initialization of objects in std::vector?     │               74 │
 │ 78183948 │ About memory barrier                                               │               52 │
@@ -307,12 +315,16 @@ COMMENT 'Ordering Key'
 --populate table from existing table
 
 INSERT INTO posts_v3 SELECT * FROM posts_v2
+```
 
+```response
 0 rows in set. Elapsed: 158.074 sec. Processed 59.82 million rows, 76.21 GB (378.42 thousand rows/s., 482.14 MB/s.)
 Peak memory usage: 6.41 GiB.
+```
 
 Our previous query improves the query response time by over 3x:
 
+```sql
 SELECT
     Id,
     Title,
@@ -321,7 +333,9 @@ FROM posts_v3
 WHERE (CreationDate >= '2024-01-01') AND (PostTypeId = 'Question')
 ORDER BY CommentCount DESC
 LIMIT 3
+```
 
+```response
 10 rows in set. Elapsed: 0.020 sec. Processed 290.09 thousand rows, 21.03 MB (14.65 million rows/s., 1.06 GB/s.)
 ```
 

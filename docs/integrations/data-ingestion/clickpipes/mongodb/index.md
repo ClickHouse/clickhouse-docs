@@ -20,8 +20,6 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
-# Ingesting data from MongoDB to ClickHouse (using CDC)
-
 <BetaBadge/>
 
 :::info

@@ -7,8 +7,6 @@ title: 'redis'
 doc_type: 'reference'
 ---
 
-# redis テーブル関数 \{#redis-table-function\}
-
 このテーブル関数により、ClickHouse を [Redis](https://redis.io/) と統合できます。
 
 ## 構文 \{#syntax\}

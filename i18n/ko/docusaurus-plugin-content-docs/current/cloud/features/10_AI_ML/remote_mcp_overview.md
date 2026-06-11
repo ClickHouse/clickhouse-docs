@@ -3,11 +3,9 @@ sidebar_label: '원격 MCP 서버'
 slug: /cloud/features/ai-ml/remote-mcp
 title: 'Cloud의 원격 MCP'
 description: 'ClickHouse Cloud의 원격 MCP 기능 설명'
-keywords: ['AI', 'ClickHouse Cloud', 'MCP', 'Model Context Protocol', '원격 MCP']
+keywords: ['AI', 'ClickHouse Cloud', 'MCP', 'Model Context Protocol', 'remote MCP']
 doc_type: 'reference'
 ---
-
-# Cloud의 원격 MCP 서버 \{#remote-mcp-server-in-cloud\}
 
 모든 사용자가 ClickHouse를 Cloud 콘솔을 통해서만 사용하는 것은 아닙니다.
 예를 들어, 많은 개발자는 선호하는 코드 편집기, CLI 에이전트에서 직접 작업하거나 사용자 정의 설정을 통해 데이터베이스에 연결하며, 다른 사용자들은 대부분의 탐색 작업에 Anthropic Claude와 같은 범용 AI 어시스턴트에 의존합니다.

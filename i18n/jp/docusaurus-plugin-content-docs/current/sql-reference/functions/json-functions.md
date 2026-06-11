@@ -1677,6 +1677,54 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 ```
 
 
+## prettyPrintJSON \{#prettyPrintJSON\}
+
+導入バージョン: v26.4.0
+
+JSON文字列を、改行とスペースによるインデントを含む、読みやすく整形された形式で返します。
+
+**構文**
+
+```sql
+prettyPrintJSON(json [, indent])
+```
+
+**引数**
+
+* `json` — 整形する有効な JSON 文字列。 [`String`](/sql-reference/data-types/string)
+* `indent` — インデントレベルごとのスペース数。デフォルト: 4。最大: 32。 [`UInt*`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+整形済みの JSON 文字列。 [`String`](/sql-reference/data-types/string)
+
+**例**
+
+**シンプルなオブジェクト**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1,"b":"hello"}');
+```
+
+```response title=Response
+{
+    "a": 1,
+    "b": "hello"
+}
+```
+
+**インデントのカスタマイズ**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1}', 8);
+```
+
+```response title=Response
+{
+        "a": 1
+}
+```
+
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 
 導入バージョン: v21.4.0

@@ -6,13 +6,11 @@ title: '服务器过载'
 doc_type: 'reference'
 ---
 
-# 服务器过载 \{#server-overload\}
-
 ## 概览 \{#overview\}
 
 有时服务器可能会由于各种原因而过载。为了判断当前的 CPU 过载情况，
-ClickHouse 服务器会计算 CPU 等待时间（`OSCPUWaitMicroseconds` 指标）与忙碌时间
-（`OSCPUVirtualTimeMicroseconds` 指标）的比值。当服务器的过载程度超过某个比值阈值时，
+ClickHouse 服务器会计算 CPU 等待时间 (`OSCPUWaitMicroseconds` 指标) 与忙碌时间
+(`OSCPUVirtualTimeMicroseconds` 指标) 的比值。当服务器的过载程度超过某个比值阈值时，
 丢弃部分查询，甚至拒绝新的连接请求，以避免进一步增加负载，是合理的。
 
 服务器有一个配置项 `os_cpu_busy_time_threshold`，用于控制将 CPU 视为在执行有用工作时所需的最小忙碌时间。

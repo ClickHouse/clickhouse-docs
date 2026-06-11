@@ -7,14 +7,12 @@ title: 'RabbitMQ 表引擎'
 doc_type: 'guide'
 ---
 
-# RabbitMQ 表引擎 \{#rabbitmq-table-engine\}
+该引擎支持将 ClickHouse 与 [RabbitMQ](https://www.rabbitmq.com) 集成。
 
-该引擎用于将 ClickHouse 与 [RabbitMQ](https://www.rabbitmq.com) 集成。
+`RabbitMQ` 可让您：
 
-`RabbitMQ` 可用于：
-
-- 发布或订阅数据流。
-- 在数据流可用时对其进行处理。
+* 发布或订阅数据流。
+* 在流可用后立即进行处理。
 
 ## 创建表 \{#creating-a-table\}
 

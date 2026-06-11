@@ -1,12 +1,10 @@
 ---
-description: 'Справочник по функциям интроспекции'
+description: 'Документация по функциям интроспекции'
 sidebar_label: 'Интроспекция'
 slug: /sql-reference/functions/introspection
 title: 'Функции интроспекции'
 doc_type: 'reference'
 ---
-
-# Функции интроспекции \{#introspection-functions\}
 
 Вы можете использовать функции, описанные в этой главе, для интроспекции форматов [ELF](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) и [DWARF](https://en.wikipedia.org/wiki/DWARF) при профилировании запросов.
 
@@ -22,7 +20,7 @@ doc_type: 'reference'
 
   По соображениям безопасности функции интроспекции по умолчанию отключены.
 
-ClickHouse сохраняет отчёты профилировщика в системной таблице [trace&#95;log](/operations/system-tables/trace_log). Убедитесь, что таблица и профилировщик корректно настроены.
+ClickHouse сохраняет отчёты профилировщика в системную таблицу [trace&#95;log](/operations/system-tables/trace_log). Убедитесь, что таблица и профилировщик корректно настроены.
 
 {/*
   Внутреннее содержимое следующих тегов заменяется при сборке фреймворка документации
@@ -122,7 +120,6 @@ trace_source_code_lines: /lib/x86_64-linux-gnu/libpthread-2.27.so
 /build/glibc-OTsEL5/glibc-2.27/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:97
 ```
 
-
 ## addressToLineWithInlines \{#addressToLineWithInlines\}
 
 Впервые представлена в версии: v22.2.0
@@ -177,7 +174,6 @@ FROM system.trace_log
 WHERE
     query_id = '5e173544-2020-45de-b645-5deebe2aae54';
 ```
-
 
 ```response title=Response
 ┌────────ta─┬─addressToLineWithInlines(arrayJoin(trace))───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -294,7 +290,6 @@ LIMIT 1
 \G
 ```
 
-
 ```response title=Response
 Row 1:
 ──────
@@ -389,14 +384,13 @@ LIMIT 1
 \G
 ```
 
-
 ```response title=Response
 Row 1:
 ──────
 trace_functions: DB::IAggregateFunctionHelper<DB::AggregateFunctionSum<unsigned long, unsigned long, DB::AggregateFunctionSumData<unsigned long> > >::addBatchSinglePlace(unsigned long, char*, DB::IColumn const**, DB::Arena*) const
 DB::Aggregator::executeWithoutKeyImpl(char*&, unsigned long, DB::Aggregator::AggregateFunctionInstruction*, DB::Arena*) const
-DB::Aggregator::executeOnBlock(std::vector<COW<DB::IColumn>::immutable_ptr<DB::IColumn>, std::allocator<COW<DB::IColumn>::immutable_ptr<DB::IColumn> > >, unsigned long, DB::AggregatedDataVariants&, std::vector<DB::IColumn const*, std::allocator<DB::IColumn const*> >&, std::vector<std::vector<DB::IColumn const*, std::allocator<DB::IColumn const*> >, std::allocator<std::vector<DB::IColumn const*, std::allocator<DB::IColumn const*> > > >&, bool&)
-DB::Aggregator::executeOnBlock(DB::Block const&, DB::AggregatedDataVariants&, std::vector<DB::IColumn const*, std::allocator<DB::IColumn const*> >&, std::vector<std::vector<DB::IColumn const*, std::allocator<DB::IColumn const*> >, std::allocator<std::vector<DB::IColumn const*, std::allocator<DB::IColumn const*> > > >&, bool&)
+DB::Aggregator::executeOnBlock(...)
+DB::Aggregator::executeOnBlock(DB::Block const&, ...)
 DB::Aggregator::execute(std::shared_ptr<DB::IBlockInputStream> const&, DB::AggregatedDataVariants&)
 DB::AggregatingBlockInputStream::readImpl()
 DB::IBlockInputStream::read()
@@ -450,7 +444,6 @@ SELECT isMergeTreePartCoveredBy(rhs, lhs), isMergeTreePartCoveredBy(lhs, rhs);
 └────────────────────────────────────┴────────────────────────────────────┘
 ```
 
-
 ## logTrace \{#logTrace\}
 
 Впервые появился в версии v20.12.0
@@ -484,7 +477,6 @@ SELECT logTrace('logTrace message');
 │                            0 │
 └──────────────────────────────┘
 ```
-
 
 ## mergeTreePartInfo \{#mergeTreePartInfo\}
 
@@ -520,7 +512,6 @@ SELECT info.partition_id, info.min_block, info.max_block, info.level, info.mutat
 │ all               │             12 │             25 │          7 │             4 │
 └───────────────────┴────────────────┴────────────────┴────────────┴───────────────┘
 ```
-
 
 ## tid \{#tid\}
 

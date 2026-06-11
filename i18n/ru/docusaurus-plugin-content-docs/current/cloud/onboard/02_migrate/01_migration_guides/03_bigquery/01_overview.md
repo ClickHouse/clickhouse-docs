@@ -1,5 +1,5 @@
 ---
-title: 'BigQuery против ClickHouse Cloud'
+title: 'Сравнение ClickHouse Cloud и BigQuery'
 slug: /migrations/bigquery/biquery-vs-clickhouse-cloud
 description: 'Чем BigQuery отличается от ClickHouse Cloud'
 keywords: ['BigQuery']
@@ -10,9 +10,6 @@ doc_type: 'guide'
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
-
-
-# Сравнение ClickHouse Cloud и BigQuery  \{#comparing-clickhouse-cloud-and-bigquery\}
 
 ## Организация ресурсов \{#resource-organization\}
 
@@ -162,7 +159,7 @@ ClickHouse использует стандартный SQL с множество
 
 Типичный паттерн в ClickHouse — использовать агрегатную функцию [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray), чтобы (временно) преобразовать отдельные значения строк таблицы в массив. Затем этот массив удобно обрабатывать с помощью функций для массивов, а результат можно преобразовать обратно в отдельные строки таблицы с помощью агрегатной функции [`arrayJoin`](/sql-reference/functions/array-join).
 
-Поскольку SQL в ClickHouse поддерживает [функции высшего порядка и лямбда-функции](/sql-reference/functions/overview#arrow-operator-and-lambda), многие продвинутые операции над массивами можно выполнить, просто вызвав одну из встроенных функций высшего порядка для массивов, вместо временного преобразования массивов обратно в таблицы, как это часто [требуется](https://cloud.google.com/bigquery/docs/arrays) в BigQuery, например для [фильтрации](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays) или [«сшивания» (zipping)](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays) массивов. В ClickHouse эти операции сводятся к простому вызову функций высшего порядка [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) и [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) соответственно.
+Поскольку ClickHouse SQL поддерживает [функции высшего порядка и лямбда-функции](/sql-reference/functions/overview#arrow-operator-and-lambda), многие продвинутые операции над массивами можно выполнить, просто вызвав одну из встроенных функций высшего порядка для массивов, вместо временного преобразования массивов обратно в таблицы, как это часто [требуется](https://cloud.google.com/bigquery/docs/arrays) в BigQuery, например для [фильтрации](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays) или [«сшивания» (zipping)](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays) массивов. В ClickHouse эти операции сводятся к простому вызову функций высшего порядка [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) и [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) соответственно.
 
 Ниже приведено соответствие операций с массивами в BigQuery и ClickHouse:
 
@@ -207,6 +204,9 @@ FROM
     UNION ALL
     SELECT 3
 )
+```
+
+```response
    ┌─new_array─┐
 1. │ [1,2,3]   │
    └───────────┘
@@ -242,7 +242,6 @@ ORDER BY offset;
 *ClickHouse*
 
 оператор [ARRAY JOIN](/sql-reference/statements/select/array-join)
-
 
 ```sql
 WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values
@@ -286,7 +285,9 @@ SELECT GENERATE_DATE_ARRAY('2016-10-05', '2016-10-08') AS example;
 
 ```sql
 SELECT arrayMap(x -> (toDate('2016-10-05') + x), range(toUInt32((toDate('2016-10-08') - toDate('2016-10-05')) + 1))) AS example
+```
 
+```response
    ┌─example───────────────────────────────────────────────┐
 1. │ ['2016-10-05','2016-10-06','2016-10-07','2016-10-08'] │
    └───────────────────────────────────────────────────────┘
@@ -311,11 +312,13 @@ SELECT GENERATE_TIMESTAMP_ARRAY('2016-10-05 00:00:00', '2016-10-07 00:00:00',
 
 *ClickHouse*
 
-Функции [range](/sql-reference/functions/array-functions#range) + [arrayMap](/sql-reference/functions/array-functions#arrayMap)
+Функции [range](/sql-reference/functions/array-functions#range) и [arrayMap](/sql-reference/functions/array-functions#arrayMap)
 
 ```sql
 SELECT arrayMap(x -> (toDateTime('2016-10-05 00:00:00') + toIntervalDay(x)), range(dateDiff('day', toDateTime('2016-10-05 00:00:00'), toDateTime('2016-10-07 00:00:00')) + 1)) AS timestamp_array
+```
 
+```response
 Query id: b324c11f-655b-479f-9337-f4d34fd02190
 
    ┌─timestamp_array─────────────────────────────────────────────────────┐
@@ -353,7 +356,6 @@ FROM Sequences;
 
 Функция [arrayFilter](/sql-reference/functions/array-functions#arrayFilter)
 
-
 ```sql
 WITH Sequences AS
     (
@@ -365,6 +367,9 @@ WITH Sequences AS
     )
 SELECT arrayMap(x -> (x * 2), arrayFilter(x -> (x < 5), some_numbers)) AS doubled_less_than_five
 FROM Sequences;
+```
+
+```response
    ┌─doubled_less_than_five─┐
 1. │ [0,2,2,4,6]            │
    └────────────────────────┘
@@ -424,6 +429,9 @@ WITH Combinations AS
     )
 SELECT arrayZip(letters, arrayResize(numbers, length(letters))) AS pairs
 FROM Combinations;
+```
+
+```response
    ┌─pairs─────────────┐
 1. │ [('a',1),('b',2)] │
    └───────────────────┘
@@ -458,7 +466,6 @@ FROM Sequences AS s;
 
 функции [arraySum](/sql-reference/functions/array-functions#arraySum), [arrayAvg](/sql-reference/functions/array-functions#arrayAvg), ... или любая из более чем 90 существующих агрегатных функций в качестве аргумента функции [arrayReduce](/sql-reference/functions/array-functions#arrayReduce)
 
-
 ```sql
 WITH Sequences AS
     (
@@ -472,6 +479,9 @@ SELECT
     some_numbers,
     arraySum(some_numbers) AS sums
 FROM Sequences;
+```
+
+```response
    ┌─some_numbers──┬─sums─┐
 1. │ [0,1,1,2,3,5] │   12 │
    └───────────────┴──────┘

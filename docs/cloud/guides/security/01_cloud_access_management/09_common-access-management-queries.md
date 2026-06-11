@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/docs/_snippets/_users-and-roles-common.md';
 
-# Common access management queries
-
 :::tip Self-managed
 If you're working with self-managed ClickHouse please see [SQL users and roles](/guides/sre/user-management/index.md).
 :::

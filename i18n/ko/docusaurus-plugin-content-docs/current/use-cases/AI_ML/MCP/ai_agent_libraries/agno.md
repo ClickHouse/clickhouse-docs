@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Agno와 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-agno-and-the-clickhouse-mcp-server\}
-
 이 가이드에서는 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)와 상호 작용할 수 있는 [Agno](https://github.com/agno-agi/agno) AI 에이전트를 [ClickHouse의 MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여 구축하는 방법을 학습합니다.
 
 :::note 예제 노트북

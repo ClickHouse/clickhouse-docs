@@ -16,14 +16,11 @@ import holistics_04 from '@site/static/images/integrations/data-visualization/ho
 import holistics_05 from '@site/static/images/integrations/data-visualization/holistics_05.png';
 import holistics_06 from '@site/static/images/integrations/data-visualization/holistics_06.png';
 
+<CommunityMaintainedBadge />
 
-# Подключение ClickHouse к Holistics \{#connecting-clickhouse-to-holistics\}
+[Holistics](https://www.holistics.io/) — это AI-native платформа самообслуживания BI с программируемым семантическим слоем для согласованных и надежных метрик.
 
-<CommunityMaintainedBadge/>
-
-[Holistics](https://www.holistics.io/) — это изначально ориентированная на ИИ self-service BI‑платформа с программируемым семантическим слоем, обеспечивающим единые и достоверные метрики.
-
-Подключив ClickHouse к Holistics, ваши команды получают быструю и надежную среду самообслуживания с поддержкой ИИ, основанную на кодовом семантическом слое. Бизнес-пользователи смогут уверенно исследовать данные с помощью drag-and-drop и ИИ, а вы сохраните определения метрик многократно используемыми, легко комбинируемыми и находящимися под управлением версий в Git.
+Подключив ClickHouse к Holistics, ваши команды получат быстрые и надежные возможности самообслуживания на базе ИИ, основанные на семантическом слое, описываемом в коде. Бизнес-пользователи смогут уверенно работать с данными с помощью drag-and-drop и ИИ, а вы сохраните определения метрик переиспользуемыми, компонуемыми и версионируемыми в Git.
 
 ## Предварительные требования \{#prerequisites\}
 

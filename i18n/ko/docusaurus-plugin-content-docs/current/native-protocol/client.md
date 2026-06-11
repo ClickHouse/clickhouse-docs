@@ -7,16 +7,14 @@ doc_type: 'reference'
 keywords: ['클라이언트 패킷', '네이티브 프로토콜 클라이언트', '프로토콜 패킷', '클라이언트 통신', 'TCP 클라이언트']
 ---
 
-# 클라이언트 패킷 \{#client-packets\}
-
-| value | name              | description        |
-|-------|-------------------|--------------------|
+| value | name              | description    |
+| ----- | ----------------- | -------------- |
 | 0     | [Hello](#hello)   | 클라이언트 핸드셰이크 시작 |
 | 1     | [Query](#query)   | 쿼리 요청          |
-| 2     | [Data](#data)     | 데이터 블록        |
+| 2     | [데이터](#data)     | 데이터 블록         |
 | 3     | [Cancel](#cancel) | 쿼리 취소          |
-| 4     | [Ping](#ping)     | 핑(Ping) 요청      |
-| 5     | TableStatus       | 테이블 상태 요청   |
+| 4     | [Ping](#ping)     | Ping 요청     |
+| 5     | TableStatus       | 테이블 상태 요청      |
 
 `Data` 패킷은 압축할 수 있습니다.
 

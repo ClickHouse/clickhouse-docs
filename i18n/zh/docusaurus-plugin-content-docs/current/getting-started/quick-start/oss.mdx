@@ -11,19 +11,19 @@ doc_type: 'guide'
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-# ClickHouse 开源版快速开始 \{#clickhouse-oss-quick-start\}
-
-> 在本快速入门教程中，我们将通过几个简单步骤帮助你完成开源版 ClickHouse 的设置。你将使用 ClickHouse CLI `clickhousectl` 安装 ClickHouse，
-> 启动 ClickHouse 服务端，连接到服务器来创建一张表，
-> 向其中插入数据，并执行一条 SELECT 查询。
+> 在本快速入门教程中，我们将通过几个简单步骤帮你完成开源版 ClickHouse 的设置。
+> 你将使用 ClickHouse CLI `clickhousectl` 安装 ClickHouse，
+> 启动 ClickHouse server，连接到服务器以创建表，
+> 向表中插入数据，并运行 SELECT 查询。
 
 <VerticalStepper>
   ## 安装 ClickHouse CLI \ \{#install-the-cli\}
 
-  ClickHouse CLI (`clickhousectl`) 用于安装和管理本地 ClickHouse 版本、启动服务器及执行查询。使用以下命令安装：
+  ClickHouse CLI (`clickhousectl`) 用于安装本地 ClickHouse 版本、启动服务器、执行查询以及管理 ClickHouse Cloud。
+
+  使用以下命令安装：
 
   ```bash
   curl https://clickhouse.com/cli | sh
@@ -31,15 +31,32 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   系统还会自动创建 `chctl` 别名以方便使用。
 
+  <details>
+    <summary>高级：无需 `clickhousectl` 安装 ClickHouse</summary>
+
+    如果您只需要 `clickhouse` 二进制文件，且不需要 `clickhousectl`，请使用通用安装程序并设置 `CLICKHOUSE_ONLY=1`：
+
+    ```bash
+    curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+    ```
+
+    这会将单个 `clickhouse` 二进制文件下载到当前目录。然后，您可以
+    直接通过该二进制文件运行 `clickhouse-server`、`clickhouse-client` 和 `clickhouse-local`，
+    而本指南其余基于 `clickhousectl` 的步骤将不适用。有关
+    纯二进制文件工作流，请参阅[快速安装](/install/quick-install)页面。
+  </details>
+
   ## 安装 ClickHouse \{#install-clickhouse\}
 
   ClickHouse 原生支持在 Linux 和 macOS 上运行，并可通过 [WSL](https://learn.microsoft.com/en-us/windows/wsl/about) 在 Windows 上运行。
 
-  使用 CLI 安装最新稳定版 ClickHouse：
+  使用 CLI 安装最新稳定版 ClickHouse 并将其设为默认版本：
 
   ```bash
-  clickhousectl local install stable
+  clickhousectl local use stable
   ```
+
+  `local use` 会在该版本尚未安装的情况下自动安装，将其设为默认版本，并在 `~/.local/bin` (位于您的 `PATH` 中) 创建一个 `clickhouse` 符号链接，以便您可以直接调用 `clickhouse` 二进制文件。本指南后续步骤均依赖该符号链接。如需下载某个版本而不更改默认版本或更新符号链接，请改用 `clickhousectl local install <version>`。
 
   :::note
   这不是在生产环境中安装 ClickHouse 的推荐方式。
@@ -227,7 +244,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')
+      ```
 
+      ```response
       Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
 
       ┌─name──────┬─type────────────────────┐
@@ -252,7 +271,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       )
       ```
 
-      更多详情，请参阅[`file` 表函数](/sql-reference/table-functions/file)文档页面。
+      更多详情，请参阅[`file` 表函数](/sql-reference/table-functions/file)
+      文档页面。
 
       <br />
     </TabItem>
@@ -280,7 +300,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="MySQL" label="MySQL">
-      使用 [`mysql` 테이블 함수](/sql-reference/table-functions/mysql)
+      使用 [`mysql` 表函数](/sql-reference/table-functions/mysql)
       读取 MySQL 表中的数据：
 
       ```sql
@@ -322,7 +342,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
     </TabItem>
 
     <TabItem value="messagequeue" label="消息队列">
-      消息队列可以通过相应的表引擎将数据流式写入 ClickHouse，包括：
+      消息队列可以通过相应的表
+      引擎将数据流式导入 ClickHouse，包括：
 
       * **Kafka**：使用 [`Kafka` 表引擎](/engines/table-engines/integrations/kafka) 集成 Kafka
       * **Amazon MSK**：集成 [Amazon Managed Streaming for Apache Kafka (MSK)](/integrations/kafka/cloud/amazon-msk/)

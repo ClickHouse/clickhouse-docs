@@ -9,10 +9,8 @@ doc_type: 'reference'
 
 import TableOfContents from '@site/i18n/ko/docusaurus-plugin-content-docs/current/guides/best-practices/_snippets/_performance_optimizations_table_of_contents.md';
 
-# 성능 및 최적화 \{#performance-and-optimizations\}
-
-이 섹션에서는 ClickHouse 성능을 향상하기 위한 팁과 모범 사례를 다룹니다.
-성능 향상에 필요한 주요 개념을 설명하는
-[핵심 개념](/parts) 섹션을 먼저 읽으실 것을 권장합니다.
+이 섹션에는 ClickHouse의 성능을 개선하기 위한 팁과 모범 사례가 포함되어 있습니다.
+이 섹션을 읽기 전에 [핵심 개념](/parts)을 먼저 읽어보실 것을 권장합니다.
+여기에서는 성능 개선에 필요한 주요 개념을 다룹니다.
 
 <TableOfContents />

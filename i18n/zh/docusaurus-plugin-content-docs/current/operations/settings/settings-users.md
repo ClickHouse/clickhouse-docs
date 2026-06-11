@@ -1,5 +1,5 @@
 ---
-description: '用于配置用户和角色的相关设置。'
+description: '用于配置用户和角色的设置。'
 sidebar_label: '用户设置'
 sidebar_position: 63
 slug: /operations/settings/settings-users
@@ -7,12 +7,10 @@ title: '用户和角色设置'
 doc_type: 'reference'
 ---
 
-# 用户和角色设置 \{#users-and-roles-settings\}
-
 `users.xml` 配置文件中的 `users` 部分包含用户配置。
 
 :::note
-ClickHouse 也支持用于管理用户的 [SQL 驱动的工作流](/operations/access-rights#access-control-usage)，我们建议优先采用这种方式。
+ClickHouse 也支持用于管理用户的 [SQL 驱动的工作流](/operations/access-rights#access-control-usage)。我们建议使用它。
 :::
 
 `users` 部分的结构：

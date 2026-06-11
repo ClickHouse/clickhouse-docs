@@ -7,7 +7,6 @@ title: 'ODBC driver'
 doc_type: 'reference'
 ---
 
-# ODBC Driver
 
 The ClickHouse ODBC driver provides a standards-compliant interface for connecting ODBC-compatible applications to
 ClickHouse. It implements the ODBC API and enables applications, BI tools, and scripting environments to execute SQL

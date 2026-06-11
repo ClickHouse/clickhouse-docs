@@ -1,5 +1,5 @@
 ---
-description: 'EXCEPT 句に関するドキュメントです。1つ目のクエリの結果から 2つ目のクエリの結果を除いた行のみを返します。'
+description: '2 つ目のクエリの結果を除いた、最初のクエリの結果の行のみを返す EXCEPT 句のドキュメント。'
 sidebar_label: 'EXCEPT'
 slug: /sql-reference/statements/select/except
 title: 'EXCEPT 句'
@@ -7,14 +7,12 @@ keywords: ['EXCEPT', '句']
 doc_type: 'reference'
 ---
 
-# EXCEPT 句 \{#except-clause\}
-
 > `EXCEPT` 句は、最初のクエリの結果から 2 つ目のクエリの結果を除外した行だけを返します。
 
-* 両方のクエリは、同じ順序・データ型で同数の列を持っている必要があります。
-* `EXCEPT` の結果には重複行が含まれる場合があります。これを避けたい場合は `EXCEPT DISTINCT` を使用します。
-* `EXCEPT` が複数ある場合は、かっこで明示的にグループ化しない限り、左から右の順に評価されます。
-* `EXCEPT` 演算子の優先順位は `UNION` 句と同じで、`INTERSECT` 句よりも低くなります。
+* 両方のクエリは、同じ順序で、同じ数のカラムと同じデータ型を持っている必要があります。
+* `EXCEPT` の結果には重複した行が含まれる場合があります。これが望ましくない場合は `EXCEPT DISTINCT` を使用してください。
+* 括弧が指定されていない場合、複数の `EXCEPT` ステートメントは左から右に実行されます。
+* `EXCEPT` 演算子の優先順位は `UNION` 句と同じで、`INTERSECT` 句より低くなります。
 
 ## 構文 \{#syntax\}
 
@@ -32,7 +30,7 @@ FROM table2
 
 条件には、要件に応じて任意の式を使用できます。
 
-さらに、`EXCEPT()` は、BigQuery（Google Cloud）と同様に、同じテーブルに対する結果セットから列を除外するためにも、次の構文で使用できます。
+さらに、`EXCEPT()` は、BigQuery (Google Cloud) と同様に、同じテーブルに対する結果セットからカラムを除外するためにも、次の構文で使用できます。
 
 ```sql
 SELECT column1 [, column2 ] EXCEPT (column3 [, column4]) 
@@ -92,25 +90,22 @@ LIMIT 5
 11. │ type        │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
 12. │ value       │ String                                                                   │ NO   │     │ ᴺᵁᴸᴸ    │       │
     └─────────────┴──────────────────────────────────────────────────────────────────────────┴──────┴─────┴─────────┴───────┘
-```
 
-┌─name────────────────────┬─value──────┬─changed─┬─min──┬─max──┬─type────┬─is&#95;obsolete─┬─tier───────┐
-
+   ┌─name────────────────────┬─value──────┬─changed─┬─min──┬─max──┬─type────┬─is_obsolete─┬─tier───────┐
 1. │ dialect                 │ clickhouse │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ Dialect │           0 │ Production │
-2. │ min&#95;compress&#95;block&#95;size │ 65536      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
-3. │ max&#95;compress&#95;block&#95;size │ 1048576    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
-4. │ max&#95;block&#95;size          │ 65409      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
-5. │ max&#95;insert&#95;block&#95;size   │ 1048449    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+2. │ min_compress_block_size │ 65536      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+3. │ max_compress_block_size │ 1048576    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+4. │ max_block_size          │ 65409      │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
+5. │ max_insert_block_size   │ 1048449    │       0 │ ᴺᵁᴸᴸ │ ᴺᵁᴸᴸ │ UInt64  │           0 │ Production │
    └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
-
 ```
 
-### 暗号通貨データでの`EXCEPT`と`INTERSECT`の使用 {#using-except-and-intersect-with-cryptocurrency-data}
+### 暗号通貨データで `EXCEPT` と `INTERSECT` を使用する \{#using-except-and-intersect-with-cryptocurrency-data\}
 
-`EXCEPT`と`INTERSECT`は、異なるブール論理で相互に置き換えて使用できることが多く、共通の列（または複数の列）を共有する2つのテーブルがある場合に便利です。
-例えば、取引価格と出来高を含む数百万行の過去の暗号通貨データがあるとします。
+`EXCEPT` と `INTERSECT` は、ブール論理こそ異なるものの、多くの場合は似た用途で使えます。どちらも、共通のカラム (または複数のカラム) を持つ2つのテーブルがある場合に便利です。
+たとえば、取引価格と出来高を含む、数百万行の過去の暗号通貨データがあるとします。
 
-```sql title="クエリ"
+```sql title="Query"
 CREATE TABLE crypto_prices
 (
     trade_date Date,
@@ -153,7 +148,7 @@ LIMIT 10;
 
 ここで、`holdings` という名前のテーブルがあり、自分たちが保有する暗号通貨の一覧と、それぞれの保有枚数が含まれているとします。
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,
@@ -187,9 +182,9 @@ WHERE price < 10;
 └─────────────┘
 ```
 
-つまり、私たちが保有している4つの暗号通貨のうち、Bitcoinだけが一度も$10を下回ったことがない（この例で扱っている限定的なデータに基づく）という意味です。
+つまり、私たちが保有している4つの暗号通貨のうち、Bitcoinだけが一度も$10を下回ったことがない (この例で扱っている限定的なデータに基づく) という意味です。
 
-### `EXCEPT DISTINCT` の使用 {#using-except-and-intersect-with-cryptocurrency-data}
+### `EXCEPT DISTINCT` の使用 \{#using-except-distinct\}
 
 前のクエリでは、結果に複数のBitcoinの保有行が含まれていたことに注目してください。`EXCEPT` に `DISTINCT` を追加すると、結果から重複する行を取り除くことができます。
 

@@ -1,7 +1,7 @@
 ---
 sidebar_label: '使用 remoteSecure'
 slug: /cloud/migration/clickhouse-to-cloud
-title: '在自管理版 ClickHouse 与 ClickHouse Cloud 之间迁移'
+title: '使用 remoteSecure 在自管理 ClickHouse 与 ClickHouse Cloud 之间迁移'
 description: '介绍如何在自管理版 ClickHouse 与 ClickHouse Cloud 之间进行迁移的页面'
 doc_type: 'guide'
 keywords: ['迁移', 'ClickHouse Cloud', 'OSS', '将自管理迁移到 Cloud']
@@ -17,13 +17,10 @@ import self_managed_05 from '@site/static/images/integrations/migration/self-man
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 import CompatibilityNote from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/compatibility.mdx'
 
+<Image img={self_managed_01} size="lg" alt="迁移自管理 ClickHouse" />
 
-# 使用 remoteSecure 在自管理 ClickHouse 与 ClickHouse Cloud 之间迁移 \{#migrating-between-self-managed-clickhouse-and-clickhouse-cloud-using-remotesecure\}
-
-<Image img={self_managed_01} size='lg' alt='Migrating Self-managed ClickHouse'/>
-
-本指南说明如何将自管理 ClickHouse 服务器迁移到 ClickHouse Cloud，以及如何在不同的 ClickHouse Cloud 服务之间进行迁移。
-[`remoteSecure`](/sql-reference/table-functions/remote) 函数可在 `SELECT` 和 `INSERT` 查询中使用，以访问远程 ClickHouse 服务器，从而使迁移表的操作简化为编写一个包含嵌套 `SELECT` 的 `INSERT INTO` 查询。
+本指南介绍如何从自管理 ClickHouse 服务器迁移到 ClickHouse Cloud，以及如何在不同的 ClickHouse Cloud 服务之间迁移。
+[`remoteSecure`](/sql-reference/table-functions/remote) 函数用于 `SELECT` 和 `INSERT` 查询中，可访问远程 ClickHouse 服务器，从而让迁移表变得像编写一条嵌入 `SELECT` 的 `INSERT INTO` 查询一样简单。
 
 ## 从自管理 ClickHouse 迁移到 ClickHouse Cloud \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud\}
 

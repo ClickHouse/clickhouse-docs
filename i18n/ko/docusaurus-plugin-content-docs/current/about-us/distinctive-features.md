@@ -8,8 +8,6 @@ keywords: ['compression', 'secondary-indexes','column-oriented']
 doc_type: 'guide'
 ---
 
-# ClickHouse의 주요 특징 \{#distinctive-features-of-clickhouse\}
-
 ## 진정한 컬럼 지향 데이터베이스 관리 시스템 \{#true-column-oriented-database-management-system\}
 
 진정한 컬럼 지향 DBMS에서는 값과 함께 불필요한 추가 데이터가 저장되지 않습니다. 이는 값의 길이를 나타내는 「숫자」를 값 옆에 따로 저장하지 않기 위해, 반드시 고정 길이 값을 지원해야 함을 의미합니다. 예를 들어, 10억 개의 `UInt8` 타입 값은 압축하지 않은 상태에서 약 1 GB 정도만 사용해야 하며, 이 기준을 벗어나면 CPU 사용량에 크게 영향을 미칩니다. 압축되지 않은 상태에서도 데이터가 불필요한 「잡동사니」 없이 컴팩트하게 저장되는 것이 중요합니다. 압축 해제 속도(사용되는 CPU 자원)는 주로 압축을 풀었을 때의 데이터 양에 의해 결정되기 때문입니다.

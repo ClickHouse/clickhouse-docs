@@ -1,16 +1,14 @@
 ---
-description: 'Документация по оператору ARRAY JOIN'
+description: 'Документация по предложению ARRAY JOIN'
 sidebar_label: 'ARRAY JOIN'
 slug: /sql-reference/statements/select/array-join
-title: 'Оператор ARRAY JOIN'
+title: 'Предложение ARRAY JOIN'
 doc_type: 'reference'
 ---
 
-# Оператор ARRAY JOIN \{#array-join-clause\}
+Для таблиц, содержащих столбец-массив, часто требуется получить новую таблицу, в которой для каждого отдельного элемента массива исходного столбца создаётся отдельная строка, а значения остальных столбцов дублируются. Это базовый случай работы предложения `ARRAY JOIN`.
 
-Для таблиц, содержащих столбец-массив, часто требуется получить новую таблицу, в которой для каждого отдельного элемента массива исходного столбца создаётся отдельная строка, а значения остальных столбцов дублируются. Это базовый случай работы оператора `ARRAY JOIN`.
-
-Его название связано с тем, что его можно рассматривать как выполнение операции `JOIN` с массивом или вложенной структурой данных. Назначение похоже на функцию [arrayJoin](/sql-reference/functions/array-join), но функциональность оператора шире.
+Его название связано с тем, что его можно рассматривать как выполнение операции `JOIN` с массивом или вложенной структурой данных. Назначение похоже на функцию [arrayJoin](/sql-reference/functions/array-join), но функциональность предложения шире.
 
 Синтаксис:
 
@@ -31,7 +29,7 @@ FROM <left_subquery>
 
 ### ARRAY JOIN и LEFT ARRAY JOIN \{#array-join-left-array-join-examples\}
 
-Примеры ниже демонстрируют использование операторов `ARRAY JOIN` и `LEFT ARRAY JOIN`. Создадим таблицу со столбцом типа [Array](../../../sql-reference/data-types/array.md) и вставим в него значения:
+Примеры ниже демонстрируют использование предложений `ARRAY JOIN` и `LEFT ARRAY JOIN`. Создадим таблицу со столбцом типа [Array](../../../sql-reference/data-types/array.md) и вставим в него значения:
 
 ```sql
 CREATE TABLE arrays_test
@@ -70,7 +68,7 @@ ARRAY JOIN arr;
 └───────┴─────┘
 ```
 
-В следующем примере используется оператор `LEFT ARRAY JOIN`:
+В следующем примере используется предложение `LEFT ARRAY JOIN`:
 
 ```sql
 SELECT s, arr
@@ -376,7 +374,7 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 
 ## Подробности реализации \{#implementation-details\}
 
-Порядок выполнения запроса оптимизируется при использовании `ARRAY JOIN`. Хотя `ARRAY JOIN` всегда должен указываться в запросе перед секцией [WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md), технически они могут выполняться в любом порядке, если только результат `ARRAY JOIN` не используется для фильтрации. Порядок обработки контролируется оптимизатором запросов.
+Порядок выполнения запроса оптимизируется при использовании `ARRAY JOIN`. Хотя `ARRAY JOIN` всегда должен указываться в запросе перед предложением [WHERE](../../../sql-reference/statements/select/where.md)/[PREWHERE](../../../sql-reference/statements/select/prewhere.md), технически они могут выполняться в любом порядке, если только результат `ARRAY JOIN` не используется для фильтрации. Порядок обработки контролируется оптимизатором запросов.
 
 ### Несовместимость с коротким замыканием при вычислении функций \{#incompatibility-with-short-circuit-function-evaluation\}
 
@@ -386,4 +384,4 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Работа с временными рядами в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* Блог: [Работа с временными рядами в ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

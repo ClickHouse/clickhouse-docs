@@ -111,7 +111,7 @@ This generally means that the features themselves are produced through batch-pro
 
 With capabilities to read data from multiple sources and apply transformations via SQL queries, the results of these queries can also be persisted in ClickHouse via `INSERT INTO SELECT` statements.
 With transformations often grouped by an entity ID and returning a number of columns as results, ClickHouse’s schema inference can automatically detect the required types from these results and produce an appropriate table schema to store them.
-Functions for generating random numbers and statistical sampling allow data to be efficiently iterated and scaled at millions or rows per second for feeding to model training pipelines.
+Functions for generating random numbers and statistical sampling allow data to be efficiently iterated and scaled at millions of rows per second for feeding to model training pipelines.
 
 Often, features are represented in tables with a timestamp indicating the value for an entity and feature at a specific point in time.
 As described earlier, training pipelines often need the state of features at specific points in time and in groups. ClickHouse’s sparse indices allow fast filtering of data to satisfy point-in-time queries and feature selection filters. While other technologies such as Spark, Redshift, and BigQuery rely on slow stateful windowed approaches to identify the state of features at a specific point in time, ClickHouse supports the ASOF (as-of-this-time) LEFT JOIN query and argMax function.

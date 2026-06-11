@@ -8,7 +8,6 @@ keywords: ['OLAP']
 doc_type: 'reference'
 ---
 
-# What is OLAP?
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) stands for Online Analytical Processing. It is a broad term that can be looked at from two perspectives: technical and business. At the highest level, you can just read these words backward:
 

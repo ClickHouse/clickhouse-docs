@@ -1,15 +1,13 @@
 ---
-description: 'ClickHouse クエリ アナライザーの詳細ページ'
+description: 'ClickHouse クエリアナライザについて詳述するページ'
 keywords: ['analyzer']
-sidebar_label: 'アナライザー'
+sidebar_label: 'Analyzer'
 slug: /operations/analyzer
-title: 'アナライザー'
+title: 'Analyzer'
 doc_type: 'reference'
 ---
 
-# Analyzer \{#analyzer\}
-
-ClickHouse バージョン `24.3` では、新しいクエリアナライザーがデフォルトで有効になりました。
+ClickHouse バージョン `24.3` では、新しいクエリアナライザがデフォルトで有効になりました。
 その動作の詳細については[こちら](/guides/developer/understanding-query-execution-with-the-analyzer#analyzer)を参照してください。
 
 ## 既知の非互換性 \{#known-incompatibilities\}

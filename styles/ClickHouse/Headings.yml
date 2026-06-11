@@ -21,6 +21,7 @@ exceptions:
   - ALTER DELETE
   - DROP PARTITION
   - TRUNCATE
+  - "`OPTIMIZE FINAL`"
   - Arrow
   - AWS
   - Apache
@@ -29,6 +30,8 @@ exceptions:
   - Amazon Web Services
   - "AI Notebooks"
   - "ClickHouse Assistant"
+  - "ClickHouse Agents"
+  - "Agent Builder"
   - Azure
   - Azure Blob Storage
   - Azure Data Factory
@@ -58,6 +61,7 @@ exceptions:
   - DBT
   - DDL
   - DNS
+  - Debian
   - Docker
   - Docker Compose
   - DigitalOcean Spaces
@@ -105,6 +109,7 @@ exceptions:
   - NPM
   - NodeJS
   - NodeJs
+  - Odigos
   - OLAP
   - OLTP
   - ORC
@@ -142,6 +147,7 @@ exceptions:
   - SDK
   - TCP
   - TDE
+  - TPC-H
   - TTL
   - TiDB
   - Time To Live
@@ -152,6 +158,8 @@ exceptions:
   - UI
   - URLs
   - UAE
+  - Ubuntu
+  - Unix
   - User Defined Functions
   - VLDB
   - VS
@@ -160,6 +168,7 @@ exceptions:
   - Visual
   - Windows
   - Yandex.Metrica
+  - Yum
   - ZSTD
   - MergeTree
   - MySQL
@@ -208,9 +217,11 @@ exceptions:
   - Avg state
   - Count resample
   - PREWHERE
+  - "PREPARE, EXECUTE, DEALLOCATE"
   - Splunk
   - Retool
   - Airbyte
+  - Apify
   - RawBLOB
   - RowBinary
   - MessagePack
@@ -313,6 +324,7 @@ exceptions:
   - Backward Incompatible Changes
   - Backward Incompatible Change
   - Build Improvements
+  - "Build/Testing/Packaging Improvement"
   - Main Changes
   - New Feature
   - Experimental Feature
@@ -554,6 +566,7 @@ exceptions:
   - Neon
   - NiFi
   - NixOS
+  - Notion
   - Ollama
   - OneLake
   - OpenAI
@@ -579,6 +592,7 @@ exceptions:
   - TimescaleDB
   - Upsonic
   - WebUI
+  - Rocket.BI
   # Acronyms
   - AI
   - BI
@@ -633,4 +647,6 @@ exceptions:
   - I/O
   - JOIN
   - RESTORE
+  - Supabase
   - ClickHouse Connect
+  - re2

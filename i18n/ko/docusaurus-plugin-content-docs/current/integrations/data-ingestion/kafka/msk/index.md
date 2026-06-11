@@ -13,22 +13,20 @@ integration:
 
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# Amazon MSK를 ClickHouse와 통합하기 \{#integrating-amazon-msk-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/6lKI_WlQ3-s"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
-> 참고: 동영상에 표시된 정책은 빠른 시작만을 위한 허용 범위가 넓은(permissive) 정책입니다. 아래의 최소 권한 원칙 기반 IAM 가이드를 참고하십시오.
+> 참고: 동영상에 표시된 정책은 권한이 광범위하며 Quick Start 전용입니다. 아래의 최소 권한 IAM 지침을 참조하십시오.
 
 ## 사전 준비 사항 \{#prerequisites\}
 

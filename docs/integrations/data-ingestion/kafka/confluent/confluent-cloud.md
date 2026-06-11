@@ -15,8 +15,6 @@ integration:
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-# Integrating Confluent Cloud with ClickHouse
-
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
     width="640"

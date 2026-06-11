@@ -8,8 +8,6 @@ title: 'AggregateFunction 타입'
 doc_type: 'reference'
 ---
 
-# AggregateFunction 데이터 타입 \{#aggregatefunction-type\}
-
 ## 설명 \{#description\}
 
 ClickHouse의 모든 [집계 함수](/sql-reference/aggregate-functions)는

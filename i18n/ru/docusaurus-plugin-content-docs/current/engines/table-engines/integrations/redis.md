@@ -7,9 +7,7 @@ title: 'Табличный движок Redis'
 doc_type: 'guide'
 ---
 
-# Табличный движок Redis \{#redis-table-engine\}
-
-Этот движок позволяет интегрировать ClickHouse с [Redis](https://redis.io/). Поскольку Redis использует модель ключ–значение (kv), настоятельно рекомендуется выполнять только точечные запросы, например `where k=xx` или `where k in (xx, xx)`.
+Этот движок позволяет интегрировать ClickHouse с [Redis](https://redis.io/). Поскольку Redis использует модель «ключ-значение», мы настоятельно рекомендуем выполнять к нему только точечные запросы, например `where k=xx` или `where k in (xx, xx)`.
 
 ## Создание таблицы \{#creating-a-table\}
 
@@ -46,7 +44,7 @@ PRIMARY KEY(primary_key_name);
 
 Создайте таблицу в ClickHouse с движком `Redis`, явно указав аргументы:
 
-```sql
+```sql title="Query"
 CREATE TABLE redis_table
 (
     `key` String,
@@ -71,7 +69,7 @@ ENGINE = Redis('redis1:6379') PRIMARY KEY(key);
 </named_collections>
 ```
 
-```sql
+```sql title="Query"
 CREATE TABLE redis_table
 (
     `key` String,
@@ -84,37 +82,35 @@ ENGINE = Redis(redis_creds) PRIMARY KEY(key);
 
 Вставить:
 
-```sql
+```sql title="Query"
 INSERT INTO redis_table VALUES('1', 1, '1', 1.0), ('2', 2, '2', 2.0);
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT COUNT(*) FROM redis_table;
 ```
 
-```text
+```text title="Response"
 ┌─count()─┐
 │       2 │
 └─────────┘
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM redis_table WHERE key='1';
 ```
 
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v2─┬─v3─┐
 │ 1   │  1 │ 1  │  1 │
 └─────┴────┴────┴────┘
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM redis_table WHERE v1=2;
 ```
 
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v2─┬─v3─┐
 │ 2   │  2 │ 2  │  2 │
 └─────┴────┴────┴────┘
@@ -124,13 +120,13 @@ SELECT * FROM redis_table WHERE v1=2;
 
 Имейте в виду, что первичный ключ нельзя изменять.
 
-```sql
+```sql title="Query"
 ALTER TABLE redis_table UPDATE v1=2 WHERE key='1';
 ```
 
 Удалить:
 
-```sql
+```sql title="Query"
 ALTER TABLE redis_table DELETE WHERE key='1';
 ```
 
@@ -138,7 +134,7 @@ Truncate:
 
 Асинхронно очищает базу данных Redis. Также `Truncate` поддерживает синхронный режим (SYNC).
 
-```sql
+```sql title="Query"
 TRUNCATE TABLE redis_table SYNC;
 ```
 
@@ -146,12 +142,13 @@ Join:
 
 Объединение с другими таблицами.
 
-```sql
+```sql title="Query"
 SELECT * FROM redis_table JOIN merge_tree_table ON merge_tree_table.key=redis_table.key;
 ```
 
 ## Ограничения \{#limitations\}
 
 Движок Redis также поддерживает запросы сканирования, такие как `where k > xx`, но у него есть некоторые ограничения:
+
 1. Запрос сканирования может привести к появлению дублирующихся ключей в очень редких случаях, когда выполняется рехеширование. См. подробности в [Redis Scan](https://github.com/redis/redis/blob/e4d183afd33e0b2e6e8d1c79a832f678a04a7886/src/dict.c#L1186-L1269).
 2. Во время сканирования ключи могут создаваться и удаляться, поэтому полученный набор данных не будет соответствовать корректному состоянию на какой-либо конкретный момент времени.

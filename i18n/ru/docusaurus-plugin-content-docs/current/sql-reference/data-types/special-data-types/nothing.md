@@ -1,13 +1,11 @@
 ---
-description: 'Документация по специальному типу данных «Nothing»'
+description: 'Документация по специальному типу данных Nothing'
 sidebar_label: 'Nothing'
 sidebar_position: 60
 slug: /sql-reference/data-types/special-data-types/nothing
 title: 'Nothing'
 doc_type: 'reference'
 ---
-
-# Nothing \{#nothing\}
 
 Единственное назначение этого типа данных — служить для представления случаев, когда значение не предполагается. Поэтому вы не можете создать значение типа `Nothing`.
 

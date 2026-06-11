@@ -9,8 +9,6 @@ doc_type: 'guide'
 import nullTableMV from '@site/static/images/data-modeling/null_table_mv.png';
 import Image from '@theme/IdealImage';
 
-# Backfilling Data
-
 Whether new to ClickHouse or responsible for an existing deployment, you will invariably need to backfill tables with historical data. In some cases, this is relatively simple but can become more complex when materialized views need to be populated. This guide documents some processes for this task that you can apply to your use case.
 
 :::note
@@ -26,7 +24,9 @@ For example, the subset covers a single day - `2024-12-17` and is available publ
 ```sql
 SELECT count()
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/*.parquet')
+```
 
+```response
 ┌────count()─┐
 │ 2039988137 │ -- 2.04 billion
 └────────────┘
@@ -43,7 +43,9 @@ We assume the user is consuming a stream of this data e.g. from Kafka or object 
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/*.parquet')
 FORMAT PrettyCompactNoEscapesMonoBlock
 SETTINGS describe_compact_output = 1
+```
 
+```response
 ┌─name───────────────┬─type────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ timestamp │ Nullable(DateTime64(6))                                                                                                                 │
 │ country_code       │ Nullable(String)                                                                                                                        │
@@ -121,21 +123,31 @@ We populate the main table and associated view with a subset of the data:
 ```sql
 INSERT INTO pypi SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{000..100}.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 15.702 sec. Processed 41.23 million rows, 3.94 GB (2.63 million rows/s., 251.01 MB/s.)
 Peak memory usage: 977.49 MiB.
+```
 
+```sql
 SELECT count() FROM pypi
+```
 
+```response
 ┌──count()─┐
 │ 20612750 │ -- 20.61 million
 └──────────┘
 
 1 row in set. Elapsed: 0.004 sec.
+```
 
+```sql
 SELECT sum(count)
 FROM pypi_downloads
+```
 
+```response
 ┌─sum(count)─┐
 │   20612750 │ -- 20.61 million
 └────────────┘
@@ -168,22 +180,32 @@ We populate this with our 2nd subset of approximately the same size and confirm 
 ```sql
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-000000000{101..200}.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 17.545 sec. Processed 40.80 million rows, 3.90 GB (2.33 million rows/s., 222.29 MB/s.)
 Peak memory usage: 991.50 MiB.
+```
 
+```sql
 SELECT count()
 FROM pypi_v2
+```
 
+```response
 ┌──count()─┐
 │ 20400020 │ -- 20.40 million
 └──────────┘
 
 1 row in set. Elapsed: 0.004 sec.
+```
 
+```sql
 SELECT sum(count)
 FROM pypi_downloads_v2
+```
 
+```response
 ┌─sum(count)─┐
 │   20400020 │ -- 20.40 million
 └────────────┘
@@ -198,11 +220,17 @@ With our data load complete, we can move the data from our duplicate tables to t
 
 ```sql
 ALTER TABLE pypi_v2 MOVE PARTITION () TO pypi
+```
 
+```response
 0 rows in set. Elapsed: 1.401 sec.
+```
 
+```sql
 ALTER TABLE pypi_downloads_v2 MOVE PARTITION () TO pypi_downloads
+```
 
+```response
 0 rows in set. Elapsed: 0.389 sec.
 ```
 
@@ -215,22 +243,30 @@ We can now confirm `pypi` and `pypi_downloads` contain the complete data. `pypi_
 ```sql
 SELECT count()
 FROM pypi
+```
 
+```response
 ┌──count()─┐
 │ 41012770 │ -- 41.01 million
 └──────────┘
 
 1 row in set. Elapsed: 0.003 sec.
+```
 
+```sql
 SELECT sum(count)
 FROM pypi_downloads
+```
 
+```response
 ┌─sum(count)─┐
 │   41012770 │ -- 41.01 million
 └────────────┘
 
 1 row in set. Elapsed: 0.007 sec. Processed 191.64 thousand rows, 1.53 MB (27.34 million rows/s., 218.74 MB/s.)
+```
 
+```sql
 SELECT count()
 FROM pypi_v2
 ```
@@ -274,7 +310,9 @@ For example, in our PyPI data suppose we have data loaded. We can identify the m
 ```sql
 SELECT min(timestamp)
 FROM pypi
+```
 
+```response
 ┌──────min(timestamp)─┐
 │ 2024-12-17 09:00:00 │
 └─────────────────────┘
@@ -298,7 +336,9 @@ GROUP BY project
 INSERT INTO pypi_v2 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/2024-12-17/1734393600-*.parquet')
 WHERE timestamp < '2024-12-17 09:00:00'
+```
 
+```response
 0 rows in set. Elapsed: 500.152 sec. Processed 2.74 billion rows, 364.40 GB (5.47 million rows/s., 728.59 MB/s.)
 ```
 :::note
@@ -386,7 +426,9 @@ WHERE timestamp < '2024-12-17 09:00:00'
 GROUP BY
     hour,
  project
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 2.830 sec. Processed 798.89 million rows, 17.40 GB (282.28 million rows/s., 6.15 GB/s.)
@@ -451,7 +493,9 @@ To populate this materialized view, we simply insert the relevant data to backfi
 
 ```sql
 INSERT INTO pypi_v2 SELECT timestamp, project FROM pypi WHERE timestamp < '2024-12-17 09:00:00'
+```
 
+```response
 0 rows in set. Elapsed: 27.325 sec. Processed 1.50 billion rows, 33.48 GB (54.73 million rows/s., 1.23 GB/s.)
 Peak memory usage: 639.47 MiB.
 ```
@@ -485,7 +529,9 @@ SELECT
 FROM pypi
 WHERE timestamp < '2024-12-17 09:00:00'
 SETTINGS max_insert_threads = 1
+```
 
+```response
 0 rows in set. Elapsed: 27.752 sec. Processed 1.50 billion rows, 33.48 GB (53.89 million rows/s., 1.21 GB/s.)
 Peak memory usage: 506.78 MiB.
 ```
@@ -498,7 +544,9 @@ SELECT timestamp, project
 FROM pypi
 WHERE timestamp < '2024-12-17 09:00:00'
 SETTINGS max_insert_threads = 1, max_threads = 1
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 43.907 sec. Processed 1.50 billion rows, 33.48 GB (34.06 million rows/s., 762.54 MB/s.)
@@ -515,7 +563,9 @@ SELECT
 FROM pypi
 WHERE timestamp < '2024-12-17 09:00:00'
 SETTINGS max_insert_threads = 1, max_threads = 1, min_insert_block_size_rows = 0, min_insert_block_size_bytes = 10485760
+```
 
+```response
 0 rows in set. Elapsed: 43.293 sec. Processed 1.50 billion rows, 33.48 GB (34.54 million rows/s., 773.36 MB/s.)
 Peak memory usage: 218.64 MiB.
 ```
@@ -537,26 +587,34 @@ Consider the following example using PyPI and our previous new materialized view
 
 ```sql
 SELECT count() FROM pypi
+```
 
+```response
 ┌────count()─┐
 │ 2039988137 │ -- 2.04 billion
 └────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
+```
 
+```sql
 -- (1) Pause inserts
 -- (2) Create a duplicate of our target table
 
 CREATE TABLE pypi_v2 AS pypi
 
 SELECT count() FROM pypi_v2
+```
 
+```response
 ┌────count()─┐
 │ 2039988137 │ -- 2.04 billion
 └────────────┘
 
 1 row in set. Elapsed: 0.004 sec.
+```
 
+```sql
 -- (3) Attach partitions from the original target table to the duplicate.
 
 ALTER TABLE pypi_v2
@@ -590,20 +648,29 @@ FROM pypi
 LIMIT 1
 
 SELECT count() FROM pypi
+```
 
+```response
 ┌────count()─┐
 │ 2039988138 │ -- 2.04 billion
 └────────────┘
 
 1 row in set. Elapsed: 0.003 sec.
+```
 
+```sql
 -- notice how pypi_v2 contains same number of rows as before
 
 SELECT count() FROM pypi_v2
+```
+
+```response
 ┌────count()─┐
 │ 2039988137 │ -- 2.04 billion
 └────────────┘
+```
 
+```sql
 -- (5) Backfill the view using the backup pypi_v2
 
 INSERT INTO pypi_downloads_per_day SELECT
@@ -614,9 +681,13 @@ FROM pypi_v2
 GROUP BY
     hour,
  project
+```
 
+```response
 0 rows in set. Elapsed: 3.719 sec. Processed 2.04 billion rows, 47.15 GB (548.57 million rows/s., 12.68 GB/s.)
+```
 
+```sql
 DROP TABLE pypi_v2;
 ```
 

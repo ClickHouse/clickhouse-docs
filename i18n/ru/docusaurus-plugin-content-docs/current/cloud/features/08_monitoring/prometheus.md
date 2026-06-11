@@ -2,7 +2,7 @@
 slug: /integrations/prometheus
 sidebar_label: 'Конечная точка Prometheus'
 sidebar_position: 4
-title: 'Совместимая с Prometheus конечная точка метрик'
+title: 'Интеграция с Prometheus'
 description: 'Экспорт метрик ClickHouse в Prometheus'
 keywords: ['prometheus', 'grafana', 'мониторинг', 'метрики', 'экспортер']
 doc_type: 'reference'
@@ -16,12 +16,11 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
+Эта возможность позволяет интегрировать [Prometheus](https://prometheus.io/) для мониторинга сервисов ClickHouse Cloud. Доступ к метрикам Prometheus предоставляется через конечную точку [API ClickHouse Cloud](/cloud/manage/api/api-overview), которая позволяет безопасно подключаться и экспортировать метрики в ваш коллектор метрик Prometheus. Эти метрики можно интегрировать с панелями мониторинга, например Grafana и Datadog, для визуализации.
 
-# Интеграция с Prometheus \{#prometheus-integration\}
+Для начала [сгенерируйте API-ключ](/cloud/manage/openapi).
 
-Данная возможность поддерживает интеграцию с [Prometheus](https://prometheus.io/) для мониторинга сервисов ClickHouse Cloud. Доступ к метрикам Prometheus предоставляется через конечную точку [ClickHouse Cloud API](/cloud/manage/api/api-overview), которая позволяет безопасно подключаться и экспортировать метрики в ваш сборщик метрик Prometheus. Эти метрики могут быть интегрированы с дашбордами, например Grafana или Datadog, для визуализации.
-
-Чтобы начать, [создайте API-ключ](/cloud/manage/openapi).
+Если вам нужна аналогичная конечная точка для сервисов [Managed Postgres](/cloud/managed-postgres), см. [конечную точку Prometheus для Managed Postgres](/cloud/managed-postgres/monitoring/prometheus).
 
 ## API конечной точки Prometheus для доступа к метрикам ClickHouse Cloud \{#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics\}
 
@@ -335,3 +334,4 @@ instances:
 * [Мониторинг в Cloud Console](/cloud/monitoring/cloud-console) — Встроенные панели мониторинга, не требующие внешних инструментов
 * [Интеграции сообщества и партнеров](/cloud/monitoring/integrations) — Интеграция с агентом Datadog и решения сообщества
 * [Запросы к системным таблицам](/cloud/monitoring/system-tables) — Прямой SQL-доступ к системным метрикам
+* [Конечная точка Prometheus для Managed Postgres](/cloud/managed-postgres/monitoring/prometheus) — Собирайте метрики из сервисов Managed Postgres

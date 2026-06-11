@@ -19,4 +19,6 @@ import ResourceEstimation from '@site/i18n/zh/docusaurus-plugin-content-docs/cur
 
 指定完需求后，您的托管 ClickStack 服务将需要几分钟时间完成预配。在等待预配期间，您可以随时浏览 [ClickHouse Cloud 控制台](/cloud/overview) 的其他部分。
 
+有关如何根据您的环境进一步细化资源估算假设的详细信息，请参阅 [&quot;根据您的环境细化资源估算假设&quot;](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions)。
+
 一旦**预配完成，左侧菜单中的 &#39;ClickStack&#39; 选项将被启用**。

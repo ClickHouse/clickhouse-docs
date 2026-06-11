@@ -12,10 +12,7 @@ import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png
 import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png';
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
-
-# Журнал аудита консоли \{#console-audit-log\}
-
-Действия в консоли записываются в журнал аудита. Если у вас есть роль администратора (Admin) или разработчика (Developer) в организации, вы можете просматривать этот журнал и интегрировать его с системами логирования.
+Действия в консоли записываются в журнал аудита. Если у вас есть роль Admin или Developer в организации, вы можете просматривать журнал и интегрировать его с вашими системами логирования.
 
 ## Доступ к журналу аудита консоли через пользовательский интерфейс \{#console-audit-log-ui\}
 

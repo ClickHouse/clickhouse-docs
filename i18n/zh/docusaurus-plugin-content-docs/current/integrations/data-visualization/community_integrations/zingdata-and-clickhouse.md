@@ -25,12 +25,9 @@ import zing_08 from '@site/static/images/integrations/data-visualization/zing_08
 import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# 将 Zing Data 连接到 ClickHouse \{#connect-zing-data-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> 是一个数据探索与可视化平台。Zing Data 使用 ClickHouse 提供的 JavaScript 驱动程序进行连接。
+<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> 是一个数据探索与可视化平台。Zing Data 使用 ClickHouse 提供的 JS 驱动程序连接到 ClickHouse。
 
 ## 如何连接 \{#how-to-connect\}
 

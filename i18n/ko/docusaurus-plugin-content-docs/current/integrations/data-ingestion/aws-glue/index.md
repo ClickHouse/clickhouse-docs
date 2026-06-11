@@ -3,8 +3,8 @@ sidebar_label: 'Amazon Glue'
 sidebar_position: 1
 slug: /integrations/glue
 description: 'ClickHouse와 Amazon Glue 통합'
-keywords: ['clickhouse', 'amazon', 'aws', 'glue', 'migrating', 'data', 'spark']
-title: 'Amazon Glue를 ClickHouse 및 Spark와 통합하기'
+keywords: ['clickhouse', 'amazon', 'aws', 'glue', '마이그레이션', '데이터', 'spark']
+title: 'Amazon Glue를 ClickHouse 및 Spark와 통합'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -18,12 +18,9 @@ import notebook_connections_config from '@site/static/images/integrations/data-i
 import dependent_jars_path_option from '@site/static/images/integrations/data-ingestion/aws-glue/dependent_jars_path_option.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Amazon Glue를 ClickHouse 및 Spark와 통합하기 \{#integrating-amazon-glue-with-clickhouse-and-spark\}
-
-<ClickHouseSupportedBadge/>
-
-[Amazon Glue](https://aws.amazon.com/glue/)는 Amazon Web Services(AWS)에서 제공하는 완전 관리형 서버리스 데이터 통합 서비스입니다. 분석, 머신 러닝, 애플리케이션 개발을 위해 데이터를 탐색, 준비 및 변환하는 작업을 단순화합니다.
+[Amazon Glue](https://aws.amazon.com/glue/)는 Amazon Web Services(AWS)에서 제공하는 완전 관리형 서버리스 데이터 통합 서비스입니다. 분석, 머신 러닝, 애플리케이션 개발에 사용할 데이터를 탐색하고 준비하며 변환하는 과정을 간소화합니다.
 
 ## 설치 \{#installation\}
 

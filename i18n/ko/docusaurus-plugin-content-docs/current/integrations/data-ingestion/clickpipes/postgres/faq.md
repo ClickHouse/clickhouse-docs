@@ -15,8 +15,6 @@ import failover_slot from '@site/static/images/integrations/data-ingestion/click
 import Image from '@theme/IdealImage';
 
 
-# Postgres용 ClickPipes FAQ \{#clickpipes-for-postgres-faq\}
-
 ### 트랜잭션 롤백도 ClickHouse로 복제됩니까? \{#are-transaction-rollbacks-replicated\}
 
 아니요. CDC는 커밋된 트랜잭션만 복제합니다. 롤백된 트랜잭션은 ClickHouse로 복제되지 않습니다.

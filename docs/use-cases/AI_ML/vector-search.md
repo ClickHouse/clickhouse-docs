@@ -303,7 +303,9 @@ Verify that 1 million rows are seen in the dbpedia table:
 ```sql
 SELECT count(*)
 FROM dbpedia
+```
 
+```response
 ┌─count()─┐
 │ 1000000 │
 └─────────┘

@@ -1,12 +1,11 @@
 ---
-sidebar_label: 'ClickHouse Assistant 에이전트'
+sidebar_label: 'ClickHouse Assistant'
+sidebar_position: 2
 slug: /cloud/features/ai-ml/ask-ai
-title: 'Cloud에서 ClickHouse Assistant 에이전트 사용하기'
-description: 'ClickHouse Cloud의 ClickHouse Assistant 채팅 기능에 대한 설명'
-doc_type: 'reference'
+title: 'Cloud에서 ClickHouse Assistant 사용하기'
+description: 'ClickHouse Cloud의 ClickHouse Assistant chat 기능 설명'
+doc_type: '참고'
 ---
-
-# Cloud에서 ClickHouse Assistant 에이전트 사용하기 \{#clickhouse-assistant-agent-in-cloud\}
 
 「ClickHouse Assistant」 에이전트는 ClickHouse Cloud 서비스에 호스팅된 데이터에 대해 복잡한 분석 작업을 손쉽게 실행할 수 있도록 해 주는 턴키(즉시 사용 가능한) 기능입니다.
 SQL을 작성하거나 대시보드를 탐색하는 대신, 찾고자 하는 내용을 자연어로 설명하면 됩니다.

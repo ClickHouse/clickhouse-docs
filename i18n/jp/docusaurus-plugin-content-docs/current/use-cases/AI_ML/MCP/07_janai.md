@@ -1,17 +1,15 @@
 ---
 slug: /use-cases/AI/MCP/janai
-sidebar_label: 'Jan.ai との連携'
-title: 'Jan.ai と ClickHouse MCPサーバーのセットアップ'
+sidebar_label: 'Jan.aiと連携する'
+title: 'Jan.ai で ClickHouse MCPサーバー を使用する'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、Jan.ai を ClickHouse MCPサーバーと連携させるためのセットアップ方法について説明します。'
+description: 'このガイドでは、ClickHouse MCPサーバー を使用して Jan.ai を設定する方法を説明します。'
 keywords: ['AI', 'Jan.ai', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/0_janai_openai.png';
@@ -24,9 +22,7 @@ import Question from '@site/static/images/use-cases/AI_ML/MCP/6_janai_question.p
 import MCPToolConfirm from '@site/static/images/use-cases/AI_ML/MCP/7_janai_tool_confirmation.png';
 import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_called.png';  
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
-import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
-
-# Jan.ai で ClickHouse MCPサーバー を使用する \{#using-clickhouse-mcp-server-with-janai\}
+import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';  
 
 > このガイドでは、[Jan.ai](https://jan.ai/docs) で ClickHouse MCPサーバー を使用する方法を説明します。
 

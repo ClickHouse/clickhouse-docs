@@ -1,12 +1,10 @@
 ---
-description: '비트맵 함수 문서'
+description: '비트맵 함수에 대한 문서'
 sidebar_label: '비트맵'
 slug: /sql-reference/functions/bitmap-functions
 title: '비트맵 함수'
 doc_type: 'reference'
 ---
-
-# 비트맵 함수 \{#bitmap-functions\}
 
 비트맵은 두 가지 방식으로 생성할 수 있습니다. 첫 번째 방식은 집계 함수 groupBitmap의 `-State`를 사용하여 생성하는 것이고, 다른 방식은 Array 객체에서 비트맵을 생성하는 것입니다.
 

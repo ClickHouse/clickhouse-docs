@@ -1,13 +1,11 @@
 ---
-description: '基于 ClickHouse 中 Replicated* 系列表引擎的数据复制概述'
+description: 'ClickHouse 中 Replicated* 系列表引擎的数据复制概述'
 sidebar_label: 'Replicated*'
 sidebar_position: 20
 slug: /engines/table-engines/mergetree-family/replication
 title: 'Replicated* 系列表引擎'
 doc_type: 'reference'
 ---
-
-# Replicated* 系列表引擎 \{#replicated-table-engines\}
 
 :::note
 在 ClickHouse Cloud 中，复制由系统自动管理。请在创建表时不要添加这些参数。例如，在下面的文本中，你应将其替换为：
@@ -116,7 +114,6 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 你可以指定任意现有的 ZooKeeper 集群，系统会在该集群上使用一个目录来存放自身数据 (该目录在创建复制表时指定) 。
 
 如果在配置文件中未配置 ZooKeeper，你将无法创建复制表，且任何已有的复制表都将变为只读.
-
 
 ZooKeeper 不参与 `SELECT` 查询，因为复制不会影响 `SELECT` 的性能，查询速度与非复制表一样快。对于分布式复制表的查询，ClickHouse 的行为由 [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) 和 [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries) 这两个设置控制。
 

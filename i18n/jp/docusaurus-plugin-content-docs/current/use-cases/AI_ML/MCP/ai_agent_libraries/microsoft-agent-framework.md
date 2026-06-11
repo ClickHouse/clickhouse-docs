@@ -1,18 +1,16 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/microsoft-agent-framework
-sidebar_label: 'Microsoft Agent framework を統合する'
+sidebar_label: 'Microsoft Agent framework の統合'
 title: 'Microsoft Agent framework と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'Microsoft Agent framework と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法を学ぶ'
+description: 'Microsoft Agent framework と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'Microsoft']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Microsoft Agent framework と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-microsoft-agent-framework-and-the-clickhouse-mcp-server\}
-
-このガイドでは、[Microsoft Agent framework](https://github.com/microsoft/agent-framework) を使って、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを [ClickHouse の MCP server](https://github.com/ClickHouse/mcp-clickhouse) を通じて構築する方法を説明します。
+このガイドでは、[Microsoft Agent framework](https://github.com/microsoft/agent-framework) を使って、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを [ClickHouse の MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を通じて構築する方法を説明します。
 
 :::note サンプルノートブック
 このサンプルは、[examples リポジトリ](https://github.com/ClickHouse/examples/blob/main/ai/mcp/microsoft-agent-framework/microsoft-agent-framework.ipynb) 内のノートブックとして確認できます。

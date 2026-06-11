@@ -7,14 +7,17 @@ keywords: ['postgres 连接', '连接字符串', 'pgbouncer', 'tls', 'ssl']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import connectButton from '@site/static/images/managed-postgres/connect-button.png';
 import connectModal from '@site/static/images/managed-postgres/connect-modal.png';
 import tlsCaBundle from '@site/static/images/managed-postgres/tls-ca-bundle.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="connection" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.connection-beta" />
 
+:::tip[SQL 控制台]
+本页介绍如何将生产系统连接到 Postgres。如果您只是想快速运行查询，也可以通过 [SQL 控制台](/integrations/sql-clients/sql-console) 连接，方式与连接 ClickHouse 实例相同。
+:::
 
 ## 访问连接详情 \{#accessing-connection-details\}
 
@@ -39,13 +42,13 @@ Managed Postgres 为您的数据库提供超级用户访问权限。使用这些
 
 **Connect via** 选项卡会根据你的应用程序需求，提供多种格式的连接字符串：
 
-| 格式 | 描述 |
-|--------|-------------|
-| **url** | 标准连接 URL，格式为 `postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>` |
-| **psql** | 可直接用于通过 psql 命令行工具进行连接的命令 |
-| **env** | 供基于 libpq 的客户端使用的环境变量 |
-| **yaml** | YAML 格式的配置 |
-| **jdbc** | 适用于 Java 应用程序的 JDBC 连接字符串 |
+| 格式       | 描述                                                                     |
+| -------- | ---------------------------------------------------------------------- |
+| **url**  | 标准连接 URL，格式为 `postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/<DATABASE>` |
+| **psql** | 可直接用于通过 psql 命令行工具进行连接的命令                                              |
+| **env**  | 供基于 libpq 的客户端使用的环境变量                                                  |
+| **yaml** | YAML 格式的配置                                                             |
+| **jdbc** | 适用于 Java 应用程序的 JDBC 连接字符串                                              |
 
 出于安全考虑，连接字符串中的密码默认会被隐藏。单击任意字段或连接字符串旁的复制图标，可将其直接复制到剪贴板。
 

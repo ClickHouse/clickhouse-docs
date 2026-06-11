@@ -13,7 +13,6 @@ import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import ActionsMenu from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_service_actions_menu.md';
 import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 import SupersetDocker from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_add_superset_detail.md';

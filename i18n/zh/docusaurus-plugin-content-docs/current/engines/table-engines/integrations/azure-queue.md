@@ -7,9 +7,7 @@ title: 'AzureQueue 表引擎'
 doc_type: 'reference'
 ---
 
-# AzureQueue 表引擎 \{#azurequeue-table-engine\}
-
-该引擎实现了与 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 生态系统的集成，支持以流式方式导入数据。
+此引擎提供与 [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs) 生态系统的集成，支持流式数据导入。
 
 ## 创建表 \{#creating-a-table\}
 

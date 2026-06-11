@@ -16,9 +16,6 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-
-# Azure Flexible Server for Postgres 소스 설정 가이드 \{#azure-flexible-server-for-postgres-source-setup-guide\}
-
 ClickPipes는 Postgres 12 이상 버전을 지원합니다.
 
 ## 논리적 복제(logical replication) 활성화 \{#enable-logical-replication\}

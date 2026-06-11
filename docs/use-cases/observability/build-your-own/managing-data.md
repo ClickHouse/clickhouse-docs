@@ -10,9 +10,14 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-# Managing data
-
 Deployments of ClickHouse for Observability invariably involve large datasets, which need to be managed. ClickHouse offers a number of features to assist with data management.
+
+:::tip ClickStack ships an optimized default schema
+**ClickStack provides out-of-the-box schemas for logs, traces, and metrics** that incorporate the latest ClickHouse features (text indexes for full-text and map-key search, materialized columns and ALIAS arrays for direct-read filtering, block-number row lookups) and have been benchmarked to deliver strong out-of-the-box performance for logging and trace workloads. Use them as a reference point for your own design.
+
+- Canonical DDL: [Tables and schemas used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas).
+- Optimization recipes: [ClickStack performance tuning](/use-cases/observability/clickstack/performance_tuning). Many of the recommendations on that page (materialized columns, skip indexes, primary key choice, projections, materialized views) apply directly to a build-your-own setup.
+:::
 
 ## Partitions {#partitions}
 
@@ -44,7 +49,9 @@ SELECT Timestamp::Date AS day,
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 2333977 │
 │ 2019-01-23 │ 2326694 │
@@ -63,7 +70,9 @@ Current partitions can be found using a simple system table query:
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'otel_logs'
+```
 
+```response
 ┌─partition──┐
 │ 2019-01-22 │
 │ 2019-01-23 │
@@ -89,7 +98,9 @@ SELECT
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 2333977 │
 │ 2019-01-23 │ 2326694 │
@@ -99,13 +110,17 @@ ORDER BY c DESC
 
 4 rows in set. Elapsed: 0.051 sec. Processed 8.38 million rows, 67.03 MB (163.52 million rows/s., 1.31 GB/s.)
 Peak memory usage: 4.40 MiB.
+```
 
+```sql
 SELECT Timestamp::Date AS day,
         count() AS c
 FROM otel_logs_archive
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-26 │ 1986456 │
 └────────────┴─────────┘
@@ -132,6 +147,9 @@ SELECT
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
+
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 4667954 │
 │ 2019-01-23 │ 4653388 │
@@ -332,6 +350,9 @@ In the above example, we specify the default as the `size` key in `LogAttributes
 SELECT Size
 FROM otel_logs_v2
 LIMIT 5
+```
+
+```response
 ┌──Size─┐
 │ 30577 │
 │  5667 │
@@ -383,7 +404,9 @@ FROM merge('otel_logs_v[2|3]')
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 38319300 │
 │   304  │  1360912 │
@@ -406,7 +429,9 @@ FROM otel_logs_merged
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 38319300 │
 │   304  │  1360912 │
@@ -431,7 +456,9 @@ FROM otel_logs_merged
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 39259996 │
 │   304  │  1378564 │

@@ -8,8 +8,6 @@ title: '高级用法'
 doc_type: 'reference'
 ---
 
-# 高级用法 \{#advanced-usage\}
-
 ## 原始 API \{#raw-api\}
 
 对于不需要在 ClickHouse 数据与原生或第三方数据类型和结构之间进行转换的用例，ClickHouse Connect 客户端提供了直接访问 ClickHouse 连接的方法。

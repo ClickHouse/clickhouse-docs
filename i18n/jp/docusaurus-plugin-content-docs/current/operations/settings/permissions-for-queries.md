@@ -1,21 +1,19 @@
 ---
-description: 'クエリ実行権限の設定。'
-sidebar_label: 'クエリ権限'
+description: 'クエリ権限の設定。'
+sidebar_label: 'クエリの権限'
 sidebar_position: 58
 slug: /operations/settings/permissions-for-queries
-title: 'クエリ権限'
+title: 'クエリの権限'
 doc_type: 'reference'
 ---
 
-# クエリの権限 \{#permissions-for-queries\}
-
 ClickHouse におけるクエリは、次のいくつかの種類に分類できます。
 
-1.  データ読み取りクエリ: `SELECT`, `SHOW`, `DESCRIBE`, `EXISTS`。
-2.  データ書き込みクエリ: `INSERT`, `OPTIMIZE`。
-3.  設定変更クエリ: `SET`, `USE`。
-4.  [DDL](https://en.wikipedia.org/wiki/Data_definition_language) クエリ: `CREATE`, `ALTER`, `RENAME`, `ATTACH`, `DETACH`, `DROP`, `TRUNCATE`。
-5.  `KILL QUERY`。
+1. データの読み取りクエリ: `SELECT`, `SHOW`, `DESCRIBE`, `EXISTS`。
+2. データ書き込みクエリ: `INSERT`, `OPTIMIZE`。
+3. 設定変更クエリ: `SET`, `USE`。
+4. [DDL](https://en.wikipedia.org/wiki/Data_definition_language) クエリ: `CREATE`, `ALTER`, `RENAME`, `ATTACH`, `DETACH`, `DROP` `TRUNCATE`。
+5. `KILL QUERY`。
 
 次の設定によって、クエリ種別ごとにユーザー権限を制御します。
 

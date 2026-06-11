@@ -25,14 +25,11 @@ import mitzu_10 from '@site/static/images/integrations/data-visualization/mitzu_
 import mitzu_11 from '@site/static/images/integrations/data-visualization/mitzu_11.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Mitzu를 ClickHouse에 연결하기 \{#connecting-mitzu-to-clickhouse\}
+Mitzu는 코드 작성이 필요 없는 데이터 웨어하우스 네이티브 제품 분석 애플리케이션입니다. Amplitude, Mixpanel, PostHog와 같은 도구와 마찬가지로, Mitzu는 SQL이나 Python에 대한 전문 지식 없이도 제품 사용 데이터를 분석할 수 있도록 지원합니다.
 
-<CommunityMaintainedBadge/>
-
-Mitzu는 코드 작성이 필요 없는, 데이터 웨어하우스 네이티브 제품 분석(Product analytics) 애플리케이션입니다. Amplitude, Mixpanel, PostHog과 같은 도구와 유사하게, Mitzu는 SQL이나 Python 전문 지식 없이도 제품 사용 데이터를 분석할 수 있도록 합니다.
-
-그러나 이러한 플랫폼들과 달리, Mitzu는 회사의 제품 사용 데이터를 복제하지 않습니다. 대신, 회사가 이미 보유한 데이터 웨어하우스나 데이터 레이크에서 네이티브 SQL 쿼리를 직접 생성합니다.
+하지만 이러한 플랫폼과 달리 Mitzu는 회사의 제품 사용 데이터를 복제하지 않습니다. 대신 회사의 기존 데이터 웨어하우스 또는 데이터 레이크에서 직접 네이티브 SQL 쿼리를 생성합니다.
 
 ## 목표 \{#goal\}
 

@@ -7,8 +7,6 @@ doc_type: 'guide'
 keywords: ['ClickHouse Cloud', 'SAML', 'SSO', 'single sign-on', 'IdP']
 ---
 
-# SAML SSO の削除 \{#saml-sso-removal\}
-
 お客様がアイデンティティプロバイダーの変更などの理由により、組織から SAML 連携を削除する必要が発生する場合があります。SAML ユーザーは、他のユーザー種別とは別のアイデンティティとして扱われます。別の認証方法に切り替えるには、以下の手順に従ってください。
 
 :::warning

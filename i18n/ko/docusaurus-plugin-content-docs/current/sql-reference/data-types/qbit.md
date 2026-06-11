@@ -39,6 +39,29 @@ SELECT vec FROM test ORDER BY id;
 ```
 
 
+## 배열을 QBit로 변환하기 \{#converting-arrays-to-qbit\}
+
+배열 길이가 `QBit` 차원과 일치하면 배열을 `QBit`로 변환할 수 있습니다. 배열의 요소 타입이 `QBit` 요소 타입과 같을 필요는 없습니다. 숫자 요소 타입이라면 무엇이든 자동으로 해당 타입으로 변환됩니다. 따라서 기존 임베딩 컬럼을 바로 `QBit` 컬럼으로 옮길 수 있습니다:
+
+```sql
+CREATE TABLE embeddings (id UInt32, embedding Array(Float32)) ENGINE = Memory;
+INSERT INTO embeddings VALUES (1, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]), (2, [0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]);
+
+CREATE TABLE vectors (id UInt32, vec QBit(Float32, 8)) ENGINE = Memory;
+INSERT INTO vectors SELECT id, embedding FROM embeddings;
+
+SELECT * FROM vectors ORDER BY id;
+```
+
+```text
+┌─id─┬─vec───────────────────────────────┐
+│  1 │ [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8] │
+│  2 │ [0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1] │
+└────┴───────────────────────────────────┘
+```
+
+이 변환은 `CAST`를 사용해 명시적으로 수행할 수도 있습니다. 예를 들어 `CAST(embedding AS QBit(Float32, 8))`와 같습니다.
+
 ## QBit 서브컬럼 \{#qbit-subcolumns\}
 
 `QBit`은(는) 저장된 벡터의 개별 비트 플레인에 액세스할 수 있는 서브컬럼 액세스 패턴을 구현합니다. 각 비트 위치는 `.N` 구문을 사용하여 액세스할 수 있으며, 여기서 `N`은 비트 위치를 의미합니다:

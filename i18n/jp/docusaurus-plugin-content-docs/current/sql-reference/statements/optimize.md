@@ -114,7 +114,7 @@ OPTIMIZE TABLE table DEDUPLICATE BY COLUMNS('column-matched-by-regex') EXCEPT (c
 
 次のテーブルを考えてみます。
 
-```sql
+```sql title="Query"
 CREATE TABLE example (
     primary_key Int32,
     secondary_key Int32,
@@ -128,18 +128,16 @@ PARTITION BY partition_key
 ORDER BY (primary_key, secondary_key);
 ```
 
-```sql
+```sql title="Query"
 INSERT INTO example (primary_key, secondary_key, value, partition_key)
 VALUES (0, 0, 0, 0), (0, 0, 0, 0), (1, 1, 2, 2), (1, 1, 2, 3), (1, 1, 3, 3);
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-結果：
-
-```sql
+```sql title="Response"
 
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           0 │             0 │     0 │             0 │
@@ -160,17 +158,15 @@ SELECT * FROM example;
 
 重複排除に使用するカラムが指定されていない場合は、すべてのカラムが対象になります。各カラムの値が前の行の対応する値とすべて等しい場合にのみ、その行は削除されます。
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -187,17 +183,15 @@ SELECT * FROM example;
 
 カラムが暗黙的に指定される場合、テーブルは `ALIAS` または `MATERIALIZED` ではないすべてのカラムで重複排除が行われます。上記のテーブルの場合、該当するのは `primary_key`、`secondary_key`、`value`、`partition_key` カラムです。
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY *;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -214,17 +208,15 @@ SELECT * FROM example;
 
 `ALIAS` または `MATERIALIZED` ではなく、かつ明示的に `value` でもないすべてのカラム、すなわち `primary_key`、`secondary_key`、`partition_key` カラムを基準に重複排除を行います。
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY * EXCEPT value;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -240,17 +232,15 @@ SELECT * FROM example;
 
 `primary_key`、`secondary_key`、`partition_key` カラムを指定して明示的に重複排除します：
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY primary_key, secondary_key, partition_key;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -266,17 +256,15 @@ SELECT * FROM example;
 
 `primary_key`、`secondary_key`、`partition_key` カラムなど、正規表現にマッチするすべてのカラムを対象に重複排除します。
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY COLUMNS('.*_key');
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           0 │             0 │     0 │             0 │
 └─────────────┴───────────────┴───────┴───────────────┘

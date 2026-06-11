@@ -1,19 +1,17 @@
 ---
 sidebar_label: 'Native и двоичные'
 slug: /integrations/data-formats/binary-native
-title: 'использование формата Native и бинарный формат в ClickHouse'
-description: 'Страница, описывающая, как использовать формат Native и бинарный формат в ClickHouse'
-keywords: ['бинарный формат', 'формат Native', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'форматы данных', 'производительность', 'сжатие']
+title: 'использование нативного формата и двоичный формат в ClickHouse'
+description: 'Страница, описывающая, как использовать нативный формат и двоичный формат в ClickHouse'
+keywords: ['двоичный формат', 'нативный формат', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'форматы данных', 'производительность', 'сжатие']
 doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Использование формата Native и бинарных форматов в ClickHouse \{#using-native-and-binary-formats-in-clickhouse\}
+ClickHouse поддерживает несколько двоичных форматов, которые обеспечивают более высокую производительность и более эффективное использование пространства. Двоичные форматы также не вызывают проблем с кодировкой символов, поскольку данные сохраняются в бинарном виде.
 
-ClickHouse поддерживает несколько бинарных форматов, которые обеспечивают более высокую производительность и эффективность использования дискового пространства. Бинарные форматы также безопасны с точки зрения кодировки символов, поскольку данные сохраняются в двоичном виде.
-
-Для демонстрации мы будем использовать [таблицу some_data](assets/some_data.sql) и [данные](assets/some_data.tsv); вы можете воспроизвести это в своём экземпляре ClickHouse.
+Для демонстрации мы будем использовать таблицу some&#95;data [table](assets/some_data.sql) и [данные](assets/some_data.tsv); при желании вы можете повторить это в своем экземпляре ClickHouse.
 
 ## Экспорт в нативном формате ClickHouse \{#exporting-in-a-native-clickhouse-format\}
 

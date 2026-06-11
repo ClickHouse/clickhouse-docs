@@ -10,12 +10,9 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# LDAP を使用した認証とロールマッピングのための ClickHouse の構成 \{#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping\}
-
 <SelfManaged />
 
-ClickHouse は、LDAP を使用して ClickHouse データベースユーザーを認証するように構成できます。このガイドでは、一般公開されているディレクトリに対して認証を行う LDAP システムと ClickHouse を統合する、簡単な例を紹介します。
+ClickHouse は、ClickHouse データベースユーザーの認証に LDAP を使用するように構成できます。このガイドでは、公開されているディレクトリに対して認証を行う LDAP システムと ClickHouse を統合する簡単な例を示します。
 
 <VerticalStepper headerLevel="h2">
 

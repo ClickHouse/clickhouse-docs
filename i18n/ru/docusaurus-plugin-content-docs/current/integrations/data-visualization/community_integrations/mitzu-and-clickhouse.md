@@ -2,7 +2,7 @@
 sidebar_label: 'Mitzu'
 slug: /integrations/mitzu
 keywords: ['clickhouse', 'Mitzu', 'connect', 'integrate', 'ui']
-description: 'Mitzu — это no-code приложение для продуктовой аналитики, работающее непосредственно с хранилищем данных.'
+description: 'Mitzu — это no-code приложение для продуктовой аналитики, нативное для хранилища данных.'
 title: 'Подключение Mitzu к ClickHouse'
 doc_type: 'guide'
 integration:
@@ -25,14 +25,11 @@ import mitzu_10 from '@site/static/images/integrations/data-visualization/mitzu_
 import mitzu_11 from '@site/static/images/integrations/data-visualization/mitzu_11.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Подключение Mitzu к ClickHouse \{#connecting-mitzu-to-clickhouse\}
+Mitzu — это no-code приложение для продуктовой аналитики, нативное для хранилища данных. Подобно таким инструментам, как Amplitude, Mixpanel и PostHog, Mitzu позволяет пользователям анализировать данные об использовании продукта без знания SQL или Python.
 
-<CommunityMaintainedBadge/>
-
-Mitzu — это no-code, warehouse-native-приложение для продуктовой аналитики. Подобно таким инструментам, как Amplitude, Mixpanel и PostHog, Mitzu позволяет пользователям анализировать данные об использовании продукта без необходимости владеть SQL или Python.
-
-Однако, в отличие от этих платформ, Mitzu не дублирует данные об использовании продукта компании. Вместо этого оно генерирует нативные SQL-запросы напрямую по данным, хранящимся в существующем хранилище или озере данных компании.
+Однако, в отличие от этих платформ, Mitzu не дублирует данные компании об использовании продукта. Вместо этого он генерирует нативные SQL-запросы напрямую в существующем хранилище данных или озере данных компании.
 
 ## Цель \{#goal\}
 

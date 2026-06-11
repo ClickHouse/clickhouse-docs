@@ -11,8 +11,6 @@ import projections_1 from '@site/static/images/data-modeling/projections_1.png';
 import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
-# Проекции \{#projections\}
-
 ## Введение \{#introduction\}
 
 ClickHouse предлагает различные механизмы для ускорения аналитических запросов по большим

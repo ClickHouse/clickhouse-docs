@@ -6,7 +6,6 @@ description: 'Landing page for the tools section'
 doc_type: 'landing-page'
 ---
 
-# Tools
 
 | Page      | Description                                                                                                                     |
 |-----------|---------------------------------------------------------------------------------------------------------------------------------|

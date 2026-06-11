@@ -2,7 +2,7 @@
 sidebar_label: 'Spark JDBC'
 sidebar_position: 3
 slug: /integrations/apache-spark/spark-jdbc
-description: 'ClickHouse와 함께 사용하는 Apache Spark 소개'
+description: 'ClickHouse와 함께하는 Apache Spark 소개'
 keywords: ['clickhouse', 'Apache Spark', 'jdbc', 'migrating', 'data']
 title: 'Spark JDBC'
 doc_type: 'guide'
@@ -16,15 +16,13 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Spark JDBC \{#spark-jdbc\}
+JDBC는 Spark에서 가장 널리 사용되는 데이터 소스 중 하나입니다.
+이 섹션에서는 Spark에서 [ClickHouse 공식 JDBC 커넥터](/integrations/language-clients/java/jdbc)를
+사용하는 방법을 자세히 설명합니다.
 
-<ClickHouseSupportedBadge/>
-
-JDBC는 Spark에서 가장 흔히 사용되는 데이터 소스 중 하나입니다.
-이 섹션에서는 Spark에서 [ClickHouse 공식 JDBC 커넥터](/integrations/language-clients/java/jdbc)를 사용하는 방법을 자세히 설명합니다.
-
-<TOCInline toc={toc}></TOCInline>
+<TOCInline toc={toc} />
 
 ## 데이터 읽기 \{#read-data\}
 

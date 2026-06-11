@@ -2,7 +2,7 @@
 slug: /integrations/prometheus
 sidebar_label: 'Prometheus エンドポイント'
 sidebar_position: 4
-title: 'Prometheus 互換のメトリクスエンドポイント'
+title: 'Prometheus 連携'
 description: 'ClickHouse のメトリクスを Prometheus にエクスポートする'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
 doc_type: 'reference'
@@ -16,12 +16,11 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-
-# Prometheus 連携 \{#prometheus-integration\}
-
-この機能により、[Prometheus](https://prometheus.io/) を利用して ClickHouse Cloud サービスを監視できます。Prometheus メトリクスへのアクセスは、[ClickHouse Cloud API](/cloud/manage/api/api-overview) エンドポイント経由で提供されており、Prometheus メトリクスコレクターに安全に接続してメトリクスをエクスポートできます。これらのメトリクスは、Grafana や Datadog などのダッシュボードと連携して可視化できます。
+この機能では、[Prometheus](https://prometheus.io/) を統合して ClickHouse Cloud サービスを監視できます。Prometheus メトリクスへのアクセスは、[ClickHouse Cloud API](/cloud/manage/api/api-overview) のエンドポイントを通じて提供されており、これにより Prometheus の metrics collector に安全に接続してメトリクスをエクスポートできます。これらのメトリクスは、Grafana や Datadog などのダッシュボードに統合して可視化できます。
 
 開始するには、[API キーを生成](/cloud/manage/openapi)してください。
+
+[Managed Postgres](/cloud/managed-postgres) サービス用の対応する Prometheus エンドポイントをお探しの場合は、[Managed Postgres Prometheus エンドポイント](/cloud/managed-postgres/monitoring/prometheus) を参照してください。
 
 ## ClickHouse Cloud メトリクスを取得するための Prometheus エンドポイント API \{#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics\}
 
@@ -331,7 +330,8 @@ instances:
 
 ## 関連ページ \{#related\}
 
-- [モニタリングの概要](/cloud/monitoring) — ClickHouse Cloud のすべてのモニタリング方法を比較します
-- [Cloud Console のモニタリング](/cloud/monitoring/cloud-console) — 外部ツールが不要な組み込みダッシュボード
-- [コミュニティおよびパートナーの統合](/cloud/monitoring/integrations) — Datadog agent の統合とコミュニティソリューション
-- [システムテーブルのクエリ](/cloud/monitoring/system-tables) — システムメトリクスへの直接的な SQL アクセス
+* [モニタリングの概要](/cloud/monitoring) — ClickHouse Cloud のすべてのモニタリング方法を比較します
+* [Cloud Console のモニタリング](/cloud/monitoring/cloud-console) — 外部ツールが不要な組み込みダッシュボード
+* [コミュニティおよびパートナーの統合](/cloud/monitoring/integrations) — Datadog agent の統合とコミュニティソリューション
+* [システムテーブルのクエリ](/cloud/monitoring/system-tables) — システムメトリクスへの直接的な SQL アクセス
+* [Managed Postgres Prometheus エンドポイント](/cloud/managed-postgres/monitoring/prometheus) — Managed Postgres サービスのメトリクスをスクレイプします

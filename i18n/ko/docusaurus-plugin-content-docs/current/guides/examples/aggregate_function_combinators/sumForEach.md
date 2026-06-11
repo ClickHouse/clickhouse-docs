@@ -7,21 +7,13 @@ sidebar_label: 'sumForEach'
 doc_type: 'reference'
 ---
 
-
-
-# sumForEach \{#sumforeach\}
-
-
-
 ## 설명 \{#description\}
 
-[`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach) 콤비네이터(combinator)는
+[`ForEach`](/sql-reference/aggregate-functions/combinators#-foreach) 조합자(combinator)는
 집계 함수인 [`sum`](/sql-reference/aggregate-functions/reference/sum)에 적용하여,
 행 값에 대해 동작하는 집계 함수를
 배열 컬럼에 대해 동작하는 집계 함수로 변경합니다. 이때 배열의 각 요소에 대해,
 여러 행에 걸쳐 집계를 수행합니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -51,7 +43,7 @@ GROUP BY hour_of_day
 ORDER BY hour_of_day;
 ```
 
-
 ## 같이 보기 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`ForEach` 조합자](/sql-reference/aggregate-functions/combinators#-foreach)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`ForEach` 조합자](/sql-reference/aggregate-functions/combinators#-foreach)

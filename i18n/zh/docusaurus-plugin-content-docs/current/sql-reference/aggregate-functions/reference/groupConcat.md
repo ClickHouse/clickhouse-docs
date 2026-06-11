@@ -26,7 +26,7 @@ doc_type: 'reference'
 groupConcat[(delimiter [, limit])](expression)
 ```
 
-**别名**: `group_concat`
+**别名**: `group_concat`, `string_agg`
 
 **参数**
 
@@ -64,7 +64,7 @@ SELECT groupConcat(', ')(Name) FROM Employees;
 John, Jane, Bob
 ```
 
-**使用逗号作为分隔符 (参数语法)&#x20;**
+**使用逗号作为分隔符 (自变量语法)&#x20;**
 
 ```sql title=Query
 SELECT groupConcat(Name, ', ') FROM Employees;

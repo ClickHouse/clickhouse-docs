@@ -7,9 +7,7 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-# iceberg Table Function \{#iceberg-table-function\}
-
-Amazon S3, Azure, HDFS 또는 로컬에 저장된 Apache [Iceberg](https://iceberg.apache.org/) 테이블에 대해 읽기 전용 테이블형 인터페이스를 제공합니다.
+Amazon S3, Azure, HDFS 또는 로컬에 저장된 Apache [Iceberg](https://iceberg.apache.org/) 테이블에 대해 읽기 전용의 테이블형 인터페이스를 제공합니다.
 
 ## 구문 \{#syntax\}
 

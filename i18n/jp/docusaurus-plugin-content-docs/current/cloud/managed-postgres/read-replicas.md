@@ -2,17 +2,19 @@
 slug: /cloud/managed-postgres/read-replicas
 sidebar_label: '読み取りレプリカ'
 title: '読み取りレプリカ'
-description: 'ClickHouse Managed Postgres の読み取りレプリカで読み取り中心のワークロードをスケールさせる'
+description: 'ClickHouse Managed Postgres の読み取りレプリカで、読み取り負荷の高いワークロードをスケール'
 keywords: ['読み取りレプリカ', 'スケーラビリティ', '読み取りスケーリング', 'Postgres レプリカ', '水平方向スケーリング']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
+import readReplicasFlow from '@site/static/images/managed-postgres/read-replicas-flow.png';
+import readReplicasTable from '@site/static/images/managed-postgres/read-replicas-table.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.read-replicas-beta" />
 
 読み取りレプリカを使用すると、プライマリ Managed Postgres データベースのコピーを 1 つ以上作成できます。これらのレプリカは、PostgreSQL のネイティブなレプリケーション機能を使用してプライマリデータベースを継続的に追随し、変更を常に最新の状態に保ちます。
 
@@ -24,6 +26,19 @@ import readReplicaDialog from '@site/static/images/managed-postgres/read-replica
 
 <Image img={readReplicaDialog} alt="読み取りレプリカ管理ダイアログ" size="md" border />
 
+## 読み取りレプリカの管理 \{#managing-read-replicas\}
+
+**Read replicas** ページでは、右上の **Flow** と **Table** のコントロールで切り替えられる 2 つのビューを利用できます。
+
+**Flow** ビューではレプリケーション トポロジーが表示されます。最上部のプライマリ インスタンスから、アタッチされた各レプリカへ下向きの矢印が伸びており、tier、リージョン、ステータスをひと目で確認できます。
+
+<Image img={readReplicasFlow} alt="プライマリとレプリカのトポロジーを示す読み取りレプリカのフロー表示" size="lg" border />
+
+**Table** ビューでは、各レプリカのサービス名、クラウドプロバイダとリージョン、サービスのステータス、作成時刻、**Detach service** アクションが一覧表示されます。
+
+<Image img={readReplicasTable} alt="読み取りレプリカのテーブル表示" size="lg" border />
+
+新しいレプリカを作成するには、いずれかのビューの右上にある **Create read replica** をクリックします。
 
 ## 読み取りレプリカを使用する理由 \{#why-use-read-replicas\}
 

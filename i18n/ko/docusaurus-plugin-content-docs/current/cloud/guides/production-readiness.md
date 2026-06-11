@@ -1,25 +1,23 @@
 ---
 slug: /cloud/guides/production-readiness
-sidebar_label: '프로덕션 준비 상태'
-title: 'ClickHouse Cloud 프로덕션 운영 준비 가이드'
-description: '빠른 시작 단계에서 엔터프라이즈급 ClickHouse Cloud 프로덕션 배포로 전환하려는 조직을 위한 가이드'
-keywords: ['프로덕션 준비', '엔터프라이즈', 'saml', 'sso', 'terraform', '모니터링', '백업', '재해 복구']
+sidebar_label: '프로덕션 준비'
+title: 'ClickHouse Cloud 프로덕션 준비 가이드'
+description: '빠른 시작에서 엔터프라이즈 수준의 ClickHouse Cloud 배포로 전환하는 조직을 위한 가이드'
+keywords: ['프로덕션 준비', 'enterprise', 'saml', 'sso', 'terraform', '모니터링', '백업', '재해 복구']
 doc_type: 'guide'
 ---
-
-# ClickHouse Cloud 프로덕션 준비 가이드 \{#production-readiness\}
 
 빠른 시작 가이드를 완료하고 데이터가 유입되는 활성 서비스를 운영 중인 조직을 위한 가이드입니다.
 
 :::note[TL;DR]
 이 가이드는 빠른 시작 단계에서 엔터프라이즈 수준의 ClickHouse Cloud 프로덕션 배포 환경으로 전환하는 데 도움이 됩니다. 다음 내용을 학습하게 됩니다:
 
-- 안전한 테스트를 위해 개발/스테이징/프로덕션 환경을 분리해 구성하기
-- 아이덴티티 공급자(IdP)와 SAML/SSO 인증을 연동하기
-- Terraform 또는 Cloud API를 사용해 배포를 자동화하기
-- 모니터링을 Prometheus, PagerDuty 등의 알림 인프라에 연결하기
-- 백업 절차를 검증하고 재해 복구 프로세스를 문서화하기
-:::
+* 안전한 테스트를 위해 개발/스테이징/프로덕션 환경을 분리해 구성하기
+* IdP(Identity Provider)와 SAML/SSO 인증을 연동하기
+* Terraform 또는 Cloud API를 사용해 배포를 자동화하기
+* 모니터링을 Prometheus, PagerDuty 등의 알림 인프라에 연결하기
+* 백업 절차를 검증하고 재해 복구 프로세스를 문서화하기
+  :::
 
 ## Introduction \{#introduction\}
 
@@ -175,7 +173,7 @@ Prometheus/Grafana의 상세 구성 및 고급 경보 설정을 포함한 포괄
 
 ### 백업 전략 평가 \{#backup-strategy\}
 
-ClickHouse Cloud에서는 보존 기간을 설정할 수 있는 자동 백업 기능을 제공합니다. 현재 백업 구성을 규정 준수 및 복구 요구 사항을 기준으로 평가하십시오. 백업 위치 또는 암호화와 관련해 특정 규정 준수 요구 사항이 있는 엔터프라이즈 고객은 ClickHouse Cloud가 자체 클라우드 스토리지 버킷(BYOB)에 백업을 저장하도록 구성할 수 있습니다. BYOB 구성을 위해 ClickHouse 지원팀에 문의하십시오.
+ClickHouse Cloud에서는 보존 기간을 설정할 수 있는 자동 백업 기능을 제공합니다. 현재 백업 구성을 컴플라이언스 및 복구 요구 사항을 기준으로 평가하십시오. 백업 위치 또는 암호화와 관련해 특정 컴플라이언스 요구 사항이 있는 경우, ClickHouse Cloud가 자체 클라우드 스토리지 버킷(BYOB)에 백업을 저장하도록 구성할 수 있습니다. BYOB 구성을 위해 ClickHouse 지원팀에 문의하십시오.
 
 ### 복구 절차 검증 및 테스트 \{#validate-test-recovery\}
 

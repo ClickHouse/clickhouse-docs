@@ -3,11 +3,9 @@ slug: /sql-reference/table-functions/numbers
 sidebar_position: 145
 sidebar_label: 'numbers'
 title: 'numbers'
-description: '정수 시퀀스를 포함하는 단일 `number` 컬럼으로 구성된 테이블을 반환합니다.'
+description: '정수 시퀀스를 포함하는 단일 `number` 컬럼이 있는 테이블을 반환합니다.'
 doc_type: 'reference'
 ---
-
-# numbers Table Function \{#numbers-table-function\}
 
 * `numbers()` – 0부터 시작하는 오름차순 정수를 포함하는 단일 `number` 컬럼(UInt64)을 가진 무한 테이블을 반환합니다. `LIMIT`(및 선택적으로 `OFFSET`)을 사용하여 행 수를 제한합니다.
 
@@ -38,14 +36,13 @@ SELECT * FROM numbers() LIMIT 10 OFFSET 10;
 SELECT * FROM system.numbers LIMIT 10 OFFSET 10;
 ```
 
-다음 쿼리들도 서로 동등합니다:
+다음 쿼리들도 서로 동일한 쿼리입니다:
 
 ```sql
 SELECT number * 2 FROM numbers(10);
 SELECT (number - 10) * 2 FROM numbers(10, 10);
 SELECT * FROM numbers(0, 20, 2);
 ```
-
 
 ### 예제 \{#examples\}
 

@@ -7,8 +7,6 @@ title: '测试 ClickHouse'
 doc_type: 'guide'
 ---
 
-# 测试 ClickHouse \{#testing-clickhouse\}
-
 ## 测试类型 \{#test-types\}
 
 ClickHouse 中有以下测试：
@@ -571,9 +569,6 @@ ClickHouse 提供诊断功能，帮助运维工程师发现故障硬件。
 它的测试不如 `clang-format` 充分。
 
 `CLion` 有自带的代码格式化工具，需要根据我们的代码风格进行调整。
-
-我们也使用 `codespell` 来查找代码中的拼写错误。
-这也已经实现了自动化。
 
 ## 测试覆盖率 \{#test-coverage\}
 

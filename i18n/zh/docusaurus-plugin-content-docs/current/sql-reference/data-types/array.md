@@ -7,9 +7,7 @@ title: 'Array(T)'
 doc_type: 'reference'
 ---
 
-# Array(T) \{#arrayt\}
-
-由 `T` 类型元素组成的数组，数组的起始索引为 1。`T` 可以是任何数据类型，包括数组。
+由 `T` 类型元素组成的数组，数组索引从 1 开始。`T` 可以是任何数据类型，包括数组。
 
 ## 创建数组 \{#creating-an-array\}
 
@@ -76,15 +74,13 @@ Received exception from server (version 1.1.54388):
 Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception: There is no supertype for types UInt8, String because some of them are String/FixedString and some of them are not.
 ```
 
-## 数组大小 \{#array-size\}
+## Array 大小 \{#array-size\}
 
-可以在不读取整列数据的情况下，使用 `size0` 子列获取数组的长度。对于多维数组，可以使用 `sizeN-1` 子列，其中 `N` 表示目标维度。
+可以在不读取整列数据的情况下，使用 `size0` 子列获取 Array 的长度。对于多维 Array，可以使用 `sizeN-1` 子列，其中 `N` 表示目标维度。
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE t_arr (`arr` Array(Array(Array(UInt32)))) ENGINE = MergeTree ORDER BY tuple();
 
 INSERT INTO t_arr VALUES ([[[12, 13, 0, 1],[12]]]);
@@ -92,9 +88,7 @@ INSERT INTO t_arr VALUES ([[[12, 13, 0, 1],[12]]]);
 SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─arr.size0─┬─arr.size1─┬─arr.size2─┐
 │         1 │ [2]       │ [[4,1]]   │
 └───────────┴───────────┴───────────┘

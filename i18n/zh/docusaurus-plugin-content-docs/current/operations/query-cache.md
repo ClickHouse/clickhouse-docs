@@ -1,13 +1,11 @@
 ---
-description: '使用和配置 ClickHouse 查询缓存功能的指南'
+description: '在 ClickHouse 中使用和配置查询缓存功能的指南'
 sidebar_label: '查询缓存'
 sidebar_position: 65
 slug: /operations/query-cache
 title: '查询缓存'
 doc_type: 'guide'
 ---
-
-# 查询缓存 \{#query-cache\}
 
 查询缓存允许某个 `SELECT` 查询只需计算一次，之后再次执行相同查询时可直接从缓存中返回结果。
 根据查询类型的不同，这可以显著降低 ClickHouse 服务器的延迟和资源消耗。
@@ -153,32 +151,70 @@ SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 若只想从查询缓存中移除带有标签 `tag` 的条目，可以使用语句 `SYSTEM CLEAR QUERY CACHE TAG 'tag'`。
 
 
-ClickHouse 读取表数据时，以 [max_block_size](/operations/settings/settings#max_block_size) 行为一个块。由于过滤、聚合等操作，结果块通常远小于 `max_block_size`，但也可能出现远大于该值的情况。[query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results)（默认启用）用于控制在将结果块插入查询结果缓存之前，如果结果块很小则将其压缩合并，如果很大则将其拆分为大小为 `max_block_size` 的块。这样会降低写入查询缓存时的性能，但可以提高缓存条目的压缩率，并在稍后从查询缓存返回查询结果时提供更自然的块粒度。
+## 子查询缓存 \{#subquery-caching\}
 
-因此，查询缓存会为每个查询存储多个（部分的）结果块。虽然这种行为是合理的默认设置，但可以通过设置
-[query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results) 来禁用。
+默认情况下，外层查询中设置的 `use_query_cache` 不会传递给子查询。这意味着每个子查询都必须显式启用缓存：
 
-此外，包含非确定性函数的查询结果默认不会被缓存。这类函数包括：
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000 SETTINGS use_query_cache = true)
+WHERE number > 500;
+```
 
-- 访问字典的函数：[`dictGet()`](/sql-reference/functions/ext-dict-functions) 等，
-- 在其 XML 定义中未包含标签 `<deterministic>true</deterministic>` 的 [用户自定义函数](../sql-reference/statements/create/function.md)，
-- 返回当前日期或时间的函数：[`now()`](../sql-reference/functions/date-time-functions.md#now)、[`today()`](../sql-reference/functions/date-time-functions.md#today)、[`yesterday()`](../sql-reference/functions/date-time-functions.md#yesterday) 等，
-- 返回随机值的函数：[`randomString()`](../sql-reference/functions/random-functions.md#randomString)、[`fuzzBits()`](../sql-reference/functions/random-functions.md#fuzzBits) 等，
-- 其结果依赖于用于查询处理的内部分块的大小和顺序的函数：
+在此示例中，只有内部子查询的结果会被缓存。外部查询则不会被缓存。
+
+要一次性为所有子查询启用缓存，请使用设置 `query_cache_for_subqueries`：
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000)
+WHERE number > 500
+SETTINGS use_query_cache = true, query_cache_for_subqueries = true;
+```
+
+要在启用批量传播时显式禁用某个特定子查询的缓存，请为该子查询设置 `use_query_cache = false`：
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000 SETTINGS use_query_cache = false)
+WHERE number > 500
+SETTINGS use_query_cache = true, query_cache_for_subqueries = true;
+```
+
+子查询缓存条目可在 [system.query&#95;cache](system-tables/query_cache.md) 中通过 `is_subquery = 1` 查看。`query_cache_ttl` 设置同样适用于子查询缓存条目，并且可以为每个子查询单独设置。
+
+ClickHouse 读取表数据时，以 [max&#95;block&#95;size](/operations/settings/settings#max_block_size) 行为一个块。由于过滤、聚合等操作，结果块通常远小于 `max_block_size`，但也可能出现远大于该值的情况。[query&#95;cache&#95;squash&#95;partial&#95;results](/operations/settings/settings#query_cache_squash_partial_results) (默认启用) 用于控制在将结果块插入查询结果缓存之前，如果结果块很小则将其压缩合并，如果很大则将其拆分为大小为 `max_block_size` 的块。这样会降低写入查询缓存时的性能，但可以提高缓存条目的压缩率，并在稍后从查询缓存返回查询结果时提供更自然的块粒度。
+
+因此，查询缓存会为每个查询存储多个 (部分的) 
+结果块。虽然这种行为是合理的默认设置，但可以通过设置
+[query&#95;cache&#95;squash&#95;partial&#95;results](/operations/settings/settings#query_cache_squash_partial_results) 来禁用。
+
+此外，包含非确定性函数的查询结果默认不会被缓存。这类函数包括
+
+* 访问字典的函数：[`dictGet()`](/sql-reference/functions/ext-dict-functions) 等。
+* 在其 XML 定义中未包含标签 `<deterministic>true</deterministic>` 的 [用户自定义函数](../sql-reference/statements/create/function.md)；
+* 返回当前日期或时间的函数：[`now()`](../sql-reference/functions/date-time-functions.md#now)、
+  [`today()`](../sql-reference/functions/date-time-functions.md#today)、
+  [`yesterday()`](../sql-reference/functions/date-time-functions.md#yesterday) 等；
+* 返回随机值的函数：[`randomString()`](../sql-reference/functions/random-functions.md#randomString)、
+  [`fuzzBits()`](../sql-reference/functions/random-functions.md#fuzzBits) 等；
+* 其结果依赖于用于查询处理的内部分块大小、顺序或内部 chunks 的函数：
   [`nowInBlock()`](../sql-reference/functions/date-time-functions.md#nowInBlock) 等、
   [`rowNumberInBlock()`](../sql-reference/functions/other-functions.md#rowNumberInBlock)、
   [`runningDifference()`](../sql-reference/functions/other-functions.md#runningDifference)、
-  [`blockSize()`](../sql-reference/functions/other-functions.md#blockSize) 等，
-- 依赖环境的函数：[`currentUser()`](../sql-reference/functions/other-functions.md#currentUser)、[`queryID()`](/sql-reference/functions/other-functions#queryID)、[`getMacro()`](../sql-reference/functions/other-functions.md#getMacro) 等。
+  [`blockSize()`](../sql-reference/functions/other-functions.md#blockSize) 等；
+* 依赖环境的函数：[`currentUser()`](../sql-reference/functions/other-functions.md#currentUser)、
+  [`queryID()`](/sql-reference/functions/other-functions#queryID)、
+  [`getMacro()`](../sql-reference/functions/other-functions.md#getMacro) 等。
 
 如果仍然希望对包含非确定性函数的查询结果进行缓存，请使用设置
-[query_cache_nondeterministic_function_handling](/operations/settings/settings#query_cache_nondeterministic_function_handling)。
+[query&#95;cache&#95;nondeterministic&#95;function&#95;handling](/operations/settings/settings#query_cache_nondeterministic_function_handling)。
 
-涉及 system 表的查询结果（例如 [system.processes](system-tables/processes.md) 或
-[information_schema.tables](system-tables/information_schema.md)）默认不会被缓存。如果仍然希望对包含 system 表的查询结果进行缓存，请使用设置 [query_cache_system_table_handling](/operations/settings/settings#query_cache_system_table_handling)。
+涉及 system 表的查询结果 (例如 [system.processes](system-tables/processes.md)` 或
+[information&#95;schema.tables](system-tables/information_schema.md)) 默认不会被缓存。如果仍然希望对包含 system 表的查询结果进行缓存，请使用设置 [query&#95;cache&#95;system&#95;table&#95;handling](/operations/settings/settings#query_cache_system_table_handling)。
 
-最后，出于安全原因，查询缓存中的条目不会在用户之间共享。例如，用户 A 不应通过执行与用户 B 相同的查询而绕过表上的 ROW POLICY（而用户 B 上并不存在该策略）。但是，在必要时，可以通过设置
-[query_cache_share_between_users](/operations/settings/settings#query_cache_share_between_users) 将缓存条目标记为可被其他用户访问（即共享）。
+最后，出于安全原因，查询缓存中的条目不会在用户之间共享。例如，用户 A 不应通过执行与用户 B 相同的查询而绕过表上的 ROW POLICY (而用户 B 上并不存在该策略) 。但是，在必要时，可以通过设置
+[query&#95;cache&#95;share&#95;between&#95;users](/operations/settings/settings#query_cache_share_between_users) 将缓存条目标记为可被其他用户访问 (即共享) 。
 
 ## 相关内容 \{#related-content\}
 

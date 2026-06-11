@@ -1,9 +1,9 @@
 ---
-sidebar_label: '使用 azureBlobStorage 表函数'
+sidebar_label: '使用 ClickHouse 的 azureBlobStorage 表函数'
 slug: /integrations/azure-data-factory/table-function
 description: '使用 ClickHouse 的 azureBlobStorage 表函数'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
-title: '使用 ClickHouse 的 azureBlobStorage 表函数将 Azure 数据引入 ClickHouse'
+title: '使用 ClickHouse 的 azureBlobStorage 表函数'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -14,12 +14,9 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-
-# 使用 ClickHouse 的 azureBlobStorage 表函数 \{#using-azureBlobStorage-function\}
-
 这是将数据从 Azure Blob Storage 或 Azure Data Lake Storage 复制到 ClickHouse 的最高效、最直接的方法之一。借助这个表函数，可以让 ClickHouse 直接连接到 Azure 存储，并按需读取数据。
 
-它提供了类似表的接口，使你可以直接从源端执行查询、插入和过滤操作。该函数经过高度优化，并支持许多广泛使用的文件格式，包括 `CSV`、`JSON`、`Parquet`、`Arrow`、`TSV`、`ORC`、`Avro` 等。完整列表请参阅 ["Data formats"](/interfaces/formats)。
+它提供了类似表的接口，使你可以直接从源端执行查询、插入和过滤操作。该函数经过高度优化，并支持许多广泛使用的文件格式，包括 `CSV`、`JSON`、`Parquet`、`Arrow`、`TSV`、`ORC`、`Avro` 等。完整列表请参阅 [&quot;Data formats&quot;](/interfaces/formats)。
 
 在本节中，我们将通过一个简单的入门示例，演示如何从 Azure Blob Storage 向 ClickHouse 传输数据，并说明高效使用该函数时的一些重要注意事项。若需了解更多详细信息和高级选项，请参阅官方文档：
 [`azureBlobStorage` Table Function documentation page](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)

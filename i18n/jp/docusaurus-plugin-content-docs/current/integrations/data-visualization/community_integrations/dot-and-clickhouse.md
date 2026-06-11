@@ -15,12 +15,10 @@ import dot_01 from '@site/static/images/integrations/data-visualization/dot_01.p
 import dot_02 from '@site/static/images/integrations/data-visualization/dot_02.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Dot \{#dot\}
-
 <CommunityMaintainedBadge />
 
-[Dot](https://www.getdot.ai/) は **AIデータアナリスト** です。
-ClickHouse に直接接続できるため、自然言語でデータについて質問したり、データを探索したり、仮説を検証したり、「なぜそうなったのか」に答えたりできます。これらはすべて、Slack、Microsoft Teams、ChatGPT、またはネイティブの Web UI から直接行えます。
+[Dot](https://www.getdot.ai/) は、あなたの**AI データアナリスト**です。
+ClickHouse に直接接続できるため、自然言語でデータに関する質問をしたり、データを見つけたり、仮説を検証したり、「なぜ」に関する問いに答えたりできます。これらはすべて、Slack、Microsoft Teams、ChatGPT、またはネイティブ Web UI から直接行えます。
 
 ## 前提条件 \{#pre-requisites\}
 

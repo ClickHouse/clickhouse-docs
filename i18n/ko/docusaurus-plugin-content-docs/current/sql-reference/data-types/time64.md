@@ -1,14 +1,11 @@
 ---
-description: 'ClickHouse에서 초 이하 단위 정밀도로 시간 범위를 저장하는
-  Time64 데이터 타입에 대한 문서'
+description: '소수 초 정밀도의 시간 범위를 저장하는 ClickHouse의 Time64 데이터 타입 문서'
 slug: /sql-reference/data-types/time64
 sidebar_position: 17
 sidebar_label: 'Time64'
 title: 'Time64'
 doc_type: 'reference'
 ---
-
-# Time64 \{#time64\}
 
 `Time64` 데이터 타입은 소수 초를 포함한 하루 중 시각을 표현합니다.
 날짜(일, 월, 연도)에 해당하는 달력 구성 요소는 포함하지 않습니다.

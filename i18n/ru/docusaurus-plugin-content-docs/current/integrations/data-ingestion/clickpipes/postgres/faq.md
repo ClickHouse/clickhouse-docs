@@ -15,8 +15,6 @@ import failover_slot from '@site/static/images/integrations/data-ingestion/click
 import Image from '@theme/IdealImage';
 
 
-# Часто задаваемые вопросы о ClickPipes для Postgres \{#clickpipes-for-postgres-faq\}
-
 ### Реплицируются ли откаты транзакций в ClickHouse? \{#are-transaction-rollbacks-replicated\}
 
 Нет. CDC реплицирует только зафиксированные транзакции. Отменённые транзакции никогда не отправляются в ClickHouse.

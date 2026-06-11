@@ -1,5 +1,6 @@
 ---
-description: 'Обзорная страница агрегатных функций с полным списком агрегатных функций'
+description: 'Обзорная страница агрегатных функций с полным списком агрегатных
+  функций'
 sidebar_position: 36
 slug: /sql-reference/aggregate-functions/reference/
 title: 'Агрегатные функции'
@@ -7,8 +8,6 @@ toc_folder_title: 'Справочник'
 toc_hidden: true
 doc_type: 'landing-page'
 ---
-
-# Агрегатные функции \{#aggregate-functions\}
 
 ClickHouse поддерживает все стандартные агрегатные функции SQL ([sum](../reference/sum.md), [avg](../reference/avg.md), [min](../reference/min.md), [max](../reference/max.md), [count](../reference/count.md)), а также широкий набор других агрегатных функций.
 

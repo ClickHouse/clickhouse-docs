@@ -7,9 +7,7 @@ title: 'Как собрать ClickHouse на Linux для RISC-V 64'
 doc_type: 'guide'
 ---
 
-# Как собрать ClickHouse на Linux для RISC-V 64 \{#how-to-build-clickhouse-on-linux-for-risc-v-64\}
-
-В ClickHouse есть экспериментальная поддержка архитектуры RISC-V. Доступны не все возможности.
+В ClickHouse есть экспериментальная поддержка RISC-V. Доступны не все возможности.
 
 ## Сборка ClickHouse \{#build-clickhouse\}
 

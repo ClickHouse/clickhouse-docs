@@ -4,18 +4,18 @@ sidebar_label: 'Lakekeeper カタログ'
 title: 'Lakekeeper カタログ'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、ClickHouse と Lakekeeper Catalog を使用してデータを照会する手順を説明します。'
+description: 'このガイドでは、ClickHouse と Lakekeeper カタログ を使用してデータを照会する手順を説明します。'
 keywords: ['Lakekeeper', 'REST', 'Tabular', 'Data Lake', 'Iceberg']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge />
+<BetaBadge />
 
 :::note
-Lakekeeper Catalog との統合は、Iceberg テーブルでのみ利用できます。
+Lakekeeper カタログ との統合は、Iceberg テーブルでのみ利用できます。
 この統合は AWS S3 およびその他のクラウドストレージプロバイダーの両方をサポートします。
 :::
 
@@ -257,9 +257,9 @@ USE demo;
 SHOW TABLES;
 ```
 
-セットアップにサンプルデータ（タクシーのデータセットなど）が含まれている場合は、次のようなテーブルが表示されます。
+セットアップにサンプルデータ (タクシーのデータセットなど) が含まれている場合は、次のようなテーブルが表示されます。
 
-```sql title="Response"
+```response
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
@@ -280,13 +280,13 @@ docker-compose logs spark
 
 :::
 
-テーブル（存在する場合）をクエリするには:
+テーブル (存在する場合) をクエリするには:
 
 ```sql
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
@@ -302,7 +302,7 @@ ClickHouse は複数のネームスペースをサポートしていないため
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │

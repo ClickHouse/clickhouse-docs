@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse에서 UUID 데이터 타입 문서'
+description: 'ClickHouse의 UUID 데이터 타입 문서'
 sidebar_label: 'UUID'
 sidebar_position: 24
 slug: /sql-reference/data-types/uuid
 title: 'UUID'
 doc_type: 'reference'
 ---
-
-# UUID \{#uuid\}
 
 범용 고유 식별자(UUID, Universally Unique Identifier)는 레코드를 식별하는 데 사용되는 16바이트 값입니다. UUID에 대한 자세한 정보는 [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier)를 참조하십시오.
 
@@ -38,7 +36,7 @@ UUID 값 예시:
 
 예시:
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (uuid);
 
 INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
@@ -49,9 +47,7 @@ INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
 SELECT * FROM tab;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─uuid─────────────────────────────────┐
 │ 019d2555-7874-7e9d-a284-9b45a0b2f165 │
 │ 019d2555-7874-7e9d-a284-9b46c3353be7 │
@@ -69,7 +65,7 @@ SELECT * FROM tab;
 
 우회 방법으로, UUID를 뒤쪽 절반에서 추출한 타임스탬프로 변환할 수 있습니다:
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (UUIDv7ToDateTime(uuid));
 -- Or alternatively:                      [...] PRIMARY KEY (toStartOfHour(UUIDv7ToDateTime(uuid)));
 
@@ -83,8 +79,7 @@ SELECT * FROM tab;
 
 결과(동일한 데이터가 삽입되었다고 가정한 경우):
 
-
-```text
+```text title="Response"
 ┌─uuid─────────────────────────────────┐
 │ 019d2555-7868-7333-89d1-2bd1639899c3 │
 │ 019d2555-7868-7333-89d1-2bd297eb7d42 │
@@ -102,7 +97,6 @@ SELECT * FROM tab;
 
 ORDER BY (UUIDv7ToDateTime(uuid), uuid)
 
-
 ## UUID 생성 \{#generating-uuids\}
 
 ClickHouse는 무작위 UUID 버전 4 값을 생성하는 함수 [generateUUIDv4](../../sql-reference/functions/uuid-functions.md)를 제공합니다.
@@ -113,7 +107,7 @@ ClickHouse는 무작위 UUID 버전 4 값을 생성하는 함수 [generateUUIDv4
 
 다음 예시는 UUID 컬럼을 포함한 테이블을 생성하고 해당 테이블에 값을 삽입하는 과정을 보여줍니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog
 
 INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
@@ -121,9 +115,7 @@ INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
 SELECT * FROM t_uuid
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌────────────────────────────────────x─┬─y─────────┐
 │ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 └──────────────────────────────────────┴───────────┘
@@ -145,7 +137,6 @@ SELECT * FROM t_uuid
 │ 00000000-0000-0000-0000-000000000000 │ Example 2 │
 └──────────────────────────────────────┴───────────┘
 ```
-
 
 ## 제한 사항 \{#restrictions\}
 

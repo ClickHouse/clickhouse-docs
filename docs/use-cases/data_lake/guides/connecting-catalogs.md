@@ -92,7 +92,9 @@ Once the connection has been established to your catalog, you can list the table
 
 ```sql
 SHOW TABLES FROM unity
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ unity.logs                                         │
 │ unity.single_day_log                               │
@@ -144,10 +146,11 @@ ENGINE = Iceberg('s3://...')
 All ClickHouse functions are supported. Again, the namespace and table name should be delimited with backticks.
 
 ```sql
-
 SELECT count()
 FROM unity.`icebench.single_day_log`
+```
 
+```response
 ┌───count()─┐
 │ 282634391 │ -- 282.63 million
 └───────────┘

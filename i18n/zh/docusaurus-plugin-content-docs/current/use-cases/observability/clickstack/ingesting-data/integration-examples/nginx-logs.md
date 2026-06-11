@@ -17,10 +17,7 @@ import log_view from '@site/static/images/clickstack/log-view.png';
 import search_view from '@site/static/images/clickstack/nginx-logs-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 Nginx 日志 \{#nginx-clickstack\}
-
-:::note[摘要]
+:::note[TL;DR]
 使用 OTel `filelog` 接收器在 ClickStack 中采集并可视化 Nginx 访问日志 (JSON 格式) 。包含演示数据集和预置仪表板。
 :::
 

@@ -1,6 +1,6 @@
 ```sql
 -- core commands
-BACKUP | RESTORE [ASYNC]
+BACKUP | RESTORE 
 --- what to backup/restore (or exclude)
 TABLE [db.]table_name           [AS [db.]table_name_in_backup] |
 DICTIONARY [db.]dictionary_name [AS [db.]name_in_backup] |
@@ -19,6 +19,7 @@ S3('<S3 endpoint>/<path>', '<Access key ID>', '<Secret access key>', '<extra_cre
 AzureBlobStorage('<connection string>/<url>', '<container>', '<path>', '<account name>', '<account key>')
 --- additional settings
 [SETTINGS ...]
+[ASYNC]
 ```
 
 **有关各命令的详细信息，请参阅[《命令汇总》](/operations/backup/overview/#command-summary)。**

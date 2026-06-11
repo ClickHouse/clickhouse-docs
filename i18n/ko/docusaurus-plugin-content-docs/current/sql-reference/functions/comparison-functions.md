@@ -6,8 +6,6 @@ title: '비교 함수'
 doc_type: 'reference'
 ---
 
-# 비교 함수 \{#comparison-functions\}
-
 ## 비교 규칙 \{#comparison-rules\}
 
 아래 비교 FUNCTION들은 [UInt8](/sql-reference/data-types/int-uint) 타입의 `0` 또는 `1`을 반환합니다. 동일한 그룹 내의 값들만

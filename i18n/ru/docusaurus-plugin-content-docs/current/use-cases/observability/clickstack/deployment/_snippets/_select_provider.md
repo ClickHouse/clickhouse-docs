@@ -19,4 +19,6 @@ import ResourceEstimation from '@site/i18n/ru/docusaurus-plugin-content-docs/cur
 
 После того как вы укажете требования, ваш управляемый сервис ClickStack будет подготовлен в течение нескольких минут. Пока идёт подготовка, вы можете изучить остальную часть [ClickHouse Cloud console](/cloud/overview).
 
+Подробнее о том, как уточнить предположения по подбору размеров для вашей среды, см. в разделе [&quot;Уточнение предположений по подбору размеров для вашей среды&quot;](/use-cases/observability/clickstack/estimating-resources#refining-sizing-assumptions).
+
 После **завершения подготовки опция &#39;ClickStack&#39; в левом меню будет доступна**.

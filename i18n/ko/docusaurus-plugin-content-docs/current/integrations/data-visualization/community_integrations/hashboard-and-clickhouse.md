@@ -2,9 +2,9 @@
 sidebar_label: 'Hashboard'
 sidebar_position: 132
 slug: /integrations/hashboard
-keywords: ['clickhouse', 'Hashboard', '연결', '통합', 'UI', '애널리틱스']
-description: 'Hashboard는 실시간 데이터 분석을 위해 ClickHouse와 쉽게 통합할 수 있는 강력한 분석 플랫폼입니다.'
-title: 'ClickHouse를 Hashboard에 연결하기'
+keywords: ['clickhouse', 'Hashboard', '연결', '통합', 'UI', '분석']
+description: 'Hashboard는 ClickHouse와 쉽게 통합하여 실시간 데이터 분석을 수행할 수 있는 강력한 분석 플랫폼입니다.'
+title: 'ClickHouse와 Hashboard 연결하기'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -16,18 +16,15 @@ import hashboard_01 from '@site/static/images/integrations/data-visualization/ha
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# ClickHouse를 Hashboard에 연결하기 \{#connecting-clickhouse-to-hashboard\}
+[Hashboard](https://hashboard.com)는 조직 내 누구나 메트릭을 추적하고 실질적인 인사이트를 얻을 수 있도록 지원하는 대화형 데이터 탐색 도구입니다. Hashboard는 ClickHouse DB에 실시간 SQL 쿼리를 실행하며, 사용자가 직접 수행하는 애드혹 데이터 탐색에 특히 유용합니다.
 
-<CommunityMaintainedBadge/>
+<Image size="md" img={hashboard_01} alt="대화형 쿼리 빌더와 시각화를 보여주는 Hashboard 데이터 탐색기 인터페이스" border />
 
-[Hashboard](https://hashboard.com)는 조직 내 누구나 메트릭을 추적하고 실행 가능한 인사이트를 도출할 수 있도록 해 주는 대화형 데이터 탐색 도구입니다. Hashboard는 ClickHouse 데이터베이스에 실시간으로 SQL 쿼리를 전송하며, 특히 셀프 서비스(self-serve) 및 애드혹(ad hoc) 데이터 탐색 사례에 유용합니다.
+<br />
 
-<Image size="md" img={hashboard_01} alt="대화형 쿼리 빌더와 시각화를 보여 주는 Hashboard 데이터 탐색기 인터페이스" border />
-
-<br/>
-
-이 가이드는 Hashboard를 ClickHouse 인스턴스에 연결하는 방법을 단계별로 설명합니다. 이 정보는 Hashboard의 [ClickHouse 통합 문서](https://docs.hashboard.com/docs/database-connections/clickhouse)에서도 확인할 수 있습니다.
+이 가이드에서는 Hashboard를 ClickHouse 인스턴스에 연결하는 단계를 안내합니다. 이 정보는 Hashboard의 [ClickHouse 통합 문서](https://docs.hashboard.com/docs/database-connections/clickhouse)에서도 확인할 수 있습니다.
 
 ## 사전 준비 사항 \{#pre-requisites\}
 
