@@ -14,6 +14,10 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge/>
 
+:::note
+SCIM provisioning is in private preview.
+:::
+
 <EnterprisePlanFeatureBadge feature="SCIM"/>
 
 ClickHouse Cloud supports SCIM 2.0 (System for Cross-domain Identity Management) for automated user and group lifecycle management. Once connected to your identity provider, every user you assign to the ClickHouse Cloud application is automatically created in your organization with the right role, profile updates flow through automatically, and removing a user from your IdP removes their access — no manual invites, no orphaned accounts.
