@@ -101,8 +101,14 @@ GetJWT: func(ctx context.Context) (string, error) {
 
 | Option | Type | Default | DSN param | Description | Best practice | When misconfigured |
 |--------|------|---------|-----------|-------------|---------------|-------------------|
-| `DialTimeout` | `time.Duration` | `30s` | `dial_timeout` | Max time to establish a new connection. Also controls pool acquisition wait when `MaxOpenConns` is reached. | 5-10s on LAN, 15-30s on WAN/cloud. Never below 1s. | Too short: `"clickhouse: acquire conn timeout"` during congestion. Too long (> 60s): app hangs during outages. |
+| `DialTimeout` | `time.Duration` | `30s` | `dial_timeout` | Max time to establish a new connection. Also controls pool acquisition wait when `MaxOpenConns` is reached. | 5-10s on LAN, 15-30s on WAN/cloud, 1-2m if connecting to an idled ClickHouse Cloud service. Never below 1s. | Too short: `"clickhouse: acquire conn timeout"` during congestion, or connection failure before an idled Cloud service finishes waking. Too long (> 60s): app hangs during outages. |
 | `ReadTimeout` | `time.Duration` | `5m` (300s) | `read_timeout` | Max time to wait for a server response per read call. Applied per block, not entire query. Context deadline takes precedence. | 10-30s for short interactive queries; 5-30m for long analytical queries. | Too short: `"i/o timeout"` or `"read: connection reset by peer"` mid-query; server continues executing. Too long: dead connections not detected. |
+
+:::note[ClickHouse Cloud idle services]
+A ClickHouse Cloud service that has been idle is paused, and wakes on the first incoming connection. Wake-up typically takes a few tens of seconds, during which the dial blocks. If `DialTimeout` is lower than the wake time, the first query after an idle period fails with a dial timeout instead of running.
+
+Set `DialTimeout` to `1m`–`2m` for clients that may be the first to reach an idled service. The tradeoff is slower failure detection during a real outage — dials block for the full timeout before erroring — so prefer scoping the higher timeout to the first connect, or use context deadlines on individual queries to cap end-to-end latency.
+:::
 
 ---
 
