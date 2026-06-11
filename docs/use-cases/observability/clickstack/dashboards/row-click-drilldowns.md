@@ -15,14 +15,14 @@ import row_click_drilldown from '@site/static/images/clickstack/dashboards/row-c
 import row_click_search_drilldown from '@site/static/images/clickstack/dashboards/row-click-search-drilldown.png';
 import row_click_catalog from '@site/static/images/clickstack/dashboards/row-click-catalog.png';
 
-A table tile is often a **catalog**: one row per service, host, endpoint, or error group, with a few columns that score each one. Row-click actions turn that catalog into an inspection workflow. You scan the catalog to find the row that matters, click it, and ClickStack carries the clicked row's values through as filters, so the destination opens already scoped to that one item with no query to rebuild by hand.
+A table tile is often a **catalog**: one row per service, host, endpoint, or error group, with a few columns that score each one. Row-click actions turn that catalog into an inspection workflow. You scan the catalog to find the row that matters, click it, and ClickStack carries the clicked row's values through as filters. The destination then opens already scoped to that one item with no query to rebuild by hand.
 
 A click can land in one of two places:
 
 - **another dashboard**, for a focused view of the one item, such as a per-service detail dashboard, or
 - **the underlying events** in [Search](/use-cases/observability/clickstack/search), for the logs or traces behind the row.
 
-Both use cases below start from the same catalog, a service inventory, and drill from it into each destination. Row-click actions apply to table tiles only. They are distinct from the chart [drilldown to search](/use-cases/observability/clickstack/dashboards#drilldown-to-search), which opens a context menu when you click a point on a line or bar chart.
+Both use cases below start from the same catalog (a service inventory) and drill from it into each destination. Row-click actions apply to table tiles only. They are distinct from the chart [drilldown to search](/use-cases/observability/clickstack/dashboards#drilldown-to-search), which opens a context menu when you click a point on a line or bar chart.
 
 ## Inspect a service in its own dashboard {#inspect-in-dashboard}
 
@@ -54,7 +54,7 @@ By default a table renders its group-by column (here `ServiceName`) on the right
 
 ### Wire up the row click {#wire-dashboard}
 
-On the inventory table, open **Row Click Action**, select **Dashboard**, and choose `Service Detail` from the dashboard list. Picking the dashboard directly pins it by ID, so the link keeps working if the dashboard is renamed later, and it survives dashboard export and import. (Reserve the **Template** option for choosing a different dashboard per row; see [Set up a row-click action](#set-up).)
+On the inventory table, open **Row Click Action**, select **Dashboard**, and choose `Service Detail` from the dashboard list. Picking the dashboard directly pins it by ID. The link keeps working if the dashboard is renamed later, and it survives dashboard export and import. (Reserve the **Template** option for choosing a different dashboard per row; see [Set up a row-click action](#set-up).)
 
 Because `Service Detail` declares a `ServiceName` custom filter, the drawer pre-fills an empty filter for that expression. Fill in its template:
 
@@ -73,7 +73,7 @@ Hovering a row reveals a link affordance on the right edge of the table, with a 
 
 ## Jump from a service to its traces {#jump-to-traces}
 
-Sometimes you do not want another aggregate view, you want the raw events. A **Search** action sends the click to the [Search](/use-cases/observability/clickstack/search) page instead of a dashboard, opening the logs or traces behind the row, already filtered to it.
+Sometimes you do not want another aggregate view; you want the raw events instead. A **Search** action sends the click to the [Search](/use-cases/observability/clickstack/search) page instead of a dashboard, opening the logs or traces behind the row, already filtered to it.
 
 Starting from the same service inventory table, point its row click at the traces themselves rather than the detail dashboard.
 
@@ -112,7 +112,7 @@ The drawer offers three actions:
 
 For **Search** and **Dashboard**, you choose where the click lands and template the filters carried into it:
 
-- **Destination**: pick a specific source or dashboard, or choose **Template** and enter a [Handlebars](https://handlebarsjs.com/) template that is matched by name to an available source or dashboard. Picking a specific target pins it by ID; prefer this for a single fixed destination, since it survives renames and dashboard export and import, and for a dashboard it pre-fills the destination's declared filters. Use **Template** when the target should vary per row, referencing a row column to choose it (for example `Errors-{{ServiceName}}`).
+- **Destination**: pick a specific source or dashboard, or choose **Template** and enter a [Handlebars](https://handlebarsjs.com/) template that is matched by name to an available source or dashboard. Picking a specific target pins it by ID. Prefer this for a single fixed destination: it survives renames and dashboard export and import, and for a dashboard it pre-fills the destination's declared filters. Use **Template** when the target should vary per row, referencing a row column to choose it (for example `Errors-{{ServiceName}}`).
 - **Filters**: click **Add filter** and provide an **Expression** (a column or expression on the destination, for example `ServiceName`) and a **Template** for its value (for example `{{ServiceName}}`). Templates reference the clicked row's columns with `{{columnName}}` (see the note below on which columns are available). Each filter renders to an `expression IN (value)` condition at the destination, and filters that share an expression are merged. When the destination is a dashboard, the drawer pre-fills one empty filter for each filter that dashboard already declares, so you only fill in the templates.
 - **WHERE** (optional): a Handlebars template rendered into the destination's global filter, in addition to the per-filter conditions above. Set its query language to SQL or Lucene so the destination parses it. For example, the SQL template `ServiceName = '{{ServiceName}}'` scopes the destination to the clicked row's service.
 
