@@ -420,6 +420,7 @@ const sidebars = {
           ],
         },
         'cloud/managed-postgres/openapi',
+        'cloud/managed-postgres/terraform',
         'cloud/managed-postgres/faq',
       ],
     },
@@ -610,6 +611,7 @@ const sidebars = {
       collapsible: false,
       link: { type: 'doc', id: 'integrations/language-clients/index' },
       items: [
+        'integrations/language-clients/c',
         'integrations/language-clients/cpp',
         {
           type: 'category',

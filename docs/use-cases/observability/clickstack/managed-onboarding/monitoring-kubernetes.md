@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/monitoring-kubernetes
-title: 'Monitoring Kubernetes'
+title: 'Monitoring Kubernetes with Managed ClickStack'
 description: 'Collect logs, infrastructure metrics, and events from a Kubernetes cluster into Managed ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'kubernetes', 'k8s', 'managed', 'observability', 'logs', 'metrics', 'events', 'daemonset', 'helm']

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/instrument-application
-title: 'Instrument an application'
+title: 'Instrument an application in 5 mins with Managed ClickStack'
 description: 'Instrument a Node.js application with OpenTelemetry and send its logs, metrics, and traces into Managed ClickStack'
 doc_type: 'guide'
 keywords: ['clickstack', 'instrumentation', 'opentelemetry', 'managed', 'observability', 'sdk', 'nodejs']
