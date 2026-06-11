@@ -8,8 +8,11 @@ keywords: ['ClickHouse Cloud', 'SCIM', 'provisioning', 'Okta', 'SSO', 'SAML', 'i
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
+import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 # SCIM provisioning with Okta
+
+<PrivatePreviewBadge/>
 
 <EnterprisePlanFeatureBadge feature="SCIM"/>
 
@@ -278,4 +281,8 @@ Most operations propagate within a few seconds. Bulk changes (large group push) 
 Yes — install the application once per organization, with its own SCIM endpoint URL and token. Push the same Okta groups to each application as needed.
 
 **Where do I get help if I'm stuck?**
-Open a support ticket from the ClickHouse Cloud Console (**Help → Contact support**) and include your organization id, your Okta application id, and a screenshot of the failing task or test from the Okta logs.
+Open a support ticket from the ClickHouse Cloud Console (**Help → Contact support**) and include:
+
+- your organization id,
+- your Okta application id, and
+- a screenshot of the failing task or test from the Okta logs.

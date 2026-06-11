@@ -89,7 +89,7 @@ Configure quotas, limits, and settings profiles to manage resource usage for dif
 
 ### User lifecycle management limitations {#user-lifecycle-management}
 
-ClickHouse Cloud doesn't currently support SCIM or automated provisioning/deprovisioning via identity providers. Users must be manually removed from the ClickHouse Cloud console after being removed from your IdP. Plan for manual user management processes until these features become available.
+ClickHouse Cloud supports [SCIM provisioning](/cloud/security/scim-setup) in private preview, with support for Okta. SCIM automates user and group lifecycle management, so users are created and removed automatically as you assign or unassign them in your identity provider. If you aren't using SCIM, users must be manually removed from the ClickHouse Cloud console after being removed from your IdP — plan for manual user management processes in that case.
 
 Learn more about [Cloud Access Management](/cloud/security/cloud_access_management) and [SAML SSO setup](/cloud/security/saml-setup).
 
