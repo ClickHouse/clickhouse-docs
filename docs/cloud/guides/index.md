@@ -22,7 +22,6 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [AWS customized setup](/cloud/reference/byoc/onboarding/customization-aws) | Deploy ClickHouse BYOC into your existing AWS VPC |
 | [AWS PrivateLink](/manage/security/aws-privatelink) | This document describes how to connect to ClickHouse Cloud using AWS PrivateLink. |
 | [Azure Private Link](/cloud/security/azure-privatelink) | How to set up Azure Private Link |
-| [Azure Private Preview](/cloud/reference/byoc/onboarding/azure-private-preview) | Onboard ClickHouse BYOC on Azure using the Terraform module and cross-tenant authentication |
 | [Billable AWS services](/cloud/reference/byoc/billable-aws-services) | AWS services provisioned by ClickHouse BYOC, classified as mandatory or optional, with notes on which ones contribute to your AWS bill |
 | [BYOC AWS private networking setup](/cloud/reference/byoc/onboarding/network-aws) | Set up VPC Peering or PrivateLink for BYOC on AWS |
 | [BYOC cost model (AWS)](/cloud/reference/byoc/cost-model-aws) | How ClickHouse Cloud charges and AWS infrastructure charges combine into total cost of ownership for a BYOC deployment |

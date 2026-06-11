@@ -1,10 +1,10 @@
 ---
-title: 'AWS customized setup'
+title: "AWS customized setup"
 slug: /cloud/reference/byoc/onboarding/customization-aws
-sidebar_label: 'AWS customized setup'
-keywords: ['BYOC', 'cloud', 'bring your own cloud', 'onboarding', 'AWS', 'VPC']
-description: 'Deploy ClickHouse BYOC into your existing AWS VPC'
-doc_type: 'reference'
+sidebar_label: "AWS customized setup"
+keywords: ["BYOC", "cloud", "bring your own cloud", "onboarding", "AWS", "VPC"]
+description: "Deploy ClickHouse BYOC into your existing AWS VPC"
+doc_type: "reference"
 ---
 
 import Image from '@theme/IdealImage';
@@ -68,7 +68,7 @@ module "clickhouse_onboarding" {
 
 ### Set up BYOC infrastructure {#set-up-byoc-infrastructure}
 
-In the ClickHouse Cloud console, navigate to the [BYOC setup page](https://console.clickhouse.cloud/byocOnboarding) and configure the following:
+In the ClickHouse Cloud console, configure the following when setting up new infrastructure:
 
 1. Under **VPC Configuration**, select **Use existing VPC**.
 2. Enter your **VPC ID** (e.g., `vpc-0bb751a5b888ad123`).
@@ -92,9 +92,12 @@ For organizations with advanced security requirements or strict compliance polic
 Customer-managed IAM roles are in private preview. If you require this capability, contact ClickHouse Support to discuss your specific requirements and timeline.
 
 When available, this feature will allow you to:
-* Provide pre-configured IAM roles for ClickHouse Cloud to use
-* Remove write permissions to IAM related permissions for `ClickHouseManagementRole` used for cross-account access
-* Maintain full control over role permissions and trust relationships
+
+- Provide pre-configured IAM roles for ClickHouse Cloud to use
+- Remove write permissions to IAM related permissions for `ClickHouseManagementRole` used for cross-account access
+- Maintain full control over role permissions and trust relationships
+  - Maintain full control over role permissions and trust relationships
+
 :::
 
 For information about the IAM roles that ClickHouse Cloud creates by default, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/privilege).
