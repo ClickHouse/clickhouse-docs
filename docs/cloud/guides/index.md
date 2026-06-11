@@ -68,6 +68,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Private Service Connect](/manage/security/gcp-private-service-connect) | This document describes how to connect to ClickHouse Cloud using Google Cloud Platform (GCP) Private Service Connect (PSC), and how to disable access to your ClickHouse Cloud services from addresses other than GCP PSC addresses using ClickHouse Cloud IP access lists. |
 | [SAML SSO removal](/cloud/security/saml-removal) | How to remove SAML SSO with ClickHouse Cloud |
 | [SAML SSO setup](/cloud/security/saml-setup) | How to set up SAML SSO with ClickHouse Cloud |
+| [SCIM provisioning with Okta](/cloud/security/scim-setup) | How to set up SCIM provisioning between Okta and ClickHouse Cloud |
 | [Setting IP filters](/cloud/security/setting-ip-filters) | This page explains how to set IP filters in ClickHouse Cloud to control access to ClickHouse services. |
 | [Setting up query API endpoints](/cloud/get-started/query-endpoints) | Easily spin up REST API endpoints from your saved queries |
 | [Standard onboarding](/cloud/reference/byoc/onboarding/standard) | Deploy ClickHouse on your own cloud infrastructure |
