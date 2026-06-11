@@ -182,7 +182,7 @@ Then attach the SCIM application to the same group so role membership and app ac
 
 ![Assign the application to the group](/images/cloud/security/scim-okta/scim-okta-16.png)
 
-**Push the groups.** On the application's **Provisioning** tab, click `Push Groups → Find groups by name`, search for your group, and click `Save`. Repeat for each role group. Each one should show **Push Status: Active (Pushed)** once provisioned.
+**Push the groups.** On the application's **Provisioning** tab, click `Push Groups → Find groups by name`, search for your group, and click `Save`. Repeat for each role group. Each one should show a **Push Status** of **Active (Pushed)** once provisioned.
 
 ![Set up Group Push by name on the application's Push Groups tab](/images/cloud/security/scim-okta/scim-okta-17.png)
 
@@ -214,7 +214,7 @@ Run through this short test plan with one or two test users **before** you assig
 If any step fails, fix the underlying issue before continuing — symptoms usually compound.
 
 :::tip Where to look for SCIM errors in Okta
-Okta surfaces SCIM errors in **Reports → System Log** filtered by your application, and on the application's **Provisioning → View Logs** screen. The error message returned by ClickHouse Cloud is shown verbatim — start there.
+SCIM errors surface in **Reports → System Log** filtered by your application, and on the application's **Provisioning → View Logs** screen. The error message returned by ClickHouse Cloud is shown verbatim — start there.
 :::
 
 ## Best practices for production {#best-practices}
