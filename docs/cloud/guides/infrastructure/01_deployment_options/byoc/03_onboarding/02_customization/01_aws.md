@@ -68,13 +68,13 @@ module "clickhouse_onboarding" {
 
 ### Set up BYOC infrastructure {#set-up-byoc-infrastructure}
 
-In the ClickHouse Cloud console, navigate to the [BYOC setup page](https://console.clickhouse.cloud/byocOnboarding) and configure the following:
+In the ClickHouse Cloud console, configure the following when setting up new infrastructure:
 
-1. Under **VPC Configuration**, select **Use existing VPC**.
+1. Under **VPC configuration**, select **Use existing VPC**.
 2. Enter your **VPC ID** (e.g., `vpc-0bb751a5b888ad123`).
 3. Enter the **Private subnet IDs** for the 3 subnets you configured earlier.
 4. Optionally, enter **Public subnet IDs** if your setup requires public-facing load balancers.
-5. Click **Setup Infrastructure** to begin provisioning.
+5. Click **Set up Infrastructure** to begin provisioning.
 
 <Image img={byoc_aws_existing_vpc_ui} size="lg" alt="ClickHouse Cloud BYOC setup UI with Use existing VPC selected" />
 
@@ -92,9 +92,11 @@ For organizations with advanced security requirements or strict compliance polic
 Customer-managed IAM roles are in private preview. If you require this capability, contact ClickHouse Support to discuss your specific requirements and timeline.
 
 When available, this feature will allow you to:
-* Provide pre-configured IAM roles for ClickHouse Cloud to use
-* Remove write permissions to IAM related permissions for `ClickHouseManagementRole` used for cross-account access
-* Maintain full control over role permissions and trust relationships
+
+- Provide pre-configured IAM roles for ClickHouse Cloud to use
+- Remove write permissions to IAM related permissions for `ClickHouseManagementRole` used for cross-account access
+- Maintain full control over role permissions and trust relationships
+
 :::
 
 For information about the IAM roles that ClickHouse Cloud creates by default, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/privilege).
