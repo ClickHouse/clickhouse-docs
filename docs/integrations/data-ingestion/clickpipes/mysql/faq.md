@@ -29,7 +29,7 @@ At the start of an initial load we record the binlog offset to start at. This of
 
 If your pipe fails with an error similar to:
 
-```
+```text
 MySQL execute error: ERROR 1236 (HY000): log event entry exceeded max_allowed_packet;
 Increase max_allowed_packet on source
 ```
