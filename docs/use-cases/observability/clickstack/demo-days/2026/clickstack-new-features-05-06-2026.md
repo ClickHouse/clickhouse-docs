@@ -22,18 +22,6 @@ You can also expand to an extended trace view for a full-width timeline with scr
 
 **Related PRs:** [#2402](https://github.com/hyperdxio/hyperdx/pull/2402) feat: trace panel inline split detail
 
-## Lucene search is alias aware {#lucene-search-is-alias-aware}
-
-*Demo by [@karl-power](https://github.com/karl-power)*
-
-<iframe width="768" height="432" src="https://www.youtube.com/embed/-Y6VKZG6O9s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-Lucene search now understands alias columns. Previously, filtering on an alias would either silently return wrong results or fail the query entirely — the parser had no way to know whether a field name referred to a real column or an alias.
-
-The search engine now resolves aliases correctly, so filters on aliased fields behave the same as filters on native columns. Queries that previously errored out now return the expected results.
-
-**Related PRs:** [#2422](https://github.com/hyperdxio/hyperdx/pull/2422) fix: unknown lucene field falls through in search, [#2431](https://github.com/hyperdxio/hyperdx/pull/2431) fix: use cloud versions for usable ALIAS columns
-
 ## Source-level required filters {#source-level-required-filters}
 
 *Demo by [@pulpdrew](https://github.com/pulpdrew)*
