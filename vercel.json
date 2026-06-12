@@ -3886,6 +3886,7 @@
     {
       "source": "/docs/cloud/security/cmek-migration",
       "destination": "/docs/cloud/security/cmek",
-      "permanent": true}
+      "permanent": true
+    }
   ]
 }
