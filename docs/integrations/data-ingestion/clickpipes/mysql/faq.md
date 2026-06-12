@@ -25,7 +25,7 @@ It's also possible for an inactive database to rotate the log file without allow
 
 At the start of an initial load we record the binlog offset to start at. This offset must still be valid when the initial load finishes in order for CDC to progress. If you're ingesting a large amount of data be sure to configure an appropriate binlog retention period. While setting up tables you can speed up initial load by configuring *Use a custom partitioning key for initial load* for large tables under advanced settings so that we can load a single table in parallel.
 
-### Why is my pipe failing with "log event entry exceeded max_allowed_packet"? {#binlog-event-exceeded-max-allowed-packet}
+### Why is my pipe failing with a max_allowed_packet binlog error? {#binlog-event-exceeded-max-allowed-packet}
 
 If your pipe fails with an error similar to:
 
@@ -34,7 +34,7 @@ MySQL execute error: ERROR 1236 (HY000): log event entry exceeded max_allowed_pa
 Increase max_allowed_packet on source
 ```
 
-it means a single binlog event (corresponding to one row change) is larger than your MySQL server's [`max_allowed_packet`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_allowed_packet) setting. Because the server cannot send an event that exceeds this limit, the binlog stream read aborts and CDC cannot progress.
+it means a single binlog event (corresponding to one row change) is larger than your MySQL server's [`max_allowed_packet`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_allowed_packet) setting. Because the server can't send an event that exceeds this limit, the binlog stream read aborts and CDC can't progress.
 
 This is most often caused by rows containing large `BLOB`, `TEXT`, or `JSON` values. To resolve it:
 
@@ -44,7 +44,7 @@ This is most often caused by rows containing large `BLOB`, `TEXT`, or `JSON` val
   ```
   Set it in your server configuration (e.g. `my.cnf`) as well so it persists across restarts. Existing connections must be re-established for the new value to take effect.
 - **If a single large row is the cause,** [resync the affected table](./table_resync.md) once `max_allowed_packet` has been increased so the pipe can move past it.
-- **If you expect values larger than `1G`,** exclude the large column(s) from replication, as `max_allowed_packet` cannot be raised beyond `1G`. See [Can I include columns I initially excluded from replication?](#include-excluded-columns).
+- **If you expect values larger than `1G`,** exclude the large columns from replication, as `max_allowed_packet` can't be raised beyond `1G`. See [Can I include columns I initially excluded from replication?](#include-excluded-columns).
 
 ### Why am I getting a TLS certificate validation error when connecting to MySQL? {#tls-certificate-validation-error}
 
