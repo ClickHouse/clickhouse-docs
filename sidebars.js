@@ -420,6 +420,7 @@ const sidebars = {
           ],
         },
         'cloud/managed-postgres/openapi',
+        'cloud/managed-postgres/terraform',
         'cloud/managed-postgres/faq',
       ],
     },
@@ -2066,6 +2067,7 @@ const sidebars = {
           collapsible: true,
           items: [
             'use-cases/observability/clickstack/dashboards/sql-visualizations',
+            'use-cases/observability/clickstack/dashboards/row-click-drilldowns',
             'use-cases/observability/clickstack/dashboards/dashboard-templates',
           ],
         },

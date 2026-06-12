@@ -22,7 +22,6 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [AWS customized setup](/cloud/reference/byoc/onboarding/customization-aws) | Deploy ClickHouse BYOC into your existing AWS VPC |
 | [AWS PrivateLink](/manage/security/aws-privatelink) | This document describes how to connect to ClickHouse Cloud using AWS PrivateLink. |
 | [Azure Private Link](/cloud/security/azure-privatelink) | How to set up Azure Private Link |
-| [Azure Private Preview](/cloud/reference/byoc/onboarding/azure-private-preview) | Onboard ClickHouse BYOC on Azure using the Terraform module and cross-tenant authentication |
 | [Billable AWS services](/cloud/reference/byoc/billable-aws-services) | AWS services provisioned by ClickHouse BYOC, classified as mandatory or optional, with notes on which ones contribute to your AWS bill |
 | [BYOC AWS private networking setup](/cloud/reference/byoc/onboarding/network-aws) | Set up VPC Peering or PrivateLink for BYOC on AWS |
 | [BYOC cost model (AWS)](/cloud/reference/byoc/cost-model-aws) | How ClickHouse Cloud charges and AWS infrastructure charges combine into total cost of ownership for a BYOC deployment |
@@ -68,6 +67,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Private Service Connect](/manage/security/gcp-private-service-connect) | This document describes how to connect to ClickHouse Cloud using Google Cloud Platform (GCP) Private Service Connect (PSC), and how to disable access to your ClickHouse Cloud services from addresses other than GCP PSC addresses using ClickHouse Cloud IP access lists. |
 | [SAML SSO removal](/cloud/security/saml-removal) | How to remove SAML SSO with ClickHouse Cloud |
 | [SAML SSO setup](/cloud/security/saml-setup) | How to set up SAML SSO with ClickHouse Cloud |
+| [SCIM provisioning with Okta](/cloud/security/scim-setup) | How to set up SCIM provisioning between Okta and ClickHouse Cloud |
 | [Setting IP filters](/cloud/security/setting-ip-filters) | This page explains how to set IP filters in ClickHouse Cloud to control access to ClickHouse services. |
 | [Setting up query API endpoints](/cloud/get-started/query-endpoints) | Easily spin up REST API endpoints from your saved queries |
 | [Standard onboarding](/cloud/reference/byoc/onboarding/standard) | Deploy ClickHouse on your own cloud infrastructure |
