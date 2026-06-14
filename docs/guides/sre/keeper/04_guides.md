@@ -2,7 +2,7 @@
 slug: /guides/sre/keeper/guides
 
 sidebar_label: 'Guides'
-sidebar_position: 40
+position: 4
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper', 'user guide', 'uuid', 'reconfiguration', 'cluster']
 description: 'Practical guides for ClickHouse Keeper including cluster setup, unique paths, dynamic reconfiguration, and cluster expansion.'
 title: 'ClickHouse Keeper Guides'

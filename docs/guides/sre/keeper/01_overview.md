@@ -1,8 +1,8 @@
 ---
-slug: /guides/sre/keeper/clickhouse-keeper
+slug: /guides/sre/keeper/overview
 
 sidebar_label: 'Overview'
-sidebar_position: 10
+position: 1
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
 description: 'ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and provides replication and coordination.'
 title: 'ClickHouse Keeper'

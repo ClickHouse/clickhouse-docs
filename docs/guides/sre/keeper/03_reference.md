@@ -2,7 +2,7 @@
 slug: /guides/sre/keeper/reference
 
 sidebar_label: 'Reference'
-sidebar_position: 30
+position: 3
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper', 'four letter word', 'prometheus', 'feature flags', 'disks']
 description: 'Reference documentation for ClickHouse Keeper including four letter word commands, feature flags, disk configuration, and Prometheus metrics.'
 title: 'ClickHouse Keeper Reference'

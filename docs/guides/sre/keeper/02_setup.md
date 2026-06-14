@@ -2,7 +2,7 @@
 slug: /guides/sre/keeper/setup
 
 sidebar_label: 'Setup'
-sidebar_position: 20
+position: 2
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper', 'configuration', 'setup', 'migration']
 description: 'How to configure, run, and migrate to ClickHouse Keeper.'
 title: 'ClickHouse Keeper Setup'
