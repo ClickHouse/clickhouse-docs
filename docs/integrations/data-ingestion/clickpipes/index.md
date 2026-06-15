@@ -64,10 +64,10 @@ More connectors will get added to ClickPipes, you can find out more by [contacti
 
 The following tables list the static NAT IPs that ClickPipes uses to connect to your external services. Add the IPs for the ClickPipes region that serves your ClickHouse Cloud service to your IP allow list. In the case of object storage pipes you should also add the [ClickHouse cluster IPs](/manage/data-sources/cloud-endpoints-api) to your IP allow list.
 
-Services in the Google Cloud regions listed in the Google Cloud table below use those Google Cloud IPs only if the service was created on or after 27 May 2026. Services in those regions created before 27 May 2026 continue to use the default region IPs listed below.
+Services in the Google Cloud regions listed in the Google Cloud table below use those Google Cloud IPs only if the service did not contain pre-existing ClickPipes prior to June 15th, 2026. Services in those regions with pre-existing ClickPipes prior to June 15th, 2026 continue to use the default region IPs listed below.
 
 For other services, ClickPipes traffic will originate from a default region based on your service's location:
-- **eu-central-1**: For all EU regions not explicitly listed, plus Azure EU regions and Google Cloud EU services created before 27 May 2026.
+- **eu-central-1**: For all EU regions not explicitly listed, plus Azure EU regions and Google Cloud EU services with pre-existing ClickPipes prior to June 15th, 2026.
 - **eu-west-1**: For all services in AWS `eu-west-1` created on or after 20 Jan 2026 (services created before this date use `eu-central-1` IPs).
 - **us-east-1**: For all services in AWS `us-east-1`.
 - **ap-south-1**: For services in AWS `ap-south-1` created on or after 25 Jun 2025 (services created before this date use `us-east-2` IPs).
@@ -85,7 +85,7 @@ For other services, ClickPipes traffic will originate from a default region base
 - **mx-central-1**: For services in AWS `mx-central-1` created on or after 19 May 2026 (services created before this date use `us-east-2` IPs).
 - **sa-east-1**: For services in AWS `sa-east-1` created on or after 15 Apr 2026 (services created before this date use `us-east-2` IPs).
 - **us-west-2**: For services in AWS `us-west-2` created on or after 24 Jun 2025 (services created before this date use `us-east-2` IPs).
-- **us-east-2**: For all other regions that do not match a rule above, including Azure regions and Google Cloud services created before 27 May 2026.
+- **us-east-2**: For all other regions that do not match a rule above, including Azure regions and Google Cloud services with pre-existing ClickPipes prior to June 15th, 2026.
 
 ### AWS static NAT IPs {#aws-static-nat-ips}
 
