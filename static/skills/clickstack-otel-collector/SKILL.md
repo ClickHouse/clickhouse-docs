@@ -4,7 +4,7 @@ description: Use when a user wants to wire an OpenTelemetry collector into a Man
 license: Apache-2.0
 metadata:
   author: ClickHouse Inc
-  version: "0.5.0"
+  version: "0.6.0"
 ---
 
 # Set up an OpenTelemetry collector for Managed ClickStack
@@ -160,11 +160,19 @@ your receiver is your own setup); it is generated only so the same file works if
 to the local collector. The `CLICKHOUSE_*` values are still used: they go into the exporter
 config you add to your collector in Step 6.
 
-From now on, load the file when you need a value instead of typing secrets:
+**Every later step runs in a fresh shell, so `WORKDIR`, `ENV_FILE`, and any exported credentials do
+not persist, and `WORKDIR`/`ENV_FILE` are not stored inside the env file, so sourcing it can't
+recover them.** Begin each subsequent step's shell with this **standard preamble**, which
+re-derives the paths from the deterministic default, loads the saved credentials (Step 3), and
+loads the config:
 
 ```bash
-set -a; . "$ENV_FILE"; set +a
+WORKDIR="${WORKDIR:-$HOME/clickstack-otel-collector}"; ENV_FILE="$WORKDIR/collector.env"
+[ -f "$WORKDIR/creds.env" ] && . "$WORKDIR/creds.env"; set -a; . "$ENV_FILE"; set +a
 ```
+
+If you chose a non-default `WORKDIR`, set it explicitly at the top of every step (the `${WORKDIR:-…}`
+default only covers the standard location). Later steps refer to this as "the standard preamble".
 
 **Confirm with the user** that `SERVICE_REF` is correct. Tell them the working directory and that
 `collector.env` (mode `0600`) now holds the OTLP token and the SQL password. Do **not** print
@@ -265,9 +273,14 @@ succeed without `creds.env`, you can skip this; but most agent shells need it.)
 
 ## Step 4: Resolve the service and capture the HTTPS endpoint
 
-Open the shell with the combined load so credentials and config are both present
-(`[ -f "$WORKDIR/creds.env" ] && . "$WORKDIR/creds.env"; set -a; . "$ENV_FILE"; set +a`), then
-resolve the service. If `SERVICE_REF` is a UUID, use it directly; otherwise look it up by name:
+Run the standard preamble (Step 2) so the paths, credentials, and config are all loaded in this
+shell, then resolve the service. If `SERVICE_REF` is a UUID, use it directly; otherwise look it up
+by name:
+
+```bash
+WORKDIR="${WORKDIR:-$HOME/clickstack-otel-collector}"; ENV_FILE="$WORKDIR/collector.env"
+[ -f "$WORKDIR/creds.env" ] && . "$WORKDIR/creds.env"; set -a; . "$ENV_FILE"; set +a
+```
 
 ```bash
 # UUID form
@@ -314,9 +327,8 @@ service '<name>'...`, which is expected.
 ## Step 5: Create the `hyperdx_ingest` SQL user and grant it `otel.*`
 
 This step is the same on both paths: the collector (new or existing) authenticates to ClickHouse
-as `hyperdx_ingest`. The user name is fixed and the password charset (Step 2) needs no escaping, so
-single-quoting it in SQL is safe. Open the shell with the combined load so `$CLICKHOUSE_PASSWORD`
-(and credentials) are set.
+as `hyperdx_ingest`. Open the shell with the combined load so `$CLICKHOUSE_PASSWORD` (and
+credentials) are set.
 
 > **Expect an approval prompt here.** The `CREATE USER` / `GRANT` statements below are DDL against
 > a Cloud service, so some agent sandboxes flag them as "modifying shared production
@@ -324,27 +336,36 @@ single-quoting it in SQL is safe. Open the shell with the combined load so `$CLI
 > scoped to a single dedicated ingest user and the `otel` schema, and the user should approve them
 > explicitly when prompted.
 
-**Pass the password-bearing statements over stdin, never as `--query`.** Interpolating
-`$CLICKHOUSE_PASSWORD` into `--query "… BY '…'"` puts the secret in the process arg list (visible in
-`ps`) and shell history, the very thing the skill avoids by using `docker --env-file` over `-e`. It
-also trips auto-mode classifiers, which deny the call citing "the secret expanded on the command
-line." Feed the DDL through `--queries-file -` (stdin) with a heredoc instead, so the password
-reaches ClickHouse but never an argument:
+**Never put the plaintext password in the SQL. Hash it locally and use `sha256_hash`.** Two
+problems rule out `IDENTIFIED WITH sha256_password BY '$CLICKHOUSE_PASSWORD'`: the secret would
+land in the process arg list (visible in `ps`) and shell history, and, critically, **the Query API
+echoes the failing statement verbatim in its error JSON**, so any error (a transient failure, a
+charset slip) leaks the password into output an agent may surface. Passing it over stdin does not
+help, the error echo still contains it. Instead compute the SHA-256 hash of the password locally
+(`sha256_hash` stores exactly what `sha256_password` would, so the collector still logs in with the
+plaintext from the env file) and put only the **hash** in the statement. A hash is non-reversible,
+so even an echoed error cannot leak the password:
 
 ```bash
+WORKDIR="${WORKDIR:-$HOME/clickstack-otel-collector}"; ENV_FILE="$WORKDIR/collector.env"
 [ -f "$WORKDIR/creds.env" ] && . "$WORKDIR/creds.env"; set -a; . "$ENV_FILE"; set +a
 
-# CREATE then ALTER so a re-run forces the password to this run's value. The heredoc body is
-# stdin, so $CLICKHOUSE_PASSWORD is never on the command line or in `ps`.
-clickhousectl cloud service query --id "$SERVICE_ID" --queries-file - <<EOF
-CREATE USER IF NOT EXISTS hyperdx_ingest IDENTIFIED WITH sha256_password BY '$CLICKHOUSE_PASSWORD';
-ALTER USER hyperdx_ingest IDENTIFIED WITH sha256_password BY '$CLICKHOUSE_PASSWORD';
-EOF
+# SHA-256 of the password. openssl is already a dependency; this is portable (macOS + Linux).
+# Only this hash ever reaches SQL, output, or `ps`; the plaintext stays in the env file.
+PW_HASH=$(printf %s "$CLICKHOUSE_PASSWORD" | openssl dgst -sha256 | awk '{print $NF}')
+
+# Send statements ONE AT A TIME: the Query API runs over HTTP and rejects multi-statement input
+# ("Multi-statements are not allowed"), so a single ; -separated batch fails.
+clickhousectl cloud service query --id "$SERVICE_ID" --query \
+  "CREATE USER IF NOT EXISTS hyperdx_ingest IDENTIFIED WITH sha256_hash BY '$PW_HASH'"
+# Re-run safe: force the password to this run's value if the user already existed.
+clickhousectl cloud service query --id "$SERVICE_ID" --query \
+  "ALTER USER hyperdx_ingest IDENTIFIED WITH sha256_hash BY '$PW_HASH'"
 ```
 
 Grant the least privilege the collector needs to create and write the `otel.*` schema. On the
 current image the schema migrations and their version table also live in `otel`, so `otel.*` is
-sufficient:
+sufficient (this statement carries no secret):
 
 ```bash
 clickhousectl cloud service query --id "$SERVICE_ID" --query \
@@ -376,10 +397,14 @@ hyperdx_ingest`.
 
 Follow the sub-section that matches the path and mode you chose in Step 0. All three converge on
 the same end state: a collector accepting OTLP and writing into the `otel` database on the service.
+Every code block in this step assumes you have run the **standard preamble** (Step 2) first, so
+`$WORKDIR`, `$ENV_FILE`, `$SERVICE_ID`, and the secrets are set in the shell.
 
 Make sure Docker is running (new-collector path only):
 
 ```bash
+WORKDIR="${WORKDIR:-$HOME/clickstack-otel-collector}"; ENV_FILE="$WORKDIR/collector.env"
+[ -f "$WORKDIR/creds.env" ] && . "$WORKDIR/creds.env"; set -a; . "$ENV_FILE"; set +a
 docker info > /dev/null
 ```
 
@@ -459,16 +484,22 @@ Add the ClickHouse exporter to your existing collector configuration. The config
 behavior of the ClickStack distribution, including the Session Replay (`rrweb`) routing path, and
 writes into the `otel` database the ClickStack UI expects.
 
-Print the two values you need to substitute (do not paste the password into chat; read it from the
-file on your own machine):
+**Reference the endpoint and password as environment variables (`${env:…}`), do not hardcode them
+into the config file.** The contrib collector expands `${env:VAR}` at load time, so keeping the
+plaintext password out of the config file is both safer and consistent with the rest of this skill.
+Start your collector with the env vars available, the simplest way is the same `--env-file` the
+local collector uses:
 
 ```bash
-grep -E '^CLICKHOUSE_ENDPOINT=' "$ENV_FILE"
-# password lives here too: grep CLICKHOUSE_PASSWORD "$ENV_FILE"
+# When running the contrib collector in Docker, pass collector.env so ${env:CLICKHOUSE_*} resolve:
+#   docker run -d --env-file "$ENV_FILE" -p 4317:4317 -p 4318:4318 \
+#     -v "$WORKDIR/your-config.yaml:/etc/otelcol-contrib/config.yaml:ro" \
+#     otel/opentelemetry-collector-contrib:latest
+# For a non-Docker collector, export CLICKHOUSE_ENDPOINT and CLICKHOUSE_PASSWORD into its
+# environment (e.g. an EnvironmentFile= in the systemd unit) before it starts.
 ```
 
-Substitute `<clickhouse_cloud_endpoint>` and `<your_password_here>` with those values, add this to
-your collector config, and reload it:
+Add this to your collector config and reload it:
 
 ```yaml
 receivers:
@@ -503,9 +534,9 @@ connectors:
 exporters:
   clickhouse:
     database: otel
-    endpoint: <clickhouse_cloud_endpoint>
+    endpoint: ${env:CLICKHOUSE_ENDPOINT}
     username: hyperdx_ingest
-    password: <your_password_here>
+    password: ${env:CLICKHOUSE_PASSWORD}
     ttl: 720h
     timeout: 5s
     retry_on_failure:
@@ -515,9 +546,9 @@ exporters:
       max_elapsed_time: 300s
   clickhouse/rrweb:
     database: otel
-    endpoint: <clickhouse_cloud_endpoint>
+    endpoint: ${env:CLICKHOUSE_ENDPOINT}
     username: hyperdx_ingest
-    password: <your_password_here>
+    password: ${env:CLICKHOUSE_PASSWORD}
     ttl: 720h
     logs_table_name: hyperdx_sessions
     timeout: 5s
@@ -595,25 +626,31 @@ nothing is installed on the host. Instead of one flat burst, send telemetry acro
 **services**, **severities**, **span statuses**, and **metric types**, so ClickStack's Search,
 Service Map, and dashboards have realistic, varied data rather than a single uniform stream.
 
-Load the env file so the token is available, then reference `$OTLP_AUTH_TOKEN` so the literal token
-never appears in the command text, your output, or shell history. `telemetrygen`'s header syntax
-requires the value to be a quoted string: `key="value"`.
+Load the env file so the token is available, then reference `$OTLP_AUTH_TOKEN`. The `tg` helper
+below **redirects all generator output to a log file** and prints only an exit code, because
+`telemetrygen` echoes its full config, **including the `authorization` header (your OTLP token)**,
+to stdout. Never surface that raw output in the chat. `telemetrygen`'s header syntax requires the
+value to be a quoted string: `key="value"`.
 
 ```bash
+WORKDIR="${WORKDIR:-$HOME/clickstack-otel-collector}"; ENV_FILE="$WORKDIR/collector.env"
 [ -f "$WORKDIR/creds.env" ] && . "$WORKDIR/creds.env"; set -a; . "$ENV_FILE"; set +a
 
 TG_IMAGE=ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest
 NET=clickstack-net
 ENDPOINT=clickstack-otel-collector:4317
+TG_LOG="$WORKDIR/telemetrygen.log"; : > "$TG_LOG"
 
 tg() {
   # usage: tg <logs|traces|metrics> [extra telemetrygen flags...]
+  # Output (which contains the token in the echoed config) goes to $TG_LOG, never the terminal.
   local signal="$1"; shift
   docker run --rm --network "$NET" "$TG_IMAGE" "$signal" \
     --otlp-endpoint "$ENDPOINT" \
     --otlp-insecure \
     --otlp-header "authorization=\"$OTLP_AUTH_TOKEN\"" \
-    --rate 10 --duration 15s "$@"
+    --rate 10 --duration 15s "$@" >>"$TG_LOG" 2>&1
+  echo "$signal exit=$?"
 }
 ```
 
@@ -622,13 +659,14 @@ tg() {
 > address, and set the `authorization` header (or other auth) to whatever your receiver expects.
 > Everything below is otherwise identical.
 
-**Reading `telemetrygen` output: it is noisy and ends with a scary-looking but normal line.** Each
-run prints verbose gRPC logs and then terminates with `rpc error: code = Canceled desc = grpc: the
-client connection is closing` once `--duration` elapses. **That trailing line is expected shutdown,
-not a failure.** The real failure signals are a **non-zero exit code** and an auth error such as
-`code = Unauthenticated desc = provided authorization does not match expected scheme or token`. Do
-not treat a clean, full-duration run as broken just because of the closing-connection line; judge
-success by the row counts in the verification queries below, not by the generator's log volume.
+**Judge success by exit code and row counts, never by the generator's logs.** Two reasons. First,
+the log contains your OTLP token (see above), so do not print it. Second, it is noisy and every run
+ends with `rpc error: code = Canceled desc = grpc: the client connection is closing` once
+`--duration` elapses, which is **expected shutdown, not a failure**. The `tg` helper already prints
+`<signal> exit=0` on success. If you must inspect a failure, grep the log for the real signal
+without dumping it, for example `grep -c Unauthenticated "$TG_LOG"` (a non-zero count plus a
+non-zero exit means the `authorization` header did not match). Confirm overall success with the row
+counts in the verification queries below.
 
 **Quote attribute values so the inner double quotes survive the shell.** `telemetrygen` requires
 each attribute as `key="value"` (with literal double quotes), and rejects a bare `key=value` with
@@ -700,9 +738,10 @@ You should see non-zero `rows` for `otel_logs`, `otel_traces`, `otel_metrics_sum
 `otel_metrics_gauge`, and `otel_metrics_histogram`. If a signal is missing:
 
 1. Tail the collector logs (`docker logs --tail 50 clickstack-otel-collector`) for export errors.
-2. Confirm the `authorization` header matches `$OTLP_AUTH_TOKEN` (a mismatch shows in the generator
-   output as `code = Unauthenticated desc = provided authorization does not match expected scheme
-   or token`).
+2. Confirm the `authorization` header matches `$OTLP_AUTH_TOKEN`: `grep -c Unauthenticated
+   "$TG_LOG"` (a non-zero count means a mismatch, the full message is `code = Unauthenticated desc =
+   provided authorization does not match expected scheme or token`). Grep rather than print the
+   log, since it contains the token.
 3. Re-check `CLICKHOUSE_ENDPOINT` has the `https://` scheme and `:8443` port.
 4. Some metric kinds flush slowly. Re-run the count after another 30 seconds before declaring
    failure.
