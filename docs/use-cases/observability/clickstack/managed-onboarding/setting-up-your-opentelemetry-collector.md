@@ -112,41 +112,75 @@ go install github.com/open-telemetry/opentelemetry-collector-contrib/cmd/telemet
 export OTEL_ENDPOINT=localhost:4317
 ```
 
-Send logs tagged with a service, environment, and severity:
+:::note What to expect
+Each `tg` run lasts about 20 seconds (set by `--duration 20s`) and streams verbose logs the whole time, that's expected; each run returns on its own once its 20 seconds elapse. The logs below are enough to confirm the pipeline; the optional richer set adds several more runs and takes a few minutes.
+:::
+
+Define a small `tg` helper so each command only specifies what varies (service, severity, status, attributes):
 
 ```shell
-telemetrygen logs \
+tg() { local signal=$1; shift; telemetrygen "$signal" \
   --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
   --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --rate 5 --duration 30s \
-  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
+  --rate 5 --duration 20s "$@"; }
+```
+
+Send logs as a realistic mix of severities across services, mostly informational with a warning and an error rather than one uniform error stream:
+
+```shell
+tg logs --service frontend --severity-text Info  --severity-number 9  --body "GET /api/products 200" \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.method="GET"' --telemetry-attributes 'http.status_code="200"'
+tg logs --service checkout --severity-text Warn  --severity-number 13 --body "retrying payment authorization" \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.method="POST"'
+tg logs --service payment  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
   --otlp-attributes 'deployment.environment="production"' \
   --telemetry-attributes 'http.status_code="500"'
 ```
 
-Send multi-span traces with child spans and an error status, which populate the Service Map and error views:
+Logs alone confirm the endpoint is working. For a richer demo dataset, a multi-service Service Map and charts across metric types, expand and run the commands below as well. They reuse the `tg` helper, so run them in the same shell.
+
+<details>
+<summary>Generate richer telemetry (optional)</summary>
+
+Send multi-span traces from several healthy services plus one failing dependency. This gives the Service Map a realistic shape, mostly healthy with one erroring service, and still populates the error views:
 
 ```shell
-telemetrygen traces \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --rate 5 --duration 30s \
-  --child-spans 4 --span-duration 120ms --span-links 1 --status-code Error \
+# Healthy services: the bulk of the traffic, all spans Ok
+for svc in frontend checkout cart; do
+  tg traces --service "$svc" --child-spans 3 --span-duration 80ms --status-code Ok \
+    --otlp-attributes 'deployment.environment="production"' \
+    --telemetry-attributes "http.route=\"/$svc\""
+done
+
+# One slow dependency returning errors
+tg traces --service payment --child-spans 3 --span-duration 450ms --span-links 1 --status-code Error \
   --otlp-attributes 'deployment.environment="production"' \
-  --telemetry-attributes 'http.route="/cart"'
+  --telemetry-attributes 'http.route="/charge"'
 ```
 
-Send metrics of a given type with a named series:
+Send metrics across the three common types, so charts have a counter, a gauge, and a distribution:
 
 ```shell
-telemetrygen metrics --metric-type Sum \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --otlp-metric-name http.server.requests \
-  --aggregation-temporality cumulative --rate 5 --duration 30s
+tg metrics --service frontend --metric-type Sum       --otlp-metric-name http.server.requests --aggregation-temporality cumulative
+tg metrics --service frontend --metric-type Gauge     --otlp-metric-name system.memory.usage
+tg metrics --service payment  --metric-type Histogram --otlp-metric-name http.server.duration
 ```
 
-For the full set of flags, variations across multiple services and metric types, and verification tips, see [Synthetic data with telemetrygen](/use-cases/observability/clickstack/getting-started/telemetrygen).
+For even more variety, add a couple more services and an exponential histogram:
+
+```shell
+tg traces  --service catalog   --child-spans 2 --span-duration 60ms  --status-code Ok \
+  --otlp-attributes 'deployment.environment="production"' --telemetry-attributes 'http.route="/catalog"'
+tg traces  --service inventory --child-spans 2 --span-duration 220ms --status-code Ok \
+  --otlp-attributes 'deployment.environment="staging"'   --telemetry-attributes 'http.route="/inventory"'
+tg metrics --service payment   --metric-type ExponentialHistogram --otlp-metric-name db.query.duration
+```
+
+</details>
+
+For the full set of flags and more variations, see [Synthetic data with telemetrygen](/use-cases/observability/clickstack/getting-started/telemetrygen).
 
 ## Confirm in the ClickStack UI {#confirm-in-ui}
 
@@ -291,41 +325,75 @@ Or install the binary with Go:
 go install github.com/open-telemetry/opentelemetry-collector-contrib/cmd/telemetrygen@latest
 ```
 
-Send logs tagged with a service, environment, and severity:
+:::note What to expect
+Each `tg` run lasts about 20 seconds (set by `--duration 20s`) and streams verbose logs the whole time, that's expected; each run returns on its own once its 20 seconds elapse. The logs below are enough to confirm the pipeline; the optional richer set adds several more runs and takes a few minutes.
+:::
+
+Define a small `tg` helper so each command only specifies what varies (service, severity, status, attributes):
 
 ```shell
-telemetrygen logs \
+tg() { local signal=$1; shift; telemetrygen "$signal" \
   --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
   --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --rate 5 --duration 30s \
-  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
+  --rate 5 --duration 20s "$@"; }
+```
+
+Send logs as a realistic mix of severities across services, mostly informational with a warning and an error rather than one uniform error stream:
+
+```shell
+tg logs --service frontend --severity-text Info  --severity-number 9  --body "GET /api/products 200" \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.method="GET"' --telemetry-attributes 'http.status_code="200"'
+tg logs --service checkout --severity-text Warn  --severity-number 13 --body "retrying payment authorization" \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.method="POST"'
+tg logs --service payment  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
   --otlp-attributes 'deployment.environment="production"' \
   --telemetry-attributes 'http.status_code="500"'
 ```
 
-Send multi-span traces with child spans and an error status, which populate the Service Map and error views:
+Logs alone confirm the endpoint is working. For a richer demo dataset, a multi-service Service Map and charts across metric types, expand and run the commands below as well. They reuse the `tg` helper, so run them in the same shell.
+
+<details>
+<summary>Generate richer telemetry (optional)</summary>
+
+Send multi-span traces from several healthy services plus one failing dependency. This gives the Service Map a realistic shape, mostly healthy with one erroring service, and still populates the error views:
 
 ```shell
-telemetrygen traces \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --rate 5 --duration 30s \
-  --child-spans 4 --span-duration 120ms --span-links 1 --status-code Error \
+# Healthy services: the bulk of the traffic, all spans Ok
+for svc in frontend checkout cart; do
+  tg traces --service "$svc" --child-spans 3 --span-duration 80ms --status-code Ok \
+    --otlp-attributes 'deployment.environment="production"' \
+    --telemetry-attributes "http.route=\"/$svc\""
+done
+
+# One slow dependency returning errors
+tg traces --service payment --child-spans 3 --span-duration 450ms --span-links 1 --status-code Error \
   --otlp-attributes 'deployment.environment="production"' \
-  --telemetry-attributes 'http.route="/cart"'
+  --telemetry-attributes 'http.route="/charge"'
 ```
 
-Send metrics of a given type with a named series:
+Send metrics across the three common types, so charts have a counter, a gauge, and a distribution:
 
 ```shell
-telemetrygen metrics --metric-type Sum \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --otlp-metric-name http.server.requests \
-  --aggregation-temporality cumulative --rate 5 --duration 30s
+tg metrics --service frontend --metric-type Sum       --otlp-metric-name http.server.requests --aggregation-temporality cumulative
+tg metrics --service frontend --metric-type Gauge     --otlp-metric-name system.memory.usage
+tg metrics --service payment  --metric-type Histogram --otlp-metric-name http.server.duration
 ```
 
-For the full set of flags, variations across multiple services and metric types, and verification tips, see [Synthetic data with telemetrygen](/use-cases/observability/clickstack/getting-started/telemetrygen).
+For even more variety, add a couple more services and an exponential histogram:
+
+```shell
+tg traces  --service catalog   --child-spans 2 --span-duration 60ms  --status-code Ok \
+  --otlp-attributes 'deployment.environment="production"' --telemetry-attributes 'http.route="/catalog"'
+tg traces  --service inventory --child-spans 2 --span-duration 220ms --status-code Ok \
+  --otlp-attributes 'deployment.environment="staging"'   --telemetry-attributes 'http.route="/inventory"'
+tg metrics --service payment   --metric-type ExponentialHistogram --otlp-metric-name db.query.duration
+```
+
+</details>
+
+For the full set of flags and more variations, see [Synthetic data with telemetrygen](/use-cases/observability/clickstack/getting-started/telemetrygen).
 
 ## Confirm in the ClickStack UI {#confirm-in-ui-existing}
 
@@ -337,10 +405,20 @@ For the full set of flags, variations across multiple services and metric types,
 
 </Tabs>
 
+## Next steps: send your own data {#next-steps}
+
+The synthetic burst above only proves the pipeline works. To start sending real telemetry, instrument your own services with the [ClickStack SDKs](/use-cases/observability/clickstack/sdks), which provide instrumentation for Node.js, Python, Go, Java, and other languages that export OTLP to the collector endpoint you just verified. For a complete worked example, follow [Instrument an application](/use-cases/observability/clickstack/instrument-application).
+
+To collect from infrastructure rather than application code:
+
+- [Monitoring Kubernetes](/use-cases/observability/clickstack/monitoring-kubernetes): collect logs, infrastructure metrics, and Kubernetes events from a cluster.
+- [Monitoring AWS CloudWatch logs](/use-cases/observability/clickstack/monitoring-aws-cloudwatch-logs): forward CloudWatch logs via the OpenTelemetry CloudWatch receiver.
+
 ## Further reading {#further-reading}
 
 This guide covers a single collector instance in its simplest form. The [OpenTelemetry collector reference](/use-cases/observability/clickstack/ingesting-data/otel-collector) covers what to do next:
 
+- [Deploying the collector in Kubernetes](/use-cases/observability/clickstack/ingesting-data/otel-collector#configuring-the-collector) with the upstream OpenTelemetry Helm chart and the ClickStack collector image.
 - [Securing the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector) with TLS on the OTLP endpoint and least-privilege ingestion users.
 - [Processing, filtering, and enriching](/use-cases/observability/clickstack/ingesting-data/otel-collector#processing-filtering-transforming-enriching) events at the gateway.
 - [Extending the collector configuration](/use-cases/observability/clickstack/ingesting-data/otel-collector#extending-collector-config) with custom receivers, processors, and pipelines.

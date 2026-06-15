@@ -55,27 +55,30 @@ export OTLP_AUTH_TOKEN=<your_otlp_auth_token>
 ```
 
 :::note[Unsecured collector]
-The ClickStack OpenTelemetry collector is unauthenticated by default. If you haven't followed [Securing the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector) to set an `OTLP_AUTH_TOKEN`, drop the `--otlp-header` flag from the commands below.
+The ClickStack OpenTelemetry collector is unauthenticated by default. If you haven't followed [Securing the collector](/use-cases/observability/clickstack/ingesting-data/otel-collector#securing-the-collector) to set an `OTLP_AUTH_TOKEN`, drop the `--otlp-header` line from the helper below.
 :::
+
+Define a small `tg` helper so each command only specifies what varies (service, severity, status, attributes):
+
+```shell
+tg() { local signal=$1; shift; telemetrygen "$signal" \
+  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
+  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
+  --rate 5 --duration 30s "$@"; }
+```
 
 ### Generate logs {#generate-logs-managed}
 
-Send logs from two services with different severities, bodies, and attributes, so the `Search` view has both informational and error events to filter on:
+Send logs as a realistic mix of severities across services, mostly informational with a warning and an error rather than one uniform stream:
 
 ```shell
-telemetrygen logs \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --rate 5 --duration 30s \
-  --severity-text Info --severity-number 9 --body "checkout completed" \
+tg logs --service frontend --severity-text Info  --severity-number 9  --body "GET /api/products 200" \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.method="GET"' --telemetry-attributes 'http.status_code="200"'
+tg logs --service checkout --severity-text Warn  --severity-number 13 --body "retrying payment authorization" \
   --otlp-attributes 'deployment.environment="production"' \
   --telemetry-attributes 'http.method="POST"'
-
-telemetrygen logs \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service payment --rate 5 --duration 30s \
-  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
+tg logs --service payment  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
   --otlp-attributes 'deployment.environment="production"' \
   --telemetry-attributes 'http.status_code="500"'
 ```
@@ -90,22 +93,18 @@ The most useful log flags:
 
 ### Generate traces {#generate-traces-managed}
 
-Send multi-span traces, one healthy service and one returning errors. The child spans and error status populate the Service Map and the error views:
+Send multi-span traces from several healthy services plus one failing dependency. This gives the Service Map a realistic shape, mostly healthy with one erroring service, and populates the error views:
 
 ```shell
-telemetrygen traces \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --rate 5 --duration 30s --workers 2 \
-  --child-spans 4 --span-duration 120ms --span-links 1 --status-code Ok \
-  --otlp-attributes 'deployment.environment="production"' \
-  --telemetry-attributes 'http.route="/cart"'
+# Healthy services: the bulk of the traffic, all spans Ok
+for svc in frontend checkout cart; do
+  tg traces --service "$svc" --child-spans 3 --span-duration 80ms --status-code Ok \
+    --otlp-attributes 'deployment.environment="production"' \
+    --telemetry-attributes "http.route=\"/$svc\""
+done
 
-telemetrygen traces \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service payment --rate 5 --duration 30s \
-  --child-spans 3 --span-duration 400ms --status-code Error \
+# One slow dependency returning errors
+tg traces --service payment --child-spans 3 --span-duration 450ms --span-links 1 --status-code Error \
   --otlp-attributes 'deployment.environment="production"' \
   --telemetry-attributes 'http.route="/charge"'
 ```
@@ -123,30 +122,16 @@ The most useful trace flags:
 Send the three common metric types so dashboards have counters, gauges, and a distribution. Unlike some generators, `telemetrygen` honors `--duration` for metrics, so no manual stop is needed:
 
 ```shell
-telemetrygen metrics --metric-type Sum \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --otlp-metric-name http.server.requests \
-  --aggregation-temporality cumulative --rate 5 --duration 30s
-
-telemetrygen metrics --metric-type Gauge \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service checkout --otlp-metric-name system.memory.usage \
-  --rate 5 --duration 30s
-
-telemetrygen metrics --metric-type Histogram \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
-  --service payment --otlp-metric-name http.server.duration \
-  --rate 5 --duration 30s
+tg metrics --service frontend --metric-type Sum       --otlp-metric-name http.server.requests --aggregation-temporality cumulative
+tg metrics --service frontend --metric-type Gauge     --otlp-metric-name system.memory.usage
+tg metrics --service payment  --metric-type Histogram --otlp-metric-name http.server.duration
 ```
 
 `--metric-type` accepts `Gauge`, `Sum`, `Histogram`, or `ExponentialHistogram`. `--otlp-metric-name` names the series so you can find it in the UI, and `--aggregation-temporality` is `delta` or `cumulative`.
 
 ### Verify in ClickStack {#verify-managed}
 
-Open the ClickStack UI from the ClickHouse Cloud console. In the `Search` view, set the time range to `Last 15 minutes` and switch the source between `Logs` and `Traces`. Filter on `ServiceName` to see the `checkout` and `payment` services, and on `SeverityText` to find the `Error` log line. Open a `payment` trace to see the child spans and the error status. Open the `Chart Explorer`, select `Metrics`, and chart one of the metric names you set above (for example `http.server.requests`) to verify metrics ingestion.
+Open the ClickStack UI from the ClickHouse Cloud console. In the `Search` view, set the time range to `Last 15 minutes` and switch the source between `Logs` and `Traces`. Filter on `ServiceName` to see the `frontend`, `checkout`, `cart`, and `payment` services, and on `SeverityText` to find the warning and error log lines. Open a `payment` trace to see the child spans and the error status. Open the `Chart Explorer`, select `Metrics`, and chart one of the metric names you set above (for example `http.server.requests`) to verify metrics ingestion.
 
 </VerticalStepper>
 
@@ -186,79 +171,64 @@ Export the ingestion API key:
 export CLICKSTACK_API_KEY=<your_ingestion_api_key>
 ```
 
-### Generate logs {#generate-logs-oss}
-
-Send logs from two services with different severities, bodies, and attributes:
+Define a small `tg` helper so each command only specifies what varies (service, severity, status, attributes):
 
 ```shell
-telemetrygen logs \
+tg() { local signal=$1; shift; telemetrygen "$signal" \
   --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
   --otlp-header "authorization=\"${CLICKSTACK_API_KEY}\"" \
-  --service checkout --rate 5 --duration 30s \
-  --severity-text Info --severity-number 9 --body "checkout completed" \
+  --rate 5 --duration 30s "$@"; }
+```
+
+### Generate logs {#generate-logs-oss}
+
+Send logs as a realistic mix of severities across services, mostly informational with a warning and an error rather than one uniform stream:
+
+```shell
+tg logs --service frontend --severity-text Info  --severity-number 9  --body "GET /api/products 200" \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.method="GET"' --telemetry-attributes 'http.status_code="200"'
+tg logs --service checkout --severity-text Warn  --severity-number 13 --body "retrying payment authorization" \
   --otlp-attributes 'deployment.environment="production"' \
   --telemetry-attributes 'http.method="POST"'
-
-telemetrygen logs \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${CLICKSTACK_API_KEY}\"" \
-  --service payment --rate 5 --duration 30s \
-  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
+tg logs --service payment  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
   --otlp-attributes 'deployment.environment="production"' \
   --telemetry-attributes 'http.status_code="500"'
 ```
 
 ### Generate traces {#generate-traces-oss}
 
-Send multi-span traces, one healthy service and one returning errors:
+Send multi-span traces from several healthy services plus one failing dependency. This gives the Service Map a realistic shape, mostly healthy with one erroring service, and populates the error views:
 
 ```shell
-telemetrygen traces \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${CLICKSTACK_API_KEY}\"" \
-  --service checkout --rate 5 --duration 30s --workers 2 \
-  --child-spans 4 --span-duration 120ms --span-links 1 --status-code Ok \
-  --otlp-attributes 'deployment.environment="production"' \
-  --telemetry-attributes 'http.route="/cart"'
+# Healthy services: the bulk of the traffic, all spans Ok
+for svc in frontend checkout cart; do
+  tg traces --service "$svc" --child-spans 3 --span-duration 80ms --status-code Ok \
+    --otlp-attributes 'deployment.environment="production"' \
+    --telemetry-attributes "http.route=\"/$svc\""
+done
 
-telemetrygen traces \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${CLICKSTACK_API_KEY}\"" \
-  --service payment --rate 5 --duration 30s \
-  --child-spans 3 --span-duration 400ms --status-code Error \
+# One slow dependency returning errors
+tg traces --service payment --child-spans 3 --span-duration 450ms --span-links 1 --status-code Error \
   --otlp-attributes 'deployment.environment="production"' \
   --telemetry-attributes 'http.route="/charge"'
 ```
 
 ### Generate metrics {#generate-metrics-oss}
 
-Send the three common metric types:
+Send the three common metric types so charts have a counter, a gauge, and a distribution:
 
 ```shell
-telemetrygen metrics --metric-type Sum \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${CLICKSTACK_API_KEY}\"" \
-  --service checkout --otlp-metric-name http.server.requests \
-  --aggregation-temporality cumulative --rate 5 --duration 30s
-
-telemetrygen metrics --metric-type Gauge \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${CLICKSTACK_API_KEY}\"" \
-  --service checkout --otlp-metric-name system.memory.usage \
-  --rate 5 --duration 30s
-
-telemetrygen metrics --metric-type Histogram \
-  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
-  --otlp-header "authorization=\"${CLICKSTACK_API_KEY}\"" \
-  --service payment --otlp-metric-name http.server.duration \
-  --rate 5 --duration 30s
+tg metrics --service frontend --metric-type Sum       --otlp-metric-name http.server.requests --aggregation-temporality cumulative
+tg metrics --service frontend --metric-type Gauge     --otlp-metric-name system.memory.usage
+tg metrics --service payment  --metric-type Histogram --otlp-metric-name http.server.duration
 ```
 
 `--metric-type` accepts `Gauge`, `Sum`, `Histogram`, or `ExponentialHistogram`.
 
 ### Verify in ClickStack {#verify-oss}
 
-Visit [http://localhost:8080](http://localhost:8080) to open the ClickStack UI. In the `Search` view, set the time range to `Last 15 minutes` and switch the source between `Logs` and `Traces`. Filter on `ServiceName` to see the `checkout` and `payment` services, and on `SeverityText` to find the `Error` log line. Open a `payment` trace to see the child spans and the error status. Open the `Chart Explorer`, select `Metrics`, and chart one of the metric names you set above (for example `http.server.requests`) to verify metrics ingestion.
+Visit [http://localhost:8080](http://localhost:8080) to open the ClickStack UI. In the `Search` view, set the time range to `Last 15 minutes` and switch the source between `Logs` and `Traces`. Filter on `ServiceName` to see the `frontend`, `checkout`, `cart`, and `payment` services, and on `SeverityText` to find the warning and error log lines. Open a `payment` trace to see the child spans and the error status. Open the `Chart Explorer`, select `Metrics`, and chart one of the metric names you set above (for example `http.server.requests`) to verify metrics ingestion.
 
 </VerticalStepper>
 
