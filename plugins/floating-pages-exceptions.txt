@@ -18,6 +18,7 @@ use-cases/observability/clickstack/managed-onboarding/monitoring-kubernetes.md
 use-cases/observability/clickstack/managed-onboarding/monitoring-aws-cloudwatch-logs.md
 use-cases/observability/clickstack/managed-onboarding/instrument-application.md
 use-cases/observability/clickstack/managed-onboarding/tuning-clickstack-schema.md
+use-cases/observability/clickstack/managed-onboarding/managed-getting-started.md
 
 # NOTE(kavi): To be removed after core PRs are merged
 # https://github.com/ClickHouse/ClickHouse/pull/106723
