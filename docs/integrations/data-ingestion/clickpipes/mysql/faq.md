@@ -42,9 +42,8 @@ This is most often caused by rows containing large `BLOB`, `TEXT`, or `JSON` val
   ```sql
   SET GLOBAL max_allowed_packet = 1073741824; -- 1 GiB
   ```
-  Set it in your server configuration (e.g. `my.cnf`) as well so it persists across restarts. Existing connections must be re-established for the new value to take effect.
-- **If a single large row is the cause,** [resync the affected table](./table_resync.md) once `max_allowed_packet` has been increased so the pipe can move past it.
-- **If you expect values larger than `1G`,** exclude the large columns from replication, as `max_allowed_packet` can't be raised beyond `1G`. See [Can I include columns I initially excluded from replication?](#include-excluded-columns).
+  Set it in your server configuration (e.g. `my.cnf` or the DB Parameter Group) as well so it persists across restarts.
+- **If a single row is larger than 1G:** resync the pipe.
 
 ### Why am I getting a TLS certificate validation error when connecting to MySQL? {#tls-certificate-validation-error}
 
