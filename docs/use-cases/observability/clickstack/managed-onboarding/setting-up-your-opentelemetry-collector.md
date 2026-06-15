@@ -3,7 +3,7 @@ slug: /use-cases/observability/clickstack/setting-up-your-opentelemetry-collecto
 title: 'Setting up your OpenTelemetry Collector'
 description: 'Setting up an OpenTelemetry Collector for Managed ClickStack'
 doc_type: 'guide'
-keywords: ['clickstack', 'opentelemetry', 'collector', 'managed', 'observability', 'gateway', 'otelgen']
+keywords: ['clickstack', 'opentelemetry', 'collector', 'managed', 'observability', 'gateway', 'telemetrygen']
 unlisted: true
 pagination_prev: null
 pagination_next: null
@@ -93,34 +93,60 @@ For production, we recommend enabling TLS on the OTLP endpoint. See [Securing th
 
 ## Verify the endpoint {#verify-the-endpoint}
 
-Generate some synthetic traffic against the collector to confirm the full pipeline works. We use [`otelgen`](https://github.com/krzko/otelgen), a small CLI that emits OTLP logs, traces, and metrics.
+Generate some synthetic traffic against the collector to confirm the full pipeline works. We use [`telemetrygen`](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen), the OpenTelemetry Collector Contrib generator, which emits OTLP logs, traces, and metrics and exposes flags to shape the data across services, severities, span statuses, and metric types.
 
-Install `otelgen` with Homebrew:
-
-```shell
-brew install krzko/tap/otelgen
-```
-
-Or with Go:
+Run it from its Docker image (no install required). Define a small wrapper so the commands below stay readable; `--add-host` lets the container reach a collector listening on the host:
 
 ```shell
-go install github.com/krzko/otelgen@latest
+telemetrygen() {
+  docker run --rm --add-host=host.docker.internal:host-gateway \
+    ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest "$@"
+}
+export OTEL_ENDPOINT=host.docker.internal:4317
 ```
 
-Send a short burst of logs to the collector:
+Or install the binary with Go and target `localhost` instead:
 
 ```shell
- otelgen \
-  --otel-exporter-otlp-endpoint localhost:4317 \
-  --insecure \
-  --protocol grpc \
-  --header "authorization=${OTLP_AUTH_TOKEN}" \
-  --rate 5 \
-  --duration 60 \
-  logs multi
+go install github.com/open-telemetry/opentelemetry-collector-contrib/cmd/telemetrygen@latest
+export OTEL_ENDPOINT=localhost:4317
 ```
 
-For the equivalent trace and metrics commands, and a walkthrough of the other `otelgen` subcommands, see [Synthetic data with otelgen](/use-cases/observability/clickstack/getting-started/otelgen).
+Send logs tagged with a service, environment, and severity:
+
+```shell
+telemetrygen logs \
+  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
+  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
+  --service checkout --rate 5 --duration 30s \
+  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.status_code="500"'
+```
+
+Send multi-span traces with child spans and an error status, which populate the Service Map and error views:
+
+```shell
+telemetrygen traces \
+  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
+  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
+  --service checkout --rate 5 --duration 30s \
+  --child-spans 4 --span-duration 120ms --span-links 1 --status-code Error \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.route="/cart"'
+```
+
+Send metrics of a given type with a named series:
+
+```shell
+telemetrygen metrics --metric-type Sum \
+  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
+  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
+  --service checkout --otlp-metric-name http.server.requests \
+  --aggregation-temporality cumulative --rate 5 --duration 30s
+```
+
+For the full set of flags, variations across multiple services and metric types, and verification tips, see [Synthetic data with telemetrygen](/use-cases/observability/clickstack/getting-started/telemetrygen).
 
 ## Confirm in the ClickStack UI {#confirm-in-ui}
 
@@ -246,34 +272,60 @@ For further details on configuring OpenTelemetry collectors against Managed Clic
 
 ## Verify the endpoint {#verify-the-endpoint-existing}
 
-Generate some synthetic traffic against your collector to confirm the full pipeline works. We use [`otelgen`](https://github.com/krzko/otelgen), a small CLI that emits OTLP logs, traces, and metrics.
+Generate some synthetic traffic against your collector to confirm the full pipeline works. We use [`telemetrygen`](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen), the OpenTelemetry Collector Contrib generator, which emits OTLP logs, traces, and metrics and exposes flags to shape the data across services, severities, span statuses, and metric types.
 
-Install `otelgen` with Homebrew:
-
-```shell
-brew install krzko/tap/otelgen
-```
-
-Or with Go:
+Run it from its Docker image (no install required). Substitute `<your-collector-host>` with the host your collector listens on, and set the `authorization` header (or alternative auth method) to whatever your collector expects:
 
 ```shell
-go install github.com/krzko/otelgen@latest
+telemetrygen() {
+  docker run --rm --add-host=host.docker.internal:host-gateway \
+    ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest "$@"
+}
+export OTEL_ENDPOINT=<your-collector-host>:4317
+export OTLP_AUTH_TOKEN=<your-auth-token>
 ```
 
-Send a short burst of logs to your collector. Substitute `<your-collector-host>` with the host your collector listens on, and set the `authorization` header (or alternative auth method) to whatever your collector expects:
+Or install the binary with Go:
 
 ```shell
- otelgen \
-  --otel-exporter-otlp-endpoint <your-collector-host>:4317 \
-  --insecure \
-  --protocol grpc \
-  --header "authorization=<your-auth-token>" \
-  --rate 5 \
-  --duration 60 \
-  logs multi
+go install github.com/open-telemetry/opentelemetry-collector-contrib/cmd/telemetrygen@latest
 ```
 
-For the equivalent trace and metrics commands, and a walkthrough of the other `otelgen` subcommands, see [Synthetic data with otelgen](/use-cases/observability/clickstack/getting-started/otelgen).
+Send logs tagged with a service, environment, and severity:
+
+```shell
+telemetrygen logs \
+  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
+  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
+  --service checkout --rate 5 --duration 30s \
+  --severity-text Error --severity-number 17 --body "payment gateway timeout" \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.status_code="500"'
+```
+
+Send multi-span traces with child spans and an error status, which populate the Service Map and error views:
+
+```shell
+telemetrygen traces \
+  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
+  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
+  --service checkout --rate 5 --duration 30s \
+  --child-spans 4 --span-duration 120ms --span-links 1 --status-code Error \
+  --otlp-attributes 'deployment.environment="production"' \
+  --telemetry-attributes 'http.route="/cart"'
+```
+
+Send metrics of a given type with a named series:
+
+```shell
+telemetrygen metrics --metric-type Sum \
+  --otlp-endpoint ${OTEL_ENDPOINT} --otlp-insecure \
+  --otlp-header "authorization=\"${OTLP_AUTH_TOKEN}\"" \
+  --service checkout --otlp-metric-name http.server.requests \
+  --aggregation-temporality cumulative --rate 5 --duration 30s
+```
+
+For the full set of flags, variations across multiple services and metric types, and verification tips, see [Synthetic data with telemetrygen](/use-cases/observability/clickstack/getting-started/telemetrygen).
 
 ## Confirm in the ClickStack UI {#confirm-in-ui-existing}
 
