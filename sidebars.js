@@ -1637,6 +1637,7 @@ const sidebars = {
         'operations/settings/composable-protocols',
         'operations/settings/constraints-on-settings',
         'operations/settings/memory-overcommit',
+        'operations/settings/oom-canary',
         // "operations/settings/mysql-binlog-client",
         'operations/settings/permissions-for-queries',
         'operations/settings/query-complexity',
