@@ -230,18 +230,18 @@ At this point the application is running but uninstrumented. ClickStack shows no
 
 The application needs two values to reach the collector you deployed above:
 
-- `OTEL_EXPORTER_OTLP_ENDPOINT`: the OTLP endpoint your collector exposes (commonly port `4318` for OTLP over HTTP).
-- `OTEL_EXPORTER_OTLP_HEADERS`: the authorization header carrying your ingestion token, in the form `authorization=<token>`. Use the `OTLP_AUTH_TOKEN` you set on the collector above, or whatever auth header your existing collector expects.
+- `OTEL_EXPORTER_OTLP_ENDPOINT`: the OTLP endpoint your collector exposes (commonly port `4318` for OTLP over HTTPS).
+- `OTEL_EXPORTER_OTLP_HEADERS`: the authorization header carrying your ingestion token, in the form `authorization=<ingestion_token>`. Use the `OTLP_AUTH_TOKEN` you set on the collector above, or whatever auth header your existing collector expects.
 
-Open `.env` and set them:
+Copy `.env.example` to `.env`, then open the file and set the following variables:
 
 ```bash
 OTEL_SERVICE_NAME=hn-analyzer-api
 OTEL_EXPORTER_OTLP_ENDPOINT=https://<your-collector-endpoint>:4318
-OTEL_EXPORTER_OTLP_HEADERS=authorization=<your-ingestion-token>
+OTEL_EXPORTER_OTLP_HEADERS=authorization=<ingestion_token>
 ```
 
-The SDK uses `OTEL_EXPORTER_OTLP_HEADERS` to set the authorization header for all three signals: traces, metrics, and logs. If your collector runs locally and doesn't enforce auth, you can leave the value empty (`OTEL_EXPORTER_OTLP_HEADERS=authorization=`), but the variable must be present; the SDK skips initialization entirely if it's unset or fully empty.
+The SDK uses `OTEL_EXPORTER_OTLP_HEADERS` to set the authorization header for all three signals: traces, metrics, and logs. If your collector runs locally and doesn't enforce auth, you can leave the value empty (`OTEL_EXPORTER_OTLP_HEADERS=authorization=`), but the variable must be present; the SDK skips initialization entirely if it's unset or fully empty. Finally, when running the collector without TLS, ensure you use the correct HTTP protocol (ex: `http://localhost:4318`).
 
 ## Instrument the application {#instrument-the-application}
 
