@@ -3882,6 +3882,11 @@
       "source": "/docs/integrations/pg_clickhouse/reference",
       "destination": "/docs/cloud/managed-postgres/extensions/pg_clickhouse/reference",
       "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cmek-migration",
+      "destination": "/docs/cloud/security/cmek",
+      "permanent": true
     }
   ]
 }
