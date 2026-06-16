@@ -219,7 +219,17 @@ The HTTP interface can interpret the URL path as a database, table, output forma
 
 ### Enabling path routing {#enabling-path-routing}
 
-Path interpretation is gated by these per-user settings (all default to `false`):
+Path interpretation is gated in two layers:
+
+1. A **server-level** configuration flag, `http_allow_path_requests` (default off), which globally allows the HTTP interface to route path-style requests to the query handler. Set it in the server configuration:
+
+```xml
+<clickhouse>
+    <http_allow_path_requests>1</http_allow_path_requests>
+</clickhouse>
+```
+
+2. Per-user settings (all default to `false`) which control how a routed path is interpreted:
 
 | Setting | Effect |
 |---------|--------|
@@ -228,8 +238,8 @@ Path interpretation is gated by these per-user settings (all default to `false`)
 | [`http_allow_filters_as_path`](/operations/settings/settings#http_allow_filters_as_path) | Interpret hive-style `/name=value/` path components as `WHERE` filters. |
 | [`http_allow_filters_as_unrecognized_url_parameters`](/operations/settings/settings#http_allow_filters_as_unrecognized_url_parameters) | Interpret unrecognized URL parameters as `WHERE` filters. |
 
-:::important Enable in the server's default profile
-The decision to route a path-style request (such as `/my_db/hits.csv`) to the query handler is made **before** the request is authenticated, when the connecting user is not yet known. For path routing to take effect, at least one profile must enable the relevant feature; the most predictable option is to enable it in the server's default profile. Enabling it only for a specific user or role still works once a request is routed, but until some profile enables it server-wide, unknown paths return a plain `404`. After routing, each feature is re-checked against the authenticated user's effective settings, so a user whose profile leaves these features disabled is unaffected.
+:::important Two layers: routing vs. interpretation
+The decision to route a path-style request (such as `/my_db/hits.csv`) to the query handler is made **before** the request is authenticated, so it cannot depend on a per-user setting — that is why it is gated by the server-level `http_allow_path_requests` flag. While that flag is off, path requests are never routed and unknown paths return a plain pre-auth `404`. Once it is on, requests are routed, and the per-user settings above then control — after authentication — whether and how a path is actually interpreted, so the feature can be enabled selectively per user, role, or profile.
 :::
 
 ### Tables as files {#table-as-file-examples}
