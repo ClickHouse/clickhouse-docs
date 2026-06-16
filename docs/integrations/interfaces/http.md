@@ -211,6 +211,91 @@ $ curl -X POST -F 'query=select {p1:UInt8} + {p2:UInt8}' -F "param_p1=3" -F "par
 7
 ```
 
+## Accessing tables via the URL path and constructing queries {#tables-as-files}
+
+Available since ClickHouse 26.6.
+
+The HTTP interface can interpret the URL path as a database, table, output format and compression, and can shape the result using URL parameters, so simple read requests can be made without writing SQL. All of these features are disabled by default and are opt-in per user.
+
+### Enabling path routing {#enabling-path-routing}
+
+Path interpretation is gated by these per-user settings (all default to `false`):
+
+| Setting | Effect |
+|---------|--------|
+| [`http_allow_table_as_file`](/operations/settings/settings#http_allow_table_as_file) | Interpret the last path component as `table`, `table.format`, or `table.format.compression`. |
+| [`http_allow_database_as_path`](/operations/settings/settings#http_allow_database_as_path) | Interpret a leading `/database/` path component as the current database. |
+| [`http_allow_filters_as_path`](/operations/settings/settings#http_allow_filters_as_path) | Interpret hive-style `/name=value/` path components as `WHERE` filters. |
+| [`http_allow_filters_as_unrecognized_url_parameters`](/operations/settings/settings#http_allow_filters_as_unrecognized_url_parameters) | Interpret unrecognized URL parameters as `WHERE` filters. |
+
+:::important Enable in the server's default profile
+The decision to route a path-style request (such as `/my_db/hits.csv`) to the query handler is made **before** the request is authenticated, when the connecting user is not yet known. For path routing to take effect, at least one profile must enable the relevant feature; the most predictable option is to enable it in the server's default profile. Enabling it only for a specific user or role still works once a request is routed, but until some profile enables it server-wide, unknown paths return a plain `404`. After routing, each feature is re-checked against the authenticated user's effective settings, so a user whose profile leaves these features disabled is unaffected.
+:::
+
+### Tables as files {#table-as-file-examples}
+
+With `http_allow_table_as_file` (and, for the database component, `http_allow_database_as_path`) enabled, a request to `/database/table.format.compression` is processed as `SELECT * FROM database.table`, formatted as `format` and compressed with `compression`:
+
+```bash
+# SELECT * FROM my_db.hits, formatted as CSV
+curl 'http://localhost:8123/my_db/hits.CSV'
+
+# the same, gzip-compressed
+curl 'http://localhost:8123/my_db/hits.CSV.gz' | gzip -d
+```
+
+The format and compression taken from the path are equivalent to the [`format`](#format-and-compression-overrides) and [`compression`](#format-and-compression-overrides) settings below; specifying both with conflicting values throws.
+
+### Query construction {#query-construction}
+
+The following settings wrap the base query (whether it comes from the path table or from the `query` parameter) as a derived table, so they compose with one another and with the existing query. They can be supplied via a URL parameter, an in-query `SETTINGS` clause, or a user profile.
+
+| Setting | Effect |
+|---------|--------|
+| [`select`](/operations/settings/settings#select) | `SELECT <expr_list> FROM (…)` |
+| [`filter`](/operations/settings/settings#filter) | `… WHERE <expr>`; multiple `filter` parameters are combined with `AND` |
+| [`order`](/operations/settings/settings#order) | `… ORDER BY <expr_list>` |
+| [`sort`](/operations/settings/settings#sort) | `… ORDER BY` from a comma-separated list of identifiers or column positions, each with an optional `+` (ascending) or `-` (descending) prefix (e.g. `sort=a,-b`); cannot be combined with `order` |
+| [`limit`](/operations/settings/settings#limit) / [`offset`](/operations/settings/settings#offset) | `… LIMIT <n> OFFSET <m>`; both accept negative (tail selection) and fractional (a share of the rows) values |
+| [`page`](/operations/settings/settings#page) | pagination sugar: `offset = limit * (page - 1)` (requires `limit`, and `offset` must not also be set) |
+
+```bash
+# my_db.hits where a > 0, ordered by a descending, first 10 rows
+curl 'http://localhost:8123/my_db/hits?filter=a%3E0&order=-a&limit=10'
+
+# second page of 100 rows
+curl 'http://localhost:8123/my_db/hits?limit=100&page=2'
+```
+
+:::danger `filter` is not an access-control mechanism
+`filter` only adds a `WHERE` over the wrapping subquery, so the underlying data is still read and processed before the filter is applied. It must not be used as a substitute for [row-level security policies](/operations/access-rights#row-policy-management) or the `additional_table_filters` setting when the goal is to restrict which rows a user may access.
+:::
+
+### Format and compression overrides {#format-and-compression-overrides}
+
+| Setting | Effect |
+|---------|--------|
+| [`output_format`](/operations/settings/settings#output_format) | Output format. Wins over the query `FORMAT` clause, the path file extension, and `default_format`. |
+| [`input_format`](/operations/settings/settings#input_format) | Input (for `INSERT`) format. Wins over the query `FORMAT` clause. |
+| [`format`](/operations/settings/settings#format) | Generic format for both directions; the direction-specific settings above take precedence over it. |
+| [`default_format`](/operations/settings/settings#default_format) | Format used when the query has no `FORMAT` clause and no other override. Also set by the `X-ClickHouse-Format` header. |
+| [`compression`](/operations/settings/settings#compression) | Compress the response body, e.g. `compression=gz`. Independent of HTTP `Content-Encoding` and of the ClickHouse-native `compress` parameter. |
+
+These settings apply on every protocol, including the native client and `clickhouse-local` (where they correspond to the `--format` / `--input-format` / `--output-format` options). Binary or compressed responses additionally get a `Content-Disposition: attachment; filename=…` header, with the filename derived from the URL path (or `result.<format>.<compression>` as a fallback).
+
+`compression` is consumed before the query runs (the response buffers are set up up front), so unlike the other settings here it cannot be supplied via an in-query `SETTINGS` clause.
+
+### Using a path table with your own query {#implicit-table}
+
+When the path identifies a table and you also pass a `query`, the path table is exposed to the query via [`implicit_table_at_top_level`](/operations/settings/settings#implicit_table_at_top_level): a `FROM`-less `SELECT` reads from the path table.
+
+```bash
+# reads columns a, b from my_db.hits (no FROM needed)
+curl 'http://localhost:8123/my_db/hits.CSV?query=SELECT+a,+b'
+```
+
+If your query already contains a `FROM` clause, the path component only seeds the download filename.
+
 ## Insert queries over HTTP/HTTPS {#insert-queries}
 
 The `POST` method of transmitting data is necessary for `INSERT` queries. In this case, you can write the beginning of the query in the URL parameter, and use POST to pass the data to insert. The data to insert could be, for example, a tab-separated dump from MySQL. In this way, the `INSERT` query replaces `LOAD DATA LOCAL INFILE` from MySQL.
