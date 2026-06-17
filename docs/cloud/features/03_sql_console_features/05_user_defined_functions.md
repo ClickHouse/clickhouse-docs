@@ -93,6 +93,10 @@ requests>=2.28.0
 numpy>=1.23.0
 ```
 
+:::note[Let Cloud install dependencies]
+The recommended path is to list your packages in `requirements.txt`, which ClickHouse Cloud prepares for you. You can instead bundle dependencies directly in the ZIP, but then you must include cached packages for **both CPU architectures**, so `requirements.txt` is simpler.
+:::
+
 :::note
 ClickHouse Cloud expects to find `main.py` in the zip file you will upload via the UI in the next step.
 If you name the file something else you will encounter an error.
@@ -166,6 +170,10 @@ true    false
 ```
 
 ### Create a new version {#create-new-version}
+
+:::note[Editing vs. creating a new version]
+To change a UDF's code, create a new version — uploading a file in the **Edit** panel won't replace the deployed code. **Edit** only manages which services the UDF is assigned to.
+:::
 
 1. From the Cloud console homepage, click on the name of your organization in the bottom-left menu.
 2. Select **User-defined functions** from the menu.
