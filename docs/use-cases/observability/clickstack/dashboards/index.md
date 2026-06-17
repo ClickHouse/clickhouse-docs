@@ -83,6 +83,8 @@ For example, filter by the service `frontend` by adding the filter `ServiceName:
 
 <Image img={visualization_3} alt="Simple visualization 2" size="lg"/>
 
+To build a series similar to an existing one, you can duplicate it instead of starting from scratch. Click the copy icon (`Duplicate series`) on a series row to insert a copy directly below. The copy keeps the source series' settings, such as the metric, column, and filter. You then change only the fields that differ (for example the aggregation) and give the copy its own alias. Duplicating is available wherever multiple series are supported. It is hidden for visualization types that allow only one series, such as `Number`, `Pie`, and `Heatmap`.
+
 :::note
 Visualizations can be created from any data source — metrics, traces, or logs. ClickStack treats all of these as wide events. Any **numeric column** can be charted over time, and **string**, **date**, or **numeric** columns can be used for groupings.
 
