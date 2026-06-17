@@ -369,7 +369,7 @@
     },
     {
       "source": "/docs/en/manage/replication-and-sharding",
-      "destination": "/docs/guides/sre/keeper/clickhouse-keeper",
+      "destination": "/docs/guides/sre/keeper/overview",
       "permanent": true
     },
     {
@@ -464,7 +464,7 @@
     },
     {
       "source": "/docs/en/operations/clickhouse-keeper/",
-      "destination": "/docs/guides/sre/keeper/clickhouse-keeper",
+      "destination": "/docs/guides/sre/keeper/overview",
       "permanent": true
     },
     {
@@ -789,7 +789,7 @@
     },
     {
       "source": "/docs/en/guides/sre/keeper/clickhouse-keeper-uuid",
-      "destination": "/docs/guides/sre/keeper/clickhouse-keeper",
+      "destination": "/docs/guides/sre/keeper/overview",
       "permanent": true
     },
     {
@@ -3094,7 +3094,12 @@
     },
     {
       "source": "/docs/guides/sre/clickhouse-keeper",
-      "destination": "/docs/guides/sre/keeper/clickhouse-keeper",
+      "destination": "/docs/guides/sre/keeper/overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/guides/sre/keeper/clickhouse-keeper",
+      "destination": "/docs/guides/sre/keeper/overview",
       "permanent": true
     },
     {
