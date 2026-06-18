@@ -6,7 +6,7 @@ position: 1
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper']
 description: 'ClickHouse Keeper, or clickhouse-keeper, replaces ZooKeeper and provides replication and coordination.'
 title: 'ClickHouse Keeper'
-doc_type: 'overview'
+doc_type: 'landing-page'
 ---
 
 

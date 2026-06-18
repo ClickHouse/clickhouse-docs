@@ -5,7 +5,7 @@ sidebar_label: 'Setup'
 position: 2
 keywords: ['Keeper', 'ZooKeeper', 'clickhouse-keeper', 'configuration', 'setup', 'migration']
 description: 'How to configure, run, and migrate to ClickHouse Keeper.'
-title: 'ClickHouse Keeper Setup'
+title: 'ClickHouse Keeper setup'
 doc_type: 'guide'
 ---
 
