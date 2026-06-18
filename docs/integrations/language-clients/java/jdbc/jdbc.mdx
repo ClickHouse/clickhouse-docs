@@ -933,7 +933,8 @@ try (Connection conn = DriverManager.getConnection(url, properties)) {
 
 - V2 uses only `Schema` term to name databases. `Catalog` term is reserved for future use.
 - V2 returns `false` for `DatabaseMetaData.supportsTransactions()` and `DatabaseMetaData.supportsSavepoints()`. This will be changed in the future development.
-
+- In `DatabaseMetaData.getTypeInfo()`, the `LITERAL_PREFIX` and `LITERAL_SUFFIX` columns now return `null` for data types where prefixes and suffixes are not expected (e.g., numeric types). 
+In V1, these columns returned non-null values for such types. These columns should be used when generating SQL queries to properly quote literal values according to their data type.
 
 </Version>
 
