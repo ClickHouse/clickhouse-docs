@@ -164,7 +164,7 @@ Note: no need to url encode JDBC URL or properties, they will be automatically e
 
 We deliberately avoid adding default settings to connection properties to avoid problems with read-only profiles.
 However some users need to pass format settings (for example to read JSON as String) and we recommend using `readonly=2` profile.
-Read more about read-only profiles [here](/operations/settings/settings-profiles#read-only).
+Read more about read-only profiles [here](/operations/settings/constraints-on-settings#read-only).
 
 ### Client Identification {#client-identification}
 
@@ -581,7 +581,7 @@ try (Connection conn = ...) {
 
 **JSON Type**
 
-JSON type is mapped to Map<String, Object> by default where keys are JSON object keys and values are JSON object values.
+JSON type is mapped to `Map<String, Object>` by default where keys are JSON object keys and values are JSON object values.
 For example:
 ```json
 {
