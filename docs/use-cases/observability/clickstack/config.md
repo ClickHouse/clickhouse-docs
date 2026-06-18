@@ -109,7 +109,7 @@ The ClickStack UI relies on the user defining a source for each of the Observabi
 
 This configuration can be performed inside the application from `Team Settings -> Sources`, as shown below for logs:
 
-<Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg"/>
+<Image img={hyperdx_25} alt="HyperDX Source configuration" size="md"/>
 
 Each of these sources require at least one table specified on creation and a set of columns which allow HyperDX to query the data.
 
