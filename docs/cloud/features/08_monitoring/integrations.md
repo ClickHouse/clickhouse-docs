@@ -11,19 +11,11 @@ doc_type: 'guide'
 import CommunityMonitoring from '@site/docs/_snippets/_community_monitoring.md';
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-## Direct Datadog integration {#direct-datadog}
-
-Datadog offers a ClickHouse Monitoring plugin for its agent which queries system tables directly. This integration provides comprehensive database monitoring with cluster awareness through `clusterAllReplicas` functionality.
-
-:::warning[Not recommended for ClickHouse Cloud]
-The direct Datadog agent integration that queries system tables isn't recommended for ClickHouse Cloud deployments due to incompatibility with cost-optimizing idle behavior and operational limitations of the cloud proxy layer.
-:::
-
-Instead, use the Datadog [Agent](https://docs.datadoghq.com/agent/?tab=Linux) and [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) to collect metrics from the ClickHouse Cloud Prometheus endpoint. This approach respects service idling behavior and maintains operational separation between monitoring and production workloads. For configuration guidance, see [Datadog's Prometheus and OpenMetrics integration documentation](https://docs.datadoghq.com/integrations/openmetrics/).
+## Datadog integration {#direct-datadog}
 
 For Prometheus endpoint setup details, see the [Prometheus integration page](/integrations/prometheus#integrating-with-datadog).
 
-ClickHouse has multiple ways of integrating with Datadog, suited to different deployment modes. Each has its own tradeoffs, and some are owned by ClickHouse while others are owned by Datadog. Integrations are listed in recommended order.
+For users interested in monitoring their ClickHouse deployment in Datadog, ClickHouse offers multiple integrations, suited to different deployment modes. Each has its own tradeoffs, and some are owned by ClickHouse while others are owned by Datadog. Integrations are listed in recommended order.
 
 | Integration | Docs | Deployment | Signals |
 |---|---|---|---|
