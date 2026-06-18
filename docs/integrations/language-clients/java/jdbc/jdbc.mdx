@@ -160,6 +160,12 @@ jdbc:ch:http://localhost:8123/?user=default&password=password&client_name=my-app
 ```
 Note: no need to url encode JDBC URL or properties, they will be automatically encoded.
 
+**Readonly Profiles**
+
+We deliberately avoid adding default settings to connection properties to avoid problems with read-only profiles.
+However some users need to pass format settings (for example to read JSON as String) and we recommend using `readonly=2` profile.
+Read more about read-only profiles [here](/operations/settings/constraints-on-settings#read-only).
+
 ### Client Identification {#client-identification}
 
 There are two ways to identify application originated a request: set `com.clickhouse.client.api.ClientConfigProperties#CLIENT_NAME` via 
@@ -572,6 +578,58 @@ try (Connection conn = ...) {
 - `UUID` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
 - `IPv4` and `IPv6` aren't JDBC standard types. However they're part of JDK. By default `java.net.Inet4Address` and `java.net.Inet6Address` are returned on `getObject()` method.
 - `IPv4` and `IPv6` can be read/written as `String` by using `getObject(columnIndex, String.class)` method.
+
+**JSON Type**
+
+JSON type is mapped to `Map<String, Object>` by default where keys are JSON object keys and values are JSON object values.
+For example:
+```json
+{
+    "key1": "value1",
+    "key2": ["value2", "value3"]
+    "key3": {
+        "key4": "value4",
+        "key5": "value5"
+    }
+}
+```
+will be mapped to:
+
+```java
+Map<String, Object> map = new HashMap<>();
+map.put("key1", "value1");
+map.put("key2", Arrays.asList("value2", "value3"));
+map.put("key3", new HashMap<String, Object>() {{
+    put("key4", "value4");
+    put("key5", "value5");
+}});
+```
+There is more convinient option to read JSON as String by passing server setting `jdbc_read_json_as_string=true` to connection properties.
+This makes driver return JSON values as String and can be used to parse using any JSON library.
+
+```java
+Properties properties = new Properties();
+properties.setProperty(
+                ClientConfigProperties.serverSetting(ServerSettings.OUTPUT_FORMAT_BINARY_WRITE_JSON_AS_STRING),
+                "1");
+try (Connection conn = DriverManager.getConnection(url, properties)) {
+     try (ResultSet rs = stmt.executeQuery("SELECT * FROM test_json ORDER BY order")) {
+        while (rs.next()) {
+            String json = rs.getString("json");
+            // ...
+        }
+    }
+}
+```
+
+Starting ClickHouse version 25.8 numbers are no longer quoted by default. For older versions you can disable quoting by passing server settings to connection properties:
+```java
+Properties properties = new Properties();
+properties.put(ClientConfigProperties.serverSetting("output_format_json_quote_64bit_integers"), "0");
+properties.put(ClientConfigProperties.serverSetting("output_format_json_quote_64bit_floats"), "0");
+properties.put(ClientConfigProperties.serverSetting("output_format_json_quote_decimals"), "0");
+```
+
 
 ### Handling Dates, Times, and Timezones {#handling-dates-times-and-timezones}
 
