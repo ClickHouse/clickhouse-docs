@@ -20,15 +20,16 @@ The 113 queries are organized into 33 families (`1`–`33`). Queries within a fa
 
 ## Creating the tables {#creating-tables}
 
-The JOB dataset is a snapshot of IMDb with 21 tables. The table definitions are available in [`init.sql`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/job/init.sql) in the ClickHouse repository.
+The JOB dataset is a snapshot of IMDb with 21 tables. The table definitions are available in [`init_cloud.sql`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/job/init_cloud.sql) in the ClickHouse repository.
 
 Each table uses the [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) engine sorted by its primary key column `id`, mirroring the original PostgreSQL schema where every table declares `id integer NOT NULL PRIMARY KEY`. Nullable PostgreSQL columns map to `Nullable(...)` types.
 
 Create the tables:
 
 ```bash
+curl -O https://raw.githubusercontent.com/ClickHouse/ClickHouse/master/tests/benchmarks/job/init_cloud.sql
 clickhouse client --query "CREATE DATABASE IF NOT EXISTS job"
-clickhouse client --database job --queries-file init.sql
+clickhouse client --database job --queries-file init_cloud.sql
 ```
 
 ## Loading the data {#loading-the-data}
@@ -48,7 +49,7 @@ done
 ```
 
 Alternatively, load each table with an explicit `INSERT` statement.
-Make sure to create the tables first using [`init.sql`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/job/init.sql), then run the inserts against the `job` database:
+Make sure to create the tables first using [`init_cloud.sql`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/job/init_cloud.sql), then run the inserts against the `job` database:
 
 ```sql
 INSERT INTO aka_name SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/aka_name.parquet', 'Parquet');
@@ -131,11 +132,13 @@ ClickHouse expects RFC 4180 CSV (doubled quotes, no backslash escaping), so the 
 [`convert_csv.py`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/job/convert_csv.py) performs that re-encoding.
 It reads the original CSV on stdin and writes standard CSV on stdout, doubling embedded quotes and preserving empty unquoted fields (which ClickHouse maps to `NULL` for `Nullable` columns).
 
+`init.sql` is the original, unmodified JOB schema, where columns are nullable unless declared `NOT NULL`. The tables must therefore be created with `data_type_default_nullable=1` (passed as `--data_type_default_nullable=1` below), otherwise the nullable columns are created as non-nullable and loading rows with NULLs fails.
+
 To build the tables from the original CSVs:
 
 ```bash
 clickhouse client --query "CREATE DATABASE IF NOT EXISTS job"
-clickhouse client --database job --queries-file init.sql
+clickhouse client --database job --data_type_default_nullable=1 --queries-file init.sql
 
 for table in aka_name aka_title cast_info char_name comp_cast_type company_name \
              company_type complete_cast info_type keyword kind_type link_type \
