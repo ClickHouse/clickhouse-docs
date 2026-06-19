@@ -15,6 +15,9 @@ import cp_service from '@site/static/images/integrations/data-ingestion/clickpip
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
 import mongodb_tile from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongodb-tile.png'
 import mongodb_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/mongodb-connection-details.png'
+import tls_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/tls-settings.png'
+import pipe_connection_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pipe-connection-settings.png'
+import pipe_edit_connection from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pipe-edit-connection.png'
 import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/mongodb/select-destination-db.png'
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
@@ -72,6 +75,25 @@ Make sure you're logged in to your ClickHouse Cloud account. If you don't have a
    :::
 
    <Image img={mongodb_connection_details} alt="Fill in connection details" size="lg" border/>
+
+#### (Optional) Changing TLS settings {#optional-changing-tls-settings}
+
+By default, your ClickPipe will be created with TLS enabled and certificate verification. These defaults can be modified upon ClickPipe creation:
+
+<Image img={tls_settings} alt="TLS settings" size="lg" border/>
+
+Or edited at the _Connection settings_ section of your paused ClickPipe _Settings_ tab:
+
+<Image img={pipe_connection_settings} alt="Connection settings -> Edit Connection" size="lg" border/>
+
+<Image img={pipe_edit_connection} alt="Edit Connection" size="lg" border/>
+
+Where:
+
+- `Disable TLS` toggles TLS for the connection on or off. This means data is sent as plaintext over the network, potentially including secrets and sensitive data.
+- `Skip certificate verification` toggles on and off the verification of the certificate presented by the source MongoDB database. Take into consideration the security implications of skipping certificate verification.
+- `TLS Host` (optional, defaults to the source _Host_) is the hostname the certificate's CN must match when certificate verification is enabled.
+- `Upload CA` can be used to provide a CA used when certificate verification is enabled.
 
 #### (Optional) Set up SSH Tunneling {#optional-set-up-ssh-tunneling}
 
