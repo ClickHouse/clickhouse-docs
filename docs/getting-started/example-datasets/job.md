@@ -22,7 +22,7 @@ The 113 queries are organized into 33 families (`1`–`33`). Queries within a fa
 
 The JOB dataset is a snapshot of IMDb with 21 tables. The table definitions are available in [`init.sql`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/job/init.sql) in the ClickHouse repository.
 
-Each table uses the `MergeTree` engine sorted by its primary key column `id`, mirroring the original PostgreSQL schema where every table declares `id integer NOT NULL PRIMARY KEY`. Nullable PostgreSQL columns map to `Nullable(...)` types.
+Each table uses the [`MergeTree`](/engines/table-engines/mergetree-family/mergetree) engine sorted by its primary key column `id`, mirroring the original PostgreSQL schema where every table declares `id integer NOT NULL PRIMARY KEY`. Nullable PostgreSQL columns map to `Nullable(...)` types.
 
 Create the tables:
 
