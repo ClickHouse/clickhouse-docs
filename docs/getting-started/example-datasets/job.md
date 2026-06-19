@@ -35,7 +35,7 @@ clickhouse client --database job --queries-file init.sql
 
 The dataset is available as Parquet files in a public S3 bucket.
 
-Load all 21 tables directly from S3:
+Load all 21 tables directly from S3 using the [`s3`](/sql-reference/table-functions/s3) table function:
 
 ```bash
 for table in aka_name aka_title cast_info char_name comp_cast_type company_name \
