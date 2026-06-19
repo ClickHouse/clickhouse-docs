@@ -15,6 +15,9 @@ import cp_service from '@site/static/images/integrations/data-ingestion/clickpip
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
 import postgres_tile from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-tile.png'
 import postgres_connection_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/postgres-connection-details.jpg'
+import tls_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/tls-settings.png'
+import pipe_connection_settings from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pipe-connection-settings.png'
+import pipe_edit_connection from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/pipe-edit-connection.png'
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg'
 import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-destination-db.jpg'
@@ -90,6 +93,25 @@ Make sure you're logged in to your ClickHouse Cloud account. If you don't have a
 You can use AWS Private Link to connect to your source Postgres database if it is hosted on AWS. This is useful if you
 want to keep your data transfer private.
 You can follow the [setup guide to set up the connection](/integrations/clickpipes/aws-privatelink).
+
+#### (Optional) Changing TLS settings {#optional-changing-tls-settings}
+
+By default, your ClickPipe will be created with TLS enabled and certificate verification. These defaults can be modified upon ClickPipe creation:
+
+<Image img={tls_settings} alt="TLS settings" size="lg" border/>
+
+Or edited at the _Connection settings_ section of your paused ClickPipe _Settings_ tab:
+
+<Image img={pipe_connection_settings} alt="Connection settings -> Edit Connection" size="lg" border/>
+
+<Image img={pipe_edit_connection} alt="Edit Connection" size="lg" border/>
+
+Where:
+
+- `Disable TLS` (defaults to on) toggles TLS for the connection on or off. Turning TLS off means data is sent as plaintext over the network, potentially including secrets and sensitive data.
+- `Skip certificate verification` (defaults to off) toggles on or off the verification of the certificate presented by the source database. Take into consideration the security implications of skipping certificate verification.
+- `TLS Host` (optional, defaults to the source _Host_) is the hostname the certificate's CN must match when certificate verification is enabled.
+- `Upload CA` can be used to provide a CA used when certificate verification is enabled.
 
 #### (Optional) Setting up SSH tunneling {#optional-setting-up-ssh-tunneling}
 
