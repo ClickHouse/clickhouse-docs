@@ -29,9 +29,6 @@ The [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.htm
 |----------------------------------|--------------------|---------------|--------------------|
 | 1.0.0                            | > 23.3             | > 2.7         | > 6.1              |
 
-
-
-
 ### Main features {#main-features}
 
 - Shipped with out-of-the-box exactly-once semantics. It's powered by a new ClickHouse core feature named [KeeperMap](https://github.com/ClickHouse/ClickHouse/pull/39976) (used as a state store by the connector) and allows for minimalistic architecture.
@@ -124,9 +121,6 @@ The full table of configuration options:
 | `bufferFlushTime` (since v1.3.6)                | Maximum time in milliseconds to buffer records before flush when `exactlyOnce=false`. `0` disables time-based flushing. Default value is `0`. Only required for time-base threshold. Only effective when `bufferCount > 0`.                                                                                           | `"0"`                                                    |
 | `reportInsertedOffsets` (since v1.3.6)          | Enables returning only successfully inserted offsets from `preCommit` (instead of `currentOffsets`) when `exactlyOnce=false`. This does not apply when `ignorePartitionsWhenBatching=true`, where `currentOffsets` are still returned. | `"false"`                                                |
 
-
-
-
 ### Target tables {#target-tables}
 
 ClickHouse Connect Sink reads messages from Kafka topics and writes them to appropriate tables. ClickHouse Connect Sink writes data into existing tables. Please, make sure a target table with an appropriate schema was created in ClickHouse before starting to insert data into it.
@@ -163,9 +157,6 @@ Sink, use [Kafka Connect Transformations](https://docs.confluent.io/platform/cur
 | org.apache.kafka.connect.data.Time      | Int64 / DateTime64       | ✅         | No        |
 | org.apache.kafka.connect.data.Timestamp | Int32 / Date32           | ✅         | No        |
 | org.apache.kafka.connect.data.Decimal   | Decimal                  | ✅         | No        |
-
-
-
 
 - (1) - JSON is supported only when ClickHouse settings has `input_format_binary_read_json_as_string=1`. This works only for RowBinary format family and the setting affects all columns in the insert request so they all should be a string. Connector will convert STRUCT to a JSON string in this case. 
 
@@ -284,7 +275,6 @@ The type mapping below is defined by `io.confluent.connect.avro.AvroConverter`, 
 | union | STRUCT/`<T>` | ⚠️ | Defaults to STRUCT. Resolves to the singleton type `T` in the union definition if `flatten.singleton.unions=true` (see [docs](https://docs.confluent.io/cloud/current/connectors/reference/connector-configuration.html#value-converter-flatten-singleton-unions)) |
 | fixed | BYTES | ⚠️ | Fixed `decimal` logical type is not supported (see below) |
 
-
 Refer to [Supported data types](#supported-data-types) for the mapping between Kafka Connect types and ClickHouse types.
 
 #### Unsupported Avro schemas {#unsupported-avro-schemas}
@@ -390,7 +380,6 @@ The type mapping below is defined by `io.confluent.connect.protobuf.ProtobufConv
 | google.protobuf.Duration | STRUCT | Tuple(`seconds` Int64, `nano` Nullable(Int32)) | ✅ | |
 | google.protobuf.Any | _N/A_ | _N/A_ | ❌ | |
 | google.protobuf.Empty | _N/A_ | _N/A_ | ❌ | |
-
 
 Refer to [Supported data types](#supported-data-types) for the mapping between Kafka Connect types and ClickHouse types.
 
@@ -541,9 +530,6 @@ com.clickhouse:type=ClickHouseKafkaConnector,name=SinkTask{id}
 | `receivedRecords`    | long | The total number of records received.                                                   |
 | `recordProcessingTime` | long | Total time in nanoseconds spent grouping and converting records to a unified structure. |
 | `taskProcessingTime`   | long | Total time in nanoseconds spent processing and inserting data into ClickHouse.          |
-
-
-
 
 #### Kafka Producer/Consumer Metrics {#kafka-producer-consumer-metrics}
 
@@ -907,9 +893,6 @@ Monitor these key metrics:
 | High CPU usage | Too many small parts | Enable async inserts, increase merge settings |
 | OutOfMemory errors | Batch size too large | Reduce `max.poll.records`, `max.partition.fetch.bytes` |
 | Uneven task load | Uneven partition distribution | Rebalance partitions or adjust `tasks.max` |
-
-
-
 
 #### Best practices summary {#performance-best-practices}
 
