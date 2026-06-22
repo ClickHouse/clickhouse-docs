@@ -10,9 +10,10 @@ keywords: ['clickstack', 'dashboards', 'visualization', 'monitoring', 'observabi
 ---
 
 import Image from '@theme/IdealImage';
-import visualization_1 from '@site/static/images/use-cases/observability/hyperdx-visualization-1.png';
-import visualization_2 from '@site/static/images/use-cases/observability/hyperdx-visualization-2.png';
-import visualization_3 from '@site/static/images/use-cases/observability/hyperdx-visualization-3.png';
+import visualization_1 from '@site/static/images/use-cases/observability/clickstack-visualization-1.png';
+import visualization_2 from '@site/static/images/use-cases/observability/clickstack-visualization-2.png';
+import visualization_3 from '@site/static/images/use-cases/observability/clickstack-visualization-3.png';
+import duplicate_series from '@site/static/images/use-cases/observability/clickstack-duplicate-series.png';
 import dashboard_1 from '@site/static/images/use-cases/observability/hyperdx-dashboard-1.png';
 import dashboard_2 from '@site/static/images/use-cases/observability/hyperdx-dashboard-2.png';
 import dashboard_3 from '@site/static/images/use-cases/observability/hyperdx-dashboard-3.png';
@@ -82,6 +83,10 @@ Note that you can filter events using either a SQL `WHERE` clause or Lucene synt
 For example, filter by the service `frontend` by adding the filter `ServiceName:"frontend"`. Add a second series for the count of events over time with the alias `Count` by clicking `Add Series`.
 
 <Image img={visualization_3} alt="Simple visualization 2" size="lg"/>
+
+To build a series similar to an existing one, you can duplicate it instead of starting from scratch. Click the copy icon (`Duplicate series`) on a series row to insert a copy directly below. The copy keeps the source series' settings, such as the metric, column, and filter. You then change only the fields that differ (for example the aggregation) and give the copy its own alias. Duplicating is available wherever multiple series are supported. It is hidden for visualization types that allow only one series, such as `Number`, `Pie`, and `Heatmap`.
+
+<Image img={duplicate_series} alt="The Duplicate series copy icon and its tooltip on a chart series row" size="lg"/>
 
 :::note
 Visualizations can be created from any data source — metrics, traces, or logs. ClickStack treats all of these as wide events. Any **numeric column** can be charted over time, and **string**, **date**, or **numeric** columns can be used for groupings.
