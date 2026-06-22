@@ -8,4 +8,9 @@ doc_type: 'reference'
 ---
 
 
-The native protocol is used in the [command-line client](/interfaces/cli), for inter-server communication during distributed query processing, and also in other C++ programs. Unfortunately, native ClickHouse protocol doesn't have formal specification yet, but it can be reverse-engineered from ClickHouse source code (starting [around here](https://github.com/ClickHouse/ClickHouse/tree/master/src/Client)) and/or by intercepting and analyzing TCP traffic.
+The native protocol is used in the [command-line client](/interfaces/cli), for inter-server communication during distributed query processing, and also in other C++ programs.
+
+ClickHouse provides official specifications for the native protocol and the columnar format it carries:
+
+- [Native Protocol](/interfaces/specs/NativeProtocol) — packet framing, the connection state machine, version negotiation, and the body of every non-`Block` message.
+- [Native Format](/interfaces/specs/NativeFormat) — the `Block` and column structure, the per-type encodings, and the compression frame. This format also appears outside the TCP protocol, for example with `FORMAT Native` over HTTP.
