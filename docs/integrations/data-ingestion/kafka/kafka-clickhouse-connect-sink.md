@@ -411,7 +411,7 @@ CREATE TABLE IF NOT EXISTS `StringIntUnion`
 ) ENGINE = ...;
 ```
 
-#### Unsupported protobuf schemas {#unsupported-proto-schemas}
+#### Unsupported Protobuf schemas {#unsupported-proto-schemas}
 The following Protobuf schemas are unsupported by the connector:
 - multi-message unions (**before CH version 26.1**)
 ```protobuf
