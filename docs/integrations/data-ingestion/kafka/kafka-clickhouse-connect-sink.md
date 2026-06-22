@@ -344,7 +344,7 @@ The following Avro schemas are unsupported by the connector:
 
 Please note: if you encounter issues with missing classes, not every environment comes with the protobuf converter and you may need an alternate release of the jar bundled with dependencies.
 
-#### Protobuf Type Mapping {#proto-type-mapping}
+#### Protobuf type mapping {#proto-type-mapping}
 The type mapping below is defined by `io.confluent.connect.protobuf.ProtobufConverter`, the official Protobuf serializer/deserializer implementation in Kafka Connect. See the Kafka Connect [docs](https://docs.confluent.io/platform/current/connect/userguide.html#json-schema-and-protobuf) for advanced information on conversion logic.
 
 ✅: Supported
@@ -422,7 +422,7 @@ CREATE TABLE IF NOT EXISTS `StringIntUnion`
 ) ENGINE = ...;
 ```
 
-#### Unsupported Protobuf schemas {#unsupported-proto-schemas}
+#### Unsupported protobuf schemas {#unsupported-proto-schemas}
 The following Protobuf schemas are unsupported by the connector:
 - multi-message unions (**before CH version 26.1**)
 ```protobuf
