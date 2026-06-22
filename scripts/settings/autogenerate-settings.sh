@@ -503,11 +503,15 @@ echo "[$SCRIPT_NAME] Retrieving list of system tables from ClickHouse..."
 # Query to get all system tables
 SYSTEM_TABLES_QUERY="SELECT name FROM system.tables WHERE database = 'system' ORDER BY name FORMAT TSV"
 
-# Execute the query and store results in an array (macOS compatible)
+# Execute the query and store results in an array
+# Avoid process substitution (<(...)) — /dev/fd is unavailable on some build hosts (e.g. Vercel)
 SYSTEM_TABLES=()
+_sys_tables_tmp=$(mktemp)
+"$script_path" --query "$SYSTEM_TABLES_QUERY" 2>/dev/null > "$_sys_tables_tmp"
 while IFS= read -r line; do
     SYSTEM_TABLES+=("$line")
-done < <("$script_path" --query "$SYSTEM_TABLES_QUERY" 2>/dev/null)
+done < "$_sys_tables_tmp"
+rm -f "$_sys_tables_tmp"
 
 if [ ${#SYSTEM_TABLES[@]} -eq 0 ]; then
     echo "[$SCRIPT_NAME] Error: Failed to retrieve system tables list or no tables found."
