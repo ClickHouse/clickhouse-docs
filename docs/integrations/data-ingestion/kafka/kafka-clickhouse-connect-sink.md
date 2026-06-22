@@ -344,7 +344,7 @@ The type mapping below is defined by `io.confluent.connect.protobuf.ProtobufConv
 ️⚠️: Partially supported
 
 | Protobuf Type | Kafka Connect Type | ClickHouse Type | Supported | Notes |
-|---|---|---|---|---|
+|:---|:---|:---|:---|:---|
 | double | FLOAT64 | Float64 | ✅ | |
 | float | FLOAT32 | Float32 | ✅ | |
 | int32 | INT8/INT16/INT32 | Int32 | ✅ | Defaults to INT32. Resolves to INT8 if the schema has option `connect.type=int8` (analogously for INT16 if `connect.type=int16`) |
