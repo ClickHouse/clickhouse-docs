@@ -262,7 +262,7 @@ The type mapping below is defined by `io.confluent.connect.avro.AvroConverter`, 
 |---|---|---|---|
 | null | _N/A_ | ❌ | Not supported as a standalone type, but can be used in unions |
 | boolean | BOOLEAN | ✅ | |
-| int | INT8/INT16/INT32 | ✅ | Defaults to INT32. Resolves to INT8 if the schema has property `connect.type=int8` (analagously for INT16 if `connect.type=int16`) |
+| int | INT8/INT16/INT32 | ✅ | Defaults to INT32. Resolves to INT8 if the schema has property `connect.type=int8` (analogously for INT16 if `connect.type=int16`) |
 | long | INT64 | ✅ | |
 | float | FLOAT32 | ✅ | |
 | double | FLOAT64 | ✅ | |
