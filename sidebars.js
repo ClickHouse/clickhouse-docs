@@ -963,6 +963,16 @@ const sidebars = {
             'integrations/interfaces/arrowflight',
           ],
         },
+        {
+          type: 'category',
+          label: 'Specifications',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'interfaces/specs/NativeProtocol',
+            'interfaces/specs/NativeFormat',
+          ],
+        },
         'integrations/sql-clients/sql-console',
         'interfaces/third-party/index',
       ],
