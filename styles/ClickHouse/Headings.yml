@@ -226,6 +226,7 @@ exceptions:
   - RowBinary
   - MessagePack
   - Protocol Buffers
+  - Protobuf
   - Cap'n Proto
   - TabSeparated
   - TabSeparatedRaw
