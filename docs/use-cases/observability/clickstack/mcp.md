@@ -111,6 +111,18 @@ Add the following to `opencode.json`:
 ```
 
 </TabItem>
+<TabItem value="librechat" label="LibreChat">
+
+Add the following to `librechat.yaml`:
+
+```yaml
+mcpServers:
+  clickstack:
+    type: streamable-http
+    url: https://mcp.clickhouse.cloud/clickstack
+```
+
+</TabItem>
 <TabItem value="other" label="Other">
 
 Any MCP client that supports **Streamable HTTP** with OAuth can connect. Configure it with:
@@ -216,6 +228,20 @@ Add the following to `opencode.json`:
     }
   }
 }
+```
+
+</TabItem>
+<TabItem value="librechat" label="LibreChat">
+
+Add the following to `librechat.yaml`:
+
+```yaml
+mcpServers:
+  clickstack:
+    type: streamable-http
+    url: <YOUR_CLICKSTACK_URL>/api/mcp
+    headers:
+      Authorization: "Bearer <YOUR_API_KEY>"
 ```
 
 </TabItem>
