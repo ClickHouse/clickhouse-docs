@@ -79,7 +79,7 @@ You'll combine the key and secret into a single bearer token for Entra ID in the
 <scim-key>:<scim-secret>
 ```
 
-That is, the token **key** (starting with `scim_`), a colon, then the token **secret**, with no spaces. Entra ID sends this value as an `Authorization: Bearer` header on every request.
+Specifically, the token **key** (starting with `scim_`), a colon, then the token **secret**, with no spaces. Entra ID sends this value as an `Authorization: Bearer` header on every request.
 
 ### Define the role mapping {#define-role-mapping}
 
@@ -222,11 +222,11 @@ SCIM errors surface in the application's **Provisioning → View provisioning lo
 
 ## Troubleshooting {#troubleshooting}
 
-### "Test Connection" fails in Entra ID {#test-credentials-fails}
+### "Test connection" fails in Entra ID {#test-credentials-fails}
 
 - Confirm SCIM is **enabled** in the ClickHouse Cloud Console.
 - Confirm the **Tenant URL** in Entra ID exactly matches the SCIM endpoint URL shown in the Cloud Console — the organization id must be correct.
-- Confirm the **Secret Token** is in the form `<scim-key>:<scim-secret>` — the key (starting with `scim_`), a colon, then the secret, with no leading or trailing whitespace and no `Bearer` prefix (Entra ID adds that automatically).
+- Confirm the **Secret Token** is in the form `<scim-key>:<scim-secret>` — the key (starting with `scim_`), a colon, then the secret, with no leading or trailing whitespace, and no `Bearer` prefix (Entra ID adds that automatically).
 - If you've rotated tokens, make sure you're using the **new** key and secret, not the previous pair.
 
 ### Users get created but have no permissions {#users-no-permissions}
