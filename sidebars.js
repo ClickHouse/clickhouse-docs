@@ -1135,6 +1135,7 @@ const sidebars = {
       },
       items: [
         'integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
+        'integrations/data-ingestion/etl-tools/airflow-and-clickhouse',
         'integrations/data-ingestion/etl-tools/apify-and-clickhouse',
         {
           type: 'category',
