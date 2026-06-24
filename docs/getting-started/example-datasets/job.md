@@ -34,46 +34,34 @@ clickhouse client --database job --queries-file init_cloud.sql
 
 ## Loading the data {#loading-the-data}
 
-The dataset is available as Parquet files in a public S3 bucket.
+The data comes from the original IMDb snapshot used by JOB, distributed as one CSV file per table (`aka_name.csv`, `title.csv`, ...).
+These CSVs use PostgreSQL `COPY` semantics with `ESCAPE '\'`: a backslash escapes the quote character only inside a quoted field, while outside quotes a backslash is a literal character.
+ClickHouse expects RFC 4180 CSV (doubled quotes, no backslash escaping), so the files must be re-encoded first.
 
-Load all 21 tables directly from S3 using the [`s3`](/sql-reference/table-functions/s3) table function:
+[`convert_csv.py`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/job/convert_csv.py) performs that re-encoding.
+It reads the original CSV on stdin and writes standard CSV on stdout, doubling embedded quotes and preserving empty unquoted fields (which ClickHouse maps to `NULL` for `Nullable` columns).
+
+To build the tables from the original CSVs:
+
+- Create the tables (see above).
+- Download the IMDb data set as an `imdb.tgz` file, following the instructions in the Join Order Benchmark repository.
+- Convert and import the data:
 
 ```bash
+set -euo pipefail
+
 for table in aka_name aka_title cast_info char_name comp_cast_type company_name \
              company_type complete_cast info_type keyword kind_type link_type \
              movie_companies movie_info movie_info_idx movie_keyword movie_link \
              name person_info role_type title; do
-    clickhouse client --database job --query \
-        "INSERT INTO ${table} SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/${table}.parquet', 'Parquet')"
+    echo "Loading ${table} ..."
+    python3 convert_csv.py < "${table}.csv" > "${table}.clean.csv"
+    clickhouse client --database job --query "INSERT INTO ${table} FORMAT CSV" < "${table}.clean.csv"
 done
 ```
 
-Alternatively, load each table with an explicit `INSERT` statement.
-Make sure to create the tables first using [`init_cloud.sql`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/job/init_cloud.sql), then run the inserts against the `job` database:
-
-```sql
-INSERT INTO aka_name SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/aka_name.parquet', 'Parquet');
-INSERT INTO aka_title SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/aka_title.parquet', 'Parquet');
-INSERT INTO cast_info SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/cast_info.parquet', 'Parquet');
-INSERT INTO char_name SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/char_name.parquet', 'Parquet');
-INSERT INTO comp_cast_type SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/comp_cast_type.parquet', 'Parquet');
-INSERT INTO company_name SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/company_name.parquet', 'Parquet');
-INSERT INTO company_type SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/company_type.parquet', 'Parquet');
-INSERT INTO complete_cast SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/complete_cast.parquet', 'Parquet');
-INSERT INTO info_type SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/info_type.parquet', 'Parquet');
-INSERT INTO keyword SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/keyword.parquet', 'Parquet');
-INSERT INTO kind_type SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/kind_type.parquet', 'Parquet');
-INSERT INTO link_type SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/link_type.parquet', 'Parquet');
-INSERT INTO movie_companies SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/movie_companies.parquet', 'Parquet');
-INSERT INTO movie_info SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/movie_info.parquet', 'Parquet');
-INSERT INTO movie_info_idx SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/movie_info_idx.parquet', 'Parquet');
-INSERT INTO movie_keyword SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/movie_keyword.parquet', 'Parquet');
-INSERT INTO movie_link SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/movie_link.parquet', 'Parquet');
-INSERT INTO name SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/name.parquet', 'Parquet');
-INSERT INTO person_info SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/person_info.parquet', 'Parquet');
-INSERT INTO role_type SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/role_type.parquet', 'Parquet');
-INSERT INTO title SELECT * FROM s3('https://s3.eu-west-3.amazonaws.com/public-pme/join_bench/job/title.parquet', 'Parquet');
-```
+Once the tables are populated, they can be exported to Parquet for faster re-import later, e.g.
+`clickhouse client --database job --query "SELECT * FROM title ORDER BY id FORMAT Parquet" > title.parquet`.
 
 Detailed table sizes:
 
@@ -115,39 +103,22 @@ The queries reference the tables by name, so run them against the `job` database
 An example query (`1a`):
 
 ```sql
-SELECT
-    MIN(mc.note) AS production_note,
-    MIN(t.title) AS movie_title,
-    MIN(t.production_year) AS movie_year
-FROM company_type AS ct, info_type AS it, movie_companies AS mc, movie_info_idx AS mi_idx, title AS t
-WHERE (ct.kind = 'production companies') AND (it.info = 'top 250 rank') AND (mc.note NOT LIKE '%(as Metro-Goldwyn-Mayer Pictures)%') AND ((mc.note LIKE '%(co-production)%') OR (mc.note LIKE '%(presents)%')) AND (ct.id = mc.company_type_id) AND (t.id = mc.movie_id) AND (t.id = mi_idx.movie_id) AND (mc.movie_id = mi_idx.movie_id) AND (it.id = mi_idx.info_type_id);
+SELECT MIN(mc.note) AS production_note,
+       MIN(t.title) AS movie_title,
+       MIN(t.production_year) AS movie_year
+FROM company_type AS ct,
+     info_type AS it,
+     movie_companies AS mc,
+     movie_info_idx AS mi_idx,
+     title AS t
+WHERE ct.kind = 'production companies'
+  AND it.info = 'top 250 rank'
+  AND mc.note NOT LIKE '%(as Metro-Goldwyn-Mayer Pictures)%'
+  AND (mc.note LIKE '%(co-production)%'
+       OR mc.note LIKE '%(presents)%')
+  AND ct.id = mc.company_type_id
+  AND t.id = mc.movie_id
+  AND t.id = mi_idx.movie_id
+  AND mc.movie_id = mi_idx.movie_id
+  AND it.id = mi_idx.info_type_id;
 ```
-
-## Preparing the data from the original CSV files {#preparing-from-csv}
-
-The Parquet files above are derived from the original IMDb snapshot used by JOB, which is distributed as one CSV file per table (`aka_name.csv`, `title.csv`, ...).
-These CSVs use PostgreSQL `COPY` semantics with `ESCAPE '\'`: a backslash escapes the quote character only inside a quoted field, while outside quotes a backslash is a literal character.
-ClickHouse expects RFC 4180 CSV (doubled quotes, no backslash escaping), so the files must be re-encoded first.
-
-[`convert_csv.py`](https://github.com/ClickHouse/ClickHouse/blob/master/tests/benchmarks/job/convert_csv.py) performs that re-encoding.
-It reads the original CSV on stdin and writes standard CSV on stdout, doubling embedded quotes and preserving empty unquoted fields (which ClickHouse maps to `NULL` for `Nullable` columns).
-
-`init.sql` is the original, unmodified JOB schema, where columns are nullable unless declared `NOT NULL`. The tables must therefore be created with `data_type_default_nullable=1` (passed as `--data_type_default_nullable=1` below), otherwise the nullable columns are created as non-nullable and loading rows with NULLs fails.
-
-To build the tables from the original CSVs:
-
-```bash
-clickhouse client --query "CREATE DATABASE IF NOT EXISTS job"
-clickhouse client --database job --data_type_default_nullable=1 --queries-file init.sql
-
-for table in aka_name aka_title cast_info char_name comp_cast_type company_name \
-             company_type complete_cast info_type keyword kind_type link_type \
-             movie_companies movie_info movie_info_idx movie_keyword movie_link \
-             name person_info role_type title; do
-    python3 convert_csv.py < "${table}.csv" \
-        | clickhouse client --database job --query "INSERT INTO ${table} FORMAT CSV"
-done
-```
-
-Once the tables are populated, they can be exported to Parquet for faster re-import later, e.g.
-`clickhouse client --database job --query "SELECT * FROM title ORDER BY id FORMAT Parquet" > title.parquet`.
