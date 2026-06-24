@@ -92,6 +92,7 @@ exceptions:
   - JSON
   - JSON format settings
   - JSON settings
+  - Join Order Benchmark
   - Kafka
   - Kafka Connect
   - KMS
