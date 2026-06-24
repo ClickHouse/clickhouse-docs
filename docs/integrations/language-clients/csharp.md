@@ -105,7 +105,7 @@ Below is a full list of all the settings, their default values, and their effect
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | Use `ClickHouseDecimal` for arbitrary precision; if false, uses .NET `decimal` (128-bit limit) |
 | ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | Read `String` and `FixedString` columns as `byte[]` instead of `string`; useful for binary data |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | Send parameters as form data instead of URL query string |
-| ReadBufferSize | `int` | `8192` (8 KiB) | `ReadBufferSize` | Size in bytes of the buffer used to read HTTP query responses. Increase to reduce buffer refills for large result sets. Values at or above 85,000 bytes are allocated on the Large Object Heap, which can cause LOH fragmentation and longer GC pauses.  |
+| ReadBufferSize | `int` | `8192` (8 KiB) | `ReadBufferSize` | Size in bytes of the buffer used to read HTTP query responses. Increase to reduce buffer refills for large result sets. Values at or above 85,000 bytes are allocated on the Large Object Heap, which can cause LOH fragmentation and longer GC pauses. |
 | ParameterTypeResolver | `IParameterTypeResolver` | `null` | — | Custom resolver for `@`-style parameter type mapping; see [Custom parameter type mapping](#parameter-type-mapping) |
 | ParameterFormatter | `IParameterFormatter` | `null` | — | Custom formatter for parameter value serialization; see [Custom parameter value formatting](#parameter-value-formatting) |
 | ReadValueConverter | `IReadValueConverter` | `null` | — | Custom transform applied to values returned by the data reader; see [Custom read value conversion](#read-value-conversion) |
@@ -671,7 +671,7 @@ When using `@`-style parameters (e.g., `WHERE id = @id`), the driver automatical
 :::warning Behavior for inferred DateTime parameters
 For `@`-style parameters with no `{name:Type}` hint in the SQL and no `ClickHouseType` set, instant-bearing values are inferred as `DateTime('UTC')` rather than a bare `DateTime`. `DateTime` with `Kind` of `Utc` or `Local`, and all `DateTimeOffset` values, are sent as `DateTime('UTC')`, preserving the instant across any server timezone.
 
-Explicit hints (`{name:DateTime}` take precedence over inference, and are the recommended way of building queries.
+Explicit hints (`{name:DateTime}`) take precedence over inference and are the recommended way of building queries.
 :::
 
 To override these defaults, set `ParameterTypeResolver` on `ClickHouseClientSettings`. This is useful when you want all `DateTime` parameters to use `DateTime64(3)` for millisecond precision, or all decimals to use a specific scale, without setting `ClickHouseType` on every individual parameter.
@@ -1325,7 +1325,7 @@ var settings = new ClickHouseClientSettings("Host=localhost")
 | IPv6 | `IPAddress` |
 | Nothing | `DBNull` |
 | Dynamic | See note |
-| Array(T) | `T[]` (nested `Array(Array(T))` reads as jagged `T[][]`; use `reader.GetFieldValue<T[,]>(ordinal)` to materialise rectangular data as a multidimensional CLR array) |
+| Array(T) | `T[]` (nested `Array(Array(T))` reads as jagged `T[][]`; use `reader.GetFieldValue<T[,]>(ordinal)` to materialize rectangular data as a multidimensional CLR array) |
 | Tuple(T1, T2, ...) | `Tuple<T1, T2, ...>` / `LargeTuple` |
 | Map(K, V) | `Dictionary<K, V>` |
 | Nullable(T) | `T?` |
