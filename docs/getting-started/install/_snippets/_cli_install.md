@@ -15,10 +15,10 @@ A `chctl` alias is also created automatically for convenience.
 
 ## Install ClickHouse {#cli-install-clickhouse}
 
-Install the latest stable version of ClickHouse and make it your default:
+Install the latest version of ClickHouse and make it your default:
 
 ```bash
-clickhousectl local use stable
+clickhousectl local use latest
 ```
 
 `local use` installs the version if it isn't already present, sets it as your
@@ -29,9 +29,8 @@ that runs a `clickhouse` command then works as-is.
 You can also select a specific version:
 
 ```bash
-clickhousectl local use lts             # Latest LTS release
-clickhousectl local use 25.6            # Latest 25.6.x.x
-clickhousectl local use 25.6.1.1        # Exact version
+clickhousectl local use 26.5            # Latest 26.5.x.x
+clickhousectl local use 26.5.2.39       # Exact version
 ```
 
 :::note[Use vs install]
