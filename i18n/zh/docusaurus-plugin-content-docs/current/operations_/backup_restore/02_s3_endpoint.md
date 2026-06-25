@@ -2,16 +2,13 @@
 description: 'ClickHouse 备份与恢复概览'
 sidebar_label: 'S3 端点'
 slug: /operations/backup/s3_endpoint
-title: '通过 S3 端点进行备份与恢复'
+title: '通过 S3 端点进行 BACKUP / RESTORE'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/i18n/zh/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
-# 使用 S3 端点进行备份 / 恢复 \{#backup-to-a-local-disk\}
-
-本文介绍如何通过 S3 端点将数据备份到 S3 存储桶，或从 S3 存储桶恢复备份。
+本文介绍如何通过 S3 端点将备份保存到 S3 存储桶，或从中恢复备份。
 
 ## 语法 \{#syntax\}
 

@@ -1,26 +1,21 @@
 ---
-sidebar_title: 'Конечные точки API для запросов'
+sidebar_title: 'эндпоинты Query API'
 slug: /cloud/features/query-api-endpoints
 description: 'Легко создавайте конечные точки REST API на основе сохранённых запросов'
 keywords: ['api', 'конечные точки api для запросов', 'конечные точки запросов', 'query rest api']
-title: 'Конечные точки API для запросов'
+title: 'эндпоинты Query API'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import {CardSecondary} from '@clickhouse/click-ui/bundled';
 import console_api_keys from '@site/static/images/cloud/guides/query-endpoints/console-api-keys.png';
 import edit_api_key from '@site/static/images/cloud/guides/query-endpoints/api-key-edit.png';
 import specific_locations from '@site/static/images/cloud/guides/query-endpoints/specific-locations.png';
-import Link from '@docusaurus/Link'
 
+Для создания интерактивных приложений, работающих с данными, нужны не только быстрая база данных, хорошо структурированные данные и оптимизированные запросы.
+Вашим фронтенду и микросервисам также нужен простой способ получать данные, возвращаемые этими запросами, — желательно через хорошо структурированные API.
 
-# Конечные точки Query API \{#query-api-endpoints\}
-
-Создание интерактивных приложений, основанных на данных, требует не только быстрой базы данных, хорошо структурированных данных и оптимизированных запросов.
-Вашим фронтендам и микросервисам также нужен простой способ получать данные, возвращаемые этими запросами, желательно через хорошо структурированные API.
-
-Функция **конечных точек Query API** позволяет создавать конечную точку API напрямую из любого сохранённого SQL‑запроса в консоли ClickHouse Cloud.
+Возможность **эндпоинт Query API** позволяет создавать конечную точку API напрямую из любого сохранённого SQL-запроса в консоли ClickHouse Cloud.
 Вы сможете обращаться к конечным точкам API по HTTP, чтобы выполнять сохранённые запросы без необходимости подключаться к вашему сервису ClickHouse Cloud через нативный драйвер.
 
 ## Контроль доступа по IP \{#ip-access-control\}
@@ -30,7 +25,7 @@ import Link from '@docusaurus/Link'
 Чтобы ограничить клиентов, которые могут вызывать ваши эндпоинты Query API:
 
 <VerticalStepper headerLevel="h4">
-  #### Откройте настройки API-ключа
+  #### Откройте настройки API-ключа \{#open-settings\}
 
   1. Перейдите в ClickHouse Cloud Console → **Organization** → **API Keys**
 
@@ -40,7 +35,7 @@ import Link from '@docusaurus/Link'
 
   <Image img={edit_api_key} size="md" alt="Edit" />
 
-  #### Добавьте разрешённые IP-адреса
+  #### Добавьте разрешённые IP-адреса \{#add-ips\}
 
   1. В разделе **Allow access to this API Key** выберите **Specific locations**
   2. Введите IP-адреса или CIDR-диапазоны (например, `203.0.113.1` или `203.0.113.0/24`)

@@ -3,7 +3,7 @@ sidebar_label: 'JavaScript'
 sidebar_position: 4
 keywords: ['clickhouse', 'js', 'JavaScript', 'NodeJS', 'web', 'browser', 'Cloudflare', 'workers', 'client', 'connect', 'integrate']
 slug: /integrations/javascript
-description: 'ClickHouse への接続用公式 JS クライアント。'
+description: 'ClickHouse へ接続するための公式の JS クライアントです。'
 title: 'ClickHouse JS'
 doc_type: 'reference'
 integration:
@@ -14,8 +14,6 @@ integration:
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
-# ClickHouse JS \{#clickhouse-js\}
 
 ClickHouse へ接続するための公式の JS クライアントです。
 このクライアントは TypeScript で実装されており、クライアントの公開 API 向けの型定義を提供します。

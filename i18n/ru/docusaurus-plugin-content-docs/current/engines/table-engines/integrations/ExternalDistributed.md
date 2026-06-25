@@ -1,17 +1,15 @@
 ---
 description: 'Движок `ExternalDistributed` позволяет выполнять запросы `SELECT`
   к данным, которые хранятся на удалённых серверах MySQL или PostgreSQL. Использует
-  табличные движки MySQL или PostgreSQL в качестве аргумента, что позволяет реализовать сегментацию данных.'
+  движки таблиц MySQL или PostgreSQL в качестве аргумента, что позволяет реализовать сегментацию данных.'
 sidebar_label: 'ExternalDistributed'
 sidebar_position: 55
 slug: /engines/table-engines/integrations/ExternalDistributed
-title: 'Табличный движок ExternalDistributed'
+title: 'Движок таблицы ExternalDistributed'
 doc_type: 'reference'
 ---
 
-# Движок таблицы ExternalDistributed \{#externaldistributed-table-engine\}
-
-Движок `ExternalDistributed` позволяет выполнять запросы `SELECT` к данным, которые хранятся на удалённых серверах с MySQL или PostgreSQL. Принимает в качестве аргумента движки [MySQL](../../../engines/table-engines/integrations/mysql.md) или [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md), поэтому возможен шардинг.
+Движок `ExternalDistributed` позволяет выполнять запросы `SELECT` к данным, которые хранятся на удалённых серверах MySQL или PostgreSQL. Принимает движки таблиц [MySQL](../../../engines/table-engines/integrations/mysql.md) или [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) в качестве аргумента, что делает возможной сегментацию данных.
 
 ## Создание таблицы \{#creating-a-table\}
 
@@ -39,7 +37,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 * `table` — Имя удалённой таблицы.
 * `user` — Имя пользователя.
 * `password` — Пароль пользователя.
-
 
 ## Детали реализации \{#implementation-details\}
 

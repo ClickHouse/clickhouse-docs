@@ -6,9 +6,7 @@ title: 'WITH 子句'
 doc_type: 'reference'
 ---
 
-# WITH 子句 \{#with-clause\}
-
-ClickHouse 支持公用表表达式（[CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)）、公用标量表达式以及递归查询。
+ClickHouse 支持公用表表达式 ([CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)) 、通用标量表达式以及递归查询。
 
 ## 公用表表达式 \{#common-table-expressions\}
 

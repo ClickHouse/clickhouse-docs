@@ -1,24 +1,20 @@
 ---
 slug: /use-cases/AI/MCP/anythingllm
 sidebar_label: 'AnythingLLM を統合する'
-title: 'AnythingLLM および ClickHouse Cloud 向けの ClickHouse MCP サーバーをセットアップする'
+title: 'AnythingLLM で ClickHouse MCPサーバーを使う'
 pagination_prev: null
 pagination_next: null
-description: 'このガイドでは、Docker を使用して ClickHouse MCP サーバーと連携する AnythingLLM をセットアップする方法を説明します。'
+description: 'このガイドでは、Docker を使用して ClickHouse MCPサーバーと連携する AnythingLLM をセットアップする方法を説明します。'
 keywords: ['AI', 'AnythingLLM', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/allm_conversation.png';
 import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers.png';
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
-
-# AnythingLLM で ClickHouse MCPサーバーを使う \{#using-clickhouse-mcp-server-with-anythingllm\}
 
 > このガイドでは、Docker を使用して ClickHouse MCP サーバーと連携する [AnythingLLM](https://anythingllm.com/) をセットアップし、
 > ClickHouse のサンプルデータセットに接続する方法を説明します。

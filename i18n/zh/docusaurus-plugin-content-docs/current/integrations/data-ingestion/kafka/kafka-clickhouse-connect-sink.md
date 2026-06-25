@@ -10,13 +10,10 @@ keywords: ['ClickHouse Kafka Connect Sink', 'Kafka 连接器 ClickHouse', '官�
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# ClickHouse Kafka Connect Sink \{#clickhouse-kafka-connect-sink\}
-
 :::note
-如果你需要任何帮助,请[在代码仓库中提交 issue](https://github.com/ClickHouse/clickhouse-kafka-connect/issues),或在 [ClickHouse 公共 Slack](https://clickhouse.com/slack) 中提问。
+如果您需要任何帮助，请[在仓库中提交 issue](https://github.com/ClickHouse/clickhouse-kafka-connect/issues)，或在 [ClickHouse public Slack](https://clickhouse.com/slack) 中提问。
 :::
-**ClickHouse Kafka Connect Sink** 是一个 Kafka 连接器,用于将数据从 Kafka 主题投递到 ClickHouse 表中。
+**ClickHouse Kafka Connect Sink** 是一个 Kafka 连接器，用于将数据从 Kafka topic 传输到 ClickHouse 表。
 
 ### 许可证 \{#license\}
 
@@ -163,7 +160,7 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
 
 * (1) - 仅当在 ClickHouse 设置中将 `input_format_binary_read_json_as_string=1` 打开时才支持 JSON。该设置仅对 RowBinary 格式族生效,并且会影响插入请求中的所有列,因此所有列都必须是字符串。在这种情况下,Connector 会将 STRUCT 转换为 JSON 字符串。
 
-* (2) - 当 struct 中包含 `oneof` 之类的 union 时,需要将 converter 配置为**不**在字段名上添加前缀/后缀。可以使用 `ProtobufConverter` 的 `generate.index.for.unions=false` [设置](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf)。
+* (2) - 当 struct 中包含 `oneof` 之类的 union 时,需要将转换器配置为**不**在字段名上添加前缀/后缀。可以使用 `ProtobufConverter` 的 `generate.index.for.unions=false` [设置](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf)。
 
 **未声明 schema 时:**
 
@@ -202,6 +199,9 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
 }
 ```
 
+:::note
+上述连接器配置需要你在工作线程配置中通过 `connector.client.config.override.policy=All` 启用客户端重写。更多信息，请参阅 [Kafka Connect 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)。
+:::
 
 #### 多个 topic 的基本配置 \{#basic-configuration-with-multiple-topics\}
 
@@ -254,6 +254,81 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
 ```
 
 
+###### Avro 类型对照 \{#avro-type-mapping\}
+
+下方的类型对照由 `io.confluent.connect.avro.AvroConverter` 定义，它是 Kafka Connect 官方的 Avro 序列化/反序列化实现。有关转换逻辑的更多进阶信息，请参阅 Kafka Connect [文档](https://docs.confluent.io/platform/current/connect/userguide.html#avro)。
+
+✅：支持
+
+❌：不支持
+
+️⚠️：部分支持
+
+| Avro 类型 | Kafka Connect 类型 | 是否支持 | 说明                                                                                                                                                                                                                                          |
+| ------- | ---------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| null    | *N/A*            | ❌    | 不支持作为独立类型，但可用于联合类型                                                                                                                                                                                                                          |
+| boolean | BOOLEAN          | ✅    |                                                                                                                                                                                                                                             |
+| int     | INT8/INT16/INT32 | ✅    | 默认为 INT32。如果 schema 具有属性 `connect.type=int8`，则解析为 INT8 (INT16 的情况同理，即 `connect.type=int16`)                                                                                                                                                 |
+| long    | INT64            | ✅    |                                                                                                                                                                                                                                             |
+| float   | FLOAT32          | ✅    |                                                                                                                                                                                                                                             |
+| double  | FLOAT64          | ✅    |                                                                                                                                                                                                                                             |
+| bytes   | BYTES            | ✅    |                                                                                                                                                                                                                                             |
+| string  | STRING           | ✅    |                                                                                                                                                                                                                                             |
+| record  | STRUCT           | ✅    |                                                                                                                                                                                                                                             |
+| enum    | STRING           | ✅    |                                                                                                                                                                                                                                             |
+| array   | ARRAY/MAP        | ✅    | 默认为 ARRAY。如果该字段最初是通过 `AvroData.fromConnectSchema` 构造的，则解析为 MAP ([源代码](https://github.com/confluentinc/schema-registry/blob/174907bfc0d9424e8d02e788f450f4afcdda1750/avro-data/src/main/java/io/confluent/connect/avro/AvroData.java#L943))  |
+| map     | MAP              | ✅    |                                                                                                                                                                                                                                             |
+| union   | STRUCT/`<T>`     | ⚠️   | 默认为 STRUCT。如果 `flatten.singleton.unions=true`，则解析为联合定义中的单一类型 `T` (参见 [文档](https://docs.confluent.io/cloud/current/connectors/reference/connector-configuration.html#value-converter-flatten-singleton-unions))                              |
+| fixed   | BYTES            | ⚠️   | 不支持 fixed `decimal` 逻辑类型 (见下文)                                                                                                                                                                                                              |
+
+有关 Kafka Connect 类型与 ClickHouse 类型之间的对照，请参阅[支持的数据类型](#supported-data-types)。
+
+###### 不受支持的 Avro schema \{#unsupported-avro-schemas\}
+
+该连接器不支持以下 Avro schema：
+
+* 带有 `decimal` 逻辑类型的 fixed
+
+```json
+{"name": "decimal_18_4", "type": "fixed", "size": 8, "logicalType": "decimal", "precision": 18, "scale": 4}
+```
+
+* Nullable 联合类型
+
+```json
+{"name": "mixed_union", "type": ["null", "string", "int"], "default": null}
+```
+
+* 记录的联合类型
+
+```json
+{
+  "name": "record_union",
+  "type": [
+    {
+      "type": "record",
+      "name": "TypeA",
+      "fields": [
+        {
+          "name": "label",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "type": "record",
+      "name": "TypeB",
+      "fields": [
+        {
+          "name": "count",
+          "type": "int"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ##### Protobuf 模式支持 \{#protobuf-schema-support\}
 
 ```json
@@ -271,6 +346,114 @@ ClickHouse Connect Sink 从 Kafka 主题读取消息,并将其写入相应的表
 
 请注意:如果遇到类缺失问题,由于并非所有环境都自带 protobuf 转换器,您可能需要使用一个将依赖一起打包的备用 jar 发行版。
 
+
+###### Protobuf 类型对照 \{#proto-type-mapping\}
+
+下面的类型对照由 `io.confluent.connect.protobuf.ProtobufConverter` 定义，它是 Kafka Connect 官方提供的 Protobuf 序列化器/反序列化器实现。有关转换逻辑的进阶信息，请参阅 Kafka Connect [文档](https://docs.confluent.io/platform/current/connect/userguide.html#json-schema-and-protobuf)。
+
+✅：支持
+
+❌：不受支持
+
+️⚠️：部分支持
+
+| Protobuf 类型                             | Kafka Connect 类型                        | 是否支持 | 说明                                                                                                                                                          |
+| --------------------------------------- | --------------------------------------- | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| double                                  | FLOAT64                                 | ✅    |                                                                                                                                                             |
+| float                                   | FLOAT32                                 | ✅    |                                                                                                                                                             |
+| int32                                   | INT8/INT16/INT32                        | ✅    | 默认为 INT32。如果 schema 指定了选项 `connect.type=int8`，则会解析为 INT8 (INT16 的情况同理，即 `connect.type=int16`)                                                               |
+| sint32                                  | INT8/INT16/INT32                        | ✅    | 默认为 INT32。如果 schema 指定了选项 `connect.type=int8`，则会解析为 INT8 (INT16 的情况同理，即 `connect.type=int16`)                                                               |
+| sfixed32                                | INT8/INT16/INT32                        | ✅    | 默认为 INT32。如果 schema 指定了选项 `connect.type=int8`，则会解析为 INT8 (INT16 的情况同理，即 `connect.type=int16`)                                                               |
+| uint32                                  | INT64                                   | ✅    |                                                                                                                                                             |
+| fixed32                                 | INT64                                   | ✅    |                                                                                                                                                             |
+| int64                                   | INT64                                   | ✅    |                                                                                                                                                             |
+| uint64                                  | INT64                                   | ✅    |                                                                                                                                                             |
+| sint64                                  | INT64                                   | ✅    |                                                                                                                                                             |
+| fixed64                                 | INT64                                   | ✅    |                                                                                                                                                             |
+| sfixed64                                | INT64                                   | ✅    |                                                                                                                                                             |
+| bool                                    | BOOLEAN                                 | ✅    |                                                                                                                                                             |
+| string                                  | STRING                                  | ✅    |                                                                                                                                                             |
+| bytes                                   | BYTES                                   | ✅    |                                                                                                                                                             |
+| enum                                    | INT32/STRING                            | ✅    | 默认为 STRING。如果 `int.for.enums=true`，则会解析为 INT32 (参见 [schema registry 文档](https://docs.confluent.io/platform/current/schema-registry/connect.html#protobuf))  |
+| message                                 | STRUCT                                  | ⚠️   | 请参见下方的“不受支持的 schema”一节                                                                                                                                      |
+| repeated T (where T is not a map entry) | ARRAY                                   | ✅    |                                                                                                                                                             |
+| `map<K, V>`                             | MAP                                     | ✅    |                                                                                                                                                             |
+| oneof                                   | STRUCT                                  | ⚠️   | 请参见下方关于将 oneof 转换为 ClickHouse schema 的章节                                                                                                                    |
+| google.protobuf.DoubleValue             | FLOAT64                                 | ✅    |                                                                                                                                                             |
+| google.protobuf.FloatValue              | FLOAT32                                 | ✅    |                                                                                                                                                             |
+| google.protobuf.Int64Value              | INT64                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.UInt64Value             | INT64                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.UInt32Value             | INT64                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.Int32Value              | INT32                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.BoolValue               | BOOLEAN                                 | ✅    |                                                                                                                                                             |
+| google.protobuf.StringValue             | STRING                                  | ✅    |                                                                                                                                                             |
+| google.protobuf.BytesValue              | BYTES                                   | ✅    |                                                                                                                                                             |
+| google.protobuf.Timestamp               | org.apache.kafka.connect.data.Timestamp | ✅    |                                                                                                                                                             |
+| google.type.Date                        | org.apache.kafka.connect.data.Date      | ✅    |                                                                                                                                                             |
+| google.type.TimeOfDay                   | org.apache.kafka.connect.data.Time      | ✅    |                                                                                                                                                             |
+
+有关 Kafka Connect 类型与 ClickHouse 类型之间的映射关系，请参阅[支持的数据类型](#supported-data-types)。
+
+###### 关于将 `oneof` 字段映射为 ClickHouse 列的说明 \{#oneof-translation\}
+
+该连接器不支持将 Protobuf 联合 (`oneof`) 映射为 ClickHouse 的 Variant 类型。请改为在 ClickHouse 表 schema 中，将 `oneof` 字段分别列为单独的 Nullable 字段。
+
+例如：
+
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message StringIntUnion {
+  oneof mixed {
+    string mixed_string = 2;
+    int32 mixed_int = 3;
+  }
+}
+
+```
+
+转换为以下 ClickHouse 表定义：
+
+```sql
+CREATE TABLE IF NOT EXISTS `StringIntUnion`
+(
+    mixed_string Nullable(String),
+    mixed_int Nullable(Int32)
+) ENGINE = ...;
+```
+
+###### 不受支持的 Protobuf schema \{#unsupported-proto-schemas\}
+
+连接器不支持以下 Protobuf schema：
+
+* 多消息联合类型 (**CH 26.1 之前的版本**) 
+
+```protobuf
+syntax = "proto3";
+
+package com.clickhouse.kafka.connect.proto.test;
+
+message TwoRecords {
+  oneof payload {
+    TypeA type_a = 2;
+    TypeB type_b = 3;
+  }
+
+  // translates to Nullable(Tuple(label String)) in ClickHouse, which is unsupported
+  message TypeA {
+    string label = 1;
+  }
+
+  // translates to Nullable(Tuple(count Int32)) in ClickHouse, which is unsupported
+  message TypeB {
+    int32 count = 1;
+  }
+}
+```
+
+从 CH 26.1 版本起，当 `allow_experimental_nullable_tuple_type=1` 时，即支持此 schema (请参阅[此文档页面](https://clickhouse.com/docs/operations/settings/settings#allow_experimental_nullable_tuple_type)) 。
 
 ##### JSON Schema 支持 \{#json-schema-support\}
 
@@ -518,28 +701,31 @@ Connector 从框架的缓冲区轮询消息:
 
 ```properties
 # Increase the number of records per poll
-consumer.max.poll.records=5000
+consumer.override.max.poll.records=5000
 
 # Increase the partition fetch size (5 MB)
-consumer.max.partition.fetch.bytes=5242880
+consumer.override.max.partition.fetch.bytes=5242880
 
 # Optional: Increase minimum fetch size to wait for more data (1 MB)
-consumer.fetch.min.bytes=1048576
+consumer.override.fetch.min.bytes=1048576
 
 # Optional: Reduce wait time if latency is critical
-consumer.fetch.max.wait.ms=300
+consumer.override.fetch.max.wait.ms=300
 ```
+
+:::note
+上述属性要求您在工作线程配置中通过 `connector.client.config.override.policy=All` 启用客户端配置重写。更多信息，请参阅 [Kafka Connect 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)。
+:::
 
 **重要提示**: Kafka Connect 的 fetch 设置针对的是压缩后的数据，而 ClickHouse 接收的是未压缩的数据。请根据压缩比来平衡这些设置。
 
 **权衡取舍**:
 
-* **更大的批次** = 更好的 ClickHouse 摄取性能、更少的分区片段、更低的开销
+* **更大的批次** = 更好的 ClickHouse 摄取性能、更少的parts、更低的开销
 * **更大的批次** = 更高的内存占用、端到端延迟可能增加
 * **批次过大** = 存在超时、OutOfMemory 错误或超过 `max.poll.interval.ms` 的风险
 
 更多详情: [Confluent 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration) | [Kafka 文档](https://kafka.apache.org/documentation/#consumerconfigs)
-
 
 #### 异步插入 \{#asynchronous-inserts\}
 
@@ -776,15 +962,19 @@ SETTINGS
     "exactlyOnce": "false",
     "ignorePartitionsWhenBatching": "true",
     
-    "consumer.max.poll.records": "10000",
-    "consumer.max.partition.fetch.bytes": "5242880",
-    "consumer.fetch.min.bytes": "1048576",
-    "consumer.fetch.max.wait.ms": "500",
+    "consumer.override.max.poll.records": "10000",
+    "consumer.override.max.partition.fetch.bytes": "5242880",
+    "consumer.override.fetch.min.bytes": "1048576",
+    "consumer.override.fetch.max.wait.ms": "500",
     
     "clickhouseSettings": "async_insert=1,wait_for_async_insert=1,async_insert_max_data_size=16777216,async_insert_busy_timeout_ms=1000,socket_timeout=300000"
   }
 }
 ```
+
+:::note
+上述连接器配置要求你通过 `connector.client.config.override.policy=All` 在 worker 配置中启用客户端重写。更多信息请参阅 [Kafka Connect 文档](https://docs.confluent.io/platform/current/connect/references/allconfigs.html#override-the-worker-configuration)。
+:::
 
 **此配置**:
 
@@ -794,16 +984,25 @@ SETTINGS
 * 运行 8 个并行任务(与分区数量匹配)
 * 针对吞吐量进行了优化,而非严格顺序
 
-
 ### 故障排查 \{#troubleshooting\}
 
-#### "State mismatch for topic `[someTopic]` partition `[0]`" \{#state-mismatch-for-topic-sometopic-partition-0\}
+#### &quot;State mismatch for topic `[someTopic]` partition `[0]`&quot; \{#state-mismatch-for-topic-sometopic-partition-0\}
 
 当 KeeperMap 中存储的 offset 与 Kafka 中存储的 offset 不一致时,就会出现这种情况,通常发生在某个 topic 被删除
 或 offset 被手动调整之后。
-要修复此问题,需要删除该特定 topic 和分区对应存储的旧值。
+要修复此问题,需要删除该特定 topic 和分区对应存储的旧值:
 
-**注意:此类调整可能会对 exactly-once 语义产生影响。**
+```sql
+-- First, identify the database used to store the data.
+SELECT * FROM [database].connect_state
+
+-- Identify the key that matches the topic and partition.
+ALTER TABLE [database].connect_state DELETE WHERE key = [keyname]
+```
+
+:::note
+此类调整可能会对 exactly-once 语义产生影响。
+:::
 
 #### &quot;What errors will the connector retry?&quot; \{#what-errors-will-the-connector-retry\}
 

@@ -2,26 +2,24 @@
 title: 'DataStore 访问器'
 sidebar_label: '访问器'
 slug: /chdb/datastore/accessors
-描述: '字符串、DateTime、数组、JSON、URL、IP 和地理（Geo）访问器，提供 185+ 种方法'
+description: '字符串、DateTime、数组、JSON、URL、IP 和 Geo 访问器，包含 185+ 个方法'
 keywords: ['chdb', 'datastore', 'accessor', 'str', 'dt', 'arr', 'json', 'url', 'ip', 'geo']
-doc_type: 'reference'
+doc_type: '参考'
 ---
-
-# DataStore 访问器 \{#datastore-accessors\}
 
 DataStore 提供 7 个访问器命名空间，包含 185+ 个用于特定领域操作的方法。
 
-| Accessor | Methods | Description |
-|----------|---------|-------------|
-| `.str` | 56 | 字符串操作 |
-| `.dt` | 42+ | 日期时间操作 |
-| `.arr` | 37 | 数组操作（ClickHouse 特定） |
-| `.json` | 13 | JSON 解析（ClickHouse 特定） |
-| `.url` | 15 | URL 解析（ClickHouse 特定） |
-| `.ip` | 9 | IP 地址操作（ClickHouse 特定） |
-| `.geo` | 14 | 地理/距离操作（ClickHouse 特定） |
+| Accessor | Methods | Description              |
+| -------- | ------- | ------------------------ |
+| `.str`   | 56      | 字符串操作                    |
+| `.dt`    | 42+     | 日期时间操作                   |
+| `.arr`   | 37      | 数组操作 (特有)     |
+| `.json`  | 13      | JSON 解析 (特有)  |
+| `.url`   | 15      | URL 解析 (特有)   |
+| `.ip`    | 9       | IP 地址操作 (特有)  |
+| `.geo`   | 14      | 地理/距离操作 (特有)  |
 
----
+***
 
 ## 字符串访问器 (`.str`) \{#str\}
 

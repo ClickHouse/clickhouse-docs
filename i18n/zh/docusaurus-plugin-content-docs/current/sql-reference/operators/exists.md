@@ -1,17 +1,15 @@
 ---
-description: '关于 `EXISTS` 运算符的文档'
+description: '`EXISTS` 运算符的文档'
 slug: /sql-reference/operators/exists
 title: 'EXISTS'
 doc_type: 'reference'
 ---
 
-# EXISTS \{#exists\}
-
 `EXISTS` 运算符用于检查子查询结果中记录的数量。如果结果为空，则运算符返回 `0`；否则返回 `1`。
 
 `EXISTS` 也可以在 [WHERE](../../sql-reference/statements/select/where.md) 子句中使用。
 
-:::tip\
+:::tip
 子查询中不支持引用主查询中的表和列。
 :::
 
@@ -25,13 +23,11 @@ EXISTS(subquery)
 
 用于检查子查询中是否存在某些值的查询：
 
-```sql
+```sql title="Query"
 SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM numbers(10) WHERE number > 11)
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─in(1, _subquery1)─┬─in(1, _subquery2)─┐
 │                 1 │                 0 │
 └───────────────────┴───────────────────┘
@@ -39,13 +35,11 @@ SELECT EXISTS(SELECT * FROM numbers(10) WHERE number > 8), EXISTS(SELECT * FROM 
 
 包含返回多行结果的子查询的查询：
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 8);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │      10 │
 └─────────┘
@@ -53,13 +47,11 @@ SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHER
 
 带有返回空结果的子查询的查询：
 
-```sql
+```sql title="Query"
 SELECT count() FROM numbers(10) WHERE EXISTS(SELECT number FROM numbers(10) WHERE number > 11);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │       0 │
 └─────────┘

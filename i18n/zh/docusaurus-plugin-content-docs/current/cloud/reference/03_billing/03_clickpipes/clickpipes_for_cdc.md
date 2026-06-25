@@ -1,24 +1,20 @@
 ---
-sidebar_label: 'PostgreSQL CDC'
+sidebar_label: 'PostgreSQL CDC（变更数据捕获）'
 slug: /cloud/reference/billing/clickpipes/postgres-cdc
-title: '适用于 PostgreSQL CDC 的 ClickPipes'
-description: 'PostgreSQL CDC ClickPipes 的计费概览'
+title: '用于 PostgreSQL CDC（变更数据捕获） 的 ClickPipes'
+description: 'PostgreSQL CDC（变更数据捕获） ClickPipes 计费概览'
 doc_type: 'reference'
-keywords: ['计费', 'ClickPipes', 'CDC 定价', '成本', '价格']
+keywords: ['计费', 'clickpipes', 'cdc 定价', '成本', '定价']
 ---
 
-
-
-# 用于 PostgreSQL CDC 的 ClickPipes \{#clickpipes-for-postgresql-cdc\}
-
-本节介绍 ClickPipes 中 Postgres Change Data Capture（CDC）连接器的定价模型。在设计该模型时，我们的目标是在保持价格高度具备竞争力的同时，始终坚持我们的核心愿景：
+本节介绍 ClickPipes 中 Postgres Change Data Capture (CDC（变更数据捕获）) 连接器的定价模型。在设计该模型时，我们的目标是在保持价格高度具备竞争力的同时，始终坚持我们的核心愿景：
 
 > 让用户能够无缝且成本可控地将数据从 Postgres 迁移到 ClickHouse，用于实时分析。
 
 与外部 ETL 工具以及其他数据库平台中类似功能相比，该连接器在成本效益方面高出 **5 倍以上**。
 
 :::note
-自 **2025 年 9 月 1 日** 起，所有使用 Postgres CDC ClickPipes 的客户（包括现有和新客户）均按月计量并出具账单。
+自 **2025 年 9 月 1 日** 起，所有使用 Postgres CDC（变更数据捕获） ClickPipes 的客户 (包括现有和新客户) 均按月计量并出具账单。
 :::
 
 

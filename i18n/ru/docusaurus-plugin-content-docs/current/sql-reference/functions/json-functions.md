@@ -1678,6 +1678,54 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 ```
 
 
+## prettyPrintJSON \{#prettyPrintJSON\}
+
+Добавленный в: v26.4.0
+
+Возвращает JSON-строку, отформатированную для удобства чтения, с переносами строк и пробелами для отступов.
+
+**Синтаксис**
+
+```sql
+prettyPrintJSON(json [, indent])
+```
+
+**Аргументы**
+
+* `json` — Корректная JSON-строка для форматирования. [`String`](/sql-reference/data-types/string)
+* `indent` — Число пробелов на один уровень отступа. По умолчанию: 4. Максимум: 32 [`UInt*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+JSON-строка, отформатированная для удобства чтения. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Простой объект**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1,"b":"hello"}');
+```
+
+```response title=Response
+{
+    "a": 1,
+    "b": "hello"
+}
+```
+
+**Настраиваемый отступ**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1}', 8);
+```
+
+```response title=Response
+{
+        "a": 1
+}
+```
+
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 
 Добавлено в: v21.4.0

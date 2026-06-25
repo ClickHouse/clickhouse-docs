@@ -1,14 +1,12 @@
 ---
 slug: /guides/developer/debugging-memory-issues
-sidebar_label: 'メモリ関連の問題のデバッグ'
+sidebar_label: 'メモリ問題のデバッグ'
 sidebar_position: 1
-description: 'メモリ関連の問題をデバッグするためのクエリ。'
-keywords: ['メモリ関連の問題']
-title: 'メモリ関連の問題のデバッグ'
+description: 'メモリ問題のデバッグに役立つクエリ。'
+keywords: ['メモリ問題']
+title: 'メモリ問題のデバッグ'
 doc_type: 'guide'
 ---
-
-# メモリ問題のデバッグ \{#debugging-memory-issues\}
 
 メモリ問題やメモリリークが発生した場合、どのクエリやリソースが多くのメモリを消費しているかを把握しておくことが重要です。以下では、どのクエリ、データベース、テーブルを最適化できるかを特定することで、メモリ問題のデバッグに役立つクエリを紹介します。
 

@@ -14,8 +14,6 @@ import docdb_parameter_group_status from '@site/static/images/integrations/data-
 import Image from '@theme/IdealImage';
 
 
-# Amazon DocumentDB 数据源配置指南 \{#amazon-documentdb-source-setup-guide\}
-
 ## 支持的 DocumentDB 版本 \{#supported-documentdb-versions\}
 
 ClickPipes 支持 DocumentDB 5.0 版本。

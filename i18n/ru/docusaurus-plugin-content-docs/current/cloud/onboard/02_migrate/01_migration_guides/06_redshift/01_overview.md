@@ -7,10 +7,8 @@ title: 'Сравнение ClickHouse Cloud и Amazon Redshift'
 doc_type: 'guide'
 ---
 
-# Миграция с Amazon Redshift на ClickHouse \{#amazon-redshift-to-clickhouse-migration\}
-
-> Этот документ является вводным руководством по миграции данных из Amazon
-Redshift в ClickHouse.
+> В этом документе приводится вводная информация по миграции данных из Amazon
+> Redshift в ClickHouse.
 
 ## Введение \{#introduction\}
 

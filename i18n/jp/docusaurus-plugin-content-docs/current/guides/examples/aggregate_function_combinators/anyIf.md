@@ -7,11 +7,9 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-# anyIf \{#avgif\}
-
 ## 説明 \{#description\}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターは、[`any`](/sql-reference/aggregate-functions/reference/any)
+[`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`any`](/sql-reference/aggregate-functions/reference/any)
 集約関数に適用して、指定した条件に一致する要素のうち、指定したカラム内で最初に出現したものを
 選択します。
 
@@ -43,8 +41,8 @@ INSERT INTO sales VALUES
 
 ```sql
 SELECT
-    anyIf(transaction_id, amount &lt; 200) AS tid_lt_200,
-    anyIf(transaction_id, amount &gt; 200) AS tid_gt_200
+    anyIf(transaction_id, amount < 200) AS tid_lt_200,
+    anyIf(transaction_id, amount > 200) AS tid_gt_200
 FROM sales;
 ```
 
@@ -55,5 +53,6 @@ FROM sales;
 ```
 
 ## 関連項目 \{#see-also\}
-- [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`any`](/sql-reference/aggregate-functions/reference/any)
+* [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)

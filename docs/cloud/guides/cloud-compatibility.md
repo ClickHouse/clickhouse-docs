@@ -7,7 +7,6 @@ keywords: ['ClickHouse Cloud', 'compatibility']
 doc_type: 'guide'
 ---
 
-# ClickHouse Cloud compatibility guide
 
 This guide provides an overview of what to expect functionally and operationally in ClickHouse Cloud. While ClickHouse Cloud is based on the open-source ClickHouse distribution, there may be some differences in architecture and implementation. You may find this blog on [how we built ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year) interesting and relevant to read as background.
 
@@ -27,22 +26,22 @@ ClickHouse Cloud provides access to a curated set of capabilities in the open so
 
 ### Database and table engines {#database-and-table-engines}
 
-ClickHouse Cloud provides a highly-available, replicated service by default. As a result, all database and table engines are "Replicated". You don't need to specify "Replicated"–for example, `ReplicatedMergeTree` and `MergeTree` are identical when used in ClickHouse Cloud.
+ClickHouse Cloud is a highly-available, replicated service by default, built on the [SharedMergeTree](/cloud/reference/shared-merge-tree) table engine family. When you create a table with a standard MergeTree-family engine, Cloud automatically substitutes the corresponding `Shared*` engine. You don't add a `Shared` or `Replicated` prefix yourself.
 
-**Supported table engines**
+| You specify | Cloud uses |
+|---|---|
+| `MergeTree` (or no engine) | `SharedMergeTree` |
+| `ReplacingMergeTree` | `SharedReplacingMergeTree` |
+| `SummingMergeTree` | `SharedSummingMergeTree` |
+| `AggregatingMergeTree` | `SharedAggregatingMergeTree` |
+| `CollapsingMergeTree` | `SharedCollapsingMergeTree` |
+| `VersionedCollapsingMergeTree` | `SharedVersionedCollapsingMergeTree` |
+| `GraphiteMergeTree` | `SharedGraphiteMergeTree` |
 
-- ReplicatedMergeTree (default, when none is specified)
-- ReplicatedSummingMergeTree
-- ReplicatedAggregatingMergeTree
-- ReplicatedReplacingMergeTree
-- ReplicatedCollapsingMergeTree
-- ReplicatedVersionedCollapsingMergeTree
-- MergeTree (converted to ReplicatedMergeTree)
-- SummingMergeTree (converted to ReplicatedSummingMergeTree)
-- AggregatingMergeTree (converted to ReplicatedAggregatingMergeTree)
-- ReplacingMergeTree (converted to ReplicatedReplacingMergeTree)
-- CollapsingMergeTree (converted to ReplicatedCollapsingMergeTree)
-- VersionedCollapsingMergeTree (converted to ReplicatedVersionedCollapsingMergeTree)
+`Replicated*` engines are converted to the same `Shared*` equivalents. The substitution is visible in `SHOW CREATE TABLE`, which reports the `Shared*` engine even though your statement specified the plain variant.
+
+The following engines are also supported and used as written:
+
 - URL
 - View
 - MaterializedView
@@ -81,7 +80,7 @@ Federated queries with some external database and table engines, such as SQLite,
 
 ### User defined functions {#user-defined-functions}
 
-User-defined functions in ClickHouse Cloud are in [private preview](https://clickhouse.com/docs/sql-reference/functions/udf).
+User-defined functions in ClickHouse Cloud are in [public beta](https://clickhouse.com/docs/sql-reference/functions/udf).
 
 #### Settings behavior {#udf-settings-behavior}
 

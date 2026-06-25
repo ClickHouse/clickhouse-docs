@@ -26,7 +26,7 @@ ClickHouse には、オブジェクトストレージ内のオープンテーブ
 以下の例では、各レイクハウス形式で S3 に保存された [hits](/getting-started/example-datasets/star-schema) データセットを使用します。各レイク形式について、オブジェクトストアプロバイダーごとの専用関数が用意されています。
 
 <Tabs groupId="lake-format">
-  <TabItem value="iceberg" label="Apache Iceberg" default>
+  <TabItem value="Iceberg" label="Apache Iceberg" default>
     [`iceberg`](/sql-reference/table-functions/iceberg) テーブル関数 (`icebergS3` のエイリアス) は、オブジェクトストレージから直接 Iceberg テーブルを読み取ります。各ストレージバックエンドに対応するバリアントとして、`icebergS3`、`icebergAzure`、`icebergHDFS`、`icebergLocal` があります。
 
     **構文例：**
@@ -53,7 +53,9 @@ ClickHouse には、オブジェクトストレージ内のオープンテーブ
     GROUP BY url
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─url────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │ -- 3.29 million
     │ http://kinopoisk.ru                                │ 1625250 │ -- 1.63 million
@@ -132,7 +134,9 @@ ClickHouse には、オブジェクトストレージ内のオープンテーブ
     GROUP BY url
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─url────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │
     │ http://kinopoisk.ru                                │ 1625250 │
@@ -161,8 +165,8 @@ ClickHouse には、オブジェクトストレージ内のオープンテーブ
     deltaLakeLocal(path, [,format])
     ```
 
-    :::note GCS サポート
-    関数のS3バリアントは、Google Cloud Storage (GCS) でも使用できます。
+    :::note GCSのサポート
+    関数のS3バリアントは、Google Cloud Storage (GCS) に対しても使用できます。
     :::
 
     **例：**
@@ -175,7 +179,9 @@ ClickHouse には、オブジェクトストレージ内のオープンテーブ
     GROUP BY URL
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─URL────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │ -- 3.29 million
     │ http://kinopoisk.ru                                │ 1625250 │ -- 1.63 million
@@ -201,7 +207,7 @@ ClickHouse には、オブジェクトストレージ内のオープンテーブ
     deltaLakeAzureCluster(cluster_name, connection_string|storage_account_url, container_name, blobpath, [,account_name], [,account_key] [,format] [,compression_method])
     ```
 
-    :::note GCSサポート
+    :::note GCSのサポート
     関数のS3バリアントは、Google Cloud Storage (GCS) に対しても使用できます。
     :::
 
@@ -250,7 +256,9 @@ ClickHouse には、オブジェクトストレージ内のオープンテーブ
     GROUP BY URL
     ORDER BY cnt DESC
     LIMIT 5
+    ```
 
+    ```response
     ┌─URL────────────────────────────────────────────────┬─────cnt─┐
     │ http://liver.ru/belgorod/page/1006.jки/доп_приборы │ 3288173 │
     │ http://kinopoisk.ru                                │ 1625250 │

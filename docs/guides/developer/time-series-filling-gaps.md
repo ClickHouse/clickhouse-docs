@@ -8,7 +8,6 @@ title: 'Filling gaps in time-series data'
 doc_type: 'guide'
 ---
 
-# Filling gaps in time-series data
 
 When working with time-series data, there can be gaps in the data due to missing data or inactivity.
 Typically, we don't want those gaps to exist when we query the data. In this case, the `WITH FILL` clause can come in handy.

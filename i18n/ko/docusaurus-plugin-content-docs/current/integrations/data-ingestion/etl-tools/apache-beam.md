@@ -1,24 +1,21 @@
 ---
 sidebar_label: 'Apache Beam'
 slug: /integrations/apache-beam
-description: 'Apache Beam을 사용하여 ClickHouse로 데이터를 수집할 수 있습니다'
-title: 'Apache Beam과 ClickHouse 연동'
+description: 'Apache Beam을 사용해 데이터를 ClickHouse에 수집할 수 있습니다'
+title: 'Apache Beam과 ClickHouse 통합'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
-keywords: ['apache beam', '스트림 처리', '배치 처리', 'JDBC 커넥터', '데이터 파이프라인']
+keywords: ['apache beam', '스트림 처리', '배치 처리', 'jdbc 커넥터', '데이터 파이프라인']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Apache Beam과 ClickHouse 통합 \{#integrating-apache-beam-and-clickhouse\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 **Apache Beam**은 오픈 소스 통합 프로그래밍 모델로, 개발자가 배치와 스트림(연속) 데이터 처리 파이프라인을 모두 정의하고 실행할 수 있게 합니다. Apache Beam의 유연성은 ETL(Extract, Transform, Load) 작업부터 복잡한 이벤트 처리와 실시간 분석에 이르기까지 광범위한 데이터 처리 시나리오를 지원하는 데에서 비롯됩니다.
-이 통합은 하부 데이터 삽입 계층을 위해 ClickHouse의 공식 [JDBC connector](https://github.com/ClickHouse/clickhouse-java)를 사용합니다.
+이 통합은 하부 데이터 삽입 계층을 위해 ClickHouse의 공식 [JDBC 커넥터](https://github.com/ClickHouse/clickhouse-java)를 사용합니다.
 
 ## 통합 패키지 \{#integration-package\}
 

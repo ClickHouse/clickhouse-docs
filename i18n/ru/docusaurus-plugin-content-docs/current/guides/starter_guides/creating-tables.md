@@ -4,11 +4,9 @@ sidebar_label: 'Создание таблиц'
 title: 'Создание таблиц в ClickHouse'
 slug: /guides/creating-tables
 description: 'Узнайте, как создавать таблицы в ClickHouse'
-keywords: ['создание таблиц', 'CREATE TABLE', 'создание таблицы', 'руководство по базе данных', 'движок MergeTree']
+keywords: ['создание таблиц', 'CREATE TABLE', 'создание таблиц', 'руководство по базам данных', 'движок MergeTree']
 doc_type: 'guide'
 ---
-
-# Создание таблиц в ClickHouse \{#creating-tables-in-clickhouse\}
 
 Как и большинство систем управления базами данных, ClickHouse логически группирует таблицы в **базы данных**. Используйте команду `CREATE DATABASE`, чтобы создать новую базу данных в ClickHouse:
 
@@ -49,7 +47,6 @@ CREATE DATABASE IF NOT EXISTS helloworld
 
 Существует множество движков, но для простой таблицы на одноузловом сервере ClickHouse, скорее всего, подойдёт [MergeTree](/engines/table-engines/mergetree-family/mergetree.md).
 :::
-
 
 ## Краткое введение в первичные ключи \{#a-brief-intro-to-primary-keys\}
 

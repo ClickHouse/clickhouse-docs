@@ -2,22 +2,19 @@
 sidebar_label: 'Apache Beam'
 slug: /integrations/apache-beam
 description: '您可以使用 Apache Beam 将数据摄取到 ClickHouse'
-title: '集成 Apache Beam 和 ClickHouse'
+title: '集成 Apache Beam 与 ClickHouse'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
-keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connector', 'data pipeline']
+keywords: ['apache beam', '流式处理', '批处理', 'JDBC 连接器', '数据管道']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 集成 Apache Beam 与 ClickHouse \{#integrating-apache-beam-and-clickhouse\}
-
-<ClickHouseSupportedBadge/>
-
-**Apache Beam** 是一个开源的统一编程模型，使开发者能够定义和执行批处理和流式（连续）数据处理管道。Apache Beam 的灵活性体现在它能够支持广泛的数据处理场景，从 ETL（抽取、转换、加载）操作到复杂事件处理和实时分析。
+**Apache Beam** 是一个开源的统一编程模型，使开发者能够定义和执行批处理和流式 (连续) 数据处理管道。Apache Beam 的灵活性体现在它能够支持广泛的数据处理场景，从 ETL (抽取、转换、加载) 操作到复杂事件处理和实时分析。
 本集成在数据写入层使用了 ClickHouse 官方的 [JDBC 连接器](https://github.com/ClickHouse/clickhouse-java)。
 
 ## 集成包 \{#integration-package\}

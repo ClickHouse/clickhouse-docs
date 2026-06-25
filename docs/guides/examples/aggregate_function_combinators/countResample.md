@@ -7,7 +7,6 @@ sidebar_label: 'countResample'
 doc_type: 'reference'
 ---
 
-# countResample {#countResample}
 
 ## Description {#description}
 

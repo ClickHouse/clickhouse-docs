@@ -6,9 +6,7 @@ title: 'clickhouse-keeper-client 工具'
 doc_type: 'reference'
 ---
 
-# clickhouse-keeper-client 工具 \{#clickhouse-keeper-client-utility\}
-
-一个通过其原生协议与 clickhouse-keeper 交互的客户端工具。
+用于通过 ClickHouse Keeper 原生协议与其交互的客户端应用程序。
 
 ## 参数 \{#clickhouse-keeper-client\}
 

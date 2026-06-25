@@ -2,15 +2,13 @@
 slug: /optimize/skipping-indexes/examples
 sidebar_label: '数据跳过索引 - 示例'
 sidebar_position: 2
-description: '跳过索引示例汇总'
+description: '汇总的跳过索引示例'
 title: '数据跳过索引示例'
 doc_type: 'guide'
 keywords: ['跳过索引', '数据跳过', '性能', '索引', '最佳实践']
 ---
 
-# 数据跳过索引示例 \{#data-skipping-index-examples\}
-
-本文汇总了 ClickHouse 中数据跳过索引的示例，展示如何定义每种类型、在什么场景下使用它们，以及如何验证它们是否已生效。所有功能都适用于 [MergeTree-family 表](/engines/table-engines/mergetree-family/mergetree)。
+本文汇总了 ClickHouse 中数据跳过索引的示例，展示如何定义每种类型、在什么场景下使用它们，以及如何验证它们是否已生效。所有功能都适用于 [MergeTree 家族表](/engines/table-engines/mergetree-family/mergetree)。
 
 **索引语法：**
 
@@ -30,7 +28,6 @@ ClickHouse 支持六种跳过索引类型：
 | **tokenbf&#95;v1**                                  | 用于全文搜索的基于 token 的 Bloom 过滤器 |
 
 每一节都会通过示例数据展示用法，并演示如何在查询执行中验证索引是否被使用。
-
 
 ## MinMax 索引 \{#minmax-index\}
 

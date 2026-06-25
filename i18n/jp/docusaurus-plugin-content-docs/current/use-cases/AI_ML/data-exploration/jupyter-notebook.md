@@ -1,8 +1,8 @@
 ---
 slug: /use-cases/AI/jupyter-notebook
-sidebar_label: 'Jupyter ノートブックと chDB を使ったデータ探索'
-title: 'Jupyter ノートブックでの chDB を使ったデータ探索'
-description: 'このガイドでは、Jupyer ノートブックで ClickHouse Cloud またはローカルファイルのデータを探索するための chDB の設定方法と使用方法について説明します。'
+sidebar_label: 'Jupyter Notebook と chDB を使ったデータ探索'
+title: 'Jupyter Notebook と chDB を使ったデータ探索'
+description: 'このガイドでは、Jupyer notebooks で ClickHouse Cloud やローカルファイルのデータを探索するための、chDB のセットアップと使い方を説明します'
 keywords: ['ML', 'Jupyer', 'chDB', 'pandas']
 doc_type: 'guide'
 ---
@@ -18,14 +18,12 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-# Jupyter Notebook と chDB を使ったデータ探索 \{#exploring-data-with-jupyter-notebooks-and-chdb\}
-
-このガイドでは、[chDB](/chdb)（ClickHouse を基盤とした高速なインプロセス SQL OLAP エンジン）を利用して、Jupyter Notebook から ClickHouse Cloud 上のデータセットを探索する方法を学びます。
+このガイドでは、[chDB](/chdb) (ClickHouse を基盤とした高速なインプロセス SQL OLAP エンジン) を利用して、Jupyter Notebook から ClickHouse Cloud 上のデータセットを探索する方法を学びます。
 
 **前提条件**:
 
-- 仮想環境
-- 動作している ClickHouse Cloud サービスと、その[接続情報](/cloud/guides/sql-console/gather-connection-details)
+* 仮想環境
+* 動作している ClickHouse Cloud サービスと、その[接続情報](/cloud/guides/sql-console/gather-connection-details)
 
 :::tip
 まだ ClickHouse Cloud アカウントをお持ちでない場合は、[サインアップ](https://console.clickhouse.cloud/signUp?loc=docs-juypter-chdb)して
@@ -34,10 +32,10 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 **このガイドで学べること:**
 
-- Jupyter Notebook から chDB を使って ClickHouse Cloud に接続する方法
-- リモートデータセットをクエリし、結果を Pandas DataFrame に変換する方法
-- 分析のためにクラウド上のデータとローカルの CSV ファイルを組み合わせる方法
-- matplotlib を使ってデータを可視化する方法
+* Jupyter Notebook から chDB を使って ClickHouse Cloud に接続する方法
+* リモートデータセットをクエリし、結果を Pandas DataFrame に変換する方法
+* 分析のためにクラウド上のデータとローカルの CSV ファイルを組み合わせる方法
+* matplotlib を使ってデータを可視化する方法
 
 このガイドでは、ClickHouse Cloud 上のスターターデータセットの 1 つとして提供されている UK Property Price データセットを使用します。
 このデータセットには、1995 年から 2024 年までのイギリスにおける住宅の売却価格に関するデータが含まれています。

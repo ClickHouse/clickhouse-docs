@@ -10,10 +10,7 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
-
-# ClickHouse Cloud 架构 \{#clickhouse-cloud-architecture\}
-
-<Image img={Architecture} size='lg' alt='云架构'/>
+<Image img={Architecture} size="lg" alt="Cloud 架构" />
 
 ## 基于对象存储的存储 \{#storage-backed-by-object-store\}
 

@@ -20,11 +20,8 @@ import example_dashboard from '@site/static/images/clickstack/kafka/logs/example
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 Kafka 日志 \{#kafka-logs-clickstack\}
-
-:::note[TL;DR]
-使用 OTel `filelog` 接收器在 ClickStack 中收集并可视化 Kafka broker 的日志 (Log4j 格式) 。包含演示数据集和预置仪表板。
+:::note[简述]
+使用 OTel `filelog` 接收器在 ClickStack 中采集并可视化 Kafka broker 日志 (Log4j 格式) 。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 Kafka 集成 \{#existing-kafka\}

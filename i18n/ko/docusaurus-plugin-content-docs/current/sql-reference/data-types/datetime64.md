@@ -1,13 +1,11 @@
 ---
-description: '초 단위 이하 정밀도의 타임스탬프를 저장하는 ClickHouse의 DateTime64 데이터 타입에 대한 문서'
+description: '초 미만 정밀도의 타임스탬프를 저장하는 ClickHouse DateTime64 데이터 타입 문서'
 sidebar_label: 'DateTime64'
 sidebar_position: 18
 slug: /sql-reference/data-types/datetime64
 title: 'DateTime64'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-# DateTime64 \{#datetime64\}
 
 캘린더 날짜와 하루 중 시간을 초 미만 단위까지의 정밀도로 표현할 수 있는 특정 시점을 저장하는 데 사용됩니다.
 

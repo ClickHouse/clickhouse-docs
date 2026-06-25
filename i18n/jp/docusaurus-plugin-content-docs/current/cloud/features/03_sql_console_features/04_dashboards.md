@@ -2,7 +2,7 @@
 sidebar_label: 'ダッシュボード'
 slug: /cloud/manage/dashboards
 title: 'ダッシュボード'
-description: 'SQL Console のダッシュボード機能を使用すると、保存済みクエリから作成した可視化結果をまとめて共有できます。'
+description: 'SQL コンソール のダッシュボード機能を使用すると、保存済みクエリから作成した可視化をまとめて共有できます。'
 doc_type: 'guide'
 keywords: ['ClickHouse Cloud', 'ダッシュボード', 'データ可視化', 'SQL コンソールのダッシュボード', 'クラウド分析']
 ---
@@ -20,10 +20,7 @@ import dashboards_9 from '@site/static/images/cloud/dashboards/9_dashboards.png'
 import dashboards_10 from '@site/static/images/cloud/dashboards/10_dashboards.png';
 import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.png';
 
-
-# ダッシュボード \{#dashboards\}
-
-SQL Console のダッシュボード機能を使用すると、保存したクエリから得られた可視化をまとめて共有できます。まずはクエリを保存して可視化し、その可視化結果をダッシュボードに追加し、クエリパラメータを使ってダッシュボードをインタラクティブにしてみてください。
+SQL コンソール のダッシュボード機能を使用すると、保存済みクエリから作成した可視化をまとめて共有できます。まずはクエリを保存して可視化し、その可視化をダッシュボードに追加して、クエリ パラメータを使ってダッシュボードをインタラクティブにします。
 
 ## コアコンセプト \{#core-concepts\}
 

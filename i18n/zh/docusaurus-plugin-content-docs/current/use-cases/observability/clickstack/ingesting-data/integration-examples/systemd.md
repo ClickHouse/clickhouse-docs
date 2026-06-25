@@ -19,11 +19,8 @@ import search_view from '@site/static/images/clickstack/systemd/systemd-search-v
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 systemd 日志 \{#systemd-logs-clickstack\}
-
 :::note[TL;DR]
-借助 OpenTelemetry Collector 的 journald 接收器，在 ClickStack 中收集并可视化 systemd journal 日志。包含演示数据集和预构建仪表板。
+使用 OpenTelemetry Collector 的 journald receiver 在 ClickStack 中收集并可视化 systemd journal 日志。包含演示数据集和预构建的仪表盘。
 :::
 
 :::

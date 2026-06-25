@@ -21,12 +21,9 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# ClickHouse와 함께 marimo 사용하기 \{#using-marimo-with-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-[marimo](https://marimo.io/)는 SQL이 내장된 Python용 오픈 소스 반응형 노트북입니다. 셀을 실행하거나 UI 요소와 상호 작용하면 marimo가 영향을 받는 셀을 자동으로 실행하거나 최신 상태가 아님으로 표시하여 코드와 출력 결과를 일관되게 유지하고, 버그가 발생하기 전에 미리 방지합니다. 모든 marimo 노트북은 순수 Python으로 저장되며, 스크립트로 실행할 수 있고 애플리케이션으로 배포할 수 있습니다.
+[marimo](https://marimo.io/)는 SQL이 기본 내장된 오픈소스 반응형 Python 노트북입니다. 셀을 실행하거나 UI 요소와 상호작용하면 marimo는 영향을 받는 셀을 자동으로 실행하거나 오래된 상태로 표시하여 코드와 출력의 일관성을 유지하고 버그를 사전에 방지합니다. 모든 marimo 노트북은 순수 Python으로 저장되며, 스크립트로 실행할 수 있고 앱으로 배포할 수 있습니다.
 
 <Image img={marimo_connect} size="md" border alt="ClickHouse에 연결" />
 

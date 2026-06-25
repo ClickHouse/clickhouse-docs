@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse 中 Variant 数据类型的说明文档'
+description: 'ClickHouse 中 Variant 数据类型的文档'
 sidebar_label: 'Variant(T1, T2, ...)'
 sidebar_position: 40
 slug: /sql-reference/data-types/variant
 title: 'Variant(T1, T2, ...)'
 doc_type: 'reference'
 ---
-
-# Variant(T1, T2, ...) \{#variantt1-t2\}
 
 该类型表示其他数据类型的联合类型。类型 `Variant(T1, T2, ..., TN)` 表示，该类型的每一行
 都可以包含 `T1`、`T2`、...、`TN` 中任意一种类型的值，或者不属于其中任何一种 (即 `NULL` 值) 。

@@ -6,8 +6,6 @@ title: '比較関数'
 doc_type: 'reference'
 ---
 
-# 比較関数 \{#comparison-functions\}
-
 ## 比較ルール \{#comparison-rules\}
 
 以下の比較関数は、型 [UInt8](/sql-reference/data-types/int-uint) の `0` または `1` を返します。同じグループ内の値同士のみが

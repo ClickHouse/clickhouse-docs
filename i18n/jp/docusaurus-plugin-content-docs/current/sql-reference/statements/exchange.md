@@ -1,13 +1,11 @@
 ---
-description: 'EXCHANGE 文に関するドキュメント'
+description: 'EXCHANGE ステートメントのドキュメント'
 sidebar_label: 'EXCHANGE'
 sidebar_position: 49
 slug: /sql-reference/statements/exchange
-title: 'EXCHANGE 文'
+title: 'EXCHANGE ステートメント'
 doc_type: 'reference'
 ---
-
-# EXCHANGE ステートメント \{#exchange-statement\}
 
 2 つのテーブルまたは辞書の名前をアトミックに入れ替えます。
 この操作は一時的な名前を用いた [`RENAME`](./rename.md) クエリでも行えますが、その場合はアトミックではありません。

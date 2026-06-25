@@ -1,18 +1,5 @@
-import BetaBadge from '@theme/badges/BetaBadge';
+## Schema choice: Map vs JSON {#schema-choice-map-vs-json}
 
-## JSON type support {#json-type-support}
+ClickStack stores attributes as `Map(LowCardinality(String), String)` columns by default. This is the recommended schema for observability workloads. Combined with [bucketed map serialization](/sql-reference/data-types/map#bucketed-map-serialization) and text indexes on map keys and values, it provides selective lookups without the per-key ingest overhead of dynamic JSON subcolumns.
 
-<BetaBadge/>
-
-:::warning[Beta Feature - not production ready]
-JSON type support in **ClickStack** is a **beta feature**. While the JSON type itself is production-ready in ClickHouse 25.3+, its integration within ClickStack is still under active development and may have limitations, change in the future, or contain bugs.
-:::
-
-ClickStack has beta support for the [JSON type](/interfaces/formats/JSON) from version `2.0.4`.
-
-For the benefits of this type see [Benefits of the JSON type](/use-cases/observability/clickstack/ingesting-data/otel-collector#benefits-json-type).
-
-In order to enable support for the JSON type you must set the following environment variables:
-
-- `OTEL_AGENT_FEATURE_GATE_ARG='--feature-gates=clickhouse.json'` - enables support in the OTel collector, ensuring schemas are created using the JSON type.
-- `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` (ClickStack Open Source only) - enables support in the ClickStack UI application, allowing JSON data to be queried.
+A `JSON`-typed schema is available in beta for evaluation on workloads with a small, stable attribute key-set. It is **not recommended** as the default. See [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json) for the full comparison and the env vars required to enable JSON support.

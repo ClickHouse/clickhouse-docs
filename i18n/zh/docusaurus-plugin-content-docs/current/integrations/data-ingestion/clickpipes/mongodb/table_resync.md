@@ -4,15 +4,13 @@ description: '在 MongoDB ClickPipe 中重新同步特定表'
 slug: /integrations/clickpipes/mongodb/table_resync
 sidebar_label: '重新同步表'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
+keywords: ['ClickPipes', 'MongoDB', 'CDC', '数据摄取', '实时同步']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
 
-# 重新同步特定表 \{#resync-tables\}
-
-在某些场景下，重新同步某个管道（pipe）中的特定表会很有用。例如，对 MongoDB 进行重大 schema 变更，或者在 ClickHouse 中进行一些数据模型重构。
+在某些场景下，重新同步某个 ClickPipe 中的特定表会很有用。例如，对 MongoDB 进行重大 schema 变更，或者在 ClickHouse 中进行一些数据模型重构。
 
 虽然通过单击按钮来重新同步单个表的功能仍在开发中，但本指南将介绍当前在 MongoDB ClickPipe 中实现这一目标的步骤。
 

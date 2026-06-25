@@ -19,8 +19,6 @@ import mongo_atlas_restrict_access from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 
 
-# MongoDB Atlas 数据源配置指南 \{#mongodb-atlas-source-setup-guide\}
-
 ## 配置 oplog 保留时间 \{#enable-oplog-retention\}
 
 进行复制时，oplog 至少需要保留 24 小时。我们建议将 oplog 保留时间设置为 72 小时或更长，以确保在初始快照完成之前 oplog 不会被截断。通过 UI 设置 oplog 保留时间的方法如下：

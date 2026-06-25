@@ -18,8 +18,6 @@ import dataflow_extended_template_form from '@site/static/images/integrations/da
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Dataflow BigQuery to ClickHouse template
-
 The BigQuery to ClickHouse template is a batch pipeline that ingests data from a BigQuery table into a ClickHouse table.
 The template can read the entire table or filter specific records using a provided SQL query.
 
@@ -191,4 +189,7 @@ This error occurs when ClickHouse runs out of memory while processing large batc
 
 ## Template source code {#template-source-code}
 
-The template's source code is available in ClickHouse's [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) fork.
+The template's source code is available in:
+
+- [`GoogleCloudPlatform/DataflowTemplates`](https://github.com/GoogleCloudPlatform/DataflowTemplates/tree/main/v2/googlecloud-to-clickhouse) — the upstream Google Cloud Platform repository.
+- [`ClickHouse/DataflowTemplates`](https://github.com/ClickHouse/DataflowTemplates) — ClickHouse's fork.

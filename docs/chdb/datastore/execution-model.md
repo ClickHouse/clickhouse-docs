@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---
 
-# DataStore Execution Model
 
 Understanding DataStore's lazy evaluation model is key to using it effectively and achieving optimal performance.
 
@@ -170,7 +169,7 @@ result = (ds
 
 Use `explain()` to see what will be executed:
 
-```python
+```python title="Query"
 ds = pd.read_csv("sales.csv")
 
 query = (ds
@@ -183,8 +182,7 @@ query = (ds
 query.explain()
 ```
 
-Output:
-```text
+```text title="Response"
 Pipeline:
   1. Source: file('sales.csv', 'CSVWithNames')
   2. Filter: amount > 1000

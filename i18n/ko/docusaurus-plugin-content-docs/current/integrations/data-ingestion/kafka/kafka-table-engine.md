@@ -14,10 +14,7 @@ import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafka_03.png';
 import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
-
-# Kafka 테이블 엔진 사용 \{#using-the-kafka-table-engine\}
-
-Kafka 테이블 엔진은 Apache Kafka 및 기타 Kafka API 호환 브로커(예: Redpanda, Amazon MSK)에서 데이터를 [**읽어오고**](#kafka-to-clickhouse) [**기록하는**](#clickhouse-to-kafka) 데 사용할 수 있습니다.
+Kafka 테이블 엔진은 Apache Kafka 및 기타 Kafka API 호환 브로커(예: Redpanda, Amazon MSK)에서 데이터를 [**읽거나**](#kafka-to-clickhouse) [**쓰는 데**](#clickhouse-to-kafka) 사용할 수 있습니다.
 
 ### Kafka에서 ClickHouse로 \{#kafka-to-clickhouse\}
 

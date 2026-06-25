@@ -7,8 +7,6 @@ title: '타사 개발자가 제공하는 시각적 인터페이스'
 doc_type: 'reference'
 ---
 
-# 타사 개발자가 제공하는 시각화 인터페이스 \{#visual-interfaces-from-third-party-developers\}
-
 ## 오픈 소스 \{#open-source\}
 
 ### agx \{#agx\}
@@ -91,20 +89,22 @@ Features:
 * 크로스 플랫폼 데스크톱 앱(macOS, Windows, Linux) 및 Docker 지원
 * 오픈 소스이며 MIT 라이선스를 따름
 
-### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
+### ClickHouse 스키마 플로 시각화 도구 \{#clickhouse-schemaflow-visualizer\}
 
-[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)는 Mermaid.js 다이어그램을 사용하여 ClickHouse 테이블 간 관계를 시각화하는 강력한 오픈 소스 웹 애플리케이션입니다. 직관적인 인터페이스로 데이터베이스와 테이블을 탐색하고, 선택적으로 행 개수와 크기 정보를 포함한 테이블 메타데이터를 살펴보며, 대화형 스키마 다이어그램을 내보낼 수 있습니다.
+[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)는 ClickHouse 테이블 간의 관계를 시각화하는 오픈소스 웹 애플리케이션입니다.
+이 애플리케이션은 ClickHouse 인스턴스에 연결해 `system.tables` 메타데이터(엔진 타입, 의존성, materialized view의 SELECT 문)를 파싱한 뒤, 각 엣지에 변환 표현식 레이블이 표시된 컬럼 수준 관계와 함께 인터랙티브한 테이블 수준 데이터 플로 다이어그램을 렌더링합니다. 다이어그램은 Dagre로 레이아웃이 구성되며 일반 인라인 SVG로 렌더링되므로, 클라이언트 측 다이어그램 런타임은 로드되지 않습니다.
 
 기능:
 
-- 직관적인 인터페이스로 ClickHouse 데이터베이스와 테이블 탐색
-- Mermaid.js 다이어그램으로 테이블 간 관계 시각화
-- 테이블 유형에 맞게 색상으로 구분된 아이콘을 통한 향상된 시각화
-- 테이블 간 데이터 흐름 방향 확인
-- 다이어그램을 독립 실행형 HTML 파일로 내보내기
-- 메타데이터 표시 여부 전환(테이블 행 및 크기 정보)
-- TLS 지원을 통한 ClickHouse에 대한 보안 연결
-- 모든 기기에 대응하는 반응형 웹 인터페이스
+* 직관적인 사이드바에서 ClickHouse 데이터베이스와 테이블 탐색
+* 데이터 플로 보기: 테이블 수준의 업스트림 소스와 다운스트림 materialized view
+* 관계 보기: 각 엣지에 파싱된 변환 표현식(예: `toStartOfHour(scheduled_departure)`, `avgState(delay_minutes)`)이 표시된 컬럼 수준 매핑
+* `MergeTree`, `Replicated*`, `Distributed`, `MaterializedView`, `Dictionary`에 대한 엔진별 아이콘 및 색상 구분
+* 관계 보기에서 컬럼을 클릭해 파이프라인 전체에서 해당 컬럼의 전체 데이터 경로 강조
+* 실시간 사이드바 필터와 `Ctrl+K` / `⌘K` 명령 팔레트로 원하는 테이블, 컬럼 또는 엔진으로 바로 이동
+* 테이블별 행 수와 디스크 사용 크기를 표시하는 선택적 메타데이터 오버레이
+* 현재 다이어그램을 독립형 HTML 파일로 내보내기
+* ClickHouse에 대한 TLS 연결 지원, 선택적 인증서 검증 건너뛰기 및 사용자 지정 CA / 클라이언트 인증서 지원
 
 [ClickHouse Schema Flow Visualizer - 소스 코드](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)
 
@@ -367,16 +367,20 @@ ClickHouse 데이터 소스 플러그인은 ClickHouse를 백엔드 데이터베
 
 ### CHouse UI \{#chouse-ui\}
 
-[CHouse UI](https://chouse-ui.com)는 **팀**과 **보안이 강화된 데이터 액세스**에 특화된 오픈 소스 ClickHouse 웹 인터페이스입니다. 데이터베이스 자격 증명을 직접 요구하는 기존 클라이언트와 달리, CHouse UI는 강력한 **역할 기반 접근 제어(Role-Based Access Control, RBAC)** 계층을 구현하여 관리자가 내부 시크릿 정보를 노출하지 않고도 세분화된 권한을 부여할 수 있도록 합니다.
+[CHouse UI](https://chouse-ui.com)는 **프로덕션 환경에서 ClickHouse를 운영하는 팀**을 위해 구축된 오픈소스 자체 호스팅 ClickHouse 웹 인터페이스입니다. 대부분의 도구는 쿌리 작업 공간, 대시보드, AI 어시스턴트, 클러스터 모니터처럼 한 가지 영역에 집중하지만, CHouse UI는 이 모든 것을 *결합*한 도구입니다. 즉, 팀용 접근 제어 계층에 다중 클러스터 플릿 모니터링과 자율형 읽기 전용 AI SRE를 결합했습니다. 데이터베이스 자격 증명을 직접 요구하는 클라이언트와 달리, 자격 증명을 서버 측에 암호화하여 저장하고 자체 **역할 기반 접근 제어(RBAC)** 계층으로 접근을 통제하므로 브라우저에는 ClickHouse 비밀번호가 노출되지 않습니다.
 
-주요 차별점은 다음과 같습니다.
+기능:
 
-- **엔터프라이즈급 보안** - 서버 측 자격 증명 암호화, 상세 감사 로깅, 액세스 규칙을 제공합니다.
-- **팀 협업** - 사용자 정의 역할(예: 애널리스트를 위한 특정 테이블 액세스)을 정의하고 쿼리를 안전하게 공유할 수 있습니다.
-- **AI 기반 인사이트** - 쿼리 최적화 및 시각적 설명을 위한 통합 LLM 지원을 제공합니다.
-- **포괄적인 툴킷** - 강력한 SQL 에디터, 모니터링 대시보드, 스키마 탐색기, 원활한 데이터 가져오기/내보내기 기능을 제공합니다.
+* **팀 접근 및 보안** - 애플리케이션 수준 RBAC(사전 정의 + 사용자 지정 역할, 데이터베이스/테이블별 세분화된 데이터 접근 규칙), 실제 세션 컨텍스트가 포함된 감사 로깅, AES-256-GCM으로 암호화된 서버 측 자격 증명을 제공합니다.
+* **다중 클러스터 플릿** - 하나의 화면에서 구성된 모든 클러스터를 확인할 수 있습니다(상태, 메모리, 활성 쿼리, 예외, 추세 스파크라인). 각 카드는 독립적으로 폴링되며, 백엔드 스냅샷 폴러가 이를 지원합니다.
+* **Chouse AI — Fleet Doctor** - 자율형 읽기 전용 AI SRE입니다. 보호된 `system.*` 전용 `SELECT` 도구(ClickHouse `readonly=1`)로 플릿을 스캔하고, 근본 원인을 식별하며, 대용량 쿼리 심층 분석과 제안된 재작성 내용이 포함된 구조화된 보고서를 작성합니다. 클러스터를 변경하지는 않습니다.
+* **모니터링 탭의 AI** - Query Logs 행에서 &quot;Chouse AI로 최적화&quot; 기능을 사용할 수 있으며(재작성 + 변경 전→후 `EXPLAIN` 추정 + SQL 워크스페이스에서 열기), `system.errors` 행이나 part-log 항목에서는 원클릭 &quot;진단&quot;을 사용할 수 있습니다.
+* **임계값 알림** - 노드 메모리 %, 쿼리별 메모리, 장시간 실행 쿼리 규칙을 Slack 및 이메일로 전송하며, 임계값 초과 시 자율형 근본 원인 분석이 함께 첨부됩니다.
+* **전체 워크스페이스** - Monaco SQL 편집기, 스키마 탐색기, 종료 지원이 포함된 실시간 쿼리 보기, ClickHouse 네이티브 모니터링(메모리 분해, 파트/머지, 레플리카 지연, 지연 시간 백분위수), 그리고 데이터 가져오기/내보내기를 제공합니다.
 
-[CHouse UI Source Code](https://github.com/daun-gatal/chouse-ui)
+오픈소스(Apache 2.0)이며 온프레미스를 우선으로 합니다. 유료 tier 없이 모든 기능이 기본 제공됩니다.
+
+[CHouse UI 소스 코드](https://github.com/daun-gatal/chouse-ui)
 
 ### clickhouse-flow \{#clickhouse-flow\}
 

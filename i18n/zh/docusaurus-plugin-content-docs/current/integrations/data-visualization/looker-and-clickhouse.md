@@ -18,12 +18,9 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Looker \{#looker\}
-
-<PartnerBadge/>
-
-Looker 可以通过官方的 ClickHouse 数据源连接到 ClickHouse Cloud 或自托管的 ClickHouse 部署。
+Looker 可以通过官方 ClickHouse 数据源连接到 ClickHouse Cloud 或本地部署的 ClickHouse。
 
 ## 1. 收集连接信息 \{#1-gather-your-connection-details\}
 

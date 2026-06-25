@@ -138,9 +138,9 @@ docker run -d \
 
 ## Конфигурация \{#configuration\}
 
-Контейнер открывает порт 8123 для [HTTP-интерфейса](https://clickhouse.com/docs/interfaces/http_interface/) и порт 9000 для [нативного клиентского протокола](https://clickhouse.com/docs/interfaces/tcp/).
+Контейнер открывает порт 8123 для [HTTP-интерфейса](/interfaces/http) и порт 9000 для [нативного клиента](/interfaces/tcp).
 
-Конфигурация ClickHouse задаётся файлом «config.xml» ([документация](https://clickhouse.com/docs/operations/configuration_files/))
+Конфигурация ClickHouse задаётся файлом «config.xml» ([документация](/operations/configuration-files))
 
 ### Запуск экземпляра сервера с собственной конфигурацией \{#start-server-instance-with-custom-config\}
 

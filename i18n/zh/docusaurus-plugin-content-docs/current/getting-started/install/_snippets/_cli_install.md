@@ -14,19 +14,31 @@ ClickHouse CLI (`clickhousectl`) 可帮助您安装和管理本地 ClickHouse
 
   ## 安装 ClickHouse \{#cli-install-clickhouse\}
 
-  安装最新的稳定版 ClickHouse：
+  安装最新的稳定版 ClickHouse，并将其设为默认版本：
 
   ```bash
-  clickhousectl local install stable
+  clickhousectl local use stable
   ```
 
-  您也可以安装指定版本：
+  `local use` 会在该版本尚未安装时自动进行安装，将其设为您的
+  默认版本，并在 `~/.local/bin` (位于您的 `PATH` 中) 中创建一个 `clickhouse` 符号链接，
+  这样您就可以直接调用 `clickhouse` 可执行文件。这样一来，本文档中后续任何运行
+  `clickhouse` 命令的步骤都可以直接照常使用。
+
+  您也可以选择指定版本：
 
   ```bash
-  clickhousectl local install lts             # 最新 LTS 版本
-  clickhousectl local install 25.6            # 最新 25.6.x.x
-  clickhousectl local install 25.6.1.1        # 精确版本
+  clickhousectl local use lts             # 最新 LTS 版本
+  clickhousectl local use 25.6            # 最新 25.6.x.x
+  clickhousectl local use 25.6.1.1        # 精确版本
   ```
+
+  :::note[Use 与 install]
+  `clickhousectl local use <version>` 会安装一个版本，*并且* 将其设为您的
+  默认版本，同时更新您 `PATH` 中的 `clickhouse` 符号链接。若只想下载某个版本，
+  而不更改默认版本或更新符号链接，请改用
+  `clickhousectl local install <version>`。
+  :::
 
   ## 启动 clickhouse-server \{#cli-start-clickhouse-server\}
 

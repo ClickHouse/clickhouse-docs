@@ -19,23 +19,20 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# ガイド \{#guides\}
-
-<ClickHouseSupportedBadge/>
-
-このセクションでは、dbt と ClickHouse アダプターのセットアップ方法に加え、一般公開されている IMDB データセットを用いて dbt と ClickHouse を連携させる例を紹介します。この例では、次の手順を取り上げます。
+このセクションでは、dbt と ClickHouse アダプターのセットアップに関するガイドに加え、一般公開されている IMDB データセットを使用して dbt を ClickHouse で利用する例も紹介します。この例では、次の手順を扱います。
 
 1. dbt プロジェクトを作成し、ClickHouse アダプターをセットアップする。
 2. モデルを定義する。
 3. モデルを更新する。
 4. インクリメンタルモデルを作成する。
 5. スナップショットモデルを作成する。
-6. マテリアライズドビューを使用する。
+6. materialized view を使用する。
 
-これらのガイドは、他の [ドキュメント](/integrations/dbt)、[機能と設定](/integrations/dbt/features-and-configurations)、および [マテリアライゼーションのリファレンス](/integrations/dbt/materializations) と併せて利用することを想定しています。
+これらのガイドは、[ドキュメント](/integrations/dbt)、[機能と構成](/integrations/dbt/features-and-configurations)、および [materializations リファレンス](/integrations/dbt/materializations) とあわせて使用することを想定しています。
 
-<TOCInline toc={toc}  maxHeadingLevel={2} />
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## セットアップ \{#setup\}
 

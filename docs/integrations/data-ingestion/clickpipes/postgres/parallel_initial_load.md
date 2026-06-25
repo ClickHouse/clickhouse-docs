@@ -50,4 +50,3 @@ You can analyze **pg_stat_activity** to see the parallel snapshot in action. The
 
 - The snapshot parameters can't be edited after pipe creation. If you want to change them, you will have to create a new ClickPipe.
 - When adding tables to an existing ClickPipe, you can't change the snapshot parameters. The ClickPipe will use the existing parameters for the new tables.
-- The partition key column shouldn't contain `NULL`s, as they're skipped by the partitioning logic.

@@ -1,13 +1,11 @@
 ---
-description: '암호화 함수 문서'
+description: '암호화 함수에 대한 문서'
 sidebar_label: '암호화'
 slug: /sql-reference/functions/encryption-functions
 title: '암호화 함수'
 keywords: ['암호화', '일반 함수', '암호화', '복호화']
 doc_type: 'reference'
 ---
-
-# 암호화 함수 \{#encryption-functions\}
 
 이 함수들은 AES (Advanced Encryption Standard) 알고리즘을 사용하여 데이터를 암호화하고 복호화합니다.
 

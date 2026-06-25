@@ -1,37 +1,42 @@
 ---
 slug: /cloud/managed-postgres
-title: '托管 Postgres'
+title: 'Managed Postgres'
 description: '基于 NVMe 存储构建的快速、可扩展企业级 Postgres，原生集成 ClickHouse，用于实时分析'
-keywords: ['托管 Postgres', 'PostgreSQL', '云数据库', 'Postgres 服务', 'NVMe Postgres', 'ClickHouse 集成']
+keywords: ['Managed Postgres', 'PostgreSQL', '云数据库', 'Postgres 服务', 'NVMe Postgres', 'ClickHouse 集成']
 doc_type: '指南'
 pagination_next: cloud/managed-postgres/quickstart
 pagination_prev: null
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="overview" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.overview-beta" />
 
-ClickHouse Managed Postgres 是一款面向企业的托管 Postgres 服务，专为高性能和高可扩展性而构建。依托与计算节点物理同机部署的 NVMe 存储，相比使用 EBS 等网络附加存储的替代方案，对于受磁盘限制的工作负载，最高可提供 10 倍的性能提升。
+ClickHouse Managed Postgres 是一款面向企业的Managed Postgres 服务，专为高性能和高可扩展性而构建。依托与计算节点物理同机部署的 NVMe 存储，相比使用 EBS 等网络附加存储的替代方案，对于受磁盘限制的工作负载，最高可提供 10 倍的性能提升。
 
 该服务由 ClickHouse 与 [Ubicloud](https://www.ubicloud.com/) 合作打造，后者的创始团队曾在 Citus Data、Heroku 和 Microsoft 交付世界级 Postgres，拥有卓越的实践记录。Managed Postgres 解决了快速增长的应用常见的性能挑战：摄取与更新变慢、vacuum 操作缓慢、尾延迟增加，以及由于磁盘 IOPS 受限导致的 WAL 峰值等问题。
 
 {/* TODO: 展示 Postgres 与 ClickHouse 集成的架构示意图
     Path: /static/images/cloud/managed-postgres/architecture-overview.png */}
 
-
 ## 基于 NVMe 的性能 \{#nvme-performance\}
 
 大多数托管 Postgres 服务使用的是诸如 Amazon EBS 之类的网络连接存储，每次磁盘访问都需要一次网络往返。这会引入以毫秒计的延迟，并限制 IOPS，从而在写入密集或 I/O 密集型工作负载中形成瓶颈。
 
-托管 Postgres 使用直接物理连接到与数据库同一台服务器上的 NVMe 存储。这一架构差异带来了：
+Managed Postgres 使用直接物理连接到与数据库同一台服务器上的 NVMe 存储。这一架构差异带来了：
 
-- **微秒级的磁盘延迟**，而非毫秒级
-- **本地 IOPS 理论上不设上限**，不受网络瓶颈影响
-- **在相同成本下，对受磁盘限制工作负载可实现最高 10 倍的性能提升**
+* **微秒级的磁盘延迟**，而非毫秒级
+* **高出 10 倍的持续 IOPS 上限**<sup>*</sup>，不受网络瓶颈影响
+* **在相同成本下，对受磁盘限制工作负载可实现最高 10 倍的性能提升**
 
 对于主要受磁盘 IOPS 和延迟限制的 Postgres 工作负载，这将转化为更快的摄取、更快速的 VACUUM 操作、更低的尾延迟，以及在高负载下更加可预测的性能表现。
+
+:::note
+通过[性能基准测试](https://clickhouse.com/blog/postgresbench)了解 Postgres 在 NVMe 磁盘上的性能表现。
+:::
+
+有关 AWS 上本地 NVMe 限制的信息，请参阅 [Memory optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/mo.html#mo_instance-store)、[Storage optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/so.html#so_instance-store)、[CPU optimized](https://docs.aws.amazon.com/ec2/latest/instancetypes/gp.html#gp_instance-store)。
 
 ## 原生 ClickHouse 集成 \{#clickhouse-integration\}
 

@@ -7,6 +7,4 @@ keywords: ['cassandra', '통합', '딕셔너리']
 doc_type: 'reference'
 ---
 
-# Cassandra 연동 \{#cassandra-integration\}
-
-Cassandra는 딕셔너리를 사용해 연동할 수 있습니다. 자세한 내용은 [여기](/sql-reference/statements/create/dictionary/sources/cassandra)를 참고하십시오.
+딕셔너리를 사용해 Cassandra와 연동할 수 있습니다. 자세한 내용은 [여기](/sql-reference/statements/create/dictionary/sources/cassandra)를 참조하십시오.

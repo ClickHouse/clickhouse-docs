@@ -24,12 +24,10 @@ import finish_import from '@site/static/images/clickstack/cloudflare/finish-impo
 import example_dashboard from '@site/static/images/clickstack/cloudflare/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг логов Cloudflare с ClickStack \{#cloudflare-clickstack\}
-
 :::note[Кратко]
-В этом руководстве показано, как настроить приём логов Cloudflare в ClickStack с помощью ClickPipes. Cloudflare Logpush записывает логи в S3, а ClickPipes непрерывно загружает новые файлы в ClickHouse. В отличие от большинства руководств по интеграции ClickStack, где используется OpenTelemetry Collector, в этом руководстве [ClickPipes](/integrations/clickpipes) используется для прямого получения данных из S3.
+Это руководство показывает, как загружать логи Cloudflare в ClickStack с помощью ClickPipes. Cloudflare Logpush записывает логи в S3, а ClickPipes непрерывно загружает новые файлы в ClickHouse. В отличие от большинства руководств по интеграции ClickStack, где используется OpenTelemetry Collector, в этом руководстве [ClickPipes](/integrations/clickpipes) используется для прямого получения данных из S3.
 
-Если вы хотите изучить панели мониторинга до настройки приёма данных в рабочей среде, доступен демонстрационный набор данных.
+Демонстрационный набор данных доступен, если вы хотите изучить панели мониторинга перед настройкой рабочей ингестии.
 :::
 
 ## Обзор \{#overview\}

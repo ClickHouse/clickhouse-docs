@@ -14,9 +14,7 @@ integration:
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# 连接建议 \{#connection-tips\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 ## Initial SQL 选项卡 \{#initial-sql-tab\}
 

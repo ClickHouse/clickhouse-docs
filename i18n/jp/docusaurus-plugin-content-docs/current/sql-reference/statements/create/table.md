@@ -89,20 +89,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)
 
 テーブルがすでに存在していて `IF NOT EXISTS` が指定されている場合、このクエリは何も行いません。
 
-クエリの `ENGINE` 句の後には、他の句を続けて指定することができます。テーブルの作成方法についての詳細なドキュメントは、[table engines](/engines/table-engines) の説明を参照してください。
+クエリの `ENGINE` 句の後には、他の句を続けて指定することができます。テーブルの作成方法についての詳細なドキュメントは、[テーブルエンジン](/engines/table-engines) の説明を参照してください。
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory AS SELECT 1;
 SELECT x, toTypeName(x) FROM t1;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─x─┬─toTypeName(x)─┐
 │ 1 │ String        │
 └───┴───────────────┘
@@ -314,6 +310,8 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 `boolean_expr_1` には任意のブール式を指定できます。テーブルに制約が定義されている場合、`INSERT` クエリで挿入される各行に対して、それぞれの制約が検証されます。いずれかの制約が満たされない場合、サーバーは制約名と検証に使用された式を含む例外をスローします。
 
 大量の制約を追加すると、大規模な `INSERT` クエリのパフォーマンスに悪影響を与える可能性があります。
+
+すべてのテーブルに存在する制約は、[`system.constraints`](/operations/system-tables/constraints) テーブルで確認できます。
 
 ### ASSUME \{#assume\}
 
@@ -739,16 +737,12 @@ COMMENT 'Comment'
 
 **例**
 
-クエリ：
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory COMMENT 'The temporary table';
 SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─name─┬─comment─────────────┐
 │ t1   │ The temporary table │
 └──────┴─────────────────────┘

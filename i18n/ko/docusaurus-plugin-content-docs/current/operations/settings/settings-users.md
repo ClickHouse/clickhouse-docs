@@ -1,13 +1,11 @@
 ---
-description: '사용자 및 역할을 구성하기 위한 설정입니다.'
+description: '사용자 및 역할 구성을 위한 설정입니다.'
 sidebar_label: '사용자 설정'
 sidebar_position: 63
 slug: /operations/settings/settings-users
 title: '사용자 및 역할 설정'
 doc_type: 'reference'
 ---
-
-# 사용자 및 역할 설정 \{#users-and-roles-settings\}
 
 `users.xml` 설정 파일의 `users` 섹션에는 사용자 설정이 포함되어 있습니다.
 

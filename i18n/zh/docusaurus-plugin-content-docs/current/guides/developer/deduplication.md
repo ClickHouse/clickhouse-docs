@@ -2,31 +2,27 @@
 slug: /guides/developer/deduplication
 sidebar_label: '去重策略'
 sidebar_position: 3
-description: '当你需要频繁执行 upsert、更新 和 删除 操作时，可使用去重功能。'
+description: '当你需要频繁执行 upsert、更新和删除操作时，请使用去重。'
 title: '去重策略'
-keywords: ['去重策略', '数据去重', 'upsert', '更新 和 删除', '开发者指南']
+keywords: ['去重策略', '数据去重', 'upserts', '更新和删除', '开发者指南']
 doc_type: 'guide'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-# 去重策略 \{#deduplication-strategies\}
+**去重**是&#x6307;***删除数据集中重复行***&#x7684;过程。在 OLTP 数据库中，这很容易实现，因为每一行都有唯一的主键——但代价是写入速度较慢。每次插入前都需要先查找该主键，如果已存在则需要进行替换。
 
-**去重**是指***删除数据集中重复行***的过程。在 OLTP 数据库中，这很容易实现，因为每一行都有唯一的主键——但代价是写入速度较慢。每次插入前都需要先查找该主键，如果已存在则需要进行替换。
+ClickHouse 在数据写入方面针对速度进行了优化。存储文件是不可变的，并且 ClickHouse 在插入一行之前不会检查是否已经存在相同的主键——因此去重需要多做一些工作。这也意味着去重不是即时完成的，而是**最终完成的** (eventual) ，这会带来一些副作用：
 
-ClickHouse 在数据写入方面针对速度进行了优化。存储文件是不可变的，并且 ClickHouse 在插入一行之前不会检查是否已经存在相同的主键——因此去重需要多做一些工作。这也意味着去重不是即时完成的，而是**最终完成的**（eventual），这会带来一些副作用：
+* 在任意时刻，你的表中仍然可能存在重复数据 (具有相同排序键的行) 
+* 实际删除重复行是在 parts 合并过程中发生的
+* 你的查询需要能够处理可能存在的重复数据
 
-- 在任意时刻，你的表中仍然可能存在重复数据（具有相同排序键的行）
-- 实际删除重复行是在数据分片（parts）合并过程中发生的
-- 你的查询需要能够处理可能存在的重复数据
-
-<div class='transparent-table'>
-
-|||
-|------|----|
-|<Image img={deduplication}  alt="Deduplication Logo" size="sm"/>|ClickHouse 提供关于去重和许多其他主题的免费培训。[Deleting and Updating Data 培训模块](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs)是一个很好的起点。|
-
+<div class="transparent-table">
+  |                                                                  |                                                                                                                                                                                   |
+  | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | <Image img={deduplication} alt="Deduplication Logo" size="sm" /> | ClickHouse 提供关于去重和许多其他主题的免费培训。[Deleting and Updating Data 培训模块](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)是一个很好的起点。 |
 </div>
 
 ## 去重选项 \{#options-for-deduplication\}

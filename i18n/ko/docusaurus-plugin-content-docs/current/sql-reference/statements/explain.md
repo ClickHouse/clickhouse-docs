@@ -112,21 +112,19 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 이 과정은 쿼리를 파싱하고 쿼리 AST와 쿼리 트리를 구성한 뒤, 필요에 따라 쿼리 분석기와 최적화 패스를 실행하고, 이후 쿼리 트리를 다시 쿼리 AST로 변환하는 방식으로 수행됩니다.
 
-Settings:
+설정:
 
 * `oneline` – 쿼리를 한 줄로 출력합니다. 기본값: `0`.
 * `run_query_tree_passes` – 쿼리 트리를 덤프하기 전에 쿼리 트리 패스를 실행합니다. 기본값: `0`.
 * `query_tree_passes` – `run_query_tree_passes`가 설정된 경우 실행할 패스의 수를 지정합니다. `query_tree_passes`를 지정하지 않으면 모든 패스를 실행합니다.
 
-Examples:
+예시:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-출력 결과:
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -134,13 +132,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 `run_query_tree_passes` 사용 시:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-출력:
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -149,7 +145,6 @@ FROM system.numbers AS __table1
 ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
-
 
 ### EXPLAIN QUERY TREE \{#explain-query-tree\}
 
@@ -614,10 +609,18 @@ Join (JOIN FillRightFirst)
 * `header` — 각 출력 포트에 대한 헤더를 출력합니다. 기본값: 0.
 * `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 그래프 설명 언어 형식으로 그래프를 출력합니다. 기본값: 0.
 * `compact` — `graph` 설정이 활성화된 경우 그래프를 compact 모드로 출력합니다. 기본값: 1.
+* `compact_repeated_processor_chains` — 텍스트 출력에서 인접하게 반복되는 프로세서 체인을 반복 횟수와 함께 체인 하나만 표시하도록 압축합니다. 예를 들어 조인처럼 동일한 체인이 여러 번 나타나는 경우 병렬 파이프라인을 더 쉽게 읽을 수 있습니다. 그래프 출력에는 영향을 주지 않습니다. 기본값: 0.
+
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
 
 `compact=0`이고 `graph=1`인 경우 프로세서 이름에 고유한 프로세서 식별자가 접미사로 추가됩니다.
 
-예:
+예시:
 
 ```sql
 EXPLAIN PIPELINE SELECT sum(number) FROM numbers_mt(100000) GROUP BY number % 4;
@@ -639,7 +642,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 
 쿼리를 처리하는 동안 테이블에서 읽게 될 행, 마크, 파트의 예상 개수를 보여줍니다. [MergeTree](/engines/table-engines/mergetree-family/mergetree) 패밀리의 테이블에서 동작합니다.
@@ -648,26 +650,21 @@ ExpressionTransform
 
 테이블 생성:
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-쿼리:
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
 ```
-
 
 ### EXPLAIN TABLE OVERRIDE \{#explain-table-override\}
 
@@ -678,21 +675,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 원격 MySQL 테이블이 다음과 같다고 가정합니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

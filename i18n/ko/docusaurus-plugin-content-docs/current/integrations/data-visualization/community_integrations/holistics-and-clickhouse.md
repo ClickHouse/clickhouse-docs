@@ -2,8 +2,8 @@
 sidebar_label: 'Holistics'
 slug: /integrations/holistics
 keywords: ['clickhouse', 'Holistics', 'AI', 'integrate', 'bi', 'data visualization']
-description: 'Holistics는 거버넌스가 적용된, 쉽게 접근 가능한 지표를 통해 모든 사람이 더 나은 의사 결정을 내릴 수 있도록 지원하는 셀프 서비스 BI 및 임베디드 애널리틱스를 위한 AI 기반 플랫폼입니다.'
-title: 'ClickHouse를 Holistics에 연결하기'
+description: 'Holistics는 거버넌스가 적용된, 쉽게 접근 가능한 메트릭을 통해 모든 사람이 더 나은 의사 결정을 내릴 수 있도록 지원하는 셀프 서비스 BI 및 임베디드 애널리틱스를 위한 AI 기반 플랫폼입니다.'
+title: 'ClickHouse를 Holistics에 연결하는 방법'
 doc_type: 'guide'
 ---
 
@@ -16,14 +16,11 @@ import holistics_04 from '@site/static/images/integrations/data-visualization/ho
 import holistics_05 from '@site/static/images/integrations/data-visualization/holistics_05.png';
 import holistics_06 from '@site/static/images/integrations/data-visualization/holistics_06.png';
 
+<CommunityMaintainedBadge />
 
-# ClickHouse를 Holistics에 연결하기 \{#connecting-clickhouse-to-holistics\}
+[Holistics](https://www.holistics.io/)는 일관되고 신뢰할 수 있는 메트릭을 제공하기 위한 프로그래밍 가능한 시맨틱 레이어를 갖춘 AI 네이티브 셀프 서비스 BI 플랫폼입니다.
 
-<CommunityMaintainedBadge/>
-
-[Holistics](https://www.holistics.io/)는 일관되고 신뢰할 수 있는 지표를 위한 프로그래머블 시맨틱 레이어를 제공하는 AI 네이티브 셀프 서비스 BI 플랫폼입니다.
-
-ClickHouse를 Holistics에 연결하면 팀은 코드 기반 시맨틱 레이어를 토대로 한 빠르고 신뢰할 수 있는 AI 기반 셀프 서비스 경험을 제공받을 수 있습니다. 비즈니스 사용자는 드래그 앤 드롭 기능과 AI를 통해 데이터를 자신 있게 탐색할 수 있으며, 메트릭 정의는 Git에서 재사용 가능하고 조합 가능하며 버전 관리된 상태로 유지됩니다.
+ClickHouse를 Holistics에 연결하면 팀은 코드 기반 시맨틱 레이어를 토대로 한 빠르고 신뢰할 수 있는 AI 기반 셀프 서비스 환경을 이용할 수 있습니다. 비즈니스 사용자는 드래그 앤 드롭과 AI를 사용해 데이터를 자신 있게 탐색할 수 있으며, 메트릭 정의는 Git에서 재사용 가능하고 조합 가능하며 버전 관리되도록 유지할 수 있습니다.
 
 ## 사전 준비 사항 \{#prerequisites\}
 

@@ -7,11 +7,9 @@ title: '备份'
 doc_type: '参考'
 ---
 
-# 备份 \{#backup\}
+Backup 数据库允许从[备份](/operations/backup/overview)中立即以只读模式附加表或数据库。
 
-数据库备份允许从[备份](/operations/backup/overview)中即时附加表或数据库，并以只读模式访问。
-
-数据库备份同时支持增量和非增量备份。
+Backup 数据库同时支持增量备份和非增量备份。
 
 ## 创建数据库 \{#creating-a-database\}
 

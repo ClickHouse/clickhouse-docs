@@ -6,7 +6,6 @@ keywords: ['bring yor own cloud', 'byoc', 'private', 'government', 'self-deploye
 doc_type: 'reference'
 ---
 
-# ClickHouse Deployment Options
 
 ClickHouse provides a range of deployment options to cater to diverse customer requirements, offering varying degrees of control, compliance, and operational overhead.
 This document outlines the distinct deployment types available, enabling you to select the optimal solution that aligns with your specific architectural preferences, regulatory obligations, and resource management strategies.

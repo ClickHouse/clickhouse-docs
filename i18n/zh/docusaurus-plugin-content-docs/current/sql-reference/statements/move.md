@@ -1,13 +1,11 @@
 ---
-description: 'MOVE 访问实体语句文档'
+description: 'MOVE access entity 语句的文档'
 sidebar_label: 'MOVE'
 sidebar_position: 54
 slug: /sql-reference/statements/move
-title: 'MOVE 访问实体语句'
+title: 'MOVE access entity 语句'
 doc_type: 'reference'
 ---
-
-# MOVE access entity 语句 \{#move-access-entity-statement\}
 
 该语句用于将访问实体从一个访问存储移动到另一个访问存储。
 
@@ -22,8 +20,8 @@ MOVE {USER, ROLE, QUOTA, SETTINGS PROFILE, ROW POLICY} name1 [, name2, ...] TO a
 * `local_directory`
 * `memory`
 * `replicated`
-* `users_xml`（只读）
-* `ldap`（只读）
+* `users_xml` (只读) 
+* `ldap` (只读) 
 
 示例：
 

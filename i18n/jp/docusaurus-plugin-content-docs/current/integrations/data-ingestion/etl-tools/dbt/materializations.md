@@ -11,14 +11,11 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# マテリアライゼーション \{#materializations\}
+このセクションでは、実験的機能を含め、dbt-clickhouse で利用可能なすべてのマテリアライゼーションを扱います。
 
-<ClickHouseSupportedBadge/>
-
-このセクションでは、dbt-clickhouse で利用可能なすべてのマテリアライゼーション（実験的な機能を含む）について説明します。
-
-<TOCInline toc={toc}  maxHeadingLevel={3} />
+<TOCInline toc={toc} maxHeadingLevel={3} />
 
 ## 一般的なマテリアライゼーション設定 \{#general-materialization-configurations\}
 
@@ -38,23 +35,23 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 ### サポートされているテーブルエンジン \{#supported-table-engines\}
 
-| 種類                  | 詳細                                                                                        |
-|------------------------|-------------------------------------------------------------------------------------------|
-| MergeTree (default)    | https://clickhouse.com/docs/en/engines/table-engines/mergetree-family/mergetree/.         |
-| HDFS                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hdfs                    |
-| MaterializedPostgreSQL | https://clickhouse.com/docs/en/engines/table-engines/integrations/materialized-postgresql |
-| S3                     | https://clickhouse.com/docs/en/engines/table-engines/integrations/s3                      |
-| EmbeddedRocksDB        | https://clickhouse.com/docs/en/engines/table-engines/integrations/embedded-rocksdb        |
-| Hive                   | https://clickhouse.com/docs/en/engines/table-engines/integrations/hive                    |
+| 種類                     | 詳細                                                                    |
+| ---------------------- | --------------------------------------------------------------------- |
+| MergeTree (default)    | [ドキュメント](/engines/table-engines/mergetree-family/mergetree/).         |
+| HDFS                   | [ドキュメント](/engines/table-engines/integrations/hdfs)                    |
+| MaterializedPostgreSQL | [ドキュメント](/engines/table-engines/integrations/materialized-postgresql) |
+| S3                     | [ドキュメント](/engines/table-engines/integrations/s3)                      |
+| EmbeddedRocksDB        | [ドキュメント](/engines/table-engines/integrations/embedded-rocksdb)        |
+| Hive                   | [ドキュメント](/engines/table-engines/integrations/hive)                    |
 
 **注意**: materialized view では、すべての *MergeTree エンジンがサポートされています。
 
 #### 実験的にサポートされているテーブルエンジン \{#experimental-supported-table-engines\}
 
-| 種類             | 詳細                                                                      |
-|------------------|---------------------------------------------------------------------------|
-| 分散テーブル     | https://clickhouse.com/docs/en/engines/table-engines/special/distributed. |
-| Dictionary        | https://clickhouse.com/docs/en/engines/table-engines/special/dictionary   |
+| 種類         | 詳細                                                    |
+| ---------- | ----------------------------------------------------- |
+| 分散テーブル     | [ドキュメント](/engines/table-engines/special/distributed). |
+| Dictionary | [ドキュメント](/engines/table-engines/special/dictionary)   |
 
 上記のいずれかのエンジンを使用して dbt から ClickHouse に接続する際に問題が発生した場合は、[こちら](https://github.com/ClickHouse/dbt-clickhouse/issues)から issue を登録してください。
 

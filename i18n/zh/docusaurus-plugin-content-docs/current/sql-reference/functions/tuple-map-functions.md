@@ -35,7 +35,7 @@ doc_type: 'reference'
 * `data` - 要从中提取键值对的字符串。[String](../../sql-reference/data-types/string.md) 或 [FixedString](../../sql-reference/data-types/fixedstring.md)。
   * `key_value_delimiter` - 用作键与值之间分隔符的字符。默认值为 `:`。[String](../../sql-reference/data-types/string.md) 或 [FixedString](../../sql-reference/data-types/fixedstring.md)。
   * `pair_delimiters` - 用作各键值对之间分隔符的字符集合。默认值为 `\space`、`,` 和 `;`。[String](../../sql-reference/data-types/string.md) 或 [FixedString](../../sql-reference/data-types/fixedstring.md)。
-  * `quoting_character` - 用作引用符号的字符。默认值为 `&quot;。[String](../../sql-reference/data-types/string.md) 或 [FixedString](../../sql-reference/data-types/fixedstring.md)。
+  * `quoting_character` - 用作引用符号的字符。默认值为 &#96;&quot;。[String](../../sql-reference/data-types/string.md) 或 [FixedString](../../sql-reference/data-types/fixedstring.md)。
   * `unexpected_quoting_character_strategy` - 在 `read_key` 和 `read_value` 阶段处理出现在非预期位置的引用符号的策略。可选值：`invalid`、`accept` 和 `promote`。`invalid` 会丢弃键/值并切换回 `WAITING_KEY` 状态；`accept` 会将其视为普通字符；`promote` 会切换到 `READ_QUOTED_{KEY/VALUE}` 状态并从下一个字符开始。默认值为 `INVALID`。
 
 **返回值**

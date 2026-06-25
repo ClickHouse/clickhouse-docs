@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['distributed', 'join']
 ---
 
-# ClickHouse는 분산 조인을 지원합니까? \{#does-clickhouse-support-distributed-joins\}
-
 예, ClickHouse는 클러스터에서 분산 조인을 지원합니다.
 
 데이터가 클러스터 내에 함께 배치되어 있는 경우(예: 사용자 식별자를 기준으로 조인을 수행하고, 이 식별자가 샤딩 키이기도 한 경우), ClickHouse는 네트워크에서 데이터를 이동하지 않고 조인을 수행할 수 있는 방법을 제공합니다.

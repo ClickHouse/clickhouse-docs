@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/slackbot
 sidebar_label: 'SlackBot 통합'
-title: 'ClickHouse MCP 서버를 사용하여 SlackBot 에이전트를 구축하는 방법'
+title: 'ClickHouse MCP 서버를 사용하여 SlackBot 에이전트를 구축하는 방법.'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCP 서버와 상호 작용할 수 있는 SlackBot 에이전트를 구축하는 방법에 대해 알아봅니다.'
+description: 'ClickHouse MCP 서버와 상호작용할 수 있는 SlackBot 에이전트를 구축하는 방법을 알아봅니다.'
 keywords: ['ClickHouse', 'MCP', 'Slack', 'SlackBot', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# ClickHouse MCP 서버를 사용하여 SlackBot 에이전트를 구축하는 방법 \{#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server\}
 
 이 가이드에서는 [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) 에이전트를 구축하는 방법을 안내합니다.
 이 봇을 사용하면 자연어로 Slack에서 ClickHouse 데이터에 대해 직접 질문할 수 있습니다. 이 봇은

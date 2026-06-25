@@ -1,16 +1,14 @@
 ---
-description: 'UNDROP TABLE 文のドキュメント'
+description: 'UNDROP TABLE のドキュメント'
 sidebar_label: 'UNDROP'
 slug: /sql-reference/statements/undrop
 title: 'UNDROP TABLE'
 doc_type: 'reference'
 ---
 
-# UNDROP TABLE \{#undrop-table\}
-
 テーブルの削除を取り消します。
 
-ClickHouse バージョン 23.3 以降では、Atomic データベース内で `DROP TABLE` ステートメントを実行してから `database_atomic_delay_before_drop_table_sec`（デフォルトでは 8 分）以内であれば、そのテーブルを UNDROP できます。削除されたテーブルは `system.dropped_tables` というシステムテーブルに一覧表示されます。
+ClickHouse バージョン 23.3 以降では、Atomic データベース内で `DROP TABLE` ステートメントを実行してから `database_atomic_delay_before_drop_table_sec` (デフォルトでは 8 分) 以内であれば、そのテーブルを UNDROP できます。削除されたテーブルは `system.dropped_tables` というシステムテーブルに一覧表示されます。
 
 削除されたテーブルに関連付けられており、`TO` 句を持たないマテリアライズドビューがある場合は、そのビューのインナーテーブルも UNDROP する必要があります。
 
@@ -55,7 +53,7 @@ table_dropped_time:    2023-04-05 14:12:12
 1 row in set. Elapsed: 0.001 sec. 
 ```
 
-```sql
+````sql
 UNDROP TABLE tab;
 
 SELECT *
@@ -66,7 +64,7 @@ FORMAT Vertical;
 Ok.
 
 0 rows in set. Elapsed: 0.001 sec. 
-```
+````
 
 ```sql
 DESCRIBE TABLE tab
@@ -74,7 +72,7 @@ FORMAT Vertical;
 ```
 
 ```response
-行 1:
+Row 1:
 ──────
 name:               id
 type:               UInt8

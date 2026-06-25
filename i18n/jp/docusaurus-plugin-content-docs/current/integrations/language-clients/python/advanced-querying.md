@@ -8,8 +8,6 @@ title: '高度なクエリ'
 doc_type: 'reference'
 ---
 
-# ClickHouse Connect を使ったデータクエリの高度な使い方 \{#querying-data-with-clickhouse-connect--advanced-usage\}
-
 ## QueryContexts \{#querycontexts\}
 
 ClickHouse Connect は通常のクエリを `QueryContext` 内で実行します。`QueryContext` には、ClickHouse データベースに対してクエリを構築するために使用される主要な構造と、結果を `QueryResult` またはその他の応答データ構造へと変換するために使用される設定が含まれます。これには、クエリ本体、パラメータ、設定、読み取りフォーマット、その他のプロパティが含まれます。

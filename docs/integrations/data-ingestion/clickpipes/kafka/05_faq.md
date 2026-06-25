@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'FAQ'
-description: 'Frequently asked questions about ClickPipes for Kafka'
+description: 'Frequently asked questions about ClickPipes for Kafka.'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
 title: 'Kafka ClickPipes FAQ'
@@ -68,6 +68,13 @@ Horizontal scaling adds more replicas to increase throughput, while vertical sca
 This can be configured during ClickPipe creation, or at any other point under **Settings** -> **Advanced Settings** -> **Scaling**.
 </details>
 
+<details>
+
+<summary>I can't find some of my Kafka topics in the ClickPipes setup UI. Why?</summary>
+
+The ClickPipes topic discovery UI lists up to 1,500 topics by default. If your Kafka cluster has more than 1,500 topics, some topics may not appear in the dropdown. To verify your topic exists, check directly using a Kafka client with the same credentials. If confirmed and you need to raise the listing limit beyond 1,500, reach out to ClickHouse Support.
+</details>
+
 ### Azure Event Hubs {#azure-eventhubs}
 
 <details>
@@ -109,8 +116,7 @@ Yes. ClickPipes expects you to include the port number for the Kafka surface, wh
 
 <summary>Are ClickPipes IPs still relevant for Azure Event Hubs?</summary>
 
-Yes. To restrict traffic to your Event Hubs instance, please add the [documented static NAT IPs](../
-/index.md#list-of-static-ips) to .
+Yes. To restrict traffic to your Event Hubs instance, please add the [documented static NAT IPs](/integrations/clickpipes#list-of-static-ips) to .
 
 </details>
 

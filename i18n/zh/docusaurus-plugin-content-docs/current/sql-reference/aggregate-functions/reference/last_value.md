@@ -1,11 +1,9 @@
 ---
-description: '选择最后出现的值，类似于 `anyLast`，但允许 NULL 值。'
+description: '选择最后出现的值，与 `anyLast` 类似，但可以接受 NULL。'
 slug: /sql-reference/aggregate-functions/reference/last_value
 title: 'last_value'
 doc_type: 'reference'
 ---
-
-# last_value \{#last_value\}
 
 选择最后出现的值，与 `anyLast` 类似，但可以接受 NULL。
 它主要应与[窗口函数](../../window-functions/index.md)一起使用。
@@ -24,7 +22,6 @@ ENGINE = Memory;
 INSERT INTO test_data (a, b) VALUES (1,null), (2,3), (4, 5), (6,null)
 ```
 
-
 ### 示例 1 \{#example1\}
 
 默认情况下会忽略 NULL 值。
@@ -38,7 +35,6 @@ SELECT last_value(b) FROM test_data
 │                          5 │
 └────────────────────────────┘
 ```
-
 
 ### 示例 2 \{#example2\}
 
@@ -54,7 +50,6 @@ SELECT last_value(b) ignore nulls FROM test_data
 └────────────────────────────┘
 ```
 
-
 ### 示例 3 \{#example3\}
 
 接受 NULL 值。
@@ -68,7 +63,6 @@ SELECT last_value(b) respect nulls FROM test_data
 │                        ᴺᵁᴸᴸ │
 └─────────────────────────────┘
 ```
-
 
 ### 示例 4 \{#example4\}
 

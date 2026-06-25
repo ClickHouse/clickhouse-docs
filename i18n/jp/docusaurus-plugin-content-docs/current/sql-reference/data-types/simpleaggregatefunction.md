@@ -7,8 +7,6 @@ title: 'SimpleAggregateFunction 型'
 doc_type: 'reference'
 ---
 
-# SimpleAggregateFunction 型 \{#simpleaggregatefunction-type\}
-
 ## 説明 \{#description\}
 
 `SimpleAggregateFunction` データ型は、[`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) 型が保持するような集約関数の完全な状態ではなく、集約関数の中間状態のみを格納します。

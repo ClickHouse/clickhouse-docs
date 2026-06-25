@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'accessor', 'str', 'dt', 'arr', 'json', 'url', '
 doc_type: 'reference'
 ---
 
-# DataStore Accessors
 
 DataStore provides 7 accessor namespaces with 185+ methods for domain-specific operations.
 

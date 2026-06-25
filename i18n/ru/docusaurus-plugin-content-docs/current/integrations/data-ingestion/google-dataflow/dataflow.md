@@ -10,18 +10,15 @@ keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apa
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Интеграция Google Dataflow с ClickHouse \{#integrating-google-dataflow-with-clickhouse\}
+[Google Dataflow](https://cloud.google.com/dataflow) — это полностью управляемый сервис потоковой и пакетной обработки данных. Он поддерживает конвейеры, написанные на Java или Python, и построен на основе Apache Beam SDK.
 
-<ClickHouseSupportedBadge/>
-
-[Google Dataflow](https://cloud.google.com/dataflow) — это полностью управляемый сервис обработки потоковых и пакетных данных. Он поддерживает конвейеры, написанные на Java или Python, и основан на Apache Beam SDK.
-
-Существует два основных способа использования Google Dataflow с ClickHouse; оба используют [`коннектор ClickHouseIO для Apache Beam`](/integrations/apache-beam).
+Существует два основных способа использования Google Dataflow с ClickHouse, и оба задействуют [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam).
 Это:
 
-- [Java runner](#1-java-runner)
-- [Готовые шаблоны](#2-predefined-templates)
+* [Java runner](#1-java-runner)
+* [Предопределённые шаблоны](#2-predefined-templates)
 
 ## Java runner \{#1-java-runner\}
 
@@ -35,7 +32,8 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 - Требует написания кода и понимания API Beam.
 
 ## Предопределённые шаблоны \{#2-predefined-templates\}
-ClickHouse предлагает [предопределённые шаблоны](./templates), разработанные для конкретных сценариев использования, например импорта данных из BigQuery в ClickHouse. Эти шаблоны готовы к использованию и упрощают процесс интеграции, что делает их отличным выбором, если вы предпочитаете решение без написания кода.
+
+ClickHouse предлагает [предопределённые шаблоны](./templates), разработанные для конкретных сценариев использования, например пакетного импорта из BigQuery или стриминговой ингестии из Pub/Sub в ClickHouse. Эти шаблоны готовы к использованию и упрощают процесс интеграции, что делает их отличным выбором, если вы предпочитаете решение без написания кода.
 
 ### Ключевые особенности \{#key-features-1\}
 

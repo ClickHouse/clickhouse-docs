@@ -1,13 +1,11 @@
 ---
-description: '指定された構造を持つ一時テーブルを、Null テーブルエンジンで作成します。この関数はテストやデモを行う際の利便性のために使用されます。'
+description: '指定した構造を持つ一時テーブルを、Null テーブルエンジンで作成します。この関数は、テスト作成やデモンストレーションを容易にするために使用されます。'
 sidebar_label: 'null 関数'
 sidebar_position: 140
 slug: /sql-reference/table-functions/null
 title: 'null'
 doc_type: 'reference'
 ---
-
-# null テーブル関数 \{#null-table-function\}
 
 指定した構造を持つ一時テーブルを、[Null](../../engines/table-engines/special/null.md) テーブルエンジンで作成します。`Null` エンジンの特性に従い、テーブルのデータは破棄され、クエリの実行が完了すると同時にテーブル自体も即座に削除されます。この関数は、テストやデモンストレーション用のクエリを作成しやすくするために使用されます。
 
@@ -19,7 +17,7 @@ null('structure')
 
 ## 引数 \{#argument\}
 
-- `structure` — 列とその型のリスト。[String](../../sql-reference/data-types/string.md)。
+* `structure` — 列とその型のリスト。[String](../../sql-reference/data-types/string.md)。
 
 ## 返される値 \{#returned_value\}
 
@@ -43,4 +41,4 @@ DROP TABLE IF EXISTS t;
 
 ## 関連項目 \{#related\}
 
-- [Null テーブルエンジン](../../engines/table-engines/special/null.md)
+* [Null テーブルエンジン](../../engines/table-engines/special/null.md)

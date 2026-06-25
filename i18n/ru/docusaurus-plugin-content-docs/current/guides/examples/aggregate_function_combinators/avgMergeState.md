@@ -10,8 +10,6 @@ doc_type: 'reference'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# avgMergeState \{#avgMergeState\}
-
 ## Описание \{#description\}
 
 Комбинатор [`MergeState`](/sql-reference/aggregate-functions/combinators#-state)
@@ -68,7 +66,7 @@ FROM raw_server_metrics
 GROUP BY server_id, region, datacenter;
 ```
 
-Сделаем то же самое для уровня региона и уровня дата-центра:
+Сделаем то же самое для уровня региона и уровня датацентра:
 
 ```sql
 CREATE TABLE region_performance
@@ -89,7 +87,7 @@ AS SELECT
 FROM server_performance
 GROUP BY region, datacenter;
 
--- таблица и материализованное представление на уровне дата-центра
+-- datacenter level table and materialized view
 
 CREATE TABLE datacenter_performance
 (
@@ -195,7 +193,8 @@ INSERT INTO raw_server_metrics (timestamp, server_id, region, datacenter, respon
     (now(), 301, 'eu-central', 'dc2', 135);
 ```
 
-Давайте ещё раз проверим производительность на уровне дата-центра. Обратите внимание, как вся цепочка агрегации обновилась автоматически:
+Давайте ещё раз проверим производительность на уровне датацентра. Обратите внимание, как вся
+цепочка агрегации обновилась автоматически:
 
 ```sql
 SELECT
@@ -214,7 +213,8 @@ ORDER BY datacenter;
 ```
 
 ## Смотрите также \{#see-also\}
-- [`avg`](/sql-reference/aggregate-functions/reference/avg)
-- [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
-- [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
-- [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)
+
+* [`avg`](/sql-reference/aggregate-functions/reference/avg)
+* [`AggregateFunction`](/sql-reference/data-types/aggregatefunction)
+* [`Merge`](/sql-reference/aggregate-functions/combinators#-merge)
+* [`MergeState`](/sql-reference/aggregate-functions/combinators#-mergestate)

@@ -7,11 +7,9 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'リファレンス'
 ---
 
-# groupArrayResample \{#grouparrayresample\}
-
 ## 説明 \{#description\}
 
-[`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+[`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 コンビネータは、[`groupArray`](/sql-reference/aggregate-functions/reference/sum) 集約関数に適用して、
 指定したキー列の範囲を固定数 (`N`) の区間に分割し、
 各区間に含まれるデータポイントから、キーが最小のものに対応する代表値を 1 つ選び、それらで結果の配列を構成できます。
@@ -58,5 +56,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 ```
 
 ## 関連項目 \{#see-also\}
-- [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Resample combinator`](/sql-reference/aggregate-functions/combinators#-resample)
+
+* [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
+* [`Resample コンビネータ`](/sql-reference/aggregate-functions/combinators#-resample)

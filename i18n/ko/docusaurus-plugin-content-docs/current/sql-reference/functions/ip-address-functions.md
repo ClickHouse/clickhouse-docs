@@ -1,12 +1,10 @@
 ---
-description: 'IPv4 및 IPv6 주소를 다루는 함수에 대한 문서입니다.'
+description: 'IPv4 및 IPv6 주소 작업에 사용되는 함수에 대한 문서입니다.'
 sidebar_label: 'IP 주소'
 slug: /sql-reference/functions/ip-address-functions
-title: 'IPv4 및 IPv6 주소를 다루는 함수'
+title: 'IPv4 및 IPv6 주소를 처리하기 위한 함수'
 doc_type: 'reference'
 ---
-
-# IPv4 및 IPv6 주소를 처리하기 위한 함수 \{#functions-for-working-with-ipv4-and-ipv6-addresses\}
 
 {/* 
   아래 태그 내부의 내용은 문서 프레임워크를 빌드할 때 

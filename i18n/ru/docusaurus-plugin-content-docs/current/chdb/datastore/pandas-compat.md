@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'compatibility', 'dataframe', 'methods
 doc_type: 'reference'
 ---
 
-# Совместимость с Pandas \{#pandas-compatibility\}
-
-DataStore реализует **209 методов pandas DataFrame** для полной совместимости с API pandas. Ваш существующий код на pandas будет работать практически без изменений.
+DataStore реализует **209 методов pandas DataFrame** для полной совместимости с API. Ваш существующий код pandas работает с минимальными изменениями.
 
 ## Подход к обеспечению совместимости \{#approach\}
 

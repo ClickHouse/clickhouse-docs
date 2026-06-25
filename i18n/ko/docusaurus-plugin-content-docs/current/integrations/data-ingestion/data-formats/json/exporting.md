@@ -1,12 +1,10 @@
 ---
-title: 'JSON 데이터 내보내기'
+title: 'JSON 내보내기'
 slug: /integrations/data-formats/json/exporting
 description: 'ClickHouse에서 JSON 데이터를 내보내는 방법'
-keywords: ['json', 'clickhouse', 'formats', 'exporting']
+keywords: ['json', 'ClickHouse', '형식', '내보내기']
 doc_type: 'guide'
 ---
-
-# JSON 내보내기 \{#exporting-json\}
 
 가져오기에 사용되는 거의 모든 JSON 형식은 내보내기에도 사용할 수 있습니다. 가장 널리 사용되는 형식은 [`JSONEachRow`](/interfaces/formats/JSONEachRow)입니다:
 
@@ -46,7 +44,7 @@ SELECT * FROM sometable FORMAT JSONStringsEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":"3"}
 ```
 
-이제 `hits` 숫자 컬럼은 문자열로 인코딩됩니다. 문자열로 내보내기는 모든 JSON* 포맷에서 지원되며, `JSONStrings\*` 및 `JSONCompactStrings\*` 포맷을 살펴보십시오:
+이제 `hits` 숫자 컬럼은 문자열로 인코딩됩니다. 문자열로 내보내기는 모든 JSON* 형식에서 지원되며, `JSONStrings\*` 및 `JSONCompactStrings\*` 형식을 살펴보십시오:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
@@ -60,7 +58,7 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 
 ## 데이터와 함께 메타데이터 내보내기 \{#exporting-metadata-together-with-data\}
 
-애플리케이션에서 널리 사용되는 일반적인 [JSON](/interfaces/formats/JSON) 포맷은 결과 데이터뿐만 아니라 컬럼 타입과 쿼리 통계도 함께 내보냅니다.
+애플리케이션에서 널리 사용되는 일반적인 [JSON](/interfaces/formats/JSON) 형식은 결과 데이터뿐만 아니라 컬럼 타입과 쿼리 통계도 함께 내보냅니다.
 
 ```sql
 SELECT * FROM sometable FORMAT JSON
@@ -98,7 +96,7 @@ SELECT * FROM sometable FORMAT JSON
 }
 ```
 
-[JSONCompact](/interfaces/formats/JSONCompact) 포맷은 동일한 메타데이터를 출력하지만, 데이터 자체는 보다 간결한 형식으로 표현합니다:
+[JSONCompact](/interfaces/formats/JSONCompact) 형식은 동일한 메타데이터를 출력하지만, 데이터 자체는 보다 간결한 형식으로 표현합니다:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompact
@@ -137,7 +135,7 @@ SELECT * FROM sometable FORMAT JSONCompact
 
 ## JSON 데이터와 구조를 내보내는 간결한 방법 \{#compact-way-to-export-json-data-and-structure\}
 
-데이터와 그 구조를 함께 보다 효율적으로 내보내려면 [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes) 포맷을 사용하십시오:
+데이터와 그 구조를 함께 보다 효율적으로 내보내려면 [`JSONCompactEachRowWithNamesAndTypes`](/interfaces/formats/JSONCompactEachRowWithNamesAndTypes) 형식을 사용하십시오:
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
@@ -175,7 +173,7 @@ SELECT * FROM sometable INTO OUTFILE 'out.json.gz' FORMAT JSONEachRow
 36838935 rows in set. Elapsed: 22.680 sec. Processed 36.84 million rows, 1.27 GB (1.62 million rows/s., 56.02 MB/s.)
 ```
 
-수행하는 데는 시간이 더 오래 걸리지만, 훨씬 더 작은 크기의 압축 파일이 생성됩니다.
+수행하는 데는 시간이 더 오래 걸리지만, 훨씬 더 작은 크기의 압축 파일이 생성됩니다:
 
 ```bash
 2.2G    out.json

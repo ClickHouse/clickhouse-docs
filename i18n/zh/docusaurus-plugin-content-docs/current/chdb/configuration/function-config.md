@@ -7,9 +7,7 @@ keywords: ['chdb', 'DataStore', 'function', '配置', 'Dtype', '校正']
 doc_type: 'reference'
 ---
 
-# 函数级别配置 \{#function-level-configuration\}
-
-DataStore 允许在函数级别对执行进行细粒度控制，包括引擎选择和 Dtype 校正。
+DataStore 支持在函数级别对执行进行细粒度控制，包括引擎选择和 Dtype 校正。
 
 ## FUNCTION 引擎配置 \{#function-engine\}
 

@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/llamaindex
-sidebar_label: 'LlamaIndex を統合する'
-title: 'ClickHouse MCPサーバー を使用して LlamaIndex AI エージェントを構築する方法'
+sidebar_label: 'LlamaIndex を統合'
+title: 'ClickHouse MCPサーバー を使用して LlamaIndex AI エージェントを構築する方法.'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCPサーバー と対話可能な LlamaIndex AI エージェントの構築方法を学びます。'
+description: 'ClickHouse MCPサーバー と対話できる LlamaIndex AI エージェントの構築方法を学びます。'
 keywords: ['ClickHouse', 'MCP', 'LlamaIndex']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# ClickHouse MCPサーバー を使用して LlamaIndex AI エージェントを構築する方法 \{#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server\}
 
 このガイドでは、[ClickHouse の SQL Playground](https://sql.clickhouse.com/) と対話できるようにするために、[ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を利用した [LlamaIndex](https://docs.llamaindex.ai) AI エージェントの構築方法を説明します。
 

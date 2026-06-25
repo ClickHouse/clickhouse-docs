@@ -2,7 +2,7 @@
 description: 'Подробная информация о резервном копировании и восстановлении на локальный диск и с него'
 sidebar_label: 'Локальный диск / диск S3'
 slug: /operations/backup/disk
-title: 'Резервное копирование и восстановление в ClickHouse'
+title: 'РЕЗЕРВНОЕ КОПИРОВАНИЕ / ВОССТАНОВЛЕНИЕ НА ДИСК'
 doc_type: 'guide'
 ---
 
@@ -10,8 +10,6 @@ import GenericSettings from '@site/i18n/ru/docusaurus-plugin-content-docs/curren
 import S3Settings from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 import ExampleSetup from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/ru/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
-
-# Резервное копирование и восстановление на локальный диск \{#backup-to-a-local-disk\}
 
 ## Синтаксис \{#syntax\}
 
@@ -142,14 +140,14 @@ RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 Чтобы восстановить таблицу, уже содержащую данные, выполните:
 
 ```sql
-RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
 Таблицы можно восстанавливать или создавать их резервные копии с новыми именами:
 
 ```sql
-RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
 Архив этой резервной копии имеет следующую структуру:
@@ -162,13 +160,12 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
 ```
 
 {/* TO DO: 
-  Здесь должно быть объяснение формата резервной копии. См. задачу 24a.
+  Здесь должно быть пояснение о формате резервной копии. См. задачу 24a.
   https://github.com/ClickHouse/clickhouse-docs/issues/3968
   */ }
 
 Можно использовать и другие форматы, помимо zip. См. раздел [&quot;Резервные копии в виде tar-архивов&quot;](#backups-as-tar-archives)
 ниже для получения дополнительной информации.
-
 
 ### Инкрементные резервные копии на диск \{#incremental-backups\}
 

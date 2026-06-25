@@ -1,13 +1,11 @@
 ---
-description: 'INSERT INTO SQL 문 문서'
+description: 'INSERT INTO 구문 문서'
 sidebar_label: 'INSERT INTO'
 sidebar_position: 33
 slug: /sql-reference/statements/insert-into
-title: 'INSERT INTO SQL 문'
+title: 'INSERT INTO 구문'
 doc_type: 'reference'
 ---
-
-# INSERT INTO 구문 \{#insert-into-statement\}
 
 테이블에 데이터를 삽입합니다.
 
@@ -70,7 +68,7 @@ INSERT INTO insert_select_testtable VALUES (1, DEFAULT, 1) ;
 * 테이블 정의에서 지정한 `DEFAULT` 표현식으로 계산된 값
 * `DEFAULT` 표현식이 정의되지 않은 경우 0과 빈 문자열
 
-데이터는 ClickHouse에서 지원하는 [format](/sql-reference/formats)으로 INSERT에 전달할 수 있습니다. format은 쿼리에서 명시적으로 지정해야 합니다.
+데이터는 ClickHouse에서 지원하는 [형식](/sql-reference/formats)으로 INSERT에 전달할 수 있습니다. 형식은 쿼리에서 명시적으로 지정해야 합니다.
 
 ```sql
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
@@ -102,7 +100,6 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 ```
 
 :::
-
 
 ## 제약 조건 \{#constraints\}
 
@@ -196,22 +193,19 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 다음 쿼리를 [command-line client](../../interfaces/client.md)를 사용하여 실행하십시오:
 
-```bash
+```bash title="Query"
 echo 1,A > input.csv ; echo 2,B >> input.csv
 clickhouse-client --query="CREATE TABLE table_from_file (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;"
 clickhouse-client --query="INSERT INTO table_from_file FROM INFILE 'input.csv' FORMAT CSV;"
 clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─id─┬─text─┐
 │  1 │ A    │
 │  2 │ B    │
 └────┴──────┘
 ```
-
 
 ### 글롭(glob) 패턴을 사용한 FROM INFILE 다중 파일 처리 \{#multiple-files-with-from-infile-using-globs\}
 
@@ -250,21 +244,18 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 
 다음 쿼리에서는 [remote](/sql-reference/table-functions/remote) 테이블 함수를 사용합니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
     VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌──id─┬─text──────────────────┐
 │ 100 │ inserted via remote() │
 └─────┴───────────────────────┘
 ```
-
 
 ## ClickHouse Cloud에 데이터 삽입 \{#inserting-into-clickhouse-cloud\}
 

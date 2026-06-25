@@ -58,12 +58,13 @@ INSERT INTO dbpedia SELECT _id, title, text, "text-embedding-3-large-1536-embedd
 ```sql
 SELECT count(*)
 FROM dbpedia
+```
 
+```response
    ┌─count()─┐
 1. │ 1000000 │
    └─────────┘
 ```
-
 
 ## 의미론적 검색 \{#semantic-search\}
 

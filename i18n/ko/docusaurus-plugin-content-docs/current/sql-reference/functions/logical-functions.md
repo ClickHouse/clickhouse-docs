@@ -1,12 +1,10 @@
 ---
-description: '논리 함수 문서'
+description: '논리 함수에 대한 문서'
 sidebar_label: '논리'
 slug: /sql-reference/functions/logical-functions
 title: '논리 함수'
 doc_type: 'reference'
 ---
-
-# 논리 함수 \{#logical-functions\}
 
 아래 함수들은 어떤 숫자형 인자에 대해서든 논리 연산을 수행합니다.
 이 함수들은 [`UInt8`](../data-types/int-uint.md) 타입의 `0` 또는 `1`을, 경우에 따라 `NULL`을 반환합니다.

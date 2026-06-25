@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/rocketbi
 keywords: ['clickhouse', 'RocketBI', 'connect', 'integrate', 'ui']
 description: 'RocketBI is a self-service business intelligence platform that helps you quickly analyze data, build drag-n-drop visualizations and collaborate with colleagues right on your web browser.'
-title: 'GOAL: build your 1st dashboard'
+title: 'Goal: build your first dashboard with Rocket.BI'
 doc_type: 'guide'
 integration:
   - support_level: 'community'
@@ -32,8 +32,6 @@ import rocketbi_16 from '@site/static/images/integrations/data-visualization/roc
 import rocketbi_17 from '@site/static/images/integrations/data-visualization/rocketbi_17.png';
 import rocketbi_18 from '@site/static/images/integrations/data-visualization/rocketbi_18.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
-
-# Goal: build your first dashboard with Rocket.BI
 
 <CommunityMaintainedBadge/>
 

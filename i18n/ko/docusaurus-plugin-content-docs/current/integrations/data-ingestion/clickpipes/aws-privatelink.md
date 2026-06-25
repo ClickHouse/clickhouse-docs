@@ -21,12 +21,11 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
+[AWS PrivateLink](https://aws.amazon.com/privatelink/)를 사용하면 트래픽을 퍼블릭 인터넷에 노출하지 않고도 VPC,
+AWS 서비스, 온프레미스 시스템, ClickHouse Cloud 간에 보안 연결을 설정할 수 있습니다.
 
-# ClickPipes를 위한 AWS PrivateLink \{#aws-privatelink-for-clickpipes\}
-
-[AWS PrivateLink](https://aws.amazon.com/privatelink/)을 사용하면 VPC, AWS 서비스, 온프레미스 시스템, ClickHouse Cloud 간에 퍼블릭 인터넷에 트래픽을 노출하지 않고 보안 연결을 구성할 수 있습니다.
-
-이 문서는 AWS PrivateLink VPC 엔드포인트를 설정할 수 있게 해주는 ClickPipes 역방향 프라이빗 엔드포인트 기능을 설명합니다.
+이 문서에서는 AWS PrivateLink VPC 엔드포인트를 설정할 수 있도록 하는
+ClickPipes 역방향 프라이빗 엔드포인트 기능을 설명합니다.
 
 ## 지원되는 ClickPipes 데이터 소스 \{#supported-sources\}
 

@@ -38,14 +38,16 @@ GROUP BY OwnerDisplayName
 HAVING count() > 10
 ORDER BY total_views DESC
 LIMIT 5
+```
 
-┌─OwnerDisplayName────────┬─total_views─┐
-│ Joan Venge            │       25520387 │
-│ Ray Vega              │       21576470 │
-│ anon                  │       19814224 │
-│ Tim                   │       19028260 │
-│ John                  │       17638812 │
-└─────────────────────────┴─────────────┘
+```response
+┌─OwnerDisplayName─┬─total_views─┐
+│ Joan Venge       │    25520387 │
+│ Ray Vega         │    21576470 │
+│ anon             │    19814224 │
+│ Tim              │    19028260 │
+│ John             │    17638812 │
+└──────────────────┴─────────────┘
 
 5 rows in set. Elapsed: 0.360 sec. Processed 24.37 million rows, 140.45 MB (67.73 million rows/s., 390.38 MB/s.)
 Peak memory usage: 510.71 MiB.
@@ -82,13 +84,15 @@ FROM posts
 GROUP BY tags
 ORDER BY views DESC
 LIMIT 5
+```
 
+```response
 ┌─tags───────┬──────views─┐
 │ javascript │ 8190916894 │
-│ python        │ 8175132834 │
-│ java          │ 7258379211 │
-│ c#            │ 5476932513 │
-│ android       │ 4258320338 │
+│ python     │ 8175132834 │
+│ java       │ 7258379211 │
+│ c#         │ 5476932513 │
+│ android    │ 4258320338 │
 └────────────┴────────────┘
 
 5 rows in set. Elapsed: 0.908 sec. Processed 59.82 million rows, 1.45 GB (65.87 million rows/s., 1.59 GB/s.)
@@ -132,7 +136,6 @@ Time: 112508.083 ms (01:52.508)
 
 По возможности следует использовать агрегатные функции ClickHouse. Ниже показано использование функции [argMax](/sql-reference/aggregate-functions/reference/argmax) для вычисления самого просматриваемого вопроса каждого года.
 
-
 ```sql
 --ClickHouse
 SELECT  toYear(CreationDate) AS Year,
@@ -143,6 +146,9 @@ WHERE PostTypeId = 'Question'
 GROUP BY Year
 ORDER BY Year ASC
 FORMAT Vertical
+```
+
+```response
 Row 1:
 ──────
 Year:                   2008
@@ -211,7 +217,6 @@ Time: 125822.015 ms (02:05.822)
 
 Функции условных выражений и работы с массивами значительно упрощают запросы. Следующий запрос вычисляет теги (у которых более 10 000 вхождений) с наибольшим процентным ростом с 2022 по 2023 год. Обратите внимание, насколько лаконичен следующий запрос ClickHouse благодаря условным выражениям, функциям работы с массивами и возможности повторно использовать псевдонимы в предложениях HAVING и SELECT.
 
-
 ```sql
 --ClickHouse
 SELECT  arrayJoin(arrayFilter(t -> (t != ''), splitByChar('|', Tags))) AS tag,
@@ -224,13 +229,15 @@ GROUP BY tag
 HAVING (count_2022 > 10000) AND (count_2023 > 10000)
 ORDER BY percent_change DESC
 LIMIT 5
+```
 
+```response
 ┌─tag─────────┬─count_2023─┬─count_2022─┬──────percent_change─┐
-│ next.js       │       13788 │         10520 │   31.06463878326996 │
-│ spring-boot │         16573 │         17721 │  -6.478189718413183 │
-│ .net          │       11458 │         12968 │ -11.644046884639112 │
-│ azure         │       11996 │         14049 │ -14.613139725247349 │
-│ docker        │       13885 │         16877 │  -17.72826924216389 │
+│ next.js     │      13788 │      10520 │   31.06463878326996 │
+│ spring-boot │      16573 │      17721 │  -6.478189718413183 │
+│ .net        │      11458 │      12968 │ -11.644046884639112 │
+│ azure       │      11996 │      14049 │ -14.613139725247349 │
+│ docker      │      13885 │      16877 │  -17.72826924216389 │
 └─────────────┴────────────┴────────────┴─────────────────────┘
 
 5 rows in set. Elapsed: 0.247 sec. Processed 5.08 million rows, 155.73 MB (20.58 million rows/s., 630.61 MB/s.)

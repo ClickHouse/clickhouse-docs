@@ -1,5 +1,5 @@
 ---
-description: '`ExternalDistributed` 엔진은 원격 서버의 MySQL 또는 PostgreSQL 데이터베이스에 저장된 데이터에 대해 `SELECT` 쿼리를 수행할 수 있도록 합니다. MySQL 또는 PostgreSQL 엔진을 인수로 받아 세그먼트 구성이 가능해집니다.'
+description: '`ExternalDistributed` 엔진은 원격 서버의 MySQL 또는 PostgreSQL 데이터베이스에 저장된 데이터에 대해 `SELECT` 쿼리를 수행할 수 있도록 합니다. MySQL 또는 PostgreSQL 엔진을 인수로 받아 세그먼트 분할이 가능해집니다.'
 sidebar_label: 'ExternalDistributed'
 sidebar_position: 55
 slug: /engines/table-engines/integrations/ExternalDistributed
@@ -7,9 +7,7 @@ title: 'ExternalDistributed 테이블 엔진'
 doc_type: 'reference'
 ---
 
-# ExternalDistributed 테이블 엔진 \{#externaldistributed-table-engine\}
-
-`ExternalDistributed` 엔진은 원격 서버의 MySQL 또는 PostgreSQL 데이터베이스에 저장된 데이터에 대해 `SELECT` 쿼리를 수행할 수 있도록 합니다. 인자로 [MySQL](../../../engines/table-engines/integrations/mysql.md) 또는 [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) 엔진을 받으므로 세그먼트 구성이 가능합니다.
+`ExternalDistributed` 엔진은 원격 서버의 MySQL 또는 PostgreSQL에 저장된 데이터에 대해 `SELECT` 쿼리를 수행할 수 있습니다. [MySQL](../../../engines/table-engines/integrations/mysql.md) 또는 [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) 엔진을 인수로 받아 세그먼트 분할을 수행할 수 있습니다.
 
 ## 테이블 생성 \{#creating-a-table\}
 

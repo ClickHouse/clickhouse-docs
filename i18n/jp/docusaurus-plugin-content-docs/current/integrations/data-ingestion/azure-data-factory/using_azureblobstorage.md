@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'ClickHouse の azureBlobStorage テーブル関数の使用'
+sidebar_label: 'ClickHouse の `azureBlobStorage` テーブル関数の使用'
 slug: /integrations/azure-data-factory/table-function
-description: 'ClickHouse の azureBlobStorage テーブル関数の使用'
+description: 'ClickHouse の `azureBlobStorage` テーブル関数の使用'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
-title: 'ClickHouse の azureBlobStorage テーブル関数を使用して Azure のデータを ClickHouse に取り込む'
+title: 'ClickHouse の `azureBlobStorage` テーブル関数の使用'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -14,9 +14,6 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-
-# ClickHouse の `azureBlobStorage` テーブル関数の使用 \{#using-azureBlobStorage-function\}
-
 これは、Azure Blob Storage または Azure Data Lake Storage から ClickHouse へ
 データをコピーするための、最も効率的でシンプルな方法の 1 つです。この
 テーブル関数を使うことで、ClickHouse に Azure ストレージへ直接接続させ、
@@ -26,7 +23,7 @@ import azureDataStoreAccessKeys                 from '@site/static/images/integr
 `SELECT`、`INSERT`、およびフィルタリングを行うことができます。この関数は
 高度に最適化されており、`CSV`、`JSON`、`Parquet`、`Arrow`、`TSV`、`ORC`、
 `Avro` など、広く利用されている多くのファイル形式をサポートします。サポート
-している形式の網羅的な一覧は、["データ形式"](/interfaces/formats) を参照して
+している形式の網羅的な一覧は、[&quot;データ形式&quot;](/interfaces/formats) を参照して
 ください。
 
 このセクションでは、Azure Blob Storage から ClickHouse へデータを転送する

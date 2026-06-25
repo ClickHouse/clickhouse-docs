@@ -7,8 +7,6 @@ title: 'ClickHouse のテスト'
 doc_type: 'guide'
 ---
 
-# ClickHouse のテスト \{#testing-clickhouse\}
-
 ## テストの種類 \{#test-types\}
 
 ClickHouse には、次のテストがあります。
@@ -572,9 +570,6 @@ ClickHouse は、運用担当エンジニアが故障したハードウェアを
 ただし、こちらは `clang-format` ほど十分にはテストされていません。
 
 `CLion` には独自のコードフォーマッタがあり、当プロジェクトのコードスタイルに合わせてチューニングする必要があります。
-
-また、コード内のタイポを検出するために `codespell` も使用しています。
-これも自動化されています。
 
 ## テストカバレッジ \{#test-coverage\}
 

@@ -1,5 +1,5 @@
 ---
-title: 'Cloud 控制台监控'
+title: 'ClickHouse Cloud 控制台中的监控'
 slug: /cloud/monitoring/cloud-console
 description: 'ClickHouse Cloud 控制台内置的监控仪表板'
 keywords: ['cloud', '监控', '仪表板', '服务健康', '资源利用率', '高级仪表板']
@@ -16,9 +16,7 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-# ClickHouse Cloud 控制台中的监控 \{#monitoring-in-the-clickhouse-cloud-console\}
-
-ClickHouse Cloud 中的服务内置监控组件，可为用户提供仪表板和通知。默认情况下，Cloud 控制台中的所有用户都可以访问这些仪表板。
+ClickHouse Cloud 中的服务内置了开箱即用的监控组件，可为用户提供仪表板和通知。默认情况下，Cloud 控制台中的所有用户都可以访问这些仪表板。
 
 ## 仪表板 \{#dashboards\}
 

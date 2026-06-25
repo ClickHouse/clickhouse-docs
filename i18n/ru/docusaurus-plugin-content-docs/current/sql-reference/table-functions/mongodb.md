@@ -7,9 +7,7 @@ title: 'mongodb'
 doc_type: 'reference'
 ---
 
-# Табличная функция MongoDB \{#mongodb-table-function\}
-
-Позволяет выполнять `SELECT`-запросы к данным, хранящимся на удалённом сервере MongoDB.
+Позволяет выполнять запросы `SELECT` к данным, хранящимся на удалённом сервере MongoDB.
 
 ## Синтаксис \{#syntax\}
 

@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/open-webui
 sidebar_label: '集成 Open WebUI'
-title: '使用 Open WebUI 和 ClickHouse Cloud 设置 ClickHouse MCP 服务器'
+title: '在 Open WebUI 中使用 ClickHouse MCP 服务器'
 pagination_prev: null
 pagination_next: null
 description: '本指南介绍如何使用 Docker 将 Open WebUI 与 ClickHouse MCP 服务器集成。'
@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
 import Endpoints from '@site/static/images/use-cases/AI_ML/MCP/0_endpoints.png';
@@ -25,9 +23,7 @@ import AddConnection from '@site/static/images/use-cases/AI_ML/MCP/7_add_connect
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/8_openai_models_more.png';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation.png';
 
-# 使用 ClickHouse MCP 服务器 与 Open WebUI \{#using-clickhouse-mcp-server-with-open-webui\}
-
-> 本指南介绍如何将 [Open WebUI](https://github.com/open-webui/open-webui) 与 ClickHouse MCP 服务器 配置在一起，
+> 本指南介绍如何将 [Open WebUI](https://github.com/open-webui/open-webui) 与 ClickHouse MCP 服务器集成，
 > 并将其连接到 ClickHouse 示例数据集。
 
 <VerticalStepper headerLevel="h2">
@@ -46,9 +42,9 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
 
   访问 http://localhost:8080/ 以查看 UI。
 
-  ## 配置 ClickHouse MCP Server \{#configure-clickhouse-mcp-server\}
+  ## 配置 ClickHouse MCP 服务器 \{#configure-clickhouse-mcp-server\}
 
-  要配置 ClickHouse MCP Server，我们需要将 MCP Server 暴露为一组 OpenAPI 端点。
+  要配置 ClickHouse MCP 服务器，我们需要将 MCP Server 暴露为一组 OpenAPI 端点。
   首先，先设置环境变量，以便连接到 ClickHouse SQL Playground：
 
   ```bash
@@ -63,7 +59,7 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
   uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhouse
   ```
 
-  你可以通过访问 [http://localhost:8000/docs](http://localhost:8000/docs) 查看已创建的端点列表。
+  你可以通过访问 http://localhost:8000/docs 查看已创建的端点列表。
 
   <Image img={Endpoints} alt="Open API 端点" size="md" />
 
@@ -75,7 +71,7 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
 
   <Image img={ToolsPage} alt="Open WebUI 工具" size="md" />
 
-  将 [http://localhost:8000](http://localhost:8000) 添加为工具的 URL：
+  将 http://localhost:8000 添加为工具的 URL：
 
   <Image img={AddTool} alt="Open WebUI 工具" size="md" />
 

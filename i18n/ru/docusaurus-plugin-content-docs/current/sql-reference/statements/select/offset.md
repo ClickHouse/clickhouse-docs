@@ -73,13 +73,11 @@ SELECT * FROM test_fetch ORDER BY a LIMIT 3 OFFSET 1;
 
 Использование параметра `ONLY`:
 
-```sql
+```sql title="Query"
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─a─┬─b─┐
 │ 2 │ 1 │
 │ 3 │ 4 │
@@ -89,13 +87,11 @@ SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS ONLY;
 
 Использование параметра `WITH TIES`:
 
-```sql
+```sql title="Query"
 SELECT * FROM test_fetch ORDER BY a OFFSET 3 ROW FETCH FIRST 3 ROWS WITH TIES;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─a─┬─b─┐
 │ 2 │ 1 │
 │ 3 │ 4 │

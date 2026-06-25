@@ -1,21 +1,19 @@
 ---
-description: '厳密ベクトル検索および近似ベクトル検索に関するドキュメント'
-keywords: ['vector similarity search', 'ann', 'knn', 'hnsw', 'indices', 'index', 'nearest neighbor', 'vector search']
-sidebar_label: '厳密ベクトル検索および近似ベクトル検索'
+description: '厳密ベクトル検索と近似ベクトル検索に関するドキュメント'
+keywords: ['ベクトル類似検索', 'ann', 'knn', 'hnsw', '索引', '索引', '最近傍', 'ベクトル検索']
+sidebar_label: '厳密ベクトル検索と近似ベクトル検索'
 slug: /engines/table-engines/mergetree-family/annindexes
-title: '厳密ベクトル検索および近似ベクトル検索'
+title: '厳密ベクトル検索と近似ベクトル検索'
 doc_type: 'guide'
 ---
 
-# 厳密ベクトル検索と近似ベクトル検索 \{#exact-and-approximate-vector-search\}
-
-多次元（ベクトル）空間において、ある点に最も近い N 個の点を見つける問題は、[nearest neighbor search](https://en.wikipedia.org/wiki/Nearest_neighbor_search)（最近傍探索）、あるいは略してベクトル検索と呼ばれます。
+多次元 (ベクトル) 空間において、ある点に最も近い N 個の点を見つける問題は、[nearest neighbor search](https://en.wikipedia.org/wiki/Nearest_neighbor_search) (最近傍探索) 、あるいは略してベクトル検索と呼ばれます。
 ベクトル検索を解くための一般的なアプローチには 2 種類あります。
 
 * 厳密ベクトル検索は、与えられた点とベクトル空間内のすべての点との距離を計算します。これにより可能な限り最高の精度が得られ、返される点が実際の最近傍であることが保証されます。ベクトル空間を網羅的に探索するため、厳密ベクトル検索は実運用のユースケースでは遅くなりすぎる場合があります。
-* 近似ベクトル検索は、一群の手法（例: グラフやランダムフォレストといった特殊なデータ構造）を指し、厳密ベクトル検索よりもはるかに高速に結果を計算します。結果の精度は通常、実用上「十分良い」レベルです。多くの近似手法は、結果精度と検索時間のトレードオフを調整するためのパラメータを提供します。
+* 近似ベクトル検索は、一群の手法 (例: グラフやランダムフォレストといった特殊なデータ構造) を指し、厳密ベクトル検索よりもはるかに高速に結果を計算します。結果の精度は通常、実用上「十分良い」レベルです。多くの近似手法は、結果精度と検索時間のトレードオフを調整するためのパラメータを提供します。
 
-ベクトル検索（厳密・近似いずれも）は、次のように SQL で記述できます。
+ベクトル検索 (厳密・近似いずれも) は、次のように SQL で記述できます。
 
 ```sql
 WITH [...] AS reference_vector
@@ -31,7 +29,6 @@ LIMIT <N>
 `<DistanceFunction>` は参照点と格納されているすべての点との距離を計算します。
 この計算には、利用可能な任意の [distance function](/sql-reference/functions/distance-functions) を使用できます。
 `<N>` は返される近傍点の数を指定します。
-
 
 ## 厳密ベクトル検索 \{#exact-nearest-neighbor-search\}
 
@@ -604,7 +601,7 @@ WHERE type = 'vector_similarity';
 
 クエリ:
 
-```sql
+```sql title="Query"
 CREATE TABLE tab(id Int32, vec Array(Float32), INDEX idx vec TYPE vector_similarity('hnsw', 'L2Distance', 2)) ENGINE = MergeTree ORDER BY id;
 
 INSERT INTO tab VALUES (0, [1.0, 0.0]), (1, [1.1, 0.0]), (2, [1.2, 0.0]), (3, [1.3, 0.0]), (4, [1.4, 0.0]), (5, [1.5, 0.0]), (6, [0.0, 2.0]), (7, [0.0, 2.1]), (8, [0.0, 2.2]), (9, [0.0, 2.3]), (10, [0.0, 2.4]), (11, [0.0, 2.5]);
@@ -616,9 +613,7 @@ ORDER BY L2Distance(vec, reference_vec) ASC
 LIMIT 3;
 ```
 
-結果:
-
-```result
+```result title="Response"
    ┌─id─┬─vec─────┐
 1. │  6 │ [0,2]   │
 2. │  7 │ [0,2.1] │

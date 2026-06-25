@@ -2,7 +2,7 @@
 slug: /integrations/prometheus
 sidebar_label: 'Prometheus endpoint'
 sidebar_position: 4
-title: 'Prometheus-compatible metrics endpoint'
+title: 'Prometheus integration'
 description: 'Export ClickHouse metrics to Prometheus'
 keywords: ['prometheus', 'grafana', 'monitoring', 'metrics', 'exporter']
 doc_type: 'reference'
@@ -16,11 +16,11 @@ import prometheus_grafana_metrics_explorer from '@site/static/images/integration
 import prometheus_datadog from '@site/static/images/integrations/prometheus-datadog.png';
 import Image from '@theme/IdealImage';
 
-# Prometheus Integration
-
 The feature supports integrating [Prometheus](https://prometheus.io/) to monitor ClickHouse Cloud services. Access to Prometheus metrics is exposed via the [ClickHouse Cloud API](/cloud/manage/api/api-overview) endpoint that allows you to securely connect and export metrics into your Prometheus metrics collector. These metrics can be integrated with dashboards e.g., Grafana, Datadog for visualization.
 
 To get started, [generate an API key](/cloud/manage/openapi).
+
+If you're looking for the equivalent endpoint for [Managed Postgres](/cloud/managed-postgres) services, see the [Managed Postgres Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus).
 
 ## Prometheus endpoint API to retrieve ClickHouse Cloud metrics {#prometheus-endpoint-api-to-retrieve-clickhouse-cloud-metrics}
 
@@ -329,3 +329,4 @@ instances:
 - [Cloud Console monitoring](/cloud/monitoring/cloud-console) — Built-in dashboards that require no external tools
 - [Community and partner integrations](/cloud/monitoring/integrations) — Datadog agent integration and community solutions
 - [Querying system tables](/cloud/monitoring/system-tables) — Direct SQL access to system metrics
+- [Managed Postgres Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus) — Scrape metrics from your Managed Postgres services

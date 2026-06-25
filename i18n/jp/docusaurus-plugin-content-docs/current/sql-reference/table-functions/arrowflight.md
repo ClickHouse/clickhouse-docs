@@ -1,13 +1,11 @@
 ---
-description: 'Apache Arrow Flight サーバーが公開するデータに対してクエリを実行できるようにします。'
+description: 'Apache Arrow Flight サーバーで公開されているデータに対してクエリを実行できます。'
 sidebar_label: 'arrowFlight'
 sidebar_position: 186
 slug: /sql-reference/table-functions/arrowflight
 title: 'arrowFlight'
 doc_type: 'reference'
 ---
-
-# arrowFlight テーブル関数 \{#arrowflight-table-function\}
 
 [Apache Arrow Flight](/interfaces/arrowflight) サーバーで公開されているデータに対してクエリを実行できます。
 
@@ -24,7 +22,7 @@ arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 * `username` - HTTP ベーシック認証で使用するユーザー名。
 * `password` - HTTP ベーシック認証で使用するパスワード。
   `username` と `password` が指定されていない場合は、認証を行わないことを意味します
-   (その場合に接続できるかどうかは、Arrow Flight サーバーが認証なし接続を許可している場合に限ります) 。
+  (その場合に接続できるかどうかは、Arrow Flight サーバーが認証なし接続を許可している場合に限ります) 。
 
 **返される値**
 
@@ -32,15 +30,11 @@ arrowFlight('host:port', 'dataset_name' [, 'username', 'password'])
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT * FROM arrowFlight('127.0.0.1:9005', 'sample_dataset') ORDER BY id;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─id─┬─name────┬─value─┐
 │  1 │ foo     │ 42.1  │
 │  2 │ bar     │ 13.3  │

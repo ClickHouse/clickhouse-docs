@@ -1,7 +1,7 @@
 ---
-title: "GCP Private Service Connect"
-description: "В этом документе описывается, как подключиться к ClickHouse Cloud с помощью Google Cloud Platform (GCP) Private Service Connect (PSC) и как с помощью списков IP-доступа ClickHouse Cloud запретить доступ к вашим сервисам ClickHouse Cloud с любых адресов, кроме адресов GCP PSC."
-sidebar_label: "GCP Private Service Connect"
+title: 'Private Service Connect'
+description: 'В этом документе описано, как подключиться к ClickHouse Cloud с помощью Google Cloud Platform (GCP) Private Service Connect (PSC), а также как отключить доступ к вашим сервисам ClickHouse Cloud с адресов, не относящихся к GCP PSC, с помощью списков доступа по IP-адресам ClickHouse Cloud.'
+sidebar_label: 'GCP private service connect'
 slug: /manage/security/gcp-private-service-connect
 doc_type: 'guide'
 keywords: ['Private Service Connect']
@@ -20,9 +20,6 @@ import gcp_psc_dns_record from '@site/static/images/cloud/security/gcp-psc-dns-r
 import gcp_pe_remove_private_endpoint from '@site/static/images/cloud/security/gcp-pe-remove-private-endpoint.png';
 import gcp_privatelink_pe_filters from '@site/static/images/cloud/security/gcp-privatelink-pe-filters.png';
 import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-privatelink-pe-dns.png';
-
-
-# Private Service Connect \{#private-service-connect\}
 
 <ScalePlanFeatureBadge feature="GCP PSC" />
 
@@ -47,10 +44,10 @@ Private Service Connect (PSC) — это сетевая возможность G
 
 **Выполните следующие шаги, чтобы включить GCP PSC**:
 
-1. Получите ресурс подключения сервиса GCP в GCP для Private Service Connect.
+1. Получите подключение сервиса GCP в GCP для Private Service Connect.
 2. Создайте конечную точку сервиса (service endpoint).
-3. Добавьте идентификатор конечной точки (Endpoint ID) в сервис ClickHouse Cloud.
-4. Добавьте идентификатор конечной точки (Endpoint ID) в список разрешённых сервиса ClickHouse.
+3. Добавьте Endpoint ID в сервис ClickHouse Cloud.
+4. Добавьте Endpoint ID в список разрешённых сервиса ClickHouse.
 
 ## Внимание \{#attention\}
 

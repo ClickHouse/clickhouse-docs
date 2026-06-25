@@ -1,11 +1,11 @@
 ---
-description: '它是 `any` 的别名，为了与窗口函数兼容而引入。在窗口函数中，有时需要处理 `NULL` 值（默认情况下，所有 ClickHouse 聚合函数都会忽略 `NULL` 值）。'
+description: '它是 any 的别名，但引入它是为了兼容
+  窗口函数，在这些场景下有时需要处理 `NULL` 值（默认情况下，
+  所有 ClickHouse 聚合函数都会忽略 NULL 值）。'
 slug: /sql-reference/aggregate-functions/reference/first_value
 title: 'first_value'
 doc_type: 'reference'
 ---
-
-# first_value \{#first_value\}
 
 它是 [`any`](../../../sql-reference/aggregate-functions/reference/any.md) 的别名，但之所以引入它，是为了兼容 [窗口函数](../../window-functions/index.md)，在这些场景下有时需要处理 `NULL` 值 (默认情况下，所有 ClickHouse 聚合函数都会忽略 NULL 值) 。
 

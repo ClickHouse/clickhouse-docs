@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
 sidebar_label: 'Customizing ClickHouse Assistant chat with a semantic layer'
-title: 'Optimizing ClickHouse Assistant agent conversations with a semantic layer'
+title: 'Optimizing ClickHouse Assistant conversations with a semantic layer'
 pagination_prev: null
 pagination_next: null
 description: 'Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the ClickHouse Assistant chat agent'
@@ -10,7 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Customize ClickHouse Assistant chat with a semantic layer
 
 The ClickHouse Assistant chat agent can be customized to understand your specific business logic, data structures, and domain knowledge through **AGENTS.md**—a special saved query that acts as a semantic layer over the agent's system prompt.
 

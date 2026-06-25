@@ -2,32 +2,27 @@
 slug: /guides/developer/deduplication
 sidebar_label: '중복 제거 전략'
 sidebar_position: 3
-description: '업서트, 업데이트, 삭제를 자주 수행해야 하는 경우 중복 제거를 사용합니다.'
+description: '빈번한 upsert, update, delete가 필요한 경우 중복 제거를 사용합니다.'
 title: '중복 제거 전략'
-keywords: ['중복 제거 전략', '데이터 중복 제거', '업서트', '업데이트 및 삭제', '개발자 가이드']
+keywords: ['중복 제거 전략', '데이터 중복 제거', 'upserts', 'updates and deletes', '개발자 가이드']
 doc_type: 'guide'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-
-# 중복 제거 전략 \{#deduplication-strategies\}
-
-**Deduplication(중복 제거)**은 ***데이터 세트에서 중복된 행을 제거하는 과정***을 의미합니다. OLTP 데이터베이스에서는 각 행이 고유한 기본 키(primary key)를 가지므로 이 작업을 비교적 쉽게 수행할 수 있지만, 삽입 속도가 느려지는 비용이 발생합니다. 삽입되는 각 행은 먼저 검색되어야 하고, 이미 존재하는 경우 교체되어야 합니다.
+**Deduplication(중복 제거)**은 ***데이터 세트에서 중복된 행을 제거하는 과정***&#xC744; 의미합니다. OLTP 데이터베이스에서는 각 행이 고유한 기본 키(primary key)를 가지므로 이 작업을 비교적 쉽게 수행할 수 있지만, 삽입 속도가 느려지는 비용이 발생합니다. 삽입되는 각 행은 먼저 검색되어야 하고, 이미 존재하는 경우 교체되어야 합니다.
 
 ClickHouse는 데이터 삽입 속도에 최적화되어 있습니다. 저장 파일은 불변(immutable)이며, ClickHouse는 행을 삽입하기 전에 기존 기본 키를 확인하지 않습니다. 따라서 중복 제거에는 더 많은 작업이 필요합니다. 또한 중복 제거가 즉시 수행되는 것이 아니라 **최종적으로(eventual)** 이루어지며, 이로 인해 다음과 같은 부수 효과가 있습니다.
 
-- 어느 시점에서든 테이블에는 여전히 중복(동일한 정렬 키를 가진 행)이 존재할 수 있습니다.
-- 중복된 행의 실제 제거는 파트를 병합하는 과정에서 발생합니다.
-- 쿼리는 중복이 존재할 가능성을 허용하도록 작성되어야 합니다.
+* 어느 시점에서든 테이블에는 여전히 중복(동일한 정렬 키를 가진 행)이 존재할 수 있습니다.
+* 중복된 행의 실제 제거는 파트를 병합하는 과정에서 발생합니다.
+* 쿼리는 중복이 존재할 가능성을 허용하도록 작성되어야 합니다.
 
-<div class='transparent-table'>
-
-|||
-|------|----|
-|<Image img={deduplication}  alt="Deduplication 로고" size="sm"/>|ClickHouse는 중복 제거를 비롯한 다양한 주제에 대해 무료 교육을 제공합니다. [Deleting and Updating Data 교육 모듈](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs)은 시작하기에 좋은 자료입니다.|
-
+<div class="transparent-table">
+  |                                                                |                                                                                                                                                                                                               |
+  | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | <Image img={deduplication} alt="Deduplication 로고" size="sm" /> | ClickHouse는 중복 제거를 비롯한 다양한 주제에 대해 무료 교육을 제공합니다.  [Deleting and Updating Data 교육 모듈](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)은 시작하기에 좋은 자료입니다. |
 </div>
 
 ## 중복 제거 옵션 \{#options-for-deduplication\}

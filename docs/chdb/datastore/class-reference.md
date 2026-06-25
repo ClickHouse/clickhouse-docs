@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'class', 'reference', 'api', 'columnexpr', 'lazy
 doc_type: 'reference'
 ---
 
-# DataStore Class Reference
 
 This reference documents the core classes in the DataStore API.
 

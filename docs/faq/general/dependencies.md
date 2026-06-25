@@ -8,7 +8,6 @@ doc_type: 'reference'
 keywords: ['dependencies', '3rd-party']
 ---
 
-# What are the 3rd-party dependencies for running ClickHouse?
 
 ClickHouse doesn't have any runtime dependencies. It is distributed as a single binary application which is fully self-contained. This application provides all the functionality of the cluster, serves queries, acts as a worker node in the cluster, as a coordination system providing the RAFT consensus algorithm, as a client or a local query engine.
 

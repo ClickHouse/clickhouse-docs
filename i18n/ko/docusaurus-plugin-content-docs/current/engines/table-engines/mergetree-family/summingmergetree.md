@@ -1,13 +1,11 @@
 ---
-description: 'SummingMergeTree는 MergeTree 엔진을 상속한 엔진입니다. 이 엔진의 핵심 기능은 파트 병합 시 숫자 데이터를 자동으로 합산하는 것입니다.'
+description: 'SummingMergeTree는 MergeTree 엔진을 상속합니다. 핵심 기능은 파트 병합 중 숫자 데이터를 자동으로 합산하는 기능입니다.'
 sidebar_label: 'SummingMergeTree'
 sidebar_position: 50
 slug: /engines/table-engines/mergetree-family/summingmergetree
 title: 'SummingMergeTree 테이블 엔진'
 doc_type: 'reference'
 ---
-
-# SummingMergeTree 테이블 엔진 \{#summingmergetree-table-engine\}
 
 이 엔진은 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)를 상속합니다. 차이점은 `SummingMergeTree` 테이블의 데이터 파트를 병합할 때 ClickHouse가 동일한 기본 키(보다 정확하게는 동일한 [정렬 키](../../../engines/table-engines/mergetree-family/mergetree.md))를 가진 모든 행을, 숫자 데이터 타입 컬럼의 값을 합산한 하나의 행으로 대체한다는 점입니다. 정렬 키가 하나의 키 값에 매우 많은 행이 대응되도록 구성되어 있다면, 저장 공간을 크게 줄이고 데이터 조회 속도를 높일 수 있습니다.
 

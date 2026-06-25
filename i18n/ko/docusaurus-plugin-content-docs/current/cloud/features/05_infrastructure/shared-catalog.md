@@ -1,26 +1,24 @@
 ---
 slug: /cloud/reference/shared-catalog
 sidebar_label: '공유 카탈로그'
-title: '공유 카탈로그와 공유 데이터베이스 엔진'
+title: '공유 카탈로그 및 공유 데이터베이스 엔진'
 keywords: ['SharedCatalog', 'SharedDatabaseEngine']
-description: 'ClickHouse Cloud의 Shared Catalog 구성 요소와 Shared Database 엔진을 설명합니다'
+description: 'ClickHouse Cloud의 Shared Catalog 컴포넌트와 Shared 데이터베이스 엔진을 설명합니다'
 doc_type: 'reference'
 ---
 
-# Shared catalog and shared database engine \{#shared-catalog-and-shared-database-engine\}
-
 **ClickHouse Cloud (및 퍼스트파티 파트너 Cloud 서비스)에서만 사용할 수 있습니다**
 
-Shared Catalog는 ClickHouse Cloud에서 stateless 엔진을 사용하는 데이터베이스와 테이블의 메타데이터 및 DDL 작업을 레플리카 간에 복제하는 역할을 하는 클라우드 네이티브 컴포넌트입니다. 이 컴포넌트는 이러한 객체에 대해 일관되고 중앙화된 상태 관리를 가능하게 하여, 동적이거나 일부 노드가 오프라인인 환경에서도 메타데이터의 일관성을 보장합니다.
+Shared Catalog는 ClickHouse Cloud에서 상태 비저장 엔진을 사용하는 데이터베이스와 테이블의 메타데이터 및 DDL 작업을 레플리카 간에 복제하는 역할을 하는 클라우드 네이티브 컴포넌트입니다. 이 컴포넌트는 이러한 객체에 대해 일관되고 중앙화된 상태 관리를 가능하게 하여, 동적이거나 일부 노드가 오프라인인 환경에서도 메타데이터의 일관성을 보장합니다.
 
 Shared Catalog는 **테이블 자체를 복제하지는 않지만**, DDL 쿼리와 메타데이터를 복제하여 모든 레플리카가 데이터베이스와 테이블 정의를 일관되게 볼 수 있도록 보장합니다.
 
 다음 데이터베이스 엔진의 복제를 지원합니다:
 
-- Shared
-- PostgreSQL
-- MySQL
-- DataLakeCatalog
+* Shared
+* PostgreSQL
+* MySQL
+* DataLakeCatalog
 
 ## 아키텍처와 메타데이터 저장 \{#architecture-and-metadata-storage\}
 

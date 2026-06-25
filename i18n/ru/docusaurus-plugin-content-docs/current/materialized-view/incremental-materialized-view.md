@@ -43,7 +43,9 @@ ENGINE = MergeTree
 ORDER BY (VoteTypeId, CreationDate, PostId)
 
 INSERT INTO votes SELECT * FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 29.359 sec. Processed 238.98 million rows, 2.13 GB (8.14 million rows/s., 72.45 MB/s.)
 ```
 
@@ -57,7 +59,9 @@ FROM votes
 GROUP BY day
 ORDER BY day ASC
 LIMIT 10
+```
 
+```response
 ┌─────────────────day─┬─UpVotes─┬─DownVotes─┐
 │ 2008-07-31 00:00:00 │       6 │         0 │
 │ 2008-08-01 00:00:00 │     182 │        50 │
@@ -107,11 +111,12 @@ GROUP BY Day
 
 Мы можем заново заполнить таблицу голосов, используя ранее выполненную вставку:
 
-
 ```sql
 INSERT INTO votes SELECT toUInt32(Id) AS Id, toInt32(PostId) AS PostId, VoteTypeId, CreationDate, UserId, BountyAmount
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/votes/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 111.964 sec. Processed 477.97 million rows, 3.89 GB (4.27 million rows/s., 34.71 MB/s.)
 Peak memory usage: 283.49 MiB.
 ```
@@ -122,15 +127,17 @@ Peak memory usage: 283.49 MiB.
 SELECT count()
 FROM up_down_votes_per_day
 FINAL
+```
 
+```response
 ┌─count()─┐
 │    5723 │
 └─────────┘
 ```
 
-Мы фактически сократили количество строк с 238 миллионов (в `votes`) до 5000, сохранив результат нашего запроса. Важно, однако, что при вставке новых голосов в таблицу `votes` новые значения будут попадать в `up_down_votes_per_day` для соответствующего дня, где они будут автоматически асинхронно объединяться в фоновом режиме — при этом сохраняется только одна строка в день. Таким образом, `up_down_votes_per_day` всегда будет и небольшой по размеру, и актуальной.
+Мы фактически сократили количество строк с 238 миллионов (в `votes`) до 5000, сохранив результат нашего запроса. Важно, однако, что при вставке новых голосов в таблицу `votes` новые значения будут попадать в `up_down_votes_per_day` для соответствующего дня, где они будут автоматически асинхронно сливаться в фоновом режиме — при этом сохраняется только одна строка в день. Таким образом, `up_down_votes_per_day` всегда будет и небольшой по размеру, и актуальной.
 
-Поскольку объединение строк происходит асинхронно, на момент выполнения запроса пользователем в таблице может существовать более одной строки на день. Чтобы гарантировать, что все ещё не объединённые строки будут учтены во время выполнения запроса, у нас есть два варианта:
+Поскольку слияние строк происходит асинхронно, на момент выполнения запроса пользователем в таблице может существовать более одной строки на день. Чтобы гарантировать, что все ещё не слитые строки будут учтены во время выполнения запроса, у нас есть два варианта:
 
 * Использовать модификатор `FINAL` в имени таблицы в запросе. Мы делали это для запроса COUNT выше.
 * Агрегировать по ключу сортировки, используемому в нашей итоговой таблице, то есть `CreationDate`, и суммировать метрики. Обычно это более эффективно и гибко (таблицу можно использовать и для других целей), но первый вариант может быть проще для некоторых запросов. Ниже мы показываем оба подхода:
@@ -144,15 +151,22 @@ FROM up_down_votes_per_day
 FINAL
 ORDER BY Day ASC
 LIMIT 10
+```
 
+```response
 10 rows in set. Elapsed: 0.004 sec. Processed 8.97 thousand rows, 89.68 KB (2.09 million rows/s., 20.89 MB/s.)
 Peak memory usage: 289.75 KiB.
+```
 
+```sql
 SELECT Day, sum(UpVotes) AS UpVotes, sum(DownVotes) AS DownVotes
 FROM up_down_votes_per_day
 GROUP BY Day
 ORDER BY Day ASC
 LIMIT 10
+```
+
+```response
 ┌────────Day─┬─UpVotes─┬─DownVotes─┐
 │ 2008-07-31 │       6 │         0 │
 │ 2008-08-01 │     182 │        50 │
@@ -176,7 +190,6 @@ Peak memory usage: 567.61 KiB.
 В большинстве случаев столбцы, используемые в предложении `GROUP BY` в преобразовании materialized view, должны соответствовать столбцам, используемым в предложении `ORDER BY` целевой таблицы при использовании движков таблиц `SummingMergeTree` или `AggregatingMergeTree`. Эти движки полагаются на столбцы `ORDER BY` для слияния строк с идентичными значениями во время фоновых операций слияния. Несоответствие между столбцами `GROUP BY` и `ORDER BY` может привести к неэффективному выполнению запросов, неоптимальным слияниям или даже к расхождениям в данных.
 :::
 
-
 ### Более сложный пример \{#a-more-complex-example\}
 
 Приведённый выше пример использует Materialized Views для вычисления и поддержки двух сумм в день. Суммы представляют собой простейшую форму агрегации для поддержания частичных состояний — мы можем просто добавлять новые значения к существующим по мере их поступления. Однако Materialized Views в ClickHouse могут использоваться для любого типа агрегации.
@@ -192,7 +205,9 @@ FROM posts
 GROUP BY Day
 ORDER BY Day DESC
 LIMIT 10
+```
 
+```response
 ┌─────────────────Day─┬────────Score_99th─┬────AvgCommentCount─┐
 │ 2024-03-31 00:00:00 │  5.23700000000008 │ 1.3429811866859624 │
 │ 2024-03-30 00:00:00 │                 5 │ 1.3097158891616976 │
@@ -237,7 +252,6 @@ GROUP BY Day
 
 Теперь создадим целевую таблицу для этого представления `post_stats_per_day`, которая хранит эти частичные состояния агрегации:
 
-
 ```sql
 CREATE TABLE post_stats_per_day
 (
@@ -256,7 +270,9 @@ ORDER BY Day
 
 ```sql
 INSERT INTO posts_null SELECT * FROM posts
+```
 
+```response
 0 rows in set. Elapsed: 13.329 sec. Processed 119.64 million rows, 76.99 GB (8.98 million rows/s., 5.78 GB/s.)
 ```
 
@@ -276,7 +292,6 @@ LIMIT 10
 ```
 
 Обратите внимание, что здесь мы используем `GROUP BY` вместо `FINAL`.
-
 
 ## Другие варианты использования \{#other-applications\}
 
@@ -313,7 +328,9 @@ CREATE TABLE comments
 )
 ENGINE = MergeTree
 ORDER BY PostId
+```
 
+```response
 0 rows in set. Elapsed: 46.357 sec. Processed 90.38 million rows, 11.14 GB (1.95 million rows/s., 240.22 MB/s.)
 ```
 
@@ -325,7 +342,9 @@ ORDER BY PostId
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
 ┌──────────avg(Score)─┐
 │ 0.18181818181818182 │
 └─────────────────────┘
@@ -334,7 +353,7 @@ WHERE UserId = 8592047
 Peak memory usage: 217.08 MiB.
 ```
 
-Хотя запрос выполняется быстро (данные небольшие для ClickHouse), по числу обработанных строк — 90,38 миллиона — видно, что требуется полное сканирование таблицы. Для более крупных наборов данных мы можем использовать materialized view, чтобы получать значения нашего ключа упорядочивания `PostId` для фильтрации по столбцу `UserId`. Эти значения затем можно использовать для эффективного поиска.
+Хотя запрос выполняется быстро (данные небольшие для ClickHouse), по числу обработанных строк — 90,38 миллиона — видно, что требуется полное сканирование таблицы. Для более крупных наборов данных мы можем использовать materialized view, чтобы получать значения нашего ключа сортировки `PostId` для фильтрации по столбцу `UserId`. Эти значения затем можно использовать для эффективного поиска.
 
 В этом примере наша materialized view может быть очень простой: при вставке она выбирает только `PostId` и `UserId` из `comments`. Эти результаты, в свою очередь, отправляются в таблицу `comments_posts_users`, которая упорядочена по `UserId`. Ниже мы создаём пустую (без данных) версию таблицы `Comments` и используем её для заполнения нашей materialized view и таблицы `comments_posts_users`:
 
@@ -351,7 +370,9 @@ CREATE MATERIALIZED VIEW comments_posts_users_mv TO comments_posts_users AS
 SELECT PostId, UserId FROM comments_null
 
 INSERT INTO comments_null SELECT * FROM comments
+```
 
+```response
 0 rows in set. Elapsed: 5.163 sec. Processed 90.38 million rows, 17.25 GB (17.51 million rows/s., 3.34 GB/s.)
 ```
 
@@ -365,14 +386,15 @@ WHERE PostId IN (
         FROM comments_posts_users
         WHERE UserId = 8592047
 ) AND UserId = 8592047
+```
 
+```response
 ┌──────────avg(Score)─┐
 │ 0.18181818181818182 │
 └─────────────────────┘
 
 1 row in set. Elapsed: 0.012 sec. Processed 88.61 thousand rows, 771.37 KB (7.09 million rows/s., 61.73 MB/s.)
 ```
-
 
 ### Связывание / каскадирование materialized views \{#chaining\}
 
@@ -467,24 +489,27 @@ GROUP BY Day, b.UserId, u.DisplayName;
 Оператор `GROUP BY` в materialized view должен включать `DisplayName`, `UserId` и `Day`, чтобы соответствовать `ORDER BY` в целевой таблице на `SummingMergeTree`. Это гарантирует, что строки корректно агрегируются и сливаются. Пропуск любого из этих полей может привести к неверным результатам или неэффективным слияниям.
 :::
 
-Если теперь назначить бейджи, представление сработает и заполнит нашу таблицу `daily_badges_by_user`.
+Если теперь назначить значки, представление сработает и заполнит нашу таблицу `daily_badges_by_user`.
 
 ```sql
 INSERT INTO badges SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 433.762 sec. Processed 1.16 billion rows, 28.50 GB (2.67 million rows/s., 65.70 MB/s.)
 ```
 
 Предположим, что мы хотим просмотреть значки, полученные конкретным пользователем; для этого можно написать следующий запрос:
-
 
 ```sql
 SELECT *
 FROM daily_badges_by_user
 FINAL
 WHERE DisplayName = 'gingerwizard'
+```
 
+```response
 ┌────────Day─┬──UserId─┬─DisplayName──┬─Gold─┬─Silver─┬─Bronze─┐
 │ 2023-02-27 │ 2936484 │ gingerwizard │    0 │      0 │      1 │
 │ 2023-02-28 │ 2936484 │ gingerwizard │    0 │      0 │      1 │
@@ -503,13 +528,20 @@ WHERE DisplayName = 'gingerwizard'
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
+```
 
+```response
 1 row in set. Elapsed: 7.517 sec.
+```
 
+```sql
 SELECT *
 FROM daily_badges_by_user
 FINAL
 WHERE DisplayName = 'gingerwizard'
+```
+
+```response
 ┌────────Day─┬──UserId─┬─DisplayName──┬─Gold─┬─Silver─┬─Bronze─┐
 │ 2013-10-30 │ 2936484 │ gingerwizard │    0 │      0 │      1 │
 │ 2013-11-18 │ 2936484 │ gingerwizard │    0 │      0 │      1 │
@@ -536,13 +568,14 @@ INSERT INTO badges VALUES (53505059, 23923286, 'Good Answer', now(), 'Bronze', 0
 INSERT INTO users VALUES (23923286, 1, now(),  'brand_new_user', now(), 'UK', 1, 1, 0);
 ```
 
-
 ```sql
 SELECT *
 FROM daily_badges_by_user
 FINAL
 WHERE DisplayName = 'brand_new_user';
+```
 
+```response
 0 rows in set. Elapsed: 0.017 sec. Processed 32.77 thousand rows, 644.32 KB (1.98 million rows/s., 38.94 MB/s.)
 ```
 
@@ -555,7 +588,9 @@ SELECT *
 FROM daily_badges_by_user
 FINAL
 WHERE DisplayName = 'brand_new_user'
+```
 
+```response
 ┌────────Day─┬───UserId─┬─DisplayName────┬─Gold─┬─Silver─┬─Bronze─┐
 │ 2025-04-13 │ 23923286 │ brand_new_user │    0 │      0 │      1 │
 └────────────┴──────────┴────────────────┴──────┴────────┴────────┘
@@ -564,7 +599,6 @@ WHERE DisplayName = 'brand_new_user'
 ```
 
 Однако учтите, что этот результат некорректен.
-
 
 ### Рекомендации по использованию JOIN в materialized views \{#join-best-practices\}
 
@@ -614,18 +648,25 @@ INSERT INTO t0 VALUES (1),(2),(3);
 INSERT INTO t0 VALUES (1),(2),(3),(4),(5);
 
 SELECT * FROM mvw1;
+```
+
+```response
 ┌─c0─┐
 │  3 │
 │  5 │
 └────┘
+```
 
+```sql
 SELECT * FROM mvw2;
+```
+
+```response
 ┌─c0─┐
 │  3 │
 │  8 │
 └────┘
 ```
-
 
 #### Пояснение \{#explanation\}
 
@@ -680,7 +721,9 @@ GROUP BY Day, b.UserId, u.DisplayName;
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
+```
 
+```response
 1 row in set. Elapsed: 7.517 sec.
 ```
 
@@ -718,7 +761,9 @@ GROUP BY
 ```sql
 INSERT INTO badges SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/badges.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 132.118 sec. Processed 323.43 million rows, 4.69 GB (2.45 million rows/s., 35.49 MB/s.)
 Peak memory usage: 1.99 GiB.
 ```
@@ -727,12 +772,13 @@ Peak memory usage: 1.99 GiB.
 
 ```sql
 INSERT INTO badges VALUES (53505058, 2936484, 'gingerwizard', now(), 'Gold', 0);
+```
 
+```response
 1 row in set. Elapsed: 0.583 sec.
 ```
 
 В указанной выше операции из таблицы `users` извлекается только одна строка для идентификатора пользователя `2936484`. Этот запрос также оптимизирован за счёт использования ключа сортировки таблицы `Id`.
-
 
 ## materialized view и объединения \{#materialized-views-and-unions\}
 
@@ -852,7 +898,6 @@ ORDER BY last_activity DESC
 
 Хотя это синтаксически корректно, оно приведёт к результатам, отличающимся от ожидаемых — представление будет срабатывать только на вставки в таблицу `comments`. Например:
 
-
 ```sql
 INSERT INTO comments VALUES (99999999, 23121, 1, 'The answer is 42', now(), 2936484, 'gingerwizard');
 
@@ -864,7 +909,9 @@ SELECT
 FROM user_activity
 WHERE UserId = '2936484'
 GROUP BY UserId
+```
 
+```response
 ┌─UserId──┬─description──────┬─activity_type─┬───────────last_activity─┐
 │ 2936484 │ The answer is 42 │ comment       │ 2025-04-15 09:56:19.000 │
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
@@ -885,7 +932,9 @@ SELECT
 FROM user_activity
 WHERE UserId = '2936484'
 GROUP BY UserId;
+```
 
+```response
 ┌─UserId──┬─description──────┬─activity_type─┬───────────last_activity─┐
 │ 2936484 │ The answer is 42 │ comment       │ 2025-04-15 09:56:19.000 │
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
@@ -931,7 +980,9 @@ SELECT
 FROM user_activity
 WHERE UserId = '2936484'
 GROUP BY UserId;
+```
 
+```response
 ┌─UserId──┬─description──────┬─activity_type─┬───────────last_activity─┐
 │ 2936484 │ The answer is 42 │ comment       │ 2025-04-15 10:18:47.000 │
 └─────────┴──────────────────┴───────────────┴─────────────────────────┘
@@ -952,7 +1003,9 @@ SELECT
 FROM user_activity
 WHERE UserId = '2936484'
 GROUP BY UserId
+```
 
+```response
 ┌─UserId──┬─description──┬─activity_type─┬───────────last_activity─┐
 │ 2936484 │ gingerwizard │ badge         │ 2025-04-15 10:20:18.000 │
 └─────────┴──────────────┴───────────────┴─────────────────────────┘
@@ -960,14 +1013,13 @@ GROUP BY UserId
 1 row in set. Elapsed: 0.006 sec.
 ```
 
-
 ## Параллельная и последовательная обработка \{#materialized-views-parallel-vs-sequential\}
 
-Как показано в предыдущем примере, таблица может служить источником для нескольких материализованных представлений. Порядок их выполнения зависит от параметра [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing).
+Как показано в предыдущем примере, таблица может служить источником для нескольких Materialized Views. Порядок их выполнения зависит от параметра [`parallel_view_processing`](/operations/settings/settings#parallel_view_processing).
 
 По умолчанию эта настройка имеет значение `0` (`false`), что означает, что materialized view выполняются последовательно в порядке их `uuid`.
 
-Например, рассмотрим следующую таблицу `source` и три материализованных представления, каждое из которых отправляет строки в таблицу `target`:
+Например, рассмотрим следующую таблицу `source` и три Materialized Views, каждое из которых отправляет строки в таблицу `target`:
 
 ```sql
 CREATE TABLE source
@@ -1018,11 +1070,13 @@ FROM source;
 
 ```sql
 INSERT INTO source VALUES ('test')
+```
 
+```response
 1 row in set. Elapsed: 3.786 sec.
 ```
 
-Мы можем проверить поступление строк с помощью запроса `SELECT`:
+Мы можем проверить поступление строк от каждого представления с помощью запроса `SELECT`:
 
 ```sql
 SELECT
@@ -1031,7 +1085,9 @@ SELECT
     now
 FROM target
 ORDER BY now ASC
+```
 
+```response
 ┌─message─┬─from─┬───────────────────────────now─┐
 │ test    │ mv3  │ 2025-04-15 14:52:01.306162309 │
 │ test    │ mv1  │ 2025-04-15 14:52:02.307693521 │
@@ -1050,7 +1106,9 @@ SELECT
 FROM system.tables
 WHERE name IN ('mv_1', 'mv_2', 'mv_3')
 ORDER BY uuid ASC
+```
 
+```response
 ┌─name─┬─uuid─────────────────────────────────┐
 │ mv_3 │ ba5e36d0-fa9e-4fe8-8f8c-bc4f72324111 │
 │ mv_1 │ b961c3ac-5a0e-4117-ab71-baa585824d43 │
@@ -1067,16 +1125,22 @@ TRUNCATE target;
 SET parallel_view_processing = 1;
 
 INSERT INTO source VALUES ('test');
+```
 
+```response
 1 row in set. Elapsed: 1.588 sec.
+```
 
+```sql
 SELECT
     message,
     from,
     now
 FROM target
 ORDER BY now ASC
+```
 
+```response
 ┌─message─┬─from─┬───────────────────────────now─┐
 │ test    │ mv3  │ 2025-04-15 19:47:32.242937372 │
 │ test    │ mv1  │ 2025-04-15 19:47:32.243058183 │
@@ -1111,9 +1175,9 @@ ORDER BY now ASC
 - Вам требуется предсказуемое, упорядоченное выполнение
 - Вы отлаживаете или аудируете поведение вставок и хотите детерминированное воспроизведение
 
-## materialized view и общие табличные выражения (CTE) \{#materialized-views-common-table-expressions-ctes\}
+## Materialized Views и общие табличные выражения (CTE) \{#materialized-views-common-table-expressions-ctes\}
 
-**Нерекурсивные** общие табличные выражения (CTE) поддерживаются в materialized view.
+**Нерекурсивные** общие табличные выражения (CTE) поддерживаются в Materialized Views.
 
 :::note Common Table Expressions **не материализуются**
 ClickHouse не материализует CTE; вместо этого он подставляет определение CTE непосредственно в запрос, что может приводить к многократному вычислению одного и того же выражения (если CTE используется более одного раза).
@@ -1177,7 +1241,9 @@ GROUP BY
     PostType
 ORDER BY Day DESC
 LIMIT 10
+```
 
+```response
 ┌────────Day─┬─PostType─┬───────────AvgScore─┬─PostsCreated─┬─TotalViews─┐
 │ 2024-03-31 │ Question │ 1.3317757009345794 │          214 │       9728 │
 │ 2024-03-31 │ Answer   │ 1.4747191011235956 │          356 │          0 │
@@ -1201,7 +1267,6 @@ Peak memory usage: 989.53 KiB.
 * materialized view по-прежнему будет срабатывать только при вставках в основную исходную таблицу, но CTE будет выполняться повторно при каждой вставке, что может приводить к дополнительным накладным расходам, особенно если таблица, на которую он ссылается, большая.
 
 Например,
-
 
 ```sql
 WITH recent_users AS (

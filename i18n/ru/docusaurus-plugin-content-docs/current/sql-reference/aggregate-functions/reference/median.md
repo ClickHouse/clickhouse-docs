@@ -1,11 +1,10 @@
 ---
-description: 'Функции `median*` являются псевдонимами соответствующих функций `quantile*`. Они вычисляют медиану по выборке числовых данных.'
+description: 'Функции `median*` являются псевдонимами соответствующих функций `quantile*`.
+  Они вычисляют медиану по числовой выборке данных.'
 slug: /sql-reference/aggregate-functions/reference/median
 title: 'median'
 doc_type: 'reference'
 ---
-
-# median \{#median\}
 
 Функции `median*` являются псевдонимами соответствующих функций `quantile*`. Они вычисляют медиану по числовой выборке данных.
 
@@ -35,15 +34,11 @@ doc_type: 'reference'
 └─────┘
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT medianDeterministic(val, 1) FROM t;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─medianDeterministic(val, 1)─┐
 │                         1.5 │
 └─────────────────────────────┘

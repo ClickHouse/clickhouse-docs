@@ -6,8 +6,6 @@ title: '集成 Rust 库'
 doc_type: 'guide'
 ---
 
-# Rust 库 \{#rust-libraries\}
-
 Rust 库的集成将以集成 BLAKE3 哈希函数为例进行说明。
 
 集成的第一步是将该库添加到 /rust 目录下。为此，你需要创建一个空的 Rust 项目，并在 Cargo.toml 中添加所需的库。同时还需要在 Cargo.toml 中添加 `crate-type = ["staticlib"]`，以将新库配置为编译为静态库。
@@ -21,9 +19,9 @@ target_include_directories(_ch_rust_blake3 INTERFACE include)
 add_library(ch_rust::blake3 ALIAS _ch_rust_blake3)
 ```
 
-因此，我们将使用 Corrosion 创建一个合适的 CMake 目标，然后再将其重命名为一个更便于使用的名称。请注意，名称 `_ch_rust_blake3` 来自 Cargo.toml，在其中作为项目名称使用（`name = "_ch_rust_blake3"`）。
+因此，我们将使用 Corrosion 创建一个合适的 CMake 目标，然后再将其重命名为一个更便于使用的名称。请注意，名称 `_ch_rust_blake3` 来自 Cargo.toml，在其中作为项目名称使用 (`name = "_ch_rust_blake3"`) 。
 
-由于 Rust 数据类型与 C/C++ 的数据类型不兼容，我们将利用这个空的库项目来创建用于转换的 shim（垫片）方法：将从 C/C++ 接收的数据进行转换、调用库方法，以及对输出数据进行反向转换。例如，我们为 BLAKE3 编写了如下方法：
+由于 Rust 数据类型与 C/C++ 的数据类型不兼容，我们将利用这个空的库项目来创建用于转换的 shim (垫片) 方法：将从 C/C++ 接收的数据进行转换、调用库方法，以及对输出数据进行反向转换。例如，我们为 BLAKE3 编写了如下方法：
 
 ```rust
 #[no_mangle]

@@ -7,8 +7,6 @@ title: 'Параметрические агрегатные функции'
 doc_type: 'reference'
 ---
 
-# Параметрические агрегатные функции \{#parametric-aggregate-functions\}
-
 Некоторые агрегатные функции могут принимать не только столбцы-аргументы (используемые для сжатия), но и набор параметров — констант для инициализации. В синтаксисе для этого используются две пары круглых скобок вместо одной: первая — для параметров, вторая — для аргументов.
 
 ## histogram \{#histogram\}
@@ -85,7 +83,6 @@ FROM
 
 В этом случае следует помнить, что вы не знаете границы интервалов гистограммы.
 
-
 ## sequenceMatch \{#sequencematch\}
 
 Проверяет, содержит ли последовательность цепочку событий, соответствующую заданному шаблону.
@@ -116,7 +113,6 @@ sequenceMatch(pattern)(timestamp, cond1, cond2, ...)
 * 0, если шаблон не совпал.
 
 Тип: `UInt8`.
-
 
 #### Синтаксис шаблона \{#pattern-syntax\}
 
@@ -178,7 +174,6 @@ SELECT sequenceMatch('(?1)(?2)')(time, number = 1, number = 2, number = 4) FROM 
 
 * [sequenceCount](#sequencecount)
 
-
 ## sequenceCount \{#sequencecount\}
 
 Подсчитывает количество цепочек событий, соответствующих шаблону. Функция ищет цепочки событий, которые не перекрываются: после сопоставления текущей цепочки она начинает поиск следующей.
@@ -235,7 +230,6 @@ SELECT sequenceCount('(?1).*(?2)')(time, number = 1, number = 2) FROM t
 │                                                                       2 │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## sequenceMatchEvents \{#sequencematchevents\}
 
@@ -298,7 +292,6 @@ SELECT sequenceMatchEvents('(?1).*(?2).*(?1)(?3)')(time, number = 1, number = 2,
 
 * [sequenceMatch](#sequencematch)
 
-
 ## windowFunnel \{#windowfunnel\}
 
 Ищет цепочки событий в скользящем временном окне и вычисляет максимальное число событий из цепочки, произошедших в этом окне.
@@ -352,7 +345,6 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 Входная таблица:
 
-
 ```text
 ┌─event_date─┬─user_id─┬───────────timestamp─┬─eventID─┬─product─┐
 │ 2019-01-28 │       1 │ 2019-01-29 10:00:00 │    1003 │ phone   │
@@ -370,9 +362,7 @@ windowFunnel(window, [mode, [mode, ... ]])(timestamp, cond1, cond2, ..., condN)
 
 Узнайте, как далеко пользователь `user_id` продвинулся по цепочке за период январь–февраль 2019 года.
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     level,
     count() AS c
@@ -389,9 +379,7 @@ GROUP BY level
 ORDER BY level ASC;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─level─┬─c─┐
 │     4 │ 1 │
 └───────┴───┘
@@ -428,7 +416,6 @@ GROUP BY level
 ORDER BY level ASC;
 ```
 
-
 ## retention \{#retention\}
 
 Функция принимает в качестве аргументов набор из 1–32 условий типа `UInt8`, которые указывают, было ли выполнено определённое условие для события.
@@ -461,7 +448,7 @@ retention(cond1, cond2, ..., cond32);
 
 **1.** Создайте таблицу для иллюстрации.
 
-```sql
+```sql title="Query"
 CREATE TABLE retention_test(date Date, uid Int32) ENGINE = Memory;
 
 INSERT INTO retention_test SELECT '2020-01-01', number FROM numbers(5);
@@ -471,15 +458,11 @@ INSERT INTO retention_test SELECT '2020-01-03', number FROM numbers(15);
 
 Входная таблица:
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM retention_test
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌───────date─┬─uid─┐
 │ 2020-01-01 │   0 │
 │ 2020-01-01 │   1 │
@@ -520,9 +503,7 @@ SELECT * FROM retention_test
 
 **2.** Сгруппируйте пользователей по уникальному идентификатору `uid`, используя функцию `retention`.
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     uid,
     retention(date = '2020-01-01', date = '2020-01-02', date = '2020-01-03') AS r
@@ -532,10 +513,7 @@ GROUP BY uid
 ORDER BY uid ASC
 ```
 
-Результат:
-
-
-```text
+```text title="Response"
 ┌─uid─┬─r───────┐
 │   0 │ [1,1,1] │
 │   1 │ [1,1,1] │
@@ -557,9 +535,7 @@ ORDER BY uid ASC
 
 **3.** Рассчитайте общее количество посещений сайта за каждый день.
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     sum(r[1]) AS r1,
     sum(r[2]) AS r2,
@@ -575,9 +551,7 @@ FROM
 )
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─r1─┬─r2─┬─r3─┐
 │  5 │  5 │  5 │
 └────┴────┴────┘
@@ -588,7 +562,6 @@ FROM
 * `r1` — количество уникальных посетителей, которые посетили сайт за 2020-01-01 (условие `cond1`).
 * `r2` — количество уникальных посетителей, которые посетили сайт в течение определённого периода времени между 2020-01-01 и 2020-01-02 (условия `cond1` и `cond2`).
 * `r3` — количество уникальных посетителей, которые посетили сайт в течение определённого периода времени в даты 2020-01-01 и 2020-01-03 (условия `cond1` и `cond3`).
-
 
 ## uniqUpTo(N)(x) \{#uniquptonx\}
 
@@ -610,7 +583,6 @@ HAVING uniqUpTo(4)(UserID) >= 5
 
 `uniqUpTo(4)(UserID)` вычисляет количество уникальных значений `UserID` для каждого `SearchPhrase`, но считает только до 4 уникальных значений. Если для какого-либо `SearchPhrase` существует более 4 уникальных значений `UserID`, функция возвращает 5 (4 + 1). Затем условие `HAVING` отфильтровывает значения `SearchPhrase`, для которых количество уникальных значений `UserID` меньше 5. В результате вы получите список поисковых запросов, которые использовались как минимум 5 уникальными пользователями.
 
-
 ## sumMapFiltered \{#summapfiltered\}
 
 Эта функция ведёт себя так же, как [sumMap](/sql-reference/aggregate-functions/reference/summap), за исключением того, что она также принимает в качестве параметра массив ключей для фильтрации. Это может быть особенно полезно при работе с высокой кардинальностью ключей.
@@ -631,9 +603,7 @@ HAVING uniqUpTo(4)(UserID) >= 5
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE sum_map
 (
     `date` Date,
@@ -649,18 +619,15 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10]);
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_map;
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests)─┐
 1. │ ([1,4,8],[10,20,10])                                            │
    └─────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## sumMapFilteredWithOverflow \{#summapfilteredwithoverflow\}
 
@@ -684,9 +651,7 @@ SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) FROM sum_
 
 В этом примере мы создаём таблицу `sum_map`, вставляем в неё некоторые данные, а затем используем `sumMapFilteredWithOverflow` и `sumMapFiltered`, а также функцию `toTypeName` для сравнения результата. Поскольку `requests` имел тип `UInt8` в созданной таблице, `sumMapFiltered` привела тип суммируемых значений к `UInt64`, чтобы избежать переполнения, тогда как `sumMapFilteredWithOverflow` сохранила тип `UInt8`, который недостаточно велик для хранения результата, то есть произошло переполнение.
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE sum_map
 (
     `date` Date,
@@ -702,28 +667,25 @@ INSERT INTO sum_map VALUES
     ('2000-01-01', '2000-01-01 00:01:00', [6, 7, 8], [10, 10, 10]);
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFilteredWithOverflow([1, 4, 8])(statusMap.status, statusMap.requests) as summap_overflow, toTypeName(summap_overflow) FROM sum_map;
 ```
 
-```sql
+```sql title="Query"
 SELECT sumMapFiltered([1, 4, 8])(statusMap.status, statusMap.requests) as summap, toTypeName(summap) FROM sum_map;
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─sum──────────────────┬─toTypeName(sum)───────────────────┐
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt8)) │
    └──────────────────────┴───────────────────────────────────┘
 ```
 
-```response
+```response title="Response"
    ┌─summap───────────────┬─toTypeName(summap)─────────────────┐
 1. │ ([1,4,8],[10,20,10]) │ Tuple(Array(UInt8), Array(UInt64)) │
    └──────────────────────┴────────────────────────────────────┘
 ```
-
 
 ## sequenceNextNode \{#sequencenextnode\}
 
@@ -769,7 +731,7 @@ sequenceNextNode(direction, base)(timestamp, event_column, base_condition, event
 
 Пример запроса, который ищет событие, следующее за A-&gt;B:
 
-```sql
+```sql title="Query"
 CREATE TABLE test_flow (
     dt DateTime,
     id int,
@@ -783,9 +745,7 @@ INSERT INTO test_flow VALUES (1, 1, 'A') (2, 1, 'B') (3, 1, 'C') (4, 1, 'D') (5,
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'A', page = 'A', page = 'B') as next_flow FROM test_flow GROUP BY id;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─id─┬─next_flow─┐
 │  1 │ C         │
 └────┴───────────┘
@@ -800,7 +760,6 @@ INSERT INTO test_flow VALUES (1, 1, 'Home') (2, 1, 'Gift') (3, 1, 'Exit');
 INSERT INTO test_flow VALUES (1, 2, 'Home') (2, 2, 'Home') (3, 2, 'Gift') (4, 2, 'Basket');
 INSERT INTO test_flow VALUES (1, 3, 'Gift') (2, 3, 'Home') (3, 3, 'Gift') (4, 3, 'Basket');
 ```
-
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, page = 'Home', page = 'Home', page = 'Gift') FROM test_flow GROUP BY id;
@@ -862,7 +821,6 @@ SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', p
 1970-01-01 09:00:03    3   Gift
 1970-01-01 09:00:04    3   Basket
 ```
-
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'first_match')(dt, page, page = 'Gift', page = 'Gift', page = 'Home') FROM test_flow GROUP BY id;
@@ -939,7 +897,6 @@ ORDER BY id;
 
 INSERT INTO test_flow_basecond VALUES (1, 1, 'A', 'ref4') (2, 1, 'A', 'ref3') (3, 1, 'B', 'ref2') (4, 1, 'B', 'ref1');
 ```
-
 
 ```sql
 SELECT id, sequenceNextNode('forward', 'head')(dt, page, ref = 'ref1', page = 'A') FROM test_flow_basecond GROUP BY id;

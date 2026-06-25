@@ -7,9 +7,7 @@ title: 'LowCardinality(T)'
 doc_type: 'reference'
 ---
 
-# LowCardinality(T) \{#lowcardinalityt\}
-
-他のデータ型の内部表現を辞書エンコードされた形式に変更します。
+他のデータ型の内部表現を辞書エンコードに変更します。
 
 ## 構文 \{#syntax\}
 

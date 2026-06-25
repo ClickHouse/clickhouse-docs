@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/mcp-agent
 sidebar_label: 'mcp-agent 통합'
-title: 'mcp-agent 및 ClickHouse 서버로 AI 에이전트 구축하기'
+title: 'mcp-agent와 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'mcp-agent 및 ClickHouse 서버로 AI 에이전트를 구축하는 방법을 알아봅니다'
+description: 'mcp-agent와 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법 알아보기'
 keywords: ['ClickHouse', 'MCP', 'mcp-agent']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# CrewAI와 ClickHouse MCP 서버로 AI 에이전트를 구축하는 방법 \{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\}
 
 이 가이드에서는 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)과 상호작용하는 [ClickHouse의 MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 사용하는 [mcp-agent](https://github.com/lastmile-ai/mcp-agent) AI 에이전트를 구축하는 방법을 안내합니다.
 

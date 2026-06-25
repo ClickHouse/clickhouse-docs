@@ -21,7 +21,6 @@ title: 'Lessons - materialized views'
 description: 'Real world examples of materialized views, problems and solutions'
 ---
 
-# Materialized views: how they can become a double edged sword {#materialized-views-the-double-edged-sword}
 
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Too many parts bogging your database down? Check out the [Too Many Parts](./too-many-parts.md) community insights guide.*

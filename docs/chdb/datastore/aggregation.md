@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'aggregation', 'window', 'groupby', 'sum', 'mean
 doc_type: 'reference'
 ---
 
-# DataStore Aggregation Functions
 
 DataStore provides comprehensive aggregation and window function support, leveraging ClickHouse's powerful SQL aggregation capabilities.
 

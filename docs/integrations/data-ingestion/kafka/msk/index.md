@@ -13,8 +13,6 @@ integration:
 
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 
-# Integrating Amazon MSK with ClickHouse
-
 <div class='vimeo-container'>
   <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
     width="640"

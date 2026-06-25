@@ -1,5 +1,5 @@
 ---
-description: 'EXCEPT 修飾子について説明するドキュメントです。この修飾子は、結果から除外する 1 つ以上の列名を指定します。一致するすべての列名は出力から除外されます。'
+description: 'EXCEPT 修飾子について説明するドキュメントです。この修飾子は、結果から除外する 1 つ以上のカラム名を指定します。一致するすべてのカラム名は出力から除外されます。'
 sidebar_label: 'EXCEPT'
 slug: /sql-reference/statements/select/except-modifier
 title: 'EXCEPT 修飾子'
@@ -7,9 +7,7 @@ keywords: ['EXCEPT', 'modifier']
 doc_type: 'reference'
 ---
 
-# EXCEPT 修飾子 \{#except\}
-
-> 結果から除外する 1 つ以上の列名を指定します。指定した名前に一致するすべての列は出力から除外されます。
+> 結果から除外する 1 つ以上のカラム名を指定します。一致するすべてのカラム名は出力に含まれません。
 
 ## 構文 \{#syntax\}
 

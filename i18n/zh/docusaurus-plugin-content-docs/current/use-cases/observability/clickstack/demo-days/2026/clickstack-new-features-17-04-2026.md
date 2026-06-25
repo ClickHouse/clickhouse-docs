@@ -7,6 +7,7 @@ pagination_next: null
 description: 'ClickStack 2026-04-17 演示日'
 doc_type: 'guide'
 keywords: ['ClickStack', '演示日']
+sidebar_position: -20260417
 ---
 
 ## 总结日志和链路追踪 \{#summarize-logs-and-traces\}

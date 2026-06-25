@@ -1,5 +1,6 @@
 ---
-description: 'CoalescingMergeTree наследует от движка MergeTree. Его ключевая особенность — возможность автоматически сохранять последнее ненулевое значение каждого столбца при слиянии частей.'
+description: 'CoalescingMergeTree наследуется от движка MergeTree. Его ключевая возможность
+  — автоматически сохранять последнее значение, отличное от NULL, для каждого столбца при слиянии частей.'
 sidebar_label: 'CoalescingMergeTree'
 sidebar_position: 50
 slug: /engines/table-engines/mergetree-family/coalescingmergetree
@@ -8,8 +9,6 @@ keywords: ['CoalescingMergeTree']
 show_related_blogs: true
 doc_type: 'reference'
 ---
-
-# Движок таблицы CoalescingMergeTree \{#coalescingmergetree-table-engine\}
 
 :::note Доступно начиная с версии 25.6
 Этот движок таблицы доступен начиная с версии 25.6 как в OSS, так и в Cloud.

@@ -1,13 +1,11 @@
 ---
-description: '距离函数文档'
+description: '距离函数的文档'
 sidebar_label: '距离'
 slug: /sql-reference/functions/distance-functions
 title: '距离函数'
 keywords: ['距离函数', '范数', '距离', '向量']
-doc_type: '参考文档'
+doc_type: 'reference'
 ---
-
-# 距离函数 \{#distance-functions\}
 
 {/* 
   下面标签内部的内容会在文档框架构建过程中，

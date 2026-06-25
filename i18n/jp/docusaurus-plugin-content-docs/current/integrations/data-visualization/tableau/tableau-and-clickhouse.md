@@ -29,19 +29,16 @@ import tableau_workbook6 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Tableau を ClickHouse に接続する \{#connecting-tableau-to-clickhouse\}
+ClickHouse は公式の Tableau Connector を提供しており、
+[Tableau Exchange](https://exchange.tableau.com/products/1064) でも紹介されています。
+このコネクタは、ClickHouse の高度な [JDBC ドライバー](/integrations/language-clients/java/jdbc) を基盤としています。
 
-<ClickHouseSupportedBadge/>
-
-ClickHouse は公式の Tableau コネクタを提供しており、
-[Tableau Exchange](https://exchange.tableau.com/products/1064) に掲載されています。
-このコネクタは、ClickHouse の高度な [JDBC ドライバー](/integrations/language-clients/java/jdbc) をベースとしています。
-
-このコネクタを使用すると、Tableau から ClickHouse のデータベースやテーブルをデータソースとして利用できます。この機能を有効にするには、
+このコネクタを使用すると、Tableau で ClickHouse のデータベースやテーブルをデータソースとして利用できます。この機能を有効にするには、
 以下のセットアップガイドに従ってください。
 
-<TOCInline toc={toc}/>
+<TOCInline toc={toc} />
 
 ## 利用開始前のセットアップ \{#setup-required-prior-usage\}
 

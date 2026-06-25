@@ -12,8 +12,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
 
-# 数据加密 \{#data-encryption\}
-
 ## 存储层加密 \{#storage-encryption\}
 
 ClickHouse Cloud 默认启用静态数据加密，使用由云服务提供商管理的 AES-256 密钥。更多信息请参阅：

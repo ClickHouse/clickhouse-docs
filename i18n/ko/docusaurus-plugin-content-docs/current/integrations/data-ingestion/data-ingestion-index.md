@@ -6,8 +6,6 @@ description: '데이터 수집 섹션의 랜딩 페이지'
 doc_type: 'landing-page'
 ---
 
-# 데이터 수집 \{#data-ingestion\}
-
 ClickHouse는 데이터 통합 및 변환을 위한 다양한 솔루션과 통합됩니다.
 자세한 내용은 아래 페이지를 확인하십시오.
 

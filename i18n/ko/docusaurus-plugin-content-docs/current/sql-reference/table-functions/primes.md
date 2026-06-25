@@ -3,11 +3,9 @@ slug: /sql-reference/table-functions/primes
 sidebar_position: 145
 sidebar_label: 'primes'
 title: 'primes'
-description: '소수(prime number)를 담고 있는 단일 `prime` 컬럼을 가진 테이블을 반환합니다.'
+description: '소수를 포함하는 단일 `prime` 컬럼을 가진 테이블을 반환합니다.'
 doc_type: 'reference'
 ---
-
-# primes Table Function \{#primes-table-function\}
 
 * `primes()` – 2부터 시작하여 오름차순의 소수를 포함하는 단일 `prime` 컬럼(UInt64)을 가진 무한 테이블을 반환합니다. `LIMIT`(및 필요하다면 `OFFSET`)을 사용하여 행 수를 제한합니다.
 

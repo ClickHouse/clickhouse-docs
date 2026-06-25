@@ -1,14 +1,12 @@
 ---
 description: 'Этот движок позволяет использовать кластер Keeper/ZooKeeper как согласованное
-  хранилище пар ключ–значение с линеаризуемыми записями и последовательной согласованностью при чтении.'
+  хранилище ключ–значение с линеаризуемыми записями и последовательно согласованными чтениями.'
 sidebar_label: 'KeeperMap'
 sidebar_position: 150
 slug: /engines/table-engines/special/keeper-map
 title: 'Табличный движок KeeperMap'
 doc_type: 'reference'
 ---
-
-# Табличный движок KeeperMap \{#keepermap-table-engine\}
 
 Этот движок позволяет использовать кластер Keeper/ZooKeeper как согласованное хранилище ключ–значение с линеаризуемыми записями и последовательно согласованными чтениями.
 
@@ -37,11 +35,11 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 Параметры движка:
 
-* `root_path` — путь в ZooKeeper, по которому будет храниться `table_name`.\
-  Этот путь не должен содержать префикс, определённый в конфигурации `<keeper_map_path_prefix>`, поскольку префикс будет автоматически добавлен к `root_path`.\
-  Также поддерживается формат `auxiliary_zookeeper_cluster_name:/some/path`, где `auxiliary_zookeeper_cluster` — это кластер ZooKeeper, определённый в конфигурации `<auxiliary_zookeepers>`.\
+* `root_path` — путь в ZooKeeper, по которому будет храниться `table_name`.
+  Этот путь не должен содержать префикс, определённый в конфигурации `<keeper_map_path_prefix>`, поскольку префикс будет автоматически добавлен к `root_path`.
+  Также поддерживается формат `auxiliary_zookeeper_cluster_name:/some/path`, где `auxiliary_zookeeper_cluster` — это кластер ZooKeeper, определённый в конфигурации `<auxiliary_zookeepers>`.
   По умолчанию используется кластер ZooKeeper, определённый в конфигурации `<zookeeper>`.
-* `keys_limit` — максимальное количество ключей, разрешённых в таблице.\
+* `keys_limit` — максимальное количество ключей, разрешённых в таблице.
   Это мягкое ограничение, и в некоторых крайних случаях в таблице может оказаться большее количество ключей.
 * `primary_key_name` — любое имя столбца из списка столбцов.
 * `primary key` должен быть указан; он может содержать только один столбец. Первичный ключ будет сериализован в бинарном виде как `node name` в ZooKeeper.
@@ -73,8 +71,8 @@ PRIMARY KEY key
 Каждое значение — бинарная сериализация `(v1, v2, v3)` — будет храниться в `/keeper_map_tables/keeper_map_table/data/serialized_key` в `Keeper`.
 Кроме того, на количество ключей будет действовать мягкий лимит в 4 ключа.
 
-Если несколько таблиц создаются на одном и том же пути в ZooKeeper, значения сохраняются до тех пор, пока существует как минимум одна таблица, использующая их.\
-В результате можно использовать предложение `ON CLUSTER` при создании таблицы и разделять данные между несколькими экземплярами ClickHouse.\
+Если несколько таблиц создаются на одном и том же пути в ZooKeeper, значения сохраняются до тех пор, пока существует как минимум одна таблица, использующая их.
+В результате можно использовать предложение `ON CLUSTER` при создании таблицы и разделять данные между несколькими экземплярами ClickHouse.
 Разумеется, можно вручную выполнить `CREATE TABLE` с тем же путём на несвязанных экземплярах ClickHouse, чтобы получить тот же эффект совместного использования данных.
 
 ## Поддерживаемые операции \{#supported-operations\}
@@ -118,4 +116,4 @@ ALTER TABLE keeper_map_table UPDATE v1 = v1 * 10 + 2 WHERE key LIKE 'some%' AND 
 
 ## Связанные материалы \{#related-content\}
 
-- Блог: [Создание аналитических приложений реального времени с ClickHouse и Hex](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)
+* Блог: [Создание аналитических приложений реального времени с ClickHouse и Hex](https://clickhouse.com/blog/building-real-time-applications-with-clickhouse-and-hex-notebook-keeper-engine)

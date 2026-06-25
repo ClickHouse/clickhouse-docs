@@ -2,7 +2,7 @@
 sidebar_label: 'Apache Flink'
 sidebar_position: 1
 slug: /integrations/apache-flink
-description: 'Apache Flink 与 ClickHouse 集成简介'
+description: 'Apache Flink 与 ClickHouse 简介'
 keywords: ['clickhouse', 'Apache Flink', '迁移', '数据', '流处理']
 title: 'Flink 连接器'
 doc_type: 'guide'
@@ -15,9 +15,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
-
-# Flink 连接器 \{#flink-connector\}
 
 <ClickHouseSupportedBadge />
 

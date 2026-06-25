@@ -6,8 +6,6 @@ title: 'Функция arrayJoin'
 doc_type: 'reference'
 ---
 
-# Функция arrayJoin \{#arrayjoin-function\}
-
 Это очень необычная функция.
 
 Обычные функции не изменяют набор строк, а лишь изменяют значения в каждой строке (map).
@@ -83,14 +81,14 @@ GROUP BY
 └─────────────┴──────────┴─────────┘
 ```
 
-### Рекомендации по использованию \{#important-note\}
+### Рекомендация \{#important-note\}
 
-Использование нескольких `arrayJoin` с одним и тем же выражением может привести к неожиданным результатам из-за устранения общих подвыражений.
-В таких случаях имеет смысл модифицировать повторяющиеся выражения с массивами с помощью дополнительных операций, которые не влияют на результат операции `join`. Например, `arrayJoin(arraySort(arr))`, `arrayJoin(arrayConcat(arr, []))`
+Использование нескольких `arrayJoin` с одним и тем же выражением может не дать ожидаемого результата из-за устранения общих подвыражений.
+В таких случаях попробуйте изменить повторяющиеся выражения массива, добавив дополнительные операции, которые не влияют на результат `join`. Например, `arrayJoin(arraySort(arr))`, `arrayJoin(arrayConcat(arr, []))`
 
 Пример:
 
-```sql
+```sql title="Query"
 SELECT
     arrayJoin(dice) AS first_throw,
     /* arrayJoin(dice) as second_throw */ -- is technically correct, but will annihilate result set
@@ -100,12 +98,12 @@ FROM (
 );
 ```
 
-Обратите внимание на синтаксис [`ARRAY JOIN`](../statements/select/array-join.md) в запросе SELECT, который даёт более широкие возможности.
-`ARRAY JOIN` позволяет преобразовывать несколько массивов с одинаковым количеством элементов за один раз.
+Обратите внимание на синтаксис [`ARRAY JOIN`](../statements/select/array-join.md) в запросе SELECT, который открывает более широкие возможности.
+`ARRAY JOIN` позволяет одновременно преобразовывать несколько массивов с одинаковым количеством элементов.
 
 Пример:
 
-```sql
+```sql title="Query"
 SELECT
     sum(1) AS impressions,
     city,
@@ -124,7 +122,7 @@ GROUP BY
     3
 ```
 
-```text
+```text title="Response"
 ┌─impressions─┬─city─────┬─browser─┐
 │           1 │ Istanbul │ Firefox │
 │           1 │ Berlin   │ Chrome  │

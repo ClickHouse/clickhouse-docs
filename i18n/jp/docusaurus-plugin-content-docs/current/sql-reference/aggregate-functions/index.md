@@ -1,13 +1,11 @@
 ---
-description: '集約関数に関するリファレンス'
+description: '集約関数のドキュメント'
 sidebar_label: '集約関数'
 sidebar_position: 33
 slug: /sql-reference/aggregate-functions/
 title: '集約関数'
 doc_type: 'reference'
 ---
-
-# 集約関数 \{#aggregate-functions\}
 
 集約関数は、データベースの専門家にとって[一般的な](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial)方法で動作します。
 
@@ -20,7 +18,7 @@ ClickHouse は次の機能もサポートしています：
 
 集約処理の際、すべての `NULL` 引数はスキップされます。集約に複数の引数がある場合、それらのうち 1 つでも NULL が含まれる行は無視されます。
 
-このルールには例外があり、`RESPECT NULLS` 修飾子を伴う関数 [`first_value`](../../sql-reference/aggregate-functions/reference/first_value.md)、[`last_value`](../../sql-reference/aggregate-functions/reference/last_value.md) と、それぞれのエイリアス（`any` と `anyLast`）が該当します。たとえば、`FIRST_VALUE(b) RESPECT NULLS` のように指定します。
+このルールには例外があり、`RESPECT NULLS` 修飾子を伴う関数 [`first_value`](../../sql-reference/aggregate-functions/reference/first_value.md)、[`last_value`](../../sql-reference/aggregate-functions/reference/last_value.md) と、それぞれのエイリアス (`any` と `anyLast`) が該当します。たとえば、`FIRST_VALUE(b) RESPECT NULLS` のように指定します。
 
 **例:**
 
@@ -62,7 +60,7 @@ SELECT groupArray(y) FROM t_null_big
 
 `groupArray` は、結果の配列に `NULL` を含めません。
 
-[COALESCE](../../sql-reference/functions/functions-for-nulls.md#coalesce) を使用して、`NULL` をユースケースに応じて意味のある値に変換できます。たとえば、`avg(COALESCE(column, 0))` は、集約時に列の値を使用し、`NULL` の場合は 0 を使用します。
+[COALESCE](../../sql-reference/functions/functions-for-nulls.md#coalesce) を使用して、`NULL` をユースケースに応じて意味のある値に変換できます。たとえば、`avg(COALESCE(column, 0))` は、集約時にカラムの値を使用し、`NULL` の場合は 0 を使用します:
 
 ```sql
 SELECT
@@ -90,7 +88,7 @@ FROM t_null_big;
 └───────────────┴───────────────────────────────────────┘
 ```
 
-列が集約関数の引数として使用される場合、その列に対する集約はスキップされることに注意してください。たとえば、引数なしの [`count`](../../sql-reference/aggregate-functions/reference/count.md)（`count()`）や定数引数付きのもの（`count(1)`）は、（それが引数ではないため GROUP BY 列の値に依存せずに）ブロック内のすべての行をカウントしますが、`count(column)` は `column` が NULL でない行のみの数を返します。
+カラムが集約関数の引数として使用される場合、そのカラムに対する集約はスキップされることに注意してください。たとえば、引数なしの [`count`](../../sql-reference/aggregate-functions/reference/count.md) (`count()`) や定数引数付きのもの (`count(1)`) は、 (それが引数ではないため GROUP BY カラムの値に依存せずに) ブロック内のすべての行をカウントしますが、`count(column)` は `column` が NULL でない行のみの数を返します。
 
 ```sql
 SELECT

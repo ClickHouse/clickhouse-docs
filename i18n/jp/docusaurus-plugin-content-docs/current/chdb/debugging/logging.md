@@ -1,15 +1,13 @@
 ---
-title: 'DataStore のロギング'
-sidebar_label: 'ロギング'
+title: 'DataStore のログ'
+sidebar_label: 'ログ'
 slug: /chdb/debugging/logging
-description: 'デバッグと監視のために DataStore のロギングを設定する'
+description: 'デバッグと監視のために DataStore のログを設定する'
 keywords: ['chdb', 'datastore', 'logging', 'debug', 'log', 'level']
 doc_type: 'reference'
 ---
 
-# DataStore ロギング \{#datastore-logging\}
-
-DataStore は Python 標準ライブラリの logging モジュールを使用します。本ガイドでは、デバッグ目的でのロギング設定方法について説明します。
+DataStore は Python の標準 logging モジュールを使用します。このガイドでは、デバッグ用のログを設定する方法を説明します。
 
 ## クイックスタート \{#quick-start\}
 
@@ -65,35 +63,29 @@ config.enable_debug()  # Sets DEBUG level + verbose format
 
 ## ログフォーマット \{#format\}
 
-### 簡易形式（デフォルト） \{#simple\}
+### 簡易フォーマット (デフォルト)  \{#simple\}
 
-```python
+```python title="Query"
 config.set_log_format("simple")
 ```
 
-出力結果:
-
-```text
+```text title="Response"
 DEBUG - Executing SQL query
 DEBUG - Cache miss for key abc123
 ```
 
-
 ### 詳細フォーマット \{#verbose\}
 
-```python
+```python title="Query"
 config.set_log_format("verbose")
 ```
 
-出力:
-
-```text
+```text title="Response"
 2024-01-15 10:30:45.123 DEBUG datastore.core - Executing SQL query
 2024-01-15 10:30:45.456 DEBUG datastore.cache - Cache miss for key abc123
 ```
 
 ***
-
 
 ## ログ対象 \{#what-logged\}
 

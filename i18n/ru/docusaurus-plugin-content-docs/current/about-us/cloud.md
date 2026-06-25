@@ -1,6 +1,6 @@
 ---
 slug: /about-us/cloud
-sidebar_label: 'Облачный сервис'
+sidebar_label: 'сервис ClickHouse Cloud'
 sidebar_position: 10
 description: 'ClickHouse Cloud'
 title: 'ClickHouse Cloud'
@@ -8,10 +8,8 @@ keywords: ['ClickHouse Cloud', 'облачная база данных', 'упр
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud \{#clickhouse-cloud\}
-
-ClickHouse Cloud — это облачный сервис, созданный создателями популярной OLAP‑базы данных с открытым исходным кодом ClickHouse. 
-Вы можете опробовать ClickHouse Cloud, [оформив бесплатный пробный период](https://console.clickhouse.cloud/signUp).
+ClickHouse Cloud — это облачное решение, созданное авторами популярной open-source OLAP-базы данных ClickHouse.
+Вы можете ознакомиться с ClickHouse Cloud, [оформив бесплатный пробный период](https://console.clickhouse.cloud/signUp).
 
 ## Преимущества ClickHouse Cloud \{#clickhouse-cloud-benefits\}
 

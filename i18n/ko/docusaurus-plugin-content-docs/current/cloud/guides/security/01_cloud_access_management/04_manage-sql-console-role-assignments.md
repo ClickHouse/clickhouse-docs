@@ -1,10 +1,10 @@
 ---
 slug: /cloud/guides/sql-console/manage-sql-console-role-assignments
 sidebar_label: 'SQL 콘솔 역할 할당 관리'
-title: 'SQL 콘솔 역할 할당 관리'
-description: 'SQL 콘솔 역할 할당을 관리하는 방법을 안내하는 가이드'
+title: 'SQL 콘솔 역할 할당 구성'
+description: 'SQL 콘솔 역할 할당 관리 방법을 설명하는 가이드'
 doc_type: 'guide'
-keywords: ['sql console', '역할 할당', '액세스 관리', '권한', '보안']
+keywords: ['sql console', 'role assignments', 'access management', 'permissions', 'security']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,10 +17,8 @@ import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
 :::warning
-이 설정은 사용 중단되었으며, 사용자 지정 역할로 마이그레이션한 조직에서는 역할 생성 화면의 새 설정으로 대체되었습니다. 자세한 내용은 [Cloud 사용자 관리](/cloud/security/manage-cloud-users)를 참조하십시오.
+이 설정은 사용 중단되었으며, 사용자 지정 역할로 마이그레이션한 조직에서는 역할 생성 화면의 새로운 설정으로 대체되었습니다. 자세한 내용은 [Manage cloud users](/cloud/security/manage-cloud-users)를 참조하십시오.
 :::
-
-# SQL 콘솔 역할 할당 구성 \{#configuring-sql-console-role-assignments\}
 
 > 이 가이드는 SQL 콘솔 역할 할당을 구성하는 방법을 설명합니다. 역할 할당은 콘솔 전체의 액세스 권한과 사용자가 Cloud 콘솔 내에서 사용할 수 있는 기능을 결정합니다.
 

@@ -287,7 +287,7 @@ INSERT INTO arxiv FORMAT JSONEachRow
 ```
 
 
-이제 서브컬럼 `tags`의 데이터 타입을 추론할 수 있습니다.
+이제 서브컬럼 `tags`의 타입을 추론할 수 있습니다.
 
 ```sql
 SELECT JSONAllPathsWithTypes(tags)
@@ -305,6 +305,8 @@ FORMAT PrettyJSONEachRow
     "tag_1.score": "String"
   }
 }
+```
 
+```response
 1 row in set. Elapsed: 0.002 sec.
 ```

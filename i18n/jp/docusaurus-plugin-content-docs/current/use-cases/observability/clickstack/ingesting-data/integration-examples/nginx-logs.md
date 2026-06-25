@@ -17,11 +17,8 @@ import log_view from '@site/static/images/clickstack/log-view.png';
 import search_view from '@site/static/images/clickstack/nginx-logs-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack による Nginx ログの監視 \{#nginx-clickstack\}
-
-:::note[TL;DR]
-OTel `filelog` レシーバーを使用して、ClickStack で Nginx のアクセスログ（JSON 形式）を収集・可視化します。デモ用データセットと、あらかじめ用意されたダッシュボードが含まれます。
+:::note[要点]
+OTel の `filelog` レシーバーを使用して、Nginx アクセスログ (JSON フォーマット) を ClickStack で収集・可視化します。デモデータセットとあらかじめ用意されたダッシュボードが含まれています。
 :::
 
 ## 既存の Nginx との統合 \{#existing-nginx\}

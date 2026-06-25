@@ -7,10 +7,8 @@ title: 'Keeper HTTP API 和仪表板'
 doc_type: 'reference'
 ---
 
-# Keeper HTTP API 和仪表盘 \{#keeper-http-api-and-dashboard\}
-
-ClickHouse Keeper 提供用于监控、健康检查和存储管理的 HTTP API 和内嵌 Web 仪表盘。
-该界面允许运维人员通过 Web 浏览器或 HTTP 客户端查看集群状态、执行命令并管理 Keeper 存储。
+ClickHouse Keeper 提供 HTTP API 和内嵌式 Web 仪表板，用于监控、健康检查和存储管理。
+该接口允许运维人员通过 Web 浏览器或 HTTP 客户端查看集群状态、执行命令，并管理 Keeper 存储。
 
 ## 配置 \{#configuration\}
 

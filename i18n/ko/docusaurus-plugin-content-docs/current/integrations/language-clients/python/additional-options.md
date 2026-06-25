@@ -8,9 +8,7 @@ title: '추가 옵션'
 doc_type: 'reference'
 ---
 
-# 추가 옵션 \{#additional-options\}
-
-ClickHouse Connect는 고급 활용 시나리오를 위한 다양한 추가 옵션을 제공합니다.
+ClickHouse Connect는 고급 활용 사례를 위해 여러 추가 옵션을 제공합니다.
 
 ## 전역 설정 \{#global-settings\}
 

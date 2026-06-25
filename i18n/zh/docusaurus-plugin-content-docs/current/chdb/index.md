@@ -10,11 +10,8 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import dfBench from '@site/static/images/chdb/df_bench.png';
 
-
-# chDB \{#chdb\}
-
-chDB 是一个由 [ClickHouse](https://github.com/clickhouse/clickhouse) v25.8.2.1 驱动的高性能进程内 SQL OLAP 引擎。
-当你希望在某种编程语言环境中使用 ClickHouse 的强大功能，而无需连接到 ClickHouse 服务器时，就可以使用它。
+chDB 是一个快速的进程内 SQL OLAP 引擎，由 [ClickHouse](https://github.com/clickhouse/clickhouse) v25.8.2.1 驱动。
+如果你希望在编程语言中使用 ClickHouse 的强大能力，而无需连接到 ClickHouse 服务器，就可以使用它。
 
 ## 关键特性 \{#key-features\}
 

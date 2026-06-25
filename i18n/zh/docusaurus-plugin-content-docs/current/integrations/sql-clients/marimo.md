@@ -21,12 +21,9 @@ import dropdown_cell_chart from '@site/static/images/integrations/sql-clients/ma
 import run_app_view from '@site/static/images/integrations/sql-clients/marimo/run-app-view.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# 将 marimo 与 ClickHouse 一起使用 \{#using-marimo-with-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-[marimo](https://marimo.io/) 是一个开源的 Python 响应式笔记本，内置 SQL 支持。每当你运行某个单元格或与 UI 元素交互时，marimo 会自动运行受影响的单元格（或将其标记为已失效），从而保持代码和输出的一致性，并在问题发生之前避免错误。每个 marimo 笔记本都以纯 Python 形式存储，可作为脚本执行，也可部署为应用。
+[marimo](https://marimo.io/) 是一个开源的响应式 Python notebook，内置 SQL。当你运行某个单元格或与某个 UI 元素交互时，marimo 会自动运行受影响的单元格 (或将其标记为陈旧) ，从而保持代码和输出一致，并防止 bug 发生。每个 marimo notebook 都以纯 Python 形式存储，可作为脚本执行，也可部署为应用。
 
 <Image img={marimo_connect} size="md" border alt="连接到 ClickHouse" />
 

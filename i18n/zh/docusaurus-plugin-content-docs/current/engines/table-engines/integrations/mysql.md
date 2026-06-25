@@ -7,9 +7,7 @@ title: 'MySQL 表引擎'
 doc_type: 'reference'
 ---
 
-# MySQL 表引擎 \{#mysql-table-engine\}
-
-MySQL 引擎允许对存储在远程 MySQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
+MySQL 引擎允许您对存储在远程 MySQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
 ## 创建表 \{#creating-a-table\}
 

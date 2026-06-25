@@ -17,10 +17,7 @@ import Bucket1 from '@site/static/images/integrations/data-ingestion/s3/bucket1.
 import Bucket2 from '@site/static/images/integrations/data-ingestion/s3/bucket2.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse と S3 の統合 \{#integrating-s3-with-clickhouse\}
-
-S3 から ClickHouse にデータを挿入できるほか、S3 をエクスポート先としても利用できるため、「データレイク」アーキテクチャとの連携が可能になります。さらに、S3 は「コールド」ストレージ階層を提供し、ストレージとコンピュートの分離にも役立ちます。以下のセクションでは、New York City taxi データセットを用いて、S3 と ClickHouse 間でデータを移動する手順を示すとともに、主要な構成パラメータを明らかにし、パフォーマンスを最適化するためのヒントを紹介します。
+S3 から ClickHouse にデータを挿入でき、また S3 をエクスポート先として使用することで、&quot;データレイク&quot; アーキテクチャと連携できます。さらに、S3 は &quot;コールド&quot; ストレージ tier を提供し、ストレージとコンピュートの分離にも役立ちます。以下のセクションでは、New York City taxi dataset を使用して、S3 と ClickHouse の間でデータを移動するプロセスを示すとともに、重要な構成パラメータを特定し、パフォーマンスを最適化するためのヒントを紹介します。
 
 ## S3 テーブル関数 \{#s3-table-functions\}
 
@@ -48,11 +45,13 @@ ClickHouse にテーブルを作成する前に、S3 バケット内のデータ
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames');
 ```
 
-`DESCRIBE TABLE`ステートメントの出力から、S3バケット内にあるこのデータについて、ClickHouseがどのように自動的に型推論を行うかを確認できます。gzip圧縮形式も自動的に認識して解凍している点に注目してください。
+`DESCRIBE TABLE`ステートメントの出力から、S3バケット内にあるこのデータについて、ClickHouseがどのように自動的に型推論を行うかを確認できます。gzip圧縮フォーマットも自動的に認識して解凍している点に注目してください。
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_*.gz', 'TabSeparatedWithNames') SETTINGS describe_compact_output=1
+```
 
+```response
 ┌─name──────────────────┬─type───────────────┐
 │ trip_id               │ Nullable(Int64)    │
 │ vendor_id             │ Nullable(Int64)    │
@@ -103,7 +102,6 @@ DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc
 ```
 
 S3ベースのデータセットを操作するために、標準的な`MergeTree`テーブルを宛先として準備します。以下のステートメントは、デフォルトデータベースに`trips`という名前のテーブルを作成します。上記で推論されたデータ型の一部を変更しており、特に[`Nullable()`](/sql-reference/data-types/nullable)データ型修飾子は使用しないようにしています。これは、不要な追加ストレージと若干のパフォーマンスオーバーヘッドを引き起こす可能性があるためです。
-
 
 ```sql
 CREATE TABLE trips
@@ -416,7 +414,9 @@ CREATE TABLE trips_raw
 SELECT DISTINCT(pickup_ntaname)
 FROM trips_raw
 LIMIT 10;
+```
 
+```response
 ┌─pickup_ntaname───────────────────────────────────┐
 │ Lenox Hill-Roosevelt Island                      │
 │ Airport                                          │
@@ -430,7 +430,6 @@ LIMIT 10;
 │ DUMBO-Vinegar Hill-Downtown Brooklyn-Boerum Hill │
 └──────────────────────────────────────────────────┘
 ```
-
 
 ### データの挿入 \{#inserting-data\}
 
@@ -552,9 +551,9 @@ ClickHouse は、特に「コールド」データに対するクエリ性能が
 
 ### ストレージ階層 \{#storage-tiers\}
 
-ClickHouse のストレージボリューム機能により、物理ディスクを MergeTree テーブルエンジンから抽象化できます。単一のボリュームは、順序付けられたディスクの集合で構成できます。これは主に複数のブロックデバイスをデータストレージに利用できるようにするためのものですが、この抽象化により S3 を含む他のストレージタイプも利用可能になります。ClickHouse のデータパーツは、ストレージポリシーに従ってボリューム間を移動したり、使用率に応じて移動したりできるため、ストレージ階層という概念が生まれます。
+ClickHouse のストレージボリューム機能により、物理ディスクを MergeTree テーブルエンジンから抽象化できます。単一のボリュームは、順序付けられたディスクの集合で構成できます。これは主に複数のブロックデバイスをデータストレージに利用できるようにするためのものですが、この抽象化により S3 を含む他のストレージタイプも利用可能になります。ClickHouse のデータパーツは、ストレージポリシーと使用率に従ってボリューム間を移動できるため、ストレージ階層という概念が生まれます。
 
-ストレージ階層によりホット・コールド アーキテクチャが可能になります。もっとも新しいデータは、通常もっとも頻繁にクエリされるため、高性能ストレージ（例: NVMe SSD）の比較的小さな容量のみを必要とします。データが古くなるにつれて、SLA で許容されるクエリ時間は長くなり、クエリ頻度も増加します。この裾野の広いロングテールのデータは、HDD のような低速で性能の低いストレージや、S3 のようなオブジェクトストレージに保存できます。
+ストレージ階層によりホット・コールド構成が可能になります。もっとも新しいデータは、通常もっとも頻繁にクエリされるため、高性能ストレージ (例: NVMe SSD) の比較的小さな容量のみを必要とします。データが古くなるにつれて、SLA で許容されるクエリ時間は長くなり、クエリ頻度も増加します。この裾野の広いロングテールのデータは、HDD のような低速で性能の低いストレージや、S3 のようなオブジェクトストレージに保存できます。
 
 ### ディスクの作成 \{#creating-a-disk\}
 
@@ -1364,7 +1363,9 @@ SELECT * FROM s3('https://test-bucket--eun1-az1--x-s3.s3express-eun1-az1.eu-nort
 
 ```sql
 BACKUP TABLE t TO Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status─────────┐
 │ c61f65ac-0d76-4390-8317-504a30ba7595 │ BACKUP_CREATED │
 └──────────────────────────────────────┴────────────────┘
@@ -1372,7 +1373,9 @@ BACKUP TABLE t TO Disk('s3_express', 't.zip')
 
 ```sql
 RESTORE TABLE t AS t_restored FROM Disk('s3_express', 't.zip')
+```
 
+```response
 ┌─id───────────────────────────────────┬─status───┐
 │ 4870e829-8d76-4171-ae59-cffaf58dea04 │ RESTORED │
 └──────────────────────────────────────┴──────────┘

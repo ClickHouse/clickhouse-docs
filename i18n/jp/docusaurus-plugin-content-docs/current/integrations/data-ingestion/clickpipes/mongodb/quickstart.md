@@ -1,16 +1,14 @@
 ---
-title: 'ClickHouse における JSON の扱い'
-sidebar_label: 'JSON の扱い'
+title: 'ClickHouse での JSON の扱い方'
+sidebar_label: 'JSON の扱い方'
 slug: /integrations/clickpipes/mongodb/quickstart
-description: 'ClickPipes を使用して MongoDB から ClickHouse へレプリケーションされた JSON データを扱う際の一般的なパターン'
+description: 'ClickPipes を使用して MongoDB から ClickHouse にレプリケートされた JSON データを扱う際の一般的なパターン'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mongodb', 'cdc', 'データインジェスト', 'リアルタイム同期']
+keywords: ['clickpipes', 'mongodb', 'CDC', 'データインジェスト', 'リアルタイム同期']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
-
-# ClickHouse での JSON の扱い方 \{#working-with-json-in-clickhouse\}
 
 このガイドでは、ClickPipes を使用して MongoDB から ClickHouse にレプリケートされた JSON データを扱う際の一般的なパターンを紹介します。
 
@@ -41,7 +39,7 @@ db.t1.insertOne({
 })
 ```
 
-MongoDB CDC Connector は、ネイティブ JSON データ型を使用して MongoDB のドキュメントを ClickHouse にレプリケートします。ClickHouse 上のレプリケートされたテーブル `t1` には、次の行が含まれます。
+MongoDB CDC Connector は、ネイティブ JSON データ型を使用して MongoDB のドキュメントを ClickHouse にレプリケートします。ClickHouse 上のレプリケートテーブル `t1` には、次の行が含まれます。
 
 ```shell
 Row 1:

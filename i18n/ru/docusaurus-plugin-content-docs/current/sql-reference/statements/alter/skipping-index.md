@@ -8,8 +8,6 @@ toc_hidden_folder: true
 doc_type: 'reference'
 ---
 
-# Работа с индексами пропуска данных \{#manipulating-data-skipping-indices\}
-
 Доступны следующие операции:
 
 ## ADD INDEX \{#add-index\}
@@ -31,6 +29,6 @@ doc_type: 'reference'
 Команды `ADD`, `DROP` и `CLEAR` являются «легковесными» в том смысле, что они только изменяют метаданные или удаляют файлы.
 Кроме того, они реплицируются, синхронизируя метаданные индексов через ClickHouse Keeper или ZooKeeper.
 
-:::note    
+:::note
 Управление индексами поддерживается только для таблиц с движком [`*MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) (включая [реплицируемые](/engines/table-engines/mergetree-family/replication.md) варианты).
 :::

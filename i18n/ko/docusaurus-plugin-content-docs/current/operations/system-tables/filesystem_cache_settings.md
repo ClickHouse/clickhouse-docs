@@ -37,6 +37,7 @@ doc_type: 'reference'
 * `bypass_cache_threshold` ([UInt64](../../sql-reference/data-types/)) — 문서화되지 않았습니다. 사용을 권장하지 않습니다
 * `write_cache_per_user_id_directory` ([UInt8](../../sql-reference/data-types/)) — 내부 ClickHouse Cloud 설정
 * `allow_dynamic_cache_resize` ([UInt8](../../sql-reference/data-types/)) — 파일 시스템 캐시의 동적 크기 조정을 허용합니다
+* `dynamic_resize_lock_wait_ms` ([UInt64](../../sql-reference/data-types/)) — 크기 조정 시도를 건너뛰기 전에 동적 크기 조정 전용 잠금을 획득하기 위해 대기하는 밀리초 단위 타임아웃
 * `max_size_ratio_to_total_space` ([Float64](../../sql-reference/data-types/)) — 전체 디스크 공간 대비 `max_size`의 비율
 * `skip_cache_on_disk_failure` ([UInt8](../../sql-reference/data-types/)) — true이면 디스크 IO 오류 발생 시 파일 시스템 캐시 작업을 자동으로 우회합니다. false(기본값)이면 디스크 IO 오류가 시작 실패로 전파됩니다.
 * `use_split_cache` ([UInt8](../../sql-reference/data-types/)) — 파일을 system/data로 분리해 사용합니다.

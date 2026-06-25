@@ -7,7 +7,6 @@ doc_type: 'reference'
 keywords: ['network', 'ports', 'configuration', 'security', 'firewall']
 ---
 
-# Network ports
 
 :::note
 Ports described as **default** mean that the port number is configured in `/etc/clickhouse-server/config.xml`.  To customize your settings, add a file to `/etc/clickhouse-server/config.d/`.  See the [configuration file](/operations/configuration-files) documentation.

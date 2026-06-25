@@ -65,13 +65,13 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 }
 ```
 
-원하는 스케일 수준을 설정합니다. 지원되는 구성은 CPU 코어 1~24개이며, 메모리(GB)는 코어 수의 4배로 설정됩니다.
+원하는 스케일 수준을 설정합니다. 지원되는 구성은 CPU 코어 1~32개이며, 메모리(GB)는 코어 수의 4배로 설정됩니다:
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
 {
-  "replicaCpuMillicores": 24000,
-  "replicaMemoryGb": 96
+  "replicaCpuMillicores": 32000,
+  "replicaMemoryGb": 128
 }
 EOF
 
@@ -91,8 +91,8 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 # example result:
 {
   "result": {
-    "replicaCpuMillicores": 24000,
-    "replicaMemoryGb": 96
+    "replicaCpuMillicores": 32000,
+    "replicaMemoryGb": 128
   },
   "requestId": "5a76d642-d29f-45af-a857-8c4d4b947bf0",
   "status": 200

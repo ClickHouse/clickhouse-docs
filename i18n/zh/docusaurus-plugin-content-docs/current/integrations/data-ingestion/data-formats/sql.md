@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['SQL 格式', '数据导出', '数据导入', '备份', 'SQL 转储']
 ---
 
-# 在 ClickHouse 中插入和转储 SQL 数据 \{#inserting-and-dumping-sql-data-in-clickhouse\}
-
-ClickHouse 可以通过多种方式轻松集成到 OLTP 数据库基础架构中。其中一种方式是使用 SQL 转储文件在其他数据库与 ClickHouse 之间传输数据。
+ClickHouse 可以通过多种方式轻松集成到 OLTP 数据库基础设施中。其中一种方式是使用 SQL 转储在其他数据库和 ClickHouse 之间传输数据。
 
 ## 创建 SQL 转储 \{#creating-sql-dumps\}
 

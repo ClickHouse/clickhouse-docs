@@ -7,19 +7,11 @@ sidebar_label: 'groupArrayDistinct'
 doc_type: 'reference'
 ---
 
-
-
-# groupArrayDistinct \{#sumdistinct\}
-
-
-
 ## 설명 \{#description\}
 
 [`groupArrayDistinct`](/sql-reference/aggregate-functions/combinators#-foreach) 조합자는
 [`groupArray`](/sql-reference/aggregate-functions/reference/sum) 집계 함수에 적용하여
 서로 다른 인자 값으로 구성된 배열을 생성합니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -38,7 +30,7 @@ ORDER BY URLDomain ASC
 LIMIT 20;
 ```
 
-
 ## 같이 보기 \{#see-also\}
-- [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Distinct combinator`](/sql-reference/aggregate-functions/combinators#-distinct)
+
+* [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
+* [`Distinct 조합자`](/sql-reference/aggregate-functions/combinators#-distinct)

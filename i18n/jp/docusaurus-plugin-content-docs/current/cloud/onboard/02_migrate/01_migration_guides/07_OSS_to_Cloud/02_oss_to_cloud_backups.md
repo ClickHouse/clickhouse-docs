@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'BACKUP と RESTORE の使用'
 slug: /cloud/migration/oss-to-cloud-backup-restore
-title: 'BACKUP/RESTORE を使用したセルフマネージド ClickHouse と ClickHouse Cloud 間の移行'
+title: 'バックアップコマンドを使用したセルフマネージド ClickHouse から ClickHouse Cloud への移行'
 description: 'セルフマネージド ClickHouse と ClickHouse Cloud 間を BACKUP および RESTORE コマンドを使って移行する方法を説明するページ'
 doc_type: 'guide'
 keywords: ['移行', 'ClickHouse Cloud', 'OSS', 'セルフマネージドから Cloud への移行', 'BACKUP', 'RESTORE']
@@ -17,9 +17,6 @@ import open_console from '@site/static/images/cloud/onboard/migrate/oss_to_cloud
 import service_role_id from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/service_role_id.png';
 import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/create_new_role.png';
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
-
-
-# バックアップコマンドを使用してセルフマネージド ClickHouse から ClickHouse Cloud に移行する \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud-using-backup-commands\}
 
 ## 概要 \{#overview-migration-approaches\}
 
@@ -166,13 +163,15 @@ SYSTEM RESTORE REPLICA nyc_taxi.trips_small_adapted;
 SELECT engine
 FROM system.tables
 WHERE name = 'trips_small_adapted' AND database = 'nyc_taxi';
+```
 
+```response
 ┌─engine──────────────┐
 │ ReplicatedMergeTree │
 └─────────────────────┘
 ```
 
-これで、後で S3 バケットからバックアップをリストアできるよう、Cloud サービスのセットアップに進む準備が整いました。
+これで、後で S3 バケットからバックアップを復元できるよう、Cloud サービスのセットアップに進む準備が整いました。
 
 ### ReplicatedMergeTree を使用した分散テーブル \{#distributed-tables\}
 

@@ -24,7 +24,7 @@ WITH
         SELECT sum(cityHash64(*))
         FROM
         (
-            -- здесь ваш запрос 1
+            -- your query 1 here
             -- SELECT ...
         )
     ) AS q1_resultset_hash,
@@ -32,14 +32,14 @@ WITH
         SELECT sum(cityHash64(*))
         FROM
         (
-            -- здесь ваш запрос 2
+            -- your query 2 here
             -- SELECT ...
         )
     ) AS q2_resultset_hash
 SELECT equals(q1_resultset_hash,q2_resultset_hash) as Q1_equals_Q2
 ```
 
-В этом примере используется [CTE](https://clickhouse.com/docs/sql-reference/statements/select/with) для вычисления сумм значения [cityHash](https://clickhouse.com/docs/sql-reference/functions/hash-functions#cityhash64) для каждой строки в двух запросах и возвращает `1`, если два результирующих набора идентичны.
+В этом примере используется [CTE](/sql-reference/statements/select/with) для вычисления сумм значения [cityHash](/sql-reference/functions/hash-functions#cityHash64) для каждой строки в двух запросах и возвращает `1`, если два набора результатов идентичны.
 
 Используя данные в виде некоторой последовательности целых чисел и немного наглядного форматирования:
 

@@ -13,9 +13,6 @@ integration:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
-
-# R2DBCドライバ \{#r2dbc-driver\}
 
 ## R2DBCドライバ \{#r2dbc-driver\}
 

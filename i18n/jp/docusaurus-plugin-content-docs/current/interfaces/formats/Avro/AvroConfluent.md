@@ -3,7 +3,7 @@ alias: []
 description: 'AvroConfluent フォーマットに関するドキュメント'
 input_format: true
 keywords: ['AvroConfluent']
-output_format: false
+output_format: true
 slug: /interfaces/formats/AvroConfluent
 title: 'AvroConfluent'
 doc_type: 'reference'
@@ -13,15 +13,15 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 | 入力 | 出力 | エイリアス |
 | -- | -- | ----- |
-| ✔  | ✗  |       |
+| ✔  | ✔  |       |
 
 ## 説明 \{#description\}
 
-[Apache Avro](https://avro.apache.org/) は、効率的なデータ処理のためにバイナリエンコードを使用する行指向のシリアル化フォーマットです。`AvroConfluent` フォーマットは、[Confluent Schema Registry](https://docs.confluent.io/current/schema-registry/index.html)（またはその API 互換サービス）を用いてシリアル化された、単一オブジェクト形式の Avro でエンコードされた Kafka メッセージのデコードをサポートします。
+[Apache Avro](https://avro.apache.org/) は、効率的なデータ処理のためにバイナリエンコードを使用する行指向のシリアル化フォーマットです。`AvroConfluent` フォーマットは、[Confluent スキーマレジストリ](https://docs.confluent.io/current/schema-registry/index.html) (またはその API 互換サービス) を使用して、Avro でエンコードされたメッセージの読み取りと書き込みをサポートします。
 
-各 Avro メッセージにはスキーマ ID が埋め込まれており、ClickHouse は設定済みの Schema Registry に対してクエリを実行することで自動的にスキーマを解決します。一度解決されたスキーマは、パフォーマンスを最適化するためにキャッシュされます。
+各メッセージは Confluent のワイヤ形式を使用します。つまり、マジックバイト (`0x00`) の後に 4 バイトのビッグエンディアンのスキーマ ID が続き、その後に Avro のバイナリデータが続きます。読み取り時には、ClickHouse はレジストリに対してクエリを実行してスキーマ ID を解決します。書き込み時には、ClickHouse は出力カラムから導出したスキーマを登録し、その結果得られた ID を各行の先頭に付加します。スキーマは、パフォーマンスを最適化するためにキャッシュされます。
 
-<a id="data-types-matching"></a>
+<a id="data-types-matching" />
 
 ## データ型のマッピング \{#data-type-mapping\}
 
@@ -31,15 +31,20 @@ import DataTypesMatching from './_snippets/data-types-matching.md'
 
 [//]: # "NOTE これらの設定はセッション・レベルでも設定できますが、それが行われることはあまりなく、あまり目立つ形で文書化するとユーザーを混乱させる可能性があります。"
 
-| Setting                                     | Description                                                                                         | Default |
-|---------------------------------------------|-----------------------------------------------------------------------------------------------------|---------|
-| `input_format_avro_allow_missing_fields`    | スキーマ内にフィールドが見つからない場合にエラーを発生させる代わりに、デフォルト値を使用するかどうか。 | `0`     |
-| `input_format_avro_null_as_default`         | NULL を許容しないカラムに `null` 値を挿入する際にエラーを発生させる代わりに、デフォルト値を使用するかどうか。 |   `0`   |
-| `format_avro_schema_registry_url`           | Confluent Schema Registry の URL。Basic 認証を利用する場合は、URL エンコードした認証情報を URL のパス部分に直接含めることができます。 |         |
+| Setting                                          | Description                                                                               | Default |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------- | ------- |
+| `input_format_avro_allow_missing_fields`         | スキーマ内にフィールドが見つからない場合にエラーを発生させる代わりに、デフォルト値を使用するかどうか。                                       | `0`     |
+| `input_format_avro_null_as_default`              | NULL を許容しないカラムに `null` 値を挿入する際にエラーを発生させる代わりに、デフォルト値を使用するかどうか。                             | `0`     |
+| `format_avro_schema_registry_url`                | Confluent スキーマレジストリ の URL。Basic 認証を利用する場合は、URL エンコードした認証情報を URL のパス部分に直接含めることができます。 |         |
+| `format_avro_schema_registry_connection_timeout` | スキーマレジストリ HTTP クライアントの接続タイムアウト (秒) 。スキーマの取得と登録の両方で使用されます。0 より大きく、600 (10 分) 未満である必要があります。 | `1`     |
+| `format_avro_schema_registry_send_timeout`       | スキーマレジストリ HTTP クライアントの送信タイムアウト (秒) 。0 より大きく、600 (10 分) 未満である必要があります。                      | `1`     |
+| `format_avro_schema_registry_receive_timeout`    | スキーマレジストリ HTTP クライアントの受信タイムアウト (秒) 。0 より大きく、600 (10 分) 未満である必要があります。                      | `1`     |
+| `output_format_avro_confluent_subject`           | 出力用: スキーマレジストリでスキーマを登録する subject 名。書き込み時に必須です。                                            |         |
+| `output_format_avro_string_column_pattern`       | 出力用: Avro `string` としてシリアライズする String カラムの正規表現 (デフォルトは `bytes`) 。                         |         |
 
 ## 例 \{#examples\}
 
-### スキーマレジストリの使用 \{#using-a-schema-registry\}
+### Kafka からの読み取り \{#reading-from-kafka\}
 
 [Kafka table engine](/engines/table-engines/integrations/kafka.md) を使用して Avro でエンコードされた Kafka トピックを読み取るには、`format_avro_schema_registry_url` 設定を使用してスキーマレジストリの URL を指定します。
 
@@ -58,6 +63,27 @@ kafka_format = 'AvroConfluent',
 format_avro_schema_registry_url = 'http://schema-registry-url';
 
 SELECT * FROM topic1_stream;
+```
+
+### Kafka への書き込み \{#writing-to-kafka\}
+
+AvroConfluent メッセージを Kafka トピックに書き込むには、スキーマレジストリの URL とサブジェクト名の両方を設定します。最初の書き込み時に、スキーマは自動的にレジストリに登録されます。
+
+```sql
+CREATE TABLE topic1_sink
+(
+    field1 String,
+    field2 String
+)
+ENGINE = Kafka()
+SETTINGS
+kafka_broker_list = 'kafka-broker',
+kafka_topic_list = 'topic1',
+kafka_format = 'AvroConfluent',
+format_avro_schema_registry_url = 'http://schema-registry-url',
+output_format_avro_confluent_subject = 'topic1-value';
+
+INSERT INTO topic1_sink VALUES ('hello', 'world');
 ```
 
 #### Basic 認証の使用 \{#using-basic-authentication\}

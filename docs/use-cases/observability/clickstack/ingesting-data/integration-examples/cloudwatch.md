@@ -21,8 +21,6 @@ import error_log_overview from '@site/static/images/clickstack/cloudwatch/error-
 import error_log_column_values from '@site/static/images/clickstack/cloudwatch/error-log-column-values.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Monitoring AWS CloudWatch Logs with ClickStack {#cloudwatch-clickstack}
-
 :::note[TL;DR]
 Forward AWS CloudWatch logs to ClickStack using the OpenTelemetry Collector's CloudWatch receiver. Supports named log groups and autodiscovery. Includes a demo dataset and pre-built dashboard.
 :::
@@ -123,6 +121,46 @@ Replace `YOUR_ACCOUNT_ID` with your AWS account ID.
 #### Configure the CloudWatch receiver {#configure-receiver}
 
 Create an `otel-collector-config.yaml` file with the CloudWatch receiver configuration.
+
+<details>
+<summary>Discover the log groups available in your account</summary>
+
+Before editing the config, list the log groups that exist in your region so you can pick real names (and confirm the region is correct):
+
+```bash
+aws logs describe-log-groups --region us-east-1 \
+  --query 'logGroups[].logGroupName' --output table
+```
+
+Example output:
+
+```text
+-------------------------------
+|      DescribeLogGroups      |
++-----------------------------+
+|  /aws-glue/jobs/error       |
+|  /aws-glue/jobs/logs-v2     |
+|  /aws-glue/jobs/output      |
+|  /aws-glue/sessions/error   |
+|  /aws-glue/sessions/output  |
++-----------------------------+
+```
+
+Use the names from this list directly in the `groups.named` block of Example 1 below. For the account above, the named-groups section would become:
+
+```yaml
+groups:
+  named:
+    /aws-glue/jobs/error:
+    /aws-glue/jobs/logs-v2:
+    /aws-glue/jobs/output:
+    /aws-glue/sessions/error:
+    /aws-glue/sessions/output:
+```
+
+Alternatively, if the groups you want share a common prefix (here `/aws-glue/`), use Example 2 with `prefix: /aws-glue/` instead of listing them individually.
+
+</details>
 
 **Example 1: Named log groups (recommended)**
 

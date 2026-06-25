@@ -7,20 +7,13 @@ keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'ola
 doc_type: 'guide'
 ---
 
-
-
-# Node.js용 chDB \{#chdb-for-nodejs\}
-
-chDB-node는 chDB용 Node.js 바인딩을 제공하여, 별도의 외부 의존성 없이 Node.js 애플리케이션에서 ClickHouse 쿼리를 직접 실행할 수 있도록 합니다.
-
-
+chDB-node는 chDB용 Node.js 바인딩을 제공하여, 외부 의존성 없이 Node.js 애플리케이션에서 ClickHouse 쿼리를 직접 실행할 수 있게 합니다.
 
 ## 설치 \{#installation\}
 
 ```bash
 npm install chdb
 ```
-
 
 ## 사용 방법 \{#usage\}
 
@@ -146,7 +139,6 @@ try {
 }
 ```
 
-
 ## 오류 처리 \{#error-handling\}
 
 chDB를 사용할 때는 항상 오류를 적절하게 처리해야 합니다:
@@ -192,9 +184,8 @@ function safeSessionQuery() {
 safeSessionQuery();
 ```
 
-
 ## GitHub 리포지토리 \{#github-repository\}
 
-- **GitHub 리포지토리**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
-- **이슈 및 지원**: [GitHub 리포지토리](https://github.com/chdb-io/chdb-node/issues)에서 이슈를 등록하십시오
-- **NPM 패키지**: [npm의 chdb 패키지](https://www.npmjs.com/package/chdb)
+* **GitHub 리포지토리**: [chdb-io/chdb-node](https://github.com/chdb-io/chdb-node)
+* **이슈 및 지원**: [GitHub 리포지토리](https://github.com/chdb-io/chdb-node/issues)에서 이슈를 등록하십시오
+* **NPM 패키지**: [npm의 chdb 패키지](https://www.npmjs.com/package/chdb)

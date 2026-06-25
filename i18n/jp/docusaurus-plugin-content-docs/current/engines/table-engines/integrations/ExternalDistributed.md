@@ -7,9 +7,7 @@ title: 'ExternalDistributed テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# ExternalDistributed テーブルエンジン \{#externaldistributed-table-engine\}
-
-`ExternalDistributed` エンジンを使用すると、リモートサーバー上の MySQL または PostgreSQL に保存されているデータに対して `SELECT` クエリを実行できます。引数として [MySQL](../../../engines/table-engines/integrations/mysql.md) または [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) エンジンを指定できるため、シャーディングが可能です。
+`ExternalDistributed` エンジンを使用すると、リモートの MySQL または PostgreSQL サーバーに保存されているデータに対して `SELECT` クエリを実行できます。[MySQL](../../../engines/table-engines/integrations/mysql.md) または [PostgreSQL](../../../engines/table-engines/integrations/postgresql.md) エンジンを引数として受け取るため、データの分片 (シャーディング) が可能です。
 
 ## テーブルを作成する \{#creating-a-table\}
 

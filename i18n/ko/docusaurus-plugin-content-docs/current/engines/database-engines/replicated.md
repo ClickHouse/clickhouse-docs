@@ -1,13 +1,11 @@
 ---
-description: '이 엔진은 Atomic 엔진을 기반으로 합니다. ZooKeeper에 기록되는 DDL 로그를 통해 메타데이터 복제를 지원하며, 이는 지정된 데이터베이스의 모든 레플리카에서 실행됩니다.'
-sidebar_label: '복제형'
+description: '이 엔진은 Atomic 엔진을 기반으로 합니다. DDL 로그를 ZooKeeper에 기록하고 이를 해당 데이터베이스의 모든 레플리카에서 실행하는 방식으로 메타데이터 복제를 지원합니다.'
+sidebar_label: 'Replicated'
 sidebar_position: 30
 slug: /engines/database-engines/replicated
-title: '복제형'
-doc_type: 'reference'
+title: 'Replicated'
+doc_type: '참고'
 ---
-
-# Replicated \{#replicated\}
 
 이 엔진은 [Atomic](../../engines/database-engines/atomic.md) 엔진을 기반으로 합니다. DDL 로그가 ZooKeeper에 기록되는 방식으로 메타데이터 복제를 지원하며, 해당 데이터베이스의 모든 레플리카에서 실행됩니다.
 

@@ -8,9 +8,11 @@ title: '구성'
 doc_type: 'reference'
 ---
 
-# 구성 \{#configuration\}
-
 ## 연결 설정 \{#connection-settings\}
+
+:::tip
+기본값, DSN 매개변수, 모범 사례, 문제 해결을 포함해 각 옵션을 자세히 살펴보려면 [구성 참고](/integrations/language-clients/go/config-reference)를 참조하십시오.
+:::
 
 연결을 열 때 `Options` 구조체를 사용해 클라이언트 동작을 제어할 수 있습니다. 사용할 수 있는 설정은 다음과 같습니다.
 
@@ -24,21 +26,21 @@ doc_type: 'reference'
 | `DialTimeout`          | `time.Duration`                                    | `30s`              | 새 연결을 열 때까지 대기하는 최대 시간입니다.                                                                                                         |
 | `MaxOpenConns`         | `int`                                              | `MaxIdleConns + 5` | 동시에 열 수 있는 최대 연결 수입니다.                                                                                                             |
 | `MaxIdleConns`         | `int`                                              | `5`                | 커넥션 풀에 유지할 유휴 연결 수입니다.                                                                                                             |
-| `ConnMaxLifetime`      | `time.Duration`                                    | `1h`               | 풀에 있는 연결의 최대 수명입니다. [커넥션 풀링](#connection-pooling)을 참조하십시오.                                                                         |
+| `ConnMaxLifetime`      | `time.Duration`                                    | `1h`               | 풀에 있는 연결의 최대 수명입니다. [연결 풀링](#connection-pooling)을 참조하십시오.                                                                         |
 | `ConnOpenStrategy`     | `ConnOpenStrategy`                                 | `ConnOpenInOrder`  | `Addr`에서 노드를 선택하는 전략입니다. [여러 노드에 연결하기](#connecting-to-multiple-nodes)를 참조하십시오.                                                     |
-| `BlockBufferSize`      | `uint8`                                            | `2`                | 병렬로 디코딩할 블록 수입니다. 값이 클수록 처리량은 증가하지만 메모리 사용량도 늘어납니다. context를 통해 쿼리별로 재정의할 수 있습니다.                                               |
+| `BlockBufferSize`      | `uint8`                                            | `2`                | 병렬로 디코딩할 블록 수입니다. 값이 클수록 처리량은 증가하지만 메모리 사용량도 늘어납니다. context를 통해 쿼리별로 재정의할 수 있습니다.                                                  |
 | `Settings`             | `Settings`                                         | —                  | 모든 쿼리에 적용되는 ClickHouse 설정의 맵입니다. 개별 쿼리는 [context](/integrations/language-clients/go/clickhouse-api#using-context)를 통해 재정의할 수 있습니다. |
-| `Compression`          | `*Compression`                                     | `nil`              | 블록 수준 압축입니다. [압축](#compression)을 참조하십시오.                                                                                        |
+| `Compression`          | `*Compression`                                     | `nil`              | 블록 수준 압축입니다. [압축](#compression)을 참조하십시오.                                                                                           |
 | `ReadTimeout`          | `time.Duration`                                    | —                  | 단일 호출에서 서버의 읽기 응답을 기다리는 최대 시간입니다.                                                                                                  |
 | `FreeBufOnConnRelease` | `bool`                                             | `false`            | true이면 쿼리마다 연결의 메모리 버퍼를 풀에 반환합니다. CPU 비용이 약간 증가하는 대신 메모리 사용량을 줄일 수 있습니다.                                                           |
 | `Logger`               | `*slog.Logger`                                     | `nil`              | 구조화된 로거(Go `log/slog`)입니다. [로깅](#logging)을 참조하십시오.                                                                                 |
 | `Debug`                | `bool`                                             | `false`            | **사용 중단되었습니다.** 대신 `Logger`를 사용하십시오. stdout에 레거시 디버그 출력을 활성화합니다.                                                                   |
 | `Debugf`               | `func(string, ...any)`                             | —                  | **사용 중단되었습니다.** 대신 `Logger`를 사용하십시오. 사용자 지정 디버그 로그 함수입니다. `Debug: true`가 필요합니다.                                                    |
 | `GetJWT`               | `GetJWTFunc`                                       | —                  | ClickHouse Cloud 인증용 JWT token을 반환하는 callback입니다(HTTPS 전용).                                                                        |
-| `HttpHeaders`          | `map[string]string`                                | —                  | 모든 요청에 포함되는 추가 HTTP 헤더입니다(HTTP 전송 전용).                                                                                         |
+| `HttpHeaders`          | `map[string]string`                                | —                  | 모든 요청에 포함되는 추가 HTTP 헤더입니다(HTTP 전송 전용).                                                                                             |
 | `HttpUrlPath`          | `string`                                           | —                  | HTTP 요청에 추가되는 URL 경로입니다(HTTP 전송 전용).                                                                                               |
 | `HttpMaxConnsPerHost`  | `int`                                              | —                  | 내부 `http.Transport`의 `MaxConnsPerHost`를 재정의합니다(HTTP 전송 전용).                                                                        |
-| `TransportFunc`        | `func(*http.Transport) (http.RoundTripper, error)` | —                  | 사용자 지정 HTTP 전송 팩터리입니다. 필요한 항목만 선택적으로 재정의할 수 있도록 기본 전송가 함께 전달됩니다(HTTP 전송 전용).                                         |
+| `TransportFunc`        | `func(*http.Transport) (http.RoundTripper, error)` | —                  | 사용자 지정 HTTP 전송 팩터리입니다. 필요한 항목만 선택적으로 재정의할 수 있도록 기본 전송가 함께 전달됩니다(HTTP 전송 전용).                                                       |
 | `HTTPProxyURL`         | `*url.URL`                                         | —                  | 모든 요청에 사용할 HTTP 프록시 URL입니다(HTTP 전송 전용).                                                                                            |
 
 ```go

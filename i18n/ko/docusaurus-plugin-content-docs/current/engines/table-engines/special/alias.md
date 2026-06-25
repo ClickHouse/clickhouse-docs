@@ -1,27 +1,15 @@
 ---
-description: 'Alias 테이블 엔진은 다른 테이블에 대한 투명한 프록시를 생성합니다. 모든 연산은 대상 테이블로 전달되며, Alias 자체는 어떠한 데이터도 저장하지 않습니다.'
-sidebar_label: 'Alias'
+description: '별칭 테이블 엔진은 다른 테이블에 대한 투명한 프록시를 생성합니다. 모든 연산은 대상 테이블로 전달되며, 별칭 자체는 어떠한 데이터도 저장하지 않습니다.'
+sidebar_label: '별칭'
 sidebar_position: 5
 slug: /engines/table-engines/special/alias
-title: 'Alias 테이블 엔진'
+title: '별칭 테이블 엔진'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+# 별칭 테이블 엔진 \{#alias-table-engine\}
 
-
-# Alias 테이블 엔진 \{#alias-table-engine\}
-
-<ExperimentalBadge/>
-
-`Alias` 엔진은 다른 테이블에 대한 프록시를 생성합니다. 모든 읽기 및 쓰기 연산은 대상 테이블로 전달되며, `Alias` 자체는 데이터를 저장하지 않고 대상 테이블에 대한 참조만 유지합니다.
-
-:::info
-이 기능은 실험적 기능이며, 향후 릴리스에서 하위 호환성을 보장하지 않는 방식으로 변경될 수 있습니다.
-[allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine) 설정을 통해
-Alias 테이블 엔진 사용을 활성화하십시오.
-`set allow_experimental_alias_table_engine = 1` 명령을 입력하십시오.
-:::
+`별칭` 엔진은 다른 테이블에 대한 프록시를 생성합니다. 모든 읽기 및 쓰기 연산은 대상 테이블로 전달되며, `별칭` 자체는 데이터를 저장하지 않고 대상 테이블에 대한 참조만 유지합니다.
 
 ## 테이블 생성 \{#creating-a-table\}
 

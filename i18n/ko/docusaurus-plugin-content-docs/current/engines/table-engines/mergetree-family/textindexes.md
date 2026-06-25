@@ -1,15 +1,13 @@
 ---
-description: '텍스트에서 검색어를 빠르게 찾는 방법입니다.'
+description: '텍스트에서 검색어를 빠르게 찾습니다.'
 keywords: ['전문 검색', '텍스트 인덱스', '인덱스', '인덱스']
-sidebar_label: '텍스트 인덱스를 활용한 전문 검색'
+sidebar_label: '텍스트 인덱스를 사용한 전문 검색'
 slug: /engines/table-engines/mergetree-family/textindexes
-title: '텍스트 인덱스를 활용한 전문 검색'
+title: '텍스트 인덱스를 사용한 전문 검색'
 doc_type: 'reference'
 ---
 
-# 텍스트 인덱스를 사용한 전체 텍스트 검색 \{#full-text-search-with-text-indexes\}
-
-텍스트 인덱스(또는 [inverted index](https://en.wikipedia.org/wiki/Inverted_index))는 텍스트 데이터에 대해 빠른 전체 텍스트 검색을 가능하게 합니다.
+텍스트 인덱스(또는 [inverted indexes](https://en.wikipedia.org/wiki/Inverted_index))는 텍스트 데이터에 대해 빠른 전문 검색을 가능하게 합니다.
 텍스트 인덱스는 토큰에서 각 토큰을 포함하는 행 번호로의 매핑을 저장합니다.
 토큰은 토큰화(tokenization)라고 불리는 과정에 의해 생성됩니다.
 예를 들어, ClickHouse의 기본 토크나이저는 영어 문장 &quot;The cat likes mice.&quot;를 토큰 [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;]로 변환합니다.
@@ -60,7 +58,6 @@ two    : [3]
 
 검색 토큰이 주어지면 이 인덱스 구조를 통해 모든 일치하는 행을 빠르게 찾을 수 있습니다.
 
-
 ## 텍스트 인덱스 생성 \{#creating-a-text-index\}
 
 텍스트 인덱스는 ClickHouse 26.2 버전 이상에서 일반 공급(GA) 상태입니다.
@@ -73,7 +70,7 @@ two    : [3]
 
 텍스트 인덱스를 생성하려면 다음 구문을 사용하십시오:
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     key UInt64,
@@ -110,7 +107,7 @@ ORDER BY key
 
 또는 기존 테이블에 텍스트 인덱스를 추가하려면 다음과 같이 합니다.
 
-```sql
+```sql title="Query"
 ALTER TABLE table
     ADD INDEX text_idx(str) TYPE text(
                                 -- Mandatory parameters:
@@ -133,13 +130,13 @@ ALTER TABLE table
 
 이미 존재하는 테이블에 인덱스를 추가했다면, 기존 테이블 파트에 대해 해당 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 느린 브루트 포스(전체 스캔)으로 수행됩니다.
 
-```sql
+```sql title="Query"
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ```
 
 텍스트 인덱스를 제거하려면 다음 명령을 실행하십시오.
 
-```sql
+```sql title="Query"
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
@@ -176,13 +173,11 @@ ALTER TABLE table DROP INDEX text_idx;
 
 예시:
 
-```sql
+```sql title="Query"
 SELECT tokens('abc def', 'ngrams', 3);
 ```
 
-결과:
-
-```result
+```result title="Response"
 ['abc','bc ','c d',' de','def']
 ```
 
@@ -194,7 +189,6 @@ SELECT tokens('abc def', 'ngrams', 3);
 **전처리기 인수(선택 사항)**. 전처리기는 토큰화 전에 입력 문자열에 적용되는 표현식을 의미합니다.
 
 전처리기 인수의 대표적인 사용 사례는 다음과 같습니다.
-
 
 1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환 또는 case folding(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)).
 2. UTF-8 정규화(예: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)).
@@ -220,11 +214,12 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 비결정적 함수 사용은 허용되지 않습니다.
 
-[hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens), [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 함수는 검색어를 토큰화하기 전에 먼저 전처리기를 사용하여 검색어를 변환합니다.
+[hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens), [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens), [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) 함수는 검색어를 토큰화하기 전에 먼저 전처리기를 사용하여 검색어를 변환합니다.
+전처리기는 텍스트 인덱스 경로에만 적용되므로, 이러한 함수의 결과는 텍스트 인덱스를 사용하는 쿼리와 사용하지 않는 쿼리 간에 다를 수 있습니다(예: `SETTINGS use_skip_indexes = 0`).
 
 예를 들어,
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -238,7 +233,7 @@ SELECT count() FROM table WHERE hasToken(str, 'Foo');
 
 다음과 동일합니다:
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -254,7 +249,7 @@ SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 
 예시:
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     arr Array(String),
@@ -269,13 +264,12 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-빌드 시 [Map](/sql-reference/data-types/map.md) 타입 컬럼에 대한 텍스트 인덱스에서 전처리기를 정의하려면, 인덱스를
-맵의 키 기준으로 생성할지 값 기준으로 생성할지 결정해야 합니다.
+텍스트 인덱스에서 [맵](/sql-reference/data-types/map.md) 타입 컬럼에 전처리기를 정의하려면, 인덱스를
+맵 키를 대상으로 생성할지 값를 대상으로 생성할지 결정해야 합니다.
 
 예시:
 
-
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     map Map(String, String),
@@ -314,7 +308,7 @@ SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 
 예시:
 
-```sql
+```sql title="Query"
 CREATE TABLE table(
     k UInt64,
     s String,
@@ -325,9 +319,7 @@ ORDER BY k;
 SHOW CREATE TABLE table;
 ```
 
-결과:
-
-```result
+```result title="Response"
 ┌─statement──────────────────────────────────────────────────────────────┐
 │ CREATE TABLE default.table                                            ↴│
 │↳(                                                                     ↴│
@@ -343,7 +335,6 @@ SHOW CREATE TABLE table;
 
 매우 큰 index granularity를 사용하면 텍스트 인덱스가 파트 전체를 대상으로 생성됩니다.
 명시적으로 지정된 index granularity 값은 무시됩니다.
-
 
 ## 텍스트 인덱스 사용하기 \{#using-a-text-index\}
 
@@ -696,7 +687,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 
 예시 인덱스 정의:
 
-```sql
+```sql title="Query"
 CREATE TABLE sensor_data
 (
     data JSON(sensor_id String),
@@ -713,13 +704,11 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'l
 
 예시 쿼리:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-결과:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -732,13 +721,11 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 
 예시 쿼리:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-결과:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -756,7 +743,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 
 예시 인덱스 정의:
 
-```sql
+```sql title="Query"
 CREATE TABLE events
 (
     data JSON,
@@ -774,13 +761,11 @@ INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 
 예시:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-결과:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -795,11 +780,9 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 
 예시:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
-
-결과:
 
 ```text title="Response"
 ...
@@ -816,13 +799,11 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 
 예시:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -908,7 +889,7 @@ SELECT * FROM events WHERE data.level IN ('error', 'critical');
 
 #### 예시 \{#text-index-phrase-search-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (
     id UInt32,
     text String,
@@ -923,13 +904,11 @@ INSERT INTO tab VALUES
     (3, 'weather in New Orleans');
 ```
 
-```sql
+```sql title="Query"
 SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
 ```
 
-결과:
-
-```result
+```result title="Response"
    ┌─id─┬─text────────────────┐
 1. │  1 │ weather in New York │
    └────┴─────────────────────┘

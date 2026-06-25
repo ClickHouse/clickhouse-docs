@@ -2,17 +2,15 @@
 sidebar_label: '数据库审计日志'
 slug: /cloud/security/audit-logging/database-audit-log
 title: '数据库审计日志'
-description: '本页介绍您如何查看数据库审计日志'
+description: '本页介绍如何查看数据库审计日志'
 doc_type: 'guide'
 keywords: ['审计日志', '数据库日志', '合规', '安全', '监控']
 ---
 
-# 数据库审计日志 \{#database-audit-log\}
-
-ClickHouse 默认提供数据库审计日志。本页重点介绍与安全相关的日志。有关系统记录的数据的更多信息，请参阅 [系统表（system tables）](/operations/system-tables/overview) 文档。
+ClickHouse 默认提供数据库审计日志。本页重点介绍与安全相关的日志。有关系统记录的数据的更多信息，请参阅 [系统表 (system tables) ](/operations/system-tables/overview) 文档。
 
 :::tip 日志保留
-相关信息会直接记录到系统表中，默认保留期最长为 30 天。该时长可能更长或更短，并会受到系统合并（merge）频率的影响。用户可以采取额外措施以更长时间存储日志，或将日志导出到安全信息和事件管理（SIEM）系统进行长期存储。详见下文。
+相关信息会直接记录到系统表中，默认保留期最长为 30 天。该时长可能更长或更短，并会受到系统合并 (merge) 频率的影响。用户可以采取额外措施以更长时间存储日志，或将日志导出到安全信息和事件管理 (SIEM) 系统进行长期存储。详见下文。
 :::
 
 ## 与安全相关的日志 \{#security-relevant-logs\}

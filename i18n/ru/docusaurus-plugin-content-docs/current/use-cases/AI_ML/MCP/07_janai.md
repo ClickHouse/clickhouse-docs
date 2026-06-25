@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/janai
 sidebar_label: 'Интеграция с Jan.ai'
-title: 'Настройка сервера ClickHouse MCP для Jan.ai'
+title: 'Использование сервера ClickHouse MCP с Jan.ai'
 pagination_prev: null
 pagination_next: null
 description: 'В этом руководстве объясняется, как настроить Jan.ai для работы с сервером ClickHouse MCP.'
@@ -10,8 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/0_janai_openai.png';
@@ -24,9 +22,7 @@ import Question from '@site/static/images/use-cases/AI_ML/MCP/6_janai_question.p
 import MCPToolConfirm from '@site/static/images/use-cases/AI_ML/MCP/7_janai_tool_confirmation.png';
 import ToolsCalled from '@site/static/images/use-cases/AI_ML/MCP/8_janai_tools_called.png';  
 import ToolsCalledExpanded from '@site/static/images/use-cases/AI_ML/MCP/9_janai_tools_called_expanded.png';  
-import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';
-
-# Использование сервера ClickHouse MCP с Jan.ai \{#using-clickhouse-mcp-server-with-janai\}
+import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png';  
 
 > В этом руководстве объясняется, как использовать сервер ClickHouse MCP с [Jan.ai](https://jan.ai/docs).
 

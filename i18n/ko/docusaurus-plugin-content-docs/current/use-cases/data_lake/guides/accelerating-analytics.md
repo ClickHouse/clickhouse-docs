@@ -40,7 +40,9 @@ oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', 
 
 ```sql
 SHOW TABLES FROM unity
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ unity.logs                                         │
 │ unity.single_day_log                               │
@@ -82,7 +84,9 @@ ENGINE = Iceberg('s3://...')
 ```sql
 SELECT count()
 FROM unity.`icebench.single_day_log`
+```
 
+```response
 ┌───count()─┐
 │ 282634391 │ -- 282.63 million
 └───────────┘
@@ -105,7 +109,9 @@ WHERE (thread_name = 'TCPHandler')
 GROUP BY logger_name
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─logger_name──────────────┬────c─┐
 │ executeQuery             │ 6907 │
 │ TCPHandler               │ 4145 │
@@ -167,7 +173,9 @@ ORDER BY (instance_type, thread_name, toStartOfMinute(event_time))
 
 ```sql
 INSERT INTO single_day_log SELECT * FROM icebench.`icebench.single_day_log`
+```
 
+```response
 282634391 rows in set. Elapsed: 237.680 sec. Processed 282.63 million rows, 5.42 GB (1.19 million rows/s., 22.79 MB/s.)
 Peak memory usage: 18.62 GiB.
 ```
@@ -187,7 +195,9 @@ WHERE (thread_name = 'TCPHandler')
 GROUP BY logger_name
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─logger_name──────────────┬────c─┐
 │ executeQuery             │ 6907 │
 │ TCPHandler               │ 4145 │

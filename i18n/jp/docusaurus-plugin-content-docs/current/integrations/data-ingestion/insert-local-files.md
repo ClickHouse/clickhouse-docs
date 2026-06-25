@@ -3,17 +3,15 @@ sidebar_label: 'ローカルファイルの挿入'
 sidebar_position: 2
 title: 'ローカルファイルの挿入'
 slug: /integrations/data-ingestion/insert-local-files
-description: 'ローカルファイルの挿入方法を学ぶ'
+description: 'ローカルファイルの挿入について学びます'
 show_related_blogs: true
 doc_type: 'guide'
-keywords: ['ローカルファイル 挿入 ClickHouse', 'ClickHouse ローカルファイル インポート', 'clickhouse-client ファイルアップロード']
+keywords: ['insert local files ClickHouse', 'ClickHouse local file import', 'clickhouse-client file upload']
 ---
-
-# ローカルファイルの挿入 \{#insert-local-files\}
 
 `clickhouse-client` を使用して、ローカルファイルを ClickHouse サービスにストリーミングできます。これにより、ClickHouse が備える数多くの強力かつ便利な関数を使ってデータを前処理できます。例を見てみましょう...
 
-1. Hacker News のコメントが含まれている `comments.tsv` という名前の TSV ファイルがあり、ヘッダー行には列名が含まれているとします。データを挿入する際には、[input format](/interfaces/formats) を指定する必要があり、この場合は `TabSeparatedWithNames` を使用します。
+1. Hacker News のコメントが含まれている `comments.tsv` という名前の TSV ファイルがあり、ヘッダー行にはカラム名が含まれているとします。データを挿入する際には、[input format](/interfaces/formats) を指定する必要があり、この場合は `TabSeparatedWithNames` を使用します。
 
 ```text
 id      type    author  timestamp       comment children

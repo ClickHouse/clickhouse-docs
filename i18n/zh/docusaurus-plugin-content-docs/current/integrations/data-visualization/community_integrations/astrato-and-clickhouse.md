@@ -25,12 +25,9 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# 将 Astrato 连接到 ClickHouse \{#connecting-astrato-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-Astrato 使用 Pushdown SQL 直接查询 ClickHouse Cloud 或本地部署的 ClickHouse。这样，您就可以借助 ClickHouse 行业领先的性能，访问所需的全部数据。
+Astrato 使用下推 SQL 直接查询 ClickHouse Cloud 或本地部署环境。这意味着您可以访问所需的全部数据，并依托 ClickHouse 业界领先的性能。
 
 ## 所需连接数据 \{#connection-data-required\}
 

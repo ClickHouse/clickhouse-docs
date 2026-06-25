@@ -4,13 +4,11 @@ sidebar_label: '集成 CopilotKit'
 title: '如何使用 CopilotKit 和 ClickHouse MCP server 构建 AI 智能体'
 pagination_prev: null
 pagination_next: null
-description: '学习如何使用 ClickHouse MCP 和 CopilotKit，将存储在 ClickHouse 中的数据用于构建智能体应用'
+description: '了解如何使用存储在 ClickHouse 中的数据，借助 ClickHouse MCP 和 CopilotKit 构建智能体应用'
 keywords: ['ClickHouse', 'MCP', 'copilotkit']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 如何使用 CopilotKit 和 ClickHouse MCP server 构建 AI 智能体 \{#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server\}
 
 这是一个示例，演示如何使用存储在 ClickHouse 中的数据构建智能体应用。它使用 [ClickHouse MCP server](https://github.com/ClickHouse/mcp-clickhouse)
 从 ClickHouse 查询数据，并基于这些数据生成图表。
@@ -79,13 +77,13 @@ Copilotkit 运行时以使用不同的 LLM 适配器。
 - `CLICKHOUSE_PASSWORD`
 - `CLICKHOUSE_SECURE`
 
-# 运行应用 \{#run-the-application\}
+## 运行应用 \{#run-the-application\}
 
 运行 `npm run dev` 来启动开发服务器。
 
-你可以使用如下提示词来测试 Agent： 
+你可以使用如下提示词来测试 Agent：
 
-> "Show me the price evolution in 
-Manchester for the last 10 years."
+> &quot;Show me the price evolution in
+> Manchester for the last 10 years.&quot;
 
 在浏览器中打开 [http://localhost:3000](http://localhost:3000) 查看结果。

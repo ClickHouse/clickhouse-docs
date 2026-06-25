@@ -186,15 +186,11 @@ FROM menu_item
 
 ## Проверьте данные \{#validate-data\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT count() FROM menu_item_denorm;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─count()─┐
 │ 1329175 │
 └─────────┘
@@ -204,9 +200,7 @@ SELECT count() FROM menu_item_denorm;
 
 ### Средние исторические цены на блюда \{#query-averaged-historical-prices\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -218,9 +212,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 100, 100)─┐
 │ 1850 │     618 │                  1.5 │ █▍                           │
 │ 1860 │    1634 │                 1.29 │ █▎                           │
@@ -246,9 +238,7 @@ ORDER BY d ASC;
 
 ### Цены на бургеры \{#query-burger-prices\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -260,9 +250,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)───────────┐
 │ 1880 │       2 │                 0.42 │ ▋                                     │
 │ 1890 │       7 │                 0.85 │ █▋                                    │
@@ -283,9 +271,7 @@ ORDER BY d ASC;
 
 ### Водка \{#query-vodka\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -297,9 +283,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)─┐
 │ 1910 │       2 │                    0 │                             │
 │ 1920 │       1 │                  0.3 │ ▌                           │
@@ -319,9 +303,7 @@ ORDER BY d ASC;
 
 Выведем цены на икру, а также название любого блюда с икрой.
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -334,9 +316,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)──────┬─any(dish_name)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 1090 │       1 │                    0 │                                  │ Caviar                                                                                                                              │
 │ 1880 │       3 │                    0 │                                  │ Caviar                                                                                                                              │

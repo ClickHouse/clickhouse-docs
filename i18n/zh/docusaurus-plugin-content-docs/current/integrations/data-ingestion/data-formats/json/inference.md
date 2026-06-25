@@ -106,7 +106,7 @@ SETTINGS describe_compact_output = 1
 
 以下内容假设 JSON 结构一致，并且每个路径仅包含单一类型。
 
-我们可以依赖模式推断（schema inference）就地查询 JSON 数据。下面的示例中，我们为每一年找出排名靠前的作者，利用的是系统会自动识别日期和数组这一特性。
+我们可以依赖 schema 推断 就地查询 JSON 数据。下面的示例中，我们为每一年找出排名靠前的作者，利用的是系统会自动识别日期和数组这一特性。
 
 ```sql
 SELECT
@@ -121,7 +121,9 @@ ORDER BY
     year ASC,
  c DESC
 LIMIT 1 BY year
+```
 
+```response
 ┌─year─┬─authors────────────────────────────────────┬───c─┐
 │ 2007 │ The BABAR Collaboration, B. Aubert, et al  │  98 │
 │ 2008 │ The OPAL collaboration, G. Abbiendi, et al │  59 │
@@ -146,8 +148,7 @@ LIMIT 1 BY year
 18 rows in set. Elapsed: 20.172 sec. Processed 2.52 million rows, 1.39 GB (124.72 thousand rows/s., 68.76 MB/s.)
 ```
 
-模式推断使我们无需显式定义模式即可查询 JSON 文件，从而加速即席数据分析任务。
-
+schema 推断使我们无需显式定义 schema 即可查询 JSON 文件，从而加速即席数据分析任务。
 
 ## 创建表 \{#creating-tables\}
 
@@ -234,12 +235,14 @@ ORDER BY update_date
 ```sql
 INSERT INTO arxiv SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz')
+```
 
+```response
 0 rows in set. Elapsed: 38.498 sec. Processed 2.52 million rows, 1.39 GB (65.35 thousand rows/s., 36.03 MB/s.)
 Peak memory usage: 870.67 MiB.
 ```
 
-有关从其他来源（例如文件）加载数据的示例，请参阅[此处](/sql-reference/statements/insert-into)。
+有关从其他来源 (例如文件) 加载数据的示例，请参阅[此处](/sql-reference/statements/insert-into)。
 
 加载完成后，我们可以查询数据，并可以选择使用 `PrettyJSONEachRow` 格式，以原始结构展示每一行：
 
@@ -275,10 +278,11 @@ FORMAT PrettyJSONEachRow
     ]
   ]
 }
-
-1 row in set. Elapsed: 0.009 sec.
 ```
 
+```response
+1 row in set. Elapsed: 0.009 sec.
+```
 
 ## 处理错误 \{#handling-errors\}
 
@@ -290,7 +294,7 @@ FORMAT PrettyJSONEachRow
 
 ClickHouse 通过专门的 [`JSON`](/sql-reference/data-types/newjson) 类型来处理这种情况。
 
-如果你知道你的 JSON 高度动态，包含大量各不相同的键，并且同一键可能对应多种类型，我们不建议在使用 `JSONEachRow` 时启用模式推断（schema inference）来为每个键推断一列——即使数据是换行分隔 JSON（newline-delimited JSON）格式。
+如果你知道你的 JSON 高度动态，包含大量各不相同的键，并且同一键可能对应多种类型，我们不建议在使用 `JSONEachRow` 时启用 schema 推断 来为每个键推断一列——即使数据是换行分隔 JSON (newline-delimited JSON) 格式。
 
 来看下面这个基于上述 [Python PyPI dataset](https://clickpy.clickhouse.com/) 的扩展示例。在这里，我们添加了一个额外的 `tags` 列，其中包含随机的键值对。
 
@@ -311,17 +315,19 @@ ClickHouse 通过专门的 [`JSON`](/sql-reference/data-types/newjson) 类型来
 }
 ```
 
-这份数据样本以换行分隔的 JSON 格式公开提供。如果我们尝试对该文件进行模式推断，你会发现性能非常差，而且响应内容极其冗长：
+这份数据样本以换行分隔的 JSON 格式公开提供。如果我们尝试对该文件进行 schema 推断，你会发现性能非常差，而且响应内容极其冗长：
 
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz')
 
 -- result omitted for brevity
+```
 
+```response
 9 rows in set. Elapsed: 127.066 sec.
 ```
 
-这里的主要问题是使用了 `JSONEachRow` 格式来进行推断。该格式会尝试为 **JSON 中的每个键推断一个列类型** —— 实际上是在不使用 [`JSON`](/sql-reference/data-types/newjson) 类型的情况下，对数据强行应用一个静态模式（schema）。
+这里的主要问题是使用了 `JSONEachRow` 格式来进行推断。该格式会尝试为 **JSON 中的每个键推断一个列类型** —— 实际上是在不使用 [`JSON`](/sql-reference/data-types/newjson) 类型的情况下，对数据强行应用一个静态 schema 。
 
 当存在成千上万的不同列时，这种推断方式会非常慢。作为替代方案，你可以使用 `JSONAsObject` 格式。
 
@@ -330,7 +336,9 @@ DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/pypi_with_tags/sample_rows.json.gz', 'JSONAsObject')
 SETTINGS describe_compact_output = 1
+```
 
+```response
 ┌─name─┬─type─┐
 │ json │ JSON │
 └──────┴──────┘
@@ -350,7 +358,9 @@ SETTINGS describe_compact_output = 1
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/sample.json')
 SETTINGS describe_compact_output = 1
+```
 
+```response
 ┌─name─┬─type─────────────┐
 │ a    │ Nullable(String) │
 └──────┴──────────────────┘
@@ -371,30 +381,34 @@ SETTINGS describe_compact_output = 1
 
 在这种情况下，这里无法进行任何形式的类型转换，因此 `DESCRIBE` 命令会失败：
 
-
 ```sql
 DESCRIBE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json')
+```
 
+```response
 Elapsed: 0.755 sec.
+```
 
+```sql
 Received exception from server (version 24.12.1):
 Code: 636. DB::Exception: Received from sql-clickhouse.clickhouse.com:9440. DB::Exception: The table structure cannot be extracted from a JSON format file. Error:
 Code: 53. DB::Exception: Automatically defined type Tuple(b Int64) for column 'a' in row 1 differs from type defined by previous rows: Int64. You can specify the type for this column using setting schema_inference_hints.
 ```
 
-在这种情况下，`JSONAsObject` 会将每一行视为一个 [`JSON`](/sql-reference/data-types/newjson) 类型（该类型支持同一列中包含多种类型）。这一点至关重要：
+在这种情况下，`JSONAsObject` 会将每一行视为一个 [`JSON`](/sql-reference/data-types/newjson) 类型 (该类型支持同一列中包含多种类型) 。这一点至关重要：
 
 ```sql
 DESCRIBE TABLE s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/json/conflict_sample.json', JSONAsObject)
 SETTINGS enable_json_type = 1, describe_compact_output = 1
+```
 
+```response
 ┌─name─┬─type─┐
 │ json │ JSON │
 └──────┴──────┘
 
 1 row in set. Elapsed: 0.010 sec.
 ```
-
 
 ## 延伸阅读 \{#further-reading\}
 

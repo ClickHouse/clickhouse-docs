@@ -117,7 +117,7 @@ SELECT (tuple(42 AS b) AS a, [1, 2, 3] AS c, 'Hello, World!' AS d)::JSON AS json
 ```
 
 
-#### Приведение типа из `Map` к `JSON` \{#cast-from-map-to-json\}
+#### CAST из `Map` к `JSON` \{#cast-from-map-to-json\}
 
 ```sql title="Query"
 SET use_variant_as_common_type=1;
@@ -137,13 +137,13 @@ JSON-пути хранятся в плоском виде. Это означае
 
 Например:
 
-```sql
+```sql title="Query"
 SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 ```
 
 вернет:
 
-```response
+```response title="Response"
    ┌─json───────────────────┐
 1. │ {"a":{"b":{"c":"42"}}} │
    └────────────────────────┘
@@ -158,7 +158,6 @@ SELECT CAST('{"a.b.c" : 42}', 'JSON') AS json
 ```
 
 :::
-
 
 ## Чтение JSON-путей как подстолбцов \{#reading-json-paths-as-sub-columns\}
 
@@ -917,7 +916,7 @@ ORDER BY _part ASC
 
 ## Функции интроспекции \{#introspection-functions\}
 
-Существует несколько функций, которые помогают исследовать содержимое столбца JSON:
+Существует несколько функций, которые помогают исследовать содержимое JSON-столбца:
 
 * [`JSONAllPaths`](../functions/json-functions.md#JSONAllPaths)
 * [`JSONAllPathsWithTypes`](../functions/json-functions.md#JSONAllPathsWithTypes)
@@ -993,14 +992,13 @@ FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz
 └─arrayJoin(distinctJSONPaths(json))─────────────────────────┘
 ```
 
-```sql
+```sql title="Query"
 SELECT arrayJoin(distinctJSONPathsAndTypes(json))
 FROM s3('s3://clickhouse-public-datasets/gharchive/original/2020-01-01-*.json.gz', JSONAsObject)
 SETTINGS date_time_input_format = 'best_effort'
 ```
 
-
-```text
+```text title="Response"
 ┌─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┐
 │ ('actor.avatar_url',['String'])                             │
 │ ('actor.display_login',['String'])                          │
@@ -1054,7 +1052,6 @@ SETTINGS date_time_input_format = 'best_effort'
 │ ('type',['String'])                                         │
 └─arrayJoin(distinctJSONPathsAndTypes(json))──────────────────┘
 ```
-
 
 ## ALTER MODIFY COLUMN к типу JSON \{#alter-modify-column-to-json-type\}
 
@@ -1212,7 +1209,7 @@ SELECT json1, json2, json1 < json2, json1 = json2, json1 > json2 FROM test;
 
 #### Пример \{#json-indexes-on-subcolumns-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE sensor_data
 (
     data JSON(sensor_id UInt32),
@@ -1275,7 +1272,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 
 #### Пример \{#json-indexes-jsonallpaths-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE events
 (
     data JSON,

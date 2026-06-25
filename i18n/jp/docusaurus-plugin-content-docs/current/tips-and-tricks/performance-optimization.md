@@ -21,11 +21,9 @@ title: '事例集 - パフォーマンス最適化'
 description: 'パフォーマンス最適化戦略の実践的な実例集'
 ---
 
-# パフォーマンス最適化: コミュニティで検証された手法 \{#performance-optimization\}
-
-*このガイドは、コミュニティミートアップから得られた知見をまとめたコレクションの一部です。より実践的な解決策や知見については、[問題別のトピック](./community-wisdom.md)を参照してください。*
-*マテリアライズドビューでお困りですか？[Materialized Views](./materialized-views.md) に関するコミュニティの知見をまとめたガイドをご覧ください。*
-*クエリが遅く、さらに多くの例が必要な場合は、[Query Optimization](/optimize/query-optimization) ガイドも参照してください。*
+*このガイドは、コミュニティミートアップで得られた知見をまとめたコレクションの一部です。さらに実践的な解決策や知見については、[具体的な問題別に見る](./community-wisdom.md)ことができます。*
+*materialized view でお困りですか？ [Materialized Views](./materialized-views.md) のコミュニティ知見ガイドをご覧ください。*
+*クエリが遅く、さらに多くの例を確認したい場合は、[クエリ最適化](/optimize/query-optimization) ガイドもご覧ください。*
 
 ## カーディナリティの低い順に並べる \{#cardinality-ordering\}
 ClickHouse のプライマリインデックスは、カーディナリティの低いカラムを先頭に配置することで最も効率よく動作し、大きなデータチャンクを効果的にスキップできます。キーの後半にカーディナリティの高いカラムを配置することで、それらのチャンク内でのきめ細かなソートが可能になります。異なる値の数が少ないカラム（status、category、country など）から始め、異なる値の数が多いカラム（user_id、timestamp、session_id など）で終わるようにしてください。

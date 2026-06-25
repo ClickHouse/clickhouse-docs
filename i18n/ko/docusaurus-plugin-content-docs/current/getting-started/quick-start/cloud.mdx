@@ -22,12 +22,11 @@ import client_details from '@site/static/images/_snippets/client_details.png';
 import new_rows_from_csv from '@site/static/images/_snippets/new_rows_from_csv.png';
 import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 
-# ClickHouse Cloud 빠른 시작 \{#clickhouse-cloud-quick-start\}
-
-> ClickHouse를 가장 빠르고 손쉽게 도입하는 방법은 [ClickHouse Cloud](https://console.clickhouse.cloud)에서 새 서비스를 생성하는 것입니다. 이 빠른 시작 가이드에서는 3단계로 환경을 설정하는 방법을 안내합니다.
+> ClickHouse를 가장 빠르고 쉽게 시작하는 방법은 [ClickHouse Cloud](https://console.clickhouse.cloud)에서 새
+> 서비스를 생성하는 것입니다. 이 빠른 시작 가이드에서는 세 가지 간단한 단계로 설정하는 방법을 안내합니다.
 
 <VerticalStepper type="numbered">
-  ## ClickHouse 서비스 생성하기 \{#1-create-a-clickhouse-service\}
+  ## ClickHouse 서비스 생성하기
 
   [ClickHouse Cloud](https://console.clickhouse.cloud)에서 무료 ClickHouse 서비스를 생성하려면 다음 단계를 완료하여 가입하세요:
 
@@ -56,7 +55,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   축하합니다! ClickHouse Cloud 서비스가 실행 중이며 온보딩이 완료되었습니다. 데이터 수집 및 쿼리를 시작하는 방법에 대한 자세한 내용을 계속 확인하십시오.
 
-  ## ClickHouse에 연결하기 \{#2-connect-to-clickhouse\}
+  ## ClickHouse에 연결하기
 
   ClickHouse에 연결하는 방법은 두 가지입니다:
 
@@ -65,7 +64,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  ### SQL 콘솔을 사용하여 연결하기 \{#connect-using-sql-console\}
+  ### SQL 콘솔을 사용하여 연결하기
 
   빠르게 시작할 수 있도록 ClickHouse는 웹 기반 SQL 콘솔을 제공하며, 온보딩을 완료하면 해당 콘솔로 자동으로 이동합니다.
 
@@ -85,7 +84,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   이제 완료되었습니다. 새로운 ClickHouse 서비스를 사용할 준비가 되었습니다!
 
-  ### 애플리케이션 연결 \{#connect-with-your-app\}
+  ### 애플리케이션 연결
 
   내비게이션 메뉴에서 연결 버튼을 클릭하십시오. 모달 창이 열리며 서비스 자격 증명과 인터페이스 또는 언어 클라이언트로 연결하는 방법에 대한 지침이 표시됩니다.
 
@@ -95,7 +94,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   사용하시는 언어 클라이언트가 목록에 없다면 [통합](/integrations) 목록을 확인하십시오.
 
-  ## 데이터 추가하기 \{#3-add-data\}
+  ## 데이터 추가하기
 
   ClickHouse는 데이터와 함께할 때 더욱 강력합니다! 데이터를 추가하는 방법은 여러 가지가 있으며, 대부분의 방법은 탐색 메뉴에서 접근할 수 있는 Data Sources 페이지에서 이용하실 수 있습니다.
 
@@ -111,7 +110,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   * 파일 업로드  - 지원되는 형식: JSON, CSV, TSV
   * 파일 URL에서 데이터 업로드하기
 
-  ### ClickPipes \{#clickpipes\}
+  ### ClickPipes
 
   [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes)는 다양한 소스에서 데이터를 수집하는 작업을 몇 번의 클릭만으로 간편하게 처리할 수 있는 관리형 통합 플랫폼입니다. 가장 까다로운 워크로드를 위해 설계된 ClickPipes의 견고하고 확장 가능한 아키텍처는 일관된 성능과 안정성을 보장합니다. ClickPipes는 장기 스트리밍 요구 사항이나 일회성 데이터 로딩 작업에 모두 사용할 수 있습니다.
 
@@ -119,7 +118,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  ### SQL 콘솔을 사용하여 데이터 추가 \{#add-data-using-the-sql-console\}
+  ### SQL 콘솔을 사용하여 데이터 추가
 
   대부분의 데이터베이스 관리 시스템과 마찬가지로 ClickHouse는 테이블을 논리적으로 **데이터베이스**로 그룹화합니다. ClickHouse에서 새 데이터베이스를 생성하려면 [`CREATE DATABASE`](../../sql-reference/statements/create/database.md) 명령어를 사용하세요:
 
@@ -160,7 +159,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   선택할 수 있는 테이블 엔진이 많지만, 단일 노드 ClickHouse 서버에서 간단한 테이블을 사용하는 경우 [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md)를 선택하는 것이 적합합니다.
   :::
 
-  #### 기본 키에 대한 간단한 소개 \{#a-brief-intro-to-primary-keys\}
+  #### 기본 키에 대한 간단한 소개
 
   더 진행하기 전에 ClickHouse에서 기본 키(Primary Key)가 작동하는 방식을 이해하는 것이 중요합니다(기본 키의 구현 방식이 예상과 다를 수 있습니다):
 
@@ -178,7 +177,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
   ClickHouse의 핵심 개념에 대한 자세한 내용은 [&quot;핵심 개념&quot;](../../managing-data/core-concepts/index.md)을 참조하세요.
 
-  #### 테이블에 데이터 삽입 \{#insert-data-into-your-table\}
+  #### 테이블에 데이터 삽입
 
   ClickHouse에서 익숙한 [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) 명령을 사용할 수 있지만, [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) 테이블에 삽입할 때마다 스토리지에 **파트**가 생성된다는 점을 이해하는 것이 중요합니다.
 
@@ -208,7 +207,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   SELECT * FROM helloworld.my_first_table
   ```
 
-  ### ClickHouse Client를 사용하여 데이터 추가 \{#add-data-using-the-clickhouse-client\}
+  ### ClickHouse Client를 사용하여 데이터 추가
 
   [**clickhouse client**](/interfaces/cli)라는 명령줄 도구를 사용하여 ClickHouse Cloud 서비스에 연결할 수도 있습니다. 왼쪽 메뉴에서 `Connect`를 클릭하여 연결 정보에 접근하세요. 대화 상자의 드롭다운에서 `Native`를 선택하세요:
 
@@ -288,7 +287,7 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
   exit
   ```
 
-  ### 파일 업로드하기 \{#upload-a-file\}
+  ### 파일 업로드하기
 
   데이터베이스를 시작할 때 일반적인 작업은 파일에 보유하고 있는 데이터를 삽입하는 것입니다. 클릭스트림 데이터를 나타내는 샘플 데이터를 온라인에서 제공하고 있으며, 이 데이터에는 사용자 ID, 방문한 URL, 이벤트의 타임스탬프가 포함되어 있습니다.
 
@@ -323,14 +322,14 @@ import SQLConsoleDetail from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 
 :::tip[IP 액세스 목록 필터링]
 다음 단계로 진행하기 전에 IP 액세스 목록 필터링을 설정하는 것이 좋습니다.
-자세한 내용은 [&quot;IP 필터 설정&quot;](/cloud/security/setting-ip-filters) 문서를 참조하십시오.
+자세한 내용은 ["IP 필터 설정"](/cloud/security/setting-ip-filters) 문서를 참조하십시오.
 :::
 
 ## 다음 단계 \{#whats-next\}
 
 * [Tutorial](/tutorial.md)에서는 테이블에 200만 행을 삽입하고 몇 가지 분석 쿼리를 작성해 봅니다
 * [예제 데이터셋](/getting-started/index.md) 목록과 이를 삽입하는 방법에 대한 안내가 준비되어 있습니다
-* 25분 분량의 [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/) 동영상을 확인하십시오
+* 12분 분량의 [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/) 동영상을 확인하십시오
 * 데이터가 외부 소스에서 유입되는 경우, 메시지 큐, 데이터베이스, 파이프라인 등과 연결하는 방법을 설명한 [통합 가이드 모음](/integrations/index.mdx)을 참고하십시오
 * UI/BI 시각화 도구를 사용하는 경우, UI를 ClickHouse에 연결하는 방법을 설명한 [가이드](/integrations/data-visualization)를 참고하십시오
 * [기본 키(Primary Key)](/guides/best-practices/sparse-primary-indexes.md)에 대한 사용자 가이드는 기본 키와 그 정의 방법에 대해 알아야 할 모든 내용을 다루고 있습니다

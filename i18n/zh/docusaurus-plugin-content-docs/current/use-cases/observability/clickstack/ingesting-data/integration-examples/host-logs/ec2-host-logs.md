@@ -22,11 +22,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# 使用 ClickStack 监控 EC2 主机日志 \{#ec2-host-logs-clickstack\}
-
 :::note[摘要]
-使用 OpenTelemetry Collector 并自动补充 EC2 元数据 (实例 ID、区域、可用区、实例类型) ，在 ClickStack 中收集并可视化 EC2 系统日志。包含演示数据集和预置仪表板。
+使用 OpenTelemetry Collector 在 ClickStack 中采集并可视化 EC2 系统日志，并自动添加 EC2 元数据 (实例 ID、区域、AZ、实例类型) 。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 EC2 实例集成 \{#existing-ec2\}

@@ -1,14 +1,12 @@
 ---
-description: 'При записи в таблицу `Null` данные игнорируются. При чтении из таблицы
-  `Null` ответ пустой.'
+description: 'При записи данных в таблицу `Null` они игнорируются. При чтении из
+  таблицы `Null` результат будет пустым.'
 sidebar_label: 'Null'
 sidebar_position: 50
 slug: /engines/table-engines/special/null
 title: 'Движок таблицы Null'
 doc_type: 'reference'
 ---
-
-# Движок таблицы Null \{#null-table-engine\}
 
 При записи данных в таблицу `Null` они игнорируются.
 При чтении из таблицы `Null` результат будет пустым.

@@ -1,13 +1,11 @@
 ---
-description: 'RENAME 语句说明'
+description: 'RENAME 语句文档'
 sidebar_label: 'RENAME'
 sidebar_position: 48
 slug: /sql-reference/statements/rename
 title: 'RENAME 语句'
 doc_type: 'reference'
 ---
-
-# RENAME 语句 \{#rename-statement\}
 
 用于重命名数据库、表或字典。可以在单个查询中重命名多个实体。
 请注意，包含多个实体的 `RENAME` 查询属于非原子操作。若要以原子方式交换实体名称，请使用 [EXCHANGE](./exchange.md) 语句。

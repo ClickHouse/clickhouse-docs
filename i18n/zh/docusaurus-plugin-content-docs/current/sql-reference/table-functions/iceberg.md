@@ -7,9 +7,7 @@ title: 'iceberg'
 doc_type: 'reference'
 ---
 
-# iceberg 表函数 \{#iceberg-table-function\}
-
-为存储在 Amazon S3、Azure、HDFS 或本地的 Apache [Iceberg](https://iceberg.apache.org/) 表提供类似表的只读接口。
+提供一个针对存储在 Amazon S3、Azure、HDFS 或本地的 Apache [Iceberg](https://iceberg.apache.org/) 表的只读类表接口。
 
 ## 语法 \{#syntax\}
 

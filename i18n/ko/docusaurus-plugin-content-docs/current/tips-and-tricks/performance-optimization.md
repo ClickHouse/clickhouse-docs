@@ -21,11 +21,9 @@ title: '사례 - 성능 최적화'
 description: '성능 최적화 전략의 실제 사례'
 ---
 
-# 성능 최적화: 커뮤니티가 검증한 전략 \{#performance-optimization\}
-
-*이 가이드는 커뮤니티 밋업 행사에서 얻은 인사이트를 모아 정리한 컬렉션의 일부입니다. 더 많은 실제 사례 기반 해결책과 인사이트는 [문제 유형별로 찾아보기](./community-wisdom.md)를 참고하십시오.*
-*materialized view 사용에 어려움이 있다면 [Materialized Views](./materialized-views.md) 커뮤니티 인사이트 가이드를 확인하십시오.*
-*쿼리 성능 저하를 겪고 있고 더 많은 예제가 필요하다면 [Query Optimization](/optimize/query-optimization) 가이드도 참고하십시오.*
+*이 가이드는 커뮤니티 밋업에서 얻은 인사이트를 모아둔 컬렉션의 일부입니다. 더 많은 실제 해결 방법과 인사이트는 [특정 문제별로 살펴보십시오](./community-wisdom.md).*
+*Materialized Views에 문제가 있다면 [Materialized Views](./materialized-views.md) 커뮤니티 인사이트 가이드를 확인하십시오.*
+*쿼리가 느리고 더 많은 예시가 필요하다면 [쿼리 최적화](/optimize/query-optimization) 가이드도 참고하십시오.*
 
 ## 카디널리티 순서대로 정렬하기 (낮은 카디널리티 → 높은 카디널리티) \{#cardinality-ordering\}
 

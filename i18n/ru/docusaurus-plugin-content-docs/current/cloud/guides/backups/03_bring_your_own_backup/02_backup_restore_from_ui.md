@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Резервное копирование и восстановление через веб-интерфейс'
 slug: /cloud/manage/backups/backup-restore-via-ui
-title: 'Создание и восстановление резервной копии через веб-интерфейс'
+title: 'Резервное копирование / восстановление через веб-интерфейс'
 description: 'Страница, описывающая, как создать резервную копию или восстановить её через веб-интерфейс с использованием вашего собственного бакета'
 sidebar_position: 2
 doc_type: 'guide'
@@ -21,11 +21,8 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
-
-# Резервное копирование и восстановление с помощью пользовательского интерфейса \{#ui-experience\}
-
 :::note
-Автоматическое резервное копирование в ваш внешний бакет выполняется как «полное» каждые 24 часа, и эту периодичность нельзя настроить.
+Автоматическое создание полных резервных копий в вашем внешнем бакете выполняется каждые 24 часа, и изменить эту периодичность нельзя.
 :::
 
 ## AWS \{#AWS\}

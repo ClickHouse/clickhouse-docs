@@ -2,12 +2,10 @@
 sidebar_label: 'BYOC 보안 플레이북'
 slug: /cloud/security/audit-logging/byoc-security-playbook
 title: 'BYOC 보안 플레이북'
-description: '이 페이지에서는 잠재적인 보안 이벤트를 식별하는 데 사용할 수 있는 방법을 보여줍니다'
-doc_type: 'guide'
-keywords: ['byoc', 'security', 'playbook', 'best practices', 'compliance']
+description: '이 페이지에서는 고객이 잠재적인 보안 이벤트를 식별하는 데 사용할 수 있는 메서드를 설명합니다'
+doc_type: '가이드'
+keywords: ['byoc', '보안', '플레이북', '모범 사례', '컴플라이언스']
 ---
-
-# BYOC 보안 플레이북 \{#byoc-security-playbook\}
 
 ClickHouse는 보안 공동 책임 모델에 기반해 Bring Your Own Cloud(BYOC)를 운영하며, 해당 모델은 https://trust.clickhouse.com 의 Trust Center에서 다운로드할 수 있습니다. 다음 정보는 잠재적인 보안 이벤트를 식별하는 방법에 대한 예시로 BYOC 고객에게 제공됩니다. 고객은 이 정보를 자체 보안 프로그램의 맥락에서 검토하여, 추가적인 탐지 및 경보를 구성하는 것이 유용한지 여부를 판단해야 합니다.
 
@@ -29,7 +27,7 @@ FROM clusterAllReplicas('default',system.crash_log)
 
 ClickHouse는 시스템 기능을 활성화하기 위해 미리 생성된 역할을 사용합니다. 이 섹션은 고객이 CloudTrail이 포함된 AWS를 사용하고 있으며 CloudTrail 로그에 액세스할 수 있다고 가정합니다.
 
-사고가 유출된 역할의 결과일 수 있는 경우, ClickHouse IAM 역할 및 작업과 관련된 CloudTrail 및 CloudWatch의 활동을 검토하십시오. IAM 역할 목록은 설정의 일부로 제공된 [CloudFormation](/cloud/reference/byoc/reference/privilege#cloudformation-iam-roles) 스택 또는 Terraform 모듈을 참조하십시오.
+사고가 유출된 역할의 결과일 수 있는 경우, ClickHouse IAM 역할 및 작업과 관련된 CloudTrail 및 CloudWatch의 활동을 검토하십시오. IAM 역할 목록은 설정의 일부로 제공된 [CloudFormation](/cloud/reference/byoc/reference/privilege#aws-iam-roles) 스택 또는 Terraform 모듈을 참조하십시오.
 
 ## EKS 클러스터에 대한 무단 액세스 \{#unauthorized-access-eks-cluster\}
 

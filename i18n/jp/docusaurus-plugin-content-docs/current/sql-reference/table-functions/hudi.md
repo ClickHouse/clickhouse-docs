@@ -7,9 +7,7 @@ title: 'hudi'
 doc_type: 'reference'
 ---
 
-# hudi テーブル関数 \{#hudi-table-function\}
-
-Amazon S3 上の Apache [Hudi](https://hudi.apache.org/) テーブルに読み取り専用のテーブル形式インターフェイスを提供します。
+Amazon S3 上の Apache [Hudi](https://hudi.apache.org/) テーブルに対して、読み取り専用のテーブル形式インターフェイスを提供する。
 
 ## 構文 \{#syntax\}
 

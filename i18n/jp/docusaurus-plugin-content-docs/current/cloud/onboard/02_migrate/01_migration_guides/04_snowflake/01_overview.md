@@ -12,8 +12,6 @@ import snowflake_architecture from '@site/static/images/cloud/onboard/discover/u
 import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_cases/cloud_architecture.png';
 import Image from '@theme/IdealImage';
 
-# Snowflake から ClickHouse への移行 \{#snowflake-to-clickhouse-migration\}
-
 > このドキュメントでは、Snowflake から ClickHouse へのデータ移行の概要を説明します。
 
 Snowflake は、オンプレミスのレガシーなデータウェアハウス・ワークロードをクラウドへ移行することに主眼を置いたクラウド・データウェアハウスです。大規模な長時間実行レポートを実行するよう最適化されています。データセットがクラウドに移行されると、データ所有者は、このデータから他にどのような価値を引き出せるか、たとえば、これらのデータセットを用いて社内外向けのリアルタイム・アプリケーションを構築するといったことを考え始めます。そうした段階になると、しばしば ClickHouse のような、リアルタイム分析のために最適化されたデータベースが必要であることに気付きます。

@@ -7,8 +7,6 @@ description: 'Возвращает таблицу с единственным с
 doc_type: 'reference'
 ---
 
-# Табличная функция numbers \{#numbers-table-function\}
-
 * `numbers()` – Возвращает бесконечную таблицу с единственным столбцом `number` (UInt64), который содержит целые числа в порядке возрастания, начиная с 0. Используйте `LIMIT` (и при необходимости `OFFSET`), чтобы ограничить число строк.
 
 * `numbers(N)` – Возвращает таблицу с единственным столбцом `number` (UInt64), который содержит целые числа от 0 до `N - 1`.
@@ -38,14 +36,13 @@ SELECT * FROM numbers() LIMIT 10 OFFSET 10;
 SELECT * FROM system.numbers LIMIT 10 OFFSET 10;
 ```
 
-Также эквивалентны следующие запросы:
+Следующие запросы также эквивалентны друг другу:
 
 ```sql
 SELECT number * 2 FROM numbers(10);
 SELECT (number - 10) * 2 FROM numbers(10, 10);
 SELECT * FROM numbers(0, 20, 2);
 ```
-
 
 ### Примеры \{#examples\}
 

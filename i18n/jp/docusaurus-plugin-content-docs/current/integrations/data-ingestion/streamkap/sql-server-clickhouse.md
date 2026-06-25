@@ -1,10 +1,10 @@
 ---
 sidebar_label: 'ClickHouse 向け SQL Server CDC'
 sidebar_position: 13
-keywords: ['clickhouse', 'Streamkap', 'CDC', 'SQL Server', '接続', '連携', 'ETL', 'データ連携', '変更データキャプチャ']
+keywords: ['clickhouse', 'Streamkap', 'CDC', 'sql server', '接続', '統合', 'etl', 'データ統合', '変更データキャプチャ']
 slug: /integrations/data-ingestion/etl-tools/sql-server-clickhouse
-description: '高速分析のために SQL Server から ClickHouse へデータをストリーミングする'
-title: '高速分析のために SQL Server から ClickHouse へデータをストリーミングする'
+description: '高速分析のために SQL Server から ClickHouse へデータをストリーミング'
+title: '高速分析のための SQL Server から ClickHouse へデータをストリーミングする：ステップバイステップガイド'
 doc_type: 'guide'
 ---
 
@@ -13,9 +13,6 @@ import Image from '@theme/IdealImage';
 import image1 from '@site/static/images/integrations/data-ingestion/etl-tools/image1.png';
 import image2 from '@site/static/images/integrations/data-ingestion/etl-tools/image2.png';
 import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/image3.png';
-
-
-# 高速分析のための SQL Server から ClickHouse へデータをストリーミングする：ステップバイステップガイド \{#streaming-data-from-sql-server-to-clickhouse-for-fast-analytics-step-by-step-guide\}
 
 この記事では、SQL Server から ClickHouse へデータをストリーミングする方法を、チュートリアル形式で詳しく解説します。ClickHouse は、社内向けまたはカスタマー向けダッシュボード向けレポーティングで超高速な分析が必要な場合に理想的です。両方のデータベースのセットアップ方法、接続方法、そして最終的に [Streamkap](https://streamkap.com) を使ってデータをストリーミングする手順まで、ステップごとに見ていきます。日々の業務は SQL Server で処理しつつ、分析には ClickHouse のスピードと高度な分析機能を活用したい場合、本記事が最適なガイドとなります。
 

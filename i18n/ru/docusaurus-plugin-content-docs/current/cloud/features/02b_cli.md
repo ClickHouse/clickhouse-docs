@@ -3,13 +3,11 @@ sidebar_label: 'ClickHouse CLI'
 slug: /cloud/features/cli
 title: 'ClickHouse CLI'
 description: 'Используйте ClickHouse CLI для управления сервисами ClickHouse Cloud и локальными экземплярами ClickHouse'
-keywords: ['clickhousectl', 'CLI', 'управление облачными сервисами', 'локальная разработка']
+keywords: ['clickhousectl', 'CLI', 'Управление ClickHouse Cloud', 'локальная разработка']
 doc_type: 'reference'
 ---
 
-# ClickHouse CLI \{#clickhouse-cli\}
-
-ClickHouse CLI (`clickhousectl`) — это универсальный инструмент командной строки для управления ресурсами ClickHouse Cloud и локальной разработки с ClickHouse.
+ClickHouse CLI (`clickhousectl`) — это единый инструмент командной строки для управления ресурсами ClickHouse Cloud и локальной разработки на базе ClickHouse. Он также позволяет управлять сервисами [ClickHouse Cloud Postgres](/cloud/managed-postgres).
 
 ## Установка \{#installation\}
 
@@ -66,6 +64,38 @@ clickhousectl cloud service stop <service-id>
 clickhousectl cloud service delete <service-id>
 ```
 
+### Сервисы Postgres (бета) \{#postgres-services\}
+
+Создавайте сервисы [ClickHouse Cloud Postgres](/cloud/managed-postgres) и управляйте ими.
+
+```bash
+# List Postgres services
+clickhousectl cloud postgres list
+
+# Create a Postgres service
+clickhousectl cloud postgres create \
+  --name my-pg \
+  --region us-east-1 \
+  --size c6gd.xlarge \
+  --pg-version 18
+
+# Get service details
+clickhousectl cloud postgres get <pg-id>
+
+# Update a service
+clickhousectl cloud postgres update <pg-id> --size c6gd.2xlarge --add-tag env=prod
+
+# Reset the password
+clickhousectl cloud postgres reset-password <pg-id> --generate
+
+# Read replicas and point-in-time restore
+clickhousectl cloud postgres read-replica create <pg-id> --name replica-1
+clickhousectl cloud postgres restore <pg-id> --name restored --restore-target 2026-04-16T12:00:00Z
+
+# Delete a service
+clickhousectl cloud postgres delete <pg-id>
+```
+
 ### Организации \{#organizations\}
 
 ```bash
@@ -105,7 +135,7 @@ clickhousectl cloud --json service list
 
 ## Локальная разработка \{#local-development\}
 
-CLI также управляет локальными установками ClickHouse и серверами. Чтобы начать работу с локальной разработкой, см. страницу [быстрой установки](/install/quick-install).
+CLI также управляет локальными установками ClickHouse и серверами. Чтобы начать работу с локальной разработкой, см. страницу [clickhousectl (CLI)](/install/clickhousectl).
 
 ## Требования \{#requirements\}
 

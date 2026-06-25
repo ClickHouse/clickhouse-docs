@@ -10,7 +10,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Working with JSON in ClickHouse
 
 This guide provides common patterns for working with JSON data replicated from MongoDB to ClickHouse via ClickPipes.
 

@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции row_number'
+description: 'Документация по оконной функции row_number'
 sidebar_label: 'row_number'
 sidebar_position: 2
 slug: /sql-reference/window-functions/row_number
 title: 'row_number'
 doc_type: 'reference'
 ---
-
-# row&#95;number \{#row&#95;number\}
 
 Нумерует текущую строку внутри её раздела (partition), начиная с 1.
 
@@ -31,9 +29,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 Следующий пример основан на примере, приведённом в видеоруководстве [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -51,15 +47,13 @@ INSERT INTO salaries FORMAT Values
     ('Port Elizabeth Barbarians', 'Robert George', 195000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, 
        row_number() OVER (ORDER BY salary DESC) AS row_number
 FROM salaries;
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─row_number─┐
 1. │ Gary Chen       │ 195000 │          1 │
 2. │ Robert George   │ 195000 │          2 │

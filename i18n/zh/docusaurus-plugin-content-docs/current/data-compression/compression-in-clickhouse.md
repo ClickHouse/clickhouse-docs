@@ -22,12 +22,12 @@ ClickHouse 中的压缩效果主要会受到三个关键因素的影响：
 
 ## 选择合适的数据类型以优化压缩 \{#choose-the-right-data-type-to-optimize-compression\}
 
-让我们以 Stack Overflow 数据集为例，对比 `posts` 表在以下表结构下的压缩统计信息：
+让我们以 Stack Overflow 数据集为例，对比 `posts` 表在以下 schema 下的压缩统计信息：
 
-* `posts` - 未针对数据类型进行优化、且没有排序键的表结构。
-* `posts_v3` - 针对数据类型进行了优化的表结构，为每一列选择了合适的数据类型和位宽，并使用 `(PostTypeId, toDate(CreationDate), CommentCount)` 作为排序键。
+* `posts` - 未针对数据类型进行优化、且没有排序键的 schema。
+* `posts_v3` - 针对数据类型进行了优化的 schema，为每一列选择了合适的数据类型和位宽，并使用 `(PostTypeId, toDate(CreationDate), CommentCount)` 作为排序键。
 
-使用以下查询，我们可以测量每一列当前压缩后和未压缩的大小。让我们先来看一下没有排序键的初始优化表结构 `posts` 的大小。
+使用以下查询，我们可以测量每一列当前压缩后和未压缩的大小。让我们先来看一下没有排序键的初始优化 schema `posts` 的大小。
 
 ```sql
 SELECT name,
@@ -37,7 +37,9 @@ SELECT name,
 FROM system.columns
 WHERE table = 'posts'
 GROUP BY name
+```
 
+```response
 ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio────┐
 │ Body                  │ 46.14 GiB       │ 127.31 GiB        │ 2.76       │
 │ Title                 │ 1.20 GiB        │ 2.63 GiB          │ 2.19       │
@@ -63,7 +65,6 @@ GROUP BY name
 │ CommunityOwnedDate    │ 2.21 MiB        │ 509.60 MiB        │ 230.94     │
 └───────────────────────┴─────────────────┴───────────────────┴────────────┘
 ```
-
 
 <details>
    
@@ -146,7 +147,9 @@ SELECT formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE table = 'posts'
+```
 
+```response
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ 50.16 GiB       │ 143.47 GiB        │  2.86 │
 └─────────────────┴───────────────────┴───────┘
@@ -161,14 +164,15 @@ SELECT
     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
 FROM system.columns
 WHERE `table` = 'posts_v3'
+```
 
+```response
 ┌─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ 25.15 GiB       │ 68.87 GiB         │  2.74 │
 └─────────────────┴───────────────────┴───────┘
 ```
 
 完整的列级明细显示，通过在压缩前对数据进行排序并使用合适的数据类型，在 `Body`、`Title`、`Tags` 和 `CreationDate` 列上实现了可观的空间节省。
-
 
 ```sql
 SELECT
@@ -179,7 +183,9 @@ SELECT
 FROM system.columns
 WHERE `table` = 'posts_v3'
 GROUP BY name
+```
 
+```response
 ┌─name──────────────────┬─compressed_size─┬─uncompressed_size─┬───ratio─┐
 │ Body                  │ 23.10 GiB       │ 63.63 GiB         │    2.75 │
 │ Title                 │ 614.65 MiB      │ 1.28 GiB          │    2.14 │
@@ -205,7 +211,6 @@ GROUP BY name
 │ CommunityOwnedDate    │ 824.60 KiB      │ 1.34 MiB          │    1.66 │
 └───────────────────────┴─────────────────┴───────────────────┴─────────┘
 ```
-
 
 ## 选择合适的列压缩编解码器 \{#choosing-the-right-column-compression-codec\}
 
@@ -279,7 +284,9 @@ GROUP BY
 ORDER BY
     name ASC,
     `table` ASC
+```
 
+```response
 ┌─table────┬─name────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ posts_v3 │ AnswerCount │ 9.67 MiB        │ 113.69 MiB        │ 11.76 │
 │ posts_v4 │ AnswerCount │ 10.39 MiB       │ 111.31 MiB        │ 10.71 │
@@ -291,7 +298,6 @@ ORDER BY
 
 6 rows in set. Elapsed: 0.008 sec
 ```
-
 
 ### ClickHouse Cloud 中的压缩 \{#compression-in-clickhouse-cloud\}
 

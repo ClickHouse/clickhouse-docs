@@ -1,13 +1,12 @@
 ---
-description: 'Документация о типе данных Enum в ClickHouse, задающем набор именованных константных значений'
+description: 'Документация по типу данных Enum в ClickHouse, который представляет
+  собой набор именованных константных значений'
 sidebar_label: 'Enum'
 sidebar_position: 20
 slug: /sql-reference/data-types/enum
 title: 'Enum'
 doc_type: 'reference'
 ---
-
-# Enum \{#enum\}
 
 Перечисляемый тип, состоящий из именованных значений.
 

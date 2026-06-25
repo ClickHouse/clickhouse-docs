@@ -3,7 +3,7 @@ sidebar_label: 'JavaScript'
 sidebar_position: 4
 keywords: ['clickhouse', 'js', 'JavaScript', 'NodeJS', 'web', 'browser', 'Cloudflare', 'workers', 'client', 'connect', 'integrate']
 slug: /integrations/javascript
-description: 'Официальный JS-клиент для подключения к ClickHouse.'
+description: 'Официальный JS‑клиент для подключения к ClickHouse.'
 title: 'ClickHouse JS'
 doc_type: 'reference'
 integration:
@@ -14,8 +14,6 @@ integration:
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
-# ClickHouse JS \{#clickhouse-js\}
 
 Официальный JS‑клиент для подключения к ClickHouse.
 Клиент написан на TypeScript и предоставляет типы для публичного API клиента.

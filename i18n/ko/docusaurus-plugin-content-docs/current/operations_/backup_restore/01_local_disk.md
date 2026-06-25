@@ -2,7 +2,7 @@
 description: '로컬 디스크를 대상으로 하거나 로컬 디스크에서 수행하는 백업/복원에 대한 자세한 설명'
 sidebar_label: '로컬 디스크 / S3 디스크'
 slug: /operations/backup/disk
-title: 'ClickHouse에서의 백업 및 복원'
+title: '디스크로의 BACKUP / RESTORE'
 doc_type: 'guide'
 ---
 
@@ -10,9 +10,6 @@ import GenericSettings from '@site/i18n/ko/docusaurus-plugin-content-docs/curren
 import S3Settings from '@site/i18n/ko/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 import ExampleSetup from '@site/i18n/ko/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/ko/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
-
-
-# 로컬 디스크로 BACKUP / RESTORE \{#backup-to-a-local-disk\}
 
 ## 구문 \{#syntax\}
 
@@ -141,14 +138,14 @@ RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 이미 데이터가 들어 있는 테이블을 복원하려면 다음을 실행합니다:
 
 ```sql
-RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
 테이블을 새 이름으로 복원하거나 백업할 수 있습니다.
 
 ```sql
-RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
 해당 백업 아카이브의 구조는 다음과 같습니다:
@@ -161,12 +158,11 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
 ```
 
 {/* TO DO: 
-  백업 포맷에 대한 설명을 여기에 추가해야 합니다. Issue 24a를 참조하십시오.
+  백업 포맷에 대한 설명을 여기에 추가하십시오. Issue 24a를 참조하십시오.
   https://github.com/ClickHouse/clickhouse-docs/issues/3968
   */ }
 
-zip 이외의 형식도 사용할 수 있습니다. 자세한 내용은 아래의 [&quot;tar 아카이브 백업(Backups as tar archives)&quot;](#backups-as-tar-archives)를 참조하십시오.
-
+zip 이외의 형식도 사용할 수 있습니다. 자세한 내용은 아래의 [&quot;tar 아카이브 형식의 백업&quot;](#backups-as-tar-archives)를 참조하십시오.
 
 ### 디스크 증분 백업 \{#incremental-backups\}
 

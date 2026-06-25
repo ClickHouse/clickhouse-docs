@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'explain', 'execution', 'plan', 'sql']
 doc_type: 'reference'
 ---
 
-# explain() 메서드 \{#explain-method\}
-
-`explain()` 메서드는 DataStore 쿼리의 실행 계획을 표시하여 어떤 작업이 수행되고 어떤 SQL이 생성되는지 이해하는 데 도움이 됩니다.
+`explain()` 메서드는 DataStore 쿼리의 실행 계획을 표시하여, 어떤 작업이 수행되고 어떤 SQL이 생성되는지 파악하는 데 도움이 됩니다.
 
 ## 기본 사용법 \{#basic\}
 

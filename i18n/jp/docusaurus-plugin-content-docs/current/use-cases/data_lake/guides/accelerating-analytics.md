@@ -40,7 +40,9 @@ oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', 
 
 ```sql
 SHOW TABLES FROM unity
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ unity.logs                                         │
 │ unity.single_day_log                               │
@@ -82,7 +84,9 @@ ENGINE = Iceberg('s3://...')
 ```sql
 SELECT count()
 FROM unity.`icebench.single_day_log`
+```
 
+```response
 ┌───count()─┐
 │ 282634391 │ -- 282.63 million
 └───────────┘
@@ -105,7 +109,9 @@ WHERE (thread_name = 'TCPHandler')
 GROUP BY logger_name
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─logger_name──────────────┬────c─┐
 │ executeQuery             │ 6907 │
 │ TCPHandler               │ 4145 │
@@ -167,7 +173,9 @@ ORDER BY (instance_type, thread_name, toStartOfMinute(event_time))
 
 ```sql
 INSERT INTO single_day_log SELECT * FROM icebench.`icebench.single_day_log`
+```
 
+```response
 282634391 rows in set. Elapsed: 237.680 sec. Processed 282.63 million rows, 5.42 GB (1.19 million rows/s., 22.79 MB/s.)
 Peak memory usage: 18.62 GiB.
 ```
@@ -187,7 +195,9 @@ WHERE (thread_name = 'TCPHandler')
 GROUP BY logger_name
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─logger_name──────────────┬────c─┐
 │ executeQuery             │ 6907 │
 │ TCPHandler               │ 4145 │
@@ -202,7 +212,7 @@ Peak memory usage: 1.12 GiB.
 
 同じクエリは **0.22 秒** で完了するようになり、**約 40 倍高速化** されています。この改善をもたらしている主な最適化は 2 つあります。
 
-* **スパースな主索引** - `ORDER BY (instance_type, thread_name, ...)` キーにより、ClickHouse は `instance_type = 'm6i.4xlarge'` と `thread_name = 'TCPHandler'` に一致するグラニュールへ直接スキップでき、処理対象の行数を 2 億 8,300 万行からわずか 1,400 万行まで削減できます。
+* **スパースプライマリ索引** - `ORDER BY (instance_type, thread_name, ...)` キーにより、ClickHouse は `instance_type = 'm6i.4xlarge'` と `thread_name = 'TCPHandler'` に一致するグラニュールへ直接スキップでき、処理対象の行数を 2 億 8,300 万行からわずか 1,400 万行まで削減できます。
 * **全文索引** - `message` カラム上の `text_idx` 索引により、`hasToken(message, 'error')` はすべてのメッセージ文字列を走査するのではなく索引を使って評価できるため、ClickHouse が読み取る必要のあるデータをさらに減らせます。
 
 その結果、このクエリはリアルタイムダッシュボードを十分に支えられる性能を発揮します。しかも、そのスケールとレイテンシは、オブジェクトストレージ上の Parquet ファイルをクエリする方法では実現できません。

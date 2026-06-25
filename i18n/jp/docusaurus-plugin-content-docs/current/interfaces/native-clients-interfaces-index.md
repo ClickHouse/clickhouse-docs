@@ -1,12 +1,10 @@
 ---
-description: 'ClickHouse 用のネイティブ クライアントとインターフェース'
-keywords: ['クライアント', 'インターフェース', 'CLI', 'SQL コンソール', 'ドライバー']
+description: 'ClickHouseのネイティブクライアントとインターフェース'
+keywords: ['クライアント', 'インターフェース', 'CLI', 'SQL Console', 'ドライバー']
 slug: /interfaces/natives-clients-and-interfaces
-title: 'ネイティブ クライアントとインターフェース'
+title: 'ネイティブクライアントとインターフェース'
 doc_type: 'landing-page'
 ---
-
-# ネイティブクライアントとインターフェース \{#native-clients-interfaces\}
 
 ClickHouse には、接続のために利用できる複数のネイティブクライアントおよびインターフェースが用意されています。
 

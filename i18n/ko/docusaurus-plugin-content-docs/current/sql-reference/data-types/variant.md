@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse의 Variant 데이터 유형에 대한 문서'
+description: 'ClickHouse의 Variant 데이터 타입에 대한 문서'
 sidebar_label: 'Variant(T1, T2, ...)'
 sidebar_position: 40
 slug: /sql-reference/data-types/variant
 title: 'Variant(T1, T2, ...)'
 doc_type: 'reference'
 ---
-
-# Variant(T1, T2, ...) \{#variantt1-t2\}
 
 이 타입은 다른 데이터 타입들의 합(union)을 나타냅니다. `Variant(T1, T2, ..., TN)` 타입은 이 타입의 각 행이
 `T1`, `T2`, ... 또는 `TN` 타입 중 하나의 값이거나, 어느 것에도 속하지 않는 값(`NULL` 값)을 가질 수 있음을 의미합니다.

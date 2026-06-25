@@ -6,8 +6,6 @@ title: 'INTERSECT 절'
 doc_type: 'reference'
 ---
 
-# INTERSECT 절 \{#intersect-clause\}
-
 `INTERSECT` 절은 첫 번째 쿼리와 두 번째 쿼리 모두의 결과에 포함되는 행만 반환합니다. 두 쿼리는 컬럼의 개수, 순서, 데이터 타입이 일치해야 합니다. `INTERSECT` 결과에는 중복된 행이 포함될 수 있습니다.
 
 괄호를 사용하지 않으면 여러 개의 `INTERSECT` SQL 문은 왼쪽에서 오른쪽 순서로 실행됩니다. `INTERSECT` 연산자는 `UNION` 및 `EXCEPT` 절보다 우선순위가 높습니다.
@@ -31,13 +29,11 @@ FROM table2
 
 다음은 1부터 10까지의 숫자와 3부터 8까지의 숫자의 교집합을 구하는 간단한 예시입니다:
 
-```sql
+```sql title="Query"
 SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─number─┐
 │      3 │
 │      4 │
@@ -50,7 +46,7 @@ SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 
 `INTERSECT`는 하나 이상의 공통 컬럼을 공유하는 두 테이블이 있을 때 유용합니다. 결과에 동일한 컬럼들이 포함되어 있는 한, 두 쿼리의 결과를 교집합으로 구할 수 있습니다. 예를 들어, 수백만 행에 이르는 과거 암호화폐 데이터가 있고, 이 데이터에 거래 가격과 거래량이 포함되어 있다고 가정해 보겠습니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE crypto_prices
 (
     trade_date Date,
@@ -76,7 +72,7 @@ ORDER BY trade_date DESC
 LIMIT 10;
 ```
 
-```response
+```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
 │ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
 │ 2020-11-01 │ Bitcoin     │ 24453857000 │ 13737.11 │ 254569760000 │ -0.0031840964 │
@@ -93,7 +89,7 @@ LIMIT 10;
 
 이제 `holdings`라는 이름의 테이블에 보유 중인 암호화폐 목록과 각 코인의 개수가 저장되어 있다고 가정합니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,
@@ -111,18 +107,16 @@ INSERT INTO holdings VALUES
    ('Bitcoin Diamond', 5000);
 ```
 
-`INTERSECT`를 사용하면 **「우리가 보유한 코인 중 가격이 $100을 초과하여 거래된 것은 무엇인가?」**와 같은 질문에 답할 수 있습니다.
+`INTERSECT`를 사용하면 **「우리가 보유한 코인 중 가격이 $100을 초과하여 거래된 것은 무엇인가?」**와 같은 질문에 답할 수 있습니다:
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 INTERSECT
 SELECT crypto_name FROM crypto_prices
 WHERE price > 100
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Bitcoin     │
@@ -131,29 +125,27 @@ WHERE price > 100
 └─────────────┘
 ```
 
-이는 어떤 시점에는 Bitcoin과 Ethereum이 $100 이상에서 거래된 적이 있었고, DOGEFI와 Bitcoin Diamond는 이 예제에서 사용한 데이터 기준으로는 한 번도 $100 이상에서 거래된 적이 없음을 의미합니다.
+이는 어느 시점에는 Bitcoin과 Ethereum이 $100을 넘는 가격에 거래되었고, DOGEFI와 Bitcoin Diamond는 한 번도 $100을 넘는 가격에 거래된 적이 없었음을 의미합니다(적어도 여기 이 예시에서 사용한 데이터를 기준으로 하면 그렇습니다).
 
 ## INTERSECT DISTINCT \{#intersect-distinct\}
 
 이전 쿼리에서는 100달러 이상에 거래된 Bitcoin과 Ethereum 보유분이 여러 개 있었던 것을 확인할 수 있습니다. 이미 알고 있는 내용을 반복할 뿐인 중복 행을 제거하면 결과가 더 깔끔해집니다. 결과에서 중복 행을 제거하려면 `INTERSECT`에 `DISTINCT`를 추가하면 됩니다:
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 INTERSECT DISTINCT
 SELECT crypto_name FROM crypto_prices
 WHERE price > 100;
 ```
 
-결과:
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Ethereum    │
 └─────────────┘
 ```
 
-**함께 보기**
+**관련 항목**
 
 * [UNION](/sql-reference/statements/select/union)
 * [EXCEPT](/sql-reference/statements/select/except)

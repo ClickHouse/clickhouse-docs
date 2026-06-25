@@ -9,8 +9,6 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# Интерфейс PostgreSQL \{#postgresql-interface\}
-
 <CloudNotSupportedBadge />
 
 :::tip

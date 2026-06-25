@@ -6,8 +6,6 @@ title: '算术函数'
 doc_type: 'reference'
 ---
 
-# 算术函数 \{#arithmetic-functions\}
-
 ## 概览 \{#overview\}
 
 算术函数适用于任意两个操作数，其类型可以是 `UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32`、`Int64`、`Float32` 或 `Float64`。
@@ -592,7 +590,7 @@ SELECT intDivOrZero(0.05, -1)
 
 引入版本：v1.1.0
 
-如果 Float32 或 Float64 参数既不是无穷大也不是 `NaN`，则返回 `1`，否则该函数返回 `0`。
+如果 Float32、Float64 或 BFloat16 参数既不是无穷大也不是 `NaN`，则返回 `1`，否则该函数返回 `0`。
 
 **语法**
 
@@ -602,7 +600,7 @@ isFinite(x)
 
 **参数**
 
-* `x` — 要检查是否为有限值的数值。[`Float*`](/sql-reference/data-types/float)
+* `x` — 要检查是否为有限值的数值。[`Float*`](/sql-reference/data-types/float) 或 [`BFloat16`](/sql-reference/data-types/float)
 
 **返回值**
 
@@ -624,7 +622,7 @@ SELECT isFinite(inf)
 
 引入版本：v1.1.0
 
-如果 Float32 或 Float64 参数为无穷大，则返回 `1`，否则该 FUNCTION 返回 `0`。
+如果 Float32、Float64 或 BFloat16 参数为无穷大，则返回 `1`，否则该 FUNCTION 返回 `0`。
 注意，对于 `NaN` 会返回 `0`。
 
 **语法**
@@ -635,7 +633,7 @@ isInfinite(x)
 
 **参数**
 
-* `x` — 要检查是否为无穷大的数值。[`Float*`](/sql-reference/data-types/float)
+* `x` — 要检查是否为无穷大的数值。[`Float*`](/sql-reference/data-types/float) 或 [`BFloat16`](/sql-reference/data-types/float)
 
 **返回值**
 
@@ -657,7 +655,7 @@ SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
 
 引入版本：v1.1.0
 
-如果 Float32 或 Float64 类型的参数为 `NaN`，则返回 `1`，否则返回 `0`。
+如果 Float32、Float64 或 BFloat16 类型的参数为 `NaN`，则返回 `1`，否则返回 `0`。
 
 **语法**
 
@@ -667,7 +665,7 @@ isNaN(x)
 
 **参数**
 
-* `x` — 用于判断是否为 `NaN` 的参数。[`Float*`](/sql-reference/data-types/float)
+* `x` — 用于判断是否为 `NaN` 的参数。[`Float*`](/sql-reference/data-types/float) 或 [`BFloat16`](/sql-reference/data-types/float)
 
 **返回值**
 

@@ -1,11 +1,11 @@
 ---
 
 
-sidebar_label: 'Kafka と ClickHouse の統合'
+sidebar_label: 'Kafka を ClickHouse と統合する'
 sidebar_position: 1
 slug: /integrations/kafka
-description: 'ClickHouse と連携した Kafka の概要'
-title: 'Kafka と ClickHouse の統合'
+description: 'ClickHouse と Kafka の概要'
+title: 'Kafka を ClickHouse と統合する'
 keywords: ['Apache Kafka', 'イベントストリーミング', 'データパイプライン', 'メッセージブローカー', 'リアルタイムデータ']
 doc_type: 'guide'
 integration:
@@ -13,9 +13,7 @@ integration:
   - category: 'data_ingestion'
 ---
 
-# Kafka を ClickHouse と統合する \{#integrating-kafka-with-clickhouse\}
-
-[Apache Kafka](https://kafka.apache.org/) は、ハイパフォーマンスなデータパイプライン、ストリーミング分析、データ統合、およびミッションクリティカルなアプリケーションのために数千社で利用されている、オープンソースの分散イベントストリーミングプラットフォームです。ClickHouse は、Kafka およびその他の Kafka API 互換ブローカー（例: Redpanda、Amazon MSK）からの**読み取り**およびそれらへの**書き込み**を行うための複数のオプションを提供します。
+[Apache Kafka](https://kafka.apache.org/) は、ハイパフォーマンスなデータパイプライン、ストリーミング分析、データ統合、およびミッションクリティカルなアプリケーションのために数千社で利用されている、オープンソースの分散イベントストリーミングプラットフォームです。ClickHouse は、Kafka およびその他の Kafka API 互換ブローカー (例: Redpanda、Amazon MSK) からの**読み取り**およびそれらへの**書き込み**を行うための複数のオプションを提供します。
 
 ## 利用可能なオプション \{#available-options\}
 
@@ -39,15 +37,13 @@ ClickHouse Cloud ユーザーの場合、このオプションが推奨されま
 
 #### 主な機能 \{#clickpipes-for-kafka-main-features\}
 
-[//]: # "TODO It isn't optimal to link to a static alpha-release of the Terraform provider. Link to a Terraform guide once that's available."
-
 * ClickHouse Cloud 向けに最適化されており、非常に高速なパフォーマンスを実現
 * 高スループットワークロード向けの水平および垂直スケーラビリティ
 * 設定可能なレプリカと自動リトライによる組み込みのフォールトトレランス
-* ClickHouse Cloud UI、[Open API](/cloud/manage/api/api-overview)、または [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe) を介したデプロイおよび管理
+* ClickHouse Cloud UI、[Open API](/integrations/clickpipes/programmatic-access/openapi)、または [Terraform](/integrations/clickpipes/programmatic-access/terraform) を介したデプロイおよび管理
 * クラウドネイティブ認可 (IAM) とプライベート接続 (PrivateLink) をサポートするエンタープライズグレードのセキュリティ
 * Confluent Cloud、Amazon MSK、Redpanda Cloud、Azure Event Hubs など、幅広い [データソース](/integrations/clickpipes/kafka/reference/) をサポート
-* 一般的なシリアル化フォーマット (JSON、Avro、Protobuf［近日対応予定］) をサポート
+* 一般的なシリアル化フォーマット (JSON、Avro、Protobuf) をサポート
 
 #### はじめに \{#clickpipes-for-kafka-getting-started\}
 

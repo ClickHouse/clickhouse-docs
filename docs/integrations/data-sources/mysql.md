@@ -1,7 +1,7 @@
 ---
 slug: /integrations/mysql
 sidebar_label: 'MySQL'
-title: 'MySQL'
+title: 'Integrating MySQL with ClickHouse'
 hide_title: true
 description: 'Page describing MySQL integration'
 doc_type: 'reference'
@@ -14,8 +14,6 @@ keywords: ['mysql', 'database integration', 'external table', 'data source', 'sq
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
-# Integrating MySQL with ClickHouse
 
 This page covers using the `MySQL` table engine, for reading from a MySQL table.
 
@@ -64,7 +62,7 @@ The `MySQL` table engine allows you to connect ClickHouse to MySQL. **SELECT** a
 
 :::note
 If you're using this feature in ClickHouse Cloud, you may need the to allow the ClickHouse Cloud IP addresses to access your MySQL instance.
-Check the ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) for egress traffic details.
+Check the ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints) for egress traffic details.
 :::
 
 ### 2. Define a Table in ClickHouse {#2-define-a-table-in-clickhouse}

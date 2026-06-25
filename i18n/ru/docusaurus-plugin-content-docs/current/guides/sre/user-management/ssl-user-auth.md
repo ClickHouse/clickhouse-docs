@@ -1,14 +1,12 @@
 ---
-sidebar_label: 'Аутентификация по пользовательскому SSL-сертификату'
+sidebar_label: 'Аутентификация по пользовательскому SSL‑сертификату'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
 title: 'Настройка аутентификации по пользовательскому SSL‑сертификату'
 description: 'В этом руководстве приведены простые и минимально необходимые настройки для аутентификации с помощью пользовательских SSL-сертификатов.'
 doc_type: 'guide'
-keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
+keywords: ['ssl', 'аутентификация', 'безопасность', 'сертификаты', 'управление пользователями']
 ---
-
-# Настройка аутентификации по пользовательскому SSL‑сертификату \{#configuring-ssl-user-certificate-for-authentication\}
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
@@ -25,7 +23,6 @@ import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_s
 
 > I would like to be able to configure our NLB proxy protocol v2 as below `proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`.
 > :::
-
 
 ## 1. Создание пользовательских сертификатов SSL \{#1-create-ssl-user-certificates\}
 

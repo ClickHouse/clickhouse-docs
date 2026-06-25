@@ -11,9 +11,6 @@ doc_type: 'guide'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-
-# 使用 TTL（存活时间）管理数据 \{#manage-data-with-ttl-time-to-live\}
-
 ## TTL 概述 \{#overview-of-ttl\}
 
 TTL（time-to-live，生存时间）指的是在经过一定时间间隔后，将行或列移动、删除或进行汇总处理的能力。尽管 “time-to-live” 这个表达听起来好像只适用于删除旧数据，但 TTL 实际上有多种用法：

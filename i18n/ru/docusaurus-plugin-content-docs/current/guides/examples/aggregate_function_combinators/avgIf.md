@@ -7,8 +7,6 @@ sidebar_label: 'avgIf'
 doc_type: 'reference'
 ---
 
-# avgIf \{#avgif\}
-
 ## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)

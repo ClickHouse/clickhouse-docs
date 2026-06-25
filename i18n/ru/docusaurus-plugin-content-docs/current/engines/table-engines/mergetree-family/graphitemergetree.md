@@ -1,13 +1,11 @@
 ---
-description: 'Предназначен для прореживания и агрегации/усреднения (rollup) данных Graphite.'
+description: 'Предназначен для прореживания и агрегирования/усреднения (rollup) данных Graphite.'
 sidebar_label: 'GraphiteMergeTree'
 sidebar_position: 90
 slug: /engines/table-engines/mergetree-family/graphitemergetree
 title: 'Движок таблицы GraphiteMergeTree'
 doc_type: 'guide'
 ---
-
-# Движок таблицы GraphiteMergeTree \{#graphitemergetree-table-engine\}
 
 Этот движок предназначен для прореживания и агрегирования/усреднения (rollup) данных [Graphite](http://graphite.readthedocs.io/en/latest/index.html). Он может быть полезен разработчикам, которые хотят использовать ClickHouse в качестве хранилища данных для Graphite.
 
@@ -62,16 +60,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
     EventDate Date,
     Path String,
     Time DateTime,
     Value Float64,
     Version <Numeric_type>
     ...
-) ENGINE [=] GraphiteMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, config_section)
-```
+  ) ENGINE [=] GraphiteMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, config_section)
+  ```
 
   Все параметры, кроме `config_section`, имеют то же значение, что и в `MergeTree`.
 
@@ -89,19 +87,19 @@ patterns
 
 ### Обязательные столбцы \{#required-columns\}
 
-#### `path_column_name` \{#path&#95;column&#95;name\}
+#### `path_column_name` \{#path_column_name\}
 
 `path_column_name` — имя столбца, в котором хранится имя метрики (датчик Graphite). Значение по умолчанию: `Path`.
 
-#### `time_column_name` \{#time&#95;column&#95;name\}
+#### `time_column_name` \{#time_column_name\}
 
 `time_column_name` — имя столбца, в котором хранится время измерения метрики. Значение по умолчанию: `Time`.
 
-#### `value_column_name` \{#value&#95;column&#95;name\}
+#### `value_column_name` \{#value_column_name\}
 
 `value_column_name` — имя столбца, в котором хранится значение метрики в момент времени, указанной в `time_column_name`. Значение по умолчанию: `Value`.
 
-#### `version_column_name` \{#version&#95;column&#95;name\}
+#### `version_column_name` \{#version_column_name\}
 
 `version_column_name` — имя столбца, в котором хранится версия метрики. Значение по умолчанию: `Timestamp`.
 

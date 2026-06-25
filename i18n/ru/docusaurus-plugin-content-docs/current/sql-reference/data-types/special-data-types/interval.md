@@ -7,8 +7,6 @@ title: 'Interval'
 doc_type: 'reference'
 ---
 
-# Interval \{#interval\}
-
 Семейство типов данных для представления временных и календарных интервалов. Типы, возвращаемые оператором [INTERVAL](/sql-reference/operators#interval).
 
 Структура:
@@ -41,7 +39,6 @@ SELECT toTypeName(INTERVAL 4 DAY)
 │ IntervalDay                  │
 └──────────────────────────────┘
 ```
-
 
 ## Примечания по использованию \{#usage-remarks\}
 

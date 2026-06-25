@@ -1,12 +1,10 @@
 ---
-description: 'QUALIFY 句に関するドキュメント'
+description: 'QUALIFY 句のドキュメント'
 sidebar_label: 'QUALIFY'
 slug: /sql-reference/statements/select/qualify
 title: 'QUALIFY 句'
 doc_type: 'reference'
 ---
-
-# QUALIFY 句 \{#qualify-clause\}
 
 ウィンドウ関数の結果をフィルタリングするために使用します。[WHERE](../../../sql-reference/statements/select/where.md) 句と似ていますが、`WHERE` はウィンドウ関数の評価より前に実行されるのに対し、`QUALIFY` はその後に実行される点が異なります。
 

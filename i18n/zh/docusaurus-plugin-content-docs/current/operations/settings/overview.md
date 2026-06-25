@@ -6,8 +6,6 @@ title: '设置概览'
 doc_type: 'reference'
 ---
 
-# 设置概览 \{#settings-overview\}
-
 ## 概览 \{#overview\}
 
 :::note

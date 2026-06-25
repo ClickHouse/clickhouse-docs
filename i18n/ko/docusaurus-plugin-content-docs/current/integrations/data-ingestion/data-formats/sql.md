@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['SQL 형식', '데이터 내보내기', '데이터 가져오기', '백업', 'SQL 덤프']
 ---
 
-# ClickHouse에서 SQL 데이터 삽입 및 덤프 \{#inserting-and-dumping-sql-data-in-clickhouse\}
-
-ClickHouse는 다양한 방식으로 OLTP 데이터베이스 인프라에 쉽게 통합할 수 있습니다. 한 가지 방법은 SQL 덤프를 사용해 다른 데이터베이스와 ClickHouse 간에 데이터를 전송하는 것입니다.
+ClickHouse는 다양한 방식으로 OLTP 데이터베이스 인프라에 쉽게 통합할 수 있습니다. 그중 한 가지 방법은 SQL 덤프를 사용해 다른 데이터베이스와 ClickHouse 사이에서 데이터를 전송하는 것입니다.
 
 ## SQL 덤프 생성 \{#creating-sql-dumps\}
 

@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/slackbot
 sidebar_label: '集成 SlackBot'
-title: '如何使用 ClickHouse MCP server 构建 SlackBot agent'
+title: '如何使用 ClickHouse MCP server 构建 SlackBot agent。'
 pagination_prev: null
 pagination_next: null
-description: '了解如何构建一个可以与 ClickHouse MCP server 交互的 SlackBot agent。'
+description: '了解如何构建一个可与 ClickHouse MCP server 交互的 SlackBot agent。'
 keywords: ['ClickHouse', 'MCP', 'Slack', 'SlackBot', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 如何使用 ClickHouse MCP server 构建 SlackBot agent \{#how-to-build-a-slackbot-agent-using-clickhouse-mcp-server\}
 
 在本指南中，您将学习如何构建一个 [SlackBot](https://slack.com/intl/en-gb/help/articles/202026038-An-introduction-to-Slackbot) agent。
 这个机器人允许您在 Slack 中使用自然语言直接查询您的 ClickHouse 数据。它基于

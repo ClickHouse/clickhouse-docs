@@ -6,8 +6,6 @@ title: 'Предложение INTO OUTFILE'
 doc_type: 'reference'
 ---
 
-# Оператор INTO OUTFILE \{#into-outfile-clause\}
-
 Оператор `INTO OUTFILE` перенаправляет результат запроса `SELECT` в файл на стороне **клиента**.
 
 Поддерживаются сжатые файлы. Тип сжатия определяется по расширению имени файла (по умолчанию используется режим `'auto'`), либо может быть явно задан оператором `COMPRESSION`. Уровень сжатия для выбранного типа может быть указан оператором `LEVEL`.
@@ -35,13 +33,11 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 Выполните следующий запрос с помощью [клиента командной строки](../../../interfaces/client.md):
 
-```bash
+```bash title="Query"
 clickhouse-client --query="SELECT 1,'ABC' INTO OUTFILE 'select.gz' FORMAT CSV;"
 zcat select.gz 
 ```
 
-Результат:
-
-```text
+```text title="Response"
 1,"ABC"
 ```

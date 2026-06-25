@@ -7,7 +7,6 @@ keywords: ['chdb', 'nodejs', 'javascript', 'embedded', 'clickhouse', 'sql', 'ola
 doc_type: 'guide'
 ---
 
-# chDB for Node.js
 
 chDB-node provides Node.js bindings for chDB, enabling you to run ClickHouse queries directly in your Node.js applications with zero external dependencies.
 

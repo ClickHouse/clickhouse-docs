@@ -7,13 +7,11 @@ keywords: ['chdb', 'datastore', 'pandas', 'sql', '对照', '查询']
 doc_type: 'guide'
 ---
 
-# 面向 pandas 用户的 SQL \{#sql-for-pandas-users\}
-
-DataStore 会将 pandas 风格的操作编译为经过优化的 SQL。本文档帮助 pandas 用户理解其操作对应的底层 SQL。
+DataStore 会将 pandas 风格的操作编译为优化后的 SQL。本指南可帮助 pandas 用户理解其操作背后的 SQL。
 
 ## 查看生成的 SQL 语句 \{#viewing-sql\}
 
-```python
+```python title="Query"
 from pathlib import Path
 Path("sales.csv").write_text("""\
 region,product,category,amount,quantity,price,date,order_id
@@ -40,9 +38,7 @@ query = (ds
 print(query.to_sql())
 ```
 
-输出：
-
-```sql
+```sql title="Response"
 SELECT region, SUM(amount) AS sum, AVG(amount) AS mean
 FROM file('sales.csv', 'CSVWithNames')
 WHERE amount > 1000
@@ -52,7 +48,6 @@ LIMIT 10
 ```
 
 ***
-
 
 ## 基本操作对照 \{#basic\}
 

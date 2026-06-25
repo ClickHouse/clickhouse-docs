@@ -1,13 +1,11 @@
 ---
-description: 'Быстрый поиск терминов в тексте.'
-keywords: ['полнотекстовый поиск', 'текстовый индекс', 'индекс', 'индексы']
+description: 'Быстро находите искомые термины в тексте.'
+keywords: ['full-text search', 'text index', 'index', 'indices']
 sidebar_label: 'Полнотекстовый поиск с текстовыми индексами'
 slug: /engines/table-engines/mergetree-family/textindexes
 title: 'Полнотекстовый поиск с текстовыми индексами'
 doc_type: 'reference'
 ---
-
-# Полнотекстовый поиск с текстовыми индексами \{#full-text-search-with-text-indexes\}
 
 Текстовые индексы (также известные как [обратные индексы](https://en.wikipedia.org/wiki/Inverted_index)) обеспечивают быстрый полнотекстовый поиск по текстовым данным.
 Текстовый индекс хранит отображение от токенов к номерам строк, содержащих каждый токен.
@@ -60,7 +58,6 @@ two    : [3]
 
 При заданном поисковом токене эта структура индекса позволяет быстро находить все соответствующие строки.
 
-
 ## Создание текстового индекса \{#creating-a-text-index\}
 
 Текстовые индексы доступны в статусе General Availability (GA) в ClickHouse версии 26.2 и новее.
@@ -73,7 +70,7 @@ two    : [3]
 
 Чтобы создать текстовый индекс, используйте следующий синтаксис:
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     key UInt64,
@@ -110,7 +107,7 @@ ORDER BY key
 
 Также можно добавить текстовый индекс к существующей таблице:
 
-```sql
+```sql title="Query"
 ALTER TABLE table
     ADD INDEX text_idx(str) TYPE text(
                                 -- Mandatory parameters:
@@ -133,13 +130,13 @@ ALTER TABLE table
 
 Если вы добавите индекс к существующей таблице, мы рекомендуем материализовать индекс для уже имеющихся частей этой таблицы (иначе поиск по частям без индекса будет сводиться к медленному полному перебору).
 
-```sql
+```sql title="Query"
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ```
 
 Чтобы удалить текстовый индекс, выполните следующую команду
 
-```sql
+```sql title="Query"
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
@@ -176,13 +173,11 @@ ALTER TABLE table DROP INDEX text_idx;
 
 Пример:
 
-```sql
+```sql title="Query"
 SELECT tokens('abc def', 'ngrams', 3);
 ```
 
-Результат:
-
-```result
+```result title="Response"
 ['abc','bc ','c d',' de','def']
 ```
 
@@ -194,7 +189,6 @@ SELECT tokens('abc def', 'ngrams', 3);
 **Аргумент препроцессора (необязательный)**. Под препроцессором здесь понимается выражение, которое применяется к входной строке перед токенизацией.
 
 Типичные варианты использования аргумента препроцессора включают следующее:
-
 
 1. Приведение к нижнему/верхнему регистру или свёртка регистра для обеспечения регистронезависимого сопоставления, например [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8).
 2. Нормализация UTF-8, например [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8).
@@ -220,11 +214,12 @@ SELECT tokens('abc def', 'ngrams', 3);
 
 Использование недетерминированных функций не допускается.
 
-Функции [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens) и [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) используют препроцессор для предварительного преобразования поискового запроса перед его токенизацией.
+Функции [hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens), [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) и [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) используют препроцессор для предварительного преобразования поискового запроса перед его токенизацией.
+Обратите внимание, что, поскольку препроцессор применяется только на пути текстового индекса, результаты этих функций могут различаться между запросами, использующими текстовый индекс, и запросами, которые его не используют (например, `SETTINGS use_skip_indexes = 0`).
 
 Например,
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -238,7 +233,7 @@ SELECT count() FROM table WHERE hasToken(str, 'Foo');
 
 эквивалентно следующему:
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -254,7 +249,7 @@ SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 
 Пример:
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     arr Array(String),
@@ -269,13 +264,12 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-Чтобы задать препроцессор в текстовом индексе по столбцам типа [Map](/sql-reference/data-types/map.md), пользователям необходимо решить, строится ли индекс
-по ключам или по значениям Map.
+Чтобы определить препроцессор в текстовом индексе, построенном по столбцам типа [Map](/sql-reference/data-types/map.md), пользователю нужно решить, строится ли индекс
+по ключам или по значениям map.
 
 Пример:
 
-
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     map Map(String, String),
@@ -314,7 +308,7 @@ SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 
 Пример:
 
-```sql
+```sql title="Query"
 CREATE TABLE table(
     k UInt64,
     s String,
@@ -325,9 +319,7 @@ ORDER BY k;
 SHOW CREATE TABLE table;
 ```
 
-Результат:
-
-```result
+```result title="Response"
 ┌─statement──────────────────────────────────────────────────────────────┐
 │ CREATE TABLE default.table                                            ↴│
 │↳(                                                                     ↴│
@@ -343,7 +335,6 @@ SHOW CREATE TABLE table;
 
 Большое значение гранулярности индекса гарантирует, что текстовый индекс создаётся для всей части.
 Явно указанная гранулярность индекса игнорируется.
-
 
 ## Использование текстового индекса \{#using-a-text-index\}
 
@@ -697,7 +688,7 @@ SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 
 Пример определения индекса:
 
-```sql
+```sql title="Query"
 CREATE TABLE sensor_data
 (
     data JSON(sensor_id String),
@@ -714,13 +705,11 @@ INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'l
 
 Пример запроса:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -733,13 +722,11 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
 
 Пример запроса:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -757,7 +744,7 @@ EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'roo
 
 Пример определения индекса:
 
-```sql
+```sql title="Query"
 CREATE TABLE events
 (
     data JSON,
@@ -775,13 +762,11 @@ INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
 
 Пример:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -796,11 +781,9 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
 
 Пример:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 ```
-
-Результат:
 
 ```text title="Response"
 ...
@@ -817,13 +800,11 @@ EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
 
 Пример:
 
-```sql
+```sql title="Query"
 EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ...
     Indexes:
       Skip
@@ -909,7 +890,7 @@ SELECT * FROM events WHERE data.level IN ('error', 'critical');
 
 #### Пример \{#text-index-phrase-search-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (
     id UInt32,
     text String,
@@ -924,13 +905,11 @@ INSERT INTO tab VALUES
     (3, 'weather in New Orleans');
 ```
 
-```sql
+```sql title="Query"
 SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
 ```
 
-Результат:
-
-```result
+```result title="Response"
    ┌─id─┬─text────────────────┐
 1. │  1 │ weather in New York │
    └────┴─────────────────────┘

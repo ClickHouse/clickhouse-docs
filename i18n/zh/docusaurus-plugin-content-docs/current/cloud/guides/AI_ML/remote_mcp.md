@@ -11,16 +11,9 @@ sidebar_position: 1
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import img1 from '@site/static/images/use-cases/AI_ML/MCP/1connectmcpmodal.png';
 import img2 from '@site/static/images/use-cases/AI_ML/MCP/2enable_mcp.png';
-import img3 from '@site/static/images/use-cases/AI_ML/MCP/3oauth.png';
-import img4 from '@site/static/images/use-cases/AI_ML/MCP/4oauth_success.png';
-import img5 from '@site/static/images/use-cases/AI_ML/MCP/5connected_mcp_claude.png';
-import img6 from '@site/static/images/use-cases/AI_ML/MCP/6slash_mcp_claude.png';
-import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 本指南介绍如何启用 ClickHouse Cloud 远程 MCP 服务器，并将其配置为可与常见的开发者工具配合使用。
 
@@ -28,7 +21,6 @@ import img7 from '@site/static/images/use-cases/AI_ML/MCP/7usage_mcp.png';
 
 * 一个正在运行的 [ClickHouse Cloud 服务](/getting-started/quick-start/cloud)
 * 您选择的 IDE 或 agentic 开发工具
-
 
 ## 为 Cloud 启用远程 MCP 服务器 \{#enable-remote-mcp-server\}
 

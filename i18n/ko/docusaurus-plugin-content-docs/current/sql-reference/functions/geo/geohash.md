@@ -6,15 +6,11 @@ title: 'Geohash 작업을 위한 함수'
 doc_type: 'reference'
 ---
 
-
-
 ## Geohash \{#geohash\}
 
 [Geohash](https://en.wikipedia.org/wiki/Geohash)는 지구 표면을 격자 모양의 버킷으로 세분화하고, 각 셀을 문자와 숫자로 이루어진 짧은 문자열로 인코딩하는 지오코드 시스템입니다. 계층적 데이터 구조이므로 geohash 문자열이 길어질수록 지리적 위치가 더 정밀해집니다.
 
 지리 좌표를 geohash 문자열로 수동으로 변환해야 하는 경우 [geohash.org](http://geohash.co/)를 사용할 수 있습니다.
-
-
 
 ## geohashEncode \{#geohashencode\}
 
@@ -44,20 +40,15 @@ geohashEncode(longitude, latitude, [precision])
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT geohashEncode(-5.60302734375, 42.593994140625, 0) AS res;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─res──────────┐
 │ ezs42d000000 │
 └──────────────┘
 ```
-
 
 ## geohashDecode \{#geohashdecode\}
 
@@ -77,7 +68,7 @@ geohashDecode(hash_str)
 
 * 위도와 경도의 `Float64` 값으로 이루어진 튜플 `(longitude, latitude)`. [Tuple](../../data-types/tuple.md)([Float64](../../data-types/float.md))
 
-**예제**
+**예시**
 
 ```sql
 SELECT geohashDecode('ezs42') AS res;
@@ -88,7 +79,6 @@ SELECT geohashDecode('ezs42') AS res;
 │ (-5.60302734375,42.60498046875) │
 └─────────────────────────────────┘
 ```
-
 
 ## geohashesInBox \{#geohashesinbox\}
 
@@ -123,15 +113,11 @@ geohashesInBox(longitude_min, latitude_min, longitude_max, latitude_max, precisi
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT geohashesInBox(24.48, 40.56, 24.785, 40.81, 4) AS thasos;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─thasos──────────────────────────────────────┐
 │ ['sx1q','sx1r','sx32','sx1w','sx1x','sx38'] │
 └─────────────────────────────────────────────┘

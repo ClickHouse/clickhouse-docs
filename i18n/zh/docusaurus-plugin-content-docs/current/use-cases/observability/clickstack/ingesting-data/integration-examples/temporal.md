@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
-title: '使用 ClickStack 监控 Temporal Cloud'
+title: '使用 ClickStack 监控 Temporal Cloud 指标'
 sidebar_label: 'Temporal Cloud 指标'
 pagination_prev: null
 pagination_next: null
@@ -23,11 +23,8 @@ Temporal 平台中的 OpenMetrics 支持目前处于[公开预览](https://docs.
 
 Temporal 提供了一种抽象，用于构建简单、精巧且具备高弹性的应用程序。
 
-
-# 使用 ClickStack 监控 Temporal Cloud 指标 \{#temporal-metrics-clickstack\}
-
-:::note[摘要]
-使用 OTel Prometheus receiver 在 ClickStack 中监控 Temporal Cloud 指标。包含预置仪表板。
+:::note[TL;DR]
+使用 OTel Prometheus receiver 在 ClickStack 中监控 Temporal Cloud 指标。包含一个预构建的仪表板。
 :::
 
 ## 与现有 Temporal Cloud 的集成 \{#existing-temporal\}

@@ -66,7 +66,7 @@ for i in {01..02}; do
 done
 ```
 
-Add the following `docker-compose.yml` file to the `clickhouse-cluster` directory:
+Add the following `docker-compose.yml` file to the `cluster_2S_1R` directory:
 
 ```yaml title="docker-compose.yml"
 version: '3.8'
@@ -494,7 +494,7 @@ WHERE path IN ('/', '/clickhouse')
 
 <VerifyKeeperStatus/>
 
-With this, you have successfully set up a ClickHouse cluster with a single shard and two replicas.
+With this, you have successfully set up a ClickHouse cluster with two shards and one replica per shard.
 In the next step, you will create a table in the cluster.
 
 ## Create a database {#creating-a-database}
@@ -678,7 +678,7 @@ both of the rows which were inserted on the two hosts, unlike in our previous ex
 SELECT * FROM test.test_table_dist;
 ```
 
-```sql
+```response
    ┌─id─┬─name───────────────┐
 1. │  1 │ Alexey Milovidov   │
 2. │  1 │ Clicky McClickface │

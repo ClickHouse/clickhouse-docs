@@ -106,7 +106,7 @@ ORDER BY vin;
 
 ### CollapsingMergeTree \{#collapsingmergetree\}
 
-基于这样一种思路：更新开销很大，但可以利用插入操作来完成更新，`CollapsingMergeTree` 使用一个 `Sign` 列来告诉 ClickHouse 在合并期间如何处理行。如果为 `Sign` 列插入 `-1`，则当其与匹配的 `+1` 行配对时，该行会被折叠（删除）。要更新的行是根据在创建表时 `ORDER BY` 子句中使用的排序键来识别的。
+基于这样一种思路：更新开销很大，但可以利用插入操作来完成更新，`CollapsingMergeTree` 使用一个 `Sign` 列来告诉 ClickHouse 在合并期间如何处理行。如果为 `Sign` 列插入 `-1`，则当其与匹配的 `+1` 行配对时，该行会被折叠 (删除) 。要更新的行是根据在创建表时 `ORDER BY` 子句中使用的排序键来识别的。
 
 ```sql
 CREATE TABLE user_activity
@@ -134,7 +134,9 @@ SELECT
 FROM user_activity
 GROUP BY UserID
 HAVING sum(Sign) > 0
+```
 
+```response
 ┌──────────────UserID─┬─PageViews─┬─Duration─┐
 │ 4324182021466249494 │         6 │      185 │
 └─────────────────────┴───────────┴──────────┘
@@ -143,11 +145,10 @@ HAVING sum(Sign) > 0
 与 `ReplacingMergeTree` 不同，`CollapsingMergeTree` 允许你修改排序键的值。它非常适合具有可撤销语义的可逆操作，例如金融交易或游戏状态跟踪。
 
 :::note
-上述更新方法要求你的应用程序在客户端维护状态，以便插入撤销行（cancellation row）。虽然从 ClickHouse 的角度来看这是最高效的，但在大规模场景下使用可能会比较复杂。查询还需要结合符号相乘的聚合才能生成正确结果。
+上述更新方法要求你的应用程序在客户端维护状态，以便插入撤销行 (cancellation row) 。虽然从 ClickHouse 的角度来看这是最高效的，但在大规模场景下使用可能会比较复杂。查询还需要结合符号相乘的聚合才能生成正确结果。
 :::
 
 延伸阅读：[CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
-
 
 ## 声明式更新 \{#sql-style-updates\}
 
@@ -295,17 +296,23 @@ UPDATE posts SET AnswerCount = AnswerCount + 1 WHERE Id = 404346
 SET apply_mutations_on_fly = 1;
 
 SELECT ViewCount FROM posts WHERE Id = 404346
+```
 
+```response
 ┌─ViewCount─┐
 │     26762 │
 └───────────┘
+```
 
+```sql
 -- Increment the count
 ALTER TABLE posts UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346
 
 -- The updated value is immediately visible
 SELECT ViewCount FROM posts WHERE Id = 404346
+```
 
+```response
 ┌─ViewCount─┐
 │     26763 │
 └───────────┘
@@ -320,7 +327,6 @@ SELECT ViewCount FROM posts WHERE Id = 404346
 :::
 
 延伸阅读：[实时变更](#on-the-fly-mutations)
-
 
 ## 对比总结 \{#comparison-summary\}
 

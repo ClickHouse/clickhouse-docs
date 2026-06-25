@@ -2,16 +2,14 @@
 description: 'ClickHouse 백업 및 복원의 개요'
 sidebar_label: 'S3 엔드포인트'
 slug: /operations/backup/s3_endpoint
-title: 'S3 엔드포인트로/에서의 백업 및 복원'
+title: 'S3 엔드포인트로/에서의 백업 / 복원'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/i18n/ko/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
-# S3 엔드포인트를 통한 BACKUP / RESTORE \{#backup-to-a-local-disk\}
-
-이 문서는 S3 엔드포인트를 통해 S3 버킷으로 백업을 수행하거나 S3 버킷에서 백업을 복원하는 방법을 설명합니다.
+이 문서에서는 S3 엔드포인트를 통해 S3 버킷에 백업하거나
+S3 버킷의 백업을 복원하는 방법을 설명합니다.
 
 ## 구문 \{#syntax\}
 

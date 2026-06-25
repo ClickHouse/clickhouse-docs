@@ -7,8 +7,6 @@ title: 'Amazon Redshift SQL 语法对照指南'
 doc_type: 'reference'
 ---
 
-# Amazon Redshift SQL 转换指南 \{#amazon-redshift-sql-translation-guide\}
-
 ## 数据类型 \{#data-types\}
 
 在 ClickHouse 与 Redshift 之间迁移数据的用户会立刻注意到，ClickHouse 提供的类型范围更广，而且限制更少。Redshift 要求用户指定字符串的可能长度，即使是可变长度；而 ClickHouse 通过以原始字节的形式存储字符串，取消了这一限制和负担。因此，ClickHouse 的 `String` 类型没有长度限制或长度声明要求。

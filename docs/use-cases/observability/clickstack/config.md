@@ -109,7 +109,7 @@ The ClickStack UI relies on the user defining a source for each of the Observabi
 
 This configuration can be performed inside the application from `Team Settings -> Sources`, as shown below for logs:
 
-<Image img={hyperdx_25} alt="HyperDX Source configuration" size="lg"/>
+<Image img={hyperdx_25} alt="HyperDX Source configuration" size="md"/>
 
 Each of these sources require at least one table specified on creation and a set of columns which allow HyperDX to query the data.
 
@@ -126,6 +126,7 @@ The following settings are available for each source:
 | Setting                        | Description                                                                                                             | Required | Inferred in Default Schema | Inferred Value                                      |
 |-------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|-----------------------------------------------------|
 | `Name`                        | Source name.                                                                                                            | Yes      | No                          | –                                                   |
+| `Section`                     | Optional label for grouping sources in the source selector. Sources that share a section appear together, and search matches the section name in addition to the source name. | No       | No                          | –                                                   |
 | `Server Connection`           | Server connection name.                                                                                                | Yes      | No                          | `Default`                                             |
 | `Database`                    | ClickHouse database name.                                                                                              | Yes      | Yes                         | `default`                                             |
 | `Table`                       | Target table name. Set to `otel_logs` if default schema is used.                                                                                                     | Yes      | No                         |                                            |
@@ -150,6 +151,7 @@ The following settings are available for each source:
 | Setting                          | Description                                                                                                             | Required | Inferred in Default Schema | Inferred Value         |
 |----------------------------------|-------------------------------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
 | `Name`                           | Source name.                                                                                                            | Yes      | No                          | –                      |
+| `Section`                        | Optional label for grouping sources in the source selector. Sources that share a section appear together, and search matches the section name in addition to the source name. | No       | No                          | –                      |
 | `Server Connection`              | Server connection name.                                                                                                | Yes      | No                          | `Default`              |
 | `Database`                       | ClickHouse database name.                                                                                              | Yes      | Yes                         | `default`                |
 | `Table`                          | Target table name. Set to `otel_traces` if using the default schema.                                                                                                    | Yes      | Yes                         |      -       |
@@ -181,6 +183,7 @@ The following settings are available for each source:
 | Setting               | Description                                                                                   | Required | Inferred in Default Schema | Inferred Value              |
 |------------------------|-----------------------------------------------------------------------------------------------|----------|-----------------------------|-----------------------------|
 | `Name`                 | Source name.                                                                                  | Yes      | No                          | –                           |
+| `Section`              | Optional label for grouping sources in the source selector. Sources that share a section appear together, and search matches the section name in addition to the source name. | No       | No                          | –                           |
 | `Server Connection`    | Server connection name.                                                                        | Yes      | No                          | `Default`                   |
 | `Database`             | ClickHouse database name.                                                                      | Yes      | Yes                         | `default`                   |
 | `Gauge Table`          | Table storing gauge-type metrics.                                                              | Yes      | No                         | `otel_metrics_gauge`        |
@@ -193,6 +196,7 @@ The following settings are available for each source:
 | Setting                        | Description                                                                                         | Required | Inferred in Default Schema | Inferred Value         |
 |-------------------------------|-----------------------------------------------------------------------------------------------------|----------|-----------------------------|------------------------|
 | `Name`                        | Source name.                                                                                        | Yes      | No                          | –                      |
+| `Section`                     | Optional label for grouping sources in the source selector. Sources that share a section appear together, and search matches the section name in addition to the source name. | No       | No                          | –                      |
 | `Server Connection`           | Server connection name.                                                                             | Yes      | No                          | `Default`              |
 | `Database`                    | ClickHouse database name.                                                                           | Yes      | Yes                         | `default`              |
 | `Table`                       | Target table for session data. Target table name. Set to `hyperdx_sessions` if using the default schema.                                                                          | Yes      | Yes                         | -      |
@@ -372,7 +376,8 @@ These settings can't be modified when HyperDX is managed in ClickHouse Cloud.
   - **Default:** `false`
   - **Description:** Enables Beta support for the JSON type in HyperDX. See also [`OTEL_AGENT_FEATURE_GATE_ARG`](#otel-collector) to enable JSON support in the OTel collector.
   - **Guidance:**
-  - Set to `true` to enable JSON support in ClickStack.
+    - Enables a **beta feature**. JSON-typed schemas are **not recommended** for typical observability workloads. See [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json) for the comparison and when each is appropriate.
+    - Set to `true` to enable JSON support in the ClickStack UI.
 
 ## OpenTelemetry collector {#otel-collector}
 
@@ -429,9 +434,10 @@ See ["ClickStack OpenTelemetry Collector"](/use-cases/observability/clickstack/i
 
 - `OTEL_AGENT_FEATURE_GATE_ARG`
   - **Default:** `<empty string>`
-  - **Description:** Enables feature flags to enabled in the collector. If set to `--feature-gates=clickhouse.json` enables Beta support for the JSON type in collector, ensuring schemas are created with the type. See also [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) to enable JSON support in HyperDX.
+  - **Description:** Enables feature flags in the collector. If set to `--feature-gates=clickhouse.json`, enables Beta support for the JSON type in the collector, ensuring schemas are created with that type. See also [`BETA_CH_OTEL_JSON_SCHEMA_ENABLED`](#hyperdx) to enable JSON support in HyperDX.
   - **Guidance:**
-  - Set to `true` to enable JSON support in ClickStack.
+    - Enables a **beta feature**. JSON-typed schemas are **not recommended** for typical observability workloads. See [Map vs JSON type](/use-cases/observability/clickstack/ingesting-data/schema/map-vs-json) for the comparison and when each is appropriate.
+    - Set to `--feature-gates=clickhouse.json` to create new tables using the JSON type.
 
 ## ClickHouse {#clickhouse}
 

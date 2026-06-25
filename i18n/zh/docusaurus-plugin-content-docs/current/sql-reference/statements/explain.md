@@ -127,7 +127,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 ### EXPLAIN SYNTAX \{#explain-syntax\}
 
-在语法分析之后显示查询的抽象语法树（AST）。
+在语法分析之后显示查询的抽象语法树 (AST) 。
 
 该过程通过解析查询、构建查询 AST 和查询树，可选地运行查询分析器和优化 pass，随后将查询树转换回查询 AST 来完成。
 
@@ -139,13 +139,11 @@ Settings:
 
 Examples:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-输出结果：
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -153,13 +151,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 使用 `run_query_tree_passes`：
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-输出结果：
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -627,11 +623,19 @@ Join (JOIN FillRightFirst)
 
 设置：
 
-* `header` — 为每个输出端口输出表头。默认值：0。
+* `header` — 为每个输出端口输出请求头。默认值：0。
 * `graph` — 使用 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 图描述语言输出图形。默认值：0。
 * `compact` — 当启用 `graph` 设置时，以紧凑模式输出图形。默认值：1。
+* `compact_repeated_processor_chains` — 在文本输出中，将相邻重复的处理器链压缩显示为一份副本并标注重复次数。例如，当相同的处理器链多次出现时 (如在 joins 中) ，这可以让并行管道更易于阅读。它不会影响图形输出。默认值：0。
 
-当 `compact=0` 且 `graph=1` 时，processor 名称会包含一个带有唯一 processor 标识符的额外后缀。
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
+
+当 `compact=0` 且 `graph=1` 时，处理器名称会包含一个带有唯一处理器标识符的额外后缀。
 
 示例：
 
@@ -655,7 +659,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 
 显示在处理查询时预计将从表中读取的行数、标记数和分区片段数。适用于 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 系列表。
@@ -664,21 +667,17 @@ ExpressionTransform
 
 创建一个表：
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
@@ -693,21 +692,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 假设你有一个远程的 MySQL 表，如下所示：
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

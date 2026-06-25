@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Beta Features and Experimental'
-title: 'Beta and Experimental Features'
+sidebar_label: 'Beta and experimental features'
+title: 'Beta and experimental features'
 description: 'ClickHouse has beta and experimental features. This documentation page discusses definition.'
 slug: /beta-and-experimental-features
 doc_type: 'reference'
@@ -108,6 +108,8 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_nlp_functions](/operations/settings/settings#allow_experimental_nlp_functions) | `0` |
 | [allow_experimental_hash_functions](/operations/settings/settings#allow_experimental_hash_functions) | `0` |
 | [allow_experimental_time_series_table](/operations/settings/settings#allow_experimental_time_series_table) | `0` |
+| [unique_key_max_encoded_size](/operations/settings/settings#unique_key_max_encoded_size) | `256` |
+| [allow_experimental_unique_key](/operations/settings/settings#allow_experimental_unique_key) | `0` |
 | [allow_experimental_codecs](/operations/settings/settings#allow_experimental_codecs) | `0` |
 | [throw_on_unsupported_query_inside_transaction](/operations/settings/settings#throw_on_unsupported_query_inside_transaction) | `1` |
 | [wait_changes_become_visible_after_commit_mode](/operations/settings/settings#wait_changes_become_visible_after_commit_mode) | `wait_unknown` |
@@ -118,6 +120,8 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [join_to_sort_maximum_table_rows](/operations/settings/settings#join_to_sort_maximum_table_rows) | `10000` |
 | [allow_experimental_join_right_table_sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting) | `0` |
 | [allow_experimental_json_lazy_type_hints](/operations/settings/settings#allow_experimental_json_lazy_type_hints) | `0` |
+| [enable_streaming_queries](/operations/settings/settings#enable_streaming_queries) | `0` |
+| [allow_experimental_text_index_lazy_apply](/operations/settings/settings#allow_experimental_text_index_lazy_apply) | `0` |
 | [allow_experimental_window_view](/operations/settings/settings#allow_experimental_window_view) | `0` |
 | [window_view_clean_interval](/operations/settings/settings#window_view_clean_interval) | `60` |
 | [window_view_heartbeat_interval](/operations/settings/settings#window_view_heartbeat_interval) | `15` |
@@ -132,6 +136,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_polyglot_dialect](/operations/settings/settings#allow_experimental_polyglot_dialect) | `0` |
 | [polyglot_dialect](/operations/settings/settings#polyglot_dialect) | `` |
 | [enable_adaptive_memory_spill_scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler) | `0` |
+| [allow_experimental_cleanup_old_data_files_compaction](/operations/settings/settings#allow_experimental_cleanup_old_data_files_compaction) | `0` |
 | [allow_experimental_iceberg_compaction](/operations/settings/settings#allow_experimental_iceberg_compaction) | `0` |
 | [allow_iceberg_remove_orphan_files](/operations/settings/settings#allow_iceberg_remove_orphan_files) | `0` |
 | [iceberg_orphan_files_older_than_seconds](/operations/settings/settings#iceberg_orphan_files_older_than_seconds) | `259200` |
@@ -160,7 +165,9 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [promql_database](/operations/settings/settings#promql_database) | `` |
 | [promql_table](/operations/settings/settings#promql_table) | `` |
 | [promql_evaluation_time](/operations/settings/settings#promql_evaluation_time) | `auto` |
-| [allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine) | `0` |
+| [allow_experimental_paimon_storage_engine](/operations/settings/settings#allow_experimental_paimon_storage_engine) | `0` |
+| [paimon_target_snapshot_id](/operations/settings/settings#paimon_target_snapshot_id) | `-1` |
+| [max_consume_snapshots](/operations/settings/settings#max_consume_snapshots) | `0` |
 | [use_paimon_partition_pruning](/operations/settings/settings#use_paimon_partition_pruning) | `0` |
 | [allow_experimental_object_storage_queue_hive_partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning) | `0` |
 | [query_plan_optimize_join_order_algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm) | `greedy` |
@@ -178,4 +185,5 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [ai_function_max_output_tokens_per_query](/operations/settings/settings#ai_function_max_output_tokens_per_query) | `500000` |
 | [ai_function_max_api_calls_per_query](/operations/settings/settings#ai_function_max_api_calls_per_query) | `0` |
 | [ai_function_throw_on_quota_exceeded](/operations/settings/settings#ai_function_throw_on_quota_exceeded) | `1` |
+| [ai_function_embedding_max_batch_size](/operations/settings/settings#ai_function_embedding_max_batch_size) | `100` |
 <!--AUTOGENERATED_END-->

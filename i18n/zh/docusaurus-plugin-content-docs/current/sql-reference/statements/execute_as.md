@@ -7,6 +7,10 @@ title: 'EXECUTE AS 语句'
 doc_type: 'reference'
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
+<CloudNotSupportedBadge />
+
 # EXECUTE AS 语句 \{#execute-as-statement\}
 
 允许以其他用户身份执行查询。

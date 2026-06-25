@@ -21,10 +21,8 @@ title: '레슨 - 너무 많은 파트 문제'
 description: '파트가 너무 많은 문제 해결 및 예방'
 ---
 
-# 너무 많은 파트 문제 \{#the-too-many-parts-problem\}
-
-*이 가이드는 커뮤니티 밋업에서 얻은 인사이트 모음의 일부입니다. 더 많은 실제 사례 기반의 해결책과 인사이트는 [문제별로 살펴보기](./community-wisdom.md)에서 확인할 수 있습니다.*
-*추가 성능 최적화 팁은 커뮤니티 인사이트 가이드인 [Performance Optimization](./performance-optimization.md)에서 확인할 수 있습니다.*
+*이 가이드는 커뮤니티 밋업에서 얻은 인사이트 모음의 일부입니다. 실제 환경에서의 더 많은 해결책과 인사이트는 [특정 문제별로 찾아보기](./community-wisdom.md)에서 확인할 수 있습니다.*
+*성능 최적화 팁이 더 필요하시면 [성능 최적화](./performance-optimization.md) 커뮤니티 인사이트 가이드를 확인하십시오.*
 
 ## 문제 이해하기 \{#understanding-the-problem\}
 

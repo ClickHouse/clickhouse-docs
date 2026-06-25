@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 slug: /tips-and-tricks/too-many-parts
-sidebar_label: 'パーツが多すぎる'
+sidebar_label: 'Too many parts'
 doc_type: 'guide'
 keywords: [
   'ClickHouse パーツ数が多すぎる',
@@ -10,21 +10,19 @@ keywords: [
   'パーツの爆発的増加問題',
   'ClickHouse マージ性能',
   'バッチ挿入の最適化',
-  'ClickHouse 非同期インサート',
+  'ClickHouse 非同期 INSERT',
   '小さな挿入の問題',
   'ClickHouse パーツ管理',
   '挿入パフォーマンスの最適化',
   'ClickHouse バッチ挿入戦略',
   'データベース挿入パターン'
 ]
-title: 'レッスン - パーツが多すぎる問題'
+title: 'レッスン - Too many parts 問題'
 description: 'Too Many Parts の解決策と防止策'
 ---
 
-# パーツが多すぎる問題 \{#the-too-many-parts-problem\}
-
-*このガイドは、コミュニティミートアップから得られた知見をまとめたコレクションの一部です。より実践的なソリューションやインサイトについては、[問題別に閲覧](./community-wisdom.md)できます。*
-*さらにパフォーマンス最適化のヒントが必要な場合は、[パフォーマンス最適化](./performance-optimization.md) に関するコミュニティインサイトガイドを参照してください。*
+*このガイドは、コミュニティミートアップで得られた知見をまとめたコレクションの一部です。実運用に基づく解決策や知見をさらに確認するには、[問題別に参照](./community-wisdom.md)してください。*
+*さらにパフォーマンス最適化のヒントを探している場合は、[Performance Optimization](./performance-optimization.md) コミュニティインサイトガイドをご覧ください。*
 
 ## 問題の理解 \{#understanding-the-problem\}
 

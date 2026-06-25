@@ -1,5 +1,5 @@
 ---
-description: 'Interval 特殊データ型に関するドキュメント'
+description: 'Interval 特殊データ型のドキュメント'
 sidebar_label: 'Interval'
 sidebar_position: 61
 slug: /sql-reference/data-types/special-data-types/interval
@@ -7,16 +7,14 @@ title: 'Interval'
 doc_type: 'reference'
 ---
 
-# Interval \{#interval\}
-
-日時の間隔を表すデータ型のファミリーです。[INTERVAL](/sql-reference/operators#interval) 演算子の結果として得られる型です。
+日時のインターバルを表すデータ型のファミリーです。[INTERVAL](/sql-reference/operators#interval) 演算子の結果として得られる型です。
 
 構造:
 
-* 符号なし整数値として表される時間間隔。
-* 間隔の型。
+* 符号なし整数値として表される時間インターバル。
+* インターバルの型。
 
-サポートされている間隔の種類:
+サポートされているインターバルの種類:
 
 * `NANOSECOND`
 * `MICROSECOND`
@@ -30,7 +28,7 @@ doc_type: 'reference'
 * `QUARTER`
 * `YEAR`
 
-各間隔の種類ごとに、個別のデータ型が定義されています。たとえば、`DAY` 間隔は `IntervalDay` データ型に対応します:
+各インターバルの種類ごとに、個別のデータ型が定義されています。たとえば、`DAY` インターバルは `IntervalDay` データ型に対応します:
 
 ```sql
 SELECT toTypeName(INTERVAL 4 DAY)
@@ -41,7 +39,6 @@ SELECT toTypeName(INTERVAL 4 DAY)
 │ IntervalDay                  │
 └──────────────────────────────┘
 ```
-
 
 ## 使用上の注意 \{#usage-remarks\}
 

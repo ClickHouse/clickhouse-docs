@@ -1,12 +1,10 @@
 ---
-description: 'Документация по оператору UNDROP TABLE'
+description: 'Документация по UNDROP TABLE'
 sidebar_label: 'UNDROP'
 slug: /sql-reference/statements/undrop
 title: 'UNDROP TABLE'
 doc_type: 'reference'
 ---
-
-# UNDROP TABLE \{#undrop-table\}
 
 Отменяет удаление таблицы.
 
@@ -57,7 +55,7 @@ table_dropped_time:    2023-04-05 14:12:12
 1 row in set. Elapsed: 0.001 sec. 
 ```
 
-```sql
+````sql
 UNDROP TABLE tab;
 
 SELECT *
@@ -68,7 +66,7 @@ FORMAT Vertical;
 Ok.
 
 0 rows in set. Elapsed: 0.001 sec. 
-```
+````
 
 ```sql
 DESCRIBE TABLE tab
@@ -76,7 +74,7 @@ FORMAT Vertical;
 ```
 
 ```response
-Строка 1:
+Row 1:
 ──────
 name:               id
 type:               UInt8

@@ -2,13 +2,11 @@
 slug: /guides/developer/time-series-filling-gaps
 sidebar_label: '時系列 - 欠損補完'
 sidebar_position: 10
-description: '時系列データの欠損を補完します。'
-keywords: ['時系列', '欠損補完', 'ギャップフィル']
+description: '時系列データの欠損を補完する方法。'
+keywords: ['時系列データ', '欠損補完']
 title: '時系列データの欠損を補完する'
 doc_type: 'guide'
 ---
-
-# 時系列データの欠損を補完する \{#filling-gaps-in-time-series-data\}
 
 時系列データを扱う際、欠損データや非アクティブな期間が原因で、データにギャップが生じることがあります。
 通常、データをクエリする際には、そのようなギャップが存在しない状態が望まれます。このような場合に役立つのが `WITH FILL` 句です。
@@ -43,7 +41,6 @@ INSERT INTO images VALUES (1088619208524431510, '2023-03-24 00:24:04.879', 1024,
 INSERT INTO images VALUES (1088619208425437515, '2023-03-24 00:24:05.160', 1024, 1024, 1538451);
 ```
 
-
 ## バケット単位でのクエリ \{#querying-by-bucket\}
 
 2023 年 3 月 24 日の `00:24:03` から `00:24:04` の間に作成されたイメージを調べるために、その時点を表すパラメータを作成してみましょう。
@@ -77,7 +74,6 @@ ORDER BY bucket ASC
 ```
 
 結果セットには画像が生成されたバケットのみが含まれますが、時系列分析では、たとえエントリが存在しない場合でも、100ms ごとのバケットをすべて返したい場合があります。
-
 
 ## WITH FILL \{#with-fill\}
 
@@ -116,7 +112,6 @@ STEP toIntervalMillisecond(100);
 ```
 
 `count` 列の欠損部分が 0 の値で補完されていることが分かります。
-
 
 ## WITH FILL...FROM \{#with-fillfrom\}
 
@@ -160,7 +155,6 @@ STEP toIntervalMillisecond(100);
 ```
 
 結果から、`00:24:03.000` から `00:24:03.500` までのバケットがすべて表示されていることがわかります。
-
 
 ## WITH FILL...TO \{#with-fillto\}
 
@@ -209,7 +203,6 @@ STEP toIntervalMillisecond(100);
 
 これですべてのギャップが埋まり、`00:24:03.000` から `00:24:05.000` まで 100 ms ごとのエントリが揃いました。
 
-
 ## 累積カウント \{#cumulative-count\}
 
 ここでは、バケットをまたいで作成された画像の数を累積的にカウントしたいとします。
@@ -257,7 +250,6 @@ STEP toIntervalMillisecond(100);
 ```
 
 累積列の値が、意図したとおりに動作していません。
-
 
 ## WITH FILL...INTERPOLATE \{#with-fillinterpolate\}
 
@@ -325,7 +317,6 @@ TO toDateTime64({end:String}, 3) + INTERVAL 100 millisecond
 STEP toIntervalMillisecond(100)
 INTERPOLATE (cumulative, barChart);
 ```
-
 
 ```response
 ┌──────────────────bucket─┬─count─┬─cumulative─┬─barChart─┐

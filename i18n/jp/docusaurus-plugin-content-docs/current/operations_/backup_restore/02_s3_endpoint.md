@@ -2,16 +2,14 @@
 description: 'ClickHouse のバックアップとリストアの概要'
 sidebar_label: 'S3 エンドポイント'
 slug: /operations/backup/s3_endpoint
-title: 'S3 エンドポイントへのバックアップおよびそこからのリストア'
+title: 'S3 エンドポイントへの、またはそこからの BACKUP / 復元'
 doc_type: 'guide'
 ---
 
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
 
-
-# S3 エンドポイントを利用したバックアップ / リストア \{#backup-to-a-local-disk\}
-
-この記事では、S3 エンドポイント経由で S3 バケットにバックアップを保存したり、S3 バケット上のバックアップからリストアしたりする方法について説明します。
+この記事では、S3 エンドポイントを介した、S3 バケットへのバックアップと
+S3 バケットからの復元について説明します。
 
 ## 構文 \{#syntax\}
 

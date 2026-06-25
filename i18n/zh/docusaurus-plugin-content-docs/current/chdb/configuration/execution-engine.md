@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'execution', 'engine', 'chdb', 'pandas', 'auto']
 doc_type: 'guide'
 ---
 
-# 执行引擎配置 \{#execution-engine-configuration\}
-
-DataStore 可以使用不同的后端来执行操作。本指南介绍如何配置并优化引擎选择。
+DataStore 可以使用不同的后端来执行操作。这个指南说明如何配置并优化引擎选择。
 
 ## 可用引擎 \{#engines\}
 

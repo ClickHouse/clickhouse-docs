@@ -134,7 +134,9 @@ SELECT
 FROM user_activity
 GROUP BY UserID
 HAVING sum(Sign) > 0
+```
 
+```response
 ┌──────────────UserID─┬─PageViews─┬─Duration─┐
 │ 4324182021466249494 │         6 │      185 │
 └─────────────────────┴───────────┴──────────┘
@@ -147,7 +149,6 @@ HAVING sum(Sign) > 0
 :::
 
 더 알아보기: [CollapsingMergeTree](/engines/table-engines/mergetree-family/collapsingmergetree)
-
 
 ## 선언적 업데이트 \{#sql-style-updates\}
 
@@ -295,17 +296,23 @@ UPDATE posts SET AnswerCount = AnswerCount + 1 WHERE Id = 404346
 SET apply_mutations_on_fly = 1;
 
 SELECT ViewCount FROM posts WHERE Id = 404346
+```
 
+```response
 ┌─ViewCount─┐
 │     26762 │
 └───────────┘
+```
 
+```sql
 -- Increment the count
 ALTER TABLE posts UPDATE ViewCount = ViewCount + 1 WHERE Id = 404346
 
 -- The updated value is immediately visible
 SELECT ViewCount FROM posts WHERE Id = 404346
+```
 
+```response
 ┌─ViewCount─┐
 │     26763 │
 └───────────┘
@@ -320,7 +327,6 @@ SELECT ViewCount FROM posts WHERE Id = 404346
 :::
 
 참조하다: [실시간 뮤테이션](#on-the-fly-mutations)
-
 
 ## 비교 요약 \{#comparison-summary\}
 

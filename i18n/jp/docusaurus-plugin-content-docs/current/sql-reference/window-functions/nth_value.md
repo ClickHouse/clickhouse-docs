@@ -7,9 +7,7 @@ title: 'nth_value'
 doc_type: 'reference'
 ---
 
-# nth&#95;value \{#nth&#95;value\}
-
-順序付けられたフレーム内の n 行目（オフセット）に対応して評価された、最初の非 NULL 値を返します。
+順序付けられたフレーム内の n 行目 (オフセット) に対応して評価された、最初の非 NULL 値を返します。
 
 **構文**
 
@@ -30,15 +28,13 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 **戻り値**
 
-* 並び順が定義されたフレーム内で、n 番目の行（`offset`）に対して評価される最初の NULL 以外の値。
+* 並び順が定義されたフレーム内で、n 番目の行 (`offset`) に対して評価される最初の NULL 以外の値。
 
 **例**
 
 この例では、`nth-value` 関数を使用して、プレミアリーグのサッカー選手の架空の給与データセットから 3 番目に高い給与を求めます。
 
-クエリ:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -59,13 +55,11 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, nth_value(player,3) OVER(ORDER BY salary DESC) AS third_highest_salary FROM salaries;
 ```
 
-結果：
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─third_highest_salary─┐
 1. │ Gary Chen       │ 195000 │                      │
 2. │ Robert George   │ 195000 │                      │

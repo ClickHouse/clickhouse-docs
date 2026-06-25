@@ -7,9 +7,7 @@ title: 'Array(T)'
 doc_type: 'reference'
 ---
 
-# Array(T) \{#arrayt\}
-
-`T` 타입 항목으로 구성된 배열로, 배열 인덱스는 1부터 시작합니다. `T`는 배열을 포함하여 어떤 데이터 타입이든 될 수 있습니다.
+배열 인덱스가 1부터 시작하는 `T` 타입 항목의 배열입니다. `T`는 배열을 포함해 모든 데이터 타입이 될 수 있습니다.
 
 ## 배열 생성하기 \{#creating-an-array\}
 
@@ -82,9 +80,7 @@ Code: 386. DB::Exception: Received from localhost:9000, 127.0.0.1. DB::Exception
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE t_arr (`arr` Array(Array(Array(UInt32)))) ENGINE = MergeTree ORDER BY tuple();
 
 INSERT INTO t_arr VALUES ([[[12, 13, 0, 1],[12]]]);
@@ -92,9 +88,7 @@ INSERT INTO t_arr VALUES ([[[12, 13, 0, 1],[12]]]);
 SELECT arr.size0, arr.size1, arr.size2 FROM t_arr;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─arr.size0─┬─arr.size1─┬─arr.size2─┐
 │         1 │ [2]       │ [[4,1]]   │
 └───────────┴───────────┴───────────┘

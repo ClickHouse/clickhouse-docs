@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse 中 Tuple 数据类型文档'
+description: 'ClickHouse 中 Tuple 数据类型的文档'
 sidebar_label: 'Tuple(T1, T2, ...)'
 sidebar_position: 34
 slug: /sql-reference/data-types/tuple
@@ -7,13 +7,11 @@ title: 'Tuple(T1, T2, ...)'
 doc_type: 'reference'
 ---
 
-# Tuple(T1, T2, ...) \{#tuplet1-t2\}
+一个由多个元素组成的Tuple，每个元素都有各自的[类型](/sql-reference/data-types)。Tuple必须至少包含一个元素。
 
-一个由多个元素组成的元组，每个元素都有各自的[类型](/sql-reference/data-types)。元组必须至少包含一个元素。
+Tuple用于对列进行临时分组。在查询中使用 IN 表达式时可以对列进行分组，也可用于指定 lambda 函数的某些形式参数。更多信息请参阅 [IN 运算符](../../sql-reference/operators/in.md) 和 [高阶函数](/sql-reference/functions/overview#higher-order-functions) 章节。
 
-元组用于对列进行临时分组。在查询中使用 IN 表达式时可以对列进行分组，也可用于指定 lambda 函数的某些形式参数。更多信息请参阅 [IN 运算符](../../sql-reference/operators/in.md) 和 [高阶函数](/sql-reference/functions/overview#higher-order-functions) 章节。
-
-元组可以作为查询结果返回。在这种情况下，对于除 JSON 以外的文本格式，值会以逗号分隔并包裹在 `()` 中。在 JSON 格式中，元组会以数组形式输出 (使用 `[]`) 。
+Tuple可以作为查询结果返回。在这种情况下，对于除 JSON 以外的文本格式，值会以逗号分隔并包裹在 `()` 中。在 JSON 格式中，Tuple会以数组形式输出 (使用 `[]`) 。
 
 ## 创建元组 \{#creating-tuples\}
 
@@ -83,7 +81,7 @@ SELECT tuple(1, NULL) AS x, toTypeName(x)
 
 Tuple 元素可以通过名称或索引进行引用：
 
-```sql
+```sql title="Query"
 CREATE TABLE named_tuples (`a` Tuple(s String, i Int64)) ENGINE = Memory;
 INSERT INTO named_tuples VALUES (('y', 10)), (('x',-10));
 
@@ -91,9 +89,7 @@ SELECT a.s FROM named_tuples; -- by name
 SELECT a.2 FROM named_tuples; -- by index
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─a.s─┐
 │ y   │
 │ x   │

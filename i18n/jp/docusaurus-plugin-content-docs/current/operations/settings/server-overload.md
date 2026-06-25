@@ -6,13 +6,11 @@ title: 'サーバー過負荷'
 doc_type: 'reference'
 ---
 
-# サーバー過負荷 \{#server-overload\}
-
 ## 概要 \{#overview\}
 
 サーバーはさまざまな要因により過負荷状態になることがあります。現在の CPU の過負荷状況を判断するために、
-ClickHouse サーバーは CPU の待ち時間（`OSCPUWaitMicroseconds` メトリクス）とビジー時間
-（`OSCPUVirtualTimeMicroseconds` メトリクス）の比率を計算します。サーバーの負荷が一定の比率を超えて過負荷と判断された場合、
+ClickHouse サーバーは CPU の待ち時間 (`OSCPUWaitMicroseconds` メトリクス) とビジー時間
+(`OSCPUVirtualTimeMicroseconds` メトリクス) の比率を計算します。サーバーの負荷が一定の比率を超えて過負荷と判断された場合、
 負荷をこれ以上増やさないように、一部のクエリを破棄したり、接続要求自体を拒否したりすることが妥当です。
 
 サーバー設定 `os_cpu_busy_time_threshold` により、CPU が有用な処理を行っていると見なすための最小ビジー時間が制御されます。

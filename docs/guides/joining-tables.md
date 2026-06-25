@@ -28,7 +28,9 @@ SELECT count()
 FROM stackoverflow.posts AS p
 ANY INNER `JOIN` stackoverflow.comments AS c ON p.Id = c.PostId
 WHERE (p.Title != '') AND (p.Title NOT ILIKE '%clickhouse%') AND (p.Body NOT ILIKE '%clickhouse%') AND (c.Text ILIKE '%clickhouse%')
+```
 
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -49,6 +51,9 @@ WHERE (Title != '') AND (Title NOT ILIKE '%clickhouse%') AND (Body NOT ILIKE '%c
         FROM stackoverflow.comments
         WHERE Text ILIKE '%clickhouse%'
 ))
+```
+
+```response
 ┌─count()─┐
 │       86 │
 └─────────┘
@@ -66,7 +71,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.posts AS p
 INNER JOIN stackoverflow.votes AS v ON p.Id = v.PostId
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -81,7 +88,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -96,7 +105,9 @@ SELECT countIf(VoteTypeId = 2) AS upvotes
 FROM stackoverflow.votes AS v
 INNER JOIN stackoverflow.posts AS p ON v.PostId = p.Id
 WHERE has(arrayFilter(t -> (t != ''), splitByChar('|', p.Tags)), 'java') AND (p.CreationDate >= '2020-01-01') AND (v.CreationDate >= '2020-01-01')
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘
@@ -115,7 +126,9 @@ WHERE (VoteTypeId = 2) AND (PostId IN (
         FROM stackoverflow.posts
         WHERE (CreationDate >= '2020-01-01') AND has(arrayFilter(t -> (t != ''), splitByChar('|', Tags)), 'java')
 ))
+```
 
+```response
 ┌─upvotes─┐
 │  261915 │
 └─────────┘

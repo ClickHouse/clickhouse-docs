@@ -1,15 +1,13 @@
 ---
-sidebar_label: 'BYOC 安全操作手册'
+sidebar_label: 'BYOC 安全作战手册'
 slug: /cloud/security/audit-logging/byoc-security-playbook
-title: 'BYOC 安全操作手册'
-description: '本页说明客户可用于识别潜在安全事件的方法'
+title: 'BYOC 安全作战手册'
+description: '本页面说明了客户可用于识别潜在安全事件的方法'
 doc_type: '指南'
-keywords: ['byoc', 'security', 'playbook', 'best practices', 'compliance']
+keywords: ['byoc', '安全', '作战手册', '最佳实践', '合规']
 ---
 
-# BYOC 安全作战手册 \{#byoc-security-playbook\}
-
-ClickHouse 在“自带云”（Bring Your Own Cloud，BYOC）模式下采用共享责任安全模型。该模型可从我们的信任中心（https://trust.clickhouse.com）下载。以下信息提供给 BYOC 客户，用作识别潜在安全事件的示例。客户应结合自身的安全计划来参考这些信息，以判断是否需要额外的检测和告警。
+ClickHouse 在“自带云” (Bring Your Own Cloud，BYOC) 模式下采用共享责任安全模型。该模型可从我们的信任中心 (https://trust.clickhouse.com) 下载。以下信息提供给 BYOC 客户，用作识别潜在安全事件的示例。客户应结合自身的安全计划来参考这些信息，以判断是否需要额外的检测和告警。
 
 ## 可能已泄露的 ClickHouse 凭证 \{#compromised-clickhouse-credentials\}
 
@@ -29,7 +27,7 @@ FROM clusterAllReplicas('default',system.crash_log)
 
 ClickHouse 使用预先创建的角色来启用系统功能。本节假设客户正在使用 AWS 和 CloudTrail，并且可以访问 CloudTrail 日志。
 
-如果某个事件可能是角色遭入侵导致的结果，请审查 CloudTrail 和 CloudWatch 中与 ClickHouse IAM 角色及操作相关的活动。有关 IAM 角色列表，请参阅作为设置一部分提供的 [CloudFormation](/cloud/reference/byoc/reference/privilege#cloudformation-iam-roles) 堆栈或 Terraform 模块。
+如果某个事件可能是角色遭入侵导致的结果，请审查 CloudTrail 和 CloudWatch 中与 ClickHouse IAM 角色及操作相关的活动。有关 IAM 角色列表，请参阅作为设置一部分提供的 [CloudFormation](/cloud/reference/byoc/reference/privilege#aws-iam-roles) 堆栈或 Terraform 模块。
 
 ## 未经授权访问 EKS 集群 \{#unauthorized-access-eks-cluster\}
 

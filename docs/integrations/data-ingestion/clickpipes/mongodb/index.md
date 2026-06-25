@@ -19,8 +19,7 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
-
-# Ingesting data from MongoDB to ClickHouse (using CDC)
+import ChangingTLSSettings from '@site/docs/_snippets/clickpipes/_changing_tls_settings.md';
 
 <BetaBadge/>
 
@@ -74,6 +73,10 @@ Make sure you're logged in to your ClickHouse Cloud account. If you don't have a
    :::
 
    <Image img={mongodb_connection_details} alt="Fill in connection details" size="lg" border/>
+
+#### (Optional) Changing TLS settings {#optional-changing-tls-settings}
+
+<ChangingTLSSettings/>
 
 #### (Optional) Set up SSH Tunneling {#optional-set-up-ssh-tunneling}
 

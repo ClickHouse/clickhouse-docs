@@ -16,11 +16,8 @@ import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 JVM 指标 \{#jvm-clickstack\}
-
 :::note[TL;DR]
-使用 OpenTelemetry Java agent 在 ClickStack 中监控 JVM 应用程序。包含演示数据集和预置仪表板。
+使用 OpenTelemetry Java agent 在 ClickStack 中监控 JVM 应用程序。包含演示数据集和预置仪表盘。
 :::
 
 ## 集成现有 JVM 应用程序 \{#existing-jvm\}

@@ -21,7 +21,7 @@ title: 'Lessons - performance optimization'
 description: 'Real world examples of performance optimization strategies'
 ---
 
-# Performance optimization: community tested strategies {#performance-optimization}
+
 *This guide is part of a collection of findings gained from community meetups. For more real world solutions and insights you can [browse by specific problem](./community-wisdom.md).*
 *Having trouble with Materialized Views? Check out the [Materialized Views](./materialized-views.md) community insights guide.*
 *If you're experiencing slow queries and want more examples, we also have a [Query Optimization](/optimize/query-optimization) guide.*

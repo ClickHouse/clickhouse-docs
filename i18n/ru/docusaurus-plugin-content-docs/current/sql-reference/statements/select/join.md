@@ -1,15 +1,13 @@
 ---
-description: 'Документация по оператору JOIN'
+description: 'Документация по предложению JOIN'
 sidebar_label: 'JOIN'
 slug: /sql-reference/statements/select/join
-title: 'Оператор JOIN'
-keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANТИ JOIN', 'RIGHT ANТИ JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN', 'NATURAL JOIN']
-doc_type: 'справочник'
+title: 'Предложение JOIN'
+keywords: ['INNER JOIN', 'LEFT JOIN', 'LEFT OUTER JOIN', 'RIGHT JOIN', 'RIGHT OUTER JOIN', 'FULL OUTER JOIN', 'CROSS JOIN', 'LEFT SEMI JOIN', 'RIGHT SEMI JOIN', 'LEFT ANTI JOIN', 'RIGHT ANTI JOIN', 'LEFT ANY JOIN', 'RIGHT ANY JOIN', 'INNER ANY JOIN', 'ASOF JOIN', 'LEFT ASOF JOIN', 'PASTE JOIN', 'NATURAL JOIN']
+doc_type: 'reference'
 ---
 
-# Оператор JOIN \{#join-clause\}
-
-Оператор `JOIN` формирует новую таблицу, объединяя столбцы из одной или нескольких таблиц по общим для них значениям. Это распространённая операция в базах данных с поддержкой SQL, которая соответствует операции соединения в [реляционной алгебре](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators). Особый случай соединения таблицы с самой собой часто называют «self-join».
+Предложение `JOIN` формирует новую таблицу, объединяя столбцы из одной или нескольких таблиц по общим для них значениям. Это распространённая операция в базах данных с поддержкой SQL, которая соответствует операции соединения в [реляционной алгебре](https://en.wikipedia.org/wiki/Relational_algebra#Joins_and_join-like_operators). Особый случай соединения таблицы с самой собой часто называют «self-join».
 
 **Синтаксис**
 
@@ -20,8 +18,7 @@ FROM <left_table>
 (ON <expr_list>)|(USING <column_list>) ...
 ```
 
-Выражения из предложения `ON` и столбцы из предложения `USING` называются «ключами соединения». Если не указано иное, оператор `JOIN` формирует [декартово произведение](https://en.wikipedia.org/wiki/Cartesian_product) строк с совпадающими «ключами соединения», что может приводить к получению результата с гораздо большим количеством строк, чем в исходных таблицах.
-
+Выражения из предложения `ON` и столбцы из предложения `USING` называются «ключами соединения». Если не указано иное, предложение `JOIN` формирует [декартово произведение](https://en.wikipedia.org/wiki/Cartesian_product) строк с совпадающими «ключами соединения», что может приводить к получению результата с гораздо большим количеством строк, чем в исходных таблицах.
 
 ## Поддерживаемые типы JOIN \{#supported-types-of-join\}
 
@@ -103,14 +100,14 @@ FROM <left_table>
 
 Запрос с одним условием соединения по ключу и дополнительным условием для `table_2`:
 
-```sql
+```sql title="Query"
 SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
     ON table_1.Id = table_2.Id AND startsWith(table_2.text, 'Text');
 ```
 
 Обратите внимание, что результат содержит строку с именем `C` и пустым текстовым столбцом. Она включена в результат, так как используется внешнее соединение (`OUTER JOIN`).
 
-```response
+```response title="Response"
 ┌─name─┬─text───┐
 │ A    │ Text A │
 │ B    │ Text B │
@@ -120,14 +117,12 @@ SELECT name, text FROM table_1 LEFT OUTER JOIN table_2
 
 Запрос с соединением типа `INNER` и несколькими условиями:
 
-```sql
+```sql title="Query"
 SELECT name, text, scores FROM table_1 INNER JOIN table_2
     ON table_1.Id = table_2.Id AND table_2.scores > 10 AND startsWith(table_2.text, 'Text');
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 ┌─name─┬─text───┬─scores─┐
 │ B    │ Text B │     15 │
 └──────┴────────┴────────┘
@@ -135,7 +130,7 @@ SELECT name, text, scores FROM table_1 INNER JOIN table_2
 
 Запрос с соединением типа `INNER` и условием с оператором `OR`:
 
-```sql
+```sql title="Query"
 CREATE TABLE t1 (`a` Int64, `b` Int64) ENGINE = MergeTree() ORDER BY a;
 
 CREATE TABLE t2 (`key` Int32, `val` Int64) ENGINE = MergeTree() ORDER BY key;
@@ -147,9 +142,7 @@ INSERT INTO t2 SELECT if(number % 2 == 0, toInt64(number), -number) as key, numb
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─a─┬──b─┬─val─┐
 │ 0 │  0 │   0 │
 │ 1 │ -1 │   1 │
@@ -169,20 +162,17 @@ However, you can try experimental support for conditions like `t1.a = t2.key AND
 
 :::
 
-```sql
+```sql title="Query"
 SELECT a, b, val FROM t1 INNER JOIN t2 ON t1.a = t2.key OR t1.b = t2.key AND t2.val > 3;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─a─┬──b─┬─val─┐
 │ 0 │  0 │   0 │
 │ 2 │ -2 │   2 │
 │ 4 │ -4 │   4 │
 └───┴────┴─────┘
 ```
-
 
 ## JOIN с условиями неравенства для столбцов из разных таблиц \{#join-with-inequality-conditions-for-columns-from-different-tables\}
 

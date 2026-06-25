@@ -3,8 +3,8 @@ sidebar_label: 'JDBC'
 sidebar_position: 2
 keywords: ['clickhouse', 'jdbc', 'connect', 'integrate']
 slug: /integrations/jdbc/jdbc-with-clickhouse
-description: 'ClickHouse JDBC Bridge により、JDBC ドライバーが利用可能なあらゆる外部データソースのデータに ClickHouse からアクセスできるようになります'
-title: 'JDBC で ClickHouse を外部データソースに接続する'
+description: 'ClickHouse JDBC Bridge を使用すると、JDBC ドライバーが提供されている任意の外部データソース上のデータに ClickHouse からアクセスできます'
+title: 'JDBC を使用して ClickHouse を外部データソースに接続する'
 doc_type: 'guide'
 ---
 
@@ -14,9 +14,6 @@ import TabItem from '@theme/TabItem';
 import Jdbc01 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-01.png';
 import Jdbc02 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-02.png';
 import Jdbc03 from '@site/static/images/integrations/data-ingestion/dbms/jdbc-03.png';
-
-
-# JDBC を使用して ClickHouse を外部データソースに接続する \{#connecting-clickhouse-to-external-data-sources-with-jdbc\}
 
 :::warning
 clickhouse-jdbc-bridge には実験的なコードが含まれており、現在はサポートされていません。信頼性やセキュリティに関する脆弱性を含んでいる可能性があります。自己責任で使用してください。
@@ -28,7 +25,7 @@ JDBC を使用するには ClickHouse JDBC Bridge が必要なため、ローカ
 
 **概要:** <a href="https://github.com/ClickHouse/clickhouse-jdbc-bridge" target="_blank">ClickHouse JDBC Bridge</a> を [jdbc テーブル関数](/sql-reference/table-functions/jdbc.md) または [JDBC テーブルエンジン](/engines/table-engines/integrations/jdbc.md) と組み合わせて使用することで、<a href="https://en.wikipedia.org/wiki/JDBC_driver" target="_blank">JDBC ドライバー</a> が提供されている任意の外部データソース上のデータに ClickHouse からアクセスできるようになります。
 
-<Image img={Jdbc01} size="lg" alt="ClickHouse JDBC Bridge のアーキテクチャ図" background='white'/>
+<Image img={Jdbc01} size="lg" alt="ClickHouse JDBC Bridge のアーキテクチャ図" background="white" />
 
 これは、対象の外部データソース向けのネイティブな組み込み [integration engine](/engines/table-engines/integrations)、テーブル関数、または外部ディクショナリが存在しない場合でも、そのデータソース用の JDBC ドライバーがあれば利用できるため便利です。
 
@@ -43,10 +40,10 @@ ClickHouse JDBC Bridge は、読み取りと書き込みの両方に使用でき
 
 1. Unix シェルとインターネット接続がある
 2. <a href="https://www.gnu.org/software/wget/" target="_blank">wget</a> がインストールされている
-3. 最新バージョンの **Java**（例: <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> バージョン >= 17）がインストールされている
-4. 最新バージョンの **MySQL**（例: <a href="https://www.mysql.com" target="_blank">MySQL</a> バージョン >= 8）がインストールされ、稼働している
+3. 最新バージョンの **Java** (例: <a href="https://openjdk.java.net" target="_blank">OpenJDK</a> バージョン &gt;= 17) がインストールされている
+4. 最新バージョンの **MySQL** (例: <a href="https://www.mysql.com" target="_blank">MySQL</a> バージョン &gt;= 8) がインストールされ、稼働している
 5. 最新バージョンの **ClickHouse** が [インストール](/getting-started/install/install.mdx) され、稼働している
-:::
+   :::
 
 ## ClickHouse JDBC Bridge をローカルにインストールする \{#install-the-clickhouse-jdbc-bridge-locally\}
 

@@ -7,7 +7,6 @@ title: 'Comparing ClickHouse Cloud and Amazon Redshift'
 doc_type: 'guide'
 ---
 
-# Amazon Redshift to ClickHouse migration
 
 > This document provides an introduction to migrating data from Amazon
 Redshift to ClickHouse.

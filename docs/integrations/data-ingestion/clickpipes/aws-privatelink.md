@@ -21,8 +21,6 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
-# AWS PrivateLink for ClickPipes
-
 You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to establish secure connectivity between VPCs,
 AWS services, your on-premises systems, and ClickHouse Cloud without exposing traffic to the public Internet.
 
@@ -37,6 +35,10 @@ data source types:
 - Postgres
 - MySQL
 - MongoDB
+
+:::note
+For Kafka, the [schema registry](/integrations/clickpipes/kafka/schema-registries) can be reached over the same reverse private endpoint as the brokers — it does not need to be publicly accessible — provided its hostname resolves to the endpoint's private IP addresses.
+:::
 
 ## Supported AWS PrivateLink endpoint types {#aws-privatelink-endpoint-types}
 

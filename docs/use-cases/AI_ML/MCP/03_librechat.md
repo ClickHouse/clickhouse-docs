@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/librechat
 sidebar_label: 'Integrate LibreChat'
-title: 'Set up ClickHouse MCP server with LibreChat and ClickHouse Cloud'
+title: 'Using ClickHouse MCP server with LibreChat'
 pagination_prev: null
 pagination_next: null
 description: 'This guide explains how to set up LibreChat with a ClickHouse MCP server using Docker.'
@@ -14,8 +14,6 @@ import {CardHorizontal} from '@clickhouse/click-ui/bundled'
 import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
-
-# Using ClickHouse MCP server with LibreChat
 
 > This guide explains how to set up LibreChat with a ClickHouse MCP server using Docker
 > and connect it to the ClickHouse example datasets.

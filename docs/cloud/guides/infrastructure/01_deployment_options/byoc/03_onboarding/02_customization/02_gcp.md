@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 import byoc_gcp_subnet from '@site/static/images/cloud/reference/byoc-gcp-subnet.png';
+import byoc_gcp_existing_vpc_ui from '@site/static/images/cloud/reference/byoc-gcp-existing-vpc-ui.png';
 
 ## Customer-managed VPC (BYO-VPC) for GCP {#customer-managed-vpc-gcp}
 
@@ -32,16 +33,15 @@ Ensure a [Cloud NAT gateway](https://cloud.google.com/nat/docs/overview) is depl
 **DNS Resolution**
 Ensure your VPC has working DNS resolution and doesn't block, interfere with, or overwrite standard DNS names. ClickHouse BYOC relies on DNS to resolve Tailscale control servers and ClickHouse service endpoints. If DNS is unavailable or misconfigured, BYOC services may fail to connect or operate properly.
 
-### Contact ClickHouse support {#contact-clickhouse-support}
+### Set up BYOC infrastructure {#set-up-byoc-infrastructure}
 
-After completing the above configuration steps, create a support ticket with the following information:
+In the ClickHouse Cloud console, configure the following when setting up new infrastructure:
 
-* Your GCP project ID
-* The GCP region where you want to deploy the service
-* Your VPC network name
-* The subnet name you've allocated for ClickHouse
-* (Optional) The secondary IPv4 range names dedicated for ClickHouse. This is only required if the private subnet has multiple secondary IPv4 ranges and not all of them are intended for ClickHouse use
+1. Under **VPC configuration**, select **Use existing VPC**.
+2. Enter your **VPC network name**.
+3. Enter the **Subnet name** you allocated for ClickHouse.
+4. Click **Set up Infrastructure** to begin provisioning.
 
-Our team will review your configuration and complete the provisioning from our side.
+<Image img={byoc_gcp_existing_vpc_ui} size="lg" alt="ClickHouse Cloud BYOC setup UI with Use existing VPC selected for GCP" />
 
 </VerticalStepper>

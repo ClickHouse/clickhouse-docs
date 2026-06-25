@@ -2,24 +2,22 @@
 slug: /cloud/guides/production-readiness
 sidebar_label: '生产就绪'
 title: 'ClickHouse Cloud 生产就绪指南'
-description: '为正从快速入门阶段过渡到企业级 ClickHouse Cloud 部署的组织提供指南'
-keywords: ['生产就绪', '企业', 'saml', 'sso', 'terraform', '监控', '备份', '灾难恢复']
+description: '面向从快速入门过渡到企业级就绪 ClickHouse Cloud 部署的组织指南'
+keywords: ['生产就绪', 'enterprise', 'saml', 'sso', 'terraform', '监控', '备份', '灾难恢复']
 doc_type: 'guide'
 ---
-
-# ClickHouse Cloud 生产就绪指南 \{#production-readiness\}
 
 适用于已完成快速入门指南且已有活跃服务并在持续接收数据的组织
 
 :::note[摘要]
 本指南将帮助你从快速入门过渡到满足企业级要求的 ClickHouse Cloud 部署。你将学习如何：
 
-- 建立独立的开发/预发布/生产环境以进行安全测试
-- 将 SAML/SSO 认证与身份提供商集成
-- 使用 Terraform 或 Cloud API 实现部署自动化
-- 将监控系统接入你的告警基础设施（Prometheus、PagerDuty）
-- 验证备份流程并编写灾难恢复流程文档
-:::
+* 建立独立的开发/预发布/生产环境以进行安全测试
+* 将 SAML/SSO 身份验证与身份提供商集成
+* 使用 Terraform 或 Cloud API 实现部署自动化
+* 将监控系统接入你的告警基础设施 (Prometheus、PagerDuty) 
+* 验证备份流程并编写灾难恢复流程文档
+  :::
 
 ## 简介 \{#introduction\}
 
@@ -175,7 +173,7 @@ scrape_configs:
 
 ### 备份策略评估 \{#backup-strategy\}
 
-ClickHouse Cloud 提供带有可配置保留期的自动备份。根据合规性和恢复要求评估你当前的备份配置。对备份位置或加密有特定合规性要求的企业客户，可以将 ClickHouse Cloud 配置为将备份存储在其自有的云存储桶中（BYOB）。有关 BYOB 配置，请联系 ClickHouse 支持。
+ClickHouse Cloud 提供带有可配置保留期的自动备份。根据合规性和恢复要求评估你当前的备份配置。如果您对备份位置或加密有特定的合规性要求，可以将 ClickHouse Cloud 配置为将备份存储在您自己的云存储桶中 (BYOB) 。有关 BYOB 配置，请联系 ClickHouse Support。
 
 ### 验证并测试恢复流程 \{#validate-test-recovery\}
 

@@ -20,11 +20,8 @@ import finish_import from '@site/static/images/clickstack/mongodb/finish-import.
 import example_dashboard from '@site/static/images/clickstack/mongodb/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг логов MongoDB с ClickStack \{#mongodb-logs-clickstack\}
-
-:::note[Вкратце]
-Собирайте и визуализируйте логи сервера MongoDB (JSON-формат 4.4+) в ClickStack с помощью OTel-приёмника `filelog`. Включает демо-набор данных и готовую панель мониторинга.
+:::note[Кратко]
+Собирайте и визуализируйте логи сервера MongoDB (JSON-формат 4.4+) в ClickStack с помощью получателя OTel `filelog`. Включает демо-набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующей MongoDB \{#existing-mongodb\}

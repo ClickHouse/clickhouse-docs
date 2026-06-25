@@ -16,11 +16,8 @@ import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг метрик JVM в ClickStack \{#jvm-clickstack\}
-
 :::note[Кратко]
-Мониторьте JVM‑приложения в ClickStack с помощью Java‑агента OpenTelemetry. Доступны демо‑набор данных и готовая панель мониторинга.
+Отслеживайте приложения JVM в ClickStack с помощью Java-агента OpenTelemetry. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим JVM‑приложением \{#existing-jvm\}

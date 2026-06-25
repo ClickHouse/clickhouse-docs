@@ -1,11 +1,11 @@
 ---
 sidebar_label: 'Artie'
 sidebar_position: 12
-keywords: ['clickhouse', 'Artie', '연결', '통합', 'CDC', 'etl', '데이터 통합', '실시간', '스트리밍']
+keywords: ['clickhouse', 'Artie', 'connect', 'integrate', 'cdc', 'etl', 'data integration', 'real-time', 'streaming']
 slug: /integrations/artie
-description: 'Artie CDC 스트리밍 플랫폼을 사용하여 데이터를 ClickHouse로 스트리밍합니다'
+description: 'Artie CDC 스트리밍 플랫폼을 사용하여 ClickHouse로 데이터를 스트리밍합니다'
 title: 'Artie를 ClickHouse에 연결하기'
-doc_type: '가이드'
+doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
@@ -16,10 +16,7 @@ import monitor from '@site/static/images/integrations/data-ingestion/etl-tools/a
 import schema_notification from '@site/static/images/integrations/data-ingestion/etl-tools/artie/schema_notification.png';
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# Artie를 ClickHouse에 연결하기 \{#connect-artie-to-clickhouse\}
-
-<a href="https://www.artie.com/" target="_blank">Artie</a>는 운영 환경 데이터를 ClickHouse로 복제하여 고객 대상 분석, 운영 워크플로, 운영 환경의 Agentic AI를 구현할 수 있게 해 주는 완전 관리형 실시간 데이터 스트리밍 플랫폼입니다.
+<a href="https://www.artie.com/" target="_blank">Artie</a>는 프로덕션 데이터를 ClickHouse로 복제하여 대고객 분석, 운영 워크플로, 그리고 프로덕션 환경에서의 Agentic AI를 지원하는 완전 관리형 실시간 데이터 스트리밍 플랫폼입니다.
 
 ## 개요 \{#overview\}
 

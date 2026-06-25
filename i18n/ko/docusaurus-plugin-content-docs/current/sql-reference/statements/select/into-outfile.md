@@ -6,8 +6,6 @@ title: 'INTO OUTFILE 절'
 doc_type: 'reference'
 ---
 
-# INTO OUTFILE 절 \{#into-outfile-clause\}
-
 `INTO OUTFILE` 절은 `SELECT` 쿼리의 결과를 **클라이언트** 측 파일로 리디렉션합니다.
 
 압축 파일도 지원합니다. 압축 유형은 파일 이름의 확장자로 감지되며(기본값은 `'auto'` 모드), `COMPRESSION` 절에서 명시적으로 지정할 수도 있습니다. 특정 압축 유형에 대한 압축 수준은 `LEVEL` 절에서 지정할 수 있습니다.
@@ -35,13 +33,11 @@ SELECT <expr_list> INTO OUTFILE file_name [AND STDOUT] [APPEND | TRUNCATE] [COMP
 
 다음 쿼리를 [command-line client](../../../interfaces/client.md)를 사용하여 실행하십시오:
 
-```bash
+```bash title="Query"
 clickhouse-client --query="SELECT 1,'ABC' INTO OUTFILE 'select.gz' FORMAT CSV;"
 zcat select.gz 
 ```
 
-결과:
-
-```text
+```text title="Response"
 1,"ABC"
 ```

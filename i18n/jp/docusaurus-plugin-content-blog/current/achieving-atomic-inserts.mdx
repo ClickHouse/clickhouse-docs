@@ -1,0 +1,141 @@
+---
+title: ClickHouse Cloud でアトミックな insert と複数テーブルの整合性を実現する
+description: ステージングテーブルとパーティションレベルの操作を使って、複数ステートメントトランザクションなしで ClickHouse Cloud にデータをアトミックにロードし、複数テーブルの整合性を保つ方法。
+date: 2026-06-01
+tags: ['データインジェスト', 'ベストプラクティス']
+keywords: ['アトミックな insert', 'ステージングテーブル', 'MOVE PARTITION', 'ATTACH PARTITION', 'REPLACE PARTITION', '複数テーブルの整合性']
+---
+
+{frontMatter.description}
+
+{/* truncate */}
+
+## 問題 \{#problem\}
+
+ClickHouse Cloud は、従来の RDBMS でいう複数ステートメントのトランザクションをサポートしていません。
+このため、よくある課題が 2 つ生じます。
+
+1. バルクロード時の単一テーブルの原子性: 一般的な方法は、一時的な部分キーにデータを insert し、その後レコードを実際のキーにコピーして一時レコードを削除することです。しかし、この方法は効率が悪く、特に削除ステップが処理全体の時間の 90% 以上を占めることがあります。
+2. 複数テーブル間の整合性: パイプラインが Table A のロードには成功しても Table B で失敗した場合、Table A はすでにコミットされており、ロールバックできません。その結果、両方のテーブルをまたいでクエリするアナリストには、整合していないデータが見えることになります。
+
+## 背景 \{#background\}
+
+ClickHouse は、単一の `INSERT`・単一のパーティションのレベルで原子性を保証します。つまり、`INSERT` が成功すれば、そのブロック内のすべての行が可視になり、失敗した場合は 1 行も可視になりません。ただし、複数回の `INSERT` や複数のテーブルにまたがるデータを原子的にコミットするための組み込みの仕組みはありません。
+
+パーティション操作コマンド ([`MOVE PARTITION TO TABLE`](/sql-reference/statements/alter/partition#move-partition-to-table)、[`REPLACE PARTITION`](/sql-reference/statements/alter/partition#replace-partition)、[`ATTACH PARTITION FROM`](/sql-reference/statements/alter/partition#attach-partition-from)) は、ソーステーブルと宛先テーブルが同じストレージポリシーを共有している場合、メタデータレベルで動作します。
+
+つまり、データサイズに関係なくほぼ瞬時に実行できるため、アトミックスワップパターンの理想的な構成要素になります。
+
+## 推奨される方法 \{#recommended-solution\}
+
+障害発生時の後処理で整合性を取ろうとして本番テーブルに直接 insert するのではなく、専用のステージングテーブルを受け皿として使用します。データを検証した後、パーティションレベルの操作を使って、そのデータを本番環境にアトミックに昇格させます。
+
+## 単一テーブルの原子性を実現する手順 \{#step-by-step\}
+
+<VerticalStepper headerLevel="h3">
+  ### ステージングテーブルを作成する {#create-staging-table}
+
+  本番テーブルと同じスキーマ、パーティションキー、`ORDER BY`、ストレージポリシーを使用します。
+
+  ```sql
+  CREATE TABLE my_table_staging AS my_table_prod;
+  ```
+
+  ### ステージングテーブルにデータを insert する {#insert-into-staging}
+
+  本番テーブルではなく、ステージングテーブルに対して insert を実行します。
+
+  ```sql
+  INSERT INTO my_table_staging SELECT ... FROM source;
+  ```
+
+  ### insert が失敗した場合は、TRUNCATE して再試行する {#on-failure}
+
+  ステージングテーブルを TRUNCATE して、再度ロードを実行します。本番データには影響しません。
+
+  ```sql
+  TRUNCATE TABLE my_table_staging;
+  ```
+
+  ### insert が成功した場合は、パーティションを本番テーブルに移動する {#on-success}
+
+  データを本番テーブルに移動し、ステージングテーブルから削除するには、`MOVE PARTITION` を使用します。
+
+  ```sql
+  ALTER TABLE my_table_staging MOVE PARTITION <partition_expr> TO TABLE my_table_prod;
+  ```
+
+  または、`ATTACH PARTITION` を使用して、本番テーブル内の既存のパーティションにデータをコピーできます。
+
+  ```sql
+  ALTER TABLE my_table_prod ATTACH PARTITION tuple() FROM my_table_staging;
+  ```
+
+  どちらの操作も、同じストレージポリシー上でのメタデータレベルの変更であり、ほぼ瞬時に完了します。
+
+  ### ステージングテーブルをクリーンアップする {#clean-up}
+
+  すべてのパーティションを移動し終えたら、次のロードに備えて空のままにしておけるよう、ステージングテーブルを TRUNCATE します。
+
+  ```sql
+  TRUNCATE TABLE my_table_staging;
+  ```
+</VerticalStepper>
+
+## 複数テーブルの整合性 {#multi-table-consistency}
+
+同じパターンは、2 つ以上のテーブルをすべて読み込み終えるまで、どのテーブルもアナリストに見せたくないパイプラインにも有効です。各テーブルのデータをそれぞれ専用のステージングテーブルに読み込んで検証し、その後、パーティションの移動をまとめて実行します。各移動はほぼ瞬時に完了するメタデータ操作であるため、テーブル間で不整合が生じる時間は、読み込み全体にかかる時間ではなく、パーティションの切り替えに要する時間まで短縮されます。
+
+## 要件と制約 {#requirements-and-constraints}
+
+`MOVE PARTITION TO TABLE`、`REPLACE PARTITION`、`ATTACH PARTITION FROM` では、ソーステーブルと宛先テーブルが次の条件を満たしている必要があります。
+
+* 同一のカラム構造
+* 同一のパーティションキー、`ORDER BY` キー、主キー
+* 同一のストレージポリシー
+* 宛先テーブルには、ソーステーブルのすべてのインデックスとプロジェクションが含まれている必要があります
+
+## 例
+
+以下の例は、[fiddle](https://fiddle.clickhouse.com/7ef9ed84-ac14-4f2c-9ca5-d5913089769a)で対話的に実行できます：
+
+```sql
+CREATE TABLE prod
+(
+  uid Int16,
+  name String,
+  age Int16
+)
+ENGINE=MergeTree
+ORDER BY ();
+
+CREATE TABLE staging
+(
+  uid Int16,
+  name String,
+  age Int16
+)
+ENGINE=MergeTree
+ORDER BY ();
+
+-- Initial data
+INSERT INTO prod VALUES (123, 'John', 33);
+INSERT INTO prod VALUES (456, 'Ksenia', 48);
+-- Load data
+INSERT INTO staging VALUES (8811, 'Alice', 50);
+INSERT INTO staging VALUES (8812, 'Bob', 23);
+
+-- Validate import
+SELECT 'Staging count:', COUNT() FROM staging;
+-- Move partition
+ALTER TABLE staging MOVE PARTITION tuple() TO TABLE prod; -- atomic op
+
+-- Check data
+SELECT 'Prod count:', COUNT() FROM prod;
+SELECT * FROM prod;
+```
+
+## 参考資料 {#references}
+
+* [**パーティションとパーツの操作**](/sql-reference/statements/alter/partition)
+* この戦略の詳細については、ブログ記事 [**大規模な ClickHouse データロードを高速化する - パート 3: 大規模なデータロードの耐障害性を高める**](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part3) を参照してください。

@@ -1,14 +1,12 @@
 ---
 title: '날짜 및 시간 데이터 타입 - 시계열'
 sidebar_label: '날짜 및 시간 데이터 타입'
-description: 'ClickHouse의 시계열용 데이터 타입입니다.'
+description: 'ClickHouse의 시계열 데이터 타입입니다.'
 slug: /use-cases/time-series/date-time-data-types
-keywords: ['시계열', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', '데이터 타입', '시간 관련 데이터', '타임스탬프']
+keywords: ['time-series', 'DateTime', 'DateTime64', 'Date', 'Time', 'Time64', 'data types', 'temporal data', 'timestamp']
 show_related_blogs: true
-doc_type: '참조'
+doc_type: 'reference'
 ---
-
-# 날짜 및 시간 데이터 타입 \{#date-and-time-data-types\}
 
 효과적인 시계열 데이터 관리를 위해서는 다양한 날짜 및 시간 타입이 필요하며, ClickHouse는 이에 정확히 부합하는 기능을 제공합니다.
 간결한 날짜 표현부터 나노초 정밀도의 고정밀 타임스탬프까지, 이러한 타입들은 다양한 시계열 애플리케이션의 실용적인 요구사항과 저장 효율성 간의 균형을 맞추도록 설계되었습니다.

@@ -1,13 +1,11 @@
 ---
-description: 'PostgreSQL 테이블 엔진은 원격 PostgreSQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 허용합니다.'
+description: 'PostgreSQL 엔진을 사용하면 원격 PostgreSQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 실행할 수 있습니다.'
 sidebar_label: 'PostgreSQL'
 sidebar_position: 160
 slug: /engines/table-engines/integrations/postgresql
 title: 'PostgreSQL 테이블 엔진'
 doc_type: 'guide'
 ---
-
-# PostgreSQL 테이블 엔진 \{#postgresql-table-engine\}
 
 PostgreSQL 엔진을 사용하면 원격 PostgreSQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 실행할 수 있습니다.
 

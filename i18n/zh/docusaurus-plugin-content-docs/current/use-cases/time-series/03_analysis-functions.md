@@ -1,19 +1,17 @@
 ---
-title: '分析函数 - 时间序列'
+title: '分析函数 - 时序'
 sidebar_label: '分析函数'
-description: '用于在 ClickHouse 中分析时间序列数据的函数。'
+description: '在 ClickHouse 中分析时序数据的函数。'
 slug: /use-cases/time-series/analysis-functions
-keywords: ['时间序列', '分析函数', '窗口函数', '聚合函数', '移动平均', '趋势分析']
+keywords: ['时序', '分析函数', '窗口函数', '聚合函数', '移动平均', '趋势分析']
 show_related_blogs: true
 doc_type: 'reference'
 ---
 
-# 时间序列分析函数 \{#time-series-analysis-functions\}
-
 在 ClickHouse 中，可以使用标准的 SQL 聚合函数和窗口函数来进行时间序列分析。
 处理时间序列数据时，通常会遇到三种主要类型的指标：
 
-* 随时间单调递增的计数器指标 (例如页面浏览量或事件总数)
+* 随时间单调递增的计数器类型指标 (例如页面浏览量或事件总数)
 * 表示某一时刻测量值、可升可降的仪表指标 (例如 CPU 使用率或温度)
 * 对观测值进行采样并按桶计数的直方图指标 (例如请求时长或响应大小)
 

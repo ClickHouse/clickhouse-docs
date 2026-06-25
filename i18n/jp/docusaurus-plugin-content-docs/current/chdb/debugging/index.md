@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'debug', 'explain', 'profiling', 'logging']
 doc_type: 'guide'
 ---
 
-# DataStore のデバッグ \{#datastore-debugging\}
-
-DataStore は、データパイプラインを理解し、最適化するための包括的なデバッグツール群を提供します。
+DataStore には、データパイプラインの理解と最適化に役立つ包括的なデバッグツールが用意されています。
 
 ## デバッグツールの概要 \{#overview\}
 
@@ -59,7 +57,7 @@ profiler.report()
 
 実行前にクエリの実行計画を確認します。
 
-```python
+```python title="Query"
 ds = pd.read_csv("data.csv")
 
 query = (ds
@@ -72,9 +70,7 @@ query = (ds
 query.explain()
 ```
 
-出力結果:
-
-```text
+```text title="Response"
 Pipeline:
   Source: file('data.csv', 'CSVWithNames')
   Filter: amount > 1000
@@ -92,12 +88,11 @@ GROUP BY region
 
 ***
 
-
 ## プロファイリング \{#profiling\}
 
 各処理の実行時間を計測します。
 
-```python
+```python title="Query"
 from chdb.datastore.config import config, get_profiler
 
 # Enable profiling
@@ -119,9 +114,7 @@ profiler = get_profiler()
 profiler.report(min_duration_ms=0.1)
 ```
 
-出力:
-
-```text
+```text title="Response"
 Performance Report
 ==================
 Step                          Duration    Calls
@@ -140,7 +133,6 @@ Total                         1.939s      7
 詳細は [Profiling Guide](profiling.md) を参照してください。
 
 ***
-
 
 ## ロギング \{#logging\}
 

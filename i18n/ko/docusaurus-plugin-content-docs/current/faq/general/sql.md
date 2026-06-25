@@ -1,5 +1,5 @@
 ---
-title: 'ClickHouse는 어떤 SQL 구문을 지원하나요?'
+title: 'ClickHouse는 어떤 SQL 구문을 지원합니까?'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/sql
@@ -7,8 +7,6 @@ description: 'ClickHouse는 SQL 구문을 100% 지원합니다'
 doc_type: 'reference'
 keywords: ['SQL 구문', 'ANSI SQL']
 ---
-
-# ClickHouse는 어떤 SQL 구문을 지원합니까? \{#what-sql-syntax-does-clickhouse-support\}
 
 ClickHouse는 다음과 같은 기능을 포함하여 SQL 구문을 완전히 지원합니다:
 

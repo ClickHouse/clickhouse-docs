@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse에서 PostgreSQL 와이어 프로토콜 인터페이스에 대한 문서'
+description: 'ClickHouse의 PostgreSQL wire 프로토콜 인터페이스 문서'
 sidebar_label: 'PostgreSQL 인터페이스'
 sidebar_position: 20
 slug: /interfaces/postgresql
@@ -9,15 +9,13 @@ doc_type: 'reference'
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
-# PostgreSQL 인터페이스 \{#postgresql-interface\}
-
 <CloudNotSupportedBadge />
 
 :::tip
 NVMe 스토리지를 기반으로 하는 [Managed Postgres](/docs/cloud/managed-postgres) 서비스를 확인하십시오. 이 스토리지는 컴퓨트와 물리적으로 함께 배치되어 EBS와 같은 네트워크 연결 스토리지를 사용하는 대안에 비해 디스크에 병목이 있는 워크로드에서 최대 10배 빠른 성능을 제공하며, Postgres CDC 커넥터를 사용하는 ClickPipes를 통해 Postgres 데이터를 ClickHouse로 복제할 수 있도록 합니다.
 :::
 
-ClickHouse는 PostgreSQL 와이어 프로토콜을 지원하므로 Postgres 클라이언트를 사용하여 ClickHouse에 연결할 수 있습니다. 어떤 의미에서는 ClickHouse가 PostgreSQL 인스턴스로 동작할 수 있으므로, ClickHouse에서 아직 직접 지원하지 않는 PostgreSQL 클라이언트 애플리케이션(예: Amazon Redshift)을 ClickHouse에 연결할 수 있습니다.
+ClickHouse는 PostgreSQL 와이어 프로토콜을 지원하므로 PostgreSQL 클라이언트를 사용하여 ClickHouse에 연결할 수 있습니다. 어떤 의미에서는 ClickHouse가 PostgreSQL 인스턴스로 동작할 수 있으므로, ClickHouse에서 아직 직접 지원하지 않는 PostgreSQL 클라이언트 애플리케이션(예: Amazon Redshift)을 ClickHouse에 연결할 수 있습니다.
 
 PostgreSQL 와이어 프로토콜을 활성화하려면 서버의 구성 파일에 [postgresql&#95;port](/operations/server-configuration-parameters/settings#postgresql_port) 설정을 추가하십시오. 예를 들어 `config.d` 폴더의 새 XML 파일에서 포트를 정의할 수 있습니다:
 

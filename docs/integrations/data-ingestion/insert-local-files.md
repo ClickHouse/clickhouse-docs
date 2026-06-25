@@ -9,7 +9,6 @@ doc_type: 'guide'
 keywords: ['insert local files ClickHouse', 'ClickHouse local file import', 'clickhouse-client file upload']
 ---
 
-# Insert local files
 
 You can use `clickhouse-client` to stream local files into your ClickHouse service. This allows you the ability to preprocess
 the data using the many powerful and convenient ClickHouse functions. Let's look at an example...

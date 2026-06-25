@@ -2,13 +2,11 @@
 slug: /optimize/skipping-indexes/examples
 sidebar_label: '데이터 스키핑 인덱스 - 예시'
 sidebar_position: 2
-description: '데이터 스키핑 인덱스 예시 모음'
+description: '통합된 스킵 인덱스 예시'
 title: '데이터 스키핑 인덱스 예시'
 doc_type: 'guide'
-keywords: ['데이터 스키핑 인덱스', '데이터 스키핑', '성능', '인덱싱', '모범 사례']
+keywords: ['스키핑 인덱스', '데이터 스키핑', '성능', '인덱스', '모범 사례']
 ---
-
-# 데이터 스키핑 인덱스 예시 \{#data-skipping-index-examples\}
 
 이 페이지에서는 ClickHouse 데이터 스키핑 인덱스 예시를 정리하여 각 인덱스 유형을 선언하는 방법, 언제 사용하는지, 그리고 인덱스가 적용되었는지 확인하는 방법을 설명합니다. 모든 기능은 [MergeTree 계열 테이블](/engines/table-engines/mergetree-family/mergetree)에서 동작합니다.
 
@@ -24,13 +22,12 @@ ClickHouse는 여섯 가지 스킵 인덱스 유형을 지원합니다:
 | --------------------------------------------------- | ----------------------------------- |
 | **minmax**                                          | 각 그래뉼(granule)에서 최소값과 최대값을 추적       |
 | **set(N)**                                          | 그래뉼당 최대 N개의 서로 다른 값을 저장             |
-| **text**                                            | 전체 텍스트 검색을 위해 토큰화된 문자열 데이터에 대한 역인덱스 |
+| **text**                                            | 전체 텍스트 검색을 위해 토큰화된 문자열 데이터에 대한 역색인 |
 | **bloom&#95;filter([false&#95;positive&#95;rate])** | 존재 여부 검사를 위한 확률적 필터                 |
 | **ngrambf&#95;v1**                                  | 부분 문자열 검색을 위한 N-그램 블룸 필터            |
 | **tokenbf&#95;v1**                                  | 전체 텍스트 검색을 위한 토큰 기반 블룸 필터           |
 
 각 섹션에서는 샘플 데이터와 함께 예제를 제시하고, 쿼리 실행 시 인덱스 사용 여부를 확인하는 방법을 보여줍니다.
-
 
 ## MinMax 인덱스 \{#minmax-index\}
 

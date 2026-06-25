@@ -14,10 +14,7 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-
-# 쿼리 인사이트 \{#query-insights\}
-
-**쿼리 인사이트(Query Insights)** 기능은 시각화와 테이블을 통해 ClickHouse의 내장 쿼리 로그를 보다 쉽게 활용할 수 있도록 해줍니다. ClickHouse의 `system.query_log` 테이블은 쿼리 최적화, 디버깅, 전체 클러스터 상태와 성능 모니터링을 위한 주요 정보 원천입니다.
+The **쿼리 인사이트** 기능은 시각화와 테이블을 통해 ClickHouse의 내장 쿼리 로그를 더 쉽게 활용할 수 있도록 합니다. ClickHouse의 `system.query_log` 테이블은 쿼리 최적화, 디버깅, 그리고 전반적인 클러스터 상태 및 성능 모니터링을 위한 핵심 정보원입니다.
 
 ## 쿼리 개요 \{#query-overview\}
 

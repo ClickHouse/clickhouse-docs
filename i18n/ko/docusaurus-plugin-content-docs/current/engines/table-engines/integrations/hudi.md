@@ -7,8 +7,6 @@ title: 'Hudi 테이블 엔진'
 doc_type: 'reference'
 ---
 
-# Hudi 테이블 엔진 \{#hudi-table-engine\}
-
 이 엔진은 Amazon S3에 있는 기존 Apache [Hudi](https://hudi.apache.org/) 테이블과의 읽기 전용 통합을 제공합니다.
 
 ## 테이블 생성 \{#create-table\}

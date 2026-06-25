@@ -2,30 +2,27 @@
 sidebar_label: 'clickhouse-local の使用'
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/clickhouse-local
-title: 'clickhouse-local を使用して ClickHouse に移行する'
-description: 'clickhouse-local を使用して ClickHouse に移行する方法を解説するガイド'
+title: 'clickhouse-local を使用した ClickHouse への移行'
+description: 'clickhouse-local を使用して ClickHouse に移行するためのガイド'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import AddARemoteSystem from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_add_remote_ip_access_list_detail.md';
 import ch_local_01 from '@site/static/images/integrations/migration/ch-local-01.png';
 import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.png';
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-# clickhouse-local を使用した ClickHouse への移行 \{#migrating-to-clickhouse-using-clickhouse-local\}
-
-<Image img={ch_local_01} size='lg' alt='セルフマネージド ClickHouse の移行'/>
+<Image img={ch_local_01} size="lg" alt="セルフマネージド ClickHouse の移行" />
 
 ClickHouse、より具体的には [`clickhouse-local`](/operations/utilities/clickhouse-local.md) を ETL ツールとして使用して、現在のデータベースシステムから ClickHouse Cloud へデータを移行できます。ただし、現在のデータベースシステムに対して、ClickHouse が提供する [integration engine](/engines/table-engines/#integration-engines) または [table function](/sql-reference/table-functions/) が存在するか、あるいはベンダー提供の JDBC ドライバーまたは ODBC ドライバーが利用可能である必要があります。
 
-この移行方法を「ピボット」方式と呼ぶことがあります。これは、データをソースデータベースから宛先データベースへ移動する際に、中間のピボットポイント（中継点）を利用するためです。たとえば、セキュリティ要件により、プライベートまたは内部ネットワーク内からはアウトバウンド接続のみが許可されている場合、この方法が必要になることがあります。その場合、clickhouse-local を使ってソースデータベースからデータをプルし、続いて clickhouse-local をピボットポイントとして利用しながら、データを宛先の ClickHouse データベースへプッシュします。
+この移行方法を「ピボット」方式と呼ぶことがあります。これは、データをソースデータベースから宛先データベースへ移動する際に、中間のピボットポイント (中継点) を利用するためです。たとえば、セキュリティ要件により、プライベートまたは内部ネットワーク内からはアウトバウンド接続のみが許可されている場合、この方法が必要になることがあります。その場合、clickhouse-local を使ってソースデータベースからデータをプルし、続いて clickhouse-local をピボットポイントとして利用しながら、データを宛先の ClickHouse データベースへプッシュします。
 
-ClickHouse は、[MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL](/engines/table-engines/integrations/postgresql)、[MongoDB](/engines/table-engines/integrations/mongodb)、[SQLite](/engines/table-engines/integrations/sqlite) 向けの integration engine と（オンザフライで integration engine を作成する）table function を提供しています。
+ClickHouse は、[MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL](/engines/table-engines/integrations/postgresql)、[MongoDB](/engines/table-engines/integrations/mongodb)、[SQLite](/engines/table-engines/integrations/sqlite) 向けの integration engine と (オンザフライで integration engine を作成する) table function を提供しています。
 その他の主要なデータベースシステムについては、システムのベンダーから JDBC ドライバーまたは ODBC ドライバーが提供されています。
 
 ## clickhouse-local とは何ですか？ \{#what-is-clickhouse-local\}

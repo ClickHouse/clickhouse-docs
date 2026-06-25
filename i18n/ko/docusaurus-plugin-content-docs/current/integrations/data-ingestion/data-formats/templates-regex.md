@@ -8,9 +8,7 @@ doc_type: 'guide'
 keywords: ['데이터 형식', 'Template', 'Regex', '사용자 지정 형식', '파싱']
 ---
 
-# ClickHouse에서 Template과 Regex를 사용하여 사용자 지정 텍스트 데이터 가져오기 및 내보내기 \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}
-
-사용자 지정 텍스트 형식의 데이터를 다뤄야 하는 경우가 자주 있습니다. 비표준 형식이거나, 잘못된 JSON, 손상된 CSV일 수도 있습니다. 이러한 경우 CSV 또는 JSON과 같은 표준 파서만으로는 모두 처리할 수 없습니다. 하지만 ClickHouse에는 강력한 Template 및 Regex 형식이 있어 이러한 상황에서도 데이터를 문제없이 처리할 수 있습니다.
+사용자 지정 텍스트 형식의 데이터를 처리해야 하는 경우가 자주 있습니다. 비표준 형식일 수도 있고, 잘못된 JSON이거나 손상된 CSV일 수도 있습니다. 이런 경우에는 CSV나 JSON 같은 표준 parser로는 모두 처리할 수 없습니다. 하지만 ClickHouse는 강력한 Template 및 Regex 형식을 통해 이러한 상황을 지원합니다.
 
 ## Template 기반으로 가져오기 \{#importing-based-on-a-template\}
 

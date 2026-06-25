@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Fabi.ai'
 slug: /integrations/fabi.ai
-keywords: ['clickhouse', 'Fabi.ai', '연결', '통합', '노트북', 'ui', '분석']
-description: 'Fabi.ai는 올인원 협업형 데이터 분석 플랫폼입니다. SQL, Python, AI 및 노코드 방식을 활용하여 그 어느 때보다 빠르게 대시보드와 데이터 워크플로를 구축할 수 있습니다.'
+keywords: ['ClickHouse', 'Fabi.ai', '연결', '통합', '노트북', 'UI', '분석']
+description: 'Fabi.ai는 올인원 협업형 데이터 분석 플랫폼입니다. SQL, Python, AI, no-code를 활용하여 대시보드와 데이터 워크플로를 이전보다 훨씬 빠르게 구축할 수 있습니다'
 title: 'ClickHouse를 Fabi.ai에 연결하기'
 doc_type: 'guide'
 integration:
@@ -18,12 +18,9 @@ import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
+<CommunityMaintainedBadge />
 
-# ClickHouse를 Fabi.ai에 연결하기 \{#connecting-clickhouse-to-fabiai\}
-
-<CommunityMaintainedBadge/>
-
-<a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a>는 올인원 협업형 데이터 분석 플랫폼입니다. SQL, Python, AI, 그리고 노코드(no-code)를 활용하여 그 어느 때보다 빠르게 대시보드와 데이터 워크플로를 구축할 수 있습니다. ClickHouse의 확장성과 강력한 성능을 함께 활용하면, 방대한 데이터셋에 대해 고성능 대시보드를 몇 분 만에 구축하고 공유할 수 있습니다.
+<a href="https://www.fabi.ai/" target="_blank">Fabi.ai</a>는 통합 협업 데이터 분석 플랫폼입니다. SQL, Python, AI, 노코드 기능을 활용해 대시보드와 데이터 워크플로를 그 어느 때보다 빠르게 구축할 수 있습니다. ClickHouse의 확장성과 강력한 성능을 함께 활용하면, 대규모 데이터셋을 기반으로 고성능 대시보드를 단 몇 분 만에 만들고 공유할 수 있습니다.
 
 <Image size="md" img={fabi_01} alt="Fabi.ai 데이터 탐색 및 워크플로 플랫폼" border />
 

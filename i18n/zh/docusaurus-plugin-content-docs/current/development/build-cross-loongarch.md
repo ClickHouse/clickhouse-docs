@@ -7,9 +7,7 @@ title: '在 Linux 上为 LoongArch64 构建'
 doc_type: 'guide'
 ---
 
-# 在 Linux 上为 LoongArch64 构建 \{#build-on-linux-for-loongarch64\}
-
-ClickHouse 对 LoongArch64 提供了实验性支持
+ClickHouse 已对 LoongArch64 提供 Experimental 支持
 
 ## 构建 ClickHouse \{#build-clickhouse\}
 

@@ -8,11 +8,9 @@ title: 'mergeTreeTextIndex'
 doc_type: 'reference'
 ---
 
-# mergeTreeTextIndex 테이블 함수 \{#mergetreetextindex-table-function\}
-
-MergeTree 테이블에서 텍스트 인덱스의 딕셔너리를 나타냅니다.
-토큰과 해당 포스팅 리스트 메타데이터를 반환합니다.
-내부 구조를 점검하거나 분석하는 용도로 사용할 수 있습니다.
+MergeTree 테이블의 텍스트 인덱스 딕셔너리를 나타냅니다.
+포스팅 리스트 메타데이터와 함께 토큰을 반환합니다.
+내부 검사에 사용할 수 있습니다.
 
 ## 구문 \{#syntax\}
 
@@ -35,7 +33,7 @@ mergeTreeTextIndex(database, table, index_name)
 
 ## 사용 예제 \{#usage-example\}
 
-```sql
+```sql title="Query"
 CREATE TABLE tab
 (
     id UInt64,
@@ -51,9 +49,7 @@ INSERT INTO tab SELECT 500 + number, concatWithSeparator(' ', 'cherry', 'date') 
 SELECT * FROM mergeTreeTextIndex(currentDatabase(), tab, idx_s);
 ```
 
-결과:
-
-```text
+```text title="Response"
    ┌─part_name─┬─token──┬─dictionary_compression─┬─cardinality─┬─num_posting_blocks─┬─has_embedded_postings─┬─has_raw_postings─┬─has_compressed_postings─┐
 1. │ all_1_1_0 │ apple  │ front_coded            │         500 │                  1 │                     0 │                0 │                       0 │
 2. │ all_1_1_0 │ banana │ front_coded            │         500 │                  1 │                     0 │                0 │                       0 │

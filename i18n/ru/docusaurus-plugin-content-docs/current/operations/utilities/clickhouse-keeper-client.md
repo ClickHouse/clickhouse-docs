@@ -6,9 +6,7 @@ title: 'Утилита clickhouse-keeper-client'
 doc_type: 'reference'
 ---
 
-# Утилита clickhouse-keeper-client \{#clickhouse-keeper-client-utility\}
-
-Клиентское приложение для взаимодействия с clickhouse-keeper по его родному протоколу.
+Клиентское приложение для взаимодействия с clickhouse-keeper через собственный протокол.
 
 ## Ключи \{#clickhouse-keeper-client\}
 

@@ -1,14 +1,12 @@
 ---
-description: 'クエリの実行時に、ClickHouse はさまざまな種類のキャッシュを使用します。'
+description: 'クエリを実行する際には、ClickHouse はさまざまなキャッシュを利用します。'
 sidebar_label: 'キャッシュ'
 sidebar_position: 65
 slug: /operations/caches
 title: 'キャッシュの種類'
-keywords: ['cache']
+keywords: ['キャッシュ']
 doc_type: 'reference'
 ---
-
-# キャッシュの種類 \{#cache-types\}
 
 クエリを実行する際には、ClickHouse はさまざまなキャッシュを利用してクエリ処理を高速化し、
 ディスクからの読み取りやディスクへの書き込みの必要性を減らします。
@@ -17,7 +15,7 @@ doc_type: 'reference'
 
 * `mark_cache` — [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンで使用される [marks](/development/architecture#merge-tree) のキャッシュ。
 * `uncompressed_cache` — [`MergeTree`](../engines/table-engines/mergetree-family/mergetree.md) ファミリーのテーブルエンジンで使用される非圧縮データのキャッシュ。
-* オペレーティングシステムのページキャッシュ（実データを保持するファイルに対して間接的に利用される）。
+* オペレーティングシステムのページキャッシュ (実データを保持するファイルに対して間接的に利用される) 。
 
 このほかにも、多数の追加キャッシュがあります：
 

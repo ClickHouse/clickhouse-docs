@@ -2,7 +2,7 @@
 sidebar_label: '대시보드'
 slug: /cloud/manage/dashboards
 title: '대시보드'
-description: 'SQL Console의 대시보드 기능을 사용하면 저장된 쿼리에서 생성된 시각화 결과를 모으고 공유할 수 있습니다.'
+description: 'SQL 콘솔의 대시보드 기능을 사용하면 저장된 쿼리에서 생성된 시각화를 모으고 공유할 수 있습니다.'
 doc_type: 'guide'
 keywords: ['ClickHouse Cloud', '대시보드', '데이터 시각화', 'SQL 콘솔 대시보드', '클라우드 분석']
 ---
@@ -20,10 +20,7 @@ import dashboards_9 from '@site/static/images/cloud/dashboards/9_dashboards.png'
 import dashboards_10 from '@site/static/images/cloud/dashboards/10_dashboards.png';
 import dashboards_11 from '@site/static/images/cloud/dashboards/11_dashboards.png';
 
-
-# 대시보드 \{#dashboards\}
-
-SQL Console의 대시보드 기능을 사용하면 저장된 쿼리에서 생성된 시각화를 모아서 공유할 수 있습니다. 먼저 쿼리를 저장하고 시각화를 만든 다음, 해당 쿼리 시각화를 대시보드에 추가하고 쿼리 매개변수를 사용해 대시보드를 대화형으로 구성하십시오.
+SQL 콘솔의 대시보드 기능을 사용하면 저장된 쿼리에서 생성된 시각화를 모으고 공유할 수 있습니다. 시작하려면 먼저 쿼리를 저장하고 시각화한 다음, 쿼리 시각화를 대시보드에 추가하고 쿼리 매개변수를 사용해 대시보드를 대화형으로 만드십시오.
 
 ## 핵심 개념 \{#core-concepts\}
 

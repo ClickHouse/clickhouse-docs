@@ -7,8 +7,6 @@ sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
 
-# argMaxIf \{#argmaxif\}
-
 ## 説明 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネータは、[`argMax`](/sql-reference/aggregate-functions/reference/argmax)
@@ -41,8 +39,8 @@ SELECT argMaxIf(product_name, price, sales_count >= 10) AS most_expensive_popula
 FROM product_sales;
 ```
 
-`argMaxIf` 関数は、少なくとも 10 回販売されたすべての商品（sales&#95;count &gt;= 10）の中から、価格が最も高い商品の名前を返します。
-この場合、人気のある商品の中で最も価格が高い（999.99）ため、&#39;Laptop&#39; が返されます。
+`argMaxIf` 関数は、少なくとも 10 回販売されたすべての商品 (sales&#95;count &gt;= 10) の中から、価格が最も高い商品の名前を返します。
+この場合、人気のある商品の中で最も価格が高い (999.99) ため、&#39;Laptop&#39; が返されます。
 
 ```response title="Response"
    ┌─most_expensi⋯lar_product─┐
@@ -51,7 +49,8 @@ FROM product_sales;
 ```
 
 ## 関連項目 \{#see-also\}
-- [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-- [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-- [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
-- [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+* [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+* [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
+* [`If コンビネータ`](/sql-reference/aggregate-functions/combinators#-if)

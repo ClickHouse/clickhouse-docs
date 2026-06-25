@@ -18,16 +18,16 @@ ClickHouse는 대부분의 일반적인 텍스트 및 바이너리 데이터 형
 
 입력 포맷은 다음과 같은 경우에 사용됩니다.
 
-- `INSERT` SQL 문에 제공되는 데이터를 파싱할 때
-- `File`, `URL`, `HDFS`와 같은 파일 기반 테이블에 대해 `SELECT` 쿼리를 수행할 때
-- 딕셔너리를 읽을 때
+* `INSERT` SQL 문에 제공되는 데이터를 파싱할 때
+* `File`, `URL`, `HDFS`와 같은 파일 기반 테이블에 대해 `SELECT` 쿼리를 수행할 때
+* 딕셔너리를 읽을 때
 
 적절한 입력 포맷을 선택하는 것은 ClickHouse에서 데이터를 효율적으로 수집하는 데 매우 중요합니다. 70개가 넘는 포맷을 지원하므로, 가장 성능이 좋은 옵션을 선택하는 것은 INSERT 속도, CPU 및 메모리 사용량, 전체 시스템 효율성에 큰 영향을 미칠 수 있습니다. 이러한 선택을 돕기 위해 포맷별 수집 성능을 벤치마크했으며, 이를 통해 다음과 같은 핵심 사항을 확인했습니다.
 
-- **[Native](formats/Native.md) 포맷은 가장 효율적인 입력 포맷입니다.** 최고 수준의 압축률, 가장 낮은 리소스 사용량, 최소한의 서버 측 처리 오버헤드를 제공합니다.
-- **압축은 필수적입니다.** LZ4는 CPU 비용을 거의 늘리지 않고 데이터 크기를 줄여 주며, ZSTD는 더 높은 압축률을 제공하는 대신 추가 CPU 사용량이 필요합니다.
-- **사전 정렬의 영향은 중간 수준입니다.** ClickHouse 자체가 이미 효율적으로 정렬을 수행하기 때문입니다.
-- **배치는 효율성을 크게 향상시킵니다.** 배치 크기가 클수록 INSERT 오버헤드가 줄어들고 처리량이 향상됩니다.
+* **[Native](formats/Native.md) 포맷은 가장 효율적인 입력 포맷입니다.** 최고 수준의 압축률, 가장 낮은 리소스 사용량, 최소한의 서버 측 처리 오버헤드를 제공합니다.
+* **압축은 필수적입니다.** LZ4는 CPU 비용을 거의 늘리지 않고 데이터 크기를 줄여 주며, ZSTD는 더 높은 압축률을 제공하는 대신 추가 CPU 사용량이 필요합니다.
+* **사전 정렬의 영향은 중간 수준입니다.** ClickHouse 자체가 이미 효율적으로 정렬을 수행하기 때문입니다.
+* **배치는 효율성을 크게 향상시킵니다.** 배치 크기가 클수록 INSERT 오버헤드가 줄어들고 처리량이 향상됩니다.
 
 자세한 결과와 모범 사례는 전체 [벤치마크 분석](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient)을 참조하십시오. 전체 테스트 결과는 [FastFormats](https://fastformats.clickhouse.com/) 온라인 대시보드에서 확인할 수 있습니다.
 
@@ -103,7 +103,7 @@ ClickHouse는 대부분의 일반적인 텍스트 및 바이너리 데이터 형
 | [ProtobufSingle](./formats/Protobuf/ProtobufSingle.md)                                                     | ✔  | ✔  |
 | [ProtobufList](./formats/Protobuf/ProtobufList.md)                                                         | ✔  | ✔  |
 | [Avro](./formats/Avro/Avro.md)                                                                             | ✔  | ✔  |
-| [AvroConfluent](./formats/Avro/AvroConfluent.md)                                                           | ✔  | ✗  |
+| [AvroConfluent](./formats/Avro/AvroConfluent.md)                                                           | ✔  | ✔  |
 | [Parquet](./formats/Parquet/Parquet.md)                                                                    | ✔  | ✔  |
 | [ParquetMetadata](./formats/Parquet/ParquetMetadata.md)                                                    | ✔  | ✗  |
 | [Arrow](./formats/Arrow/Arrow.md)                                                                          | ✔  | ✔  |
@@ -115,6 +115,7 @@ ClickHouse는 대부분의 일반적인 텍스트 및 바이너리 데이터 형
 | [RowBinaryWithNames](./formats/RowBinary/RowBinaryWithNames.md)                                            | ✔  | ✔  |
 | [RowBinaryWithNamesAndTypes](./formats/RowBinary/RowBinaryWithNamesAndTypes.md)                            | ✔  | ✔  |
 | [RowBinaryWithDefaults](./formats/RowBinary/RowBinaryWithDefaults.md)                                      | ✔  | ✗  |
+| [RowBinaryWithNamesAndTypesAndDefaults](./formats/RowBinary/RowBinaryWithNamesAndTypesAndDefaults.md)      | ✔  | ✗  |
 | [Native](./formats/Native.md)                                                                              | ✔  | ✔  |
 | [Buffers](./formats/Buffers.md)                                                                            | ✔  | ✔  |
 | [Null](./formats/Null.md)                                                                                  | ✗  | ✔  |

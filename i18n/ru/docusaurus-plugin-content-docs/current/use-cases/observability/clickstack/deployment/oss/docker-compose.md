@@ -149,31 +149,8 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
         - internal
   ```
 
-  Значение `CLICKHOUSE_ENDPOINT` должно быть HTTPS-эндпоинтом ClickHouse Cloud, включая порт `8443`, например: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`.
+  Значение `CLICKHOUSE_ENDPOINT` должно быть конечной точкой HTTPS ClickHouse Cloud, включая порт `8443`, например: `https://mxl4k3ul6a.us-east-2.aws.clickhouse.com:8443`.
 
 * Подключившись к UI HyperDX и создавая подключение к ClickHouse, используйте свои учетные данные ClickHouse Cloud.
 
 <JSONSupport />
-
-Чтобы задать эти параметры, измените соответствующие сервисы в `docker-compose.yml`:
-
-```yaml
-  app:
-    image: ${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    ports:
-      - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
-      - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
-    environment:
-      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # enable JSON
-      FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
-      HYPERDX_API_KEY: ${HYPERDX_API_KEY}
-      HYPERDX_API_PORT: ${HYPERDX_API_PORT}
-    # truncated for brevity
-
-  otel-collector:
-    image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    environment:
-      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
-      CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s' 
-      # truncated for brevity
-```

@@ -2,21 +2,20 @@
 slug: /cloud/managed-postgres/backup-and-restore
 sidebar_label: 'Резервное копирование и восстановление'
 title: 'Резервное копирование и восстановление'
-description: 'Узнайте о стратегиях резервного копирования и восстановлении до точки во времени в ClickHouse Managed Postgres'
-keywords: ['резервное копирование', 'восстановление', 'восстановление до точки во времени', 'pitr', 'план восстановления после аварии', 'резервное копирование Postgres']
+description: 'Узнайте о стратегиях резервного копирования и восстановлении на определённый момент времени в ClickHouse Managed Postgres'
+keywords: ['резервное копирование', 'восстановление', 'восстановление на определённый момент времени', 'pitr', 'план восстановления после аварии', 'резервное копирование Postgres']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import backupAndRestore from '@site/static/images/managed-postgres/backup-and-restore.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="backup-and-restore" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.backup-and-restore-beta" />
 
-Управляемый Postgres обеспечивает безопасность и доступность ваших данных с помощью автоматических резервных копий и восстановления до определённого момента времени. Вы можете просматривать историю резервного копирования и инициировать восстановление в разделе **Backups** вашего экземпляра.
+Managed Postgres обеспечивает безопасность и доступность ваших данных с помощью автоматических резервных копий и восстановления на определённый момент времени. Вы можете просматривать историю резервного копирования и инициировать восстановление в разделе **Backups** вашего экземпляра.
 
-<Image img={backupAndRestore} alt="Раздел Backups с историей резервных копий и параметрами восстановления до определённого момента времени" size="lg" border />
-
+<Image img={backupAndRestore} alt="Раздел Backups с историей резервных копий и параметрами восстановления на определённый момент времени" size="lg" border />
 
 ## Резервное копирование \{#backups\}
 

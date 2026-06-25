@@ -21,12 +21,10 @@ title: '经验总结 - 创新用例'
 description: '查找 ClickHouse 中最常见问题的解决方案，包括慢查询、内存错误、连接问题和配置问题。'
 ---
 
-# 成功案例 \{#breaking-the-rules\}
+*本指南是社区 meetup 中经验总结系列的一部分。如需了解更多来自真实场景的解决方案和见解，您可以[按具体问题浏览](./community-wisdom.md)。*
+*需要在生产环境中调试问题的技巧？请查看社区指南 [Debugging Insights](./debugging-insights.md)。*
 
-*本指南是社区交流活动中汇总实践经验的一部分。若想获取更多真实场景下的解决方案与洞见，你可以[按具体问题浏览](./community-wisdom.md)。*
-*需要一些在生产环境中调试问题的技巧？请查看社区指南：[Debugging Insights](./debugging-insights.md)。*
-
-这些案例展示了各家公司如何在自身场景中通过使用 ClickHouse 获得成功，有的甚至挑战了传统的数据库分类方式，证明有时看似“错误”的工具，反而会成为最合适的解决方案。
+这些案例展示了各家公司如何通过将 ClickHouse 用于自身场景而取得成功，其中一些甚至挑战了传统的数据库分类，也证明了有时看似“错误”的工具，恰恰就是最合适的解决方案。
 
 ## 将 ClickHouse 用作限流器 \{#clickhouse-rate-limiter\}
 

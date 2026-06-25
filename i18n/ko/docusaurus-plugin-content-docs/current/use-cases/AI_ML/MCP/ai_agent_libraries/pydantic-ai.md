@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/pydantic-ai
-sidebar_label: 'PydanticAI 연동'
-title: 'ClickHouse MCP 서버를 사용하여 PydanticAI 에이전트를 구축하는 방법'
+sidebar_label: 'PydanticAI 통합'
+title: 'ClickHouse MCP 서버를 사용하여 PydanticAI 에이전트를 구축하는 방법.'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCP 서버와 상호 작용할 수 있는 PydanticAI 에이전트를 구축하는 방법을 알아봅니다.'
+description: 'ClickHouse MCP 서버와 상호작용할 수 있는 PydanticAI 에이전트를 구축하는 방법을 알아봅니다.'
 keywords: ['ClickHouse', 'MCP', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# ClickHouse MCP 서버를 사용하여 PydanticAI 에이전트를 구축하는 방법 \{#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server\}
 
 이 가이드에서는 [ClickHouse의 MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여
 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)와 상호작용할 수 있는 [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1) 에이전트를 구축하는 방법을 알아봅니다.

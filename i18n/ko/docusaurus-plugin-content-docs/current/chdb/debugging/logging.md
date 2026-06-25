@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'logging', 'debug', 'log', 'level']
 doc_type: 'reference'
 ---
 
-# DataStore 로깅 \{#datastore-logging\}
-
-DataStore는 Python의 표준 logging 모듈을 사용합니다. 이 가이드에서는 디버깅을 위해 로깅을 구성하는 방법을 설명합니다.
+DataStore는 Python의 표준 로깅 모듈을 사용합니다. 이 가이드에서는 디버깅을 위해 로깅을 구성하는 방법을 설명합니다.
 
 ## 빠른 시작 \{#quick-start\}
 
@@ -67,33 +65,27 @@ config.enable_debug()  # Sets DEBUG level + verbose format
 
 ### 간단 형식(기본값) \{#simple\}
 
-```python
+```python title="Query"
 config.set_log_format("simple")
 ```
 
-출력 결과:
-
-```text
+```text title="Response"
 DEBUG - Executing SQL query
 DEBUG - Cache miss for key abc123
 ```
 
-
 ### 상세 형식 \{#verbose\}
 
-```python
+```python title="Query"
 config.set_log_format("verbose")
 ```
 
-출력:
-
-```text
+```text title="Response"
 2024-01-15 10:30:45.123 DEBUG datastore.core - Executing SQL query
 2024-01-15 10:30:45.456 DEBUG datastore.cache - Cache miss for key abc123
 ```
 
 ***
-
 
 ## 로그에 기록되는 내용 \{#what-logged\}
 

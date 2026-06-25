@@ -22,11 +22,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# ClickStack を使用した EC2 ホストログの監視 \{#ec2-host-logs-clickstack\}
-
-:::note[TL;DR]
-インスタンス ID、リージョン、AZ、インスタンスタイプなどの EC2 メタデータを自動付加する OpenTelemetry コレクターを使用して、ClickStack で EC2 システムログを収集・可視化します。デモ用データセットと事前構築済みダッシュボードが含まれます。
+:::note[要点]
+自動的に EC2 メタデータ (インスタンス ID、リージョン、AZ、インスタンスタイプ) を付与する OpenTelemetry Collector を使用して、ClickStack で EC2 のシステムログを収集・可視化します。デモデータセットと事前構築済みダッシュボードが含まれています。
 :::
 
 ## 既存の EC2 インスタンスとの統合 \{#existing-ec2\}

@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse Playground는 사용자가 서버나 클러스터를 직접 설정하지 않고도 즉시 쿼리를 실행하여 ClickHouse를 손쉽게 체험할 수 있게 해줍니다.'
+description: 'ClickHouse Playground은 서버나 클러스터를 직접 설정하지 않고도 즉시 쿼리를 실행하여 ClickHouse를 손쉽게 체험할 수 있게 해줍니다.'
 keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
 sidebar_label: 'ClickHouse Playground'
 slug: /getting-started/playground
 title: 'ClickHouse Playground'
 doc_type: 'guide'
 ---
-
-# ClickHouse Playground \{#clickhouse-playground\}
 
 [ClickHouse Playground](https://sql.clickhouse.com)은 서버나 클러스터를 직접 설정하지 않고도 즉시 쿼리를 실행하여 ClickHouse를 손쉽게 체험할 수 있게 해줍니다.
 Playground에는 여러 예제 데이터셋이 제공됩니다.

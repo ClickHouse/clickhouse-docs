@@ -27,31 +27,28 @@ import azure_pe_remove_private_endpoint from '@site/static/images/cloud/security
 import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azure-privatelink-pe-filter.png';
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
-
-# Azure Private Link \{#azure-private-link\}
-
 <ScalePlanFeatureBadge feature="Azure Private Link" />
 
-В этом руководстве показано, как использовать Azure Private Link для организации частного подключения через виртуальную сеть между Azure (включая сервисы, принадлежащие клиентам и партнёрам Microsoft) и ClickHouse Cloud. Azure Private Link упрощает сетевую архитектуру и защищает соединение между конечными точками в Azure, исключая передачу данных через общедоступный интернет.
+В этом руководстве показано, как использовать Azure Private Link для организации частного подключения через виртуальную сеть между Azure (включая сервисы, принадлежащие клиенту и партнерам Microsoft) и ClickHouse Cloud. Azure Private Link упрощает сетевую архитектуру и защищает соединение между конечными точками в Azure, исключая передачу данных через публичный интернет.
 
 <Image img={azure_pe} size="lg" alt="Обзор PrivateLink" background="white" />
 
-Azure поддерживает межрегиональное подключение через Private Link. Это позволяет устанавливать подключения между виртуальными сетями (VNet) в разных регионах, в которых у вас развернуты сервисы ClickHouse.
+Azure поддерживает межрегиональное подключение через Private Link. Это позволяет устанавливать соединения между VNet, расположенными в разных регионах, где у вас развернуты сервисы ClickHouse.
 
 :::note
-За межрегиональный трафик могут взиматься дополнительные платежи. Пожалуйста, ознакомьтесь с актуальной документацией Azure.
+За межрегиональный трафик может взиматься дополнительная плата. Актуальную информацию смотрите в последней документации Azure.
 :::
 
-**Выполните следующие шаги, чтобы включить Azure Private Link:**
+**Чтобы включить Azure Private Link, выполните следующие шаги:**
 
-1. Получите псевдоним подключения (connection alias) Azure для Private Link
+1. Получите псевдоним подключения Azure для Private Link
 2. Создайте Private Endpoint в Azure
-3. Добавьте Resource ID Private Endpoint в вашу организацию ClickHouse Cloud
-4. Добавьте Resource ID Private Endpoint в allow list ваших сервисов
-5. Подключайтесь к вашему сервису ClickHouse Cloud через Private Link
+3. Добавьте Resource ID частной конечной точки в вашу организацию ClickHouse Cloud
+4. Добавьте Resource ID частной конечной точки в список разрешений ваших сервисов
+5. Получите доступ к вашему сервису ClickHouse Cloud с помощью Private Link
 
 :::note
-В ClickHouse Cloud для Azure PrivateLink фильтрация была переведена с использования resourceGUID на фильтры по Resource ID. Вы всё ещё можете использовать resourceGUID, так как он сохраняет обратную совместимость, но мы рекомендуем перейти на фильтры по Resource ID. Для миграции просто создайте новую конечную точку (endpoint) с использованием Resource ID, привяжите её к сервису и удалите старую конечную точку, основанную на resourceGUID.
+В ClickHouse Cloud Azure PrivateLink перешел с использования фильтров resourceGUID на фильтры Resource ID. Вы по-прежнему можете использовать resourceGUID, так как он обратно совместим, но мы рекомендуем перейти на фильтры Resource ID. Для миграции просто создайте новую конечную точку с использованием Resource ID, привяжите ее к сервису и удалите старую, основанную на resourceGUID.
 :::
 
 ## Внимание \{#attention\}

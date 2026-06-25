@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Жизненный цикл ClickPipe для Postgres'
+sidebar_label: 'Жизненный цикл Postgres ClickPipe'
 description: 'Различные статусы конвейера и их значения'
 slug: /integrations/clickpipes/postgres/lifecycle
-title: 'Жизненный цикл ClickPipe для Postgres'
+title: 'Жизненный цикл Postgres ClickPipe'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'CDC', 'ингестия данных', 'синхронизация в режиме реального времени']
 integration:
@@ -10,9 +10,7 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Жизненный цикл Postgres ClickPipe \{#lifecycle\}
-
-В этом документе описываются различные этапы Postgres ClickPipe, возможные статусы и то, что они означают.
+В этом документе описаны различные фазы Postgres ClickPipe, возможные статусы и их значения.
 
 ## Подготовка инфраструктуры \{#provisioning\}
 

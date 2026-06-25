@@ -7,9 +7,7 @@ keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 
 doc_type: 'guide'
 ---
 
-# Bun 向け chDB \{#chdb-for-bun\}
-
-chDB-bun は chDB に対する実験的な FFI (Foreign Function Interface) バインディングを提供し、外部への依存なしに Bun アプリケーションから直接 ClickHouse クエリを実行できるようにします。
+chDB-bun は、chDB 向けの実験的な FFI (Foreign Function Interface) バインディングを提供しており、外部依存なしで、Bun アプリケーションから ClickHouse クエリを直接実行できます。
 
 ## インストール \{#installation\}
 

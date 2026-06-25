@@ -16,10 +16,7 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-
-# Azure PostgreSQL 灵活服务器源设置指南 \{#azure-flexible-server-for-postgres-source-setup-guide\}
-
-ClickPipes 支持 Postgres 12 及更高版本。
+ClickPipes 支持 Postgres 12 及以上版本。
 
 ## 启用逻辑复制 \{#enable-logical-replication\}
 

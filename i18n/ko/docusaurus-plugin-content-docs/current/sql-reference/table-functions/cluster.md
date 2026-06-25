@@ -1,13 +1,11 @@
 ---
-description: '`remote_servers` 섹션에 설정된 클러스터의 모든 세그먼트에 분산 테이블을 생성하지 않고도 액세스할 수 있다'
+description: '`remote_servers` 섹션에 설정된 클러스터의 모든 세그먼트에 [Distributed](../../engines/table-engines/special/distributed.md) 테이블을 생성하지 않고 액세스할 수 있습니다.'
 sidebar_label: 'cluster'
 sidebar_position: 30
 slug: /sql-reference/table-functions/cluster
 title: 'clusterAllReplicas'
 doc_type: 'reference'
 ---
-
-# clusterAllReplicas Table Function \{#clusterallreplicas-table-function\}
 
 [분산](../../engines/table-engines/special/distributed.md) 테이블을 생성하지 않고도 `remote_servers` 섹션에 설정된 클러스터의 모든 세그먼트에 액세스할 수 있습니다. 각 세그먼트에서는 하나의 레플리카만 쿼리합니다.
 

@@ -2,9 +2,9 @@
 sidebar_label: 'DynamoDB'
 sidebar_position: 10
 slug: /integrations/dynamodb
-description: 'ClickPipes 使您能够将 ClickHouse 与 DynamoDB 连接起来。'
+description: 'ClickPipes 支持将 ClickHouse 连接到 DynamoDB。'
 keywords: ['DynamoDB']
-title: '从 DynamoDB 到 ClickHouse 的 CDC（变更数据捕获）'
+title: '从 DynamoDB 到 ClickHouse 的 CDC'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -14,8 +14,6 @@ import dynamodb_kinesis_stream from '@site/static/images/integrations/data-inges
 import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-s3-export.png';
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
-
-# 从 DynamoDB 到 ClickHouse 的 CDC \{#cdc-from-dynamodb-to-clickhouse\}
 
 本页介绍如何使用 ClickPipes 将 DynamoDB 的数据以 CDC 方式同步到 ClickHouse。此集成由两个组件构成：
 

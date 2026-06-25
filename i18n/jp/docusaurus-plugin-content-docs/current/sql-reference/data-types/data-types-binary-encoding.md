@@ -1,13 +1,11 @@
 ---
 description: 'データ型のバイナリエンコーディング仕様に関するドキュメント'
-sidebar_label: 'データ型のバイナリエンコーディング仕様'
+sidebar_label: 'データ型のバイナリエンコーディング仕様。'
 sidebar_position: 56
 slug: /sql-reference/data-types/data-types-binary-encoding
 title: 'データ型のバイナリエンコーディング仕様'
 doc_type: 'reference'
 ---
-
-# データ型のバイナリエンコーディング仕様 \{#data-types-binary-encoding-specification\}
 
 この仕様では、ClickHouse のデータ型のバイナリエンコードおよびデコードに使用できるバイナリ形式について説明します。この形式は `Dynamic` カラムの[バイナリシリアル化](dynamic.md#binary-output-format)で使用され、対応する設定の下で入出力フォーマット [RowBinaryWithNamesAndTypes](/interfaces/formats/RowBinaryWithNamesAndTypes) および [Native](/interfaces/formats/Native) でも使用できます。
 

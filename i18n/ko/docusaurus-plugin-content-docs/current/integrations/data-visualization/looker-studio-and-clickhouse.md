@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Looker Studio'
 slug: /integrations/lookerstudio
-keywords: ['clickhouse', 'looker', 'studio', 'connect', 'mysql', 'integrate', 'ui']
-description: '이전 명칭이 Google Data Studio인 Looker Studio는 데이터를 맞춤형 정보 보고서와 대시보드로 변환하는 온라인 도구입니다.'
+keywords: ['clickhouse', 'looker', 'studio', '연결', 'mysql', '통합', 'UI']
+description: 'Looker Studio는 이전 명칭이 Google Data Studio인 온라인 도구로, 데이터를 사용자 지정 가능한 유용한 보고서와 대시보드로 변환할 수 있습니다.'
 title: 'Looker Studio'
 doc_type: 'guide'
 integration:
@@ -23,12 +23,9 @@ import looker_studio_enable_mysql from '@site/static/images/integrations/data-vi
 import looker_studio_mysql_cloud from '@site/static/images/integrations/data-visualization/looker_studio_mysql_cloud.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Looker Studio \{#looker-studio\}
-
-<PartnerBadge/>
-
-Looker Studio는 공식 Google MySQL 데이터 소스를 통해 MySQL 인터페이스로 ClickHouse에 연결할 수 있습니다.
+Looker Studio는 공식 Google MySQL 데이터 소스를 사용하여 MySQL 인터페이스를 통해 ClickHouse에 연결할 수 있습니다.
 
 ## ClickHouse Cloud 설정 \{#clickhouse-cloud-setup\}
 

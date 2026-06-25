@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse에서 쿼리 조건 캐시 기능을 사용하고 구성하는 방법에 대한 가이드'
+description: 'ClickHouse에서 query condition cache 기능을 사용하고 구성하는 방법에 대한 가이드'
 sidebar_label: '쿼리 조건 캐시'
 sidebar_position: 64
 slug: /operations/query-condition-cache
@@ -7,10 +7,8 @@ title: '쿼리 조건 캐시'
 doc_type: 'guide'
 ---
 
-# Query condition cache \{#query-condition-cache\}
-
 :::note
-query condition cache는 [enable_analyzer](https://clickhouse.com/docs/operations/settings/settings#enable_analyzer)가 true로 설정되어 있을 때만 동작하며, 이 값이 기본값입니다.
+쿼리 조건 캐시는 [enable&#95;analyzer](https://clickhouse.com/docs/operations/settings/settings#enable_analyzer)가 true로 설정되어 있을 때만 동작하며, 이 값이 기본값입니다.
 :::
 
 많은 실제 워크로드에서는 동일하거나 거의 동일한 데이터(예: 기존 데이터에 새로운 데이터가 추가된 것)에 대해 반복적으로 쿼리를 수행합니다.
@@ -20,17 +18,17 @@ ClickHouse는 이러한 쿼리 패턴을 최적화하기 위한 다양한 최적
 첫 번째 접근 방식의 단점은 데이터베이스 관리자가 수동으로 개입하고 모니터링해야 한다는 점입니다.
 두 번째 접근 방식은 query cache가 트랜잭션 수준에서 일관성을 보장하지 않기 때문에 오래된 결과를 반환할 수 있으며, 이는 사용 사례에 따라 허용될 수도 있고 허용되지 않을 수도 있습니다.
 
-query condition cache는 이 두 가지 문제에 대한 우아한 해결책을 제공합니다.
+쿼리 조건 캐시는 이 두 가지 문제에 대한 우아한 해결책을 제공합니다.
 이는 동일한 데이터에 대해 필터 조건(예: `WHERE col = 'xyz'`)을 평가하면 항상 동일한 결과가 나온다는 아이디어에 기반합니다.
-보다 구체적으로, query condition cache는 각 평가된 필터와 각 그래뉼(기본적으로 8192개의 행으로 이루어진 블록)에 대해, 해당 그래뉼에서 필터 조건을 만족하는 행이 전혀 없는지를 기억합니다.
+보다 구체적으로, 쿼리 조건 캐시는 각 평가된 필터와 각 그래뉼(기본적으로 8192개의 행으로 이루어진 블록)에 대해, 해당 그래뉼에서 필터 조건을 만족하는 행이 전혀 없는지를 기억합니다.
 이 정보는 단일 비트로 기록되며, 비트 0은 필터와 일치하는 행이 없음을, 비트 1은 최소 하나 이상의 일치하는 행이 있음을 나타냅니다.
 전자의 경우 ClickHouse는 필터 평가 중에 해당 그래뉼을 건너뛸 수 있고, 후자의 경우에는 그래뉼을 로드하여 평가해야 합니다.
 
-query condition cache는 다음의 세 가지 전제 조건이 충족될 때 효과적입니다:
+쿼리 조건 캐시는 다음의 세 가지 전제 조건이 충족될 때 효과적입니다:
 
-- 첫째, 워크로드에서 동일한 필터 조건을 반복적으로 평가해야 합니다. 이는 하나의 쿼리가 여러 번 반복 실행되는 경우 자연스럽게 발생하지만, `SELECT product FROM products WHERE quality > 3`와 `SELECT vendor, count() FROM products WHERE quality > 3`와 같이 두 쿼리가 동일한 필터를 공유하는 경우에도 발생할 수 있습니다.
-- 둘째, 데이터의 대부분이 불변(immutable)이어서 쿼리 사이에 변경되지 않아야 합니다. 이는 ClickHouse에서는 일반적으로 사실인데, 파트가 불변이며 INSERT에 의해서만 생성되기 때문입니다.
-- 셋째, 필터의 선택도가 높아야(selective) 하며, 즉 필터 조건을 만족하는 행이 상대적으로 적어야 합니다. 필터 조건과 일치하는 행이 적을수록 더 많은 그래뉼이 비트 0(일치하는 행 없음)으로 기록되며, 그만큼 이후 필터 평가에서 "가지치기(pruning)"할 수 있는 데이터가 많아집니다.
+* 첫째, 워크로드에서 동일한 필터 조건을 반복적으로 평가해야 합니다. 이는 하나의 쿼리가 여러 번 반복 실행되는 경우 자연스럽게 발생하지만, `SELECT product FROM products WHERE quality > 3`와 `SELECT vendor, count() FROM products WHERE quality > 3`와 같이 두 쿼리가 동일한 필터를 공유하는 경우에도 발생할 수 있습니다.
+* 둘째, 데이터의 대부분이 불변(immutable)이어서 쿼리 사이에 변경되지 않아야 합니다. 이는 ClickHouse에서는 일반적으로 사실인데, 파트가 불변이며 INSERT에 의해서만 생성되기 때문입니다.
+* 셋째, 필터의 선택도가 높아야(selective) 하며, 즉 필터 조건을 만족하는 행이 상대적으로 적어야 합니다. 필터 조건과 일치하는 행이 적을수록 더 많은 그래뉼이 비트 0(일치하는 행 없음)으로 기록되며, 그만큼 이후 필터 평가에서 &quot;가지치기(pruning)&quot;할 수 있는 데이터가 많아집니다.
 
 ## 메모리 사용량 \{#memory-consumption\}
 

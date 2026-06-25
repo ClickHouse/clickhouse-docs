@@ -25,12 +25,9 @@ import zing_08 from '@site/static/images/integrations/data-visualization/zing_08
 import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Подключение Zing Data к ClickHouse \{#connect-zing-data-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> — это платформа для исследования и визуализации данных. Zing Data подключается к ClickHouse с использованием JavaScript (JS)‑драйвера, предоставляемого ClickHouse.
+<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> — это платформа для анализа и визуализации данных. Zing Data подключается к ClickHouse с помощью JS-драйвера от ClickHouse.
 
 ## Как подключиться \{#how-to-connect\}
 

@@ -15,13 +15,10 @@ import dot_01 from '@site/static/images/integrations/data-visualization/dot_01.p
 import dot_02 from '@site/static/images/integrations/data-visualization/dot_02.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Dot \{#dot\}
-
-<CommunityMaintainedBadge/>
-
-[Dot](https://www.getdot.ai/)은 **AI 데이터 분석가**입니다.
-ClickHouse에 직접 연결되므로 자연어로 데이터를 질의하고, 데이터를 탐색하며, 가설을 검증하고, 원인(왜 그랬는지)에 대한 질문에 답변할 수 있습니다. 이 모든 작업을 Slack, Microsoft Teams, ChatGPT 또는 네이티브 Web UI에서 직접 수행할 수 있습니다.
+[Dot](https://www.getdot.ai/)는 **AI 데이터 분석가**입니다.
+ClickHouse에 직접 연결되므로 자연어로 데이터 관련 질문을 하고, 데이터를 탐색하고, 가설을 검증하고, &quot;왜 그런지&quot;에 대한 질문에 답을 얻을 수 있습니다. 이 모든 작업은 Slack, Microsoft Teams, ChatGPT 또는 네이티브 Web UI에서 직접 수행할 수 있습니다.
 
 ## 사전 요구 사항 \{#pre-requisites\}
 

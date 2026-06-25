@@ -16,8 +16,6 @@ import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Integrating Apache Spark with ClickHouse
-
 <ClickHouseSupportedBadge/>
 
 [Apache Spark](https://spark.apache.org/) is a multi-language engine for executing data engineering, data

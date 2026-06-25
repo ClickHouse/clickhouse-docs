@@ -7,22 +7,14 @@ sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
 
-
-
-# argMaxIf \{#argmaxif\}
-
-
-
 ## 설명 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 결합자는 [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-함수에 적용할 수 있으며, 이를 통해 조건이 참인 행들 중에서 `val`의 최댓값에 해당하는 `arg` 값을
-`argMaxIf` 집계 결합자 함수를 사용해 찾을 수 있습니다.
+FUNCTION에 적용할 수 있으며, 이를 통해 조건이 참인 행들 중에서 `val`의 최댓값에 해당하는 `arg` 값을
+`argMaxIf` 집계 결합자 FUNCTION을 사용해 찾을 수 있습니다.
 
-`argMaxIf` 함수는 데이터셋에서 최댓값에 대응하는 값을 찾아야 하지만,
+`argMaxIf` FUNCTION은 데이터셋에서 최댓값에 대응하는 값을 찾아야 하지만,
 그중에서도 특정 조건을 만족하는 행에 대해서만 이를 수행해야 할 때 유용합니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -58,9 +50,9 @@ FROM product_sales;
    └──────────────────────────┘
 ```
 
-
 ## 함께 보기 \{#see-also\}
-- [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-- [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-- [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+* [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+* [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
+* [`If 결합자`](/sql-reference/aggregate-functions/combinators#-if)

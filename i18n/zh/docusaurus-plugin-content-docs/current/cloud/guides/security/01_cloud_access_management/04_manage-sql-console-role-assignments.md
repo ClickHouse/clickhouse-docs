@@ -1,10 +1,10 @@
 ---
 slug: /cloud/guides/sql-console/manage-sql-console-role-assignments
 sidebar_label: '管理 SQL 控制台角色分配'
-title: '管理 SQL 控制台角色分配'
-description: '本指南介绍如何管理 SQL 控制台中的角色分配'
+title: '配置 SQL 控制台角色分配'
+description: '说明如何管理 SQL 控制台角色分配的指南'
 doc_type: 'guide'
-keywords: ['sql console', '角色分配', '访问管理', '权限', '安全']
+keywords: ['SQL 控制台', '角色分配', '访问管理', '权限', '安全']
 ---
 
 import Image from '@theme/IdealImage';
@@ -17,10 +17,8 @@ import step_6 from '@site/static/images/cloud/guides/sql_console/service_level_a
 import step_7 from '@site/static/images/cloud/guides/sql_console/service_level_access/7_service_settings.png'
 
 :::warning
-此设置已弃用。对于已迁移到自定义角色的组织，它已被角色创建界面中的新设置所取代。更多信息，请参见 [管理云用户](/cloud/security/manage-cloud-users)。
+此设置已弃用。对于已迁移到自定义角色的组织，角色创建页面上的新设置已取代此设置。有关更多信息，请参阅 [管理 Cloud 用户](/cloud/security/manage-cloud-users)。
 :::
-
-# 配置 SQL 控制台角色分配 \{#configuring-sql-console-role-assignments\}
 
 > 本指南介绍如何配置 SQL 控制台角色分配，这些分配决定整个控制台的访问权限，以及用户在 Cloud 控制台中可使用的功能。
 

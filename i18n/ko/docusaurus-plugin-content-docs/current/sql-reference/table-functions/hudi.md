@@ -7,9 +7,7 @@ title: 'hudi'
 doc_type: 'reference'
 ---
 
-# hudi 테이블 함수 \{#hudi-table-function\}
-
-Amazon S3의 Apache [Hudi](https://hudi.apache.org/) 테이블에 읽기 전용 테이블과 유사한 인터페이스를 제공합니다.
+Amazon S3의 Apache [Hudi](https://hudi.apache.org/) 테이블에 대해 읽기 전용의 테이블형 인터페이스를 제공합니다.
 
 ## 구문 \{#syntax\}
 

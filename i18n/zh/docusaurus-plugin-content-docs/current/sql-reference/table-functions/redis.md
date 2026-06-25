@@ -7,9 +7,7 @@ title: 'redis'
 doc_type: 'reference'
 ---
 
-# redis 表函数 \{#redis-table-function\}
-
-此表函数用于将 ClickHouse 与 [Redis](https://redis.io/) 集成。
+此表函数可将 ClickHouse 与 [Redis](https://redis.io/) 集成。
 
 ## 语法 \{#syntax\}
 

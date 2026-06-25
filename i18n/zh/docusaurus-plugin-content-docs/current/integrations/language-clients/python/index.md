@@ -12,20 +12,18 @@ integration:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# 介绍 \{#introduction\}
+## 介绍 \{#introduction\}
 
 ClickHouse Connect 是一个核心数据库驱动，为各类 Python 应用程序提供互操作能力。
 
-- 主要接口是包 `clickhouse_connect.driver` 中的 `Client` 对象。该核心包还包含若干用于与 ClickHouse 服务器通信的辅助类和实用函数，以及用于高级管理 INSERT 和 SELECT 查询的 “context” 实现。
-- `clickhouse_connect.datatypes` 包为所有非实验性的 ClickHouse 数据类型提供基础实现及其子类。其主要功能是将 ClickHouse 数据在 ClickHouse “Native” 二进制列式格式之间进行序列化与反序列化，以实现 ClickHouse 与客户端应用之间最高效的传输。
-- `clickhouse_connect.cdriver` 包中的 Cython/C 类对一些最常见的序列化与反序列化进行了优化，相比纯 Python 实现可显著提升性能。
-- 包 `clickhouse_connect.cc_sqlalchemy` 中提供了一个 [SQLAlchemy](https://www.sqlalchemy.org/) dialect，它基于 `datatypes` 和 `dbi` 包构建。该实现支持 SQLAlchemy Core 功能，包括带有 `JOIN`（`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`）的 `SELECT` 查询、`WHERE` 子句、`ORDER BY`、`LIMIT`/`OFFSET`、`DISTINCT` 操作、带 `WHERE` 条件的轻量级 `DELETE` 语句、表反射，以及基础 DDL 操作（`CREATE TABLE`、`CREATE`/`DROP DATABASE`）。尽管它不支持高级 ORM 功能或高级 DDL 功能，但为在 ClickHouse 面向 OLAP 的数据库上运行的大多数分析型工作负载提供了强大的查询能力。
-- 核心驱动和 [ClickHouse Connect SQLAlchemy](sqlalchemy.md) 实现是将 ClickHouse 连接到 Apache Superset 的首选方式。请使用 `ClickHouse Connect` 数据库连接，或使用 `clickhousedb` SQLAlchemy dialect 连接字符串。
+* 主要接口是包 `clickhouse_connect.driver` 中的 `Client` 对象。该核心包还包含若干用于与 ClickHouse 服务器通信的辅助类和实用函数，以及用于高级管理 INSERT 和 SELECT 查询的 “context” 实现。
+* `clickhouse_connect.datatypes` 包为所有非实验性的 ClickHouse 数据类型提供基础实现及其子类。其主要功能是将 ClickHouse 数据在 ClickHouse “Native” 二进制列式格式之间进行序列化与反序列化，以实现 ClickHouse 与客户端应用之间最高效的传输。
+* `clickhouse_connect.cdriver` 包中的 Cython/C 类对一些最常见的序列化与反序列化进行了优化，相比纯 Python 实现可显著提升性能。
+* 包 `clickhouse_connect.cc_sqlalchemy` 中提供了一个 [SQLAlchemy](https://www.sqlalchemy.org/) dialect，它基于 `datatypes` 和 `dbi` 包构建。该实现支持 SQLAlchemy Core 功能，包括带有 `JOIN` (`INNER`、`LEFT OUTER`、`FULL OUTER`、`CROSS`) 的 `SELECT` 查询、`WHERE` 子句、`ORDER BY`、`LIMIT`/`OFFSET`、`DISTINCT` 操作、带 `WHERE` 条件的轻量级 `DELETE` 语句、表反射，以及基础 DDL 操作 (`CREATE TABLE`、`CREATE`/`DROP DATABASE`) 。尽管它不支持高级 ORM 功能或高级 DDL 功能，但为在 ClickHouse 面向 OLAP 的数据库上运行的大多数分析型工作负载提供了强大的查询能力。
+* 核心驱动和 [ClickHouse Connect SQLAlchemy](sqlalchemy.md) 实现是将 ClickHouse 连接到 Apache Superset 的首选方式。请使用 `ClickHouse Connect` 数据库连接，或使用 `clickhousedb` SQLAlchemy dialect 连接字符串。
 
 本文档内容基于 clickhouse-connect 0.9.2 版本。
 

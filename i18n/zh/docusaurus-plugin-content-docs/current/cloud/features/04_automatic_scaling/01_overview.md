@@ -3,18 +3,16 @@ sidebar_position: 1
 sidebar_label: '概述'
 slug: /manage/scaling
 description: 'ClickHouse Cloud 自动扩缩容概述'
-keywords: ['autoscaling', 'auto scaling', 'scaling', 'horizontal', 'vertical', 'bursts']
+keywords: ['自动扩缩容', '自动扩容', '扩缩容', '水平', '垂直', '突发']
 title: '自动扩缩容'
 doc_type: 'guide'
 ---
 
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 
-# 自动扩缩容 \{#automatic-scaling\}
+扩缩容是指调整可用资源以满足客户端需求的能力。Scale 和 Enterprise (使用标准 1:4 profile) 的服务可通过编程方式调用 API，或在 UI 中更改设置来进行水平扩缩容，从而调整系统资源。这些服务还可以通过**垂直自动扩缩容**来满足应用程序需求。
 
-扩缩容是指调整可用资源以满足客户端需求的能力。Scale 和 Enterprise (使用标准 1:4 profile) 的服务可通过编程方式调用 API，或在 UI 中更改设置来进行水平扩缩容，从而调整系统资源。这些服务还可以通过**自动垂直扩缩容**来满足应用程序需求。
-
-<ScalePlanFeatureBadge feature="自动垂直扩缩容" />
+<ScalePlanFeatureBadge feature="垂直自动扩缩容" />
 
 :::note
 Scale 和 Enterprise 层级同时支持单副本和多副本服务，而 Basic 层级仅支持单副本服务。单副本服务的大小固定，因此不支持垂直或水平扩缩容。您可以升级到 Scale 或 Enterprise 层级，以对服务进行扩缩容。
@@ -47,4 +45,4 @@ ClickHouse Cloud 中的扩缩容采用一种我们称为[&quot;先建后拆&quot
 * [先建后拆 (MBB)](/cloud/features/mbb) — 了解 ClickHouse Cloud 如何无缝执行扩缩容操作
 * [自动闲置状态转换](/cloud/features/autoscaling/idling) — 通过自动暂停服务来节省成本
 * [扩缩容建议](/cloud/features/autoscaling/scaling-recommendations) — 了解扩缩容建议
-* [定时扩缩容](/cloud/features/autoscaling/scaling-recommendations) — 了解定时扩缩容功能，该功能允许您精确定义服务何时扩容或缩容，而不依赖实时指标
+* [定时扩缩容](/cloud/features/autoscaling/scheduled-scaling) — 了解定时扩缩容功能，该功能允许您精确定义服务何时扩容或缩容，而不依赖实时指标

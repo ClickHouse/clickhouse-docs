@@ -7,8 +7,6 @@ title: 'sqlite'
 doc_type: 'reference'
 ---
 
-# Табличная функция SQLite \{#sqlite-table-function\}
-
 Позволяет выполнять запросы к данным, хранящимся в базе данных [SQLite](../../engines/database-engines/sqlite.md).
 
 ## Синтаксис \{#syntax\}
@@ -29,22 +27,17 @@ sqlite('db_path', 'table_name')
 
 ## Пример \{#example\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM sqlite('sqlite.db', 'table1') ORDER BY col2;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─col1──┬─col2─┐
 │ line1 │    1 │
 │ line2 │    2 │
 │ line3 │    3 │
 └───────┴──────┘
 ```
-
 
 ## См. также \{#related\}
 

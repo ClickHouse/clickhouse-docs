@@ -1,18 +1,16 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/openai-agents
 sidebar_label: 'OpenAI 통합'
-title: 'ClickHouse MCP 서버를 사용하여 OpenAI 에이전트를 구축하는 방법'
+title: 'ClickHouse MCP 서버를 사용하여 OpenAI 에이전트를 구축하는 방법.'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCP 서버와 상호 작용할 수 있는 OpenAI 에이전트를 구축하는 방법을 알아봅니다.'
+description: 'ClickHouse MCP 서버와 상호 작용할 수 있는 OpenAI 에이전트를 구축하는 방법을 알아보세요.'
 keywords: ['ClickHouse', 'MCP', 'OpenAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# ClickHouse MCP 서버를 사용하여 OpenAI 에이전트를 구축하는 방법 \{#how-to-build-an-openai-agent-using-clickhouse-mcp-server\}
-
-이 가이드에서는 [ClickHouse의 MCP server](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)와 상호 작용할 수 있는 [OpenAI](https://github.com/openai/openai-agents-python) 에이전트를 구축하는 방법을 설명합니다.
+이 가이드에서는 [ClickHouse의 MCP server](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여 [ClickHouse의 SQL 플레이그라운드](https://sql.clickhouse.com/)와 상호 작용할 수 있는 [OpenAI](https://github.com/openai/openai-agents-python) 에이전트를 구축하는 방법을 설명합니다.
 
 :::note 예제 노트북
 이 예제는 [examples 저장소](https://github.com/ClickHouse/examples/blob/main/ai/mcp/openai-agents/openai-agents.ipynb)에 있는 노트북으로도 제공됩니다.

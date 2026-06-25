@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'migration', 'guide']
 doc_type: 'guide'
 ---
 
-# 从 pandas 迁移 \{#migration-from-pandas\}
-
-本指南帮助你将现有的 pandas 代码迁移到 DataStore，在保持兼容性的同时提升性能。
+这个指南可帮助您将现有的 pandas 代码迁移到 DataStore，在保持兼容性的同时提升性能。
 
 ## 一行代码迁移 \{#one-line\}
 

@@ -18,9 +18,6 @@ import finish_import from '@site/static/images/clickstack/mysql/finish-import.pn
 import example_dashboard from '@site/static/images/clickstack/mysql/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 MySQL 日志 \{#mysql-logs-clickstack\}
-
 :::note[摘要]
 使用 OTel `filelog` 接收器在 ClickStack 中收集并可视化 MySQL 错误日志和慢查询日志。包含演示数据集和预置仪表板。
 :::

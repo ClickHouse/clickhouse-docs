@@ -33,6 +33,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/install/macOS",
+      "destination": "/docs/install/quick-install",
+      "permanent": true
+    },
+    {
+      "source": "/docs/install/windows",
+      "destination": "/docs/install/quick-install",
+      "permanent": true
+    },
+    {
       "source": "/docs/integrations/clickpipes/secure-kinesis",
       "destination": "/docs/integrations/clickpipes/kinesis/auth",
       "permanent": true
@@ -3033,6 +3043,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/sql-clients/cli",
+      "destination": "/docs/interfaces/cli",
+      "permanent": true
+    },
+    {
       "source": "/docs/getting_started/tutorial",
       "destination": "/docs/tutorial",
       "permanent": true
@@ -3846,6 +3861,31 @@
     {
       "source": "/docs/managing-data/update_mutations",
       "destination": "/docs/sql-reference/statements/alter/update",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/managed-postgres/migrations/clickhouse-cloud",
+      "destination": "/docs/cloud/managed-postgres/migrations/clickpipes",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/pg_clickhouse",
+      "destination": "/docs/cloud/managed-postgres/extensions/pg_clickhouse",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/pg_clickhouse/tutorial",
+      "destination": "/docs/cloud/managed-postgres/extensions/pg_clickhouse/tutorial",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/pg_clickhouse/reference",
+      "destination": "/docs/cloud/managed-postgres/extensions/pg_clickhouse/reference",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/security/cmek-migration",
+      "destination": "/docs/cloud/security/cmek",
       "permanent": true
     }
   ]

@@ -17,11 +17,8 @@ import finish_import from '@site/static/images/clickstack/kafka/import-kafka-das
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack による Kafka メトリクスの監視 \{#kafka-metrics-clickstack\}
-
-:::note[TL;DR]
-OTel JMX Metric Gatherer を使用して、ClickStack で Apache Kafka のパフォーマンスメトリクスを監視します。デモ用データセットとあらかじめ用意されたダッシュボードが含まれます。
+:::note[要約]
+OTel JMX Metric Gatherer を使用して、ClickStack で Apache Kafka のパフォーマンスメトリクスを監視します。デモデータセットと、あらかじめ用意されたダッシュボードが含まれています。
 :::
 
 ## 既存の Kafka デプロイメントとの統合 \{#existing-kafka\}

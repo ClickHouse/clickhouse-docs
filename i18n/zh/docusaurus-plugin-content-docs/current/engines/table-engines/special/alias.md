@@ -7,19 +7,9 @@ title: 'Alias 表引擎'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
 # Alias 表引擎 \{#alias-table-engine\}
 
-<ExperimentalBadge/>
-
 `Alias` 引擎会创建指向另一张表的代理。所有读写操作都会被转发到目标表，而别名表本身不存储任何数据，只维护对目标表的引用。
-
-:::info
-这是一个实验性特性，在未来版本中可能会以不向后兼容的方式发生变更。
-要启用 Alias 表引擎，请通过设置 [allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine)。
-输入命令 `set allow_experimental_alias_table_engine = 1`。
-:::
 
 ## 创建表 \{#creating-a-table\}
 

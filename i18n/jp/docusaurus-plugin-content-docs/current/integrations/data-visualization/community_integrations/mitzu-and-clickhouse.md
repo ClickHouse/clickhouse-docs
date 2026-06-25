@@ -2,7 +2,7 @@
 sidebar_label: 'Mitzu'
 slug: /integrations/mitzu
 keywords: ['clickhouse', 'Mitzu', 'connect', 'integrate', 'ui']
-description: 'Mitzu は、データウェアハウスネイティブなノーコードのプロダクト分析アプリケーションです。'
+description: 'Mitzu は、ウェアハウスネイティブなノーコードのプロダクト分析アプリケーションです。'
 title: 'Mitzu を ClickHouse に接続する'
 doc_type: 'guide'
 integration:
@@ -25,14 +25,11 @@ import mitzu_10 from '@site/static/images/integrations/data-visualization/mitzu_
 import mitzu_11 from '@site/static/images/integrations/data-visualization/mitzu_11.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Mitzu を ClickHouse に接続する \{#connecting-mitzu-to-clickhouse\}
+Mitzu は、ウェアハウスネイティブなノーコードのプロダクト分析アプリケーションです。Amplitude、Mixpanel、PostHog のようなツールと同様に、Mitzu を使えば、SQL や Python の専門知識がなくてもプロダクト利用データを分析できます。
 
-<CommunityMaintainedBadge/>
-
-Mitzu は、ノーコードで利用できる、データウェアハウス・ネイティブなプロダクト分析アプリケーションです。Amplitude、Mixpanel、PostHog といったツールと同様に、Mitzu により、ユーザーは SQL や Python の専門知識がなくてもプロダクト利用データを分析できます。
-
-しかし、これらのプラットフォームとは異なり、Mitzu は企業のプロダクト利用データをコピーしません。その代わりに、企業がすでに運用しているデータウェアハウスやデータレイク上のデータに対して、ネイティブな SQL クエリを直接生成します。
+ただし、これらのプラットフォームとは異なり、Mitzu は企業のプロダクト利用データを複製しません。代わりに、企業の既存のデータウェアハウスまたはデータレイクに対して、直接ネイティブ SQL クエリを生成します。
 
 ## 目標 \{#goal\}
 

@@ -19,8 +19,6 @@ import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting DataGrip to ClickHouse
-
 <CommunityMaintainedBadge/>
 
 ## Start or download DataGrip {#start-or-download-datagrip}

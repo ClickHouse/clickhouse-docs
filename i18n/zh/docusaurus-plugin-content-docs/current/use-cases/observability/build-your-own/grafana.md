@@ -1,5 +1,5 @@
 ---
-title: '使用 Grafana'
+title: '使用 Grafana 和 ClickHouse 实现可观测性'
 description: '结合 Grafana 和 ClickHouse 实现可观测性'
 slug: /observability/grafana
 keywords: ['可观测性', '日志', '追踪', '指标', 'OpenTelemetry', 'Grafana', 'OTel']
@@ -19,12 +19,10 @@ import observability_23 from '@site/static/images/use-cases/observability/observ
 import observability_24 from '@site/static/images/use-cases/observability/observability-24.png';
 import Image from '@theme/IdealImage';
 
-# 使用 Grafana 和 ClickHouse 构建可观测性 \{#using-grafana-and-clickhouse-for-observability\}
+Grafana 是 ClickHouse 中可观测性数据的首选可视化工具。这可通过 Grafana 官方的 ClickHouse 插件实现。你可以按照[此处](/integrations/grafana)的安装说明进行操作。
 
-Grafana 是 ClickHouse 可观测性数据的首选可视化工具。这是通过 Grafana 官方的 ClickHouse 插件实现的。你可以按照[此处](/integrations/grafana)的安装说明进行操作。
-
-该插件的 V4 版本在全新的查询构建体验中，将日志和链路追踪提升为一等公民。这最大限度地减少了 SRE 编写 SQL 查询的需求，并简化了基于 SQL 的可观测性，推动了这一新兴范式的发展。
-其中一项重要工作是将 OpenTelemetry (OTel) 置于插件的核心位置，因为我们认为，在未来几年中，它将成为基于 SQL 的可观测性以及数据采集方式的基础。
+该插件的 V4 版本在全新的查询构建器体验中，将日志和链路追踪提升为一等公民。这最大限度地减少了 SRE 编写 SQL 查询的需求，并简化了基于 SQL 的可观测性，推动这一新兴范式向前发展。
+其中一项工作是将 OpenTelemetry (OTel) 置于插件的核心，因为我们相信，在未来几年里，它将成为基于 SQL 的可观测性的基础，也将成为数据采集的基础。
 
 ## OpenTelemetry 集成 \{#open-telemetry-integration\}
 

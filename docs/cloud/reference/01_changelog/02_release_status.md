@@ -47,13 +47,26 @@ For advance testing before production upgrades, use the Fast or Regular channel 
 
 <ReleaseSchedule releases={[
     {
+     changelog_link: 'https://clickhouse.com/docs/changelogs/26.4',
+     version: '26.4',
+     fast_start_date: '2026-06-22',
+     fast_end_date: 'TBD',
+     regular_start_date: 'TBD',
+     regular_end_date: 'TBD',
+     slow_start_date: 'TBD',
+     slow_end_date: 'TBD',
+     fast_progress: 'green',
+     regular_progress: 'green',
+     slow_progress: 'green',
+    },
+    {
      changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
      version: '26.2',
      fast_start_date: '2026-04-03',
      fast_end_date: '2026-04-14',
      regular_start_date: '2026-05-06',
-     regular_end_date: 'TBD',
-     slow_start_date: 'TBD',
+     regular_end_date: '2026-06-17',
+     slow_start_date: '2026-07-01',
      slow_end_date: 'TBD',
      fast_progress: 'green',
      regular_progress: 'green',

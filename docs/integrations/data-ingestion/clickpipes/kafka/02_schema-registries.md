@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Integrate with a schema registry'
-description: 'How to integrate for ClickPipes with a schema registry for schema management'
+description: 'How to integrate for ClickPipes with a schema registry for schema management.'
 slug: /integrations/clickpipes/kafka/schema-registries
 sidebar_position: 1
 title: 'Schema registries for Kafka ClickPipe'
@@ -11,9 +11,8 @@ integration:
    - category: 'clickpipes'
 ---
 
-# Schema registries {#schema-registries}
 
-ClickPipes supports schema registries for Avro data streams.
+ClickPipes supports integrating with a schema registry to decode Avro- and Protobuf-encoded topics.
 
 ## Supported registries for Kafka ClickPipes {#supported-schema-registries}
 
@@ -26,25 +25,37 @@ ClickPipes doesn't support AWS Glue Schema Registry or Azure Schema Registry yet
 
 ## Configuration {#schema-registry-configuration}
 
-ClickPipes with Avro data require a schema registry. This can be configured in one of three ways:
+To integrate with a schema registry during ClickPipes configuration, you must use one of the following approaches:
 
-1. Providing a complete path to the schema subject (e.g. `https://registry.example.com/subjects/events`)
-    - Optionally, a specific version can be referenced by appending `/versions/[version]` to the url (otherwise ClickPipes will retrieve the latest version).
-2. Providing a complete path to the schema id (e.g. `https://registry.example.com/schemas/ids/1000`)
-3. Providing the root schema registry URL (e.g. `https://registry.example.com`)
+1. Provide a complete path to the schema subject (e.g. `https://registry.example.com/subjects/events`)
+    - Optionally, a specific version can be referenced by appending `/versions/[version]` to the URL (otherwise ClickPipes will retrieve the latest version).
+2. Provide a complete path to the schema ID (e.g. `https://registry.example.com/schemas/ids/1000`)
+3. Provide the root schema registry URL (e.g. `https://registry.example.com`)
+
+## Network connectivity {#network-connectivity}
+
+ClickPipes connects to the schema registry over HTTPS at the URL you provide. The schema registry does not need to be publicly accessible.
+
+If your Kafka brokers are reached through a [reverse private endpoint](/integrations/clickpipes/aws-privatelink) (AWS PrivateLink or GCP Private Service Connect), the schema registry can use the same private connectivity. ClickPipes resolves the registry hostname through the reverse private endpoint's private DNS, so a registry hosted privately alongside your brokers is reachable as long as its hostname resolves to the reverse private endpoint's private IP addresses (via the endpoint's private DNS support or a custom private DNS mapping).
+
+Keep the following in mind:
+
+- The schema registry URL must use `https://`.
+- If the registry hostname resolves to a private address, it must be reachable through a reverse private endpoint selected for the ClickPipe; otherwise the connectivity check during setup will fail.
 
 ## How it works {#how-schema-registries-work}
 
-ClickPipes dynamically retrieves and applies the Avro schema from the configured schema registry.
-- If there's a schema id embedded in the message, it will use that to retrieve the schema.
-- If there's no schema id embedded in the message, it will use the schema id or subject name specified in the ClickPipe configuration to retrieve the schema.
-- If the message is written without an embedded schema id, and no schema id or subject name is specified in the ClickPipe configuration, then the schema won't be retrieved and the message will be skipped with a `SOURCE_SCHEMA_ERROR` logged in the ClickPipes errors table.
-- If the message doesn't conform to the schema, then the message will be skipped with a `DATA_PARSING_ERROR` logged in the ClickPipes errors table.
+ClickPipes dynamically retrieves and applies the schema from the configured schema registry.
+- If there's a schema ID embedded in the message, it will use that to retrieve the schema.
+- If there's no schema ID embedded in the message, it will use the schema ID or subject name specified in the ClickPipe configuration to retrieve the schema.
+- If the message is written without an embedded schema ID, and no schema ID or subject name is specified in the ClickPipe configuration, then the schema will not be retrieved and the message will be skipped with a `SOURCE_SCHEMA_ERROR` logged in the ClickPipes error table.
+- If the message does not conform to the schema, then the message will be skipped with a `DATA_PARSING_ERROR` logged in the ClickPipes error table.
+- For Protobuf schemas only: ClickPipes will load any imported schemas defined as dependencies. Avro schemas with external references are not yet supported.
 
 ## Schema mapping {#schema-mapping}
 
-The following rules are applied to the mapping between the retrieved Avro schema and the ClickHouse destination table:
+The following rules are applied to the mapping between the retrieved schema and the ClickHouse destination table:
 
-- If the Avro schema contains a field that isn't included in the ClickHouse destination mapping, that field is ignored.
-- If the Avro schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string. Note that DEFAULT expressions aren't currently evaluated for ClickPipes inserts (this is temporary limitation pending updates to the ClickHouse server default processing).
-- If the Avro schema field and the ClickHouse column are incompatible, inserts of that row/message will fail, and the failure will be recorded in the ClickPipes errors table. Note that several implicit conversions are supported (like between numeric types), but not all (for example, an Avro record field can not be inserted into an Int32 ClickHouse column).
+- If the schema contains a field that is not included in the ClickHouse destination mapping, that field is ignored.
+- If the schema is missing a field defined in the ClickHouse destination mapping, the ClickHouse column will be populated with a "zero" value, such as 0 or an empty string. Note that `DEFAULT` expressions are not supported.
+- If the schema field and the ClickHouse column are incompatible, inserts of that row/message will fail, and the failure will be recorded in the ClickPipes error table. Note that several implicit conversions are supported (e.g., between numeric types), but not all (e.g., an Avro record field cannot be inserted into an `Int32` ClickHouse column).

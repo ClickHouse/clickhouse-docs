@@ -1,14 +1,12 @@
 ---
 slug: /faq/general/olap
-title: 'OLAP란 무엇입니까?'
+title: 'OLAP이란 무엇입니까?'
 toc_hidden: true
 toc_priority: 100
-description: 'Online Analytical Processing(OLAP)에 대한 설명입니다'
+description: 'Online Analytical Processing이 무엇인지 설명합니다'
 keywords: ['OLAP']
 doc_type: 'reference'
 ---
-
-# OLAP이란 무엇입니까? \{#what-is-olap\}
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing)은 Online Analytical Processing의 약자입니다. 이는 기술적 관점과 비즈니스 관점, 두 가지 관점에서 볼 수 있는 포괄적인 용어입니다. 하지만 매우 높은 수준에서 보면, 이 세 단어를 거꾸로 읽어 보면 됩니다:
 

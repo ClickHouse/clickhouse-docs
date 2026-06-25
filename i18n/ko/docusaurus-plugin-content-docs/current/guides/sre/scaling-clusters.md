@@ -2,13 +2,11 @@
 slug: /guides/sre/scaling-clusters
 sidebar_label: '세그먼트 리밸런싱'
 sidebar_position: 20
-description: 'ClickHouse는 자동 세그먼트 리밸런싱을 지원하지 않으므로 세그먼트를 리밸런싱하는 방법에 대한 모범 사례를 제공합니다.'
+description: 'ClickHouse는 자동 세그먼트 리밸런싱을 지원하지 않으므로, 세그먼트 리밸런싱 방법에 대한 몇 가지 모범 사례를 제공합니다.'
 title: '데이터 리밸런싱'
 doc_type: 'guide'
-keywords: ['확장', '클러스터', '수평 확장', '용량 계획', '성능']
+keywords: ['스케일링', '클러스터', '수평 스케일링', '용량 계획', '성능']
 ---
-
-# 데이터 리밸런싱 \{#rebalancing-data\}
 
 ClickHouse는 자동 세그먼트 리밸런싱을 지원하지 않습니다. 그러나 다음과 같은 우선순위에 따른 세그먼트 리밸런싱 방법이 있습니다:
 

@@ -2,9 +2,9 @@
 sidebar_label: 'DynamoDB'
 sidebar_position: 10
 slug: /integrations/dynamodb
-description: 'ClickPipes を使用すると、ClickHouse と DynamoDB を接続できます。'
+description: 'ClickPipes を使用して、ClickHouse を DynamoDB に接続できます。'
 keywords: ['DynamoDB']
-title: 'DynamoDB から ClickHouse への CDC（変更データキャプチャ）'
+title: 'DynamoDB から ClickHouse への CDC'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -15,9 +15,7 @@ import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
-# DynamoDB から ClickHouse への CDC \{#cdc-from-dynamodb-to-clickhouse\}
-
-このページでは、ClickPipes を使用して DynamoDB から ClickHouse への CDC（変更データキャプチャ）を構成する方法について説明します。この連携は次の 2 つのコンポーネントから構成されます。
+このページでは、ClickPipes を使用して DynamoDB から ClickHouse への CDC (変更データキャプチャ) を構成する方法について説明します。この連携は次の 2 つのコンポーネントから構成されます。
 
 1. S3 ClickPipes による初期スナップショット
 2. Kinesis ClickPipes によるリアルタイム更新

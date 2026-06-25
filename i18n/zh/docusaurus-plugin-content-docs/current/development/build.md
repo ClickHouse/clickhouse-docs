@@ -1,13 +1,11 @@
 ---
-description: '在 Linux 系统上从源代码构建 ClickHouse 的分步指南'
+description: '在 Linux 系统上从源码构建 ClickHouse 的分步指南'
 sidebar_label: '在 Linux 上构建'
 sidebar_position: 10
 slug: /development/build
 title: '如何在 Linux 上构建 ClickHouse'
 doc_type: 'guide'
 ---
-
-# 如何在 Linux 上构建 ClickHouse \{#how-to-build-clickhouse-on-linux\}
 
 :::info 本构建指南适用于修改 ClickHouse 自身的贡献者。
 你可以按照[快速开始](https://clickhouse.com/docs/get-started/quick-start)中的说明安装预编译的 ClickHouse。

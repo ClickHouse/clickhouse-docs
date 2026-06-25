@@ -1,7 +1,7 @@
 ---
 slug: /integrations/mysql
 sidebar_label: 'MySQL'
-title: 'MySQL'
+title: 'Интеграция MySQL с ClickHouse'
 hide_title: true
 description: 'Страница, описывающая интеграцию с MySQL'
 doc_type: 'reference'
@@ -15,13 +15,10 @@ keywords: ['mysql', 'интеграция с базой данных', 'внеш
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# Интеграция MySQL с ClickHouse \{#integrating-mysql-with-clickhouse\}
-
-На этой странице рассматривается использование табличного движка `MySQL` для чтения данных из таблицы MySQL.
+На этой странице рассматривается использование движка таблицы `MySQL` для чтения данных из таблицы MySQL.
 
 :::note
-В ClickHouse Cloud вы также можете использовать [MySQL ClickPipe](/integrations/clickpipes/mysql) (в настоящее время в режиме публичного бета-тестирования), чтобы упростить перенос данных из ваших таблиц MySQL в ClickHouse.
+Для ClickHouse Cloud вы также можете использовать [MySQL ClickPipe](/integrations/clickpipes/mysql) (сейчас в публичной бете), чтобы легко переносить данные из таблиц MySQL в ClickHouse.
 :::
 
 ## Подключение ClickHouse к MySQL с использованием табличного движка MySQL \{#connecting-clickhouse-to-mysql-using-the-mysql-table-engine\}
@@ -70,9 +67,8 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 :::note
 Если вы используете эту возможность в ClickHouse Cloud, возможно, вам потребуется разрешить IP-адресам ClickHouse Cloud доступ к вашему экземпляру MySQL.
-Обратитесь к ClickHouse [Cloud Endpoints API](//cloud/get-started/query-endpoints.md) для получения сведений об исходящем трафике.
+Обратитесь к ClickHouse [Cloud Endpoints API](/cloud/get-started/query-endpoints) для получения сведений об исходящем трафике.
 :::
-
 
 ### 2. Определите таблицу в ClickHouse \{#2-define-a-table-in-clickhouse\}
 

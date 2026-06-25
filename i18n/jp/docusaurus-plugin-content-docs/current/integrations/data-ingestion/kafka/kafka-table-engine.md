@@ -14,10 +14,7 @@ import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafka_03.png';
 import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
-
-# Kafka テーブルエンジンの使用 \{#using-the-kafka-table-engine\}
-
-Kafka テーブルエンジンは、Apache Kafka およびその他の Kafka API 互換ブローカー（例: Redpanda、Amazon MSK）から[**データを読み取ったり**](#kafka-to-clickhouse)、[**データを書き込んだり**](#clickhouse-to-kafka)するために使用できます。
+Kafka テーブルエンジンを使用すると、Apache Kafka およびその他の Kafka API 互換ブローカー (例: Redpanda、Amazon MSK) からデータを[**読み取る**](#kafka-to-clickhouse)ことも、それらにデータを[**書き込む**](#clickhouse-to-kafka)こともできます。
 
 ### Kafka から ClickHouse へ \{#kafka-to-clickhouse\}
 

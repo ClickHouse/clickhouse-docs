@@ -1,5 +1,5 @@
 ---
-title: 'Запросы к системным таблицам'
+title: 'Запросы к системной базе данных ClickHouse'
 slug: /cloud/monitoring/system-tables
 description: 'Мониторинг ClickHouse Cloud с помощью прямых запросов к системным таблицам'
 keywords: ['cloud', 'мониторинг', 'системные таблицы', 'query_log', 'clusterAllReplicas', 'панель мониторинга обсервабилити']
@@ -11,15 +11,13 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import NativeAdvancedDashboard from '@site/static/images/cloud/manage/monitoring/native_advanced_dashboard.png';
 
-# Запросы к системной базе данных ClickHouse \{#querying-clickhouses-system-database\}
+Все экземпляры ClickHouse включают набор [системных таблиц](/operations/system-tables/overview), расположенных в базе данных `system`, которые содержат информацию о:
 
-Во всех экземплярах ClickHouse есть набор [системных таблиц](/operations/system-tables/overview), находящихся в базе данных `system` и содержащих информацию о:
+* Состоянии сервера, процессах и окружении.
+* Внутренних процессах сервера.
+* Параметрах, использованных при сборке бинарного файла ClickHouse.
 
-* состояниях, процессах и окружении сервера;
-* внутренних процессах сервера;
-* параметрах, использованных при сборке бинарного файла ClickHouse.
-
-Прямые запросы к этим таблицам полезны для мониторинга развертываний ClickHouse, особенно при глубоком анализе и отладке.
+Прямые запросы к этим таблицам полезны для мониторинга развертываний ClickHouse, особенно для детального анализа внутреннего состояния и отладки.
 
 ## Использование консоли ClickHouse Cloud \{#using-cloud-console\}
 

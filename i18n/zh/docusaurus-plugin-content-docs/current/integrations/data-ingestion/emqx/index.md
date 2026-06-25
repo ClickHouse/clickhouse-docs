@@ -40,8 +40,6 @@ import clickhouse_result from '@site/static/images/integrations/data-ingestion/e
 import Image from '@theme/IdealImage';
 
 
-# 将 EMQX 与 ClickHouse 集成 \{#integrating-emqx-with-clickhouse\}
-
 ## 连接 EMQX \{#connecting-emqx\}
 
 [EMQX](https://www.emqx.com/en/try?product=enterprise) 是一个开源 MQTT 代理，具备高性能的实时消息处理引擎，可为大规模物联网设备提供事件流处理能力。作为可扩展性最强的 MQTT 代理，EMQX 能帮助你在任何规模下连接任何设备，让你可以在任何地方传输和处理物联网数据。

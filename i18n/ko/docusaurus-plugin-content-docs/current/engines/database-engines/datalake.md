@@ -1,12 +1,10 @@
 ---
-description: 'DataLakeCatalog 데이터베이스 엔진은 ClickHouse를 외부 데이터 카탈로그에 연결하여 오픈 테이블 포맷 데이터를 쿼리할 수 있도록 합니다'
+description: 'DataLakeCatalog 데이터베이스 엔진을 사용하면 ClickHouse를 외부 데이터 카탈로그에 연결하고 오픈 테이블 포맷 데이터를 쿼리할 수 있습니다'
 sidebar_label: 'DataLakeCatalog'
 slug: /engines/database-engines/datalakecatalog
 title: 'DataLakeCatalog'
 doc_type: 'reference'
 ---
-
-# DataLakeCatalog \{#datalakecatalog\}
 
 `DataLakeCatalog` 데이터베이스 엔진을 사용하면 ClickHouse를 외부
 데이터 카탈로그에 연결하여, 데이터를 복제할 필요 없이 오픈 테이블 포맷 데이터를

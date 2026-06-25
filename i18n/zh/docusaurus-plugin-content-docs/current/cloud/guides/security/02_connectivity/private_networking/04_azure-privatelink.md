@@ -27,16 +27,13 @@ import azure_pe_remove_private_endpoint from '@site/static/images/cloud/security
 import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azure-privatelink-pe-filter.png';
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
-
-# Azure Private Link \{#azure-private-link\}
-
 <ScalePlanFeatureBadge feature="Azure Private Link" />
 
-本指南介绍如何使用 Azure Private Link，通过虚拟网络在 Azure (包括客户自有服务和 Microsoft 合作伙伴服务) 与 ClickHouse Cloud 之间提供专用连接。Azure Private Link 通过避免数据暴露在公共互联网中，简化网络架构并保护 Azure 中各端点之间的连接安全。
+本指南介绍如何使用 Azure Private Link，通过虚拟网络在 Azure (包括客户自有服务和 Microsoft Partner 服务) 与 ClickHouse Cloud 之间提供私有连接。Azure Private Link 通过消除数据暴露到公共互联网的风险，简化网络架构，并保护 Azure 中各端点之间的连接安全。
 
-<Image img={azure_pe} size="lg" alt="Private Link 概览" background="white" />
+<Image img={azure_pe} size="lg" alt="PrivateLink 概览" background="white" />
 
-Azure 通过 Private Link 支持跨区域连接。这使您能够在部署了 ClickHouse 服务的不同区域中的虚拟网络 (VNet) 之间建立连接。
+Azure 支持通过 Private Link 实现跨区域连接。这使您能够在部署了 ClickHouse 服务的不同区域的 VNet 之间建立连接。
 
 :::note
 跨区域流量可能会产生额外费用。请查阅最新的 Azure 文档。
@@ -45,14 +42,14 @@ Azure 通过 Private Link 支持跨区域连接。这使您能够在部署了 Cl
 **请完成以下步骤以启用 Azure Private Link：**
 
 1. 获取用于 Private Link 的 Azure 连接别名
-2. 在 Azure 中创建 Private Endpoint (专用终结点) 
-3. 将 Private Endpoint 的 Resource ID 添加到您的 ClickHouse Cloud 组织
-4. 将 Private Endpoint 的 Resource ID 添加到您的服务允许列表中
-5. 通过 Private Link 访问您的 ClickHouse Cloud 服务
+2. 在 Azure 中创建一个专用终结点
+3. 将专用终结点 Resource ID 添加到您的 ClickHouse Cloud 组织
+4. 将专用终结点 Resource ID 添加到您的服务允许列表
+5. 使用 Private Link 访问您的 ClickHouse Cloud 服务
 
 :::note
-ClickHouse Cloud Azure Private Link 已从使用 resourceGUID 切换为使用 Resource ID 筛选器。您仍然可以使用 resourceGUID (其具有向后兼容性) ，但我们建议切换到 Resource ID 筛选器。要迁移，只需使用 Resource ID 创建新的终结点，将其关联到服务，然后移除旧的基于 resourceGUID 的终结点。
-:::
+ClickHouse Cloud Azure PrivateLink 已从使用 resourceGUID 切换为使用 Resource ID 过滤器。您仍然可以使用 resourceGUID，因为它向后兼容，但我们建议切换到 Resource ID 过滤器。要迁移，只需使用 Resource ID 创建一个新端点，将其附加到服务，然后删除旧的基于 resourceGUID 的端点。
+:::”
 
 ## 注意 \{#attention\}
 

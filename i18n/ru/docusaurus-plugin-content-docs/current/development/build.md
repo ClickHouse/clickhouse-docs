@@ -1,13 +1,11 @@
 ---
-description: 'Пошаговое руководство по сборке ClickHouse из исходников в операционных системах Linux'
+description: 'Пошаговое руководство по сборке ClickHouse из исходного кода на системах Linux'
 sidebar_label: 'Сборка на Linux'
 sidebar_position: 10
 slug: /development/build
 title: 'Как собрать ClickHouse на Linux'
 doc_type: 'guide'
 ---
-
-# Как собрать ClickHouse на Linux \{#how-to-build-clickhouse-on-linux\}
 
 :::info Это руководство по сборке предназначено для участников, изменяющих сам ClickHouse.
 Если вы не изменяете исходный код ClickHouse, вы можете установить уже собранный ClickHouse, как описано в разделе [Быстрый старт](https://clickhouse.com/docs/get-started/quick-start).

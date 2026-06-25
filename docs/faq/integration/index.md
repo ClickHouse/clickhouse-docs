@@ -8,7 +8,6 @@ description: 'Landing page listing questions related to integrating ClickHouse w
 doc_type: 'landing-page'
 ---
 
-# Questions about integrating ClickHouse and other systems
 
 - [How do I export data from ClickHouse to a file?](https://clickhouse.com/docs/knowledgebase/file-export)
 - [How to import JSON into ClickHouse?](/integrations/data-ingestion/data-formats/json/intro.md)

@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/mcp-agent
 sidebar_label: '集成 mcp-agent'
-title: '如何使用 mcp-agent 和 ClickHouse MCP Server 构建 AI 智能体'
+title: '如何使用 mcp-agent 和 ClickHouse MCP server 构建 AI 智能体'
 pagination_prev: null
 pagination_next: null
-description: '了解如何使用 mcp-agent 和 ClickHouse MCP Server 构建 AI 智能体'
+description: '了解如何使用 mcp-agent 和 ClickHouse MCP server 构建 AI 智能体'
 keywords: ['ClickHouse', 'MCP', 'mcp-agent']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# 如何使用 CrewAI 和 ClickHouse MCP server 构建 AI 智能体 \{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\}
 
 在本指南中，您将学习如何构建一个使用 [ClickHouse MCP server](https://github.com/ClickHouse/mcp-clickhouse) 与 [ClickHouse SQL playground](https://sql.clickhouse.com/) 进行交互的 [mcp-agent](https://github.com/lastmile-ai/mcp-agent) AI 智能体。
 

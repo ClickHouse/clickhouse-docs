@@ -24,15 +24,13 @@ import airbyte08 from '@site/static/images/integrations/data-ingestion/etl-tools
 import airbyte09 from '@site/static/images/integrations/data-ingestion/etl-tools/airbyte_09.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Airbyte를 ClickHouse에 연결하기 \{#connect-airbyte-to-clickhouse\}
-
 <PartnerBadge />
 
 :::note
-현재 ClickHouse용 Airbyte 소스와 대상은 알파(Alpha) 단계이며, 1,000만 행(&gt; 10 million rows) 이상의 대규모 데이터셋을 이동하는 데에는 적합하지 않습니다.
+Airbyte의 ClickHouse용 source 및 destination은 현재 Alpha 상태이며, 대규모 데이터셋(&gt; 1,000만 행)을 이동하는 데는 적합하지 않다는 점에 유의하십시오.
 :::
 
-<a href="https://www.airbyte.com/" target="_blank">Airbyte</a>는 오픈 소스 데이터 통합 플랫폼입니다. <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> 데이터 파이프라인을 생성할 수 있으며, 140개가 넘는 기본 제공 커넥터와 함께 제공됩니다. 이 단계별 튜토리얼에서는 Airbyte를 ClickHouse의 대상(destination)으로 연결하고 샘플 데이터셋을 적재하는 방법을 설명합니다.
+<a href="https://www.airbyte.com/" target="_blank">Airbyte</a>는 오픈소스 데이터 통합 플랫폼입니다. <a href="https://airbyte.com/blog/why-the-future-of-etl-is-not-elt-but-el" target="_blank">ELT</a> 데이터 파이프라인을 생성할 수 있으며, 즉시 사용할 수 있는 140개 이상의 connector를 제공합니다. 이 단계별 자습서에서는 Airbyte를 ClickHouse 대상에 연결하고 샘플 데이터셋을 로드하는 방법을 설명합니다.
 
 <VerticalStepper headerLevel="h2">
   ## Airbyte 다운로드 및 실행 \{#1-download-and-run-airbyte\}

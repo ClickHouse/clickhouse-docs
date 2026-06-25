@@ -11,19 +11,19 @@ doc_type: 'guide'
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
-# ClickHouse OSS クイックスタート \{#clickhouse-oss-quick-start\}
-
-> このクイックスタートチュートリアルでは、いくつかの簡単なステップで OSS ClickHouse をセットアップします。ClickHouse CLI `clickhousectl` を使用して ClickHouse をインストールし、
-> ClickHouse サーバーを起動してサーバーに接続し、テーブルを作成して、
-> そのテーブルにデータを挿入し、SELECT クエリを実行します。
+> このクイックスタートチュートリアルでは、いくつかの簡単な手順で OSS ClickHouse をセットアップします。
+> ClickHouse CLI `clickhousectl` を使用して ClickHouse をインストールし、
+> ClickHouse サーバーを起動して、サーバーに接続してテーブルを作成し、
+> そこにデータを挿入し、SELECT クエリを実行します。
 
 <VerticalStepper>
   ## ClickHouse CLIのインストール \ \{#install-the-cli\}
 
-  ClickHouse CLI (`clickhousectl`) は、ローカルの ClickHouse バージョンのインストールと管理、サーバーの起動、クエリの実行に使用するツールです。次のコマンドでインストールします。
+  ClickHouse CLI (`clickhousectl`) は、ローカルの ClickHouse バージョンのインストール、サーバーの起動、クエリの実行、および ClickHouse Cloud の管理に使用するツールです。
+
+  次のコマンドでインストールします。
 
   ```bash
   curl https://clickhouse.com/cli | sh
@@ -31,16 +31,33 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
   便宜上、`chctl` エイリアスも自動的に作成されます。
 
+  <details>
+    <summary>上級: `clickhousectl` を使わずに ClickHouse をインストールする</summary>
+
+    `clickhouse` バイナリのみが必要で、`clickhousectl` が不要な場合は、
+    `CLICKHOUSE_ONLY=1` を指定してユニバーサルインストーラーを使用してください:
+
+    ```bash
+    curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+    ```
+
+    これにより、単一の `clickhouse` バイナリが現在のディレクトリにダウンロードされます。以降は、そのバイナリから `clickhouse-server`、`clickhouse-client`、`clickhouse-local` を
+    直接実行できます。そのため、このガイドの残りの `clickhousectl` ベースの
+    手順は該当しません。プレーンバイナリのワークフローについては、[Quick install](/install/quick-install) ページを参照してください。
+  </details>
+
   ## ClickHouseのインストール \{#install-clickhouse\}
 
   ClickHouseはLinuxおよびmacOS上でネイティブに動作し、Windowsでは
   [WSL](https://learn.microsoft.com/en-us/windows/wsl/about)経由で動作します。
 
-  CLIを使用して、ClickHouseの最新安定版をインストールします：
+  CLIを使用して、ClickHouseの最新安定版をインストールし、デフォルトに設定します：
 
   ```bash
-  clickhousectl local install stable
+  clickhousectl local use stable
   ```
+
+  `local use` は、指定したバージョンがまだインストールされていない場合にインストールし、デフォルトとして設定した上で、`~/.local/bin` (`PATH` 上) に `clickhouse` シンボリックリンクを作成します。これにより、`clickhouse` バイナリを直接呼び出せるようになります。このガイドの以降の手順はそのシンボリックリンクに依存しています。デフォルトの変更やシンボリックリンクの更新を行わずにバージョンをダウンロードするには、代わりに `clickhousectl local install <version>` を使用してください。
 
   :::note
   これは本番環境向けの ClickHouse インストール方法として推奨されていません。
@@ -227,7 +244,9 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
       ```sql
       DESCRIBE TABLE file('comments.tsv')
+      ```
 
+      ```response
       Query id: 8ca9b2f9-65a2-4982-954a-890de710a336
 
       ┌─name──────┬─type────────────────────┐
@@ -252,8 +271,8 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       )
       ```
 
-      [`file` テーブル関数](/sql-reference/table-functions/file)の
-      ドキュメントページを参照してください。
+      [`file` テーブル関数](/sql-reference/table-functions/file)
+      のドキュメントページを参照してください。
 
       <br />
     </TabItem>
@@ -333,7 +352,7 @@ import {VerticalStepper} from '@clickhouse/click-ui/bundled';
       <br />
     </TabItem>
 
-    <TabItem value="データレイク" label="データレイク">
+    <TabItem value="datalake" label="データレイク">
       ClickHouseには、次のソースからデータを読み込むためのテーブル関数があります。
 
       * **Hadoop**: [`hdfs` テーブル関数](/sql-reference/table-functions/hdfs)を使用して Apache Hadoop と連携します

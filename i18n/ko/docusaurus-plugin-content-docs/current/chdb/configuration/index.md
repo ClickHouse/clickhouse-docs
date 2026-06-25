@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'configuration', 'config', 'settings']
 doc_type: 'reference'
 ---
 
-# DataStore 구성 \{#datastore-configuration\}
-
-DataStore는 실행 엔진 선택, 호환성 모드, 로깅, 캐싱, 프로파일링, 데이터 타입(dtype) 교정 등을 위한 포괄적인 구성 옵션을 제공합니다.
+DataStore는 실행 엔진 선택, 호환성 모드, 로깅, 캐싱, 프로파일링, dtype 교정을 위한 다양한 구성 옵션을 제공합니다.
 
 ## 빠른 참고 \{#quick-reference\}
 

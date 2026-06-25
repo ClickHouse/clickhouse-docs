@@ -1,5 +1,5 @@
 ---
-title: 'OpenTelemetry の統合'
+title: 'データ収集のためのOpenTelemetryの統合'
 description: 'OpenTelemetry と ClickHouse を統合してオブザーバビリティを実現する'
 slug: /observability/integrating-opentelemetry
 keywords: ['オブザーバビリティ', 'OpenTelemetry']
@@ -16,14 +16,11 @@ import observability_8 from '@site/static/images/use-cases/observability/observa
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
 
+あらゆるオブザーバビリティソリューションには、ログ と トレース を収集してエクスポートする手段が必要です。この目的のために、ClickHouse は [OpenTelemetry (OTel) プロジェクト](https://opentelemetry.io/) を推奨しています。
 
-# データ収集のための OpenTelemetry の統合 \{#integrating-opentelemetry-for-data-collection\}
+&quot;OpenTelemetry は、トレース、メトリクス、ログ などのテレメトリーデータを生成・管理するために設計されたオブザーバビリティフレームワークおよびツールキットです。&quot;
 
-あらゆるオブザーバビリティソリューションには、ログおよびトレースを収集してエクスポートする手段が必要です。この目的のために、ClickHouse は [OpenTelemetry (OTel) プロジェクト](https://opentelemetry.io/) を推奨しています。
-
-「OpenTelemetry は、トレース、メトリクス、ログなどのテレメトリデータを作成および管理するために設計されたオブザーバビリティフレームワーク兼ツールキットです。」
-
-ClickHouse や Prometheus とは異なり、OpenTelemetry はオブザーバビリティのバックエンドではなく、テレメトリデータの生成、収集、管理、およびエクスポートに特化しています。OpenTelemetry の当初の目的は、言語固有の SDKS を用いてアプリケーションやシステムを容易にインスツルメンテーションできるようにすることでしたが、現在では OpenTelemetry collector を通じたログ収集も含むように拡張されています。OpenTelemetry collector は、テレメトリデータを受信、処理、およびエクスポートするエージェントまたはプロキシです。
+ClickHouse や Prometheus とは異なり、OpenTelemetry はオブザーバビリティバックエンドではなく、テレメトリーデータの生成、収集、管理、エクスポートに重点を置いています。OpenTelemetry の当初の目的は、言語固有の SDK を使用してアプリケーションやシステムを容易に計装できるようにすることでしたが、その後、テレメトリーデータを受信、処理、エクスポートする agent またはプロキシである OpenTelemetry Collector を通じた ログ の収集も含むように拡張されました。
 
 ## ClickHouse 関連コンポーネント \{#clickhouse-relevant-components\}
 
@@ -422,7 +419,7 @@ service:
 ./otelcol-contrib --config clickhouse-config.yaml
 ```
 
-このコレクターにトレースデータを送信するには、`telemetrygen` ツールを使用して次のコマンドを実行してください。
+このcollectorにトレースデータを送信するには、`telemetrygen` ツールを使用して次のコマンドを実行してください。
 
 ```bash
 $GOBIN/telemetrygen traces --otlp-insecure --traces 300
@@ -430,13 +427,14 @@ $GOBIN/telemetrygen traces --otlp-insecure --traces 300
 
 起動後、簡単なクエリを実行してログイベントが取り込まれていることを確認します。
 
-
 ```sql
 SELECT *
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Timestamp:              2019-01-22 06:46:14.000000000
@@ -490,7 +488,6 @@ Links.SpanId:           []
 Links.TraceState:   []
 Links.Attributes:   []
 ```
-
 
 ## すぐに利用できるスキーマ \{#out-of-the-box-schema\}
 

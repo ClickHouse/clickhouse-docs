@@ -1,13 +1,11 @@
 ---
-description: 'leadInFrame ウィンドウ関数のリファレンス'
+description: 'leadInFrame ウィンドウ関数のドキュメント'
 sidebar_label: 'leadInFrame'
 sidebar_position: 10
 slug: /sql-reference/window-functions/leadInFrame
 title: 'leadInFrame'
 doc_type: 'reference'
 ---
-
-# leadInFrame \{#leadinframe\}
 
 順序付けされたフレーム内で、現在の行から指定したオフセット行数だけ後方の行で評価された値を返します。
 
@@ -32,8 +30,8 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **パラメーター**
 
 * `x` — カラム名。
-* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。（オプション - 省略時は `1`）
-* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。（オプション - 省略時はカラム型のデフォルト値）
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (オプション - 省略時は `1`)
+* `default` — 計算対象の行がウィンドウフレームの境界を超えた場合に返す値。 (オプション - 省略時はカラム型のデフォルト値)
 
 **返される値**
 
@@ -43,15 +41,13 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 この例では、ノーベル賞受賞者の[過去のデータ](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data)を対象に、物理学部門における連続した受賞者の一覧を返すために `leadInFrame` 関数を使用しています。
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE OR REPLACE VIEW nobel_prize_laureates
 AS SELECT *
 FROM file('nobel_laureates_data.csv');
 ```
 
-```sql
+```sql title="Query"
 SELECT
     fullName,
     leadInFrame(year, 1, year) OVER (PARTITION BY category ORDER BY year ASC
@@ -65,9 +61,7 @@ ORDER BY year DESC
 LIMIT 9
 ```
 
-結果:
-
-```response
+```response title="Response"
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 1. │ Anne L Huillier  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
 2. │ Pierre Agostini  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │

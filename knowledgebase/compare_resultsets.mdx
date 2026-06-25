@@ -1,5 +1,5 @@
 ---
-title: How to Validate if Two Queries Return the Same Result-sets
+title: How to validate if two queries return the same result-sets
 description: Learn how to validate that two ClickHouse queries produce identical result-sets using hash functions and comparison techniques.
 date: 2023-05-04
 tags: ['Functions']
@@ -37,7 +37,7 @@ WITH
     ) AS q2_resultset_hash
 SELECT equals(q1_resultset_hash,q2_resultset_hash) as Q1_equals_Q2
 ```
-The example uses a [CTE](https://clickhouse.com/docs/sql-reference/statements/select/with) to calculate sums of the [cityHash](https://clickhouse.com/docs/sql-reference/functions/hash-functions#cityhash64) value of each row in these two queries and will return `1` if the two resultsets are identical.
+The example uses a [CTE](/sql-reference/statements/select/with) to calculate sums of the [cityHash](/sql-reference/functions/hash-functions#cityHash64) value of each row in these two queries and will return `1` if the two resultsets are identical.
 
 
 Using some integers sequence data and some pretty formatting:

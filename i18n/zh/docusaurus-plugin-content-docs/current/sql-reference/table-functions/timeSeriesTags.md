@@ -1,13 +1,11 @@
 ---
-description: 'timeSeriesTags 表函数返回 TimeSeries 引擎表 `db_name.time_series_table` 所使用的 tags 表。'
+description: 'timeSeriesTags 表函数返回表 `db_name.time_series_table` 所使用的 tags 表，其中该表的表引擎为 TimeSeries 引擎。'
 sidebar_label: 'timeSeriesTags'
 sidebar_position: 145
 slug: /sql-reference/table-functions/timeSeriesTags
 title: 'timeSeriesTags'
 doc_type: 'reference'
 ---
-
-# timeSeriesTags 表函数 \{#timeseriestags-table-function\}
 
 `timeSeriesTags(db_name.time_series_table)` - 返回表 `db_name.time_series_table` 使用的 [tags](../../engines/table-engines/integrations/time-series.md#tags-table) 表，其中该表的表引擎为 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 引擎：
 

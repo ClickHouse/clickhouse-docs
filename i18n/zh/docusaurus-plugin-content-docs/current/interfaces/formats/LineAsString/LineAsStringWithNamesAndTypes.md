@@ -10,8 +10,8 @@ doc_type: 'reference'
 ---
 
 | 输入 | 输出 | 别名 |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| -- | -- | -- |
+| ✗  | ✔  |    |
 
 ## 描述 \{#description\}
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 ## 使用示例 \{#example-usage\}
 
-```sql
+```sql title="Query"
 CREATE TABLE example (
     name String,
     value Int32

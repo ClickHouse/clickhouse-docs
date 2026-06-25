@@ -7,8 +7,6 @@ title: 'jdbc'
 doc_type: 'reference'
 ---
 
-# jdbc Table Function \{#jdbc-table-function\}
-
 :::note
 clickhouse-jdbc-bridge에는 실험적인 코드가 포함되어 있으며 더 이상 지원되지 않습니다. 신뢰성 문제와 보안 취약성이 있을 수 있습니다. 사용 시 이러한 위험을 전적으로 감수해야 합니다.
 ClickHouse는 임시(ad-hoc) 쿼리 시나리오(Postgres, MySQL, MongoDB 등)에 더 나은 대안을 제공하는 ClickHouse 내장 테이블 함수 사용을 권장합니다.

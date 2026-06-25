@@ -3,12 +3,10 @@ title: 'ClickHouse 是否支持联邦查询？'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/federated
-description: 'ClickHouse 广泛支持联邦和混合查询'
+description: 'ClickHouse 支持广泛的联邦查询和混合查询'
 doc_type: 'reference'
 keywords: ['federated', 'hybrid', 'postgres', 'mysql', 'sqlite', 'odbc', 'jdbc']
 ---
-
-# ClickHouse 是否支持联邦查询？ \{#does-clickhouse-support-federated-queries\}
 
 在分析型数据库中，ClickHouse 对联邦查询和混合查询执行的支持最为全面。
 

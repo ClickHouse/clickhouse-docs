@@ -1,5 +1,5 @@
 ---
-description: 'Alias テーブルエンジンは、別のテーブルへの透過的なプロキシとして機能します。すべての操作は対象テーブルに転送され、エイリアス自体はデータを保持しません。'
+description: 'Alias テーブルエンジンは、別のテーブルへの透過的なプロキシとして機能します。すべての操作はターゲットテーブルに転送され、エイリアス自体はデータを保持しません。'
 sidebar_label: 'Alias'
 sidebar_position: 5
 slug: /engines/table-engines/special/alias
@@ -7,20 +7,9 @@ title: 'Alias テーブルエンジン'
 doc_type: 'reference'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
-
 # Alias テーブルエンジン \{#alias-table-engine\}
 
-<ExperimentalBadge/>
-
-`Alias` エンジンは、別のテーブルへのプロキシを作成します。すべての読み取りおよび書き込み操作は対象テーブルに転送され、エイリアス自体はデータを保持せず、対象テーブルへの参照のみを保持します。
-
-:::info
-これは実験的な機能であり、将来のリリースで後方互換性を損なう形で変更される可能性があります。
-`Alias` テーブルエンジンを使用するには、
-[allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine) 設定を有効にしてください。
-次のコマンドを実行します: `set allow_experimental_alias_table_engine = 1`。
-:::
+`Alias` エンジンは、別のテーブルへのプロキシを作成します。すべての読み取りおよび書き込み操作はターゲットテーブルに転送され、エイリアス自体はデータを保持せず、ターゲットテーブルへの参照のみを保持します。
 
 ## テーブルの作成 \{#creating-a-table\}
 

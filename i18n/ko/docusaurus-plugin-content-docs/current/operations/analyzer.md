@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse 쿼리 분석기에 대해 설명하는 페이지'
+description: 'ClickHouse 쿌리 분석기를 자세히 설명하는 페이지'
 keywords: ['analyzer']
 sidebar_label: 'Analyzer'
 slug: /operations/analyzer
@@ -7,9 +7,7 @@ title: 'Analyzer'
 doc_type: 'reference'
 ---
 
-# Analyzer \{#analyzer\}
-
-ClickHouse `24.3` 버전에서는 새로운 쿼리 Analyzer가 기본값으로 활성화되었습니다.
+ClickHouse `24.3` 버전에서는 새로운 쿼리 분석기가 기본값으로 활성화되었습니다.
 동작 방식에 대한 자세한 내용은 [여기](/guides/developer/understanding-query-execution-with-the-analyzer#analyzer)에서 확인할 수 있습니다.
 
 ## 알려진 비호환 사항 \{#known-incompatibilities\}

@@ -12,8 +12,6 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 import cmek_performance from '@site/static/images/_snippets/cmek-performance.png';
 
 
-# 데이터 암호화 \{#data-encryption\}
-
 ## 스토리지 수준 암호화 \{#storage-encryption\}
 
 ClickHouse Cloud는 기본적으로 클라우드 제공자가 관리하는 AES 256 키를 사용하는 저장 데이터 암호화(encryption at rest)로 구성되어 있습니다. 자세한 내용은 다음 문서를 참고하십시오.

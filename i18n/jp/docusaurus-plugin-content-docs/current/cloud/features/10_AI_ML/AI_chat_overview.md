@@ -1,12 +1,11 @@
 ---
-sidebar_label: 'ClickHouse Assistant エージェントに質問'
+sidebar_label: 'ClickHouse Assistant'
+sidebar_position: 2
 slug: /cloud/features/ai-ml/ask-ai
-title: 'Cloud で ClickHouse Assistant エージェントに質問する'
-description: 'ClickHouse Cloud における ClickHouse Assistant チャット機能の説明'
+title: 'Cloud の ClickHouse Assistant'
+description: 'ClickHouse Cloud における ClickHouse Assistant chat 機能の説明'
 doc_type: 'reference'
 ---
-
-# Cloud で ClickHouse Assistant エージェントに質問する \{#clickhouse-assistant-agent-in-cloud\}
 
 「ClickHouse Assistant」エージェントは、ClickHouse Cloud サービスでホストされているデータに対して複雑な分析タスクを実行できる、すぐに使えるターンキー型の機能です。
 SQL を書いたりダッシュボードを操作したりする代わりに、ユーザーは探している内容を自然言語で説明できます。

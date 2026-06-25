@@ -9,6 +9,4 @@ doc_type: 'guide'
 
 import MigrationGuide from '@site/i18n/ko/docusaurus-plugin-content-docs/current/integrations/data-ingestion/redshift/_snippets/_migration_guide.md'
 
-# Amazon Redshift에서 ClickHouse로 마이그레이션하는 가이드 \{#amazon-redshift-to-clickhouse-migration-guide\}
-
 <MigrationGuide />

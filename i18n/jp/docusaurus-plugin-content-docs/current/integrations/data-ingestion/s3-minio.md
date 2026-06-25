@@ -2,16 +2,14 @@
 sidebar_label: 'MinIO'
 sidebar_position: 6
 slug: /integrations/minio
-description: 'ClickHouse と組み合わせて MinIO を使用する方法を説明するページ'
+description: 'ClickHouse で MinIO を使用する方法を説明するページ'
 title: 'MinIO の使用'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
-keywords: ['s3', 'minio', 'object storage', 'data loading', 'compatible storage']
+keywords: ['s3', 'minio', 'オブジェクトストレージ', 'データ読み込み', '互換ストレージ']
 ---
-
-# MinIO の使用 \{#using-minio\}
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 

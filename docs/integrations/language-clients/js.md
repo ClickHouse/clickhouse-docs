@@ -15,8 +15,6 @@ integration:
 import ConnectionDetails from '@site/docs/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# ClickHouse JS
-
 The official JS client for connecting to ClickHouse.
 The client is written in TypeScript and provides typings for the client public API.
 

@@ -7,7 +7,6 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState {#minsimplestate}
 
 ## Description {#description}
 
@@ -150,7 +149,7 @@ ORDER BY location_id;
 
 We now get the expected result:
 
-```sql
+```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ North         │        3 │        8 │
 │           2 │ South         │       15 │       18 │

@@ -680,7 +680,7 @@ ENGINE = Distributed('cluster_2S_2R', 'uk', 'uk_price_paid_local', rand());
 
 On each host you will now see the following tables in the `uk` database:
 
-```sql
+```response
    ┌─name──────────────────────┐
 1. │ uk_price_paid_distributed │
 2. │ uk_price_paid_local       │

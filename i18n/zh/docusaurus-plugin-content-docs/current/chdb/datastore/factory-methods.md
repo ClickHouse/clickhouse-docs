@@ -2,14 +2,12 @@
 title: 'DataStore 工厂方法'
 sidebar_label: '工厂方法'
 slug: /chdb/datastore/factory-methods
-description: '从文件、数据库、Cloud 存储和数据湖创建 DataStore 实例'
+description: '从文件、数据库、云存储和数据湖创建 DataStore 实例'
 keywords: ['chdb', 'datastore', 'factory', 'from_file', 'from_s3', 'uri', 'mysql', 'postgresql']
 doc_type: 'reference'
 ---
 
-# DataStore 工厂方法 \{#datastore-factory-methods\}
-
-DataStore 提供了超过 20 种工厂方法，可从本地文件、数据库、云存储和数据湖等多种数据源创建实例。
+DataStore 提供了 20 多种工厂方法，可从多种数据源创建实例，包括本地文件、数据库、云存储和数据湖。
 
 ## 通用 URI 接口 \{#uri\}
 

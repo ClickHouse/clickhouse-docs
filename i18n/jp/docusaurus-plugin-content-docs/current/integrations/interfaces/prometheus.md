@@ -7,8 +7,6 @@ title: 'Prometheus プロトコル'
 doc_type: 'reference'
 ---
 
-# Prometheus プロトコル \{#prometheus-protocols\}
-
 ## メトリクスの公開 \{#expose\}
 
 :::note
@@ -66,18 +64,17 @@ Settings:
 | `histograms`                 | true       | [system.histogram&#95;metrics](/operations/system-tables/histogram_metrics) テーブルからヒストグラムメトリクスを公開します。       |
 | `dimensional_metrics`        | true       | [system.dimensional&#95;metrics](/operations/system-tables/dimensional_metrics) テーブルからディメンショナルメトリクスを公開します。 |
 
-確認（`127.0.0.1` を ClickHouse サーバーの IP アドレスまたはホスト名に置き換えてください）:
+確認 (`127.0.0.1` を ClickHouse サーバーの IP アドレスまたはホスト名に置き換えてください) :
 
 ```bash
 curl 127.0.0.1:9363/metrics
 ```
 
-
 ## Remote-write プロトコル
 
 ClickHouse は [remote-write](https://prometheus.io/docs/specs/remote_write_spec/) プロトコルをサポートしています。
 このプロトコルを通じてデータを受信し、[TimeSeries](/engines/table-engines/special/time_series) テーブルに書き込みます
-（テーブルは事前に作成しておく必要があります）。
+ (テーブルは事前に作成しておく必要があります) 。
 
 ```xml
 <prometheus>
@@ -103,7 +100,6 @@ Settings:
 | `url` / `headers` / `method` | none    | リクエストに対して一致するハンドラーを見つけるために使用されるフィルター。[`<http_handlers>`](/interfaces/http) セクション内の同名フィールドと同様です。                                  |
 | `table`                      | none    | `remote-write` プロトコルで受信したデータを書き込む [TimeSeries](/engines/table-engines/special/time_series) テーブルの名前。この名前には、任意でデータベース名も含めることができます。 |
 | `database`                   | none    | `table` 設定で指定されたテーブル名にデータベース名が含まれていない場合に、そのテーブルが存在するデータベースの名前。                                                                   |
-
 
 ## リモートリードプロトコル
 
@@ -134,7 +130,6 @@ Settings:
 | `url` / `headers` / `method` | none    | リクエストに対して一致するハンドラーを見つけるために使用されるフィルタ。[`<http_handlers>`](/interfaces/http) セクション内の同名フィールドと同様です。                                     |
 | `table`                      | none    | `remote-read` プロトコルで送信するデータを読み取るための [TimeSeries](/engines/table-engines/special/time_series) テーブル名。この名前にはオプションでデータベース名も含めることができます。 |
 | `database`                   | none    | `table` 設定で指定されたテーブルが存在するデータベース名。テーブル名にデータベース名が含まれていない場合に使用されます。                                                                   |
-
 
 ## 複数プロトコルの設定
 

@@ -10,10 +10,7 @@ doc_type: 'reference'
 import Image from '@theme/IdealImage';
 import Architecture from '@site/static/images/cloud/reference/architecture.png';
 
-
-# ClickHouse Cloud 아키텍처 \{#clickhouse-cloud-architecture\}
-
-<Image img={Architecture} size='lg' alt='Cloud 아키텍처'/>
+<Image img={Architecture} size="lg" alt="Cloud 아키텍처" />
 
 ## 객체 스토리지 기반 스토리지 \{#storage-backed-by-object-store\}
 

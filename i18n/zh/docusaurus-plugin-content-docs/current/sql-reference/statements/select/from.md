@@ -1,12 +1,10 @@
 ---
-description: 'FROM 子句说明'
+description: 'FROM 子句文档'
 sidebar_label: 'FROM'
 slug: /sql-reference/statements/select/from
 title: 'FROM 子句'
 doc_type: 'reference'
 ---
-
-# FROM 子句 \{#from-clause\}
 
 `FROM` 子句指定要从哪些来源读取数据：
 

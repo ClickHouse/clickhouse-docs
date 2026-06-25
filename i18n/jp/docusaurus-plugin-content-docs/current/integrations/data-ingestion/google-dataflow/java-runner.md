@@ -10,11 +10,9 @@ keywords: ['Dataflow Java runner', 'Google Dataflow ClickHouse', 'Apache Beam Ja
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Dataflow Java runner \{#dataflow-java-runner\}
-
 <ClickHouseSupportedBadge />
 
-Dataflow Java runner を使用すると、カスタム Apache Beam パイプラインを Google Cloud の Dataflow サービス上で実行できます。このアプローチは最大限の柔軟性を提供し、高度な ETL ワークフローに適しています。
+Dataflow Java runner を使用すると、Google Cloud の Dataflow サービス上でカスタム Apache Beam パイプラインを実行できます。このアプローチは最大限の柔軟性を提供し、高度な ETL ワークフローに適しています。
 
 ## 仕組み \{#how-it-works\}
 

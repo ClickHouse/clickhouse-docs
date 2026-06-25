@@ -7,9 +7,7 @@ title: 'fuzzJSON'
 doc_type: 'reference'
 ---
 
-# fuzzJSON テーブル関数 \{#fuzzjson-table-function\}
-
-JSON 文字列にランダムな変化を加えて撹乱します。
+JSON 文字列にランダムな変化を加えます。
 
 ## 構文 \{#syntax\}
 
@@ -19,22 +17,22 @@ fuzzJSON({ named_collection [, option=value [,..]] | json_str[, random_seed] })
 
 ## 引数 \{#arguments\}
 
-| Argument                           | Description                                                                                 |
-|------------------------------------|---------------------------------------------------------------------------------------------|
-| `named_collection`                 | [NAMED COLLECTION](sql-reference/statements/create/named-collection.md)。                  |
-| `option=value`                     | NAMED COLLECTION のオプションパラメータとその値。                                          |
+| Argument                           | Description                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| `named_collection`                 | [NAMED COLLECTION](sql-reference/statements/create/named-collection.md)。 |
+| `option=value`                     | NAMED COLLECTION のオプションパラメータとその値。                                        |
 | `json_str` (String)                | JSON 形式の構造化データを表す元の文字列。                                                  |
-| `random_seed` (UInt64)             | 安定した結果を得るための手動指定の乱数シード値。                                           |
-| `reuse_output` (boolean)           | ファジング処理の出力を、次の fuzzer の入力として再利用します。                             |
-| `malform_output` (boolean)         | JSON オブジェクトとして解析できない文字列を生成します。                                    |
-| `max_output_length` (UInt64)       | 生成または変形された JSON 文字列の許容される最大長。                                       |
-| `probability` (Float64)            | JSON フィールド（キーと値のペア）にファジングを行う確率。[0, 1] の範囲である必要があります。 |
-| `max_nesting_level` (UInt64)       | JSON データ内で許可されるネスト構造の最大深さ。                                            |
-| `max_array_size` (UInt64)          | JSON 配列で許可される最大サイズ。                                                          |
-| `max_object_size` (UInt64)         | JSON オブジェクトの単一レベルで許可されるフィールド数の最大値。                           |
-| `max_string_value_length` (UInt64) | String 値の最大長。                                                                        |
-| `min_key_length` (UInt64)          | キーの最小長。少なくとも 1 である必要があります。                                          |
-| `max_key_length` (UInt64)          | キーの最大長。指定されている場合は `min_key_length` 以上である必要があります。            |
+| `random_seed` (UInt64)             | 安定した結果を得るための手動指定の乱数シード値。                                                 |
+| `reuse_output` (boolean)           | ファジング処理の出力を、次の fuzzer の入力として再利用します。                                      |
+| `malform_output` (boolean)         | JSON オブジェクトとして解析できない文字列を生成します。                                           |
+| `max_output_length` (UInt64)       | 生成または変形された JSON 文字列の許容される最大長。                                            |
+| `probability` (Float64)            | JSON フィールド (キーと値のペア) にファジングを行う確率。[0, 1] の範囲である必要があります。                   |
+| `max_nesting_level` (UInt64)       | JSON データ内で許可されるネスト構造の最大深さ。                                               |
+| `max_array_size` (UInt64)          | JSON 配列で許可される最大サイズ。                                                      |
+| `max_object_size` (UInt64)         | JSON オブジェクトの単一レベルで許可されるフィールド数の最大値。                                       |
+| `max_string_value_length` (UInt64) | String 値の最大長。                                                            |
+| `min_key_length` (UInt64)          | キーの最小長。少なくとも 1 である必要があります。                                               |
+| `max_key_length` (UInt64)          | キーの最大長。指定されている場合は `min_key_length` 以上である必要があります。                         |
 
 ## 戻り値 \{#returned_value\}
 

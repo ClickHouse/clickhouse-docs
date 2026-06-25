@@ -22,24 +22,22 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Grafana용 ClickHouse 데이터 소스 플러그인 \{#clickhouse-data-source-plugin-for-grafana\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 Grafana를 사용하면 대시보드를 통해 모든 데이터를 탐색하고 공유할 수 있습니다.
-Grafana에서 ClickHouse에 연결하려면 플러그인이 필요하며, Grafana UI에서 쉽게 설치할 수 있습니다.
+Grafana에서 ClickHouse에 연결하려면 플러그인이 필요하며, 이 플러그인은 Grafana UI 내에서 쉽게 설치할 수 있습니다.
 
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/bRce9xWiqQM"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/bRce9xWiqQM"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 1. 연결 정보 확인 \{#1-gather-your-connection-details\}

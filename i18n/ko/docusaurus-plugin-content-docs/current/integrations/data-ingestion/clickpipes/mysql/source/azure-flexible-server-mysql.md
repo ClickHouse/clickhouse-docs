@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Azure Flexible Server for MySQL'
-description: 'ClickPipes 소스로 Azure Flexible Server for MySQL을 설정합니다'
+description: 'Azure Flexible Server for MySQL을 ClickPipes 소스로 설정'
 slug: /integrations/clickpipes/mysql/source/azure-flexible-server-mysql
 title: 'Azure Flexible Server for MySQL 소스 설정 가이드'
 keywords: ['azure', 'flexible server', 'mysql', 'clickpipes', 'binlog']
@@ -11,9 +11,6 @@ import configure_network_security from '@site/static/images/integrations/data-in
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-
-# Azure Flexible Server for MySQL 소스 설정 가이드 \{#azure-flexible-server-for-mysql-source-setup-guide\}
 
 이 단계별 가이드는 Azure Flexible Server for MySQL을 구성하여 [MySQL ClickPipe](../index.md)를 사용해 데이터를 ClickHouse Cloud로 복제하는 방법을 설명합니다. 이 서비스에서는 **일회성 수집**만 지원합니다. MySQL CDC에 대한 일반적인 질문은 [MySQL FAQ 페이지](/integrations/data-ingestion/clickpipes/mysql/faq.md)를 참고하십시오.
 

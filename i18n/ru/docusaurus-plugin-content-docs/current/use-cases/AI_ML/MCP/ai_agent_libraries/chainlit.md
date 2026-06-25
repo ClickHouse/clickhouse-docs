@@ -1,22 +1,20 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/chainlit
 sidebar_label: 'Интеграция с Chainlit'
-title: 'Как создать ИИ-агента с помощью Chainlit и сервера ClickHouse MCP'
+title: 'Как создать ИИ-агента с помощью Chainlit и MCP-сервера ClickHouse'
 pagination_prev: null
 pagination_next: null
-description: 'Узнайте, как использовать Chainlit для создания чат-приложений на базе LLM совместно с сервером ClickHouse MCP'
+description: 'Узнайте, как использовать Chainlit для создания чат-приложений на базе LLM совместно с MCP-сервером ClickHouse'
 keywords: ['ClickHouse', 'MCP', 'Chainlit']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать ИИ-агента с помощью Chainlit и сервера ClickHouse MCP \{#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server\}
-
-В этом руководстве показано, как объединить мощный фреймворк чат-интерфейсов Chainlit
-с сервером ClickHouse Model Context Protocol (MCP) для создания интерактивных
-приложений для работы с данными. Chainlit позволяет создавать диалоговые интерфейсы для ИИ‑приложений
-с минимальным количеством кода, а сервер ClickHouse MCP обеспечивает бесшовную интеграцию
-с высокопроизводительной колоночной базой данных ClickHouse.
+В этом руководстве рассматривается, как объединить мощный фреймворк Chainlit для создания чат-интерфейсов
+с сервером ClickHouse Model Context Protocol (MCP), чтобы создавать интерактивные
+приложения для работы с данными. Chainlit позволяет создавать диалоговые интерфейсы для ИИ-
+приложений с минимальным количеством кода, а MCP-сервер ClickHouse обеспечивает удобную
+интеграцию с высокопроизводительной колоночной базой данных ClickHouse.
 
 ## Предварительные требования \{#prerequisites\}
 

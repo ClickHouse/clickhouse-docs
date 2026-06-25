@@ -1,13 +1,11 @@
 ---
-description: 'EXISTS SQL 문 문서'
+description: 'EXISTS SQL 문에 대한 문서'
 sidebar_label: 'EXISTS'
 sidebar_position: 45
 slug: /sql-reference/statements/exists
-title: 'EXISTS SQL 문'
+title: 'EXISTS 문'
 doc_type: 'reference'
 ---
-
-# EXISTS 문 \{#exists-statement\}
 
 ```sql
 EXISTS [TEMPORARY] [TABLE|DICTIONARY|DATABASE] [db.]name [INTO OUTFILE filename] [FORMAT format]
