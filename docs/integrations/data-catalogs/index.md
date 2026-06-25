@@ -30,7 +30,7 @@ Connect ClickHouse Cloud to your data catalogs to access your open table format 
 
 <Image img={data_catalogs_ui} size="md" alt="ClickHouse Cloud UI with data catalog integrations"/>
 
-Once connected, catalog tables show up in the SQL console under the database name you choose. You can query them with standard ClickHouse SQL, join them with [MergeTree](/engines/table-engines/mergetree-family/mergetree) tables, and use them as sources for [materialized views](/materialized-view).
+Once connected, catalog tables show up in the SQL console under the database name you choose. You can query them with standard ClickHouse SQL, join them with [MergeTree](/engines/table-engines/mergetree-family/mergetree) tables, and use them as sources for [materialized views](/materialized-views).
 
 ## Prerequisites {#prerequisites}
 
@@ -208,7 +208,7 @@ SELECT * FROM `identity_profiles.identity_profiles_iceberg`
 
 See also:
 
-- [Accelerating analytics on lakehouse data](/use-cases/data-lake/guides/accelerating-analytics) — load catalog tables into MergeTree for repeated queries
+- [Accelerating analytics on lakehouse data](/use-cases/data-lake/getting-started/accelerating-analytics) — load catalog tables into MergeTree for repeated queries
 - [Accessing Iceberg data securely](/cloud/data-sources/secure-iceberg) — IAM role setup for AWS Iceberg and Glue access
 
 ## Troubleshooting {#troubleshooting}
