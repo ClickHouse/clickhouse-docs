@@ -49,7 +49,7 @@ Make sure you're logged in to your [ClickHouse Cloud](https://cloud.clickhouse.c
 3. Click  **+ Add catalog** if you haven't set up any data sources. Click **Add data source** > **Add data lake catalog.**
 4. In the **Connect your data catalog** flyout, select your catalog from the **Select catalog** dropdown. If the catalog supports multiple open table formats, choose the format in **Open table format**.
 
-<Image img={catalog_flyout_select} alt="Connect your data catalog flyout with Select catalog dropdown" size="lg" border/>
+<Image img={catalog_flyout_select} alt="Connect your data catalog flyout with Select catalog dropdown showing AWS Glue, BigLake Metastore, Microsoft OneLake, Polaris, REST Catalog, and Unity Catalog" size="lg" border/>
 
 ### Add your catalog connection {#add-your-catalog-connection}
 
