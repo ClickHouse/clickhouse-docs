@@ -16,6 +16,7 @@ import catalog_flyout_select from '@site/static/images/integrations/data-catalog
 import linked_catalogs_table from '@site/static/images/integrations/data-catalogs/linked-catalogs-table.png';
 import catalog_tables_browser from '@site/static/images/integrations/data-catalogs/catalog-tables-browser.png';
 import catalog_sql_query from '@site/static/images/integrations/data-catalogs/catalog-sql-query.png';
+import data_catalogs_ui from '@site/static/images/cloud/features/data-catalogs-ui.png';
 
 <BetaBadge/>
 
@@ -25,7 +26,9 @@ import catalog_sql_query from '@site/static/images/integrations/data-catalogs/ca
 Data catalog integrations in ClickHouse Cloud are in public beta.
 :::
 
-Connect ClickHouse Cloud to your data catalogs to access your open table format tables. You can set up connections in the **Data sources** UI. For setup via SQL, use the `[DataLakeCatalog](/engines/database-engines/datalakecatalog)` database engine in your SQL editor of choice. 
+Connect ClickHouse Cloud to your data catalogs to access your open table format tables. You can set up connections in the **Data sources** UI. For setup via SQL, use the `[DataLakeCatalog](/engines/database-engines/datalakecatalog)` database engine in your SQL editor of choice.
+
+<Image img={data_catalogs_ui} size="md" alt="ClickHouse Cloud UI with data catalog integrations"/>
 
 Once connected, catalog tables show up in the SQL console under the database name you choose. You can query them with standard ClickHouse SQL, join them with [MergeTree](/engines/table-engines/mergetree-family/mergetree) tables, and use them as sources for [materialized views](/materialized-view).
 

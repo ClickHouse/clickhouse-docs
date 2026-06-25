@@ -23,6 +23,8 @@ Using the UI:
 - Provides a single interface for active data catalog integrations
 - Tests connections and credentials when saving
 
+<Image img={data_catalogs_ui} size="md" alt="ClickHouse Cloud UI with data catalog integrations"/>
+
 For a step-by-step Cloud UI walkthrough, see [Connect a data catalog in ClickHouse Cloud](/integrations/data-catalogs).
 
 | Name              | Open table format | Auth method                            | Cloud                                                      | Core                                             | Version |
