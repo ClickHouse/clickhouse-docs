@@ -11,10 +11,13 @@ integration:
 ---
 
 import Image from '@theme/IdealImage';
+import BetaBadge from '@theme/badges/BetaBadge';
 import catalog_flyout_select from '@site/static/images/integrations/data-catalogs/catalog-flyout-select.png';
 import linked_catalogs_table from '@site/static/images/integrations/data-catalogs/linked-catalogs-table.png';
 import catalog_tables_browser from '@site/static/images/integrations/data-catalogs/catalog-tables-browser.png';
 import catalog_sql_query from '@site/static/images/integrations/data-catalogs/catalog-sql-query.png';
+
+<BetaBadge/>
 
 # Connect a data catalog in ClickHouse Cloud
 

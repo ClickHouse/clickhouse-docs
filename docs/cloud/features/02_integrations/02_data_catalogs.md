@@ -11,7 +11,7 @@ import data_catalogs_ui from '@site/static/images/cloud/features/data-catalogs-u
 import Image from '@theme/IdealImage';
 import BetaBadge from '@theme/badges/BetaBadge';
 
-
+<BetaBadge/>
 
 ClickHouse Cloud can connect directly to your open table format data catalogs, giving you access to your data lake tables without duplicating data.
 Through the integration, your catalog's tables will appear as queryable databases inside ClickHouse.
