@@ -1,4 +1,4 @@
-personal_ws-1.1 en 4047 
+personal_ws-1.1 en 4049 
 AArch
 ACLs
 AICPA
@@ -1319,6 +1319,7 @@ SIGTERM
 SIMD
 SLAs
 SLES
+SLO
 SLRU
 SMALLINT
 SNWD
@@ -3508,6 +3509,7 @@ socketcache
 soundex
 sparkBar
 sparkbar
+sparkline
 sparsehash
 specificities
 speedscope
