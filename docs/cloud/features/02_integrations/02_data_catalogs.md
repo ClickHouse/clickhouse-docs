@@ -25,9 +25,6 @@ Using the UI:
 
 For a step-by-step Cloud UI walkthrough, see [Connect a data catalog in ClickHouse Cloud](/integrations/data-catalogs).
 
-
-
-
 | Name              | Open table format | Auth method                            | Cloud                                                      | Core                                             | Version |
 | ----------------- | ----------------- | -------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------ | ------- |
 | AWS Glue Catalog  | Iceberg           | IAM role (26.2+), Access keys          | [Guide](/integrations/data-catalogs?catalog=aws-glue)      | [Guide](/use-cases/data-lake/glue-catalog)       | 25.10+  |
@@ -39,6 +36,5 @@ For a step-by-step Cloud UI walkthrough, see [Connect a data catalog in ClickHou
 | REST catalog      | Iceberg           | OAuth client credentials, Bearer token | [Guide](/integrations/data-catalogs?catalog=rest)          | [Guide](/use-cases/data-lake/rest-catalog)       | 25.10+  |
 | Unity Catalog     | Iceberg           | OAuth client credentials               | [Guide](/integrations/data-catalogs?catalog=unity-iceberg) | [Guide](/use-cases/data-lake/unity-catalog)      | 25.10+  |
 | Unity Catalog     | Delta             | Personal Access Token (PAT)            | [Guide](/integrations/data-catalogs?catalog=unity-delta)   | [Guide](/use-cases/data-lake/unity-catalog)      | 25.10+  |
-
 
 We have more catalogs planned, including Horizon and S3 tables REST endpoint.

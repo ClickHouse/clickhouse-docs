@@ -53,7 +53,6 @@ Make sure you're logged in to your [ClickHouse Cloud](https://cloud.clickhouse.c
 1. Fill in the connection parameters and **Database name** for your catalog type. The **Database name** is the ClickHouse database that exposes your catalog tables in the SQL console.
   Select your catalog below for field-level guidance and prerequisites.
 
-
 [AWS Glue Catalog](/use-cases/data-lake/glue-catalog) exposes [Iceberg](/engines/table-engines/integrations/iceberg) tables registered in the Glue Data Catalog.
 
 Before you connect, confirm:
@@ -82,8 +81,6 @@ In the flyout, enter your AWS **Region** (e.g. `us-west-2`), then choose an auth
 Glue supports multiple table formats, but ClickHouse only reads **Iceberg** tables from Glue.
 :::
 
-
-
 Query Unity Catalog managed [Iceberg](/engines/table-engines/integrations/iceberg) tables using OAuth client credentials from a Databricks service principal. See the [Unity Catalog guide](/use-cases/data-lake/unity-catalog#read-iceberg) for full setup.
 
 Before you connect, confirm:
@@ -98,8 +95,6 @@ In the flyout:
 2. Enter the **Databricks catalog name** to connect (e.g. `icebench`).
 3. Enter the OAuth **Client ID** and **Client secret** for your service principal.
 4. Enter a **Database name** for the ClickHouse database that exposes your Unity Catalog tables.
-
-
 
 Query Unity Catalog [Delta Lake](/engines/table-engines/integrations/deltalake) tables using a Databricks Personal Access Token (PAT). See the [Unity Catalog guide](/use-cases/data-lake/unity-catalog#read-delta) for full setup.
 
@@ -120,8 +115,6 @@ In the flyout:
 Iceberg and Delta use different authentication in the UI. This will require two separate ClickHouse databases to access both types of tables.
 :::
 
-
-
 Connect to any catalog that implements the [Iceberg REST Catalog](https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml) specification. See the [REST catalog guide](/use-cases/data-lake/rest-catalog) for full setup.
 
 Before you connect, confirm:
@@ -139,8 +132,6 @@ In the flyout:
 4. Select an **Authentication method**: **OAuth Client Credentials** or **Bearer Token**, then enter the matching credentials.
 5. Enter a **Database name** for the ClickHouse database that exposes your REST catalog tables.
 
-
-
 Query [Iceberg](/engines/table-engines/integrations/iceberg) tables in Microsoft Fabric OneLake using Azure AD application credentials. See the [Fabric OneLake guide](/use-cases/data-lake/onelake-catalog) for full setup.
 
 Before you connect, confirm:
@@ -156,8 +147,6 @@ In the flyout:
 2. Enter the **Data Item ID** — use your Lakehouse GUID. Warehouse IDs are not supported.
 3. Enter your Entra ID **Tenant ID**, **Application (client) ID**, and **Client secret**.
 4. Enter a **Database name** for the ClickHouse database that exposes your OneLake tables.
-
-
 
 Connect to a Snowflake Open Catalog (Polaris) deployment for [Iceberg](/engines/table-engines/integrations/iceberg) tables. See the [Polaris catalog guide](/use-cases/data-lake/polaris-catalog) for full setup.
 
@@ -175,8 +164,6 @@ In the flyout:
 4. Enter the **Storage Endpoint** URI prefix for table storage.
 5. Enter a **Database name** for the ClickHouse database that exposes your Polaris tables.
 
-
-
 Connect to Google Cloud BigLake Metastore (aka Lakehouse runtime catalog) for [Iceberg](/engines/table-engines/integrations/iceberg) tables in GCS. See the [BigLake Metastore guide](/use-cases/data-lake/biglake-catalog) for full setup.
 
 Before you connect, confirm:
@@ -190,8 +177,6 @@ In the flyout:
 1. Enter your **Google ADC Client ID**, **Client Secret**, **Refresh Token**, and **Quota Project ID**.
 2. Enter the **Cloud Storage Bucket** URI for table data (e.g. `gs://biglake-public-nyc-taxi-iceberg`).
 3. Enter a **Database name** for the ClickHouse database that exposes your BigLake tables.
-
-
 
 1. Click **Add catalog**. ClickHouse validates the connection and credentials when saving.
 2. On success, a confirmation toast appears with a **View in SQL console** link. Your catalog is listed in the **Linked catalogs** table with its connection status and table count.
@@ -227,4 +212,3 @@ See also:
 
 - If you don't see your tables in the SQL console: verify credentials, network access, and table types in catalog. Make sure the tables you expect to see are in supported file and table formats. 
 - Open up a support ticket if you aren't able to debug.
-
