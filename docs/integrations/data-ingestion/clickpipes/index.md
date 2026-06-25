@@ -159,6 +159,11 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 
 ## Error reporting {#error-reporting}
 ClickPipes will store errors in two separate tables depending on the type of error encountered during the ingestion process.
+
+:::note
+This does not currently apply to CDC pipes (Postgres, MySQL, and MongoDB), for which operational and error logging are available directly in the ClickHouse Cloud console.
+:::
+
 ### Record errors {#record-errors}
 ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from malformed data or mismatched schema and will include the entirety of the invalid message. This table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 ### System errors {#system-errors}
