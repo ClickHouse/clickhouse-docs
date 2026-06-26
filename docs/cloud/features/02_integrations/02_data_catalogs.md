@@ -29,14 +29,14 @@ For a step-by-step Cloud UI walkthrough, see [Connect a data catalog in ClickHou
 
 | Name              | Open table format | Auth method                            | Cloud                                                      | Core                                             | Version |
 | ----------------- | ----------------- | -------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------ | ------- |
-| AWS Glue Catalog  | Iceberg           | IAM role (26.2+), Access keys          | [Guide](/integrations/data-catalogs?catalog=aws-glue)      | [Guide](/use-cases/data-lake/glue-catalog)       | 25.10+  |
-| BigLake Metastore | Iceberg           | Google ADC (OAuth)                     | [Guide](/integrations/data-catalogs?catalog=biglake)       | [Guide](/use-cases/data-lake/biglake-catalog)    | 26.2+   |
+| AWS Glue Catalog  | Iceberg           | IAM role (26.2+), Access keys          | [Guide](/integrations/data-catalogs?catalog=aws-glue#add-your-catalog-connection)      | [Guide](/use-cases/data-lake/glue-catalog)       | 25.10+  |
+| BigLake Metastore | Iceberg           | Google ADC (OAuth)                     | [Guide](/integrations/data-catalogs?catalog=biglake#add-your-catalog-connection)       | [Guide](/use-cases/data-lake/biglake-catalog)    | 26.2+   |
 | Lakekeeper        | Iceberg           | OAuth client credentials               | —                                                          | [Guide](/use-cases/data-lake/lakekeeper-catalog) | 25.10+  |
-| Microsoft OneLake | Iceberg           | Azure Active Directory (AAD)           | [Guide](/integrations/data-catalogs?catalog=onelake)       | [Guide](/use-cases/data-lake/onelake-catalog)    | 25.12+  |
+| Microsoft OneLake | Iceberg           | Azure Active Directory (AAD)           | [Guide](/integrations/data-catalogs?catalog=onelake#add-your-catalog-connection)       | [Guide](/use-cases/data-lake/onelake-catalog)    | 25.12+  |
 | Nessie            | Iceberg           | OAuth client credentials               | —                                                          | [Guide](/use-cases/data-lake/nessie-catalog)     | 25.10+  |
-| Polaris           | Iceberg           | OAuth client credentials               | [Guide](/integrations/data-catalogs?catalog=polaris)       | [Guide](/use-cases/data-lake/polaris-catalog)    | 26.1+   |
-| REST catalog      | Iceberg           | OAuth client credentials, Bearer token | [Guide](/integrations/data-catalogs?catalog=rest)          | [Guide](/use-cases/data-lake/rest-catalog)       | 25.10+  |
-| Unity Catalog     | Iceberg           | OAuth client credentials               | [Guide](/integrations/data-catalogs?catalog=unity-iceberg) | [Guide](/use-cases/data-lake/unity-catalog)      | 25.10+  |
-| Unity Catalog     | Delta             | Personal Access Token (PAT)            | [Guide](/integrations/data-catalogs?catalog=unity-delta)   | [Guide](/use-cases/data-lake/unity-catalog)      | 25.10+  |
+| Polaris           | Iceberg           | OAuth client credentials               | [Guide](/integrations/data-catalogs?catalog=polaris#add-your-catalog-connection)       | [Guide](/use-cases/data-lake/polaris-catalog)    | 26.1+   |
+| REST catalog      | Iceberg           | OAuth client credentials, Bearer token | [Guide](/integrations/data-catalogs?catalog=rest#add-your-catalog-connection)          | [Guide](/use-cases/data-lake/rest-catalog)       | 25.10+  |
+| Unity Catalog     | Iceberg           | OAuth client credentials               | [Guide](/integrations/data-catalogs?catalog=unity-iceberg#add-your-catalog-connection) | [Guide](/use-cases/data-lake/unity-catalog)      | 25.10+  |
+| Unity Catalog     | Delta             | Personal Access Token (PAT)            | [Guide](/integrations/data-catalogs?catalog=unity-delta#add-your-catalog-connection)   | [Guide](/use-cases/data-lake/unity-catalog)      | 25.10+  |
 
 We have more catalogs planned, including Horizon and S3 tables REST endpoint.
