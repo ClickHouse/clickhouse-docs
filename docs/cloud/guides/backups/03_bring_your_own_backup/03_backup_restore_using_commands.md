@@ -194,7 +194,7 @@ You can check the version your service is running with:
 SELECT version()
 ```
 
-When enabled, restored users and roles have their grants limited to what the restoring user is allowed to grant
+When `restore_access_entities_with_current_grants` is enabled, restored users and roles have their grants limited to what the restoring user is allowed to grant
 (the same semantics as [`GRANT CURRENT GRANTS`](/sql-reference/statements/grant)), instead of the `RESTORE`
 failing with `ACCESS_DENIED` when the backup contains more permissions than the restoring user can grant.
 
