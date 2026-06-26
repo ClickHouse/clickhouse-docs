@@ -199,17 +199,7 @@ When enabled, restored users and roles have their grants limited to what the res
 (the same semantics as [`GRANT CURRENT GRANTS`](/sql-reference/statements/grant)), instead of the `RESTORE`
 failing with `ACCESS_DENIED` when the backup contains more permissions than the restoring user can grant.
 
-On versions earlier than 26.4, omit the setting and exclude the access entities from the restore instead, so that
-the `RESTORE` does not fail (note that your users and roles will not be restored in this case):
-
-```sql
-RESTORE ALL EXCEPT TABLES system.users, system.roles
-FROM S3(
-    'https://testchbackups.s3.amazonaws.com/<uuid>',
-    '<key id>',
-    '<key secret>'
-)
-```
+On versions earlier than 26.4, omit the setting and exclude the access entities from the restore instead by using `RESTORE ALL EXCEPT TABLES system.users, system.roles` (note that your users and roles will not be restored in this case).
 :::
 </TabItem>
 </Tabs>
