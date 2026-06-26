@@ -160,7 +160,7 @@ cpu_mode=host-passthrough
 
 ## ClickHouse Keeper 和 ZooKeeper \{#zookeeper\}
 
-推荐在 ClickHouse 集群中使用 ClickHouse Keeper 替代 ZooKeeper。请参阅 [ClickHouse Keeper](../guides/sre/keeper/index.md) 文档。
+推荐在 ClickHouse 集群中使用 ClickHouse Keeper 替代 ZooKeeper。请参阅 [ClickHouse Keeper](../guides/sre/keeper/overview) 文档。
 
 如果希望继续使用 ZooKeeper，最好使用较新的 ZooKeeper 版本——3.4.9 或更高版本。稳定版 Linux 发行版中自带的版本可能已经过时。
 

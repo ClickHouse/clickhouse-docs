@@ -161,7 +161,7 @@ cpu_mode=host-passthrough
 
 ## ClickHouse Keeper и ZooKeeper \{#zookeeper\}
 
-Рекомендуется использовать ClickHouse Keeper вместо ZooKeeper для кластеров ClickHouse. См. документацию по [ClickHouse Keeper](../guides/sre/keeper/index.md)
+Рекомендуется использовать ClickHouse Keeper вместо ZooKeeper для кластеров ClickHouse. См. документацию по [ClickHouse Keeper](../guides/sre/keeper/overview)
 
 Если вы хотите продолжить использовать ZooKeeper, лучше использовать свежую версию ZooKeeper – 3.4.9 или более новую. Версия в стабильных дистрибутивах Linux может быть устаревшей.
 

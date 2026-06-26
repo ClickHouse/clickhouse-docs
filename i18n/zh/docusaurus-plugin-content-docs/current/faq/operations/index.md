@@ -11,7 +11,7 @@ keywords: ['运维', '管理', '部署', '集群管理', '常见问题']
 * [在生产环境中应该使用哪个 ClickHouse 版本？](/faq/operations/production.md)
 * [是否可以采用存储与计算分离的方式部署 ClickHouse？](/faq/operations/separate_storage.md)
 * [是否可以从 ClickHouse 表中删除旧记录？](/faq/operations/delete-old-data.md)
-* [如何配置 ClickHouse Keeper？](/guides/sre/keeper/index.md)
+* [如何配置 ClickHouse Keeper？](/guides/sre/keeper/overview)
 * [ClickHouse 能否与 LDAP 集成？](/guides/sre/user-management/configuring-ldap.md)
 * [如何在 ClickHouse 中配置用户、角色和权限？](/guides/sre/user-management/index.md)
 * [能否在 ClickHouse 中更新或删除行？](/guides/starter_guides/mutations.md)

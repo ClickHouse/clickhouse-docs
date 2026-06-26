@@ -48,7 +48,7 @@ ENGINE = ReplicatedMergeTree
 * `DROP TABLE` クエリは、クエリが実行されたサーバー上にあるレプリカを削除します。
 * `RENAME` クエリは、レプリカの 1 つでテーブル名を変更します。言い換えると、レプリケートテーブルは、レプリカごとに異なる名前を持つことができます。
 
-ClickHouse は、レプリカのメタ情報を保存するために [ClickHouse Keeper](/guides/sre/keeper/index.md) を使用します。ZooKeeper バージョン 3.4.5 以降を使用することもできますが、ClickHouse Keeper を推奨します。
+ClickHouse は、レプリカのメタ情報を保存するために [ClickHouse Keeper](/guides/sre/keeper/overview) を使用します。ZooKeeper バージョン 3.4.5 以降を使用することもできますが、ClickHouse Keeper を推奨します。
 
 レプリケーションを使用するには、[zookeeper](/operations/server-configuration-parameters/settings#zookeeper) サーバー設定セクションでパラメーターを設定します。
 

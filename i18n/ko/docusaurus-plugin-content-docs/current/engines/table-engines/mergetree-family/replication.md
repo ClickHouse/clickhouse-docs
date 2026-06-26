@@ -48,7 +48,7 @@ ENGINE = ReplicatedMergeTree
 * `DROP TABLE` 쿼리는 쿼리가 실행된 서버에 있는 레플리카를 삭제합니다.
 * `RENAME` 쿼리는 레플리카 중 하나에 있는 테이블의 이름을 변경합니다. 즉, 복제된 테이블은 레플리카별로 서로 다른 이름을 가질 수 있습니다.
 
-ClickHouse는 레플리카의 메타데이터를 저장하기 위해 [ClickHouse Keeper](/guides/sre/keeper/index.md)를 사용합니다. ZooKeeper 3.4.5 이상의 버전을 사용할 수 있으나 ClickHouse Keeper 사용을 권장합니다.
+ClickHouse는 레플리카의 메타데이터를 저장하기 위해 [ClickHouse Keeper](/guides/sre/keeper/overview)를 사용합니다. ZooKeeper 3.4.5 이상의 버전을 사용할 수 있으나 ClickHouse Keeper 사용을 권장합니다.
 
 복제를 사용하려면 [zookeeper](/operations/server-configuration-parameters/settings#zookeeper) 서버 설정 섹션에서 매개변수를 설정하십시오.
 

@@ -132,7 +132,7 @@ ClickHouse에 연결하지 못하는 경우, 인증 실패, SSL 인증서 오류
 ### 고급 구성 \{#advanced-configuration\}
 - [데이터 복제 설정](/docs/engines/table-engines/mergetree-family/replication)
 - [분산 테이블 구성](/docs/engines/table-engines/special/distributed)
-<!-- - [ClickHouse Keeper setup](/docs/guides/sre/keeper/index.md) -->
+<!-- - [ClickHouse Keeper setup](/docs/guides/sre/keeper/overview) -->
 - [백업 및 복구 설정](/docs/operations/backup/overview)
 - [모니터링 구성](/docs/operations/system-tables/overview)
 

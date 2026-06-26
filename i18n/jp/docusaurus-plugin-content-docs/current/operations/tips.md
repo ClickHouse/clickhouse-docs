@@ -162,7 +162,7 @@ XML 設定で指定します。
 
 ## ClickHouse Keeper と ZooKeeper \{#zookeeper\}
 
-ClickHouse Keeper は、ClickHouse クラスターにおいて ZooKeeper を置き換えることが推奨されます。[ClickHouse Keeper](../guides/sre/keeper/index.md) のドキュメントを参照してください。
+ClickHouse Keeper は、ClickHouse クラスターにおいて ZooKeeper を置き換えることが推奨されます。[ClickHouse Keeper](../guides/sre/keeper/overview) のドキュメントを参照してください。
 
 ZooKeeper を引き続き使用したい場合は、新しいバージョンの ZooKeeper（3.4.9 以降）を使用するのが最善です。安定版 Linux ディストリビューションに含まれるバージョンは古くなっている可能性があります。
 

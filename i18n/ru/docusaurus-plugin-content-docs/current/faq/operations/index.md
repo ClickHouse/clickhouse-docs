@@ -11,7 +11,7 @@ keywords: ['эксплуатация', 'администрирование', 'р
 * [Какую версию ClickHouse использовать в продакшене?](/faq/operations/production.md)
 * [Можно ли развернуть ClickHouse с раздельными хранилищем и вычислительными ресурсами?](/faq/operations/separate_storage.md)
 * [Можно ли удалять старые данные из таблицы ClickHouse?](/faq/operations/delete-old-data.md)
-* [Как настроить ClickHouse Keeper?](/guides/sre/keeper/index.md)
+* [Как настроить ClickHouse Keeper?](/guides/sre/keeper/overview)
 * [Может ли ClickHouse интегрироваться с LDAP?](/guides/sre/user-management/configuring-ldap.md)
 * [Как настроить пользователей, роли и права доступа в ClickHouse?](/guides/sre/user-management/index.md)
 * [Можно ли обновлять или удалять строки в ClickHouse?](/guides/starter_guides/mutations.md)

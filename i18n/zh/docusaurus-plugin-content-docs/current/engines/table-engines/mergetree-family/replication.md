@@ -48,7 +48,7 @@ ENGINE = ReplicatedMergeTree
 * `DROP TABLE` 查询会删除位于执行该查询的服务器上的该副本。
 * `RENAME` 查询会在其中一个副本上重命名表。换句话说，复制表在不同副本上可以有不同的名称。
 
-ClickHouse 使用 [ClickHouse Keeper](/guides/sre/keeper/index.md) 来存储副本的元信息。也可以使用 3.4.5 或更新版本的 ZooKeeper，但推荐使用 ClickHouse Keeper。
+ClickHouse 使用 [ClickHouse Keeper](/guides/sre/keeper/overview) 来存储副本的元信息。也可以使用 3.4.5 或更新版本的 ZooKeeper，但推荐使用 ClickHouse Keeper。
 
 要使用复制功能，请在服务器配置的 [zookeeper](/operations/server-configuration-parameters/settings#zookeeper) 部分设置相关参数。
 

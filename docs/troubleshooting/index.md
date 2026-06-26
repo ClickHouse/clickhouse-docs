@@ -133,7 +133,7 @@ Initial installation, server configuration, database creation, data ingestion is
 ### Advanced configuration {#advanced-configuration}
 - [Set up data replication](/docs/engines/table-engines/mergetree-family/replication)
 - [Configure distributed tables](/docs/engines/table-engines/special/distributed)
-<!-- - [ClickHouse Keeper setup](/docs/guides/sre/keeper/index.md) -->
+<!-- - [ClickHouse Keeper setup](/docs/guides/sre/keeper/overview) -->
 - [Set up backup and recovery](/docs/operations/backup/overview)
 - [Configure monitoring](/docs/operations/system-tables/overview)
 

@@ -132,7 +132,7 @@ description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询
 ### 高级配置 \{#advanced-configuration\}
 - [设置数据复制](/docs/engines/table-engines/mergetree-family/replication)
 - [配置分布式表](/docs/engines/table-engines/special/distributed)
-<!-- - [ClickHouse Keeper setup](/docs/guides/sre/keeper/index.md) -->
+<!-- - [ClickHouse Keeper setup](/docs/guides/sre/keeper/overview) -->
 - [设置备份与恢复](/docs/operations/backup/overview)
 - [配置监控](/docs/operations/system-tables/overview)
 

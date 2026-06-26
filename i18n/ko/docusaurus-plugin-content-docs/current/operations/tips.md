@@ -167,7 +167,7 @@ XML 구성에서 설정해야 합니다.
 
 ## ClickHouse Keeper 및 ZooKeeper \{#zookeeper\}
 
-ClickHouse Keeper는 ClickHouse 클러스터에서 ZooKeeper를 대체하여 사용하는 것이 권장됩니다. [ClickHouse Keeper](../guides/sre/keeper/index.md)에 대한 문서를 참조하십시오.
+ClickHouse Keeper는 ClickHouse 클러스터에서 ZooKeeper를 대체하여 사용하는 것이 권장됩니다. [ClickHouse Keeper](../guides/sre/keeper/overview)에 대한 문서를 참조하십시오.
 
 ZooKeeper 사용을 계속하려는 경우에는 가급적 3.4.9 이상의 최신 버전을 사용하는 것이 좋습니다. 안정 버전 Linux 배포판에 포함된 버전은 오래되었을 수 있습니다.
 

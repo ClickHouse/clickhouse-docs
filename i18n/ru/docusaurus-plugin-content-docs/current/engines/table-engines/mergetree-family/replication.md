@@ -48,7 +48,7 @@ ENGINE = ReplicatedMergeTree
 * Запрос `DROP TABLE` удаляет реплику, расположенную на сервере, на котором выполняется запрос.
 * Запрос `RENAME` переименовывает таблицу на одной из реплик. Другими словами, реплицируемые таблицы могут иметь разные имена на разных репликах.
 
-ClickHouse использует [ClickHouse Keeper](/guides/sre/keeper/index.md) для хранения метаинформации о репликах. Можно использовать ZooKeeper версии 3.4.5 или новее, но рекомендуется ClickHouse Keeper.
+ClickHouse использует [ClickHouse Keeper](/guides/sre/keeper/overview) для хранения метаинформации о репликах. Можно использовать ZooKeeper версии 3.4.5 или новее, но рекомендуется ClickHouse Keeper.
 
 Чтобы использовать репликацию, задайте параметры в разделе конфигурации сервера [zookeeper](/operations/server-configuration-parameters/settings#zookeeper).
 

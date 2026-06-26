@@ -391,7 +391,7 @@ import Image from '@theme/IdealImage';
      | 9444            | порт Raft ClickHouse Keeper       |
 
   3. Проверьте состояние ClickHouse Keeper
-     The typical [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) commands won&#39;t work using `echo` without TLS, here is how to use the commands with `openssl`.
+     The typical [4 letter word (4lW)](/guides/sre/keeper/reference#four-letter-word-commands) commands won&#39;t work using `echo` without TLS, here is how to use the commands with `openssl`.
      * Запустите интерактивную сессию `openssl`
 
   ```bash

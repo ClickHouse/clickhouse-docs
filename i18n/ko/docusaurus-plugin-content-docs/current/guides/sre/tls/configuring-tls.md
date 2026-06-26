@@ -391,7 +391,7 @@ TLS 구현은 복잡하며, 완전히 안전하고 견고한 배포를 보장하
      | 9444            | ClickHouse Keeper Raft 포트 |
 
   3. ClickHouse Keeper 상태 확인
-     일반적인 [4 letter word (4lW)](/guides/sre/keeper/index.md#four-letter-word-commands) 명령은 TLS 없이 `echo`로는 동작하지 않으므로, `openssl`을 사용해 명령을 실행하는 방법은 다음과 같습니다.
+     일반적인 [4 letter word (4lW)](/guides/sre/keeper/reference#four-letter-word-commands) 명령은 TLS 없이 `echo`로는 동작하지 않으므로, `openssl`을 사용해 명령을 실행하는 방법은 다음과 같습니다.
      * `openssl` 대화형 세션을 시작합니다
 
   ```bash

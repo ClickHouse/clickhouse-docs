@@ -11,7 +11,7 @@ keywords: ['運用', '管理', 'デプロイメント', 'クラスター管理',
 * [本番環境ではどの ClickHouse バージョンを使用すべきですか？](/faq/operations/production.md)
 * [ストレージとコンピュートを分離した構成で ClickHouse をデプロイできますか？](/faq/operations/separate_storage.md)
 * [ClickHouse テーブルから古いレコードを削除できますか？](/faq/operations/delete-old-data.md)
-* [ClickHouse Keeper はどのように構成すればよいですか？](/guides/sre/keeper/index.md)
+* [ClickHouse Keeper はどのように構成すればよいですか？](/guides/sre/keeper/overview)
 * [ClickHouse を LDAP と連携できますか？](/guides/sre/user-management/configuring-ldap.md)
 * [ClickHouse でユーザー、ロール、権限をどのように設定すればよいですか？](/guides/sre/user-management/index.md)
 * [ClickHouse で行の更新や削除はできますか？](/guides/starter_guides/mutations.md)

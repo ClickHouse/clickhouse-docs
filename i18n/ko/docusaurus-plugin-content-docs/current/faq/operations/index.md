@@ -11,7 +11,7 @@ keywords: ['운영', '관리', '배포', '클러스터 관리', 'faq']
 * [운영 환경에서는 어떤 ClickHouse 버전을 사용해야 합니까?](/faq/operations/production.md)
 * [스토리지와 컴퓨트를 분리하여 ClickHouse를 배포할 수 있습니까?](/faq/operations/separate_storage.md)
 * [ClickHouse 테이블에서 오래된 레코드를 삭제할 수 있습니까?](/faq/operations/delete-old-data.md)
-* [ClickHouse Keeper는 어떻게 구성합니까?](/guides/sre/keeper/index.md)
+* [ClickHouse Keeper는 어떻게 구성합니까?](/guides/sre/keeper/overview)
 * [ClickHouse를 LDAP과 연동할 수 있습니까?](/guides/sre/user-management/configuring-ldap.md)
 * [ClickHouse에서 사용자, 역할, 권한은 어떻게 구성합니까?](/guides/sre/user-management/index.md)
 * [ClickHouse에서 행을 업데이트하거나 삭제할 수 있습니까?](/guides/starter_guides/mutations.md)

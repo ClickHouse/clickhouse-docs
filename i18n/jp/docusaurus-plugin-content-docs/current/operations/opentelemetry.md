@@ -25,7 +25,7 @@ ClickHouse は、[W3C 勧告](https://www.w3.org/TR/trace-context/) で説明さ
 
 ## ClickHouse Keeper リクエストのトレース \{#tracing-clickhouse-keeper-requests\}
 
-ClickHouse は、[ClickHouse Keeper](../guides/sre/keeper/index.md) リクエスト（ZooKeeper 互換のコーディネーションサービス）に対する OpenTelemetry によるトレーシングをサポートしています。この機能により、クライアントからのリクエスト送信からサーバー側での処理に至るまで、Keeper オペレーションのライフサイクル全体を詳細に可視化できます。
+ClickHouse は、[ClickHouse Keeper](../guides/sre/keeper/overview) リクエスト（ZooKeeper 互換のコーディネーションサービス）に対する OpenTelemetry によるトレーシングをサポートしています。この機能により、クライアントからのリクエスト送信からサーバー側での処理に至るまで、Keeper オペレーションのライフサイクル全体を詳細に可視化できます。
 
 ### Keeper のトレーシングを有効化する \{#enabling-keeper-tracing\}
 

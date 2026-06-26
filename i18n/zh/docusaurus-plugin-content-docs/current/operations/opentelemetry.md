@@ -25,7 +25,7 @@ ClickHouse 接收符合 [W3C 规范](https://www.w3.org/TR/trace-context/)的 tr
 
 ## 跟踪 ClickHouse Keeper 请求 \{#tracing-clickhouse-keeper-requests\}
 
-ClickHouse 支持对 [ClickHouse Keeper](../guides/sre/keeper/index.md) 请求（兼容 ZooKeeper 的协调服务）启用 OpenTelemetry 跟踪。借助此功能，可以对 Keeper 操作从客户端请求提交到服务端处理的完整生命周期获得细粒度可见性。
+ClickHouse 支持对 [ClickHouse Keeper](../guides/sre/keeper/overview) 请求（兼容 ZooKeeper 的协调服务）启用 OpenTelemetry 跟踪。借助此功能，可以对 Keeper 操作从客户端请求提交到服务端处理的完整生命周期获得细粒度可见性。
 
 ### 启用 Keeper 追踪 \{#enabling-keeper-tracing\}
 
