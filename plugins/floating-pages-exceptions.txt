@@ -19,4 +19,4 @@ use-cases/observability/clickstack/managed-onboarding/monitoring-aws-cloudwatch-
 use-cases/observability/clickstack/managed-onboarding/instrument-application.md
 use-cases/observability/clickstack/managed-onboarding/tuning-clickstack-schema.md
 use-cases/observability/clickstack/managed-onboarding/managed-getting-started.md
-
+interfaces/documentation-search
