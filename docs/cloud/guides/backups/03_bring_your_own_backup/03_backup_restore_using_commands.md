@@ -187,7 +187,6 @@ FROM S3(
 SETTINGS restore_access_entities_with_current_grants = 1
 ```
 
-:::note Restoring users and roles requires ClickHouse 26.4 or later
 The `restore_access_entities_with_current_grants` setting is available from ClickHouse Cloud version **26.4** (build **26.4.1.1942** or later).
 You can check the version your service is running with:
 
@@ -198,7 +197,8 @@ SELECT version()
 When enabled, restored users and roles have their grants limited to what the restoring user is allowed to grant
 (the same semantics as [`GRANT CURRENT GRANTS`](/sql-reference/statements/grant)), instead of the `RESTORE`
 failing with `ACCESS_DENIED` when the backup contains more permissions than the restoring user can grant.
-:::
+
+On versions earlier than 26.4, omit the setting.
 </TabItem>
 </Tabs>
 
