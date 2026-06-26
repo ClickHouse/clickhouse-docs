@@ -1145,6 +1145,7 @@ const sidebars = {
       },
       items: [
         'integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
+        'integrations/data-ingestion/etl-tools/airflow-and-clickhouse',
         'integrations/data-ingestion/etl-tools/apify-and-clickhouse',
         {
           type: 'category',
@@ -1611,7 +1612,6 @@ const sidebars = {
         'operations/ssl-zookeeper',
         'operations/startup-scripts',
         'operations/storing-data',
-        'operations/allocation-profiling',
         {
           type: 'category',
           label: 'Backup/Restore',
@@ -1629,7 +1629,6 @@ const sidebars = {
           label: 'Allocation profiling',
           collapsed: true,
           collapsible: true,
-          link: { type: 'doc', id: 'operations/allocation-profiling' },
           items: [
             'operations/allocation-profiling',
             'operations/allocation-profiling-old',

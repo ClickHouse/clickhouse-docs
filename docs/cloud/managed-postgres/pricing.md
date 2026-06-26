@@ -80,7 +80,7 @@ The table below summarizes the features, capabilities, and limits included in ea
     <p style={{fontWeight: 600, marginBottom: '8px', fontSize: '0.9rem'}}>Everything in Scale, plus</p>
     <ul style={{paddingLeft: '20px', margin: 0, fontSize: '0.9rem'}}>
       <li>Enterprise support with 30 min response time for Severity 1 issues</li>
-      <li><a href="/docs/cloud/infrastructure/clickhouse-private">Private regions</a></li>
+      <li>Private regions</li>
       <li>Named Lead Support Engineer</li>
       <li><a href="/docs/cloud/managed-postgres/extensions">Custom extensions</a> (*pending approval)</li>
       <li><a href="/docs/cloud/managed-postgres/migrations/clickhouse-cloud">Consultative migrations guides</a></li>
