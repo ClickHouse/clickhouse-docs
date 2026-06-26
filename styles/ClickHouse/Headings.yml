@@ -25,6 +25,8 @@ exceptions:
   - Arrow
   - AWS
   - Apache
+  - Airflow
+  - Apache Airflow
   - AggregatingMergeTree
   - Amazon
   - Amazon Web Services
