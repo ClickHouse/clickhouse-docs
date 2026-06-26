@@ -14,7 +14,7 @@ import byoc_vpcpeering2 from '@site/static/images/cloud/reference/byoc-vpcpeerin
 import byoc_vpcpeering3 from '@site/static/images/cloud/reference/byoc-vpcpeering-3.png';
 import byoc_vpcpeering4 from '@site/static/images/cloud/reference/byoc-vpcpeering-4.png';
 import byoc_privatelink from '@site/static/images/cloud/reference/byoc-privatelink.png';
-import byoc_privatelink_1 from '@site/static/images/cloud/reference/byoc-privatelink-1.png';
+import aws_private_link_pecreate from '@site/static/images/cloud/security/aws-privatelink-pe-create.png';
 import aws_private_link_endpoint_settings from '@site/static/images/cloud/security/aws-privatelink-endpoint-settings.png';
 import aws_private_link_select_vpc from '@site/static/images/cloud/security/aws-privatelink-select-vpc-and-subnets.png';
 import aws_private_link_vpc_endpoint_id from '@site/static/images/cloud/security/aws-privatelink-vpc-endpoint-id.png';
@@ -29,6 +29,8 @@ ClickHouse BYOC on AWS supports two private connection options including VPC Pee
 Common steps required by both VPC peering and PrivateLink.
 
 ### Enable private load balancer for ClickHouse BYOC {#step-enable-private-load-balancer-for-clickhouse-byoc}
+
+In the ClickHouse Cloud console, enable the **Private load balancer** for your BYOC infrastructure.
 
 <Image img={byoc_private_load_balancer} size="md" alt="BYOC Enable Private Load Balancer" border />
 
@@ -113,9 +115,10 @@ Make sure the **private load balancer** is turned on as a prerequisite.
 
 ### Obtain endpoint "Service name" {#step-2-obtain-endpoint-service-name}
 
-1. Open your **BYOC AWS console** (i.e. the AWS account where BYOC infrastructure is created) → VPC → Endpoint services.
-2. Find the service starting with `clickhouse-cloud-infra` and navigate to its details page.
-   <Image img={byoc_privatelink_1} size="md" alt="BYOC PrivateLink Service Endpoint" border />
+1. In the ClickHouse Cloud console, navigate to the service's Settings page that you would like to connect to via PrivateLink.
+2. Click "Set up private endpoint".
+3. In the opened flyout, copy the `Service name` value — you'll use it in the next step. (It may take a while for the value to be generated after enabling PrivateLink.)
+   <Image img={aws_private_link_pecreate} size="md" alt="Private Endpoints" border />
 
 ### Create endpoint in your network {#step-3-create-endpoint}
 
@@ -140,7 +143,7 @@ Make sure the **private load balancer** is turned on as a prerequisite.
    Make sure that ports `443`, `8443`, `9440`, `3306` are allowed in the security group.
    :::
 8. Click "Create endpoint", wait a moment for the endpoint to be created.
-9. After creating the endpoint, take a note of the `Endpoint ID` value. You'll need it for the upcoming step.
+9. After creating the endpoint, copy the `Endpoint ID` value — you'll use it in the next step.
    <Image img={aws_private_link_vpc_endpoint_id} size="md" alt="VPC Endpoint ID" border />
 
 ### Approve the endpoint connection {#step-4-approve-endpoint-connection}

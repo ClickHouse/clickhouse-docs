@@ -13,15 +13,10 @@ import byoc_vpcpeering from '@site/static/images/cloud/reference/byoc-vpcpeering
 import byoc_vpcpeering2 from '@site/static/images/cloud/reference/byoc-vpcpeering-gcp-2.png';
 import byoc_vpcpeering3 from '@site/static/images/cloud/reference/byoc-vpcpeering-gcp-3.png';
 import byoc_privatelink from '@site/static/images/cloud/reference/byoc-privatelink.png';
-import byoc_privatelink_1 from '@site/static/images/cloud/reference/byoc-privatelink-gcp-1.png';
-import byoc_privatelink_2 from '@site/static/images/cloud/reference/byoc-privatelink-gcp-2.png';
-import byoc_privatelink_3 from '@site/static/images/cloud/reference/byoc-privatelink-gcp-3.png';
-import byoc_privatelink_4 from '@site/static/images/cloud/reference/byoc-privatelink-gcp-4.png';
+import gcp_privatelink_pe_create from '@site/static/images/cloud/security/gcp-privatelink-pe-create.png';
 import gcp_psc_open from '@site/static/images/cloud/security/gcp-psc-open.png';
 import gcp_psc_enable_global_access from '@site/static/images/cloud/security/gcp-psc-enable-global-access.png';
 import gcp_psc_copy_connection_id from '@site/static/images/cloud/security/gcp-psc-copy-connection-id.png';
-import byoc_privatelink_5 from '@site/static/images/cloud/reference/byoc-privatelink-gcp-5.png';
-import byoc_privatelink_6 from '@site/static/images/cloud/reference/byoc-privatelink-gcp-6.png';
 import gcp_privatelink_pe_filters from '@site/static/images/cloud/security/gcp-privatelink-pe-filters.png';
 import gcp_privatelink_pe_dns from '@site/static/images/cloud/security/gcp-privatelink-pe-dns.png';
 
@@ -32,6 +27,8 @@ ClickHouse BYOC on GCP supports two private connection options including VPC Pee
 Common steps required by both VPC peering and PSC.
 
 ### Enable private load balancer for ClickHouse BYOC {#step-enable-private-load-balancer-for-clickhouse-byoc}
+
+In the ClickHouse Cloud console, enable the **Private load balancer** for your BYOC infrastructure.
 
 <Image img={byoc_private_load_balancer} size="md" alt="BYOC Enable Private Load Balancer" border />
 
@@ -93,10 +90,10 @@ Make sure the **private load balancer** is turned on as a prerequisite.
 
 ### Obtain endpoint "Service name" {#step-2-obtain-endpoint-service-name}
 
-1. Open your **BYOC GCP console** (i.e. the GCP account where BYOC infrastructure is created) → Network Services → Private Service Connect → Published services
-2. Find the service starting with `clickhouse-cloud-infra` and navigate to its details page.
-   <Image img={byoc_privatelink_3} size="md" alt="BYOC PSC Endpoint" border />
-   <Image img={byoc_privatelink_4} size="md" alt="BYOC PSC Endpoint" border />
+1. In the ClickHouse Cloud console, navigate to the service's Settings page that you would like to connect to via PSC.
+2. Click "Set up private endpoint".
+3. In the opened flyout, copy the `Service name` and `DNS name` value — you'll use them in the next step. (It may take a while for the value to be generated after enabling private link.)
+   <Image img={gcp_privatelink_pe_create} size="md" alt="Private Endpoints" border />
 
 ### Create endpoint in your network {#step-3-create-endpoint}
 
@@ -114,7 +111,7 @@ Make sure the **private load balancer** is turned on as a prerequisite.
    - Click "ADD ENDPOINT" button to create the endpoint.
 
 4. The Status column will change from Pending to Accepted once the connection is approved.
-5. After creating the endpoint, take a note of the `PSC Connection ID` value. You'll need it for the upcoming step.
+5. After creating the endpoint, copy the `PSC Connection ID` value — you'll use it in the next step.
    <Image img={gcp_psc_copy_connection_id} size="md" alt="Copy PSC Connection ID" border />
 
 ### Add "Endpoint ID" to ClickHouse service allow list {#step-4-add-endpoint-id-to-services-allow-list}
