@@ -23,7 +23,17 @@ To learn more about message compression in Kafka, we recommend starting with thi
 - Individual messages are limited to 16MB (uncompressed) by default when running with the smallest (XS) replica size, and 32MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Delivery semantics {#delivery-semantics}
-ClickPipes for Kafka guarantees at "at least once" semantics via consumer group and Kafka based offset tracking.  It optionally supports "exactly-once delivery semantics", so each Kafka record is inserted into ClickHouse exactly once even across restarts, consumer rebalances, and insert failures. See [Exactly-once semantics](/integrations/clickpipes/kafka/exactly-once) for how it works and how to tune a pipe to use it effectively.
+
+ClickPipes for Kafka guarantees at-least-once delivery by default, tracking ingestion progress through Kafka consumer group offsets. It also optionally supports exactly-once semantics, where each Kafka record is inserted into ClickHouse exactly once even across pod restarts, consumer rebalances, and insert failures.
+
+To deliver exactly-once, ClickPipes records each partition's progress in its internal state store using two values:
+
+- **High-water mark** — the offset up to which every record on the partition is confirmed inserted into ClickHouse. On restart, ClickPipes drops any record at or below this mark, so data that already landed is never sent again.
+- **Pending ranges** — the offset ranges of insert blocks sent to ClickHouse but not yet confirmed. After a failure, ClickPipes replays exactly these ranges.
+
+Each insert block covers a contiguous range of offsets and carries a deterministic [deduplication token](/guides/developer/deduplicating-inserts-on-retries) of the form `topic:partition:firstOffset-lastOffset`. On replay, ClickPipes reproduces the same offset range and therefore the same token, so ClickHouse rejects the duplicate. Because the token depends only on the offset range, a replay is deduplicated even when the rebuilt block isn't byte-for-byte identical.
+
+The main tradeoff is memory. Larger insert blocks produce fewer, larger [parts](/parts) in ClickHouse, but ClickPipes holds a partition's rows in memory while it builds each block. A pipe works best when the number of partitions is close to the number of insert workers, since each worker then handles roughly one partition and can build large blocks without competing for memory. The worker count scales with replica size and count, which you configure under **Settings** -> **Advanced Settings** -> **Scaling**.
 
 ## Authentication {#authentication}
 For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption, as well as `SASL/SCRAM-SHA-256` and `SASL/SCRAM-SHA-512`. Depending on the streaming source (Redpanda, MSK, etc) will enable all or a subset of these auth mechanisms based on compatibility. If you auth needs differ please [give us feedback](https://clickhouse.com/company/contact?loc=clickpipes).
