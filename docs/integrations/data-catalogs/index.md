@@ -233,7 +233,7 @@ On the **Data sources** page, find your catalog in the **Linked catalogs** table
 ClickHouse opens the SQL console with your catalog database selected and lists the available tables.
 
 :::note
-Tables may not appear immediately after you connect a catalog. Depending on the size of your catalog, it can take anywhere from a few minutes up to a day for all tables to be listed.
+Tables may not appear immediately after you connect a catalog. It can take a few minutes for all tables to be listed.
 :::
 
 <Image img={catalog_tables_browser} alt="SQL console table browser showing catalog tables" size="lg" border/>
