@@ -1222,7 +1222,21 @@ const sidebars = {
           ],
         },
         'integrations/data-ingestion/etl-tools/dlt-and-clickhouse',
-        'integrations/data-ingestion/etl-tools/estuary',
+        {
+          type: 'category',
+          label: 'Estuary',
+          className: 'top-nav-item',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/data-ingestion/etl-tools/estuary/index',
+          },
+          items: [
+            'integrations/data-ingestion/etl-tools/estuary/native-protocol',
+            'integrations/data-ingestion/etl-tools/estuary/clickpipes',
+          ],
+        },
         {
           type: 'category',
           label: 'Fivetran',
