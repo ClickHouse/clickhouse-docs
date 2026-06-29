@@ -55,7 +55,7 @@ Make sure you're logged in to your [ClickHouse Cloud](https://cloud.clickhouse.c
 
 ### Add your catalog connection {#add-your-catalog-connection}
 
-Select your catalog below for field-level guidance and prerequisites, then fill in the connection parameters and a **Database name**. The **Database name** is the ClickHouse database that exposes your catalog tables in the SQL console.
+Select your catalog below for guidance and prerequisites. Then fill in the connection parameters, along with a **Database name** — the ClickHouse database that exposes your catalog tables in the SQL console.
 
 <Tabs queryString="catalog">
 <TabItem value="aws-glue" label="AWS Glue" default>
@@ -216,7 +216,7 @@ After filling in the fields:
 1. Click **Add catalog**. ClickHouse validates the connection and credentials when saving.
 2. On success, a confirmation toast appears with a **View in SQL console** link. Your catalog is listed in the **Linked catalogs** table with its connection status and table count.
 
-From the **Actions** menu on a linked catalog row, you can drop the catalog connection. Dropping removes the ClickHouse database binding — it does not delete data in your external catalog.
+From the **Actions** menu on a linked catalog row, you can drop the catalog connection. Dropping removes the catalog's database from ClickHouse — it does not delete any data in your external catalog.
 
 </VerticalStepper>
 
@@ -231,6 +231,10 @@ On the **Data sources** page, find your catalog in the **Linked catalogs** table
 <Image img={linked_catalogs_table} alt="Linked catalogs table with View tables action" size="lg" border/>
 
 ClickHouse opens the SQL console with your catalog database selected and lists the available tables.
+
+:::note
+Tables may not appear immediately after you connect a catalog. Depending on the size of your catalog, it can take anywhere from a few minutes up to a day for all tables to be listed.
+:::
 
 <Image img={catalog_tables_browser} alt="SQL console table browser showing catalog tables" size="lg" border/>
 
