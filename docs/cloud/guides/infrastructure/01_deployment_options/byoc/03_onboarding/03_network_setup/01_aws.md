@@ -14,6 +14,7 @@ import byoc_vpcpeering2 from '@site/static/images/cloud/reference/byoc-vpcpeerin
 import byoc_vpcpeering3 from '@site/static/images/cloud/reference/byoc-vpcpeering-3.png';
 import byoc_vpcpeering4 from '@site/static/images/cloud/reference/byoc-vpcpeering-4.png';
 import byoc_privatelink from '@site/static/images/cloud/reference/byoc-privatelink.png';
+import byoc_privatelink_aws_cross_region from '@site/static/images/cloud/reference/byoc-privatelink-aws-cross-region.png';
 import aws_private_link_pecreate from '@site/static/images/cloud/security/aws-privatelink-pe-create.png';
 import aws_private_link_endpoint_settings from '@site/static/images/cloud/security/aws-privatelink-endpoint-settings.png';
 import aws_private_link_select_vpc from '@site/static/images/cloud/security/aws-privatelink-select-vpc-and-subnets.png';
@@ -125,8 +126,9 @@ Make sure the **private load balancer** is turned on as a prerequisite.
 1. Open your **own AWS console** (i.e. the AWS account where your client application is) → VPC → Endpoints → Create endpoints.
 2. Select "Endpoint services that use NLBs and GWLBs" and use `Service name` obtained from the last step.
 3. Click "Verify service".
-4. (Optional) If you want to establish a cross-regional connection via PrivateLink, enable the "Cross region endpoint" checkbox and specify the service region. The service region is where the ClickHouse instance is running.
    <Image img={aws_private_link_endpoint_settings} size="md" alt="AWS PrivateLink Endpoint Settings" border/>
+4. (Optional) If you want to establish a cross-regional connection via PrivateLink, enable the "Cross region endpoint" checkbox and specify the service region. The service region is where the ClickHouse instance is running. Meanwhile, add your endpoint region in your **BYOC AWS console** (i.e. the AWS account where your BYOC infrastructure is created) as well.
+   <Image img={byoc_privatelink_aws_cross_region} size="md" alt="AWS PrivateLink Cross Region Endpoint Settings" border/>
 5. Select your VPC and subnets (one per availability zone is recommended).
    <Image img={aws_private_link_select_vpc} size="md" alt="Select VPC and subnets" border />
 6. **Important**: Enable "Private DNS names" for the endpoint — this is required for Private DNS to function correctly.
