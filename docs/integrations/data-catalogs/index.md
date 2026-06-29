@@ -1,6 +1,6 @@
 ---
-sidebar_label: 'Connect a data catalog'
-description: 'Connect an external data catalog to ClickHouse Cloud via the Data sources UI.'
+sidebar_label: 'Data catalogs'
+description: 'How to connect a data catalog for Iceberg or Delta tables in ClickHouse Cloud via the Data sources UI.'
 slug: /integrations/data-catalogs
 title: 'Connect a data catalog in ClickHouse Cloud'
 doc_type: 'guide'

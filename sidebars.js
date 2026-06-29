@@ -1024,7 +1024,6 @@ const sidebars = {
         'integrations/data-sources/cassandra',
         'integrations/data-ingestion/gcs/index',
         'integrations/data-ingestion/s3-minio',
-        'integrations/data-catalogs/index',
         'integrations/data-ingestion/emqx/index',
         'integrations/data-ingestion/insert-local-files',
         'integrations/data-ingestion/dbms/jdbc-with-clickhouse',
@@ -1034,6 +1033,15 @@ const sidebars = {
           label: 'Table engines',
           href: 'https://clickhouse.com/docs/engines/table-engines/integrations',
         },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Data lakes',
+      collapsed: true,
+      collapsible: true,
+      items: [
+        'integrations/data-catalogs/index',
       ],
     },
     {
