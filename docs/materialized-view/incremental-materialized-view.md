@@ -1115,13 +1115,17 @@ ORDER BY uuid ASC
 3 rows in set. Elapsed: 0.004 sec.
 ```
 
+:::note
+As of ClickHouse v25.5, `parallel_view_processing` only applies to `INSERT ... SELECT` queries. Use `INSERT ... SELECT` to demonstrate parallel view processing as shown below.
+:::
+
 Conversely, consider what happens if we insert a row with `parallel_view_processing=1` enabled. With this enabled, the views are executed in parallel, giving no guarantees to the order at which rows arrive to the target table:
 
 ```sql
 TRUNCATE target;
 SET parallel_view_processing = 1;
 
-INSERT INTO source VALUES ('test');
+INSERT INTO source SELECT 'test';
 ```
 
 ```response
