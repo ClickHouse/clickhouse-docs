@@ -14,6 +14,7 @@ cloud/features/backups/faq.md
 interfaces/web-terminal
 interfaces/web-sql
 operations/query-rules
+operations/query-plan-cache
 use-cases/observability/clickstack/managed-onboarding/setting-up-your-opentelemetry-collector.md
 use-cases/observability/clickstack/managed-onboarding/monitoring-kubernetes.md
 use-cases/observability/clickstack/managed-onboarding/monitoring-aws-cloudwatch-logs.md
