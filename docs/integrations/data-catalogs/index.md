@@ -164,7 +164,7 @@ Before you connect, confirm:
 In the flyout:
 
 1. Enter your Fabric **Workspace ID**.
-2. Enter the **Data Item ID** — use your Lakehouse GUID. Warehouse IDs are not supported.
+2. Enter the **Data Item ID** — use your Lakehouse ID. Warehouse IDs aren't supported.
 3. Enter your Entra ID **Tenant ID**, **Application (client) ID**, and **Client secret**.
 4. Enter a **Database name** for the ClickHouse database that exposes your OneLake tables.
 <br/>
@@ -216,7 +216,7 @@ After filling in the fields:
 1. Click **Add catalog**. ClickHouse validates the connection and credentials when saving.
 2. On success, a confirmation toast appears with a **View in SQL console** link. Your catalog is listed in the **Linked catalogs** table with its connection status and table count.
 
-From the **Actions** menu on a linked catalog row, you can drop the catalog connection. Dropping removes the catalog's database from ClickHouse — it does not delete any data in your external catalog.
+From the **Actions** menu on a linked catalog row, you can drop the catalog connection. Dropping removes the catalog's database from ClickHouse — it doesn't delete any data in your external catalog.
 
 </VerticalStepper>
 
@@ -253,7 +253,6 @@ SELECT * FROM `identity_profiles.identity_profiles_iceberg`
 ## Troubleshooting {#troubleshooting}
 
 - If you don't see your tables in the SQL console: verify credentials, network access, and table types in the catalog. Make sure the tables you expect to see are in supported file and table formats.
-- Open up a support ticket if you aren't able to debug.
 
 ## See also {#see-also}
 
