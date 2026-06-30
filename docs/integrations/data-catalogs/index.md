@@ -35,21 +35,16 @@ Once connected, catalog tables show up in the SQL console under the database nam
 Before you connect a catalog, confirm the following:
 
 - **Service permissions.** You need the `control-plane:service:manage` permission to access the **Data sources** page and add catalogs.
-- **Running service.** If the service is idle, wake it from the **Data sources** page or the service overview before connecting or viewing linked catalogs.
+- **Running service.** If the service is idle, wake it from the **Data sources** or the service settings pages before connecting or viewing linked catalogs.
 - **Catalog credentials.** Gather connection details for your catalog type before opening the flyout. Each catalog uses different fields and authentication — see [Add your catalog connection](#add-your-catalog-connection) below.
 
 ## Connect your catalog {#connect-your-catalog}
 
-Make sure you're logged in to your [ClickHouse Cloud](https://cloud.clickhouse.com/) account.
-
-<VerticalStepper headerLevel="h3">
-
 ### Open the data catalog flyout {#open-flyout}
 
-1. In the console, open the ClickHouse Cloud service you want to connect.
-2. Select **Data sources** in the left navigation.
-3. Click **+ Add catalog** if you haven't set up any data sources. Otherwise, click **Add data source** > **Add data lake catalog**.
-4. In the **Connect your data catalog** flyout, select your catalog from the **Select catalog** dropdown. If the catalog supports multiple open table formats, choose the format in **Open table format**.
+1. Select **Data sources** in the left navigation.
+2. Click **+ Add catalog** if you haven't set up any data sources. Otherwise, click **Add data source** > **Add data lake catalog**.
+3. In the **Connect your data catalog** flyout, select your catalog from the **Select catalog** dropdown. If the catalog supports multiple open table formats, choose the format in **Open table format**.
 
 <Image img={catalog_flyout_select} alt="Connect your data catalog flyout with Select catalog dropdown showing AWS Glue, BigLake Metastore, Microsoft OneLake, Polaris, REST Catalog, and Unity Catalog" size="lg" border/>
 
