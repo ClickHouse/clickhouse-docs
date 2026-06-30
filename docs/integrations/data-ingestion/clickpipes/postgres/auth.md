@@ -15,7 +15,7 @@ import Image from '@theme/IdealImage';
 
 This article demonstrates how ClickPipes customers can leverage role-based access to authenticate with Amazon Aurora and RDS and access their databases securely.
 
-:::warning
+:::note
 For AWS RDS Postgres and Aurora Postgres, IAM authentication for replication is supported from PostgreSQL version 11 onwards and requires the `rds.iam_auth_for_replication` parameter to be set. On earlier versions, you can only run `Initial Load Only` ClickPipes.
 
 For MySQL and MariaDB, this limitation doesn't apply, and you can run both `Initial Load Only` and `CDC` ClickPipes.
