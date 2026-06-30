@@ -118,7 +118,7 @@ Make sure the **private load balancer** is turned on as a prerequisite.
 
 1. In the ClickHouse Cloud console, navigate to the service's Settings page that you would like to connect to via PSC.
 2. Click "Set up private endpoint".
-3. In the opened flyout, enter the `Endpoint ID` obtained from the last step with an optional description.
+3. In the opened flyout, enter the `PSC Connection ID` obtained from the last step into the `Endpoint ID` field with an optional description.
 4. Click "Create endpoint".
 
 :::note
@@ -141,8 +141,8 @@ You need to point all subdomains (wildcard) of the "DNS name" to GCP PSC endpoin
 2. Click "Set up private endpoint".
 3. In the opened flyout, copy the `DNS name`.
    <Image img={gcp_privatelink_pe_dns} size="md" alt="Private Endpoint DNS Name" border />
-   Access to ClickHouse services via PSC is controlled at two levels:
-   1. **Istio Authorization Policy**: ClickHouse Cloud's service-level authorization policies
-   2. **VPC Endpoint Security Group**: The security group attached to your VPC endpoint controls which resources in your VPC can use the endpoint
+   :::note
+   Access to ClickHouse services via PSC is controlled by ClickHouse Cloud's service-level **Istio Authorization Policy**.
+   :::
 
 </VerticalStepper>

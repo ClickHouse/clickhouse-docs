@@ -127,8 +127,10 @@ Make sure the **private load balancer** is turned on as a prerequisite.
 2. Select "Endpoint services that use NLBs and GWLBs" and use `Service name` obtained from the last step.
 3. Click "Verify service".
    <Image img={aws_private_link_endpoint_settings} size="md" alt="AWS PrivateLink Endpoint Settings" border/>
-4. (Optional) If you want to establish a cross-regional connection via PrivateLink, enable the "Cross region endpoint" checkbox and specify the service region. The service region is where the ClickHouse instance is running. Meanwhile, add your endpoint region in your **BYOC AWS console** (i.e. the AWS account where your BYOC infrastructure is created) as well.
-   <Image img={byoc_privatelink_aws_cross_region} size="md" alt="AWS PrivateLink Cross Region Endpoint Settings" border/>
+4. (Optional) If you want to establish a cross-regional connection via PrivateLink, enable the "Cross region endpoint" checkbox and specify the service region. The service region is where your BYOC infrastructure is created. Meanwhile,
+   1. Open your **BYOC AWS console** (i.e. the AWS account where your BYOC infrastructure is created) → VPC → Endpoint services → `clickhouse-cloud-infra-xxx` → Supported regions.
+   2. Add the region where your client application is running to the supported regions list. By default, only the region of this BYOC infrastructure is supported. You can add multiple regions if you want to connect from different regions, and ClickHouse won't change or reset these values.
+      <Image img={byoc_privatelink_aws_cross_region} size="md" alt="AWS PrivateLink Cross Region Endpoint Settings" border/>
 5. Select your VPC and subnets (one per availability zone is recommended).
    <Image img={aws_private_link_select_vpc} size="md" alt="Select VPC and subnets" border />
 6. **Important**: Enable "Private DNS names" for the endpoint — this is required for Private DNS to function correctly.
