@@ -15,6 +15,7 @@ WITH function_docs AS (
     FROM system.functions
     WHERE categories = {category:String}
     AND alias_to = ''
+    AND is_aggregate = 0 -- aggregate functions are documented on their own reference pages
 ORDER BY name ASC
     ),
 function_aliases AS (
