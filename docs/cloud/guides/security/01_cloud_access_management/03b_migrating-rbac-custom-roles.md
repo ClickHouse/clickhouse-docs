@@ -19,7 +19,7 @@ Organizations that haven't finished the migration by the deadline shown in the w
 
 The new RBAC system introduces custom role definitions and more granular access control. Instead of a fixed set of service-scoped permissions, you define roles that reveal every permission they grant, so it's clear exactly what access each role provides.
 
-A role can combine organization, service, and database permissions, and you can apply those permissions to all or a subset of your services and databases. For the full list of permissions and the standard roles that ship with ClickHouse Cloud, see [Console roles and permissions](/cloud/security/console-roles). For instructions on creating and editing roles after you migrate, see [Manage custom roles](/cloud/guides/security/manage-custom-roles).
+A role can combine organization, service, and database permissions. You can apply those permissions to all of your services and databases, or to a subset. For the full list of permissions and the standard roles that ship with ClickHouse Cloud, see [Console roles and permissions](/cloud/security/console-roles). For instructions on creating and editing roles after you migrate, see [Manage custom roles](/cloud/guides/security/manage-custom-roles).
 
 Most permissions map to the new model automatically. Service-scoped permissions that can't be mapped directly are what the migration wizard asks you to handle.
 
@@ -47,7 +47,7 @@ Assign an Admin role to at least one existing member. The wizard won't let you s
 
 ### Submit the migration {#submit}
 
-Once every member, invitation, and API key has a role and at least one member is an Administrator, submit the migration. You'll be redirected to the **Roles** tab on success.
+Once every member, invitation, and API key has a role, submit the migration. You'll be redirected to the **Roles** tab on success.
 
 </VerticalStepper>
 
@@ -63,6 +63,6 @@ The automated migration creates one custom role per user and one custom role per
 
 Review your OpenAPI and Terraform configurations to keep them compatible with the new roles system. Automation that references the old roles may need to be updated.
 
-Note that the Query Endpoints role transitions to the Basic service API reader role. Update any integrations that depend on the previous role name.
+The Query Endpoints role transitions to the Basic service API reader role. Update any integrations that depend on the previous role name.
 
 For guidance on managing roles going forward, see [Manage custom roles](/cloud/guides/security/manage-custom-roles) and [Cloud access management](/cloud/security/cloud_access_management).
