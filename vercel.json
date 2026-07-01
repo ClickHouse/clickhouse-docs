@@ -2949,7 +2949,22 @@
     },
     {
       "source": "/docs/cloud/manage/billing/overview#clickpipes-for-postgres-cdc",
-      "destination": "/docs/cloud/reference/billing/clickpipes/postgresql-cdc",
+      "destination": "/docs/cloud/reference/billing/clickpipes/cdc",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/billing/clickpipes/postgres-cdc#pricing-dimensions",
+      "destination": "/docs/cloud/reference/billing/clickpipes/cdc#pricing-dimensions-oltp",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/billing/clickpipes/postgres-cdc",
+      "destination": "/docs/cloud/reference/billing/clickpipes/cdc",
+      "permanent": true
+    },
+    {
+      "source": "/docs/cloud/reference/billing/clickpipes/postgresql-cdc",
+      "destination": "/docs/cloud/reference/billing/clickpipes/cdc",
       "permanent": true
     },
      {
