@@ -1037,6 +1037,15 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Data lakes',
+      collapsed: true,
+      collapsible: true,
+      items: [
+        'integrations/data-catalogs/index',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Data visualization',
       collapsed: true,
       collapsible: true,
