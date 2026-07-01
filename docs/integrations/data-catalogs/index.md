@@ -99,7 +99,7 @@ Before you connect, confirm:
 
 In the flyout:
 
-1. Enter your Databricks **Workspace URL** (e.g. `dbc-1234567a-cbde`).
+1. Enter your Databricks **Workspace URL** (e.g. `dbc-1234567a-cbde.cloud.databricks.com`).
 2. Enter the **Databricks catalog name** to connect (e.g. `icebench`).
 3. Enter the OAuth **Client ID** and **Client secret** for your service principal.
 4. Enter a **Database name** for the ClickHouse database that exposes your Unity Catalog tables.
