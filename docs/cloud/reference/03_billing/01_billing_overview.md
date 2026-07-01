@@ -15,7 +15,7 @@ To understand what can affect your bill, and ways that you can manage your spend
 
 :::note
 - Prices reflect AWS us-east-1 pricing.
-- Explore applicable data transfer and ClickPipes charges [here](/cloud/manage/network-data-transfer).
+- Explore applicable data transfer charges [here](/cloud/manage/network-data-transfer).
 :::
 
 ### Basic: from $66.52 per month {#basic-from-6652-per-month}
@@ -394,4 +394,4 @@ However, combining two services in a warehouse and idling one of them helps you 
 
 ## ClickPipes pricing {#clickpipes-pricing}
 
-For information on ClickPipes billing, please see the dedicated ["ClickPipes billing" section](/cloud/reference/billing/clickpipes).
+For information on ClickPipes billing, please see the dedicated ["ClickPipes" section](/cloud/reference/billing/clickpipes).
