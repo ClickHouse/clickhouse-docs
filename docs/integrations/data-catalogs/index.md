@@ -40,6 +40,8 @@ Before you connect a catalog, confirm the following:
 
 ## Connect your catalog {#connect-your-catalog}
 
+<VerticalStepper headerLevel="h3">
+
 ### Open the data catalog flyout {#open-flyout}
 
 1. Select **Data sources** in the left navigation.
