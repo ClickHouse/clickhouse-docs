@@ -14,12 +14,12 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 Replica-aware routing (also known as sticky sessions, sticky routing, or session affinity) increases the chance of cache reuse by consistently routing related requests to the same ClickHouse replica. It is best-effort and does not guarantee isolation.
 
 :::warning Protocol support — HTTP/HTTPS only
-Replica-aware routing is applied at the proxy layer over the **HTTP/HTTPS interface**, using the `session_id` query parameter (see below). It is **not available over the native protocol** (native port, e.g. the `clickhouse-go` driver in its default native mode). If you need sticky routing from a native-protocol client, connect that workload over the HTTP interface instead — for `clickhouse-go` (v2), set `Protocol: clickhouse.HTTP` on the connection.
+Replica-aware routing is applied at the proxy layer over the **HTTP/HTTPS interface**, using the `session_id` query parameter (see below). It is **not available over the native protocol** (native port, e.g. the `clickhouse-go` driver). 
 :::
 
 ## HTTP-based routing (session_id) {#http-based-routing}
 
-To pin a workload to a replica, set the `session_id` query parameter on the HTTPS interface. The proxy parses the request and uses consistent hashing on the `session_id` to select a replica, so all requests sharing the same `session_id` are routed to the same server — until the cluster topology changes.
+To route a workload to a replica, set the `session_id` query parameter on the HTTPS interface. The proxy parses the request and uses consistent hashing on the `session_id` to select a replica, so all requests sharing the same `session_id` are routed to the same server — until the cluster topology changes. The `session_id` can be any alphanumberic input you would like. 
 
 ```bash
 echo 'SELECT hostName()' | curl \
@@ -27,25 +27,21 @@ echo 'SELECT hostName()' | curl \
   'https://<host>:8443/?session_id=my-workload-1' -d @-
 ```
 
-Every request carrying `session_id=my-workload-1` lands on the same replica. A different `session_id` value hashes independently and may land on the same or a different replica — the mapping is consistent, but you do not choose *which* replica a given value maps to.
+Every request carrying `session_id=my-workload-1` lands on the same replica. A different `session_id` value hashes independently and may land on the same or a different replica. You don't choose *which* replica a given value maps to.
 
-## Subdomain-based routing (deprecated) {#subdomain-based-routing-deprecated}
+## Subdomain-based routing {#subdomain-based-routing}
 
-:::danger Deprecated
-The subdomain-based mechanism below is **deprecated** and is no longer enabled on new services. It does not scale (each sticky endpoint requires its own TLS certificate). Use the [HTTP-based `session_id` method](#http-based-routing) instead.
+:::Attention
+We will no longer onboard new service to the subdomain-based routing flow.
 :::
 
-Previously, enabling replica-aware routing allowed a wildcard subdomain on top of the service hostname. For a service with the host name `abcxyz123.us-west-2.aws.clickhouse.cloud`, any hostname matching `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` (e.g. `aaa.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`) was hashed by Envoy to a consistent replica. The original hostname continued to use `LEAST_CONNECTION` load balancing, the default routing algorithm.
+Previously, enabling replica-aware routing allowed a wildcard subdomain on top of the service hostname. For a service with the host name `abcxyz123.us-west-2.aws.clickhouse.cloud`, any hostname matching `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` (e.g. `aaa.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`) was hashed by Envoy to a consistent replica. This is no longer available and the feature will not be enabled on new services due to lack of scalability. Each sticky endpoint requires its own TLS certificate and there's a limit as to how many certs available.  
 
 ## Limitations of replica-aware routing {#limitations-of-replica-aware-routing}
 
 ### Replica-aware routing doesn't guarantee isolation {#replica-aware-routing-does-not-guarantee-isolation}
 
-Any disruption to the service — server pod restarts (version upgrade, crash, vertical scaling), or scale out / in — changes the routing hash ring. This causes requests sharing the same `session_id` to land on a different server pod.
-
-### Replica-aware routing doesn't work out of the box with private link {#replica-aware-routing-does-not-work-out-of-the-box-with-private-link}
-
-When using the deprecated subdomain method, customers need to manually add a DNS entry to make name resolution work for the new hostname pattern. It is possible that this can cause imbalance in the server load if customers use it incorrectly.
+Any disruption to the service — server pod restarts (version upgrade, crash, vertical scaling), or scale out / in — changes the routing hash ring. This could cause requests sharing the same `session_id` to land on a different server pod.
 
 ### Replica-aware routing requires the HTTP protocol {#replica-aware-routing-requires-http}
 
