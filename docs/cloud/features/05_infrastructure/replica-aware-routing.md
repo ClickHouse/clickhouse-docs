@@ -2,14 +2,14 @@
 title: 'Replica-aware routing'
 slug: /manage/replica-aware-routing
 description: 'How to use Replica-aware routing to increase cache re-use'
-keywords: ['cloud', 'sticky endpoints', 'sticky', 'endpoints', 'sticky routing', 'routing', 'replica aware routing', 'session_id']
+keywords: ['cloud', 'sticky endpoints', 'sticky', 'endpoints', 'sticky routing', 'routing', 'replica aware routing', 'session_id', 'enterprise']
 doc_type: 'guide'
 unlisted: true
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
-<PrivatePreviewBadge/>
+<EnterprisePlanFeatureBadge feature="Replica-aware routing" support="true"/>
 
 Replica-aware routing (also known as sticky sessions, sticky routing, or session affinity) increases the chance of cache reuse by consistently routing related requests to the same ClickHouse replica. It's best-effort and doesn't guarantee isolation.
 
