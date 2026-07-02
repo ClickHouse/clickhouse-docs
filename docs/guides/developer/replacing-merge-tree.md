@@ -98,9 +98,11 @@ We use an `ORDER BY` key of `(PostTypeId, toDate(CreationDate), CreationDate, Id
 
 ## Querying ReplacingMergeTree {#querying-replacingmergetree}
 
-At merge time, the ReplacingMergeTree identifies duplicate rows, using the values of the `ORDER BY` columns as a unique identifier, and either retains only the highest version or removes all duplicates if the latest version indicates a delete. This, however, offers eventual correctness only - it doesn't guarantee rows will be deduplicated, and you shouldn't rely on it. Queries can, therefore, produce incorrect answers due to update and delete rows being considered in queries.
+At merge time, the ReplacingMergeTree identifies duplicate rows, using the values of the `ORDER BY` columns as a unique identifier, and either retains only the highest version or removes all duplicates if the latest version indicates a delete. This, however, offers eventual correctness only - it doesn't guarantee rows will be deduplicated, and you shouldn't rely on it.
 
-To obtain correct answers, you will need to complement background merges with query time deduplication and deletion removal. This can be achieved using the `FINAL` operator.
+:::note[Use FINAL to read deduplicated data]
+Because deduplication only happens during background merges, a plain `SELECT` can still return duplicate or deleted rows. To read correct results at query time, use the `FINAL` modifier, which completes deduplication and deletion removal as the query runs.
+:::
 
 Consider the posts table above. We can use the normal method of loading this dataset but specify a deleted and version column in addition to values 0. For example purposes, we load 10000 rows only.
 

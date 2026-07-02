@@ -1735,8 +1735,8 @@
       "name": "Apache Airflow",
       "slug": "apache_airflow",
       "category": "DATA_INGESTION",
-      "supportLevel": "COMMUNITY",
-      "docsLink": "https://github.com/bryzgaloff/airflow-clickhouse-plugin",
+      "supportLevel": "CORE",
+      "docsLink": "https://clickhouse.com/docs/integrations/airflow",
       "logo": {
         "id": 2661,
         "documentId": "xe6c78wt9ztzz2w8aii5w76u",

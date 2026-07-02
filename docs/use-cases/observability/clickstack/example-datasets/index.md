@@ -18,4 +18,5 @@ This section provides various sample datasets and examples to help you get start
 | [Session Replay Demo](session-replay.md) | Instrument a demo web application for session replay and view your interactions in ClickStack |
 | [Chrome Extension](chrome-extension.md) | Inject the Browser SDK into any website using the HyperDX Chrome extension, no application code changes required |
 | [Synthetic data with otelgen](otelgen.md) | Use `otelgen` to send synthetic logs, traces and metrics to a running ClickStack OpenTelemetry collector |
+| [Synthetic data with telemetrygen](telemetrygen.md) | Use `telemetrygen` to send diverse synthetic logs, traces and metrics, shaped with flags across services, severities, span statuses and metric types, to a running ClickStack OpenTelemetry collector |
 | [HackerNews Analyzer](instrument-application.md) | Instrument the HackerNews Analyzer, a Node.js application, with OpenTelemetry and send its logs, metrics, and traces to Managed ClickStack |

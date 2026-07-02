@@ -286,7 +286,7 @@ result = sess.query("""
 """, "JSON")
 ```
 
-См. также: [test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py).
+См. также: [test&#95;stateful.py](https://github.com/chdb-io/chdb-core/blob/main/tests/test_stateful.py).
 
 
 ### Интерфейс Python DB-API 2.0 \{#python-db-api-20\}

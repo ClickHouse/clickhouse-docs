@@ -25,6 +25,8 @@ exceptions:
   - Arrow
   - AWS
   - Apache
+  - Airflow
+  - Apache Airflow
   - AggregatingMergeTree
   - Amazon
   - Amazon Web Services
@@ -92,6 +94,7 @@ exceptions:
   - JSON
   - JSON format settings
   - JSON settings
+  - Join Order Benchmark
   - Kafka
   - Kafka Connect
   - KMS
@@ -226,6 +229,7 @@ exceptions:
   - RowBinary
   - MessagePack
   - Protocol Buffers
+  - Protobuf
   - Cap'n Proto
   - TabSeparated
   - TabSeparatedRaw

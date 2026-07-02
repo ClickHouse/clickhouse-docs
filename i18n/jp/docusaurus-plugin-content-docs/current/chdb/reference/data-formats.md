@@ -14,7 +14,7 @@ doc_type: 'reference'
 ClickHouse がサポートするフォーマットに加えて、chDB は次の形式もサポートします:
 
 * 出力フォーマットとしての `ArrowTable`。型は Python の `pyarrow.Table`
-* 入力・出力フォーマットとしての `DataFrame`。型は Python の `pandas.DataFrame`。例については [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py) を参照してください
+* 入力・出力フォーマットとしての `DataFrame`。型は Python の `pandas.DataFrame`。例については [`test_joindf.py`](https://github.com/chdb-io/chdb-core/blob/main/tests/test_joindf.py) を参照してください
 * 出力フォーマットとしての `Debug` (`CSV` のエイリアス) 。ClickHouse からのデバッグ用詳細出力が有効化されます。
 
 ClickHouse でサポートされているフォーマットは次のとおりです:

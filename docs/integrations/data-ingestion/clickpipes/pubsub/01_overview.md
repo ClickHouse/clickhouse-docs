@@ -185,7 +185,7 @@ The `_raw_message` field can be used in cases where only the full Pub/Sub messag
 ## Limitations {#limitations}
 
 - [DEFAULT](/sql-reference/statements/create/table#default) isn't supported.
-- Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
+- Individual messages are limited to 16MB (uncompressed) by default when running with the smallest (XS) replica size, and 32MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 - Pub/Sub subscription filters are immutable — changing the filter expression requires recreating the pipe.
 - Filters apply to message attributes only, not the message payload.
 

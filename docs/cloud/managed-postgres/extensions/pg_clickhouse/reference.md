@@ -132,20 +132,32 @@ CREATE SERVER taxi_srv FOREIGN DATA WRAPPER clickhouse_fdw
 The supported options are:
 
 * `driver`: The ClickHouse connection driver to use, either "binary" or
-    "http". **Required.**
+  "http". **Required.**
+* `compression`: Native-protocol compression for the "binary" driver, one of
+  "none", "lz4", or "zstd". Defaults to "lz4". Ignored by the "http" driver.
 * `dbname`: The ClickHouse database to use upon connecting. Defaults to
-    "default".
+  "default".
 * `fetch_size`: Approximate batch size in bytes for HTTP streaming. Batches
   split on row boundaries. Defaults to `50000000` (50 MB). `0` disables
   streaming and buffers the full response. Foreign tables can override this
   value.
 * `host`: The host name of the ClickHouse server. Defaults to "localhost";
 * `port`: The port to connect to on the ClickHouse server. Defaults as
-    follows:
+  follows:
   * 9440 if `driver` is "binary" and `host` is a ClickHouse Cloud host
   * 9004 if `driver` is "binary" and `host` isn't a ClickHouse Cloud host
   * 8443 if `driver` is "http" and `host` is a ClickHouse Cloud host
   * 8123 if `driver` is "http" and `host` isn't a ClickHouse Cloud host
+* `min_tls_version`: Minimum TLS protocol version to negotiate on connections
+  that use TLS. One of `TLSv1`, `TLSv1.1`, `TLSv1.2`, or `TLSv1.3`. Defaults
+  to the TLS library's own minimum. Applies to both drivers.
+* `secure`: Controls TLS for the connection. One of:
+  * `auto` (default): use TLS when `host` is a ClickHouse Cloud host or
+    `port` is a secure port; plaintext otherwise.
+  * `on` (or `true`/`yes`/`1`): always use TLS. Defaults `port` to 8443
+    ("http") or 9440 ("binary").
+  * `off` (or `false`/`no`/`0`): never use TLS. Defaults `port` to 8123
+    ("http") or 9000 ("binary").
 
 ### ALTER SERVER {#alter-server}
 
@@ -1092,6 +1104,10 @@ equivalents as follows:
 * `reverse(bytea)`: [reverse](https://clickhouse.com/docs/sql-reference/functions/string-functions#reverse)
 * `strpos`: [positionUTF8](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#positionutf8)
 * `regexp_like`: [match](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#match)
+* `regexp_match`: [extractGroups](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#extractGroups)
+  if the regular expression contains parenthesized subexpressions; otherwise
+  [extractAll](https://clickhouse.com/docs/sql-reference/functions/string-search-functions#extractAll)
+  sliced with [arraySlice](https://clickhouse.com/docs/sql-reference/functions/array-functions#arraySlice).
 * `regexp_replace`: [replaceRegexpOne](https://clickhouse.com/docs/sql-reference/functions/string-replace-functions#replaceRegexpOne) or [replaceRegexpOne](https://clickhouse.com/docs/sql-reference/functions/string-replace-functions#replaceRegexpAll) when the `g` flag is present
 * `regexp_split_to_array`: [splitByRegexp](https://clickhouse.com/docs/sql-reference/functions/splitting-merging-functions#splitByRegexp)
 * `md5`: [MD5](https://clickhouse.com/docs/sql-reference/functions/hash-functions#MD5)
@@ -1295,7 +1311,7 @@ aware of the differences between the two and how pg_clickhouse handles them.
   `WHERE` clause) and POSIX when it will be evaluated by Postgres (e.g., in a
   `SELECT` clause).
 
-* pg_clickhouse pushes down the Postgres [Regex flags] by prepending them to
+* pg_clickhouse pushes down the [Postgres flags] by prepending them to
   ClickHouse regular expression inside `(?)`. For example:
 
     ``` sql
@@ -1305,28 +1321,54 @@ aware of the differences between the two and how pg_clickhouse handles them.
   Becomes
 
     ```sql
-    match(val, concat('(?i-s)', '^VAL\\d'))
+    match(val, concat('(?i)', '^VAL\\d'))
     ```
-
-  Note the inclusion of `-s`; this aligns the behavior with Postgres regular
-  expressions by disabling `s`, which ClickHouse enables by default.
-  pg_clickhouse will not include `-s` if the flags in the Postgres function
-  call include `s`. Unfortunately, this behavior breaks the compatibility of
-  some regular expression in Postgres 24 and earlier.
 
 * The only flags both support, and therefore can be used when evaluated by
   ClickHouse, are:
 
-  * `i`: case-insensitive
-  * `m`: multi-line mode:
-  * `s`: let `.` match `\n`
-  * `p`: partial newline-sensitive matching (treated the same as `s`)
-  * `t`: tight syntax (the default, removed by pg_clickhouse)
+    | Flag | As    | Notes                                                          |
+    | ---- | ----- | -------------------------------------------------------------- |
+    | `i`  | `i`   | case-insensitive matching                                      |
+    | `m`  | `m-s` | `^` and `$` match begin/end line in addition to begin/end text |
+    | `n`  | `m-s` | Postgres alias for `m`                                         |
+    | `p`  | `-s`  | don't let `.` and `[^x]` match `\n`                            |
+    | `s`  | `s`   | let `.` and `[^x]` match `\n`                                  |
+    | `t`  |       | tight syntax, ignored                                          |
+    | `w`  | `m`   | inverse partial newline-sensitive matching                     |
 
-  RE2 supports only these flags; don't use any other [Postgres flags]
+  RE2 supports only these flags; don't use any other [Postgres flags].
 
-* Any other flags passed to regular expression functions will cause the
-  function not to be pushed down.
+* This table summarizes the affects of the various flags (and no flag, which
+  is the same as `s`) when matching newlines and line endings. Note that in
+  Postgres, `m` and `p` prevent negated character classes (`[^xyz]`) from
+  matching a newline, while the ClickHouse equivalents do not. Otherwise,
+  the behaviors are the same in ClickHouse as in Postgres:
+
+    | Pattern applied to `a\nb` | Postgres | ClickHouse | Same? |
+    | ------------------------- | :------: | :--------: | :---: |
+    | `a.b`                     | true     | true       |   ✔︎   |
+    | `a[^x]b`                  | true     | true       |   ✔︎   |
+    | `a$`                      | false    | false      |   ✔︎   |
+    | **`s` Flag**              |          |            |       |
+    | `(?s)a.b`                 | true     | true       |   ✔︎   |
+    | `(?s)a[^x]b`              | true     | true       |   ✔︎   |
+    | `(?s)a$`                  | false    | false      |   ✔︎   |
+    | **`m` Flag**              |          |            |       |
+    | `(?m)a.b`                 | false    | false      |   ✔︎   |
+    | `(?m)a[^x]b`              | true     | false      |   ✘   |
+    | `(?m)a$`                  | true     | true       |   ✔︎   |
+    | **`p` Flag**              |          |            |       |
+    | `(?p)a.b`                 | false    | false      |   ✔︎   |
+    | `(?p)a[^x]b`              | true     | false      |   ✘   |
+    | `(?p)a$`                  | false    | false      |   ✔︎   |
+    | **`w` Flag**              |          |            |       |
+    | `(?w)a.b`                 | true     | true       |   ✔   |
+    | `(?w)a[^x]b`              | true     | true       |   ✔   |
+    | `(?w)a$`                  | true     | true       |   ✔   |
+
+* Any other flags passed to regular expression functions will prevent
+  pushdown of the function.
 
 * The exception is `regexp_replace()`, which also supports the `g` flag. When
   `g` is set, pg_clickhouse uses `replaceRegexpAll()` instead of
@@ -1335,6 +1377,15 @@ aware of the differences between the two and how pg_clickhouse handles them.
 * The replacement argument to Postgres `regexp_replace()` supports `\&` to
   refer to the entire match, while in ClickHouse supports `\0` for the entire
   match. Be sure to use `\0` when the function pushes down to ClickHouse.
+
+* Postgres `regexp_match` returns `NULL` when there are no matches, while
+  the expressions it pushes down to return an empty array. Use `COALESCE()`
+  to return an empty array instead of `NULL` to compare return values
+  compatibly. For example:
+
+    ```sql
+    SELECT * FROM events WHERE COALESCE(regexp_match(msg, '^ERR'), '{}');
+    ```
 
 To avoid all ambiguity, consider setting
 [pg_clickhouse.pushdown_regex](#pg_clickhousepushdown_regex) to prevent
@@ -1482,9 +1533,9 @@ Copyright (c) 2025-2026, ClickHouse
     "PostgreSQL Docs: Character Types"
   [window functions]: https://www.postgresql.org/docs/current/functions-window.html
     "PostgreSQL Docs: Window Functions"
-  [POSIX Regular Expressions]: https://www.postgresql.org/docs/18/functions-matching.html#FUNCTIONS-POSIX-REGEXP
+  [POSIX Regular Expressions]: https://www.postgresql.org/docs/current/functions-matching.html#FUNCTIONS-POSIX-REGEXP
     "PostgreSQL Docs: POSIX Regular Expressions"
-  [Postgres flags]: https://www.postgresql.org/docs/18/functions-matching.html#POSIX-EMBEDDED-OPTIONS-TABLE
+  [Postgres flags]: https://www.postgresql.org/docs/current/functions-matching.html#POSIX-EMBEDDED-OPTIONS-TABLE
     "PostgreSQL Docs: ARE Embedded-Option Letters"
   [RE2]: https://github.com/google/re2/wiki/Syntax "RE2 Syntax"
   [re2 extension]: https://github.com/ClickHouse/pg_re2

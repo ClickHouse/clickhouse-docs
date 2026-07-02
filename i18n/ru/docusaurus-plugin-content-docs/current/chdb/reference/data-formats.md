@@ -14,7 +14,7 @@ doc_type: 'reference'
 Помимо форматов данных, которые поддерживает ClickHouse, chDB также поддерживает:
 
 * `ArrowTable` как формат вывода, тип — Python `pyarrow.Table`
-* `DataFrame` как формат ввода и вывода, тип — Python `pandas.DataFrame`. Примеры см. в [`test_joindf.py`](https://github.com/chdb-io/chdb/blob/main/tests/test_joindf.py)
+* `DataFrame` как формат ввода и вывода, тип — Python `pandas.DataFrame`. Примеры см. в [`test_joindf.py`](https://github.com/chdb-io/chdb-core/blob/main/tests/test_joindf.py)
 * `Debug` как формат вывода (как алиас формата `CSV`), но с включенным подробным отладочным выводом из ClickHouse.
 
 Поддерживаемые ClickHouse форматы данных:
