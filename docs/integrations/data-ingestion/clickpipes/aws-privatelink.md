@@ -36,6 +36,10 @@ data source types:
 - MySQL
 - MongoDB
 
+:::note
+For Kafka, the [schema registry](/integrations/clickpipes/kafka/schema-registries) can be reached over the same reverse private endpoint as the brokers — it does not need to be publicly accessible — provided its hostname resolves to the endpoint's private IP addresses.
+:::
+
 ## Supported AWS PrivateLink endpoint types {#aws-privatelink-endpoint-types}
 
 ClickPipes reverse private endpoint can be configured with one of the following AWS PrivateLink approaches:

@@ -25,6 +25,26 @@ It's also possible for an inactive database to rotate the log file without allow
 
 At the start of an initial load we record the binlog offset to start at. This offset must still be valid when the initial load finishes in order for CDC to progress. If you're ingesting a large amount of data be sure to configure an appropriate binlog retention period. While setting up tables you can speed up initial load by configuring *Use a custom partitioning key for initial load* for large tables under advanced settings so that we can load a single table in parallel.
 
+### Why is my pipe failing with a max_allowed_packet binlog error? {#binlog-event-exceeded-max-allowed-packet}
+
+If your pipe fails with an error similar to:
+
+```text
+MySQL execute error: ERROR 1236 (HY000): log event entry exceeded max_allowed_packet;
+Increase max_allowed_packet on source
+```
+
+it means a single binlog event (corresponding to one row change) is larger than your MySQL server's [`max_allowed_packet`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_allowed_packet) setting. Because the server can't send an event that exceeds this limit, the binlog stream read aborts and CDC can't progress.
+
+This is most often caused by rows containing large `BLOB`, `TEXT`, or `JSON` values. To resolve it:
+
+- **Increase `max_allowed_packet` on the source.** Raise it above the size of your largest row change — setting it to the maximum of `1G` is usually safe:
+  ```sql
+  SET GLOBAL max_allowed_packet = 1073741824; -- 1 GiB
+  ```
+  Set it in your server configuration (e.g. `my.cnf` or the DB Parameter Group) as well so it persists across restarts.
+- **If a single row is larger than 1G:** resync the pipe.
+
 ### Why am I getting a TLS certificate validation error when connecting to MySQL? {#tls-certificate-validation-error}
 
 When connecting to MySQL, you may encounter certificate errors like `x509: certificate is not valid for any names` or `x509: certificate signed by unknown authority`. These occur because ClickPipes enables TLS encryption by default.
