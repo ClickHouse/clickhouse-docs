@@ -39,7 +39,7 @@ When continuous ingestion is enabled, ClickPipes continuously ingests data from 
 
 The GCS ClickPipe assumes files are added to a bucket in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the bucket, it will be **ignored** because the file name isn't lexically greater than the last ingested file.
 
-In this mode, the GCS ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the specified path.
+In this mode, the GCS ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). To begin continuous ingestion after a specific file, configure **Start after**. ClickPipes will skip files that are lexicographically less than or equal to the configured value and continue ingesting newer files from that point.
 
 #### Any order {#continuous-ingestion-any-order}
 
@@ -53,7 +53,7 @@ It's possible to configure a GCS ClickPipe to ingest files that don't have an im
 Unordered mode is **not** supported for public buckets. It requires **Service Account** authentication and a [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) subscription connected to the bucket.
 :::
 
-In this mode, the GCS ClickPipe does an initial load of **all files** in the selected path, and then listens for `OBJECT_FINALIZE` notifications via the Pub/Sub subscription that match the specified path. Any message for a previously seen file, file not matching the path, or event of a different type will be **ignored**. It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the selected path.
+In this mode, the GCS ClickPipe does an initial load of **all files** in the selected path, and then listens for `OBJECT_FINALIZE` notifications via the Pub/Sub subscription that match the specified path. Any message for a previously seen file, file not matching the path, or event of a different type will be **ignored**. To ingest only files delivered through the subscription, enable **Skip initial load**. When enabled, ClickPipes skips the initial scan of existing files in the selected path and processes only files delivered through the Pub/Sub subscription.
 
 ### File pattern matching {#file-pattern-matching}
 
@@ -154,6 +154,8 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 | `Min insert block size bytes`      | 1GB           | [Minimum size of bytes in the block](/operations/settings/settings#min_insert_block_size_bytes) which can be inserted into a table. |
 | `Max download threads`             | 4             | [Maximum number of concurrent download threads](/operations/settings/settings#max_download_threads). |
 | `Object storage polling interval`  | 30s           | Configures the maximum wait period before inserting data into the ClickHouse cluster. |
+| `Start after`                      | None          | For continuous ingestion, skips files that are lexicographically less than or equal to the configured filename or path. |
+| `Skip initial load`                | false         | For unordered continuous ingestion, skips the initial scan of existing files and processes only object notifications from the configured Pub/Sub subscription. |
 | `Parallel distributed insert select` | 2           | [Parallel distributed insert select setting](/operations/settings/settings#parallel_distributed_insert_select). |
 | `Parallel view processing`         | false         | Whether to enable pushing to attached views [concurrently instead of sequentially](/operations/settings/settings#parallel_view_processing). |
 | `Use cluster function`             | true          | Whether to process files in parallel across multiple nodes. |
