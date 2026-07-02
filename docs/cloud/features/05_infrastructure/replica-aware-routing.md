@@ -14,12 +14,12 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 Replica-aware routing (also known as sticky sessions, sticky routing, or session affinity) increases the chance of cache reuse by consistently routing related requests to the same ClickHouse replica. It is best-effort and does not guarantee isolation.
 
 :::warning Protocol support — HTTP/HTTPS only
-Replica-aware routing is applied at the proxy layer over the **HTTP/HTTPS interface**, using the `session_id` query parameter (see below). It is **not available over the native protocol** (native port, e.g. the `clickhouse-go` driver). 
+Replica-aware routing is applied at the proxy layer over the **HTTP/HTTPS interface**, using the `session_id` query parameter (see below). It's **not available over the native protocol** (native port, e.g. the `clickhouse-go` driver).
 :::
 
 ## HTTP-based routing (session_id) {#http-based-routing}
 
-To route a workload to a replica, set the `session_id` query parameter on the HTTPS interface. The proxy parses the request and uses consistent hashing on the `session_id` to select a replica, so all requests sharing the same `session_id` are routed to the same server — until the cluster topology changes. The `session_id` can be any alphanumberic input you would like. 
+To route a workload to a replica, set the `session_id` query parameter on the HTTPS interface. The proxy parses the request and uses consistent hashing on the `session_id` to select a replica, so all requests sharing the same `session_id` are routed to the same server — until the cluster topology changes. The `session_id` can be any string you choose.
 
 ```bash
 echo 'SELECT hostName()' | curl \
@@ -31,11 +31,11 @@ Every request carrying `session_id=my-workload-1` lands on the same replica. A d
 
 ## Subdomain-based routing {#subdomain-based-routing}
 
-:::Attention
-We will no longer onboard new service to the subdomain-based routing flow.
+:::note
+We no longer onboard new services to the subdomain-based routing flow.
 :::
 
-Previously, enabling replica-aware routing allowed a wildcard subdomain on top of the service hostname. For a service with the host name `abcxyz123.us-west-2.aws.clickhouse.cloud`, any hostname matching `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` (e.g. `aaa.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`) was hashed by Envoy to a consistent replica. This is no longer available and the feature will not be enabled on new services due to lack of scalability. Each sticky endpoint requires its own TLS certificate and there's a limit as to how many certs available.  
+Previously, enabling replica-aware routing allowed a wildcard subdomain on top of the service hostname. For a service with the host name `abcxyz123.us-west-2.aws.clickhouse.cloud`, any hostname matching `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` (e.g. `aaa.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`) was hashed by Envoy to a consistent replica. This is no longer available, and the feature won't be enabled on new services because it doesn't scale — each sticky endpoint requires its own TLS certificate, and there's a limit to how many certificates are available.
 
 ## Limitations of replica-aware routing {#limitations-of-replica-aware-routing}
 
