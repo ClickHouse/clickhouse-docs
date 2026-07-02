@@ -86,7 +86,7 @@ for line in sys.stdin:
 EOF
 ```
 
-If your Python script imports third-party packages, you must create a `requirements.txt` file listing those dependencies. For example:
+If your Python script imports third-party packages, list them in a `requirements.txt` file and ClickHouse Cloud installs them for you. You can instead bundle dependencies directly in the ZIP, but then you must include cached packages for both CPU architectures, so `requirements.txt` is simpler. For example:
 
 ```text
 requests>=2.28.0
@@ -166,6 +166,8 @@ true    false
 ```
 
 ### Create a new version {#create-new-version}
+
+To change a UDF's code, create a new version. The **Edit** panel only manages which services a UDF is assigned to; uploading a file there won't replace the deployed code.
 
 1. From the Cloud console homepage, click on the name of your organization in the bottom-left menu.
 2. Select **User-defined functions** from the menu.
