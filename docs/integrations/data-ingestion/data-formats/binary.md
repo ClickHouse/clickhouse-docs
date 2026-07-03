@@ -11,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ClickHouse supports multiple binary formats, which result in better performance and space efficiency. Binary formats are also safe in character encoding since data is saved in a binary form.
 
-We're going to use some_data [table](assets/some_data.sql) and [data](assets/some_data.tsv) for demonstration, feel free to reproduce that on your ClickHouse instance.
+We're going to use some_data [table](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.sql) and [data](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.tsv) for demonstration, feel free to reproduce that on your ClickHouse instance.
 
 ## Exporting in a Native ClickHouse format {#exporting-in-a-native-clickhouse-format}
 
@@ -22,7 +22,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.clickhouse' FORMAT Native
 ```
 
-This will create [data.clickhouse](assets/data.clickhouse) file in a native format.
+This will create [data.clickhouse](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.clickhouse) file in a native format.
 
 ### Importing from a Native format {#importing-from-a-native-format}
 
@@ -80,7 +80,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.binary' FORMAT RowBinary
 ```
 
-This will generate [data.binary](assets/data.binary) file in a binary rows format.
+This will generate [data.binary](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.binary) file in a binary rows format.
 
 ### Exploring RowBinary files {#exploring-rowbinary-files}
 Automatic schema inference isn't supported for this format, so to explore before loading, we have to define schema explicitly:
@@ -160,7 +160,7 @@ INTO OUTFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-To import data from a [MessagePack file](assets/data.msgpk):
+To import data from a [MessagePack file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.msgpk):
 
 ```sql
 INSERT INTO sometable
@@ -172,7 +172,7 @@ FORMAT MsgPack
 
 <CloudNotSupportedBadge/>
 
-To work with [Protocol Buffers](/interfaces/formats/Protobuf) we first need to define a [schema file](assets/schema.proto):
+To work with [Protocol Buffers](/interfaces/formats/Protobuf) we first need to define a [schema file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.proto):
 
 ```protobuf
 syntax = "proto3";
@@ -193,13 +193,13 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-This saves data to the [proto.bin](assets/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](/interfaces/formats/ProtobufSingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
+This saves data to the [proto.bin](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/proto.bin) file. ClickHouse also supports importing Protobuf data as well as nested messages. Consider using [ProtobufSingle](/interfaces/formats/ProtobufSingle) to work with a single Protocol Buffer message (length delimiters will be omitted in this case).
 
 ## Cap'n Proto {#capn-proto}
 
 <CloudNotSupportedBadge/>
 
-Another popular binary serialization format supported by ClickHouse is [Cap'n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define a schema file ([`schema.capnp`](assets/schema.capnp)) in our example:
+Another popular binary serialization format supported by ClickHouse is [Cap'n Proto](https://capnproto.org/). Similarly to `Protobuf` format, we have to define a schema file ([`schema.capnp`](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.capnp)) in our example:
 
 ```response
 @0xec8ff1a10aa10dbe;

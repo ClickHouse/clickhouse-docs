@@ -10,7 +10,6 @@ keywords: ['Kafka', '로그', 'OTEL', 'ClickStack', '브로커 모니터링', 'L
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import log_view from '@site/static/images/clickstack/kafka/logs/log-view.png';
@@ -264,7 +263,7 @@ OTel `filelog` 수신기로 Kafka 브로커 로그(Log4j 포맷)를 수집하고
 ## 대시보드 및 시각화
 
 <VerticalStepper headerLevel="h4">
-  #### <TrackedLink href={useBaseUrl('/examples/kafka-logs-dashboard.json')} download="kafka-logs-dashboard.json" eventName="docs.kafka_logs_monitoring.dashboard_download">다운로드</TrackedLink>할 대시보드 구성 파일
+  #### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/kafka-logs-dashboard.json'} download="kafka-logs-dashboard.json" eventName="docs.kafka_logs_monitoring.dashboard_download">다운로드</TrackedLink>할 대시보드 구성 파일
 
   #### 미리 구성된 대시보드 가져오기
 

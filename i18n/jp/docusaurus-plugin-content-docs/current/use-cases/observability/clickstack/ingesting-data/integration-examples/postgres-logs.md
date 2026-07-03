@@ -10,7 +10,6 @@ keywords: ['PostgreSQL', 'Postgres', 'logs', 'OTEL', 'ClickStack', 'database mon
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import logs_search_view from '@site/static/images/clickstack/postgres/postgres-logs-search-view.png';
 import log_view from '@site/static/images/clickstack/postgres/postgres-log-view.png';
@@ -303,7 +302,7 @@ ClickStack を使って PostgreSQL の監視を始めやすくするために、
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/postgres-logs-dashboard.json'} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
 
 #### 事前構築済みダッシュボードをインポートする \{#import-dashboard\}
 

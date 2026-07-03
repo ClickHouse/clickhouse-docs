@@ -12,7 +12,7 @@ keywords: ['форматы данных', 'шаблон', 'regex', 'пользо
 
 ## Импорт на основе шаблона \{#importing-based-on-a-template\}
 
-Предположим, что мы хотим импортировать данные из следующего [файла журнала](assets/error.log):
+Предположим, что мы хотим импортировать данные из следующего [файла журнала](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log):
 
 ```bash
 head error.log
@@ -45,7 +45,7 @@ ENGINE = MergeTree
 ORDER BY (host, request, time)
 ```
 
-Чтобы импортировать данные с использованием указанного шаблона, нужно сохранить строку шаблона в файл (в нашем случае — в [row.template](assets/row.template)):
+Чтобы импортировать данные с использованием указанного шаблона, нужно сохранить строку шаблона в файл (в нашем случае — в [row.template](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/row.template)):
 
 ```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
@@ -97,7 +97,7 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 
 Мы также можем экспортировать данные в любой текстовый формат с помощью шаблонов. В этом случае нужно создать два файла:
 
-[Result set template](assets/output.results), который определяет структуру всего набора результатов:
+[Result set template](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.results), который определяет структуру всего набора результатов:
 
 ```response
 == Top 10 IPs ==
@@ -105,7 +105,7 @@ ${data}
 --- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
-Здесь `rows_read` и `time` — это системные метрики, доступные для каждого запроса. При этом `data` обозначает сгенерированные строки (`${data}` всегда должно быть первым плейсхолдером в этом файле), которые формируются по шаблону, определённому в [**файле шаблона строк**](assets/output.rows):
+Здесь `rows_read` и `time` — это системные метрики, доступные для каждого запроса. При этом `data` обозначает сгенерированные строки (`${data}` всегда должно быть первым плейсхолдером в этом файле), которые формируются по шаблону, определённому в [**файле шаблона строк**](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.rows):
 
 ```response
 ${ip:Escaped} generated ${total:Escaped} requests
@@ -140,7 +140,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 
 ### Экспорт в HTML-файлы \{#exporting-to-html-files\}
 
-Результаты, сформированные по шаблону, также можно экспортировать в файлы с помощью предложения [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md). Сгенерируем HTML-файлы на основе указанных форматов [resultset](assets/html.results) и [row](assets/html.row):
+Результаты, сформированные по шаблону, также можно экспортировать в файлы с помощью предложения [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md). Сгенерируем HTML-файлы на основе указанных форматов [resultset](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.results) и [row](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.row):
 
 ```sql
 SELECT
@@ -202,7 +202,7 @@ FORMAT XML
 
 ## Импорт данных на основе регулярных выражений \{#importing-data-based-on-regular-expressions\}
 
-Формат [Regexp](/interfaces/formats/Regexp) предназначен для более сложных случаев, когда входные данные необходимо разбирать более сложным способом. Давайте разберём наш пример с файлом [error.log](assets/error.log), но на этот раз извлечём имя файла и протокол, чтобы сохранить их в отдельные столбцы. Для начала подготовим для этого новую таблицу:
+Формат [Regexp](/interfaces/formats/Regexp) предназначен для более сложных случаев, когда входные данные необходимо разбирать более сложным способом. Давайте разберём наш пример с файлом [error.log](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log), но на этот раз извлечём имя файла и протокол, чтобы сохранить их в отдельные столбцы. Для начала подготовим для этого новую таблицу:
 
 ```sql
 CREATE TABLE error_log
