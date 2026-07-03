@@ -10,7 +10,6 @@ keywords: ['Redis', 'メトリクス', 'OTel', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/import-redis-metrics-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
@@ -290,7 +289,7 @@ ClickStack で Redis の監視を始めるにあたり、Redis Metrics 用の基
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-metrics-dashboard.json'} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
 
 #### 用意済みダッシュボードをインポートする \{#import-dashboard\}
 

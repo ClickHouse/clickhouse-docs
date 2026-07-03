@@ -24,7 +24,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-Чтобы импортировать данные из [CSV-файла](assets/data_small.csv) в таблицу `sometable`, можно передать содержимое файла напрямую в clickhouse-client через конвейер (pipe):
+Чтобы импортировать данные из [CSV-файла](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.csv) в таблицу `sometable`, можно передать содержимое файла напрямую в clickhouse-client через конвейер (pipe):
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
@@ -48,7 +48,7 @@ FORMAT CSV
 
 ### CSV-файлы с заголовками \{#csv-files-with-headers\}
 
-Предположим, что наш [CSV-файл содержит заголовки](assets/data_small_headers.csv):
+Предположим, что наш [CSV-файл содержит заголовки](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small_headers.csv):
 
 ```bash
 head data-small-headers.csv
@@ -104,7 +104,7 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 └─────────┘
 ```
 
-Файл [file](assets/data_small.csv) содержит 1k строк, но ClickHouse загрузил только 990, так как мы указали пропустить первые 10.
+Файл [file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.csv) содержит 1k строк, но ClickHouse загрузил только 990, так как мы указали пропустить первые 10.
 
 :::tip
 При использовании функции `file()` в ClickHouse Cloud вам потребуется выполнять команды в `clickhouse client` на машине, где находится файл. Другой вариант — использовать [`clickhouse-local`](/operations/utilities/clickhouse-local.md) для локального анализа файлов.
@@ -161,7 +161,7 @@ SELECT * FROM file('nulls.csv')
 
 ## TSV‑файлы (со значениями, разделёнными табуляцией) \{#tsv-tab-separated-files\}
 
-Формат данных с разделителями табуляции широко используется в качестве формата обмена данными. Для загрузки данных из [TSV‑файла](assets/data_small.tsv) в ClickHouse используется формат [TabSeparated](/interfaces/formats/TabSeparated):
+Формат данных с разделителями табуляции широко используется в качестве формата обмена данными. Для загрузки данных из [TSV‑файла](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.tsv) в ClickHouse используется формат [TabSeparated](/interfaces/formats/TabSeparated):
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.tsv
@@ -352,7 +352,7 @@ FORMAT CSVWithNamesAndTypes
 "2016_Greater_Western_Sydney_Giants_season","2017-05-01",86
 ```
 
-Этот формат включает две строки заголовка — одну с именами столбцов и другую с их типами. Это позволяет ClickHouse (и другим приложениям) определять типы столбцов при загрузке данных из [подобных файлов](assets/data_csv_types.csv):
+Этот формат включает две строки заголовка — одну с именами столбцов и другую с их типами. Это позволяет ClickHouse (и другим приложениям) определять типы столбцов при загрузке данных из [подобных файлов](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_csv_types.csv):
 
 ```sql
 DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
@@ -389,7 +389,7 @@ SET format_custom_row_between_delimiter = ',';
 SET format_custom_escaping_rule = 'Quoted';
 ```
 
-Теперь мы можем загрузить данные из нашего файла с пользовательским форматом [file](assets/data_small_custom.txt):
+Теперь мы можем загрузить данные из нашего файла с пользовательским форматом [file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small_custom.txt):
 
 ```sql
 SELECT *

@@ -9,7 +9,6 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 import grafanaDashboard from '@site/static/images/managed-postgres/monitoring/grafana-dashboard.png';
 
@@ -115,7 +114,7 @@ scrape_configs:
 <VerticalStepper headerLevel="h4">
   #### 下载仪表板 JSON \{#download\}
 
-  <TrackedLink href={useBaseUrl('/examples/managed-postgres-grafana-dashboard.json')} download="managed-postgres-grafana-dashboard.json" eventName="docs.managed_postgres_grafana_dashboard.download">下载仪表板 JSON</TrackedLink>。
+  <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/managed-postgres-grafana-dashboard.json'} download="managed-postgres-grafana-dashboard.json" eventName="docs.managed_postgres_grafana_dashboard.download">下载仪表板 JSON</TrackedLink>。
 
   #### 在 Grafana 中打开导入界面 \{#open-import\}
 
