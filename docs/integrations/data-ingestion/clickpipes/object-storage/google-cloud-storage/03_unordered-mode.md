@@ -72,7 +72,7 @@ Various types of failures can occur when ingesting data, which can result in par
 
 **1.** In the ClickHouse Cloud console, navigate to **Data Sources > Create ClickPipe** and select **Google Cloud Storage**. Enter the details to connect to your GCS bucket. Under **Authentication method**, choose **Service Account** and provide the `.json` service account key.
 
-**2.** Toggle on **Continuous ingestion**, then select **Any order** as the ingestion mode and provide the **Pub/Sub subscription** name for the subscription connected to your bucket. To process only files from the subscription and skip the initial scan of existing files in the selected path, enable **Skip initial load**. The subscription name must follow the following format:
+**2.** Toggle on **Continuous ingestion**, then select **Any order** as the ingestion mode and provide the **Pub/Sub subscription** name for the subscription connected to your bucket. To process only files from the subscription and skip the initial scan of existing files in the selected path, enable **Skip initial load**. The subscription name must use the following format:
 
 ```text
 projects/${YOUR_PROJECT_ID}/subscriptions/${YOUR_SUBSCRIPTION_NAME}

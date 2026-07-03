@@ -198,7 +198,7 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 | `Min insert block size bytes`      | 1GB           | [Minimum size of bytes in the block](/operations/settings/settings#min_insert_block_size_bytes) which can be inserted into a table. |
 | `Max download threads`             | 4             | [Maximum number of concurrent download threads](/operations/settings/settings#max_download_threads). |
 | `Object storage polling interval`  | 30s           | Configures the maximum wait period before inserting data into the ClickHouse cluster. |
-| `Start after`                      | None          | For continuous ingestion, skips files that are lexicographically less than or equal to the configured filename or path. |
+| `Start after`                      | None          | For ordered continuous ingestion, skips files that are lexicographically less than or equal to the configured filename or path. |
 | `Skip initial load`                | false         | For unordered continuous ingestion, skips the initial scan of existing files and processes only object notifications from the configured SQS queue. |
 | `Parallel distributed insert select` | 2           | [Parallel distributed insert select setting](/operations/settings/settings#parallel_distributed_insert_select). |
 | `Parallel view processing`         | false         | Whether to enable pushing to attached views [concurrently instead of sequentially](/operations/settings/settings#parallel_view_processing). |
