@@ -15,6 +15,11 @@ integration:
 ### Does the MySQL ClickPipe support MariaDB? {#does-the-clickpipe-support-mariadb}
 Yes, the MySQL ClickPipe supports MariaDB 10.0 and above. The configuration for it is very similar to MySQL, using GTID replication by default.
 
+### Why did my pipe fail with an unsupported MariaDB partial row event? {#mariadb-partial-row-event-unsupported}
+MariaDB 12.3 and above can emit a `PARTIAL_ROW_DATA_EVENT` in the binlog. When a row change exceeds the fragment threshold, MariaDB splits it across several binlog events that a consumer must buffer and reassemble before decoding. ClickPipes does not yet support reassembling these fragments, so rather than silently dropping the row change the pipe fails loudly and requires a resync.
+
+To recover, [resync the pipe](./table_resync.md). To reduce the chance of hitting this again, you can also raise `binlog_row_event_fragment_threshold` on the source so fewer row changes get fragmented — keep it below your `max_allowed_packet`, since a single unfragmented binlog event larger than `max_allowed_packet` will fail the replication stream instead.
+
 ### Does the MySQL ClickPipe support PlanetScale, Vitess, or TiDB? {#does-the-clickpipe-support-planetscale-vitess}
 No, these don't support MySQL's binlog API.
 
