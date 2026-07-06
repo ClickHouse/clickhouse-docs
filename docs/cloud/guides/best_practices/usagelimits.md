@@ -29,7 +29,6 @@ or look together at how we can increase them in a controlled manner.
 | **Parts** | 10k (see [`max_parts_in_total`](/whats-new/cloud-compatibility#max_parts_in_total-10000)) |
 | **Part size** | 150 GB |
 | **Services per organization** | 20 (soft) |
-| **Services per warehouse** | 5 (soft) |
 | **Replicas per service** | 20 (soft) |
 | **Replicas per warehouse** | 50 (soft) |
 | **Low cardinality** | 10k or less |
