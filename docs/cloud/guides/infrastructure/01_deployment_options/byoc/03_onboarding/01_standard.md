@@ -59,10 +59,12 @@ If you prefer to use Terraform instead of CloudFormation for AWS deployments, us
 
 ```hcl
 module "clickhouse_onboarding" {
-  source      = "github.com/ClickHouse/terraform-byoc-onboarding.git//modules/aws?ref=v1.2.0"
+  source      = "github.com/ClickHouse/terraform-byoc-onboarding.git//modules/aws?ref=<version>"
   external_id = "<external-id-provided-by-clickhouse>"
 }
 ```
+
+Replace `<version>` with the latest tag from the module's [releases page](https://github.com/ClickHouse/terraform-byoc-onboarding/releases) — always use the latest release.
 
 :::note
 The module was previously distributed as a tarball at `https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz`. That URL remains available but is deprecated — use the GitHub module above.
