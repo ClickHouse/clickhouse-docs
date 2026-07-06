@@ -9,7 +9,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/redis/redis-import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis/redis-logs-dashboard.png';
@@ -271,7 +270,7 @@ ClickStack で Redis を監視し始める際に役立つように、Redis Logs 
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード構成を<TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">ダウンロード</TrackedLink> {#download}
+#### ダッシュボード構成を<TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-logs-dashboard.json'} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">ダウンロード</TrackedLink> {#download}
 
 #### あらかじめ用意されたダッシュボードをインポート \{#import-dashboard\}
 

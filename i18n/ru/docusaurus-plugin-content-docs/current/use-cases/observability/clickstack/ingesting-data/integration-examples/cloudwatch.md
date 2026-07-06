@@ -10,7 +10,6 @@ keywords: ['AWS', 'CloudWatch', 'OTEL', 'ClickStack', 'logs']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/cloudwatch/finish-import.png';
@@ -336,7 +335,7 @@ HyperDX отображает временные метки в локальном
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/cloudwatch-logs-dashboard.json')} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/cloudwatch-logs-dashboard.json'} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
 
 #### Импортируйте дашборд \{#import-dashboard\}
 

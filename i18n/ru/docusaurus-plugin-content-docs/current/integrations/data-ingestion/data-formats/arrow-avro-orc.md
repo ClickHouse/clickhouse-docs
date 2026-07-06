@@ -14,7 +14,7 @@ Apache выпустил несколько форматов данных, кот
 
 ClickHouse поддерживает чтение и запись файлов данных [Apache Avro](https://avro.apache.org/), которые широко используются в системах Hadoop.
 
-Чтобы импортировать данные из [файла в формате Avro](assets/data.avro), следует использовать формат [Avro](/interfaces/formats/Avro) в операторе `INSERT`:
+Чтобы импортировать данные из [файла в формате Avro](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.avro), следует использовать формат [Avro](/interfaces/formats/Avro) в операторе `INSERT`:
 
 ```sql
 INSERT INTO sometable
@@ -88,7 +88,7 @@ kafka_format = 'AvroConfluent';
 
 ## Работа с форматом Arrow \{#working-with-arrow-format\}
 
-Ещё один колоночный формат — [Apache Arrow](https://arrow.apache.org/), который также поддерживается ClickHouse для импорта и экспорта данных. Чтобы импортировать данные из [файла в формате Arrow](assets/data.arrow), мы используем формат [Arrow](/interfaces/formats/Arrow):
+Ещё один колоночный формат — [Apache Arrow](https://arrow.apache.org/), который также поддерживается ClickHouse для импорта и экспорта данных. Чтобы импортировать данные из [файла в формате Arrow](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.arrow), мы используем формат [Arrow](/interfaces/formats/Arrow):
 
 ```sql
 INSERT INTO sometable
@@ -142,7 +142,7 @@ arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
 
 ## Импорт и экспорт данных ORC \{#importing-and-exporting-orc-data\}
 
-Формат [Apache ORC](https://orc.apache.org/) — это колоночный формат хранения, обычно используемый с Hadoop. ClickHouse поддерживает импорт и экспорт [данных ORC](assets/data.orc) с использованием [формата ORC](/interfaces/formats/ORC):
+Формат [Apache ORC](https://orc.apache.org/) — это колоночный формат хранения, обычно используемый с Hadoop. ClickHouse поддерживает импорт и экспорт [данных ORC](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.orc) с использованием [формата ORC](/interfaces/formats/ORC):
 
 ```sql
 SELECT *

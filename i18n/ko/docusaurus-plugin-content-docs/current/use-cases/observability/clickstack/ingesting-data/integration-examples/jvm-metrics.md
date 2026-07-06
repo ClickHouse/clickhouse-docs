@@ -9,7 +9,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import.png';
@@ -198,7 +197,7 @@ ClickStack으로 JVM 애플리케이션을 모니터링할 수 있도록, JVM �
 
 <VerticalStepper headerLevel="h4">
 
-#### 대시보드 구성 파일을 <TrackedLink href={useBaseUrl('/examples/jvm-metrics-dashboard.json')} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">다운로드</TrackedLink> \{#download\}
+#### 대시보드 구성 파일을 <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/jvm-metrics-dashboard.json'} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">다운로드</TrackedLink> \{#download\}
 
 #### 사전 구성된 대시보드 가져오기 \{#import-dashboard\}
 

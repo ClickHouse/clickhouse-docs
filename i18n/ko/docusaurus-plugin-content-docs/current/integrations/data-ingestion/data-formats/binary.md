@@ -11,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ClickHouse는 더 나은 성능과 공간 효율성을 제공하는 여러 바이너리 형식을 지원합니다. 바이너리 형식은 데이터가 바이너리 형태로 저장되므로 문자 인코딩과 관련해서도 안전합니다.
 
-예시를 위해 some&#95;data [테이블](assets/some_data.sql)과 [데이터](assets/some_data.tsv)를 사용하겠습니다. ClickHouse 인스턴스에서 직접 재현해 보셔도 됩니다.
+예시를 위해 some&#95;data [테이블](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.sql)과 [데이터](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.tsv)를 사용하겠습니다. ClickHouse 인스턴스에서 직접 재현해 보셔도 됩니다.
 
 ## Native ClickHouse 형식으로 내보내기 \{#exporting-in-a-native-clickhouse-format\}
 
@@ -22,7 +22,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.clickhouse' FORMAT Native
 ```
 
-이렇게 하면 네이티브 포맷으로 [data.clickhouse](assets/data.clickhouse) 파일이 생성됩니다.
+이렇게 하면 네이티브 포맷으로 [data.clickhouse](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.clickhouse) 파일이 생성됩니다.
 
 
 ### Native 형식에서 가져오기 \{#importing-from-a-native-format\}
@@ -84,7 +84,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.binary' FORMAT RowBinary
 ```
 
-이 명령을 실행하면 RowBinary(바이너리 행) 형식의 [data.binary](assets/data.binary) 파일이 생성됩니다.
+이 명령을 실행하면 RowBinary(바이너리 행) 형식의 [data.binary](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.binary) 파일이 생성됩니다.
 
 
 ### RowBinary 파일 살펴보기 \{#exploring-rowbinary-files\}
@@ -173,7 +173,7 @@ INTO OUTFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-[MessagePack 파일](assets/data.msgpk)에서 데이터를 불러오려면:
+[MessagePack 파일](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.msgpk)에서 데이터를 불러오려면:
 
 ```sql
 INSERT INTO sometable
@@ -186,7 +186,7 @@ FORMAT MsgPack
 
 <CloudNotSupportedBadge />
 
-[Protocol Buffers](/interfaces/formats/Protobuf)로 작업하려면 먼저 [스키마 파일](assets/schema.proto)을 정의해야 합니다.
+[Protocol Buffers](/interfaces/formats/Protobuf)로 작업하려면 먼저 [스키마 파일](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.proto)을 정의해야 합니다.
 
 ```protobuf
 syntax = "proto3";
@@ -207,14 +207,14 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-이 작업은 데이터를 [proto.bin](assets/proto.bin) 파일에 저장합니다. ClickHouse는 중첩 메시지를 포함한 Protobuf 데이터의 가져오기도 지원합니다. 단일 Protocol Buffer 메시지를 처리해야 하는 경우 [ProtobufSingle](/interfaces/formats/ProtobufSingle) 사용을 고려하십시오(이 경우 길이 구분자는 생략됩니다).
+이 작업은 데이터를 [proto.bin](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/proto.bin) 파일에 저장합니다. ClickHouse는 중첩 메시지를 포함한 Protobuf 데이터의 가져오기도 지원합니다. 단일 Protocol Buffer 메시지를 처리해야 하는 경우 [ProtobufSingle](/interfaces/formats/ProtobufSingle) 사용을 고려하십시오(이 경우 길이 구분자는 생략됩니다).
 
 
 ## Cap&#39;n Proto \{#capn-proto\}
 
 <CloudNotSupportedBadge />
 
-ClickHouse가 지원하는 또 다른 대표적인 바이너리 직렬화 포맷은 [Cap&#39;n Proto](https://capnproto.org/)입니다. `Protobuf` 포맷과 마찬가지로 이 예제에서는 스키마 파일([`schema.capnp`](assets/schema.capnp))을 정의해야 합니다.
+ClickHouse가 지원하는 또 다른 대표적인 바이너리 직렬화 포맷은 [Cap&#39;n Proto](https://capnproto.org/)입니다. `Protobuf` 포맷과 마찬가지로 이 예제에서는 스키마 파일([`schema.capnp`](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.capnp))을 정의해야 합니다.
 
 ```response
 @0xec8ff1a10aa10dbe;

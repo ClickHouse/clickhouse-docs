@@ -611,7 +611,6 @@ const sidebars = {
       collapsible: false,
       link: { type: 'doc', id: 'integrations/language-clients/index' },
       items: [
-        'integrations/language-clients/c',
         'integrations/language-clients/cpp',
         {
           type: 'category',
@@ -684,6 +683,7 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
+            'integrations/language-clients/c',
             'integrations/language-clients/moose-olap',
             'interfaces/third-party/client-libraries',
           ],
@@ -1034,6 +1034,15 @@ const sidebars = {
           label: 'Table engines',
           href: 'https://clickhouse.com/docs/engines/table-engines/integrations',
         },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Data lakes',
+      collapsed: true,
+      collapsible: true,
+      items: [
+        'integrations/data-catalogs/index',
       ],
     },
     {

@@ -10,7 +10,6 @@ keywords: ['Kafka', '日志', 'OTel', 'ClickStack', 'broker 监控', 'Log4j']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import log_view from '@site/static/images/clickstack/kafka/logs/log-view.png';
@@ -265,7 +264,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/kafka-logs-dashboard.json')} download="kafka-logs-dashboard.json" eventName="docs.kafka_logs_monitoring.dashboard_download">下载</TrackedLink>仪表板配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/kafka-logs-dashboard.json'} download="kafka-logs-dashboard.json" eventName="docs.kafka_logs_monitoring.dashboard_download">下载</TrackedLink>仪表板配置 \{#download\}
 
 #### 导入预构建的仪表板 \{#import-dashboard\}
 
