@@ -126,12 +126,12 @@ After saving credentials, expand the **Mappings** section. Entra ID shows two ma
 
 Open **Provision Microsoft Entra ID Users** and confirm the attribute mappings line up with what ClickHouse Cloud expects.
 
-By default, Entra ID maps `userName` from `userPrincipalName`. **Edit this mapping so that `userName` is sourced from `mail` instead.** Click the `userName` row, change the **Source attribute** to `mail`, and save.
+By default, Entra ID maps `userName` from `userPrincipalName`. **What matters is that `userName` is sourced from whichever attribute holds the same email address your SAML SSO uses to sign users in** — not any specific attribute name. In some tenants `userPrincipalName` is already that email and no change is needed; in others the email lives in `mail`, so you edit the mapping to source `userName` from `mail`. To change the source, click the `userName` row, set the **Source attribute** to the correct one, and save.
 
 Set the **Matching precedence** so that `userName` is the primary matching attribute. You can remove unsupported mappings; anything outside the SCIM standard set is ignored on the ClickHouse Cloud side.
 
 :::warning Match the email used for SAML SSO
-The value that flows into `userName` **must** match the email address each user signs in with through SAML SSO. SCIM creates the account and SAML authenticates it, so if the SCIM `userName` and the SAML assertion's email don't match, the user is provisioned but can't sign in. Map `userName` from whichever attribute (`mail` here) carries the same email your SAML configuration sends.
+The value that flows into `userName` **must** match the email address each user signs in with through SAML SSO. SCIM creates the account and SAML authenticates it, so if the SCIM `userName` and the SAML assertion's email don't match, SAML creates a separate new user on sign-in that isn't managed by SCIM — leaving a duplicate, unmanaged account. Map `userName` from whichever attribute (`userPrincipalName`, `mail`, or another) carries the same email your SAML configuration sends.
 :::
 
 The remaining rows below come mapped by default — double-check that each is in place:
