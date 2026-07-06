@@ -944,6 +944,7 @@ const sidebars = {
       items: [
         'interfaces/cli',
         'interfaces/client',
+        'interfaces/documentation-search',
         {
           type: 'category',
           label: 'Drivers and interfaces',
