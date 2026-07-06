@@ -122,6 +122,7 @@ For other services, ClickPipes traffic will originate from a default region base
 | **europe-west4** - Netherlands (from 27 May 2026) | `34.34.86.3`, `34.6.175.56`, `34.178.6.187`, `34.91.204.220`, `34.12.85.206`                            |
 | **us-central1** - Iowa (from 27 May 2026)        | `34.28.24.54`, `34.42.56.195`, `34.63.141.9`, `35.238.146.37`, `34.10.251.49`                            |
 | **us-east1** - South Carolina (from 27 May 2026) | `34.24.134.232`, `34.24.214.165`, `34.24.20.1`, `35.243.193.248`, `34.23.98.76`                          |
+| **us-west1** - Oregon (from 1 Jul 2026)          | `136.118.254.175`, `8.229.115.2`, `34.83.0.219`, `35.247.34.28`, `35.199.165.121`                       |
 
 ## Adjusting ClickHouse settings {#adjusting-clickhouse-settings}
 ClickHouse Cloud provides sensible defaults for most of the use cases. However, if you need to adjust some ClickHouse settings for the ClickPipes destination tables, a dedicated role for ClickPipes is the most flexible solution.
@@ -159,6 +160,11 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 
 ## Error reporting {#error-reporting}
 ClickPipes will store errors in two separate tables depending on the type of error encountered during the ingestion process.
+
+:::note
+This does not currently apply to CDC pipes (Postgres, MySQL, and MongoDB), for which operational and error logging are available directly in the ClickHouse Cloud console.
+:::
+
 ### Record errors {#record-errors}
 ClickPipes will create a table next to your destination table with the postfix `<destination_table_name>_clickpipes_error`. This table will contain any errors from malformed data or mismatched schema and will include the entirety of the invalid message. This table has a [TTL](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) of 7 days.
 ### System errors {#system-errors}

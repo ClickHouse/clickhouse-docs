@@ -81,12 +81,17 @@ def read_metadata(text):
     for part in parts:
         parts = part.split(":")
         if len(parts) == 2:
-            if parts[0] in ['title', 'description', 'slug', 'keywords', 'score', 'doc_type']:
+            if parts[0] in ['title', 'description', 'slug', 'keywords', 'score', 'doc_type', 'unlisted', 'draft']:
                 value = parts[1].strip()
                 # Strip quotes only from doc_type
                 if parts[0] == 'doc_type':
                     value = value.strip("'\"")
-                metadata[parts[0]] = int(value) if parts[0] == 'score' else value
+                if parts[0] == 'score':
+                    metadata[parts[0]] = int(value)
+                elif parts[0] in ['unlisted', 'draft']:
+                    metadata[parts[0]] = value.strip("'\"").lower() == 'true'
+                else:
+                    metadata[parts[0]] = value
     return metadata
 
 
@@ -423,6 +428,12 @@ def process_markdown_directory(directory, base_directory, base_url):
                 if md_file_path not in files_processed:
                     files_processed.add(md_file_path)
                     metadata, content = parse_metadata_and_content(directory, base_directory, md_file_path)
+                    # Skip pages hidden from search via frontmatter. `unlisted` pages are
+                    # excluded from the sidebar and tagged `noindex` by Docusaurus; `draft`
+                    # pages are dropped from production builds entirely. Neither should be
+                    # indexed, but they remain reachable by direct URL.
+                    if metadata.get('unlisted') or metadata.get('draft'):
+                        continue
                     for sub_doc in parse_markdown_content(metadata, content, base_url):
                         url_without_anchor, anchor = split_url_and_anchor(sub_doc['url'])
                         sub_doc['url_without_anchor'] = url_without_anchor

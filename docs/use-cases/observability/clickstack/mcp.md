@@ -58,10 +58,10 @@ Each client handles the OAuth flow automatically on first connection.
 <TabItem value="claude-code" label="Claude Code" default>
 
 ```shell
-claude mcp add --transport http clickstack-cloud https://mcp.clickhouse.cloud/clickstack
+claude mcp add --transport http clickstack https://mcp.clickhouse.cloud/clickstack
 ```
 
-Launch Claude Code and run `/mcp`, then select `clickstack-cloud` to complete the OAuth flow.
+Launch Claude Code and run `/mcp`, then select `clickstack` to complete the OAuth flow.
 
 </TabItem>
 <TabItem value="cursor" label="Cursor">
@@ -71,7 +71,7 @@ Add the following to `.cursor/mcp.json`:
 ```json
 {
   "mcpServers": {
-    "clickstack-cloud": {
+    "clickstack": {
       "url": "https://mcp.clickhouse.cloud/clickstack"
     }
   }
@@ -86,7 +86,7 @@ Add the following to `.vscode/mcp.json`:
 ```json
 {
   "servers": {
-    "clickstack-cloud": {
+    "clickstack": {
       "type": "http",
       "url": "https://mcp.clickhouse.cloud/clickstack"
     }
@@ -102,12 +102,24 @@ Add the following to `opencode.json`:
 ```json
 {
   "mcp": {
-    "clickstack-cloud": {
+    "clickstack": {
       "type": "remote",
       "url": "https://mcp.clickhouse.cloud/clickstack"
     }
   }
 }
+```
+
+</TabItem>
+<TabItem value="librechat" label="LibreChat">
+
+Add the following to `librechat.yaml`:
+
+```yaml
+mcpServers:
+  clickstack:
+    type: streamable-http
+    url: https://mcp.clickhouse.cloud/clickstack
 ```
 
 </TabItem>
@@ -216,6 +228,20 @@ Add the following to `opencode.json`:
     }
   }
 }
+```
+
+</TabItem>
+<TabItem value="librechat" label="LibreChat">
+
+Add the following to `librechat.yaml`:
+
+```yaml
+mcpServers:
+  clickstack:
+    type: streamable-http
+    url: <YOUR_CLICKSTACK_URL>/api/mcp
+    headers:
+      Authorization: "Bearer <YOUR_API_KEY>"
 ```
 
 </TabItem>

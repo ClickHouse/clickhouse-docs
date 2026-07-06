@@ -10,7 +10,6 @@ keywords: ['PostgreSQL', 'Postgres', 'metrics', 'OTEL', 'ClickStack', 'database 
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/postgres/import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
@@ -187,7 +186,7 @@ ClickStack으로 PostgreSQL을 모니터링하기 시작할 수 있도록, Postg
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-metrics-dashboard.json')} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/postgres-metrics-dashboard.json'} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> \{#download\}
 
 #### 미리 구성된 대시보드 가져오기 \{#import-dashboard\}
 

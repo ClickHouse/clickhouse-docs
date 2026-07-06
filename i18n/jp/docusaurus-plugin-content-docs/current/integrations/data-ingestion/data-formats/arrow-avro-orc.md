@@ -14,7 +14,7 @@ Apache は、広く利用されている [Avro](https://avro.apache.org/)、[Arr
 
 ClickHouse は、Hadoop システムで広く使用されている [Apache Avro](https://avro.apache.org/) データファイルの読み書きをサポートしています。
 
-[avro ファイル](assets/data.avro)からインポートするには、`INSERT` 文で [Avro](/interfaces/formats/Avro) 形式を使用します。
+[avro ファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.avro)からインポートするには、`INSERT` 文で [Avro](/interfaces/formats/Avro) 形式を使用します。
 
 ```sql
 INSERT INTO sometable
@@ -88,7 +88,7 @@ kafka_format = 'AvroConfluent';
 
 ## Arrow フォーマットの利用 \{#working-with-arrow-format\}
 
-もう一つの列指向フォーマットとして [Apache Arrow](https://arrow.apache.org/) があります。これは ClickHouse でのインポートおよびエクスポートにも対応しています。[Arrow ファイル](assets/data.arrow) からデータをインポートするには、[Arrow](/interfaces/formats/Arrow) フォーマットを使用します。
+もう一つの列指向フォーマットとして [Apache Arrow](https://arrow.apache.org/) があります。これは ClickHouse でのインポートおよびエクスポートにも対応しています。[Arrow ファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.arrow) からデータをインポートするには、[Arrow](/interfaces/formats/Arrow) フォーマットを使用します。
 
 ```sql
 INSERT INTO sometable
@@ -142,7 +142,7 @@ Arrow ストリーミングデータのソースの一例として `arrow-stream
 
 ## ORC データのインポートとエクスポート \{#importing-and-exporting-orc-data\}
 
-[Apache ORC](https://orc.apache.org/) は、主に Hadoop で使用される列指向ストレージ形式です。ClickHouse は、[ORC フォーマット](/interfaces/formats/ORC) を使用して [ORC データ](assets/data.orc) のインポートおよびエクスポートの両方をサポートしています。
+[Apache ORC](https://orc.apache.org/) は、主に Hadoop で使用される列指向ストレージ形式です。ClickHouse は、[ORC フォーマット](/interfaces/formats/ORC) を使用して [ORC データ](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.orc) のインポートおよびエクスポートの両方をサポートしています。
 
 ```sql
 SELECT *

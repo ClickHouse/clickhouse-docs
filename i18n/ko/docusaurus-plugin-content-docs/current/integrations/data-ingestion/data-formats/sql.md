@@ -26,7 +26,7 @@ FORMAT SQLInsert
 SET output_format_sql_insert_include_column_names = 0
 ```
 
-이제 [dump.sql](assets/dump.sql) 파일을 다른 OLTP 데이터베이스에 로드할 수 있습니다:
+이제 [dump.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/dump.sql) 파일을 다른 OLTP 데이터베이스에 로드할 수 있습니다:
 
 ```bash
 mysql some_db < dump.sql
@@ -72,7 +72,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-기본적으로 ClickHouse는 알 수 없는 컬럼을 건너뜁니다([input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 옵션으로 제어됨). 또한 덤프에서 처음 발견된 테이블의 데이터만 처리합니다(여러 테이블이 단일 파일로 덤프된 경우). DDL SQL 문은 처리하지 않습니다. MySQL 덤프에서 테이블로 데이터를 적재하려면([mysql.sql](assets/mysql.sql) 파일):
+기본적으로 ClickHouse는 알 수 없는 컬럼을 건너뜁니다([input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) 옵션으로 제어됨). 또한 덤프에서 처음 발견된 테이블의 데이터만 처리합니다(여러 테이블이 단일 파일로 덤프된 경우). DDL SQL 문은 처리하지 않습니다. MySQL 덤프에서 테이블로 데이터를 적재하려면([mysql.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/mysql.sql) 파일):
 
 ```sql
 INSERT INTO some_data

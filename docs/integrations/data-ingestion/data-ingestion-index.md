@@ -1,6 +1,6 @@
 ---
 slug: /integrations/data-ingestion-overview
-keywords: [ 'Airbyte', 'Apache Spark', 'Spark', 'Azure Synapse', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector' ]
+keywords: [ 'Airbyte', 'Apache Airflow', 'Airflow', 'Apache Spark', 'Spark', 'Azure Synapse', 'Amazon Glue', 'Apache Beam', 'dbt', 'Fivetran', 'NiFi', 'dlt', 'Vector' ]
 title: 'Data ingestion'
 description: 'Landing page for the data ingestion section'
 doc_type: 'landing-page'
@@ -13,6 +13,7 @@ For more information check out the pages below:
 | Data Ingestion Tool                                              | Description                                                                                                                                                                                                                           |
 |------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Airbyte](/integrations/airbyte)                                 | An open-source data integration platform. It allows the creation of ELT data pipelines and is shipped with more than 140 out-of-the-box connectors.                                                                                   |
+| [Apache Airflow](/integrations/airflow)                          | An open-source platform for authoring, scheduling, and monitoring workflows as code, with a provider for running ClickHouse queries and data loads from DAGs.                                                                          |
 | [Apache Spark](/integrations/apache-spark)                       | A multi-language engine for executing data engineering, data science, and machine learning on single-node machines or clusters                                                                                                        |
 | [Apache Flink](/integrations/apache-flink)                       | Real-time data ingestion and processing into ClickHouse through Flink's DataStream API with support for batch writes                                                                                                                  |
 | [Amazon Glue](/integrations/glue)                                | A fully managed, serverless data integration service provided by Amazon Web Services (AWS) simplifying the process of discovering, preparing, and transforming data for analytics, machine learning, and application development.     |

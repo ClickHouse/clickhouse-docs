@@ -334,4 +334,4 @@ cleanup:
 
 - **Основной репозиторий**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **Проблемы и поддержка**: Сообщайте о проблемах в [репозитории GitHub](https://github.com/chdb-io/chdb/issues)
-- **Документация C API**: [Документация привязок](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+- **Документация C API**: [Документация привязок](https://github.com/chdb-io/chdb-core/blob/main/bindings.md)

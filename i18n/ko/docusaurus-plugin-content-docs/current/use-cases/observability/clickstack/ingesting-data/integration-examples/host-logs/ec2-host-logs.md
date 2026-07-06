@@ -10,7 +10,6 @@ keywords: ['EC2', 'AWS', '호스트 로그', 'systemd', 'syslog', 'OTel', 'Click
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import search_view from '@site/static/images/clickstack/host-logs/ec2/search-view.png';
 import log_view from '@site/static/images/clickstack/host-logs/ec2/log-view.png';
@@ -437,7 +436,7 @@ ClickStack으로 EC2 호스트 로그 모니터링을 시작할 수 있도록, �
 
 <VerticalStepper headerLevel="h4">
 
-#### 대시보드 구성 파일을 <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">다운로드</TrackedLink>합니다 \{#download\}
+#### 대시보드 구성 파일을 <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/host-logs-dashboard.json'} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">다운로드</TrackedLink>합니다 \{#download\}
 
 #### 사전 구성된 대시보드를 가져옵니다 \{#import-dashboard\}
 

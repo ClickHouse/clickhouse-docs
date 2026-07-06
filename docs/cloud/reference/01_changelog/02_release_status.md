@@ -71,7 +71,6 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green',
-     fast_delay_note: 'Services with upgrade windows will be upgraded starting 2026-04-15.',
     },
     {
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
@@ -85,8 +84,6 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green',
-     regular_delay_note: 'Services with scheduled upgrade windows will receive 25.12 during their scheduled window in the week after Mar 23',
-     slow_delay_note: 'Services with scheduled upgrade windows will receive 25.12 during their scheduled window in the week after Apr 13',
    },
    {
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',

@@ -121,7 +121,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 
 ## Массив JSON-объектов \{#array-of-json-objects\}
 
-Одна из самых распространённых форм представления данных в JSON — это список JSON-объектов в JSON-массиве, как в [этом примере](../assets/list.json):
+Одна из самых распространённых форм представления данных в JSON — это список JSON-объектов в JSON-массиве, как в [этом примере](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list.json):
 
 ```bash
 > cat list.json
@@ -153,7 +153,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-Чтобы импортировать список JSON-объектов, можно использовать формат [`JSONEachRow`](/interfaces/formats/JSONEachRow) (вставляя данные из файла [list.json](../assets/list.json)):
+Чтобы импортировать список JSON-объектов, можно использовать формат [`JSONEachRow`](/interfaces/formats/JSONEachRow) (вставляя данные из файла [list.json](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list.json)):
 
 ```sql
 INSERT INTO sometable
@@ -178,7 +178,7 @@ FROM sometable
 
 ## Ключи объектов JSON \{#json-object-keys\}
 
-В некоторых случаях список объектов JSON может быть представлен в виде свойств объекта, а не элементов массива (см. [objects.json](../assets/objects.json) в качестве примера):
+В некоторых случаях список объектов JSON может быть представлен в виде свойств объекта, а не элементов массива (см. [objects.json](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/objects.json) в качестве примера):
 
 ```bash
 cat objects.json
@@ -241,7 +241,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 
 ## Массивы JSON \{#json-arrays\}
 
-Иногда в целях экономии места файлы JSON кодируются как массивы вместо объектов. В этом случае мы имеем дело со [списком массивов JSON](../assets/arrays.json):
+Иногда в целях экономии места файлы JSON кодируются как массивы вместо объектов. В этом случае мы имеем дело со [списком массивов JSON](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/arrays.json):
 
 ```bash
 cat arrays.json
@@ -269,7 +269,7 @@ SELECT * FROM sometable
 
 ### Импорт отдельных столбцов из JSON-массивов \{#importing-individual-columns-from-json-arrays\}
 
-В некоторых случаях данные могут быть закодированы по столбцам, а не по строкам. В этом случае родительский JSON-объект содержит столбцы со значениями. Рассмотрим [следующий файл](../assets/columns.json):
+В некоторых случаях данные могут быть закодированы по столбцам, а не по строкам. В этом случае родительский JSON-объект содержит столбцы со значениями. Рассмотрим [следующий файл](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/columns.json):
 
 ```bash
 cat columns.json
@@ -297,7 +297,7 @@ SELECT * FROM file('columns.json', JSONColumns)
 └────────────────────────────┴────────────┴──────┘
 ```
 
-При работе с [массивом столбцов](../assets/columns-array.json) вместо объекта также поддерживается более компактный формат — [`JSONCompactColumns`](/interfaces/formats/JSONCompactColumns):
+При работе с [массивом столбцов](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/columns-array.json) вместо объекта также поддерживается более компактный формат — [`JSONCompactColumns`](/interfaces/formats/JSONCompactColumns):
 
 ```sql
 SELECT * FROM file('columns-array.json', JSONCompactColumns)
@@ -313,7 +313,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## Сохранение объектов JSON без разбора \{#saving-json-objects-instead-of-parsing\}
 
-Иногда может потребоваться сохранять объекты JSON в одном столбце типа `String` (или `JSON`), а не разбирать их. Это может быть полезно при работе со списком объектов JSON с разной структурой. Возьмём [этот файл](../assets/custom.json) в качестве примера, где внутри родительского списка содержится несколько различных объектов JSON:
+Иногда может потребоваться сохранять объекты JSON в одном столбце типа `String` (или `JSON`), а не разбирать их. Это может быть полезно при работе со списком объектов JSON с разной структурой. Возьмём [этот файл](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/custom.json) в качестве примера, где внутри родительского списка содержится несколько различных объектов JSON:
 
 ```bash
 cat custom.json
@@ -367,7 +367,7 @@ FROM events
 
 ## Схема для вложенных объектов \{#schema-for-nested-objects\}
 
-В случае работы с [вложенными объектами JSON](../assets/list-nested.json) мы можем дополнительно явно задать схему и использовать составные типы данных ([`Array`](/sql-reference/data-types/array.md), [`JSON`](/integrations/data-formats/json/overview) или [`Tuple`](/sql-reference/data-types/tuple.md)) для загрузки данных:
+В случае работы с [вложенными объектами JSON](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list-nested.json) мы можем дополнительно явно задать схему и использовать составные типы данных ([`Array`](/sql-reference/data-types/array.md), [`JSON`](/integrations/data-formats/json/overview) или [`Tuple`](/sql-reference/data-types/tuple.md)) для загрузки данных:
 
 ```sql
 SELECT *
@@ -383,7 +383,7 @@ LIMIT 1
 
 ## Доступ к вложенным JSON-объектам \{#accessing-nested-json-objects\}
 
-Мы можем обращаться к [вложенным ключам JSON](../assets/list-nested.json), включив [следующий параметр настройки](/operations/settings/settings-formats.md/#input_format_import_nested_json):
+Мы можем обращаться к [вложенным ключам JSON](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list-nested.json), включив [следующий параметр настройки](/operations/settings/settings-formats.md/#input_format_import_nested_json):
 
 ```sql
 SET input_format_import_nested_json = 1
@@ -419,7 +419,7 @@ ENGINE = MergeTree
 ORDER BY path
 ```
 
-Мы по‑прежнему можем вставить в эту таблицу [исходные данные в формате JSON](../assets/list.json) с тремя столбцами:
+Мы по‑прежнему можем вставить в эту таблицу [исходные данные в формате JSON](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list.json) с тремя столбцами:
 
 ```sql
 INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
@@ -453,7 +453,7 @@ ClickHouse будет выдавать исключения, если струк
 
 ClickHouse позволяет экспортировать данные в файлы, закодированные в формате [BSON](https://bsonspec.org/), и импортировать данные из них. Этот формат используется некоторыми СУБД, например базой данных [MongoDB](https://github.com/mongodb/mongo).
 
-Для импорта данных в формате BSON мы используем формат [BSONEachRow](/interfaces/formats/BSONEachRow). Давайте импортируем данные из [этого BSON‑файла](../assets/data.bson):
+Для импорта данных в формате BSON мы используем формат [BSONEachRow](/interfaces/formats/BSONEachRow). Давайте импортируем данные из [этого BSON‑файла](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.bson):
 
 ```sql
 SELECT * FROM file('data.bson', BSONEachRow)
