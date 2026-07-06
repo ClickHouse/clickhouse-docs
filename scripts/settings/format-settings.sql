@@ -10,9 +10,9 @@ WITH
                     (i, x) -> '{' ||
                         '"id": "row-' || toString(i) || '",' ||
                         '"items": [' ||
-                            '{"label": "' || toString(x.1) || '"},' ||
-                            '{"label": "' || toString(x.2) || '"},' ||
-                            '{"label": "' || replaceRegexpAll(x.3, '([\\"])', '\\\\$1') || '"}' ||
+                            '{"label": ' || toJSONString(toString(x.1)) || '},' ||
+                            '{"label": ' || toJSONString(toString(x.2)) || '},' ||
+                            '{"label": ' || toJSONString(toString(x.3)) || '}' ||
                         ']' ||
                     '}',
                     arrayEnumerate(groupArray((version, default_value, comment))),

@@ -10,7 +10,6 @@ keywords: ['Node.js', 'traces', 'OTel', 'ClickStack', '分散トレーシング'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import search_view from '@site/static/images/clickstack/nodejs/traces-search-view.png';
@@ -163,7 +162,7 @@ Node.js アプリケーションのパフォーマンス監視をすぐに始め
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">ダッシュボード構成をダウンロード</TrackedLink> \{#download-dashboard\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nodejs-traces-dashboard.json'} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">ダッシュボード構成をダウンロード</TrackedLink> \{#download-dashboard\}
 
 #### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 

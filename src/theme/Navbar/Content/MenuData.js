@@ -254,6 +254,12 @@ export const dropdownCategories = [
       },
       {
         type: "link",
+        label: <Translate id="sidebar.dropdownCategories.category.Integrations.Data lakes">Data lakes</Translate>,
+        description: <Translate id="sidebar.dropdownCategories.category.Integrations.Data lakes.description">Connect a data catalog for Iceberg or Delta tables</Translate>,
+        href: "/integrations/data-catalogs"
+      },
+      {
+        type: "link",
         label: <Translate id="sidebar.dropdownCategories.category.Integrations.Data visualization">Data visualization</Translate>,
         description: <Translate id="sidebar.dropdownCategories.category.Integrations.Data visualization.description">Connect ClickHouse to your favorite visualization tool</Translate>,
         href: "/integrations/data-visualization"

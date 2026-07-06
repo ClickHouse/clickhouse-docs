@@ -10,7 +10,6 @@ keywords: ['MongoDB', 'ログ', 'OTel', 'ClickStack', 'データベース監視'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import log_view from '@site/static/images/clickstack/mongodb/log-view.png';
@@ -289,7 +288,7 @@ OTel の `filelog` レシーバーを使用して、MongoDB サーバーログ (
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード設定を<TrackedLink href={useBaseUrl('/examples/mongodb-logs-dashboard.json')} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">ダウンロード</TrackedLink>する \{#download\}
+#### ダッシュボード設定を<TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/mongodb-logs-dashboard.json'} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">ダウンロード</TrackedLink>する \{#download\}
 
 #### 事前構築済みダッシュボードをインポートする \{#import-dashboard\}
 

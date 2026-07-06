@@ -9,7 +9,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/redis/redis-import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis/redis-logs-dashboard.png';
@@ -272,7 +271,7 @@ HyperDX отображает временные метки в локальном
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-logs-dashboard.json'} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
 
 #### Импорт готового дашборда \{#import-dashboard\}
 

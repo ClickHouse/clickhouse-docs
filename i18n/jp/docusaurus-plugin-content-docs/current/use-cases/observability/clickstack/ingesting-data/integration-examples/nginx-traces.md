@@ -10,7 +10,6 @@ keywords: ['ClickStack', 'Nginx', 'traces', 'otel']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-nginx-traces-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
@@ -248,7 +247,7 @@ ClickStack でトレースの監視を始めやすくするために、トレー
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード設定を<TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">ダウンロード</TrackedLink> \{#download\}
+#### ダッシュボード設定を<TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nginx-traces-dashboard.json'} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">ダウンロード</TrackedLink> \{#download\}
 
 #### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 1. HyperDX を開き、［Dashboards］セクションに移動します。

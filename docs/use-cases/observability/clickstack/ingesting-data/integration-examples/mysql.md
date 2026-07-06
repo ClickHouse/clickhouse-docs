@@ -10,7 +10,6 @@ keywords: ['MySQL', 'logs', 'OTEL', 'ClickStack', 'database monitoring', 'slow q
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import search_view from '@site/static/images/clickstack/mysql/search-view.png';
 import log_view from '@site/static/images/clickstack/mysql/log-view.png';
@@ -342,7 +341,7 @@ To help you get started monitoring MySQL with ClickStack, we provide essential v
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/mysql-logs-dashboard.json')} download="mysql-logs-dashboard.json" eventName="docs.mysql_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/mysql-logs-dashboard.json'} download="mysql-logs-dashboard.json" eventName="docs.mysql_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 

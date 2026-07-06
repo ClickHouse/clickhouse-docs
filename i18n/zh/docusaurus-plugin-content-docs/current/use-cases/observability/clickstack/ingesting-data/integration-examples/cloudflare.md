@@ -10,7 +10,6 @@ keywords: ['Cloudflare', '日志', 'ClickStack', 'ClickPipes', 'S3', 'HTTP', 'Lo
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import clickpipe_s3 from '@site/static/images/clickstack/cloudflare/clickpipe-s3.png';
 import continuous_ingestion from '@site/static/images/clickstack/cloudflare/continuous-ingestion.png';
 import parse_information from '@site/static/images/clickstack/cloudflare/parse-information.png';
@@ -198,7 +197,7 @@ https://YOUR_CLICKHOUSE_HOST:8443/?query=INSERT+INTO+cloudflare_http_logs+FORMAT
 ## 仪表板和可视化 \{#dashboards\}
 
 <VerticalStepper headerLevel="h4">
-  #### <TrackedLink href={useBaseUrl('/examples/cloudflare-logs-dashboard.json')} download="cloudflare-logs-dashboard.json" eventName="docs.cloudflare_logs_monitoring.dashboard_download">下载</TrackedLink>仪表板配置文件 \{#download\}
+  #### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/cloudflare-logs-dashboard.json'} download="cloudflare-logs-dashboard.json" eventName="docs.cloudflare_logs_monitoring.dashboard_download">下载</TrackedLink>仪表板配置文件 \{#download\}
 
   #### 导入仪表板 \{#import-dashboard\}
 

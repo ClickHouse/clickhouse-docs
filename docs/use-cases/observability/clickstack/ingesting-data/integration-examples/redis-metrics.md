@@ -10,7 +10,6 @@ keywords: ['Redis', 'metrics', 'OTEL', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/import-redis-metrics-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
@@ -280,7 +279,7 @@ To help you get started monitoring Redis with ClickStack, we provide essential v
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-metrics-dashboard.json'} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 

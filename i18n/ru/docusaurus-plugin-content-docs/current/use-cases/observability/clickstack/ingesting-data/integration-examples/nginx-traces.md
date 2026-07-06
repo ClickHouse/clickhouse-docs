@@ -10,7 +10,6 @@ keywords: ['ClickStack', 'Nginx', 'traces', 'OTel']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-nginx-traces-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
@@ -248,7 +247,7 @@ HyperDX отображает метки времени в локальном ч�
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nginx-traces-dashboard.json'} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
 
 #### Импортируйте готовый дашборд \{#import-dashboard\}
 1. Откройте HyperDX и перейдите в раздел Dashboards.

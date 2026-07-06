@@ -10,7 +10,6 @@ keywords: ['EC2', 'AWS', 'host logs', 'systemd', 'syslog', 'OTEL', 'ClickStack',
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import search_view from '@site/static/images/clickstack/host-logs/ec2/search-view.png';
 import log_view from '@site/static/images/clickstack/host-logs/ec2/log-view.png';
@@ -425,7 +424,7 @@ To help you get started monitoring EC2 host logs with ClickStack, we provide ess
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/host-logs-dashboard.json'} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 
