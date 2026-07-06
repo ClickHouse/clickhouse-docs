@@ -593,6 +593,7 @@ exceptions:
   - Synapse
   - Systemd
   - "TABLUM.IO"
+  - Tigris
   - TimescaleDB
   - Upsonic
   - WebUI
