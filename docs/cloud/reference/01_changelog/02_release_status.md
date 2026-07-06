@@ -31,9 +31,7 @@ All single replica services are automatically enrolled in the Fast release chann
 
 </details>
 
-:::note
 Scheduled upgrade windows are available for all release channels for services in the Enterprise tier. This feature allows you to configure a time window on a given day of the week for upgrades.
-:::
 
 ## Release schedule {#release-schedule}
 
