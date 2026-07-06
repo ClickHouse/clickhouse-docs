@@ -20,7 +20,7 @@ ClickHouse는 Parquet 파일을 읽고 쓰는 기능을 모두 제공합니다.
 
 ## Parquet에서 가져오기 \{#importing-from-parquet\}
 
-데이터를 로드하기 전에 [file()](/sql-reference/functions/files.md/#file) 함수를 사용하여 [예제 Parquet 파일](assets/data.parquet)의 구조를 살펴볼 수 있습니다.
+데이터를 로드하기 전에 [file()](/sql-reference/functions/files.md/#file) 함수를 사용하여 [예제 Parquet 파일](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.parquet)의 구조를 살펴볼 수 있습니다.
 
 ```sql
 DESCRIBE TABLE file('data.parquet', Parquet);
@@ -150,7 +150,7 @@ FORMAT Parquet
 
 ## ClickHouse 및 Parquet 데이터 유형 \{#clickhouse-and-parquet-data-types\}
 
-ClickHouse 및 Parquet 데이터 유형은 대부분 동일하지만 [일부 차이가 있습니다](/interfaces/formats/Parquet#data-types-matching-parquet). 예를 들어, ClickHouse는 `DateTime` 유형을 Parquet의 `int64`로 내보냅니다. 그런 다음 이를 ClickHouse로 다시 가져오면 숫자만 보이게 됩니다([time.parquet 파일](assets/time.parquet)):
+ClickHouse 및 Parquet 데이터 유형은 대부분 동일하지만 [일부 차이가 있습니다](/interfaces/formats/Parquet#data-types-matching-parquet). 예를 들어, ClickHouse는 `DateTime` 유형을 Parquet의 `int64`로 내보냅니다. 그런 다음 이를 ClickHouse로 다시 가져오면 숫자만 보이게 됩니다([time.parquet 파일](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/time.parquet)):
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);

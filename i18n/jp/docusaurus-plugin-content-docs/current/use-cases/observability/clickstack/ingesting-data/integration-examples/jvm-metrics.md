@@ -9,7 +9,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import.png';
@@ -198,7 +197,7 @@ ClickStack で JVM アプリケーションを監視できるようにするた�
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード設定を <TrackedLink href={useBaseUrl('/examples/jvm-metrics-dashboard.json')} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">ダウンロード</TrackedLink> する \{#download\}
+#### ダッシュボード設定を <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/jvm-metrics-dashboard.json'} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">ダウンロード</TrackedLink> する \{#download\}
 
 #### 用意されたダッシュボードをインポートする \{#import-dashboard\}
 

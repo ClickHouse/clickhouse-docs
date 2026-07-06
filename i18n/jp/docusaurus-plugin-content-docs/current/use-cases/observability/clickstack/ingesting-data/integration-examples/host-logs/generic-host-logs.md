@@ -10,7 +10,6 @@ keywords: ['ホストログ', 'systemd', 'syslog', 'OTEL', 'ClickStack', 'シス
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import log_view from '@site/static/images/clickstack/host-logs/log-view.png';
 import search_view from '@site/static/images/clickstack/host-logs/search-view.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
@@ -364,7 +363,7 @@ ClickStack を使ってホストログのモニタリングを始められるよ
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/host-logs-dashboard.json'} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
 
 #### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 
