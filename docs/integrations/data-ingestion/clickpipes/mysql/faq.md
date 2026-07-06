@@ -60,8 +60,6 @@ Received a partial JSON update event while processing <database>.<table>; binlog
 
 it means the source MySQL server has [`binlog_row_value_options`](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_row_value_options) set to `PARTIAL_JSON`. With this option enabled, MySQL logs updates to `JSON` columns as partial diffs (only the changed paths) rather than the full document. ClickPipes cannot apply these partial diffs, so CDC can't progress.
 
-`binlog_row_value_options` is a dynamic variable, so it can be enabled after your pipe was created — for example by a DBA or an application session — even if it was empty when the pipe was set up. **We recommend keeping `binlog_row_value_options` disabled (empty) for any database replicated by ClickPipes.**
-
 To resolve it:
 
 - **Disable `PARTIAL_JSON` on the source.** Set the value back to empty:
