@@ -226,7 +226,7 @@ SCIM errors surface in the application's **Provisioning → View provisioning lo
 
 - Confirm SCIM is **enabled** in the ClickHouse Cloud Console.
 - Confirm the **Tenant URL** in Entra ID exactly matches the SCIM endpoint URL shown in the Cloud Console — the organization id must be correct.
-- Confirm the **Secret Token** is in the form `<scim-key>:<scim-secret>` — the key (starting with `scim_`), a colon, then the secret, with no leading or trailing whitespace, and no `Bearer` prefix (Entra ID adds that automatically).
+- Confirm the **Secret Token** is in the form `<scim-key>:<scim-secret>` — the key (starting with `scim_`), a colon, and then the secret. Include no leading or trailing whitespace, and no `Bearer` prefix (Entra ID adds that automatically).
 - If you've rotated tokens, make sure you're using the **new** key and secret, not the previous pair.
 
 ### Users get created but have no permissions {#users-no-permissions}
