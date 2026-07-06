@@ -133,13 +133,11 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 Each service in a warehouse scales independently. You can adjust the number and size of replicas, enable horizontal and vertical autoscaling, and configure auto-idling on inactivity.
 
-Services, including the primary service, can run with a single replica, but that isn't recommended for production — use at least 2 replicas for high availability.
+Services, including the primary service, can run with a single replica, but that isn't recommended for production — use at least 2 replicas for high availability. Secondary single-node services can scale vertically, while primary single-node services cannot.
 
 The combined replica count across all services in a warehouse is capped at 50 by default. See [usage limits](/cloud/bestpractices/usage-limits) for details. Contact [support](https://clickhouse.com/support/program) to raise the limit.
 
 [Scheduled scaling](/cloud/features/autoscaling/scheduled-scaling) works for individual services in a warehouse. Warehouse limits still apply — plan schedules so the combined replica count across all services at peak times stays within the warehouse cap. For more information, see [Automatic scaling](/manage/scaling).
- 
-
 
 ## Changes in `clusterAllReplicas` behavior {#changes-in-behavior}
 
@@ -160,7 +158,7 @@ SELECT * FROM clusterAllReplicas('all_groups.default', system, processes)
 Some workloads can't be isolated to specific services; there are edge cases where one workload in one service will affect another service in the warehouse. These include:
 
 -  **All read-write services handle background merge operations by default.** When inserting data to ClickHouse, the database at first inserts the data to some staging partitions, and then performs merges in the background. These merges can consume memory and CPU resources. When two read-write services share the same storage, they both are performing background operations. That means that there can be a situation where there is an `INSERT` query in Service 1, but the merge operation is completed by Service 2. 
-Note that read-only services don't execute background merges, thus they don't spend their resources on this operation. Contact [support](https://clickhouse.com/support/program) to turn off merges on a service.
+Note that read-only services don't execute background merges. Contact [support](https://clickhouse.com/support/program) to turn off merges on a read/write service.
 
 - **All read-write services are performing S3Queue table engine insert operations.** When creating a S3Queue table on a read/write service, all other read/write services on the warehouse may perform reading data from S3 and writing data to the database.
 
