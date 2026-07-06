@@ -12,6 +12,22 @@ import byoc_connect_1 from '@site/static/images/cloud/reference/byoc-connect-1.p
 
 This page describes the different ways to connect to your ClickHouse services in BYOC. You can choose from public load balancers, private load balancers, or PrivateLink/Private Service Connect endpoints based on your security and networking requirements.
 
+## Selecting a connection path in the console {#connection-via}
+
+Connection details for every BYOC service are available in the ClickHouse Cloud console: open the service and click **Connect**.
+
+When a service exposes more than one network path, the **Connect** dialog shows a **Connection via** dropdown. Use it to choose how you reach the service:
+
+- **Public load balancer** — the internet-facing endpoint.
+- **Private load balancer** — the internal endpoint, reached over VPC peering or connected networks. Listed only when a [private load balancer](#private-load-balancer) is enabled for your infrastructure.
+- **PrivateLink** (AWS) / **Private Service Connect** (GCP) / **Private Link** (Azure) — the cloud provider's private-endpoint hostname. Listed only when [PrivateLink or Private Service Connect](#privatelink-or-private-service-connect) is enabled.
+
+Selecting a path updates the hostname in every connection example in the dialog — the HTTPS (`curl`) command, the native client, JDBC, MySQL, and the language-client snippets (Python, Node.js, Java, Go, and C#) — so you can copy a ready-to-use command for the exact path you need without editing the hostname by hand.
+
+The dropdown lists only the paths enabled for your infrastructure. A service that exposes only the public load balancer shows that endpoint directly, without a dropdown.
+
+{/* TODO: add a screenshot of the Connect dialog with the "Connection via" dropdown expanded once the feature is live in production. */}
+
 ## Public Load Balancer {#public-load-balancer}
 
 A public load balancer provides internet-facing access to your ClickHouse services. This is the default configuration when using a ClickHouse-managed dedicated VPC.
@@ -64,6 +80,8 @@ To connect using the private endpoint:
    - **Public endpoint**: `sb9jmrq2ne.asf3kcggao.ap-southeast-1.aws.clickhouse-byoc.com`
    - **Private endpoint**: `sb9jmrq2ne-private.asf3kcggao.ap-southeast-1.aws.clickhouse-byoc.com`
 
+   Rather than deriving the `-private` hostname by hand, select **Private load balancer** from the **Connection via** dropdown in the **Connect** dialog to copy the endpoint and ready-made connection commands directly.
+
 ### IP Filtering {#private-ip-filtering}
 
 Although private load balancers restrict access to internal networks only, you may still set up IP filtering for even finer-grained control over which sources within your private network can connect. IP filtering for private load balancers uses the same configuration mechanism as with public load balancers: define your allowed IP addresses or CIDR ranges, and ClickHouse Cloud will apply these rules appropriately to each endpoint type. The platform automatically distinguishes between public and private CIDR ranges and assigns them to the corresponding load balancer endpoints. See the [IP Access List documentation](https://clickhouse.com/docs/cloud/security/setting-ip-filters). 
@@ -96,6 +114,8 @@ The PrivateLink endpoint format is similar to the public endpoint, but includes 
 
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
 - **PrivateLink endpoint**: `h5ju65kv87.vpce.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
+
+Once the endpoint is set up and allowlisted, select **PrivateLink** (or **Private Service Connect** on GCP, **Private Link** on Azure) from the **Connection via** dropdown in the **Connect** dialog to copy the private-endpoint connection details directly.
 
 ### Endpoint ID Allowlist {#endpoint-id-allowlist}
 
