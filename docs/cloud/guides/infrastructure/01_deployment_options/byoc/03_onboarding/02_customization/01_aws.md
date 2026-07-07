@@ -90,7 +90,7 @@ New region setup can take up to 40 minutes.
 
 </VerticalStepper>
 
-## Customer-managed IAM roles (BYO-IAM) {#customer-managed-iam-roles}
+## Customer-managed IAM roles {#customer-managed-iam-roles}
 
 For organizations with advanced security requirements or strict compliance policies, you can provide your own IAM roles instead of having ClickHouse Cloud create them. This approach gives you complete control over IAM permissions and allows you to enforce your organization's security policies.
 
