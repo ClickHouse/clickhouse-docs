@@ -24,7 +24,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-要将 [CSV 文件](assets/data_small.csv) 中的数据导入到 `sometable` 表中，我们可以通过管道将该文件直接传递给 clickhouse-client 客户端程序：
+要将 [CSV 文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.csv) 中的数据导入到 `sometable` 表中，我们可以通过管道将该文件直接传递给 clickhouse-client 客户端程序：
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
@@ -48,7 +48,7 @@ FORMAT CSV
 
 ### 带表头的 CSV 文件 \{#csv-files-with-headers\}
 
-假设我们的 [CSV 文件包含表头](assets/data_small_headers.csv)：
+假设我们的 [CSV 文件包含表头](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small_headers.csv)：
 
 ```bash
 head data-small-headers.csv
@@ -104,7 +104,7 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 └─────────┘
 ```
 
-该 [文件](assets/data_small.csv) 有 1000 行，但 ClickHouse 只加载了 990 行，因为我们要求跳过前 10 行。
+该 [文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.csv) 有 1000 行，但 ClickHouse 只加载了 990 行，因为我们要求跳过前 10 行。
 
 :::tip
 在配合 ClickHouse Cloud 使用 `file()` 函数时，您需要在文件所在的机器上通过 `clickhouse client` 来运行这些命令。另一种方式是使用 [`clickhouse-local`](/operations/utilities/clickhouse-local.md) 在本地查看文件。
@@ -161,7 +161,7 @@ SELECT * FROM file('nulls.csv')
 
 ## TSV（制表符分隔）文件 \{#tsv-tab-separated-files\}
 
-制表符分隔的数据格式是一种常用的数据交换格式。要将 [TSV 文件](assets/data_small.tsv) 中的数据加载到 ClickHouse，需要使用 [TabSeparated](/interfaces/formats/TabSeparated) 格式：
+制表符分隔的数据格式是一种常用的数据交换格式。要将 [TSV 文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.tsv) 中的数据加载到 ClickHouse，需要使用 [TabSeparated](/interfaces/formats/TabSeparated) 格式：
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.tsv
@@ -311,7 +311,7 @@ FORMAT CSVWithNamesAndTypes
 "2016_Greater_Western_Sydney_Giants_season","2017-05-01",86
 ```
 
-这种格式将包含两行表头：第一行为列名，第二行为列类型。这样 ClickHouse（以及其他应用）在从[此类文件](assets/data_csv_types.csv)加载数据时就可以识别列类型：
+这种格式将包含两行表头：第一行为列名，第二行为列类型。这样 ClickHouse（以及其他应用）在从[此类文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_csv_types.csv)加载数据时就可以识别列类型：
 
 ```sql
 DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
@@ -348,7 +348,7 @@ SET format_custom_row_between_delimiter = ',';
 SET format_custom_escaping_rule = 'Quoted';
 ```
 
-现在我们可以从自定义格式的 [文件](assets/data_small_custom.txt) 中加载数据：
+现在我们可以从自定义格式的 [文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small_custom.txt) 中加载数据：
 
 ```sql
 SELECT *

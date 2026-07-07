@@ -10,7 +10,6 @@ keywords: ['EC2', 'AWS', '主机日志', 'systemd', 'syslog', 'OTel', 'ClickStac
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import search_view from '@site/static/images/clickstack/host-logs/ec2/search-view.png';
 import log_view from '@site/static/images/clickstack/host-logs/ec2/log-view.png';
@@ -437,7 +436,7 @@ docker run --name clickstack-demo \
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/host-logs-dashboard.json'} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
 
 #### 导入预构建的仪表盘 \{#import-dashboard\}
 

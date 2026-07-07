@@ -36,6 +36,7 @@ import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
 import heatmap_tile_editor from '@site/static/images/clickstack/dashboards/heatmap-tile-editor.png';
 import heatmap_tile_rendered from '@site/static/images/clickstack/dashboards/heatmap-tile-rendered.png';
 import heatmap_tile_drilldown from '@site/static/images/clickstack/dashboards/heatmap-tile-drilldown.png';
+import number_tile_background_chart from '@site/static/images/clickstack/dashboards/number-tile-background-chart.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
 ClickStack supports visualizing events, with built-in support for charting in ClickStack UI (HyperDX). These charts can be added to dashboards for sharing with other users.
@@ -213,6 +214,18 @@ The dashboard will be auto-saved. To set the dashboard name, select the title an
 To remove, edit, or duplicate a visualization, hover over it and use the corresponding action buttons.
 
 <Image img={dashboard_edit} alt="Dashboard edit" size="lg"/>
+
+### Tile display settings {#tile-display-settings}
+
+Each tile has a **Display Settings** drawer for options that control how its value is rendered. Open it from the tile editor by clicking **Display Settings**. The available options depend on the visualization type.
+
+Number tiles can show a **background chart**: a trend sparkline drawn behind the value, so its movement over the selected time range is visible at a glance. This is useful for SLO and error-budget tiles, where how a value is trending matters as much as its current reading.
+
+With a number tile selected, open **Display Settings** and set **Background chart** to **Line** or **Area** (or **None** to turn it off). The sparkline is derived from a time-bucketed version of the tile's query, so no extra configuration is needed. It inherits the tile color by default; set a **Background color** to override it with a specific palette color.
+
+<Image img={number_tile_background_chart} alt="Display Settings drawer for a number tile, with Background chart set to Area" size="lg"/>
+
+Background charts apply to query-builder number tiles. Raw SQL number tiles return a single value with no time dimension to bucket, so the option appears but is disabled for them.
 
 ## Dashboard - Listing and search {#dashboard-listing-search}
 

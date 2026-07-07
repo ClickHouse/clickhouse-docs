@@ -11,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ClickHouse は複数のバイナリ形式をサポートしており、より高いパフォーマンスと優れた容量効率を実現します。バイナリ形式はデータがバイナリ形式で保存されるため、文字エンコーディングの面でも安全です。
 
-デモでは some&#95;data の [テーブル](assets/some_data.sql) と [データ](assets/some_data.tsv) を使用します。必要に応じて、お使いの ClickHouse インスタンスで再現してください。
+デモでは some&#95;data の [テーブル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.sql) と [データ](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.tsv) を使用します。必要に応じて、お使いの ClickHouse インスタンスで再現してください。
 
 ## ネイティブ ClickHouse 形式でのエクスポート \{#exporting-in-a-native-clickhouse-format\}
 
@@ -22,7 +22,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.clickhouse' FORMAT Native
 ```
 
-これにより、ネイティブ形式の [data.clickhouse](assets/data.clickhouse) ファイルが作成されます。
+これにより、ネイティブ形式の [data.clickhouse](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.clickhouse) ファイルが作成されます。
 
 
 ### ネイティブ形式からのインポート \{#importing-from-a-native-format\}
@@ -84,7 +84,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.binary' FORMAT RowBinary
 ```
 
-これはバイナリ行形式で [data.binary](assets/data.binary) ファイルを生成します。
+これはバイナリ行形式で [data.binary](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.binary) ファイルを生成します。
 
 
 ### RowBinary ファイルの確認 \{#exploring-rowbinary-files\}
@@ -173,7 +173,7 @@ INTO OUTFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-[MessagePack ファイル](assets/data.msgpk) からデータをインポートするには、次のようにします。
+[MessagePack ファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.msgpk) からデータをインポートするには、次のようにします。
 
 ```sql
 INSERT INTO sometable
@@ -186,7 +186,7 @@ FORMAT MsgPack
 
 <CloudNotSupportedBadge />
 
-[Protocol Buffers](/interfaces/formats/Protobuf) を利用するには、まず [スキーマファイル](assets/schema.proto) を定義する必要があります。
+[Protocol Buffers](/interfaces/formats/Protobuf) を利用するには、まず [スキーマファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.proto) を定義する必要があります。
 
 ```protobuf
 syntax = "proto3";
@@ -207,14 +207,14 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-これはデータを [proto.bin](assets/proto.bin) ファイルに保存します。ClickHouse では Protobuf データおよびネストされたメッセージのインポートもサポートしています。単一の Protocol Buffer メッセージを扱う場合は、[ProtobufSingle](/interfaces/formats/ProtobufSingle) の使用を検討してください（この場合、長さ区切りは省略されます）。
+これはデータを [proto.bin](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/proto.bin) ファイルに保存します。ClickHouse では Protobuf データおよびネストされたメッセージのインポートもサポートしています。単一の Protocol Buffer メッセージを扱う場合は、[ProtobufSingle](/interfaces/formats/ProtobufSingle) の使用を検討してください（この場合、長さ区切りは省略されます）。
 
 
 ## Cap&#39;n Proto \{#capn-proto\}
 
 <CloudNotSupportedBadge />
 
-ClickHouse がサポートしている、もう 1 つの一般的なバイナリシリアライゼーション形式が [Cap&#39;n Proto](https://capnproto.org/) です。`Protobuf` フォーマットの場合と同様に、この例でもスキーマファイル（[`schema.capnp`](assets/schema.capnp)）を定義する必要があります。
+ClickHouse がサポートしている、もう 1 つの一般的なバイナリシリアライゼーション形式が [Cap&#39;n Proto](https://capnproto.org/) です。`Protobuf` フォーマットの場合と同様に、この例でもスキーマファイル（[`schema.capnp`](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.capnp)）を定義する必要があります。
 
 ```response
 @0xec8ff1a10aa10dbe;

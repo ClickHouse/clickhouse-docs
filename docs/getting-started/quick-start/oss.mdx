@@ -14,92 +14,68 @@ import TabItem from '@theme/TabItem';
 import {VerticalStepper} from '@clickhouse/click-ui/bundled';
 
 > In this quick start tutorial, we'll get you set up with OSS ClickHouse in a few
-easy steps. You'll use the ClickHouse CLI `clickhousectl` to install ClickHouse, 
-start a ClickHouse server, connect to your server to create a table, 
-insert data into it, and run a SELECT query.
+easy steps. You'll download the ClickHouse binary, start ClickHouse, create a
+table, insert data into it, and run a SELECT query.
 
 <VerticalStepper>
 
-## Install the ClickHouse CLI \{#install-the-cli\}
+## Install and start ClickHouse {#install-clickhouse}
 
-The ClickHouse CLI (`clickhousectl`) helps you install local ClickHouse
-versions, launch servers, run queries and manage ClickHouse Cloud.
-
-Install it with:
+Download the ClickHouse binary and start an interactive session:
 
 ```bash
-curl https://clickhouse.com/cli | sh
+curl https://clickhouse.com/ | sh
+./clickhouse
 ```
 
-A `chctl` alias is also created automatically for convenience.
+You should see a smiling face as ClickHouse starts up:
 
-<details>
-<summary>Advanced: install ClickHouse without `clickhousectl`</summary>
+```response
+local-host :)
+```
 
-If you only need the `clickhouse` binary and don't want `clickhousectl`, use the
-universal installer with `CLICKHOUSE_ONLY=1`:
+You're now in an interactive
+[`clickhouse-local`](/operations/utilities/clickhouse-local) session, where you
+can run SQL commands.
+
+That's all it takes to get started. The details below explain what just happened
+and where to go next.
+
+The first command downloads a single `clickhouse` binary into the current
+directory (ClickHouse runs natively on Linux and macOS, and on Windows via the
+[WSL](https://learn.microsoft.com/en-us/windows/wsl/about)). The second starts
+`clickhouse-local`, which needs no configuration. The same binary can also run
+`clickhouse-server` and `clickhouse-client`.
+
+:::note[For Mac users]
+If you're getting errors that the developer of the binary can't be verified,
+please see [here](/knowledgebase/fix-developer-verification-error-in-macos).
+:::
+
+:::tip[You also installed clickhousectl]
+The same install script also installs
+[`clickhousectl`](/install/clickhousectl), the ClickHouse CLI, into
+`~/.local/bin` (with a `chctl` alias). `clickhousectl` helps you install and
+manage multiple local ClickHouse versions, run servers in the background, and
+manage ClickHouse Cloud. See the [clickhousectl install page](/install/clickhousectl)
+for the CLI-based workflow.
+
+To download just the `clickhouse` binary without `clickhousectl`, set
+`CLICKHOUSE_ONLY=1`:
 
 ```bash
 curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
 ```
-
-This downloads a single `clickhouse` binary into the current directory. You can
-then run `clickhouse-server`, `clickhouse-client`, and `clickhouse-local`
-directly from that binary, and the rest of this guide's `clickhousectl`-based
-steps won't apply. See the [Quick install](/install/quick-install) page for the
-plain-binary workflow.
-
-</details>
-
-## Install ClickHouse {#install-clickhouse}
-
-ClickHouse runs natively on Linux and macOS, and runs on Windows via
-the [WSL](https://learn.microsoft.com/en-us/windows/wsl/about).
-
-Use the CLI to install the latest stable version of ClickHouse and make it your default:
-
-```bash
-clickhousectl local use stable
-```
-
-`local use` installs the version if it isn't already present, sets it as your
-default, and creates a `clickhouse` symlink in `~/.local/bin` (on your `PATH`)
-so you can invoke the `clickhouse` binary directly. The later steps in this
-guide rely on that symlink. To download a version without changing your default
-or updating the symlink, use `clickhousectl local install <version>` instead.
-
-:::note
-This isn't the recommended way to install ClickHouse for production.
-If you're looking to install a production instance of ClickHouse, please see the [install page](/install).
 :::
 
-## Start the server {#start-the-server}
-
-Start a ClickHouse server instance:
-
-```bash
-clickhousectl local server start --name my-first-server
-```
-
-The server runs in the background by default. To verify it's running:
-
-```bash
-clickhousectl local server list
-```
-
-## Start the client {#start-the-client}
-
-Connect to your running ClickHouse server:
-
-```bash
-clickhousectl local client --name my-first-server
-```
-
-You should see a smiling face as it connects to your service running on localhost:
-
-```response
-my-host :)
-```
+:::note
+`clickhouse-local` stores table data in a temporary location, so tables you
+create are no longer available after you restart it. To persist data, run a
+ClickHouse server instead — see the [Quick install](/install/quick-install)
+page for the `clickhouse-server` and `clickhouse-client` workflow. Note that
+neither is the recommended way to install ClickHouse for production; for that,
+see the [install page](/install).
+:::
 
 ## Create a table {#create-table}
 

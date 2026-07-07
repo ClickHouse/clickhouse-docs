@@ -334,4 +334,4 @@ cleanup:
 
 - **主仓库**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **问题与支持**:在 [GitHub 仓库](https://github.com/chdb-io/chdb/issues) 中提交 Issue
-- **C API 文档**: [绑定文档](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+- **C API 文档**: [绑定文档](https://github.com/chdb-io/chdb-core/blob/main/bindings.md)

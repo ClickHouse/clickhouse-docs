@@ -611,7 +611,6 @@ const sidebars = {
       collapsible: false,
       link: { type: 'doc', id: 'integrations/language-clients/index' },
       items: [
-        'integrations/language-clients/c',
         'integrations/language-clients/cpp',
         {
           type: 'category',
@@ -684,6 +683,7 @@ const sidebars = {
           collapsed: true,
           collapsible: true,
           items: [
+            'integrations/language-clients/c',
             'integrations/language-clients/moose-olap',
             'interfaces/third-party/client-libraries',
           ],
@@ -944,6 +944,7 @@ const sidebars = {
       items: [
         'interfaces/cli',
         'interfaces/client',
+        'interfaces/documentation-search',
         {
           type: 'category',
           label: 'Drivers and interfaces',
@@ -961,6 +962,16 @@ const sidebars = {
             'integrations/interfaces/ssh',
             'integrations/interfaces/grpc',
             'integrations/interfaces/arrowflight',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Specifications',
+          collapsed: true,
+          collapsible: true,
+          items: [
+            'interfaces/specs/NativeProtocol',
+            'interfaces/specs/NativeFormat',
           ],
         },
         'integrations/sql-clients/sql-console',
@@ -1014,6 +1025,7 @@ const sidebars = {
         'integrations/data-sources/cassandra',
         'integrations/data-ingestion/gcs/index',
         'integrations/data-ingestion/s3-minio',
+        'integrations/data-ingestion/s3-tigris',
         'integrations/data-ingestion/emqx/index',
         'integrations/data-ingestion/insert-local-files',
         'integrations/data-ingestion/dbms/jdbc-with-clickhouse',
@@ -1023,6 +1035,15 @@ const sidebars = {
           label: 'Table engines',
           href: 'https://clickhouse.com/docs/engines/table-engines/integrations',
         },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Data lakes',
+      collapsed: true,
+      collapsible: true,
+      items: [
+        'integrations/data-catalogs/index',
       ],
     },
     {
@@ -1135,6 +1156,7 @@ const sidebars = {
       },
       items: [
         'integrations/data-ingestion/etl-tools/airbyte-and-clickhouse',
+        'integrations/data-ingestion/etl-tools/airflow-and-clickhouse',
         'integrations/data-ingestion/etl-tools/apify-and-clickhouse',
         {
           type: 'category',
@@ -1211,7 +1233,21 @@ const sidebars = {
           ],
         },
         'integrations/data-ingestion/etl-tools/dlt-and-clickhouse',
-        'integrations/data-ingestion/etl-tools/estuary',
+        {
+          type: 'category',
+          label: 'Estuary',
+          className: 'top-nav-item',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/data-ingestion/etl-tools/estuary/index',
+          },
+          items: [
+            'integrations/data-ingestion/etl-tools/estuary/native-protocol',
+            'integrations/data-ingestion/etl-tools/estuary/clickpipes',
+          ],
+        },
         {
           type: 'category',
           label: 'Fivetran',
@@ -1590,7 +1626,6 @@ const sidebars = {
         'operations/ssl-zookeeper',
         'operations/startup-scripts',
         'operations/storing-data',
-        'operations/allocation-profiling',
         {
           type: 'category',
           label: 'Backup/Restore',
@@ -1608,7 +1643,6 @@ const sidebars = {
           label: 'Allocation profiling',
           collapsed: true,
           collapsible: true,
-          link: { type: 'doc', id: 'operations/allocation-profiling' },
           items: [
             'operations/allocation-profiling',
             'operations/allocation-profiling-old',

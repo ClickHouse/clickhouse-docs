@@ -20,7 +20,7 @@ ClickHouse поддерживает как чтение, так и запись 
 
 ## Импорт из Parquet \{#importing-from-parquet\}
 
-Перед загрузкой данных мы можем использовать функцию [file()](/sql-reference/functions/files.md/#file), чтобы изучить структуру [примерного файла формата Parquet](assets/data.parquet):
+Перед загрузкой данных мы можем использовать функцию [file()](/sql-reference/functions/files.md/#file), чтобы изучить структуру [примерного файла формата Parquet](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.parquet):
 
 ```sql
 DESCRIBE TABLE file('data.parquet', Parquet);
@@ -150,7 +150,7 @@ FORMAT Parquet
 
 ## Типы данных ClickHouse и Parquet \{#clickhouse-and-parquet-data-types\}
 
-Типы данных ClickHouse и Parquet в основном совпадают, но всё же [имеют некоторые отличия](/interfaces/formats/Parquet#data-types-matching-parquet). Например, ClickHouse экспортирует тип `DateTime` как значение типа `int64` в формате Parquet. Если затем импортировать его обратно в ClickHouse, мы увидим числа ([файл time.parquet](assets/time.parquet)):
+Типы данных ClickHouse и Parquet в основном совпадают, но всё же [имеют некоторые отличия](/interfaces/formats/Parquet#data-types-matching-parquet). Например, ClickHouse экспортирует тип `DateTime` как значение типа `int64` в формате Parquet. Если затем импортировать его обратно в ClickHouse, мы увидим числа ([файл time.parquet](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/time.parquet)):
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);

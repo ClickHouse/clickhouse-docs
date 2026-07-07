@@ -12,9 +12,6 @@ interface ReleaseRow {
   regular_end_date: string;
   slow_start_date: string;
   slow_end_date: string;
-  fast_delay_note?: string;
-  regular_delay_note?: string;
-  slow_delay_note?: string;
   fast_progress: ProgressStatus;
   regular_progress: ProgressStatus;
   slow_progress: ProgressStatus;
@@ -36,23 +33,15 @@ const StatusIndicator = ({ status }: { status: ProgressStatus }) => {
 
 const DateCell = ({
   date,
-  note,
   status,
 }: {
   date: string;
-  note?: string;
   status: ProgressStatus;
 }) => {
   return (
     <div className={styles.statusCell}>
       <StatusIndicator status={status} />
       <span>{date}</span>
-      {note && (
-        <div className={styles.tooltipContainer}>
-          <span className={styles.infoIcon}>i</span>
-          <span className={styles.tooltip}>{note}</span>
-        </div>
-      )}
     </div>
   );
 };
@@ -104,7 +93,6 @@ export default function ReleaseSchedule({ releases }: ReleaseScheduleProps) {
               <td>
                 <DateCell
                   date={release.fast_start_date}
-                  note={release.fast_delay_note}
                   status={release.fast_progress}
                 />
               </td>
@@ -117,7 +105,6 @@ export default function ReleaseSchedule({ releases }: ReleaseScheduleProps) {
               <td>
                 <DateCell
                   date={release.regular_start_date}
-                  note={release.regular_delay_note}
                   status={release.regular_progress}
                 />
               </td>
@@ -130,7 +117,6 @@ export default function ReleaseSchedule({ releases }: ReleaseScheduleProps) {
               <td>
                 <DateCell
                   date={release.slow_start_date}
-                  note={release.slow_delay_note}
                   status={release.slow_progress}
                 />
               </td>
