@@ -10,7 +10,6 @@ keywords: ['MySQL', '로그', 'OTel', 'ClickStack', '데이터베이스 모니�
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import search_view from '@site/static/images/clickstack/mysql/search-view.png';
 import log_view from '@site/static/images/clickstack/mysql/log-view.png';
@@ -343,7 +342,7 @@ ClickStack으로 MySQL을 모니터링하기 시작할 수 있도록 MySQL 로�
 
 <VerticalStepper headerLevel="h4">
 
-#### 대시보드 구성 파일을 <TrackedLink href={useBaseUrl('/examples/mysql-logs-dashboard.json')} download="mysql-logs-dashboard.json" eventName="docs.mysql_logs_monitoring.dashboard_download">다운로드</TrackedLink> \{#download\}
+#### 대시보드 구성 파일을 <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/mysql-logs-dashboard.json'} download="mysql-logs-dashboard.json" eventName="docs.mysql_logs_monitoring.dashboard_download">다운로드</TrackedLink> \{#download\}
 
 #### 미리 구성된 대시보드 가져오기 \{#import-dashboard\}
 

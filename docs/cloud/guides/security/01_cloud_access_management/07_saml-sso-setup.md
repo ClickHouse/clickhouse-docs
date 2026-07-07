@@ -78,7 +78,7 @@ Click `Next: Verify your domains`. Enter your domain in the text box and click `
 Create a TXT record with your DNS provider. Copy the `TXT record name` to the TXT record Name field with your DNS provider. Copy the `Value` to the Content field with your DNS provider. Click `Verify and Finish` to complete the process.
 
 :::note
-It may take several minutes for the DNS record to update and be verified. You may leave the setup page and return later to complete the process without restarting.
+It may take several minutes for the DNS record to update and be verified. You may leave the setup page and return later to complete the process without restarting. The verification value is valid for 48 hours from when it is first generated.
 :::
 
    <Image img={samlSelfServe5} size="lg" alt="Verify your domain" force/> 

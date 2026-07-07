@@ -10,7 +10,6 @@ keywords: ['ClickStack', 'Nginx', 'traces', 'otel']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-nginx-traces-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
@@ -248,7 +247,7 @@ ClickStack으로 트레이스 모니터링을 시작할 수 있도록, 트레이
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">대시보드 구성 파일을 다운로드</TrackedLink> \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nginx-traces-dashboard.json'} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">대시보드 구성 파일을 다운로드</TrackedLink> \{#download\}
 
 #### 미리 구성된 대시보드 가져오기 \{#import-dashboard\}
 1. HyperDX를 열고 Dashboards 섹션으로 이동합니다.

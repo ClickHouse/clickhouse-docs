@@ -10,7 +10,6 @@ keywords: ['Temporal', 'メトリクス', 'OTel', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import temporal_metrics from '@site/static/images/clickstack/temporal/temporal-metrics.png';
 import finish_import from '@site/static/images/clickstack/temporal/import-temporal-metrics-dashboard.png';
@@ -161,7 +160,7 @@ ClickStack を使って Temporal Cloud の監視を始めやすくするため�
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード構成を <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">ダウンロード</TrackedLink> \{#download\}
+#### ダッシュボード構成を <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/temporal-metrics-dashboard.json'} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">ダウンロード</TrackedLink> \{#download\}
 
 #### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 

@@ -29,6 +29,7 @@ ClickHouse Cloud supports [cross-region PrivateLink](https://aws.amazon.com/abou
 - sa-east-1
 - il-central-1
 - me-south-1
+- mx-central-1
 - eu-central-2
 - eu-north-1
 - eu-south-2

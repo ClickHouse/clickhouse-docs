@@ -10,7 +10,6 @@ keywords: ['host logs', 'systemd', 'syslog', 'OTEL', 'ClickStack', 'system monit
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import log_view from '@site/static/images/clickstack/host-logs/log-view.png';
 import search_view from '@site/static/images/clickstack/host-logs/search-view.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
@@ -363,7 +362,7 @@ ClickStack으로 호스트 로그 모니터링을 시작하는 데 도움이 되
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/host-logs-dashboard.json'} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> {#download}
 
 #### 미리 구성된 대시보드 가져오기 \{#import-dashboard\}
 

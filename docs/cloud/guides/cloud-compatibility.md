@@ -26,22 +26,22 @@ ClickHouse Cloud provides access to a curated set of capabilities in the open so
 
 ### Database and table engines {#database-and-table-engines}
 
-ClickHouse Cloud provides a highly-available, replicated service by default. As a result, all database and table engines are "Replicated". You don't need to specify "Replicated"–for example, `ReplicatedMergeTree` and `MergeTree` are identical when used in ClickHouse Cloud.
+ClickHouse Cloud is a highly-available, replicated service by default, built on the [SharedMergeTree](/cloud/reference/shared-merge-tree) table engine family. When you create a table with a standard MergeTree-family engine, Cloud automatically substitutes the corresponding `Shared*` engine. You don't add a `Shared` or `Replicated` prefix yourself.
 
-**Supported table engines**
+| You specify | Cloud uses |
+|---|---|
+| `MergeTree` (or no engine) | `SharedMergeTree` |
+| `ReplacingMergeTree` | `SharedReplacingMergeTree` |
+| `SummingMergeTree` | `SharedSummingMergeTree` |
+| `AggregatingMergeTree` | `SharedAggregatingMergeTree` |
+| `CollapsingMergeTree` | `SharedCollapsingMergeTree` |
+| `VersionedCollapsingMergeTree` | `SharedVersionedCollapsingMergeTree` |
+| `GraphiteMergeTree` | `SharedGraphiteMergeTree` |
 
-- ReplicatedMergeTree (default, when none is specified)
-- ReplicatedSummingMergeTree
-- ReplicatedAggregatingMergeTree
-- ReplicatedReplacingMergeTree
-- ReplicatedCollapsingMergeTree
-- ReplicatedVersionedCollapsingMergeTree
-- MergeTree (converted to ReplicatedMergeTree)
-- SummingMergeTree (converted to ReplicatedSummingMergeTree)
-- AggregatingMergeTree (converted to ReplicatedAggregatingMergeTree)
-- ReplacingMergeTree (converted to ReplicatedReplacingMergeTree)
-- CollapsingMergeTree (converted to ReplicatedCollapsingMergeTree)
-- VersionedCollapsingMergeTree (converted to ReplicatedVersionedCollapsingMergeTree)
+`Replicated*` engines are converted to the same `Shared*` equivalents. The substitution is visible in `SHOW CREATE TABLE`, which reports the `Shared*` engine even though your statement specified the plain variant.
+
+The following engines are also supported and used as written:
+
 - URL
 - View
 - MaterializedView

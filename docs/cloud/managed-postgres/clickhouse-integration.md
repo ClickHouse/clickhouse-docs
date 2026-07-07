@@ -1,7 +1,7 @@
 ---
 slug: /cloud/managed-postgres/clickhouse-integration
-sidebar_label: 'ClickHouse integration'
-title: 'ClickHouse integration'
+sidebar_label: 'Sync to ClickHouse'
+title: 'Sync to ClickHouse'
 description: 'Replicate your Postgres data to ClickHouse using built-in CDC capabilities'
 keywords: ['postgres', 'clickhouse integration', 'cdc', 'replication', 'clickpipes', 'data sync']
 doc_type: 'guide'
@@ -19,7 +19,7 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
 
 Every Managed Postgres instance comes with built-in CDC capabilities to any of your ClickHouse services. This allows you to move some or all of the data on your Postgres instance to ClickHouse and have changes in data on Postgres be reflected on ClickHouse continuous and nearly real-time. This is powered by [ClickPipes](/integrations/clickpipes) under the hood.
 
-To access this, click on **ClickHouse Integration** in the sidebar of your Postgres instance.
+To access this, click on **Sync to ClickHouse** in the sidebar of your Postgres instance.
 
 <Image img={chIntegrationIntro} alt="ClickHouse integration landing page showing the integration option in the sidebar" size="md" border/>
 

@@ -12,7 +12,7 @@ keywords: ['데이터 형식', 'Template', 'Regex', '사용자 지정 형식', '
 
 ## Template 기반으로 가져오기 \{#importing-based-on-a-template\}
 
-다음 [로그 파일](assets/error.log)에서 데이터를 가져온다고 가정해 보겠습니다.
+다음 [로그 파일](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log)에서 데이터를 가져온다고 가정해 보겠습니다.
 
 ```bash
 head error.log
@@ -45,7 +45,7 @@ ENGINE = MergeTree
 ORDER BY (host, request, time)
 ```
 
-지정된 Template를 사용하여 데이터를 가져오려면 Template 문자열을 파일에 저장해야 합니다. 여기서는 [row.template](assets/row.template) 파일에 저장합니다.
+지정된 Template를 사용하여 데이터를 가져오려면 Template 문자열을 파일에 저장해야 합니다. 여기서는 [row.template](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/row.template) 파일에 저장합니다.
 
 ```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
@@ -97,7 +97,7 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 
 Template 포맷을 사용하면 데이터를 임의의 텍스트 형식으로도 내보낼 수 있습니다. 이 경우 두 개의 파일을 생성해야 합니다:
 
-전체 결과 집합의 구조를 정의하는 [결과 세트 템플릿](assets/output.results):
+전체 결과 집합의 구조를 정의하는 [결과 세트 템플릿](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.results):
 
 ```response
 == Top 10 IPs ==
@@ -105,7 +105,7 @@ ${data}
 --- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
-여기서 `rows_read`와 `time`은 각 요청마다 사용할 수 있는 시스템 메트릭입니다. `data`는 생성된 행을 나타내며(이 파일에서 `${data}`는 항상 첫 번째 플레이스홀더로 배치되어야 합니다), [**row template file**](assets/output.rows)에 정의된 템플릿을 기반으로 합니다:
+여기서 `rows_read`와 `time`은 각 요청마다 사용할 수 있는 시스템 메트릭입니다. `data`는 생성된 행을 나타내며(이 파일에서 `${data}`는 항상 첫 번째 플레이스홀더로 배치되어야 합니다), [**row template file**](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.rows)에 정의된 템플릿을 기반으로 합니다:
 
 ```response
 ${ip:Escaped} generated ${total:Escaped} requests
@@ -140,7 +140,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 
 ### HTML 파일로 내보내기 \{#exporting-to-html-files\}
 
-Template을 기반으로 한 결과는 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 절을 사용하여 파일로도 내보낼 수 있습니다. 주어진 [resultset](assets/html.results) 및 [row](assets/html.row) 형식을 사용해 HTML 파일을 생성해 보겠습니다:
+Template을 기반으로 한 결과는 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 절을 사용하여 파일로도 내보낼 수 있습니다. 주어진 [resultset](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.results) 및 [row](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.row) 형식을 사용해 HTML 파일을 생성해 보겠습니다:
 
 ```sql
 SELECT
@@ -202,7 +202,7 @@ FORMAT XML
 
 ## 정규식을 기반으로 데이터 가져오기 \{#importing-data-based-on-regular-expressions\}
 
-[Regexp](/interfaces/formats/Regexp) 포맷은 입력 데이터를 더 복잡한 방식으로 파싱해야 하는 보다 정교한 경우에 사용됩니다. 이번에는 [error.log](assets/error.log) 예제 파일을 파싱하되, 파일 이름과 프로토콜을 추출하여 별도 컬럼으로 저장해 보겠습니다. 먼저 이를 위한 새 테이블을 준비합니다:
+[Regexp](/interfaces/formats/Regexp) 포맷은 입력 데이터를 더 복잡한 방식으로 파싱해야 하는 보다 정교한 경우에 사용됩니다. 이번에는 [error.log](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log) 예제 파일을 파싱하되, 파일 이름과 프로토콜을 추출하여 별도 컬럼으로 저장해 보겠습니다. 먼저 이를 위한 새 테이블을 준비합니다:
 
 ```sql
 CREATE TABLE error_log
