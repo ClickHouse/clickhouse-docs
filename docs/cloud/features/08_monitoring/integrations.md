@@ -36,6 +36,7 @@ The customer provides a Datadog API key, and Datadog periodically polls the Clic
 - Metrics are **not** treated as custom metrics by Datadog
 - Does **not** prevent the service from idling
 - Ships with a pre-configured set of dashboards and monitors
+
 For onboarding steps, see [ClickHouse Cloud & Datadog - Integration](#).
 
 ### ClickHouse Cloud Prometheus integration {#clickhouse-cloud-prometheus-integration}
